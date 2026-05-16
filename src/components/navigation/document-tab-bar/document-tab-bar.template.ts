@@ -11,6 +11,13 @@ export function documentTabBarTemplate(component: NLDDDocumentTabBar): TemplateR
 	const label = component.accessibleLabel || 'Tabbladen';
 	const isNavigation = component.navigation;
 
+	// Overflow button: aria-controls is intentionally omitted. ARIA IDREF
+	// attributes cannot cross shadow DOM boundaries (the menu is reparented
+	// to document.body). popup-type + expanded forward to the inner button
+	// as aria-haspopup / aria-expanded and give sufficient AT context for
+	// WCAG 2.1 AA. Restore aria-controls once nldd-menu moves into the
+	// shadow root, or CSS Anchor Positioning lets the menu escape the
+	// stacking context without document.body.
 	const inner = html`
 		<div class="document-tab-bar__items"
 			role=${isNavigation ? nothing : 'tablist'}
@@ -26,13 +33,7 @@ export function documentTabBarTemplate(component: NLDDDocumentTabBar): TemplateR
 				tooltip-timing="never"
 				popup-type="menu"
 				?expanded=${component._menuOpen}
-			>
-				<!-- aria-controls omitted: ARIA IDREF attributes cannot cross shadow DOM boundaries.
-					 popup-type + expanded provide sufficient AT context for WCAG 2.1 AA, and
-					 forward to the inner button as aria-haspopup / aria-expanded. Restore
-					 aria-controls once nldd-menu moves into the shadow root or CSS Anchor
-					 Positioning allows the menu to escape stacking context without document.body. -->
-			</nldd-icon-button>
+			></nldd-icon-button>
 		</div>
 		<div class="document-tab-bar__end" hidden>
 			<slot name="end" @slotchange=${component._onEndSlotChange}></slot>

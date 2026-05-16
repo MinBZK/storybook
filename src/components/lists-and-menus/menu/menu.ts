@@ -536,7 +536,12 @@ export class NLDDMenu extends LitElement {
 		} | null;
 		if (!anchor) return;
 		if ('expanded' in anchor) anchor.expanded = isOpen;
-		if (isOpen && 'popupType' in anchor && (anchor.popupType === null || anchor.popupType === undefined)) {
+		// Seed a valid aria-haspopup when the anchor has no usable popup
+		// type. Falsy covers unset (undefined/null) AND `popup-type=""` —
+		// an empty string is not a valid aria-haspopup token, so it must
+		// still be seeded rather than left invalid. An intentional opt-out
+		// is `popup-type="false"`, which is truthy and preserved here.
+		if (isOpen && 'popupType' in anchor && !anchor.popupType) {
 			anchor.popupType = this.variant === 'listbox' ? 'listbox' : 'menu';
 		}
 		if ('popoverTargetAction' in anchor) {

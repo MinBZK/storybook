@@ -98,6 +98,15 @@ export function template(
 ) {
 	const allChildren = [...startChildren, ...centerChildren, ...endChildren];
 
+	// Overflow button: aria-controls is intentionally omitted. ARIA IDREF
+	// attributes cannot cross shadow DOM boundaries, and the menu is
+	// reparented to document.body while this button lives in the toolbar's
+	// shadow root — so the IDREF could not resolve from the host nor a
+	// forwarded inner button. popup-type + expanded forward to the inner
+	// button as aria-haspopup / aria-expanded and give sufficient AT
+	// context for WCAG 2.1 AA. Restore aria-controls once nldd-menu moves
+	// into the shadow root, or CSS Anchor Positioning lets the menu escape
+	// the stacking context without document.body.
 	return html`
 		<div class="toolbar"
 			role="toolbar"
@@ -127,16 +136,7 @@ export function template(
 					tooltip-timing="never"
 					popup-type="menu"
 					?expanded=${menuOpen}
-				>
-					<!-- aria-controls omitted: ARIA IDREF attributes cannot cross shadow DOM
-						 boundaries, and the menu is reparented to document.body while this
-						 button lives in the toolbar's shadow root — so the IDREF cannot resolve
-						 from the host nor a forwarded inner button. popup-type + expanded
-						 forward to the inner button as aria-haspopup / aria-expanded and
-						 provide sufficient AT context for WCAG 2.1 AA. Restore aria-controls
-						 once nldd-menu moves into the shadow root or CSS Anchor Positioning
-						 lets the menu escape the stacking context without document.body. -->
-				</nldd-icon-button>
+				></nldd-icon-button>
 				<span class="toolbar__item-label">${t('components.toolbar.overflow-action')}</span>
 			</div>
 		</div>
