@@ -89,23 +89,18 @@ export const menuStyles = css`
 		}
 	}
 
-	/* Hover gated behind a real hover-capable pointer: touch emulates a
-	 * sticky :hover on the last-tapped point, so opening a drill-in
-	 * submenu with the back button under the finger would otherwise
-	 * leave it highlighted. :active:hover gives press feedback without
-	 * the sticky-hover trap (the synthetic hover never coincides with
-	 * an active press on the back button itself). Mirrors the
-	 * .menu__item:active:hover pattern. */
+	/* Hover/press gated behind a real hover-capable pointer: touch
+	 * emulates a sticky :hover on the last-tapped point, so opening a
+	 * drill-in submenu with the back button under the finger — or
+	 * starting an internal touch-scroll from it — would otherwise leave
+	 * it highlighted. Touch stays highlight-free, consistent with the
+	 * .menu__item pattern. */
 	@media (hover: hover) {
-		.menu__back-button:hover {
+		.menu__back-button:hover,
+		.menu__back-button:active:hover {
 			background-color: var(--components-menu-item-is-highlighted-background-color);
 			--context-cell-content-color: var(--components-menu-item-is-highlighted-content-color);
 		}
-	}
-
-	.menu__back-button:active:hover {
-		background-color: var(--components-menu-item-is-highlighted-background-color);
-		--context-cell-content-color: var(--components-menu-item-is-highlighted-content-color);
 	}
 
 	.menu__back-button:focus-visible {
@@ -188,12 +183,25 @@ export const menuItemStyles = css`
 	 * additionally covers the case where the cursor sits directly on an
 	 * open opener (since [highlighted] gets cleared at submenu-open time). */
 
-	:host([highlighted]) .menu__item,
-	.menu__item[aria-expanded="true"]:hover,
-	.menu__item:active:hover {
+	:host([highlighted]) .menu__item {
 		background-color: var(--components-menu-item-is-highlighted-background-color);
 		--context-cell-content-color: var(--components-menu-item-is-highlighted-content-color);
 		--context-cell-content-secondary-color: var(--components-menu-item-is-highlighted-content-color);
+	}
+
+	/* Hover/press upgrades gated behind a real hover-capable pointer:
+	 * touch emulates a sticky :hover on the touched point, so pressing
+	 * an item — or starting an internal touch-scroll from one — would
+	 * otherwise leave it highlighted for the whole gesture. The
+	 * JS-driven [highlighted] path above is already touch-suppressed
+	 * (isTouchMode), so touch stays highlight-free and consistent. */
+	@media (hover: hover) {
+		.menu__item[aria-expanded="true"]:hover,
+		.menu__item:active:hover {
+			background-color: var(--components-menu-item-is-highlighted-background-color);
+			--context-cell-content-color: var(--components-menu-item-is-highlighted-content-color);
+			--context-cell-content-secondary-color: var(--components-menu-item-is-highlighted-content-color);
+		}
 	}
 
 
