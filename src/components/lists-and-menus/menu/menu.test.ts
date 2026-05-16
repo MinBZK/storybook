@@ -1094,6 +1094,122 @@ describe('nldd-menu drill-in chain', () => {
 		cleanup(root);
 	});
 
+	it('anchor click collapses the chain after 2 drill-in navigations — twice', async () => {
+		// Repro: clicking the "Open menu" anchor while two levels deep in a
+		// drill-in chain should collapse everything. The user reported it
+		// stops working after the 2nd navigation / on a repeat cycle.
+		const root = await fixture<HTMLElement>(`
+			<div>
+				<button id="anch">Open menu</button>
+				<nldd-menu anchor="anch">
+					<nldd-menu-item text="L1">
+						<nldd-menu>
+							<nldd-menu-item text="L2">
+								<nldd-menu>
+									<nldd-menu-item text="L3"></nldd-menu-item>
+								</nldd-menu>
+							</nldd-menu-item>
+						</nldd-menu>
+					</nldd-menu-item>
+				</nldd-menu>
+			</div>
+		`);
+		await waitForUpdate(root);
+
+		const anch = root.querySelector('#anch') as HTMLButtonElement;
+		const menu = root.querySelector('nldd-menu') as HTMLElement & { showPopover(): void };
+		const l1Item = menu.querySelector(':scope > nldd-menu-item') as HTMLElement;
+		const l2Menu = l1Item.querySelector(':scope > nldd-menu') as HTMLElement;
+		const l2Item = l2Menu.querySelector(':scope > nldd-menu-item') as HTMLElement;
+		const l3Menu = l2Item.querySelector(':scope > nldd-menu') as HTMLElement;
+		const rootInternals = menu as unknown as { _activeSubmenu: HTMLElement | null };
+
+		const navigateTwice = async () => {
+			menu.showPopover();
+			await waitForUpdate(root);
+			openSubmenu(menu, l1Item, l2Menu);   // navigation 1
+			await waitForUpdate(root);
+			openSubmenu(l2Menu, l2Item, l3Menu); // navigation 2
+			await waitForUpdate(root);
+			expect(l3Menu.matches(':popover-open')).toBe(true);
+		};
+
+		// Cycle 1.
+		await navigateTwice();
+		anch.click(); // anchor "Open menu" toggle → must collapse the chain
+		await waitForUpdate(root);
+		expect(l3Menu.matches(':popover-open')).toBe(false);
+		expect(l2Menu.matches(':popover-open')).toBe(false);
+		expect(menu.matches(':popover-open')).toBe(false);
+		expect(rootInternals._activeSubmenu).toBe(null);
+
+		// Cycle 2 — the "after the 2nd time" repeat the user described.
+		await navigateTwice();
+		anch.click();
+		await waitForUpdate(root);
+		expect(l3Menu.matches(':popover-open')).toBe(false);
+		expect(l2Menu.matches(':popover-open')).toBe(false);
+		expect(menu.matches(':popover-open')).toBe(false);
+		expect(rootInternals._activeSubmenu).toBe(null);
+
+		cleanup(root);
+	});
+
+	it('anchor click collapses the chain even when chain links are stale', async () => {
+		// The recurring "anchor click doesn't close" bug: real interaction
+		// leaves _activeSubmenu / _parentMenu stale, so the old
+		// parent-walk collapse silently bailed and the click fell through
+		// to showPopover() (bounce). _collapseChain is registry-driven and
+		// must survive deliberately corrupted links.
+		const root = await fixture<HTMLElement>(`
+			<div>
+				<button id="anch2">Open menu</button>
+				<nldd-menu anchor="anch2">
+					<nldd-menu-item text="L1">
+						<nldd-menu>
+							<nldd-menu-item text="L2">
+								<nldd-menu>
+									<nldd-menu-item text="L3"></nldd-menu-item>
+								</nldd-menu>
+							</nldd-menu-item>
+						</nldd-menu>
+					</nldd-menu-item>
+				</nldd-menu>
+			</div>
+		`);
+		await waitForUpdate(root);
+		const anch = root.querySelector('#anch2') as HTMLButtonElement;
+		const menu = root.querySelector('nldd-menu') as HTMLElement & { showPopover(): void };
+		const l1Item = menu.querySelector(':scope > nldd-menu-item') as HTMLElement;
+		const l2Menu = l1Item.querySelector(':scope > nldd-menu') as HTMLElement;
+		const l2Item = l2Menu.querySelector(':scope > nldd-menu-item') as HTMLElement;
+		const l3Menu = l2Item.querySelector(':scope > nldd-menu') as HTMLElement;
+
+		menu.showPopover();
+		await waitForUpdate(root);
+		openSubmenu(menu, l1Item, l2Menu);
+		await waitForUpdate(root);
+		openSubmenu(l2Menu, l2Item, l3Menu);
+		await waitForUpdate(root);
+		expect(l3Menu.matches(':popover-open')).toBe(true);
+
+		// Corrupt every parent/active link the old walk depended on.
+		const wipe = (m: HTMLElement) => Object.assign(m as unknown as Record<string, unknown>, {
+			_activeSubmenu: null, _parentMenu: null, _activeSubmenuCleanup: null,
+		});
+		wipe(menu); wipe(l2Menu); wipe(l3Menu);
+
+		anch.click(); // registry-driven collapse must still work
+		await waitForUpdate(root);
+
+		expect(l3Menu.matches(':popover-open')).toBe(false);
+		expect(l2Menu.matches(':popover-open')).toBe(false);
+		expect(menu.matches(':popover-open')).toBe(false);
+		expect((menu as unknown as { _openChain: unknown[] })._openChain.length).toBe(0);
+
+		cleanup(root);
+	});
+
 	it('pointerdown outside the chain collapses every level', async () => {
 		const root = await fixture<HTMLElement>(`
 			<nldd-menu>

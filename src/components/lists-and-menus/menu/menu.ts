@@ -394,11 +394,20 @@ export class NLDDMenu extends LitElement {
 	 * level — its parent's onToggle should skip the normal close cleanup
 	 * (re-parent + re-show) so the chain stays in deeper-level state. */
 	_drillInHidingForDeeper = false;
-	/** Signal that this close is part of a select-chain-close (an item was
-	 * selected somewhere in the chain) — onToggle should drop the listener
-	 * and skip the re-parent + re-show, since the whole chain is shutting
-	 * down at once. */
-	_drillInClosingForSelect = false;
+	/** Root-owned registry of every submenu currently open in this chain,
+	 * in open order. Lives on the root menu only; submenus reach it via
+	 * `_chainRoot`. Drives `_collapseChain()` so collapsing the whole
+	 * stack never depends on `_activeSubmenu`/`_parentMenu` threading
+	 * (which real interaction can leave stale). @internal */
+	_openChain: NLDDMenu[] = [];
+	/** Back-reference to the chain's root, set on every submenu when it
+	 * opens. Lets `_collapseChain()` find the registry without walking
+	 * the (possibly stale) parent links. null on the root. @internal */
+	_chainRoot: NLDDMenu | null = null;
+	/** Force-teardown for this submenu (detach toggle listener, hide,
+	 * restore DOM, reset state — no parent re-show). Set when the submenu
+	 * opens; called by `_collapseChain()`. @internal */
+	_collapseSelf: (() => void) | null = null;
 
 	/** When this menu is itself a submenu, points to the parent menu that
 	 * opened it. Set by the parent's _handleSubmenuOpen. null on the root.
@@ -540,13 +549,11 @@ export class NLDDMenu extends LitElement {
 		// Drill-in: the root is hidden while a submenu shows, so `_isOpen`
 		// is false on the root even though the menu is visibly open. A
 		// plain toggle would `showPopover()` the root — i.e. bounce back
-		// to the main level instead of closing. The anchor button is a
-		// toggle: if any level is open, clicking it collapses the whole
-		// chain. Find the deepest open level and run its chain-close.
-		if (this._drillInMode && this._activeSubmenu) {
-			let deepest: NLDDMenu = this._activeSubmenu;
-			while (deepest._activeSubmenu) deepest = deepest._activeSubmenu;
-			deepest._handleSelectChainClose();
+		// to the main level. The anchor is a toggle: if anything in the
+		// chain is open, clicking it collapses the whole stack (registry-
+		// driven, so it works even if chain links went stale).
+		if (this._drillInMode && (this._isOpen || this._openChain.length > 0)) {
+			this._collapseChain();
 			return;
 		}
 		if (this._isOpen) {
@@ -1037,6 +1044,13 @@ export class NLDDMenu extends LitElement {
 		submenu._parentMenu = this;
 		submenu._parentItem = item;
 
+		// Register this submenu in the root's open-chain so `_collapseChain()`
+		// can tear the whole stack down without relying on parent links being
+		// intact at collapse time. Captured here, while links are fresh.
+		const chainRoot = this._rootMenu;
+		submenu._chainRoot = chainRoot;
+		if (!chainRoot._openChain.includes(submenu)) chainRoot._openChain.push(submenu);
+
 		if (this._drillInMode) {
 			// Drill-in: anchor to the root's anchor so all submenus open at the
 			// same screen position — visually stacks. Inherit root placement
@@ -1076,11 +1090,11 @@ export class NLDDMenu extends LitElement {
 			}
 			submenu._parentMenu = null;
 			submenu._parentItem = null;
-			// Reset chain-close flag here (rather than only at the toggle
-			// branch) so chain-walk cleanups also clear it — otherwise a
-			// stale `true` would carry over to the next open and silently
-			// suppress the next "back" reshow.
-			submenu._drillInClosingForSelect = false;
+			// Deregister from the root's open-chain registry.
+			const ci = chainRoot._openChain.indexOf(submenu);
+			if (ci !== -1) chainRoot._openChain.splice(ci, 1);
+			submenu._collapseSelf = null;
+			submenu._chainRoot = null;
 			item._submenuOpen = false;
 			// Drill-in: restore the submenu to its original DOM position and
 			// re-show the parent so the user returns to the previous view.
@@ -1133,15 +1147,21 @@ export class NLDDMenu extends LitElement {
 				submenu._drillInHidingForDeeper = false;
 				return;
 			}
-			// Select-chain close: an item was selected somewhere in the chain
-			// and `_handleSelectChainClose` is hiding every level. Run the
-			// same teardown as a normal close, but skip re-showing this
-			// (parent) menu — the whole chain is shutting down. (`cleanup`
-			// itself resets the flag, so we don't need to reset it here.)
-			cleanup(submenu._drillInClosingForSelect);
+			// A real toggle-close = one level back: tear down and re-show
+			// the parent. Collapsing the whole chain doesn't come through
+			// here — `_collapseChain()` drives `_collapseSelf` directly.
+			cleanup(false);
 		};
 		submenu.addEventListener('toggle', onToggle);
 		this._activeSubmenuCleanup = cleanup;
+		// Force-teardown used by `_collapseChain()`: detach the toggle
+		// listener (so this hide doesn't also run the back-nav onToggle),
+		// hide, then run the shared cleanup with no parent re-show.
+		submenu._collapseSelf = () => {
+			submenu.removeEventListener('toggle', onToggle);
+			(submenu as HTMLElement).hidePopover?.();
+			cleanup(true);
+		};
 
 		// Drill-in: re-parent the submenu to <body> before show so it isn't
 		// a popover-stack descendant of the parent — that lets us close the
@@ -1246,57 +1266,32 @@ export class NLDDMenu extends LitElement {
 	 * listener is wired only while we're open and torn down on close, so
 	 * idle menus pay nothing. */
 	private _handleWindowResize = (): void => {
-		(this as HTMLElement).hidePopover?.();
+		this._collapseChain();
 	};
 
 	/**
-	 * Close this menu when a `select` event bubbles up — selecting an item
-	 * anywhere in the menu (or any descendant submenu) closes the entire
-	 * popover chain so the action feels final.
+	 * Collapse the entire menu chain at once — root + every open submenu —
+	 * with no "back one level" re-show. Used when the action is final:
+	 * selecting an item, clicking the anchor, clicking/tapping outside, or
+	 * a viewport resize.
 	 *
-	 * In cascade mode the popover stack auto-closes ancestors when a
-	 * descendant closes, so hiding `this` is enough. In drill-in mode the
-	 * chain is decoupled (each level was reparented to <body> and the upper
-	 * levels were already hidden when deeper levels took over), so `select`
-	 * no longer bubbles past the deepest level and the upper levels' `toggle`
-	 * events will never re-fire. Walk `_parentMenu` explicitly to invoke
-	 * each level's stored cleanup with `skipReshow`, collapsing the whole
-	 * stack instead of bouncing back to the previous view.
+	 * Driven by the root's `_openChain` registry and each submenu's
+	 * `_collapseSelf`, so it never depends on `_activeSubmenu` /
+	 * `_parentMenu` threading being intact at collapse time — real
+	 * interaction can leave those stale, which was the source of the
+	 * recurring "anchor click doesn't close after the 2nd navigation"
+	 * bug. Idempotent: every chain level's `select` listener may call it,
+	 * but the first run empties the registry so the rest are no-ops.
 	 */
-	private _handleSelectChainClose = (): void => {
-		// Stamp the root's reopen guard. When this chain-close was triggered
-		// by an anchor click (pointerdown → _handleDocumentPointerdown),
-		// the same gesture's `click` reaches the root's _handleDocumentClick
-		// a moment later with _activeSubmenu already cleared and the root
-		// still closed — without this stamp it would `showPopover()` the
-		// root, bouncing the user back to the main level instead of
-		// staying closed. The root was hidden long ago (when it made room
-		// for the submenu), so its own _closedAt is stale and wouldn't
-		// trip the guard; refresh it here.
-		this._rootMenu._closedAt = Date.now();
-		// Capture the chain BEFORE hiding ourselves: in browsers that
-		// dispatch the close-side `toggle` event synchronously inside
-		// `hidePopover()`, our parent's cleanup runs immediately and
-		// nulls `this._parentMenu` — reading it after hidePopover would
-		// then give us null and the walk would never run, leaving stale
-		// `_activeSubmenu` / `_activeSubmenuCleanup` / toggle listeners
-		// on grandparent levels.
-		let parent = this._parentMenu;
-		// Mark this level so its toggle→cleanup run skips re-showing the
-		// parent. Then hide ourselves to fire the normal cleanup path.
-		this._drillInClosingForSelect = true;
-		(this as HTMLElement).hidePopover?.();
-		// Walk up the chain — these ancestors are already hidden in drill-in
-		// mode (or auto-closed by the popover stack in cascade mode), so
-		// hidePopover would be a no-op and their stale toggle listeners would
-		// never fire. Invoke their stored cleanup directly to clear state and
-		// detach listeners. Capture `next` before calling cleanup, since each
-		// cleanup nulls out _parentMenu / _activeSubmenuCleanup as it runs.
-		while (parent) {
-			const next = parent._parentMenu;
-			parent._activeSubmenuCleanup?.(true);
-			parent = next;
-		}
+	private _collapseChain = (): void => {
+		const root = this._chainRoot ?? this;
+		root._closedAt = Date.now();
+		// Snapshot + clear first so the re-entrant cleanup splices are
+		// no-ops and a trailing same-gesture call finds nothing to do.
+		const chain = root._openChain;
+		root._openChain = [];
+		for (let i = chain.length - 1; i >= 0; i--) chain[i]._collapseSelf?.();
+		if (root._isOpen) (root as HTMLElement).hidePopover?.();
 	};
 
 	/**
@@ -1307,7 +1302,7 @@ export class NLDDMenu extends LitElement {
 	 * would helpfully re-show the previous level. That's the wrong outcome
 	 * for a click outside the menu: the user is dismissing the whole menu,
 	 * not navigating one step back. Detect the outside click here and route
-	 * to `_handleSelectChainClose`, which collapses every level at once.
+	 * to `_collapseChain`, which collapses every level at once.
 	 *
 	 * Cascade mode falls back to the native popover stack behaviour: a click
 	 * outside light-dismisses every popover down to the click target's
@@ -1361,7 +1356,7 @@ export class NLDDMenu extends LitElement {
 			document.addEventListener('pointercancel', this._outsideTapCancel, true);
 			return;
 		}
-		this._handleSelectChainClose();
+		this._collapseChain();
 	};
 
 	private _outsideTapStartX = 0;
@@ -1380,7 +1375,7 @@ export class NLDDMenu extends LitElement {
 	private _outsideTapEnd = (): void => {
 		const wasTap = this._outsideTapTracking;
 		this._teardownOutsideTap();
-		if (wasTap) this._handleSelectChainClose();
+		if (wasTap) this._collapseChain();
 	};
 
 	private _outsideTapCancel = (): void => {
@@ -1413,7 +1408,7 @@ export class NLDDMenu extends LitElement {
 		this.addEventListener('mouseleave', this._handleMouseleave);
 		this.addEventListener('menu-item-focused', this._handleMenuItemFocused);
 		this.addEventListener('submenu-open', this._handleSubmenuOpen);
-		this.addEventListener('select', this._handleSelectChainClose);
+		this.addEventListener('select', this._collapseChain);
 		document.addEventListener('click', this._handleDocumentClick);
 	}
 
@@ -1437,7 +1432,7 @@ export class NLDDMenu extends LitElement {
 		this.removeEventListener('mouseleave', this._handleMouseleave);
 		this.removeEventListener('menu-item-focused', this._handleMenuItemFocused);
 		this.removeEventListener('submenu-open', this._handleSubmenuOpen);
-		this.removeEventListener('select', this._handleSelectChainClose);
+		this.removeEventListener('select', this._collapseChain);
 		document.removeEventListener('click', this._handleDocumentClick);
 		// Defensive: the pointerdown + resize listeners are added on open
 		// and removed on close, but if the menu is torn down mid-open we'd
