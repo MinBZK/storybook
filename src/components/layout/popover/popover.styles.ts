@@ -13,21 +13,21 @@ export const popoverStyles = css`
 		--_max-height: calc(100vh - var(--semantics-overlays-inset) * 2);
 
 		margin: 0;
-		padding: 0;
 		border: none;
-		background-color: var(--semantics-surfaces-background-color);
 		box-shadow: var(--semantics-overlays-box-shadow);
-		overflow: auto;
 		outline: none;
+		background-color: var(--semantics-surfaces-background-color);
+		overflow: auto;
+		padding: 0;
 		isolation: isolate;
 
 		@media (max-width: ${smMax}) {
 			position: fixed;
 			inset: auto 0 0 0;
+			border-radius: var(--semantics-overlays-corner-radius) var(--semantics-overlays-corner-radius) 0 0;
 			width: 100%;
 			max-width: 100%;
 			max-height: calc(100dvh - var(--semantics-sheets-bottom-top-inset));
-			border-radius: var(--semantics-overlays-corner-radius) var(--semantics-overlays-corner-radius) 0 0;
 			transform: translateY(100%);
 			transition:
 				transform var(--semantics-sheets-bottom-animation-duration) var(--primitives-transition-easing-default),

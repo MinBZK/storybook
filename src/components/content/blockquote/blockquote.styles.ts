@@ -41,17 +41,17 @@ export const blockquoteStyles = css`
 	/* # Block */
 
 	.blockquote {
+		display: flex;
 		margin: 0;
-		padding-inline: var(--_spacing);
-		padding-top: var(--_spacing);
-		padding-bottom: 0;
 		border-top: var(--semantics-blockquotes-border);
 		border-left: var(--semantics-blockquotes-border);
 		border-top-left-radius: var(--semantics-blockquotes-corner-radius);
-		color: var(--semantics-content-color);
-		display: flex;
+		padding-inline: var(--_spacing);
+		padding-top: var(--_spacing);
+		padding-bottom: 0;
 		flex-direction: column;
 		gap: calc(var(--_spacing) / 2);
+		color: var(--semantics-content-color);
 	}
 
 

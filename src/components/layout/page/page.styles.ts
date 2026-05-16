@@ -9,13 +9,13 @@ export const pageStyles = css`
 		--_background-color: var(--context-parent-background-color, var(--semantics-surfaces-background-color));
 
 		display: flex;
-		flex-direction: column;
+		background-color: var(--_background-color);
 		width: 100%;
 		height: 100%;
 		overflow-y: auto;
 		overflow-x: hidden;
+		flex-direction: column;
 		overscroll-behavior: contain;
-		background-color: var(--_background-color);
 	}
 
 	/* Overflow hidden prevents content from escaping the scroll wrapper.
@@ -45,17 +45,17 @@ export const pageStyles = css`
 
 	.page {
 		display: flex;
+		min-height: 0;
 		flex-direction: column;
 		flex-grow: 1;
-		min-height: 0;
 	}
 
 
 	/* # Header */
 
 	.page__header {
-		flex-shrink: 0;
 		position: relative;
+		flex-shrink: 0;
 	}
 
 	:host([sticky-header]) .page__header {
@@ -73,10 +73,10 @@ export const pageStyles = css`
 		top: 100%;
 		left: 0;
 		right: 0;
-		height: var(--primitives-space-32);
+		opacity: 0;
 		background: linear-gradient(to bottom, color-mix(in srgb, var(--_background-color) 95%, transparent), transparent);
 		pointer-events: none;
-		opacity: 0;
+		height: var(--primitives-space-32);
 		transition: opacity var(--primitives-transition-duration-medium) var(--primitives-transition-easing-default);
 	}
 
@@ -89,9 +89,9 @@ export const pageStyles = css`
 
 	.page__scroll {
 		display: flex;
+		min-height: 0;
 		flex-direction: column;
 		flex-grow: 1;
-		min-height: 0;
 	}
 
 	:host([sticky-header]) .page__scroll {
@@ -113,8 +113,8 @@ export const pageStyles = css`
 	/* # Footer */
 
 	.page__footer {
-		flex-shrink: 0;
 		position: relative;
+		flex-shrink: 0;
 	}
 
 	:host([sticky-footer]) .page__footer {
@@ -130,8 +130,8 @@ export const pageStyles = css`
 		bottom: 100%;
 		left: 0;
 		right: 0;
-		height: var(--primitives-space-32);
 		background: linear-gradient(to top, color-mix(in srgb, var(--_background-color) 95%, transparent), transparent);
 		pointer-events: none;
+		height: var(--primitives-space-32);
 	}
 `;

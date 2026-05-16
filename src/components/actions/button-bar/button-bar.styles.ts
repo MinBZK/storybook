@@ -56,16 +56,16 @@ export const buttonBarStyles = css`
 	/* # Size: XS */
 
 	:host([size="xs"]) .button-bar {
-		height: var(--semantics-controls-xs-min-size);
 		border-radius: var(--semantics-controls-xs-corner-radius);
+		height: var(--semantics-controls-xs-min-size);
 	}
 
 
 	/* # Size: SM */
 
 	:host([size="sm"]) .button-bar {
-		height: var(--semantics-controls-sm-min-size);
 		border-radius: var(--semantics-controls-sm-corner-radius);
+		height: var(--semantics-controls-sm-min-size);
 	}
 
 
@@ -73,8 +73,8 @@ export const buttonBarStyles = css`
 
 	:host([size="md"]) .button-bar,
 	:host(:not([size])) .button-bar {
-		height: var(--semantics-controls-md-min-size);
 		border-radius: var(--semantics-controls-md-corner-radius);
+		height: var(--semantics-controls-md-min-size);
 	}
 
 
@@ -101,8 +101,8 @@ export const buttonBarStyles = css`
 	}
 
 	.button-bar__divider-line {
-		width: var(--semantics-dividers-thickness);
 		background-color: var(--semantics-buttons-neutral-tinted-divider-color);
+		width: var(--semantics-dividers-thickness);
 	}
 
 	:host([variant="accent-filled"]) .button-bar__divider-line,

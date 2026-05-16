@@ -29,9 +29,9 @@ export const stepperStyles = css`
 
 	.stepper {
 		display: inline-flex;
+		background-color: var(--semantics-buttons-neutral-tinted-background-color);
 		flex-direction: row;
 		align-items: center;
-		background-color: var(--semantics-buttons-neutral-tinted-background-color);
 	}
 
 	:host([size='xs']) .stepper {
@@ -57,9 +57,9 @@ export const stepperStyles = css`
 	/* # Divider */
 
 	.stepper__divider {
+		background-color: var(--semantics-buttons-neutral-tinted-divider-color);
 		width: var(--semantics-dividers-thickness);
 		flex-shrink: 0;
-		background-color: var(--semantics-buttons-neutral-tinted-divider-color);
 	}
 
 	:host([size='xs']) .stepper__divider {

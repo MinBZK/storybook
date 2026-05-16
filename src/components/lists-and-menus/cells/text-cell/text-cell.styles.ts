@@ -12,12 +12,12 @@ export const textCellStyles = css`
 		--_min-height: 0;
 
 		display: flex;
-		flex-direction: column;
-		justify-content: center;
 		width: var(--_width);
 		min-width: var(--_min-width);
 		max-width: var(--_max-width);
 		min-height: var(--_min-height);
+		flex-direction: column;
+		justify-content: center;
 	}
 
 	:host([hidden]) {
@@ -35,10 +35,10 @@ export const textCellStyles = css`
 	}
 
 	:host([width='fit-content']) {
+		width: fit-content;
 		flex-grow: 0;
 		flex-shrink: 0;
 		flex-basis: auto;
-		width: fit-content;
 	}
 
 	:host([width]:not([width='full']):not([width='fit-content']):not([width=''])) {
@@ -92,8 +92,8 @@ export const textCellStyles = css`
 
 	.text-cell__overline {
 		margin: 0;
-		align-self: stretch;
 		min-width: 0;
+		align-self: stretch;
 		overflow-wrap: anywhere;
 		color: var(--context-cell-content-color, var(--semantics-content-secondary-color));
 	}
@@ -120,8 +120,8 @@ export const textCellStyles = css`
 
 	.text-cell__text {
 		margin: 0;
-		align-self: stretch;
 		min-width: 0;
+		align-self: stretch;
 		overflow-wrap: anywhere;
 		text-wrap: pretty;
 	}
@@ -196,8 +196,8 @@ export const textCellStyles = css`
 
 	.text-cell__supporting-text {
 		margin: 0;
-		align-self: stretch;
 		min-width: 0;
+		align-self: stretch;
 		overflow-wrap: anywhere;
 		color: var(--context-cell-content-color, var(--semantics-content-secondary-color));
 	}

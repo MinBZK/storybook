@@ -24,10 +24,10 @@ export const titleStyles = css`
 
 	.title {
 		display: flex;
+		width: 100%;
 		flex-direction: row;
 		align-items: center;
 		gap: var(--primitives-space-12);
-		width: 100%;
 	}
 
 
@@ -35,9 +35,9 @@ export const titleStyles = css`
 
 	.title__title-group {
 		display: flex;
+		min-width: 0;
 		flex-direction: column;
 		flex: 1;
-		min-width: 0;
 	}
 
 

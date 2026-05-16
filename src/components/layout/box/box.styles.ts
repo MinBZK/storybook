@@ -17,9 +17,9 @@ export const boxStyles = css`
 	/* # Block */
 
 	.box {
-		background-color: var(--components-box-background-color);
-		border-radius: var(--components-box-corner-radius);
-		padding: var(--components-box-padding);
 		box-sizing: border-box;
+		border-radius: var(--components-box-corner-radius);
+		background-color: var(--components-box-background-color);
+		padding: var(--components-box-padding);
 	}
 `;

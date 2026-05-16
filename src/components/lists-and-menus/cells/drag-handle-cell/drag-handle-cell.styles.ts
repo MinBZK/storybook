@@ -7,10 +7,10 @@ export const dragHandleCellStyles = css`
 
 	:host {
 		display: inline-flex;
+		cursor: grab;
+		width: fit-content;
 		align-items: center;
 		justify-content: center;
-		width: fit-content;
-		cursor: grab;
 	}
 
 	:host([hidden]) {
@@ -26,13 +26,13 @@ export const dragHandleCellStyles = css`
 
 	.drag-handle-cell__control {
 		display: flex;
+		margin: 0;
+		border: none;
+		background-color: var(--semantics-grab-handles-background-color);
+		cursor: inherit;
+		padding: 0;
 		align-items: center;
 		justify-content: center;
-		background-color: var(--semantics-grab-handles-background-color);
-		border: none;
-		padding: 0;
-		margin: 0;
-		cursor: inherit;
 		-webkit-appearance: none;
 		appearance: none;
 	}
@@ -48,18 +48,18 @@ export const dragHandleCellStyles = css`
 
 	:host([size="md"]) .drag-handle-cell__control,
 	:host(:not([size])) .drag-handle-cell__control {
+		border-radius: var(--semantics-controls-md-corner-radius);
 		width: var(--semantics-controls-sm-min-size);
 		height: var(--semantics-controls-md-min-size);
-		border-radius: var(--semantics-controls-md-corner-radius);
 	}
 
 
 	/* ## Size: SM */
 
 	:host([size="sm"]) .drag-handle-cell__control {
+		border-radius: var(--semantics-controls-sm-corner-radius);
 		width: var(--semantics-controls-xs-min-size);
 		height: var(--semantics-controls-sm-min-size);
-		border-radius: var(--semantics-controls-sm-corner-radius);
 	}
 
 

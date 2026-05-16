@@ -45,8 +45,8 @@ export const formFieldStyles = css`
 
 	.form-field__header {
 		display: flex;
-		flex-direction: column;
 		box-sizing: border-box;
+		flex-direction: column;
 	}
 
 	:host([label-alignment='left']) .form-field__header,
@@ -54,11 +54,11 @@ export const formFieldStyles = css`
 	:host(:not([label-alignment])[form-label-alignment='left']) .form-field__header,
 	:host(:not([label-alignment])[form-label-alignment='right']) .form-field__header {
 		@container (min-width: 641px) {
+			width: var(--semantics-forms-label-column-width);
+			min-height: var(--semantics-controls-md-min-size);
 			flex-grow: 0;
 			flex-shrink: 0;
 			justify-content: center;
-			width: var(--semantics-forms-label-column-width);
-			min-height: var(--semantics-controls-md-min-size);
 		}
 	}
 
@@ -150,11 +150,11 @@ export const formFieldStyles = css`
 
 	.form-field__main {
 		display: flex;
+		min-width: 0;
 		flex-direction: column;
 		flex-grow: 1;
 		flex-shrink: 1;
 		flex-basis: 0;
-		min-width: 0;
 	}
 
 
@@ -196,10 +196,10 @@ export const formFieldHelpTextStyles = css`
 	/* # Links */
 
 	::slotted(a) {
+		border-radius: var(--primitives-corner-radius-xxs);
 		color: var(--semantics-links-color);
 		text-decoration: underline;
 		text-underline-offset: var(--primitives-space-2);
-		border-radius: var(--primitives-corner-radius-xxs);
 	}
 
 	@media (hover: hover) {
@@ -253,10 +253,10 @@ export const formFieldErrorTextStyles = css`
 	/* # Links */
 
 	::slotted(a) {
+		border-radius: var(--primitives-corner-radius-xxs);
 		color: var(--semantics-links-color);
 		text-decoration: underline;
 		text-underline-offset: var(--primitives-space-2);
-		border-radius: var(--primitives-corner-radius-xxs);
 	}
 
 	@media (hover: hover) {

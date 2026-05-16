@@ -165,14 +165,14 @@ export const tagStyles = css`
 
 	.tag {
 		display: inline-flex;
-		align-items: center;
 		box-sizing: border-box;
+		border-radius: var(--_corner-radius);
+		background-color: var(--_background-color);
 		min-height: var(--_min-height);
 		padding: 0 var(--_inline-padding);
+		align-items: center;
 		gap: var(--_gap);
-		background-color: var(--_background-color);
 		color: var(--_content-color);
-		border-radius: var(--_corner-radius);
 		white-space: nowrap;
 		font: var(--_font);
 	}
@@ -182,11 +182,11 @@ export const tagStyles = css`
 
 	.tag__icon {
 		display: inline-flex;
-		align-items: center;
-		flex-shrink: 0;
+		margin-inline: calc((var(--_min-height) - var(--_icon-size)) / 2 - var(--_inline-padding));
 		width: var(--_icon-size);
 		height: var(--_icon-size);
-		margin-inline: calc((var(--_min-height) - var(--_icon-size)) / 2 - var(--_inline-padding));
+		align-items: center;
+		flex-shrink: 0;
 	}
 
 	.tag__icon:has(+ .tag__text) {

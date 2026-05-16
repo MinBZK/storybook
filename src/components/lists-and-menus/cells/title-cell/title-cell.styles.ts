@@ -12,12 +12,12 @@ export const titleCellStyles = css`
 		--_min-height: 0;
 
 		display: flex;
-		flex-direction: column;
-		justify-content: center;
 		width: var(--_width);
 		min-width: var(--_min-width);
 		max-width: var(--_max-width);
 		min-height: var(--_min-height);
+		flex-direction: column;
+		justify-content: center;
 	}
 
 	:host([hidden]) {
@@ -35,10 +35,10 @@ export const titleCellStyles = css`
 	}
 
 	:host([width='fit-content']) {
+		width: fit-content;
 		flex-grow: 0;
 		flex-shrink: 0;
 		flex-basis: auto;
-		width: fit-content;
 	}
 
 	:host([width]:not([width='full']):not([width='fit-content']):not([width=''])) {
@@ -92,8 +92,8 @@ export const titleCellStyles = css`
 
 	.title-cell__overline {
 		margin: 0;
-		align-self: stretch;
 		min-width: 0;
+		align-self: stretch;
 		overflow-wrap: anywhere;
 		font: var(--primitives-font-body-xs-regular-tight);
 		color: var(--context-cell-content-color, var(--semantics-content-secondary-color));
@@ -112,8 +112,8 @@ export const titleCellStyles = css`
 
 	.title-cell__title {
 		margin: 0;
-		align-self: stretch;
 		min-width: 0;
+		align-self: stretch;
 		overflow-wrap: break-word;
 		color: var(--context-cell-content-color, var(--semantics-content-color));
 		text-wrap: pretty;
@@ -169,8 +169,8 @@ export const titleCellStyles = css`
 
 	.title-cell__supporting-text {
 		margin: 0;
-		align-self: stretch;
 		min-width: 0;
+		align-self: stretch;
 		overflow-wrap: anywhere;
 		font: var(--primitives-font-body-sm-regular-tight);
 		color: var(--context-cell-content-color, var(--semantics-content-secondary-color));

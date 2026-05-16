@@ -9,10 +9,10 @@ export const barSplitViewStyles = css`
 		--_background-color: var(--context-parent-background-color, var(--semantics-surfaces-background-color));
 
 		display: flex;
-		flex-direction: column;
+		background-color: var(--_background-color);
 		width: 100%;
 		height: 100%;
-		background-color: var(--_background-color);
+		flex-direction: column;
 	}
 
 	:host([background="default"]) {
@@ -34,10 +34,10 @@ export const barSplitViewStyles = css`
 
 	.bar-split-view {
 		display: flex;
-		flex-direction: column;
-		flex: 1;
 		min-height: 0;
 		min-width: 0;
+		flex-direction: column;
+		flex: 1;
 	}
 
 
@@ -45,10 +45,10 @@ export const barSplitViewStyles = css`
 
 	.bar-split-view__bar {
 		display: flex;
-		flex-direction: column;
-		flex-shrink: 0;
 		min-width: 0;
 		overflow: hidden;
+		flex-direction: column;
+		flex-shrink: 0;
 	}
 
 
@@ -63,18 +63,18 @@ export const barSplitViewStyles = css`
 
 	.bar-split-view__main {
 		display: flex;
-		flex-direction: column;
-		flex: 1;
 		min-height: 0;
 		min-width: 0;
 		overflow: hidden;
+		flex-direction: column;
+		flex: 1;
 	}
 
 
 	/* # Slotted */
 
 	::slotted(*) {
-		flex: 1;
 		min-height: 0;
+		flex: 1;
 	}
 `;

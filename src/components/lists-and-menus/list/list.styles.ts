@@ -65,8 +65,8 @@ export const listStyles = css`
 	/* # Variant: box */
 
 	:host([variant='box']) .list__items {
-		background-color: var(--semantics-surfaces-tinted-background-color);
 		border-radius: var(--components-list-corner-radius);
+		background-color: var(--semantics-surfaces-tinted-background-color);
 		overflow: hidden;
 	}
 
@@ -74,8 +74,8 @@ export const listStyles = css`
 	/* # Variant: box-on-tinted */
 
 	:host([variant='box-on-tinted']) .list__items {
-		background-color: var(--semantics-surfaces-background-color);
 		border-radius: var(--components-list-corner-radius);
+		background-color: var(--semantics-surfaces-background-color);
 		overflow: hidden;
 	}
 
@@ -84,9 +84,9 @@ export const listStyles = css`
 
 	::slotted(.nldd-list-drag-placeholder) {
 		box-sizing: border-box;
+		border-radius: var(--components-list-item-indicator-corner-radius);
 		background-color: var(--components-list-drag-placeholder-background-color);
 		pointer-events: none;
-		border-radius: var(--components-list-item-indicator-corner-radius);
 	}
 
 
@@ -96,17 +96,17 @@ export const listStyles = css`
 		position: absolute;
 		top: var(--_drag-clone-top);
 		left: var(--_drag-clone-left);
-		width: var(--_drag-clone-width);
-		height: var(--_drag-clone-height);
 		display: flex;
-		flex-direction: row;
-		align-items: stretch;
-		pointer-events: none;
 		opacity: var(--_drag-clone-opacity);
+		z-index: var(--_drag-clone-z-index);
 		border-radius: var(--components-list-item-indicator-corner-radius);
 		background: var(--semantics-surfaces-background-color);
-		z-index: var(--_drag-clone-z-index);
+		pointer-events: none;
+		width: var(--_drag-clone-width);
+		height: var(--_drag-clone-height);
 		overflow: hidden;
+		flex-direction: row;
+		align-items: stretch;
 	}
 
 
@@ -115,13 +115,13 @@ export const listStyles = css`
 	.list__polite-announcer,
 	.list__assertive-announcer {
 		position: absolute;
+		margin: -1px;
+		border: 0;
 		width: 1px;
 		height: 1px;
-		padding: 0;
-		margin: -1px;
 		overflow: hidden;
-		clip-path: inset(50%);
+		padding: 0;
 		white-space: nowrap;
-		border: 0;
+		clip-path: inset(50%);
 	}
 `;

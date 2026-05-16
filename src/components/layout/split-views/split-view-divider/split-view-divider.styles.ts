@@ -20,19 +20,19 @@ export const splitViewDividerStyles = css`
 
 	.split-view-divider {
 		display: flex;
-		justify-content: center;
-		align-items: center;
 		position: relative;
 		background-color: var(--semantics-dividers-color);
+		justify-content: center;
+		align-items: center;
 	}
 
 
 	/* # Drag handle */
 
 	.split-view-divider__drag-handle {
-		background-color: var(--semantics-content-secondary-color);
-		border-radius: 9999px;
 		position: absolute;
+		border-radius: 9999px;
+		background-color: var(--semantics-content-secondary-color);
 	}
 
 

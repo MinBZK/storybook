@@ -30,9 +30,9 @@ export const toolbarStyles = css`
 
 	.toolbar {
 		display: flex;
+		width: 100%;
 		flex-direction: row;
 		align-items: center;
-		width: 100%;
 	}
 
 	:host([size="sm"]) .toolbar {
@@ -49,10 +49,10 @@ export const toolbarStyles = css`
 
 	.toolbar__items {
 		display: flex;
+		min-width: 0;
 		flex-direction: row;
 		align-items: flex-start;
 		flex: 1;
-		min-width: 0;
 	}
 
 	:host([size="sm"]) .toolbar__items {
@@ -68,9 +68,9 @@ export const toolbarStyles = css`
 	/* # Spacers */
 
 	.toolbar__flexible-spacer {
+		margin-left: calc(-1 * var(--components-toolbar-md-gap));
 		flex-grow: 1;
 		flex-shrink: 1;
-		margin-left: calc(-1 * var(--components-toolbar-md-gap));
 	}
 
 	:host([size="sm"]) .toolbar__flexible-spacer {
@@ -79,19 +79,19 @@ export const toolbarStyles = css`
 
 	.toolbar__center-fill {
 		display: flex;
+		min-width: 0;
 		flex-direction: row;
 		align-items: flex-start;
 		flex-grow: 1;
 		flex-shrink: 1;
-		min-width: 0;
 		justify-content: center;
 	}
 
 	.toolbar__left-spacer {
+		margin-right: calc(-1 * var(--components-toolbar-md-gap));
+		min-width: 0;
 		flex-shrink: 1;
 		flex-grow: 0;
-		min-width: 0;
-		margin-right: calc(-1 * var(--components-toolbar-md-gap));
 		flex-basis: calc(
 			var(--_width) / 2
 			- var(--_start-width)
@@ -111,10 +111,10 @@ export const toolbarStyles = css`
 	}
 
 	.toolbar__right-spacer {
+		margin-left: calc(-1 * var(--components-toolbar-md-gap));
+		min-width: 0;
 		flex-shrink: 1;
 		flex-grow: 0;
-		min-width: 0;
-		margin-left: calc(-1 * var(--components-toolbar-md-gap));
 		flex-basis: calc(
 			var(--_width) / 2
 			- var(--_end-width)
@@ -147,8 +147,8 @@ export const toolbarStyles = css`
 	}
 
 	.toolbar__item.is-fluid {
-		flex-basis: var(--_item-width);
 		min-width: var(--_item-min-width);
+		flex-basis: var(--_item-width);
 		flex-shrink: 1;
 	}
 
@@ -164,8 +164,8 @@ export const toolbarStyles = css`
 
 	.toolbar__item-content {
 		display: inline-flex;
-		align-items: center;
 		width: 100%;
+		align-items: center;
 		justify-content: center;
 	}
 
@@ -214,18 +214,18 @@ export const toolbarStyles = css`
 
 	.toolbar__title-group {
 		display: inline-flex;
-		flex-direction: column;
-		justify-content: center;
 		min-width: var(--_title-group-min-width);
 		overflow: hidden;
+		flex-direction: column;
+		justify-content: center;
 		flex-shrink: 1;
 	}
 
 	.toolbar__title-group.is-solo-fluid {
+		min-width: 0;
 		flex-grow: 1;
 		flex-shrink: 1;
 		flex-basis: 0;
-		min-width: 0;
 	}
 
 	:host([size="sm"]) .toolbar__title-group {
@@ -249,11 +249,11 @@ export const toolbarStyles = css`
 
 	.toolbar__title {
 		margin: 0;
-		color: var(--semantics-content-color);
 		overflow: hidden;
+		max-width: 100%;
+		color: var(--semantics-content-color);
 		text-overflow: ellipsis;
 		white-space: nowrap;
-		max-width: 100%;
 	}
 
 	:host([size="md"]) .toolbar__title,
@@ -267,11 +267,11 @@ export const toolbarStyles = css`
 
 	.toolbar__subtitle {
 		margin: 0;
-		color: var(--semantics-content-secondary-color);
 		overflow: hidden;
+		max-width: 100%;
+		color: var(--semantics-content-secondary-color);
 		text-overflow: ellipsis;
 		white-space: nowrap;
-		max-width: 100%;
 	}
 
 	:host([size="md"]) .toolbar__subtitle,

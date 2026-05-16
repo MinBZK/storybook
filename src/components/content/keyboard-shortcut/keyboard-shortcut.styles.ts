@@ -47,16 +47,16 @@ export const keyboardShortcutStyles = css`
 
 	.keyboard-shortcut__key {
 		display: inline-flex;
-		align-items: center;
-		justify-content: center;
 		box-sizing: border-box;
+		border: var(--components-keyboard-shortcut-border-thickness) solid var(--components-keyboard-shortcut-border-color);
+		border-radius: var(--components-keyboard-shortcut-corner-radius);
+		background-color: var(--components-keyboard-shortcut-background-color);
 		min-width: var(--_size);
 		height: var(--_size);
 		padding: 0 var(--_inline-padding);
-		background-color: var(--components-keyboard-shortcut-background-color);
+		align-items: center;
+		justify-content: center;
 		color: var(--components-keyboard-shortcut-content-color);
-		border: var(--components-keyboard-shortcut-border-thickness) solid var(--components-keyboard-shortcut-border-color);
-		border-radius: var(--components-keyboard-shortcut-corner-radius);
 		font: var(--_font);
 		white-space: nowrap;
 	}

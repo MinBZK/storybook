@@ -38,20 +38,20 @@ export const documentTabBarStyles = css`
 
 	.document-tab-bar__items {
 		display: flex;
+		min-width: 0;
 		flex-direction: row;
 		align-items: center;
 		gap: var(--primitives-space-8);
 		flex-grow: 1;
 		flex-shrink: 1;
 		flex-basis: 0;
-		min-width: 0;
 	}
 
 	::slotted(nldd-document-tab-bar-item) {
+		min-width: var(--_item-min-width);
 		flex-grow: 1;
 		flex-shrink: 1;
 		flex-basis: 0;
-		min-width: var(--_item-min-width);
 	}
 
 	::slotted(nldd-document-tab-bar-item[hidden]) {
@@ -104,15 +104,15 @@ export const documentTabBarStyles = css`
 
 	::slotted(.nldd-document-tab-bar-drag-placeholder) {
 		box-sizing: border-box;
+		opacity: var(--semantics-controls-is-dragging-opacity);
+		border-radius: var(--semantics-controls-md-corner-radius);
 		background-color: var(--semantics-buttons-neutral-tinted-background-color);
 		pointer-events: none;
-		border-radius: var(--semantics-controls-md-corner-radius);
 		height: var(--semantics-controls-md-min-size);
+		min-width: var(--_item-min-width);
 		flex-grow: 1;
 		flex-shrink: 1;
 		flex-basis: 0;
-		min-width: var(--_item-min-width);
-		opacity: var(--semantics-controls-is-dragging-opacity);
 	}
 
 
@@ -122,46 +122,46 @@ export const documentTabBarStyles = css`
 		position: absolute;
 		top: var(--_drag-clone-top);
 		left: var(--_drag-clone-left);
-		width: var(--_drag-clone-width);
-		height: var(--_drag-clone-height);
 		display: flex;
-		flex-direction: row;
-		align-items: stretch;
-		pointer-events: none;
 		opacity: var(--_drag-clone-opacity);
+		z-index: var(--_drag-clone-z-index);
 		border-radius: var(--semantics-controls-md-corner-radius);
 		background: var(--semantics-buttons-neutral-tinted-background-color);
-		z-index: var(--_drag-clone-z-index);
-		overflow: hidden;
+		pointer-events: none;
 		cursor: grabbing;
+		width: var(--_drag-clone-width);
+		height: var(--_drag-clone-height);
+		overflow: hidden;
+		flex-direction: row;
+		align-items: stretch;
 	}
 
 	.document-tab-bar__drag-clone .document-tab-bar__item {
-		width: 100%;
-		height: 100%;
 		box-sizing: border-box;
 		position: relative;
+		width: 100%;
+		height: 100%;
 	}
 
 	.document-tab-bar__drag-clone .document-tab-bar__item-tab {
 		display: flex;
-		flex-direction: column;
-		justify-content: center;
+		box-sizing: border-box;
+		border-radius: var(--semantics-controls-md-corner-radius);
 		width: 100%;
 		height: 100%;
 		min-width: 0;
-		border-radius: var(--semantics-controls-md-corner-radius);
+		overflow: hidden;
 		padding-block: var(--primitives-space-6);
 		padding-inline-start: var(--primitives-space-10);
 		padding-inline-end: calc(var(--semantics-controls-sm-min-size) + var(--primitives-space-6) * 2);
-		box-sizing: border-box;
-		overflow: hidden;
+		flex-direction: column;
+		justify-content: center;
 	}
 
 	.document-tab-bar__drag-clone .document-tab-bar__item-text {
+		overflow: hidden;
 		font: var(--components-document-tab-bar-tab-title-font);
 		color: var(--semantics-buttons-neutral-tinted-content-color);
-		overflow: hidden;
 		text-overflow: ellipsis;
 		white-space: nowrap;
 	}
@@ -176,9 +176,9 @@ export const documentTabBarStyles = css`
 	}
 
 	.document-tab-bar__drag-clone .document-tab-bar__item-supporting-text {
+		overflow: hidden;
 		font: var(--primitives-font-body-xs-regular-flat);
 		color: var(--semantics-content-secondary-color);
-		overflow: hidden;
 		text-overflow: ellipsis;
 		white-space: nowrap;
 	}
@@ -189,14 +189,14 @@ export const documentTabBarStyles = css`
 	.document-tab-bar__polite-announcer,
 	.document-tab-bar__assertive-announcer {
 		position: absolute;
+		margin: -1px;
+		border: 0;
 		width: 1px;
 		height: 1px;
-		padding: 0;
-		margin: -1px;
 		overflow: hidden;
-		clip-path: inset(50%);
+		padding: 0;
 		white-space: nowrap;
-		border: 0;
+		clip-path: inset(50%);
 	}
 
 `;
@@ -208,9 +208,9 @@ export const documentTabBarItemStyles = css`
 
 	:host {
 		display: block;
-		min-width: 0;
 		container-name: document-tab-bar;
 		container-type: inline-size;
+		min-width: 0;
 		touch-action: pan-y;
 		-webkit-tap-highlight-color: transparent;
 	}
@@ -224,33 +224,33 @@ export const documentTabBarItemStyles = css`
 
 	.document-tab-bar__item {
 		position: relative;
+		box-sizing: border-box;
 		height: var(--semantics-controls-md-min-size);
 		width: 100%;
-		box-sizing: border-box;
 	}
 
 
 	/* # Item tab */
 
 	.document-tab-bar__item-tab {
-		appearance: none;
-		border: none;
-		margin: 0;
-		text-align: left;
 		display: flex;
-		flex-direction: column;
-		justify-content: center;
+		box-sizing: border-box;
+		margin: 0;
+		border: none;
+		border-radius: var(--semantics-controls-md-corner-radius);
+		background-color: var(--semantics-buttons-neutral-tinted-background-color);
 		width: 100%;
 		height: 100%;
 		min-width: 0;
-		border-radius: var(--semantics-controls-md-corner-radius);
+		overflow: hidden;
 		padding-block: var(--primitives-space-6);
 		padding-inline-start: var(--primitives-space-10);
 		padding-inline-end: calc(var(--semantics-controls-sm-min-size) + var(--primitives-space-6));
-		background-color: var(--semantics-buttons-neutral-tinted-background-color);
-		box-sizing: border-box;
-		overflow: hidden;
+		text-align: left;
+		flex-direction: column;
+		justify-content: center;
 		text-decoration: none;
+		appearance: none;
 	}
 
 	@media (hover: hover) {
@@ -304,10 +304,10 @@ export const documentTabBarItemStyles = css`
 	/* # Item label */
 
 	.document-tab-bar__item-text {
+		overflow: hidden;
 		padding-inline-end: var(--primitives-space-6);
 		font: var(--components-document-tab-bar-tab-title-font);
 		color: var(--semantics-buttons-neutral-tinted-content-color);
-		overflow: hidden;
 		text-overflow: ellipsis;
 		white-space: nowrap;
 	}
@@ -317,10 +317,10 @@ export const documentTabBarItemStyles = css`
 	}
 
 	.document-tab-bar__item-short-text {
+		overflow: hidden;
 		padding-inline-end: var(--primitives-space-6);
 		font: var(--components-document-tab-bar-tab-title-font);
 		color: var(--semantics-buttons-neutral-tinted-content-color);
-		overflow: hidden;
 		text-overflow: ellipsis;
 		white-space: nowrap;
 	}
@@ -333,10 +333,10 @@ export const documentTabBarItemStyles = css`
 	/* # Item supporting label */
 
 	.document-tab-bar__item-supporting-text {
+		overflow: hidden;
 		padding-inline-end: var(--primitives-space-6);
 		font: var(--primitives-font-body-xs-regular-flat);
 		color: var(--semantics-buttons-neutral-tinted-secondary-content-color);
-		overflow: hidden;
 		text-overflow: ellipsis;
 		white-space: nowrap;
 	}
@@ -346,10 +346,10 @@ export const documentTabBarItemStyles = css`
 	}
 
 	.document-tab-bar__item-short-supporting-text {
+		overflow: hidden;
 		padding-inline-end: var(--primitives-space-6);
 		font: var(--primitives-font-body-xs-regular-flat);
 		color: var(--semantics-buttons-neutral-tinted-secondary-content-color);
-		overflow: hidden;
 		text-overflow: ellipsis;
 		white-space: nowrap;
 	}
@@ -365,19 +365,19 @@ export const documentTabBarItemStyles = css`
 		position: absolute;
 		right: var(--primitives-space-6);
 		top: 50%;
-		transform: translateY(-50%);
-		appearance: none;
-		border: none;
-		background: none;
-		margin: 0;
-		padding: var(--primitives-space-4);
 		display: flex;
-		align-items: center;
-		justify-content: center;
+		margin: 0;
+		border: none;
+		border-radius: var(--semantics-controls-sm-corner-radius);
+		background: none;
 		width: var(--semantics-controls-sm-min-size);
 		height: var(--semantics-controls-sm-min-size);
-		border-radius: var(--semantics-controls-sm-corner-radius);
+		padding: var(--primitives-space-4);
+		align-items: center;
+		justify-content: center;
 		color: var(--semantics-buttons-neutral-tinted-content-color);
+		transform: translateY(-50%);
+		appearance: none;
 	}
 
 	@media (hover: hover) {

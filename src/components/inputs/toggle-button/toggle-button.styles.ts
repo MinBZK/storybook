@@ -24,12 +24,12 @@ export const toggleButtonStyles = css`
 
 	.toggle-button {
 		/* Reset */
-		appearance: none;
-		border: none;
 		margin: 0;
-		padding: 0;
+		border: none;
 		background: none;
+		padding: 0;
 		font: inherit;
+		appearance: none;
 
 		/* Layout */
 		position: relative;
@@ -48,28 +48,28 @@ export const toggleButtonStyles = css`
 	/* ## Sizes */
 
 	:host([size="xs"]) .toggle-button {
+		border-radius: var(--semantics-controls-xs-corner-radius);
 		min-height: var(--semantics-controls-xs-min-size);
 		padding: var(--semantics-controls-xs-block-padding) var(--semantics-controls-xs-inline-padding);
-		font: var(--semantics-buttons-xs-font);
-		border-radius: var(--semantics-controls-xs-corner-radius);
 		gap: var(--semantics-buttons-xs-gap);
+		font: var(--semantics-buttons-xs-font);
 	}
 
 	:host([size="sm"]) .toggle-button {
+		border-radius: var(--semantics-controls-sm-corner-radius);
 		min-height: var(--semantics-controls-sm-min-size);
 		padding: var(--semantics-controls-sm-block-padding) var(--semantics-controls-sm-inline-padding);
-		font: var(--semantics-buttons-sm-font);
-		border-radius: var(--semantics-controls-sm-corner-radius);
 		gap: var(--semantics-buttons-sm-gap);
+		font: var(--semantics-buttons-sm-font);
 	}
 
 	:host([size="md"]) .toggle-button,
 	:host(:not([size])) .toggle-button {
+		border-radius: var(--semantics-controls-md-corner-radius);
 		min-height: var(--semantics-controls-md-min-size);
 		padding: var(--semantics-controls-md-block-padding) var(--semantics-controls-md-inline-padding);
-		font: var(--semantics-buttons-md-font);
-		border-radius: var(--semantics-controls-md-corner-radius);
 		gap: var(--semantics-buttons-md-gap);
+		font: var(--semantics-buttons-md-font);
 	}
 
 	/* ## Icon-only sizes */
@@ -183,10 +183,10 @@ export const toggleButtonStyles = css`
 	.toggle-button__input {
 		position: absolute;
 		inset: 0;
-		width: 100%;
-		height: 100%;
-		margin: 0;
 		opacity: 0;
 		z-index: 1;
+		margin: 0;
+		width: 100%;
+		height: 100%;
 	}
 `;

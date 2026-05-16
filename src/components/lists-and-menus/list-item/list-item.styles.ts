@@ -13,10 +13,10 @@ export const listItemStyles = css`
 		--_focus-outline-offset: 6px;
 
 		display: block;
-		width: 100%;
-		-webkit-tap-highlight-color: transparent;
 		container-type: inline-size;
 		container-name: list-item;
+		width: 100%;
+		-webkit-tap-highlight-color: transparent;
 	}
 
 	:host([hidden]) {
@@ -55,12 +55,12 @@ export const listItemStyles = css`
 	.list-item {
 		box-sizing: border-box;
 		display: flex;
+		position: relative;
 		min-height: var(--semantics-controls-md-min-size);
+		width: 100%;
 		flex-direction: row;
 		align-items: stretch;
-		position: relative;
 		isolation: isolate;
-		width: 100%;
 	}
 
 	:host([size='sm']) .list-item {
@@ -72,17 +72,17 @@ export const listItemStyles = css`
 
 	.list-item__action {
 		display: flex;
+		margin: 0;
+		border: none;
+		outline: none;
+		background: none;
+		width: 100%;
+		padding: 0;
 		flex-direction: row;
 		align-items: stretch;
-		width: 100%;
-		background: none;
-		border: none;
-		padding: 0;
-		margin: 0;
 		text-align: start;
 		text-decoration: none;
 		color: inherit;
-		outline: none;
 	}
 
 	a.list-item__action {
@@ -104,9 +104,9 @@ export const listItemStyles = css`
 		position: absolute;
 		inset-block: 0;
 		inset-inline: min(calc(var(--primitives-space-8) * -1), calc(var(--components-list-item-indicator-corner-radius) * -1));
+		z-index: var(--_z-index-indicator);
 		border-radius: var(--components-list-item-indicator-corner-radius);
 		background-color: var(--_background-color);
-		z-index: var(--_z-index-indicator);
 		pointer-events: none;
 	}
 
@@ -125,9 +125,9 @@ export const listItemStyles = css`
 		position: absolute;
 		inset-block: 0;
 		inset-inline: min(calc(var(--primitives-space-8) * -1), calc(var(--components-list-item-indicator-corner-radius) * -1));
+		z-index: var(--_z-index-indicator);
 		border-radius: var(--components-list-item-indicator-corner-radius);
 		background-color: var(--_background-color);
-		z-index: var(--_z-index-indicator);
 		pointer-events: none;
 	}
 
@@ -167,10 +167,10 @@ export const listItemStyles = css`
 		content: '';
 		display: block;
 		position: absolute;
-		pointer-events: none;
 		outline: var(--semantics-focus-ring-outline);
 		outline-offset: var(--semantics-focus-ring-outline-offset);
 		box-shadow: var(--semantics-focus-ring-box-shadow);
+		pointer-events: none;
 	}
 
 	:host(:not(.is-boxed)) .list-item__action:focus-visible:not(.is-pointer-focus)::after {
@@ -199,12 +199,12 @@ export const listItemStyles = css`
 	.list-item__start-area,
 	.list-item__end-area {
 		display: none;
-		flex-direction: row;
-		align-items: center;
-		flex-shrink: 0;
 		position: relative;
 		z-index: var(--_z-index-content);
 		padding-block: var(--components-list-item-md-padding-block);
+		flex-direction: row;
+		align-items: center;
+		flex-shrink: 0;
 	}
 
 	.list-item__start-area.is-visible,
@@ -222,13 +222,13 @@ export const listItemStyles = css`
 
 	.list-item__main-area {
 		display: flex;
+		position: relative;
+		z-index: var(--_z-index-content);
+		min-width: 0;
+		padding-block: var(--components-list-item-md-padding-block);
 		flex-direction: row;
 		align-items: center;
 		flex-grow: 1;
-		min-width: 0;
-		position: relative;
-		z-index: var(--_z-index-content);
-		padding-block: var(--components-list-item-md-padding-block);
 	}
 
 	:host([size='sm']) .list-item__main-area {
@@ -243,8 +243,8 @@ export const listItemStyles = css`
 		position: absolute;
 		inset-block-end: 0;
 		inset-inline: 0;
-		height: var(--semantics-dividers-thickness);
 		background-color: var(--semantics-dividers-color);
+		height: var(--semantics-dividers-thickness);
 	}
 
 	:host([selected]) .list-item__divider,

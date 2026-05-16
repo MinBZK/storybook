@@ -27,11 +27,11 @@ export const tooltipStyles = css`
 
 	.tooltip {
 		position: fixed;
+		opacity: 0;
 		margin: 0;
-		padding: 0;
 		border: none;
 		background: none;
-		opacity: 0;
+		padding: 0;
 		transition:
 			opacity var(--_hide-duration) ease,
 			display var(--_hide-duration) allow-discrete,
@@ -56,16 +56,16 @@ export const tooltipStyles = css`
 	/* ## Tooltip body */
 
 	.tooltip__body {
-		background-color: var(--components-tooltip-background-color);
-		color: var(--components-tooltip-content-color);
-		font: var(--primitives-font-body-xs-regular-tight);
-		padding-block: var(--primitives-space-4);
-		padding-inline: var(--primitives-space-8);
-		width: max-content;
-		max-width: var(--_max-width);
-		overflow-wrap: break-word;
 		box-shadow: var(--components-tooltip-box-shadow);
 		border-radius: var(--primitives-corner-radius-xs);
+		background-color: var(--components-tooltip-background-color);
+		width: max-content;
+		max-width: var(--_max-width);
+		padding-block: var(--primitives-space-4);
+		padding-inline: var(--primitives-space-8);
+		color: var(--components-tooltip-content-color);
+		font: var(--primitives-font-body-xs-regular-tight);
+		overflow-wrap: break-word;
 	}
 
 

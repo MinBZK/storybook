@@ -18,9 +18,9 @@ export const oneThirdTwoThirdsSectionStyles = css`
 		--_max-width: var(--semantics-page-sections-body-max-width);
 
 		display: flex;
+		width: 100%;
 		flex-direction: column;
 		align-items: center;
-		width: 100%;
 	}
 
 	:host([hidden]) {
@@ -36,10 +36,10 @@ export const oneThirdTwoThirdsSectionStyles = css`
 
 	.one-third-two-thirds-section {
 		display: flex;
+		box-sizing: border-box;
+		width: 100%;
 		flex-direction: column;
 		align-items: center;
-		width: 100%;
-		box-sizing: border-box;
 
 		@media (max-width: ${smMax}) {
 			padding-inline: var(--semantics-page-sections-sm-margin-inline);
@@ -77,9 +77,9 @@ export const oneThirdTwoThirdsSectionStyles = css`
 
 	.one-third-two-thirds-section__body {
 		display: flex;
-		flex-direction: column;
 		width: 100%;
 		max-width: var(--_max-width);
+		flex-direction: column;
 
 		@media (max-width: ${smMax}) {
 			gap: var(--semantics-page-sections-sm-gap);
@@ -139,12 +139,12 @@ export const oneThirdTwoThirdsSectionStyles = css`
 	}
 
 	.one-third-two-thirds-section__left-column {
-		flex: 1;
 		min-width: var(--primitives-area-280);
+		flex: 1;
 	}
 
 	.one-third-two-thirds-section__right-column {
-		flex: 2;
 		min-width: var(--primitives-area-280);
+		flex: 2;
 	}
 `;

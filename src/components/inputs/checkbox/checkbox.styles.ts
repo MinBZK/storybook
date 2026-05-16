@@ -7,11 +7,11 @@ export const checkboxStyles = css`
 
 	:host {
 		display: inline-flex;
-		align-items: center;
-		justify-content: center;
 		position: relative;
 		width: var(--semantics-controls-xs-min-size);
 		height: var(--semantics-controls-xs-min-size);
+		align-items: center;
+		justify-content: center;
 		-webkit-tap-highlight-color: transparent;
 	}
 
@@ -25,11 +25,11 @@ export const checkboxStyles = css`
 	.checkbox__input {
 		position: absolute;
 		inset: 0;
-		width: 100%;
-		height: 100%;
-		margin: 0;
 		opacity: 0;
 		z-index: 1;
+		margin: 0;
+		width: 100%;
+		height: 100%;
 	}
 
 
@@ -38,11 +38,11 @@ export const checkboxStyles = css`
 	.checkbox__box {
 		position: relative;
 		box-sizing: border-box;
-		width: var(--semantics-controls-xs-min-size);
-		height: var(--semantics-controls-xs-min-size);
 		border-radius: var(--semantics-controls-xs-corner-radius);
 		border: var(--components-checkbox-border-thickness) solid var(--components-checkbox-border-color);
 		background-color: var(--components-checkbox-background-color);
+		width: var(--semantics-controls-xs-min-size);
+		height: var(--semantics-controls-xs-min-size);
 		color: transparent;
 	}
 
@@ -110,10 +110,10 @@ export const checkboxStyles = css`
 		position: absolute;
 		top: 50%;
 		left: 50%;
-		transform: translate(-50%, -50%);
+		display: none;
 		width: var(--primitives-space-24);
 		height: var(--primitives-space-24);
-		display: none;
+		transform: translate(-50%, -50%);
 	}
 
 	.checkbox__input:checked ~ .checkbox__box .checkbox__check-icon {
