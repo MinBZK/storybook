@@ -76,6 +76,95 @@ describe('nldd-menu-bar', () => {
 		const overflowItem = el.shadowRoot!.querySelector('.menu-bar__overflow-button nldd-menu-bar-item');
 		expect(overflowItem!.getAttribute('text')).toBe('More options');
 	});
+
+	it('toggles the overflow popover open/closed via the trigger', async () => {
+		el = await fixture('<nldd-menu-bar><nldd-menu-bar-item text="A"></nldd-menu-bar-item></nldd-menu-bar>');
+		await waitForUpdate(el);
+
+		const trigger = el.shadowRoot!.querySelector(
+			'.menu-bar__overflow-button nldd-menu-bar-item',
+		) as HTMLElement;
+		expect(trigger).not.toBeNull();
+
+		// Explicit-toggle path (mirrors menu-bar-item._toggleMenu): open.
+		(el as unknown as { _toggleOverflowMenu(): void })._toggleOverflowMenu();
+		await waitForUpdate(el);
+		const menu = document.querySelector('nldd-menu') as HTMLElement;
+		expect(menu).not.toBeNull();
+		expect(menu.matches(':popover-open')).toBe(true);
+		// Anchored to the always-visible trigger, not the display-toggled wrapper.
+		expect((menu as unknown as { anchorElement: Element | null }).anchorElement)
+			.toBe(trigger);
+
+		// Toggling again closes it.
+		(el as unknown as { _toggleOverflowMenu(): void })._toggleOverflowMenu();
+		await waitForUpdate(el);
+		expect(menu.matches(':popover-open')).toBe(false);
+	});
+
+	it('reopens after a close (reopen guard does not permanently block)', async () => {
+		el = await fixture('<nldd-menu-bar><nldd-menu-bar-item text="A"></nldd-menu-bar-item></nldd-menu-bar>');
+		await waitForUpdate(el);
+		const toggle = () =>
+			(el as unknown as { _toggleOverflowMenu(): void })._toggleOverflowMenu();
+
+		toggle();
+		await waitForUpdate(el);
+		const menu = document.querySelector('nldd-menu') as HTMLElement;
+		expect(menu.matches(':popover-open')).toBe(true);
+
+		menu.hidePopover(); // simulate light-dismiss
+		await waitForUpdate(el);
+		expect(menu.matches(':popover-open')).toBe(false);
+
+		// Past the guard window, the trigger can reopen it.
+		await new Promise(r => setTimeout(r, 150));
+		toggle();
+		await waitForUpdate(el);
+		expect(menu.matches(':popover-open')).toBe(true);
+	});
+
+	it('selecting a flattened expandable child does not reopen the original item\'s submenu off-screen', async () => {
+		el = await fixture(`
+			<nldd-menu-bar>
+				<nldd-menu-bar-item text="Mijn DigID" expandable data-overflow>
+					<nldd-menu-item text="Mijn gegevens"></nldd-menu-item>
+					<nldd-menu-item text="Instellingen"></nldd-menu-item>
+				</nldd-menu-bar-item>
+			</nldd-menu-bar>
+		`);
+		await waitForUpdate(el);
+
+		const original = el.querySelector('nldd-menu-bar-item') as HTMLElement;
+		// Simulate the overflowed (hidden) state the real layout produces.
+		original.style.display = 'none';
+
+		(el as unknown as { _toggleOverflowMenu(): void })._toggleOverflowMenu();
+		await waitForUpdate(el);
+		const overflowMenu = document.querySelector('nldd-menu') as HTMLElement;
+		expect(overflowMenu.matches(':popover-open')).toBe(true);
+
+		let originalSelectFired = false;
+		el.querySelector('nldd-menu-item[text="Mijn gegevens"]')!
+			.addEventListener('select', () => { originalSelectFired = true; });
+
+		// Click the cloned child's inner button (where nldd-menu-item binds
+		// its click handler) inside the overflow popover.
+		const clone = [...overflowMenu.querySelectorAll('nldd-menu-item')]
+			.find(mi => mi.getAttribute('text') === 'Mijn gegevens') as HTMLElement;
+		expect(clone).toBeTruthy();
+		(clone.shadowRoot!.querySelector('button') as HTMLButtonElement).click();
+		await waitForUpdate(el);
+
+		// Delegation still reaches the original (select bubbles to consumer)…
+		expect(originalSelectFired).toBe(true);
+		// …but NO nldd-menu is left open: the overflow popover closed on
+		// select and the original hidden expandable parent's own submenu
+		// did NOT open against a 0-rect anchor (the off-screen bug).
+		const anyOpen = [...document.querySelectorAll('nldd-menu')]
+			.some(m => m.matches(':popover-open'));
+		expect(anyOpen).toBe(false);
+	});
 });
 
 describe('nldd-menu-bar – compact propagation', () => {
