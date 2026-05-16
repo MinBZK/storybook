@@ -275,10 +275,18 @@ describe('nldd-sheet – height', () => {
 		expect(el.style.getPropertyValue('--_height')).toBe('');
 	});
 
-	it('ignores invalid CSS values', async () => {
+	it('ignores invalid CSS values and warns once', async () => {
+		const warnSpy = vi.spyOn(console, 'warn').mockImplementation(() => {});
 		el = await fixture<NLDDSheet>('<nldd-sheet placement="bottom" height="not-a-length"></nldd-sheet>');
 		await waitForUpdate(el);
 		expect(el.style.getPropertyValue('--_height')).toBe('');
+		expect(warnSpy).toHaveBeenCalledTimes(1);
+		expect(warnSpy.mock.calls[0][0]).toContain('Invalid height value "not-a-length"');
+
+		el.height = 'also-bogus';
+		await waitForUpdate(el);
+		expect(warnSpy).toHaveBeenCalledTimes(1);
+		warnSpy.mockRestore();
 	});
 
 	it('clears --_height when property is reset to empty', async () => {

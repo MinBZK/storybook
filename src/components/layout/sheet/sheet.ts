@@ -92,12 +92,17 @@ export class NLDDSheet extends LitElement {
 			if (h && h !== 'full' && CSS.supports('height', h)) {
 				this.style.setProperty('--_height', h);
 			} else {
+				if (import.meta.env?.DEV && h && h !== 'full' && !this._hasWarnedHeight) {
+					this._hasWarnedHeight = true;
+					console.warn(`<nldd-sheet>: Invalid height value "${h}". Falling back to full height. Use 'full', 'fit-content', or a valid CSS length (e.g. '50dvh', '480px').`);
+				}
 				this.style.removeProperty('--_height');
 			}
 		}
 	}
 
 	private _hasWarnedLabel = false;
+	private _hasWarnedHeight = false;
 
 	private _closing = false;
 
