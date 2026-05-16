@@ -521,7 +521,7 @@ export class NLDDMenu extends LitElement {
 		} | null;
 		if (!anchor) return;
 		if ('expanded' in anchor) anchor.expanded = isOpen;
-		if (isOpen && 'popupType' in anchor && !anchor.popupType) {
+		if (isOpen && 'popupType' in anchor && anchor.popupType == null) {
 			anchor.popupType = this.variant === 'listbox' ? 'listbox' : 'menu';
 		}
 		if ('popoverTargetAction' in anchor) {
