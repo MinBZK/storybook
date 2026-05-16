@@ -1,6 +1,7 @@
 import { css, unsafeCSS } from 'lit';
 import { breakpoints } from '../../../assets/styles/breakpoints.js';
 
+const smMax = unsafeCSS(breakpoints.smMax);
 const mdMin = unsafeCSS(breakpoints.mdMin);
 const mdMax = unsafeCSS(breakpoints.mdMax);
 const lgMin = unsafeCSS(breakpoints.lgMin);
@@ -13,26 +14,11 @@ export const topNavigationBarStyles = css`
 	/* # Host */
 
 	:host {
-		--_logo-width: var(--primitives-space-40);
 		--_wordmark-content-color: light-dark(var(--primitives-color-reference-lintblauw), var(--primitives-color-neutral-1000));
+		--_logo-width: var(--primitives-space-40);
+
 		display: block;
 		width: 100%;
-
-		@media (min-width: ${mdMin}) {
-			--_logo-width: var(--primitives-space-44);
-		}
-
-		@media (min-width: ${lgMin}) {
-			--_logo-width: var(--primitives-space-48);
-		}
-
-		@container layout-container (min-width: ${mdMin}) {
-			--_logo-width: var(--primitives-space-44);
-		}
-
-		@container layout-container (min-width: ${lgMin}) {
-			--_logo-width: var(--primitives-space-48);
-		}
 	}
 
 	:host([hidden]) {
@@ -49,7 +35,7 @@ export const topNavigationBarStyles = css`
 		margin: 0 auto;
 		box-sizing: border-box;
 		container-type: inline-size;
-		container-name: top-navigation-bar;
+		container-name: top-navigation-bar-container;
 	}
 
 
@@ -60,21 +46,16 @@ export const topNavigationBarStyles = css`
 		grid-template-columns: 1fr auto 1fr;
 		gap: var(--primitives-space-8);
 		align-items: center;
-		padding-inline: var(--semantics-page-sections-sm-margin-inline);
 
-		@media (min-width: ${mdMin}) {
+		@container top-navigation-bar-container (max-width: ${smMax}) {
+			padding-inline: var(--semantics-page-sections-sm-margin-inline);
+		}
+
+		@container top-navigation-bar-container (min-width: ${mdMin}) and (max-width: ${mdMax}) {
 			padding-inline: var(--semantics-page-sections-md-margin-inline);
 		}
 
-		@media (min-width: ${lgMin}) {
-			padding-inline: var(--semantics-page-sections-lg-margin-inline);
-		}
-
-		@container layout-container (min-width: ${mdMin}) {
-			padding-inline: var(--semantics-page-sections-md-margin-inline);
-		}
-
-		@container layout-container (min-width: ${lgMin}) {
+		@container top-navigation-bar-container (min-width: ${lgMin}) {
 			padding-inline: var(--semantics-page-sections-lg-margin-inline);
 		}
 	}
@@ -89,6 +70,18 @@ export const topNavigationBarStyles = css`
 		justify-content: center;
 		width: var(--_logo-width);
 		height: calc(var(--_logo-width) * 2);
+
+		@container top-navigation-bar-container (max-width: ${smMax}) {
+			--_logo-width: var(--primitives-space-40);
+		}
+
+		@container top-navigation-bar-container (min-width: ${mdMin}) and (max-width: ${mdMax}) {
+			--_logo-width: var(--primitives-space-44);
+		}
+
+		@container top-navigation-bar-container (min-width: ${lgMin}) {
+			--_logo-width: var(--primitives-space-48);
+		}
 	}
 
 	.top-navigation-bar__logo svg {
@@ -178,26 +171,20 @@ export const topNavigationBarStyles = css`
 
 	.top-navigation-bar__main-bar {
 		display: flex;
-		flex-direction: column;
-		padding-inline: calc(var(--semantics-page-sections-sm-margin-inline) - var(--components-menu-bar-item-inline-padding));
 
-		@media (min-width: ${mdMin}) {
+		@container top-navigation-bar-container (max-width: ${smMax}) {
+			padding-inline: var(--semantics-page-sections-sm-margin-inline);
+			flex-direction: column;
+		}
+
+		@container top-navigation-bar-container (min-width: ${mdMin}) and (max-width: ${mdMax}) {
 			padding-inline: var(--semantics-page-sections-md-margin-inline);
+			flex-direction: row;
+			align-items: center;
 		}
 
-		@media (min-width: ${lgMin}) {
+		@container top-navigation-bar-container (min-width: ${lgMin}) {
 			padding-inline: var(--semantics-page-sections-lg-margin-inline);
-		}
-
-		@container layout-container (min-width: ${mdMin}) {
-			padding-inline: var(--semantics-page-sections-md-margin-inline);
-		}
-
-		@container layout-container (min-width: ${lgMin}) {
-			padding-inline: var(--semantics-page-sections-lg-margin-inline);
-		}
-
-		@container top-navigation-bar (min-width: ${mdMin}) {
 			flex-direction: row;
 			align-items: center;
 		}
@@ -211,7 +198,7 @@ export const topNavigationBarStyles = css`
 		justify-content: center;
 		padding: var(--primitives-space-4) var(--primitives-space-8);
 
-		@container top-navigation-bar (min-width: ${mdMin}) {
+		@container top-navigation-bar-container (min-width: ${mdMin}) {
 			justify-content: flex-start;
 			padding: 0;
 		}
@@ -224,7 +211,7 @@ export const topNavigationBarStyles = css`
 		color: var(--semantics-content-color);
 		white-space: nowrap;
 
-		@container top-navigation-bar (min-width: ${mdMin}) {
+		@container top-navigation-bar-container (min-width: ${mdMin}) {
 			font: var(--components-top-navigation-bar-title-md-font);
 			/* Create spacing between title and menu-bar on md+ where they sit
 			   on the same row. On sm the title-bar stacks above the menu-bar
@@ -232,7 +219,7 @@ export const topNavigationBarStyles = css`
 			margin-inline-end: var(--primitives-space-8);
 		}
 
-		@container top-navigation-bar (min-width: ${lgMin}) {
+		@container top-navigation-bar-container (min-width: ${lgMin}) {
 			font: var(--components-top-navigation-bar-title-lg-font);
 		}
 	}
@@ -265,11 +252,11 @@ export const topNavigationBarStyles = css`
 		min-width: 0;
 		flex-grow: 1;
 
-		@container top-navigation-bar (max-width: ${mdMax}) {
+		@container top-navigation-bar-container (max-width: ${mdMax}) {
 			flex-shrink: 0;
 		}
 
-		@container top-navigation-bar (min-width: ${lgMin}) {
+		@container top-navigation-bar-container (min-width: ${lgMin}) {
 			flex-shrink: 1;
 		}
 	}
@@ -281,11 +268,11 @@ export const topNavigationBarStyles = css`
 		align-items: center;
 		min-width: 0;
 
-		@container top-navigation-bar (max-width: ${mdMax}) {
+		@container top-navigation-bar-container (max-width: ${mdMax}) {
 			flex-shrink: 1;
 		}
 
-		@container top-navigation-bar (min-width: ${lgMin}) {
+		@container top-navigation-bar-container (min-width: ${lgMin}) {
 			flex-shrink: 0;
 		}
 	}
@@ -297,7 +284,7 @@ export const topNavigationBarStyles = css`
 		flex-grow: 1;
 		flex-shrink: 1;
 		min-width: 0;
-		@container top-navigation-bar (min-width: ${lgMin}) {
+		@container top-navigation-bar-container (min-width: ${lgMin}) {
 			:host(.has-global-items) & {
 				display: flex;
 			}
@@ -309,7 +296,7 @@ export const topNavigationBarStyles = css`
 	.top-navigation-bar__menu-button {
 		display: none;
 
-		@container top-navigation-bar (max-width: ${mdMax}) {
+		@container top-navigation-bar-container (max-width: ${mdMax}) {
 			:host(.has-global-items) & {
 				display: inline-block;
 			}
