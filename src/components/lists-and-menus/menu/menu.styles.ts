@@ -13,6 +13,16 @@ export const menuStyles = css`
 		--_menu-item-size: var(--semantics-controls-md-min-size);
 		--_menu-padding: var(--primitives-space-8);
 
+		/* Press-flash colours for .menu__item:active:hover. Defined here on
+		 * the menu host so they inherit across the shadow boundary into the
+		 * slotted nldd-menu-item subtree (same channel as
+		 * --context-cell-content-color). While a touch-scroll is in
+		 * progress they're neutralised (see :host([scroll-active]) below)
+		 * so a finger that started on an item and then panned doesn't
+		 * leave it highlighted for the whole gesture. */
+		--_item-press-bg: var(--components-menu-item-is-highlighted-background-color);
+		--_item-press-fg: var(--components-menu-item-is-highlighted-content-color);
+
 		@media (pointer: fine) {
 			--_menu-item-size: var(--semantics-controls-sm-min-size);
 			--_menu-padding: var(--primitives-space-6);
@@ -30,6 +40,15 @@ export const menuStyles = css`
 
 	:host(:not(:popover-open)) {
 		display: none;
+	}
+
+	/* Touch-scroll in progress (set by nldd-menu's touch handlers): kill
+	 * the item press-flash. transparent bg + initial content colour
+	 * (guaranteed-invalid, so cells fall back to their default) means the
+	 * still-matching .menu__item:active:hover rule paints nothing. */
+	:host([scroll-active]) {
+		--_item-press-bg: transparent;
+		--_item-press-fg: initial;
 	}
 
 
@@ -189,11 +208,20 @@ export const menuItemStyles = css`
 	 * open opener (since [highlighted] gets cleared at submenu-open time). */
 
 	:host([highlighted]) .menu__item,
-	.menu__item[aria-expanded="true"]:hover,
-	.menu__item:active:hover {
+	.menu__item[aria-expanded="true"]:hover {
 		background-color: var(--components-menu-item-is-highlighted-background-color);
 		--context-cell-content-color: var(--components-menu-item-is-highlighted-content-color);
 		--context-cell-content-secondary-color: var(--components-menu-item-is-highlighted-content-color);
+	}
+
+	/* Press flash via host-inherited vars so a touch-scroll can neutralise
+	 * it (see --_item-press-* / :host([scroll-active]) in menuStyles).
+	 * On mouse these vars are the highlight colours, identical to the
+	 * rule above. */
+	.menu__item:active:hover {
+		background-color: var(--_item-press-bg);
+		--context-cell-content-color: var(--_item-press-fg);
+		--context-cell-content-secondary-color: var(--_item-press-fg);
 	}
 
 

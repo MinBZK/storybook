@@ -1162,6 +1162,47 @@ export class NLDDMenu extends LitElement {
 		this._clearHighlight();
 	};
 
+	// — Touch-scroll press-flash suppression ————————————————————————————————
+	//
+	// On touch, pressing an item sets :active and the synthetic sticky
+	// :hover lands on it, so `.menu__item:active:hover` flashes. If the
+	// gesture becomes an internal scroll (cramped menu), :active lingers
+	// until the browser recognises the pan and the highlight stays for
+	// the whole scroll. We detect a scroll from the touch delta and set
+	// `scroll-active` on the host; the styles neutralise the press flash
+	// while it's set. A pure tap never moves past the threshold, so its
+	// brief press feedback is preserved.
+
+	private static readonly _TOUCH_SCROLL_THRESHOLD_PX = 8;
+	private _touchStartX = 0;
+	private _touchStartY = 0;
+
+	/** @internal */
+	_handleMenuTouchStart = (event: TouchEvent): void => {
+		const t = event.touches[0];
+		if (!t) return;
+		this._touchStartX = t.clientX;
+		this._touchStartY = t.clientY;
+		this.removeAttribute('scroll-active');
+	};
+
+	/** @internal */
+	_handleMenuTouchMove = (event: TouchEvent): void => {
+		if (this.hasAttribute('scroll-active')) return;
+		const t = event.touches[0];
+		if (!t) return;
+		const dx = t.clientX - this._touchStartX;
+		const dy = t.clientY - this._touchStartY;
+		if (Math.hypot(dx, dy) > NLDDMenu._TOUCH_SCROLL_THRESHOLD_PX) {
+			this.setAttribute('scroll-active', '');
+		}
+	};
+
+	/** @internal */
+	_handleMenuTouchEnd = (): void => {
+		this.removeAttribute('scroll-active');
+	};
+
 	/** Close the menu on a window resize. Floating-UI's autoUpdate keeps
 	 * the position in sync with scrolls (where users genuinely expect the
 	 * menu to follow the anchor), but a full window resize is a layout-

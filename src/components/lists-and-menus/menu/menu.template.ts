@@ -25,6 +25,10 @@ export function menuTemplate(this: NLDDMenu, isEmpty: boolean, variant: 'menu' |
 		<div class="menu"
 			role=${menuRole}
 			tabindex="-1"
+			@touchstart=${this._handleMenuTouchStart}
+			@touchmove=${this._handleMenuTouchMove}
+			@touchend=${this._handleMenuTouchEnd}
+			@touchcancel=${this._handleMenuTouchEnd}
 		>
 			${showBack ? html`
 				<button class="menu__back-button"

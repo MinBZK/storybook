@@ -1255,3 +1255,64 @@ describe('nldd-menu close-on-resize', () => {
 		cleanup(menu);
 	});
 });
+
+describe('nldd-menu touch-scroll press suppression', () => {
+	function touchEvent(type: string, target: EventTarget, x: number, y: number): TouchEvent {
+		const touch = new Touch({ identifier: 0, target, clientX: x, clientY: y });
+		return new TouchEvent(type, {
+			bubbles: true,
+			composed: true,
+			touches: type === 'touchend' || type === 'touchcancel' ? [] : [touch],
+			changedTouches: [touch],
+		});
+	}
+
+	it('sets scroll-active once the touch moves past the threshold and clears on touchend', async () => {
+		const menu = await fixture<HTMLElement>(`
+			<nldd-menu>
+				<nldd-menu-item text="A"></nldd-menu-item>
+				<nldd-menu-item text="B"></nldd-menu-item>
+			</nldd-menu>
+		`);
+		await waitForUpdate(menu);
+		(menu as HTMLElement & { showPopover: () => void }).showPopover();
+		await waitForUpdate(menu);
+
+		const scroller = menu.shadowRoot!.querySelector('.menu')!;
+
+		scroller.dispatchEvent(touchEvent('touchstart', scroller, 100, 100));
+		expect(menu.hasAttribute('scroll-active')).toBe(false);
+
+		// Small jitter below the 8px threshold — still a tap, not a scroll.
+		scroller.dispatchEvent(touchEvent('touchmove', scroller, 103, 104));
+		expect(menu.hasAttribute('scroll-active')).toBe(false);
+
+		// Past the threshold — now a scroll.
+		scroller.dispatchEvent(touchEvent('touchmove', scroller, 100, 130));
+		expect(menu.hasAttribute('scroll-active')).toBe(true);
+
+		scroller.dispatchEvent(touchEvent('touchend', scroller, 100, 130));
+		expect(menu.hasAttribute('scroll-active')).toBe(false);
+
+		cleanup(menu);
+	});
+
+	it('a pure tap (no significant move) never sets scroll-active', async () => {
+		const menu = await fixture<HTMLElement>(`
+			<nldd-menu>
+				<nldd-menu-item text="A"></nldd-menu-item>
+			</nldd-menu>
+		`);
+		await waitForUpdate(menu);
+		(menu as HTMLElement & { showPopover: () => void }).showPopover();
+		await waitForUpdate(menu);
+
+		const scroller = menu.shadowRoot!.querySelector('.menu')!;
+		scroller.dispatchEvent(touchEvent('touchstart', scroller, 50, 50));
+		scroller.dispatchEvent(touchEvent('touchmove', scroller, 51, 52));
+		scroller.dispatchEvent(touchEvent('touchend', scroller, 51, 52));
+		expect(menu.hasAttribute('scroll-active')).toBe(false);
+
+		cleanup(menu);
+	});
+});
