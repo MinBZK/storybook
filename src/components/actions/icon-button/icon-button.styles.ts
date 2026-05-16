@@ -37,19 +37,19 @@ export const iconButtonStyles = css`
 	/* # Block */
 
 	.icon-button {
-		appearance: none;
-		border: none;
-		margin: 0;
-		padding: 0;
-		background: none;
-		font: inherit;
 		box-sizing: border-box;
-		text-decoration: none;
 		display: inline-flex;
+		margin: 0;
+		border: none;
+		background: none;
+		width: var(--_width);
+		padding: 0;
 		flex-direction: column;
 		align-items: center;
 		justify-content: center;
-		width: var(--_width);
+		font: inherit;
+		text-decoration: none;
+		appearance: none;
 		transition:
 			background-color var(--primitives-transition-duration-fast) var(--primitives-transition-easing-default),
 			color var(--primitives-transition-duration-fast) var(--primitives-transition-easing-default)
@@ -85,42 +85,42 @@ export const iconButtonStyles = css`
 	/* ## Size: XS */
 
 	:host([size='xs']) .icon-button {
+		border-radius: var(--semantics-controls-xs-corner-radius);
 		height: var(--semantics-controls-xs-min-size);
 		min-width: var(--semantics-controls-xs-min-size);
 		min-height: var(--semantics-controls-xs-min-size);
 		padding: calc((var(--semantics-controls-xs-min-size) - var(--semantics-buttons-xs-icon-only-icon-size)) / 2);
-		border-radius: var(--semantics-controls-xs-corner-radius);
 	}
 
 	/* ## Size: SM */
 
 	:host([size='sm']) .icon-button {
+		border-radius: var(--semantics-controls-sm-corner-radius);
 		height: var(--semantics-controls-sm-min-size);
 		min-width: var(--semantics-controls-sm-min-size);
 		min-height: var(--semantics-controls-sm-min-size);
 		padding: calc((var(--semantics-controls-sm-min-size) - var(--semantics-buttons-sm-icon-only-icon-size)) / 2);
-		border-radius: var(--semantics-controls-sm-corner-radius);
 	}
 
 	/* ## Size: MD (Default) */
 
 	:host([size='md']) .icon-button,
 	:host(:not([size])) .icon-button {
+		border-radius: var(--semantics-controls-md-corner-radius);
 		height: var(--semantics-controls-md-min-size);
 		min-width: var(--semantics-controls-md-min-size);
 		min-height: var(--semantics-controls-md-min-size);
 		padding: calc((var(--semantics-controls-md-min-size) - var(--semantics-buttons-md-icon-only-icon-size)) / 2);
-		border-radius: var(--semantics-controls-md-corner-radius);
 	}
 
 	/* ## Size: LG */
 
 	:host([size='lg']) .icon-button {
+		border-radius: var(--semantics-controls-lg-corner-radius);
 		height: var(--semantics-controls-lg-min-size);
 		min-width: var(--semantics-controls-lg-min-size);
 		min-height: var(--semantics-controls-lg-min-size);
 		padding: var(--primitives-space-8);
-		border-radius: var(--semantics-controls-lg-corner-radius);
 	}
 
 	/* # Variants */
@@ -377,9 +377,9 @@ export const iconButtonStyles = css`
 
 	.icon-button__disclosure-icon {
 		display: flex;
-		flex-shrink: 0;
 		width: var(--_disclosure-icon-size);
 		height: var(--_disclosure-icon-size);
+		flex-shrink: 0;
 	}
 
 	:host([size='sm']) .icon-button__disclosure-icon,

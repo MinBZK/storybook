@@ -41,20 +41,20 @@ export const buttonStyles = css`
 	/* # Block */
 
 	.button {
-		appearance: none;
-		border: none;
-		margin: 0;
-		padding: 0;
-		background: none;
-		font: inherit;
 		box-sizing: border-box;
-		text-decoration: none;
 		display: inline-flex;
-		align-items: center;
-		justify-content: center;
+		margin: 0;
+		border: none;
+		background: none;
 		width: var(--_width);
 		max-width: 100%;
+		padding: 0;
+		align-items: center;
+		justify-content: center;
+		font: inherit;
+		text-decoration: none;
 		text-wrap: pretty;
+		appearance: none;
 		transition:
 			background-color var(--primitives-transition-duration-fast) var(--primitives-transition-easing-default),
 			color var(--primitives-transition-duration-fast) var(--primitives-transition-easing-default)
@@ -90,35 +90,35 @@ export const buttonStyles = css`
 	/* ## Size: XS */
 
 	:host([size="xs"]) .button {
+		border-radius: var(--semantics-controls-xs-corner-radius);
 		min-height: var(--semantics-controls-xs-min-size);
 		min-width: var(--semantics-controls-xs-min-size);
 		padding: var(--semantics-controls-xs-block-padding) var(--semantics-controls-xs-inline-padding);
-		font: var(--semantics-buttons-xs-font);
-		border-radius: var(--semantics-controls-xs-corner-radius);
 		gap: var(--semantics-buttons-xs-gap);
+		font: var(--semantics-buttons-xs-font);
 	}
 
 	/* ## Size: SM */
 
 	:host([size="sm"]) .button {
+		border-radius: var(--semantics-controls-sm-corner-radius);
 		min-height: var(--semantics-controls-sm-min-size);
 		min-width: var(--semantics-controls-sm-min-size);
 		padding: var(--semantics-controls-sm-block-padding) var(--semantics-controls-sm-inline-padding);
-		font: var(--semantics-buttons-sm-font);
-		border-radius: var(--semantics-controls-sm-corner-radius);
 		gap: var(--semantics-buttons-sm-gap);
+		font: var(--semantics-buttons-sm-font);
 	}
 
 	/* ## Size: MD (Default) */
 
 	:host([size="md"]) .button,
 	:host(:not([size])) .button {
+		border-radius: var(--semantics-controls-md-corner-radius);
 		min-height: var(--semantics-controls-md-min-size);
 		min-width: var(--semantics-controls-md-min-size);
 		padding: var(--semantics-controls-md-block-padding) var(--semantics-controls-md-inline-padding);
-		font: var(--semantics-buttons-md-font);
-		border-radius: var(--semantics-controls-md-corner-radius);
 		gap: var(--semantics-buttons-md-gap);
+		font: var(--semantics-buttons-md-font);
 	}
 
 
@@ -383,9 +383,9 @@ export const buttonStyles = css`
 
 	.button__disclosure-icon {
 		display: block;
-		flex-shrink: 0;
 		width: var(--_disclosure-icon-size);
 		height: var(--_disclosure-icon-size);
+		flex-shrink: 0;
 	}
 
 	:host([size="md"]) .button__disclosure-icon,

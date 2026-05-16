@@ -32,23 +32,23 @@ export const searchFieldStyles = css`
 	.search-field {
 		position: relative;
 		display: flex;
+		box-sizing: border-box;
+		border: var(--semantics-input-fields-border);
+		background-color: var(--_background-color);
+		width: 100%;
 		flex-direction: row;
 		align-items: center;
-		box-sizing: border-box;
-		width: 100%;
-		background-color: var(--_background-color);
-		border: var(--semantics-input-fields-border);
 	}
 
 	:host([size='sm']) .search-field {
-		min-height: var(--semantics-controls-sm-min-size);
 		border-radius: var(--semantics-controls-sm-corner-radius);
+		min-height: var(--semantics-controls-sm-min-size);
 	}
 
 	:host([size='md']) .search-field,
 	:host(:not([size])) .search-field {
-		min-height: var(--semantics-controls-md-min-size);
 		border-radius: var(--semantics-controls-md-corner-radius);
+		min-height: var(--semantics-controls-md-min-size);
 	}
 
 	.search-field:has(.search-field__input:focus-visible) {
@@ -74,32 +74,32 @@ export const searchFieldStyles = css`
 	}
 
 	:host([size='sm']) .search-field__search-icon {
+		margin-inline: calc((var(--semantics-controls-sm-min-size) - var(--primitives-space-20)) / 2 - var(--semantics-input-fields-border-thickness));
 		width: var(--primitives-space-20);
 		height: var(--primitives-space-20);
-		margin-inline: calc((var(--semantics-controls-sm-min-size) - var(--primitives-space-20)) / 2 - var(--semantics-input-fields-border-thickness));
 	}
 
 	:host([size='md']) .search-field__search-icon,
 	:host(:not([size])) .search-field__search-icon {
+		margin-inline: calc((var(--semantics-controls-md-min-size) - var(--primitives-space-24)) / 2 - var(--semantics-input-fields-border-thickness));
 		width: var(--primitives-space-24);
 		height: var(--primitives-space-24);
-		margin-inline: calc((var(--semantics-controls-md-min-size) - var(--primitives-space-24)) / 2 - var(--semantics-input-fields-border-thickness));
 	}
 
 
 	/* # Input */
 
 	.search-field__input {
-		appearance: none;
-		border: none;
-		background: transparent;
-		margin: 0;
-		padding: 0;
-		outline: none;
 		box-sizing: border-box;
-		flex: 1;
+		margin: 0;
+		border: none;
+		outline: none;
+		background: transparent;
 		min-width: 0;
+		padding: 0;
+		flex: 1;
 		color: var(--semantics-content-color);
+		appearance: none;
 	}
 
 	:host([size='sm']) .search-field__input {
@@ -129,9 +129,9 @@ export const searchFieldStyles = css`
 
 	.search-field__input-fade {
 		position: relative;
+		width: 0;
 		flex-shrink: 0;
 		align-self: stretch;
-		width: 0;
 	}
 
 	.search-field__input-fade::after {
@@ -140,9 +140,9 @@ export const searchFieldStyles = css`
 		top: 0;
 		bottom: 0;
 		right: 0;
-		width: var(--primitives-space-8);
 		background: linear-gradient(90deg, color-mix(in oklch, var(--_background-color) 0%, transparent) 0%, var(--_background-color) 100%);
 		pointer-events: none;
+		width: var(--primitives-space-8);
 	}
 
 	:host([size='sm']) .search-field__input-fade::after {
@@ -159,9 +159,9 @@ export const searchFieldStyles = css`
 
 	.search-field__end {
 		display: flex;
+		position: relative;
 		flex-shrink: 0;
 		align-items: center;
-		position: relative;
 	}
 
 	:host([size='sm']) .search-field__end {

@@ -25,25 +25,25 @@ export const passwordFieldStyles = css`
 
 	.password-field {
 		display: flex;
-		flex-direction: row;
-		align-items: center;
-		overflow: hidden;
 		box-sizing: border-box;
 		border: var(--semantics-input-fields-border);
 		background-color: var(--_background-color);
+		overflow: hidden;
+		flex-direction: row;
+		align-items: center;
 	}
 
 	:host([size='sm']) .password-field {
-		padding-left: calc(var(--semantics-controls-sm-inline-padding) - var(--semantics-input-fields-border-thickness));
-		min-height: var(--semantics-controls-sm-min-size);
 		border-radius: var(--semantics-controls-sm-corner-radius);
+		min-height: var(--semantics-controls-sm-min-size);
+		padding-left: calc(var(--semantics-controls-sm-inline-padding) - var(--semantics-input-fields-border-thickness));
 	}
 
 	:host([size='md']) .password-field,
 	:host(:not([size])) .password-field {
-		padding-left: calc(var(--semantics-controls-md-inline-padding) - var(--semantics-input-fields-border-thickness));
-		min-height: var(--semantics-controls-md-min-size);
 		border-radius: var(--semantics-controls-md-corner-radius);
+		min-height: var(--semantics-controls-md-min-size);
+		padding-left: calc(var(--semantics-controls-md-inline-padding) - var(--semantics-input-fields-border-thickness));
 	}
 
 	:host([valid]) .password-field {
@@ -82,16 +82,16 @@ export const passwordFieldStyles = css`
 	/* # Input */
 
 	.password-field__input {
-		flex-grow: 1;
-		min-width: 0;
-		overflow: hidden;
 		box-sizing: border-box;
-		padding: 0;
 		margin: 0;
-		color: var(--semantics-content-color);
-		background: transparent;
 		border: none;
 		outline: none;
+		background: transparent;
+		min-width: 0;
+		overflow: hidden;
+		padding: 0;
+		flex-grow: 1;
+		color: var(--semantics-content-color);
 		appearance: none;
 	}
 
@@ -142,9 +142,9 @@ export const passwordFieldStyles = css`
 
 	.password-field__input-fade {
 		position: relative;
+		width: 0;
 		flex-shrink: 0;
 		align-self: stretch;
-		width: 0;
 	}
 
 	.password-field__input-fade::after {
@@ -153,10 +153,10 @@ export const passwordFieldStyles = css`
 		top: 0;
 		bottom: 0;
 		right: 0;
-		width: var(--primitives-space-8);
 		border-radius: var(--semantics-controls-md-corner-radius);
 		background: linear-gradient(90deg, color-mix(in oklch, var(--_background-color) 0%, transparent) 0%, var(--_background-color) 100%);
 		pointer-events: none;
+		width: var(--primitives-space-8);
 	}
 
 
@@ -164,10 +164,10 @@ export const passwordFieldStyles = css`
 
 	.password-field__validation-icon-area {
 		display: flex;
+		height: 100%;
 		align-items: center;
 		justify-content: center;
 		flex-shrink: 0;
-		height: 100%;
 	}
 
 	:host([size='sm']) .password-field__validation-icon-area {
@@ -203,10 +203,10 @@ export const passwordFieldStyles = css`
 
 	.password-field__visibility-toggle-button {
 		display: flex;
+		height: 100%;
 		align-items: center;
 		justify-content: center;
 		flex-shrink: 0;
-		height: 100%;
 	}
 
 	:host([size='sm']) .password-field__visibility-toggle-button {

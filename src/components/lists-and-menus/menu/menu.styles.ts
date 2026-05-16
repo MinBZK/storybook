@@ -29,12 +29,12 @@ export const menuStyles = css`
 		}
 
 		display: block;
-		padding: 0;
+		position: absolute;
+		margin: 0;
 		border: none;
 		background: transparent;
-		margin: 0;
-		position: absolute;
 		overflow: visible;
+		padding: 0;
 		-webkit-tap-highlight-color: transparent;
 	}
 
@@ -56,19 +56,19 @@ export const menuStyles = css`
 
 	.menu {
 		display: flex;
-		flex-direction: column;
-		padding: var(--_menu-padding);
-		background: var(--semantics-surfaces-background-color);
+		box-sizing: border-box;
 		border-radius: var(--semantics-overlays-corner-radius);
 		box-shadow: var(--components-menu-box-shadow);
-		box-sizing: border-box;
+		background: var(--semantics-surfaces-background-color);
 		width: var(--_menu-width);
+		padding: var(--_menu-padding);
+		flex-direction: column;
 		max-height: min(
 			var(--_menu-max-height),
 			calc(var(--_menu-max-items) * var(--_menu-item-size) + var(--_menu-padding) * 2)
 		);
-		overflow-y: auto;
 		outline: none;
+		overflow-y: auto;
 	}
 
 	.menu:focus-visible:not(.is-pointer-focus) {
@@ -89,22 +89,22 @@ export const menuStyles = css`
 
 	.menu__back-button {
 		display: flex;
-		flex-direction: row;
-		align-items: center;
-		width: 100%;
-		min-height: var(--_menu-item-size);
-		padding: var(--primitives-space-8);
 		box-sizing: border-box;
 		border: none;
 		border-radius: var(--semantics-controls-md-corner-radius);
 		background: transparent;
+		width: 100%;
+		min-height: var(--_menu-item-size);
+		padding: var(--primitives-space-8);
+		flex-direction: row;
+		align-items: center;
 		text-align: start;
 		appearance: none;
 		--context-cell-content-color: var(--semantics-content-secondary-color);
 
 		@media (pointer: fine) {
-			padding: var(--primitives-space-4) var(--primitives-space-8);
 			border-radius: var(--semantics-controls-sm-corner-radius);
+			padding: var(--primitives-space-4) var(--primitives-space-8);
 		}
 	}
 
@@ -136,9 +136,9 @@ export const menuStyles = css`
 	}
 
 	.menu__back-button-divider {
-		height: var(--semantics-dividers-thickness);
-		background-color: var(--semantics-dividers-color);
 		margin: var(--primitives-space-4) 0;
+		background-color: var(--semantics-dividers-color);
+		height: var(--semantics-dividers-thickness);
 	}
 `;
 
@@ -161,20 +161,20 @@ export const menuItemStyles = css`
 
 	.menu__item {
 		display: flex;
-		flex-direction: row;
-		align-items: center;
-		width: 100%;
-		min-height: var(--_menu-item-size);
-		padding: var(--primitives-space-8);
 		box-sizing: border-box;
 		border: none;
 		border-radius: var(--semantics-controls-md-corner-radius);
 		background: transparent;
+		width: 100%;
+		min-height: var(--_menu-item-size);
+		padding: var(--primitives-space-8);
+		flex-direction: row;
+		align-items: center;
 		text-align: start;
 		appearance: none;
 		@media (pointer: fine) {
-			padding: var(--primitives-space-4) var(--primitives-space-8);
 			border-radius: var(--semantics-controls-sm-corner-radius);
+			padding: var(--primitives-space-4) var(--primitives-space-8);
 		}
 	}
 
@@ -268,9 +268,9 @@ export const menuItemStyles = css`
 
 		:host([highlighted]) .menu__item,
 		.menu__item[aria-expanded="true"]:hover {
+			outline: none;
 			background-color: Highlight;
 			color: HighlightText;
-			outline: none;
 		}
 
 		.menu__item:focus-visible {
@@ -297,8 +297,8 @@ export const menuDividerStyles = css`
 	/* # Divider */
 
 	.menu__divider {
-		height: var(--semantics-dividers-thickness);
 		background-color: var(--semantics-dividers-color);
+		height: var(--semantics-dividers-thickness);
 	}
 `;
 
@@ -317,9 +317,9 @@ export const menuGroupStyles = css`
 
 	:host {
 		display: block;
+		margin-top: var(--primitives-space-4);
 		border-top: var(--semantics-dividers-thickness) solid var(--semantics-dividers-color);
 		padding-top: var(--primitives-space-6);
-		margin-top: var(--primitives-space-4);
 	}
 
 	:host(:first-child) {

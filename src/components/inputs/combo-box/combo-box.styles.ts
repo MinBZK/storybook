@@ -30,23 +30,23 @@ export const comboBoxStyles = css`
 
 	.combo-box {
 		display: flex;
+		box-sizing: border-box;
+		border: var(--semantics-input-fields-border);
+		background-color: var(--_background-color);
+		width: 100%;
 		flex-direction: row;
 		align-items: center;
-		box-sizing: border-box;
-		width: 100%;
-		background-color: var(--_background-color);
-		border: var(--semantics-input-fields-border);
 	}
 
 	:host([size='sm']) .combo-box {
-		min-height: var(--semantics-controls-sm-min-size);
 		border-radius: var(--semantics-controls-sm-corner-radius);
+		min-height: var(--semantics-controls-sm-min-size);
 	}
 
 	:host([size='md']) .combo-box,
 	:host(:not([size])) .combo-box {
-		min-height: var(--semantics-controls-md-min-size);
 		border-radius: var(--semantics-controls-md-corner-radius);
+		min-height: var(--semantics-controls-md-min-size);
 	}
 
 	:host([valid]) .combo-box {
@@ -72,16 +72,16 @@ export const comboBoxStyles = css`
 	/* # Input */
 
 	.combo-box__input {
-		appearance: none;
-		border: none;
-		background: transparent;
-		margin: 0;
-		outline: none;
 		box-sizing: border-box;
-		flex: 1;
+		margin: 0;
+		border: none;
+		outline: none;
+		background: transparent;
 		min-width: 0;
 		width: 100%;
+		flex: 1;
 		color: var(--semantics-content-color);
+		appearance: none;
 	}
 
 	:host([size='sm']) .combo-box__input {
@@ -109,9 +109,9 @@ export const comboBoxStyles = css`
 
 	.combo-box__input-fade {
 		position: relative;
+		width: 0;
 		flex-shrink: 0;
 		align-self: stretch;
-		width: 0;
 	}
 
 	.combo-box__input-fade::after {
@@ -120,9 +120,9 @@ export const comboBoxStyles = css`
 		top: 0;
 		bottom: 0;
 		right: 0;
-		width: var(--primitives-space-8);
 		background: linear-gradient(90deg, color-mix(in oklch, var(--_background-color) 0%, transparent) 0%, var(--_background-color) 100%);
 		pointer-events: none;
+		width: var(--primitives-space-8);
 	}
 
 
@@ -156,10 +156,10 @@ export const comboBoxStyles = css`
 
 	.combo-box__validation-icon-area {
 		display: flex;
+		height: 100%;
 		align-items: center;
 		justify-content: center;
 		flex-shrink: 0;
-		height: 100%;
 	}
 
 	:host([valid]) .combo-box__validation-icon-area {

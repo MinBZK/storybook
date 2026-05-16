@@ -44,11 +44,11 @@ export const linkStyles = css`
 	/* # Block */
 
 	.link {
-		appearance: none;
+		border-radius: var(--primitives-corner-radius-xs);
 		background: none;
 		color: var(--semantics-links-color);
 		text-decoration: none;
-		border-radius: var(--primitives-corner-radius-xs);
+		appearance: none;
 		transition: color var(--primitives-transition-duration-fast) var(--primitives-transition-easing-default);
 	}
 
@@ -127,10 +127,10 @@ export const linkStyles = css`
 	.link__end-icon {
 		position: relative;
 		display: inline-flex;
-		align-items: center;
-		flex-shrink: 0;
 		width: 1em;
 		height: 1em;
+		align-items: center;
+		flex-shrink: 0;
 	}
 
 	:host(:not([size])) .link__start-icon,

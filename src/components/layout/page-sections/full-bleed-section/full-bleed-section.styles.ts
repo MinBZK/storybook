@@ -18,9 +18,9 @@ export const fullBleedSectionStyles = css`
 		--_max-width: var(--semantics-page-sections-body-max-width);
 
 		display: flex;
+		width: 100%;
 		flex-direction: column;
 		align-items: center;
-		width: 100%;
 	}
 
 	:host([hidden]) {
@@ -36,11 +36,11 @@ export const fullBleedSectionStyles = css`
 
 	.full-bleed-section {
 		display: flex;
+		box-sizing: border-box;
+		width: 100%;
 		flex-direction: column;
 		flex-grow: 1;
 		align-items: center;
-		width: 100%;
-		box-sizing: border-box;
 
 		@media (max-width: ${smMax}) {
 			padding-block: var(--semantics-page-sections-sm-margin-block);
@@ -72,10 +72,10 @@ export const fullBleedSectionStyles = css`
 
 	.full-bleed-section__body {
 		display: flex;
-		flex-direction: column;
-		flex-grow: 1;
 		width: 100%;
 		max-width: var(--_max-width);
+		flex-direction: column;
+		flex-grow: 1;
 
 		@media (max-width: ${smMax}) {
 			gap: var(--semantics-page-sections-sm-gap);
