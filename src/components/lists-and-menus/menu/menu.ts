@@ -411,15 +411,6 @@ export class NLDDMenu extends LitElement {
 	@state()
 	_parentItem: NLDDMenuItem | null = null;
 
-	/** Frozen drill-in placement for the whole chain, resolved once on the
-	 * root from the available space around the anchor (not from content
-	 * size). Stored on the root; every chain member reads it via
-	 * `_rootMenu`. Keeps the menu on the roomiest side so a larger
-	 * submenu scrolls internally instead of flipping the whole stack to
-	 * the other side of the anchor mid-navigation. Cleared on the root's
-	 * real close. */
-	private _drillInPlacement: string | null = null;
-
 	private _isOpen = false;
 	private _closedAt = 0;
 	private _cleanupAutoUpdate: (() => void) | null = null;
@@ -1636,22 +1627,19 @@ export class NLDDMenu extends LitElement {
 			? parseInt(getComputedStyle(this).getPropertyValue('--_menu-padding')) || 0
 			: 0;
 
-		// Drill-in: freeze the side on the root (resolved from available
-		// space, not content size) and reuse it for the whole chain. No
-		// `flip` — flip is content-dependent and would jump the whole
-		// stack to the other side of the anchor when a larger submenu
-		// doesn't fit; instead `size` caps the height and the menu
-		// scrolls internally on the chosen, stable side. Cascade keeps
-		// `flip` (submenus open beside the opener, content-fit matters).
+		// Drill-in: pick the side from the available space around the
+		// anchor — recomputed every reposition, but content-independent so
+		// a larger submenu never changes it (no mid-chain jump). `flip` is
+		// content-dependent and WOULD jump the stack when a bigger submenu
+		// doesn't fit, so it's dropped here; `size` caps the height and
+		// the menu scrolls internally instead. Re-resolving each time (vs
+		// freezing) keeps it following the anchor on scroll and re-picking
+		// the roomiest side after a close + reopen. Cascade keeps `flip`
+		// (submenus open beside the opener, content-fit matters there).
 		const drillIn = this._drillInMode;
-		let effectivePlacement = this.placement;
-		if (drillIn) {
-			const root = this._rootMenu;
-			if (root._drillInPlacement === null) {
-				root._drillInPlacement = root._resolveDrillInPlacement(anchorEl);
-			}
-			effectivePlacement = root._drillInPlacement;
-		}
+		const effectivePlacement = drillIn
+			? this._resolveDrillInPlacement(anchorEl)
+			: this.placement;
 
 		const { x, y } = await computePosition(anchorEl, this, {
 			placement: effectivePlacement as import('@floating-ui/dom').Placement,
@@ -1835,12 +1823,6 @@ export class NLDDMenu extends LitElement {
 			window.removeEventListener('resize', this._handleWindowResize);
 			document.removeEventListener('pointerdown', this._handleDocumentPointerdown, true);
 			this._teardownOutsideTap();
-			// Release the frozen drill-in side on a real close, but not on
-			// the intermediate hide that makes room for a deeper level
-			// (_drillInHidingForDeeper is still set here — the parent's
-			// onToggle resets it afterwards). Keeps the side stable while
-			// navigating the chain, re-resolves fresh on the next open.
-			if (!this._drillInHidingForDeeper) this._drillInPlacement = null;
 			this._clearHighlight();
 			return;
 		}

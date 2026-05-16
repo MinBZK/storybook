@@ -1292,7 +1292,8 @@ describe('nldd-menu drill-in chain', () => {
 		cleanup(root);
 	});
 
-	it('freezes the drill-in side from available space, stable across a larger submenu', async () => {
+	it('resolves the drill-in side from available space, content-independent', async () => {
+		// Anchor near the top of the viewport → more space below.
 		const anchor = document.createElement('button');
 		anchor.style.cssText = 'position:fixed;left:8px;top:8px;width:40px;height:24px;';
 		document.body.appendChild(anchor);
@@ -1308,27 +1309,24 @@ describe('nldd-menu drill-in chain', () => {
 				</nldd-menu-item>
 			</nldd-menu>
 		`);
-		(root as unknown as { anchorElement: Element }).anchorElement = anchor;
 		await waitForUpdate(root);
 
+		const resolve = (root as unknown as {
+			_resolveDrillInPlacement: (a: Element) => string;
+		})._resolveDrillInPlacement.bind(root);
+
+		expect(resolve(anchor)).toBe('bottom-start');
+
+		// Opening a (larger) submenu must not change the resolved side —
+		// the resolver reads only the anchor rect + viewport, never
+		// content size, so a bigger submenu can't flip the stack.
 		(root as HTMLElement & { showPopover: () => void }).showPopover();
 		await waitForUpdate(root);
-		await (root as unknown as { reposition: () => Promise<void> }).reposition();
-
-		// Anchor near the top of the viewport → more space below → bottom side.
-		const frozen = (root as unknown as { _drillInPlacement: string })._drillInPlacement;
-		expect(frozen).toBe('bottom-start');
-
 		const l1Item = root.querySelector(':scope > nldd-menu-item') as HTMLElement;
 		const l2Menu = l1Item.querySelector(':scope > nldd-menu') as HTMLElement;
 		openSubmenu(root, l1Item, l2Menu);
 		await waitForUpdate(root);
-		await (l2Menu as unknown as { reposition: () => Promise<void> }).reposition();
-
-		// The (larger) submenu must not re-resolve a different side — the
-		// frozen value is unchanged and the submenu reads it via _rootMenu.
-		expect((root as unknown as { _drillInPlacement: string })._drillInPlacement).toBe(frozen);
-		expect((l2Menu as unknown as { _rootMenu: HTMLElement })._rootMenu).toBe(root);
+		expect(resolve(anchor)).toBe('bottom-start');
 
 		anchor.remove();
 		cleanup(root);
@@ -1342,14 +1340,13 @@ describe('nldd-menu drill-in chain', () => {
 		const root = await fixture<HTMLElement>(`
 			<nldd-menu><nldd-menu-item text="A"></nldd-menu-item></nldd-menu>
 		`);
-		(root as unknown as { anchorElement: Element }).anchorElement = anchor;
 		await waitForUpdate(root);
 
-		(root as HTMLElement & { showPopover: () => void }).showPopover();
-		await waitForUpdate(root);
-		await (root as unknown as { reposition: () => Promise<void> }).reposition();
+		const resolve = (root as unknown as {
+			_resolveDrillInPlacement: (a: Element) => string;
+		})._resolveDrillInPlacement.bind(root);
 
-		expect((root as unknown as { _drillInPlacement: string })._drillInPlacement).toBe('top-start');
+		expect(resolve(anchor)).toBe('top-start');
 
 		anchor.remove();
 		cleanup(root);
