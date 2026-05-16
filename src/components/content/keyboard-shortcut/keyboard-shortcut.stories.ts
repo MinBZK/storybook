@@ -92,7 +92,6 @@ const Template = ({ size, alwaysVisible, keys, macKeys, windowsKeys, linuxKeys }
 	></nldd-keyboard-shortcut>
 `;
 
-
 export const Default = {
 	render: Template,
 	args: {
