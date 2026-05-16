@@ -99,7 +99,7 @@ export class NLDDMenuBarItem extends LitElement {
 	 * and excludes the click from popover light-dismiss.
 	 */
 	@property({ attribute: false })
-	popoverTargetElement: Element | null = null;
+	popoverTargetElement: HTMLElement | null = null;
 
 	/**
 	 * Action the browser performs when the inner button is clicked,
