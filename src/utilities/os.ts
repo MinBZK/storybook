@@ -3,8 +3,9 @@
  * Used to pick OS-specific keyboard shortcut labels and similar
  * platform-aware UI variants.
  *
- * Falls back to `'other'` when the platform can't be classified (Android,
- * ChromeOS, unknown UA strings, non-browser environments).
+ * ChromeOS is reported as `'linux'` (its platform string matches
+ * `cros`/`linux`). Falls back to `'other'` when the platform can't be
+ * classified (Android, unknown UA strings, non-browser environments).
  */
 
 export type OS = 'mac' | 'windows' | 'linux' | 'other';
