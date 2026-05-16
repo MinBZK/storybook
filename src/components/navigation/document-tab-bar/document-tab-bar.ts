@@ -42,6 +42,7 @@ import { documentTabBarTemplate, documentTabBarItemTemplate } from './document-t
 import { withTranslations } from '../../../utilities/with-translations.js';
 import { nlddDocumentTabBarTranslations } from './document-tab-bar.i18n.js';
 import './../../lists-and-menus/menu/menu.js';
+import type { NLDDMenu } from '../../lists-and-menus/menu/menu.js';
 
 // Pointer movement threshold in px before drag mode activates.
 // Distinguishes a click (select) from a drag (reorder).
@@ -178,7 +179,7 @@ export class NLDDDocumentTabBar extends withTranslations(LitElement, nlddDocumen
 	@state()
 	_menuOpen = false;
 
-	private _menu: Element | null = null;
+	private _menu: NLDDMenu | null = null;
 	private _resizeObserver: ResizeObserver | null = null;
 	private _hasCustomLabel = false;
 
@@ -703,9 +704,6 @@ export class NLDDDocumentTabBar extends withTranslations(LitElement, nlddDocumen
 		menu.addEventListener('toggle', (event: Event) => {
 			this._menuOpen = (event as ToggleEvent).newState === 'open';
 		});
-		// TODO: appending to document.body and accessing nldd-menu internals via any-cast
-		// is a known limitation. Fix: define a typed public API on nldd-menu (anchorElement,
-		// showPopover, hidePopover) or use a popover anchor approach within renderRoot.
 		document.body.appendChild(menu);
 		this._menu = menu;
 	}
@@ -717,7 +715,7 @@ export class NLDDDocumentTabBar extends withTranslations(LitElement, nlddDocumen
 			popoverTargetAction?: 'toggle' | 'show' | 'hide';
 		} | null;
 		if (button) {
-			(this._menu as any).anchorElement = button;
+			this._menu.anchorElement = button;
 			// Wire the button as the menu's invoker. The browser handles
 			// open/close natively via popovertarget — no `@click` handler
 			// needed. The menu syncs `popoverTargetAction` on every toggle
@@ -740,7 +738,7 @@ export class NLDDDocumentTabBar extends withTranslations(LitElement, nlddDocumen
 	}
 
 	private _closeMenu(): void {
-		(this._menu as any)?.hidePopover?.();
+		this._menu?.hidePopover();
 	}
 
 
