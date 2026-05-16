@@ -169,6 +169,14 @@ describe('nldd-icon-button – tooltip', () => {
 		expect(tooltip).not.toBeNull();
 		expect(tooltip!.getAttribute('text')).toBe('Toon wachtwoord');
 	});
+
+	it('forwards tooltip-timing="instant" to the inner nldd-tooltip', async () => {
+		el = await fixture<NLDDIconButton>('<nldd-icon-button size="md" icon="download" text="Download" tooltip-timing="instant"></nldd-icon-button>');
+		await waitForUpdate(el);
+		const tooltip = el.shadowRoot!.querySelector('nldd-tooltip');
+		expect(tooltip).not.toBeNull();
+		expect(tooltip!.getAttribute('timing')).toBe('instant');
+	});
 });
 
 
