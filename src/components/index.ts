@@ -17,7 +17,6 @@ export { NLDDSplitButton } from './actions/split-button/split-button.js';
 export { NLDDButtonGroup } from './actions/button-group/button-group.js';
 export { NLDDButtonBar } from './actions/button-bar/button-bar.js';
 export { NLDDToolbar } from './actions/toolbar/toolbar.js';
-export { NLDDLink } from './actions/link/link.js';
 
 
 // # Content components
@@ -117,6 +116,7 @@ export { NLDDTimelineTrackCell } from './lists-and-menus/cells/timeline-track-ce
 
 export { NLDDMenuBar } from './navigation/menu-bar/menu-bar.js';
 export { NLDDMenuBarItem } from './navigation/menu-bar-item/menu-bar-item.js';
+export { NLDDLink } from './navigation/link/link.js';
 export { NLDDSkipLink } from './navigation/skip-link/skip-link.js';
 export { NLDDTopNavigationBar } from './navigation/top-navigation-bar/top-navigation-bar.js';
 export { NLDDTopTitleBar } from './navigation/top-title-bar/top-title-bar.js';
