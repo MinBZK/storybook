@@ -1210,6 +1210,58 @@ describe('nldd-menu drill-in chain', () => {
 		cleanup(root);
 	});
 
+	it('anchor click after a pointer-collapse never reopens, even past the time guard', async () => {
+		// Closing from deep in a drill-in submenu: the submenu's
+		// pointerdown/tap collapses the chain, then the trailing click
+		// reaches the root. On touch the pointerup→click gap can exceed
+		// POPOVER_REOPEN_GUARD_MS, so the old time-based guard let the
+		// click's showPopover() reopen the root (intermittent bounce).
+		// The gesture marker must suppress that regardless of timing.
+		const root = await fixture<HTMLElement>(`
+			<div>
+				<button id="anch3">Open menu</button>
+				<nldd-menu anchor="anch3">
+					<nldd-menu-item text="L1">
+						<nldd-menu>
+							<nldd-menu-item text="L2"></nldd-menu-item>
+						</nldd-menu>
+					</nldd-menu-item>
+				</nldd-menu>
+			</div>
+		`);
+		await waitForUpdate(root);
+		const anch = root.querySelector('#anch3') as HTMLButtonElement;
+		const menu = root.querySelector('nldd-menu') as HTMLElement & { showPopover(): void };
+		const l1Item = menu.querySelector(':scope > nldd-menu-item') as HTMLElement;
+		const l2Menu = l1Item.querySelector(':scope > nldd-menu') as HTMLElement;
+
+		menu.showPopover();
+		await waitForUpdate(root);
+		openSubmenu(menu, l1Item, l2Menu);
+		await waitForUpdate(root);
+		expect(l2Menu.matches(':popover-open')).toBe(true);
+
+		// The submenu's capture pointerdown handler collapses the chain and
+		// marks the gesture (mouse path = synchronous, like the real flow).
+		anch.dispatchEvent(new PointerEvent('pointerdown', {
+			bubbles: true, composed: true, pointerType: 'mouse',
+		}));
+		await waitForUpdate(root);
+		expect(l2Menu.matches(':popover-open')).toBe(false);
+
+		// Simulate a long pointerup→click gap so the time guard lapses.
+		(menu as unknown as { _closedAt: number })._closedAt = Date.now() - 5000;
+
+		anch.click();
+		await waitForUpdate(root);
+
+		expect(menu.matches(':popover-open')).toBe(false); // did NOT reopen
+		expect(l2Menu.matches(':popover-open')).toBe(false);
+		expect((menu as unknown as { _openChain: unknown[] })._openChain.length).toBe(0);
+
+		cleanup(root);
+	});
+
 	it('pointerdown outside the chain collapses every level', async () => {
 		const root = await fixture<HTMLElement>(`
 			<nldd-menu>

@@ -422,6 +422,12 @@ export class NLDDMenu extends LitElement {
 
 	private _isOpen = false;
 	private _closedAt = 0;
+	/** Set on the root when a pointer gesture (outside/anchor pointerdown
+	 * or confirmed tap) collapsed the chain. The trailing `click` of that
+	 * same gesture consumes it in `_handleDocumentClick` and must NOT
+	 * reopen — gesture-correlated, so it's reliable on touch where the
+	 * pointerup→click gap exceeds the time-based reopen guard. @internal */
+	_collapsedByPointerGesture = false;
 	private _cleanupAutoUpdate: (() => void) | null = null;
 
 	// — i18n ——————————————————————————————————————————————————————————————————
@@ -542,10 +548,21 @@ export class NLDDMenu extends LitElement {
 
 	private _handleDocumentClick = (event: MouseEvent): void => {
 		if (this.anchorElement) return;
+		// Consume the same-gesture collapse marker (set when an outside or
+		// anchor pointer gesture collapsed the chain). Read+clear for every
+		// click so it never leaks past a single gesture.
+		const collapsedByGesture = this._collapsedByPointerGesture;
+		this._collapsedByPointerGesture = false;
 		const anchorEl = this._getAnchorEl();
 		if (!anchorEl) return;
 		const path = event.composedPath();
 		if (!path.includes(anchorEl)) return;
+		// This click is the tail of the very gesture that just collapsed the
+		// chain (e.g. tapping the anchor from deep in a drill-in submenu:
+		// the submenu's pointerdown/tap already collapsed). It must not
+		// reopen. Gesture-correlated, so reliable even when the
+		// pointerup→click gap exceeds the time-based reopen guard on touch.
+		if (collapsedByGesture) return;
 		// Drill-in: the root is hidden while a submenu shows, so `_isOpen`
 		// is false on the root even though the menu is visibly open. A
 		// plain toggle would `showPopover()` the root — i.e. bounce back
@@ -1356,6 +1373,7 @@ export class NLDDMenu extends LitElement {
 			document.addEventListener('pointercancel', this._outsideTapCancel, true);
 			return;
 		}
+		(this._chainRoot ?? this)._collapsedByPointerGesture = true;
 		this._collapseChain();
 	};
 
@@ -1375,7 +1393,10 @@ export class NLDDMenu extends LitElement {
 	private _outsideTapEnd = (): void => {
 		const wasTap = this._outsideTapTracking;
 		this._teardownOutsideTap();
-		if (wasTap) this._collapseChain();
+		if (wasTap) {
+			(this._chainRoot ?? this)._collapsedByPointerGesture = true;
+			this._collapseChain();
+		}
 	};
 
 	private _outsideTapCancel = (): void => {
