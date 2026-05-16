@@ -1,6 +1,6 @@
 import { describe, it, expect, afterEach } from 'vitest';
 import { fixture, cleanup, waitForUpdate } from '../../../test-utils.js';
-import { _setOSOverride } from '../../../utilities/os.js';
+import { _setOSOverride, _resetOSDetectionCache } from '../../../utilities/os.js';
 import './keyboard-shortcut.js';
 
 describe('nldd-keyboard-shortcut', () => {
@@ -111,6 +111,7 @@ describe('nldd-keyboard-shortcut', () => {
 	describe('per-OS keys overrides', () => {
 		afterEach(() => {
 			_setOSOverride(null);
+			_resetOSDetectionCache();
 		});
 
 		it('uses keys fallback when matching per-OS attribute is absent', async () => {
