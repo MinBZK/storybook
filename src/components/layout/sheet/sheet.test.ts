@@ -275,11 +275,18 @@ describe('nldd-sheet – height', () => {
 		expect(el.style.getPropertyValue('--_height')).toBe('');
 	});
 
-	it('ignores invalid CSS values and warns once', async () => {
-		const warnSpy = vi.spyOn(console, 'warn').mockImplementation(() => {});
+	it('ignores invalid CSS values (falls back, no --_height)', async () => {
 		el = await fixture<NLDDSheet>('<nldd-sheet placement="bottom" height="not-a-length"></nldd-sheet>');
 		await waitForUpdate(el);
 		expect(el.style.getPropertyValue('--_height')).toBe('');
+	});
+
+	// The warning is gated on import.meta.env.DEV; skip when the suite runs
+	// in production mode so a missing warn isn't a false failure.
+	it.skipIf(!import.meta.env.DEV)('warns exactly once on an invalid height value', async () => {
+		const warnSpy = vi.spyOn(console, 'warn').mockImplementation(() => {});
+		el = await fixture<NLDDSheet>('<nldd-sheet placement="bottom" height="not-a-length"></nldd-sheet>');
+		await waitForUpdate(el);
 		expect(warnSpy).toHaveBeenCalledTimes(1);
 		expect(warnSpy.mock.calls[0][0]).toContain('Invalid height value "not-a-length"');
 
