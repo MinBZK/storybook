@@ -1383,8 +1383,51 @@ describe('nldd-menu drill-in chain', () => {
 		expect(l2Menu.matches(':popover-open')).toBe(true);
 		expect(root.matches(':popover-open')).toBe(false);
 
-		// One click on the anchor must collapse the whole chain — not
-		// bounce back to the (hidden) root menu.
+		// Real gesture: pointerdown collapses the chain via
+		// _handleDocumentPointerdown, then the same gesture's click
+		// reaches _handleDocumentClick with _activeSubmenu already
+		// cleared. The root must NOT be re-shown — the whole menu stays
+		// closed after a single click.
+		anchor.dispatchEvent(new PointerEvent('pointerdown', { bubbles: true, composed: true }));
+		await waitForUpdate(root);
+		anchor.dispatchEvent(new MouseEvent('click', { bubbles: true, composed: true }));
+		await waitForUpdate(root);
+
+		expect(l2Menu.matches(':popover-open')).toBe(false);
+		expect(root.matches(':popover-open')).toBe(false);
+
+		anchor.remove();
+		cleanup(root);
+	});
+
+	it('keyboard activation of the anchor (click, no pointerdown) also collapses the chain', async () => {
+		const anchor = document.createElement('button');
+		anchor.id = 'drillin-anchor-kbd';
+		anchor.textContent = 'Open menu';
+		document.body.appendChild(anchor);
+
+		const root = await fixture<HTMLElement>(`
+			<nldd-menu anchor="drillin-anchor-kbd">
+				<nldd-menu-item text="L1">
+					<nldd-menu>
+						<nldd-menu-item text="L2"></nldd-menu-item>
+					</nldd-menu>
+				</nldd-menu-item>
+			</nldd-menu>
+		`);
+		await waitForUpdate(root);
+		const l1Item = root.querySelector(':scope > nldd-menu-item') as HTMLElement;
+		const l2Menu = l1Item.querySelector(':scope > nldd-menu') as HTMLElement;
+
+		(root as HTMLElement & { showPopover: () => void }).showPopover();
+		await waitForUpdate(root);
+		openSubmenu(root, l1Item, l2Menu);
+		await waitForUpdate(root);
+		expect(l2Menu.matches(':popover-open')).toBe(true);
+
+		// Enter/Space on the button fires `click` with no preceding
+		// pointerdown — handled by the _activeSubmenu guard in
+		// _handleDocumentClick.
 		anchor.dispatchEvent(new MouseEvent('click', { bubbles: true, composed: true }));
 		await waitForUpdate(root);
 

@@ -1273,6 +1273,16 @@ export class NLDDMenu extends LitElement {
 	 * stack instead of bouncing back to the previous view.
 	 */
 	private _handleSelectChainClose = (): void => {
+		// Stamp the root's reopen guard. When this chain-close was triggered
+		// by an anchor click (pointerdown → _handleDocumentPointerdown),
+		// the same gesture's `click` reaches the root's _handleDocumentClick
+		// a moment later with _activeSubmenu already cleared and the root
+		// still closed — without this stamp it would `showPopover()` the
+		// root, bouncing the user back to the main level instead of
+		// staying closed. The root was hidden long ago (when it made room
+		// for the submenu), so its own _closedAt is stale and wouldn't
+		// trip the guard; refresh it here.
+		this._rootMenu._closedAt = Date.now();
 		// Capture the chain BEFORE hiding ourselves: in browsers that
 		// dispatch the close-side `toggle` event synchronously inside
 		// `hidePopover()`, our parent's cleanup runs immediately and
