@@ -1,6 +1,6 @@
 import { describe, it, expect, afterEach, vi } from 'vitest';
 import { fixture, cleanup, waitForUpdate, deepActiveElement } from '../../../test-utils.js';
-import type { NLDDButton } from './button.js';
+import { NLDD_BUTTON_VARIANTS, type NLDDButton, type NLDDButtonVariant } from './button.js';
 import './button.js';
 
 describe('nldd-button', () => {
@@ -53,6 +53,41 @@ describe('nldd-button', () => {
 		await waitForUpdate(el);
 		const inner = el.shadowRoot!.querySelector('button');
 		expect(inner!.hasAttribute('aria-label')).toBe(false);
+	});
+});
+
+describe('nldd-button – variant type & unknown-variant warning', () => {
+	let el: NLDDButton;
+
+	afterEach(() => {
+		if (el) cleanup(el);
+	});
+
+	it('exports NLDD_BUTTON_VARIANTS as the single source of truth', () => {
+		expect(NLDD_BUTTON_VARIANTS).toContain('destructive');
+		expect(NLDD_BUTTON_VARIANTS).toContain('critical-tinted');
+		expect(NLDD_BUTTON_VARIANTS).toContain('neutral-tinted');
+		// `critical` is a <nldd-tag> color, NOT a button variant (issue #83).
+		expect(NLDD_BUTTON_VARIANTS).not.toContain('critical');
+		// Type is derived from the array — this only compiles if it lines up.
+		const v: NLDDButtonVariant = 'destructive';
+		expect(v).toBe('destructive');
+	});
+
+	it('warns when an unknown variant is set', async () => {
+		const warnSpy = vi.spyOn(console, 'warn').mockImplementation(() => {});
+		el = await fixture<NLDDButton>('<nldd-button text="Verwijderen" variant="critical"></nldd-button>');
+		await waitForUpdate(el);
+		expect(warnSpy).toHaveBeenCalledWith(expect.stringContaining('unknown variant "critical"'));
+		warnSpy.mockRestore();
+	});
+
+	it('does not warn for a valid variant', async () => {
+		const warnSpy = vi.spyOn(console, 'warn').mockImplementation(() => {});
+		el = await fixture<NLDDButton>('<nldd-button text="Verwijderen" variant="destructive"></nldd-button>');
+		await waitForUpdate(el);
+		expect(warnSpy).not.toHaveBeenCalled();
+		warnSpy.mockRestore();
 	});
 });
 

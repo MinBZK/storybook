@@ -2,7 +2,7 @@
  * Nederlandse Digitale Dienst Button Component (Lit + TypeScript)
  *
  * @element nldd-button
- * @attr {string} variant - Button variant: 'primary' | 'secondary' | 'destructive' | 'accent-filled' | 'accent-transparent' | 'neutral-tinted' | 'neutral-transparent' | 'critical-tinted' | 'critical-transparent'
+ * @attr {string} variant - Button variant: 'primary' | 'secondary' | 'destructive' | 'accent-filled' | 'accent-transparent' | 'neutral-tinted' | 'neutral-transparent' | 'critical-tinted' | 'critical-transparent'. Importable as the `NLDDButtonVariant` type / `NLDD_BUTTON_VARIANTS` runtime list.
  * @attr {string} size - Button size: 'xs' | 'sm' | 'md' (default: 'md')
  * @attr {boolean} disabled - Disabled state
  * @attr {string} type - Button type for form submission: 'button' | 'submit' | 'reset' (ignored when href is set)
@@ -32,16 +32,25 @@ import { buttonStyles } from './button.styles.js';
 import { template } from './button.template.js';
 import './../../content/icon/icon.js';
 
-type Variant =
-	| 'primary'
-	| 'secondary'
-	| 'destructive'
-	| 'accent-filled'
-	| 'accent-transparent'
-	| 'neutral-tinted'
-	| 'neutral-transparent'
-	| 'critical-tinted'
-	| 'critical-transparent';
+/**
+ * All valid `variant` values for `<nldd-button>`. Single source of truth:
+ * `NLDDButtonVariant` is derived from this array, and `updated()` uses it to
+ * emit a dev-only warning when an unknown variant is set (which otherwise
+ * renders an unstyled, near-invisible button — see issue #83).
+ */
+export const NLDD_BUTTON_VARIANTS = [
+	'primary',
+	'secondary',
+	'destructive',
+	'accent-filled',
+	'accent-transparent',
+	'neutral-tinted',
+	'neutral-transparent',
+	'critical-tinted',
+	'critical-transparent',
+] as const;
+
+export type NLDDButtonVariant = (typeof NLDD_BUTTON_VARIANTS)[number];
 type Size = 'xs' | 'sm' | 'md';
 type ButtonType = 'button' | 'submit' | 'reset';
 type PopupType = 'menu' | 'listbox' | 'dialog' | 'tree' | 'grid';
@@ -57,7 +66,7 @@ export class NLDDButton extends LitElement {
 	private _internals = this.attachInternals();
 
 	@property({ type: String, reflect: true })
-	variant: Variant = 'neutral-tinted';
+	variant: NLDDButtonVariant = 'neutral-tinted';
 
 	@property({ type: String, reflect: true })
 	size: Size = 'md';
@@ -146,6 +155,7 @@ export class NLDDButton extends LitElement {
 	rel: string | undefined = undefined;
 
 	private _warnedA11y = false;
+	private _warnedVariant = false;
 
 	override updated(changedProperties: Map<string, unknown>): void {
 		if (changedProperties.has('width')) {
@@ -170,6 +180,19 @@ export class NLDDButton extends LitElement {
 			console.warn('<nldd-button>: button has no text or accessible-label. This produces an inaccessible button (WCAG SC 4.1.2).');
 		} else if (!isEmpty) {
 			this._warnedA11y = false;
+		}
+
+		// An unknown variant matches no `:host([variant=...])` rule and falls
+		// through to no styling at all (the default style only applies via
+		// `:host(:not([variant]))`), producing a near-invisible button. The
+		// type system can't catch it because the attribute is a plain string
+		// from HTML/framework templates — so warn at runtime in dev.
+		const knownVariant = (NLDD_BUTTON_VARIANTS as readonly string[]).includes(this.variant);
+		if (import.meta.env?.DEV && !knownVariant && !this._warnedVariant) {
+			this._warnedVariant = true;
+			console.warn(`<nldd-button>: unknown variant "${this.variant}" — the button renders unstyled. Valid variants: ${NLDD_BUTTON_VARIANTS.join(', ')}.`);
+		} else if (knownVariant) {
+			this._warnedVariant = false;
 		}
 	}
 

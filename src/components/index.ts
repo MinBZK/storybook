@@ -11,7 +11,8 @@
 
 // # Action components
 
-export { NLDDButton } from './actions/button/button.js';
+export { NLDDButton, NLDD_BUTTON_VARIANTS } from './actions/button/button.js';
+export type { NLDDButtonVariant } from './actions/button/button.js';
 export { NLDDIconButton } from './actions/icon-button/icon-button.js';
 export { NLDDSplitButton } from './actions/split-button/split-button.js';
 export { NLDDButtonGroup } from './actions/button-group/button-group.js';
