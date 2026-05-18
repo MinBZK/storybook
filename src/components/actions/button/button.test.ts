@@ -133,6 +133,28 @@ describe('nldd-button – icon attributes', () => {
 	});
 });
 
+describe('nldd-button – part="button"', () => {
+	let el: NLDDButton;
+
+	afterEach(() => {
+		if (el) cleanup(el);
+	});
+
+	it('exposes part="button" on the inner <button>', async () => {
+		el = await fixture<NLDDButton>('<nldd-button text="Opslaan"></nldd-button>');
+		await waitForUpdate(el);
+		const btn = el.shadowRoot!.querySelector('button')!;
+		expect(btn.getAttribute('part')).toBe('button');
+	});
+
+	it('exposes part="button" on the inner <a> when href is set', async () => {
+		el = await fixture<NLDDButton>('<nldd-button href="/overzicht" text="Terug"></nldd-button>');
+		await waitForUpdate(el);
+		const a = el.shadowRoot!.querySelector('a')!;
+		expect(a.getAttribute('part')).toBe('button');
+	});
+});
+
 describe('nldd-button – href / link rendering', () => {
 	let el: NLDDButton;
 

@@ -23,6 +23,11 @@
  * @slot start-icon - Slot for a custom start icon (e.g. custom SVG). Only used when start-icon attribute is not set.
  * @slot end-icon - Slot for a custom end icon (e.g. custom SVG). Only used when end-icon attribute is not set.
  *
+ * @csspart button - The inner interactive element: the `<button>`, or the `<a>`
+ *                    when `href` is set. Use `nldd-button::part(button)` to apply
+ *                    consumer-specific styling across the shadow boundary without
+ *                    recreating the component.
+ *
  * @fires click - When button is clicked (not fired when disabled)
  */
 

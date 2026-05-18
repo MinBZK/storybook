@@ -295,6 +295,32 @@ describe('nldd-icon-button – href / link rendering', () => {
 	});
 });
 
+/* ============================================================
+   CSS part (external styling hook)
+   ============================================================ */
+
+describe('nldd-icon-button – part="button"', () => {
+	let el: NLDDIconButton;
+
+	afterEach(() => {
+		if (el) cleanup(el);
+	});
+
+	it('exposes part="button" on the inner <button>', async () => {
+		el = await fixture<NLDDIconButton>('<nldd-icon-button icon="dismiss" text="Sluiten" tooltip-timing="never"></nldd-icon-button>');
+		await waitForUpdate(el);
+		const btn = el.shadowRoot!.querySelector('button')!;
+		expect(btn.getAttribute('part')).toBe('button');
+	});
+
+	it('exposes part="button" on the inner <a> when href is set', async () => {
+		el = await fixture<NLDDIconButton>('<nldd-icon-button href="/overzicht" icon="arrow-left" text="Terug" tooltip-timing="never"></nldd-icon-button>');
+		await waitForUpdate(el);
+		const a = el.shadowRoot!.querySelector('a')!;
+		expect(a.getAttribute('part')).toBe('button');
+	});
+});
+
 describe('nldd-icon-button – aria-expanded / aria-haspopup', () => {
 	let el: NLDDIconButton;
 

@@ -46,6 +46,7 @@ export function template(this: NLDDButton, helpers: TemplateHelpers) {
 		const resolvedRel = this._resolvedRel();
 		return html`
 			<a class="button"
+				part="button"
 				href=${this.href}
 				target=${this.target || nothing}
 				rel=${resolvedRel || nothing}
@@ -67,6 +68,7 @@ export function template(this: NLDDButton, helpers: TemplateHelpers) {
 	// drives is non-functional regardless. No per-binding capability check.
 	return html`
 		<button class="button"
+			part="button"
 			type=${this.type}
 			?disabled=${this.disabled}
 			aria-disabled=${this.disabled ? 'true' : nothing}

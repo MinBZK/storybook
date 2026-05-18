@@ -43,6 +43,7 @@ export function template(this: NLDDIconButton) {
 			const resolvedRel = this._resolvedRel();
 			return html`
 				<a class="icon-button"
+					part="button"
 					href=${this.href}
 					target=${this.target || nothing}
 					rel=${resolvedRel || nothing}
@@ -64,6 +65,7 @@ export function template(this: NLDDIconButton) {
 		// this button drives is non-functional regardless. No capability check.
 		return html`
 			<button class="icon-button"
+				part="button"
 				type=${this.type}
 				?disabled=${this.disabled}
 				aria-disabled=${this.disabled ? 'true' : nothing}

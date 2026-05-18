@@ -29,6 +29,11 @@
  *
  * @slot icon - Slot for a custom icon (e.g. custom SVG). Only used when icon attribute is not set.
  *
+ * @csspart button - The inner interactive element: the `<button>`, or the `<a>`
+ *                    when `href` is set. Use `nldd-icon-button::part(button)` to
+ *                    apply consumer-specific styling (e.g. padding, custom hover)
+ *                    across the shadow boundary without recreating the component.
+ *
  * @example
  * ```html
  * <nldd-icon-button text="Download" icon="download"></nldd-icon-button>
