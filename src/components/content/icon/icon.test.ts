@@ -1,5 +1,7 @@
 import { describe, it, expect, afterEach } from 'vitest';
 import { fixture, cleanup, waitForUpdate } from '../../../test-utils.js';
+import { aliases } from './icon-aliases.js';
+import { iconRegistry } from './icon-registry.js';
 import './icon.js';
 import type { NLDDIcon } from './icon.js';
 
@@ -54,5 +56,19 @@ describe('nldd-icon', () => {
 		expect(painted).not.toBeNull();
 		expect(getComputedStyle(painted as Element).fill).toBe('rgb(255, 0, 0)');
 		cleanup(wrapper);
+	});
+});
+
+describe('icon aliases – messaging/composer', () => {
+	// Each alias must resolve (aliases[name] -> target) to an icon that
+	// actually exists in the registry, mirroring icon.ts#_loadIcon.
+	it.each([
+		['emoji', 'face-smiling'],
+		['smile-plus', 'face-smiling-badge-plus'],
+		['send-horizontal', 'paper-plane'],
+		['paper-airplane', 'paper-plane'],
+	])('alias "%s" resolves to existing icon "%s"', (alias, target) => {
+		expect(aliases[alias]).toBe(target);
+		expect(iconRegistry.has(target)).toBe(true);
 	});
 });

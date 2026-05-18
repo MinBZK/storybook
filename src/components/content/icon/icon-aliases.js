@@ -135,9 +135,11 @@ export const aliases = {
 	// face-smiling
 	'happy': 'face-smiling',
 	'smiling': 'face-smiling',
+	'emoji': 'face-smiling',
 
 	// face-smiling-badge-plus
 	'add-emoji': 'face-smiling-badge-plus',
+	'smile-plus': 'face-smiling-badge-plus',
 
 	// file-text
 	'document': 'file-text',
@@ -220,6 +222,8 @@ export const aliases = {
 
 	// paper-plane
 	'send': 'paper-plane',
+	'send-horizontal': 'paper-plane',
+	'paper-airplane': 'paper-plane',
 
 	// paperclip
 	'attachment': 'paperclip',
