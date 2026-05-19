@@ -27,21 +27,21 @@ export const descriptionCellStyles = css`
 
 	/* # Width */
 
-	:host([width='full']),
+	:host([width="full"]),
 	:host(:not([width])),
-	:host([width='']) {
+	:host([width=""]) {
 		flex-grow: 1;
 		flex-shrink: 1;
 	}
 
-	:host([width='fit-content']) {
+	:host([width="fit-content"]) {
 		width: fit-content;
 		flex-grow: 0;
 		flex-shrink: 0;
 		flex-basis: auto;
 	}
 
-	:host([width]:not([width='full']):not([width='fit-content']):not([width=''])) {
+	:host([width]:not([width="full"]):not([width="fit-content"]):not([width=""])) {
 		flex-shrink: 0;
 	}
 
@@ -50,55 +50,51 @@ export const descriptionCellStyles = css`
 	}
 
 
-	/* # Vertical alignment
-	 *
-	 * 'center' (default): the cell stretches to fill the full row height, then
-	 * centers its content within that space. When min-height is set, the cell is
-	 * at least that tall and the content sits centered inside it. For strict top
-	 * alignment without a minimum height, use vertical-alignment="top".
-	 */
+	/* # Vertical alignment */
 
-	:host([vertical-alignment='center']),
+	/* "center" (default) stretches to the full row height then centers content;
+	   use vertical-alignment="top" for strict top without a minimum height */
+
+	:host([vertical-alignment="center"]),
 	:host(:not([vertical-alignment])) {
 		align-self: stretch;
 	}
 
-	:host([vertical-alignment='top']) {
+	:host([vertical-alignment="top"]) {
 		align-self: flex-start;
 	}
 
-	:host([vertical-alignment='bottom']) {
+	:host([vertical-alignment="bottom"]) {
 		align-self: flex-end;
 	}
 
 
-	/* # Title */
+	/* # Elements */
 
-	::slotted([slot='title']) {
+	::slotted([slot="title"]) {
 		margin: 0;
 		min-width: 0;
 		align-self: stretch;
-		font: var(--primitives-font-body-sm-regular-flat);
 		color: var(--context-cell-content-color, var(--semantics-content-secondary-color));
+		font: var(--primitives-font-body-sm-regular-flat);
 	}
-
-
-	/* # Description */
-
-	::slotted([slot='description']) {
-		margin: 0;
-		min-width: 0;
-		align-self: stretch;
-		font: var(--primitives-font-body-md-regular-tight);
-		color: var(--context-cell-content-color, var(--semantics-content-color));
-	}
-
-
-	/* # Forced colors */
 
 	@media (forced-colors: active) {
-		::slotted([slot='title']),
-		::slotted([slot='description']) {
+		::slotted([slot="title"]) {
+			forced-color-adjust: none;
+		}
+	}
+
+	::slotted([slot="description"]) {
+		margin: 0;
+		min-width: 0;
+		align-self: stretch;
+		color: var(--context-cell-content-color, var(--semantics-content-color));
+		font: var(--primitives-font-body-md-regular-tight);
+	}
+
+	@media (forced-colors: active) {
+		::slotted([slot="description"]) {
 			forced-color-adjust: none;
 		}
 	}

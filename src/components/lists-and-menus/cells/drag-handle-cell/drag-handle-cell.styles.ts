@@ -6,6 +6,10 @@ export const dragHandleCellStyles = css`
 	/* # Host */
 
 	:host {
+		--_corner-radius: var(--semantics-controls-md-corner-radius);
+		--_width: var(--semantics-controls-sm-min-size);
+		--_height: var(--semantics-controls-md-min-size);
+
 		display: inline-flex;
 		cursor: grab;
 		width: fit-content;
@@ -21,15 +25,24 @@ export const dragHandleCellStyles = css`
 		cursor: grabbing;
 	}
 
+	:host([size="sm"]) {
+		--_corner-radius: var(--semantics-controls-sm-corner-radius);
+		--_width: var(--semantics-controls-xs-min-size);
+		--_height: var(--semantics-controls-sm-min-size);
+	}
 
-	/* # Control */
+
+	/* # Block */
 
 	.drag-handle-cell__control {
 		display: flex;
 		margin: 0;
 		border: none;
+		border-radius: var(--_corner-radius);
 		background-color: var(--semantics-grab-handles-background-color);
 		cursor: inherit;
+		width: var(--_width);
+		height: var(--_height);
 		padding: 0;
 		align-items: center;
 		justify-content: center;
@@ -44,26 +57,7 @@ export const dragHandleCellStyles = css`
 	}
 
 
-	/* ## Size: MD (default) */
-
-	:host([size="md"]) .drag-handle-cell__control,
-	:host(:not([size])) .drag-handle-cell__control {
-		border-radius: var(--semantics-controls-md-corner-radius);
-		width: var(--semantics-controls-sm-min-size);
-		height: var(--semantics-controls-md-min-size);
-	}
-
-
-	/* ## Size: SM */
-
-	:host([size="sm"]) .drag-handle-cell__control {
-		border-radius: var(--semantics-controls-sm-corner-radius);
-		width: var(--semantics-controls-xs-min-size);
-		height: var(--semantics-controls-sm-min-size);
-	}
-
-
-	/* # Grip */
+	/* # Elements */
 
 	.drag-handle-cell__control-grip {
 		display: block;
