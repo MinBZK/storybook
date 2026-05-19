@@ -9,11 +9,11 @@ const lgMin = unsafeCSS(breakpoints.lgMin);
 export const oneHalfOneHalfSectionStyles = css`
 
 
-	/* # Host
-	   Geen eigen container-type: page-sections luisteren naar de outer
-	   layout-container (gezet door nldd-page / nldd-card). Voor contexten
-	   zonder layout-container dient @media als fallback. */
+	/* # Host */
 
+	/* No own container-type: page-sections read the outer layout-container
+	   (set by nldd-page / nldd-card). @media is the fallback for contexts
+	   without a layout-container. */
 	:host {
 		--_max-width: var(--semantics-page-sections-body-max-width);
 
@@ -35,8 +35,8 @@ export const oneHalfOneHalfSectionStyles = css`
 	/* # Block */
 
 	.one-half-one-half-section {
-		display: flex;
 		box-sizing: border-box;
+		display: flex;
 		width: 100%;
 		flex-direction: column;
 		align-items: center;
@@ -73,7 +73,7 @@ export const oneHalfOneHalfSectionStyles = css`
 	}
 
 
-	/* # Body */
+	/* # Elements */
 
 	.one-half-one-half-section__body {
 		display: flex;
@@ -105,9 +105,6 @@ export const oneHalfOneHalfSectionStyles = css`
 			gap: var(--semantics-page-sections-lg-gap);
 		}
 	}
-
-
-	/* # Columns */
 
 	.one-half-one-half-section__columns {
 		display: flex;
