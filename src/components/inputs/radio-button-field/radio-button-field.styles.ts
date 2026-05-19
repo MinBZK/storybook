@@ -20,12 +20,12 @@ export const radioButtonFieldStyles = css`
 		display: flex;
 		min-height: var(--semantics-controls-md-min-size);
 		flex-direction: row;
-		align-items: flex-start;
 		gap: var(--primitives-space-8);
+		align-items: flex-start;
 	}
 
 
-	/* # Control */
+	/* # Elements */
 
 	.radio-button-field__control {
 		display: flex;
@@ -34,16 +34,13 @@ export const radioButtonFieldStyles = css`
 		align-items: center;
 	}
 
-
-	/* # Label */
-
 	.radio-button-field__label {
 		display: flex;
 		cursor: default;
 		padding-top: calc((var(--semantics-controls-md-min-size) - 1em * var(--primitives-line-height-snug)) / 2);
 		flex-grow: 1;
-		font: var(--primitives-font-body-md-regular-snug);
 		color: var(--semantics-content-color);
+		font: var(--primitives-font-body-md-regular-snug);
 	}
 
 	:host([disabled]) .radio-button-field__label {

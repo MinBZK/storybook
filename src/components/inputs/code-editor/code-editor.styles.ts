@@ -6,18 +6,16 @@ export const codeEditorStyles = css`
 	/* # Host */
 
 	:host {
-		--_background-color: var(--semantics-surfaces-tinted-background-color);
-		--_content-color: var(--semantics-content-color);
-		--_inline-padding: var(--primitives-space-16);
-		--_block-padding: var(--primitives-space-16);
 		--_corner-radius: var(--primitives-corner-radius-lg);
+		--_background-color: var(--semantics-surfaces-tinted-background-color);
+		--_block-padding: var(--primitives-space-16);
+		--_inline-padding: var(--primitives-space-16);
+		--_content-color: var(--semantics-content-color);
 		--_font: var(--primitives-font-monospace-sm-regular-snug);
 
-		/* flex column lets the textarea grow when the host has a fixed
-		   height (e.g. as a flex item in a tall pane). With no set height,
-		   the textarea falls back to its rows attribute.
-		   flex: 1 + min-height: 0 make the host a good flex citizen so
-		   consumers in flex parents don't have to set them on every use. */
+		/* flex column + min-height:0 + flex:1 makes the host a good flex
+		   citizen so a fixed-height parent grows the textarea; with no set
+		   height it falls back to the rows attribute. */
 		display: flex;
 		min-height: 0;
 		flex-direction: column;
@@ -35,9 +33,9 @@ export const codeEditorStyles = css`
 	/* # Block */
 
 	.code-editor {
-		position: relative;
-		display: flex;
 		box-sizing: border-box;
+		display: flex;
+		position: relative;
 		border-radius: var(--_corner-radius);
 		background-color: var(--_background-color);
 		min-height: 0;
@@ -59,17 +57,17 @@ export const codeEditorStyles = css`
 	}
 
 
-	/* # Input */
+	/* # Elements */
 
 	.code-editor__input {
-		display: block;
 		box-sizing: border-box;
+		display: block;
 		margin: 0;
-		border: none;
 		outline: none;
+		border: none;
 		background: transparent;
-		min-height: 0;
 		width: 100%;
+		min-height: 0;
 		padding: var(--_block-padding) var(--_inline-padding);
 		flex-grow: 1;
 		flex-shrink: 1;
@@ -87,15 +85,15 @@ export const codeEditorStyles = css`
 		overflow-wrap: break-word;
 	}
 
-	:host([resize='vertical']) .code-editor__input {
+	:host([resize="vertical"]) .code-editor__input {
 		resize: vertical;
 	}
 
-	:host([resize='none']) .code-editor__input {
+	:host([resize="none"]) .code-editor__input {
 		resize: none;
 	}
 
-	:host([resize='auto']) .code-editor__input {
+	:host([resize="auto"]) .code-editor__input {
 		resize: none;
 		field-sizing: content;
 	}
