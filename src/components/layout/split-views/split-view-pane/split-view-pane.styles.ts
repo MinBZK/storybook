@@ -20,6 +20,10 @@ export const splitViewPaneStyles = css`
 		}
 	}
 
+	:host([hidden]) {
+		display: none;
+	}
+
 	:host([background="default"]) {
 		--context-parent-background-color: var(--semantics-surfaces-background-color);
 		--_background-color: var(--context-parent-background-color);
@@ -28,10 +32,6 @@ export const splitViewPaneStyles = css`
 	:host([background="tinted"]) {
 		--context-parent-background-color: var(--semantics-surfaces-tinted-background-color);
 		--_background-color: var(--context-parent-background-color);
-	}
-
-	:host([hidden]) {
-		display: none;
 	}
 
 	:host([hide-back]) {
@@ -43,12 +43,15 @@ export const splitViewPaneStyles = css`
 
 	.split-view-pane {
 		display: flex;
-		min-height: 0;
 		min-width: 0;
+		min-height: 0;
 		overflow: hidden;
 		flex-direction: column;
 		flex: 1;
 	}
+
+
+	/* # Elements */
 
 	::slotted(*) {
 		min-height: 0;
