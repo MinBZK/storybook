@@ -7,6 +7,11 @@ export const numberFieldStyles = css`
 
 	:host {
 		--_width: auto;
+		--_corner-radius: var(--semantics-controls-md-corner-radius);
+		--_min-size: var(--semantics-controls-md-min-size);
+		--_spin-button-padding: calc((var(--_min-size) - var(--semantics-controls-sm-min-size)) / 2 - var(--semantics-input-fields-border-thickness));
+		--_text-font: var(--semantics-input-fields-md-text-font);
+		--_inline-padding: calc(var(--semantics-controls-md-inline-padding) - var(--semantics-input-fields-border-thickness));
 
 		display: inline-block;
 		-webkit-tap-highlight-color: transparent;
@@ -14,6 +19,14 @@ export const numberFieldStyles = css`
 
 	:host([hidden]) {
 		display: none;
+	}
+
+	:host([size="sm"]) {
+		--_corner-radius: var(--semantics-controls-sm-corner-radius);
+		--_min-size: var(--semantics-controls-sm-min-size);
+		--_spin-button-padding: calc((var(--_min-size) - var(--semantics-controls-xs-min-size)) / 2 - var(--semantics-input-fields-border-thickness));
+		--_text-font: var(--semantics-input-fields-sm-text-font);
+		--_inline-padding: calc(var(--semantics-controls-sm-inline-padding) - var(--semantics-input-fields-border-thickness));
 	}
 
 	:host([disabled]) {
@@ -39,23 +52,14 @@ export const numberFieldStyles = css`
 	/* # Block */
 
 	.number-field {
-		display: inline-flex;
 		box-sizing: border-box;
+		display: inline-flex;
 		border: var(--semantics-input-fields-border);
+		border-radius: var(--_corner-radius);
 		background-color: var(--semantics-input-fields-background-color);
+		height: var(--_min-size);
 		flex-direction: row;
 		align-items: center;
-	}
-
-	:host([size='sm']) .number-field {
-		border-radius: var(--semantics-controls-sm-corner-radius);
-		height: var(--semantics-controls-sm-min-size);
-	}
-
-	:host([size='md']) .number-field,
-	:host(:not([size])) .number-field {
-		border-radius: var(--semantics-controls-md-corner-radius);
-		height: var(--semantics-controls-md-min-size);
 	}
 
 	:host([width="full"]) .number-field,
@@ -70,7 +74,7 @@ export const numberFieldStyles = css`
 	}
 
 
-	/* # Controls */
+	/* # Elements */
 
 	.number-field__decrement-button,
 	.number-field__increment-button {
@@ -79,51 +83,29 @@ export const numberFieldStyles = css`
 		align-items: center;
 	}
 
-	:host([size='sm']) .number-field__decrement-button {
-		padding-left: calc((var(--semantics-controls-sm-min-size) - var(--semantics-controls-xs-min-size)) / 2 - var(--semantics-input-fields-border-thickness));
+	.number-field__decrement-button {
+		padding-left: var(--_spin-button-padding);
 	}
 
-	:host([size='sm']) .number-field__increment-button {
-		padding-right: calc((var(--semantics-controls-sm-min-size) - var(--semantics-controls-xs-min-size)) / 2 - var(--semantics-input-fields-border-thickness));
+	.number-field__increment-button {
+		padding-right: var(--_spin-button-padding);
 	}
-
-	:host([size='md']) .number-field__decrement-button,
-	:host(:not([size])) .number-field__decrement-button {
-		padding-left: calc((var(--semantics-controls-md-min-size) - var(--semantics-controls-sm-min-size)) / 2 - var(--semantics-input-fields-border-thickness));
-	}
-
-	:host([size='md']) .number-field__increment-button,
-	:host(:not([size])) .number-field__increment-button {
-		padding-right: calc((var(--semantics-controls-md-min-size) - var(--semantics-controls-sm-min-size)) / 2 - var(--semantics-input-fields-border-thickness));
-	}
-
-
-	/* # Input */
 
 	.number-field__input {
 		box-sizing: border-box;
 		margin: 0;
-		border: none;
 		outline: none;
+		border: none;
 		background: transparent;
+		min-width: var(--_min-size);
 		padding: 0 var(--primitives-space-6);
 		text-align: center;
 		color: var(--semantics-content-color);
+		font: var(--_text-font);
 		appearance: none;
 	}
 
-	:host([size='sm']) .number-field__input {
-		min-width: var(--semantics-controls-sm-min-size);
-		font: var(--semantics-input-fields-sm-text-font);
-	}
-
-	:host([size='md']) .number-field__input,
-	:host(:not([size])) .number-field__input {
-		min-width: var(--semantics-controls-md-min-size);
-		font: var(--semantics-input-fields-md-text-font);
-	}
-
-	.number-field__input[type='number'] {
+	.number-field__input[type="number"] {
 		-moz-appearance: textfield;
 	}
 
@@ -135,16 +117,8 @@ export const numberFieldStyles = css`
 
 	:host([hide-spin-buttons]) .number-field__input {
 		min-width: var(--primitives-space-80);
+		padding-inline: var(--_inline-padding);
 		text-align: left;
-	}
-
-	:host([hide-spin-buttons][size='sm']) .number-field__input {
-		padding-inline: calc(var(--semantics-controls-sm-inline-padding) - var(--semantics-input-fields-border-thickness));
-	}
-
-	:host([hide-spin-buttons][size='md']) .number-field__input,
-	:host([hide-spin-buttons]:not([size])) .number-field__input {
-		padding-inline: calc(var(--semantics-controls-md-inline-padding) - var(--semantics-input-fields-border-thickness));
 	}
 
 	:host([width="full"]) .number-field__input,
