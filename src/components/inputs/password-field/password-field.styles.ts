@@ -104,16 +104,17 @@ export const passwordFieldStyles = css`
 		appearance: none;
 	}
 
+	.password-field__input::placeholder {
+		color: var(--semantics-input-fields-placeholder-color);
+		font: var(--_text-font);
+	}
+
 	.password-field__input.is-masked {
 		font: var(--_mask-font);
 	}
 
 	:host([disabled]) .password-field__input {
 		pointer-events: none;
-	}
-
-	.password-field__input::placeholder {
-		color: var(--semantics-input-fields-placeholder-color);
 	}
 
 	.password-field__input:-webkit-autofill,
