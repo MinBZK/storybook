@@ -6,8 +6,34 @@ export const buttonBarStyles = css`
 	/* # Host */
 
 	:host {
+		--_corner-radius: var(--semantics-controls-md-corner-radius);
+		--_background-color: var(--semantics-buttons-neutral-tinted-background-color);
+		--_size: var(--semantics-controls-md-min-size);
+		--_divider-color: var(--semantics-buttons-neutral-tinted-divider-color);
+		--_divider-length: var(--semantics-buttons-md-divider-length);
+
 		display: inline-flex;
 		isolation: isolate;
+	}
+
+	:host([size="sm"]) {
+		--_corner-radius: var(--semantics-controls-sm-corner-radius);
+		--_size: var(--semantics-controls-sm-min-size);
+		--_divider-length: var(--semantics-buttons-sm-divider-length);
+	}
+
+	:host([size="xs"]) {
+		--_corner-radius: var(--semantics-controls-xs-corner-radius);
+		--_size: var(--semantics-controls-xs-min-size);
+		--_divider-length: var(--semantics-buttons-xs-divider-length);
+	}
+
+	/* ## Accent Filled (Primary) */
+
+	:host([variant="accent-filled"]),
+	:host([variant="primary"]) {
+		--_background-color: var(--semantics-buttons-accent-filled-background-color);
+		--_divider-color: var(--semantics-buttons-accent-filled-divider-color);
 	}
 
 	:host([hidden]) {
@@ -25,106 +51,34 @@ export const buttonBarStyles = css`
 	}
 
 
-	/* # Block */
+	/* # Button bar */
 
 	.button-bar {
 		display: flex;
+		border-radius: var(--_corner-radius);
+		background-color: var(--_background-color);
+		height: var(--_size);
 		flex-direction: row;
 		justify-content: center;
 		align-items: center;
 	}
 
 
-	/* # Variants */
-
-	/* ## Variant: Neutral Tinted (Default) / Secondary */
-
-	:host([variant="neutral-tinted"]) .button-bar,
-	:host([variant="secondary"]) .button-bar,
-	:host(:not([variant])) .button-bar {
-		background-color: var(--semantics-buttons-neutral-tinted-background-color);
-	}
-
-	/* ## Variant: Accent Filled / Primary */
-
-	:host([variant="accent-filled"]) .button-bar,
-	:host([variant="primary"]) .button-bar {
-		background-color: var(--semantics-buttons-accent-filled-background-color);
-	}
-
-
-	/* # Size: XS */
-
-	:host([size="xs"]) .button-bar {
-		border-radius: var(--semantics-controls-xs-corner-radius);
-		height: var(--semantics-controls-xs-min-size);
-	}
-
-
-	/* # Size: SM */
-
-	:host([size="sm"]) .button-bar {
-		border-radius: var(--semantics-controls-sm-corner-radius);
-		height: var(--semantics-controls-sm-min-size);
-	}
-
-
-	/* # Size: MD */
-
-	:host([size="md"]) .button-bar,
-	:host(:not([size])) .button-bar {
-		border-radius: var(--semantics-controls-md-corner-radius);
-		height: var(--semantics-controls-md-min-size);
-	}
-
-
-	/* # Divider */
+	/* # Elements */
 
 	.button-bar__divider {
 		display: flex;
+		height: var(--_size);
 		align-items: center;
 		justify-content: center;
 		flex-shrink: 0;
 	}
 
-	:host([size="xs"]) .button-bar__divider {
-		height: var(--semantics-controls-xs-min-size);
-	}
-
-	:host([size="sm"]) .button-bar__divider {
-		height: var(--semantics-controls-sm-min-size);
-	}
-
-	:host([size="md"]) .button-bar__divider,
-	:host(:not([size])) .button-bar__divider {
-		height: var(--semantics-controls-md-min-size);
-	}
-
 	.button-bar__divider-line {
-		background-color: var(--semantics-buttons-neutral-tinted-divider-color);
+		background-color: var(--_divider-color);
 		width: var(--semantics-dividers-thickness);
+		height: var(--_divider-length);
 	}
-
-	:host([variant="accent-filled"]) .button-bar__divider-line,
-	:host([variant="primary"]) .button-bar__divider-line {
-		background-color: var(--semantics-buttons-accent-filled-divider-color);
-	}
-
-	:host([size="xs"]) .button-bar__divider-line {
-		height: var(--semantics-buttons-xs-divider-length);
-	}
-
-	:host([size="sm"]) .button-bar__divider-line {
-		height: var(--semantics-buttons-sm-divider-length);
-	}
-
-	:host([size="md"]) .button-bar__divider-line,
-	:host(:not([size])) .button-bar__divider-line {
-		height: var(--semantics-buttons-md-divider-length);
-	}
-
-
-	/* # Focus */
 
 	::slotted([data-focused]) {
 		position: relative;

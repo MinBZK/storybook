@@ -6,7 +6,26 @@ export const buttonGroupStyles = css`
 	/* # Host */
 
 	:host {
-		display: inline-flex;
+		--_width: 100%;
+		--_flex-direction: column;
+		--_flex-wrap: nowrap;
+		--_gap: var(--components-button-group-md-gap);
+
+		display: flex;
+		width: 100%;
+		justify-content: flex-start;
+	}
+
+	:host([size="sm"]) {
+		--_gap: var(--components-button-group-sm-gap);
+	}
+
+	/* ## Horizontal */
+
+	:host([orientation="horizontal"]) {
+		--_width: auto;
+		--_flex-direction: row;
+		--_flex-wrap: wrap;
 	}
 
 	:host([hidden]) {
@@ -18,45 +37,13 @@ export const buttonGroupStyles = css`
 	}
 
 
-	/* # Block */
+	/* # Button group */
 
 	.button-group {
 		display: flex;
-	}
-
-
-	/* # Orientation: Horizontal */
-
-	:host([orientation="horizontal"]) .button-group {
-		flex-direction: row;
-		flex-wrap: wrap;
-	}
-
-
-	/* # Orientation: Vertical */
-
-	:host([orientation="vertical"]) {
-		display: flex;
-		width: 100%;
-	}
-
-	:host([orientation="vertical"]) .button-group {
-		width: 100%;
-		flex-direction: column;
-	}
-
-
-	/* # Size: S */
-
-	:host([size="sm"]) .button-group {
-		gap: var(--components-button-group-sm-gap);
-	}
-
-
-	/* # Size: M (default) */
-
-	:host([size="md"]) .button-group,
-	:host(:not([size])) .button-group {
-		gap: var(--components-button-group-md-gap);
+		width: var(--_width);
+		flex-direction: var(--_flex-direction);
+		flex-wrap: var(--_flex-wrap);
+		gap: var(--_gap);
 	}
 `;
