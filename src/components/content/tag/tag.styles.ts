@@ -6,41 +6,30 @@ export const tagStyles = css`
 	/* # Host */
 
 	:host {
+		--_corner-radius: var(--components-tag-md-corner-radius);
 		--_background-color: var(--components-tag-neutral-background-color);
-		--_content-color: var(--components-tag-neutral-content-color);
 		--_min-height: var(--primitives-space-24);
 		--_inline-padding: var(--primitives-space-6);
 		--_gap: var(--primitives-space-3);
+		--_content-color: var(--components-tag-neutral-content-color);
 		--_font: var(--primitives-font-body-sm-bold-flat);
 		--_icon-size: var(--primitives-space-16);
 		--_icon-offset-correction: var(--primitives-space-1);
-		--_corner-radius: var(--components-tag-md-corner-radius);
 
 		display: inline-flex;
 		vertical-align: middle;
 	}
 
 	:host([size="sm"]) {
+		--_corner-radius: var(--components-tag-sm-corner-radius);
 		--_min-height: var(--primitives-space-20);
 		--_inline-padding: var(--primitives-space-4);
 		--_gap: var(--primitives-space-2);
 		--_font: var(--primitives-font-body-xs-bold-flat);
 		--_icon-size: var(--primitives-space-14);
-		--_corner-radius: var(--components-tag-sm-corner-radius);
 	}
-
-	:host([hidden]) {
-		display: none;
-	}
-
 
 	/* ## Color */
-
-	:host([color="neutral"]),
-	:host(:not([color])) {
-		--_background-color: var(--components-tag-neutral-background-color);
-		--_content-color: var(--components-tag-neutral-content-color);
-	}
 
 	:host([color="accent"]) {
 		--_background-color: var(--components-tag-accent-background-color);
@@ -61,7 +50,6 @@ export const tagStyles = css`
 		--_background-color: var(--components-tag-critical-background-color);
 		--_content-color: var(--components-tag-critical-content-color);
 	}
-
 
 	/* ### Rijkskleuren */
 
@@ -160,42 +148,43 @@ export const tagStyles = css`
 		--_content-color: var(--components-tag-mintgroen-content-color);
 	}
 
+	:host([hidden]) {
+		display: none;
+	}
+
 
 	/* # Block */
 
 	.tag {
-		display: inline-flex;
 		box-sizing: border-box;
+		display: inline-flex;
 		border-radius: var(--_corner-radius);
 		background-color: var(--_background-color);
 		min-height: var(--_min-height);
 		padding: 0 var(--_inline-padding);
-		align-items: center;
 		gap: var(--_gap);
+		align-items: center;
 		color: var(--_content-color);
-		white-space: nowrap;
 		font: var(--_font);
+		white-space: nowrap;
 	}
 
 
-	/* # Icon */
+	/* # Elements */
 
 	.tag__icon {
 		display: inline-flex;
 		margin-inline: calc((var(--_min-height) - var(--_icon-size)) / 2 - var(--_inline-padding));
 		width: var(--_icon-size);
 		height: var(--_icon-size);
-		align-items: center;
 		flex-shrink: 0;
+		align-items: center;
 	}
 
 	.tag__icon:has(+ .tag__text) {
 		margin-left: calc((var(--_min-height) - var(--_icon-size)) / 2 - var(--_inline-padding) + var(--_icon-offset-correction));
 		margin-right: 0;
 	}
-
-
-	/* # Text */
 
 	.tag__text {
 		display: inline-block;

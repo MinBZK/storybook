@@ -13,6 +13,9 @@ export const iconStyles = css`
 		color: inherit;
 	}
 
+
+	/* # Block */
+
 	.icon__container {
 		display: flex;
 		width: 100%;
@@ -20,6 +23,9 @@ export const iconStyles = css`
 		align-items: center;
 		justify-content: center;
 	}
+
+
+	/* # Elements */
 
 	svg {
 		display: block;

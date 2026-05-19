@@ -6,11 +6,11 @@ export const codeStyles = css`
 	/* # Host */
 
 	:host {
-		--_background-color: var(--semantics-surfaces-tinted-background-color);
-		--_content-color: var(--semantics-content-color);
-		--_inline-padding: var(--primitives-space-16);
-		--_block-padding: var(--primitives-space-16);
 		--_corner-radius: var(--primitives-corner-radius-lg);
+		--_background-color: var(--semantics-surfaces-tinted-background-color);
+		--_block-padding: var(--primitives-space-16);
+		--_inline-padding: var(--primitives-space-16);
+		--_content-color: var(--semantics-content-color);
 		--_font: var(--primitives-font-monospace-sm-regular-snug);
 
 		display: block;
@@ -40,27 +40,18 @@ export const codeStyles = css`
 		word-break: break-word;
 	}
 
-	/* When highlighting is active, hide the raw slot output and show the
-	   tokenised <code> instead. The slot stays in the tree as the source
-	   of truth — slotchange listens there and feeds the highlighter.
-	   Lit reflects empty-string properties as language="" attributes,
-	   so we explicitly exclude that case. */
+	/* Lit reflects empty-string props as language=""; exclude that case */
 	:host([language]:not([language=""])) slot {
 		display: none;
 	}
 
 	.code__highlighted {
-		font: inherit;
 		color: inherit;
+		font: inherit;
 	}
 
 
-	/* # Tokens (Prism)
-	 *
-	 * Token theme — Solarized-inspired, mapped to descriptive DS palettes.
-	 * Defaults defined in settings.css under --components-code-token-*;
-	 * consumers can override per-instance to swap colors. Documented in
-	 * the JSDoc of nldd-code (see code.ts). */
+	/* # Tokens */
 
 	.token.comment,
 	.token.prolog,
@@ -96,8 +87,6 @@ export const codeStyles = css`
 	.token.symbol { color: var(--components-code-token-symbol-color); }
 	.token.entity { color: var(--components-code-token-entity-color); }
 	.token.variable { color: var(--components-code-token-variable-color); }
-
-	/* YAML key uses the property/keyword slot so YAML reads naturally */
 	.token.key { color: var(--components-code-token-property-color); }
 
 	.token.bold { font-weight: bold; }
