@@ -36,6 +36,12 @@ export const paginationStyles = css`
 		align-items: center;
 	}
 
+	@media (forced-colors: active) {
+		.pagination {
+			border: 1px solid CanvasText;
+		}
+	}
+
 	.pagination__previous-button:focus-within,
 	.pagination__next-button:focus-within {
 		position: relative;
@@ -79,11 +85,24 @@ export const paginationStyles = css`
 		color: var(--semantics-buttons-neutral-tinted-is-selected-content-color);
 	}
 
+	@media (forced-colors: active) {
+		.pagination__page-button.is-current {
+			background-color: Highlight;
+			color: HighlightText;
+		}
+	}
+
 	.pagination__page-button:focus-visible {
 		z-index: 1;
 		outline: var(--semantics-focus-ring-outline);
 		outline-offset: var(--semantics-focus-ring-outline-offset);
 		box-shadow: var(--semantics-focus-ring-box-shadow);
+	}
+
+	@media (forced-colors: active) {
+		.pagination__page-button:focus-visible {
+			outline: 2px solid CanvasText;
+		}
 	}
 
 
@@ -109,9 +128,9 @@ export const paginationStyles = css`
 	.pagination__divider {
 		display: flex;
 		height: var(--semantics-controls-md-min-size);
+		flex-shrink: 0;
 		align-items: center;
 		justify-content: center;
-		flex-shrink: 0;
 	}
 
 	.pagination__divider-line {
@@ -170,37 +189,17 @@ export const paginationStyles = css`
 
 	.pagination__page-buttons {
 		display: contents;
+
+		@container (max-width: 400px) {
+			display: none;
+		}
 	}
 
 	.pagination__compact {
 		display: none;
-	}
 
-	@container (max-width: 400px) {
-		.pagination__page-buttons {
-			display: none;
-		}
-
-		.pagination__compact {
+		@container (max-width: 400px) {
 			display: contents;
-		}
-	}
-
-
-	/* # High contrast */
-
-	@media (forced-colors: active) {
-		.pagination {
-			border: 1px solid CanvasText;
-		}
-
-		.pagination__page-button.is-current {
-			background-color: Highlight;
-			color: HighlightText;
-		}
-
-		.pagination__page-button:focus-visible {
-			outline: 2px solid CanvasText;
 		}
 	}
 `;
