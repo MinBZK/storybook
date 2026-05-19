@@ -14,16 +14,12 @@ export const pageStyles = css`
 		height: 100%;
 		overflow-y: auto;
 		overflow-x: hidden;
-		flex-direction: column;
 		overscroll-behavior: contain;
+		flex-direction: column;
 	}
 
-	/* Overflow hidden prevents content from escaping the scroll wrapper.
-	   Overlays inside slotted content should use popover, dialog, or
-	   position: fixed to render in the top layer. */
-	:host([sticky-header]) {
-		position: relative;
-		overflow: hidden;
+	:host([hidden]) {
+		display: none;
 	}
 
 	:host([background="default"]) {
@@ -36,8 +32,12 @@ export const pageStyles = css`
 		--_background-color: var(--context-parent-background-color);
 	}
 
-	:host([hidden]) {
-		display: none;
+	/* Overflow hidden prevents content from escaping the scroll wrapper.
+	   Overlays inside slotted content should use popover, dialog, or
+	   position: fixed to render in the top layer. */
+	:host([sticky-header]) {
+		position: relative;
+		overflow: hidden;
 	}
 
 
@@ -51,7 +51,7 @@ export const pageStyles = css`
 	}
 
 
-	/* # Header */
+	/* # Elements */
 
 	.page__header {
 		position: relative;
@@ -84,9 +84,6 @@ export const pageStyles = css`
 		opacity: 1;
 	}
 
-
-	/* # Scroll */
-
 	.page__scroll {
 		display: flex;
 		min-height: 0;
@@ -100,17 +97,11 @@ export const pageStyles = css`
 		overscroll-behavior: contain;
 	}
 
-
-	/* # Main */
-
 	.page__main {
 		display: flex;
 		flex-direction: column;
 		flex-grow: 1;
 	}
-
-
-	/* # Footer */
 
 	.page__footer {
 		position: relative;

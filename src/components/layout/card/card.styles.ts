@@ -28,7 +28,7 @@ export const cardStyles = css`
 	}
 
 
-	/* # Header */
+	/* # Elements */
 
 	.card__header {
 		flex-shrink: 0;
@@ -38,18 +38,12 @@ export const cardStyles = css`
 		display: none;
 	}
 
-
-	/* # Main */
-
 	.card__main {
 		display: flex;
 		min-height: 0;
 		flex-direction: column;
 		flex-grow: 1;
 	}
-
-
-	/* # Footer */
 
 	.card__footer {
 		flex-shrink: 0;

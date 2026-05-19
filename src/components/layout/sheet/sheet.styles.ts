@@ -18,7 +18,7 @@ export const sheetStyles = css`
 	}
 
 
-	/* # Keyframes — right */
+	/* # Keyframes */
 
 	@keyframes sheet-slide-in-right {
 		from { transform: translateX(100%); }
@@ -30,9 +30,6 @@ export const sheetStyles = css`
 		to { transform: translateX(100%); }
 	}
 
-
-	/* # Keyframes — left */
-
 	@keyframes sheet-slide-in-left {
 		from { transform: translateX(-100%); }
 		to { transform: translateX(0); }
@@ -42,9 +39,6 @@ export const sheetStyles = css`
 		from { transform: translateX(0); }
 		to { transform: translateX(-100%); }
 	}
-
-
-	/* # Keyframes — bottom */
 
 	@keyframes sheet-slide-in-bottom {
 		from { transform: translateY(100%); }
@@ -63,9 +57,9 @@ export const sheetStyles = css`
 		display: flex;
 		position: fixed;
 		margin: 0;
+		outline: none;
 		border: none;
 		box-shadow: var(--semantics-overlays-box-shadow);
-		outline: none;
 		background: var(--semantics-surfaces-background-color);
 		overflow: hidden;
 		padding: 0;
@@ -73,9 +67,9 @@ export const sheetStyles = css`
 	}
 
 	.sheet:focus-visible:not(.is-pointer-focus) {
-		box-shadow: var(--semantics-focus-ring-box-shadow), var(--semantics-overlays-box-shadow);
 		outline: var(--semantics-focus-ring-outline);
 		outline-offset: var(--semantics-focus-ring-outline-offset);
+		box-shadow: var(--semantics-focus-ring-box-shadow), var(--semantics-overlays-box-shadow);
 	}
 
 	.sheet:not([open]) {
@@ -90,10 +84,9 @@ export const sheetStyles = css`
 		background: transparent;
 	}
 
+	/* ## Placement: right (default) */
 
-	/* # Placement: right (default) */
-
-	:host([placement='right']) .sheet,
+	:host([placement="right"]) .sheet,
 	:host(:not([placement])) .sheet {
 		inset: var(--semantics-overlays-inset) var(--semantics-overlays-inset) var(--semantics-overlays-inset) auto;
 		border-radius: var(--semantics-overlays-corner-radius);
@@ -113,10 +106,9 @@ export const sheetStyles = css`
 		}
 	}
 
+	/* ## Placement: left */
 
-	/* # Placement: left */
-
-	:host([placement='left']) .sheet {
+	:host([placement="left"]) .sheet {
 		inset: var(--semantics-overlays-inset) auto var(--semantics-overlays-inset) var(--semantics-overlays-inset);
 		border-radius: var(--semantics-overlays-corner-radius);
 		width: min(var(--_width, var(--semantics-sheets-side-md-width)), calc(100vw - var(--semantics-overlays-inset) * 2));
@@ -135,17 +127,16 @@ export const sheetStyles = css`
 		}
 	}
 
+	/* ## Placement: bottom
+	 *
+	 * Default height is full (viewport minus top-inset) so visualisation-
+	 * heavy bottom sheets fill the available area without the consumer
+	 * having to opt in. Consumers that want a content-sized sheet pass
+	 * height="fit-content" — max-height already keeps the sheet within
+	 * 100dvh - top-inset regardless of the chosen value, so the dismiss-
+	 * tap area at the top is preserved even for oversized custom heights. */
 
-	/* # Placement: bottom
-
-	   Default height is full (viewport minus top-inset) so visualisation-
-	   heavy bottom sheets fill the available area without the consumer
-	   having to opt in. Consumers that want a content-sized sheet pass
-	   height="fit-content" — max-height already keeps the sheet within
-	   100dvh - top-inset regardless of the chosen value, so the dismiss-
-	   tap area at the top is preserved even for oversized custom heights. */
-
-	:host([placement='bottom']) .sheet {
+	:host([placement="bottom"]) .sheet {
 		inset: auto 0 0 0;
 		margin-inline: auto;
 		border-radius: var(--semantics-overlays-corner-radius) var(--semantics-overlays-corner-radius) 0 0;
@@ -175,22 +166,21 @@ export const sheetStyles = css`
 		}
 	}
 
-
-	/* # Responsive: sm viewport — all placements become bottom sheet
-
-	   The same default-full + opt-out-via-height semantics apply when
-	   a side sheet collapses to a bottom sheet on sm. */
+	/* ## Responsive: sm viewport — all placements become bottom sheet
+	 *
+	 * The same default-full + opt-out-via-height semantics apply when
+	 * a side sheet collapses to a bottom sheet on sm. */
 
 	@media (max-width: ${smMax}) {
-		:host([placement='right']) .sheet,
+		:host([placement="right"]) .sheet,
 		:host(:not([placement])) .sheet,
-		:host([placement='left']) .sheet {
+		:host([placement="left"]) .sheet {
 			inset: auto 0 0 0;
 			border-radius: var(--semantics-overlays-corner-radius) var(--semantics-overlays-corner-radius) 0 0;
 			width: 100%;
 			max-width: 100%;
-			height: var(--_height, calc(100dvh - var(--semantics-sheets-bottom-top-inset)));
 			max-height: calc(100dvh - var(--semantics-sheets-bottom-top-inset));
+			height: var(--_height, calc(100dvh - var(--semantics-sheets-bottom-top-inset)));
 
 			&[open] {
 				animation: sheet-slide-in-bottom var(--semantics-sheets-bottom-animation-duration) var(--primitives-transition-easing-default) both;
@@ -202,9 +192,6 @@ export const sheetStyles = css`
 		}
 	}
 
-
-	/* # Reduced motion */
-
 	@media (prefers-reduced-motion: reduce) {
 		.sheet[open],
 		.sheet.is-closing {
@@ -213,7 +200,7 @@ export const sheetStyles = css`
 	}
 
 
-	/* # Sheet body */
+	/* # Elements */
 
 	.sheet__body {
 		display: flex;

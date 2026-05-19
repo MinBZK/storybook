@@ -23,15 +23,15 @@ export const windowStyles = css`
 		display: flex;
 		position: fixed;
 		margin: auto;
+		outline: none;
 		border: none;
 		border-radius: var(--semantics-overlays-corner-radius);
 		box-shadow: var(--semantics-overlays-box-shadow);
-		outline: none;
 		background-color: var(--semantics-surfaces-background-color);
-		overflow: hidden;
 		width: var(--components-window-default-width);
 		max-width: calc(100vw - var(--semantics-overlays-inset) * 2);
 		max-height: calc(100dvh - var(--semantics-overlays-inset) * 2);
+		overflow: hidden;
 		padding: 0;
 		flex-direction: column;
 	}
@@ -41,20 +41,25 @@ export const windowStyles = css`
 	}
 
 	.window:focus-visible:not(.is-pointer-focus) {
-		box-shadow: var(--semantics-focus-ring-box-shadow), var(--semantics-overlays-box-shadow);
 		outline: var(--semantics-focus-ring-outline);
 		outline-offset: var(--semantics-focus-ring-outline-offset);
+		box-shadow: var(--semantics-focus-ring-box-shadow), var(--semantics-overlays-box-shadow);
 	}
-
-
-	/* # Backdrop (modal only) */
 
 	.window::backdrop {
 		background-color: var(--semantics-overlays-backdrop-color);
 	}
 
 
-	/* # Draggable — whole window as drag target (no handle) */
+	/* # Elements */
+
+	.window__body {
+		display: flex;
+		min-height: 0;
+		width: 100%;
+		flex-direction: column;
+		flex-grow: 1;
+	}
 
 	:host([movable]:not([has-drag-handle])) .window__body {
 		cursor: grab;
@@ -64,11 +69,13 @@ export const windowStyles = css`
 		cursor: grabbing;
 	}
 
+	/* Drag handle cursor is set via JS in _detectDragHandle because
+	   ::slotted cannot reach nested elements (e.g. nldd-top-title-bar
+	   inside nldd-page). */
 
-	/* Drag handle cursor is set via JS in _detectDragHandle
-	   because ::slotted cannot reach nested elements
-	   (e.g. nldd-top-title-bar inside nldd-page). */
-
+	::slotted(*) {
+		min-height: 0;
+	}
 
 	/* ## Responsive: sm — fixed insets, no dragging */
 
@@ -86,20 +93,5 @@ export const windowStyles = css`
 		:host([movable]:not([has-drag-handle])) .window__body:active {
 			cursor: default;
 		}
-	}
-
-
-	/* # Body */
-
-	.window__body {
-		display: flex;
-		min-height: 0;
-		width: 100%;
-		flex-direction: column;
-		flex-grow: 1;
-	}
-
-	::slotted(*) {
-		min-height: 0;
 	}
 `;
