@@ -10,12 +10,6 @@ nldd-rich-text {
 		0px,
 		calc(100% - var(--components-rich-text-main-max-width))
 	);
-	--_h1-font: var(--primitives-font-display-1-sm);
-	--_h2-font: var(--primitives-font-display-2-sm);
-	--_h3-font: var(--primitives-font-display-3-sm);
-	--_h4-font: var(--primitives-font-display-4-sm);
-	--_h5-font: var(--primitives-font-display-5-sm);
-	--_h6-font: var(--primitives-font-display-6-sm);
 
 	display: grid;
 	grid-template-columns:
@@ -85,77 +79,178 @@ nldd-rich-text :is(h1, h2, h3, h4, h5, h6) {
 }
 
 
-/* # Heading sizes
- *
- * Each level maps to a display token; size is driven only by the viewport
- * (@media) or the nearest layout-container (@container). The --_hN-font
- * vars let that breakpoint→token mapping be declared once instead of
- * repeated per heading. sm is the unconditional default; the @container
- * blocks come last (incl. an explicit sm one) so that inside a
- * layout-container the container size wins over the viewport — preserving
- * the original per-heading @media-then-@container source order. */
+/* # Heading 1 */
 
-@media (min-width: 641px) and (max-width: 1007px) {
-	nldd-rich-text {
-		--_h1-font: var(--primitives-font-display-1-md);
-		--_h2-font: var(--primitives-font-display-2-md);
-		--_h3-font: var(--primitives-font-display-3-md);
-		--_h4-font: var(--primitives-font-display-4-md);
-		--_h5-font: var(--primitives-font-display-5-md);
-		--_h6-font: var(--primitives-font-display-6-md);
+nldd-rich-text h1 {
+	@media (max-width: 640px) {
+		font: var(--primitives-font-display-1-sm);
+	}
+
+	@media (min-width: 641px) and (max-width: 1007px) {
+		font: var(--primitives-font-display-1-md);
+	}
+
+	@media (min-width: 1008px) {
+		font: var(--primitives-font-display-1-lg);
+	}
+
+	@container layout-container (max-width: 640px) {
+		font: var(--primitives-font-display-1-sm);
+	}
+
+	@container layout-container (min-width: 641px) and (max-width: 1007px) {
+		font: var(--primitives-font-display-1-md);
+	}
+
+	@container layout-container (min-width: 1008px) {
+		font: var(--primitives-font-display-1-lg);
 	}
 }
 
-@media (min-width: 1008px) {
-	nldd-rich-text {
-		--_h1-font: var(--primitives-font-display-1-lg);
-		--_h2-font: var(--primitives-font-display-2-lg);
-		--_h3-font: var(--primitives-font-display-3-lg);
-		--_h4-font: var(--primitives-font-display-4-lg);
-		--_h5-font: var(--primitives-font-display-5-lg);
-		--_h6-font: var(--primitives-font-display-6-lg);
+
+/* # Heading 2 */
+
+nldd-rich-text h2 {
+	@media (max-width: 640px) {
+		font: var(--primitives-font-display-2-sm);
+	}
+
+	@media (min-width: 641px) and (max-width: 1007px) {
+		font: var(--primitives-font-display-2-md);
+	}
+
+	@media (min-width: 1008px) {
+		font: var(--primitives-font-display-2-lg);
+	}
+
+	@container layout-container (max-width: 640px) {
+		font: var(--primitives-font-display-2-sm);
+	}
+
+	@container layout-container (min-width: 641px) and (max-width: 1007px) {
+		font: var(--primitives-font-display-2-md);
+	}
+
+	@container layout-container (min-width: 1008px) {
+		font: var(--primitives-font-display-2-lg);
 	}
 }
 
-@container layout-container (max-width: 640px) {
-	nldd-rich-text {
-		--_h1-font: var(--primitives-font-display-1-sm);
-		--_h2-font: var(--primitives-font-display-2-sm);
-		--_h3-font: var(--primitives-font-display-3-sm);
-		--_h4-font: var(--primitives-font-display-4-sm);
-		--_h5-font: var(--primitives-font-display-5-sm);
-		--_h6-font: var(--primitives-font-display-6-sm);
+
+/* # Heading 3 */
+
+nldd-rich-text h3 {
+	@media (max-width: 640px) {
+		font: var(--primitives-font-display-3-sm);
+	}
+
+	@media (min-width: 641px) and (max-width: 1007px) {
+		font: var(--primitives-font-display-3-md);
+	}
+
+	@media (min-width: 1008px) {
+		font: var(--primitives-font-display-3-lg);
+	}
+
+	@container layout-container (max-width: 640px) {
+		font: var(--primitives-font-display-3-sm);
+	}
+
+	@container layout-container (min-width: 641px) and (max-width: 1007px) {
+		font: var(--primitives-font-display-3-md);
+	}
+
+	@container layout-container (min-width: 1008px) {
+		font: var(--primitives-font-display-3-lg);
 	}
 }
 
-@container layout-container (min-width: 641px) and (max-width: 1007px) {
-	nldd-rich-text {
-		--_h1-font: var(--primitives-font-display-1-md);
-		--_h2-font: var(--primitives-font-display-2-md);
-		--_h3-font: var(--primitives-font-display-3-md);
-		--_h4-font: var(--primitives-font-display-4-md);
-		--_h5-font: var(--primitives-font-display-5-md);
-		--_h6-font: var(--primitives-font-display-6-md);
+
+/* # Heading 4 */
+
+nldd-rich-text h4 {
+	@media (max-width: 640px) {
+		font: var(--primitives-font-display-4-sm);
+	}
+
+	@media (min-width: 641px) and (max-width: 1007px) {
+		font: var(--primitives-font-display-4-md);
+	}
+
+	@media (min-width: 1008px) {
+		font: var(--primitives-font-display-4-lg);
+	}
+
+	@container layout-container (max-width: 640px) {
+		font: var(--primitives-font-display-4-sm);
+	}
+
+	@container layout-container (min-width: 641px) and (max-width: 1007px) {
+		font: var(--primitives-font-display-4-md);
+	}
+
+	@container layout-container (min-width: 1008px) {
+		font: var(--primitives-font-display-4-lg);
 	}
 }
 
-@container layout-container (min-width: 1008px) {
-	nldd-rich-text {
-		--_h1-font: var(--primitives-font-display-1-lg);
-		--_h2-font: var(--primitives-font-display-2-lg);
-		--_h3-font: var(--primitives-font-display-3-lg);
-		--_h4-font: var(--primitives-font-display-4-lg);
-		--_h5-font: var(--primitives-font-display-5-lg);
-		--_h6-font: var(--primitives-font-display-6-lg);
+
+/* # Heading 5 */
+
+nldd-rich-text h5 {
+	@media (max-width: 640px) {
+		font: var(--primitives-font-display-5-sm);
+	}
+
+	@media (min-width: 641px) and (max-width: 1007px) {
+		font: var(--primitives-font-display-5-md);
+	}
+
+	@media (min-width: 1008px) {
+		font: var(--primitives-font-display-5-lg);
+	}
+
+	@container layout-container (max-width: 640px) {
+		font: var(--primitives-font-display-5-sm);
+	}
+
+	@container layout-container (min-width: 641px) and (max-width: 1007px) {
+		font: var(--primitives-font-display-5-md);
+	}
+
+	@container layout-container (min-width: 1008px) {
+		font: var(--primitives-font-display-5-lg);
 	}
 }
 
-nldd-rich-text h1 { font: var(--_h1-font); }
-nldd-rich-text h2 { font: var(--_h2-font); }
-nldd-rich-text h3 { font: var(--_h3-font); }
-nldd-rich-text h4 { font: var(--_h4-font); }
-nldd-rich-text h5 { font: var(--_h5-font); }
-nldd-rich-text h6 { font: var(--_h6-font); }
+
+/* # Heading 6 */
+
+nldd-rich-text h6 {
+	@media (max-width: 640px) {
+		font: var(--primitives-font-display-6-sm);
+	}
+
+	@media (min-width: 641px) and (max-width: 1007px) {
+		font: var(--primitives-font-display-6-md);
+	}
+
+	@media (min-width: 1008px) {
+		font: var(--primitives-font-display-6-lg);
+	}
+
+	@container layout-container (max-width: 640px) {
+		font: var(--primitives-font-display-6-sm);
+	}
+
+	@container layout-container (min-width: 641px) and (max-width: 1007px) {
+		font: var(--primitives-font-display-6-md);
+	}
+
+	@container layout-container (min-width: 1008px) {
+		font: var(--primitives-font-display-6-lg);
+	}
+}
 
 
 /* # Paragraph */
