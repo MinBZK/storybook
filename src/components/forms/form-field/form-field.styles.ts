@@ -1,8 +1,7 @@
-import { css } from 'lit';
+import { css, unsafeCSS } from 'lit';
+import { breakpoints } from '../../../assets/styles/breakpoints.js';
 
-/* ============================================================
-   nldd-form-field
-   ============================================================ */
+const mdMin = unsafeCSS(breakpoints.mdMin);
 
 export const formFieldStyles = css`
 
@@ -19,9 +18,7 @@ export const formFieldStyles = css`
 	}
 
 
-	/* # Block
-	   641px = breakpoints.mdMin (zie src/assets/styles/breakpoints.ts).
-	   Houd in sync met form.css's @media queries en form-actions. */
+	/* # Block */
 
 	.form-field {
 		display: flex;
@@ -29,14 +26,14 @@ export const formFieldStyles = css`
 		gap: var(--components-form-field-gap);
 	}
 
-	:host([label-alignment='left']) .form-field,
-	:host([label-alignment='right']) .form-field,
-	:host(:not([label-alignment])[form-label-alignment='left']) .form-field,
-	:host(:not([label-alignment])[form-label-alignment='right']) .form-field {
-		@container (min-width: 641px) {
+	:host([label-alignment="left"]) .form-field,
+	:host([label-alignment="right"]) .form-field,
+	:host(:not([label-alignment])[form-label-alignment="left"]) .form-field,
+	:host(:not([label-alignment])[form-label-alignment="right"]) .form-field {
+		@container (min-width: ${mdMin}) {
 			flex-direction: row;
-			align-items: start;
 			gap: var(--semantics-forms-columns-gap);
+			align-items: start;
 		}
 	}
 
@@ -44,16 +41,16 @@ export const formFieldStyles = css`
 	/* # Header */
 
 	.form-field__header {
-		display: flex;
 		box-sizing: border-box;
+		display: flex;
 		flex-direction: column;
 	}
 
-	:host([label-alignment='left']) .form-field__header,
-	:host([label-alignment='right']) .form-field__header,
-	:host(:not([label-alignment])[form-label-alignment='left']) .form-field__header,
-	:host(:not([label-alignment])[form-label-alignment='right']) .form-field__header {
-		@container (min-width: 641px) {
+	:host([label-alignment="left"]) .form-field__header,
+	:host([label-alignment="right"]) .form-field__header,
+	:host(:not([label-alignment])[form-label-alignment="left"]) .form-field__header,
+	:host(:not([label-alignment])[form-label-alignment="right"]) .form-field__header {
+		@container (min-width: ${mdMin}) {
 			width: var(--semantics-forms-label-column-width);
 			min-height: var(--semantics-controls-md-min-size);
 			flex-grow: 0;
@@ -62,17 +59,17 @@ export const formFieldStyles = css`
 		}
 	}
 
-	:host([label-alignment='right']) .form-field__header,
-	:host(:not([label-alignment])[form-label-alignment='right']) .form-field__header {
-		@container (min-width: 641px) {
+	:host([label-alignment="right"]) .form-field__header,
+	:host(:not([label-alignment])[form-label-alignment="right"]) .form-field__header {
+		@container (min-width: ${mdMin}) {
 			align-items: end;
 			text-align: right;
 		}
 	}
 
-	:host([label-alignment='left']) .form-field__header,
-	:host(:not([label-alignment])[form-label-alignment='left']) .form-field__header {
-		@container (min-width: 641px) {
+	:host([label-alignment="left"]) .form-field__header,
+	:host(:not([label-alignment])[form-label-alignment="left"]) .form-field__header {
+		@container (min-width: ${mdMin}) {
 			align-items: start;
 			text-align: left;
 		}
@@ -82,11 +79,11 @@ export const formFieldStyles = css`
 		display: none;
 	}
 
-	:host([label-alignment='left']) .form-field__header.is-empty,
-	:host([label-alignment='right']) .form-field__header.is-empty,
-	:host(:not([label-alignment])[form-label-alignment='left']) .form-field__header.is-empty,
-	:host(:not([label-alignment])[form-label-alignment='right']) .form-field__header.is-empty {
-		@container (min-width: 641px) {
+	:host([label-alignment="left"]) .form-field__header.is-empty,
+	:host([label-alignment="right"]) .form-field__header.is-empty,
+	:host(:not([label-alignment])[form-label-alignment="left"]) .form-field__header.is-empty,
+	:host(:not([label-alignment])[form-label-alignment="right"]) .form-field__header.is-empty {
+		@container (min-width: ${mdMin}) {
 			display: flex;
 		}
 	}
@@ -96,34 +93,34 @@ export const formFieldStyles = css`
 
 	.form-field__label {
 		display: inline-flex;
-		align-items: baseline;
 		gap: var(--primitives-space-4);
+		align-items: baseline;
 		color: var(--semantics-content-color);
 		font: var(--primitives-font-body-md-regular-tight);
 		text-wrap: pretty;
 	}
 
-	:host([label-alignment='left']) .form-field__label,
-	:host([label-alignment='right']) .form-field__label,
-	:host(:not([label-alignment])[form-label-alignment='left']) .form-field__label,
-	:host(:not([label-alignment])[form-label-alignment='right']) .form-field__label {
-		@container (min-width: 641px) {
+	:host([label-alignment="left"]) .form-field__label,
+	:host([label-alignment="right"]) .form-field__label,
+	:host(:not([label-alignment])[form-label-alignment="left"]) .form-field__label,
+	:host(:not([label-alignment])[form-label-alignment="right"]) .form-field__label {
+		@container (min-width: ${mdMin}) {
 			display: flex;
 			flex-direction: column;
 			gap: var(--primitives-space-0);
 		}
 	}
 
-	:host([label-alignment='right']) .form-field__label,
-	:host(:not([label-alignment])[form-label-alignment='right']) .form-field__label {
-		@container (min-width: 641px) {
+	:host([label-alignment="right"]) .form-field__label,
+	:host(:not([label-alignment])[form-label-alignment="right"]) .form-field__label {
+		@container (min-width: ${mdMin}) {
 			align-items: end;
 		}
 	}
 
-	:host([label-alignment='left']) .form-field__label,
-	:host(:not([label-alignment])[form-label-alignment='left']) .form-field__label {
-		@container (min-width: 641px) {
+	:host([label-alignment="left"]) .form-field__label,
+	:host(:not([label-alignment])[form-label-alignment="left"]) .form-field__label {
+		@container (min-width: ${mdMin}) {
 			align-items: start;
 		}
 	}
@@ -169,10 +166,6 @@ export const formFieldStyles = css`
 		margin-top: var(--primitives-space-2);
 	}
 `;
-
-/* ============================================================
-   nldd-form-field-help-text
-   ============================================================ */
 
 export const formFieldHelpTextStyles = css`
 
@@ -222,10 +215,6 @@ export const formFieldHelpTextStyles = css`
 		outline: none;
 	}
 `;
-
-/* ============================================================
-   nldd-form-field-error-text
-   ============================================================ */
 
 export const formFieldErrorTextStyles = css`
 

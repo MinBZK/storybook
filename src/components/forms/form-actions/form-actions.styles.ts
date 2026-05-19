@@ -1,4 +1,7 @@
-import { css } from 'lit';
+import { css, unsafeCSS } from 'lit';
+import { breakpoints } from '../../../assets/styles/breakpoints.js';
+
+const mdMin = unsafeCSS(breakpoints.mdMin);
 
 export const formActionsStyles = css`
 
@@ -15,31 +18,29 @@ export const formActionsStyles = css`
 	}
 
 
-	/* # Block
-	   641px = breakpoints.mdMin (zie src/assets/styles/breakpoints.ts).
-	   Houd in sync met form.css's @media queries en form-field. */
+	/* # Block */
 
 	.form-actions {
 		display: flex;
 		flex-direction: column;
 	}
 
-	:host([label-alignment='left']) .form-actions,
-	:host([label-alignment='right']) .form-actions,
-	:host(:not([label-alignment])[form-label-alignment='left']) .form-actions,
-	:host(:not([label-alignment])[form-label-alignment='right']) .form-actions {
-		@container (min-width: 641px) {
+	:host([label-alignment="left"]) .form-actions,
+	:host([label-alignment="right"]) .form-actions,
+	:host(:not([label-alignment])[form-label-alignment="left"]) .form-actions,
+	:host(:not([label-alignment])[form-label-alignment="right"]) .form-actions {
+		@container (min-width: ${mdMin}) {
 			flex-direction: row;
-			align-items: start;
 			gap: var(--semantics-forms-columns-gap);
+			align-items: start;
 		}
 	}
 
-	:host([label-alignment='left']) .form-actions::before,
-	:host([label-alignment='right']) .form-actions::before,
-	:host(:not([label-alignment])[form-label-alignment='left']) .form-actions::before,
-	:host(:not([label-alignment])[form-label-alignment='right']) .form-actions::before {
-		@container (min-width: 641px) {
+	:host([label-alignment="left"]) .form-actions::before,
+	:host([label-alignment="right"]) .form-actions::before,
+	:host(:not([label-alignment])[form-label-alignment="left"]) .form-actions::before,
+	:host(:not([label-alignment])[form-label-alignment="right"]) .form-actions::before {
+		@container (min-width: ${mdMin}) {
 			content: '';
 			width: var(--semantics-forms-label-column-width);
 			flex-grow: 0;
@@ -48,7 +49,7 @@ export const formActionsStyles = css`
 	}
 
 
-	/* # Main */
+	/* # Elements */
 
 	.form-actions__main {
 		display: flex;
