@@ -502,8 +502,8 @@ Er is geen automatische formatter. Volg deze regels handmatig.
   9. layout van kinderen: `flex-*`, `grid-*`, `gap`, `align-*`, `justify-*`, `place-*`, `order`, `vertical-align`, `text-align`
   10. inhoud: `color`, `font` / `font-*`, `line-height`, `letter-spacing`, `text-decoration`, `text-overflow`, `white-space`, `content`
   11. gedrag/effect: `transition`, `transform`, `animation`, `appearance`, `isolation`, `-webkit-tap-highlight-color`
-  Pseudo-elementen: `content: ''` mag bovenaan (vóór 1). `@container`/`@media` blijven genest, ná de properties van die rule.
-- Gebruik **CSS nesting** voor `@container` en `@media` — nest in de element rule block
+  Pseudo-elementen: `content: ''` mag bovenaan (vóór 1). Responsive breakpoint-`@container`/`@media` blijven genest, ná de properties van die rule.
+- **CSS nesting** voor *responsive* breakpoint-overrides (`@container` en `@media` met sm/md/lg) — genest in de element/`:host` rule. **State/toegankelijkheid-`@media`** (`forced-colors`, `prefers-reduced-motion`, `hover`) **niet nesten** — als los blok direct ná de element-rule die het wijzigt; géén aparte sectie ervoor
 - Declareer **alle** lokale CSS variabelen (`--_*`) **bovenin `:host`**, gevolgd door een lege regel die ze scheidt van de overige properties. Inclusief responsive overrides via `@container` nesting. Elementen gebruiken alleen `var(--_foo)`, nooit fallbacks: niet `var(--_foo, 100)`
 - **Volgorde van de `--_*` vars: in volgorde van eerste gebruik** in de stylesheet (de rules staan zelf in Concentric volgorde, dus dit volgt daaruit). Niet concentric- of alfabetisch sorteren. Pas dezelfde canonieke volgorde toe in élk override-blok (`:host([size=…])`, `:host([variant=…])`, `:host([expanded]…)`): elk blok somt z'n subset in die volgorde op. Herordenen is risicoloos — declaratievolgorde heeft geen cascade-effect
 - Gebruik **nooit** flex shorthand (`flex: 1`), schrijf de losse properties
