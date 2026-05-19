@@ -6,6 +6,9 @@ export const stepperStyles = css`
 	/* # Host */
 
 	:host {
+		--_corner-radius: var(--semantics-controls-md-corner-radius);
+		--_divider-length: var(--semantics-buttons-md-divider-length);
+
 		display: inline-flex;
 		isolation: isolate;
 		-webkit-tap-highlight-color: transparent;
@@ -13,6 +16,16 @@ export const stepperStyles = css`
 
 	:host([hidden]) {
 		display: none;
+	}
+
+	:host([size="sm"]) {
+		--_corner-radius: var(--semantics-controls-sm-corner-radius);
+		--_divider-length: var(--semantics-buttons-sm-divider-length);
+	}
+
+	:host([size="xs"]) {
+		--_corner-radius: var(--semantics-controls-xs-corner-radius);
+		--_divider-length: var(--semantics-buttons-xs-divider-length);
 	}
 
 	:host([disabled]) {
@@ -29,22 +42,10 @@ export const stepperStyles = css`
 
 	.stepper {
 		display: inline-flex;
+		border-radius: var(--_corner-radius);
 		background-color: var(--semantics-buttons-neutral-tinted-background-color);
 		flex-direction: row;
 		align-items: center;
-	}
-
-	:host([size='xs']) .stepper {
-		border-radius: var(--semantics-controls-xs-corner-radius);
-	}
-
-	:host([size='sm']) .stepper {
-		border-radius: var(--semantics-controls-sm-corner-radius);
-	}
-
-	:host([size='md']) .stepper,
-	:host(:not([size])) .stepper {
-		border-radius: var(--semantics-controls-md-corner-radius);
 	}
 
 	.stepper:focus-visible {
@@ -54,29 +55,14 @@ export const stepperStyles = css`
 	}
 
 
-	/* # Divider */
+	/* # Elements */
 
 	.stepper__divider {
 		background-color: var(--semantics-buttons-neutral-tinted-divider-color);
 		width: var(--semantics-dividers-thickness);
+		height: var(--_divider-length);
 		flex-shrink: 0;
 	}
-
-	:host([size='xs']) .stepper__divider {
-		height: var(--semantics-buttons-xs-divider-length);
-	}
-
-	:host([size='sm']) .stepper__divider {
-		height: var(--semantics-buttons-sm-divider-length);
-	}
-
-	:host([size='md']) .stepper__divider,
-	:host(:not([size])) .stepper__divider {
-		height: var(--semantics-buttons-md-divider-length);
-	}
-
-
-	/* # Focus */
 
 	nldd-icon-button:focus-within {
 		position: relative;
