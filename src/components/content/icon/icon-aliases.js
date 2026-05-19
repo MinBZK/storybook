@@ -195,6 +195,10 @@ export const aliases = {
 	// magnifier
 	'search': 'magnifier',
 
+	// message-rectangle-text
+	'annotation': 'message-rectangle-text',
+	'comment': 'message-rectangle-text',
+
 	// minus
 	'remove': 'minus',
 
