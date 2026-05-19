@@ -57,14 +57,10 @@ export const codeStyles = css`
 	.token.prolog,
 	.token.doctype,
 	.token.cdata { color: var(--components-code-token-comment-color); font-style: italic; }
-
 	.token.punctuation { color: var(--components-code-token-punctuation-color); }
-
 	.token.namespace { opacity: 0.7; }
-
 	.token.keyword { color: var(--components-code-token-keyword-color); }
-	.token.string,
-	.token.char { color: var(--components-code-token-string-color); }
+	.token.string, .token.char { color: var(--components-code-token-string-color); }
 	.token.number { color: var(--components-code-token-number-color); }
 	.token.boolean { color: var(--components-code-token-boolean-color); }
 	.token.null { color: var(--components-code-token-null-color); }
@@ -88,7 +84,6 @@ export const codeStyles = css`
 	.token.entity { color: var(--components-code-token-entity-color); }
 	.token.variable { color: var(--components-code-token-variable-color); }
 	.token.key { color: var(--components-code-token-property-color); }
-
 	.token.bold { font-weight: bold; }
 	.token.italic { font-style: italic; }
 `;

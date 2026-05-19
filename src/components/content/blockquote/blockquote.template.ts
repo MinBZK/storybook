@@ -12,7 +12,9 @@ export function template(component: NLDDBlockquote) {
 			<div class="blockquote__attribution"
 				?hidden=${!component._hasAttribution}
 			>
-				<span class="blockquote__attribution-prefix" aria-hidden="true">${component._attributionPrefix}</span>
+				<span class="blockquote__attribution-prefix"
+					aria-hidden="true"
+				>${component._attributionPrefix}</span>
 				<slot name="attribution"
 					@slotchange=${component._handleAttributionSlotChange}
 				></slot>
