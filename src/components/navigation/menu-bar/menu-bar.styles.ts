@@ -24,12 +24,13 @@ export const menuBarStyles = css`
 		display: flex;
 		min-width: 0;
 		flex-direction: row;
-		align-items: center;
 		flex-grow: 1;
 		flex-shrink: 1;
+		align-items: center;
 	}
 
-	/* ## Overflow button */
+
+	/* # Elements */
 
 	.menu-bar__overflow-button {
 		display: none;

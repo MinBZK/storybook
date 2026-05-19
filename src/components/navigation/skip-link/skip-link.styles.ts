@@ -24,14 +24,14 @@ export const skipLinkStyles = css`
 	/* # Block */
 
 	.skip-link {
+		display: flex;
 		position: absolute;
 		top: 0;
 		left: 0;
-		display: flex;
-		z-index: var(--_z-index);
 		opacity: 0;
-		box-shadow: var(--_box-shadow);
+		z-index: var(--_z-index);
 		border-radius: var(--semantics-controls-md-corner-radius);
+		box-shadow: var(--_box-shadow);
 		background-color: var(--semantics-surfaces-background-color);
 		pointer-events: none;
 		justify-content: center;
@@ -43,7 +43,7 @@ export const skipLinkStyles = css`
 	}
 
 
-	/* # Control */
+	/* # Elements */
 
 	.skip-link__control {
 		display: inline-flex;
@@ -61,11 +61,9 @@ export const skipLinkStyles = css`
 	}
 
 	.skip-link__control:focus-visible {
-		box-shadow: var(--_focus-box-shadow);
 		outline: var(--semantics-focus-ring-outline);
-		/* Negative outline-offset zodat de halo binnen het control valt
-		   (skip-link is small en zou anders deels buiten het viewport
-		   uitsteken). Component-specifieke override van de default. */
+		/* negative: keep the focus halo inside the small skip-link, not past the viewport */
 		outline-offset: var(--_focus-outline-offset);
+		box-shadow: var(--_focus-box-shadow);
 	}
 `;
