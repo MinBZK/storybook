@@ -6,12 +6,40 @@ export const toggleButtonStyles = css`
 	/* # Host */
 
 	:host {
+		--_corner-radius: var(--semantics-controls-md-corner-radius);
+		--_min-size: var(--semantics-controls-md-min-size);
+		--_padding: var(--semantics-controls-md-block-padding) var(--semantics-controls-md-inline-padding);
+		--_gap: var(--semantics-buttons-md-gap);
+		--_font: var(--semantics-buttons-md-font);
+		--_icon-size: var(--semantics-buttons-md-icon-size);
+		--_icon-only-icon-size: var(--semantics-buttons-md-icon-only-icon-size);
+
 		display: inline-block;
 		-webkit-tap-highlight-color: transparent;
 	}
 
 	:host([hidden]) {
 		display: none;
+	}
+
+	:host([size="sm"]) {
+		--_corner-radius: var(--semantics-controls-sm-corner-radius);
+		--_min-size: var(--semantics-controls-sm-min-size);
+		--_padding: var(--semantics-controls-sm-block-padding) var(--semantics-controls-sm-inline-padding);
+		--_gap: var(--semantics-buttons-sm-gap);
+		--_font: var(--semantics-buttons-sm-font);
+		--_icon-size: var(--semantics-buttons-sm-icon-size);
+		--_icon-only-icon-size: var(--semantics-buttons-sm-icon-only-icon-size);
+	}
+
+	:host([size="xs"]) {
+		--_corner-radius: var(--semantics-controls-xs-corner-radius);
+		--_min-size: var(--semantics-controls-xs-min-size);
+		--_padding: var(--semantics-controls-xs-block-padding) var(--semantics-controls-xs-inline-padding);
+		--_gap: var(--semantics-buttons-xs-gap);
+		--_font: var(--semantics-buttons-xs-font);
+		--_icon-size: var(--semantics-buttons-xs-icon-size);
+		--_icon-only-icon-size: var(--semantics-buttons-xs-icon-only-icon-size);
 	}
 
 	:host([disabled]) {
@@ -23,74 +51,30 @@ export const toggleButtonStyles = css`
 	/* # Block */
 
 	.toggle-button {
-		/* Reset */
-		margin: 0;
-		border: none;
-		background: none;
-		padding: 0;
-		font: inherit;
-		appearance: none;
-
-		/* Layout */
-		position: relative;
 		box-sizing: border-box;
 		display: inline-flex;
+		position: relative;
+		margin: 0;
+		border: none;
+		border-radius: var(--_corner-radius);
+		background: none;
+		background-color: var(--semantics-buttons-neutral-tinted-background-color);
+		min-height: var(--_min-size);
+		padding: var(--_padding);
+		gap: var(--_gap);
 		align-items: center;
 		justify-content: center;
+		color: var(--semantics-buttons-neutral-tinted-content-color);
+		font: var(--_font);
 		white-space: nowrap;
 		text-decoration: none;
-
-		/* Appearance */
-		background-color: var(--semantics-buttons-neutral-tinted-background-color);
-		color: var(--semantics-buttons-neutral-tinted-content-color);
+		appearance: none;
 	}
 
-	/* ## Sizes */
-
-	:host([size="xs"]) .toggle-button {
-		border-radius: var(--semantics-controls-xs-corner-radius);
-		min-height: var(--semantics-controls-xs-min-size);
-		padding: var(--semantics-controls-xs-block-padding) var(--semantics-controls-xs-inline-padding);
-		gap: var(--semantics-buttons-xs-gap);
-		font: var(--semantics-buttons-xs-font);
-	}
-
-	:host([size="sm"]) .toggle-button {
-		border-radius: var(--semantics-controls-sm-corner-radius);
-		min-height: var(--semantics-controls-sm-min-size);
-		padding: var(--semantics-controls-sm-block-padding) var(--semantics-controls-sm-inline-padding);
-		gap: var(--semantics-buttons-sm-gap);
-		font: var(--semantics-buttons-sm-font);
-	}
-
-	:host([size="md"]) .toggle-button,
-	:host(:not([size])) .toggle-button {
-		border-radius: var(--semantics-controls-md-corner-radius);
-		min-height: var(--semantics-controls-md-min-size);
-		padding: var(--semantics-controls-md-block-padding) var(--semantics-controls-md-inline-padding);
-		gap: var(--semantics-buttons-md-gap);
-		font: var(--semantics-buttons-md-font);
-	}
-
-	/* ## Icon-only sizes */
-
-	:host([icon-only][size="xs"]) .toggle-button {
-		width: var(--semantics-controls-xs-min-size);
+	:host([icon-only]) .toggle-button {
+		width: var(--_min-size);
 		padding: 0;
 	}
-
-	:host([icon-only][size="sm"]) .toggle-button {
-		width: var(--semantics-controls-sm-min-size);
-		padding: 0;
-	}
-
-	:host([icon-only][size="md"]) .toggle-button,
-	:host([icon-only]:not([size])) .toggle-button {
-		width: var(--semantics-controls-md-min-size);
-		padding: 0;
-	}
-
-	/* ## Hover */
 
 	@media (hover: hover) {
 		.toggle-button:hover,
@@ -99,8 +83,6 @@ export const toggleButtonStyles = css`
 			color: var(--semantics-buttons-neutral-tinted-is-hovered-content-color);
 		}
 	}
-
-	/* ## Selected */
 
 	:host([selected]) .toggle-button {
 		background-color: var(--semantics-buttons-neutral-tinted-is-selected-background-color);
@@ -115,8 +97,6 @@ export const toggleButtonStyles = css`
 		}
 	}
 
-	/* ## Focus */
-
 	.toggle-button:focus-visible,
 	.toggle-button:has(.toggle-button__input:focus-visible) {
 		outline: var(--semantics-focus-ring-outline);
@@ -129,56 +109,24 @@ export const toggleButtonStyles = css`
 	}
 
 
-	/* # Icon */
+	/* # Elements */
 
-	/* Hide the original nldd-icon in the slot — it is re-rendered in the shadow DOM */
+	/* Slotted nldd-icon is re-rendered in shadow DOM — hide the original */
 	::slotted(nldd-icon) {
 		display: none;
 	}
 
 	.toggle-button__icon {
 		display: block;
+		width: var(--_icon-size);
+		height: var(--_icon-size);
 		flex-shrink: 0;
 	}
 
-	/* ## Icon size — naast tekst (default) */
-
-	:host([size="md"]) .toggle-button__icon,
-	:host(:not([size])) .toggle-button__icon {
-		width: var(--semantics-buttons-md-icon-size);
-		height: var(--semantics-buttons-md-icon-size);
+	:host([icon-only]) .toggle-button__icon {
+		width: var(--_icon-only-icon-size);
+		height: var(--_icon-only-icon-size);
 	}
-
-	:host([size="sm"]) .toggle-button__icon {
-		width: var(--semantics-buttons-sm-icon-size);
-		height: var(--semantics-buttons-sm-icon-size);
-	}
-
-	:host([size="xs"]) .toggle-button__icon {
-		width: var(--semantics-buttons-xs-icon-size);
-		height: var(--semantics-buttons-xs-icon-size);
-	}
-
-	/* ## Icon size — icon-only mode */
-
-	:host([icon-only][size="md"]) .toggle-button__icon,
-	:host([icon-only]:not([size])) .toggle-button__icon {
-		width: var(--semantics-buttons-md-icon-only-icon-size);
-		height: var(--semantics-buttons-md-icon-only-icon-size);
-	}
-
-	:host([icon-only][size="sm"]) .toggle-button__icon {
-		width: var(--semantics-buttons-sm-icon-only-icon-size);
-		height: var(--semantics-buttons-sm-icon-only-icon-size);
-	}
-
-	:host([icon-only][size="xs"]) .toggle-button__icon {
-		width: var(--semantics-buttons-xs-icon-only-icon-size);
-		height: var(--semantics-buttons-xs-icon-only-icon-size);
-	}
-
-
-	/* # Input */
 
 	.toggle-button__input {
 		position: absolute;
