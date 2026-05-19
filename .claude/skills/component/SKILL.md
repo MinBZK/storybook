@@ -54,6 +54,7 @@ Zoek in `src/components/` of het component al bestaat.
 - **Lokaal:** `--_{variant}-{state}-{element}-{element-variant}-{element-state}-{property}`
   Interne variabelen binnen een component. Definieer defaults in `:host`.
   bijv. `--_background-color`
+  Het `{element}`-segment is de **volledige BEM-elementnaam**, niet afgekort: `--_disclosure-icon-margin-right`, niet `--_disclosure-margin-right`. Laat het element-segment weg voor het root-block (`--_background-color`). Gebruik één generieke naam als de var door meerdere elementen gedeeld wordt (bijv. `--_icon-size` voor `__start-icon` én `__end-icon`).
 
 Primitives zijn basiswaarden — gebruik ze niet direct in componenten. Semantics geven context voor een groep componenten. Component variabelen zijn specifiek voor één component.
 
@@ -504,6 +505,7 @@ Er is geen automatische formatter. Volg deze regels handmatig.
   Pseudo-elementen: `content: ''` mag bovenaan (vóór 1). `@container`/`@media` blijven genest, ná de properties van die rule.
 - Gebruik **CSS nesting** voor `@container` en `@media` — nest in de element rule block
 - Declareer **alle** lokale CSS variabelen (`--_*`) **bovenin `:host`**, gevolgd door een lege regel die ze scheidt van de overige properties. Inclusief responsive overrides via `@container` nesting. Elementen gebruiken alleen `var(--_foo)`, nooit fallbacks: niet `var(--_foo, 100)`
+- **Volgorde van de `--_*` vars: in volgorde van eerste gebruik** in de stylesheet (de rules staan zelf in Concentric volgorde, dus dit volgt daaruit). Niet concentric- of alfabetisch sorteren. Pas dezelfde canonieke volgorde toe in élk override-blok (`:host([size=…])`, `:host([variant=…])`, `:host([expanded]…)`): elk blok somt z'n subset in die volgorde op. Herordenen is risicoloos — declaratievolgorde heeft geen cascade-effect
 - Gebruik **nooit** flex shorthand (`flex: 1`), schrijf de losse properties
 - Level 1 headings (`/* # Section */`): 2 lege regels ervoor, 1 erna
 - Level 2 headings (`/* ## Subsection */`): 1 lege regel ervoor en erna
