@@ -6,9 +6,15 @@ export const comboBoxStyles = css`
 	/* # Host */
 
 	:host {
-		--_background-color: var(--semantics-input-fields-background-color);
-		--_z-index-button-focus: 1;
 		--_width: 100%;
+		--_background-color: var(--semantics-input-fields-background-color);
+		--_corner-radius: var(--semantics-controls-md-corner-radius);
+		--_min-size: var(--semantics-controls-md-min-size);
+		--_inline-padding: calc(var(--semantics-controls-md-inline-padding) - var(--semantics-input-fields-border-thickness));
+		--_text-font: var(--semantics-input-fields-md-text-font);
+		--_end-padding-right: calc((var(--_min-size) - var(--semantics-controls-sm-min-size)) / 2 - var(--semantics-input-fields-border-thickness));
+		--_z-index-button-focus: 1;
+		--_validation-icon-size: var(--semantics-input-fields-md-validation-icon-size);
 
 		display: block;
 		width: var(--_width);
@@ -20,6 +26,15 @@ export const comboBoxStyles = css`
 		display: none;
 	}
 
+	:host([size="sm"]) {
+		--_corner-radius: var(--semantics-controls-sm-corner-radius);
+		--_min-size: var(--semantics-controls-sm-min-size);
+		--_inline-padding: calc(var(--semantics-controls-sm-inline-padding) - var(--semantics-input-fields-border-thickness));
+		--_text-font: var(--semantics-input-fields-sm-text-font);
+		--_end-padding-right: calc((var(--_min-size) - var(--semantics-controls-xs-min-size)) / 2 - var(--semantics-input-fields-border-thickness));
+		--_validation-icon-size: var(--semantics-input-fields-sm-validation-icon-size);
+	}
+
 	:host([disabled]) {
 		opacity: var(--primitives-opacity-disabled);
 		pointer-events: none;
@@ -29,24 +44,15 @@ export const comboBoxStyles = css`
 	/* # Block */
 
 	.combo-box {
-		display: flex;
 		box-sizing: border-box;
+		display: flex;
 		border: var(--semantics-input-fields-border);
+		border-radius: var(--_corner-radius);
 		background-color: var(--_background-color);
 		width: 100%;
+		min-height: var(--_min-size);
 		flex-direction: row;
 		align-items: center;
-	}
-
-	:host([size='sm']) .combo-box {
-		border-radius: var(--semantics-controls-sm-corner-radius);
-		min-height: var(--semantics-controls-sm-min-size);
-	}
-
-	:host([size='md']) .combo-box,
-	:host(:not([size])) .combo-box {
-		border-radius: var(--semantics-controls-md-corner-radius);
-		min-height: var(--semantics-controls-md-min-size);
 	}
 
 	:host([valid]) .combo-box {
@@ -69,30 +75,21 @@ export const comboBoxStyles = css`
 	}
 
 
-	/* # Input */
+	/* # Elements */
 
 	.combo-box__input {
 		box-sizing: border-box;
 		margin: 0;
-		border: none;
 		outline: none;
+		border: none;
 		background: transparent;
 		min-width: 0;
 		width: 100%;
+		padding-left: var(--_inline-padding);
 		flex: 1;
 		color: var(--semantics-content-color);
+		font: var(--_text-font);
 		appearance: none;
-	}
-
-	:host([size='sm']) .combo-box__input {
-		padding-left: calc(var(--semantics-controls-sm-inline-padding) - var(--semantics-input-fields-border-thickness));
-		font: var(--semantics-input-fields-sm-text-font);
-	}
-
-	:host([size='md']) .combo-box__input,
-	:host(:not([size])) .combo-box__input {
-		padding-left: calc(var(--semantics-controls-md-inline-padding) - var(--semantics-input-fields-border-thickness));
-		font: var(--semantics-input-fields-md-text-font);
 	}
 
 	.combo-box__input::placeholder {
@@ -103,9 +100,6 @@ export const comboBoxStyles = css`
 	.combo-box__input:autofill {
 		box-shadow: 0 0 0 999px var(--_background-color) inset;
 	}
-
-
-	/* # Input fade */
 
 	.combo-box__input-fade {
 		position: relative;
@@ -118,48 +112,31 @@ export const comboBoxStyles = css`
 		content: '';
 		position: absolute;
 		top: 0;
-		bottom: 0;
 		right: 0;
+		bottom: 0;
 		background: linear-gradient(90deg, color-mix(in oklch, var(--_background-color) 0%, transparent) 0%, var(--_background-color) 100%);
 		pointer-events: none;
 		width: var(--primitives-space-8);
 	}
 
-
-	/* # End */
-
 	.combo-box__end {
 		display: flex;
+		padding-right: var(--_end-padding-right);
 		flex-shrink: 0;
 		align-items: center;
 	}
-
-	:host([size='sm']) .combo-box__end {
-		padding-right: calc((var(--semantics-controls-sm-min-size) - var(--semantics-controls-xs-min-size)) / 2 - var(--semantics-input-fields-border-thickness));
-	}
-
-	:host([size='md']) .combo-box__end,
-	:host(:not([size])) .combo-box__end {
-		padding-right: calc((var(--semantics-controls-md-min-size) - var(--semantics-controls-sm-min-size)) / 2 - var(--semantics-input-fields-border-thickness));
-	}
-
-
-	/* # Clear button */
 
 	.combo-box__clear-button:focus-within {
 		position: relative;
 		z-index: var(--_z-index-button-focus);
 	}
 
-
-	/* # Validation icon */
-
 	.combo-box__validation-icon-area {
 		display: flex;
 		height: 100%;
+		flex-shrink: 0;
 		align-items: center;
 		justify-content: center;
-		flex-shrink: 0;
 	}
 
 	:host([valid]) .combo-box__validation-icon-area {
@@ -170,18 +147,10 @@ export const comboBoxStyles = css`
 		color: var(--semantics-input-fields-is-invalid-icon-color);
 	}
 
-	:host([size='sm']) .combo-box__validation-icon {
-		width: var(--semantics-input-fields-sm-validation-icon-size);
-		height: var(--semantics-input-fields-sm-validation-icon-size);
+	.combo-box__validation-icon {
+		width: var(--_validation-icon-size);
+		height: var(--_validation-icon-size);
 	}
-
-	:host([size='md']) .combo-box__validation-icon,
-	:host(:not([size])) .combo-box__validation-icon {
-		width: var(--semantics-input-fields-md-validation-icon-size);
-		height: var(--semantics-input-fields-md-validation-icon-size);
-	}
-
-	/* # Picker button */
 
 	.combo-box__picker-button {
 		margin-left: var(--primitives-space-6);
