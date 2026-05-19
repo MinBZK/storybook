@@ -56,14 +56,14 @@ export const listItemStyles = css`
 		box-sizing: border-box;
 		display: flex;
 		position: relative;
-		min-height: var(--semantics-controls-md-min-size);
 		width: 100%;
+		min-height: var(--semantics-controls-md-min-size);
 		flex-direction: row;
 		align-items: stretch;
 		isolation: isolate;
 	}
 
-	:host([size='sm']) .list-item {
+	:host([size="sm"]) .list-item {
 		min-height: var(--semantics-controls-sm-min-size);
 	}
 
@@ -73,16 +73,16 @@ export const listItemStyles = css`
 	.list-item__action {
 		display: flex;
 		margin: 0;
-		border: none;
 		outline: none;
+		border: none;
 		background: none;
 		width: 100%;
 		padding: 0;
 		flex-direction: row;
 		align-items: stretch;
 		text-align: start;
-		text-decoration: none;
 		color: inherit;
+		text-decoration: none;
 	}
 
 	a.list-item__action {
@@ -92,11 +92,8 @@ export const listItemStyles = css`
 
 	/* # Indicator */
 
-	/* ## Non-interactive
-	   Items without an inner action get the selection indicator directly on
-	   .list-item, driven only by :host([selected]). Use when a slotted
-	   control (e.g. a checkbox) owns the selection semantics and the row
-	   itself should still reflect the selected state visually. */
+	/* Non-interactive: items without an inner action get the selection
+	   indicator directly on .list-item, driven only by :host([selected]) */
 
 	.list-item:not(:has(.list-item__action))::before {
 		content: '';
@@ -115,9 +112,8 @@ export const listItemStyles = css`
 		--context-cell-content-color: var(--components-list-item-is-selected-content-color);
 	}
 
-	/* ## Interactive
-	   Items with a link or button inner element. Indicator responds to
-	   hover and focus on top of the selected state. */
+	/* Interactive: items with a link/button inner element; indicator responds
+	   to hover and focus on top of the selected state */
 
 	.list-item__action::before {
 		content: '';
@@ -131,8 +127,8 @@ export const listItemStyles = css`
 		pointer-events: none;
 	}
 
-	/* Hover rules only on hover-capable devices: prevents touch-scrolling
-	 * from briefly flashing the hover state on the row under the finger. */
+	/* hover only on hover-capable devices: avoids touch-scroll flashing the
+	   hover state on the row under the finger */
 	@media (hover: hover) {
 		.list-item__action:hover {
 			--_background-color: var(--components-list-item-is-hovered-background-color);
@@ -161,7 +157,7 @@ export const listItemStyles = css`
 	}
 
 
-	/* ## Focus */
+	/* # Focus */
 
 	.list-item__action:focus-visible:not(.is-pointer-focus)::after {
 		content: '';
@@ -203,8 +199,8 @@ export const listItemStyles = css`
 		z-index: var(--_z-index-content);
 		padding-block: var(--components-list-item-md-padding-block);
 		flex-direction: row;
-		align-items: center;
 		flex-shrink: 0;
+		align-items: center;
 	}
 
 	.list-item__start-area.is-visible,
@@ -212,8 +208,8 @@ export const listItemStyles = css`
 		display: flex;
 	}
 
-	:host([size='sm']) .list-item__start-area,
-	:host([size='sm']) .list-item__end-area {
+	:host([size="sm"]) .list-item__start-area,
+	:host([size="sm"]) .list-item__end-area {
 		padding-block: var(--components-list-item-sm-padding-block);
 	}
 
@@ -227,11 +223,11 @@ export const listItemStyles = css`
 		min-width: 0;
 		padding-block: var(--components-list-item-md-padding-block);
 		flex-direction: row;
-		align-items: center;
 		flex-grow: 1;
+		align-items: center;
 	}
 
-	:host([size='sm']) .list-item__main-area {
+	:host([size="sm"]) .list-item__main-area {
 		padding-block: var(--components-list-item-sm-padding-block);
 	}
 

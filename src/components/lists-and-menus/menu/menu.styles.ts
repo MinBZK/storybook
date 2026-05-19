@@ -264,16 +264,11 @@ export const menuItemStyles = css`
 	}
 
 
-	/* # Reduced motion */
-
 	@media (prefers-reduced-motion: reduce) {
 		.menu__item {
 			transition: none;
 		}
 	}
-
-
-	/* # Forced colors */
 
 	@media (forced-colors: active) {
 		/* In forced-colors there's no neutral lighter palette, so mark the
