@@ -112,26 +112,6 @@ export const collectionStyles = css`
 		width: 100%;
 	}
 
-	/* ## Load more — grid/list */
-
-	:host([layout="grid"]) .collection__footer,
-	:host([layout="list"]) .collection__footer,
-	:host(:not([layout])) .collection__footer {
-		justify-content: stretch;
-	}
-
-	:host([layout="grid"]) .collection__footer nldd-button,
-	:host([layout="list"]) .collection__footer nldd-button,
-	:host(:not([layout])) .collection__footer nldd-button {
-		width: 100%;
-	}
-
-	:host([layout="grid"]) .collection__footer nldd-button::part(button),
-	:host([layout="list"]) .collection__footer nldd-button::part(button),
-	:host(:not([layout])) .collection__footer nldd-button::part(button) {
-		width: 100%;
-	}
-
 	/* ## Scroll navigation — horizontal scroll */
 
 	:host([layout="horizontal-scroll"]) .collection__footer {
