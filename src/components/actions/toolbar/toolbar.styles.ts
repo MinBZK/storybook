@@ -7,6 +7,7 @@ export const toolbarStyles = css`
 
 	:host {
 		--_gap: var(--components-toolbar-md-gap);
+		/* --_width..--_overflow-button-width: measured + set by toolbar.ts; 0px is a valid pre-measurement placeholder */
 		--_width: 0px;
 		--_start-width: 0px;
 		--_center-width: 0px;
@@ -35,7 +36,7 @@ export const toolbarStyles = css`
 	}
 
 
-	/* # Toolbar */
+	/* # Block */
 
 	.toolbar {
 		display: flex;

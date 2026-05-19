@@ -49,7 +49,7 @@ export const splitButtonStyles = css`
 	}
 
 
-	/* # Split button */
+	/* # Block */
 
 	.split-button {
 		display: inline-flex;

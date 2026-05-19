@@ -183,7 +183,7 @@ export const buttonStyles = css`
 	}
 
 
-	/* # Button */
+	/* # Block */
 
 	.button {
 		box-sizing: border-box;

@@ -180,7 +180,7 @@ export const iconButtonStyles = css`
 	}
 
 
-	/* # Icon button */
+	/* # Block */
 
 	.icon-button {
 		box-sizing: border-box;

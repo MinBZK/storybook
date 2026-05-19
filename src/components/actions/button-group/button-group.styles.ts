@@ -37,7 +37,7 @@ export const buttonGroupStyles = css`
 	}
 
 
-	/* # Button group */
+	/* # Block */
 
 	.button-group {
 		display: flex;

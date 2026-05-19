@@ -51,7 +51,7 @@ export const buttonBarStyles = css`
 	}
 
 
-	/* # Button bar */
+	/* # Block */
 
 	.button-bar {
 		display: flex;
