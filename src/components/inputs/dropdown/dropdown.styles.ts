@@ -9,7 +9,7 @@ export const dropdownStyles = css`
 		--_xs-picker-icon-size: var(--primitives-space-16);
 		--_sm-picker-icon-size: var(--primitives-space-20);
 		--_md-picker-icon-size: var(--primitives-space-24);
-		--_width: auto;
+		--_width: 100%;
 
 		display: block;
 		width: var(--_width);

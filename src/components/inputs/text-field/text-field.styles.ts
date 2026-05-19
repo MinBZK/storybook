@@ -7,7 +7,7 @@ export const textFieldStyles = css`
 
 	:host {
 		--_background-color: var(--semantics-input-fields-background-color);
-		--_width: auto;
+		--_width: 100%;
 
 		display: block;
 		width: var(--_width);

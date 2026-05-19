@@ -8,7 +8,7 @@ export const searchFieldStyles = css`
 	:host {
 		--_background-color: var(--semantics-input-fields-background-color);
 		--_z-index-button-focus: 1;
-		--_width: auto;
+		--_width: 100%;
 
 		display: block;
 		width: var(--_width);
