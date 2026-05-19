@@ -366,10 +366,10 @@ export const documentTabBarItemStyles = css`
 	/* # Item dismiss button */
 
 	.document-tab-bar__item-dismiss-button {
-		position: absolute;
-		right: var(--primitives-space-6);
-		top: 50%;
 		display: flex;
+		position: absolute;
+		top: 50%;
+		right: var(--primitives-space-6);
 		margin: 0;
 		border: none;
 		border-radius: var(--semantics-controls-sm-corner-radius);
