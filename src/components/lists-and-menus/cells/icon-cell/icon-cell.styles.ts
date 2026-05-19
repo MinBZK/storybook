@@ -6,19 +6,56 @@ export const iconCellStyles = css`
 	/* # Host */
 
 	:host {
+		--_size: var(--primitives-space-24);
+		--_content-color: var(--context-cell-content-color, var(--semantics-content-color));
+
 		display: flex;
+		width: var(--_size);
 		flex-direction: column;
 		align-items: center;
+		color: var(--_content-color);
 	}
 
 	:host([hidden]) {
 		display: none;
 	}
 
+	:host([size="16"]) {
+		--_size: var(--primitives-space-16);
+	}
+
+	:host([size="20"]) {
+		--_size: var(--primitives-space-20);
+	}
+
+	:host([size="32"]) {
+		--_size: var(--primitives-space-32);
+	}
+
+	/* ## Color */
+
+	:host([color="secondary"]) {
+		--_content-color: var(--context-cell-content-secondary-color, var(--semantics-content-secondary-color));
+	}
+
+	:host([color="accent"]) {
+		--_content-color: var(--context-cell-content-accent-color, var(--semantics-content-accent-color));
+	}
+
+	:host([color="success"]) {
+		--_content-color: var(--context-cell-content-success-color, var(--semantics-content-success-color));
+	}
+
+	:host([color="warning"]) {
+		--_content-color: var(--context-cell-content-warning-color, var(--semantics-content-warning-color));
+	}
+
+	:host([color="critical"]) {
+		--_content-color: var(--context-cell-content-critical-color, var(--semantics-content-critical-color));
+	}
+
 
 	/* # Vertical alignment */
-
-	/* ## Vertical alignment: center (default) */
 
 	:host([vertical-alignment="center"]),
 	:host(:not([vertical-alignment])) {
@@ -26,14 +63,10 @@ export const iconCellStyles = css`
 		justify-content: center;
 	}
 
-	/* ## Vertical alignment: top */
-
 	:host([vertical-alignment="top"]) {
 		align-self: flex-start;
 		justify-content: flex-start;
 	}
-
-	/* ## Vertical alignment: bottom */
 
 	:host([vertical-alignment="bottom"]) {
 		align-self: flex-end;
@@ -41,99 +74,12 @@ export const iconCellStyles = css`
 	}
 
 
-	/* # Slotted icon */
+	/* # Elements */
 
 	::slotted(*) {
 		display: block;
+		width: var(--_size);
+		height: var(--_size);
 		flex-shrink: 0;
-	}
-
-
-	/* # Size */
-
-	/* ## Size: 16 */
-
-	:host([size="16"]) {
-		width: var(--primitives-space-16);
-	}
-
-	:host([size="16"]) ::slotted(*) {
-		width: var(--primitives-space-16);
-		height: var(--primitives-space-16);
-	}
-
-	/* ## Size: 20 */
-
-	:host([size="20"]) {
-		width: var(--primitives-space-20);
-	}
-
-	:host([size="20"]) ::slotted(*) {
-		width: var(--primitives-space-20);
-		height: var(--primitives-space-20);
-	}
-
-	/* ## Size: 24 (default) */
-
-	:host([size="24"]),
-	:host(:not([size])) {
-		width: var(--primitives-space-24);
-	}
-
-	:host([size="24"]) ::slotted(*),
-	:host(:not([size])) ::slotted(*) {
-		width: var(--primitives-space-24);
-		height: var(--primitives-space-24);
-	}
-
-	/* ## Size: 32 */
-
-	:host([size="32"]) {
-		width: var(--primitives-space-32);
-	}
-
-	:host([size="32"]) ::slotted(*) {
-		width: var(--primitives-space-32);
-		height: var(--primitives-space-32);
-	}
-
-
-	/* # Color */
-
-	/* ## Color: default */
-
-	:host([color="default"]),
-	:host(:not([color])) {
-		color: var(--context-cell-content-color, var(--semantics-content-color));
-	}
-
-	/* ## Color: secondary */
-
-	:host([color="secondary"]) {
-		color: var(--context-cell-content-secondary-color, var(--semantics-content-secondary-color));
-	}
-
-	/* ## Color: accent */
-
-	:host([color="accent"]) {
-		color: var(--context-cell-content-accent-color, var(--semantics-content-accent-color));
-	}
-
-	/* ## Color: success */
-
-	:host([color="success"]) {
-		color: var(--context-cell-content-success-color, var(--semantics-content-success-color));
-	}
-
-	/* ## Color: warning */
-
-	:host([color="warning"]) {
-		color: var(--context-cell-content-warning-color, var(--semantics-content-warning-color));
-	}
-
-	/* ## Color: critical */
-
-	:host([color="critical"]) {
-		color: var(--context-cell-content-critical-color, var(--semantics-content-critical-color));
 	}
 `;
