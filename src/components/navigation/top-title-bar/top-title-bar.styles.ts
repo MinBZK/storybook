@@ -18,8 +18,8 @@ export const topTitleBarStyles = css`
 	/* # Block */
 
 	.top-title-bar {
-		display: flex;
 		box-sizing: border-box;
+		display: flex;
 		width: 100%;
 		padding-inline: var(--primitives-space-6);
 		flex-direction: row;
@@ -27,36 +27,30 @@ export const topTitleBarStyles = css`
 	}
 
 
-	/* # Start */
+	/* # Elements */
 
 	.top-title-bar__start {
 		display: flex;
 		min-width: 0;
 		flex-direction: row;
-		align-items: center;
 		flex-grow: 1;
 		flex-shrink: 1;
 		flex-basis: 0;
+		align-items: center;
 	}
-
-
-	/* # End */
 
 	.top-title-bar__end {
 		display: flex;
 		margin-top: var(--primitives-space-6);
 		flex-direction: row;
-		align-items: center;
 		flex-grow: 0;
 		flex-shrink: 0;
+		align-items: center;
 	}
 
 	.top-title-bar__end[hidden] {
 		display: none;
 	}
-
-
-	/* # Back button — text variant (default state) */
 
 	.top-title-bar__back-button {
 		display: var(--context-back-button-display, flex);
@@ -75,9 +69,6 @@ export const topTitleBarStyles = css`
 		display: none;
 	}
 
-
-	/* # Back button — icon variant (compact state) */
-
 	.top-title-bar__icon-back-button {
 		display: none;
 	}
@@ -85,9 +76,6 @@ export const topTitleBarStyles = css`
 	:host(.is-compact) .top-title-bar__icon-back-button {
 		display: flex;
 	}
-
-
-	/* # Divider */
 
 	.top-title-bar__divider {
 		display: none;
@@ -101,9 +89,6 @@ export const topTitleBarStyles = css`
 		display: block;
 	}
 
-
-	/* # Title group */
-
 	.top-title-bar__title-group {
 		display: none;
 		margin-top: var(--primitives-space-6);
@@ -112,9 +97,9 @@ export const topTitleBarStyles = css`
 		overflow: hidden;
 		padding-inline: var(--primitives-space-10);
 		flex-direction: column;
-		justify-content: center;
 		flex-grow: 1;
 		flex-shrink: 1;
+		justify-content: center;
 	}
 
 	:host(.is-compact) .top-title-bar__title-group {
@@ -124,8 +109,8 @@ export const topTitleBarStyles = css`
 	.top-title-bar__title {
 		margin: 0;
 		overflow: hidden;
-		font: var(--primitives-font-body-lg-bold-flat);
 		color: var(--semantics-content-color);
+		font: var(--primitives-font-body-lg-bold-flat);
 		text-overflow: ellipsis;
 		white-space: nowrap;
 	}
@@ -134,28 +119,22 @@ export const topTitleBarStyles = css`
 		font: var(--primitives-font-body-md-bold-flat);
 	}
 
-	.top-title-bar__subtitle {
-		margin: 0;
-		overflow: hidden;
-		font: var(--primitives-font-body-xxs-regular-flat);
-		color: var(--semantics-content-secondary-color);
-		text-overflow: ellipsis;
-		white-space: nowrap;
-	}
-
-
-	/* # Dismiss button */
-
-	.top-title-bar__dismiss-button {
-		display: var(--context-dismiss-button-display, block);
-	}
-
-
-	/* # Accessibility: High Contrast Mode */
-
 	@media (forced-colors: active) {
 		.top-title-bar__title {
 			color: CanvasText;
 		}
+	}
+
+	.top-title-bar__subtitle {
+		margin: 0;
+		overflow: hidden;
+		color: var(--semantics-content-secondary-color);
+		font: var(--primitives-font-body-xxs-regular-flat);
+		text-overflow: ellipsis;
+		white-space: nowrap;
+	}
+
+	.top-title-bar__dismiss-button {
+		display: var(--context-dismiss-button-display, block);
 	}
 `;
