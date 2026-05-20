@@ -341,6 +341,7 @@ export const menuGroupStyles = css`
 	:host {
 		display: block;
 		margin-top: var(--primitives-space-4);
+		margin-bottom: var(--primitives-space-4);
 		border-top: var(--semantics-dividers-thickness) solid var(--semantics-dividers-color);
 		border-bottom: var(--semantics-dividers-thickness) solid var(--semantics-dividers-color);
 		padding-top: var(--primitives-space-6);
@@ -353,6 +354,7 @@ export const menuGroupStyles = css`
 	}
 
 	:host([data-no-bottom-divider]) {
+		margin-bottom: 0;
 		border-bottom: none;
 		padding-bottom: var(--primitives-space-2);
 	}

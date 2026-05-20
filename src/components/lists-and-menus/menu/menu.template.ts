@@ -71,8 +71,6 @@ export function menuTemplate(this: NLDDMenu, isEmpty: boolean, variant: 'menu' |
 
 export function menuItemTemplate(this: NLDDMenuItem, variant: 'menu' | 'listbox' = 'menu') {
 	const hasCheckState = this.type !== 'button' && variant === 'menu';
-	const showCheckCell = hasCheckState || (this._reserveCheckPlaceholder && variant === 'menu');
-	const showIconCell = !!this.icon || this._reserveIconPlaceholder;
 	const role = itemRoleMap[this.type][variant];
 	const hasSubmenu = this._hasSubmenu;
 	return html`
@@ -88,17 +86,18 @@ export function menuItemTemplate(this: NLDDMenuItem, variant: 'menu' | 'listbox'
 			.popoverTargetElement=${this._submenuEl}
 			@click=${this._handleClick}
 		>
-			${showCheckCell ? html`
+			${hasCheckState ? html`
+				<nldd-spacer-cell size="2"></nldd-spacer-cell>
 				<nldd-icon-cell class="menu__item-check"
 					size="24"
 					horizontal-alignment="center"
-					icon=${hasCheckState && this.selected ? 'check-mark' : nothing}
+					icon=${this.selected ? 'check-mark' : nothing}
 				></nldd-icon-cell>
-				<nldd-spacer-cell size="8"></nldd-spacer-cell>
+				<nldd-spacer-cell size="2"></nldd-spacer-cell>
 			` : nothing}
-			${showIconCell ? html`
-				<nldd-icon-cell class="menu__item-icon" size="20" icon=${this.icon || nothing}></nldd-icon-cell>
-				<nldd-spacer-cell size="6"></nldd-spacer-cell>
+			${this.icon ? html`
+				<nldd-icon-cell class="menu__item-icon" size="20" icon=${this.icon}></nldd-icon-cell>
+				<nldd-spacer-cell size="8"></nldd-spacer-cell>
 			` : nothing}
 			<nldd-text-cell class="menu__item-text" text=${this.text} query=${this.query} query-mark-mode=${this.queryMarkMode}></nldd-text-cell>
 			${this.details ? html`
