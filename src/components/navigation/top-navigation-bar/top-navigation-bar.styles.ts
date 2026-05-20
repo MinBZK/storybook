@@ -246,13 +246,14 @@ export const topNavigationBarStyles = css`
 		display: flex;
 		min-width: 0;
 		align-items: center;
-		flex-grow: 1;
 
 		@container top-navigation-bar-container (max-width: ${mdMax}) {
+			flex-grow: 0;
 			flex-shrink: 0;
 		}
 
 		@container top-navigation-bar-container (min-width: ${lgMin}) {
+			flex-grow: 1;
 			flex-shrink: 1;
 		}
 	}
@@ -265,10 +266,12 @@ export const topNavigationBarStyles = css`
 		align-items: center;
 
 		@container top-navigation-bar-container (max-width: ${mdMax}) {
+			flex-grow: 1;
 			flex-shrink: 1;
 		}
 
 		@container top-navigation-bar-container (min-width: ${lgMin}) {
+			flex-grow: 0;
 			flex-shrink: 0;
 		}
 	}
