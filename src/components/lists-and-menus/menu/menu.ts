@@ -1638,34 +1638,37 @@ export class NLDDMenu extends LitElement {
 		});
 
 		const visible = children.filter(el => !el.hasAttribute('hidden'));
+
+		// Pass 1: hide redundant explicit dividers (first/last, adjacent to
+		// another divider, adjacent to a group's auto-divider).
 		visible.forEach((el, index) => {
-			const tag = el.tagName.toLowerCase();
-			const prev = index > 0 ? visible[index - 1] : null;
-			const next = index < visible.length - 1 ? visible[index + 1] : null;
-			const prevTag = prev?.tagName.toLowerCase();
-			const nextTag = next?.tagName.toLowerCase();
+			if (el.tagName.toLowerCase() !== 'nldd-menu-divider') return;
+			const prevTag = visible[index - 1]?.tagName.toLowerCase();
+			const nextTag = visible[index + 1]?.tagName.toLowerCase();
 			const isFirst = index === 0;
 			const isLast = index === visible.length - 1;
-
-			if (tag === 'nldd-menu-divider') {
-				// nldd-menu-group renders auto-dividers both above and below;
-				// suppress an explicit divider that would render right next to it.
-				const prevIsDivider = prevTag === 'nldd-menu-divider';
-				const nextIsGroup = nextTag === 'nldd-menu-group';
-				const prevIsGroup = prevTag === 'nldd-menu-group';
-				if (isFirst || isLast || prevIsDivider || nextIsGroup || prevIsGroup) {
-					el.setAttribute('hidden', '');
-				}
+			if (
+				isFirst || isLast
+				|| prevTag === 'nldd-menu-divider'
+				|| prevTag === 'nldd-menu-group'
+				|| nextTag === 'nldd-menu-group'
+			) {
+				el.setAttribute('hidden', '');
 			}
+		});
 
-			if (tag === 'nldd-menu-group') {
-				// A group's own bottom divider is redundant when it's the last
-				// child or directly followed by another group (whose top divider
-				// already separates them).
-				const nextIsGroup = nextTag === 'nldd-menu-group';
-				if (isLast || nextIsGroup) {
-					el.setAttribute('data-no-bottom-divider', '');
-				}
+		// Pass 2: determine group bottom-divider against the post-pass-1
+		// visible set. Without this re-filter a group followed by an
+		// explicit divider that pass 1 hid (e.g. because the divider is
+		// last, or the items after it are hidden) would still see the
+		// divider as its "next" sibling and keep the bottom border.
+		const remaining = visible.filter(el => !el.hasAttribute('hidden'));
+		remaining.forEach((el, index) => {
+			if (el.tagName.toLowerCase() !== 'nldd-menu-group') return;
+			const nextTag = remaining[index + 1]?.tagName.toLowerCase();
+			const isLast = index === remaining.length - 1;
+			if (isLast || nextTag === 'nldd-menu-group') {
+				el.setAttribute('data-no-bottom-divider', '');
 			}
 		});
 	}
