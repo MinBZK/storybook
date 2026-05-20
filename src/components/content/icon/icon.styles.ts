@@ -15,7 +15,6 @@ export const iconStyles = css`
 
 		display: inline-block;
 		width: var(--_size);
-		aspect-ratio: 1 / 1;
 		color: var(--_color);
 	}
 
@@ -77,7 +76,6 @@ export const iconStyles = css`
 	.icon__container {
 		display: flex;
 		width: 100%;
-		height: 100%;
 		align-items: center;
 		justify-content: center;
 	}
@@ -88,7 +86,5 @@ export const iconStyles = css`
 	svg {
 		display: block;
 		width: 100%;
-		height: 100%;
-		object-fit: contain;
 	}
 `;
