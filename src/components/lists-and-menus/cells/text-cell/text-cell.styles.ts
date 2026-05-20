@@ -37,6 +37,7 @@ export const textCellStyles = css`
 	:host([width=""]) {
 		flex-grow: 1;
 		flex-shrink: 1;
+		flex-basis: 0;
 	}
 
 	:host([width="fit-content"]) {

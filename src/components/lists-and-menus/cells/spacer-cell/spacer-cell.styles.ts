@@ -42,5 +42,7 @@ export const spacerCellStyles = css`
 	:host([size="flexible"]) {
 		--_width: auto;
 		flex-grow: 1;
+		flex-shrink: 1;
+		flex-basis: 0;
 	}
 `;
