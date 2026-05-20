@@ -240,6 +240,7 @@ export class NLDDToolbar extends LitElement {
 		if (this._pinnedOverflowItems.length > 0) {
 			this._pinnedOverflowItems.forEach(el => {
 				const clone = el.cloneNode(true) as Element;
+				clone.removeAttribute('slot');
 				this._menu!.appendChild(clone);
 			});
 		}
