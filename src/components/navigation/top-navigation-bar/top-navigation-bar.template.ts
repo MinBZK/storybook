@@ -107,20 +107,16 @@ export function template(component: NLDDTopNavigationBar) {
 							></nldd-menu-bar-item>
 						</div>
 						<div class="top-navigation-bar__global-menu-bar">
-							<nldd-menu-bar
-								accessible-label="${component._t('components.top-navigation-bar.global-menu-bar-label')}"
-							>
-								<slot name="global"></slot>
-							</nldd-menu-bar>
+							<slot name="global"
+								@slotchange=${component._onGlobalSlotChange}
+							></slot>
 						</div>
 					</div>
 					<div class="top-navigation-bar__menu-bar-end">
 						<div class="top-navigation-bar__utility-menu-bar">
-							<nldd-menu-bar
-								accessible-label="${component._t('components.top-navigation-bar.utility-menu-bar-label')}"
-							>
-								<slot name="utility"></slot>
-							</nldd-menu-bar>
+							<slot name="utility"
+								@slotchange=${component._onUtilitySlotChange}
+							></slot>
 						</div>
 					</div>
 				</div>

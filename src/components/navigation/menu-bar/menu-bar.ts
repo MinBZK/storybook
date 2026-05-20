@@ -94,8 +94,14 @@ export class NLDDMenuBar extends withTranslations(LitElement, nlddMenuBarTransla
 		this._setupOverflowDetection();
 		this._syncCompactAttribute();
 		this._syncEmpty();
-		if (import.meta.env?.DEV && !this.accessibleLabel && !this.hasAttribute('empty')) {
-			console.warn('nldd-menu-bar: accessible-label is niet gezet. Pagina\'s met meerdere nav landmarks moeten elke nav een uniek label geven (WCAG 1.3.1).');
+		if (import.meta.env?.DEV) {
+			// Defer one task so wrappers (e.g. top-navigation-bar) that set a
+			// default label via slotchange have a chance to run first.
+			setTimeout(() => {
+				if (this.isConnected && !this.accessibleLabel && !this.hasAttribute('empty')) {
+					console.warn('nldd-menu-bar: accessible-label is niet gezet. Pagina\'s met meerdere nav landmarks moeten elke nav een uniek label geven (WCAG 1.3.1).');
+				}
+			}, 0);
 		}
 	}
 
