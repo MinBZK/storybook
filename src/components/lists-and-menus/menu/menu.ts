@@ -138,6 +138,18 @@ export class NLDDMenuItem extends LitElement {
 	@state()
 	_submenuOpen = false;
 
+	/** Set by nldd-menu when any peer item is checkbox/radio — keeps text
+	 * baselines aligned across the menu by reserving an empty check cell on
+	 * items that don't have one of their own. Not part of the public API. */
+	@state()
+	_reserveCheckPlaceholder = false;
+
+	/** Set by nldd-menu when any peer item has an icon — same alignment
+	 * reservation idea as `_reserveCheckPlaceholder`. Not part of the
+	 * public API. */
+	@state()
+	_reserveIconPlaceholder = false;
+
 	private static _idCounter = 0;
 
 	override connectedCallback(): void {
@@ -1688,6 +1700,7 @@ export class NLDDMenu extends LitElement {
 		this._setHighlight(null);
 		this._updateEmptyState();
 		this._updateDividerVisibility();
+		this._updateAlignmentReservations();
 		if (this._isOpen) this.reposition();
 	}
 
@@ -1701,6 +1714,23 @@ export class NLDDMenu extends LitElement {
 		groups.forEach(group => {
 			const visibleItems = group.querySelectorAll('nldd-menu-item:not([hidden])');
 			group.toggleAttribute('hidden', visibleItems.length === 0);
+		});
+	}
+
+	/**
+	 * When peer items have icons or checkbox/radio state, items that lack
+	 * their own should still reserve the leading cell so text baselines
+	 * line up. Pushes flags onto each NLDDMenuItem; the item's template
+	 * renders an empty placeholder cell when the flag is set but the item
+	 * itself has no icon / check.
+	 */
+	private _updateAlignmentReservations(): void {
+		const items = Array.from(this.querySelectorAll('nldd-menu-item')) as NLDDMenuItem[];
+		const anyCheckable = items.some(item => item.type === 'checkbox' || item.type === 'radio');
+		const anyIcon = items.some(item => item.icon !== '');
+		items.forEach(item => {
+			item._reserveCheckPlaceholder = anyCheckable;
+			item._reserveIconPlaceholder = anyIcon;
 		});
 	}
 
@@ -1984,6 +2014,7 @@ export class NLDDMenu extends LitElement {
 		}
 
 		this._updateDividerVisibility();
+		this._updateAlignmentReservations();
 		this._clearHighlight();
 		this._updateEmptyState();
 		Array.from(this.querySelectorAll('nldd-menu-item')).forEach(item => {

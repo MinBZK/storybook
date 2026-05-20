@@ -75,6 +75,29 @@ export const Radio = {
 	`,
 };
 
+export const MixedIconsAndCheckable = {
+	render: () => html`
+		<nldd-button id="button-mixed-icons-checkable" expandable text="Open menu"></nldd-button>
+		<nldd-menu id="menu-mixed-icons-checkable" anchor="button-mixed-icons-checkable">
+			<nldd-menu-item type="checkbox" text="Vet" icon="bold" selected></nldd-menu-item>
+			<nldd-menu-item type="checkbox" text="Cursief" icon="italic"></nldd-menu-item>
+			<nldd-menu-item type="checkbox" text="Onderstreept" icon="underlined"></nldd-menu-item>
+			<nldd-menu-item type="radio" text="Lijst zonder bullets" selected></nldd-menu-item>
+			<nldd-menu-item type="radio" text="Lijst met bullets"></nldd-menu-item>
+			<nldd-menu-item text="Bewerk citaat" icon="text-quote"></nldd-menu-item>
+			<nldd-menu-item text="Voorbeeldweergave" icon="eye"></nldd-menu-item>
+			<nldd-menu-item text="Volledig scherm"></nldd-menu-item>
+		</nldd-menu>
+	`,
+	parameters: {
+		docs: {
+			description: {
+				story: 'Combineer items met iconen en items met radio/checkbox in dezelfde menu. De menu reserveert een lege placeholder voor de check- of icoon-cel bij items die er zelf geen hebben, zodat alle tekst-baselines uitgelijnd staan. Radio/checkbox items met een icoon krijgen beide cellen ingevuld.',
+			},
+		},
+	},
+};
+
 export const Disabled = {
 	render: () => html`
 		<nldd-button id="button-disabled" expandable text="Open menu"></nldd-button>
