@@ -128,7 +128,7 @@ export const Standaard = {
 			lg-padding-right=${ifDefined(args.lgPaddingRight)}
 			lg-padding-bottom=${ifDefined(args.lgPaddingBottom)}
 			lg-padding-left=${ifDefined(args.lgPaddingLeft)}
-			style="outline: 1px dashed var(--color-neutral-400);"
+			style="outline: 1px dashed var(--primitives-color-neutral-150);"
 		>
 			<nldd-rich-text><p>Inhoud van de container.</p></nldd-rich-text>
 		</nldd-container>
@@ -137,7 +137,7 @@ export const Standaard = {
 
 export const PaddingAlleZijden = {
 	render: () => html`
-		<nldd-container padding="24" style="outline: 1px dashed var(--color-neutral-400);">
+		<nldd-container padding="24" style="outline: 1px dashed var(--primitives-color-neutral-150);">
 			<nldd-rich-text><p>Padding aan alle zijden.</p></nldd-rich-text>
 		</nldd-container>
 	`,
@@ -146,7 +146,7 @@ export const PaddingAlleZijden = {
 
 export const PaddingInline = {
 	render: () => html`
-		<nldd-container padding-inline="32" style="outline: 1px dashed var(--color-neutral-400);">
+		<nldd-container padding-inline="32" style="outline: 1px dashed var(--primitives-color-neutral-150);">
 			<nldd-rich-text><p>Padding links en rechts.</p></nldd-rich-text>
 		</nldd-container>
 	`,
@@ -160,7 +160,7 @@ export const PaddingIndividueel = {
 			padding-right="32"
 			padding-bottom="16"
 			padding-left="64"
-			style="outline: 1px dashed var(--color-neutral-400);"
+			style="outline: 1px dashed var(--primitives-color-neutral-150);"
 		>
 			<nldd-rich-text><p>Individuele padding: top=8 right=32 bottom=16 left=64.</p></nldd-rich-text>
 		</nldd-container>
@@ -175,7 +175,7 @@ export const PaddingResponsief = {
 			sm-padding="16"
 			md-padding="24"
 			lg-padding="32"
-			style="outline: 1px dashed var(--color-neutral-400);"
+			style="outline: 1px dashed var(--primitives-color-neutral-150);"
 		>
 			<nldd-rich-text><p>Padding: 8 (default) → 16 (sm) → 24 (md) → 32 (lg).</p></nldd-rich-text>
 		</nldd-container>
@@ -185,7 +185,7 @@ export const PaddingResponsief = {
 
 export const Row = {
 	render: () => html`
-		<nldd-container direction="row" gap="12" padding="16" style="outline: 1px dashed var(--color-neutral-400);">
+		<nldd-container direction="row" gap="12" padding="16" style="outline: 1px dashed var(--primitives-color-neutral-150);">
 			<nldd-rich-text><p>Eerste</p></nldd-rich-text>
 			<nldd-rich-text><p>Tweede</p></nldd-rich-text>
 			<nldd-rich-text><p>Derde</p></nldd-rich-text>
@@ -196,7 +196,7 @@ export const Row = {
 
 export const Column = {
 	render: () => html`
-		<nldd-container direction="column" gap="12" padding="16" style="outline: 1px dashed var(--color-neutral-400);">
+		<nldd-container direction="column" gap="12" padding="16" style="outline: 1px dashed var(--primitives-color-neutral-150);">
 			<nldd-rich-text><p>Eerste</p></nldd-rich-text>
 			<nldd-rich-text><p>Tweede</p></nldd-rich-text>
 			<nldd-rich-text><p>Derde</p></nldd-rich-text>
@@ -207,7 +207,7 @@ export const Column = {
 
 export const Wrap = {
 	render: () => html`
-		<nldd-container direction="row" wrap gap="12" padding="16" style="outline: 1px dashed var(--color-neutral-400); max-width: 320px;">
+		<nldd-container direction="row" wrap gap="12" padding="16" style="outline: 1px dashed var(--primitives-color-neutral-150); max-width: 320px;">
 			<nldd-tag>Item één</nldd-tag>
 			<nldd-tag>Item twee</nldd-tag>
 			<nldd-tag>Item drie</nldd-tag>
@@ -226,7 +226,7 @@ export const Alignment = {
 			padding="16"
 			horizontal-alignment="center"
 			vertical-alignment="center"
-			style="outline: 1px dashed var(--color-neutral-400); min-height: 200px;"
+			style="outline: 1px dashed var(--primitives-color-neutral-150); min-height: 200px;"
 		>
 			<nldd-rich-text><p>Gecentreerd</p></nldd-rich-text>
 			<nldd-rich-text><p>Op beide assen</p></nldd-rich-text>
@@ -237,7 +237,7 @@ export const Alignment = {
 
 export const GeenPadding = {
 	render: () => html`
-		<nldd-container padding="0" style="outline: 1px dashed var(--color-neutral-400);">
+		<nldd-container padding="0" style="outline: 1px dashed var(--primitives-color-neutral-150);">
 			<nldd-rich-text><p>Geen padding.</p></nldd-rich-text>
 		</nldd-container>
 	`,
