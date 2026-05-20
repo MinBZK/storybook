@@ -114,12 +114,6 @@ export const AlleToestanden = {
 				<option value="optie-1">Optie 1</option>
 			</select>
 		</nldd-dropdown>
-		<nldd-dropdown size="md" expanded>
-			<select name="optie-expanded" aria-label="Selecteer een optie">
-				<option value="optie-1" selected>Optie 1</option>
-				<option value="optie-2">Optie 2</option>
-			</select>
-		</nldd-dropdown>
 		<nldd-dropdown size="md" disabled>
 			<select name="optie-4" aria-label="Selecteer een optie">
 				<option value="optie-1">Optie 1</option>
