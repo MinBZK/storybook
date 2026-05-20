@@ -68,7 +68,13 @@ export const barSplitViewStyles = css`
 		flex-basis: 0;
 	}
 
-	::slotted(*) {
+	/* Only the main pane grows to fill remaining space; bar panes size to
+	 * their content. Without this scoping a bar's slotted content gets
+	 * flex-basis: 0 and collapses (the old 'flex: 1' shorthand expanded
+	 * to 'flex: 1 1 0%', where % resolved to 'auto' inside the
+	 * height-indeterminate bar wrapper — the longhand conversion lost
+	 * that nuance, hence this rule). */
+	::slotted([slot="main"]) {
 		min-height: 0;
 		flex-grow: 1;
 		flex-shrink: 1;

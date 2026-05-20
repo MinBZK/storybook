@@ -41,6 +41,13 @@ export const splitViewPaneStyles = css`
 
 	/* # Block */
 
+	/* flex-basis: auto (not 0) so the pane works in both determinate
+	 * parents (main column — grows to fill via flex-grow) AND
+	 * indeterminate parents (a bar — auto = content size, no growth
+	 * space, stays compact). The old 'flex: 1' shorthand expanded to
+	 * 'flex-basis: 0%' which the spec resolves to 'auto' in indeterminate
+	 * parents; the longhand conversion lost that nuance and collapsed
+	 * panes inside bars. */
 	.split-view-pane {
 		display: flex;
 		min-width: 0;
@@ -49,7 +56,7 @@ export const splitViewPaneStyles = css`
 		flex-direction: column;
 		flex-grow: 1;
 		flex-shrink: 1;
-		flex-basis: 0;
+		flex-basis: auto;
 	}
 
 
@@ -59,6 +66,6 @@ export const splitViewPaneStyles = css`
 		min-height: 0;
 		flex-grow: 1;
 		flex-shrink: 1;
-		flex-basis: 0;
+		flex-basis: auto;
 	}
 `;
