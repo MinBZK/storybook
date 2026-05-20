@@ -214,15 +214,23 @@ export class NLDDMenuBar extends withTranslations(LitElement, nlddMenuBarTransla
 		overflowButton.style.display = 'inline-block';
 
 		const containerWidth = this.clientWidth;
-		const overflowButtonWidth = overflowButton.offsetWidth;
+		const totalItemsWidth = items.reduce((sum, item) => sum + item.offsetWidth, 0);
 
+		// All items fit on their own — no overflow button needed, no items hidden.
+		if (totalItemsWidth <= containerWidth) {
+			overflowButton.style.display = 'none';
+			return;
+		}
+
+		// Items don't fit; reserve overflow-button space and find the cutoff.
+		const overflowButtonWidth = overflowButton.offsetWidth;
+		const availableWidth = containerWidth - overflowButtonWidth;
 		let usedWidth = 0;
 		let overflowStartIndex = -1;
 
 		for (let i = 0; i < items.length; i++) {
 			const itemWidth = items[i].offsetWidth;
-			const availableWidth = containerWidth - overflowButtonWidth;
-			if (usedWidth + itemWidth > availableWidth && overflowStartIndex < 0) {
+			if (usedWidth + itemWidth > availableWidth) {
 				overflowStartIndex = i;
 				break;
 			}
