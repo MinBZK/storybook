@@ -15,7 +15,7 @@ export const iconStyles = css`
 
 		display: inline-block;
 		width: var(--_size);
-		height: auto;
+		aspect-ratio: 1 / 1;
 		color: var(--_color);
 	}
 
