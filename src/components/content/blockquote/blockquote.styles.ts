@@ -61,7 +61,12 @@ export const blockquoteStyles = css`
 	}
 
 	.blockquote__attribution {
+		display: block;
 		font: var(--_attribution-font);
+	}
+
+	.blockquote__attribution::before {
+		content: '— ' / '';
 	}
 
 	.blockquote__attribution[hidden] {
@@ -72,7 +77,7 @@ export const blockquoteStyles = css`
 		margin: 0;
 	}
 
-	slot[name="attribution"]::slotted(p) {
+	.blockquote__attribution::slotted(p) {
 		display: inline;
 	}
 `;
