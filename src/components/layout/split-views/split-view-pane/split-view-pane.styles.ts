@@ -49,7 +49,8 @@ export const splitViewPaneStyles = css`
 		flex-direction: column;
 		flex-grow: 1;
 		flex-shrink: 1;
-		flex-basis: 0;	}
+		flex-basis: 0;
+	}
 
 
 	/* # Elements */
@@ -58,5 +59,6 @@ export const splitViewPaneStyles = css`
 		min-height: 0;
 		flex-grow: 1;
 		flex-shrink: 1;
-		flex-basis: 0;	}
+		flex-basis: 0;
+	}
 `;

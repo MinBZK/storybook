@@ -90,7 +90,9 @@ export const collectionStyles = css`
 
 	:host([layout="horizontal-scroll"]) .collection__items::after {
 		content: '';
-		flex: 0 0 var(--primitives-space-48);
+		flex-grow: 0;
+		flex-shrink: 0;
+		flex-basis: var(--primitives-space-48);
 	}
 
 	:host([layout="horizontal-scroll"]) .collection__items::-webkit-scrollbar {

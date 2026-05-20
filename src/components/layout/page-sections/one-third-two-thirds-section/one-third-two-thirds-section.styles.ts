@@ -139,10 +139,13 @@ export const oneThirdTwoThirdsSectionStyles = css`
 		min-width: var(--primitives-area-280);
 		flex-grow: 1;
 		flex-shrink: 1;
-		flex-basis: 0;	}
+		flex-basis: 0;
+	}
 
 	.one-third-two-thirds-section__right-column {
 		min-width: var(--primitives-area-280);
-		flex: 2;
+		flex-grow: 2;
+		flex-shrink: 1;
+		flex-basis: 0;
 	}
 `;

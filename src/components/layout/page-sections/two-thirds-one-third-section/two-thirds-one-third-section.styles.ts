@@ -137,12 +137,15 @@ export const twoThirdsOneThirdSectionStyles = css`
 
 	.two-thirds-one-third-section__left-column {
 		min-width: var(--primitives-area-280);
-		flex: 2;
+		flex-grow: 2;
+		flex-shrink: 1;
+		flex-basis: 0;
 	}
 
 	.two-thirds-one-third-section__right-column {
 		min-width: var(--primitives-area-280);
 		flex-grow: 1;
 		flex-shrink: 1;
-		flex-basis: 0;	}
+		flex-basis: 0;
+	}
 `;

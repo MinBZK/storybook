@@ -139,11 +139,13 @@ export const oneHalfOneHalfSectionStyles = css`
 		min-width: var(--primitives-area-280);
 		flex-grow: 1;
 		flex-shrink: 1;
-		flex-basis: 0;	}
+		flex-basis: 0;
+	}
 
 	.one-half-one-half-section__right-column {
 		min-width: var(--primitives-area-280);
 		flex-grow: 1;
 		flex-shrink: 1;
-		flex-basis: 0;	}
+		flex-basis: 0;
+	}
 `;

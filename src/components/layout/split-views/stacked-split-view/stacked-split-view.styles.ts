@@ -42,7 +42,8 @@ export const stackedSplitViewStyles = css`
 		flex-direction: column;
 		flex-grow: 1;
 		flex-shrink: 1;
-		flex-basis: 0;	}
+		flex-basis: 0;
+	}
 
 
 	/* # Elements */
@@ -55,7 +56,8 @@ export const stackedSplitViewStyles = css`
 		flex-direction: column;
 		flex-grow: 1;
 		flex-shrink: 1;
-		flex-basis: 0;	}
+		flex-basis: 0;
+	}
 
 	.stacked-split-view__pane[hidden] {
 		display: none;
@@ -65,5 +67,6 @@ export const stackedSplitViewStyles = css`
 		min-height: 0;
 		flex-grow: 1;
 		flex-shrink: 1;
-		flex-basis: 0;	}
+		flex-basis: 0;
+	}
 `;

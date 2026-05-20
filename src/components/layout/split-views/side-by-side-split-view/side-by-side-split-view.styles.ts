@@ -41,7 +41,8 @@ export const sideBySideSplitViewStyles = css`
 		flex-direction: row;
 		flex-grow: 1;
 		flex-shrink: 1;
-		flex-basis: 0;	}
+		flex-basis: 0;
+	}
 
 
 	/* # Elements */
@@ -54,7 +55,8 @@ export const sideBySideSplitViewStyles = css`
 		flex-direction: column;
 		flex-grow: 1;
 		flex-shrink: 1;
-		flex-basis: 0;	}
+		flex-basis: 0;
+	}
 
 	.side-by-side-split-view__pane[hidden] {
 		display: none;
@@ -64,5 +66,6 @@ export const sideBySideSplitViewStyles = css`
 		min-height: 0;
 		flex-grow: 1;
 		flex-shrink: 1;
-		flex-basis: 0;	}
+		flex-basis: 0;
+	}
 `;
