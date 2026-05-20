@@ -16,6 +16,9 @@ export const pageStyles = css`
 		overflow-x: hidden;
 		overscroll-behavior: contain;
 		flex-direction: column;
+		/* New stacking context so descendant z-index (e.g. list-item
+		 * sticky/elevated layers) can't paint over the page's scrollbar. */
+		isolation: isolate;
 	}
 
 	:host([hidden]) {
