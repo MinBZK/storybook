@@ -12,7 +12,9 @@ export const titleStyles = css`
 	/* # Host */
 
 	:host {
-		--_font: var(--primitives-font-display-3-sm);
+		@media (max-width: ${smMax}) {
+			--_font: var(--primitives-font-display-3-sm);
+		}
 
 		@media (min-width: ${mdMin}) and (max-width: ${mdMax}) {
 			--_font: var(--primitives-font-display-3-md);
@@ -20,6 +22,10 @@ export const titleStyles = css`
 
 		@media (min-width: ${lgMin}) {
 			--_font: var(--primitives-font-display-3-lg);
+		}
+
+		@container layout-container (max-width: ${smMax}) {
+			--_font: var(--primitives-font-display-3-sm);
 		}
 
 		@container layout-container (min-width: ${mdMin}) and (max-width: ${mdMax}) {
@@ -34,7 +40,9 @@ export const titleStyles = css`
 	}
 
 	:host([size="1"]) {
-		--_font: var(--primitives-font-display-1-sm);
+		@media (max-width: ${smMax}) {
+			--_font: var(--primitives-font-display-1-sm);
+		}
 
 		@media (min-width: ${mdMin}) and (max-width: ${mdMax}) {
 			--_font: var(--primitives-font-display-1-md);
@@ -42,6 +50,10 @@ export const titleStyles = css`
 
 		@media (min-width: ${lgMin}) {
 			--_font: var(--primitives-font-display-1-lg);
+		}
+
+		@container layout-container (max-width: ${smMax}) {
+			--_font: var(--primitives-font-display-1-sm);
 		}
 
 		@container layout-container (min-width: ${mdMin}) and (max-width: ${mdMax}) {
@@ -54,7 +66,9 @@ export const titleStyles = css`
 	}
 
 	:host([size="2"]) {
-		--_font: var(--primitives-font-display-2-sm);
+		@media (max-width: ${smMax}) {
+			--_font: var(--primitives-font-display-2-sm);
+		}
 
 		@media (min-width: ${mdMin}) and (max-width: ${mdMax}) {
 			--_font: var(--primitives-font-display-2-md);
@@ -62,6 +76,10 @@ export const titleStyles = css`
 
 		@media (min-width: ${lgMin}) {
 			--_font: var(--primitives-font-display-2-lg);
+		}
+
+		@container layout-container (max-width: ${smMax}) {
+			--_font: var(--primitives-font-display-2-sm);
 		}
 
 		@container layout-container (min-width: ${mdMin}) and (max-width: ${mdMax}) {
@@ -74,7 +92,9 @@ export const titleStyles = css`
 	}
 
 	:host([size="4"]) {
-		--_font: var(--primitives-font-display-4-sm);
+		@media (max-width: ${smMax}) {
+			--_font: var(--primitives-font-display-4-sm);
+		}
 
 		@media (min-width: ${mdMin}) and (max-width: ${mdMax}) {
 			--_font: var(--primitives-font-display-4-md);
@@ -82,6 +102,10 @@ export const titleStyles = css`
 
 		@media (min-width: ${lgMin}) {
 			--_font: var(--primitives-font-display-4-lg);
+		}
+
+		@container layout-container (max-width: ${smMax}) {
+			--_font: var(--primitives-font-display-4-sm);
 		}
 
 		@container layout-container (min-width: ${mdMin}) and (max-width: ${mdMax}) {
@@ -94,7 +118,9 @@ export const titleStyles = css`
 	}
 
 	:host([size="5"]) {
-		--_font: var(--primitives-font-display-5-sm);
+		@media (max-width: ${smMax}) {
+			--_font: var(--primitives-font-display-5-sm);
+		}
 
 		@media (min-width: ${mdMin}) and (max-width: ${mdMax}) {
 			--_font: var(--primitives-font-display-5-md);
@@ -102,6 +128,10 @@ export const titleStyles = css`
 
 		@media (min-width: ${lgMin}) {
 			--_font: var(--primitives-font-display-5-lg);
+		}
+
+		@container layout-container (max-width: ${smMax}) {
+			--_font: var(--primitives-font-display-5-sm);
 		}
 
 		@container layout-container (min-width: ${mdMin}) and (max-width: ${mdMax}) {
@@ -114,7 +144,9 @@ export const titleStyles = css`
 	}
 
 	:host([size="6"]) {
-		--_font: var(--primitives-font-display-6-sm);
+		@media (max-width: ${smMax}) {
+			--_font: var(--primitives-font-display-6-sm);
+		}
 
 		@media (min-width: ${mdMin}) and (max-width: ${mdMax}) {
 			--_font: var(--primitives-font-display-6-md);
@@ -122,6 +154,10 @@ export const titleStyles = css`
 
 		@media (min-width: ${lgMin}) {
 			--_font: var(--primitives-font-display-6-lg);
+		}
+
+		@container layout-container (max-width: ${smMax}) {
+			--_font: var(--primitives-font-display-6-sm);
 		}
 
 		@container layout-container (min-width: ${mdMin}) and (max-width: ${mdMax}) {
