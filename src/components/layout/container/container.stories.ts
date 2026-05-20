@@ -6,6 +6,12 @@ import '../../content/tag/tag.js';
 
 const SIZES = ['0', '2', '4', '6', '8', '10', '12', '16', '20', '24', '28', '32', '40', '44', '48', '56', '64', '80', '96'];
 
+const sizeControl = (description: string) => ({
+	control: 'select',
+	options: SIZES,
+	description,
+});
+
 /**
  * Container is een eenvoudige layout-primitive: flex met richting, gap,
  * uitlijning en padding. Padding kan per zijde, per as (inline/block) of
@@ -39,22 +45,44 @@ export default {
 	argTypes: {
 		direction: { control: 'select', options: ['column', 'row'], description: 'Flex-richting' },
 		wrap: { control: 'boolean', description: 'Kinderen wrappen naar nieuwe regel' },
-		gap: { control: 'select', options: SIZES, description: 'Gap tussen kinderen' },
-		smGap: { name: 'sm-gap', control: 'select', options: SIZES, description: 'Gap bij sm' },
-		mdGap: { name: 'md-gap', control: 'select', options: SIZES, description: 'Gap bij md' },
-		lgGap: { name: 'lg-gap', control: 'select', options: SIZES, description: 'Gap bij lg' },
+		gap: sizeControl('Gap tussen kinderen'),
+		smGap: { name: 'sm-gap', ...sizeControl('Gap bij sm') },
+		mdGap: { name: 'md-gap', ...sizeControl('Gap bij md') },
+		lgGap: { name: 'lg-gap', ...sizeControl('Gap bij lg') },
 		horizontalAlignment: { name: 'horizontal-alignment', control: 'select', options: [undefined, 'left', 'center', 'right'], description: 'Horizontale uitlijning' },
 		verticalAlignment: { name: 'vertical-alignment', control: 'select', options: [undefined, 'top', 'center', 'bottom'], description: 'Verticale uitlijning' },
-		padding: { control: 'select', options: SIZES, description: 'Padding voor alle zijden' },
-		paddingInline: { name: 'padding-inline', control: 'select', options: SIZES, description: 'Padding links en rechts' },
-		paddingBlock: { name: 'padding-block', control: 'select', options: SIZES, description: 'Padding boven en onder' },
-		paddingTop: { name: 'padding-top', control: 'select', options: SIZES, description: 'Padding boven' },
-		paddingRight: { name: 'padding-right', control: 'select', options: SIZES, description: 'Padding rechts' },
-		paddingBottom: { name: 'padding-bottom', control: 'select', options: SIZES, description: 'Padding onder' },
-		paddingLeft: { name: 'padding-left', control: 'select', options: SIZES, description: 'Padding links' },
-		smPadding: { name: 'sm-padding', control: 'select', options: SIZES, description: 'Padding bij sm' },
-		mdPadding: { name: 'md-padding', control: 'select', options: SIZES, description: 'Padding bij md' },
-		lgPadding: { name: 'lg-padding', control: 'select', options: SIZES, description: 'Padding bij lg' },
+
+		padding: sizeControl('Padding voor alle zijden'),
+		paddingInline: { name: 'padding-inline', ...sizeControl('Padding links en rechts') },
+		paddingBlock: { name: 'padding-block', ...sizeControl('Padding boven en onder') },
+		paddingTop: { name: 'padding-top', ...sizeControl('Padding boven') },
+		paddingRight: { name: 'padding-right', ...sizeControl('Padding rechts') },
+		paddingBottom: { name: 'padding-bottom', ...sizeControl('Padding onder') },
+		paddingLeft: { name: 'padding-left', ...sizeControl('Padding links') },
+
+		smPadding: { name: 'sm-padding', ...sizeControl('Padding bij sm') },
+		smPaddingInline: { name: 'sm-padding-inline', ...sizeControl('Padding inline bij sm') },
+		smPaddingBlock: { name: 'sm-padding-block', ...sizeControl('Padding block bij sm') },
+		smPaddingTop: { name: 'sm-padding-top', ...sizeControl('Padding top bij sm') },
+		smPaddingRight: { name: 'sm-padding-right', ...sizeControl('Padding right bij sm') },
+		smPaddingBottom: { name: 'sm-padding-bottom', ...sizeControl('Padding bottom bij sm') },
+		smPaddingLeft: { name: 'sm-padding-left', ...sizeControl('Padding left bij sm') },
+
+		mdPadding: { name: 'md-padding', ...sizeControl('Padding bij md') },
+		mdPaddingInline: { name: 'md-padding-inline', ...sizeControl('Padding inline bij md') },
+		mdPaddingBlock: { name: 'md-padding-block', ...sizeControl('Padding block bij md') },
+		mdPaddingTop: { name: 'md-padding-top', ...sizeControl('Padding top bij md') },
+		mdPaddingRight: { name: 'md-padding-right', ...sizeControl('Padding right bij md') },
+		mdPaddingBottom: { name: 'md-padding-bottom', ...sizeControl('Padding bottom bij md') },
+		mdPaddingLeft: { name: 'md-padding-left', ...sizeControl('Padding left bij md') },
+
+		lgPadding: { name: 'lg-padding', ...sizeControl('Padding bij lg') },
+		lgPaddingInline: { name: 'lg-padding-inline', ...sizeControl('Padding inline bij lg') },
+		lgPaddingBlock: { name: 'lg-padding-block', ...sizeControl('Padding block bij lg') },
+		lgPaddingTop: { name: 'lg-padding-top', ...sizeControl('Padding top bij lg') },
+		lgPaddingRight: { name: 'lg-padding-right', ...sizeControl('Padding right bij lg') },
+		lgPaddingBottom: { name: 'lg-padding-bottom', ...sizeControl('Padding bottom bij lg') },
+		lgPaddingLeft: { name: 'lg-padding-left', ...sizeControl('Padding left bij lg') },
 	},
 };
 
@@ -80,8 +108,26 @@ export const Standaard = {
 			padding-bottom=${ifDefined(args.paddingBottom)}
 			padding-left=${ifDefined(args.paddingLeft)}
 			sm-padding=${ifDefined(args.smPadding)}
+			sm-padding-inline=${ifDefined(args.smPaddingInline)}
+			sm-padding-block=${ifDefined(args.smPaddingBlock)}
+			sm-padding-top=${ifDefined(args.smPaddingTop)}
+			sm-padding-right=${ifDefined(args.smPaddingRight)}
+			sm-padding-bottom=${ifDefined(args.smPaddingBottom)}
+			sm-padding-left=${ifDefined(args.smPaddingLeft)}
 			md-padding=${ifDefined(args.mdPadding)}
+			md-padding-inline=${ifDefined(args.mdPaddingInline)}
+			md-padding-block=${ifDefined(args.mdPaddingBlock)}
+			md-padding-top=${ifDefined(args.mdPaddingTop)}
+			md-padding-right=${ifDefined(args.mdPaddingRight)}
+			md-padding-bottom=${ifDefined(args.mdPaddingBottom)}
+			md-padding-left=${ifDefined(args.mdPaddingLeft)}
 			lg-padding=${ifDefined(args.lgPadding)}
+			lg-padding-inline=${ifDefined(args.lgPaddingInline)}
+			lg-padding-block=${ifDefined(args.lgPaddingBlock)}
+			lg-padding-top=${ifDefined(args.lgPaddingTop)}
+			lg-padding-right=${ifDefined(args.lgPaddingRight)}
+			lg-padding-bottom=${ifDefined(args.lgPaddingBottom)}
+			lg-padding-left=${ifDefined(args.lgPaddingLeft)}
 			style="outline: 1px dashed var(--color-neutral-400);"
 		>
 			<nldd-rich-text><p>Inhoud van de container.</p></nldd-rich-text>

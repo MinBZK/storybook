@@ -12,17 +12,6 @@ export const containerStyles = css`
 	/* # Host */
 
 	:host {
-		display: block;
-	}
-
-	:host([hidden]) {
-		display: none;
-	}
-
-
-	/* # Block */
-
-	.container {
 		display: flex;
 		height: 100%;
 		flex-direction: column;
@@ -84,11 +73,15 @@ export const containerStyles = css`
 		}
 	}
 
-	:host([direction="row"]) .container {
+	:host([hidden]) {
+		display: none;
+	}
+
+	:host([direction="row"]) {
 		flex-direction: row;
 	}
 
-	:host([wrap]) .container {
+	:host([wrap]) {
 		flex-wrap: wrap;
 	}
 `;
