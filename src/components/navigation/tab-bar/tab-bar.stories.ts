@@ -16,10 +16,10 @@ export default {
 	argTypes: {
 		variant: {
 			control: 'select',
-			options: ['(geen)', 'icon-and-text', 'text', 'icon', 'compact'],
-			mapping: { '(geen)': '' },
-			description: 'Standaard variant voor alle items. Kan per item worden overschreven met een eigen variant attribuut. "compact" stapelt het icoon boven de tekst.',
-			table: { defaultValue: { summary: '(geen)' } },
+			options: ['(auto)', 'icon-and-text', 'text', 'icon', 'compact'],
+			mapping: { '(auto)': '' },
+			description: 'Standaard variant voor alle items. Kan per item worden overschreven met een eigen variant attribuut. Bij "(auto)" bepaalt elk item dat zelf op basis van text/icon. "compact" stapelt het icoon boven de tekst.',
+			table: { defaultValue: { summary: '(auto)' } },
 		},
 		responsive: {
 			control: 'boolean',
