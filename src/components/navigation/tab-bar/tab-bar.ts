@@ -7,7 +7,6 @@
  * @element nldd-tab-bar
  * @attr {string}  variant           - Visual mode: 'icon-and-text' | 'text' | 'icon' | 'compact'. 'compact' stacks the icon above the text. When unset, the variant is inferred from each item's content.
  * @attr {boolean} navigation        - Renders a nav landmark instead of tablist; use for href-based items that navigate between routes
- * @attr {boolean} responsive        - Automatically switches to the compact look below 480px container width
  * @attr {boolean} centered          - Centers the tabs in the container (host fills the row, tabs group in the middle)
  * @attr {string}  accessible-label  - Accessible name for the navigation region; defaults to 'Tabs'
  *
@@ -44,10 +43,6 @@ export class NLDDTabBarItem extends LitElement {
 
 	@property({ type: String })
 	href = '';
-
-	/** Set by nldd-tab-bar. Not part of the public API. */
-	@property({ type: Boolean, reflect: true })
-	responsive = false;
 
 	/** Set by nldd-tab-bar. Not part of the public API. */
 	@property({ type: String })
@@ -130,9 +125,6 @@ export class NLDDTabBarItem extends LitElement {
 export class NLDDTabBar extends LitElement {
 	static override styles = tabBarStyles;
 
-	@property({ type: Boolean, reflect: true })
-	responsive = false;
-
 	/** Centers the tabs in the container (host fills the row, tabs group in the middle). */
 	@property({ type: Boolean, reflect: true })
 	centered = false;
@@ -170,7 +162,6 @@ export class NLDDTabBar extends LitElement {
 
 	override updated(changedProperties: Map<string, unknown>): void {
 		if (
-			changedProperties.has('responsive') ||
 			changedProperties.has('variant') ||
 			changedProperties.has('navigation')
 		) {
@@ -192,7 +183,6 @@ export class NLDDTabBar extends LitElement {
 		const items = this._getItems();
 
 		items.forEach(item => {
-			item.responsive = this.responsive;
 			item._groupVariant = this.variant;
 			item._navigation = this.navigation;
 		});

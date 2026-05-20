@@ -459,44 +459,6 @@ describe('nldd-tab-bar – variant propagation', () => {
 
 
 /* ============================================================
-   nldd-tab-bar – responsive propagation
-   ============================================================ */
-
-describe('nldd-tab-bar – responsive propagation', () => {
-	let el: NLDDTabBar;
-
-	afterEach(() => {
-		if (el) cleanup(el);
-	});
-
-	it('propagates responsive attribute to all items', async () => {
-		el = await fixture<NLDDTabBar>(`
-			<nldd-tab-bar responsive>
-				<nldd-tab-bar-item><svg slot="icon"></svg>Home</nldd-tab-bar-item>
-				<nldd-tab-bar-item><svg slot="icon"></svg>Zoeken</nldd-tab-bar-item>
-			</nldd-tab-bar>
-		`);
-		await waitForUpdate(el);
-		getItems(el).forEach(item => {
-			expect(item.hasAttribute('responsive')).toBe(true);
-		});
-	});
-
-	it('removes responsive from items when parent responsive is removed', async () => {
-		el = await fixture<NLDDTabBar>(`
-			<nldd-tab-bar responsive>
-				<nldd-tab-bar-item text="Home"></nldd-tab-bar-item>
-			</nldd-tab-bar>
-		`);
-		await waitForUpdate(el);
-		el.responsive = false;
-		await waitForUpdate(el);
-		expect(getItems(el)[0].hasAttribute('responsive')).toBe(false);
-	});
-});
-
-
-/* ============================================================
    nldd-tab-bar – centered
    ============================================================ */
 

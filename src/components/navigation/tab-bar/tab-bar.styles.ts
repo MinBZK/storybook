@@ -1,7 +1,4 @@
-import { css, unsafeCSS } from 'lit';
-import { breakpoints } from '../../../assets/styles/breakpoints.js';
-
-const smMax = unsafeCSS(breakpoints.smMax);
+import { css } from 'lit';
 
 export const tabBarStyles = css`
 
@@ -118,22 +115,6 @@ export const tabBarItemStyles = css`
 		flex-direction: column;
 	}
 
-	:host([responsive]) .tab-bar__item {
-		@media (max-width: ${smMax}) {
-			height: var(--semantics-controls-lg-min-size);
-			padding: var(--primitives-space-8);
-			flex-direction: column;
-			gap: 0;
-		}
-
-		@container layout-container (max-width: ${smMax}) {
-			height: var(--semantics-controls-lg-min-size);
-			padding: var(--primitives-space-8);
-			flex-direction: column;
-			gap: 0;
-		}
-	}
-
 	@media (hover: hover) {
 		.tab-bar__item:hover {
 			background-color: var(--semantics-buttons-neutral-tinted-is-hovered-background-color);
@@ -181,18 +162,6 @@ export const tabBarItemStyles = css`
 		height: var(--semantics-buttons-md-icon-only-icon-size);
 	}
 
-	:host([responsive]) .tab-bar__item-icon {
-		@media (max-width: ${smMax}) {
-			width: var(--semantics-buttons-md-icon-only-icon-size);
-			height: var(--semantics-buttons-md-icon-only-icon-size);
-		}
-
-		@container layout-container (max-width: ${smMax}) {
-			width: var(--semantics-buttons-md-icon-only-icon-size);
-			height: var(--semantics-buttons-md-icon-only-icon-size);
-		}
-	}
-
 	:host([variant="text"]) .tab-bar__item-icon {
 		display: none;
 	}
@@ -214,15 +183,5 @@ export const tabBarItemStyles = css`
 
 	:host([variant="icon"]) .tab-bar__item-text {
 		display: none;
-	}
-
-	:host([responsive]) .tab-bar__item-text {
-		@media (max-width: ${smMax}) {
-			font: var(--primitives-font-body-xxs-bold-flat);
-		}
-
-		@container layout-container (max-width: ${smMax}) {
-			font: var(--primitives-font-body-xxs-bold-flat);
-		}
 	}
 `;
