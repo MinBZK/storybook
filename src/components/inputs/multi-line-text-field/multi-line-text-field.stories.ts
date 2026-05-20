@@ -57,16 +57,16 @@ export default {
 		rows: 3,
 		width: '',
 		placeholder: 'Schrijf hier je toelichting',
-		valid: false,
-		invalid: false,
-		readonly: false,
-		disabled: false,
 		name: '',
 		value: '',
 		required: false,
 		autocomplete: '',
-		accessibleLabel: '',
 		noSpellcheck: false,
+		accessibleLabel: '',
+		valid: false,
+		invalid: false,
+		readonly: false,
+		disabled: false,
 	},
 	argTypes: {
 		size: {
@@ -136,16 +136,16 @@ export default {
 			description: 'Browser autofill hint (HTML autocomplete attribute, bv. "off")',
 			table: { defaultValue: { summary: '' } },
 		},
-		accessibleLabel: {
-			name: 'accessible-label',
-			control: 'text',
-			description: 'Toegankelijk label voor screen readers',
-		},
 		noSpellcheck: {
 			name: 'no-spellcheck',
 			control: 'boolean',
 			description: 'Disables browser spellchecking on the inner textarea',
 			table: { defaultValue: { summary: false } },
+		},
+		accessibleLabel: {
+			name: 'accessible-label',
+			control: 'text',
+			description: 'Toegankelijk label voor screen readers',
 		},
 	},
 };

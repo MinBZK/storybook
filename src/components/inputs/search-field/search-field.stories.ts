@@ -55,15 +55,15 @@ export default {
 			control: 'text',
 			description: 'Toegankelijkheidslabel voor de input. Valt automatisch terug op de placeholder als niet ingevuld.',
 		},
-		disabled: {
-			control: 'boolean',
-			description: 'Uitgeschakelde toestand',
-			table: { defaultValue: { summary: false } },
-		},
 		noSpellcheck: {
 			name: 'no-spellcheck',
 			control: 'boolean',
 			description: 'Disables browser spellchecking on the inner input',
+			table: { defaultValue: { summary: false } },
+		},
+		disabled: {
+			control: 'boolean',
+			description: 'Uitgeschakelde toestand',
 			table: { defaultValue: { summary: false } },
 		},
 	},
@@ -75,8 +75,8 @@ export default {
 		value: '',
 		placeholder: 'Zoeken',
 		accessibleLabel: '',
-		disabled: false,
 		noSpellcheck: false,
+		disabled: false,
 	},
 };
 

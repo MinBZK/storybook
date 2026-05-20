@@ -339,7 +339,7 @@ selected, checked, indeterminate, open, valid, invalid, masked, readonly, curren
 
 [13. Form]
 name, value, type, min, max, step, required, total,
-autocomplete, href, target, method, action, novalidate
+autocomplete, noSpellcheck, href, target, method, action, novalidate
 ```
 
 **Open punt**: `type` staat onder Form (HTML input type, vaakste betekenis). Voor `segmented-control` heeft het een andere semantiek (radio/checkbox-modus); kan later via een rename naar bijv. `selectionMode` opgelost worden.

@@ -69,16 +69,16 @@ export default {
 			description: 'Browser autofill hint. Default "off" om conflict met dropdown te voorkomen. Set bv. "country" of "organization" om autofill toe te staan.',
 			table: { defaultValue: { summary: 'off' } },
 		},
-		accessibleLabel: {
-			name: 'accessible-label',
-			control: 'text',
-			description: 'Toegankelijk label voor screen readers',
-		},
 		noSpellcheck: {
 			name: 'no-spellcheck',
 			control: 'boolean',
 			description: 'Disables browser spellchecking on the inner input',
 			table: { defaultValue: { summary: false } },
+		},
+		accessibleLabel: {
+			name: 'accessible-label',
+			control: 'text',
+			description: 'Toegankelijk label voor screen readers',
 		},
 	},
 	args: {
@@ -92,8 +92,8 @@ export default {
 		name: '',
 		value: '',
 		autocomplete: 'off',
-		accessibleLabel: '',
 		noSpellcheck: false,
+		accessibleLabel: '',
 	},
 };
 

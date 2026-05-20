@@ -77,6 +77,12 @@ export default {
 			description: 'Browser autofill hint (HTML autocomplete attribute, bv. "name", "email", "off")',
 			table: { defaultValue: { summary: '' } },
 		},
+		noSpellcheck: {
+			name: 'no-spellcheck',
+			control: 'boolean',
+			description: 'Disables browser spellchecking on the inner input',
+			table: { defaultValue: { summary: false } },
+		},
 		valid: {
 			control: 'boolean',
 			description: 'Valid state',
@@ -102,12 +108,6 @@ export default {
 			description: 'Disabled state',
 			table: { defaultValue: { summary: false } },
 		},
-		noSpellcheck: {
-			name: 'no-spellcheck',
-			control: 'boolean',
-			description: 'Disables browser spellchecking on the inner input',
-			table: { defaultValue: { summary: false } },
-		},
 	},
 	args: {
 		size: 'md',
@@ -117,12 +117,12 @@ export default {
 		placeholder: 'Text field',
 		type: 'text',
 		autocomplete: '',
+		noSpellcheck: false,
 		valid: false,
 		invalid: false,
 		readonly: false,
 		required: false,
 		disabled: false,
-		noSpellcheck: false,
 	},
 };
 
