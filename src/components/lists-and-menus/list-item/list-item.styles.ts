@@ -146,6 +146,19 @@ export const listItemStyles = css`
 		}
 	}
 
+	/* Press feedback — works on touch where :hover doesn't. Same visual as
+	   :hover (the gated mouse rule above) so it reads consistently across
+	   input modes. */
+	.list-item__action:active {
+		--_background-color: var(--components-list-item-is-hovered-background-color);
+		--context-cell-content-color: var(--components-list-item-is-hovered-content-color);
+	}
+
+	:host([selected]) .list-item__action:active {
+		--_background-color: var(--components-list-item-is-highlighted-background-color);
+		--context-cell-content-color: var(--components-list-item-is-highlighted-content-color);
+	}
+
 	:host([selected]) .list-item__action {
 		--_background-color: var(--components-list-item-is-selected-background-color);
 		--context-cell-content-color: var(--components-list-item-is-selected-content-color);
