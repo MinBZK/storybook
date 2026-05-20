@@ -19,7 +19,6 @@ import { menuBarStyles } from './menu-bar.styles.js';
 import { template } from './menu-bar.template.js';
 import { withTranslations } from '../../../utilities/with-translations.js';
 import { nlddMenuBarTranslations } from './menu-bar.i18n.js';
-import { POPOVER_REOPEN_GUARD_MS } from '../../../utilities/popover-guard.js';
 import '../menu-bar-item/menu-bar-item.js';
 import type { NLDDMenuBarItem } from '../menu-bar-item/menu-bar-item.js';
 import '../../lists-and-menus/menu/menu.js';
@@ -61,7 +60,7 @@ export class NLDDMenuBar extends withTranslations(LitElement, nlddMenuBarTransla
 	_menuOpen = false;
 
 	private _overflowMenu: PopoverMenu | null = null;
-	private _menuClosedAt = 0;
+	private _overflowPointerdownWhileOpen = false;
 	private _overflowUpdatePending = false;
 
 	private _resizeObserver: ResizeObserver | null = null;
@@ -246,7 +245,6 @@ export class NLDDMenuBar extends withTranslations(LitElement, nlddMenuBarTransla
 			const isOpen = (event as ToggleEvent).newState === 'open';
 			this._menuOpen = isOpen;
 			if (!isOpen) {
-				this._menuClosedAt = Date.now();
 				// Flush any overflow recalc that was deferred while open.
 				if (this._overflowUpdatePending) {
 					this._overflowUpdatePending = false;
@@ -261,24 +259,33 @@ export class NLDDMenuBar extends withTranslations(LitElement, nlddMenuBarTransla
 	/**
 	 * @internal Used by template.
 	 *
-	 * Opens/closes the overflow popover explicitly — the same proven
-	 * mechanism as an expandable nldd-menu-bar-item's own submenu
-	 * (`_toggleMenu`): anchor to the (always-visible) trigger so
-	 * floating-ui never collapses to 0,0, and a POPOVER_REOPEN_GUARD_MS
-	 * window so a click that light-dismissed the popover doesn't
-	 * immediately reopen it. The native popover-invoker path was unusable
-	 * here (anchor inside a display-toggled wrapper + no reopen guard).
+	 * Opens/closes the overflow popover explicitly. Anchored to the
+	 * always-visible trigger so floating-ui never collapses to 0,0.
+	 * The native popover-invoker path was unusable here (anchor inside a
+	 * display-toggled wrapper). Reopen-after-light-dismiss on touch is
+	 * prevented deterministically via the pointerdown flag below.
 	 */
 	_toggleOverflowMenu = (): void => {
+		if (this._overflowPointerdownWhileOpen) {
+			this._overflowPointerdownWhileOpen = false;
+			return;
+		}
 		this._createOverflowMenu();
 		if (!this._overflowMenu) return;
 		const trigger = this._overflowButton?.querySelector('nldd-menu-bar-item');
 		this._overflowMenu.anchorElement = trigger ?? this._overflowButton;
 		if (this._menuOpen) {
 			this._overflowMenu.hidePopover();
-		} else if (Date.now() - this._menuClosedAt > POPOVER_REOPEN_GUARD_MS) {
+		} else {
 			this._populateOverflowMenu();
 			this._overflowMenu.showPopover();
+		}
+	};
+
+	/** @internal Used by template — captures touch-tap-to-close so the trailing click doesn't reopen. */
+	_handleOverflowButtonPointerdown = (): void => {
+		if (this._menuOpen) {
+			this._overflowPointerdownWhileOpen = true;
 		}
 	};
 
