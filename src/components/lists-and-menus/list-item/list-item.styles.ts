@@ -13,8 +13,6 @@ export const listItemStyles = css`
 		--_focus-outline-offset: 6px;
 
 		display: block;
-		container-type: inline-size;
-		container-name: list-item;
 		width: 100%;
 		-webkit-tap-highlight-color: transparent;
 	}
