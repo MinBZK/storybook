@@ -137,11 +137,13 @@ export const oneHalfOneHalfSectionStyles = css`
 
 	.one-half-one-half-section__left-column {
 		min-width: var(--primitives-area-280);
-		flex: 1;
-	}
+		flex-grow: 1;
+		flex-shrink: 1;
+		flex-basis: 0;	}
 
 	.one-half-one-half-section__right-column {
 		min-width: var(--primitives-area-280);
-		flex: 1;
-	}
+		flex-grow: 1;
+		flex-shrink: 1;
+		flex-basis: 0;	}
 `;

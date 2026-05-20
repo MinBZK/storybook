@@ -64,8 +64,9 @@ export const spacerStyles = css`
 		min-height: 0;
 		width: auto;
 		height: auto;
-		flex: 1;
-	}
+		flex-grow: 1;
+		flex-shrink: 1;
+		flex-basis: 0;	}
 
 	:host([size="flexible"][direction="horizontal"]) {
 		min-height: auto;
@@ -112,8 +113,9 @@ export const spacerStyles = css`
 			min-height: 0;
 			width: auto;
 			height: auto;
-			flex: 1;
-		}
+			flex-grow: 1;
+			flex-shrink: 1;
+			flex-basis: 0;		}
 
 		:host([sm-size="flexible"][direction="horizontal"]) {
 			min-height: auto;
@@ -151,8 +153,9 @@ export const spacerStyles = css`
 			min-height: 0;
 			width: auto;
 			height: auto;
-			flex: 1;
-		}
+			flex-grow: 1;
+			flex-shrink: 1;
+			flex-basis: 0;		}
 
 		:host([md-size="flexible"][direction="horizontal"]) {
 			min-height: auto;
@@ -190,8 +193,9 @@ export const spacerStyles = css`
 			min-height: 0;
 			width: auto;
 			height: auto;
-			flex: 1;
-		}
+			flex-grow: 1;
+			flex-shrink: 1;
+			flex-basis: 0;		}
 
 		:host([lg-size="flexible"][direction="horizontal"]) {
 			min-height: auto;

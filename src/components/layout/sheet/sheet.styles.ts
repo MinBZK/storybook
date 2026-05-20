@@ -212,6 +212,7 @@ export const sheetStyles = css`
 
 	::slotted(*) {
 		min-height: 0;
-		flex: 1;
-	}
+		flex-grow: 1;
+		flex-shrink: 1;
+		flex-basis: 0;	}
 `;

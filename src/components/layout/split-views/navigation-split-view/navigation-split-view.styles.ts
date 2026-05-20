@@ -77,8 +77,9 @@ export const navigationSplitViewStyles = css`
 		min-height: 0;
 		overflow: hidden;
 		flex-direction: row;
-		flex: 1;
-	}
+		flex-grow: 1;
+		flex-shrink: 1;
+		flex-basis: 0;	}
 
 
 	/* # Elements */
@@ -107,16 +108,18 @@ export const navigationSplitViewStyles = css`
 		min-height: 0;
 		overflow: hidden;
 		flex-direction: column;
-		flex: 1;
-	}
+		flex-grow: 1;
+		flex-shrink: 1;
+		flex-basis: 0;	}
 
 	/* Full-stack: the single visible pane fills the space, no minimum */
 	:host(.full-stack) .navigation-split-view__sidebar-pane,
 	:host(.full-stack) .navigation-split-view__secondary-sidebar-pane,
 	:host(.full-stack) .navigation-split-view__main-pane {
 		min-width: 0;
-		flex: 1;
-	}
+		flex-grow: 1;
+		flex-shrink: 1;
+		flex-basis: 0;	}
 
 	/* Inline sidebar panes suppress their dismiss button */
 	.navigation-split-view__sidebar-pane,
@@ -306,6 +309,7 @@ export const navigationSplitViewStyles = css`
 
 	::slotted(*) {
 		min-height: 0;
-		flex: 1;
-	}
+		flex-grow: 1;
+		flex-shrink: 1;
+		flex-basis: 0;	}
 `;

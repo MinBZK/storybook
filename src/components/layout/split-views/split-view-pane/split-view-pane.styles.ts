@@ -47,14 +47,16 @@ export const splitViewPaneStyles = css`
 		min-height: 0;
 		overflow: hidden;
 		flex-direction: column;
-		flex: 1;
-	}
+		flex-grow: 1;
+		flex-shrink: 1;
+		flex-basis: 0;	}
 
 
 	/* # Elements */
 
 	::slotted(*) {
 		min-height: 0;
-		flex: 1;
-	}
+		flex-grow: 1;
+		flex-shrink: 1;
+		flex-basis: 0;	}
 `;

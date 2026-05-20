@@ -137,8 +137,9 @@ export const oneThirdTwoThirdsSectionStyles = css`
 
 	.one-third-two-thirds-section__left-column {
 		min-width: var(--primitives-area-280);
-		flex: 1;
-	}
+		flex-grow: 1;
+		flex-shrink: 1;
+		flex-basis: 0;	}
 
 	.one-third-two-thirds-section__right-column {
 		min-width: var(--primitives-area-280);

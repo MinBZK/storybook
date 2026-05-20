@@ -90,7 +90,9 @@ export const searchFieldStyles = css`
 		background: transparent;
 		min-width: 0;
 		padding: 0;
-		flex: 1;
+		flex-grow: 1;
+		flex-shrink: 1;
+		flex-basis: 0;
 		align-self: stretch;
 		color: var(--semantics-content-color);
 		font: var(--_text-font);

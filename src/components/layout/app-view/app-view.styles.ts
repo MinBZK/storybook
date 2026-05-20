@@ -33,7 +33,9 @@ export const appViewStyles = css`
 		min-height: 0;
 		overflow: hidden;
 		flex-direction: column;
-		flex: 1;
+		flex-grow: 1;
+		flex-shrink: 1;
+		flex-basis: 0;
 	}
 
 
@@ -41,6 +43,8 @@ export const appViewStyles = css`
 
 	::slotted(*) {
 		min-height: 0;
-		flex: 1;
+		flex-grow: 1;
+		flex-shrink: 1;
+		flex-basis: 0;
 	}
 `;

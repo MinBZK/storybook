@@ -86,7 +86,9 @@ export const comboBoxStyles = css`
 		min-width: 0;
 		width: 100%;
 		padding-left: var(--_inline-padding);
-		flex: 1;
+		flex-grow: 1;
+		flex-shrink: 1;
+		flex-basis: 0;
 		align-self: stretch;
 		color: var(--semantics-content-color);
 		font: var(--_text-font);

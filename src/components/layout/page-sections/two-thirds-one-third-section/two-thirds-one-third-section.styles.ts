@@ -142,6 +142,7 @@ export const twoThirdsOneThirdSectionStyles = css`
 
 	.two-thirds-one-third-section__right-column {
 		min-width: var(--primitives-area-280);
-		flex: 1;
-	}
+		flex-grow: 1;
+		flex-shrink: 1;
+		flex-basis: 0;	}
 `;

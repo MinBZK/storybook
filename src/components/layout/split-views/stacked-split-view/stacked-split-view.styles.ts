@@ -40,8 +40,9 @@ export const stackedSplitViewStyles = css`
 		min-height: 0;
 		overflow: hidden;
 		flex-direction: column;
-		flex: 1;
-	}
+		flex-grow: 1;
+		flex-shrink: 1;
+		flex-basis: 0;	}
 
 
 	/* # Elements */
@@ -52,8 +53,9 @@ export const stackedSplitViewStyles = css`
 		min-height: var(--_pane-min-height);
 		overflow: hidden;
 		flex-direction: column;
-		flex: 1;
-	}
+		flex-grow: 1;
+		flex-shrink: 1;
+		flex-basis: 0;	}
 
 	.stacked-split-view__pane[hidden] {
 		display: none;
@@ -61,6 +63,7 @@ export const stackedSplitViewStyles = css`
 
 	::slotted(*) {
 		min-height: 0;
-		flex: 1;
-	}
+		flex-grow: 1;
+		flex-shrink: 1;
+		flex-basis: 0;	}
 `;

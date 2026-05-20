@@ -39,8 +39,9 @@ export const sideBySideSplitViewStyles = css`
 		min-height: 0;
 		overflow: hidden;
 		flex-direction: row;
-		flex: 1;
-	}
+		flex-grow: 1;
+		flex-shrink: 1;
+		flex-basis: 0;	}
 
 
 	/* # Elements */
@@ -51,8 +52,9 @@ export const sideBySideSplitViewStyles = css`
 		min-height: 0;
 		overflow: hidden;
 		flex-direction: column;
-		flex: 1;
-	}
+		flex-grow: 1;
+		flex-shrink: 1;
+		flex-basis: 0;	}
 
 	.side-by-side-split-view__pane[hidden] {
 		display: none;
@@ -60,6 +62,7 @@ export const sideBySideSplitViewStyles = css`
 
 	::slotted(*) {
 		min-height: 0;
-		flex: 1;
-	}
+		flex-grow: 1;
+		flex-shrink: 1;
+		flex-basis: 0;	}
 `;
