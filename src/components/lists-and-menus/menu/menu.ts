@@ -1410,6 +1410,38 @@ export class NLDDMenu extends LitElement {
 	 * tap (pointerup without crossing the scroll threshold); a scroll
 	 * leaves the chain untouched, matching root-menu behaviour.
 	 */
+	private _dragStartItem: NLDDMenuItem | null = null;
+
+	/**
+	 * Native HTML `<select>` lets you press on one option, drag to another,
+	 * and release to pick the one under the pointer. Standard click events
+	 * don't fire across different elements, so we replicate it manually:
+	 * remember the pointerdown'd item, listen for the matching pointerup,
+	 * and if the release lands on a different non-disabled item, fire its
+	 * `select` directly. The original button's click handler still owns the
+	 * single-click no-drag path.
+	 */
+	private _handleItemPointerdown = (event: PointerEvent): void => {
+		if (event.button !== 0) return;
+		const item = (event.target as Element | null)?.closest('nldd-menu-item') as NLDDMenuItem | null;
+		if (!item || item.disabled) return;
+		this._dragStartItem = item;
+		document.addEventListener('pointerup', this._handleDragRelease, { capture: true, once: true });
+	};
+
+	private _handleDragRelease = (event: PointerEvent): void => {
+		const startItem = this._dragStartItem;
+		this._dragStartItem = null;
+		if (!startItem) return;
+		const target = document.elementFromPoint(event.clientX, event.clientY);
+		const releaseItem = target?.closest('nldd-menu-item') as NLDDMenuItem | null;
+		if (!releaseItem || releaseItem === startItem || releaseItem.disabled) return;
+		// Different item — fire its select. Browser won't dispatch click here
+		// because pointerdown and pointerup landed on different targets, so
+		// there's no double-fire to suppress.
+		releaseItem._handleClick();
+	};
+
 	private _handleDocumentPointerdown = (event: PointerEvent): void => {
 		if (!this._isOpen) return;
 		// Anchor pointerdown on a root menu while open: capture as a gesture
@@ -1513,6 +1545,7 @@ export class NLDDMenu extends LitElement {
 		this.addEventListener('menu-item-focused', this._handleMenuItemFocused);
 		this.addEventListener('submenu-open', this._handleSubmenuOpen);
 		this.addEventListener('select', this._collapseChain);
+		this.addEventListener('pointerdown', this._handleItemPointerdown);
 		document.addEventListener('click', this._handleDocumentClick);
 	}
 
@@ -1537,7 +1570,9 @@ export class NLDDMenu extends LitElement {
 		this.removeEventListener('menu-item-focused', this._handleMenuItemFocused);
 		this.removeEventListener('submenu-open', this._handleSubmenuOpen);
 		this.removeEventListener('select', this._collapseChain);
+		this.removeEventListener('pointerdown', this._handleItemPointerdown);
 		document.removeEventListener('click', this._handleDocumentClick);
+		document.removeEventListener('pointerup', this._handleDragRelease, true);
 		// Defensive: the pointerdown + resize listeners are added on open
 		// and removed on close, but if the menu is torn down mid-open we'd
 		// otherwise leak the global listeners.
