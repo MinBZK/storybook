@@ -156,9 +156,6 @@ export const aliases = {
 	// house
 	'home': 'house',
 
-	// inbox
-	'messages': 'inbox',
-
 	// info-circle
 	'info': 'info-circle',
 	'information': 'info-circle',
