@@ -3,7 +3,9 @@ import type { NLDDTag } from './tag.js';
 
 export function template(component: NLDDTag) {
 	const variant = component._effectiveVariant;
-	const showIcon = (variant === 'icon' || variant === 'icon-and-text') && component._hasIcon;
+	// variant=icon always renders the icon area so the icon-placeholder
+	// fallback inside the slot can show when no icon is provided.
+	const showIcon = variant === 'icon' || (variant === 'icon-and-text' && component._hasIcon);
 	const showText = (variant === 'text' || variant === 'icon-and-text') && component._hasText;
 	// icon-only needs an explicit accessible name — the visible text is gone,
 	// so the screen reader has nothing to announce without role="img" +
@@ -18,7 +20,7 @@ export function template(component: NLDDTag) {
 				<span class="tag__icon">
 					${component.icon
 						? html`<nldd-icon name=${component.icon}></nldd-icon>`
-						: html`<slot name="icon"></slot>`}
+						: html`<slot name="icon">${variant === 'icon' ? html`<nldd-icon name="icon-placeholder"></nldd-icon>` : nothing}</slot>`}
 				</span>
 			` : nothing}
 			${showText ? html`
