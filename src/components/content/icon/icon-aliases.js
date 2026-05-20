@@ -74,6 +74,9 @@ export const aliases = {
 	// circle-dashed
 	'icon-placeholder': 'circle-dashed',
 
+	// clipboard-rectangle
+	'paste': 'clipboard-rectangle',
+
 	// clock
 	'time': 'clock',
 	'now': 'clock',
@@ -185,6 +188,9 @@ export const aliases = {
 	'unlocked': 'lock-open',
 	'unsecure': 'lock-open',
 
+	// scissor
+	'cut': 'scissor',
+
 	// ship-wheel
 	'k8s': 'ship-wheel',
 	'kubernetes': 'ship-wheel',
@@ -278,6 +284,9 @@ export const aliases = {
 
 	// square-arrow-up
 	'share': 'square-arrow-up',
+
+	// square-arrow-right-inward
+	'login': 'square-arrow-right-inward',
 
 	// square-arrow-right-top
 	'external-link': 'square-arrow-right-top',
