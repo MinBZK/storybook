@@ -153,32 +153,39 @@ describe('nldd-toggle-button – state', () => {
 
 
 /* ============================================================
-   Icon-only detection
+   Variant — auto-detect + explicit
    ============================================================ */
 
-describe('nldd-toggle-button – icon-only', () => {
+describe('nldd-toggle-button – variant', () => {
 	let el: NLDDToggleButton;
 
 	afterEach(() => {
 		if (el) cleanup(el);
 	});
 
-	it('sets icon-only attribute when only icon is set (no text)', async () => {
+	it('reflects variant="icon" when only icon is set (no text)', async () => {
 		el = await fixture<NLDDToggleButton>('<nldd-toggle-button icon="heart" accessible-label="Favoriet"></nldd-toggle-button>');
 		await waitForUpdate(el);
-		expect(el.hasAttribute('icon-only')).toBe(true);
+		expect(el._effectiveVariant).toBe('icon');
 	});
 
-	it('does not set icon-only when there is text', async () => {
+	it('reflects variant="icon-and-text" when both are set', async () => {
 		el = await fixture<NLDDToggleButton>('<nldd-toggle-button icon="heart" text="Label"></nldd-toggle-button>');
 		await waitForUpdate(el);
-		expect(el.hasAttribute('icon-only')).toBe(false);
+		expect(el._effectiveVariant).toBe('icon-and-text');
 	});
 
-	it('does not set icon-only when there is no icon', async () => {
+	it('reflects variant="text" when there is no icon', async () => {
 		el = await fixture<NLDDToggleButton>('<nldd-toggle-button text="Label"></nldd-toggle-button>');
 		await waitForUpdate(el);
-		expect(el.hasAttribute('icon-only')).toBe(false);
+		expect(el._effectiveVariant).toBe('text');
+	});
+
+	it('explicit variant overrides auto-detect', async () => {
+		el = await fixture<NLDDToggleButton>('<nldd-toggle-button icon="heart" text="Label" variant="icon" accessible-label="Favoriet"></nldd-toggle-button>');
+		await waitForUpdate(el);
+		expect(el._effectiveVariant).toBe('icon');
+		expect(el.shadowRoot!.querySelector('.toggle-button__text')).toBeNull();
 	});
 
 	it('warns when icon-only without accessible-label', async () => {

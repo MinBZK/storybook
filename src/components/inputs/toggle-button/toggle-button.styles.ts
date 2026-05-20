@@ -71,7 +71,7 @@ export const toggleButtonStyles = css`
 		appearance: none;
 	}
 
-	:host([icon-only]) .toggle-button {
+	:host([variant="icon"]) .toggle-button {
 		width: var(--_min-size);
 		padding: 0;
 	}
@@ -123,9 +123,14 @@ export const toggleButtonStyles = css`
 		flex-shrink: 0;
 	}
 
-	:host([icon-only]) .toggle-button__icon {
+	:host([variant="icon"]) .toggle-button__icon {
 		width: var(--_icon-only-icon-size);
 		height: var(--_icon-only-icon-size);
+	}
+
+	:host([variant="text"]) .toggle-button__icon,
+	:host([variant="text"]) ::slotted([slot="icon"]) {
+		display: none;
 	}
 
 	.toggle-button__input {

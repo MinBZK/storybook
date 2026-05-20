@@ -14,6 +14,7 @@
  * @attr {string}                          name             - Name for form submission (checkbox/radio)
  * @attr {string}                          text             - Button text
  * @attr {string}                          icon             - Icon name for nldd-icon
+ * @attr {'text' | 'icon' | 'icon-and-text'} variant        - What renders: text, icon, or both. Unset → auto-detect from text/icon attributes.
  * @attr {string}                          accessible-label - Accessible label; required for icon-only usage
  *
  * @slot icon - Slot for a custom icon (e.g. custom SVG). Only used when icon attribute is not set.
@@ -29,6 +30,7 @@ import './../../content/icon/icon.js';
 
 export type ToggleButtonType = 'button' | 'checkbox' | 'radio';
 export type ToggleButtonSize = 'xs' | 'sm' | 'md';
+export type ToggleButtonVariant = 'text' | 'icon' | 'icon-and-text';
 
 @customElement('nldd-toggle-button')
 export class NLDDToggleButton extends LitElement {
@@ -66,14 +68,25 @@ export class NLDDToggleButton extends LitElement {
 	@property({ type: String })
 	icon = '';
 
+	@property({ type: String, reflect: true })
+	variant: ToggleButtonVariant | '' = '';
+
 	@property({ type: String, attribute: 'accessible-label' })
 	accessibleLabel = '';
 
 	/** Whether an icon is present via attribute or slot. */
-	private get _hasIcon(): boolean {
+	get _hasIcon(): boolean {
 		if (this.icon) return true;
 		const slot = this.shadowRoot?.querySelector<HTMLSlotElement>('slot[name="icon"]');
 		return (slot?.assignedElements().length ?? 0) > 0;
+	}
+
+	get _effectiveVariant(): ToggleButtonVariant {
+		if (this.variant) return this.variant;
+		const hasText = !!this.text;
+		if (this._hasIcon && hasText) return 'icon-and-text';
+		if (this._hasIcon) return 'icon';
+		return 'text';
 	}
 
 	private _warnedA11y = false;
@@ -83,8 +96,7 @@ export class NLDDToggleButton extends LitElement {
 	}
 
 	override updated(changed: PropertyValues): void {
-		const iconOnly = this._hasIcon && !this.text;
-		this.toggleAttribute('icon-only', iconOnly);
+		const iconOnly = this._effectiveVariant === 'icon';
 		const inaccessible = iconOnly && !this.accessibleLabel;
 		if (import.meta.env?.DEV && inaccessible && !this._warnedA11y) {
 			this._warnedA11y = true;
