@@ -91,6 +91,7 @@ export const searchFieldStyles = css`
 		min-width: 0;
 		padding: 0;
 		flex: 1;
+		align-self: stretch;
 		color: var(--semantics-content-color);
 		font: var(--_text-font);
 		appearance: none;
