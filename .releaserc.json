@@ -21,12 +21,33 @@
         { "message": "*", "release": "patch" }
       ]
     }],
-    "@semantic-release/release-notes-generator",
+    ["@semantic-release/release-notes-generator", {
+      "preset": "conventionalcommits",
+      "presetConfig": {
+        "types": [
+          { "type": "feat", "section": "Added" },
+          { "type": "fix", "section": "Fixed" },
+          { "type": "perf", "section": "Changed" },
+          { "type": "revert", "section": "Reverted" },
+          { "type": "refactor", "hidden": true },
+          { "type": "chore", "hidden": true },
+          { "type": "docs", "hidden": true },
+          { "type": "ci", "hidden": true },
+          { "type": "style", "hidden": true },
+          { "type": "test", "hidden": true },
+          { "type": "build", "hidden": true }
+        ]
+      }
+    }],
+    ["@semantic-release/changelog", {
+      "changelogFile": "CHANGELOG.md",
+      "changelogTitle": "# Changelog\n\nAll notable changes to the NLDD design system are documented here.\n\nThe format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),\nand this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).\nVersions are bumped automatically by semantic-release on merge to main —\nthe type of conventional-commit determines the release. Conventional types\n`chore`, `docs`, `ci`, `style`, `test`, `build` are intentionally omitted\nhere; consult the commit history if you need that level of detail."
+    }],
     ["@semantic-release/npm", {
       "npmPublish": false
     }],
     ["@semantic-release/git", {
-      "assets": ["package.json"],
+      "assets": ["package.json", "CHANGELOG.md"],
       "message": "chore(release): ${nextRelease.version}\n\n${nextRelease.notes}"
     }]
   ]
