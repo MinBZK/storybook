@@ -15,6 +15,7 @@ export const iconStyles = css`
 
 		display: inline-block;
 		width: var(--_size);
+		height: auto;
 		color: var(--_color);
 	}
 
