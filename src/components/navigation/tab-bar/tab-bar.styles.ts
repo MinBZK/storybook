@@ -47,7 +47,7 @@ export const tabBarStyles = css`
 		justify-content: center;
 	}
 
-	:host([compact]) .tab-bar__items {
+	:host([variant="compact"]) .tab-bar__items {
 		border-radius: var(--semantics-controls-lg-corner-radius);
 	}
 
