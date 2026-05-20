@@ -82,7 +82,6 @@ import { computePosition, flip, shift, size, autoUpdate, type Placement } from '
 import { popoverStyles } from './popover.styles.js';
 import { popoverTemplate } from './popover.template.js';
 import { nlddPopoverTranslations, type NLDDPopoverTranslations } from './popover.i18n.js';
-import { POPOVER_REOPEN_GUARD_MS } from '../../../utilities/popover-guard.js';
 import { isPointerMode } from '../../../utilities/input-modality.js';
 import { breakpoints } from '../../../assets/styles/breakpoints.js';
 
@@ -137,7 +136,7 @@ export class NLDDPopover extends LitElement {
 	private _isOpen = false;
 	private _hasWarnedLabel = false;
 	private _previousFocus: HTMLElement | null = null;
-	private _closedAt = 0;
+	private _pointerdownOnAnchorWhileOpen = false;
 	/** Cleanup-functie van Floating UI's autoUpdate, alleen actief tijdens open. */
 	private _cleanupAutoUpdate: (() => void) | null = null;
 	private _smQuery: MediaQueryList | null = null;
@@ -157,6 +156,7 @@ export class NLDDPopover extends LitElement {
 		if (!this.hasAttribute('role')) this.setAttribute('role', 'dialog');
 		this.addEventListener('toggle', this._handleToggle);
 		this.addEventListener('keydown', this._handleKeydown);
+		document.addEventListener('pointerdown', this._handleDocumentPointerdown, true);
 		document.addEventListener('click', this._handleDocumentClick);
 		this._smQuery = window.matchMedia(`(max-width: ${breakpoints.smMax})`);
 		this._wasOnSm = this._smQuery.matches;
@@ -178,6 +178,7 @@ export class NLDDPopover extends LitElement {
 		super.disconnectedCallback();
 		this.removeEventListener('toggle', this._handleToggle);
 		this.removeEventListener('keydown', this._handleKeydown);
+		document.removeEventListener('pointerdown', this._handleDocumentPointerdown, true);
 		document.removeEventListener('click', this._handleDocumentClick);
 		this._smQuery?.removeEventListener('change', this._handleViewportChange);
 		this._smQuery = null;
@@ -437,6 +438,14 @@ export class NLDDPopover extends LitElement {
 		}
 	};
 
+	private _handleDocumentPointerdown = (event: PointerEvent): void => {
+		if (!this._isOpen) return;
+		const anchorEl = this._getAnchorEl();
+		if (!anchorEl) return;
+		if (!event.composedPath().includes(anchorEl)) return;
+		this._pointerdownOnAnchorWhileOpen = true;
+	};
+
 	private _handleDocumentClick = (event: MouseEvent): void => {
 		const anchorEl = this._getAnchorEl();
 		if (!anchorEl) return;
@@ -448,9 +457,16 @@ export class NLDDPopover extends LitElement {
 		// the popover in the wrong final state.
 		const popovertarget = anchorEl.getAttribute('popovertarget');
 		if (popovertarget && this.id && popovertarget === this.id) return;
+		// Native light-dismiss fires on pointerdown and closes the popover
+		// before the click arrives. Without this guard the click would
+		// immediately reopen it.
+		if (this._pointerdownOnAnchorWhileOpen) {
+			this._pointerdownOnAnchorWhileOpen = false;
+			return;
+		}
 		if (this._isOpen) {
 			(this as HTMLElement).hidePopover();
-		} else if (Date.now() - this._closedAt > POPOVER_REOPEN_GUARD_MS) {
+		} else {
 			(this as HTMLElement).showPopover();
 		}
 	};
@@ -465,7 +481,6 @@ export class NLDDPopover extends LitElement {
 			// Stop scroll/resize tracking — niet meer nodig wanneer dicht.
 			this._cleanupAutoUpdate?.();
 			this._cleanupAutoUpdate = null;
-			this._closedAt = Date.now();
 			this._returnFocus();
 			this.dispatchEvent(new CustomEvent('close', { bubbles: true, composed: true }));
 			return;

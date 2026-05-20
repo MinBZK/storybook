@@ -1214,13 +1214,12 @@ describe('nldd-menu drill-in chain', () => {
 		cleanup(root);
 	});
 
-	it('anchor click after a pointer-collapse never reopens, even past the time guard', async () => {
+	it('anchor click after a pointer-collapse never reopens', async () => {
 		// Closing from deep in a drill-in submenu: the submenu's
 		// pointerdown/tap collapses the chain, then the trailing click
-		// reaches the root. On touch the pointerup→click gap can exceed
-		// POPOVER_REOPEN_GUARD_MS, so the old time-based guard let the
-		// click's showPopover() reopen the root (intermittent bounce).
-		// The gesture marker must suppress that regardless of timing.
+		// reaches the root. The gesture marker (_collapsedByPointerGesture)
+		// suppresses the click-driven reopen — timing-independent, so it
+		// works on touch where pointerup→click can lag arbitrarily.
 		const root = await fixture<HTMLElement>(`
 			<div>
 				<button id="anch3">Open menu</button>
@@ -1252,9 +1251,6 @@ describe('nldd-menu drill-in chain', () => {
 		}));
 		await waitForUpdate(root);
 		expect(l2Menu.matches(':popover-open')).toBe(false);
-
-		// Simulate a long pointerup→click gap so the time guard lapses.
-		(menu as unknown as { _closedAt: number })._closedAt = Date.now() - 5000;
 
 		anch.click();
 		await waitForUpdate(root);
@@ -1293,8 +1289,7 @@ describe('nldd-menu drill-in chain', () => {
 		await waitForUpdate(root);
 		expect(menu.matches(':popover-open')).toBe(false);
 
-		// Past the reopen guard, a fresh anchor click opens it again.
-		(menu as unknown as { _closedAt: number })._closedAt = Date.now() - 5000;
+		// A fresh anchor click opens it again.
 		anch.click();
 		await waitForUpdate(root);
 		expect(menu.matches(':popover-open')).toBe(true);

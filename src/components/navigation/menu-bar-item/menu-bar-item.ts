@@ -34,7 +34,6 @@ import { menuBarItemStyles } from './menu-bar-item.styles.js';
 import { template } from './menu-bar-item.template.js';
 import '../../content/icon/icon.js';
 import '../../lists-and-menus/menu/menu.js';
-import { POPOVER_REOPEN_GUARD_MS } from '../../../utilities/popover-guard.js';
 
 /**
  * Minimal typed interface for nldd-menu.
@@ -115,17 +114,19 @@ export class NLDDMenuBarItem extends LitElement {
 
 	private _menu: PopoverMenu | null = null;
 	private _menuOpen = false;
-	private _menuClosedAt = 0;
+	private _pointerdownWhileMenuOpen = false;
 
 	// ## Lifecycle
 
 	override connectedCallback(): void {
 		super.connectedCallback();
+		this.addEventListener('pointerdown', this._handlePointerdown);
 		this.addEventListener('click', this._handleClick);
 	}
 
 	override disconnectedCallback(): void {
 		super.disconnectedCallback();
+		this.removeEventListener('pointerdown', this._handlePointerdown);
 		this.removeEventListener('click', this._handleClick);
 		this._menu?.remove();
 		this._menu = null;
@@ -151,6 +152,12 @@ export class NLDDMenuBarItem extends LitElement {
 	}
 
 	// ## Event handlers
+
+	private _handlePointerdown = (): void => {
+		if (this._menuOpen) {
+			this._pointerdownWhileMenuOpen = true;
+		}
+	};
 
 	private _handleClick = (event: Event): void => {
 		if (this.disabled) {
@@ -188,7 +195,6 @@ export class NLDDMenuBarItem extends LitElement {
 			const isOpen = (event as ToggleEvent).newState === 'open';
 			this._menuOpen = isOpen;
 			this.expanded = isOpen;
-			if (!isOpen) this._menuClosedAt = Date.now();
 		});
 		document.body.appendChild(menu);
 		this._menu = menu;
@@ -212,6 +218,10 @@ export class NLDDMenuBarItem extends LitElement {
 	}
 
 	private _toggleMenu(): void {
+		if (this._pointerdownWhileMenuOpen) {
+			this._pointerdownWhileMenuOpen = false;
+			return;
+		}
 		if (!this._menu) this._createMenu();
 		if (!this._menu) return;
 
@@ -219,7 +229,7 @@ export class NLDDMenuBarItem extends LitElement {
 
 		if (this._menuOpen) {
 			this._menu.hidePopover();
-		} else if (Date.now() - this._menuClosedAt > POPOVER_REOPEN_GUARD_MS) {
+		} else {
 			this._syncMenuItems();
 			this._menu.showPopover();
 		}

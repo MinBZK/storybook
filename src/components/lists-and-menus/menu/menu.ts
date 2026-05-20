@@ -12,7 +12,6 @@ import '../../lists-and-menus/cells/text-cell/text-cell.js';
 import '../../content/icon/icon.js';
 import '../../status-and-feedback/inline-dialog/inline-dialog.js';
 import { isKeyboardMode, isTouchMode } from '../../../utilities/input-modality.js';
-import { POPOVER_REOPEN_GUARD_MS } from '../../../utilities/popover-guard.js';
 import { breakpoints } from '../../../assets/styles/breakpoints.js';
 
 
@@ -421,12 +420,13 @@ export class NLDDMenu extends LitElement {
 	_parentItem: NLDDMenuItem | null = null;
 
 	private _isOpen = false;
-	private _closedAt = 0;
 	/** Set on the root when a pointer gesture (outside/anchor pointerdown
-	 * or confirmed tap) collapsed the chain. The trailing `click` of that
-	 * same gesture consumes it in `_handleDocumentClick` and must NOT
-	 * reopen — gesture-correlated, so it's reliable on touch where the
-	 * pointerup→click gap exceeds the time-based reopen guard. @internal */
+	 * or confirmed tap) collapsed the chain, or when a pointerdown landed
+	 * on the anchor while the menu was open (covers native light-dismiss).
+	 * The trailing `click` of that same gesture consumes it in
+	 * `_handleDocumentClick` and must NOT reopen — gesture-correlated, so
+	 * it's reliable on touch regardless of pointerup→click timing.
+	 * @internal */
 	_collapsedByPointerGesture = false;
 	private _cleanupAutoUpdate: (() => void) | null = null;
 
@@ -630,7 +630,7 @@ export class NLDDMenu extends LitElement {
 		}
 		if (this._isOpen) {
 			(this as HTMLElement).hidePopover();
-		} else if (Date.now() - this._closedAt > POPOVER_REOPEN_GUARD_MS) {
+		} else {
 			(this as HTMLElement).showPopover();
 		}
 	};
@@ -1375,7 +1375,6 @@ export class NLDDMenu extends LitElement {
 	 */
 	private _collapseChain = (): void => {
 		const root = this._chainRoot ?? this;
-		root._closedAt = Date.now();
 		// Snapshot + clear first so the re-entrant cleanup splices are
 		// no-ops and a trailing same-gesture call finds nothing to do.
 		const chain = root._openChain;
@@ -1413,6 +1412,17 @@ export class NLDDMenu extends LitElement {
 	 */
 	private _handleDocumentPointerdown = (event: PointerEvent): void => {
 		if (!this._isOpen) return;
+		// Anchor pointerdown on a root menu while open: capture as a gesture
+		// so the trailing click — fired after native popover light-dismiss
+		// has already closed us — won't reopen us via `_handleDocumentClick`.
+		// Drill-in submenus take a different path further down.
+		if (!this._isSubmenu) {
+			const anchorEl = this._getAnchorEl();
+			if (anchorEl && event.composedPath().includes(anchorEl)) {
+				this._collapsedByPointerGesture = true;
+				return;
+			}
+		}
 		if (!this._drillInMode) return;
 		// Only nested drill-in submenus need this: they form a hidden chain
 		// of ancestors that won't auto-collapse on outside click. A root
@@ -1911,7 +1921,6 @@ export class NLDDMenu extends LitElement {
 		this._syncAnchorPopupState(this._isOpen);
 
 		if (toggleEvent.newState !== 'open') {
-			this._closedAt = Date.now();
 			this._cleanupAutoUpdate?.();
 			this._cleanupAutoUpdate = null;
 			window.removeEventListener('resize', this._handleWindowResize);
