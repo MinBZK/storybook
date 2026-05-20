@@ -16,6 +16,7 @@
  * @attr {string}  name                - Input name for form submission
  * @attr {boolean} show-search-button - When set, shows a search button on the right
  * @attr {object}  translations        - Override translation keys; unset keys fall back to Dutch
+ * @attr {boolean} no-spellcheck       - Disables browser spellchecking on the inner input
  * @attr {string}  width               - Optional fixed width (any CSS length, e.g. "240px"). Default: stretches to fill container.
  *
  * @fires input  - When the input value changes; detail: { value: string }
@@ -73,6 +74,9 @@ export class NLDDSearchField extends LitElement {
 	/** Override one or more translation keys. Unset keys fall back to Dutch. */
 	@property({ type: Object })
 	translations: Partial<NLDDSearchFieldTranslations> = {};
+
+	@property({ type: Boolean, reflect: true, attribute: 'no-spellcheck' })
+	noSpellcheck = false;
 
 	/** Optional fixed width (any CSS length). When unset, the field stretches to fill its container. */
 	@property({ type: String, reflect: true })

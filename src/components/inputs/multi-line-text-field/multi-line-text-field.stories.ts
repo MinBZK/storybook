@@ -66,6 +66,7 @@ export default {
 		required: false,
 		autocomplete: '',
 		accessibleLabel: '',
+		noSpellcheck: false,
 	},
 	argTypes: {
 		size: {
@@ -140,10 +141,16 @@ export default {
 			control: 'text',
 			description: 'Toegankelijk label voor screen readers',
 		},
+		noSpellcheck: {
+			name: 'no-spellcheck',
+			control: 'boolean',
+			description: 'Disables browser spellchecking on the inner textarea',
+			table: { defaultValue: { summary: false } },
+		},
 	},
 };
 
-const Template = ({ size, resize, rows, width, placeholder, valid, invalid, readonly, disabled, name, value, required, autocomplete, accessibleLabel }: Record<string, any>) => html`
+const Template = ({ size, resize, rows, width, placeholder, valid, invalid, readonly, disabled, name, value, required, autocomplete, accessibleLabel, noSpellcheck }: Record<string, any>) => html`
 	<nldd-multi-line-text-field
 		size=${size}
 		resize=${resize}
@@ -159,6 +166,7 @@ const Template = ({ size, resize, rows, width, placeholder, valid, invalid, read
 		?required=${required}
 		autocomplete=${autocomplete}
 		accessible-label=${accessibleLabel || nothing}
+		?no-spellcheck=${noSpellcheck}
 	></nldd-multi-line-text-field>
 `;
 

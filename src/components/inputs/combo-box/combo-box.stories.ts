@@ -74,6 +74,12 @@ export default {
 			control: 'text',
 			description: 'Toegankelijk label voor screen readers',
 		},
+		noSpellcheck: {
+			name: 'no-spellcheck',
+			control: 'boolean',
+			description: 'Disables browser spellchecking on the inner input',
+			table: { defaultValue: { summary: false } },
+		},
 	},
 	args: {
 		size: 'md',
@@ -87,6 +93,7 @@ export default {
 		value: '',
 		autocomplete: 'off',
 		accessibleLabel: '',
+		noSpellcheck: false,
 	},
 };
 
@@ -103,6 +110,7 @@ const Template = (args: Record<string, any>) => html`
 		value=${args.value}
 		autocomplete=${args.autocomplete}
 		accessible-label=${args.accessibleLabel || nothing}
+		?no-spellcheck=${args.noSpellcheck}
 	>
 		<nldd-menu empty-text="Geen resultaten">
 			<nldd-menu-item text="Nederland" value="nl"></nldd-menu-item>

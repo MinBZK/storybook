@@ -188,4 +188,18 @@ describe('nldd-multi-line-text-field', () => {
 		await waitForUpdate(el);
 		expect(el.style.getPropertyValue('--_width')).toBe('');
 	});
+
+	it('inner textarea keeps spellcheck=true by default', async () => {
+		el = await fixture('<nldd-multi-line-text-field></nldd-multi-line-text-field>');
+		await waitForUpdate(el);
+		const textarea = el.shadowRoot!.querySelector('textarea')!;
+		expect(textarea.getAttribute('spellcheck')).toBe('true');
+	});
+
+	it('no-spellcheck attribute disables spellcheck on inner textarea', async () => {
+		el = await fixture('<nldd-multi-line-text-field no-spellcheck></nldd-multi-line-text-field>');
+		await waitForUpdate(el);
+		const textarea = el.shadowRoot!.querySelector('textarea')!;
+		expect(textarea.getAttribute('spellcheck')).toBe('false');
+	});
 });

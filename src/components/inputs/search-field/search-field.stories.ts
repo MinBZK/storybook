@@ -60,6 +60,12 @@ export default {
 			description: 'Uitgeschakelde toestand',
 			table: { defaultValue: { summary: false } },
 		},
+		noSpellcheck: {
+			name: 'no-spellcheck',
+			control: 'boolean',
+			description: 'Disables browser spellchecking on the inner input',
+			table: { defaultValue: { summary: false } },
+		},
 	},
 	args: {
 		size: 'md',
@@ -70,10 +76,11 @@ export default {
 		placeholder: 'Zoeken',
 		accessibleLabel: '',
 		disabled: false,
+		noSpellcheck: false,
 	},
 };
 
-const Template = ({ size, showSearchButton, name, value, placeholder, accessibleLabel, disabled, width }: Record<string, any>) => html`
+const Template = ({ size, showSearchButton, name, value, placeholder, accessibleLabel, disabled, noSpellcheck, width }: Record<string, any>) => html`
 	<nldd-search-field
 		value=${value}
 		placeholder=${placeholder}
@@ -82,6 +89,7 @@ const Template = ({ size, showSearchButton, name, value, placeholder, accessible
 		?disabled=${disabled}
 		?show-search-button=${showSearchButton}
 		name=${name}
+		?no-spellcheck=${noSpellcheck}
 		width=${width}
 	></nldd-search-field>
 `;

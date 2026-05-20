@@ -16,6 +16,7 @@
  * @attr {boolean} required    - Required state
  * @attr {string} autocomplete - Autocomplete hint
  * @attr {string} accessible-label    - Accessible label forwarded to the inner input. Set automatically by nldd-form-field.
+ * @attr {boolean} no-spellcheck - Disables browser spellchecking on the inner input
  * @attr {string} width        - Optional fixed width (any CSS length, e.g. "240px"). Default: stretches to fill container.
  *
  * @fires input  - When input value changes
@@ -85,6 +86,9 @@ export class NLDDTextField extends LitElement {
 
 	@property({ type: String, attribute: 'error-message-ids' })
 	errorMessageIds = '';
+
+	@property({ type: Boolean, reflect: true, attribute: 'no-spellcheck' })
+	noSpellcheck = false;
 
 	/** Optional fixed width (any CSS length). When unset, the field stretches to fill its container. */
 	@property({ type: String, reflect: true })

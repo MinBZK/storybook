@@ -246,4 +246,18 @@ describe('nldd-search-field – dismiss', () => {
 		const input = el.shadowRoot!.querySelector('input');
 		expect(deepActiveElement()).toBe(input);
 	});
+
+	it('inner input keeps spellcheck=true by default', async () => {
+		el = await fixture('<nldd-search-field></nldd-search-field>');
+		await waitForUpdate(el);
+		const input = el.shadowRoot!.querySelector('input')!;
+		expect(input.getAttribute('spellcheck')).toBe('true');
+	});
+
+	it('no-spellcheck attribute disables spellcheck on inner input', async () => {
+		el = await fixture('<nldd-search-field no-spellcheck></nldd-search-field>');
+		await waitForUpdate(el);
+		const input = el.shadowRoot!.querySelector('input')!;
+		expect(input.getAttribute('spellcheck')).toBe('false');
+	});
 });

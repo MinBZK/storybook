@@ -31,6 +31,7 @@
  * @attr {string}  accessible-label - Accessible label forwarded as aria-label to the input. Required for screen reader accessibility.
  * @attr {number}  max-items    - Maximum visible items before scrolling (default: 8)
  * @attr {object}  translations - Override translation keys; unset keys fall back to Dutch
+ * @attr {boolean} no-spellcheck - Disables browser spellchecking on the inner input
  * @attr {string}  width        - Optional fixed width (any CSS length, e.g. "240px"). Default: stretches to fill container.
  *
  * @note Free-text values: if the user types a value that does not match any menu option
@@ -124,6 +125,9 @@ export class NLDDComboBox extends LitElement {
 
 	@property({ type: Object })
 	translations: Partial<NLDDComboBoxTranslations> = {};
+
+	@property({ type: Boolean, reflect: true, attribute: 'no-spellcheck' })
+	noSpellcheck = false;
 
 	/** Optional fixed width (any CSS length). When unset, the field stretches to fill its container. */
 	@property({ type: String, reflect: true })
