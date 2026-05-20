@@ -21,14 +21,14 @@ export default {
 			description: 'Standaard variant voor alle items. Kan per item worden overschreven met een eigen variant attribuut. "compact" stapelt het icoon boven de tekst.',
 			table: { defaultValue: { summary: '(geen)' } },
 		},
-		centered: {
-			control: 'boolean',
-			description: 'Centreert de tabs in de container (host vult de rij, tabs groeperen in het midden)',
-			table: { defaultValue: { summary: false } },
-		},
 		responsive: {
 			control: 'boolean',
 			description: 'Schakelt automatisch over naar de compact-look via de layout-container container query (onder 480px)',
+			table: { defaultValue: { summary: false } },
+		},
+		centered: {
+			control: 'boolean',
+			description: 'Centreert de tabs in de container (host vult de rij, tabs groeperen in het midden)',
 			table: { defaultValue: { summary: false } },
 		},
 		accessibleLabel: {
@@ -39,8 +39,8 @@ export default {
 	},
 	args: {
 		variant: '',
-		centered: false,
 		responsive: false,
+		centered: false,
 		accessibleLabel: '',
 	},
 };
@@ -53,7 +53,7 @@ const tabBarItems = html`
 	<nldd-tab-bar-item text="Zoeken" icon="search"></nldd-tab-bar-item>
 `;
 
-const Template = ({ variant, centered, responsive, accessibleLabel }: Record<string, any>) => html`
+const Template = ({ variant, responsive, centered, accessibleLabel }: Record<string, any>) => html`
 	<nldd-tab-bar
 		variant=${variant || nothing}
 		?responsive=${responsive}
