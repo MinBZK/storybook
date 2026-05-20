@@ -87,13 +87,12 @@ export function menuItemTemplate(this: NLDDMenuItem, variant: 'menu' | 'listbox'
 			@click=${this._handleClick}
 		>
 			${hasCheckState ? html`
-				<nldd-spacer-cell size="2"></nldd-spacer-cell>
 				<nldd-icon-cell class="menu__item-check"
 					size="24"
 					horizontal-alignment="center"
 					icon=${this.selected ? 'check-mark' : nothing}
 				></nldd-icon-cell>
-				<nldd-spacer-cell size="2"></nldd-spacer-cell>
+				<nldd-spacer-cell size="4"></nldd-spacer-cell>
 			` : nothing}
 			${this.icon ? html`
 				<nldd-icon-cell class="menu__item-icon" size="20" icon=${this.icon}></nldd-icon-cell>
