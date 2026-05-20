@@ -27,6 +27,13 @@ export default {
 		},
 	},
 	argTypes: {
+		variant: {
+			control: 'select',
+			options: ['(auto)', 'text', 'icon', 'icon-and-text'],
+			mapping: { '(auto)': '' },
+			description: 'Wat zichtbaar is. Bij "(auto)" bepaalt de knop dat zelf op basis van text/icon.',
+			table: { defaultValue: { summary: '(auto)' } },
+		},
 		size: {
 			control: 'select',
 			options: ['xs', 'sm', 'md'],
@@ -75,6 +82,7 @@ export default {
 		},
 	},
 	args: {
+		variant: '',
 		size: 'md',
 		text: 'Toggle',
 		icon: '',
@@ -87,6 +95,7 @@ export default {
 
 const Template = (args: Record<string, any>) => html`
 	<nldd-toggle-button
+		variant=${args.variant || nothing}
 		type=${args.type}
 		size=${args.size}
 		?selected=${args.selected}

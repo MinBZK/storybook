@@ -26,6 +26,13 @@ export default {
 		},
 	},
 	argTypes: {
+		variant: {
+			control: 'select',
+			options: ['(auto)', 'text', 'icon', 'icon-and-text'],
+			mapping: { '(auto)': '' },
+			description: 'Wat zichtbaar is. Bij "(auto)" bepaalt de tag dat zelf op basis van text/icon.',
+			table: { defaultValue: { summary: '(auto)' } },
+		},
 		color: {
 			control: 'select',
 			options: [
@@ -70,6 +77,7 @@ export default {
 		},
 	},
 	args: {
+		variant: '',
 		color: 'neutral',
 		size: 'md',
 		text: 'Tag',
@@ -78,8 +86,9 @@ export default {
 	},
 };
 
-const Template = ({ color, size, text, icon, accessibleLabel }: Record<string, any>) => html`
+const Template = ({ variant, color, size, text, icon, accessibleLabel }: Record<string, any>) => html`
 	<nldd-tag
+		variant=${variant || nothing}
 		color=${color}
 		size=${size}
 		icon=${icon || nothing}
