@@ -278,18 +278,18 @@ export const aliases = {
 	'new': 'starburst-filled',
 	'promotion': 'starburst-filled',
 
-	// square-and-arrow-right
-	'logout': 'square-and-arrow-right',
-	'exit': 'square-and-arrow-right',
-
-	// square-arrow-up
-	'share': 'square-arrow-up',
+	// square-arrow-right
+	'logout': 'square-arrow-right',
+	'exit': 'square-arrow-right',
 
 	// square-arrow-right-inward
 	'login': 'square-arrow-right-inward',
 
 	// square-arrow-right-top
 	'external-link': 'square-arrow-right-top',
+
+	// square-arrow-up
+	'share': 'square-arrow-up',
 
 	// square-on-square
 	'copy': 'square-on-square',
