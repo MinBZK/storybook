@@ -88,6 +88,7 @@ if (!customElements.get('nldd-menu-group')) {
  * @attr {string}  icon      - Icon name rendered before the text (nldd-icon name).
  * @attr {string}  type      - Item type: 'button' | 'checkbox' | 'radio'. Default: 'button'.
  * @attr {boolean} selected        - Selected state for checkbox and radio types.
+ * @attr {boolean} destructive     - Marks the item as destructive (red text; red highlight bg). Use for irreversible actions like "Delete".
  * @attr {boolean} disabled        - Disabled state.
  * @attr {string}  query           - Query substring to bold-highlight in text. Set by menu's filter(); also settable by consumers.
  * @attr {string}  query-mark-mode - 'match' | 'predictive' (default: 'predictive'). See text-cell for details.
@@ -119,6 +120,9 @@ export class NLDDMenuItem extends LitElement {
 
 	@property({ type: Boolean, reflect: true })
 	selected = false;
+
+	@property({ type: Boolean, reflect: true })
+	destructive = false;
 
 	@property({ type: Boolean, reflect: true })
 	disabled = false;
@@ -301,9 +305,9 @@ const defaultFilterFn = (query: string, item: NLDDMenuItem): boolean => {
  * @attr {string}  empty-text           - Text of the default empty-state dialog. Falls back
  *                                        to Dutch i18n "Geen opties beschikbaar".
  * @attr {string}  empty-supporting-text - Supporting text of the default empty-state dialog.
- * @attr {string}  width                - Explicit width. Sets --_menu-width internally.
+ * @attr {string}  width                - Explicit width. Sets --_width internally.
  * @attr {number}  max-items            - Maximum number of visible items before scrolling.
- *                                        Sets --_menu-max-items internally. Default: 0 (no limit).
+ *                                        Sets --_max-items internally. Default: 0 (no limit).
  * @attr {object}  translations         - Override one or more translation keys.
  * @attr {Function} filterFn            - Custom filter function (query, item) => boolean.
  *
@@ -339,13 +343,13 @@ export class NLDDMenu extends LitElement {
 	emptySupportingText = '';
 
 
-	/** Explicit width. Sets --_menu-width internally. */
+	/** Explicit width. Sets --_width internally. */
 	@property({ type: String, reflect: true })
 	width = '';
 
 	/**
 	 * Maximum number of visible items before the menu scrolls.
-	 * Sets --_menu-max-items internally. Default: 0 (no limit).
+	 * Sets --_max-items internally. Default: 0 (no limit).
 	 */
 	@property({ type: Number, attribute: 'max-items' })
 	maxItems = 0;
@@ -508,16 +512,16 @@ export class NLDDMenu extends LitElement {
 	override updated(changedProperties: Map<string, unknown>): void {
 		if (changedProperties.has('width')) {
 			if (this.width) {
-				this.style.setProperty('--_menu-width', this.width);
+				this.style.setProperty('--_width', this.width);
 			} else {
-				this.style.removeProperty('--_menu-width');
+				this.style.removeProperty('--_width');
 			}
 		}
 		if (changedProperties.has('maxItems')) {
 			if (this.maxItems > 0) {
-				this.style.setProperty('--_menu-max-items', String(this.maxItems));
+				this.style.setProperty('--_max-items', String(this.maxItems));
 			} else {
-				this.style.removeProperty('--_menu-max-items');
+				this.style.removeProperty('--_max-items');
 			}
 		}
 		if (changedProperties.has('variant')) {
@@ -1781,7 +1785,7 @@ export class NLDDMenu extends LitElement {
 		// Without this, the submenu's top edge aligns with the opener and the
 		// inner padding pushes the first item down, leaving a visible step.
 		const submenuPadding = (this._isSubmenu && !this._drillInMode)
-			? this._cssPx('--_menu-padding')
+			? this._cssPx('--_padding')
 			: 0;
 
 		// Drill-in: pick the side from the available space around the
@@ -1807,7 +1811,7 @@ export class NLDDMenu extends LitElement {
 				size({
 					padding: viewportMargin,
 					apply: ({ availableHeight }: { availableHeight: number }) => {
-						this.style.setProperty('--_menu-max-height', `${availableHeight}px`);
+						this.style.setProperty('--_max-height', `${availableHeight}px`);
 					},
 				}),
 			],

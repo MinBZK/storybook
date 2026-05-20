@@ -35,7 +35,8 @@ export const WithIcons = {
 		<nldd-menu id="menu-icons" anchor="button-icons">
 			<nldd-menu-item text="Bewerk" icon="pencil"></nldd-menu-item>
 			<nldd-menu-item text="Dupliceer" icon="square-plus-on-square"></nldd-menu-item>
-			<nldd-menu-item text="Verwijder" icon="trash"></nldd-menu-item>
+			<nldd-menu-divider></nldd-menu-divider>
+			<nldd-menu-item destructive text="Verwijder" icon="trash"></nldd-menu-item>
 		</nldd-menu>
 	`,
 };
@@ -109,6 +110,25 @@ export const Disabled = {
 			<nldd-menu-item text="Kopieer"></nldd-menu-item>
 		</nldd-menu>
 	`,
+};
+
+export const Destructive = {
+	render: () => html`
+		<nldd-button id="button-destructive" expandable text="Open menu"></nldd-button>
+		<nldd-menu id="menu-destructive" anchor="button-destructive">
+			<nldd-menu-item text="Bewerk" icon="pencil"></nldd-menu-item>
+			<nldd-menu-item text="Dupliceer" icon="square-plus-on-square"></nldd-menu-item>
+			<nldd-menu-divider></nldd-menu-divider>
+			<nldd-menu-item destructive text="Verwijder" icon="trash"></nldd-menu-item>
+		</nldd-menu>
+	`,
+	parameters: {
+		docs: {
+			description: {
+				story: 'Markeer onomkeerbare acties als `destructive` voor een rode tekstkleur en een rode highlight-achtergrond — zodat de actie visueel afwijkt van veilige items in dezelfde menu.',
+			},
+		},
+	},
 };
 
 export const WithGroups = {

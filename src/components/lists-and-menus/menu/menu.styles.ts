@@ -6,26 +6,19 @@ export const menuStyles = css`
 	/* # Host */
 
 	:host {
-		--_viewport-margin: 16px;
-		--_menu-width: var(--primitives-area-280);
-		--_menu-max-height: calc(infinity * 1px);
-		--_menu-max-items: 9999;
-		--_menu-item-size: var(--semantics-controls-md-min-size);
-		--_menu-padding: var(--primitives-space-8);
-
-		/* Press-flash colours for .menu__item:active:hover. Defined here on
-		 * the menu host so they inherit across the shadow boundary into the
-		 * slotted nldd-menu-item subtree (same channel as
-		 * --context-cell-content-color). While a touch-scroll is in
-		 * progress they're neutralised (see :host([scroll-active]) below)
-		 * so a finger that started on an item and then panned doesn't
-		 * leave it highlighted for the whole gesture. */
-		--_item-press-bg: var(--components-menu-item-is-highlighted-background-color);
-		--_item-press-fg: var(--components-menu-item-is-highlighted-content-color);
+		--_viewport-margin: var(--primitives-space-16);
+		--_width: var(--primitives-area-280);
+		--_max-height: calc(infinity * 1px);
+		--_max-items: 9999;
+		--_padding: var(--primitives-space-8);
+		--_item-size: var(--semantics-controls-md-min-size);
+		--_item-background-color: transparent;
+		--_item-is-highlighted-background-color: var(--components-menu-item-is-highlighted-background-color);
+		--_item-is-highlighted-content-color: var(--components-menu-item-is-highlighted-content-color);
 
 		@media (pointer: fine) {
-			--_menu-item-size: var(--semantics-controls-sm-min-size);
-			--_menu-padding: var(--primitives-space-6);
+			--_padding: var(--primitives-space-6);
+			--_item-size: var(--semantics-controls-sm-min-size);
 		}
 
 		display: block;
@@ -42,13 +35,9 @@ export const menuStyles = css`
 		display: none;
 	}
 
-	/* Touch-scroll in progress (set by nldd-menu's touch handlers): kill
-	 * the item press-flash. transparent bg + initial content colour
-	 * (guaranteed-invalid, so cells fall back to their default) means the
-	 * still-matching .menu__item:active:hover rule paints nothing. */
 	:host([scroll-active]) {
-		--_item-press-bg: transparent;
-		--_item-press-fg: initial;
+		--_item-is-highlighted-background-color: transparent;
+		--_item-is-highlighted-content-color: initial;
 	}
 
 
@@ -60,13 +49,10 @@ export const menuStyles = css`
 		border-radius: var(--semantics-overlays-corner-radius);
 		box-shadow: var(--components-menu-box-shadow);
 		background: var(--semantics-surfaces-background-color);
-		width: var(--_menu-width);
-		padding: var(--_menu-padding);
+		width: var(--_width);
+		padding: var(--_padding);
 		flex-direction: column;
-		max-height: min(
-			var(--_menu-max-height),
-			calc(var(--_menu-max-items) * var(--_menu-item-size) + var(--_menu-padding) * 2)
-		);
+		max-height: min(var(--_max-height), calc(var(--_max-items) * var(--_item-size) + var(--_padding) * 2));
 		outline: none;
 		overflow-y: auto;
 	}
@@ -94,7 +80,7 @@ export const menuStyles = css`
 		border-radius: var(--semantics-controls-md-corner-radius);
 		background: transparent;
 		width: 100%;
-		min-height: var(--_menu-item-size);
+		min-height: var(--_item-size);
 		padding: var(--primitives-space-8);
 		flex-direction: row;
 		align-items: center;
@@ -108,23 +94,19 @@ export const menuStyles = css`
 		}
 	}
 
-	/* Hover gated behind a real hover-capable pointer: touch emulates a
-	 * sticky :hover on the last-tapped point, so opening a drill-in
-	 * submenu with the back button under the finger would otherwise
-	 * leave it highlighted. :active:hover gives press feedback without
-	 * the sticky-hover trap (the synthetic hover never coincides with
-	 * an active press on the back button itself). Mirrors the
-	 * .menu__item:active:hover pattern. */
+	/* Hover gated to hover-capable pointers: touch's sticky :hover would
+	 * otherwise leave the back button highlighted after opening a submenu. */
+
 	@media (hover: hover) {
 		.menu__back-button:hover {
-			background-color: var(--components-menu-item-is-highlighted-background-color);
-			--context-cell-content-color: var(--components-menu-item-is-highlighted-content-color);
+			background-color: var(--_item-is-highlighted-background-color);
+			--context-cell-content-color: var(--_item-is-highlighted-content-color);
 		}
 	}
 
 	.menu__back-button:active:hover {
-		background-color: var(--components-menu-item-is-highlighted-background-color);
-		--context-cell-content-color: var(--components-menu-item-is-highlighted-content-color);
+		background-color: var(--_item-is-highlighted-background-color);
+		--context-cell-content-color: var(--_item-is-highlighted-content-color);
 	}
 
 	.menu__back-button:focus-visible {
@@ -144,11 +126,9 @@ export const menuStyles = css`
 
 	/* # Live region — drill-in view-change announcements (WCAG 4.1.3)
 	 *
-	 * Sibling of .menu (not a child): .menu carries role="menu", whose
-	 * required-owned children are menuitem/group/separator only — a
-	 * role="status" node inside it would violate that. Visually hidden
-	 * but kept in the a11y tree so screen readers announce the swapped
-	 * view; out of the focus order (no tabindex). */
+	 * Sibling of .menu so the role="status" doesn't violate menu's
+	 * required-owned-children. Visually hidden, kept in the a11y tree. */
+
 	.menu__live-region {
 		position: absolute;
 		margin: -1px;
@@ -176,17 +156,54 @@ export const menuItemStyles = css`
 		display: none;
 	}
 
+	/* ## Open submenu opener
+	 *
+	 * Lighter neutral bg while the cursor is in the submenu — the active
+	 * item is in the submenu, the opener just marks the branch. The
+	 * highlighted/hover rule below upgrades back to the bold accent when
+	 * the cursor returns to the opener. */
 
-	/* # Item */
+	.menu__item[aria-expanded="true"] {
+		--_item-background-color: var(--components-menu-item-is-expanded-background-color);
+		--context-cell-content-color: var(--components-menu-item-is-expanded-content-color);
+		--context-cell-content-secondary-color: var(--components-menu-item-is-expanded-content-color);
+	}
+
+	/* ## Highlighted or pressed
+	 *
+	 * :hover on [aria-expanded="true"] covers the cursor-on-open-opener
+	 * case where [highlighted] has been cleared by submenu-open.
+	 * :active:hover is the press flash on touch (neutralised during
+	 * scroll via --_item-is-highlighted-* on :host([scroll-active])). */
+
+	:host([highlighted]) .menu__item,
+	.menu__item[aria-expanded="true"]:hover,
+	.menu__item:active:hover {
+		--_item-background-color: var(--_item-is-highlighted-background-color);
+		--context-cell-content-color: var(--_item-is-highlighted-content-color);
+		--context-cell-content-secondary-color: var(--_item-is-highlighted-content-color);
+	}
+
+	/* ## Destructive */
+
+	:host([destructive]) {
+		--_item-is-highlighted-background-color: var(--components-menu-item-is-destructive-is-highlighted-background-color);
+		--_item-is-highlighted-content-color: var(--components-menu-item-is-destructive-is-highlighted-content-color);
+		--context-cell-content-color: var(--components-menu-item-is-destructive-content-color);
+		--context-cell-content-secondary-color: var(--components-menu-item-is-destructive-content-color);
+	}
+
+
+	/* # Elements */
 
 	.menu__item {
 		display: flex;
 		box-sizing: border-box;
 		border: none;
 		border-radius: var(--semantics-controls-md-corner-radius);
-		background: transparent;
+		background: var(--_item-background-color);
 		width: 100%;
-		min-height: var(--_menu-item-size);
+		min-height: var(--_item-size);
 		padding: var(--primitives-space-8);
 		flex-direction: row;
 		align-items: center;
@@ -198,55 +215,6 @@ export const menuItemStyles = css`
 		}
 	}
 
-
-	/* # Open submenu opener
-	 *
-	 * Lighter, neutral background while the opener's submenu is open and the
-	 * cursor has moved into the submenu. The currently-active item is the
-	 * one in the submenu; the opener just shows "this branch is active".
-	 * macOS-style: subtle, not competing with the highlight.
-	 *
-	 * When the cursor moves back over the opener (or it's keyboard-focused),
-	 * the highlighted/hover rule below upgrades it to the bold accent. */
-
-	.menu__item[aria-expanded="true"] {
-		background-color: var(--components-menu-item-is-expanded-background-color);
-		--context-cell-content-color: var(--components-menu-item-is-expanded-content-color);
-		--context-cell-content-secondary-color: var(--components-menu-item-is-expanded-content-color);
-	}
-
-
-	/* # Highlighted or pressed
-	 *
-	 * [highlighted] always upgrades to the bold accent — including on openers
-	 * with an open submenu. The menu component keeps [highlighted] in sync
-	 * with where the user is logically navigating (set by mouseenter,
-	 * keyboard nav, or the safe-triangle while in transit; cleared on
-	 * peer-hover, submenu-entry, mouseleave, submenu-close), so a stale
-	 * highlighted attr on an opener shouldn't occur. The :hover branch
-	 * additionally covers the case where the cursor sits directly on an
-	 * open opener (since [highlighted] gets cleared at submenu-open time). */
-
-	:host([highlighted]) .menu__item,
-	.menu__item[aria-expanded="true"]:hover {
-		background-color: var(--components-menu-item-is-highlighted-background-color);
-		--context-cell-content-color: var(--components-menu-item-is-highlighted-content-color);
-		--context-cell-content-secondary-color: var(--components-menu-item-is-highlighted-content-color);
-	}
-
-	/* Press flash via host-inherited vars so a touch-scroll can neutralise
-	 * it (see --_item-press-* / :host([scroll-active]) in menuStyles).
-	 * On mouse these vars are the highlight colours, identical to the
-	 * rule above. */
-	.menu__item:active:hover {
-		background-color: var(--_item-press-bg);
-		--context-cell-content-color: var(--_item-press-fg);
-		--context-cell-content-secondary-color: var(--_item-press-fg);
-	}
-
-
-	/* # Focus */
-
 	.menu__item:focus-visible {
 		position: relative;
 		z-index: 1;
@@ -254,9 +222,6 @@ export const menuItemStyles = css`
 		outline-offset: var(--semantics-focus-ring-outline-offset);
 		box-shadow: var(--semantics-focus-ring-box-shadow);
 	}
-
-
-	/* # Disabled */
 
 	:host([disabled]) .menu__item {
 		opacity: var(--primitives-opacity-disabled);
@@ -270,26 +235,13 @@ export const menuItemStyles = css`
 		}
 	}
 
-	@media (forced-colors: active) {
-		/* In forced-colors there's no neutral lighter palette, so mark the
-		 * open opener with a 1px outline instead of a fill — visibly "active"
-		 * without competing with the actual Highlight that lives in the
-		 * submenu. The hovered/highlighted branch promotes it back to the
-		 * full Highlight fill. */
-		.menu__item[aria-expanded="true"] {
-			outline: 1px solid CanvasText;
-			outline-offset: -1px;
-		}
 
+	@media (forced-colors: active) {
 		:host([highlighted]) .menu__item,
-		.menu__item[aria-expanded="true"]:hover {
-			outline: none;
+		.menu__item:hover,
+		.menu__item:focus-visible {
 			background-color: Highlight;
 			color: HighlightText;
-		}
-
-		.menu__item:focus-visible {
-			outline: 2px solid CanvasText;
 		}
 	}
 `;
@@ -322,21 +274,13 @@ export const menuGroupStyles = css`
 
 	/* # Host
 	 *
-	 * Renders automatic dividers above and below the group via
-	 * border-top / border-bottom, except in cases where the divider is
-	 * redundant (first child = no preceding content, last child = no
-	 * trailing content, or an adjacent group already supplies one). The
-	 * padding-top below the top divider provides generous breathing room
-	 * above the title — paired with the tighter margin-bottom on the title
-	 * itself this gives the "more space above than below" rhythm that
-	 * visually binds the title to the items it labels rather than to
-	 * whatever sits above.
+	 * Auto top/bottom dividers via border-top/-bottom; suppressed for the
+	 * first child (top) and when followed by another group or last child
+	 * (bottom — flag set by parent menu via data-no-bottom-divider since
+	 * :last-child can't see hidden siblings).
 	 *
-	 * The data-no-bottom-divider attribute is set by the parent menu when
-	 * the group is the last visible child or is directly followed by
-	 * another group — cases CSS :last-child can't account for because the
-	 * surrounding siblings may be hidden via attribute (e.g. filtering).
-	 */
+	 * padding-top > padding-bottom binds the title visually to its items
+	 * rather than to whatever sits above. */
 
 	:host {
 		display: block;
@@ -380,12 +324,9 @@ export const menuGroupStyles = css`
 	/* # Items wrapper
 	 *
 	 * display: block keeps the role="group" wrapper as a real box so the
-	 * accessibility tree reliably exposes role + aria-labelledby across all
-	 * supported engines (display: contents has historical a11y-tree bugs in
-	 * older WebKit/Chromium that drop these). The extra container has no
-	 * visual impact: .menu is a flex column, and a block child stacks the
-	 * group's items the same as if they were direct children.
-	 */
+	 * a11y tree exposes role + aria-labelledby reliably (display: contents
+	 * has historical a11y-tree bugs in older WebKit/Chromium). */
+
 	.menu-group__items {
 		display: block;
 	}
