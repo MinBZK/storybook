@@ -36,9 +36,9 @@ export default {
 	},
 };
 
-// ## Layout area wrapper (simulates nldd-page container)
+// ## Background wrapper (top-navigation-bar uses its own container query, no layout-container needed)
 
-const layoutArea = 'container-type: inline-size; container-name: layout-container; background-color: var(--semantics-surfaces-background-color);';
+const layoutArea = 'background-color: var(--semantics-surfaces-background-color);';
 
 // ## Template
 
