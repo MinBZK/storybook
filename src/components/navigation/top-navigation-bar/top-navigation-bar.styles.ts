@@ -309,5 +309,10 @@ export const topNavigationBarStyles = css`
 		min-width: 0;
 		flex-grow: 1;
 		flex-shrink: 1;
+		justify-content: flex-end;
+	}
+
+	slot[name="utility"]::slotted(nldd-menu-bar) {
+		flex-grow: 0;
 	}
 `;
