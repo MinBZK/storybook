@@ -89,7 +89,7 @@ export const Compact = {
 	parameters: { controls: { disable: true } },
 };
 
-export const VolleBreedte = {
+export const Gecentreerd = {
 	render: () => html`
 	<div style="container-type: inline-size; container-name: layout-container;">
 		<nldd-tab-bar centered>
