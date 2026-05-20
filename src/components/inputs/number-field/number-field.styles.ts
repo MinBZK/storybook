@@ -99,6 +99,7 @@ export const numberFieldStyles = css`
 		background: transparent;
 		min-width: var(--_min-size);
 		padding: 0 var(--primitives-space-6);
+		align-self: stretch;
 		text-align: center;
 		color: var(--semantics-content-color);
 		font: var(--_text-font);
