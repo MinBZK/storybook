@@ -1628,22 +1628,40 @@ export class NLDDMenu extends LitElement {
 	private _updateDividerVisibility(): void {
 		const children = Array.from(this.children) as Element[];
 		children.forEach(el => {
-			if (el.tagName.toLowerCase() === 'nldd-menu-divider') {
-				el.removeAttribute('hidden');
-			}
+			const tag = el.tagName.toLowerCase();
+			if (tag === 'nldd-menu-divider') el.removeAttribute('hidden');
+			if (tag === 'nldd-menu-group') el.removeAttribute('data-no-bottom-divider');
 		});
 
 		const visible = children.filter(el => !el.hasAttribute('hidden'));
 		visible.forEach((el, index) => {
-			if (el.tagName.toLowerCase() !== 'nldd-menu-divider') return;
+			const tag = el.tagName.toLowerCase();
+			const prev = index > 0 ? visible[index - 1] : null;
+			const next = index < visible.length - 1 ? visible[index + 1] : null;
+			const prevTag = prev?.tagName.toLowerCase();
+			const nextTag = next?.tagName.toLowerCase();
 			const isFirst = index === 0;
 			const isLast = index === visible.length - 1;
-			const prevIsDivider = index > 0 && visible[index - 1].tagName.toLowerCase() === 'nldd-menu-divider';
-			// nldd-menu-group renders its own auto-divider above; suppress an
-			// explicit divider that would render right next to it.
-			const nextIsGroup = index < visible.length - 1 && visible[index + 1].tagName.toLowerCase() === 'nldd-menu-group';
-			if (isFirst || isLast || prevIsDivider || nextIsGroup) {
-				el.setAttribute('hidden', '');
+
+			if (tag === 'nldd-menu-divider') {
+				// nldd-menu-group renders auto-dividers both above and below;
+				// suppress an explicit divider that would render right next to it.
+				const prevIsDivider = prevTag === 'nldd-menu-divider';
+				const nextIsGroup = nextTag === 'nldd-menu-group';
+				const prevIsGroup = prevTag === 'nldd-menu-group';
+				if (isFirst || isLast || prevIsDivider || nextIsGroup || prevIsGroup) {
+					el.setAttribute('hidden', '');
+				}
+			}
+
+			if (tag === 'nldd-menu-group') {
+				// A group's own bottom divider is redundant when it's the last
+				// child or directly followed by another group (whose top divider
+				// already separates them).
+				const nextIsGroup = nextTag === 'nldd-menu-group';
+				if (isLast || nextIsGroup) {
+					el.setAttribute('data-no-bottom-divider', '');
+				}
 			}
 		});
 	}

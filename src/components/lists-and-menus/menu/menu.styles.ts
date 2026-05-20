@@ -322,24 +322,39 @@ export const menuGroupStyles = css`
 
 	/* # Host
 	 *
-	 * Renders an automatic divider above the group via border-top, except when
-	 * the group is the first child of the menu (then no divider is needed).
-	 * The padding-top below the divider provides generous breathing room above
-	 * the title — paired with the tighter margin-bottom on the title itself
-	 * this gives the "more space above than below" rhythm that visually binds
-	 * the title to the items it labels rather than to whatever sits above.
+	 * Renders automatic dividers above and below the group via
+	 * border-top / border-bottom, except in cases where the divider is
+	 * redundant (first child = no preceding content, last child = no
+	 * trailing content, or an adjacent group already supplies one). The
+	 * padding-top below the top divider provides generous breathing room
+	 * above the title — paired with the tighter margin-bottom on the title
+	 * itself this gives the "more space above than below" rhythm that
+	 * visually binds the title to the items it labels rather than to
+	 * whatever sits above.
+	 *
+	 * The data-no-bottom-divider attribute is set by the parent menu when
+	 * the group is the last visible child or is directly followed by
+	 * another group — cases CSS :last-child can't account for because the
+	 * surrounding siblings may be hidden via attribute (e.g. filtering).
 	 */
 
 	:host {
 		display: block;
 		margin-top: var(--primitives-space-4);
 		border-top: var(--semantics-dividers-thickness) solid var(--semantics-dividers-color);
+		border-bottom: var(--semantics-dividers-thickness) solid var(--semantics-dividers-color);
 		padding-top: var(--primitives-space-6);
+		padding-bottom: var(--primitives-space-4);
 	}
 
 	:host(:first-child) {
 		border-top: none;
 		padding-top: var(--primitives-space-2);
+	}
+
+	:host([data-no-bottom-divider]) {
+		border-bottom: none;
+		padding-bottom: var(--primitives-space-2);
 	}
 
 	:host([hidden]) {
