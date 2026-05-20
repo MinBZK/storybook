@@ -71,16 +71,6 @@ export const iconStyles = css`
 	:host([color="mintgroen"])   { --_color: var(--components-icon-color-mintgroen-color); }
 
 
-	/* # Block */
-
-	.icon__container {
-		display: flex;
-		width: 100%;
-		align-items: center;
-		justify-content: center;
-	}
-
-
 	/* # Elements */
 
 	svg {
