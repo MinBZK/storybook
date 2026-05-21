@@ -783,9 +783,9 @@
 
 	/* ## Links */
 
-	--semantics-links-color: light-dark(var(--primitives-color-lintblauw-750), var(--primitives-color-lintblauw-650));
-	--semantics-links-is-hovered-color: light-dark(var(--primitives-color-lintblauw-800), var(--primitives-color-lintblauw-700));
-	--semantics-links-is-active-color: light-dark(var(--primitives-color-lintblauw-850), var(--primitives-color-lintblauw-750));
+	--semantics-links-color: light-dark(var(--primitives-color-lintblauw-550), var(--primitives-color-lintblauw-650));
+	--semantics-links-is-hovered-color: light-dark(var(--primitives-color-lintblauw-600), var(--primitives-color-lintblauw-700));
+	--semantics-links-is-active-color: light-dark(var(--primitives-color-lintblauw-650), var(--primitives-color-lintblauw-750));
 
 	/* ## Blockquotes */
 
