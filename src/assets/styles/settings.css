@@ -1178,7 +1178,7 @@
 	--components-menu-item-is-expanded-content-color: var(--primitives-color-neutral-1000);
 	--components-menu-item-is-destructive-content-color: var(--semantics-content-critical-color);
 	--components-menu-item-is-destructive-is-highlighted-background-color: light-dark(var(--primitives-color-critical-600), var(--primitives-color-critical-650));
-	--components-menu-item-is-destructive-is-highlighted-content-color: light-dark(var(--primitives-color-neutral-0), var(--primitives-color-neutral-0));
+	--components-menu-item-is-destructive-is-highlighted-content-color: var(--primitives-color-neutral-0);
 
 	/* ## Menu bar */
 
