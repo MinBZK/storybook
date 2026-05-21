@@ -265,3 +265,41 @@ describe('nldd-pagination – translations', () => {
 	});
 });
 
+describe('nldd-pagination – select expanded state', () => {
+	let el: NLDDPagination;
+
+	afterEach(() => {
+		if (el) cleanup(el);
+	});
+
+	it('sets the select-expanded attribute when the picker opens', async () => {
+		el = await fixture<NLDDPagination>('<nldd-pagination current="1" total="5"></nldd-pagination>');
+		await waitForUpdate(el);
+
+		el._handleSelectToggle(Object.assign(new Event('toggle'), { newState: 'open' }));
+		expect(el.hasAttribute('select-expanded')).toBe(true);
+	});
+
+	it('removes the select-expanded attribute when the picker closes', async () => {
+		el = await fixture<NLDDPagination>('<nldd-pagination current="1" total="5"></nldd-pagination>');
+		await waitForUpdate(el);
+
+		el._handleSelectToggle(Object.assign(new Event('toggle'), { newState: 'open' }));
+		expect(el.hasAttribute('select-expanded')).toBe(true);
+
+		el._handleSelectToggle(Object.assign(new Event('toggle'), { newState: 'closed' }));
+		expect(el.hasAttribute('select-expanded')).toBe(false);
+	});
+
+	it('clears the select-expanded attribute on blur', async () => {
+		el = await fixture<NLDDPagination>('<nldd-pagination current="1" total="5"></nldd-pagination>');
+		await waitForUpdate(el);
+
+		el._handleSelectToggle(Object.assign(new Event('toggle'), { newState: 'open' }));
+		expect(el.hasAttribute('select-expanded')).toBe(true);
+
+		el._handleSelectBlur();
+		expect(el.hasAttribute('select-expanded')).toBe(false);
+	});
+});
+

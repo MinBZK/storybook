@@ -9,6 +9,8 @@ export const formFieldStyles = css`
 	/* # Host */
 
 	:host {
+		--_gap: calc(var(--primitives-space-10) / 2);
+
 		display: block;
 		container-type: inline-size;
 	}
@@ -23,7 +25,7 @@ export const formFieldStyles = css`
 	.form-field {
 		display: flex;
 		flex-direction: column;
-		gap: var(--components-form-field-gap);
+		gap: var(--_gap);
 	}
 
 	:host([label-alignment="left"]) .form-field,

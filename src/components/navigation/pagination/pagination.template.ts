@@ -76,6 +76,7 @@ export function paginationTemplate(component: NLDDPagination): TemplateResult {
 						@focus=${component._handleSelectFocus}
 						@blur=${component._handleSelectBlur}
 						@keydown=${component._handleSelectKeydown}
+						@toggle=${component._handleSelectToggle}
 					>
 						${Array.from({ length: component.total }, (_, i) => i + 1).map((page) => html`
 							<option value=${page} ?selected=${page === component.current}>${page} / ${component.total}</option>

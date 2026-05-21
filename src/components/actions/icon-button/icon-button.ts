@@ -60,6 +60,12 @@ export type PopupType = 'menu' | 'listbox' | 'dialog' | 'tree' | 'grid';
 export class NLDDIconButton extends LitElement {
 	static override styles = iconButtonStyles;
 
+	// Form-associated so a type="submit"/"reset" icon-button can drive its
+	// form. The inner <button> lives in the shadow root and has no form owner
+	// across the shadow boundary, so the host element must carry the association.
+	static formAssociated = true;
+	private _internals = this.attachInternals();
+
 	@property({ type: String, reflect: true })
 	variant: Variant = 'neutral-tinted';
 
@@ -196,6 +202,21 @@ export class NLDDIconButton extends LitElement {
 			e.stopPropagation();
 			return;
 		}
+		// A link icon-button has no form behaviour. Otherwise drive the
+		// associated form ourselves: the shadow <button type="submit"|"reset">
+		// can't reach the light-DOM form across the shadow boundary.
+		//
+		// Limitation: we call requestSubmit() without a submitter, so
+		// SubmitEvent.submitter is null. A form handler that branches on
+		// event.submitter to tell multiple submit buttons apart won't see this
+		// element. There is no fix via requestSubmit(submitter): the inner shadow
+		// <button> is not a form descendant (throws NotFoundError) and this host
+		// is not a "submit button" per spec (throws TypeError) — both verified.
+		// Consumers that need to distinguish submitters should use a hidden field
+		// or separate forms.
+		if (this.href) return;
+		if (this.type === 'submit') this._internals.form?.requestSubmit();
+		else if (this.type === 'reset') this._internals.form?.reset();
 	}
 
 	/**

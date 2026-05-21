@@ -36,7 +36,7 @@ export const containerStyles = css`
 		--_lg-padding-left: var(--_padding-left);
 
 		display: flex;
-		height: 100%;
+		height: auto;
 		flex-direction: column;
 		flex-wrap: nowrap;
 		justify-content: var(--_justify-content);

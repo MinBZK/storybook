@@ -24,6 +24,23 @@ describe('nldd-button', () => {
 		expect(content.textContent).toContain('Click me');
 	});
 
+	it('renders a text slot when the text attribute is not set', async () => {
+		el = await fixture('<nldd-button><strong slot="text">Bold label</strong></nldd-button>');
+		await waitForUpdate(el);
+		const slot = el.shadowRoot!.querySelector('.button__text slot[name="text"]') as HTMLSlotElement;
+		expect(slot).not.toBeNull();
+		const assigned = slot.assignedElements();
+		expect(assigned.length).toBe(1);
+		expect(assigned[0].textContent).toBe('Bold label');
+	});
+
+	it('text attribute takes precedence over the text slot (no slot rendered)', async () => {
+		el = await fixture('<nldd-button text="Attr wins"><span slot="text">Slotted</span></nldd-button>');
+		await waitForUpdate(el);
+		expect(el.shadowRoot!.querySelector('.button__text slot[name="text"]')).toBeNull();
+		expect(el.shadowRoot!.querySelector('.button__text')!.textContent).toContain('Attr wins');
+	});
+
 	it('forwards aria-label to the inner button element', async () => {
 		el = await fixture('<nldd-button accessible-label="Close dialog" text="X"></nldd-button>');
 		await waitForUpdate(el);
@@ -386,5 +403,65 @@ describe('nldd-button – popoverTargetElement / popoverTargetAction IDL forward
 		el.popoverTargetAction = 'hide';
 		await waitForUpdate(el);
 		expect(inner.popoverTargetAction).toBe('hide');
+	});
+});
+
+describe('nldd-button – form association', () => {
+	let host: HTMLElement;
+
+	afterEach(() => {
+		if (host) cleanup(host);
+	});
+
+	function clickInner(root: ParentNode) {
+		const btn = root.querySelector('nldd-button')!;
+		(btn.shadowRoot!.querySelector('button') as HTMLElement).click();
+	}
+
+	it('submits the closest form on click when type=submit', async () => {
+		host = await fixture('<form><input name="x" /><nldd-button type="submit" text="Go"></nldd-button></form>');
+		await waitForUpdate(host.querySelector('nldd-button')!);
+		let submitted = false;
+		host.addEventListener('submit', (e) => { e.preventDefault(); submitted = true; });
+		clickInner(host);
+		expect(submitted).toBe(true);
+	});
+
+	it('does not submit when type is the default (button)', async () => {
+		host = await fixture('<form><input name="x" /><nldd-button text="Go"></nldd-button></form>');
+		await waitForUpdate(host.querySelector('nldd-button')!);
+		let submitted = false;
+		host.addEventListener('submit', (e) => { e.preventDefault(); submitted = true; });
+		clickInner(host);
+		expect(submitted).toBe(false);
+	});
+
+	it('does not submit when disabled', async () => {
+		host = await fixture('<form><input name="x" /><nldd-button type="submit" disabled text="Go"></nldd-button></form>');
+		await waitForUpdate(host.querySelector('nldd-button')!);
+		let submitted = false;
+		host.addEventListener('submit', (e) => { e.preventDefault(); submitted = true; });
+		clickInner(host);
+		expect(submitted).toBe(false);
+	});
+
+	it('resets the form on click when type=reset', async () => {
+		host = await fixture('<form><input name="x" /><nldd-button type="reset" text="Reset"></nldd-button></form>');
+		await waitForUpdate(host.querySelector('nldd-button')!);
+		const input = host.querySelector('input') as HTMLInputElement;
+		input.value = 'changed';
+		clickInner(host);
+		expect(input.value).toBe('');
+	});
+
+	it('a link button (href) never triggers form submission', async () => {
+		host = await fixture('<form><input name="x" /><nldd-button type="submit" href="/x" text="Link"></nldd-button></form>');
+		await waitForUpdate(host.querySelector('nldd-button')!);
+		let submitted = false;
+		host.addEventListener('submit', (e) => { e.preventDefault(); submitted = true; });
+		const a = host.querySelector('nldd-button')!.shadowRoot!.querySelector('a') as HTMLElement;
+		a.addEventListener('click', (e) => e.preventDefault());
+		a.click();
+		expect(submitted).toBe(false);
 	});
 });

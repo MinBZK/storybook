@@ -131,11 +131,23 @@ export class NLDDPagination extends LitElement {
 
 	_handleSelectBlur = (): void => {
 		this.toggleAttribute('is-pointer-focus', false);
+		this.toggleAttribute('select-expanded', false);
 	};
 
 	/** Any key press while focused promotes to keyboard mode — drop the marker. */
 	_handleSelectKeydown = (): void => {
 		this.toggleAttribute('is-pointer-focus', false);
+	};
+
+	/**
+	 * Native <select> dispatches a `toggle` event with `newState` of 'open' or
+	 * 'closed' (Chrome 131+, Firefox 134+, Safari 18+). Older browsers silently
+	 * skip this — the visual expanded state is then a no-op. Drives the
+	 * `select-expanded` host attribute that switches the wrapper to its
+	 * is-expanded surface tokens.
+	 */
+	_handleSelectToggle = (e: Event): void => {
+		this.toggleAttribute('select-expanded', (e as ToggleEvent).newState === 'open');
 	};
 
 	override render() {

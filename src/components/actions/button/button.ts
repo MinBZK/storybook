@@ -19,6 +19,7 @@
  * @attr {string} target - Link target (e.g. '_blank'); only used when href is set
  * @attr {string} rel - Link rel attribute; defaults to 'noopener noreferrer' when target is '_blank'
  *
+ * @slot text - Slot for custom button content (e.g. text with inline markup). Used when the text attribute is empty or not set (an empty string counts as "not set", since the attribute and the unset property are indistinguishable). Provide accessible-label when the slotted content isn't plain text.
  * @slot start-icon - Slot for a custom start icon (e.g. custom SVG). Only used when start-icon attribute is not set.
  * @slot end-icon - Slot for a custom end icon (e.g. custom SVG). Only used when end-icon attribute is not set.
  *
@@ -48,6 +49,12 @@ type PopupType = 'menu' | 'listbox' | 'dialog' | 'tree' | 'grid';
 @customElement('nldd-button')
 export class NLDDButton extends LitElement {
 	static override styles = buttonStyles;
+
+	// Form-associated so a type="submit"/"reset" button can drive its form.
+	// The inner <button> lives in the shadow root and has no form owner across
+	// the shadow boundary, so the host element must carry the association.
+	static formAssociated = true;
+	private _internals = this.attachInternals();
 
 	@property({ type: String, reflect: true })
 	variant: Variant = 'neutral-tinted';
@@ -172,6 +179,23 @@ export class NLDDButton extends LitElement {
 			e.stopPropagation();
 			return;
 		}
+		// A link button has no form behaviour. Otherwise drive the associated
+		// form ourselves: the shadow <button type="submit"|"reset"> can't reach
+		// the light-DOM form across the shadow boundary. requestSubmit() runs
+		// constraint validation and fires a cancelable submit event, matching a
+		// native submit button.
+		//
+		// Limitation: we call requestSubmit() without a submitter, so
+		// SubmitEvent.submitter is null. A form handler that branches on
+		// event.submitter to tell multiple submit buttons apart won't see this
+		// element. There is no fix via requestSubmit(submitter): the inner shadow
+		// <button> is not a form descendant (throws NotFoundError) and this host
+		// is not a "submit button" per spec (throws TypeError) — both verified.
+		// Consumers that need to distinguish submitters should use a hidden field
+		// or separate forms.
+		if (this.href) return;
+		if (this.type === 'submit') this._internals.form?.requestSubmit();
+		else if (this.type === 'reset') this._internals.form?.reset();
 	}
 
 	/** Resolves the effective rel value for link rendering. */
