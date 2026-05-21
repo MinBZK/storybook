@@ -166,11 +166,11 @@ export const IconGallery = {
 					.filter(([, target]) => target === iconName)
 					.map(([alias]) => alias);
 				return html`
-					<div style="text-align: center; padding: 12px; border: 1px solid var(--semantics-dividers-color); border-radius: 8px;">
+					<div style="display: flex; flex-direction: column; align-items: center; text-align: center; padding: 16px 8px 8px; border: 1px solid var(--semantics-dividers-color); border-radius: 8px;">
 						<nldd-icon name=${iconName} size="32"></nldd-icon>
-						<div style="font: var(--primitives-font-body-sm-regular-tight); margin-top: 8px; font-weight: 500;">${iconName}</div>
+						<div style="font: var(--primitives-font-body-xs-regular-tight); margin-top: 12px;">${iconName}</div>
 						${iconAliases.length > 0 ? html`
-							<div style="font: var(--primitives-font-body-sm-regular-tight); color: var(--semantics-content-secondary-color); margin-top: 4px; font-style: italic;">
+							<div style="font: var(--primitives-font-body-xxs-regular-tight); color: var(--semantics-content-secondary-color);">
 								${iconAliases.join(', ')}
 							</div>
 						` : ''}
