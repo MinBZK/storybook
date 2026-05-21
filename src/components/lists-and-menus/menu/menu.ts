@@ -1441,6 +1441,10 @@ export class NLDDMenu extends LitElement {
 		const startItem = this._dragStartItem;
 		this._dragStartItem = null;
 		if (!startItem) return;
+		// If the menu closed between pointerdown and pointerup (light-dismiss,
+		// keyboard shortcut), bail — elementFromPoint could otherwise resolve
+		// to an item in a different, newly-opened menu and fire its select.
+		if (!this._isOpen) return;
 		const target = document.elementFromPoint(event.clientX, event.clientY);
 		const releaseItem = target?.closest('nldd-menu-item') as NLDDMenuItem | null;
 		if (!releaseItem || releaseItem === startItem || releaseItem.disabled) return;
