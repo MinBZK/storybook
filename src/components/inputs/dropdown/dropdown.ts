@@ -12,6 +12,7 @@
  * @attr {boolean} valid    - Marks the field as valid
  * @attr {boolean} invalid  - Marks the field as invalid
  * @attr {boolean} disabled - Disabled state; also forwarded to the slotted select
+ * @attr {boolean} expanded - Reflects whether the native picker popup is open (driven internally)
  * @attr {string}  width    - Optional fixed width (any CSS length, e.g. "240px"). Default: stretches to fill container.
  *
  * @slot - A native `<select>` element with `<option>` and/or `<optgroup>` children
@@ -54,6 +55,9 @@ export class NLDDDropdown extends LitElement {
 	@property({ type: Boolean, reflect: true })
 	disabled = false;
 
+	@property({ type: Boolean, reflect: true })
+	expanded = false;
+
 	/** Optional fixed width (any CSS length). When unset, the field stretches to fill its container. */
 	@property({ type: String, reflect: true })
 	width = '';
@@ -94,12 +98,14 @@ export class NLDDDropdown extends LitElement {
 			this._select.removeEventListener('focus', this._handleSelectFocus);
 			this._select.removeEventListener('blur', this._handleSelectBlur);
 			this._select.removeEventListener('keydown', this._handleSelectKeydown);
+			this._select.removeEventListener('toggle', this._handleSelectToggle);
 		}
 
 		this._select = select;
 
 		if (!select) {
 			this._displayValue = '';
+			this.expanded = false;
 			return;
 		}
 
@@ -111,6 +117,7 @@ export class NLDDDropdown extends LitElement {
 		select.addEventListener('focus', this._handleSelectFocus);
 		select.addEventListener('blur', this._handleSelectBlur);
 		select.addEventListener('keydown', this._handleSelectKeydown);
+		select.addEventListener('toggle', this._handleSelectToggle);
 		this._syncDisabled();
 		this._syncAriaInvalid();
 		this._syncDisplayValue();
@@ -161,11 +168,21 @@ export class NLDDDropdown extends LitElement {
 
 	private _handleSelectBlur = (): void => {
 		this.toggleAttribute('is-pointer-focus', false);
+		this.expanded = false;
 	};
 
 	/** Any key press while focused promotes to keyboard mode — drop the marker. */
 	private _handleSelectKeydown = (): void => {
 		this.toggleAttribute('is-pointer-focus', false);
+	};
+
+	/**
+	 * Native <select> dispatches a `toggle` event with `newState` of 'open' or
+	 * 'closed' (Chrome 131+, Firefox 134+, Safari 18+). Older browsers
+	 * silently skip this — the visual expanded state is then a no-op.
+	 */
+	private _handleSelectToggle = (e: Event): void => {
+		this.expanded = (e as ToggleEvent).newState === 'open';
 	};
 
 	override render() {

@@ -7,14 +7,14 @@ export const badgeStyles = css`
 
 	:host {
 		--_background-color: var(--components-badge-critical-background-color);
-		--_content-color: var(--components-badge-critical-content-color);
 		--_height: var(--primitives-space-20);
 		--_inline-padding: var(--primitives-space-6);
 		--_gap: var(--primitives-space-3);
+		--_content-color: var(--components-badge-critical-content-color);
 		--_font: var(--primitives-font-body-xs-bold-flat);
+		--_dot-size: var(--primitives-space-10);
 		--_icon-size: var(--primitives-space-14);
 		--_icon-offset-correction: var(--primitives-space-1);
-		--_dot-size: var(--primitives-space-10);
 
 		display: inline-flex;
 		vertical-align: middle;
@@ -25,22 +25,11 @@ export const badgeStyles = css`
 		--_inline-padding: var(--primitives-space-4);
 		--_gap: var(--primitives-space-2);
 		--_font: var(--primitives-font-body-xxs-bold-flat);
-		--_icon-size: var(--primitives-space-12);
 		--_dot-size: var(--primitives-space-6);
+		--_icon-size: var(--primitives-space-12);
 	}
 
-	:host([hidden]) {
-		display: none;
-	}
-
-
-	/* ## Variants */
-
-	:host([color="critical"]),
-	:host(:not([color])) {
-		--_background-color: var(--components-badge-critical-background-color);
-		--_content-color: var(--components-badge-critical-content-color);
-	}
+	/* ## Color */
 
 	:host([color="accent"]) {
 		--_background-color: var(--components-badge-accent-background-color);
@@ -62,24 +51,36 @@ export const badgeStyles = css`
 		--_content-color: var(--components-badge-success-content-color);
 	}
 
+	:host([hidden]) {
+		display: none;
+	}
+
 
 	/* # Block */
 
 	.badge {
-		display: inline-flex;
 		box-sizing: border-box;
+		display: inline-flex;
 		border-radius: var(--components-badge-corner-radius);
 		box-shadow: 0 0 0 1px var(--context-parent-background-color, var(--semantics-surfaces-background-color));
 		background-color: var(--_background-color);
 		min-width: var(--_height);
 		height: var(--_height);
 		padding: 0 var(--_inline-padding);
+		gap: var(--_gap);
 		align-items: center;
 		justify-content: center;
-		gap: var(--_gap);
 		color: var(--_content-color);
-		white-space: nowrap;
 		font: var(--_font);
+		white-space: nowrap;
+	}
+
+	@media (forced-colors: active) {
+		.badge {
+			border: 1px solid CanvasText;
+			background-color: Canvas;
+			color: CanvasText;
+		}
 	}
 
 	.badge--dot {
@@ -96,15 +97,15 @@ export const badgeStyles = css`
 	}
 
 
-	/* # Icon */
+	/* # Elements */
 
 	.badge__icon {
 		display: inline-flex;
 		width: var(--_icon-size);
 		height: var(--_icon-size);
+		flex-shrink: 0;
 		align-items: center;
 		justify-content: center;
-		flex-shrink: 0;
 	}
 
 	.badge__icon:has(+ .badge__text) {
@@ -116,21 +117,7 @@ export const badgeStyles = css`
 		height: 100%;
 	}
 
-
-	/* # Text */
-
 	.badge__text {
 		display: inline-block;
-	}
-
-
-	/* # Toegankelijkheid */
-
-	@media (forced-colors: active) {
-		.badge {
-			border: 1px solid CanvasText;
-			background-color: Canvas;
-			color: CanvasText;
-		}
 	}
 `;

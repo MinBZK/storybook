@@ -24,9 +24,6 @@ export const keyboardShortcutStyles = css`
 		display: none;
 	}
 
-	/* Hide on touch-only devices (no hover capability anywhere) since the
-	   shortcut cannot be invoked. Override with [always-visible] when the
-	   shortcut is shown for informational purposes. */
 	@media (any-hover: none) {
 		:host(:not([always-visible])) {
 			display: none;
@@ -38,16 +35,16 @@ export const keyboardShortcutStyles = css`
 
 	.keyboard-shortcut {
 		display: inline-flex;
-		align-items: center;
 		gap: var(--primitives-space-4);
+		align-items: center;
 	}
 
 
 	/* # Elements */
 
 	.keyboard-shortcut__key {
-		display: inline-flex;
 		box-sizing: border-box;
+		display: inline-flex;
 		border: var(--components-keyboard-shortcut-border-thickness) solid var(--components-keyboard-shortcut-border-color);
 		border-radius: var(--components-keyboard-shortcut-corner-radius);
 		background-color: var(--components-keyboard-shortcut-background-color);
@@ -61,19 +58,16 @@ export const keyboardShortcutStyles = css`
 		white-space: nowrap;
 	}
 
-	.keyboard-shortcut__separator {
-		color: var(--components-keyboard-shortcut-separator-color);
-		font: var(--_font);
-	}
-
-
-	/* # Toegankelijkheid */
-
 	@media (forced-colors: active) {
 		.keyboard-shortcut__key {
 			border-color: CanvasText;
 			background-color: Canvas;
 			color: CanvasText;
 		}
+	}
+
+	.keyboard-shortcut__separator {
+		color: var(--components-keyboard-shortcut-separator-color);
+		font: var(--_font);
 	}
 `;

@@ -9,11 +9,11 @@ const lgMin = unsafeCSS(breakpoints.lgMin);
 export const simpleSectionStyles = css`
 
 
-	/* # Host
-	   Geen eigen container-type: page-sections luisteren naar de outer
-	   layout-container (gezet door nldd-page / nldd-card). Voor contexten
-	   zonder layout-container dient @media als fallback. */
+	/* # Host */
 
+	/* No own container-type: page-sections read the outer layout-container
+	   (set by nldd-page / nldd-card). @media is the fallback for contexts
+	   without a layout-container. */
 	:host {
 		--_max-width: var(--semantics-page-sections-body-max-width);
 
@@ -40,8 +40,8 @@ export const simpleSectionStyles = css`
 	/* # Block */
 
 	.simple-section {
-		display: flex;
 		box-sizing: border-box;
+		display: flex;
 		width: 100%;
 		flex-direction: column;
 		flex-grow: 1;
@@ -79,7 +79,7 @@ export const simpleSectionStyles = css`
 	}
 
 
-	/* # Body */
+	/* # Elements */
 
 	.simple-section__body {
 		display: flex;
@@ -113,24 +113,15 @@ export const simpleSectionStyles = css`
 		}
 	}
 
-
-	/* # Header */
-
 	.simple-section__header[hidden] {
 		display: none;
 	}
-
-
-	/* # Main */
 
 	.simple-section__main {
 		display: flex;
 		flex-direction: column;
 		flex-grow: 1;
 	}
-
-
-	/* # Footer */
 
 	.simple-section__footer[hidden] {
 		display: none;

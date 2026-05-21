@@ -8,18 +8,34 @@ export const listStyles = css`
 	:host {
 		--_drag-clone-top: 0px;
 		--_drag-clone-left: 0px;
-		--_drag-clone-width: 0px;
-		--_drag-clone-height: 0px;
 		--_drag-clone-opacity: 0.95;
 		--_drag-clone-z-index: 100;
+		--_drag-clone-width: 0px;
+		--_drag-clone-height: 0px;
 
 		display: block;
 		position: relative;
 		isolation: isolate;
 	}
 
+	:host([no-dividers]) {
+		--context-list-divider-display: none;
+	}
 
-	/* # Body */
+	:host([variant="box"]) .list__items {
+		border-radius: var(--components-list-corner-radius);
+		background-color: var(--semantics-surfaces-tinted-background-color);
+		overflow: hidden;
+	}
+
+	:host([variant="box-on-tinted"]) .list__items {
+		border-radius: var(--components-list-corner-radius);
+		background-color: var(--semantics-surfaces-background-color);
+		overflow: hidden;
+	}
+
+
+	/* # Elements */
 
 	.list__body {
 		display: flex;
@@ -27,24 +43,15 @@ export const listStyles = css`
 		gap: var(--primitives-space-8);
 	}
 
-
-	/* # Header & footer */
-
 	.list__header,
 	.list__footer {
 		display: contents;
 	}
 
-
-	/* # Items */
-
 	.list__items {
 		display: flex;
 		flex-direction: column;
 	}
-
-
-	/* # Empty slot */
 
 	.list__empty {
 		padding: var(--primitives-space-16);
@@ -54,34 +61,6 @@ export const listStyles = css`
 		display: none;
 	}
 
-
-	/* # No dividers */
-
-	:host([no-dividers]) {
-		--context-list-divider-display: none;
-	}
-
-
-	/* # Variant: box */
-
-	:host([variant='box']) .list__items {
-		border-radius: var(--components-list-corner-radius);
-		background-color: var(--semantics-surfaces-tinted-background-color);
-		overflow: hidden;
-	}
-
-
-	/* # Variant: box-on-tinted */
-
-	:host([variant='box-on-tinted']) .list__items {
-		border-radius: var(--components-list-corner-radius);
-		background-color: var(--semantics-surfaces-background-color);
-		overflow: hidden;
-	}
-
-
-	/* # Drag placeholder */
-
 	::slotted(.nldd-list-drag-placeholder) {
 		box-sizing: border-box;
 		border-radius: var(--components-list-item-indicator-corner-radius);
@@ -89,14 +68,11 @@ export const listStyles = css`
 		pointer-events: none;
 	}
 
-
-	/* # Drag clone */
-
 	.list__drag-clone {
+		display: flex;
 		position: absolute;
 		top: var(--_drag-clone-top);
 		left: var(--_drag-clone-left);
-		display: flex;
 		opacity: var(--_drag-clone-opacity);
 		z-index: var(--_drag-clone-z-index);
 		border-radius: var(--components-list-item-indicator-corner-radius);
@@ -108,9 +84,6 @@ export const listStyles = css`
 		flex-direction: row;
 		align-items: stretch;
 	}
-
-
-	/* # Announcer */
 
 	.list__polite-announcer,
 	.list__assertive-announcer {

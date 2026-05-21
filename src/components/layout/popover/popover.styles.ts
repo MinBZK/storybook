@@ -13,9 +13,9 @@ export const popoverStyles = css`
 		--_max-height: calc(100vh - var(--semantics-overlays-inset) * 2);
 
 		margin: 0;
+		outline: none;
 		border: none;
 		box-shadow: var(--semantics-overlays-box-shadow);
-		outline: none;
 		background-color: var(--semantics-surfaces-background-color);
 		overflow: auto;
 		padding: 0;
@@ -54,11 +54,10 @@ export const popoverStyles = css`
 	}
 
 	:host(:focus-visible:not(.is-pointer-focus)) {
-		box-shadow: var(--semantics-focus-ring-box-shadow), var(--semantics-overlays-box-shadow);
 		outline: var(--semantics-focus-ring-outline);
 		outline-offset: var(--semantics-focus-ring-outline-offset);
+		box-shadow: var(--semantics-focus-ring-box-shadow), var(--semantics-overlays-box-shadow);
 	}
-
 
 	:host(:popover-open) {
 		@media (max-width: ${smMax}) {
@@ -82,15 +81,11 @@ export const popoverStyles = css`
 		}
 	}
 
-
-	/* # Reduced motion — top-level safety net.
-	   Currently transitions zijn alleen gedefinieerd binnen de sm
-	   bottom-sheet-rule, maar deze top-level guard zorgt dat ook
-	   toekomstige desktop-viewport animaties automatisch worden
-	   gedeactiveerd voor users met prefers-reduced-motion. */
-
-	:host {
-		@media (prefers-reduced-motion: reduce) {
+	/* Top-level safety net: transitions currently only exist in the sm
+	   bottom-sheet rule, but this guard also disables any future
+	   desktop-viewport animation for prefers-reduced-motion users. */
+	@media (prefers-reduced-motion: reduce) {
+		:host {
 			transition: none;
 		}
 	}

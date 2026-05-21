@@ -15,6 +15,10 @@ export const documentTabBarStyles = css`
 		--_short-text-threshold: 200px;
 		--_item-min-width: 100px;
 		--_overflow-button-reserve: 52px; /* Used for overflowButtonReserve. Overflow button width + spacing */
+		--_dismiss-button-is-hovered-background-color: light-dark(var(--primitives-color-neutral-150), var(--primitives-color-neutral-250));
+		--_dismiss-button-is-active-background-color: light-dark(var(--primitives-color-neutral-200), var(--primitives-color-neutral-300));
+		--_dismiss-button-is-selected-is-hovered-background-color: light-dark(var(--primitives-color-accent-650), var(--primitives-color-accent-600));
+		--_dismiss-button-is-selected-is-active-background-color: light-dark(var(--primitives-color-accent-600), var(--primitives-color-accent-550));
 
 		display: block;
 		position: relative;
@@ -362,10 +366,10 @@ export const documentTabBarItemStyles = css`
 	/* # Item dismiss button */
 
 	.document-tab-bar__item-dismiss-button {
-		position: absolute;
-		right: var(--primitives-space-6);
-		top: 50%;
 		display: flex;
+		position: absolute;
+		top: 50%;
+		right: var(--primitives-space-6);
 		margin: 0;
 		border: none;
 		border-radius: var(--semantics-controls-sm-corner-radius);
@@ -382,12 +386,12 @@ export const documentTabBarItemStyles = css`
 
 	@media (hover: hover) {
 		.document-tab-bar__item-dismiss-button:hover {
-			background-color: var(--primitives-color-neutral-150);
+			background-color: var(--_dismiss-button-is-hovered-background-color);
 		}
 	}
 
 	.document-tab-bar__item-dismiss-button:active {
-		background-color: var(--primitives-color-neutral-200);
+		background-color: var(--_dismiss-button-is-active-background-color);
 	}
 
 	:host([selected]) .document-tab-bar__item-dismiss-button {
@@ -396,12 +400,12 @@ export const documentTabBarItemStyles = css`
 
 	@media (hover: hover) {
 		:host([selected]) .document-tab-bar__item-dismiss-button:hover {
-			background-color: var(--primitives-color-accent-650);
+			background-color: var(--_dismiss-button-is-selected-is-hovered-background-color);
 		}
 	}
 
 	:host([selected]) .document-tab-bar__item-dismiss-button:active {
-		background-color: var(--primitives-color-accent-600);
+		background-color: var(--_dismiss-button-is-selected-is-active-background-color);
 	}
 
 	.document-tab-bar__item-dismiss-button:focus-visible {

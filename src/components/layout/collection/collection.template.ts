@@ -32,6 +32,7 @@ export function collectionTemplate(component: NLDDCollection): TemplateResult {
 					<nldd-button
 						variant="neutral-tinted"
 						text=${component._t('components.collection.load-more-action')}
+						width="full"
 						@click=${() => component._loadMore()}
 					></nldd-button>
 				` : nothing}

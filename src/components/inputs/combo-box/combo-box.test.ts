@@ -639,4 +639,18 @@ describe('nldd-combo-box – text', () => {
 		el.focus();
 		expect(deepActiveElement()).toBe(el.shadowRoot!.querySelector('input'));
 	});
+
+	it('inner input keeps spellcheck=true by default', async () => {
+		el = await fixture<NLDDComboBox>('<nldd-combo-box accessible-label="Land"></nldd-combo-box>');
+		await waitForUpdate(el);
+		const input = el.shadowRoot!.querySelector('input')!;
+		expect(input.getAttribute('spellcheck')).toBe('true');
+	});
+
+	it('no-spellcheck attribute disables spellcheck on inner input', async () => {
+		el = await fixture<NLDDComboBox>('<nldd-combo-box accessible-label="Land" no-spellcheck></nldd-combo-box>');
+		await waitForUpdate(el);
+		const input = el.shadowRoot!.querySelector('input')!;
+		expect(input.getAttribute('spellcheck')).toBe('false');
+	});
 });

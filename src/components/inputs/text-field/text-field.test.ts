@@ -163,4 +163,18 @@ describe('nldd-text-field', () => {
 		const input = el.shadowRoot!.querySelector('input');
 		expect(deepActiveElement()).toBe(input);
 	});
+
+	it('inner input keeps spellcheck=true by default', async () => {
+		el = await fixture('<nldd-text-field></nldd-text-field>');
+		await waitForUpdate(el);
+		const input = el.shadowRoot!.querySelector('input')!;
+		expect(input.getAttribute('spellcheck')).toBe('true');
+	});
+
+	it('no-spellcheck attribute disables spellcheck on inner input', async () => {
+		el = await fixture('<nldd-text-field no-spellcheck></nldd-text-field>');
+		await waitForUpdate(el);
+		const input = el.shadowRoot!.querySelector('input')!;
+		expect(input.getAttribute('spellcheck')).toBe('false');
+	});
 });

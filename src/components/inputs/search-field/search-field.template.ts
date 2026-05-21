@@ -19,6 +19,7 @@ export function searchFieldTemplate(component: NLDDSearchField): TemplateResult 
 				aria-label=${component.accessibleLabel || component.placeholder || nothing}
 				?disabled=${component.disabled}
 				name=${component.name || nothing}
+				spellcheck=${component.noSpellcheck ? 'false' : 'true'}
 				@input=${component._handleInput}
 				@change=${component._handleChange}
 				@keydown=${component._handleKeydown}

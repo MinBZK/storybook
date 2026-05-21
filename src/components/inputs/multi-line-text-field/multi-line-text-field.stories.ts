@@ -57,15 +57,16 @@ export default {
 		rows: 3,
 		width: '',
 		placeholder: 'Schrijf hier je toelichting',
-		valid: false,
-		invalid: false,
-		readonly: false,
-		disabled: false,
 		name: '',
 		value: '',
 		required: false,
 		autocomplete: '',
+		noSpellcheck: false,
 		accessibleLabel: '',
+		valid: false,
+		invalid: false,
+		readonly: false,
+		disabled: false,
 	},
 	argTypes: {
 		size: {
@@ -135,6 +136,12 @@ export default {
 			description: 'Browser autofill hint (HTML autocomplete attribute, bv. "off")',
 			table: { defaultValue: { summary: '' } },
 		},
+		noSpellcheck: {
+			name: 'no-spellcheck',
+			control: 'boolean',
+			description: 'Disables browser spellchecking on the inner textarea',
+			table: { defaultValue: { summary: false } },
+		},
 		accessibleLabel: {
 			name: 'accessible-label',
 			control: 'text',
@@ -143,7 +150,7 @@ export default {
 	},
 };
 
-const Template = ({ size, resize, rows, width, placeholder, valid, invalid, readonly, disabled, name, value, required, autocomplete, accessibleLabel }: Record<string, any>) => html`
+const Template = ({ size, resize, rows, width, placeholder, valid, invalid, readonly, disabled, name, value, required, autocomplete, accessibleLabel, noSpellcheck }: Record<string, any>) => html`
 	<nldd-multi-line-text-field
 		size=${size}
 		resize=${resize}
@@ -159,6 +166,7 @@ const Template = ({ size, resize, rows, width, placeholder, valid, invalid, read
 		?required=${required}
 		autocomplete=${autocomplete}
 		accessible-label=${accessibleLabel || nothing}
+		?no-spellcheck=${noSpellcheck}
 	></nldd-multi-line-text-field>
 `;
 

@@ -9,11 +9,11 @@ const lgMin = unsafeCSS(breakpoints.lgMin);
 export const fullBleedSectionStyles = css`
 
 
-	/* # Host
-	   Geen eigen container-type: page-sections luisteren naar de outer
-	   layout-container (gezet door nldd-page / nldd-card). Voor contexten
-	   zonder layout-container dient @media als fallback. */
+	/* # Host */
 
+	/* No own container-type: page-sections read the outer layout-container
+	   (set by nldd-page / nldd-card). @media is the fallback for contexts
+	   without a layout-container. */
 	:host {
 		--_max-width: var(--semantics-page-sections-body-max-width);
 
@@ -35,8 +35,8 @@ export const fullBleedSectionStyles = css`
 	/* # Block */
 
 	.full-bleed-section {
-		display: flex;
 		box-sizing: border-box;
+		display: flex;
 		width: 100%;
 		flex-direction: column;
 		flex-grow: 1;
@@ -68,7 +68,7 @@ export const fullBleedSectionStyles = css`
 	}
 
 
-	/* # Body */
+	/* # Elements */
 
 	.full-bleed-section__body {
 		display: flex;
@@ -102,24 +102,15 @@ export const fullBleedSectionStyles = css`
 		}
 	}
 
-
-	/* # Header */
-
 	.full-bleed-section__header[hidden] {
 		display: none;
 	}
-
-
-	/* # Main */
 
 	.full-bleed-section__main {
 		display: flex;
 		flex-direction: column;
 		flex-grow: 1;
 	}
-
-
-	/* # Footer */
 
 	.full-bleed-section__footer[hidden] {
 		display: none;

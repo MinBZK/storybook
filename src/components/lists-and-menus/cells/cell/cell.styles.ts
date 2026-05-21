@@ -17,8 +17,8 @@ export const cellStyles = css`
 		max-width: var(--_max-width);
 		min-height: var(--_min-height);
 		flex-direction: column;
-		align-items: flex-start;
 		flex-shrink: 0;
+		align-items: flex-start;
 		justify-content: center;
 	}
 
@@ -29,20 +29,21 @@ export const cellStyles = css`
 
 	/* # Width */
 
-	:host([width='full']) {
+	:host([width="full"]) {
 		flex-grow: 1;
 		flex-shrink: 1;
+		flex-basis: 0;
 	}
 
-	:host([width='fit-content']),
+	:host([width="fit-content"]),
 	:host(:not([width])),
-	:host([width='']) {
+	:host([width=""]) {
 		width: fit-content;
 		flex-grow: 0;
 		flex-basis: auto;
 	}
 
-	:host([width]:not([width='full']):not([width='fit-content']):not([width=''])) {
+	:host([width]:not([width="full"]):not([width="fit-content"]):not([width=""])) {
 		flex-shrink: 0;
 	}
 
@@ -53,32 +54,32 @@ export const cellStyles = css`
 
 	/* # Vertical alignment */
 
-	:host([vertical-alignment='center']),
+	:host([vertical-alignment="center"]),
 	:host(:not([vertical-alignment])) {
 		align-self: stretch;
 	}
 
-	:host([vertical-alignment='top']) {
+	:host([vertical-alignment="top"]) {
 		align-self: flex-start;
 	}
 
-	:host([vertical-alignment='bottom']) {
+	:host([vertical-alignment="bottom"]) {
 		align-self: flex-end;
 	}
 
 
 	/* # Horizontal alignment */
 
-	:host([horizontal-alignment='left']),
+	:host([horizontal-alignment="left"]),
 	:host(:not([horizontal-alignment])) {
 		align-items: flex-start;
 	}
 
-	:host([horizontal-alignment='center']) {
+	:host([horizontal-alignment="center"]) {
 		align-items: center;
 	}
 
-	:host([horizontal-alignment='right']) {
+	:host([horizontal-alignment="right"]) {
 		align-items: flex-end;
 	}
 

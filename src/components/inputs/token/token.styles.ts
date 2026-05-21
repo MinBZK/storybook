@@ -23,28 +23,20 @@ export const tokenStyles = css`
 	/* # Block */
 
 	.token {
-		/* Reset (for menu button) */
+		box-sizing: border-box;
+		display: inline-flex;
 		margin: 0;
 		border: none;
+		border-radius: var(--semantics-controls-sm-corner-radius);
 		background: none;
-		font: inherit;
-		appearance: none;
-
-		/* Layout */
-		display: inline-flex;
-		box-sizing: border-box;
+		background-color: var(--semantics-buttons-neutral-tinted-background-color);
 		height: var(--semantics-controls-sm-min-size);
 		padding: 0 var(--primitives-space-6);
 		align-items: center;
-
-		/* Appearance */
-		border-radius: var(--semantics-controls-sm-corner-radius);
-		background-color: var(--semantics-buttons-neutral-tinted-background-color);
 		color: var(--semantics-buttons-neutral-tinted-content-color);
 		font: var(--semantics-buttons-sm-font);
-
-		/* Animation */
 		transition: background-color var(--primitives-transition-duration-fast) var(--primitives-transition-easing-default);
+		appearance: none;
 	}
 
 	@media (prefers-reduced-motion: reduce) {
@@ -53,38 +45,12 @@ export const tokenStyles = css`
 		}
 	}
 
-
-	/* # Text */
-
-	.token__text {
-		display: flex;
-		padding: 0 var(--primitives-space-2);
-		align-items: center;
-	}
-
-
-	/* # Icon */
-
-	.token__icon {
-		display: block;
-		width: var(--primitives-space-16);
-		height: var(--primitives-space-16);
-		flex-shrink: 0;
-	}
-
-
-	/* # States */
-
-	/* ## Hover — menu */
-
 	@media (hover: hover) {
 		:host([control="menu"]) .token:hover:not(:disabled) {
 			background-color: var(--semantics-buttons-neutral-tinted-is-hovered-background-color);
 			color: var(--semantics-buttons-neutral-tinted-is-hovered-content-color);
 		}
 	}
-
-	/* ## Open — menu */
 
 	:host([expanded]) .token {
 		background-color: var(--semantics-buttons-neutral-tinted-is-active-background-color);
@@ -98,8 +64,6 @@ export const tokenStyles = css`
 		}
 	}
 
-	/* ## Focus — menu */
-
 	:host([control="menu"]) .token:focus-visible {
 		outline: var(--semantics-focus-ring-outline);
 		outline-offset: var(--semantics-focus-ring-outline-offset);
@@ -110,16 +74,10 @@ export const tokenStyles = css`
 		outline: none;
 	}
 
-
-	/* # Dismiss — padding compensation */
-
 	/* Remove right padding so the nldd-icon-button flush-fits the token edge */
 	:host([control="dismiss"]) .token {
 		padding-right: 0;
 	}
-
-
-	/* # Accessibility */
 
 	@media (forced-colors: active) {
 		.token {
@@ -131,5 +89,21 @@ export const tokenStyles = css`
 			outline: 2px solid CanvasText;
 			outline-offset: 2px;
 		}
+	}
+
+
+	/* # Elements */
+
+	.token__text {
+		display: flex;
+		padding: 0 var(--primitives-space-2);
+		align-items: center;
+	}
+
+	.token__icon {
+		display: block;
+		width: var(--primitives-space-16);
+		height: var(--primitives-space-16);
+		flex-shrink: 0;
 	}
 `;

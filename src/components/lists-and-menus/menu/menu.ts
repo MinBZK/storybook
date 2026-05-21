@@ -12,7 +12,6 @@ import '../../lists-and-menus/cells/text-cell/text-cell.js';
 import '../../content/icon/icon.js';
 import '../../status-and-feedback/inline-dialog/inline-dialog.js';
 import { isKeyboardMode, isTouchMode } from '../../../utilities/input-modality.js';
-import { POPOVER_REOPEN_GUARD_MS } from '../../../utilities/popover-guard.js';
 import { breakpoints } from '../../../assets/styles/breakpoints.js';
 
 
@@ -89,6 +88,11 @@ if (!customElements.get('nldd-menu-group')) {
  * @attr {string}  icon      - Icon name rendered before the text (nldd-icon name).
  * @attr {string}  type      - Item type: 'button' | 'checkbox' | 'radio'. Default: 'button'.
  * @attr {boolean} selected        - Selected state for checkbox and radio types.
+ * @attr {boolean} destructive     - Marks the item as destructive (red text; red highlight bg). Use for irreversible
+ *                                   actions like "Delete". Colour is the only built-in signal, so per WCAG 1.4.1 the
+ *                                   item's own label must convey the destructive nature (e.g. "Verwijder") — don't rely
+ *                                   on the red alone. Confirming the action (e.g. a follow-up dialog) is the consumer's
+ *                                   responsibility.
  * @attr {boolean} disabled        - Disabled state.
  * @attr {string}  query           - Query substring to bold-highlight in text. Set by menu's filter(); also settable by consumers.
  * @attr {string}  query-mark-mode - 'match' | 'predictive' (default: 'predictive'). See text-cell for details.
@@ -120,6 +124,9 @@ export class NLDDMenuItem extends LitElement {
 
 	@property({ type: Boolean, reflect: true })
 	selected = false;
+
+	@property({ type: Boolean, reflect: true })
+	destructive = false;
 
 	@property({ type: Boolean, reflect: true })
 	disabled = false;
@@ -302,9 +309,9 @@ const defaultFilterFn = (query: string, item: NLDDMenuItem): boolean => {
  * @attr {string}  empty-text           - Text of the default empty-state dialog. Falls back
  *                                        to Dutch i18n "Geen opties beschikbaar".
  * @attr {string}  empty-supporting-text - Supporting text of the default empty-state dialog.
- * @attr {string}  width                - Explicit width. Sets --_menu-width internally.
+ * @attr {string}  width                - Explicit width. Sets --_width internally.
  * @attr {number}  max-items            - Maximum number of visible items before scrolling.
- *                                        Sets --_menu-max-items internally. Default: 0 (no limit).
+ *                                        Sets --_max-items internally. Default: 0 (no limit).
  * @attr {object}  translations         - Override one or more translation keys.
  * @attr {Function} filterFn            - Custom filter function (query, item) => boolean.
  *
@@ -340,13 +347,13 @@ export class NLDDMenu extends LitElement {
 	emptySupportingText = '';
 
 
-	/** Explicit width. Sets --_menu-width internally. */
+	/** Explicit width. Sets --_width internally. */
 	@property({ type: String, reflect: true })
 	width = '';
 
 	/**
 	 * Maximum number of visible items before the menu scrolls.
-	 * Sets --_menu-max-items internally. Default: 0 (no limit).
+	 * Sets --_max-items internally. Default: 0 (no limit).
 	 */
 	@property({ type: Number, attribute: 'max-items' })
 	maxItems = 0;
@@ -421,12 +428,13 @@ export class NLDDMenu extends LitElement {
 	_parentItem: NLDDMenuItem | null = null;
 
 	private _isOpen = false;
-	private _closedAt = 0;
 	/** Set on the root when a pointer gesture (outside/anchor pointerdown
-	 * or confirmed tap) collapsed the chain. The trailing `click` of that
-	 * same gesture consumes it in `_handleDocumentClick` and must NOT
-	 * reopen — gesture-correlated, so it's reliable on touch where the
-	 * pointerup→click gap exceeds the time-based reopen guard. @internal */
+	 * or confirmed tap) collapsed the chain, or when a pointerdown landed
+	 * on the anchor while the menu was open (covers native light-dismiss).
+	 * The trailing `click` of that same gesture consumes it in
+	 * `_handleDocumentClick` and must NOT reopen — gesture-correlated, so
+	 * it's reliable on touch regardless of pointerup→click timing.
+	 * @internal */
 	_collapsedByPointerGesture = false;
 	private _cleanupAutoUpdate: (() => void) | null = null;
 
@@ -508,16 +516,16 @@ export class NLDDMenu extends LitElement {
 	override updated(changedProperties: Map<string, unknown>): void {
 		if (changedProperties.has('width')) {
 			if (this.width) {
-				this.style.setProperty('--_menu-width', this.width);
+				this.style.setProperty('--_width', this.width);
 			} else {
-				this.style.removeProperty('--_menu-width');
+				this.style.removeProperty('--_width');
 			}
 		}
 		if (changedProperties.has('maxItems')) {
 			if (this.maxItems > 0) {
-				this.style.setProperty('--_menu-max-items', String(this.maxItems));
+				this.style.setProperty('--_max-items', String(this.maxItems));
 			} else {
-				this.style.removeProperty('--_menu-max-items');
+				this.style.removeProperty('--_max-items');
 			}
 		}
 		if (changedProperties.has('variant')) {
@@ -630,7 +638,7 @@ export class NLDDMenu extends LitElement {
 		}
 		if (this._isOpen) {
 			(this as HTMLElement).hidePopover();
-		} else if (Date.now() - this._closedAt > POPOVER_REOPEN_GUARD_MS) {
+		} else {
 			(this as HTMLElement).showPopover();
 		}
 	};
@@ -1375,7 +1383,6 @@ export class NLDDMenu extends LitElement {
 	 */
 	private _collapseChain = (): void => {
 		const root = this._chainRoot ?? this;
-		root._closedAt = Date.now();
 		// Snapshot + clear first so the re-entrant cleanup splices are
 		// no-ops and a trailing same-gesture call finds nothing to do.
 		const chain = root._openChain;
@@ -1411,8 +1418,55 @@ export class NLDDMenu extends LitElement {
 	 * tap (pointerup without crossing the scroll threshold); a scroll
 	 * leaves the chain untouched, matching root-menu behaviour.
 	 */
+	private _dragStartItem: NLDDMenuItem | null = null;
+
+	/**
+	 * Native HTML `<select>` lets you press on one option, drag to another,
+	 * and release to pick the one under the pointer. Standard click events
+	 * don't fire across different elements, so we replicate it manually:
+	 * remember the pointerdown'd item, listen for the matching pointerup,
+	 * and if the release lands on a different non-disabled item, fire its
+	 * `select` directly. The original button's click handler still owns the
+	 * single-click no-drag path.
+	 */
+	private _handleItemPointerdown = (event: PointerEvent): void => {
+		if (event.button !== 0) return;
+		const item = (event.target as Element | null)?.closest('nldd-menu-item') as NLDDMenuItem | null;
+		if (!item || item.disabled) return;
+		this._dragStartItem = item;
+		document.addEventListener('pointerup', this._handleDragRelease, { capture: true, once: true });
+	};
+
+	private _handleDragRelease = (event: PointerEvent): void => {
+		const startItem = this._dragStartItem;
+		this._dragStartItem = null;
+		if (!startItem) return;
+		// If the menu closed between pointerdown and pointerup (light-dismiss,
+		// keyboard shortcut), bail — elementFromPoint could otherwise resolve
+		// to an item in a different, newly-opened menu and fire its select.
+		if (!this._isOpen) return;
+		const target = document.elementFromPoint(event.clientX, event.clientY);
+		const releaseItem = target?.closest('nldd-menu-item') as NLDDMenuItem | null;
+		if (!releaseItem || releaseItem === startItem || releaseItem.disabled) return;
+		// Different item — fire its select. Browser won't dispatch click here
+		// because pointerdown and pointerup landed on different targets, so
+		// there's no double-fire to suppress.
+		releaseItem._handleClick();
+	};
+
 	private _handleDocumentPointerdown = (event: PointerEvent): void => {
 		if (!this._isOpen) return;
+		// Anchor pointerdown on a root menu while open: capture as a gesture
+		// so the trailing click — fired after native popover light-dismiss
+		// has already closed us — won't reopen us via `_handleDocumentClick`.
+		// Drill-in submenus take a different path further down.
+		if (!this._isSubmenu) {
+			const anchorEl = this._getAnchorEl();
+			if (anchorEl && event.composedPath().includes(anchorEl)) {
+				this._collapsedByPointerGesture = true;
+				return;
+			}
+		}
 		if (!this._drillInMode) return;
 		// Only nested drill-in submenus need this: they form a hidden chain
 		// of ancestors that won't auto-collapse on outside click. A root
@@ -1503,6 +1557,7 @@ export class NLDDMenu extends LitElement {
 		this.addEventListener('menu-item-focused', this._handleMenuItemFocused);
 		this.addEventListener('submenu-open', this._handleSubmenuOpen);
 		this.addEventListener('select', this._collapseChain);
+		this.addEventListener('pointerdown', this._handleItemPointerdown);
 		document.addEventListener('click', this._handleDocumentClick);
 	}
 
@@ -1527,7 +1582,9 @@ export class NLDDMenu extends LitElement {
 		this.removeEventListener('menu-item-focused', this._handleMenuItemFocused);
 		this.removeEventListener('submenu-open', this._handleSubmenuOpen);
 		this.removeEventListener('select', this._collapseChain);
+		this.removeEventListener('pointerdown', this._handleItemPointerdown);
 		document.removeEventListener('click', this._handleDocumentClick);
+		document.removeEventListener('pointerup', this._handleDragRelease, true);
 		// Defensive: the pointerdown + resize listeners are added on open
 		// and removed on close, but if the menu is torn down mid-open we'd
 		// otherwise leak the global listeners.
@@ -1583,22 +1640,43 @@ export class NLDDMenu extends LitElement {
 	private _updateDividerVisibility(): void {
 		const children = Array.from(this.children) as Element[];
 		children.forEach(el => {
-			if (el.tagName.toLowerCase() === 'nldd-menu-divider') {
-				el.removeAttribute('hidden');
-			}
+			const tag = el.tagName.toLowerCase();
+			if (tag === 'nldd-menu-divider') el.removeAttribute('hidden');
+			if (tag === 'nldd-menu-group') el.removeAttribute('data-no-bottom-divider');
 		});
 
 		const visible = children.filter(el => !el.hasAttribute('hidden'));
+
+		// Pass 1: hide redundant explicit dividers (first/last, adjacent to
+		// another divider, adjacent to a group's auto-divider).
 		visible.forEach((el, index) => {
 			if (el.tagName.toLowerCase() !== 'nldd-menu-divider') return;
+			const prevTag = visible[index - 1]?.tagName.toLowerCase();
+			const nextTag = visible[index + 1]?.tagName.toLowerCase();
 			const isFirst = index === 0;
 			const isLast = index === visible.length - 1;
-			const prevIsDivider = index > 0 && visible[index - 1].tagName.toLowerCase() === 'nldd-menu-divider';
-			// nldd-menu-group renders its own auto-divider above; suppress an
-			// explicit divider that would render right next to it.
-			const nextIsGroup = index < visible.length - 1 && visible[index + 1].tagName.toLowerCase() === 'nldd-menu-group';
-			if (isFirst || isLast || prevIsDivider || nextIsGroup) {
+			if (
+				isFirst || isLast
+				|| prevTag === 'nldd-menu-divider'
+				|| prevTag === 'nldd-menu-group'
+				|| nextTag === 'nldd-menu-group'
+			) {
 				el.setAttribute('hidden', '');
+			}
+		});
+
+		// Pass 2: determine group bottom-divider against the post-pass-1
+		// visible set. Without this re-filter a group followed by an
+		// explicit divider that pass 1 hid (e.g. because the divider is
+		// last, or the items after it are hidden) would still see the
+		// divider as its "next" sibling and keep the bottom border.
+		const remaining = visible.filter(el => !el.hasAttribute('hidden'));
+		remaining.forEach((el, index) => {
+			if (el.tagName.toLowerCase() !== 'nldd-menu-group') return;
+			const nextTag = remaining[index + 1]?.tagName.toLowerCase();
+			const isLast = index === remaining.length - 1;
+			if (isLast || nextTag === 'nldd-menu-group') {
+				el.setAttribute('data-no-bottom-divider', '');
 			}
 		});
 	}
@@ -1718,7 +1796,7 @@ export class NLDDMenu extends LitElement {
 		// Without this, the submenu's top edge aligns with the opener and the
 		// inner padding pushes the first item down, leaving a visible step.
 		const submenuPadding = (this._isSubmenu && !this._drillInMode)
-			? this._cssPx('--_menu-padding')
+			? this._cssPx('--_padding')
 			: 0;
 
 		// Drill-in: pick the side from the available space around the
@@ -1744,7 +1822,7 @@ export class NLDDMenu extends LitElement {
 				size({
 					padding: viewportMargin,
 					apply: ({ availableHeight }: { availableHeight: number }) => {
-						this.style.setProperty('--_menu-max-height', `${availableHeight}px`);
+						this.style.setProperty('--_max-height', `${availableHeight}px`);
 					},
 				}),
 			],
@@ -1911,7 +1989,6 @@ export class NLDDMenu extends LitElement {
 		this._syncAnchorPopupState(this._isOpen);
 
 		if (toggleEvent.newState !== 'open') {
-			this._closedAt = Date.now();
 			this._cleanupAutoUpdate?.();
 			this._cleanupAutoUpdate = null;
 			window.removeEventListener('resize', this._handleWindowResize);

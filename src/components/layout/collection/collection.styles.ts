@@ -10,12 +10,13 @@ export const collectionStyles = css`
 	/* # Host */
 
 	:host {
+		--_item-width: var(--primitives-area-280);
+
 		display: flex;
 		width: 100%;
 		min-width: 0;
 		flex-direction: column;
 		gap: var(--components-collection-sm-gap);
-		--_item-width: var(--primitives-area-280);
 
 		@media (min-width: ${mdMin}) {
 			gap: var(--components-collection-md-gap);
@@ -47,28 +48,25 @@ export const collectionStyles = css`
 		}
 	}
 
+	/* ## Grid */
 
-	/* # Grid */
-
-	:host([layout='grid']) .collection__items,
+	:host([layout="grid"]) .collection__items,
 	:host(:not([layout])) .collection__items {
-		display: grid;
 		/* min(item-width, 100%) clamps the track min to the container width so
 		   a single column never forces horizontal overflow on narrow screens. */
+		display: grid;
 		grid-template-columns: repeat(auto-fill, minmax(min(var(--_item-width), 100%), 1fr));
 	}
 
+	/* ## List */
 
-	/* # List */
-
-	:host([layout='list']) .collection__items {
+	:host([layout="list"]) .collection__items {
 		flex-direction: column;
 	}
 
+	/* ## Horizontal scroll */
 
-	/* # Horizontal scroll */
-
-	:host([layout='horizontal-scroll']) .collection__items {
+	:host([layout="horizontal-scroll"]) .collection__items {
 		margin-inline-start: calc(var(--primitives-space-16) * -1);
 		margin-block: calc(var(--primitives-space-16) * -1);
 		overflow-x: auto;
@@ -90,16 +88,18 @@ export const collectionStyles = css`
 		);
 	}
 
-	:host([layout='horizontal-scroll']) .collection__items::after {
+	:host([layout="horizontal-scroll"]) .collection__items::after {
 		content: '';
-		flex: 0 0 var(--primitives-space-48);
+		flex-grow: 0;
+		flex-shrink: 0;
+		flex-basis: var(--primitives-space-48);
 	}
 
-	:host([layout='horizontal-scroll']) .collection__items::-webkit-scrollbar {
+	:host([layout="horizontal-scroll"]) .collection__items::-webkit-scrollbar {
 		display: none;
 	}
 
-	:host([layout='horizontal-scroll']) .collection__items ::slotted(*) {
+	:host([layout="horizontal-scroll"]) .collection__items ::slotted(*) {
 		flex-grow: 1;
 		flex-shrink: 0;
 		flex-basis: var(--_item-width);
@@ -114,31 +114,9 @@ export const collectionStyles = css`
 		width: 100%;
 	}
 
+	/* ## Scroll navigation — horizontal scroll */
 
-	/* # Load more (grid/list) */
-
-	:host([layout='grid']) .collection__footer,
-	:host([layout='list']) .collection__footer,
-	:host(:not([layout])) .collection__footer {
-		justify-content: stretch;
-	}
-
-	:host([layout='grid']) .collection__footer nldd-button,
-	:host([layout='list']) .collection__footer nldd-button,
-	:host(:not([layout])) .collection__footer nldd-button {
-		width: 100%;
-	}
-
-	:host([layout='grid']) .collection__footer nldd-button::part(button),
-	:host([layout='list']) .collection__footer nldd-button::part(button),
-	:host(:not([layout])) .collection__footer nldd-button::part(button) {
-		width: 100%;
-	}
-
-
-	/* # Scroll navigation (horizontal scroll) */
-
-	:host([layout='horizontal-scroll']) .collection__footer {
+	:host([layout="horizontal-scroll"]) .collection__footer {
 		justify-content: flex-end;
 		gap: var(--primitives-space-16);
 	}

@@ -1,6 +1,7 @@
 import { describe, it, expect, afterEach } from 'vitest';
 import { fixture, cleanup, waitForUpdate } from '../../../test-utils.js';
 import './tag.js';
+import type { NLDDTag } from './tag.js';
 
 describe('nldd-tag', () => {
 	let el: HTMLElement;
@@ -145,6 +146,79 @@ describe('nldd-tag', () => {
 			await waitForUpdate(el);
 			// Alleen whitespace mag geen tekstblok renderen
 			expect(el.shadowRoot!.querySelector('.tag__text')).toBeNull();
+		});
+	});
+
+
+	describe('variant', () => {
+		const hasText = (e: Element) => e.shadowRoot!.querySelector('.tag__text') !== null;
+		const hasIcon = (e: Element) => e.shadowRoot!.querySelector('.tag__icon') !== null;
+
+		describe('auto-detect (no explicit variant)', () => {
+			it('text only → text, no icon', async () => {
+				el = await fixture<NLDDTag>('<nldd-tag text="Label"></nldd-tag>');
+				await waitForUpdate(el);
+				expect((el as NLDDTag)._effectiveVariant).toBe('text');
+				expect(hasText(el)).toBe(true);
+				expect(hasIcon(el)).toBe(false);
+			});
+
+			it('icon only → icon, no text', async () => {
+				el = await fixture<NLDDTag>('<nldd-tag icon="check-mark" accessible-label="OK"></nldd-tag>');
+				await waitForUpdate(el);
+				expect((el as NLDDTag)._effectiveVariant).toBe('icon');
+				expect(hasIcon(el)).toBe(true);
+				expect(hasText(el)).toBe(false);
+			});
+
+			it('icon + text → icon-and-text', async () => {
+				el = await fixture<NLDDTag>('<nldd-tag icon="check-mark" text="Done"></nldd-tag>');
+				await waitForUpdate(el);
+				expect((el as NLDDTag)._effectiveVariant).toBe('icon-and-text');
+				expect(hasIcon(el)).toBe(true);
+				expect(hasText(el)).toBe(true);
+			});
+		});
+
+		describe('explicit override', () => {
+			it('variant="text" hides the icon even when an icon is set', async () => {
+				el = await fixture<NLDDTag>('<nldd-tag variant="text" icon="check-mark" text="Done"></nldd-tag>');
+				await waitForUpdate(el);
+				expect(hasText(el)).toBe(true);
+				expect(hasIcon(el)).toBe(false);
+			});
+
+			it('variant="icon" hides the text even when text is set', async () => {
+				el = await fixture<NLDDTag>('<nldd-tag variant="icon" icon="check-mark" text="Done" accessible-label="Done"></nldd-tag>');
+				await waitForUpdate(el);
+				expect(hasIcon(el)).toBe(true);
+				expect(hasText(el)).toBe(false);
+			});
+
+			it('variant="icon-and-text" shows both', async () => {
+				el = await fixture<NLDDTag>('<nldd-tag variant="icon-and-text" icon="check-mark" text="Done"></nldd-tag>');
+				await waitForUpdate(el);
+				expect(hasIcon(el)).toBe(true);
+				expect(hasText(el)).toBe(true);
+			});
+		});
+
+		describe('variant="icon" icon-placeholder fallback', () => {
+			it('renders the icon-placeholder when no icon is provided', async () => {
+				el = await fixture<NLDDTag>('<nldd-tag variant="icon" text="Done" accessible-label="Done"></nldd-tag>');
+				await waitForUpdate(el);
+				expect(hasIcon(el)).toBe(true);
+				// The placeholder lives in the icon slot's default content.
+				const placeholder = el.shadowRoot!.querySelector('nldd-icon[name="icon-placeholder"]');
+				expect(placeholder).not.toBeNull();
+			});
+
+			it('uses the provided icon when one is set', async () => {
+				el = await fixture<NLDDTag>('<nldd-tag variant="icon" icon="check-mark" accessible-label="OK"></nldd-tag>');
+				await waitForUpdate(el);
+				const icon = el.shadowRoot!.querySelector('.tag__icon nldd-icon');
+				expect(icon!.getAttribute('name')).toBe('check-mark');
+			});
 		});
 	});
 });

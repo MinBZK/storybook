@@ -13,24 +13,20 @@ export const blockquoteStyles = css`
 		--_quote-font: var(--semantics-blockquotes-md-quote-font);
 		--_attribution-font: var(--semantics-blockquotes-md-attribution-font);
 
+		@media (max-width: ${smMax}) {
+			--_spacing: var(--semantics-blockquotes-sm-spacing);
+			--_quote-font: var(--semantics-blockquotes-sm-quote-font);
+			--_attribution-font: var(--semantics-blockquotes-sm-attribution-font);
+		}
+
+		@container layout-container (max-width: ${smMax}) {
+			--_spacing: var(--semantics-blockquotes-sm-spacing);
+			--_quote-font: var(--semantics-blockquotes-sm-quote-font);
+			--_attribution-font: var(--semantics-blockquotes-sm-attribution-font);
+		}
+
 		display: block;
 		max-width: var(--semantics-blockquotes-max-width);
-	}
-
-	@media (max-width: ${smMax}) {
-		:host {
-			--_spacing: var(--semantics-blockquotes-sm-spacing);
-			--_quote-font: var(--semantics-blockquotes-sm-quote-font);
-			--_attribution-font: var(--semantics-blockquotes-sm-attribution-font);
-		}
-	}
-
-	@container layout-container (max-width: ${smMax}) {
-		:host {
-			--_spacing: var(--semantics-blockquotes-sm-spacing);
-			--_quote-font: var(--semantics-blockquotes-sm-quote-font);
-			--_attribution-font: var(--semantics-blockquotes-sm-attribution-font);
-		}
 	}
 
 	:host([hidden]) {
@@ -65,7 +61,12 @@ export const blockquoteStyles = css`
 	}
 
 	.blockquote__attribution {
+		display: block;
 		font: var(--_attribution-font);
+	}
+
+	.blockquote__attribution::before {
+		content: '— ' / '';
 	}
 
 	.blockquote__attribution[hidden] {
@@ -76,7 +77,7 @@ export const blockquoteStyles = css`
 		margin: 0;
 	}
 
-	slot[name="attribution"]::slotted(p) {
+	.blockquote__attribution::slotted(p) {
 		display: inline;
 	}
 `;

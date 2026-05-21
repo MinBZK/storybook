@@ -3,7 +3,7 @@ import { customElement, property, query } from 'lit/decorators.js';
 import { topNavigationBarStyles } from './top-navigation-bar.styles.js';
 import { template } from './top-navigation-bar.template.js';
 import { withTranslations } from '../../../utilities/with-translations.js';
-import { nlddTopNavigationBarTranslations } from './top-navigation-bar.i18n.js';
+import { nlddTopNavigationBarTranslations, type NLDDTopNavigationBarTranslations } from './top-navigation-bar.i18n.js';
 import '../menu-bar-item/menu-bar-item.js';
 import { NLDDMenuBarItem } from '../menu-bar-item/menu-bar-item.js';
 import '../menu-bar/menu-bar.js';
@@ -80,13 +80,56 @@ export class NLDDTopNavigationBar extends withTranslations(LitElement, nlddTopNa
 	private _compactRAF: number | null = null;
 	private _setupRAF: number | null = null;
 
+	// Tracks the accessible-label we last applied to each slotted menu-bar, so
+	// our default can follow translation changes while a consumer-set label is
+	// left untouched — including one set asynchronously after the first sync.
+	private _appliedMenuBarLabels = new WeakMap<NLDDMenuBar, string>();
+
 	override willUpdate(changed: PropertyValues): void {
 		super.willUpdate(changed);
 		if (changed.has('translations')) {
 			this._globalMenuSheet?.setAttribute('accessible-label', this._t('components.top-navigation-bar.menu-action'));
 			this._globalMenuSheet?.querySelector('nldd-top-title-bar')?.setAttribute('text', this._menuText);
 			this._globalMenuSheet?.querySelector('nldd-top-title-bar')?.setAttribute('dismiss-text', this._t('components.top-navigation-bar.menu-sheet-dismiss-action'));
+			this._syncSlottedMenuBarLabels();
 		}
+	}
+
+	// ## Slotted menu-bars
+
+	/** Items live inside the consumer-supplied <nldd-menu-bar> in the given slot. */
+	private _getSlottedMenuBar(slot: HTMLSlotElement | undefined): NLDDMenuBar | null {
+		const assigned = slot?.assignedElements({ flatten: true }) ?? [];
+		return (assigned.find(el => el.tagName === 'NLDD-MENU-BAR') as NLDDMenuBar | undefined) ?? null;
+	}
+
+	private _getSlottedItems(slot: HTMLSlotElement | undefined): NLDDMenuBarItem[] {
+		const menuBar = this._getSlottedMenuBar(slot);
+		if (!menuBar) return [];
+		return Array.from(menuBar.querySelectorAll(':scope > nldd-menu-bar-item')) as NLDDMenuBarItem[];
+	}
+
+	private _syncSlottedMenuBarLabels(): void {
+		// Apply a default accessible-label that follows translation changes,
+		// but back off the moment the consumer owns the label.
+		type LabelKey = keyof NLDDTopNavigationBarTranslations;
+		const setDefault = (menuBar: NLDDMenuBar | null, labelKey: LabelKey) => {
+			if (!menuBar) return;
+			const current = menuBar.getAttribute('accessible-label');
+			const ourLast = this._appliedMenuBarLabels.get(menuBar);
+			// Consumer owns the label if they set one we never applied, or
+			// changed it away from our last applied value (even asynchronously
+			// after the first sync). Stop managing it in both cases.
+			if (current !== null && current !== ourLast) {
+				this._appliedMenuBarLabels.delete(menuBar);
+				return;
+			}
+			const next = this._t(labelKey);
+			menuBar.setAttribute('accessible-label', next);
+			this._appliedMenuBarLabels.set(menuBar, next);
+		};
+		setDefault(this._getSlottedMenuBar(this._globalSlot), 'components.top-navigation-bar.global-menu-bar-label');
+		setDefault(this._getSlottedMenuBar(this._utilitySlot), 'components.top-navigation-bar.utility-menu-bar-label');
 	}
 
 	// ## Computed properties
@@ -139,8 +182,8 @@ export class NLDDTopNavigationBar extends withTranslations(LitElement, nlddTopNa
 	private _handleItemSelect = (event: Event): void => {
 		const detail = (event as CustomEvent).detail;
 		if (!detail?.item) return;
-		const slottedItems = this._globalSlot?.assignedElements({ flatten: true }) ?? [];
-		if (!slottedItems.includes(detail.item)) return;
+		const globalItems = this._getSlottedItems(this._globalSlot);
+		if (!globalItems.includes(detail.item)) return;
 
 		const selectEvent = new CustomEvent('itemselect', {
 			bubbles: true,
@@ -152,9 +195,9 @@ export class NLDDTopNavigationBar extends withTranslations(LitElement, nlddTopNa
 
 		if (!selectEvent.defaultPrevented) {
 			detail.item.current = true;
-			slottedItems.forEach(item => {
+			globalItems.forEach(item => {
 				if (item !== detail.item) {
-					(item as HTMLElement).removeAttribute('current');
+					item.removeAttribute('current');
 				}
 			});
 		}
@@ -171,9 +214,6 @@ export class NLDDTopNavigationBar extends withTranslations(LitElement, nlddTopNa
 				this._scheduleCompactUpdate();
 			});
 			this._resizeObserver.observe(this);
-			if (this._globalSlot) {
-				this._globalSlot.addEventListener('slotchange', this._onGlobalSlotChange);
-			}
 			this._scheduleCompactUpdate();
 		});
 	}
@@ -191,13 +231,19 @@ export class NLDDTopNavigationBar extends withTranslations(LitElement, nlddTopNa
 			this._resizeObserver.disconnect();
 			this._resizeObserver = null;
 		}
-		if (this._globalSlot) {
-			this._globalSlot.removeEventListener('slotchange', this._onGlobalSlotChange);
-		}
 	}
 
-	private _onGlobalSlotChange = (): void => {
+	/** @internal Used by template */
+	_onGlobalSlotChange = (): void => {
 		this._syncHasGlobalItems();
+		this._syncSlottedMenuBarLabels();
+		this._syncCompactAttribute();
+	};
+
+	/** @internal Used by template */
+	_onUtilitySlotChange = (): void => {
+		this._syncSlottedMenuBarLabels();
+		this._syncCompactAttribute();
 	};
 
 	private _scheduleCompactUpdate = (): void => {
@@ -209,20 +255,21 @@ export class NLDDTopNavigationBar extends withTranslations(LitElement, nlddTopNa
 
 	/** Update has-global-items class on host based on global slot content. */
 	private _syncHasGlobalItems(): void {
-		const globalItems = this._globalSlot?.assignedElements({ flatten: true }) ?? [];
-		const hasGlobalItems = globalItems.some(el => el.tagName === 'NLDD-MENU-BAR-ITEM');
-		this.classList.toggle('has-global-items', hasGlobalItems);
+		this.classList.toggle('has-global-items', this._getSlottedItems(this._globalSlot).length > 0);
 	}
 
 	/** Propagate compact to menu-bars and internal items when container is sm. */
 	private _syncCompactAttribute(): void {
 		const isCompact = this._isSmBreakpoint();
 
-		// Menu bars (propagate compact + trigger overflow recalculation)
-		const menuBars = this.shadowRoot?.querySelectorAll('nldd-menu-bar') ?? [];
-		for (const menuBar of menuBars) {
+		// Slotted menu-bars (consumer-supplied)
+		const slottedMenuBars = [
+			this._getSlottedMenuBar(this._globalSlot),
+			this._getSlottedMenuBar(this._utilitySlot),
+		].filter((mb): mb is NLDDMenuBar => mb !== null);
+		for (const menuBar of slottedMenuBars) {
 			menuBar.toggleAttribute('compact', isCompact);
-			(menuBar as NLDDMenuBar).requestOverflowUpdate();
+			menuBar.requestOverflowUpdate();
 		}
 
 		// Internal items not inside a menu-bar (menu-button, back-button)
@@ -286,8 +333,7 @@ export class NLDDTopNavigationBar extends withTranslations(LitElement, nlddTopNa
 		if (!this._globalMenuSheetList) return;
 		this._globalMenuSheetList.replaceChildren();
 
-		const slottedElements = this._globalSlot?.assignedElements({ flatten: true }) ?? [];
-		const items = slottedElements.filter(el => el.tagName === 'NLDD-MENU-BAR-ITEM') as NLDDMenuBarItem[];
+		const items = this._getSlottedItems(this._globalSlot);
 
 		for (const item of items) {
 			const listItem = document.createElement('nldd-list-item');

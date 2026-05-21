@@ -1,7 +1,4 @@
-import { css, unsafeCSS } from 'lit';
-import { breakpoints } from '../../../assets/styles/breakpoints.js';
-
-const smMax = unsafeCSS(breakpoints.smMax);
+import { css } from 'lit';
 
 export const tabBarStyles = css`
 
@@ -30,8 +27,8 @@ export const tabBarStyles = css`
 	.tab-bar {
 		display: flex;
 		flex-direction: row;
-		justify-content: flex-start;
 		align-items: center;
+		justify-content: flex-start;
 	}
 
 	:host([centered]) .tab-bar {
@@ -43,11 +40,11 @@ export const tabBarStyles = css`
 		border-radius: var(--semantics-controls-md-corner-radius);
 		background-color: var(--semantics-buttons-neutral-tinted-background-color);
 		flex-direction: row;
-		justify-content: center;
 		align-items: center;
+		justify-content: center;
 	}
 
-	:host([compact]) .tab-bar__items {
+	:host([variant="compact"]) .tab-bar__items {
 		border-radius: var(--semantics-controls-lg-corner-radius);
 	}
 
@@ -58,7 +55,6 @@ export const tabBarStyles = css`
 		position: relative;
 		z-index: 1;
 	}
-
 `;
 
 export const tabBarItemStyles = css`
@@ -77,7 +73,7 @@ export const tabBarItemStyles = css`
 	}
 
 
-	/* # Item */
+	/* # Block */
 
 	.tab-bar__item {
 		box-sizing: border-box;
@@ -88,51 +84,35 @@ export const tabBarItemStyles = css`
 		border-radius: var(--semantics-controls-md-corner-radius);
 		background: none;
 		padding: 0;
-		justify-content: center;
 		align-items: center;
+		justify-content: center;
 		color: var(--semantics-buttons-neutral-tinted-content-color);
 		font: var(--semantics-buttons-md-font);
 		text-decoration: none;
 		appearance: none;
 	}
 
-	:host([variant='icon-and-text']) .tab-bar__item {
+	:host([variant="icon-and-text"]) .tab-bar__item {
 		height: var(--semantics-controls-md-min-size);
 		padding: var(--primitives-space-8) var(--primitives-space-12);
 		gap: var(--semantics-buttons-md-gap);
 	}
 
-	:host([variant='text']) .tab-bar__item {
+	:host([variant="text"]) .tab-bar__item {
 		height: var(--semantics-controls-md-min-size);
 		padding: var(--primitives-space-8) var(--primitives-space-12);
 	}
 
-	:host([variant='icon']) .tab-bar__item {
+	:host([variant="icon"]) .tab-bar__item {
 		width: var(--semantics-controls-md-min-size);
 		height: var(--semantics-controls-md-min-size);
 		padding: 0;
 	}
 
-	:host([variant='compact']) .tab-bar__item {
+	:host([variant="compact"]) .tab-bar__item {
 		height: var(--semantics-controls-lg-min-size);
 		padding: var(--primitives-space-8);
 		flex-direction: column;
-	}
-
-	:host([responsive]) .tab-bar__item {
-		@media (max-width: ${smMax}) {
-			height: var(--semantics-controls-lg-min-size);
-			padding: var(--primitives-space-8);
-			flex-direction: column;
-			gap: 0;
-		}
-
-		@container layout-container (max-width: ${smMax}) {
-			height: var(--semantics-controls-lg-min-size);
-			padding: var(--primitives-space-8);
-			flex-direction: column;
-			gap: 0;
-		}
 	}
 
 	@media (hover: hover) {
@@ -144,8 +124,10 @@ export const tabBarItemStyles = css`
 	:host([selected]) .tab-bar__item {
 		background-color: var(--semantics-buttons-neutral-tinted-is-selected-background-color);
 		color: var(--semantics-buttons-neutral-tinted-is-selected-content-color);
+	}
 
-		@media (forced-colors: active) {
+	@media (forced-colors: active) {
+		:host([selected]) .tab-bar__item {
 			background-color: Highlight;
 		}
 	}
@@ -157,7 +139,7 @@ export const tabBarItemStyles = css`
 	}
 
 
-	/* # Icon */
+	/* # Elements */
 
 	.tab-bar__item-icon {
 		display: flex;
@@ -165,67 +147,41 @@ export const tabBarItemStyles = css`
 		z-index: 1;
 		width: var(--semantics-buttons-md-icon-size);
 		height: var(--semantics-buttons-md-icon-size);
-		justify-content: center;
-		align-items: center;
 		flex-shrink: 0;
+		align-items: center;
+		justify-content: center;
 	}
 
-	:host([variant='icon']) .tab-bar__item-icon {
+	:host([variant="icon"]) .tab-bar__item-icon {
 		width: var(--semantics-buttons-md-icon-only-icon-size);
 		height: var(--semantics-buttons-md-icon-only-icon-size);
 	}
 
-	:host([variant='compact']) .tab-bar__item-icon {
+	:host([variant="compact"]) .tab-bar__item-icon {
 		width: var(--semantics-buttons-md-icon-only-icon-size);
 		height: var(--semantics-buttons-md-icon-only-icon-size);
 	}
 
-	:host([responsive]) .tab-bar__item-icon {
-		@media (max-width: ${smMax}) {
-			width: var(--semantics-buttons-md-icon-only-icon-size);
-			height: var(--semantics-buttons-md-icon-only-icon-size);
-		}
-
-		@container layout-container (max-width: ${smMax}) {
-			width: var(--semantics-buttons-md-icon-only-icon-size);
-			height: var(--semantics-buttons-md-icon-only-icon-size);
-		}
-	}
-
-	:host([variant='text']) .tab-bar__item-icon {
+	:host([variant="text"]) .tab-bar__item-icon {
 		display: none;
 	}
 
-	::slotted([slot='icon']) {
+	::slotted([slot="icon"]) {
 		display: block;
 		width: 100%;
 		height: 100%;
 	}
-
-
-	/* # Label */
 
 	.tab-bar__item-text {
 		position: relative;
 		z-index: 1;
 	}
 
-	:host([variant='compact']) .tab-bar__item-text {
+	:host([variant="compact"]) .tab-bar__item-text {
 		font: var(--primitives-font-body-xxs-bold-flat);
 	}
 
-	:host([variant='icon']) .tab-bar__item-text {
+	:host([variant="icon"]) .tab-bar__item-text {
 		display: none;
 	}
-
-	:host([responsive]) .tab-bar__item-text {
-		@media (max-width: ${smMax}) {
-			font: var(--primitives-font-body-xxs-bold-flat);
-		}
-
-		@container layout-container (max-width: ${smMax}) {
-			font: var(--primitives-font-body-xxs-bold-flat);
-		}
-	}
-
 `;

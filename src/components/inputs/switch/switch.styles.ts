@@ -6,17 +6,16 @@ export const switchStyles = css`
 	/* # Host */
 
 	:host {
-		--_switch-xs-width: var(--semantics-controls-md-min-size);
-		--_switch-xs-height: var(--semantics-controls-xs-min-size);
-		--_switch-sm-width: var(--semantics-controls-lg-min-size);
-		--_switch-sm-height: var(--semantics-controls-sm-min-size);
-		--_switch-padding: var(--primitives-space-2);
-		--_switch-xs-thumb-size: calc(var(--_switch-xs-height) - var(--_switch-padding) * 2 - var(--components-switch-thumb-border-thickness) * 2);
-		--_switch-sm-thumb-size: calc(var(--_switch-sm-height) - var(--_switch-padding) * 2 - var(--components-switch-thumb-border-thickness) * 2);
+		--_track-width: var(--semantics-controls-lg-min-size);
+		--_track-height: var(--semantics-controls-sm-min-size);
+		--_padding: var(--primitives-space-2);
 		--_transition-duration: var(--primitives-transition-duration-fast);
+		--_thumb-size: calc(var(--_track-height) - var(--_padding) * 2 - var(--components-switch-thumb-border-thickness) * 2);
 
 		display: inline-block;
 		position: relative;
+		width: var(--_track-width);
+		height: var(--_track-height);
 		flex-shrink: 0;
 		-webkit-tap-highlight-color: transparent;
 	}
@@ -25,57 +24,40 @@ export const switchStyles = css`
 		display: none;
 	}
 
+	:host([size="xs"]) {
+		--_track-width: var(--semantics-controls-md-min-size);
+		--_track-height: var(--semantics-controls-xs-min-size);
+	}
+
 	:host([disabled]) {
 		opacity: var(--primitives-opacity-disabled);
 	}
 
-	:host([size='xs']) {
-		width: var(--_switch-xs-width);
-		height: var(--_switch-xs-height);
-	}
 
-	:host([size='sm']),
-	:host(:not([size])) {
-		width: var(--_switch-sm-width);
-		height: var(--_switch-sm-height);
-	}
-
-
-	/* # Input */
+	/* # Elements */
 
 	.switch__input {
 		position: absolute;
 		inset: 0;
-		z-index: 1;
 		opacity: 0;
+		z-index: 1;
 		margin: 0;
 		width: 100%;
 		height: 100%;
 	}
 
-
-	/* # Track */
-
 	.switch__track {
-		position: relative;
-		display: flex;
 		box-sizing: border-box;
+		display: flex;
+		position: relative;
 		border: var(--components-switch-border-thickness) solid var(--components-switch-border-color);
+		border-radius: calc(var(--_track-height) / 2);
 		background-color: var(--components-switch-background-color);
 		width: 100%;
 		height: 100%;
-		padding: var(--_switch-padding);
+		padding: var(--_padding);
 		align-items: center;
 		transition: background-color var(--_transition-duration) ease, border-color var(--_transition-duration) ease;
-	}
-
-	:host([size='xs']) .switch__track {
-		border-radius: calc(var(--semantics-controls-xs-min-size) / 2);
-	}
-
-	:host([size='sm']) .switch__track,
-	:host(:not([size])) .switch__track {
-		border-radius: calc(var(--semantics-controls-sm-min-size) / 2);
 	}
 
 	.switch__input:checked ~ .switch__track {
@@ -89,57 +71,32 @@ export const switchStyles = css`
 		box-shadow: var(--semantics-focus-ring-box-shadow);
 	}
 
-
-	/* # Thumb */
-
 	.switch__thumb {
-		position: absolute;
-		left: var(--_switch-padding);
 		box-sizing: border-box;
-		border-radius: 50%;
+		position: absolute;
+		left: var(--_padding);
 		border: var(--components-switch-thumb-border-thickness) solid var(--components-switch-thumb-border-color);
+		border-radius: 50%;
 		background-color: var(--components-switch-thumb-background-color);
+		width: var(--_thumb-size);
+		height: var(--_thumb-size);
 		transition: width var(--_transition-duration) ease, height var(--_transition-duration) ease, left var(--_transition-duration) ease, background-color var(--_transition-duration) ease, border-color var(--_transition-duration) ease;
 		will-change: width, height, left;
 	}
 
-	:host([size='xs']) .switch__thumb {
-		width: var(--_switch-xs-thumb-size);
-		height: var(--_switch-xs-thumb-size);
-	}
-
-	:host([size='sm']) .switch__thumb,
-	:host(:not([size])) .switch__thumb {
-		width: var(--_switch-sm-thumb-size);
-		height: var(--_switch-sm-thumb-size);
-	}
-
 	.switch__input:checked ~ .switch__track .switch__thumb {
+		left: calc(var(--_track-width) - var(--components-switch-thumb-border-thickness) * 2 - var(--_thumb-size) - var(--_padding) * 2);
 		border-color: var(--components-switch-is-selected-thumb-background-color);
 		background-color: var(--components-switch-is-selected-thumb-background-color);
+		width: calc(var(--_thumb-size) + var(--_padding) * 2);
+		height: calc(var(--_thumb-size) + var(--_padding) * 2);
 	}
-
-	:host([size='xs']) .switch__input:checked ~ .switch__track .switch__thumb {
-		left: calc(var(--_switch-xs-width) - var(--components-switch-thumb-border-thickness) * 2 - var(--_switch-xs-thumb-size) - var(--_switch-padding) * 2);
-		width: calc(var(--_switch-xs-thumb-size) + var(--_switch-padding) * 2);
-		height: calc(var(--_switch-xs-thumb-size) + var(--_switch-padding) * 2);
-	}
-
-	:host([size='sm']) .switch__input:checked ~ .switch__track .switch__thumb,
-	:host(:not([size])) .switch__input:checked ~ .switch__track .switch__thumb {
-		left: calc(var(--_switch-sm-width) - var(--components-switch-thumb-border-thickness) * 2 - var(--_switch-sm-thumb-size) - var(--_switch-padding) * 2);
-		width: calc(var(--_switch-sm-thumb-size) + var(--_switch-padding) * 2);
-		height: calc(var(--_switch-sm-thumb-size) + var(--_switch-padding) * 2);
-	}
-
-
-	/* # Check */
 
 	.switch__check {
+		display: flex;
 		position: absolute;
 		top: 50%;
 		left: 50%;
-		display: flex;
 		opacity: 0;
 		pointer-events: none;
 		width: calc(100% + var(--components-switch-thumb-border-thickness) * 2);

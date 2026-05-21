@@ -14,11 +14,9 @@ import { LitElement } from 'lit';
 import { customElement, property, state } from 'lit/decorators.js';
 import { blockquoteStyles } from './blockquote.styles.js';
 import { template } from './blockquote.template.js';
-import { withTranslations } from '../../../utilities/with-translations.js';
-import { nlddBlockquoteTranslations } from './blockquote.i18n.js';
 
 @customElement('nldd-blockquote')
-export class NLDDBlockquote extends withTranslations(LitElement, nlddBlockquoteTranslations) {
+export class NLDDBlockquote extends LitElement {
 	static override styles = blockquoteStyles;
 
 	@property({ type: String })
@@ -35,10 +33,6 @@ export class NLDDBlockquote extends withTranslations(LitElement, nlddBlockquoteT
 			return (n.textContent ?? '').trim().length > 0;
 		});
 	};
-
-	get _attributionPrefix(): string {
-		return this._t('components.blockquote.attribution-prefix');
-	}
 
 	override render() {
 		return template(this);

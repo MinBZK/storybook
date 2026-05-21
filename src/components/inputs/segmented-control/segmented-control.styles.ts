@@ -6,10 +6,12 @@ export const segmentedControlStyles = css`
 	/* # Host */
 
 	:host {
+		--_corner-radius: var(--semantics-controls-md-corner-radius);
 		--_width: auto;
 		--_gap: var(--primitives-space-2);
 
 		display: inline-grid;
+		border-radius: var(--_corner-radius);
 		background-color: var(--semantics-buttons-neutral-tinted-background-color);
 		width: var(--_width);
 		max-width: 100%;
@@ -22,6 +24,10 @@ export const segmentedControlStyles = css`
 
 	:host([hidden]) {
 		display: none;
+	}
+
+	:host([size="sm"]) {
+		--_corner-radius: var(--semantics-controls-sm-corner-radius);
 	}
 
 	:host([width="full"]) {
@@ -39,17 +45,8 @@ export const segmentedControlStyles = css`
 		pointer-events: none;
 	}
 
-	:host([size='md']),
-	:host(:not([size])) {
-		border-radius: var(--semantics-controls-md-corner-radius);
-	}
 
-	:host([size='sm']) {
-		border-radius: var(--semantics-controls-sm-corner-radius);
-	}
-
-
-	/* # Focus */
+	/* # Elements */
 
 	::slotted(nldd-segmented-control-item:focus-within) {
 		position: relative;
@@ -63,6 +60,12 @@ export const segmentedControlItemStyles = css`
 	/* # Host */
 
 	:host {
+		--_corner-radius: var(--semantics-controls-md-corner-radius);
+		--_min-size: var(--semantics-controls-md-min-size);
+		--_padding-inline: var(--primitives-space-12);
+		--_font: var(--semantics-buttons-md-font);
+		--_icon-size: var(--semantics-buttons-md-icon-only-icon-size);
+
 		display: flex;
 		position: relative;
 		min-width: 0;
@@ -73,43 +76,34 @@ export const segmentedControlItemStyles = css`
 		display: none;
 	}
 
+	:host([size="sm"]) {
+		--_corner-radius: var(--semantics-controls-sm-corner-radius);
+		--_min-size: var(--semantics-controls-sm-min-size);
+		--_padding-inline: var(--primitives-space-8);
+		--_font: var(--semantics-buttons-sm-font);
+		--_icon-size: var(--semantics-buttons-sm-icon-only-icon-size);
+	}
 
-	/* # Item */
+
+	/* # Block */
 
 	.segmented-control__item {
 		box-sizing: border-box;
 		display: flex;
 		position: relative;
 		cursor: default;
+		border-radius: var(--_corner-radius);
 		width: 100%;
+		min-width: var(--_min-size);
+		height: var(--_min-size);
+		padding-inline: var(--_padding-inline);
 		align-items: center;
 		justify-content: center;
 		color: var(--semantics-buttons-neutral-tinted-content-color);
+		font: var(--_font);
 	}
 
-	:host([size='md']) .segmented-control__item,
-	:host(:not([size])) .segmented-control__item {
-		border-radius: var(--semantics-controls-md-corner-radius);
-		min-width: var(--semantics-controls-md-min-size);
-		height: var(--semantics-controls-md-min-size);
-		padding-inline: var(--primitives-space-12);
-		font: var(--semantics-buttons-md-font);
-	}
-
-	:host([size='sm']) .segmented-control__item {
-		border-radius: var(--semantics-controls-sm-corner-radius);
-		min-width: var(--semantics-controls-sm-min-size);
-		height: var(--semantics-controls-sm-min-size);
-		padding-inline: var(--primitives-space-8);
-		font: var(--semantics-buttons-sm-font);
-	}
-
-	:host([variant='icon'][size='md']) .segmented-control__item,
-	:host([variant='icon']:not([size])) .segmented-control__item {
-		padding: 0;
-	}
-
-	:host([variant='icon'][size='sm']) .segmented-control__item {
+	:host([variant="icon"]) .segmented-control__item {
 		padding: 0;
 	}
 
@@ -135,7 +129,7 @@ export const segmentedControlItemStyles = css`
 	}
 
 
-	/* # Input */
+	/* # Elements */
 
 	.segmented-control__item-input {
 		position: absolute;
@@ -147,43 +141,28 @@ export const segmentedControlItemStyles = css`
 		height: 100%;
 	}
 
-
-	/* # Text */
-
 	.segmented-control__item-text {
 		pointer-events: none;
 		overflow: hidden;
-		text-overflow: ellipsis;
 		white-space: nowrap;
+		text-overflow: ellipsis;
 	}
 
-	:host([variant='icon']) .segmented-control__item-text {
+	:host([variant="icon"]) .segmented-control__item-text {
 		display: none;
 	}
-
-
-	/* # Icon */
 
 	.segmented-control__item-icon {
 		display: flex;
 		pointer-events: none;
+		width: var(--_icon-size);
+		height: var(--_icon-size);
 		flex-shrink: 0;
 		align-items: center;
 		justify-content: center;
 	}
 
-	:host([size='md']) .segmented-control__item-icon,
-	:host(:not([size])) .segmented-control__item-icon {
-		width: var(--semantics-buttons-md-icon-only-icon-size);
-		height: var(--semantics-buttons-md-icon-only-icon-size);
-	}
-
-	:host([size='sm']) .segmented-control__item-icon {
-		width: var(--semantics-buttons-sm-icon-only-icon-size);
-		height: var(--semantics-buttons-sm-icon-only-icon-size);
-	}
-
-	:host([variant='text']) .segmented-control__item-icon {
+	:host([variant="text"]) .segmented-control__item-icon {
 		display: none;
 	}
 

@@ -77,6 +77,12 @@ export default {
 			description: 'Browser autofill hint (HTML autocomplete attribute, bv. "name", "email", "off")',
 			table: { defaultValue: { summary: '' } },
 		},
+		noSpellcheck: {
+			name: 'no-spellcheck',
+			control: 'boolean',
+			description: 'Disables browser spellchecking on the inner input',
+			table: { defaultValue: { summary: false } },
+		},
 		valid: {
 			control: 'boolean',
 			description: 'Valid state',
@@ -111,6 +117,7 @@ export default {
 		placeholder: 'Text field',
 		type: 'text',
 		autocomplete: '',
+		noSpellcheck: false,
 		valid: false,
 		invalid: false,
 		readonly: false,
@@ -119,7 +126,7 @@ export default {
 	},
 };
 
-const Template = ({ size, name, value, placeholder, type, autocomplete, valid, invalid, readonly, required, disabled, width }: Record<string, any>) => html`
+const Template = ({ size, name, value, placeholder, type, autocomplete, valid, invalid, readonly, required, disabled, noSpellcheck, width }: Record<string, any>) => html`
 	<nldd-text-field
 		.value=${value}
 		.placeholder=${placeholder}
@@ -132,6 +139,7 @@ const Template = ({ size, name, value, placeholder, type, autocomplete, valid, i
 		autocomplete=${autocomplete}
 		?readonly=${readonly}
 		?required=${required}
+		?no-spellcheck=${noSpellcheck}
 		width=${width}
 	></nldd-text-field>
 `;

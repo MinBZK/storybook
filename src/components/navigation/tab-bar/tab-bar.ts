@@ -5,9 +5,8 @@
  * Exports both NLDDTabBar and NLDDTabBarItem.
  *
  * @element nldd-tab-bar
- * @attr {boolean} compact           - Shows items in compact view: icon stacked above text
+ * @attr {string}  variant           - Visual mode: 'icon-and-text' | 'text' | 'icon' | 'compact'. 'compact' stacks the icon above the text. When unset, the variant is inferred from each item's content.
  * @attr {boolean} navigation        - Renders a nav landmark instead of tablist; use for href-based items that navigate between routes
- * @attr {boolean} responsive        - Automatically switches to compact below 480px container width
  * @attr {boolean} centered          - Centers the tabs in the container (host fills the row, tabs group in the middle)
  * @attr {string}  accessible-label  - Accessible name for the navigation region; defaults to 'Tabs'
  *
@@ -46,21 +45,13 @@ export class NLDDTabBarItem extends LitElement {
 	href = '';
 
 	/** Set by nldd-tab-bar. Not part of the public API. */
-	@property({ type: Boolean, reflect: true })
-	compact = false;
-
-	/** Set by nldd-tab-bar. Not part of the public API. */
-	@property({ type: Boolean, reflect: true })
-	responsive = false;
-
-	/** Set by nldd-tab-bar. Not part of the public API. */
 	@property({ type: String })
-	_groupVariant: 'icon-and-text' | 'text' | 'icon' | '' = '';
+	_groupVariant: 'icon-and-text' | 'text' | 'icon' | 'compact' | '' = '';
 
 	// Author-set variant captured once in connectedCallback.
 	// Not a Lit property to avoid a feedback loop with the setAttribute
 	// call in updated() which writes the resolved value to the same attribute.
-	private _authorVariant: 'icon-and-text' | 'text' | 'icon' | '' = '';
+	private _authorVariant: 'icon-and-text' | 'text' | 'icon' | 'compact' | '' = '';
 
 	@property({ type: String })
 	text = '';
@@ -69,7 +60,6 @@ export class NLDDTabBarItem extends LitElement {
 	icon = '';
 
 	get _effectiveVariant(): 'icon-and-text' | 'text' | 'icon' | 'compact' {
-		if (this.compact) return 'compact';
 		if (this._authorVariant) return this._authorVariant;
 		if (this._groupVariant) return this._groupVariant;
 		const hasIcon = Boolean(this.icon) || this._hasIconSlot;
@@ -94,7 +84,7 @@ export class NLDDTabBarItem extends LitElement {
 		this.setAttribute('role', 'none');
 		// Capture author intent before updated() overwrites the attribute with the resolved value
 		const attr = this.getAttribute('variant');
-		if (attr === 'text' || attr === 'icon' || attr === 'icon-and-text') {
+		if (attr === 'text' || attr === 'icon' || attr === 'icon-and-text' || attr === 'compact') {
 			this._authorVariant = attr;
 		}
 	}
@@ -135,18 +125,12 @@ export class NLDDTabBarItem extends LitElement {
 export class NLDDTabBar extends LitElement {
 	static override styles = tabBarStyles;
 
-	@property({ type: Boolean, reflect: true })
-	compact = false;
-
-	@property({ type: Boolean, reflect: true })
-	responsive = false;
-
 	/** Centers the tabs in the container (host fills the row, tabs group in the middle). */
 	@property({ type: Boolean, reflect: true })
 	centered = false;
 
 	@property({ type: String, reflect: true })
-	variant: 'icon-and-text' | 'text' | 'icon' | '' = '';
+	variant: 'icon-and-text' | 'text' | 'icon' | 'compact' | '' = '';
 
 	@property({ type: Boolean, reflect: true })
 	navigation = false;
@@ -178,8 +162,6 @@ export class NLDDTabBar extends LitElement {
 
 	override updated(changedProperties: Map<string, unknown>): void {
 		if (
-			changedProperties.has('compact') ||
-			changedProperties.has('responsive') ||
 			changedProperties.has('variant') ||
 			changedProperties.has('navigation')
 		) {
@@ -201,8 +183,6 @@ export class NLDDTabBar extends LitElement {
 		const items = this._getItems();
 
 		items.forEach(item => {
-			item.compact = this.compact;
-			item.responsive = this.responsive;
 			item._groupVariant = this.variant;
 			item._navigation = this.navigation;
 		});

@@ -74,6 +74,9 @@ export const aliases = {
 	// circle-dashed
 	'icon-placeholder': 'circle-dashed',
 
+	// clipboard-rectangle
+	'paste': 'clipboard-rectangle',
+
 	// clock
 	'time': 'clock',
 	'now': 'clock',
@@ -149,15 +152,15 @@ export const aliases = {
 	// gear
 	'global-settings': 'gear',
 
+	// globe
+	'languages': 'globe',
+
 	// heart-filled
 	'favorite': 'heart-filled',
 	'love': 'heart-filled',
 
 	// house
 	'home': 'house',
-
-	// inbox
-	'messages': 'inbox',
 
 	// info-circle
 	'info': 'info-circle',
@@ -188,12 +191,19 @@ export const aliases = {
 	'unlocked': 'lock-open',
 	'unsecure': 'lock-open',
 
+	// scissor
+	'cut': 'scissor',
+
 	// ship-wheel
 	'k8s': 'ship-wheel',
 	'kubernetes': 'ship-wheel',
 
 	// magnifier
 	'search': 'magnifier',
+
+	// message-rectangle-text
+	'annotation': 'message-rectangle-text',
+	'comment': 'message-rectangle-text',
 
 	// minus
 	'remove': 'minus',
@@ -271,15 +281,18 @@ export const aliases = {
 	'new': 'starburst-filled',
 	'promotion': 'starburst-filled',
 
-	// square-and-arrow-right
-	'logout': 'square-and-arrow-right',
-	'exit': 'square-and-arrow-right',
+	// square-arrow-right
+	'logout': 'square-arrow-right',
+	'exit': 'square-arrow-right',
 
-	// square-arrow-up
-	'share': 'square-arrow-up',
+	// square-arrow-right-inward
+	'login': 'square-arrow-right-inward',
 
 	// square-arrow-right-top
 	'external-link': 'square-arrow-right-top',
+
+	// square-arrow-up
+	'share': 'square-arrow-up',
 
 	// square-on-square
 	'copy': 'square-on-square',

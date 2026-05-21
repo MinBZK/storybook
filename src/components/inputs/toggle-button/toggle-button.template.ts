@@ -4,15 +4,21 @@ import '../../content/tooltip/tooltip.js';
 
 
 export function toggleButtonTemplate(component: NLDDToggleButton): TemplateResult {
+	const variant = component._effectiveVariant;
+	const showText = (variant === 'text' || variant === 'icon-and-text') && !!component.text;
 	const label = component.accessibleLabel || nothing;
-	const iconOnly = !!component.icon && !component.text;
-	const tooltipText = iconOnly ? (component.accessibleLabel || component.text) : '';
+	const tooltipText = variant === 'icon' ? (component.accessibleLabel || component.text) : '';
 
+	// Always render the slot so auto-detect can observe slotchange and so
+	// consumers can supply an icon via slot before the attribute. CSS hides
+	// the icon when variant resolves to 'text'. When variant is explicitly
+	// 'icon' but the consumer hasn't supplied one, fall back to the
+	// icon-placeholder as a visible hint.
 	const icon = component.icon
 		? html`<nldd-icon class="toggle-button__icon" name=${component.icon}></nldd-icon>`
-		: html`<slot name="icon" @slotchange=${component.requestUpdate}></slot>`;
+		: html`<slot name="icon" @slotchange=${component.requestUpdate}>${variant === 'icon' ? html`<nldd-icon class="toggle-button__icon" name="icon-placeholder"></nldd-icon>` : nothing}</slot>`;
 
-	const textContent = component.text
+	const textContent = showText
 		? html`<span class="toggle-button__text">${component.text}</span>`
 		: nothing;
 

@@ -12,11 +12,12 @@ export const navigationSplitViewStyles = css`
 	/* # Host */
 
 	:host {
-		--_sidebar-min-width: var(--primitives-area-320); /* Pane min-width — read by JS via getComputedStyle in firstUpdated */
-		--_secondary-sidebar-min-width: var(--primitives-area-320); /* Pane min-width — read by JS via getComputedStyle in firstUpdated */
-		--_main-min-width: var(--primitives-area-480); /* Pane min-width — read by JS via getComputedStyle in firstUpdated */
-		--_inspector-min-width: var(--primitives-area-320); /* Pane min-width — read by JS via getComputedStyle in firstUpdated */
 		--_background-color: var(--context-parent-background-color, var(--semantics-surfaces-background-color));
+		/* Pane min-widths — read by JS via getComputedStyle in firstUpdated */
+		--_sidebar-min-width: var(--primitives-area-320);
+		--_secondary-sidebar-min-width: var(--primitives-area-320);
+		--_main-min-width: var(--primitives-area-480);
+		--_inspector-min-width: var(--primitives-area-320);
 
 		display: flex;
 		background-color: var(--_background-color);
@@ -35,85 +36,7 @@ export const navigationSplitViewStyles = css`
 	}
 
 
-	/* # Block */
-
-	.navigation-split-view {
-		display: flex;
-		min-height: 0;
-		min-width: 0;
-		overflow: hidden;
-		flex-direction: row;
-		flex: 1;
-	}
-
-
-	/* # Sidebar */
-
-	.navigation-split-view__sidebar-pane {
-		display: flex;
-		min-height: 0;
-		min-width: var(--_sidebar-min-width);
-		overflow: hidden;
-		flex-direction: column;
-		flex-shrink: 0;
-	}
-
-
-	/* # Secondary sidebar */
-
-	.navigation-split-view__secondary-sidebar-pane {
-		display: flex;
-		min-height: 0;
-		min-width: var(--_secondary-sidebar-min-width);
-		overflow: hidden;
-		flex-direction: column;
-		flex-shrink: 0;
-	}
-
-
-	/* # Main */
-
-	.navigation-split-view__main-pane {
-		display: flex;
-		min-height: 0;
-		min-width: var(--_main-min-width);
-		overflow: hidden;
-		flex-direction: column;
-		flex: 1;
-	}
-
-
-	/* # Full-stack: single pane fills available space, no minimum */
-
-	:host(.full-stack) .navigation-split-view__sidebar-pane,
-	:host(.full-stack) .navigation-split-view__secondary-sidebar-pane,
-	:host(.full-stack) .navigation-split-view__main-pane {
-		min-width: 0;
-		flex: 1;
-	}
-
-
-	/* # Sidebar — inline pane suppresses dismiss button */
-
-	.navigation-split-view__sidebar-pane,
-	.navigation-split-view__secondary-sidebar-pane {
-		--context-dismiss-button-display: none;
-	}
-
-	.navigation-split-view__inspector-pane {
-		/* Suppress dismiss button — inspector is always dismissable as a sheet, not inline */
-		--context-dismiss-button-display: none;
-
-		display: flex;
-		min-height: 0;
-		min-width: var(--_inspector-min-width);
-		overflow: hidden;
-		flex-direction: column;
-		flex-shrink: 0;
-	}
-
-
-	/* # Inspector — sheet (dialog) */
+	/* # Keyframes */
 
 	@keyframes navigation-split-view-inspector-slide-in {
 		from { transform: translateX(100%); }
@@ -125,13 +48,107 @@ export const navigationSplitViewStyles = css`
 		to { transform: translateX(100%); }
 	}
 
+	@keyframes navigation-split-view-sidebar-slide-in {
+		from { transform: translateX(-100%); }
+		to { transform: translateX(0); }
+	}
+
+	@keyframes navigation-split-view-sidebar-slide-out {
+		from { transform: translateX(0); }
+		to { transform: translateX(-100%); }
+	}
+
+	@keyframes navigation-split-view-slide-in-bottom {
+		from { transform: translateY(100%); }
+		to { transform: translateY(0); }
+	}
+
+	@keyframes navigation-split-view-slide-out-bottom {
+		from { transform: translateY(0); }
+		to { transform: translateY(100%); }
+	}
+
+
+	/* # Block */
+
+	.navigation-split-view {
+		display: flex;
+		min-width: 0;
+		min-height: 0;
+		overflow: hidden;
+		flex-direction: row;
+		flex-grow: 1;
+		flex-shrink: 1;
+		flex-basis: 0;
+	}
+
+
+	/* # Elements */
+
+	.navigation-split-view__sidebar-pane {
+		display: flex;
+		min-width: var(--_sidebar-min-width);
+		min-height: 0;
+		overflow: hidden;
+		flex-direction: column;
+		flex-shrink: 0;
+	}
+
+	.navigation-split-view__secondary-sidebar-pane {
+		display: flex;
+		min-width: var(--_secondary-sidebar-min-width);
+		min-height: 0;
+		overflow: hidden;
+		flex-direction: column;
+		flex-shrink: 0;
+	}
+
+	.navigation-split-view__main-pane {
+		display: flex;
+		min-width: var(--_main-min-width);
+		min-height: 0;
+		overflow: hidden;
+		flex-direction: column;
+		flex-grow: 1;
+		flex-shrink: 1;
+		flex-basis: 0;
+	}
+
+	/* Full-stack: the single visible pane fills the space, no minimum */
+	:host(.full-stack) .navigation-split-view__sidebar-pane,
+	:host(.full-stack) .navigation-split-view__secondary-sidebar-pane,
+	:host(.full-stack) .navigation-split-view__main-pane {
+		min-width: 0;
+		flex-grow: 1;
+		flex-shrink: 1;
+		flex-basis: 0;
+	}
+
+	/* Inline sidebar panes suppress their dismiss button */
+	.navigation-split-view__sidebar-pane,
+	.navigation-split-view__secondary-sidebar-pane {
+		--context-dismiss-button-display: none;
+	}
+
+	.navigation-split-view__inspector-pane {
+		/* Inspector is always dismissable as a sheet, not inline */
+		--context-dismiss-button-display: none;
+
+		display: flex;
+		min-width: var(--_inspector-min-width);
+		min-height: 0;
+		overflow: hidden;
+		flex-direction: column;
+		flex-shrink: 0;
+	}
+
 	.navigation-split-view__inspector-sheet {
 		display: flex;
 		position: fixed;
 		margin: 0;
+		outline: none;
 		border: none;
 		box-shadow: var(--semantics-overlays-box-shadow);
-		outline: none;
 		background: var(--semantics-surfaces-background-color);
 		overflow: hidden;
 		padding: 0;
@@ -161,9 +178,9 @@ export const navigationSplitViewStyles = css`
 		}
 
 		&:focus-visible:not(.is-pointer-focus) {
-			box-shadow: var(--semantics-focus-ring-box-shadow), var(--semantics-overlays-box-shadow);
 			outline: var(--semantics-focus-ring-outline);
 			outline-offset: var(--semantics-focus-ring-outline-offset);
+			box-shadow: var(--semantics-focus-ring-box-shadow), var(--semantics-overlays-box-shadow);
 		}
 
 		&:not([open]) {
@@ -197,32 +214,19 @@ export const navigationSplitViewStyles = css`
 
 	.navigation-split-view__inspector-sheet-body {
 		display: flex;
-		min-height: 0;
 		width: 100%;
+		min-height: 0;
 		flex-direction: column;
 		flex-grow: 1;
-	}
-
-
-	/* # Sidebar — sheet (dialog) */
-
-	@keyframes navigation-split-view-sidebar-slide-in {
-		from { transform: translateX(-100%); }
-		to { transform: translateX(0); }
-	}
-
-	@keyframes navigation-split-view-sidebar-slide-out {
-		from { transform: translateX(0); }
-		to { transform: translateX(-100%); }
 	}
 
 	.navigation-split-view__sidebar-sheet {
 		display: flex;
 		position: fixed;
 		margin: 0;
+		outline: none;
 		border: none;
 		box-shadow: var(--semantics-overlays-box-shadow);
-		outline: none;
 		background: var(--semantics-surfaces-background-color);
 		overflow: hidden;
 		padding: 0;
@@ -252,9 +256,9 @@ export const navigationSplitViewStyles = css`
 		}
 
 		&:focus-visible:not(.is-pointer-focus) {
-			box-shadow: var(--semantics-focus-ring-box-shadow), var(--semantics-overlays-box-shadow);
 			outline: var(--semantics-focus-ring-outline);
 			outline-offset: var(--semantics-focus-ring-outline-offset);
+			box-shadow: var(--semantics-focus-ring-box-shadow), var(--semantics-overlays-box-shadow);
 		}
 
 		&:not([open]) {
@@ -291,27 +295,11 @@ export const navigationSplitViewStyles = css`
 		--context-dismiss-button-display: block;
 
 		display: flex;
-		min-height: 0;
 		width: 100%;
+		min-height: 0;
 		flex-direction: column;
 		flex-grow: 1;
 	}
-
-
-	/* # Responsive: sm viewport — sheets become bottom sheets */
-
-	@keyframes navigation-split-view-slide-in-bottom {
-		from { transform: translateY(100%); }
-		to { transform: translateY(0); }
-	}
-
-	@keyframes navigation-split-view-slide-out-bottom {
-		from { transform: translateY(0); }
-		to { transform: translateY(100%); }
-	}
-
-
-	/* # Reduced motion */
 
 	@media (prefers-reduced-motion: reduce) {
 		.navigation-split-view__inspector-sheet[open],
@@ -322,11 +310,10 @@ export const navigationSplitViewStyles = css`
 		}
 	}
 
-
-	/* # Slotted */
-
 	::slotted(*) {
 		min-height: 0;
-		flex: 1;
+		flex-grow: 1;
+		flex-shrink: 1;
+		flex-basis: 0;
 	}
 `;

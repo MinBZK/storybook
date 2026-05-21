@@ -69,6 +69,12 @@ export default {
 			description: 'Browser autofill hint. Default "off" om conflict met dropdown te voorkomen. Set bv. "country" of "organization" om autofill toe te staan.',
 			table: { defaultValue: { summary: 'off' } },
 		},
+		noSpellcheck: {
+			name: 'no-spellcheck',
+			control: 'boolean',
+			description: 'Disables browser spellchecking on the inner input',
+			table: { defaultValue: { summary: false } },
+		},
 		accessibleLabel: {
 			name: 'accessible-label',
 			control: 'text',
@@ -86,6 +92,7 @@ export default {
 		name: '',
 		value: '',
 		autocomplete: 'off',
+		noSpellcheck: false,
 		accessibleLabel: '',
 	},
 };
@@ -103,6 +110,7 @@ const Template = (args: Record<string, any>) => html`
 		value=${args.value}
 		autocomplete=${args.autocomplete}
 		accessible-label=${args.accessibleLabel || nothing}
+		?no-spellcheck=${args.noSpellcheck}
 	>
 		<nldd-menu empty-text="Geen resultaten">
 			<nldd-menu-item text="Nederland" value="nl"></nldd-menu-item>

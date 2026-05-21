@@ -9,6 +9,7 @@
  * @attr {string} size - Tag grootte: 'sm' | 'md' (default: 'md')
  * @attr {string} text - Tag tekst (alternatief voor default slot)
  * @attr {string} icon - Icoon voor de tekst
+ * @attr {string} variant - Wat zichtbaar is: 'text' | 'icon' | 'icon-and-text'. Onbepaald → auto-detect op basis van welke van text/icon aanwezig is.
  * @attr {string} accessible-label - Toegankelijk label voor screenreaders. Gebruik dit bij icon-only tags zonder zichtbare tekst.
  *
  * @slot - Tag tekst
@@ -49,6 +50,7 @@ type Color =
 	| 'mosgroen'
 	| 'mintgroen';
 type Size = 'sm' | 'md';
+type Variant = 'text' | 'icon' | 'icon-and-text';
 
 @customElement('nldd-tag')
 export class NLDDTag extends LitElement {
@@ -65,6 +67,9 @@ export class NLDDTag extends LitElement {
 
 	@property({ type: String })
 	icon = '';
+
+	@property({ type: String, reflect: true })
+	variant: Variant | '' = '';
 
 	@property({ type: String, attribute: 'accessible-label' })
 	accessibleLabel = '';
@@ -83,6 +88,13 @@ export class NLDDTag extends LitElement {
 
 	get _hasIcon(): boolean {
 		return !!this.icon || this._hasSlotIcon;
+	}
+
+	get _effectiveVariant(): Variant {
+		if (this.variant) return this.variant;
+		if (this._hasIcon && this._hasText) return 'icon-and-text';
+		if (this._hasIcon) return 'icon';
+		return 'text';
 	}
 
 	override connectedCallback() {
@@ -118,6 +130,15 @@ export class NLDDTag extends LitElement {
 		}
 		this._hasSlotText = hasText;
 		this._hasSlotIcon = hasIcon;
+	}
+
+	override updated() {
+		// An icon-only tag with no accessible-label has no accessible name —
+		// the placeholder/icon is decorative (aria-hidden), so screen readers
+		// announce nothing. Warn in dev so consumers add a label.
+		if (import.meta.env?.DEV && this._effectiveVariant === 'icon' && !this.accessibleLabel) {
+			console.warn('nldd-tag: icon-only tag without an accessible-label has no accessible name. Add accessible-label so screen readers can announce it.', this);
+		}
 	}
 
 	override render() {

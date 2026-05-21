@@ -6,16 +6,14 @@ const mdMin = unsafeCSS(breakpoints.mdMin);
 const mdMax = unsafeCSS(breakpoints.mdMax);
 const lgMin = unsafeCSS(breakpoints.lgMin);
 
-// # Top navigation bar styles
-
 export const topNavigationBarStyles = css`
 
 
 	/* # Host */
 
 	:host {
-		--_wordmark-content-color: light-dark(var(--primitives-color-reference-lintblauw), var(--primitives-color-neutral-1000));
 		--_logo-width: var(--primitives-space-40);
+		--_wordmark-content-color: light-dark(var(--primitives-color-reference-lintblauw), var(--primitives-color-neutral-1000));
 
 		display: block;
 		width: 100%;
@@ -29,8 +27,8 @@ export const topNavigationBarStyles = css`
 	/* # Block */
 
 	.top-navigation-bar {
-		display: flex;
 		box-sizing: border-box;
+		display: flex;
 		container-type: inline-size;
 		container-name: top-navigation-bar-container;
 		margin: 0 auto;
@@ -213,9 +211,7 @@ export const topNavigationBarStyles = css`
 
 		@container top-navigation-bar-container (min-width: ${mdMin}) {
 			font: var(--components-top-navigation-bar-title-md-font);
-			/* Create spacing between title and menu-bar on md+ where they sit
-			   on the same row. On sm the title-bar stacks above the menu-bar
-			   and this margin would visually offset the centered title. */
+			/* md+ only: title shares the row with the menu-bar; on sm it stacks and this margin would offset the centered title */
 			margin-inline-end: var(--primitives-space-8);
 		}
 
@@ -241,6 +237,7 @@ export const topNavigationBarStyles = css`
 		display: flex;
 		min-width: 0;
 		align-items: center;
+		gap: var(--primitives-space-12);
 		flex-grow: 1;
 	}
 
@@ -250,13 +247,14 @@ export const topNavigationBarStyles = css`
 		display: flex;
 		min-width: 0;
 		align-items: center;
-		flex-grow: 1;
 
 		@container top-navigation-bar-container (max-width: ${mdMax}) {
+			flex-grow: 0;
 			flex-shrink: 0;
 		}
 
 		@container top-navigation-bar-container (min-width: ${lgMin}) {
+			flex-grow: 1;
 			flex-shrink: 1;
 		}
 	}
@@ -269,10 +267,12 @@ export const topNavigationBarStyles = css`
 		align-items: center;
 
 		@container top-navigation-bar-container (max-width: ${mdMax}) {
+			flex-grow: 1;
 			flex-shrink: 1;
 		}
 
 		@container top-navigation-bar-container (min-width: ${lgMin}) {
+			flex-grow: 0;
 			flex-shrink: 0;
 		}
 	}
@@ -310,5 +310,10 @@ export const topNavigationBarStyles = css`
 		min-width: 0;
 		flex-grow: 1;
 		flex-shrink: 1;
+		justify-content: flex-end;
+	}
+
+	slot[name="utility"]::slotted(nldd-menu-bar) {
+		flex-grow: 0;
 	}
 `;

@@ -6,16 +6,162 @@ export const iconButtonStyles = css`
 	/* # Host */
 
 	:host {
+		--_corner-radius: var(--semantics-controls-md-corner-radius);
+		--_background-color: var(--semantics-buttons-neutral-tinted-background-color);
 		--_width: auto;
+		--_min-size: var(--semantics-controls-md-min-size);
+		--_padding: calc((var(--semantics-controls-md-min-size) - var(--semantics-buttons-md-icon-only-icon-size)) / 2);
+		--_content-color: var(--semantics-buttons-neutral-tinted-content-color);
+		--_is-hovered-background-color: var(--semantics-buttons-neutral-tinted-is-hovered-background-color);
+		--_is-hovered-content-color: var(--semantics-buttons-neutral-tinted-is-hovered-content-color);
+		--_is-active-background-color: var(--semantics-buttons-neutral-tinted-is-active-background-color);
+		--_is-active-content-color: var(--semantics-buttons-neutral-tinted-is-active-content-color);
+		--_icon-size: var(--semantics-buttons-md-icon-only-icon-size);
+		--_disclosure-icon-margin-right: calc(var(--primitives-space-2) * -1);
 		--_disclosure-icon-size: var(--primitives-space-20);
+		--_text-display: none;
 
 		display: inline-block;
 		max-width: 100%;
 		-webkit-tap-highlight-color: transparent;
 	}
 
-	:host([size='xs']) {
+	:host([size="xs"]) {
+		--_corner-radius: var(--semantics-controls-xs-corner-radius);
+		--_min-size: var(--semantics-controls-xs-min-size);
+		--_padding: calc((var(--semantics-controls-xs-min-size) - var(--semantics-buttons-xs-icon-only-icon-size)) / 2);
+		--_icon-size: var(--semantics-buttons-xs-icon-only-icon-size);
+		--_disclosure-icon-margin-right: 0;
 		--_disclosure-icon-size: var(--primitives-space-16);
+	}
+
+	:host([size="sm"]) {
+		--_corner-radius: var(--semantics-controls-sm-corner-radius);
+		--_min-size: var(--semantics-controls-sm-min-size);
+		--_padding: calc((var(--semantics-controls-sm-min-size) - var(--semantics-buttons-sm-icon-only-icon-size)) / 2);
+		--_icon-size: var(--semantics-buttons-sm-icon-only-icon-size);
+	}
+
+	:host([size="lg"]) {
+		--_corner-radius: var(--semantics-controls-lg-corner-radius);
+		--_min-size: var(--semantics-controls-lg-min-size);
+		--_padding: var(--primitives-space-8);
+		--_text-display: block;
+	}
+
+	/* ## Neutral Transparent */
+
+	:host([variant="neutral-transparent"]) {
+		--_background-color: transparent;
+		--_content-color: var(--semantics-buttons-neutral-transparent-content-color);
+		--_is-hovered-background-color: transparent;
+		--_is-hovered-content-color: var(--semantics-buttons-neutral-transparent-is-hovered-content-color);
+		--_is-active-background-color: transparent;
+		--_is-active-content-color: var(--semantics-buttons-neutral-transparent-is-active-content-color);
+	}
+
+	/* ## Accent Filled (Primary) */
+
+	:host([variant="accent-filled"]),
+	:host([variant="primary"]) {
+		--_background-color: var(--semantics-buttons-accent-filled-background-color);
+		--_content-color: var(--semantics-buttons-accent-filled-content-color);
+		--_is-hovered-background-color: var(--semantics-buttons-accent-filled-is-hovered-background-color);
+		--_is-hovered-content-color: var(--semantics-buttons-accent-filled-is-hovered-content-color);
+		--_is-active-background-color: var(--semantics-buttons-accent-filled-is-active-background-color);
+		--_is-active-content-color: var(--semantics-buttons-accent-filled-is-active-content-color);
+	}
+
+	/* ## Accent Transparent */
+
+	:host([variant="accent-transparent"]) {
+		--_background-color: transparent;
+		--_content-color: var(--semantics-buttons-accent-transparent-content-color);
+		--_is-hovered-background-color: transparent;
+		--_is-hovered-content-color: var(--semantics-buttons-accent-transparent-is-hovered-content-color);
+		--_is-active-background-color: transparent;
+		--_is-active-content-color: var(--semantics-buttons-accent-transparent-is-active-content-color);
+	}
+
+	/* ## Critical Tinted (Destructive) */
+
+	:host([variant="critical-tinted"]),
+	:host([variant="destructive"]) {
+		--_background-color: var(--semantics-buttons-critical-tinted-background-color);
+		--_content-color: var(--semantics-buttons-critical-tinted-content-color);
+		--_is-hovered-background-color: var(--semantics-buttons-critical-tinted-is-hovered-background-color);
+		--_is-hovered-content-color: var(--semantics-buttons-critical-tinted-is-hovered-content-color);
+		--_is-active-background-color: var(--semantics-buttons-critical-tinted-is-active-background-color);
+		--_is-active-content-color: var(--semantics-buttons-critical-tinted-is-active-content-color);
+	}
+
+	/* ## Critical Transparent */
+
+	:host([variant="critical-transparent"]) {
+		--_background-color: transparent;
+		--_content-color: var(--semantics-buttons-critical-transparent-content-color);
+		--_is-hovered-background-color: transparent;
+		--_is-hovered-content-color: var(--semantics-buttons-critical-transparent-is-hovered-content-color);
+		--_is-active-background-color: transparent;
+		--_is-active-content-color: var(--semantics-buttons-critical-transparent-is-active-content-color);
+	}
+
+	/* ## Expanded — default (incl. unknown variant) */
+
+	:host([expanded]) {
+		--_background-color: var(--semantics-buttons-neutral-tinted-is-expanded-background-color);
+		--_content-color: var(--semantics-buttons-neutral-tinted-is-expanded-content-color);
+		--_is-hovered-background-color: var(--semantics-buttons-neutral-tinted-is-expanded-is-hovered-background-color);
+		--_is-hovered-content-color: var(--semantics-buttons-neutral-tinted-is-expanded-is-hovered-content-color);
+		--_is-active-background-color: var(--semantics-buttons-neutral-tinted-is-expanded-is-active-background-color);
+		--_is-active-content-color: var(--semantics-buttons-neutral-tinted-is-expanded-is-active-content-color);
+	}
+
+	:host([expanded][variant="accent-filled"]),
+	:host([expanded][variant="primary"]) {
+		--_background-color: var(--semantics-buttons-accent-filled-is-expanded-background-color);
+		--_content-color: var(--semantics-buttons-accent-filled-is-expanded-content-color);
+		--_is-hovered-background-color: var(--semantics-buttons-accent-filled-is-expanded-is-hovered-background-color);
+		--_is-hovered-content-color: var(--semantics-buttons-accent-filled-is-expanded-is-hovered-content-color);
+		--_is-active-background-color: var(--semantics-buttons-accent-filled-is-expanded-is-active-background-color);
+		--_is-active-content-color: var(--semantics-buttons-accent-filled-is-expanded-is-active-content-color);
+	}
+
+	:host([expanded][variant="neutral-transparent"]) {
+		--_background-color: transparent;
+		--_content-color: var(--semantics-buttons-neutral-transparent-content-color);
+		--_is-hovered-background-color: transparent;
+		--_is-hovered-content-color: var(--semantics-buttons-neutral-transparent-is-hovered-content-color);
+		--_is-active-background-color: transparent;
+		--_is-active-content-color: var(--semantics-buttons-neutral-transparent-is-active-content-color);
+	}
+
+	:host([expanded][variant="accent-transparent"]) {
+		--_background-color: transparent;
+		--_content-color: var(--semantics-buttons-accent-transparent-content-color);
+		--_is-hovered-background-color: transparent;
+		--_is-hovered-content-color: var(--semantics-buttons-accent-transparent-is-hovered-content-color);
+		--_is-active-background-color: transparent;
+		--_is-active-content-color: var(--semantics-buttons-accent-transparent-is-active-content-color);
+	}
+
+	:host([expanded][variant="critical-tinted"]),
+	:host([expanded][variant="destructive"]) {
+		--_background-color: var(--semantics-buttons-critical-tinted-background-color);
+		--_content-color: var(--semantics-buttons-critical-tinted-content-color);
+		--_is-hovered-background-color: var(--semantics-buttons-critical-tinted-is-hovered-background-color);
+		--_is-hovered-content-color: var(--semantics-buttons-critical-tinted-is-hovered-content-color);
+		--_is-active-background-color: var(--semantics-buttons-critical-tinted-is-active-background-color);
+		--_is-active-content-color: var(--semantics-buttons-critical-tinted-is-active-content-color);
+	}
+
+	:host([expanded][variant="critical-transparent"]) {
+		--_background-color: transparent;
+		--_content-color: var(--semantics-buttons-critical-transparent-content-color);
+		--_is-hovered-background-color: transparent;
+		--_is-hovered-content-color: var(--semantics-buttons-critical-transparent-is-hovered-content-color);
+		--_is-active-background-color: transparent;
+		--_is-active-content-color: var(--semantics-buttons-critical-transparent-is-active-content-color);
 	}
 
 	:host([width="full"]) {
@@ -41,19 +187,25 @@ export const iconButtonStyles = css`
 		display: inline-flex;
 		margin: 0;
 		border: none;
+		border-radius: var(--_corner-radius);
 		background: none;
+		background-color: var(--_background-color);
 		width: var(--_width);
-		padding: 0;
+		min-width: var(--_min-size);
+		height: var(--_min-size);
+		min-height: var(--_min-size);
+		padding: var(--_padding);
 		flex-direction: column;
 		align-items: center;
 		justify-content: center;
+		color: var(--_content-color);
 		font: inherit;
 		text-decoration: none;
-		appearance: none;
 		transition:
 			background-color var(--primitives-transition-duration-fast) var(--primitives-transition-easing-default),
 			color var(--primitives-transition-duration-fast) var(--primitives-transition-easing-default)
 		;
+		appearance: none;
 	}
 
 	a.icon-button {
@@ -66,9 +218,6 @@ export const iconButtonStyles = css`
 		}
 	}
 
-
-	/* # Focus */
-
 	.icon-button:focus-visible {
 		outline: var(--semantics-focus-ring-outline);
 		outline-offset: var(--semantics-focus-ring-outline-offset);
@@ -79,262 +228,16 @@ export const iconButtonStyles = css`
 		outline: none;
 	}
 
-
-	/* # Sizes */
-
-	/* ## Size: XS */
-
-	:host([size='xs']) .icon-button {
-		border-radius: var(--semantics-controls-xs-corner-radius);
-		height: var(--semantics-controls-xs-min-size);
-		min-width: var(--semantics-controls-xs-min-size);
-		min-height: var(--semantics-controls-xs-min-size);
-		padding: calc((var(--semantics-controls-xs-min-size) - var(--semantics-buttons-xs-icon-only-icon-size)) / 2);
-	}
-
-	/* ## Size: SM */
-
-	:host([size='sm']) .icon-button {
-		border-radius: var(--semantics-controls-sm-corner-radius);
-		height: var(--semantics-controls-sm-min-size);
-		min-width: var(--semantics-controls-sm-min-size);
-		min-height: var(--semantics-controls-sm-min-size);
-		padding: calc((var(--semantics-controls-sm-min-size) - var(--semantics-buttons-sm-icon-only-icon-size)) / 2);
-	}
-
-	/* ## Size: MD (Default) */
-
-	:host([size='md']) .icon-button,
-	:host(:not([size])) .icon-button {
-		border-radius: var(--semantics-controls-md-corner-radius);
-		height: var(--semantics-controls-md-min-size);
-		min-width: var(--semantics-controls-md-min-size);
-		min-height: var(--semantics-controls-md-min-size);
-		padding: calc((var(--semantics-controls-md-min-size) - var(--semantics-buttons-md-icon-only-icon-size)) / 2);
-	}
-
-	/* ## Size: LG */
-
-	:host([size='lg']) .icon-button {
-		border-radius: var(--semantics-controls-lg-corner-radius);
-		height: var(--semantics-controls-lg-min-size);
-		min-width: var(--semantics-controls-lg-min-size);
-		min-height: var(--semantics-controls-lg-min-size);
-		padding: var(--primitives-space-8);
-	}
-
-	/* # Variants */
-
-	/* ## Neutral Tinted (Secondary, Default) */
-
-	/* ### Default neutral tinted icon button */
-
-	:host([variant='neutral-tinted']) .icon-button,
-	:host([variant='secondary']) .icon-button,
-	:host(:not([variant])) .icon-button {
-		background-color: var(--semantics-buttons-neutral-tinted-background-color);
-		color: var(--semantics-buttons-neutral-tinted-content-color);
-	}
-
-	/* ### Hovered neutral tinted icon button */
-
 	@media (hover: hover) {
-		:host([variant='neutral-tinted']) .icon-button:hover,
-		:host([variant='secondary']) .icon-button:hover,
-		:host(:not([variant])) .icon-button:hover {
-			background-color: var(--semantics-buttons-neutral-tinted-is-hovered-background-color);
-			color: var(--semantics-buttons-neutral-tinted-is-hovered-content-color);
+		.icon-button:hover {
+			background-color: var(--_is-hovered-background-color);
+			color: var(--_is-hovered-content-color);
 		}
 	}
 
-	/* ### Active neutral tinted icon button */
-
-	:host([variant='neutral-tinted']) .icon-button:active,
-	:host([variant='secondary']) .icon-button:active,
-	:host(:not([variant])) .icon-button:active {
-		background-color: var(--semantics-buttons-neutral-tinted-is-active-background-color);
-		color: var(--semantics-buttons-neutral-tinted-is-active-content-color);
-	}
-
-	/* ### Open neutral tinted icon button */
-
-	:host([expanded][variant='neutral-tinted']) .icon-button,
-	:host([expanded][variant='secondary']) .icon-button,
-	:host([expanded]:not([variant])) .icon-button {
-		background-color: var(--semantics-buttons-neutral-tinted-is-expanded-background-color);
-		color: var(--semantics-buttons-neutral-tinted-is-expanded-content-color);
-	}
-
-	/* ### Open hovered neutral tinted icon button */
-
-	@media (hover: hover) {
-		:host([expanded][variant='neutral-tinted']) .icon-button:hover,
-		:host([expanded][variant='secondary']) .icon-button:hover,
-		:host([expanded]:not([variant])) .icon-button:hover {
-			background-color: var(--semantics-buttons-neutral-tinted-is-expanded-is-hovered-background-color);
-			color: var(--semantics-buttons-neutral-tinted-is-expanded-is-hovered-content-color);
-		}
-	}
-
-	/* ### Open active neutral tinted icon button */
-
-	:host([expanded][variant='neutral-tinted']) .icon-button:active,
-	:host([expanded][variant='secondary']) .icon-button:active,
-	:host([expanded]:not([variant])) .icon-button:active {
-		background-color: var(--semantics-buttons-neutral-tinted-is-expanded-is-active-background-color);
-		color: var(--semantics-buttons-neutral-tinted-is-expanded-is-active-content-color);
-	}
-
-	/* ## Neutral Transparent */
-
-	/* ### Default neutral transparent icon button */
-
-	:host([variant='neutral-transparent']) .icon-button {
-		background-color: transparent;
-		color: var(--semantics-buttons-neutral-transparent-content-color);
-	}
-
-	/* ### Hovered neutral transparent icon button */
-
-	@media (hover: hover) {
-		:host([variant='neutral-transparent']) .icon-button:hover {
-			background-color: transparent;
-			color: var(--semantics-buttons-neutral-transparent-is-hovered-content-color);
-		}
-	}
-
-	/* ### Active neutral transparent icon button */
-
-	:host([variant='neutral-transparent']) .icon-button:active {
-		color: var(--semantics-buttons-neutral-transparent-is-active-content-color);
-	}
-
-	/* ## Accent Filled (Primary) */
-
-	/* ### Default accent filled icon button */
-
-	:host([variant='accent-filled']) .icon-button,
-	:host([variant='primary']) .icon-button {
-		background-color: var(--semantics-buttons-accent-filled-background-color);
-		color: var(--semantics-buttons-accent-filled-content-color);
-	}
-
-	/* ### Hovered accent filled icon button */
-
-	@media (hover: hover) {
-		:host([variant='accent-filled']) .icon-button:hover,
-		:host([variant='primary']) .icon-button:hover {
-			background-color: var(--semantics-buttons-accent-filled-is-hovered-background-color);
-			color: var(--semantics-buttons-accent-filled-is-hovered-content-color);
-		}
-	}
-
-	/* ### Active accent filled icon button */
-
-	:host([variant='accent-filled']) .icon-button:active,
-	:host([variant='primary']) .icon-button:active {
-		background-color: var(--semantics-buttons-accent-filled-is-active-background-color);
-		color: var(--semantics-buttons-accent-filled-is-active-content-color);
-	}
-
-	/* ### Open accent filled icon button */
-
-	:host([expanded][variant='accent-filled']) .icon-button,
-	:host([expanded][variant='primary']) .icon-button {
-		background-color: var(--semantics-buttons-accent-filled-is-expanded-background-color);
-		color: var(--semantics-buttons-accent-filled-is-expanded-content-color);
-	}
-
-	/* ### Open hovered accent filled icon button */
-
-	@media (hover: hover) {
-		:host([expanded][variant='accent-filled']) .icon-button:hover,
-		:host([expanded][variant='primary']) .icon-button:hover {
-			background-color: var(--semantics-buttons-accent-filled-is-expanded-is-hovered-background-color);
-			color: var(--semantics-buttons-accent-filled-is-expanded-is-hovered-content-color);
-		}
-	}
-
-	/* ### Open active accent filled icon button */
-
-	:host([expanded][variant='accent-filled']) .icon-button:active,
-	:host([expanded][variant='primary']) .icon-button:active {
-		background-color: var(--semantics-buttons-accent-filled-is-expanded-is-active-background-color);
-		color: var(--semantics-buttons-accent-filled-is-expanded-is-active-content-color);
-	}
-
-	/* ## Accent Transparent */
-
-	/* ### Default accent transparent icon button */
-
-	:host([variant='accent-transparent']) .icon-button {
-		background-color: transparent;
-		color: var(--semantics-buttons-accent-transparent-content-color);
-	}
-
-	/* ### Hovered accent transparent icon button */
-
-	@media (hover: hover) {
-		:host([variant='accent-transparent']) .icon-button:hover {
-			color: var(--semantics-buttons-accent-transparent-is-hovered-content-color);
-		}
-	}
-
-	/* ### Active accent transparent icon button */
-
-	:host([variant='accent-transparent']) .icon-button:active {
-		color: var(--semantics-buttons-accent-transparent-is-active-content-color);
-	}
-
-	/* ## Critical Tinted (Destructive) */
-
-	/* ### Default critical tinted icon button */
-
-	:host([variant='critical-tinted']) .icon-button,
-	:host([variant='destructive']) .icon-button {
-		background-color: var(--semantics-buttons-critical-tinted-background-color);
-		color: var(--semantics-buttons-critical-tinted-content-color);
-	}
-
-	/* ### Hovered critical tinted icon button */
-
-	@media (hover: hover) {
-		:host([variant='critical-tinted']) .icon-button:hover,
-		:host([variant='destructive']) .icon-button:hover {
-			background-color: var(--semantics-buttons-critical-tinted-is-hovered-background-color);
-			color: var(--semantics-buttons-critical-tinted-is-hovered-content-color);
-		}
-	}
-
-	/* ### Active critical tinted icon button */
-
-	:host([variant='critical-tinted']) .icon-button:active,
-	:host([variant='destructive']) .icon-button:active {
-		background-color: var(--semantics-buttons-critical-tinted-is-active-background-color);
-		color: var(--semantics-buttons-critical-tinted-is-active-content-color);
-	}
-
-	/* ## Critical Transparent */
-
-	/* ### Default critical transparent icon button */
-
-	:host([variant='critical-transparent']) .icon-button {
-		background-color: transparent;
-		color: var(--semantics-buttons-critical-transparent-content-color);
-	}
-
-	/* ### Hovered critical transparent icon button */
-
-	@media (hover: hover) {
-		:host([variant='critical-transparent']) .icon-button:hover {
-			color: var(--semantics-buttons-critical-transparent-is-hovered-content-color);
-		}
-	}
-
-	/* ### Active critical transparent icon button */
-
-	:host([variant='critical-transparent']) .icon-button:active {
-		color: var(--semantics-buttons-critical-transparent-is-active-content-color);
+	.icon-button:active {
+		background-color: var(--_is-active-background-color);
+		color: var(--_is-active-content-color);
 	}
 
 
@@ -349,55 +252,26 @@ export const iconButtonStyles = css`
 
 	.icon-button__icon {
 		display: flex;
+		width: var(--_icon-size);
+		height: var(--_icon-size);
 		flex-shrink: 0;
 		align-items: center;
 		justify-content: center;
 	}
 
-	:host([size='xs']) .icon-button__icon {
-		width: var(--semantics-buttons-xs-icon-only-icon-size);
-		height: var(--semantics-buttons-xs-icon-only-icon-size);
-	}
-
-	:host([size='sm']) .icon-button__icon {
-		width: var(--semantics-buttons-sm-icon-only-icon-size);
-		height: var(--semantics-buttons-sm-icon-only-icon-size);
-	}
-
-	:host([size='md']) .icon-button__icon,
-	:host(:not([size])) .icon-button__icon {
-		width: var(--semantics-buttons-md-icon-only-icon-size);
-		height: var(--semantics-buttons-md-icon-only-icon-size);
-	}
-
-	:host([size='lg']) .icon-button__icon {
-		width: var(--semantics-buttons-md-icon-only-icon-size);
-		height: var(--semantics-buttons-md-icon-only-icon-size);
-	}
-
 	.icon-button__disclosure-icon {
 		display: flex;
+		margin-right: var(--_disclosure-icon-margin-right);
 		width: var(--_disclosure-icon-size);
 		height: var(--_disclosure-icon-size);
 		flex-shrink: 0;
 	}
 
-	:host([size='sm']) .icon-button__disclosure-icon,
-	:host([size='md']) .icon-button__disclosure-icon,
-	:host(:not([size])) .icon-button__disclosure-icon,
-	:host([size='lg']) .icon-button__disclosure-icon {
-		margin-right: calc(var(--primitives-space-2) * -1);
-	}
-
 	.icon-button__text {
-		display: none;
+		display: var(--_text-display);
 		text-align: center;
-		white-space: nowrap;
 		color: inherit;
 		font: var(--primitives-font-body-xxs-bold-flat);
-	}
-
-	:host([size='lg']) .icon-button__text {
-		display: block;
+		white-space: nowrap;
 	}
 `;

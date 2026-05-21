@@ -47,6 +47,7 @@ export function comboBoxTemplate(component: NLDDComboBox): TemplateResult {
 				?disabled=${component.disabled}
 				name=${component.name || nothing}
 				autocomplete=${component.autocomplete || nothing}
+				spellcheck=${component.noSpellcheck ? 'false' : 'true'}
 				@input=${component._handleInput}
 				@keydown=${component._handleKeydown}
 				@blur=${component._handleBlur}

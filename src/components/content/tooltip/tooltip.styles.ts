@@ -6,14 +6,14 @@ export const tooltipStyles = css`
 	/* # Host */
 
 	:host {
+		--_hide-duration: var(--primitives-transition-duration-fast);
+		--_show-duration: var(--primitives-transition-duration-fast);
+		--_max-width: var(--primitives-area-280);
 		--_z-index: 10000;
 		--_show-delay: 700ms;
-		--_show-duration: var(--primitives-transition-duration-fast);
 		--_hide-delay: 50; /* unitless ms, read by JavaScript */
-		--_hide-duration: var(--primitives-transition-duration-fast);
 		--_offset: 4; /* px, unitless — read by JS */
 		--_shift-padding: 8; /* px, unitless — read by JS */
-		--_max-width: var(--primitives-area-280);
 
 		display: contents;
 	}
@@ -52,12 +52,20 @@ export const tooltipStyles = css`
 		}
 	}
 
+	@media (prefers-reduced-motion: reduce) {
+		.tooltip,
+		.tooltip.is-visible,
+		.tooltip.is-focus-visible {
+			transition: none;
+		}
+	}
+
 
 	/* ## Tooltip body */
 
 	.tooltip__body {
-		box-shadow: var(--components-tooltip-box-shadow);
 		border-radius: var(--primitives-corner-radius-xs);
+		box-shadow: var(--components-tooltip-box-shadow);
 		background-color: var(--components-tooltip-background-color);
 		width: max-content;
 		max-width: var(--_max-width);
@@ -68,20 +76,9 @@ export const tooltipStyles = css`
 		overflow-wrap: break-word;
 	}
 
-
-	/* # Toegankelijkheid */
-
 	@media (forced-colors: active) {
 		.tooltip__body {
 			border: 1px solid CanvasText;
-		}
-	}
-
-	@media (prefers-reduced-motion: reduce) {
-		.tooltip,
-		.tooltip.is-visible,
-		.tooltip.is-focus-visible {
-			transition: none;
 		}
 	}
 `;

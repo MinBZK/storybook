@@ -27,22 +27,22 @@ export const menuBarItemStyles = css`
 	/* # Block */
 
 	.menu-bar-item {
+		box-sizing: border-box;
 		display: flex;
 		position: relative;
-		box-sizing: border-box;
 		margin: 0;
 		border: none;
 		background: none;
-		height: var(--semantics-controls-md-min-size);
 		min-width: var(--semantics-controls-md-min-size);
+		height: var(--semantics-controls-md-min-size);
 		padding: 0 var(--components-menu-bar-item-inline-padding);
-		justify-content: center;
-		align-items: center;
 		gap: var(--primitives-space-4);
+		align-items: center;
+		justify-content: center;
 		text-align: center;
-		text-decoration: none;
-		font: var(--components-menu-bar-item-font);
 		color: var(--components-menu-bar-item-content-color);
+		font: var(--components-menu-bar-item-font);
+		text-decoration: none;
 		white-space: nowrap;
 		appearance: none;
 	}
@@ -53,9 +53,9 @@ export const menuBarItemStyles = css`
 		content: '';
 		position: absolute;
 		top: var(--primitives-space-6);
+		right: 0;
 		bottom: var(--primitives-space-6);
 		left: 0;
-		right: 0;
 		z-index: var(--_indicator-z-index);
 		border-radius: var(--semantics-controls-sm-corner-radius);
 		pointer-events: none;
@@ -82,13 +82,13 @@ export const menuBarItemStyles = css`
 	:host([current]) .menu-bar-item::after {
 		content: '';
 		position: absolute;
+		right: var(--primitives-space-8);
 		bottom: 0;
 		left: var(--primitives-space-8);
-		right: var(--primitives-space-8);
 		z-index: var(--_indicator-z-index);
 		background-color: var(--components-menu-bar-item-is-current-indicator-background-color);
-		pointer-events: none;
 		height: var(--components-menu-bar-item-is-current-indicator-height);
+		pointer-events: none;
 	}
 
 	/* ## Text */
@@ -168,8 +168,6 @@ export const menuBarItemStyles = css`
 		white-space: nowrap;
 		clip-path: inset(50%);
 	}
-
-	/* ## Text-only when compact */
 
 	:host([content-priority="text"][compact]) .menu-bar-item__icon {
 		display: none;

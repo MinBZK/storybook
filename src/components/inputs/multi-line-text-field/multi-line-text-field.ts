@@ -18,6 +18,7 @@
  * @attr {string} resize          - 'none' | 'vertical' (default) | 'auto'.
  *                                  'auto' grows with content (native field-sizing), no manual handle.
  * @attr {string} accessible-label - Accessible label forwarded to the inner textarea. Set automatically by nldd-form-field.
+ * @attr {boolean} no-spellcheck  - Disables browser spellchecking on the inner textarea
  * @attr {string} width           - Optional fixed width (any CSS length, e.g. "240px"). Default: stretches to fill container.
  *
  * @fires input  - When value changes
@@ -90,6 +91,9 @@ export class NLDDMultiLineTextField extends LitElement {
 
 	@property({ type: String, attribute: 'error-message-ids' })
 	errorMessageIds = '';
+
+	@property({ type: Boolean, reflect: true, attribute: 'no-spellcheck' })
+	noSpellcheck = false;
 
 	/** Optional fixed width (any CSS length). When unset, the field stretches to fill its container. */
 	@property({ type: String, reflect: true })

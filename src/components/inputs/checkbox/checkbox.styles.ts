@@ -20,7 +20,7 @@ export const checkboxStyles = css`
 	}
 
 
-	/* # Native input */
+	/* # Elements */
 
 	.checkbox__input {
 		position: absolute;
@@ -32,22 +32,16 @@ export const checkboxStyles = css`
 		height: 100%;
 	}
 
-
-	/* # Visual box */
-
 	.checkbox__box {
-		position: relative;
 		box-sizing: border-box;
-		border-radius: var(--semantics-controls-xs-corner-radius);
+		position: relative;
 		border: var(--components-checkbox-border-thickness) solid var(--components-checkbox-border-color);
+		border-radius: var(--semantics-controls-xs-corner-radius);
 		background-color: var(--components-checkbox-background-color);
 		width: var(--semantics-controls-xs-min-size);
 		height: var(--semantics-controls-xs-min-size);
 		color: transparent;
 	}
-
-
-	/* # Selected */
 
 	.checkbox__input:checked ~ .checkbox__box,
 	.checkbox__input:indeterminate ~ .checkbox__box {
@@ -55,9 +49,6 @@ export const checkboxStyles = css`
 		background-color: var(--components-checkbox-is-selected-background-color);
 		color: var(--components-checkbox-is-selected-icon-color);
 	}
-
-
-	/* # Hover */
 
 	@media (hover: hover) {
 		.checkbox__input:hover:not(:disabled) ~ .checkbox__box {
@@ -72,9 +63,6 @@ export const checkboxStyles = css`
 		}
 	}
 
-
-	/* # Active */
-
 	.checkbox__input:active:not(:disabled) ~ .checkbox__box {
 		border-color: var(--components-checkbox-is-active-border-color);
 	}
@@ -86,31 +74,22 @@ export const checkboxStyles = css`
 		color: var(--components-checkbox-is-selected-is-active-icon-color);
 	}
 
-
-	/* # Focus */
-
 	.checkbox__input:focus-visible ~ .checkbox__box {
 		outline: var(--semantics-focus-ring-outline);
 		outline-offset: var(--semantics-focus-ring-outline-offset);
 		box-shadow: var(--semantics-focus-ring-box-shadow);
 	}
 
-
-	/* # Disabled */
-
 	.checkbox__input:disabled ~ .checkbox__box {
 		opacity: var(--primitives-opacity-disabled);
 	}
 
-
-	/* # Icons */
-
 	.checkbox__check-icon,
 	.checkbox__indeterminate-icon {
+		display: none;
 		position: absolute;
 		top: 50%;
 		left: 50%;
-		display: none;
 		width: var(--primitives-space-24);
 		height: var(--primitives-space-24);
 		transform: translate(-50%, -50%);

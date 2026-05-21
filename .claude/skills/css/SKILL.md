@@ -1,10 +1,14 @@
 ---
-name: responsive-css
-description: Conventie voor responsive CSS in design-system componenten — expliciet per breakpoint, geen mobile-first overrides
+name: css
+description: CSS-conventies voor design-system componenten — MECE breakpoints (expliciet per breakpoint, geen mobile-first overrides), at-rule nesting, lokale variabelen, comments
 user-invocable: false
 ---
 
-# Responsive CSS conventie
+# CSS conventie
+
+CSS-schrijfconventies voor design-system componenten: responsive (MECE breakpoints), at-rule nesting, lokale variabelen, comments.
+
+## Responsive: expliciet per breakpoint
 
 Schrijf responsive component-CSS **expliciet per breakpoint**. Geen mobile-first base-waarde die in `@media` of `@container` queries wordt overschreven.
 
@@ -17,6 +21,13 @@ Trade-off: méér CSS-regels per property dat verschilt per breakpoint. Voor des
 ## Regel
 
 Een property die varieert per breakpoint mag **niet** een base-waarde buiten queries hebben. Elke variant zit in z'n eigen `@media`/`@container` block.
+
+**Keerzijde van dezelfde regel — de breakpoint-bereiken zijn MECE** (Mutually Exclusive, Collectively Exhaustive):
+
+- **Collectively Exhaustive**: zodra een property in één breakpoint wordt gezet, moet 'ie in **álle** breakpoint-bereiken gezet worden (sm én md én lg). Er mag geen viewport zijn waar de property ongezet blijft — omdat er geen fallback buiten de queries staat, resolveert 'ie anders leeg op een niet-gedekte viewport.
+- **Mutually Exclusive**: de bereiken overlappen niet, zodat op elke viewport precies één query matcht en er nooit een override in de browser plaatsvindt.
+
+Samen: elke viewport valt in precies één breakpoint, geen gat en geen overlap.
 
 Een property die **niet** varieert per breakpoint blijft buiten queries — dat is de natuurlijke base.
 
@@ -282,6 +293,7 @@ doet (bv. "padding per breakpoint" boven een blok met padding-rules).
 ## Checklist bij review
 
 - [ ] Geen base-waarde voor een property die ook in een `@media`/`@container` voorkomt
+- [ ] Breakpoint-bereiken zijn MECE: elke viewport in precies één query (collectively exhaustive — geen viewport zonder waarde; mutually exclusive — geen overlap/override)
 - [ ] Breakpoints gebruiken de tokens uit `breakpoints.ts`
 - [ ] Bereiken sluiten op elkaar aan (640/641, 1007/1008) — geen gat of overlap
 - [ ] `@container` waar mogelijk, `@media` als fallback

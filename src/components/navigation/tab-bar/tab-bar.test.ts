@@ -121,19 +121,9 @@ describe('nldd-tab-bar-item – content variant detection', () => {
 		expect(el.getAttribute('variant')).toBe('icon');
 	});
 
-	it('sets variant to compact when compact attribute is set', async () => {
+	it('keeps an explicit variant="compact" on the item', async () => {
 		el = await fixture<NLDDTabBarItem>(`
-			<nldd-tab-bar-item compact text="Tab">
-				<svg slot="icon"></svg>
-			</nldd-tab-bar-item>
-		`);
-		await waitForUpdate(el);
-		expect(el.getAttribute('variant')).toBe('compact');
-	});
-
-	it('compact overrides explicit variant', async () => {
-		el = await fixture<NLDDTabBarItem>(`
-			<nldd-tab-bar-item compact variant="text" text="Tab">
+			<nldd-tab-bar-item variant="compact" text="Tab">
 				<svg slot="icon"></svg>
 			</nldd-tab-bar-item>
 		`);
@@ -433,100 +423,37 @@ describe('nldd-tab-bar – variant propagation', () => {
 		expect(items[1].getAttribute('variant')).toBe('icon');
 	});
 
-	it('compact still overrides parent variant', async () => {
+	it('parent variant="compact" propagates to items', async () => {
 		el = await fixture<NLDDTabBar>(`
-			<nldd-tab-bar compact variant="text">
+			<nldd-tab-bar variant="compact">
 				<nldd-tab-bar-item><svg slot="icon"></svg>Home</nldd-tab-bar-item>
 			</nldd-tab-bar>
 		`);
 		await waitForUpdate(el);
 		expect(getItems(el)[0].getAttribute('variant')).toBe('compact');
 	});
-});
 
-
-/* ============================================================
-   nldd-tab-bar – compact propagation
-   ============================================================ */
-
-describe('nldd-tab-bar – compact propagation', () => {
-	let el: NLDDTabBar;
-
-	afterEach(() => {
-		if (el) cleanup(el);
-	});
-
-	it('propagates compact to all items', async () => {
+	it('item variant overrides parent variant="compact"', async () => {
 		el = await fixture<NLDDTabBar>(`
-			<nldd-tab-bar compact>
-				<nldd-tab-bar-item><svg slot="icon"></svg>Home</nldd-tab-bar-item>
-				<nldd-tab-bar-item><svg slot="icon"></svg>Zoeken</nldd-tab-bar-item>
-			</nldd-tab-bar>
-		`);
-		await waitForUpdate(el);
-		getItems(el).forEach(item => {
-			expect(item.hasAttribute('compact')).toBe(true);
-		});
-	});
-
-	it('compact overrides explicit variant on items', async () => {
-		el = await fixture<NLDDTabBar>(`
-			<nldd-tab-bar compact>
+			<nldd-tab-bar variant="compact">
 				<nldd-tab-bar-item variant="text"><svg slot="icon"></svg>Home</nldd-tab-bar-item>
 			</nldd-tab-bar>
 		`);
 		await waitForUpdate(el);
-		expect(getItems(el)[0].getAttribute('variant')).toBe('compact');
+		expect(getItems(el)[0].getAttribute('variant')).toBe('text');
 	});
 
-	it('removes compact from items when parent compact is removed', async () => {
+	it('removes variant="compact" from items when parent variant is cleared', async () => {
 		el = await fixture<NLDDTabBar>(`
-			<nldd-tab-bar compact>
-				<nldd-tab-bar-item><svg slot="icon"></svg>Home</nldd-tab-bar-item>
+			<nldd-tab-bar variant="compact">
+				<nldd-tab-bar-item text="Home" icon="home"></nldd-tab-bar-item>
 			</nldd-tab-bar>
 		`);
 		await waitForUpdate(el);
-		el.compact = false;
+		el.variant = '';
 		await waitForUpdate(el);
-		expect(getItems(el)[0].hasAttribute('compact')).toBe(false);
-	});
-});
-
-
-/* ============================================================
-   nldd-tab-bar – responsive propagation
-   ============================================================ */
-
-describe('nldd-tab-bar – responsive propagation', () => {
-	let el: NLDDTabBar;
-
-	afterEach(() => {
-		if (el) cleanup(el);
-	});
-
-	it('propagates responsive attribute to all items', async () => {
-		el = await fixture<NLDDTabBar>(`
-			<nldd-tab-bar responsive>
-				<nldd-tab-bar-item><svg slot="icon"></svg>Home</nldd-tab-bar-item>
-				<nldd-tab-bar-item><svg slot="icon"></svg>Zoeken</nldd-tab-bar-item>
-			</nldd-tab-bar>
-		`);
-		await waitForUpdate(el);
-		getItems(el).forEach(item => {
-			expect(item.hasAttribute('responsive')).toBe(true);
-		});
-	});
-
-	it('removes responsive from items when parent responsive is removed', async () => {
-		el = await fixture<NLDDTabBar>(`
-			<nldd-tab-bar responsive>
-				<nldd-tab-bar-item text="Home"></nldd-tab-bar-item>
-			</nldd-tab-bar>
-		`);
-		await waitForUpdate(el);
-		el.responsive = false;
-		await waitForUpdate(el);
-		expect(getItems(el)[0].hasAttribute('responsive')).toBe(false);
+		// Falls back to auto-detect — text + icon → icon-and-text
+		expect(getItems(el)[0].getAttribute('variant')).toBe('icon-and-text');
 	});
 });
 

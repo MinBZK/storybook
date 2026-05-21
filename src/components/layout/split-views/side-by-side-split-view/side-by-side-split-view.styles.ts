@@ -6,13 +6,18 @@ export const sideBySideSplitViewStyles = css`
 	/* # Host */
 
 	:host {
+		--_background-color: var(--context-parent-background-color, var(--semantics-surfaces-background-color));
+		/* Pane min-width — read by JS via getComputedStyle in firstUpdated */
+		--_pane-min-width: var(--primitives-area-320);
+
 		display: flex;
 		background-color: var(--_background-color);
 		width: 100%;
 		height: 100%;
+	}
 
-		--_pane-min-width: var(--primitives-area-320); /* Pane min-width — read by JS via getComputedStyle in firstUpdated */
-		--_background-color: var(--context-parent-background-color, var(--semantics-surfaces-background-color));
+	:host([hidden]) {
+		display: none;
 	}
 
 	:host([background="default"]) {
@@ -25,32 +30,32 @@ export const sideBySideSplitViewStyles = css`
 		--_background-color: var(--context-parent-background-color);
 	}
 
-	:host([hidden]) {
-		display: none;
-	}
-
 
 	/* # Block */
 
 	.side-by-side-split-view {
 		display: flex;
-		min-height: 0;
 		min-width: 0;
+		min-height: 0;
 		overflow: hidden;
 		flex-direction: row;
-		flex: 1;
+		flex-grow: 1;
+		flex-shrink: 1;
+		flex-basis: 0;
 	}
 
 
-	/* # Pane */
+	/* # Elements */
 
 	.side-by-side-split-view__pane {
 		display: flex;
-		min-height: 0;
 		min-width: var(--_pane-min-width);
+		min-height: 0;
 		overflow: hidden;
 		flex-direction: column;
-		flex: 1;
+		flex-grow: 1;
+		flex-shrink: 1;
+		flex-basis: 0;
 	}
 
 	.side-by-side-split-view__pane[hidden] {
@@ -59,6 +64,8 @@ export const sideBySideSplitViewStyles = css`
 
 	::slotted(*) {
 		min-height: 0;
-		flex: 1;
+		flex-grow: 1;
+		flex-shrink: 1;
+		flex-basis: 0;
 	}
 `;

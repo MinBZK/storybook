@@ -9,11 +9,11 @@ const lgMin = unsafeCSS(breakpoints.lgMin);
 export const twoThirdsOneThirdSectionStyles = css`
 
 
-	/* # Host
-	   Geen eigen container-type: page-sections luisteren naar de outer
-	   layout-container (gezet door nldd-page / nldd-card). Voor contexten
-	   zonder layout-container dient @media als fallback. */
+	/* # Host */
 
+	/* No own container-type: page-sections read the outer layout-container
+	   (set by nldd-page / nldd-card). @media is the fallback for contexts
+	   without a layout-container. */
 	:host {
 		--_max-width: var(--semantics-page-sections-body-max-width);
 
@@ -35,8 +35,8 @@ export const twoThirdsOneThirdSectionStyles = css`
 	/* # Block */
 
 	.two-thirds-one-third-section {
-		display: flex;
 		box-sizing: border-box;
+		display: flex;
 		width: 100%;
 		flex-direction: column;
 		align-items: center;
@@ -73,7 +73,7 @@ export const twoThirdsOneThirdSectionStyles = css`
 	}
 
 
-	/* # Body */
+	/* # Elements */
 
 	.two-thirds-one-third-section__body {
 		display: flex;
@@ -106,9 +106,6 @@ export const twoThirdsOneThirdSectionStyles = css`
 		}
 	}
 
-
-	/* # Columns */
-
 	.two-thirds-one-third-section__columns {
 		display: flex;
 		flex-wrap: wrap;
@@ -140,11 +137,15 @@ export const twoThirdsOneThirdSectionStyles = css`
 
 	.two-thirds-one-third-section__left-column {
 		min-width: var(--primitives-area-280);
-		flex: 2;
+		flex-grow: 2;
+		flex-shrink: 1;
+		flex-basis: 0;
 	}
 
 	.two-thirds-one-third-section__right-column {
 		min-width: var(--primitives-area-280);
-		flex: 1;
+		flex-grow: 1;
+		flex-shrink: 1;
+		flex-basis: 0;
 	}
 `;

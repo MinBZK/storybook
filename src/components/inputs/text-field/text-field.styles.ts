@@ -6,8 +6,13 @@ export const textFieldStyles = css`
 	/* # Host */
 
 	:host {
+		--_width: 100%;
+		--_corner-radius: var(--semantics-controls-md-corner-radius);
 		--_background-color: var(--semantics-input-fields-background-color);
-		--_width: auto;
+		--_min-size: var(--semantics-controls-md-min-size);
+		--_inline-padding: var(--semantics-controls-md-inline-padding);
+		--_text-font: var(--semantics-input-fields-md-text-font);
+		--_validation-icon-size: var(--semantics-input-fields-md-validation-icon-size);
 
 		display: block;
 		width: var(--_width);
@@ -19,30 +24,28 @@ export const textFieldStyles = css`
 		display: none;
 	}
 
+	:host([size="sm"]) {
+		--_corner-radius: var(--semantics-controls-sm-corner-radius);
+		--_min-size: var(--semantics-controls-sm-min-size);
+		--_inline-padding: var(--semantics-controls-sm-inline-padding);
+		--_text-font: var(--semantics-input-fields-sm-text-font);
+		--_validation-icon-size: var(--semantics-input-fields-sm-validation-icon-size);
+	}
+
 
 	/* # Block */
 
 	.text-field {
-		display: flex;
 		box-sizing: border-box;
+		display: flex;
 		border: var(--semantics-input-fields-border);
+		border-radius: var(--_corner-radius);
 		background-color: var(--_background-color);
+		min-height: var(--_min-size);
 		overflow: hidden;
+		padding-left: calc(var(--_inline-padding) - var(--semantics-input-fields-border-thickness));
 		flex-direction: row;
 		align-items: center;
-	}
-
-	:host([size='sm']) .text-field {
-		border-radius: var(--semantics-controls-sm-corner-radius);
-		min-height: var(--semantics-controls-sm-min-size);
-		padding-left: calc(var(--semantics-controls-sm-inline-padding) - var(--semantics-input-fields-border-thickness));
-	}
-
-	:host([size='md']) .text-field,
-	:host(:not([size])) .text-field {
-		border-radius: var(--semantics-controls-md-corner-radius);
-		min-height: var(--semantics-controls-md-min-size);
-		padding-left: calc(var(--semantics-controls-md-inline-padding) - var(--semantics-input-fields-border-thickness));
 	}
 
 	:host([valid]) .text-field {
@@ -54,8 +57,8 @@ export const textFieldStyles = css`
 	}
 
 	:host([readonly]) .text-field {
-		border-color: var(--semantics-input-fields-is-read-only-border-color);
 		--_background-color: var(--semantics-input-fields-is-read-only-background-color);
+		border-color: var(--semantics-input-fields-is-read-only-border-color);
 	}
 
 	:host([disabled]) .text-field {
@@ -74,31 +77,22 @@ export const textFieldStyles = css`
 	}
 
 
-	/* # Input */
+	/* # Elements */
 
 	.text-field__input {
 		box-sizing: border-box;
 		margin: 0;
-		border: none;
 		outline: none;
+		border: none;
 		background: transparent;
 		min-width: 0;
+		min-height: calc(var(--_min-size) - var(--semantics-input-fields-border-thickness) * 2);
 		overflow: hidden;
 		padding: 0;
 		flex-grow: 1;
 		color: var(--semantics-content-color);
+		font: var(--_text-font);
 		appearance: none;
-	}
-
-	:host([size='sm']) .text-field__input {
-		min-height: calc(var(--semantics-controls-sm-min-size) - var(--semantics-input-fields-border-thickness) * 2);
-		font: var(--semantics-input-fields-sm-text-font);
-	}
-
-	:host([size='md']) .text-field__input,
-	:host(:not([size])) .text-field__input {
-		min-height: calc(var(--semantics-controls-md-min-size) - var(--semantics-input-fields-border-thickness) * 2);
-		font: var(--semantics-input-fields-md-text-font);
 	}
 
 	:host([disabled]) .text-field__input {
@@ -114,9 +108,6 @@ export const textFieldStyles = css`
 		box-shadow: 0 0 0 999px var(--_background-color) inset;
 	}
 
-
-	/* # Input fade */
-
 	.text-field__input-fade {
 		position: relative;
 		width: 0;
@@ -128,40 +119,21 @@ export const textFieldStyles = css`
 		content: '';
 		position: absolute;
 		top: 0;
-		bottom: 0;
 		right: 0;
+		bottom: 0;
+		border-radius: var(--_corner-radius);
 		background: linear-gradient(90deg, color-mix(in oklch, var(--_background-color) 0%, transparent) 0%, var(--_background-color) 100%);
 		pointer-events: none;
 		width: var(--primitives-space-8);
 	}
 
-	:host([size='sm']) .text-field__input-fade::after {
-		border-radius: var(--semantics-controls-sm-corner-radius);
-	}
-
-	:host([size='md']) .text-field__input-fade::after,
-	:host(:not([size])) .text-field__input-fade::after {
-		border-radius: var(--semantics-controls-md-corner-radius);
-	}
-
-
-	/* # Validation icon area */
-
 	.text-field__validation-icon-area {
 		display: flex;
+		width: calc(var(--_min-size) - var(--semantics-input-fields-border-thickness) * 2);
 		height: 100%;
+		flex-shrink: 0;
 		align-items: center;
 		justify-content: center;
-		flex-shrink: 0;
-	}
-
-	:host([size='sm']) .text-field__validation-icon-area {
-		width: calc(var(--semantics-controls-sm-min-size) - var(--semantics-input-fields-border-thickness) * 2);
-	}
-
-	:host([size='md']) .text-field__validation-icon-area,
-	:host(:not([size])) .text-field__validation-icon-area {
-		width: calc(var(--semantics-controls-md-min-size) - var(--semantics-input-fields-border-thickness) * 2);
 	}
 
 	:host([valid]) .text-field__validation-icon-area {
@@ -172,17 +144,8 @@ export const textFieldStyles = css`
 		color: var(--semantics-input-fields-is-invalid-icon-color);
 	}
 
-
-	/* # Validation icon */
-
-	:host([size='sm']) .text-field__validation-icon {
-		width: var(--semantics-input-fields-sm-validation-icon-size);
-		height: var(--semantics-input-fields-sm-validation-icon-size);
-	}
-
-	:host([size='md']) .text-field__validation-icon,
-	:host(:not([size])) .text-field__validation-icon {
-		width: var(--semantics-input-fields-md-validation-icon-size);
-		height: var(--semantics-input-fields-md-validation-icon-size);
+	.text-field__validation-icon {
+		width: var(--_validation-icon-size);
+		height: var(--_validation-icon-size);
 	}
 `;

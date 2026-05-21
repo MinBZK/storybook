@@ -2,24 +2,28 @@ import { html, nothing } from 'lit';
 import type { NLDDTag } from './tag.js';
 
 export function template(component: NLDDTag) {
-	// Use _hasIcon (covers icon prop én slot="icon") zodat slotted-icon-only
-	// tags ook role="img" + aria-label krijgen — zonder dit zou een tag met
-	// slot="icon" en accessible-label maar geen tekst geen accessible name
-	// hebben (SR kondigt niks aan).
-	const iconOnly = component._hasIcon && !component._hasText && !!component.accessibleLabel;
+	const variant = component._effectiveVariant;
+	// variant=icon always renders the icon area so the icon-placeholder
+	// fallback inside the slot can show when no icon is provided.
+	const showIcon = variant === 'icon' || (variant === 'icon-and-text' && component._hasIcon);
+	const showText = (variant === 'text' || variant === 'icon-and-text') && component._hasText;
+	// icon-only needs an explicit accessible name — the visible text is gone,
+	// so the screen reader has nothing to announce without role="img" +
+	// aria-label. Hidden slot/text isn't projected into the a11y tree.
+	const iconOnly = variant === 'icon' && component._hasIcon && !!component.accessibleLabel;
 	return html`
 		<span class="tag"
 			role=${iconOnly ? 'img' : nothing}
 			aria-label=${iconOnly ? component.accessibleLabel : nothing}
 		>
-			${component._hasIcon ? html`
+			${showIcon ? html`
 				<span class="tag__icon">
 					${component.icon
 						? html`<nldd-icon name=${component.icon}></nldd-icon>`
-						: html`<slot name="icon"></slot>`}
+						: html`<slot name="icon">${variant === 'icon' ? html`<nldd-icon name="icon-placeholder"></nldd-icon>` : nothing}</slot>`}
 				</span>
 			` : nothing}
-			${component._hasText ? html`
+			${showText ? html`
 				<span class="tag__text">
 					${component.text ? component.text : html`<slot></slot>`}
 				</span>

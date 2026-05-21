@@ -1214,13 +1214,12 @@ describe('nldd-menu drill-in chain', () => {
 		cleanup(root);
 	});
 
-	it('anchor click after a pointer-collapse never reopens, even past the time guard', async () => {
+	it('anchor click after a pointer-collapse never reopens', async () => {
 		// Closing from deep in a drill-in submenu: the submenu's
 		// pointerdown/tap collapses the chain, then the trailing click
-		// reaches the root. On touch the pointerup→click gap can exceed
-		// POPOVER_REOPEN_GUARD_MS, so the old time-based guard let the
-		// click's showPopover() reopen the root (intermittent bounce).
-		// The gesture marker must suppress that regardless of timing.
+		// reaches the root. The gesture marker (_collapsedByPointerGesture)
+		// suppresses the click-driven reopen — timing-independent, so it
+		// works on touch where pointerup→click can lag arbitrarily.
 		const root = await fixture<HTMLElement>(`
 			<div>
 				<button id="anch3">Open menu</button>
@@ -1252,9 +1251,6 @@ describe('nldd-menu drill-in chain', () => {
 		}));
 		await waitForUpdate(root);
 		expect(l2Menu.matches(':popover-open')).toBe(false);
-
-		// Simulate a long pointerup→click gap so the time guard lapses.
-		(menu as unknown as { _closedAt: number })._closedAt = Date.now() - 5000;
 
 		anch.click();
 		await waitForUpdate(root);
@@ -1293,8 +1289,7 @@ describe('nldd-menu drill-in chain', () => {
 		await waitForUpdate(root);
 		expect(menu.matches(':popover-open')).toBe(false);
 
-		// Past the reopen guard, a fresh anchor click opens it again.
-		(menu as unknown as { _closedAt: number })._closedAt = Date.now() - 5000;
+		// A fresh anchor click opens it again.
 		anch.click();
 		await waitForUpdate(root);
 		expect(menu.matches(':popover-open')).toBe(true);
@@ -1948,5 +1943,103 @@ describe('nldd-menu touch-scroll press suppression', () => {
 		expect(menu.hasAttribute('scroll-active')).toBe(false);
 
 		cleanup(menu);
+	});
+
+	// — Drag selection (press one item, release on another) ————————————————
+
+	describe('drag selection', () => {
+		// Open a standalone menu and return its two items with their on-screen
+		// centre coordinates (needs real layout, which the browser test runner
+		// provides — elementFromPoint resolves the release target).
+		async function openTwoItemMenu() {
+			const menu = await fixture<HTMLElement>(`
+				<nldd-menu>
+					<nldd-menu-item text="Alpha"></nldd-menu-item>
+					<nldd-menu-item text="Beta"></nldd-menu-item>
+				</nldd-menu>
+			`);
+			await waitForUpdate(menu);
+			(menu as HTMLElement & { showPopover: () => void }).showPopover();
+			await waitForUpdate(menu);
+			const [itemA, itemB] = Array.from(menu.querySelectorAll('nldd-menu-item')) as HTMLElement[];
+			const centre = (el: HTMLElement) => {
+				const r = el.getBoundingClientRect();
+				return { x: r.left + r.width / 2, y: r.top + r.height / 2 };
+			};
+			return { menu, itemA, itemB, centre };
+		}
+
+		function press(item: HTMLElement, button = 0) {
+			item.dispatchEvent(new PointerEvent('pointerdown', { button, bubbles: true, composed: true }));
+		}
+		function release(x: number, y: number) {
+			document.dispatchEvent(new PointerEvent('pointerup', { button: 0, bubbles: true, composed: true, clientX: x, clientY: y }));
+		}
+
+		it('selects the item under the release, not the one pressed', async () => {
+			const { menu, itemA, itemB, centre } = await openTwoItemMenu();
+			let aFired = false;
+			let bFired = false;
+			itemA.addEventListener('select', () => { aFired = true; });
+			itemB.addEventListener('select', () => { bFired = true; });
+
+			press(itemA);
+			const b = centre(itemB);
+			release(b.x, b.y);
+
+			expect(bFired).toBe(true);
+			expect(aFired).toBe(false);
+			cleanup(menu);
+		});
+
+		it('does not fire when press and release land on the same item', async () => {
+			const { menu, itemA, centre } = await openTwoItemMenu();
+			let aFired = false;
+			itemA.addEventListener('select', () => { aFired = true; });
+
+			press(itemA);
+			const a = centre(itemA);
+			release(a.x, a.y);
+
+			// Same-item release is the no-drag path; the button's own click
+			// handler owns it, drag-release stays out of the way.
+			expect(aFired).toBe(false);
+			cleanup(menu);
+		});
+
+		it('does not select a disabled item under the release', async () => {
+			const menu = await fixture<HTMLElement>(`
+				<nldd-menu>
+					<nldd-menu-item text="Alpha"></nldd-menu-item>
+					<nldd-menu-item text="Beta" disabled></nldd-menu-item>
+				</nldd-menu>
+			`);
+			await waitForUpdate(menu);
+			(menu as HTMLElement & { showPopover: () => void }).showPopover();
+			await waitForUpdate(menu);
+			const [itemA, itemB] = Array.from(menu.querySelectorAll('nldd-menu-item')) as HTMLElement[];
+			let bFired = false;
+			itemB.addEventListener('select', () => { bFired = true; });
+
+			itemA.dispatchEvent(new PointerEvent('pointerdown', { button: 0, bubbles: true, composed: true }));
+			const r = itemB.getBoundingClientRect();
+			document.dispatchEvent(new PointerEvent('pointerup', { button: 0, bubbles: true, composed: true, clientX: r.left + r.width / 2, clientY: r.top + r.height / 2 }));
+
+			expect(bFired).toBe(false);
+			cleanup(menu);
+		});
+
+		it('ignores a non-left-button press', async () => {
+			const { menu, itemA, itemB, centre } = await openTwoItemMenu();
+			let bFired = false;
+			itemB.addEventListener('select', () => { bFired = true; });
+
+			press(itemA, 2); // right button — no drag tracking starts
+			const b = centre(itemB);
+			release(b.x, b.y);
+
+			expect(bFired).toBe(false);
+			cleanup(menu);
+		});
 	});
 });

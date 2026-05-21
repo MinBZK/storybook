@@ -26,7 +26,7 @@ export function segmentedControlItemTemplate(component: NLDDSegmentedControlItem
 			>
 				${component.icon
 					? html`<nldd-icon name=${component.icon}></nldd-icon>`
-					: html`<slot name="icon"></slot>`}
+					: html`<slot name="icon">${isIcon ? html`<nldd-icon name="icon-placeholder"></nldd-icon>` : nothing}</slot>`}
 			</span>
 			<span class="segmented-control__item-text"
 				aria-hidden=${component.variant === 'text' ? nothing : 'true'}

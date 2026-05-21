@@ -6,9 +6,32 @@ export const splitButtonStyles = css`
 	/* # Host */
 
 	:host {
+		--_corner-radius: var(--semantics-controls-md-corner-radius);
+		--_background-color: var(--semantics-buttons-neutral-tinted-background-color);
+		--_divider-color: var(--semantics-buttons-neutral-tinted-divider-color);
+		--_divider-length: var(--semantics-buttons-md-divider-length);
+
 		display: inline-flex;
 		isolation: isolate;
 		-webkit-tap-highlight-color: transparent;
+	}
+
+	:host([size="sm"]) {
+		--_corner-radius: var(--semantics-controls-sm-corner-radius);
+		--_divider-length: var(--semantics-buttons-sm-divider-length);
+	}
+
+	:host([size="xs"]) {
+		--_corner-radius: var(--semantics-controls-xs-corner-radius);
+		--_divider-length: var(--semantics-buttons-xs-divider-length);
+	}
+
+	/* ## Accent Filled (Primary) */
+
+	:host([variant="accent-filled"]),
+	:host([variant="primary"]) {
+		--_background-color: var(--semantics-buttons-accent-filled-background-color);
+		--_divider-color: var(--semantics-buttons-accent-filled-divider-color);
 	}
 
 	:host([hidden]) {
@@ -30,83 +53,25 @@ export const splitButtonStyles = css`
 
 	.split-button {
 		display: inline-flex;
+		border-radius: var(--_corner-radius);
+		background-color: var(--_background-color);
 		flex-direction: row;
 		align-items: center;
 	}
 
 
-	/* # Focus */
+	/* # Elements */
+
+	.split-button__divider {
+		background-color: var(--_divider-color);
+		width: 1px;
+		height: var(--_divider-length);
+		flex-shrink: 0;
+	}
 
 	nldd-button:focus-within,
 	nldd-icon-button:focus-within {
 		position: relative;
 		z-index: 1;
-	}
-
-
-	/* # Sizes */
-
-	/* ## Size: XS */
-
-	:host([size='xs']) .split-button {
-		border-radius: var(--semantics-controls-xs-corner-radius);
-	}
-
-	:host([size='xs']) .split-button__divider {
-		height: var(--semantics-buttons-xs-divider-length);
-	}
-
-	/* ## Size: SM */
-
-	:host([size='sm']) .split-button {
-		border-radius: var(--semantics-controls-sm-corner-radius);
-	}
-
-	:host([size='sm']) .split-button__divider {
-		height: var(--semantics-buttons-sm-divider-length);
-	}
-
-	/* ## Size: MD */
-
-	:host([size='md']) .split-button,
-	:host(:not([size])) .split-button {
-		border-radius: var(--semantics-controls-md-corner-radius);
-	}
-
-	:host([size='md']) .split-button__divider,
-	:host(:not([size])) .split-button__divider {
-		height: var(--semantics-buttons-md-divider-length);
-	}
-
-
-	/* # Variants */
-
-	/* ## Variant: Neutral Tintend (Default) / Secondary */
-
-	:host([variant="neutral-tinted"]) .split-button,
-	:host([variant="secondary"]) .split-button,
-	:host(:not([variant])) .split-button {
-		background-color: var(--semantics-buttons-neutral-tinted-background-color);
-	}
-
-	/* ## Variant: Accent Filled / Primary */
-
-	:host([variant="accent-filled"]) .split-button,
-	:host([variant="primary"]) .split-button {
-		background-color: var(--semantics-buttons-accent-filled-background-color);
-	}
-
-
-	/* # Divider */
-
-	.split-button__divider {
-		background-color: var(--semantics-buttons-neutral-tinted-divider-color);
-		width: 1px;
-		flex-shrink: 0;
-	}
-
-	:host([variant="accent-filled"]) .split-button__divider,
-	:host([variant="primary"]) .split-button__divider {
-		background-color: var(--semantics-buttons-accent-filled-divider-color);
 	}
 `;

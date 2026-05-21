@@ -20,7 +20,7 @@ export const radioButtonStyles = css`
 	}
 
 
-	/* # Native input */
+	/* # Elements */
 
 	.radio-button__input {
 		position: absolute;
@@ -32,36 +32,27 @@ export const radioButtonStyles = css`
 		height: 100%;
 	}
 
-
-	/* # Outer shape */
-
 	.radio-button__outer-shape {
-		position: relative;
 		box-sizing: border-box;
-		border-radius: 50%;
+		position: relative;
 		border: var(--components-radio-button-border-thickness) solid var(--components-radio-button-border-color);
+		border-radius: 50%;
 		background-color: var(--components-radio-button-background-color);
 		width: var(--semantics-controls-xs-min-size);
 		height: var(--semantics-controls-xs-min-size);
 	}
 
-
-	/* # Inner shape */
-
 	.radio-button__inner-shape {
+		box-sizing: border-box;
 		position: absolute;
 		top: 50%;
 		left: 50%;
-		box-sizing: border-box;
-		border-radius: 50%;
 		border: var(--components-radio-button-is-selected-inner-shape-border-thickness) solid var(--components-radio-button-is-selected-inner-shape-border-color);
+		border-radius: 50%;
 		width: var(--primitives-space-20);
 		height: var(--primitives-space-20);
 		transform: translate(-50%, -50%) scale(0);
 	}
-
-
-	/* # Selected */
 
 	.radio-button__input:checked ~ .radio-button__outer-shape {
 		border-color: var(--components-radio-button-is-selected-border-color);
@@ -71,9 +62,6 @@ export const radioButtonStyles = css`
 	.radio-button__input:checked ~ .radio-button__outer-shape .radio-button__inner-shape {
 		transform: translate(-50%, -50%) scale(1);
 	}
-
-
-	/* # Hover */
 
 	@media (hover: hover) {
 		.radio-button__input:hover:not(:disabled) ~ .radio-button__outer-shape {
@@ -90,9 +78,6 @@ export const radioButtonStyles = css`
 		}
 	}
 
-
-	/* # Active */
-
 	.radio-button__input:active:not(:disabled) ~ .radio-button__outer-shape {
 		border-color: var(--components-radio-button-is-active-border-color);
 	}
@@ -106,17 +91,11 @@ export const radioButtonStyles = css`
 		border-color: var(--components-radio-button-is-selected-is-active-inner-shape-border-color);
 	}
 
-
-	/* # Focus */
-
 	.radio-button__input:focus-visible ~ .radio-button__outer-shape {
 		outline: var(--semantics-focus-ring-outline);
 		outline-offset: var(--semantics-focus-ring-outline-offset);
 		box-shadow: var(--semantics-focus-ring-box-shadow);
 	}
-
-
-	/* # Disabled */
 
 	.radio-button__input:disabled ~ .radio-button__outer-shape {
 		opacity: var(--primitives-opacity-disabled);

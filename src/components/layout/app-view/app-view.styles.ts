@@ -15,14 +15,13 @@ export const appViewStyles = css`
 		height: 100%;
 	}
 
+	:host([hidden]) {
+		display: none;
+	}
 
 	:host([background="tinted"]) {
 		--context-parent-background-color: var(--semantics-surfaces-tinted-background-color);
 		--_background-color: var(--semantics-surfaces-tinted-background-color);
-	}
-
-	:host([hidden]) {
-		display: none;
 	}
 
 
@@ -30,15 +29,22 @@ export const appViewStyles = css`
 
 	.app-view {
 		display: flex;
-		min-height: 0;
 		min-width: 0;
+		min-height: 0;
 		overflow: hidden;
 		flex-direction: column;
-		flex: 1;
+		flex-grow: 1;
+		flex-shrink: 1;
+		flex-basis: 0;
 	}
+
+
+	/* # Elements */
 
 	::slotted(*) {
 		min-height: 0;
-		flex: 1;
+		flex-grow: 1;
+		flex-shrink: 1;
+		flex-basis: 0;
 	}
 `;

@@ -237,4 +237,11 @@ describe('nldd-password-field', () => {
 		form.reset();
 		expect(pw.value).toBe('default');
 	});
+
+	it('inner input has spellcheck=false hardcoded', async () => {
+		el = await fixture('<nldd-password-field></nldd-password-field>');
+		await waitForUpdate(el);
+		const input = el.shadowRoot!.querySelector('input')!;
+		expect(input.getAttribute('spellcheck')).toBe('false');
+	});
 });

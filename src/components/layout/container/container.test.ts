@@ -15,74 +15,93 @@ describe('nldd-container', () => {
 		expect(el.shadowRoot).not.toBeNull();
 	});
 
-	it('reflects padding attribute', async () => {
+	it('does not reflect a direction attribute by default (column is the implicit default)', async () => {
+		el = await fixture('<nldd-container></nldd-container>');
+		await waitForUpdate(el);
+		// No default attribute pollution; column comes from the :host default style.
+		expect(el.hasAttribute('direction')).toBe(false);
+		expect(getComputedStyle(el).flexDirection).toBe('column');
+	});
+
+	it('reflects direction=row', async () => {
+		el = await fixture('<nldd-container direction="row"></nldd-container>');
+		await waitForUpdate(el);
+		expect(el.getAttribute('direction')).toBe('row');
+	});
+
+	it('reflects wrap and applies flex-wrap: wrap', async () => {
+		el = await fixture('<nldd-container wrap></nldd-container>');
+		await waitForUpdate(el);
+		expect(el.hasAttribute('wrap')).toBe(true);
+		expect(getComputedStyle(el).flexWrap).toBe('wrap');
+	});
+
+	it('defaults to flex-wrap: nowrap without the wrap attribute', async () => {
+		el = await fixture('<nldd-container></nldd-container>');
+		await waitForUpdate(el);
+		expect(getComputedStyle(el).flexWrap).toBe('nowrap');
+	});
+
+	it('writes --_padding-* longhands from padding attr', async () => {
 		el = await fixture('<nldd-container padding="16"></nldd-container>');
 		await waitForUpdate(el);
-		expect(el.getAttribute('padding')).toBe('16');
+		expect(el.style.getPropertyValue('--_padding-top')).toBe('var(--primitives-space-16)');
+		expect(el.style.getPropertyValue('--_padding-right')).toBe('var(--primitives-space-16)');
+		expect(el.style.getPropertyValue('--_padding-bottom')).toBe('var(--primitives-space-16)');
+		expect(el.style.getPropertyValue('--_padding-left')).toBe('var(--primitives-space-16)');
 	});
-	it('reflects padding-inline attribute', async () => {
-		el = await fixture('<nldd-container padding-inline="16"></nldd-container>');
+
+	it('per-side padding overrides axis and all', async () => {
+		el = await fixture('<nldd-container padding="16" padding-block="8" padding-top="32"></nldd-container>');
 		await waitForUpdate(el);
-		expect(el.getAttribute('padding-inline')).toBe('16');
+		expect(el.style.getPropertyValue('--_padding-top')).toBe('var(--primitives-space-32)');
+		expect(el.style.getPropertyValue('--_padding-bottom')).toBe('var(--primitives-space-8)');
+		expect(el.style.getPropertyValue('--_padding-right')).toBe('var(--primitives-space-16)');
+		expect(el.style.getPropertyValue('--_padding-left')).toBe('var(--primitives-space-16)');
 	});
-	it('reflects padding-block attribute', async () => {
-		el = await fixture('<nldd-container padding-block="16"></nldd-container>');
+
+	it('writes scoped --_sm-padding-* from sm-padding attr', async () => {
+		el = await fixture('<nldd-container sm-padding="8"></nldd-container>');
 		await waitForUpdate(el);
-		expect(el.getAttribute('padding-block')).toBe('16');
+		expect(el.style.getPropertyValue('--_sm-padding-top')).toBe('var(--primitives-space-8)');
+		expect(el.style.getPropertyValue('--_sm-padding-left')).toBe('var(--primitives-space-8)');
 	});
-	it('reflects padding-top attribute', async () => {
-		el = await fixture('<nldd-container padding-top="16"></nldd-container>');
+
+	it('writes --_gap from gap attr', async () => {
+		el = await fixture('<nldd-container gap="12"></nldd-container>');
 		await waitForUpdate(el);
-		expect(el.getAttribute('padding-top')).toBe('16');
+		expect(el.style.getPropertyValue('--_gap')).toBe('var(--primitives-space-12)');
 	});
-	it('reflects padding-right attribute', async () => {
-		el = await fixture('<nldd-container padding-right="16"></nldd-container>');
+
+	it('writes responsive --_sm-gap', async () => {
+		el = await fixture('<nldd-container sm-gap="4"></nldd-container>');
 		await waitForUpdate(el);
-		expect(el.getAttribute('padding-right')).toBe('16');
+		expect(el.style.getPropertyValue('--_sm-gap')).toBe('var(--primitives-space-4)');
 	});
-	it('reflects padding-bottom attribute', async () => {
-		el = await fixture('<nldd-container padding-bottom="16"></nldd-container>');
+
+	it('maps horizontal-alignment to justify-content for row direction', async () => {
+		el = await fixture('<nldd-container direction="row" horizontal-alignment="center"></nldd-container>');
 		await waitForUpdate(el);
-		expect(el.getAttribute('padding-bottom')).toBe('16');
+		expect(el.style.getPropertyValue('--_justify-content')).toBe('center');
+		expect(el.style.getPropertyValue('--_align-items')).toBe('');
 	});
-	it('reflects padding-left attribute', async () => {
-		el = await fixture('<nldd-container padding-left="16"></nldd-container>');
+
+	it('maps horizontal-alignment to align-items for column direction', async () => {
+		el = await fixture('<nldd-container direction="column" horizontal-alignment="right"></nldd-container>');
 		await waitForUpdate(el);
-		expect(el.getAttribute('padding-left')).toBe('16');
+		expect(el.style.getPropertyValue('--_align-items')).toBe('flex-end');
+		expect(el.style.getPropertyValue('--_justify-content')).toBe('');
 	});
-	it('reflects sm-padding attribute', async () => {
-		el = await fixture('<nldd-container sm-padding="24"></nldd-container>');
+
+	it('maps vertical-alignment to align-items for row direction', async () => {
+		el = await fixture('<nldd-container direction="row" vertical-alignment="bottom"></nldd-container>');
 		await waitForUpdate(el);
-		expect(el.getAttribute('sm-padding')).toBe('24');
+		expect(el.style.getPropertyValue('--_align-items')).toBe('flex-end');
 	});
-	it('reflects md-padding attribute', async () => {
-		el = await fixture('<nldd-container md-padding="24"></nldd-container>');
-		await waitForUpdate(el);
-		expect(el.getAttribute('md-padding')).toBe('24');
-	});
-	it('reflects lg-padding attribute', async () => {
-		el = await fixture('<nldd-container lg-padding="24"></nldd-container>');
-		await waitForUpdate(el);
-		expect(el.getAttribute('lg-padding')).toBe('24');
-	});
-	it('reflects layout-container-sm-padding attribute', async () => {
-		el = await fixture('<nldd-container layout-container-sm-padding="24"></nldd-container>');
-		await waitForUpdate(el);
-		expect(el.getAttribute('layout-container-sm-padding')).toBe('24');
-	});
-	it('reflects layout-container-md-padding attribute', async () => {
-		el = await fixture('<nldd-container layout-container-md-padding="24"></nldd-container>');
-		await waitForUpdate(el);
-		expect(el.getAttribute('layout-container-md-padding')).toBe('24');
-	});
-	it('reflects layout-container-lg-padding attribute', async () => {
-		el = await fixture('<nldd-container layout-container-lg-padding="24"></nldd-container>');
-		await waitForUpdate(el);
-		expect(el.getAttribute('layout-container-lg-padding')).toBe('24');
-	});
-	it('accepts none as padding value', async () => {
+
+	it('accepts 0 as padding value', async () => {
 		el = await fixture('<nldd-container padding="0"></nldd-container>');
 		await waitForUpdate(el);
-		expect(el.getAttribute('padding')).toBe('0');
+		expect(el.style.getPropertyValue('--_padding-top')).toBe('0');
 	});
 });

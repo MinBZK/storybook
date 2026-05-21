@@ -14,6 +14,7 @@ export function template(component: NLDDMenuBar) {
 					icon-only
 					haspopup="menu"
 					?expanded=${component._menuOpen}
+					@pointerdown=${component._handleOverflowButtonPointerdown}
 					@click=${component._toggleOverflowMenu}
 				>
 					<!-- The overflow popover is opened/closed explicitly by

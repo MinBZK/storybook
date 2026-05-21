@@ -3,12 +3,14 @@ import { fixture, cleanup, waitForUpdate } from '../../../test-utils.js';
 import type { NLDDTopNavigationBar } from './top-navigation-bar.js';
 import './top-navigation-bar.js';
 
-function navWithItems(): string {
+function navWithGlobalItems(): string {
 	return `
 		<nldd-top-navigation-bar website-title="DigID">
-			<nldd-menu-bar-item slot="global" text="Home"></nldd-menu-bar-item>
-			<nldd-menu-bar-item slot="global" text="About"></nldd-menu-bar-item>
-			<nldd-menu-bar-item slot="global" text="Contact"></nldd-menu-bar-item>
+			<nldd-menu-bar slot="global">
+				<nldd-menu-bar-item text="Home"></nldd-menu-bar-item>
+				<nldd-menu-bar-item text="About"></nldd-menu-bar-item>
+				<nldd-menu-bar-item text="Contact"></nldd-menu-bar-item>
+			</nldd-menu-bar>
 		</nldd-top-navigation-bar>
 	`;
 }
@@ -16,8 +18,10 @@ function navWithItems(): string {
 function navWithUtility(): string {
 	return `
 		<nldd-top-navigation-bar website-title="DigID">
-			<nldd-menu-bar-item slot="utility" text="Zoeken" icon="magnifier"></nldd-menu-bar-item>
-			<nldd-menu-bar-item slot="utility" text="Account" icon="person" expandable></nldd-menu-bar-item>
+			<nldd-menu-bar slot="utility">
+				<nldd-menu-bar-item text="Zoeken" icon="magnifier"></nldd-menu-bar-item>
+				<nldd-menu-bar-item text="Account" icon="person" expandable></nldd-menu-bar-item>
+			</nldd-menu-bar>
 		</nldd-top-navigation-bar>
 	`;
 }
@@ -43,11 +47,12 @@ describe('nldd-top-navigation-bar', () => {
 		expect(logoBar).not.toBeNull();
 	});
 
-	it('renders utility slot items', async () => {
+	it('renders utility slot items inside the slotted menu-bar', async () => {
 		el = await fixture(navWithUtility());
 		await waitForUpdate(el);
-		const utilityItems = el.querySelectorAll('nldd-menu-bar-item[slot="utility"]');
-		expect(utilityItems.length).toBe(2);
+		const utilityMenuBar = el.querySelector('nldd-menu-bar[slot="utility"]');
+		expect(utilityMenuBar).not.toBeNull();
+		expect(utilityMenuBar!.querySelectorAll('nldd-menu-bar-item').length).toBe(2);
 	});
 
 	it('renders menu-bar-end for utility slot', async () => {
@@ -66,22 +71,22 @@ describe('nldd-top-navigation-bar – menu item selection', () => {
 	});
 
 	it('deselects other items when one is current', async () => {
-		el = await fixture<NLDDTopNavigationBar>(navWithItems());
+		el = await fixture<NLDDTopNavigationBar>(navWithGlobalItems());
 		await waitForUpdate(el);
 
-		const items = el.querySelectorAll('nldd-menu-bar-item');
-		items[0].click();
+		const items = el.querySelectorAll('nldd-menu-bar[slot="global"] > nldd-menu-bar-item');
+		(items[0] as HTMLElement).click();
 		await waitForUpdate(el);
 		expect(items[0].hasAttribute('current')).toBe(true);
 
-		items[1].click();
+		(items[1] as HTMLElement).click();
 		await waitForUpdate(el);
 		expect(items[0].hasAttribute('current')).toBe(false);
 		expect(items[1].hasAttribute('current')).toBe(true);
 	});
 
 	it('dispatches itemselect event on item click', async () => {
-		el = await fixture<NLDDTopNavigationBar>(navWithItems());
+		el = await fixture<NLDDTopNavigationBar>(navWithGlobalItems());
 		await waitForUpdate(el);
 
 		let detail: any;
@@ -89,23 +94,24 @@ describe('nldd-top-navigation-bar – menu item selection', () => {
 			detail = e.detail;
 		}) as EventListener);
 
-		el.querySelectorAll('nldd-menu-bar-item')[1].click();
+		const items = el.querySelectorAll('nldd-menu-bar[slot="global"] > nldd-menu-bar-item');
+		(items[1] as HTMLElement).click();
 		await waitForUpdate(el);
 
 		expect(detail).toBeDefined();
-		expect(detail.item).toBe(el.querySelectorAll('nldd-menu-bar-item')[1]);
+		expect(detail.item).toBe(items[1]);
 	});
 
 	it('does not set current when itemselect is prevented', async () => {
-		el = await fixture<NLDDTopNavigationBar>(navWithItems());
+		el = await fixture<NLDDTopNavigationBar>(navWithGlobalItems());
 		await waitForUpdate(el);
 
 		el.addEventListener('itemselect', ((e: CustomEvent) => {
 			e.preventDefault();
 		}) as EventListener);
 
-		const items = el.querySelectorAll('nldd-menu-bar-item');
-		items[1].click();
+		const items = el.querySelectorAll('nldd-menu-bar[slot="global"] > nldd-menu-bar-item');
+		(items[1] as HTMLElement).click();
 		await waitForUpdate(el);
 
 		expect(items[1].hasAttribute('current')).toBe(false);
@@ -120,8 +126,8 @@ describe('nldd-top-navigation-bar – compact breakpoint', () => {
 		vi.restoreAllMocks();
 	});
 
-	it('sets compact on inner menu-bars at small breakpoint', async () => {
-		el = await fixture<NLDDTopNavigationBar>(navWithItems());
+	it('sets compact on slotted menu-bars at small breakpoint', async () => {
+		el = await fixture<NLDDTopNavigationBar>(navWithGlobalItems());
 		await waitForUpdate(el);
 
 		// Mock container width below smMax (640px)
@@ -131,14 +137,15 @@ describe('nldd-top-navigation-bar – compact breakpoint', () => {
 		(el as any)._syncCompactAttribute();
 		await waitForUpdate(el);
 
-		const menuBars = el.shadowRoot!.querySelectorAll('nldd-menu-bar');
+		const menuBars = el.querySelectorAll('nldd-menu-bar');
+		expect(menuBars.length).toBeGreaterThan(0);
 		for (const bar of menuBars) {
 			expect(bar.hasAttribute('compact')).toBe(true);
 		}
 	});
 
-	it('removes compact from inner menu-bars above small breakpoint', async () => {
-		el = await fixture<NLDDTopNavigationBar>(navWithItems());
+	it('removes compact from slotted menu-bars above small breakpoint', async () => {
+		el = await fixture<NLDDTopNavigationBar>(navWithGlobalItems());
 		await waitForUpdate(el);
 
 		const container = el.shadowRoot!.querySelector('.top-navigation-bar') as HTMLElement;
@@ -147,7 +154,8 @@ describe('nldd-top-navigation-bar – compact breakpoint', () => {
 		(el as any)._syncCompactAttribute();
 		await waitForUpdate(el);
 
-		const menuBars = el.shadowRoot!.querySelectorAll('nldd-menu-bar');
+		const menuBars = el.querySelectorAll('nldd-menu-bar');
+		expect(menuBars.length).toBeGreaterThan(0);
 		for (const bar of menuBars) {
 			expect(bar.hasAttribute('compact')).toBe(false);
 		}
@@ -165,7 +173,9 @@ describe('nldd-top-navigation-bar – menu sheet async guards', () => {
 	it('does not create sheet after disconnect during async load', async () => {
 		el = await fixture<NLDDTopNavigationBar>(`
 			<nldd-top-navigation-bar website-title="Test">
-				<nldd-menu-bar-item slot="global" text="Home"></nldd-menu-bar-item>
+				<nldd-menu-bar slot="global">
+					<nldd-menu-bar-item text="Home"></nldd-menu-bar-item>
+				</nldd-menu-bar>
 			</nldd-top-navigation-bar>
 		`);
 		await waitForUpdate(el);
@@ -292,20 +302,34 @@ describe('nldd-top-navigation-bar – i18n', () => {
 		if (el) cleanup(el);
 	});
 
-	it('uses default Dutch translations', async () => {
-		el = await fixture<NLDDTopNavigationBar>('<nldd-top-navigation-bar></nldd-top-navigation-bar>');
+	it('applies default Dutch accessible-label to slotted global menu-bar', async () => {
+		el = await fixture<NLDDTopNavigationBar>(navWithGlobalItems());
 		await waitForUpdate(el);
-		const menuBar = el.shadowRoot!.querySelector('.top-navigation-bar__global-menu-bar nldd-menu-bar');
-		expect(menuBar!.getAttribute('accessible-label')).toBe('Hoofdnavigatie');
+		const menuBar = el.querySelector('nldd-menu-bar[slot="global"]')!;
+		expect(menuBar.getAttribute('accessible-label')).toBe('Hoofdnavigatie');
 	});
 
-	it('accepts custom translations', async () => {
-		el = await fixture<NLDDTopNavigationBar>('<nldd-top-navigation-bar></nldd-top-navigation-bar>');
+	it('does not override consumer-provided accessible-label on slotted menu-bar', async () => {
+		el = await fixture<NLDDTopNavigationBar>(`
+			<nldd-top-navigation-bar>
+				<nldd-menu-bar slot="global" accessible-label="Custom label">
+					<nldd-menu-bar-item text="Home"></nldd-menu-bar-item>
+				</nldd-menu-bar>
+			</nldd-top-navigation-bar>
+		`);
+		await waitForUpdate(el);
+		const menuBar = el.querySelector('nldd-menu-bar[slot="global"]')!;
+		expect(menuBar.getAttribute('accessible-label')).toBe('Custom label');
+	});
+
+	it('applies custom translations to slotted menu-bar', async () => {
+		el = await fixture<NLDDTopNavigationBar>(navWithGlobalItems());
+		await waitForUpdate(el);
 		(el as NLDDTopNavigationBar).translations = {
 			'components.top-navigation-bar.global-menu-bar-label': 'Main navigation',
 		};
 		await waitForUpdate(el);
-		const menuBar = el.shadowRoot!.querySelector('.top-navigation-bar__global-menu-bar nldd-menu-bar');
-		expect(menuBar!.getAttribute('accessible-label')).toBe('Main navigation');
+		const menuBar = el.querySelector('nldd-menu-bar[slot="global"]')!;
+		expect(menuBar.getAttribute('accessible-label')).toBe('Main navigation');
 	});
 });

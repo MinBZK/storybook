@@ -16,24 +16,14 @@ export default {
 	argTypes: {
 		variant: {
 			control: 'select',
-			options: ['(geen)', 'icon-and-text', 'text', 'icon'],
-			mapping: { '(geen)': '' },
-			description: 'Standaard variant voor alle items. Kan per item worden overschreven met een eigen variant attribuut. Wordt genegeerd wanneer compact actief is.',
-			table: { defaultValue: { summary: '(geen)' } },
+			options: ['(auto)', 'icon-and-text', 'text', 'icon', 'compact'],
+			mapping: { '(auto)': '' },
+			description: 'Standaard variant voor alle items. Kan per item worden overschreven met een eigen variant attribuut. Bij "(auto)" bepaalt elk item dat zelf op basis van text/icon. "compact" stapelt het icoon boven de tekst.',
+			table: { defaultValue: { summary: '(auto)' } },
 		},
 		centered: {
 			control: 'boolean',
 			description: 'Centreert de tabs in de container (host vult de rij, tabs groeperen in het midden)',
-			table: { defaultValue: { summary: false } },
-		},
-		compact: {
-			control: 'boolean',
-			description: 'Toont items in compact weergave: icoon boven tekst gestapeld. Overschrijft variant op de parent én individuele variant attributen op items.',
-			table: { defaultValue: { summary: false } },
-		},
-		responsive: {
-			control: 'boolean',
-			description: 'Schakelt automatisch over naar compact via de layout-container container query (onder 480px)',
 			table: { defaultValue: { summary: false } },
 		},
 		accessibleLabel: {
@@ -45,8 +35,6 @@ export default {
 	args: {
 		variant: '',
 		centered: false,
-		compact: false,
-		responsive: false,
 		accessibleLabel: '',
 	},
 };
@@ -59,11 +47,9 @@ const tabBarItems = html`
 	<nldd-tab-bar-item text="Zoeken" icon="search"></nldd-tab-bar-item>
 `;
 
-const Template = ({ variant, centered, compact, responsive, accessibleLabel }: Record<string, any>) => html`
+const Template = ({ variant, centered, accessibleLabel }: Record<string, any>) => html`
 	<nldd-tab-bar
 		variant=${variant || nothing}
-		?compact=${compact}
-		?responsive=${responsive}
 		?centered=${centered}
 		accessible-label=${accessibleLabel || nothing}
 	>
@@ -96,38 +82,14 @@ export const MetIconenVariant = {
 
 export const Compact = {
 	render: () => html`
-	<nldd-tab-bar compact>
+	<nldd-tab-bar variant="compact">
 		${tabBarItems}
 	</nldd-tab-bar>
 `,
 	parameters: { controls: { disable: true } },
 };
 
-export const Responsief = {
-	render: () => html`
-	<div style="display: flex; flex-direction: column; gap: 2rem;">
-		<div>
-			<small>Breed (regular weergave)</small>
-			<div style="container-type: inline-size; container-name: layout-container; width: 680px;">
-				<nldd-tab-bar responsive centered>
-					${tabBarItems}
-				</nldd-tab-bar>
-			</div>
-		</div>
-		<div>
-			<small>Smal onder 480px (compact weergave)</small>
-			<div style="container-type: inline-size; container-name: layout-container; width: 320px;">
-				<nldd-tab-bar responsive centered>
-					${tabBarItems}
-				</nldd-tab-bar>
-			</div>
-		</div>
-	</div>
-`,
-	parameters: { controls: { disable: true } },
-};
-
-export const VolleBreedte = {
+export const Gecentreerd = {
 	render: () => html`
 	<div style="container-type: inline-size; container-name: layout-container;">
 		<nldd-tab-bar centered>

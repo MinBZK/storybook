@@ -92,11 +92,11 @@ export function menuItemTemplate(this: NLDDMenuItem, variant: 'menu' | 'listbox'
 					horizontal-alignment="center"
 					icon=${this.selected ? 'check-mark' : nothing}
 				></nldd-icon-cell>
-				<nldd-spacer-cell size="8"></nldd-spacer-cell>
+				<nldd-spacer-cell size="4"></nldd-spacer-cell>
 			` : nothing}
 			${this.icon ? html`
 				<nldd-icon-cell class="menu__item-icon" size="20" icon=${this.icon}></nldd-icon-cell>
-				<nldd-spacer-cell size="6"></nldd-spacer-cell>
+				<nldd-spacer-cell size="8"></nldd-spacer-cell>
 			` : nothing}
 			<nldd-text-cell class="menu__item-text" text=${this.text} query=${this.query} query-mark-mode=${this.queryMarkMode}></nldd-text-cell>
 			${this.details ? html`

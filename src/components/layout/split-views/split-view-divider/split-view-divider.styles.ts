@@ -6,6 +6,8 @@ export const splitViewDividerStyles = css`
 	/* # Host */
 
 	:host {
+		--_thickness: var(--semantics-dividers-thickness);
+
 		display: flex;
 		flex-shrink: 0;
 		align-self: stretch;
@@ -15,6 +17,10 @@ export const splitViewDividerStyles = css`
 		display: none;
 	}
 
+	:host([has-drag-handle]) {
+		--_thickness: var(--primitives-space-12);
+	}
+
 
 	/* # Block */
 
@@ -22,62 +28,36 @@ export const splitViewDividerStyles = css`
 		display: flex;
 		position: relative;
 		background-color: var(--semantics-dividers-color);
-		justify-content: center;
+		width: 100%;
+		height: var(--_thickness);
 		align-items: center;
+		justify-content: center;
 	}
 
-
-	/* # Drag handle */
-
-	.split-view-divider__drag-handle {
-		position: absolute;
-		border-radius: 9999px;
-		background-color: var(--semantics-content-secondary-color);
-	}
-
-
-	/* # Vertical */
-
-	:host([orientation='vertical']) .split-view-divider {
-		width: var(--semantics-dividers-thickness);
+	:host([orientation="vertical"]) .split-view-divider {
+		width: var(--_thickness);
 		height: 100%;
 	}
-
-	:host([orientation='vertical'][has-drag-handle]) .split-view-divider {
-		width: 12px;
-	}
-
-	:host([orientation='vertical']) .split-view-divider__drag-handle {
-		width: 4px;
-		height: 40px;
-	}
-
-
-	/* # Horizontal */
-
-	:host([orientation='horizontal']) .split-view-divider,
-	:host(:not([orientation])) .split-view-divider {
-		width: 100%;
-		height: var(--semantics-dividers-thickness);
-	}
-
-	:host([orientation='horizontal'][has-drag-handle]) .split-view-divider,
-	:host(:not([orientation])[has-drag-handle]) .split-view-divider {
-		height: 12px;
-	}
-
-	:host([orientation='horizontal']) .split-view-divider__drag-handle,
-	:host(:not([orientation])) .split-view-divider__drag-handle {
-		width: 40px;
-		height: 4px;
-	}
-
-
-	/* # High contrast */
 
 	@media (forced-colors: active) {
 		.split-view-divider {
 			background-color: CanvasText;
 		}
+	}
+
+
+	/* # Elements */
+
+	.split-view-divider__drag-handle {
+		position: absolute;
+		border-radius: var(--primitives-corner-radius-full);
+		background-color: var(--semantics-content-secondary-color);
+		width: var(--primitives-space-40);
+		height: var(--primitives-space-4);
+	}
+
+	:host([orientation="vertical"]) .split-view-divider__drag-handle {
+		width: var(--primitives-space-4);
+		height: var(--primitives-space-40);
 	}
 `;

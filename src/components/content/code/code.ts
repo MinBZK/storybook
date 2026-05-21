@@ -41,6 +41,7 @@ import { customElement, property, state } from 'lit/decorators.js';
 import Prism from 'prismjs';
 import { codeStyles } from './code.styles.js';
 import { codeTemplate } from './code.template.js';
+import { onColorSchemeChange, forceScrollLayerRepaint } from '../../../utilities/color-scheme-repaint.js';
 
 /* Map our public language names to Prism grammar loaders. `html` shares
  * the markup grammar (covers html/xml/svg). Static `import()` calls let
@@ -89,9 +90,26 @@ export class NLDDCode extends LitElement {
 	_highlightedHtml = '';
 
 	private _highlightPending: Promise<void> = Promise.resolve();
+	private _unsubscribeScheme?: () => void;
 
 	override render() {
 		return codeTemplate(this);
+	}
+
+	override connectedCallback(): void {
+		super.connectedCallback();
+		/* The .code block has overflow-x: auto and tends to scroll wide
+		 * content. Browsers cache off-screen tiles for its scroll layer and
+		 * don't reliably invalidate them when light-dark() colours flip with
+		 * color-scheme, so scroll back after a theme switch shows stale
+		 * paint. Drop the layer on each scheme change to repaint clean. */
+		this._unsubscribeScheme = onColorSchemeChange(() => this._repaintCodeBlock());
+	}
+
+	override disconnectedCallback(): void {
+		super.disconnectedCallback();
+		this._unsubscribeScheme?.();
+		this._unsubscribeScheme = undefined;
 	}
 
 	_onSlotChange(e: Event) {
@@ -100,6 +118,11 @@ export class NLDDCode extends LitElement {
 
 	override updated(changed: Map<string, unknown>) {
 		if (changed.has('language')) this._refreshHighlight();
+	}
+
+	private _repaintCodeBlock(): void {
+		const block = this.shadowRoot?.querySelector('.code') as HTMLElement | null;
+		if (block) forceScrollLayerRepaint(block);
 	}
 
 	/* Lazy grammar loading is async; surface the in-flight highlight

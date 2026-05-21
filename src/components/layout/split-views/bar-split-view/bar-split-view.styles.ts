@@ -15,6 +15,10 @@ export const barSplitViewStyles = css`
 		flex-direction: column;
 	}
 
+	:host([hidden]) {
+		display: none;
+	}
+
 	:host([background="default"]) {
 		--context-parent-background-color: var(--semantics-surfaces-background-color);
 		--_background-color: var(--context-parent-background-color);
@@ -25,23 +29,21 @@ export const barSplitViewStyles = css`
 		--_background-color: var(--context-parent-background-color);
 	}
 
-	:host([hidden]) {
-		display: none;
-	}
-
 
 	/* # Block */
 
 	.bar-split-view {
 		display: flex;
-		min-height: 0;
 		min-width: 0;
+		min-height: 0;
 		flex-direction: column;
-		flex: 1;
+		flex-grow: 1;
+		flex-shrink: 1;
+		flex-basis: 0;
 	}
 
 
-	/* # Bar */
+	/* # Elements */
 
 	.bar-split-view__bar {
 		display: flex;
@@ -51,30 +53,31 @@ export const barSplitViewStyles = css`
 		flex-shrink: 0;
 	}
 
-
-	/* # Divider */
-
 	.bar-split-view__divider {
 		flex-shrink: 0;
 	}
 
-
-	/* # Main */
-
 	.bar-split-view__main {
 		display: flex;
-		min-height: 0;
 		min-width: 0;
+		min-height: 0;
 		overflow: hidden;
 		flex-direction: column;
-		flex: 1;
+		flex-grow: 1;
+		flex-shrink: 1;
+		flex-basis: 0;
 	}
 
-
-	/* # Slotted */
-
-	::slotted(*) {
+	/* Only the main pane grows to fill remaining space; bar panes size to
+	 * their content. Without this scoping a bar's slotted content gets
+	 * flex-basis: 0 and collapses (the old 'flex: 1' shorthand expanded
+	 * to 'flex: 1 1 0%', where % resolved to 'auto' inside the
+	 * height-indeterminate bar wrapper — the longhand conversion lost
+	 * that nuance, hence this rule). */
+	::slotted([slot="main"]) {
 		min-height: 0;
-		flex: 1;
+		flex-grow: 1;
+		flex-shrink: 1;
+		flex-basis: 0;
 	}
 `;

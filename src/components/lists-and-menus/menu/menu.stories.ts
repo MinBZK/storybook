@@ -35,7 +35,8 @@ export const WithIcons = {
 		<nldd-menu id="menu-icons" anchor="button-icons">
 			<nldd-menu-item text="Bewerk" icon="pencil"></nldd-menu-item>
 			<nldd-menu-item text="Dupliceer" icon="square-plus-on-square"></nldd-menu-item>
-			<nldd-menu-item text="Verwijder" icon="trash"></nldd-menu-item>
+			<nldd-menu-divider></nldd-menu-divider>
+			<nldd-menu-item destructive text="Verwijder" icon="trash"></nldd-menu-item>
 		</nldd-menu>
 	`,
 };
@@ -75,6 +76,31 @@ export const Radio = {
 	`,
 };
 
+export const MixedIconsAndCheckable = {
+	render: () => html`
+		<nldd-button id="button-mixed-icons-checkable" expandable text="Open menu"></nldd-button>
+		<nldd-menu id="menu-mixed-icons-checkable" anchor="button-mixed-icons-checkable">
+			<nldd-menu-item type="checkbox" text="Vet" selected></nldd-menu-item>
+			<nldd-menu-item type="checkbox" text="Cursief"></nldd-menu-item>
+			<nldd-menu-item type="radio" text="Linksuitlijning" selected></nldd-menu-item>
+			<nldd-menu-item type="radio" text="Centreren"></nldd-menu-item>
+			<nldd-menu-divider></nldd-menu-divider>
+			<nldd-menu-item text="Bewerk citaat" icon="text-quote"></nldd-menu-item>
+			<nldd-menu-item text="Voorbeeldweergave" icon="eye"></nldd-menu-item>
+			<nldd-menu-divider></nldd-menu-divider>
+			<nldd-menu-item type="checkbox" text="Vet (met icoon)" icon="bold" selected></nldd-menu-item>
+			<nldd-menu-item type="checkbox" text="Cursief (met icoon)" icon="italic"></nldd-menu-item>
+		</nldd-menu>
+	`,
+	parameters: {
+		docs: {
+			description: {
+				story: 'Mix van items met checkbox/radio en items met alleen een icoon: hun teksten lijnen uit doordat het check-cel-blok en het icoon-cel-blok dezelfde leading-breedte hebben. Items die zowel een checkbox/radio als een icoon hebben zijn extra ingesprongen — dat is bewust.',
+			},
+		},
+	},
+};
+
 export const Disabled = {
 	render: () => html`
 		<nldd-button id="button-disabled" expandable text="Open menu"></nldd-button>
@@ -84,6 +110,25 @@ export const Disabled = {
 			<nldd-menu-item text="Kopieer"></nldd-menu-item>
 		</nldd-menu>
 	`,
+};
+
+export const Destructive = {
+	render: () => html`
+		<nldd-button id="button-destructive" expandable text="Open menu"></nldd-button>
+		<nldd-menu id="menu-destructive" anchor="button-destructive">
+			<nldd-menu-item text="Bewerk" icon="pencil"></nldd-menu-item>
+			<nldd-menu-item text="Dupliceer" icon="square-plus-on-square"></nldd-menu-item>
+			<nldd-menu-divider></nldd-menu-divider>
+			<nldd-menu-item destructive text="Verwijder" icon="trash"></nldd-menu-item>
+		</nldd-menu>
+	`,
+	parameters: {
+		docs: {
+			description: {
+				story: 'Markeer onomkeerbare acties als `destructive` voor een rode tekstkleur en een rode highlight-achtergrond — zodat de actie visueel afwijkt van veilige items in dezelfde menu.',
+			},
+		},
+	},
 };
 
 export const WithGroups = {
