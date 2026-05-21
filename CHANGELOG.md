@@ -11,25 +11,18 @@ here; consult the commit history if you need that level of detail.
 
 ## Unreleased
 
+<!--
+  Alleen Highlights worden hier handmatig bijgehouden — de Added/Changed/Fixed
+  entries genereert semantic-release bij de merge automatisch uit de commits.
+  Verplaats deze Highlights na de release onder de nieuwe versie-sectie.
+-->
+
 ### Highlights
 
 - Buttons doen nu echt mee in formulieren: `nldd-button` en `nldd-icon-button`
   zijn form-associated, dus `type="submit"` en `type="reset"` werken nu ook
   binnen een `<form>` (voorheen deed een klik niets over de shadow-grens).
 - Consistente "pressed" (active) feedback op alle neutral-tinted controls.
-
-### Added
-
-* **actions:** add a text slot to button for rich label content ([c3fb360](https://github.com/MinBZK/storybook/commit/c3fb360))
-* **actions:** make button form-associated so type=submit/reset works ([fc56980](https://github.com/MinBZK/storybook/commit/fc56980))
-* **actions:** make icon-button form-associated so type=submit/reset works ([0867ae6](https://github.com/MinBZK/storybook/commit/0867ae6))
-* **inputs:** add active states and align expanded states across controls ([216efdd](https://github.com/MinBZK/storybook/commit/216efdd))
-
-### Fixed
-
-* **forms:** widen form-field label-to-control gap so focus ring clears the label ([032528a](https://github.com/MinBZK/storybook/commit/032528a))
-* **forms:** widen the tight gap between stacked form elements ([98a9f82](https://github.com/MinBZK/storybook/commit/98a9f82))
-* **layout:** container height auto instead of 100% ([017a38d](https://github.com/MinBZK/storybook/commit/017a38d))
 
 ## <small>0.8.45 (2026-05-21)</small>
 
