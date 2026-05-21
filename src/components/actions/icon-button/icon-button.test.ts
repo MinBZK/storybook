@@ -435,3 +435,52 @@ describe('nldd-icon-button – popoverTargetElement / popoverTargetAction IDL fo
 		expect(inner.popoverTargetAction).toBe('hide');
 	});
 });
+
+describe('nldd-icon-button – form association', () => {
+	let host: HTMLElement;
+
+	afterEach(() => {
+		if (host) cleanup(host);
+	});
+
+	function clickInner(root: ParentNode) {
+		const btn = root.querySelector('nldd-icon-button')!;
+		(btn.shadowRoot!.querySelector('button') as HTMLElement).click();
+	}
+
+	it('submits the closest form on click when type=submit', async () => {
+		host = await fixture('<form><input name="x" /><nldd-icon-button type="submit" icon="check-mark" accessible-label="Verstuur"></nldd-icon-button></form>');
+		await waitForUpdate(host.querySelector('nldd-icon-button')!);
+		let submitted = false;
+		host.addEventListener('submit', (e) => { e.preventDefault(); submitted = true; });
+		clickInner(host);
+		expect(submitted).toBe(true);
+	});
+
+	it('does not submit when type is the default (button)', async () => {
+		host = await fixture('<form><input name="x" /><nldd-icon-button icon="check-mark" accessible-label="Actie"></nldd-icon-button></form>');
+		await waitForUpdate(host.querySelector('nldd-icon-button')!);
+		let submitted = false;
+		host.addEventListener('submit', (e) => { e.preventDefault(); submitted = true; });
+		clickInner(host);
+		expect(submitted).toBe(false);
+	});
+
+	it('resets the form on click when type=reset', async () => {
+		host = await fixture('<form><input name="x" /><nldd-icon-button type="reset" icon="arrow-2-counter-clockwise" accessible-label="Reset"></nldd-icon-button></form>');
+		await waitForUpdate(host.querySelector('nldd-icon-button')!);
+		const input = host.querySelector('input') as HTMLInputElement;
+		input.value = 'changed';
+		clickInner(host);
+		expect(input.value).toBe('');
+	});
+
+	it('does not submit when disabled', async () => {
+		host = await fixture('<form><input name="x" /><nldd-icon-button type="submit" disabled icon="check-mark" accessible-label="Verstuur"></nldd-icon-button></form>');
+		await waitForUpdate(host.querySelector('nldd-icon-button')!);
+		let submitted = false;
+		host.addEventListener('submit', (e) => { e.preventDefault(); submitted = true; });
+		clickInner(host);
+		expect(submitted).toBe(false);
+	});
+});
