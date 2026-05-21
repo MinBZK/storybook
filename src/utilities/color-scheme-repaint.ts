@@ -57,19 +57,29 @@ export function onColorSchemeChange(callback: Listener): () => void {
 
 /**
  * Force a scrollable element to drop and recreate its compositor layer,
- * invalidating any stale off-screen paint tiles. Preserves scrollLeft so
- * the user doesn't lose their horizontal position.
+ * invalidating any stale off-screen paint tiles. Preserves scrollLeft/Top
+ * so the user doesn't lose their position, and restores the caller's
+ * inline `display` value.
  *
  * Use this from an `onColorSchemeChange` callback.
+ *
+ * Caveat: the display:none → reflow → display cycle fires any
+ * ResizeObserver watching this element (it reports width/height 0, then
+ * the original size). Harmless for elements no one observes, but a
+ * component that observes its own scroll container should audit for
+ * resize-driven side effects before adopting this.
  */
 export function forceScrollLayerRepaint(el: HTMLElement): void {
 	const x = el.scrollLeft;
 	const y = el.scrollTop;
+	// Save the caller's inline display so a legitimate value (e.g. an
+	// explicit `display: flex`) survives — clearing to '' would drop it.
+	const prevDisplay = el.style.display;
 	el.style.display = 'none';
 	// Synchronous reflow drops the layer; the browser doesn't paint
 	// between this and re-showing, so there's no visible flicker.
 	void el.offsetHeight;
-	el.style.display = '';
+	el.style.display = prevDisplay;
 	el.scrollLeft = x;
 	el.scrollTop = y;
 }

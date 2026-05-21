@@ -104,5 +104,14 @@ describe('color-scheme-repaint', () => {
 			expect(el.style.display).toBe('');
 			document.body.removeChild(el);
 		});
+
+		it('restores a pre-existing inline display value', () => {
+			const el = document.createElement('div');
+			el.style.display = 'flex';
+			document.body.appendChild(el);
+			forceScrollLayerRepaint(el);
+			expect(el.style.display).toBe('flex');
+			document.body.removeChild(el);
+		});
 	});
 });
