@@ -29,10 +29,17 @@ describe('nldd-container', () => {
 		expect(el.getAttribute('direction')).toBe('row');
 	});
 
-	it('reflects wrap', async () => {
+	it('reflects wrap and applies flex-wrap: wrap', async () => {
 		el = await fixture('<nldd-container wrap></nldd-container>');
 		await waitForUpdate(el);
 		expect(el.hasAttribute('wrap')).toBe(true);
+		expect(getComputedStyle(el).flexWrap).toBe('wrap');
+	});
+
+	it('defaults to flex-wrap: nowrap without the wrap attribute', async () => {
+		el = await fixture('<nldd-container></nldd-container>');
+		await waitForUpdate(el);
+		expect(getComputedStyle(el).flexWrap).toBe('nowrap');
 	});
 
 	it('writes --_padding-* longhands from padding attr', async () => {
