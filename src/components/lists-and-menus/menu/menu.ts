@@ -88,7 +88,11 @@ if (!customElements.get('nldd-menu-group')) {
  * @attr {string}  icon      - Icon name rendered before the text (nldd-icon name).
  * @attr {string}  type      - Item type: 'button' | 'checkbox' | 'radio'. Default: 'button'.
  * @attr {boolean} selected        - Selected state for checkbox and radio types.
- * @attr {boolean} destructive     - Marks the item as destructive (red text; red highlight bg). Use for irreversible actions like "Delete".
+ * @attr {boolean} destructive     - Marks the item as destructive (red text; red highlight bg). Use for irreversible
+ *                                   actions like "Delete". Colour is the only built-in signal, so per WCAG 1.4.1 the
+ *                                   item's own label must convey the destructive nature (e.g. "Verwijder") — don't rely
+ *                                   on the red alone. Confirming the action (e.g. a follow-up dialog) is the consumer's
+ *                                   responsibility.
  * @attr {boolean} disabled        - Disabled state.
  * @attr {string}  query           - Query substring to bold-highlight in text. Set by menu's filter(); also settable by consumers.
  * @attr {string}  query-mark-mode - 'match' | 'predictive' (default: 'predictive'). See text-cell for details.
