@@ -152,6 +152,9 @@ export const aliases = {
 	// gear
 	'global-settings': 'gear',
 
+	// globe
+	'languages': 'globe',
+
 	// heart-filled
 	'favorite': 'heart-filled',
 	'love': 'heart-filled',
