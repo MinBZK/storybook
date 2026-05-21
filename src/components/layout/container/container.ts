@@ -70,8 +70,12 @@ function sizeToValue(size: PaddingSize | undefined): string | null {
 export class NLDDContainer extends LitElement {
 	static override styles = containerStyles;
 
+	// No default value so a plain <nldd-container> doesn't carry a
+	// reflected direction="column" attribute. Absence resolves to column
+	// in the styles (the unconditional :host default) and in
+	// writeCustomProperties (isRow checks for 'row' specifically).
 	@property({ type: String, reflect: true })
-	direction: Direction = 'column';
+	direction?: Direction;
 
 	@property({ type: Boolean, reflect: true })
 	wrap = false;

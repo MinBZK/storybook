@@ -15,10 +15,12 @@ describe('nldd-container', () => {
 		expect(el.shadowRoot).not.toBeNull();
 	});
 
-	it('defaults direction to column', async () => {
+	it('does not reflect a direction attribute by default (column is the implicit default)', async () => {
 		el = await fixture('<nldd-container></nldd-container>');
 		await waitForUpdate(el);
-		expect(el.getAttribute('direction')).toBe('column');
+		// No default attribute pollution; column comes from the :host default style.
+		expect(el.hasAttribute('direction')).toBe(false);
+		expect(getComputedStyle(el).flexDirection).toBe('column');
 	});
 
 	it('reflects direction=row', async () => {
