@@ -203,8 +203,8 @@ export const RoleBased = {
 			description: {
 				story: 'Role based buttons zijn aliases van de appearance based buttons.',
 			},
+		},
 	},
-},
 };
 
 export const AppearanceBased = {
@@ -250,8 +250,8 @@ export const WithStartIcon = {
 			description: {
 				story: 'Button met een icoon aan de linkerkant via het <code>start-icon</code> attribute.',
 			},
+		},
 	},
-},
 };
 
 export const WithEndIcon = {
@@ -268,8 +268,8 @@ export const WithEndIcon = {
 			description: {
 				story: 'Button met een icoon aan de rechterkant via het <code>end-icon</code> attribute.',
 			},
+		},
 	},
-},
 };
 
 export const WithBothIcons = {
@@ -286,8 +286,8 @@ export const WithBothIcons = {
 			description: {
 				story: 'Button met zowel een start als end icoon via de <code>start-icon</code> en <code>end-icon</code> attributes.',
 			},
+		},
 	},
-},
 };
 
 export const WithDisclosureIcon = {
@@ -304,8 +304,8 @@ export const WithDisclosureIcon = {
 			description: {
 				story: 'Button die een menu of popover opent. Gebruik de <code>expandable</code> attribute om aan te geven dat deze button een menu of popover opent.',
 			},
+		},
 	},
-},
 };
 
 export const CustomIconSlot = {
@@ -329,8 +329,8 @@ export const CustomIconSlot = {
 			description: {
 				story: 'Gebruik de <code>start-icon</code> en <code>end-icon</code> slots om custom SVG iconen te plaatsen in plaats van de icon attributes.',
 			},
+		},
 	},
-},
 };
 
 export const TextSlot = {
@@ -350,6 +350,6 @@ export const TextSlot = {
 			description: {
 				story: 'Gebruik de <code>text</code> slot wanneer de knoptekst meer dan platte tekst nodig heeft (inline markup). Het <code>text</code> attribuut heeft voorrang; zet <code>accessible-label</code> wanneer de inhoud geen leesbare platte tekst is.',
 			},
+		},
 	},
-},
 };

@@ -483,4 +483,15 @@ describe('nldd-icon-button – form association', () => {
 		clickInner(host);
 		expect(submitted).toBe(false);
 	});
+
+	it('a link icon-button (href) never triggers form submission', async () => {
+		host = await fixture('<form><input name="x" /><nldd-icon-button type="submit" href="/x" icon="arrow-right" accessible-label="Link"></nldd-icon-button></form>');
+		await waitForUpdate(host.querySelector('nldd-icon-button')!);
+		let submitted = false;
+		host.addEventListener('submit', (e) => { e.preventDefault(); submitted = true; });
+		const a = host.querySelector('nldd-icon-button')!.shadowRoot!.querySelector('a') as HTMLElement;
+		a.addEventListener('click', (e) => e.preventDefault());
+		a.click();
+		expect(submitted).toBe(false);
+	});
 });

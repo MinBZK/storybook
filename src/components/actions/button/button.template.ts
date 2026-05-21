@@ -6,6 +6,9 @@ interface TemplateHelpers {
 }
 
 function renderContent(component: NLDDButton) {
+	// `button__text` falls back to the slot on falsy `text`. The property
+	// defaults to '', so `text=""` and an absent attribute are indistinguishable
+	// — both intentionally render the slot rather than an empty label.
 	return html`
 		<span class="button__content">
 			${component.startIcon ? html`
