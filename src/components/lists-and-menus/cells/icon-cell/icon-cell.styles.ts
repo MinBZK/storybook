@@ -76,10 +76,12 @@ export const iconCellStyles = css`
 
 	/* # Elements */
 
+	/* No width/height here: a slotted nldd-icon defines its own --_size,
+	   which shadows this cell's --_size in ::slotted var() resolution
+	   (custom props resolve against the slotted element). The icon sizes
+	   itself — width fills the cell, height auto keeps it square. */
 	::slotted(*) {
 		display: block;
-		width: var(--_size);
-		height: var(--_size);
 		flex-shrink: 0;
 	}
 `;
