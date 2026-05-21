@@ -184,6 +184,15 @@ export class NLDDButton extends LitElement {
 		// the light-DOM form across the shadow boundary. requestSubmit() runs
 		// constraint validation and fires a cancelable submit event, matching a
 		// native submit button.
+		//
+		// Limitation: we call requestSubmit() without a submitter, so
+		// SubmitEvent.submitter is null. A form handler that branches on
+		// event.submitter to tell multiple submit buttons apart won't see this
+		// element. There is no fix via requestSubmit(submitter): the inner shadow
+		// <button> is not a form descendant (throws NotFoundError) and this host
+		// is not a "submit button" per spec (throws TypeError) — both verified.
+		// Consumers that need to distinguish submitters should use a hidden field
+		// or separate forms.
 		if (this.href) return;
 		if (this.type === 'submit') this._internals.form?.requestSubmit();
 		else if (this.type === 'reset') this._internals.form?.reset();
