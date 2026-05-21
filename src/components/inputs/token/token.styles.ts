@@ -52,16 +52,26 @@ export const tokenStyles = css`
 		}
 	}
 
-	:host([expanded]) .token {
+	:host([control="menu"]) .token:active:not(:disabled) {
 		background-color: var(--semantics-buttons-neutral-tinted-is-active-background-color);
 		color: var(--semantics-buttons-neutral-tinted-is-active-content-color);
 	}
 
+	:host([expanded]) .token {
+		background-color: var(--semantics-buttons-neutral-tinted-is-expanded-background-color);
+		color: var(--semantics-buttons-neutral-tinted-is-expanded-content-color);
+	}
+
 	@media (hover: hover) {
 		:host([expanded]) .token:hover:not(:disabled) {
-			background-color: var(--semantics-buttons-neutral-tinted-is-active-background-color);
-			color: var(--semantics-buttons-neutral-tinted-is-active-content-color);
+			background-color: var(--semantics-buttons-neutral-tinted-is-expanded-is-hovered-background-color);
+			color: var(--semantics-buttons-neutral-tinted-is-expanded-is-hovered-content-color);
 		}
+	}
+
+	:host([expanded]) .token:active:not(:disabled) {
+		background-color: var(--semantics-buttons-neutral-tinted-is-expanded-is-active-background-color);
+		color: var(--semantics-buttons-neutral-tinted-is-expanded-is-active-content-color);
 	}
 
 	:host([control="menu"]) .token:focus-visible {

@@ -84,6 +84,12 @@ export const toggleButtonStyles = css`
 		}
 	}
 
+	.toggle-button:active,
+	.toggle-button:has(.toggle-button__input:active) {
+		background-color: var(--semantics-buttons-neutral-tinted-is-active-background-color);
+		color: var(--semantics-buttons-neutral-tinted-is-active-content-color);
+	}
+
 	:host([selected]) .toggle-button {
 		background-color: var(--semantics-buttons-neutral-tinted-is-selected-background-color);
 		color: var(--semantics-buttons-neutral-tinted-is-selected-content-color);
@@ -95,6 +101,12 @@ export const toggleButtonStyles = css`
 			background-color: var(--semantics-buttons-neutral-tinted-is-selected-is-hovered-background-color);
 			color: var(--semantics-buttons-neutral-tinted-is-selected-is-hovered-content-color);
 		}
+	}
+
+	:host([selected]) .toggle-button:active,
+	:host([selected]) .toggle-button:has(.toggle-button__input:active) {
+		background-color: var(--semantics-buttons-neutral-tinted-is-selected-is-active-background-color);
+		color: var(--semantics-buttons-neutral-tinted-is-selected-is-active-content-color);
 	}
 
 	.toggle-button:focus-visible,

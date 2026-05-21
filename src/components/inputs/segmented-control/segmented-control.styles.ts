@@ -118,6 +118,16 @@ export const segmentedControlItemStyles = css`
 		}
 	}
 
+	:host(:not([selected])) .segmented-control__item:active {
+		background-color: var(--semantics-buttons-neutral-tinted-is-active-background-color);
+		color: var(--semantics-buttons-neutral-tinted-is-active-content-color);
+	}
+
+	:host([selected]) .segmented-control__item:active {
+		background-color: var(--semantics-buttons-neutral-tinted-is-selected-is-active-background-color);
+		color: var(--semantics-buttons-neutral-tinted-is-selected-is-active-content-color);
+	}
+
 	:host([disabled]) .segmented-control__item {
 		opacity: var(--primitives-opacity-disabled);
 	}

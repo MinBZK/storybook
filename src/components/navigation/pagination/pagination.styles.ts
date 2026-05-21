@@ -80,9 +80,19 @@ export const paginationStyles = css`
 		}
 	}
 
+	.pagination__page-button:active:not(.is-current) {
+		background-color: var(--semantics-buttons-neutral-tinted-is-active-background-color);
+		color: var(--semantics-buttons-neutral-tinted-is-active-content-color);
+	}
+
 	.pagination__page-button.is-current {
 		background-color: var(--semantics-buttons-neutral-tinted-is-selected-background-color);
 		color: var(--semantics-buttons-neutral-tinted-is-selected-content-color);
+	}
+
+	.pagination__page-button.is-current:active {
+		background-color: var(--semantics-buttons-neutral-tinted-is-selected-is-active-background-color);
+		color: var(--semantics-buttons-neutral-tinted-is-selected-is-active-content-color);
 	}
 
 	@media (forced-colors: active) {
@@ -143,9 +153,53 @@ export const paginationStyles = css`
 	/* # Select (compact fallback) */
 
 	.pagination__select-wrapper {
+		/* Mirrors the dropdown's neutral-tinted state tokens. The visible
+		   <select> sits on top with a transparent background, so the wrapper
+		   carries the hover/active/expanded surface behind it. */
+		--_background-color: transparent;
+		--_content-color: inherit;
+		--_is-hovered-background-color: var(--semantics-buttons-neutral-tinted-is-hovered-background-color);
+		--_is-hovered-content-color: var(--semantics-buttons-neutral-tinted-is-hovered-content-color);
+		--_is-active-background-color: var(--semantics-buttons-neutral-tinted-is-active-background-color);
+		--_is-active-content-color: var(--semantics-buttons-neutral-tinted-is-active-content-color);
+
 		display: inline-flex;
 		position: relative;
+		border-radius: var(--semantics-controls-md-corner-radius);
+		background-color: var(--_background-color);
 		align-items: center;
+		color: var(--_content-color);
+		transition:
+			background-color var(--primitives-transition-duration-fast) var(--primitives-transition-easing-default),
+			color var(--primitives-transition-duration-fast) var(--primitives-transition-easing-default)
+		;
+	}
+
+	@media (hover: hover) {
+		.pagination__select-wrapper:hover {
+			background-color: var(--_is-hovered-background-color);
+			color: var(--_is-hovered-content-color);
+		}
+	}
+
+	.pagination__select-wrapper:active {
+		background-color: var(--_is-active-background-color);
+		color: var(--_is-active-content-color);
+	}
+
+	:host([select-expanded]) .pagination__select-wrapper {
+		--_background-color: var(--semantics-buttons-neutral-tinted-is-expanded-background-color);
+		--_content-color: var(--semantics-buttons-neutral-tinted-is-expanded-content-color);
+		--_is-hovered-background-color: var(--semantics-buttons-neutral-tinted-is-expanded-is-hovered-background-color);
+		--_is-hovered-content-color: var(--semantics-buttons-neutral-tinted-is-expanded-is-hovered-content-color);
+		--_is-active-background-color: var(--semantics-buttons-neutral-tinted-is-expanded-is-active-background-color);
+		--_is-active-content-color: var(--semantics-buttons-neutral-tinted-is-expanded-is-active-content-color);
+	}
+
+	@media (prefers-reduced-motion: reduce) {
+		.pagination__select-wrapper {
+			transition: none;
+		}
 	}
 
 	.pagination__select {
@@ -158,7 +212,7 @@ export const paginationStyles = css`
 		height: var(--semantics-controls-md-min-size);
 		padding-block: var(--primitives-space-8);
 		padding-inline-start: var(--primitives-space-12);
-		padding-inline-end: calc(var(--primitives-space-24) + var(--primitives-space-4));
+		padding-inline-end: calc(var(--primitives-space-24) + var(--primitives-space-12));
 		color: inherit;
 		font: var(--semantics-buttons-md-font);
 		appearance: none;
