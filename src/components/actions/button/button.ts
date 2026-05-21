@@ -50,6 +50,12 @@ type PopupType = 'menu' | 'listbox' | 'dialog' | 'tree' | 'grid';
 export class NLDDButton extends LitElement {
 	static override styles = buttonStyles;
 
+	// Form-associated so a type="submit"/"reset" button can drive its form.
+	// The inner <button> lives in the shadow root and has no form owner across
+	// the shadow boundary, so the host element must carry the association.
+	static formAssociated = true;
+	private _internals = this.attachInternals();
+
 	@property({ type: String, reflect: true })
 	variant: Variant = 'neutral-tinted';
 
@@ -173,6 +179,14 @@ export class NLDDButton extends LitElement {
 			e.stopPropagation();
 			return;
 		}
+		// A link button has no form behaviour. Otherwise drive the associated
+		// form ourselves: the shadow <button type="submit"|"reset"> can't reach
+		// the light-DOM form across the shadow boundary. requestSubmit() runs
+		// constraint validation and fires a cancelable submit event, matching a
+		// native submit button.
+		if (this.href) return;
+		if (this.type === 'submit') this._internals.form?.requestSubmit();
+		else if (this.type === 'reset') this._internals.form?.reset();
 	}
 
 	/** Resolves the effective rel value for link rendering. */
