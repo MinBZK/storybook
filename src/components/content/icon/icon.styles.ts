@@ -13,8 +13,9 @@ export const iconStyles = css`
 		--_size: 100%;
 		--_color: inherit;
 
-		display: inline-block;
+		display: inline-flex;
 		width: var(--_size);
+		align-items: center;
 		color: var(--_color);
 	}
 
