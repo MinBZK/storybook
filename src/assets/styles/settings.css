@@ -1070,10 +1070,6 @@
 
 	--components-document-tab-bar-tab-title-font: var(--primitives-font-body-sm-bold-flat);
 
-	/* ## Form field */
-
-	--components-form-field-gap: var(--primitives-space-2);
-
 	/* ## Icon — rijkskleuren
 
 	   Shade per rijkskleur picked to keep ≥400 shade distance from the
