@@ -41,11 +41,18 @@ describe('nldd-icon', () => {
 		expect(el.color).toBe('');
 	});
 
-	it('inherits parent color when no color attribute is set', async () => {
+	it('inherits parent color, and the SVG fill resolves to it through currentColor', async () => {
 		const wrapper = await fixture<HTMLElement>('<div style="color: rgb(255, 0, 0);"><nldd-icon></nldd-icon></div>');
 		const icon = wrapper.querySelector('nldd-icon') as NLDDIcon;
 		await waitForUpdate(icon);
+		// Host inherits the parent color.
 		expect(getComputedStyle(icon).color).toBe('rgb(255, 0, 0)');
+		// And the SVG paint actually uses it: the icon SVG paints with
+		// fill="currentColor", which must resolve through the shadow boundary
+		// to the inherited color — not break into the default black.
+		const painted = icon.shadowRoot!.querySelector('svg [fill="currentColor"], svg path');
+		expect(painted).not.toBeNull();
+		expect(getComputedStyle(painted as Element).fill).toBe('rgb(255, 0, 0)');
 		cleanup(wrapper);
 	});
 });
