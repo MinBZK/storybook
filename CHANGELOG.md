@@ -20,15 +20,16 @@ here; consult the commit history if you need that level of detail.
 
 ### Added
 
-- **button**: een `text`-slot voor rijke labelinhoud (inline markup) ([c3fb360](https://github.com/MinBZK/storybook/commit/c3fb360))
-- **button / icon-button**: form-associatie via `ElementInternals`, zodat `type="submit"`/`"reset"` het formulier aandrijven ([fc56980](https://github.com/MinBZK/storybook/commit/fc56980), [0867ae6](https://github.com/MinBZK/storybook/commit/0867ae6))
-- **inputs**: `:active` (pressed) state op pagination-paginaknoppen, de pagination-select, segmented-control items, toggle-button en de menu-token; de pagination-select krijgt daarnaast hover/active/expanded surfaces zoals de dropdown, en de token-expanded volgt nu de volledige `is-expanded`-tokenfamilie ([216efdd](https://github.com/MinBZK/storybook/commit/216efdd))
+* **actions:** add a text slot to button for rich label content ([c3fb360](https://github.com/MinBZK/storybook/commit/c3fb360))
+* **actions:** make button form-associated so type=submit/reset works ([fc56980](https://github.com/MinBZK/storybook/commit/fc56980))
+* **actions:** make icon-button form-associated so type=submit/reset works ([0867ae6](https://github.com/MinBZK/storybook/commit/0867ae6))
+* **inputs:** add active states and align expanded states across controls ([216efdd](https://github.com/MinBZK/storybook/commit/216efdd))
 
 ### Fixed
 
-- **form-field**: ruimere afstand tussen label en control zodat de focus-ring het label niet meer overlapt ([032528a](https://github.com/MinBZK/storybook/commit/032528a))
-- **forms**: ruimere "tight" gap tussen gestapelde formulierelementen ([98a9f82](https://github.com/MinBZK/storybook/commit/98a9f82))
-- **layout**: container gebruikt `height: auto` in plaats van `100%` ([017a38d](https://github.com/MinBZK/storybook/commit/017a38d))
+* **forms:** widen form-field label-to-control gap so focus ring clears the label ([032528a](https://github.com/MinBZK/storybook/commit/032528a))
+* **forms:** widen the tight gap between stacked form elements ([98a9f82](https://github.com/MinBZK/storybook/commit/98a9f82))
+* **layout:** container height auto instead of 100% ([017a38d](https://github.com/MinBZK/storybook/commit/017a38d))
 
 ## <small>0.8.45 (2026-05-21)</small>
 
