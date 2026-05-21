@@ -237,6 +237,7 @@ export const topNavigationBarStyles = css`
 		display: flex;
 		min-width: 0;
 		align-items: center;
+		gap: var(--primitives-space-12);
 		flex-grow: 1;
 	}
 
