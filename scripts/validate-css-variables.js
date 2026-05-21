@@ -90,6 +90,11 @@ function parseComponentFile(filePath) {
   const usages = new Set();
   let match;
   while ((match = VAR_USAGE_PATTERN.exec(content)) !== null) {
+    // Skip dynamic interpolations like `var(--primitives-space-${size})`:
+    // the captured name stops at the `$`, leaving an incomplete prefix
+    // that can't be validated statically. The runtime suffix is
+    // constrained by the component's own TypeScript types.
+    if (content[match.index + match[0].length] === '$') continue;
     usages.add(match[1]);
   }
 
