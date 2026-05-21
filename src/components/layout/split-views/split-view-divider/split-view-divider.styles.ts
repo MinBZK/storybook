@@ -18,7 +18,7 @@ export const splitViewDividerStyles = css`
 	}
 
 	:host([has-drag-handle]) {
-		--_thickness: 12px;
+		--_thickness: var(--primitives-space-12);
 	}
 
 
@@ -50,14 +50,14 @@ export const splitViewDividerStyles = css`
 
 	.split-view-divider__drag-handle {
 		position: absolute;
-		border-radius: 9999px;
+		border-radius: var(--primitives-corner-radius-full);
 		background-color: var(--semantics-content-secondary-color);
-		width: 40px;
-		height: 4px;
+		width: var(--primitives-space-40);
+		height: var(--primitives-space-4);
 	}
 
 	:host([orientation="vertical"]) .split-view-divider__drag-handle {
-		width: 4px;
-		height: 40px;
+		width: var(--primitives-space-4);
+		height: var(--primitives-space-40);
 	}
 `;
