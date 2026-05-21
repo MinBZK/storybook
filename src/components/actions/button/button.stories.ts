@@ -332,3 +332,24 @@ export const CustomIconSlot = {
 	},
 },
 };
+
+export const TextSlot = {
+	render: () => html`
+	<div style="display: flex; flex-wrap: wrap; gap: 16px; align-items: center;">
+		<nldd-button>
+			<span slot="text">Tekst met <strong>nadruk</strong></span>
+		</nldd-button>
+		<nldd-button variant="secondary" accessible-label="Prijs 15 euro, was 20 euro">
+			<span slot="text">Prijs <span style="text-decoration: line-through;">€20</span> €15</span>
+		</nldd-button>
+	</div>
+`,
+	parameters: {
+		controls: { disable: true },
+		docs: {
+			description: {
+				story: 'Gebruik de <code>text</code> slot wanneer de knoptekst meer dan platte tekst nodig heeft (inline markup). Het <code>text</code> attribuut heeft voorrang; zet <code>accessible-label</code> wanneer de inhoud geen leesbare platte tekst is.',
+			},
+	},
+},
+};

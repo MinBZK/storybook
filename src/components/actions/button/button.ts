@@ -19,6 +19,7 @@
  * @attr {string} target - Link target (e.g. '_blank'); only used when href is set
  * @attr {string} rel - Link rel attribute; defaults to 'noopener noreferrer' when target is '_blank'
  *
+ * @slot text - Slot for custom button content (e.g. text with inline markup). Only used when the text attribute is not set. Provide accessible-label when the slotted content isn't plain text.
  * @slot start-icon - Slot for a custom start icon (e.g. custom SVG). Only used when start-icon attribute is not set.
  * @slot end-icon - Slot for a custom end icon (e.g. custom SVG). Only used when end-icon attribute is not set.
  *
