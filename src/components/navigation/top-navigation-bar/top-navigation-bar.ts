@@ -80,6 +80,11 @@ export class NLDDTopNavigationBar extends withTranslations(LitElement, nlddTopNa
 	private _compactRAF: number | null = null;
 	private _setupRAF: number | null = null;
 
+	// Tracks the accessible-label we last applied to each slotted menu-bar, so
+	// our default can follow translation changes while a consumer-set label is
+	// left untouched — including one set asynchronously after the first sync.
+	private _appliedMenuBarLabels = new WeakMap<NLDDMenuBar, string>();
+
 	override willUpdate(changed: PropertyValues): void {
 		super.willUpdate(changed);
 		if (changed.has('translations')) {
@@ -105,15 +110,23 @@ export class NLDDTopNavigationBar extends withTranslations(LitElement, nlddTopNa
 	}
 
 	private _syncSlottedMenuBarLabels(): void {
-		// Mark labels we apply with a data attribute. Consumer-set labels
-		// (no marker) are left alone; our defaults follow translation changes.
+		// Apply a default accessible-label that follows translation changes,
+		// but back off the moment the consumer owns the label.
 		type LabelKey = keyof NLDDTopNavigationBarTranslations;
 		const setDefault = (menuBar: NLDDMenuBar | null, labelKey: LabelKey) => {
 			if (!menuBar) return;
-			const ours = menuBar.hasAttribute('data-default-label');
-			if (menuBar.hasAttribute('accessible-label') && !ours) return;
-			menuBar.setAttribute('accessible-label', this._t(labelKey));
-			menuBar.setAttribute('data-default-label', '');
+			const current = menuBar.getAttribute('accessible-label');
+			const ourLast = this._appliedMenuBarLabels.get(menuBar);
+			// Consumer owns the label if they set one we never applied, or
+			// changed it away from our last applied value (even asynchronously
+			// after the first sync). Stop managing it in both cases.
+			if (current !== null && current !== ourLast) {
+				this._appliedMenuBarLabels.delete(menuBar);
+				return;
+			}
+			const next = this._t(labelKey);
+			menuBar.setAttribute('accessible-label', next);
+			this._appliedMenuBarLabels.set(menuBar, next);
 		};
 		setDefault(this._getSlottedMenuBar(this._globalSlot), 'components.top-navigation-bar.global-menu-bar-label');
 		setDefault(this._getSlottedMenuBar(this._utilitySlot), 'components.top-navigation-bar.utility-menu-bar-label');
