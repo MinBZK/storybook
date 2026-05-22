@@ -978,12 +978,12 @@
 	--semantics-page-sections-sm-margin-inline: var(--primitives-space-16);
 	--semantics-page-sections-sm-margin-block: var(--primitives-space-16);
 	--semantics-page-sections-sm-gap: var(--primitives-space-16);
-	--semantics-page-sections-md-margin-inline: var(--primitives-space-32);
-	--semantics-page-sections-md-margin-block: var(--primitives-space-24);
+	--semantics-page-sections-md-margin-inline: var(--primitives-space-40);
+	--semantics-page-sections-md-margin-block: var(--primitives-space-32);
 	--semantics-page-sections-md-gap: var(--primitives-space-24);
-	--semantics-page-sections-lg-margin-inline: var(--primitives-space-48);
-	--semantics-page-sections-lg-margin-block: var(--primitives-space-32);
-	--semantics-page-sections-lg-gap: var(--primitives-space-24);
+	--semantics-page-sections-lg-margin-inline: var(--primitives-space-56);
+	--semantics-page-sections-lg-margin-block: var(--primitives-space-48);
+	--semantics-page-sections-lg-gap: var(--primitives-space-32);
 
 	/* ## Overlays */
 
