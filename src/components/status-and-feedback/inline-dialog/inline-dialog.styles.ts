@@ -59,6 +59,14 @@ export const inlineDialogStyles = css`
 		align-items: center;
 	}
 
+	.inline-dialog__main {
+		display: flex;
+		width: 100%;
+		flex-direction: column;
+		align-items: center;
+		gap: var(--primitives-space-2);
+	}
+
 	.inline-dialog__icon {
 		display: flex;
 		width: var(--_icon-size);
@@ -73,7 +81,7 @@ export const inlineDialogStyles = css`
 		margin: 0;
 		text-align: center;
 		color: var(--semantics-content-color);
-		font: var(--primitives-font-body-md-bold-tight);
+		font: var(--primitives-font-body-lg-bold-tight);
 		text-wrap: pretty;
 	}
 
@@ -86,7 +94,7 @@ export const inlineDialogStyles = css`
 		margin: 0;
 		text-align: center;
 		color: var(--semantics-content-color);
-		font: var(--primitives-font-body-sm-regular-tight);
+		font: var(--primitives-font-body-md-regular-tight);
 		text-wrap: pretty;
 	}
 
@@ -98,12 +106,12 @@ export const inlineDialogStyles = css`
 		display: none;
 	}
 
-	.inline-dialog__actions {
+	.inline-dialog__footer {
 		width: 100%;
 		padding-top: var(--primitives-space-16);
 	}
 
-	.inline-dialog__actions[hidden] {
+	.inline-dialog__footer[hidden] {
 		display: none;
 	}
 `;
