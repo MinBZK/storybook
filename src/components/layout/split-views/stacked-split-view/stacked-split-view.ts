@@ -8,7 +8,7 @@
  *
  * @element nldd-stacked-split-view
  *
- * @attr {'inherit'|'default'|'tinted'} background - Use a tinted background color (cascades to descendants)
+ * @attr {'inherit'|'base'|'tinted'} background - Use a tinted background color (cascades to descendants)
  * @attr {number} panes - Number of panes (default: 2)
  *
  * @slot pane-1 - First pane
@@ -25,7 +25,7 @@ export class NLDDStackedSplitView extends LitElement {
 	static override styles = stackedSplitViewStyles;
 
 	@property({ type: String, reflect: true })
-	background: 'inherit' | 'default' | 'tinted' = 'inherit';
+	background: 'inherit' | 'base' | 'tinted' = 'inherit';
 
 	@property({ type: Number, reflect: true })
 	panes = 2;

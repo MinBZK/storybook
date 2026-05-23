@@ -36,7 +36,7 @@ export default {
 	argTypes: {
 		background: {
 			control: { type: 'select' },
-			options: ['inherit', 'default', 'tinted'],
+			options: ['inherit', 'base', 'tinted'],
 			description: 'Tinted achtergrond — cascade van --context-parent-background-color naar alle afstammelingen inclusief nldd-page en de fade overlay',
 			table: { defaultValue: { summary: 'inherit' } },
 		},

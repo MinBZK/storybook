@@ -34,13 +34,13 @@ export default {
 	argTypes: {
 		background: {
 			control: { type: 'select' },
-			options: ['default', 'tinted'],
+			options: ['base', 'tinted'],
 			description: 'Tinted achtergrond — cascade van --context-parent-background-color naar alle afstammelingen',
-			table: { defaultValue: { summary: 'default' } },
+			table: { defaultValue: { summary: 'base' } },
 		},
 	},
 	args: {
-		background: 'default',
+		background: 'base',
 	},
 };
 

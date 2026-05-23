@@ -18,7 +18,7 @@
  *
  * @element nldd-bar-split-view
  *
- * @attr {'inherit'|'default'|'tinted'} background  - Background color variant (default: inherit)
+ * @attr {'inherit'|'base'|'tinted'} background  - Background color variant (default: inherit)
  *
  * Responsive visibility per child (direct children of nldd-bar-split-view):
  * @attr {'sm'|'md'|'lg'} above - Show this panel from this breakpoint and larger
@@ -50,7 +50,7 @@ export class NLDDBarSplitView extends LitElement {
 	static override styles = barSplitViewStyles;
 
 	@property({ type: String, reflect: true })
-	background: 'inherit' | 'default' | 'tinted' = 'inherit';
+	background: 'inherit' | 'base' | 'tinted' = 'inherit';
 
 	// null until connectedCallback measures the viewport. Before measurement the
 	// template falls back to DOM order with dividers — no breakpoint-specific

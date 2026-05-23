@@ -11,7 +11,7 @@
  *
  * @attr {boolean} sticky-header - Sticky header
  * @attr {boolean} sticky-footer - Sticky footer
- * @attr {'inherit'|'default'|'tinted'} background - Use a grey background instead of white
+ * @attr {'inherit'|'base'|'tinted'} background - Use a grey background instead of white
  *
  * @slot header - Header content
  * @slot - Main content (scrollable)
@@ -33,7 +33,7 @@ export class NLDDPage extends LitElement {
 	stickyFooter = false;
 
 	@property({ type: String, reflect: true })
-	background: 'inherit' | 'default' | 'tinted' = 'inherit';
+	background: 'inherit' | 'base' | 'tinted' = 'inherit';
 
 	@state()
 	_scrolled = false;

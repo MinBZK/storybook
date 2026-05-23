@@ -28,10 +28,10 @@ describe('nldd-app-view', () => {
 		expect(el.querySelector('#child')).not.toBeNull();
 	});
 
-	it('defaults background to "default"', async () => {
+	it('defaults background to "base"', async () => {
 		el = await fixture('<nldd-app-view></nldd-app-view>');
 		await waitForUpdate(el);
-		expect(el.getAttribute('background')).toBe('default');
+		expect(el.getAttribute('background')).toBe('base');
 	});
 
 	it('reflects background="tinted" attribute', async () => {

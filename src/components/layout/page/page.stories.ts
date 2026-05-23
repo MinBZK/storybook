@@ -43,7 +43,7 @@ export default {
 	argTypes: {
 		background: {
 			control: { type: 'select' },
-			options: ['inherit', 'default', 'tinted'],
+			options: ['inherit', 'base', 'tinted'],
 			description: 'Grijze achtergrond',
 			table: { defaultValue: { summary: 'false' } },
 		},
