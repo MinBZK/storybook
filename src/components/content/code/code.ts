@@ -13,7 +13,8 @@
  *
  * ## Syntax highlighting
  * Set `language` to one of the supported grammars (yaml, json, javascript,
- * typescript, css, html, bash, markdown) to highlight the slot content
+ * typescript, css, html, xml, bash, markdown, rust, gherkin, toml, sql,
+ * python) to highlight the slot content
  * with Prism. Without `language` the slot content is rendered raw, no
  * highlighting applied. Grammars are loaded lazily on first use, so a
  * page that never sets `language` ships zero grammar code.
@@ -31,7 +32,7 @@
  *
  * @element nldd-code
  *
- * @attr {string} language - Grammar to highlight with (yaml, json, javascript, typescript, css, html, bash, markdown). Empty disables highlighting.
+ * @attr {string} language - Grammar to highlight with (yaml, json, javascript, typescript, css, html, xml, bash, markdown, rust, gherkin, toml, sql, python). Empty disables highlighting.
  * @attr {boolean} wrap - Wrap long lines instead of horizontal scroll
  *
  * @slot - Default slot for the code/text content
@@ -43,8 +44,8 @@ import { codeStyles } from './code.styles.js';
 import { codeTemplate } from './code.template.js';
 import { onColorSchemeChange, forceScrollLayerRepaint } from '../../../utilities/color-scheme-repaint.js';
 
-/* Map our public language names to Prism grammar loaders. `html` shares
- * the markup grammar (covers html/xml/svg). Static `import()` calls let
+/* Map our public language names to Prism grammar loaders. `html` and `xml`
+ * share the markup grammar (covers html/xml/svg). Static `import()` calls let
  * the bundler emit one chunk per file, so consumers only download
  * grammars they actually render. */
 const GRAMMAR_LOADERS: Record<string, () => Promise<unknown>> = {
@@ -54,8 +55,14 @@ const GRAMMAR_LOADERS: Record<string, () => Promise<unknown>> = {
 	typescript: () => import('prismjs/components/prism-typescript.js'),
 	css: () => import('prismjs/components/prism-css.js'),
 	html: () => import('prismjs/components/prism-markup.js'),
+	xml: () => import('prismjs/components/prism-markup.js'),
 	bash: () => import('prismjs/components/prism-bash.js'),
 	markdown: () => import('prismjs/components/prism-markdown.js'),
+	rust: () => import('prismjs/components/prism-rust.js'),
+	gherkin: () => import('prismjs/components/prism-gherkin.js'),
+	toml: () => import('prismjs/components/prism-toml.js'),
+	sql: () => import('prismjs/components/prism-sql.js'),
+	python: () => import('prismjs/components/prism-python.js'),
 };
 
 const grammarLoads = new Map<string, Promise<unknown>>();
