@@ -11,6 +11,8 @@ nldd-rich-text {
 		calc(100% - var(--components-rich-text-main-max-width))
 	);
 
+	container-type: inline-size;
+	container-name: rich-text-container;
 	display: grid;
 	grid-template-columns:
 		[full-start]   0
@@ -82,27 +84,15 @@ nldd-rich-text :is(h1, h2, h3, h4, h5, h6) {
 /* # Heading 1 */
 
 nldd-rich-text h1 {
-	@media (max-width: 640px) {
+	@container rich-text-container (max-width: 640px) {
 		font: var(--primitives-font-display-1-sm);
 	}
 
-	@media (min-width: 641px) and (max-width: 1007px) {
+	@container rich-text-container (min-width: 641px) and (max-width: 1007px) {
 		font: var(--primitives-font-display-1-md);
 	}
 
-	@media (min-width: 1008px) {
-		font: var(--primitives-font-display-1-lg);
-	}
-
-	@container layout-container (max-width: 640px) {
-		font: var(--primitives-font-display-1-sm);
-	}
-
-	@container layout-container (min-width: 641px) and (max-width: 1007px) {
-		font: var(--primitives-font-display-1-md);
-	}
-
-	@container layout-container (min-width: 1008px) {
+	@container rich-text-container (min-width: 1008px) {
 		font: var(--primitives-font-display-1-lg);
 	}
 }
@@ -111,27 +101,15 @@ nldd-rich-text h1 {
 /* # Heading 2 */
 
 nldd-rich-text h2 {
-	@media (max-width: 640px) {
+	@container rich-text-container (max-width: 640px) {
 		font: var(--primitives-font-display-2-sm);
 	}
 
-	@media (min-width: 641px) and (max-width: 1007px) {
+	@container rich-text-container (min-width: 641px) and (max-width: 1007px) {
 		font: var(--primitives-font-display-2-md);
 	}
 
-	@media (min-width: 1008px) {
-		font: var(--primitives-font-display-2-lg);
-	}
-
-	@container layout-container (max-width: 640px) {
-		font: var(--primitives-font-display-2-sm);
-	}
-
-	@container layout-container (min-width: 641px) and (max-width: 1007px) {
-		font: var(--primitives-font-display-2-md);
-	}
-
-	@container layout-container (min-width: 1008px) {
+	@container rich-text-container (min-width: 1008px) {
 		font: var(--primitives-font-display-2-lg);
 	}
 }
@@ -140,27 +118,15 @@ nldd-rich-text h2 {
 /* # Heading 3 */
 
 nldd-rich-text h3 {
-	@media (max-width: 640px) {
+	@container rich-text-container (max-width: 640px) {
 		font: var(--primitives-font-display-3-sm);
 	}
 
-	@media (min-width: 641px) and (max-width: 1007px) {
+	@container rich-text-container (min-width: 641px) and (max-width: 1007px) {
 		font: var(--primitives-font-display-3-md);
 	}
 
-	@media (min-width: 1008px) {
-		font: var(--primitives-font-display-3-lg);
-	}
-
-	@container layout-container (max-width: 640px) {
-		font: var(--primitives-font-display-3-sm);
-	}
-
-	@container layout-container (min-width: 641px) and (max-width: 1007px) {
-		font: var(--primitives-font-display-3-md);
-	}
-
-	@container layout-container (min-width: 1008px) {
+	@container rich-text-container (min-width: 1008px) {
 		font: var(--primitives-font-display-3-lg);
 	}
 }
@@ -169,27 +135,15 @@ nldd-rich-text h3 {
 /* # Heading 4 */
 
 nldd-rich-text h4 {
-	@media (max-width: 640px) {
+	@container rich-text-container (max-width: 640px) {
 		font: var(--primitives-font-display-4-sm);
 	}
 
-	@media (min-width: 641px) and (max-width: 1007px) {
+	@container rich-text-container (min-width: 641px) and (max-width: 1007px) {
 		font: var(--primitives-font-display-4-md);
 	}
 
-	@media (min-width: 1008px) {
-		font: var(--primitives-font-display-4-lg);
-	}
-
-	@container layout-container (max-width: 640px) {
-		font: var(--primitives-font-display-4-sm);
-	}
-
-	@container layout-container (min-width: 641px) and (max-width: 1007px) {
-		font: var(--primitives-font-display-4-md);
-	}
-
-	@container layout-container (min-width: 1008px) {
+	@container rich-text-container (min-width: 1008px) {
 		font: var(--primitives-font-display-4-lg);
 	}
 }
@@ -198,27 +152,15 @@ nldd-rich-text h4 {
 /* # Heading 5 */
 
 nldd-rich-text h5 {
-	@media (max-width: 640px) {
+	@container rich-text-container (max-width: 640px) {
 		font: var(--primitives-font-display-5-sm);
 	}
 
-	@media (min-width: 641px) and (max-width: 1007px) {
+	@container rich-text-container (min-width: 641px) and (max-width: 1007px) {
 		font: var(--primitives-font-display-5-md);
 	}
 
-	@media (min-width: 1008px) {
-		font: var(--primitives-font-display-5-lg);
-	}
-
-	@container layout-container (max-width: 640px) {
-		font: var(--primitives-font-display-5-sm);
-	}
-
-	@container layout-container (min-width: 641px) and (max-width: 1007px) {
-		font: var(--primitives-font-display-5-md);
-	}
-
-	@container layout-container (min-width: 1008px) {
+	@container rich-text-container (min-width: 1008px) {
 		font: var(--primitives-font-display-5-lg);
 	}
 }
@@ -227,27 +169,15 @@ nldd-rich-text h5 {
 /* # Heading 6 */
 
 nldd-rich-text h6 {
-	@media (max-width: 640px) {
+	@container rich-text-container (max-width: 640px) {
 		font: var(--primitives-font-display-6-sm);
 	}
 
-	@media (min-width: 641px) and (max-width: 1007px) {
+	@container rich-text-container (min-width: 641px) and (max-width: 1007px) {
 		font: var(--primitives-font-display-6-md);
 	}
 
-	@media (min-width: 1008px) {
-		font: var(--primitives-font-display-6-lg);
-	}
-
-	@container layout-container (max-width: 640px) {
-		font: var(--primitives-font-display-6-sm);
-	}
-
-	@container layout-container (min-width: 641px) and (max-width: 1007px) {
-		font: var(--primitives-font-display-6-md);
-	}
-
-	@container layout-container (min-width: 1008px) {
+	@container rich-text-container (min-width: 1008px) {
 		font: var(--primitives-font-display-6-lg);
 	}
 }
@@ -390,18 +320,7 @@ nldd-rich-text blockquote {
 	border-top-left-radius: var(--semantics-blockquotes-corner-radius);
 	font: var(--semantics-blockquotes-md-quote-font);
 
-	@media (max-width: 640px) {
-		gap: calc(var(--semantics-blockquotes-sm-spacing) / 2);
-		margin-block: max(
-			0px,
-			calc(var(--semantics-blockquotes-sm-spacing) - var(--_spacing))
-		);
-		padding-block-start: var(--semantics-blockquotes-sm-spacing);
-		padding-inline: var(--semantics-blockquotes-sm-spacing);
-		font: var(--semantics-blockquotes-sm-quote-font);
-	}
-
-	@container layout-container (max-width: 640px) {
+	@container rich-text-container (max-width: 640px) {
 		gap: calc(var(--semantics-blockquotes-sm-spacing) / 2);
 		margin-block: max(
 			0px,
@@ -477,13 +396,7 @@ nldd-rich-text table {
 	-webkit-overflow-scrolling: touch;
 	scrollbar-width: thin;
 
-	@media (min-width: 641px) {
-		display: table;
-		overflow-x: unset;
-		scrollbar-width: unset;
-	}
-
-	@container layout-container (min-width: 641px) {
+	@container rich-text-container (min-width: 641px) {
 		display: table;
 		overflow-x: unset;
 		scrollbar-width: unset;
@@ -504,16 +417,12 @@ nldd-rich-text th {
 /* # Table Data Cell */
 
 nldd-rich-text td {
-	min-width: var(--primitives-area-120);
+	min-width: var(--primitives-area-160);
 	padding: var(--primitives-space-6);
 	border-bottom: var(--semantics-dividers-thickness) solid var(--semantics-dividers-color);
 	font: var(--primitives-font-body-md-regular-snug);
 
-	@media (min-width: 641px) {
-		min-width: unset;
-	}
-
-	@container layout-container (min-width: 641px) {
+	@container rich-text-container (min-width: 641px) {
 		min-width: unset;
 	}
 }
