@@ -11,10 +11,20 @@ export const twoThirdsOneThirdSectionStyles = css`
 
 	/* # Host */
 
-	/* No own container-type: page-sections read the outer layout-container
-	   (set by nldd-page / nldd-card). @media is the fallback for contexts
-	   without a layout-container. */
+	/* Each section establishes its own page-section-container (set inline on
+	   the host by PageSectionMixin); the responsive padding and gap below query
+	   it directly. */
 	:host {
+		/* Block-padding overrides from PageSectionMixin; 'initial' lets the
+		   block fall back to the responsive default until the mixin sets one. */
+		--_padding-top: initial;
+		--_padding-bottom: initial;
+		--_sm-padding-top: initial;
+		--_sm-padding-bottom: initial;
+		--_md-padding-top: initial;
+		--_md-padding-bottom: initial;
+		--_lg-padding-top: initial;
+		--_lg-padding-bottom: initial;
 		--_max-width: var(--semantics-page-sections-body-max-width);
 
 		display: flex;
@@ -41,34 +51,23 @@ export const twoThirdsOneThirdSectionStyles = css`
 		flex-direction: column;
 		align-items: center;
 
-		@media (max-width: ${smMax}) {
+
+		@container page-section-container (max-width: ${smMax}) {
 			padding-inline: var(--semantics-page-sections-sm-margin-inline);
-			padding-block: var(--semantics-page-sections-sm-margin-block);
+			padding-top: var(--_sm-padding-top, var(--_padding-top, var(--semantics-page-sections-sm-margin-block)));
+			padding-bottom: var(--_sm-padding-bottom, var(--_padding-bottom, var(--semantics-page-sections-sm-margin-block)));
 		}
 
-		@media (min-width: ${mdMin}) and (max-width: ${mdMax}) {
+		@container page-section-container (min-width: ${mdMin}) and (max-width: ${mdMax}) {
 			padding-inline: var(--semantics-page-sections-md-margin-inline);
-			padding-block: var(--semantics-page-sections-md-margin-block);
+			padding-top: var(--_md-padding-top, var(--_padding-top, var(--semantics-page-sections-md-margin-block)));
+			padding-bottom: var(--_md-padding-bottom, var(--_padding-bottom, var(--semantics-page-sections-md-margin-block)));
 		}
 
-		@media (min-width: ${lgMin}) {
+		@container page-section-container (min-width: ${lgMin}) {
 			padding-inline: var(--semantics-page-sections-lg-margin-inline);
-			padding-block: var(--semantics-page-sections-lg-margin-block);
-		}
-
-		@container layout-container (max-width: ${smMax}) {
-			padding-inline: var(--semantics-page-sections-sm-margin-inline);
-			padding-block: var(--semantics-page-sections-sm-margin-block);
-		}
-
-		@container layout-container (min-width: ${mdMin}) and (max-width: ${mdMax}) {
-			padding-inline: var(--semantics-page-sections-md-margin-inline);
-			padding-block: var(--semantics-page-sections-md-margin-block);
-		}
-
-		@container layout-container (min-width: ${lgMin}) {
-			padding-inline: var(--semantics-page-sections-lg-margin-inline);
-			padding-block: var(--semantics-page-sections-lg-margin-block);
+			padding-top: var(--_lg-padding-top, var(--_padding-top, var(--semantics-page-sections-lg-margin-block)));
+			padding-bottom: var(--_lg-padding-bottom, var(--_padding-bottom, var(--semantics-page-sections-lg-margin-block)));
 		}
 	}
 
@@ -81,27 +80,15 @@ export const twoThirdsOneThirdSectionStyles = css`
 		max-width: var(--_max-width);
 		flex-direction: column;
 
-		@media (max-width: ${smMax}) {
+		@container page-section-container (max-width: ${smMax}) {
 			gap: var(--semantics-page-sections-sm-gap);
 		}
 
-		@media (min-width: ${mdMin}) and (max-width: ${mdMax}) {
+		@container page-section-container (min-width: ${mdMin}) and (max-width: ${mdMax}) {
 			gap: var(--semantics-page-sections-md-gap);
 		}
 
-		@media (min-width: ${lgMin}) {
-			gap: var(--semantics-page-sections-lg-gap);
-		}
-
-		@container layout-container (max-width: ${smMax}) {
-			gap: var(--semantics-page-sections-sm-gap);
-		}
-
-		@container layout-container (min-width: ${mdMin}) and (max-width: ${mdMax}) {
-			gap: var(--semantics-page-sections-md-gap);
-		}
-
-		@container layout-container (min-width: ${lgMin}) {
+		@container page-section-container (min-width: ${lgMin}) {
 			gap: var(--semantics-page-sections-lg-gap);
 		}
 	}
@@ -110,27 +97,24 @@ export const twoThirdsOneThirdSectionStyles = css`
 		display: flex;
 		flex-wrap: wrap;
 
-		@media (max-width: ${smMax}) {
+		/* Below ~768px the 2/3 column would shrink under 400px and read as
+		   two near-equal columns; stack to a single column instead. nowrap
+		   stops the column-direction wrap container from stretching the
+		   shorter column to fill height. */
+		@container page-section-container (max-width: 768px) {
+			flex-direction: column;
+			flex-wrap: nowrap;
+		}
+
+		@container page-section-container (max-width: ${smMax}) {
 			gap: var(--semantics-page-sections-sm-gap);
 		}
 
-		@media (min-width: ${mdMin}) and (max-width: ${mdMax}) {
+		@container page-section-container (min-width: ${mdMin}) and (max-width: ${mdMax}) {
 			gap: var(--semantics-page-sections-md-gap);
 		}
 
-		@media (min-width: ${lgMin}) {
-			gap: var(--semantics-page-sections-lg-gap);
-		}
-
-		@container layout-container (max-width: ${smMax}) {
-			gap: var(--semantics-page-sections-sm-gap);
-		}
-
-		@container layout-container (min-width: ${mdMin}) and (max-width: ${mdMax}) {
-			gap: var(--semantics-page-sections-md-gap);
-		}
-
-		@container layout-container (min-width: ${lgMin}) {
+		@container page-section-container (min-width: ${lgMin}) {
 			gap: var(--semantics-page-sections-lg-gap);
 		}
 	}

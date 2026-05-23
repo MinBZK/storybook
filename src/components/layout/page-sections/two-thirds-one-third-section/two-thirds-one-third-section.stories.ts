@@ -1,6 +1,7 @@
-import { html, nothing } from 'lit';
+import { html } from 'lit';
 import './two-thirds-one-third-section.js';
 import '../../../content/rich-text/rich-text.js';
+import { pageSectionArgTypes, pageSectionArgs, pageSectionAttrs } from '../page-section-controls.js';
 
 /**
  * Gebruik een two-thirds one-third section wanneer de hoofdinhoud de meeste
@@ -31,21 +32,13 @@ export default {
 			type: 'stable',
 		},
 	},
-	argTypes: {
-		width: {
-			control: 'text',
-			description: 'Body max-width: "full" removes the constraint, of een CSS length (bv. "480px") overschrijft de default max-width',
-			table: { defaultValue: { summary: '' } },
-		},
-	},
-	args: {
-		width: '',
-	},
+	argTypes: pageSectionArgTypes,
+	args: pageSectionArgs,
 };
 
 export const Standaard = {
-	render: ({ width }: Record<string, any>) => html`
-		<nldd-two-thirds-one-third-section width=${width || nothing}>
+	render: (args: Record<string, any>) => html`
+		<nldd-two-thirds-one-third-section ${pageSectionAttrs(args)}>
 			<nldd-rich-text slot="header">
 				<h2>Sectietitel</h2>
 			</nldd-rich-text>

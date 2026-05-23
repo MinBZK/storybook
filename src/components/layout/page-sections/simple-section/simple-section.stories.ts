@@ -1,6 +1,7 @@
-import { html, nothing } from 'lit';
+import { html } from 'lit';
 import './simple-section.js';
 import '../../../content/rich-text/rich-text.js';
+import { pageSectionArgTypes, pageSectionArgs, pageSectionAttrs } from '../page-section-controls.js';
 
 /**
  * Gebruik een simple section als bouwsteen voor paginainhoud.
@@ -29,21 +30,13 @@ export default {
 			type: 'stable',
 		},
 	},
-	argTypes: {
-		width: {
-			control: 'text',
-			description: 'Body max-width: "full" removes the constraint, of een CSS length (bv. "480px") overschrijft de default max-width',
-			table: { defaultValue: { summary: '' } },
-		},
-	},
-	args: {
-		width: '',
-	},
+	argTypes: pageSectionArgTypes,
+	args: pageSectionArgs,
 };
 
 export const Standaard = {
-	render: ({ width }: Record<string, any>) => html`
-		<nldd-simple-section width=${width || nothing}>
+	render: (args: Record<string, any>) => html`
+		<nldd-simple-section ${pageSectionAttrs(args)}>
 			<nldd-rich-text slot="header">
 				<h2>Sectietitel</h2>
 			</nldd-rich-text>
@@ -56,6 +49,59 @@ export const Standaard = {
 			</nldd-rich-text>
 		</nldd-simple-section>
 	`,
+};
+
+/**
+ * `background` tekent een oppervlak ("base" of "tinted") en cascadet
+ * `--context-parent-background-color` naar afstammelingen. Combineer met
+ * `scheme="dark"` voor een donkere band op een lichte pagina.
+ */
+export const Oppervlak = {
+	render: () => html`
+		<nldd-simple-section background="tinted" scheme="dark">
+			<nldd-rich-text slot="header">
+				<h2>Donkere, getinte sectie</h2>
+			</nldd-rich-text>
+			<nldd-rich-text>
+				<p>Deze sectie forceert <code>scheme="dark"</code> en een getint oppervlak — bruikbaar voor een hero-band.</p>
+			</nldd-rich-text>
+		</nldd-simple-section>
+	`,
+	parameters: { controls: { disable: true } },
+};
+
+/**
+ * `height` accepteert elke CSS-length en zet de minimale sectiehoogte.
+ */
+export const MinimaleHoogte = {
+	render: () => html`
+		<nldd-simple-section background="tinted" height="320px">
+			<nldd-rich-text>
+				<p>Deze sectie is minimaal 320px hoog, ook met weinig inhoud.</p>
+			</nldd-rich-text>
+		</nldd-simple-section>
+	`,
+	parameters: { controls: { disable: true } },
+};
+
+/**
+ * Block-padding overschrijven: `padding-block="0"` verwijdert de verticale
+ * padding; `padding-top` / `padding-bottom` regelen één zijde.
+ */
+export const BlockPadding = {
+	render: () => html`
+		<nldd-simple-section background="base" padding-bottom="0">
+			<nldd-rich-text>
+				<p>Deze sectie laat de standaard bovenpadding staan maar verwijdert de onderpadding (<code>padding-bottom="0"</code>), zodat ze strak aansluit op de volgende sectie.</p>
+			</nldd-rich-text>
+		</nldd-simple-section>
+		<nldd-simple-section background="tinted" padding-top="0">
+			<nldd-rich-text>
+				<p>De volgende sectie verwijdert juist haar bovenpadding (<code>padding-top="0"</code>).</p>
+			</nldd-rich-text>
+		</nldd-simple-section>
+	`,
+	parameters: { controls: { disable: true } },
 };
 
 export const ZonderHeaderEnFooter = {
