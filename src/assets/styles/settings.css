@@ -1039,7 +1039,7 @@
 
 	/* ## Card */
 
-	--components-card-background-color: var(--semantics-surfaces-background-color);
+	--components-card-background-color: light-dark(var(--primitives-color-neutral-0), var(--primitives-color-neutral-75));
 	--components-card-corner-radius: var(--primitives-corner-radius-none);
 	--components-card-box-shadow: var(--primitives-box-shadows-level-2);
 
@@ -1288,6 +1288,11 @@
 	--components-tag-mosgroen-content-color: var(--primitives-color-mosgroen-750);
 	--components-tag-mintgroen-background-color: light-dark(var(--primitives-color-mintgroen-75), var(--primitives-color-mintgroen-150));
 	--components-tag-mintgroen-content-color: var(--primitives-color-mintgroen-750);
+
+	/* ## Timeline track cell */
+
+	--components-timeline-track-cell-color: light-dark(var(--primitives-color-accent-750), var(--primitives-color-accent-650));
+	--components-timeline-track-cell-future-background-color: var(--semantics-surfaces-background-color);
 
 	/* ## Title */
 
