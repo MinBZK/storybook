@@ -129,6 +129,14 @@ export class NLDDWindow extends LitElement {
 		window.removeEventListener('resize', this._handleResize);
 	}
 
+	override firstUpdated(): void {
+		// Apply scheme once the shadow DOM (including the inner <dialog>) is
+		// in place — the `changed.has('scheme')` path in updated() may run
+		// before the @query lookup resolves the dialog on the very first
+		// render.
+		this._applyScheme();
+	}
+
 	override updated(changed: PropertyValues): void {
 		this._applyPositionStyles();
 		if (changed.has('movable')) {
