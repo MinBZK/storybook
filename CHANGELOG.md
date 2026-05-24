@@ -55,6 +55,40 @@ here; consult the commit history if you need that level of detail.
   (`--components-timeline-track-cell-color` /
   `-future-background-color`). Cell stretches to its row by default so
   the line spans the full main-area height.
+- New `nldd-breadcrumbs` + `nldd-breadcrumbs-item` (the item is an
+  internal sub-component): chevron-right separator, container-query-
+  driven "‹ {parent}" fallback on sm viewports, schema.org
+  `BreadcrumbList` JSON-LD by default (opt-out with `no-seo`).
+- New `nldd-page-footer` family (page-footer + legal-bar +
+  legal-bar-item, the latter two internal sub-components) with
+  breadcrumbs / main / legal-bar slots, automatic dividers between
+  non-empty rows, and a hard-coded Rijksoverheid lintje (#154273) that
+  bleeds through the bottom padding to touch the viewport edge. Width
+  matches the top-nav logo width responsively; height is half the
+  width. `single-slot` attribute reflects when only one row is visible
+  so the lintje sits symmetric within that single block.
+- Inline-dialog ships a `size` variant — `md` (the previous default)
+  and `lg` (body-lg title, body-md supporting text, 56-px icon). The
+  earlier blanket bump was reverted; consumers opt into `size="lg"`
+  for full-page status dialogs.
+- Window keeps its position on sm viewports — previously
+  top/right/bottom/left/centered were cleared on sm and the dialog
+  centered. New `scheme` attribute ('inherit' | 'light' | 'dark')
+  applies color-scheme to host + inner dialog so surfaces inside
+  adapt.
+- Tab-bar and pagination items now style the previously missing
+  active state, selected+hover and selected+active. Pagination link
+  variant uses `--semantics-controls-link-cursor` (default arrow) on
+  the anchor.
+- Rich-text `<mark>` finally renders — `--semantics-content-mark-*`
+  semantics tokens now exist (routed via the donkergeel-based mark
+  primitives). Block-level children inside an `<li>` get the same
+  spacing as the rich-text root's `row-gap`.
+- Collection footer collapses out of the host's flex `gap` when its
+  slot is empty and no fallback (button-bar / load-more) renders —
+  previously the empty footer kept a gap slot above it.
+- Top-navigation-bar wordmark title / subtitle / supporting-text use
+  `text-wrap: pretty` to avoid orphan/widow lines on narrow viewports.
 
 ### Breaking Changes
 
@@ -64,6 +98,39 @@ here; consult the commit history if you need that level of detail.
   `stacked`). Same paint behaviour, just a clearer name that matches the
   new `PageSectionMixin` vocabulary. Migration: search/replace
   `background="default"` → `background="base"` on these elements.
+- `<nldd-menu-bar-item expandable>` items must now be wrapped in an
+  explicit `<nldd-menu>`. Previously menu-bar-item auto-created a
+  body-attached menu and cloned the slotted items into it (which
+  dropped JS event listeners). Migration:
+
+  ```html
+  <!-- before -->
+  <nldd-menu-bar-item text="Account" expandable>
+    <nldd-menu-item ...></nldd-menu-item>
+    <nldd-menu-divider></nldd-menu-divider>
+    <nldd-menu-item ...></nldd-menu-item>
+  </nldd-menu-bar-item>
+
+  <!-- after -->
+  <nldd-menu-bar-item text="Account" expandable>
+    <nldd-menu>
+      <nldd-menu-item ...></nldd-menu-item>
+      <nldd-menu-divider></nldd-menu-divider>
+      <nldd-menu-item ...></nldd-menu-item>
+    </nldd-menu>
+  </nldd-menu-bar-item>
+  ```
+
+  All `<nldd-menu>` attributes (accessible-label, translations,
+  variant, filterFn) are now reachable. Event listeners on items work
+  directly — no more cloneNode.
+- `<nldd-code>` → `<nldd-code-viewer>` (disambiguates from the
+  unrelated `<nldd-code-editor>` input component). Class
+  `NLDDCode` → `NLDDCodeViewer`; all 26 `--components-code-*`
+  token-color custom properties → `--components-code-viewer-*`.
+  Migration: search/replace `nldd-code` → `nldd-code-viewer` (skip
+  `nldd-code-editor` matches), `NLDDCode` → `NLDDCodeViewer`,
+  `--components-code-` → `--components-code-viewer-`.
 
 ## <small>0.8.46 (2026-05-21)</small>
 
