@@ -152,16 +152,19 @@ export const topNavigationBarStyles = css`
 	.top-navigation-bar__wordmark-title {
 		margin: 0;
 		font: var(--primitives-font-body-sm-bold-flat);
+		text-wrap: pretty;
 	}
 
 	.top-navigation-bar__wordmark-subtitle {
 		margin: 0;
 		font: var(--primitives-font-body-xs-regular-flat);
+		text-wrap: pretty;
 	}
 
 	.top-navigation-bar__wordmark-supporting-text {
 		margin: 0;
 		font: var(--primitives-font-body-xxs-regular-flat);
+		text-wrap: pretty;
 	}
 
 
