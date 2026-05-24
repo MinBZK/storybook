@@ -72,10 +72,6 @@ here; consult the commit history if you need that level of detail.
   centered. New `scheme` attribute ('inherit' | 'light' | 'dark')
   applies color-scheme to host + inner dialog so surfaces inside
   adapt.
-- Tab-bar and pagination items now style the previously missing
-  active state, selected+hover and selected+active. Pagination link
-  variant uses `--semantics-controls-link-cursor` (default arrow) on
-  the anchor.
 
 ### Breaking Changes
 
