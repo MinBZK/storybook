@@ -31,34 +31,6 @@ here; consult the commit history if you need that level of detail.
 
 ### Highlights
 
-- New `PageSectionMixin` gives all five page-section components a shared
-  surface API: `background` (`inherit`/`base`/`tinted`), `scheme`
-  (`inherit`/`light`/`dark`/`inverted`), responsive block-padding
-  (12 attrs) and `height`. Each section establishes its own
-  `page-section-container` so its responsive rules resolve against its own
-  width — no outer layout-container required.
-- Inline-dialog gets bigger heading typography (`body-lg-bold-tight` for
-  the title, `body-md-regular-tight` for supporting text) and a new
-  `__main`/`__footer` structure with a 2px gap. `__actions` renamed to
-  `__footer` to match the slot-naming convention used elsewhere.
-- Rich-text drops its `@media` fallbacks — the component owns its
-  `rich-text-container`, so the `@container` queries always resolve and
-  the duplicate `@media` blocks are gone (19 blocks removed).
-- Top-navigation-bar back button now uses `chevron-left` instead of
-  `arrow-left`.
-- List-item exposes `--context-list-item-padding-block` on `:host`,
-  driven by the size attribute. Timeline-track-cell uses it so the
-  connector line extends across the list-item's block-padding — no more
-  gaps between consecutive steps.
-- Timeline-track-cell split into `*.styles.ts` + `*.template.ts` like
-  other cell components. Own component-color tokens
-  (`--components-timeline-track-cell-color` /
-  `-future-background-color`). Cell stretches to its row by default so
-  the line spans the full main-area height.
-- New `nldd-breadcrumbs` + `nldd-breadcrumbs-item` (the item is an
-  internal sub-component): chevron-right separator, container-query-
-  driven "‹ {parent}" fallback on sm viewports, schema.org
-  `BreadcrumbList` JSON-LD by default (opt-out with `no-seo`).
 - New `nldd-page-footer` family (page-footer + legal-bar +
   legal-bar-item, the latter two internal sub-components) with
   breadcrumbs / main / legal-bar slots, automatic dividers between
@@ -67,6 +39,21 @@ here; consult the commit history if you need that level of detail.
   matches the top-nav logo width responsively; height is half the
   width. `single-slot` attribute reflects when only one row is visible
   so the lintje sits symmetric within that single block.
+- New `nldd-breadcrumbs` + `nldd-breadcrumbs-item` (the item is an
+  internal sub-component): chevron-right separator, container-query-
+  driven "‹ {parent}" fallback on sm viewports, schema.org
+  `BreadcrumbList` JSON-LD by default (opt-out with `no-seo`).
+- New `PageSectionMixin` gives all five page-section components a shared
+  surface API: `background` (`inherit`/`base`/`tinted`), `scheme`
+  (`inherit`/`light`/`dark`/`inverted`), responsive block-padding
+  (12 attrs) and `height`. Each section establishes its own
+  `page-section-container` so its responsive rules resolve against its own
+  width — no outer layout-container required.
+- Timeline-track-cell split into `*.styles.ts` + `*.template.ts` like
+  other cell components. Own component-color tokens
+  (`--components-timeline-track-cell-color` /
+  `-future-background-color`). Cell stretches to its row by default so
+  the line spans the full main-area height.
 - Window keeps its position on sm viewports — previously
   top/right/bottom/left/centered were cleared on sm and the dialog
   centered. New `scheme` attribute ('inherit' | 'light' | 'dark')
