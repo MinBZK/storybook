@@ -316,7 +316,7 @@ export const AllSizes = {
 		<div style="display: flex; flex-direction: column; gap: 2rem;">
 			<div>
 				<p style="font: var(--primitives-font-body-sm-bold-tight); color: var(--semantics-content-color); margin: 0 0 8px;">sm (&lt; 641px) — beperkt tot 393px</p>
-				<div style="width: 393px; border: 1px dashed #cbd5e1; padding: 16px;">
+				<div style="width: 393px; border: 1px dashed var(--semantics-dividers-color); padding: 16px;">
 					<nldd-rich-text spacing=${args.spacing} ?centered=${args.centered}>
 						<h2>Artikel 1. Algemene begrippen</h2>
 						<p>In deze wet wordt verstaan onder:</p>
@@ -329,7 +329,7 @@ export const AllSizes = {
 			</div>
 			<div>
 				<p style="font: var(--primitives-font-body-sm-bold-tight); color: var(--semantics-content-color); margin: 0 0 8px;">md (≥ 641px) — beperkt tot 834px</p>
-				<div style="width: 834px; border: 1px dashed #cbd5e1; padding: 16px;">
+				<div style="width: 834px; border: 1px dashed var(--semantics-dividers-color); padding: 16px;">
 					<nldd-rich-text spacing=${args.spacing} ?centered=${args.centered}>
 						<h2>Artikel 1. Algemene begrippen</h2>
 						<p>In deze wet wordt verstaan onder:</p>
@@ -342,7 +342,7 @@ export const AllSizes = {
 			</div>
 			<div>
 				<p style="font: var(--primitives-font-body-sm-bold-tight); color: var(--semantics-content-color); margin: 0 0 8px;">lg (≥ 1008px) — beperkt tot 1200px</p>
-				<div style="width: 1200px; border: 1px dashed #cbd5e1; padding: 16px;">
+				<div style="width: 1200px; border: 1px dashed var(--semantics-dividers-color); padding: 16px;">
 					<nldd-rich-text spacing=${args.spacing} ?centered=${args.centered}>
 						<h2>Artikel 1. Algemene begrippen</h2>
 						<p>In deze wet wordt verstaan onder:</p>
