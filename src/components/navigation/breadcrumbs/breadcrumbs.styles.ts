@@ -50,6 +50,13 @@ export const breadcrumbsStyles = css`
 		color: var(--semantics-links-is-hovered-color);
 	}
 
+	.breadcrumbs__level-up:focus-visible {
+		outline: var(--semantics-focus-ring-outline);
+		outline-offset: var(--semantics-focus-ring-outline-offset);
+		border-radius: var(--primitives-corner-radius-xs);
+		box-shadow: var(--semantics-focus-ring-box-shadow);
+	}
+
 	.breadcrumbs__level-up-icon {
 		display: inline-flex;
 		width: var(--primitives-space-16);
@@ -86,6 +93,13 @@ export const breadcrumbsItemStyles = css`
 
 	.breadcrumbs__item-link:hover {
 		color: var(--semantics-links-is-hovered-color);
+	}
+
+	.breadcrumbs__item-link:focus-visible {
+		outline: var(--semantics-focus-ring-outline);
+		outline-offset: var(--semantics-focus-ring-outline-offset);
+		border-radius: var(--primitives-corner-radius-xs);
+		box-shadow: var(--semantics-focus-ring-box-shadow);
 	}
 
 	.breadcrumbs__separator {

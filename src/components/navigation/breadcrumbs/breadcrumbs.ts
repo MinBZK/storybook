@@ -11,20 +11,17 @@
  * @attr {string}  accessible-label - Override the nav's aria-label.
  *                                    Defaults to the i18n value (NL: "Kruimelpad").
  * @attr {boolean} no-seo           - Opt out of the BreadcrumbList JSON-LD
- *                                    script that is otherwise injected for SEO.
+ *                                    script that is otherwise injected (into
+ *                                    document.head) for SEO.
  * @attr {object}  translations     - Override translation keys; unset keys
  *                                    fall back to the Dutch default.
  *
  * @slot - `nldd-breadcrumbs-item` children.
  */
 import { LitElement, type PropertyValues } from 'lit';
-import { customElement, property, state } from 'lit/decorators.js';
+import { customElement, property } from 'lit/decorators.js';
 import { breadcrumbsStyles, breadcrumbsItemStyles } from './breadcrumbs.styles.js';
-import {
-	breadcrumbsTemplate,
-	breadcrumbsItemTemplate,
-	renderBreadcrumbsJsonLd,
-} from './breadcrumbs.template.js';
+import { breadcrumbsTemplate, breadcrumbsItemTemplate } from './breadcrumbs.template.js';
 import { nlddBreadcrumbsTranslations, type NLDDBreadcrumbsTranslations } from './breadcrumbs.i18n.js';
 
 
@@ -92,11 +89,8 @@ export class NLDDBreadcrumbs extends LitElement {
 	@property({ type: Object })
 	translations: Partial<NLDDBreadcrumbsTranslations> = {};
 
-	/** True when there is a non-current parent item — drives the sm fallback. */
-	@state()
-	private _hasParent = false;
-
 	private _mergedTranslations: NLDDBreadcrumbsTranslations = { ...nlddBreadcrumbsTranslations };
+	private _jsonLdEl: HTMLScriptElement | null = null;
 
 	override connectedCallback(): void {
 		super.connectedCallback();
@@ -108,6 +102,11 @@ export class NLDDBreadcrumbs extends LitElement {
 		this.style.containerName = 'breadcrumbs-container';
 	}
 
+	override disconnectedCallback(): void {
+		super.disconnectedCallback();
+		this._removeJsonLd();
+	}
+
 	override willUpdate(changed: PropertyValues): void {
 		if (changed.has('translations') || changed.has('accessibleLabel')) {
 			this._mergedTranslations = {
@@ -117,6 +116,9 @@ export class NLDDBreadcrumbs extends LitElement {
 			if (this.accessibleLabel) {
 				this._mergedTranslations['components.breadcrumbs.accessible-label'] = this.accessibleLabel;
 			}
+		}
+		if (changed.has('noSeo')) {
+			this._updateJsonLd();
 		}
 	}
 
@@ -130,24 +132,60 @@ export class NLDDBreadcrumbs extends LitElement {
 	}
 
 	/**
-	 * The parent (one-level-up) item: the last non-current item. Used by the
-	 * sm-viewport "‹ {parent}" fallback when the full trail is hidden.
+	 * The parent (one-level-up) item: the last non-current item with an
+	 * `href` — the level-up link needs somewhere to navigate. Returns null
+	 * when no eligible parent exists; the level-up element stays hidden in
+	 * that case.
 	 */
 	_parentItem(): NLDDBreadcrumbsItem | null {
 		const items = this._items();
 		for (let i = items.length - 1; i >= 0; i--) {
-			if (!items[i].current) return items[i];
+			if (!items[i].current && items[i].href) return items[i];
 		}
 		return null;
 	}
 
 	_onSlotChange = () => {
-		this._hasParent = !!this._parentItem();
-		this.toggleAttribute('has-parent', this._hasParent);
+		// CSS reads `[has-parent]` directly; no need for @state. Toggling
+		// the attribute is enough.
+		this.toggleAttribute('has-parent', !!this._parentItem());
+		this._updateJsonLd();
 	};
 
-	_renderJsonLd() {
-		return renderBreadcrumbsJsonLd.call(this);
+	private _updateJsonLd(): void {
+		if (this.noSeo) {
+			this._removeJsonLd();
+			return;
+		}
+		const items = this._items();
+		if (items.length === 0) {
+			this._removeJsonLd();
+			return;
+		}
+		const json = {
+			'@context': 'https://schema.org',
+			'@type': 'BreadcrumbList',
+			itemListElement: items.map((item, i) => ({
+				'@type': 'ListItem',
+				position: i + 1,
+				name: item.text || item.textContent?.trim() || '',
+				...(item.href ? { item: item.href } : {}),
+			})),
+		};
+		// Crawlers (Google in particular) do not reliably read JSON-LD from
+		// inside a shadow root, so emit the script into document.head where
+		// SEO tooling expects it.
+		if (!this._jsonLdEl) {
+			this._jsonLdEl = document.createElement('script');
+			this._jsonLdEl.type = 'application/ld+json';
+			document.head.appendChild(this._jsonLdEl);
+		}
+		this._jsonLdEl.textContent = JSON.stringify(json);
+	}
+
+	private _removeJsonLd(): void {
+		this._jsonLdEl?.remove();
+		this._jsonLdEl = null;
 	}
 
 	override render() {
