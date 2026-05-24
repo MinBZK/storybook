@@ -110,8 +110,7 @@ describe('nldd-breadcrumbs', () => {
 		await waitForUpdate(el);
 		expect(el.hasAttribute('has-parent')).toBe(false);
 		el.querySelector('nldd-breadcrumbs-item')!.setAttribute('href', '/section');
-		// Give the MutationObserver microtask a chance to fire.
-		await new Promise((r) => setTimeout(r, 0));
+		// waitForUpdate already covers the MO microtask + Lit re-render cycle.
 		await waitForUpdate(el);
 		expect(el.hasAttribute('has-parent')).toBe(true);
 		expect(el.shadowRoot!.querySelector('.breadcrumbs__level-up')).not.toBeNull();

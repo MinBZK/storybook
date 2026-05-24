@@ -3,6 +3,7 @@
    elements (each sets role="listitem" on its host); the lit-a11y/list
    rule can't see through the slot/role chain. */
 import { html, nothing, type TemplateResult } from 'lit';
+import { ifDefined } from 'lit/directives/if-defined.js';
 import type { NLDDBreadcrumbs, NLDDBreadcrumbsItem } from './breadcrumbs.js';
 import '../../content/icon/icon.js';
 
@@ -18,7 +19,7 @@ export function breadcrumbsTemplate(component: NLDDBreadcrumbs): TemplateResult 
 		>
 			${parent ? html`
 				<a class="breadcrumbs__level-up"
-					href=${parent.href}
+					href=${ifDefined(parent.href)}
 				>
 					<span class="breadcrumbs__level-up-icon"
 						aria-hidden="true"
