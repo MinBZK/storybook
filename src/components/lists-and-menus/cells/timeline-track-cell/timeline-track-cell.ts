@@ -14,7 +14,7 @@
 import { LitElement } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
 import { timelineTrackCellStyles } from './timeline-track-cell.styles.js';
-import { template } from './timeline-track-cell.template.js';
+import { timelineTrackCellTemplate } from './timeline-track-cell.template.js';
 
 type Step = 'past' | 'future' | 'none';
 type Child = 'first' | 'between' | 'last';
@@ -30,7 +30,7 @@ export class NLDDTimelineTrackCell extends LitElement {
 	child: Child = 'between';
 
 	override render() {
-		return template.call(this);
+		return timelineTrackCellTemplate.call(this);
 	}
 }
 

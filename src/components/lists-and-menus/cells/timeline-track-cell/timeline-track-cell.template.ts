@@ -1,7 +1,7 @@
 import { html, nothing } from 'lit';
 import type { NLDDTimelineTrackCell } from './timeline-track-cell.js';
 
-export function template(this: NLDDTimelineTrackCell) {
+export function timelineTrackCellTemplate(this: NLDDTimelineTrackCell) {
 	if (this.step === 'none') {
 		return html`
 			<div class="timeline-track-cell">

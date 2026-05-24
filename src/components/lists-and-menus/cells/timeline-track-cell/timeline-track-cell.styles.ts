@@ -8,6 +8,7 @@ export const timelineTrackCellStyles = css`
 	:host {
 		--_size: var(--primitives-space-16);
 		--_line-width: var(--primitives-space-2);
+		--_z-index-dot: 1;
 		--_color: var(--components-timeline-track-cell-color);
 		--_future-background-color: var(--components-timeline-track-cell-future-background-color);
 
@@ -65,7 +66,7 @@ export const timelineTrackCellStyles = css`
 		position: absolute;
 		top: 50%;
 		left: 0;
-		z-index: 1;
+		z-index: var(--_z-index-dot);
 		margin-top: calc(var(--_size) / -2);
 		border: var(--_line-width) solid var(--_color);
 		border-radius: var(--primitives-corner-radius-full);
