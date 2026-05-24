@@ -220,6 +220,10 @@ nldd-rich-text li {
 	padding: 0;
 }
 
+nldd-rich-text li > * + * {
+	margin-top: var(--_spacing);
+}
+
 
 /* # Link */
 
