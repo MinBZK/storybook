@@ -61,11 +61,28 @@ export class NLDDBreadcrumbsItem extends LitElement {
 		}
 	}
 
+	override updated(changed: PropertyValues): void {
+		// Reflect aria-current on the host (the semantic listitem) rather
+		// than on an inner span — the listitem is the element screen readers
+		// announce, so the current-page hint should live there.
+		if (changed.has('current')) {
+			if (this.current) {
+				this.setAttribute('aria-current', 'page');
+			} else {
+				this.removeAttribute('aria-current');
+			}
+		}
+	}
+
 	override render() {
-		return breadcrumbsItemTemplate.call(this);
+		return breadcrumbsItemTemplate(this);
 	}
 }
 
+// Internal sub-component: register via the guard pattern (matches
+// nldd-menu's nldd-menu-item / nldd-menu-divider). Using @customElement
+// here would throw on re-registration in tests / HMR; the guard keeps the
+// first registration authoritative.
 if (!customElements.get('nldd-breadcrumbs-item')) {
 	customElements.define('nldd-breadcrumbs-item', NLDDBreadcrumbsItem);
 }
@@ -111,7 +128,13 @@ export class NLDDBreadcrumbs extends LitElement {
 		return this._mergedTranslations[key] ?? key;
 	}
 
-	/** All slotted nldd-breadcrumbs-item children, in DOM order. */
+	/**
+	 * All slotted nldd-breadcrumbs-item children, in DOM order. Items MUST
+	 * be direct children of nldd-breadcrumbs — wrapping them in another
+	 * element (e.g. `<ul><nldd-breadcrumbs-item>`) is unsupported and will
+	 * make them invisible to this component (separator handling, sm-viewport
+	 * fallback, etc. all key off this set).
+	 */
 	_items(): NLDDBreadcrumbsItem[] {
 		return Array.from(this.querySelectorAll(':scope > nldd-breadcrumbs-item'));
 	}
@@ -137,7 +160,7 @@ export class NLDDBreadcrumbs extends LitElement {
 	};
 
 	override render() {
-		return breadcrumbsTemplate.call(this);
+		return breadcrumbsTemplate(this);
 	}
 }
 

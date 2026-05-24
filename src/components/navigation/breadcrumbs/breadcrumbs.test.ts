@@ -53,6 +53,41 @@ describe('nldd-breadcrumbs', () => {
 		await waitForUpdate(el);
 		expect(el.hasAttribute('has-parent')).toBe(false);
 	});
+
+	it('uses the parent item text in the level-up link', async () => {
+		el = await fixture(`
+			<nldd-breadcrumbs>
+				<nldd-breadcrumbs-item text="Documentation" href="/docs/"></nldd-breadcrumbs-item>
+				<nldd-breadcrumbs-item text="Here" current></nldd-breadcrumbs-item>
+			</nldd-breadcrumbs>
+		`);
+		await waitForUpdate(el);
+		const levelUpText = el.shadowRoot!.querySelector('.breadcrumbs__level-up-text');
+		expect(levelUpText?.textContent?.trim()).toBe('Documentation');
+	});
+
+	it('falls back to the slotted textContent when parent has no text attribute', async () => {
+		el = await fixture(`
+			<nldd-breadcrumbs>
+				<nldd-breadcrumbs-item href="/docs/">Slotted parent</nldd-breadcrumbs-item>
+				<nldd-breadcrumbs-item text="Here" current></nldd-breadcrumbs-item>
+			</nldd-breadcrumbs>
+		`);
+		await waitForUpdate(el);
+		const levelUpText = el.shadowRoot!.querySelector('.breadcrumbs__level-up-text');
+		expect(levelUpText?.textContent?.trim()).toBe('Slotted parent');
+	});
+
+	it('falls back to the i18n level-up label when no parent', async () => {
+		el = await fixture(`
+			<nldd-breadcrumbs>
+				<nldd-breadcrumbs-item text="Here" current></nldd-breadcrumbs-item>
+			</nldd-breadcrumbs>
+		`);
+		await waitForUpdate(el);
+		const levelUpText = el.shadowRoot!.querySelector('.breadcrumbs__level-up-text');
+		expect(levelUpText?.textContent?.trim()).toBe('Eén niveau omhoog');
+	});
 });
 
 describe('nldd-breadcrumbs-item', () => {
@@ -88,12 +123,20 @@ describe('nldd-breadcrumbs-item', () => {
 		expect(a!.getAttribute('href')).toBe('/docs/');
 	});
 
-	it('renders plain text with aria-current when current is set', async () => {
+	it('renders plain text and sets aria-current on the host when current', async () => {
 		el = await fixture('<nldd-breadcrumbs-item current text="Here" href="/here/"></nldd-breadcrumbs-item>');
 		await waitForUpdate(el);
 		expect(el.shadowRoot!.querySelector('a')).toBeNull();
-		const span = el.shadowRoot!.querySelector('.breadcrumbs__item');
-		expect(span?.getAttribute('aria-current')).toBe('page');
+		expect(el.getAttribute('aria-current')).toBe('page');
+	});
+
+	it('clears aria-current when current is toggled off', async () => {
+		el = await fixture('<nldd-breadcrumbs-item current text="Here"></nldd-breadcrumbs-item>');
+		await waitForUpdate(el);
+		expect(el.getAttribute('aria-current')).toBe('page');
+		el.removeAttribute('current');
+		await waitForUpdate(el);
+		expect(el.hasAttribute('aria-current')).toBe(false);
 	});
 
 	it('renders a chevron-right separator after every item', async () => {

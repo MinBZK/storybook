@@ -63,14 +63,15 @@ export const breadcrumbsStyles = css`
 		height: var(--primitives-space-16);
 		flex-shrink: 0;
 	}
-
-	.breadcrumbs__level-up-text {
-		text-decoration: none;
-	}
 `;
 
 export const breadcrumbsItemStyles = css`
 	:host {
+		/* Small downward offset so the chevron-right-small icon sits closer
+		   to the text's optical centerline (the icon's bbox renders slightly
+		   above the visual baseline). */
+		--_separator-vertical-offset: 0.05em;
+
 		display: inline-flex;
 		align-items: center;
 	}
@@ -105,7 +106,7 @@ export const breadcrumbsItemStyles = css`
 	.breadcrumbs__separator {
 		display: inline-flex;
 		position: relative;
-		top: 0.05em;
+		top: var(--_separator-vertical-offset);
 		margin-inline: var(--primitives-space-2);
 		color: var(--semantics-content-secondary-color);
 		width: var(--primitives-space-16);
