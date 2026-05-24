@@ -174,18 +174,18 @@ export const topNavigationBarStyles = css`
 		display: flex;
 
 		@container top-navigation-bar-container (max-width: ${smMax}) {
-			padding-inline: var(--semantics-page-sections-sm-margin-inline);
+			padding-inline: calc(var(--semantics-page-sections-sm-margin-inline) - var(--components-menu-bar-item-inline-padding));
 			flex-direction: column;
 		}
 
 		@container top-navigation-bar-container (min-width: ${mdMin}) and (max-width: ${mdMax}) {
-			padding-inline: var(--semantics-page-sections-md-margin-inline);
+			padding-inline: calc(var(--semantics-page-sections-md-margin-inline) - var(--components-menu-bar-item-inline-padding));
 			flex-direction: row;
 			align-items: center;
 		}
 
 		@container top-navigation-bar-container (min-width: ${lgMin}) {
-			padding-inline: var(--semantics-page-sections-lg-margin-inline);
+			padding-inline: calc(var(--semantics-page-sections-lg-margin-inline) - var(--components-menu-bar-item-inline-padding));
 			flex-direction: row;
 			align-items: center;
 		}
@@ -195,7 +195,8 @@ export const topNavigationBarStyles = css`
 
 	.top-navigation-bar__website-title-bar {
 		display: flex;
-		padding: var(--primitives-space-4) var(--primitives-space-8);
+		padding-block: var(--primitives-space-4);
+		padding-inline: calc(var(--primitives-space-8) + var(--components-menu-bar-item-inline-padding));
 		align-items: center;
 		justify-content: center;
 
@@ -214,8 +215,7 @@ export const topNavigationBarStyles = css`
 
 		@container top-navigation-bar-container (min-width: ${mdMin}) {
 			font: var(--components-top-navigation-bar-title-md-font);
-			/* md+ only: title shares the row with the menu-bar; on sm it stacks and this margin would offset the centered title */
-			margin-inline-end: var(--primitives-space-8);
+			margin-inline: var(--components-menu-bar-item-inline-padding);
 		}
 
 		@container top-navigation-bar-container (min-width: ${lgMin}) {
