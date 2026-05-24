@@ -29,6 +29,7 @@
  *                                     `align-items`/`justify-items` overrides.
  * @attr {string}  width            - CSS width (standaard: var(--components-window-default-width))
  * @attr {string}  height           - CSS height (standaard: content height)
+ * @attr {'inherit'|'light'|'dark'} scheme - Color scheme (default 'inherit').
  *
  * @slot - Volledige window content (bijv. nldd-page)
  *
@@ -46,6 +47,8 @@ import { windowTemplate } from './window.template.js';
 import { nlddWindowTranslations, type NLDDWindowTranslations } from './window.i18n.js';
 import { isPointerMode } from '../../../utilities/input-modality.js';
 import { breakpoints } from '../../../assets/styles/breakpoints.js';
+
+export type NLDDWindowScheme = 'inherit' | 'light' | 'dark';
 
 @customElement('nldd-window')
 export class NLDDWindow extends LitElement {
@@ -88,6 +91,9 @@ export class NLDDWindow extends LitElement {
 	@property({ type: String, reflect: true })
 	height: string | undefined;
 
+	@property({ type: String, reflect: true })
+	scheme: NLDDWindowScheme = 'inherit';
+
 	private _closing = false;
 	private _dragging = false;
 	private _dragOffsetX = 0;
@@ -127,6 +133,20 @@ export class NLDDWindow extends LitElement {
 		this._applyPositionStyles();
 		if (changed.has('movable')) {
 			this._detectDragHandle();
+		}
+		if (changed.has('scheme')) {
+			this._applyScheme();
+		}
+	}
+
+	private _applyScheme(): void {
+		const dialog = this._dialog;
+		if (this.scheme === 'light' || this.scheme === 'dark') {
+			this.style.colorScheme = this.scheme;
+			if (dialog) dialog.style.colorScheme = this.scheme;
+		} else {
+			this.style.removeProperty('color-scheme');
+			if (dialog) dialog.style.removeProperty('color-scheme');
 		}
 	}
 
@@ -183,20 +203,6 @@ export class NLDDWindow extends LitElement {
 	private _applyPositionStyles(): void {
 		const dialog = this._dialog;
 		if (!dialog) return;
-
-		// On small viewports: clear position styles, keep width/height
-		const isSmall = window.matchMedia(`(max-width: ${breakpoints.smMax})`).matches;
-		if (isSmall) {
-			dialog.style.top = '';
-			dialog.style.bottom = '';
-			dialog.style.left = '';
-			dialog.style.right = '';
-			dialog.style.margin = '';
-			dialog.style.transform = '';
-			dialog.style.width = this.width ?? '';
-			dialog.style.height = this.height ?? '';
-			return;
-		}
 
 		const hasEdge = this.top !== undefined || this.left !== undefined || this.right !== undefined || this.bottom !== undefined;
 		const hasOverride = hasEdge || this.centered;

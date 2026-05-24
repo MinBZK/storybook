@@ -37,15 +37,11 @@ export default {
 		status: { type: 'experimental' },
 	},
 	argTypes: {
-		modeless: {
-			control: 'boolean',
-			description: 'Niet-modaal (geen backdrop of focusvergrendeling)',
-			table: { defaultValue: { summary: false } },
-		},
-		movable: {
-			control: 'boolean',
-			description: 'Verplaatsbaar (op sm uitgeschakeld)',
-			table: { defaultValue: { summary: false } },
+		scheme: {
+			control: 'select',
+			options: ['inherit', 'light', 'dark'],
+			description: 'Color scheme: inherit (default), light of dark',
+			table: { defaultValue: { summary: 'inherit' } },
 		},
 		width: {
 			control: 'text',
@@ -62,11 +58,6 @@ export default {
 			description: 'CSS top positie',
 			table: { defaultValue: { summary: '' } },
 		},
-		left: {
-			control: 'text',
-			description: 'CSS left positie',
-			table: { defaultValue: { summary: '' } },
-		},
 		right: {
 			control: 'text',
 			description: 'CSS right positie',
@@ -77,22 +68,38 @@ export default {
 			description: 'CSS bottom positie',
 			table: { defaultValue: { summary: '' } },
 		},
+		left: {
+			control: 'text',
+			description: 'CSS left positie',
+			table: { defaultValue: { summary: '' } },
+		},
 		accessibleLabel: {
 			name: 'accessible-label',
 			control: 'text',
 			description: 'Toegankelijk label voor screen readers (aria-label van het venster)',
 		},
+		modeless: {
+			control: 'boolean',
+			description: 'Niet-modaal (geen backdrop of focusvergrendeling)',
+			table: { defaultValue: { summary: false } },
+		},
+		movable: {
+			control: 'boolean',
+			description: 'Verplaatsbaar (op sm uitgeschakeld)',
+			table: { defaultValue: { summary: false } },
+		},
 	},
 	args: {
-		modeless: false,
-		movable: false,
+		scheme: 'inherit',
 		width: '',
 		height: '',
 		top: '',
-		left: '',
 		right: '',
 		bottom: '',
+		left: '',
 		accessibleLabel: 'Voorbeeldvenster',
+		modeless: false,
+		movable: false,
 	},
 };
 
@@ -111,15 +118,16 @@ const pageContent = html`
 const Template = (args: Record<string, unknown>) => html`
 	<nldd-button text="Open venster" @click=${openNext}></nldd-button>
 	<nldd-window
-		?modeless=${args.modeless}
-		?movable=${args.movable}
+		scheme=${args.scheme || nothing}
 		width=${args.width || nothing}
 		height=${args.height || nothing}
 		top=${args.top || nothing}
-		left=${args.left || nothing}
 		right=${args.right || nothing}
 		bottom=${args.bottom || nothing}
+		left=${args.left || nothing}
 		accessible-label=${args.accessibleLabel || nothing}
+		?modeless=${args.modeless}
+		?movable=${args.movable}
 	>
 		<nldd-page sticky-header>
 			<nldd-top-title-bar

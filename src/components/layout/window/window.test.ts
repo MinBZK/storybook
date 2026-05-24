@@ -158,7 +158,7 @@ describe('nldd-window', () => {
 	});
 
 	it('drag update left en top en cleart right en bottom', async () => {
-		el = await fixture<NLDDWindow>('<nldd-window modeless movable right="32px" bottom="32px" width="200px" height="200px"><div window-drag-handle>Handle</div></nldd-window>');
+		el = await fixture<NLDDWindow>('<nldd-window modeless movable top="0" left="0" width="200px" height="200px"><div window-drag-handle>Handle</div></nldd-window>');
 		await waitForUpdate(el);
 		el.show();
 		await waitForUpdate(el);
