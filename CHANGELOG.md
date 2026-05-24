@@ -31,47 +31,16 @@ here; consult the commit history if you need that level of detail.
 
 ### Highlights
 
-- New `nldd-page-footer` family (page-footer + legal-bar +
-  legal-bar-item, the latter two internal sub-components) with
-  breadcrumbs / main / legal-bar slots, automatic dividers between
-  non-empty rows, and a hard-coded Rijksoverheid lintje (#154273) that
-  bleeds through the bottom padding to touch the viewport edge. Width
-  matches the top-nav logo width responsively; height is half the
-  width. `single-slot` attribute reflects when only one row is visible
-  so the lintje sits symmetric within that single block.
-- New `nldd-breadcrumbs` + `nldd-breadcrumbs-item` (the item is an
-  internal sub-component): chevron-right separator, container-query-
-  driven "‹ {parent}" fallback on sm viewports, schema.org
-  `BreadcrumbList` JSON-LD by default (opt-out with `no-seo`).
-- New `PageSectionMixin` gives all five page-section components a shared
-  surface API: `background` (`inherit`/`base`/`tinted`), `scheme`
-  (`inherit`/`light`/`dark`/`inverted`), responsive block-padding
-  (12 attrs) and `height`. Each section establishes its own
-  `page-section-container` so its responsive rules resolve against its own
-  width — no outer layout-container required.
-- Timeline-track-cell split into `*.styles.ts` + `*.template.ts` like
-  other cell components. Own component-color tokens
-  (`--components-timeline-track-cell-color` /
-  `-future-background-color`). Cell stretches to its row by default so
-  the line spans the full main-area height.
-- Window keeps its position on sm viewports — previously
-  top/right/bottom/left/centered were cleared on sm and the dialog
-  centered. New `scheme` attribute ('inherit' | 'light' | 'dark')
-  applies color-scheme to host + inner dialog so surfaces inside
-  adapt.
+- New `nldd-page-footer` family (page-footer + legal-bar + legal-bar-item, the latter two internal sub-components) with breadcrumbs / main / legal-bar slots, automatic dividers between non-empty rows, and a hard-coded Rijksoverheid lintje (#154273) that bleeds through the bottom padding to touch the viewport edge. Width matches the top-nav logo width responsively; height is half the width. `single-slot` attribute reflects when only one row is visible so the lintje sits symmetric within that single block.
+- New `nldd-breadcrumbs` + `nldd-breadcrumbs-item` (the item is an internal sub-component): chevron-right separator, container-query-driven "‹ {parent}" fallback on sm viewports, schema.org `BreadcrumbList` JSON-LD by default (opt-out with `no-seo`).
+- New `PageSectionMixin` gives all five page-section components a shared surface API: `background` (`inherit`/`base`/`tinted`), `scheme` (`inherit`/`light`/`dark`/`inverted`), responsive block-padding (12 attrs) and `height`. Each section establishes its own `page-section-container` so its responsive rules resolve against its own width — no outer layout-container required.
+- Timeline-track-cell split into `*.styles.ts` + `*.template.ts` like other cell components. Own component-color tokens (`--components-timeline-track-cell-color` / `-future-background-color`). Cell stretches to its row by default so the line spans the full main-area height.
+- Window keeps its position on sm viewports — previously top/right/bottom/left/centered were cleared on sm and the dialog centered. New `scheme` attribute ('inherit' | 'light' | 'dark') applies color-scheme to host + inner dialog so surfaces inside adapt.
 
 ### Breaking Changes
 
-- `background="default"` is now `background="base"` on `nldd-app-view`,
-  `nldd-page` and the five split-view components
-  (`nldd-split-view-pane`, `bar`, `navigation`, `side-by-side`,
-  `stacked`). Same paint behaviour, just a clearer name that matches the
-  new `PageSectionMixin` vocabulary. Migration: search/replace
-  `background="default"` → `background="base"` on these elements.
-- `<nldd-menu-bar-item expandable>` items must now be wrapped in an
-  explicit `<nldd-menu>`. Previously menu-bar-item auto-created a
-  body-attached menu and cloned the slotted items into it (which
-  dropped JS event listeners). Migration:
+- `background="default"` is now `background="base"` on `nldd-app-view`, `nldd-page` and the five split-view components (`nldd-split-view-pane`, `bar`, `navigation`, `side-by-side`, `stacked`). Same paint behaviour, just a clearer name that matches the new `PageSectionMixin` vocabulary. Migration: search/replace `background="default"` → `background="base"` on these elements.
+- `<nldd-menu-bar-item expandable>` items must now be wrapped in an explicit `<nldd-menu>`. Previously menu-bar-item auto-created a body-attached menu and cloned the slotted items into it (which dropped JS event listeners). Migration:
 
   ```html
   <!-- before -->
@@ -91,16 +60,8 @@ here; consult the commit history if you need that level of detail.
   </nldd-menu-bar-item>
   ```
 
-  All `<nldd-menu>` attributes (accessible-label, translations,
-  variant, filterFn) are now reachable. Event listeners on items work
-  directly — no more cloneNode.
-- `<nldd-code>` → `<nldd-code-viewer>` (disambiguates from the
-  unrelated `<nldd-code-editor>` input component). Class
-  `NLDDCode` → `NLDDCodeViewer`; all 26 `--components-code-*`
-  token-color custom properties → `--components-code-viewer-*`.
-  Migration: search/replace `nldd-code` → `nldd-code-viewer` (skip
-  `nldd-code-editor` matches), `NLDDCode` → `NLDDCodeViewer`,
-  `--components-code-` → `--components-code-viewer-`.
+  All `<nldd-menu>` attributes (accessible-label, translations, variant, filterFn) are now reachable. Event listeners on items work directly — no more cloneNode.
+- `<nldd-code>` → `<nldd-code-viewer>` (disambiguates from the unrelated `<nldd-code-editor>` input component). Class `NLDDCode` → `NLDDCodeViewer`; all 26 `--components-code-*` token-color custom properties → `--components-code-viewer-*`. Migration: search/replace `nldd-code` → `nldd-code-viewer` (skip `nldd-code-editor` matches), `NLDDCode` → `NLDDCodeViewer`, `--components-code-` → `--components-code-viewer-`.
 
 ## <small>0.8.46 (2026-05-21)</small>
 
