@@ -67,10 +67,6 @@ here; consult the commit history if you need that level of detail.
   matches the top-nav logo width responsively; height is half the
   width. `single-slot` attribute reflects when only one row is visible
   so the lintje sits symmetric within that single block.
-- Inline-dialog ships a `size` variant — `md` (the previous default)
-  and `lg` (body-lg title, body-md supporting text, 56-px icon). The
-  earlier blanket bump was reverted; consumers opt into `size="lg"`
-  for full-page status dialogs.
 - Window keeps its position on sm viewports — previously
   top/right/bottom/left/centered were cleared on sm and the dialog
   centered. New `scheme` attribute ('inherit' | 'light' | 'dark')
@@ -80,15 +76,6 @@ here; consult the commit history if you need that level of detail.
   active state, selected+hover and selected+active. Pagination link
   variant uses `--semantics-controls-link-cursor` (default arrow) on
   the anchor.
-- Rich-text `<mark>` finally renders — `--semantics-content-mark-*`
-  semantics tokens now exist (routed via the donkergeel-based mark
-  primitives). Block-level children inside an `<li>` get the same
-  spacing as the rich-text root's `row-gap`.
-- Collection footer collapses out of the host's flex `gap` when its
-  slot is empty and no fallback (button-bar / load-more) renders —
-  previously the empty footer kept a gap slot above it.
-- Top-navigation-bar wordmark title / subtitle / supporting-text use
-  `text-wrap: pretty` to avoid orphan/widow lines on narrow viewports.
 
 ### Breaking Changes
 
