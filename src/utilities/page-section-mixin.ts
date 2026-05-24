@@ -151,14 +151,39 @@ export function PageSectionMixin<TBase extends Constructor<LitElement>>(
 			if (this.scheme === 'light' || this.scheme === 'dark') {
 				this.style.colorScheme = this.scheme;
 			} else if (this.scheme === 'inverted') {
-				// Read the surrounding (inherited) scheme from the real parent —
-				// reading the host itself would echo back our own value.
-				const parent = this.parentElement ?? document.documentElement;
-				const current = getComputedStyle(parent).colorScheme;
-				this.style.colorScheme = current.includes('dark') ? 'light' : 'dark';
+				this.style.colorScheme = this._resolveActiveScheme() === 'dark' ? 'light' : 'dark';
 			} else {
 				this.style.removeProperty('color-scheme');
 			}
+		}
+
+		/**
+		 * Best-effort detection of the *actively rendered* scheme around the
+		 * section, used to invert it.
+		 *
+		 * `getComputedStyle(parent).colorScheme` returns the *declared* value
+		 * (`'light dark'` for "supports both"; `'normal'` for the initial
+		 * value) — not the one the browser actually paints with. For
+		 * `'inverted'` we want the painted scheme, so:
+		 *   1. Prefer the app's explicit override on `:root[data-scheme]`
+		 *      (the project's site-wide light/dark toggle).
+		 *   2. Walk up to find an ancestor that pins a single scheme.
+		 *   3. Otherwise fall back to `prefers-color-scheme` — that's what
+		 *      `'light dark'` resolves to in practice.
+		 */
+		private _resolveActiveScheme(): 'light' | 'dark' {
+			const root = document.documentElement.getAttribute('data-scheme');
+			if (root === 'light' || root === 'dark') return root;
+			let el: Element | null = this.parentElement;
+			while (el) {
+				const declared = getComputedStyle(el).colorScheme;
+				const hasLight = declared.includes('light');
+				const hasDark = declared.includes('dark');
+				if (hasDark && !hasLight) return 'dark';
+				if (hasLight && !hasDark) return 'light';
+				el = el.parentElement;
+			}
+			return window.matchMedia?.('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
 		}
 
 		private _applyPadding(): void {
