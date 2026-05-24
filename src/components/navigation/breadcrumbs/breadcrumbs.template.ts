@@ -10,23 +10,24 @@ export function breadcrumbsTemplate(component: NLDDBreadcrumbs): TemplateResult 
 	const label = component._t('components.breadcrumbs.accessible-label');
 	const levelUpLabel = component._t('components.breadcrumbs.level-up-label');
 	const parent = component._parentItem();
-	const levelUpText = parent?.text || parent?.textContent?.trim() || levelUpLabel;
+	const levelUpText = parent ? (parent.text || parent.textContent?.trim() || levelUpLabel) : '';
 
 	return html`
 		<nav class="breadcrumbs"
 			aria-label=${label}
 		>
-			<a class="breadcrumbs__level-up"
-				href=${parent?.href ?? nothing}
-				?hidden=${!parent}
-			>
-				<span class="breadcrumbs__level-up-icon"
-					aria-hidden="true"
+			${parent ? html`
+				<a class="breadcrumbs__level-up"
+					href=${parent.href}
 				>
-					<nldd-icon name="chevron-left"></nldd-icon>
-				</span>
-				<span class="breadcrumbs__level-up-text">${levelUpText}</span>
-			</a>
+					<span class="breadcrumbs__level-up-icon"
+						aria-hidden="true"
+					>
+						<nldd-icon name="chevron-left"></nldd-icon>
+					</span>
+					<span class="breadcrumbs__level-up-text">${levelUpText}</span>
+				</a>
+			` : nothing}
 			<ol class="breadcrumbs__list">
 				<slot @slotchange=${component._onSlotChange}></slot>
 			</ol>
@@ -48,5 +49,10 @@ export function breadcrumbsItemTemplate(component: NLDDBreadcrumbsItem): Templat
 			</span>${separator}
 		`;
 	}
-	return html`<span class="breadcrumbs__item">${label}</span>${separator}`;
+	// aria-current also lives on the host (for the role=listitem) — mirroring
+	// here makes it visible to AT+browser combinations (e.g. VoiceOver/Safari)
+	// that miss reflected ARIA on shadow hosts.
+	return html`<span class="breadcrumbs__item"
+		aria-current=${component.current ? 'page' : nothing}
+	>${label}</span>${separator}`;
 }

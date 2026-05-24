@@ -132,8 +132,8 @@ export class NLDDBreadcrumbs extends LitElement {
 	/**
 	 * The parent (one-level-up) item: the last non-current item with an
 	 * `href` — the level-up link needs somewhere to navigate. Returns null
-	 * when no eligible parent exists; the level-up element stays hidden in
-	 * that case.
+	 * when no eligible parent exists; the level-up element is not rendered
+	 * in that case (so it can't appear in the link list of any AT).
 	 */
 	_parentItem(): NLDDBreadcrumbsItem | null {
 		const items = this._items();

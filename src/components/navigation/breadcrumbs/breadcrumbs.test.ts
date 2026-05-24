@@ -78,9 +78,20 @@ describe('nldd-breadcrumbs', () => {
 		expect(levelUpText?.textContent?.trim()).toBe('Slotted parent');
 	});
 
-	it('falls back to the i18n level-up label when no parent', async () => {
+	it('does not render the level-up link when there is no parent', async () => {
 		el = await fixture(`
 			<nldd-breadcrumbs>
+				<nldd-breadcrumbs-item text="Here" current></nldd-breadcrumbs-item>
+			</nldd-breadcrumbs>
+		`);
+		await waitForUpdate(el);
+		expect(el.shadowRoot!.querySelector('.breadcrumbs__level-up')).toBeNull();
+	});
+
+	it('falls back to the i18n level-up label when the parent has no text', async () => {
+		el = await fixture(`
+			<nldd-breadcrumbs>
+				<nldd-breadcrumbs-item href="/"></nldd-breadcrumbs-item>
 				<nldd-breadcrumbs-item text="Here" current></nldd-breadcrumbs-item>
 			</nldd-breadcrumbs>
 		`);
