@@ -38,6 +38,7 @@ export function pageFooterLegalBarTemplate(component: NLDDPageFooterLegalBar): T
 	return html`
 		<nav class="page-footer__legal-bar"
 			aria-label=${label}
+			?hidden=${!component._hasStart && !component._hasEnd}
 		>
 			<div class="page-footer__legal-bar-start"
 				?hidden=${!component._hasStart}
@@ -54,6 +55,9 @@ export function pageFooterLegalBarTemplate(component: NLDDPageFooterLegalBar): T
 }
 
 export function pageFooterLegalBarItemTemplate(component: NLDDPageFooterLegalBarItem): TemplateResult {
+	// `text=""` (empty string) intentionally falls through to the slot —
+	// Lit normalises the absent-attribute case to '', so a single falsy
+	// check covers both "no text attr" and "explicit empty text".
 	const label = component.text || html`<slot></slot>`;
 	if (component.href) {
 		return html`

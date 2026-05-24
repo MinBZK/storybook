@@ -142,6 +142,13 @@ describe('nldd-page-footer-legal-bar', () => {
 		expect(start.hidden).toBe(true);
 		expect(end.hidden).toBe(false);
 	});
+
+	it('hides the nav landmark when both start and end are empty', async () => {
+		el = await fixture('<nldd-page-footer-legal-bar></nldd-page-footer-legal-bar>');
+		await waitForUpdate(el);
+		const nav = el.shadowRoot!.querySelector('nav') as HTMLElement;
+		expect(nav.hidden).toBe(true);
+	});
 });
 
 describe('nldd-page-footer-legal-bar-item', () => {
@@ -166,5 +173,12 @@ describe('nldd-page-footer-legal-bar-item', () => {
 		expect(el.shadowRoot!.querySelector('a')).toBeNull();
 		const span = el.shadowRoot!.querySelector('.page-footer__legal-bar-item');
 		expect(span?.textContent?.trim()).toBe('© 2026');
+	});
+
+	it('falls back to the default slot when no text attribute is set', async () => {
+		el = await fixture('<nldd-page-footer-legal-bar-item>Disclaimer</nldd-page-footer-legal-bar-item>');
+		await waitForUpdate(el);
+		// Slotted content lives in the light DOM; el.textContent walks both trees.
+		expect(el.textContent?.trim()).toBe('Disclaimer');
 	});
 });
