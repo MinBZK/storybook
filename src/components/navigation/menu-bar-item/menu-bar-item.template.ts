@@ -36,7 +36,7 @@ export function template(component: NLDDMenuBarItem) {
 					</span>
 				` : nothing}
 			</a>
-			<slot></slot>
+			<slot @slotchange=${component._onSlotChange}></slot>
 		`;
 	}
 
@@ -65,6 +65,6 @@ export function template(component: NLDDMenuBarItem) {
 				</span>
 			` : nothing}
 		</button>
-		<slot></slot>
+		<slot @slotchange=${component._onSlotChange}></slot>
 	`;
 }

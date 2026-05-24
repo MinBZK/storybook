@@ -124,6 +124,12 @@ export class NLDDMenuBarItem extends LitElement {
 		super.connectedCallback();
 		this.addEventListener('pointerdown', this._handlePointerdown);
 		this.addEventListener('click', this._handleClick);
+		// Wire any nldd-menu that is already in light DOM before our shadow
+		// renders — covers the case where a consumer fires `toggle`
+		// programmatically before the first click (so before _toggleMenu()
+		// would have wired the menu itself). Slotchange handles the slot's
+		// own projection event; this handles the pre-render snapshot.
+		this._wireMenu();
 	}
 
 	override disconnectedCallback(): void {
@@ -132,6 +138,11 @@ export class NLDDMenuBarItem extends LitElement {
 		this.removeEventListener('click', this._handleClick);
 		this._unwireMenu();
 	}
+
+	_onSlotChange = (): void => {
+		// Re-wire when a consumer swaps the slotted <nldd-menu> at runtime.
+		this._wireMenu();
+	};
 
 	override focus(options?: FocusOptions): void {
 		const focusable = this.shadowRoot?.querySelector<HTMLElement>('button, a');
