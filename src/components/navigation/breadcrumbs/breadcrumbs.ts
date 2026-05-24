@@ -147,7 +147,35 @@ export class NLDDBreadcrumbs extends LitElement {
 		// CSS reads `[has-parent]` directly; no need for @state. Toggling
 		// the attribute is enough.
 		this.toggleAttribute('has-parent', !!this._parentItem());
+		this._observeItemAttrs();
+		this.requestUpdate();
 	};
+
+	// MutationObserver covers the case where a consumer mutates `href` or
+	// `current` on an already-slotted item — slotchange doesn't fire for
+	// attribute changes, so has-parent + the level-up template would
+	// otherwise desync from the actual state.
+	private _itemObserver?: MutationObserver;
+
+	private _observeItemAttrs(): void {
+		this._itemObserver?.disconnect();
+		this._itemObserver = new MutationObserver(() => {
+			this.toggleAttribute('has-parent', !!this._parentItem());
+			this.requestUpdate();
+		});
+		for (const item of this._items()) {
+			this._itemObserver.observe(item, {
+				attributes: true,
+				attributeFilter: ['href', 'current'],
+			});
+		}
+	}
+
+	override disconnectedCallback(): void {
+		super.disconnectedCallback();
+		this._itemObserver?.disconnect();
+		this._itemObserver = undefined;
+	}
 
 	override render() {
 		return breadcrumbsTemplate(this);

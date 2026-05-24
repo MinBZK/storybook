@@ -99,6 +99,23 @@ describe('nldd-breadcrumbs', () => {
 		const levelUpText = el.shadowRoot!.querySelector('.breadcrumbs__level-up-text');
 		expect(levelUpText?.textContent?.trim()).toBe('Eén niveau omhoog');
 	});
+
+	it('re-evaluates has-parent when an item href mutates after render', async () => {
+		el = await fixture(`
+			<nldd-breadcrumbs>
+				<nldd-breadcrumbs-item text="Section"></nldd-breadcrumbs-item>
+				<nldd-breadcrumbs-item text="Here" current></nldd-breadcrumbs-item>
+			</nldd-breadcrumbs>
+		`);
+		await waitForUpdate(el);
+		expect(el.hasAttribute('has-parent')).toBe(false);
+		el.querySelector('nldd-breadcrumbs-item')!.setAttribute('href', '/section');
+		// Give the MutationObserver microtask a chance to fire.
+		await new Promise((r) => setTimeout(r, 0));
+		await waitForUpdate(el);
+		expect(el.hasAttribute('has-parent')).toBe(true);
+		expect(el.shadowRoot!.querySelector('.breadcrumbs__level-up')).not.toBeNull();
+	});
 });
 
 describe('nldd-breadcrumbs-item', () => {
