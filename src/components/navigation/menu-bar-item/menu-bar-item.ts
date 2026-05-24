@@ -216,7 +216,8 @@ export class NLDDMenuBarItem extends LitElement {
 			this._pointerdownWhileMenuOpen = false;
 			return;
 		}
-		this._wireMenu();
+		// _wireMenu already ran in connectedCallback and re-runs on
+		// slotchange — no need to call it here.
 		if (!this._menu) return;
 		this._menu.anchorElement = this;
 		if (this._menuOpen) {
