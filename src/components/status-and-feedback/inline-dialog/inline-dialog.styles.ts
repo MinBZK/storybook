@@ -8,11 +8,19 @@ export const inlineDialogStyles = css`
 	:host {
 		--_icon-size: var(--primitives-space-48);
 		--_icon-color: var(--components-inline-dialog-icon-color);
+		--_text-font: var(--primitives-font-body-md-bold-tight);
+		--_supporting-text-font: var(--primitives-font-body-sm-regular-tight);
 
 		display: flex;
 		flex-grow: 1;
 		align-items: center;
 		justify-content: center;
+	}
+
+	:host([size="lg"]) {
+		--_icon-size: var(--primitives-space-56);
+		--_text-font: var(--primitives-font-body-lg-bold-tight);
+		--_supporting-text-font: var(--primitives-font-body-md-regular-tight);
 	}
 
 	:host([variant="alert"]) {
@@ -81,7 +89,7 @@ export const inlineDialogStyles = css`
 		margin: 0;
 		text-align: center;
 		color: var(--semantics-content-color);
-		font: var(--primitives-font-body-lg-bold-tight);
+		font: var(--_text-font);
 		text-wrap: pretty;
 	}
 
@@ -94,7 +102,7 @@ export const inlineDialogStyles = css`
 		margin: 0;
 		text-align: center;
 		color: var(--semantics-content-color);
-		font: var(--primitives-font-body-md-regular-tight);
+		font: var(--_supporting-text-font);
 		text-wrap: pretty;
 	}
 
