@@ -163,6 +163,14 @@ export function PageSectionMixin<TBase extends Constructor<LitElement>>(
 		 *   2. Walk up to find an ancestor that pins a single scheme.
 		 *   3. Otherwise fall back to `prefers-color-scheme` — that's what
 		 *      `'light dark'` resolves to in practice.
+		 *
+		 * Perf: the per-call cost is `getComputedStyle()` for each ancestor
+		 * up to one that pins a scheme. This only runs when the project
+		 * does NOT set `:root[data-scheme]` (apps with a global theme
+		 * toggle, like regelrecht, hit the fast path and never enter the
+		 * walk). When the fallback is needed the walk is bounded by the
+		 * DOM depth and only fires on `scheme` prop change or a
+		 * color-scheme repaint event — not on every render.
 		 */
 		private _resolveActiveScheme(): 'light' | 'dark' {
 			const root = document.documentElement.getAttribute('data-scheme');
