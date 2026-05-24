@@ -11,10 +11,8 @@ export const simpleSectionStyles = css`
 
 	/* # Host */
 
-	/* Each section establishes its own page-section-container (set inline on
-	   the host by PageSectionMixin); the responsive padding and gap below query
-	   it directly. */
 	:host {
+		container-type: inline-size;
 		/* Block-padding overrides from PageSectionMixin; 'initial' makes the
 		   var() in .simple-section fall back to the responsive default until the
 		   mixin sets a value inline on the host. */
@@ -59,19 +57,19 @@ export const simpleSectionStyles = css`
 		align-items: center;
 
 
-		@container page-section-container (max-width: ${smMax}) {
+		@container (max-width: ${smMax}) {
 			padding-inline: var(--semantics-page-sections-sm-margin-inline);
 			padding-top: var(--_sm-padding-top, var(--_padding-top, var(--semantics-page-sections-sm-margin-block)));
 			padding-bottom: var(--_sm-padding-bottom, var(--_padding-bottom, var(--semantics-page-sections-sm-margin-block)));
 		}
 
-		@container page-section-container (min-width: ${mdMin}) and (max-width: ${mdMax}) {
+		@container (min-width: ${mdMin}) and (max-width: ${mdMax}) {
 			padding-inline: var(--semantics-page-sections-md-margin-inline);
 			padding-top: var(--_md-padding-top, var(--_padding-top, var(--semantics-page-sections-md-margin-block)));
 			padding-bottom: var(--_md-padding-bottom, var(--_padding-bottom, var(--semantics-page-sections-md-margin-block)));
 		}
 
-		@container page-section-container (min-width: ${lgMin}) {
+		@container (min-width: ${lgMin}) {
 			padding-inline: var(--semantics-page-sections-lg-margin-inline);
 			padding-top: var(--_lg-padding-top, var(--_padding-top, var(--semantics-page-sections-lg-margin-block)));
 			padding-bottom: var(--_lg-padding-bottom, var(--_padding-bottom, var(--semantics-page-sections-lg-margin-block)));
@@ -88,15 +86,15 @@ export const simpleSectionStyles = css`
 		flex-direction: column;
 		flex-grow: 1;
 
-		@container page-section-container (max-width: ${smMax}) {
+		@container (max-width: ${smMax}) {
 			gap: var(--semantics-page-sections-sm-gap);
 		}
 
-		@container page-section-container (min-width: ${mdMin}) and (max-width: ${mdMax}) {
+		@container (min-width: ${mdMin}) and (max-width: ${mdMax}) {
 			gap: var(--semantics-page-sections-md-gap);
 		}
 
-		@container page-section-container (min-width: ${lgMin}) {
+		@container (min-width: ${lgMin}) {
 			gap: var(--semantics-page-sections-lg-gap);
 		}
 	}

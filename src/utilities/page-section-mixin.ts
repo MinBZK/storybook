@@ -108,13 +108,6 @@ export function PageSectionMixin<TBase extends Constructor<LitElement>>(
 
 		override connectedCallback(): void {
 			super.connectedCallback();
-			// Establish the section's own query container so the responsive
-			// padding/gap (which query `page-section-container`) resolve against
-			// the section's own width — no outer layout container required. Set
-			// inline on the host: Safari doesn't reliably honour container-type
-			// declared via :host in the shadow stylesheet.
-			this.style.containerType = 'inline-size';
-			this.style.containerName = 'page-section-container';
 			// Re-resolve `inverted` whenever the page color-scheme flips.
 			this._unsubScheme = onColorSchemeChange(() => {
 				if (this.scheme === 'inverted') this._applyScheme();

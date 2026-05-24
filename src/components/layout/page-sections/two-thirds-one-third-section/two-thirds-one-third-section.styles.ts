@@ -11,10 +11,8 @@ export const twoThirdsOneThirdSectionStyles = css`
 
 	/* # Host */
 
-	/* Each section establishes its own page-section-container (set inline on
-	   the host by PageSectionMixin); the responsive padding and gap below query
-	   it directly. */
 	:host {
+		container-type: inline-size;
 		/* Block-padding overrides from PageSectionMixin; 'initial' lets the
 		   block fall back to the responsive default until the mixin sets one. */
 		--_padding-top: initial;
@@ -52,19 +50,19 @@ export const twoThirdsOneThirdSectionStyles = css`
 		align-items: center;
 
 
-		@container page-section-container (max-width: ${smMax}) {
+		@container (max-width: ${smMax}) {
 			padding-inline: var(--semantics-page-sections-sm-margin-inline);
 			padding-top: var(--_sm-padding-top, var(--_padding-top, var(--semantics-page-sections-sm-margin-block)));
 			padding-bottom: var(--_sm-padding-bottom, var(--_padding-bottom, var(--semantics-page-sections-sm-margin-block)));
 		}
 
-		@container page-section-container (min-width: ${mdMin}) and (max-width: ${mdMax}) {
+		@container (min-width: ${mdMin}) and (max-width: ${mdMax}) {
 			padding-inline: var(--semantics-page-sections-md-margin-inline);
 			padding-top: var(--_md-padding-top, var(--_padding-top, var(--semantics-page-sections-md-margin-block)));
 			padding-bottom: var(--_md-padding-bottom, var(--_padding-bottom, var(--semantics-page-sections-md-margin-block)));
 		}
 
-		@container page-section-container (min-width: ${lgMin}) {
+		@container (min-width: ${lgMin}) {
 			padding-inline: var(--semantics-page-sections-lg-margin-inline);
 			padding-top: var(--_lg-padding-top, var(--_padding-top, var(--semantics-page-sections-lg-margin-block)));
 			padding-bottom: var(--_lg-padding-bottom, var(--_padding-bottom, var(--semantics-page-sections-lg-margin-block)));
@@ -80,15 +78,15 @@ export const twoThirdsOneThirdSectionStyles = css`
 		max-width: var(--_max-width);
 		flex-direction: column;
 
-		@container page-section-container (max-width: ${smMax}) {
+		@container (max-width: ${smMax}) {
 			gap: var(--semantics-page-sections-sm-gap);
 		}
 
-		@container page-section-container (min-width: ${mdMin}) and (max-width: ${mdMax}) {
+		@container (min-width: ${mdMin}) and (max-width: ${mdMax}) {
 			gap: var(--semantics-page-sections-md-gap);
 		}
 
-		@container page-section-container (min-width: ${lgMin}) {
+		@container (min-width: ${lgMin}) {
 			gap: var(--semantics-page-sections-lg-gap);
 		}
 	}
@@ -101,20 +99,20 @@ export const twoThirdsOneThirdSectionStyles = css`
 		   two near-equal columns; stack to a single column instead. nowrap
 		   stops the column-direction wrap container from stretching the
 		   shorter column to fill height. */
-		@container page-section-container (max-width: 768px) {
+		@container (max-width: 768px) {
 			flex-direction: column;
 			flex-wrap: nowrap;
 		}
 
-		@container page-section-container (max-width: ${smMax}) {
+		@container (max-width: ${smMax}) {
 			gap: var(--semantics-page-sections-sm-gap);
 		}
 
-		@container page-section-container (min-width: ${mdMin}) and (max-width: ${mdMax}) {
+		@container (min-width: ${mdMin}) and (max-width: ${mdMax}) {
 			gap: var(--semantics-page-sections-md-gap);
 		}
 
-		@container page-section-container (min-width: ${lgMin}) {
+		@container (min-width: ${lgMin}) {
 			gap: var(--semantics-page-sections-lg-gap);
 		}
 	}
