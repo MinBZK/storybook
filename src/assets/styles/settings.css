@@ -1192,7 +1192,7 @@
 	/* ## Page footer */
 
 	--components-page-footer-background-color: light-dark(var(--primitives-color-neutral-75), var(--primitives-color-neutral-50));
-	--components-page-footer-divider-color: light-dark(var(--primitives-color-neutral-200), var(--primitives-color-neutral-300));
+	--components-page-footer-divider-color: light-dark(var(--primitives-color-neutral-200), var(--primitives-color-neutral-150));
 	--components-page-footer-legal-bar-item-color: var(--semantics-content-secondary-color);
 
 	/* ## Popover */
