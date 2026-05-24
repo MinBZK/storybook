@@ -102,16 +102,6 @@ export class NLDDBreadcrumbs extends LitElement {
 
 	private _mergedTranslations: NLDDBreadcrumbsTranslations = { ...nlddBreadcrumbsTranslations };
 
-	override connectedCallback(): void {
-		super.connectedCallback();
-		// Establish the component's own container so the sm-viewport fallback
-		// reacts to the breadcrumbs' own width, not the viewport. Set inline
-		// on the host: Safari doesn't reliably honour container-type declared
-		// via :host in the shadow stylesheet.
-		this.style.containerType = 'inline-size';
-		this.style.containerName = 'breadcrumbs-container';
-	}
-
 	override willUpdate(changed: PropertyValues): void {
 		if (changed.has('translations') || changed.has('accessibleLabel')) {
 			this._mergedTranslations = {

@@ -5,6 +5,7 @@ const smMax = unsafeCSS(breakpoints.smMax);
 
 export const breadcrumbsStyles = css`
 	:host {
+		container-type: inline-size;
 		display: block;
 	}
 
@@ -26,7 +27,7 @@ export const breadcrumbsStyles = css`
 	}
 
 	:host([has-parent]) .breadcrumbs__list {
-		@container breadcrumbs-container (max-width: ${smMax}) {
+		@container (max-width: ${smMax}) {
 			display: none;
 		}
 	}
@@ -41,7 +42,7 @@ export const breadcrumbsStyles = css`
 	}
 
 	:host([has-parent]) .breadcrumbs__level-up {
-		@container breadcrumbs-container (max-width: ${smMax}) {
+		@container (max-width: ${smMax}) {
 			display: inline-flex;
 		}
 	}
@@ -59,8 +60,8 @@ export const breadcrumbsStyles = css`
 
 	.breadcrumbs__level-up-icon {
 		display: inline-flex;
-		width: var(--primitives-space-16);
-		height: var(--primitives-space-16);
+		width: var(--primitives-space-20);
+		height: var(--primitives-space-20);
 		flex-shrink: 0;
 	}
 `;
