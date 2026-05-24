@@ -51,6 +51,10 @@ export const breadcrumbsStyles = css`
 		color: var(--semantics-links-is-hovered-color);
 	}
 
+	.breadcrumbs__level-up:active {
+		color: var(--semantics-links-is-active-color);
+	}
+
 	.breadcrumbs__level-up:focus-visible {
 		outline: var(--semantics-focus-ring-outline);
 		outline-offset: var(--semantics-focus-ring-outline-offset);
@@ -95,6 +99,10 @@ export const breadcrumbsItemStyles = css`
 
 	.breadcrumbs__item-link:hover {
 		color: var(--semantics-links-is-hovered-color);
+	}
+
+	.breadcrumbs__item-link:active {
+		color: var(--semantics-links-is-active-color);
 	}
 
 	.breadcrumbs__item-link:focus-visible {
