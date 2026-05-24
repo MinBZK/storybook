@@ -14,9 +14,8 @@ export const listItemStyles = css`
 
 		--context-list-item-padding-block: var(--components-list-item-md-padding-block);
 
-		display: block;
 		container-type: inline-size;
-		container-name: list-item;
+		display: block;
 		width: 100%;
 		-webkit-tap-highlight-color: transparent;
 	}

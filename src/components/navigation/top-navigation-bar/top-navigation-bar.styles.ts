@@ -15,6 +15,7 @@ export const topNavigationBarStyles = css`
 		--_logo-width: var(--primitives-space-40);
 		--_wordmark-content-color: light-dark(var(--primitives-color-reference-lintblauw), var(--primitives-color-neutral-1000));
 
+		container-type: inline-size;
 		display: block;
 		width: 100%;
 	}
@@ -29,8 +30,6 @@ export const topNavigationBarStyles = css`
 	.top-navigation-bar {
 		box-sizing: border-box;
 		display: flex;
-		container-type: inline-size;
-		container-name: top-navigation-bar-container;
 		margin: 0 auto;
 		width: 100%;
 		flex-direction: column;
@@ -45,15 +44,15 @@ export const topNavigationBarStyles = css`
 		gap: var(--primitives-space-8);
 		align-items: center;
 
-		@container top-navigation-bar-container (max-width: ${smMax}) {
+		@container (max-width: ${smMax}) {
 			padding-inline: var(--semantics-page-sections-sm-margin-inline);
 		}
 
-		@container top-navigation-bar-container (min-width: ${mdMin}) and (max-width: ${mdMax}) {
+		@container (min-width: ${mdMin}) and (max-width: ${mdMax}) {
 			padding-inline: var(--semantics-page-sections-md-margin-inline);
 		}
 
-		@container top-navigation-bar-container (min-width: ${lgMin}) {
+		@container (min-width: ${lgMin}) {
 			padding-inline: var(--semantics-page-sections-lg-margin-inline);
 		}
 	}
@@ -69,15 +68,15 @@ export const topNavigationBarStyles = css`
 		align-items: center;
 		justify-content: center;
 
-		@container top-navigation-bar-container (max-width: ${smMax}) {
+		@container (max-width: ${smMax}) {
 			--_logo-width: var(--primitives-space-40);
 		}
 
-		@container top-navigation-bar-container (min-width: ${mdMin}) and (max-width: ${mdMax}) {
+		@container (min-width: ${mdMin}) and (max-width: ${mdMax}) {
 			--_logo-width: var(--primitives-space-44);
 		}
 
-		@container top-navigation-bar-container (min-width: ${lgMin}) {
+		@container (min-width: ${lgMin}) {
 			--_logo-width: var(--primitives-space-48);
 		}
 	}
@@ -173,18 +172,18 @@ export const topNavigationBarStyles = css`
 	.top-navigation-bar__main-bar {
 		display: flex;
 
-		@container top-navigation-bar-container (max-width: ${smMax}) {
+		@container (max-width: ${smMax}) {
 			padding-inline: calc(var(--semantics-page-sections-sm-margin-inline) - var(--components-menu-bar-item-inline-padding));
 			flex-direction: column;
 		}
 
-		@container top-navigation-bar-container (min-width: ${mdMin}) and (max-width: ${mdMax}) {
+		@container (min-width: ${mdMin}) and (max-width: ${mdMax}) {
 			padding-inline: calc(var(--semantics-page-sections-md-margin-inline) - var(--components-menu-bar-item-inline-padding));
 			flex-direction: row;
 			align-items: center;
 		}
 
-		@container top-navigation-bar-container (min-width: ${lgMin}) {
+		@container (min-width: ${lgMin}) {
 			padding-inline: calc(var(--semantics-page-sections-lg-margin-inline) - var(--components-menu-bar-item-inline-padding));
 			flex-direction: row;
 			align-items: center;
@@ -200,7 +199,7 @@ export const topNavigationBarStyles = css`
 		align-items: center;
 		justify-content: center;
 
-		@container top-navigation-bar-container (min-width: ${mdMin}) {
+		@container (min-width: ${mdMin}) {
 			padding: 0;
 			justify-content: flex-start;
 		}
@@ -213,12 +212,12 @@ export const topNavigationBarStyles = css`
 		color: var(--semantics-content-color);
 		white-space: nowrap;
 
-		@container top-navigation-bar-container (min-width: ${mdMin}) {
+		@container (min-width: ${mdMin}) {
 			font: var(--components-top-navigation-bar-title-md-font);
 			margin-inline: var(--components-menu-bar-item-inline-padding);
 		}
 
-		@container top-navigation-bar-container (min-width: ${lgMin}) {
+		@container (min-width: ${lgMin}) {
 			font: var(--components-top-navigation-bar-title-lg-font);
 		}
 	}
@@ -251,12 +250,12 @@ export const topNavigationBarStyles = css`
 		min-width: 0;
 		align-items: center;
 
-		@container top-navigation-bar-container (max-width: ${mdMax}) {
+		@container (max-width: ${mdMax}) {
 			flex-grow: 0;
 			flex-shrink: 0;
 		}
 
-		@container top-navigation-bar-container (min-width: ${lgMin}) {
+		@container (min-width: ${lgMin}) {
 			flex-grow: 1;
 			flex-shrink: 1;
 		}
@@ -269,12 +268,12 @@ export const topNavigationBarStyles = css`
 		min-width: 0;
 		align-items: center;
 
-		@container top-navigation-bar-container (max-width: ${mdMax}) {
+		@container (max-width: ${mdMax}) {
 			flex-grow: 1;
 			flex-shrink: 1;
 		}
 
-		@container top-navigation-bar-container (min-width: ${lgMin}) {
+		@container (min-width: ${lgMin}) {
 			flex-grow: 0;
 			flex-shrink: 0;
 		}
@@ -287,7 +286,7 @@ export const topNavigationBarStyles = css`
 		min-width: 0;
 		flex-grow: 1;
 		flex-shrink: 1;
-		@container top-navigation-bar-container (min-width: ${lgMin}) {
+		@container (min-width: ${lgMin}) {
 			:host(.has-global-items) & {
 				display: flex;
 			}
@@ -299,7 +298,7 @@ export const topNavigationBarStyles = css`
 	.top-navigation-bar__menu-button {
 		display: none;
 
-		@container top-navigation-bar-container (max-width: ${mdMax}) {
+		@container (max-width: ${mdMax}) {
 			:host(.has-global-items) & {
 				display: inline-block;
 			}

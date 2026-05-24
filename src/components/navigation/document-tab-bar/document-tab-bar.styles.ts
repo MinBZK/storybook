@@ -211,9 +211,8 @@ export const documentTabBarItemStyles = css`
 	/* # Host */
 
 	:host {
-		display: block;
-		container-name: document-tab-bar;
 		container-type: inline-size;
+		display: block;
 		min-width: 0;
 		touch-action: pan-y;
 		-webkit-tap-highlight-color: transparent;
@@ -291,7 +290,7 @@ export const documentTabBarItemStyles = css`
 	.document-tab-bar__item-normal {
 		display: contents;
 
-		@container document-tab-bar (max-width: 200px) {
+		@container (max-width: 200px) {
 			display: none;
 		}
 	}
@@ -299,7 +298,7 @@ export const documentTabBarItemStyles = css`
 	.document-tab-bar__item-short {
 		display: none;
 
-		@container document-tab-bar (max-width: 200px) {
+		@container (max-width: 200px) {
 			display: contents;
 		}
 	}

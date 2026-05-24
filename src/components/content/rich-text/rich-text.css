@@ -12,7 +12,6 @@ nldd-rich-text {
 	);
 
 	container-type: inline-size;
-	container-name: rich-text-container;
 	display: grid;
 	grid-template-columns:
 		[full-start]   0
@@ -84,15 +83,15 @@ nldd-rich-text :is(h1, h2, h3, h4, h5, h6) {
 /* # Heading 1 */
 
 nldd-rich-text h1 {
-	@container rich-text-container (max-width: 640px) {
+	@container (max-width: 640px) {
 		font: var(--primitives-font-display-1-sm);
 	}
 
-	@container rich-text-container (min-width: 641px) and (max-width: 1007px) {
+	@container (min-width: 641px) and (max-width: 1007px) {
 		font: var(--primitives-font-display-1-md);
 	}
 
-	@container rich-text-container (min-width: 1008px) {
+	@container (min-width: 1008px) {
 		font: var(--primitives-font-display-1-lg);
 	}
 }
@@ -101,15 +100,15 @@ nldd-rich-text h1 {
 /* # Heading 2 */
 
 nldd-rich-text h2 {
-	@container rich-text-container (max-width: 640px) {
+	@container (max-width: 640px) {
 		font: var(--primitives-font-display-2-sm);
 	}
 
-	@container rich-text-container (min-width: 641px) and (max-width: 1007px) {
+	@container (min-width: 641px) and (max-width: 1007px) {
 		font: var(--primitives-font-display-2-md);
 	}
 
-	@container rich-text-container (min-width: 1008px) {
+	@container (min-width: 1008px) {
 		font: var(--primitives-font-display-2-lg);
 	}
 }
@@ -118,15 +117,15 @@ nldd-rich-text h2 {
 /* # Heading 3 */
 
 nldd-rich-text h3 {
-	@container rich-text-container (max-width: 640px) {
+	@container (max-width: 640px) {
 		font: var(--primitives-font-display-3-sm);
 	}
 
-	@container rich-text-container (min-width: 641px) and (max-width: 1007px) {
+	@container (min-width: 641px) and (max-width: 1007px) {
 		font: var(--primitives-font-display-3-md);
 	}
 
-	@container rich-text-container (min-width: 1008px) {
+	@container (min-width: 1008px) {
 		font: var(--primitives-font-display-3-lg);
 	}
 }
@@ -135,15 +134,15 @@ nldd-rich-text h3 {
 /* # Heading 4 */
 
 nldd-rich-text h4 {
-	@container rich-text-container (max-width: 640px) {
+	@container (max-width: 640px) {
 		font: var(--primitives-font-display-4-sm);
 	}
 
-	@container rich-text-container (min-width: 641px) and (max-width: 1007px) {
+	@container (min-width: 641px) and (max-width: 1007px) {
 		font: var(--primitives-font-display-4-md);
 	}
 
-	@container rich-text-container (min-width: 1008px) {
+	@container (min-width: 1008px) {
 		font: var(--primitives-font-display-4-lg);
 	}
 }
@@ -152,15 +151,15 @@ nldd-rich-text h4 {
 /* # Heading 5 */
 
 nldd-rich-text h5 {
-	@container rich-text-container (max-width: 640px) {
+	@container (max-width: 640px) {
 		font: var(--primitives-font-display-5-sm);
 	}
 
-	@container rich-text-container (min-width: 641px) and (max-width: 1007px) {
+	@container (min-width: 641px) and (max-width: 1007px) {
 		font: var(--primitives-font-display-5-md);
 	}
 
-	@container rich-text-container (min-width: 1008px) {
+	@container (min-width: 1008px) {
 		font: var(--primitives-font-display-5-lg);
 	}
 }
@@ -169,15 +168,15 @@ nldd-rich-text h5 {
 /* # Heading 6 */
 
 nldd-rich-text h6 {
-	@container rich-text-container (max-width: 640px) {
+	@container (max-width: 640px) {
 		font: var(--primitives-font-display-6-sm);
 	}
 
-	@container rich-text-container (min-width: 641px) and (max-width: 1007px) {
+	@container (min-width: 641px) and (max-width: 1007px) {
 		font: var(--primitives-font-display-6-md);
 	}
 
-	@container rich-text-container (min-width: 1008px) {
+	@container (min-width: 1008px) {
 		font: var(--primitives-font-display-6-lg);
 	}
 }
@@ -324,7 +323,7 @@ nldd-rich-text blockquote {
 	border-top-left-radius: var(--semantics-blockquotes-corner-radius);
 	font: var(--semantics-blockquotes-md-quote-font);
 
-	@container rich-text-container (max-width: 640px) {
+	@container (max-width: 640px) {
 		gap: calc(var(--semantics-blockquotes-sm-spacing) / 2);
 		margin-block: max(
 			0px,
@@ -400,7 +399,7 @@ nldd-rich-text table {
 	-webkit-overflow-scrolling: touch;
 	scrollbar-width: thin;
 
-	@container rich-text-container (min-width: 641px) {
+	@container (min-width: 641px) {
 		display: table;
 		overflow-x: unset;
 		scrollbar-width: unset;
@@ -426,7 +425,7 @@ nldd-rich-text td {
 	border-bottom: var(--semantics-dividers-thickness) solid var(--semantics-dividers-color);
 	font: var(--primitives-font-body-md-regular-snug);
 
-	@container rich-text-container (min-width: 641px) {
+	@container (min-width: 641px) {
 		min-width: unset;
 	}
 }
