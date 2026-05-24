@@ -7,8 +7,6 @@ describe('nldd-menu-bar-item', () => {
 
 	afterEach(() => {
 		if (el) cleanup(el);
-		// Clean up any popover menus appended to document.body
-		document.querySelectorAll('nldd-menu').forEach(m => m.remove());
 	});
 
 	it('renders without error', async () => {
@@ -33,56 +31,30 @@ describe('nldd-menu-bar-item', () => {
 		expect(el.hasAttribute('current')).toBe(false);
 	});
 
-	it('creates popover menu lazily on first click when expandable', async () => {
+	it('opens the slotted nldd-menu on click when expandable', async () => {
 		el = await fixture(`
 			<nldd-menu-bar-item text="NL" expandable>
-				<nldd-menu-item text="Nederlands"></nldd-menu-item>
-				<nldd-menu-item text="English"></nldd-menu-item>
+				<nldd-menu>
+					<nldd-menu-item text="Nederlands"></nldd-menu-item>
+					<nldd-menu-item text="English"></nldd-menu-item>
+				</nldd-menu>
 			</nldd-menu-bar-item>
 		`);
 		await waitForUpdate(el);
-		// Menu is not created until first click (lazy creation)
-		expect(document.querySelector('nldd-menu')).toBeNull();
+		const menu = el.querySelector('nldd-menu') as HTMLElement & { matches(s: string): boolean };
+		expect(menu).not.toBeNull();
+		expect(menu.matches(':popover-open')).toBe(false);
 		el.click();
 		await waitForUpdate(el);
-		expect(document.querySelector('nldd-menu')).not.toBeNull();
+		expect(menu.matches(':popover-open')).toBe(true);
 	});
 
-	it('removes popover menu on disconnect', async () => {
+	it('does not fire select when expandable with a slotted menu', async () => {
 		el = await fixture(`
 			<nldd-menu-bar-item text="NL" expandable>
-				<nldd-menu-item text="Nederlands"></nldd-menu-item>
-			</nldd-menu-bar-item>
-		`);
-		await waitForUpdate(el);
-		el.click();
-		await waitForUpdate(el);
-		expect(document.querySelector('nldd-menu')).not.toBeNull();
-		cleanup(el);
-		expect(document.querySelector('nldd-menu')).toBeNull();
-		// Prevent afterEach double-cleanup
-		el = null as any;
-	});
-
-	it('removes popover menu when expandable is removed', async () => {
-		el = await fixture(`
-			<nldd-menu-bar-item text="NL" expandable>
-				<nldd-menu-item text="Nederlands"></nldd-menu-item>
-			</nldd-menu-bar-item>
-		`);
-		await waitForUpdate(el);
-		el.click();
-		await waitForUpdate(el);
-		expect(document.querySelector('nldd-menu')).not.toBeNull();
-		el.removeAttribute('expandable');
-		await waitForUpdate(el);
-		expect(document.querySelector('nldd-menu')).toBeNull();
-	});
-
-	it('does not fire select when expandable with menu items', async () => {
-		el = await fixture(`
-			<nldd-menu-bar-item text="NL" expandable>
-				<nldd-menu-item text="Nederlands"></nldd-menu-item>
+				<nldd-menu>
+					<nldd-menu-item text="Nederlands"></nldd-menu-item>
+				</nldd-menu>
 			</nldd-menu-bar-item>
 		`);
 		await waitForUpdate(el);
@@ -91,6 +63,16 @@ describe('nldd-menu-bar-item', () => {
 		el.click();
 		await waitForUpdate(el);
 		expect(fired).toBe(false);
+	});
+
+	it('fires select when expandable but no slotted menu', async () => {
+		el = await fixture('<nldd-menu-bar-item text="More" expandable></nldd-menu-bar-item>');
+		await waitForUpdate(el);
+		let fired = false;
+		el.addEventListener('select', () => { fired = true; });
+		el.click();
+		await waitForUpdate(el);
+		expect(fired).toBe(true);
 	});
 
 	it('renders as link when href is set', async () => {
