@@ -17,16 +17,13 @@ export const breadcrumbsStyles = css`
 		display: block;
 	}
 
-	.breadcrumbs__list {
+	.breadcrumbs__items {
 		display: flex;
-		margin: 0;
-		padding: 0;
 		flex-wrap: wrap;
 		row-gap: var(--primitives-space-4);
-		list-style: none;
 	}
 
-	:host([has-parent]) .breadcrumbs__list {
+	:host([has-parent]) .breadcrumbs__items {
 		@container (max-width: ${smMax}) {
 			display: none;
 		}

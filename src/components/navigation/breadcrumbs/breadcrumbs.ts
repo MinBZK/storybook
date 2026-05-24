@@ -2,9 +2,12 @@
  * Nederlandse Digitale Dienst Breadcrumbs Component (Lit + TypeScript)
  *
  * A trail of `nldd-breadcrumbs-item`s separated by `›`, rendered as a
- * `<nav>` landmark with an `<ol>`. Establishes its own container query
- * (`breadcrumbs-container`) so the sm-viewport "‹ {parent}" fallback
- * reacts to the breadcrumbs' own width, not the viewport.
+ * `<nav>` landmark wrapping a `<div role="list">` (with each item carrying
+ * `role="listitem"`). Explicit ARIA roles travel reliably across the slot
+ * boundary where the implicit `<ol>`/`<li>` mapping is inconsistent across
+ * AT + browser combos. The host itself is its own container-query scope so
+ * the sm-viewport "‹ {parent}" fallback reacts to the breadcrumbs' own
+ * width, not the viewport.
  *
  * @element nldd-breadcrumbs
  *
@@ -52,10 +55,11 @@ export class NLDDBreadcrumbsItem extends LitElement {
 
 	override connectedCallback(): void {
 		super.connectedCallback();
-		// The parent .breadcrumbs__list is <ol>; each item gets the matching
-		// listitem role so screen readers announce a proper list with N items
-		// (the projected custom elements aren't <li>, so the implicit ARIA
-		// mapping doesn't kick in).
+		// The parent .breadcrumbs__items is a div role="list"; each item
+		// gets the matching listitem role so screen readers announce a
+		// proper list with N items. Explicit ARIA is what AT actually
+		// reads across the slot boundary — the implicit <ol>/<li>
+		// mapping doesn't traverse it reliably.
 		if (!this.hasAttribute('role')) {
 			this.setAttribute('role', 'listitem');
 		}

@@ -1,7 +1,3 @@
-/* eslint-disable lit-a11y/list -- breadcrumbs are <nav><ol>…</ol></nav>
-   per WCAG H48. The slotted children are nldd-breadcrumbs-item custom
-   elements (each sets role="listitem" on its host); the lit-a11y/list
-   rule can't see through the slot/role chain. */
 import { html, nothing, type TemplateResult } from 'lit';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import type { NLDDBreadcrumbs, NLDDBreadcrumbsItem } from './breadcrumbs.js';
@@ -29,9 +25,11 @@ export function breadcrumbsTemplate(component: NLDDBreadcrumbs): TemplateResult 
 					<span class="breadcrumbs__level-up-text">${levelUpText}</span>
 				</a>
 			` : nothing}
-			<ol class="breadcrumbs__list">
+			<div class="breadcrumbs__items"
+				role="list"
+			>
 				<slot @slotchange=${component._onSlotChange}></slot>
-			</ol>
+			</div>
 		</nav>
 	`;
 }
