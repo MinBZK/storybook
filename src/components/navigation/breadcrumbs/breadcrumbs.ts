@@ -56,6 +56,17 @@ export class NLDDBreadcrumbsItem extends LitElement {
 	@property({ type: String, reflect: true })
 	text = '';
 
+	override connectedCallback(): void {
+		super.connectedCallback();
+		// The parent .breadcrumbs__list is role="list" (a <div>, not <ol>, to
+		// keep lit-a11y/list happy since custom elements aren't <li>); each
+		// item gets the matching listitem role so screen readers still
+		// announce a proper list with N items.
+		if (!this.hasAttribute('role')) {
+			this.setAttribute('role', 'listitem');
+		}
+	}
+
 	override render() {
 		return breadcrumbsItemTemplate.call(this);
 	}

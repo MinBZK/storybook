@@ -22,9 +22,11 @@ export function breadcrumbsTemplate(this: NLDDBreadcrumbs) {
 				</span>
 				<span class="breadcrumbs__level-up-text">${levelUpText}</span>
 			</a>
-			<ol class="breadcrumbs__list">
+			<div class="breadcrumbs__list"
+				role="list"
+			>
 				<slot @slotchange=${this._onSlotChange}></slot>
-			</ol>
+			</div>
 		</nav>
 		${this.noSeo ? nothing : this._renderJsonLd()}
 	`;
