@@ -156,12 +156,6 @@ export class NLDDPageFooter extends LitElement {
 
 	override connectedCallback(): void {
 		super.connectedCallback();
-		// Establish the component's own container so the responsive padding
-		// and gap react to the footer's own width, not the viewport. Set
-		// inline on the host: Safari doesn't reliably honour container-type
-		// declared via :host in the shadow stylesheet.
-		this.style.containerType = 'inline-size';
-		this.style.containerName = 'page-footer-container';
 		// Skip-link target: `<a href="#page-footer">` can only reach an id
 		// in the light DOM, not one inside our shadow root. Set it on the
 		// host (don't override a consumer-provided id).

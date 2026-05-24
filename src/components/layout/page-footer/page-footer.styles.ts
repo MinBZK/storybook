@@ -9,20 +9,23 @@ const lgMin = unsafeCSS(breakpoints.lgMin);
 export const pageFooterStyles = css`
 	:host {
 		--_max-width: var(--semantics-page-sections-body-max-width);
-		--_lintje-width: var(--primitives-space-40);
-		--_lintje-height: calc(var(--_lintje-width) / 2);
 		--context-parent-background-color: var(--components-page-footer-background-color);
 
-		display: block;
-		background-color: var(--components-page-footer-background-color);
+		@container (max-width: ${smMax}) {
+			--_lintje-width: var(--primitives-space-40);
+		}
 
-		@container page-footer-container (min-width: ${mdMin}) and (max-width: ${mdMax}) {
+		@container (min-width: ${mdMin}) and (max-width: ${mdMax}) {
 			--_lintje-width: var(--primitives-space-44);
 		}
 
-		@container page-footer-container (min-width: ${lgMin}) {
+		@container (min-width: ${lgMin}) {
 			--_lintje-width: var(--primitives-space-48);
 		}
+
+		container-type: inline-size;
+		display: block;
+		background-color: var(--components-page-footer-background-color);
 	}
 
 	:host([hidden]) {
@@ -30,6 +33,8 @@ export const pageFooterStyles = css`
 	}
 
 	.page-footer {
+		--_lintje-height: calc(var(--_lintje-width) / 2);
+
 		box-sizing: border-box;
 		display: flex;
 		position: relative;
@@ -37,15 +42,15 @@ export const pageFooterStyles = css`
 		flex-direction: column;
 		align-items: center;
 
-		@container page-footer-container (max-width: ${smMax}) {
+		@container (max-width: ${smMax}) {
 			padding-inline: var(--semantics-page-sections-sm-margin-inline);
 		}
 
-		@container page-footer-container (min-width: ${mdMin}) and (max-width: ${mdMax}) {
+		@container (min-width: ${mdMin}) and (max-width: ${mdMax}) {
 			padding-inline: var(--semantics-page-sections-md-margin-inline);
 		}
 
-		@container page-footer-container (min-width: ${lgMin}) {
+		@container (min-width: ${lgMin}) {
 			padding-inline: var(--semantics-page-sections-lg-margin-inline);
 		}
 	}
@@ -76,29 +81,29 @@ export const pageFooterStyles = css`
 
 	.page-footer__breadcrumbs,
 	.page-footer__legal-bar {
-		@container page-footer-container (max-width: ${smMax}) {
+		@container (max-width: ${smMax}) {
 			padding-block: var(--primitives-space-16);
 		}
 
-		@container page-footer-container (min-width: ${mdMin}) and (max-width: ${mdMax}) {
+		@container (min-width: ${mdMin}) and (max-width: ${mdMax}) {
 			padding-block: var(--primitives-space-24);
 		}
 
-		@container page-footer-container (min-width: ${lgMin}) {
+		@container (min-width: ${lgMin}) {
 			padding-block: var(--primitives-space-24);
 		}
 	}
 
 	.page-footer__main {
-		@container page-footer-container (max-width: ${smMax}) {
+		@container (max-width: ${smMax}) {
 			padding-block: var(--primitives-space-24);
 		}
 
-		@container page-footer-container (min-width: ${mdMin}) and (max-width: ${mdMax}) {
+		@container (min-width: ${mdMin}) and (max-width: ${mdMax}) {
 			padding-block: var(--primitives-space-32);
 		}
 
-		@container page-footer-container (min-width: ${lgMin}) {
+		@container (min-width: ${lgMin}) {
 			padding-block: var(--primitives-space-48);
 		}
 	}
