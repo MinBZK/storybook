@@ -28,7 +28,7 @@ export { NLDDTooltip } from './content/tooltip/tooltip.js';
 export { NLDDBlockquote } from './content/blockquote/blockquote.js';
 export { NLDDTag } from './content/tag/tag.js';
 export { NLDDKeyboardShortcut } from './content/keyboard-shortcut/keyboard-shortcut.js';
-export { NLDDCode } from './content/code/code.js';
+export { NLDDCodeViewer } from './content/code-viewer/code-viewer.js';
 
 
 // # Forms components
