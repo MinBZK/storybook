@@ -14,7 +14,6 @@ export default {
 	},
 	args: {
 		accessibleLabel: '',
-		noSeo: false,
 	},
 	argTypes: {
 		accessibleLabel: {
@@ -23,12 +22,6 @@ export default {
 			description: 'Override van het aria-label op de <nav> (anders i18n-default)',
 			table: { defaultValue: { summary: '(geen)' } },
 		},
-		noSeo: {
-			name: 'no-seo',
-			control: 'boolean',
-			description: 'Opt-out voor de BreadcrumbList JSON-LD',
-			table: { defaultValue: { summary: 'false' } },
-		},
 	},
 };
 
@@ -36,7 +29,6 @@ export const Standaard = {
 	render: (args: Record<string, any>) => html`
 		<nldd-breadcrumbs
 			accessible-label=${args.accessibleLabel || ''}
-			?no-seo=${args.noSeo}
 		>
 			<nldd-breadcrumbs-item text="Home" href="/"></nldd-breadcrumbs-item>
 			<nldd-breadcrumbs-item text="Documentatie" href="/docs/"></nldd-breadcrumbs-item>
