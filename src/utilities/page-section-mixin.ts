@@ -198,7 +198,7 @@ export function PageSectionMixin<TBase extends Constructor<LitElement>>(
 			// Like `width` (which sets the body max-width), the `height` keyword
 			// maps to a constraint — here the host's min-height.
 			const v = this.height;
-			if (v && CSS.supports('min-height', v)) {
+			if (v && typeof CSS !== 'undefined' && CSS.supports('min-height', v)) {
 				this.style.minHeight = v;
 			} else {
 				this.style.removeProperty('min-height');
