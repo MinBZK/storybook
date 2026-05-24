@@ -1,6 +1,7 @@
 import { describe, it, expect, afterEach } from 'vitest';
 import { fixture, cleanup, waitForUpdate } from '../../../test-utils.js';
 import './page-footer.js';
+import '../../navigation/breadcrumbs/breadcrumbs.js';
 
 describe('nldd-page-footer', () => {
 	let el: HTMLElement;
@@ -9,12 +10,10 @@ describe('nldd-page-footer', () => {
 		if (el) cleanup(el);
 	});
 
-	it('renders a footer landmark with id="page-footer"', async () => {
+	it('renders a footer landmark', async () => {
 		el = await fixture('<nldd-page-footer></nldd-page-footer>');
 		await waitForUpdate(el);
-		const footer = el.shadowRoot!.querySelector('footer');
-		expect(footer).not.toBeNull();
-		expect(footer!.id).toBe('page-footer');
+		expect(el.shadowRoot!.querySelector('footer')).not.toBeNull();
 	});
 
 	it('hides all wrapper slots when no content is provided', async () => {
@@ -52,6 +51,45 @@ describe('nldd-page-footer', () => {
 		await waitForUpdate(el);
 		const dividers = Array.from(el.shadowRoot!.querySelectorAll('.page-footer__divider')) as HTMLElement[];
 		expect(dividers.every(d => d.hidden)).toBe(true);
+	});
+
+	it('sets single-slot when only one row is visible', async () => {
+		el = await fixture(`
+			<nldd-page-footer>
+				<nldd-page-footer-legal-bar slot="legal-bar">
+					<nldd-page-footer-legal-bar-item slot="end" text="Privacy" href="/privacy/"></nldd-page-footer-legal-bar-item>
+				</nldd-page-footer-legal-bar>
+			</nldd-page-footer>
+		`);
+		await waitForUpdate(el);
+		expect(el.hasAttribute('single-slot')).toBe(true);
+	});
+
+	it('clears single-slot when multiple rows are visible', async () => {
+		el = await fixture(`
+			<nldd-page-footer>
+				<nldd-breadcrumbs slot="breadcrumbs">
+					<nldd-breadcrumbs-item text="Home" href="/"></nldd-breadcrumbs-item>
+				</nldd-breadcrumbs>
+				<nldd-page-footer-legal-bar slot="legal-bar">
+					<nldd-page-footer-legal-bar-item slot="end" text="Privacy" href="/privacy/"></nldd-page-footer-legal-bar-item>
+				</nldd-page-footer-legal-bar>
+			</nldd-page-footer>
+		`);
+		await waitForUpdate(el);
+		expect(el.hasAttribute('single-slot')).toBe(false);
+	});
+
+	it('sets id="page-footer" on the host for skip-link targets', async () => {
+		el = await fixture('<nldd-page-footer></nldd-page-footer>');
+		await waitForUpdate(el);
+		expect(el.id).toBe('page-footer');
+	});
+
+	it('does not overwrite a consumer-provided host id', async () => {
+		el = await fixture('<nldd-page-footer id="my-footer"></nldd-page-footer>');
+		await waitForUpdate(el);
+		expect(el.id).toBe('my-footer');
 	});
 });
 

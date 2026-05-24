@@ -9,10 +9,20 @@ const lgMin = unsafeCSS(breakpoints.lgMin);
 export const pageFooterStyles = css`
 	:host {
 		--_max-width: var(--semantics-page-sections-body-max-width);
+		--_lintje-width: var(--primitives-space-40);
+		--_lintje-height: calc(var(--_lintje-width) / 2);
 		--context-parent-background-color: var(--components-page-footer-background-color);
 
 		display: block;
 		background-color: var(--components-page-footer-background-color);
+
+		@container page-footer-container (min-width: ${mdMin}) and (max-width: ${mdMax}) {
+			--_lintje-width: var(--primitives-space-44);
+		}
+
+		@container page-footer-container (min-width: ${lgMin}) {
+			--_lintje-width: var(--primitives-space-48);
+		}
 	}
 
 	:host([hidden]) {
@@ -46,22 +56,9 @@ export const pageFooterStyles = css`
 		bottom: 0;
 		left: 50%;
 		background-color: #154273;
+		width: var(--_lintje-width);
+		height: var(--_lintje-height);
 		transform: translateX(-50%);
-
-		@container page-footer-container (max-width: ${smMax}) {
-			width: var(--primitives-space-40);
-			height: calc(var(--primitives-space-40) / 2);
-		}
-
-		@container page-footer-container (min-width: ${mdMin}) and (max-width: ${mdMax}) {
-			width: var(--primitives-space-44);
-			height: calc(var(--primitives-space-44) / 2);
-		}
-
-		@container page-footer-container (min-width: ${lgMin}) {
-			width: var(--primitives-space-48);
-			height: calc(var(--primitives-space-48) / 2);
-		}
 	}
 
 	.page-footer__body {
@@ -101,31 +98,11 @@ export const pageFooterStyles = css`
 	}
 
 	.page-footer__body > div:not([hidden]):not(:has(~ div:not([hidden]))) {
-		@container page-footer-container (max-width: ${smMax}) {
-			padding-bottom: calc(var(--primitives-space-16) + var(--primitives-space-40) / 2);
-		}
-
-		@container page-footer-container (min-width: ${mdMin}) and (max-width: ${mdMax}) {
-			padding-bottom: calc(var(--primitives-space-16) + var(--primitives-space-44) / 2);
-		}
-
-		@container page-footer-container (min-width: ${lgMin}) {
-			padding-bottom: calc(var(--primitives-space-16) + var(--primitives-space-48) / 2);
-		}
+		padding-bottom: calc(var(--primitives-space-16) + var(--_lintje-height));
 	}
 
 	:host([single-slot]) .page-footer__body > div:not([hidden]) {
-		@container page-footer-container (max-width: ${smMax}) {
-			padding-top: calc(var(--primitives-space-16) + var(--primitives-space-40) / 2);
-		}
-
-		@container page-footer-container (min-width: ${mdMin}) and (max-width: ${mdMax}) {
-			padding-top: calc(var(--primitives-space-16) + var(--primitives-space-44) / 2);
-		}
-
-		@container page-footer-container (min-width: ${lgMin}) {
-			padding-top: calc(var(--primitives-space-16) + var(--primitives-space-48) / 2);
-		}
+		padding-top: calc(var(--primitives-space-16) + var(--_lintje-height));
 	}
 
 	.page-footer__breadcrumbs[hidden],
@@ -206,5 +183,12 @@ export const pageFooterLegalBarItemStyles = css`
 	.page-footer__legal-bar-item-link {
 		color: var(--components-page-footer-legal-bar-item-color);
 		text-decoration: underline;
+	}
+
+	.page-footer__legal-bar-item-link:focus-visible {
+		outline: var(--semantics-focus-ring-outline);
+		outline-offset: var(--semantics-focus-ring-outline-offset);
+		border-radius: var(--primitives-corner-radius-xs);
+		box-shadow: var(--semantics-focus-ring-box-shadow);
 	}
 `;

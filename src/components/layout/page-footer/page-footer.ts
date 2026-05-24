@@ -91,6 +91,12 @@ export class NLDDPageFooterLegalBar extends LitElement {
 	@property({ type: Object })
 	translations: Partial<NLDDPageFooterTranslations> = {};
 
+	@state()
+	_hasStart = false;
+
+	@state()
+	_hasEnd = false;
+
 	private _mergedTranslations: NLDDPageFooterTranslations = { ...nlddPageFooterTranslations };
 
 	override willUpdate(changed: PropertyValues): void {
@@ -111,8 +117,10 @@ export class NLDDPageFooterLegalBar extends LitElement {
 
 	_onSlotChange = (e: Event) => {
 		const slot = e.target as HTMLSlotElement;
-		const wrapper = slot.parentElement as HTMLElement;
-		wrapper.hidden = slot.assignedElements().length === 0;
+		const hasContent = slot.assignedElements().length > 0;
+		const name = slot.getAttribute('name') ?? '';
+		if (name === 'start') this._hasStart = hasContent;
+		else if (name === 'end') this._hasEnd = hasContent;
 	};
 
 	override render() {
@@ -148,6 +156,12 @@ export class NLDDPageFooter extends LitElement {
 		// declared via :host in the shadow stylesheet.
 		this.style.containerType = 'inline-size';
 		this.style.containerName = 'page-footer-container';
+		// Skip-link target: `<a href="#page-footer">` can only reach an id
+		// in the light DOM, not one inside our shadow root. Set it on the
+		// host (don't override a consumer-provided id).
+		if (!this.id) {
+			this.id = 'page-footer';
+		}
 	}
 
 	_hasMeaningfulContent(slot: HTMLSlotElement | null): boolean {
@@ -160,9 +174,7 @@ export class NLDDPageFooter extends LitElement {
 
 	_onSlotChange = (e: Event) => {
 		const slot = e.target as HTMLSlotElement;
-		const wrapper = slot.parentElement as HTMLElement;
 		const hasContent = this._hasMeaningfulContent(slot);
-		wrapper.hidden = !hasContent;
 		const name = slot.getAttribute('name') ?? '';
 		if (name === 'breadcrumbs') this._hasBreadcrumbs = hasContent;
 		else if (name === 'legal-bar') this._hasLegalBar = hasContent;

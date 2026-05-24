@@ -5,23 +5,27 @@ export function pageFooterTemplate(this: NLDDPageFooter) {
 	const showDividerAboveMain = this._hasBreadcrumbs && this._hasMain;
 	const showDividerAboveLegal = (this._hasBreadcrumbs || this._hasMain) && this._hasLegalBar;
 	return html`
-		<footer class="page-footer"
-			id="page-footer"
-		>
+		<footer class="page-footer">
 			<div class="page-footer__body">
-				<div class="page-footer__breadcrumbs" hidden>
+				<div class="page-footer__breadcrumbs"
+					?hidden=${!this._hasBreadcrumbs}
+				>
 					<slot name="breadcrumbs" @slotchange=${this._onSlotChange}></slot>
 				</div>
 				<hr class="page-footer__divider"
 					?hidden=${!showDividerAboveMain}
 				>
-				<div class="page-footer__main" hidden>
+				<div class="page-footer__main"
+					?hidden=${!this._hasMain}
+				>
 					<slot @slotchange=${this._onSlotChange}></slot>
 				</div>
 				<hr class="page-footer__divider"
 					?hidden=${!showDividerAboveLegal}
 				>
-				<div class="page-footer__legal-bar" hidden>
+				<div class="page-footer__legal-bar"
+					?hidden=${!this._hasLegalBar}
+				>
 					<slot name="legal-bar" @slotchange=${this._onSlotChange}></slot>
 				</div>
 			</div>
@@ -35,10 +39,14 @@ export function pageFooterLegalBarTemplate(this: NLDDPageFooterLegalBar) {
 		<nav class="page-footer__legal-bar"
 			aria-label=${label}
 		>
-			<div class="page-footer__legal-bar-start" hidden>
+			<div class="page-footer__legal-bar-start"
+				?hidden=${!this._hasStart}
+			>
 				<slot name="start" @slotchange=${this._onSlotChange}></slot>
 			</div>
-			<div class="page-footer__legal-bar-end" hidden>
+			<div class="page-footer__legal-bar-end"
+				?hidden=${!this._hasEnd}
+			>
 				<slot name="end" @slotchange=${this._onSlotChange}></slot>
 			</div>
 		</nav>
