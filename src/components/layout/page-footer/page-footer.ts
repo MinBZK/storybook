@@ -160,20 +160,18 @@ export class NLDDPageFooter extends LitElement {
 		// in the light DOM, not one inside our shadow root. Set it on the
 		// host (don't override a consumer-provided id).
 		if (!this.id) {
-			this.id = 'page-footer';
 			// DEV: warn on duplicate id="page-footer" in the document — a
 			// second nldd-page-footer (SPA without cleanup, repeated layout
 			// fragment) silently breaks HTML uniqueness (WCAG SC 4.1.1) and
-			// makes skip-links target the wrong instance.
-			if (import.meta.env?.DEV) {
-				const other = document.getElementById('page-footer');
-				if (other && other !== this) {
-					console.warn(
-						'<nldd-page-footer>: another element already has id="page-footer"; ' +
-						'set a unique id on this instance so skip-links target the right one.',
-					);
-				}
+			// makes skip-links target the wrong instance. Check BEFORE
+			// setting this.id so we can't self-match.
+			if (import.meta.env?.DEV && document.getElementById('page-footer')) {
+				console.warn(
+					'<nldd-page-footer>: another element already has id="page-footer"; ' +
+					'set a unique id on this instance so skip-links target the right one.',
+				);
 			}
+			this.id = 'page-footer';
 		}
 	}
 
