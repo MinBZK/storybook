@@ -114,6 +114,10 @@ export const collectionStyles = css`
 		width: 100%;
 	}
 
+	.collection__footer[hidden] {
+		display: none;
+	}
+
 	/* ## Scroll navigation — horizontal scroll */
 
 	:host([layout="horizontal-scroll"]) .collection__footer {

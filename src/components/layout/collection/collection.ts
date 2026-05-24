@@ -83,6 +83,14 @@ export class NLDDCollection extends LitElement {
 	@state()
 	_atEnd = false;
 
+	@state()
+	_hasFooterSlot = false;
+
+	_onFooterSlotChange = (e: Event): void => {
+		const slot = e.target as HTMLSlotElement;
+		this._hasFooterSlot = slot.assignedElements().length > 0;
+	};
+
 	@query('.collection__items')
 	private _itemsEl!: HTMLElement;
 
