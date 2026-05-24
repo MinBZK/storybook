@@ -1,8 +1,8 @@
-import { html, nothing } from 'lit';
+import { html, nothing, type TemplateResult } from 'lit';
 import type { NLDDTimelineTrackCell } from './timeline-track-cell.js';
 
-export function timelineTrackCellTemplate(this: NLDDTimelineTrackCell) {
-	if (this.step === 'none') {
+export function timelineTrackCellTemplate(component: NLDDTimelineTrackCell): TemplateResult {
+	if (component.step === 'none') {
 		return html`
 			<div class="timeline-track-cell">
 				<div class="timeline-track-cell__line-full"></div>
@@ -10,8 +10,8 @@ export function timelineTrackCellTemplate(this: NLDDTimelineTrackCell) {
 		`;
 	}
 
-	const showTopLine = this.child === 'between' || this.child === 'last';
-	const showBottomLine = this.child === 'between' || this.child === 'first';
+	const showTopLine = component.child === 'between' || component.child === 'last';
+	const showBottomLine = component.child === 'between' || component.child === 'first';
 
 	return html`
 		<div class="timeline-track-cell">

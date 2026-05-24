@@ -30,7 +30,7 @@ export class NLDDTimelineTrackCell extends LitElement {
 	child: Child = 'between';
 
 	override render() {
-		return timelineTrackCellTemplate.call(this);
+		return timelineTrackCellTemplate(this);
 	}
 }
 
