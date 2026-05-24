@@ -119,11 +119,26 @@ export const tabBarItemStyles = css`
 		.tab-bar__item:hover {
 			background-color: var(--semantics-buttons-neutral-tinted-is-hovered-background-color);
 		}
+
+		:host([selected]) .tab-bar__item:hover {
+			background-color: var(--semantics-buttons-neutral-tinted-is-selected-is-hovered-background-color);
+			color: var(--semantics-buttons-neutral-tinted-is-selected-is-hovered-content-color);
+		}
+	}
+
+	.tab-bar__item:active {
+		background-color: var(--semantics-buttons-neutral-tinted-is-active-background-color);
+		color: var(--semantics-buttons-neutral-tinted-is-active-content-color);
 	}
 
 	:host([selected]) .tab-bar__item {
 		background-color: var(--semantics-buttons-neutral-tinted-is-selected-background-color);
 		color: var(--semantics-buttons-neutral-tinted-is-selected-content-color);
+	}
+
+	:host([selected]) .tab-bar__item:active {
+		background-color: var(--semantics-buttons-neutral-tinted-is-selected-is-active-background-color);
+		color: var(--semantics-buttons-neutral-tinted-is-selected-is-active-content-color);
 	}
 
 	@media (forced-colors: active) {
