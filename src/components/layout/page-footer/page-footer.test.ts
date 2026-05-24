@@ -40,6 +40,24 @@ describe('nldd-page-footer', () => {
 		expect(legal.hidden).toBe(false);
 	});
 
+	it('shows two dividers when all three slots are populated', async () => {
+		el = await fixture(`
+			<nldd-page-footer>
+				<nldd-breadcrumbs slot="breadcrumbs">
+					<nldd-breadcrumbs-item text="Home" href="/"></nldd-breadcrumbs-item>
+				</nldd-breadcrumbs>
+				<p>Main content</p>
+				<nldd-page-footer-legal-bar slot="legal-bar">
+					<nldd-page-footer-legal-bar-item slot="end" text="Privacy" href="/privacy/"></nldd-page-footer-legal-bar-item>
+				</nldd-page-footer-legal-bar>
+			</nldd-page-footer>
+		`);
+		await waitForUpdate(el);
+		const dividers = Array.from(el.shadowRoot!.querySelectorAll('.page-footer__divider')) as HTMLElement[];
+		expect(dividers).toHaveLength(2);
+		expect(dividers.every(d => !d.hidden)).toBe(true);
+	});
+
 	it('hides dividers when only one row is present', async () => {
 		el = await fixture(`
 			<nldd-page-footer>

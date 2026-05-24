@@ -61,6 +61,12 @@ export const pageFooterStyles = css`
 		transform: translateX(-50%);
 	}
 
+	@media (forced-colors: active) {
+		.page-footer::after {
+			background-color: ButtonText;
+		}
+	}
+
 	.page-footer__body {
 		display: flex;
 		width: 100%;

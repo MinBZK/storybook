@@ -1,65 +1,65 @@
-import { html } from 'lit';
+import { html, type TemplateResult } from 'lit';
 import type { NLDDPageFooter, NLDDPageFooterLegalBar, NLDDPageFooterLegalBarItem } from './page-footer.js';
 
-export function pageFooterTemplate(this: NLDDPageFooter) {
-	const showDividerAboveMain = this._hasBreadcrumbs && this._hasMain;
-	const showDividerAboveLegal = (this._hasBreadcrumbs || this._hasMain) && this._hasLegalBar;
+export function pageFooterTemplate(component: NLDDPageFooter): TemplateResult {
+	const showDividerAboveMain = component._hasBreadcrumbs && component._hasMain;
+	const showDividerAboveLegal = (component._hasBreadcrumbs || component._hasMain) && component._hasLegalBar;
 	return html`
 		<footer class="page-footer">
 			<div class="page-footer__body">
 				<div class="page-footer__breadcrumbs"
-					?hidden=${!this._hasBreadcrumbs}
+					?hidden=${!component._hasBreadcrumbs}
 				>
-					<slot name="breadcrumbs" @slotchange=${this._onSlotChange}></slot>
+					<slot name="breadcrumbs" @slotchange=${component._onSlotChange}></slot>
 				</div>
 				<hr class="page-footer__divider"
 					?hidden=${!showDividerAboveMain}
 				>
 				<div class="page-footer__main"
-					?hidden=${!this._hasMain}
+					?hidden=${!component._hasMain}
 				>
-					<slot @slotchange=${this._onSlotChange}></slot>
+					<slot @slotchange=${component._onSlotChange}></slot>
 				</div>
 				<hr class="page-footer__divider"
 					?hidden=${!showDividerAboveLegal}
 				>
 				<div class="page-footer__legal-bar"
-					?hidden=${!this._hasLegalBar}
+					?hidden=${!component._hasLegalBar}
 				>
-					<slot name="legal-bar" @slotchange=${this._onSlotChange}></slot>
+					<slot name="legal-bar" @slotchange=${component._onSlotChange}></slot>
 				</div>
 			</div>
 		</footer>
 	`;
 }
 
-export function pageFooterLegalBarTemplate(this: NLDDPageFooterLegalBar) {
-	const label = this._t('components.page-footer.legal-bar-accessible-label');
+export function pageFooterLegalBarTemplate(component: NLDDPageFooterLegalBar): TemplateResult {
+	const label = component._t('components.page-footer.legal-bar-accessible-label');
 	return html`
 		<nav class="page-footer__legal-bar"
 			aria-label=${label}
 		>
 			<div class="page-footer__legal-bar-start"
-				?hidden=${!this._hasStart}
+				?hidden=${!component._hasStart}
 			>
-				<slot name="start" @slotchange=${this._onSlotChange}></slot>
+				<slot name="start" @slotchange=${component._onSlotChange}></slot>
 			</div>
 			<div class="page-footer__legal-bar-end"
-				?hidden=${!this._hasEnd}
+				?hidden=${!component._hasEnd}
 			>
-				<slot name="end" @slotchange=${this._onSlotChange}></slot>
+				<slot name="end" @slotchange=${component._onSlotChange}></slot>
 			</div>
 		</nav>
 	`;
 }
 
-export function pageFooterLegalBarItemTemplate(this: NLDDPageFooterLegalBarItem) {
-	const label = this.text || html`<slot></slot>`;
-	if (this.href) {
+export function pageFooterLegalBarItemTemplate(component: NLDDPageFooterLegalBarItem): TemplateResult {
+	const label = component.text || html`<slot></slot>`;
+	if (component.href) {
 		return html`
 			<span class="page-footer__legal-bar-item">
 				<a class="page-footer__legal-bar-item-link"
-					href=${this.href}
+					href=${component.href}
 				>${label}</a>
 			</span>
 		`;

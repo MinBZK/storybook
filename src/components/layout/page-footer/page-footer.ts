@@ -57,10 +57,14 @@ export class NLDDPageFooterLegalBarItem extends LitElement {
 	text = '';
 
 	override render() {
-		return pageFooterLegalBarItemTemplate.call(this);
+		return pageFooterLegalBarItemTemplate(this);
 	}
 }
 
+// Internal sub-component: register via the guard pattern (matches
+// nldd-menu's nldd-menu-item). Using @customElement here would throw on
+// re-registration in tests / HMR; the guard keeps the first registration
+// authoritative.
 if (!customElements.get('nldd-page-footer-legal-bar-item')) {
 	customElements.define('nldd-page-footer-legal-bar-item', NLDDPageFooterLegalBarItem);
 }
@@ -124,10 +128,12 @@ export class NLDDPageFooterLegalBar extends LitElement {
 	};
 
 	override render() {
-		return pageFooterLegalBarTemplate.call(this);
+		return pageFooterLegalBarTemplate(this);
 	}
 }
 
+// Internal sub-component — see note on nldd-page-footer-legal-bar-item
+// above for the guard-pattern rationale.
 if (!customElements.get('nldd-page-footer-legal-bar')) {
 	customElements.define('nldd-page-footer-legal-bar', NLDDPageFooterLegalBar);
 }
@@ -161,6 +167,19 @@ export class NLDDPageFooter extends LitElement {
 		// host (don't override a consumer-provided id).
 		if (!this.id) {
 			this.id = 'page-footer';
+			// DEV: warn on duplicate id="page-footer" in the document — a
+			// second nldd-page-footer (SPA without cleanup, repeated layout
+			// fragment) silently breaks HTML uniqueness (WCAG SC 4.1.1) and
+			// makes skip-links target the wrong instance.
+			if (import.meta.env?.DEV) {
+				const other = document.getElementById('page-footer');
+				if (other && other !== this) {
+					console.warn(
+						'<nldd-page-footer>: another element already has id="page-footer"; ' +
+						'set a unique id on this instance so skip-links target the right one.',
+					);
+				}
+			}
 		}
 	}
 
@@ -187,7 +206,7 @@ export class NLDDPageFooter extends LitElement {
 	};
 
 	override render() {
-		return pageFooterTemplate.call(this);
+		return pageFooterTemplate(this);
 	}
 }
 
