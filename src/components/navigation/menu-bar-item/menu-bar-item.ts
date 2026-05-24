@@ -124,11 +124,18 @@ export class NLDDMenuBarItem extends LitElement {
 		super.connectedCallback();
 		this.addEventListener('pointerdown', this._handlePointerdown);
 		this.addEventListener('click', this._handleClick);
-		// Wire any nldd-menu that is already in light DOM before our shadow
-		// renders — covers the case where a consumer fires `toggle`
-		// programmatically before the first click (so before _toggleMenu()
-		// would have wired the menu itself). Slotchange handles the slot's
-		// own projection event; this handles the pre-render snapshot.
+		// Pre-render snapshot — if children are already in light DOM by the
+		// time we connect, wire them now. (querySelector returns the DOM
+		// node even before the custom element has upgraded; the toggle
+		// listener attaches to the stable DOM node and survives upgrade.)
+		this._wireMenu();
+	}
+
+	override firstUpdated(): void {
+		// Once the shadow is rendered the slot's slotchange has fired and we
+		// have a definitive view of the projected content; re-wire as a
+		// safety net for any consumer who slotted the menu after
+		// connectedCallback but before the first render.
 		this._wireMenu();
 	}
 

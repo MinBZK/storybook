@@ -20,7 +20,9 @@ export function breadcrumbsTemplate(component: NLDDBreadcrumbs): TemplateResult 
 				href=${parent?.href ?? nothing}
 				?hidden=${!parent}
 			>
-				<span class="breadcrumbs__level-up-icon">
+				<span class="breadcrumbs__level-up-icon"
+					aria-hidden="true"
+				>
 					<nldd-icon name="chevron-left"></nldd-icon>
 				</span>
 				<span class="breadcrumbs__level-up-text">${levelUpText}</span>
