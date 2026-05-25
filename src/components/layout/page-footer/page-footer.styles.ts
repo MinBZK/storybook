@@ -16,18 +16,6 @@ export const pageFooterStyles = css`
 		--_lintje-color: #154273;
 		--context-parent-background-color: var(--components-page-footer-background-color);
 
-		@container (max-width: ${smMax}) {
-			--_lintje-width: var(--primitives-space-40);
-		}
-
-		@container (min-width: ${mdMin}) and (max-width: ${mdMax}) {
-			--_lintje-width: var(--primitives-space-44);
-		}
-
-		@container (min-width: ${lgMin}) {
-			--_lintje-width: var(--primitives-space-48);
-		}
-
 		container-type: inline-size;
 		display: block;
 		background-color: var(--components-page-footer-background-color);
@@ -49,14 +37,17 @@ export const pageFooterStyles = css`
 
 		@container (max-width: ${smMax}) {
 			padding-inline: var(--semantics-page-sections-sm-margin-inline);
+			--_lintje-width: var(--primitives-space-40);
 		}
 
 		@container (min-width: ${mdMin}) and (max-width: ${mdMax}) {
 			padding-inline: var(--semantics-page-sections-md-margin-inline);
+			--_lintje-width: var(--primitives-space-44);
 		}
 
 		@container (min-width: ${lgMin}) {
 			padding-inline: var(--semantics-page-sections-lg-margin-inline);
+			--_lintje-width: var(--primitives-space-48);
 		}
 	}
 
