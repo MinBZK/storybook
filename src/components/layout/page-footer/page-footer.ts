@@ -61,10 +61,11 @@ export class NLDDPageFooterLegalBarItem extends LitElement {
 	}
 }
 
-// Internal sub-component: register via the guard pattern (matches
-// nldd-menu's nldd-menu-item). Using @customElement here would throw on
-// re-registration in tests / HMR; the guard keeps the first registration
-// authoritative.
+// Sub-component of nldd-page-footer-legal-bar. Exported as a public class
+// for type imports and slot-content composition. The guard registration
+// (matches nldd-menu's nldd-menu-item) is for de-dupe safety: @customElement
+// throws if the same tag is defined twice during HMR or test re-imports,
+// the guard keeps the first registration authoritative.
 if (!customElements.get('nldd-page-footer-legal-bar-item')) {
 	customElements.define('nldd-page-footer-legal-bar-item', NLDDPageFooterLegalBarItem);
 }
@@ -116,7 +117,14 @@ export class NLDDPageFooterLegalBar extends LitElement {
 	}
 
 	_t(key: keyof NLDDPageFooterTranslations): string {
-		return this._mergedTranslations[key] ?? key;
+		// Return '' (not the key) for missing translations so callers can do
+		// `value || nothing` to suppress aria-label / text rather than
+		// announcing the raw key string. Warn in DEV.
+		const value = this._mergedTranslations[key];
+		if (value === undefined && import.meta.env?.DEV) {
+			console.warn(`<nldd-page-footer-legal-bar>: missing translation for "${key}"`);
+		}
+		return value ?? '';
 	}
 
 	_onSlotChange = (e: Event) => {
@@ -132,8 +140,8 @@ export class NLDDPageFooterLegalBar extends LitElement {
 	}
 }
 
-// Internal sub-component — see note on nldd-page-footer-legal-bar-item
-// above for the guard-pattern rationale.
+// Sub-component of nldd-page-footer — see note on
+// nldd-page-footer-legal-bar-item above for the guard-pattern rationale.
 if (!customElements.get('nldd-page-footer-legal-bar')) {
 	customElements.define('nldd-page-footer-legal-bar', NLDDPageFooterLegalBar);
 }
@@ -156,6 +164,14 @@ export class NLDDPageFooter extends LitElement {
 
 	override connectedCallback(): void {
 		super.connectedCallback();
+		// Expose the contentinfo landmark on the host. VoiceOver/Safari
+		// (and a few other AT+browser combos) don't reliably traverse a
+		// shadow root to surface a <footer> as a landmark, so the role
+		// goes on the host element where the AT tree builder always sees
+		// it. Don't override a consumer-provided role.
+		if (!this.hasAttribute('role')) {
+			this.setAttribute('role', 'contentinfo');
+		}
 		// Skip-link target: `<a href="#page-footer">` can only reach an id
 		// in the light DOM, not one inside our shadow root. Set it on the
 		// host (don't override a consumer-provided id).

@@ -10,10 +10,18 @@ describe('nldd-page-footer', () => {
 		if (el) cleanup(el);
 	});
 
-	it('renders a footer landmark', async () => {
+	it('exposes the contentinfo landmark on the host', async () => {
+		// VoiceOver/Safari doesn't traverse a shadow-root <footer> as a
+		// landmark, so the role goes on the host instead of the inner div.
 		el = await fixture('<nldd-page-footer></nldd-page-footer>');
 		await waitForUpdate(el);
-		expect(el.shadowRoot!.querySelector('footer')).not.toBeNull();
+		expect(el.getAttribute('role')).toBe('contentinfo');
+	});
+
+	it('respects a consumer-provided role attribute', async () => {
+		el = await fixture('<nldd-page-footer role="region"></nldd-page-footer>');
+		await waitForUpdate(el);
+		expect(el.getAttribute('role')).toBe('region');
 	});
 
 	it('hides all wrapper slots when no content is provided', async () => {
@@ -77,6 +85,16 @@ describe('nldd-page-footer', () => {
 				<nldd-page-footer-legal-bar slot="legal-bar">
 					<nldd-page-footer-legal-bar-item slot="end" text="Privacy" href="/privacy/"></nldd-page-footer-legal-bar-item>
 				</nldd-page-footer-legal-bar>
+			</nldd-page-footer>
+		`);
+		await waitForUpdate(el);
+		expect(el.hasAttribute('single-slot')).toBe(true);
+	});
+
+	it('sets single-slot when only the default (main) slot is populated', async () => {
+		el = await fixture(`
+			<nldd-page-footer>
+				<div>Main content</div>
 			</nldd-page-footer>
 		`);
 		await waitForUpdate(el);

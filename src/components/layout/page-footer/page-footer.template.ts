@@ -1,11 +1,15 @@
-import { html, type TemplateResult } from 'lit';
+import { html, nothing, type TemplateResult } from 'lit';
 import type { NLDDPageFooter, NLDDPageFooterLegalBar, NLDDPageFooterLegalBarItem } from './page-footer.js';
 
 export function pageFooterTemplate(component: NLDDPageFooter): TemplateResult {
 	const showDividerAboveMain = component._hasBreadcrumbs && component._hasMain;
 	const showDividerAboveLegal = (component._hasBreadcrumbs || component._hasMain) && component._hasLegalBar;
+	// The host carries role="contentinfo" (set in connectedCallback) so AT
+	// that doesn't traverse the shadow root still sees the landmark. Using
+	// <div> here instead of <footer> avoids double-announcing the landmark
+	// in AT that DOES cross the boundary.
 	return html`
-		<footer class="page-footer">
+		<div class="page-footer">
 			<div class="page-footer__body">
 				<div class="page-footer__breadcrumbs"
 					?hidden=${!component._hasBreadcrumbs}
@@ -29,7 +33,7 @@ export function pageFooterTemplate(component: NLDDPageFooter): TemplateResult {
 					<slot name="legal-bar" @slotchange=${component._onSlotChange}></slot>
 				</div>
 			</div>
-		</footer>
+		</div>
 	`;
 }
 
@@ -37,7 +41,7 @@ export function pageFooterLegalBarTemplate(component: NLDDPageFooterLegalBar): T
 	const label = component._t('components.page-footer.legal-bar-accessible-label');
 	return html`
 		<nav class="page-footer__legal-bar"
-			aria-label=${label}
+			aria-label=${label || nothing}
 			?hidden=${!component._hasStart && !component._hasEnd}
 		>
 			<div class="page-footer__legal-bar-start"
