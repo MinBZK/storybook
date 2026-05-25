@@ -77,15 +77,9 @@ export const windowStyles = css`
 		min-height: 0;
 	}
 
-	/* ## Responsive: sm — fixed insets, no dragging */
+	/* ## Responsive: sm — dragging disabled */
 
 	@media (max-width: ${smMax}) {
-		.window {
-			left: var(--semantics-overlays-inset);
-			right: var(--semantics-overlays-inset);
-			width: calc(100vw - var(--semantics-overlays-inset) * 2);
-		}
-
 		:host([movable]:not([has-drag-handle])) .window__body {
 			cursor: default;
 		}

@@ -3,7 +3,8 @@
  *
  * Interactief bouwblok voor gebruik in een menu bar. Rendert als <a> (met href)
  * of <button> (zonder href). Ondersteunt icon, text, disclosure indicator,
- * en expandable popover menu via slotted nldd-menu-item elementen.
+ * en een expandable popover via een geslotte `<nldd-menu>` (of ander
+ * popover-element).
  *
  * @element nldd-menu-bar-item
  * @attr {string} text - Tekst van het item
@@ -11,7 +12,7 @@
  * @attr {string} current-type - aria-current waarde als current is true ('page', 'step', 'location', 'true'). Standaard: 'page'
  * @attr {string} href - Optionele link URL. Zonder href rendert als button.
  * @attr {string} icon - Optioneel icon naam (nldd-icon)
- * @attr {boolean} expandable - Toon disclosure icon en open popover bij klik
+ * @attr {boolean} expandable - Toon disclosure icon en open de geslotte `<nldd-menu>` bij klik
  * @attr {boolean} icon-only - Verberg tekst visueel (altijd)
  * @attr {'icon'|'text'} content-priority - Bepaalt wat zichtbaar blijft in compact modus: 'icon' verbergt tekst, 'text' verbergt icon
  * @attr {boolean} compact - Activeert content-priority gedrag (gezet door parent nldd-menu-bar)
@@ -22,13 +23,13 @@
  *
  * @fires select - Bij klik op non-expandable button item (bubbles, composed)
  *
- * @slot - Slotted nldd-menu-item en nldd-menu-divider voor expandable popover.
- *   Items worden gekloond naar het popover menu (cloneNode). JS event listeners
- *   op slotted items worden niet meegenomen. Gebruik event delegation op een
- *   parent element als custom click handlers nodig zijn.
+ * @slot - Inhoud van de expandable popover — wrap items in een `<nldd-menu>`
+ *   zodat dit component de menu-API (variant, accessible-label, translations,
+ *   filterFn, …) niet hoeft te dupliceren. Event listeners op items werken
+ *   direct, omdat er niet meer gekloond wordt.
  */
 
-import { LitElement, type PropertyValues } from 'lit';
+import { LitElement } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
 import { menuBarItemStyles } from './menu-bar-item.styles.js';
 import { template } from './menu-bar-item.template.js';
@@ -37,7 +38,7 @@ import '../../lists-and-menus/menu/menu.js';
 
 /**
  * Minimal typed interface for nldd-menu.
- * Double-cast (as unknown as) is required because createElement returns HTMLElement,
+ * Double-cast (as unknown as) is required because querySelector returns Element,
  * and this custom element class is not registered in HTMLElementTagNameMap
  * for this component's compilation unit.
  */
@@ -115,6 +116,7 @@ export class NLDDMenuBarItem extends LitElement {
 	private _menu: PopoverMenu | null = null;
 	private _menuOpen = false;
 	private _pointerdownWhileMenuOpen = false;
+	private _menuToggleHandler: ((event: Event) => void) | null = null;
 
 	// ## Lifecycle
 
@@ -122,23 +124,32 @@ export class NLDDMenuBarItem extends LitElement {
 		super.connectedCallback();
 		this.addEventListener('pointerdown', this._handlePointerdown);
 		this.addEventListener('click', this._handleClick);
+		// Pre-render snapshot — if children are already in light DOM by the
+		// time we connect, wire them now. (querySelector returns the DOM
+		// node even before the custom element has upgraded; the toggle
+		// listener attaches to the stable DOM node and survives upgrade.)
+		this._wireMenu();
+	}
+
+	override firstUpdated(): void {
+		// Once the shadow is rendered the slot's slotchange has fired and we
+		// have a definitive view of the projected content; re-wire as a
+		// safety net for any consumer who slotted the menu after
+		// connectedCallback but before the first render.
+		this._wireMenu();
 	}
 
 	override disconnectedCallback(): void {
 		super.disconnectedCallback();
 		this.removeEventListener('pointerdown', this._handlePointerdown);
 		this.removeEventListener('click', this._handleClick);
-		this._menu?.remove();
-		this._menu = null;
+		this._unwireMenu();
 	}
 
-	override updated(changed: PropertyValues): void {
-		// Clean up menu when expandable is removed; creation is lazy in _toggleMenu()
-		if (changed.has('expandable') && !this.expandable && this._menu) {
-			this._menu.remove();
-			this._menu = null;
-		}
-	}
+	_onSlotChange = (): void => {
+		// Re-wire when a consumer swaps the slotted <nldd-menu> at runtime.
+		this._wireMenu();
+	};
 
 	override focus(options?: FocusOptions): void {
 		const focusable = this.shadowRoot?.querySelector<HTMLElement>('button, a');
@@ -147,8 +158,31 @@ export class NLDDMenuBarItem extends LitElement {
 
 	// ## Helpers
 
-	private _hasMenuItems(): boolean {
-		return this.querySelector('nldd-menu-item, nldd-menu-divider') !== null;
+	private _findMenu(): PopoverMenu | null {
+		return this.querySelector('nldd-menu') as unknown as PopoverMenu | null;
+	}
+
+	private _wireMenu(): void {
+		const menu = this._findMenu();
+		if (menu === this._menu) return;
+		this._unwireMenu();
+		if (!menu) return;
+		this._menu = menu;
+		this._menuToggleHandler = (event: Event) => {
+			const isOpen = (event as ToggleEvent).newState === 'open';
+			this._menuOpen = isOpen;
+			this.expanded = isOpen;
+		};
+		menu.addEventListener('toggle', this._menuToggleHandler);
+	}
+
+	private _unwireMenu(): void {
+		if (this._menu && this._menuToggleHandler) {
+			this._menu.removeEventListener('toggle', this._menuToggleHandler);
+		}
+		this._menu = null;
+		this._menuToggleHandler = null;
+		this._menuOpen = false;
 	}
 
 	// ## Event handlers
@@ -166,7 +200,7 @@ export class NLDDMenuBarItem extends LitElement {
 			return;
 		}
 
-		if (this.expandable && this._hasMenuItems()) {
+		if (this.expandable && this._findMenu()) {
 			event.preventDefault();
 			this._toggleMenu();
 			return;
@@ -184,53 +218,18 @@ export class NLDDMenuBarItem extends LitElement {
 
 	// ## Menu popover
 
-	private _createMenu(): void {
-		if (this._menu || !this._hasMenuItems()) return;
-		if (typeof document === 'undefined') return;
-
-		const menu = document.createElement('nldd-menu') as unknown as PopoverMenu;
-		menu.setAttribute('placement', 'bottom-start');
-
-		menu.addEventListener('toggle', (event: Event) => {
-			const isOpen = (event as ToggleEvent).newState === 'open';
-			this._menuOpen = isOpen;
-			this.expanded = isOpen;
-		});
-		document.body.appendChild(menu);
-		this._menu = menu;
-	}
-
-	/**
-	 * Clone slotted menu items into the popover menu.
-	 * Note: cloneNode(true) copies DOM structure and attributes but not JS event
-	 * listeners. Custom click handlers on slotted nldd-menu-item elements won't
-	 * fire in the popover. Use event delegation on a parent element instead.
-	 */
-	private _syncMenuItems(): void {
-		if (!this._menu) return;
-		this._menu.replaceChildren();
-
-		const items = this.querySelectorAll('nldd-menu-item, nldd-menu-divider');
-		items.forEach(item => {
-			const clone = item.cloneNode(true) as Element;
-			this._menu!.appendChild(clone);
-		});
-	}
-
 	private _toggleMenu(): void {
 		if (this._pointerdownWhileMenuOpen) {
 			this._pointerdownWhileMenuOpen = false;
 			return;
 		}
-		if (!this._menu) this._createMenu();
+		// _wireMenu already ran in connectedCallback and re-runs on
+		// slotchange — no need to call it here.
 		if (!this._menu) return;
-
 		this._menu.anchorElement = this;
-
 		if (this._menuOpen) {
 			this._menu.hidePopover();
 		} else {
-			this._syncMenuItems();
 			this._menu.showPopover();
 		}
 	}

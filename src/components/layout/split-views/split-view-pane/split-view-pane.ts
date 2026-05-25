@@ -18,7 +18,7 @@
  *
  * @attr {boolean} has-content - The pane has content (default: false)
  * @attr {boolean} hide-back   - Hide the back button (set automatically by the split view)
- * @attr {'inherit'|'default'|'tinted'} background      - Use a tinted background color (cascades to descendants)
+ * @attr {'inherit'|'base'|'tinted'} background      - Use a tinted background color (cascades to descendants)
  *
  * @slot - Pane content
  */
@@ -38,7 +38,7 @@ export class NLDDSplitViewPane extends LitElement {
 	hideBack = false;
 
 	@property({ type: String, reflect: true })
-	background: 'inherit' | 'default' | 'tinted' = 'inherit';
+	background: 'inherit' | 'base' | 'tinted' = 'inherit';
 
 	override connectedCallback() {
 		super.connectedCallback();

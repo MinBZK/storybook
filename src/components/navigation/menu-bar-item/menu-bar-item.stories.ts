@@ -133,10 +133,12 @@ export const Disabled = {
 export const Expandable = {
 	render: () => html`
 		<nldd-menu-bar-item text="Account" icon="person" expandable>
-			<nldd-menu-item text="Mijn profiel"></nldd-menu-item>
-			<nldd-menu-item text="Instellingen"></nldd-menu-item>
-			<nldd-menu-divider></nldd-menu-divider>
-			<nldd-menu-item text="Uitloggen"></nldd-menu-item>
+			<nldd-menu>
+				<nldd-menu-item text="Mijn profiel"></nldd-menu-item>
+				<nldd-menu-item text="Instellingen"></nldd-menu-item>
+				<nldd-menu-divider></nldd-menu-divider>
+				<nldd-menu-item text="Uitloggen"></nldd-menu-item>
+			</nldd-menu>
 		</nldd-menu-bar-item>
 	`,
 	parameters: { controls: { disable: true } },
@@ -156,8 +158,10 @@ export const AllStates = {
 			<nldd-menu-bar-item text="Disabled" disabled></nldd-menu-bar-item>
 			<nldd-menu-bar-item text="Link" href="/"></nldd-menu-bar-item>
 			<nldd-menu-bar-item text="Expandable" expandable>
-				<nldd-menu-item text="Optie 1"></nldd-menu-item>
-				<nldd-menu-item text="Optie 2"></nldd-menu-item>
+				<nldd-menu>
+					<nldd-menu-item text="Optie 1"></nldd-menu-item>
+					<nldd-menu-item text="Optie 2"></nldd-menu-item>
+				</nldd-menu>
 			</nldd-menu-bar-item>
 		</div>
 	`,

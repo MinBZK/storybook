@@ -93,15 +93,19 @@ export const WithExpandableItems = {
 		<div style=${layoutArea}>
 			<nldd-menu-bar>
 				<nldd-menu-bar-item text="NL" expandable content-priority="icon">
-					<nldd-menu-item text="Nederlands" type="radio" selected></nldd-menu-item>
-					<nldd-menu-item text="English" type="radio"></nldd-menu-item>
-					<nldd-menu-item text="Papiamentu" type="radio"></nldd-menu-item>
+					<nldd-menu>
+						<nldd-menu-item text="Nederlands" type="radio" selected></nldd-menu-item>
+						<nldd-menu-item text="English" type="radio"></nldd-menu-item>
+						<nldd-menu-item text="Papiamentu" type="radio"></nldd-menu-item>
+					</nldd-menu>
 				</nldd-menu-bar-item>
 				<nldd-menu-bar-item text="Zoeken" icon="magnifier" content-priority="icon"></nldd-menu-bar-item>
 				<nldd-menu-bar-item text="Account" icon="person" expandable content-priority="text">
-					<nldd-menu-item text="Mijn profiel"></nldd-menu-item>
-					<nldd-menu-divider></nldd-menu-divider>
-					<nldd-menu-item text="Uitloggen"></nldd-menu-item>
+					<nldd-menu>
+						<nldd-menu-item text="Mijn profiel"></nldd-menu-item>
+						<nldd-menu-divider></nldd-menu-divider>
+						<nldd-menu-item text="Uitloggen"></nldd-menu-item>
+					</nldd-menu>
 				</nldd-menu-bar-item>
 			</nldd-menu-bar>
 		</div>
@@ -114,13 +118,17 @@ export const Compact = {
 		<div style=${layoutArea}>
 			<nldd-menu-bar compact>
 				<nldd-menu-bar-item text="NL" expandable content-priority="icon">
-					<nldd-menu-item text="Nederlands" type="radio" selected></nldd-menu-item>
-					<nldd-menu-item text="English" type="radio"></nldd-menu-item>
+					<nldd-menu>
+						<nldd-menu-item text="Nederlands" type="radio" selected></nldd-menu-item>
+						<nldd-menu-item text="English" type="radio"></nldd-menu-item>
+					</nldd-menu>
 				</nldd-menu-bar-item>
 				<nldd-menu-bar-item text="Zoeken" icon="magnifier" content-priority="icon"></nldd-menu-bar-item>
 				<nldd-menu-bar-item text="Mijn DigID" icon="person" expandable content-priority="text">
-					<nldd-menu-item text="Mijn gegevens"></nldd-menu-item>
-					<nldd-menu-item text="Uitloggen"></nldd-menu-item>
+					<nldd-menu>
+						<nldd-menu-item text="Mijn gegevens"></nldd-menu-item>
+						<nldd-menu-item text="Uitloggen"></nldd-menu-item>
+					</nldd-menu>
 				</nldd-menu-bar-item>
 			</nldd-menu-bar>
 		</div>

@@ -7,6 +7,7 @@
  * @element nldd-inline-dialog
  *
  * @attr {'alert'|'success'} variant - Semantic variant; 'alert' or 'success' forces a matching icon and color
+ * @attr {'md'|'lg'} size          - Typography size: 'md' (default) keeps body-md text + body-sm supporting; 'lg' bumps both up a step.
  * @attr {string}  icon            - Name of the nldd-icon icon above the text; absent when not set. Ignored when variant is set.
  * @attr {string}  icon-color      - 'secondary' | 'accent' | 'critical' | 'warning' | 'success'. Overrides the default and variant icon color.
  * @attr {string}  text            - Main text (heading or paragraph, depending on heading-level)
@@ -24,6 +25,7 @@ import '../../content/icon/icon.js';
 import '../../actions/button-group/button-group.js';
 
 export type InlineDialogVariant = 'alert' | 'success';
+export type InlineDialogSize = 'md' | 'lg';
 export type InlineDialogIconColor = 'secondary' | 'accent' | 'critical' | 'warning' | 'success';
 
 @customElement('nldd-inline-dialog')
@@ -32,6 +34,9 @@ export class NLDDInlineDialog extends LitElement {
 
 	@property({ type: String, reflect: true })
 	variant: InlineDialogVariant | '' = '';
+
+	@property({ type: String, reflect: true })
+	size: InlineDialogSize = 'md';
 
 	@property({ type: String, reflect: true })
 	icon = '';

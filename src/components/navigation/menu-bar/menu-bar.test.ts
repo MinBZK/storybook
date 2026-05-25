@@ -128,9 +128,11 @@ describe('nldd-menu-bar', () => {
 		el = await fixture(`
 			<nldd-menu-bar>
 				<nldd-menu-bar-item text="Mijn DigID" expandable data-overflow>
-					<nldd-menu-item text="Mijn gegevens"></nldd-menu-item>
-					<nldd-menu-divider></nldd-menu-divider>
-					<nldd-menu-item text="Uitloggen"></nldd-menu-item>
+					<nldd-menu>
+						<nldd-menu-item text="Mijn gegevens"></nldd-menu-item>
+						<nldd-menu-divider></nldd-menu-divider>
+						<nldd-menu-item text="Uitloggen"></nldd-menu-item>
+					</nldd-menu>
 				</nldd-menu-bar-item>
 			</nldd-menu-bar>
 		`);
@@ -139,7 +141,7 @@ describe('nldd-menu-bar', () => {
 
 		(el as unknown as { _toggleOverflowMenu(): void })._toggleOverflowMenu();
 		await waitForUpdate(el);
-		const overflowMenu = document.querySelector('nldd-menu') as HTMLElement;
+		const overflowMenu = (el as unknown as { _overflowMenu: HTMLElement })._overflowMenu;
 
 		// The parent is a single direct menu-item (no flat divider-separated
 		// siblings at the overflow root, no dead label).
@@ -163,8 +165,10 @@ describe('nldd-menu-bar', () => {
 		el = await fixture(`
 			<nldd-menu-bar>
 				<nldd-menu-bar-item text="Mijn DigID" expandable data-overflow>
-					<nldd-menu-item text="Mijn gegevens"></nldd-menu-item>
-					<nldd-menu-item text="Instellingen"></nldd-menu-item>
+					<nldd-menu>
+						<nldd-menu-item text="Mijn gegevens"></nldd-menu-item>
+						<nldd-menu-item text="Instellingen"></nldd-menu-item>
+					</nldd-menu>
 				</nldd-menu-bar-item>
 			</nldd-menu-bar>
 		`);
@@ -179,7 +183,7 @@ describe('nldd-menu-bar', () => {
 		el.querySelector('nldd-menu-item[text="Mijn gegevens"]')!
 			.addEventListener('select', () => { originalSelectFired = true; });
 
-		const overflowMenu = document.querySelector('nldd-menu') as HTMLElement;
+		const overflowMenu = (el as unknown as { _overflowMenu: HTMLElement })._overflowMenu;
 		const clone = [...overflowMenu.querySelectorAll('nldd-menu-item')]
 			.find(mi => mi.getAttribute('text') === 'Mijn gegevens') as HTMLElement;
 		expect(clone).toBeTruthy();

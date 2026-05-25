@@ -11,10 +11,19 @@ export const simpleSectionStyles = css`
 
 	/* # Host */
 
-	/* No own container-type: page-sections read the outer layout-container
-	   (set by nldd-page / nldd-card). @media is the fallback for contexts
-	   without a layout-container. */
 	:host {
+		container-type: inline-size;
+		/* Block-padding overrides from PageSectionMixin; 'initial' makes the
+		   var() in .simple-section fall back to the responsive default until the
+		   mixin sets a value inline on the host. */
+		--_padding-top: initial;
+		--_padding-bottom: initial;
+		--_sm-padding-top: initial;
+		--_sm-padding-bottom: initial;
+		--_md-padding-top: initial;
+		--_md-padding-bottom: initial;
+		--_lg-padding-top: initial;
+		--_lg-padding-bottom: initial;
 		--_max-width: var(--semantics-page-sections-body-max-width);
 
 		display: flex;
@@ -47,34 +56,23 @@ export const simpleSectionStyles = css`
 		flex-grow: 1;
 		align-items: center;
 
-		@media (max-width: ${smMax}) {
+
+		@container (max-width: ${smMax}) {
 			padding-inline: var(--semantics-page-sections-sm-margin-inline);
-			padding-block: var(--semantics-page-sections-sm-margin-block);
+			padding-top: var(--_sm-padding-top, var(--_padding-top, var(--semantics-page-sections-sm-margin-block)));
+			padding-bottom: var(--_sm-padding-bottom, var(--_padding-bottom, var(--semantics-page-sections-sm-margin-block)));
 		}
 
-		@media (min-width: ${mdMin}) and (max-width: ${mdMax}) {
+		@container (min-width: ${mdMin}) and (max-width: ${mdMax}) {
 			padding-inline: var(--semantics-page-sections-md-margin-inline);
-			padding-block: var(--semantics-page-sections-md-margin-block);
+			padding-top: var(--_md-padding-top, var(--_padding-top, var(--semantics-page-sections-md-margin-block)));
+			padding-bottom: var(--_md-padding-bottom, var(--_padding-bottom, var(--semantics-page-sections-md-margin-block)));
 		}
 
-		@media (min-width: ${lgMin}) {
+		@container (min-width: ${lgMin}) {
 			padding-inline: var(--semantics-page-sections-lg-margin-inline);
-			padding-block: var(--semantics-page-sections-lg-margin-block);
-		}
-
-		@container layout-container (max-width: ${smMax}) {
-			padding-inline: var(--semantics-page-sections-sm-margin-inline);
-			padding-block: var(--semantics-page-sections-sm-margin-block);
-		}
-
-		@container layout-container (min-width: ${mdMin}) and (max-width: ${mdMax}) {
-			padding-inline: var(--semantics-page-sections-md-margin-inline);
-			padding-block: var(--semantics-page-sections-md-margin-block);
-		}
-
-		@container layout-container (min-width: ${lgMin}) {
-			padding-inline: var(--semantics-page-sections-lg-margin-inline);
-			padding-block: var(--semantics-page-sections-lg-margin-block);
+			padding-top: var(--_lg-padding-top, var(--_padding-top, var(--semantics-page-sections-lg-margin-block)));
+			padding-bottom: var(--_lg-padding-bottom, var(--_padding-bottom, var(--semantics-page-sections-lg-margin-block)));
 		}
 	}
 
@@ -88,27 +86,15 @@ export const simpleSectionStyles = css`
 		flex-direction: column;
 		flex-grow: 1;
 
-		@media (max-width: ${smMax}) {
+		@container (max-width: ${smMax}) {
 			gap: var(--semantics-page-sections-sm-gap);
 		}
 
-		@media (min-width: ${mdMin}) and (max-width: ${mdMax}) {
+		@container (min-width: ${mdMin}) and (max-width: ${mdMax}) {
 			gap: var(--semantics-page-sections-md-gap);
 		}
 
-		@media (min-width: ${lgMin}) {
-			gap: var(--semantics-page-sections-lg-gap);
-		}
-
-		@container layout-container (max-width: ${smMax}) {
-			gap: var(--semantics-page-sections-sm-gap);
-		}
-
-		@container layout-container (min-width: ${mdMin}) and (max-width: ${mdMax}) {
-			gap: var(--semantics-page-sections-md-gap);
-		}
-
-		@container layout-container (min-width: ${lgMin}) {
+		@container (min-width: ${lgMin}) {
 			gap: var(--semantics-page-sections-lg-gap);
 		}
 	}

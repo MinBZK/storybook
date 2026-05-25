@@ -23,7 +23,7 @@
  *
  * @element nldd-app-view
  *
- * @attr {'default'|'tinted'} background - Background color (cascades to descendants)
+ * @attr {'base'|'tinted'} background - Background color (cascades to descendants)
  *
  * @slot - Default slot for the application content
  */
@@ -53,7 +53,7 @@ export class NLDDAppView extends LitElement {
 	static override styles = appViewStyles;
 
 	@property({ type: String, reflect: true })
-	background: 'default' | 'tinted' = 'default';
+	background: 'base' | 'tinted' = 'base';
 
 	override connectedCallback(): void {
 		super.connectedCallback();

@@ -206,7 +206,7 @@ describe('nldd-top-navigation-bar – back button', () => {
 			<nldd-top-navigation-bar back-text="Terug"></nldd-top-navigation-bar>
 		`);
 		await waitForUpdate(el);
-		const backBtn = el.shadowRoot!.querySelector('nldd-menu-bar-item[icon="arrow-left"]');
+		const backBtn = el.shadowRoot!.querySelector('nldd-menu-bar-item[icon="chevron-left"]');
 		expect(backBtn).not.toBeNull();
 	});
 
@@ -219,7 +219,7 @@ describe('nldd-top-navigation-bar – back button', () => {
 		let fired = false;
 		el.addEventListener('back-click', () => { fired = true; });
 
-		const backBtn = el.shadowRoot!.querySelector('nldd-menu-bar-item[icon="arrow-left"]') as HTMLElement;
+		const backBtn = el.shadowRoot!.querySelector('nldd-menu-bar-item[icon="chevron-left"]') as HTMLElement;
 		backBtn?.click();
 		expect(fired).toBe(true);
 	});
@@ -229,7 +229,7 @@ describe('nldd-top-navigation-bar – back button', () => {
 			<nldd-top-navigation-bar back-href="/home" back-text="Home"></nldd-top-navigation-bar>
 		`);
 		await waitForUpdate(el);
-		const backItem = el.shadowRoot!.querySelector('nldd-menu-bar-item[icon="arrow-left"]') as HTMLElement;
+		const backItem = el.shadowRoot!.querySelector('nldd-menu-bar-item[icon="chevron-left"]') as HTMLElement;
 		expect(backItem).not.toBeNull();
 		expect(backItem.getAttribute('href')).toBe('/home');
 	});

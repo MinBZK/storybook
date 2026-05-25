@@ -1,5 +1,5 @@
 /**
- * Nederlandse Digitale Dienst Code Component (Lit + TypeScript)
+ * Nederlandse Digitale Dienst Code Viewer Component (Lit + TypeScript)
  *
  * A block of monospaced text for code, traces, output dumps, etc.
  * Renders a styled `<pre>` with the design-system's monospace family,
@@ -13,25 +13,26 @@
  *
  * ## Syntax highlighting
  * Set `language` to one of the supported grammars (yaml, json, javascript,
- * typescript, css, html, bash, markdown) to highlight the slot content
+ * typescript, css, html, xml, bash, markdown, rust, gherkin, toml, sql,
+ * python) to highlight the slot content
  * with Prism. Without `language` the slot content is rendered raw, no
  * highlighting applied. Grammars are loaded lazily on first use, so a
  * page that never sets `language` ships zero grammar code.
  *
  * ### Theming
- * Token colors are exposed as `--components-code-token-*` custom
+ * Token colors are exposed as `--components-code-viewer-token-*` custom
  * properties on the host. Override them per-instance to swap the theme:
  *
  * ```css
- * nldd-code {
- *   --components-code-token-keyword-color: var(--my-purple);
- *   --components-code-token-string-color: var(--my-green);
+ * nldd-code-viewer {
+ *   --components-code-viewer-token-keyword-color: var(--my-purple);
+ *   --components-code-viewer-token-string-color: var(--my-green);
  * }
  * ```
  *
- * @element nldd-code
+ * @element nldd-code-viewer
  *
- * @attr {string} language - Grammar to highlight with (yaml, json, javascript, typescript, css, html, bash, markdown). Empty disables highlighting.
+ * @attr {string} language - Grammar to highlight with (yaml, json, javascript, typescript, css, html, xml, bash, markdown, rust, gherkin, toml, sql, python). Empty disables highlighting.
  * @attr {boolean} wrap - Wrap long lines instead of horizontal scroll
  *
  * @slot - Default slot for the code/text content
@@ -39,12 +40,12 @@
 import { LitElement } from 'lit';
 import { customElement, property, state } from 'lit/decorators.js';
 import Prism from 'prismjs';
-import { codeStyles } from './code.styles.js';
-import { codeTemplate } from './code.template.js';
+import { codeViewerStyles } from './code-viewer.styles.js';
+import { codeViewerTemplate } from './code-viewer.template.js';
 import { onColorSchemeChange, forceScrollLayerRepaint } from '../../../utilities/color-scheme-repaint.js';
 
-/* Map our public language names to Prism grammar loaders. `html` shares
- * the markup grammar (covers html/xml/svg). Static `import()` calls let
+/* Map our public language names to Prism grammar loaders. `html` and `xml`
+ * share the markup grammar (covers html/xml/svg). Static `import()` calls let
  * the bundler emit one chunk per file, so consumers only download
  * grammars they actually render. */
 const GRAMMAR_LOADERS: Record<string, () => Promise<unknown>> = {
@@ -54,8 +55,14 @@ const GRAMMAR_LOADERS: Record<string, () => Promise<unknown>> = {
 	typescript: () => import('prismjs/components/prism-typescript.js'),
 	css: () => import('prismjs/components/prism-css.js'),
 	html: () => import('prismjs/components/prism-markup.js'),
+	xml: () => import('prismjs/components/prism-markup.js'),
 	bash: () => import('prismjs/components/prism-bash.js'),
 	markdown: () => import('prismjs/components/prism-markdown.js'),
+	rust: () => import('prismjs/components/prism-rust.js'),
+	gherkin: () => import('prismjs/components/prism-gherkin.js'),
+	toml: () => import('prismjs/components/prism-toml.js'),
+	sql: () => import('prismjs/components/prism-sql.js'),
+	python: () => import('prismjs/components/prism-python.js'),
 };
 
 const grammarLoads = new Map<string, Promise<unknown>>();
@@ -76,9 +83,9 @@ function loadGrammar(language: string): Promise<unknown> | undefined {
 	return pending;
 }
 
-@customElement('nldd-code')
-export class NLDDCode extends LitElement {
-	static override styles = codeStyles;
+@customElement('nldd-code-viewer')
+export class NLDDCodeViewer extends LitElement {
+	static override styles = codeViewerStyles;
 
 	@property({ type: String, reflect: true })
 	language = '';
@@ -93,12 +100,12 @@ export class NLDDCode extends LitElement {
 	private _unsubscribeScheme?: () => void;
 
 	override render() {
-		return codeTemplate(this);
+		return codeViewerTemplate(this);
 	}
 
 	override connectedCallback(): void {
 		super.connectedCallback();
-		/* The .code block has overflow-x: auto and tends to scroll wide
+		/* The .code-viewer block has overflow-x: auto and tends to scroll wide
 		 * content. Browsers cache off-screen tiles for its scroll layer and
 		 * don't reliably invalidate them when light-dark() colours flip with
 		 * color-scheme, so scroll back after a theme switch shows stale
@@ -121,7 +128,7 @@ export class NLDDCode extends LitElement {
 	}
 
 	private _repaintCodeBlock(): void {
-		const block = this.shadowRoot?.querySelector('.code') as HTMLElement | null;
+		const block = this.shadowRoot?.querySelector('.code-viewer') as HTMLElement | null;
 		if (block) forceScrollLayerRepaint(block);
 	}
 
@@ -170,6 +177,6 @@ export class NLDDCode extends LitElement {
 
 declare global {
 	interface HTMLElementTagNameMap {
-		'nldd-code': NLDDCode;
+		'nldd-code-viewer': NLDDCodeViewer;
 	}
 }

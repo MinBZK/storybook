@@ -13,17 +13,26 @@ const sizeControl = (description: string) => ({
 });
 
 /**
- * Container is een eenvoudige layout-primitive: flex met richting, gap,
- * uitlijning en padding. Padding kan per zijde, per as (inline/block) of
- * voor alle zijden tegelijk. Specifiekere instellingen winnen: zijde > as > alle.
+ * Container is een eenvoudige layout-primitive: kies een layout-modus, geef
+ * een gap, optioneel uitlijning, en padding. Padding kan per zijde, per as
+ * (inline/block) of voor alle zijden tegelijk. Specifiekere instellingen
+ * winnen: zijde > as > alle.
  *
  * Responsive padding en gap hebben `sm-` / `md-` / `lg-` varianten. Elke variant
  * werkt binnen een `layout-container` als container query, en valt buiten
  * een layout-container terug op een viewport media query.
  *
+ * Layout-modi:
+ *  - `stack` (default): items onder elkaar (normale DOM-flow).
+ *  - `row`: flex-rij, geen wrap.
+ *  - `wrap`: flex-rij die naar volgende regel wraps.
+ *  - `grid`: CSS-grid, auto-fit kolommen van min 280px breed.
+ *  - `columns`: CSS multicolumn, items flowen verticaal en lopen door naar
+ *    de volgende kolom (krant-stijl); breaks binnen items worden vermeden.
+ *
  * ## Gebruik
  * ```html
- * <nldd-container direction="row" gap="12" padding="16" sm-padding="8">
+ * <nldd-container layout="wrap" gap="12" padding="16" sm-padding="8">
  *   <nldd-rich-text><p>Eerste item</p></nldd-rich-text>
  *   <nldd-rich-text><p>Tweede item</p></nldd-rich-text>
  * </nldd-container>
@@ -43,8 +52,15 @@ export default {
 		},
 	},
 	argTypes: {
-		direction: { control: 'select', options: ['column', 'row'], description: 'Flex-richting' },
-		wrap: { control: 'boolean', description: 'Kinderen wrappen naar nieuwe regel' },
+		layout: { control: 'select', options: [undefined, 'stack', 'row', 'wrap', 'grid', 'columns'], description: 'Layout-modus' },
+		reverse: { control: 'boolean', description: 'Keer de volgorde van items om' },
+		smReverse: { name: 'sm-reverse', control: 'boolean', description: 'Reverse alleen op sm-viewport' },
+		mdReverse: { name: 'md-reverse', control: 'boolean', description: 'Reverse alleen op md-viewport' },
+		lgReverse: { name: 'lg-reverse', control: 'boolean', description: 'Reverse alleen op lg-viewport' },
+		columnCount: { name: 'column-count', control: 'select', options: [undefined, 1, 2, 3, 4, 5, 6, 7, 8], description: 'Aantal kolommen (grid/columns)' },
+		smColumnCount: { name: 'sm-column-count', control: 'select', options: [undefined, 1, 2, 3, 4, 5, 6, 7, 8], description: 'Kolom-aantal bij sm container-breedte' },
+		mdColumnCount: { name: 'md-column-count', control: 'select', options: [undefined, 1, 2, 3, 4, 5, 6, 7, 8], description: 'Kolom-aantal bij md container-breedte' },
+		lgColumnCount: { name: 'lg-column-count', control: 'select', options: [undefined, 1, 2, 3, 4, 5, 6, 7, 8], description: 'Kolom-aantal bij lg container-breedte' },
 		gap: sizeControl('Gap tussen kinderen'),
 		smGap: { name: 'sm-gap', ...sizeControl('Gap bij sm') },
 		mdGap: { name: 'md-gap', ...sizeControl('Gap bij md') },
@@ -92,8 +108,15 @@ export const Standaard = {
 	},
 	render: (args: Record<string, any>) => html`
 		<nldd-container
-			direction=${ifDefined(args.direction)}
-			?wrap=${args.wrap}
+			layout=${ifDefined(args.layout)}
+			?reverse=${args.reverse}
+			?sm-reverse=${args.smReverse}
+			?md-reverse=${args.mdReverse}
+			?lg-reverse=${args.lgReverse}
+			column-count=${ifDefined(args.columnCount)}
+			sm-column-count=${ifDefined(args.smColumnCount)}
+			md-column-count=${ifDefined(args.mdColumnCount)}
+			lg-column-count=${ifDefined(args.lgColumnCount)}
 			gap=${ifDefined(args.gap)}
 			sm-gap=${ifDefined(args.smGap)}
 			md-gap=${ifDefined(args.mdGap)}
@@ -130,7 +153,12 @@ export const Standaard = {
 			lg-padding-left=${ifDefined(args.lgPaddingLeft)}
 			style="outline: 1px dashed var(--primitives-color-neutral-150);"
 		>
-			<nldd-rich-text><p>Inhoud van de container.</p></nldd-rich-text>
+			<nldd-container padding="12" style="outline: 1px dashed var(--primitives-color-neutral-150);">
+				<nldd-rich-text><p>Eerste container.</p></nldd-rich-text>
+			</nldd-container>
+			<nldd-container padding="12" style="outline: 1px dashed var(--primitives-color-neutral-150);">
+				<nldd-rich-text><p>Tweede container.</p></nldd-rich-text>
+			</nldd-container>
 		</nldd-container>
 	`,
 };
@@ -183,31 +211,31 @@ export const PaddingResponsief = {
 	storyName: 'Padding — responsief',
 };
 
-export const Row = {
+export const LayoutStack = {
 	render: () => html`
-		<nldd-container direction="row" gap="12" padding="16" style="outline: 1px dashed var(--primitives-color-neutral-150);">
+		<nldd-container gap="12" padding="16" style="outline: 1px dashed var(--primitives-color-neutral-150);">
 			<nldd-rich-text><p>Eerste</p></nldd-rich-text>
 			<nldd-rich-text><p>Tweede</p></nldd-rich-text>
 			<nldd-rich-text><p>Derde</p></nldd-rich-text>
 		</nldd-container>
 	`,
-	storyName: 'Direction — row',
+	storyName: 'Layout — stack (default)',
 };
 
-export const Column = {
+export const LayoutRow = {
 	render: () => html`
-		<nldd-container direction="column" gap="12" padding="16" style="outline: 1px dashed var(--primitives-color-neutral-150);">
+		<nldd-container layout="row" gap="12" padding="16" style="outline: 1px dashed var(--primitives-color-neutral-150);">
 			<nldd-rich-text><p>Eerste</p></nldd-rich-text>
 			<nldd-rich-text><p>Tweede</p></nldd-rich-text>
 			<nldd-rich-text><p>Derde</p></nldd-rich-text>
 		</nldd-container>
 	`,
-	storyName: 'Direction — column',
+	storyName: 'Layout — row',
 };
 
-export const Wrap = {
+export const LayoutWrap = {
 	render: () => html`
-		<nldd-container direction="row" wrap gap="12" padding="16" style="outline: 1px dashed var(--primitives-color-neutral-150); max-width: 320px;">
+		<nldd-container layout="wrap" gap="12" padding="16" style="outline: 1px dashed var(--primitives-color-neutral-150); max-width: 320px;">
 			<nldd-tag>Item één</nldd-tag>
 			<nldd-tag>Item twee</nldd-tag>
 			<nldd-tag>Item drie</nldd-tag>
@@ -215,13 +243,127 @@ export const Wrap = {
 			<nldd-tag>Item vijf</nldd-tag>
 		</nldd-container>
 	`,
-	storyName: 'Wrap',
+	storyName: 'Layout — wrap',
+};
+
+export const LayoutGrid = {
+	render: () => html`
+		<nldd-container layout="grid" gap="12" padding="16" style="outline: 1px dashed var(--primitives-color-neutral-150);">
+			<nldd-rich-text><p>Cell één</p></nldd-rich-text>
+			<nldd-rich-text><p>Cell twee</p></nldd-rich-text>
+			<nldd-rich-text><p>Cell drie</p></nldd-rich-text>
+			<nldd-rich-text><p>Cell vier</p></nldd-rich-text>
+			<nldd-rich-text><p>Cell vijf</p></nldd-rich-text>
+			<nldd-rich-text><p>Cell zes</p></nldd-rich-text>
+		</nldd-container>
+	`,
+	storyName: 'Layout — grid (auto-fit, min 280px)',
+};
+
+export const LayoutColumns = {
+	render: () => html`
+		<nldd-container layout="columns" gap="24" padding="16" style="outline: 1px dashed var(--primitives-color-neutral-150);">
+			<nldd-rich-text><p>Eerste link in de lijst</p></nldd-rich-text>
+			<nldd-rich-text><p>Tweede link</p></nldd-rich-text>
+			<nldd-rich-text><p>Derde link in de lijst</p></nldd-rich-text>
+			<nldd-rich-text><p>Vierde link</p></nldd-rich-text>
+			<nldd-rich-text><p>Vijfde link in de lijst</p></nldd-rich-text>
+			<nldd-rich-text><p>Zesde link</p></nldd-rich-text>
+			<nldd-rich-text><p>Zevende link in de lijst</p></nldd-rich-text>
+			<nldd-rich-text><p>Achtste link</p></nldd-rich-text>
+		</nldd-container>
+	`,
+	storyName: 'Layout — columns (multicol, min 280px)',
+};
+
+export const ReverseRow = {
+	render: () => html`
+		<nldd-container layout="row" reverse gap="12" padding="16" style="outline: 1px dashed var(--primitives-color-neutral-150);">
+			<nldd-rich-text><p>1</p></nldd-rich-text>
+			<nldd-rich-text><p>2</p></nldd-rich-text>
+			<nldd-rich-text><p>3</p></nldd-rich-text>
+			<nldd-rich-text><p>4</p></nldd-rich-text>
+		</nldd-container>
+	`,
+	storyName: 'Reverse — row (items 4→1)',
+};
+
+export const ReverseWrap = {
+	render: () => html`
+		<nldd-container layout="wrap" reverse gap="12" padding="16" style="outline: 1px dashed var(--primitives-color-neutral-150); max-width: 320px;">
+			<nldd-tag>Tag 1</nldd-tag>
+			<nldd-tag>Tag 2</nldd-tag>
+			<nldd-tag>Tag 3</nldd-tag>
+			<nldd-tag>Tag 4</nldd-tag>
+			<nldd-tag>Tag 5</nldd-tag>
+			<nldd-tag>Tag 6</nldd-tag>
+		</nldd-container>
+	`,
+	storyName: 'Reverse — wrap (laatste tag eerst, wraps van rechtsboven)',
+};
+
+export const ReverseGrid = {
+	render: () => html`
+		<nldd-container layout="grid" reverse gap="12" padding="16" style="outline: 1px dashed var(--primitives-color-neutral-150);">
+			<nldd-rich-text><p>1</p></nldd-rich-text>
+			<nldd-rich-text><p>2</p></nldd-rich-text>
+			<nldd-rich-text><p>3</p></nldd-rich-text>
+			<nldd-rich-text><p>4</p></nldd-rich-text>
+			<nldd-rich-text><p>5</p></nldd-rich-text>
+			<nldd-rich-text><p>6</p></nldd-rich-text>
+			<nldd-rich-text><p>7</p></nldd-rich-text>
+			<nldd-rich-text><p>8</p></nldd-rich-text>
+		</nldd-container>
+	`,
+	storyName: 'Reverse — grid (valt terug op flex, 2D omkering)',
+};
+
+export const ColumnCountFooter = {
+	render: () => html`
+		<nldd-container layout="grid" column-count="4" md-column-count="2" sm-column-count="1" gap="32" padding="16" style="outline: 1px dashed var(--primitives-color-neutral-150);">
+			<nldd-rich-text><p>Kolom 1</p></nldd-rich-text>
+			<nldd-rich-text><p>Kolom 2</p></nldd-rich-text>
+			<nldd-rich-text><p>Kolom 3</p></nldd-rich-text>
+			<nldd-rich-text><p>Kolom 4</p></nldd-rich-text>
+		</nldd-container>
+	`,
+	storyName: 'Column-count — footer-pattern (4 / md=2 / sm=1)',
+};
+
+export const ColumnCountGrid6 = {
+	render: () => html`
+		<nldd-container layout="grid" column-count="6" gap="12" padding="16" style="outline: 1px dashed var(--primitives-color-neutral-150);">
+			${Array.from({ length: 12 }).map((_, i) => html`<nldd-rich-text><p>${i + 1}</p></nldd-rich-text>`)}
+		</nldd-container>
+	`,
+	storyName: 'Column-count — grid 6 kolommen',
+};
+
+export const ColumnCountColumns = {
+	render: () => html`
+		<nldd-container layout="columns" column-count="3" gap="24" padding="16" style="outline: 1px dashed var(--primitives-color-neutral-150);">
+			${Array.from({ length: 9 }).map((_, i) => html`<nldd-rich-text><p>Item ${i + 1}</p></nldd-rich-text>`)}
+		</nldd-container>
+	`,
+	storyName: 'Column-count — multicol 3 kolommen',
+};
+
+export const ReverseScopedSm = {
+	render: () => html`
+		<nldd-container layout="row" sm-reverse gap="12" padding="16" style="outline: 1px dashed var(--primitives-color-neutral-150);">
+			<nldd-rich-text><p>1</p></nldd-rich-text>
+			<nldd-rich-text><p>2</p></nldd-rich-text>
+			<nldd-rich-text><p>3</p></nldd-rich-text>
+			<nldd-rich-text><p>4</p></nldd-rich-text>
+		</nldd-container>
+	`,
+	storyName: 'Reverse — alleen sm (versmal viewport om effect te zien)',
 };
 
 export const Alignment = {
 	render: () => html`
 		<nldd-container
-			direction="row"
+			layout="row"
 			gap="12"
 			padding="16"
 			horizontal-alignment="center"

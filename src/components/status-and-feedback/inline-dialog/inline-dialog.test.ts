@@ -83,6 +83,18 @@ describe('nldd-inline-dialog', () => {
 		expect(el.getAttribute('variant')).toBe('alert');
 	});
 
+	it('reflects size attribute', async () => {
+		el = await fixture('<nldd-inline-dialog size="lg"></nldd-inline-dialog>');
+		await waitForUpdate(el);
+		expect(el.getAttribute('size')).toBe('lg');
+	});
+
+	it('defaults size to md when omitted', async () => {
+		el = await fixture('<nldd-inline-dialog></nldd-inline-dialog>');
+		await waitForUpdate(el);
+		expect(el.getAttribute('size')).toBe('md');
+	});
+
 	it('renders actions slot wrapped in nldd-button-group', async () => {
 		el = await fixture(`
 			<nldd-inline-dialog>

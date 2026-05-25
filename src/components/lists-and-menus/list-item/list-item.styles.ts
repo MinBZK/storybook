@@ -12,11 +12,16 @@ export const listItemStyles = css`
 		--_z-index-indicator: calc(var(--_z-index-content) - 1);
 		--_focus-outline-offset: 6px;
 
-		display: block;
+		--context-list-item-padding-block: var(--components-list-item-md-padding-block);
+
 		container-type: inline-size;
-		container-name: list-item;
+		display: block;
 		width: 100%;
 		-webkit-tap-highlight-color: transparent;
+	}
+
+	:host([size="sm"]) {
+		--context-list-item-padding-block: var(--components-list-item-sm-padding-block);
 	}
 
 	:host([hidden]) {
@@ -210,7 +215,7 @@ export const listItemStyles = css`
 		display: none;
 		position: relative;
 		z-index: var(--_z-index-content);
-		padding-block: var(--components-list-item-md-padding-block);
+		padding-block: var(--context-list-item-padding-block);
 		flex-direction: row;
 		flex-shrink: 0;
 		align-items: center;
@@ -221,11 +226,6 @@ export const listItemStyles = css`
 		display: flex;
 	}
 
-	:host([size="sm"]) .list-item__start-area,
-	:host([size="sm"]) .list-item__end-area {
-		padding-block: var(--components-list-item-sm-padding-block);
-	}
-
 
 	/* # Main area */
 
@@ -234,14 +234,10 @@ export const listItemStyles = css`
 		position: relative;
 		z-index: var(--_z-index-content);
 		min-width: 0;
-		padding-block: var(--components-list-item-md-padding-block);
+		padding-block: var(--context-list-item-padding-block);
 		flex-direction: row;
 		flex-grow: 1;
 		align-items: center;
-	}
-
-	:host([size="sm"]) .list-item__main-area {
-		padding-block: var(--components-list-item-sm-padding-block);
 	}
 
 

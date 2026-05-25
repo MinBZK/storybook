@@ -71,12 +71,18 @@ export const paginationStyles = css`
 	}
 
 	a.pagination__page-button {
+		cursor: var(--semantics-controls-link-cursor);
 		text-decoration: none;
 	}
 
 	@media (hover: hover) {
 		.pagination__page-button:hover:not(.is-current) {
 			background-color: var(--semantics-buttons-neutral-tinted-is-hovered-background-color);
+		}
+
+		.pagination__page-button.is-current:hover {
+			background-color: var(--semantics-buttons-neutral-tinted-is-selected-is-hovered-background-color);
+			color: var(--semantics-buttons-neutral-tinted-is-selected-is-hovered-content-color);
 		}
 	}
 

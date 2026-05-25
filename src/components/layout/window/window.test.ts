@@ -158,7 +158,7 @@ describe('nldd-window', () => {
 	});
 
 	it('drag update left en top en cleart right en bottom', async () => {
-		el = await fixture<NLDDWindow>('<nldd-window modeless movable right="32px" bottom="32px" width="200px" height="200px"><div window-drag-handle>Handle</div></nldd-window>');
+		el = await fixture<NLDDWindow>('<nldd-window modeless movable top="0" left="0" width="200px" height="200px"><div window-drag-handle>Handle</div></nldd-window>');
 		await waitForUpdate(el);
 		el.show();
 		await waitForUpdate(el);
@@ -259,6 +259,35 @@ describe('nldd-window', () => {
 			expect(dialog.style.transform).toBe('');
 			// margin: '' (empty) — UA-default centering blijft actief
 			expect(dialog.style.margin).toBe('');
+		});
+	});
+
+	describe('scheme', () => {
+		it('applies color-scheme to host and dialog when scheme="dark"', async () => {
+			el = await fixture<NLDDWindow>('<nldd-window scheme="dark" accessible-label="Test"></nldd-window>');
+			await waitForUpdate(el);
+			expect(el.style.colorScheme).toBe('dark');
+			const dialog = el.shadowRoot!.querySelector('dialog') as HTMLDialogElement;
+			expect(dialog.style.colorScheme).toBe('dark');
+		});
+
+		it('applies color-scheme to host and dialog when scheme="light"', async () => {
+			el = await fixture<NLDDWindow>('<nldd-window scheme="light" accessible-label="Test"></nldd-window>');
+			await waitForUpdate(el);
+			expect(el.style.colorScheme).toBe('light');
+			const dialog = el.shadowRoot!.querySelector('dialog') as HTMLDialogElement;
+			expect(dialog.style.colorScheme).toBe('light');
+		});
+
+		it('clears color-scheme when scheme="inherit"', async () => {
+			el = await fixture<NLDDWindow>('<nldd-window scheme="dark" accessible-label="Test"></nldd-window>');
+			await waitForUpdate(el);
+			expect(el.style.colorScheme).toBe('dark');
+			el.setAttribute('scheme', 'inherit');
+			await waitForUpdate(el);
+			expect(el.style.colorScheme).toBe('');
+			const dialog = el.shadowRoot!.querySelector('dialog') as HTMLDialogElement;
+			expect(dialog.style.colorScheme).toBe('');
 		});
 	});
 });

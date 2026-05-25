@@ -39,6 +39,12 @@ export default {
 			description: 'Semantische variant — dwingt een icoon en kleur af',
 			table: { defaultValue: { summary: '(geen)' } },
 		},
+		size: {
+			control: 'select',
+			options: ['md', 'lg'],
+			description: 'Typografische maat — md (default) of lg voor een grotere kop + ondersteuning',
+			table: { defaultValue: { summary: 'md' } },
+		},
 		text: {
 			control: 'text',
 			description: 'Hoofdtekst',
@@ -68,6 +74,7 @@ export default {
 	},
 	args: {
 		variant: '',
+		size: 'md',
 		text: 'Dialog titel',
 		supportingText: 'Ondersteunende tekst voor aanvullende context.',
 		icon: '',
@@ -78,6 +85,7 @@ export default {
 export const Standaard = (args: Record<string, any>) => html`
 	<nldd-inline-dialog
 		variant=${args.variant || nothing}
+		size=${args.size}
 		text=${args.text}
 		supporting-text=${args.supportingText}
 		icon=${args.icon || nothing}
@@ -161,6 +169,25 @@ export const Success = {
 		<nldd-button slot="actions" variant="primary" text="Sluiten"></nldd-button>
 	</nldd-inline-dialog>
 `,
+	parameters: { controls: { disable: true } },
+};
+
+/**
+ * `size="lg"` bumpt de typografie een stap omhoog (body-lg-bold + body-md
+ * voor de supporting-text). Bruikbaar voor prominentere lege-toestanden
+ * of hero-achtige dialogen.
+ */
+export const Groot = {
+	render: () => html`
+		<nldd-inline-dialog
+			size="lg"
+			icon="info-circle"
+			text="Grotere dialog"
+			supporting-text="Met size=&quot;lg&quot; krijgt zowel de hoofdtekst als de supporting-text een stap grotere typografie."
+		>
+			<nldd-button slot="actions" variant="primary" text="Begrepen"></nldd-button>
+		</nldd-inline-dialog>
+	`,
 	parameters: { controls: { disable: true } },
 };
 

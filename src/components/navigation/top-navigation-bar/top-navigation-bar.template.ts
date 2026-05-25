@@ -90,7 +90,7 @@ export function template(component: NLDDTopNavigationBar) {
 						${component._hasBackButton ? html`
 							<div class="top-navigation-bar__back-button">
 								<nldd-menu-bar-item
-									icon="arrow-left"
+									icon="chevron-left"
 									text="${component._backText}"
 									href=${component.backHref || nothing}
 									accessible-label="${component._backText}"

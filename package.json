@@ -59,9 +59,9 @@
       "types": "./dist/components/content/keyboard-shortcut/keyboard-shortcut.d.ts",
       "default": "./dist/components/content/keyboard-shortcut/keyboard-shortcut.js"
     },
-    "./code": {
-      "types": "./dist/components/content/code/code.d.ts",
-      "default": "./dist/components/content/code/code.js"
+    "./code-viewer": {
+      "types": "./dist/components/content/code-viewer/code-viewer.d.ts",
+      "default": "./dist/components/content/code-viewer/code-viewer.js"
     },
     "./form": {
       "types": "./dist/components/forms/form/form.d.ts",
@@ -243,6 +243,10 @@
       "types": "./dist/components/layout/window/window.d.ts",
       "default": "./dist/components/layout/window/window.js"
     },
+    "./page-footer": {
+      "types": "./dist/components/layout/page-footer/page-footer.d.ts",
+      "default": "./dist/components/layout/page-footer/page-footer.js"
+    },
     "./menu": {
       "types": "./dist/components/lists-and-menus/menu/menu.d.ts",
       "default": "./dist/components/lists-and-menus/menu/menu.js"
@@ -286,6 +290,10 @@
     "./timeline-track-cell": {
       "types": "./dist/components/lists-and-menus/cells/timeline-track-cell/timeline-track-cell.d.ts",
       "default": "./dist/components/lists-and-menus/cells/timeline-track-cell/timeline-track-cell.js"
+    },
+    "./breadcrumbs": {
+      "types": "./dist/components/navigation/breadcrumbs/breadcrumbs.d.ts",
+      "default": "./dist/components/navigation/breadcrumbs/breadcrumbs.js"
     },
     "./menu-bar": {
       "types": "./dist/components/navigation/menu-bar/menu-bar.d.ts",

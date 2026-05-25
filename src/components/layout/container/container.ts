@@ -1,19 +1,65 @@
 /**
  * Nederlandse Digitale Dienst Container Component (Lit + TypeScript)
  *
- * A simple layout primitive: flex direction, gap, alignment, and padding.
- * Padding can be set for all sides, per axis (inline/block), or per individual side.
- * Specificity: per side > per axis > all sides.
+ * A simple layout primitive: pick a layout mode, give it a gap, optionally
+ * align contents, and add padding. Padding can be set for all sides, per
+ * axis (inline/block), or per individual side. Specificity: per side >
+ * per axis > all sides.
  *
  * Responsive padding and gap have sm/md/lg variants. Each variant emits both
  * an @media (viewport) and @container (layout-container) query. When inside a
  * layout-container the @container query wins; otherwise the @media query
  * provides the viewport-based fallback.
  *
+ * Layout modes:
+ *  - `stack` (default): block items, stacked vertically. The "what you
+ *    expect from DOM flow" mode.
+ *  - `row`: flex row, no wrapping. Items shrink or overflow.
+ *  - `wrap`: flex row, items wrap to new lines.
+ *  - `grid`: CSS grid, auto-fit columns at min 280px wide.
+ *  - `columns`: CSS multi-column flow, 280px minimum column width,
+ *    items don't split across column breaks.
+ *
+ * Alignment maps to the layout's natural axis:
+ *  - `stack`: vertical = main-axis (justify-content), horizontal = cross-axis (align-items)
+ *  - `row` / `wrap`: horizontal = main-axis, vertical = cross-axis
+ *  - `grid`: horizontal = justify-items, vertical = align-items (per cell)
+ *  - `columns`: alignment props have no effect (CSS multicol doesn't expose alignment)
+ *
+ * The `reverse` boolean inverts item order within the chosen layout:
+ *  - `stack` → `flex-direction: column-reverse`
+ *  - `row` → `flex-direction: row-reverse`
+ *  - `wrap` → `flex-direction: row-reverse` + `flex-wrap: wrap-reverse`
+ *  - `grid` → falls back to flex (row-reverse + wrap-reverse + per-item
+ *    `flex-grow: 1; flex-shrink: 1; flex-basis: var(--_min-column-width)`
+ *    with `min-width: 0`) so items still grow to share space equally and
+ *    the 2D order truly reverses. The cost is that the last row no longer
+ *    aligns to the grid track — it stretches to fill the remaining width.
+ *  - `columns` → no-op (multicol has no item-order hook)
+ *
+ * `sm-reverse` / `md-reverse` / `lg-reverse` enable reverse only at that
+ * breakpoint. Combine with the base `reverse` (always on) or use the
+ * scoped ones independently.
+ *
+ * The `column-count` attribute (1-8) forces an exact column count for
+ * `layout="grid"` (overrides auto-fit) and `layout="columns"` (overrides
+ * the natural width-driven count). `sm-column-count` / `md-column-count`
+ * / `lg-column-count` resolve against this container's OWN width via
+ * an `@container (...)` query on the host — not against the viewport.
+ * That lets a footer in a narrow sidebar choose its own column count
+ * independent of the surrounding page width.
+ *
  * @element nldd-container
  *
- * @attr {string}  direction              - 'row' | 'column' (default: 'column')
- * @attr {boolean} wrap                   - Wrap children onto new lines (default: false)
+ * @attr {string}  layout                 - 'stack' | 'row' | 'wrap' | 'grid' | 'columns' (default: 'stack')
+ * @attr {boolean} reverse                - Reverse the visual order of items
+ * @attr {boolean} sm-reverse             - Reverse only at the sm breakpoint
+ * @attr {boolean} md-reverse             - Reverse only at the md breakpoint
+ * @attr {boolean} lg-reverse             - Reverse only at the lg breakpoint
+ * @attr {number}  column-count           - Force N columns (1-8) for layout=grid/columns
+ * @attr {number}  sm-column-count        - Column count when this container is sm-wide
+ * @attr {number}  md-column-count        - Column count when this container is md-wide
+ * @attr {number}  lg-column-count        - Column count when this container is lg-wide
  * @attr {string}  gap                    - Gap between children
  * @attr {string}  sm-gap                 - Gap at sm breakpoint
  * @attr {string}  md-gap                 - Gap at md breakpoint
@@ -43,7 +89,8 @@ type PaddingSize =
 	| '0' | '2' | '4' | '6' | '8' | '10' | '12' | '16' | '20' | '24'
 	| '28' | '32' | '40' | '44' | '48' | '56' | '64' | '80' | '96';
 
-type Direction = 'row' | 'column';
+type Layout = 'stack' | 'row' | 'wrap' | 'grid' | 'columns';
+type ColumnCount = 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8;
 type HorizontalAlignment = 'left' | 'center' | 'right';
 type VerticalAlignment = 'top' | 'center' | 'bottom';
 type Scope = '' | 'sm' | 'md' | 'lg';
@@ -71,14 +118,48 @@ export class NLDDContainer extends LitElement {
 	static override styles = containerStyles;
 
 	// No default value so a plain <nldd-container> doesn't carry a
-	// reflected direction="column" attribute. Absence resolves to column
-	// in the styles (the unconditional :host default) and in
-	// writeCustomProperties (isRow checks for 'row' specifically).
+	// reflected layout="stack" attribute. Absence resolves to stack in the
+	// styles (the unconditional :host default) and in
+	// writeCustomProperties (the horizontal-axis check matches 'row'/'wrap'
+	// specifically).
 	@property({ type: String, reflect: true })
-	direction?: Direction;
+	layout?: Layout;
 
+	// Reverse the visual order of items within the chosen layout. For
+	// stack/row/wrap this is native flex-direction reverse (+ wrap-reverse
+	// for the 2D wrap case). For grid the host falls back to flex with
+	// wrap-reverse so 2D reversal works; the trade-off is that the last
+	// row no longer aligns to the grid track. For columns reverse is a
+	// no-op — multicol items flow top→bottom inside each column with no
+	// CSS hook to invert that.
 	@property({ type: Boolean, reflect: true })
-	wrap = false;
+	reverse = false;
+
+	@property({ type: Boolean, reflect: true, attribute: 'sm-reverse' })
+	smReverse = false;
+
+	@property({ type: Boolean, reflect: true, attribute: 'md-reverse' })
+	mdReverse = false;
+
+	@property({ type: Boolean, reflect: true, attribute: 'lg-reverse' })
+	lgReverse = false;
+
+	// Explicit column count for layout="grid" (overrides auto-fit) and for
+	// layout="columns" (overrides the natural width-driven count). 1-8.
+	// Per-viewport variants resolve against this container's OWN width via
+	// @container queries — sm/md/lg refer to the container's inline-size,
+	// not the viewport.
+	@property({ type: Number, reflect: true, attribute: 'column-count' })
+	columnCount?: ColumnCount;
+
+	@property({ type: Number, reflect: true, attribute: 'sm-column-count' })
+	smColumnCount?: ColumnCount;
+
+	@property({ type: Number, reflect: true, attribute: 'md-column-count' })
+	mdColumnCount?: ColumnCount;
+
+	@property({ type: Number, reflect: true, attribute: 'lg-column-count' })
+	lgColumnCount?: ColumnCount;
 
 	@property({ type: String, reflect: true, attribute: 'horizontal-alignment' })
 	horizontalAlignment: HorizontalAlignment | undefined = undefined;
@@ -192,11 +273,34 @@ export class NLDDContainer extends LitElement {
 			else this.style.setProperty(name, value);
 		};
 
-		const isRow = this.direction === 'row';
+		// Alignment maps to a different CSS property depending on the
+		// layout's axes:
+		//  - Row/wrap (and grid+reverse, which falls back to flex):
+		//    horizontal = justify-content (main), vertical = align-items (cross)
+		//  - Stack (flex column):
+		//    horizontal = align-items (cross), vertical = justify-content (main)
+		//  - Grid (non-reverse): per-cell —
+		//    horizontal = justify-items, vertical = align-items
+		// We set --_justify-content/--_justify-items/--_align-items
+		// independently; the .container picks up whichever applies to its
+		// current display. Columns layout has no alignment hooks.
 		const horizontal = this.horizontalAlignment ? HORIZONTAL_TO_FLEX[this.horizontalAlignment] : null;
 		const vertical = this.verticalAlignment ? VERTICAL_TO_FLEX[this.verticalAlignment] : null;
-		setProp('--_justify-content', isRow ? horizontal : vertical);
-		setProp('--_align-items', isRow ? vertical : horizontal);
+		const isFlexRow = this.layout === 'row' || this.layout === 'wrap';
+		const isGrid = this.layout === 'grid';
+		if (isGrid) {
+			setProp('--_justify-items', horizontal);
+			setProp('--_justify-content', horizontal);
+			setProp('--_align-items', vertical);
+		} else if (isFlexRow) {
+			setProp('--_justify-content', horizontal);
+			setProp('--_align-items', vertical);
+			setProp('--_justify-items', null);
+		} else {
+			setProp('--_justify-content', vertical);
+			setProp('--_align-items', horizontal);
+			setProp('--_justify-items', null);
+		}
 
 		setProp('--_gap', sizeToValue(this.gap));
 		setProp('--_sm-gap', sizeToValue(this.smGap));

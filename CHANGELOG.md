@@ -9,29 +9,6 @@ the type of conventional-commit determines the release. Conventional types
 `chore`, `docs`, `ci`, `style`, `test`, `build` are intentionally omitted
 here; consult the commit history if you need that level of detail.
 
-## <small>0.8.46 (2026-05-21)</small>
-
-* feat(actions): form-associated buttons, text slot, and consistent active states ([a99a1c5](https://github.com/MinBZK/storybook/commit/a99a1c5))
-
-## Unreleased
-
-<!--
-  Alleen Highlights worden hier handmatig bijgehouden — de Added/Changed/Fixed
-  entries genereert semantic-release bij de merge automatisch uit de commits.
-  Verplaats deze Highlights na de release onder de nieuwe versie-sectie.
--->
-
-### Highlights
-
-- Buttons doen nu echt mee in formulieren: `nldd-button` en `nldd-icon-button`
-  zijn form-associated, dus `type="submit"` en `type="reset"` werken nu ook
-  binnen een `<form>` (voorheen deed een klik niets over de shadow-grens).
-- Consistente "pressed" (active) feedback op alle neutral-tinted controls.
-
-## <small>0.8.45 (2026-05-21)</small>
-
-* feat!: bugs and housekeeping — menu, container, variant API, icon API, CSS refactor pass ([d53da4d](https://github.com/MinBZK/storybook/commit/d53da4d))
-
 ## Section conventions
 
 - **Highlights** — short narrative summary, only when there is something
@@ -43,3 +20,229 @@ here; consult the commit history if you need that level of detail.
 - **Fixed** — bug fixes.
 - **Deprecated** — APIs marked for removal in a future release.
 - **Removed** — APIs that have been removed.
+
+## Unreleased
+
+<!--
+  Alleen Highlights worden hier handmatig bijgehouden — de Added/Changed/Fixed
+  entries genereert semantic-release bij de merge automatisch uit de commits.
+  Verplaats deze Highlights na de release onder de nieuwe versie-sectie.
+-->
+
+### Highlights
+
+- New `nldd-page-footer` family (page-footer + legal-bar + legal-bar-item, the latter two internal sub-components) with breadcrumbs / main / legal-bar slots, automatic dividers between non-empty rows, and a hard-coded Rijksoverheid lintje (#154273) that bleeds through the bottom padding to touch the viewport edge. Width matches the top-nav logo width responsively; height is half the width. `single-slot` attribute reflects when only one row is visible so the lintje sits symmetric within that single block.
+- New `nldd-breadcrumbs` + `nldd-breadcrumbs-item` (the item is an internal sub-component): chevron-right separator, container-query-driven "‹ {parent}" fallback on sm viewports.
+- New `PageSectionMixin` gives all five page-section components a shared surface API: `background` (`inherit`/`base`/`tinted`), `scheme` (`inherit`/`light`/`dark`/`inverted`), responsive block-padding (12 attrs) and `height`. Each section is its own container-query scope, so its responsive rules resolve against its own width — no outer layout-container required.
+- `nldd-container` got a `layout` attribute that covers the common composition patterns: `stack` (default — block items, vertical flow), `row` (flex row, no wrap), `wrap` (flex row, wraps to new lines), `grid` (CSS grid, auto-fit columns at min 280px) and `columns` (CSS multicol, items flow vertically and break to the next column at min 280px width, never split across columns). `gap` keeps working across every mode, and `horizontal-alignment` / `vertical-alignment` map to the right axis property per layout (justify-content / justify-items / align-items). A `reverse` boolean inverts item order for stack / row / wrap natively, and for grid by falling back to flex with `wrap-reverse` (real 2D reversal at the cost of grid-track alignment on the last row); `sm-reverse` / `md-reverse` / `lg-reverse` scope the reversal to a single breakpoint. A `column-count` attribute (1-8, plus `sm-column-count` / `md-column-count` / `lg-column-count`) forces an exact column count and overrides auto-fit — the per-viewport variants resolve against this container's OWN inline-size via a self-aware `@container` query, so a footer grid wraps based on the footer's actual width rather than the viewport (allowing for clean step patterns like 4 → 2 → 1 without an intermediate 3-column phase). Internally the host now wraps the layout in a `.container` div so the host can carry `container-type: inline-size` without violating the "an element can't query itself" rule of container queries.
+- Timeline-track-cell split into `*.styles.ts` + `*.template.ts` like other cell components. Own component-color tokens (`--components-timeline-track-cell-color` / `-future-background-color`). Cell stretches to its row by default so the line spans the full main-area height.
+- Window keeps its position on sm viewports — previously top/right/bottom/left/centered were cleared on sm and the dialog centered. New `scheme` attribute ('inherit' | 'light' | 'dark') applies color-scheme to host + inner dialog so surfaces inside adapt.
+
+### Breaking Changes
+
+- `background="default"` is now `background="base"` on `nldd-app-view`, `nldd-page` and the five split-view components (`nldd-split-view-pane`, `bar`, `navigation`, `side-by-side`, `stacked`). Same paint behaviour, just a clearer name that matches the new `PageSectionMixin` vocabulary. Migration: search/replace `background="default"` → `background="base"` on these elements.
+- `<nldd-menu-bar-item expandable>` items must now be wrapped in an explicit `<nldd-menu>`. Previously menu-bar-item auto-created a body-attached menu and cloned the slotted items into it (which dropped JS event listeners). Migration:
+
+  ```html
+  <!-- before -->
+  <nldd-menu-bar-item text="Account" expandable>
+    <nldd-menu-item ...></nldd-menu-item>
+    <nldd-menu-divider></nldd-menu-divider>
+    <nldd-menu-item ...></nldd-menu-item>
+  </nldd-menu-bar-item>
+
+  <!-- after -->
+  <nldd-menu-bar-item text="Account" expandable>
+    <nldd-menu>
+      <nldd-menu-item ...></nldd-menu-item>
+      <nldd-menu-divider></nldd-menu-divider>
+      <nldd-menu-item ...></nldd-menu-item>
+    </nldd-menu>
+  </nldd-menu-bar-item>
+  ```
+
+  All `<nldd-menu>` attributes (accessible-label, translations, variant, filterFn) are now reachable. Event listeners on items work directly — no more cloneNode.
+- `<nldd-code>` → `<nldd-code-viewer>` (disambiguates from the unrelated `<nldd-code-editor>` input component). Class `NLDDCode` → `NLDDCodeViewer`; all 26 `--components-code-*` token-color custom properties → `--components-code-viewer-*`. Migration: search/replace `nldd-code` → `nldd-code-viewer` (skip `nldd-code-editor` matches), `NLDDCode` → `NLDDCodeViewer`, `--components-code-` → `--components-code-viewer-`.
+- `nldd-container`: `direction` and `wrap` are replaced by a single `layout` attribute. Migration: `direction="row"` → `layout="row"`, `direction="row" wrap` → `layout="wrap"`, default (or `direction="column"`) → omit / `layout="stack"`. The case `direction="column" wrap` had no working semantics and is dropped. New values `layout="grid"` and `layout="columns"` are net additions.
+
+## <small>0.8.46 (2026-05-21)</small>
+
+### Highlights
+
+- Buttons doen nu echt mee in formulieren: `nldd-button` en `nldd-icon-button`
+  zijn form-associated, dus `type="submit"` en `type="reset"` werken nu ook
+  binnen een `<form>` (voorheen deed een klik niets over de shadow-grens).
+- Consistente "pressed" (active) feedback op alle neutral-tinted controls.
+
+* feat(actions): form-associated buttons, text slot, and consistent active states ([a99a1c5](https://github.com/MinBZK/storybook/commit/a99a1c5))
+
+## <small>0.8.45 (2026-05-21)</small>
+
+### Highlights
+
+Grote housekeeping-batch met een paar zichtbare features bovenop een grondige CSS-architectuur opschoning:
+
+- **Menu uitbreidingen**: destructive variant (rode tekst + highlight, voor "Verwijder"-type acties), klik-en-sleep selectie, automatische groep-dividers, uitlijning van items met gemengde icon/check states.
+- **Container layout primitive** herwerkt: nieuwe `direction` / `gap` / `horizontal-alignment` / `vertical-alignment` API, slimmer responsive padding model.
+- **Internal "default-unconditional + local-var" CSS pattern** uitgerold over alle componenten — onbekende attribuutwaardes vallen nu netjes terug op de gedocumenteerde default i.p.v. "unstyled" te renderen.
+- **Gestandaardiseerd variant-systeem** voor `tag`, `toggle-button` en `tab-bar` — allemaal `variant="text|icon|icon-and-text"` met auto-detect en gedeelde icon-placeholder fallback.
+- **Nieuwe standalone icon API** — `<nldd-icon>` krijgt `size` en `color` attributen (functionele semantics + 18 Rijkskleuren). Voorheen alleen via de parent-container.
+- **Zeven nieuwe iconen**: `clipboard`, `clipboard-rectangle`, `scissor`, `square-arrow-right-inward`, `message-rectangle-text`, `globe` (+ aliassen `paste` / `cut` / `login` / `annotation` / `comment` / `languages`).
+- **Top-navigation-bar accepteert consumer-supplied `<nldd-menu-bar>`** in plaats van losse `menu-bar-item`s.
+- **`<nldd-code>` houdt kleuren correct na light/dark-wissel** tijdens horizontaal scrollen — voorheen bleef weggescrollde inhoud in het oude kleurenschema hangen.
+- **Changelog infrastructure**: `CHANGELOG.md` in repo + Storybook docs-page + auto-generatie via semantic-release.
+
+### Breaking Changes
+
+Bijna alle breaking changes zijn "onbekende/lege attribuutwaardes → fallback op default" (waar voorheen ongedefineerd gedrag was). Echte API-veranderingen:
+
+- **`<nldd-icon name="square-and-arrow-right">` → `name="square-arrow-right"`** (rename; `logout` / `exit` aliassen blijven).
+- **`<nldd-tab-bar compact>` → `variant="compact"`** (idem `<nldd-tab-bar-item>`); `responsive` boolean verwijderd.
+- **`<nldd-top-navigation-bar>`** met losse `<nldd-menu-bar-item slot="global">` → wrap in `<nldd-menu-bar slot="global">`.
+- **`<nldd-tag>` / `<nldd-toggle-button>`** variant-namen → `'text' | 'icon' | 'icon-and-text'`, auto-detect bij geen variant.
+- **Container** (`<nldd-layout-container>`): `layout-container-{sm,md,lg}-padding*` → `sm-/md-/lg-padding*`; nieuwe `direction` / `wrap` / `gap` / `horizontal-alignment` / `vertical-alignment`.
+- **Form controls** stretchen nu by default tot 100% van hun container; wrapper of `style="width: …"` voor oude shrink-to-content.
+- **`<nldd-toggle-button>`** reflecteert geen `[icon-only]` meer — gebruik `[variant="icon"]`.
+- **Title, button, segmented-control, switch, stepper, dropdown, combo-box, text/multi-line/search/password/number-field, split-view-divider, button-group, cells** — onbekende/lege `size`/`variant`/`orientation` → gedocumenteerde default (`md`/`text`/`vertical`) i.p.v. unstyled.
+
+### Added
+
+- `<nldd-icon>` `size` (spacer-aligned 16–96) en `color` (functioneel of Rijkskleur).
+- Zeven nieuwe iconen + aliassen (zie Highlights).
+- `<nldd-menu-item destructive>` variant.
+- `<nldd-menu-group>` auto bottom-divider (parent-aware).
+- Menu klik-en-sleep selectie.
+- `no-spellcheck` op text-field / multi-line-text-field / search-field / combo-box.
+- `<nldd-dropdown>` hover/active/expanded states + transitions.
+- Container layout primitive (direction/wrap/gap/alignment).
+- `variant="icon-and-text"` op tag / toggle-button / tab-bar-item; `icon-placeholder` fallback bij `variant="icon"` zonder icoon.
+- `<nldd-top-navigation-bar>` consumer-supplied `<nldd-menu-bar>`.
+- `CHANGELOG.md` + Storybook docs-page.
+
+### Changed
+
+- Globale "default-unconditional + local-var + concentric BEM order" refactor over alle categorieën.
+- `<nldd-blockquote>` attribution-prefix via slot `::before`.
+- Menu-item uitlijning + check-spacing.
+- Popover reopen-guard gestandaardiseerd op pointerdown-flag (popover, menu, menu-bar, menu-bar-item).
+- `flex: 1` shorthand → longhands.
+- `--components-link-color` pinned op `lintblauw`; light-mode link-kleur feller.
+- Top-navigation-bar 12px gap tussen global en utility bar.
+- `<nldd-icon>` `:host` is nu `inline-flex` + `height: auto` (intrinsieke SVG-aspect) — voorkomt cross-axis stretch in flex-rijen.
+- Storybook 10.3.4 → 10.4.0.
+
+### Fixed
+
+- `<nldd-bar-split-view>` / `<nldd-split-view-pane>` collapsten naar 0 hoogte na de `flex: 1` → longhand conversie.
+- `<nldd-menu-group>` bottom divider werd niet onderdrukt wanneer een expliciete divider tussen de group en hidden items zat.
+- `<nldd-icon-cell>` `::slotted` width/height var-collisie opgelost.
+- `<nldd-code>` repaint na color-scheme flip (nieuwe `color-scheme-repaint` utility).
+- `<nldd-page>` `isolation: isolate` — descendant z-index dekt scrollbar niet meer af.
+- `<nldd-list-item>` press feedback op touch.
+- `<nldd-toolbar>` pinned overflow items renderen in de popover.
+- `<nldd-menu-bar>` reserveert overflow-button ruimte alleen bij overflow.
+- `<nldd-top-navigation-bar>` utility-menu rechts-uitgelijnd + breathing room op max-md; consumer-set menu-bar-label wordt niet meer overschreven.
+- combo-box / number-field / search-field input vult volledige wrapper hoogte.
+- `<nldd-password-field>` placeholder gebruikt text-font.
+- `<nldd-title>` sized variants honoreren layout-container size op smMax.
+- `<nldd-document-tab-bar>` dismiss-button hover/active in dark mode.
+- `<nldd-collection>` load-more button stretcht via `button[width="full"]`.
+
+* feat!: bugs and housekeeping — menu, container, variant API, icon API, CSS refactor pass ([d53da4d](https://github.com/MinBZK/storybook/commit/d53da4d))
+
+## <small>0.8.44 (2026-05-16)</small>
+
+### Highlights
+
+Substantial branch: several components reworked, **7 breaking changes**, plus accessibility improvements, bug fixes and new icons. 90 commits. Read the breaking changes before upgrading.
+
+### Breaking Changes
+
+- **menu**: drill-in chain reworked — opener no longer toggles its submenu; anchor state is synced. Open/close behaviour changes; review any code reaching into menu internals.
+- **rich-text**: rebuilt on CSS grid with named columns + new `centered` mode; blockquotes/tables now bleed wider. Check custom rich-text styling.
+- **sheet**: `full-height` boolean removed → `height` attribute (`full` default | `fit-content` | CSS length); `width` for side sheets.
+- **icon-button**: `hide-tooltip` removed → `tooltip-timing` (`default` | `instant` | `never`).
+- **split-button**: `start-icon` → `icon`; popup-button container restructured.
+- **password-field**: toggle-button attributes prefixed `button-`.
+- **styles**: `is-open` CSS variables renamed to `is-expanded`.
+- **link**: moved from `actions` to `navigation` — update the import path / export subpath (`navigation/link`).
+
+### Menu (drill-in rework)
+
+- Root-owned registry drives chain collapse instead of walking stale parent links: fixes anchor-click not closing after multiple navigations and bounce-back to root.
+- Re-resolve drill-in side per reposition (no frozen/mid-chain flip).
+- No sticky highlight / press-flash on touch; don't collapse on a touch-scroll started outside; reposition after scroll/resize.
+- Remove orphaned drill-in submenu when the parent disconnects; close on window resize.
+- Seed `aria-haspopup` for empty `popup-type`; subpixel-safe px custom-prop parsing; safe-triangle stall-dismissal 750ms → 500ms.
+- **A11y: polite `role="status"` live region announces drill-in view changes (WCAG 4.1.3)** — entered submenu on drill-in, destination on back / ArrowLeft / Esc; cascade & collapse-all stay silent.
+
+### Added
+
+- **button**: forwards `popoverTargetElement` (IDL) across the shadow boundary — drive popovers in another shadow root.
+- **menu-bar**: overflowed expandable items render as nested submenus in the overflow menu.
+- **keyboard-shortcut**: per-OS overrides (`mac-keys` / `windows-keys` / `linux-keys`) + automatic OS detection.
+- New icons: books-vertical, clock, clock-arrow-clockwise, eyeglasses, starburst-filled, square-on-square (+ aliases incl. `copy`).
+
+### Changed
+
+- **`accessible-label` exposed as a Storybook control** on 17 components that supported the attribute but lacked the control.
+- WCAG target-size + simplified styling for tab-bar / segmented-control / pagination.
+- Drop non-functional `aria-controls` on the overflow button; sheet warns once in DEV on missing label / invalid height.
+- Refreshed u-turn arrows, puzzle-piece, books-vertical, eyeglasses, starburst-filled.
+- Concentric CSS property-ordering convention documented + applied; removed unused `--primitives-space-22`; tighter button gaps.
+
+### Fixed
+
+- dropdown focus-state inverted to failure-safe; pagination prev/next above divider, no mouse focus ring on select.
+- segmented-control icon-only items fill custom width; inputs custom width capped at container (`max-width: 100%`).
+- full-bleed-section body horizontally centered (matches simple-section); touch uses `pointerdown` not `mousedown`.
+- OS detection refined: Android → other, UACH `iOS` → mac, ChromeOS classified correctly (more accurate `keyboard-shortcut`).
+
+* feat!: component reworks, breaking changes, fixes & new icons ([149f5aa](https://github.com/MinBZK/storybook/commit/149f5aa))
+
+## <small>0.8.43 (2026-05-13)</small>
+
+### Highlights
+
+Brede design-system polish over componenten, tokens en a11y. Bevat meerdere breaking changes — markered met `!` per commit.
+
+- **A11y fixes (review)** — Buttons en icon-buttons die een menu/popover openen krijgen nu correct `aria-expanded` (was: weggelaten bij `open=false`, WCAG 4.1.2 violation). Nieuwe `popup-type` attribute (`'menu' | 'listbox' | 'dialog' | 'tree' | 'grid'`) forwardt naar `aria-haspopup`. Split-button + combo-box gemigreerd naar de nieuwe API.
+- **Trigger API consolidation (BREAKING)** — `open` boolean → `expanded` op `nldd-button`, `nldd-icon-button`, `nldd-token`, `nldd-menu-bar-item`. `expanded` mapt 1-op-1 op `aria-expanded`, geen botsing met HTML-native `<dialog open>` / `<details open>` (container-semantiek), en vormt een natuurlijk paar met `expandable`. Token's `toggle` event detail key ook hernoemd (`{ open }` → `{ expanded }`).
+- **Tooltip API consolidation (BREAKING)** — `disabled` + `instant` booleans → één `timing` enum (`'instant' | 'default' | 'never'`). Eén concept, mutually exclusive waarden.
+- **Tag/badge API consolidation (BREAKING)** — `variant` → `color` op tag en badge (pure kleurvarianten, geen style-dimensie zoals filled/outlined).
+- **Token housekeeping** — nieuwe `--semantics-buttons-{size}-icon-size` + `-icon-only-icon-size` voor consistent icon-sizing in de button-familie. Ongebruikte `--primitives-breakpoint-*` vars verwijderd. Box-shadow en backdrop hebben nu één bron van waarheid (`color-scheme` CSS property) ipv een dubbele detectie via `prefers-color-scheme` media query + `data-scheme` attribuut.
+- **Rename `layout-area` → `layout-container`** in container queries en CSS class — consistenter met de responsive-css conventie.
+- **Rename `toolbar-title-group` → `toolbar-title`** (+ `subtext` → `supporting-text`).
+- **Nieuwe features** — 19 rijkskleur-varianten op tag. `single-line` attribuut op button met ellipsis-vriendelijke layout. Responsive cells via named `list-container` (`hide-below`/`hide-above` via `VisibilityMixin`). Scoped `html, body` reset voor `<nldd-app-view>` shells (via `:has()`, in `@layer reset`). `tooltip.timing="instant"` voor directe hover-show.
+- **Storybook DX** — alle stories naar NL. Optionele select-controls gebruiken het `'(geen)'` label-mapping patroon zodat de placeholder verdwijnt en de "geen waarde"-state een echte optie wordt.
+- **Tests** — smoke coverage voor button/icon-button aria-expanded combinaties, popup-type forwarding, single-line, width-API en variants.
+
+### Breaking Changes
+
+Migration guide:
+
+```diff
+- <nldd-button open>Acties</nldd-button>
++ <nldd-button expanded>Acties</nldd-button>
+
+- <nldd-icon-button expandable aria-haspopup="menu">…</nldd-icon-button>
++ <nldd-icon-button expandable popup-type="menu">…</nldd-icon-button>
+
+- <nldd-tooltip disabled>…</nldd-tooltip>
++ <nldd-tooltip timing="never">…</nldd-tooltip>
+
+- <nldd-tooltip instant>…</nldd-tooltip>
++ <nldd-tooltip timing="instant">…</nldd-tooltip>
+
+- <nldd-tag variant="success">Live</nldd-tag>
++ <nldd-tag color="success">Live</nldd-tag>
+
+- <nldd-toolbar-title-group text="…" subtext="…">
++ <nldd-toolbar-title text="…" supporting-text="…">
+
+  // token toggle event
+- token.addEventListener('toggle', e => { e.detail.open })
++ token.addEventListener('toggle', e => { e.detail.expanded })
+```
+
+* feat!: bugs and housekeeping — tokens, refactors, A11y fixes ([d54ed9e](https://github.com/MinBZK/storybook/commit/d54ed9e))

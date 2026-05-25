@@ -28,7 +28,7 @@ export { NLDDTooltip } from './content/tooltip/tooltip.js';
 export { NLDDBlockquote } from './content/blockquote/blockquote.js';
 export { NLDDTag } from './content/tag/tag.js';
 export { NLDDKeyboardShortcut } from './content/keyboard-shortcut/keyboard-shortcut.js';
-export { NLDDCode } from './content/code/code.js';
+export { NLDDCodeViewer } from './content/code-viewer/code-viewer.js';
 
 
 // # Forms components
@@ -94,6 +94,12 @@ export { NLDDPopover } from './layout/popover/popover.js';
 export { NLDDSheet } from './layout/sheet/sheet.js';
 export { NLDDWindow } from './layout/window/window.js';
 
+export {
+	NLDDPageFooter,
+	NLDDPageFooterLegalBar,
+	NLDDPageFooterLegalBarItem,
+} from './layout/page-footer/page-footer.js';
+
 
 // # List and Menu components
 
@@ -114,6 +120,10 @@ export { NLDDTimelineTrackCell } from './lists-and-menus/cells/timeline-track-ce
 
 // # Navigation components
 
+export {
+	NLDDBreadcrumbs,
+	NLDDBreadcrumbsItem,
+} from './navigation/breadcrumbs/breadcrumbs.js';
 export { NLDDMenuBar } from './navigation/menu-bar/menu-bar.js';
 export { NLDDMenuBarItem } from './navigation/menu-bar-item/menu-bar-item.js';
 export { NLDDLink } from './navigation/link/link.js';
