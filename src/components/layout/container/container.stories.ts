@@ -13,17 +13,26 @@ const sizeControl = (description: string) => ({
 });
 
 /**
- * Container is een eenvoudige layout-primitive: flex met richting, gap,
- * uitlijning en padding. Padding kan per zijde, per as (inline/block) of
- * voor alle zijden tegelijk. Specifiekere instellingen winnen: zijde > as > alle.
+ * Container is een eenvoudige layout-primitive: kies een layout-modus, geef
+ * een gap, optioneel uitlijning, en padding. Padding kan per zijde, per as
+ * (inline/block) of voor alle zijden tegelijk. Specifiekere instellingen
+ * winnen: zijde > as > alle.
  *
  * Responsive padding en gap hebben `sm-` / `md-` / `lg-` varianten. Elke variant
  * werkt binnen een `layout-container` als container query, en valt buiten
  * een layout-container terug op een viewport media query.
  *
+ * Layout-modi:
+ *  - `stack` (default): items onder elkaar (normale DOM-flow).
+ *  - `row`: flex-rij, geen wrap.
+ *  - `wrap`: flex-rij die naar volgende regel wraps.
+ *  - `grid`: CSS-grid, auto-fit kolommen van min 280px breed.
+ *  - `columns`: CSS multicolumn, items flowen verticaal en lopen door naar
+ *    de volgende kolom (krant-stijl); breaks binnen items worden vermeden.
+ *
  * ## Gebruik
  * ```html
- * <nldd-container direction="row" gap="12" padding="16" sm-padding="8">
+ * <nldd-container layout="wrap" gap="12" padding="16" sm-padding="8">
  *   <nldd-rich-text><p>Eerste item</p></nldd-rich-text>
  *   <nldd-rich-text><p>Tweede item</p></nldd-rich-text>
  * </nldd-container>
@@ -43,8 +52,7 @@ export default {
 		},
 	},
 	argTypes: {
-		direction: { control: 'select', options: ['column', 'row'], description: 'Flex-richting' },
-		wrap: { control: 'boolean', description: 'Kinderen wrappen naar nieuwe regel' },
+		layout: { control: 'select', options: [undefined, 'stack', 'row', 'wrap', 'grid', 'columns'], description: 'Layout-modus' },
 		gap: sizeControl('Gap tussen kinderen'),
 		smGap: { name: 'sm-gap', ...sizeControl('Gap bij sm') },
 		mdGap: { name: 'md-gap', ...sizeControl('Gap bij md') },
@@ -92,8 +100,7 @@ export const Standaard = {
 	},
 	render: (args: Record<string, any>) => html`
 		<nldd-container
-			direction=${ifDefined(args.direction)}
-			?wrap=${args.wrap}
+			layout=${ifDefined(args.layout)}
 			gap=${ifDefined(args.gap)}
 			sm-gap=${ifDefined(args.smGap)}
 			md-gap=${ifDefined(args.mdGap)}
@@ -183,31 +190,31 @@ export const PaddingResponsief = {
 	storyName: 'Padding — responsief',
 };
 
-export const Row = {
+export const LayoutStack = {
 	render: () => html`
-		<nldd-container direction="row" gap="12" padding="16" style="outline: 1px dashed var(--primitives-color-neutral-150);">
+		<nldd-container gap="12" padding="16" style="outline: 1px dashed var(--primitives-color-neutral-150);">
 			<nldd-rich-text><p>Eerste</p></nldd-rich-text>
 			<nldd-rich-text><p>Tweede</p></nldd-rich-text>
 			<nldd-rich-text><p>Derde</p></nldd-rich-text>
 		</nldd-container>
 	`,
-	storyName: 'Direction — row',
+	storyName: 'Layout — stack (default)',
 };
 
-export const Column = {
+export const LayoutRow = {
 	render: () => html`
-		<nldd-container direction="column" gap="12" padding="16" style="outline: 1px dashed var(--primitives-color-neutral-150);">
+		<nldd-container layout="row" gap="12" padding="16" style="outline: 1px dashed var(--primitives-color-neutral-150);">
 			<nldd-rich-text><p>Eerste</p></nldd-rich-text>
 			<nldd-rich-text><p>Tweede</p></nldd-rich-text>
 			<nldd-rich-text><p>Derde</p></nldd-rich-text>
 		</nldd-container>
 	`,
-	storyName: 'Direction — column',
+	storyName: 'Layout — row',
 };
 
-export const Wrap = {
+export const LayoutWrap = {
 	render: () => html`
-		<nldd-container direction="row" wrap gap="12" padding="16" style="outline: 1px dashed var(--primitives-color-neutral-150); max-width: 320px;">
+		<nldd-container layout="wrap" gap="12" padding="16" style="outline: 1px dashed var(--primitives-color-neutral-150); max-width: 320px;">
 			<nldd-tag>Item één</nldd-tag>
 			<nldd-tag>Item twee</nldd-tag>
 			<nldd-tag>Item drie</nldd-tag>
@@ -215,13 +222,43 @@ export const Wrap = {
 			<nldd-tag>Item vijf</nldd-tag>
 		</nldd-container>
 	`,
-	storyName: 'Wrap',
+	storyName: 'Layout — wrap',
+};
+
+export const LayoutGrid = {
+	render: () => html`
+		<nldd-container layout="grid" gap="12" padding="16" style="outline: 1px dashed var(--primitives-color-neutral-150);">
+			<nldd-rich-text><p>Cell één</p></nldd-rich-text>
+			<nldd-rich-text><p>Cell twee</p></nldd-rich-text>
+			<nldd-rich-text><p>Cell drie</p></nldd-rich-text>
+			<nldd-rich-text><p>Cell vier</p></nldd-rich-text>
+			<nldd-rich-text><p>Cell vijf</p></nldd-rich-text>
+			<nldd-rich-text><p>Cell zes</p></nldd-rich-text>
+		</nldd-container>
+	`,
+	storyName: 'Layout — grid (auto-fit, min 280px)',
+};
+
+export const LayoutColumns = {
+	render: () => html`
+		<nldd-container layout="columns" gap="24" padding="16" style="outline: 1px dashed var(--primitives-color-neutral-150);">
+			<nldd-rich-text><p>Eerste link in de lijst</p></nldd-rich-text>
+			<nldd-rich-text><p>Tweede link</p></nldd-rich-text>
+			<nldd-rich-text><p>Derde link in de lijst</p></nldd-rich-text>
+			<nldd-rich-text><p>Vierde link</p></nldd-rich-text>
+			<nldd-rich-text><p>Vijfde link in de lijst</p></nldd-rich-text>
+			<nldd-rich-text><p>Zesde link</p></nldd-rich-text>
+			<nldd-rich-text><p>Zevende link in de lijst</p></nldd-rich-text>
+			<nldd-rich-text><p>Achtste link</p></nldd-rich-text>
+		</nldd-container>
+	`,
+	storyName: 'Layout — columns (multicol, min 280px)',
 };
 
 export const Alignment = {
 	render: () => html`
 		<nldd-container
-			direction="row"
+			layout="row"
 			gap="12"
 			padding="16"
 			horizontal-alignment="center"

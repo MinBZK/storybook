@@ -1,19 +1,34 @@
 /**
  * Nederlandse Digitale Dienst Container Component (Lit + TypeScript)
  *
- * A simple layout primitive: flex direction, gap, alignment, and padding.
- * Padding can be set for all sides, per axis (inline/block), or per individual side.
- * Specificity: per side > per axis > all sides.
+ * A simple layout primitive: pick a layout mode, give it a gap, optionally
+ * align contents, and add padding. Padding can be set for all sides, per
+ * axis (inline/block), or per individual side. Specificity: per side >
+ * per axis > all sides.
  *
  * Responsive padding and gap have sm/md/lg variants. Each variant emits both
  * an @media (viewport) and @container (layout-container) query. When inside a
  * layout-container the @container query wins; otherwise the @media query
  * provides the viewport-based fallback.
  *
+ * Layout modes:
+ *  - `stack` (default): block items, stacked vertically. The "what you
+ *    expect from DOM flow" mode.
+ *  - `row`: flex row, no wrapping. Items shrink or overflow.
+ *  - `wrap`: flex row, items wrap to new lines.
+ *  - `grid`: CSS grid, auto-fit columns at min 280px wide.
+ *  - `columns`: CSS multi-column flow, 280px minimum column width,
+ *    items don't split across column breaks.
+ *
+ * Alignment maps to the layout's natural axis:
+ *  - `stack`: vertical = main-axis (justify-content), horizontal = cross-axis (align-items)
+ *  - `row` / `wrap`: horizontal = main-axis, vertical = cross-axis
+ *  - `grid`: horizontal = justify-items, vertical = align-items (per cell)
+ *  - `columns`: alignment props have no effect (CSS multicol doesn't expose alignment)
+ *
  * @element nldd-container
  *
- * @attr {string}  direction              - 'row' | 'column' (default: 'column')
- * @attr {boolean} wrap                   - Wrap children onto new lines (default: false)
+ * @attr {string}  layout                 - 'stack' | 'row' | 'wrap' | 'grid' | 'columns' (default: 'stack')
  * @attr {string}  gap                    - Gap between children
  * @attr {string}  sm-gap                 - Gap at sm breakpoint
  * @attr {string}  md-gap                 - Gap at md breakpoint
@@ -43,7 +58,7 @@ type PaddingSize =
 	| '0' | '2' | '4' | '6' | '8' | '10' | '12' | '16' | '20' | '24'
 	| '28' | '32' | '40' | '44' | '48' | '56' | '64' | '80' | '96';
 
-type Direction = 'row' | 'column';
+type Layout = 'stack' | 'row' | 'wrap' | 'grid' | 'columns';
 type HorizontalAlignment = 'left' | 'center' | 'right';
 type VerticalAlignment = 'top' | 'center' | 'bottom';
 type Scope = '' | 'sm' | 'md' | 'lg';
@@ -71,14 +86,12 @@ export class NLDDContainer extends LitElement {
 	static override styles = containerStyles;
 
 	// No default value so a plain <nldd-container> doesn't carry a
-	// reflected direction="column" attribute. Absence resolves to column
-	// in the styles (the unconditional :host default) and in
-	// writeCustomProperties (isRow checks for 'row' specifically).
+	// reflected layout="stack" attribute. Absence resolves to stack in the
+	// styles (the unconditional :host default) and in
+	// writeCustomProperties (the horizontal-axis check matches 'row'/'wrap'
+	// specifically).
 	@property({ type: String, reflect: true })
-	direction?: Direction;
-
-	@property({ type: Boolean, reflect: true })
-	wrap = false;
+	layout?: Layout;
 
 	@property({ type: String, reflect: true, attribute: 'horizontal-alignment' })
 	horizontalAlignment: HorizontalAlignment | undefined = undefined;
@@ -192,11 +205,15 @@ export class NLDDContainer extends LitElement {
 			else this.style.setProperty(name, value);
 		};
 
-		const isRow = this.direction === 'row';
+		// Horizontal-axis layouts (row, wrap) put items on the main axis
+		// horizontally; stack puts them on the main axis vertically. Grid
+		// uses justify-items / align-items per cell — same horizontal/vertical
+		// mapping as stack. Columns has no alignment hooks.
+		const horizontalIsMainAxis = this.layout === 'row' || this.layout === 'wrap';
 		const horizontal = this.horizontalAlignment ? HORIZONTAL_TO_FLEX[this.horizontalAlignment] : null;
 		const vertical = this.verticalAlignment ? VERTICAL_TO_FLEX[this.verticalAlignment] : null;
-		setProp('--_justify-content', isRow ? horizontal : vertical);
-		setProp('--_align-items', isRow ? vertical : horizontal);
+		setProp('--_justify-content', horizontalIsMainAxis ? horizontal : vertical);
+		setProp('--_align-items', horizontalIsMainAxis ? vertical : horizontal);
 
 		setProp('--_gap', sizeToValue(this.gap));
 		setProp('--_sm-gap', sizeToValue(this.smGap));

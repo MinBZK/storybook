@@ -100,11 +100,27 @@ export const containerStyles = css`
 		display: none;
 	}
 
-	:host([direction="row"]) {
+	:host([layout="row"]) {
 		flex-direction: row;
 	}
 
-	:host([wrap]) {
+	:host([layout="wrap"]) {
+		flex-direction: row;
 		flex-wrap: wrap;
+	}
+
+	:host([layout="grid"]) {
+		display: grid;
+		grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+	}
+
+	:host([layout="columns"]) {
+		display: block;
+		columns: 280px;
+		column-gap: var(--_gap);
+	}
+
+	:host([layout="columns"]) ::slotted(*) {
+		break-inside: avoid;
 	}
 `;
