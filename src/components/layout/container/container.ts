@@ -26,9 +26,27 @@
  *  - `grid`: horizontal = justify-items, vertical = align-items (per cell)
  *  - `columns`: alignment props have no effect (CSS multicol doesn't expose alignment)
  *
+ * The `reverse` boolean inverts item order within the chosen layout:
+ *  - `stack` → `flex-direction: column-reverse`
+ *  - `row` → `flex-direction: row-reverse`
+ *  - `wrap` → `flex-direction: row-reverse` + `flex-wrap: wrap-reverse`
+ *  - `grid` → falls back to flex (row-reverse + wrap-reverse + per-item
+ *    `flex: 0 1 var(--_min-column-width)`) so the 2D order truly reverses;
+ *    the last row no longer aligns to the grid track (the cost of leaving
+ *    CSS grid for flex)
+ *  - `columns` → no-op (multicol has no item-order hook)
+ *
+ * `sm-reverse` / `md-reverse` / `lg-reverse` enable reverse only at that
+ * breakpoint. Combine with the base `reverse` (always on) or use the
+ * scoped ones independently.
+ *
  * @element nldd-container
  *
  * @attr {string}  layout                 - 'stack' | 'row' | 'wrap' | 'grid' | 'columns' (default: 'stack')
+ * @attr {boolean} reverse                - Reverse the visual order of items
+ * @attr {boolean} sm-reverse             - Reverse only at the sm breakpoint
+ * @attr {boolean} md-reverse             - Reverse only at the md breakpoint
+ * @attr {boolean} lg-reverse             - Reverse only at the lg breakpoint
  * @attr {string}  gap                    - Gap between children
  * @attr {string}  sm-gap                 - Gap at sm breakpoint
  * @attr {string}  md-gap                 - Gap at md breakpoint
@@ -92,6 +110,25 @@ export class NLDDContainer extends LitElement {
 	// specifically).
 	@property({ type: String, reflect: true })
 	layout?: Layout;
+
+	// Reverse the visual order of items within the chosen layout. For
+	// stack/row/wrap this is native flex-direction reverse (+ wrap-reverse
+	// for the 2D wrap case). For grid the host falls back to flex with
+	// wrap-reverse so 2D reversal works; the trade-off is that the last
+	// row no longer aligns to the grid track. For columns reverse is a
+	// no-op — multicol items flow top→bottom inside each column with no
+	// CSS hook to invert that.
+	@property({ type: Boolean, reflect: true })
+	reverse = false;
+
+	@property({ type: Boolean, reflect: true, attribute: 'sm-reverse' })
+	smReverse = false;
+
+	@property({ type: Boolean, reflect: true, attribute: 'md-reverse' })
+	mdReverse = false;
+
+	@property({ type: Boolean, reflect: true, attribute: 'lg-reverse' })
+	lgReverse = false;
 
 	@property({ type: String, reflect: true, attribute: 'horizontal-alignment' })
 	horizontalAlignment: HorizontalAlignment | undefined = undefined;

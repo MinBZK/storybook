@@ -53,6 +53,10 @@ export default {
 	},
 	argTypes: {
 		layout: { control: 'select', options: [undefined, 'stack', 'row', 'wrap', 'grid', 'columns'], description: 'Layout-modus' },
+		reverse: { control: 'boolean', description: 'Keer de volgorde van items om' },
+		smReverse: { name: 'sm-reverse', control: 'boolean', description: 'Reverse alleen op sm-viewport' },
+		mdReverse: { name: 'md-reverse', control: 'boolean', description: 'Reverse alleen op md-viewport' },
+		lgReverse: { name: 'lg-reverse', control: 'boolean', description: 'Reverse alleen op lg-viewport' },
 		gap: sizeControl('Gap tussen kinderen'),
 		smGap: { name: 'sm-gap', ...sizeControl('Gap bij sm') },
 		mdGap: { name: 'md-gap', ...sizeControl('Gap bij md') },
@@ -101,6 +105,10 @@ export const Standaard = {
 	render: (args: Record<string, any>) => html`
 		<nldd-container
 			layout=${ifDefined(args.layout)}
+			?reverse=${args.reverse}
+			?sm-reverse=${args.smReverse}
+			?md-reverse=${args.mdReverse}
+			?lg-reverse=${args.lgReverse}
 			gap=${ifDefined(args.gap)}
 			sm-gap=${ifDefined(args.smGap)}
 			md-gap=${ifDefined(args.mdGap)}
@@ -253,6 +261,60 @@ export const LayoutColumns = {
 		</nldd-container>
 	`,
 	storyName: 'Layout — columns (multicol, min 280px)',
+};
+
+export const ReverseRow = {
+	render: () => html`
+		<nldd-container layout="row" reverse gap="12" padding="16" style="outline: 1px dashed var(--primitives-color-neutral-150);">
+			<nldd-rich-text><p>1</p></nldd-rich-text>
+			<nldd-rich-text><p>2</p></nldd-rich-text>
+			<nldd-rich-text><p>3</p></nldd-rich-text>
+			<nldd-rich-text><p>4</p></nldd-rich-text>
+		</nldd-container>
+	`,
+	storyName: 'Reverse — row (items 4→1)',
+};
+
+export const ReverseWrap = {
+	render: () => html`
+		<nldd-container layout="wrap" reverse gap="12" padding="16" style="outline: 1px dashed var(--primitives-color-neutral-150); max-width: 320px;">
+			<nldd-tag>Tag 1</nldd-tag>
+			<nldd-tag>Tag 2</nldd-tag>
+			<nldd-tag>Tag 3</nldd-tag>
+			<nldd-tag>Tag 4</nldd-tag>
+			<nldd-tag>Tag 5</nldd-tag>
+			<nldd-tag>Tag 6</nldd-tag>
+		</nldd-container>
+	`,
+	storyName: 'Reverse — wrap (laatste tag eerst, wraps van rechtsboven)',
+};
+
+export const ReverseGrid = {
+	render: () => html`
+		<nldd-container layout="grid" reverse gap="12" padding="16" style="outline: 1px dashed var(--primitives-color-neutral-150);">
+			<nldd-rich-text><p>1</p></nldd-rich-text>
+			<nldd-rich-text><p>2</p></nldd-rich-text>
+			<nldd-rich-text><p>3</p></nldd-rich-text>
+			<nldd-rich-text><p>4</p></nldd-rich-text>
+			<nldd-rich-text><p>5</p></nldd-rich-text>
+			<nldd-rich-text><p>6</p></nldd-rich-text>
+			<nldd-rich-text><p>7</p></nldd-rich-text>
+			<nldd-rich-text><p>8</p></nldd-rich-text>
+		</nldd-container>
+	`,
+	storyName: 'Reverse — grid (valt terug op flex, 2D omkering)',
+};
+
+export const ReverseScopedSm = {
+	render: () => html`
+		<nldd-container layout="row" sm-reverse gap="12" padding="16" style="outline: 1px dashed var(--primitives-color-neutral-150);">
+			<nldd-rich-text><p>1</p></nldd-rich-text>
+			<nldd-rich-text><p>2</p></nldd-rich-text>
+			<nldd-rich-text><p>3</p></nldd-rich-text>
+			<nldd-rich-text><p>4</p></nldd-rich-text>
+		</nldd-container>
+	`,
+	storyName: 'Reverse — alleen sm (versmal viewport om effect te zien)',
 };
 
 export const Alignment = {

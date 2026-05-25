@@ -124,4 +124,98 @@ export const containerStyles = css`
 	:host([layout="columns"]) ::slotted(*) {
 		break-inside: avoid;
 	}
+
+
+	/* # Reverse — base (applies at all breakpoints) */
+
+	:host([reverse]:not([layout])),
+	:host([reverse][layout="stack"]) {
+		flex-direction: column-reverse;
+	}
+
+	:host([reverse][layout="row"]) {
+		flex-direction: row-reverse;
+	}
+
+	:host([reverse][layout="wrap"]) {
+		flex-direction: row-reverse;
+		flex-wrap: wrap-reverse;
+	}
+
+	/* Grid + reverse: fall back to flex so the 2D order truly reverses.
+	   Trade-off: last row no longer aligns to grid track. */
+	:host([reverse][layout="grid"]) {
+		display: flex;
+		flex-direction: row-reverse;
+		flex-wrap: wrap-reverse;
+	}
+	:host([reverse][layout="grid"]) ::slotted(*) {
+		flex: 0 1 var(--_min-column-width);
+	}
+
+	/* layout="columns" + reverse: intentional no-op (multicol has no
+	   item-order hook). */
+
+
+	/* # Reverse — sm scope */
+
+	@media (max-width: ${smMax}) {
+		:host([sm-reverse]:not([layout])),
+		:host([sm-reverse][layout="stack"]) { flex-direction: column-reverse; }
+		:host([sm-reverse][layout="row"]) { flex-direction: row-reverse; }
+		:host([sm-reverse][layout="wrap"]) { flex-direction: row-reverse; flex-wrap: wrap-reverse; }
+		:host([sm-reverse][layout="grid"]) { display: flex; flex-direction: row-reverse; flex-wrap: wrap-reverse; }
+		:host([sm-reverse][layout="grid"]) ::slotted(*) { flex: 0 1 var(--_min-column-width); }
+	}
+
+	@container layout-container (max-width: ${smMax}) {
+		:host([sm-reverse]:not([layout])),
+		:host([sm-reverse][layout="stack"]) { flex-direction: column-reverse; }
+		:host([sm-reverse][layout="row"]) { flex-direction: row-reverse; }
+		:host([sm-reverse][layout="wrap"]) { flex-direction: row-reverse; flex-wrap: wrap-reverse; }
+		:host([sm-reverse][layout="grid"]) { display: flex; flex-direction: row-reverse; flex-wrap: wrap-reverse; }
+		:host([sm-reverse][layout="grid"]) ::slotted(*) { flex: 0 1 var(--_min-column-width); }
+	}
+
+
+	/* # Reverse — md scope */
+
+	@media (min-width: ${mdMin}) and (max-width: ${mdMax}) {
+		:host([md-reverse]:not([layout])),
+		:host([md-reverse][layout="stack"]) { flex-direction: column-reverse; }
+		:host([md-reverse][layout="row"]) { flex-direction: row-reverse; }
+		:host([md-reverse][layout="wrap"]) { flex-direction: row-reverse; flex-wrap: wrap-reverse; }
+		:host([md-reverse][layout="grid"]) { display: flex; flex-direction: row-reverse; flex-wrap: wrap-reverse; }
+		:host([md-reverse][layout="grid"]) ::slotted(*) { flex: 0 1 var(--_min-column-width); }
+	}
+
+	@container layout-container (min-width: ${mdMin}) and (max-width: ${mdMax}) {
+		:host([md-reverse]:not([layout])),
+		:host([md-reverse][layout="stack"]) { flex-direction: column-reverse; }
+		:host([md-reverse][layout="row"]) { flex-direction: row-reverse; }
+		:host([md-reverse][layout="wrap"]) { flex-direction: row-reverse; flex-wrap: wrap-reverse; }
+		:host([md-reverse][layout="grid"]) { display: flex; flex-direction: row-reverse; flex-wrap: wrap-reverse; }
+		:host([md-reverse][layout="grid"]) ::slotted(*) { flex: 0 1 var(--_min-column-width); }
+	}
+
+
+	/* # Reverse — lg scope */
+
+	@media (min-width: ${lgMin}) {
+		:host([lg-reverse]:not([layout])),
+		:host([lg-reverse][layout="stack"]) { flex-direction: column-reverse; }
+		:host([lg-reverse][layout="row"]) { flex-direction: row-reverse; }
+		:host([lg-reverse][layout="wrap"]) { flex-direction: row-reverse; flex-wrap: wrap-reverse; }
+		:host([lg-reverse][layout="grid"]) { display: flex; flex-direction: row-reverse; flex-wrap: wrap-reverse; }
+		:host([lg-reverse][layout="grid"]) ::slotted(*) { flex: 0 1 var(--_min-column-width); }
+	}
+
+	@container layout-container (min-width: ${lgMin}) {
+		:host([lg-reverse]:not([layout])),
+		:host([lg-reverse][layout="stack"]) { flex-direction: column-reverse; }
+		:host([lg-reverse][layout="row"]) { flex-direction: row-reverse; }
+		:host([lg-reverse][layout="wrap"]) { flex-direction: row-reverse; flex-wrap: wrap-reverse; }
+		:host([lg-reverse][layout="grid"]) { display: flex; flex-direction: row-reverse; flex-wrap: wrap-reverse; }
+		:host([lg-reverse][layout="grid"]) ::slotted(*) { flex: 0 1 var(--_min-column-width); }
+	}
 `;

@@ -119,6 +119,48 @@ describe('nldd-container', () => {
 		expect(el.style.getPropertyValue('--_justify-content')).toBe('center');
 	});
 
+	it('reverse on the default (stack) layout sets flex-direction: column-reverse', async () => {
+		el = await fixture('<nldd-container reverse></nldd-container>');
+		await waitForUpdate(el);
+		expect(getComputedStyle(el).flexDirection).toBe('column-reverse');
+	});
+
+	it('reverse on layout=row sets flex-direction: row-reverse', async () => {
+		el = await fixture('<nldd-container layout="row" reverse></nldd-container>');
+		await waitForUpdate(el);
+		expect(getComputedStyle(el).flexDirection).toBe('row-reverse');
+	});
+
+	it('reverse on layout=wrap sets row-reverse + wrap-reverse', async () => {
+		el = await fixture('<nldd-container layout="wrap" reverse></nldd-container>');
+		await waitForUpdate(el);
+		expect(getComputedStyle(el).flexDirection).toBe('row-reverse');
+		expect(getComputedStyle(el).flexWrap).toBe('wrap-reverse');
+	});
+
+	it('reverse on layout=grid switches the host to flex', async () => {
+		el = await fixture('<nldd-container layout="grid" reverse></nldd-container>');
+		await waitForUpdate(el);
+		// Grid + reverse falls back to flex to get true 2D reversal.
+		expect(getComputedStyle(el).display).toBe('flex');
+		expect(getComputedStyle(el).flexDirection).toBe('row-reverse');
+		expect(getComputedStyle(el).flexWrap).toBe('wrap-reverse');
+	});
+
+	it('reverse on layout=columns is a no-op (display stays block)', async () => {
+		el = await fixture('<nldd-container layout="columns" reverse></nldd-container>');
+		await waitForUpdate(el);
+		expect(getComputedStyle(el).display).toBe('block');
+	});
+
+	it('reflects sm-reverse / md-reverse / lg-reverse as boolean attributes', async () => {
+		el = await fixture('<nldd-container sm-reverse md-reverse lg-reverse></nldd-container>');
+		await waitForUpdate(el);
+		expect(el.hasAttribute('sm-reverse')).toBe(true);
+		expect(el.hasAttribute('md-reverse')).toBe(true);
+		expect(el.hasAttribute('lg-reverse')).toBe(true);
+	});
+
 	it('accepts 0 as padding value', async () => {
 		el = await fixture('<nldd-container padding="0"></nldd-container>');
 		await waitForUpdate(el);
