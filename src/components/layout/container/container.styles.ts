@@ -12,6 +12,7 @@ export const containerStyles = css`
 	/* # Host */
 
 	:host {
+		--_min-column-width: var(--primitives-area-280);
 		--_justify-content: initial;
 		--_align-items: initial;
 		--_gap: 0;
@@ -111,12 +112,12 @@ export const containerStyles = css`
 
 	:host([layout="grid"]) {
 		display: grid;
-		grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+		grid-template-columns: repeat(auto-fit, minmax(var(--_min-column-width), 1fr));
 	}
 
 	:host([layout="columns"]) {
 		display: block;
-		columns: 280px;
+		columns: var(--_min-column-width);
 		column-gap: var(--_gap);
 	}
 
