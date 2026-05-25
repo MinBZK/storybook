@@ -171,6 +171,13 @@ export function PageSectionMixin<TBase extends Constructor<LitElement>>(
 		 * walk). When the fallback is needed the walk is bounded by the
 		 * DOM depth and only fires on `scheme` prop change or a
 		 * color-scheme repaint event — not on every render.
+		 *
+		 * Cross-shadow caveat: `parentElement` doesn't traverse shadow
+		 * boundaries, so a `color-scheme` declared on an outer custom
+		 * element's host won't be picked up by the walk; we then fall
+		 * through to `prefers-color-scheme`. For reliable `'inverted'`
+		 * behaviour inside nested shadow trees, set `data-scheme` on
+		 * `:root` so the fast path resolves the painted scheme directly.
 		 */
 		private _resolveActiveScheme(): 'light' | 'dark' {
 			const root = document.documentElement.getAttribute('data-scheme');
