@@ -9,6 +9,11 @@ const lgMin = unsafeCSS(breakpoints.lgMin);
 export const pageFooterStyles = css`
 	:host {
 		--_max-width: var(--semantics-page-sections-body-max-width);
+		/* Official Rijksoverheid lintje colour — identical across all
+		   .rijks.app / .overheid.nl sites by visual-identity policy, so it
+		   intentionally lives outside the semantic token system. Local
+		   --_ var keeps the value discoverable in one place. */
+		--_lintje-color: #154273;
 		--context-parent-background-color: var(--components-page-footer-background-color);
 
 		@container (max-width: ${smMax}) {
@@ -60,7 +65,7 @@ export const pageFooterStyles = css`
 		position: absolute;
 		bottom: 0;
 		left: 50%;
-		background-color: #154273;
+		background-color: var(--_lintje-color);
 		width: var(--_lintje-width);
 		height: var(--_lintje-height);
 		transform: translateX(-50%);
