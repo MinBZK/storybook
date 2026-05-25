@@ -83,10 +83,11 @@ export class NLDDBreadcrumbsItem extends LitElement {
 	}
 }
 
-// Internal sub-component: register via the guard pattern (matches
-// nldd-menu's nldd-menu-item / nldd-menu-divider). Using @customElement
-// here would throw on re-registration in tests / HMR; the guard keeps the
-// first registration authoritative.
+// Sub-component of nldd-breadcrumbs. Exported as a public class for type
+// imports. The guard registration (matches nldd-menu's nldd-menu-item /
+// nldd-menu-divider) is for de-dupe safety: @customElement throws if the
+// same tag is defined twice during HMR or test re-imports, the guard keeps
+// the first registration authoritative.
 if (!customElements.get('nldd-breadcrumbs-item')) {
 	customElements.define('nldd-breadcrumbs-item', NLDDBreadcrumbsItem);
 }
@@ -119,7 +120,14 @@ export class NLDDBreadcrumbs extends LitElement {
 	}
 
 	_t(key: keyof NLDDBreadcrumbsTranslations): string {
-		return this._mergedTranslations[key] ?? key;
+		// Return '' (not the key) for missing translations so callers can do
+		// `value || nothing` to suppress aria-label / text rather than
+		// announcing the raw key string. Warn in DEV.
+		const value = this._mergedTranslations[key];
+		if (value === undefined && import.meta.env?.DEV) {
+			console.warn(`<nldd-breadcrumbs>: missing translation for "${key}"`);
+		}
+		return value ?? '';
 	}
 
 	/**

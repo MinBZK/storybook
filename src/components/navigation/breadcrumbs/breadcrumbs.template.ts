@@ -11,7 +11,7 @@ export function breadcrumbsTemplate(component: NLDDBreadcrumbs): TemplateResult 
 
 	return html`
 		<nav class="breadcrumbs"
-			aria-label=${label}
+			aria-label=${label || nothing}
 		>
 			${parent ? html`
 				<a class="breadcrumbs__level-up"
