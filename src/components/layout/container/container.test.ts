@@ -18,42 +18,61 @@ describe('nldd-container', () => {
 	it('does not reflect a layout attribute by default (stack is the implicit default)', async () => {
 		el = await fixture('<nldd-container></nldd-container>');
 		await waitForUpdate(el);
-		// No default attribute pollution; stack comes from the :host default style.
+		// No default attribute pollution; stack comes from the .container default style.
 		expect(el.hasAttribute('layout')).toBe(false);
-		expect(getComputedStyle(el).display).toBe('flex');
-		expect(getComputedStyle(el).flexDirection).toBe('column');
+		// :host is just a padding wrapper now (block); layout lives on .container.
+		expect(getComputedStyle(el).display).toBe('block');
+		const inner = el.shadowRoot!.querySelector('.container') as HTMLElement;
+		expect(getComputedStyle(inner).display).toBe('flex');
+		expect(getComputedStyle(inner).flexDirection).toBe('column');
 	});
 
-	it('layout=row sets flex-direction: row', async () => {
+	it('layout=row sets flex-direction: row on the inner', async () => {
 		el = await fixture('<nldd-container layout="row"></nldd-container>');
 		await waitForUpdate(el);
-		expect(getComputedStyle(el).flexDirection).toBe('row');
-		expect(getComputedStyle(el).flexWrap).toBe('nowrap');
+		const inner = el.shadowRoot!.querySelector('.container') as HTMLElement;
+		expect(getComputedStyle(inner).flexDirection).toBe('row');
+		expect(getComputedStyle(inner).flexWrap).toBe('nowrap');
 	});
 
-	it('layout=wrap sets flex-direction: row + flex-wrap: wrap', async () => {
+	it('layout=wrap sets row-reverse-style + flex-wrap on the inner', async () => {
 		el = await fixture('<nldd-container layout="wrap"></nldd-container>');
 		await waitForUpdate(el);
-		expect(getComputedStyle(el).flexDirection).toBe('row');
-		expect(getComputedStyle(el).flexWrap).toBe('wrap');
+		const inner = el.shadowRoot!.querySelector('.container') as HTMLElement;
+		expect(getComputedStyle(inner).flexDirection).toBe('row');
+		expect(getComputedStyle(inner).flexWrap).toBe('wrap');
 	});
 
-	it('layout=grid switches to display: grid', async () => {
+	it('layout=grid switches the inner to display: grid', async () => {
 		el = await fixture('<nldd-container layout="grid"></nldd-container>');
 		await waitForUpdate(el);
-		expect(getComputedStyle(el).display).toBe('grid');
+		const inner = el.shadowRoot!.querySelector('.container') as HTMLElement;
+		expect(getComputedStyle(inner).display).toBe('grid');
 	});
 
-	it('layout=columns switches to display: block', async () => {
+	it('layout=columns keeps the inner as block (multicol)', async () => {
 		el = await fixture('<nldd-container layout="columns"></nldd-container>');
 		await waitForUpdate(el);
-		expect(getComputedStyle(el).display).toBe('block');
+		const inner = el.shadowRoot!.querySelector('.container') as HTMLElement;
+		expect(getComputedStyle(inner).display).toBe('block');
 		expect(el.getAttribute('layout')).toBe('columns');
-		// Column-width itself reads through --_min-column-width →
-		// --primitives-area-280. The primitives stylesheet isn't loaded in
-		// vitest, so computed columnWidth resolves to 'auto' — relying on
-		// the visual story (and a real-world page with settings.css loaded)
-		// for the actual 280px assertion.
+	});
+
+	it('column-count="4" sets the --_column-count var on the inner', async () => {
+		el = await fixture('<nldd-container layout="grid" column-count="4"></nldd-container>');
+		await waitForUpdate(el);
+		const inner = el.shadowRoot!.querySelector('.container') as HTMLElement;
+		expect(getComputedStyle(inner).getPropertyValue('--_column-count').trim()).toBe('4');
+		expect(getComputedStyle(inner).getPropertyValue('--_track-min').trim()).toBe('0');
+	});
+
+	it('reflects column-count + per-viewport variants as integer attributes', async () => {
+		el = await fixture('<nldd-container column-count="4" sm-column-count="1" md-column-count="2" lg-column-count="4"></nldd-container>');
+		await waitForUpdate(el);
+		expect(el.getAttribute('column-count')).toBe('4');
+		expect(el.getAttribute('sm-column-count')).toBe('1');
+		expect(el.getAttribute('md-column-count')).toBe('2');
+		expect(el.getAttribute('lg-column-count')).toBe('4');
 	});
 
 	it('writes --_padding-* longhands from padding attr', async () => {
@@ -119,38 +138,60 @@ describe('nldd-container', () => {
 		expect(el.style.getPropertyValue('--_justify-content')).toBe('center');
 	});
 
-	it('reverse on the default (stack) layout sets flex-direction: column-reverse', async () => {
+	it('maps grid vertical-alignment to align-items (per-cell), not justify-content', async () => {
+		el = await fixture('<nldd-container layout="grid" vertical-alignment="center"></nldd-container>');
+		await waitForUpdate(el);
+		expect(el.style.getPropertyValue('--_align-items')).toBe('center');
+		// For grid we set justify-content too (so grid+reverse → flex still works),
+		// but vertical-alignment must NOT leak into --_justify-content like it does
+		// for stack layouts.
+		expect(el.style.getPropertyValue('--_justify-content')).toBe('');
+	});
+
+	it('maps grid horizontal-alignment to both justify-items and justify-content', async () => {
+		el = await fixture('<nldd-container layout="grid" horizontal-alignment="center"></nldd-container>');
+		await waitForUpdate(el);
+		expect(el.style.getPropertyValue('--_justify-items')).toBe('center');
+		expect(el.style.getPropertyValue('--_justify-content')).toBe('center');
+	});
+
+	it('reverse on the default (stack) layout sets flex-direction: column-reverse on the inner', async () => {
 		el = await fixture('<nldd-container reverse></nldd-container>');
 		await waitForUpdate(el);
-		expect(getComputedStyle(el).flexDirection).toBe('column-reverse');
+		const inner = el.shadowRoot!.querySelector('.container') as HTMLElement;
+		expect(getComputedStyle(inner).flexDirection).toBe('column-reverse');
 	});
 
-	it('reverse on layout=row sets flex-direction: row-reverse', async () => {
+	it('reverse on layout=row sets flex-direction: row-reverse on the inner', async () => {
 		el = await fixture('<nldd-container layout="row" reverse></nldd-container>');
 		await waitForUpdate(el);
-		expect(getComputedStyle(el).flexDirection).toBe('row-reverse');
+		const inner = el.shadowRoot!.querySelector('.container') as HTMLElement;
+		expect(getComputedStyle(inner).flexDirection).toBe('row-reverse');
 	});
 
-	it('reverse on layout=wrap sets row-reverse + wrap-reverse', async () => {
+	it('reverse on layout=wrap sets row-reverse + wrap-reverse on the inner', async () => {
 		el = await fixture('<nldd-container layout="wrap" reverse></nldd-container>');
 		await waitForUpdate(el);
-		expect(getComputedStyle(el).flexDirection).toBe('row-reverse');
-		expect(getComputedStyle(el).flexWrap).toBe('wrap-reverse');
+		const inner = el.shadowRoot!.querySelector('.container') as HTMLElement;
+		expect(getComputedStyle(inner).flexDirection).toBe('row-reverse');
+		expect(getComputedStyle(inner).flexWrap).toBe('wrap-reverse');
 	});
 
-	it('reverse on layout=grid switches the host to flex', async () => {
+	it('reverse on layout=grid switches the inner to flex', async () => {
 		el = await fixture('<nldd-container layout="grid" reverse></nldd-container>');
 		await waitForUpdate(el);
+		const inner = el.shadowRoot!.querySelector('.container') as HTMLElement;
 		// Grid + reverse falls back to flex to get true 2D reversal.
-		expect(getComputedStyle(el).display).toBe('flex');
-		expect(getComputedStyle(el).flexDirection).toBe('row-reverse');
-		expect(getComputedStyle(el).flexWrap).toBe('wrap-reverse');
+		expect(getComputedStyle(inner).display).toBe('flex');
+		expect(getComputedStyle(inner).flexDirection).toBe('row-reverse');
+		expect(getComputedStyle(inner).flexWrap).toBe('wrap-reverse');
 	});
 
-	it('reverse on layout=columns is a no-op (display stays block)', async () => {
+	it('reverse on layout=columns is a no-op (inner stays block)', async () => {
 		el = await fixture('<nldd-container layout="columns" reverse></nldd-container>');
 		await waitForUpdate(el);
-		expect(getComputedStyle(el).display).toBe('block');
+		const inner = el.shadowRoot!.querySelector('.container') as HTMLElement;
+		expect(getComputedStyle(inner).display).toBe('block');
 	});
 
 	it('reflects sm-reverse / md-reverse / lg-reverse as boolean attributes', async () => {

@@ -9,11 +9,12 @@ const lgMin = unsafeCSS(breakpoints.lgMin);
 export const containerStyles = css`
 
 
-	/* # Host */
+	/* # Host — outer chrome (padding + scheme + query container) */
 
 	:host {
 		--_min-column-width: var(--primitives-area-280);
 		--_justify-content: initial;
+		--_justify-items: initial;
 		--_align-items: initial;
 		--_gap: 0;
 		--_sm-gap: var(--_gap);
@@ -36,20 +37,15 @@ export const containerStyles = css`
 		--_lg-padding-bottom: var(--_padding-bottom);
 		--_lg-padding-left: var(--_padding-left);
 
-		display: flex;
+		container-type: inline-size;
+		display: block;
 		height: auto;
-		flex-direction: column;
-		flex-wrap: nowrap;
-		justify-content: var(--_justify-content);
-		align-items: var(--_align-items);
-		gap: var(--_gap);
 		padding-top: var(--_padding-top);
 		padding-right: var(--_padding-right);
 		padding-bottom: var(--_padding-bottom);
 		padding-left: var(--_padding-left);
 
 		@media (max-width: ${smMax}) {
-			gap: var(--_sm-gap);
 			padding-top: var(--_sm-padding-top);
 			padding-right: var(--_sm-padding-right);
 			padding-bottom: var(--_sm-padding-bottom);
@@ -57,7 +53,6 @@ export const containerStyles = css`
 		}
 
 		@media (min-width: ${mdMin}) and (max-width: ${mdMax}) {
-			gap: var(--_md-gap);
 			padding-top: var(--_md-padding-top);
 			padding-right: var(--_md-padding-right);
 			padding-bottom: var(--_md-padding-bottom);
@@ -65,7 +60,6 @@ export const containerStyles = css`
 		}
 
 		@media (min-width: ${lgMin}) {
-			gap: var(--_lg-gap);
 			padding-top: var(--_lg-padding-top);
 			padding-right: var(--_lg-padding-right);
 			padding-bottom: var(--_lg-padding-bottom);
@@ -73,7 +67,6 @@ export const containerStyles = css`
 		}
 
 		@container layout-container (max-width: ${smMax}) {
-			gap: var(--_sm-gap);
 			padding-top: var(--_sm-padding-top);
 			padding-right: var(--_sm-padding-right);
 			padding-bottom: var(--_sm-padding-bottom);
@@ -81,7 +74,6 @@ export const containerStyles = css`
 		}
 
 		@container layout-container (min-width: ${mdMin}) and (max-width: ${mdMax}) {
-			gap: var(--_md-gap);
 			padding-top: var(--_md-padding-top);
 			padding-right: var(--_md-padding-right);
 			padding-bottom: var(--_md-padding-bottom);
@@ -89,7 +81,6 @@ export const containerStyles = css`
 		}
 
 		@container layout-container (min-width: ${lgMin}) {
-			gap: var(--_lg-gap);
 			padding-top: var(--_lg-padding-top);
 			padding-right: var(--_lg-padding-right);
 			padding-bottom: var(--_lg-padding-bottom);
@@ -101,21 +92,45 @@ export const containerStyles = css`
 		display: none;
 	}
 
-	:host([layout="row"]) {
+
+	/* # Inner — actual layout */
+
+	.container {
+		display: flex;
+		flex-direction: column;
+		flex-wrap: nowrap;
+		justify-content: var(--_justify-content);
+		justify-items: var(--_justify-items);
+		align-items: var(--_align-items);
+		gap: var(--_gap);
+
+		@media (max-width: ${smMax}) { gap: var(--_sm-gap); }
+		@media (min-width: ${mdMin}) and (max-width: ${mdMax}) { gap: var(--_md-gap); }
+		@media (min-width: ${lgMin}) { gap: var(--_lg-gap); }
+
+		@container layout-container (max-width: ${smMax}) { gap: var(--_sm-gap); }
+		@container layout-container (min-width: ${mdMin}) and (max-width: ${mdMax}) { gap: var(--_md-gap); }
+		@container layout-container (min-width: ${lgMin}) { gap: var(--_lg-gap); }
+	}
+
+	:host([layout="row"]) .container {
 		flex-direction: row;
 	}
 
-	:host([layout="wrap"]) {
+	:host([layout="wrap"]) .container {
 		flex-direction: row;
 		flex-wrap: wrap;
 	}
 
-	:host([layout="grid"]) {
+	:host([layout="grid"]) .container {
 		display: grid;
-		grid-template-columns: repeat(auto-fit, minmax(var(--_min-column-width), 1fr));
+		grid-template-columns: repeat(
+			var(--_column-count, auto-fit),
+			minmax(var(--_track-min, var(--_min-column-width)), 1fr)
+		);
 	}
 
-	:host([layout="columns"]) {
+	:host([layout="columns"]) .container {
 		display: block;
 		columns: var(--_min-column-width);
 		column-gap: var(--_gap);
@@ -125,32 +140,104 @@ export const containerStyles = css`
 		break-inside: avoid;
 	}
 
+	:host([layout="columns"][column-count]) .container,
+	:host([layout="columns"][sm-column-count]) .container,
+	:host([layout="columns"][md-column-count]) .container,
+	:host([layout="columns"][lg-column-count]) .container {
+		column-count: var(--_column-count);
+		column-width: auto;
+	}
+
+
+	/* # Column count — base scope */
+
+	:host([column-count="1"]) .container { --_column-count: 1; }
+	:host([column-count="2"]) .container { --_column-count: 2; }
+	:host([column-count="3"]) .container { --_column-count: 3; }
+	:host([column-count="4"]) .container { --_column-count: 4; }
+	:host([column-count="5"]) .container { --_column-count: 5; }
+	:host([column-count="6"]) .container { --_column-count: 6; }
+	:host([column-count="7"]) .container { --_column-count: 7; }
+	:host([column-count="8"]) .container { --_column-count: 8; }
+	:host([column-count]) .container { --_track-min: 0; }
+
+
+	/* # Column count — sm scope (queries :host own width) */
+
+	@container (max-width: ${smMax}) {
+		:host([sm-column-count="1"]) .container { --_column-count: 1; }
+		:host([sm-column-count="2"]) .container { --_column-count: 2; }
+		:host([sm-column-count="3"]) .container { --_column-count: 3; }
+		:host([sm-column-count="4"]) .container { --_column-count: 4; }
+		:host([sm-column-count="5"]) .container { --_column-count: 5; }
+		:host([sm-column-count="6"]) .container { --_column-count: 6; }
+		:host([sm-column-count="7"]) .container { --_column-count: 7; }
+		:host([sm-column-count="8"]) .container { --_column-count: 8; }
+		:host([sm-column-count]) .container { --_track-min: 0; }
+	}
+
+
+	/* # Column count — md scope */
+
+	@container (min-width: ${mdMin}) and (max-width: ${mdMax}) {
+		:host([md-column-count="1"]) .container { --_column-count: 1; }
+		:host([md-column-count="2"]) .container { --_column-count: 2; }
+		:host([md-column-count="3"]) .container { --_column-count: 3; }
+		:host([md-column-count="4"]) .container { --_column-count: 4; }
+		:host([md-column-count="5"]) .container { --_column-count: 5; }
+		:host([md-column-count="6"]) .container { --_column-count: 6; }
+		:host([md-column-count="7"]) .container { --_column-count: 7; }
+		:host([md-column-count="8"]) .container { --_column-count: 8; }
+		:host([md-column-count]) .container { --_track-min: 0; }
+	}
+
+
+	/* # Column count — lg scope */
+
+	@container (min-width: ${lgMin}) {
+		:host([lg-column-count="1"]) .container { --_column-count: 1; }
+		:host([lg-column-count="2"]) .container { --_column-count: 2; }
+		:host([lg-column-count="3"]) .container { --_column-count: 3; }
+		:host([lg-column-count="4"]) .container { --_column-count: 4; }
+		:host([lg-column-count="5"]) .container { --_column-count: 5; }
+		:host([lg-column-count="6"]) .container { --_column-count: 6; }
+		:host([lg-column-count="7"]) .container { --_column-count: 7; }
+		:host([lg-column-count="8"]) .container { --_column-count: 8; }
+		:host([lg-column-count]) .container { --_track-min: 0; }
+	}
+
 
 	/* # Reverse — base (applies at all breakpoints) */
 
-	:host([reverse]:not([layout])),
-	:host([reverse][layout="stack"]) {
+	:host([reverse]:not([layout])) .container,
+	:host([reverse][layout="stack"]) .container {
 		flex-direction: column-reverse;
 	}
 
-	:host([reverse][layout="row"]) {
+	:host([reverse][layout="row"]) .container {
 		flex-direction: row-reverse;
 	}
 
-	:host([reverse][layout="wrap"]) {
+	:host([reverse][layout="wrap"]) .container {
 		flex-direction: row-reverse;
 		flex-wrap: wrap-reverse;
 	}
 
 	/* Grid + reverse: fall back to flex so the 2D order truly reverses.
 	   Trade-off: last row no longer aligns to grid track. */
-	:host([reverse][layout="grid"]) {
+	:host([reverse][layout="grid"]) .container {
 		display: flex;
 		flex-direction: row-reverse;
 		flex-wrap: wrap-reverse;
 	}
 	:host([reverse][layout="grid"]) ::slotted(*) {
-		flex: 0 1 var(--_min-column-width);
+		flex-grow: 1;
+		flex-shrink: 1;
+		flex-basis: var(--_min-column-width);
+		min-width: 0;
+	}
+	:host([reverse][layout="grid"][column-count]) ::slotted(*) {
+		flex-basis: calc((100% - (var(--_column-count) - 1) * var(--_gap)) / var(--_column-count));
 	}
 
 	/* layout="columns" + reverse: intentional no-op (multicol has no
@@ -160,62 +247,110 @@ export const containerStyles = css`
 	/* # Reverse — sm scope */
 
 	@media (max-width: ${smMax}) {
-		:host([sm-reverse]:not([layout])),
-		:host([sm-reverse][layout="stack"]) { flex-direction: column-reverse; }
-		:host([sm-reverse][layout="row"]) { flex-direction: row-reverse; }
-		:host([sm-reverse][layout="wrap"]) { flex-direction: row-reverse; flex-wrap: wrap-reverse; }
-		:host([sm-reverse][layout="grid"]) { display: flex; flex-direction: row-reverse; flex-wrap: wrap-reverse; }
-		:host([sm-reverse][layout="grid"]) ::slotted(*) { flex: 0 1 var(--_min-column-width); }
+		:host([sm-reverse]:not([layout])) .container,
+		:host([sm-reverse][layout="stack"]) .container { flex-direction: column-reverse; }
+		:host([sm-reverse][layout="row"]) .container { flex-direction: row-reverse; }
+		:host([sm-reverse][layout="wrap"]) .container { flex-direction: row-reverse; flex-wrap: wrap-reverse; }
+		:host([sm-reverse][layout="grid"]) .container { display: flex; flex-direction: row-reverse; flex-wrap: wrap-reverse; }
+		:host([sm-reverse][layout="grid"]) ::slotted(*) {
+			flex-grow: 1;
+			flex-shrink: 1;
+			flex-basis: var(--_min-column-width);
+			min-width: 0;
+		}
+		:host([sm-reverse][layout="grid"][column-count]) ::slotted(*) {
+			flex-basis: calc((100% - (var(--_column-count) - 1) * var(--_gap)) / var(--_column-count));
+		}
 	}
 
 	@container layout-container (max-width: ${smMax}) {
-		:host([sm-reverse]:not([layout])),
-		:host([sm-reverse][layout="stack"]) { flex-direction: column-reverse; }
-		:host([sm-reverse][layout="row"]) { flex-direction: row-reverse; }
-		:host([sm-reverse][layout="wrap"]) { flex-direction: row-reverse; flex-wrap: wrap-reverse; }
-		:host([sm-reverse][layout="grid"]) { display: flex; flex-direction: row-reverse; flex-wrap: wrap-reverse; }
-		:host([sm-reverse][layout="grid"]) ::slotted(*) { flex: 0 1 var(--_min-column-width); }
+		:host([sm-reverse]:not([layout])) .container,
+		:host([sm-reverse][layout="stack"]) .container { flex-direction: column-reverse; }
+		:host([sm-reverse][layout="row"]) .container { flex-direction: row-reverse; }
+		:host([sm-reverse][layout="wrap"]) .container { flex-direction: row-reverse; flex-wrap: wrap-reverse; }
+		:host([sm-reverse][layout="grid"]) .container { display: flex; flex-direction: row-reverse; flex-wrap: wrap-reverse; }
+		:host([sm-reverse][layout="grid"]) ::slotted(*) {
+			flex-grow: 1;
+			flex-shrink: 1;
+			flex-basis: var(--_min-column-width);
+			min-width: 0;
+		}
+		:host([sm-reverse][layout="grid"][column-count]) ::slotted(*) {
+			flex-basis: calc((100% - (var(--_column-count) - 1) * var(--_gap)) / var(--_column-count));
+		}
 	}
 
 
 	/* # Reverse — md scope */
 
 	@media (min-width: ${mdMin}) and (max-width: ${mdMax}) {
-		:host([md-reverse]:not([layout])),
-		:host([md-reverse][layout="stack"]) { flex-direction: column-reverse; }
-		:host([md-reverse][layout="row"]) { flex-direction: row-reverse; }
-		:host([md-reverse][layout="wrap"]) { flex-direction: row-reverse; flex-wrap: wrap-reverse; }
-		:host([md-reverse][layout="grid"]) { display: flex; flex-direction: row-reverse; flex-wrap: wrap-reverse; }
-		:host([md-reverse][layout="grid"]) ::slotted(*) { flex: 0 1 var(--_min-column-width); }
+		:host([md-reverse]:not([layout])) .container,
+		:host([md-reverse][layout="stack"]) .container { flex-direction: column-reverse; }
+		:host([md-reverse][layout="row"]) .container { flex-direction: row-reverse; }
+		:host([md-reverse][layout="wrap"]) .container { flex-direction: row-reverse; flex-wrap: wrap-reverse; }
+		:host([md-reverse][layout="grid"]) .container { display: flex; flex-direction: row-reverse; flex-wrap: wrap-reverse; }
+		:host([md-reverse][layout="grid"]) ::slotted(*) {
+			flex-grow: 1;
+			flex-shrink: 1;
+			flex-basis: var(--_min-column-width);
+			min-width: 0;
+		}
+		:host([md-reverse][layout="grid"][column-count]) ::slotted(*) {
+			flex-basis: calc((100% - (var(--_column-count) - 1) * var(--_gap)) / var(--_column-count));
+		}
 	}
 
 	@container layout-container (min-width: ${mdMin}) and (max-width: ${mdMax}) {
-		:host([md-reverse]:not([layout])),
-		:host([md-reverse][layout="stack"]) { flex-direction: column-reverse; }
-		:host([md-reverse][layout="row"]) { flex-direction: row-reverse; }
-		:host([md-reverse][layout="wrap"]) { flex-direction: row-reverse; flex-wrap: wrap-reverse; }
-		:host([md-reverse][layout="grid"]) { display: flex; flex-direction: row-reverse; flex-wrap: wrap-reverse; }
-		:host([md-reverse][layout="grid"]) ::slotted(*) { flex: 0 1 var(--_min-column-width); }
+		:host([md-reverse]:not([layout])) .container,
+		:host([md-reverse][layout="stack"]) .container { flex-direction: column-reverse; }
+		:host([md-reverse][layout="row"]) .container { flex-direction: row-reverse; }
+		:host([md-reverse][layout="wrap"]) .container { flex-direction: row-reverse; flex-wrap: wrap-reverse; }
+		:host([md-reverse][layout="grid"]) .container { display: flex; flex-direction: row-reverse; flex-wrap: wrap-reverse; }
+		:host([md-reverse][layout="grid"]) ::slotted(*) {
+			flex-grow: 1;
+			flex-shrink: 1;
+			flex-basis: var(--_min-column-width);
+			min-width: 0;
+		}
+		:host([md-reverse][layout="grid"][column-count]) ::slotted(*) {
+			flex-basis: calc((100% - (var(--_column-count) - 1) * var(--_gap)) / var(--_column-count));
+		}
 	}
 
 
 	/* # Reverse — lg scope */
 
 	@media (min-width: ${lgMin}) {
-		:host([lg-reverse]:not([layout])),
-		:host([lg-reverse][layout="stack"]) { flex-direction: column-reverse; }
-		:host([lg-reverse][layout="row"]) { flex-direction: row-reverse; }
-		:host([lg-reverse][layout="wrap"]) { flex-direction: row-reverse; flex-wrap: wrap-reverse; }
-		:host([lg-reverse][layout="grid"]) { display: flex; flex-direction: row-reverse; flex-wrap: wrap-reverse; }
-		:host([lg-reverse][layout="grid"]) ::slotted(*) { flex: 0 1 var(--_min-column-width); }
+		:host([lg-reverse]:not([layout])) .container,
+		:host([lg-reverse][layout="stack"]) .container { flex-direction: column-reverse; }
+		:host([lg-reverse][layout="row"]) .container { flex-direction: row-reverse; }
+		:host([lg-reverse][layout="wrap"]) .container { flex-direction: row-reverse; flex-wrap: wrap-reverse; }
+		:host([lg-reverse][layout="grid"]) .container { display: flex; flex-direction: row-reverse; flex-wrap: wrap-reverse; }
+		:host([lg-reverse][layout="grid"]) ::slotted(*) {
+			flex-grow: 1;
+			flex-shrink: 1;
+			flex-basis: var(--_min-column-width);
+			min-width: 0;
+		}
+		:host([lg-reverse][layout="grid"][column-count]) ::slotted(*) {
+			flex-basis: calc((100% - (var(--_column-count) - 1) * var(--_gap)) / var(--_column-count));
+		}
 	}
 
 	@container layout-container (min-width: ${lgMin}) {
-		:host([lg-reverse]:not([layout])),
-		:host([lg-reverse][layout="stack"]) { flex-direction: column-reverse; }
-		:host([lg-reverse][layout="row"]) { flex-direction: row-reverse; }
-		:host([lg-reverse][layout="wrap"]) { flex-direction: row-reverse; flex-wrap: wrap-reverse; }
-		:host([lg-reverse][layout="grid"]) { display: flex; flex-direction: row-reverse; flex-wrap: wrap-reverse; }
-		:host([lg-reverse][layout="grid"]) ::slotted(*) { flex: 0 1 var(--_min-column-width); }
+		:host([lg-reverse]:not([layout])) .container,
+		:host([lg-reverse][layout="stack"]) .container { flex-direction: column-reverse; }
+		:host([lg-reverse][layout="row"]) .container { flex-direction: row-reverse; }
+		:host([lg-reverse][layout="wrap"]) .container { flex-direction: row-reverse; flex-wrap: wrap-reverse; }
+		:host([lg-reverse][layout="grid"]) .container { display: flex; flex-direction: row-reverse; flex-wrap: wrap-reverse; }
+		:host([lg-reverse][layout="grid"]) ::slotted(*) {
+			flex-grow: 1;
+			flex-shrink: 1;
+			flex-basis: var(--_min-column-width);
+			min-width: 0;
+		}
+		:host([lg-reverse][layout="grid"][column-count]) ::slotted(*) {
+			flex-basis: calc((100% - (var(--_column-count) - 1) * var(--_gap)) / var(--_column-count));
+		}
 	}
 `;

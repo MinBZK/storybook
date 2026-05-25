@@ -57,6 +57,10 @@ export default {
 		smReverse: { name: 'sm-reverse', control: 'boolean', description: 'Reverse alleen op sm-viewport' },
 		mdReverse: { name: 'md-reverse', control: 'boolean', description: 'Reverse alleen op md-viewport' },
 		lgReverse: { name: 'lg-reverse', control: 'boolean', description: 'Reverse alleen op lg-viewport' },
+		columnCount: { name: 'column-count', control: 'select', options: [undefined, 1, 2, 3, 4, 5, 6, 7, 8], description: 'Aantal kolommen (grid/columns)' },
+		smColumnCount: { name: 'sm-column-count', control: 'select', options: [undefined, 1, 2, 3, 4, 5, 6, 7, 8], description: 'Kolom-aantal bij sm container-breedte' },
+		mdColumnCount: { name: 'md-column-count', control: 'select', options: [undefined, 1, 2, 3, 4, 5, 6, 7, 8], description: 'Kolom-aantal bij md container-breedte' },
+		lgColumnCount: { name: 'lg-column-count', control: 'select', options: [undefined, 1, 2, 3, 4, 5, 6, 7, 8], description: 'Kolom-aantal bij lg container-breedte' },
 		gap: sizeControl('Gap tussen kinderen'),
 		smGap: { name: 'sm-gap', ...sizeControl('Gap bij sm') },
 		mdGap: { name: 'md-gap', ...sizeControl('Gap bij md') },
@@ -109,6 +113,10 @@ export const Standaard = {
 			?sm-reverse=${args.smReverse}
 			?md-reverse=${args.mdReverse}
 			?lg-reverse=${args.lgReverse}
+			column-count=${ifDefined(args.columnCount)}
+			sm-column-count=${ifDefined(args.smColumnCount)}
+			md-column-count=${ifDefined(args.mdColumnCount)}
+			lg-column-count=${ifDefined(args.lgColumnCount)}
 			gap=${ifDefined(args.gap)}
 			sm-gap=${ifDefined(args.smGap)}
 			md-gap=${ifDefined(args.mdGap)}
@@ -145,7 +153,12 @@ export const Standaard = {
 			lg-padding-left=${ifDefined(args.lgPaddingLeft)}
 			style="outline: 1px dashed var(--primitives-color-neutral-150);"
 		>
-			<nldd-rich-text><p>Inhoud van de container.</p></nldd-rich-text>
+			<nldd-container padding="12" style="outline: 1px dashed var(--primitives-color-neutral-150);">
+				<nldd-rich-text><p>Eerste container.</p></nldd-rich-text>
+			</nldd-container>
+			<nldd-container padding="12" style="outline: 1px dashed var(--primitives-color-neutral-150);">
+				<nldd-rich-text><p>Tweede container.</p></nldd-rich-text>
+			</nldd-container>
 		</nldd-container>
 	`,
 };
@@ -303,6 +316,36 @@ export const ReverseGrid = {
 		</nldd-container>
 	`,
 	storyName: 'Reverse — grid (valt terug op flex, 2D omkering)',
+};
+
+export const ColumnCountFooter = {
+	render: () => html`
+		<nldd-container layout="grid" column-count="4" md-column-count="2" sm-column-count="1" gap="32" padding="16" style="outline: 1px dashed var(--primitives-color-neutral-150);">
+			<nldd-rich-text><p>Kolom 1</p></nldd-rich-text>
+			<nldd-rich-text><p>Kolom 2</p></nldd-rich-text>
+			<nldd-rich-text><p>Kolom 3</p></nldd-rich-text>
+			<nldd-rich-text><p>Kolom 4</p></nldd-rich-text>
+		</nldd-container>
+	`,
+	storyName: 'Column-count — footer-pattern (4 / md=2 / sm=1)',
+};
+
+export const ColumnCountGrid6 = {
+	render: () => html`
+		<nldd-container layout="grid" column-count="6" gap="12" padding="16" style="outline: 1px dashed var(--primitives-color-neutral-150);">
+			${Array.from({ length: 12 }).map((_, i) => html`<nldd-rich-text><p>${i + 1}</p></nldd-rich-text>`)}
+		</nldd-container>
+	`,
+	storyName: 'Column-count — grid 6 kolommen',
+};
+
+export const ColumnCountColumns = {
+	render: () => html`
+		<nldd-container layout="columns" column-count="3" gap="24" padding="16" style="outline: 1px dashed var(--primitives-color-neutral-150);">
+			${Array.from({ length: 9 }).map((_, i) => html`<nldd-rich-text><p>Item ${i + 1}</p></nldd-rich-text>`)}
+		</nldd-container>
+	`,
+	storyName: 'Column-count — multicol 3 kolommen',
 };
 
 export const ReverseScopedSm = {
