@@ -135,7 +135,7 @@ export function PageSectionMixin<TBase extends Constructor<LitElement>>(
 				// Cascade so descendants (cards, nested sections) match.
 				this.style.setProperty('--context-parent-background-color', token);
 			} else {
-				this.style.removeProperty('background-color');
+				this.style.backgroundColor = '';
 				this.style.removeProperty('--context-parent-background-color');
 			}
 		}
