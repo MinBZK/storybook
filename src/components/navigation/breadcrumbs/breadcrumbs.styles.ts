@@ -14,7 +14,7 @@ export const breadcrumbsStyles = css`
 	}
 
 	.breadcrumbs {
-		display: block;
+		display: flex;
 	}
 
 	.breadcrumbs__items {

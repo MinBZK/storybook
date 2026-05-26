@@ -142,9 +142,6 @@ describe('nldd-container', () => {
 		el = await fixture('<nldd-container layout="grid" vertical-alignment="center"></nldd-container>');
 		await waitForUpdate(el);
 		expect(el.style.getPropertyValue('--_align-items')).toBe('center');
-		// For grid we set justify-content too (so grid+reverse → flex still works),
-		// but vertical-alignment must NOT leak into --_justify-content like it does
-		// for stack layouts.
 		expect(el.style.getPropertyValue('--_justify-content')).toBe('');
 	});
 
@@ -155,51 +152,37 @@ describe('nldd-container', () => {
 		expect(el.style.getPropertyValue('--_justify-content')).toBe('center');
 	});
 
-	it('reverse on the default (stack) layout sets flex-direction: column-reverse on the inner', async () => {
-		el = await fixture('<nldd-container reverse></nldd-container>');
+	it('bridges order attr on a slotted child to --_slot-order inline custom prop', async () => {
+		el = await fixture('<nldd-container layout="row"><div order="3"></div></nldd-container>');
 		await waitForUpdate(el);
-		const inner = el.shadowRoot!.querySelector('.container') as HTMLElement;
-		expect(getComputedStyle(inner).flexDirection).toBe('column-reverse');
+		const child = el.querySelector('div') as HTMLElement;
+		expect(child.style.getPropertyValue('--_slot-order')).toBe('3');
 	});
 
-	it('reverse on layout=row sets flex-direction: row-reverse on the inner', async () => {
-		el = await fixture('<nldd-container layout="row" reverse></nldd-container>');
+	it('bridges sm-order / md-order / lg-order independently', async () => {
+		el = await fixture('<nldd-container layout="row"><div order="1" sm-order="5" md-order="2" lg-order="9"></div></nldd-container>');
 		await waitForUpdate(el);
-		const inner = el.shadowRoot!.querySelector('.container') as HTMLElement;
-		expect(getComputedStyle(inner).flexDirection).toBe('row-reverse');
+		const child = el.querySelector('div') as HTMLElement;
+		expect(child.style.getPropertyValue('--_slot-order')).toBe('1');
+		expect(child.style.getPropertyValue('--_slot-sm-order')).toBe('5');
+		expect(child.style.getPropertyValue('--_slot-md-order')).toBe('2');
+		expect(child.style.getPropertyValue('--_slot-lg-order')).toBe('9');
 	});
 
-	it('reverse on layout=wrap sets row-reverse + wrap-reverse on the inner', async () => {
-		el = await fixture('<nldd-container layout="wrap" reverse></nldd-container>');
+	it('accepts negative order values', async () => {
+		el = await fixture('<nldd-container layout="row"><div order="-1"></div></nldd-container>');
 		await waitForUpdate(el);
-		const inner = el.shadowRoot!.querySelector('.container') as HTMLElement;
-		expect(getComputedStyle(inner).flexDirection).toBe('row-reverse');
-		expect(getComputedStyle(inner).flexWrap).toBe('wrap-reverse');
+		const child = el.querySelector('div') as HTMLElement;
+		expect(child.style.getPropertyValue('--_slot-order')).toBe('-1');
 	});
 
-	it('reverse on layout=grid switches the inner to flex', async () => {
-		el = await fixture('<nldd-container layout="grid" reverse></nldd-container>');
+	it('removes the inline custom prop when the order attribute is cleared', async () => {
+		el = await fixture('<nldd-container layout="row"><div order="3"></div></nldd-container>');
 		await waitForUpdate(el);
-		const inner = el.shadowRoot!.querySelector('.container') as HTMLElement;
-		// Grid + reverse falls back to flex to get true 2D reversal.
-		expect(getComputedStyle(inner).display).toBe('flex');
-		expect(getComputedStyle(inner).flexDirection).toBe('row-reverse');
-		expect(getComputedStyle(inner).flexWrap).toBe('wrap-reverse');
-	});
-
-	it('reverse on layout=columns is a no-op (inner stays block)', async () => {
-		el = await fixture('<nldd-container layout="columns" reverse></nldd-container>');
-		await waitForUpdate(el);
-		const inner = el.shadowRoot!.querySelector('.container') as HTMLElement;
-		expect(getComputedStyle(inner).display).toBe('block');
-	});
-
-	it('reflects sm-reverse / md-reverse / lg-reverse as boolean attributes', async () => {
-		el = await fixture('<nldd-container sm-reverse md-reverse lg-reverse></nldd-container>');
-		await waitForUpdate(el);
-		expect(el.hasAttribute('sm-reverse')).toBe(true);
-		expect(el.hasAttribute('md-reverse')).toBe(true);
-		expect(el.hasAttribute('lg-reverse')).toBe(true);
+		const child = el.querySelector('div') as HTMLElement;
+		child.removeAttribute('order');
+		await new Promise(r => requestAnimationFrame(() => r(null)));
+		expect(child.style.getPropertyValue('--_slot-order')).toBe('');
 	});
 
 	it('accepts 0 as padding value', async () => {

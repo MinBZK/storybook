@@ -9,6 +9,51 @@ the type of conventional-commit determines the release. Conventional types
 `chore`, `docs`, `ci`, `style`, `test`, `build` are intentionally omitted
 here; consult the commit history if you need that level of detail.
 
+### Highlights
+
+- `nldd-container`: per-child ordering replaces the boolean reverse family. Each slotted child can declare `order` / `sm-order` / `md-order` / `lg-order` (any integer, including negative) and the container observes slot + attribute mutations to bridge those to `--_slot-{attr}` inline custom properties on the child; the container's shadow CSS reads them via `::slotted(*)` inside `@container` queries with a `sm/md/lg-order → order → 0` fallback cascade. No `ResizeObserver`, no enumerated value rules — and `layout="grid"` now keeps its 2D grid track when items reorder (the previous grid→flex fallback for `reverse` is gone).
+- `nldd-breadcrumbs`: `.breadcrumbs` switched from `display: block` to `display: flex` so the `inline-flex` `__level-up` link no longer sits on a baseline line-box, fixing the vertical alignment of the chevron + label at sm.
+- `nldd-container` stories: control + story ordering aligned with the canonical skill groups (visueel dominant → space → alignment); optional selects use the `'(geen)'` + `mapping` pattern; booleans default to `false` so the toggle is interactive immediately (no intermediate "Set boolean" step); the defaults column is populated across all controls.
+- CHANGELOG workflow: section conventions moved to `CONTRIBUTING.md`; the `## Unreleased` header is dropped — hand-written `### Highlights` / `### Breaking Changes` now sit directly above the current top version and nest naturally under the new version block that semantic-release prepends on release.
+
+### Breaking Changes
+
+- `nldd-container`: `reverse`, `sm-reverse`, `md-reverse`, `lg-reverse` boolean attributes are **removed**. Use per-child `order` / `sm-order` / `md-order` / `lg-order` on the slotted items instead.
+
+  Migration — full reverse of two children:
+
+  ```html
+  <!-- before -->
+  <nldd-container layout="row" reverse>
+    <a>First</a>
+    <b>Second</b>
+  </nldd-container>
+
+  <!-- after — either flip the DOM order, or set explicit per-child order -->
+  <nldd-container layout="row">
+    <a order="2">First</a>
+    <b order="1">Second</b>
+  </nldd-container>
+  ```
+
+  Migration — responsive flip (was `md-reverse lg-reverse` on a two-child container):
+
+  ```html
+  <!-- before -->
+  <nldd-container md-reverse lg-reverse>
+    <figure>…</figure>
+    <p>…</p>
+  </nldd-container>
+
+  <!-- after — the second child moves before the first at md+ -->
+  <nldd-container>
+    <figure>…</figure>
+    <p md-order="-1" lg-order="-1">…</p>
+  </nldd-container>
+  ```
+
+  `layout="grid"` + reorder no longer falls back to flex — the grid track stays aligned on every breakpoint. `layout="columns"` reorder is still a no-op (CSS multicol has no per-item ordering hook).
+
 ## <small>0.8.48 (2026-05-25)</small>
 
 * fix: padding new page-footer ([fbbdf2c](https://github.com/MinBZK/storybook/commit/fbbdf2c))
@@ -16,26 +61,6 @@ here; consult the commit history if you need that level of detail.
 ## <small>0.8.47 (2026-05-25)</small>
 
 * feat!: page-footer, breadcrumbs, container layout API, window scheme ([f96ebf1](https://github.com/MinBZK/storybook/commit/f96ebf1)), closes [#154273](https://github.com/MinBZK/storybook/issues/154273)
-
-## Section conventions
-
-- **Highlights** — short narrative summary, only when there is something
-  worth calling out.
-- **Breaking Changes** — incompatible API changes that need consumer action.
-  Each entry describes what changed and the migration step.
-- **Added** — new components, attributes, variants.
-- **Changed** — modifications to existing functionality (non-breaking).
-- **Fixed** — bug fixes.
-- **Deprecated** — APIs marked for removal in a future release.
-- **Removed** — APIs that have been removed.
-
-## Unreleased
-
-<!--
-  Alleen Highlights worden hier handmatig bijgehouden — de Added/Changed/Fixed
-  entries genereert semantic-release bij de merge automatisch uit de commits.
-  Verplaats deze Highlights na de release onder de nieuwe versie-sectie.
--->
 
 ### Highlights
 

@@ -36,6 +36,10 @@ export const containerStyles = css`
 		--_lg-padding-right: var(--_padding-right);
 		--_lg-padding-bottom: var(--_padding-bottom);
 		--_lg-padding-left: var(--_padding-left);
+		--_slot-order: 0;
+		--_slot-sm-order: var(--_slot-order);
+		--_slot-md-order: var(--_slot-order);
+		--_slot-lg-order: var(--_slot-order);
 
 		container-type: inline-size;
 		display: block;
@@ -207,150 +211,25 @@ export const containerStyles = css`
 	}
 
 
-	/* # Reverse — base (applies at all breakpoints) */
+	/* # Slot order — per-child via order / sm-order / md-order / lg-order
+	   attributes on slotted children. Container JS bridges those to
+	   --_slot-{attr} inline custom props on the child; the queries below
+	   pick the right value per breakpoint with var() cascading
+	   sm/md/lg-order → order → 0. No-op for layout="columns" (multicol). */
 
-	:host([reverse]:not([layout])) .container,
-	:host([reverse][layout="stack"]) .container {
-		flex-direction: column-reverse;
+	::slotted(*) {
+		order: var(--_slot-order, 0);
 	}
 
-	:host([reverse][layout="row"]) .container {
-		flex-direction: row-reverse;
+	@container (max-width: ${smMax}) {
+		::slotted(*) { order: var(--_slot-sm-order, var(--_slot-order, 0)); }
 	}
 
-	:host([reverse][layout="wrap"]) .container {
-		flex-direction: row-reverse;
-		flex-wrap: wrap-reverse;
+	@container (min-width: ${mdMin}) and (max-width: ${mdMax}) {
+		::slotted(*) { order: var(--_slot-md-order, var(--_slot-order, 0)); }
 	}
 
-	/* Grid + reverse: fall back to flex so the 2D order truly reverses.
-	   Trade-off: last row no longer aligns to grid track. */
-	:host([reverse][layout="grid"]) .container {
-		display: flex;
-		flex-direction: row-reverse;
-		flex-wrap: wrap-reverse;
-	}
-	:host([reverse][layout="grid"]) ::slotted(*) {
-		flex-grow: 1;
-		flex-shrink: 1;
-		flex-basis: var(--_min-column-width);
-		min-width: 0;
-	}
-	:host([reverse][layout="grid"][column-count]) ::slotted(*) {
-		flex-basis: calc((100% - (var(--_column-count) - 1) * var(--_gap)) / var(--_column-count));
-	}
-
-	/* layout="columns" + reverse: intentional no-op (multicol has no
-	   item-order hook). */
-
-
-	/* # Reverse — sm scope */
-
-	@media (max-width: ${smMax}) {
-		:host([sm-reverse]:not([layout])) .container,
-		:host([sm-reverse][layout="stack"]) .container { flex-direction: column-reverse; }
-		:host([sm-reverse][layout="row"]) .container { flex-direction: row-reverse; }
-		:host([sm-reverse][layout="wrap"]) .container { flex-direction: row-reverse; flex-wrap: wrap-reverse; }
-		:host([sm-reverse][layout="grid"]) .container { display: flex; flex-direction: row-reverse; flex-wrap: wrap-reverse; }
-		:host([sm-reverse][layout="grid"]) ::slotted(*) {
-			flex-grow: 1;
-			flex-shrink: 1;
-			flex-basis: var(--_min-column-width);
-			min-width: 0;
-		}
-		:host([sm-reverse][layout="grid"][column-count]) ::slotted(*) {
-			flex-basis: calc((100% - (var(--_column-count) - 1) * var(--_gap)) / var(--_column-count));
-		}
-	}
-
-	@container layout-container (max-width: ${smMax}) {
-		:host([sm-reverse]:not([layout])) .container,
-		:host([sm-reverse][layout="stack"]) .container { flex-direction: column-reverse; }
-		:host([sm-reverse][layout="row"]) .container { flex-direction: row-reverse; }
-		:host([sm-reverse][layout="wrap"]) .container { flex-direction: row-reverse; flex-wrap: wrap-reverse; }
-		:host([sm-reverse][layout="grid"]) .container { display: flex; flex-direction: row-reverse; flex-wrap: wrap-reverse; }
-		:host([sm-reverse][layout="grid"]) ::slotted(*) {
-			flex-grow: 1;
-			flex-shrink: 1;
-			flex-basis: var(--_min-column-width);
-			min-width: 0;
-		}
-		:host([sm-reverse][layout="grid"][column-count]) ::slotted(*) {
-			flex-basis: calc((100% - (var(--_column-count) - 1) * var(--_gap)) / var(--_column-count));
-		}
-	}
-
-
-	/* # Reverse — md scope */
-
-	@media (min-width: ${mdMin}) and (max-width: ${mdMax}) {
-		:host([md-reverse]:not([layout])) .container,
-		:host([md-reverse][layout="stack"]) .container { flex-direction: column-reverse; }
-		:host([md-reverse][layout="row"]) .container { flex-direction: row-reverse; }
-		:host([md-reverse][layout="wrap"]) .container { flex-direction: row-reverse; flex-wrap: wrap-reverse; }
-		:host([md-reverse][layout="grid"]) .container { display: flex; flex-direction: row-reverse; flex-wrap: wrap-reverse; }
-		:host([md-reverse][layout="grid"]) ::slotted(*) {
-			flex-grow: 1;
-			flex-shrink: 1;
-			flex-basis: var(--_min-column-width);
-			min-width: 0;
-		}
-		:host([md-reverse][layout="grid"][column-count]) ::slotted(*) {
-			flex-basis: calc((100% - (var(--_column-count) - 1) * var(--_gap)) / var(--_column-count));
-		}
-	}
-
-	@container layout-container (min-width: ${mdMin}) and (max-width: ${mdMax}) {
-		:host([md-reverse]:not([layout])) .container,
-		:host([md-reverse][layout="stack"]) .container { flex-direction: column-reverse; }
-		:host([md-reverse][layout="row"]) .container { flex-direction: row-reverse; }
-		:host([md-reverse][layout="wrap"]) .container { flex-direction: row-reverse; flex-wrap: wrap-reverse; }
-		:host([md-reverse][layout="grid"]) .container { display: flex; flex-direction: row-reverse; flex-wrap: wrap-reverse; }
-		:host([md-reverse][layout="grid"]) ::slotted(*) {
-			flex-grow: 1;
-			flex-shrink: 1;
-			flex-basis: var(--_min-column-width);
-			min-width: 0;
-		}
-		:host([md-reverse][layout="grid"][column-count]) ::slotted(*) {
-			flex-basis: calc((100% - (var(--_column-count) - 1) * var(--_gap)) / var(--_column-count));
-		}
-	}
-
-
-	/* # Reverse — lg scope */
-
-	@media (min-width: ${lgMin}) {
-		:host([lg-reverse]:not([layout])) .container,
-		:host([lg-reverse][layout="stack"]) .container { flex-direction: column-reverse; }
-		:host([lg-reverse][layout="row"]) .container { flex-direction: row-reverse; }
-		:host([lg-reverse][layout="wrap"]) .container { flex-direction: row-reverse; flex-wrap: wrap-reverse; }
-		:host([lg-reverse][layout="grid"]) .container { display: flex; flex-direction: row-reverse; flex-wrap: wrap-reverse; }
-		:host([lg-reverse][layout="grid"]) ::slotted(*) {
-			flex-grow: 1;
-			flex-shrink: 1;
-			flex-basis: var(--_min-column-width);
-			min-width: 0;
-		}
-		:host([lg-reverse][layout="grid"][column-count]) ::slotted(*) {
-			flex-basis: calc((100% - (var(--_column-count) - 1) * var(--_gap)) / var(--_column-count));
-		}
-	}
-
-	@container layout-container (min-width: ${lgMin}) {
-		:host([lg-reverse]:not([layout])) .container,
-		:host([lg-reverse][layout="stack"]) .container { flex-direction: column-reverse; }
-		:host([lg-reverse][layout="row"]) .container { flex-direction: row-reverse; }
-		:host([lg-reverse][layout="wrap"]) .container { flex-direction: row-reverse; flex-wrap: wrap-reverse; }
-		:host([lg-reverse][layout="grid"]) .container { display: flex; flex-direction: row-reverse; flex-wrap: wrap-reverse; }
-		:host([lg-reverse][layout="grid"]) ::slotted(*) {
-			flex-grow: 1;
-			flex-shrink: 1;
-			flex-basis: var(--_min-column-width);
-			min-width: 0;
-		}
-		:host([lg-reverse][layout="grid"][column-count]) ::slotted(*) {
-			flex-basis: calc((100% - (var(--_column-count) - 1) * var(--_gap)) / var(--_column-count));
-		}
+	@container (min-width: ${lgMin}) {
+		::slotted(*) { order: var(--_slot-lg-order, var(--_slot-order, 0)); }
 	}
 `;

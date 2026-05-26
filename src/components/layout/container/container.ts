@@ -26,20 +26,17 @@
  *  - `grid`: horizontal = justify-items, vertical = align-items (per cell)
  *  - `columns`: alignment props have no effect (CSS multicol doesn't expose alignment)
  *
- * The `reverse` boolean inverts item order within the chosen layout:
- *  - `stack` → `flex-direction: column-reverse`
- *  - `row` → `flex-direction: row-reverse`
- *  - `wrap` → `flex-direction: row-reverse` + `flex-wrap: wrap-reverse`
- *  - `grid` → falls back to flex (row-reverse + wrap-reverse + per-item
- *    `flex-grow: 1; flex-shrink: 1; flex-basis: var(--_min-column-width)`
- *    with `min-width: 0`) so items still grow to share space equally and
- *    the 2D order truly reverses. The cost is that the last row no longer
- *    aligns to the grid track — it stretches to fill the remaining width.
- *  - `columns` → no-op (multicol has no item-order hook)
- *
- * `sm-reverse` / `md-reverse` / `lg-reverse` enable reverse only at that
- * breakpoint. Combine with the base `reverse` (always on) or use the
- * scoped ones independently.
+ * Item order is set per-child via attributes on the slotted children
+ * themselves: `<child order="3">` for a fixed position, or `<child sm-order="N">`
+ * / `<child md-order="N">` / `<child lg-order="N">` to override per breakpoint
+ * (resolved against THIS container's width via @container queries, same scope
+ * as the responsive padding/gap). The container observes slot changes and
+ * child attribute mutations and bridges these to `--_slot-order` /
+ * `--_slot-sm-order` / etc. custom properties on each child's inline style,
+ * which the container's CSS then reads via `::slotted(*)` inside @container
+ * queries. Cascade: `sm-order` falls back to `order` falls back to `0` at sm
+ * (and analogously for md/lg). No-op for `layout="columns"` (CSS multicol has
+ * no per-item ordering hook).
  *
  * The `column-count` attribute (1-8) forces an exact column count for
  * `layout="grid"` (overrides auto-fit) and `layout="columns"` (overrides
@@ -52,10 +49,6 @@
  * @element nldd-container
  *
  * @attr {string}  layout                 - 'stack' | 'row' | 'wrap' | 'grid' | 'columns' (default: 'stack')
- * @attr {boolean} reverse                - Reverse the visual order of items
- * @attr {boolean} sm-reverse             - Reverse only at the sm breakpoint
- * @attr {boolean} md-reverse             - Reverse only at the md breakpoint
- * @attr {boolean} lg-reverse             - Reverse only at the lg breakpoint
  * @attr {number}  column-count           - Force N columns (1-8) for layout=grid/columns
  * @attr {number}  sm-column-count        - Column count when this container is sm-wide
  * @attr {number}  md-column-count        - Column count when this container is md-wide
@@ -107,6 +100,8 @@ const VERTICAL_TO_FLEX: Record<VerticalAlignment, string> = {
 	bottom: 'flex-end',
 };
 
+const ORDER_ATTRS = ['order', 'sm-order', 'md-order', 'lg-order'] as const;
+
 function sizeToValue(size: PaddingSize | undefined): string | null {
 	if (size === undefined) return null;
 	if (size === '0') return '0';
@@ -124,25 +119,6 @@ export class NLDDContainer extends LitElement {
 	// specifically).
 	@property({ type: String, reflect: true })
 	layout?: Layout;
-
-	// Reverse the visual order of items within the chosen layout. For
-	// stack/row/wrap this is native flex-direction reverse (+ wrap-reverse
-	// for the 2D wrap case). For grid the host falls back to flex with
-	// wrap-reverse so 2D reversal works; the trade-off is that the last
-	// row no longer aligns to the grid track. For columns reverse is a
-	// no-op — multicol items flow top→bottom inside each column with no
-	// CSS hook to invert that.
-	@property({ type: Boolean, reflect: true })
-	reverse = false;
-
-	@property({ type: Boolean, reflect: true, attribute: 'sm-reverse' })
-	smReverse = false;
-
-	@property({ type: Boolean, reflect: true, attribute: 'md-reverse' })
-	mdReverse = false;
-
-	@property({ type: Boolean, reflect: true, attribute: 'lg-reverse' })
-	lgReverse = false;
 
 	// Explicit column count for layout="grid" (overrides auto-fit) and for
 	// layout="columns" (overrides the natural width-driven count). 1-8.
@@ -275,12 +251,9 @@ export class NLDDContainer extends LitElement {
 
 		// Alignment maps to a different CSS property depending on the
 		// layout's axes:
-		//  - Row/wrap (and grid+reverse, which falls back to flex):
-		//    horizontal = justify-content (main), vertical = align-items (cross)
-		//  - Stack (flex column):
-		//    horizontal = align-items (cross), vertical = justify-content (main)
-		//  - Grid (non-reverse): per-cell —
-		//    horizontal = justify-items, vertical = align-items
+		//  - Row/wrap: horizontal = justify-content (main), vertical = align-items (cross)
+		//  - Stack (flex column): horizontal = align-items (cross), vertical = justify-content (main)
+		//  - Grid: per-cell — horizontal = justify-items, vertical = align-items
 		// We set --_justify-content/--_justify-items/--_align-items
 		// independently; the .container picks up whichever applies to its
 		// current display. Columns layout has no alignment hooks.
@@ -330,6 +303,44 @@ export class NLDDContainer extends LitElement {
 		const bottom = get('PaddingBottom') ?? block ?? all;
 		const left = get('PaddingLeft') ?? inline ?? all;
 		return [top, right, bottom, left];
+	}
+
+	// Bridge: read order/sm-order/md-order/lg-order attributes on each slotted
+	// child and write them as --_slot-{attr} inline custom props on that child.
+	// The container's @container queries pick the right one per breakpoint via
+	// var() fallback. Inline style cannot itself host @container queries, so
+	// this bridge exists to expose declarative attrs while letting CSS do the
+	// breakpoint switching natively (no ResizeObserver).
+	private _childObserver?: MutationObserver;
+
+	override disconnectedCallback(): void {
+		super.disconnectedCallback();
+		this._childObserver?.disconnect();
+		this._childObserver = undefined;
+	}
+
+	_onSlotChange = (e: Event): void => {
+		const slot = e.target as HTMLSlotElement;
+		this._childObserver?.disconnect();
+		this._childObserver = new MutationObserver(muts => {
+			for (const m of muts) {
+				if (m.target instanceof HTMLElement) this._applyOrderProps(m.target);
+			}
+		});
+		for (const el of slot.assignedElements()) {
+			if (!(el instanceof HTMLElement)) continue;
+			this._applyOrderProps(el);
+			this._childObserver.observe(el, { attributes: true, attributeFilter: [...ORDER_ATTRS] });
+		}
+	};
+
+	private _applyOrderProps(el: HTMLElement): void {
+		for (const attr of ORDER_ATTRS) {
+			const v = el.getAttribute(attr);
+			const prop = `--_slot-${attr}`;
+			if (v !== null) el.style.setProperty(prop, v);
+			else el.style.removeProperty(prop);
+		}
 	}
 
 	override render() {
