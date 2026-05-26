@@ -15,6 +15,7 @@ export const toggleButtonStyles = css`
 		--_icon-only-icon-size: var(--semantics-buttons-md-icon-only-icon-size);
 
 		display: inline-block;
+		user-select: none;
 		-webkit-tap-highlight-color: transparent;
 	}
 

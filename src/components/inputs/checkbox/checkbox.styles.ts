@@ -12,6 +12,7 @@ export const checkboxStyles = css`
 		height: var(--semantics-controls-xs-min-size);
 		align-items: center;
 		justify-content: center;
+		user-select: none;
 		-webkit-tap-highlight-color: transparent;
 	}
 

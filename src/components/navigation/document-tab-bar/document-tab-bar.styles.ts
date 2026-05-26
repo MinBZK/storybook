@@ -23,6 +23,7 @@ export const documentTabBarStyles = css`
 		display: block;
 		position: relative;
 		isolation: isolate;
+		user-select: none;
 		-webkit-tap-highlight-color: transparent;
 	}
 

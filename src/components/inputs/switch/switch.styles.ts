@@ -17,6 +17,7 @@ export const switchStyles = css`
 		width: var(--_track-width);
 		height: var(--_track-height);
 		flex-shrink: 0;
+		user-select: none;
 		-webkit-tap-highlight-color: transparent;
 	}
 

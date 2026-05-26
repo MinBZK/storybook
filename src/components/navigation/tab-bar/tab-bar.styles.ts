@@ -9,6 +9,7 @@ export const tabBarStyles = css`
 		display: inline-block;
 		position: relative;
 		isolation: isolate;
+		user-select: none;
 		-webkit-tap-highlight-color: transparent;
 	}
 

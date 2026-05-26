@@ -9,6 +9,7 @@ export const paginationStyles = css`
 		display: block;
 		container-type: inline-size;
 		isolation: isolate;
+		user-select: none;
 		-webkit-tap-highlight-color: transparent;
 	}
 

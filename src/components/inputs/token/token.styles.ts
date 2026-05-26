@@ -7,6 +7,7 @@ export const tokenStyles = css`
 
 	:host {
 		display: inline-block;
+		user-select: none;
 		-webkit-tap-highlight-color: transparent;
 	}
 
