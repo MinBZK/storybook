@@ -21,6 +21,14 @@ export const aliases = {
 	// arrow-u-turn-forward
 	'redo': 'arrow-u-turn-forward',
 
+	// bell
+	'notification': 'bell',
+	'notifications': 'bell',
+	'alarm': 'bell',
+
+	// bookmark-filled
+	'bookmarked': 'bookmark-filled',
+
 	// books-vertical
 	'books': 'books-vertical',
 
@@ -142,6 +150,9 @@ export const aliases = {
 	// file-text
 	'document': 'file-text',
 	'file': 'file-text',
+
+	// flag-filled
+	'flagged': 'flag-filled',
 
 	// folder
 	'directory': 'folder',
@@ -277,6 +288,12 @@ export const aliases = {
 	'ai': 'sparkles',
 	'magic': 'sparkles',
 
+	// star
+	'rating': 'star',
+
+	// star-filled
+	'rated': 'star-filled',
+
 	// starburst-filled
 	'new': 'starburst-filled',
 	'promotion': 'starburst-filled',
@@ -309,6 +326,10 @@ export const aliases = {
 
 	// table-badge-arrow-down
 	'download-table': 'table-badge-arrow-down',
+
+	// tag
+	'label': 'tag',
+	'category': 'tag',
 
 	// terminal
 	'cli': 'terminal',
