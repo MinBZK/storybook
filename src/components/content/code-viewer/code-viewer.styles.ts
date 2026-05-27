@@ -34,6 +34,16 @@ export const codeViewerStyles = css`
 		white-space: pre;
 	}
 
+	.code-viewer:focus-visible {
+		outline: var(--semantics-focus-ring-outline);
+		outline-offset: var(--semantics-focus-ring-outline-offset);
+		box-shadow: var(--semantics-focus-ring-box-shadow);
+	}
+
+	.code-viewer:focus:not(:focus-visible) {
+		outline: none;
+	}
+
 	:host([wrap]) .code-viewer {
 		overflow-x: visible;
 		white-space: pre-wrap;

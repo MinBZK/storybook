@@ -42,6 +42,8 @@ import { customElement, property, state } from 'lit/decorators.js';
 import Prism from 'prismjs';
 import { codeViewerStyles } from './code-viewer.styles.js';
 import { codeViewerTemplate } from './code-viewer.template.js';
+import { nlddCodeViewerTranslations } from './code-viewer.i18n.js';
+import type { NLDDCodeViewerTranslations } from './code-viewer.i18n.js';
 import { onColorSchemeChange, forceScrollLayerRepaint } from '../../../utilities/color-scheme-repaint.js';
 
 /* Map our public language names to Prism grammar loaders. `html` and `xml`
@@ -93,11 +95,19 @@ export class NLDDCodeViewer extends LitElement {
 	@property({ type: Boolean, reflect: true })
 	wrap = false;
 
+	/** Override one or more translation keys. Unspecified keys fall back to Dutch. */
+	@property({ type: Object })
+	translations: Partial<NLDDCodeViewerTranslations> = {};
+
 	@state()
 	_highlightedHtml = '';
 
+	@state()
+	_isScrollable = false;
+
 	private _highlightPending: Promise<void> = Promise.resolve();
 	private _unsubscribeScheme?: () => void;
+	private _resizeObserver?: ResizeObserver;
 
 	override render() {
 		return codeViewerTemplate(this);
@@ -117,6 +127,16 @@ export class NLDDCodeViewer extends LitElement {
 		super.disconnectedCallback();
 		this._unsubscribeScheme?.();
 		this._unsubscribeScheme = undefined;
+		this._resizeObserver?.disconnect();
+		this._resizeObserver = undefined;
+	}
+
+	override firstUpdated(): void {
+		const pre = this.shadowRoot?.querySelector('.code-viewer') as HTMLElement | null;
+		if (!pre) return;
+		this._resizeObserver = new ResizeObserver(() => this._updateScrollable(pre));
+		this._resizeObserver.observe(pre);
+		this._updateScrollable(pre);
 	}
 
 	_onSlotChange(e: Event) {
@@ -125,6 +145,22 @@ export class NLDDCodeViewer extends LitElement {
 
 	override updated(changed: Map<string, unknown>) {
 		if (changed.has('language')) this._refreshHighlight();
+		/* Re-evaluate scrollability whenever something other than _isScrollable
+		 * itself changes. Content swaps (slot/highlight) and wrap toggles can
+		 * change overflow without resizing the pre, so ResizeObserver alone
+		 * misses them. */
+		if (changed.size > 0 && !(changed.size === 1 && changed.has('_isScrollable'))) {
+			const pre = this.shadowRoot?.querySelector('.code-viewer') as HTMLElement | null;
+			if (pre) this._updateScrollable(pre);
+		}
+	}
+
+	public _t(key: keyof NLDDCodeViewerTranslations): string {
+		return this.translations[key] ?? nlddCodeViewerTranslations[key];
+	}
+
+	private _updateScrollable(pre: HTMLElement): void {
+		this._isScrollable = !this.wrap && pre.scrollWidth > pre.clientWidth;
 	}
 
 	private _repaintCodeBlock(): void {
