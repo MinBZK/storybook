@@ -106,6 +106,24 @@ export const collectionStyles = css`
 		scroll-snap-align: start;
 	}
 
+	/* The horizontal-scroll items has a mask-image that fades the left and
+	 * right edges, which would clip an outline rendered directly on it.
+	 * Render the focus-ring on the host instead — the host has no mask
+	 * and its bounding box matches the visible content area (items
+	 * extends outside via negative margins, exactly the area the mask
+	 * fades away). The host is flagged via an is-focus-on-items attribute
+	 * by the component when items has keyboard focus — :host(:has())
+	 * doesn't pierce shadow boundaries in current browsers. */
+	.collection__items:focus-visible {
+		outline: none;
+	}
+
+	:host([is-focus-on-items]) {
+		outline: var(--semantics-focus-ring-outline);
+		outline-offset: var(--semantics-focus-ring-outline-offset);
+		box-shadow: var(--semantics-focus-ring-box-shadow);
+	}
+
 
 	/* # Footer */
 

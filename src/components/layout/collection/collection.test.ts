@@ -66,4 +66,42 @@ describe('nldd-collection', () => {
 		el.shadowRoot!.querySelector('nldd-button')!.dispatchEvent(new MouseEvent('click', { bubbles: true, composed: true }));
 		expect(fired).toBe(true);
 	});
+
+	it('horizontal-scroll items get tabindex=0 when content overflows', async () => {
+		el = await fixture(`
+			<nldd-collection layout="horizontal-scroll" style="width: 200px;">
+				<div style="width: 300px; flex-shrink: 0;">Item 1</div>
+				<div style="width: 300px; flex-shrink: 0;">Item 2</div>
+				<div style="width: 300px; flex-shrink: 0;">Item 3</div>
+			</nldd-collection>
+		`);
+		await waitForUpdate(el);
+		await waitForUpdate(el); // wait for ResizeObserver/scroll-listener to settle
+		const itemsEl = el.shadowRoot!.querySelector<HTMLElement>('.collection__items')!;
+		expect(itemsEl.getAttribute('tabindex')).toBe('0');
+		expect(itemsEl.getAttribute('aria-label')).toBe('Collectie');
+	});
+
+	it('horizontal-scroll items skip tabindex when content fits', async () => {
+		el = await fixture(`
+			<nldd-collection layout="horizontal-scroll" style="width: 1000px;">
+				<div style="width: 100px;">Item 1</div>
+			</nldd-collection>
+		`);
+		await waitForUpdate(el);
+		await waitForUpdate(el);
+		const itemsEl = el.shadowRoot!.querySelector<HTMLElement>('.collection__items')!;
+		expect(itemsEl.hasAttribute('tabindex')).toBe(false);
+	});
+
+	it('grid layout never gets tabindex regardless of overflow', async () => {
+		el = await fixture(`
+			<nldd-collection layout="grid">
+				<div>Item 1</div>
+			</nldd-collection>
+		`);
+		await waitForUpdate(el);
+		const itemsEl = el.shadowRoot!.querySelector<HTMLElement>('.collection__items')!;
+		expect(itemsEl.hasAttribute('tabindex')).toBe(false);
+	});
 });

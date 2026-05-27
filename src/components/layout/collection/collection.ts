@@ -84,6 +84,9 @@ export class NLDDCollection extends LitElement {
 	_atEnd = false;
 
 	@state()
+	_isScrollable = false;
+
+	@state()
 	_hasFooterSlot = false;
 
 	_onFooterSlotChange = (e: Event): void => {
@@ -99,6 +102,10 @@ export class NLDDCollection extends LitElement {
 		if (!el) return;
 		this._atStart = el.scrollLeft < 1;
 		this._atEnd = el.scrollLeft + el.clientWidth >= el.scrollWidth - 1;
+		/* Track overflow so the template can make the scroll container
+		 * keyboard-focusable. Without focus, arrow-key users can't scroll
+		 * a non-focusable region (WCAG 2.1.1). */
+		this._isScrollable = el.scrollWidth > el.clientWidth;
 	};
 
 	@query('nldd-button.load-more')
@@ -149,6 +156,8 @@ export class NLDDCollection extends LitElement {
 
 		if (this.layout === 'horizontal-scroll' && this._itemsEl) {
 			this._itemsEl.addEventListener('scroll', this._scrollListener, { passive: true });
+			this._itemsEl.addEventListener('focus', this._onItemsFocus);
+			this._itemsEl.addEventListener('blur', this._onItemsBlur);
 			this._resizeObserver = new ResizeObserver(() => this._scrollListener());
 			this._resizeObserver.observe(this._itemsEl);
 			this._scrollListenerAttached = true;
@@ -157,10 +166,30 @@ export class NLDDCollection extends LitElement {
 
 	private _teardownScrollListeners(): void {
 		this._itemsEl?.removeEventListener('scroll', this._scrollListener);
+		this._itemsEl?.removeEventListener('focus', this._onItemsFocus);
+		this._itemsEl?.removeEventListener('blur', this._onItemsBlur);
 		this._resizeObserver?.disconnect();
 		this._resizeObserver = undefined;
 		this._scrollListenerAttached = false;
+		this._isScrollable = false;
+		this.removeAttribute('is-focus-on-items');
 	}
+
+	/* CSS :host(:has(.foo:focus-visible)) doesn't pierce shadow DOM in
+	 * current browsers, so flag the host via an attribute when items has
+	 * keyboard focus. The stylesheet renders the focus-ring on the host
+	 * because the items' mask-image clips an outline drawn directly on
+	 * it. focus-visible matches only on the items itself — slotted card
+	 * links keep their own focus indicator separate. */
+	private _onItemsFocus = (): void => {
+		if (this._itemsEl.matches(':focus-visible')) {
+			this.setAttribute('is-focus-on-items', '');
+		}
+	};
+
+	private _onItemsBlur = (): void => {
+		this.removeAttribute('is-focus-on-items');
+	};
 
 	_onSlotChange(e: Event): void {
 		const slot = e.target as HTMLSlotElement;
