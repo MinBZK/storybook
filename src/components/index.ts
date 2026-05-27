@@ -139,6 +139,7 @@ export { NLDDPagination } from './navigation/pagination/pagination.js';
 
 export { NLDDModalDialog } from './status-and-feedback/modal-dialog/modal-dialog.js';
 export { NLDDInlineDialog } from './status-and-feedback/inline-dialog/inline-dialog.js';
+export { NLDDBanner } from './status-and-feedback/banner/banner.js';
 export { NLDDBadge } from './status-and-feedback/badge/badge.js';
 
 // Auto-register happens on import of individual component files
