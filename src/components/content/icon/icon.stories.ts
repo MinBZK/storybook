@@ -1,5 +1,6 @@
 import { html, nothing } from 'lit';
 import { ICONS, aliases } from './icon.js';
+import '../../inputs/search-field/search-field.js';
 
 const aliasSet = new Set(Object.keys(aliases));
 const iconNames = ICONS.filter(name => !aliasSet.has(name));
@@ -155,28 +156,48 @@ export const IconGallery = {
 		controls: { disable: true },
 		docs: {
 			description: {
-				story: 'Alle beschikbare icoonnamen, inclusief aliassen.',
+				story: 'Alle beschikbare icoonnamen, inclusief aliassen. Gebruik het zoekveld om te filteren op naam of alias.',
 			},
 		},
 	},
-	render: () => html`
-		<div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 16px; padding: 16px;">
-			${iconNames.map(iconName => {
-				const iconAliases = Object.entries(aliases)
-					.filter(([, target]) => target === iconName)
-					.map(([alias]) => alias);
-				return html`
-					<div style="display: flex; flex-direction: column; align-items: center; text-align: center; padding: 16px 8px 8px; border: 1px solid var(--semantics-dividers-color); border-radius: 8px;">
-						<nldd-icon name=${iconName} size="32"></nldd-icon>
-						<div style="font: var(--primitives-font-body-xs-regular-tight); margin-top: 12px;">${iconName}</div>
-						${iconAliases.length > 0 ? html`
-							<div style="font: var(--primitives-font-body-xxs-regular-tight); color: var(--semantics-content-secondary-color);">
-								${iconAliases.join(', ')}
+	render: () => {
+		const handleSearch = (e: CustomEvent<{ value: string }>) => {
+			const query = e.detail.value.toLowerCase().trim();
+			const wrapper = (e.target as HTMLElement).closest('[data-gallery]');
+			wrapper?.querySelectorAll<HTMLElement>('[data-search-tokens]').forEach(tile => {
+				const match = !query || tile.dataset.searchTokens!.includes(query);
+				tile.style.display = match ? '' : 'none';
+			});
+		};
+		return html`
+			<div data-gallery style="padding: 16px;">
+				<nldd-search-field
+					width="full"
+					placeholder="Icoon op naam of alias zoeken"
+					accessible-label="Icoon op naam of alias zoeken"
+					style="margin-bottom: 16px;"
+					@input=${handleSearch}
+				></nldd-search-field>
+				<div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 16px;">
+					${iconNames.map(iconName => {
+						const iconAliases = Object.entries(aliases)
+							.filter(([, target]) => target === iconName)
+							.map(([alias]) => alias);
+						const searchTokens = [iconName, ...iconAliases].join(' ').toLowerCase();
+						return html`
+							<div data-search-tokens=${searchTokens} style="display: flex; flex-direction: column; align-items: center; text-align: center; padding: 16px 8px 8px; border: 1px solid var(--semantics-dividers-color); border-radius: 8px;">
+								<nldd-icon name=${iconName} size="32"></nldd-icon>
+								<div style="font: var(--primitives-font-body-xs-regular-tight); margin-top: 12px;">${iconName}</div>
+								${iconAliases.length > 0 ? html`
+									<div style="font: var(--primitives-font-body-xxs-regular-tight); color: var(--semantics-content-secondary-color);">
+										${iconAliases.join(', ')}
+									</div>
+								` : ''}
 							</div>
-						` : ''}
-					</div>
-				`;
-			})}
-		</div>
-	`,
+						`;
+					})}
+				</div>
+			</div>
+		`;
+	},
 };
