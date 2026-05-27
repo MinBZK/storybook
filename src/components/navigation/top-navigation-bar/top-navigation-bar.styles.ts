@@ -194,14 +194,23 @@ export const topNavigationBarStyles = css`
 
 	.top-navigation-bar__website-title-bar {
 		display: flex;
-		padding-block: var(--primitives-space-4);
 		padding-inline: calc(var(--primitives-space-8) + var(--components-menu-bar-item-inline-padding));
 		align-items: center;
 		justify-content: center;
 
+		@container (max-width: ${smMax}) {
+			padding-top: var(--primitives-space-4);
+		}
+
 		@container (min-width: ${mdMin}) {
 			padding: 0;
 			justify-content: flex-start;
+		}
+	}
+
+	:host([no-logo]) .top-navigation-bar__website-title-bar {
+		@container (max-width: ${smMax}) {
+			padding-top: var(--primitives-space-8);
 		}
 	}
 
