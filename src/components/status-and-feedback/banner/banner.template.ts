@@ -38,11 +38,11 @@ export function bannerTemplate(component: NLDDBanner) {
 			</div>
 		</div>
 		${component.dismissible ? html`
-			<div class="banner__dismiss">
+			<div class="banner__dismiss-button">
 				<nldd-icon-button
-					icon="dismiss"
+					icon="dismiss-small"
 					variant="neutral-transparent"
-					size="sm"
+					size="md"
 					accessible-label=${component._t('components.banner.dismiss-action')}
 					@click=${component._onDismissClick}
 				></nldd-icon-button>

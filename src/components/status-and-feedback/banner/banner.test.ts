@@ -109,13 +109,13 @@ describe('nldd-banner', () => {
 	it('does not render a dismiss button by default', async () => {
 		el = await fixture('<nldd-banner></nldd-banner>');
 		await waitForUpdate(el);
-		expect(el.shadowRoot!.querySelector('.banner__dismiss')).toBeNull();
+		expect(el.shadowRoot!.querySelector('.banner__dismiss-button')).toBeNull();
 	});
 
 	it('renders a dismiss button when dismissible is set', async () => {
 		el = await fixture('<nldd-banner dismissible></nldd-banner>');
 		await waitForUpdate(el);
-		expect(el.shadowRoot!.querySelector('.banner__dismiss nldd-icon-button')).not.toBeNull();
+		expect(el.shadowRoot!.querySelector('.banner__dismiss-button nldd-icon-button')).not.toBeNull();
 	});
 
 	it('fires a dismiss event when the dismiss button is clicked', async () => {
@@ -123,7 +123,7 @@ describe('nldd-banner', () => {
 		await waitForUpdate(el);
 		let fired = false;
 		el.addEventListener('dismiss', () => { fired = true; });
-		const btn = el.shadowRoot!.querySelector<HTMLElement>('.banner__dismiss nldd-icon-button')!;
+		const btn = el.shadowRoot!.querySelector<HTMLElement>('.banner__dismiss-button nldd-icon-button')!;
 		btn.dispatchEvent(new MouseEvent('click', { bubbles: true, composed: true }));
 		expect(fired).toBe(true);
 	});

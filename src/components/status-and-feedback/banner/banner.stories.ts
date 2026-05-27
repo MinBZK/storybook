@@ -108,7 +108,7 @@ export const MetActies = {
 export const MetRichContent = {
 	render: () => html`
 		<nldd-banner variant="warning" text="Onderhoud gepland" heading-level="2">
-			<nldd-rich-text spacing="tight">
+			<nldd-rich-text spacing="flat">
 				<p>Op zondag 28 mei wordt het systeem onderhouden tussen 02:00 en 04:00. Tijdens deze periode:</p>
 				<ul>
 					<li>Kun je niet inloggen</li>

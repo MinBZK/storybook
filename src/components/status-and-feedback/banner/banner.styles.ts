@@ -17,13 +17,18 @@ export const bannerStyles = css`
 
 		box-sizing: border-box;
 		display: grid;
+		position: relative;
 		border-radius: var(--_corner-radius);
 		background-color: var(--_background-color);
 		width: 100%;
 		padding: var(--_padding);
-		grid-template-columns: auto 1fr auto;
+		grid-template-columns: auto 1fr;
 		gap: var(--primitives-space-10);
 		color: var(--_content-color);
+	}
+
+	:host([dismissible]) {
+		padding-right: var(--primitives-space-44);
 	}
 
 	:host([hidden]) {
@@ -92,6 +97,10 @@ export const bannerStyles = css`
 		text-wrap: pretty;
 	}
 
+	.banner__heading:has(.banner__supporting-text) .banner__text {
+		padding-top: calc(var(--_text-icon-offset) - var(--primitives-space-2));
+	}
+
 	.banner__supporting-text {
 		margin: 0;
 		color: var(--_content-secondary-color);
@@ -119,11 +128,10 @@ export const bannerStyles = css`
 
 	/* # Dismiss */
 
-	.banner__dismiss {
+	.banner__dismiss-button {
 		display: flex;
-		grid-column: 3;
-		grid-row: 1;
-		align-items: flex-start;
-		justify-content: flex-end;
+		position: absolute;
+		top: 0;
+		right: 0;
 	}
 `;
