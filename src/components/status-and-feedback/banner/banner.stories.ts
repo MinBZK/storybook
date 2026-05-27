@@ -23,7 +23,7 @@ export default {
 	argTypes: {
 		variant: {
 			control: 'select',
-			options: ['neutral', 'accent', 'success', 'warning', 'critical'],
+			options: ['neutral', 'success', 'warning', 'critical'],
 			description: 'Kleur en standaard-icoon',
 			table: { defaultValue: { summary: 'neutral' } },
 		},
@@ -86,7 +86,6 @@ export const AlleVarianten = {
 	render: () => html`
 		<div style="display: flex; flex-direction: column; gap: 16px;">
 			<nldd-banner variant="neutral" text="Standaard mededeling" supporting-text="Met wat extra context."></nldd-banner>
-			<nldd-banner variant="accent" text="Tip" supporting-text="Vergeet niet je werk op te slaan."></nldd-banner>
 			<nldd-banner variant="success" text="Opgeslagen" supporting-text="Je wijzigingen zijn bewaard."></nldd-banner>
 			<nldd-banner variant="warning" text="Let op" supporting-text="Deze actie heeft gevolgen voor andere gebruikers."></nldd-banner>
 			<nldd-banner variant="critical" text="Er ging iets mis" supporting-text="Controleer de gemarkeerde velden hieronder."></nldd-banner>
@@ -124,7 +123,7 @@ export const MetRichContent = {
 
 export const Sluitbaar = {
 	render: () => html`
-		<nldd-banner variant="accent" text="Nieuw in deze versie" supporting-text="Je kunt nu in je dossier filteren op type." dismissible></nldd-banner>
+		<nldd-banner variant="neutral" text="Nieuw in deze versie" supporting-text="Je kunt nu in je dossier filteren op type." dismissible></nldd-banner>
 	`,
 	parameters: {
 		controls: { disable: true },

@@ -1033,16 +1033,18 @@
 	--components-banner-padding: var(--primitives-space-16);
 	--components-banner-content-color: var(--semantics-content-color);
 	--components-banner-content-secondary-color: var(--semantics-content-secondary-color);
-	--components-banner-neutral-background-color: light-dark(var(--primitives-color-neutral-25), var(--primitives-color-neutral-75));
-	--components-banner-accent-background-color: light-dark(var(--primitives-color-accent-25), var(--primitives-color-accent-100));
-	--components-banner-success-background-color: light-dark(var(--primitives-color-success-25), var(--primitives-color-success-100));
-	--components-banner-warning-background-color: light-dark(var(--primitives-color-warning-25), var(--primitives-color-warning-100));
-	--components-banner-critical-background-color: light-dark(var(--primitives-color-critical-25), var(--primitives-color-critical-100));
+	--components-banner-neutral-background-color: light-dark(var(--primitives-color-neutral-50), var(--primitives-color-neutral-75));
+	--components-banner-success-background-color: light-dark(var(--primitives-color-success-50), var(--primitives-color-success-75));
+	--components-banner-warning-background-color: light-dark(var(--primitives-color-warning-50), var(--primitives-color-warning-75));
+	--components-banner-critical-background-color: light-dark(var(--primitives-color-critical-50), var(--primitives-color-critical-75));
+	--components-banner-neutral-border-color: light-dark(var(--primitives-color-neutral-100), var(--primitives-color-neutral-150));
+	--components-banner-success-border-color: light-dark(var(--primitives-color-success-100), var(--primitives-color-success-150));
+	--components-banner-warning-border-color: light-dark(var(--primitives-color-warning-100), var(--primitives-color-warning-150));
+	--components-banner-critical-border-color: light-dark(var(--primitives-color-critical-100), var(--primitives-color-critical-150));
 	--components-banner-neutral-icon-color: var(--semantics-content-color);
-	--components-banner-accent-icon-color: light-dark(var(--primitives-color-accent-750), var(--primitives-color-accent-650));
-	--components-banner-success-icon-color: light-dark(var(--primitives-color-success-650), var(--primitives-color-success-550));
-	--components-banner-warning-icon-color: light-dark(var(--primitives-color-warning-650), var(--primitives-color-warning-550));
-	--components-banner-critical-icon-color: light-dark(var(--primitives-color-critical-650), var(--primitives-color-critical-550));
+	--components-banner-success-icon-color: light-dark(var(--primitives-color-success-500), var(--primitives-color-success-600));
+	--components-banner-warning-icon-color: light-dark(var(--primitives-color-warning-450), var(--primitives-color-warning-700));
+	--components-banner-critical-icon-color: light-dark(var(--primitives-color-critical-550), var(--primitives-color-critical-600));
 
 	/* ## Box */
 

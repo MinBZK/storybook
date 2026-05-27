@@ -175,6 +175,7 @@ export const IconGallery = {
 					width="full"
 					placeholder="Icoon op naam of alias zoeken"
 					accessible-label="Icoon op naam of alias zoeken"
+					no-spellcheck
 					style="margin-bottom: 16px;"
 					@input=${handleSearch}
 				></nldd-search-field>

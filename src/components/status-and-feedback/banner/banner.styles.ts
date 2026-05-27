@@ -9,6 +9,8 @@ export const bannerStyles = css`
 		--_corner-radius: var(--components-banner-corner-radius);
 		--_padding: var(--components-banner-padding);
 		--_background-color: var(--components-banner-neutral-background-color);
+		--_border-color: var(--components-banner-neutral-border-color);
+		--_border-width: var(--primitives-border-width-thin);
 		--_icon-color: var(--components-banner-neutral-icon-color);
 		--_icon-size: var(--primitives-space-28);
 		--_content-color: var(--components-banner-content-color);
@@ -18,6 +20,7 @@ export const bannerStyles = css`
 		box-sizing: border-box;
 		display: grid;
 		position: relative;
+		border: var(--_border-width) solid var(--_border-color);
 		border-radius: var(--_corner-radius);
 		background-color: var(--_background-color);
 		width: 100%;
@@ -35,23 +38,21 @@ export const bannerStyles = css`
 		display: none;
 	}
 
-	:host([variant="accent"]) {
-		--_background-color: var(--components-banner-accent-background-color);
-		--_icon-color: var(--components-banner-accent-icon-color);
-	}
-
 	:host([variant="success"]) {
 		--_background-color: var(--components-banner-success-background-color);
+		--_border-color: var(--components-banner-success-border-color);
 		--_icon-color: var(--components-banner-success-icon-color);
 	}
 
 	:host([variant="warning"]) {
 		--_background-color: var(--components-banner-warning-background-color);
+		--_border-color: var(--components-banner-warning-border-color);
 		--_icon-color: var(--components-banner-warning-icon-color);
 	}
 
 	:host([variant="critical"]) {
 		--_background-color: var(--components-banner-critical-background-color);
+		--_border-color: var(--components-banner-critical-border-color);
 		--_icon-color: var(--components-banner-critical-icon-color);
 	}
 
@@ -87,18 +88,18 @@ export const bannerStyles = css`
 
 	.banner__heading {
 		display: flex;
+		padding-top: var(--_text-icon-offset);
 		flex-direction: column;
+	}
+
+	.banner__heading:has(.banner__supporting-text) {
+		padding-top: calc(var(--_text-icon-offset) - var(--primitives-space-2));
 	}
 
 	.banner__text {
 		margin: 0;
-		padding-top: var(--_text-icon-offset);
 		font: var(--primitives-font-body-md-bold-tight);
 		text-wrap: pretty;
-	}
-
-	.banner__heading:has(.banner__supporting-text) .banner__text {
-		padding-top: calc(var(--_text-icon-offset) - var(--primitives-space-2));
 	}
 
 	.banner__supporting-text {

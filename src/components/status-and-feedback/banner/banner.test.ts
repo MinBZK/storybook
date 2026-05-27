@@ -47,11 +47,10 @@ describe('nldd-banner', () => {
 	   ============================================================ */
 
 	it.each([
-		['neutral', 'info-circle'],
-		['accent', 'info-circle'],
-		['success', 'check-mark-circle'],
+		['neutral', 'info-circle-filled'],
+		['success', 'check-circle-filled'],
 		['warning', 'exclamation-triangle-filled'],
-		['critical', 'exclamation-circle'],
+		['critical', 'exclamation-circle-filled'],
 	])('variant="%s" uses default icon "%s"', async (variant, expectedIcon) => {
 		el = await fixture(`<nldd-banner variant="${variant}"></nldd-banner>`);
 		await waitForUpdate(el);
@@ -72,7 +71,7 @@ describe('nldd-banner', () => {
 	   ============================================================ */
 
 	it('non-critical variants get role="status" and aria-live="polite"', async () => {
-		for (const v of ['neutral', 'accent', 'success', 'warning'] as const) {
+		for (const v of ['neutral', 'success', 'warning'] as const) {
 			const wrapper = document.createElement('div');
 			wrapper.innerHTML = `<nldd-banner variant="${v}"></nldd-banner>`;
 			document.body.appendChild(wrapper);
