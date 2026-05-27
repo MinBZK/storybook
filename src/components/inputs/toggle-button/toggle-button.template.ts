@@ -4,19 +4,40 @@ import '../../content/tooltip/tooltip.js';
 
 
 export function toggleButtonTemplate(component: NLDDToggleButton): TemplateResult {
-	const variant = component._effectiveVariant;
-	const showText = (variant === 'text' || variant === 'icon-and-text') && !!component.text;
-	const label = component.accessibleLabel || nothing;
-	const tooltipText = variant === 'icon' ? (component.accessibleLabel || component.text) : '';
+	/* `variant` forces what's rendered (not just styling):
+	 * - 'icon'          → suppress text even if provided
+	 * - 'text'          → suppress icon even if provided
+	 * - 'icon-and-text' → same as unset: render whatever is there
+	 *
+	 * Styling (square vs auto, icon size) is driven entirely by what's
+	 * in the DOM via :has(.toggle-button__text) in the stylesheet. */
+	const showText = component.variant !== 'icon' && !!component.text;
+	const renderIconArea = component.variant !== 'text';
+	const showIcon = renderIconArea && component._hasIcon;
 
-	// Always render the slot so auto-detect can observe slotchange and so
-	// consumers can supply an icon via slot before the attribute. CSS hides
-	// the icon when variant resolves to 'text'. When variant is explicitly
-	// 'icon' but the consumer hasn't supplied one, fall back to the
-	// icon-placeholder as a visible hint.
-	const icon = component.icon
-		? html`<nldd-icon class="toggle-button__icon" name=${component.icon}></nldd-icon>`
-		: html`<slot name="icon" @slotchange=${component.requestUpdate}>${variant === 'icon' ? html`<nldd-icon class="toggle-button__icon" name="icon-placeholder"></nldd-icon>` : nothing}</slot>`;
+	/* When variant="icon" hides a provided text, fall the text back to
+	 * aria-label so screen readers still announce the button. Explicit
+	 * accessible-label always wins. */
+	const ariaLabel = component.accessibleLabel
+		|| (component.variant === 'icon' && component.text ? component.text : '')
+		|| nothing;
+
+	/* Tooltip surfaces the off-screen label when an icon is visible but
+	 * no text is. accessible-label takes precedence; text is the fallback
+	 * (e.g. variant="icon" + text="Bold" → tooltip shows "Bold"). */
+	const isIconOnlyDisplay = showIcon && !showText;
+	const tooltipText = isIconOnlyDisplay ? (component.accessibleLabel || component.text || '') : '';
+
+	/* When variant != 'text', always render the icon area so the slot
+	 * is in shadow DOM for assignment + slotchange detection. Without
+	 * the slot present, slotted content can't be projected and
+	 * _hasIcon can't observe slotchange. An empty slot collapses to
+	 * 0×0 via display:contents, so it costs nothing visually. */
+	const icon = renderIconArea
+		? (component.icon
+			? html`<nldd-icon class="toggle-button__icon" name=${component.icon}></nldd-icon>`
+			: html`<slot name="icon" @slotchange=${component.requestUpdate}></slot>`)
+		: nothing;
 
 	const textContent = showText
 		? html`<span class="toggle-button__text">${component.text}</span>`
@@ -27,14 +48,13 @@ export function toggleButtonTemplate(component: NLDDToggleButton): TemplateResul
 	if (component.type === 'checkbox' || component.type === 'radio') {
 		result = html`
 			<label class="toggle-button">
-				<input
-					class="toggle-button__input"
+				<input class="toggle-button__input"
 					type=${component.type}
 					.checked=${component.selected}
 					?disabled=${component.disabled}
 					name=${component.name || nothing}
 					value=${component.value}
-					aria-label=${label}
+					aria-label=${ariaLabel}
 					@change=${component._handleInputChange}
 				>
 				${icon}
@@ -43,12 +63,11 @@ export function toggleButtonTemplate(component: NLDDToggleButton): TemplateResul
 		`;
 	} else {
 		result = html`
-			<button
-				class="toggle-button"
+			<button class="toggle-button"
 				type="button"
 				aria-pressed=${component.selected}
 				?disabled=${component.disabled}
-				aria-label=${label}
+				aria-label=${ariaLabel}
 				@click=${component._handleButtonClick}
 			>
 				${icon}

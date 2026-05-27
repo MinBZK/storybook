@@ -78,15 +78,12 @@ export class NLDDToggleButton extends LitElement {
 	get _hasIcon(): boolean {
 		if (this.icon) return true;
 		const slot = this.shadowRoot?.querySelector<HTMLSlotElement>('slot[name="icon"]');
-		return (slot?.assignedElements().length ?? 0) > 0;
-	}
-
-	get _effectiveVariant(): ToggleButtonVariant {
-		if (this.variant) return this.variant;
-		const hasText = !!this.text;
-		if (this._hasIcon && hasText) return 'icon-and-text';
-		if (this._hasIcon) return 'icon';
-		return 'text';
+		if (slot && slot.assignedElements().length > 0) return true;
+		/* On the first render the shadow slot doesn't exist yet, so fall
+		 * back to a light-DOM check so the initial render can see slotted
+		 * content. The slotchange handler triggers re-renders for later
+		 * changes. */
+		return this.querySelector(':scope > [slot="icon"]') !== null;
 	}
 
 	private _warnedA11y = false;
@@ -96,11 +93,13 @@ export class NLDDToggleButton extends LitElement {
 	}
 
 	override updated(changed: PropertyValues): void {
-		const iconOnly = this._effectiveVariant === 'icon';
-		const inaccessible = iconOnly && !this.accessibleLabel;
+		/* A button needs an accessible name. That name comes from either
+		 * the visible text or the explicit accessible-label. Without
+		 * either, the button is anonymous to assistive tech. */
+		const inaccessible = !this.text && !this.accessibleLabel;
 		if (import.meta.env?.DEV && inaccessible && !this._warnedA11y) {
 			this._warnedA11y = true;
-			console.warn('<nldd-toggle-button>: Icon-only usage requires an accessible-label attribute for accessibility.');
+			console.warn('<nldd-toggle-button>: Provide a text or accessible-label attribute for accessibility.');
 		} else if (!inaccessible) {
 			this._warnedA11y = false;
 		}
