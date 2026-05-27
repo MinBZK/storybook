@@ -775,19 +775,19 @@
 	/* ## Content */
 
 	--semantics-content-color: light-dark(var(--primitives-color-neutral-800), var(--primitives-color-neutral-900));
-	--semantics-content-secondary-color: light-dark(var(--primitives-color-neutral-550), var(--primitives-color-neutral-700));
+	--semantics-content-secondary-color: light-dark(var(--primitives-color-neutral-600), var(--primitives-color-neutral-700));
 	--semantics-content-accent-color: light-dark(var(--primitives-color-accent-750), var(--primitives-color-accent-650));
-	--semantics-content-critical-color: light-dark(var(--primitives-color-critical-550), var(--primitives-color-critical-650));
-	--semantics-content-warning-color: light-dark(var(--primitives-color-warning-550), var(--primitives-color-warning-650));
-	--semantics-content-success-color: light-dark(var(--primitives-color-success-550), var(--primitives-color-success-650));
+	--semantics-content-critical-color: light-dark(var(--primitives-color-critical-600), var(--primitives-color-critical-650));
+	--semantics-content-warning-color: light-dark(var(--primitives-color-warning-600), var(--primitives-color-warning-650));
+	--semantics-content-success-color: light-dark(var(--primitives-color-success-600), var(--primitives-color-success-650));
 	--semantics-content-mark-background-color: light-dark(var(--primitives-color-mark-100), var(--primitives-color-mark-200));
 	--semantics-content-mark-color: light-dark(var(--primitives-color-mark-900), var(--primitives-color-mark-800));
 
 	/* ## Links */
 
-	--semantics-links-color: light-dark(var(--primitives-color-lintblauw-550), var(--primitives-color-lintblauw-650));
-	--semantics-links-is-hovered-color: light-dark(var(--primitives-color-lintblauw-600), var(--primitives-color-lintblauw-700));
-	--semantics-links-is-active-color: light-dark(var(--primitives-color-lintblauw-650), var(--primitives-color-lintblauw-750));
+	--semantics-links-color: light-dark(var(--primitives-color-lintblauw-600), var(--primitives-color-lintblauw-650));
+	--semantics-links-is-hovered-color: light-dark(var(--primitives-color-lintblauw-650), var(--primitives-color-lintblauw-700));
+	--semantics-links-is-active-color: light-dark(var(--primitives-color-lintblauw-700), var(--primitives-color-lintblauw-750));
 
 	/* ## Blockquotes */
 
