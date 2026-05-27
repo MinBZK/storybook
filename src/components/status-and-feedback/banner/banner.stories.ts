@@ -96,9 +96,9 @@ export const AlleVarianten = {
 
 export const MetActies = {
 	render: () => html`
-		<nldd-banner variant="critical" text="Onopgeslagen wijzigingen" supporting-text="Je hebt nog niet opgeslagen wat je hebt gewijzigd.">
-			<nldd-button slot="actions" variant="critical-tinted" text="Opslaan"></nldd-button>
-			<nldd-button slot="actions" variant="neutral-transparent" text="Verwerpen"></nldd-button>
+		<nldd-banner variant="neutral" text="Nieuwe versie beschikbaar" supporting-text="Ververs de pagina om de laatste versie van de applicatie te laden.">
+			<nldd-button slot="actions" variant="accent-filled" text="Ververs nu"></nldd-button>
+			<nldd-button slot="actions" variant="neutral-tinted" text="Later"></nldd-button>
 		</nldd-banner>
 	`,
 	parameters: { controls: { disable: true } },
