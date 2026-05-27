@@ -36,6 +36,7 @@
  * @attr {boolean} wrap - Wrap long lines instead of horizontal scroll
  * @attr {boolean} no-box - Drop the rounded container, padding, and background. Use when embedding inside a parent that supplies its own surface.
  * @attr {string} background - 'tinted' (default), 'base', or 'inherit'. Only applies when the box is on. Use 'base' for a code block on a tinted parent.
+ * @attr {boolean} no-copy - Hide the copy-to-clipboard button (shown by default).
  *
  * @slot - Default slot for the code/text content
  */
@@ -47,6 +48,12 @@ import { codeViewerTemplate } from './code-viewer.template.js';
 import { nlddCodeViewerTranslations } from './code-viewer.i18n.js';
 import type { NLDDCodeViewerTranslations } from './code-viewer.i18n.js';
 import { onColorSchemeChange, forceScrollLayerRepaint } from '../../../utilities/color-scheme-repaint.js';
+import '../../actions/icon-button/icon-button.js';
+import '../tooltip/tooltip.js';
+
+export type CodeViewerCopyState = 'idle' | 'success' | 'failure';
+
+const COPY_FEEDBACK_DURATION_MS = 2000;
 
 /* Map our public language names to Prism grammar loaders. `html` and `xml`
  * share the markup grammar (covers html/xml/svg). Static `import()` calls let
@@ -105,6 +112,10 @@ export class NLDDCodeViewer extends LitElement {
 	@property({ type: String, reflect: true })
 	background: 'tinted' | 'base' | 'inherit' = 'tinted';
 
+	/** Hide the copy-to-clipboard button (shown by default). */
+	@property({ type: Boolean, reflect: true, attribute: 'no-copy' })
+	noCopy = false;
+
 	/** Override one or more translation keys. Unspecified keys fall back to Dutch. */
 	@property({ type: Object })
 	translations: Partial<NLDDCodeViewerTranslations> = {};
@@ -115,9 +126,13 @@ export class NLDDCodeViewer extends LitElement {
 	@state()
 	_isScrollable = false;
 
+	@state()
+	_copyState: CodeViewerCopyState = 'idle';
+
 	private _highlightPending: Promise<void> = Promise.resolve();
 	private _unsubscribeScheme?: () => void;
 	private _resizeObserver?: ResizeObserver;
+	private _copyResetTimer?: ReturnType<typeof setTimeout>;
 
 	override render() {
 		return codeViewerTemplate(this);
@@ -139,6 +154,8 @@ export class NLDDCodeViewer extends LitElement {
 		this._unsubscribeScheme = undefined;
 		this._resizeObserver?.disconnect();
 		this._resizeObserver = undefined;
+		clearTimeout(this._copyResetTimer);
+		this._copyResetTimer = undefined;
 	}
 
 	override firstUpdated(): void {
@@ -171,6 +188,31 @@ export class NLDDCodeViewer extends LitElement {
 
 	private _updateScrollable(pre: HTMLElement): void {
 		this._isScrollable = !this.wrap && pre.scrollWidth > pre.clientWidth;
+	}
+
+	/* Read the raw, unhighlighted slot text. Prism wraps tokens in spans for
+	 * the visual highlight, but the user clicking "copy" wants what they'd
+	 * have typed — so go to the assigned light-DOM nodes, not the rendered
+	 * shadow content. */
+	private _getRawText(): string {
+		const slot = this.shadowRoot?.querySelector('slot');
+		if (!slot) return '';
+		return slot.assignedNodes({ flatten: true })
+			.map((n) => n.textContent ?? '')
+			.join('');
+	}
+
+	public async _onCopyClick(): Promise<void> {
+		try {
+			await navigator.clipboard.writeText(this._getRawText());
+			this._copyState = 'success';
+		} catch {
+			this._copyState = 'failure';
+		}
+		clearTimeout(this._copyResetTimer);
+		this._copyResetTimer = setTimeout(() => {
+			this._copyState = 'idle';
+		}, COPY_FEEDBACK_DURATION_MS);
 	}
 
 	private _repaintCodeBlock(): void {

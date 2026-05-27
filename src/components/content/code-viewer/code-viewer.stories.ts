@@ -62,6 +62,11 @@ export default {
 			table: { defaultValue: { summary: 'tinted' } },
 			if: { arg: 'box' },
 		},
+		copy: {
+			control: 'boolean',
+			description: 'Toon de kopieerknop rechtsboven. Klik kopieert de raw slot-tekst naar het klembord.',
+			table: { defaultValue: { summary: true } },
+		},
 	},
 	args: {
 		content: DEFAULT_CONTENT,
@@ -69,6 +74,7 @@ export default {
 		wrap: false,
 		box: true,
 		background: 'tinted',
+		copy: true,
 	},
 };
 
@@ -77,6 +83,7 @@ const Template = (args: Record<string, any>) => html`
 		language=${args.language || nothing}
 		?wrap=${args.wrap}
 		?no-box=${!args.box}
+		?no-copy=${!args.copy}
 		background=${args.background}
 	>${args.content}</nldd-code-viewer>
 `;
@@ -213,6 +220,25 @@ export const BackgroundInherit = {
 		docs: {
 			description: {
 				story: '`background="inherit"` maakt de achtergrond transparant; het box-padding en de afgeronde hoeken blijven.',
+			},
+		},
+	},
+};
+
+
+/* ============================================================
+   Copy
+   ============================================================ */
+
+export const NoCopy = {
+	render: Template,
+	args: {
+		copy: false,
+	},
+	parameters: {
+		docs: {
+			description: {
+				story: 'Met `no-copy` is de kopieerknop verborgen. De pre-rechterpadding krijgt dan ook geen extra ruimte.',
 			},
 		},
 	},

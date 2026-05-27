@@ -12,8 +12,12 @@ export const codeViewerStyles = css`
 		--_inline-padding: var(--primitives-space-16);
 		--_content-color: var(--semantics-content-color);
 		--_font: var(--primitives-font-monospace-sm-regular-snug);
+		--_actions-area-padding: var(--primitives-space-8);
+		--_actions-area-size: calc(var(--semantics-controls-md-min-size) + var(--_actions-area-padding) * 2);
+		--_actions-z-index: 1;
 
-		display: block;
+		display: flex;
+		position: relative;
 	}
 
 	:host([hidden]) {
@@ -39,14 +43,26 @@ export const codeViewerStyles = css`
 	/* # Block */
 
 	.code-viewer {
+		box-sizing: border-box;
+		display: flex;
+		position: relative;
 		margin: 0;
 		border-radius: var(--_corner-radius);
 		background-color: var(--_background-color);
 		overflow-x: auto;
 		padding: var(--_block-padding) var(--_inline-padding);
+		flex-direction: column;
+		flex-grow: 1;
+		align-items: start;
+		justify-content: center;
 		color: var(--_content-color);
 		font: var(--_font);
 		white-space: pre;
+	}
+
+	:host(:not([no-copy])) .code-viewer {
+		min-height: var(--_actions-area-size);
+		padding-right: var(--_actions-area-size);
 	}
 
 	.code-viewer:focus-visible {
@@ -73,6 +89,19 @@ export const codeViewerStyles = css`
 	.code__highlighted {
 		color: inherit;
 		font: inherit;
+	}
+
+	.code-viewer__actions {
+		position: absolute;
+		top: var(--_actions-area-padding);
+		right: var(--_actions-area-padding);
+		bottom: var(--_actions-area-padding);
+		z-index: var(--_actions-z-index);
+	}
+
+	.code-viewer__copy-button {
+		position: sticky;
+		top: var(--_actions-area-padding);
 	}
 
 

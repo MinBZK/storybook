@@ -1,5 +1,6 @@
-import { describe, it, expect, afterEach } from 'vitest';
+import { describe, it, expect, afterEach, vi } from 'vitest';
 import { fixture, cleanup, waitForUpdate } from '../../../test-utils.js';
+import type { NLDDCodeViewer } from './code-viewer.js';
 import './code-viewer.js';
 
 describe('nldd-code-viewer', () => {
@@ -114,4 +115,92 @@ describe('nldd-code-viewer', () => {
 			wrapper.remove();
 		}
 	});
+
+
+	/* ============================================================
+	   Copy button
+	   ============================================================ */
+
+	it('renders the copy button by default', async () => {
+		el = await fixture('<nldd-code-viewer>x</nldd-code-viewer>');
+		await waitForUpdate(el);
+		expect(el.shadowRoot!.querySelector('.code-viewer__copy-button')).not.toBeNull();
+	});
+
+	it('no-copy hides the copy button', async () => {
+		el = await fixture('<nldd-code-viewer no-copy>x</nldd-code-viewer>');
+		await waitForUpdate(el);
+		expect(el.shadowRoot!.querySelector('.code-viewer__copy-button')).toBeNull();
+	});
+
+	it('clicking copy writes the raw slot text to the clipboard', async () => {
+		const writeText = vi.fn().mockResolvedValue(undefined);
+		const originalClipboard = navigator.clipboard;
+		Object.defineProperty(navigator, 'clipboard', { value: { writeText }, configurable: true });
+		try {
+			el = await fixture<NLDDCodeViewer>('<nldd-code-viewer>hello world</nldd-code-viewer>');
+			await waitForUpdate(el);
+			(el as unknown as NLDDCodeViewer)._onCopyClick();
+			await waitForUpdate(el);
+			expect(writeText).toHaveBeenCalledWith('hello world');
+		} finally {
+			Object.defineProperty(navigator, 'clipboard', { value: originalClipboard, configurable: true });
+		}
+	});
+
+	it('success state swaps icon to check-mark and opens the tooltip', async () => {
+		const originalClipboard = navigator.clipboard;
+		Object.defineProperty(navigator, 'clipboard', { value: { writeText: vi.fn().mockResolvedValue(undefined) }, configurable: true });
+		try {
+			el = await fixture<NLDDCodeViewer>('<nldd-code-viewer>x</nldd-code-viewer>');
+			await waitForUpdate(el);
+			await (el as unknown as NLDDCodeViewer)._onCopyClick();
+			await waitForUpdate(el);
+			expect((el as unknown as NLDDCodeViewer)._copyState).toBe('success');
+			const iconBtn = el.shadowRoot!.querySelector('.code-viewer__copy-button nldd-icon-button');
+			expect(iconBtn!.getAttribute('icon')).toBe('check-mark');
+			const tooltip = el.shadowRoot!.querySelector('.code-viewer__copy-button nldd-tooltip');
+			expect(tooltip!.hasAttribute('open')).toBe(true);
+		} finally {
+			Object.defineProperty(navigator, 'clipboard', { value: originalClipboard, configurable: true });
+		}
+	});
+
+	it('failure state keeps the copy icon and opens the tooltip with failure text', async () => {
+		const originalClipboard = navigator.clipboard;
+		Object.defineProperty(navigator, 'clipboard', { value: { writeText: vi.fn().mockRejectedValue(new Error('denied')) }, configurable: true });
+		try {
+			el = await fixture<NLDDCodeViewer>('<nldd-code-viewer>x</nldd-code-viewer>');
+			await waitForUpdate(el);
+			await (el as unknown as NLDDCodeViewer)._onCopyClick();
+			await waitForUpdate(el);
+			expect((el as unknown as NLDDCodeViewer)._copyState).toBe('failure');
+			const iconBtn = el.shadowRoot!.querySelector('.code-viewer__copy-button nldd-icon-button');
+			expect(iconBtn!.getAttribute('icon')).toBe('copy');
+			const tooltip = el.shadowRoot!.querySelector('.code-viewer__copy-button nldd-tooltip');
+			expect(tooltip!.getAttribute('text')).toBe('Kopiëren mislukt');
+		} finally {
+			Object.defineProperty(navigator, 'clipboard', { value: originalClipboard, configurable: true });
+		}
+	});
+
+	it('resets to idle after the feedback duration', async () => {
+		const originalClipboard = navigator.clipboard;
+		Object.defineProperty(navigator, 'clipboard', { value: { writeText: vi.fn().mockResolvedValue(undefined) }, configurable: true });
+		try {
+			el = await fixture<NLDDCodeViewer>('<nldd-code-viewer>x</nldd-code-viewer>');
+			await waitForUpdate(el);
+			await (el as unknown as NLDDCodeViewer)._onCopyClick();
+			await waitForUpdate(el);
+			expect((el as unknown as NLDDCodeViewer)._copyState).toBe('success');
+			/* The component uses a 2s reset timer; wait a touch longer to
+			 * account for scheduler jitter. Real-timer wait is acceptable
+			 * for one test — useFakeTimers conflicts with waitForUpdate
+			 * (which itself uses setTimeout). */
+			await new Promise((r) => setTimeout(r, 2100));
+			expect((el as unknown as NLDDCodeViewer)._copyState).toBe('idle');
+		} finally {
+			Object.defineProperty(navigator, 'clipboard', { value: originalClipboard, configurable: true });
+		}
+	}, 5000);
 });

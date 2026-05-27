@@ -1,4 +1,4 @@
-import { html, TemplateResult } from 'lit';
+import { html, nothing, TemplateResult } from 'lit';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { unsafeHTML } from 'lit/directives/unsafe-html.js';
 import type { NLDDCodeViewer } from './code-viewer.js';
@@ -15,6 +15,12 @@ export function codeViewerTemplate(component: NLDDCodeViewer): TemplateResult {
 	// wrapping tokens in spans, so the only HTML in the output is the
 	// span scaffolding Prism itself emits. Safe by construction.
 	const scrollable = component._isScrollable;
+	const copyState = component._copyState;
+	const tooltipText = copyState === 'success'
+		? component._t('components.code-viewer.copy-success-text')
+		: copyState === 'failure'
+			? component._t('components.code-viewer.copy-failure-text')
+			: component._t('components.code-viewer.copy-action');
 	return html`<pre
 		class="code-viewer"
 		tabindex=${ifDefined(scrollable ? '0' : undefined)}
@@ -23,5 +29,23 @@ export function codeViewerTemplate(component: NLDDCodeViewer): TemplateResult {
 		component.language && component._highlightedHtml
 			? html`<code class="code__highlighted language-${component.language}">${unsafeHTML(component._highlightedHtml)}</code>`
 			: ''
-	}</pre>`;
+	}</pre>${component.noCopy ? nothing : html`
+		<div class="code-viewer__actions">
+			<div class="code-viewer__copy-button">
+				<nldd-tooltip
+					text=${tooltipText}
+					placement="left"
+					?open=${copyState !== 'idle'}
+				>
+					<nldd-icon-button
+						icon=${copyState === 'success' ? 'check-mark' : 'copy'}
+						accessible-label=${component._t('components.code-viewer.copy-action')}
+						tooltip-timing="never"
+						size="md"
+						@click=${component._onCopyClick}
+					></nldd-icon-button>
+				</nldd-tooltip>
+			</div>
+		</div>
+	`}`;
 }
