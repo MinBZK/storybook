@@ -11,6 +11,7 @@ export const collectionStyles = css`
 
 	:host {
 		--_item-width: var(--primitives-area-280);
+		--_focus-ring-z-index: 1;
 
 		display: flex;
 		width: 100%;
@@ -106,22 +107,30 @@ export const collectionStyles = css`
 		scroll-snap-align: start;
 	}
 
-	/* The horizontal-scroll items has a mask-image that fades the left and
-	 * right edges, which would clip an outline rendered directly on it.
-	 * Render the focus-ring on the host instead — the host has no mask
-	 * and its bounding box matches the visible content area (items
-	 * extends outside via negative margins, exactly the area the mask
-	 * fades away). The host is flagged via an is-focus-on-items attribute
-	 * by the component when items has keyboard focus — :host(:has())
-	 * doesn't pierce shadow boundaries in current browsers. */
+	/* The horizontal-scroll items has a mask-image that fades the left
+	 * and right edges, which would clip an outline drawn directly on it.
+	 * The .collection__scroll-area wrapper has no mask and is the layout
+	 * box that matches the visible content area; its ::after sits above
+	 * slotted cards via z-index, so card box-shadows can't overlap the
+	 * ring. :has() works here because both elements are in the same
+	 * shadow tree (unlike :host(:has()), which doesn't pierce). */
+	.collection__scroll-area {
+		position: relative;
+	}
+
 	.collection__items:focus-visible {
 		outline: none;
 	}
 
-	:host([is-focus-on-items]) {
+	.collection__scroll-area:has(.collection__items:focus-visible)::after {
+		content: '';
+		position: absolute;
+		inset: 0;
+		z-index: var(--_focus-ring-z-index);
 		outline: var(--semantics-focus-ring-outline);
 		outline-offset: var(--semantics-focus-ring-outline-offset);
 		box-shadow: var(--semantics-focus-ring-box-shadow);
+		pointer-events: none;
 	}
 
 
