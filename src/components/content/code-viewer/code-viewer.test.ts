@@ -65,4 +65,53 @@ describe('nldd-code-viewer', () => {
 		await waitForUpdate(el);
 		expect(el.shadowRoot!.querySelector('code.code__highlighted')).toBeNull();
 	});
+
+
+	/* ============================================================
+	   Container (box + background)
+	   ============================================================ */
+
+	it('defaults to box on with background="tinted"', async () => {
+		el = await fixture('<nldd-code-viewer>x</nldd-code-viewer>');
+		await waitForUpdate(el);
+		expect(el.hasAttribute('no-box')).toBe(false);
+		expect(el.getAttribute('background')).toBe('tinted');
+	});
+
+	it('reflects no-box attribute', async () => {
+		el = await fixture('<nldd-code-viewer no-box>x</nldd-code-viewer>');
+		await waitForUpdate(el);
+		expect(el.hasAttribute('no-box')).toBe(true);
+		expect((el as { noBox?: boolean }).noBox).toBe(true);
+	});
+
+	it('no-box zeroes the box CSS — corner-radius and padding', async () => {
+		el = await fixture('<nldd-code-viewer no-box>x</nldd-code-viewer>');
+		await waitForUpdate(el);
+		const pre = el.shadowRoot!.querySelector<HTMLElement>('pre.code-viewer')!;
+		const cs = getComputedStyle(pre);
+		expect(parseFloat(cs.borderTopLeftRadius)).toBe(0);
+		expect(parseFloat(cs.paddingTop)).toBe(0);
+		expect(parseFloat(cs.paddingLeft)).toBe(0);
+		expect(cs.backgroundColor).toBe('rgba(0, 0, 0, 0)');
+	});
+
+	it('background="inherit" makes the background transparent', async () => {
+		el = await fixture('<nldd-code-viewer background="inherit">x</nldd-code-viewer>');
+		await waitForUpdate(el);
+		const pre = el.shadowRoot!.querySelector<HTMLElement>('pre.code-viewer')!;
+		expect(getComputedStyle(pre).backgroundColor).toBe('rgba(0, 0, 0, 0)');
+	});
+
+	it('background attribute reflects each value', async () => {
+		for (const bg of ['tinted', 'base', 'inherit'] as const) {
+			const wrapper = document.createElement('div');
+			wrapper.innerHTML = `<nldd-code-viewer background="${bg}">x</nldd-code-viewer>`;
+			document.body.appendChild(wrapper);
+			const cv = wrapper.firstElementChild as HTMLElement & { updateComplete: Promise<boolean> };
+			await cv.updateComplete;
+			expect(cv.getAttribute('background')).toBe(bg);
+			wrapper.remove();
+		}
+	});
 });

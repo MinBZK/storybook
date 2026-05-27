@@ -20,6 +20,21 @@ export const codeViewerStyles = css`
 		display: none;
 	}
 
+	:host([background="base"]) {
+		--_background-color: var(--semantics-surfaces-background-color);
+	}
+
+	:host([background="inherit"]) {
+		--_background-color: transparent;
+	}
+
+	:host([no-box]) {
+		--_corner-radius: 0;
+		--_background-color: transparent;
+		--_block-padding: 0;
+		--_inline-padding: 0;
+	}
+
 
 	/* # Block */
 

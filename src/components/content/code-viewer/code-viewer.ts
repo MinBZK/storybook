@@ -34,6 +34,8 @@
  *
  * @attr {string} language - Grammar to highlight with (yaml, json, javascript, typescript, css, html, xml, bash, markdown, rust, gherkin, toml, sql, python). Empty disables highlighting.
  * @attr {boolean} wrap - Wrap long lines instead of horizontal scroll
+ * @attr {boolean} no-box - Drop the rounded container, padding, and background. Use when embedding inside a parent that supplies its own surface.
+ * @attr {string} background - 'tinted' (default), 'base', or 'inherit'. Only applies when the box is on. Use 'base' for a code block on a tinted parent.
  *
  * @slot - Default slot for the code/text content
  */
@@ -94,6 +96,14 @@ export class NLDDCodeViewer extends LitElement {
 
 	@property({ type: Boolean, reflect: true })
 	wrap = false;
+
+	/** Removes the container styling (rounded corners, padding, background). Consumer is expected to wrap in their own container. */
+	@property({ type: Boolean, reflect: true, attribute: 'no-box' })
+	noBox = false;
+
+	/** Background color when the box is on. 'tinted' is the default; use 'base' on a tinted parent; 'inherit' is fully transparent. */
+	@property({ type: String, reflect: true })
+	background: 'tinted' | 'base' | 'inherit' = 'tinted';
 
 	/** Override one or more translation keys. Unspecified keys fall back to Dutch. */
 	@property({ type: Object })

@@ -1,5 +1,26 @@
-import { html } from 'lit';
+import { html, nothing } from 'lit';
 import './code-viewer.ts';
+
+const LANGUAGE_OPTIONS = [
+	'(geen)',
+	'yaml',
+	'json',
+	'javascript',
+	'typescript',
+	'css',
+	'html',
+	'xml',
+	'bash',
+	'markdown',
+	'rust',
+	'gherkin',
+	'toml',
+	'sql',
+	'python',
+];
+
+const DEFAULT_CONTENT = `const greet = (name) => \`Hallo, \${name}!\`;
+console.log(greet('wereld'));`;
 
 export default {
 	title: 'Components/Content/Code Viewer',
@@ -12,34 +33,92 @@ export default {
 		},
 		status: { type: 'beta' },
 	},
+	argTypes: {
+		content: {
+			control: 'text',
+			description: 'Code-inhoud (slot)',
+		},
+		language: {
+			control: 'select',
+			options: LANGUAGE_OPTIONS,
+			mapping: { '(geen)': '' },
+			description: 'Grammar voor syntax-highlighting. Bij "(geen)" wordt de inhoud raw gerenderd.',
+			table: { defaultValue: { summary: '(geen)' } },
+		},
+		wrap: {
+			control: 'boolean',
+			description: 'Lange regels afbreken in plaats van horizontaal scrollen',
+			table: { defaultValue: { summary: false } },
+		},
+		box: {
+			control: 'boolean',
+			description: 'Container tonen (afgeronde hoeken, padding, achtergrond). Uit voor inbedding in een eigen wrapper.',
+			table: { defaultValue: { summary: true } },
+		},
+		background: {
+			control: 'select',
+			options: ['tinted', 'base', 'inherit'],
+			description: 'Achtergrondkleur van de container. `base` op een getinte parent, `inherit` voor transparant.',
+			table: { defaultValue: { summary: 'tinted' } },
+			if: { arg: 'box' },
+		},
+	},
+	args: {
+		content: DEFAULT_CONTENT,
+		language: '',
+		wrap: false,
+		box: true,
+		background: 'tinted',
+	},
 };
 
-export const Default = () => html`
-	<nldd-code-viewer>const greet = (name) =&gt; \`Hallo, \${name}!\`;
-console.log(greet('wereld'));</nldd-code-viewer>
+const Template = (args: Record<string, any>) => html`
+	<nldd-code-viewer
+		language=${args.language || nothing}
+		?wrap=${args.wrap}
+		?no-box=${!args.box}
+		background=${args.background}
+	>${args.content}</nldd-code-viewer>
 `;
 
-export const Trace = () => html`
-	<nldd-code-viewer>[engine] resolved input: bsn=999993653
+export const Default = {
+	render: Template,
+};
+
+export const Trace = {
+	render: Template,
+	args: {
+		content: `[engine] resolved input: bsn=999993653
 [engine] action 'heeft_recht_op_zorgtoeslag' = true
 [engine] action 'hoogte_zorgtoeslag' = 12345 (cents)
-[engine] elapsed 4ms</nldd-code-viewer>
-`;
+[engine] elapsed 4ms`,
+	},
+};
 
-export const LongLines = () => html`
-	<nldd-code-viewer>function deeplyNestedFunctionWithAVeryLongNameThatExceedsTheTypicalContainerWidth(parameterOne, parameterTwo, parameterThree) {
+export const LongLines = {
+	render: Template,
+	args: {
+		content: `function deeplyNestedFunctionWithAVeryLongNameThatExceedsTheTypicalContainerWidth(parameterOne, parameterTwo, parameterThree) {
   return parameterOne + parameterTwo + parameterThree;
-}</nldd-code-viewer>
-`;
+}`,
+	},
+};
 
-export const Wrap = () => html`
-	<nldd-code-viewer wrap>function deeplyNestedFunctionWithAVeryLongNameThatExceedsTheTypicalContainerWidth(parameterOne, parameterTwo, parameterThree) {
+export const Wrap = {
+	render: Template,
+	args: {
+		wrap: true,
+		content: `function deeplyNestedFunctionWithAVeryLongNameThatExceedsTheTypicalContainerWidth(parameterOne, parameterTwo, parameterThree) {
   return parameterOne + parameterTwo + parameterThree;
-}</nldd-code-viewer>
-`;
+}`,
+	},
+};
 
-export const HighlightYaml = () => html`
-	<nldd-code-viewer language="yaml"># wet_op_de_zorgtoeslag — artikel 2
+export const HighlightYaml = {
+	render: Template,
+	args: {
+		language: 'yaml',
+		content: `# wet_op_de_zorgtoeslag — artikel 2
 $id: zorgtoeslagwet
 articles:
   - number: '2'
@@ -48,22 +127,93 @@ articles:
     threshold: 32502
     actions:
       - output: heeft_recht_op_zorgtoeslag
-        operation: AND</nldd-code-viewer>
-`;
+        operation: AND`,
+	},
+};
 
-export const HighlightJson = () => html`
-	<nldd-code-viewer language="json">{
+export const HighlightJson = {
+	render: Template,
+	args: {
+		language: 'json',
+		content: `{
   "lawId": "zorgtoeslagwet",
   "article": 2,
   "active": true,
   "outputs": ["heeft_recht_op_zorgtoeslag", "hoogte_zorgtoeslag"]
-}</nldd-code-viewer>
-`;
+}`,
+	},
+};
 
-export const HighlightJavaScript = () => html`
-	<nldd-code-viewer language="javascript">// Compute eligibility
+export const HighlightJavaScript = {
+	render: Template,
+	args: {
+		language: 'javascript',
+		content: `// Compute eligibility
 function isEligible(person, threshold = 32502) {
   if (person.income > threshold) return false;
   return person.age >= 18 && person.insured;
-}</nldd-code-viewer>
-`;
+}`,
+	},
+};
+
+
+/* ============================================================
+   Container
+   ============================================================ */
+
+export const NoBox = {
+	render: Template,
+	args: {
+		box: false,
+	},
+	parameters: {
+		docs: {
+			description: {
+				story: 'Container weg met `no-box`. Gebruik wanneer de code-viewer binnen een eigen wrapper zit die de surface en padding levert.',
+			},
+		},
+	},
+};
+
+export const BackgroundBase = {
+	render: (args: Record<string, any>) => html`
+		<div style="padding: 24px; background-color: var(--semantics-surfaces-tinted-background-color); border-radius: var(--primitives-corner-radius-lg);">
+			${Template(args)}
+		</div>
+	`,
+	args: {
+		language: 'json',
+		background: 'base',
+		content: `{
+  "lawId": "zorgtoeslagwet",
+  "active": true
+}`,
+	},
+	parameters: {
+		docs: {
+			description: {
+				story: '`background="base"` voor een code-viewer op een getinte parent. De code-viewer tekent zich af met de basis-surface in plaats van te versmelten met de getinte achtergrond.',
+			},
+		},
+	},
+};
+
+export const BackgroundInherit = {
+	render: (args: Record<string, any>) => html`
+		<div style="padding: 24px; background-color: var(--semantics-surfaces-tinted-background-color); border-radius: var(--primitives-corner-radius-lg);">
+			${Template(args)}
+		</div>
+	`,
+	args: {
+		background: 'inherit',
+		content: `const transparent = true;
+// neemt de parent-achtergrond over`,
+	},
+	parameters: {
+		docs: {
+			description: {
+				story: '`background="inherit"` maakt de achtergrond transparant; het box-padding en de afgeronde hoeken blijven.',
+			},
+		},
+	},
+};
