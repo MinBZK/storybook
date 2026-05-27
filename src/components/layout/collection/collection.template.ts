@@ -25,7 +25,7 @@ export function collectionTemplate(component: NLDDCollection): TemplateResult {
 							icon="chevron-left"
 							text=${component._t('components.collection.previous-action')}
 							tooltip-timing="never"
-							?disabled=${component._atStart}
+							.disabled=${component._atStart}
 							@click=${() => component._scrollBy(-1)}
 						></nldd-icon-button>
 						<nldd-button-bar-divider></nldd-button-bar-divider>
@@ -33,7 +33,7 @@ export function collectionTemplate(component: NLDDCollection): TemplateResult {
 							icon="chevron-right"
 							text=${component._t('components.collection.next-action')}
 							tooltip-timing="never"
-							?disabled=${component._atEnd}
+							.disabled=${component._atEnd}
 							@click=${() => component._scrollBy(1)}
 						></nldd-icon-button>
 					</nldd-button-bar>
