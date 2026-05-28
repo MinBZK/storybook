@@ -28,7 +28,9 @@ export const nlddLqipEncoderTranslations = {
 	'components.lqip-encoder.upload-label': 'Kies een afbeelding',
 	'components.lqip-encoder.file-prefix-text': 'Bestand:',
 	'components.lqip-encoder.copy-instruction-text': 'Kopieer deze waarde naar je lqip attribuut:',
-	'components.lqip-encoder.preview-label': 'Voorbeeld (refresh om het LQIP placeholder opnieuw te zien):',
+	'components.lqip-encoder.preview-heading-text': 'Visuele controle:',
+	'components.lqip-encoder.preview-lqip-label': 'LQIP placeholder',
+	'components.lqip-encoder.preview-image-label': 'Originele afbeelding',
 };
 
 export type NLDDLqipEncoderTranslations = typeof nlddLqipEncoderTranslations;
@@ -239,6 +241,7 @@ export class NLDDLqipEncoder extends LitElement {
 	@state() private _lqip: number | null = null;
 	@state() private _imageUrl = '';
 	@state() private _filename = '';
+	@state() private _aspectRatio = '16/9';
 	@state() private _error = '';
 
 	public _t(key: keyof NLDDLqipEncoderTranslations): string {
@@ -294,7 +297,28 @@ export class NLDDLqipEncoder extends LitElement {
 		}
 
 		.encoder__preview {
-			max-width: var(--primitives-area-480);
+			display: flex;
+			flex-direction: column;
+			gap: var(--primitives-space-8);
+		}
+
+		.encoder__preview-pair {
+			display: grid;
+			grid-template-columns: 1fr 1fr;
+			gap: var(--primitives-space-16);
+			max-width: calc(var(--primitives-area-480) * 2 + var(--primitives-space-16));
+		}
+
+		.encoder__preview-item {
+			display: flex;
+			flex-direction: column;
+			gap: var(--primitives-space-4);
+			min-width: 0;
+		}
+
+		.encoder__preview-item-label {
+			font: var(--primitives-font-body-sm-regular-tight);
+			color: var(--semantics-content-secondary-color);
 		}
 
 		.encoder__error {
@@ -315,7 +339,13 @@ export class NLDDLqipEncoder extends LitElement {
 			if (this._imageUrl) URL.revokeObjectURL(this._imageUrl);
 			this._imageUrl = URL.createObjectURL(file);
 			this._filename = file.name;
-			this._lqip = await encodeLqip(file);
+			// Decode once to read dimensions for the comparison preview, then
+			// reuse the bitmap for the actual encode so the file isn't decoded
+			// twice.
+			const bitmap = await createImageBitmap(file);
+			this._aspectRatio = `${bitmap.width}/${bitmap.height}`;
+			this._lqip = await encodeLqip(bitmap);
+			bitmap.close();
 		} catch (err) {
 			this._error = err instanceof Error ? err.message : String(err);
 			this._lqip = null;
@@ -347,13 +377,26 @@ export class NLDDLqipEncoder extends LitElement {
 					<div class="encoder__code">lqip="${this._lqip}"</div>
 				</div>
 				<div class="encoder__preview">
-					<div>${this._t('components.lqip-encoder.preview-label')}</div>
-					<nldd-image
-						src=${this._imageUrl}
-						alt=${this._filename}
-						aspect-ratio="16/9"
-						lqip=${this._lqip}
-					></nldd-image>
+					<div>${this._t('components.lqip-encoder.preview-heading-text')}</div>
+					<div class="encoder__preview-pair">
+						<div class="encoder__preview-item">
+							<nldd-image
+								alt=${this._t('components.lqip-encoder.preview-lqip-label')}
+								aspect-ratio=${this._aspectRatio}
+								lqip=${this._lqip}
+							></nldd-image>
+							<span class="encoder__preview-item-label">${this._t('components.lqip-encoder.preview-lqip-label')}</span>
+						</div>
+						<div class="encoder__preview-item">
+							<nldd-image
+								src=${this._imageUrl}
+								alt=${this._filename}
+								aspect-ratio=${this._aspectRatio}
+								lqip=${this._lqip}
+							></nldd-image>
+							<span class="encoder__preview-item-label">${this._t('components.lqip-encoder.preview-image-label')}</span>
+						</div>
+					</div>
 				</div>
 			` : ''}
 		`;
