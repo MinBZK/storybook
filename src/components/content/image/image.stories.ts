@@ -173,16 +173,31 @@ export const Shapes = {
 	render: () => html`
 		<div style="display: flex; gap: 24px; align-items: flex-end;">
 			<div style="width: 200px;">
-				<nldd-image src=${SAMPLE_SRC} alt=${SAMPLE_ALT} aspect-ratio="4/3" shape="square"></nldd-image>
-				<p style="margin: 8px 0 0; font: var(--primitives-font-body-sm-regular-snug);">square</p>
+				<nldd-image
+					src=${SAMPLE_SRC}
+					alt=${SAMPLE_ALT}
+					aspect-ratio="4/3"
+					shape="square"
+					caption="square"
+				></nldd-image>
 			</div>
 			<div style="width: 200px;">
-				<nldd-image src=${SAMPLE_SRC} alt=${SAMPLE_ALT} aspect-ratio="4/3" shape="rounded"></nldd-image>
-				<p style="margin: 8px 0 0; font: var(--primitives-font-body-sm-regular-snug);">rounded</p>
+				<nldd-image
+					src=${SAMPLE_SRC}
+					alt=${SAMPLE_ALT}
+					aspect-ratio="4/3"
+					shape="rounded"
+					caption="rounded"
+				></nldd-image>
 			</div>
 			<div style="width: 120px;">
-				<nldd-image src=${SAMPLE_SRC} alt=${SAMPLE_ALT} aspect-ratio="1/1" shape="circle"></nldd-image>
-				<p style="margin: 8px 0 0; font: var(--primitives-font-body-sm-regular-snug);">circle</p>
+				<nldd-image
+					src=${SAMPLE_SRC}
+					alt=${SAMPLE_ALT}
+					aspect-ratio="1/1"
+					shape="circle"
+					caption="circle"
+				></nldd-image>
 			</div>
 		</div>
 	`,
@@ -195,8 +210,12 @@ export const AspectRatios = {
 		<div style="display: flex; gap: 16px; flex-wrap: wrap;">
 			${['21/9', '16/9', '3/2', '4/3', '1/1', '3/4', '2/3'].map(ratio => html`
 				<div style="width: 240px;">
-					<nldd-image src=${SAMPLE_SRC} alt=${SAMPLE_ALT} aspect-ratio=${ratio}></nldd-image>
-					<p style="margin: 4px 0 0;">${ratio}</p>
+					<nldd-image
+						src=${SAMPLE_SRC}
+						alt=${SAMPLE_ALT}
+						aspect-ratio=${ratio}
+						caption=${ratio}
+					></nldd-image>
 				</div>
 			`)}
 		</div>
@@ -215,8 +234,8 @@ export const ObjectFit = {
 						alt=${SAMPLE_ALT}
 						aspect-ratio="1/1"
 						object-fit=${fit}
+						caption=${fit}
 					></nldd-image>
-					<p style="margin: 8px 0 0;">${fit}</p>
 				</div>
 			`)}
 		</div>
@@ -274,18 +293,18 @@ export const LQIPPlaceholder = {
 				<nldd-image
 					alt="Placeholder zonder image"
 					aspect-ratio="16/9"
-					lqip="192900"
+					lqip="-270877"
+					caption="Alleen LQIP (geen src)"
 				></nldd-image>
-				<p style="margin: 4px 0 0;">Alleen LQIP (geen src)</p>
 			</div>
 			<div style="width: 320px;">
 				<nldd-image
 					src=${SAMPLE_SRC}
 					alt=${SAMPLE_ALT}
 					aspect-ratio="16/9"
-					lqip="192900"
+					lqip="-270877"
+					caption="LQIP + image"
 				></nldd-image>
-				<p style="margin: 4px 0 0;">LQIP + image</p>
 			</div>
 		</div>
 	`,
@@ -310,25 +329,25 @@ export const ErrorState = {
 					src="/this-does-not-exist.jpg"
 					alt="Het Binnenhof in Den Haag bij avondlicht"
 					aspect-ratio="16/9"
+					caption="Zonder LQIP"
 				></nldd-image>
-				<p style="margin: 4px 0 0;">Zonder LQIP</p>
 			</div>
 			<div style="width: 320px;">
 				<nldd-image
 					src="/this-does-not-exist.jpg"
 					alt="Het Binnenhof in Den Haag bij avondlicht"
 					aspect-ratio="16/9"
-					lqip="192900"
+					lqip="-270877"
+					caption="Met LQIP"
 				></nldd-image>
-				<p style="margin: 4px 0 0;">Met LQIP</p>
 			</div>
 			<div style="width: 320px;">
 				<nldd-image
 					src="/this-does-not-exist.jpg"
 					aspect-ratio="16/9"
 					decorative
+					caption="Decoratief (alleen icoon)"
 				></nldd-image>
-				<p style="margin: 4px 0 0;">Decoratief (alleen icoon)</p>
 			</div>
 		</div>
 	`,

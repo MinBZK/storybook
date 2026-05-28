@@ -23,6 +23,7 @@ export function imageTemplate(component: NLDDImage) {
 	const imgClasses = classMap({
 		'image__img': true,
 		'image__img--loaded': component._imageLoaded,
+		'image__img--errored': component._imageErrored,
 	});
 
 	const fallbackImg = html`
@@ -49,7 +50,7 @@ export function imageTemplate(component: NLDDImage) {
 	const errorOverlay = component._imageErrored ? html`
 		<div class="image__error" role="img" aria-label=${component.decorative ? nothing : component.alt}>
 			<div class="image__error-card">
-				<nldd-icon name="image" color="secondary-content"></nldd-icon>
+				<nldd-icon name="broken-image" size="32" color="secondary-content"></nldd-icon>
 				${component.decorative ? nothing : html`<span class="image__error-text">${component.alt}</span>`}
 			</div>
 		</div>

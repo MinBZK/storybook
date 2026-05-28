@@ -242,6 +242,9 @@ export const aliases = {
 	// photo
 	'image': 'photo',
 
+	// photo-slash
+	'broken-image': 'photo-slash',
+
 	// pencil-on-square
 	'edit': 'pencil-on-square',
 

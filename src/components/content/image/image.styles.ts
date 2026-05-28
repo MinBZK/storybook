@@ -154,6 +154,17 @@ export const imageStyles = css`
 	}
 
 
+	/* # Errored image
+	   Hide the broken <img> entirely so the browser's native fallback rendering
+	   (alt text leaking out + broken-image icon/border) doesn't show through
+	   underneath our own error overlay. visibility:hidden keeps the element
+	   in the layout flow and preserves the load/error listeners. */
+
+	.image__img--errored {
+		visibility: hidden;
+	}
+
+
 	/* # Error state
 	   Centred card with icon + alt-text shown when the image fails to load.
 	   Sits over whatever background --_background-color provides (the LQIP
