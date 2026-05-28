@@ -358,7 +358,6 @@ export class NLDDProgressBar extends LitElement {
 		const denominator = total > this.max ? total : this.max;
 
 		if (total > this.max && this._hasSegments) {
-			// eslint-disable-next-line no-console
 			console.warn(
 				`[nldd-progress-bar] Sum of segment values (${total}) exceeds max (${this.max}). ` +
 				'Segments are normalised proportionally.',

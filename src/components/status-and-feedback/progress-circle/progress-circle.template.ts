@@ -1,4 +1,5 @@
 import { html, svg, nothing } from 'lit';
+import { ifDefined } from 'lit/directives/if-defined.js';
 import type { NLDDProgressCircle } from './progress-circle.js';
 
 // SVG geometry: viewBox 100×100, ring centred. The stroke would extend
@@ -47,9 +48,18 @@ export function progressCircleTemplate(component: NLDDProgressCircle, onSlotChan
 	const sizeInPixels = Number(component.size) || 32;
 	const radius = getRadius(sizeInPixels);
 	const circumference = getCircumference(sizeInPixels);
+	// Accessible name: prefer the visible text below the circle (linked via
+	// aria-labelledby) so screen readers and the visual label stay in sync.
+	// Falls back to the translated "Voortgang" string when no text is rendered.
+	const hasText = !!component.text;
+	const labelId = 'progress-circle-label';
+	const ariaLabelledby = hasText ? labelId : undefined;
+	const ariaLabel = hasText ? undefined : component._t('components.progress-circle.label-text');
 	const circle = html`
 		<div class="progress-circle__circle"
 			role="progressbar"
+			aria-labelledby=${ifDefined(ariaLabelledby)}
+			aria-label=${ifDefined(ariaLabel)}
 			aria-valuemin="0"
 			aria-valuemax=${component.max}
 			aria-valuenow=${ariaValueNow ?? ''}
@@ -104,6 +114,6 @@ export function progressCircleTemplate(component: NLDDProgressCircle, onSlotChan
 	return html`
 		${wrappedCircle}
 		<slot @slotchange=${onSlotChange}></slot>
-		${component.text ? html`<span class="progress-circle__text">${component.text}</span>` : nothing}
+		${component.text ? html`<span class="progress-circle__text" id=${labelId}>${component.text}</span>` : nothing}
 	`;
 }
