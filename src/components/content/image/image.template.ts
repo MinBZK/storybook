@@ -19,7 +19,10 @@ export function imageTemplate(component: NLDDImage) {
 
 	const mediaClasses = classMap({
 		'image__media': true,
-		'image__media--lqip': hasLqip,
+		// LQIP only renders while the image is in-flight. Once it errors we
+		// fall back to the neutral background so the error card sits on a
+		// calm surface instead of a distracting gradient.
+		'image__media--lqip': hasLqip && !component._imageErrored,
 	});
 
 	const imgClasses = classMap({

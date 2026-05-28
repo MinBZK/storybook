@@ -320,9 +320,9 @@ export const LQIPPlaceholder = {
 /**
  * Wanneer een image niet geladen kan worden (404, netwerk-fout, decode-fout)
  * toont het component een fallback: een icoon + de alt-tekst in een kleine
- * neutrale container. Bij gezet `lqip` zit die container over het gradient
- * zodat er voldoende contrast met de tekst is; zonder LQIP gebruikt de
- * media-wrapper diezelfde neutrale kleur.
+ * neutrale container, met de neutrale media-achtergrond erachter. Een
+ * eventueel gezet `lqip` gradient wordt verborgen in error state — de
+ * placeholder dient alleen tijdens het laden, niet ná een mislukking.
  *
  * Een decoratieve afbeelding (`decorative`) toont alleen het icoon, geen tekst.
  */
@@ -335,16 +335,7 @@ export const ErrorState = {
 					src="/this-does-not-exist.jpg"
 					alt="De Pier van Scheveningen bij avondlicht"
 					aspect-ratio="16/9"
-					caption="Zonder LQIP"
-				></nldd-image>
-			</div>
-			<div style="width: 320px;">
-				<nldd-image
-					src="/this-does-not-exist.jpg"
-					alt="De Pier van Scheveningen bij avondlicht"
-					aspect-ratio="16/9"
-					lqip=${SAMPLE_LQIP}
-					caption="Met LQIP"
+					caption="Met alt-tekst"
 				></nldd-image>
 			</div>
 			<div style="width: 320px;">
