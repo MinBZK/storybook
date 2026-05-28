@@ -159,6 +159,11 @@ export class NLDDCollection extends LitElement {
 			this._resizeObserver = new ResizeObserver(() => this._scrollListener());
 			this._resizeObserver.observe(this._itemsEl);
 			this._scrollListenerAttached = true;
+			// Compute initial overflow synchronously. The ResizeObserver only
+			// fires on the next animation frame, so without this the first
+			// render shows tabindex/aria-label missing until the observer
+			// catches up — flaky in tests and a brief flash in real use.
+			this._scrollListener();
 		}
 	}
 
