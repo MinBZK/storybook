@@ -29,8 +29,8 @@ export default {
 	argTypes: {
 		text: {
 			control: 'text',
-			description: 'Tekst onder de indicator. Leeg → vertaalde "Laden".',
-			table: { defaultValue: { summary: '(geen)' } },
+			description: 'Tekst onder de indicator. Leeg → vertaalde fallback.',
+			table: { defaultValue: { summary: 'Laden' } },
 		},
 	},
 };

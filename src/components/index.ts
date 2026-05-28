@@ -22,6 +22,7 @@ export { NLDDToolbar } from './actions/toolbar/toolbar.js';
 // # Content components
 
 export { NLDDIcon } from './content/icon/icon.js';
+export { NLDDImage } from './content/image/image.js';
 export { NLDDRichText } from './content/rich-text/rich-text.js';
 export { NLDDTitle } from './content/title/title.js';
 export { NLDDTooltip } from './content/tooltip/tooltip.js';
