@@ -3,7 +3,7 @@
   "compilerOptions": {
     "noEmit": false,
     "allowImportingTsExtensions": false,
-    "rewriteRelativeImportExtensions": true, // Requires TypeScript ≥ 5.7
+    "rewriteRelativeImportExtensions": true,
     "declaration": true,
     "declarationMap": true,
     "rootDir": "src",

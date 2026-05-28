@@ -44,4 +44,3 @@ jobs:
           # prompt: 'Update the pull request description to include a summary of changes.'
 
           claude_args: "--allowedTools Bash,Read,Glob,Grep"
-
