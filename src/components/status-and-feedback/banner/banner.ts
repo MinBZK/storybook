@@ -62,10 +62,10 @@ export class NLDDBanner extends LitElement {
 	@property({ type: String, reflect: true })
 	icon = '';
 
-	@property({ type: String, reflect: true })
+	@property({ type: String })
 	text = '';
 
-	@property({ type: String, reflect: true, attribute: 'supporting-text' })
+	@property({ type: String, attribute: 'supporting-text' })
 	supportingText = '';
 
 	@property({ type: Number, reflect: true, attribute: 'heading-level' })

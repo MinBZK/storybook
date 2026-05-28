@@ -47,6 +47,11 @@ import { nlddProgressBarTranslations } from './progress-bar.i18n.js';
 import type { NLDDProgressBarTranslations } from './progress-bar.i18n.js';
 import '../../content/tooltip/tooltip.js';
 
+/** Indeterminate ↔ determinate crossfade duration. Must stay in sync with
+ *  --primitives-transition-duration-slow used by the matching CSS animations
+ *  and with nldd-progress-circle's matching constant. */
+const INDETERMINATE_TRANSITION_MS = 300;
+
 export type ProgressBarMode = 'progress' | 'distribution';
 export type ProgressBarSize = 'sm' | 'md' | 'lg';
 export type ProgressBarValueFormat = 'percentage' | 'absolute' | 'fraction' | 'none';
@@ -83,13 +88,13 @@ export class NLDDProgressBarSegment extends LitElement {
 	@property({ type: String, reflect: true, attribute: 'tooltip-text' })
 	tooltipText = '';
 
-	/** Set by the parent based on value-format. Not for external use —
-	 *  consumers use `tooltip-text`. */
-	@property({ type: String, attribute: 'data-tooltip-text' })
-	dataTooltipText = '';
+	/** Set by the parent based on value-format. Internal state, not a public
+	 *  property — consumers use `tooltip-text` to override. */
+	@state()
+	_autoTooltipText = '';
 
 	get _effectiveTooltip(): string {
-		return this.tooltipText || this.dataTooltipText || '';
+		return this.tooltipText || this._autoTooltipText || '';
 	}
 
 	override render() {
@@ -278,7 +283,7 @@ export class NLDDProgressBar extends LitElement {
 		this._exitTimeout = setTimeout(() => {
 			this._indeterminateExiting = false;
 			this._exitTimeout = undefined;
-		}, 300);
+		}, INDETERMINATE_TRANSITION_MS);
 	}
 
 	/** Indicator fades in, segment shrinks from current width to 0 — both 300ms. */
@@ -288,7 +293,7 @@ export class NLDDProgressBar extends LitElement {
 		this._enterTimeout = setTimeout(() => {
 			this._indeterminateEntering = false;
 			this._enterTimeout = undefined;
-		}, 300);
+		}, INDETERMINATE_TRANSITION_MS);
 	}
 
 	private _cancelIndeterminateExit(): void {
@@ -389,7 +394,7 @@ export class NLDDProgressBar extends LitElement {
 			if (v <= 0) {
 				seg.hidden = true;
 				seg.removeAttribute('data-mode');
-				seg.dataTooltipText = '';
+				seg._autoTooltipText = '';
 				continue;
 			}
 			seg.hidden = false;
@@ -399,7 +404,7 @@ export class NLDDProgressBar extends LitElement {
 			// segments are rectangular, only the track's outer corners are
 			// rounded (via overflow:hidden + border-radius on the track).
 			seg.setAttribute('data-mode', this.mode);
-			seg.dataTooltipText = suppressAutoTooltip ? '' : this._formatSegmentTooltip(seg);
+			seg._autoTooltipText = suppressAutoTooltip ? '' : this._formatSegmentTooltip(seg);
 			seg.toggleAttribute('data-grow', isExiting);
 			seg.toggleAttribute('data-shrink', isEntering);
 		}

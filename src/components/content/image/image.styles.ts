@@ -15,6 +15,12 @@ export const imageStyles = css`
 		--_credit-font: var(--components-image-credit-font);
 		--_error-text-color: var(--components-image-error-text-color);
 		--_error-font: var(--components-image-error-font);
+		--_error-padding: var(--primitives-space-8);
+		--_error-card-padding-block: var(--primitives-space-12);
+		--_error-card-padding-inline: var(--primitives-space-16);
+		--_error-card-gap: var(--primitives-space-4);
+		--_error-card-corner-radius: var(--primitives-corner-radius-md);
+		--_caption-row-gap: var(--primitives-space-8);
 		--_object-fit: cover;
 		--_object-position: center;
 
@@ -177,7 +183,7 @@ export const imageStyles = css`
 		display: flex;
 		align-items: center;
 		justify-content: center;
-		padding: var(--primitives-space-8);
+		padding: var(--_error-padding);
 	}
 
 	.image__error-card {
@@ -186,10 +192,10 @@ export const imageStyles = css`
 		flex-direction: column;
 		align-items: center;
 		max-width: 100%;
-		padding: var(--primitives-space-12) var(--primitives-space-16);
-		gap: var(--primitives-space-4);
-		background-color: var(--components-image-background-color);
-		border-radius: var(--primitives-corner-radius-md);
+		padding: var(--_error-card-padding-block) var(--_error-card-padding-inline);
+		gap: var(--_error-card-gap);
+		background-color: var(--_background-color);
+		border-radius: var(--_error-card-corner-radius);
 		color: var(--_error-text-color);
 		font: var(--_error-font);
 		text-align: center;
@@ -206,7 +212,7 @@ export const imageStyles = css`
 	.image__caption {
 		display: flex;
 		flex-wrap: wrap;
-		gap: var(--primitives-space-8);
+		gap: var(--_caption-row-gap);
 		color: var(--_caption-color);
 		font: var(--_caption-font);
 	}

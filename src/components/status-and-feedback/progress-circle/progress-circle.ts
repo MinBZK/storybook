@@ -43,6 +43,11 @@ import { nlddProgressCircleTranslations } from './progress-circle.i18n.js';
 import type { NLDDProgressCircleTranslations } from './progress-circle.i18n.js';
 import '../../content/tooltip/tooltip.js';
 
+/** Indeterminate ↔ determinate crossfade duration. Must stay in sync with
+ *  --primitives-transition-duration-slow used by the matching CSS animations
+ *  and with nldd-progress-bar's matching constant. */
+const INDETERMINATE_TRANSITION_MS = 300;
+
 export type ProgressCircleMode = 'progress' | 'distribution';
 export type ProgressCircleSize = '16' | '20' | '24' | '28' | '32' | '40' | '44' | '48' | '56' | '64' | '80' | '96';
 export type ProgressCircleValueFormat = 'percentage' | 'absolute' | 'fraction' | 'none';
@@ -274,7 +279,7 @@ export class NLDDProgressCircle extends LitElement {
 		this._exitTimeout = setTimeout(() => {
 			this._indeterminateExiting = false;
 			this._exitTimeout = undefined;
-		}, 300);
+		}, INDETERMINATE_TRANSITION_MS);
 	}
 
 	private _beginIndeterminateEnter(): void {
@@ -283,7 +288,7 @@ export class NLDDProgressCircle extends LitElement {
 		this._enterTimeout = setTimeout(() => {
 			this._indeterminateEntering = false;
 			this._enterTimeout = undefined;
-		}, 300);
+		}, INDETERMINATE_TRANSITION_MS);
 	}
 
 	private _cancelIndeterminateExit(): void {
