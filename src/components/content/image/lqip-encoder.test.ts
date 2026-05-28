@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { encodeLqip } from './lqip-encoder.js';
+import { encodeLqip, encodePixelDataToLqip } from './lqip-encoder.js';
 
 /**
  * Renders a solid-colour ImageBitmap of the given RGB so the encoder gets
@@ -79,5 +79,66 @@ describe('encodeLqip', () => {
 		const red = await encodeLqip(await makeSolidBitmap(220, 30, 30));
 		const blue = await encodeLqip(await makeSolidBitmap(30, 30, 220));
 		expect(red).not.toBe(blue);
+	});
+});
+
+describe('encodePixelDataToLqip — pure-function snapshot tests', () => {
+	/** Build a width×height RGBA buffer where every pixel has the given colour. */
+	function solid(r: number, g: number, b: number, width: number, height: number): Uint8ClampedArray {
+		const buf = new Uint8ClampedArray(width * height * 4);
+		for (let i = 0; i < buf.length; i += 4) {
+			buf[i] = r; buf[i + 1] = g; buf[i + 2] = b; buf[i + 3] = 255;
+		}
+		return buf;
+	}
+
+	it('rejects images smaller than 3×2', () => {
+		expect(() => encodePixelDataToLqip(solid(0, 0, 0, 2, 2), 2, 2)).toThrow();
+	});
+
+	it('locks the algorithm against silent regression: solid black snapshot', () => {
+		// If you change the encoder math and this test fails, every previously
+		// generated LQIP value will look different in the rendered placeholder.
+		// Bump SAMPLE_LQIP in image.stories.ts and audit downstream uses.
+		expect(encodePixelDataToLqip(solid(0, 0, 0, 12, 8), 12, 8)).toBe(-524253);
+	});
+
+	it('locks the algorithm: solid white snapshot', () => {
+		expect(encodePixelDataToLqip(solid(255, 255, 255, 12, 8), 12, 8)).toBe(524259);
+	});
+
+	it('locks the algorithm: horizontal gradient (black left → white right)', () => {
+		// 12px wide, 8px tall. Each column gets a stepped intensity so the
+		// three cell columns see distinct averages (~21, ~127, ~233 luma).
+		const buf = new Uint8ClampedArray(12 * 8 * 4);
+		for (let y = 0; y < 8; y++) {
+			for (let x = 0; x < 12; x++) {
+				const v = Math.round((x / 11) * 255);
+				const i = (y * 12 + x) * 4;
+				buf[i] = v; buf[i + 1] = v; buf[i + 2] = v; buf[i + 3] = 255;
+			}
+		}
+		const lqip = encodePixelDataToLqip(buf, 12, 8);
+		// The three columns of cells should monotonically lighten: ca < cb < cc.
+		const u = lqip + (1 << 19);
+		const ca = (u >> 18) & 3;
+		const cb = (u >> 16) & 3;
+		const cc = (u >> 14) & 3;
+		expect(ca).toBeLessThanOrEqual(cb);
+		expect(cb).toBeLessThanOrEqual(cc);
+		expect(ca).toBeLessThan(cc);
+	});
+
+	it('rounds-trips solid colours via the pure function and the browser wrapper to the same value', async () => {
+		const wrapperResult = await encodeLqip(await (async () => {
+			const c = document.createElement('canvas');
+			c.width = 8; c.height = 6;
+			const ctx = c.getContext('2d')!;
+			ctx.fillStyle = 'rgb(200, 100, 50)';
+			ctx.fillRect(0, 0, 8, 6);
+			return createImageBitmap(c);
+		})());
+		const pureResult = encodePixelDataToLqip(solid(200, 100, 50, 8, 6), 8, 6);
+		expect(wrapperResult).toBe(pureResult);
 	});
 });

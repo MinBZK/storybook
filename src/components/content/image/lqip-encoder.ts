@@ -35,28 +35,51 @@ export type NLDDLqipEncoderTranslations = typeof nlddLqipEncoderTranslations;
 
 /* --------------------------------------------------------------------- *
  *  Encoder
+ *
+ *  The math runs in TWO improvements over a naive canvas-based encoder:
+ *
+ *   1. Linear-light averaging. sRGB pixel values are gamma-encoded, so
+ *      averaging them directly under-weights highlights. We convert each
+ *      pixel to linear-light (via a 256-entry LUT), average, then map back
+ *      to sRGB / Oklab. This matches how a photon-correct downsample would
+ *      behave and represents bright local features (e.g. lights against a
+ *      dark sky) more faithfully.
+ *
+ *   2. Manual per-cell sampling. We don't rely on canvas drawImage()
+ *      down-resampling — different browsers and platforms use different
+ *      kernels (bilinear / bicubic / Lanczos) and would produce different
+ *      LQIP integers for the same image. Looping the pixel data ourselves
+ *      makes the encoder identical across browser, Node, and any other
+ *      runtime that can give us a Uint8ClampedArray of RGBA bytes.
+ *
+ *  The pure entry point is `encodePixelDataToLqip(data, width, height)`. The
+ *  async `encodeLqip(source)` is a browser wrapper that gets pixels via
+ *  canvas getImageData and forwards them. Node users can build their own
+ *  wrapper using sharp / pngjs / etc. — same pure function, same result.
  * --------------------------------------------------------------------- */
 
-/** sRGB (0-255) → linear-light (0-1). */
-function srgbToLinear(c: number): number {
-	const n = c / 255;
-	return n <= 0.04045 ? n / 12.92 : Math.pow((n + 0.055) / 1.055, 2.4);
+/** sRGB byte (0-255) → linear-light (0-1) lookup table. Precomputed because
+ *  large images run this hundreds of thousands of times. */
+const SRGB_TO_LINEAR_LUT = new Float32Array(256);
+for (let i = 0; i < 256; i++) {
+	const n = i / 255;
+	SRGB_TO_LINEAR_LUT[i] = n <= 0.04045 ? n / 12.92 : Math.pow((n + 0.055) / 1.055, 2.4);
 }
 
-/** sRGB triplet → Oklab. Constants from the Oklab spec. */
-function rgbToOklab(r: number, g: number, b: number): { L: number; a: number; b: number } {
-	const rl = srgbToLinear(r);
-	const gl = srgbToLinear(g);
-	const bl = srgbToLinear(b);
+/** linear-light (0-1) → sRGB byte (0-255). */
+function linearToSrgb(n: number): number {
+	const clamped = Math.max(0, Math.min(1, n));
+	const v = clamped <= 0.0031308 ? 12.92 * clamped : 1.055 * Math.pow(clamped, 1 / 2.4) - 0.055;
+	return Math.round(v * 255);
+}
 
+/** Linear-light RGB triplet (0-1 per channel) → Oklab. Same constants as the
+ *  spec, but skips the sRGB→linear step since the input is already linear. */
+function linearRgbToOklab(rl: number, gl: number, bl: number): { L: number; a: number; b: number } {
 	const l = 0.4122214708 * rl + 0.5363325363 * gl + 0.0514459929 * bl;
 	const m = 0.2119034982 * rl + 0.6806995451 * gl + 0.1073969566 * bl;
 	const s = 0.0883024619 * rl + 0.2817188376 * gl + 0.6299787005 * bl;
-
-	const l_ = Math.cbrt(l);
-	const m_ = Math.cbrt(m);
-	const s_ = Math.cbrt(s);
-
+	const l_ = Math.cbrt(l), m_ = Math.cbrt(m), s_ = Math.cbrt(s);
 	return {
 		L: 0.2104542553 * l_ + 0.7936177850 * m_ - 0.0040720468 * s_,
 		a: 1.9779984951 * l_ - 2.4285922050 * m_ + 0.4505937099 * s_,
@@ -69,57 +92,61 @@ function clamp(v: number, lo: number, hi: number): number {
 }
 
 /**
- * Encode an image into the 20-bit LQIP integer.
+ * Pure LQIP encoder. Operates on a raw RGBA pixel buffer (no DOM, no Node
+ * APIs) so the same function can be called from a browser, a Node script,
+ * a Worker, or any other runtime. Returns the signed 20-bit integer the
+ * CSS decoder expects (range [-524288, 524287]).
  *
- * The source can be a File (e.g. from <input type="file">), an HTMLImageElement,
- * or an ImageBitmap. Returns a number in [-524288, 524287].
- *
- * When passing an HTMLImageElement loaded from a different origin, set
- * `img.crossOrigin = 'anonymous'` BEFORE assigning `src` — otherwise the
- * underlying canvas read taints and throws a SecurityError. Files and
- * ImageBitmaps from the same origin are unaffected.
+ * The buffer layout is the same as ImageData.data: 4 bytes per pixel, in
+ * RGBA order, row-major.
  */
-export async function encodeLqip(source: File | HTMLImageElement | ImageBitmap): Promise<number> {
-	let bitmap: ImageBitmap;
-	if (source instanceof File) {
-		bitmap = await createImageBitmap(source);
-	} else if (source instanceof HTMLImageElement) {
-		bitmap = await createImageBitmap(source);
-	} else {
-		bitmap = source;
+export function encodePixelDataToLqip(
+	data: Uint8ClampedArray | Uint8Array,
+	width: number,
+	height: number,
+): number {
+	if (width < 3 || height < 2) {
+		throw new Error(`encodePixelDataToLqip: image must be at least 3×2, got ${width}×${height}`);
 	}
-
-	// Cell colours: 3×2 downsample, take greyscale per pixel.
-	const cellCanvas = document.createElement('canvas');
-	cellCanvas.width = 3;
-	cellCanvas.height = 2;
-	const cellCtx = cellCanvas.getContext('2d');
-	if (!cellCtx) throw new Error('encodeLqip: could not acquire a 2D canvas context');
-	cellCtx.drawImage(bitmap, 0, 0, 3, 2);
-	const cellData = cellCtx.getImageData(0, 0, 3, 2).data;
-
 	const cells: number[] = [];
-	for (let i = 0; i < 6; i++) {
-		const r = cellData[i * 4];
-		const g = cellData[i * 4 + 1];
-		const b = cellData[i * 4 + 2];
-		// Rec.709 luminance gives a perceptually decent greyscale.
-		const gray = (0.2126 * r + 0.7152 * g + 0.0722 * b) / 255;
-		// CSS maps quantised cell value c (0-3) to lightness c/3 * 60% + 20%,
-		// i.e. the 0.2-0.8 range. Invert that mapping to quantise the source.
-		const c = clamp(Math.round((gray - 0.2) / 0.6 * 3), 0, 3);
-		cells.push(c);
+	let totalR = 0, totalG = 0, totalB = 0, totalCount = 0;
+
+	// 3 columns × 2 rows. Cell bounds use floor() so a 1200×799 image still
+	// partitions cleanly into 6 contiguous regions.
+	for (let cellRow = 0; cellRow < 2; cellRow++) {
+		const yStart = Math.floor(cellRow * height / 2);
+		const yEnd = Math.floor((cellRow + 1) * height / 2);
+		for (let cellCol = 0; cellCol < 3; cellCol++) {
+			const xStart = Math.floor(cellCol * width / 3);
+			const xEnd = Math.floor((cellCol + 1) * width / 3);
+			let cellR = 0, cellG = 0, cellB = 0, cellCount = 0;
+			for (let y = yStart; y < yEnd; y++) {
+				for (let x = xStart; x < xEnd; x++) {
+					const i = (y * width + x) * 4;
+					cellR += SRGB_TO_LINEAR_LUT[data[i]];
+					cellG += SRGB_TO_LINEAR_LUT[data[i + 1]];
+					cellB += SRGB_TO_LINEAR_LUT[data[i + 2]];
+					cellCount++;
+				}
+			}
+			totalR += cellR; totalG += cellG; totalB += cellB; totalCount += cellCount;
+
+			// Cell quantisation: take linear-light average, convert back to
+			// sRGB bytes, then Rec.709 luma. The CSS renders each cell as a
+			// hsl(0 0% calc(c/3 * 60% + 20%)) grey, so we mirror that scaling
+			// at encode time — c/3 * 60 + 20 covers the [20%, 80%] band.
+			const avgR = linearToSrgb(cellR / cellCount);
+			const avgG = linearToSrgb(cellG / cellCount);
+			const avgB = linearToSrgb(cellB / cellCount);
+			const luma = (0.2126 * avgR + 0.7152 * avgG + 0.0722 * avgB) / 255;
+			cells.push(clamp(Math.round((luma - 0.2) / 0.6 * 3), 0, 3));
+		}
 	}
 
-	// Base colour: 1×1 downsample = average pixel.
-	const avgCanvas = document.createElement('canvas');
-	avgCanvas.width = 1;
-	avgCanvas.height = 1;
-	const avgCtx = avgCanvas.getContext('2d');
-	if (!avgCtx) throw new Error('encodeLqip: could not acquire a 2D canvas context');
-	avgCtx.drawImage(bitmap, 0, 0, 1, 1);
-	const avgData = avgCtx.getImageData(0, 0, 1, 1).data;
-	const lab = rgbToOklab(avgData[0], avgData[1], avgData[2]);
+	// Base colour: linear-light average over the WHOLE image (the cell sums
+	// already partition every pixel exactly once). Convert to Oklab and
+	// quantise L / a / b.
+	const lab = linearRgbToOklab(totalR / totalCount, totalG / totalCount, totalB / totalCount);
 
 	// CSS maps the quantised triplet back to:
 	//   L: ll/3 * 0.6 + 0.2          → invert: (L - 0.2) / 0.6 * 3
@@ -129,7 +156,6 @@ export async function encodeLqip(source: File | HTMLImageElement | ImageBitmap):
 	const aaa = clamp(Math.round((lab.a + 0.35) / 0.7 * 8), 0, 7);
 	const bbb = clamp(Math.round((lab.b + 0.35) / 0.7 * 8 - 1), 0, 7);
 
-	// Pack: ca | cb | cc | cd | ce | cf | ll | aaa | bbb
 	let packed = 0;
 	packed |= cells[0] << 18;
 	packed |= cells[1] << 16;
@@ -140,9 +166,36 @@ export async function encodeLqip(source: File | HTMLImageElement | ImageBitmap):
 	packed |= ll << 6;
 	packed |= aaa << 3;
 	packed |= bbb;
-
-	// The CSS decoder adds 2^19 back, so subtract it here for a signed result.
 	return packed - (1 << 19);
+}
+
+/**
+ * Browser-friendly wrapper around `encodePixelDataToLqip`. Accepts a File
+ * (e.g. from <input type="file">), an HTMLImageElement, or an ImageBitmap;
+ * decodes it to pixels via the Canvas API; and forwards to the pure encoder.
+ *
+ * When passing an HTMLImageElement loaded from a different origin, set
+ * `img.crossOrigin = 'anonymous'` BEFORE assigning `src` — otherwise the
+ * underlying canvas read taints and throws a SecurityError. Files and
+ * same-origin ImageBitmaps are unaffected.
+ */
+export async function encodeLqip(source: File | HTMLImageElement | ImageBitmap): Promise<number> {
+	let bitmap: ImageBitmap;
+	if (source instanceof File || source instanceof HTMLImageElement) {
+		bitmap = await createImageBitmap(source);
+	} else {
+		bitmap = source;
+	}
+
+	const canvas = document.createElement('canvas');
+	canvas.width = bitmap.width;
+	canvas.height = bitmap.height;
+	const ctx = canvas.getContext('2d');
+	if (!ctx) throw new Error('encodeLqip: could not acquire a 2D canvas context');
+	ctx.drawImage(bitmap, 0, 0);
+	const { data } = ctx.getImageData(0, 0, bitmap.width, bitmap.height);
+
+	return encodePixelDataToLqip(data, bitmap.width, bitmap.height);
 }
 
 

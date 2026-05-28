@@ -15,7 +15,7 @@ const SAMPLE_SRCSET =
 
 /** LQIP integer berekend uit de bron. Regenereer via de "LQIP encoder tool"
  *  story als je de afbeelding vervangt. */
-const SAMPLE_LQIP = -196509;
+const SAMPLE_LQIP = 83043;
 
 /**
  * Een gestylede wrapper rond `<img>` met de design system tokens voor radius,
