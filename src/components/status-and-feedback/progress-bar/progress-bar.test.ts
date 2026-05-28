@@ -273,7 +273,7 @@ describe('nldd-progress-bar', () => {
 	it('renders an internal segment when value is set and no children', async () => {
 		el = await fixture('<nldd-progress-bar value="60" color="success"></nldd-progress-bar>');
 		await waitForUpdate(el);
-		const internal = el.shadowRoot!.querySelector<HTMLElement>('.progress-bar__internal-segment');
+		const internal = el.shadowRoot!.querySelector<HTMLElement>('.progress-bar__segment');
 		expect(internal).not.toBeNull();
 		expect(internal!.getAttribute('color')).toBe('success');
 		expect(internal!.style.getPropertyValue('--context-progress-bar-segment-width')).toBe('60%');
@@ -286,7 +286,7 @@ describe('nldd-progress-bar', () => {
 			</nldd-progress-bar>
 		`);
 		await waitForUpdate(el);
-		expect(el.shadowRoot!.querySelector('.progress-bar__internal-segment')).toBeNull();
+		expect(el.shadowRoot!.querySelector('.progress-bar__segment')).toBeNull();
 	});
 
 
@@ -389,14 +389,14 @@ describe('nldd-progress-bar', () => {
 	it('internal segment tooltip is suppressed when header is shown', async () => {
 		el = await fixture('<nldd-progress-bar value="60" text="Uploaden"></nldd-progress-bar>');
 		await waitForUpdate(el);
-		const internal = el.shadowRoot!.querySelector<NLDDProgressBarSegment>('.progress-bar__internal-segment')!;
+		const internal = el.shadowRoot!.querySelector<NLDDProgressBarSegment>('.progress-bar__segment')!;
 		expect(internal.dataTooltipText).toBe('');
 	});
 
 	it('internal segment gets a tooltip when header is hidden', async () => {
 		el = await fixture('<nldd-progress-bar value="60"></nldd-progress-bar>');
 		await waitForUpdate(el);
-		const internal = el.shadowRoot!.querySelector<NLDDProgressBarSegment>('.progress-bar__internal-segment')!;
+		const internal = el.shadowRoot!.querySelector<NLDDProgressBarSegment>('.progress-bar__segment')!;
 		expect(internal.dataTooltipText).toBe('60%');
 	});
 

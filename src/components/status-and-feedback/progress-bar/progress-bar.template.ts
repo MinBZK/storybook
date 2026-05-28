@@ -44,7 +44,7 @@ export function progressBarTemplate(component: NLDDProgressBar, onSlotChange: ()
 				})}></div>
 			` : nothing}
 			${showInternalSegment ? html`
-				<nldd-progress-bar-segment class="progress-bar__internal-segment"
+				<nldd-progress-bar-segment class="progress-bar__segment"
 					.value=${component.value!}
 					color=${component.color}
 				></nldd-progress-bar-segment>

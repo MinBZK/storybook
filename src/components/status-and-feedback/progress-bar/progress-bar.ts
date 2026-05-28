@@ -369,7 +369,7 @@ export class NLDDProgressBar extends LitElement {
 		// lives in shadow DOM and is rendered by the template when there are no
 		// slotted children — both share the same dynamic-attribute logic here.
 		const internalSegment = this.shadowRoot?.querySelector<NLDDProgressBarSegment>(
-			'.progress-bar__internal-segment',
+			'.progress-bar__segment',
 		) ?? null;
 		const allSegments: NLDDProgressBarSegment[] = internalSegment
 			? [internalSegment, ...this._segments]
