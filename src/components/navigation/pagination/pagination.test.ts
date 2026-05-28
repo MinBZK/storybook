@@ -302,4 +302,3 @@ describe('nldd-pagination – select expanded state', () => {
 		expect(el.hasAttribute('select-expanded')).toBe(false);
 	});
 });
-
