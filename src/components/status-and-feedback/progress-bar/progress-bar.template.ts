@@ -22,23 +22,21 @@ export function progressBarTemplate(component: NLDDProgressBar, onSlotChange: ()
 	// Round so aria-valuenow doesn't produce floats (some screenreaders
 	// read them out literally — "49 point 999 percent").
 	const ariaValueNow = component.indeterminate ? undefined : Math.round(component._totalValue);
-	// Accessible name: prefer the visible header text (linked via aria-labelledby)
-	// so screen readers and the visual label stay in sync. Falls back to the
-	// translated "Voortgang" string when no header is rendered.
-	const labelId = 'progress-bar-label';
-	const ariaLabelledby = hasHeader ? labelId : undefined;
-	const ariaLabel = hasHeader ? undefined : component._t('components.progress-bar.label-text');
+	// Accessible name: use aria-label with the visible header text or a
+	// translated fallback. aria-labelledby would be cleaner but VoiceOver on
+	// Safari can't resolve IDREFs scoped to a shadow root, so we duplicate
+	// the string into aria-label for cross-browser screen-reader support.
+	const ariaLabel = component.text || component._t('components.progress-bar.label-text');
 	return html`
 		${hasHeader ? html`
 			<div class="progress-bar__header">
-				<span class="progress-bar__text" id=${labelId}>${component.text}</span>
+				<span class="progress-bar__text">${component.text}</span>
 				<span class="progress-bar__value">${component._displayValue}</span>
 			</div>
 		` : nothing}
 		<div class="progress-bar__track"
 			role="progressbar"
-			aria-labelledby=${ifDefined(ariaLabelledby)}
-			aria-label=${ifDefined(ariaLabel)}
+			aria-label=${ariaLabel}
 			aria-valuemin="0"
 			aria-valuemax=${component.max}
 			aria-valuenow=${ifDefined(ariaValueNow)}

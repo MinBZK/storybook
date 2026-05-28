@@ -9,11 +9,16 @@
  *
  * @attr {string}  spacing  - Spacing between elements: 'flat' | 'tight' | 'snug' (default) | 'loose'
  * @attr {boolean} centered - Centers the main column inside the container; without it, content is left-aligned
+ * @attr {object}  translations - Override translation keys; unset keys fall back to Dutch
  */
 import { LitElement } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
+import { nlddRichTextTranslations } from './rich-text.i18n.js';
+import type { NLDDRichTextTranslations } from './rich-text.i18n.js';
 
 type Spacing = 'flat' | 'tight' | 'snug' | 'loose';
+
+const MANAGED_LABEL_ATTR = 'data-nldd-managed-label';
 
 @customElement('nldd-rich-text')
 export class NLDDRichText extends LitElement {
@@ -22,6 +27,13 @@ export class NLDDRichText extends LitElement {
 
 	@property({ type: Boolean, reflect: true })
 	centered = false;
+
+	@property({ type: Object })
+	translations: Partial<NLDDRichTextTranslations> = {};
+
+	public _t(key: keyof NLDDRichTextTranslations): string {
+		return this.translations[key] ?? nlddRichTextTranslations[key];
+	}
 
 	private _mutationObserver?: MutationObserver;
 	private _resizeObserver?: ResizeObserver;
@@ -58,9 +70,23 @@ export class NLDDRichText extends LitElement {
 			if (table.scrollWidth > table.clientWidth) {
 				if (table.getAttribute('tabindex') !== '0') {
 					table.setAttribute('tabindex', '0');
+					// Focusable region needs an accessible name. Prefer the table's
+					// own caption when present, otherwise fall back to a translated
+					// generic label. Only set aria-label when the table doesn't
+					// already declare one (consumer wins). Mark managed labels so
+					// we can clean them up when the table no longer overflows.
+					if (!table.hasAttribute('aria-label') && !table.hasAttribute('aria-labelledby')) {
+						const captionText = table.querySelector('caption')?.textContent?.trim();
+						table.setAttribute('aria-label', captionText || this._t('components.rich-text.table-scroll-label'));
+						table.setAttribute(MANAGED_LABEL_ATTR, '');
+					}
 				}
 			} else if (table.getAttribute('tabindex') === '0') {
 				table.removeAttribute('tabindex');
+				if (table.hasAttribute(MANAGED_LABEL_ATTR)) {
+					table.removeAttribute('aria-label');
+					table.removeAttribute(MANAGED_LABEL_ATTR);
+				}
 			}
 		}
 	}

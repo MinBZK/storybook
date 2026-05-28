@@ -1,4 +1,4 @@
-import { describe, it, expect, afterEach } from 'vitest';
+import { describe, it, expect, afterEach, vi } from 'vitest';
 import { fixture, cleanup, waitForUpdate } from '../../../test-utils.js';
 import type { NLDDProgress } from './progress.js';
 import './progress.js';
@@ -28,22 +28,49 @@ describe('nldd-progress', () => {
 		expect(el.shadowRoot!.querySelector('.progress__indicator')).toBeNull();
 	});
 
-	it('resets the delay timer on disconnect + reconnect', async () => {
-		// Document the by-design behaviour: removing the element and
-		// re-inserting it restarts the 1000ms wait and hides the indicator
-		// again. Consumers who want the timer to run only once should toggle
-		// `hidden` or visibility instead of unmounting.
-		el = await fixture<NLDDProgress>('<nldd-progress></nldd-progress>');
-		await waitForUpdate(el);
-		// Force the visible state to simulate the timer having fired.
-		(el as unknown as { _visible: boolean })._visible = true;
-		await waitForUpdate(el);
-		expect(el.shadowRoot!.querySelector('.progress__indicator')).not.toBeNull();
-		const parent = el.parentElement!;
-		parent.removeChild(el);
-		parent.appendChild(el);
-		await waitForUpdate(el);
-		// Indicator is hidden again after reconnect; the new timeout has not yet fired.
-		expect(el.shadowRoot!.querySelector('.progress__indicator')).toBeNull();
+	it('shows the indicator after the 1000ms delay elapses', async () => {
+		// Use fake timers + updateComplete (not waitForUpdate) — waitForUpdate's
+		// internal setTimeout(0) never fires when timers are mocked.
+		vi.useFakeTimers();
+		try {
+			el = await fixture<NLDDProgress>('<nldd-progress></nldd-progress>');
+			const litEl = el as HTMLElement & { updateComplete: Promise<boolean> };
+			await litEl.updateComplete;
+			expect(el.shadowRoot!.querySelector('.progress__indicator')).toBeNull();
+			await vi.advanceTimersByTimeAsync(1000);
+			await litEl.updateComplete;
+			expect(el.shadowRoot!.querySelector('.progress__indicator')).not.toBeNull();
+		} finally {
+			vi.useRealTimers();
+		}
+	});
+
+	it('resets the delay timer on disconnect + reconnect and re-fires after 1000ms', async () => {
+		// Removing and re-inserting the element restarts the 1000ms wait and
+		// hides the indicator again — by design. Consumers who want the timer
+		// to run only once should toggle `hidden` or visibility instead of
+		// unmounting the element.
+		vi.useFakeTimers();
+		try {
+			el = await fixture<NLDDProgress>('<nldd-progress></nldd-progress>');
+			const litEl = el as HTMLElement & { updateComplete: Promise<boolean> };
+			await litEl.updateComplete;
+			// First timer fires → indicator visible.
+			await vi.advanceTimersByTimeAsync(1000);
+			await litEl.updateComplete;
+			expect(el.shadowRoot!.querySelector('.progress__indicator')).not.toBeNull();
+			// Detach + re-attach to trigger the reconnect path.
+			const parent = el.parentElement!;
+			parent.removeChild(el);
+			parent.appendChild(el);
+			await litEl.updateComplete;
+			expect(el.shadowRoot!.querySelector('.progress__indicator')).toBeNull();
+			// Another 1000ms makes it reappear.
+			await vi.advanceTimersByTimeAsync(1000);
+			await litEl.updateComplete;
+			expect(el.shadowRoot!.querySelector('.progress__indicator')).not.toBeNull();
+		} finally {
+			vi.useRealTimers();
+		}
 	});
 });

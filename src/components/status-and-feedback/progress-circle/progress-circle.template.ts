@@ -48,18 +48,15 @@ export function progressCircleTemplate(component: NLDDProgressCircle, onSlotChan
 	const sizeInPixels = Number(component.size) || 32;
 	const radius = getRadius(sizeInPixels);
 	const circumference = getCircumference(sizeInPixels);
-	// Accessible name: prefer the visible text below the circle (linked via
-	// aria-labelledby) so screen readers and the visual label stay in sync.
-	// Falls back to the translated "Voortgang" string when no text is rendered.
-	const hasText = !!component.text;
-	const labelId = 'progress-circle-label';
-	const ariaLabelledby = hasText ? labelId : undefined;
-	const ariaLabel = hasText ? undefined : component._t('components.progress-circle.label-text');
+	// Accessible name: use aria-label with the visible label text or a
+	// translated fallback. aria-labelledby would be cleaner but VoiceOver on
+	// Safari can't resolve IDREFs scoped to a shadow root, so we duplicate
+	// the string into aria-label for cross-browser screen-reader support.
+	const ariaLabel = component.text || component._t('components.progress-circle.label-text');
 	const circle = html`
 		<div class="progress-circle__circle"
 			role="progressbar"
-			aria-labelledby=${ifDefined(ariaLabelledby)}
-			aria-label=${ifDefined(ariaLabel)}
+			aria-label=${ariaLabel}
 			aria-valuemin="0"
 			aria-valuemax=${component.max}
 			aria-valuenow=${ifDefined(ariaValueNow)}
@@ -114,6 +111,6 @@ export function progressCircleTemplate(component: NLDDProgressCircle, onSlotChan
 	return html`
 		${wrappedCircle}
 		<slot @slotchange=${onSlotChange}></slot>
-		${component.text ? html`<span class="progress-circle__text" id=${labelId}>${component.text}</span>` : nothing}
+		${component.text ? html`<span class="progress-circle__text">${component.text}</span>` : nothing}
 	`;
 }

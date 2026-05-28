@@ -35,6 +35,10 @@
       "types": "./dist/components/content/icon/icon.d.ts",
       "default": "./dist/components/content/icon/icon.js"
     },
+    "./image": {
+      "types": "./dist/components/content/image/image.d.ts",
+      "default": "./dist/components/content/image/image.js"
+    },
     "./rich-text": {
       "types": "./dist/components/content/rich-text/rich-text.d.ts",
       "default": "./dist/components/content/rich-text/rich-text.js"
@@ -339,9 +343,25 @@
       "types": "./dist/components/status-and-feedback/inline-dialog/inline-dialog.d.ts",
       "default": "./dist/components/status-and-feedback/inline-dialog/inline-dialog.js"
     },
+    "./banner": {
+      "types": "./dist/components/status-and-feedback/banner/banner.d.ts",
+      "default": "./dist/components/status-and-feedback/banner/banner.js"
+    },
     "./badge": {
       "types": "./dist/components/status-and-feedback/badge/badge.d.ts",
       "default": "./dist/components/status-and-feedback/badge/badge.js"
+    },
+    "./progress-bar": {
+      "types": "./dist/components/status-and-feedback/progress-bar/progress-bar.d.ts",
+      "default": "./dist/components/status-and-feedback/progress-bar/progress-bar.js"
+    },
+    "./progress-circle": {
+      "types": "./dist/components/status-and-feedback/progress-circle/progress-circle.d.ts",
+      "default": "./dist/components/status-and-feedback/progress-circle/progress-circle.js"
+    },
+    "./progress": {
+      "types": "./dist/components/status-and-feedback/progress/progress.d.ts",
+      "default": "./dist/components/status-and-feedback/progress/progress.js"
     },
     "./styles": "./dist/css/global.css",
     "./styles/tokens": "./dist/css/settings.css",

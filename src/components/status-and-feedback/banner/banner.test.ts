@@ -70,17 +70,11 @@ describe('nldd-banner', () => {
 	   ARIA semantics
 	   ============================================================ */
 
-	it('non-critical variants get role="status" and aria-live="polite"', async () => {
-		for (const v of ['neutral', 'success', 'warning'] as const) {
-			const wrapper = document.createElement('div');
-			wrapper.innerHTML = `<nldd-banner variant="${v}"></nldd-banner>`;
-			document.body.appendChild(wrapper);
-			const banner = wrapper.firstElementChild as HTMLElement & { updateComplete: Promise<boolean> };
-			await banner.updateComplete;
-			expect(banner.getAttribute('role')).toBe('status');
-			expect(banner.getAttribute('aria-live')).toBe('polite');
-			wrapper.remove();
-		}
+	it.each(['neutral', 'success', 'warning'] as const)('variant="%s" gets role="status" and aria-live="polite"', async (variant) => {
+		el = await fixture(`<nldd-banner variant="${variant}"></nldd-banner>`);
+		await waitForUpdate(el);
+		expect(el.getAttribute('role')).toBe('status');
+		expect(el.getAttribute('aria-live')).toBe('polite');
 	});
 
 	it('critical variant gets role="alert" without aria-live', async () => {
