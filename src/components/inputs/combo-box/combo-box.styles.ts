@@ -102,6 +102,7 @@ export const comboBoxStyles = css`
 	.combo-box__input:-webkit-autofill,
 	.combo-box__input:autofill {
 		box-shadow: 0 0 0 999px var(--_background-color) inset;
+		-webkit-text-fill-color: var(--semantics-content-color);
 	}
 
 	.combo-box__input-fade {

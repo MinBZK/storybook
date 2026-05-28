@@ -106,6 +106,7 @@ export const searchFieldStyles = css`
 	.search-field__input:-webkit-autofill,
 	.search-field__input:autofill {
 		box-shadow: 0 0 0 999px var(--_background-color) inset;
+		-webkit-text-fill-color: var(--semantics-content-color);
 	}
 
 	.search-field__input::-webkit-search-cancel-button {

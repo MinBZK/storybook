@@ -122,6 +122,7 @@ export const multiLineTextFieldStyles = css`
 	.multi-line-text-field__input:-webkit-autofill,
 	.multi-line-text-field__input:autofill {
 		box-shadow: 0 0 0 999px var(--_background-color) inset;
+		-webkit-text-fill-color: var(--semantics-content-color);
 	}
 
 	.multi-line-text-field__validation-icon-area {
