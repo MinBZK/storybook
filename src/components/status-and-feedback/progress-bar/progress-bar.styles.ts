@@ -205,13 +205,6 @@ export const progressBarSegmentStyles = css`
 	/* # Host */
 
 	:host {
-		/* The parent nldd-progress-bar sets --context-progress-bar-segment-width
-		 * inline on each segment before the segment renders. The 0% fallback is
-		 * defensive: it keeps a stray un-parented segment from rendering at its
-		 * intrinsic width (the segment is meaningless standalone but shouldn't
-		 * blow up the layout if it ends up loose during dev). --context-* vars
-		 * are intentionally outside the no-fallback rule that applies to
-		 * --primitives/--semantics/--components/--_ (those are validated). */
 		--_width: var(--context-progress-bar-segment-width, 0%);
 		--_min-width: var(--components-progress-bar-segment-min-width);
 		--_fill-color: var(--components-progress-bar-accent-fill-color);

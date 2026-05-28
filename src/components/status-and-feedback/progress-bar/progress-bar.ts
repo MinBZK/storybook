@@ -154,12 +154,12 @@ export class NLDDProgressBar extends LitElement {
 	/** True for 300ms after indeterminate=true→false: indicator fades out while
 	 *  the segment grows from 0 to its target value. */
 	@state()
-	private _indeterminateExiting = false;
+	_indeterminateExiting = false;
 
 	/** True for 300ms after indeterminate=false→true: indicator fades in while
 	 *  the segment shrinks from its current width to 0. */
 	@state()
-	private _indeterminateEntering = false;
+	_indeterminateEntering = false;
 
 	private _exitTimeout?: ReturnType<typeof setTimeout>;
 	private _enterTimeout?: ReturnType<typeof setTimeout>;
