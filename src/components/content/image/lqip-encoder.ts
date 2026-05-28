@@ -101,10 +101,12 @@ function clamp(v: number, lo: number, hi: number): number {
  *  snap to the adjacent non-neutral bucket so the tint is preserved. */
 function quantiseChromaAwayFromMid(value: number, midBucket: number, lo: number, hi: number): number {
 	const offset = value - midBucket;
-	// Genuinely-neutral threshold: 5% of a quantisation step. Anything inside
-	// snaps to the neutral bucket; anything outside snaps to the next bucket
-	// in the appropriate direction.
-	if (Math.abs(offset) < 0.05) return midBucket;
+	// Genuinely-neutral threshold: 15% of a quantisation step. Anything inside
+	// the threshold snaps to the neutral bucket — this keeps near-neutral
+	// images (snow, neutral indoor scenes, B&W photos) from being pushed into
+	// a misleading colour cast. Anything outside the threshold snaps to the
+	// next bucket in the appropriate direction so genuine tints survive.
+	if (Math.abs(offset) < 0.15) return midBucket;
 	return offset > 0 ? clamp(Math.ceil(value), lo, hi) : clamp(Math.floor(value), lo, hi);
 }
 

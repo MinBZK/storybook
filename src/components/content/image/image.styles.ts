@@ -137,7 +137,7 @@ export const imageStyles = css`
 		   highlights stay softer than the base; a value of 1.0 would match
 		   the base hue exactly, 0.0 is back to pure grey. The encoded LQIP
 		   integers are unchanged — only the decoder gets warmer output. */
-		--_lqip-cell-chroma-scale: 0.4;
+		--_lqip-cell-chroma-scale: 0.7;
 		--_lqip-base-a: calc(var(--_lqip-aaa) / 8 * 0.7 - 0.35);
 		--_lqip-base-b: calc((var(--_lqip-bbb) + 1) / 8 * 0.7 - 0.35);
 		--_lqip-cell-a: calc(var(--_lqip-base-a) * var(--_lqip-cell-chroma-scale));
