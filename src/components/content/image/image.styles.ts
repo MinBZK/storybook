@@ -127,22 +127,28 @@ export const imageStyles = css`
 		--_lqip-bbb: mod(calc(var(--context-lqip) + pow(2, 19)), 8);
 
 		/* Cells render in Oklab with each cell's own quantised luminance but
-		   the base colour's hue (a/b). This deviates from Lean Rada's exact
-		   technique — his version uses hsl(0 0% X%) which is pure grey and
-		   visibly washes out the base tint with six grey overlays. Using the
-		   base hue per cell preserves the overall colour cast while still
-		   modulating brightness, so the placeholder reads as "muted blue
-		   sunset" instead of "muted grey". The encoded LQIP integers are
-		   unchanged — only the decoder gets warmer output. */
+		   a damped version of the base colour's hue (a/b). This deviates
+		   from Lean Rada's exact technique — his version uses hsl(0 0% X%)
+		   which is pure grey and visibly washes out the base tint with six
+		   grey overlays. Using the base hue per cell preserves the overall
+		   colour cast while still modulating brightness, so the placeholder
+		   reads as "muted blue sunset" instead of "muted grey". Cell chroma
+		   is multiplied by --_lqip-cell-chroma-scale (0..1) so the cell
+		   highlights stay softer than the base; a value of 1.0 would match
+		   the base hue exactly, 0.0 is back to pure grey. The encoded LQIP
+		   integers are unchanged — only the decoder gets warmer output. */
+		--_lqip-cell-chroma-scale: 0.4;
 		--_lqip-base-a: calc(var(--_lqip-aaa) / 8 * 0.7 - 0.35);
 		--_lqip-base-b: calc((var(--_lqip-bbb) + 1) / 8 * 0.7 - 0.35);
+		--_lqip-cell-a: calc(var(--_lqip-base-a) * var(--_lqip-cell-chroma-scale));
+		--_lqip-cell-b: calc(var(--_lqip-base-b) * var(--_lqip-cell-chroma-scale));
 
-		--_lqip-ca-clr: oklab(calc(var(--_lqip-ca) / 3 * 0.6 + 0.2) var(--_lqip-base-a) var(--_lqip-base-b));
-		--_lqip-cb-clr: oklab(calc(var(--_lqip-cb) / 3 * 0.6 + 0.2) var(--_lqip-base-a) var(--_lqip-base-b));
-		--_lqip-cc-clr: oklab(calc(var(--_lqip-cc) / 3 * 0.6 + 0.2) var(--_lqip-base-a) var(--_lqip-base-b));
-		--_lqip-cd-clr: oklab(calc(var(--_lqip-cd) / 3 * 0.6 + 0.2) var(--_lqip-base-a) var(--_lqip-base-b));
-		--_lqip-ce-clr: oklab(calc(var(--_lqip-ce) / 3 * 0.6 + 0.2) var(--_lqip-base-a) var(--_lqip-base-b));
-		--_lqip-cf-clr: oklab(calc(var(--_lqip-cf) / 3 * 0.6 + 0.2) var(--_lqip-base-a) var(--_lqip-base-b));
+		--_lqip-ca-clr: oklab(calc(var(--_lqip-ca) / 3 * 0.6 + 0.2) var(--_lqip-cell-a) var(--_lqip-cell-b));
+		--_lqip-cb-clr: oklab(calc(var(--_lqip-cb) / 3 * 0.6 + 0.2) var(--_lqip-cell-a) var(--_lqip-cell-b));
+		--_lqip-cc-clr: oklab(calc(var(--_lqip-cc) / 3 * 0.6 + 0.2) var(--_lqip-cell-a) var(--_lqip-cell-b));
+		--_lqip-cd-clr: oklab(calc(var(--_lqip-cd) / 3 * 0.6 + 0.2) var(--_lqip-cell-a) var(--_lqip-cell-b));
+		--_lqip-ce-clr: oklab(calc(var(--_lqip-ce) / 3 * 0.6 + 0.2) var(--_lqip-cell-a) var(--_lqip-cell-b));
+		--_lqip-cf-clr: oklab(calc(var(--_lqip-cf) / 3 * 0.6 + 0.2) var(--_lqip-cell-a) var(--_lqip-cell-b));
 		--_lqip-base-clr: oklab(calc(var(--_lqip-ll) / 3 * 0.6 + 0.2) var(--_lqip-base-a) var(--_lqip-base-b));
 
 		background-color: transparent;
