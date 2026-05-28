@@ -136,9 +136,13 @@ describe('nldd-image', () => {
 		const img = el.shadowRoot!.querySelector('img')!;
 		img.dispatchEvent(new Event('error'));
 		await waitForUpdate(el);
+		const overlay = el.shadowRoot!.querySelector('.image__error')!;
 		expect(el.shadowRoot!.querySelector('.image__error-text')).toBeNull();
-		// aria-label is omitted for decorative images
-		expect(el.shadowRoot!.querySelector('.image__error')!.hasAttribute('aria-label')).toBe(false);
+		// Overlay is hidden from assistive tech entirely for decorative images:
+		// no img role, no label, aria-hidden true.
+		expect(overlay.hasAttribute('role')).toBe(false);
+		expect(overlay.hasAttribute('aria-label')).toBe(false);
+		expect(overlay.getAttribute('aria-hidden')).toBe('true');
 	});
 
 	it('passes through srcset and sizes', async () => {

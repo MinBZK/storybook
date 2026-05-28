@@ -61,7 +61,8 @@ describe('nldd-progress-circle', () => {
 		el = await fixture('<nldd-progress-circle indeterminate></nldd-progress-circle>');
 		await waitForUpdate(el);
 		const wrapper = el.shadowRoot!.querySelector('.progress-circle__circle')!;
-		expect(wrapper.getAttribute('aria-valuenow')).toBe('');
+		// aria-valuenow must be ABSENT (not empty) — some screenreaders read "" as "0 percent".
+		expect(wrapper.hasAttribute('aria-valuenow')).toBe(false);
 		expect(wrapper.getAttribute('aria-valuetext')).toBe('Aan het laden');
 		expect(el.shadowRoot!.querySelector('.progress-circle__indeterminate-indicator')).not.toBeNull();
 	});

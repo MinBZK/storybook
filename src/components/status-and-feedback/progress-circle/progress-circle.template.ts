@@ -62,7 +62,7 @@ export function progressCircleTemplate(component: NLDDProgressCircle, onSlotChan
 			aria-label=${ifDefined(ariaLabel)}
 			aria-valuemin="0"
 			aria-valuemax=${component.max}
-			aria-valuenow=${ariaValueNow ?? ''}
+			aria-valuenow=${ifDefined(ariaValueNow)}
 			aria-valuetext=${ariaText}
 		>
 			<svg class="progress-circle__svg"

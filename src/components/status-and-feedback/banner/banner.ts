@@ -113,6 +113,10 @@ export class NLDDBanner extends LitElement {
 			this.setAttribute('role', 'status');
 			this.setAttribute('aria-live', 'polite');
 		}
+		// Banner is a structured region (icon + heading + supporting-text +
+		// actions). Without aria-atomic some screen readers announce only the
+		// changed subtree on updates, producing incomplete announcements.
+		this.setAttribute('aria-atomic', 'true');
 	}
 
 	override firstUpdated(): void {

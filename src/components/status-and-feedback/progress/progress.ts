@@ -9,6 +9,12 @@
  * "Laden" label. Drop anything in the slot (a progress-bar, a customised
  * progress-circle, etc.) to override.
  *
+ * Reconnect behaviour: every `connectedCallback` resets the timer and hides
+ * the indicator again. If a consumer toggles the element via a conditional
+ * render (remove + re-insert) the spinner will disappear and re-fade after
+ * another 1000ms. Keep the element mounted and toggle visibility / `hidden`
+ * instead if you want the timer to run only once.
+ *
  * @element nldd-progress
  *
  * @attr {string} text - Label under the default indicator. Falls back to the

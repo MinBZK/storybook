@@ -100,6 +100,15 @@ describe('nldd-banner', () => {
 		expect(el.hasAttribute('aria-live')).toBe(false);
 	});
 
+	it('always sets aria-atomic="true" so live-region updates announce the whole banner', async () => {
+		el = await fixture('<nldd-banner variant="success"></nldd-banner>');
+		await waitForUpdate(el);
+		expect(el.getAttribute('aria-atomic')).toBe('true');
+		(el as unknown as NLDDBanner).variant = 'critical';
+		await waitForUpdate(el);
+		expect(el.getAttribute('aria-atomic')).toBe('true');
+	});
+
 
 	/* ============================================================
 	   Dismissible

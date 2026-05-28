@@ -48,7 +48,11 @@ export function imageTemplate(component: NLDDImage) {
 	// background when no LQIP is provided). Decorative images skip the alt
 	// label so they don't introduce an accidental description.
 	const errorOverlay = component._imageErrored ? html`
-		<div class="image__error" role="img" aria-label=${component.decorative ? nothing : component.alt}>
+		<div class="image__error"
+			role=${component.decorative ? nothing : 'img'}
+			aria-label=${component.decorative ? nothing : component.alt}
+			aria-hidden=${component.decorative ? 'true' : nothing}
+		>
 			<div class="image__error-card">
 				<nldd-icon name="broken-image" size="32" color="secondary-content"></nldd-icon>
 				${component.decorative ? nothing : html`<span class="image__error-text">${component.alt}</span>`}
