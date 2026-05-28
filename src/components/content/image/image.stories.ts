@@ -1,4 +1,4 @@
-import { html } from 'lit';
+import { html, nothing } from 'lit';
 import './image.ts';
 import './lqip-encoder.ts';
 
@@ -47,7 +47,7 @@ export default {
 		shape: 'rounded',
 		srcset: '',
 		sizes: '',
-		lqip: undefined,
+		lqip: '',
 		caption: '',
 		credit: '',
 		decorative: false,
@@ -96,25 +96,16 @@ export default {
 			table: { defaultValue: { summary: 'rounded' } },
 		},
 		srcset: {
-			control: 'select',
-			options: ['(geen)', 'Voorbeeld 480w/960w/1600w'],
-			mapping: { '(geen)': '', 'Voorbeeld 480w/960w/1600w': SAMPLE_SRCSET },
-			description: 'Responsive bron-set met varianten per pixel-breedte',
-			table: { defaultValue: { summary: '(geen)' } },
+			control: 'text',
+			description: `Responsive bron-set met varianten per pixel-breedte. Voorbeeld: ${SAMPLE_SRCSET}`,
 		},
 		sizes: {
-			control: 'select',
-			options: ['(geen)', '100vw', '50vw', '(max-width: 640px) 100vw, 50vw'],
-			mapping: { '(geen)': '' },
-			description: 'Sizes hint voor srcset — vertelt de browser welke variant te kiezen',
-			table: { defaultValue: { summary: '(geen)' } },
+			control: 'text',
+			description: 'Sizes hint voor srcset — bv. `100vw` of `(max-width: 640px) 100vw, 50vw`',
 		},
 		lqip: {
-			control: 'select',
-			options: ['(geen)', SAMPLE_LQIP],
-			mapping: { '(geen)': undefined },
-			description: 'CSS-only LQIP placeholder integer. Genereer een eigen waarde via de "LQIP encoder tool" story.',
-			table: { defaultValue: { summary: '(geen)' } },
+			control: 'text',
+			description: `CSS-only LQIP placeholder integer (bv. ${SAMPLE_LQIP}). Genereer een eigen waarde via de "LQIP encoder tool" story.`,
 		},
 		caption: {
 			control: 'text',
@@ -157,7 +148,7 @@ const Template = ({
 		shape=${shape as string}
 		srcset=${srcset as string}
 		sizes=${sizes as string}
-		lqip=${(lqip as number | undefined) ?? ''}
+		lqip=${(lqip as string) || nothing}
 		caption=${caption as string}
 		credit=${credit as string}
 		?decorative=${decorative}
