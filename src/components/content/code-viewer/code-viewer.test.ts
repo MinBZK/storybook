@@ -187,20 +187,24 @@ describe('nldd-code-viewer', () => {
 	it('resets to idle after the feedback duration', async () => {
 		const originalClipboard = navigator.clipboard;
 		Object.defineProperty(navigator, 'clipboard', { value: { writeText: vi.fn().mockResolvedValue(undefined) }, configurable: true });
+		vi.useFakeTimers();
 		try {
 			el = await fixture<NLDDCodeViewer>('<nldd-code-viewer>x</nldd-code-viewer>');
-			await waitForUpdate(el);
+			const litEl = el as HTMLElement & { updateComplete: Promise<boolean> };
+			await litEl.updateComplete;
 			await (el as unknown as NLDDCodeViewer)._onCopyClick();
-			await waitForUpdate(el);
+			await litEl.updateComplete;
 			expect((el as unknown as NLDDCodeViewer)._copyState).toBe('success');
-			/* The component uses a 2s reset timer; wait a touch longer to
-			 * account for scheduler jitter. Real-timer wait is acceptable
-			 * for one test — useFakeTimers conflicts with waitForUpdate
-			 * (which itself uses setTimeout). */
-			await new Promise((r) => setTimeout(r, 2100));
+			// Advance past the 2s reset timer with fake timers instead of a
+			// real setTimeout. Direct updateComplete (not waitForUpdate)
+			// because waitForUpdate's internal setTimeout(0) never fires
+			// under fake timers.
+			await vi.advanceTimersByTimeAsync(2100);
+			await litEl.updateComplete;
 			expect((el as unknown as NLDDCodeViewer)._copyState).toBe('idle');
 		} finally {
+			vi.useRealTimers();
 			Object.defineProperty(navigator, 'clipboard', { value: originalClipboard, configurable: true });
 		}
-	}, 5000);
+	});
 });

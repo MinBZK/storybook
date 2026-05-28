@@ -101,25 +101,24 @@ export const imageStyles = css`
 
 
 	/* # LQIP placeholder
-	   Implements Lean Rada's CSS-only LQIP: a single 20-bit integer in --lqip
-	   encodes a 3×2 grayscale grid + an Oklab base colour. Six radial-gradients
-	   compose the thumbnail behind the image; the image fades in on load.
-	   See https://leanrada.com/notes/css-only-lqip/ for the encoding details.
-
-	   When --lqip is set we hide the regular placeholder background so the
-	   gradient shows through; the image starts at opacity 0 and crossfades
-	   to 1 when the load event fires. */
+	   Implements Lean Rada's CSS-only LQIP: a single 20-bit integer in
+	   --context-lqip encodes a 3×2 grayscale grid + an Oklab base colour.
+	   Six radial-gradients compose the thumbnail behind the image; the
+	   image fades in on load. The component sets --context-lqip as an
+	   inline style from the lqip attribute — it crosses the shadow
+	   boundary so it uses the --context-* prefix, not --_.
+	   See https://leanrada.com/notes/css-only-lqip/ for the encoding details. */
 
 	.image__media--lqip {
-		--_lqip-ca: mod(round(down, calc((var(--lqip) + pow(2, 19)) / pow(2, 18))), 4);
-		--_lqip-cb: mod(round(down, calc((var(--lqip) + pow(2, 19)) / pow(2, 16))), 4);
-		--_lqip-cc: mod(round(down, calc((var(--lqip) + pow(2, 19)) / pow(2, 14))), 4);
-		--_lqip-cd: mod(round(down, calc((var(--lqip) + pow(2, 19)) / pow(2, 12))), 4);
-		--_lqip-ce: mod(round(down, calc((var(--lqip) + pow(2, 19)) / pow(2, 10))), 4);
-		--_lqip-cf: mod(round(down, calc((var(--lqip) + pow(2, 19)) / pow(2, 8))), 4);
-		--_lqip-ll: mod(round(down, calc((var(--lqip) + pow(2, 19)) / pow(2, 6))), 4);
-		--_lqip-aaa: mod(round(down, calc((var(--lqip) + pow(2, 19)) / pow(2, 3))), 8);
-		--_lqip-bbb: mod(calc(var(--lqip) + pow(2, 19)), 8);
+		--_lqip-ca: mod(round(down, calc((var(--context-lqip) + pow(2, 19)) / pow(2, 18))), 4);
+		--_lqip-cb: mod(round(down, calc((var(--context-lqip) + pow(2, 19)) / pow(2, 16))), 4);
+		--_lqip-cc: mod(round(down, calc((var(--context-lqip) + pow(2, 19)) / pow(2, 14))), 4);
+		--_lqip-cd: mod(round(down, calc((var(--context-lqip) + pow(2, 19)) / pow(2, 12))), 4);
+		--_lqip-ce: mod(round(down, calc((var(--context-lqip) + pow(2, 19)) / pow(2, 10))), 4);
+		--_lqip-cf: mod(round(down, calc((var(--context-lqip) + pow(2, 19)) / pow(2, 8))), 4);
+		--_lqip-ll: mod(round(down, calc((var(--context-lqip) + pow(2, 19)) / pow(2, 6))), 4);
+		--_lqip-aaa: mod(round(down, calc((var(--context-lqip) + pow(2, 19)) / pow(2, 3))), 8);
+		--_lqip-bbb: mod(calc(var(--context-lqip) + pow(2, 19)), 8);
 
 		--_lqip-ca-clr: hsl(0 0% calc(var(--_lqip-ca) / 3 * 60% + 20%));
 		--_lqip-cb-clr: hsl(0 0% calc(var(--_lqip-cb) / 3 * 60% + 20%));

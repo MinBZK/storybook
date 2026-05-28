@@ -26,7 +26,7 @@
  *   "16:9" colon notation is also accepted for convenience.
  * @attr {'cover'|'contain'|'fill'|'scale-down'|'none'} object-fit - default: 'cover'
  * @attr {'center'|'top'|'bottom'|'left'|'right'} object-position - default: 'center'
- * @attr {'square'|'rounded'|'circle'} shape - Corner shape (default: 'square')
+ * @attr {'square'|'rounded'|'circle'} shape - Corner shape (default: 'rounded')
  * @attr {string}  caption - Caption text shown below the image
  * @attr {string}  credit - Smaller credit/attribution text shown beside the caption
  * @attr {boolean} decorative - Decorative image: alt is forced empty + aria-hidden

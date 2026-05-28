@@ -118,7 +118,9 @@ export const passwordFieldStyles = css`
 	}
 
 	.password-field__input:-webkit-autofill,
-	.password-field__input:autofill {
+	.password-field__input:autofill,
+	.password-field__input:-webkit-autofill:disabled,
+	.password-field__input:autofill:disabled {
 		box-shadow: 0 0 0 999px var(--_background-color) inset;
 		-webkit-text-fill-color: var(--semantics-content-color);
 	}

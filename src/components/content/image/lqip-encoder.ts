@@ -88,7 +88,8 @@ export async function encodeLqip(source: File | HTMLImageElement | ImageBitmap):
 	const cellCanvas = document.createElement('canvas');
 	cellCanvas.width = 3;
 	cellCanvas.height = 2;
-	const cellCtx = cellCanvas.getContext('2d')!;
+	const cellCtx = cellCanvas.getContext('2d');
+	if (!cellCtx) throw new Error('encodeLqip: could not acquire a 2D canvas context');
 	cellCtx.drawImage(bitmap, 0, 0, 3, 2);
 	const cellData = cellCtx.getImageData(0, 0, 3, 2).data;
 
@@ -109,7 +110,8 @@ export async function encodeLqip(source: File | HTMLImageElement | ImageBitmap):
 	const avgCanvas = document.createElement('canvas');
 	avgCanvas.width = 1;
 	avgCanvas.height = 1;
-	const avgCtx = avgCanvas.getContext('2d')!;
+	const avgCtx = avgCanvas.getContext('2d');
+	if (!avgCtx) throw new Error('encodeLqip: could not acquire a 2D canvas context');
 	avgCtx.drawImage(bitmap, 0, 0, 1, 1);
 	const avgData = avgCtx.getImageData(0, 0, 1, 1).data;
 	const lab = rgbToOklab(avgData[0], avgData[1], avgData[2]);
@@ -171,7 +173,7 @@ export class NLDDLqipEncoder extends LitElement {
 			flex-direction: column;
 			gap: var(--primitives-space-16);
 			padding: var(--primitives-space-16);
-			border: 1px solid var(--semantics-content-secondary-color);
+			border: var(--primitives-border-width-thin) solid var(--semantics-content-secondary-color);
 			border-radius: var(--primitives-corner-radius-md);
 			background-color: var(--semantics-surfaces-background-color);
 			color: var(--semantics-content-color);
@@ -212,7 +214,7 @@ export class NLDDLqipEncoder extends LitElement {
 		}
 
 		.encoder__preview {
-			max-width: 480px;
+			max-width: var(--primitives-area-480);
 		}
 
 		.encoder__error {

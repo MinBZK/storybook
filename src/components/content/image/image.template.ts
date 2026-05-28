@@ -8,12 +8,14 @@ export function imageTemplate(component: NLDDImage) {
 	// aspect-ratio is applied to the media wrapper (not the img) so it
 	// reserves space in the layout *before* the image loads, avoiding CLS.
 	// Slotted img/picture also fills this wrapper.
-	// --lqip is the 20-bit-encoded placeholder integer; the CSS reads it via
-	// var(--lqip) and renders a 6-cell gradient until the image loads.
+	// --context-lqip is the 20-bit-encoded placeholder integer; the CSS
+	// reads it via var(--context-lqip) and renders a 6-cell gradient until
+	// the image loads. Uses the --context-* prefix because it crosses the
+	// shadow boundary from this inline style into the shadow stylesheet.
 	const hasLqip = component.lqip !== undefined && component.lqip !== null;
 	const mediaStyles: Record<string, string> = {};
 	if (component._cssAspectRatio) mediaStyles.aspectRatio = component._cssAspectRatio;
-	if (hasLqip) mediaStyles['--lqip'] = String(component.lqip);
+	if (hasLqip) mediaStyles['--context-lqip'] = String(component.lqip);
 
 	const mediaClasses = classMap({
 		'image__media': true,

@@ -87,6 +87,7 @@ export class NLDDToggleButton extends LitElement {
 	}
 
 	private _warnedA11y = false;
+	private _warnedEmptyIcon = false;
 
 	override firstUpdated(): void {
 		this._initialSelected = this.selected;
@@ -102,6 +103,14 @@ export class NLDDToggleButton extends LitElement {
 			console.warn('<nldd-toggle-button>: Provide a text or accessible-label attribute for accessibility.');
 		} else if (!inaccessible) {
 			this._warnedA11y = false;
+		}
+		/* variant="icon" with no icon attribute and no slotted icon renders
+		 * an invisible button — easy to misconfigure during development. */
+		if (import.meta.env?.DEV && this.variant === 'icon' && !this._hasIcon && !this._warnedEmptyIcon) {
+			this._warnedEmptyIcon = true;
+			console.warn('<nldd-toggle-button variant="icon">: No icon attribute or slot="icon" content provided. The button renders empty.');
+		} else if (this._hasIcon || this.variant !== 'icon') {
+			this._warnedEmptyIcon = false;
 		}
 		if (changed.has('selected') || changed.has('value') || changed.has('type')) {
 			// Only checkbox/radio variants participate in form submission.
