@@ -17,8 +17,21 @@
  */
 
 import { LitElement, html, css } from 'lit';
-import { customElement, state } from 'lit/decorators.js';
+import { customElement, property, state } from 'lit/decorators.js';
 import './image.js';
+
+/* --------------------------------------------------------------------- *
+ *  i18n
+ * --------------------------------------------------------------------- */
+
+export const nlddLqipEncoderTranslations = {
+	'components.lqip-encoder.upload-label': 'Kies een afbeelding',
+	'components.lqip-encoder.file-prefix-text': 'Bestand:',
+	'components.lqip-encoder.copy-instruction-text': 'Kopieer deze waarde naar je lqip attribuut:',
+	'components.lqip-encoder.preview-label': 'Voorbeeld (refresh om het LQIP placeholder opnieuw te zien):',
+};
+
+export type NLDDLqipEncoderTranslations = typeof nlddLqipEncoderTranslations;
 
 /* --------------------------------------------------------------------- *
  *  Encoder
@@ -139,10 +152,17 @@ export async function encodeLqip(source: File | HTMLImageElement | ImageBitmap):
  */
 @customElement('nldd-lqip-encoder')
 export class NLDDLqipEncoder extends LitElement {
+	@property({ type: Object })
+	translations: Partial<NLDDLqipEncoderTranslations> = {};
+
 	@state() private _lqip: number | null = null;
 	@state() private _imageUrl = '';
 	@state() private _filename = '';
 	@state() private _error = '';
+
+	public _t(key: keyof NLDDLqipEncoderTranslations): string {
+		return this.translations[key] ?? nlddLqipEncoderTranslations[key];
+	}
 
 	static override styles = css`
 		:host {
@@ -229,7 +249,7 @@ export class NLDDLqipEncoder extends LitElement {
 		return html`
 			<div>
 				<label class="encoder__upload-label">
-					Kies een afbeelding
+					${this._t('components.lqip-encoder.upload-label')}
 					<input class="encoder__upload-input"
 						type="file"
 						accept="image/*"
@@ -240,12 +260,12 @@ export class NLDDLqipEncoder extends LitElement {
 			${this._error ? html`<div class="encoder__error">${this._error}</div>` : ''}
 			${this._lqip !== null ? html`
 				<div class="encoder__result">
-					<div>Bestand: <strong>${this._filename}</strong></div>
-					<div>Kopieer deze waarde naar je <code>lqip</code> attribuut:</div>
+					<div>${this._t('components.lqip-encoder.file-prefix-text')} <strong>${this._filename}</strong></div>
+					<div>${this._t('components.lqip-encoder.copy-instruction-text')}</div>
 					<div class="encoder__code">lqip="${this._lqip}"</div>
 				</div>
 				<div class="encoder__preview">
-					<div>Voorbeeld (refresh om het LQIP placeholder opnieuw te zien):</div>
+					<div>${this._t('components.lqip-encoder.preview-label')}</div>
 					<nldd-image
 						src=${this._imageUrl}
 						alt=${this._filename}

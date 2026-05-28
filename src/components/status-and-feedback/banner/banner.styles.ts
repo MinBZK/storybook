@@ -16,6 +16,10 @@ export const bannerStyles = css`
 		--_content-color: var(--components-banner-content-color);
 		--_content-secondary-color: var(--components-banner-content-secondary-color);
 		--_text-icon-offset: calc((var(--_icon-size) - var(--primitives-font-size-100) * var(--primitives-line-height-tight)) / 2);
+		--_column-gap: var(--primitives-space-10);
+		--_dismissible-padding-right: var(--primitives-space-44);
+		--_main-gap: var(--primitives-space-8);
+		--_actions-gap: var(--primitives-space-4);
 
 		box-sizing: border-box;
 		display: grid;
@@ -26,12 +30,12 @@ export const bannerStyles = css`
 		width: 100%;
 		padding: var(--_padding);
 		grid-template-columns: auto 1fr;
-		gap: var(--primitives-space-10);
+		gap: var(--_column-gap);
 		color: var(--_content-color);
 	}
 
 	:host([dismissible]) {
-		padding-right: var(--primitives-space-44);
+		padding-right: var(--_dismissible-padding-right);
 	}
 
 	:host([hidden]) {
@@ -83,7 +87,7 @@ export const bannerStyles = css`
 		grid-row: 1;
 		min-width: 0;
 		flex-direction: column;
-		gap: var(--primitives-space-8);
+		gap: var(--_main-gap);
 	}
 
 	.banner__heading {
@@ -119,7 +123,7 @@ export const bannerStyles = css`
 
 	.banner__actions {
 		display: flex;
-		margin-top: var(--primitives-space-4);
+		margin-top: var(--_actions-gap);
 	}
 
 	.banner__actions[hidden] {

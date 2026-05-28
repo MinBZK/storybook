@@ -124,7 +124,7 @@ export const progressBarStyles = css`
 		position: absolute;
 		inset: 0;
 		opacity: 1;
-		transition: opacity 500ms ease-out;
+		transition: opacity var(--primitives-transition-duration-slow) ease-out;
 	}
 
 	.progress-bar__indeterminate-indicator.is-fading-out {
@@ -132,7 +132,7 @@ export const progressBarStyles = css`
 	}
 
 	.progress-bar__indeterminate-indicator.is-fading-in {
-		animation: progress-bar-indicator-fade-in 500ms ease-out;
+		animation: progress-bar-indicator-fade-in var(--primitives-transition-duration-slow) ease-out;
 	}
 
 	@keyframes progress-bar-indicator-fade-in {
@@ -205,6 +205,13 @@ export const progressBarSegmentStyles = css`
 	/* # Host */
 
 	:host {
+		/* The parent nldd-progress-bar sets --context-progress-bar-segment-width
+		 * inline on each segment before the segment renders. The 0% fallback is
+		 * defensive: it keeps a stray un-parented segment from rendering at its
+		 * intrinsic width (the segment is meaningless standalone but shouldn't
+		 * blow up the layout if it ends up loose during dev). --context-* vars
+		 * are intentionally outside the no-fallback rule that applies to
+		 * --primitives/--semantics/--components/--_ (those are validated). */
 		--_width: var(--context-progress-bar-segment-width, 0%);
 		--_min-width: var(--components-progress-bar-segment-min-width);
 		--_fill-color: var(--components-progress-bar-accent-fill-color);
@@ -220,7 +227,7 @@ export const progressBarSegmentStyles = css`
 		min-width: var(--_min-width);
 		height: 100%;
 		overflow: hidden;
-		transition: width 200ms ease-out;
+		transition: width var(--primitives-transition-duration-medium) ease-out;
 	}
 
 	:host([value="0"]),
@@ -234,11 +241,11 @@ export const progressBarSegmentStyles = css`
 	   indeterminate and determinate. */
 
 	:host([data-grow]) {
-		animation: progress-bar-segment-grow 500ms ease-out;
+		animation: progress-bar-segment-grow var(--primitives-transition-duration-slow) ease-out;
 	}
 
 	:host([data-shrink]) {
-		animation: progress-bar-segment-shrink 500ms ease-out forwards;
+		animation: progress-bar-segment-shrink var(--primitives-transition-duration-slow) ease-out forwards;
 	}
 
 	@keyframes progress-bar-segment-grow {

@@ -80,7 +80,7 @@ export const progressCircleStyles = css`
 	.progress-circle__segment {
 		stroke-width: var(--_stroke-width);
 		opacity: 1;
-		transition: stroke-dasharray 300ms ease-out, stroke-dashoffset 300ms ease-out, opacity 300ms ease-out;
+		transition: stroke-dasharray var(--primitives-transition-duration-slow) ease-out, stroke-dashoffset var(--primitives-transition-duration-slow) ease-out, opacity var(--primitives-transition-duration-slow) ease-out;
 	}
 
 	.progress-circle__segment[data-shrink] {
@@ -138,7 +138,7 @@ export const progressCircleStyles = css`
 		stroke: var(--_indeterminate-fill-color);
 		opacity: 1;
 		transform-origin: 50% 50%;
-		transition: opacity 300ms ease-out;
+		transition: opacity var(--primitives-transition-duration-slow) ease-out;
 		animation:
 			progress-circle-indeterminate-indicator-rotate 2s linear infinite,
 			progress-circle-indeterminate-indicator-dash 1.5s ease-in-out infinite;

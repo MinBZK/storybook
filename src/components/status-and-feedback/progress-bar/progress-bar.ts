@@ -151,12 +151,12 @@ export class NLDDProgressBar extends LitElement {
 	@state()
 	private _segments: NLDDProgressBarSegment[] = [];
 
-	/** True for 500ms after indeterminate=true→false: indicator fades out while
+	/** True for 300ms after indeterminate=true→false: indicator fades out while
 	 *  the segment grows from 0 to its target value. */
 	@state()
 	private _indeterminateExiting = false;
 
-	/** True for 500ms after indeterminate=false→true: indicator fades in while
+	/** True for 300ms after indeterminate=false→true: indicator fades in while
 	 *  the segment shrinks from its current width to 0. */
 	@state()
 	private _indeterminateEntering = false;
@@ -270,24 +270,25 @@ export class NLDDProgressBar extends LitElement {
 		this._syncSegments();
 	}
 
-	/** Indicator fades out, segment grows from 0 to its target — both 500ms. */
+	/** Indicator fades out, segment grows from 0 to its target — both 300ms
+	 *  (matches --primitives-transition-duration-slow and nldd-progress-circle). */
 	private _beginIndeterminateExit(): void {
 		this._cancelIndeterminateEnter();
 		this._indeterminateExiting = true;
 		this._exitTimeout = setTimeout(() => {
 			this._indeterminateExiting = false;
 			this._exitTimeout = undefined;
-		}, 500);
+		}, 300);
 	}
 
-	/** Indicator fades in, segment shrinks from current width to 0 — both 500ms. */
+	/** Indicator fades in, segment shrinks from current width to 0 — both 300ms. */
 	private _beginIndeterminateEnter(): void {
 		this._cancelIndeterminateExit();
 		this._indeterminateEntering = true;
 		this._enterTimeout = setTimeout(() => {
 			this._indeterminateEntering = false;
 			this._enterTimeout = undefined;
-		}, 500);
+		}, 300);
 	}
 
 	private _cancelIndeterminateExit(): void {
