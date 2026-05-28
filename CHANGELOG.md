@@ -9,6 +9,42 @@ the type of conventional-commit determines the release. Conventional types
 `chore`, `docs`, `ci`, `style`, `test`, `build` are intentionally omitted
 here; consult the commit history if you need that level of detail.
 
+### Highlights
+
+- **Five new components**: `nldd-banner`, `nldd-progress-bar`, `nldd-progress-circle`, `nldd-progress`, and `nldd-image`. Between them they cover status messaging, loading-state visualisation (single-value, multi-segment, distribution, indeterminate), and design-token-aware image presentation. The progress bar and circle share an API so swapping the shape is a one-attribute change; `nldd-progress` is a layout wrapper that delays the indicator by 1000 ms so quick loads don't flash a spinner.
+- **Six new icons**: `bell`, `bookmark`, `flag`, `star`, `tag`, and `photo-slash` (with a `broken-image` alias used by `nldd-image`'s error fallback). The icon gallery story also gains a search filter for easier discovery.
+
+### Added
+
+- `nldd-banner`: status/feedback component with semantic variants (info / success / warning / critical), filled default icons, optional dismiss button, and primary/secondary actions.
+- `nldd-progress-bar` + `nldd-progress-bar-segment`: single `value` or multi-segment use, `progress` and `distribution` modes, 24 colour variants (semantic + Rijkskleuren), indeterminate animation that cross-fades into and out of the determinate state, translatable copy.
+- `nldd-progress-circle` + `nldd-progress-circle-segment`: circular sibling with the same API as the bar. Radius scales per size so the stroke (2–6 px on size 16–96) always stays inside the viewBox; the track colour aliases the bar's so the two stay in lockstep.
+- `nldd-progress`: layout placeholder that fills its parent and centres an indeterminate circle after a 1000 ms grace period. Caption defaults to a translated "Laden"; override the indicator via the default slot.
+- `nldd-image`: styled `<img>` wrapper with `shape` (square / rounded / circle), `aspect-ratio` for CLS-free layout reservation, `object-fit`, `object-position`, `caption` + `credit`, a `width` attribute (`'full'` or numeric), `decorative`, and `srcset` / `sizes`. Renders `<figure>` + `<figcaption>` only when a caption or credit is present; consumer-supplied `<img>` / `<picture>` in the default slot override the internal one. Error fallback overlays a small neutral card with the new `broken-image` icon and the alt text.
+- **CSS-only LQIP** for `nldd-image` via Lean Rada's technique ([leanrada.com](https://leanrada.com/notes/css-only-lqip/)): the `lqip` attribute takes a 20-bit integer that renders a 3×2 radial-gradient + Oklab base-colour placeholder while the real image loads, then fades out on the load event. Skipped under `prefers-reduced-motion`.
+- `<nldd-lqip-encoder>` element + "LQIP encoder tool" Storybook page so consumers can generate the LQIP integer in-browser, without depending on the original leanrada.com tool.
+- `nldd-code-viewer`: `box` and `background` attributes for shell-style framing, plus a copy-to-clipboard button.
+- `nldd-collection`: arrow-key navigation when horizontal-scroll regions overflow, with a keyboard focus state on the scroll container.
+- `nldd-tooltip`: `open` attribute for forced visibility.
+- Generic horizontal-scroll regions (e.g. inside `nldd-code-viewer` and overflowing tables in `nldd-rich-text`) become keyboard-focusable when their content overflows.
+- Icons: bell, bookmark, flag, star, tag, photo-slash (with `broken-image` alias).
+- Icon gallery story: search filter.
+
+### Changed
+
+- `nldd-toggle-button`: variant styling is now driven from the rendered content (icon-and-text / icon-only / text-only) — the manual `variant` attribute is no longer needed.
+- `nldd-collection`: focus ring renders as a shadow-DOM `::after` so it can sit above slotted cards.
+- `nldd-banner` (post-initial iterations): filled default icons, lighter border + background, dismiss button alignment + spacing polished, accent variant dropped (use `nldd-inline-dialog` for accent emphasis), stories rebuilt around the new actions pattern.
+- `nldd-tag` and `nldd-badge` stories: `Variants` + `Rijkskleuren` merged into a single `Colors` story per component; tag colour labels switched from concept-style strings (concept / nieuw / gepubliceerd / let op / afgewezen) to the semantic colour names.
+- Interactive controls (16 components) now have `user-select: none` on hit targets so double-tapping or shift-clicking doesn't accidentally select label text.
+
+### Fixed
+
+- `text-field`, `password-field`, `search-field`, `combo-box`, `multi-line-text-field`: autofill text colour pinned to the content-color token via `-webkit-text-fill-color` so dark-mode autofill no longer paints dark browser-default text on the dark-amber autofill background.
+- `nldd-collection`: initial left-arrow disabled state on first render.
+- `nldd-top-navigation-bar`: website-title gets vertical breathing room at sm so it no longer kisses the top edge.
+- Tokens: light-mode `--semantics-content-color` and link colours bumped so the new page-footer meets WCAG contrast.
+
 ## <small>0.8.50 (2026-05-28)</small>
 
 * fix: deblokkeer pre-commit hooks (#116) ([50269f0](https://github.com/MinBZK/storybook/commit/50269f0)), closes [#116](https://github.com/MinBZK/storybook/issues/116)
