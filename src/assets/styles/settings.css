@@ -1272,11 +1272,11 @@
 
 	--components-image-corner-radius: var(--semantics-controls-md-corner-radius);
 	--components-image-background-color: var(--semantics-surfaces-tinted-background-color);
-	--components-image-caption-gap: var(--primitives-space-8);
+	--components-image-caption-gap: var(--primitives-space-4);
 	--components-image-caption-color: var(--semantics-content-color);
 	--components-image-caption-font: var(--primitives-font-body-sm-regular-snug);
 	--components-image-credit-color: var(--semantics-content-secondary-color);
-	--components-image-credit-font: var(--primitives-font-body-xs-regular-snug);
+	--components-image-credit-font: var(--primitives-font-body-sm-regular-snug);
 
 	/* ## Inline dialog */
 

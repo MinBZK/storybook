@@ -68,6 +68,29 @@ describe('nldd-image', () => {
 		expect(el.getAttribute('shape')).toBe('circle');
 	});
 
+	it('defaults shape to rounded', async () => {
+		el = await fixture<NLDDImage>('<nldd-image src="/foo.jpg" alt="Foo"></nldd-image>');
+		await waitForUpdate(el);
+		expect((el as unknown as NLDDImage).shape).toBe('rounded');
+		expect(el.getAttribute('shape')).toBe('rounded');
+	});
+
+	it('defaults width to "full" and applies no host max-width', async () => {
+		el = await fixture<NLDDImage>('<nldd-image src="/foo.jpg" alt="Foo"></nldd-image>');
+		await waitForUpdate(el);
+		expect(el.style.maxWidth).toBe('');
+		const img = el.shadowRoot!.querySelector('img')!;
+		expect(img.hasAttribute('width')).toBe(false);
+	});
+
+	it('applies max-width on host and width hint on img when width is numeric', async () => {
+		el = await fixture<NLDDImage>('<nldd-image src="/foo.jpg" alt="Foo" width="240"></nldd-image>');
+		await waitForUpdate(el);
+		expect(el.style.maxWidth).toBe('240px');
+		const img = el.shadowRoot!.querySelector('img')!;
+		expect(img.getAttribute('width')).toBe('240');
+	});
+
 	it('reflects aspect-ratio as inline style on the media wrapper (colon → slash)', async () => {
 		el = await fixture('<nldd-image src="/foo.jpg" alt="Foo" aspect-ratio="16:9"></nldd-image>');
 		await waitForUpdate(el);

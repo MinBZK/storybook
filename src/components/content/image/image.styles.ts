@@ -44,12 +44,12 @@ export const imageStyles = css`
 
 
 	/* ## Shape variants
-	   Square: no radius. Rounded: design-system corner radius. Circle: 50%
-	   for avatar-style use (combine with aspect-ratio 1/1 for a true circle). */
+	   Rounded is the default (already set via the --_corner-radius in :host
+	   pointing at the design-system token). Square overrides to 0, circle to
+	   50% for avatar-style use (combine with aspect-ratio 1/1 for a true circle). */
 
-	:host([shape="rounded"]) { --_corner-radius: var(--components-image-corner-radius); }
+	:host([shape="square"]) { --_corner-radius: 0; }
 	:host([shape="circle"]) { --_corner-radius: 50%; }
-	:host(:not([shape="rounded"]):not([shape="circle"])) { --_corner-radius: 0; }
 
 
 	/* # Figure

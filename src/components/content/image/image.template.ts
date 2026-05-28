@@ -32,7 +32,7 @@ export function imageTemplate(component: NLDDImage) {
 			aria-hidden=${component.decorative ? 'true' : nothing}
 			srcset=${component.srcset || nothing}
 			sizes=${component.sizes || nothing}
-			width=${ifDefined(component.width)}
+			width=${ifDefined(component._numericWidth)}
 			height=${ifDefined(component.height)}
 			loading=${component.loading}
 			decoding=${component.decoding}

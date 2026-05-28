@@ -28,10 +28,14 @@ export default {
 	args: {
 		src: SAMPLE_SRC,
 		alt: SAMPLE_ALT,
+		width: 'full',
 		aspectRatio: '16/9',
 		objectFit: 'cover',
 		objectPosition: 'center',
-		shape: 'square',
+		shape: 'rounded',
+		srcset: '',
+		sizes: '',
+		lqip: undefined,
 		caption: '',
 		credit: '',
 		decorative: false,
@@ -45,10 +49,16 @@ export default {
 			control: 'text',
 			description: 'Alt-tekst. Verplicht tenzij `decorative` is gezet.',
 		},
+		width: {
+			control: 'select',
+			options: ['full', 160, 240, 320, 480, 640],
+			description: 'Display-breedte. `full` vult de parent, een numerieke waarde zet max-width + img-hint.',
+			table: { defaultValue: { summary: 'full' } },
+		},
 		aspectRatio: {
 			name: 'aspect-ratio',
 			control: 'select',
-			options: ['(geen)', '16/9', '4/3', '1/1', '3/4', '21/9'],
+			options: ['(geen)', '21/9', '16/9', '3/2', '4/3', '1/1', '3/4', '2/3'],
 			mapping: { '(geen)': '' },
 			description: 'Reserveert ruimte tijdens laden om layout-shift te voorkomen',
 			table: { defaultValue: { summary: '(geen)' } },
@@ -71,7 +81,20 @@ export default {
 			control: 'select',
 			options: ['square', 'rounded', 'circle'],
 			description: 'Hoekvorm',
-			table: { defaultValue: { summary: 'square' } },
+			table: { defaultValue: { summary: 'rounded' } },
+		},
+		srcset: {
+			control: 'text',
+			description: 'Responsive bron-set, bv. `foo-480.jpg 480w, foo-960.jpg 960w`',
+		},
+		sizes: {
+			control: 'text',
+			description: 'Sizes hint voor srcset, bv. `(max-width: 600px) 100vw, 50vw`',
+		},
+		lqip: {
+			control: 'number',
+			description: 'CSS-only LQIP placeholder integer. Genereer via de "LQIP encoder tool" story.',
+			table: { defaultValue: { summary: '(geen)' } },
 		},
 		caption: {
 			control: 'text',
@@ -92,27 +115,33 @@ export default {
 const Template = ({
 	src,
 	alt,
+	width,
 	aspectRatio,
 	objectFit,
 	objectPosition,
 	shape,
+	srcset,
+	sizes,
+	lqip,
 	caption,
 	credit,
 	decorative,
 }: Record<string, unknown>) => html`
-	<div style="max-width: 480px;">
-		<nldd-image
-			src=${src as string}
-			alt=${alt as string}
-			aspect-ratio=${aspectRatio as string}
-			object-fit=${objectFit as string}
-			object-position=${objectPosition as string}
-			shape=${shape as string}
-			caption=${caption as string}
-			credit=${credit as string}
-			?decorative=${decorative}
-		></nldd-image>
-	</div>
+	<nldd-image
+		src=${src as string}
+		alt=${alt as string}
+		width=${width as string}
+		aspect-ratio=${aspectRatio as string}
+		object-fit=${objectFit as string}
+		object-position=${objectPosition as string}
+		shape=${shape as string}
+		srcset=${srcset as string}
+		sizes=${sizes as string}
+		lqip=${(lqip as number | undefined) ?? ''}
+		caption=${caption as string}
+		credit=${credit as string}
+		?decorative=${decorative}
+	></nldd-image>
 `;
 
 export const Default = {
@@ -152,26 +181,12 @@ export const AspectRatios = {
 	name: 'Aspect ratios',
 	render: () => html`
 		<div style="display: flex; gap: 16px; flex-wrap: wrap;">
-			<div style="width: 240px;">
-				<nldd-image src=${SAMPLE_SRC} alt=${SAMPLE_ALT} aspect-ratio="21/9"></nldd-image>
-				<p style="margin: 8px 0 0;">21/9</p>
-			</div>
-			<div style="width: 240px;">
-				<nldd-image src=${SAMPLE_SRC} alt=${SAMPLE_ALT} aspect-ratio="16/9"></nldd-image>
-				<p style="margin: 8px 0 0;">16/9</p>
-			</div>
-			<div style="width: 240px;">
-				<nldd-image src=${SAMPLE_SRC} alt=${SAMPLE_ALT} aspect-ratio="4/3"></nldd-image>
-				<p style="margin: 8px 0 0;">4/3</p>
-			</div>
-			<div style="width: 240px;">
-				<nldd-image src=${SAMPLE_SRC} alt=${SAMPLE_ALT} aspect-ratio="1/1"></nldd-image>
-				<p style="margin: 8px 0 0;">1/1</p>
-			</div>
-			<div style="width: 200px;">
-				<nldd-image src=${SAMPLE_SRC} alt=${SAMPLE_ALT} aspect-ratio="3/4"></nldd-image>
-				<p style="margin: 8px 0 0;">3/4</p>
-			</div>
+			${['21/9', '16/9', '3/2', '4/3', '1/1', '3/4', '2/3'].map(ratio => html`
+				<div style="width: 240px;">
+					<nldd-image src=${SAMPLE_SRC} alt=${SAMPLE_ALT} aspect-ratio=${ratio}></nldd-image>
+					<p style="margin: 4px 0 0;">${ratio}</p>
+				</div>
+			`)}
 		</div>
 	`,
 	parameters: { controls: { disable: true } },

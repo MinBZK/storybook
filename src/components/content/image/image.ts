@@ -16,7 +16,8 @@
  * @attr {string}  alt - Alt text. Required unless `decorative`.
  * @attr {string}  srcset - Responsive source set
  * @attr {string}  sizes - Source sizes hint
- * @attr {number}  width - Intrinsic width (for layout reservation)
+ * @attr {number|'full'} width - Display width. `full` (default) fills the parent.
+ *   A numeric value sets host `max-width` AND the `<img>` layout-hint width.
  * @attr {number}  height - Intrinsic height (for layout reservation)
  * @attr {'lazy'|'eager'} loading - Loading strategy (default: 'lazy')
  * @attr {'async'|'sync'|'auto'} decoding - Decoding hint (default: 'async')
@@ -65,8 +66,8 @@ export class NLDDImage extends LitElement {
 	@property({ type: String })
 	sizes = '';
 
-	@property({ type: Number })
-	width?: number;
+	@property({ type: String, reflect: true })
+	width: number | 'full' = 'full';
 
 	@property({ type: Number })
 	height?: number;
@@ -90,7 +91,7 @@ export class NLDDImage extends LitElement {
 	objectPosition: ImageObjectPosition = 'center';
 
 	@property({ type: String, reflect: true })
-	shape: ImageShape = 'square';
+	shape: ImageShape = 'rounded';
 
 	@property({ type: String })
 	caption = '';
@@ -119,6 +120,15 @@ export class NLDDImage extends LitElement {
 		return this.aspectRatio.replace(':', '/');
 	}
 
+	/** Width parsed as a positive number if it isn't 'full'. Undefined when
+	 *  the host should fill its parent (no max-width and no <img width> hint).
+	 *  Empty / NaN / non-positive values fall back to undefined. */
+	get _numericWidth(): number | undefined {
+		if (this.width === 'full') return undefined;
+		const n = Number(this.width);
+		return Number.isFinite(n) && n > 0 ? n : undefined;
+	}
+
 	get _hasCaption(): boolean {
 		return !!this.caption || !!this.credit || this._hasSlottedCaption;
 	}
@@ -128,6 +138,19 @@ export class NLDDImage extends LitElement {
 		// for the new image until it finishes loading.
 		if (changed.has('src')) {
 			this._imageLoaded = false;
+		}
+	}
+
+	override updated(changed: Map<string, unknown>): void {
+		// Apply the numeric `width` as the host's max-width so the image (and
+		// its caption) stay within that limit. 'full' clears the constraint.
+		if (changed.has('width')) {
+			const n = this._numericWidth;
+			if (n !== undefined) {
+				this.style.maxWidth = `${n}px`;
+			} else {
+				this.style.removeProperty('max-width');
+			}
 		}
 	}
 
