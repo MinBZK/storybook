@@ -91,6 +91,21 @@ function clamp(v: number, lo: number, hi: number): number {
 	return Math.max(lo, Math.min(hi, v));
 }
 
+/** Quantise a chroma value with a small bias *away* from the neutral midpoint
+ *  bucket. Round-to-nearest creates a "dead zone" around the midpoint where
+ *  any value within half a step gets rounded to neutral grey — visually losing
+ *  faint tints (slight blue, slight amber). With this helper, the encoder only
+ *  picks the neutral bucket when the input is essentially at it; otherwise we
+ *  snap to the adjacent non-neutral bucket so the tint is preserved. */
+function quantiseChromaAwayFromMid(value: number, midBucket: number, lo: number, hi: number): number {
+	const offset = value - midBucket;
+	// Genuinely-neutral threshold: 5% of a quantisation step. Anything inside
+	// snaps to the neutral bucket; anything outside snaps to the next bucket
+	// in the appropriate direction.
+	if (Math.abs(offset) < 0.05) return midBucket;
+	return offset > 0 ? clamp(Math.ceil(value), lo, hi) : clamp(Math.floor(value), lo, hi);
+}
+
 /**
  * Pure LQIP encoder. Operates on a raw RGBA pixel buffer (no DOM, no Node
  * APIs) so the same function can be called from a browser, a Node script,
@@ -153,8 +168,14 @@ export function encodePixelDataToLqip(
 	//   a: aaa/8 * 0.7 - 0.35        → invert: (a + 0.35) / 0.7 * 8 (clamped to 7)
 	//   b: (bbb+1)/8 * 0.7 - 0.35    → invert: ((b + 0.35) / 0.7 * 8) - 1 (clamped 0-7)
 	const ll = clamp(Math.round((lab.L - 0.2) / 0.6 * 3), 0, 3);
-	const aaa = clamp(Math.round((lab.a + 0.35) / 0.7 * 8), 0, 7);
-	const bbb = clamp(Math.round((lab.b + 0.35) / 0.7 * 8 - 1), 0, 7);
+	// For a/b, bias away from the neutral midpoint (aaa=4 / bbb=3 both
+	// decode to exactly 0). Round-to-nearest would round subtle chroma to
+	// grey within ~half a quantisation step around zero — visually that
+	// reads as "this image has no tint" even when the average is genuinely
+	// a faint blue / amber. Snap to the nearest *non-neutral* bucket
+	// instead unless the input really is dead-on neutral.
+	const aaa = quantiseChromaAwayFromMid((lab.a + 0.35) / 0.7 * 8, 4, 0, 7);
+	const bbb = quantiseChromaAwayFromMid((lab.b + 0.35) / 0.7 * 8 - 1, 3, 0, 7);
 
 	let packed = 0;
 	packed |= cells[0] << 18;
