@@ -29,6 +29,9 @@
  * @attr {string}  caption - Caption text shown below the image
  * @attr {string}  credit - Smaller credit/attribution text shown beside the caption
  * @attr {boolean} decorative - Decorative image: alt is forced empty + aria-hidden
+ * @attr {number}  lqip - Low-quality image placeholder encoded as a 20-bit integer
+ *   (see https://leanrada.com/notes/css-only-lqip/). Renders a tiny gradient
+ *   thumbnail while the real image loads, then the image fades in over it.
  *
  * @slot - Custom `<img>` or `<picture>` (overrides the src-based default)
  * @slot caption - Rich caption content (overrides the `caption` attribute)
@@ -98,8 +101,16 @@ export class NLDDImage extends LitElement {
 	@property({ type: Boolean, reflect: true })
 	decorative = false;
 
+	@property({ type: Number })
+	lqip?: number;
+
 	@state()
 	_hasSlottedCaption = false;
+
+	/** Tracks whether the internal <img> has finished loading. While false and
+	 *  an LQIP value is set, the image stays hidden so the placeholder shows. */
+	@state()
+	_imageLoaded = false;
 
 	/** Convert "16:9" → "16/9" so the CSS `aspect-ratio` parser accepts it.
 	 *  Already-slashed values pass through untouched. */
@@ -111,6 +122,27 @@ export class NLDDImage extends LitElement {
 	get _hasCaption(): boolean {
 		return !!this.caption || !!this.credit || this._hasSlottedCaption;
 	}
+
+	override willUpdate(changed: Map<string, unknown>): void {
+		// Reset the loaded flag when the src changes so the LQIP shows again
+		// for the new image until it finishes loading.
+		if (changed.has('src')) {
+			this._imageLoaded = false;
+		}
+	}
+
+	override firstUpdated(): void {
+		// If the image was cached or already loaded by the time the listener
+		// attached, the load event won't fire — sync state directly.
+		const img = this.shadowRoot?.querySelector<HTMLImageElement>('.image__img');
+		if (img?.complete && img.naturalWidth > 0) {
+			this._imageLoaded = true;
+		}
+	}
+
+	_onImageLoad = (): void => {
+		this._imageLoaded = true;
+	};
 
 	_onCaptionSlotChange = (e: Event): void => {
 		const slot = e.target as HTMLSlotElement;

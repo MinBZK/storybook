@@ -226,3 +226,24 @@ export const SlottedImage = {
 	`,
 	parameters: { controls: { disable: true } },
 };
+
+/**
+ * CSS-only Low Quality Image Placeholder volgens
+ * https://leanrada.com/notes/css-only-lqip/. Eén integer encodeert een 6-cel
+ * 3×2 gradient + base color, die zichtbaar is tot het echte beeld geladen is.
+ * De waarde wordt gegenereerd door een build-step uit de bron-afbeelding.
+ */
+export const LQIPPlaceholder = {
+	name: 'LQIP placeholder',
+	render: () => html`
+		<div style="max-width: 480px;">
+			<nldd-image
+				src=${SAMPLE_SRC}
+				alt=${SAMPLE_ALT}
+				aspect-ratio="16/9"
+				lqip="192900"
+			></nldd-image>
+		</div>
+	`,
+	parameters: { controls: { disable: true } },
+};

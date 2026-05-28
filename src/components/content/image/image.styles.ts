@@ -97,6 +97,60 @@ export const imageStyles = css`
 	}
 
 
+	/* # LQIP placeholder
+	   Implements Lean Rada's CSS-only LQIP: a single 20-bit integer in --lqip
+	   encodes a 3×2 grayscale grid + an Oklab base colour. Six radial-gradients
+	   compose the thumbnail behind the image; the image fades in on load.
+	   See https://leanrada.com/notes/css-only-lqip/ for the encoding details.
+
+	   When --lqip is set we hide the regular placeholder background so the
+	   gradient shows through; the image starts at opacity 0 and crossfades
+	   to 1 when the load event fires. */
+
+	.image__media--lqip {
+		--_lqip-ca: mod(round(down, calc((var(--lqip) + pow(2, 19)) / pow(2, 18))), 4);
+		--_lqip-cb: mod(round(down, calc((var(--lqip) + pow(2, 19)) / pow(2, 16))), 4);
+		--_lqip-cc: mod(round(down, calc((var(--lqip) + pow(2, 19)) / pow(2, 14))), 4);
+		--_lqip-cd: mod(round(down, calc((var(--lqip) + pow(2, 19)) / pow(2, 12))), 4);
+		--_lqip-ce: mod(round(down, calc((var(--lqip) + pow(2, 19)) / pow(2, 10))), 4);
+		--_lqip-cf: mod(round(down, calc((var(--lqip) + pow(2, 19)) / pow(2, 8))), 4);
+		--_lqip-ll: mod(round(down, calc((var(--lqip) + pow(2, 19)) / pow(2, 6))), 4);
+		--_lqip-aaa: mod(round(down, calc((var(--lqip) + pow(2, 19)) / pow(2, 3))), 8);
+		--_lqip-bbb: mod(calc(var(--lqip) + pow(2, 19)), 8);
+
+		--_lqip-ca-clr: hsl(0 0% calc(var(--_lqip-ca) / 3 * 60% + 20%));
+		--_lqip-cb-clr: hsl(0 0% calc(var(--_lqip-cb) / 3 * 60% + 20%));
+		--_lqip-cc-clr: hsl(0 0% calc(var(--_lqip-cc) / 3 * 60% + 20%));
+		--_lqip-cd-clr: hsl(0 0% calc(var(--_lqip-cd) / 3 * 60% + 20%));
+		--_lqip-ce-clr: hsl(0 0% calc(var(--_lqip-ce) / 3 * 60% + 20%));
+		--_lqip-cf-clr: hsl(0 0% calc(var(--_lqip-cf) / 3 * 60% + 20%));
+		--_lqip-base-clr: oklab(
+			calc(var(--_lqip-ll) / 3 * 0.6 + 0.2)
+			calc(var(--_lqip-aaa) / 8 * 0.7 - 0.35)
+			calc((var(--_lqip-bbb) + 1) / 8 * 0.7 - 0.35)
+		);
+
+		background-color: transparent;
+		background-image:
+			radial-gradient(50% 75% at 16.67% 25%, var(--_lqip-ca-clr), transparent),
+			radial-gradient(50% 75% at 50% 25%, var(--_lqip-cb-clr), transparent),
+			radial-gradient(50% 75% at 83.33% 25%, var(--_lqip-cc-clr), transparent),
+			radial-gradient(50% 75% at 16.67% 75%, var(--_lqip-cd-clr), transparent),
+			radial-gradient(50% 75% at 50% 75%, var(--_lqip-ce-clr), transparent),
+			radial-gradient(50% 75% at 83.33% 75%, var(--_lqip-cf-clr), transparent),
+			linear-gradient(0deg, var(--_lqip-base-clr), var(--_lqip-base-clr));
+	}
+
+	.image__media--lqip .image__img {
+		opacity: 0;
+		transition: opacity 300ms ease-out;
+	}
+
+	.image__media--lqip .image__img--loaded {
+		opacity: 1;
+	}
+
+
 	/* # Caption */
 
 	.image__caption {
@@ -114,6 +168,12 @@ export const imageStyles = css`
 
 
 	/* # Accessibility */
+
+	@media (prefers-reduced-motion: reduce) {
+		.image__media--lqip .image__img {
+			transition: none;
+		}
+	}
 
 	@media (forced-colors: active) {
 		.image__media {
