@@ -13,7 +13,7 @@ Implementeer een web component: $ARGUMENTS
 |--------|-------------|
 | **Framework** | [Lit](https://lit.dev/) (LitElement) |
 | **Taal** | TypeScript (`.ts`) |
-| **Prefix** | `ndd-` |
+| **Prefix** | `nldd-` |
 
 ## WORKFLOW
 
@@ -21,8 +21,9 @@ Implementeer een web component: $ARGUMENTS
 
 1. Als gebruiker naam opgaf → gebruik die
 2. Converteer naar kebab-case: "Toggle Button" → "toggle-button"
-3. Voeg `ndd-` prefix toe: → "ndd-toggle-button"
-4. Class naam: `NDDToggleButton`
+3. Bestandsnamen gebruiken de kale naam: `toggle-button.ts` (geen prefix)
+4. Custom element tag krijgt `nldd-` prefix: `nldd-toggle-button`
+5. Class naam: `NLDDToggleButton`
 
 ### Stap 2: Bestaand component check
 
@@ -69,25 +70,25 @@ grep -i "focus-ring" src/assets/styles/settings.css
 
 ```
 src/components/{categorie}/{naam}/
-  ndd-{naam}.ts           # Component class
-  ndd-{naam}.styles.ts    # Styles
-  ndd-{naam}.template.ts  # Render template
-  ndd-{naam}.i18n.ts      # Vertalingen (optioneel, bij gebruikersgerichte tekst)
-  ndd-{naam}.stories.ts   # Storybook stories
-  ndd-{naam}.test.ts      # Tests
+  {naam}.ts           # Component class
+  {naam}.styles.ts    # Styles
+  {naam}.template.ts  # Render template
+  {naam}.i18n.ts      # Vertalingen (optioneel, bij gebruikersgerichte tekst)
+  {naam}.stories.ts   # Storybook stories
+  {naam}.test.ts      # Tests
 ```
 
 ---
 
 ## COMPONENT TEMPLATE
 
-**`ndd-{naam}.ts`:**
+**`{naam}.ts`:**
 
 ```typescript
 /**
- * Nederlandse Digitale Dienst {DisplayName} Component (Lit + TypeScript)
+ * NLDD Design System {DisplayName} Component (Lit + TypeScript)
  *
- * @element ndd-{naam}
+ * @element nldd-{naam}
  * @attr {string} size - Component size: 'xs' | 'sm' | 'md' (standaard: 'md')
  * @attr {boolean} disabled - Uitgeschakelde staat
  *
@@ -98,13 +99,13 @@ src/components/{categorie}/{naam}/
 
 import { LitElement } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
-import { styles } from './ndd-{naam}.styles.ts';
-import { template } from './ndd-{naam}.template.ts';
+import { styles } from './{naam}.styles.ts';
+import { template } from './{naam}.template.ts';
 
 type Size = 'xs' | 'sm' | 'md';
 
-@customElement('ndd-{naam}')
-export class NDD{PascalName} extends LitElement {
+@customElement('nldd-{naam}')
+export class NLDD{PascalName} extends LitElement {
 	static override styles = styles;
 
 	@property({ type: String, reflect: true })
@@ -120,12 +121,12 @@ export class NDD{PascalName} extends LitElement {
 
 declare global {
 	interface HTMLElementTagNameMap {
-		'ndd-{naam}': NDD{PascalName};
+		'nldd-{naam}': NLDD{PascalName};
 	}
 }
 ```
 
-**`ndd-{naam}.styles.ts`:**
+**`{naam}.styles.ts`:**
 
 ```typescript
 import { css } from 'lit';
@@ -226,13 +227,13 @@ export const styles = css`
 `;
 ```
 
-**`ndd-{naam}.template.ts`:**
+**`{naam}.template.ts`:**
 
 ```typescript
 import { html, TemplateResult } from 'lit';
-import type { NDD{PascalName} } from './ndd-{naam}.ts';
+import type { NLDD{PascalName} } from './{naam}.ts';
 
-export function template(component: NDD{PascalName}): TemplateResult {
+export function template(component: NLDD{PascalName}): TemplateResult {
 	return html`
 		<button class="{naam}"
 			type="button"
@@ -249,7 +250,7 @@ export function template(component: NDD{PascalName}): TemplateResult {
 
 ## STORY TEMPLATE
 
-**`ndd-{naam}.stories.ts`:**
+**`{naam}.stories.ts`:**
 
 ### Controls conventies
 
@@ -258,7 +259,7 @@ export function template(component: NDD{PascalName}): TemplateResult {
 - **`name:`** het HTML attribuut in kebab-case (bijv. `name: 'start-icon'`, `name: 'full-width'`)
 - **`table.defaultValue.summary:`** altijd invullen met de default waarde
 - **`description:`** korte Nederlandse beschrijving
-- **Icon controls:** gebruik `control: 'select'` met `options: ['(geen)', ...ICONS]` plus `mapping: { '(geen)': '' }` — importeer `ICONS` uit `../../content/icon/ndd-icon.ts`. Nooit een text input voor iconen.
+- **Icon controls:** gebruik `control: 'select'` met `options: ['(geen)', ...ICONS]` plus `mapping: { '(geen)': '' }` — importeer `ICONS` uit `../../content/icon/icon.ts`. Nooit een text input voor iconen.
 - **Optionele select-controls:** Storybook toont anders een leeg item of letterlijk "undefined" in de dropdown. Gebruik `'(geen)'` als label en `mapping` om dat naar de echte waarde te vertalen. Plaats `'(geen)'` als eerste element in `options`. In `args` staat de **actual value** (`''` of `undefined`) — Storybook reverse-lookt via `mapping` welke label de huidige waarde representeert en toont die als geselecteerd in de UI. De render-functie ontvangt eveneens de actual value. Let op: bij opties met numerieke waarden (`1, 2, ...`) plaatst JS de integer-index keys altijd eerst in `Object.keys`, waardoor `'(geen)'` visueel onderaan de dropdown belandt; de selected-state werkt wel correct, dus accepteer dat als trade-off.
   ```ts
   // String prop met '' als "geen waarde"
@@ -346,16 +347,16 @@ autocomplete, noSpellcheck, href, target, method, action, novalidate
 
 ```typescript
 import { html, nothing } from 'lit';
-import './ndd-{naam}.ts';
-import { ICONS } from '../../content/icon/ndd-icon.ts';
+import './{naam}.ts';
+import { ICONS } from '../../content/icon/icon.ts';
 
 export default {
 	title: 'Components/{Categorie}/{DisplayName}',
-	component: 'ndd-{naam}',
+	component: 'nldd-{naam}',
 	tags: ['autodocs'],
 	parameters: {
 		componentSource: {
-			file: 'src/components/{categorie}/{naam}/ndd-{naam}.ts',
+			file: 'src/components/{categorie}/{naam}/{naam}.ts',
 			repository: 'https://github.com/MinBZK/storybook',
 		},
 		status: { type: 'stable' },
@@ -401,12 +402,12 @@ const Template = ({
 	fullWidth,
 	disabled,
 }: Record<string, unknown>) => html`
-	<ndd-{naam}
+	<nldd-{naam}
 		size=${size || nothing}
 		start-icon=${startIcon || nothing}
 		?full-width=${fullWidth}
 		?disabled=${disabled}
-	>Label</ndd-{naam}>
+	>Label</nldd-{naam}>
 `;
 
 export const Default = Template.bind({});
@@ -416,14 +417,14 @@ export const Default = Template.bind({});
 
 ## TEST TEMPLATE
 
-**`ndd-{naam}.test.ts`:**
+**`{naam}.test.ts`:**
 
 ```typescript
 import { describe, it, expect, afterEach } from 'vitest';
 import { fixture, cleanup, waitForUpdate } from '../../../test-utils.ts';
-import './ndd-{naam}.ts';
+import './{naam}.ts';
 
-describe('ndd-{naam}', () => {
+describe('nldd-{naam}', () => {
 	let el: HTMLElement;
 
 	afterEach(() => {
@@ -431,7 +432,7 @@ describe('ndd-{naam}', () => {
 	});
 
 	it('rendert zonder fouten', async () => {
-		el = await fixture('<ndd-{naam}></ndd-{naam}>');
+		el = await fixture('<nldd-{naam}></nldd-{naam}>');
 		await waitForUpdate(el);
 		expect(el.shadowRoot).not.toBeNull();
 	});
@@ -448,17 +449,17 @@ Zie `/translation-keys` skill voor alle conventies rond translation keys, types 
 
 ## SPACER COMPONENT
 
-Gebruik `<ndd-spacer>` voor ruimte tussen verschillende soorten componenten die elkaar direct opvolgen:
+Gebruik `<nldd-spacer>` voor ruimte tussen verschillende soorten componenten die elkaar direct opvolgen:
 
 ```html
 <!-- Vaste spacing op alle breakpoints -->
-<ndd-spacer size="32"></ndd-spacer>
+<nldd-spacer size="32"></nldd-spacer>
 
 <!-- Per breakpoint anders -->
-<ndd-spacer sm-size="16" md-size="24" lg-size="32"></ndd-spacer>
+<nldd-spacer sm-size="16" md-size="24" lg-size="32"></nldd-spacer>
 
 <!-- Vult beschikbare ruimte op -->
-<ndd-spacer size="flexible"></ndd-spacer>
+<nldd-spacer size="flexible"></nldd-spacer>
 ```
 
 **Beschikbare sizes:** 2, 4, 6, 8, 10, 12, 16, 20, 24, 28, 32, 40, 44, 48, 56, 64, 80, 96, flexible
@@ -590,11 +591,11 @@ Er is geen automatische formatter. Volg deze regels handmatig.
 
 <!-- GOED — child component in wrapper -->
 <span class="checkbox__icon">
-	<ndd-icon name="check-mark-small"></ndd-icon>
+	<nldd-icon name="check-mark-small"></nldd-icon>
 </span>
 
 <!-- FOUT — class op child component -->
-<ndd-icon class="checkbox__icon" name="check-mark-small"></ndd-icon>
+<nldd-icon class="checkbox__icon" name="check-mark-small"></nldd-icon>
 
 <!-- FOUT — class op aparte regel -->
 <input

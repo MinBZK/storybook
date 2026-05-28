@@ -142,45 +142,34 @@ general.friday-short-capitalize: Vr.
 ## Bestandsstructuur
 
 ```typescript
-// ndd-{naam}.i18n.ts
-export const ndd{PascalName}Translations = {
+// {naam}.i18n.ts
+export const nldd{PascalName}Translations = {
 	'components.{naam}.label-text': 'Label',
 	'components.{naam}.previous-action': 'Vorige',
 };
 
-export type NDD{PascalName}Translations = typeof ndd{PascalName}Translations;
+export type NLDD{PascalName}Translations = typeof nldd{PascalName}Translations;
 ```
 
 ## Implementatie in component
 
+Gebruik de `withTranslations` mixin uit `src/utilities/with-translations.ts`. De mixin levert de `translations` property, de gemergede defaults en de `_t()` helper.
+
 ```typescript
-import { ndd{PascalName}Translations } from './ndd-{naam}.i18n.ts';
-import type { NDD{PascalName}Translations } from './ndd-{naam}.i18n.ts';
+import { LitElement } from 'lit';
+import { customElement } from 'lit/decorators.js';
+import { withTranslations } from '../../../utilities/with-translations.js';
+import { nldd{PascalName}Translations } from './{naam}.i18n.js';
 
-// Property voor consumer override
-@property({ type: Object })
-translations: Partial<NDD{PascalName}Translations> = {};
-
-private _mergedTranslations = { ...ndd{PascalName}Translations };
-
-// Merge in willUpdate (vóór render)
-override willUpdate(changed: PropertyValues): void {
-	if (changed.has('translations')) {
-		this._mergedTranslations = { ...ndd{PascalName}Translations, ...this.translations };
+@customElement('nldd-{naam}')
+export class NLDD{PascalName} extends withTranslations(LitElement, nldd{PascalName}Translations) {
+	override render() {
+		return html`${this._t('components.{naam}.label-text')}`;
 	}
-}
-
-// Helper
-_t(key: keyof NDD{PascalName}Translations, params?: Record<string, string | number>): string {
-	let text = this._mergedTranslations[key] ?? key;
-	if (params) {
-		for (const [k, v] of Object.entries(params)) {
-			text = text.replace(`{${k}}`, String(v));
-		}
-	}
-	return text;
 }
 ```
+
+Gebruik in templates `component._t('key', { var: value })` voor lookups met optionele `{var}`-placeholder-vervanging.
 
 ## Checklist
 
@@ -188,5 +177,5 @@ _t(key: keyof NDD{PascalName}Translations, params?: Record<string, string | numb
 - [ ] Elk key eindigt met het juiste type suffix
 - [ ] Directe acties in gebiedende wijs
 - [ ] Placeholders met `{naam}` syntax
+- [ ] Component gebruikt `withTranslations` mixin
 - [ ] Consumer kan overschrijven via `translations` property
-- [ ] `willUpdate` gebruikt (niet `updated`)
