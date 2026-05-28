@@ -18,7 +18,7 @@ export const imageStyles = css`
 		--_error-padding: var(--primitives-space-8);
 		--_error-card-padding-block: var(--primitives-space-12);
 		--_error-card-padding-inline: var(--primitives-space-16);
-		--_error-card-gap: var(--primitives-space-4);
+		--_error-card-gap: var(--primitives-space-2);
 		--_error-card-corner-radius: var(--primitives-corner-radius-md);
 		--_caption-row-gap: var(--primitives-space-8);
 		--_object-fit: cover;
