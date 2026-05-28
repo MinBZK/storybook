@@ -110,8 +110,10 @@ export default {
 			table: { defaultValue: { summary: '(geen)' } },
 		},
 		lqip: {
-			control: 'number',
-			description: 'CSS-only LQIP placeholder integer. Genereer via de "LQIP encoder tool" story.',
+			control: 'select',
+			options: ['(geen)', SAMPLE_LQIP],
+			mapping: { '(geen)': undefined },
+			description: 'CSS-only LQIP placeholder integer. Genereer een eigen waarde via de "LQIP encoder tool" story.',
 			table: { defaultValue: { summary: '(geen)' } },
 		},
 		caption: {
