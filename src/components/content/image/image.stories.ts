@@ -1,5 +1,6 @@
 import { html } from 'lit';
 import './image.ts';
+import './lqip-encoder.ts';
 
 const SAMPLE_SRC = 'https://images.unsplash.com/photo-1543872084-c7bd3822856f?auto=format&fit=crop&w=1200&q=70';
 const SAMPLE_ALT = 'Het Binnenhof in Den Haag bij avondlicht';
@@ -231,7 +232,8 @@ export const SlottedImage = {
  * CSS-only Low Quality Image Placeholder volgens
  * https://leanrada.com/notes/css-only-lqip/. Eén integer encodeert een 6-cel
  * 3×2 gradient + base color, die zichtbaar is tot het echte beeld geladen is.
- * De waarde wordt gegenereerd door een build-step uit de bron-afbeelding.
+ * De waarde wordt gegenereerd door een build-step uit de bron-afbeelding, of
+ * via de "LQIP encoder tool" story hieronder.
  */
 export const LQIPPlaceholder = {
 	name: 'LQIP placeholder',
@@ -245,5 +247,20 @@ export const LQIPPlaceholder = {
 			></nldd-image>
 		</div>
 	`,
+	parameters: { controls: { disable: true } },
+};
+
+/**
+ * Encodeer je eigen afbeelding tot een LQIP integer. Volledig client-side —
+ * niets wordt geüpload. De berekende waarde plak je in het `lqip` attribuut
+ * van `nldd-image`.
+ *
+ * Mocht de [originele tool van Lean Rada](https://leanrada.com/notes/css-only-lqip/)
+ * ooit offline gaan, dan kun je je placeholders nog steeds genereren met dit
+ * lokale alternatief.
+ */
+export const LQIPEncoderTool = {
+	name: 'LQIP encoder tool',
+	render: () => html`<nldd-lqip-encoder></nldd-lqip-encoder>`,
 	parameters: { controls: { disable: true } },
 };
