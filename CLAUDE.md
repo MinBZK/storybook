@@ -30,12 +30,12 @@ npm run build            # Volledige build
 
 ```
 src/components/{categorie}/{naam}/
-  nldd-{naam}.ts           # Lit + TypeScript component
-  nldd-{naam}.styles.ts    # Component styles
-  nldd-{naam}.template.ts  # Render template
-  nldd-{naam}.i18n.ts      # Vertalingen (optioneel)
-  nldd-{naam}.stories.ts   # Storybook stories
-  nldd-{naam}.test.ts      # Unit tests
+  {naam}.ts           # Lit + TypeScript component (custom element: nldd-{naam}, class: NLDD{PascalName})
+  {naam}.styles.ts    # Component styles
+  {naam}.template.ts  # Render template
+  {naam}.i18n.ts      # Vertalingen (optioneel)
+  {naam}.stories.ts   # Storybook stories
+  {naam}.test.ts      # Unit tests
 ```
 
 ## CSS Variabelen
