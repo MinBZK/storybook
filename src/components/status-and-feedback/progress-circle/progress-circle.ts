@@ -327,7 +327,9 @@ export class NLDDProgressCircle extends LitElement {
 				attributeFilter: ['value', 'color', 'name'],
 			});
 		}
-		this.requestUpdate();
+		// Setting _segments (a @state) above already schedules a re-render —
+		// the trailing requestUpdate() was a duplicate that produced a second
+		// render on every slot mutation.
 	}
 
 	/** Build the SVG arc list for the current segments (or a single synthetic

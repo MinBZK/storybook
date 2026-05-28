@@ -70,14 +70,20 @@ export class NLDDRichText extends LitElement {
 			if (table.scrollWidth > table.clientWidth) {
 				if (table.getAttribute('tabindex') !== '0') {
 					table.setAttribute('tabindex', '0');
-					// Focusable region needs an accessible name. Prefer the table's
-					// own caption when present, otherwise fall back to a translated
-					// generic label. Only set aria-label when the table doesn't
-					// already declare one (consumer wins). Mark managed labels so
-					// we can clean them up when the table no longer overflows.
-					if (!table.hasAttribute('aria-label') && !table.hasAttribute('aria-labelledby')) {
-						const captionText = table.querySelector('caption')?.textContent?.trim();
-						table.setAttribute('aria-label', captionText || this._t('components.rich-text.table-scroll-label'));
+					// Focusable region needs an accessible name. A <caption>
+					// already names the table natively, so only fall back to
+					// a generic translated label when neither caption nor
+					// existing aria-label/labelledby is present. Mark managed
+					// labels so we can clean them up later without touching
+					// consumer-set ones. (aria-label takes precedence over
+					// caption, so adding it when caption exists would risk
+					// silent divergence if the caption updates.)
+					if (
+						!table.hasAttribute('aria-label')
+						&& !table.hasAttribute('aria-labelledby')
+						&& !table.querySelector('caption')
+					) {
+						table.setAttribute('aria-label', this._t('components.rich-text.table-scroll-label'));
 						table.setAttribute(MANAGED_LABEL_ATTR, '');
 					}
 				}

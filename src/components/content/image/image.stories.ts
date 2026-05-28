@@ -3,20 +3,19 @@ import './image.ts';
 import './lqip-encoder.ts';
 
 // Lokale voorbeeldafbeelding (public/sample-images/), zodat de stories niet
-// afhankelijk zijn van Unsplash en consumers van offline Storybook-builds.
-// Foto: Michal Soukup via Unsplash (Unsplash License — geen attributie verplicht).
-const SAMPLE_SRC = '/sample-images/dutch-windmills-1200.jpg';
-const SAMPLE_ALT = 'Drie traditionele Nederlandse molens bij een meer onder bewolkte hemel';
+// afhankelijk zijn van een externe host en consumers van offline Storybook-builds.
+// Foto: Bart van de Biezen — De Pier van Scheveningen bij avondlicht.
+const SAMPLE_SRC = '/sample-images/scheveningen-pier-1200.jpg';
+const SAMPLE_ALT = 'De Pier van Scheveningen bij avondlicht';
 
 const SAMPLE_SRCSET =
-	'/sample-images/dutch-windmills-480.jpg 480w, ' +
-	'/sample-images/dutch-windmills-960.jpg 960w, ' +
-	'/sample-images/dutch-windmills-1600.jpg 1600w';
+	'/sample-images/scheveningen-pier-480.jpg 480w, ' +
+	'/sample-images/scheveningen-pier-960.jpg 960w, ' +
+	'/sample-images/scheveningen-pier-1600.jpg 1600w';
 
-/** LQIP integer berekend uit de 1200×800 bron (donkere blauw-grijze toon door
- *  bewolkte hemel). Regenereer via de "LQIP encoder tool" story als je de bron
- *  vervangt. */
-const SAMPLE_LQIP = -524189;
+/** LQIP integer berekend uit de bron. Regenereer via de "LQIP encoder tool"
+ *  story als je de afbeelding vervangt. */
+const SAMPLE_LQIP = 86114;
 
 /**
  * Een gestylede wrapper rond `<img>` met de design system tokens voor radius,
@@ -171,8 +170,8 @@ export const WithCaption = {
 	name: 'With caption',
 	render: Template,
 	args: {
-		caption: 'Traditionele molens bij een Nederlands meer.',
-		credit: 'Foto: Michal Soukup / Unsplash',
+		caption: 'De Pier van Scheveningen vlak na zonsondergang.',
+		credit: 'Foto: Bart van de Biezen',
 	},
 };
 
@@ -300,7 +299,7 @@ export const LQIPPlaceholder = {
 				<nldd-image
 					alt="Placeholder zonder image"
 					aspect-ratio="16/9"
-					lqip="-524189"
+					lqip=${SAMPLE_LQIP}
 					caption="Alleen LQIP (geen src)"
 				></nldd-image>
 			</div>
@@ -309,7 +308,7 @@ export const LQIPPlaceholder = {
 					src=${SAMPLE_SRC}
 					alt=${SAMPLE_ALT}
 					aspect-ratio="16/9"
-					lqip="-524189"
+					lqip=${SAMPLE_LQIP}
 					caption="LQIP + image"
 				></nldd-image>
 			</div>
@@ -334,7 +333,7 @@ export const ErrorState = {
 			<div style="width: 320px;">
 				<nldd-image
 					src="/this-does-not-exist.jpg"
-					alt="Drie traditionele Nederlandse molens bij een meer onder bewolkte hemel"
+					alt="De Pier van Scheveningen bij avondlicht"
 					aspect-ratio="16/9"
 					caption="Zonder LQIP"
 				></nldd-image>
@@ -342,9 +341,9 @@ export const ErrorState = {
 			<div style="width: 320px;">
 				<nldd-image
 					src="/this-does-not-exist.jpg"
-					alt="Drie traditionele Nederlandse molens bij een meer onder bewolkte hemel"
+					alt="De Pier van Scheveningen bij avondlicht"
 					aspect-ratio="16/9"
-					lqip="-524189"
+					lqip=${SAMPLE_LQIP}
 					caption="Met LQIP"
 				></nldd-image>
 			</div>

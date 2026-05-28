@@ -104,6 +104,19 @@ export const codeViewerStyles = css`
 		top: var(--_actions-area-padding);
 	}
 
+	/* Visually-hidden live region announces copy success/failure to
+	   screen readers — the static accessible-label on the icon button
+	   alone can't convey state changes. */
+
+	.code-viewer__live-region {
+		position: absolute;
+		width: 1px;
+		height: 1px;
+		overflow: hidden;
+		clip-path: inset(50%);
+		white-space: nowrap;
+	}
+
 
 	/* # Tokens */
 

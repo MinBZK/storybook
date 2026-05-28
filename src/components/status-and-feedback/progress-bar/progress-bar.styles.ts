@@ -147,7 +147,7 @@ export const progressBarStyles = css`
 		content: '';
 		position: absolute;
 		inset-block: 0;
-		left: 0%;
+		left: 0;
 		border-radius: var(--_corner-radius);
 		background: var(--_indeterminate-fill-color);
 		width: 20%;

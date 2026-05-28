@@ -21,6 +21,14 @@ export function codeViewerTemplate(component: NLDDCodeViewer): TemplateResult {
 		: copyState === 'failure'
 			? component._t('components.code-viewer.copy-failure-text')
 			: component._t('components.code-viewer.copy-action');
+	// Live-region payload: announces "Gekopieerd" / "Kopiëren mislukt" so
+	// screen-reader users get confirmation that the static accessible-label
+	// alone can't convey. Empty when idle so re-clicks re-announce.
+	const liveRegionText = copyState === 'success'
+		? component._t('components.code-viewer.copy-success-text')
+		: copyState === 'failure'
+			? component._t('components.code-viewer.copy-failure-text')
+			: '';
 	return html`<pre
 		class="code-viewer"
 		tabindex=${ifDefined(scrollable ? '0' : undefined)}
@@ -46,6 +54,7 @@ export function codeViewerTemplate(component: NLDDCodeViewer): TemplateResult {
 					></nldd-icon-button>
 				</nldd-tooltip>
 			</div>
+			<div class="code-viewer__live-region" role="status" aria-live="polite">${liveRegionText}</div>
 		</div>
 	`}`;
 }

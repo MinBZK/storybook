@@ -14,7 +14,7 @@ export function progressTemplate(component: NLDDProgress) {
 				<nldd-progress-circle
 					size="28"
 					indeterminate
-					text=${text}
+					.text=${text}
 				></nldd-progress-circle>
 			</slot>
 		</div>

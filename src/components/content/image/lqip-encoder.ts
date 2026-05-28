@@ -73,6 +73,11 @@ function clamp(v: number, lo: number, hi: number): number {
  *
  * The source can be a File (e.g. from <input type="file">), an HTMLImageElement,
  * or an ImageBitmap. Returns a number in [-524288, 524287].
+ *
+ * When passing an HTMLImageElement loaded from a different origin, set
+ * `img.crossOrigin = 'anonymous'` BEFORE assigning `src` — otherwise the
+ * underlying canvas read taints and throws a SecurityError. Files and
+ * ImageBitmaps from the same origin are unaffected.
  */
 export async function encodeLqip(source: File | HTMLImageElement | ImageBitmap): Promise<number> {
 	let bitmap: ImageBitmap;

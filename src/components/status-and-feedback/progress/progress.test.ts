@@ -29,8 +29,10 @@ describe('nldd-progress', () => {
 	});
 
 	it('shows the indicator after the 1000ms delay elapses', async () => {
-		// Use fake timers + updateComplete (not waitForUpdate) — waitForUpdate's
-		// internal setTimeout(0) never fires when timers are mocked.
+		// Timer-dependent tests in this file use vi.useFakeTimers + direct
+		// litEl.updateComplete instead of the shared waitForUpdate helper —
+		// waitForUpdate's internal setTimeout(0) would never fire under fake
+		// timers and the test would hang.
 		vi.useFakeTimers();
 		try {
 			el = await fixture<NLDDProgress>('<nldd-progress></nldd-progress>');

@@ -1276,9 +1276,9 @@
 	--components-image-error-font: var(--primitives-font-body-sm-regular-snug);
 	--components-image-caption-gap: var(--primitives-space-4);
 	--components-image-caption-color: var(--semantics-content-color);
-	--components-image-caption-font: var(--primitives-font-body-sm-regular-snug);
+	--components-image-caption-font: var(--primitives-font-body-sm-regular-tight);
 	--components-image-credit-color: var(--semantics-content-secondary-color);
-	--components-image-credit-font: var(--primitives-font-body-sm-regular-snug);
+	--components-image-credit-font: var(--primitives-font-body-sm-regular-tight);
 
 	/* ## Inline dialog */
 

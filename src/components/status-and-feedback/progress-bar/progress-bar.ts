@@ -104,9 +104,16 @@ export class NLDDProgressBarSegment extends LitElement {
 		if (!text) {
 			return html`<span class="progress-bar-segment__hover-area"></span>`;
 		}
+		// tabindex=0 + role=button-like exposure so keyboard users can reach
+		// the segment to read the tooltip (WCAG 2.1.1). nldd-tooltip listens
+		// to focus/blur on its slotted content, so no extra handlers needed.
 		return html`
 			<nldd-tooltip text=${text} timing="instant">
-				<span class="progress-bar-segment__hover-area"></span>
+				<span class="progress-bar-segment__hover-area"
+					tabindex="0"
+					role="button"
+					aria-label=${text}
+				></span>
 			</nldd-tooltip>
 		`;
 	}
@@ -363,7 +370,7 @@ export class NLDDProgressBar extends LitElement {
 		const total = this._totalValue;
 		const denominator = total > this.max ? total : this.max;
 
-		if (total > this.max && this._hasSegments) {
+		if (import.meta.env?.DEV && total > this.max && this._hasSegments) {
 			console.warn(
 				`[nldd-progress-bar] Sum of segment values (${total}) exceeds max (${this.max}). ` +
 				'Segments are normalised proportionally.',
