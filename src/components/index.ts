@@ -141,5 +141,6 @@ export { NLDDModalDialog } from './status-and-feedback/modal-dialog/modal-dialog
 export { NLDDInlineDialog } from './status-and-feedback/inline-dialog/inline-dialog.js';
 export { NLDDBanner } from './status-and-feedback/banner/banner.js';
 export { NLDDBadge } from './status-and-feedback/badge/badge.js';
+export { NLDDProgressBar, NLDDProgressBarSegment } from './status-and-feedback/progress-bar/progress-bar.js';
 
 // Auto-register happens on import of individual component files
