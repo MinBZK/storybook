@@ -115,6 +115,32 @@ describe('nldd-image', () => {
 		expect(assigned[0].getAttribute('src')).toBe('/slotted.jpg');
 	});
 
+	it('renders the error overlay with icon + alt text when the image errors', async () => {
+		el = await fixture<NLDDImage>('<nldd-image src="/missing.jpg" alt="Beschrijving"></nldd-image>');
+		await waitForUpdate(el);
+		// Force the error state directly (jsdom/headless browsers may or may
+		// not fire a real error event for a missing relative URL).
+		const img = el.shadowRoot!.querySelector('img')!;
+		img.dispatchEvent(new Event('error'));
+		await waitForUpdate(el);
+		const overlay = el.shadowRoot!.querySelector('.image__error');
+		expect(overlay).not.toBeNull();
+		expect(overlay!.getAttribute('aria-label')).toBe('Beschrijving');
+		expect(el.shadowRoot!.querySelector('.image__error-text')?.textContent).toBe('Beschrijving');
+		expect(el.shadowRoot!.querySelector('nldd-icon')).not.toBeNull();
+	});
+
+	it('hides the alt text in the error overlay when decorative', async () => {
+		el = await fixture<NLDDImage>('<nldd-image src="/missing.jpg" alt="Ignored" decorative></nldd-image>');
+		await waitForUpdate(el);
+		const img = el.shadowRoot!.querySelector('img')!;
+		img.dispatchEvent(new Event('error'));
+		await waitForUpdate(el);
+		expect(el.shadowRoot!.querySelector('.image__error-text')).toBeNull();
+		// aria-label is omitted for decorative images
+		expect(el.shadowRoot!.querySelector('.image__error')!.hasAttribute('aria-label')).toBe(false);
+	});
+
 	it('passes through srcset and sizes', async () => {
 		el = await fixture('<nldd-image src="/foo.jpg" alt="Foo" srcset="/foo-2x.jpg 2x" sizes="100vw"></nldd-image>');
 		await waitForUpdate(el);

@@ -13,6 +13,8 @@ export const imageStyles = css`
 		--_caption-font: var(--components-image-caption-font);
 		--_credit-color: var(--components-image-credit-color);
 		--_credit-font: var(--components-image-credit-font);
+		--_error-text-color: var(--components-image-error-text-color);
+		--_error-font: var(--components-image-error-font);
 		--_object-fit: cover;
 		--_object-position: center;
 
@@ -72,6 +74,7 @@ export const imageStyles = css`
 
 	.image__media {
 		display: block;
+		position: relative;
 		overflow: hidden;
 		background-color: var(--_background-color);
 		max-width: 100%;
@@ -148,6 +151,43 @@ export const imageStyles = css`
 
 	.image__media--lqip .image__img--loaded {
 		opacity: 1;
+	}
+
+
+	/* # Error state
+	   Centred card with icon + alt-text shown when the image fails to load.
+	   Sits over whatever background --_background-color provides (the LQIP
+	   gradient when present, otherwise the neutral fallback colour). The
+	   card has its own neutral background so the icon + label stay legible
+	   against the LQIP behind it. */
+
+	.image__error {
+		position: absolute;
+		inset: 0;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		padding: var(--primitives-space-8);
+	}
+
+	.image__error-card {
+		box-sizing: border-box;
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		max-width: 100%;
+		padding: var(--primitives-space-12) var(--primitives-space-16);
+		gap: var(--primitives-space-4);
+		background-color: var(--components-image-background-color);
+		border-radius: var(--primitives-corner-radius-md);
+		color: var(--_error-text-color);
+		font: var(--_error-font);
+		text-align: center;
+	}
+
+	.image__error-text {
+		max-width: 100%;
+		overflow-wrap: anywhere;
 	}
 
 

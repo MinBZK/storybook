@@ -5,6 +5,12 @@ import './lqip-encoder.ts';
 const SAMPLE_SRC = 'https://images.unsplash.com/photo-1543872084-c7bd3822856f?auto=format&fit=crop&w=1200&q=70';
 const SAMPLE_ALT = 'Het Binnenhof in Den Haag bij avondlicht';
 
+// Verschillende resolutie-varianten van dezelfde Unsplash bron, zodat we
+// `srcset` als realistisch voorbeeld kunnen aanbieden in de Storybook control.
+const buildSampleUrl = (w: number) =>
+	`https://images.unsplash.com/photo-1543872084-c7bd3822856f?auto=format&fit=crop&w=${w}&q=70`;
+const SAMPLE_SRCSET = `${buildSampleUrl(480)} 480w, ${buildSampleUrl(960)} 960w, ${buildSampleUrl(1600)} 1600w`;
+
 /**
  * Een gestylede wrapper rond `<img>` met de design system tokens voor radius,
  * achtergrond en caption. Reserveert ruimte via `aspect-ratio` om layout-shift
@@ -84,12 +90,18 @@ export default {
 			table: { defaultValue: { summary: 'rounded' } },
 		},
 		srcset: {
-			control: 'text',
-			description: 'Responsive bron-set, bv. `foo-480.jpg 480w, foo-960.jpg 960w`',
+			control: 'select',
+			options: ['(geen)', 'Voorbeeld 480w/960w/1600w'],
+			mapping: { '(geen)': '', 'Voorbeeld 480w/960w/1600w': SAMPLE_SRCSET },
+			description: 'Responsive bron-set met varianten per pixel-breedte',
+			table: { defaultValue: { summary: '(geen)' } },
 		},
 		sizes: {
-			control: 'text',
-			description: 'Sizes hint voor srcset, bv. `(max-width: 600px) 100vw, 50vw`',
+			control: 'select',
+			options: ['(geen)', '100vw', '50vw', '(max-width: 640px) 100vw, 50vw'],
+			mapping: { '(geen)': '' },
+			description: 'Sizes hint voor srcset — vertelt de browser welke variant te kiezen',
+			table: { defaultValue: { summary: '(geen)' } },
 		},
 		lqip: {
 			control: 'number',
@@ -249,17 +261,75 @@ export const SlottedImage = {
  * 3×2 gradient + base color, die zichtbaar is tot het echte beeld geladen is.
  * De waarde wordt gegenereerd door een build-step uit de bron-afbeelding, of
  * via de "LQIP encoder tool" story hieronder.
+ *
+ * Links: alleen de placeholder (geen src) zodat je het LQIP gradient los ziet.
+ * Rechts: met src — placeholder is even zichtbaar en wordt overlapt zodra de
+ * afbeelding geladen is.
  */
 export const LQIPPlaceholder = {
 	name: 'LQIP placeholder',
 	render: () => html`
-		<div style="max-width: 480px;">
-			<nldd-image
-				src=${SAMPLE_SRC}
-				alt=${SAMPLE_ALT}
-				aspect-ratio="16/9"
-				lqip="192900"
-			></nldd-image>
+		<div style="display: flex; gap: 24px; flex-wrap: wrap;">
+			<div style="width: 320px;">
+				<nldd-image
+					alt="Placeholder zonder image"
+					aspect-ratio="16/9"
+					lqip="192900"
+				></nldd-image>
+				<p style="margin: 4px 0 0;">Alleen LQIP (geen src)</p>
+			</div>
+			<div style="width: 320px;">
+				<nldd-image
+					src=${SAMPLE_SRC}
+					alt=${SAMPLE_ALT}
+					aspect-ratio="16/9"
+					lqip="192900"
+				></nldd-image>
+				<p style="margin: 4px 0 0;">LQIP + image</p>
+			</div>
+		</div>
+	`,
+	parameters: { controls: { disable: true } },
+};
+
+/**
+ * Wanneer een image niet geladen kan worden (404, netwerk-fout, decode-fout)
+ * toont het component een fallback: een icoon + de alt-tekst in een kleine
+ * neutrale container. Bij gezet `lqip` zit die container over het gradient
+ * zodat er voldoende contrast met de tekst is; zonder LQIP gebruikt de
+ * media-wrapper diezelfde neutrale kleur.
+ *
+ * Een decoratieve afbeelding (`decorative`) toont alleen het icoon, geen tekst.
+ */
+export const ErrorState = {
+	name: 'Error state',
+	render: () => html`
+		<div style="display: flex; gap: 24px; flex-wrap: wrap;">
+			<div style="width: 320px;">
+				<nldd-image
+					src="/this-does-not-exist.jpg"
+					alt="Het Binnenhof in Den Haag bij avondlicht"
+					aspect-ratio="16/9"
+				></nldd-image>
+				<p style="margin: 4px 0 0;">Zonder LQIP</p>
+			</div>
+			<div style="width: 320px;">
+				<nldd-image
+					src="/this-does-not-exist.jpg"
+					alt="Het Binnenhof in Den Haag bij avondlicht"
+					aspect-ratio="16/9"
+					lqip="192900"
+				></nldd-image>
+				<p style="margin: 4px 0 0;">Met LQIP</p>
+			</div>
+			<div style="width: 320px;">
+				<nldd-image
+					src="/this-does-not-exist.jpg"
+					aspect-ratio="16/9"
+					decorative
+				></nldd-image>
+				<p style="margin: 4px 0 0;">Decoratief (alleen icoon)</p>
+			</div>
 		</div>
 	`,
 	parameters: { controls: { disable: true } },

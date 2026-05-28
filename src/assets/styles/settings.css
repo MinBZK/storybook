@@ -1271,7 +1271,9 @@
 	/* ## Image */
 
 	--components-image-corner-radius: var(--semantics-controls-md-corner-radius);
-	--components-image-background-color: var(--semantics-surfaces-tinted-background-color);
+	--components-image-background-color: light-dark(var(--primitives-color-neutral-75), var(--primitives-color-neutral-50));
+	--components-image-error-text-color: var(--semantics-content-color);
+	--components-image-error-font: var(--primitives-font-body-sm-regular-snug);
 	--components-image-caption-gap: var(--primitives-space-4);
 	--components-image-caption-color: var(--semantics-content-color);
 	--components-image-caption-font: var(--primitives-font-body-sm-regular-snug);

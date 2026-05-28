@@ -42,6 +42,7 @@ import { LitElement } from 'lit';
 import { customElement, property, state } from 'lit/decorators.js';
 import { imageStyles } from './image.styles.js';
 import { imageTemplate } from './image.template.js';
+import '../icon/icon.js';
 
 export type ImageShape = 'square' | 'rounded' | 'circle';
 export type ImageObjectFit = 'cover' | 'contain' | 'fill' | 'scale-down' | 'none';
@@ -113,6 +114,12 @@ export class NLDDImage extends LitElement {
 	@state()
 	_imageLoaded = false;
 
+	/** Set when the internal <img> fires an error event (404, network error,
+	 *  decode failure, …). The template uses this to render a fallback UI
+	 *  with an icon + the alt text. */
+	@state()
+	_imageErrored = false;
+
 	/** Convert "16:9" → "16/9" so the CSS `aspect-ratio` parser accepts it.
 	 *  Already-slashed values pass through untouched. */
 	get _cssAspectRatio(): string {
@@ -134,10 +141,11 @@ export class NLDDImage extends LitElement {
 	}
 
 	override willUpdate(changed: Map<string, unknown>): void {
-		// Reset the loaded flag when the src changes so the LQIP shows again
-		// for the new image until it finishes loading.
+		// Reset load/error flags when the src changes so the LQIP shows again
+		// for the new image until it finishes loading (or errors out anew).
 		if (changed.has('src')) {
 			this._imageLoaded = false;
+			this._imageErrored = false;
 		}
 	}
 
@@ -165,6 +173,12 @@ export class NLDDImage extends LitElement {
 
 	_onImageLoad = (): void => {
 		this._imageLoaded = true;
+		this._imageErrored = false;
+	};
+
+	_onImageError = (): void => {
+		this._imageErrored = true;
+		this._imageLoaded = false;
 	};
 
 	_onCaptionSlotChange = (e: Event): void => {

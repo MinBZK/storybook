@@ -38,14 +38,29 @@ export function imageTemplate(component: NLDDImage) {
 			decoding=${component.decoding}
 			fetchpriority=${ifDefined(component.fetchPriority)}
 			@load=${component._onImageLoad}
+			@error=${component._onImageError}
 		>
 	`;
+
+	// Error overlay: shown when the fallback img fires an error. Sits centred
+	// over the media area on top of the LQIP gradient (or the neutral fallback
+	// background when no LQIP is provided). Decorative images skip the alt
+	// label so they don't introduce an accidental description.
+	const errorOverlay = component._imageErrored ? html`
+		<div class="image__error" role="img" aria-label=${component.decorative ? nothing : component.alt}>
+			<div class="image__error-card">
+				<nldd-icon name="image" color="secondary-content"></nldd-icon>
+				${component.decorative ? nothing : html`<span class="image__error-text">${component.alt}</span>`}
+			</div>
+		</div>
+	` : nothing;
 
 	const media = html`
 		<div class=${mediaClasses}
 			style=${styleMap(mediaStyles)}
 		>
 			<slot>${fallbackImg}</slot>
+			${errorOverlay}
 		</div>
 	`;
 
