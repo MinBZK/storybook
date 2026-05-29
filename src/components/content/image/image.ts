@@ -277,7 +277,7 @@ export class NLDDImage extends LitElement {
 		// (which doesn't fire for static initial content) — producing a
 		// flash of no figure / caption on first paint.
 		const captionSlot = this.shadowRoot?.querySelector<HTMLSlotElement>('slot[name="caption"]');
-		if (captionSlot) this._onCaptionSlotChange({ target: captionSlot } as unknown as Event);
+		if (captionSlot) this._syncSlottedCaption(captionSlot);
 	}
 
 	_onImageLoad = (): void => {
@@ -290,8 +290,10 @@ export class NLDDImage extends LitElement {
 		this._imageLoaded = false;
 	};
 
-	_onCaptionSlotChange = (e: Event): void => {
-		const slot = e.target as HTMLSlotElement;
+	/** Recompute _hasSlottedCaption from a caption slot's assigned nodes.
+	 *  Takes the slot directly so both the slotchange handler and the
+	 *  firstUpdated initial-sync can call it — no synthetic Event needed. */
+	_syncSlottedCaption(slot: HTMLSlotElement): void {
 		this._hasSlottedCaption = slot.assignedNodes({ flatten: true })
 			.some(node => {
 				if (node.nodeType === Node.TEXT_NODE) {
@@ -299,6 +301,10 @@ export class NLDDImage extends LitElement {
 				}
 				return true;
 			});
+	}
+
+	_onCaptionSlotChange = (e: Event): void => {
+		this._syncSlottedCaption(e.target as HTMLSlotElement);
 	};
 
 	override render() {
