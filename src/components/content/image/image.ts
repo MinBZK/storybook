@@ -83,7 +83,7 @@ export class NLDDImage extends LitElement {
 	@property({ type: String, reflect: true })
 	width: number | 'full' = 'full';
 
-	@property({ type: Number })
+	@property({ type: Number, reflect: true })
 	height?: number;
 
 	@property({ type: String })

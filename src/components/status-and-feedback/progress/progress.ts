@@ -33,6 +33,11 @@
  *
  * @attr {string} text - Label under the default indicator. Falls back to the
  *   translated "Laden" string when unset. Ignored when the slot is filled.
+ * @attr {boolean} no-label - Suppress the label under the default indicator
+ *   entirely. Use when the surrounding UI already conveys "loading" and an
+ *   extra "Laden" caption would be redundant noise.
+ * @attr {boolean} complete - Mark the loader as finished while keeping the
+ *   element mounted; clears aria-busy and hides the indicator.
  * @attr {object} translations - Override translation keys; unset keys fall back to Dutch
  *
  * @slot - Optional custom indicator; overrides the default progress-circle.
@@ -60,6 +65,12 @@ export class NLDDProgress extends LitElement {
 
 	@property({ type: String, reflect: true })
 	text = '';
+
+	/** Suppress the indicator's label entirely. The component still
+	 *  renders the spinner and announces aria-busy; only the visible
+	 *  "Laden" caption is hidden. Replaces the old text=" " sentinel. */
+	@property({ type: Boolean, reflect: true, attribute: 'no-label' })
+	noLabel = false;
 
 	/** Mark the loader as finished while keeping the element mounted.
 	 *  Clears aria-busy and hides the indicator. Default false. */

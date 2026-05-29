@@ -337,10 +337,10 @@ export class NLDDProgressBar extends LitElement {
 			case 'fraction': valuePart = `${v} / ${this.max}`; break;
 			case 'percentage':
 			case 'none':
-				// 'none' is listed only for exhaustiveness — callers strip the
-				// value entirely when valueFormat is 'none' (see
-				// _renderHeaderValue), so this branch is never reached with
-				// 'none' under normal flow.
+				// 'none' is listed only for exhaustiveness — callers strip
+				// the value entirely when valueFormat is 'none' (see the
+				// _displayValue getter above), so this branch is never
+				// reached with 'none' under normal flow.
 				// falls through
 			default: valuePart = `${pct}%`; break;
 		}

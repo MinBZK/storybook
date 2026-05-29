@@ -25,6 +25,7 @@ export default {
 	},
 	args: {
 		text: '',
+		noLabel: false,
 	},
 	argTypes: {
 		text: {
@@ -32,12 +33,20 @@ export default {
 			description: 'Tekst onder de indicator. Leeg → vertaalde fallback.',
 			table: { defaultValue: { summary: 'Laden' } },
 		},
+		noLabel: {
+			name: 'no-label',
+			control: 'boolean',
+			description: 'Verberg het label volledig — bv. wanneer de omringende UI al "laden" communiceert',
+			table: { defaultValue: { summary: false } },
+		},
 	},
 };
 
-const Template = ({ text }: Record<string, unknown>) => html`
+const Template = ({ text, noLabel }: Record<string, unknown>) => html`
 	<div style="height: 240px; display: flex;">
-		<nldd-progress text=${text as string}></nldd-progress>
+		<nldd-progress text=${text as string}
+			?no-label=${noLabel}
+		></nldd-progress>
 	</div>
 `;
 
@@ -49,6 +58,12 @@ export const CustomText = {
 	name: 'Custom text',
 	render: Template,
 	args: { text: 'Bezig met opslaan' },
+};
+
+export const WithoutLabel = {
+	name: 'Without label',
+	render: Template,
+	args: { noLabel: true },
 };
 
 export const ProgressBarViaSlot = {

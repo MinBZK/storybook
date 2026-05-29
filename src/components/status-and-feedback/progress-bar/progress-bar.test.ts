@@ -435,18 +435,16 @@ describe('nldd-progress-bar', () => {
 		expect(track.getAttribute('aria-valuenow')).toBe('1');
 	});
 
-	it('cleans up timers and observer on disconnect', async () => {
-		el = await fixture<NLDDProgressBar>('<nldd-progress-bar value="60" indeterminate></nldd-progress-bar>');
-		await waitForUpdate(el);
-		const bar = el as unknown as NLDDProgressBar;
+	it('cleans up timers and observer on disconnect without throwing', async () => {
+		const fresh = await fixture<NLDDProgressBar>('<nldd-progress-bar value="60" indeterminate></nldd-progress-bar>');
+		await waitForUpdate(fresh);
+		const bar = fresh as unknown as NLDDProgressBar;
 		bar.indeterminate = false;
-		await waitForUpdate(el);
-		// disconnect mid-transition
-		cleanup(el);
-		// hard to assert that the timeout no longer fires, but at the very least
-		// disconnectedCallback invokes the cancel paths without errors
-		expect(true).toBe(true);
-		(el as unknown) = null;
+		await waitForUpdate(fresh);
+		// Disconnect mid-transition. The actual assertion is that the cancel
+		// paths in disconnectedCallback don't throw — we can't easily prove
+		// the timeout never fires, but we can prove the teardown is clean.
+		expect(() => cleanup(fresh)).not.toThrow();
 	});
 });
 

@@ -6,11 +6,12 @@ export function progressTemplate(component: NLDDProgress) {
 	// even flash for sub-second loads, or once `complete` is set so the
 	// element stays mounted but ARIA / visuals reflect the finished state.
 	if (!component._visible || component.complete) return nothing;
-	// `text` attribute overrides the translated default. Empty string keeps
-	// the default — pass `text=" "` (a space) if you genuinely want no label.
-	// TODO: replace the space-sentinel with an explicit `no-label` boolean
-	// attribute. A whitespace string is non-obvious and easy to misuse.
-	const text = component.text || component._t('components.progress.loading-text');
+	// `text` attribute overrides the translated default. To suppress the
+	// label entirely use the `no-label` boolean attribute — passing
+	// text="" leaves the translated fallback in place by design.
+	const text = component.noLabel
+		? ''
+		: (component.text || component._t('components.progress.loading-text'));
 	return html`
 		<div class="progress__indicator">
 			<slot>
