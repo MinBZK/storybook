@@ -36,7 +36,7 @@ export default {
 		background: {
 			control: 'select',
 			options: ['tinted', 'base'],
-			description: 'Surface fill. `tinted` voor box op een plain page, `base` voor box op een al getinte parent (highlight ring krijgt +2 stappen voor extra contrast).',
+			description: 'Surface fill. `tinted` voor box op een plain page, `base` voor box op een al getinte parent (border ring krijgt +2 stappen voor extra contrast).',
 			table: { defaultValue: { summary: 'tinted' } },
 		},
 	},

@@ -22,7 +22,7 @@ export default {
 		variant: {
 			control: 'select',
 			options: ['simple', 'box'],
-			description: 'Visuele stijl: `simple` = platte strip, `box` = framed card met afgeronde hoeken en highlight ring',
+			description: 'Visuele stijl: `simple` = platte strip, `box` = framed card met afgeronde hoeken en border ring',
 			table: { defaultValue: { summary: 'simple' } },
 		},
 		background: {
@@ -111,7 +111,7 @@ export const Variants = {
 			</nldd-list>
 
 			<nldd-list variant="box">
-				<nldd-list-item><nldd-text-cell text="Box (default: tinted bg + highlight) — item 1"></nldd-text-cell></nldd-list-item>
+				<nldd-list-item><nldd-text-cell text="Box (default: tinted bg + border) — item 1"></nldd-text-cell></nldd-list-item>
 				<nldd-list-item><nldd-text-cell text="Box — item 2"></nldd-text-cell></nldd-list-item>
 				<nldd-list-item><nldd-text-cell text="Box — item 3"></nldd-text-cell></nldd-list-item>
 			</nldd-list>
@@ -129,7 +129,7 @@ export const Variants = {
 		controls: { disable: true },
 		docs: {
 			description: {
-				story: 'Twee varianten: `simple` (platte strip, alleen item-scheiding) en `box` (framed card met afgeronde hoeken + highlight ring). De `background` attribute regelt de fill — default volgt de variant (`simple` → transparent, `box` → tinted). Voor "box op een getinte pagina": `variant="box" background="base"`.',
+				story: 'Twee varianten: `simple` (platte strip, alleen item-scheiding) en `box` (framed card met afgeronde hoeken + border ring). De `background` attribute regelt de fill — default volgt de variant (`simple` → transparent, `box` → tinted). Voor "box op een getinte pagina": `variant="box" background="base"`.',
 			},
 		},
 	},

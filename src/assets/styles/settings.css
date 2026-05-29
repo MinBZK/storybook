@@ -771,16 +771,8 @@
 
 	--semantics-surfaces-background-color: light-dark(var(--primitives-color-neutral-0), var(--primitives-color-neutral-100));
 	--semantics-surfaces-tinted-background-color: light-dark(var(--primitives-color-neutral-25), var(--primitives-color-neutral-75));
-	/* "Highlight" = a palette step above the corresponding surface bg.
-	   Used as a subtle 1px ring (via box-shadow inset) to give surface-like
-	   components a defined edge without taking layout space.
-	   - Tinted variant: +1 step. Components sitting on the page bg only need
-	     a soft edge to read as a card.
-	   - Base variant: +2 steps. A base-coloured card on an already-tinted
-	     parent has nothing else to read against, so the ring needs more
-	     contrast to register. */
-	--semantics-surfaces-highlight-color: light-dark(var(--primitives-color-neutral-50), var(--primitives-color-neutral-200));
-	--semantics-surfaces-tinted-highlight-color: light-dark(var(--primitives-color-neutral-50), var(--primitives-color-neutral-100));
+	--semantics-surfaces-border-color: light-dark(var(--primitives-color-neutral-50), var(--primitives-color-neutral-150));
+	--semantics-surfaces-tinted-border-color: light-dark(var(--primitives-color-neutral-50), var(--primitives-color-neutral-100));
 
 	/* ## Content */
 
@@ -1210,8 +1202,8 @@
 
 	--components-box-background-color: var(--semantics-surfaces-tinted-background-color);
 	--components-box-base-background-color: var(--semantics-surfaces-background-color);
-	--components-box-highlight-color: var(--semantics-surfaces-tinted-highlight-color);
-	--components-box-base-highlight-color: var(--semantics-surfaces-highlight-color);
+	--components-box-border-color: var(--semantics-surfaces-tinted-border-color);
+	--components-box-base-border-color: var(--semantics-surfaces-border-color);
 	--components-box-corner-radius: var(--primitives-corner-radius-xl);
 	--components-box-padding: var(--primitives-space-16);
 

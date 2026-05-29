@@ -23,7 +23,7 @@ export const listStyles = css`
 	}
 
 
-	/* ## Background + highlight
+	/* ## Background + border
 	   Default state is transparent / no ring. variant="box" picks the
 	   tinted surface as its implicit background (matches nldd-box's
 	   default). An explicit background= attribute always wins, so
@@ -32,37 +32,37 @@ export const listStyles = css`
 
 	:host {
 		--_background-color: transparent;
-		--_highlight-color: transparent;
+		--_border-color: transparent;
 	}
 
 	:host([variant="box"]:not([background])) {
 		--_background-color: var(--semantics-surfaces-tinted-background-color);
-		--_highlight-color: var(--semantics-surfaces-tinted-highlight-color);
+		--_border-color: var(--semantics-surfaces-tinted-border-color);
 	}
 
 	:host([background="base"]) {
 		--_background-color: var(--semantics-surfaces-background-color);
-		--_highlight-color: var(--semantics-surfaces-highlight-color);
+		--_border-color: var(--semantics-surfaces-border-color);
 	}
 
 	:host([background="tinted"]) {
 		--_background-color: var(--semantics-surfaces-tinted-background-color);
-		--_highlight-color: var(--semantics-surfaces-tinted-highlight-color);
+		--_border-color: var(--semantics-surfaces-tinted-border-color);
 	}
 
 	/* transparent is the implicit :host default but an explicit value
 	   needs to clear any per-variant default that came before it. */
 	:host([background="transparent"]) {
 		--_background-color: transparent;
-		--_highlight-color: transparent;
+		--_border-color: transparent;
 	}
 
 	:host([variant="box"]) .list__items {
 		border-radius: var(--components-list-corner-radius);
 		background-color: var(--_background-color);
-		/* Inner box-shadow paints the highlight ring inside the radius
+		/* Inner box-shadow paints the border ring inside the radius
 		   without taking layout space, matching nldd-box / nldd-banner. */
-		box-shadow: inset 0 0 0 1px var(--_highlight-color);
+		box-shadow: inset 0 0 0 1px var(--_border-color);
 		overflow: hidden;
 	}
 
@@ -137,7 +137,7 @@ export const listStyles = css`
 
 	/* # Accessibility
 	   forced-colors / Windows High Contrast strips box-shadow, so the
-	   inset highlight on the box variant would disappear. Restore the
+	   inset border on the box variant would disappear. Restore the
 	   frame with a real border in that mode — same fallback nldd-box
 	   and nldd-banner use. */
 
