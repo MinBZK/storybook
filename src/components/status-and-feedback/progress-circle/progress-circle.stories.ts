@@ -49,7 +49,7 @@ export default {
 			control: 'select',
 			options: ['16', '20', '24', '28', '32', '40', '44', '48', '56', '64', '80', '96'],
 			description: 'Diameter in px (zelfde set als nldd-icon)',
-			table: { defaultValue: { summary: '32' } },
+			table: { defaultValue: { summary: '28' } },
 		},
 		max: {
 			control: { type: 'number', min: 1 },
@@ -82,7 +82,7 @@ export default {
 	args: {
 		mode: 'progress',
 		color: 'accent',
-		size: '32',
+		size: '28',
 		max: 100,
 		value: 60,
 		text: 'Bestanden uploaden',
