@@ -153,7 +153,7 @@ export const bannerStyles = css`
 	   meets contrast. */
 
 	@media (forced-colors: active) {
-		.banner {
+		:host {
 			border: var(--_border-width) solid CanvasText;
 		}
 	}

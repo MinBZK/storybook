@@ -273,20 +273,26 @@ export function encodePixelDataToLqip(
  * same-origin ImageBitmaps are unaffected.
  */
 export async function encodeLqip(source: File | HTMLImageElement | ImageBitmap): Promise<string> {
-	let bitmap: ImageBitmap;
-	if (source instanceof File || source instanceof HTMLImageElement) {
-		bitmap = await createImageBitmap(source);
-	} else {
-		bitmap = source;
+	// When we create the bitmap from a File / HTMLImageElement we own its
+	// lifecycle and must close it. When the caller passes an ImageBitmap they
+	// own it (the Storybook encoder element, for one, reuses + closes its own),
+	// so we leave that case untouched.
+	const ownsBitmap = source instanceof File || source instanceof HTMLImageElement;
+	const bitmap: ImageBitmap = ownsBitmap ? await createImageBitmap(source) : source;
+
+	try {
+		const canvas = document.createElement('canvas');
+		canvas.width = bitmap.width;
+		canvas.height = bitmap.height;
+		const ctx = canvas.getContext('2d');
+		if (!ctx) throw new Error('encodeLqip: could not acquire a 2D canvas context');
+		ctx.drawImage(bitmap, 0, 0);
+		const { data } = ctx.getImageData(0, 0, bitmap.width, bitmap.height);
+
+		return encodePixelDataToLqip(data, bitmap.width, bitmap.height);
+	} finally {
+		// Close only the bitmap we allocated; never the caller's. Runs on the
+		// success path and on a thrown SecurityError / context failure.
+		if (ownsBitmap) bitmap.close();
 	}
-
-	const canvas = document.createElement('canvas');
-	canvas.width = bitmap.width;
-	canvas.height = bitmap.height;
-	const ctx = canvas.getContext('2d');
-	if (!ctx) throw new Error('encodeLqip: could not acquire a 2D canvas context');
-	ctx.drawImage(bitmap, 0, 0);
-	const { data } = ctx.getImageData(0, 0, bitmap.width, bitmap.height);
-
-	return encodePixelDataToLqip(data, bitmap.width, bitmap.height);
 }

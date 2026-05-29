@@ -87,8 +87,13 @@ export class NLDDImage extends LitElement {
 	@property({ type: String })
 	sizes = '';
 
+	/** `'full'` (fills the parent) or a numeric pixel string like `'320'`.
+	 *  Typed as `string` because `type: String` means a `width="320"`
+	 *  attribute arrives as the string `"320"`, not the number `320` — the
+	 *  `_numericWidth` getter owns all parsing. A consumer setting the
+	 *  property directly should pass a string (`el.width = '320'`). */
 	@property({ type: String, reflect: true })
-	width: number | 'full' = 'full';
+	width: string = 'full';
 
 	@property({ type: Number, reflect: true })
 	height?: number;
