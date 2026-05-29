@@ -770,9 +770,9 @@
 	/* ## Surfaces */
 
 	--semantics-surfaces-background-color: light-dark(var(--primitives-color-neutral-0), var(--primitives-color-neutral-100));
-	--semantics-surfaces-tinted-background-color: light-dark(var(--primitives-color-neutral-25), var(--primitives-color-neutral-75));
 	--semantics-surfaces-border-color: light-dark(var(--primitives-color-neutral-50), var(--primitives-color-neutral-150));
-	--semantics-surfaces-tinted-border-color: light-dark(var(--primitives-color-neutral-50), var(--primitives-color-neutral-100));
+	--semantics-surfaces-tinted-background-color: light-dark(var(--primitives-color-neutral-25), var(--primitives-color-neutral-75));
+	--semantics-surfaces-tinted-border-color: light-dark(var(--primitives-color-neutral-50), var(--primitives-color-neutral-150));
 
 	/* ## Content */
 
