@@ -46,7 +46,6 @@ here; consult the commit history if you need that level of detail.
 - `nldd-banner` (post-initial iterations): filled default icons, lighter border + background, dismiss button alignment + spacing polished, accent variant dropped (use `nldd-inline-dialog` for accent emphasis), stories rebuilt around the new actions pattern. The edge changed from a real `border` to an inset box-shadow so child content keeps its exact position regardless of the edge weight, with a `forced-colors` fallback restoring a real border.
 - `nldd-tag` and `nldd-badge` stories: `Variants` + `Rijkskleuren` merged into a single `Colors` story per component; tag colour labels switched from concept-style strings (concept / nieuw / gepubliceerd / let op / afgewezen) to the semantic colour names.
 - Interactive controls (16 components) now have `user-select: none` on hit targets so double-tapping or shift-clicking doesn't accidentally select label text.
-- `nldd-progress-circle`: indeterminate spinner switched from the Material-style "grow + shrink while rotating" arc to a GitHub-style fixed-width 25% arc that simply rotates. At the design-system default size (28 px) the previous animation read as visually busy; a constant-width rotation is calmer.
 
 ### Breaking
 
