@@ -4,18 +4,18 @@ import './lqip-encoder.ts';
 
 // Lokale voorbeeldafbeelding (public/sample-images/), zodat de stories niet
 // afhankelijk zijn van een externe host en consumers van offline Storybook-builds.
-// Foto: Bart van de Biezen — De Pier van Scheveningen bij avondlicht.
-const SAMPLE_SRC = '/sample-images/scheveningen-pier-1200.jpg';
-const SAMPLE_ALT = 'De Pier van Scheveningen bij avondlicht';
+// Foto: Bart van de Biezen — Klein koolwitje op een vlinderstruik.
+const SAMPLE_SRC = '/sample-images/butterfly-1200.jpg';
+const SAMPLE_ALT = 'Klein koolwitje op een vlinderstruik';
 
 const SAMPLE_SRCSET =
-	'/sample-images/scheveningen-pier-480.jpg 480w, ' +
-	'/sample-images/scheveningen-pier-960.jpg 960w, ' +
-	'/sample-images/scheveningen-pier-1600.jpg 1600w';
+	'/sample-images/butterfly-480.jpg 480w, ' +
+	'/sample-images/butterfly-960.jpg 960w, ' +
+	'/sample-images/butterfly-1600.jpg 1600w';
 
 /** LQIP CSV string berekend uit de bron (zeven 0-255 Oklab bytes). Regenereer
  *  via de "LQIP encoder tool" story als je de afbeelding vervangt. */
-const SAMPLE_LQIP = '98,154,162,99,99,99,100';
+const SAMPLE_LQIP = '28,28,164,164,106,170,99';
 
 /**
  * Een gestylede wrapper rond `<img>` met de design system tokens voor radius,
@@ -163,7 +163,7 @@ export const WithCaption = {
 	name: 'With caption',
 	render: Template,
 	args: {
-		caption: 'De Pier van Scheveningen vlak na zonsondergang.',
+		caption: 'Klein koolwitje op een vlinderstruik.',
 		credit: 'Foto: Bart van de Biezen',
 	},
 };
@@ -326,7 +326,7 @@ export const ErrorState = {
 			<div style="width: 320px;">
 				<nldd-image
 					src="/this-does-not-exist.jpg"
-					alt="De Pier van Scheveningen bij avondlicht"
+					alt="Klein koolwitje op een vlinderstruik"
 					aspect-ratio="16/9"
 					caption="Met alt-tekst"
 				></nldd-image>
