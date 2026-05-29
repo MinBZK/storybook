@@ -150,11 +150,16 @@ export class NLDDLqipEncoder extends LitElement {
 			this._filename = file.name;
 			// Decode once to read dimensions for the comparison preview, then
 			// reuse the bitmap for the actual encode so the file isn't decoded
-			// twice.
+			// twice. We pass an ImageBitmap (not the File) so encodeLqip treats
+			// it as caller-owned and won't close it — hence the try/finally
+			// here closes it ourselves, including when encodeLqip throws.
 			const bitmap = await createImageBitmap(file);
-			this._aspectRatio = `${bitmap.width}/${bitmap.height}`;
-			this._lqip = await encodeLqip(bitmap);
-			bitmap.close();
+			try {
+				this._aspectRatio = `${bitmap.width}/${bitmap.height}`;
+				this._lqip = await encodeLqip(bitmap);
+			} finally {
+				bitmap.close();
+			}
 		} catch (err) {
 			this._error = err instanceof Error ? err.message : String(err);
 			this._lqip = null;
