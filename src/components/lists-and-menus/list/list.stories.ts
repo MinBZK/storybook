@@ -27,10 +27,10 @@ export default {
 		},
 		background: {
 			control: 'select',
-			options: ['(default)', 'transparent', 'base', 'tinted'],
-			mapping: { '(default)': undefined },
-			description: 'Surface fill. Default volgt `variant` (simple → transparent, box → tinted). Zet `base` om de box op een al getinte achtergrond te plaatsen.',
-			table: { defaultValue: { summary: '(default)' } },
+			options: ['tinted', 'base'],
+			description: 'Surface fill voor `variant="box"`. `tinted` (default) voor een list op een plain page, `base` voor een list op een al getinte parent. Geen effect bij `variant="simple"`.',
+			table: { defaultValue: { summary: 'tinted' } },
+			if: { arg: 'variant', eq: 'box' },
 		},
 		type: {
 			control: 'select',
@@ -73,7 +73,7 @@ Selectie-state wordt **altijd door de consumer beheerd**: de lijst muteert nooit
 export const Default = {
 	args: {
 		variant: 'simple',
-		background: undefined,
+		background: 'tinted',
 		type: 'list',
 		'no-dividers': false,
 		'empty-text': '',
@@ -82,7 +82,7 @@ export const Default = {
 	render: (args: Record<string, any>) => html`
 		<nldd-list
 			variant=${args.variant}
-			background=${args.background || nothing}
+			background=${args.variant === 'box' ? args.background : nothing}
 			type=${args.type}
 			?no-dividers=${args['no-dividers']}
 			empty-text=${args['empty-text']}
@@ -129,7 +129,7 @@ export const Variants = {
 		controls: { disable: true },
 		docs: {
 			description: {
-				story: 'Twee varianten: `simple` (platte strip, alleen item-scheiding) en `box` (framed card met afgeronde hoeken + border ring). De `background` attribute regelt de fill — default volgt de variant (`simple` → transparent, `box` → tinted). Voor "box op een getinte pagina": `variant="box" background="base"`.',
+				story: 'Twee varianten: `simple` (platte strip, geen chrome) en `box` (framed card met afgeronde hoeken + border ring). De `background` attribute regelt de fill van de box-variant — `tinted` (default) of `base`. `background` heeft geen effect bij `variant="simple"`. Voor "box op een getinte pagina": `variant="box" background="base"`.',
 			},
 		},
 	},

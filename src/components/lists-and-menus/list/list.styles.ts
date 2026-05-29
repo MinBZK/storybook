@@ -24,18 +24,12 @@ export const listStyles = css`
 
 
 	/* ## Background + border
-	   Default state is transparent / no ring. variant="box" picks the
-	   tinted surface as its implicit background (matches nldd-box's
-	   default). An explicit background= attribute always wins, so
-	   <nldd-list variant="box" background="base"> is the "box on a
-	   tinted page" use-case (the old variant="box-on-tinted" shape). */
+	   Only the box variant has a surface. simple is a plain vertical
+	   strip with no chrome. variant="box" defaults to the tinted
+	   surface; an explicit background="base" picks the base semantic
+	   pair (same shape nldd-box uses). */
 
-	:host {
-		--_background-color: transparent;
-		--_border-color: transparent;
-	}
-
-	:host([variant="box"]:not([background])) {
+	:host([variant="box"]) {
 		--_background-color: var(--semantics-surfaces-tinted-background-color);
 		--_border-color: var(--semantics-surfaces-tinted-border-color);
 	}
@@ -45,18 +39,6 @@ export const listStyles = css`
 		--_border-color: var(--semantics-surfaces-border-color);
 	}
 
-	:host([background="tinted"]) {
-		--_background-color: var(--semantics-surfaces-tinted-background-color);
-		--_border-color: var(--semantics-surfaces-tinted-border-color);
-	}
-
-	/* transparent is the implicit :host default but an explicit value
-	   needs to clear any per-variant default that came before it. */
-	:host([background="transparent"]) {
-		--_background-color: transparent;
-		--_border-color: transparent;
-	}
-
 	:host([variant="box"]) .list__items {
 		border-radius: var(--components-list-corner-radius);
 		background-color: var(--_background-color);
@@ -64,10 +46,6 @@ export const listStyles = css`
 		   without taking layout space, matching nldd-box / nldd-banner. */
 		box-shadow: inset 0 0 0 1px var(--_border-color);
 		overflow: hidden;
-	}
-
-	:host([variant="simple"]) .list__items {
-		background-color: var(--_background-color);
 	}
 
 
