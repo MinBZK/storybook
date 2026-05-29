@@ -19,7 +19,7 @@ export interface NLDDReorderEventDetail {
 /**
  * A container for `nldd-list-item` elements, with optional header and footer slots.
  *
- * The `type` attribute switches the list's a11y role and behaviour:
+ * The `type` attribute switches the list's a11y role and behavior:
  * - `list` (default) — `role="list"`, items `role="listitem"`. Reorderable allowed.
  *                     Items may individually be buttons or links; the list itself
  *                     has no special keyboard semantics.
@@ -169,7 +169,7 @@ export class NLDDList extends LitElement {
 		super.connectedCallback();
 		// Set container-type/name as inline style on the host. Doing this from
 		// a `:host` rule inside the shadow DOM works in Chromium but Safari
-		// does not always recognise the host as a container for slotted
+		// does not always recognize the host as a container for slotted
 		// descendants — a known engine inconsistency. Same workaround as
 		// nldd-page and nldd-card.
 		this.style.containerType = 'inline-size';

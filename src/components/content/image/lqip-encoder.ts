@@ -1,5 +1,5 @@
 /**
- * Encoder for the CSS-only multi-colour LQIP technique used by nldd-image.
+ * Encoder for the CSS-only multi-color LQIP technique used by nldd-image.
  *
  * Takes an image (File, ImageBitmap, or HTMLImageElement) and returns the
  * comma-separated string the `lqip` attribute expects:
@@ -7,15 +7,15 @@
  *   "base,c1,c2,c3,c4,c5,c6"
  *
  * — seven 0-255 bytes, each packing an 8-bit Oklab triplet (2 bits L,
- * 3 bits a, 3 bits b). The first byte is the base colour shown behind /
- * outside the cell gradients; the other six are per-cell colours laid out
+ * 3 bits a, 3 bits b). The first byte is the base color shown behind /
+ * outside the cell gradients; the other six are per-cell colors laid out
  * row-major in a 3×2 grid (c1 top-left, c6 bottom-right).
  *
  * Inspired by Lean Rada's CSS-only LQIP technique
  * (https://leanrada.com/notes/css-only-lqip/) but intentionally
  * incompatible with his wire format: his 20-bit packed integer carries
- * only greyscale per cell, whereas this 56-bit CSV carries one quantised
- * Oklab colour per cell so multi-hue subjects survive the placeholder.
+ * only grayscale per cell, whereas this 56-bit CSV carries one quantized
+ * Oklab color per cell so multi-hue subjects survive the placeholder.
  * Decoder lives in image.styles.ts and renders 7 background layers
  * (6 radial-gradient cells + base) natively, no JS / blend modes.
  *
@@ -29,17 +29,17 @@
 /* --------------------------------------------------------------------- *
  *  Encoder
  *
- *  Extends Lean Rada's CSS-only LQIP technique with per-cell colour.
- *  Lean's original format packs 6 × 2-bit greyscale cells + 1 × 8-bit
- *  Oklab base colour into 20 bits, then uses CSS blend modes to fake
- *  multi-colour from a greyscale payload. The cells can only modulate
+ *  Extends Lean Rada's CSS-only LQIP technique with per-cell color.
+ *  Lean's original format packs 6 × 2-bit grayscale cells + 1 × 8-bit
+ *  Oklab base color into 20 bits, then uses CSS blend modes to fake
+ *  multi-color from a grayscale payload. The cells can only modulate
  *  the base's lightness — there is no actual hue variation across the
  *  placeholder, so a photo with blue sky + warm lights collapses to "a
  *  bit darker / a bit lighter than that one dominant blue".
  *
  *  This encoder gives every cell its own 8-bit Oklab triplet (2 bits L,
  *  3 bits a, 3 bits b) — the same resolution Lean uses for his single
- *  global base — plus an 8-bit base colour for pixels outside the cell
+ *  global base — plus an 8-bit base color for pixels outside the cell
  *  gradients. Total payload: 7 × 8 = 56 bits, serialised as a
  *  comma-separated string "base,c1,c2,c3,c4,c5,c6" (each int 0-255).
  *
@@ -50,15 +50,15 @@
  *  Key implementation choices:
  *
  *   1. Per cell: linear-light average → Oklab → findOklabBits. Same
- *      brute-force scaled-Euclidean quantiser used for the base, applied
+ *      brute-force scaled-Euclidean quantizer used for the base, applied
  *      6 more times.
  *
- *   2. Base colour: histogram-dominant Oklab bucket → findOklabBits.
+ *   2. Base color: histogram-dominant Oklab bucket → findOklabBits.
  *      The base shows through cell-gradient edges and outside the
  *      gradient radii, so it sets the "overall mood" of the placeholder.
  *
  *   3. Linear-light averaging via a 256-entry LUT keeps per-cell mean
- *      colour photonically correct.
+ *      color photonically correct.
  *
  *  Pure entry point: `encodePixelDataToLqip(data, width, height)` →
  *  string. Async `encodeLqip(source)` is a browser wrapper that gets
@@ -92,14 +92,14 @@ function clamp(v: number, lo: number, hi: number): number {
 	return Math.max(lo, Math.min(hi, v));
 }
 
-/** Decode an 8-bit colour triplet (2 + 3 + 3 bits) back to the Oklab L/a/b
- *  values the CSS decoder will reconstruct. Used by the brute-force quantiser
+/** Decode an 8-bit color triplet (2 + 3 + 3 bits) back to the Oklab L/a/b
+ *  values the CSS decoder will reconstruct. Used by the brute-force quantizer
  *  to evaluate candidates and by the cell encoder for the cell's own bits.
  *
  *  Per-byte L/a/b decoding matches Lean Rada's reference implementation
- *  exactly — the same formulae produce the same colours. The overall wire
- *  format is NOT interchangeable though: Lean packs 6 greyscale cells + a
- *  single base colour into one 20-bit integer; we ship 7 independent bytes
+ *  exactly — the same formulas produce the same colors. The overall wire
+ *  format is NOT interchangeable though: Lean packs 6 grayscale cells + a
+ *  single base color into one 20-bit integer; we ship 7 independent bytes
  *  in a CSV string. So an individual byte can be decoded with either
  *  decoder, but the LQIP attribute strings can't be swapped between tools. */
 function bitsToLab(ll: number, aaa: number, bbb: number): { L: number; a: number; b: number } {
@@ -110,10 +110,10 @@ function bitsToLab(ll: number, aaa: number, bbb: number): { L: number; a: number
 	};
 }
 
-/** Find the 2 + 3 + 3 bit Oklab triplet whose decoded colour is visually
+/** Find the 2 + 3 + 3 bit Oklab triplet whose decoded color is visually
  *  closest to the target. Brute-forces all 256 combinations because the
  *  search space is tiny and round-to-nearest under-performs near the
- *  quantisation boundaries.
+ *  quantization boundaries.
  *
  *  Distance is *scaled* Euclidean: a/b are divided by sqrt(chroma) before
  *  comparison so that vivid targets aren't crushed in favour of nearby
@@ -143,15 +143,15 @@ function findOklabBits(targetL: number, targetA: number, targetB: number): { ll:
 	return { ll: bestBits[0], aaa: bestBits[1], bbb: bestBits[2] };
 }
 
-/** Find the dominant colour in the image by histogram bucketing in Oklab
+/** Find the dominant color in the image by histogram bucketing in Oklab
  *  space. Quantises every pixel into an 8×8×8 grid (512 buckets), then
  *  returns the linear-RGB mean of the most-populated bucket.
  *
  *  Using "dominant" instead of "average" is what makes the placeholder pick
- *  up the subject's colour (sky blue, foliage green, the pier's amber
+ *  up the subject's color (sky blue, foliage green, the pier's amber
  *  lights) rather than collapsing foreground and background into a muddy
  *  midpoint. The bucket grid resolution is intentionally coarse so that
- *  perceptually-similar tones share a bucket — fine quantisation would
+ *  perceptually-similar tones share a bucket — fine quantization would
  *  scatter near-identical pixels across many tiny buckets and lose the
  *  dominance signal we want. */
 function findDominantColor(
@@ -193,9 +193,9 @@ function findDominantColor(
 	return { rl: sumR[bestIdx] / n, gl: sumG[bestIdx] / n, bl: sumB[bestIdx] / n };
 }
 
-/** Pack a quantised Oklab triplet into a single byte: 2 bits L (high), 3 bits
+/** Pack a quantized Oklab triplet into a single byte: 2 bits L (high), 3 bits
  *  a, 3 bits b (low). Matches the format Lean uses for his global base
- *  colour, so the CSS decoder for each cell uses the same maths as Lean's
+ *  color, so the CSS decoder for each cell uses the same math as Lean's
  *  base decoder — just one byte at a time, seven times. */
 function packLab(ll: number, aaa: number, bbb: number): number {
 	return (ll << 6) | (aaa << 3) | bbb;
@@ -209,7 +209,7 @@ function packLab(ll: number, aaa: number, bbb: number): number {
  * Returns a comma-separated string `"base,c1,c2,c3,c4,c5,c6"` where each
  * value is an integer 0-255 packing 2 bits L + 3 bits a + 3 bits b. The
  * `nldd-image` component parses this string into seven CSS variables; its
- * decoder turns each one back into an `oklab()` colour.
+ * decoder turns each one back into an `oklab()` color.
  *
  * Buffer layout matches ImageData.data: 4 bytes per pixel in RGBA, row-major.
  *
@@ -229,7 +229,7 @@ export function encodePixelDataToLqip(
 		throw new Error(`encodePixelDataToLqip: image must be at least 3×2, got ${width}×${height}`);
 	}
 
-	// Per-cell quantised Oklab bytes.
+	// Per-cell quantized Oklab bytes.
 	const cellBytes: number[] = [];
 	for (let cellRow = 0; cellRow < 2; cellRow++) {
 		const yStart = Math.floor(cellRow * height / 2);
@@ -253,7 +253,7 @@ export function encodePixelDataToLqip(
 		}
 	}
 
-	// Base: dominant Oklab bucket → quantised byte.
+	// Base: dominant Oklab bucket → quantized byte.
 	const dom = findDominantColor(data, width, height);
 	const domLab = linearRgbToOklab(dom.rl, dom.gl, dom.bl);
 	const base = findOklabBits(domLab.L, domLab.a, domLab.b);

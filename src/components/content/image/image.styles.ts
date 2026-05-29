@@ -122,16 +122,16 @@ export const imageStyles = css`
 
 	/* # LQIP placeholder
 	   Per-cell Oklab LQIP — extends Lean Rada's CSS-only LQIP technique
-	   (https://leanrada.com/notes/css-only-lqip/) with one quantised
-	   colour per cell instead of greyscale-only cells. The component
+	   (https://leanrada.com/notes/css-only-lqip/) with one quantized
+	   color per cell instead of grayscale-only cells. The component
 	   parses lqip="base,c1,c2,c3,c4,c5,c6" and forwards each byte as an
 	   inline --context-lqip-* variable (crosses the shadow boundary;
 	   hence the --context-* prefix, not --_).
 	   Each byte packs 2 bits L + 3 bits a + 3 bits b — the same format
-	   Lean uses for his single base colour, applied 7 times. The base
+	   Lean uses for his single base color, applied 7 times. The base
 	   shows through cell-gradient transparent edges; the six cells carry
 	   the per-zone hue. No blend modes are needed because every cell
-	   already has its own real colour — overlap zones blend naturally
+	   already has its own real color — overlap zones blend naturally
 	   through the smooth alpha falloff (stop10/20/30/40).
 	   Browser support: depends on CSS mod() (Chrome 113+, Safari 15.4+,
 	   Firefox 118+, May 2023 baseline), CSS round(down, ...) (Chrome 111+,
@@ -336,7 +336,7 @@ export const imageStyles = css`
 	/* # Error state
 	   Centred card with icon + alt-text shown when the image fails to load.
 	   Sits over whatever background --_background-color provides (the LQIP
-	   gradient when present, otherwise the neutral fallback colour). The
+	   gradient when present, otherwise the neutral fallback color). The
 	   card has its own neutral background so the icon + label stay legible
 	   against the LQIP behind it. */
 

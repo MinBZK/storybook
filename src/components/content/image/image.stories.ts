@@ -107,7 +107,7 @@ export default {
 		},
 		lqip: {
 			control: 'text',
-			description: `CSS-only multi-colour LQIP. CSV-string van 7 bytes (base + 6 cellen, 3×2 raster) — elke byte is een 8-bit Oklab triplet. Voorbeeld: \`${SAMPLE_LQIP}\`. Genereer eigen waarden via de "LQIP encoder tool" story.`,
+			description: `CSS-only multi-color LQIP. CSV-string van 7 bytes (base + 6 cellen, 3×2 raster) — elke byte is een 8-bit Oklab triplet. Voorbeeld: \`${SAMPLE_LQIP}\`. Genereer eigen waarden via de "LQIP encoder tool" story.`,
 		},
 		caption: {
 			control: 'text',
@@ -294,7 +294,7 @@ export const SlottedImage = {
 };
 
 /**
- * CSS-only multi-colour Low Quality Image Placeholder — geïnspireerd op
+ * CSS-only multi-color Low Quality Image Placeholder — geïnspireerd op
  * https://leanrada.com/notes/css-only-lqip/, uitgebreid met per-cel kleur
  * (Lean's originele encoding heeft alleen grijswaarde-cellen rondom één
  * dominante hue). Onze versie encodeert 7 bytes: een base color + 6 per-cel

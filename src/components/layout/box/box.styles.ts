@@ -39,7 +39,7 @@ export const boxStyles = css`
 		box-sizing: border-box;
 		border-radius: var(--components-box-corner-radius);
 		/* Inner box-shadow paints a 1px border ring inside the radius
-		   without taking layout space. The colour is one to two palette
+		   without taking layout space. The color is one to two palette
 		   steps above the surface bg depending on the variant, giving the
 		   box a defined edge that reads as "subtle dimensional lift"
 		   rather than a hard border. */
@@ -53,7 +53,7 @@ export const boxStyles = css`
 	   box-shadow is dropped by Windows High Contrast / forced-colors mode,
 	   so the border ring would disappear and the box would lose its
 	   defined edge against the system background. Restore the edge with a
-	   real border in that mode. CanvasText is the system foreground colour
+	   real border in that mode. CanvasText is the system foreground color
 	   so the border always meets contrast. */
 
 	@media (forced-colors: active) {

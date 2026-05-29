@@ -149,7 +149,7 @@ export const bannerStyles = css`
 	   forced-colors / Windows High Contrast strips box-shadow, so the inset
 	   edge would disappear and the banner would lose its semantic frame
 	   against the system background. Restore it with a real border in that
-	   mode. CanvasText is the system foreground colour so the border always
+	   mode. CanvasText is the system foreground color so the border always
 	   meets contrast. */
 
 	@media (forced-colors: active) {

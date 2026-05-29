@@ -149,7 +149,7 @@ export class NLDDCodeViewer extends LitElement {
 		super.connectedCallback();
 		/* The .code-viewer block has overflow-x: auto and tends to scroll wide
 		 * content. Browsers cache off-screen tiles for its scroll layer and
-		 * don't reliably invalidate them when light-dark() colours flip with
+		 * don't reliably invalidate them when light-dark() colors flip with
 		 * color-scheme, so scroll back after a theme switch shows stale
 		 * paint. Drop the layer on each scheme change to repaint clean. */
 		this._unsubscribeScheme = onColorSchemeChange(() => this._repaintCodeBlock());

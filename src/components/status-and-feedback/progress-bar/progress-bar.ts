@@ -9,16 +9,16 @@
  * computes percentages from `max`.
  *
  * Two modes:
- * - `progress` (default): segments sum towards `max`; remaining space
+ * - `progress` (default): segments sum toward `max`; remaining space
  *   is empty track. ARIA reads "X% voltooid".
  * - `distribution`: segments fill the bar; ARIA enumerates segments.
  *
- * If the sum of segment values exceeds `max`, segments are normalised
+ * If the sum of segment values exceeds `max`, segments are normalized
  * proportionally to fit and a warning is logged.
  *
  * @element nldd-progress-bar
  *
- * @attr {'progress'|'distribution'} mode - Semantics for ARIA and visualisation (default: 'progress')
+ * @attr {'progress'|'distribution'} mode - Semantics for ARIA and visualization (default: 'progress')
  * @attr {number}  max               - Total value (default: 100)
  * @attr {number}  value             - Single-segment shorthand (ignored when segment children are present)
  * @attr {string}  color             - Color for the single-segment shorthand (default: 'accent')
@@ -109,7 +109,7 @@ export class NLDDProgressBarSegment extends LitElement {
 		// land on it and have nldd-tooltip surface its text (WCAG 2.1.1).
 		// role="img" exposes the element to the AT tree with its aria-label as
 		// accessible name — a bare <span> + aria-label is silently ignored by
-		// most screen readers (a labelled generic element has no semantic
+		// most screen readers (a labeled generic element has no semantic
 		// role to anchor the name to). role="img" fits because the hover area
 		// is a focusable visual representation of a data value, not an
 		// activator (role="button" would promise an action that doesn't
@@ -383,14 +383,14 @@ export class NLDDProgressBar extends LitElement {
 	}
 
 	private _syncSegments(): void {
-		// Compute per-segment widths. If sum exceeds max, normalise.
+		// Compute per-segment widths. If sum exceeds max, normalize.
 		const total = this._totalValue;
 		const denominator = total > this.max ? total : this.max;
 
 		if (import.meta.env?.DEV && total > this.max && this._hasSegments) {
 			console.warn(
 				`[nldd-progress-bar] Sum of segment values (${total}) exceeds max (${this.max}). ` +
-				'Segments are normalised proportionally.',
+				'Segments are normalized proportionally.',
 			);
 		}
 

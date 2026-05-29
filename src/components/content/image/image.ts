@@ -40,12 +40,12 @@
  * @attr {string}  lqip - Low-quality image placeholder as a CSV string
  *   `"base,c1,c2,c3,c4,c5,c6"` — seven 0-255 bytes, each packing an 8-bit
  *   Oklab triplet (2 bits L, 3 bits a, 3 bits b). The first is the base
- *   colour shown outside the cell gradients; the other six are per-cell
- *   colours in row-major 3×2 order. Generate via the encoder in
+ *   color shown outside the cell gradients; the other six are per-cell
+ *   colors in row-major 3×2 order. Generate via the encoder in
  *   `lqip-encoder.ts` or via the "LQIP encoder tool" Storybook story.
  *   Extends Lean Rada's CSS-only LQIP (https://leanrada.com/notes/css-only-lqip/)
- *   with per-cell hue — Lean's original format encodes greyscale cells only;
- *   ours encodes a colour per cell so multi-colour subjects survive the
+ *   with per-cell hue — Lean's original format encodes grayscale cells only;
+ *   ours encodes a color per cell so multi-color subjects survive the
  *   placeholder.
  *
  * @slot - Custom `<img>` or `<picture>` (overrides the src-based default).
@@ -193,7 +193,7 @@ export class NLDDImage extends LitElement {
 	 *  the host should fill its parent (no max-width and no <img width> hint).
 	 *  Empty / NaN / non-positive values fall back to undefined.
 	 *
-	 *  Sentinel behaviour: `width="0"` (and any other non-positive value)
+	 *  Sentinel behavior: `width="0"` (and any other non-positive value)
 	 *  silently behaves as `width="full"`. A zero-width image is meaningless,
 	 *  so we treat the input as the consumer's mistake rather than a literal
 	 *  request — a DEV-mode warn flags it during development. */
