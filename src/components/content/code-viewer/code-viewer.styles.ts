@@ -8,6 +8,7 @@ export const codeViewerStyles = css`
 	:host {
 		--_corner-radius: var(--primitives-corner-radius-lg);
 		--_background-color: var(--semantics-surfaces-tinted-background-color);
+		--_border-color: var(--semantics-surfaces-tinted-border-color);
 		--_block-padding: var(--primitives-space-16);
 		--_inline-padding: var(--primitives-space-16);
 		--_content-color: var(--semantics-content-color);
@@ -26,15 +27,22 @@ export const codeViewerStyles = css`
 
 	:host([background="base"]) {
 		--_background-color: var(--semantics-surfaces-background-color);
+		--_border-color: var(--semantics-surfaces-border-color);
 	}
 
-	:host([background="inherit"]) {
+	/* Frame visible but no fill — keep the border ring so the snippet still
+	   reads as a defined block. Matches the box-shadow + border pattern
+	   nldd-box and nldd-banner use. */
+	:host([background="transparent"]) {
 		--_background-color: transparent;
 	}
 
+	/* no-box drops the entire frame (no rounded corners, no padding, no
+	   bg, no border ring). The host turns into an unstyled wrapper. */
 	:host([no-box]) {
 		--_corner-radius: 0;
 		--_background-color: transparent;
+		--_border-color: transparent;
 		--_block-padding: 0;
 		--_inline-padding: 0;
 	}
@@ -48,6 +56,13 @@ export const codeViewerStyles = css`
 		position: relative;
 		margin: 0;
 		border-radius: var(--_corner-radius);
+		/* Inner box-shadow paints the 1px border ring inside the radius
+		   without taking layout space — matches nldd-box / nldd-banner.
+		   no-box and background="transparent" suppress the ring by
+		   setting --_border-color to transparent above. The forced-colors
+		   fallback at the bottom of the file restores a real border for
+		   Windows High Contrast users. */
+		box-shadow: inset 0 0 0 1px var(--_border-color);
 		background-color: var(--_background-color);
 		overflow-x: auto;
 		padding: var(--_block-padding) var(--_inline-padding);
@@ -161,4 +176,18 @@ export const codeViewerStyles = css`
 	.token.key { color: var(--components-code-viewer-token-property-color); }
 	.token.bold { font-weight: bold; }
 	.token.italic { font-style: italic; }
+
+
+	/* # Accessibility
+	   forced-colors / Windows High Contrast strips box-shadow, so the
+	   inset border ring on .code-viewer would disappear. Restore the
+	   frame with a real border in that mode — same fallback nldd-box,
+	   nldd-banner, and nldd-list use. no-box keeps no border (the host
+	   is a bare wrapper in that mode). */
+
+	@media (forced-colors: active) {
+		:host(:not([no-box])) .code-viewer {
+			border: 1px solid CanvasText;
+		}
+	}
 `;

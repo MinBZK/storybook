@@ -97,15 +97,15 @@ describe('nldd-code-viewer', () => {
 		expect(cs.backgroundColor).toBe('rgba(0, 0, 0, 0)');
 	});
 
-	it('background="inherit" makes the background transparent', async () => {
-		el = await fixture('<nldd-code-viewer background="inherit">x</nldd-code-viewer>');
+	it('background="transparent" makes the fill transparent', async () => {
+		el = await fixture('<nldd-code-viewer background="transparent">x</nldd-code-viewer>');
 		await waitForUpdate(el);
 		const pre = el.shadowRoot!.querySelector<HTMLElement>('pre.code-viewer')!;
 		expect(getComputedStyle(pre).backgroundColor).toBe('rgba(0, 0, 0, 0)');
 	});
 
 	it('background attribute reflects each value', async () => {
-		for (const bg of ['tinted', 'base', 'inherit'] as const) {
+		for (const bg of ['tinted', 'base', 'transparent'] as const) {
 			el = await fixture(`<nldd-code-viewer background="${bg}">x</nldd-code-viewer>`);
 			await waitForUpdate(el);
 			expect(el.getAttribute('background')).toBe(bg);

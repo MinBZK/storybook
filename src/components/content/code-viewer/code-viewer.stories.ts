@@ -57,8 +57,8 @@ export default {
 		},
 		background: {
 			control: 'select',
-			options: ['tinted', 'base', 'inherit'],
-			description: 'Achtergrondkleur van de container. `base` op een getinte parent, `inherit` voor transparant.',
+			options: ['tinted', 'base', 'transparent'],
+			description: 'Achtergrondkleur van de container. `base` op een getinte parent, `transparent` voor frame zonder fill (border ring blijft zichtbaar).',
 			table: { defaultValue: { summary: 'tinted' } },
 			if: { arg: 'box' },
 		},
@@ -205,21 +205,22 @@ export const BackgroundBase = {
 	},
 };
 
-export const BackgroundInherit = {
+export const BackgroundTransparent = {
+	name: 'Background: transparent',
 	render: (args: Record<string, any>) => html`
 		<div style="padding: 24px; background-color: var(--semantics-surfaces-tinted-background-color); border-radius: var(--primitives-corner-radius-lg);">
 			${Template(args)}
 		</div>
 	`,
 	args: {
-		background: 'inherit',
+		background: 'transparent',
 		content: `const transparent = true;
-// neemt de parent-achtergrond over`,
+// transparent fill, border ring stays visible`,
 	},
 	parameters: {
 		docs: {
 			description: {
-				story: '`background="inherit"` maakt de achtergrond transparant; het box-padding en de afgeronde hoeken blijven.',
+				story: '`background="transparent"` maakt de fill transparant; de border ring, padding en afgeronde hoeken blijven zichtbaar als frame.',
 			},
 		},
 	},
