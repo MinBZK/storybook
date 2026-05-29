@@ -1,6 +1,11 @@
 import { describe, it, expect, afterEach, vi } from 'vitest';
 import { fixture, cleanup, waitForUpdate } from '../../../test-utils.js';
 import type { NLDDProgressBar, NLDDProgressBarSegment } from './progress-bar.js';
+import { INDETERMINATE_TRANSITION_MS } from './progress-bar.js';
+// Raw CSS source for the token cross-check at the bottom of this file. Vite
+// transforms ?raw imports into string literals at build time, so no HTTP
+// request is needed at runtime.
+import settingsCss from '../../../assets/styles/settings.css?raw';
 import './progress-bar.js';
 
 describe('nldd-progress-bar', () => {
@@ -462,5 +467,22 @@ describe('nldd-progress-bar-segment', () => {
 		el = await fixture<NLDDProgressBarSegment>('<nldd-progress-bar-segment value="30"></nldd-progress-bar-segment>');
 		await waitForUpdate(el);
 		expect((el as unknown as NLDDProgressBarSegment).color).toBe('accent');
+	});
+
+	/* ============================================================
+	   JS timer ↔ CSS transition token cross-check
+	   ============================================================ */
+
+	it('INDETERMINATE_TRANSITION_MS matches --primitives-transition-duration-slow', () => {
+		// The crossfade JS timer drives _beginIndeterminate{Exit,Enter}; the
+		// CSS transitions read --primitives-transition-duration-slow. If the
+		// two drift, the indicator fades while the segment is already done
+		// growing (or vice versa). Parse the token straight out of the raw
+		// CSS source so the test doesn't depend on the global stylesheet
+		// being loaded into the document.
+		const match = /--primitives-transition-duration-slow\s*:\s*(\d+)ms/.exec(settingsCss);
+		expect(match, 'token declaration not found in settings.css').not.toBeNull();
+		const tokenMs = Number(match![1]);
+		expect(tokenMs).toBe(INDETERMINATE_TRANSITION_MS);
 	});
 });

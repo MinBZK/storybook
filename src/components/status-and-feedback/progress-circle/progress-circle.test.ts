@@ -1,6 +1,9 @@
 import { describe, it, expect, afterEach } from 'vitest';
 import { fixture, cleanup, waitForUpdate } from '../../../test-utils.js';
 import type { NLDDProgressCircle } from './progress-circle.js';
+import { INDETERMINATE_TRANSITION_MS } from './progress-circle.js';
+import { getStrokeWidthPx } from './progress-circle.template.js';
+import settingsCss from '../../../assets/styles/settings.css?raw';
 import './progress-circle.js';
 
 describe('nldd-progress-circle', () => {
@@ -166,5 +169,36 @@ describe('nldd-progress-circle-segment', () => {
 		expect(arcs[0].length).toBe(0);
 		expect(arcs[1].length).toBeGreaterThan(0);
 		cleanup(parent);
+	});
+
+	/* ============================================================
+	   Stroke-width JS ↔ CSS cross-check
+	   ============================================================ */
+
+	it('INDETERMINATE_TRANSITION_MS matches --primitives-transition-duration-slow', () => {
+		// Mirror of the progress-bar cross-check; same approach (parse the
+		// token from the raw CSS source so we don't depend on the global
+		// stylesheet being loaded).
+		const match = /--primitives-transition-duration-slow\s*:\s*(\d+)ms/.exec(settingsCss);
+		expect(match, 'token declaration not found in settings.css').not.toBeNull();
+		const tokenMs = Number(match![1]);
+		expect(tokenMs).toBe(INDETERMINATE_TRANSITION_MS);
+	});
+
+	it('getStrokeWidthPx(size) matches the per-size CSS --_stroke-width rule for every published size', async () => {
+		// The CSS encodes --_stroke-width: calc({STROKE_PX} * 100 / {SIZE}) per
+		// `:host([size="{SIZE}"])`. If a new size is added in one place but not
+		// the other, the SVG arc widths drift visually. The table here mirrors
+		// the CSS verbatim — keep it in sync with the rules in
+		// progress-circle.styles.ts.
+		const cssExpected: Record<string, number> = {
+			'16': 3, '20': 3,
+			'24': 4, '28': 4, '32': 4, '40': 4,
+			'44': 5, '48': 5,
+			'56': 6, '64': 6, '80': 6, '96': 6,
+		};
+		for (const [size, expected] of Object.entries(cssExpected)) {
+			expect(getStrokeWidthPx(Number(size)), `size=${size}`).toBe(expected);
+		}
 	});
 });

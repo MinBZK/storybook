@@ -134,11 +134,16 @@ export const imageStyles = css`
 	   already has its own real colour — overlap zones blend naturally
 	   through the smooth alpha falloff (stop10/20/30/40).
 	   Browser support: depends on CSS mod() (Chrome 113+, Safari 15.4+,
-	   Firefox 118+, May 2023 baseline) and CSS round(down, ...) (Chrome
-	   111+, Safari 15.4+, Firefox 118+). Older engines drop the
-	   .image__media--lqip background and fall through to the neutral
-	   --_background-color set on .image__media — degraded but harmless
-	   (the placeholder is a "nice to have", not a load-bearing element). */
+	   Firefox 118+, May 2023 baseline), CSS round(down, ...) (Chrome 111+,
+	   Safari 15.4+, Firefox 118+), and oklab() (Chrome 111+, Safari 15.4+,
+	   Firefox 113+). The whole rule lives inside an @supports gate that
+	   tests two narrow features — a feature query for mod() (the youngest
+	   capability) and for oklab() — so older engines drop the LQIP
+	   gradient entirely and fall through to the neutral --_background-color
+	   set on .image__media. Degraded but harmless: the placeholder is a
+	   "nice to have", not a load-bearing element. */
+
+	@supports (left: mod(1px, 1px)) and (background: oklab(0 0 0)) {
 
 	.image__media--lqip {
 		--_lqip-base-ll: mod(round(down, var(--context-lqip-base) / 64), 4);
@@ -274,6 +279,11 @@ export const imageStyles = css`
 				transparent),
 			linear-gradient(0deg, var(--_lqip-base-clr), var(--_lqip-base-clr));
 	}
+
+	} /* end @supports for LQIP gradient */
+
+	/* Fade-in transitions live OUTSIDE the @supports — they only run when the
+	   --lqip class is present and the engine renders the gradient anyway. */
 
 	.image__media--lqip .image__img {
 		opacity: 0;

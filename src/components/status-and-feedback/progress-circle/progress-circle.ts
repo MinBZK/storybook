@@ -45,8 +45,9 @@ import '../../content/tooltip/tooltip.js';
 
 /** Indeterminate ↔ determinate crossfade duration. Must stay in sync with
  *  --primitives-transition-duration-slow used by the matching CSS animations
- *  and with nldd-progress-bar's matching constant. */
-const INDETERMINATE_TRANSITION_MS = 300;
+ *  and with nldd-progress-bar's matching constant. Exported so the test
+ *  suite can cross-check this value against the resolved CSS token. */
+export const INDETERMINATE_TRANSITION_MS = 300;
 
 export type ProgressCircleMode = 'progress' | 'distribution';
 export type ProgressCircleSize = '16' | '20' | '24' | '28' | '32' | '40' | '44' | '48' | '56' | '64' | '80' | '96';
