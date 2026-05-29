@@ -83,11 +83,17 @@ export const codeViewerStyles = css`
 		padding-right: var(--_actions-area-size);
 	}
 
-	/* no-box + copy-button isn't a designed combination (the button is laid
-	   out for the carded variant). Drop the min-height + reserved right-padding
-	   so a naked snippet doesn't sit on an oversized vertical baseline. */
+	/* no-box + copy-button: pin the button flush to the host's top-right
+	   corner (no inset padding) and keep the snippet at least as tall as
+	   the button so the layout never clips the action. The reserved
+	   right-padding is dropped — bare snippets imply no chrome, so the
+	   code may flow under the button if a single line is long enough. */
+	:host([no-box]:not([no-copy])) {
+		--_actions-area-padding: 0;
+	}
+
 	:host([no-box]:not([no-copy])) .code-viewer {
-		min-height: 0;
+		min-height: var(--_actions-area-size);
 		padding-right: 0;
 	}
 
