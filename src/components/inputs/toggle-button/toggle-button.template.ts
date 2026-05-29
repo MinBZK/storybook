@@ -12,8 +12,7 @@ export function toggleButtonTemplate(component: NLDDToggleButton): TemplateResul
 	 * Styling (square vs auto, icon size) is driven entirely by what's
 	 * in the DOM via :has(.toggle-button__text) in the stylesheet. */
 	const showText = component.variant !== 'icon' && !!component.text;
-	const renderIconArea = component.variant !== 'text';
-	const showIcon = renderIconArea && component._hasIcon;
+	const showIcon = component.variant !== 'text' && component._hasIcon;
 
 	/* When variant="icon" hides a provided text, fall the text back to
 	 * aria-label so screen readers still announce the button. Explicit
@@ -28,16 +27,16 @@ export function toggleButtonTemplate(component: NLDDToggleButton): TemplateResul
 	const isIconOnlyDisplay = showIcon && !showText;
 	const tooltipText = isIconOnlyDisplay ? (component.accessibleLabel || component.text || '') : '';
 
-	/* When variant != 'text', always render the icon area so the slot
-	 * is in shadow DOM for assignment + slotchange detection. Without
-	 * the slot present, slotted content can't be projected and
-	 * _hasIcon can't observe slotchange. An empty slot collapses to
-	 * 0×0 via display:contents, so it costs nothing visually. */
-	const icon = renderIconArea
-		? (component.icon
-			? html`<nldd-icon class="toggle-button__icon" name=${component.icon}></nldd-icon>`
-			: html`<slot name="icon" @slotchange=${component.requestUpdate}></slot>`)
-		: nothing;
+	/* Always render the icon area so the slot stays in shadow DOM for
+	 * assignment + slotchange detection — even when variant="text" hides
+	 * it visually (CSS handles that via :host([variant="text"]) below).
+	 * Without the slot present, slotted content can't be projected and a
+	 * subsequent variant change couldn't pick it up because no slotchange
+	 * would have fired. An empty slot collapses to 0×0 via display:contents,
+	 * so it costs nothing visually. */
+	const icon = component.icon
+		? html`<nldd-icon class="toggle-button__icon" name=${component.icon}></nldd-icon>`
+		: html`<slot name="icon" @slotchange=${component.requestUpdate}></slot>`;
 
 	const textContent = showText
 		? html`<span class="toggle-button__text">${component.text}</span>`

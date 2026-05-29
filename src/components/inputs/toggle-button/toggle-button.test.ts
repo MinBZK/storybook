@@ -191,10 +191,15 @@ describe('nldd-toggle-button – variant', () => {
 		expect(el.shadowRoot!.querySelector('.toggle-button__icon')).not.toBeNull();
 	});
 
-	it('variant="text" suppresses icon even when icon attribute is set', async () => {
+	it('variant="text" hides the icon visually while keeping the slot in shadow DOM', async () => {
+		// The icon element is still rendered (so slotchange stays observable
+		// for a future variant flip) but display:none keeps it out of the
+		// visual layout. Verify both: present in shadow DOM, hidden via CSS.
 		el = await fixture<NLDDToggleButton>('<nldd-toggle-button icon="heart" text="Label" variant="text"></nldd-toggle-button>');
 		await waitForUpdate(el);
-		expect(el.shadowRoot!.querySelector('.toggle-button__icon')).toBeNull();
+		const icon = el.shadowRoot!.querySelector('.toggle-button__icon');
+		expect(icon).not.toBeNull();
+		expect(getComputedStyle(icon!).display).toBe('none');
 		expect(el.shadowRoot!.querySelector('.toggle-button__text')).not.toBeNull();
 	});
 

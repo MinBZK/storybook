@@ -16,11 +16,18 @@
  * instead if you want the timer to run only once.
  *
  * Accessibility: the host element carries `aria-busy="true"` for as long as
- * it is connected, including the silent 1000 ms pre-spinner window. AT users
- * landing on the region during that window are told loading is in progress,
- * even before the visual spinner appears. The expected consumer pattern is to
- * unmount `<nldd-progress>` entirely once content has loaded, at which point
- * `aria-busy` is removed from the page along with the element.
+ * it is connected and not marked `complete`, including the silent 1000 ms
+ * pre-spinner window. AT users landing on the region during that window are
+ * told loading is in progress, even before the visual spinner appears.
+ *
+ * Two patterns to signal "done":
+ *   1. (Preferred.) Unmount `<nldd-progress>` entirely. aria-busy goes away
+ *      with the element, and the indicator's `progressbar` role disappears
+ *      from the AT tree.
+ *   2. Set the boolean `complete` attribute. aria-busy is cleared and the
+ *      indicator is hidden, but the element stays in the DOM. Use this when
+ *      you want a CSS transition out, or when the wrapper sits in a layout
+ *      slot that would collapse if unmounted.
  *
  * @element nldd-progress
  *
@@ -54,6 +61,11 @@ export class NLDDProgress extends LitElement {
 	@property({ type: String, reflect: true })
 	text = '';
 
+	/** Mark the loader as finished while keeping the element mounted.
+	 *  Clears aria-busy and hides the indicator. Default false. */
+	@property({ type: Boolean, reflect: true })
+	complete = false;
+
 	@property({ type: Object })
 	translations: Partial<NLDDProgressTranslations> = {};
 
@@ -70,14 +82,24 @@ export class NLDDProgress extends LitElement {
 		super.connectedCallback();
 		// aria-busy signals "loading in progress" to AT users immediately,
 		// even during the silent 1000 ms window before the visual indicator
-		// fades in. Set unconditionally on connect; clears naturally when the
-		// consumer unmounts the element after content loads.
-		this.setAttribute('aria-busy', 'true');
+		// fades in. Set unless the consumer connected the element already
+		// marked complete (rare but valid — e.g. server-rendered "done" state).
+		if (!this.complete) this.setAttribute('aria-busy', 'true');
 		this._visible = false;
 		this._delayTimeout = setTimeout(() => {
 			this._visible = true;
 			this._delayTimeout = undefined;
 		}, DELAY_MS);
+	}
+
+	override willUpdate(changed: Map<string, unknown>): void {
+		if (changed.has('complete')) {
+			if (this.complete) {
+				this.removeAttribute('aria-busy');
+			} else {
+				this.setAttribute('aria-busy', 'true');
+			}
+		}
 	}
 
 	override disconnectedCallback(): void {

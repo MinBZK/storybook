@@ -143,6 +143,13 @@ export const toggleButtonStyles = css`
 		height: var(--_icon-size);
 	}
 
+	/* variant="text" keeps the icon slot in shadow DOM (so slotchange still
+	   fires after a future variant change) but hides any rendered icon. */
+	:host([variant="text"]) .toggle-button__icon,
+	:host([variant="text"]) ::slotted([slot="icon"]) {
+		display: none;
+	}
+
 	.toggle-button__input {
 		position: absolute;
 		inset: 0;

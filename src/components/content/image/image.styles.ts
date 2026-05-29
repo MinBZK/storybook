@@ -91,20 +91,32 @@ export const imageStyles = css`
 
 
 	/* # Image element
-	   Both the internal img and any slotted img/picture get the same styling
-	   so the wrapper behaves identically in both cases. ::slotted() can't
-	   reach descendants, so a slotted <picture> works for source switching
-	   but consumers must put any extra styling on the inner <img> themselves. */
+	   Both the internal img and any slotted img get the same styling so the
+	   wrapper behaves identically in both cases. ::slotted() can't reach
+	   descendants, so a slotted <picture> works for source switching but
+	   consumers must put any extra styling on the inner <img> themselves —
+	   object-fit / object-position aren't inheritable into <picture>'s child
+	   <img>, so we don't bother targeting <picture> here. */
 
 	.image__img,
-	::slotted(img),
-	::slotted(picture) {
+	::slotted(img) {
 		display: block;
 		width: 100%;
 		height: 100%;
 		max-width: 100%;
 		object-fit: var(--_object-fit);
 		object-position: var(--_object-position);
+	}
+
+	/* <picture> is a wrapper that picks the right <source>; layout properties
+	   like width/height DO apply to it directly even though object-fit doesn't.
+	   Size it so the slotted picture fills the media wrapper, then let the
+	   consumer style the inner <img> for fit/position. */
+	::slotted(picture) {
+		display: block;
+		width: 100%;
+		height: 100%;
+		max-width: 100%;
 	}
 
 

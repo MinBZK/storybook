@@ -404,7 +404,7 @@ export class NLDDLqipEncoder extends LitElement {
 
 		.encoder__error {
 			color: var(--semantics-content-color);
-			background-color: var(--semantics-buttons-critical-tinted-background-color);
+			background-color: var(--components-banner-critical-background-color);
 			padding: var(--primitives-space-8) var(--primitives-space-12);
 			border-radius: var(--primitives-corner-radius-sm);
 		}
@@ -450,7 +450,7 @@ export class NLDDLqipEncoder extends LitElement {
 					>
 				</label>
 			</div>
-			${this._error ? html`<div class="encoder__error">${this._error}</div>` : ''}
+			${this._error ? html`<div class="encoder__error" role="alert">${this._error}</div>` : ''}
 			${this._lqip !== null ? html`
 				<div class="encoder__result">
 					<div>${this._t('components.lqip-encoder.file-prefix-text')} <strong>${this._filename}</strong></div>

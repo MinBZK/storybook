@@ -156,4 +156,33 @@ describe('nldd-image', () => {
 		expect(img.getAttribute('srcset')).toBe('/foo-2x.jpg 2x');
 		expect(img.getAttribute('sizes')).toBe('100vw');
 	});
+
+	it('forwards a valid lqip CSV as 7 inline --context-lqip-* CSS variables', async () => {
+		// Skip src so the image never errors out and removes the lqip class.
+		el = await fixture<NLDDImage>('<nldd-image alt="Foo" lqip="98,154,162,99,99,99,100"></nldd-image>');
+		await waitForUpdate(el);
+		const media = el.shadowRoot!.querySelector<HTMLElement>('.image__media')!;
+		expect(media.style.getPropertyValue('--context-lqip-base')).toBe('98');
+		expect(media.style.getPropertyValue('--context-lqip-c1')).toBe('154');
+		expect(media.style.getPropertyValue('--context-lqip-c2')).toBe('162');
+		expect(media.style.getPropertyValue('--context-lqip-c3')).toBe('99');
+		expect(media.style.getPropertyValue('--context-lqip-c4')).toBe('99');
+		expect(media.style.getPropertyValue('--context-lqip-c5')).toBe('99');
+		expect(media.style.getPropertyValue('--context-lqip-c6')).toBe('100');
+		expect(media.classList.contains('image__media--lqip')).toBe(true);
+	});
+
+	it('silently ignores a malformed lqip string', async () => {
+		// Too few values, out-of-range numbers, non-integers, empty — all
+		// should fall through to "no LQIP" instead of throwing or producing
+		// half-set CSS vars.
+		for (const bad of ['1,2,3', '300,300,300,300,300,300,300', 'foo,1,2,3,4,5,6', '']) {
+			el = await fixture<NLDDImage>(`<nldd-image alt="Foo" lqip="${bad}"></nldd-image>`);
+			await waitForUpdate(el);
+			const media = el.shadowRoot!.querySelector<HTMLElement>('.image__media')!;
+			expect(media.style.getPropertyValue('--context-lqip-base')).toBe('');
+			expect(media.classList.contains('image__media--lqip')).toBe(false);
+			cleanup(el);
+		}
+	});
 });

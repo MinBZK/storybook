@@ -38,6 +38,7 @@ export function codeViewerTemplate(component: NLDDCodeViewer): TemplateResult {
 	return html`<pre
 		class="code-viewer"
 		tabindex=${ifDefined(scrollable ? '0' : undefined)}
+		role=${ifDefined(scrollable ? 'region' : undefined)}
 		aria-label=${ifDefined(scrollable ? component._t('components.code-viewer.region-label') : undefined)}
 	><slot @slotchange=${component._onSlotChange}></slot>${
 		component.language && component._highlightedHtml

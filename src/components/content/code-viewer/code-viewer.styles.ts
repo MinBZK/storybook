@@ -65,6 +65,14 @@ export const codeViewerStyles = css`
 		padding-right: var(--_actions-area-size);
 	}
 
+	/* no-box + copy-button isn't a designed combination (the button is laid
+	   out for the carded variant). Drop the min-height + reserved right-padding
+	   so a naked snippet doesn't sit on an oversized vertical baseline. */
+	:host([no-box]:not([no-copy])) .code-viewer {
+		min-height: 0;
+		padding-right: 0;
+	}
+
 	.code-viewer:focus-visible {
 		outline: var(--semantics-focus-ring-outline);
 		outline-offset: var(--semantics-focus-ring-outline-offset);

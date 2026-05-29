@@ -366,11 +366,10 @@ export class NLDDProgressBar extends LitElement {
 
 		// Re-observe each segment for value/color/name/tooltip changes so the
 		// parent re-computes widths and ARIA when a child attribute mutates.
+		// requestUpdate() routes through updated(), which calls _syncSegments
+		// — no need to call it directly here.
 		this._attributeObserver?.disconnect();
-		this._attributeObserver = new MutationObserver(() => {
-			this.requestUpdate();
-			this._syncSegments();
-		});
+		this._attributeObserver = new MutationObserver(() => this.requestUpdate());
 		for (const seg of this._segments) {
 			this._attributeObserver.observe(seg, {
 				attributes: true,
@@ -378,7 +377,9 @@ export class NLDDProgressBar extends LitElement {
 			});
 		}
 
-		this._syncSegments();
+		// Mutating _segments above schedules a re-render via Lit's state
+		// system, which fires updated() → _syncSegments(). Calling it here
+		// directly would just run it a second time per slot mutation.
 	}
 
 	private _syncSegments(): void {

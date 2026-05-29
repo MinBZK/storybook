@@ -140,9 +140,14 @@ export class NLDDBanner extends LitElement {
 		this.setAttribute('aria-atomic', 'true');
 	}
 
-	override firstUpdated(): void {
+	/** Re-runs every connectedCallback (i.e. also after a move-and-reinsert),
+	 *  unlike firstUpdated which is one-shot. Without this, slotchange after
+	 *  a reconnect would never update _hasContent / _hasActions because the
+	 *  listeners were torn down in disconnectedCallback and never re-attached. */
+	private _attachSlotListeners(): void {
 		const contentSlot = this.shadowRoot?.querySelector<HTMLSlotElement>('slot:not([name])');
 		const actionsSlot = this.shadowRoot?.querySelector<HTMLSlotElement>('slot[name="actions"]');
+		if (!contentSlot && !actionsSlot) return;
 		const hasMeaningfulContent = (slot: HTMLSlotElement | undefined | null): boolean => {
 			const nodes = slot?.assignedNodes({ flatten: true }) ?? [];
 			return nodes.some((n) =>
@@ -158,11 +163,27 @@ export class NLDDBanner extends LitElement {
 		this._syncActions();
 	}
 
+	override firstUpdated(): void {
+		this._attachSlotListeners();
+	}
+
+	override connectedCallback(): void {
+		super.connectedCallback();
+		// Re-attach when reconnecting after a previous disconnect; firstUpdated
+		// doesn't fire again. Guard on shadowRoot existence so we don't run
+		// twice on the very first connect (firstUpdated will handle that one).
+		if (this.shadowRoot && !this._syncContent) {
+			this._attachSlotListeners();
+		}
+	}
+
 	override disconnectedCallback(): void {
 		const contentSlot = this.shadowRoot?.querySelector<HTMLSlotElement>('slot:not([name])');
 		const actionsSlot = this.shadowRoot?.querySelector<HTMLSlotElement>('slot[name="actions"]');
 		if (this._syncContent) contentSlot?.removeEventListener('slotchange', this._syncContent);
 		if (this._syncActions) actionsSlot?.removeEventListener('slotchange', this._syncActions);
+		this._syncContent = undefined;
+		this._syncActions = undefined;
 		super.disconnectedCallback();
 	}
 

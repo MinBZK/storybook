@@ -6,8 +6,8 @@ export const progressStyles = css`
 	/* # Host */
 
 	:host {
-		--_fade-duration: 300ms;
-		--_indicator-max-width: 240px;
+		--_fade-duration: var(--primitives-transition-duration-slow);
+		--_indicator-max-width: var(--primitives-area-240);
 
 		box-sizing: border-box;
 		display: flex;

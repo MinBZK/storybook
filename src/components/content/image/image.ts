@@ -174,12 +174,25 @@ export class NLDDImage extends LitElement {
 
 	/** Width parsed as a positive number if it isn't 'full'. Undefined when
 	 *  the host should fill its parent (no max-width and no <img width> hint).
-	 *  Empty / NaN / non-positive values fall back to undefined. */
+	 *  Empty / NaN / non-positive values fall back to undefined.
+	 *
+	 *  Sentinel behaviour: `width="0"` (and any other non-positive value)
+	 *  silently behaves as `width="full"`. A zero-width image is meaningless,
+	 *  so we treat the input as the consumer's mistake rather than a literal
+	 *  request — a DEV-mode warn flags it during development. */
 	get _numericWidth(): number | undefined {
 		if (this.width === 'full') return undefined;
 		const n = Number(this.width);
-		return Number.isFinite(n) && n > 0 ? n : undefined;
+		if (Number.isFinite(n) && n > 0) return n;
+		if (import.meta.env?.DEV && this.width != null && String(this.width) !== '' && !this._warnedWidth) {
+			this._warnedWidth = true;
+			console.warn(`<nldd-image>: width="${this.width}" is not a positive number. Falling back to "full".`);
+		}
+		return undefined;
 	}
+
+	/** DEV-only "bad width" warning latch; see _numericWidth. */
+	private _warnedWidth = false;
 
 	get _hasCaption(): boolean {
 		return !!this.caption || !!this.credit || this._hasSlottedCaption;
@@ -236,6 +249,13 @@ export class NLDDImage extends LitElement {
 		if (img?.complete && img.naturalWidth > 0) {
 			this._imageLoaded = true;
 		}
+		// Sync the slotted-caption flag from the initial assignment. Without
+		// this, consumer-provided `<span slot="caption">` content in the
+		// page's initial HTML wouldn't show up until the FIRST slotchange
+		// (which doesn't fire for static initial content) — producing a
+		// flash of no figure / caption on first paint.
+		const captionSlot = this.shadowRoot?.querySelector<HTMLSlotElement>('slot[name="caption"]');
+		if (captionSlot) this._onCaptionSlotChange({ target: captionSlot } as unknown as Event);
 	}
 
 	_onImageLoad = (): void => {

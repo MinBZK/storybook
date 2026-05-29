@@ -22,6 +22,12 @@
  *
  * @slot - Het element waarop de tooltip wordt getoond
  *
+ * @fires nldd-tooltip-dismiss - Wanneer een gebruiker Escape drukt terwijl
+ *   `open=true` is. De consumer beheert dan de open-lifecycle (wij kunnen
+ *   `open` niet eenzijdig wissen), dus dit event geeft de consumer de kans
+ *   om `open` terug naar `false` te zetten. WCAG 1.4.13: persistent hover-/
+ *   focus-overlays moeten dismissible zijn zonder focus te verplaatsen.
+ *
  * @note Rendert via de native Popover API (`popover="manual"`) in de top
  * layer. Daardoor escape de tooltip alle ancestor stacking contexts en
  * `overflow: hidden` clipping — geen z-index gevechten meer met overlay-
@@ -297,9 +303,21 @@ export class NLDDTooltip extends LitElement {
 	}
 
 	private _handleKeyDown = (e: KeyboardEvent): void => {
-		// Escape dismisses hover-shown tooltips, not force-shown ones — the
-		// consumer controls the open lifecycle (e.g. action-feedback timer).
-		if (e.key === 'Escape' && this._visible && !this.open) this._visible = false;
+		if (e.key !== 'Escape' || !this._visible) return;
+		if (this.open) {
+			// WCAG 1.4.13 (Content on Hover or Focus): persistent
+			// keyboard-triggered overlay content must be dismissible without
+			// moving focus. The consumer controls the open lifecycle (e.g.
+			// action-feedback timers) so we can't unilaterally set open=false
+			// here — but we DO emit nldd-tooltip-dismiss so the consumer can
+			// honor the request. preventDefault keeps the keystroke from
+			// bubbling to something else (modal close, etc.) when handled.
+			this.dispatchEvent(new CustomEvent('nldd-tooltip-dismiss', { bubbles: true, composed: true }));
+			e.preventDefault();
+			return;
+		}
+		// Hover/focus-shown tooltips: we own the lifecycle, dismiss directly.
+		this._visible = false;
 	};
 
 	private async _updatePosition(): Promise<void> {
