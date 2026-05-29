@@ -17,13 +17,13 @@ describe('nldd-progress-circle', () => {
 		expect(el.shadowRoot!.querySelector('svg')).not.toBeNull();
 	});
 
-	it('defaults to mode="progress", max=100, size="32", color="accent"', async () => {
+	it('defaults to mode="progress", max=100, size="28", color="accent"', async () => {
 		el = await fixture<NLDDProgressCircle>('<nldd-progress-circle></nldd-progress-circle>');
 		await waitForUpdate(el);
 		const bar = el as unknown as NLDDProgressCircle;
 		expect(bar.mode).toBe('progress');
 		expect(bar.max).toBe(100);
-		expect(bar.size).toBe('32');
+		expect(bar.size).toBe('28');
 		expect(bar.color).toBe('accent');
 	});
 

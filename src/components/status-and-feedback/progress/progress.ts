@@ -29,6 +29,11 @@
  * @attr {object} translations - Override translation keys; unset keys fall back to Dutch
  *
  * @slot - Optional custom indicator; overrides the default progress-circle.
+ *   The host carries `aria-busy="true"` for AT users, but the default ARIA
+ *   semantics on the visible indicator (role="progressbar", aria-valuetext)
+ *   come from the built-in `<nldd-progress-circle>`. Consumers replacing the
+ *   slot are responsible for supplying their own progressbar role / label
+ *   on the custom indicator.
  */
 import { LitElement } from 'lit';
 import { customElement, property, state } from 'lit/decorators.js';

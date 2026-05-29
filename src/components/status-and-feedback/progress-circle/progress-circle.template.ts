@@ -45,7 +45,7 @@ export function progressCircleTemplate(component: NLDDProgressCircle, onSlotChan
 	const isIndeterminate = (component.indeterminate || isExiting) && !component._hasSegments;
 	const showArcs = !component.indeterminate || component._indeterminateEntering;
 	const arcs = showArcs ? component._buildArcs() : [];
-	const sizeInPixels = Number(component.size) || 32;
+	const sizeInPixels = Number(component.size) || 28;
 	const radius = getRadius(sizeInPixels);
 	const circumference = getCircumference(sizeInPixels);
 	// Accessible name: use aria-label with the visible label text or a

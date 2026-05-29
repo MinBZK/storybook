@@ -18,6 +18,8 @@ export const progressBarStyles = css`
 		--_header-text-font: var(--components-progress-bar-header-text-font);
 		--_header-value-font: var(--components-progress-bar-header-value-font);
 		--_indeterminate-fill-color: var(--components-progress-bar-accent-fill-color);
+		--_indeterminate-bar-width: 20%;
+		--_indeterminate-duration: 800ms;
 
 		box-sizing: border-box;
 		display: flex;
@@ -150,21 +152,24 @@ export const progressBarStyles = css`
 		left: 0;
 		border-radius: var(--_corner-radius);
 		background: var(--_indeterminate-fill-color);
-		width: 20%;
+		width: var(--_indeterminate-bar-width);
 		transform: translateX(0);
-		/* Duration scales with track width via container queries below. */
-		animation: progress-bar-indeterminate 800ms ease-in-out infinite alternate;
+		/* Duration scales with track width via the container queries below.
+		   Wider tracks need longer sweeps so the perceived velocity feels
+		   constant — a fast 800 ms cycle reads as frantic on a 1000 px bar
+		   and as too slow on a 200 px bar at the same wall-clock time. */
+		animation: progress-bar-indeterminate var(--_indeterminate-duration) ease-in-out infinite alternate;
 	}
 
 	@container (min-width: 401px) and (max-width: 720px) {
 		.progress-bar__indeterminate-indicator::before {
-			animation-duration: 1000ms;
+			--_indeterminate-duration: 1000ms;
 		}
 	}
 
 	@container (min-width: 721px) {
 		.progress-bar__indeterminate-indicator::before {
-			animation-duration: 1200ms;
+			--_indeterminate-duration: 1200ms;
 		}
 	}
 

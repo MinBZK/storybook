@@ -117,20 +117,38 @@ export class NLDDImage extends LitElement {
 	@property({ type: String })
 	lqip = '';
 
+	/** Cache key — the raw lqip attribute string at the time of the last
+	 *  parse. Lit dirty-checks by reference, so without caching every render
+	 *  would emit a fresh object + array and force downstream re-evaluation
+	 *  even when the attribute hasn't changed. Matters when many images live
+	 *  in a virtualised list. */
+	private _parsedLqipKey?: string;
+	private _parsedLqipValue: { base: number; cells: number[] } | null = null;
+
 	/** Parsed LQIP: 7 numbers in [0, 255] — base + 6 cells — or null when the
-	 *  attribute is empty or malformed. Recomputed on each render via the
-	 *  template; cached here is unnecessary because the template only forwards
-	 *  to inline CSS vars, and Lit skips identical style updates. */
+	 *  attribute is empty or malformed. Memoised against the raw lqip string,
+	 *  so successive reads return the same object reference until the
+	 *  attribute changes. */
 	get _parsedLqip(): { base: number; cells: number[] } | null {
-		if (!this.lqip) return null;
+		if (this._parsedLqipKey === this.lqip) return this._parsedLqipValue;
+		this._parsedLqipKey = this.lqip;
+		if (!this.lqip) {
+			this._parsedLqipValue = null;
+			return null;
+		}
 		const parts = this.lqip.split(',').map(s => s.trim());
-		if (parts.length !== 7) return null;
+		if (parts.length !== 7) {
+			this._parsedLqipValue = null;
+			return null;
+		}
 		const nums = parts.map(s => {
 			const n = Number(s);
 			return Number.isInteger(n) && n >= 0 && n <= 255 ? n : NaN;
 		});
-		if (nums.some(Number.isNaN)) return null;
-		return { base: nums[0], cells: nums.slice(1) };
+		this._parsedLqipValue = nums.some(Number.isNaN)
+			? null
+			: { base: nums[0], cells: nums.slice(1) };
+		return this._parsedLqipValue;
 	}
 
 	@state()
@@ -170,21 +188,27 @@ export class NLDDImage extends LitElement {
 	override willUpdate(changed: Map<string, unknown>): void {
 		// Reset load/error flags when the src changes so the LQIP shows again
 		// for the new image until it finishes loading (or errors out anew).
+		// Also re-arm the alt-warning latch so swapping to a new src with a
+		// missing alt warns again instead of staying silent after the first hit.
 		if (changed.has('src')) {
 			this._imageLoaded = false;
 			this._imageErrored = false;
+			this._warnedAlt = false;
 		}
 	}
 
 	override updated(changed: Map<string, unknown>): void {
-		// Apply the numeric `width` as the host's max-width so the image (and
-		// its caption) stay within that limit. 'full' clears the constraint.
+		// Apply the numeric `width` as a custom property the stylesheet picks
+		// up. Setting style.maxWidth directly would override any consumer CSS
+		// targeting the host's max-width; routing through --_max-width lets
+		// the consumer's cascade win for the rare case where they need a
+		// different cap. 'full' clears the constraint.
 		if (changed.has('width')) {
 			const n = this._numericWidth;
 			if (n !== undefined) {
-				this.style.maxWidth = `${n}px`;
+				this.style.setProperty('--_max-width', `${n}px`);
 			} else {
-				this.style.removeProperty('max-width');
+				this.style.removeProperty('--_max-width');
 			}
 		}
 		// Non-decorative images without alt text are a silent a11y failure

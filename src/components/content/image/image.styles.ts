@@ -23,9 +23,11 @@ export const imageStyles = css`
 		--_caption-row-gap: var(--primitives-space-8);
 		--_object-fit: cover;
 		--_object-position: center;
+		--_max-width: 100%;
 
 		box-sizing: border-box;
 		display: block;
+		max-width: var(--_max-width);
 	}
 
 	:host([hidden]) {
@@ -118,7 +120,13 @@ export const imageStyles = css`
 	   shows through cell-gradient transparent edges; the six cells carry
 	   the per-zone hue. No blend modes are needed because every cell
 	   already has its own real colour — overlap zones blend naturally
-	   through the smooth alpha falloff (stop10/20/30/40). */
+	   through the smooth alpha falloff (stop10/20/30/40).
+	   Browser support: depends on CSS mod() (Chrome 113+, Safari 15.4+,
+	   Firefox 118+, May 2023 baseline) and CSS round(down, ...) (Chrome
+	   111+, Safari 15.4+, Firefox 118+). Older engines drop the
+	   .image__media--lqip background and fall through to the neutral
+	   --_background-color set on .image__media — degraded but harmless
+	   (the placeholder is a "nice to have", not a load-bearing element). */
 
 	.image__media--lqip {
 		--_lqip-base-ll: mod(round(down, var(--context-lqip-base) / 64), 4);

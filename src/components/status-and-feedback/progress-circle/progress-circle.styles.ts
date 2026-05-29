@@ -6,13 +6,13 @@ export const progressCircleStyles = css`
 	/* # Host */
 
 	:host {
-		--_size: var(--primitives-space-32);
+		--_size: var(--primitives-space-28);
 		/* SVG viewBox is 100×100 user units. To get a visual {N}px stroke at any
 		   rendered size, the user-unit stroke-width must scale up by 100/size.
 		   Per-size overrides below set the appropriate value. Stroke width
 		   grows with circle size — must match getStrokeWidthPx() in the
 		   template file. */
-		--_stroke-width: calc(4px * 100 / 32);
+		--_stroke-width: calc(4px * 100 / 28);
 		--_track-color: var(--components-progress-circle-track-color);
 		--_track-border-color: var(--components-progress-circle-track-border-color);
 		--_label-gap: var(--components-progress-circle-label-gap);
@@ -222,6 +222,13 @@ export const progressCircleStyles = css`
 	@media (prefers-reduced-motion: reduce) {
 		.progress-circle__indeterminate-indicator {
 			animation: progress-circle-indeterminate-indicator-pulse 2s ease-in-out infinite;
+			/* Static stationary arc + opacity pulse instead of the rotating
+			   25% sweep that runs at full motion. 23 / 100 of the circumference
+			   is the average of the regular animation's range (1..75% sweep,
+			   midpoint ≈ 38; 23 reads slightly under because lower values
+			   are visually heavier and need less length to register). The
+			   exact number doesn't need a token — adjust by eye if a future
+			   token scale changes the perceived weight. */
 			stroke-dasharray: 23 100;
 			stroke-dashoffset: 0;
 		}

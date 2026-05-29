@@ -21,6 +21,12 @@ export function codeViewerTemplate(component: NLDDCodeViewer): TemplateResult {
 		: copyState === 'failure'
 			? component._t('components.code-viewer.copy-failure-text')
 			: component._t('components.code-viewer.copy-action');
+	// Reuse tooltipText for the icon-button's accessible-label so a keyboard
+	// user re-focusing the button mid-feedback hears the actual state
+	// ("Gekopieerd") instead of the static "Kopieer". The role="status" live
+	// region still fires the initial announcement; this only changes what AT
+	// reads on subsequent focus during the 1500 ms feedback window.
+	const buttonLabel = tooltipText;
 	// Live-region payload: announces "Gekopieerd" / "Kopiëren mislukt" so
 	// screen-reader users get confirmation that the static accessible-label
 	// alone can't convey. Empty when idle so re-clicks re-announce.
@@ -47,7 +53,7 @@ export function codeViewerTemplate(component: NLDDCodeViewer): TemplateResult {
 				>
 					<nldd-icon-button
 						icon=${copyState === 'success' ? 'check-mark' : 'copy'}
-						accessible-label=${component._t('components.code-viewer.copy-action')}
+						accessible-label=${buttonLabel}
 						tooltip-timing="never"
 						size="md"
 						@click=${component._onCopyClick}

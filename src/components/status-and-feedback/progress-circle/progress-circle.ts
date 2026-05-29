@@ -22,7 +22,7 @@
  * @attr {number}  max               - Total value (default: 100)
  * @attr {number}  value             - Single-segment shorthand (ignored when segment children exist)
  * @attr {string}  color             - Color. Semantic (neutral, accent, success, warning, critical) or a Rijkskleur. Default 'accent'.
- * @attr {string} size              - Circle diameter in px. Matches nldd-icon sizes: 16, 20, 24, 28, 32, 40, 44, 48, 56, 64, 80, 96 (default: '32')
+ * @attr {string} size              - Circle diameter in px. Matches nldd-icon sizes: 16, 20, 24, 28, 32, 40, 44, 48, 56, 64, 80, 96 (default: '28')
  * @attr {string}  text              - Label below the circle
  * @attr {'percentage'|'absolute'|'fraction'|'none'} value-format - Format the tooltip uses for the auto-text
  * @attr {string}  accessible-label  - Full override of aria-valuetext (and tooltip text)
@@ -107,7 +107,7 @@ export class NLDDProgressCircle extends LitElement {
 	color: ProgressCircleColor = 'accent';
 
 	@property({ type: String, reflect: true })
-	size: ProgressCircleSize = '32';
+	size: ProgressCircleSize = '28';
 
 	@property({ type: String, reflect: true })
 	text = '';
@@ -244,6 +244,11 @@ export class NLDDProgressCircle extends LitElement {
 			case 'fraction': return `${value} / ${this.max}`;
 			case 'percentage':
 			case 'none':
+				// 'none' is listed only for exhaustiveness — the segment
+				// template skips calling _formatValuePart when valueFormat
+				// is 'none', so this branch is never reached with 'none'
+				// under normal flow.
+				// falls through
 			default: return `${pct}%`;
 		}
 	}
@@ -318,7 +323,10 @@ export class NLDDProgressCircle extends LitElement {
 		const slot = this.shadowRoot?.querySelector<HTMLSlotElement>('slot:not([name])');
 		const assigned = slot?.assignedElements({ flatten: true }) ?? [];
 		this._segments = assigned.filter(
-			(el): el is NLDDProgressCircleSegment => el.tagName === 'NLDD-PROGRESS-CIRCLE-SEGMENT',
+			// instanceof, not tagName === '...': tagName comparison breaks
+			// under scoped custom-element registries where the same class
+			// can be registered under a different tag.
+			(el): el is NLDDProgressCircleSegment => el instanceof NLDDProgressCircleSegment,
 		);
 
 		this._attributeObserver?.disconnect();
@@ -336,7 +344,11 @@ export class NLDDProgressCircle extends LitElement {
 
 	/** Build the SVG arc list for the current segments (or a single synthetic
 	 *  segment when the user provides only `value`). Each arc gets a length
-	 *  and offset on the shared circle so they line up. */
+	 *  and offset on the shared circle so they line up.
+	 *
+	 *  @internal `public` here is required for the render template to call
+	 *  this method (templates live outside the class). Treat it as private
+	 *  externally — the leading underscore signals "not API". */
 	public _buildArcs(): Array<{ length: number; offset: number; color: ProgressCircleColor }> {
 		const arcs: Array<{ length: number; offset: number; color: ProgressCircleColor }> = [];
 
@@ -358,7 +370,7 @@ export class NLDDProgressCircle extends LitElement {
 		// half-strokes) so the visible gap is 1px. Distribution mode uses butt
 		// caps so a 2px gap is enough. Single-segment progress (just `value`,
 		// no children) has no neighbours so no gap.
-		const sizeInPixels = Number(this.size) || 32;
+		const sizeInPixels = Number(this.size) || 28;
 		const strokeWidthPx = getStrokeWidthPx(sizeInPixels);
 		const isMultiSegment = sourceSegments.length > 1 || this.mode === 'distribution';
 		const isProgressMode = this.mode !== 'distribution';
@@ -399,8 +411,15 @@ export class NLDDProgressCircle extends LitElement {
 		return progressCircleTemplate(this, this._onSlotChangeBound);
 	}
 
-	override updated(): void {
-		this._syncDynamicAttributes();
+	override updated(changed: Map<string, unknown>): void {
+		// Sync only when the entering/exiting flags change. The previous
+		// implementation re-walked the shadow DOM on every render —
+		// querySelectorAll + setAttribute/removeAttribute is cheap but
+		// non-zero, and a busy parent that re-renders for unrelated reasons
+		// (slot change, attribute mutation) shouldn't pay for it.
+		if (changed.has('_indeterminateEntering') || changed.has('_indeterminateExiting')) {
+			this._syncDynamicAttributes();
+		}
 	}
 
 	/**

@@ -84,6 +84,25 @@ export class NLDDBanner extends LitElement {
 	@state()
 	_hasActions = false;
 
+	/** Stored slot-change listener references so disconnectedCallback can
+	 *  remove them. Shadow-DOM slots are GC'd with the host, so leakage is
+	 *  cosmetic — but we keep cleanup symmetric with addEventListener. */
+	private _syncContent?: () => void;
+	private _syncActions?: () => void;
+
+	constructor() {
+		super();
+		// AT requires role + aria-live to be present on the element by the time
+		// it's first inserted into the DOM, otherwise the initial announcement
+		// is missed. Reading the raw attribute here (instead of waiting for
+		// Lit to project the @property) lets us cover both HTML-declared
+		// (attribute set before constructor returns) and document.createElement
+		// + setAttribute (attribute set before appendChild) flows. updated()
+		// still keeps the host in sync when variant changes at runtime.
+		const initialVariant = this.getAttribute('variant') as BannerVariant | null;
+		this._applyAriaForVariant(initialVariant ?? 'neutral');
+	}
+
 	public _t(key: keyof NLDDBannerTranslations): string {
 		return this.translations[key] ?? nlddBannerTranslations[key];
 	}
@@ -95,18 +114,20 @@ export class NLDDBanner extends LitElement {
 	/* The host gets role+aria-live based on variant. Critical interrupts
 	 * (assertive); other variants are polite announcements. Not exposed
 	 * for override — consumers who need quieter semantics should pick a
-	 * different component. */
-	override connectedCallback(): void {
-		super.connectedCallback();
-		this._syncAriaSemantics();
-	}
-
+	 * different component.
+	 *
+	 * Note on dynamic variant changes: AT engines vary on whether they
+	 * re-announce when a live-region's role / aria-live changes after the
+	 * element is already in the AT tree. Constructor-time setup covers
+	 * the common case (variant fixed at insertion). Toggling variant at
+	 * runtime updates the visual treatment immediately but the new
+	 * announcement may not fire on every screen reader. */
 	override updated(changed: Map<string, unknown>): void {
-		if (changed.has('variant')) this._syncAriaSemantics();
+		if (changed.has('variant')) this._applyAriaForVariant(this.variant);
 	}
 
-	private _syncAriaSemantics(): void {
-		if (this.variant === 'critical') {
+	private _applyAriaForVariant(variant: BannerVariant): void {
+		if (variant === 'critical') {
 			this.setAttribute('role', 'alert');
 			this.removeAttribute('aria-live');
 		} else {
@@ -129,12 +150,20 @@ export class NLDDBanner extends LitElement {
 				|| (n.nodeType === Node.TEXT_NODE && (n.textContent?.trim() ?? '') !== ''),
 			);
 		};
-		const syncContent = () => { this._hasContent = hasMeaningfulContent(contentSlot); };
-		const syncActions = () => { this._hasActions = hasMeaningfulContent(actionsSlot); };
-		contentSlot?.addEventListener('slotchange', syncContent);
-		actionsSlot?.addEventListener('slotchange', syncActions);
-		syncContent();
-		syncActions();
+		this._syncContent = () => { this._hasContent = hasMeaningfulContent(contentSlot); };
+		this._syncActions = () => { this._hasActions = hasMeaningfulContent(actionsSlot); };
+		contentSlot?.addEventListener('slotchange', this._syncContent);
+		actionsSlot?.addEventListener('slotchange', this._syncActions);
+		this._syncContent();
+		this._syncActions();
+	}
+
+	override disconnectedCallback(): void {
+		const contentSlot = this.shadowRoot?.querySelector<HTMLSlotElement>('slot:not([name])');
+		const actionsSlot = this.shadowRoot?.querySelector<HTMLSlotElement>('slot[name="actions"]');
+		if (this._syncContent) contentSlot?.removeEventListener('slotchange', this._syncContent);
+		if (this._syncActions) actionsSlot?.removeEventListener('slotchange', this._syncActions);
+		super.disconnectedCallback();
 	}
 
 	public _onDismissClick(): void {

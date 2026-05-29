@@ -83,10 +83,12 @@ describe('nldd-image', () => {
 		expect(img.hasAttribute('width')).toBe(false);
 	});
 
-	it('applies max-width on host and width hint on img when width is numeric', async () => {
+	it('applies max-width via --_max-width custom property and width hint on img when width is numeric', async () => {
 		el = await fixture<NLDDImage>('<nldd-image src="/foo.jpg" alt="Foo" width="240"></nldd-image>');
 		await waitForUpdate(el);
-		expect(el.style.maxWidth).toBe('240px');
+		// The component routes width through --_max-width so consumer CSS can
+		// override the host's max-width if needed.
+		expect(el.style.getPropertyValue('--_max-width')).toBe('240px');
 		const img = el.shadowRoot!.querySelector('img')!;
 		expect(img.getAttribute('width')).toBe('240');
 	});
@@ -125,7 +127,9 @@ describe('nldd-image', () => {
 		await waitForUpdate(el);
 		const overlay = el.shadowRoot!.querySelector('.image__error');
 		expect(overlay).not.toBeNull();
-		expect(overlay!.getAttribute('aria-label')).toBe('Beschrijving');
+		// The visible .image__error-text carries the alt; the wrapper deliberately
+		// no longer mirrors it via aria-label to avoid a double SR announcement.
+		expect(overlay!.hasAttribute('aria-label')).toBe(false);
 		expect(el.shadowRoot!.querySelector('.image__error-text')?.textContent).toBe('Beschrijving');
 		expect(el.shadowRoot!.querySelector('nldd-icon')).not.toBeNull();
 	});

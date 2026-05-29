@@ -57,12 +57,15 @@ export function imageTemplate(component: NLDDImage) {
 
 	// Error overlay: shown when the fallback img fires an error. Sits centred
 	// over the media area on top of the LQIP gradient (or the neutral fallback
-	// background when no LQIP is provided). Decorative images skip the alt
-	// label so they don't introduce an accidental description.
+	// background when no LQIP is provided).
+	// A11y: the visible .image__error-text already carries the alt as readable
+	// text for both sighted and screen-reader users, so the wrapper does NOT
+	// repeat it via role="img" + aria-label — that produced a duplicate
+	// announcement ("image: X" followed by "X"). Decorative images skip the
+	// text entirely and aria-hidden the whole overlay so AT users don't get a
+	// spurious failure announcement for an image that conveyed nothing anyway.
 	const errorOverlay = component._imageErrored ? html`
 		<div class="image__error"
-			role=${component.decorative ? nothing : 'img'}
-			aria-label=${component.decorative ? nothing : component.alt}
 			aria-hidden=${component.decorative ? 'true' : nothing}
 		>
 			<div class="image__error-card">

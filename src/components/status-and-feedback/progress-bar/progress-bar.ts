@@ -105,16 +105,20 @@ export class NLDDProgressBarSegment extends LitElement {
 			return html`<span class="progress-bar-segment__hover-area"></span>`;
 		}
 		// tabindex=0 makes the hover area keyboard-reachable so SR users can
-		// land on it and have nldd-tooltip surface its text (WCAG 2.1.1). No
-		// explicit role: this element is a focus target, not an activator —
-		// role=button would promise an action that the span doesn't perform.
-		// aria-label carries the same text as the tooltip so the focus
-		// announcement is meaningful on its own. nldd-tooltip listens to
-		// focus/blur on slotted content, so no extra handlers needed here.
+		// land on it and have nldd-tooltip surface its text (WCAG 2.1.1).
+		// role="img" exposes the element to the AT tree with its aria-label as
+		// accessible name — a bare <span> + aria-label is silently ignored by
+		// most screen readers (a labelled generic element has no semantic
+		// role to anchor the name to). role="img" fits because the hover area
+		// is a focusable visual representation of a data value, not an
+		// activator (role="button" would promise an action that doesn't
+		// happen). nldd-tooltip listens to focus/blur on slotted content, so
+		// no extra handlers needed here.
 		return html`
 			<nldd-tooltip text=${text} timing="instant">
 				<span class="progress-bar-segment__hover-area"
 					tabindex="0"
+					role="img"
 					aria-label=${text}
 				></span>
 			</nldd-tooltip>
@@ -332,6 +336,11 @@ export class NLDDProgressBar extends LitElement {
 			case 'fraction': valuePart = `${v} / ${this.max}`; break;
 			case 'percentage':
 			case 'none':
+				// 'none' is listed only for exhaustiveness — callers strip the
+				// value entirely when valueFormat is 'none' (see
+				// _renderHeaderValue), so this branch is never reached with
+				// 'none' under normal flow.
+				// falls through
 			default: valuePart = `${pct}%`; break;
 		}
 		return seg.name ? `${seg.name}: ${valuePart}` : valuePart;
@@ -347,8 +356,12 @@ export class NLDDProgressBar extends LitElement {
 	private _onSlotChange(): void {
 		const slot = this.shadowRoot?.querySelector<HTMLSlotElement>('slot:not([name])');
 		const assigned = slot?.assignedElements({ flatten: true }) ?? [];
+		// instanceof, not tagName === 'NLDD-PROGRESS-BAR-SEGMENT': tagName
+		// comparison breaks under scoped custom-element registries (used in
+		// some test environments and cross-frame contexts) where the same
+		// class can be registered under a different tag.
 		this._segments = assigned.filter(
-			(el): el is NLDDProgressBarSegment => el.tagName === 'NLDD-PROGRESS-BAR-SEGMENT',
+			(el): el is NLDDProgressBarSegment => el instanceof NLDDProgressBarSegment,
 		);
 
 		// Re-observe each segment for value/color/name/tooltip changes so the
