@@ -9,6 +9,10 @@ the type of conventional-commit determines the release. Conventional types
 `chore`, `docs`, `ci`, `style`, `test`, `build` are intentionally omitted
 here; consult the commit history if you need that level of detail.
 
+## <small>0.8.52 (2026-05-29)</small>
+
+* fix(image): use relative sample-image paths so they load under GH Pages base ([4c3150b](https://github.com/MinBZK/storybook/commit/4c3150b))
+
 ## <small>0.8.51 (2026-05-29)</small>
 
 * feat: banner, progress family, image with LQIP, and new icons (#115) ([d217812](https://github.com/MinBZK/storybook/commit/d217812)), closes [#115](https://github.com/MinBZK/storybook/issues/115)
