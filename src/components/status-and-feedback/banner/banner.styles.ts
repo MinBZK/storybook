@@ -24,8 +24,12 @@ export const bannerStyles = css`
 		box-sizing: border-box;
 		display: grid;
 		position: relative;
-		border: var(--_border-width) solid var(--_border-color);
+		/* Inset box-shadow paints the 1px edge inside the radius without
+		   taking layout space, matching the highlight pattern nldd-box
+		   uses. forced-colors fallback below restores a real border for
+		   Windows High Contrast users (box-shadow is dropped there). */
 		border-radius: var(--_corner-radius);
+		box-shadow: inset 0 0 0 var(--_border-width) var(--_border-color);
 		background-color: var(--_background-color);
 		width: 100%;
 		padding: var(--_padding);
@@ -138,5 +142,19 @@ export const bannerStyles = css`
 		position: absolute;
 		top: 0;
 		right: 0;
+	}
+
+
+	/* # Accessibility
+	   forced-colors / Windows High Contrast strips box-shadow, so the inset
+	   edge would disappear and the banner would lose its semantic frame
+	   against the system background. Restore it with a real border in that
+	   mode. CanvasText is the system foreground colour so the border always
+	   meets contrast. */
+
+	@media (forced-colors: active) {
+		.banner {
+			border: var(--_border-width) solid CanvasText;
+		}
 	}
 `;
