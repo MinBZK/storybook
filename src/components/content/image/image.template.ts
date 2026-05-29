@@ -75,12 +75,24 @@ export function imageTemplate(component: NLDDImage) {
 		</div>
 	` : nothing;
 
+	// Visually-hidden live region announces "image failed to load" once the
+	// internal img errors mid-session (gallery swap, lazy reload, etc.). The
+	// element is always rendered (so AT subscribes to it from first paint),
+	// but populated only on error so the announcement fires when the text
+	// flips from empty to non-empty. Decorative images stay silent — they
+	// convey nothing, so a failure isn't worth announcing.
+	const errorStatusMessage = component._imageErrored && !component.decorative
+		? `${component._t('components.image.error-status-message')}: ${component.alt || component.src}`
+		: '';
+	const liveRegion = html`<span class="image__status" aria-live="polite">${errorStatusMessage}</span>`;
+
 	const media = html`
 		<div class=${mediaClasses}
 			style=${styleMap(mediaStyles)}
 		>
 			<slot>${fallbackImg}</slot>
 			${errorOverlay}
+			${liveRegion}
 		</div>
 	`;
 

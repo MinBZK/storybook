@@ -290,13 +290,33 @@ export const imageStyles = css`
 	   (alt text leaking out + broken-image icon/border) doesn't show through
 	   underneath our own error overlay. display:none also drops the element
 	   from the accessibility tree, so its alt isn't announced alongside the
-	   error overlay's role=img / aria-label (which already carries the same
-	   text). Box dimensions are preserved by aspect-ratio on .image__media,
-	   not by the img itself. Listeners stay attached — only DOM removal
-	   detaches them — so the next src change still triggers load/error. */
+	   visible .image__error-text in the overlay (the overlay wrapper itself
+	   carries no role/aria-label — the visible text serves AT users too, so a
+	   duplicate label there would just announce the alt twice). Box dimensions
+	   are preserved by aspect-ratio on .image__media, not by the img itself.
+	   Listeners stay attached — only DOM removal detaches them — so the next
+	   src change still triggers load/error. */
 
 	.image__img--errored {
 		display: none;
+	}
+
+
+	/* # Live region for dynamic load failures
+	   Visually-hidden span sits inside .image__media and announces the
+	   translated "image could not be loaded" message + alt text via
+	   aria-live="polite" when _imageErrored flips mid-session. The element
+	   is always rendered (so AT subscribes from first paint) but the
+	   content only flows in on the error transition, which is what fires
+	   the announcement. Standard visually-hidden recipe. */
+
+	.image__status {
+		position: absolute;
+		width: 1px;
+		height: 1px;
+		overflow: hidden;
+		clip-path: inset(50%);
+		white-space: nowrap;
 	}
 
 

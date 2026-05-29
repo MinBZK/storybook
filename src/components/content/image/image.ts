@@ -53,6 +53,8 @@ import { LitElement } from 'lit';
 import { customElement, property, state } from 'lit/decorators.js';
 import { imageStyles } from './image.styles.js';
 import { imageTemplate } from './image.template.js';
+import { nlddImageTranslations } from './image.i18n.js';
+import type { NLDDImageTranslations } from './image.i18n.js';
 import '../icon/icon.js';
 
 export type ImageShape = 'square' | 'rounded' | 'circle';
@@ -116,6 +118,14 @@ export class NLDDImage extends LitElement {
 
 	@property({ type: String })
 	lqip = '';
+
+	/** Override one or more translation keys. Unspecified keys fall back to Dutch. */
+	@property({ type: Object })
+	translations: Partial<NLDDImageTranslations> = {};
+
+	public _t(key: keyof NLDDImageTranslations): string {
+		return this.translations[key] ?? nlddImageTranslations[key];
+	}
 
 	/** Cache key — the raw lqip attribute string at the time of the last
 	 *  parse. Lit dirty-checks by reference, so without caching every render

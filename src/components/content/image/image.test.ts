@@ -117,6 +117,30 @@ describe('nldd-image', () => {
 		expect(assigned[0].getAttribute('src')).toBe('/slotted.jpg');
 	});
 
+	it('populates an aria-live status region with the error message + alt on error', async () => {
+		el = await fixture<NLDDImage>('<nldd-image src="/missing.jpg" alt="Beschrijving"></nldd-image>');
+		await waitForUpdate(el);
+		const status = el.shadowRoot!.querySelector('.image__status');
+		expect(status).not.toBeNull();
+		expect(status!.getAttribute('aria-live')).toBe('polite');
+		expect(status!.textContent).toBe('');
+		const img = el.shadowRoot!.querySelector('img')!;
+		img.dispatchEvent(new Event('error'));
+		await waitForUpdate(el);
+		// Text now contains the translated default + the alt, so SR users get a
+		// meaningful announcement on the empty → non-empty transition.
+		expect(status!.textContent).toBe('Afbeelding kon niet worden geladen: Beschrijving');
+	});
+
+	it('does not announce in the status region for decorative errored images', async () => {
+		el = await fixture<NLDDImage>('<nldd-image src="/missing.jpg" alt="Ignored" decorative></nldd-image>');
+		await waitForUpdate(el);
+		const img = el.shadowRoot!.querySelector('img')!;
+		img.dispatchEvent(new Event('error'));
+		await waitForUpdate(el);
+		expect(el.shadowRoot!.querySelector('.image__status')!.textContent).toBe('');
+	});
+
 	it('renders the error overlay with icon + alt text when the image errors', async () => {
 		el = await fixture<NLDDImage>('<nldd-image src="/missing.jpg" alt="Beschrijving"></nldd-image>');
 		await waitForUpdate(el);
