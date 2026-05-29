@@ -13,7 +13,17 @@ import { ICONS } from './../../content/icon/icon.js';
  * <nldd-badge color="success" text="Nieuw"></nldd-badge>
  * ```
  */
-const COLORS = ['critical', 'accent', 'neutral', 'warning', 'success'];
+const SEMANTIC_COLORS = ['critical', 'accent', 'neutral', 'warning', 'success'];
+const RIJKSLEUREN = [
+	'coolgray',
+	'lintblauw', 'donkerblauw', 'hemelblauw', 'lichtblauw',
+	'paars', 'violet',
+	'robijnrood', 'roze', 'rood', 'oranje',
+	'donkergeel', 'geel',
+	'donkerbruin', 'bruin',
+	'donkergroen', 'groen', 'mosgroen', 'mintgroen',
+];
+const COLORS = [...SEMANTIC_COLORS, ...RIJKSLEUREN];
 
 export default {
 	title: 'Components/Status & Feedback/Badge',
@@ -201,10 +211,10 @@ export const WithIconAndText = {
 	},
 };
 
-export const Variants = {
+export const Colors = {
 	render: () => html`
-		<div style="display: flex; gap: 12px; align-items: center;">
-			${COLORS.map(v => html`<nldd-badge color=${v} number="3"></nldd-badge>`)}
+		<div style="display: flex; gap: 12px; align-items: center; flex-wrap: wrap;">
+			${COLORS.map(c => html`<nldd-badge color=${c} number="3"></nldd-badge>`)}
 		</div>
 	`,
 	parameters: {

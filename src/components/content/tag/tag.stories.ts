@@ -104,29 +104,14 @@ export const Default = {
 	},
 };
 
-export const Variants = {
+export const Colors = {
 	render: () => html`
 		<div style="display: flex; flex-wrap: wrap; gap: 8px; align-items: center;">
-			<nldd-tag color="neutral" text="Concept"></nldd-tag>
-			<nldd-tag color="accent" text="Nieuw"></nldd-tag>
-			<nldd-tag color="success" text="Gepubliceerd"></nldd-tag>
-			<nldd-tag color="warning" text="Let op"></nldd-tag>
-			<nldd-tag color="critical" text="Afgewezen"></nldd-tag>
-		</div>
-	`,
-	parameters: {
-		controls: { disable: true },
-		docs: {
-			description: {
-				story: 'Semantische varianten voor de meest voorkomende statussen. Gebruik deze waar mogelijk — ze communiceren betekenis bovenop kleur.',
-			},
-		},
-	},
-};
-
-export const Rijkskleuren = {
-	render: () => html`
-		<div style="display: flex; flex-wrap: wrap; gap: 8px; align-items: center;">
+			<nldd-tag color="neutral" text="neutral"></nldd-tag>
+			<nldd-tag color="accent" text="accent"></nldd-tag>
+			<nldd-tag color="success" text="success"></nldd-tag>
+			<nldd-tag color="warning" text="warning"></nldd-tag>
+			<nldd-tag color="critical" text="critical"></nldd-tag>
 			<nldd-tag color="coolgray" text="coolgray"></nldd-tag>
 			<nldd-tag color="lintblauw" text="lintblauw"></nldd-tag>
 			<nldd-tag color="donkerblauw" text="donkerblauw"></nldd-tag>
@@ -152,7 +137,7 @@ export const Rijkskleuren = {
 		controls: { disable: true },
 		docs: {
 			description: {
-				story: 'Alle rijkskleuren uit het palette zijn direct als kleurvariant beschikbaar — handig voor categorisering waar de semantische varianten niet passen. Combineer kleur altijd met tekst zodat de tag ook zonder kleur leesbaar blijft.',
+				story: 'Semantische varianten (`neutral`, `accent`, `success`, `warning`, `critical`) voor de meest voorkomende statussen — gebruik deze waar mogelijk, ze communiceren betekenis bovenop kleur. Daarnaast alle Rijksleuren voor categorisering waar de semantische varianten niet passen. Combineer kleur altijd met tekst zodat de tag ook zonder kleur leesbaar blijft.',
 			},
 		},
 	},

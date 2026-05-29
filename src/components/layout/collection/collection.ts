@@ -84,6 +84,9 @@ export class NLDDCollection extends LitElement {
 	_atEnd = false;
 
 	@state()
+	_isScrollable = false;
+
+	@state()
 	_hasFooterSlot = false;
 
 	_onFooterSlotChange = (e: Event): void => {
@@ -99,6 +102,10 @@ export class NLDDCollection extends LitElement {
 		if (!el) return;
 		this._atStart = el.scrollLeft < 1;
 		this._atEnd = el.scrollLeft + el.clientWidth >= el.scrollWidth - 1;
+		/* Track overflow so the template can make the scroll container
+		 * keyboard-focusable. Without focus, arrow-key users can't scroll
+		 * a non-focusable region (WCAG 2.1.1). */
+		this._isScrollable = el.scrollWidth > el.clientWidth;
 	};
 
 	@query('nldd-button.load-more')
@@ -152,6 +159,11 @@ export class NLDDCollection extends LitElement {
 			this._resizeObserver = new ResizeObserver(() => this._scrollListener());
 			this._resizeObserver.observe(this._itemsEl);
 			this._scrollListenerAttached = true;
+			// Compute initial overflow synchronously. The ResizeObserver only
+			// fires on the next animation frame, so without this the first
+			// render shows tabindex/aria-label missing until the observer
+			// catches up — flaky in tests and a brief flash in real use.
+			this._scrollListener();
 		}
 	}
 
@@ -160,6 +172,7 @@ export class NLDDCollection extends LitElement {
 		this._resizeObserver?.disconnect();
 		this._resizeObserver = undefined;
 		this._scrollListenerAttached = false;
+		this._isScrollable = false;
 	}
 
 	_onSlotChange(e: Event): void {

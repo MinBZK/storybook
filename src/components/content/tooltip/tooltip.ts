@@ -6,6 +6,7 @@
  *
  * @element nldd-tooltip
  * @attr {string}  text      - Tooltip tekst
+ * @attr {boolean} open      - Forceer de tooltip zichtbaar, ongeacht hover/focus. Gebruik voor programmatische feedback (bv. "Gekopieerd"). Reset naar false om hover-gedrag te herstellen.
  * @attr {string}  placement - Positie: 'top' | 'bottom' | 'left' | 'right' (standaard: 'bottom'; op touch devices automatisch 'top')
  * @attr {string}  timing    - Wanneer de tooltip verschijnt op hover:
  *                              'instant'  — direct, zonder show-delay.
@@ -20,6 +21,12 @@
  *                              altijd instant.
  *
  * @slot - Het element waarop de tooltip wordt getoond
+ *
+ * @fires nldd-tooltip-dismiss - Wanneer een gebruiker Escape drukt terwijl
+ *   `open=true` is. De consumer beheert dan de open-lifecycle (wij kunnen
+ *   `open` niet eenzijdig wissen), dus dit event geeft de consumer de kans
+ *   om `open` terug naar `false` te zetten. WCAG 1.4.13: persistent hover-/
+ *   focus-overlays moeten dismissible zijn zonder focus te verplaatsen.
  *
  * @note Rendert via de native Popover API (`popover="manual"`) in de top
  * layer. Daardoor escape de tooltip alle ancestor stacking contexts en
@@ -67,6 +74,10 @@ export class NLDDTooltip extends LitElement {
 	@property({ type: String, reflect: true })
 	text = '';
 
+	/** Programmatically force the tooltip visible regardless of hover/focus. */
+	@property({ type: Boolean, reflect: true })
+	open = false;
+
 	@property({ type: String, reflect: true })
 	placement: Placement = 'bottom';
 
@@ -86,6 +97,7 @@ export class NLDDTooltip extends LitElement {
 	private _descriptionEl: HTMLSpanElement | null = null;
 	private _currentTrigger: Element | null = null;
 	private _boundSlotChange = () => this._syncAriaDescribedBy();
+	private _positionVersion = 0;
 
 	override connectedCallback(): void {
 		super.connectedCallback();
@@ -101,6 +113,23 @@ export class NLDDTooltip extends LitElement {
 	}
 
 	override updated(changed: PropertyValues): void {
+		if (changed.has('open')) {
+			if (this.open) {
+				/* Force-show: cancel any pending hide so the tooltip stays up
+				 * even if the cursor left the trigger area. */
+				if (this._hideTimeout) {
+					clearTimeout(this._hideTimeout);
+					this._hideTimeout = null;
+				}
+				if (this._showTimeout) {
+					clearTimeout(this._showTimeout);
+					this._showTimeout = null;
+				}
+				this._visible = true;
+			} else if (this._visible) {
+				this._visible = false;
+			}
+		}
 		if (changed.has('_visible')) {
 			const tooltip = this._getTooltipElement();
 			if (tooltip) {
@@ -114,6 +143,11 @@ export class NLDDTooltip extends LitElement {
 		}
 		if (changed.has('text') || changed.has('timing')) {
 			this._syncAriaDescribedBy();
+		}
+		if (changed.has('text') && this._visible) {
+			/* Text changed mid-display (e.g. action feedback like "Gekopieerd").
+			 * Re-position so the popover snaps to the new content's box. */
+			this._updatePosition();
 		}
 		if (changed.has('timing') && this.timing === 'never') {
 			// Cancel any pending show — without this the timer fires after
@@ -234,6 +268,7 @@ export class NLDDTooltip extends LitElement {
 			clearTimeout(this._showTimeout);
 			this._showTimeout = null;
 		}
+		if (this.open) return; // force-shown — hover-out doesn't dismiss
 		if (this._hideTimeout) {
 			clearTimeout(this._hideTimeout);
 		}
@@ -268,13 +303,45 @@ export class NLDDTooltip extends LitElement {
 	}
 
 	private _handleKeyDown = (e: KeyboardEvent): void => {
-		if (e.key === 'Escape' && this._visible) this._visible = false;
+		if (e.key !== 'Escape' || !this._visible) return;
+		if (this.open) {
+			// WCAG 1.4.13 (Content on Hover or Focus): persistent
+			// keyboard-triggered overlay content must be dismissible without
+			// moving focus. The consumer controls the open lifecycle (e.g.
+			// action-feedback timers) so we can't unilaterally set open=false
+			// here — but we DO emit nldd-tooltip-dismiss so the consumer can
+			// honor the request. preventDefault keeps the keystroke from
+			// bubbling to something else (modal close, etc.) when handled.
+			this.dispatchEvent(new CustomEvent('nldd-tooltip-dismiss', { bubbles: true, composed: true }));
+			e.preventDefault();
+			return;
+		}
+		// Hover/focus-shown tooltips: we own the lifecycle, dismiss directly.
+		this._visible = false;
 	};
 
 	private async _updatePosition(): Promise<void> {
+		/* Multiple position calcs can be queued in the same flow (e.g. the
+		 * text-change handler and the _visible handler fire in consecutive
+		 * cycles). Each call awaits computePosition, so they may resolve
+		 * out of order. Version-stamp every call and bail when a newer one
+		 * has started — only the latest gets to write style.left/top. */
+		const version = ++this._positionVersion;
 		const trigger = this._getTriggerElement();
 		const tooltip = this._getTooltipElement();
 		if (!trigger || !tooltip) return;
+
+		/* Wait for custom fonts so the first measurement matches the
+		 * steady-state width. Without this, on a fresh page load the
+		 * tooltip body is measured with the fallback font (wider) and
+		 * Floating UI places the popover a few pixels off; once the web
+		 * font swaps in, the body shrinks but the position is already
+		 * committed. document.fonts.ready resolves immediately when all
+		 * fonts are loaded, so this is a no-op after the first show. */
+		if (document.fonts?.status !== 'loaded') {
+			await document.fonts?.ready;
+			if (version !== this._positionVersion) return;
+		}
 
 		const styles = getComputedStyle(this);
 		const { x, y } = await computePosition(trigger, tooltip, {
@@ -287,6 +354,7 @@ export class NLDDTooltip extends LitElement {
 			],
 		});
 
+		if (version !== this._positionVersion) return;
 		tooltip.style.left = `${x}px`;
 		tooltip.style.top = `${y}px`;
 	}

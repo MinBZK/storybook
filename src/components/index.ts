@@ -22,6 +22,7 @@ export { NLDDToolbar } from './actions/toolbar/toolbar.js';
 // # Content components
 
 export { NLDDIcon } from './content/icon/icon.js';
+export { NLDDImage } from './content/image/image.js';
 export { NLDDRichText } from './content/rich-text/rich-text.js';
 export { NLDDTitle } from './content/title/title.js';
 export { NLDDTooltip } from './content/tooltip/tooltip.js';
@@ -139,6 +140,10 @@ export { NLDDPagination } from './navigation/pagination/pagination.js';
 
 export { NLDDModalDialog } from './status-and-feedback/modal-dialog/modal-dialog.js';
 export { NLDDInlineDialog } from './status-and-feedback/inline-dialog/inline-dialog.js';
+export { NLDDBanner } from './status-and-feedback/banner/banner.js';
 export { NLDDBadge } from './status-and-feedback/badge/badge.js';
+export { NLDDProgressBar, NLDDProgressBarSegment } from './status-and-feedback/progress-bar/progress-bar.js';
+export { NLDDProgressCircle, NLDDProgressCircleSegment } from './status-and-feedback/progress-circle/progress-circle.js';
+export { NLDDProgress } from './status-and-feedback/progress/progress.js';
 
 // Auto-register happens on import of individual component files

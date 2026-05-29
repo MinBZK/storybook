@@ -7,7 +7,8 @@ import { nlddListTranslations } from './list.i18n.js';
 import type { NLDDListTranslations } from './list.i18n.js';
 import '../../status-and-feedback/inline-dialog/inline-dialog.js';
 
-export type ListVariant = 'simple' | 'box' | 'box-on-tinted';
+export type ListVariant = 'simple' | 'box';
+export type ListBackground = 'tinted' | 'base';
 export type ListType = 'list' | 'navigation';
 
 export interface NLDDReorderEventDetail {
@@ -18,7 +19,7 @@ export interface NLDDReorderEventDetail {
 /**
  * A container for `nldd-list-item` elements, with optional header and footer slots.
  *
- * The `type` attribute switches the list's a11y role and behaviour:
+ * The `type` attribute switches the list's a11y role and behavior:
  * - `list` (default) — `role="list"`, items `role="listitem"`. Reorderable allowed.
  *                     Items may individually be buttons or links; the list itself
  *                     has no special keyboard semantics.
@@ -51,9 +52,17 @@ export interface NLDDReorderEventDetail {
 export class NLDDList extends LitElement {
 	static override styles = [listStyles];
 
-	/** Visual style of the list. */
+	/** Visual style of the list. `simple` is a plain vertical strip with
+	 *  no chrome (no rounded corners, no fill, no border); `box` is a
+	 *  framed card with rounded corners, fill, and an inset border ring. */
 	@property({ reflect: true })
 	variant: ListVariant = 'simple';
+
+	/** Surface fill for `variant="box"`. `tinted` (default) for a list on
+	 *  a plain page; `base` for a list on an already-tinted parent. No
+	 *  effect when `variant="simple"`. */
+	@property({ reflect: true })
+	background?: ListBackground;
 
 	/** A11y semantics. See class docblock. */
 	@property({ reflect: true })
@@ -160,7 +169,7 @@ export class NLDDList extends LitElement {
 		super.connectedCallback();
 		// Set container-type/name as inline style on the host. Doing this from
 		// a `:host` rule inside the shadow DOM works in Chromium but Safari
-		// does not always recognise the host as a container for slotted
+		// does not always recognize the host as a container for slotted
 		// descendants — a known engine inconsistency. Same workaround as
 		// nldd-page and nldd-card.
 		this.style.containerType = 'inline-size';

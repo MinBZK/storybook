@@ -32,7 +32,16 @@
  *
  * @element nldd-code-viewer
  *
+ * @attr {'simple'|'box'} variant - Visual style. `box` (default) is a framed
+ *   card with rounded corners, padding, fill, and a 1px border ring. `simple`
+ *   drops the entire frame (no corners, no padding, no fill, no ring) — use
+ *   when embedding inside a parent that supplies its own surface.
+ * @attr {'tinted'|'base'} background - Surface fill when `variant="box"`.
+ *   `tinted` (default) for a card on a plain page; `base` for a card on an
+ *   already-tinted parent (the border ring picks the +2-step semantic so the
+ *   frame still reads against a card-on-card).
  * @attr {string} language - Grammar to highlight with (yaml, json, javascript, typescript, css, html, xml, bash, markdown, rust, gherkin, toml, sql, python). Empty disables highlighting.
+ * @attr {boolean} no-copy - Hide the copy-to-clipboard button (shown by default).
  * @attr {boolean} wrap - Wrap long lines instead of horizontal scroll
  *
  * @slot - Default slot for the code/text content
@@ -42,7 +51,15 @@ import { customElement, property, state } from 'lit/decorators.js';
 import Prism from 'prismjs';
 import { codeViewerStyles } from './code-viewer.styles.js';
 import { codeViewerTemplate } from './code-viewer.template.js';
+import { nlddCodeViewerTranslations } from './code-viewer.i18n.js';
+import type { NLDDCodeViewerTranslations } from './code-viewer.i18n.js';
 import { onColorSchemeChange, forceScrollLayerRepaint } from '../../../utilities/color-scheme-repaint.js';
+import '../../actions/icon-button/icon-button.js';
+import '../tooltip/tooltip.js';
+
+export type CodeViewerCopyState = 'idle' | 'success' | 'failure';
+
+const COPY_FEEDBACK_DURATION_MS = 2000;
 
 /* Map our public language names to Prism grammar loaders. `html` and `xml`
  * share the markup grammar (covers html/xml/svg). Static `import()` calls let
@@ -87,17 +104,42 @@ function loadGrammar(language: string): Promise<unknown> | undefined {
 export class NLDDCodeViewer extends LitElement {
 	static override styles = codeViewerStyles;
 
+	/** Visual style. `box` (default) is a framed card; `simple` drops the
+	 *  entire frame for embedding in a consumer-provided container. */
+	@property({ type: String, reflect: true })
+	variant: 'simple' | 'box' = 'box';
+
+	/** Surface fill when `variant="box"`. */
+	@property({ type: String, reflect: true })
+	background: 'tinted' | 'base' = 'tinted';
+
 	@property({ type: String, reflect: true })
 	language = '';
+
+	/** Hide the copy-to-clipboard button (shown by default). */
+	@property({ type: Boolean, reflect: true, attribute: 'no-copy' })
+	noCopy = false;
 
 	@property({ type: Boolean, reflect: true })
 	wrap = false;
 
+	/** Override one or more translation keys. Unspecified keys fall back to Dutch. */
+	@property({ type: Object })
+	translations: Partial<NLDDCodeViewerTranslations> = {};
+
 	@state()
 	_highlightedHtml = '';
 
+	@state()
+	_isScrollable = false;
+
+	@state()
+	_copyState: CodeViewerCopyState = 'idle';
+
 	private _highlightPending: Promise<void> = Promise.resolve();
 	private _unsubscribeScheme?: () => void;
+	private _resizeObserver?: ResizeObserver;
+	private _copyResetTimer?: ReturnType<typeof setTimeout>;
 
 	override render() {
 		return codeViewerTemplate(this);
@@ -107,7 +149,7 @@ export class NLDDCodeViewer extends LitElement {
 		super.connectedCallback();
 		/* The .code-viewer block has overflow-x: auto and tends to scroll wide
 		 * content. Browsers cache off-screen tiles for its scroll layer and
-		 * don't reliably invalidate them when light-dark() colours flip with
+		 * don't reliably invalidate them when light-dark() colors flip with
 		 * color-scheme, so scroll back after a theme switch shows stale
 		 * paint. Drop the layer on each scheme change to repaint clean. */
 		this._unsubscribeScheme = onColorSchemeChange(() => this._repaintCodeBlock());
@@ -117,6 +159,18 @@ export class NLDDCodeViewer extends LitElement {
 		super.disconnectedCallback();
 		this._unsubscribeScheme?.();
 		this._unsubscribeScheme = undefined;
+		this._resizeObserver?.disconnect();
+		this._resizeObserver = undefined;
+		clearTimeout(this._copyResetTimer);
+		this._copyResetTimer = undefined;
+	}
+
+	override firstUpdated(): void {
+		const pre = this.shadowRoot?.querySelector('.code-viewer') as HTMLElement | null;
+		if (!pre) return;
+		this._resizeObserver = new ResizeObserver(() => this._updateScrollable(pre));
+		this._resizeObserver.observe(pre);
+		this._updateScrollable(pre);
 	}
 
 	_onSlotChange(e: Event) {
@@ -125,6 +179,57 @@ export class NLDDCodeViewer extends LitElement {
 
 	override updated(changed: Map<string, unknown>) {
 		if (changed.has('language')) this._refreshHighlight();
+		/* Re-evaluate scrollability whenever something other than _isScrollable
+		 * itself changes. Content swaps (slot/highlight) and wrap toggles can
+		 * change overflow without resizing the pre, so ResizeObserver alone
+		 * misses them. */
+		if (changed.size > 0 && !(changed.size === 1 && changed.has('_isScrollable'))) {
+			const pre = this.shadowRoot?.querySelector('.code-viewer') as HTMLElement | null;
+			if (pre) this._updateScrollable(pre);
+		}
+	}
+
+	public _t(key: keyof NLDDCodeViewerTranslations): string {
+		return this.translations[key] ?? nlddCodeViewerTranslations[key];
+	}
+
+	private _updateScrollable(pre: HTMLElement): void {
+		this._isScrollable = !this.wrap && pre.scrollWidth > pre.clientWidth;
+	}
+
+	/* Read the raw, unhighlighted slot text. Prism wraps tokens in spans for
+	 * the visual highlight, but the user clicking "copy" wants what they'd
+	 * have typed — so go to the assigned light-DOM nodes, not the rendered
+	 * shadow content. */
+	private _getRawText(): string {
+		const slot = this.shadowRoot?.querySelector('slot');
+		if (!slot) return '';
+		return slot.assignedNodes({ flatten: true })
+			.map((n) => n.textContent ?? '')
+			.join('');
+	}
+
+	public async _onCopyClick(): Promise<void> {
+		try {
+			await navigator.clipboard.writeText(this._getRawText());
+			this._copyState = 'success';
+		} catch {
+			this._copyState = 'failure';
+		}
+		clearTimeout(this._copyResetTimer);
+		this._copyResetTimer = setTimeout(() => {
+			this._copyState = 'idle';
+		}, COPY_FEEDBACK_DURATION_MS);
+	}
+
+	/** Escape on the open feedback tooltip dismisses it early (WCAG 1.4.13:
+	 *  persistent hover/focus content must be dismissible without moving
+	 *  focus). nldd-tooltip emits nldd-tooltip-dismiss because the consumer
+	 *  owns its open lifecycle; we honour it by clearing the feedback state
+	 *  and cancelling the auto-reset timer. */
+	public _onCopyDismiss(): void {
+		clearTimeout(this._copyResetTimer);
+		this._copyState = 'idle';
 	}
 
 	private _repaintCodeBlock(): void {

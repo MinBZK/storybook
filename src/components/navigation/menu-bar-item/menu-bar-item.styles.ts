@@ -16,6 +16,7 @@ export const menuBarItemStyles = css`
 		flex-shrink: 0;
 		flex-basis: auto;
 		isolation: isolate;
+		user-select: none;
 		-webkit-tap-highlight-color: transparent;
 	}
 

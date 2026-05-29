@@ -23,6 +23,7 @@ export const iconButtonStyles = css`
 
 		display: inline-block;
 		max-width: 100%;
+		user-select: none;
 		-webkit-tap-highlight-color: transparent;
 	}
 

@@ -11,6 +11,7 @@ export const collectionStyles = css`
 
 	:host {
 		--_item-width: var(--primitives-area-280);
+		--_focus-ring-z-index: 1;
 
 		display: flex;
 		width: 100%;
@@ -104,6 +105,32 @@ export const collectionStyles = css`
 		flex-shrink: 0;
 		flex-basis: var(--_item-width);
 		scroll-snap-align: start;
+	}
+
+	/* The horizontal-scroll items has a mask-image that fades the left
+	 * and right edges, which would clip an outline drawn directly on it.
+	 * The .collection__scroll-area wrapper has no mask and is the layout
+	 * box that matches the visible content area; its ::after sits above
+	 * slotted cards via z-index, so card box-shadows can't overlap the
+	 * ring. :has() works here because both elements are in the same
+	 * shadow tree (unlike :host(:has()), which doesn't pierce). */
+	.collection__scroll-area {
+		position: relative;
+	}
+
+	.collection__items:focus-visible {
+		outline: none;
+	}
+
+	.collection__scroll-area:has(.collection__items:focus-visible)::after {
+		content: '';
+		position: absolute;
+		inset: 0;
+		z-index: var(--_focus-ring-z-index);
+		outline: var(--semantics-focus-ring-outline);
+		outline-offset: var(--semantics-focus-ring-outline-offset);
+		box-shadow: var(--semantics-focus-ring-box-shadow);
+		pointer-events: none;
 	}
 
 

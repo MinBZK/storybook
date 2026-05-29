@@ -15,6 +15,7 @@ export const toggleButtonStyles = css`
 		--_icon-only-icon-size: var(--semantics-buttons-md-icon-only-icon-size);
 
 		display: inline-block;
+		user-select: none;
 		-webkit-tap-highlight-color: transparent;
 	}
 
@@ -59,8 +60,9 @@ export const toggleButtonStyles = css`
 		border-radius: var(--_corner-radius);
 		background: none;
 		background-color: var(--semantics-buttons-neutral-tinted-background-color);
+		width: var(--_min-size);
 		min-height: var(--_min-size);
-		padding: var(--_padding);
+		padding: 0;
 		gap: var(--_gap);
 		align-items: center;
 		justify-content: center;
@@ -71,9 +73,9 @@ export const toggleButtonStyles = css`
 		appearance: none;
 	}
 
-	:host([variant="icon"]) .toggle-button {
-		width: var(--_min-size);
-		padding: 0;
+	.toggle-button:has(.toggle-button__text) {
+		width: auto;
+		padding: var(--_padding);
 	}
 
 	@media (hover: hover) {
@@ -123,23 +125,26 @@ export const toggleButtonStyles = css`
 
 	/* # Elements */
 
-	/* Slotted nldd-icon is re-rendered in shadow DOM — hide the original */
 	::slotted(nldd-icon) {
 		display: none;
 	}
 
-	.toggle-button__icon {
+	.toggle-button__icon,
+	::slotted([slot="icon"]) {
 		display: block;
-		width: var(--_icon-size);
-		height: var(--_icon-size);
+		width: var(--_icon-only-icon-size);
+		height: var(--_icon-only-icon-size);
 		flex-shrink: 0;
 	}
 
-	:host([variant="icon"]) .toggle-button__icon {
-		width: var(--_icon-only-icon-size);
-		height: var(--_icon-only-icon-size);
+	.toggle-button:has(.toggle-button__text) .toggle-button__icon,
+	.toggle-button:has(.toggle-button__text) ::slotted([slot="icon"]) {
+		width: var(--_icon-size);
+		height: var(--_icon-size);
 	}
 
+	/* variant="text" keeps the icon slot in shadow DOM (so slotchange still
+	   fires after a future variant change) but hides any rendered icon. */
 	:host([variant="text"]) .toggle-button__icon,
 	:host([variant="text"]) ::slotted([slot="icon"]) {
 		display: none;

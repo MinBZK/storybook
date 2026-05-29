@@ -10,6 +10,7 @@ export const menuBarStyles = css`
 		min-width: 0;
 		flex-grow: 1;
 		flex-shrink: 1;
+		user-select: none;
 	}
 
 	:host([hidden]),

@@ -6,7 +6,7 @@
  * Gebruik in een hoek van een ander element (bijv. een icon) of standalone.
  *
  * @element nldd-badge
- * @attr {string} color - 'critical' | 'accent' | 'neutral' | 'warning' | 'success' (default: 'critical')
+ * @attr {string} color - Semantisch ('critical' | 'accent' | 'neutral' | 'warning' | 'success') of een Rijkskleur ('lintblauw' | 'hemelblauw' | 'oranje' | …). Default: 'critical'
  * @attr {string} size - Grootte: 'sm' | 'md' (default: 'md')
  * @attr {string} text - Tekst (heeft voorrang op number)
  * @attr {number} number - Numerieke waarde. Wordt beknopt als meer dan max
@@ -23,7 +23,15 @@ import { withTranslations } from '../../../utilities/with-translations.js';
 import { nlddBadgeTranslations } from './badge.i18n.js';
 import './../../content/icon/icon.js';
 
-type Color = 'critical' | 'accent' | 'neutral' | 'warning' | 'success';
+type Color =
+	| 'critical' | 'accent' | 'neutral' | 'warning' | 'success'
+	| 'coolgray'
+	| 'lintblauw' | 'donkerblauw' | 'hemelblauw' | 'lichtblauw'
+	| 'paars' | 'violet'
+	| 'robijnrood' | 'roze' | 'rood' | 'oranje'
+	| 'donkergeel' | 'geel'
+	| 'donkerbruin' | 'bruin'
+	| 'donkergroen' | 'groen' | 'mosgroen' | 'mintgroen';
 type Size = 'sm' | 'md';
 
 @customElement('nldd-badge')

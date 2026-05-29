@@ -128,7 +128,7 @@ export class NLDDListItem extends LitElement {
 	}
 
 	private _applyVariant(variant: string) {
-		this._isBoxed = variant === 'box' || variant === 'box-on-tinted';
+		this._isBoxed = variant === 'box';
 		this.classList.toggle('is-boxed', this._isBoxed);
 		this._updateVisibility();
 	}

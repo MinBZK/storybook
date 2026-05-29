@@ -153,7 +153,7 @@ describe('nldd-toggle-button – state', () => {
 
 
 /* ============================================================
-   Variant — auto-detect + explicit
+   Variant — content-driven rendering + explicit force
    ============================================================ */
 
 describe('nldd-toggle-button – variant', () => {
@@ -163,32 +163,54 @@ describe('nldd-toggle-button – variant', () => {
 		if (el) cleanup(el);
 	});
 
-	it('reflects variant="icon" when only icon is set (no text)', async () => {
+	it('renders only the icon when no text is provided', async () => {
 		el = await fixture<NLDDToggleButton>('<nldd-toggle-button icon="heart" accessible-label="Favoriet"></nldd-toggle-button>');
 		await waitForUpdate(el);
-		expect(el._effectiveVariant).toBe('icon');
-	});
-
-	it('reflects variant="icon-and-text" when both are set', async () => {
-		el = await fixture<NLDDToggleButton>('<nldd-toggle-button icon="heart" text="Label"></nldd-toggle-button>');
-		await waitForUpdate(el);
-		expect(el._effectiveVariant).toBe('icon-and-text');
-	});
-
-	it('reflects variant="text" when there is no icon', async () => {
-		el = await fixture<NLDDToggleButton>('<nldd-toggle-button text="Label"></nldd-toggle-button>');
-		await waitForUpdate(el);
-		expect(el._effectiveVariant).toBe('text');
-	});
-
-	it('explicit variant overrides auto-detect', async () => {
-		el = await fixture<NLDDToggleButton>('<nldd-toggle-button icon="heart" text="Label" variant="icon" accessible-label="Favoriet"></nldd-toggle-button>');
-		await waitForUpdate(el);
-		expect(el._effectiveVariant).toBe('icon');
+		expect(el.shadowRoot!.querySelector('.toggle-button__icon')).not.toBeNull();
 		expect(el.shadowRoot!.querySelector('.toggle-button__text')).toBeNull();
 	});
 
-	it('warns when icon-only without accessible-label', async () => {
+	it('renders both icon and text when both are provided', async () => {
+		el = await fixture<NLDDToggleButton>('<nldd-toggle-button icon="heart" text="Label"></nldd-toggle-button>');
+		await waitForUpdate(el);
+		expect(el.shadowRoot!.querySelector('.toggle-button__icon')).not.toBeNull();
+		expect(el.shadowRoot!.querySelector('.toggle-button__text')).not.toBeNull();
+	});
+
+	it('renders only text when no icon is provided', async () => {
+		el = await fixture<NLDDToggleButton>('<nldd-toggle-button text="Label"></nldd-toggle-button>');
+		await waitForUpdate(el);
+		expect(el.shadowRoot!.querySelector('.toggle-button__icon')).toBeNull();
+		expect(el.shadowRoot!.querySelector('.toggle-button__text')).not.toBeNull();
+	});
+
+	it('variant="icon" suppresses text even when text attribute is set', async () => {
+		el = await fixture<NLDDToggleButton>('<nldd-toggle-button icon="heart" text="Label" variant="icon" accessible-label="Favoriet"></nldd-toggle-button>');
+		await waitForUpdate(el);
+		expect(el.shadowRoot!.querySelector('.toggle-button__text')).toBeNull();
+		expect(el.shadowRoot!.querySelector('.toggle-button__icon')).not.toBeNull();
+	});
+
+	it('variant="text" hides the icon visually while keeping the slot in shadow DOM', async () => {
+		// The icon element is still rendered (so slotchange stays observable
+		// for a future variant flip) but display:none keeps it out of the
+		// visual layout. Verify both: present in shadow DOM, hidden via CSS.
+		el = await fixture<NLDDToggleButton>('<nldd-toggle-button icon="heart" text="Label" variant="text"></nldd-toggle-button>');
+		await waitForUpdate(el);
+		const icon = el.shadowRoot!.querySelector('.toggle-button__icon');
+		expect(icon).not.toBeNull();
+		expect(getComputedStyle(icon!).display).toBe('none');
+		expect(el.shadowRoot!.querySelector('.toggle-button__text')).not.toBeNull();
+	});
+
+	it('variant="icon" falls text back to aria-label when text is set', async () => {
+		el = await fixture<NLDDToggleButton>('<nldd-toggle-button icon="bold" text="Bold" variant="icon"></nldd-toggle-button>');
+		await waitForUpdate(el);
+		const button = el.shadowRoot!.querySelector('button')!;
+		expect(button.getAttribute('aria-label')).toBe('Bold');
+	});
+
+	it('warns when neither text nor accessible-label is set', async () => {
 		const warnSpy = vi.spyOn(console, 'warn').mockImplementation(() => {});
 
 		el = await fixture<NLDDToggleButton>('<nldd-toggle-button icon="heart"></nldd-toggle-button>');
@@ -198,10 +220,20 @@ describe('nldd-toggle-button – variant', () => {
 		warnSpy.mockRestore();
 	});
 
-	it('does not warn when icon-only with accessible-label', async () => {
+	it('does not warn when accessible-label is provided', async () => {
 		const warnSpy = vi.spyOn(console, 'warn').mockImplementation(() => {});
 
 		el = await fixture<NLDDToggleButton>('<nldd-toggle-button icon="heart" accessible-label="Favoriet"></nldd-toggle-button>');
+		await waitForUpdate(el);
+
+		expect(warnSpy).not.toHaveBeenCalled();
+		warnSpy.mockRestore();
+	});
+
+	it('does not warn when text is provided', async () => {
+		const warnSpy = vi.spyOn(console, 'warn').mockImplementation(() => {});
+
+		el = await fixture<NLDDToggleButton>('<nldd-toggle-button text="Label"></nldd-toggle-button>');
 		await waitForUpdate(el);
 
 		expect(warnSpy).not.toHaveBeenCalled();

@@ -22,15 +22,29 @@ export const listStyles = css`
 		--context-list-divider-display: none;
 	}
 
-	:host([variant="box"]) .list__items {
-		border-radius: var(--components-list-corner-radius);
-		background-color: var(--semantics-surfaces-tinted-background-color);
-		overflow: hidden;
+
+	/* ## Background + border
+	   Only the box variant has a surface. simple is a plain vertical
+	   strip with no chrome. variant="box" defaults to the tinted
+	   surface; an explicit background="base" picks the base semantic
+	   pair (same shape nldd-box uses). */
+
+	:host([variant="box"]) {
+		--_background-color: var(--semantics-surfaces-tinted-background-color);
+		--_border-color: var(--semantics-surfaces-tinted-border-color);
 	}
 
-	:host([variant="box-on-tinted"]) .list__items {
+	:host([background="base"]) {
+		--_background-color: var(--semantics-surfaces-background-color);
+		--_border-color: var(--semantics-surfaces-border-color);
+	}
+
+	:host([variant="box"]) .list__items {
 		border-radius: var(--components-list-corner-radius);
-		background-color: var(--semantics-surfaces-background-color);
+		background-color: var(--_background-color);
+		/* Inner box-shadow paints the border ring inside the radius
+		   without taking layout space, matching nldd-box / nldd-banner. */
+		box-shadow: inset 0 0 0 1px var(--_border-color);
 		overflow: hidden;
 	}
 
@@ -96,5 +110,18 @@ export const listStyles = css`
 		padding: 0;
 		white-space: nowrap;
 		clip-path: inset(50%);
+	}
+
+
+	/* # Accessibility
+	   forced-colors / Windows High Contrast strips box-shadow, so the
+	   inset border on the box variant would disappear. Restore the
+	   frame with a real border in that mode — same fallback nldd-box
+	   and nldd-banner use. */
+
+	@media (forced-colors: active) {
+		:host([variant="box"]) .list__items {
+			border: 1px solid CanvasText;
+		}
 	}
 `;

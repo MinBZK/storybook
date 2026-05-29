@@ -770,24 +770,26 @@
 	/* ## Surfaces */
 
 	--semantics-surfaces-background-color: light-dark(var(--primitives-color-neutral-0), var(--primitives-color-neutral-100));
+	--semantics-surfaces-border-color: light-dark(var(--primitives-color-neutral-50), var(--primitives-color-neutral-150));
 	--semantics-surfaces-tinted-background-color: light-dark(var(--primitives-color-neutral-25), var(--primitives-color-neutral-75));
+	--semantics-surfaces-tinted-border-color: light-dark(var(--primitives-color-neutral-50), var(--primitives-color-neutral-150));
 
 	/* ## Content */
 
 	--semantics-content-color: light-dark(var(--primitives-color-neutral-800), var(--primitives-color-neutral-900));
-	--semantics-content-secondary-color: light-dark(var(--primitives-color-neutral-550), var(--primitives-color-neutral-700));
+	--semantics-content-secondary-color: light-dark(var(--primitives-color-neutral-600), var(--primitives-color-neutral-700));
 	--semantics-content-accent-color: light-dark(var(--primitives-color-accent-750), var(--primitives-color-accent-650));
-	--semantics-content-critical-color: light-dark(var(--primitives-color-critical-550), var(--primitives-color-critical-650));
-	--semantics-content-warning-color: light-dark(var(--primitives-color-warning-550), var(--primitives-color-warning-650));
-	--semantics-content-success-color: light-dark(var(--primitives-color-success-550), var(--primitives-color-success-650));
+	--semantics-content-critical-color: light-dark(var(--primitives-color-critical-600), var(--primitives-color-critical-650));
+	--semantics-content-warning-color: light-dark(var(--primitives-color-warning-600), var(--primitives-color-warning-650));
+	--semantics-content-success-color: light-dark(var(--primitives-color-success-600), var(--primitives-color-success-650));
 	--semantics-content-mark-background-color: light-dark(var(--primitives-color-mark-100), var(--primitives-color-mark-200));
 	--semantics-content-mark-color: light-dark(var(--primitives-color-mark-900), var(--primitives-color-mark-800));
 
 	/* ## Links */
 
-	--semantics-links-color: light-dark(var(--primitives-color-lintblauw-550), var(--primitives-color-lintblauw-650));
-	--semantics-links-is-hovered-color: light-dark(var(--primitives-color-lintblauw-600), var(--primitives-color-lintblauw-700));
-	--semantics-links-is-active-color: light-dark(var(--primitives-color-lintblauw-650), var(--primitives-color-lintblauw-750));
+	--semantics-links-color: light-dark(var(--primitives-color-lintblauw-600), var(--primitives-color-lintblauw-650));
+	--semantics-links-is-hovered-color: light-dark(var(--primitives-color-lintblauw-650), var(--primitives-color-lintblauw-700));
+	--semantics-links-is-active-color: light-dark(var(--primitives-color-lintblauw-700), var(--primitives-color-lintblauw-750));
 
 	/* ## Blockquotes */
 
@@ -1011,26 +1013,197 @@
 	--semantics-focus-ring-box-shadow: 0 0 0 calc(var(--primitives-border-width-regular) * 3) var(--semantics-surfaces-background-color);
 
 
+	/* ## Categories — filled
+	   Distinguishing colors voor groep-onderscheid in een verzadigde stijl
+	   (badges, progress-bar segmenten). Voor een zachtere stijl (tags, chips)
+	   is er ruimte voor een toekomstige `categories-tinted` set. Filled-regel:
+	   bg = referentie-step zo dicht mogelijk. Border = bg + 50, geforceerd naar
+	   minimum 450 (light) / 500 (dark). Bij geforceerde border: bg = border − 100.
+	   Content-color flipt met mode zodat tekst altijd contrast houdt. */
+
+	--semantics-categories-filled-accent-background-color: light-dark(var(--primitives-color-accent-750), var(--primitives-color-accent-400));
+	--semantics-categories-filled-accent-border-color: light-dark(var(--primitives-color-accent-800), var(--primitives-color-accent-500));
+	--semantics-categories-filled-accent-content-color: light-dark(var(--primitives-color-accent-0), var(--primitives-color-accent-1000));
+	--semantics-categories-filled-critical-background-color: light-dark(var(--primitives-color-critical-550), var(--primitives-color-critical-450));
+	--semantics-categories-filled-critical-border-color: light-dark(var(--primitives-color-critical-600), var(--primitives-color-critical-500));
+	--semantics-categories-filled-critical-content-color: light-dark(var(--primitives-color-critical-0), var(--primitives-color-critical-1000));
+	--semantics-categories-filled-neutral-background-color: var(--primitives-color-neutral-500);
+	--semantics-categories-filled-neutral-border-color: var(--primitives-color-neutral-550);
+	--semantics-categories-filled-neutral-content-color: light-dark(var(--primitives-color-neutral-0), var(--primitives-color-neutral-1000));
+	--semantics-categories-filled-warning-background-color: light-dark(var(--primitives-color-warning-400), var(--primitives-color-warning-600));
+	--semantics-categories-filled-warning-border-color: light-dark(var(--primitives-color-warning-450), var(--primitives-color-warning-650));
+	--semantics-categories-filled-warning-content-color: light-dark(var(--primitives-color-warning-1000), var(--primitives-color-warning-0));
+	--semantics-categories-filled-success-background-color: var(--primitives-color-success-500);
+	--semantics-categories-filled-success-border-color: var(--primitives-color-success-550);
+	--semantics-categories-filled-success-content-color: light-dark(var(--primitives-color-success-0), var(--primitives-color-success-1000));
+
+	--semantics-categories-filled-coolgray-background-color: var(--primitives-color-coolgray-500);
+	--semantics-categories-filled-coolgray-border-color: var(--primitives-color-coolgray-550);
+	--semantics-categories-filled-coolgray-content-color: light-dark(var(--primitives-color-coolgray-0), var(--primitives-color-coolgray-1000));
+	--semantics-categories-filled-lintblauw-background-color: light-dark(var(--primitives-color-lintblauw-750), var(--primitives-color-lintblauw-400));
+	--semantics-categories-filled-lintblauw-border-color: light-dark(var(--primitives-color-lintblauw-800), var(--primitives-color-lintblauw-500));
+	--semantics-categories-filled-lintblauw-content-color: light-dark(var(--primitives-color-lintblauw-0), var(--primitives-color-lintblauw-1000));
+	--semantics-categories-filled-donkerblauw-background-color: light-dark(var(--primitives-color-donkerblauw-600), var(--primitives-color-donkerblauw-400));
+	--semantics-categories-filled-donkerblauw-border-color: light-dark(var(--primitives-color-donkerblauw-650), var(--primitives-color-donkerblauw-500));
+	--semantics-categories-filled-donkerblauw-content-color: light-dark(var(--primitives-color-donkerblauw-0), var(--primitives-color-donkerblauw-1000));
+	--semantics-categories-filled-hemelblauw-background-color: var(--primitives-color-hemelblauw-500);
+	--semantics-categories-filled-hemelblauw-border-color: var(--primitives-color-hemelblauw-550);
+	--semantics-categories-filled-hemelblauw-content-color: light-dark(var(--primitives-color-hemelblauw-0), var(--primitives-color-hemelblauw-1000));
+	--semantics-categories-filled-lichtblauw-background-color: light-dark(var(--primitives-color-lichtblauw-350), var(--primitives-color-lichtblauw-800));
+	--semantics-categories-filled-lichtblauw-border-color: light-dark(var(--primitives-color-lichtblauw-450), var(--primitives-color-lichtblauw-850));
+	--semantics-categories-filled-lichtblauw-content-color: light-dark(var(--primitives-color-lichtblauw-1000), var(--primitives-color-lichtblauw-0));
+	--semantics-categories-filled-paars-background-color: light-dark(var(--primitives-color-paars-850), var(--primitives-color-paars-400));
+	--semantics-categories-filled-paars-border-color: light-dark(var(--primitives-color-paars-900), var(--primitives-color-paars-500));
+	--semantics-categories-filled-paars-content-color: light-dark(var(--primitives-color-paars-0), var(--primitives-color-paars-1000));
+	--semantics-categories-filled-violet-background-color: light-dark(var(--primitives-color-violet-650), var(--primitives-color-violet-400));
+	--semantics-categories-filled-violet-border-color: light-dark(var(--primitives-color-violet-700), var(--primitives-color-violet-500));
+	--semantics-categories-filled-violet-content-color: light-dark(var(--primitives-color-violet-0), var(--primitives-color-violet-1000));
+	--semantics-categories-filled-robijnrood-background-color: light-dark(var(--primitives-color-robijnrood-600), var(--primitives-color-robijnrood-400));
+	--semantics-categories-filled-robijnrood-border-color: light-dark(var(--primitives-color-robijnrood-650), var(--primitives-color-robijnrood-500));
+	--semantics-categories-filled-robijnrood-content-color: light-dark(var(--primitives-color-robijnrood-0), var(--primitives-color-robijnrood-1000));
+	--semantics-categories-filled-roze-background-color: light-dark(var(--primitives-color-roze-350), var(--primitives-color-roze-750));
+	--semantics-categories-filled-roze-border-color: light-dark(var(--primitives-color-roze-450), var(--primitives-color-roze-800));
+	--semantics-categories-filled-roze-content-color: light-dark(var(--primitives-color-roze-1000), var(--primitives-color-roze-0));
+	--semantics-categories-filled-rood-background-color: light-dark(var(--primitives-color-rood-550), var(--primitives-color-rood-450));
+	--semantics-categories-filled-rood-border-color: light-dark(var(--primitives-color-rood-600), var(--primitives-color-rood-500));
+	--semantics-categories-filled-rood-content-color: light-dark(var(--primitives-color-rood-0), var(--primitives-color-rood-1000));
+	--semantics-categories-filled-oranje-background-color: light-dark(var(--primitives-color-oranje-400), var(--primitives-color-oranje-600));
+	--semantics-categories-filled-oranje-border-color: light-dark(var(--primitives-color-oranje-450), var(--primitives-color-oranje-650));
+	--semantics-categories-filled-oranje-content-color: light-dark(var(--primitives-color-oranje-1000), var(--primitives-color-oranje-0));
+	--semantics-categories-filled-donkergeel-background-color: light-dark(var(--primitives-color-donkergeel-350), var(--primitives-color-donkergeel-800));
+	--semantics-categories-filled-donkergeel-border-color: light-dark(var(--primitives-color-donkergeel-450), var(--primitives-color-donkergeel-850));
+	--semantics-categories-filled-donkergeel-content-color: light-dark(var(--primitives-color-donkergeel-1000), var(--primitives-color-donkergeel-0));
+	--semantics-categories-filled-geel-background-color: light-dark(var(--primitives-color-geel-350), var(--primitives-color-geel-900));
+	--semantics-categories-filled-geel-border-color: light-dark(var(--primitives-color-geel-450), var(--primitives-color-geel-950));
+	--semantics-categories-filled-geel-content-color: light-dark(var(--primitives-color-geel-1000), var(--primitives-color-geel-0));
+	--semantics-categories-filled-donkerbruin-background-color: light-dark(var(--primitives-color-donkerbruin-750), var(--primitives-color-donkerbruin-400));
+	--semantics-categories-filled-donkerbruin-border-color: light-dark(var(--primitives-color-donkerbruin-800), var(--primitives-color-donkerbruin-500));
+	--semantics-categories-filled-donkerbruin-content-color: light-dark(var(--primitives-color-donkerbruin-0), var(--primitives-color-donkerbruin-1000));
+	--semantics-categories-filled-bruin-background-color: var(--primitives-color-bruin-500);
+	--semantics-categories-filled-bruin-border-color: var(--primitives-color-bruin-550);
+	--semantics-categories-filled-bruin-content-color: light-dark(var(--primitives-color-bruin-0), var(--primitives-color-bruin-1000));
+	--semantics-categories-filled-donkergroen-background-color: light-dark(var(--primitives-color-donkergroen-700), var(--primitives-color-donkergroen-400));
+	--semantics-categories-filled-donkergroen-border-color: light-dark(var(--primitives-color-donkergroen-750), var(--primitives-color-donkergroen-500));
+	--semantics-categories-filled-donkergroen-content-color: light-dark(var(--primitives-color-donkergroen-0), var(--primitives-color-donkergroen-1000));
+	--semantics-categories-filled-groen-background-color: var(--primitives-color-groen-500);
+	--semantics-categories-filled-groen-border-color: var(--primitives-color-groen-550);
+	--semantics-categories-filled-groen-content-color: light-dark(var(--primitives-color-groen-0), var(--primitives-color-groen-1000));
+	--semantics-categories-filled-mosgroen-background-color: var(--primitives-color-mosgroen-500);
+	--semantics-categories-filled-mosgroen-border-color: var(--primitives-color-mosgroen-550);
+	--semantics-categories-filled-mosgroen-content-color: light-dark(var(--primitives-color-mosgroen-0), var(--primitives-color-mosgroen-1000));
+	--semantics-categories-filled-mintgroen-background-color: light-dark(var(--primitives-color-mintgroen-350), var(--primitives-color-mintgroen-800));
+	--semantics-categories-filled-mintgroen-border-color: light-dark(var(--primitives-color-mintgroen-450), var(--primitives-color-mintgroen-850));
+	--semantics-categories-filled-mintgroen-content-color: light-dark(var(--primitives-color-mintgroen-1000), var(--primitives-color-mintgroen-0));
+
+
 	/* # Components */
 
 	/* ## Badge */
 
 	--components-badge-corner-radius: var(--primitives-corner-radius-full);
-	--components-badge-critical-background-color: var(--primitives-color-critical-550);
-	--components-badge-critical-content-color: var(--primitives-color-critical-0);
-	--components-badge-accent-background-color: light-dark(var(--primitives-color-accent-750), var(--primitives-color-accent-650));
-	--components-badge-accent-content-color: var(--primitives-color-accent-0);
-	--components-badge-neutral-background-color: var(--primitives-color-neutral-800);
-	--components-badge-neutral-content-color: var(--primitives-color-neutral-0);
-	--components-badge-warning-background-color: light-dark(var(--primitives-color-warning-300), var(--primitives-color-warning-700));
-	--components-badge-warning-content-color: light-dark(var(--primitives-color-warning-1000), var(--primitives-color-warning-0));
-	--components-badge-success-background-color: var(--primitives-color-success-550);
-	--components-badge-success-content-color: var(--primitives-color-success-0);
+	--components-badge-border-width: var(--primitives-border-width-thin);
+
+	/* Kleur-varianten verwijzen door naar semantics-categories. */
+
+	--components-badge-critical-background-color: var(--semantics-categories-filled-critical-background-color);
+	--components-badge-critical-border-color: var(--semantics-categories-filled-critical-border-color);
+	--components-badge-critical-content-color: var(--semantics-categories-filled-critical-content-color);
+	--components-badge-accent-background-color: var(--semantics-categories-filled-accent-background-color);
+	--components-badge-accent-border-color: var(--semantics-categories-filled-accent-border-color);
+	--components-badge-accent-content-color: var(--semantics-categories-filled-accent-content-color);
+	--components-badge-neutral-background-color: var(--semantics-categories-filled-neutral-background-color);
+	--components-badge-neutral-border-color: var(--semantics-categories-filled-neutral-border-color);
+	--components-badge-neutral-content-color: var(--semantics-categories-filled-neutral-content-color);
+	--components-badge-warning-background-color: var(--semantics-categories-filled-warning-background-color);
+	--components-badge-warning-border-color: var(--semantics-categories-filled-warning-border-color);
+	--components-badge-warning-content-color: var(--semantics-categories-filled-warning-content-color);
+	--components-badge-success-background-color: var(--semantics-categories-filled-success-background-color);
+	--components-badge-success-border-color: var(--semantics-categories-filled-success-border-color);
+	--components-badge-success-content-color: var(--semantics-categories-filled-success-content-color);
+
+	--components-badge-coolgray-background-color: var(--semantics-categories-filled-coolgray-background-color);
+	--components-badge-coolgray-border-color: var(--semantics-categories-filled-coolgray-border-color);
+	--components-badge-coolgray-content-color: var(--semantics-categories-filled-coolgray-content-color);
+	--components-badge-lintblauw-background-color: var(--semantics-categories-filled-lintblauw-background-color);
+	--components-badge-lintblauw-border-color: var(--semantics-categories-filled-lintblauw-border-color);
+	--components-badge-lintblauw-content-color: var(--semantics-categories-filled-lintblauw-content-color);
+	--components-badge-donkerblauw-background-color: var(--semantics-categories-filled-donkerblauw-background-color);
+	--components-badge-donkerblauw-border-color: var(--semantics-categories-filled-donkerblauw-border-color);
+	--components-badge-donkerblauw-content-color: var(--semantics-categories-filled-donkerblauw-content-color);
+	--components-badge-hemelblauw-background-color: var(--semantics-categories-filled-hemelblauw-background-color);
+	--components-badge-hemelblauw-border-color: var(--semantics-categories-filled-hemelblauw-border-color);
+	--components-badge-hemelblauw-content-color: var(--semantics-categories-filled-hemelblauw-content-color);
+	--components-badge-lichtblauw-background-color: var(--semantics-categories-filled-lichtblauw-background-color);
+	--components-badge-lichtblauw-border-color: var(--semantics-categories-filled-lichtblauw-border-color);
+	--components-badge-lichtblauw-content-color: var(--semantics-categories-filled-lichtblauw-content-color);
+	--components-badge-paars-background-color: var(--semantics-categories-filled-paars-background-color);
+	--components-badge-paars-border-color: var(--semantics-categories-filled-paars-border-color);
+	--components-badge-paars-content-color: var(--semantics-categories-filled-paars-content-color);
+	--components-badge-violet-background-color: var(--semantics-categories-filled-violet-background-color);
+	--components-badge-violet-border-color: var(--semantics-categories-filled-violet-border-color);
+	--components-badge-violet-content-color: var(--semantics-categories-filled-violet-content-color);
+	--components-badge-robijnrood-background-color: var(--semantics-categories-filled-robijnrood-background-color);
+	--components-badge-robijnrood-border-color: var(--semantics-categories-filled-robijnrood-border-color);
+	--components-badge-robijnrood-content-color: var(--semantics-categories-filled-robijnrood-content-color);
+	--components-badge-roze-background-color: var(--semantics-categories-filled-roze-background-color);
+	--components-badge-roze-border-color: var(--semantics-categories-filled-roze-border-color);
+	--components-badge-roze-content-color: var(--semantics-categories-filled-roze-content-color);
+	--components-badge-rood-background-color: var(--semantics-categories-filled-rood-background-color);
+	--components-badge-rood-border-color: var(--semantics-categories-filled-rood-border-color);
+	--components-badge-rood-content-color: var(--semantics-categories-filled-rood-content-color);
+	--components-badge-oranje-background-color: var(--semantics-categories-filled-oranje-background-color);
+	--components-badge-oranje-border-color: var(--semantics-categories-filled-oranje-border-color);
+	--components-badge-oranje-content-color: var(--semantics-categories-filled-oranje-content-color);
+	--components-badge-donkergeel-background-color: var(--semantics-categories-filled-donkergeel-background-color);
+	--components-badge-donkergeel-border-color: var(--semantics-categories-filled-donkergeel-border-color);
+	--components-badge-donkergeel-content-color: var(--semantics-categories-filled-donkergeel-content-color);
+	--components-badge-geel-background-color: var(--semantics-categories-filled-geel-background-color);
+	--components-badge-geel-border-color: var(--semantics-categories-filled-geel-border-color);
+	--components-badge-geel-content-color: var(--semantics-categories-filled-geel-content-color);
+	--components-badge-donkerbruin-background-color: var(--semantics-categories-filled-donkerbruin-background-color);
+	--components-badge-donkerbruin-border-color: var(--semantics-categories-filled-donkerbruin-border-color);
+	--components-badge-donkerbruin-content-color: var(--semantics-categories-filled-donkerbruin-content-color);
+	--components-badge-bruin-background-color: var(--semantics-categories-filled-bruin-background-color);
+	--components-badge-bruin-border-color: var(--semantics-categories-filled-bruin-border-color);
+	--components-badge-bruin-content-color: var(--semantics-categories-filled-bruin-content-color);
+	--components-badge-donkergroen-background-color: var(--semantics-categories-filled-donkergroen-background-color);
+	--components-badge-donkergroen-border-color: var(--semantics-categories-filled-donkergroen-border-color);
+	--components-badge-donkergroen-content-color: var(--semantics-categories-filled-donkergroen-content-color);
+	--components-badge-groen-background-color: var(--semantics-categories-filled-groen-background-color);
+	--components-badge-groen-border-color: var(--semantics-categories-filled-groen-border-color);
+	--components-badge-groen-content-color: var(--semantics-categories-filled-groen-content-color);
+	--components-badge-mosgroen-background-color: var(--semantics-categories-filled-mosgroen-background-color);
+	--components-badge-mosgroen-border-color: var(--semantics-categories-filled-mosgroen-border-color);
+	--components-badge-mosgroen-content-color: var(--semantics-categories-filled-mosgroen-content-color);
+	--components-badge-mintgroen-background-color: var(--semantics-categories-filled-mintgroen-background-color);
+	--components-badge-mintgroen-border-color: var(--semantics-categories-filled-mintgroen-border-color);
+	--components-badge-mintgroen-content-color: var(--semantics-categories-filled-mintgroen-content-color);
+
+	/* ## Banner */
+
+	--components-banner-corner-radius: var(--primitives-corner-radius-lg);
+	--components-banner-padding: var(--primitives-space-16);
+	--components-banner-content-color: var(--semantics-content-color);
+	--components-banner-content-secondary-color: var(--semantics-content-secondary-color);
+	--components-banner-neutral-background-color: light-dark(var(--primitives-color-neutral-50), var(--primitives-color-neutral-75));
+	--components-banner-success-background-color: light-dark(var(--primitives-color-success-50), var(--primitives-color-success-75));
+	--components-banner-warning-background-color: light-dark(var(--primitives-color-warning-50), var(--primitives-color-warning-75));
+	--components-banner-critical-background-color: light-dark(var(--primitives-color-critical-50), var(--primitives-color-critical-75));
+	--components-banner-neutral-border-color: light-dark(var(--primitives-color-neutral-100), var(--primitives-color-neutral-150));
+	--components-banner-success-border-color: light-dark(var(--primitives-color-success-100), var(--primitives-color-success-150));
+	--components-banner-warning-border-color: light-dark(var(--primitives-color-warning-100), var(--primitives-color-warning-150));
+	--components-banner-critical-border-color: light-dark(var(--primitives-color-critical-100), var(--primitives-color-critical-150));
+	--components-banner-neutral-icon-color: var(--semantics-content-color);
+	--components-banner-success-icon-color: light-dark(var(--primitives-color-success-500), var(--primitives-color-success-600));
+	--components-banner-warning-icon-color: light-dark(var(--primitives-color-warning-450), var(--primitives-color-warning-700));
+	--components-banner-critical-icon-color: light-dark(var(--primitives-color-critical-550), var(--primitives-color-critical-600));
 
 	/* ## Box */
 
 	--components-box-background-color: var(--semantics-surfaces-tinted-background-color);
-	--components-box-on-tinted-background-color: var(--semantics-surfaces-background-color);
+	--components-box-base-background-color: var(--semantics-surfaces-background-color);
+	--components-box-border-color: var(--semantics-surfaces-tinted-border-color);
+	--components-box-base-border-color: var(--semantics-surfaces-border-color);
 	--components-box-corner-radius: var(--primitives-corner-radius-xl);
 	--components-box-padding: var(--primitives-space-16);
 
@@ -1098,6 +1271,18 @@
 	--components-icon-color-groen-color: var(--primitives-color-groen-500);
 	--components-icon-color-mosgroen-color: var(--primitives-color-mosgroen-500);
 	--components-icon-color-mintgroen-color: light-dark(var(--primitives-color-mintgroen-450), var(--primitives-color-mintgroen-800));
+
+	/* ## Image */
+
+	--components-image-corner-radius: var(--semantics-controls-md-corner-radius);
+	--components-image-background-color: light-dark(var(--primitives-color-neutral-75), var(--primitives-color-neutral-50));
+	--components-image-error-text-color: var(--semantics-content-color);
+	--components-image-error-font: var(--primitives-font-body-sm-regular-snug);
+	--components-image-caption-gap: var(--primitives-space-4);
+	--components-image-caption-color: var(--semantics-content-color);
+	--components-image-caption-font: var(--primitives-font-body-sm-regular-tight);
+	--components-image-credit-color: var(--semantics-content-secondary-color);
+	--components-image-credit-font: var(--primitives-font-body-sm-regular-tight);
 
 	/* ## Inline dialog */
 
@@ -1198,6 +1383,149 @@
 	/* ## Popover */
 
 	--components-popover-default-width: var(--primitives-area-320);
+
+	/* ## Progress bar */
+
+	--components-progress-bar-corner-radius: var(--primitives-corner-radius-full);
+	--components-progress-bar-distribution-corner-radius: var(--primitives-corner-radius-xxs);
+	--components-progress-bar-track-color: light-dark(var(--primitives-color-neutral-50), var(--primitives-color-neutral-150));
+	--components-progress-bar-track-border-color: light-dark(var(--primitives-color-neutral-100), var(--primitives-color-neutral-200));
+	--components-progress-bar-track-border-width: var(--primitives-border-width-thin);
+	--components-progress-bar-progress-segment-gap: var(--primitives-space-1);
+	--components-progress-bar-distribution-segment-gap: var(--primitives-space-2);
+	--components-progress-bar-segment-min-width: var(--primitives-space-2);
+	--components-progress-bar-sm-height: var(--primitives-space-4);
+	--components-progress-bar-md-height: var(--primitives-space-8);
+	--components-progress-bar-lg-height: var(--primitives-space-16);
+	--components-progress-bar-header-gap: var(--primitives-space-6);
+	--components-progress-bar-header-text-color: var(--semantics-content-color);
+	--components-progress-bar-header-value-color: var(--semantics-content-secondary-color);
+	--components-progress-bar-header-text-font: var(--primitives-font-body-md-regular-tight);
+	--components-progress-bar-header-value-font: var(--primitives-font-body-md-regular-tight);
+
+	/* ### Progress bar — semantic variants */
+
+	--components-progress-bar-segment-border-width: var(--primitives-border-width-thin);
+
+	--components-progress-bar-neutral-fill-color: var(--semantics-categories-filled-neutral-background-color);
+	--components-progress-bar-neutral-border-color: var(--semantics-categories-filled-neutral-border-color);
+	--components-progress-bar-accent-fill-color: var(--semantics-categories-filled-accent-background-color);
+	--components-progress-bar-accent-border-color: var(--semantics-categories-filled-accent-border-color);
+	--components-progress-bar-success-fill-color: var(--semantics-categories-filled-success-background-color);
+	--components-progress-bar-success-border-color: var(--semantics-categories-filled-success-border-color);
+	--components-progress-bar-warning-fill-color: var(--semantics-categories-filled-warning-background-color);
+	--components-progress-bar-warning-border-color: var(--semantics-categories-filled-warning-border-color);
+	--components-progress-bar-critical-fill-color: var(--semantics-categories-filled-critical-background-color);
+	--components-progress-bar-critical-border-color: var(--semantics-categories-filled-critical-border-color);
+
+	/* ### Progress bar — rijkskleuren */
+
+	--components-progress-bar-coolgray-fill-color: var(--semantics-categories-filled-coolgray-background-color);
+	--components-progress-bar-coolgray-border-color: var(--semantics-categories-filled-coolgray-border-color);
+	--components-progress-bar-lintblauw-fill-color: var(--semantics-categories-filled-lintblauw-background-color);
+	--components-progress-bar-lintblauw-border-color: var(--semantics-categories-filled-lintblauw-border-color);
+	--components-progress-bar-donkerblauw-fill-color: var(--semantics-categories-filled-donkerblauw-background-color);
+	--components-progress-bar-donkerblauw-border-color: var(--semantics-categories-filled-donkerblauw-border-color);
+	--components-progress-bar-hemelblauw-fill-color: var(--semantics-categories-filled-hemelblauw-background-color);
+	--components-progress-bar-hemelblauw-border-color: var(--semantics-categories-filled-hemelblauw-border-color);
+	--components-progress-bar-lichtblauw-fill-color: var(--semantics-categories-filled-lichtblauw-background-color);
+	--components-progress-bar-lichtblauw-border-color: var(--semantics-categories-filled-lichtblauw-border-color);
+	--components-progress-bar-paars-fill-color: var(--semantics-categories-filled-paars-background-color);
+	--components-progress-bar-paars-border-color: var(--semantics-categories-filled-paars-border-color);
+	--components-progress-bar-violet-fill-color: var(--semantics-categories-filled-violet-background-color);
+	--components-progress-bar-violet-border-color: var(--semantics-categories-filled-violet-border-color);
+	--components-progress-bar-robijnrood-fill-color: var(--semantics-categories-filled-robijnrood-background-color);
+	--components-progress-bar-robijnrood-border-color: var(--semantics-categories-filled-robijnrood-border-color);
+	--components-progress-bar-roze-fill-color: var(--semantics-categories-filled-roze-background-color);
+	--components-progress-bar-roze-border-color: var(--semantics-categories-filled-roze-border-color);
+	--components-progress-bar-rood-fill-color: var(--semantics-categories-filled-rood-background-color);
+	--components-progress-bar-rood-border-color: var(--semantics-categories-filled-rood-border-color);
+	--components-progress-bar-oranje-fill-color: var(--semantics-categories-filled-oranje-background-color);
+	--components-progress-bar-oranje-border-color: var(--semantics-categories-filled-oranje-border-color);
+	--components-progress-bar-donkergeel-fill-color: var(--semantics-categories-filled-donkergeel-background-color);
+	--components-progress-bar-donkergeel-border-color: var(--semantics-categories-filled-donkergeel-border-color);
+	--components-progress-bar-geel-fill-color: var(--semantics-categories-filled-geel-background-color);
+	--components-progress-bar-geel-border-color: var(--semantics-categories-filled-geel-border-color);
+	--components-progress-bar-donkerbruin-fill-color: var(--semantics-categories-filled-donkerbruin-background-color);
+	--components-progress-bar-donkerbruin-border-color: var(--semantics-categories-filled-donkerbruin-border-color);
+	--components-progress-bar-bruin-fill-color: var(--semantics-categories-filled-bruin-background-color);
+	--components-progress-bar-bruin-border-color: var(--semantics-categories-filled-bruin-border-color);
+	--components-progress-bar-donkergroen-fill-color: var(--semantics-categories-filled-donkergroen-background-color);
+	--components-progress-bar-donkergroen-border-color: var(--semantics-categories-filled-donkergroen-border-color);
+	--components-progress-bar-groen-fill-color: var(--semantics-categories-filled-groen-background-color);
+	--components-progress-bar-groen-border-color: var(--semantics-categories-filled-groen-border-color);
+	--components-progress-bar-mosgroen-fill-color: var(--semantics-categories-filled-mosgroen-background-color);
+	--components-progress-bar-mosgroen-border-color: var(--semantics-categories-filled-mosgroen-border-color);
+	--components-progress-bar-mintgroen-fill-color: var(--semantics-categories-filled-mintgroen-background-color);
+	--components-progress-bar-mintgroen-border-color: var(--semantics-categories-filled-mintgroen-border-color);
+
+	/* ## Progress circle */
+
+	--components-progress-circle-track-color: light-dark(var(--primitives-color-neutral-50), var(--primitives-color-neutral-150));
+	--components-progress-circle-track-border-color: light-dark(var(--primitives-color-neutral-100), var(--primitives-color-neutral-200));
+	--components-progress-circle-label-gap: var(--primitives-space-8);
+	--components-progress-circle-label-color: var(--semantics-content-color);
+	--components-progress-circle-label-font: var(--primitives-font-body-md-regular-tight);
+	/* Segment gap is intentionally hard-coded in progress-circle.ts as 1px /
+	   2px (visual gap) and scaled per render into SVG user units, so that the
+	   gap stays a consistent pixel width across every host size. Exposing it
+	   as a degree-based token (as it used to be) made the gap drift visually
+	   on small / large rings; the constants moved into TS and the tokens
+	   were dropped. */
+
+	/* ### Progress circle — semantic variants */
+
+	--components-progress-circle-neutral-fill-color: var(--semantics-categories-filled-neutral-background-color);
+	--components-progress-circle-neutral-border-color: var(--semantics-categories-filled-neutral-border-color);
+	--components-progress-circle-accent-fill-color: var(--semantics-categories-filled-accent-background-color);
+	--components-progress-circle-accent-border-color: var(--semantics-categories-filled-accent-border-color);
+	--components-progress-circle-success-fill-color: var(--semantics-categories-filled-success-background-color);
+	--components-progress-circle-success-border-color: var(--semantics-categories-filled-success-border-color);
+	--components-progress-circle-warning-fill-color: var(--semantics-categories-filled-warning-background-color);
+	--components-progress-circle-warning-border-color: var(--semantics-categories-filled-warning-border-color);
+	--components-progress-circle-critical-fill-color: var(--semantics-categories-filled-critical-background-color);
+	--components-progress-circle-critical-border-color: var(--semantics-categories-filled-critical-border-color);
+
+	/* ### Progress circle — rijkskleuren */
+
+	--components-progress-circle-coolgray-fill-color: var(--semantics-categories-filled-coolgray-background-color);
+	--components-progress-circle-coolgray-border-color: var(--semantics-categories-filled-coolgray-border-color);
+	--components-progress-circle-lintblauw-fill-color: var(--semantics-categories-filled-lintblauw-background-color);
+	--components-progress-circle-lintblauw-border-color: var(--semantics-categories-filled-lintblauw-border-color);
+	--components-progress-circle-donkerblauw-fill-color: var(--semantics-categories-filled-donkerblauw-background-color);
+	--components-progress-circle-donkerblauw-border-color: var(--semantics-categories-filled-donkerblauw-border-color);
+	--components-progress-circle-hemelblauw-fill-color: var(--semantics-categories-filled-hemelblauw-background-color);
+	--components-progress-circle-hemelblauw-border-color: var(--semantics-categories-filled-hemelblauw-border-color);
+	--components-progress-circle-lichtblauw-fill-color: var(--semantics-categories-filled-lichtblauw-background-color);
+	--components-progress-circle-lichtblauw-border-color: var(--semantics-categories-filled-lichtblauw-border-color);
+	--components-progress-circle-paars-fill-color: var(--semantics-categories-filled-paars-background-color);
+	--components-progress-circle-paars-border-color: var(--semantics-categories-filled-paars-border-color);
+	--components-progress-circle-violet-fill-color: var(--semantics-categories-filled-violet-background-color);
+	--components-progress-circle-violet-border-color: var(--semantics-categories-filled-violet-border-color);
+	--components-progress-circle-robijnrood-fill-color: var(--semantics-categories-filled-robijnrood-background-color);
+	--components-progress-circle-robijnrood-border-color: var(--semantics-categories-filled-robijnrood-border-color);
+	--components-progress-circle-roze-fill-color: var(--semantics-categories-filled-roze-background-color);
+	--components-progress-circle-roze-border-color: var(--semantics-categories-filled-roze-border-color);
+	--components-progress-circle-rood-fill-color: var(--semantics-categories-filled-rood-background-color);
+	--components-progress-circle-rood-border-color: var(--semantics-categories-filled-rood-border-color);
+	--components-progress-circle-oranje-fill-color: var(--semantics-categories-filled-oranje-background-color);
+	--components-progress-circle-oranje-border-color: var(--semantics-categories-filled-oranje-border-color);
+	--components-progress-circle-donkergeel-fill-color: var(--semantics-categories-filled-donkergeel-background-color);
+	--components-progress-circle-donkergeel-border-color: var(--semantics-categories-filled-donkergeel-border-color);
+	--components-progress-circle-geel-fill-color: var(--semantics-categories-filled-geel-background-color);
+	--components-progress-circle-geel-border-color: var(--semantics-categories-filled-geel-border-color);
+	--components-progress-circle-donkerbruin-fill-color: var(--semantics-categories-filled-donkerbruin-background-color);
+	--components-progress-circle-donkerbruin-border-color: var(--semantics-categories-filled-donkerbruin-border-color);
+	--components-progress-circle-bruin-fill-color: var(--semantics-categories-filled-bruin-background-color);
+	--components-progress-circle-bruin-border-color: var(--semantics-categories-filled-bruin-border-color);
+	--components-progress-circle-donkergroen-fill-color: var(--semantics-categories-filled-donkergroen-background-color);
+	--components-progress-circle-donkergroen-border-color: var(--semantics-categories-filled-donkergroen-border-color);
+	--components-progress-circle-groen-fill-color: var(--semantics-categories-filled-groen-background-color);
+	--components-progress-circle-groen-border-color: var(--semantics-categories-filled-groen-border-color);
+	--components-progress-circle-mosgroen-fill-color: var(--semantics-categories-filled-mosgroen-background-color);
+	--components-progress-circle-mosgroen-border-color: var(--semantics-categories-filled-mosgroen-border-color);
+	--components-progress-circle-mintgroen-fill-color: var(--semantics-categories-filled-mintgroen-background-color);
+	--components-progress-circle-mintgroen-border-color: var(--semantics-categories-filled-mintgroen-border-color);
 
 	/* ## Radio button */
 
