@@ -184,7 +184,7 @@ export class NLDDImage extends LitElement {
 		if (this.width === 'full') return undefined;
 		const n = Number(this.width);
 		if (Number.isFinite(n) && n > 0) return n;
-		if (import.meta.env?.DEV && this.width != null && String(this.width) !== '' && !this._warnedWidth) {
+		if (import.meta.env?.DEV && this.width !== null && this.width !== undefined && String(this.width) !== '' && !this._warnedWidth) {
 			this._warnedWidth = true;
 			console.warn(`<nldd-image>: width="${this.width}" is not a positive number. Falling back to "full".`);
 		}
