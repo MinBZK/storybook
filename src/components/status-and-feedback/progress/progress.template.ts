@@ -8,6 +8,8 @@ export function progressTemplate(component: NLDDProgress) {
 	if (!component._visible || component.complete) return nothing;
 	// `text` attribute overrides the translated default. Empty string keeps
 	// the default — pass `text=" "` (a space) if you genuinely want no label.
+	// TODO: replace the space-sentinel with an explicit `no-label` boolean
+	// attribute. A whitespace string is non-obvious and easy to misuse.
 	const text = component.text || component._t('components.progress.loading-text');
 	return html`
 		<div class="progress__indicator">

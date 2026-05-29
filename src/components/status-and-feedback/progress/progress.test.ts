@@ -47,6 +47,54 @@ describe('nldd-progress', () => {
 		}
 	});
 
+	it('sets aria-busy="true" on the host on connect', async () => {
+		el = await fixture<NLDDProgress>('<nldd-progress></nldd-progress>');
+		await waitForUpdate(el);
+		expect(el.getAttribute('aria-busy')).toBe('true');
+	});
+
+	it('clears aria-busy and hides the indicator when complete is set', async () => {
+		vi.useFakeTimers();
+		try {
+			el = await fixture<NLDDProgress>('<nldd-progress></nldd-progress>');
+			const litEl = el as HTMLElement & { updateComplete: Promise<boolean> };
+			// Let the indicator appear first so we know we're observing the
+			// transition, not the pre-delay window.
+			await vi.advanceTimersByTimeAsync(1000);
+			await litEl.updateComplete;
+			expect(el.shadowRoot!.querySelector('.progress__indicator')).not.toBeNull();
+			expect(el.getAttribute('aria-busy')).toBe('true');
+			// Flip complete → indicator goes, aria-busy goes.
+			(el as unknown as NLDDProgress).complete = true;
+			await litEl.updateComplete;
+			expect(el.shadowRoot!.querySelector('.progress__indicator')).toBeNull();
+			expect(el.hasAttribute('aria-busy')).toBe(false);
+			// And the inverse: clearing complete brings them back.
+			(el as unknown as NLDDProgress).complete = false;
+			await litEl.updateComplete;
+			expect(el.shadowRoot!.querySelector('.progress__indicator')).not.toBeNull();
+			expect(el.getAttribute('aria-busy')).toBe('true');
+		} finally {
+			vi.useRealTimers();
+		}
+	});
+
+	it('connects with complete already set: no aria-busy, no indicator', async () => {
+		vi.useFakeTimers();
+		try {
+			el = await fixture<NLDDProgress>('<nldd-progress complete></nldd-progress>');
+			const litEl = el as HTMLElement & { updateComplete: Promise<boolean> };
+			await litEl.updateComplete;
+			expect(el.hasAttribute('aria-busy')).toBe(false);
+			// Delay window doesn't matter — complete short-circuits the render.
+			await vi.advanceTimersByTimeAsync(1000);
+			await litEl.updateComplete;
+			expect(el.shadowRoot!.querySelector('.progress__indicator')).toBeNull();
+		} finally {
+			vi.useRealTimers();
+		}
+	});
+
 	it('resets the delay timer on disconnect + reconnect and re-fires after 1000ms', async () => {
 		// Removing and re-inserting the element restarts the 1000ms wait and
 		// hides the indicator again — by design. Consumers who want the timer

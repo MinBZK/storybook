@@ -129,4 +129,57 @@ describe('nldd-banner', () => {
 		btn.dispatchEvent(new MouseEvent('click', { bubbles: true, composed: true }));
 		expect(fired).toBe(true);
 	});
+
+	/* ============================================================
+	   Slot detection — hidden flags driven by slotchange listeners
+	   ============================================================ */
+
+	it('hides the content area when the default slot is empty', async () => {
+		el = await fixture('<nldd-banner text="Hi"></nldd-banner>');
+		await waitForUpdate(el);
+		const content = el.shadowRoot!.querySelector<HTMLElement>('.banner__content')!;
+		expect(content.hasAttribute('hidden')).toBe(true);
+	});
+
+	it('shows the content area when meaningful default-slot content is present', async () => {
+		el = await fixture('<nldd-banner text="Hi"><p>Body copy</p></nldd-banner>');
+		await waitForUpdate(el);
+		const content = el.shadowRoot!.querySelector<HTMLElement>('.banner__content')!;
+		expect(content.hasAttribute('hidden')).toBe(false);
+	});
+
+	it('shows the actions area when slot="actions" has content', async () => {
+		el = await fixture('<nldd-banner text="Hi"><nldd-button slot="actions" text="OK"></nldd-button></nldd-banner>');
+		await waitForUpdate(el);
+		const actions = el.shadowRoot!.querySelector<HTMLElement>('.banner__actions')!;
+		expect(actions.hasAttribute('hidden')).toBe(false);
+	});
+
+	it('reacts to runtime slot mutations (added child flips the hidden flag)', async () => {
+		el = await fixture('<nldd-banner text="Hi"></nldd-banner>');
+		await waitForUpdate(el);
+		const content = el.shadowRoot!.querySelector<HTMLElement>('.banner__content')!;
+		expect(content.hasAttribute('hidden')).toBe(true);
+		const child = document.createElement('p');
+		child.textContent = 'Body copy added late';
+		el.appendChild(child);
+		await waitForUpdate(el);
+		expect(content.hasAttribute('hidden')).toBe(false);
+	});
+
+	it('reattaches slot listeners after a disconnect + reconnect', async () => {
+		el = await fixture('<nldd-banner text="Hi"></nldd-banner>');
+		await waitForUpdate(el);
+		const parent = el.parentElement!;
+		parent.removeChild(el);
+		parent.appendChild(el);
+		await waitForUpdate(el);
+		// Add content after the reconnect; the new listener should pick it up.
+		const child = document.createElement('p');
+		child.textContent = 'Late content after reconnect';
+		el.appendChild(child);
+		await waitForUpdate(el);
+		const content = el.shadowRoot!.querySelector<HTMLElement>('.banner__content')!;
+		expect(content.hasAttribute('hidden')).toBe(false);
+	});
 });

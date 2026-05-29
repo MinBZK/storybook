@@ -18,6 +18,15 @@
  * - others   → role="status" aria-live="polite"
  * Not overridable — if you need a less prominent component, use one.
  *
+ * aria-atomic="true" is also set so that updates to the structured region
+ * (icon + heading + supporting-text + actions) are announced as one unit
+ * rather than as a partial subtree. Trade-off: any programmatic content
+ * mutation re-reads the entire banner. Banners are designed for short,
+ * heading-scale copy — if you slot in a paragraph of rich body text and
+ * then toggle variant or supporting-text at runtime, AT will re-announce
+ * the whole thing. Keep banner content concise, or render long-form
+ * messages in a different surface.
+ *
  * @element nldd-banner
  *
  * @attr {'neutral'|'success'|'warning'|'critical'} variant - Colour and default icon (default: 'neutral')

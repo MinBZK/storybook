@@ -25,7 +25,7 @@ export function codeViewerTemplate(component: NLDDCodeViewer): TemplateResult {
 	// user re-focusing the button mid-feedback hears the actual state
 	// ("Gekopieerd") instead of the static "Kopieer". The role="status" live
 	// region still fires the initial announcement; this only changes what AT
-	// reads on subsequent focus during the 1500 ms feedback window.
+	// reads on subsequent focus during the 2000 ms feedback window.
 	const buttonLabel = tooltipText;
 	// Live-region payload: announces "Gekopieerd" / "Kopiëren mislukt" so
 	// screen-reader users get confirmation that the static accessible-label
