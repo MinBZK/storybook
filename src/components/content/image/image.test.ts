@@ -118,12 +118,16 @@ describe('nldd-image', () => {
 	});
 
 	it('populates an aria-live status region with the error message + alt on error', async () => {
-		el = await fixture<NLDDImage>('<nldd-image src="/missing.jpg" alt="Beschrijving"></nldd-image>');
+		// Mount with no src first so the img doesn't try (and fail) to load a
+		// missing URL — that fires `error` synchronously in some browsers and
+		// races with the "pre-error state is empty" assertion below.
+		el = await fixture<NLDDImage>('<nldd-image alt="Beschrijving"></nldd-image>');
 		await waitForUpdate(el);
 		const status = el.shadowRoot!.querySelector('.image__status');
 		expect(status).not.toBeNull();
 		expect(status!.getAttribute('aria-live')).toBe('polite');
 		expect(status!.textContent).toBe('');
+		// Force the error transition by dispatching directly on the internal img.
 		const img = el.shadowRoot!.querySelector('img')!;
 		img.dispatchEvent(new Event('error'));
 		await waitForUpdate(el);
