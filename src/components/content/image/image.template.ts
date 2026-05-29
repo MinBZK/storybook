@@ -81,8 +81,12 @@ export function imageTemplate(component: NLDDImage) {
 	// but populated only on error so the announcement fires when the text
 	// flips from empty to non-empty. Decorative images stay silent — they
 	// convey nothing, so a failure isn't worth announcing.
+	// Append the alt only — never the raw src. A CDN URL with a long path
+	// and query string is noise to AT users; when alt is empty (valid in
+	// production, DEV-warned) we announce the plain translated message.
+	const errorBase = component._t('components.image.error-status-message');
 	const errorStatusMessage = component._imageErrored && !component.decorative
-		? `${component._t('components.image.error-status-message')}: ${component.alt || component.src}`
+		? (component.alt ? `${errorBase}: ${component.alt}` : errorBase)
 		: '';
 	const liveRegion = html`<span class="image__status" aria-live="polite">${errorStatusMessage}</span>`;
 

@@ -222,6 +222,16 @@ export class NLDDCodeViewer extends LitElement {
 		}, COPY_FEEDBACK_DURATION_MS);
 	}
 
+	/** Escape on the open feedback tooltip dismisses it early (WCAG 1.4.13:
+	 *  persistent hover/focus content must be dismissible without moving
+	 *  focus). nldd-tooltip emits nldd-tooltip-dismiss because the consumer
+	 *  owns its open lifecycle; we honour it by clearing the feedback state
+	 *  and cancelling the auto-reset timer. */
+	public _onCopyDismiss(): void {
+		clearTimeout(this._copyResetTimer);
+		this._copyState = 'idle';
+	}
+
 	private _repaintCodeBlock(): void {
 		const block = this.shadowRoot?.querySelector('.code-viewer') as HTMLElement | null;
 		if (block) forceScrollLayerRepaint(block);

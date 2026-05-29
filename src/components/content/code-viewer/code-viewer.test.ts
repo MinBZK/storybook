@@ -197,4 +197,32 @@ describe('nldd-code-viewer', () => {
 			Object.defineProperty(navigator, 'clipboard', { value: originalClipboard, configurable: true });
 		}
 	});
+
+	it('tooltip dismiss (Escape) resets copy state to idle and cancels the timer', async () => {
+		const originalClipboard = navigator.clipboard;
+		Object.defineProperty(navigator, 'clipboard', { value: { writeText: vi.fn().mockResolvedValue(undefined) }, configurable: true });
+		vi.useFakeTimers();
+		try {
+			el = await fixture<NLDDCodeViewer>('<nldd-code-viewer>x</nldd-code-viewer>');
+			const litEl = el as HTMLElement & { updateComplete: Promise<boolean> };
+			await litEl.updateComplete;
+			await (el as unknown as NLDDCodeViewer)._onCopyClick();
+			await litEl.updateComplete;
+			expect((el as unknown as NLDDCodeViewer)._copyState).toBe('success');
+			// User presses Escape on the open feedback tooltip → it emits
+			// nldd-tooltip-dismiss, which the code-viewer honours.
+			const tooltip = el.shadowRoot!.querySelector('.code-viewer__copy-button nldd-tooltip')!;
+			tooltip.dispatchEvent(new CustomEvent('nldd-tooltip-dismiss', { bubbles: true, composed: true }));
+			await litEl.updateComplete;
+			expect((el as unknown as NLDDCodeViewer)._copyState).toBe('idle');
+			expect(tooltip.hasAttribute('open')).toBe(false);
+			// The auto-reset timer was cancelled, so nothing flips back later.
+			await vi.advanceTimersByTimeAsync(2100);
+			await litEl.updateComplete;
+			expect((el as unknown as NLDDCodeViewer)._copyState).toBe('idle');
+		} finally {
+			vi.useRealTimers();
+			Object.defineProperty(navigator, 'clipboard', { value: originalClipboard, configurable: true });
+		}
+	});
 });
