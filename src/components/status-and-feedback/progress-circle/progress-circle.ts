@@ -35,7 +35,7 @@
  * @attr {string}  color - Color (semantic or Rijkskleur). Default 'accent'.
  * @attr {string}  name  - Optional name used in the combined tooltip + screenreader text
  */
-import { LitElement, html, nothing } from 'lit';
+import { LitElement, nothing } from 'lit';
 import { customElement, property, state } from 'lit/decorators.js';
 import { progressCircleStyles, progressCircleSegmentStyles } from './progress-circle.styles.js';
 import { progressCircleTemplate, getCircumference, getStrokeWidthPx } from './progress-circle.template.js';
