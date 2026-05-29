@@ -58,7 +58,7 @@ export default {
 		background: {
 			control: 'select',
 			options: ['tinted', 'base', 'transparent'],
-			description: 'Achtergrondkleur van de container. `base` op een getinte parent, `transparent` voor frame zonder fill (border ring blijft zichtbaar).',
+			description: 'Achtergrondkleur van de container. `base` op een getinte parent, `transparent` geen fill en geen border ring (de omliggende context bakent de snippet af).',
 			table: { defaultValue: { summary: 'tinted' } },
 			if: { arg: 'box' },
 		},
@@ -215,12 +215,12 @@ export const BackgroundTransparent = {
 	args: {
 		background: 'transparent',
 		content: `const transparent = true;
-// transparent fill, border ring stays visible`,
+// no fill, no border ring — pure code on the parent surface`,
 	},
 	parameters: {
 		docs: {
 			description: {
-				story: '`background="transparent"` maakt de fill transparant; de border ring, padding en afgeronde hoeken blijven zichtbaar als frame.',
+				story: '`background="transparent"` maakt zowel de fill als de border ring transparant. Padding en afgeronde hoeken blijven om de tekst in te kaderen, maar de snippet leunt visueel volledig op de omliggende parent.',
 			},
 		},
 	},

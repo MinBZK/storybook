@@ -9,6 +9,9 @@ export const codeViewerStyles = css`
 		--_corner-radius: var(--primitives-corner-radius-lg);
 		--_background-color: var(--semantics-surfaces-tinted-background-color);
 		--_border-color: var(--semantics-surfaces-tinted-border-color);
+		/* Shared shadow value so the default and focus-visible rules can
+		   compose with var(...) instead of repeating the inset literal. */
+		--_border-shadow: inset 0 0 0 1px var(--_border-color);
 		--_block-padding: var(--primitives-space-16);
 		--_inline-padding: var(--primitives-space-16);
 		--_content-color: var(--semantics-content-color);
@@ -30,11 +33,11 @@ export const codeViewerStyles = css`
 		--_border-color: var(--semantics-surfaces-border-color);
 	}
 
-	/* Frame visible but no fill — keep the border ring so the snippet still
-	   reads as a defined block. Matches the box-shadow + border pattern
-	   nldd-box and nldd-banner use. */
+	/* Fully transparent — no fill AND no border ring. The snippet relies on
+	   surrounding context (a parent surface, a label) to delineate it. */
 	:host([background="transparent"]) {
 		--_background-color: transparent;
+		--_border-color: transparent;
 	}
 
 	/* no-box drops the entire frame (no rounded corners, no padding, no
@@ -62,7 +65,7 @@ export const codeViewerStyles = css`
 		   setting --_border-color to transparent above. The forced-colors
 		   fallback at the bottom of the file restores a real border for
 		   Windows High Contrast users. */
-		box-shadow: inset 0 0 0 1px var(--_border-color);
+		box-shadow: var(--_border-shadow);
 		background-color: var(--_background-color);
 		overflow-x: auto;
 		padding: var(--_block-padding) var(--_inline-padding);
@@ -91,7 +94,10 @@ export const codeViewerStyles = css`
 	.code-viewer:focus-visible {
 		outline: var(--semantics-focus-ring-outline);
 		outline-offset: var(--semantics-focus-ring-outline-offset);
-		box-shadow: var(--semantics-focus-ring-box-shadow);
+		/* Comma-compose so the outer focus ring layers over the existing
+		   inset border ring instead of replacing it. Focus first (outer),
+		   border second (inner). */
+		box-shadow: var(--semantics-focus-ring-box-shadow), var(--_border-shadow);
 	}
 
 	.code-viewer:focus:not(:focus-visible) {
