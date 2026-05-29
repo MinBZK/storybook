@@ -106,13 +106,10 @@ describe('nldd-code-viewer', () => {
 
 	it('background attribute reflects each value', async () => {
 		for (const bg of ['tinted', 'base', 'inherit'] as const) {
-			const wrapper = document.createElement('div');
-			wrapper.innerHTML = `<nldd-code-viewer background="${bg}">x</nldd-code-viewer>`;
-			document.body.appendChild(wrapper);
-			const cv = wrapper.firstElementChild as HTMLElement & { updateComplete: Promise<boolean> };
-			await cv.updateComplete;
-			expect(cv.getAttribute('background')).toBe(bg);
-			wrapper.remove();
+			el = await fixture(`<nldd-code-viewer background="${bg}">x</nldd-code-viewer>`);
+			await waitForUpdate(el);
+			expect(el.getAttribute('background')).toBe(bg);
+			cleanup(el);
 		}
 	});
 

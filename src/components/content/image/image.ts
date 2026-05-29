@@ -41,7 +41,11 @@
  *   ours encodes a colour per cell so multi-colour subjects survive the
  *   placeholder.
  *
- * @slot - Custom `<img>` or `<picture>` (overrides the src-based default)
+ * @slot - Custom `<img>` or `<picture>` (overrides the src-based default).
+ *   The internal `error` listener is attached only to the built-in `<img>`, so
+ *   slotted content does not trigger the error-state overlay automatically.
+ *   Consumers slotting their own image are responsible for handling its
+ *   error state (e.g. swapping the slot content or styling a fallback).
  * @slot caption - Rich caption content (overrides the `caption` attribute)
  */
 
