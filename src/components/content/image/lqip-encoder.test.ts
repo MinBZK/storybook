@@ -47,29 +47,32 @@ describe('encodeLqip', () => {
 		expect(lqip).toBeLessThan(1 << 19);
 	});
 
-	it('encodes pure black as the lowest greyscale + lowest luminance levels', async () => {
+	it('encodes pure black as lowest base luminance + uniform cells', async () => {
 		const bitmap = await makeSolidBitmap(0, 0, 0);
 		const lqip = await encodeLqip(bitmap);
 		const { cells, ll } = unpackLqip(lqip);
-		// All six cells share the same darkest greyscale level (0).
-		expect(cells).toEqual([0, 0, 0, 0, 0, 0]);
+		// All six cells encode the same lightness offset vs the base. The
+		// absolute value depends on where pure black quantises in the 2-bit L
+		// space; what matters is that the placeholder is uniform.
+		expect(cells.every(c => c === cells[0])).toBe(true);
 		// Luminance L lands at the bottom of the 0-3 range.
 		expect(ll).toBe(0);
 	});
 
-	it('encodes pure white as the highest greyscale + highest luminance levels', async () => {
+	it('encodes pure white as highest base luminance + uniform cells', async () => {
 		const bitmap = await makeSolidBitmap(255, 255, 255);
 		const lqip = await encodeLqip(bitmap);
 		const { cells, ll } = unpackLqip(lqip);
-		expect(cells).toEqual([3, 3, 3, 3, 3, 3]);
+		expect(cells.every(c => c === cells[0])).toBe(true);
 		expect(ll).toBe(3);
 	});
 
-	it('encodes mid-grey near the middle of the greyscale range', async () => {
+	it('encodes a solid mid-grey with cells centred on the neutral offset', async () => {
 		const bitmap = await makeSolidBitmap(128, 128, 128);
 		const lqip = await encodeLqip(bitmap);
 		const { cells } = unpackLqip(lqip);
-		// Mid-grey rec.709 luminance ≈ 0.5 → quantised cell value clamps to 1 or 2.
+		// For a uniform image cell L equals base L, so the relative offset is
+		// 0 → encoded as the centre bucket (1 or 2 after rounding 1.5).
 		for (const c of cells) {
 			expect(c === 1 || c === 2).toBe(true);
 		}
@@ -100,11 +103,11 @@ describe('encodePixelDataToLqip — pure-function snapshot tests', () => {
 		// If you change the encoder math and this test fails, every previously
 		// generated LQIP value will look different in the rendered placeholder.
 		// Bump SAMPLE_LQIP in image.stories.ts and audit downstream uses.
-		expect(encodePixelDataToLqip(solid(0, 0, 0, 12, 8), 12, 8)).toBe(-524253);
+		expect(encodePixelDataToLqip(solid(0, 0, 0, 12, 8), 12, 8)).toBe(-174813);
 	});
 
 	it('locks the algorithm: solid white snapshot', () => {
-		expect(encodePixelDataToLqip(solid(255, 255, 255, 12, 8), 12, 8)).toBe(524259);
+		expect(encodePixelDataToLqip(solid(255, 255, 255, 12, 8), 12, 8)).toBe(174819);
 	});
 
 	it('locks the algorithm: horizontal gradient (black left → white right)', () => {

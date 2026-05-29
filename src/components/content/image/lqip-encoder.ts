@@ -38,26 +38,41 @@ export type NLDDLqipEncoderTranslations = typeof nlddLqipEncoderTranslations;
 /* --------------------------------------------------------------------- *
  *  Encoder
  *
- *  The math runs in TWO improvements over a naive canvas-based encoder:
+ *  Implements Lean Rada's production LQIP encoder, adapted to run in
+ *  the browser without a Node-only colour-quantisation library. Key
+ *  choices that match Lean's reference implementation:
  *
- *   1. Linear-light averaging. sRGB pixel values are gamma-encoded, so
- *      averaging them directly under-weights highlights. We convert each
- *      pixel to linear-light (via a 256-entry LUT), average, then map back
- *      to sRGB / Oklab. This matches how a photon-correct downsample would
- *      behave and represents bright local features (e.g. lights against a
- *      dark sky) more faithfully.
+ *   1. DOMINANT colour as the base, not the average. A simple histogram
+ *      buckets every pixel in Oklab space; the most populated bucket's
+ *      mean linear-RGB is taken as the dominant. This pulls bright,
+ *      meaningful subjects (sky, foliage, the pier lights) into the
+ *      placeholder rather than letting opposing tones cancel out into
+ *      neutral grey.
  *
- *   2. Manual per-cell sampling. We don't rely on canvas drawImage()
- *      down-resampling — different browsers and platforms use different
- *      kernels (bilinear / bicubic / Lanczos) and would produce different
- *      LQIP integers for the same image. Looping the pixel data ourselves
- *      makes the encoder identical across browser, Node, and any other
- *      runtime that can give us a Uint8ClampedArray of RGBA bytes.
+ *   2. Cells encode RELATIVE lightness (cellL - baseL + 0.5), not
+ *      absolute brightness. Combined with the production CSS decoder
+ *      (which renders each cell as a greyscale radial-gradient layered
+ *      over the base oklab() colour with hard-light + overlay blend
+ *      modes), this is what makes the placeholder appear multi-coloured
+ *      even though the cell payload is greyscale.
  *
- *  The pure entry point is `encodePixelDataToLqip(data, width, height)`. The
- *  async `encodeLqip(source)` is a browser wrapper that gets pixels via
- *  canvas getImageData and forwards them. Node users can build their own
- *  wrapper using sharp / pngjs / etc. — same pure function, same result.
+ *   3. findOklabBits() picks the 8-bit base colour by brute-forcing all
+ *      256 combinations and selecting the one with the smallest scaled
+ *      Euclidean distance in Oklab. The scaling normalises a/b by
+ *      sqrt(chroma) so the comparison isn't biased toward low-chroma
+ *      buckets.
+ *
+ *   4. Linear-light averaging via a 256-entry LUT keeps per-cell mean
+ *      lightness photonically correct and identical across runtimes
+ *      (no reliance on canvas drawImage resampling kernels).
+ *
+ *  The pure entry point is `encodePixelDataToLqip(data, width, height)`.
+ *  The async `encodeLqip(source)` is a browser wrapper that gets pixels
+ *  via getImageData and forwards them. Node users can build their own
+ *  wrapper using sharp / pngjs / etc.
+ *
+ *  Output values are wire-compatible with Lean's reference encoder; the
+ *  production CSS decoder consumes both.
  * --------------------------------------------------------------------- */
 
 /** sRGB byte (0-255) → linear-light (0-1) lookup table. Precomputed because
@@ -66,13 +81,6 @@ const SRGB_TO_LINEAR_LUT = new Float32Array(256);
 for (let i = 0; i < 256; i++) {
 	const n = i / 255;
 	SRGB_TO_LINEAR_LUT[i] = n <= 0.04045 ? n / 12.92 : Math.pow((n + 0.055) / 1.055, 2.4);
-}
-
-/** linear-light (0-1) → sRGB byte (0-255). */
-function linearToSrgb(n: number): number {
-	const clamped = Math.max(0, Math.min(1, n));
-	const v = clamped <= 0.0031308 ? 12.92 * clamped : 1.055 * Math.pow(clamped, 1 / 2.4) - 0.055;
-	return Math.round(v * 255);
 }
 
 /** Linear-light RGB triplet (0-1 per channel) → Oklab. Same constants as the
@@ -93,21 +101,100 @@ function clamp(v: number, lo: number, hi: number): number {
 	return Math.max(lo, Math.min(hi, v));
 }
 
-/** Quantise a chroma value with a small bias *away* from the neutral midpoint
- *  bucket. Round-to-nearest creates a "dead zone" around the midpoint where
- *  any value within half a step gets rounded to neutral grey — visually losing
- *  faint tints (slight blue, slight amber). With this helper, the encoder only
- *  picks the neutral bucket when the input is essentially at it; otherwise we
- *  snap to the adjacent non-neutral bucket so the tint is preserved. */
-function quantiseChromaAwayFromMid(value: number, midBucket: number, lo: number, hi: number): number {
-	const offset = value - midBucket;
-	// Genuinely-neutral threshold: 15% of a quantisation step. Anything inside
-	// the threshold snaps to the neutral bucket — this keeps near-neutral
-	// images (snow, neutral indoor scenes, B&W photos) from being pushed into
-	// a misleading colour cast. Anything outside the threshold snaps to the
-	// next bucket in the appropriate direction so genuine tints survive.
-	if (Math.abs(offset) < 0.15) return midBucket;
-	return offset > 0 ? clamp(Math.ceil(value), lo, hi) : clamp(Math.floor(value), lo, hi);
+/** Decode an 8-bit base-colour triplet (2 + 3 + 3 bits) back to the Oklab
+ *  L/a/b values the CSS decoder will reconstruct. Used both by the brute-force
+ *  quantiser below to evaluate candidates and by the cell encoder to know the
+ *  base lightness it should subtract. Mirrors Lean's reference implementation
+ *  exactly so wire integers are interchangeable with his tool. */
+function bitsToLab(ll: number, aaa: number, bbb: number): { L: number; a: number; b: number } {
+	return {
+		L: (ll / 0b11) * 0.6 + 0.2,
+		a: (aaa / 0b1000) * 0.7 - 0.35,
+		b: ((bbb + 1) / 0b1000) * 0.7 - 0.35,
+	};
+}
+
+/** Find the 2 + 3 + 3 bit Oklab triplet whose decoded colour is visually
+ *  closest to the target. Brute-forces all 256 combinations because the
+ *  search space is tiny and round-to-nearest under-performs near the
+ *  quantisation boundaries.
+ *
+ *  Distance is *scaled* Euclidean: a/b are divided by sqrt(chroma) before
+ *  comparison so that vivid targets aren't crushed in favour of nearby
+ *  lower-chroma buckets that happen to have a smaller raw delta. Matches
+ *  Lean's reference implementation. */
+function findOklabBits(targetL: number, targetA: number, targetB: number): { ll: number; aaa: number; bbb: number } {
+	const targetChroma = Math.hypot(targetA, targetB);
+	const scaledTargetA = targetA / (1e-6 + Math.pow(targetChroma, 0.5));
+	const scaledTargetB = targetB / (1e-6 + Math.pow(targetChroma, 0.5));
+	let bestBits: [number, number, number] = [0, 0, 0];
+	let bestDifference = Infinity;
+	for (let lli = 0; lli <= 0b11; lli++) {
+		for (let aaai = 0; aaai <= 0b111; aaai++) {
+			for (let bbbi = 0; bbbi <= 0b111; bbbi++) {
+				const { L, a, b } = bitsToLab(lli, aaai, bbbi);
+				const chroma = Math.hypot(a, b);
+				const scaledA = a / (1e-6 + Math.pow(chroma, 0.5));
+				const scaledB = b / (1e-6 + Math.pow(chroma, 0.5));
+				const difference = Math.hypot(L - targetL, scaledA - scaledTargetA, scaledB - scaledTargetB);
+				if (difference < bestDifference) {
+					bestDifference = difference;
+					bestBits = [lli, aaai, bbbi];
+				}
+			}
+		}
+	}
+	return { ll: bestBits[0], aaa: bestBits[1], bbb: bestBits[2] };
+}
+
+/** Find the dominant colour in the image by histogram bucketing in Oklab
+ *  space. Quantises every pixel into an 8×8×8 grid (512 buckets), then
+ *  returns the linear-RGB mean of the most-populated bucket.
+ *
+ *  Using "dominant" instead of "average" is what makes the placeholder pick
+ *  up the subject's colour (sky blue, foliage green, the pier's amber
+ *  lights) rather than collapsing foreground and background into a muddy
+ *  midpoint. The bucket grid resolution is intentionally coarse so that
+ *  perceptually-similar tones share a bucket — fine quantisation would
+ *  scatter near-identical pixels across many tiny buckets and lose the
+ *  dominance signal we want. */
+function findDominantColor(
+	data: Uint8ClampedArray | Uint8Array,
+	width: number,
+	height: number,
+): { rl: number; gl: number; bl: number } {
+	const L_BUCKETS = 8, A_BUCKETS = 8, B_BUCKETS = 8;
+	const TOTAL = L_BUCKETS * A_BUCKETS * B_BUCKETS;
+	const counts = new Uint32Array(TOTAL);
+	const sumR = new Float64Array(TOTAL);
+	const sumG = new Float64Array(TOTAL);
+	const sumB = new Float64Array(TOTAL);
+	const pixelCount = width * height;
+	for (let p = 0; p < pixelCount; p++) {
+		const i = p * 4;
+		const rl = SRGB_TO_LINEAR_LUT[data[i]];
+		const gl = SRGB_TO_LINEAR_LUT[data[i + 1]];
+		const bl = SRGB_TO_LINEAR_LUT[data[i + 2]];
+		const { L, a, b } = linearRgbToOklab(rl, gl, bl);
+		// L is roughly [0, 1]; a/b for sRGB stay roughly within [-0.4, 0.4].
+		const li = clamp(Math.floor(L * L_BUCKETS), 0, L_BUCKETS - 1);
+		const ai = clamp(Math.floor((a + 0.4) / 0.8 * A_BUCKETS), 0, A_BUCKETS - 1);
+		const bi = clamp(Math.floor((b + 0.4) / 0.8 * B_BUCKETS), 0, B_BUCKETS - 1);
+		const idx = li * A_BUCKETS * B_BUCKETS + ai * B_BUCKETS + bi;
+		counts[idx]++;
+		sumR[idx] += rl;
+		sumG[idx] += gl;
+		sumB[idx] += bl;
+	}
+	let bestIdx = 0, bestCount = 0;
+	for (let i = 0; i < TOTAL; i++) {
+		if (counts[i] > bestCount) {
+			bestCount = counts[i];
+			bestIdx = i;
+		}
+	}
+	const n = counts[bestIdx];
+	return { rl: sumR[bestIdx] / n, gl: sumG[bestIdx] / n, bl: sumB[bestIdx] / n };
 }
 
 /**
@@ -118,6 +205,15 @@ function quantiseChromaAwayFromMid(value: number, midBucket: number, lo: number,
  *
  * The buffer layout is the same as ImageData.data: 4 bytes per pixel, in
  * RGBA order, row-major.
+ *
+ * Algorithm (Lean-compatible):
+ *   1. Per cell: linear-light average → Oklab L.
+ *   2. Base colour: histogram-dominant linear-RGB → Oklab → findOklabBits.
+ *   3. Cells encode RELATIVE lightness (cellL − baseL + 0.5), quantised to
+ *      0–3. The CSS decoder layers these greyscale values over the base
+ *      with hard-light + overlay blend modes; values around 0.5 leave the
+ *      base untouched, < 0.5 darken it, > 0.5 lighten it. That's how a
+ *      greyscale payload produces a multi-colour placeholder.
  */
 export function encodePixelDataToLqip(
 	data: Uint8ClampedArray | Uint8Array,
@@ -127,11 +223,9 @@ export function encodePixelDataToLqip(
 	if (width < 3 || height < 2) {
 		throw new Error(`encodePixelDataToLqip: image must be at least 3×2, got ${width}×${height}`);
 	}
-	const cells: number[] = [];
-	let totalR = 0, totalG = 0, totalB = 0, totalCount = 0;
 
-	// 3 columns × 2 rows. Cell bounds use floor() so a 1200×799 image still
-	// partitions cleanly into 6 contiguous regions.
+	// Cell lightness: linear-light average per cell, converted to Oklab L.
+	const cellLs: number[] = [];
 	for (let cellRow = 0; cellRow < 2; cellRow++) {
 		const yStart = Math.floor(cellRow * height / 2);
 		const yEnd = Math.floor((cellRow + 1) * height / 2);
@@ -148,38 +242,19 @@ export function encodePixelDataToLqip(
 					cellCount++;
 				}
 			}
-			totalR += cellR; totalG += cellG; totalB += cellB; totalCount += cellCount;
-
-			// Cell quantisation: take linear-light average, convert back to
-			// sRGB bytes, then Rec.709 luma. The CSS renders each cell as a
-			// hsl(0 0% calc(c/3 * 60% + 20%)) grey, so we mirror that scaling
-			// at encode time — c/3 * 60 + 20 covers the [20%, 80%] band.
-			const avgR = linearToSrgb(cellR / cellCount);
-			const avgG = linearToSrgb(cellG / cellCount);
-			const avgB = linearToSrgb(cellB / cellCount);
-			const luma = (0.2126 * avgR + 0.7152 * avgG + 0.0722 * avgB) / 255;
-			cells.push(clamp(Math.round((luma - 0.2) / 0.6 * 3), 0, 3));
+			const { L } = linearRgbToOklab(cellR / cellCount, cellG / cellCount, cellB / cellCount);
+			cellLs.push(L);
 		}
 	}
 
-	// Base colour: linear-light average over the WHOLE image (the cell sums
-	// already partition every pixel exactly once). Convert to Oklab and
-	// quantise L / a / b.
-	const lab = linearRgbToOklab(totalR / totalCount, totalG / totalCount, totalB / totalCount);
+	// Base colour: dominant bucket → Oklab → 8-bit quantised triplet.
+	const dom = findDominantColor(data, width, height);
+	const domLab = linearRgbToOklab(dom.rl, dom.gl, dom.bl);
+	const { ll, aaa, bbb } = findOklabBits(domLab.L, domLab.a, domLab.b);
+	const { L: baseL } = bitsToLab(ll, aaa, bbb);
 
-	// CSS maps the quantised triplet back to:
-	//   L: ll/3 * 0.6 + 0.2          → invert: (L - 0.2) / 0.6 * 3
-	//   a: aaa/8 * 0.7 - 0.35        → invert: (a + 0.35) / 0.7 * 8 (clamped to 7)
-	//   b: (bbb+1)/8 * 0.7 - 0.35    → invert: ((b + 0.35) / 0.7 * 8) - 1 (clamped 0-7)
-	const ll = clamp(Math.round((lab.L - 0.2) / 0.6 * 3), 0, 3);
-	// For a/b, bias away from the neutral midpoint (aaa=4 / bbb=3 both
-	// decode to exactly 0). Round-to-nearest would round subtle chroma to
-	// grey within ~half a quantisation step around zero — visually that
-	// reads as "this image has no tint" even when the average is genuinely
-	// a faint blue / amber. Snap to the nearest *non-neutral* bucket
-	// instead unless the input really is dead-on neutral.
-	const aaa = quantiseChromaAwayFromMid((lab.a + 0.35) / 0.7 * 8, 4, 0, 7);
-	const bbb = quantiseChromaAwayFromMid((lab.b + 0.35) / 0.7 * 8 - 1, 3, 0, 7);
+	// Cells: relative lightness, centred at 0.5, quantised to 0..3.
+	const cells = cellLs.map(L => clamp(Math.round(clamp(0.5 + L - baseL, 0, 1) * 3), 0, 3));
 
 	let packed = 0;
 	packed |= cells[0] << 18;
