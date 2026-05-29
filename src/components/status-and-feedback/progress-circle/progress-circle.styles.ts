@@ -130,18 +130,22 @@ export const progressCircleStyles = css`
 
 
 	/* # Spinner (indeterminate)
-	   Material-style: elastic indicator that grows + shrinks while the whole
-	   element rotates. transform-origin centers the rotation on the circle. */
+	   GitHub-style: a fixed-width arc (25 / 100 = quarter turn, 90°) that
+	   simply rotates around the circle. Calmer than Material's elastic
+	   grow + shrink, which at small sizes (default 28 px) reads as visually
+	   busy. pathLength="100" on the indicator normalises the dash pattern
+	   to percentages of the circumference so the same numbers stay correct
+	   at every size. transform-origin centres the rotation. */
 
 	.progress-circle__indeterminate-indicator {
 		stroke-width: var(--_stroke-width);
+		stroke-dasharray: 25 100;
+		stroke-dashoffset: 0;
 		stroke: var(--_indeterminate-fill-color);
 		opacity: 1;
 		transform-origin: 50% 50%;
 		transition: opacity var(--primitives-transition-duration-slow) ease-out;
-		animation:
-			progress-circle-indeterminate-indicator-rotate 2s linear infinite,
-			progress-circle-indeterminate-indicator-dash 1.5s ease-in-out infinite;
+		animation: progress-circle-indeterminate-indicator-rotate 1s linear infinite;
 	}
 
 	.progress-circle__indeterminate-indicator[data-fade="out"] {
@@ -150,20 +154,6 @@ export const progressCircleStyles = css`
 
 	@keyframes progress-circle-indeterminate-indicator-rotate {
 		100% { transform: rotate(360deg); }
-	}
-
-	/* pathLength="100" on the indicator normalises the circle's path to
-	   100 units regardless of the actual radius, so these keyframe values
-	   are percentages of the circumference and stay correct at every size.
-	   The 100% state matches the 0% state (dash 1, offset advanced by one
-	   full circumference) so the loop is seamless — the offset wraps from
-	   -100 to 0 without a visible jump because the dash pattern repeats
-	   every 100 units. */
-
-	@keyframes progress-circle-indeterminate-indicator-dash {
-		0%   { stroke-dasharray: 1 100; stroke-dashoffset: 0; }
-		50%  { stroke-dasharray: 75 100; stroke-dashoffset: -30; }
-		100% { stroke-dasharray: 1 100; stroke-dashoffset: -100; }
 	}
 
 
@@ -221,16 +211,12 @@ export const progressCircleStyles = css`
 
 	@media (prefers-reduced-motion: reduce) {
 		.progress-circle__indeterminate-indicator {
+			/* Static arc with the same 25 / 100 dash pattern as the full-motion
+			   spinner — only the rotation is removed and an opacity pulse
+			   takes its place. Keeping the dasharray identical means the
+			   placeholder shape doesn't visibly jump when a user toggles
+			   reduce-motion at runtime. */
 			animation: progress-circle-indeterminate-indicator-pulse 2s ease-in-out infinite;
-			/* Static stationary arc + opacity pulse instead of the rotating
-			   25% sweep that runs at full motion. 23 / 100 of the circumference
-			   is the average of the regular animation's range (1..75% sweep,
-			   midpoint ≈ 38; 23 reads slightly under because lower values
-			   are visually heavier and need less length to register). The
-			   exact number doesn't need a token — adjust by eye if a future
-			   token scale changes the perceived weight. */
-			stroke-dasharray: 23 100;
-			stroke-dashoffset: 0;
 		}
 
 		@keyframes progress-circle-indeterminate-indicator-pulse {
