@@ -37,7 +37,6 @@ here; consult the commit history if you need that level of detail.
 - `nldd-tooltip`: `open` attribute for forced visibility.
 - Generic horizontal-scroll regions (e.g. inside `nldd-code-viewer` and overflowing tables in `nldd-rich-text`) become keyboard-focusable when their content overflows.
 - Icons: bell, bookmark, flag, star, tag, photo-slash (with `broken-image` alias).
-- Icon gallery story: search filter.
 
 ### Changed
 
