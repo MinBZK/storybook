@@ -1,5 +1,5 @@
 /**
- * Encoder for the CSS-only multi-color LQIP technique used by nldd-image.
+ * Encoder for the CSS-only multi-colour LQIP technique used by nldd-image.
  *
  * Takes an image (File, ImageBitmap, or HTMLImageElement) and returns the
  * comma-separated string the `lqip` attribute expects:
