@@ -268,11 +268,15 @@ export const imageStyles = css`
 	/* # Errored image
 	   Hide the broken <img> entirely so the browser's native fallback rendering
 	   (alt text leaking out + broken-image icon/border) doesn't show through
-	   underneath our own error overlay. visibility:hidden keeps the element
-	   in the layout flow and preserves the load/error listeners. */
+	   underneath our own error overlay. display:none also drops the element
+	   from the accessibility tree, so its alt isn't announced alongside the
+	   error overlay's role=img / aria-label (which already carries the same
+	   text). Box dimensions are preserved by aspect-ratio on .image__media,
+	   not by the img itself. Listeners stay attached — only DOM removal
+	   detaches them — so the next src change still triggers load/error. */
 
 	.image__img--errored {
-		visibility: hidden;
+		display: none;
 	}
 
 

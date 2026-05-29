@@ -104,14 +104,17 @@ export class NLDDProgressBarSegment extends LitElement {
 		if (!text) {
 			return html`<span class="progress-bar-segment__hover-area"></span>`;
 		}
-		// tabindex=0 + role=button-like exposure so keyboard users can reach
-		// the segment to read the tooltip (WCAG 2.1.1). nldd-tooltip listens
-		// to focus/blur on its slotted content, so no extra handlers needed.
+		// tabindex=0 makes the hover area keyboard-reachable so SR users can
+		// land on it and have nldd-tooltip surface its text (WCAG 2.1.1). No
+		// explicit role: this element is a focus target, not an activator —
+		// role=button would promise an action that the span doesn't perform.
+		// aria-label carries the same text as the tooltip so the focus
+		// announcement is meaningful on its own. nldd-tooltip listens to
+		// focus/blur on slotted content, so no extra handlers needed here.
 		return html`
 			<nldd-tooltip text=${text} timing="instant">
 				<span class="progress-bar-segment__hover-area"
 					tabindex="0"
-					role="button"
 					aria-label=${text}
 				></span>
 			</nldd-tooltip>

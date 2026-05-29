@@ -1,19 +1,26 @@
 /**
- * Encoder for the CSS-only LQIP technique used by nldd-image.
+ * Encoder for the CSS-only multi-color LQIP technique used by nldd-image.
  *
  * Takes an image (File, ImageBitmap, or HTMLImageElement) and returns the
- * 20-bit integer the `lqip` attribute expects. The encoding matches the
- * decoder in image.styles.ts, which follows the scheme from
- * https://leanrada.com/notes/css-only-lqip/:
+ * comma-separated string the `lqip` attribute expects:
  *
- *   - Six 2-bit greyscale cells (3×2 grid downsample of the source image)
- *   - One 2-bit luminance + 3-bit a + 3-bit b Oklab base colour (1×1 average)
- *   - Packed into 20 bits, offset by 2^19 so the on-disk integer is signed
+ *   "base,c1,c2,c3,c4,c5,c6"
  *
- * Bundled with a small `<nldd-lqip-encoder>` element that wraps the function
- * in a file-picker UI. The element is registered for use in our Storybook so
- * consumers can encode their own images without relying on the original
- * leanrada.com tool.
+ * — seven 0-255 bytes, each packing an 8-bit Oklab triplet (2 bits L,
+ * 3 bits a, 3 bits b). The first byte is the base colour shown behind /
+ * outside the cell gradients; the other six are per-cell colours laid out
+ * row-major in a 3×2 grid (c1 top-left, c6 bottom-right).
+ *
+ * Inspired by Lean Rada's CSS-only LQIP technique
+ * (https://leanrada.com/notes/css-only-lqip/) but intentionally
+ * incompatible with his wire format: his 20-bit packed integer carries
+ * only greyscale per cell, whereas this 56-bit CSV carries one quantised
+ * Oklab colour per cell so multi-hue subjects survive the placeholder.
+ * Decoder lives in image.styles.ts and renders 7 background layers
+ * (6 radial-gradient cells + base) natively, no JS / blend modes.
+ *
+ * Bundled with a small `<nldd-lqip-encoder>` element that wraps the
+ * function in a file-picker UI for our Storybook.
  */
 
 import { LitElement, html, css } from 'lit';

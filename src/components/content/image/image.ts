@@ -187,7 +187,23 @@ export class NLDDImage extends LitElement {
 				this.style.removeProperty('max-width');
 			}
 		}
+		// Non-decorative images without alt text are a silent a11y failure
+		// (WCAG H37). Warn once in dev so the issue surfaces during build /
+		// Storybook, but stay quiet in production. Reset the flag when the
+		// situation is resolved so re-introducing the bug warns again.
+		if (import.meta.env?.DEV) {
+			const inaccessible = !this.decorative && !this.alt.trim();
+			if (inaccessible && !this._warnedAlt) {
+				this._warnedAlt = true;
+				console.warn('<nldd-image>: Non-decorative images need a non-empty `alt`. Set `decorative` if the image conveys no information.');
+			} else if (!inaccessible) {
+				this._warnedAlt = false;
+			}
+		}
 	}
+
+	/** DEV-only "missing alt" warning latch; see updated(). */
+	private _warnedAlt = false;
 
 	override firstUpdated(): void {
 		// If the image was cached or already loaded by the time the listener

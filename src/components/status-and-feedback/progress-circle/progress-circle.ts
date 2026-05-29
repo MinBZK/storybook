@@ -35,7 +35,7 @@
  * @attr {string}  color - Color (semantic or Rijkskleur). Default 'accent'.
  * @attr {string}  name  - Optional name used in the combined tooltip + screenreader text
  */
-import { LitElement, html } from 'lit';
+import { LitElement, html, nothing } from 'lit';
 import { customElement, property, state } from 'lit/decorators.js';
 import { progressCircleStyles, progressCircleSegmentStyles } from './progress-circle.styles.js';
 import { progressCircleTemplate, getCircumference, getStrokeWidthPx } from './progress-circle.template.js';
@@ -80,8 +80,10 @@ export class NLDDProgressCircleSegment extends LitElement {
 
 	override render() {
 		// Data-only element — the parent reads value/color/name and renders
-		// the actual SVG arc. Render nothing.
-		return html``;
+		// the actual SVG arc. Return Lit's `nothing` sentinel so no DOM is
+		// created (an empty html`` literal would still produce a Lit
+		// TemplateResult).
+		return nothing;
 	}
 }
 
