@@ -771,6 +771,12 @@
 
 	--semantics-surfaces-background-color: light-dark(var(--primitives-color-neutral-0), var(--primitives-color-neutral-100));
 	--semantics-surfaces-tinted-background-color: light-dark(var(--primitives-color-neutral-25), var(--primitives-color-neutral-75));
+	/* "Highlight" = one palette step above the corresponding surface bg.
+	   Used as a subtle 1px ring (via box-shadow inset) to give surface-like
+	   components a defined edge without taking layout space. Same +1 step
+	   convention the banner uses for its border. */
+	--semantics-surfaces-highlight-color: light-dark(var(--primitives-color-neutral-25), var(--primitives-color-neutral-150));
+	--semantics-surfaces-tinted-highlight-color: light-dark(var(--primitives-color-neutral-50), var(--primitives-color-neutral-100));
 
 	/* ## Content */
 
@@ -1200,6 +1206,7 @@
 
 	--components-box-background-color: var(--semantics-surfaces-tinted-background-color);
 	--components-box-on-tinted-background-color: var(--semantics-surfaces-background-color);
+	--components-box-highlight-color: var(--semantics-surfaces-tinted-highlight-color);
 	--components-box-corner-radius: var(--primitives-corner-radius-xl);
 	--components-box-padding: var(--primitives-space-16);
 
