@@ -35,8 +35,8 @@ export default {
 	argTypes: {
 		background: {
 			control: 'select',
-			options: ['tinted', 'base', 'transparent'],
-			description: 'Surface fill. `tinted` voor box op een plain page, `base` voor box op een al getinte parent (highlight ring krijgt +2 stappen voor extra contrast), `transparent` voor ghost outline zonder fill of ring.',
+			options: ['tinted', 'base'],
+			description: 'Surface fill. `tinted` voor box op een plain page, `base` voor box op een al getinte parent (highlight ring krijgt +2 stappen voor extra contrast).',
 			table: { defaultValue: { summary: 'tinted' } },
 		},
 	},
@@ -77,9 +77,6 @@ export const Backgrounds = {
 					<nldd-rich-text><p>background="base" — base-coloured box op een al getinte parent. Highlight ring is +2 stappen voor extra contrast.</p></nldd-rich-text>
 				</nldd-box>
 			</div>
-			<nldd-box background="transparent">
-				<nldd-rich-text><p>background="transparent" — ghost outline (geen fill, geen highlight ring)</p></nldd-rich-text>
-			</nldd-box>
 		</div>
 	`,
 	parameters: { controls: { disable: true } },

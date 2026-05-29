@@ -20,8 +20,7 @@ export const boxStyles = css`
 	/* ## Background variants
 	   Default is tinted (matches :host above). base = card-on-tinted, the
 	   highlight ring picks the +2-step semantic so the frame still reads
-	   against an already-tinted parent. transparent = ghost outline, no
-	   bg and no ring. */
+	   against an already-tinted parent. */
 
 	:host([background="tinted"]) {
 		--_background-color: var(--components-box-background-color);
@@ -31,11 +30,6 @@ export const boxStyles = css`
 	:host([background="base"]) {
 		--_background-color: var(--components-box-base-background-color);
 		--_highlight-color: var(--components-box-base-highlight-color);
-	}
-
-	:host([background="transparent"]) {
-		--_background-color: transparent;
-		--_highlight-color: transparent;
 	}
 
 
