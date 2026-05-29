@@ -1,7 +1,7 @@
 import { html } from 'lit';
 import './progress.ts';
-import '../progress-circle/progress-circle.ts';
-import '../progress-bar/progress-bar.ts';
+import '../progress-circle/progress-circle.js';
+import '../progress-bar/progress-bar.js';
 
 /**
  * Een layout placeholder die de beschikbare ruimte vult en een indeterminate

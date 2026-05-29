@@ -135,15 +135,18 @@ export const imageStyles = css`
 	   through the smooth alpha falloff (stop10/20/30/40).
 	   Browser support: depends on CSS mod() (Chrome 113+, Safari 15.4+,
 	   Firefox 118+, May 2023 baseline), CSS round(down, ...) (Chrome 111+,
-	   Safari 15.4+, Firefox 118+), and oklab() (Chrome 111+, Safari 15.4+,
-	   Firefox 113+). The whole rule lives inside an @supports gate that
-	   tests two narrow features — a feature query for mod() (the youngest
-	   capability) and for oklab() — so older engines drop the LQIP
-	   gradient entirely and fall through to the neutral --_background-color
-	   set on .image__media. Degraded but harmless: the placeholder is a
-	   "nice to have", not a load-bearing element. */
+	   Safari 15.4+, Firefox 118+), oklab() (Chrome 111+, Safari 15.4+,
+	   Firefox 113+), and the relative-color syntax rgb(from … r g b / α)
+	   used in the gradient stops (Chrome 119+, Safari 16.4+, Firefox 128+,
+	   mid-2024 baseline). The @supports gate probes all three of the
+	   youngest-per-engine capabilities — without the relative-color probe,
+	   Firefox 113-127 would pass the gate but render transparent/black
+	   stops because rgb(from …) wouldn't parse. Older engines drop the
+	   LQIP gradient entirely and fall through to the neutral
+	   --_background-color set on .image__media. Degraded but harmless:
+	   the placeholder is a "nice to have", not a load-bearing element. */
 
-	@supports (left: mod(1px, 1px)) and (background: oklab(0 0 0)) {
+	@supports (left: mod(1px, 1px)) and (background: oklab(0 0 0)) and (color: rgb(from red r g b)) {
 
 	.image__media--lqip {
 		--_lqip-base-ll: mod(round(down, var(--context-lqip-base) / 64), 4);

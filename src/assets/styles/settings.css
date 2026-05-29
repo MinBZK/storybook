@@ -1462,8 +1462,12 @@
 	--components-progress-circle-label-gap: var(--primitives-space-8);
 	--components-progress-circle-label-color: var(--semantics-content-color);
 	--components-progress-circle-label-font: var(--primitives-font-body-md-regular-tight);
-	--components-progress-circle-progress-segment-gap: 2deg;
-	--components-progress-circle-distribution-segment-gap: 4deg;
+	/* Segment gap is intentionally hard-coded in progress-circle.ts as 1px /
+	   2px (visual gap) and scaled per render into SVG user units, so that the
+	   gap stays a consistent pixel width across every host size. Exposing it
+	   as a degree-based token (as it used to be) made the gap drift visually
+	   on small / large rings; the constants moved into TS and the tokens
+	   were dropped. */
 
 	/* ### Progress circle — semantic variants */
 

@@ -329,6 +329,11 @@ export class NLDDProgressBar extends LitElement {
 
 	/** Auto-tooltip based on parent's value-format. Override via segment.tooltip. */
 	private _formatSegmentTooltip(seg: NLDDProgressBarSegment): string {
+		// valueFormat="none" hides all values, including per-segment ones.
+		// Without an explicit return here, the switch below falls through to
+		// the percentage branch and every multi-segment tooltip still says
+		// "Name: 30%" — matches progress-circle's `_formatValuePart` guard.
+		if (this.valueFormat === 'none') return seg.name ?? '';
 		const v = Math.max(0, seg.value);
 		const pct = this.max > 0 ? Math.round((v / this.max) * 100) : 0;
 		let valuePart: string;
@@ -336,12 +341,6 @@ export class NLDDProgressBar extends LitElement {
 			case 'absolute': valuePart = `${v}`; break;
 			case 'fraction': valuePart = `${v} / ${this.max}`; break;
 			case 'percentage':
-			case 'none':
-				// 'none' is listed only for exhaustiveness — callers strip
-				// the value entirely when valueFormat is 'none' (see the
-				// _displayValue getter above), so this branch is never
-				// reached with 'none' under normal flow.
-				// falls through
 			default: valuePart = `${pct}%`; break;
 		}
 		return seg.name ? `${seg.name}: ${valuePart}` : valuePart;

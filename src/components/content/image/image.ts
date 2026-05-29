@@ -19,7 +19,14 @@
  * @attr {number|'full'} width - Display width. `full` (default) fills the parent.
  *   A numeric value sets host `max-width` AND the `<img>` layout-hint width.
  * @attr {number}  height - Intrinsic height (for layout reservation)
- * @attr {'lazy'|'eager'} loading - Loading strategy (default: 'lazy')
+ * @attr {'lazy'|'eager'} loading - Loading strategy (default: 'lazy').
+ *   Lazy defers fetch until the image is near the viewport — the right
+ *   choice for below-the-fold content. Set to 'eager' on images that
+ *   appear in the initial viewport, especially the LCP candidate (hero
+ *   illustration, top-of-list thumbnail); leaving them lazy silently
+ *   regresses Core Web Vitals because the LCP fetch waits for the
+ *   intersection observer. Pair with `fetchpriority="high"` on the LCP
+ *   image for the strongest signal.
  * @attr {'async'|'sync'|'auto'} decoding - Decoding hint (default: 'async')
  * @attr {'high'|'low'|'auto'} fetchpriority - Fetch priority hint
  * @attr {string}  aspect-ratio - Aspect ratio in CSS form (e.g. "16/9", "1/1", "4/3").

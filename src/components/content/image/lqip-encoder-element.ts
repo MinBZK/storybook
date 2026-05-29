@@ -71,6 +71,16 @@ export class NLDDLqipEncoder extends LitElement {
 			font: var(--primitives-font-body-md-regular-snug);
 		}
 
+		/* The native <input type="file"> is visually hidden but still focusable;
+		   reflect its focus state on the surrounding label so keyboard users
+		   see where focus is. Same focus-ring tokens the rest of the design
+		   system uses on buttons. */
+		.encoder__upload-label:focus-within {
+			outline: var(--semantics-focus-ring-outline);
+			outline-offset: var(--semantics-focus-ring-outline-offset);
+			box-shadow: var(--semantics-focus-ring-box-shadow);
+		}
+
 		.encoder__upload-input {
 			position: absolute;
 			width: 1px;

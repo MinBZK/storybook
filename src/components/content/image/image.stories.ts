@@ -50,6 +50,8 @@ export default {
 		lqip: '',
 		caption: '',
 		credit: '',
+		loading: 'lazy',
+		fetchPriority: '(auto)',
 		decorative: false,
 	},
 	argTypes: {
@@ -115,6 +117,20 @@ export default {
 			control: 'text',
 			description: 'Kleinere credit/attributie naast de caption',
 		},
+		loading: {
+			control: 'select',
+			options: ['lazy', 'eager'],
+			description: 'Loading-strategie. `lazy` is goed voor below-the-fold; gebruik `eager` voor hero / LCP-kandidaat (anders silent Core Web Vitals regressie).',
+			table: { defaultValue: { summary: 'lazy' } },
+		},
+		fetchPriority: {
+			name: 'fetchpriority',
+			control: 'select',
+			options: ['(auto)', 'high', 'low'],
+			mapping: { '(auto)': undefined },
+			description: 'Fetch priority hint. Zet `high` op de LCP-image voor sterkste signaal naar de browser.',
+			table: { defaultValue: { summary: '(auto)' } },
+		},
 		decorative: {
 			control: 'boolean',
 			description: 'Decoratieve afbeelding: alt wordt leeg en aria-hidden gezet',
@@ -136,6 +152,8 @@ const Template = ({
 	lqip,
 	caption,
 	credit,
+	loading,
+	fetchPriority,
 	decorative,
 }: Record<string, unknown>) => html`
 	<nldd-image
@@ -151,6 +169,8 @@ const Template = ({
 		lqip=${(lqip as string) || nothing}
 		caption=${caption as string}
 		credit=${credit as string}
+		loading=${loading as string}
+		fetchpriority=${(fetchPriority as string) || nothing}
 		?decorative=${decorative}
 	></nldd-image>
 `;
