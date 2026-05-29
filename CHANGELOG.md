@@ -30,6 +30,10 @@ here; consult the commit history if you need that level of detail.
 - `nldd-box`: `background` attribute (`'tinted'` default for a box on a plain page, `'base'` for a box on an already-tinted parent — the border ring picks the +2-step semantic so the frame still reads card-on-card).
 - New surface tokens: `--semantics-surfaces-border-color` / `--semantics-surfaces-tinted-border-color` (+ matching `--components-box-*-border-color` pair). Used as a 1px inset ring across `nldd-box`, `nldd-banner`, `nldd-list`, and `nldd-code-viewer`.
 - `nldd-progress`: `complete` boolean attribute clears `aria-busy` and hides the indicator while keeping the element mounted (for consumers who can't unmount). `no-label` boolean attribute suppresses the visible "Laden" caption when the surrounding UI already conveys loading.
+- `nldd-image`: visually-hidden `aria-live="polite"` status region announces load failures mid-session (WCAG 4.1.3 Status Messages). The region stays empty until `_imageErrored` flips, so screen readers learn about a dynamic `src` swap that errored even though the visible error overlay was already there. Decorative images stay silent.
+- `nldd-image`: `loading` and `fetchpriority` exposed as Storybook controls with LCP guidance; the `loading` JSDoc now warns that leaving `lazy` on a hero / LCP image silently regresses Core Web Vitals.
+- `nldd-tooltip`: `nldd-tooltip-dismiss` event fired when Escape is pressed while `open=true`. The consumer controls the open lifecycle (e.g. an action-feedback timer) so we can't unilaterally clear it; the event lets them honour WCAG 1.4.13 (dismissible hover / focus content) without losing control.
+- DEV-mode warnings on `nldd-image` for missing `alt` on non-decorative images and for non-positive `width` values that silently fall back to `full`.
 - `nldd-collection`: arrow-key navigation when horizontal-scroll regions overflow, with a keyboard focus state on the scroll container.
 - `nldd-tooltip`: `open` attribute for forced visibility.
 - Generic horizontal-scroll regions (e.g. inside `nldd-code-viewer` and overflowing tables in `nldd-rich-text`) become keyboard-focusable when their content overflows.
@@ -43,6 +47,8 @@ here; consult the commit history if you need that level of detail.
 - `nldd-banner` (post-initial iterations): filled default icons, lighter border + background, dismiss button alignment + spacing polished, accent variant dropped (use `nldd-inline-dialog` for accent emphasis), stories rebuilt around the new actions pattern. The edge changed from a real `border` to an inset box-shadow so child content keeps its exact position regardless of the edge weight, with a `forced-colors` fallback restoring a real border.
 - `nldd-tag` and `nldd-badge` stories: `Variants` + `Rijkskleuren` merged into a single `Colors` story per component; tag colour labels switched from concept-style strings (concept / nieuw / gepubliceerd / let op / afgewezen) to the semantic colour names.
 - Interactive controls (16 components) now have `user-select: none` on hit targets so double-tapping or shift-clicking doesn't accidentally select label text.
+- `nldd-progress-circle`: indeterminate spinner switched from the Material-style "grow + shrink while rotating" arc to a GitHub-style fixed-width 25% arc that simply rotates. At the design-system default size (28 px) the previous animation read as visually busy; a constant-width rotation is calmer.
+- `nldd-progress-circle`: default `size` changed from 32 to 28, matching the size `nldd-progress` already uses for its inner spinner.
 
 ### Breaking
 
@@ -62,6 +68,12 @@ here; consult the commit history if you need that level of detail.
 - `nldd-collection`: initial left-arrow disabled state on first render.
 - `nldd-top-navigation-bar`: website-title gets vertical breathing room at sm so it no longer kisses the top edge.
 - Tokens: light-mode `--semantics-content-color` and link colours bumped so the new page-footer meets WCAG contrast.
+- `nldd-image`: errored `<img>` switched from `visibility: hidden` to `display: none` so its `alt` isn't announced alongside the visible error overlay (was producing duplicate announcements on most screen readers).
+- `nldd-image`: `width` routes through a `--_max-width` custom property instead of inline `style.maxWidth`, so consumer CSS targeting the host's max-width still wins the cascade.
+- `nldd-image`: alt-aware double-announce on the error overlay is gone. The wrapper no longer carries `role="img"` + `aria-label` (the visible `.image__error-text` already carries the alt text for both audiences).
+- `nldd-banner`: ARIA `role` + `aria-live` are now applied in the constructor (reading the raw `variant` attribute) so the host carries the correct role the moment it enters the DOM. AT engines no longer miss the initial announcement when role is added in `connectedCallback`.
+- `nldd-progress-bar` + `nldd-progress-circle`: parent → segment detection uses `instanceof` instead of `tagName === '…'`, so scoped custom-element registries (used in some test contexts and cross-frame setups) keep working.
+- LQIP gradient now lives inside an `@supports (left: mod(1px, 1px)) and (background: oklab(0 0 0)) and (color: rgb(from red r g b))` gate, so older engines drop the gradient cleanly to the neutral fallback instead of risking a partial render.
 
 ## <small>0.8.50 (2026-05-28)</small>
 
