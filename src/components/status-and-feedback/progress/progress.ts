@@ -15,6 +15,13 @@
  * another 1000ms. Keep the element mounted and toggle visibility / `hidden`
  * instead if you want the timer to run only once.
  *
+ * Accessibility: the host element carries `aria-busy="true"` for as long as
+ * it is connected, including the silent 1000 ms pre-spinner window. AT users
+ * landing on the region during that window are told loading is in progress,
+ * even before the visual spinner appears. The expected consumer pattern is to
+ * unmount `<nldd-progress>` entirely once content has loaded, at which point
+ * `aria-busy` is removed from the page along with the element.
+ *
  * @element nldd-progress
  *
  * @attr {string} text - Label under the default indicator. Falls back to the
@@ -56,6 +63,11 @@ export class NLDDProgress extends LitElement {
 
 	override connectedCallback(): void {
 		super.connectedCallback();
+		// aria-busy signals "loading in progress" to AT users immediately,
+		// even during the silent 1000 ms window before the visual indicator
+		// fades in. Set unconditionally on connect; clears naturally when the
+		// consumer unmounts the element after content loads.
+		this.setAttribute('aria-busy', 'true');
 		this._visible = false;
 		this._delayTimeout = setTimeout(() => {
 			this._visible = true;
