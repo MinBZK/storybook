@@ -13,9 +13,9 @@ const SAMPLE_SRCSET =
 	'/sample-images/scheveningen-pier-960.jpg 960w, ' +
 	'/sample-images/scheveningen-pier-1600.jpg 1600w';
 
-/** LQIP integer berekend uit de bron. Regenereer via de "LQIP encoder tool"
- *  story als je de afbeelding vervangt. */
-const SAMPLE_LQIP = 170594;
+/** LQIP CSV string berekend uit de bron (zeven 0-255 Oklab bytes). Regenereer
+ *  via de "LQIP encoder tool" story als je de afbeelding vervangt. */
+const SAMPLE_LQIP = '98,154,162,99,99,99,100';
 
 /**
  * Een gestylede wrapper rond `<img>` met de design system tokens voor radius,
@@ -105,7 +105,7 @@ export default {
 		},
 		lqip: {
 			control: 'text',
-			description: `CSS-only LQIP placeholder integer (bv. ${SAMPLE_LQIP}). Genereer een eigen waarde via de "LQIP encoder tool" story.`,
+			description: `CSS-only multi-color LQIP. CSV-string van 7 bytes (base + 6 cellen, 3×2 raster) — elke byte is een 8-bit Oklab triplet. Voorbeeld: \`${SAMPLE_LQIP}\`. Genereer eigen waarden via de "LQIP encoder tool" story.`,
 		},
 		caption: {
 			control: 'text',
@@ -274,11 +274,11 @@ export const SlottedImage = {
 };
 
 /**
- * CSS-only Low Quality Image Placeholder volgens
- * https://leanrada.com/notes/css-only-lqip/. Eén integer encodeert een 6-cel
- * 3×2 gradient + base color, die zichtbaar is tot het echte beeld geladen is.
- * De waarde wordt gegenereerd door een build-step uit de bron-afbeelding, of
- * via de "LQIP encoder tool" story hieronder.
+ * CSS-only multi-color Low Quality Image Placeholder — geïnspireerd op
+ * https://leanrada.com/notes/css-only-lqip/, uitgebreid met per-cel kleur
+ * (Lean's originele encoding heeft alleen grijswaarde-cellen rondom één
+ * dominante hue). Onze versie encodeert 7 bytes: een base color + 6 per-cel
+ * Oklab kleuren in een 3×2 raster. Zichtbaar tot het echte beeld is geladen.
  *
  * Links: alleen de placeholder (geen src) zodat je het LQIP gradient los ziet.
  * Rechts: met src — placeholder is even zichtbaar en wordt overlapt zodra de

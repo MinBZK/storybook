@@ -8,14 +8,21 @@ export function imageTemplate(component: NLDDImage) {
 	// aspect-ratio is applied to the media wrapper (not the img) so it
 	// reserves space in the layout *before* the image loads, avoiding CLS.
 	// Slotted img/picture also fills this wrapper.
-	// --context-lqip is the 20-bit-encoded placeholder integer; the CSS
-	// reads it via var(--context-lqip) and renders a 6-cell gradient until
-	// the image loads. Uses the --context-* prefix because it crosses the
-	// shadow boundary from this inline style into the shadow stylesheet.
-	const hasLqip = component.lqip !== undefined && component.lqip !== null;
+	// --context-lqip-base / --context-lqip-c1..c6 carry the seven quantised
+	// Oklab bytes from the parsed lqip attribute across the shadow boundary
+	// into the stylesheet. Each byte decodes back into an oklab() colour at
+	// render time. Uses the --context-* prefix because the inline style and
+	// the consuming CSS live in different scopes.
+	const parsedLqip = component._parsedLqip;
+	const hasLqip = parsedLqip !== null;
 	const mediaStyles: Record<string, string> = {};
 	if (component._cssAspectRatio) mediaStyles.aspectRatio = component._cssAspectRatio;
-	if (hasLqip) mediaStyles['--context-lqip'] = String(component.lqip);
+	if (hasLqip) {
+		mediaStyles['--context-lqip-base'] = String(parsedLqip.base);
+		parsedLqip.cells.forEach((cell, i) => {
+			mediaStyles[`--context-lqip-c${i + 1}`] = String(cell);
+		});
+	}
 
 	const mediaClasses = classMap({
 		'image__media': true,

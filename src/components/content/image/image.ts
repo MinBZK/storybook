@@ -30,9 +30,16 @@
  * @attr {string}  caption - Caption text shown below the image
  * @attr {string}  credit - Smaller credit/attribution text shown beside the caption
  * @attr {boolean} decorative - Decorative image: alt is forced empty + aria-hidden
- * @attr {number}  lqip - Low-quality image placeholder encoded as a 20-bit integer
- *   (see https://leanrada.com/notes/css-only-lqip/). Renders a tiny gradient
- *   thumbnail while the real image loads, then the image fades in over it.
+ * @attr {string}  lqip - Low-quality image placeholder as a CSV string
+ *   `"base,c1,c2,c3,c4,c5,c6"` — seven 0-255 bytes, each packing an 8-bit
+ *   Oklab triplet (2 bits L, 3 bits a, 3 bits b). The first is the base
+ *   colour shown outside the cell gradients; the other six are per-cell
+ *   colours in row-major 3×2 order. Generate via the encoder in
+ *   `lqip-encoder.ts` or via the "LQIP encoder tool" Storybook story.
+ *   Extends Lean Rada's CSS-only LQIP (https://leanrada.com/notes/css-only-lqip/)
+ *   with per-cell hue — Lean's original format encodes greyscale cells only;
+ *   ours encodes a colour per cell so multi-colour subjects survive the
+ *   placeholder.
  *
  * @slot - Custom `<img>` or `<picture>` (overrides the src-based default)
  * @slot caption - Rich caption content (overrides the `caption` attribute)
@@ -103,8 +110,24 @@ export class NLDDImage extends LitElement {
 	@property({ type: Boolean, reflect: true })
 	decorative = false;
 
-	@property({ type: Number })
-	lqip?: number;
+	@property({ type: String })
+	lqip = '';
+
+	/** Parsed LQIP: 7 numbers in [0, 255] — base + 6 cells — or null when the
+	 *  attribute is empty or malformed. Recomputed on each render via the
+	 *  template; cached here is unnecessary because the template only forwards
+	 *  to inline CSS vars, and Lit skips identical style updates. */
+	get _parsedLqip(): { base: number; cells: number[] } | null {
+		if (!this.lqip) return null;
+		const parts = this.lqip.split(',').map(s => s.trim());
+		if (parts.length !== 7) return null;
+		const nums = parts.map(s => {
+			const n = Number(s);
+			return Number.isInteger(n) && n >= 0 && n <= 255 ? n : NaN;
+		});
+		if (nums.some(Number.isNaN)) return null;
+		return { base: nums[0], cells: nums.slice(1) };
+	}
 
 	@state()
 	_hasSlottedCaption = false;

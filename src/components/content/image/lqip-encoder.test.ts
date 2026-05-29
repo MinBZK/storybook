@@ -3,9 +3,9 @@ import { encodeLqip, encodePixelDataToLqip } from './lqip-encoder.js';
 
 /**
  * Renders a solid-colour ImageBitmap of the given RGB so the encoder gets
- * a deterministic input. Both downsamples (3×2 cells and 1×1 average) end
- * up with the same colour, so the resulting cells encode the greyscale of
- * (r, g, b) and the base colour encodes its Oklab.
+ * a deterministic input. Every cell and the dominant histogram bucket all
+ * end up with the same colour, so all seven output bytes encode the same
+ * Oklab quantisation of (r, g, b).
  */
 async function makeSolidBitmap(r: number, g: number, b: number): Promise<ImageBitmap> {
 	const canvas = document.createElement('canvas');
@@ -17,68 +17,67 @@ async function makeSolidBitmap(r: number, g: number, b: number): Promise<ImageBi
 	return createImageBitmap(canvas);
 }
 
-/** Decode the 20-bit packed integer back into its component fields the same
- *  way the CSS decoder does. Returns the 6 cell levels (0-3), the L level
- *  (0-3), and the a/b levels (0-7). */
-function unpackLqip(lqip: number): {
+/** Parse the encoder's CSV output `"base,c1,c2,c3,c4,c5,c6"` into the seven
+ *  bytes and their packed-Oklab fields (2 bits L, 3 bits a, 3 bits b each). */
+function parseLqip(lqip: string): {
+	base: number;
 	cells: number[];
-	ll: number;
-	aaa: number;
-	bbb: number;
+	bits: { byte: number; ll: number; aaa: number; bbb: number }[];
 } {
-	const u = lqip + (1 << 19);
-	const cells: number[] = [];
-	for (let i = 0; i < 6; i++) {
-		const shift = 18 - i * 2;
-		cells.push((u >> shift) & 0b11);
-	}
-	const ll = (u >> 6) & 0b11;
-	const aaa = (u >> 3) & 0b111;
-	const bbb = u & 0b111;
-	return { cells, ll, aaa, bbb };
+	const parts = lqip.split(',').map(Number);
+	const [base, ...cells] = parts;
+	const bits = parts.map(byte => ({
+		byte,
+		ll: (byte >> 6) & 0b11,
+		aaa: (byte >> 3) & 0b111,
+		bbb: byte & 0b111,
+	}));
+	return { base, cells, bits };
 }
 
 describe('encodeLqip', () => {
-	it('returns an integer in the signed 20-bit range', async () => {
+	it('returns a 7-byte CSV string', async () => {
 		const bitmap = await makeSolidBitmap(128, 128, 128);
 		const lqip = await encodeLqip(bitmap);
-		expect(Number.isInteger(lqip)).toBe(true);
-		expect(lqip).toBeGreaterThanOrEqual(-(1 << 19));
-		expect(lqip).toBeLessThan(1 << 19);
-	});
-
-	it('encodes pure black as lowest base luminance + uniform cells', async () => {
-		const bitmap = await makeSolidBitmap(0, 0, 0);
-		const lqip = await encodeLqip(bitmap);
-		const { cells, ll } = unpackLqip(lqip);
-		// All six cells encode the same lightness offset vs the base. The
-		// absolute value depends on where pure black quantises in the 2-bit L
-		// space; what matters is that the placeholder is uniform.
-		expect(cells.every(c => c === cells[0])).toBe(true);
-		// Luminance L lands at the bottom of the 0-3 range.
-		expect(ll).toBe(0);
-	});
-
-	it('encodes pure white as highest base luminance + uniform cells', async () => {
-		const bitmap = await makeSolidBitmap(255, 255, 255);
-		const lqip = await encodeLqip(bitmap);
-		const { cells, ll } = unpackLqip(lqip);
-		expect(cells.every(c => c === cells[0])).toBe(true);
-		expect(ll).toBe(3);
-	});
-
-	it('encodes a solid mid-grey with cells centred on the neutral offset', async () => {
-		const bitmap = await makeSolidBitmap(128, 128, 128);
-		const lqip = await encodeLqip(bitmap);
-		const { cells } = unpackLqip(lqip);
-		// For a uniform image cell L equals base L, so the relative offset is
-		// 0 → encoded as the centre bucket (1 or 2 after rounding 1.5).
-		for (const c of cells) {
-			expect(c === 1 || c === 2).toBe(true);
+		expect(typeof lqip).toBe('string');
+		const parts = lqip.split(',');
+		expect(parts).toHaveLength(7);
+		for (const p of parts) {
+			const n = Number(p);
+			expect(Number.isInteger(n)).toBe(true);
+			expect(n).toBeGreaterThanOrEqual(0);
+			expect(n).toBeLessThanOrEqual(255);
 		}
 	});
 
-	it('produces different integers for visibly different colours', async () => {
+	it('encodes pure black as lowest L + uniform cells', async () => {
+		const bitmap = await makeSolidBitmap(0, 0, 0);
+		const lqip = await encodeLqip(bitmap);
+		const { base, cells, bits } = parseLqip(lqip);
+		// All seven bytes identical for a uniform input.
+		expect(cells.every(c => c === base)).toBe(true);
+		// L quantises to the bottom of its 2-bit range.
+		expect(bits[0].ll).toBe(0);
+	});
+
+	it('encodes pure white as highest L + uniform cells', async () => {
+		const bitmap = await makeSolidBitmap(255, 255, 255);
+		const lqip = await encodeLqip(bitmap);
+		const { base, cells, bits } = parseLqip(lqip);
+		expect(cells.every(c => c === base)).toBe(true);
+		expect(bits[0].ll).toBe(3);
+	});
+
+	it('encodes mid-grey near the centre of the L range', async () => {
+		const bitmap = await makeSolidBitmap(128, 128, 128);
+		const lqip = await encodeLqip(bitmap);
+		const { bits } = parseLqip(lqip);
+		// Mid-grey Oklab L ≈ 0.6 → quantised L lands at bucket 1 or 2 in the
+		// 0..3 range that maps to [0.2, 0.8].
+		expect(bits[0].ll === 1 || bits[0].ll === 2).toBe(true);
+	});
+
+	it('produces different strings for visibly different colours', async () => {
 		const red = await encodeLqip(await makeSolidBitmap(220, 30, 30));
 		const blue = await encodeLqip(await makeSolidBitmap(30, 30, 220));
 		expect(red).not.toBe(blue);
@@ -103,11 +102,13 @@ describe('encodePixelDataToLqip — pure-function snapshot tests', () => {
 		// If you change the encoder math and this test fails, every previously
 		// generated LQIP value will look different in the rendered placeholder.
 		// Bump SAMPLE_LQIP in image.stories.ts and audit downstream uses.
-		expect(encodePixelDataToLqip(solid(0, 0, 0, 12, 8), 12, 8)).toBe(-174813);
+		expect(encodePixelDataToLqip(solid(0, 0, 0, 12, 8), 12, 8))
+			.toBe('35,35,35,35,35,35,35');
 	});
 
 	it('locks the algorithm: solid white snapshot', () => {
-		expect(encodePixelDataToLqip(solid(255, 255, 255, 12, 8), 12, 8)).toBe(174819);
+		expect(encodePixelDataToLqip(solid(255, 255, 255, 12, 8), 12, 8))
+			.toBe('227,227,227,227,227,227,227');
 	});
 
 	it('locks the algorithm: horizontal gradient (black left → white right)', () => {
@@ -122,17 +123,17 @@ describe('encodePixelDataToLqip — pure-function snapshot tests', () => {
 			}
 		}
 		const lqip = encodePixelDataToLqip(buf, 12, 8);
-		// The three columns of cells should monotonically lighten: ca < cb < cc.
-		const u = lqip + (1 << 19);
-		const ca = (u >> 18) & 3;
-		const cb = (u >> 16) & 3;
-		const cc = (u >> 14) & 3;
-		expect(ca).toBeLessThanOrEqual(cb);
-		expect(cb).toBeLessThanOrEqual(cc);
-		expect(ca).toBeLessThan(cc);
+		const { bits } = parseLqip(lqip);
+		// Cell layout is row-major: c1/c2/c3 = top row left/middle/right.
+		// In a black-left → white-right gradient those three columns should
+		// monotonically brighten.
+		const [, c1, c2, c3] = bits;
+		expect(c1.ll).toBeLessThanOrEqual(c2.ll);
+		expect(c2.ll).toBeLessThanOrEqual(c3.ll);
+		expect(c1.ll).toBeLessThan(c3.ll);
 	});
 
-	it('rounds-trips solid colours via the pure function and the browser wrapper to the same value', async () => {
+	it('round-trips solid colours via the pure function and the browser wrapper to the same value', async () => {
 		const wrapperResult = await encodeLqip(await (async () => {
 			const c = document.createElement('canvas');
 			c.width = 8; c.height = 6;
