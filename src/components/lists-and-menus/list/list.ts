@@ -7,7 +7,8 @@ import { nlddListTranslations } from './list.i18n.js';
 import type { NLDDListTranslations } from './list.i18n.js';
 import '../../status-and-feedback/inline-dialog/inline-dialog.js';
 
-export type ListVariant = 'simple' | 'box' | 'box-on-tinted';
+export type ListVariant = 'simple' | 'box';
+export type ListBackground = 'transparent' | 'base' | 'tinted';
 export type ListType = 'list' | 'navigation';
 
 export interface NLDDReorderEventDetail {
@@ -51,9 +52,18 @@ export interface NLDDReorderEventDetail {
 export class NLDDList extends LitElement {
 	static override styles = [listStyles];
 
-	/** Visual style of the list. */
+	/** Visual style of the list. `simple` is a plain vertical strip with
+	 *  no rounded corners; `box` is a framed card with rounded corners and
+	 *  an inset highlight ring. */
 	@property({ reflect: true })
 	variant: ListVariant = 'simple';
+
+	/** Surface fill. Default depends on `variant` — `simple` defaults to
+	 *  `transparent`, `box` defaults to `tinted`. Override to use the list
+	 *  on a different parent surface (`base` when the page itself is
+	 *  already tinted, `transparent` for a ghost-card outline). */
+	@property({ reflect: true })
+	background?: ListBackground;
 
 	/** A11y semantics. See class docblock. */
 	@property({ reflect: true })

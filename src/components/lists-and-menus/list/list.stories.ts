@@ -1,4 +1,4 @@
-import { html, render } from 'lit';
+import { html, nothing, render } from 'lit';
 import './list.js';
 import '../list-item/list-item.js';
 import '../cells/title-cell/title-cell.js';
@@ -21,9 +21,16 @@ export default {
 	argTypes: {
 		variant: {
 			control: 'select',
-			options: ['simple', 'box', 'box-on-tinted'],
-			description: 'Visuele stijl van de lijst',
+			options: ['simple', 'box'],
+			description: 'Visuele stijl: `simple` = platte strip, `box` = framed card met afgeronde hoeken en highlight ring',
 			table: { defaultValue: { summary: 'simple' } },
+		},
+		background: {
+			control: 'select',
+			options: ['(default)', 'transparent', 'base', 'tinted'],
+			mapping: { '(default)': undefined },
+			description: 'Surface fill. Default volgt `variant` (simple → transparent, box → tinted). Zet `base` om de box op een al getinte achtergrond te plaatsen.',
+			table: { defaultValue: { summary: '(default)' } },
 		},
 		type: {
 			control: 'select',
@@ -66,6 +73,7 @@ Selectie-state wordt **altijd door de consumer beheerd**: de lijst muteert nooit
 export const Default = {
 	args: {
 		variant: 'simple',
+		background: undefined,
 		type: 'list',
 		'no-dividers': false,
 		'empty-text': '',
@@ -74,6 +82,7 @@ export const Default = {
 	render: (args: Record<string, any>) => html`
 		<nldd-list
 			variant=${args.variant}
+			background=${args.background || nothing}
 			type=${args.type}
 			?no-dividers=${args['no-dividers']}
 			empty-text=${args['empty-text']}
@@ -102,16 +111,16 @@ export const Variants = {
 			</nldd-list>
 
 			<nldd-list variant="box">
-				<nldd-list-item><nldd-text-cell text="Box — item 1"></nldd-text-cell></nldd-list-item>
+				<nldd-list-item><nldd-text-cell text="Box (default: tinted bg + highlight) — item 1"></nldd-text-cell></nldd-list-item>
 				<nldd-list-item><nldd-text-cell text="Box — item 2"></nldd-text-cell></nldd-list-item>
 				<nldd-list-item><nldd-text-cell text="Box — item 3"></nldd-text-cell></nldd-list-item>
 			</nldd-list>
 
 			<div style="background: var(--semantics-surfaces-tinted-background-color); padding: 24px;">
-				<nldd-list variant="box-on-tinted">
-					<nldd-list-item><nldd-text-cell text="Box-on-tinted — item 1"></nldd-text-cell></nldd-list-item>
-					<nldd-list-item><nldd-text-cell text="Box-on-tinted — item 2"></nldd-text-cell></nldd-list-item>
-					<nldd-list-item><nldd-text-cell text="Box-on-tinted — item 3"></nldd-text-cell></nldd-list-item>
+				<nldd-list variant="box" background="base">
+					<nldd-list-item><nldd-text-cell text='variant="box" background="base" — item 1'></nldd-text-cell></nldd-list-item>
+					<nldd-list-item><nldd-text-cell text="op een al getinte pagina — item 2"></nldd-text-cell></nldd-list-item>
+					<nldd-list-item><nldd-text-cell text="item 3"></nldd-text-cell></nldd-list-item>
 				</nldd-list>
 			</div>
 		</div>
@@ -120,7 +129,7 @@ export const Variants = {
 		controls: { disable: true },
 		docs: {
 			description: {
-				story: 'Drie visuele varianten: `simple` (alleen bovenrand), `box` (getint oppervlak met afgeronde hoeken) en `box-on-tinted` (effen oppervlak voor gebruik op een al getinte achtergrond).',
+				story: 'Twee varianten: `simple` (platte strip, alleen item-scheiding) en `box` (framed card met afgeronde hoeken + highlight ring). De `background` attribute regelt de fill — default volgt de variant (`simple` → transparent, `box` → tinted). Voor "box op een getinte pagina": `variant="box" background="base"`.',
 			},
 		},
 	},
