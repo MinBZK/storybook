@@ -6,11 +6,36 @@ export const boxStyles = css`
 	/* # Host */
 
 	:host {
+		--_background-color: var(--components-box-background-color);
+		--_highlight-color: var(--components-box-highlight-color);
+
 		display: block;
 	}
 
 	:host([hidden]) {
 		display: none;
+	}
+
+
+	/* ## Background variants
+	   Default is tinted (matches :host above). base = card-on-tinted, the
+	   highlight ring picks the +2-step semantic so the frame still reads
+	   against an already-tinted parent. transparent = ghost outline, no
+	   bg and no ring. */
+
+	:host([background="tinted"]) {
+		--_background-color: var(--components-box-background-color);
+		--_highlight-color: var(--components-box-highlight-color);
+	}
+
+	:host([background="base"]) {
+		--_background-color: var(--components-box-base-background-color);
+		--_highlight-color: var(--components-box-base-highlight-color);
+	}
+
+	:host([background="transparent"]) {
+		--_background-color: transparent;
+		--_highlight-color: transparent;
 	}
 
 
@@ -20,11 +45,12 @@ export const boxStyles = css`
 		box-sizing: border-box;
 		border-radius: var(--components-box-corner-radius);
 		/* Inner box-shadow paints a 1px highlight ring inside the radius
-		   without taking layout space. The colour is one palette step above
-		   the surface bg, giving the box a defined edge that reads as
-		   "subtle dimensional lift" rather than a hard border. */
-		box-shadow: inset 0 0 0 1px var(--components-box-highlight-color);
-		background-color: var(--components-box-background-color);
+		   without taking layout space. The colour is one to two palette
+		   steps above the surface bg depending on the variant, giving the
+		   box a defined edge that reads as "subtle dimensional lift"
+		   rather than a hard border. */
+		box-shadow: inset 0 0 0 1px var(--_highlight-color);
+		background-color: var(--_background-color);
 		padding: var(--components-box-padding);
 	}
 
