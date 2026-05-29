@@ -32,8 +32,14 @@
  *
  * @element nldd-code-viewer
  *
- * @attr {boolean} no-box - Drop the rounded container, padding, background, and border ring. Use when embedding inside a parent that supplies its own surface.
- * @attr {string} background - 'tinted' (default), 'base', or 'transparent'. Only applies when the box is on. Use 'base' for a code block on a tinted parent; 'transparent' for no fill and no border ring (the snippet relies on surrounding context to delineate).
+ * @attr {'simple'|'box'} variant - Visual style. `box` (default) is a framed
+ *   card with rounded corners, padding, fill, and a 1px border ring. `simple`
+ *   drops the entire frame (no corners, no padding, no fill, no ring) — use
+ *   when embedding inside a parent that supplies its own surface.
+ * @attr {'tinted'|'base'} background - Surface fill when `variant="box"`.
+ *   `tinted` (default) for a card on a plain page; `base` for a card on an
+ *   already-tinted parent (the border ring picks the +2-step semantic so the
+ *   frame still reads against a card-on-card).
  * @attr {string} language - Grammar to highlight with (yaml, json, javascript, typescript, css, html, xml, bash, markdown, rust, gherkin, toml, sql, python). Empty disables highlighting.
  * @attr {boolean} no-copy - Hide the copy-to-clipboard button (shown by default).
  * @attr {boolean} wrap - Wrap long lines instead of horizontal scroll
@@ -98,13 +104,14 @@ function loadGrammar(language: string): Promise<unknown> | undefined {
 export class NLDDCodeViewer extends LitElement {
 	static override styles = codeViewerStyles;
 
-	/** Removes the container styling (rounded corners, padding, background, border ring). Consumer is expected to wrap in their own container. */
-	@property({ type: Boolean, reflect: true, attribute: 'no-box' })
-	noBox = false;
-
-	/** Background color when the box is on. 'tinted' is the default; use 'base' on a tinted parent; 'transparent' for no fill and no border ring. */
+	/** Visual style. `box` (default) is a framed card; `simple` drops the
+	 *  entire frame for embedding in a consumer-provided container. */
 	@property({ type: String, reflect: true })
-	background: 'tinted' | 'base' | 'transparent' = 'tinted';
+	variant: 'simple' | 'box' = 'box';
+
+	/** Surface fill when `variant="box"`. */
+	@property({ type: String, reflect: true })
+	background: 'tinted' | 'base' = 'tinted';
 
 	@property({ type: String, reflect: true })
 	language = '';

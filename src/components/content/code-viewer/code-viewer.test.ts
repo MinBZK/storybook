@@ -72,22 +72,22 @@ describe('nldd-code-viewer', () => {
 	   Container (box + background)
 	   ============================================================ */
 
-	it('defaults to box on with background="tinted"', async () => {
+	it('defaults to variant="box" + background="tinted"', async () => {
 		el = await fixture('<nldd-code-viewer>x</nldd-code-viewer>');
 		await waitForUpdate(el);
-		expect(el.hasAttribute('no-box')).toBe(false);
+		expect(el.getAttribute('variant')).toBe('box');
 		expect(el.getAttribute('background')).toBe('tinted');
 	});
 
-	it('reflects no-box attribute', async () => {
-		el = await fixture('<nldd-code-viewer no-box>x</nldd-code-viewer>');
+	it('reflects variant attribute', async () => {
+		el = await fixture('<nldd-code-viewer variant="simple">x</nldd-code-viewer>');
 		await waitForUpdate(el);
-		expect(el.hasAttribute('no-box')).toBe(true);
-		expect((el as { noBox?: boolean }).noBox).toBe(true);
+		expect(el.getAttribute('variant')).toBe('simple');
+		expect((el as { variant?: string }).variant).toBe('simple');
 	});
 
-	it('no-box zeroes the box CSS — corner-radius and padding', async () => {
-		el = await fixture('<nldd-code-viewer no-box>x</nldd-code-viewer>');
+	it('variant="simple" zeroes the box CSS — corner-radius and padding', async () => {
+		el = await fixture('<nldd-code-viewer variant="simple">x</nldd-code-viewer>');
 		await waitForUpdate(el);
 		const pre = el.shadowRoot!.querySelector<HTMLElement>('pre.code-viewer')!;
 		const cs = getComputedStyle(pre);
@@ -97,15 +97,8 @@ describe('nldd-code-viewer', () => {
 		expect(cs.backgroundColor).toBe('rgba(0, 0, 0, 0)');
 	});
 
-	it('background="transparent" makes the fill transparent', async () => {
-		el = await fixture('<nldd-code-viewer background="transparent">x</nldd-code-viewer>');
-		await waitForUpdate(el);
-		const pre = el.shadowRoot!.querySelector<HTMLElement>('pre.code-viewer')!;
-		expect(getComputedStyle(pre).backgroundColor).toBe('rgba(0, 0, 0, 0)');
-	});
-
 	it('background attribute reflects each value', async () => {
-		for (const bg of ['tinted', 'base', 'transparent'] as const) {
+		for (const bg of ['tinted', 'base'] as const) {
 			el = await fixture(`<nldd-code-viewer background="${bg}">x</nldd-code-viewer>`);
 			await waitForUpdate(el);
 			expect(el.getAttribute('background')).toBe(bg);

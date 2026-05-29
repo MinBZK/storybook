@@ -34,17 +34,18 @@ export default {
 		status: { type: 'beta' },
 	},
 	argTypes: {
-		box: {
-			control: 'boolean',
-			description: 'Container tonen (afgeronde hoeken, padding, achtergrond, border ring). Uit voor inbedding in een eigen wrapper.',
-			table: { defaultValue: { summary: true } },
+		variant: {
+			control: 'select',
+			options: ['simple', 'box'],
+			description: '`box` (default) = framed card met afgeronde hoeken + border ring. `simple` = geen chrome (geen kader, padding of border) — voor inbedding in een eigen wrapper.',
+			table: { defaultValue: { summary: 'box' } },
 		},
 		background: {
 			control: 'select',
-			options: ['tinted', 'base', 'transparent'],
-			description: 'Achtergrondkleur van de container. `base` op een getinte parent, `transparent` geen fill en geen border ring (de omliggende context bakent de snippet af).',
+			options: ['tinted', 'base'],
+			description: 'Achtergrondkleur van de container. `base` op een al getinte parent (border ring krijgt +2 stappen voor extra contrast). Alleen van toepassing bij `variant="box"`.',
 			table: { defaultValue: { summary: 'tinted' } },
-			if: { arg: 'box' },
+			if: { arg: 'variant', eq: 'box' },
 		},
 		content: {
 			control: 'text',
@@ -69,7 +70,7 @@ export default {
 		},
 	},
 	args: {
-		box: true,
+		variant: 'box',
 		background: 'tinted',
 		content: DEFAULT_CONTENT,
 		language: '',
@@ -80,7 +81,7 @@ export default {
 
 const Template = (args: Record<string, any>) => html`
 	<nldd-code-viewer
-		?no-box=${!args.box}
+		variant=${args.variant}
 		background=${args.background}
 		language=${args.language || nothing}
 		?no-copy=${!args.copy}
@@ -168,15 +169,15 @@ function isEligible(person, threshold = 32502) {
    Container
    ============================================================ */
 
-export const NoBox = {
+export const Simple = {
 	render: Template,
 	args: {
-		box: false,
+		variant: 'simple',
 	},
 	parameters: {
 		docs: {
 			description: {
-				story: 'Container weg met `no-box`. Gebruik wanneer de code-viewer binnen een eigen wrapper zit die de surface en padding levert.',
+				story: '`variant="simple"` haalt het frame weg (geen corners, padding, fill of border). Gebruik wanneer de code-viewer binnen een eigen wrapper zit die de surface en padding levert.',
 			},
 		},
 	},
@@ -199,28 +200,7 @@ export const BackgroundBase = {
 	parameters: {
 		docs: {
 			description: {
-				story: '`background="base"` voor een code-viewer op een getinte parent. De code-viewer tekent zich af met de basis-surface in plaats van te versmelten met de getinte achtergrond.',
-			},
-		},
-	},
-};
-
-export const BackgroundTransparent = {
-	name: 'Background: transparent',
-	render: (args: Record<string, any>) => html`
-		<div style="padding: 24px; background-color: var(--semantics-surfaces-tinted-background-color); border-radius: var(--primitives-corner-radius-lg);">
-			${Template(args)}
-		</div>
-	`,
-	args: {
-		background: 'transparent',
-		content: `const transparent = true;
-// no fill, no border ring — pure code on the parent surface`,
-	},
-	parameters: {
-		docs: {
-			description: {
-				story: '`background="transparent"` maakt zowel de fill als de border ring transparant. Padding en afgeronde hoeken blijven om de tekst in te kaderen, maar de snippet leunt visueel volledig op de omliggende parent.',
+				story: '`background="base"` voor een code-viewer op een getinte parent. De code-viewer tekent zich af met de basis-surface in plaats van te versmelten met de getinte achtergrond; de border ring krijgt automatisch +2 stappen voor extra contrast.',
 			},
 		},
 	},

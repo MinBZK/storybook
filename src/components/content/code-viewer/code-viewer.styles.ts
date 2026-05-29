@@ -33,16 +33,11 @@ export const codeViewerStyles = css`
 		--_border-color: var(--semantics-surfaces-border-color);
 	}
 
-	/* Fully transparent — no fill AND no border ring. The snippet relies on
-	   surrounding context (a parent surface, a label) to delineate it. */
-	:host([background="transparent"]) {
-		--_background-color: transparent;
-		--_border-color: transparent;
-	}
-
-	/* no-box drops the entire frame (no rounded corners, no padding, no
-	   bg, no border ring). The host turns into an unstyled wrapper. */
-	:host([no-box]) {
+	/* variant="simple" drops the entire frame (no rounded corners, no
+	   padding, no fill, no border ring). The host becomes a thin wrapper
+	   around the slot content — use for embedding in a consumer-supplied
+	   container. Same shape nldd-list uses for its simple variant. */
+	:host([variant="simple"]) {
 		--_corner-radius: 0;
 		--_background-color: transparent;
 		--_border-color: transparent;
@@ -61,10 +56,10 @@ export const codeViewerStyles = css`
 		border-radius: var(--_corner-radius);
 		/* Inner box-shadow paints the 1px border ring inside the radius
 		   without taking layout space — matches nldd-box / nldd-banner.
-		   no-box and background="transparent" suppress the ring by
-		   setting --_border-color to transparent above. The forced-colors
-		   fallback at the bottom of the file restores a real border for
-		   Windows High Contrast users. */
+		   variant="simple" suppresses the ring by setting --_border-color
+		   to transparent above. The forced-colors fallback at the bottom
+		   of the file restores a real border for Windows High Contrast
+		   users. */
 		box-shadow: var(--_border-shadow);
 		background-color: var(--_background-color);
 		overflow-x: auto;
@@ -83,16 +78,16 @@ export const codeViewerStyles = css`
 		padding-right: var(--_actions-area-size);
 	}
 
-	/* no-box + copy-button: pin the button flush to the host's top-right
-	   corner (no inset padding) and keep the snippet at least as tall as
-	   the button so the layout never clips the action. The reserved
-	   right-padding is dropped — bare snippets imply no chrome, so the
-	   code may flow under the button if a single line is long enough. */
-	:host([no-box]:not([no-copy])) {
+	/* variant="simple" + copy-button: pin the button flush to the host's
+	   top-right corner (no inset padding) and keep the snippet at least as
+	   tall as the button so the layout never clips the action. The reserved
+	   right-padding is dropped — bare snippets imply no chrome, so the code
+	   may flow under the button if a single line is long enough. */
+	:host([variant="simple"]:not([no-copy])) {
 		--_actions-area-padding: 0;
 	}
 
-	:host([no-box]:not([no-copy])) .code-viewer {
+	:host([variant="simple"]:not([no-copy])) .code-viewer {
 		min-height: var(--_actions-area-size);
 		padding-right: 0;
 	}
@@ -194,11 +189,11 @@ export const codeViewerStyles = css`
 	   forced-colors / Windows High Contrast strips box-shadow, so the
 	   inset border ring on .code-viewer would disappear. Restore the
 	   frame with a real border in that mode — same fallback nldd-box,
-	   nldd-banner, and nldd-list use. no-box keeps no border (the host
-	   is a bare wrapper in that mode). */
+	   nldd-banner, and nldd-list use. variant="simple" keeps no border
+	   (the host is a bare wrapper in that mode). */
 
 	@media (forced-colors: active) {
-		:host(:not([no-box])) .code-viewer {
+		:host([variant="box"]) .code-viewer {
 			border: 1px solid CanvasText;
 		}
 	}
