@@ -34,6 +34,18 @@ export default {
 		status: { type: 'beta' },
 	},
 	argTypes: {
+		box: {
+			control: 'boolean',
+			description: 'Container tonen (afgeronde hoeken, padding, achtergrond, border ring). Uit voor inbedding in een eigen wrapper.',
+			table: { defaultValue: { summary: true } },
+		},
+		background: {
+			control: 'select',
+			options: ['tinted', 'base', 'transparent'],
+			description: 'Achtergrondkleur van de container. `base` op een getinte parent, `transparent` geen fill en geen border ring (de omliggende context bakent de snippet af).',
+			table: { defaultValue: { summary: 'tinted' } },
+			if: { arg: 'box' },
+		},
 		content: {
 			control: 'text',
 			description: 'Code-inhoud (slot)',
@@ -45,46 +57,34 @@ export default {
 			description: 'Grammar voor syntax-highlighting. Bij "(geen)" wordt de inhoud raw gerenderd.',
 			table: { defaultValue: { summary: '(geen)' } },
 		},
-		wrap: {
-			control: 'boolean',
-			description: 'Lange regels afbreken in plaats van horizontaal scrollen',
-			table: { defaultValue: { summary: false } },
-		},
-		box: {
-			control: 'boolean',
-			description: 'Container tonen (afgeronde hoeken, padding, achtergrond). Uit voor inbedding in een eigen wrapper.',
-			table: { defaultValue: { summary: true } },
-		},
-		background: {
-			control: 'select',
-			options: ['tinted', 'base', 'transparent'],
-			description: 'Achtergrondkleur van de container. `base` op een getinte parent, `transparent` geen fill en geen border ring (de omliggende context bakent de snippet af).',
-			table: { defaultValue: { summary: 'tinted' } },
-			if: { arg: 'box' },
-		},
 		copy: {
 			control: 'boolean',
 			description: 'Toon de kopieerknop rechtsboven. Klik kopieert de raw slot-tekst naar het klembord.',
 			table: { defaultValue: { summary: true } },
 		},
+		wrap: {
+			control: 'boolean',
+			description: 'Lange regels afbreken in plaats van horizontaal scrollen',
+			table: { defaultValue: { summary: false } },
+		},
 	},
 	args: {
-		content: DEFAULT_CONTENT,
-		language: '',
-		wrap: false,
 		box: true,
 		background: 'tinted',
+		content: DEFAULT_CONTENT,
+		language: '',
 		copy: true,
+		wrap: false,
 	},
 };
 
 const Template = (args: Record<string, any>) => html`
 	<nldd-code-viewer
-		language=${args.language || nothing}
-		?wrap=${args.wrap}
 		?no-box=${!args.box}
-		?no-copy=${!args.copy}
 		background=${args.background}
+		language=${args.language || nothing}
+		?no-copy=${!args.copy}
+		?wrap=${args.wrap}
 	>${args.content}</nldd-code-viewer>
 `;
 
