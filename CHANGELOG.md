@@ -64,12 +64,6 @@ here; consult the commit history if you need that level of detail.
 - `nldd-collection`: initial left-arrow disabled state on first render.
 - `nldd-top-navigation-bar`: website-title gets vertical breathing room at sm so it no longer kisses the top edge.
 - Tokens: light-mode `--semantics-content-color` and link colours bumped so the new page-footer meets WCAG contrast.
-- `nldd-image`: errored `<img>` switched from `visibility: hidden` to `display: none` so its `alt` isn't announced alongside the visible error overlay (was producing duplicate announcements on most screen readers).
-- `nldd-image`: `width` routes through a `--_max-width` custom property instead of inline `style.maxWidth`, so consumer CSS targeting the host's max-width still wins the cascade.
-- `nldd-image`: alt-aware double-announce on the error overlay is gone. The wrapper no longer carries `role="img"` + `aria-label` (the visible `.image__error-text` already carries the alt text for both audiences).
-- `nldd-banner`: ARIA `role` + `aria-live` are now applied in the constructor (reading the raw `variant` attribute) so the host carries the correct role the moment it enters the DOM. AT engines no longer miss the initial announcement when role is added in `connectedCallback`.
-- `nldd-progress-bar` + `nldd-progress-circle`: parent → segment detection uses `instanceof` instead of `tagName === '…'`, so scoped custom-element registries (used in some test contexts and cross-frame setups) keep working.
-- LQIP gradient now lives inside an `@supports (left: mod(1px, 1px)) and (background: oklab(0 0 0)) and (color: rgb(from red r g b))` gate, so older engines drop the gradient cleanly to the neutral fallback instead of risking a partial render.
 
 ## <small>0.8.50 (2026-05-28)</small>
 
