@@ -272,63 +272,6 @@ export { parseTypedTag, parseNamedTag, parseComponent, extractLeadingBlock };
 // consumer-facing surface. Exclude them from the reference.
 const INTERNAL_TAGS = new Set(['nldd-lqip-encoder']);
 
-function main() {
-
-const entryFiles = collectEntryFiles(componentsDir);
-const components = [];
-for (const file of entryFiles) {
-	const source = readFileSync(file, 'utf-8');
-	const block = extractLeadingBlock(source);
-	if (!block) continue;
-	const ceMatch = source.match(/@customElement\(['"]([^'"]+)['"]\)/);
-	const fallbackTag = ceMatch ? ceMatch[1] : null;
-	for (const parsed of parseComponent(block, file, fallbackTag)) {
-		if (parsed.tag && !INTERNAL_TAGS.has(parsed.tag)) components.push(parsed);
-	}
-}
-
-// Group by category, in the declared order; unknown categories come last.
-const byCategory = new Map();
-for (const c of components) {
-	if (!byCategory.has(c.category)) byCategory.set(c.category, []);
-	byCategory.get(c.category).push(c);
-}
-
-const orderedCategories = [
-	...Object.keys(CATEGORY_TITLES).filter((k) => byCategory.has(k)),
-	...[...byCategory.keys()].filter((k) => !(k in CATEGORY_TITLES)).sort(),
-];
-
-const header = `<!--
-  GEGENEREERD BESTAND — niet handmatig bewerken.
-  Bron: de JSDoc (@element / @attr / @slot / @fires) van elk component in
-  src/components, plus de iconnamen uit content/icon/icons en icon-aliases.
-  Hergenereren: npm run generate:component-reference
--->
-
-# Componentreferentie — @nldd/design-system
-
-Elk custom element met zijn attributen, slots en events. Dit is een offline
-snelreferentie; de levende documentatie met voorbeelden staat in
-[Storybook](https://minbzk.github.io/storybook/), en de exacte types staan in
-de \`.d.ts\` bestanden van het pakket.
-
-> Let op: deze referentie komt uit de JSDoc van de componenten. Een paar
-> componenten documenteren niet al hun \`@attr\`s; daar tonen de \`.d.ts\` types
-> of Storybook de volledige set. Raadpleeg die bij twijfel.
-
-`;
-
-const sections = [];
-let total = 0;
-for (const cat of orderedCategories) {
-	const list = byCategory.get(cat).sort((a, b) => a.tag.localeCompare(b.tag));
-	total += list.length;
-	const title = CATEGORY_TITLES[cat] || cat;
-	sections.push(`## ${title}\n`);
-	sections.push(list.map(renderComponent).join('\n'));
-}
-
 // --- Icon names ---
 // The valid `name` values for <nldd-icon> are the SVG filenames in the icon
 // folder plus the aliases. Both are build inputs, so we read them directly to
@@ -350,8 +293,7 @@ function collectIconNames() {
 	return { names: names.sort(), aliases: aliases.sort() };
 }
 
-function renderIcons() {
-	const { names, aliases } = collectIconNames();
+function renderIcons({ names, aliases }) {
 	const out = [
 		'## Iconen',
 		'',
@@ -370,16 +312,72 @@ function renderIcons() {
 	return out.join('\n');
 }
 
-sections.push(renderIcons());
+function main() {
+	const entryFiles = collectEntryFiles(componentsDir);
+	const components = [];
+	for (const file of entryFiles) {
+		const source = readFileSync(file, 'utf-8');
+		const block = extractLeadingBlock(source);
+		if (!block) continue;
+		const ceMatch = source.match(/@customElement\(['"]([^'"]+)['"]\)/);
+		const fallbackTag = ceMatch ? ceMatch[1] : null;
+		for (const parsed of parseComponent(block, file, fallbackTag)) {
+			if (parsed.tag && !INTERNAL_TAGS.has(parsed.tag)) components.push(parsed);
+		}
+	}
 
-const body = header + sections.join('\n');
-writeFileSync(outputPath, body.replace(/\n{3,}/g, '\n\n').trimEnd() + '\n');
+	// Group by category, in the declared order; unknown categories come last.
+	const byCategory = new Map();
+	for (const c of components) {
+		if (!byCategory.has(c.category)) byCategory.set(c.category, []);
+		byCategory.get(c.category).push(c);
+	}
 
-const iconInfo = collectIconNames();
-console.log(`Wrote ${outputPath}`);
-console.log(`Components: ${total} across ${orderedCategories.length} categories`);
-console.log(`Icons: ${iconInfo.names.length} names + ${iconInfo.aliases.length} aliases`);
+	const orderedCategories = [
+		...Object.keys(CATEGORY_TITLES).filter((k) => byCategory.has(k)),
+		...[...byCategory.keys()].filter((k) => !(k in CATEGORY_TITLES)).sort(),
+	];
 
+	const header = `<!--
+  GEGENEREERD BESTAND — niet handmatig bewerken.
+  Bron: de JSDoc (@element / @attr / @slot / @fires) van elk component in
+  src/components, plus de iconnamen uit content/icon/icons en icon-aliases.
+  Hergenereren: npm run generate:component-reference
+-->
+
+# Componentreferentie — @nldd/design-system
+
+Elk custom element met zijn attributen, slots en events. Dit is een offline
+snelreferentie; de levende documentatie met voorbeelden staat in
+[Storybook](https://minbzk.github.io/storybook/), en de exacte types staan in
+de \`.d.ts\` bestanden van het pakket.
+
+> Let op: deze referentie komt uit de JSDoc van de componenten. Een paar
+> componenten documenteren niet al hun \`@attr\`s; daar tonen de \`.d.ts\` types
+> of Storybook de volledige set. Raadpleeg die bij twijfel.
+
+`;
+
+	const sections = [];
+	let total = 0;
+	for (const cat of orderedCategories) {
+		const list = byCategory.get(cat).sort((a, b) => a.tag.localeCompare(b.tag));
+		total += list.length;
+		const title = CATEGORY_TITLES[cat] || cat;
+		sections.push(`## ${title}\n`);
+		sections.push(list.map(renderComponent).join('\n'));
+	}
+
+	// Read the icon catalog once and reuse it for both rendering and the summary.
+	const iconInfo = collectIconNames();
+	sections.push(renderIcons(iconInfo));
+
+	const body = header + sections.join('\n');
+	writeFileSync(outputPath, body.replace(/\n{3,}/g, '\n\n').trimEnd() + '\n');
+
+	console.log(`Wrote ${outputPath}`);
+	console.log(`Components: ${total} across ${orderedCategories.length} categories`);
+	console.log(`Icons: ${iconInfo.names.length} names + ${iconInfo.aliases.length} aliases`);
 }
 
 // Run the generator only when executed directly, not when imported for tests.

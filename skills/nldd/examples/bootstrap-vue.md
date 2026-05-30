@@ -99,7 +99,6 @@ watch(
         slot="header"
         text="Bewerken"
         dismiss-text="Sluiten"
-        @dismiss="emit('close')"
       ></nldd-top-title-bar>
       <!-- inhoud -->
     </nldd-page>
@@ -107,8 +106,13 @@ watch(
 </template>
 ```
 
-**Waarom de `@close` óók `emit('close')` aanroept en niet direct `hide()`:** de
-sheet sluit zichzelf bij Esc of klik-buiten en vuurt dan `close`. Laat dat de
-gedeelde `open`-state omlaag zetten, zodat de `watch` één keer `hide()` doet.
-Roep je in de handler zelf weer `hide()` aan, dan krijg je een
-`hide()` → `@close` → `hide()` lus.
+**Eén handler, niet twee.** Luister alleen naar `@close` op de sheet, niet ook
+naar `@dismiss` op de title-bar. De sheet vangt het bubbelende `dismiss`-event
+zelf op en roept intern `hide()` aan, wat `close` vuurt. Zou je daarnaast
+`@dismiss="emit('close')"` zetten, dan krijg je twee `close`-emits op één klik.
+
+**Waarom de `@close` `emit('close')` aanroept en niet direct `hide()`:** de
+sheet sluit zichzelf bij Esc, klik-buiten of de dismiss-knop en vuurt dan
+`close`. Laat dat de gedeelde `open`-state omlaag zetten, zodat de `watch` één
+keer `hide()` doet. Roep je in de handler zelf weer `hide()` aan, dan krijg je
+een `hide()` → `@close` → `hide()` lus.
