@@ -10,7 +10,7 @@ export const formFieldStyles = css`
 	/* # Host */
 
 	:host {
-		--_gap: calc(var(--primitives-space-10) / 2);
+		--_gap: calc(var(--primitives-space-10) / 2 - var(--primitives-space-2));
 
 		${inheritedTextReset}
 		display: block;
@@ -47,6 +47,10 @@ export const formFieldStyles = css`
 	.form-field__header {
 		box-sizing: border-box;
 		display: flex;
+		/* Paints above .form-field__main so a label descender stays readable where it
+		   overlaps the input focus ring — this is what lets the top-aligned --_gap stay
+		   tight. Reset to auto in the side-by-side layout below (no vertical overlap there). */
+		z-index: 1;
 		flex-direction: column;
 	}
 
@@ -55,6 +59,7 @@ export const formFieldStyles = css`
 	:host(:not([label-alignment])[form-label-alignment="left"]) .form-field__header,
 	:host(:not([label-alignment])[form-label-alignment="right"]) .form-field__header {
 		@container (min-width: ${mdMin}) {
+			z-index: auto;
 			width: var(--semantics-forms-label-column-width);
 			min-height: var(--semantics-controls-md-min-size);
 			flex-grow: 0;
