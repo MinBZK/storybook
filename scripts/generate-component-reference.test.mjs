@@ -8,11 +8,13 @@
 
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
+import { join } from 'node:path';
 import {
 	parseTypedTag,
 	parseNamedTag,
 	parseComponent,
 	extractLeadingBlock,
+	componentsDir,
 } from './generate-component-reference.js';
 
 test('parseTypedTag: simple type, name, description', () => {
@@ -79,8 +81,6 @@ test('parseComponent: single element with attrs, slots, events', () => {
 	const [c] = parseComponent(block, '/x/src/components/content/thing/thing.ts', null);
 	assert.equal(c.tag, 'nldd-thing');
 	assert.equal(c.summary, 'A short summary.');
-	// category is derived relative to the real componentsDir prefix, which a
-	// synthetic path doesn't share; it's covered by the integration run instead.
 	assert.deepEqual(c.attrs, [{ type: 'string', name: 'label', description: 'The label' }]);
 	assert.equal(c.slots.length, 1);
 	assert.equal(c.events[0].name, 'change');
@@ -124,6 +124,14 @@ test('parseComponent: falls back to @customElement tag when no @element', () => 
 	const block = 'Just prose, no element tag.';
 	const [c] = parseComponent(block, '/x/src/components/a/b/b.ts', 'nldd-fallback');
 	assert.equal(c.tag, 'nldd-fallback');
+});
+
+test('parseComponent: category is derived from the path under componentsDir', () => {
+	// Use a path actually under the real componentsDir so the prefix-slice that
+	// derives the category lines up (a synthetic path would yield the wrong root).
+	const filePath = join(componentsDir, 'status-and-feedback', 'badge', 'badge.ts');
+	const [c] = parseComponent('@element nldd-badge', filePath, null);
+	assert.equal(c.category, 'status-and-feedback');
 });
 
 test('extractLeadingBlock: prefers the block containing @element over a license header', () => {

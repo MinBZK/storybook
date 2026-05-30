@@ -262,9 +262,10 @@ function renderComponent(c) {
 	return out.join('\n');
 }
 
-// The pure parsing helpers are exported so they can be unit-tested without
-// triggering the file-walking/writing side effects of the main routine.
-export { parseTypedTag, parseNamedTag, parseComponent, extractLeadingBlock };
+// The pure parsing helpers (and componentsDir, for path-derived assertions) are
+// exported so they can be unit-tested without triggering the file-walking and
+// file-writing side effects of the main routine.
+export { parseTypedTag, parseNamedTag, parseComponent, extractLeadingBlock, componentsDir };
 
 // --- Main ---
 
@@ -287,8 +288,10 @@ function collectIconNames() {
 	try {
 		const src = readFileSync(aliasesFile, 'utf-8');
 		aliases = [...src.matchAll(/^\s*'([^']+)'\s*:/gm)].map((m) => m[1]);
-	} catch {
-		// aliases are optional
+	} catch (err) {
+		// The aliases file is optional; only a missing file is tolerated.
+		// Surface anything else (permission, read errors) instead of hiding it.
+		if (err.code !== 'ENOENT') throw err;
 	}
 	return { names: names.sort(), aliases: aliases.sort() };
 }
