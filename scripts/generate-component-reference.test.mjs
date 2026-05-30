@@ -9,6 +9,7 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { join } from 'node:path';
+import { readFileSync } from 'node:fs';
 import {
 	parseTypedTag,
 	parseNamedTag,
@@ -148,4 +149,20 @@ test('extractLeadingBlock: prefers the block containing @element over a license 
 	const block = extractLeadingBlock(source);
 	assert.match(block, /@element nldd-thing/);
 	assert.doesNotMatch(block, /Copyright/);
+});
+
+test('integration: parses a real component file end to end', () => {
+	// Exercises the full extract → parse pipeline against actual source, so a
+	// break surfaces locally with `npm run test:scripts`, not only in CI.
+	const file = join(componentsDir, 'actions', 'button', 'button.ts');
+	const source = readFileSync(file, 'utf-8');
+	const block = extractLeadingBlock(source);
+	const ce = source.match(/@customElement\(['"]([^'"]+)['"]\)/);
+	const [c] = parseComponent(block, file, ce ? ce[1] : null);
+	assert.equal(c.tag, 'nldd-button');
+	assert.equal(c.category, 'actions');
+	assert.ok(c.attrs.some((a) => a.name === 'variant'), 'button should document a variant attr');
+	assert.ok(c.events.some((e) => e.name === 'click'), 'button should document a click event');
+	// Every attribute must have a non-empty name (no parse drift to empty rows).
+	assert.ok(c.attrs.every((a) => a.name.length > 0));
 });

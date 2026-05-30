@@ -281,7 +281,16 @@ const INTERNAL_TAGS = new Set(['nldd-lqip-encoder']);
 function collectIconNames() {
 	const iconsDir = resolve(componentsDir, 'content/icon/icons');
 	const aliasesFile = resolve(componentsDir, 'content/icon/icon-aliases.js');
-	const names = readdirSync(iconsDir)
+	let entries;
+	try {
+		entries = readdirSync(iconsDir);
+	} catch (err) {
+		if (err.code === 'ENOENT') {
+			throw new Error(`Icon directory not found at ${iconsDir}.`);
+		}
+		throw err;
+	}
+	const names = entries
 		.filter((f) => f.endsWith('.svg'))
 		.map((f) => f.slice(0, -4));
 	let aliases = [];
