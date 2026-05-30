@@ -100,7 +100,8 @@ function parseTypedTag(rest) {
 	}
 	const nameMatch = remainder.match(/^(\S+)\s*(.*)$/s);
 	if (!nameMatch) return { type, name: '', description: '' };
-	const name = nameMatch[1];
+	// Strip the JSDoc `[optional]` bracket convention from the attribute name.
+	const name = nameMatch[1].replace(/^\[|\]$/g, '');
 	const description = nameMatch[2].replace(/^-\s*/, '').replace(/\s+/g, ' ').trim();
 	return { type, name, description };
 }
@@ -120,47 +121,74 @@ function parseNamedTag(rest) {
 	return { name, description: description.replace(/\s+/g, ' ').trim() };
 }
 
-/** Parse one component's JSDoc block into a structured record. The fallbackTag
- * (from the @customElement decorator) is used when the JSDoc omits @element. */
+/** Parse one component file's JSDoc block into one or more records — a file may
+ * document several custom elements (e.g. nldd-tab-bar + nldd-tab-bar-item), each
+ * with its own @element. attrs/slots/events are assigned to the @element that
+ * precedes them. The fallbackTag (from @customElement) is used only when the
+ * JSDoc has no @element at all. Returns an array of components. */
 function parseComponent(block, filePath, fallbackTag) {
 	const lines = block.split('\n');
-	const component = {
-		tag: null,
-		summary: [],
+	const category = filePath.slice(componentsDir.length + 1).split(sep)[0];
+	const summaryLines = [];
+	const components = [];
+
+	const newComponent = (tag) => ({
+		tag,
+		summary: '',
 		attrs: [],
 		slots: [],
 		events: [],
-	};
+		category,
+	});
 
-	let sawTag = false;
+	let current = null;
+	// The most recent description-bearing entry (attr/slot/event), so a
+	// multi-line JSDoc tag's continuation lines append to it instead of dropping.
+	let lastEntry = null;
+
 	for (const line of lines) {
 		const tagMatch = line.match(/^@(\w+)\s*([\s\S]*)$/);
 		if (!tagMatch) {
-			// Lines before the first @-tag form the prose summary.
-			if (!sawTag && line.trim() && !line.startsWith('#')) {
-				component.summary.push(line.trim());
+			if (line.trim() === '') {
+				lastEntry = null;
+				continue;
+			}
+			if (lastEntry) {
+				lastEntry.description = `${lastEntry.description} ${line.trim()}`.trim();
+				continue;
+			}
+			// Prose before the first @element is the shared summary.
+			if (!current && !line.startsWith('#')) {
+				summaryLines.push(line.trim());
 			}
 			continue;
 		}
-		sawTag = true;
+		lastEntry = null;
 		const [, tag, rest] = tagMatch;
 		switch (tag) {
 			case 'element':
-				component.tag = rest.trim();
+				current = newComponent(rest.trim());
+				components.push(current);
 				break;
 			case 'attr': {
-				const { type, name, description } = parseTypedTag(rest);
-				component.attrs.push({ name, type, description });
+				if (!current) break;
+				const entry = parseTypedTag(rest);
+				current.attrs.push(entry);
+				lastEntry = entry;
 				break;
 			}
 			case 'slot': {
-				const { name, description } = parseNamedTag(rest);
-				component.slots.push({ name, description });
+				if (!current) break;
+				const entry = parseNamedTag(rest);
+				current.slots.push(entry);
+				lastEntry = entry;
 				break;
 			}
 			case 'fires': {
-				const { name, description } = parseNamedTag(rest);
-				component.events.push({ name, description });
+				if (!current) break;
+				const entry = parseNamedTag(rest);
+				current.events.push(entry);
+				lastEntry = entry;
 				break;
 			}
 			default:
@@ -168,19 +196,22 @@ function parseComponent(block, filePath, fallbackTag) {
 		}
 	}
 
-	// Fall back to the @customElement tag when the JSDoc omits @element.
-	if (!component.tag) component.tag = fallbackTag;
-	if (!component.tag) return null;
-	// The first summary line is the boilerplate "… Component (Lit + TypeScript)"
-	// title; drop it and keep the genuine description that follows.
-	component.summary = component.summary.filter(
-		(l) => !/Component \(Lit \+ TypeScript\)\s*$/.test(l),
-	);
-	component.summary = component.summary.join(' ').replace(/\s+/g, ' ').trim();
-	component.category = filePath
-		.slice(componentsDir.length + 1)
-		.split(sep)[0];
-	return component;
+	// No @element at all: fall back to the @customElement decorator tag.
+	if (components.length === 0) {
+		if (!fallbackTag) return [];
+		components.push(newComponent(fallbackTag));
+	}
+
+	// The shared prose summary (minus the boilerplate title line) goes to the
+	// first element; sub-elements keep their own per-element prose if any.
+	const summary = summaryLines
+		.filter((l) => !/Component \(Lit \+ TypeScript\)\s*$/.test(l))
+		.join(' ')
+		.replace(/\s+/g, ' ')
+		.trim();
+	if (components[0]) components[0].summary = summary;
+
+	return components;
 }
 
 function escapeCell(text) {
@@ -241,8 +272,9 @@ for (const file of entryFiles) {
 	if (!block) continue;
 	const ceMatch = source.match(/@customElement\(['"]([^'"]+)['"]\)/);
 	const fallbackTag = ceMatch ? ceMatch[1] : null;
-	const parsed = parseComponent(block, file, fallbackTag);
-	if (parsed && !INTERNAL_TAGS.has(parsed.tag)) components.push(parsed);
+	for (const parsed of parseComponent(block, file, fallbackTag)) {
+		if (parsed.tag && !INTERNAL_TAGS.has(parsed.tag)) components.push(parsed);
+	}
 }
 
 // Group by category, in the declared order; unknown categories come last.

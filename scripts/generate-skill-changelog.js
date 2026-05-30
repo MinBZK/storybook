@@ -30,7 +30,17 @@ const header = `<!--
 
 `;
 
-const changelog = readFileSync(sourcePath, 'utf-8');
+let changelog;
+try {
+	changelog = readFileSync(sourcePath, 'utf-8');
+} catch (err) {
+	if (err.code === 'ENOENT') {
+		console.error(`CHANGELOG.md not found at ${sourcePath}.`);
+		console.error('Draai dit script na een release, als semantic-release de CHANGELOG heeft bijgewerkt.');
+		process.exit(1);
+	}
+	throw err;
+}
 writeFileSync(outputPath, header + changelog);
 
 console.log(`Wrote ${outputPath} (${changelog.split('\n').length} lines)`);

@@ -44,13 +44,13 @@
       "changelogTitle": "# Changelog\n\nAll notable changes to the NLDD design system are documented here.\n\nThe format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),\nand this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).\nVersions are bumped automatically by semantic-release on merge to main —\nthe type of conventional-commit determines the release. Conventional types\n`chore`, `docs`, `ci`, `style`, `test`, `build` are intentionally omitted\nhere; consult the commit history if you need that level of detail."
     }],
     ["@semantic-release/exec", {
-      "prepareCmd": "npm run generate:skill-changelog"
+      "prepareCmd": "npm run generate:skill-docs"
     }],
     ["@semantic-release/npm", {
       "npmPublish": false
     }],
     ["@semantic-release/git", {
-      "assets": ["package.json", "CHANGELOG.md", "skills/nldd/changelog.md"],
+      "assets": ["package.json", "CHANGELOG.md", "skills/nldd/changelog.md", "skills/nldd/reference.md"],
       "message": "chore(release): ${nextRelease.version}\n\n${nextRelease.notes}"
     }]
   ]

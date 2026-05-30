@@ -241,6 +241,12 @@ watch(() => props.open, async (open) => {
 *Waarom:* mount/unmount slaat de in- en uit-animatie over en verliest
 DOM-toestand. De imperatieve methoden animeren wel.
 
+Belangrijk: dit fragment toont alleen de `watch`-kant. De sheet sluit zichzelf
+bij Esc of klik-buiten en vuurt dan `close`; koppel `@close` aan een
+`emit('close')` die diezelfde `open`-state omlaag zet, niet aan een directe
+`hide()`. Anders krijg je de `hide()` → `@close` → `hide()` lus. Het complete,
+werkende component staat in [`examples/bootstrap-vue.md`](examples/bootstrap-vue.md).
+
 ### Lijstrijen componeren uit cellen
 
 Bouw rijen op uit cellen binnen een `nldd-list-item`. Niet uit losse divs.
@@ -276,6 +282,11 @@ slot; jij stuurt alleen `invalid` aan vanuit je eigen validatielogica.
   </nldd-form-field-error-text>
 </nldd-form-field>
 ```
+
+`invalid` is een gewone boolean-attribuut dat je dynamisch zet: in Vue
+`:invalid="hasError"`, in platte JS `field.toggleAttribute('invalid', hasError)`.
+Zo koppel je dezelfde vlag aan je validatie bij blur, submit of een
+server-respons.
 
 *Waarom dit patroon:* de koppeling loopt via `error-message` → `id`, niet via
 shadow-DOM-trucs, zodat screenreaders de fout aan het veld koppelen. De
@@ -388,6 +399,17 @@ bestaat, zonder foutmelding, alleen een stille terugval op de default.
 **Iconen.** `nldd-icon name="…"` accepteert namen uit een vaste set. De
 volledige lijst (iconen plus aliassen) staat onder "Iconen" in
 [`reference.md`](reference.md); verzin geen naam, kies er een uit die set.
+
+## Grenzen van deze skill
+
+Deze skill gaat over het *gebruiken* van het design system: welke componenten,
+welke patronen, welke visie. Wat erbuiten valt en je zelf invult vanuit je
+applicatie- en frameworkkeuzes: state-management en validatieregels,
+server-side foutafhandeling, routing, en het testen van je eigen app. Voor
+SSR/hydratie geldt de algemene web-componentenpraktijk (de componenten
+upgraden client-side; render geen kritieke inhoud uitsluitend in hun shadow
+DOM). De componenten zelf zijn los getest binnen het design system; jouw
+app-tests schrijf je met je eigen testopstelling.
 
 > Voor onderhouders: `reference.md` en `changelog.md` zijn gegenereerd
 > (uit respectievelijk de JSDoc van de componenten en de root-CHANGELOG). Draai
