@@ -340,6 +340,8 @@ Wat jij nog moet doen:
    dit als een attribuut, slot of gedrag pas vanaf een bepaalde versie bestaat,
    of om te zien wat er sinds jouw versie is veranderd.
 
-> Voor onderhouders: `reference.md` is gegenereerd uit de JSDoc van de
-> componenten. Na een API-wijziging draai je `npm run generate:component-reference`
-> en commit je het resultaat.
+> Voor onderhouders: `reference.md` en `changelog.md` zijn gegenereerd
+> (uit respectievelijk de JSDoc van de componenten en de root-CHANGELOG). Draai
+> `npm run generate:skill-docs` na een API-wijziging of release en commit het
+> resultaat. Het zijn echte bestanden, geen symlinks: een plugin wordt naar een
+> geïsoleerde cache gekopieerd waarbij symlinks buiten de plugin-map wegvallen.
