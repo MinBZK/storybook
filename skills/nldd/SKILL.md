@@ -330,6 +330,37 @@ Wat jij nog moet doen:
 - Geef betekenisvolle `accessible-label`s waar je tekst weglaat (icon-only
   knoppen, geslotte inhoud).
 
+## Upgraden naar een nieuwe versie
+
+Het systeem brengt versies uit als patches (semantic-release verhoogt het
+patch-nummer bij elke `feat`, `fix` of breaking change). Het versienummer alleen
+zegt dus niet of een upgrade veilig is; **de changelog wel.** Gebruik
+[`changelog.md`](changelog.md) als je upgradepad.
+
+Werkwijze bij het verhogen van je `@nldd/design-system` versie:
+
+1. **Lees elke versie tussen jouw huidige en de doelversie.** De entries staan
+   nieuwste eerst, met een kop per release (versienummer + datum). Sla niets
+   over: een breaking change kan in een tussenliggende patch zitten.
+2. **Scan de `Breaking` / `Breaking Changes` secties eerst.** Die bevatten
+   concrete migratie-instructies: een verwijderd attribuut met zijn vervanger,
+   hernoemde tokens, gewijzigd gedrag. Een echt voorbeeld uit de changelog:
+   `variant="box-on-tinted"` op `nldd-list` is verwijderd, met als vervanger
+   `<nldd-list variant="box" background="base">`.
+3. **Pas de migraties toe in je code** voordat je de nieuwe versie in gebruik
+   neemt. Zoek je app door op de verwijderde attributen, tokennamen of
+   componenten uit de breaking entries.
+4. **Lees `Highlights`, `Added` en `Changed`** voor nieuwe componenten of
+   attributen die je oudere, omslachtigere code kunnen vervangen.
+5. **Verifieer tegen [`reference.md`](reference.md)** of een attribuut, slot of
+   event in de doelversie bestaat zoals je verwacht. Die referentie hoort bij
+   exact deze release.
+
+Vuistregel: ga niet meer dan een handvol patches in één sprong omhoog zonder de
+tussenliggende `Breaking` secties te lezen. Hernoemde CSS-tokens zijn de meest
+gemiste val: je eigen thema-overrides verwijzen dan naar een naam die niet meer
+bestaat, zonder foutmelding, alleen een stille terugval op de default.
+
 ## Bron van waarheid
 
 1. **[Storybook](https://minbzk.github.io/storybook/)**: levende voorbeelden en
