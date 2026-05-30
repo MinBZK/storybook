@@ -259,7 +259,8 @@ const orderedCategories = [
 
 const header = `<!--
   GEGENEREERD BESTAND — niet handmatig bewerken.
-  Bron: de JSDoc (@element / @attr / @slot / @fires) van elk component in src/components.
+  Bron: de JSDoc (@element / @attr / @slot / @fires) van elk component in
+  src/components, plus de iconnamen uit content/icon/icons en icon-aliases.
   Hergenereren: npm run generate:component-reference
 -->
 
@@ -286,8 +287,53 @@ for (const cat of orderedCategories) {
 	sections.push(list.map(renderComponent).join('\n'));
 }
 
+// --- Icon names ---
+// The valid `name` values for <nldd-icon> are the SVG filenames in the icon
+// folder plus the aliases. Both are build inputs, so we read them directly to
+// give consumers an offline, in-sync catalog instead of "see Storybook".
+
+function collectIconNames() {
+	const iconsDir = resolve(componentsDir, 'content/icon/icons');
+	const aliasesFile = resolve(componentsDir, 'content/icon/icon-aliases.js');
+	const names = readdirSync(iconsDir)
+		.filter((f) => f.endsWith('.svg'))
+		.map((f) => f.slice(0, -4));
+	let aliases = [];
+	try {
+		const src = readFileSync(aliasesFile, 'utf-8');
+		aliases = [...src.matchAll(/^\s*'([^']+)'\s*:/gm)].map((m) => m[1]);
+	} catch {
+		// aliases are optional
+	}
+	return { names: names.sort(), aliases: aliases.sort() };
+}
+
+function renderIcons() {
+	const { names, aliases } = collectIconNames();
+	const out = [
+		'## Iconen',
+		'',
+		`Geldige \`name\`-waarden voor \`<nldd-icon>\` (${names.length} iconen` +
+			`${aliases.length ? ` + ${aliases.length} aliassen` : ''}). Verzin geen naam; kies er een uit deze set.`,
+		'',
+		'**Iconen**',
+		'',
+		names.map((n) => `\`${n}\``).join(', '),
+		'',
+	];
+	if (aliases.length) {
+		out.push('**Aliassen** (verwijzen naar een icoon hierboven)', '');
+		out.push(aliases.map((n) => `\`${n}\``).join(', '), '');
+	}
+	return out.join('\n');
+}
+
+sections.push(renderIcons());
+
 const body = header + sections.join('\n');
 writeFileSync(outputPath, body.replace(/\n{3,}/g, '\n\n').trimEnd() + '\n');
 
+const iconInfo = collectIconNames();
 console.log(`Wrote ${outputPath}`);
 console.log(`Components: ${total} across ${orderedCategories.length} categories`);
+console.log(`Icons: ${iconInfo.names.length} names + ${iconInfo.aliases.length} aliases`);

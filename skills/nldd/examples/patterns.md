@@ -64,7 +64,7 @@ voor themabewuste kleuren.
 
 .leeg-titel {
   font-size: var(--primitives-font-size-200);
-  font-weight: var(--primitives-font-weight-medium);
+  font-weight: var(--primitives-font-weight-body-medium);
   color: light-dark(
     var(--primitives-color-neutral-400),
     var(--primitives-color-neutral-500)

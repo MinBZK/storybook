@@ -1,6 +1,6 @@
 ---
 name: nldd
-description: "Bouw applicaties met het NLDD Design System (@nldd/design-system). Gebruik deze skill wanneer je een app maakt die de web components van de Nederlandse Digitale Dienst gebruikt: triggers zijn '@nldd/design-system', 'nldd-' tags, 'design system', 'web component', 'Rijksoverheid UI', 'overheidsinterface bouwen', 'nldd component gebruiken', plus vragen over layout, sheets, popovers, modals, toegankelijkheid en CSS-tokens van dit systeem. NIET voor het ontwikkelen van het design system zelf (daarvoor: /component, /css)."
+description: "Bouw applicaties met de web components van het NLDD Design System (@nldd/design-system, Nederlandse Digitale Dienst, Rijksoverheid). Triggers: @nldd/design-system, 'nldd-' tags, vragen over layout, sheets, popovers, modals, formulieren, toegankelijkheid, CSS-tokens of upgraden van dit systeem. NIET voor het ontwikkelen van het design system zelf (daarvoor: /component, /css)."
 metadata:
   type: reference
   audience: consumers
@@ -109,31 +109,13 @@ import '@nldd/design-system';          // registreert alle nldd-* componenten
 import '@nldd/design-system/styles';   // CSS-tokens + Rijksoverheid-fonts
 ```
 
-Wil je alleen laden wat je gebruikt, importeer dan per component via de
-subpath-export:
+Voor tree-shaking kun je ook per component importeren via de subpath-export
+(bijv. `@nldd/design-system/button`). Frameworks die templates compileren,
+moeten `nldd-*` als custom elements herkennen (in Vue: `isCustomElement`).
 
-```js
-import '@nldd/design-system/button';
-import '@nldd/design-system/text-field';
-import '@nldd/design-system/styles';
-```
-
-Frameworks die JSX of templates compileren, moeten weten dat `nldd-*` tags
-custom elements zijn. In Vue 3 (Vite):
-
-```js
-// vite.config.js
-vue({
-  template: {
-    compilerOptions: {
-      isCustomElement: (tag) => tag.startsWith('nldd-'),
-    },
-  },
-})
-```
-
-Zie [`examples/bootstrap-html.md`](examples/bootstrap-html.md) en
-[`examples/bootstrap-vue.md`](examples/bootstrap-vue.md) voor complete setups.
+De complete setups, inclusief de Vue-config en het per-component importeren,
+staan in [`examples/bootstrap-html.md`](examples/bootstrap-html.md) en
+[`examples/bootstrap-vue.md`](examples/bootstrap-vue.md).
 
 ## De vijf CSS-lagen
 
@@ -163,6 +145,12 @@ waarden:
   );
 }
 ```
+
+**Licht en donker.** Het hele palet is gebouwd op `light-dark()`, dus het thema
+volgt de CSS `color-scheme`. Standaard is dat de OS- of browservoorkeur. Wil je
+licht of donker forceren, zet dan `color-scheme: light` (of `dark`) op een
+root-element; gebruik `light-dark()` zoals hierboven voor je eigen kleuren zodat
+ze meebewegen. Er is geen aparte thema-toggle-API op `nldd-app-view`.
 
 ## Gebruikspatronen
 
@@ -268,6 +256,32 @@ Bouw rijen op uit cellen binnen een `nldd-list-item`. Niet uit losse divs.
 Beschikbare cellen: `nldd-text-cell`, `nldd-icon-cell`, `nldd-title-cell`,
 `nldd-description-cell`, `nldd-spacer-cell`, en meer (zie `reference.md`).
 
+### Formulieren en validatiefouten
+
+`nldd-form-field` koppelt label en input automatisch (geen `for`/`id`-gedoe).
+Voor een foutmelding zet je twee dingen op de input zelf: `invalid` en
+`error-message` met de `id`('s) van de bijbehorende
+`nldd-form-field-error-text`-elementen. Die wijzen zichzelf toe aan de juiste
+slot; jij stuurt alleen `invalid` aan vanuit je eigen validatielogica.
+
+```html
+<!-- zet `invalid` op de input als je validatie faalt -->
+<nldd-form-field label="KvK-nummer">
+  <nldd-text-field name="kvk"
+    invalid
+    error-message="kvk-error"
+  ></nldd-text-field>
+  <nldd-form-field-error-text id="kvk-error">
+    Vul een geldig KvK-nummer in (8 cijfers).
+  </nldd-form-field-error-text>
+</nldd-form-field>
+```
+
+*Waarom dit patroon:* de koppeling loopt via `error-message` → `id`, niet via
+shadow-DOM-trucs, zodat screenreaders de fout aan het veld koppelen. De
+validatie-*regels* (wanneer is iets fout) zijn aan jou; het systeem regelt
+alleen de presentatie en de toegankelijke koppeling.
+
 ### Custom events lezen via `event.detail`
 
 Componenten leveren hun waarde in `event.detail`, niet altijd op
@@ -370,6 +384,10 @@ bestaat, zonder foutmelding, alleen een stille terugval op de default.
 4. **[`changelog.md`](changelog.md)**: de release notes per versie. Raadpleeg
    dit als een attribuut, slot of gedrag pas vanaf een bepaalde versie bestaat,
    of om te zien wat er sinds jouw versie is veranderd.
+
+**Iconen.** `nldd-icon name="…"` accepteert namen uit een vaste set. De
+volledige lijst (iconen plus aliassen) staat onder "Iconen" in
+[`reference.md`](reference.md); verzin geen naam, kies er een uit die set.
 
 > Voor onderhouders: `reference.md` en `changelog.md` zijn gegenereerd
 > (uit respectievelijk de JSDoc van de componenten en de root-CHANGELOG). Draai
