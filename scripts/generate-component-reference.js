@@ -68,10 +68,12 @@ function extractLeadingBlock(source) {
 	if (blocks.length === 0) return null;
 	const chosen =
 		blocks.find((m) => /@element\b|@customElement\b/.test(m[1])) ?? blocks[0];
-	// Strip the leading " * " from each line.
+	// Strip the leading " * " from each line. Use \s* (not \s?) after the star so
+	// JSDoc formatted with two or more spaces (" *  @attr …") still lands the tag
+	// at column 0, otherwise the @-tag regex would miss it and drop the entry.
 	return chosen[1]
 		.split('\n')
-		.map((line) => line.replace(/^\s*\*?\s?/, ''))
+		.map((line) => line.replace(/^\s*\*?\s*/, ''))
 		.join('\n')
 		.trim();
 }
@@ -265,7 +267,7 @@ function renderComponent(c) {
 // The pure parsing helpers (and componentsDir, for path-derived assertions) are
 // exported so they can be unit-tested without triggering the file-walking and
 // file-writing side effects of the main routine.
-export { parseTypedTag, parseNamedTag, parseComponent, extractLeadingBlock, componentsDir };
+export { parseTypedTag, parseNamedTag, parseComponent, extractLeadingBlock, escapeCell, componentsDir };
 
 // --- Main ---
 

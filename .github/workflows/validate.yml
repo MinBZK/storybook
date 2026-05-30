@@ -30,6 +30,10 @@ jobs:
       - name: Test reference generator
         run: npm run test:scripts
 
+      # Guards reference.md (JSDoc-derived) against drift on every PR.
+      # changelog.md is intentionally NOT guarded here: it is synced from the
+      # root CHANGELOG by the release pipeline (@semantic-release/exec), so it
+      # only needs to be current at release time, not per-PR.
       - name: Check skill component reference is in sync
         run: |
           npm run generate:component-reference

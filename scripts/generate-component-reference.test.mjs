@@ -15,6 +15,7 @@ import {
 	parseNamedTag,
 	parseComponent,
 	extractLeadingBlock,
+	escapeCell,
 	componentsDir,
 } from './generate-component-reference.js';
 
@@ -151,6 +152,23 @@ test('extractLeadingBlock: prefers the block containing @element over a license 
 	assert.doesNotMatch(block, /Copyright/);
 });
 
+test('extractLeadingBlock: tags with two spaces after the star still land at column 0', () => {
+	// Some formatters align tags with two spaces; the strip must not leave a
+	// leading space, or the @-tag regex misses it and the entry is dropped.
+	const source = ['/**', ' *  @element nldd-thing', ' *  @attr {string} label - x', ' */'].join('\n');
+	const block = extractLeadingBlock(source);
+	const [c] = parseComponent(block, '/x/src/components/a/b/b.ts', null);
+	assert.equal(c.tag, 'nldd-thing');
+	assert.equal(c.attrs.length, 1);
+	assert.equal(c.attrs[0].name, 'label');
+});
+
+test('escapeCell: escapes pipe characters so union types do not break the table', () => {
+	assert.equal(escapeCell("'a'|'b'"), "'a'\\|'b'");
+	assert.equal(escapeCell(''), '');
+	assert.equal(escapeCell('no pipes here'), 'no pipes here');
+});
+
 test('integration: parses a real component file end to end', () => {
 	// Exercises the full extract → parse pipeline against actual source, so a
 	// break surfaces locally with `npm run test:scripts`, not only in CI.
@@ -161,6 +179,9 @@ test('integration: parses a real component file end to end', () => {
 	const [c] = parseComponent(block, file, ce ? ce[1] : null);
 	assert.equal(c.tag, 'nldd-button');
 	assert.equal(c.category, 'actions');
+	// These two intentionally pin button's stable public API (variant + click):
+	// if a refactor accidentally stops parsing attrs/events, this fails loudly.
+	// If button's JSDoc legitimately drops them, update this test alongside it.
 	assert.ok(c.attrs.some((a) => a.name === 'variant'), 'button should document a variant attr');
 	assert.ok(c.events.some((e) => e.name === 'click'), 'button should document a click event');
 	// Every attribute must have a non-empty name (no parse drift to empty rows).
