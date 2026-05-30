@@ -1,0 +1,2029 @@
+<!--
+  GEGENEREERD BESTAND — niet handmatig bewerken.
+  Bron: de JSDoc (@element / @attr / @slot / @fires) van elk component in src/components.
+  Hergenereren: npm run generate:component-reference
+-->
+
+# Componentreferentie — @nldd/design-system
+
+Elk custom element met zijn attributen, slots en events. Dit is een offline
+snelreferentie; de levende documentatie met voorbeelden staat in
+[Storybook](https://minbzk.github.io/storybook/), en de exacte types staan in
+de `.d.ts` bestanden van het pakket.
+
+> Let op: deze referentie komt uit de JSDoc van de componenten. Een paar
+> componenten documenteren niet al hun `@attr`s; daar tonen de `.d.ts` types
+> of Storybook de volledige set. Raadpleeg die bij twijfel.
+
+## Actions
+
+### `<nldd-button>`
+
+**Attributes**
+
+| Attribuut | Type | Beschrijving |
+| --- | --- | --- |
+| `variant` | `string` | Button variant: 'primary' \| 'secondary' \| 'destructive' \| 'accent-filled' \| 'accent-transparent' \| 'neutral-tinted' \| 'neutral-transparent' \| 'critical-tinted' \| 'critical-transparent' |
+| `size` | `string` | Button size: 'xs' \| 'sm' \| 'md' (default: 'md') |
+| `disabled` | `boolean` | Disabled state |
+| `type` | `string` | Button type for form submission: 'button' \| 'submit' \| 'reset' (ignored when href is set) |
+| `expandable` | `boolean` | Whether the button has a icon to indicate it opens a menu or popover |
+| `expanded` | `boolean` | Whether the popover/menu controlled by this button is currently open. Forwarded as aria-expanded on the inner button; toggles the is-expanded visual state. |
+| `popup-type` | `string` | Type of popup container this button opens: 'menu' \| 'listbox' \| 'dialog' \| 'tree' \| 'grid'. Sets aria-haspopup on the inner button and forces aria-expanded to always be present (true/false) so screen readers know the popup state. |
+| `width` | `string` | Width mode: 'full' (stretches to container) or any CSS length (e.g. '240px') |
+| `text` | `string` | Button text |
+| `single-line` | `boolean` | When true, truncates overflowing text with an ellipsis instead of letting it wrap. Requires the button (or an ancestor) to constrain the width. |
+| `start-icon` | `string` | Icon name for the start icon (before text) |
+| `end-icon` | `string` | Icon name for the end icon (after text) |
+| `accessible-label` | `string` | Accessible label for the button, overrides text for screen readers |
+| `href` | `string` | When set, renders an <a> element instead of <button> |
+| `target` | `string` | Link target (e.g. '_blank'); only used when href is set |
+| `rel` | `string` | Link rel attribute; defaults to 'noopener noreferrer' when target is '_blank' |
+
+**Slots**
+
+| Slot | Beschrijving |
+| --- | --- |
+| `text` | Slot for custom button content (e.g. text with inline markup). Used when the text attribute is empty or not set (an empty string counts as "not set", since the attribute and the unset property are indistinguishable). Provide accessible-label when the slotted content isn't plain text. |
+| `start-icon` | Slot for a custom start icon (e.g. custom SVG). Only used when start-icon attribute is not set. |
+| `end-icon` | Slot for a custom end icon (e.g. custom SVG). Only used when end-icon attribute is not set. |
+
+**Events**
+
+| Event | Beschrijving |
+| --- | --- |
+| `click` | When button is clicked (not fired when disabled) |
+
+### `<nldd-button-bar>`
+
+A horizontal container for grouping buttons with a neutral background. Automatically propagates its size and variant to all child nldd-button and nldd-icon-button elements. Renders nldd-button-bar-divider elements as internal dividers — no separate component needed.
+
+**Attributes**
+
+| Attribuut | Type | Beschrijving |
+| --- | --- | --- |
+| `size` | `string` | Bar size: 'xs' \| 'sm' \| 'md' (default: 'md') |
+| `variant` | `string` | Button variant (default: 'neutral-tinted') |
+| `disabled` | `boolean` | Disabled state |
+
+**Slots**
+
+| Slot | Beschrijving |
+| --- | --- |
+| _(default)_ | Default slot for nldd-button, nldd-icon-button and nldd-button-bar-divider elements |
+
+### `<nldd-button-group>`
+
+A container for grouping related buttons together, either horizontally or vertically.
+
+**Attributes**
+
+| Attribuut | Type | Beschrijving |
+| --- | --- | --- |
+| `size` | `string` | Button group size: 'sm' \| 'md' (default: 'md') |
+| `orientation` | `string` | Layout direction: 'horizontal' \| 'vertical' (default: 'vertical') |
+
+**Slots**
+
+| Slot | Beschrijving |
+| --- | --- |
+| _(default)_ | Default slot for buttons (max 3) |
+
+### `<nldd-icon-button>`
+
+**Attributes**
+
+| Attribuut | Type | Beschrijving |
+| --- | --- | --- |
+| `variant` | `string` | Button variant: 'accent-filled' \| 'accent-transparent' \| 'neutral-tinted' \| 'neutral-transparent' \| 'critical-tinted' \| 'critical-transparent' \| 'primary' \| 'secondary' \| 'destructive' |
+| `size` | `string` | Button size: 'xs' \| 'sm' \| 'md' \| 'lg' (default: 'md') |
+| `disabled` | `boolean` | Disabled state |
+| `type` | `string` | Button type for form submission: 'button' \| 'submit' \| 'reset' (ignored when href is set) |
+| `expandable` | `boolean` | Whether the button opens a menu or popover and shows chevron next to the icon |
+| `expanded` | `boolean` | Whether the popover/menu controlled by this button is currently open. Forwarded as aria-expanded on the inner button; toggles the is-expanded visual state. |
+| `popup-type` | `string` | Type of popup container this button opens: 'menu' \| 'listbox' \| 'dialog' \| 'tree' \| 'grid'. Sets aria-haspopup on the inner button and forces aria-expanded to always be present (true/false) so screen readers know the popup state. |
+| `width` | `string` | Width mode: 'full' (stretches to container) or any CSS length (e.g. '240px') |
+| `text` | `string` | Button text, used as aria-label and shown below the icon in lg size |
+| `icon` | `string` | Icon name for the nldd-icon element |
+| `accessible-label` | `string` | Accessible label for screen readers. Overrides text as aria-label |
+| `tooltip-timing` | `string` | Forwarded to the inner nldd-tooltip's `timing`: |
+| `href` | `string` | When set, renders an <a> element instead of <button> |
+| `target` | `string` | Link target (e.g. '_blank'); only used when href is set |
+| `rel` | `string` | Link rel attribute; defaults to 'noopener noreferrer' when target is '_blank' |
+| `popovertarget` | `string` | ID of a popover element to toggle; forwarded to the inner <button> |
+
+**Slots**
+
+| Slot | Beschrijving |
+| --- | --- |
+| `icon` | Slot for a custom icon (e.g. custom SVG). Only used when icon attribute is not set. |
+
+**Events**
+
+| Event | Beschrijving |
+| --- | --- |
+| `click` | When button is clicked (not fired when disabled) |
+
+### `<nldd-split-button>`
+
+A split button combines a primary action button with a dropdown trigger. The main button performs the default action, while the icon button opens a menu. Any `nldd-menu-item` and `nldd-menu-divider` children in the light DOM are **moved** into an internal `nldd-menu` inside the component's shadow DOM on mount (and on subsequent add/remove via MutationObserver). Consumers can no longer `querySelector` those items from the split-button afterwards — query through the menu via custom events or keep their own references. When no items are slotted, the chevron dispatches `menu-click` and the consumer is expected to manage their own popover.
+
+**Attributes**
+
+| Attribuut | Type | Beschrijving |
+| --- | --- | --- |
+| `size` | `string` | Button size: 'xs' \| 'sm' \| 'md' (default: 'md') |
+| `variant` | `string` | Button variant (default: 'neutral-tinted') |
+| `disabled` | `boolean` | Disabled state |
+| `text` | `string` | Button text for the primary action |
+| `icon` | `string` | Icon name shown before the text on the primary action button |
+| `translations` | `object` | Translations; unset keys fall back to Dutch |
+
+**Events**
+
+| Event | Beschrijving |
+| --- | --- |
+| `action-click` | Fired when the main button is clicked |
+| `menu-click` | Fired when the dropdown trigger is clicked and no items |
+
+### `<nldd-toolbar>`
+
+**Attributes**
+
+| Attribuut | Type | Beschrijving |
+| --- | --- | --- |
+| `size` | `string` | Toolbar size, propagated to all child controls: 'sm' \| 'md' (default: 'md') |
+| `show-item-labels` | `boolean` | When true, shows a text label below each toolbar item and the overflow button |
+| `label` | `string` | Accessible label for the toolbar. Only needed when multiple toolbars appear on the same page |
+
+**Slots**
+
+| Slot | Beschrijving |
+| --- | --- |
+| `start` | nldd-toolbar-item and nldd-toolbar-title elements placed at the start |
+| `center` | nldd-toolbar-item and nldd-toolbar-title elements placed at the center |
+| `end` | nldd-toolbar-item and nldd-toolbar-title elements placed at the end |
+| `overflow` | nldd-menu-item and nldd-menu-divider elements always shown in the overflow menu |
+
+## Content
+
+### `<nldd-blockquote>`
+
+Toont een citaat met optionele bron-attributie.
+
+**Attributes**
+
+| Attribuut | Type | Beschrijving |
+| --- | --- | --- |
+| `cite` | `string` | URL van de bron (wordt doorgegeven aan het <blockquote> element) |
+
+**Slots**
+
+| Slot | Beschrijving |
+| --- | --- |
+| _(default)_ | De citaat-paragra(a)f(en) — gebruik bij voorkeur <p>-elementen |
+| `attribution` | Optionele bronvermelding (auteur, titel, etc.) |
+
+### `<nldd-code-viewer>`
+
+A block of monospaced text for code, traces, output dumps, etc. Renders a styled `<pre>` with the design-system's monospace family, tinted background and standard content color. Whitespace is preserved (`white-space: pre`); long lines scroll horizontally by default. Set `wrap` to break long lines onto the next visual line — useful for prose-like content (YAML strings, formatted output) where horizontal scrolling is more disruptive than wrapping. Set `language` to one of the supported grammars (yaml, json, javascript, typescript, css, html, xml, bash, markdown, rust, gherkin, toml, sql, python) to highlight the slot content with Prism. Without `language` the slot content is rendered raw, no highlighting applied. Grammars are loaded lazily on first use, so a page that never sets `language` ships zero grammar code. Token colors are exposed as `--components-code-viewer-token-*` custom properties on the host. Override them per-instance to swap the theme: ```css nldd-code-viewer { --components-code-viewer-token-keyword-color: var(--my-purple); --components-code-viewer-token-string-color: var(--my-green); } ```
+
+**Attributes**
+
+| Attribuut | Type | Beschrijving |
+| --- | --- | --- |
+| `variant` | `'simple'\|'box'` | Visual style. `box` (default) is a framed |
+| `background` | `'tinted'\|'base'` | Surface fill when `variant="box"`. |
+| `language` | `string` | Grammar to highlight with (yaml, json, javascript, typescript, css, html, xml, bash, markdown, rust, gherkin, toml, sql, python). Empty disables highlighting. |
+| `no-copy` | `boolean` | Hide the copy-to-clipboard button (shown by default). |
+| `wrap` | `boolean` | Wrap long lines instead of horizontal scroll |
+
+**Slots**
+
+| Slot | Beschrijving |
+| --- | --- |
+| _(default)_ | Default slot for the code/text content |
+
+### `<nldd-icon>`
+
+A customizable icon component that renders SVG icons from a predefined library. Icons are decorative by default: the host gets `aria-hidden="true"` automatically. If you want the icon to be announced by assistive tech, set `aria-hidden="false"` on the consumer side together with an `aria-label`. Sizing: by default the icon fills its parent (existing behaviour). Set `size` to pin to a fixed spacer-aligned dimension (16–96px). Colour: by default the icon inherits its parent's `color`. Set `color` to one of the functional semantics (`primary-content`, `secondary-content`, `accent`, `critical`, `warning`, `success`) or a rijkskleur (`lintblauw`, `paars`, `groen`, …). For arbitrary one-off colours, set `style="color: …"` on the host — the inherited `color` still drives the SVG fill/stroke.
+
+**Attributes**
+
+| Attribuut | Type | Beschrijving |
+| --- | --- | --- |
+| `name` | `string` | The name of the icon to display |
+| `size` | `string` | Fixed size in px (spacer-aligned: 16, 20, 24, 28, 32, |
+| `color` | `string` | Functional (`primary-content`, `secondary-content`, |
+
+### `<nldd-image>`
+
+Wraps a native `<img>` with design-system styling: corner radius variants, aspect-ratio reservation, object-fit/position control, optional caption + credit. Renders as `<figure>` + `<figcaption>` only when a caption or credit is set — otherwise just the image, no extra wrapping. Hybrid source: the `src` attribute renders an internal `<img>`. To use a custom `<img>` or `<picture>` (e.g. with art-direction sources), slot it into the default slot and we'll style and wrap it like our own image.
+
+**Attributes**
+
+| Attribuut | Type | Beschrijving |
+| --- | --- | --- |
+| `src` | `string` | Image URL |
+| `alt` | `string` | Alt text. Required unless `decorative`. |
+| `srcset` | `string` | Responsive source set |
+| `sizes` | `string` | Source sizes hint |
+| `width` | `number\|'full'` | Display width. `full` (default) fills the parent. |
+| `height` | `number` | Intrinsic height (for layout reservation) |
+| `loading` | `'lazy'\|'eager'` | Loading strategy (default: 'lazy'). |
+| `decoding` | `'async'\|'sync'\|'auto'` | Decoding hint (default: 'async') |
+| `fetchpriority` | `'high'\|'low'\|'auto'` | Fetch priority hint |
+| `aspect-ratio` | `string` | Aspect ratio in CSS form (e.g. "16/9", "1/1", "4/3"). |
+| `object-fit` | `'cover'\|'contain'\|'fill'\|'scale-down'\|'none'` | default: 'cover' |
+| `object-position` | `'center'\|'top'\|'bottom'\|'left'\|'right'` | default: 'center' |
+| `shape` | `'square'\|'rounded'\|'circle'` | Corner shape (default: 'rounded') |
+| `caption` | `string` | Caption text shown below the image |
+| `credit` | `string` | Smaller credit/attribution text shown beside the caption |
+| `decorative` | `boolean` | Decorative image: alt is forced empty + aria-hidden |
+| `lqip` | `string` | Low-quality image placeholder as a CSV string |
+
+**Slots**
+
+| Slot | Beschrijving |
+| --- | --- |
+| _(default)_ | Custom `<img>` or `<picture>` (overrides the src-based default). |
+| `caption` | Rich caption content (overrides the `caption` attribute) |
+
+### `<nldd-keyboard-shortcut>`
+
+Toont een toetsencombinatie (zoals Cmd+K of Ctrl+Shift+P) in één gecombineerde container met semantische <kbd>-elementen per toets. Op touch-only devices (geen hover-capable input) wordt de shortcut standaard verborgen omdat hij niet aanroepbaar is. Gebruik het `always-visible` attribuut wanneer de shortcut puur informatief is en altijd zichtbaar moet blijven. Voor cross-platform shortcuts kunnen `mac-keys`, `windows-keys` en `linux-keys` worden gezet — het component picks de juiste op basis van de gedetecteerde OS, met `keys` als fallback voor onbekende platforms.
+
+**Attributes**
+
+| Attribuut | Type | Beschrijving |
+| --- | --- | --- |
+| `keys` | `string` | Toetsen gescheiden door '+' (bijv. 'Cmd+K' of 'Ctrl+Shift+P'). |
+| `mac-keys` | `string` | Optionele override voor macOS (incl. iPhone/iPad/iPod). |
+| `windows-keys` | `string` | Optionele override voor Windows. |
+| `linux-keys` | `string` | Optionele override voor Linux/ChromeOS. |
+| `size` | `string` | Grootte: 'sm' \| 'md' (default: 'md') |
+| `always-visible` | `boolean` | Toon ook op touch-only devices waar shortcuts niet aanroepbaar zijn. |
+
+**Slots**
+
+| Slot | Beschrijving |
+| --- | --- |
+| _(default)_ | Optionele custom <kbd>-elementen. Wordt genegeerd als keys is opgegeven. |
+
+### `<nldd-rich-text>`
+
+A container for rich text content that automatically applies responsive typography. Uses no shadow DOM so styles apply to all nested elements. Import nldd-rich-text.css globally in your application.
+
+**Attributes**
+
+| Attribuut | Type | Beschrijving |
+| --- | --- | --- |
+| `spacing` | `string` | Spacing between elements: 'flat' \| 'tight' \| 'snug' (default) \| 'loose' |
+| `centered` | `boolean` | Centers the main column inside the container; without it, content is left-aligned |
+| `translations` | `object` | Override translation keys; unset keys fall back to Dutch |
+
+### `<nldd-tag>`
+
+Een compacte label voor categorieën, statussen of metadata. Niet interactief. Voor interactieve chips (filter, dismiss) gebruik je <nldd-token>.
+
+**Attributes**
+
+| Attribuut | Type | Beschrijving |
+| --- | --- | --- |
+| `color` | `string` | Kleurvariant. Semantisch: 'neutral' \| 'accent' \| 'success' \| 'warning' \| 'critical'. Rijkskleuren: 'coolgray' \| 'lintblauw' \| 'donkerblauw' \| 'hemelblauw' \| 'lichtblauw' \| 'paars' \| 'violet' \| 'robijnrood' \| 'roze' \| 'rood' \| 'oranje' \| 'donkergeel' \| 'geel' \| 'donkerbruin' \| 'bruin' \| 'donkergroen' \| 'groen' \| 'mosgroen' \| 'mintgroen'. (default: 'neutral') |
+| `size` | `string` | Tag grootte: 'sm' \| 'md' (default: 'md') |
+| `text` | `string` | Tag tekst (alternatief voor default slot) |
+| `icon` | `string` | Icoon voor de tekst |
+| `variant` | `string` | Wat zichtbaar is: 'text' \| 'icon' \| 'icon-and-text'. Onbepaald → auto-detect op basis van welke van text/icon aanwezig is. |
+| `accessible-label` | `string` | Toegankelijk label voor screenreaders. Gebruik dit bij icon-only tags zonder zichtbare tekst. |
+
+**Slots**
+
+| Slot | Beschrijving |
+| --- | --- |
+| _(default)_ | Tag tekst |
+| `icon` | Custom icoon voor de tekst |
+
+### `<nldd-title>`
+
+A title bar with an optional overline, title, and subtitle on the left, and a slot for actions on the right.
+
+**Attributes**
+
+| Attribuut | Type | Beschrijving |
+| --- | --- | --- |
+| `size` | `number` | Visual size of the title: 1–6 (default: 3) |
+
+**Slots**
+
+| Slot | Beschrijving |
+| --- | --- |
+| `overline` | Optional overline above the title |
+| _(default)_ | Title text (use h1–h6 for semantics) |
+| `subtitle` | Optional subtitle below the title |
+| `actions` | Actions to the right of the title (buttons, menus, etc.) |
+
+### `<nldd-tooltip>`
+
+Wrapper component dat een tooltip toont bij hover of focus op het child element. Gebruikt `display: contents` zodat het de layout van het child niet beïnvloedt.
+
+**Attributes**
+
+| Attribuut | Type | Beschrijving |
+| --- | --- | --- |
+| `text` | `string` | Tooltip tekst |
+| `open` | `boolean` | Forceer de tooltip zichtbaar, ongeacht hover/focus. Gebruik voor programmatische feedback (bv. "Gekopieerd"). Reset naar false om hover-gedrag te herstellen. |
+| `placement` | `string` | Positie: 'top' \| 'bottom' \| 'left' \| 'right' (standaard: 'bottom'; op touch devices automatisch 'top') |
+| `timing` | `string` | Wanneer de tooltip verschijnt op hover: |
+
+**Slots**
+
+| Slot | Beschrijving |
+| --- | --- |
+| _(default)_ | Het element waarop de tooltip wordt getoond |
+
+**Events**
+
+| Event | Beschrijving |
+| --- | --- |
+| `nldd-tooltip-dismiss` | Wanneer een gebruiker Escape drukt terwijl |
+
+## Forms
+
+### `<nldd-form>`
+
+Nederlandse Digitale Dienst Form Component Plain custom element (extends HTMLElement, no Lit) — required for light-DOM autofill. Renders a real <form> element in the LIGHT DOM around its children. Chrome's autofill engine looks for native <input> elements that have a <form> ancestor in the light DOM; with shadow-DOM inputs it can't find them, so we keep this component shadow-less. **Differs from other nldd-* components:** - Geen shadowRoot — alle children leven in light DOM (binnen het inner <form>) - Geen Lit — pure HTMLElement met handmatige attribute-mirroring - **Vereist global stylesheet import** — vertical rhythm en form-section divider-suppression regels staan in `dist/css/form.css` (of `global.css`), niet in een component-specifieke shadow stylesheet. Import deze als deel van je app's globale CSS bundle. **Two usage modes:** 1. **Auto-wrap** (default): write children directly. Component creates a `<form>` element and migrates children into it via MutationObserver. Simplest API. 2. **User-provided form** (framework-friendly): write your own `<form>` as direct child. Component detects it, takes over attribute-mirroring, en skipt de migration. Children blijven waar je framework ze plaatst — geen DOM-shuffling die met React/Vue/Angular reconciliation conflicteert. **Framework interop:** In auto-wrap mode wordt elke direct child verplaatst naar het inner form via een MutationObserver. Voor de meeste React/Vue use cases werkt dit prima omdat frameworks alleen DOM-mutaties doen wanneer hun virtual DOM verandert. Voor edge cases (animatie-libs die DOM-positie tracken, SSR-hydration mismatches, frameworks die actief sibling-positions controleren) gebruik dan **user-provided form** mode. Voor programmatische manipulatie: gebruik de `form` getter zodat je direct met het inner `<form>` element werkt: const inner = document.querySelector('nldd-form').form; inner.checkValidity(); inner.appendChild(myInput); // skipt migration-overhead
+
+**Attributes**
+
+| Attribuut | Type | Beschrijving |
+| --- | --- | --- |
+| `name` | `string` | Form name |
+| `action` | `string` | URL endpoint for submission |
+| `method` | `string` | HTTP method ('get' \| 'post' \| 'dialog') |
+| `novalidate` | `boolean` | Skip native browser validation |
+| `enctype` | `string` | Encoding type for submission |
+| `target` | `string` | Submit target ('_self' \| '_blank' \| ...) |
+| `autocomplete` | `string` | 'on' \| 'off' (form-level autofill toggle) |
+| `label-alignment` | `string` | Default `label-alignment` voor descendant |
+
+**Events**
+
+| Event | Beschrijving |
+| --- | --- |
+| `submit` | — |
+| `reset` | — |
+
+### `<nldd-form-actions>`
+
+Een layout-wrapper voor de actie-knoppen onderaan een formulier (typisch een submit-button of button-group). Volgt dezelfde responsive layout als `nldd-form-field`: met `label-alignment="right"` of `"left"` krijgt de inhoud dezelfde insprong als de invoervelden boven, dankzij een `::before`-pseudo-element dat fungeert als spacer-kolom waar de label zou staan. Erft `label-alignment` automatisch over van een wrappende `<nldd-form>`: de form propageert z'n eigen `label-alignment` als `form-label-alignment` naar descendant `nldd-form-actions` (en `nldd-form-field`) via een MutationObserver. Een expliciete eigen `label-alignment` op de form-actions wint via CSS-cascade — de form-code raakt het `label-alignment` attribuut van de descendant nooit aan. <nldd-form label-alignment="right"> <nldd-form-field>...</nldd-form-field> <nldd-form-actions> <nldd-button-group> <nldd-button variant="primary" type="submit" text="Opslaan"></nldd-button> </nldd-button-group> </nldd-form-actions> </nldd-form>
+
+**Attributes**
+
+| Attribuut | Type | Beschrijving |
+| --- | --- | --- |
+| `label-alignment` | `string` | 'top' (default) \| 'right' \| 'left'. |
+| `form-label-alignment` | `string` | Door wrappende nldd-form gezet als |
+
+**Slots**
+
+| Slot | Beschrijving |
+| --- | --- |
+| _(default)_ | Actie-elementen (button, button-group, etc.) |
+
+### `<nldd-form-field-error-text>`
+
+Nederlandse Digitale Dienst Form Field Components (Lit + TypeScript)
+
+**Attributes**
+
+| Attribuut | Type | Beschrijving |
+| --- | --- | --- |
+| `label-alignment` | `string` | 'top' (default) \| 'right' \| 'left'. |
+| `form-label-alignment` | `string` | Door wrappende nldd-form gezet als |
+| `label` | `string` | Field label text. Omit for no-label layout. |
+| `supporting-label` | `string` | Short supporting text below the label. Same typography as optional badge. |
+| `optional` | `boolean` | Shows an optional badge next to the label. |
+| `optional-label` | `string` | Text for the optional badge. Defaults to 'Optioneel'. |
+| `id` | `string` | Referenced by the input's `error-message` attribute. |
+| `invalid` | `boolean` | Visibility managed automatically by nldd-form-field. |
+
+**Slots**
+
+| Slot | Beschrijving |
+| --- | --- |
+| _(default)_ | The slotted input (e.g. nldd-text-field). Set `invalid` and |
+| _(default)_ | Help text content. May contain inline elements including links. |
+| _(default)_ | The error message text. |
+
+### `<nldd-form-section>`
+
+Nederlandse Digitale Dienst Form Section Component Plain custom element (extends HTMLElement, no Lit) — light-DOM render lost een NVDA + Firefox a11y-bug op waar shadow-DOM <fieldset> + <legend> niet betrouwbaar als group-label aangekondigd worden voor slotted controls. Native fieldset/legend in light DOM werkt correct over alle AT/browser-combinaties. **Differs from shadow components:** - Geen shadowRoot — alle children leven in light DOM (binnen het gerenderde <fieldset>). - Geen Lit — pure HTMLElement met handmatige DOM-mutation. - **Vereist global stylesheet import** — `dist/css/form-section.css` (of `global.css`). Form-section heeft geen shadow stylesheet. Renders to: <nldd-form-section> <fieldset class="form-section"> <legend class="form-section__header"> <span class="form-section__title">Title</span> <span class="form-section__subtitle">Subtitle</span> </legend> <div class="form-section__main"> [user's children] </div> </fieldset> </nldd-form-section> **Accessibility note**: de title rendert als `<legend>`. Dat is semantisch een **groep-label**, geen heading. Screenreaders kondigen 't aan wanneer de gebruiker in de fieldset komt, maar gebruikers die met de H-toets door headings springen slaan 'm over. Visueel lijkt 't op een heading; gebruik dit component dus voor *form-grouping*, niet als pagina-structuur. Voor echte page-headings: gebruik een apart heading-element boven het form. **Supporting-text lengte**: de subtitle staat als `<span>` binnen de `<legend>` zodat SR 'm meeleest als group label. Bijwerking: bij elke field-entry binnen de sectie wordt de hele legend (titel + subtitel) opnieuw uitgesproken. Houd `supporting-text` daarom kort (richtlijn: ≤ ~80 tekens) en gebruik 'm voor groep-introductie ("Vul je adresgegevens in"), niet voor uitgebreide instructies. Voor langere uitleg op een specifiek veld: gebruik `nldd-form-field-help-text` op dat veld. <nldd-form> <nldd-form-section text="Persoonsgegevens" supporting-text="Vul je gegevens in."> <nldd-form-field label="Voornaam">...</nldd-form-field> <nldd-form-field label="Achternaam">...</nldd-form-field> </nldd-form-section> <nldd-form-section text="Adres"> <nldd-form-field label="Straat">...</nldd-form-field> </nldd-form-section> <nldd-form-actions>...</nldd-form-actions> </nldd-form>
+
+**Attributes**
+
+| Attribuut | Type | Beschrijving |
+| --- | --- | --- |
+| `text` | `string` | Heading-tekst (gerenderd in `<legend>`). |
+| `supporting-text` | `string` | Korte beschrijving onder de heading. |
+
+## Inputs
+
+### `<nldd-checkbox>`
+
+**Attributes**
+
+| Attribuut | Type | Beschrijving |
+| --- | --- | --- |
+| `checked` | `boolean` | Checked state |
+| `disabled` | `boolean` | Disabled state |
+| `indeterminate` | `boolean` | Indeterminate state (takes precedence over checked visually) |
+| `value` | `string` | Value for form submission |
+| `name` | `string` | Name for form submission |
+| `accessible-label` | `string` | Accessible label forwarded as aria-label to the native input. |
+
+**Events**
+
+| Event | Beschrijving |
+| --- | --- |
+| `change` | Fired when the checkbox state changes; detail: { checked: boolean, value: string } |
+
+### `<nldd-checkbox-field>`
+
+A checkbox with an inline label for use in forms.
+
+**Attributes**
+
+| Attribuut | Type | Beschrijving |
+| --- | --- | --- |
+| `checked` | `boolean` | Checked state |
+| `indeterminate` | `boolean` | Indeterminate state |
+| `disabled` | `boolean` | Disabled state |
+| `value` | `string` | Value for form submission |
+| `name` | `string` | Name for form submission |
+| `label` | `string` | Label text for the checkbox |
+
+**Events**
+
+| Event | Beschrijving |
+| --- | --- |
+| `change` | When checked state changes; detail: { checked: boolean, value: string } |
+
+### `<nldd-code-editor>`
+
+A monospace text editor for code, YAML, JSON, and other technical content. Visually pairs with `nldd-code` (same tinted background, same monospace font, same rounded corners) so a read-only view and the editable counterpart look like the same surface. Built on a native `<textarea>` — no syntax highlighting, no line numbers. Reach for a real editor library (CodeMirror, Monaco) when those features are required. Spellcheck and autocorrect are disabled by default since they don't help on code; long lines scroll horizontally unless `wrap` is set.
+
+**Attributes**
+
+| Attribuut | Type | Beschrijving |
+| --- | --- | --- |
+| `value` | `string` | The textarea value |
+| `placeholder` | `string` | Placeholder text |
+| `input-id` | `string` | Sets the id on the native textarea. Set automatically by nldd-form-field. |
+| `disabled` | `boolean` | Disabled state |
+| `name` | `string` | Textarea name for form submission |
+| `readonly` | `boolean` | Readonly state |
+| `required` | `boolean` | Required state |
+| `wrap` | `boolean` | Wrap long lines instead of horizontal scroll |
+| `rows` | `number` | Initial visible rows (minimum height). Default: 6. |
+| `resize` | `string` | 'none' \| 'vertical' (default) \| 'auto'. |
+| `accessible-label` | `string` | Accessible label forwarded to the inner textarea. Set automatically by nldd-form-field. |
+
+**Events**
+
+| Event | Beschrijving |
+| --- | --- |
+| `input` | When value changes |
+| `change` | When value is committed (blur) |
+
+### `<nldd-combo-box>`
+
+A text input with autocomplete dropdown via nldd-menu. Add a slotted nldd-menu with nldd-menu-item children to provide options. The slotted nldd-menu keeps its default focus behavior (menu container receives focus) so that typing keeps focus on the input. The picker button moves focus to the menu explicitly on activation. Note: Only nldd-menu-item type="button" is supported. Radio and checkbox types are not supported in this context.
+
+**Attributes**
+
+| Attribuut | Type | Beschrijving |
+| --- | --- | --- |
+| `value` | `string` | The selected form value |
+| `text` | `string` | The text shown in the input. May differ from `value` |
+| `placeholder` | `string` | Placeholder text for the input |
+| `size` | `string` | Size: 'sm' \| 'md' (default: 'md') |
+| `valid` | `boolean` | Marks the field as valid |
+| `invalid` | `boolean` | Marks the field as invalid |
+| `disabled` | `boolean` | Disabled state |
+| `name` | `string` | Input name for form submission |
+| `autocomplete` | `string` | Browser autofill hint. Default 'off' to prevent the |
+| `accessible-label` | `string` | Accessible label forwarded as aria-label to the input. Required for screen reader accessibility. |
+| `max-items` | `number` | Maximum visible items before scrolling (default: 8) |
+| `translations` | `object` | Override translation keys; unset keys fall back to Dutch |
+| `no-spellcheck` | `boolean` | Disables browser spellchecking on the inner input |
+| `width` | `string` | Optional fixed width (any CSS length, e.g. "240px"). Default: stretches to fill container. |
+
+**Slots**
+
+| Slot | Beschrijving |
+| --- | --- |
+| _(default)_ | An nldd-menu element with nldd-menu-item and nldd-menu-divider children |
+
+**Events**
+
+| Event | Beschrijving |
+| --- | --- |
+| `input` | When the input value changes; detail: { value: string } |
+| `change` | When an option is selected or a custom value is committed; |
+
+### `<nldd-dropdown>`
+
+A visual wrapper around a native `<select>` element. The consumer provides a native `<select>` as a slotted child — this way the browser retains full control over form submission, accessibility and keyboard navigation, including `<optgroup>`, `data-*` attributes and dynamic changes to options.
+
+**Attributes**
+
+| Attribuut | Type | Beschrijving |
+| --- | --- | --- |
+| `size` | `string` | Size: 'xs' \| 'sm' \| 'md' (default: 'md') |
+| `valid` | `boolean` | Marks the field as valid |
+| `invalid` | `boolean` | Marks the field as invalid |
+| `disabled` | `boolean` | Disabled state; also forwarded to the slotted select |
+| `expanded` | `boolean` | Reflects whether the native picker popup is open (driven internally) |
+| `width` | `string` | Optional fixed width (any CSS length, e.g. "240px"). Default: stretches to fill container. |
+
+**Slots**
+
+| Slot | Beschrijving |
+| --- | --- |
+| _(default)_ | A native `<select>` element with `<option>` and/or `<optgroup>` children |
+
+**Events**
+
+| Event | Beschrijving |
+| --- | --- |
+| `change` | Bubbles up from the slotted select; detail: { value: string } |
+
+### `<nldd-multi-line-text-field>`
+
+**Attributes**
+
+| Attribuut | Type | Beschrijving |
+| --- | --- | --- |
+| `value` | `string` | The textarea value |
+| `placeholder` | `string` | Placeholder text |
+| `input-id` | `string` | Sets the id on the native textarea. Set automatically by nldd-form-field. |
+| `size` | `string` | 'md' (default) \| 'sm'. Set automatically by nldd-form-field. |
+| `invalid` | `boolean` | Marks the field as invalid |
+| `valid` | `boolean` | Marks the field as valid |
+| `disabled` | `boolean` | Disabled state |
+| `name` | `string` | Textarea name for form submission |
+| `readonly` | `boolean` | Readonly state |
+| `required` | `boolean` | Required state |
+| `autocomplete` | `string` | Autocomplete hint |
+| `rows` | `number` | Initial visible rows (minimum height). Default: 3. |
+| `resize` | `string` | 'none' \| 'vertical' (default) \| 'auto'. |
+| `accessible-label` | `string` | Accessible label forwarded to the inner textarea. Set automatically by nldd-form-field. |
+| `no-spellcheck` | `boolean` | Disables browser spellchecking on the inner textarea |
+| `width` | `string` | Optional fixed width (any CSS length, e.g. "240px"). Default: stretches to fill container. |
+
+**Events**
+
+| Event | Beschrijving |
+| --- | --- |
+| `input` | When value changes |
+| `change` | When value is committed (blur) |
+
+### `<nldd-number-field>`
+
+A numeric input field with decrement and increment buttons.
+
+**Attributes**
+
+| Attribuut | Type | Beschrijving |
+| --- | --- | --- |
+| `value` | `number` | Current value |
+| `min` | `number` | Minimum value (default: -Infinity) |
+| `max` | `number` | Maximum value (default: Infinity) |
+| `step` | `number` | Step size (default: 1) |
+| `size` | `string` | Size: 'sm' \| 'md' (default: 'md') |
+| `disabled` | `boolean` | Disabled state |
+| `name` | `string` | Name for form submission |
+| `translations` | `object` | Translations; unspecified keys fall back to Dutch |
+| `width` | `string` | Width mode: 'full' (stretches to container) or any CSS length (e.g. '240px') |
+| `hide-spin-buttons` | `boolean` | When set, hides the decrement and increment buttons |
+| `accessible-label` | `string` | Accessible label (aria-label) forwarded to the native input |
+
+**Events**
+
+| Event | Beschrijving |
+| --- | --- |
+| `input` | When the value changes (typing, +/- button, or on-commit correction); |
+| `change` | When the value is committed (blur/Enter or +/- button), clamped to |
+
+### `<nldd-password-field>`
+
+A password input field with visibility toggle and validation states.
+
+**Attributes**
+
+| Attribuut | Type | Beschrijving |
+| --- | --- | --- |
+| `value` | `string` | The input value |
+| `placeholder` | `string` | Placeholder text |
+| `input-id` | `string` | Sets the id on the native input. Set automatically by nldd-form-field. |
+| `size` | `string` | 'md' (default) \| 'sm'. Set automatically by nldd-form-field. |
+| `valid` | `boolean` | Marks the field as valid |
+| `invalid` | `boolean` | Marks the field as invalid |
+| `disabled` | `boolean` | Disabled state |
+| `masked` | `boolean` | Whether the password is masked (default: true) |
+| `show-button-text` | `string` | Visible toggle button text when masked (default: 'Toon') |
+| `hide-button-text` | `string` | Visible toggle button text when unmasked (default: 'Verberg') |
+| `show-button-accessible-label` | `string` | aria-label for toggle when masked (default: 'Toon wachtwoord') |
+| `hide-button-accessible-label` | `string` | aria-label for toggle when unmasked (default: 'Verberg wachtwoord') |
+| `readonly` | `boolean` | Readonly state |
+| `required` | `boolean` | Required state |
+| `name` | `string` | Input name for form submission |
+| `autocomplete` | `string` | Autocomplete hint |
+| `accessible-label` | `string` | Accessible label forwarded to the inner input. Set automatically by nldd-form-field. |
+| `width` | `string` | Optional fixed width (any CSS length, e.g. "240px"). Default: stretches to fill container. |
+
+**Events**
+
+| Event | Beschrijving |
+| --- | --- |
+| `input` | When the input value changes ({ detail: { value } }) |
+| `change` | When the input value is committed ({ detail: { value } }) |
+
+### `<nldd-radio-button>`
+
+WAI-ARIA: Wrap radio buttons in a <fieldset>/<legend> or a container with role="radiogroup" and aria-labelledby for proper group semantics.
+
+**Attributes**
+
+| Attribuut | Type | Beschrijving |
+| --- | --- | --- |
+| `checked` | `boolean` | Checked state |
+| `disabled` | `boolean` | Disabled state |
+| `accessible-label` | `string` | Accessible label forwarded as aria-label to the native input. |
+
+**Events**
+
+| Event | Beschrijving |
+| --- | --- |
+| `change` | When checked state changes; detail: { checked: boolean, value: string, name: string } |
+
+### `<nldd-radio-button-field>`
+
+A radio button with an inline label. Use inside nldd-radio-button-group for keyboard navigation and group semantics. The group sets the name.
+
+**Attributes**
+
+| Attribuut | Type | Beschrijving |
+| --- | --- | --- |
+| `checked` | `boolean` | Checked state |
+| `disabled` | `boolean` | Disabled state |
+| `value` | `string` | Value for form submission |
+| `label` | `string` | Label text for the radio button |
+
+**Events**
+
+| Event | Beschrijving |
+| --- | --- |
+| `change` | When checked state changes; detail: { checked: boolean, value: string } |
+
+### `<nldd-radio-button-group>`
+
+Groups nldd-radio-button-field elements, handles keyboard navigation, and forwards name and disabled state to all child fields. Use inside nldd-form-field which provides the group label.
+
+**Attributes**
+
+| Attribuut | Type | Beschrijving |
+| --- | --- | --- |
+| `name` | `string` | Forwarded to all slotted nldd-radio-button-field elements |
+| `disabled` | `boolean` | Disables all slotted fields |
+| `required` | `boolean` | Marks the group as required |
+
+**Slots**
+
+| Slot | Beschrijving |
+| --- | --- |
+| _(default)_ | Slot for nldd-radio-button-field elements |
+
+**Events**
+
+| Event | Beschrijving |
+| --- | --- |
+| `change` | Bubbles up from the checked field; detail: { checked: boolean, value: string } |
+
+### `<nldd-search-field>`
+
+A search input with a leading search icon, an optional dismiss button, and an optional search button.
+
+**Attributes**
+
+| Attribuut | Type | Beschrijving |
+| --- | --- | --- |
+| `value` | `string` | The search value |
+| `placeholder` | `string` | Placeholder text for the input |
+| `accessible-label` | `string` | Accessible label (aria-label) for the native input. |
+| `size` | `string` | Field size: 'sm' \| 'md' (default: 'md') |
+| `disabled` | `boolean` | Disabled state |
+| `name` | `string` | Input name for form submission |
+| `show-search-button` | `boolean` | When set, shows a search button on the right |
+| `translations` | `object` | Override translation keys; unset keys fall back to Dutch |
+| `no-spellcheck` | `boolean` | Disables browser spellchecking on the inner input |
+| `width` | `string` | Optional fixed width (any CSS length, e.g. "240px"). Default: stretches to fill container. |
+
+**Events**
+
+| Event | Beschrijving |
+| --- | --- |
+| `input` | When the input value changes; detail: { value: string } |
+| `change` | When the input value is committed; detail: { value: string } |
+| `search` | When search is submitted via Enter or the search button; detail: { value: string } |
+
+### `<nldd-segmented-control-item>`
+
+A horizontal group of mutually exclusive (radio) or multi-select (checkbox) options. Exports both NLDDSegmentedControl and NLDDSegmentedControlItem.
+
+**Attributes**
+
+| Attribuut | Type | Beschrijving |
+| --- | --- | --- |
+| `value` | `string` | Selected value for radio type |
+| `size` | `string` | Control size: 'sm' \| 'md' (default: 'md') |
+| `type` | `string` | Input type: 'radio' \| 'checkbox' (default: 'radio') |
+| `variant` | `string` | Content type for all items: 'text' \| 'icon' (default: 'text') |
+| `disabled` | `boolean` | Disabled state for all items |
+| `width` | `string` | Width mode: 'full' (stretches to container), 'fit-content' (per-item content size), or any CSS length (e.g. '240px') |
+| `name` | `string` | Name for form submission, forwarded to native inputs |
+| `value` | `string` | Value for this item |
+| `selected` | `boolean` | Whether this item is selected (set by parent) |
+| `disabled` | `boolean` | Disabled state |
+| `text` | `string` | Text label (shown when parent variant="text", |
+| `icon` | `string` | Icon name for nldd-icon |
+
+**Slots**
+
+| Slot | Beschrijving |
+| --- | --- |
+| _(default)_ | nldd-segmented-control-item elements |
+| `icon` | Slot for a custom icon (e.g. custom SVG). Only used when icon attribute is not set. |
+
+**Events**
+
+| Event | Beschrijving |
+| --- | --- |
+| `change` | When selection changes; detail: { value: string } for radio, |
+| `item-change` | When item is activated; detail: { value: string, checked: boolean } |
+
+### `<nldd-stepper>`
+
+A numeric control with increment and decrement buttons.
+
+**Attributes**
+
+| Attribuut | Type | Beschrijving |
+| --- | --- | --- |
+| `value` | `number` | Current value |
+| `min` | `number` | Minimum value (default: 0) |
+| `max` | `number` | Maximum value (default: Infinity) |
+| `step` | `number` | Step size (default: 1) |
+| `disabled` | `boolean` | Disabled state |
+| `size` | `string` | Size: 'xs' \| 'sm' \| 'md' (default: 'md') |
+| `translations` | `object` | Translations; unspecified keys fall back to Dutch |
+
+**Events**
+
+| Event | Beschrijving |
+| --- | --- |
+| `change` | When the value changes; detail: { value: number } |
+
+### `<nldd-switch>`
+
+A toggle control for on/off settings. Prefer nldd-switch-field for labeled usage — it combines the switch with a visible label. Direct use of nldd-switch requires an accessible-label attribute for screen reader accessibility.
+
+**Attributes**
+
+| Attribuut | Type | Beschrijving |
+| --- | --- | --- |
+| `checked` | `boolean` | Whether the switch is on/off |
+| `disabled` | `boolean` | Disabled state |
+| `size` | `string` | Switch size: 'xs' \| 'sm' (default: 'sm') |
+| `accessible-label` | `string` | Accessible label forwarded as aria-label to the native input. |
+
+**Events**
+
+| Event | Beschrijving |
+| --- | --- |
+| `change` | When the switch state changes; detail: { checked: boolean, value: string } |
+
+### `<nldd-switch-field>`
+
+A switch toggle with an inline label for use in forms.
+
+**Attributes**
+
+| Attribuut | Type | Beschrijving |
+| --- | --- | --- |
+| `checked` | `boolean` | Checked state |
+| `disabled` | `boolean` | Disabled state |
+| `value` | `string` | Value for form submission |
+| `name` | `string` | Name for form submission |
+| `label` | `string` | Label text for the switch |
+
+**Events**
+
+| Event | Beschrijving |
+| --- | --- |
+| `change` | When checked state changes; detail: { checked: boolean, value: string } |
+
+### `<nldd-text-field>`
+
+**Attributes**
+
+| Attribuut | Type | Beschrijving |
+| --- | --- | --- |
+| `value` | `string` | The input value |
+| `placeholder` | `string` | Placeholder text |
+| `input-id` | `string` | Sets the id on the native input. Set automatically by nldd-form-field. |
+| `size` | `string` | 'md' (default) \| 'sm'. Set automatically by nldd-form-field. |
+| `invalid` | `boolean` | Marks the field as invalid |
+| `valid` | `boolean` | Marks the field as valid |
+| `disabled` | `boolean` | Disabled state |
+| `type` | `string` | Input type: 'text' \| 'email' \| 'tel' \| 'url' |
+| `name` | `string` | Input name for form submission |
+| `readonly` | `boolean` | Readonly state |
+| `required` | `boolean` | Required state |
+| `autocomplete` | `string` | Autocomplete hint |
+| `accessible-label` | `string` | Accessible label forwarded to the inner input. Set automatically by nldd-form-field. |
+| `no-spellcheck` | `boolean` | Disables browser spellchecking on the inner input |
+| `width` | `string` | Optional fixed width (any CSS length, e.g. "240px"). Default: stretches to fill container. |
+
+**Events**
+
+| Event | Beschrijving |
+| --- | --- |
+| `input` | When input value changes |
+| `change` | When input value is committed |
+
+### `<nldd-toggle-button>`
+
+A selectable button that toggles between selected and unselected. Available as a button (aria-pressed), checkbox, or radio input.
+
+**Attributes**
+
+| Attribuut | Type | Beschrijving |
+| --- | --- | --- |
+| `type` | `'button' \| 'checkbox' \| 'radio'` | Underlying element (default: 'button') |
+| `size` | `'xs' \| 'sm' \| 'md'` | Button size (default: 'md') |
+| `selected` | `boolean` | Selected state |
+| `disabled` | `boolean` | Disabled state |
+| `value` | `string` | Value for form submission (checkbox/radio) |
+| `name` | `string` | Name for form submission (checkbox/radio) |
+| `text` | `string` | Button text |
+| `icon` | `string` | Icon name for nldd-icon |
+| `variant` | `'text' \| 'icon' \| 'icon-and-text'` | What renders: text, icon, or both. Unset → auto-detect from text/icon attributes. |
+| `accessible-label` | `string` | Accessible label; required for icon-only usage |
+
+**Slots**
+
+| Slot | Beschrijving |
+| --- | --- |
+| `icon` | Slot for a custom icon (e.g. custom SVG). Only used when icon attribute is not set. |
+
+**Events**
+
+| Event | Beschrijving |
+| --- | --- |
+| `change` | When selection changes; detail: { selected: boolean, value: string } |
+
+### `<nldd-toggle-button-group>`
+
+Groups nldd-toggle-button elements and manages selection, keyboard navigation, and forwarding of type, name, size, and disabled state to all buttons. For type="radio" (single-select), arrow keys navigate between buttons and automatically select the focused one. For type="checkbox" (multi-select), multiple buttons can be selected simultaneously.
+
+**Attributes**
+
+| Attribuut | Type | Beschrijving |
+| --- | --- | --- |
+| `type` | `'button' \| 'checkbox' \| 'radio'` | Selection mode (default: 'checkbox') |
+| `name` | `string` | Forwarded to all buttons |
+| `size` | `'xs' \| 'sm' \| 'md'` | Forwarded to all buttons (default: 'md') |
+| `disabled` | `boolean` | Disables all buttons |
+| `accessible-label` | `string` | Accessible name for the group (aria-label) |
+| `accessible-labelledby` | `string` | ID of an external label element (aria-labelledby) |
+
+**Slots**
+
+| Slot | Beschrijving |
+| --- | --- |
+| _(default)_ | nldd-toggle-button elements |
+
+**Events**
+
+| Event | Beschrijving |
+| --- | --- |
+| `change` | Bubbles up from the changed button; detail: { selected: boolean, value: string } |
+
+### `<nldd-token>`
+
+A token component representing a piece of data — such as a person in an address field or an active filter value. Optionally dismissable or interactive via a contextual menu.
+
+**Attributes**
+
+| Attribuut | Type | Beschrijving |
+| --- | --- | --- |
+| `control` | `'none' \| 'dismiss' \| 'menu'` | Control type (default: 'none') |
+| `expanded` | `boolean` | Whether the menu is open (menu only). Forwarded as aria-expanded on the menu button. |
+| `disabled` | `boolean` | Disabled state |
+| `dismiss-text` | `string` | Text for the dismiss button (default: 'Verwijder') |
+| `controls` | `string` | ID of the associated popup element (aria-controls). |
+
+**Slots**
+
+| Slot | Beschrijving |
+| --- | --- |
+| _(default)_ | Token text |
+
+**Events**
+
+| Event | Beschrijving |
+| --- | --- |
+| `dismiss` | When the dismiss button is clicked |
+| `toggle` | When the menu is clicked; detail: { expanded: boolean } |
+
+## Layout
+
+### `<nldd-app-view>`
+
+The required root shell of a Nederlandse Digitale Dienst application. Always contains a split view or an nldd-page as direct content. Set background="tinted" to give the whole application a tinted background. All descendants read --context-parent-background-color via --_background-color automatically. Individual components can override locally with their own background attribute. The same background color is forced on `document.body` so that browser- chrome surfaces (iOS overscroll bounce, status bar, page-margin areas) blend with the app instead of revealing the user-agent's default white. Cleared when the app-view disconnects. `overscroll-behavior: none` is set on `document.documentElement` and `document.body` while the app-view is connected. Combined with the `overscroll-behavior: contain` on `nldd-page`'s scroll target, this prevents iOS rubber-band on the viewport when scroll gestures land outside an `nldd-page` (e.g. on a top-bar). Cleared on last disconnect.
+
+**Attributes**
+
+| Attribuut | Type | Beschrijving |
+| --- | --- | --- |
+| `background` | `'base'\|'tinted'` | Background color (cascades to descendants) |
+
+**Slots**
+
+| Slot | Beschrijving |
+| --- | --- |
+| _(default)_ | Default slot for the application content |
+
+### `<nldd-bar-split-view>`
+
+A vertical split view with a main area and an unlimited number of bar panels. Each child determines its order per breakpoint via sm-order, md-order, and lg-order. Children without order attributes are sorted by DOM order. All bars are in normal flow at every breakpoint and stack vertically with dividers between them on md and lg. Dividers are suppressed on sm. Give each bar a unique slot name (e.g. slot="toolbar", slot="status-bar"). Use slot="bar-1", slot="bar-2" if no meaningful name applies. The main panel always uses slot="main". Sets --context-parent-background-color, which cascades to all descendants.
+
+**Attributes**
+
+| Attribuut | Type | Beschrijving |
+| --- | --- | --- |
+| `background` | `'inherit'\|'base'\|'tinted'` | Background color variant (default: inherit) |
+| `above` | `'sm'\|'md'\|'lg'` | Show this panel from this breakpoint and larger |
+| `below` | `'sm'\|'md'\|'lg'` | Show this panel up to and including this breakpoint |
+| `only` | `'sm'\|'md'\|'lg'` | Show this panel only at this breakpoint |
+| `no-divider` | — | Suppress dividers adjacent to this bar. Setting it on |
+
+**Slots**
+
+| Slot | Beschrijving |
+| --- | --- |
+| `main` | Central panel for primary content |
+| `*` | Any other unique slot name creates a bar panel |
+
+### `<nldd-box>`
+
+Use a box to visually group related components in a distinct, contained region. Boxes draw attention to a set of controls or content that belong together, helping users understand their relationship at a glance.
+
+**Attributes**
+
+| Attribuut | Type | Beschrijving |
+| --- | --- | --- |
+| `background` | `'tinted'\|'base'` | Surface fill. |
+
+**Slots**
+
+| Slot | Beschrijving |
+| --- | --- |
+| _(default)_ | Place components inside the box |
+
+### `<nldd-card>`
+
+Een visueel afgebakende kaart met optionele header, body en footer secties. De kaart heeft een elevated look als standaard. Padding wordt overgelaten aan geneste containers.
+
+**Attributes**
+
+| Attribuut | Type | Beschrijving |
+| --- | --- | --- |
+| `accessible-label` | `string` | Toegankelijke naam voor de kaart (aria-label) |
+
+**Slots**
+
+| Slot | Beschrijving |
+| --- | --- |
+| `header` | Header-content (bijv. nldd-title) |
+| _(default)_ | Body-content |
+| `footer` | Footer-content (bijv. nldd-button-group) — altijd aan onderkant |
+
+### `<nldd-collection>`
+
+A container for displaying collections of items. Supports grid, list, and horizontal scroll layouts. In grid and list modes, items are paginated via a load-more button. With `lazy-load`, the next items are automatically loaded when the load-more button comes into view.
+
+**Attributes**
+
+| Attribuut | Type | Beschrijving |
+| --- | --- | --- |
+| `layout` | `string` | Layout mode: 'grid' \| 'list' \| 'horizontal-scroll' (default: 'grid') |
+| `show-load-more` | `boolean` | Show load-more button in grid/list (default: false) |
+| `max-items` | `number` | Number of visible items per page (default: 24) |
+| `lazy-load` | `boolean` | Automatically load more items when the button becomes visible |
+| `item-width` | `string` | Preferred width for each item (e.g. '280px', '20rem'). In grid |
+| `translations` | `object` | Translation overrides; unset keys fall back to Dutch. |
+
+**Slots**
+
+| Slot | Beschrijving |
+| --- | --- |
+| _(default)_ | Default slot for collection items |
+| `footer` | Slot for custom footer content |
+
+**Events**
+
+| Event | Beschrijving |
+| --- | --- |
+| `load-more` | When the load-more button is clicked |
+
+### `<nldd-container>`
+
+A simple layout primitive: pick a layout mode, give it a gap, optionally align contents, and add padding. Padding can be set for all sides, per axis (inline/block), or per individual side. Specificity: per side > per axis > all sides. Responsive padding and gap have sm/md/lg variants. Each variant emits both an @media (viewport) and @container (layout-container) query. When inside a layout-container the @container query wins; otherwise the @media query provides the viewport-based fallback. Layout modes: - `stack` (default): block items, stacked vertically. The "what you expect from DOM flow" mode. - `row`: flex row, no wrapping. Items shrink or overflow. - `wrap`: flex row, items wrap to new lines. - `grid`: CSS grid, auto-fit columns at min 280px wide. - `columns`: CSS multi-column flow, 280px minimum column width, items don't split across column breaks. Alignment maps to the layout's natural axis: - `stack`: vertical = main-axis (justify-content), horizontal = cross-axis (align-items) - `row` / `wrap`: horizontal = main-axis, vertical = cross-axis - `grid`: horizontal = justify-items, vertical = align-items (per cell) - `columns`: alignment props have no effect (CSS multicol doesn't expose alignment) Item order is set per-child via attributes on the slotted children themselves: `<child order="3">` for a fixed position, or `<child sm-order="N">` / `<child md-order="N">` / `<child lg-order="N">` to override per breakpoint (resolved against THIS container's width via @container queries, same scope as the responsive padding/gap). The container observes slot changes and child attribute mutations and bridges these to `--_slot-order` / `--_slot-sm-order` / etc. custom properties on each child's inline style, which the container's CSS then reads via `::slotted(*)` inside @container queries. Cascade: `sm-order` falls back to `order` falls back to `0` at sm (and analogously for md/lg). No-op for `layout="columns"` (CSS multicol has no per-item ordering hook). The `column-count` attribute (1-8) forces an exact column count for `layout="grid"` (overrides auto-fit) and `layout="columns"` (overrides the natural width-driven count). `sm-column-count` / `md-column-count` / `lg-column-count` resolve against this container's OWN width via an `@container (...)` query on the host — not against the viewport. That lets a footer in a narrow sidebar choose its own column count independent of the surrounding page width.
+
+**Attributes**
+
+| Attribuut | Type | Beschrijving |
+| --- | --- | --- |
+| `layout` | `string` | 'stack' \| 'row' \| 'wrap' \| 'grid' \| 'columns' (default: 'stack') |
+| `column-count` | `number` | Force N columns (1-8) for layout=grid/columns |
+| `sm-column-count` | `number` | Column count when this container is sm-wide |
+| `md-column-count` | `number` | Column count when this container is md-wide |
+| `lg-column-count` | `number` | Column count when this container is lg-wide |
+| `gap` | `string` | Gap between children |
+| `sm-gap` | `string` | Gap at sm breakpoint |
+| `md-gap` | `string` | Gap at md breakpoint |
+| `lg-gap` | `string` | Gap at lg breakpoint |
+| `horizontal-alignment` | `string` | 'left' \| 'center' \| 'right' |
+| `vertical-alignment` | `string` | 'top' \| 'center' \| 'bottom' |
+| `padding` | `string` | Padding for all sides |
+| `padding-inline` | `string` | Padding for left and right |
+| `padding-block` | `string` | Padding for top and bottom |
+| `padding-top` | `string` | Padding top |
+| `padding-right` | `string` | Padding right |
+| `padding-bottom` | `string` | Padding bottom |
+| `padding-left` | `string` | Padding left |
+| `sm-padding` | `string` | Padding for all sides at sm |
+| `sm-padding-inline` | `string` | (and equivalents for inline/block/top/right/bottom/left) |
+| `md-padding` | `string` | Padding at md (and per-side equivalents) |
+| `lg-padding` | `string` | Padding at lg (and per-side equivalents) |
+
+**Slots**
+
+| Slot | Beschrijving |
+| --- | --- |
+| _(default)_ | Container content |
+
+### `<nldd-divider>`
+
+Een scheidingslijn die secties van inhoud visueel van elkaar scheidt.
+
+### `<nldd-full-bleed-section>`
+
+A section that spans the full width without horizontal padding. Useful for background colors, images, or other content that runs edge to edge. Vertical padding and gap adjust via container queries.
+
+**Attributes**
+
+| Attribuut | Type | Beschrijving |
+| --- | --- | --- |
+| `[background]` | `'inherit'\|'base'\|'tinted'` | Surface background ('inherit' default; 'base'/'tinted' paint and cascade a surface). |
+| `[scheme]` | `'inherit'\|'light'\|'dark'\|'inverted'` | Color scheme ('inherit' default; 'inverted' = opposite of the surrounding page scheme). |
+| `[width]` | `string` | Body max-width: 'full' removes the constraint so the |
+| `[height]` | `string` | Minimum section height (any CSS length, e.g. '400px', '100dvh') (mirrors width, which sets the body max-width). |
+| `[padding-block]` | `string` | Block (top and bottom) padding override (token 0-96; '0' strips it). |
+| `[padding-top]` | `string` | Top padding override. |
+| `[padding-bottom]` | `string` | Bottom padding override. |
+| `[sm-padding-block]` | `string` | Responsive block padding (sm/md/lg, also per edge: {sm,md,lg}-padding-{top,bottom}). |
+
+**Slots**
+
+| Slot | Beschrijving |
+| --- | --- |
+| `header` | Content above the main content |
+| _(default)_ | Main content |
+| `footer` | Content below the main content |
+
+### `<nldd-navigation-split-view>`
+
+A four-column layout with a sidebar, secondary sidebar, main content area, and inspector. The sidebars show navigation or lists, the main area shows primary content, and the inspector shows additional details or properties of the selection. Panes are shown automatically when content is slotted into them.
+
+**Attributes**
+
+| Attribuut | Type | Beschrijving |
+| --- | --- | --- |
+| `inspector-auto-hidden` | `boolean` | Inspector hidden to free up space for other panes (read-only, set by the split view) |
+| `inspector-as-sheet` | `boolean` | Always show the inspector as a sheet regardless of available space |
+| `sidebar-as-sheet` | `boolean` | Always show the sidebar as a sheet, keeping main visible at full width |
+| `inspector-accessible-label` | `string` | Accessible name for the inspector sheet dialog (default: 'Details') |
+| `sidebar-accessible-label` | `string` | Accessible name for the sidebar sheet dialog (default: 'Navigatie') |
+
+**Slots**
+
+| Slot | Beschrijving |
+| --- | --- |
+| `sidebar` | Left pane for primary navigation |
+| `secondary-sidebar` | Second pane for secondary navigation (shown when slotted) |
+| `main` | Center pane for primary content |
+| `inspector` | Right pane for details or properties |
+
+### `<nldd-one-half-one-half-section>`
+
+A section with two equal columns side by side. The columns wrap automatically when they become smaller than 280px. Padding and gap adjust via container queries.
+
+**Attributes**
+
+| Attribuut | Type | Beschrijving |
+| --- | --- | --- |
+| `[background]` | `'inherit'\|'base'\|'tinted'` | Surface background ('inherit' default; 'base'/'tinted' paint and cascade a surface). |
+| `[scheme]` | `'inherit'\|'light'\|'dark'\|'inverted'` | Color scheme ('inherit' default; 'inverted' = opposite of the surrounding page scheme). |
+| `[width]` | `string` | Body max-width: 'full' removes the constraint so the |
+| `[height]` | `string` | Minimum section height (any CSS length, e.g. '400px', '100dvh') (mirrors width, which sets the body max-width). |
+| `[padding-block]` | `string` | Block (top and bottom) padding override (token 0-96; '0' strips it). |
+| `[padding-top]` | `string` | Top padding override. |
+| `[padding-bottom]` | `string` | Bottom padding override. |
+| `[sm-padding-block]` | `string` | Responsive block padding (sm/md/lg, also per edge: {sm,md,lg}-padding-{top,bottom}). |
+
+**Slots**
+
+| Slot | Beschrijving |
+| --- | --- |
+| `header` | Content above the columns |
+| _(default)_ | Left column (1/2), alternative for slot="left" |
+| `left` | Left column (1/2) |
+| `right` | Right column (1/2) |
+| `footer` | Content below the columns |
+
+### `<nldd-one-third-two-thirds-section>`
+
+A section with a 1/3 sidebar on the left and 2/3 main content on the right. The columns wrap automatically when they become smaller than 280px. Padding and gap adjust via container queries.
+
+**Attributes**
+
+| Attribuut | Type | Beschrijving |
+| --- | --- | --- |
+| `[background]` | `'inherit'\|'base'\|'tinted'` | Surface background ('inherit' default; 'base'/'tinted' paint and cascade a surface). |
+| `[scheme]` | `'inherit'\|'light'\|'dark'\|'inverted'` | Color scheme ('inherit' default; 'inverted' = opposite of the surrounding page scheme). |
+| `[width]` | `string` | Body max-width: 'full' removes the constraint so the |
+| `[height]` | `string` | Minimum section height (any CSS length, e.g. '400px', '100dvh') (mirrors width, which sets the body max-width). |
+| `[padding-block]` | `string` | Block (top and bottom) padding override (token 0-96; '0' strips it). |
+| `[padding-top]` | `string` | Top padding override. |
+| `[padding-bottom]` | `string` | Bottom padding override. |
+| `[sm-padding-block]` | `string` | Responsive block padding (sm/md/lg, also per edge: {sm,md,lg}-padding-{top,bottom}). |
+
+**Slots**
+
+| Slot | Beschrijving |
+| --- | --- |
+| `header` | Content above the columns |
+| `left` | Left column (1/3) |
+| _(default)_ | Right column (2/3), alternative for slot="right" |
+| `right` | Right column (2/3) |
+| `footer` | Content below the columns |
+
+### `<nldd-page>`
+
+A page layout with optional sticky header and footer. Without sticky-header, the host is the scroll container and the header is in normal flow. With sticky-header, the header becomes absolute and .page__scroll takes over scrolling. A ResizeObserver on the header sets padding-top on the scroll wrapper (only when not scrolled).
+
+**Attributes**
+
+| Attribuut | Type | Beschrijving |
+| --- | --- | --- |
+| `sticky-header` | `boolean` | Sticky header |
+| `sticky-footer` | `boolean` | Sticky footer |
+| `background` | `'inherit'\|'base'\|'tinted'` | Use a grey background instead of white |
+
+**Slots**
+
+| Slot | Beschrijving |
+| --- | --- |
+| `header` | Header content |
+| _(default)_ | Main content (scrollable) |
+| `footer` | Footer content |
+
+### `<nldd-page-footer>`
+
+The footer band at the bottom of a page. Hosts three optional rows in a fixed order: breadcrumbs (top), consumer-defined main content (middle), and a legal-bar (bottom). Dividers are drawn automatically between non-empty rows. Establishes its own container query (`page-footer-container`) so the responsive padding and gap react to the footer's own width, not the viewport. The host has `id="page-footer"` so a skip-link can target it directly. Use the sub-components `nldd-page-footer-legal-bar` and `nldd-page-footer-legal-bar-item` for the bottom row.
+
+**Slots**
+
+| Slot | Beschrijving |
+| --- | --- |
+| `breadcrumbs` | `nldd-breadcrumbs` for the top row. |
+| _(default)_ | Main footer content (typically a container with a grid |
+| `legal-bar` | `nldd-page-footer-legal-bar` for the bottom row. |
+
+### `<nldd-popover>`
+
+Een non-modal floating panel dat is verankerd aan een trigger-element. Gebouwd op de native Popover API (popover="auto") met Floating UI voor positionering. De browser regelt open/toggle/light-dismiss; deze component regelt alleen positionering en focus. Aanbevolen gebruik via popovertarget zodat de browser de toggle regelt: <nldd-button id="info-trigger" popovertarget="info-popover">Info</nldd-button> <nldd-popover id="info-popover" anchor="info-trigger" accessible-label="Info"> <nldd-container> <p>Inhoud van de popover.</p> </nldd-container> </nldd-popover> Voor een custom focus-target binnen de popover: zet `autofocus` op het gewenste child-element. Anders krijgt de popover-host zelf focus.
+
+**Attributes**
+
+| Attribuut | Type | Beschrijving |
+| --- | --- | --- |
+| `anchor` | `string` | ID van het trigger-element voor positionering |
+| `placement` | `string` | Floating UI placement (default: 'bottom-start') |
+| `width` | `string` | Expliciete width (default: 320px via --components-popover-default-width) |
+| `top` | `string` | CSS top-positie. Wanneer gezet (alleen of |
+| `left` | `string` | CSS left-positie. Zie `top` voor semantiek. |
+| `right` | `string` | CSS right-positie. Zie `top` voor semantiek. |
+| `bottom` | `string` | CSS bottom-positie. Zie `top` voor semantiek. |
+| `centered` | `boolean` | Centreert beide assen op de viewport. Per |
+| `sm-full-height` | `boolean` | Op sm-viewport (waar de popover als |
+| `accessible-label` | `string` | (verplicht) Toegankelijke naam (aria-label). |
+| `role` | `string` | ARIA role (default: 'dialog'). Voor |
+| `translations` | `object` | Override translation keys; unset keys |
+
+**Slots**
+
+| Slot | Beschrijving |
+| --- | --- |
+| _(default)_ | Vrije content (bijv. nldd-container met form/info) |
+
+**Events**
+
+| Event | Beschrijving |
+| --- | --- |
+| `open` | Wanneer de popover wordt geopend |
+| `close` | Wanneer de popover wordt gesloten |
+
+### `<nldd-sheet>`
+
+An overlay component that slides in from the side or bottom of the screen. Based on the native <dialog> element for built-in accessibility, focus management, and Escape key support. On small (sm) viewports the sheet always renders as a bottom sheet, regardless of the configured placement.
+
+**Attributes**
+
+| Attribuut | Type | Beschrijving |
+| --- | --- | --- |
+| `placement` | `string` | Sheet position: 'left' \| 'right' \| 'bottom' (default: 'right') |
+| `height` | `string` | Custom height for bottom sheets (and for any sheet on sm |
+| `modeless` | `boolean` | Non-modal (no backdrop or focus lock); the sheet is modal by default |
+| `accessible-label` | `string` | Accessible name for the dialog, forwarded as aria-label (default: 'Dialoogvenster') |
+| `width` | `string` | Custom width for side sheets (left/right) as a CSS length |
+
+**Slots**
+
+| Slot | Beschrijving |
+| --- | --- |
+| _(default)_ | Sheet content |
+
+**Events**
+
+| Event | Beschrijving |
+| --- | --- |
+| `open` | Fired when the sheet is opened |
+| `close` | Fired when the sheet is fully closed |
+
+### `<nldd-side-by-side-split-view>`
+
+A horizontal split view with multiple equal panes side by side. The number of panes is set via the `panes` attribute. Each pane automatically gets a numbered slot: pane-1, pane-2, etc. Panes that do not fit the available width are automatically hidden.
+
+**Attributes**
+
+| Attribuut | Type | Beschrijving |
+| --- | --- | --- |
+| `background` | `'inherit'\|'base'\|'tinted'` | Use a tinted background color (cascades to descendants) |
+| `panes` | `number` | Number of panes (default: 2) |
+
+**Slots**
+
+| Slot | Beschrijving |
+| --- | --- |
+| `pane-1` | First pane |
+| `pane-2` | Second pane |
+| `pane-n` | Each subsequent pane based on the `panes` attribute |
+
+### `<nldd-simple-section>`
+
+A basic section with responsive padding and gap based on container size. Contains optional header and footer slots. The padding and spacing between slots adjust automatically via container queries.
+
+**Attributes**
+
+| Attribuut | Type | Beschrijving |
+| --- | --- | --- |
+| `[background]` | `'inherit'\|'base'\|'tinted'` | Surface background ('inherit' default; 'base'/'tinted' paint and cascade a surface). |
+| `[scheme]` | `'inherit'\|'light'\|'dark'\|'inverted'` | Color scheme ('inherit' default; 'inverted' = opposite of the surrounding page scheme). |
+| `[width]` | `string` | Body max-width: 'full' removes the constraint so the |
+| `[height]` | `string` | Minimum section height (any CSS length, e.g. '400px', '100dvh') (mirrors width, which sets the body max-width). |
+| `[padding-block]` | `string` | Block (top and bottom) padding override (token 0-96; '0' strips it). |
+| `[padding-top]` | `string` | Top padding override. |
+| `[padding-bottom]` | `string` | Bottom padding override. |
+| `[sm-padding-block]` | `string` | Responsive block padding (sm/md/lg, also per edge: {sm,md,lg}-padding-{top,bottom}). |
+
+**Slots**
+
+| Slot | Beschrijving |
+| --- | --- |
+| `header` | Content above the main content |
+| _(default)_ | Main content |
+| `footer` | Content below the main content |
+
+### `<nldd-spacer>`
+
+Add explicit space between elements. Components in this design system have no margins of their own — all whitespace is set by a spacer. Use a single `size` attribute for whitespace that's the same at every viewport. Combine with `sm-size`, `md-size` and/or `lg-size` to override the size at specific breakpoints (mobile-first cascade is intentionally avoided — each breakpoint that needs a different value declares it explicitly): - `size` applies at every breakpoint that has no per-viewport override. - `sm-size` overrides at sm (max-width: 640px). - `md-size` overrides at md (641px–1007px). - `lg-size` overrides at lg (min-width: 1008px). Use `flexible` (in any of the four attributes) to fill the remaining space in a flex container.
+
+**Attributes**
+
+| Attribuut | Type | Beschrijving |
+| --- | --- | --- |
+| `size` | `string` | Base spacer size. 'flexible' or one of the fixed |
+| `sm-size` | `string` | Spacer size at sm breakpoint (max-width: 640px). |
+| `md-size` | `string` | Spacer size at md breakpoint (641px–1007px). |
+| `lg-size` | `string` | Spacer size at lg breakpoint (min-width: 1008px). |
+| `direction` | `string` | Direction: 'horizontal' \| 'vertical' \| 'both' (default: 'both') |
+
+### `<nldd-split-view-divider>`
+
+A divider line between panels in a split view. The divider runs from edge to edge in the direction perpendicular to the orientation. An optional drag handle indicates that the divider is draggable (future functionality).
+
+**Attributes**
+
+| Attribuut | Type | Beschrijving |
+| --- | --- | --- |
+| `orientation` | `string` | Orientation: 'vertical' \| 'horizontal' |
+| `has-drag-handle` | `boolean` | Show a drag handle |
+
+### `<nldd-split-view-pane>`
+
+A simple pane container for use inside split views. The split view automatically sets context: whether a back button should be shown. The consumer sets `has-content` to indicate the pane has content. The consumer sets `back-text` on the `nldd-top-title-bar` inside the pane. The split view sets `hide-back` when the back button is not applicable. The pane automatically hides the back button via CSS when `hide-back` is active. The pane sets `--context-parent-background-color` which cascades down to all descendants. Set `background="tinted"` on a pane to give it a tinted background independently of sibling panes. Descendants such as `nldd-page` read `--context-parent-background-color` automatically.
+
+**Attributes**
+
+| Attribuut | Type | Beschrijving |
+| --- | --- | --- |
+| `has-content` | `boolean` | The pane has content (default: false) |
+| `hide-back` | `boolean` | Hide the back button (set automatically by the split view) |
+| `background` | `'inherit'\|'base'\|'tinted'` | Use a tinted background color (cascades to descendants) |
+
+**Slots**
+
+| Slot | Beschrijving |
+| --- | --- |
+| _(default)_ | Pane content |
+
+### `<nldd-stacked-split-view>`
+
+A vertical split view with multiple stacked panes. The number of panes is set via the `panes` attribute. Each pane automatically gets a numbered slot: pane-1, pane-2, etc. Panes that do not fit the available height are automatically hidden.
+
+**Attributes**
+
+| Attribuut | Type | Beschrijving |
+| --- | --- | --- |
+| `background` | `'inherit'\|'base'\|'tinted'` | Use a tinted background color (cascades to descendants) |
+| `panes` | `number` | Number of panes (default: 2) |
+
+**Slots**
+
+| Slot | Beschrijving |
+| --- | --- |
+| `pane-1` | First pane |
+| `pane-2` | Second pane |
+| `pane-n` | Each subsequent pane based on the `panes` attribute |
+
+### `<nldd-two-thirds-one-third-section>`
+
+A section with 2/3 main content on the left and a 1/3 sidebar on the right. The columns wrap automatically when they become smaller than 280px. Padding and gap adjust via container queries.
+
+**Attributes**
+
+| Attribuut | Type | Beschrijving |
+| --- | --- | --- |
+| `[background]` | `'inherit'\|'base'\|'tinted'` | Surface background ('inherit' default; 'base'/'tinted' paint and cascade a surface). |
+| `[scheme]` | `'inherit'\|'light'\|'dark'\|'inverted'` | Color scheme ('inherit' default; 'inverted' = opposite of the surrounding page scheme). |
+| `[width]` | `string` | Body max-width: 'full' removes the constraint so the |
+| `[height]` | `string` | Minimum section height (any CSS length, e.g. '400px', '100dvh') (mirrors width, which sets the body max-width). |
+| `[padding-block]` | `string` | Block (top and bottom) padding override (token 0-96; '0' strips it). |
+| `[padding-top]` | `string` | Top padding override. |
+| `[padding-bottom]` | `string` | Bottom padding override. |
+| `[sm-padding-block]` | `string` | Responsive block padding (sm/md/lg, also per edge: {sm,md,lg}-padding-{top,bottom}). |
+
+**Slots**
+
+| Slot | Beschrijving |
+| --- | --- |
+| `header` | Content above the columns |
+| _(default)_ | Left column (2/3), alternative for slot="left" |
+| `left` | Left column (2/3) |
+| `right` | Right column (1/3) |
+| `footer` | Content below the columns |
+
+### `<nldd-window>`
+
+Een zwevend venster gebaseerd op het native <dialog>-element. Kan modaal of niet-modaal worden weergegeven. Positioneerbaar via CSS-waarden en optioneel versleepbaar. Geen eigen header — consumers gebruiken nldd-page met sticky-header binnenin voor een title bar.
+
+**Attributes**
+
+| Attribuut | Type | Beschrijving |
+| --- | --- | --- |
+| `modeless` | `boolean` | Niet-modaal (geen backdrop of focusvergrendeling); standaard is het venster modaal |
+| `movable` | `boolean` | Verplaatsbaar via pointer (op sm uitgeschakeld). Geen keyboard-equivalent (WCAG 2.1.1 path-dependent exception). |
+| `accessible-label` | `string` | (verplicht) Toegankelijke naam (aria-label). |
+| `translations` | `object` | Override translation keys; unset keys |
+| `top` | `string` | CSS top positie van de bovenrand (bijv. '0', '100px') |
+| `left` | `string` | CSS left positie van de linkerrand |
+| `right` | `string` | CSS right waarde |
+| `bottom` | `string` | CSS bottom waarde |
+| `centered` | `boolean` | Centreert beide assen op de viewport. Per |
+| `width` | `string` | CSS width (standaard: var(--components-window-default-width)) |
+| `height` | `string` | CSS height (standaard: content height) |
+| `scheme` | `'inherit'\|'light'\|'dark'` | Color scheme (default 'inherit'). |
+
+**Slots**
+
+| Slot | Beschrijving |
+| --- | --- |
+| _(default)_ | Volledige window content (bijv. nldd-page) |
+
+**Events**
+
+| Event | Beschrijving |
+| --- | --- |
+| `open` | Wanneer het venster wordt geopend |
+| `close` | Wanneer het venster volledig is gesloten |
+
+## Lists & menus
+
+### `<nldd-cell>`
+
+A generic cell for wrapping arbitrary content in a list item. Controls vertical alignment and sizing without imposing content opinions. `vertical-alignment="center"` (default) stretches the cell to fill the full row height and centers its content within that space. Use `min-height` to set a minimum centered region. For strict top alignment without a minimum height, use `vertical-alignment="top"`.
+
+**Attributes**
+
+| Attribuut | Type | Beschrijving |
+| --- | --- | --- |
+| `width` | `string` | 'full' \| 'fit-content' \| CSS length (e.g. '120px', '10rem'). Default: 'fit-content' |
+| `min-width` | `string` | Minimum width as CSS length (e.g. '80px', '5rem') |
+| `max-width` | `string` | Maximum width as CSS length (e.g. '200px', '20rem') |
+| `min-height` | `string` | Minimum height as CSS length (e.g. '44px', '3rem') |
+| `vertical-alignment` | `'top' \| 'center' \| 'bottom'` | Vertical alignment of slotted content (default: 'center') |
+| `horizontal-alignment` | `'left' \| 'center' \| 'right'` | Horizontal alignment of slotted content (default: 'left') |
+
+**Slots**
+
+| Slot | Beschrijving |
+| --- | --- |
+| _(default)_ | Default slot for any content (buttons, switches, icons, etc.) |
+
+### `<nldd-description-cell>`
+
+A cell component for displaying a title-description pair in lists. `vertical-alignment="center"` (default) stretches the cell to fill the full row height and centers its content within that space. Use `min-height` to set a minimum centered region. For strict top alignment without a minimum height, use `vertical-alignment="top"`.
+
+**Attributes**
+
+| Attribuut | Type | Beschrijving |
+| --- | --- | --- |
+| `width` | `string` | 'full' \| 'fit-content' \| CSS length (e.g. '200px', '20rem'). Default: 'full' |
+| `min-width` | `string` | Minimum width as CSS length (e.g. '80px', '5rem') |
+| `max-width` | `string` | Maximum width as CSS length (e.g. '300px', '20rem') |
+| `min-height` | `string` | Minimum height as CSS length (e.g. '44px', '3rem') |
+| `vertical-alignment` | `'top' \| 'center' \| 'bottom'` | Vertical alignment (default: 'center') |
+
+**Slots**
+
+| Slot | Beschrijving |
+| --- | --- |
+| `title` | The label displayed above the description |
+| `description` | The description content |
+
+### `<nldd-drag-handle-cell>`
+
+A cell that displays a drag handle for reorderable list items. Always vertically centered and sized to fit the handle. To enable drag-to-reorder, add the `reorderable-only` attribute to this element. This attribute is required for `nldd-list` to detect the drag handle in the composed event path and activate pointer and keyboard drag mode: ```html <nldd-list reorderable> <nldd-list-item> <nldd-drag-handle-cell slot="start" reorderable-only></nldd-drag-handle-cell> <nldd-text-cell text="Item"></nldd-text-cell> </nldd-list-item> </nldd-list> ``` Without `reorderable-only`, pointer and keyboard drag will never trigger.
+
+**Attributes**
+
+| Attribuut | Type | Beschrijving |
+| --- | --- | --- |
+| `size` | `string` | Handle size: 'sm' \| 'md' (default: 'md') |
+
+### `<nldd-icon-cell>`
+
+A cell component for displaying icons in lists with configurable alignment and size. Set `icon` to render an `nldd-icon` by name, or slot custom content as an escape hatch for non-standard iconography.
+
+**Attributes**
+
+| Attribuut | Type | Beschrijving |
+| --- | --- | --- |
+| `vertical-alignment` | `string` | Vertical alignment: 'top' \| 'center' \| 'bottom' (default: 'center') |
+| `size` | `string` | Size: '16' \| '20' \| '24' \| '32' (default: '24') |
+| `color` | `'default' \| 'secondary' \| 'accent' \| 'success' \| 'warning' \| 'critical'` | Color variant of the icon (default: 'default') |
+| `icon` | `string` | Icon name (renders `<nldd-icon>`). Takes precedence over the default slot. |
+
+**Slots**
+
+| Slot | Beschrijving |
+| --- | --- |
+| _(default)_ | Fallback for custom icon content when `icon` is not set. |
+
+### `<nldd-list>`
+
+A container for `nldd-list-item` elements, with optional header and footer slots. The `type` attribute switches the list's a11y role and behavior: - `list` (default) — `role="list"`, items `role="listitem"`. Reorderable allowed. Items may individually be buttons or links; the list itself has no special keyboard semantics. - `navigation` — host `role="navigation"`, items with `selected` get `aria-current="page"` on their inner `<a>` or `<button>`. Selection state is consumer-managed: the list never mutates `selected` itself. On reorder (type="list" + reorderable), the list dispatches `nldd-reorder` with `fromIndex` / `toIndex` and expects the consumer to mutate the DOM (or their data model that renders the DOM). Focus is restored to the moved item's drag handle via a single `requestAnimationFrame` — this assumes the consumer reorders **synchronously** in the event handler. Async renderers (React, Vue, …) that update the DOM on a later tick will miss the focus restore and should manage focus themselves after their render commits.
+
+**Slots**
+
+| Slot | Beschrijving |
+| --- | --- |
+| _(default)_ | List items (`nldd-list-item`) |
+| `header` | Content above the list body (e.g. `nldd-title`) |
+| `footer` | Content below the list body (e.g. a short description) |
+| `empty` | Shown when no items are visible (all `[hidden]` or none). Defaults |
+
+**Events**
+
+| Event | Beschrijving |
+| --- | --- |
+| `nldd-reorder` | Reorderable `type="list"`: `{ fromIndex, toIndex }` on drop |
+
+### `<nldd-list-item>`
+
+A row within an `nldd-list`, providing layout for start, main and end areas. Renders as a link when `href` is set, as a button when `type="button"`, or as a plain container otherwise. The item synchronises its ARIA with its parent `nldd-list`'s `type`: - `list` parent → `role="listitem"` - `navigation` parent → `role="listitem"` + `aria-current="page"` on the inner `<a>` / `<button>` when `selected`
+
+**Slots**
+
+| Slot | Beschrijving |
+| --- | --- |
+| _(default)_ | Main content area |
+| `start` | Content at the start of the row |
+| `end` | Content at the end of the row |
+
+### `<nldd-spacer-cell>`
+
+A cell component that provides fixed horizontal spacing within list items.
+
+**Attributes**
+
+| Attribuut | Type | Beschrijving |
+| --- | --- | --- |
+| `size` | `string` | Spacer size in pixels: '2' \| '4' \| '6' \| '8' \| '10' \| '12' \| '16' \| '20' \| '24' \| '28' \| '32' \| '40' \| '44' \| '48' \| '56' \| '64' \| '80' \| '96' (default: '16') |
+
+### `<nldd-text-cell>`
+
+A cell component for displaying text content in lists with configurable alignment, size and color. This is the most fundamental list cell component. `vertical-alignment="center"` (default) stretches the cell to fill the full row height and centers its content within that space. Use `min-height` to set a minimum centered region. For strict top alignment without a minimum height, use `vertical-alignment="top"`. Each text region (overline, main text, supporting text) accepts either a string attribute or slotted DOM content. The slot is the source of truth: if the consumer provides slotted content, it replaces the attribute-based render for that region. Use slots when you need inline elements like `<nldd-tag>`, `<a>` or `<nldd-icon>` mixed with text. Note that `query` highlighting and `**bold**` parsing only apply to the attribute path — slotted content is rendered as-is.
+
+**Attributes**
+
+| Attribuut | Type | Beschrijving |
+| --- | --- | --- |
+| `size` | `string` | Cell size: 'sm' \| 'md' (default: 'md') |
+| `color` | `string` | Text color variant: 'default' \| 'secondary' \| 'accent' \| 'success' \| 'warning' \| 'critical' (default: 'default'). All non-default/-secondary variants apply to all three text fields so the cell reads as a coherent state. |
+| `width` | `string` | 'full' \| 'fit-content' \| CSS length (e.g. '200px', '20rem'). Default: 'full' |
+| `min-width` | `string` | Minimum width as CSS length (e.g. '80px', '5rem') |
+| `max-width` | `string` | Maximum width as CSS length (e.g. '200px', '20rem') |
+| `min-height` | `string` | Minimum height as CSS length (e.g. '44px', '3rem') |
+| `horizontal-alignment` | `string` | Horizontal alignment: 'left' \| 'center' \| 'right' (default: 'left') |
+| `vertical-alignment` | `string` | Vertical alignment: 'top' \| 'center' \| 'bottom' (default: 'center') |
+| `text` | `string` | Main text content. Supports **bold** syntax for inline bold segments. Falls back to default slot. |
+| `overline` | `string` | Optional overline text displayed above the main content. Supports **bold**. Falls back to `overline` slot. |
+| `supporting-text` | `string` | Optional supporting text displayed below the main content. Supports **bold**. Falls back to `supporting-text` slot. |
+| `query` | `string` | Query substring to bold-highlight across text fields. Empty = no marking. |
+| `query-mark-mode` | `string` | 'match' \| 'predictive' (default: 'predictive') |
+
+**Slots**
+
+| Slot | Beschrijving |
+| --- | --- |
+| `overline` | Rich content for the overline region. Overrides the `overline` attribute when content is assigned. |
+| _(default)_ | (default) Rich content for the main text region. Overrides the `text` attribute when content is assigned. |
+| `supporting-text` | Rich content for the supporting text region. Overrides the `supporting-text` attribute when content is assigned. |
+
+### `<nldd-timeline-track-cell>`
+
+A cell component for displaying timeline track indicators in lists. Shows a vertical line with a dot indicating timeline position and state. The line extends into the surrounding list-item's block padding via the `--context-list-item-padding-block` cascade so consecutive steps connect without gaps.
+
+**Attributes**
+
+| Attribuut | Type | Beschrijving |
+| --- | --- | --- |
+| `step` | `'past' \| 'future' \| 'none'` | Timeline step state (default: 'past') |
+| `child` | `'first' \| 'between' \| 'last'` | Position in timeline (default: 'between') |
+
+### `<nldd-title-cell>`
+
+A cell component for displaying a title with optional overline and subtitle in lists. `vertical-alignment="center"` (default) stretches the cell to fill the full row height and centers its content within that space. Use `min-height` to set a minimum centered region. For strict top alignment without a minimum height, use `vertical-alignment="top"`. Each text region (overline, title, supporting text) accepts either a string attribute or slotted DOM content. The slot is the source of truth: if the consumer provides slotted content, it replaces the attribute-based render for that region. Use slots when you need inline elements like `<nldd-tag>`, `<nldd-icon>` or other components mixed with text. Note that `query` highlighting and `**bold**` parsing only apply to the attribute path — slotted content is rendered as-is.
+
+**Attributes**
+
+| Attribuut | Type | Beschrijving |
+| --- | --- | --- |
+| `size` | `1\|2\|3\|4\|5\|6` | Visual size of the title (default: 5) |
+| `color` | `'default' \| 'secondary' \| 'accent' \| 'success' \| 'warning' \| 'critical'` | Text color variant (default: 'default'). `secondary` demotes the title to match the muted overline/supporting-text. `accent`, `success`, `warning` and `critical` tint all three regions so the cell reads as a coherent state. |
+| `width` | `string` | 'full' \| 'fit-content' \| CSS length (e.g. '200px', '20rem'). Default: 'full' |
+| `min-width` | `string` | Minimum width as CSS length (e.g. '80px', '5rem') |
+| `max-width` | `string` | Maximum width as CSS length (e.g. '300px', '20rem') |
+| `min-height` | `string` | Minimum height as CSS length (e.g. '44px', '3rem') |
+| `horizontal-alignment` | `'left' \| 'center' \| 'right'` | Horizontal alignment (default: 'left') |
+| `vertical-alignment` | `'top' \| 'center' \| 'bottom'` | Vertical alignment (default: 'center') |
+| `text` | `string` | Title text content. Supports **bold** syntax for inline bold segments. Falls back to default slot. |
+| `overline` | `string` | Optional overline text displayed above the title. Supports **bold**. Falls back to `overline` slot. |
+| `supporting-text` | `string` | Optional supporting text displayed below the title. Supports **bold**. Falls back to `supporting-text` slot. |
+| `heading-level` | `number` | Heading level for the title element: 1–6 (default: none, renders a <p>) |
+| `query` | `string` | Query substring to bold-highlight across text fields. Empty = no marking. |
+| `query-mark-mode` | `string` | 'match' \| 'predictive' (default: 'predictive') |
+
+**Slots**
+
+| Slot | Beschrijving |
+| --- | --- |
+| `overline` | Rich content for the overline region. Overrides the `overline` attribute when content is assigned. |
+| _(default)_ | (default) Rich content for the title. Overrides the `text` attribute when content is assigned. |
+| `supporting-text` | Rich content for the supporting text region. Overrides the `supporting-text` attribute when content is assigned. |
+
+## Navigation
+
+### `<nldd-breadcrumbs>`
+
+A trail of `nldd-breadcrumbs-item`s separated by `›`, rendered as a `<nav>` landmark wrapping a `<div role="list">` (with each item carrying `role="listitem"`). Explicit ARIA roles travel reliably across the slot boundary where the implicit `<ol>`/`<li>` mapping is inconsistent across AT + browser combos. The host itself is its own container-query scope so the sm-viewport "‹ {parent}" fallback reacts to the breadcrumbs' own width, not the viewport.
+
+**Attributes**
+
+| Attribuut | Type | Beschrijving |
+| --- | --- | --- |
+| `accessible-label` | `string` | Override the nav's aria-label. |
+| `translations` | `object` | Override translation keys; unset keys |
+
+**Slots**
+
+| Slot | Beschrijving |
+| --- | --- |
+| _(default)_ | `nldd-breadcrumbs-item` children. |
+
+### `<nldd-document-tab-bar-item>`
+
+A horizontal tab bar for document tabs with an automatic overflow button and an end slot for action buttons. Exports both NLDDDocumentTabBar and NLDDDocumentTabBarItem.
+
+**Attributes**
+
+| Attribuut | Type | Beschrijving |
+| --- | --- | --- |
+| `accessible-label` | `string` | Accessible name for the navigation landmark |
+| `translations` | `object` | Translation overrides; unset keys fall back to Dutch. |
+| `navigation` | `boolean` | Renders a nav landmark instead of tablist; use when items have hrefs |
+| `selected` | `boolean` | Selected state (managed by nldd-document-tab-bar) |
+| `text` | `string` | Primary text |
+| `supporting-text` | `string` | Supporting text |
+| `short-text` | `string` | Short primary text (visible below 200px width) |
+| `short-supporting-text` | `string` | Short supporting text (visible below 200px width) |
+| `href` | `string` | Optional link URL; renders an anchor instead of a div |
+
+**Slots**
+
+| Slot | Beschrijving |
+| --- | --- |
+| _(default)_ | nldd-document-tab-bar-item elements |
+| `end` | Action buttons (e.g. new tab) |
+
+**Events**
+
+| Event | Beschrijving |
+| --- | --- |
+| `tabchange` | Fired when a tab is selected; detail: { item } |
+| `tabdismiss` | Fired when a tab is dismissed; detail: { item, nextItem } |
+| `tabempty` | Fired when the last tab is dismissed |
+| `nldd-reorder` | Fired when tabs are reordered via drag; detail: { fromIndex, toIndex } |
+| `select` | Fired when the item is activated; detail: { item } |
+| `dismiss` | Fired when the dismiss button is clicked; detail: { item } |
+
+### `<nldd-link>`
+
+Hyperlink component met twee modi: 1. **Standalone (sized)** — set `size="xs"|"sm"|"md"|"lg"` voor menu's, actiegebieden of overzichten. Vaste tekstgrootte, `display: inline-flex` met `gap` voor icon-spacing. 2. **Inline (inherit)** — laat `size` weg of zet expliciet `size="inherit"`. De link erft `font-size`, `line-height` en `font-family` van zijn omgeving. Tekst wraps natuurlijk over regels (`display: inline`). Icons werken ook hier; de natuurlijke whitespace tussen icon en tekst zorgt voor de spacing. Voor links in CMS/markdown-output (waar de `<a>` als HTML binnenkomt) blijft `<nldd-rich-text>` met raw `<a>` de aangewezen route.
+
+**Attributes**
+
+| Attribuut | Type | Beschrijving |
+| --- | --- | --- |
+| `href` | `string` | Link doel |
+| `target` | `string` | Link target (bijv. '_blank'); stelt rel automatisch bij |
+| `rel` | `string` | Link rel attribuut; standaard 'noopener noreferrer' bij target='_blank' |
+| `size` | `string` | Tekstgrootte: 'xs' \| 'sm' \| 'md' \| 'lg' \| 'inherit'. Leeg = inherit. |
+| `text` | `string` | Link tekst (alternatief voor default slot) |
+| `start-icon` | `string` | Icoon voor de tekst |
+| `end-icon` | `string` | Icoon na de tekst |
+| `accessible-label` | `string` | Toegankelijk label voor screen readers |
+| `disabled` | `boolean` | Uitgeschakelde staat |
+
+**Slots**
+
+| Slot | Beschrijving |
+| --- | --- |
+| _(default)_ | Link tekst (alternatief voor text attribuut) |
+| `start-icon` | Custom icoon voor de tekst |
+| `end-icon` | Custom icoon na de tekst |
+
+### `<nldd-menu-bar>`
+
+Horizontale rij van nldd-menu-bar-item elementen met automatische overflow detectie. Items die niet passen worden verborgen achter een overflow button met een popover menu.
+
+**Attributes**
+
+| Attribuut | Type | Beschrijving |
+| --- | --- | --- |
+| `overflow-text` | `string` | Tekst voor de overflow button (standaard via i18n) |
+| `accessible-label` | `string` | aria-label voor de nav landmark |
+| `compact` | `boolean` | Propageert compact attribuut naar slotted items (activeert content-priority) |
+
+**Slots**
+
+| Slot | Beschrijving |
+| --- | --- |
+| _(default)_ | nldd-menu-bar-item elementen |
+
+### `<nldd-menu-bar-item>`
+
+Interactief bouwblok voor gebruik in een menu bar. Rendert als <a> (met href) of <button> (zonder href). Ondersteunt icon, text, disclosure indicator, en een expandable popover via een geslotte `<nldd-menu>` (of ander popover-element).
+
+**Attributes**
+
+| Attribuut | Type | Beschrijving |
+| --- | --- | --- |
+| `text` | `string` | Tekst van het item |
+| `current` | `boolean` | Markeer als actief/huidig item |
+| `current-type` | `string` | aria-current waarde als current is true ('page', 'step', 'location', 'true'). Standaard: 'page' |
+| `href` | `string` | Optionele link URL. Zonder href rendert als button. |
+| `icon` | `string` | Optioneel icon naam (nldd-icon) |
+| `expandable` | `boolean` | Toon disclosure icon en open de geslotte `<nldd-menu>` bij klik |
+| `icon-only` | `boolean` | Verberg tekst visueel (altijd) |
+| `content-priority` | `'icon'\|'text'` | Bepaalt wat zichtbaar blijft in compact modus: 'icon' verbergt tekst, 'text' verbergt icon |
+| `compact` | `boolean` | Activeert content-priority gedrag (gezet door parent nldd-menu-bar) |
+| `disabled` | `boolean` | Schakel interactie uit |
+| `accessible-label` | `string` | Overschrijf aria-label |
+| `haspopup` | `string` | aria-haspopup waarde (bijv. "menu", "dialog") |
+| `open` | `boolean` | Of het gekoppelde popover/menu open is |
+
+**Slots**
+
+| Slot | Beschrijving |
+| --- | --- |
+| _(default)_ | Inhoud van de expandable popover — wrap items in een `<nldd-menu>` |
+
+**Events**
+
+| Event | Beschrijving |
+| --- | --- |
+| `select` | Bij klik op non-expandable button item (bubbles, composed) |
+
+### `<nldd-pagination>`
+
+A pagination control for navigating between pages of content.
+
+**Attributes**
+
+| Attribuut | Type | Beschrijving |
+| --- | --- | --- |
+| `current` | `number` | Currently active page (1-based) |
+| `total` | `number` | Total number of pages (recommended max: 200 for compact select performance) |
+| `disabled` | `boolean` | Disabled state |
+| `centered` | `boolean` | Centreert de pagination in de container (host fills row, items grouped in the middle) |
+| `href-pattern` | `string` | URL patroon met {page} placeholder, rendert links in plaats van buttons |
+
+**Events**
+
+| Event | Beschrijving |
+| --- | --- |
+| `page-change` | Bij paginawisseling (detail: { page: number, href?: string }). Alleen cancelable in href-mode: preventDefault() voorkomt navigatie (SPA). |
+
+### `<nldd-skip-link>`
+
+Accessibility-patroon dat keyboard-gebruikers toestaat om content over te slaan. Wraps content in een default slot — zonder href focust het het eerste element na de skip-link in het DOM (nextElementSibling). Zorg dat er een focusbaar element na het component staat, anders heeft de skip-link geen effect.
+
+**Attributes**
+
+| Attribuut | Type | Beschrijving |
+| --- | --- | --- |
+| `text` | `string` | Tekst van de skip-link. Fallback naar i18n default. |
+| `href` | `string` | Optioneel extern doel-ID. Zonder href springt naar eind van eigen content. |
+
+**Slots**
+
+| Slot | Beschrijving |
+| --- | --- |
+| _(default)_ | Content die overgeslagen kan worden |
+
+### `<nldd-tab-bar-item>`
+
+A horizontal navigation bar with mutually exclusive tabs. Exports both NLDDTabBar and NLDDTabBarItem.
+
+**Attributes**
+
+| Attribuut | Type | Beschrijving |
+| --- | --- | --- |
+| `variant` | `string` | Visual mode: 'icon-and-text' \| 'text' \| 'icon' \| 'compact'. 'compact' stacks the icon above the text. When unset, the variant is inferred from each item's content. |
+| `navigation` | `boolean` | Renders a nav landmark instead of tablist; use for href-based items that navigate between routes |
+| `centered` | `boolean` | Centers the tabs in the container (host fills the row, tabs group in the middle) |
+| `accessible-label` | `string` | Accessible name for the navigation region; defaults to 'Tabs' |
+| `selected` | `boolean` | Selected state (managed by nldd-tab-bar) |
+| `text` | `string` | Tab text; also used as accessible name for icon-only items |
+| `href` | `string` | Optional link URL; renders an anchor instead of a button |
+
+**Slots**
+
+| Slot | Beschrijving |
+| --- | --- |
+| _(default)_ | nldd-tab-bar-item elements |
+| `icon` | Icon content |
+
+**Events**
+
+| Event | Beschrijving |
+| --- | --- |
+| `tabchange` | When a tab is selected; detail: { item: NLDDTabBarItem } |
+| `select` | When the item is activated; detail: { item: NLDDTabBarItem } |
+
+### `<nldd-top-navigation-bar>`
+
+Minimal typed interface for nldd-sheet API.
+
+### `<nldd-top-title-bar>`
+
+A toolbar for page and container headings with optional navigation and action buttons. The component has two states: - Default: the back button shows the previous page title as a text button - Compact (class `is-compact`): the back button is an icon button, a divider and the toolbar title are visible When `collapse-anchor` is set, the `is-compact` class is automatically applied as soon as the top of the anchor element reaches the top of the scroll container. Without `collapse-anchor` the bar takes a static state: compact when `text` is set (so the title shows in the title-group), non-compact otherwise (so the `back-text` button stays visible).
+
+**Slots**
+
+| Slot | Beschrijving |
+| --- | --- |
+| `toolbar` | Optional buttons to the left of the dismiss button |
+
+**Events**
+
+| Event | Beschrijving |
+| --- | --- |
+| `back` | Fired when the back button is clicked (not fired when back-href is set) |
+| `dismiss` | Fired when the dismiss button is clicked |
+
+## Status & feedback
+
+### `<nldd-badge>`
+
+Een notificatie-indicator, vaak voor ongelezen aantallen of statusdots. Kan tekst, een getal en/of een icoon tonen. Zonder inhoud verschijnt automatisch een stip. Gebruik in een hoek van een ander element (bijv. een icon) of standalone.
+
+**Attributes**
+
+| Attribuut | Type | Beschrijving |
+| --- | --- | --- |
+| `color` | `string` | Semantisch ('critical' \| 'accent' \| 'neutral' \| 'warning' \| 'success') of een Rijkskleur ('lintblauw' \| 'hemelblauw' \| 'oranje' \| …). Default: 'critical' |
+| `size` | `string` | Grootte: 'sm' \| 'md' (default: 'md') |
+| `text` | `string` | Tekst (heeft voorrang op number) |
+| `number` | `number` | Numerieke waarde. Wordt beknopt als meer dan max |
+| `max` | `number` | Maximum waarde boven welke number wordt getoond als "{max}+" (default: 99) |
+| `icon` | `string` | Icoon naam. Icon-only wordt als vierkant gerenderd; met text/number komt het icoon links. |
+| `accessible-label` | `string` | Toegankelijk label voor screenreaders. Fallback naar text/number; anders naar i18n default ("Notificatie"). |
+
+### `<nldd-banner>`
+
+An inline notification with a tinted background per variant. Use for persistent, page-level feedback (e.g. an error summary at the top of a form). Banner is more visually present than nldd-inline-dialog — the tinted colour catches the eye. If you need a quieter component, pick a different one rather than overriding the banner's ARIA. Layout: icon left, text + supporting text + optional rich content + actions in the centre, optional dismiss button right. Buttons wrap to a second row on narrow viewports via nldd-button-group's flex wrapping. role and aria-live are set automatically from the variant: - critical → role="alert" (interrupts screen reader) - others → role="status" aria-live="polite" Not overridable — if you need a less prominent component, use one. aria-atomic="true" is also set so that updates to the structured region (icon + heading + supporting-text + actions) are announced as one unit rather than as a partial subtree. Trade-off: any programmatic content mutation re-reads the entire banner. Banners are designed for short, heading-scale copy — if you slot in a paragraph of rich body text and then toggle variant or supporting-text at runtime, AT will re-announce the whole thing. Keep banner content concise, or render long-form messages in a different surface.
+
+**Attributes**
+
+| Attribuut | Type | Beschrijving |
+| --- | --- | --- |
+| `variant` | `'neutral'\|'success'\|'warning'\|'critical'` | Colour and default icon (default: 'neutral') |
+| `icon` | `string` | Icon override. Default per variant: neutral → info-circle-filled, success → check-circle-filled, warning → exclamation-triangle-filled, critical → exclamation-circle-filled |
+| `text` | `string` | Main text (heading or paragraph, depending on heading-level) |
+| `supporting-text` | `string` | Supporting text below the heading |
+| `heading-level` | `1\|2\|3\|4\|5\|6` | Renders text as h1–h6; absent renders a p |
+| `dismissible` | `boolean` | Show a close button in the top-right; emits `dismiss` when clicked |
+| `translations` | `object` | Override translation keys; unset keys fall back to Dutch |
+
+**Slots**
+
+| Slot | Beschrijving |
+| --- | --- |
+| _(default)_ | Optional rich content between text and actions (e.g. nldd-rich-text) |
+| `actions` | nldd-button elements, wrapped in a horizontal nldd-button-group |
+
+**Events**
+
+| Event | Beschrijving |
+| --- | --- |
+| `dismiss` | Fired when the dismiss button is clicked. The consumer is responsible for removing/hiding the banner. |
+
+### `<nldd-inline-dialog>`
+
+An inline status component for empty state, confirmations and feedback. Fills the container and has no minimum width.
+
+**Attributes**
+
+| Attribuut | Type | Beschrijving |
+| --- | --- | --- |
+| `variant` | `'alert'\|'success'` | Semantic variant; 'alert' or 'success' forces a matching icon and color |
+| `size` | `'md'\|'lg'` | Typography size: 'md' (default) keeps body-md text + body-sm supporting; 'lg' bumps both up a step. |
+| `icon` | `string` | Name of the nldd-icon icon above the text; absent when not set. Ignored when variant is set. |
+| `icon-color` | `string` | 'secondary' \| 'accent' \| 'critical' \| 'warning' \| 'success'. Overrides the default and variant icon color. |
+| `text` | `string` | Main text (heading or paragraph, depending on heading-level) |
+| `supporting-text` | `string` | Supporting text below the heading |
+| `heading-level` | `1\|2\|3\|4\|5\|6` | Renders text as h1–h6; absent renders a p |
+
+**Slots**
+
+| Slot | Beschrijving |
+| --- | --- |
+| _(default)_ | Optional custom content between text and actions |
+| `actions` | nldd-button elements, wrapped in nldd-button-group (max 3) |
+
+### `<nldd-modal-dialog>`
+
+A modal window with overlay backdrop, based on the native <dialog> element. Internally renders an <nldd-inline-dialog> for the visual structure.
+
+**Attributes**
+
+| Attribuut | Type | Beschrijving |
+| --- | --- | --- |
+| `variant` | `'alert'` | Forwarded to nldd-inline-dialog; 'alert' forces icon and color |
+| `icon` | `string` | Forwarded to nldd-inline-dialog; absent when not set |
+| `text` | `string` | Forwarded to nldd-inline-dialog; main text |
+| `supporting-text` | `string` | Forwarded to nldd-inline-dialog; supporting text |
+| `accessible-label` | `string` | Accessible name for the dialog (aria-label); falls back to text |
+
+**Slots**
+
+| Slot | Beschrijving |
+| --- | --- |
+| _(default)_ | Optional custom content, forwarded to nldd-inline-dialog |
+| `actions` | nldd-button elements, forwarded to nldd-inline-dialog |
+
+**Events**
+
+| Event | Beschrijving |
+| --- | --- |
+| `open` | When the dialog is opened |
+| `close` | When the dialog is fully closed |
+
+### `<nldd-progress>`
+
+Layout placeholder that fills its parent and centres an indeterminate progress indicator. Holds the indicator back for 1000ms so brief loading states don't flash a spinner; once the delay passes the indicator fades in. Default is an indeterminate `<nldd-progress-circle>` with the translated "Laden" label. Drop anything in the slot (a progress-bar, a customised progress-circle, etc.) to override. Reconnect behaviour: every `connectedCallback` resets the timer and hides the indicator again. If a consumer toggles the element via a conditional render (remove + re-insert) the spinner will disappear and re-fade after another 1000ms. Keep the element mounted and toggle visibility / `hidden` instead if you want the timer to run only once. Accessibility: the host element carries `aria-busy="true"` for as long as it is connected and not marked `complete`, including the silent 1000 ms pre-spinner window. AT users landing on the region during that window are told loading is in progress, even before the visual spinner appears. Two patterns to signal "done": 1. (Preferred.) Unmount `<nldd-progress>` entirely. aria-busy goes away with the element, and the indicator's `progressbar` role disappears from the AT tree. 2. Set the boolean `complete` attribute. aria-busy is cleared and the indicator is hidden, but the element stays in the DOM. Use this when you want a CSS transition out, or when the wrapper sits in a layout slot that would collapse if unmounted.
+
+**Attributes**
+
+| Attribuut | Type | Beschrijving |
+| --- | --- | --- |
+| `text` | `string` | Label under the default indicator. Falls back to the |
+| `no-label` | `boolean` | Suppress the label under the default indicator |
+| `complete` | `boolean` | Mark the loader as finished while keeping the |
+| `translations` | `object` | Override translation keys; unset keys fall back to Dutch |
+
+**Slots**
+
+| Slot | Beschrijving |
+| --- | --- |
+| _(default)_ | Optional custom indicator; overrides the default progress-circle. |
+
+### `<nldd-progress-bar-segment>`
+
+Exports both NLDDProgressBar and NLDDProgressBarSegment. A progress bar that supports a single value (loading-style) or multiple segments (multi-stage progress, or distribution like storage usage). The consumer provides raw values; the component computes percentages from `max`. Two modes: - `progress` (default): segments sum toward `max`; remaining space is empty track. ARIA reads "X% voltooid". - `distribution`: segments fill the bar; ARIA enumerates segments. If the sum of segment values exceeds `max`, segments are normalized proportionally to fit and a warning is logged.
+
+**Attributes**
+
+| Attribuut | Type | Beschrijving |
+| --- | --- | --- |
+| `mode` | `'progress'\|'distribution'` | Semantics for ARIA and visualization (default: 'progress') |
+| `max` | `number` | Total value (default: 100) |
+| `value` | `number` | Single-segment shorthand (ignored when segment children are present) |
+| `color` | `string` | Color for the single-segment shorthand (default: 'accent') |
+| `size` | `'sm'\|'md'\|'lg'` | Height of the bar (default: 'md') |
+| `text` | `string` | Label above the bar (left) |
+| `value-format` | `'percentage'\|'absolute'\|'fraction'\|'none'` | Format for the value at the top right (default: 'percentage') |
+| `value-text` | `string` | Full override of the displayed value |
+| `accessible-label` | `string` | Full override of aria-valuetext |
+| `indeterminate` | `boolean` | Shows a sliding indicator animation (only without segments) |
+| `translations` | `object` | Override translation keys; unset keys fall back to Dutch |
+| `value` | `number` | Share of the parent's total (default 0; <=0 hides segment) |
+| `color` | `string` | Color. Semantic (neutral, accent, success, warning, critical) or a Rijkskleur. Default 'accent'. |
+| `name` | `string` | Name for screenreader text (optional) |
+| `tooltip-text` | `string` | Override of the auto-generated tooltip text |
+
+**Slots**
+
+| Slot | Beschrijving |
+| --- | --- |
+| _(default)_ | Place for nldd-progress-bar-segment elements |
+
+### `<nldd-progress-circle-segment>`
+
+Exports both NLDDProgressCircle and NLDDProgressCircleSegment. A circular progress indicator that mirrors the API of nldd-progress-bar: single-value or multi-segment, progress or distribution mode, 24 colours, fade transitions between determinate/indeterminate, indeterminate indicator. Visual differences vs the bar: - SVG arcs instead of rectangular bars. - Label below the circle (not above). - No centre text; the consumer can wrap the circle if needed. - One combined tooltip on the whole circle showing all segment info (no per-segment tooltips). - Indeterminate uses a rotating elastic arc (Material-style) instead of the bar's Knight Rider scanner.
+
+**Attributes**
+
+| Attribuut | Type | Beschrijving |
+| --- | --- | --- |
+| `mode` | `'progress'\|'distribution'` | Semantics for ARIA and gap behaviour (default: 'progress') |
+| `max` | `number` | Total value (default: 100) |
+| `value` | `number` | Single-segment shorthand (ignored when segment children exist) |
+| `color` | `string` | Color. Semantic (neutral, accent, success, warning, critical) or a Rijkskleur. Default 'accent'. |
+| `size` | `string` | Circle diameter in px. Matches nldd-icon sizes: 16, 20, 24, 28, 32, 40, 44, 48, 56, 64, 80, 96 (default: '28') |
+| `text` | `string` | Label below the circle |
+| `value-format` | `'percentage'\|'absolute'\|'fraction'\|'none'` | Format the tooltip uses for the auto-text |
+| `accessible-label` | `string` | Full override of aria-valuetext (and tooltip text) |
+| `indeterminate` | `boolean` | Renders the rotating elastic arc animation |
+| `translations` | `object` | Override translation keys; unset keys fall back to Dutch |
+| `value` | `number` | Share of the parent's total (default 0; <=0 hides segment) |
+| `color` | `string` | Color (semantic or Rijkskleur). Default 'accent'. |
+| `name` | `string` | Optional name used in the combined tooltip + screenreader text |
