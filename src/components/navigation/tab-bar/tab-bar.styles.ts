@@ -197,7 +197,7 @@ export const tabBarItemStyles = css`
 	}
 
 	:host([variant="compact"]) .tab-bar__item-text {
-		font: var(--primitives-font-body-xxs-bold-flat);
+		font: var(--primitives-font-body-xxs-medium-flat);
 	}
 
 	:host([variant="icon"]) .tab-bar__item-text {

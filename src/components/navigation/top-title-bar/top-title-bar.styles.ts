@@ -112,13 +112,13 @@ export const topTitleBarStyles = css`
 		margin: 0;
 		overflow: hidden;
 		color: var(--semantics-content-color);
-		font: var(--primitives-font-body-lg-bold-flat);
+		font: var(--primitives-font-body-lg-medium-flat);
 		text-overflow: ellipsis;
 		white-space: nowrap;
 	}
 
 	.top-title-bar__title:has(+ .top-title-bar__subtitle) {
-		font: var(--primitives-font-body-md-bold-flat);
+		font: var(--primitives-font-body-md-medium-flat);
 	}
 
 	@media (forced-colors: active) {

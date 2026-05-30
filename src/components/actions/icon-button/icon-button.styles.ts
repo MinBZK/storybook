@@ -21,7 +21,7 @@ export const iconButtonStyles = css`
 		--_disclosure-icon-margin-right: calc(var(--primitives-space-2) * -1);
 		--_disclosure-icon-size: var(--primitives-space-20);
 		--_text-display: none;
-		--_text-font: var(--primitives-font-weight-body-medium) var(--primitives-font-size-70) / var(--primitives-line-height-flat) var(--primitives-font-family-body);
+		--_text-font: var(--primitives-font-body-xxs-medium-flat);
 
 		${inheritedTextReset}
 		display: inline-block;

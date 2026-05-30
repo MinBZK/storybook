@@ -14,7 +14,7 @@ export const badgeStyles = css`
 		--_inline-padding: var(--primitives-space-6);
 		--_gap: var(--primitives-space-3);
 		--_content-color: var(--components-badge-critical-content-color);
-		--_font: var(--primitives-font-body-xs-bold-flat);
+		--_font: var(--primitives-font-body-xs-medium-flat);
 		--_dot-size: var(--primitives-space-10);
 		--_icon-size: var(--primitives-space-14);
 		--_icon-offset-correction: var(--primitives-space-1);
@@ -28,7 +28,7 @@ export const badgeStyles = css`
 		--_height: var(--primitives-space-16);
 		--_inline-padding: var(--primitives-space-4);
 		--_gap: var(--primitives-space-2);
-		--_font: var(--primitives-font-body-xxs-bold-flat);
+		--_font: var(--primitives-font-body-xxs-medium-flat);
 		--_dot-size: var(--primitives-space-6);
 		--_icon-size: var(--primitives-space-12);
 	}

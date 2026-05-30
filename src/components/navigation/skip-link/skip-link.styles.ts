@@ -56,7 +56,7 @@ export const skipLinkStyles = css`
 		padding: var(--primitives-space-4) var(--primitives-space-16);
 		align-items: center;
 		color: var(--semantics-links-color);
-		font: var(--primitives-font-body-md-bold-flat);
+		font: var(--primitives-font-body-md-medium-flat);
 		text-decoration: underline;
 		white-space: nowrap;
 		appearance: none;
