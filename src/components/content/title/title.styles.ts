@@ -1,5 +1,6 @@
 import { css, unsafeCSS } from 'lit';
 import { breakpoints } from '../../../assets/styles/breakpoints.js';
+import { slottedReset, slottedTextReset } from '../../../assets/styles/slotted-reset.js';
 
 const smMax = unsafeCSS(breakpoints.smMax);
 const mdMin = unsafeCSS(breakpoints.mdMin);
@@ -197,25 +198,31 @@ export const titleStyles = css`
 	}
 
 	::slotted([slot="overline"]) {
-		margin: 0;
-		color: var(--semantics-content-secondary-color);
-		font: var(--primitives-font-body-sm-regular-tight);
-		overflow-wrap: anywhere;
+		${slottedReset}
+		${slottedTextReset}
+		margin: 0 !important;
+		color: var(--semantics-content-secondary-color) !important;
+		font: var(--primitives-font-body-sm-regular-tight) !important;
+		overflow-wrap: anywhere !important;
 	}
 
 	::slotted(:not([slot])) {
-		margin: 0;
-		color: var(--semantics-content-color);
-		font: var(--_font);
-		overflow-wrap: anywhere;
-		text-wrap: pretty;
+		${slottedReset}
+		${slottedTextReset}
+		margin: 0 !important;
+		color: var(--semantics-content-color) !important;
+		font: var(--_font) !important;
+		overflow-wrap: anywhere !important;
+		text-wrap: pretty !important;
 	}
 
 	::slotted([slot="subtitle"]) {
-		margin: 0;
-		color: var(--semantics-content-secondary-color);
-		font: var(--primitives-font-body-sm-regular-tight);
-		overflow-wrap: anywhere;
+		${slottedReset}
+		${slottedTextReset}
+		margin: 0 !important;
+		color: var(--semantics-content-secondary-color) !important;
+		font: var(--primitives-font-body-sm-regular-tight) !important;
+		overflow-wrap: anywhere !important;
 	}
 
 	.title__actions {

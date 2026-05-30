@@ -1,5 +1,6 @@
 import { css, unsafeCSS } from 'lit';
 import { breakpoints } from '../../../assets/styles/breakpoints.js';
+import { slottedReset, slottedTextReset } from '../../../assets/styles/slotted-reset.js';
 
 const mdMin = unsafeCSS(breakpoints.mdMin);
 
@@ -191,30 +192,32 @@ export const formFieldHelpTextStyles = css`
 	/* # Links */
 
 	::slotted(a) {
-		border-radius: var(--primitives-corner-radius-xxs);
-		color: var(--semantics-links-color);
-		text-decoration: underline;
-		text-underline-offset: var(--primitives-space-2);
+		${slottedReset}
+		${slottedTextReset}
+		border-radius: var(--primitives-corner-radius-xxs) !important;
+		color: var(--semantics-links-color) !important;
+		text-decoration: underline !important;
+		text-underline-offset: var(--primitives-space-2) !important;
 	}
 
 	@media (hover: hover) {
 		::slotted(a:hover) {
-			color: var(--semantics-links-is-hovered-color);
+			color: var(--semantics-links-is-hovered-color) !important;
 		}
 	}
 
 	::slotted(a:active) {
-		color: var(--semantics-links-is-active-color);
+		color: var(--semantics-links-is-active-color) !important;
 	}
 
 	::slotted(a:focus-visible) {
-		outline: var(--semantics-focus-ring-outline);
-		outline-offset: var(--semantics-focus-ring-outline-offset);
-		box-shadow: var(--semantics-focus-ring-box-shadow);
+		outline: var(--semantics-focus-ring-outline) !important;
+		outline-offset: var(--semantics-focus-ring-outline-offset) !important;
+		box-shadow: var(--semantics-focus-ring-box-shadow) !important;
 	}
 
 	::slotted(a:focus:not(:focus-visible)) {
-		outline: none;
+		outline: none !important;
 	}
 `;
 
@@ -244,29 +247,31 @@ export const formFieldErrorTextStyles = css`
 	/* # Links */
 
 	::slotted(a) {
-		border-radius: var(--primitives-corner-radius-xxs);
-		color: var(--semantics-links-color);
-		text-decoration: underline;
-		text-underline-offset: var(--primitives-space-2);
+		${slottedReset}
+		${slottedTextReset}
+		border-radius: var(--primitives-corner-radius-xxs) !important;
+		color: var(--semantics-links-color) !important;
+		text-decoration: underline !important;
+		text-underline-offset: var(--primitives-space-2) !important;
 	}
 
 	@media (hover: hover) {
 		::slotted(a:hover) {
-			color: var(--semantics-links-is-hovered-color);
+			color: var(--semantics-links-is-hovered-color) !important;
 		}
 	}
 
 	::slotted(a:active) {
-		color: var(--semantics-links-is-active-color);
+		color: var(--semantics-links-is-active-color) !important;
 	}
 
 	::slotted(a:focus-visible) {
-		outline: var(--semantics-focus-ring-outline);
-		outline-offset: var(--semantics-focus-ring-outline-offset);
-		box-shadow: var(--semantics-focus-ring-box-shadow);
+		outline: var(--semantics-focus-ring-outline) !important;
+		outline-offset: var(--semantics-focus-ring-outline-offset) !important;
+		box-shadow: var(--semantics-focus-ring-box-shadow) !important;
 	}
 
 	::slotted(a:focus:not(:focus-visible)) {
-		outline: none;
+		outline: none !important;
 	}
 `;
