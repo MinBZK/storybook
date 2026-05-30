@@ -1,6 +1,6 @@
 import { css, unsafeCSS } from 'lit';
 import { breakpoints } from '../../../assets/styles/breakpoints.js';
-import { slottedReset, slottedTextReset } from '../../../assets/styles/slotted-reset.js';
+import { slottedReset, inheritedTextReset } from '../../../assets/styles/slotted-reset.js';
 
 const mdMin = unsafeCSS(breakpoints.mdMin);
 
@@ -12,6 +12,7 @@ export const formFieldStyles = css`
 	:host {
 		--_gap: calc(var(--primitives-space-10) / 2);
 
+		${inheritedTextReset}
 		display: block;
 		container-type: inline-size;
 	}
@@ -176,6 +177,7 @@ export const formFieldHelpTextStyles = css`
 	/* # Host */
 
 	:host {
+		${inheritedTextReset}
 		display: contents;
 	}
 
@@ -193,7 +195,7 @@ export const formFieldHelpTextStyles = css`
 
 	::slotted(a) {
 		${slottedReset}
-		${slottedTextReset}
+		${inheritedTextReset}
 		border-radius: var(--primitives-corner-radius-xxs) !important;
 		color: var(--semantics-links-color) !important;
 		text-decoration: underline !important;
@@ -227,6 +229,7 @@ export const formFieldErrorTextStyles = css`
 	/* # Host */
 
 	:host {
+		${inheritedTextReset}
 		display: none;
 	}
 
@@ -248,7 +251,7 @@ export const formFieldErrorTextStyles = css`
 
 	::slotted(a) {
 		${slottedReset}
-		${slottedTextReset}
+		${inheritedTextReset}
 		border-radius: var(--primitives-corner-radius-xxs) !important;
 		color: var(--semantics-links-color) !important;
 		text-decoration: underline !important;

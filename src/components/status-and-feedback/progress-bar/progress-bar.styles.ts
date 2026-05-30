@@ -1,4 +1,5 @@
 import { css } from 'lit';
+import { inheritedTextReset } from '../../../assets/styles/slotted-reset.js';
 
 export const progressBarStyles = css`
 
@@ -21,6 +22,7 @@ export const progressBarStyles = css`
 		--_indeterminate-bar-width: 20%;
 		--_indeterminate-duration: 800ms;
 
+		${inheritedTextReset}
 		box-sizing: border-box;
 		display: flex;
 		width: 100%;

@@ -1,4 +1,5 @@
 import { css } from 'lit';
+import { inheritedTextReset } from '../../../assets/styles/slotted-reset.js';
 
 export const menuBarStyles = css`
 
@@ -6,6 +7,7 @@ export const menuBarStyles = css`
 	/* # Host */
 
 	:host {
+		${inheritedTextReset}
 		display: flex;
 		min-width: 0;
 		flex-grow: 1;

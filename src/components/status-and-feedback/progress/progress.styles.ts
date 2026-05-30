@@ -1,4 +1,5 @@
 import { css } from 'lit';
+import { inheritedTextReset } from '../../../assets/styles/slotted-reset.js';
 
 export const progressStyles = css`
 
@@ -9,6 +10,7 @@ export const progressStyles = css`
 		--_fade-duration: var(--primitives-transition-duration-slow);
 		--_indicator-max-width: var(--primitives-area-240);
 
+		${inheritedTextReset}
 		box-sizing: border-box;
 		display: flex;
 		flex-grow: 1;

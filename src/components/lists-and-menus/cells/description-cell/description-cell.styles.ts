@@ -1,5 +1,5 @@
 import { css } from 'lit';
-import { slottedReset, slottedTextReset } from '../../../../assets/styles/slotted-reset.js';
+import { slottedReset, inheritedTextReset } from '../../../../assets/styles/slotted-reset.js';
 
 export const descriptionCellStyles = css`
 
@@ -12,6 +12,7 @@ export const descriptionCellStyles = css`
 		--_max-width: none;
 		--_min-height: 0;
 
+		${inheritedTextReset}
 		display: flex;
 		width: var(--_width);
 		min-width: var(--_min-width);
@@ -75,7 +76,7 @@ export const descriptionCellStyles = css`
 
 	::slotted([slot="title"]) {
 		${slottedReset}
-		${slottedTextReset}
+		${inheritedTextReset}
 		margin: 0 !important;
 		min-width: 0 !important;
 		align-self: stretch !important;
@@ -91,7 +92,7 @@ export const descriptionCellStyles = css`
 
 	::slotted([slot="description"]) {
 		${slottedReset}
-		${slottedTextReset}
+		${inheritedTextReset}
 		margin: 0 !important;
 		min-width: 0 !important;
 		align-self: stretch !important;

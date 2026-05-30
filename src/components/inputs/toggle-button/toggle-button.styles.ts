@@ -1,4 +1,5 @@
 import { css } from 'lit';
+import { inheritedTextReset } from '../../../assets/styles/slotted-reset.js';
 
 export const toggleButtonStyles = css`
 
@@ -14,6 +15,7 @@ export const toggleButtonStyles = css`
 		--_icon-size: var(--semantics-buttons-md-icon-size);
 		--_icon-only-icon-size: var(--semantics-buttons-md-icon-only-icon-size);
 
+		${inheritedTextReset}
 		display: inline-block;
 		user-select: none;
 		-webkit-tap-highlight-color: transparent;

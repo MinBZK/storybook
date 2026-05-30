@@ -22,7 +22,7 @@ import { css } from 'lit';
  * css`
  *   ::slotted(:not([slot])) {
  *     ${slottedReset}
- *     ${slottedTextReset}
+ *     ${inheritedTextReset}
  *     color: var(--semantics-content-color) !important;
  *     font: var(--_font) !important;
  *   }
@@ -31,7 +31,7 @@ import { css } from 'lit';
  *
  * NOTE: `revert` does NOT isolate *inherited* properties — they still flow in
  * from the host via the chain `body → host → :host → slot`. For slotted text,
- * add {@link slottedTextReset} to seal the inherited typography that `font`
+ * add {@link inheritedTextReset} to seal the inherited typography that `font`
  * does not cover.
  */
 export const slottedReset = css`
@@ -39,20 +39,22 @@ export const slottedReset = css`
 `;
 
 /**
- * Inherited typography properties that the `font` shorthand does NOT cover and
- * that would otherwise inherit into slotted text from a host `<body>` (e.g.
- * `body { letter-spacing: .1em }`). Pair with {@link slottedReset} on slotted
- * text rules.
+ * Inherited typography that the `font` shorthand does NOT cover and that a host
+ * can otherwise leak into our text — directly (`a { text-decoration }`) or via
+ * inheritance (`body { letter-spacing }`). Used in two places:
  *
- * `text-align` is locked to `start` (logical, so it stays RTL-safe) — a host
- * cannot centre or justify our text. A component that needs a different
- * alignment exposes it explicitly via a more-specific override, e.g.
- * `:host([align="center"]) ::slotted(…) { text-align: center !important }`,
- * rather than leaving it open to the host.
+ * - inside `::slotted(…)` to lock the consumer's slotted text (pair with
+ *   {@link slottedReset}), and
+ * - inside `:host`, as a guard block right after the `--_*` vars, to lock the
+ *   component's OWN shadow text against host inheritance (no `all: revert` there).
+ *
+ * `text-align` is locked to `start` (logical, RTL-safe) — a host cannot centre or
+ * justify our text. A component that needs a different alignment sets it
+ * explicitly on its own element, which overrides this inherited default.
  */
-export const slottedTextReset = css`
+export const inheritedTextReset = css`
+	text-align: start !important;
 	letter-spacing: normal !important;
 	word-spacing: normal !important;
 	text-transform: none !important;
-	text-align: start !important;
 `;

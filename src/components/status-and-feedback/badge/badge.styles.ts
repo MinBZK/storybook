@@ -1,4 +1,5 @@
 import { css } from 'lit';
+import { inheritedTextReset } from '../../../assets/styles/slotted-reset.js';
 
 export const badgeStyles = css`
 
@@ -18,6 +19,7 @@ export const badgeStyles = css`
 		--_icon-size: var(--primitives-space-14);
 		--_icon-offset-correction: var(--primitives-space-1);
 
+		${inheritedTextReset}
 		display: inline-flex;
 		vertical-align: middle;
 	}

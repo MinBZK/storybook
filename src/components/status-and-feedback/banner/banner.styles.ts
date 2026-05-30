@@ -1,4 +1,5 @@
 import { css } from 'lit';
+import { inheritedTextReset } from '../../../assets/styles/slotted-reset.js';
 
 export const bannerStyles = css`
 
@@ -21,6 +22,7 @@ export const bannerStyles = css`
 		--_main-gap: var(--primitives-space-8);
 		--_actions-gap: var(--primitives-space-4);
 
+		${inheritedTextReset}
 		box-sizing: border-box;
 		display: grid;
 		position: relative;

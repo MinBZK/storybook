@@ -1,4 +1,5 @@
 import { css } from 'lit';
+import { inheritedTextReset } from '../../../assets/styles/slotted-reset.js';
 
 export const multiLineTextFieldStyles = css`
 
@@ -15,6 +16,7 @@ export const multiLineTextFieldStyles = css`
 		--_icon-area-size: calc(var(--_min-size) - var(--semantics-input-fields-border-thickness) * 2);
 		--_validation-icon-size: var(--semantics-input-fields-md-validation-icon-size);
 
+		${inheritedTextReset}
 		display: block;
 		width: var(--_width);
 		max-width: 100%;

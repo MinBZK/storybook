@@ -1,6 +1,6 @@
 import { css, unsafeCSS } from 'lit';
 import { breakpoints } from '../../../assets/styles/breakpoints.js';
-import { slottedReset, slottedTextReset } from '../../../assets/styles/slotted-reset.js';
+import { slottedReset, inheritedTextReset } from '../../../assets/styles/slotted-reset.js';
 
 const smMax = unsafeCSS(breakpoints.smMax);
 const mdMin = unsafeCSS(breakpoints.mdMin);
@@ -37,6 +37,7 @@ export const titleStyles = css`
 			--_font: var(--primitives-font-display-3-lg);
 		}
 
+		${inheritedTextReset}
 		display: flex;
 	}
 
@@ -199,7 +200,7 @@ export const titleStyles = css`
 
 	::slotted([slot="overline"]) {
 		${slottedReset}
-		${slottedTextReset}
+		${inheritedTextReset}
 		margin: 0 !important;
 		color: var(--semantics-content-secondary-color) !important;
 		font: var(--primitives-font-body-sm-regular-tight) !important;
@@ -208,7 +209,7 @@ export const titleStyles = css`
 
 	::slotted(:not([slot])) {
 		${slottedReset}
-		${slottedTextReset}
+		${inheritedTextReset}
 		margin: 0 !important;
 		color: var(--semantics-content-color) !important;
 		font: var(--_font) !important;
@@ -218,7 +219,7 @@ export const titleStyles = css`
 
 	::slotted([slot="subtitle"]) {
 		${slottedReset}
-		${slottedTextReset}
+		${inheritedTextReset}
 		margin: 0 !important;
 		color: var(--semantics-content-secondary-color) !important;
 		font: var(--primitives-font-body-sm-regular-tight) !important;

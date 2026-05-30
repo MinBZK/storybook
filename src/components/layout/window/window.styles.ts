@@ -1,5 +1,6 @@
 import { css, unsafeCSS } from 'lit';
 import { breakpoints } from '../../../assets/styles/breakpoints.js';
+import { inheritedTextReset } from '../../../assets/styles/slotted-reset.js';
 
 const smMax = unsafeCSS(breakpoints.smMax);
 
@@ -9,6 +10,7 @@ export const windowStyles = css`
 	/* # Host */
 
 	:host {
+		${inheritedTextReset}
 		display: block;
 	}
 

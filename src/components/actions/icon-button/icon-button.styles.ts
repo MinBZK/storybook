@@ -1,4 +1,5 @@
 import { css } from 'lit';
+import { inheritedTextReset } from '../../../assets/styles/slotted-reset.js';
 
 export const iconButtonStyles = css`
 
@@ -20,7 +21,9 @@ export const iconButtonStyles = css`
 		--_disclosure-icon-margin-right: calc(var(--primitives-space-2) * -1);
 		--_disclosure-icon-size: var(--primitives-space-20);
 		--_text-display: none;
+		--_text-font: var(--primitives-font-weight-body-medium) var(--primitives-font-size-70) / var(--primitives-line-height-flat) var(--primitives-font-family-body);
 
+		${inheritedTextReset}
 		display: inline-block;
 		max-width: 100%;
 		user-select: none;
@@ -272,7 +275,7 @@ export const iconButtonStyles = css`
 		display: var(--_text-display);
 		text-align: center;
 		color: inherit;
-		font: var(--primitives-font-body-xxs-bold-flat);
+		font: var(--_text-font);
 		white-space: nowrap;
 	}
 `;

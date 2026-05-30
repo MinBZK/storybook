@@ -1,5 +1,6 @@
 import { css, unsafeCSS } from 'lit';
 import { breakpoints } from '../../../assets/styles/breakpoints.js';
+import { inheritedTextReset } from '../../../assets/styles/slotted-reset.js';
 
 const smMax = unsafeCSS(breakpoints.smMax);
 const mdMin = unsafeCSS(breakpoints.mdMin);
@@ -174,6 +175,7 @@ export const pageFooterLegalBarStyles = css`
 
 export const pageFooterLegalBarItemStyles = css`
 	:host {
+		${inheritedTextReset}
 		display: inline-flex;
 	}
 

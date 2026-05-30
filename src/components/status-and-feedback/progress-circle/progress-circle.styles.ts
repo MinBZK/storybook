@@ -1,4 +1,5 @@
 import { css } from 'lit';
+import { inheritedTextReset } from '../../../assets/styles/slotted-reset.js';
 
 export const progressCircleStyles = css`
 
@@ -19,6 +20,7 @@ export const progressCircleStyles = css`
 		--_label-color: var(--components-progress-circle-label-color);
 		--_label-font: var(--components-progress-circle-label-font);
 
+		${inheritedTextReset}
 		box-sizing: border-box;
 		display: inline-flex;
 		flex-direction: column;

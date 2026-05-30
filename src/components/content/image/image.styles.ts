@@ -1,5 +1,5 @@
 import { css } from 'lit';
-import { slottedReset } from '../../../assets/styles/slotted-reset.js';
+import { slottedReset, inheritedTextReset } from '../../../assets/styles/slotted-reset.js';
 
 export const imageStyles = css`
 
@@ -26,6 +26,7 @@ export const imageStyles = css`
 		--_object-position: center;
 		--_max-width: 100%;
 
+		${inheritedTextReset}
 		box-sizing: border-box;
 		display: block;
 		max-width: var(--_max-width);

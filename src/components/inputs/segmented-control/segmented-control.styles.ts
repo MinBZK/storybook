@@ -1,4 +1,5 @@
 import { css } from 'lit';
+import { inheritedTextReset } from '../../../assets/styles/slotted-reset.js';
 
 export const segmentedControlStyles = css`
 
@@ -10,6 +11,7 @@ export const segmentedControlStyles = css`
 		--_width: auto;
 		--_gap: var(--primitives-space-2);
 
+		${inheritedTextReset}
 		display: inline-grid;
 		border-radius: var(--_corner-radius);
 		background-color: var(--semantics-buttons-neutral-tinted-background-color);
@@ -67,6 +69,7 @@ export const segmentedControlItemStyles = css`
 		--_font: var(--semantics-buttons-md-font);
 		--_icon-size: var(--semantics-buttons-md-icon-only-icon-size);
 
+		${inheritedTextReset}
 		display: flex;
 		position: relative;
 		min-width: 0;

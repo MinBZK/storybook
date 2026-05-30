@@ -1,4 +1,5 @@
 import { css } from 'lit';
+import { inheritedTextReset } from '../../../assets/styles/slotted-reset.js';
 
 export const splitButtonStyles = css`
 
@@ -11,6 +12,7 @@ export const splitButtonStyles = css`
 		--_divider-color: var(--semantics-buttons-neutral-tinted-divider-color);
 		--_divider-length: var(--semantics-buttons-md-divider-length);
 
+		${inheritedTextReset}
 		display: inline-flex;
 		isolation: isolate;
 		-webkit-tap-highlight-color: transparent;

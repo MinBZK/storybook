@@ -1,4 +1,5 @@
 import { css } from 'lit';
+import { inheritedTextReset } from '../../../assets/styles/slotted-reset.js';
 
 export const codeViewerStyles = css`
 
@@ -20,6 +21,7 @@ export const codeViewerStyles = css`
 		--_actions-area-size: calc(var(--semantics-controls-md-min-size) + var(--_actions-area-padding) * 2);
 		--_actions-z-index: 1;
 
+		${inheritedTextReset}
 		display: flex;
 		position: relative;
 	}

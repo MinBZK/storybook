@@ -1,4 +1,5 @@
 import { css } from 'lit';
+import { inheritedTextReset } from '../../../assets/styles/slotted-reset.js';
 
 export const inlineDialogStyles = css`
 
@@ -11,6 +12,7 @@ export const inlineDialogStyles = css`
 		--_text-font: var(--primitives-font-body-md-bold-tight);
 		--_supporting-text-font: var(--primitives-font-body-sm-regular-tight);
 
+		${inheritedTextReset}
 		display: flex;
 		flex-grow: 1;
 		align-items: center;

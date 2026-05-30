@@ -1,4 +1,5 @@
 import { css } from 'lit';
+import { inheritedTextReset } from '../../../assets/styles/slotted-reset.js';
 
 export const codeEditorStyles = css`
 
@@ -13,6 +14,7 @@ export const codeEditorStyles = css`
 		--_content-color: var(--semantics-content-color);
 		--_font: var(--primitives-font-monospace-sm-regular-snug);
 
+		${inheritedTextReset}
 		/* flex column + min-height:0 + flex:1 makes the host a good flex
 		   citizen so a fixed-height parent grows the textarea; with no set
 		   height it falls back to the rows attribute. */

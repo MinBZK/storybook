@@ -1,4 +1,5 @@
 import { css } from 'lit';
+import { inheritedTextReset } from '../../../assets/styles/slotted-reset.js';
 
 
 export const skipLinkStyles = css`
@@ -12,6 +13,7 @@ export const skipLinkStyles = css`
 		--_focus-box-shadow: inset var(--semantics-focus-ring-box-shadow);
 		--_focus-outline-offset: -6px;
 
+		${inheritedTextReset}
 		display: block;
 		position: relative;
 	}

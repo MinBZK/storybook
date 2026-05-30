@@ -1,5 +1,5 @@
 import { css } from 'lit';
-import { slottedReset } from '../../../assets/styles/slotted-reset.js';
+import { slottedReset, inheritedTextReset } from '../../../assets/styles/slotted-reset.js';
 
 export const dropdownStyles = css`
 
@@ -22,6 +22,7 @@ export const dropdownStyles = css`
 		--_is-active-background-color: var(--semantics-buttons-neutral-tinted-is-active-background-color);
 		--_is-active-content-color: var(--semantics-buttons-neutral-tinted-is-active-content-color);
 
+		${inheritedTextReset}
 		display: block;
 		width: var(--_width);
 		max-width: 100%;

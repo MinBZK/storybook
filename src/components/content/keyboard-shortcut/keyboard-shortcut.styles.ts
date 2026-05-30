@@ -1,4 +1,5 @@
 import { css } from 'lit';
+import { inheritedTextReset } from '../../../assets/styles/slotted-reset.js';
 
 export const keyboardShortcutStyles = css`
 
@@ -10,6 +11,7 @@ export const keyboardShortcutStyles = css`
 		--_inline-padding: var(--primitives-space-6);
 		--_font: var(--primitives-font-body-xs-regular-flat);
 
+		${inheritedTextReset}
 		display: inline-flex;
 		vertical-align: middle;
 	}

@@ -1,5 +1,6 @@
 import { css, unsafeCSS } from 'lit';
 import { breakpoints } from '../../../assets/styles/breakpoints.js';
+import { inheritedTextReset } from '../../../assets/styles/slotted-reset.js';
 
 const mdMin = unsafeCSS(breakpoints.mdMin);
 
@@ -13,6 +14,7 @@ export const modalDialogStyles = css`
 		--_animation-duration: 150ms;
 		--_animation-easing: ease;
 
+		${inheritedTextReset}
 		display: contents;
 	}
 

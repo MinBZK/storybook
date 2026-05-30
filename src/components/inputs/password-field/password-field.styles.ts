@@ -1,4 +1,5 @@
 import { css } from 'lit';
+import { inheritedTextReset } from '../../../assets/styles/slotted-reset.js';
 
 export const passwordFieldStyles = css`
 
@@ -17,6 +18,7 @@ export const passwordFieldStyles = css`
 		--_visibility-toggle-padding: calc((var(--_min-size) - var(--semantics-input-fields-border-thickness) * 2 - var(--semantics-controls-sm-min-size)) / 2);
 		--_z-index-button-focus: 1;
 
+		${inheritedTextReset}
 		display: block;
 		width: var(--_width);
 		max-width: 100%;

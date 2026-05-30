@@ -1,4 +1,5 @@
 import { css } from 'lit';
+import { inheritedTextReset } from '../../../assets/styles/slotted-reset.js';
 
 export const tooltipStyles = css`
 
@@ -15,6 +16,7 @@ export const tooltipStyles = css`
 		--_offset: 4; /* px, unitless — read by JS */
 		--_shift-padding: 8; /* px, unitless — read by JS */
 
+		${inheritedTextReset}
 		display: contents;
 	}
 
