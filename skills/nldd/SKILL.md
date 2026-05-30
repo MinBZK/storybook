@@ -19,7 +19,7 @@ Twee bestanden horen hierbij:
 - [`reference.md`](reference.md): gegenereerde snelreferentie van elk
   `nldd-*` element met zijn attributen, slots en events.
 - [`examples/`](examples/): werkende bootstrap- en patroonvoorbeelden voor
-  platte HTML en Vue 3.
+  platte HTML, Vue 3, layout-patronen en een complete content-pagina.
 
 De levende documentatie met visuele voorbeelden staat in
 [Storybook](https://minbzk.github.io/storybook/). De exacte types staan in de
@@ -172,9 +172,16 @@ systeem het meest volwassen gebruikt.
 
 ### Layout componeren
 
-De compositie loopt van buiten naar binnen: `nldd-app-view` (app-shell, zet de
-kleurschema-context) → een split view → `nldd-split-view-pane` per paneel →
-`nldd-page` / `nldd-container` voor de inhoud.
+`nldd-app-view` is altijd de buitenste schil: die zet de kleurschema-context en
+de fonts. Wat erbinnen komt, hangt af van wat je bouwt. Er zijn twee
+compositievormen, kies bewust:
+
+| Vorm | Wanneer | Bouwstenen |
+|------|---------|------------|
+| **App-shell** | Applicaties met panelen: editors, dashboards, werkomgevingen. | `nldd-app-view` → split view → `nldd-split-view-pane` → `nldd-page` |
+| **Content-pagina** | Landings-, marketing- of informatiepagina's: een verticale stapel inhoud. | `nldd-app-view` → `nldd-page` → `*-section` blokken → `nldd-page-footer` |
+
+**App-shell** loopt van buiten naar binnen via split views:
 
 ```html
 <nldd-app-view>
@@ -185,9 +192,33 @@ kleurschema-context) → een split view → `nldd-split-view-pane` per paneel �
 </nldd-app-view>
 ```
 
-*Waarom:* `nldd-app-view` regelt de globale context (kleurschema, fonts). De
-split view regelt de responsive auto-hide. Zet de prioriteit goed door de
-volgorde van de panelen.
+*Waarom:* de split view regelt de responsive auto-hide. Zet de prioriteit goed
+door de volgorde van de panelen.
+
+**Content-pagina** is een stapel page-sections, geen split views:
+
+```html
+<nldd-app-view>
+  <nldd-page>
+    <nldd-simple-section><!-- hero --></nldd-simple-section>
+    <nldd-simple-section>
+      <nldd-collection layout="grid"
+        item-width="320px"
+      >
+        <nldd-card><!-- ... --></nldd-card>
+      </nldd-collection>
+    </nldd-simple-section>
+    <nldd-page-footer><!-- ... --></nldd-page-footer>
+  </nldd-page>
+</nldd-app-view>
+```
+
+*Waarom:* de `*-section` componenten (`nldd-simple-section`,
+`nldd-two-thirds-one-third-section`, en de andere page-sections) regelen
+responsive padding en kolom-wrapping zelf via container queries. Grids van
+gelijkwaardige items bouw je met `nldd-collection` + `nldd-card`, niet met eigen
+CSS-grid. Het volledige patroon staat in
+[`examples/content-page.md`](examples/content-page.md).
 
 ### Sheet, modal of popover: kies bewust
 
