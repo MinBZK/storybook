@@ -26,3 +26,12 @@ jobs:
 
       - name: Validate CSS variables
         run: npm run validate:styles
+
+      - name: Test reference generator
+        run: npm run test:scripts
+
+      - name: Check skill component reference is in sync
+        run: |
+          npm run generate:component-reference
+          git diff --exit-code skills/nldd/reference.md \
+            || (echo "::error::skills/nldd/reference.md is verouderd. Draai 'npm run generate:component-reference' en commit het resultaat." && exit 1)

@@ -417,6 +417,7 @@
     "pretest:run": "npm run build:icons",
     "test": "vitest",
     "test:run": "vitest run",
+    "test:scripts": "node --test scripts/*.test.mjs",
     "typecheck": "tsc --noEmit"
   },
   "devDependencies": {

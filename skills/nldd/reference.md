@@ -394,8 +394,6 @@ Een layout-wrapper voor de actie-knoppen onderaan een formulier (typisch een sub
 
 ### `<nldd-form-field>`
 
-Nederlandse Digitale Dienst Form Field Components (Lit + TypeScript)
-
 **Attributes**
 
 | Attribuut | Type | Beschrijving |

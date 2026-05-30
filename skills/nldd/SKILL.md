@@ -3,7 +3,6 @@ name: nldd
 description: "Bouw applicaties met de web components van het NLDD Design System (@nldd/design-system, Nederlandse Digitale Dienst, Rijksoverheid). Triggers: @nldd/design-system, 'nldd-' tags, vragen over layout, sheets, popovers, modals, formulieren, toegankelijkheid, CSS-tokens of upgraden van dit systeem. NIET voor het ontwikkelen van het design system zelf (daarvoor: /component, /css)."
 metadata:
   type: reference
-  audience: consumers
 ---
 
 # NLDD Design System: voor wie ermee bouwt

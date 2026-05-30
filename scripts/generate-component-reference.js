@@ -14,7 +14,7 @@
  * Usage: node scripts/generate-component-reference.js
  */
 
-import { readFileSync, writeFileSync, readdirSync, statSync } from 'node:fs';
+import { readFileSync, writeFileSync, readdirSync } from 'node:fs';
 import { resolve, dirname, join, sep } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
@@ -46,26 +46,30 @@ const NON_ENTRY_SUFFIXES = [
 /** Recursively collect candidate component entry files (*.ts, excluding the non-entry suffixes). */
 function collectEntryFiles(dir) {
 	const files = [];
-	for (const name of readdirSync(dir)) {
-		const full = join(dir, name);
-		if (statSync(full).isDirectory()) {
+	for (const entry of readdirSync(dir, { withFileTypes: true })) {
+		const full = join(dir, entry.name);
+		if (entry.isDirectory()) {
 			files.push(...collectEntryFiles(full));
 			continue;
 		}
-		if (!name.endsWith('.ts')) continue;
-		if (NON_ENTRY_SUFFIXES.some((suffix) => name.endsWith(suffix))) continue;
-		if (name === 'index.ts') continue;
+		if (!entry.name.endsWith('.ts')) continue;
+		if (NON_ENTRY_SUFFIXES.some((suffix) => entry.name.endsWith(suffix))) continue;
+		if (entry.name === 'index.ts') continue;
 		files.push(full);
 	}
 	return files;
 }
 
-/** Extract the first leading block comment (/** ... *​/) from a source file. */
+/** Extract the JSDoc block that documents the component(s). Prefers the first
+ * block containing @element or @customElement so a license/module header before
+ * it does not get picked by mistake; falls back to the first block. */
 function extractLeadingBlock(source) {
-	const match = source.match(/\/\*\*([\s\S]*?)\*\//);
-	if (!match) return null;
+	const blocks = [...source.matchAll(/\/\*\*([\s\S]*?)\*\//g)];
+	if (blocks.length === 0) return null;
+	const chosen =
+		blocks.find((m) => /@element\b|@customElement\b/.test(m[1])) ?? blocks[0];
 	// Strip the leading " * " from each line.
-	return match[1]
+	return chosen[1]
 		.split('\n')
 		.map((line) => line.replace(/^\s*\*?\s?/, ''))
 		.join('\n')
@@ -205,7 +209,7 @@ function parseComponent(block, filePath, fallbackTag) {
 	// The shared prose summary (minus the boilerplate title line) goes to the
 	// first element; sub-elements keep their own per-element prose if any.
 	const summary = summaryLines
-		.filter((l) => !/Component \(Lit \+ TypeScript\)\s*$/.test(l))
+		.filter((l) => !/Components? \(Lit \+ TypeScript\)\s*$/.test(l))
 		.join(' ')
 		.replace(/\s+/g, ' ')
 		.trim();
@@ -258,11 +262,17 @@ function renderComponent(c) {
 	return out.join('\n');
 }
 
+// The pure parsing helpers are exported so they can be unit-tested without
+// triggering the file-walking/writing side effects of the main routine.
+export { parseTypedTag, parseNamedTag, parseComponent, extractLeadingBlock };
+
 // --- Main ---
 
 // Internal helpers that ship a custom element but are not part of the public,
 // consumer-facing surface. Exclude them from the reference.
 const INTERNAL_TAGS = new Set(['nldd-lqip-encoder']);
+
+function main() {
 
 const entryFiles = collectEntryFiles(componentsDir);
 const components = [];
@@ -369,3 +379,10 @@ const iconInfo = collectIconNames();
 console.log(`Wrote ${outputPath}`);
 console.log(`Components: ${total} across ${orderedCategories.length} categories`);
 console.log(`Icons: ${iconInfo.names.length} names + ${iconInfo.aliases.length} aliases`);
+
+}
+
+// Run the generator only when executed directly, not when imported for tests.
+if (process.argv[1] === fileURLToPath(import.meta.url)) {
+	main();
+}
