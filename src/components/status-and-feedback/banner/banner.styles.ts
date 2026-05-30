@@ -13,11 +13,11 @@ export const bannerStyles = css`
 		--_border-color: var(--components-banner-neutral-border-color);
 		--_border-width: var(--primitives-border-width-thin);
 		--_icon-color: var(--components-banner-neutral-icon-color);
-		--_icon-size: var(--primitives-space-28);
+		--_icon-size: var(--primitives-space-32);
 		--_content-color: var(--components-banner-content-color);
 		--_content-secondary-color: var(--components-banner-content-secondary-color);
 		--_text-icon-offset: calc((var(--_icon-size) - var(--primitives-font-size-100) * var(--primitives-line-height-tight)) / 2);
-		--_column-gap: var(--primitives-space-10);
+		--_column-gap: var(--primitives-space-8);
 		--_dismissible-padding-right: var(--primitives-space-44);
 		--_main-gap: var(--primitives-space-8);
 		--_actions-gap: var(--primitives-space-4);
@@ -48,6 +48,12 @@ export const bannerStyles = css`
 		display: none;
 	}
 
+	:host([variant="accent"]) {
+		--_background-color: var(--components-banner-accent-background-color);
+		--_border-color: var(--components-banner-accent-border-color);
+		--_icon-color: var(--components-banner-accent-icon-color);
+	}
+
 	:host([variant="success"]) {
 		--_background-color: var(--components-banner-success-background-color);
 		--_border-color: var(--components-banner-success-border-color);
@@ -69,19 +75,13 @@ export const bannerStyles = css`
 
 	/* # Icon */
 
-	.banner__icon-area {
+	.banner__icon {
 		display: flex;
 		grid-column: 1;
 		grid-row: 1;
-		align-items: flex-start;
-		justify-content: center;
-		color: var(--_icon-color);
-	}
-
-	.banner__icon {
 		width: var(--_icon-size);
-		height: var(--_icon-size);
-		flex-shrink: 0;
+		align-items: flex-start;
+		color: var(--_icon-color);
 	}
 
 

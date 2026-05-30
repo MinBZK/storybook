@@ -29,8 +29,8 @@
  *
  * @element nldd-banner
  *
- * @attr {'neutral'|'success'|'warning'|'critical'} variant - Colour and default icon (default: 'neutral')
- * @attr {string}  icon            - Icon override. Default per variant: neutral → info-circle-filled, success → check-circle-filled, warning → exclamation-triangle-filled, critical → exclamation-circle-filled
+ * @attr {'neutral'|'accent'|'success'|'warning'|'critical'} variant - Colour and default icon (default: 'neutral')
+ * @attr {string}  icon            - Icon override. Default per variant: neutral → info-circle-filled, accent → info-circle-filled, success → check-circle-filled, warning → exclamation-triangle-filled, critical → exclamation-circle-filled
  * @attr {string}  text            - Main text (heading or paragraph, depending on heading-level)
  * @attr {string}  supporting-text - Supporting text below the heading
  * @attr {1|2|3|4|5|6} heading-level - Renders text as h1–h6; absent renders a p
@@ -52,10 +52,11 @@ import '../../content/icon/icon.js';
 import '../../actions/button-group/button-group.js';
 import '../../actions/icon-button/icon-button.js';
 
-export type BannerVariant = 'neutral' | 'success' | 'warning' | 'critical';
+export type BannerVariant = 'neutral' | 'accent' | 'success' | 'warning' | 'critical';
 
 const DEFAULT_ICONS: Record<BannerVariant, string> = {
 	neutral: 'info-circle-filled',
+	accent: 'info-circle-filled',
 	success: 'check-circle-filled',
 	warning: 'exclamation-triangle-filled',
 	critical: 'exclamation-circle-filled',

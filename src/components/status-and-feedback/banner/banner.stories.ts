@@ -23,7 +23,7 @@ export default {
 	argTypes: {
 		variant: {
 			control: 'select',
-			options: ['neutral', 'success', 'warning', 'critical'],
+			options: ['neutral', 'accent', 'success', 'warning', 'critical'],
 			description: 'Kleur en standaard-icoon',
 			table: { defaultValue: { summary: 'neutral' } },
 		},
@@ -86,6 +86,7 @@ export const AlleVarianten = {
 	render: () => html`
 		<div style="display: flex; flex-direction: column; gap: 16px;">
 			<nldd-banner variant="neutral" text="Standaard mededeling" supporting-text="Met wat extra context."></nldd-banner>
+			<nldd-banner variant="accent" text="Uitgelicht" supporting-text="Een geaccentueerde mededeling die de aandacht trekt."></nldd-banner>
 			<nldd-banner variant="success" text="Opgeslagen" supporting-text="Je wijzigingen zijn bewaard."></nldd-banner>
 			<nldd-banner variant="warning" text="Let op" supporting-text="Deze actie heeft gevolgen voor andere gebruikers."></nldd-banner>
 			<nldd-banner variant="critical" text="Er ging iets mis" supporting-text="Controleer de gemarkeerde velden hieronder."></nldd-banner>
