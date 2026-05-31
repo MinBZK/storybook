@@ -6,6 +6,8 @@ export const cardStyles = css`
 	/* # Host */
 
 	:host {
+		--_highlight-border-width: var(--primitives-border-width-thin);
+
 		display: flex;
 		flex-direction: column;
 	}
@@ -38,7 +40,7 @@ export const cardStyles = css`
 		position: absolute;
 		inset: 0;
 		border-radius: inherit;
-		box-shadow: inset 0 0 0 var(--primitives-border-width-thin) var(--components-card-highlight-border-color);
+		box-shadow: inset 0 0 0 var(--_highlight-border-width) var(--components-card-highlight-border-color);
 		pointer-events: none;
 	}
 
