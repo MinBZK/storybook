@@ -100,6 +100,34 @@ describe('nldd-progress-circle', () => {
 		const wrapper = el.shadowRoot!.querySelector('.progress-circle__circle')!;
 		expect(wrapper.getAttribute('aria-valuetext')).toBe('Custom');
 	});
+
+	it('value-display="inline" shows the value as text below the label', async () => {
+		el = await fixture('<nldd-progress-circle value="60" text="Uploaden" value-display="inline"></nldd-progress-circle>');
+		await waitForUpdate(el);
+		const value = el.shadowRoot!.querySelector('.progress-circle__supporting-text');
+		expect(value).not.toBeNull();
+		expect(value!.textContent).toBe('60%');
+	});
+
+	it('value-display="tooltip" (default) wraps the circle in a tooltip and shows no inline value', async () => {
+		el = await fixture('<nldd-progress-circle value="60"></nldd-progress-circle>');
+		await waitForUpdate(el);
+		expect(el.shadowRoot!.querySelector('nldd-tooltip')).not.toBeNull();
+		expect(el.shadowRoot!.querySelector('.progress-circle__supporting-text')).toBeNull();
+	});
+
+	it('value-display="none" renders neither a tooltip nor an inline value', async () => {
+		el = await fixture('<nldd-progress-circle value="60" value-display="none"></nldd-progress-circle>');
+		await waitForUpdate(el);
+		expect(el.shadowRoot!.querySelector('nldd-tooltip')).toBeNull();
+		expect(el.shadowRoot!.querySelector('.progress-circle__supporting-text')).toBeNull();
+	});
+
+	it('value-text overrides the inline displayed value', async () => {
+		el = await fixture('<nldd-progress-circle value="60" text="x" value-display="inline" value-text="Bijna klaar"></nldd-progress-circle>');
+		await waitForUpdate(el);
+		expect(el.shadowRoot!.querySelector('.progress-circle__supporting-text')!.textContent).toBe('Bijna klaar');
+	});
 });
 
 describe('nldd-progress-circle-segment', () => {

@@ -24,8 +24,10 @@
  * @attr {string}  color             - Color. Semantic (neutral, accent, success, warning, critical) or a Rijkskleur. Default 'accent'.
  * @attr {string} size              - Circle diameter in px. Matches nldd-icon sizes: 16, 20, 24, 28, 32, 40, 44, 48, 56, 64, 80, 96 (default: '28')
  * @attr {string}  text              - Label below the circle
- * @attr {'percentage'|'absolute'|'fraction'|'none'} value-format - Format the tooltip uses for the auto-text
- * @attr {string}  accessible-label  - Full override of aria-valuetext (and tooltip text)
+ * @attr {'percentage'|'absolute'|'fraction'} value-format - Format of the displayed value (default: 'percentage')
+ * @attr {'inline'|'tooltip'|'none'} value-display - Where the value shows: inline below the label, in a tooltip, or hidden (default: 'tooltip')
+ * @attr {string}  value-text        - Full override of the displayed value (inline + tooltip)
+ * @attr {string}  accessible-label  - Full override of aria-valuetext
  * @attr {boolean} indeterminate     - Renders the rotating elastic arc animation
  * @attr {object}  translations      - Override translation keys; unset keys fall back to Dutch
  *
@@ -51,7 +53,8 @@ export const INDETERMINATE_TRANSITION_MS = 300;
 
 export type ProgressCircleMode = 'progress' | 'distribution';
 export type ProgressCircleSize = '16' | '20' | '24' | '28' | '32' | '40' | '44' | '48' | '56' | '64' | '80' | '96';
-export type ProgressCircleValueFormat = 'percentage' | 'absolute' | 'fraction' | 'none';
+export type ProgressCircleValueFormat = 'percentage' | 'absolute' | 'fraction';
+export type ProgressCircleValueDisplay = 'inline' | 'tooltip' | 'none';
 
 export type ProgressCircleColor =
 	| 'neutral' | 'accent' | 'success' | 'warning' | 'critical'
@@ -116,6 +119,12 @@ export class NLDDProgressCircle extends LitElement {
 	@property({ type: String, reflect: true, attribute: 'value-format' })
 	valueFormat: ProgressCircleValueFormat = 'percentage';
 
+	@property({ type: String, reflect: true, attribute: 'value-text' })
+	valueText = '';
+
+	@property({ type: String, reflect: true, attribute: 'value-display' })
+	valueDisplay: ProgressCircleValueDisplay = 'tooltip';
+
 	@property({ type: String, reflect: true, attribute: 'accessible-label' })
 	accessibleLabel = '';
 
@@ -166,15 +175,24 @@ export class NLDDProgressCircle extends LitElement {
 		return Math.min(100, (this._totalValue / this.max) * 100);
 	}
 
-	/** Compact text shown in the tooltip. Follows value-format (matching the
-	 *  per-segment tooltip style of nldd-progress-bar) and omits the "voltooid"
-	 *  suffix that aria-valuetext uses for screen readers. Returns '' when
-	 *  value-format is 'none' so the template can skip rendering the tooltip
-	 *  wrapper entirely. accessibleLabel and indeterminate still produce text. */
+	/** Formatted value for inline display (value-display="inline"). Mirrors
+	 *  nldd-progress-bar: valueText wins, empty while indeterminate, otherwise
+	 *  the total formatted per value-format. */
+	get _displayValue(): string {
+		if (this.valueText) return this.valueText;
+		if (this.indeterminate) return '';
+		return this._formatValuePart(this._totalValue, Math.round(this._percentage));
+	}
+
+	/** Compact text shown in the tooltip — only in value-display="tooltip" mode
+	 *  (returns '' otherwise, so the template skips the tooltip wrapper). Follows
+	 *  value-format (matching nldd-progress-bar's per-segment tooltip style) and
+	 *  omits the "voltooid" suffix that aria-valuetext uses for screen readers.
+	 *  valueText overrides the whole thing; indeterminate shows the loading text. */
 	get _tooltipText(): string {
-		if (this.accessibleLabel) return this.accessibleLabel;
+		if (this.valueDisplay !== 'tooltip') return '';
 		if (this.indeterminate) return this._t('components.progress-circle.loading-text');
-		if (this.valueFormat === 'none') return '';
+		if (this.valueText) return this.valueText;
 
 		if (!this._hasSegments) {
 			const v = Math.max(0, this.value ?? 0);
@@ -244,12 +262,6 @@ export class NLDDProgressCircle extends LitElement {
 			case 'absolute': return `${value}`;
 			case 'fraction': return `${value} / ${this.max}`;
 			case 'percentage':
-			case 'none':
-				// 'none' is listed only for exhaustiveness — the segment
-				// template skips calling _formatValuePart when valueFormat
-				// is 'none', so this branch is never reached with 'none'
-				// under normal flow.
-				// falls through
 			default: return `${pct}%`;
 		}
 	}

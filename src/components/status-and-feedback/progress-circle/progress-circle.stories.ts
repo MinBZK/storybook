@@ -36,8 +36,13 @@ export default {
 		mode: {
 			control: 'select',
 			options: ['progress', 'distribution'],
-			description: 'Semantiek voor ARIA en de gap tussen segmenten',
+			description: 'Semantiek voor ARIA en visualisatie',
 			table: { defaultValue: { summary: 'progress' } },
+		},
+		indeterminate: {
+			control: 'boolean',
+			description: 'Toont een draaiende indicator-animatie',
+			table: { defaultValue: { summary: false } },
 		},
 		color: {
 			control: 'select',
@@ -51,58 +56,72 @@ export default {
 			description: 'Diameter in px (zelfde set als nldd-icon)',
 			table: { defaultValue: { summary: '28' } },
 		},
-		max: {
-			control: { type: 'number', min: 1 },
-			table: { defaultValue: { summary: 100 } },
-		},
-		value: {
-			control: { type: 'number', min: 0 },
-		},
 		text: {
 			control: 'text',
 			description: 'Label onder de cirkel',
 		},
+		max: {
+			control: { type: 'number', min: 1 },
+			description: 'Totaalwaarde',
+			table: { defaultValue: { summary: 100 } },
+		},
+		value: {
+			control: { type: 'number', min: 0 },
+			description: 'Single-segment shorthand',
+		},
 		valueFormat: {
 			name: 'value-format',
 			control: 'select',
-			options: ['percentage', 'absolute', 'fraction', 'none'],
-			description: 'Format voor de waarde in de tooltip',
+			options: ['percentage', 'absolute', 'fraction'],
+			description: 'Format van de getoonde waarde',
 			table: { defaultValue: { summary: 'percentage' } },
+		},
+		valueText: {
+			name: 'value-text',
+			control: 'text',
+			description: 'Volledige override van de getoonde waarde',
+		},
+		valueDisplay: {
+			name: 'value-display',
+			control: 'select',
+			options: ['inline', 'tooltip', 'none'],
+			description: 'Waar de waarde verschijnt: inline, tooltip of verborgen',
+			table: { defaultValue: { summary: 'tooltip' } },
 		},
 		accessibleLabel: {
 			name: 'accessible-label',
 			control: 'text',
-			description: 'Volledige override van aria-valuetext en tooltip',
-		},
-		indeterminate: {
-			control: 'boolean',
-			table: { defaultValue: { summary: false } },
+			description: 'Volledige override van aria-valuetext',
 		},
 	},
 	args: {
 		mode: 'progress',
+		indeterminate: false,
 		color: 'accent',
 		size: '28',
+		text: 'Bestanden uploaden',
 		max: 100,
 		value: 60,
-		text: 'Bestanden uploaden',
 		valueFormat: 'percentage',
+		valueText: '',
+		valueDisplay: 'tooltip',
 		accessibleLabel: '',
-		indeterminate: false,
 	},
 };
 
 const Template = (args: Record<string, any>) => html`
 	<nldd-progress-circle
 		mode=${args.mode}
+		?indeterminate=${args.indeterminate}
 		color=${args.color}
 		size=${args.size}
+		text=${args.text || nothing}
 		max=${args.max}
 		value=${args.value}
-		text=${args.text || nothing}
 		value-format=${args.valueFormat}
+		value-text=${args.valueText || nothing}
+		value-display=${args.valueDisplay}
 		accessible-label=${args.accessibleLabel || nothing}
-		?indeterminate=${args.indeterminate}
 	></nldd-progress-circle>
 `;
 
@@ -171,6 +190,24 @@ export const Distribution = {
 	},
 };
 
+export const InlineWaarde = {
+	render: () => html`
+		<div style="display: flex; gap: 32px; align-items: flex-start;">
+			<nldd-progress-circle size="56" value="60" text="Inline" value-display="inline"></nldd-progress-circle>
+			<nldd-progress-circle size="56" value="3" max="4" text="Stappen" value-display="inline" value-format="fraction"></nldd-progress-circle>
+			<nldd-progress-circle size="56" value="60" text="Tooltip (hover)" value-display="tooltip"></nldd-progress-circle>
+		</div>
+	`,
+	parameters: {
+		controls: { disable: true },
+		docs: {
+			description: {
+				story: 'Met `value-display="inline"` verschijnt de waarde als secundaire tekst onder de label. `tooltip` (standaard) toont de waarde bij hover/focus; `none` verbergt de waarde.',
+			},
+		},
+	},
+};
+
 export const Indeterminate = {
 	render: () => html`
 		<nldd-progress-circle indeterminate color="accent" text="Bezig met laden"></nldd-progress-circle>
@@ -179,7 +216,7 @@ export const Indeterminate = {
 		controls: { disable: true },
 		docs: {
 			description: {
-				story: 'Material-stijl: elastische boog draait rond. Bij `prefers-reduced-motion` wordt de animatie vervangen door een rustige pulse.',
+				story: 'Een vast segment draait rond de cirkel. Bij `prefers-reduced-motion` wordt de animatie vervangen door een rustige pulse.',
 			},
 		},
 	},

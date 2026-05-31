@@ -72,18 +72,16 @@ export function progressCircleTemplate(component: NLDDProgressCircle, onSlotChan
 					r=${radius}
 					fill="none"
 				></circle>
-				<g class="progress-circle__segments">
-					${arcs.map(arc => svg`
-						<circle class="progress-circle__segment progress-circle__segment--${arc.color}"
-							cx="50"
-							cy="50"
-							r=${radius}
-							fill="none"
-							stroke-dasharray="${arc.length} ${circumference}"
-							stroke-dashoffset=${-arc.offset}
-						></circle>
-					`)}
-				</g>
+				${arcs.map(arc => svg`
+					<circle class="progress-circle__segment progress-circle__segment--${arc.color}"
+						cx="50"
+						cy="50"
+						r=${radius}
+						fill="none"
+						stroke-dasharray="${arc.length} ${circumference}"
+						stroke-dashoffset=${-arc.offset}
+					></circle>
+				`)}
 				${isIndeterminate ? svg`
 					<circle class="progress-circle__indeterminate-indicator"
 						cx="50"
@@ -97,8 +95,8 @@ export function progressCircleTemplate(component: NLDDProgressCircle, onSlotChan
 			</svg>
 		</div>
 	`;
-	// Skip the tooltip wrapper entirely when there's no text (value-format
-	// 'none' with no override) so consumers don't get an inert tooltip.
+	// Skip the tooltip wrapper entirely when there's no tooltip text (e.g.
+	// value-display is not "tooltip") so consumers don't get an inert tooltip.
 	const wrappedCircle = tooltipText
 		? html`
 			<nldd-tooltip
@@ -111,6 +109,11 @@ export function progressCircleTemplate(component: NLDDProgressCircle, onSlotChan
 	return html`
 		${wrappedCircle}
 		<slot @slotchange=${onSlotChange}></slot>
-		${component.text ? html`<span class="progress-circle__text">${component.text}</span>` : nothing}
+		${component.text || (component.valueDisplay === 'inline' && component._displayValue) ? html`
+			<div class="progress-circle__caption">
+				${component.text ? html`<span class="progress-circle__text">${component.text}</span>` : nothing}
+				${component.valueDisplay === 'inline' && component._displayValue ? html`<span class="progress-circle__supporting-text">${component._displayValue}</span>` : nothing}
+			</div>
+		` : nothing}
 	`;
 }

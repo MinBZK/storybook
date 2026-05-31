@@ -39,6 +39,11 @@ export default {
 			description: 'Semantiek voor ARIA en visualisatie',
 			table: { defaultValue: { summary: 'progress' } },
 		},
+		indeterminate: {
+			control: 'boolean',
+			description: 'Toont een schuivende indicator-animatie',
+			table: { defaultValue: { summary: false } },
+		},
 		color: {
 			control: 'select',
 			options: ALL_VARIANTS,
@@ -51,6 +56,10 @@ export default {
 			description: 'Hoogte van de bar',
 			table: { defaultValue: { summary: 'md' } },
 		},
+		text: {
+			control: 'text',
+			description: 'Label boven de bar (links)',
+		},
 		max: {
 			control: { type: 'number', min: 1 },
 			description: 'Totaalwaarde',
@@ -60,15 +69,11 @@ export default {
 			control: { type: 'number', min: 0 },
 			description: 'Single-segment shorthand',
 		},
-		text: {
-			control: 'text',
-			description: 'Label boven de bar (links)',
-		},
 		valueFormat: {
 			name: 'value-format',
 			control: 'select',
-			options: ['percentage', 'absolute', 'fraction', 'none'],
-			description: 'Format voor de waarde rechtsboven',
+			options: ['percentage', 'absolute', 'fraction'],
+			description: 'Format van de getoonde waarde',
 			table: { defaultValue: { summary: 'percentage' } },
 		},
 		valueText: {
@@ -76,43 +81,47 @@ export default {
 			control: 'text',
 			description: 'Volledige override van de getoonde waarde',
 		},
+		valueDisplay: {
+			name: 'value-display',
+			control: 'select',
+			options: ['inline', 'tooltip', 'none'],
+			description: 'Waar de waarde verschijnt: inline, tooltip of verborgen',
+			table: { defaultValue: { summary: 'inline' } },
+		},
 		accessibleLabel: {
 			name: 'accessible-label',
 			control: 'text',
 			description: 'Volledige override van aria-valuetext',
 		},
-		indeterminate: {
-			control: 'boolean',
-			description: 'Toont een sliding indicator-animatie',
-			table: { defaultValue: { summary: false } },
-		},
 	},
 	args: {
 		mode: 'progress',
+		indeterminate: false,
 		color: 'accent',
 		size: 'md',
+		text: 'Bestanden uploaden',
 		max: 100,
 		value: 60,
-		text: 'Bestanden uploaden',
 		valueFormat: 'percentage',
 		valueText: '',
+		valueDisplay: 'inline',
 		accessibleLabel: '',
-		indeterminate: false,
 	},
 };
 
 const Template = (args: Record<string, any>) => html`
 	<nldd-progress-bar
 		mode=${args.mode}
+		?indeterminate=${args.indeterminate}
 		color=${args.color}
 		size=${args.size}
+		text=${args.text || nothing}
 		max=${args.max}
 		value=${args.value}
-		text=${args.text || nothing}
 		value-format=${args.valueFormat}
 		value-text=${args.valueText || nothing}
+		value-display=${args.valueDisplay}
 		accessible-label=${args.accessibleLabel || nothing}
-		?indeterminate=${args.indeterminate}
 	></nldd-progress-bar>
 `;
 
@@ -179,13 +188,13 @@ export const Distribution = {
 
 export const Indeterminate = {
 	render: () => html`
-		<nldd-progress-bar indeterminate color="accent" text="Bezig met laden" value-format="none"></nldd-progress-bar>
+		<nldd-progress-bar indeterminate color="accent" text="Bezig met laden"></nldd-progress-bar>
 	`,
 	parameters: {
 		controls: { disable: true },
 		docs: {
 			description: {
-				story: 'Geen bekende voortgang. De bar toont een doorlopende sliding indicator. Bij `prefers-reduced-motion` wordt de animatie vervangen door een rustige pulse.',
+				story: 'Geen bekende voortgang. De balk toont een doorlopende schuivende indicator. Bij `prefers-reduced-motion` wordt de animatie vervangen door een rustige pulse.',
 			},
 		},
 	},
@@ -197,22 +206,39 @@ export const ValueFormats = {
 			<nldd-progress-bar value="60" max="100" text="Percentage" value-format="percentage"></nldd-progress-bar>
 			<nldd-progress-bar value="60" max="100" text="Absoluut" value-format="absolute"></nldd-progress-bar>
 			<nldd-progress-bar value="60" max="100" text="Breuk" value-format="fraction"></nldd-progress-bar>
-			<nldd-progress-bar value="60" max="100" text="Geen waarde" value-format="none"></nldd-progress-bar>
 			<nldd-progress-bar value="60" max="100" text="Custom (value-text)" value-text="Bijna klaar"></nldd-progress-bar>
 		</div>
 	`,
 	parameters: { controls: { disable: true } },
 };
 
-export const ZonderHeader = {
+export const ValueDisplay = {
 	render: () => html`
-		<nldd-progress-bar value="40"></nldd-progress-bar>
+		<div style="display: flex; flex-direction: column; gap: 16px;">
+			<nldd-progress-bar value="60" text="Inline (boven de balk)" value-display="inline"></nldd-progress-bar>
+			<nldd-progress-bar value="60" text="Tooltip (hover de balk)" value-display="tooltip"></nldd-progress-bar>
+			<nldd-progress-bar value="60" text="Verborgen" value-display="none"></nldd-progress-bar>
+		</div>
 	`,
 	parameters: {
 		controls: { disable: true },
 		docs: {
 			description: {
-				story: 'Zonder `text` verschijnt de header niet. Handig voor inline gebruik.',
+				story: '`value-display` bepaalt waar de waarde verschijnt: `inline` boven de balk, in een `tooltip` (hover/focus de balk), of `none` (verborgen).',
+			},
+		},
+	},
+};
+
+export const ZonderCaption = {
+	render: () => html`
+		<nldd-progress-bar value="40" value-display="none"></nldd-progress-bar>
+	`,
+	parameters: {
+		controls: { disable: true },
+		docs: {
+			description: {
+				story: 'Met `value-display="none"` verschijnt geen caption — alleen de balk. Handig voor inline gebruik.',
 			},
 		},
 	},

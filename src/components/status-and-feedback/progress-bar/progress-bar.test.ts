@@ -38,40 +38,53 @@ describe('nldd-progress-bar', () => {
 
 
 	/* ============================================================
-	   Header rendering
+	   Caption rendering
 	   ============================================================ */
 
 	it('renders text and value when provided', async () => {
 		el = await fixture('<nldd-progress-bar text="Uploaden" value="60"></nldd-progress-bar>');
 		await waitForUpdate(el);
 		const text = el.shadowRoot!.querySelector('.progress-bar__text')!;
-		const value = el.shadowRoot!.querySelector('.progress-bar__value')!;
+		const value = el.shadowRoot!.querySelector('.progress-bar__supporting-text')!;
 		expect(text.textContent).toBe('Uploaden');
 		expect(value.textContent).toBe('60%');
 	});
 
-	it('omits header when there is no text and value-format="none"', async () => {
-		el = await fixture('<nldd-progress-bar value="40" value-format="none"></nldd-progress-bar>');
+	it('omits caption when value-display="none"', async () => {
+		el = await fixture('<nldd-progress-bar value="40" value-display="none"></nldd-progress-bar>');
 		await waitForUpdate(el);
-		expect(el.shadowRoot!.querySelector('.progress-bar__header')).toBeNull();
+		expect(el.shadowRoot!.querySelector('.progress-bar__caption')).toBeNull();
+	});
+
+	it('value-display="inline" (default) shows the value in the caption without a label', async () => {
+		el = await fixture('<nldd-progress-bar value="40"></nldd-progress-bar>');
+		await waitForUpdate(el);
+		expect(el.shadowRoot!.querySelector('.progress-bar__caption')).not.toBeNull();
+		expect(el.shadowRoot!.querySelector('.progress-bar__supporting-text')!.textContent).toBe('40%');
+	});
+
+	it('value-display="tooltip" keeps the caption value empty', async () => {
+		el = await fixture('<nldd-progress-bar value="40" text="x" value-display="tooltip"></nldd-progress-bar>');
+		await waitForUpdate(el);
+		expect(el.shadowRoot!.querySelector('.progress-bar__supporting-text')!.textContent).toBe('');
 	});
 
 	it('value-format="absolute" shows raw number', async () => {
 		el = await fixture('<nldd-progress-bar value="60" max="100" text="x" value-format="absolute"></nldd-progress-bar>');
 		await waitForUpdate(el);
-		expect(el.shadowRoot!.querySelector('.progress-bar__value')!.textContent).toBe('60');
+		expect(el.shadowRoot!.querySelector('.progress-bar__supporting-text')!.textContent).toBe('60');
 	});
 
 	it('value-format="fraction" shows value / max', async () => {
 		el = await fixture('<nldd-progress-bar value="60" max="100" text="x" value-format="fraction"></nldd-progress-bar>');
 		await waitForUpdate(el);
-		expect(el.shadowRoot!.querySelector('.progress-bar__value')!.textContent).toBe('60 / 100');
+		expect(el.shadowRoot!.querySelector('.progress-bar__supporting-text')!.textContent).toBe('60 / 100');
 	});
 
 	it('value-text overrides the formatted value', async () => {
 		el = await fixture('<nldd-progress-bar value="60" text="x" value-text="Bijna klaar"></nldd-progress-bar>');
 		await waitForUpdate(el);
-		expect(el.shadowRoot!.querySelector('.progress-bar__value')!.textContent).toBe('Bijna klaar');
+		expect(el.shadowRoot!.querySelector('.progress-bar__supporting-text')!.textContent).toBe('Bijna klaar');
 	});
 
 
@@ -347,7 +360,7 @@ describe('nldd-progress-bar', () => {
 		expect(seg._autoTooltipText).toBe('Upload: 30 / 100');
 	});
 
-	it('suppresses auto-tooltip on single slotted segment when header is shown', async () => {
+	it('suppresses auto-tooltip on single slotted segment when caption is shown', async () => {
 		el = await fixture(`
 			<nldd-progress-bar max="100" text="Uploaden">
 				<nldd-progress-bar-segment value="30" name="Upload"></nldd-progress-bar-segment>
@@ -358,9 +371,9 @@ describe('nldd-progress-bar', () => {
 		expect(seg._autoTooltipText).toBe('');
 	});
 
-	it('shows auto-tooltip on single slotted segment when header is hidden', async () => {
+	it('shows auto-tooltip on single slotted segment in tooltip mode', async () => {
 		el = await fixture(`
-			<nldd-progress-bar max="100">
+			<nldd-progress-bar max="100" value-display="tooltip">
 				<nldd-progress-bar-segment value="30" name="Upload"></nldd-progress-bar-segment>
 			</nldd-progress-bar>
 		`);
@@ -380,7 +393,7 @@ describe('nldd-progress-bar', () => {
 		expect(seg._effectiveTooltip).toBe('200 GB van 500 GB');
 	});
 
-	it('renders an nldd-tooltip around the hover-area', async () => {
+	it('renders an nldd-tooltip around the tooltip-area', async () => {
 		el = await fixture<NLDDProgressBarSegment>(
 			'<nldd-progress-bar-segment value="30" tooltip-text="Hover me"></nldd-progress-bar-segment>',
 		);
@@ -388,18 +401,18 @@ describe('nldd-progress-bar', () => {
 		const tooltip = el.shadowRoot!.querySelector('nldd-tooltip');
 		expect(tooltip).not.toBeNull();
 		expect(tooltip!.getAttribute('text')).toBe('Hover me');
-		expect(tooltip!.querySelector('.progress-bar-segment__hover-area')).not.toBeNull();
+		expect(tooltip!.querySelector('.progress-bar-segment__tooltip-area')).not.toBeNull();
 	});
 
-	it('internal segment tooltip is suppressed when header is shown', async () => {
+	it('internal segment tooltip is suppressed when caption is shown', async () => {
 		el = await fixture('<nldd-progress-bar value="60" text="Uploaden"></nldd-progress-bar>');
 		await waitForUpdate(el);
 		const internal = el.shadowRoot!.querySelector<NLDDProgressBarSegment>('.progress-bar__segment')!;
 		expect(internal._autoTooltipText).toBe('');
 	});
 
-	it('internal segment gets a tooltip when header is hidden', async () => {
-		el = await fixture('<nldd-progress-bar value="60"></nldd-progress-bar>');
+	it('internal segment gets a tooltip in tooltip mode', async () => {
+		el = await fixture('<nldd-progress-bar value="60" value-display="tooltip"></nldd-progress-bar>');
 		await waitForUpdate(el);
 		const internal = el.shadowRoot!.querySelector<NLDDProgressBarSegment>('.progress-bar__segment')!;
 		expect(internal._autoTooltipText).toBe('60%');
