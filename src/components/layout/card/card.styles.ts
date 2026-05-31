@@ -6,7 +6,7 @@ export const cardStyles = css`
 	/* # Host */
 
 	:host {
-		--_highlight-border-width: var(--primitives-border-width-thin);
+		--_highlight-border: inset 0 0 0 var(--components-card-highlight-border-width) var(--components-card-highlight-border-color);
 
 		display: flex;
 		flex-direction: column;
@@ -30,17 +30,12 @@ export const cardStyles = css`
 		flex-grow: 1;
 	}
 
-	/* Inner highlight ring, painted on top of the children via a
-	   non-interactive ::after so the 1px highlight still reads over
-	   edge-to-edge media (e.g. a full-width image) — an inset box-shadow on
-	   .card itself would sit beneath the children. border-radius: inherit
-	   keeps the ring aligned with the clipped, rounded card edges. */
 	.card::after {
 		content: '';
 		position: absolute;
 		inset: 0;
 		border-radius: inherit;
-		box-shadow: inset 0 0 0 var(--_highlight-border-width) var(--components-card-highlight-border-color);
+		box-shadow: var(--_highlight-border);
 		pointer-events: none;
 	}
 
