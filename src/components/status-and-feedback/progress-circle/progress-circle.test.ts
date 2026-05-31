@@ -128,6 +128,18 @@ describe('nldd-progress-circle', () => {
 		await waitForUpdate(el);
 		expect(el.shadowRoot!.querySelector('.progress-circle__supporting-text')!.textContent).toBe('Bijna klaar');
 	});
+
+	it('applies a per-colour highlight-border filter to the track and segments', async () => {
+		el = await fixture('<nldd-progress-circle value="60" color="accent"></nldd-progress-circle>');
+		await waitForUpdate(el);
+		const track = el.shadowRoot!.querySelector('.progress-circle__track')!;
+		const seg = el.shadowRoot!.querySelector('.progress-circle__segment')!;
+		expect(track.getAttribute('filter')).toBe('url(#progress-circle-border-track)');
+		expect(seg.getAttribute('filter')).toBe('url(#progress-circle-border-accent)');
+		// matching filter defs (with a flood) exist for the track and the used colour
+		expect(el.shadowRoot!.querySelector('#progress-circle-border-track feFlood')).not.toBeNull();
+		expect(el.shadowRoot!.querySelector('#progress-circle-border-accent feFlood')).not.toBeNull();
+	});
 });
 
 describe('nldd-progress-circle-segment', () => {
@@ -220,10 +232,10 @@ describe('nldd-progress-circle-segment', () => {
 		// the CSS verbatim — keep it in sync with the rules in
 		// progress-circle.styles.ts.
 		const cssExpected: Record<string, number> = {
-			'16': 3, '20': 3,
-			'24': 4, '28': 4, '32': 4, '40': 4,
-			'44': 5, '48': 5,
-			'56': 6, '64': 6, '80': 6, '96': 6,
+			'16': 3, '20': 4,
+			'24': 4, '28': 4, '32': 5, '40': 5,
+			'44': 6, '48': 6,
+			'56': 7, '64': 7, '80': 8, '96': 8,
 		};
 		for (const [size, expected] of Object.entries(cssExpected)) {
 			expect(getStrokeWidthPx(Number(size)), `size=${size}`).toBe(expected);

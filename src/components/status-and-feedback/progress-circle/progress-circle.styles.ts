@@ -35,17 +35,17 @@ export const progressCircleStyles = css`
 	}
 
 	:host([size="16"]) { --_size: var(--primitives-space-16); --_stroke-width: calc(3px * 100 / 16); }
-	:host([size="20"]) { --_size: var(--primitives-space-20); --_stroke-width: calc(3px * 100 / 20); }
+	:host([size="20"]) { --_size: var(--primitives-space-20); --_stroke-width: calc(4px * 100 / 20); }
 	:host([size="24"]) { --_size: var(--primitives-space-24); --_stroke-width: calc(4px * 100 / 24); }
 	:host([size="28"]) { --_size: var(--primitives-space-28); --_stroke-width: calc(4px * 100 / 28); }
-	:host([size="32"]) { --_size: var(--primitives-space-32); --_stroke-width: calc(4px * 100 / 32); }
-	:host([size="40"]) { --_size: var(--primitives-space-40); --_stroke-width: calc(4px * 100 / 40); }
-	:host([size="44"]) { --_size: var(--primitives-space-44); --_stroke-width: calc(5px * 100 / 44); }
-	:host([size="48"]) { --_size: var(--primitives-space-48); --_stroke-width: calc(5px * 100 / 48); }
-	:host([size="56"]) { --_size: var(--primitives-space-56); --_stroke-width: calc(6px * 100 / 56); }
-	:host([size="64"]) { --_size: var(--primitives-space-64); --_stroke-width: calc(6px * 100 / 64); }
-	:host([size="80"]) { --_size: var(--primitives-space-80); --_stroke-width: calc(6px * 100 / 80); }
-	:host([size="96"]) { --_size: var(--primitives-space-96); --_stroke-width: calc(6px * 100 / 96); }
+	:host([size="32"]) { --_size: var(--primitives-space-32); --_stroke-width: calc(5px * 100 / 32); }
+	:host([size="40"]) { --_size: var(--primitives-space-40); --_stroke-width: calc(5px * 100 / 40); }
+	:host([size="44"]) { --_size: var(--primitives-space-44); --_stroke-width: calc(6px * 100 / 44); }
+	:host([size="48"]) { --_size: var(--primitives-space-48); --_stroke-width: calc(6px * 100 / 48); }
+	:host([size="56"]) { --_size: var(--primitives-space-56); --_stroke-width: calc(7px * 100 / 56); }
+	:host([size="64"]) { --_size: var(--primitives-space-64); --_stroke-width: calc(7px * 100 / 64); }
+	:host([size="80"]) { --_size: var(--primitives-space-80); --_stroke-width: calc(8px * 100 / 80); }
+	:host([size="96"]) { --_size: var(--primitives-space-96); --_stroke-width: calc(8px * 100 / 96); }
 
 
 	/* # SVG wrapper */
