@@ -8,6 +8,10 @@ import { ICONS } from '../../content/icon/icon.js';
  * Een banner toont een persistente, inline notificatie met een getinte
  * achtergrond per variant. Gebruik voor pagina-niveau feedback zoals
  * een foutmelding aan de bovenkant van een formulier.
+ *
+ * `role`, `aria-live` en `aria-atomic` worden automatisch op basis van de
+ * variant gezet (critical → `role="alert"`, overige → `role="status"` met
+ * `aria-live="polite"`). Voeg deze niet zelf toe.
  */
 export default {
 	title: 'Components/Status & Feedback/Banner',
@@ -19,6 +23,14 @@ export default {
 			repository: 'https://github.com/MinBZK/storybook',
 		},
 		status: { type: 'beta' },
+		docs: {
+			// role / aria-live / aria-atomic are set on the host by the component
+			// itself (based on variant), so strip them from the shown code — a
+			// consumer shouldn't think they need to add them by hand.
+			source: {
+				transform: (code: string) => code.replace(/\s+(?:role|aria-live|aria-atomic)="[^"]*"/g, ''),
+			},
+		},
 	},
 	argTypes: {
 		variant: {
