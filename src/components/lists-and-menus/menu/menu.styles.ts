@@ -49,7 +49,7 @@ export const menuStyles = css`
 	.menu {
 		display: flex;
 		box-sizing: border-box;
-		border-radius: var(--semantics-controls-md-corner-radius);
+		border-radius: var(--semantics-overlays-corner-radius);
 		box-shadow: var(--components-menu-box-shadow);
 		background: var(--semantics-surfaces-background-color);
 		width: var(--_width);
