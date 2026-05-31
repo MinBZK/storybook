@@ -8,6 +8,9 @@ export function segmentedControlTemplate(component: NLDDSegmentedControl): Templ
 
 export function segmentedControlItemTemplate(component: NLDDSegmentedControlItem): TemplateResult {
 	const isIcon = component.variant === 'icon';
+	/* Placeholder fills an otherwise-empty icon area: icon-only always needs
+	 * it; icon-and-text only when there's no text to fall back on. */
+	const showPlaceholder = isIcon || (component.variant === 'icon-and-text' && !component.text);
 	const labelText = component.text || nothing;
 
 	const label = html`
@@ -22,14 +25,14 @@ export function segmentedControlItemTemplate(component: NLDDSegmentedControlItem
 				@change=${component._handleChange}
 			>
 			<span class="segmented-control__item-icon"
-				aria-hidden=${component.variant === 'icon' ? nothing : 'true'}
+				aria-hidden=${isIcon ? nothing : 'true'}
 			>
 				${component.icon
 					? html`<nldd-icon name=${component.icon}></nldd-icon>`
-					: html`<slot name="icon">${isIcon ? html`<nldd-icon name="icon-placeholder"></nldd-icon>` : nothing}</slot>`}
+					: html`<slot name="icon">${showPlaceholder ? html`<nldd-icon name="icon-placeholder"></nldd-icon>` : nothing}</slot>`}
 			</span>
 			<span class="segmented-control__item-text"
-				aria-hidden=${component.variant === 'text' ? nothing : 'true'}
+				aria-hidden=${isIcon ? 'true' : nothing}
 			>
 				${component.text}
 			</span>

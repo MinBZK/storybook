@@ -22,9 +22,9 @@ export default {
 	argTypes: {
 		variant: {
 			control: 'select',
-			options: ['text', 'icon'],
+			options: ['text', 'icon', 'icon-and-text'],
 			name: 'variant',
-			description: 'Inhoudstype van alle items: tekst of icoon. Combineren is niet ondersteund.',
+			description: 'Inhoudstype van alle items: tekst, icoon, of icoon en tekst.',
 			table: { defaultValue: { summary: 'text' } },
 		},
 		size: {
@@ -151,6 +151,31 @@ export const AlleToestanden = {
 				<nldd-segmented-control-item value="onderstreept" text="Onderstreept" icon="underlined"></nldd-segmented-control-item>
 			</nldd-segmented-control>
 			<nldd-segmented-control value="vet" variant="icon" width="full" size="sm">
+				<nldd-segmented-control-item value="vet" text="Vet" icon="bold"></nldd-segmented-control-item>
+				<nldd-segmented-control-item value="cursief" text="Cursief" icon="italic"></nldd-segmented-control-item>
+				<nldd-segmented-control-item value="onderstreept" text="Onderstreept" icon="underlined"></nldd-segmented-control-item>
+			</nldd-segmented-control>
+		</div>
+	</div>
+`,
+	parameters: { controls: { disable: true } },
+};
+
+export const IconEnTekst = {
+	render: () => html`
+	<div style="display: flex; flex-direction: column; align-items: start; gap: 1rem;">
+		<nldd-segmented-control value="vet" variant="icon-and-text" size="md" accessible-label="Tekststijl">
+			<nldd-segmented-control-item value="vet" text="Vet" icon="bold"></nldd-segmented-control-item>
+			<nldd-segmented-control-item value="cursief" text="Cursief" icon="italic"></nldd-segmented-control-item>
+			<nldd-segmented-control-item value="onderstreept" text="Onderstreept" icon="underlined"></nldd-segmented-control-item>
+		</nldd-segmented-control>
+		<nldd-segmented-control value="vet" variant="icon-and-text" size="sm" accessible-label="Tekststijl">
+			<nldd-segmented-control-item value="vet" text="Vet" icon="bold"></nldd-segmented-control-item>
+			<nldd-segmented-control-item value="cursief" text="Cursief" icon="italic"></nldd-segmented-control-item>
+			<nldd-segmented-control-item value="onderstreept" text="Onderstreept" icon="underlined"></nldd-segmented-control-item>
+		</nldd-segmented-control>
+		<div style="width: 400px;">
+			<nldd-segmented-control value="vet" variant="icon-and-text" width="full" size="md" accessible-label="Tekststijl">
 				<nldd-segmented-control-item value="vet" text="Vet" icon="bold"></nldd-segmented-control-item>
 				<nldd-segmented-control-item value="cursief" text="Cursief" icon="italic"></nldd-segmented-control-item>
 				<nldd-segmented-control-item value="onderstreept" text="Onderstreept" icon="underlined"></nldd-segmented-control-item>

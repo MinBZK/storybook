@@ -9,7 +9,7 @@
  * @prop {string[]} values        - Selected values for checkbox type (property binding only, not an attribute)
  * @attr {string}  size          - Control size: 'sm' | 'md' (default: 'md')
  * @attr {string}  type          - Input type: 'radio' | 'checkbox' (default: 'radio')
- * @attr {string}  variant       - Content type for all items: 'text' | 'icon' (default: 'text')
+ * @attr {string}  variant       - Content type for all items: 'text' | 'icon' | 'icon-and-text' (default: 'text')
  * @attr {boolean} disabled      - Disabled state for all items
  * @attr {string}  width         - Width mode: 'full' (stretches to container), 'fit-content' (per-item content size), or any CSS length (e.g. '240px')
  * @attr {string}  name          - Name for form submission, forwarded to native inputs
@@ -25,8 +25,8 @@
  * @attr {string}  value        - Value for this item
  * @attr {boolean} selected     - Whether this item is selected (set by parent)
  * @attr {boolean} disabled     - Disabled state
- * @attr {string}  text         - Text label (shown when parent variant="text",
- *                                always used as aria-label and tooltip for icon items)
+ * @attr {string}  text         - Text label (shown for variant "text" and "icon-and-text";
+ *                                used as aria-label and tooltip for variant "icon")
  * @attr {string}  icon         - Icon name for nldd-icon
  *
  * @slot icon    - Slot for a custom icon (e.g. custom SVG). Only used when icon attribute is not set.
@@ -47,7 +47,7 @@ import './../../content/icon/icon.js';
 
 export type SegmentedControlSize = 'sm' | 'md';
 export type SegmentedControlType = 'radio' | 'checkbox';
-export type SegmentedControlVariant = 'text' | 'icon';
+export type SegmentedControlVariant = 'text' | 'icon' | 'icon-and-text';
 
 
 // # nldd-segmented-control-item
@@ -135,7 +135,7 @@ export class NLDDSegmentedControl extends LitElement {
 	@property({ type: String, reflect: true })
 	type: SegmentedControlType = 'radio';
 
-	/** Content type applied to all items. Mixing text and icon items is not supported. */
+	/** Content type applied to all items: text, icon, or icon-and-text. Per-item mixing is not supported. */
 	@property({ type: String, reflect: true, attribute: 'variant' })
 	variant: SegmentedControlVariant = 'text';
 
