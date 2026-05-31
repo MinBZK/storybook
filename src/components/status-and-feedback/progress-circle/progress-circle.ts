@@ -161,6 +161,7 @@ export class NLDDProgressCircle extends LitElement {
 	 *  references stay unique per element. Fragment references resolve within a
 	 *  shadow tree's own scope in modern browsers, but a per-instance id removes
 	 *  any cross-instance ambiguity (and old-WebKit shadow-SVG reference quirks).
+	 *  Browser-only: the module counter would need stable ids for SSR hydration.
 	 *  @internal */
 	readonly _uid = `pc-${NLDDProgressCircle._idCounter++}`;
 

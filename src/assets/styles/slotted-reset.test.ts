@@ -19,6 +19,10 @@ import '../../components/lists-and-menus/cells/description-cell/description-cell
  * Token-independent by design: it asserts "host CSS cannot change the rendering",
  * not specific token values, so it holds without settings.css loaded in the test
  * browser. If a slot loses its reset, the host bleeds in and before !== after.
+ *
+ * Runs in a real browser (vitest browser mode, Chromium via Playwright), so
+ * getComputedStyle resolves the actual cascade — ::slotted and cross-tree
+ * !important included. These assertions would NOT hold under jsdom.
  */
 describe('slotted-reset: host CSS cannot bleed into slotted content', () => {
 	let el: HTMLElement | undefined;

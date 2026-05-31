@@ -72,7 +72,7 @@ export const Standaard = {
 export const OnderVijandigeHostCss = {
 	name: 'Onder vijandige host-CSS',
 	render: () => html`
-		${unsafeHTML(`<style>${hostileHostCss}</style>`)}
+		<!-- hostileHostCss is a compile-time fixture, not user input --> ${unsafeHTML(`<style>${hostileHostCss}</style>`)}
 		${components()}
 		<hr style="border: none; border-top: 1px solid #ddd; margin: 8px 24px;">
 		${rawHtmlComparison()}
