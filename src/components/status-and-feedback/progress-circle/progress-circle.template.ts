@@ -62,6 +62,9 @@ export function progressCircleTemplate(component: NLDDProgressCircle, onSlotChan
 	const borderErodeRadius = getBorderErodeRadius(sizeInPixels).toFixed(3);
 	// Unique segment colours in use — one border filter each (not all 24).
 	const arcColors = [...new Set(arcs.map(arc => arc.color))];
+	// Per-instance suffix: keeps the SVG filter ids + their url(#…) references
+	// unique so two circles on one page never resolve to each other's filters.
+	const uid = component._uid;
 	// Accessible name: use aria-label with the visible label text or a
 	// translated fallback. aria-labelledby would be cleaner but VoiceOver on
 	// Safari can't resolve IDREFs scoped to a shadow root, so we duplicate
@@ -81,7 +84,7 @@ export function progressCircleTemplate(component: NLDDProgressCircle, onSlotChan
 				aria-hidden="true"
 			>
 				<defs>
-					<filter id="progress-circle-border-track" filterUnits="userSpaceOnUse" x="-10" y="-10" width="120" height="120" color-interpolation-filters="sRGB">
+					<filter id="progress-circle-border-track-${uid}" filterUnits="userSpaceOnUse" x="-10" y="-10" width="120" height="120" color-interpolation-filters="sRGB">
 						<feMorphology in="SourceGraphic" operator="erode" radius=${borderErodeRadius} result="eroded"></feMorphology>
 						<feComposite operator="out" in="SourceGraphic" in2="eroded" result="edge"></feComposite>
 						<feFlood style="flood-color: var(--_track-border-color)" result="flood"></feFlood>
@@ -89,7 +92,7 @@ export function progressCircleTemplate(component: NLDDProgressCircle, onSlotChan
 						<feComposite operator="over" in="colored" in2="SourceGraphic"></feComposite>
 					</filter>
 					${arcColors.map(color => svg`
-						<filter id="progress-circle-border-${color}" filterUnits="userSpaceOnUse" x="-10" y="-10" width="120" height="120" color-interpolation-filters="sRGB">
+						<filter id="progress-circle-border-${color}-${uid}" filterUnits="userSpaceOnUse" x="-10" y="-10" width="120" height="120" color-interpolation-filters="sRGB">
 							<feMorphology in="SourceGraphic" operator="erode" radius=${borderErodeRadius} result="eroded"></feMorphology>
 							<feComposite operator="out" in="SourceGraphic" in2="eroded" result="edge"></feComposite>
 							<feFlood style="flood-color: var(--components-progress-circle-${color}-border-color)" result="flood"></feFlood>
@@ -103,7 +106,7 @@ export function progressCircleTemplate(component: NLDDProgressCircle, onSlotChan
 					cy="50"
 					r=${radius}
 					fill="none"
-					filter="url(#progress-circle-border-track)"
+					filter="url(#progress-circle-border-track-${uid})"
 				></circle>
 				${arcs.map(arc => svg`
 					<circle class="progress-circle__segment progress-circle__segment--${arc.color}"
@@ -113,7 +116,7 @@ export function progressCircleTemplate(component: NLDDProgressCircle, onSlotChan
 						fill="none"
 						stroke-dasharray="${arc.length} ${circumference}"
 						stroke-dashoffset=${-arc.offset}
-						filter="url(#progress-circle-border-${arc.color})"
+						filter="url(#progress-circle-border-${arc.color}-${uid})"
 					></circle>
 				`)}
 				${isIndeterminate ? svg`

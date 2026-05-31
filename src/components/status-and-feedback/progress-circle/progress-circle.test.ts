@@ -134,11 +134,25 @@ describe('nldd-progress-circle', () => {
 		await waitForUpdate(el);
 		const track = el.shadowRoot!.querySelector('.progress-circle__track')!;
 		const seg = el.shadowRoot!.querySelector('.progress-circle__segment')!;
-		expect(track.getAttribute('filter')).toBe('url(#progress-circle-border-track)');
-		expect(seg.getAttribute('filter')).toBe('url(#progress-circle-border-accent)');
+		// Filter ids carry a per-instance suffix, so match by prefix.
+		expect(track.getAttribute('filter')).toMatch(/^url\(#progress-circle-border-track-/);
+		expect(seg.getAttribute('filter')).toMatch(/^url\(#progress-circle-border-accent-/);
 		// matching filter defs (with a flood) exist for the track and the used colour
-		expect(el.shadowRoot!.querySelector('#progress-circle-border-track feFlood')).not.toBeNull();
-		expect(el.shadowRoot!.querySelector('#progress-circle-border-accent feFlood')).not.toBeNull();
+		expect(el.shadowRoot!.querySelector('[id^="progress-circle-border-track-"] feFlood')).not.toBeNull();
+		expect(el.shadowRoot!.querySelector('[id^="progress-circle-border-accent-"] feFlood')).not.toBeNull();
+	});
+
+	it('scopes the highlight-border filter ids per instance so two circles do not collide', async () => {
+		const a = await fixture('<nldd-progress-circle value="60" color="accent"></nldd-progress-circle>');
+		const b = await fixture('<nldd-progress-circle value="60" color="accent"></nldd-progress-circle>');
+		await waitForUpdate(a);
+		await waitForUpdate(b);
+		const fa = a.shadowRoot!.querySelector('.progress-circle__track')!.getAttribute('filter');
+		const fb = b.shadowRoot!.querySelector('.progress-circle__track')!.getAttribute('filter');
+		expect(fa).not.toBeNull();
+		expect(fa).not.toBe(fb);
+		cleanup(a);
+		cleanup(b);
 	});
 });
 

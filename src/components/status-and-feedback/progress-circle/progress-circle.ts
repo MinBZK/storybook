@@ -155,6 +155,15 @@ export class NLDDProgressCircle extends LitElement {
 	private _growRafId?: number;
 	private _attributeObserver?: MutationObserver;
 
+	private static _idCounter = 0;
+
+	/** Per-instance suffix so the in-shadow SVG <filter> ids and their url(#…)
+	 *  references stay unique per element. Fragment references resolve within a
+	 *  shadow tree's own scope in modern browsers, but a per-instance id removes
+	 *  any cross-instance ambiguity (and old-WebKit shadow-SVG reference quirks).
+	 *  @internal */
+	readonly _uid = `pc-${NLDDProgressCircle._idCounter++}`;
+
 	public _t(key: keyof NLDDProgressCircleTranslations): string {
 		return this.translations[key] ?? nlddProgressCircleTranslations[key];
 	}
