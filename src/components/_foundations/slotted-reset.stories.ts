@@ -1,6 +1,6 @@
 import { html } from 'lit';
 import { unsafeHTML } from 'lit/directives/unsafe-html.js';
-import { hostileHostCss } from '../../test-utils.js';
+import { hostileHostCss } from '../../assets/styles/slotted-reset.fixtures.js';
 import '../content/title/title.js';
 import '../inputs/dropdown/dropdown.js';
 import '../forms/form-field/form-field.js';

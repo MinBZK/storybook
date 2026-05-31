@@ -1,5 +1,6 @@
 import { describe, it, expect, afterEach } from 'vitest';
-import { fixture, cleanup, hostileHostCss } from '../../test-utils.js';
+import { fixture, cleanup } from '../../test-utils.js';
+import { hostileHostCss } from './slotted-reset.fixtures.js';
 import '../../components/content/title/title.js';
 import '../../components/inputs/dropdown/dropdown.js';
 import '../../components/forms/form-field/form-field.js';
@@ -102,6 +103,23 @@ describe('slotted-reset: host CSS cannot bleed into slotted content', () => {
 			'p',
 			['marginTop', 'letterSpacing'],
 		);
+	});
+
+	it('blockquote — slotted attribution keeps display:inline + reset margin under a hostile p { display: none !important }', async () => {
+		// The attribution <p> matches the generic ::slotted(p) reset (margin) AND
+		// the specific .blockquote__attribution::slotted(p) { display: inline }.
+		// Both are important inner-tree declarations, so they beat an important
+		// host rule — "later declaration wins" only applies within one tree.
+		el = await fixture('<nldd-blockquote><p>Quote</p><p slot="attribution">Auteur</p></nldd-blockquote>');
+		const attribution = el.querySelector('p[slot="attribution"]')!;
+		expect(getComputedStyle(attribution).display).toBe('inline');
+
+		injected = document.createElement('style');
+		injected.textContent = 'p { display: none !important; margin: 40px !important; }';
+		document.head.appendChild(injected);
+
+		expect(getComputedStyle(attribution).display).toBe('inline');
+		expect(getComputedStyle(attribution).marginTop).toBe('0px');
 	});
 
 	it('description-cell — slotted title keeps margin and blocks the text-transform leak', async () => {
