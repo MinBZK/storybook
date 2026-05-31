@@ -14,6 +14,13 @@ export const codeEditorStyles = css`
 		--_content-color: var(--semantics-content-color);
 		--_font: var(--primitives-font-monospace-sm-regular-snug);
 
+		/* iOS Safari auto-zooms a focused field rendered under 16px (sm is ~14px).
+		   Bump to the 16px md size on touch to prevent it; non-touch keeps the
+		   compact size, and pinch-zoom stays available (no maximum-scale hack). */
+		@media (pointer: coarse) {
+			--_font: var(--primitives-font-monospace-md-regular-snug);
+		}
+
 		${inheritedTextReset}
 		/* flex column + min-height:0 + flex:1 makes the host a good flex
 		   citizen so a fixed-height parent grows the textarea; with no set
