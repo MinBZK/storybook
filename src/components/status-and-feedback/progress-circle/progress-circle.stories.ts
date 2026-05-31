@@ -190,24 +190,6 @@ export const Distribution = {
 	},
 };
 
-export const InlineWaarde = {
-	render: () => html`
-		<div style="display: flex; gap: 32px; align-items: flex-start;">
-			<nldd-progress-circle size="56" value="60" text="Inline" value-display="inline"></nldd-progress-circle>
-			<nldd-progress-circle size="56" value="3" max="4" text="Stappen" value-display="inline" value-format="fraction"></nldd-progress-circle>
-			<nldd-progress-circle size="56" value="60" text="Tooltip (hover)" value-display="tooltip"></nldd-progress-circle>
-		</div>
-	`,
-	parameters: {
-		controls: { disable: true },
-		docs: {
-			description: {
-				story: 'Met `value-display="inline"` verschijnt de waarde als secundaire tekst onder de label. `tooltip` (standaard) toont de waarde bij hover/focus; `none` verbergt de waarde.',
-			},
-		},
-	},
-};
-
 export const Indeterminate = {
 	render: () => html`
 		<nldd-progress-circle indeterminate color="accent" text="Bezig met laden"></nldd-progress-circle>
@@ -217,6 +199,50 @@ export const Indeterminate = {
 		docs: {
 			description: {
 				story: 'Een vast segment draait rond de cirkel. Bij `prefers-reduced-motion` wordt de animatie vervangen door een rustige pulse.',
+			},
+		},
+	},
+};
+
+export const ValueFormats = {
+	render: () => html`
+		<div style="display: flex; gap: 32px; align-items: flex-start;">
+			<nldd-progress-circle size="56" value="60" max="100" text="Percentage" value-format="percentage" value-display="inline"></nldd-progress-circle>
+			<nldd-progress-circle size="56" value="60" max="100" text="Absoluut" value-format="absolute" value-display="inline"></nldd-progress-circle>
+			<nldd-progress-circle size="56" value="60" max="100" text="Breuk" value-format="fraction" value-display="inline"></nldd-progress-circle>
+			<nldd-progress-circle size="56" value="60" max="100" text="Custom (value-text)" value-text="Bijna klaar" value-display="inline"></nldd-progress-circle>
+		</div>
+	`,
+	parameters: { controls: { disable: true } },
+};
+
+export const ValueDisplay = {
+	render: () => html`
+		<div style="display: flex; gap: 32px; align-items: flex-start;">
+			<nldd-progress-circle size="56" value="60" text="Inline (onder de label)" value-display="inline"></nldd-progress-circle>
+			<nldd-progress-circle size="56" value="60" text="Tooltip (hover de cirkel)" value-display="tooltip"></nldd-progress-circle>
+			<nldd-progress-circle size="56" value="60" text="Verborgen" value-display="none"></nldd-progress-circle>
+		</div>
+	`,
+	parameters: {
+		controls: { disable: true },
+		docs: {
+			description: {
+				story: '`value-display` bepaalt waar de waarde verschijnt: `inline` als secundaire tekst onder de label, in een `tooltip` (hover/focus de cirkel), of `none` (verborgen).',
+			},
+		},
+	},
+};
+
+export const ZonderCaption = {
+	render: () => html`
+		<nldd-progress-circle size="56" value="40" value-display="none"></nldd-progress-circle>
+	`,
+	parameters: {
+		controls: { disable: true },
+		docs: {
+			description: {
+				story: 'Met `value-display="none"` en geen `text` verschijnt geen caption — alleen de cirkel. Handig voor inline gebruik.',
 			},
 		},
 	},

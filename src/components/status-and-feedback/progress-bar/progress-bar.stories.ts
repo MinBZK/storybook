@@ -1,7 +1,7 @@
 import { html, nothing } from 'lit';
 import './progress-bar.ts';
 
-const SEMANTIC_VARIANTS = ['neutral', 'accent', 'success', 'warning', 'critical'] as const;
+const SEMANTIC_COLORS = ['neutral', 'accent', 'success', 'warning', 'critical'] as const;
 
 const RIJKSLEUREN = [
 	'coolgray',
@@ -13,7 +13,7 @@ const RIJKSLEUREN = [
 	'donkergroen', 'groen', 'mosgroen', 'mintgroen',
 ] as const;
 
-const ALL_VARIANTS = [...SEMANTIC_VARIANTS, ...RIJKSLEUREN];
+const ALL_COLORS = [...SEMANTIC_COLORS, ...RIJKSLEUREN];
 
 /**
  * Een progress bar toont voortgang of een verdeling. Eén waarde of meerdere
@@ -46,7 +46,7 @@ export default {
 		},
 		color: {
 			control: 'select',
-			options: ALL_VARIANTS,
+			options: ALL_COLORS,
 			description: 'Kleur van het single-segment',
 			table: { defaultValue: { summary: 'accent' } },
 		},
@@ -143,7 +143,7 @@ export const Sizes = {
 export const Colors = {
 	render: () => html`
 		<div style="display: flex; flex-direction: column; gap: 12px;">
-			${ALL_VARIANTS.map(c => html`
+			${ALL_COLORS.map(c => html`
 				<nldd-progress-bar color=${c} value="65" text=${c}></nldd-progress-bar>
 			`)}
 		</div>
