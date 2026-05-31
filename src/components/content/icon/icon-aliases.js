@@ -301,12 +301,12 @@ export const aliases = {
 	'new': 'starburst-filled',
 	'promotion': 'starburst-filled',
 
-	// square-arrow-right
-	'logout': 'square-arrow-right',
-	'exit': 'square-arrow-right',
+	// arrow-right-out-bucket
+	'logout': 'arrow-right-out-bucket',
+	'exit': 'arrow-right-out-bucket',
 
-	// square-arrow-right-inward
-	'login': 'square-arrow-right-inward',
+	// arrow-right-in-bucket
+	'login': 'arrow-right-in-bucket',
 
 	// square-arrow-right-top
 	'external-link': 'square-arrow-right-top',
