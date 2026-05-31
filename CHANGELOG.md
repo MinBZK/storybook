@@ -9,6 +9,32 @@ the type of conventional-commit determines the release. Conventional types
 `chore`, `docs`, `ci`, `style`, `test`, `build` are intentionally omitted
 here; consult the commit history if you need that level of detail.
 
+### Highlights
+
+- **Slotted content is isolated from host CSS** across the text components — projected text no longer accidentally inherits host styles, keeping rendering predictable and accessible.
+- **The progress bar and circle are more consistent** — they share a unified `value-display` API and aligned naming, so switching shapes is largely a one-name change: swap `nldd-progress-bar` for `nldd-progress-circle` and the attributes carry over.
+- **A consistent corner-radius hierarchy** via one semantic surface token: banner, list, box and card share a single radius, and the menu aligns with the (sharp) overlay radius.
+
+### Added
+
+- **`nldd-segmented-control`**: an `icon-and-text` variant — items render an icon and label together (like the toggle button); the visible text carries the accessible name.
+- **`nldd-toggle-button`**: shows an `icon-placeholder` when an icon variant has no icon (and for `icon-and-text` only when there is no text to fall back on).
+- **`nldd-card`**: an inner highlight border that paints over the content (including full-width media), white-with-opacity and light/dark aware.
+- **`nldd-banner`**: an `accent` variant with its own default icon and color.
+- **`nldd-progress-circle`**: a 1px token-colored highlight border with per-size stroke widths.
+- **Tokens**: `--semantics-surfaces-corner-radius` (a unified surface radius) and a medium body font-weight variant.
+
+### Changed
+
+- **BREAKING — `nldd-progress` / `nldd-progress-circle`**: unified `value-display` (`inline` / `tooltip` / `none`), added `value-text` to the circle, and aligned naming across the bar and circle (e.g. `header`→`caption`, `value`→`supporting-text`, `fill`→`background`, `hover-area`→`tooltip-area`). `accessible-label` now maps to `aria-valuetext` only — use `value-text` to override the visible value (inline and tooltip).
+- **BREAKING — Icons**: `login`/`logout` replaced by `arrow-right-in-bucket` / `arrow-right-out-bucket` (the glyph changed; `login`/`logout`/`exit` remain as aliases).
+- **Corner radius**: banner, list, box and card now share one surface tier, and the menu container follows the (sharp) overlay radius. The medium body font-weight is adopted where appropriate.
+
+### Fixed
+
+- **`nldd-code-editor`**: a 16px font on touch devices prevents the iOS focus-zoom (without disabling pinch-zoom).
+- **`nldd-form-field`**: a tighter gap for the top-aligned header; the label stays readable over the focus ring.
+
 ## <small>0.8.52 (2026-05-29)</small>
 
 * fix(image): use relative sample-image paths so they load under GH Pages base ([4c3150b](https://github.com/MinBZK/storybook/commit/4c3150b))

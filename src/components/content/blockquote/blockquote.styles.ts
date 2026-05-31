@@ -1,5 +1,6 @@
 import { css, unsafeCSS } from 'lit';
 import { breakpoints } from '../../../assets/styles/breakpoints.js';
+import { slottedReset, inheritedTextReset } from '../../../assets/styles/slotted-reset.js';
 
 const smMax = unsafeCSS(breakpoints.smMax);
 
@@ -25,6 +26,7 @@ export const blockquoteStyles = css`
 			--_attribution-font: var(--semantics-blockquotes-sm-attribution-font);
 		}
 
+		${inheritedTextReset}
 		display: block;
 		max-width: var(--semantics-blockquotes-max-width);
 	}
@@ -74,10 +76,12 @@ export const blockquoteStyles = css`
 	}
 
 	::slotted(p) {
-		margin: 0;
+		${slottedReset}
+		${inheritedTextReset}
+		margin: 0 !important;
 	}
 
 	.blockquote__attribution::slotted(p) {
-		display: inline;
+		display: inline !important;
 	}
 `;

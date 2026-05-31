@@ -1,4 +1,5 @@
 import { css } from 'lit';
+import { slottedReset, inheritedTextReset } from '../../../../assets/styles/slotted-reset.js';
 
 export const descriptionCellStyles = css`
 
@@ -11,6 +12,7 @@ export const descriptionCellStyles = css`
 		--_max-width: none;
 		--_min-height: 0;
 
+		${inheritedTextReset}
 		display: flex;
 		width: var(--_width);
 		min-width: var(--_min-width);
@@ -73,30 +75,34 @@ export const descriptionCellStyles = css`
 	/* # Elements */
 
 	::slotted([slot="title"]) {
-		margin: 0;
-		min-width: 0;
-		align-self: stretch;
-		color: var(--context-cell-content-color, var(--semantics-content-secondary-color));
-		font: var(--primitives-font-body-sm-regular-flat);
+		${slottedReset}
+		${inheritedTextReset}
+		margin: 0 !important;
+		min-width: 0 !important;
+		align-self: stretch !important;
+		color: var(--context-cell-content-color, var(--semantics-content-secondary-color)) !important;
+		font: var(--primitives-font-body-sm-regular-flat) !important;
 	}
 
 	@media (forced-colors: active) {
 		::slotted([slot="title"]) {
-			forced-color-adjust: none;
+			forced-color-adjust: none !important;
 		}
 	}
 
 	::slotted([slot="description"]) {
-		margin: 0;
-		min-width: 0;
-		align-self: stretch;
-		color: var(--context-cell-content-color, var(--semantics-content-color));
-		font: var(--primitives-font-body-md-regular-tight);
+		${slottedReset}
+		${inheritedTextReset}
+		margin: 0 !important;
+		min-width: 0 !important;
+		align-self: stretch !important;
+		color: var(--context-cell-content-color, var(--semantics-content-color)) !important;
+		font: var(--primitives-font-body-md-regular-tight) !important;
 	}
 
 	@media (forced-colors: active) {
 		::slotted([slot="description"]) {
-			forced-color-adjust: none;
+			forced-color-adjust: none !important;
 		}
 	}
 `;

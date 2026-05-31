@@ -1,4 +1,5 @@
 import { css } from 'lit';
+import { inheritedTextReset } from '../../../assets/styles/slotted-reset.js';
 
 export const comboBoxStyles = css`
 
@@ -16,6 +17,7 @@ export const comboBoxStyles = css`
 		--_z-index-button-focus: 1;
 		--_validation-icon-size: var(--semantics-input-fields-md-validation-icon-size);
 
+		${inheritedTextReset}
 		display: block;
 		width: var(--_width);
 		max-width: 100%;

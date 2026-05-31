@@ -1,4 +1,5 @@
 import { css } from 'lit';
+import { inheritedTextReset } from '../../../assets/styles/slotted-reset.js';
 
 
 export const skipLinkStyles = css`
@@ -12,6 +13,7 @@ export const skipLinkStyles = css`
 		--_focus-box-shadow: inset var(--semantics-focus-ring-box-shadow);
 		--_focus-outline-offset: -6px;
 
+		${inheritedTextReset}
 		display: block;
 		position: relative;
 	}
@@ -54,7 +56,7 @@ export const skipLinkStyles = css`
 		padding: var(--primitives-space-4) var(--primitives-space-16);
 		align-items: center;
 		color: var(--semantics-links-color);
-		font: var(--primitives-font-body-md-bold-flat);
+		font: var(--primitives-font-body-md-medium-flat);
 		text-decoration: underline;
 		white-space: nowrap;
 		appearance: none;

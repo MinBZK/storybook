@@ -1,4 +1,5 @@
 import { css } from 'lit';
+import { inheritedTextReset } from '../../../assets/styles/slotted-reset.js';
 
 export const documentTabBarStyles = css`
 
@@ -20,6 +21,7 @@ export const documentTabBarStyles = css`
 		--_dismiss-button-is-selected-is-hovered-background-color: light-dark(var(--primitives-color-accent-650), var(--primitives-color-accent-600));
 		--_dismiss-button-is-selected-is-active-background-color: light-dark(var(--primitives-color-accent-600), var(--primitives-color-accent-550));
 
+		${inheritedTextReset}
 		display: block;
 		position: relative;
 		isolation: isolate;
@@ -212,6 +214,7 @@ export const documentTabBarItemStyles = css`
 	/* # Host */
 
 	:host {
+		${inheritedTextReset}
 		container-type: inline-size;
 		display: block;
 		min-width: 0;

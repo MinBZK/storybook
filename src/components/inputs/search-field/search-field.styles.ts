@@ -1,4 +1,5 @@
 import { css } from 'lit';
+import { inheritedTextReset } from '../../../assets/styles/slotted-reset.js';
 
 export const searchFieldStyles = css`
 
@@ -16,6 +17,7 @@ export const searchFieldStyles = css`
 		--_end-gap: var(--primitives-space-6);
 		--_z-index-button-focus: 1;
 
+		${inheritedTextReset}
 		display: block;
 		width: var(--_width);
 		max-width: 100%;

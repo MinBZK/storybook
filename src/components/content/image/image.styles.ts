@@ -1,4 +1,5 @@
 import { css } from 'lit';
+import { slottedReset, inheritedTextReset } from '../../../assets/styles/slotted-reset.js';
 
 export const imageStyles = css`
 
@@ -25,6 +26,7 @@ export const imageStyles = css`
 		--_object-position: center;
 		--_max-width: 100%;
 
+		${inheritedTextReset}
 		box-sizing: border-box;
 		display: block;
 		max-width: var(--_max-width);
@@ -98,8 +100,7 @@ export const imageStyles = css`
 	   object-fit / object-position aren't inheritable into <picture>'s child
 	   <img>, so we don't bother targeting <picture> here. */
 
-	.image__img,
-	::slotted(img) {
+	.image__img {
 		display: block;
 		width: 100%;
 		height: 100%;
@@ -108,15 +109,26 @@ export const imageStyles = css`
 		object-position: var(--_object-position);
 	}
 
+	::slotted(img) {
+		${slottedReset}
+		display: block !important;
+		width: 100% !important;
+		height: 100% !important;
+		max-width: 100% !important;
+		object-fit: var(--_object-fit) !important;
+		object-position: var(--_object-position) !important;
+	}
+
 	/* <picture> is a wrapper that picks the right <source>; layout properties
 	   like width/height DO apply to it directly even though object-fit doesn't.
 	   Size it so the slotted picture fills the media wrapper, then let the
 	   consumer style the inner <img> for fit/position. */
 	::slotted(picture) {
-		display: block;
-		width: 100%;
-		height: 100%;
-		max-width: 100%;
+		${slottedReset}
+		display: block !important;
+		width: 100% !important;
+		height: 100% !important;
+		max-width: 100% !important;
 	}
 
 

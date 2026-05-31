@@ -1,5 +1,6 @@
 import { css, unsafeCSS } from 'lit';
 import { breakpoints } from '../../../assets/styles/breakpoints.js';
+import { slottedReset, inheritedTextReset } from '../../../assets/styles/slotted-reset.js';
 
 const mdMin = unsafeCSS(breakpoints.mdMin);
 
@@ -9,8 +10,9 @@ export const formFieldStyles = css`
 	/* # Host */
 
 	:host {
-		--_gap: calc(var(--primitives-space-10) / 2);
+		--_gap: var(--primitives-space-3);
 
+		${inheritedTextReset}
 		display: block;
 		container-type: inline-size;
 	}
@@ -45,6 +47,10 @@ export const formFieldStyles = css`
 	.form-field__header {
 		box-sizing: border-box;
 		display: flex;
+		/* Paints above .form-field__main so a label descender stays readable where it
+		   overlaps the input focus ring — this is what lets the top-aligned --_gap stay
+		   tight. Reset to auto in the side-by-side layout below (no vertical overlap there). */
+		z-index: 1;
 		flex-direction: column;
 	}
 
@@ -53,6 +59,7 @@ export const formFieldStyles = css`
 	:host(:not([label-alignment])[form-label-alignment="left"]) .form-field__header,
 	:host(:not([label-alignment])[form-label-alignment="right"]) .form-field__header {
 		@container (min-width: ${mdMin}) {
+			z-index: auto;
 			width: var(--semantics-forms-label-column-width);
 			min-height: var(--semantics-controls-md-min-size);
 			flex-grow: 0;
@@ -175,6 +182,7 @@ export const formFieldHelpTextStyles = css`
 	/* # Host */
 
 	:host {
+		${inheritedTextReset}
 		display: contents;
 	}
 
@@ -191,30 +199,32 @@ export const formFieldHelpTextStyles = css`
 	/* # Links */
 
 	::slotted(a) {
-		border-radius: var(--primitives-corner-radius-xxs);
-		color: var(--semantics-links-color);
-		text-decoration: underline;
-		text-underline-offset: var(--primitives-space-2);
+		${slottedReset}
+		${inheritedTextReset}
+		border-radius: var(--primitives-corner-radius-xxs) !important;
+		color: var(--semantics-links-color) !important;
+		text-decoration: underline !important;
+		text-underline-offset: var(--primitives-space-2) !important;
 	}
 
 	@media (hover: hover) {
 		::slotted(a:hover) {
-			color: var(--semantics-links-is-hovered-color);
+			color: var(--semantics-links-is-hovered-color) !important;
 		}
 	}
 
 	::slotted(a:active) {
-		color: var(--semantics-links-is-active-color);
+		color: var(--semantics-links-is-active-color) !important;
 	}
 
 	::slotted(a:focus-visible) {
-		outline: var(--semantics-focus-ring-outline);
-		outline-offset: var(--semantics-focus-ring-outline-offset);
-		box-shadow: var(--semantics-focus-ring-box-shadow);
+		outline: var(--semantics-focus-ring-outline) !important;
+		outline-offset: var(--semantics-focus-ring-outline-offset) !important;
+		box-shadow: var(--semantics-focus-ring-box-shadow) !important;
 	}
 
 	::slotted(a:focus:not(:focus-visible)) {
-		outline: none;
+		outline: none !important;
 	}
 `;
 
@@ -224,6 +234,7 @@ export const formFieldErrorTextStyles = css`
 	/* # Host */
 
 	:host {
+		${inheritedTextReset}
 		display: none;
 	}
 
@@ -244,29 +255,31 @@ export const formFieldErrorTextStyles = css`
 	/* # Links */
 
 	::slotted(a) {
-		border-radius: var(--primitives-corner-radius-xxs);
-		color: var(--semantics-links-color);
-		text-decoration: underline;
-		text-underline-offset: var(--primitives-space-2);
+		${slottedReset}
+		${inheritedTextReset}
+		border-radius: var(--primitives-corner-radius-xxs) !important;
+		color: var(--semantics-links-color) !important;
+		text-decoration: underline !important;
+		text-underline-offset: var(--primitives-space-2) !important;
 	}
 
 	@media (hover: hover) {
 		::slotted(a:hover) {
-			color: var(--semantics-links-is-hovered-color);
+			color: var(--semantics-links-is-hovered-color) !important;
 		}
 	}
 
 	::slotted(a:active) {
-		color: var(--semantics-links-is-active-color);
+		color: var(--semantics-links-is-active-color) !important;
 	}
 
 	::slotted(a:focus-visible) {
-		outline: var(--semantics-focus-ring-outline);
-		outline-offset: var(--semantics-focus-ring-outline-offset);
-		box-shadow: var(--semantics-focus-ring-box-shadow);
+		outline: var(--semantics-focus-ring-outline) !important;
+		outline-offset: var(--semantics-focus-ring-outline-offset) !important;
+		box-shadow: var(--semantics-focus-ring-box-shadow) !important;
 	}
 
 	::slotted(a:focus:not(:focus-visible)) {
-		outline: none;
+		outline: none !important;
 	}
 `;

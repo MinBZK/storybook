@@ -1,4 +1,5 @@
 import { css } from 'lit';
+import { inheritedTextReset } from '../../../assets/styles/slotted-reset.js';
 
 export const progressBarStyles = css`
 
@@ -7,25 +8,26 @@ export const progressBarStyles = css`
 
 	:host {
 		--_height: var(--components-progress-bar-md-height);
-		--_track-color: var(--components-progress-bar-track-color);
+		--_track-background-color: var(--components-progress-bar-track-background-color);
 		--_track-border-color: var(--components-progress-bar-track-border-color);
 		--_track-border-width: var(--components-progress-bar-track-border-width);
 		--_corner-radius: var(--components-progress-bar-corner-radius);
 		--_segment-gap: var(--components-progress-bar-progress-segment-gap);
-		--_header-gap: var(--components-progress-bar-header-gap);
-		--_header-text-color: var(--components-progress-bar-header-text-color);
-		--_header-value-color: var(--components-progress-bar-header-value-color);
-		--_header-text-font: var(--components-progress-bar-header-text-font);
-		--_header-value-font: var(--components-progress-bar-header-value-font);
-		--_indeterminate-fill-color: var(--components-progress-bar-accent-fill-color);
+		--_caption-gap: var(--components-progress-bar-caption-gap);
+		--_text-color: var(--components-progress-bar-text-color);
+		--_supporting-text-color: var(--components-progress-bar-supporting-text-color);
+		--_text-font: var(--components-progress-bar-text-font);
+		--_supporting-text-font: var(--components-progress-bar-supporting-text-font);
+		--_indeterminate-background-color: var(--components-progress-bar-accent-background-color);
 		--_indeterminate-bar-width: 20%;
 		--_indeterminate-duration: 800ms;
 
+		${inheritedTextReset}
 		box-sizing: border-box;
 		display: flex;
 		width: 100%;
 		flex-direction: column;
-		gap: var(--_header-gap);
+		gap: var(--_caption-gap);
 	}
 
 	:host([hidden]) {
@@ -44,50 +46,50 @@ export const progressBarStyles = css`
 
 	/* ## Indeterminate fill colour follows the variant; default is accent (blue) */
 
-	:host([color="neutral"]) { --_indeterminate-fill-color: var(--components-progress-bar-neutral-fill-color); }
-	:host([color="accent"]) { --_indeterminate-fill-color: var(--components-progress-bar-accent-fill-color); }
-	:host([color="success"]) { --_indeterminate-fill-color: var(--components-progress-bar-success-fill-color); }
-	:host([color="warning"]) { --_indeterminate-fill-color: var(--components-progress-bar-warning-fill-color); }
-	:host([color="critical"]) { --_indeterminate-fill-color: var(--components-progress-bar-critical-fill-color); }
+	:host([color="neutral"]) { --_indeterminate-background-color: var(--components-progress-bar-neutral-background-color); }
+	:host([color="accent"]) { --_indeterminate-background-color: var(--components-progress-bar-accent-background-color); }
+	:host([color="success"]) { --_indeterminate-background-color: var(--components-progress-bar-success-background-color); }
+	:host([color="warning"]) { --_indeterminate-background-color: var(--components-progress-bar-warning-background-color); }
+	:host([color="critical"]) { --_indeterminate-background-color: var(--components-progress-bar-critical-background-color); }
 
-	:host([color="coolgray"]) { --_indeterminate-fill-color: var(--components-progress-bar-coolgray-fill-color); }
-	:host([color="lintblauw"]) { --_indeterminate-fill-color: var(--components-progress-bar-lintblauw-fill-color); }
-	:host([color="donkerblauw"]) { --_indeterminate-fill-color: var(--components-progress-bar-donkerblauw-fill-color); }
-	:host([color="hemelblauw"]) { --_indeterminate-fill-color: var(--components-progress-bar-hemelblauw-fill-color); }
-	:host([color="lichtblauw"]) { --_indeterminate-fill-color: var(--components-progress-bar-lichtblauw-fill-color); }
-	:host([color="paars"]) { --_indeterminate-fill-color: var(--components-progress-bar-paars-fill-color); }
-	:host([color="violet"]) { --_indeterminate-fill-color: var(--components-progress-bar-violet-fill-color); }
-	:host([color="robijnrood"]) { --_indeterminate-fill-color: var(--components-progress-bar-robijnrood-fill-color); }
-	:host([color="roze"]) { --_indeterminate-fill-color: var(--components-progress-bar-roze-fill-color); }
-	:host([color="rood"]) { --_indeterminate-fill-color: var(--components-progress-bar-rood-fill-color); }
-	:host([color="oranje"]) { --_indeterminate-fill-color: var(--components-progress-bar-oranje-fill-color); }
-	:host([color="donkergeel"]) { --_indeterminate-fill-color: var(--components-progress-bar-donkergeel-fill-color); }
-	:host([color="geel"]) { --_indeterminate-fill-color: var(--components-progress-bar-geel-fill-color); }
-	:host([color="donkerbruin"]) { --_indeterminate-fill-color: var(--components-progress-bar-donkerbruin-fill-color); }
-	:host([color="bruin"]) { --_indeterminate-fill-color: var(--components-progress-bar-bruin-fill-color); }
-	:host([color="donkergroen"]) { --_indeterminate-fill-color: var(--components-progress-bar-donkergroen-fill-color); }
-	:host([color="groen"]) { --_indeterminate-fill-color: var(--components-progress-bar-groen-fill-color); }
-	:host([color="mosgroen"]) { --_indeterminate-fill-color: var(--components-progress-bar-mosgroen-fill-color); }
-	:host([color="mintgroen"]) { --_indeterminate-fill-color: var(--components-progress-bar-mintgroen-fill-color); }
+	:host([color="coolgray"]) { --_indeterminate-background-color: var(--components-progress-bar-coolgray-background-color); }
+	:host([color="lintblauw"]) { --_indeterminate-background-color: var(--components-progress-bar-lintblauw-background-color); }
+	:host([color="donkerblauw"]) { --_indeterminate-background-color: var(--components-progress-bar-donkerblauw-background-color); }
+	:host([color="hemelblauw"]) { --_indeterminate-background-color: var(--components-progress-bar-hemelblauw-background-color); }
+	:host([color="lichtblauw"]) { --_indeterminate-background-color: var(--components-progress-bar-lichtblauw-background-color); }
+	:host([color="paars"]) { --_indeterminate-background-color: var(--components-progress-bar-paars-background-color); }
+	:host([color="violet"]) { --_indeterminate-background-color: var(--components-progress-bar-violet-background-color); }
+	:host([color="robijnrood"]) { --_indeterminate-background-color: var(--components-progress-bar-robijnrood-background-color); }
+	:host([color="roze"]) { --_indeterminate-background-color: var(--components-progress-bar-roze-background-color); }
+	:host([color="rood"]) { --_indeterminate-background-color: var(--components-progress-bar-rood-background-color); }
+	:host([color="oranje"]) { --_indeterminate-background-color: var(--components-progress-bar-oranje-background-color); }
+	:host([color="donkergeel"]) { --_indeterminate-background-color: var(--components-progress-bar-donkergeel-background-color); }
+	:host([color="geel"]) { --_indeterminate-background-color: var(--components-progress-bar-geel-background-color); }
+	:host([color="donkerbruin"]) { --_indeterminate-background-color: var(--components-progress-bar-donkerbruin-background-color); }
+	:host([color="bruin"]) { --_indeterminate-background-color: var(--components-progress-bar-bruin-background-color); }
+	:host([color="donkergroen"]) { --_indeterminate-background-color: var(--components-progress-bar-donkergroen-background-color); }
+	:host([color="groen"]) { --_indeterminate-background-color: var(--components-progress-bar-groen-background-color); }
+	:host([color="mosgroen"]) { --_indeterminate-background-color: var(--components-progress-bar-mosgroen-background-color); }
+	:host([color="mintgroen"]) { --_indeterminate-background-color: var(--components-progress-bar-mintgroen-background-color); }
 
 
-	/* # Header */
+	/* # Caption */
 
-	.progress-bar__header {
+	.progress-bar__caption {
 		display: flex;
-		gap: var(--_header-gap);
+		gap: var(--_caption-gap);
 		justify-content: space-between;
 		align-items: baseline;
-		color: var(--_header-text-color);
+		color: var(--_text-color);
 	}
 
 	.progress-bar__text {
-		font: var(--_header-text-font);
+		font: var(--_text-font);
 	}
 
-	.progress-bar__value {
-		color: var(--_header-value-color);
-		font: var(--_header-value-font);
+	.progress-bar__supporting-text {
+		color: var(--_supporting-text-color);
+		font: var(--_supporting-text-font);
 		font-variant-numeric: tabular-nums;
 	}
 
@@ -100,7 +102,7 @@ export const progressBarStyles = css`
 		position: relative;
 		border-radius: var(--_corner-radius);
 		box-shadow: inset 0 0 0 var(--_track-border-width) var(--_track-border-color);
-		background-color: var(--_track-color);
+		background-color: var(--_track-background-color);
 		width: 100%;
 		height: var(--_height);
 		overflow: hidden;
@@ -151,7 +153,7 @@ export const progressBarStyles = css`
 		inset-block: 0;
 		left: 0;
 		border-radius: var(--_corner-radius);
-		background: var(--_indeterminate-fill-color);
+		background: var(--_indeterminate-background-color);
 		width: var(--_indeterminate-bar-width);
 		transform: translateX(0);
 		/* Duration scales with track width via the container queries below.
@@ -191,8 +193,8 @@ export const progressBarStyles = css`
 		}
 
 		@keyframes progress-bar-indeterminate-pulse {
-			0%, 100% { background-color: color-mix(in srgb, var(--_indeterminate-fill-color) 20%, transparent); }
-			50% { background-color: color-mix(in srgb, var(--_indeterminate-fill-color) 50%, transparent); }
+			0%, 100% { background-color: color-mix(in srgb, var(--_indeterminate-background-color) 20%, transparent); }
+			50% { background-color: color-mix(in srgb, var(--_indeterminate-background-color) 50%, transparent); }
 		}
 	}
 
@@ -212,7 +214,7 @@ export const progressBarSegmentStyles = css`
 	:host {
 		--_width: var(--context-progress-bar-segment-width, 0%);
 		--_min-width: var(--components-progress-bar-segment-min-width);
-		--_fill-color: var(--components-progress-bar-accent-fill-color);
+		--_background-color: var(--components-progress-bar-accent-background-color);
 		--_border-color: var(--components-progress-bar-accent-border-color);
 		--_border-width: var(--components-progress-bar-segment-border-width);
 
@@ -220,7 +222,7 @@ export const progressBarSegmentStyles = css`
 		display: block;
 		position: relative;
 		box-shadow: inset 0 0 0 var(--_border-width) var(--_border-color);
-		background-color: var(--_fill-color);
+		background-color: var(--_background-color);
 		width: var(--_width);
 		min-width: var(--_min-width);
 		height: 100%;
@@ -274,23 +276,23 @@ export const progressBarSegmentStyles = css`
 	/* ## Variants — semantic */
 
 	:host([color="neutral"]) {
-		--_fill-color: var(--components-progress-bar-neutral-fill-color);
+		--_background-color: var(--components-progress-bar-neutral-background-color);
 		--_border-color: var(--components-progress-bar-neutral-border-color);
 	}
 	:host([color="accent"]) {
-		--_fill-color: var(--components-progress-bar-accent-fill-color);
+		--_background-color: var(--components-progress-bar-accent-background-color);
 		--_border-color: var(--components-progress-bar-accent-border-color);
 	}
 	:host([color="success"]) {
-		--_fill-color: var(--components-progress-bar-success-fill-color);
+		--_background-color: var(--components-progress-bar-success-background-color);
 		--_border-color: var(--components-progress-bar-success-border-color);
 	}
 	:host([color="warning"]) {
-		--_fill-color: var(--components-progress-bar-warning-fill-color);
+		--_background-color: var(--components-progress-bar-warning-background-color);
 		--_border-color: var(--components-progress-bar-warning-border-color);
 	}
 	:host([color="critical"]) {
-		--_fill-color: var(--components-progress-bar-critical-fill-color);
+		--_background-color: var(--components-progress-bar-critical-background-color);
 		--_border-color: var(--components-progress-bar-critical-border-color);
 	}
 
@@ -298,79 +300,79 @@ export const progressBarSegmentStyles = css`
 	/* ## Variants — Rijkskleuren */
 
 	:host([color="coolgray"]) {
-		--_fill-color: var(--components-progress-bar-coolgray-fill-color);
+		--_background-color: var(--components-progress-bar-coolgray-background-color);
 		--_border-color: var(--components-progress-bar-coolgray-border-color);
 	}
 	:host([color="lintblauw"]) {
-		--_fill-color: var(--components-progress-bar-lintblauw-fill-color);
+		--_background-color: var(--components-progress-bar-lintblauw-background-color);
 		--_border-color: var(--components-progress-bar-lintblauw-border-color);
 	}
 	:host([color="donkerblauw"]) {
-		--_fill-color: var(--components-progress-bar-donkerblauw-fill-color);
+		--_background-color: var(--components-progress-bar-donkerblauw-background-color);
 		--_border-color: var(--components-progress-bar-donkerblauw-border-color);
 	}
 	:host([color="hemelblauw"]) {
-		--_fill-color: var(--components-progress-bar-hemelblauw-fill-color);
+		--_background-color: var(--components-progress-bar-hemelblauw-background-color);
 		--_border-color: var(--components-progress-bar-hemelblauw-border-color);
 	}
 	:host([color="lichtblauw"]) {
-		--_fill-color: var(--components-progress-bar-lichtblauw-fill-color);
+		--_background-color: var(--components-progress-bar-lichtblauw-background-color);
 		--_border-color: var(--components-progress-bar-lichtblauw-border-color);
 	}
 	:host([color="paars"]) {
-		--_fill-color: var(--components-progress-bar-paars-fill-color);
+		--_background-color: var(--components-progress-bar-paars-background-color);
 		--_border-color: var(--components-progress-bar-paars-border-color);
 	}
 	:host([color="violet"]) {
-		--_fill-color: var(--components-progress-bar-violet-fill-color);
+		--_background-color: var(--components-progress-bar-violet-background-color);
 		--_border-color: var(--components-progress-bar-violet-border-color);
 	}
 	:host([color="robijnrood"]) {
-		--_fill-color: var(--components-progress-bar-robijnrood-fill-color);
+		--_background-color: var(--components-progress-bar-robijnrood-background-color);
 		--_border-color: var(--components-progress-bar-robijnrood-border-color);
 	}
 	:host([color="roze"]) {
-		--_fill-color: var(--components-progress-bar-roze-fill-color);
+		--_background-color: var(--components-progress-bar-roze-background-color);
 		--_border-color: var(--components-progress-bar-roze-border-color);
 	}
 	:host([color="rood"]) {
-		--_fill-color: var(--components-progress-bar-rood-fill-color);
+		--_background-color: var(--components-progress-bar-rood-background-color);
 		--_border-color: var(--components-progress-bar-rood-border-color);
 	}
 	:host([color="oranje"]) {
-		--_fill-color: var(--components-progress-bar-oranje-fill-color);
+		--_background-color: var(--components-progress-bar-oranje-background-color);
 		--_border-color: var(--components-progress-bar-oranje-border-color);
 	}
 	:host([color="donkergeel"]) {
-		--_fill-color: var(--components-progress-bar-donkergeel-fill-color);
+		--_background-color: var(--components-progress-bar-donkergeel-background-color);
 		--_border-color: var(--components-progress-bar-donkergeel-border-color);
 	}
 	:host([color="geel"]) {
-		--_fill-color: var(--components-progress-bar-geel-fill-color);
+		--_background-color: var(--components-progress-bar-geel-background-color);
 		--_border-color: var(--components-progress-bar-geel-border-color);
 	}
 	:host([color="donkerbruin"]) {
-		--_fill-color: var(--components-progress-bar-donkerbruin-fill-color);
+		--_background-color: var(--components-progress-bar-donkerbruin-background-color);
 		--_border-color: var(--components-progress-bar-donkerbruin-border-color);
 	}
 	:host([color="bruin"]) {
-		--_fill-color: var(--components-progress-bar-bruin-fill-color);
+		--_background-color: var(--components-progress-bar-bruin-background-color);
 		--_border-color: var(--components-progress-bar-bruin-border-color);
 	}
 	:host([color="donkergroen"]) {
-		--_fill-color: var(--components-progress-bar-donkergroen-fill-color);
+		--_background-color: var(--components-progress-bar-donkergroen-background-color);
 		--_border-color: var(--components-progress-bar-donkergroen-border-color);
 	}
 	:host([color="groen"]) {
-		--_fill-color: var(--components-progress-bar-groen-fill-color);
+		--_background-color: var(--components-progress-bar-groen-background-color);
 		--_border-color: var(--components-progress-bar-groen-border-color);
 	}
 	:host([color="mosgroen"]) {
-		--_fill-color: var(--components-progress-bar-mosgroen-fill-color);
+		--_background-color: var(--components-progress-bar-mosgroen-background-color);
 		--_border-color: var(--components-progress-bar-mosgroen-border-color);
 	}
 	:host([color="mintgroen"]) {
-		--_fill-color: var(--components-progress-bar-mintgroen-fill-color);
+		--_background-color: var(--components-progress-bar-mintgroen-background-color);
 		--_border-color: var(--components-progress-bar-mintgroen-border-color);
 	}
 
@@ -378,7 +380,7 @@ export const progressBarSegmentStyles = css`
 	/* # Hover area (tooltip trigger)
 	   Fills the segment; captures hover/focus for the wrapping nldd-tooltip. */
 
-	.progress-bar-segment__hover-area {
+	.progress-bar-segment__tooltip-area {
 		display: block;
 		position: absolute;
 		inset: 0;

@@ -36,8 +36,13 @@ export default {
 		mode: {
 			control: 'select',
 			options: ['progress', 'distribution'],
-			description: 'Semantiek voor ARIA en de gap tussen segmenten',
+			description: 'Semantiek voor ARIA en visualisatie',
 			table: { defaultValue: { summary: 'progress' } },
+		},
+		indeterminate: {
+			control: 'boolean',
+			description: 'Toont een draaiende indicator-animatie',
+			table: { defaultValue: { summary: false } },
 		},
 		color: {
 			control: 'select',
@@ -51,58 +56,72 @@ export default {
 			description: 'Diameter in px (zelfde set als nldd-icon)',
 			table: { defaultValue: { summary: '28' } },
 		},
-		max: {
-			control: { type: 'number', min: 1 },
-			table: { defaultValue: { summary: 100 } },
-		},
-		value: {
-			control: { type: 'number', min: 0 },
-		},
 		text: {
 			control: 'text',
 			description: 'Label onder de cirkel',
 		},
+		max: {
+			control: { type: 'number', min: 1 },
+			description: 'Totaalwaarde',
+			table: { defaultValue: { summary: 100 } },
+		},
+		value: {
+			control: { type: 'number', min: 0 },
+			description: 'Single-segment shorthand',
+		},
 		valueFormat: {
 			name: 'value-format',
 			control: 'select',
-			options: ['percentage', 'absolute', 'fraction', 'none'],
-			description: 'Format voor de waarde in de tooltip',
+			options: ['percentage', 'absolute', 'fraction'],
+			description: 'Format van de getoonde waarde',
 			table: { defaultValue: { summary: 'percentage' } },
+		},
+		valueText: {
+			name: 'value-text',
+			control: 'text',
+			description: 'Volledige override van de getoonde waarde',
+		},
+		valueDisplay: {
+			name: 'value-display',
+			control: 'select',
+			options: ['inline', 'tooltip', 'none'],
+			description: 'Waar de waarde verschijnt: inline, tooltip of verborgen',
+			table: { defaultValue: { summary: 'tooltip' } },
 		},
 		accessibleLabel: {
 			name: 'accessible-label',
 			control: 'text',
-			description: 'Volledige override van aria-valuetext en tooltip',
-		},
-		indeterminate: {
-			control: 'boolean',
-			table: { defaultValue: { summary: false } },
+			description: 'Volledige override van aria-valuetext',
 		},
 	},
 	args: {
 		mode: 'progress',
+		indeterminate: false,
 		color: 'accent',
 		size: '28',
+		text: 'Bestanden uploaden',
 		max: 100,
 		value: 60,
-		text: 'Bestanden uploaden',
 		valueFormat: 'percentage',
+		valueText: '',
+		valueDisplay: 'tooltip',
 		accessibleLabel: '',
-		indeterminate: false,
 	},
 };
 
 const Template = (args: Record<string, any>) => html`
 	<nldd-progress-circle
 		mode=${args.mode}
+		?indeterminate=${args.indeterminate}
 		color=${args.color}
 		size=${args.size}
+		text=${args.text || nothing}
 		max=${args.max}
 		value=${args.value}
-		text=${args.text || nothing}
 		value-format=${args.valueFormat}
+		value-text=${args.valueText || nothing}
+		value-display=${args.valueDisplay}
 		accessible-label=${args.accessibleLabel || nothing}
-		?indeterminate=${args.indeterminate}
 	></nldd-progress-circle>
 `;
 
@@ -179,7 +198,51 @@ export const Indeterminate = {
 		controls: { disable: true },
 		docs: {
 			description: {
-				story: 'Material-stijl: elastische boog draait rond. Bij `prefers-reduced-motion` wordt de animatie vervangen door een rustige pulse.',
+				story: 'Een vast segment draait rond de cirkel. Bij `prefers-reduced-motion` wordt de animatie vervangen door een rustige pulse.',
+			},
+		},
+	},
+};
+
+export const ValueFormats = {
+	render: () => html`
+		<div style="display: flex; gap: 32px; align-items: flex-start;">
+			<nldd-progress-circle size="56" value="60" max="100" text="Percentage" value-format="percentage" value-display="inline"></nldd-progress-circle>
+			<nldd-progress-circle size="56" value="60" max="100" text="Absoluut" value-format="absolute" value-display="inline"></nldd-progress-circle>
+			<nldd-progress-circle size="56" value="60" max="100" text="Breuk" value-format="fraction" value-display="inline"></nldd-progress-circle>
+			<nldd-progress-circle size="56" value="60" max="100" text="Custom (value-text)" value-text="Bijna klaar" value-display="inline"></nldd-progress-circle>
+		</div>
+	`,
+	parameters: { controls: { disable: true } },
+};
+
+export const ValueDisplay = {
+	render: () => html`
+		<div style="display: flex; gap: 32px; align-items: flex-start;">
+			<nldd-progress-circle size="56" value="60" text="Inline (onder de label)" value-display="inline"></nldd-progress-circle>
+			<nldd-progress-circle size="56" value="60" text="Tooltip (hover de cirkel)" value-display="tooltip"></nldd-progress-circle>
+			<nldd-progress-circle size="56" value="60" text="Verborgen" value-display="none"></nldd-progress-circle>
+		</div>
+	`,
+	parameters: {
+		controls: { disable: true },
+		docs: {
+			description: {
+				story: '`value-display` bepaalt waar de waarde verschijnt: `inline` als secundaire tekst onder de label, in een `tooltip` (hover/focus de cirkel), of `none` (verborgen).',
+			},
+		},
+	},
+};
+
+export const ZonderCaption = {
+	render: () => html`
+		<nldd-progress-circle size="56" value="40" value-display="none"></nldd-progress-circle>
+	`,
+	parameters: {
+		controls: { disable: true },
+		docs: {
+			description: {
+				story: 'Met `value-display="none"` en geen `text` verschijnt geen caption — alleen de cirkel. Handig voor inline gebruik.',
 			},
 		},
 	},

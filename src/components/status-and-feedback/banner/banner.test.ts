@@ -51,17 +51,18 @@ describe('nldd-banner', () => {
 		['success', 'check-circle-filled'],
 		['warning', 'exclamation-triangle-filled'],
 		['critical', 'exclamation-circle-filled'],
+		['accent', 'info-circle-filled'],
 	])('variant="%s" uses default icon "%s"', async (variant, expectedIcon) => {
 		el = await fixture(`<nldd-banner variant="${variant}"></nldd-banner>`);
 		await waitForUpdate(el);
-		const icon = el.shadowRoot!.querySelector('.banner__icon');
+		const icon = el.shadowRoot!.querySelector('.banner__icon nldd-icon');
 		expect(icon!.getAttribute('name')).toBe(expectedIcon);
 	});
 
 	it('icon attribute overrides the default', async () => {
 		el = await fixture('<nldd-banner variant="success" icon="star"></nldd-banner>');
 		await waitForUpdate(el);
-		const icon = el.shadowRoot!.querySelector('.banner__icon');
+		const icon = el.shadowRoot!.querySelector('.banner__icon nldd-icon');
 		expect(icon!.getAttribute('name')).toBe('star');
 	});
 
@@ -70,7 +71,7 @@ describe('nldd-banner', () => {
 	   ARIA semantics
 	   ============================================================ */
 
-	it.each(['neutral', 'success', 'warning'] as const)('variant="%s" gets role="status" and aria-live="polite"', async (variant) => {
+	it.each(['neutral', 'success', 'warning', 'accent'] as const)('variant="%s" gets role="status" and aria-live="polite"', async (variant) => {
 		el = await fixture(`<nldd-banner variant="${variant}"></nldd-banner>`);
 		await waitForUpdate(el);
 		expect(el.getAttribute('role')).toBe('status');

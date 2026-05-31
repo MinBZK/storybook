@@ -24,7 +24,8 @@
  * @attr {string}  color             - Color for the single-segment shorthand (default: 'accent')
  * @attr {'sm'|'md'|'lg'} size       - Height of the bar (default: 'md')
  * @attr {string}  text              - Label above the bar (left)
- * @attr {'percentage'|'absolute'|'fraction'|'none'} value-format - Format for the value at the top right (default: 'percentage')
+ * @attr {'percentage'|'absolute'|'fraction'} value-format - Format for the displayed value (default: 'percentage')
+ * @attr {'inline'|'tooltip'|'none'} value-display - Where the value shows: inline in the caption, in a tooltip on the bar, or hidden (default: 'inline')
  * @attr {string}  value-text        - Full override of the displayed value
  * @attr {string}  accessible-label  - Full override of aria-valuetext
  * @attr {boolean} indeterminate     - Shows a sliding indicator animation (only without segments)
@@ -55,7 +56,8 @@ export const INDETERMINATE_TRANSITION_MS = 300;
 
 export type ProgressBarMode = 'progress' | 'distribution';
 export type ProgressBarSize = 'sm' | 'md' | 'lg';
-export type ProgressBarValueFormat = 'percentage' | 'absolute' | 'fraction' | 'none';
+export type ProgressBarValueFormat = 'percentage' | 'absolute' | 'fraction';
+export type ProgressBarValueDisplay = 'inline' | 'tooltip' | 'none';
 
 export type ProgressBarColor =
 	| 'neutral' | 'accent' | 'success' | 'warning' | 'critical'
@@ -103,7 +105,7 @@ export class NLDDProgressBarSegment extends LitElement {
 		// Only render the tooltip wrapper when there's actual text — avoids
 		// mounting an inert nldd-tooltip element with timing="never".
 		if (!text) {
-			return html`<span class="progress-bar-segment__hover-area"></span>`;
+			return html`<span class="progress-bar-segment__tooltip-area"></span>`;
 		}
 		// tabindex=0 makes the hover area keyboard-reachable so SR users can
 		// land on it and have nldd-tooltip surface its text (WCAG 2.1.1).
@@ -117,7 +119,7 @@ export class NLDDProgressBarSegment extends LitElement {
 		// no extra handlers needed here.
 		return html`
 			<nldd-tooltip text=${text} timing="instant">
-				<span class="progress-bar-segment__hover-area"
+				<span class="progress-bar-segment__tooltip-area"
 					tabindex="0"
 					role="img"
 					aria-label=${text}
@@ -157,6 +159,9 @@ export class NLDDProgressBar extends LitElement {
 
 	@property({ type: String, reflect: true, attribute: 'value-text' })
 	valueText = '';
+
+	@property({ type: String, reflect: true, attribute: 'value-display' })
+	valueDisplay: ProgressBarValueDisplay = 'inline';
 
 	@property({ type: String, reflect: true, attribute: 'accessible-label' })
 	accessibleLabel = '';
@@ -207,13 +212,12 @@ export class NLDDProgressBar extends LitElement {
 		return Math.min(100, (this._totalValue / this.max) * 100);
 	}
 
-	/** Formatted value string for the header. */
+	/** Formatted value string for the caption. */
 	get _displayValue(): string {
 		if (this.valueText) return this.valueText;
 		if (this.indeterminate) return '';
 		const total = this._totalValue;
 		switch (this.valueFormat) {
-			case 'none': return '';
 			case 'absolute': return `${total}`;
 			case 'fraction': return `${total} / ${this.max}`;
 			case 'percentage':
@@ -256,10 +260,10 @@ export class NLDDProgressBar extends LitElement {
 		return `${totalPct}% ${completedSuffix}`;
 	}
 
-	/** True when the header is rendered. Header only shows when `text` is set;
-	 *  used to suppress redundant auto-tooltips on single-segment bars. */
-	get _hasHeader(): boolean {
-		return !!this.text;
+	/** True when the caption is rendered: a label is set, or there's an inline
+	 *  value to show (value-display="inline"). */
+	get _hasCaption(): boolean {
+		return !!this.text || (this.valueDisplay === 'inline' && !!this._displayValue);
 	}
 
 	private _attributeObserver?: MutationObserver;
@@ -286,7 +290,7 @@ export class NLDDProgressBar extends LitElement {
 
 	override updated(): void {
 		// Sync on any update — cheap, and properties like text/valueText also
-		// affect tooltip suppression (single-segment + header).
+		// affect tooltip suppression (single-segment + caption).
 		this._syncSegments();
 	}
 
@@ -329,11 +333,9 @@ export class NLDDProgressBar extends LitElement {
 
 	/** Auto-tooltip based on parent's value-format. Override via segment.tooltip. */
 	private _formatSegmentTooltip(seg: NLDDProgressBarSegment): string {
-		// valueFormat="none" hides all values, including per-segment ones.
-		// Without an explicit return here, the switch below falls through to
-		// the percentage branch and every multi-segment tooltip still says
-		// "Name: 30%" — matches progress-circle's `_formatValuePart` guard.
-		if (this.valueFormat === 'none') return seg.name ?? '';
+		// value-display="none" hides the value, so per-segment tooltips fall
+		// back to the segment name only (empty string when unnamed).
+		if (this.valueDisplay === 'none') return seg.name ?? '';
 		const v = Math.max(0, seg.value);
 		const pct = this.max > 0 ? Math.round((v / this.max) * 100) : 0;
 		let valuePart: string;
@@ -404,11 +406,12 @@ export class NLDDProgressBar extends LitElement {
 			? [internalSegment, ...this._segments]
 			: [...this._segments];
 
-		// Suppress redundant auto-tooltip when there's only one visible segment
-		// and the header already shows the same value. The user's explicit
-		// `tooltip-text` attribute still triggers a tooltip.
+		// Single visible segment: only surface its auto-tooltip in
+		// value-display="tooltip" mode (inline shows the value in the caption,
+		// none hides it). Multi-segment always gets per-segment tooltips; an
+		// explicit `tooltip-text` attribute still wins.
 		const visibleCount = allSegments.filter(s => Math.max(0, s.value) > 0).length;
-		const suppressAutoTooltip = visibleCount <= 1 && this._hasHeader;
+		const suppressAutoTooltip = visibleCount <= 1 && this.valueDisplay !== 'tooltip';
 
 		const isExiting = this._indeterminateExiting;
 		const isEntering = this._indeterminateEntering;

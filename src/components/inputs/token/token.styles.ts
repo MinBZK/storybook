@@ -1,4 +1,5 @@
 import { css } from 'lit';
+import { inheritedTextReset } from '../../../assets/styles/slotted-reset.js';
 
 export const tokenStyles = css`
 
@@ -6,6 +7,7 @@ export const tokenStyles = css`
 	/* # Host */
 
 	:host {
+		${inheritedTextReset}
 		display: inline-block;
 		user-select: none;
 		-webkit-tap-highlight-color: transparent;

@@ -1,4 +1,5 @@
 import { css } from 'lit';
+import { inheritedTextReset } from '../../../assets/styles/slotted-reset.js';
 
 export const progressCircleStyles = css`
 
@@ -13,17 +14,20 @@ export const progressCircleStyles = css`
 		   grows with circle size — must match getStrokeWidthPx() in the
 		   template file. */
 		--_stroke-width: calc(4px * 100 / 28);
-		--_track-color: var(--components-progress-circle-track-color);
+		--_track-background-color: var(--components-progress-circle-track-background-color);
 		--_track-border-color: var(--components-progress-circle-track-border-color);
-		--_label-gap: var(--components-progress-circle-label-gap);
-		--_label-color: var(--components-progress-circle-label-color);
-		--_label-font: var(--components-progress-circle-label-font);
+		--_caption-gap: var(--components-progress-circle-caption-gap);
+		--_text-color: var(--components-progress-circle-text-color);
+		--_text-font: var(--components-progress-circle-text-font);
+		--_supporting-text-color: var(--components-progress-circle-supporting-text-color);
+		--_supporting-text-font: var(--components-progress-circle-supporting-text-font);
 
+		${inheritedTextReset}
 		box-sizing: border-box;
 		display: inline-flex;
 		flex-direction: column;
 		align-items: center;
-		gap: var(--_label-gap);
+		gap: var(--_caption-gap);
 	}
 
 	:host([hidden]) {
@@ -31,17 +35,17 @@ export const progressCircleStyles = css`
 	}
 
 	:host([size="16"]) { --_size: var(--primitives-space-16); --_stroke-width: calc(3px * 100 / 16); }
-	:host([size="20"]) { --_size: var(--primitives-space-20); --_stroke-width: calc(3px * 100 / 20); }
+	:host([size="20"]) { --_size: var(--primitives-space-20); --_stroke-width: calc(4px * 100 / 20); }
 	:host([size="24"]) { --_size: var(--primitives-space-24); --_stroke-width: calc(4px * 100 / 24); }
 	:host([size="28"]) { --_size: var(--primitives-space-28); --_stroke-width: calc(4px * 100 / 28); }
-	:host([size="32"]) { --_size: var(--primitives-space-32); --_stroke-width: calc(4px * 100 / 32); }
-	:host([size="40"]) { --_size: var(--primitives-space-40); --_stroke-width: calc(4px * 100 / 40); }
-	:host([size="44"]) { --_size: var(--primitives-space-44); --_stroke-width: calc(5px * 100 / 44); }
-	:host([size="48"]) { --_size: var(--primitives-space-48); --_stroke-width: calc(5px * 100 / 48); }
-	:host([size="56"]) { --_size: var(--primitives-space-56); --_stroke-width: calc(6px * 100 / 56); }
-	:host([size="64"]) { --_size: var(--primitives-space-64); --_stroke-width: calc(6px * 100 / 64); }
-	:host([size="80"]) { --_size: var(--primitives-space-80); --_stroke-width: calc(6px * 100 / 80); }
-	:host([size="96"]) { --_size: var(--primitives-space-96); --_stroke-width: calc(6px * 100 / 96); }
+	:host([size="32"]) { --_size: var(--primitives-space-32); --_stroke-width: calc(5px * 100 / 32); }
+	:host([size="40"]) { --_size: var(--primitives-space-40); --_stroke-width: calc(5px * 100 / 40); }
+	:host([size="44"]) { --_size: var(--primitives-space-44); --_stroke-width: calc(6px * 100 / 44); }
+	:host([size="48"]) { --_size: var(--primitives-space-48); --_stroke-width: calc(6px * 100 / 48); }
+	:host([size="56"]) { --_size: var(--primitives-space-56); --_stroke-width: calc(7px * 100 / 56); }
+	:host([size="64"]) { --_size: var(--primitives-space-64); --_stroke-width: calc(7px * 100 / 64); }
+	:host([size="80"]) { --_size: var(--primitives-space-80); --_stroke-width: calc(8px * 100 / 80); }
+	:host([size="96"]) { --_size: var(--primitives-space-96); --_stroke-width: calc(8px * 100 / 96); }
 
 
 	/* # SVG wrapper */
@@ -68,7 +72,7 @@ export const progressCircleStyles = css`
 	   so a 4px stroke is always 4 actual pixels at any circle size. */
 
 	.progress-circle__track {
-		stroke: var(--_track-color);
+		stroke: var(--_track-background-color);
 		stroke-width: var(--_stroke-width);
 	}
 
@@ -103,30 +107,30 @@ export const progressCircleStyles = css`
 
 	/* ## Arc color per variant */
 
-	.progress-circle__segment--neutral { stroke: var(--components-progress-circle-neutral-fill-color); }
-	.progress-circle__segment--accent { stroke: var(--components-progress-circle-accent-fill-color); }
-	.progress-circle__segment--success { stroke: var(--components-progress-circle-success-fill-color); }
-	.progress-circle__segment--warning { stroke: var(--components-progress-circle-warning-fill-color); }
-	.progress-circle__segment--critical { stroke: var(--components-progress-circle-critical-fill-color); }
-	.progress-circle__segment--coolgray { stroke: var(--components-progress-circle-coolgray-fill-color); }
-	.progress-circle__segment--lintblauw { stroke: var(--components-progress-circle-lintblauw-fill-color); }
-	.progress-circle__segment--donkerblauw { stroke: var(--components-progress-circle-donkerblauw-fill-color); }
-	.progress-circle__segment--hemelblauw { stroke: var(--components-progress-circle-hemelblauw-fill-color); }
-	.progress-circle__segment--lichtblauw { stroke: var(--components-progress-circle-lichtblauw-fill-color); }
-	.progress-circle__segment--paars { stroke: var(--components-progress-circle-paars-fill-color); }
-	.progress-circle__segment--violet { stroke: var(--components-progress-circle-violet-fill-color); }
-	.progress-circle__segment--robijnrood { stroke: var(--components-progress-circle-robijnrood-fill-color); }
-	.progress-circle__segment--roze { stroke: var(--components-progress-circle-roze-fill-color); }
-	.progress-circle__segment--rood { stroke: var(--components-progress-circle-rood-fill-color); }
-	.progress-circle__segment--oranje { stroke: var(--components-progress-circle-oranje-fill-color); }
-	.progress-circle__segment--donkergeel { stroke: var(--components-progress-circle-donkergeel-fill-color); }
-	.progress-circle__segment--geel { stroke: var(--components-progress-circle-geel-fill-color); }
-	.progress-circle__segment--donkerbruin { stroke: var(--components-progress-circle-donkerbruin-fill-color); }
-	.progress-circle__segment--bruin { stroke: var(--components-progress-circle-bruin-fill-color); }
-	.progress-circle__segment--donkergroen { stroke: var(--components-progress-circle-donkergroen-fill-color); }
-	.progress-circle__segment--groen { stroke: var(--components-progress-circle-groen-fill-color); }
-	.progress-circle__segment--mosgroen { stroke: var(--components-progress-circle-mosgroen-fill-color); }
-	.progress-circle__segment--mintgroen { stroke: var(--components-progress-circle-mintgroen-fill-color); }
+	.progress-circle__segment--neutral { stroke: var(--components-progress-circle-neutral-background-color); }
+	.progress-circle__segment--accent { stroke: var(--components-progress-circle-accent-background-color); }
+	.progress-circle__segment--success { stroke: var(--components-progress-circle-success-background-color); }
+	.progress-circle__segment--warning { stroke: var(--components-progress-circle-warning-background-color); }
+	.progress-circle__segment--critical { stroke: var(--components-progress-circle-critical-background-color); }
+	.progress-circle__segment--coolgray { stroke: var(--components-progress-circle-coolgray-background-color); }
+	.progress-circle__segment--lintblauw { stroke: var(--components-progress-circle-lintblauw-background-color); }
+	.progress-circle__segment--donkerblauw { stroke: var(--components-progress-circle-donkerblauw-background-color); }
+	.progress-circle__segment--hemelblauw { stroke: var(--components-progress-circle-hemelblauw-background-color); }
+	.progress-circle__segment--lichtblauw { stroke: var(--components-progress-circle-lichtblauw-background-color); }
+	.progress-circle__segment--paars { stroke: var(--components-progress-circle-paars-background-color); }
+	.progress-circle__segment--violet { stroke: var(--components-progress-circle-violet-background-color); }
+	.progress-circle__segment--robijnrood { stroke: var(--components-progress-circle-robijnrood-background-color); }
+	.progress-circle__segment--roze { stroke: var(--components-progress-circle-roze-background-color); }
+	.progress-circle__segment--rood { stroke: var(--components-progress-circle-rood-background-color); }
+	.progress-circle__segment--oranje { stroke: var(--components-progress-circle-oranje-background-color); }
+	.progress-circle__segment--donkergeel { stroke: var(--components-progress-circle-donkergeel-background-color); }
+	.progress-circle__segment--geel { stroke: var(--components-progress-circle-geel-background-color); }
+	.progress-circle__segment--donkerbruin { stroke: var(--components-progress-circle-donkerbruin-background-color); }
+	.progress-circle__segment--bruin { stroke: var(--components-progress-circle-bruin-background-color); }
+	.progress-circle__segment--donkergroen { stroke: var(--components-progress-circle-donkergroen-background-color); }
+	.progress-circle__segment--groen { stroke: var(--components-progress-circle-groen-background-color); }
+	.progress-circle__segment--mosgroen { stroke: var(--components-progress-circle-mosgroen-background-color); }
+	.progress-circle__segment--mintgroen { stroke: var(--components-progress-circle-mintgroen-background-color); }
 
 
 	/* # Spinner (indeterminate)
@@ -141,7 +145,7 @@ export const progressCircleStyles = css`
 		stroke-width: var(--_stroke-width);
 		stroke-dasharray: 25 100;
 		stroke-dashoffset: 0;
-		stroke: var(--_indeterminate-fill-color);
+		stroke: var(--_indeterminate-background-color);
 		opacity: 1;
 		transform-origin: 50% 50%;
 		transition: opacity var(--primitives-transition-duration-slow) ease-out;
@@ -160,40 +164,52 @@ export const progressCircleStyles = css`
 	/* # Indeterminate fill colour follows the color variant; default accent (blue) */
 
 	:host {
-		--_indeterminate-fill-color: var(--components-progress-circle-accent-fill-color);
+		--_indeterminate-background-color: var(--components-progress-circle-accent-background-color);
 	}
 
-	:host([color="neutral"]) { --_indeterminate-fill-color: var(--components-progress-circle-neutral-fill-color); }
-	:host([color="accent"]) { --_indeterminate-fill-color: var(--components-progress-circle-accent-fill-color); }
-	:host([color="success"]) { --_indeterminate-fill-color: var(--components-progress-circle-success-fill-color); }
-	:host([color="warning"]) { --_indeterminate-fill-color: var(--components-progress-circle-warning-fill-color); }
-	:host([color="critical"]) { --_indeterminate-fill-color: var(--components-progress-circle-critical-fill-color); }
-	:host([color="coolgray"]) { --_indeterminate-fill-color: var(--components-progress-circle-coolgray-fill-color); }
-	:host([color="lintblauw"]) { --_indeterminate-fill-color: var(--components-progress-circle-lintblauw-fill-color); }
-	:host([color="donkerblauw"]) { --_indeterminate-fill-color: var(--components-progress-circle-donkerblauw-fill-color); }
-	:host([color="hemelblauw"]) { --_indeterminate-fill-color: var(--components-progress-circle-hemelblauw-fill-color); }
-	:host([color="lichtblauw"]) { --_indeterminate-fill-color: var(--components-progress-circle-lichtblauw-fill-color); }
-	:host([color="paars"]) { --_indeterminate-fill-color: var(--components-progress-circle-paars-fill-color); }
-	:host([color="violet"]) { --_indeterminate-fill-color: var(--components-progress-circle-violet-fill-color); }
-	:host([color="robijnrood"]) { --_indeterminate-fill-color: var(--components-progress-circle-robijnrood-fill-color); }
-	:host([color="roze"]) { --_indeterminate-fill-color: var(--components-progress-circle-roze-fill-color); }
-	:host([color="rood"]) { --_indeterminate-fill-color: var(--components-progress-circle-rood-fill-color); }
-	:host([color="oranje"]) { --_indeterminate-fill-color: var(--components-progress-circle-oranje-fill-color); }
-	:host([color="donkergeel"]) { --_indeterminate-fill-color: var(--components-progress-circle-donkergeel-fill-color); }
-	:host([color="geel"]) { --_indeterminate-fill-color: var(--components-progress-circle-geel-fill-color); }
-	:host([color="donkerbruin"]) { --_indeterminate-fill-color: var(--components-progress-circle-donkerbruin-fill-color); }
-	:host([color="bruin"]) { --_indeterminate-fill-color: var(--components-progress-circle-bruin-fill-color); }
-	:host([color="donkergroen"]) { --_indeterminate-fill-color: var(--components-progress-circle-donkergroen-fill-color); }
-	:host([color="groen"]) { --_indeterminate-fill-color: var(--components-progress-circle-groen-fill-color); }
-	:host([color="mosgroen"]) { --_indeterminate-fill-color: var(--components-progress-circle-mosgroen-fill-color); }
-	:host([color="mintgroen"]) { --_indeterminate-fill-color: var(--components-progress-circle-mintgroen-fill-color); }
+	:host([color="neutral"]) { --_indeterminate-background-color: var(--components-progress-circle-neutral-background-color); }
+	:host([color="accent"]) { --_indeterminate-background-color: var(--components-progress-circle-accent-background-color); }
+	:host([color="success"]) { --_indeterminate-background-color: var(--components-progress-circle-success-background-color); }
+	:host([color="warning"]) { --_indeterminate-background-color: var(--components-progress-circle-warning-background-color); }
+	:host([color="critical"]) { --_indeterminate-background-color: var(--components-progress-circle-critical-background-color); }
+	:host([color="coolgray"]) { --_indeterminate-background-color: var(--components-progress-circle-coolgray-background-color); }
+	:host([color="lintblauw"]) { --_indeterminate-background-color: var(--components-progress-circle-lintblauw-background-color); }
+	:host([color="donkerblauw"]) { --_indeterminate-background-color: var(--components-progress-circle-donkerblauw-background-color); }
+	:host([color="hemelblauw"]) { --_indeterminate-background-color: var(--components-progress-circle-hemelblauw-background-color); }
+	:host([color="lichtblauw"]) { --_indeterminate-background-color: var(--components-progress-circle-lichtblauw-background-color); }
+	:host([color="paars"]) { --_indeterminate-background-color: var(--components-progress-circle-paars-background-color); }
+	:host([color="violet"]) { --_indeterminate-background-color: var(--components-progress-circle-violet-background-color); }
+	:host([color="robijnrood"]) { --_indeterminate-background-color: var(--components-progress-circle-robijnrood-background-color); }
+	:host([color="roze"]) { --_indeterminate-background-color: var(--components-progress-circle-roze-background-color); }
+	:host([color="rood"]) { --_indeterminate-background-color: var(--components-progress-circle-rood-background-color); }
+	:host([color="oranje"]) { --_indeterminate-background-color: var(--components-progress-circle-oranje-background-color); }
+	:host([color="donkergeel"]) { --_indeterminate-background-color: var(--components-progress-circle-donkergeel-background-color); }
+	:host([color="geel"]) { --_indeterminate-background-color: var(--components-progress-circle-geel-background-color); }
+	:host([color="donkerbruin"]) { --_indeterminate-background-color: var(--components-progress-circle-donkerbruin-background-color); }
+	:host([color="bruin"]) { --_indeterminate-background-color: var(--components-progress-circle-bruin-background-color); }
+	:host([color="donkergroen"]) { --_indeterminate-background-color: var(--components-progress-circle-donkergroen-background-color); }
+	:host([color="groen"]) { --_indeterminate-background-color: var(--components-progress-circle-groen-background-color); }
+	:host([color="mosgroen"]) { --_indeterminate-background-color: var(--components-progress-circle-mosgroen-background-color); }
+	:host([color="mintgroen"]) { --_indeterminate-background-color: var(--components-progress-circle-mintgroen-background-color); }
 
 
-	/* # Label */
+	/* # Caption (label + value) */
+
+	.progress-circle__caption {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+	}
 
 	.progress-circle__text {
-		color: var(--_label-color);
-		font: var(--_label-font);
+		color: var(--_text-color);
+		font: var(--_text-font);
+		text-align: center;
+	}
+
+	.progress-circle__supporting-text {
+		color: var(--_supporting-text-color);
+		font: var(--_supporting-text-font);
 		text-align: center;
 	}
 

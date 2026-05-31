@@ -2,7 +2,8 @@ import { describe, it, expect, afterEach } from 'vitest';
 import { fixture, cleanup, waitForUpdate } from '../../../test-utils.js';
 import type { NLDDProgressCircle } from './progress-circle.js';
 import { INDETERMINATE_TRANSITION_MS } from './progress-circle.js';
-import { getStrokeWidthPx } from './progress-circle.template.js';
+import { getStrokeWidthPx, getBorderErodeRadius } from './progress-circle.template.js';
+import { progressCircleStyles } from './progress-circle.styles.js';
 import settingsCss from '../../../assets/styles/settings.css?raw';
 import './progress-circle.js';
 
@@ -100,6 +101,60 @@ describe('nldd-progress-circle', () => {
 		const wrapper = el.shadowRoot!.querySelector('.progress-circle__circle')!;
 		expect(wrapper.getAttribute('aria-valuetext')).toBe('Custom');
 	});
+
+	it('value-display="inline" shows the value as text below the label', async () => {
+		el = await fixture('<nldd-progress-circle value="60" text="Uploaden" value-display="inline"></nldd-progress-circle>');
+		await waitForUpdate(el);
+		const value = el.shadowRoot!.querySelector('.progress-circle__supporting-text');
+		expect(value).not.toBeNull();
+		expect(value!.textContent).toBe('60%');
+	});
+
+	it('value-display="tooltip" (default) wraps the circle in a tooltip and shows no inline value', async () => {
+		el = await fixture('<nldd-progress-circle value="60"></nldd-progress-circle>');
+		await waitForUpdate(el);
+		expect(el.shadowRoot!.querySelector('nldd-tooltip')).not.toBeNull();
+		expect(el.shadowRoot!.querySelector('.progress-circle__supporting-text')).toBeNull();
+	});
+
+	it('value-display="none" renders neither a tooltip nor an inline value', async () => {
+		el = await fixture('<nldd-progress-circle value="60" value-display="none"></nldd-progress-circle>');
+		await waitForUpdate(el);
+		expect(el.shadowRoot!.querySelector('nldd-tooltip')).toBeNull();
+		expect(el.shadowRoot!.querySelector('.progress-circle__supporting-text')).toBeNull();
+	});
+
+	it('value-text overrides the inline displayed value', async () => {
+		el = await fixture('<nldd-progress-circle value="60" text="x" value-display="inline" value-text="Bijna klaar"></nldd-progress-circle>');
+		await waitForUpdate(el);
+		expect(el.shadowRoot!.querySelector('.progress-circle__supporting-text')!.textContent).toBe('Bijna klaar');
+	});
+
+	it('applies a per-colour highlight-border filter to the track and segments', async () => {
+		el = await fixture('<nldd-progress-circle value="60" color="accent"></nldd-progress-circle>');
+		await waitForUpdate(el);
+		const track = el.shadowRoot!.querySelector('.progress-circle__track')!;
+		const seg = el.shadowRoot!.querySelector('.progress-circle__segment')!;
+		// Filter ids carry a per-instance suffix, so match by prefix.
+		expect(track.getAttribute('filter')).toMatch(/^url\(#progress-circle-border-track-/);
+		expect(seg.getAttribute('filter')).toMatch(/^url\(#progress-circle-border-accent-/);
+		// matching filter defs (with a flood) exist for the track and the used colour
+		expect(el.shadowRoot!.querySelector('[id^="progress-circle-border-track-"] feFlood')).not.toBeNull();
+		expect(el.shadowRoot!.querySelector('[id^="progress-circle-border-accent-"] feFlood')).not.toBeNull();
+	});
+
+	it('scopes the highlight-border filter ids per instance so two circles do not collide', async () => {
+		const a = await fixture('<nldd-progress-circle value="60" color="accent"></nldd-progress-circle>');
+		const b = await fixture('<nldd-progress-circle value="60" color="accent"></nldd-progress-circle>');
+		await waitForUpdate(a);
+		await waitForUpdate(b);
+		const fa = a.shadowRoot!.querySelector('.progress-circle__track')!.getAttribute('filter');
+		const fb = b.shadowRoot!.querySelector('.progress-circle__track')!.getAttribute('filter');
+		expect(fa).not.toBeNull();
+		expect(fa).not.toBe(fb);
+		cleanup(a);
+		cleanup(b);
+	});
 });
 
 describe('nldd-progress-circle-segment', () => {
@@ -185,20 +240,20 @@ describe('nldd-progress-circle-segment', () => {
 		expect(tokenMs).toBe(INDETERMINATE_TRANSITION_MS);
 	});
 
-	it('getStrokeWidthPx(size) matches the per-size CSS --_stroke-width rule for every published size', async () => {
-		// The CSS encodes --_stroke-width: calc({STROKE_PX} * 100 / {SIZE}) per
-		// `:host([size="{SIZE}"])`. If a new size is added in one place but not
-		// the other, the SVG arc widths drift visually. The table here mirrors
-		// the CSS verbatim — keep it in sync with the rules in
-		// progress-circle.styles.ts.
-		const cssExpected: Record<string, number> = {
-			'16': 3, '20': 3,
-			'24': 4, '28': 4, '32': 4, '40': 4,
-			'44': 5, '48': 5,
-			'56': 6, '64': 6, '80': 6, '96': 6,
-		};
-		for (const [size, expected] of Object.entries(cssExpected)) {
-			expect(getStrokeWidthPx(Number(size)), `size=${size}`).toBe(expected);
+	it('getStrokeWidthPx(size) matches every per-size --_stroke-width rule in the stylesheet', () => {
+		// Parse the real CSS (not a hand-kept copy) so a JS↔CSS drift is caught:
+		// every `--_stroke-width: calc(<stroke>px * 100 / <size>)` must equal getStrokeWidthPx(<size>).
+		const rules = [...progressCircleStyles.cssText.matchAll(/--_stroke-width:\s*calc\((\d+)px\s*\*\s*100\s*\/\s*(\d+)\)/g)];
+		expect(rules.length).toBeGreaterThanOrEqual(12);
+		for (const [, strokePx, size] of rules) {
+			expect(getStrokeWidthPx(Number(size)), `size=${size}`).toBe(Number(strokePx));
 		}
+	});
+
+	it('getBorderErodeRadius(size) returns 100 / size (a 1px edge in viewBox user units)', () => {
+		expect(getBorderErodeRadius(100)).toBe(1);
+		expect(getBorderErodeRadius(50)).toBe(2);
+		expect(getBorderErodeRadius(16)).toBe(6.25);
+		expect(getBorderErodeRadius(28)).toBeCloseTo(100 / 28, 5);
 	});
 });

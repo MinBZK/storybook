@@ -1,10 +1,12 @@
 import { css, unsafeCSS } from 'lit';
 import { breakpoints } from '../../../assets/styles/breakpoints.js';
+import { inheritedTextReset } from '../../../assets/styles/slotted-reset.js';
 
 const smMax = unsafeCSS(breakpoints.smMax);
 
 export const breadcrumbsStyles = css`
 	:host {
+		${inheritedTextReset}
 		container-type: inline-size;
 		display: block;
 	}
@@ -74,6 +76,7 @@ export const breadcrumbsItemStyles = css`
 		   above the visual baseline). */
 		--_separator-vertical-offset: 0.05em;
 
+		${inheritedTextReset}
 		display: inline-flex;
 		align-items: center;
 	}

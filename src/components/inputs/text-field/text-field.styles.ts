@@ -1,4 +1,5 @@
 import { css } from 'lit';
+import { inheritedTextReset } from '../../../assets/styles/slotted-reset.js';
 
 export const textFieldStyles = css`
 
@@ -14,6 +15,7 @@ export const textFieldStyles = css`
 		--_text-font: var(--semantics-input-fields-md-text-font);
 		--_validation-icon-size: var(--semantics-input-fields-md-validation-icon-size);
 
+		${inheritedTextReset}
 		display: block;
 		width: var(--_width);
 		max-width: 100%;

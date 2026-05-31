@@ -1,4 +1,5 @@
 import { css } from 'lit';
+import { slottedReset, inheritedTextReset } from '../../../assets/styles/slotted-reset.js';
 
 export const dropdownStyles = css`
 
@@ -21,6 +22,7 @@ export const dropdownStyles = css`
 		--_is-active-background-color: var(--semantics-buttons-neutral-tinted-is-active-background-color);
 		--_is-active-content-color: var(--semantics-buttons-neutral-tinted-is-active-content-color);
 
+		${inheritedTextReset}
 		display: block;
 		width: var(--_width);
 		max-width: 100%;
@@ -119,19 +121,20 @@ export const dropdownStyles = css`
 	/* # Elements */
 
 	::slotted(select) {
-		box-sizing: border-box;
-		position: absolute;
-		inset: 0;
-		opacity: 0;
-		margin: 0;
-		outline: none;
-		border: none;
-		background: transparent;
-		width: 100%;
-		height: 100%;
-		padding: 0;
-		font: var(--semantics-input-fields-native-select-font);
-		appearance: none;
+		${slottedReset}
+		box-sizing: border-box !important;
+		position: absolute !important;
+		inset: 0 !important;
+		opacity: 0 !important;
+		margin: 0 !important;
+		outline: none !important;
+		border: none !important;
+		background: transparent !important;
+		width: 100% !important;
+		height: 100% !important;
+		padding: 0 !important;
+		font: var(--semantics-input-fields-native-select-font) !important;
+		appearance: none !important;
 	}
 
 	.dropdown__value {

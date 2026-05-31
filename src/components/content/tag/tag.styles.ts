@@ -1,4 +1,5 @@
 import { css } from 'lit';
+import { inheritedTextReset } from '../../../assets/styles/slotted-reset.js';
 
 export const tagStyles = css`
 
@@ -12,10 +13,11 @@ export const tagStyles = css`
 		--_inline-padding: var(--primitives-space-6);
 		--_gap: var(--primitives-space-3);
 		--_content-color: var(--components-tag-neutral-content-color);
-		--_font: var(--primitives-font-body-sm-bold-flat);
+		--_font: var(--primitives-font-body-sm-medium-flat);
 		--_icon-size: var(--primitives-space-16);
 		--_icon-offset-correction: var(--primitives-space-1);
 
+		${inheritedTextReset}
 		display: inline-flex;
 		vertical-align: middle;
 	}
@@ -25,7 +27,7 @@ export const tagStyles = css`
 		--_min-height: var(--primitives-space-20);
 		--_inline-padding: var(--primitives-space-4);
 		--_gap: var(--primitives-space-2);
-		--_font: var(--primitives-font-body-xs-bold-flat);
+		--_font: var(--primitives-font-body-xs-medium-flat);
 		--_icon-size: var(--primitives-space-14);
 	}
 

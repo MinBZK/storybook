@@ -1,4 +1,5 @@
 import { css } from 'lit';
+import { inheritedTextReset } from '../../../assets/styles/slotted-reset.js';
 
 export const toolbarStyles = css`
 
@@ -17,9 +18,10 @@ export const toolbarStyles = css`
 		--_item-width: auto;
 		--_title-group-min-width: 200px;
 		--_title-group-height: var(--semantics-controls-md-min-size);
-		--_title-font: var(--primitives-font-body-lg-bold-flat);
+		--_title-font: var(--primitives-font-body-lg-medium-flat);
 		--_subtitle-font: var(--primitives-font-body-xs-regular-flat);
 
+		${inheritedTextReset}
 		box-sizing: border-box;
 		display: block;
 	}
@@ -27,7 +29,7 @@ export const toolbarStyles = css`
 	:host([size="sm"]) {
 		--_gap: var(--components-toolbar-sm-gap);
 		--_title-group-height: var(--semantics-controls-sm-min-size);
-		--_title-font: var(--primitives-font-body-sm-bold-flat);
+		--_title-font: var(--primitives-font-body-sm-medium-flat);
 		--_subtitle-font: var(--primitives-font-body-xxs-regular-flat);
 	}
 

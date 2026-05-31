@@ -637,13 +637,51 @@ Gebruik BEM (Block Element Modifier) + state classes:
 
 ---
 
+## SLOTTED CONTENT & HOST-CSS ISOLATIE
+
+Slotted (light-DOM) content leeft in het document van de consument. Document-CSS (Tailwind Preflight, Bootstrap Reboot, een eigen host-reset) verslaat daardoor een component z'n `::slotted()`-regels voor elke *normale* declaratie — **ongeacht specificiteit**. Zonder bescherming bloedt host-styling door en breekt de consistentie tussen overheidssites.
+
+**Getypeerde/eigen slots** (specifiek element of `[slot=…]` waarvan de DS de styling bezit: `h1`, `a`, `p`, `img`, `[slot="title"]`, een native `<select>`) → gebruik `slottedReset`, en bij tekst ook `inheritedTextReset`, uit `assets/styles/slotted-reset.js`. Zet de reset vooraan en je eigen declaraties erná, **elk `!important`** (anders verslaat `all: revert !important` je eigen waarden):
+
+```ts
+import { slottedReset, inheritedTextReset } from '../../../assets/styles/slotted-reset.js';
+
+::slotted(:not([slot])) {
+	${slottedReset}
+	${inheritedTextReset}
+	color: var(--semantics-content-color) !important;
+	font: var(--_font) !important;
+}
+```
+
+Andere regels die hetzelfde slotted element raken (`:hover`, `@media`, een specifiekere override) moeten dan óók `!important`.
+
+**Eigen shadow-tekst** (tekst die het component zélf rendert: labels, waarden, `::before`-content) → zet `${inheritedTextReset}` op `:host`, als guard-blok direct ná de `--_*` vars en vóór de overige properties. Dat blokkeert geërfde host-typografie (`letter-spacing`/`text-transform`/`text-align`) die anders via `body → host → :host` in je shadow-tekst lekt. **Géén `all: revert` op `:host`** — dat zou de eigen layout van het component slopen; alleen `inheritedTextReset`.
+
+```css
+:host {
+	--_foo: …;
+
+	${inheritedTextReset}
+	display: …;
+}
+```
+
+**Generieke `::slotted(*)`** en **custom-element/icon-slots** (`::slotted(nldd-*)`, `[slot="icon"]`) → **met rust laten**. De reset zou willekeurige content (vaak een ander nldd-component met eigen `:host`) naar UA terugzetten; die inhoud hardent zichzelf. Leg hooguit een losse structuur-prop (`flex-shrink`, `display`) `!important` op waar een host functionaliteit zou breken.
+
+**Document-level componenten** (`*.css` zoals `rich-text.css` via `global.css`) zijn een ánder geval: hun descendant-selectors (`nldd-rich-text h1`, specificiteit 0,0,2) verslaan Preflight's kale `h1{}` (0,0,1) al op specificiteit. Geen reset/`!important` nodig voor de Preflight-case.
+
+`text-align` zit in `inheritedTextReset` (gelockt op `start`, RTL-veilig) — de host mag niet centreren of justifyen. Heeft een component alignment nodig, bied het expliciet aan: `:host([align="center"]) ::slotted(…) { text-align: center !important }`.
+
+---
+
 ## CHECKLIST
 
 **CSS:**
 - [ ] Components → semantics → primitives volgorde
 - [ ] Concentric property-volgorde binnen elke rule
 - [ ] Geen fallback waarden
-- [ ] Geen hardcoded waarden, geen !important
+- [ ] Geen hardcoded waarden; geen `!important` — behalve in de slotted-reset (`::slotted()`) en de host-text-reset (`:host`) (zie SLOTTED CONTENT & HOST-CSS ISOLATIE)
 - [ ] Geen `cursor: pointer`
 - [ ] Disabled: `var(--primitives-opacity-disabled)`
 

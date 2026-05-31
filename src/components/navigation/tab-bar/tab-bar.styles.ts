@@ -1,4 +1,5 @@
 import { css } from 'lit';
+import { inheritedTextReset } from '../../../assets/styles/slotted-reset.js';
 
 export const tabBarStyles = css`
 
@@ -6,6 +7,7 @@ export const tabBarStyles = css`
 	/* # Host */
 
 	:host {
+		${inheritedTextReset}
 		display: inline-block;
 		position: relative;
 		isolation: isolate;
@@ -64,6 +66,7 @@ export const tabBarItemStyles = css`
 	/* # Host */
 
 	:host {
+		${inheritedTextReset}
 		display: inline-block;
 		position: relative;
 		-webkit-tap-highlight-color: transparent;
@@ -194,7 +197,7 @@ export const tabBarItemStyles = css`
 	}
 
 	:host([variant="compact"]) .tab-bar__item-text {
-		font: var(--primitives-font-body-xxs-bold-flat);
+		font: var(--primitives-font-body-xxs-medium-flat);
 	}
 
 	:host([variant="icon"]) .tab-bar__item-text {

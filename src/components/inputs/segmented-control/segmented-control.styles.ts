@@ -1,4 +1,5 @@
 import { css } from 'lit';
+import { inheritedTextReset } from '../../../assets/styles/slotted-reset.js';
 
 export const segmentedControlStyles = css`
 
@@ -10,6 +11,7 @@ export const segmentedControlStyles = css`
 		--_width: auto;
 		--_gap: var(--primitives-space-2);
 
+		${inheritedTextReset}
 		display: inline-grid;
 		border-radius: var(--_corner-radius);
 		background-color: var(--semantics-buttons-neutral-tinted-background-color);
@@ -64,9 +66,12 @@ export const segmentedControlItemStyles = css`
 		--_corner-radius: var(--semantics-controls-md-corner-radius);
 		--_min-size: var(--semantics-controls-md-min-size);
 		--_padding-inline: var(--primitives-space-12);
+		--_gap: var(--semantics-buttons-md-gap);
 		--_font: var(--semantics-buttons-md-font);
-		--_icon-size: var(--semantics-buttons-md-icon-only-icon-size);
+		--_icon-size: var(--semantics-buttons-md-icon-size);
+		--_icon-only-icon-size: var(--semantics-buttons-md-icon-only-icon-size);
 
+		${inheritedTextReset}
 		display: flex;
 		position: relative;
 		min-width: 0;
@@ -81,8 +86,10 @@ export const segmentedControlItemStyles = css`
 		--_corner-radius: var(--semantics-controls-sm-corner-radius);
 		--_min-size: var(--semantics-controls-sm-min-size);
 		--_padding-inline: var(--primitives-space-8);
+		--_gap: var(--semantics-buttons-sm-gap);
 		--_font: var(--semantics-buttons-sm-font);
-		--_icon-size: var(--semantics-buttons-sm-icon-only-icon-size);
+		--_icon-size: var(--semantics-buttons-sm-icon-size);
+		--_icon-only-icon-size: var(--semantics-buttons-sm-icon-only-icon-size);
 	}
 
 
@@ -98,6 +105,7 @@ export const segmentedControlItemStyles = css`
 		min-width: var(--_min-size);
 		height: var(--_min-size);
 		padding-inline: var(--_padding-inline);
+		gap: var(--_gap);
 		align-items: center;
 		justify-content: center;
 		color: var(--semantics-buttons-neutral-tinted-content-color);
@@ -171,6 +179,11 @@ export const segmentedControlItemStyles = css`
 		flex-shrink: 0;
 		align-items: center;
 		justify-content: center;
+	}
+
+	:host([variant="icon"]) .segmented-control__item-icon {
+		width: var(--_icon-only-icon-size);
+		height: var(--_icon-only-icon-size);
 	}
 
 	:host([variant="text"]) .segmented-control__item-icon {

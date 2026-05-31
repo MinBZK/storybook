@@ -1,4 +1,5 @@
 import { css } from 'lit';
+import { inheritedTextReset } from '../../../../assets/styles/slotted-reset.js';
 
 export const textCellStyles = css`
 
@@ -16,6 +17,7 @@ export const textCellStyles = css`
 		--_text-color: var(--context-cell-content-color, var(--semantics-content-color));
 		--_text-font: var(--primitives-font-body-md-regular-tight);
 
+		${inheritedTextReset}
 		display: flex;
 		width: var(--_width);
 		min-width: var(--_min-width);

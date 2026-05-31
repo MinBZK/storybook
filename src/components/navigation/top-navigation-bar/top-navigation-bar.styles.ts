@@ -1,5 +1,6 @@
 import { css, unsafeCSS } from 'lit';
 import { breakpoints } from '../../../assets/styles/breakpoints.js';
+import { inheritedTextReset } from '../../../assets/styles/slotted-reset.js';
 
 const smMax = unsafeCSS(breakpoints.smMax);
 const mdMin = unsafeCSS(breakpoints.mdMin);
@@ -15,6 +16,7 @@ export const topNavigationBarStyles = css`
 		--_logo-width: var(--primitives-space-40);
 		--_wordmark-content-color: light-dark(var(--primitives-color-reference-lintblauw), var(--primitives-color-neutral-1000));
 
+		${inheritedTextReset}
 		container-type: inline-size;
 		display: block;
 		width: 100%;
@@ -150,7 +152,7 @@ export const topNavigationBarStyles = css`
 
 	.top-navigation-bar__wordmark-title {
 		margin: 0;
-		font: var(--primitives-font-body-sm-bold-flat);
+		font: var(--primitives-font-body-sm-medium-flat);
 		text-wrap: pretty;
 	}
 

@@ -210,6 +210,25 @@ describe('nldd-toggle-button – variant', () => {
 		expect(button.getAttribute('aria-label')).toBe('Bold');
 	});
 
+	it('variant="icon" without an icon shows the icon-placeholder', async () => {
+		el = await fixture<NLDDToggleButton>('<nldd-toggle-button variant="icon" accessible-label="Favoriet"></nldd-toggle-button>');
+		await waitForUpdate(el);
+		expect(el.shadowRoot!.querySelector('nldd-icon[name="icon-placeholder"]')).not.toBeNull();
+	});
+
+	it('variant="icon-and-text" without an icon falls back to text (no placeholder)', async () => {
+		el = await fixture<NLDDToggleButton>('<nldd-toggle-button variant="icon-and-text" text="Label"></nldd-toggle-button>');
+		await waitForUpdate(el);
+		expect(el.shadowRoot!.querySelector('nldd-icon[name="icon-placeholder"]')).toBeNull();
+		expect(el.shadowRoot!.querySelector('.toggle-button__text')).not.toBeNull();
+	});
+
+	it('variant="icon-and-text" without icon or text shows the icon-placeholder', async () => {
+		el = await fixture<NLDDToggleButton>('<nldd-toggle-button variant="icon-and-text" accessible-label="Leeg"></nldd-toggle-button>');
+		await waitForUpdate(el);
+		expect(el.shadowRoot!.querySelector('nldd-icon[name="icon-placeholder"]')).not.toBeNull();
+	});
+
 	it('warns when neither text nor accessible-label is set', async () => {
 		const warnSpy = vi.spyOn(console, 'warn').mockImplementation(() => {});
 

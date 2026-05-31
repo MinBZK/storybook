@@ -4,10 +4,10 @@ import { classMap } from 'lit/directives/class-map.js';
 import type { NLDDProgressBar } from './progress-bar.js';
 
 export function progressBarTemplate(component: NLDDProgressBar, onSlotChange: () => void) {
-	// Header only renders when `text` is set. The value lives next to the text
-	// and shouldn't appear on its own — otherwise it'd pop in/out when toggling
-	// indeterminate (since `_displayValue` is empty during indeterminate).
-	const hasHeader = !!component.text;
+	// Caption renders when there's a label or an inline value to show
+	// (value-display="inline"). _hasCaption stays empty during indeterminate (no
+	// value), so the row doesn't pop in/out on a determinate↔indeterminate flip.
+	const hasCaption = component._hasCaption;
 	const isExiting = component._indeterminateExiting;
 	const isEntering = component._indeterminateEntering;
 	// Indicator renders during indeterminate and during an exit-fade.
@@ -22,16 +22,16 @@ export function progressBarTemplate(component: NLDDProgressBar, onSlotChange: ()
 	// Round so aria-valuenow doesn't produce floats (some screenreaders
 	// read them out literally — "49 point 999 percent").
 	const ariaValueNow = component.indeterminate ? undefined : Math.round(component._totalValue);
-	// Accessible name: use aria-label with the visible header text or a
+	// Accessible name: use aria-label with the visible label text or a
 	// translated fallback. aria-labelledby would be cleaner but VoiceOver on
 	// Safari can't resolve IDREFs scoped to a shadow root, so we duplicate
 	// the string into aria-label for cross-browser screen-reader support.
 	const ariaLabel = component.text || component._t('components.progress-bar.label-text');
 	return html`
-		${hasHeader ? html`
-			<div class="progress-bar__header">
+		${hasCaption ? html`
+			<div class="progress-bar__caption">
 				<span class="progress-bar__text">${component.text}</span>
-				<span class="progress-bar__value">${component._displayValue}</span>
+				${component.valueDisplay === 'inline' && component._displayValue ? html`<span class="progress-bar__supporting-text">${component._displayValue}</span>` : nothing}
 			</div>
 		` : nothing}
 		<div class="progress-bar__track"

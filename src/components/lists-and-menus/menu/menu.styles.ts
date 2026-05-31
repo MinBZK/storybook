@@ -1,4 +1,5 @@
 import { css } from 'lit';
+import { inheritedTextReset } from '../../../assets/styles/slotted-reset.js';
 
 export const menuStyles = css`
 
@@ -21,6 +22,7 @@ export const menuStyles = css`
 			--_item-size: var(--semantics-controls-sm-min-size);
 		}
 
+		${inheritedTextReset}
 		display: block;
 		position: absolute;
 		margin: 0;
@@ -149,6 +151,7 @@ export const menuItemStyles = css`
 	/* # Host */
 
 	:host {
+		${inheritedTextReset}
 		display: block;
 		-webkit-tap-highlight-color: transparent;
 	}
@@ -284,6 +287,7 @@ export const menuGroupStyles = css`
 	 * rather than to whatever sits above. */
 
 	:host {
+		${inheritedTextReset}
 		display: block;
 		margin-top: var(--primitives-space-4);
 		margin-bottom: var(--primitives-space-4);

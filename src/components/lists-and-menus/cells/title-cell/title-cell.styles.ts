@@ -1,4 +1,5 @@
 import { css } from 'lit';
+import { inheritedTextReset } from '../../../../assets/styles/slotted-reset.js';
 
 export const titleCellStyles = css`
 
@@ -15,6 +16,7 @@ export const titleCellStyles = css`
 		--_title-color: var(--context-cell-content-color, var(--semantics-content-color));
 		--_title-font: var(--primitives-font-display-5-sm);
 
+		${inheritedTextReset}
 		display: flex;
 		width: var(--_width);
 		min-width: var(--_min-width);

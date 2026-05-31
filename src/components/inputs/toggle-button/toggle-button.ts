@@ -104,11 +104,11 @@ export class NLDDToggleButton extends LitElement {
 		} else if (!inaccessible) {
 			this._warnedA11y = false;
 		}
-		/* variant="icon" with no icon attribute and no slotted icon renders
-		 * an invisible button — easy to misconfigure during development. */
+		/* variant="icon" with no icon attribute and no slotted icon falls back
+		 * to a placeholder — flag the likely misconfiguration during development. */
 		if (import.meta.env?.DEV && this.variant === 'icon' && !this._hasIcon && !this._warnedEmptyIcon) {
 			this._warnedEmptyIcon = true;
-			console.warn('<nldd-toggle-button variant="icon">: No icon attribute or slot="icon" content provided. The button renders empty.');
+			console.warn('<nldd-toggle-button variant="icon">: No icon attribute or slot="icon" content provided. A placeholder icon is shown.');
 		} else if (this._hasIcon || this.variant !== 'icon') {
 			this._warnedEmptyIcon = false;
 		}

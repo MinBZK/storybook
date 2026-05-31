@@ -1,4 +1,5 @@
 import { css } from 'lit';
+import { inheritedTextReset } from '../../../assets/styles/slotted-reset.js';
 
 export const buttonStyles = css`
 
@@ -23,6 +24,7 @@ export const buttonStyles = css`
 		--_disclosure-icon-margin-left: -2px;
 		--_disclosure-icon-size: var(--primitives-space-20);
 
+		${inheritedTextReset}
 		display: inline-block;
 		max-width: 100%;
 		user-select: none;

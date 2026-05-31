@@ -1,4 +1,5 @@
 import { css } from 'lit';
+import { inheritedTextReset } from '../../../assets/styles/slotted-reset.js';
 
 export const menuBarItemStyles = css`
 
@@ -10,6 +11,7 @@ export const menuBarItemStyles = css`
 		--_content-z-index: 1;
 		--_focus-z-index: 1;
 
+		${inheritedTextReset}
 		display: inline-block;
 		position: relative;
 		flex-grow: 0;

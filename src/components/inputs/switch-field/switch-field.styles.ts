@@ -1,4 +1,5 @@
 import { css } from 'lit';
+import { inheritedTextReset } from '../../../assets/styles/slotted-reset.js';
 
 export const switchFieldStyles = css`
 
@@ -6,6 +7,7 @@ export const switchFieldStyles = css`
 	/* # Host */
 
 	:host {
+		${inheritedTextReset}
 		display: block;
 	}
 

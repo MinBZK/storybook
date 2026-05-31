@@ -1,4 +1,5 @@
 import { css } from 'lit';
+import { inheritedTextReset } from '../../../assets/styles/slotted-reset.js';
 
 export const numberFieldStyles = css`
 
@@ -13,6 +14,7 @@ export const numberFieldStyles = css`
 		--_text-font: var(--semantics-input-fields-md-text-font);
 		--_inline-padding: calc(var(--semantics-controls-md-inline-padding) - var(--semantics-input-fields-border-thickness));
 
+		${inheritedTextReset}
 		display: inline-block;
 		-webkit-tap-highlight-color: transparent;
 	}

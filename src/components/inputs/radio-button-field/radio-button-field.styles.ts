@@ -1,4 +1,5 @@
 import { css } from 'lit';
+import { inheritedTextReset } from '../../../assets/styles/slotted-reset.js';
 
 export const radioButtonFieldStyles = css`
 
@@ -6,6 +7,7 @@ export const radioButtonFieldStyles = css`
 	/* # Host */
 
 	:host {
+		${inheritedTextReset}
 		display: block;
 	}
 

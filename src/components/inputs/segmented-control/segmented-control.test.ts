@@ -431,6 +431,54 @@ describe('nldd-segmented-control-item – tooltip', () => {
 		expect(el.shadowRoot!.querySelector('nldd-tooltip')).toBeNull();
 	});
 
+	it('does not wrap in nldd-tooltip when variant is icon-and-text', async () => {
+		el = await fixture<NLDDSegmentedControlItem>(`
+			<nldd-segmented-control-item variant="icon-and-text" text="Vet" icon="bold"></nldd-segmented-control-item>
+		`);
+		await waitForUpdate(el);
+		expect(el.shadowRoot!.querySelector('nldd-tooltip')).toBeNull();
+	});
+
+	it('renders both icon and text and keeps the text accessible for variant icon-and-text', async () => {
+		el = await fixture<NLDDSegmentedControlItem>(`
+			<nldd-segmented-control-item variant="icon-and-text" text="Vet" icon="bold"></nldd-segmented-control-item>
+		`);
+		await waitForUpdate(el);
+		const icon = el.shadowRoot!.querySelector('.segmented-control__item-icon nldd-icon');
+		const text = el.shadowRoot!.querySelector('.segmented-control__item-text')!;
+		expect(icon).not.toBeNull();
+		expect(icon!.getAttribute('name')).toBe('bold');
+		expect(text.textContent?.trim()).toBe('Vet');
+		// The visible text carries the accessible name, so it must not be hidden
+		// and the input must not also carry an aria-label.
+		expect(text.getAttribute('aria-hidden')).toBeNull();
+		expect(el.shadowRoot!.querySelector('input')!.getAttribute('aria-label')).toBeNull();
+	});
+
+	it('shows the icon-placeholder for variant icon without an icon', async () => {
+		el = await fixture<NLDDSegmentedControlItem>(`
+			<nldd-segmented-control-item variant="icon" text="Vet"></nldd-segmented-control-item>
+		`);
+		await waitForUpdate(el);
+		expect(el.shadowRoot!.querySelector('nldd-icon[name="icon-placeholder"]')).not.toBeNull();
+	});
+
+	it('icon-and-text without an icon falls back to text (no placeholder)', async () => {
+		el = await fixture<NLDDSegmentedControlItem>(`
+			<nldd-segmented-control-item variant="icon-and-text" text="Vet"></nldd-segmented-control-item>
+		`);
+		await waitForUpdate(el);
+		expect(el.shadowRoot!.querySelector('nldd-icon[name="icon-placeholder"]')).toBeNull();
+	});
+
+	it('icon-and-text without an icon or text shows the placeholder', async () => {
+		el = await fixture<NLDDSegmentedControlItem>(`
+			<nldd-segmented-control-item variant="icon-and-text"></nldd-segmented-control-item>
+		`);
+		await waitForUpdate(el);
+		expect(el.shadowRoot!.querySelector('nldd-icon[name="icon-placeholder"]')).not.toBeNull();
+	});
+
 	it('participates in FormData via form-associated API (radio)', async () => {
 		const form = await fixture<HTMLFormElement>(`
 			<form>

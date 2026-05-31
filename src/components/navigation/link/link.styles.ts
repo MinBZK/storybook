@@ -1,4 +1,5 @@
 import { css } from 'lit';
+import { inheritedTextReset } from '../../../assets/styles/slotted-reset.js';
 
 export const linkStyles = css`
 
@@ -10,6 +11,7 @@ export const linkStyles = css`
 	   icons baseline-aligned with explicit gap). */
 
 	:host {
+		${inheritedTextReset}
 		-webkit-tap-highlight-color: transparent;
 	}
 

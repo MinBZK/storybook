@@ -14,6 +14,12 @@ export function toggleButtonTemplate(component: NLDDToggleButton): TemplateResul
 	const showText = component.variant !== 'icon' && !!component.text;
 	const showIcon = component.variant !== 'text' && component._hasIcon;
 
+	/* When the icon area would be empty, show a placeholder so the control
+	 * isn't blank: icon-only always needs it; icon-and-text only when there's
+	 * no text to fall back on. */
+	const showPlaceholder = component.variant === 'icon'
+		|| (component.variant === 'icon-and-text' && !component.text);
+
 	/* When variant="icon" hides a provided text, fall the text back to
 	 * aria-label so screen readers still announce the button. Explicit
 	 * accessible-label always wins. */
@@ -36,7 +42,7 @@ export function toggleButtonTemplate(component: NLDDToggleButton): TemplateResul
 	 * so it costs nothing visually. */
 	const icon = component.icon
 		? html`<nldd-icon class="toggle-button__icon" name=${component.icon}></nldd-icon>`
-		: html`<slot name="icon" @slotchange=${component.requestUpdate}></slot>`;
+		: html`<slot name="icon" @slotchange=${component.requestUpdate}>${showPlaceholder ? html`<nldd-icon class="toggle-button__icon" name="icon-placeholder"></nldd-icon>` : nothing}</slot>`;
 
 	const textContent = showText
 		? html`<span class="toggle-button__text">${component.text}</span>`

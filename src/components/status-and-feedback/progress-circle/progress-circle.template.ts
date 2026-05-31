@@ -12,10 +12,12 @@ import type { NLDDProgressCircle } from './progress-circle.js';
 // out of place on a huge ring and thick strokes overpower a tiny ring. Must
 // stay in sync with the per-size --_stroke-width rules in the stylesheet.
 export function getStrokeWidthPx(sizeInPixels: number): number {
-	if (sizeInPixels <= 20) return 3;
-	if (sizeInPixels <= 40) return 4;
-	if (sizeInPixels <= 48) return 5;
-	return 6;
+	if (sizeInPixels <= 16) return 3;
+	if (sizeInPixels <= 28) return 4;
+	if (sizeInPixels <= 40) return 5;
+	if (sizeInPixels <= 48) return 6;
+	if (sizeInPixels <= 64) return 7;
+	return 8;
 }
 
 export function getRadius(sizeInPixels: number): number {
@@ -25,6 +27,15 @@ export function getRadius(sizeInPixels: number): number {
 
 export function getCircumference(sizeInPixels: number): number {
 	return 2 * Math.PI * getRadius(sizeInPixels);
+}
+
+/**
+ * Erode radius (in viewBox user units) for a 1px-visual highlight border. The
+ * viewBox is 100u rendered at `size` px, so 1px = 100/size user units — scale it
+ * per size so the border stays a constant 1px at every rendered size.
+ */
+export function getBorderErodeRadius(sizeInPixels: number): number {
+	return 100 / sizeInPixels;
 }
 
 /**
@@ -48,6 +59,12 @@ export function progressCircleTemplate(component: NLDDProgressCircle, onSlotChan
 	const sizeInPixels = Number(component.size) || 28;
 	const radius = getRadius(sizeInPixels);
 	const circumference = getCircumference(sizeInPixels);
+	const borderErodeRadius = getBorderErodeRadius(sizeInPixels).toFixed(3);
+	// Unique segment colours in use — one border filter each (not all 24).
+	const arcColors = [...new Set(arcs.map(arc => arc.color))];
+	// Per-instance suffix: keeps the SVG filter ids + their url(#…) references
+	// unique so two circles on one page never resolve to each other's filters.
+	const uid = component._uid;
 	// Accessible name: use aria-label with the visible label text or a
 	// translated fallback. aria-labelledby would be cleaner but VoiceOver on
 	// Safari can't resolve IDREFs scoped to a shadow root, so we duplicate
@@ -66,24 +83,42 @@ export function progressCircleTemplate(component: NLDDProgressCircle, onSlotChan
 				viewBox="0 0 100 100"
 				aria-hidden="true"
 			>
+				<defs>
+					<filter id="progress-circle-border-track-${uid}" filterUnits="userSpaceOnUse" x="-10" y="-10" width="120" height="120" color-interpolation-filters="sRGB">
+						<feMorphology in="SourceGraphic" operator="erode" radius=${borderErodeRadius} result="eroded"></feMorphology>
+						<feComposite operator="out" in="SourceGraphic" in2="eroded" result="edge"></feComposite>
+						<feFlood style="flood-color: var(--_track-border-color)" result="flood"></feFlood>
+						<feComposite operator="in" in="flood" in2="edge" result="colored"></feComposite>
+						<feComposite operator="over" in="colored" in2="SourceGraphic"></feComposite>
+					</filter>
+					${arcColors.map(color => svg`
+						<filter id="progress-circle-border-${color}-${uid}" filterUnits="userSpaceOnUse" x="-10" y="-10" width="120" height="120" color-interpolation-filters="sRGB">
+							<feMorphology in="SourceGraphic" operator="erode" radius=${borderErodeRadius} result="eroded"></feMorphology>
+							<feComposite operator="out" in="SourceGraphic" in2="eroded" result="edge"></feComposite>
+							<feFlood style="flood-color: var(--components-progress-circle-${color}-border-color)" result="flood"></feFlood>
+							<feComposite operator="in" in="flood" in2="edge" result="colored"></feComposite>
+							<feComposite operator="over" in="colored" in2="SourceGraphic"></feComposite>
+						</filter>
+					`)}
+				</defs>
 				<circle class="progress-circle__track"
 					cx="50"
 					cy="50"
 					r=${radius}
 					fill="none"
+					filter="url(#progress-circle-border-track-${uid})"
 				></circle>
-				<g class="progress-circle__segments">
-					${arcs.map(arc => svg`
-						<circle class="progress-circle__segment progress-circle__segment--${arc.color}"
-							cx="50"
-							cy="50"
-							r=${radius}
-							fill="none"
-							stroke-dasharray="${arc.length} ${circumference}"
-							stroke-dashoffset=${-arc.offset}
-						></circle>
-					`)}
-				</g>
+				${arcs.map(arc => svg`
+					<circle class="progress-circle__segment progress-circle__segment--${arc.color}"
+						cx="50"
+						cy="50"
+						r=${radius}
+						fill="none"
+						stroke-dasharray="${arc.length} ${circumference}"
+						stroke-dashoffset=${-arc.offset}
+						filter="url(#progress-circle-border-${arc.color}-${uid})"
+					></circle>
+				`)}
 				${isIndeterminate ? svg`
 					<circle class="progress-circle__indeterminate-indicator"
 						cx="50"
@@ -97,8 +132,8 @@ export function progressCircleTemplate(component: NLDDProgressCircle, onSlotChan
 			</svg>
 		</div>
 	`;
-	// Skip the tooltip wrapper entirely when there's no text (value-format
-	// 'none' with no override) so consumers don't get an inert tooltip.
+	// Skip the tooltip wrapper entirely when there's no tooltip text (e.g.
+	// value-display is not "tooltip") so consumers don't get an inert tooltip.
 	const wrappedCircle = tooltipText
 		? html`
 			<nldd-tooltip
@@ -111,6 +146,11 @@ export function progressCircleTemplate(component: NLDDProgressCircle, onSlotChan
 	return html`
 		${wrappedCircle}
 		<slot @slotchange=${onSlotChange}></slot>
-		${component.text ? html`<span class="progress-circle__text">${component.text}</span>` : nothing}
+		${component.text || (component.valueDisplay === 'inline' && component._displayValue) ? html`
+			<div class="progress-circle__caption">
+				${component.text ? html`<span class="progress-circle__text">${component.text}</span>` : nothing}
+				${component.valueDisplay === 'inline' && component._displayValue ? html`<span class="progress-circle__supporting-text">${component._displayValue}</span>` : nothing}
+			</div>
+		` : nothing}
 	`;
 }
