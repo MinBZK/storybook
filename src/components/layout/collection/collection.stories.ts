@@ -90,8 +90,31 @@ const itemContent = (i: any) => html`
 	</nldd-button-group>
 `;
 
+const gradientPairs: [string, string][] = [
+	['1b5fa8', '00a3a3'],
+	['4338ca', '2563eb'],
+	['0d9488', '16a34a'],
+	['ea580c', 'dc2626'],
+	['7c3aed', 'db2777'],
+	['0891b2', '4f46e5'],
+];
+
+const gradientImage = (i: number) => {
+	const [from, to] = gradientPairs[i % gradientPairs.length];
+	const src = `data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' width='480' height='200'><defs><linearGradient id='g' x1='0' y1='0' x2='1' y2='1'><stop offset='0' stop-color='%23${from}'/><stop offset='1' stop-color='%23${to}'/></linearGradient></defs><rect width='480' height='200' fill='url(%23g)'/></svg>`;
+	return html`
+		<img
+			slot="header"
+			src=${src}
+			alt=""
+			style="display: block; width: 100%; height: auto;"
+		>
+	`;
+};
+
 const gridItems = Array.from({ length: 12 }, (_, i) => html`
 	<nldd-card>
+		${gradientImage(i)}
 		<nldd-container padding="16">${itemContent(i)}</nldd-container>
 	</nldd-card>
 `);
@@ -104,6 +127,7 @@ const listItems = Array.from({ length: 12 }, (_, i) => html`
 
 const scrollItems = Array.from({ length: 12 }, (_, i) => html`
 	<nldd-card>
+		${gradientImage(i)}
 		<nldd-container padding="16">${itemContent(i)}</nldd-container>
 	</nldd-card>
 `);
@@ -116,7 +140,7 @@ export const Standaard = ({ layout, showLoadMore, lazyLoad, maxItems, itemWidth 
 		?lazy-load=${lazyLoad}
 		item-width=${itemWidth || nothing}
 	>
-		${gridItems}
+		${listItems}
 	</nldd-collection>
 `;
 

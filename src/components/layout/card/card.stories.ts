@@ -113,3 +113,21 @@ export const VasteHoogte = () => html`
 		</nldd-container>
 	</nldd-card>
 `;
+
+export const MetAfbeelding = () => html`
+	<nldd-card style="max-width: 360px;">
+		<img
+			slot="header"
+			src="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' width='480' height='200'><defs><linearGradient id='g' x1='0' y1='0' x2='1' y2='1'><stop offset='0' stop-color='%231b5fa8'/><stop offset='1' stop-color='%2300a3a3'/></linearGradient></defs><rect width='480' height='200' fill='url(%23g)'/></svg>"
+			alt=""
+			style="display: block; width: 100%; height: auto;"
+		>
+		<nldd-container padding="16">
+			<nldd-rich-text>
+				<p>Een full-width afbeelding loopt door tot de rand van de kaart. De inner
+				highlight-rand valt eroverheen, zodat de bovenrand subtiel oplicht in plaats
+				van weg te vallen achter de afbeelding.</p>
+			</nldd-rich-text>
+		</nldd-container>
+	</nldd-card>
+`;
