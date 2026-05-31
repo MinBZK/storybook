@@ -2,7 +2,8 @@ import { describe, it, expect, afterEach } from 'vitest';
 import { fixture, cleanup, waitForUpdate } from '../../../test-utils.js';
 import type { NLDDProgressCircle } from './progress-circle.js';
 import { INDETERMINATE_TRANSITION_MS } from './progress-circle.js';
-import { getStrokeWidthPx } from './progress-circle.template.js';
+import { getStrokeWidthPx, getBorderErodeRadius } from './progress-circle.template.js';
+import { progressCircleStyles } from './progress-circle.styles.js';
 import settingsCss from '../../../assets/styles/settings.css?raw';
 import './progress-circle.js';
 
@@ -239,20 +240,20 @@ describe('nldd-progress-circle-segment', () => {
 		expect(tokenMs).toBe(INDETERMINATE_TRANSITION_MS);
 	});
 
-	it('getStrokeWidthPx(size) matches the per-size CSS --_stroke-width rule for every published size', async () => {
-		// The CSS encodes --_stroke-width: calc({STROKE_PX} * 100 / {SIZE}) per
-		// `:host([size="{SIZE}"])`. If a new size is added in one place but not
-		// the other, the SVG arc widths drift visually. The table here mirrors
-		// the CSS verbatim — keep it in sync with the rules in
-		// progress-circle.styles.ts.
-		const cssExpected: Record<string, number> = {
-			'16': 3, '20': 4,
-			'24': 4, '28': 4, '32': 5, '40': 5,
-			'44': 6, '48': 6,
-			'56': 7, '64': 7, '80': 8, '96': 8,
-		};
-		for (const [size, expected] of Object.entries(cssExpected)) {
-			expect(getStrokeWidthPx(Number(size)), `size=${size}`).toBe(expected);
+	it('getStrokeWidthPx(size) matches every per-size --_stroke-width rule in the stylesheet', () => {
+		// Parse the real CSS (not a hand-kept copy) so a JS↔CSS drift is caught:
+		// every `--_stroke-width: calc(<stroke>px * 100 / <size>)` must equal getStrokeWidthPx(<size>).
+		const rules = [...progressCircleStyles.cssText.matchAll(/--_stroke-width:\s*calc\((\d+)px\s*\*\s*100\s*\/\s*(\d+)\)/g)];
+		expect(rules.length).toBeGreaterThanOrEqual(12);
+		for (const [, strokePx, size] of rules) {
+			expect(getStrokeWidthPx(Number(size)), `size=${size}`).toBe(Number(strokePx));
 		}
+	});
+
+	it('getBorderErodeRadius(size) returns 100 / size (a 1px edge in viewBox user units)', () => {
+		expect(getBorderErodeRadius(100)).toBe(1);
+		expect(getBorderErodeRadius(50)).toBe(2);
+		expect(getBorderErodeRadius(16)).toBe(6.25);
+		expect(getBorderErodeRadius(28)).toBeCloseTo(100 / 28, 5);
 	});
 });
