@@ -10,7 +10,7 @@ export const formFieldStyles = css`
 	/* # Host */
 
 	:host {
-		--_gap: calc(var(--primitives-space-10) / 2 - var(--primitives-space-2));
+		--_gap: var(--primitives-space-3);
 
 		${inheritedTextReset}
 		display: block;
