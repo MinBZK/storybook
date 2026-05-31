@@ -63,10 +63,12 @@ describe('nldd-progress-bar', () => {
 		expect(el.shadowRoot!.querySelector('.progress-bar__supporting-text')!.textContent).toBe('40%');
 	});
 
-	it('value-display="tooltip" keeps the caption value empty', async () => {
+	it('value-display="tooltip" renders no inline caption value (supporting-text absent)', async () => {
 		el = await fixture('<nldd-progress-bar value="40" text="x" value-display="tooltip"></nldd-progress-bar>');
 		await waitForUpdate(el);
-		expect(el.shadowRoot!.querySelector('.progress-bar__supporting-text')!.textContent).toBe('');
+		// The caption still renders (text is set) but carries no inline value span.
+		expect(el.shadowRoot!.querySelector('.progress-bar__caption')).not.toBeNull();
+		expect(el.shadowRoot!.querySelector('.progress-bar__supporting-text')).toBeNull();
 	});
 
 	it('value-format="absolute" shows raw number', async () => {

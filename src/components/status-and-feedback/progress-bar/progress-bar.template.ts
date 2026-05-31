@@ -31,7 +31,7 @@ export function progressBarTemplate(component: NLDDProgressBar, onSlotChange: ()
 		${hasCaption ? html`
 			<div class="progress-bar__caption">
 				<span class="progress-bar__text">${component.text}</span>
-				<span class="progress-bar__supporting-text">${component.valueDisplay === 'inline' ? component._displayValue : ''}</span>
+				${component.valueDisplay === 'inline' && component._displayValue ? html`<span class="progress-bar__supporting-text">${component._displayValue}</span>` : nothing}
 			</div>
 		` : nothing}
 		<div class="progress-bar__track"
