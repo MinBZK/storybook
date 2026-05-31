@@ -304,11 +304,11 @@
 	--primitives-corner-radius-xxs: 3px;
 	--primitives-corner-radius-xs: 4px;
 	--primitives-corner-radius-sm: 6px;
-	--primitives-corner-radius-md: 9px;
-	--primitives-corner-radius-lg: 13px;
-	--primitives-corner-radius-xl: 18px;
-	--primitives-corner-radius-xxl: 24px;
-	--primitives-corner-radius-xxxl: 31px;
+	--primitives-corner-radius-md: 8px;
+	--primitives-corner-radius-lg: 10px;
+	--primitives-corner-radius-xl: 12px;
+	--primitives-corner-radius-xxl: 16px;
+	--primitives-corner-radius-xxxl: 24px;
 	--primitives-corner-radius-full: 9999px;
 
 	/* ## Typography */
@@ -873,6 +873,7 @@
 	--semantics-surfaces-border-color: light-dark(var(--primitives-color-neutral-50), var(--primitives-color-neutral-150));
 	--semantics-surfaces-tinted-background-color: light-dark(var(--primitives-color-neutral-25), var(--primitives-color-neutral-75));
 	--semantics-surfaces-tinted-border-color: light-dark(var(--primitives-color-neutral-50), var(--primitives-color-neutral-150));
+	--semantics-surfaces-corner-radius: var(--primitives-corner-radius-lg);
 
 	/* ## Content */
 
@@ -1281,7 +1282,7 @@
 
 	/* ## Banner */
 
-	--components-banner-corner-radius: var(--primitives-corner-radius-lg);
+	--components-banner-corner-radius: var(--semantics-surfaces-corner-radius);
 	--components-banner-padding: var(--primitives-space-12);
 	--components-banner-content-color: var(--semantics-content-color);
 	--components-banner-content-secondary-color: var(--semantics-content-secondary-color);
@@ -1307,7 +1308,7 @@
 	--components-box-base-background-color: var(--semantics-surfaces-background-color);
 	--components-box-border-color: var(--semantics-surfaces-tinted-border-color);
 	--components-box-base-border-color: var(--semantics-surfaces-border-color);
-	--components-box-corner-radius: var(--primitives-corner-radius-xl);
+	--components-box-corner-radius: var(--semantics-surfaces-corner-radius);
 	--components-box-padding: var(--primitives-space-16);
 
 	/* ## Button group */
@@ -1318,8 +1319,8 @@
 	/* ## Card */
 
 	--components-card-background-color: light-dark(var(--primitives-color-neutral-0), var(--primitives-color-neutral-75));
-	--components-card-corner-radius: var(--primitives-corner-radius-none);
-	--components-card-box-shadow: var(--primitives-box-shadows-level-2);
+	--components-card-corner-radius: var(--semantics-surfaces-corner-radius);
+	--components-card-box-shadow: var(--primitives-box-shadows-level-1);
 
 	/* ## Checkbox */
 
@@ -1442,7 +1443,7 @@
 
 	/* ## List */
 
-	--components-list-corner-radius: var(--semantics-controls-md-corner-radius);
+	--components-list-corner-radius: var(--semantics-surfaces-corner-radius);
 	--components-list-drag-placeholder-background-color: light-dark(var(--primitives-color-neutral-50), var(--primitives-color-neutral-150));
 
 	--components-list-item-sm-padding-block: var(--primitives-space-6);
