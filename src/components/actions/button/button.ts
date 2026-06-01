@@ -31,6 +31,7 @@ import { customElement, property } from 'lit/decorators.js';
 import { buttonStyles } from './button.styles.js';
 import { template } from './button.template.js';
 import './../../content/icon/icon.js';
+import './../../status-and-feedback/activity-indicator/activity-indicator.js';
 
 type Variant =
 	| 'primary'
@@ -108,6 +109,15 @@ export class NLDDButton extends LitElement {
 	@property({ attribute: false })
 	popoverTargetAction: 'toggle' | 'show' | 'hide' = 'toggle';
 
+	/**
+	 * Loading state. Shows an activity indicator centred over the (visually
+	 * hidden) content, marks the inner control `aria-busy="true"` and blocks
+	 * activation — without dropping the control from the tab order (unlike
+	 * `disabled`). The content stays laid out so the button keeps its width.
+	 */
+	@property({ type: Boolean, reflect: true })
+	loading = false;
+
 	@property({ type: Boolean, reflect: true })
 	disabled = false;
 
@@ -174,7 +184,7 @@ export class NLDDButton extends LitElement {
 	}
 
 	private _handleClick(e: MouseEvent): void {
-		if (this.disabled) {
+		if (this.disabled || this.loading) {
 			e.preventDefault();
 			e.stopPropagation();
 			return;

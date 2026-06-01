@@ -189,6 +189,7 @@ export const iconButtonStyles = css`
 	.icon-button {
 		box-sizing: border-box;
 		display: inline-flex;
+		position: relative;
 		margin: 0;
 		border: none;
 		border-radius: var(--_corner-radius);
@@ -217,7 +218,9 @@ export const iconButtonStyles = css`
 	}
 
 	@media (prefers-reduced-motion: reduce) {
-		.icon-button {
+		.icon-button,
+		.icon-button__icon-area,
+		.icon-button__text {
 			transition: none;
 		}
 	}
@@ -244,6 +247,11 @@ export const iconButtonStyles = css`
 		color: var(--_is-active-content-color);
 	}
 
+	/* Loading keeps the control focusable (not disabled); activation is blocked in JS. */
+	:host([loading]) .icon-button {
+		cursor: default;
+	}
+
 
 	/* # Elements */
 
@@ -252,6 +260,14 @@ export const iconButtonStyles = css`
 		flex-direction: row;
 		align-items: center;
 		justify-content: center;
+		transition: opacity var(--primitives-transition-duration-slow) var(--primitives-transition-easing-default);
+	}
+
+	/* Loading crossfades the content out (opacity, not visibility, so the control
+	   keeps its accessible name) while the indicator fades in. The content stays
+	   laid out, so the control keeps its size. */
+	:host([loading]) .icon-button__icon-area {
+		opacity: 0;
 	}
 
 	.icon-button__icon {
@@ -277,5 +293,18 @@ export const iconButtonStyles = css`
 		color: inherit;
 		font: var(--_text-font);
 		white-space: nowrap;
+		transition: opacity var(--primitives-transition-duration-slow) var(--primitives-transition-easing-default);
+	}
+
+	:host([loading]) .icon-button__text {
+		opacity: 0;
+	}
+
+	/* Wrapper overlaid on the control (position:relative); the activity-indicator
+	   inside fills it and centres its circle, which inherits the content color
+	   via currentColor. */
+	.icon-button__activity-indicator {
+		position: absolute;
+		inset: 0;
 	}
 `;

@@ -42,6 +42,23 @@ export function template(this: NLDDButton, helpers: TemplateHelpers) {
 	const isDisclosure = this.expandable || !!this.popupType;
 	const ariaExpanded = isDisclosure ? String(this.expanded) : (this.expanded ? 'true' : nothing);
 
+	// Loading: an activity indicator (wrapped in a positioned container)
+	// overlays the (visually hidden) content. `instant` so it shows the moment
+	// loading starts; aria-hidden because the inner control already carries
+	// aria-busy. Sizes: xs:16, sm:20, md:24.
+	const ariaBusy = this.loading ? 'true' : nothing;
+	const loadingIndicator = this.loading
+		? html`
+			<div class="button__activity-indicator">
+				<nldd-activity-indicator
+					timing="instant"
+					size=${this.size === 'xs' ? '16' : this.size === 'sm' ? '20' : '24'}
+					aria-hidden="true"
+				></nldd-activity-indicator>
+			</div>
+		`
+		: nothing;
+
 	if (this.href) {
 		const resolvedRel = this._resolvedRel();
 		return html`
@@ -53,9 +70,10 @@ export function template(this: NLDDButton, helpers: TemplateHelpers) {
 				aria-label=${this.accessibleLabel || nothing}
 				aria-haspopup=${this.popupType || nothing}
 				aria-expanded=${ariaExpanded}
+				aria-busy=${ariaBusy}
 				@click=${helpers.handleClick}
 			>
-				${content}
+				${content}${loadingIndicator}
 			</a>
 		`;
 	}
@@ -73,12 +91,13 @@ export function template(this: NLDDButton, helpers: TemplateHelpers) {
 			aria-label=${this.accessibleLabel || nothing}
 			aria-haspopup=${this.popupType || nothing}
 			aria-expanded=${ariaExpanded}
+			aria-busy=${ariaBusy}
 			popovertarget=${this.popovertarget || nothing}
 			.popoverTargetElement=${this.popoverTargetElement}
 			.popoverTargetAction=${this.popoverTargetAction}
 			@click=${helpers.handleClick}
 		>
-			${content}
+			${content}${loadingIndicator}
 		</button>
 	`;
 }

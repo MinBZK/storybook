@@ -495,3 +495,45 @@ describe('nldd-icon-button – form association', () => {
 		expect(submitted).toBe(false);
 	});
 });
+
+describe('nldd-icon-button – loading', () => {
+	let el: NLDDIconButton;
+
+	afterEach(() => {
+		if (el) cleanup(el);
+	});
+
+	it('overlays an activity indicator when loading', async () => {
+		el = await fixture<NLDDIconButton>('<nldd-icon-button loading icon="download" text="Opslaan"></nldd-icon-button>');
+		await waitForUpdate(el);
+		expect(el.shadowRoot!.querySelector('.icon-button__activity-indicator')).not.toBeNull();
+	});
+
+	it('renders no activity indicator when not loading', async () => {
+		el = await fixture<NLDDIconButton>('<nldd-icon-button icon="download" text="Opslaan"></nldd-icon-button>');
+		await waitForUpdate(el);
+		expect(el.shadowRoot!.querySelector('.icon-button__activity-indicator')).toBeNull();
+	});
+
+	it('marks the inner button aria-busy when loading', async () => {
+		el = await fixture<NLDDIconButton>('<nldd-icon-button loading icon="download" text="Opslaan"></nldd-icon-button>');
+		await waitForUpdate(el);
+		expect(el.shadowRoot!.querySelector('button')!.getAttribute('aria-busy')).toBe('true');
+	});
+
+	it('prevents the default click action while loading', async () => {
+		el = await fixture<NLDDIconButton>('<nldd-icon-button loading icon="download" text="Opslaan"></nldd-icon-button>');
+		await waitForUpdate(el);
+		const inner = el.shadowRoot!.querySelector('button')!;
+		const event = new MouseEvent('click', { bubbles: true, cancelable: true });
+		const preventSpy = vi.spyOn(event, 'preventDefault');
+		inner.dispatchEvent(event);
+		expect(preventSpy).toHaveBeenCalled();
+	});
+
+	it('does not hard-disable the inner button (stays focusable) while loading', async () => {
+		el = await fixture<NLDDIconButton>('<nldd-icon-button loading icon="download" text="Opslaan"></nldd-icon-button>');
+		await waitForUpdate(el);
+		expect(el.shadowRoot!.querySelector('button')!.hasAttribute('disabled')).toBe(false);
+	});
+});

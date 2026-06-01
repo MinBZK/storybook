@@ -135,6 +135,13 @@ export default {
 			control: 'text',
 			description: 'Toegankelijk label voor screen readers',
 		},
+		loading: {
+			control: 'boolean',
+			description: 'Laad-toestand: toont een activity indicator over de verborgen content, zet aria-busy en blokkeert activatie (knop blijft focusbaar).',
+			table: {
+				defaultValue: { summary: false },
+			},
+		},
 		disabled: {
 			control: 'boolean',
 			description: 'Uitgeschakelde toestand',
@@ -158,11 +165,12 @@ export default {
 		href: '',
 		target: '',
 		accessibleLabel: '',
+		loading: false,
 		disabled: false,
 	},
 };
 
-const Template = ({ variant, size, width, expandable, expanded, popupType, text, singleLine, startIcon, endIcon, type, href, target, accessibleLabel, disabled }: Record<string, any>) => html`
+const Template = ({ variant, size, width, expandable, expanded, popupType, text, singleLine, startIcon, endIcon, type, href, target, accessibleLabel, loading, disabled }: Record<string, any>) => html`
 	<nldd-button
 		variant=${variant}
 		size=${size}
@@ -178,6 +186,7 @@ const Template = ({ variant, size, width, expandable, expanded, popupType, text,
 		?expandable=${expandable}
 		?expanded=${expanded}
 		?single-line=${singleLine}
+		?loading=${loading}
 		?disabled=${disabled}
 	></nldd-button>
 `;
@@ -303,6 +312,26 @@ export const WithDisclosureIcon = {
 		docs: {
 			description: {
 				story: 'Button die een menu of popover opent. Gebruik de <code>expandable</code> attribute om aan te geven dat deze button een menu of popover opent.',
+			},
+		},
+	},
+};
+
+export const Loading = {
+	render: () => html`
+	<div style="display: flex; flex-wrap: wrap; gap: 16px; align-items: center;">
+		<nldd-button loading variant="primary" text="Opslaan"></nldd-button>
+		<nldd-button loading variant="neutral-tinted" text="Opslaan" start-icon="download"></nldd-button>
+		<nldd-button loading variant="critical-tinted" text="Verwijderen"></nldd-button>
+		<nldd-button loading size="sm" text="Klein"></nldd-button>
+		<nldd-button loading size="xs" text="Mini"></nldd-button>
+	</div>
+`,
+	parameters: {
+		controls: { disable: true },
+		docs: {
+			description: {
+				story: 'Laad-toestand via het <code>loading</code> attribuut: een activity indicator verschijnt over de verborgen content (geen breedte-sprong), de knop krijgt <code>aria-busy</code> en activatie is geblokkeerd terwijl de knop focusbaar blijft. De cirkel erft per variant de tekstkleur via <code>currentColor</code>.',
 			},
 		},
 	},

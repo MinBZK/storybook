@@ -125,6 +125,13 @@ export default {
 				defaultValue: { summary: 'default' },
 			},
 		},
+		loading: {
+			control: 'boolean',
+			description: 'Laad-toestand: toont een activity indicator over het verborgen icoon, zet aria-busy en blokkeert activatie (knop blijft focusbaar).',
+			table: {
+				defaultValue: { summary: false },
+			},
+		},
 		disabled: {
 			control: 'boolean',
 			description: 'Uitgeschakelde toestand',
@@ -147,11 +154,12 @@ export default {
 		target: '',
 		accessibleLabel: '',
 		tooltipTiming: 'default',
+		loading: false,
 		disabled: false,
 	},
 };
 
-const Template = ({ variant, size, width, expandable, expanded, popupType, text, icon, type, href, target, accessibleLabel, tooltipTiming, disabled }: Record<string, any>) => html`
+const Template = ({ variant, size, width, expandable, expanded, popupType, text, icon, type, href, target, accessibleLabel, tooltipTiming, loading, disabled }: Record<string, any>) => html`
 	<nldd-icon-button
 		variant=${variant}
 		size=${size}
@@ -164,6 +172,7 @@ const Template = ({ variant, size, width, expandable, expanded, popupType, text,
 		type=${type}
 		href=${href || nothing}
 		target=${target || nothing}
+		?loading=${loading}
 		?disabled=${disabled}
 		accessible-label=${accessibleLabel || nothing}
 		tooltip-timing=${tooltipTiming || nothing}
@@ -290,6 +299,26 @@ export const Disabled = {
 `,
 	parameters: {
 		controls: { disable: true },
+	},
+};
+
+export const Loading = {
+	render: () => html`
+	<div style="display: flex; flex-wrap: wrap; gap: 16px; align-items: center;">
+		<nldd-icon-button loading variant="primary" icon="download" text="Opslaan"></nldd-icon-button>
+		<nldd-icon-button loading variant="neutral-tinted" icon="download" text="Opslaan"></nldd-icon-button>
+		<nldd-icon-button loading size="lg" icon="download" text="Download"></nldd-icon-button>
+		<nldd-icon-button loading size="sm" icon="dismiss" text="Annuleer"></nldd-icon-button>
+		<nldd-icon-button loading size="xs" icon="dismiss" text="Annuleer"></nldd-icon-button>
+	</div>
+`,
+	parameters: {
+		controls: { disable: true },
+		docs: {
+			description: {
+				story: 'Laad-toestand via het <code>loading</code> attribuut: een activity indicator verschijnt over het verborgen icoon, de knop krijgt <code>aria-busy</code> en activatie is geblokkeerd terwijl de knop focusbaar blijft.',
+			},
+		},
 	},
 };
 

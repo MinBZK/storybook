@@ -191,6 +191,7 @@ export const buttonStyles = css`
 	.button {
 		box-sizing: border-box;
 		display: inline-flex;
+		position: relative;
 		margin: 0;
 		border: none;
 		border-radius: var(--_corner-radius);
@@ -231,6 +232,11 @@ export const buttonStyles = css`
 		color: var(--_is-active-content-color);
 	}
 
+	/* Loading keeps the control focusable (not disabled); activation is blocked in JS. */
+	:host([loading]) .button {
+		cursor: default;
+	}
+
 	.button:focus-visible {
 		outline: var(--semantics-focus-ring-outline);
 		outline-offset: var(--semantics-focus-ring-outline-offset);
@@ -242,7 +248,8 @@ export const buttonStyles = css`
 	}
 
 	@media (prefers-reduced-motion: reduce) {
-		.button {
+		.button,
+		.button__content {
 			transition: none;
 		}
 	}
@@ -251,7 +258,27 @@ export const buttonStyles = css`
 	/* # Elements */
 
 	.button__content {
-		display: contents;
+		display: inline-flex;
+		max-width: 100%;
+		min-width: 0;
+		align-items: center;
+		gap: var(--_gap);
+		transition: opacity var(--primitives-transition-duration-slow) var(--primitives-transition-easing-default);
+	}
+
+	/* Loading crossfades the content out (opacity, not visibility, so the button
+	   keeps its accessible name) while the indicator fades in. The content stays
+	   laid out, so the button keeps its width. */
+	:host([loading]) .button__content {
+		opacity: 0;
+	}
+
+	/* Wrapper overlaid on the button (position:relative); the activity-indicator
+	   inside fills it and centres its circle, which inherits the button's
+	   content color via currentColor. */
+	.button__activity-indicator {
+		position: absolute;
+		inset: 0;
 	}
 
 	::slotted(nldd-icon) {
