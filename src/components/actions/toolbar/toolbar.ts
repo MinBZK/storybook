@@ -17,7 +17,7 @@ import { toolbarStyles } from './toolbar.styles.js';
 import { template, type ToolbarChild } from './toolbar.template.js';
 import { nlddToolbarTranslations } from './toolbar.i18n.js';
 import type { NLDDToolbarTranslations } from './toolbar.i18n.js';
-import { NLDDMenu } from '../../lists-and-menus/menu/menu.js';
+import { NLDDMenu } from '../../actions/menu/menu.js';
 
 // # Marker elements
 if (!customElements.get('nldd-toolbar-item')) {

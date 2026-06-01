@@ -296,9 +296,9 @@ export class NLDDTopNavigationBar extends withTranslations(LitElement, nlddTopNa
 			import('../../layout/page/page.js'),
 			import('../../layout/page-sections/simple-section/simple-section.js'),
 			import('../../navigation/top-title-bar/top-title-bar.js'),
-			import('../../lists-and-menus/list/list.js'),
-			import('../../lists-and-menus/list-item/list-item.js'),
-			import('../../lists-and-menus/cells/text-cell/text-cell.js'),
+			import('../../lists-and-tables/list/list.js'),
+			import('../../lists-and-tables/list-item/list-item.js'),
+			import('../../lists-and-tables/cells/text-cell/text-cell.js'),
 		]);
 	}
 

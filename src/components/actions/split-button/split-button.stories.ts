@@ -1,7 +1,7 @@
 import { action } from 'storybook/actions';
 import { html, nothing } from 'lit';
 import './split-button.js';
-import '../../lists-and-menus/menu/menu.js';
+import '../../actions/menu/menu.js';
 import { ICONS } from '../../content/icon/icon.js';
 
 /**

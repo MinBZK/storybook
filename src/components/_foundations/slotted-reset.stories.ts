@@ -6,7 +6,7 @@ import '../inputs/dropdown/dropdown.js';
 import '../forms/form-field/form-field.js';
 import '../content/image/image.js';
 import '../content/blockquote/blockquote.js';
-import '../lists-and-menus/cells/description-cell/description-cell.js';
+import '../lists-and-tables/cells/description-cell/description-cell.js';
 
 /**
  * Laat zien dat slotted content host-CSS overleeft. De story "Onder vijandige

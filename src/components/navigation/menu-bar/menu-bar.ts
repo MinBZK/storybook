@@ -21,7 +21,7 @@ import { withTranslations } from '../../../utilities/with-translations.js';
 import { nlddMenuBarTranslations } from './menu-bar.i18n.js';
 import '../menu-bar-item/menu-bar-item.js';
 import type { NLDDMenuBarItem } from '../menu-bar-item/menu-bar-item.js';
-import '../../lists-and-menus/menu/menu.js';
+import '../../actions/menu/menu.js';
 
 /**
  * Minimal typed interface for nldd-menu.

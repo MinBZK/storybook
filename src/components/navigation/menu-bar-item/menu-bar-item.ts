@@ -34,7 +34,7 @@ import { customElement, property } from 'lit/decorators.js';
 import { menuBarItemStyles } from './menu-bar-item.styles.js';
 import { template } from './menu-bar-item.template.js';
 import '../../content/icon/icon.js';
-import '../../lists-and-menus/menu/menu.js';
+import '../../actions/menu/menu.js';
 
 /**
  * Minimal typed interface for nldd-menu.
