@@ -1461,6 +1461,13 @@
 	--components-list-item-is-highlighted-background-color: var(--semantics-controls-is-highlighted-indicator-color);
 	--components-list-item-is-highlighted-content-color: var(--semantics-controls-is-highlighted-contrast-color);
 
+	/* ## Table */
+
+	--components-table-corner-radius: var(--semantics-surfaces-corner-radius);
+	--components-table-column-gap: var(--primitives-space-8);
+	--components-table-row-padding-block: var(--primitives-space-10);
+	--components-table-row-padding-inline: var(--primitives-space-12);
+
 	/* ## Menu */
 
 	--components-menu-box-shadow: var(--primitives-box-shadows-level-5);

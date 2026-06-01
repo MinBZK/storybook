@@ -107,6 +107,7 @@ export {
 
 export { NLDDList } from './lists-and-tables/list/list.js';
 export { NLDDListItem } from './lists-and-tables/list-item/list-item.js';
+export { NLDDTable, NLDDTableRow } from './lists-and-tables/table/table.js';
 
 export { NLDDCell } from './lists-and-tables/cells/cell/cell.js';
 export { NLDDSpacerCell } from './lists-and-tables/cells/spacer-cell/spacer-cell.js';
