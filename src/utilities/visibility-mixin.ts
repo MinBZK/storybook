@@ -1,8 +1,25 @@
 import { property } from 'lit/decorators.js';
 import { LitElement, type PropertyValues } from 'lit';
+import { breakpoints } from '../assets/styles/breakpoints.js';
 
 /* eslint-disable @typescript-eslint/no-explicit-any -- mixin plumbing */
 type Constructor<T = LitElement> = new (...args: any[]) => T;
+
+// Resolve a hide-below/hide-above value to a container-query threshold. A named
+// breakpoint (sm/md/lg) maps to the standard boundary; the open edges (below
+// sm, above lg) are no-ops (null); any other value passes through as a length.
+function resolveHideBelow(value: string): string | null {
+	if (value === 'md') return breakpoints.smMax; // hidden in sm
+	if (value === 'lg') return breakpoints.mdMax;  // hidden in sm + md
+	if (value === 'sm') return null;               // nothing below sm
+	return value;
+}
+function resolveHideAbove(value: string): string | null {
+	if (value === 'sm') return breakpoints.mdMin;  // hidden in md + lg
+	if (value === 'md') return breakpoints.lgMin;  // hidden in lg
+	if (value === 'lg') return null;               // nothing above lg
+	return value;
+}
 
 /**
  * Adds `hide-below` and `hide-above` attributes that toggle visibility based
@@ -11,10 +28,14 @@ type Constructor<T = LitElement> = new (...args: any[]) => T;
  * Without a `containerName` argument the generated rule is an anonymous
  * `@container (…)` query — it matches the nearest ancestor that declares
  * `container-type: inline-size`. Pass a name to target a specific container
- * (e.g. `'list-container'` for cells inside `nldd-list`, which sets that
+ * (e.g. `'cells-container'` for cells inside `nldd-list`, which sets that
  * name inline on its host as a Safari shadow-DOM workaround).
  *
- * Values are CSS lengths (e.g. '320px', '20rem'). Container queries can't
+ * Values are either a named breakpoint — `sm` / `md` / `lg` — or a CSS length
+ * (e.g. '320px', '20rem'). Named values resolve to the standard breakpoint
+ * thresholds: `hide-below` uses the breakpoint's lower bound (e.g.
+ * `hide-below="lg"` hides in sm+md and shows in lg), `hide-above` its upper
+ * bound; the open edges (below sm, above lg) are no-ops. Container queries can't
  * read CSS variables in their conditions, so the query rule is generated at
  * runtime and injected as a <style> element in the component's shadow root,
  * wrapped in `:host { @container <name>? (…) { display: none !important; } }`
@@ -23,8 +44,8 @@ type Constructor<T = LitElement> = new (...args: any[]) => T;
  *
  * @example
  * ```ts
- * // Cell inside nldd-list — target the named list-container
- * class NLDDTextCell extends VisibilityMixin(LitElement, 'list-container') { … }
+ * // Cell inside nldd-list — target the named cells-container
+ * class NLDDTextCell extends VisibilityMixin(LitElement, 'cells-container') { … }
  *
  * // Other component — fall back to the nearest unnamed container
  * class SomeComponent extends VisibilityMixin(LitElement) { … }
@@ -54,14 +75,16 @@ export function VisibilityMixin<TBase extends Constructor<LitElement>>(
 			if (!this.shadowRoot) return;
 			const containerPrefix = containerName ? `${containerName} ` : '';
 			const rules: string[] = [];
-			if (this.hideBelow) {
+			const below = this.hideBelow ? resolveHideBelow(this.hideBelow) : null;
+			if (below) {
 				rules.push(
-					`:host { @container ${containerPrefix}(max-width: ${this.hideBelow}) { display: none !important; } }`,
+					`:host { @container ${containerPrefix}(max-width: ${below}) { display: none !important; } }`,
 				);
 			}
-			if (this.hideAbove) {
+			const above = this.hideAbove ? resolveHideAbove(this.hideAbove) : null;
+			if (above) {
 				rules.push(
-					`:host { @container ${containerPrefix}(min-width: ${this.hideAbove}) { display: none !important; } }`,
+					`:host { @container ${containerPrefix}(min-width: ${above}) { display: none !important; } }`,
 				);
 			}
 			if (rules.length === 0) {
