@@ -244,19 +244,44 @@ describe('nldd-table-row', () => {
 		expect(el.getAttribute('role')).toBe('row');
 	});
 
-	it('reflects selection to aria-selected on a body row', async () => {
-		el = await fixture<NLDDTableRow>('<nldd-table-row></nldd-table-row>');
-		await waitForUpdate(el);
-		expect(el.getAttribute('aria-selected')).toBe('false');
-		(el as unknown as NLDDTableRow).selected = true;
-		await waitForUpdate(el);
-		expect(el.getAttribute('aria-selected')).toBe('true');
+	it('reflects selection to aria-selected on a body row in a selectable table', async () => {
+		const host = await fixture('<nldd-table selectable columns="1fr"><nldd-table-row><nldd-cell>A</nldd-cell></nldd-table-row></nldd-table>');
+		const row = host.querySelector('nldd-table-row') as NLDDTableRow;
+		await waitForUpdate(row);
+		expect(row.getAttribute('aria-selected')).toBe('false');
+		row.selected = true;
+		await waitForUpdate(row);
+		expect(row.getAttribute('aria-selected')).toBe('true');
+		cleanup(host);
 	});
 
-	it('does not set aria-selected on a header row', async () => {
-		el = await fixture('<nldd-table-row slot="header"></nldd-table-row>');
-		await waitForUpdate(el);
-		expect(el.hasAttribute('aria-selected')).toBe(false);
+	it('omits aria-selected on rows when the table is not selectable', async () => {
+		const host = await fixture('<nldd-table columns="1fr"><nldd-table-row selected><nldd-cell>A</nldd-cell></nldd-table-row></nldd-table>');
+		const row = host.querySelector('nldd-table-row') as NLDDTableRow;
+		await waitForUpdate(row);
+		// Visually selected, but no false selection affordance for AT.
+		expect(row.hasAttribute('aria-selected')).toBe(false);
+		cleanup(host);
+	});
+
+	it('does not set aria-selected on a header row, even when the table is selectable', async () => {
+		const host = await fixture('<nldd-table selectable columns="1fr"><nldd-table-row slot="header"><nldd-cell>H</nldd-cell></nldd-table-row></nldd-table>');
+		const row = host.querySelector('nldd-table-row') as NLDDTableRow;
+		await waitForUpdate(row);
+		expect(row.hasAttribute('aria-selected')).toBe(false);
+		cleanup(host);
+	});
+
+	it('toggling table.selectable updates the rows aria-selected', async () => {
+		const host = await fixture('<nldd-table columns="1fr"><nldd-table-row><nldd-cell>A</nldd-cell></nldd-table-row></nldd-table>');
+		const table = host as NLDDTable;
+		const row = host.querySelector('nldd-table-row') as NLDDTableRow;
+		await waitForUpdate(table);
+		expect(row.hasAttribute('aria-selected')).toBe(false);
+		table.selectable = true;
+		await waitForUpdate(table);
+		expect(row.getAttribute('aria-selected')).toBe('false');
+		cleanup(host);
 	});
 
 	it('assigns role="cell" to slotted cells in a body row', async () => {

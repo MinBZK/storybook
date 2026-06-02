@@ -36,6 +36,7 @@
  * @attr {string} md-columns - Track list when the table is md-wide (641–1007px); falls back to `columns`
  * @attr {string} lg-columns - Track list when the table is lg-wide (≥1008px); falls back to `columns`
  * @attr {string} accessible-label - Accessible name for the table. Required for accessibility — role="table" needs a name; a missing label is DEV-warned.
+ * @attr {boolean} selectable - Opt into row selection: body rows expose aria-selected (true/false). Without it, rows omit aria-selected so a non-selectable table isn't announced as selectable.
  * @attr {string} empty-text - Text for the default empty-state dialog (falls back to the Dutch i18n default). Ignored when `[slot=empty]` is filled
  * @attr {string} empty-supporting-text - Supporting text for the default empty-state dialog. Ignored when `[slot=empty]` is filled
  * @attr {object} translations - Override translation keys; unset keys fall back to Dutch
@@ -94,6 +95,13 @@ export class NLDDTable extends LitElement {
 
 	@property({ type: String, reflect: true, attribute: 'accessible-label' })
 	accessibleLabel = '';
+
+	/** Opt into row selection. When set, body rows expose aria-selected so
+	 *  assistive tech conveys the selection state; without it, rows omit the
+	 *  attribute so a non-selectable table isn't announced as selectable
+	 *  (ARIA 1.2 §6.6.5). The visual `selected` tint on a row works either way. */
+	@property({ type: Boolean, reflect: true })
+	selectable = false;
 
 	/** Text for the default empty-state dialog. Falls back to the Dutch i18n
 	 *  default. Ignored when consumers slot their own `[slot=empty]` content. */
@@ -242,6 +250,12 @@ export class NLDDTable extends LitElement {
 		if (changed.has('accessibleLabel')) {
 			this._syncHostA11y();
 		}
+		if (changed.has('selectable')) {
+			// Selectability gates each body row's aria-selected; re-sync them.
+			for (const row of this.querySelectorAll<NLDDTableRow>('nldd-table-row')) {
+				row._syncAriaSelected();
+			}
+		}
 		if (import.meta.env?.DEV && !this.columns && !this._warnedColumns) {
 			this._warnedColumns = true;
 			console.warn('<nldd-table>: no `columns` set. Define a CSS grid track list (e.g. columns="200px 1fr 80px") so cells align into columns.');
@@ -271,9 +285,10 @@ export class NLDDTable extends LitElement {
 export class NLDDTableRow extends LitElement {
 	static override styles = tableRowStyles;
 
-	/** Selects (highlights) the row. Reflected to aria-selected on body rows so
-	 *  the state reaches assistive tech — a visual tint alone is invisible to AT.
-	 *  Selection is consumer-driven (e.g. a checkbox cell). */
+	/** Selects (highlights) the row. The visual tint applies whenever set; the
+	 *  state is also reflected to aria-selected when the parent table is
+	 *  `selectable`, so assistive tech conveys it. Consumer-driven (e.g. a
+	 *  checkbox cell). */
 	@property({ type: Boolean, reflect: true })
 	selected = false;
 
@@ -281,12 +296,12 @@ export class NLDDTableRow extends LitElement {
 		super.connectedCallback();
 		// display:grid strips native row semantics — restore them for AT.
 		this.setAttribute('role', 'row');
-		this._syncSelected();
+		this._syncAriaSelected();
 	}
 
 	override updated(changed: Map<string, unknown>): void {
 		if (changed.has('selected')) {
-			this._syncSelected();
+			this._syncAriaSelected();
 		}
 	}
 
@@ -295,13 +310,17 @@ export class NLDDTableRow extends LitElement {
 		return this.getAttribute('slot') === 'header';
 	}
 
-	/** Reflect `selected` to aria-selected so the selection state reaches AT.
-	 *  Header rows are never selectable, so they carry no aria-selected. */
-	private _syncSelected(): void {
-		if (this._isHeader) {
-			this.removeAttribute('aria-selected');
-		} else {
+	/** Reflect `selected` to aria-selected — but only when the parent table is
+	 *  `selectable`, so a non-selectable table doesn't announce a false
+	 *  selection affordance (ARIA 1.2 §6.6.5). Header rows are never selectable.
+	 *  @internal Re-invoked by the parent table when its `selectable` changes. */
+	_syncAriaSelected(): void {
+		const selectable = !this._isHeader
+			&& this.closest('nldd-table')?.hasAttribute('selectable') === true;
+		if (selectable) {
 			this.setAttribute('aria-selected', String(this.selected));
+		} else {
+			this.removeAttribute('aria-selected');
 		}
 	}
 
