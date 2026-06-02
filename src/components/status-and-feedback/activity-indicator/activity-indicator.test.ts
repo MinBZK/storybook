@@ -34,6 +34,23 @@ describe('nldd-activity-indicator', () => {
 		expect(el.shadowRoot!.querySelector('.activity-indicator')).not.toBeNull();
 	});
 
+	it('cancels the delay and shows immediately when timing flips to "instant" after connect', async () => {
+		vi.useFakeTimers();
+		try {
+			el = await fixture<NLDDActivityIndicator>('<nldd-activity-indicator></nldd-activity-indicator>');
+			const litEl = el as HTMLElement & { updateComplete: Promise<boolean> };
+			await litEl.updateComplete;
+			// default timing → hidden during the delay window
+			expect(el.shadowRoot!.querySelector('.activity-indicator')).toBeNull();
+			// flip to instant → visible right away, without waiting out the delay
+			(el as unknown as NLDDActivityIndicator).timing = 'instant';
+			await litEl.updateComplete;
+			expect(el.shadowRoot!.querySelector('.activity-indicator')).not.toBeNull();
+		} finally {
+			vi.useRealTimers();
+		}
+	});
+
 	it('renders the default circle when the slot is empty', async () => {
 		el = await fixture('<nldd-activity-indicator timing="instant"></nldd-activity-indicator>');
 		await waitForUpdate(el);
@@ -58,61 +75,70 @@ describe('nldd-activity-indicator', () => {
 		}
 	});
 
-	it('hides the label by default and shows it with show-text', async () => {
+	it('renders the label always (visually hidden by default; visible with show-text)', async () => {
 		el = await fixture<NLDDActivityIndicator>('<nldd-activity-indicator timing="instant"></nldd-activity-indicator>');
 		await waitForUpdate(el);
-		expect(el.shadowRoot!.querySelector('.activity-indicator__text')).toBeNull();
+		const label = () => el.shadowRoot!.querySelector('.activity-indicator__text');
+		// Always present (it is the announced live-region content), hidden by default.
+		expect(label()).not.toBeNull();
+		expect(label()!.classList.contains('activity-indicator__text--visually-hidden')).toBe(true);
 		(el as unknown as NLDDActivityIndicator).showText = true;
 		await waitForUpdate(el);
-		expect(el.shadowRoot!.querySelector('.activity-indicator__text')).not.toBeNull();
+		expect(label()!.classList.contains('activity-indicator__text--visually-hidden')).toBe(false);
 	});
 
-	it('sets role="status", aria-busy and aria-label (fallback "Laden") on connect', async () => {
+	it('is a polite live region (role="status", no aria-busy/aria-label) on connect', async () => {
 		el = await fixture<NLDDActivityIndicator>('<nldd-activity-indicator></nldd-activity-indicator>');
 		await waitForUpdate(el);
 		expect(el.getAttribute('role')).toBe('status');
-		expect(el.getAttribute('aria-busy')).toBe('true');
-		expect(el.getAttribute('aria-label')).toBe('Laden');
+		expect(el.hasAttribute('aria-busy')).toBe(false);
+		expect(el.hasAttribute('aria-label')).toBe(false);
 	});
 
-	it('uses text as the accessible name even when the label is hidden', async () => {
-		el = await fixture<NLDDActivityIndicator>('<nldd-activity-indicator text="Bezig"></nldd-activity-indicator>');
+	it('announces the label as visually-hidden live-region content (fallback "Laden")', async () => {
+		el = await fixture<NLDDActivityIndicator>('<nldd-activity-indicator timing="instant"></nldd-activity-indicator>');
 		await waitForUpdate(el);
-		expect(el.getAttribute('aria-label')).toBe('Bezig');
-		expect(el.shadowRoot!.querySelector('.activity-indicator__text')).toBeNull();
+		const label = el.shadowRoot!.querySelector('.activity-indicator__text');
+		expect(label?.textContent).toBe('Laden');
+		expect(label!.classList.contains('activity-indicator__text--visually-hidden')).toBe(true);
 	});
 
-	it('clears role/aria-busy and hides the indicator when complete is set', async () => {
+	it('uses text as the announced label content', async () => {
+		el = await fixture<NLDDActivityIndicator>('<nldd-activity-indicator timing="instant" text="Bezig"></nldd-activity-indicator>');
+		await waitForUpdate(el);
+		expect(el.shadowRoot!.querySelector('.activity-indicator__text')?.textContent).toBe('Bezig');
+	});
+
+	it('clears role and hides the indicator when complete is set', async () => {
 		vi.useFakeTimers();
 		try {
 			el = await fixture<NLDDActivityIndicator>('<nldd-activity-indicator timing="instant"></nldd-activity-indicator>');
 			const litEl = el as HTMLElement & { updateComplete: Promise<boolean> };
 			await litEl.updateComplete;
 			expect(el.shadowRoot!.querySelector('.activity-indicator')).not.toBeNull();
-			expect(el.getAttribute('aria-busy')).toBe('true');
-			// Flip complete → indicator goes, aria-busy + role go.
+			expect(el.getAttribute('role')).toBe('status');
+			// Flip complete → indicator goes, role goes.
 			(el as unknown as NLDDActivityIndicator).complete = true;
 			await litEl.updateComplete;
 			expect(el.shadowRoot!.querySelector('.activity-indicator')).toBeNull();
-			expect(el.hasAttribute('aria-busy')).toBe(false);
 			expect(el.hasAttribute('role')).toBe(false);
 			// And the inverse: clearing complete brings them back.
 			(el as unknown as NLDDActivityIndicator).complete = false;
 			await litEl.updateComplete;
 			expect(el.shadowRoot!.querySelector('.activity-indicator')).not.toBeNull();
-			expect(el.getAttribute('aria-busy')).toBe('true');
+			expect(el.getAttribute('role')).toBe('status');
 		} finally {
 			vi.useRealTimers();
 		}
 	});
 
-	it('connects with complete already set: no aria-busy, no indicator', async () => {
+	it('connects with complete already set: no role, no indicator', async () => {
 		vi.useFakeTimers();
 		try {
 			el = await fixture<NLDDActivityIndicator>('<nldd-activity-indicator complete></nldd-activity-indicator>');
 			const litEl = el as HTMLElement & { updateComplete: Promise<boolean> };
 			await litEl.updateComplete;
-			expect(el.hasAttribute('aria-busy')).toBe(false);
+			expect(el.hasAttribute('role')).toBe(false);
 			await vi.advanceTimersByTimeAsync(1000);
 			await litEl.updateComplete;
 			expect(el.shadowRoot!.querySelector('.activity-indicator')).toBeNull();

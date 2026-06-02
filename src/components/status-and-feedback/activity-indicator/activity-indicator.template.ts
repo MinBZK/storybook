@@ -1,4 +1,5 @@
 import { html, nothing } from 'lit';
+import { classMap } from 'lit/directives/class-map.js';
 import type { NLDDActivityIndicator } from './activity-indicator.js';
 
 export function activityIndicatorTemplate(component: NLDDActivityIndicator) {
@@ -6,7 +7,9 @@ export function activityIndicatorTemplate(component: NLDDActivityIndicator) {
 	// even flash for sub-second loads, or once `complete` is set so the
 	// element stays mounted but ARIA / visuals reflect the finished state.
 	if (!component._visible || component.complete) return nothing;
-	const text = component.text || component._t('components.activity-indicator.loading-text');
+	// The label always renders so it is the announced content of the
+	// role="status" host; show-text only controls whether it is visible.
+	const text = component._accessibleName;
 	return html`
 		<div class="activity-indicator">
 			<slot>
@@ -28,7 +31,10 @@ export function activityIndicatorTemplate(component: NLDDActivityIndicator) {
 						pathLength="100"
 					></circle>
 				</svg>
-				${component.showText ? html`<span class="activity-indicator__text">${text}</span>` : nothing}
+				<span class=${classMap({
+				'activity-indicator__text': true,
+				'activity-indicator__text--visually-hidden': !component.showText,
+			})}>${text}</span>
 			</slot>
 		</div>
 	`;

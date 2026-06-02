@@ -18,11 +18,11 @@
  * another delay. Keep the element mounted and toggle visibility / `hidden`
  * instead if you want the timer to run only once.
  *
- * Accessibility: while connected and not `complete` the host carries
- * `role="status"`, `aria-busy="true"` and an `aria-label` (the `text`, or the
- * translated "Laden" fallback). The label feeds the accessible name even when
- * it is visually hidden (`show-text` off, the default), so assistive tech
- * announces the loading state. Set `complete` (or unmount) to clear it.
+ * Accessibility: while connected and not `complete` the host is a polite live
+ * region (`role="status"`). The label (`text`, or the translated "Laden"
+ * fallback) always renders as the region's content — visually hidden when
+ * `show-text` is off (the default) — so assistive tech announces the loading
+ * state when the indicator appears. Set `complete` (or unmount) to clear it.
  *
  * @element nldd-activity-indicator
  *
@@ -33,9 +33,9 @@
  * @attr {boolean} complete - Mark the loader as finished while keeping the element mounted; clears aria-busy and hides the indicator.
  * @attr {object} translations - Override translation keys; unset keys fall back to Dutch
  *
- * @slot - Optional custom indicator; overrides the default circle. Consumers
- *   replacing the slot supply their own indicator semantics on the custom
- *   element; the host's role/aria-busy still mark the region as loading.
+ * @slot - Optional custom indicator; overrides the default circle (and its
+ *   visually-hidden label). Consumers replacing the slot supply their own
+ *   indicator semantics; the host's role="status" still marks the loading region.
  */
 import { LitElement } from 'lit';
 import { customElement, property, state } from 'lit/decorators.js';
@@ -100,39 +100,55 @@ export class NLDDActivityIndicator extends LitElement {
 		// timing="instant" skips the anti-flash delay. The fade-in still plays:
 		// it lives on the indicator wrapper, not on this timer.
 		this._visible = this.timing === 'instant';
-		if (!this._visible && !this.complete) {
-			this._delayTimeout = setTimeout(() => {
-				this._visible = true;
-				this._delayTimeout = undefined;
-			}, DELAY_MS);
-		}
+		if (!this._visible && !this.complete) this._scheduleDelay();
 	}
 
 	override willUpdate(changed: Map<string, unknown>): void {
-		// aria-label tracks the resolved text; role/aria-busy track `complete`.
-		if (changed.has('complete') || changed.has('text') || changed.has('translations')) {
+		// role="status" presence tracks `complete` (the label itself is
+		// reactive in the template, so it needs no manual sync).
+		if (changed.has('complete')) {
 			this._syncAria();
+		}
+		// `timing` can flip after connection (e.g. an embedding control switches
+		// to "instant"); re-evaluate the anti-flash delay so it isn't left stuck.
+		if (changed.has('timing')) {
+			this._clearDelay();
+			if (this.timing === 'instant') {
+				this._visible = true;
+			} else if (!this._visible && !this.complete) {
+				this._scheduleDelay();
+			}
 		}
 	}
 
 	override disconnectedCallback(): void {
 		super.disconnectedCallback();
+		this._clearDelay();
+	}
+
+	private _clearDelay(): void {
 		if (this._delayTimeout) {
 			clearTimeout(this._delayTimeout);
 			this._delayTimeout = undefined;
 		}
 	}
 
-	/** role="status" + aria-busy + aria-label while loading; cleared when complete. */
+	private _scheduleDelay(): void {
+		this._delayTimeout = setTimeout(() => {
+			this._visible = true;
+			this._delayTimeout = undefined;
+		}, DELAY_MS);
+	}
+
+	/** A polite live region (role="status") while loading; cleared when
+	 *  complete. The announced text is the visually-hidden label rendered by
+	 *  the template — not an aria-label, and without aria-busy, since a busy
+	 *  live region would defer the very announcement we want. */
 	private _syncAria(): void {
 		if (this.complete) {
 			this.removeAttribute('role');
-			this.removeAttribute('aria-busy');
-			this.removeAttribute('aria-label');
 		} else {
 			this.setAttribute('role', 'status');
-			this.setAttribute('aria-busy', 'true');
-			this.setAttribute('aria-label', this._accessibleName);
 		}
 	}
 

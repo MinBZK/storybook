@@ -9,6 +9,7 @@ export const activityIndicatorStyles = css`
 	:host {
 		--_circle-size: var(--primitives-space-32);
 		--_track-opacity: 0.25;
+		--_stroke-width: 2;
 		--_rotation-duration: 0.8s;
 		--_fade-duration: var(--primitives-transition-duration-slow);
 		--_max-width: var(--primitives-area-240);
@@ -87,7 +88,7 @@ export const activityIndicatorStyles = css`
 	.activity-indicator__track {
 		opacity: var(--_track-opacity);
 		stroke: currentColor;
-		stroke-width: 2;
+		stroke-width: var(--_stroke-width);
 	}
 
 	/* Rotate only the arc inside the SVG (around the view-box centre via
@@ -96,7 +97,7 @@ export const activityIndicatorStyles = css`
 	   label, or overlaid on a button). Mirrors nldd-progress-circle. */
 	.activity-indicator__indicator {
 		stroke: currentColor;
-		stroke-width: 2;
+		stroke-width: var(--_stroke-width);
 		stroke-linecap: round;
 		stroke-dasharray: 25 100;
 		transform-origin: 50% 50%;
@@ -113,12 +114,35 @@ export const activityIndicatorStyles = css`
 		text-align: center;
 	}
 
+	/* show-text off (default): the label still renders as the announced
+	   content of the role="status" host, but is visually hidden.
+	   Standard visually-hidden recipe. */
+	.activity-indicator__text--visually-hidden {
+		position: absolute;
+		width: 1px;
+		height: 1px;
+		overflow: hidden;
+		clip-path: inset(50%);
+		white-space: nowrap;
+	}
+
 
 	/* # Accessibility */
 
 	@media (prefers-reduced-motion: reduce) {
 		.activity-indicator {
 			animation: none;
+		}
+
+		.activity-indicator__indicator {
+			/* Drop the rotation (vestibular safety); keep the 25 / 100 arc and
+			   pulse its opacity instead, mirroring nldd-progress-circle. */
+			animation: activity-indicator-pulse 2s ease-in-out infinite;
+		}
+
+		@keyframes activity-indicator-pulse {
+			0%, 100% { opacity: 0.3; }
+			50% { opacity: 0.7; }
 		}
 	}
 `;
