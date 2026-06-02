@@ -52,11 +52,11 @@ describe('PageSectionMixin (via nldd-simple-section)', () => {
 		el = await fixture('<nldd-simple-section background="base"></nldd-simple-section>');
 		await waitForUpdate(el);
 		expect(el.style.backgroundColor).toBe(
-			'var(--semantics-surfaces-background-color)',
+			'var(--semantics-surfaces-base-background-color)',
 		);
 		expect(
 			el.style.getPropertyValue('--context-parent-background-color'),
-		).toBe('var(--semantics-surfaces-background-color)');
+		).toBe('var(--semantics-surfaces-base-background-color)');
 	});
 
 	it('paints the tinted surface', async () => {

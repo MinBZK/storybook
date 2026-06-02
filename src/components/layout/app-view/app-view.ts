@@ -90,7 +90,7 @@ export class NLDDAppView extends LitElement {
 	private _writeBodyBackground(): void {
 		const token = this.background === 'tinted'
 			? '--semantics-surfaces-tinted-background-color'
-			: '--semantics-surfaces-background-color';
+			: '--semantics-surfaces-base-background-color';
 		document.body.style.backgroundColor = `var(${token})`;
 	}
 

@@ -12,7 +12,7 @@ export type PageSectionPadding =
 	| '28' | '32' | '40' | '44' | '48' | '56' | '64' | '80' | '96';
 
 const BACKGROUND_TOKEN: Record<'base' | 'tinted', string> = {
-	base: 'var(--semantics-surfaces-background-color)',
+	base: 'var(--semantics-surfaces-base-background-color)',
 	tinted: 'var(--semantics-surfaces-tinted-background-color)',
 };
 

@@ -9,7 +9,7 @@ import '../../../actions/toolbar/toolbar.js';
 import '../../../inputs/segmented-control/segmented-control.js';
 import '../../../inputs/search-field/search-field.js';
 
-import '../../../lists-and-menus/menu/menu.js';
+import '../../../actions/menu/menu.js';
 
 /**
  * Gebruik een bar split view voor een verticale layout met een main-gebied en een

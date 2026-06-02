@@ -38,7 +38,7 @@ export default {
 
 // ## Background wrapper (top-navigation-bar uses its own container query, no layout-container needed)
 
-const layoutArea = 'background-color: var(--semantics-surfaces-background-color);';
+const layoutArea = 'background-color: var(--semantics-surfaces-base-background-color);';
 
 // ## Template
 

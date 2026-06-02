@@ -31,8 +31,8 @@ export const codeViewerStyles = css`
 	}
 
 	:host([background="base"]) {
-		--_background-color: var(--semantics-surfaces-background-color);
-		--_border-color: var(--semantics-surfaces-border-color);
+		--_background-color: var(--semantics-surfaces-base-background-color);
+		--_border-color: var(--semantics-surfaces-base-border-color);
 	}
 
 	/* variant="simple" drops the entire frame (no rounded corners, no
@@ -127,13 +127,7 @@ export const codeViewerStyles = css`
 		position: absolute;
 		top: var(--_actions-area-padding);
 		right: var(--_actions-area-padding);
-		bottom: var(--_actions-area-padding);
 		z-index: var(--_actions-z-index);
-	}
-
-	.code-viewer__copy-button {
-		position: sticky;
-		top: var(--_actions-area-padding);
 	}
 
 	/* Visually-hidden live region announces copy success/failure to

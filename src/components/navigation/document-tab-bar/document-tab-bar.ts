@@ -41,8 +41,8 @@ import { documentTabBarStyles, documentTabBarItemStyles } from './document-tab-b
 import { documentTabBarTemplate, documentTabBarItemTemplate } from './document-tab-bar.template.js';
 import { withTranslations } from '../../../utilities/with-translations.js';
 import { nlddDocumentTabBarTranslations } from './document-tab-bar.i18n.js';
-import './../../lists-and-menus/menu/menu.js';
-import type { NLDDMenu } from '../../lists-and-menus/menu/menu.js';
+import './../../actions/menu/menu.js';
+import type { NLDDMenu } from '../../actions/menu/menu.js';
 
 // Pointer movement threshold in px before drag mode activates.
 // Distinguishes a click (select) from a drag (reorder).

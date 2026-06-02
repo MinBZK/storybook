@@ -1,7 +1,7 @@
 import { describe, it, expect, afterEach } from 'vitest';
 import { fixture, cleanup, waitForUpdate } from '../../../test-utils.js';
 import './split-button.js';
-import '../../lists-and-menus/menu/menu.js';
+import '../../actions/menu/menu.js';
 
 describe('nldd-split-button', () => {
 	let el: HTMLElement;

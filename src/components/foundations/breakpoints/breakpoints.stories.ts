@@ -47,7 +47,7 @@ import { breakpoints } from '../../../assets/styles/breakpoints.js';
  * @element foundations-breakpoints
  */
 export default {
-	title: 'Foundations/Breakpoints',
+	title: 'Docs/Breakpoints',
 	tags: ['autodocs'],
 };
 

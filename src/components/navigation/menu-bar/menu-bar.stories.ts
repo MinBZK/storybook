@@ -17,7 +17,7 @@ export default {
 	},
 };
 
-const layoutArea = 'container-type: inline-size; container-name: layout-container; background-color: var(--semantics-surfaces-background-color);';
+const layoutArea = 'container-type: inline-size; container-name: layout-container; background-color: var(--semantics-surfaces-base-background-color);';
 
 const Template = ({
 	compact,

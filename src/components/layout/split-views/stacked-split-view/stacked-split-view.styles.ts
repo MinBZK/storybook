@@ -6,7 +6,7 @@ export const stackedSplitViewStyles = css`
 	/* # Host */
 
 	:host {
-		--_background-color: var(--context-parent-background-color, var(--semantics-surfaces-background-color));
+		--_background-color: var(--context-parent-background-color, var(--semantics-surfaces-base-background-color));
 		/* Pane min-height — read by JS via getComputedStyle in firstUpdated */
 		--_pane-min-height: var(--primitives-area-200);
 
@@ -22,7 +22,7 @@ export const stackedSplitViewStyles = css`
 	}
 
 	:host([background="base"]) {
-		--context-parent-background-color: var(--semantics-surfaces-background-color);
+		--context-parent-background-color: var(--semantics-surfaces-base-background-color);
 		--_background-color: var(--context-parent-background-color);
 	}
 

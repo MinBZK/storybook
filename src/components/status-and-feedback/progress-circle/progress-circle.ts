@@ -1,7 +1,7 @@
 /**
  * Nederlandse Digitale Dienst Progress Circle Component (Lit + TypeScript)
  *
- * Exports both NLDDProgressCircle and NLDDProgressCircleSegment.
+ * Exports both NLDDProgressCircle and NLDDProgressCircleSegmentIndicator.
  *
  * A circular progress indicator that mirrors the API of nldd-progress-bar:
  * single-value or multi-segment, progress or distribution mode, 24 colours,
@@ -31,7 +31,7 @@
  * @attr {boolean} indeterminate     - Renders the rotating elastic arc animation
  * @attr {object}  translations      - Override translation keys; unset keys fall back to Dutch
  *
- * @element nldd-progress-circle-segment
+ * @element nldd-progress-circle-segment-indicator
  *
  * @attr {number}  value - Share of the parent's total (default 0; <=0 hides segment)
  * @attr {string}  color - Color (semantic or Rijkskleur). Default 'accent'.
@@ -39,7 +39,7 @@
  */
 import { LitElement, nothing } from 'lit';
 import { customElement, property, state } from 'lit/decorators.js';
-import { progressCircleStyles, progressCircleSegmentStyles } from './progress-circle.styles.js';
+import { progressCircleStyles, progressCircleSegmentIndicatorStyles } from './progress-circle.styles.js';
 import { progressCircleTemplate, getCircumference, getStrokeWidthPx } from './progress-circle.template.js';
 import { nlddProgressCircleTranslations } from './progress-circle.i18n.js';
 import type { NLDDProgressCircleTranslations } from './progress-circle.i18n.js';
@@ -67,11 +67,11 @@ export type ProgressCircleColor =
 	| 'donkergroen' | 'groen' | 'mosgroen' | 'mintgroen';
 
 
-// # nldd-progress-circle-segment
+// # nldd-progress-circle-segment-indicator
 
-@customElement('nldd-progress-circle-segment')
-export class NLDDProgressCircleSegment extends LitElement {
-	static override styles = progressCircleSegmentStyles;
+@customElement('nldd-progress-circle-segment-indicator')
+export class NLDDProgressCircleSegmentIndicator extends LitElement {
+	static override styles = progressCircleSegmentIndicatorStyles;
 
 	@property({ type: Number, reflect: true })
 	value = 0;
@@ -135,7 +135,7 @@ export class NLDDProgressCircle extends LitElement {
 	translations: Partial<NLDDProgressCircleTranslations> = {};
 
 	@state()
-	private _segments: NLDDProgressCircleSegment[] = [];
+	private _segmentIndicators: NLDDProgressCircleSegmentIndicator[] = [];
 
 	@state()
 	_indeterminateExiting = false;
@@ -169,13 +169,13 @@ export class NLDDProgressCircle extends LitElement {
 		return this.translations[key] ?? nlddProgressCircleTranslations[key];
 	}
 
-	get _hasSegments(): boolean {
-		return this._segments.length > 0;
+	get _hasSegmentIndicators(): boolean {
+		return this._segmentIndicators.length > 0;
 	}
 
 	get _totalValue(): number {
-		if (this._hasSegments) {
-			return this._segments.reduce((sum, s) => sum + Math.max(0, s.value), 0);
+		if (this._hasSegmentIndicators) {
+			return this._segmentIndicators.reduce((sum, s) => sum + Math.max(0, s.value), 0);
 		}
 		return Math.max(0, this.value ?? 0);
 	}
@@ -204,15 +204,15 @@ export class NLDDProgressCircle extends LitElement {
 		if (this.indeterminate) return this._t('components.progress-circle.loading-text');
 		if (this.valueText) return this.valueText;
 
-		if (!this._hasSegments) {
+		if (!this._hasSegmentIndicators) {
 			const v = Math.max(0, this.value ?? 0);
 			const pct = this.max > 0 ? Math.round((v / this.max) * 100) : 0;
 			return this._formatValuePart(v, pct);
 		}
 
-		const named = this._segments.filter(s => s.name);
-		const allNamed = named.length === this._segments.length && this._segments.length > 0;
-		const segmentDescriptions = this._segments
+		const named = this._segmentIndicators.filter(s => s.name);
+		const allNamed = named.length === this._segmentIndicators.length && this._segmentIndicators.length > 0;
+		const segmentIndicatorDescriptions = this._segmentIndicators
 			.filter(s => s.value > 0)
 			.map(s => {
 				const pct = this.max > 0 ? Math.round((s.value / this.max) * 100) : 0;
@@ -221,14 +221,14 @@ export class NLDDProgressCircle extends LitElement {
 			});
 
 		if (this.mode === 'distribution') {
-			return segmentDescriptions.join(', ');
+			return segmentIndicatorDescriptions.join(', ');
 		}
 
 		const totalPct = Math.round(this._percentage);
 		const totalValuePart = this._formatValuePart(this._totalValue, totalPct);
 		if (allNamed) {
 			const totalPrefix = this._t('components.progress-circle.total-prefix-text');
-			return `${segmentDescriptions.join(', ')}. ${totalPrefix} ${totalValuePart}`;
+			return `${segmentIndicatorDescriptions.join(', ')}. ${totalPrefix} ${totalValuePart}`;
 		}
 		return totalValuePart;
 	}
@@ -242,13 +242,13 @@ export class NLDDProgressCircle extends LitElement {
 		const completedSuffix = this._t('components.progress-circle.completed-suffix-text');
 		const totalPrefix = this._t('components.progress-circle.total-prefix-text');
 
-		if (!this._hasSegments) {
+		if (!this._hasSegmentIndicators) {
 			return `${Math.round(this._percentage)}% ${completedSuffix}`;
 		}
 
-		const named = this._segments.filter(s => s.name);
-		const allNamed = named.length === this._segments.length && this._segments.length > 0;
-		const segmentDescriptions = this._segments
+		const named = this._segmentIndicators.filter(s => s.name);
+		const allNamed = named.length === this._segmentIndicators.length && this._segmentIndicators.length > 0;
+		const segmentIndicatorDescriptions = this._segmentIndicators
 			.filter(s => s.value > 0)
 			.map(s => {
 				const pct = this.max > 0 ? Math.round((s.value / this.max) * 100) : 0;
@@ -257,12 +257,12 @@ export class NLDDProgressCircle extends LitElement {
 			});
 
 		if (this.mode === 'distribution') {
-			return segmentDescriptions.join(', ');
+			return segmentIndicatorDescriptions.join(', ');
 		}
 
 		const totalPct = Math.round(this._percentage);
 		if (allNamed) {
-			return `${segmentDescriptions.join(', ')}. ${totalPrefix} ${totalPct}% ${completedSuffix}.`;
+			return `${segmentIndicatorDescriptions.join(', ')}. ${totalPrefix} ${totalPct}% ${completedSuffix}.`;
 		}
 		return `${totalPct}% ${completedSuffix}`;
 	}
@@ -345,22 +345,22 @@ export class NLDDProgressCircle extends LitElement {
 	private _onSlotChange(): void {
 		const slot = this.shadowRoot?.querySelector<HTMLSlotElement>('slot:not([name])');
 		const assigned = slot?.assignedElements({ flatten: true }) ?? [];
-		this._segments = assigned.filter(
+		this._segmentIndicators = assigned.filter(
 			// instanceof, not tagName === '...': tagName comparison breaks
 			// under scoped custom-element registries where the same class
 			// can be registered under a different tag.
-			(el): el is NLDDProgressCircleSegment => el instanceof NLDDProgressCircleSegment,
+			(el): el is NLDDProgressCircleSegmentIndicator => el instanceof NLDDProgressCircleSegmentIndicator,
 		);
 
 		this._attributeObserver?.disconnect();
 		this._attributeObserver = new MutationObserver(() => this.requestUpdate());
-		for (const seg of this._segments) {
+		for (const seg of this._segmentIndicators) {
 			this._attributeObserver.observe(seg, {
 				attributes: true,
 				attributeFilter: ['value', 'color', 'name'],
 			});
 		}
-		// Setting _segments (a @state) above already schedules a re-render —
+		// Setting _segmentIndicators (a @state) above already schedules a re-render —
 		// the trailing requestUpdate() was a duplicate that produced a second
 		// render on every slot mutation.
 	}
@@ -379,8 +379,8 @@ export class NLDDProgressCircle extends LitElement {
 		// SVG circle so that CSS transitions have a previous state to animate
 		// from when the value later grows. Without this, going from 0 to N
 		// would pop in instead of animating.
-		const sourceSegments: Array<{ value: number; color: ProgressCircleColor }> = this._hasSegments
-			? this._segments.map(s => ({ value: Math.max(0, s.value), color: s.color }))
+		const sourceSegmentIndicators: Array<{ value: number; color: ProgressCircleColor }> = this._hasSegmentIndicators
+			? this._segmentIndicators.map(s => ({ value: Math.max(0, s.value), color: s.color }))
 			: this.value !== null
 				? [{ value: Math.max(0, this.value), color: this.color }]
 				: [];
@@ -395,10 +395,10 @@ export class NLDDProgressCircle extends LitElement {
 		// no children) has no neighbours so no gap.
 		const sizeInPixels = Number(this.size) || 28;
 		const strokeWidthPx = getStrokeWidthPx(sizeInPixels);
-		const isMultiSegment = sourceSegments.length > 1 || this.mode === 'distribution';
+		const isMultiSegmentIndicator = sourceSegmentIndicators.length > 1 || this.mode === 'distribution';
 		const isProgressMode = this.mode !== 'distribution';
-		const visibleGapPx = isMultiSegment ? (isProgressMode ? 1 : 2) : 0;
-		const capCompensationPx = isProgressMode && isMultiSegment ? strokeWidthPx : 0;
+		const visibleGapPx = isMultiSegmentIndicator ? (isProgressMode ? 1 : 2) : 0;
+		const capCompensationPx = isProgressMode && isMultiSegmentIndicator ? strokeWidthPx : 0;
 		const gapLength = (visibleGapPx + capCompensationPx) * (100 / sizeInPixels);
 
 		// Circumference depends on radius, which depends on size (so the stroke
@@ -412,7 +412,7 @@ export class NLDDProgressCircle extends LitElement {
 		const denominator = total > this.max ? total : this.max;
 
 		let cumulative = 0;
-		for (const seg of sourceSegments) {
+		for (const seg of sourceSegmentIndicators) {
 			const fraction = denominator > 0 ? seg.value / denominator : 0;
 			const rawLength = fraction * circumference;
 			// Subtract gap from segment length so the gap appears between
@@ -453,7 +453,7 @@ export class NLDDProgressCircle extends LitElement {
 	 * always set and live in the Lit template.
 	 */
 	private _syncDynamicAttributes(): void {
-		const segments = this.shadowRoot?.querySelectorAll<SVGCircleElement>('.progress-circle__segment');
+		const segments = this.shadowRoot?.querySelectorAll<SVGCircleElement>('.progress-circle__segment-indicator');
 		if (segments) {
 			for (const el of segments) {
 				if (this._indeterminateEntering) {
@@ -480,6 +480,6 @@ export class NLDDProgressCircle extends LitElement {
 declare global {
 	interface HTMLElementTagNameMap {
 		'nldd-progress-circle': NLDDProgressCircle;
-		'nldd-progress-circle-segment': NLDDProgressCircleSegment;
+		'nldd-progress-circle-segment-indicator': NLDDProgressCircleSegmentIndicator;
 	}
 }

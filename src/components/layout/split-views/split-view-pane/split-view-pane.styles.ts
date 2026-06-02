@@ -9,7 +9,7 @@ export const splitViewPaneStyles = css`
 	/* # Host */
 
 	:host {
-		--_background-color: var(--context-parent-background-color, var(--semantics-surfaces-background-color));
+		--_background-color: var(--context-parent-background-color, var(--semantics-surfaces-base-background-color));
 
 		display: flex;
 		width: 100%;
@@ -25,7 +25,7 @@ export const splitViewPaneStyles = css`
 	}
 
 	:host([background="base"]) {
-		--context-parent-background-color: var(--semantics-surfaces-background-color);
+		--context-parent-background-color: var(--semantics-surfaces-base-background-color);
 		--_background-color: var(--context-parent-background-color);
 	}
 

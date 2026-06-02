@@ -33,8 +33,8 @@ import { nlddSplitButtonTranslations } from './split-button.i18n.js';
 import type { NLDDSplitButtonTranslations } from './split-button.i18n.js';
 import './../button/button.js';
 import './../icon-button/icon-button.js';
-import '../../lists-and-menus/menu/menu.js';
-import type { NLDDMenu } from '../../lists-and-menus/menu/menu.js';
+import '../../actions/menu/menu.js';
+import type { NLDDMenu } from '../../actions/menu/menu.js';
 
 export type Size = 'xs' | 'sm' | 'md';
 

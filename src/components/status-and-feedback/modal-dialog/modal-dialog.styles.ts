@@ -31,7 +31,7 @@ export const modalDialogStyles = css`
 		border: none;
 		border-radius: var(--semantics-overlays-corner-radius);
 		box-shadow: var(--semantics-overlays-box-shadow);
-		background-color: var(--semantics-surfaces-background-color);
+		background-color: var(--semantics-surfaces-base-background-color);
 		width: calc(100% - var(--primitives-space-16) * 2);
 		max-width: var(--primitives-area-480);
 		max-height: var(--_max-height);

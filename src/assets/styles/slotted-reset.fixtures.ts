@@ -4,9 +4,8 @@
  * (including an `!important`, to prove a shadow `!important` still wins). Inject it
  * at document level around slotted content; the slotted-reset must neutralise it.
  *
- * Shared by the regression test (slotted-reset.test.ts) and the Storybook demo
- * (Foundations/Host CSS Isolation) so both exercise the exact same threat. Kept
- * out of test-utils.ts so the Storybook story doesn't depend on a test-only module.
+ * Used by the slotted-reset regression test (slotted-reset.test.ts). Lives next
+ * to the stylesheet it guards rather than in test-utils.ts.
  */
 export const hostileHostCss = `
 	*, ::before, ::after { box-sizing: border-box; }

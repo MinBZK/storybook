@@ -56,7 +56,7 @@ export class NLDDLqipEncoder extends LitElement {
 			padding: var(--primitives-space-16);
 			border: var(--primitives-border-width-thin) solid var(--semantics-content-secondary-color);
 			border-radius: var(--primitives-corner-radius-md);
-			background-color: var(--semantics-surfaces-background-color);
+			background-color: var(--semantics-surfaces-base-background-color);
 			color: var(--semantics-content-color);
 			font: var(--primitives-font-body-md-regular-snug);
 		}

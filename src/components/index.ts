@@ -17,6 +17,7 @@ export { NLDDSplitButton } from './actions/split-button/split-button.js';
 export { NLDDButtonGroup } from './actions/button-group/button-group.js';
 export { NLDDButtonBar } from './actions/button-bar/button-bar.js';
 export { NLDDToolbar } from './actions/toolbar/toolbar.js';
+export { NLDDMenu } from './actions/menu/menu.js';
 
 
 // # Content components
@@ -102,21 +103,21 @@ export {
 } from './layout/page-footer/page-footer.js';
 
 
-// # List and Menu components
+// # List and Table components
 
-export { NLDDMenu } from './lists-and-menus/menu/menu.js';
-export { NLDDList } from './lists-and-menus/list/list.js';
-export { NLDDListItem } from './lists-and-menus/list-item/list-item.js';
+export { NLDDList } from './lists-and-tables/list/list.js';
+export { NLDDListItem } from './lists-and-tables/list-item/list-item.js';
+export { NLDDTable, NLDDTableRow } from './lists-and-tables/table/table.js';
 
-export { NLDDCell } from './lists-and-menus/cells/cell/cell.js';
-export { NLDDSpacerCell } from './lists-and-menus/cells/spacer-cell/spacer-cell.js';
-export { NLDDIconCell } from './lists-and-menus/cells/icon-cell/icon-cell.js';
-export { NLDDTitleCell } from './lists-and-menus/cells/title-cell/title-cell.js';
-export { NLDDTextCell } from './lists-and-menus/cells/text-cell/text-cell.js';
-export { NLDDDescriptionCell } from './lists-and-menus/cells/description-cell/description-cell.js';
+export { NLDDCell } from './lists-and-tables/cells/cell/cell.js';
+export { NLDDSpacerCell } from './lists-and-tables/cells/spacer-cell/spacer-cell.js';
+export { NLDDIconCell } from './lists-and-tables/cells/icon-cell/icon-cell.js';
+export { NLDDTitleCell } from './lists-and-tables/cells/title-cell/title-cell.js';
+export { NLDDTextCell } from './lists-and-tables/cells/text-cell/text-cell.js';
+export { NLDDDescriptionCell } from './lists-and-tables/cells/description-cell/description-cell.js';
 
-export { NLDDDragHandleCell } from './lists-and-menus/cells/drag-handle-cell/drag-handle-cell.js';
-export { NLDDTimelineTrackCell } from './lists-and-menus/cells/timeline-track-cell/timeline-track-cell.js';
+export { NLDDDragHandleCell } from './lists-and-tables/cells/drag-handle-cell/drag-handle-cell.js';
+export { NLDDTimelineTrackCell } from './lists-and-tables/cells/timeline-track-cell/timeline-track-cell.js';
 
 
 // # Navigation components
@@ -142,8 +143,8 @@ export { NLDDModalDialog } from './status-and-feedback/modal-dialog/modal-dialog
 export { NLDDInlineDialog } from './status-and-feedback/inline-dialog/inline-dialog.js';
 export { NLDDBanner } from './status-and-feedback/banner/banner.js';
 export { NLDDBadge } from './status-and-feedback/badge/badge.js';
-export { NLDDProgressBar, NLDDProgressBarSegment } from './status-and-feedback/progress-bar/progress-bar.js';
-export { NLDDProgressCircle, NLDDProgressCircleSegment } from './status-and-feedback/progress-circle/progress-circle.js';
-export { NLDDProgress } from './status-and-feedback/progress/progress.js';
+export { NLDDProgressBar, NLDDProgressBarSegmentIndicator } from './status-and-feedback/progress-bar/progress-bar.js';
+export { NLDDProgressCircle, NLDDProgressCircleSegmentIndicator } from './status-and-feedback/progress-circle/progress-circle.js';
+export { NLDDActivityIndicator } from './status-and-feedback/activity-indicator/activity-indicator.js';
 
 // Auto-register happens on import of individual component files

@@ -12,13 +12,15 @@ export const progressBarStyles = css`
 		--_track-border-color: var(--components-progress-bar-track-border-color);
 		--_track-border-width: var(--components-progress-bar-track-border-width);
 		--_corner-radius: var(--components-progress-bar-corner-radius);
-		--_segment-gap: var(--components-progress-bar-progress-segment-gap);
+		--_segment-indicator-gap: var(--components-progress-bar-progress-segment-indicator-gap);
 		--_caption-gap: var(--components-progress-bar-caption-gap);
 		--_text-color: var(--components-progress-bar-text-color);
 		--_supporting-text-color: var(--components-progress-bar-supporting-text-color);
 		--_text-font: var(--components-progress-bar-text-font);
 		--_supporting-text-font: var(--components-progress-bar-supporting-text-font);
 		--_indeterminate-background-color: var(--components-progress-bar-accent-background-color);
+		--_indeterminate-border-color: var(--components-progress-bar-accent-border-color);
+		--_indeterminate-border-width: var(--components-progress-bar-segment-indicator-border-width);
 		--_indeterminate-bar-width: 20%;
 		--_indeterminate-duration: 800ms;
 
@@ -39,38 +41,38 @@ export const progressBarStyles = css`
 	:host([size="lg"]) { --_height: var(--components-progress-bar-lg-height); }
 
 	:host([mode="distribution"]) {
-		--_segment-gap: var(--components-progress-bar-distribution-segment-gap);
+		--_segment-indicator-gap: var(--components-progress-bar-distribution-segment-indicator-gap);
 		--_corner-radius: var(--components-progress-bar-distribution-corner-radius);
 	}
 
 
-	/* ## Indeterminate fill colour follows the variant; default is accent (blue) */
+	/* ## Indeterminate fill + border colour follow the variant; default is accent (blue) */
 
-	:host([color="neutral"]) { --_indeterminate-background-color: var(--components-progress-bar-neutral-background-color); }
-	:host([color="accent"]) { --_indeterminate-background-color: var(--components-progress-bar-accent-background-color); }
-	:host([color="success"]) { --_indeterminate-background-color: var(--components-progress-bar-success-background-color); }
-	:host([color="warning"]) { --_indeterminate-background-color: var(--components-progress-bar-warning-background-color); }
-	:host([color="critical"]) { --_indeterminate-background-color: var(--components-progress-bar-critical-background-color); }
+	:host([color="neutral"]) { --_indeterminate-background-color: var(--components-progress-bar-neutral-background-color); --_indeterminate-border-color: var(--components-progress-bar-neutral-border-color); }
+	:host([color="accent"]) { --_indeterminate-background-color: var(--components-progress-bar-accent-background-color); --_indeterminate-border-color: var(--components-progress-bar-accent-border-color); }
+	:host([color="success"]) { --_indeterminate-background-color: var(--components-progress-bar-success-background-color); --_indeterminate-border-color: var(--components-progress-bar-success-border-color); }
+	:host([color="warning"]) { --_indeterminate-background-color: var(--components-progress-bar-warning-background-color); --_indeterminate-border-color: var(--components-progress-bar-warning-border-color); }
+	:host([color="critical"]) { --_indeterminate-background-color: var(--components-progress-bar-critical-background-color); --_indeterminate-border-color: var(--components-progress-bar-critical-border-color); }
 
-	:host([color="coolgray"]) { --_indeterminate-background-color: var(--components-progress-bar-coolgray-background-color); }
-	:host([color="lintblauw"]) { --_indeterminate-background-color: var(--components-progress-bar-lintblauw-background-color); }
-	:host([color="donkerblauw"]) { --_indeterminate-background-color: var(--components-progress-bar-donkerblauw-background-color); }
-	:host([color="hemelblauw"]) { --_indeterminate-background-color: var(--components-progress-bar-hemelblauw-background-color); }
-	:host([color="lichtblauw"]) { --_indeterminate-background-color: var(--components-progress-bar-lichtblauw-background-color); }
-	:host([color="paars"]) { --_indeterminate-background-color: var(--components-progress-bar-paars-background-color); }
-	:host([color="violet"]) { --_indeterminate-background-color: var(--components-progress-bar-violet-background-color); }
-	:host([color="robijnrood"]) { --_indeterminate-background-color: var(--components-progress-bar-robijnrood-background-color); }
-	:host([color="roze"]) { --_indeterminate-background-color: var(--components-progress-bar-roze-background-color); }
-	:host([color="rood"]) { --_indeterminate-background-color: var(--components-progress-bar-rood-background-color); }
-	:host([color="oranje"]) { --_indeterminate-background-color: var(--components-progress-bar-oranje-background-color); }
-	:host([color="donkergeel"]) { --_indeterminate-background-color: var(--components-progress-bar-donkergeel-background-color); }
-	:host([color="geel"]) { --_indeterminate-background-color: var(--components-progress-bar-geel-background-color); }
-	:host([color="donkerbruin"]) { --_indeterminate-background-color: var(--components-progress-bar-donkerbruin-background-color); }
-	:host([color="bruin"]) { --_indeterminate-background-color: var(--components-progress-bar-bruin-background-color); }
-	:host([color="donkergroen"]) { --_indeterminate-background-color: var(--components-progress-bar-donkergroen-background-color); }
-	:host([color="groen"]) { --_indeterminate-background-color: var(--components-progress-bar-groen-background-color); }
-	:host([color="mosgroen"]) { --_indeterminate-background-color: var(--components-progress-bar-mosgroen-background-color); }
-	:host([color="mintgroen"]) { --_indeterminate-background-color: var(--components-progress-bar-mintgroen-background-color); }
+	:host([color="coolgray"]) { --_indeterminate-background-color: var(--components-progress-bar-coolgray-background-color); --_indeterminate-border-color: var(--components-progress-bar-coolgray-border-color); }
+	:host([color="lintblauw"]) { --_indeterminate-background-color: var(--components-progress-bar-lintblauw-background-color); --_indeterminate-border-color: var(--components-progress-bar-lintblauw-border-color); }
+	:host([color="donkerblauw"]) { --_indeterminate-background-color: var(--components-progress-bar-donkerblauw-background-color); --_indeterminate-border-color: var(--components-progress-bar-donkerblauw-border-color); }
+	:host([color="hemelblauw"]) { --_indeterminate-background-color: var(--components-progress-bar-hemelblauw-background-color); --_indeterminate-border-color: var(--components-progress-bar-hemelblauw-border-color); }
+	:host([color="lichtblauw"]) { --_indeterminate-background-color: var(--components-progress-bar-lichtblauw-background-color); --_indeterminate-border-color: var(--components-progress-bar-lichtblauw-border-color); }
+	:host([color="paars"]) { --_indeterminate-background-color: var(--components-progress-bar-paars-background-color); --_indeterminate-border-color: var(--components-progress-bar-paars-border-color); }
+	:host([color="violet"]) { --_indeterminate-background-color: var(--components-progress-bar-violet-background-color); --_indeterminate-border-color: var(--components-progress-bar-violet-border-color); }
+	:host([color="robijnrood"]) { --_indeterminate-background-color: var(--components-progress-bar-robijnrood-background-color); --_indeterminate-border-color: var(--components-progress-bar-robijnrood-border-color); }
+	:host([color="roze"]) { --_indeterminate-background-color: var(--components-progress-bar-roze-background-color); --_indeterminate-border-color: var(--components-progress-bar-roze-border-color); }
+	:host([color="rood"]) { --_indeterminate-background-color: var(--components-progress-bar-rood-background-color); --_indeterminate-border-color: var(--components-progress-bar-rood-border-color); }
+	:host([color="oranje"]) { --_indeterminate-background-color: var(--components-progress-bar-oranje-background-color); --_indeterminate-border-color: var(--components-progress-bar-oranje-border-color); }
+	:host([color="donkergeel"]) { --_indeterminate-background-color: var(--components-progress-bar-donkergeel-background-color); --_indeterminate-border-color: var(--components-progress-bar-donkergeel-border-color); }
+	:host([color="geel"]) { --_indeterminate-background-color: var(--components-progress-bar-geel-background-color); --_indeterminate-border-color: var(--components-progress-bar-geel-border-color); }
+	:host([color="donkerbruin"]) { --_indeterminate-background-color: var(--components-progress-bar-donkerbruin-background-color); --_indeterminate-border-color: var(--components-progress-bar-donkerbruin-border-color); }
+	:host([color="bruin"]) { --_indeterminate-background-color: var(--components-progress-bar-bruin-background-color); --_indeterminate-border-color: var(--components-progress-bar-bruin-border-color); }
+	:host([color="donkergroen"]) { --_indeterminate-background-color: var(--components-progress-bar-donkergroen-background-color); --_indeterminate-border-color: var(--components-progress-bar-donkergroen-border-color); }
+	:host([color="groen"]) { --_indeterminate-background-color: var(--components-progress-bar-groen-background-color); --_indeterminate-border-color: var(--components-progress-bar-groen-border-color); }
+	:host([color="mosgroen"]) { --_indeterminate-background-color: var(--components-progress-bar-mosgroen-background-color); --_indeterminate-border-color: var(--components-progress-bar-mosgroen-border-color); }
+	:host([color="mintgroen"]) { --_indeterminate-background-color: var(--components-progress-bar-mintgroen-background-color); --_indeterminate-border-color: var(--components-progress-bar-mintgroen-border-color); }
 
 
 	/* # Caption */
@@ -106,7 +108,7 @@ export const progressBarStyles = css`
 		width: 100%;
 		height: var(--_height);
 		overflow: hidden;
-		gap: var(--_segment-gap);
+		gap: var(--_segment-indicator-gap);
 		container-type: inline-size;
 	}
 
@@ -154,6 +156,7 @@ export const progressBarStyles = css`
 		left: 0;
 		border-radius: var(--_corner-radius);
 		background: var(--_indeterminate-background-color);
+		box-shadow: inset 0 0 0 var(--_indeterminate-border-width) var(--_indeterminate-border-color);
 		width: var(--_indeterminate-bar-width);
 		transform: translateX(0);
 		/* Duration scales with track width via the container queries below.
@@ -206,17 +209,17 @@ export const progressBarStyles = css`
 `;
 
 
-export const progressBarSegmentStyles = css`
+export const progressBarSegmentIndicatorStyles = css`
 
 
 	/* # Host */
 
 	:host {
-		--_width: var(--context-progress-bar-segment-width, 0%);
-		--_min-width: var(--components-progress-bar-segment-min-width);
+		--_width: var(--context-progress-bar-segment-indicator-width, 0%);
+		--_min-width: var(--components-progress-bar-segment-indicator-min-width);
 		--_background-color: var(--components-progress-bar-accent-background-color);
 		--_border-color: var(--components-progress-bar-accent-border-color);
-		--_border-width: var(--components-progress-bar-segment-border-width);
+		--_border-width: var(--components-progress-bar-segment-indicator-border-width);
 
 		box-sizing: border-box;
 		display: block;
@@ -241,19 +244,19 @@ export const progressBarSegmentStyles = css`
 	   indeterminate and determinate. */
 
 	:host([data-grow]) {
-		animation: progress-bar-segment-grow var(--primitives-transition-duration-slow) ease-out;
+		animation: progress-bar-segment-indicator-grow var(--primitives-transition-duration-slow) ease-out;
 	}
 
 	:host([data-shrink]) {
-		animation: progress-bar-segment-shrink var(--primitives-transition-duration-slow) ease-out forwards;
+		animation: progress-bar-segment-indicator-shrink var(--primitives-transition-duration-slow) ease-out forwards;
 	}
 
-	@keyframes progress-bar-segment-grow {
+	@keyframes progress-bar-segment-indicator-grow {
 		from { width: 0%; }
 		to { width: var(--_width); }
 	}
 
-	@keyframes progress-bar-segment-shrink {
+	@keyframes progress-bar-segment-indicator-shrink {
 		from { width: var(--_width); opacity: 1; }
 		to { width: 0%; opacity: 0; }
 	}
@@ -380,7 +383,7 @@ export const progressBarSegmentStyles = css`
 	/* # Hover area (tooltip trigger)
 	   Fills the segment; captures hover/focus for the wrapping nldd-tooltip. */
 
-	.progress-bar-segment__tooltip-area {
+	.progress-bar-segment-indicator__tooltip-area {
 		display: block;
 		position: absolute;
 		inset: 0;

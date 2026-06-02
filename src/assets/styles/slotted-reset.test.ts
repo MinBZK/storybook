@@ -6,7 +6,7 @@ import '../../components/inputs/dropdown/dropdown.js';
 import '../../components/forms/form-field/form-field.js';
 import '../../components/content/image/image.js';
 import '../../components/content/blockquote/blockquote.js';
-import '../../components/lists-and-menus/cells/description-cell/description-cell.js';
+import '../../components/lists-and-tables/cells/description-cell/description-cell.js';
 
 /**
  * Regression coverage for the slotted-reset (./slotted-reset.ts).

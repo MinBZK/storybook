@@ -1,5 +1,5 @@
 import { html, nothing } from 'lit';
-import './code-viewer.ts';
+import './code-viewer.js';
 
 const LANGUAGE_OPTIONS = [
 	'(geen)',

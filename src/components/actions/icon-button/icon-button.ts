@@ -41,6 +41,7 @@ import { customElement, property } from 'lit/decorators.js';
 import { iconButtonStyles } from './icon-button.styles.js';
 import { template } from './icon-button.template.js';
 import './../../content/icon/icon.js';
+import './../../status-and-feedback/activity-indicator/activity-indicator.js';
 
 export type Size = 'xs' | 'sm' | 'md' | 'lg';
 export type Variant =
@@ -71,6 +72,18 @@ export class NLDDIconButton extends LitElement {
 
 	@property({ type: String, reflect: true })
 	size: Size = 'md';
+
+	/**
+	 * Loading state. Shows an activity indicator centred over the (visually
+	 * hidden) icon, marks the inner control `aria-busy="true"` and blocks
+	 * activation — without dropping the control from the tab order (unlike
+	 * `disabled`).
+	 *
+	 * Activation is blocked by stopping the click (as `disabled` does), so a
+	 * `click` listener delegated on an ancestor receives nothing while loading.
+	 */
+	@property({ type: Boolean, reflect: true })
+	loading = false;
 
 	@property({ type: Boolean, reflect: true })
 	disabled = false;
@@ -197,7 +210,7 @@ export class NLDDIconButton extends LitElement {
 	}
 
 	protected _handleClick(e: MouseEvent): void {
-		if (this.disabled) {
+		if (this.disabled || this.loading) {
 			e.preventDefault();
 			e.stopPropagation();
 			return;

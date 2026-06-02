@@ -31,6 +31,10 @@
       "types": "./dist/components/actions/toolbar/toolbar.d.ts",
       "default": "./dist/components/actions/toolbar/toolbar.js"
     },
+    "./menu": {
+      "types": "./dist/components/actions/menu/menu.d.ts",
+      "default": "./dist/components/actions/menu/menu.js"
+    },
     "./icon": {
       "types": "./dist/components/content/icon/icon.d.ts",
       "default": "./dist/components/content/icon/icon.js"
@@ -251,49 +255,49 @@
       "types": "./dist/components/layout/page-footer/page-footer.d.ts",
       "default": "./dist/components/layout/page-footer/page-footer.js"
     },
-    "./menu": {
-      "types": "./dist/components/lists-and-menus/menu/menu.d.ts",
-      "default": "./dist/components/lists-and-menus/menu/menu.js"
-    },
     "./list": {
-      "types": "./dist/components/lists-and-menus/list/list.d.ts",
-      "default": "./dist/components/lists-and-menus/list/list.js"
+      "types": "./dist/components/lists-and-tables/list/list.d.ts",
+      "default": "./dist/components/lists-and-tables/list/list.js"
     },
     "./list-item": {
-      "types": "./dist/components/lists-and-menus/list-item/list-item.d.ts",
-      "default": "./dist/components/lists-and-menus/list-item/list-item.js"
+      "types": "./dist/components/lists-and-tables/list-item/list-item.d.ts",
+      "default": "./dist/components/lists-and-tables/list-item/list-item.js"
+    },
+    "./table": {
+      "types": "./dist/components/lists-and-tables/table/table.d.ts",
+      "default": "./dist/components/lists-and-tables/table/table.js"
     },
     "./cell": {
-      "types": "./dist/components/lists-and-menus/cells/cell/cell.d.ts",
-      "default": "./dist/components/lists-and-menus/cells/cell/cell.js"
+      "types": "./dist/components/lists-and-tables/cells/cell/cell.d.ts",
+      "default": "./dist/components/lists-and-tables/cells/cell/cell.js"
     },
     "./spacer-cell": {
-      "types": "./dist/components/lists-and-menus/cells/spacer-cell/spacer-cell.d.ts",
-      "default": "./dist/components/lists-and-menus/cells/spacer-cell/spacer-cell.js"
+      "types": "./dist/components/lists-and-tables/cells/spacer-cell/spacer-cell.d.ts",
+      "default": "./dist/components/lists-and-tables/cells/spacer-cell/spacer-cell.js"
     },
     "./icon-cell": {
-      "types": "./dist/components/lists-and-menus/cells/icon-cell/icon-cell.d.ts",
-      "default": "./dist/components/lists-and-menus/cells/icon-cell/icon-cell.js"
+      "types": "./dist/components/lists-and-tables/cells/icon-cell/icon-cell.d.ts",
+      "default": "./dist/components/lists-and-tables/cells/icon-cell/icon-cell.js"
     },
     "./title-cell": {
-      "types": "./dist/components/lists-and-menus/cells/title-cell/title-cell.d.ts",
-      "default": "./dist/components/lists-and-menus/cells/title-cell/title-cell.js"
+      "types": "./dist/components/lists-and-tables/cells/title-cell/title-cell.d.ts",
+      "default": "./dist/components/lists-and-tables/cells/title-cell/title-cell.js"
     },
     "./text-cell": {
-      "types": "./dist/components/lists-and-menus/cells/text-cell/text-cell.d.ts",
-      "default": "./dist/components/lists-and-menus/cells/text-cell/text-cell.js"
+      "types": "./dist/components/lists-and-tables/cells/text-cell/text-cell.d.ts",
+      "default": "./dist/components/lists-and-tables/cells/text-cell/text-cell.js"
     },
     "./description-cell": {
-      "types": "./dist/components/lists-and-menus/cells/description-cell/description-cell.d.ts",
-      "default": "./dist/components/lists-and-menus/cells/description-cell/description-cell.js"
+      "types": "./dist/components/lists-and-tables/cells/description-cell/description-cell.d.ts",
+      "default": "./dist/components/lists-and-tables/cells/description-cell/description-cell.js"
     },
     "./drag-handle-cell": {
-      "types": "./dist/components/lists-and-menus/cells/drag-handle-cell/drag-handle-cell.d.ts",
-      "default": "./dist/components/lists-and-menus/cells/drag-handle-cell/drag-handle-cell.js"
+      "types": "./dist/components/lists-and-tables/cells/drag-handle-cell/drag-handle-cell.d.ts",
+      "default": "./dist/components/lists-and-tables/cells/drag-handle-cell/drag-handle-cell.js"
     },
     "./timeline-track-cell": {
-      "types": "./dist/components/lists-and-menus/cells/timeline-track-cell/timeline-track-cell.d.ts",
-      "default": "./dist/components/lists-and-menus/cells/timeline-track-cell/timeline-track-cell.js"
+      "types": "./dist/components/lists-and-tables/cells/timeline-track-cell/timeline-track-cell.d.ts",
+      "default": "./dist/components/lists-and-tables/cells/timeline-track-cell/timeline-track-cell.js"
     },
     "./breadcrumbs": {
       "types": "./dist/components/navigation/breadcrumbs/breadcrumbs.d.ts",
@@ -359,9 +363,9 @@
       "types": "./dist/components/status-and-feedback/progress-circle/progress-circle.d.ts",
       "default": "./dist/components/status-and-feedback/progress-circle/progress-circle.js"
     },
-    "./progress": {
-      "types": "./dist/components/status-and-feedback/progress/progress.d.ts",
-      "default": "./dist/components/status-and-feedback/progress/progress.js"
+    "./activity-indicator": {
+      "types": "./dist/components/status-and-feedback/activity-indicator/activity-indicator.d.ts",
+      "default": "./dist/components/status-and-feedback/activity-indicator/activity-indicator.js"
     },
     "./styles": "./dist/css/global.css",
     "./styles/tokens": "./dist/css/settings.css",

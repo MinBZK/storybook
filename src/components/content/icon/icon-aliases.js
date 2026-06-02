@@ -26,6 +26,10 @@ export const aliases = {
 	'notifications': 'bell',
 	'alarm': 'bell',
 
+	// book
+	'guide': 'book',
+	'read': 'book',
+
 	// bookmark-filled
 	'bookmarked': 'bookmark-filled',
 
@@ -176,6 +180,9 @@ export const aliases = {
 	// info-circle
 	'info': 'info-circle',
 	'information': 'info-circle',
+
+	// lightbulb
+	'idea': 'lightbulb',
 
 	// link
 	'url': 'link',

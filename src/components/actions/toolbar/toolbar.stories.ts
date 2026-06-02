@@ -4,7 +4,7 @@ import '../button/button.js';
 import '../icon-button/icon-button.js';
 import '../button-bar/button-bar.js';
 import '../../content/icon/icon.js';
-import '../../lists-and-menus/menu/menu.js';
+import '../../actions/menu/menu.js';
 import '../../inputs/search-field/search-field.js';
 import '../../inputs/segmented-control/segmented-control.js';
 

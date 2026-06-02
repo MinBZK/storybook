@@ -1,7 +1,7 @@
 /**
  * Nederlandse Digitale Dienst Progress Bar Component (Lit + TypeScript)
  *
- * Exports both NLDDProgressBar and NLDDProgressBarSegment.
+ * Exports both NLDDProgressBar and NLDDProgressBarSegmentIndicator.
  *
  * A progress bar that supports a single value (loading-style) or
  * multiple segments (multi-stage progress, or distribution like
@@ -31,9 +31,9 @@
  * @attr {boolean} indeterminate     - Shows a sliding indicator animation (only without segments)
  * @attr {object}  translations      - Override translation keys; unset keys fall back to Dutch
  *
- * @slot - Place for nldd-progress-bar-segment elements
+ * @slot - Place for nldd-progress-bar-segment-indicator elements
  *
- * @element nldd-progress-bar-segment
+ * @element nldd-progress-bar-segment-indicator
  *
  * @attr {number}  value         - Share of the parent's total (default 0; <=0 hides segment)
  * @attr {string}  color         - Color. Semantic (neutral, accent, success, warning, critical) or a Rijkskleur. Default 'accent'.
@@ -42,7 +42,7 @@
  */
 import { LitElement, html } from 'lit';
 import { customElement, property, state } from 'lit/decorators.js';
-import { progressBarStyles, progressBarSegmentStyles } from './progress-bar.styles.js';
+import { progressBarStyles, progressBarSegmentIndicatorStyles } from './progress-bar.styles.js';
 import { progressBarTemplate } from './progress-bar.template.js';
 import { nlddProgressBarTranslations } from './progress-bar.i18n.js';
 import type { NLDDProgressBarTranslations } from './progress-bar.i18n.js';
@@ -70,11 +70,11 @@ export type ProgressBarColor =
 	| 'donkergroen' | 'groen' | 'mosgroen' | 'mintgroen';
 
 
-// # nldd-progress-bar-segment
+// # nldd-progress-bar-segment-indicator
 
-@customElement('nldd-progress-bar-segment')
-export class NLDDProgressBarSegment extends LitElement {
-	static override styles = progressBarSegmentStyles;
+@customElement('nldd-progress-bar-segment-indicator')
+export class NLDDProgressBarSegmentIndicator extends LitElement {
+	static override styles = progressBarSegmentIndicatorStyles;
 
 	@property({ type: Number, reflect: true })
 	value = 0;
@@ -105,7 +105,7 @@ export class NLDDProgressBarSegment extends LitElement {
 		// Only render the tooltip wrapper when there's actual text — avoids
 		// mounting an inert nldd-tooltip element with timing="never".
 		if (!text) {
-			return html`<span class="progress-bar-segment__tooltip-area"></span>`;
+			return html`<span class="progress-bar-segment-indicator__tooltip-area"></span>`;
 		}
 		// tabindex=0 makes the hover area keyboard-reachable so SR users can
 		// land on it and have nldd-tooltip surface its text (WCAG 2.1.1).
@@ -119,7 +119,7 @@ export class NLDDProgressBarSegment extends LitElement {
 		// no extra handlers needed here.
 		return html`
 			<nldd-tooltip text=${text} timing="instant">
-				<span class="progress-bar-segment__tooltip-area"
+				<span class="progress-bar-segment-indicator__tooltip-area"
 					tabindex="0"
 					role="img"
 					aria-label=${text}
@@ -174,15 +174,15 @@ export class NLDDProgressBar extends LitElement {
 	translations: Partial<NLDDProgressBarTranslations> = {};
 
 	@state()
-	private _segments: NLDDProgressBarSegment[] = [];
+	private _segmentIndicators: NLDDProgressBarSegmentIndicator[] = [];
 
-	/** True for 300ms after indeterminate=true→false: indicator fades out while
-	 *  the segment grows from 0 to its target value. */
+	/** True for 300ms after indeterminate=true→false: the indeterminate indicator
+	 *  fades out while the segment-indicator grows from 0 to its target value. */
 	@state()
 	_indeterminateExiting = false;
 
-	/** True for 300ms after indeterminate=false→true: indicator fades in while
-	 *  the segment shrinks from its current width to 0. */
+	/** True for 300ms after indeterminate=false→true: the indeterminate indicator
+	 *  fades in while the segment-indicator shrinks from its current width to 0. */
 	@state()
 	_indeterminateEntering = false;
 
@@ -194,14 +194,14 @@ export class NLDDProgressBar extends LitElement {
 	}
 
 	/** Returns true when the user has provided segment children. */
-	get _hasSegments(): boolean {
-		return this._segments.length > 0;
+	get _hasSegmentIndicators(): boolean {
+		return this._segmentIndicators.length > 0;
 	}
 
 	/** Sum of all segment values, or the parent's own value, or 0. */
 	get _totalValue(): number {
-		if (this._hasSegments) {
-			return this._segments.reduce((sum, s) => sum + Math.max(0, s.value), 0);
+		if (this._hasSegmentIndicators) {
+			return this._segmentIndicators.reduce((sum, s) => sum + Math.max(0, s.value), 0);
 		}
 		return Math.max(0, this.value ?? 0);
 	}
@@ -234,14 +234,14 @@ export class NLDDProgressBar extends LitElement {
 		const totalPrefix = this._t('components.progress-bar.total-prefix-text');
 
 		// Single-segment case
-		if (!this._hasSegments) {
+		if (!this._hasSegmentIndicators) {
 			return `${Math.round(this._percentage)}% ${completedSuffix}`;
 		}
 
 		// Multi-segment
-		const named = this._segments.filter(s => s.name);
-		const allNamed = named.length === this._segments.length && this._segments.length > 0;
-		const segmentDescriptions = this._segments
+		const named = this._segmentIndicators.filter(s => s.name);
+		const allNamed = named.length === this._segmentIndicators.length && this._segmentIndicators.length > 0;
+		const segmentIndicatorDescriptions = this._segmentIndicators
 			.filter(s => s.value > 0)
 			.map(s => {
 				const pct = this.max > 0 ? Math.round((s.value / this.max) * 100) : 0;
@@ -249,13 +249,13 @@ export class NLDDProgressBar extends LitElement {
 			});
 
 		if (this.mode === 'distribution') {
-			return segmentDescriptions.join(', ');
+			return segmentIndicatorDescriptions.join(', ');
 		}
 
 		// Progress mode
 		const totalPct = Math.round(this._percentage);
 		if (allNamed) {
-			return `${segmentDescriptions.join(', ')}. ${totalPrefix} ${totalPct}% ${completedSuffix}.`;
+			return `${segmentIndicatorDescriptions.join(', ')}. ${totalPrefix} ${totalPct}% ${completedSuffix}.`;
 		}
 		return `${totalPct}% ${completedSuffix}`;
 	}
@@ -269,15 +269,17 @@ export class NLDDProgressBar extends LitElement {
 	private _attributeObserver?: MutationObserver;
 
 	override firstUpdated(): void {
-		this._syncSegments();
+		this._syncSegmentIndicators();
 	}
 
 	override willUpdate(changed: Map<string, unknown>): void {
-		// Detection before render: this way the indicator/segment stays mounted
-		// during a flip and the CSS animations can actually run (otherwise the
-		// indicator would unmount + remount first, and transitions/animations
-		// don't run on a freshly mounted element). The `_begin*` methods cancel
-		// the opposite phase themselves, so rapid toggles leave no stale state.
+		// Detect the flip before render so the template keeps both visuals
+		// mounted through the crossfade: the indeterminate indicator and the
+		// segment-indicator overlap for 300ms so their CSS animations can run
+		// (otherwise the outgoing one would unmount and the incoming one mount
+		// fresh, and transitions/animations don't run on a freshly mounted
+		// element). The `_begin*` methods cancel the opposite phase themselves,
+		// so rapid toggles leave no stale state.
 		if (changed.has('indeterminate')) {
 			const previous = changed.get('indeterminate');
 			if (previous === true && !this.indeterminate) {
@@ -291,10 +293,10 @@ export class NLDDProgressBar extends LitElement {
 	override updated(): void {
 		// Sync on any update — cheap, and properties like text/valueText also
 		// affect tooltip suppression (single-segment + caption).
-		this._syncSegments();
+		this._syncSegmentIndicators();
 	}
 
-	/** Indicator fades out, segment grows from 0 to its target — both 300ms
+	/** Indeterminate indicator fades out, segment-indicator grows from 0 to its target — both 300ms
 	 *  (matches --primitives-transition-duration-slow and nldd-progress-circle). */
 	private _beginIndeterminateExit(): void {
 		this._cancelIndeterminateEnter();
@@ -305,7 +307,7 @@ export class NLDDProgressBar extends LitElement {
 		}, INDETERMINATE_TRANSITION_MS);
 	}
 
-	/** Indicator fades in, segment shrinks from current width to 0 — both 300ms. */
+	/** Indeterminate indicator fades in, segment-indicator shrinks from current width to 0 — both 300ms. */
 	private _beginIndeterminateEnter(): void {
 		this._cancelIndeterminateExit();
 		this._indeterminateEntering = true;
@@ -331,8 +333,10 @@ export class NLDDProgressBar extends LitElement {
 		this._indeterminateEntering = false;
 	}
 
-	/** Auto-tooltip based on parent's value-format. Override via segment.tooltip. */
-	private _formatSegmentTooltip(seg: NLDDProgressBarSegment): string {
+	/** Computes a segment-indicator's auto-tooltip from the parent's value-format
+	 *  and the segment name. Consumers override it per segment with the
+	 *  tooltip-text attribute, which wins over this auto-text. */
+	private _formatSegmentIndicatorTooltip(seg: NLDDProgressBarSegmentIndicator): string {
 		// value-display="none" hides the value, so per-segment tooltips fall
 		// back to the segment name only (empty string when unnamed).
 		if (this.valueDisplay === 'none') return seg.name ?? '';
@@ -362,61 +366,62 @@ export class NLDDProgressBar extends LitElement {
 		// comparison breaks under scoped custom-element registries (used in
 		// some test environments and cross-frame contexts) where the same
 		// class can be registered under a different tag.
-		this._segments = assigned.filter(
-			(el): el is NLDDProgressBarSegment => el instanceof NLDDProgressBarSegment,
+		this._segmentIndicators = assigned.filter(
+			(el): el is NLDDProgressBarSegmentIndicator => el instanceof NLDDProgressBarSegmentIndicator,
 		);
 
 		// Re-observe each segment for value/color/name/tooltip changes so the
 		// parent re-computes widths and ARIA when a child attribute mutates.
-		// requestUpdate() routes through updated(), which calls _syncSegments
+		// requestUpdate() routes through updated(), which calls _syncSegmentIndicators
 		// — no need to call it directly here.
 		this._attributeObserver?.disconnect();
 		this._attributeObserver = new MutationObserver(() => this.requestUpdate());
-		for (const seg of this._segments) {
+		for (const seg of this._segmentIndicators) {
 			this._attributeObserver.observe(seg, {
 				attributes: true,
 				attributeFilter: ['value', 'color', 'name', 'tooltip-text'],
 			});
 		}
 
-		// Mutating _segments above schedules a re-render via Lit's state
-		// system, which fires updated() → _syncSegments(). Calling it here
+		// Mutating _segmentIndicators above schedules a re-render via Lit's state
+		// system, which fires updated() → _syncSegmentIndicators(). Calling it here
 		// directly would just run it a second time per slot mutation.
 	}
 
-	private _syncSegments(): void {
+	private _syncSegmentIndicators(): void {
 		// Compute per-segment widths. If sum exceeds max, normalize.
 		const total = this._totalValue;
 		const denominator = total > this.max ? total : this.max;
 
-		if (import.meta.env?.DEV && total > this.max && this._hasSegments) {
+		if (import.meta.env?.DEV && total > this.max && this._hasSegmentIndicators) {
 			console.warn(
 				`[nldd-progress-bar] Sum of segment values (${total}) exceeds max (${this.max}). ` +
 				'Segments are normalized proportionally.',
 			);
 		}
 
-		// Unified path for slotted and internal segments. The internal segment
-		// lives in shadow DOM and is rendered by the template when there are no
-		// slotted children — both share the same dynamic-attribute logic here.
-		const internalSegment = this.shadowRoot?.querySelector<NLDDProgressBarSegment>(
-			'.progress-bar__segment',
+		// Unified path for slotted and internal segment-indicators. The internal
+		// segment-indicator lives in shadow DOM and is rendered by the template
+		// when there are no slotted children — both share the same
+		// dynamic-attribute logic here.
+		const internalSegmentIndicator = this.shadowRoot?.querySelector<NLDDProgressBarSegmentIndicator>(
+			'.progress-bar__segment-indicator',
 		) ?? null;
-		const allSegments: NLDDProgressBarSegment[] = internalSegment
-			? [internalSegment, ...this._segments]
-			: [...this._segments];
+		const allSegmentIndicators: NLDDProgressBarSegmentIndicator[] = internalSegmentIndicator
+			? [internalSegmentIndicator, ...this._segmentIndicators]
+			: [...this._segmentIndicators];
 
 		// Single visible segment: only surface its auto-tooltip in
 		// value-display="tooltip" mode (inline shows the value in the caption,
 		// none hides it). Multi-segment always gets per-segment tooltips; an
 		// explicit `tooltip-text` attribute still wins.
-		const visibleCount = allSegments.filter(s => Math.max(0, s.value) > 0).length;
+		const visibleCount = allSegmentIndicators.filter(s => Math.max(0, s.value) > 0).length;
 		const suppressAutoTooltip = visibleCount <= 1 && this.valueDisplay !== 'tooltip';
 
 		const isExiting = this._indeterminateExiting;
 		const isEntering = this._indeterminateEntering;
 
-		for (const seg of allSegments) {
+		for (const seg of allSegmentIndicators) {
 			const v = Math.max(0, seg.value);
 			if (v <= 0) {
 				seg.hidden = true;
@@ -426,12 +431,12 @@ export class NLDDProgressBar extends LitElement {
 			}
 			seg.hidden = false;
 			const pct = denominator > 0 ? (v / denominator) * 100 : 0;
-			seg.style.setProperty('--context-progress-bar-segment-width', `${pct}%`);
+			seg.style.setProperty('--context-progress-bar-segment-indicator-width', `${pct}%`);
 			// Progress mode: each segment a capsule. Distribution mode:
 			// segments are rectangular, only the track's outer corners are
 			// rounded (via overflow:hidden + border-radius on the track).
 			seg.setAttribute('data-mode', this.mode);
-			seg._autoTooltipText = suppressAutoTooltip ? '' : this._formatSegmentTooltip(seg);
+			seg._autoTooltipText = suppressAutoTooltip ? '' : this._formatSegmentIndicatorTooltip(seg);
 			seg.toggleAttribute('data-grow', isExiting);
 			seg.toggleAttribute('data-shrink', isEntering);
 		}
@@ -447,6 +452,6 @@ export class NLDDProgressBar extends LitElement {
 declare global {
 	interface HTMLElementTagNameMap {
 		'nldd-progress-bar': NLDDProgressBar;
-		'nldd-progress-bar-segment': NLDDProgressBarSegment;
+		'nldd-progress-bar-segment-indicator': NLDDProgressBarSegmentIndicator;
 	}
 }

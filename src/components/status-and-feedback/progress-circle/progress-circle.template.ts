@@ -53,7 +53,7 @@ export function progressCircleTemplate(component: NLDDProgressCircle, onSlotChan
 	// read them out literally — "49 point 999 percent").
 	const ariaValueNow = component.indeterminate ? undefined : Math.round(component._totalValue);
 	const isExiting = component._indeterminateExiting;
-	const isIndeterminate = (component.indeterminate || isExiting) && !component._hasSegments;
+	const isIndeterminate = (component.indeterminate || isExiting) && !component._hasSegmentIndicators;
 	const showArcs = !component.indeterminate || component._indeterminateEntering;
 	const arcs = showArcs ? component._buildArcs() : [];
 	const sizeInPixels = Number(component.size) || 28;
@@ -100,6 +100,15 @@ export function progressCircleTemplate(component: NLDDProgressCircle, onSlotChan
 							<feComposite operator="over" in="colored" in2="SourceGraphic"></feComposite>
 						</filter>
 					`)}
+					${isIndeterminate ? svg`
+						<filter id="progress-circle-border-indeterminate-${uid}" filterUnits="userSpaceOnUse" x="-10" y="-10" width="120" height="120" color-interpolation-filters="sRGB">
+							<feMorphology in="SourceGraphic" operator="erode" radius=${borderErodeRadius} result="eroded"></feMorphology>
+							<feComposite operator="out" in="SourceGraphic" in2="eroded" result="edge"></feComposite>
+							<feFlood style="flood-color: var(--_indeterminate-border-color)" result="flood"></feFlood>
+							<feComposite operator="in" in="flood" in2="edge" result="colored"></feComposite>
+							<feComposite operator="over" in="colored" in2="SourceGraphic"></feComposite>
+						</filter>
+					` : nothing}
 				</defs>
 				<circle class="progress-circle__track"
 					cx="50"
@@ -109,7 +118,7 @@ export function progressCircleTemplate(component: NLDDProgressCircle, onSlotChan
 					filter="url(#progress-circle-border-track-${uid})"
 				></circle>
 				${arcs.map(arc => svg`
-					<circle class="progress-circle__segment progress-circle__segment--${arc.color}"
+					<circle class="progress-circle__segment-indicator progress-circle__segment-indicator--${arc.color}"
 						cx="50"
 						cy="50"
 						r=${radius}
@@ -127,6 +136,7 @@ export function progressCircleTemplate(component: NLDDProgressCircle, onSlotChan
 						fill="none"
 						pathLength="100"
 						stroke-linecap="round"
+						filter="url(#progress-circle-border-indeterminate-${uid})"
 					></circle>
 				` : nothing}
 			</svg>

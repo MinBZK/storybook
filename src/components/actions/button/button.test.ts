@@ -465,3 +465,77 @@ describe('nldd-button – form association', () => {
 		expect(submitted).toBe(false);
 	});
 });
+
+describe('nldd-button – loading', () => {
+	let el: NLDDButton;
+
+	afterEach(() => {
+		if (el) cleanup(el);
+	});
+
+	it('overlays an activity indicator when loading', async () => {
+		el = await fixture<NLDDButton>('<nldd-button loading text="Opslaan"></nldd-button>');
+		await waitForUpdate(el);
+		expect(el.shadowRoot!.querySelector('.button__activity-indicator')).not.toBeNull();
+	});
+
+	it('renders the activity indicator + aria-busy on the <a> when loading with href', async () => {
+		el = await fixture<NLDDButton>('<nldd-button loading href="/opslaan" text="Opslaan"></nldd-button>');
+		await waitForUpdate(el);
+		const anchor = el.shadowRoot!.querySelector('a');
+		expect(anchor).not.toBeNull();
+		expect(anchor!.getAttribute('aria-busy')).toBe('true');
+		const indicator = el.shadowRoot!.querySelector('nldd-activity-indicator');
+		expect(indicator).not.toBeNull();
+		// Sibling of the <a> (not inside it) and not aria-hidden, so its
+		// role="status" live region announces loading without joining the
+		// link's content-derived accessible name.
+		expect(anchor!.contains(indicator)).toBe(false);
+		expect(indicator!.hasAttribute('aria-hidden')).toBe(false);
+	});
+
+	it('renders no activity indicator when not loading', async () => {
+		el = await fixture<NLDDButton>('<nldd-button text="Opslaan"></nldd-button>');
+		await waitForUpdate(el);
+		expect(el.shadowRoot!.querySelector('.button__activity-indicator')).toBeNull();
+	});
+
+	it('marks the inner button aria-busy when loading', async () => {
+		el = await fixture<NLDDButton>('<nldd-button loading text="Opslaan"></nldd-button>');
+		await waitForUpdate(el);
+		expect(el.shadowRoot!.querySelector('button')!.getAttribute('aria-busy')).toBe('true');
+	});
+
+	it('keeps the content in the DOM (hidden via CSS) so width is preserved', async () => {
+		el = await fixture<NLDDButton>('<nldd-button loading text="Opslaan"></nldd-button>');
+		await waitForUpdate(el);
+		expect(el.shadowRoot!.querySelector('.button__content')).not.toBeNull();
+		expect(el.shadowRoot!.querySelector('.button__text')!.textContent).toContain('Opslaan');
+	});
+
+	it('prevents the default click action while loading', async () => {
+		el = await fixture<NLDDButton>('<nldd-button loading text="Opslaan"></nldd-button>');
+		await waitForUpdate(el);
+		const inner = el.shadowRoot!.querySelector('button')!;
+		const event = new MouseEvent('click', { bubbles: true, cancelable: true });
+		const preventSpy = vi.spyOn(event, 'preventDefault');
+		inner.dispatchEvent(event);
+		expect(preventSpy).toHaveBeenCalled();
+	});
+
+	it('does not submit the closest form when clicked while loading', async () => {
+		const host = await fixture('<form><nldd-button type="submit" loading text="Verzenden"></nldd-button></form>');
+		await waitForUpdate(host.querySelector('nldd-button')!);
+		let submitted = false;
+		host.addEventListener('submit', (e) => { e.preventDefault(); submitted = true; });
+		(host.querySelector('nldd-button')!.shadowRoot!.querySelector('button') as HTMLElement).click();
+		expect(submitted).toBe(false);
+		cleanup(host);
+	});
+
+	it('does not hard-disable the inner button (stays focusable) while loading', async () => {
+		el = await fixture<NLDDButton>('<nldd-button loading text="Opslaan"></nldd-button>');
+		await waitForUpdate(el);
+		expect(el.shadowRoot!.querySelector('button')!.hasAttribute('disabled')).toBe(false);
+	});
+});

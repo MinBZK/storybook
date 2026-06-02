@@ -58,3 +58,14 @@ export async function waitForUpdate(el: HTMLElement): Promise<void> {
 	await new Promise(r => setTimeout(r, 0));
 	await litEl.updateComplete;
 }
+
+/**
+ * Waits two animation frames — long enough for a ResizeObserver callback to
+ * fire and the component's reaction to it to render. Pair with waitForUpdate
+ * when a test depends on a ResizeObserver-driven change (e.g. nldd-table's
+ * overflow → focusable affordance). Kept separate from waitForUpdate so the
+ * frame wait only applies where it is actually needed.
+ */
+export function nextFrames(): Promise<void> {
+	return new Promise(r => requestAnimationFrame(() => requestAnimationFrame(() => r())));
+}

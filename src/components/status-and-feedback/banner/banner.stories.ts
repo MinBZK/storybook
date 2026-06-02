@@ -1,5 +1,5 @@
 import { html, nothing } from 'lit';
-import './banner.ts';
+import './banner.js';
 import '../../actions/button/button.js';
 import '../../content/rich-text/rich-text.js';
 import { ICONS } from '../../content/icon/icon.js';

@@ -6,7 +6,7 @@ export const sideBySideSplitViewStyles = css`
 	/* # Host */
 
 	:host {
-		--_background-color: var(--context-parent-background-color, var(--semantics-surfaces-background-color));
+		--_background-color: var(--context-parent-background-color, var(--semantics-surfaces-base-background-color));
 		/* Pane min-width — read by JS via getComputedStyle in firstUpdated */
 		--_pane-min-width: var(--primitives-area-320);
 
@@ -21,7 +21,7 @@ export const sideBySideSplitViewStyles = css`
 	}
 
 	:host([background="base"]) {
-		--context-parent-background-color: var(--semantics-surfaces-background-color);
+		--context-parent-background-color: var(--semantics-surfaces-base-background-color);
 		--_background-color: var(--context-parent-background-color);
 	}
 

@@ -1,6 +1,6 @@
 import { html, nothing } from 'lit';
-import './image.ts';
-import './lqip-encoder-element.ts';
+import './image.js';
+import './lqip-encoder-element.js';
 
 // Lokale voorbeeldafbeelding (public/sample-images/), zodat de stories niet
 // afhankelijk zijn van een externe host en consumers van offline Storybook-builds.
