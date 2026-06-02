@@ -517,8 +517,9 @@ describe('nldd-icon-button – loading', () => {
 		expect(anchor!.getAttribute('aria-busy')).toBe('true');
 		const indicator = el.shadowRoot!.querySelector('nldd-activity-indicator');
 		expect(indicator).not.toBeNull();
-		// Not aria-hidden: its role="status" live region announces loading.
-		// (Kept inside the control — the icon-button's aria-label carries the name.)
+		// Sibling of the <a> (not inside it) and not aria-hidden, so its
+		// role="status" live region works without nesting in an interactive el.
+		expect(anchor!.contains(indicator)).toBe(false);
 		expect(indicator!.hasAttribute('aria-hidden')).toBe(false);
 	});
 

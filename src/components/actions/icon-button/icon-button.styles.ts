@@ -25,6 +25,7 @@ export const iconButtonStyles = css`
 
 		${inheritedTextReset}
 		display: inline-block;
+		position: relative;
 		max-width: 100%;
 		user-select: none;
 		-webkit-tap-highlight-color: transparent;
@@ -300,9 +301,11 @@ export const iconButtonStyles = css`
 		opacity: 0;
 	}
 
-	/* Wrapper overlaid on the control (position:relative); the activity-indicator
-	   inside fills it and centres its circle, which inherits the content color
-	   via currentColor. */
+	/* Wrapper overlaid on the control, positioned against the host (which is
+	   position:relative). It lives outside the <button>/<a> and the tooltip
+	   wrapper so the indicator's role="status" live region works reliably. The
+	   activity-indicator inside fills it and centres its circle, which inherits
+	   the content color via currentColor. */
 	.icon-button__activity-indicator {
 		position: absolute;
 		inset: 0;

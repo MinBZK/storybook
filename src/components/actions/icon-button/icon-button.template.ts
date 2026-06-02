@@ -38,13 +38,13 @@ export function template(this: NLDDIconButton) {
 	const isDisclosure = this.expandable || !!this.popupType;
 	const ariaExpanded = isDisclosure ? String(this.expanded) : (this.expanded ? 'true' : nothing);
 
-	// Loading: an activity indicator overlays the (opacity-hidden) icon.
-	// `instant` so it shows the moment loading starts. It is NOT aria-hidden:
-	// its role="status" live region announces "Laden". The icon-button's name
-	// comes from aria-label, so the nested live text doesn't affect it (and
-	// keeping it inside the control avoids splitting the optional tooltip
-	// wrapper). aria-busy stays as supplementary state. Sizes: xs:16, sm:20,
-	// md:24, lg:28.
+	// Loading: an activity indicator overlays the (opacity-hidden) icon. It is
+	// rendered OUTSIDE the <button>/<a> AND the optional tooltip wrapper — a
+	// Shadow DOM sibling overlaid via the host's position:relative — so its
+	// role="status" live region functions reliably (a live region nested inside
+	// an interactive element is unreliable in some AT) and announces "Laden".
+	// aria-busy stays on the control as supplementary state. `instant` so it
+	// shows the moment loading starts. Sizes: xs:16, sm:20, md:24, lg:28.
 	const ariaBusy = this.loading ? 'true' : nothing;
 	const loadingSize = this.size === 'xs' ? '16'
 		: this.size === 'sm' ? '20'
@@ -76,7 +76,7 @@ export function template(this: NLDDIconButton) {
 					aria-busy=${ariaBusy}
 					@click=${this._handleClick}
 				>
-					${content}${loadingIndicator}
+					${content}
 				</a>
 			`;
 		}
@@ -100,18 +100,21 @@ export function template(this: NLDDIconButton) {
 				.popoverTargetAction=${this.popoverTargetAction}
 				@click=${this._handleClick}
 			>
-				${content}${loadingIndicator}
+				${content}
 			</button>
 		`;
 	};
 
-	if (tooltipText && this.tooltipTiming !== 'never') {
-		return html`
+	// The indicator is a sibling of the control (and of the tooltip wrapper),
+	// overlaid via the host's position:relative — keeping its live region out
+	// of any interactive ancestor.
+	const control = tooltipText && this.tooltipTiming !== 'never'
+		? html`
 			<nldd-tooltip text=${tooltipText} timing=${this.tooltipTiming}>
 				${renderButton()}
 			</nldd-tooltip>
-		`;
-	}
+		`
+		: renderButton();
 
-	return renderButton();
+	return html`${control}${loadingIndicator}`;
 }
