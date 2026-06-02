@@ -9,6 +9,39 @@ the type of conventional-commit determines the release. Conventional types
 `chore`, `docs`, `ci`, `style`, `test`, `build` are intentionally omitted
 here; consult the commit history if you need that level of detail.
 
+### Highlights
+
+- **Data tables** — new `nldd-table` + `nldd-table-row` bring column-aligned layouts built on the existing cells. Columns are a CSS grid track list that every row shares through subgrid, a `header` slot pins the column headers, and rows are individually selectable. The table is always a boxed surface with a `base` or `tinted` background and full-bleed dividers; overflowing tables inside `nldd-rich-text` adopt the same look.
+- **Activity indicator** — `nldd-progress` becomes `nldd-activity-indicator`, now defaulting to an inline, icon-sized `currentColor` ring that scales like an icon, with a `timing` choice between the 1000 ms anti-flash delay and an instant fade-in.
+- **Loading buttons** — `nldd-button` and `nldd-icon-button` gain a `loading` state that overlays a centered `nldd-activity-indicator`: the label is hidden without a width jump, and the control stays focusable while it announces `aria-busy` and blocks activation.
+- **Reorganized categories** — `menu` moves to **Actions** and **Lists & Menus** becomes **Lists & Tables**, making room for the new table family (import paths and Storybook nav change — see Breaking).
+- **Two new icons** — `book` (aliases `guide`, `read`) and `lightbulb` (alias `idea`).
+
+### Added
+
+- **`nldd-table` + `nldd-table-row`**: a `columns` grid-track list applied once and shared by every row via subgrid for true column alignment; reuses `nldd-cell` (generic cells default to full width inside a table); a `header` slot rendered first with `columnheader` roles; per-row `selected` styling; an empty state ("Geen items"); and keyboard focus when the table scrolls horizontally. Always a boxed surface — `background="base"` (default) or `"tinted"`, full-bleed row dividers, inline padding on the rows.
+- **`nldd-button` / `nldd-icon-button`**: a `loading` boolean that overlays a centered `nldd-activity-indicator`, hides the label without shifting width, sets `aria-busy`, blocks activation while staying focusable, and matches the control's size and color.
+- **`nldd-activity-indicator`** (renamed from `nldd-progress`): a new default inline indicator — an icon-sized `currentColor` ring whose stroke scales with `size` (the `nldd-icon` scale, default `28`). A new `timing` (`'default' | 'instant'`, like `nldd-tooltip`) keeps the 1000 ms anti-flash delay or skips straight to the fade-in. `show-text` (default off) replaces `no-label`, with the accessible name always present via `aria-label`. `text`, `translations`, `complete`, and the overridable default slot are retained.
+- **Cells**: `hide-below` / `hide-above` accept named breakpoints, resolved against the surrounding list/table width.
+- **`nldd-rich-text`**: `<table>` elements are styled to match `nldd-table` (rounded boxed frame, full-bleed dividers, edge-inset cells).
+- **Icons**: `book` (aliases `guide`, `read`) and `lightbulb` (alias `idea`).
+- **Tokens**: a shared `--semantics-tables-*` range (border color/width, row padding, column gap, row min-height, selected-row colors) used by `nldd-table` and the rich-text tables.
+- **`nldd-progress-bar` / `nldd-progress-circle`**: the indeterminate indicator now carries the same 1px token-colored highlight border as the determinate segment-indicators.
+
+### Breaking
+
+- **Component categories moved.** Import paths change: `…/lists-and-menus/*` → `…/lists-and-tables/*`, and `menu` moves to `…/actions/menu`. Storybook nav follows (`Components/Lists & Menus/*` → `Components/Lists & Tables/*`, `Menu` → `Components/Actions/Menu`).
+- **`nldd-progress` → `nldd-activity-indicator`.** The element, class (`NLDDProgress` → `NLDDActivityIndicator`), and translation key are renamed with no alias. `no-label` is replaced by `show-text` (the label is now hidden by default).
+- **Progress `segment` → `segment-indicator`.** `nldd-progress-bar-segment` → `nldd-progress-bar-segment-indicator` (and the circle equivalent); exported classes `NLDDProgress{Bar,Circle}Segment` → `…SegmentIndicator`; and the `--components-progress-*-segment-*` custom properties gain `-indicator`.
+- **Surface tokens renamed** (same values) so the default variant is named alongside `tinted`:
+  - `--semantics-surfaces-background-color` → `--semantics-surfaces-base-background-color`
+  - `--semantics-surfaces-border-color` → `--semantics-surfaces-base-border-color`
+
+### Fixed
+
+- **`nldd-rich-text`**: the host now fills its container's width so a slotted grid resolves its `1fr` tracks in Firefox (Chrome/Safari already did).
+- **`nldd-code-viewer`**: the copy button no longer sticks to the corner — it scrolls with the code.
+
 ## <small>0.8.53 (2026-05-31)</small>
 
 * feat!: isolate slotted content, unify progress + corner-radius APIs, and refine components ([f84cfe2](https://github.com/MinBZK/storybook/commit/f84cfe2))
