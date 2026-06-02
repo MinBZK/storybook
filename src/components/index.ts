@@ -143,8 +143,8 @@ export { NLDDModalDialog } from './status-and-feedback/modal-dialog/modal-dialog
 export { NLDDInlineDialog } from './status-and-feedback/inline-dialog/inline-dialog.js';
 export { NLDDBanner } from './status-and-feedback/banner/banner.js';
 export { NLDDBadge } from './status-and-feedback/badge/badge.js';
-export { NLDDProgressBar, NLDDProgressBarSegment } from './status-and-feedback/progress-bar/progress-bar.js';
-export { NLDDProgressCircle, NLDDProgressCircleSegment } from './status-and-feedback/progress-circle/progress-circle.js';
+export { NLDDProgressBar, NLDDProgressBarSegmentIndicator } from './status-and-feedback/progress-bar/progress-bar.js';
+export { NLDDProgressCircle, NLDDProgressCircleSegmentIndicator } from './status-and-feedback/progress-circle/progress-circle.js';
 export { NLDDActivityIndicator } from './status-and-feedback/activity-indicator/activity-indicator.js';
 
 // Auto-register happens on import of individual component files

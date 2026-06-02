@@ -1512,9 +1512,9 @@
 	--components-progress-bar-track-background-color: light-dark(var(--primitives-color-neutral-50), var(--primitives-color-neutral-150));
 	--components-progress-bar-track-border-color: light-dark(var(--primitives-color-neutral-100), var(--primitives-color-neutral-200));
 	--components-progress-bar-track-border-width: var(--primitives-border-width-thin);
-	--components-progress-bar-progress-segment-gap: var(--primitives-space-1);
-	--components-progress-bar-distribution-segment-gap: var(--primitives-space-2);
-	--components-progress-bar-segment-min-width: var(--primitives-space-2);
+	--components-progress-bar-progress-segment-indicator-gap: var(--primitives-space-1);
+	--components-progress-bar-distribution-segment-indicator-gap: var(--primitives-space-2);
+	--components-progress-bar-segment-indicator-min-width: var(--primitives-space-2);
 	--components-progress-bar-sm-height: var(--primitives-space-4);
 	--components-progress-bar-md-height: var(--primitives-space-8);
 	--components-progress-bar-lg-height: var(--primitives-space-16);
@@ -1526,7 +1526,7 @@
 
 	/* ### Progress bar — semantic variants */
 
-	--components-progress-bar-segment-border-width: var(--primitives-border-width-thin);
+	--components-progress-bar-segment-indicator-border-width: var(--primitives-border-width-thin);
 
 	--components-progress-bar-neutral-background-color: var(--semantics-categories-filled-neutral-background-color);
 	--components-progress-bar-neutral-border-color: var(--semantics-categories-filled-neutral-border-color);

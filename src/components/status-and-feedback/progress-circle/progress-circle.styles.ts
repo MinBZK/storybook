@@ -81,13 +81,13 @@ export const progressCircleStyles = css`
 	   Animate value changes smoothly via stroke-dasharray transition.
 	   Crossfade with the indeterminate indicator uses opacity on the SVG group. */
 
-	.progress-circle__segment {
+	.progress-circle__segment-indicator {
 		stroke-width: var(--_stroke-width);
 		opacity: 1;
 		transition: stroke-dasharray var(--primitives-transition-duration-slow) ease-out, stroke-dashoffset var(--primitives-transition-duration-slow) ease-out, opacity var(--primitives-transition-duration-slow) ease-out;
 	}
 
-	.progress-circle__segment[data-shrink] {
+	.progress-circle__segment-indicator[data-shrink] {
 		opacity: 0;
 	}
 
@@ -96,41 +96,41 @@ export const progressCircleStyles = css`
 	   visible gap between segments stays consistent.
 	   Distribution mode: butt caps keep the segment boundaries crisp. */
 
-	.progress-circle__segment {
+	.progress-circle__segment-indicator {
 		stroke-linecap: round;
 	}
 
-	:host([mode="distribution"]) .progress-circle__segment {
+	:host([mode="distribution"]) .progress-circle__segment-indicator {
 		stroke-linecap: butt;
 	}
 
 
 	/* ## Arc color per variant */
 
-	.progress-circle__segment--neutral { stroke: var(--components-progress-circle-neutral-background-color); }
-	.progress-circle__segment--accent { stroke: var(--components-progress-circle-accent-background-color); }
-	.progress-circle__segment--success { stroke: var(--components-progress-circle-success-background-color); }
-	.progress-circle__segment--warning { stroke: var(--components-progress-circle-warning-background-color); }
-	.progress-circle__segment--critical { stroke: var(--components-progress-circle-critical-background-color); }
-	.progress-circle__segment--coolgray { stroke: var(--components-progress-circle-coolgray-background-color); }
-	.progress-circle__segment--lintblauw { stroke: var(--components-progress-circle-lintblauw-background-color); }
-	.progress-circle__segment--donkerblauw { stroke: var(--components-progress-circle-donkerblauw-background-color); }
-	.progress-circle__segment--hemelblauw { stroke: var(--components-progress-circle-hemelblauw-background-color); }
-	.progress-circle__segment--lichtblauw { stroke: var(--components-progress-circle-lichtblauw-background-color); }
-	.progress-circle__segment--paars { stroke: var(--components-progress-circle-paars-background-color); }
-	.progress-circle__segment--violet { stroke: var(--components-progress-circle-violet-background-color); }
-	.progress-circle__segment--robijnrood { stroke: var(--components-progress-circle-robijnrood-background-color); }
-	.progress-circle__segment--roze { stroke: var(--components-progress-circle-roze-background-color); }
-	.progress-circle__segment--rood { stroke: var(--components-progress-circle-rood-background-color); }
-	.progress-circle__segment--oranje { stroke: var(--components-progress-circle-oranje-background-color); }
-	.progress-circle__segment--donkergeel { stroke: var(--components-progress-circle-donkergeel-background-color); }
-	.progress-circle__segment--geel { stroke: var(--components-progress-circle-geel-background-color); }
-	.progress-circle__segment--donkerbruin { stroke: var(--components-progress-circle-donkerbruin-background-color); }
-	.progress-circle__segment--bruin { stroke: var(--components-progress-circle-bruin-background-color); }
-	.progress-circle__segment--donkergroen { stroke: var(--components-progress-circle-donkergroen-background-color); }
-	.progress-circle__segment--groen { stroke: var(--components-progress-circle-groen-background-color); }
-	.progress-circle__segment--mosgroen { stroke: var(--components-progress-circle-mosgroen-background-color); }
-	.progress-circle__segment--mintgroen { stroke: var(--components-progress-circle-mintgroen-background-color); }
+	.progress-circle__segment-indicator--neutral { stroke: var(--components-progress-circle-neutral-background-color); }
+	.progress-circle__segment-indicator--accent { stroke: var(--components-progress-circle-accent-background-color); }
+	.progress-circle__segment-indicator--success { stroke: var(--components-progress-circle-success-background-color); }
+	.progress-circle__segment-indicator--warning { stroke: var(--components-progress-circle-warning-background-color); }
+	.progress-circle__segment-indicator--critical { stroke: var(--components-progress-circle-critical-background-color); }
+	.progress-circle__segment-indicator--coolgray { stroke: var(--components-progress-circle-coolgray-background-color); }
+	.progress-circle__segment-indicator--lintblauw { stroke: var(--components-progress-circle-lintblauw-background-color); }
+	.progress-circle__segment-indicator--donkerblauw { stroke: var(--components-progress-circle-donkerblauw-background-color); }
+	.progress-circle__segment-indicator--hemelblauw { stroke: var(--components-progress-circle-hemelblauw-background-color); }
+	.progress-circle__segment-indicator--lichtblauw { stroke: var(--components-progress-circle-lichtblauw-background-color); }
+	.progress-circle__segment-indicator--paars { stroke: var(--components-progress-circle-paars-background-color); }
+	.progress-circle__segment-indicator--violet { stroke: var(--components-progress-circle-violet-background-color); }
+	.progress-circle__segment-indicator--robijnrood { stroke: var(--components-progress-circle-robijnrood-background-color); }
+	.progress-circle__segment-indicator--roze { stroke: var(--components-progress-circle-roze-background-color); }
+	.progress-circle__segment-indicator--rood { stroke: var(--components-progress-circle-rood-background-color); }
+	.progress-circle__segment-indicator--oranje { stroke: var(--components-progress-circle-oranje-background-color); }
+	.progress-circle__segment-indicator--donkergeel { stroke: var(--components-progress-circle-donkergeel-background-color); }
+	.progress-circle__segment-indicator--geel { stroke: var(--components-progress-circle-geel-background-color); }
+	.progress-circle__segment-indicator--donkerbruin { stroke: var(--components-progress-circle-donkerbruin-background-color); }
+	.progress-circle__segment-indicator--bruin { stroke: var(--components-progress-circle-bruin-background-color); }
+	.progress-circle__segment-indicator--donkergroen { stroke: var(--components-progress-circle-donkergroen-background-color); }
+	.progress-circle__segment-indicator--groen { stroke: var(--components-progress-circle-groen-background-color); }
+	.progress-circle__segment-indicator--mosgroen { stroke: var(--components-progress-circle-mosgroen-background-color); }
+	.progress-circle__segment-indicator--mintgroen { stroke: var(--components-progress-circle-mintgroen-background-color); }
 
 
 	/* # Spinner (indeterminate)
@@ -161,36 +161,37 @@ export const progressCircleStyles = css`
 	}
 
 
-	/* # Indeterminate fill colour follows the color variant; default accent (blue) */
+	/* # Indeterminate fill + border colour follow the color variant; default accent (blue) */
 
 	:host {
 		--_indeterminate-background-color: var(--components-progress-circle-accent-background-color);
+		--_indeterminate-border-color: var(--components-progress-circle-accent-border-color);
 	}
 
-	:host([color="neutral"]) { --_indeterminate-background-color: var(--components-progress-circle-neutral-background-color); }
-	:host([color="accent"]) { --_indeterminate-background-color: var(--components-progress-circle-accent-background-color); }
-	:host([color="success"]) { --_indeterminate-background-color: var(--components-progress-circle-success-background-color); }
-	:host([color="warning"]) { --_indeterminate-background-color: var(--components-progress-circle-warning-background-color); }
-	:host([color="critical"]) { --_indeterminate-background-color: var(--components-progress-circle-critical-background-color); }
-	:host([color="coolgray"]) { --_indeterminate-background-color: var(--components-progress-circle-coolgray-background-color); }
-	:host([color="lintblauw"]) { --_indeterminate-background-color: var(--components-progress-circle-lintblauw-background-color); }
-	:host([color="donkerblauw"]) { --_indeterminate-background-color: var(--components-progress-circle-donkerblauw-background-color); }
-	:host([color="hemelblauw"]) { --_indeterminate-background-color: var(--components-progress-circle-hemelblauw-background-color); }
-	:host([color="lichtblauw"]) { --_indeterminate-background-color: var(--components-progress-circle-lichtblauw-background-color); }
-	:host([color="paars"]) { --_indeterminate-background-color: var(--components-progress-circle-paars-background-color); }
-	:host([color="violet"]) { --_indeterminate-background-color: var(--components-progress-circle-violet-background-color); }
-	:host([color="robijnrood"]) { --_indeterminate-background-color: var(--components-progress-circle-robijnrood-background-color); }
-	:host([color="roze"]) { --_indeterminate-background-color: var(--components-progress-circle-roze-background-color); }
-	:host([color="rood"]) { --_indeterminate-background-color: var(--components-progress-circle-rood-background-color); }
-	:host([color="oranje"]) { --_indeterminate-background-color: var(--components-progress-circle-oranje-background-color); }
-	:host([color="donkergeel"]) { --_indeterminate-background-color: var(--components-progress-circle-donkergeel-background-color); }
-	:host([color="geel"]) { --_indeterminate-background-color: var(--components-progress-circle-geel-background-color); }
-	:host([color="donkerbruin"]) { --_indeterminate-background-color: var(--components-progress-circle-donkerbruin-background-color); }
-	:host([color="bruin"]) { --_indeterminate-background-color: var(--components-progress-circle-bruin-background-color); }
-	:host([color="donkergroen"]) { --_indeterminate-background-color: var(--components-progress-circle-donkergroen-background-color); }
-	:host([color="groen"]) { --_indeterminate-background-color: var(--components-progress-circle-groen-background-color); }
-	:host([color="mosgroen"]) { --_indeterminate-background-color: var(--components-progress-circle-mosgroen-background-color); }
-	:host([color="mintgroen"]) { --_indeterminate-background-color: var(--components-progress-circle-mintgroen-background-color); }
+	:host([color="neutral"]) { --_indeterminate-background-color: var(--components-progress-circle-neutral-background-color); --_indeterminate-border-color: var(--components-progress-circle-neutral-border-color); }
+	:host([color="accent"]) { --_indeterminate-background-color: var(--components-progress-circle-accent-background-color); --_indeterminate-border-color: var(--components-progress-circle-accent-border-color); }
+	:host([color="success"]) { --_indeterminate-background-color: var(--components-progress-circle-success-background-color); --_indeterminate-border-color: var(--components-progress-circle-success-border-color); }
+	:host([color="warning"]) { --_indeterminate-background-color: var(--components-progress-circle-warning-background-color); --_indeterminate-border-color: var(--components-progress-circle-warning-border-color); }
+	:host([color="critical"]) { --_indeterminate-background-color: var(--components-progress-circle-critical-background-color); --_indeterminate-border-color: var(--components-progress-circle-critical-border-color); }
+	:host([color="coolgray"]) { --_indeterminate-background-color: var(--components-progress-circle-coolgray-background-color); --_indeterminate-border-color: var(--components-progress-circle-coolgray-border-color); }
+	:host([color="lintblauw"]) { --_indeterminate-background-color: var(--components-progress-circle-lintblauw-background-color); --_indeterminate-border-color: var(--components-progress-circle-lintblauw-border-color); }
+	:host([color="donkerblauw"]) { --_indeterminate-background-color: var(--components-progress-circle-donkerblauw-background-color); --_indeterminate-border-color: var(--components-progress-circle-donkerblauw-border-color); }
+	:host([color="hemelblauw"]) { --_indeterminate-background-color: var(--components-progress-circle-hemelblauw-background-color); --_indeterminate-border-color: var(--components-progress-circle-hemelblauw-border-color); }
+	:host([color="lichtblauw"]) { --_indeterminate-background-color: var(--components-progress-circle-lichtblauw-background-color); --_indeterminate-border-color: var(--components-progress-circle-lichtblauw-border-color); }
+	:host([color="paars"]) { --_indeterminate-background-color: var(--components-progress-circle-paars-background-color); --_indeterminate-border-color: var(--components-progress-circle-paars-border-color); }
+	:host([color="violet"]) { --_indeterminate-background-color: var(--components-progress-circle-violet-background-color); --_indeterminate-border-color: var(--components-progress-circle-violet-border-color); }
+	:host([color="robijnrood"]) { --_indeterminate-background-color: var(--components-progress-circle-robijnrood-background-color); --_indeterminate-border-color: var(--components-progress-circle-robijnrood-border-color); }
+	:host([color="roze"]) { --_indeterminate-background-color: var(--components-progress-circle-roze-background-color); --_indeterminate-border-color: var(--components-progress-circle-roze-border-color); }
+	:host([color="rood"]) { --_indeterminate-background-color: var(--components-progress-circle-rood-background-color); --_indeterminate-border-color: var(--components-progress-circle-rood-border-color); }
+	:host([color="oranje"]) { --_indeterminate-background-color: var(--components-progress-circle-oranje-background-color); --_indeterminate-border-color: var(--components-progress-circle-oranje-border-color); }
+	:host([color="donkergeel"]) { --_indeterminate-background-color: var(--components-progress-circle-donkergeel-background-color); --_indeterminate-border-color: var(--components-progress-circle-donkergeel-border-color); }
+	:host([color="geel"]) { --_indeterminate-background-color: var(--components-progress-circle-geel-background-color); --_indeterminate-border-color: var(--components-progress-circle-geel-border-color); }
+	:host([color="donkerbruin"]) { --_indeterminate-background-color: var(--components-progress-circle-donkerbruin-background-color); --_indeterminate-border-color: var(--components-progress-circle-donkerbruin-border-color); }
+	:host([color="bruin"]) { --_indeterminate-background-color: var(--components-progress-circle-bruin-background-color); --_indeterminate-border-color: var(--components-progress-circle-bruin-border-color); }
+	:host([color="donkergroen"]) { --_indeterminate-background-color: var(--components-progress-circle-donkergroen-background-color); --_indeterminate-border-color: var(--components-progress-circle-donkergroen-border-color); }
+	:host([color="groen"]) { --_indeterminate-background-color: var(--components-progress-circle-groen-background-color); --_indeterminate-border-color: var(--components-progress-circle-groen-border-color); }
+	:host([color="mosgroen"]) { --_indeterminate-background-color: var(--components-progress-circle-mosgroen-background-color); --_indeterminate-border-color: var(--components-progress-circle-mosgroen-border-color); }
+	:host([color="mintgroen"]) { --_indeterminate-background-color: var(--components-progress-circle-mintgroen-background-color); --_indeterminate-border-color: var(--components-progress-circle-mintgroen-border-color); }
 
 
 	/* # Caption (label + value) */
@@ -240,7 +241,7 @@ export const progressCircleStyles = css`
 			50% { opacity: 0.7; }
 		}
 
-		.progress-circle__segment {
+		.progress-circle__segment-indicator {
 			transition: none;
 			animation: none;
 		}
@@ -248,7 +249,7 @@ export const progressCircleStyles = css`
 
 	@media (forced-colors: active) {
 		.progress-circle__track,
-		.progress-circle__segment,
+		.progress-circle__segment-indicator,
 		.progress-circle__indeterminate-indicator {
 			stroke: CanvasText;
 		}
@@ -256,7 +257,7 @@ export const progressCircleStyles = css`
 `;
 
 
-export const progressCircleSegmentStyles = css`
+export const progressCircleSegmentIndicatorStyles = css`
 	:host {
 		display: none;
 	}

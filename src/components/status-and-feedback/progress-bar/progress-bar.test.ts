@@ -1,6 +1,6 @@
 import { describe, it, expect, afterEach, vi } from 'vitest';
 import { fixture, cleanup, waitForUpdate } from '../../../test-utils.js';
-import type { NLDDProgressBar, NLDDProgressBarSegment } from './progress-bar.js';
+import type { NLDDProgressBar, NLDDProgressBarSegmentIndicator } from './progress-bar.js';
 import { INDETERMINATE_TRANSITION_MS } from './progress-bar.js';
 // Raw CSS source for the token cross-check at the bottom of this file. Vite
 // transforms ?raw imports into string literals at build time, so no HTTP
@@ -143,8 +143,8 @@ describe('nldd-progress-bar', () => {
 	it('reads sum of segment values as aria-valuenow', async () => {
 		el = await fixture(`
 			<nldd-progress-bar max="100">
-				<nldd-progress-bar-segment value="30"></nldd-progress-bar-segment>
-				<nldd-progress-bar-segment value="20"></nldd-progress-bar-segment>
+				<nldd-progress-bar-segment-indicator value="30"></nldd-progress-bar-segment-indicator>
+				<nldd-progress-bar-segment-indicator value="20"></nldd-progress-bar-segment-indicator>
 			</nldd-progress-bar>
 		`);
 		await waitForUpdate(el);
@@ -155,8 +155,8 @@ describe('nldd-progress-bar', () => {
 	it('progress mode without names: aria-valuetext is "X% voltooid"', async () => {
 		el = await fixture(`
 			<nldd-progress-bar mode="progress" max="100">
-				<nldd-progress-bar-segment value="30"></nldd-progress-bar-segment>
-				<nldd-progress-bar-segment value="20"></nldd-progress-bar-segment>
+				<nldd-progress-bar-segment-indicator value="30"></nldd-progress-bar-segment-indicator>
+				<nldd-progress-bar-segment-indicator value="20"></nldd-progress-bar-segment-indicator>
 			</nldd-progress-bar>
 		`);
 		await waitForUpdate(el);
@@ -167,8 +167,8 @@ describe('nldd-progress-bar', () => {
 	it('progress mode with names: aria-valuetext enumerates + sums', async () => {
 		el = await fixture(`
 			<nldd-progress-bar mode="progress" max="100">
-				<nldd-progress-bar-segment value="30" name="Upload"></nldd-progress-bar-segment>
-				<nldd-progress-bar-segment value="20" name="Verwerken"></nldd-progress-bar-segment>
+				<nldd-progress-bar-segment-indicator value="30" name="Upload"></nldd-progress-bar-segment-indicator>
+				<nldd-progress-bar-segment-indicator value="20" name="Verwerken"></nldd-progress-bar-segment-indicator>
 			</nldd-progress-bar>
 		`);
 		await waitForUpdate(el);
@@ -179,9 +179,9 @@ describe('nldd-progress-bar', () => {
 	it('distribution mode without names: aria-valuetext is plain percentages', async () => {
 		el = await fixture(`
 			<nldd-progress-bar mode="distribution" max="100">
-				<nldd-progress-bar-segment value="40"></nldd-progress-bar-segment>
-				<nldd-progress-bar-segment value="30"></nldd-progress-bar-segment>
-				<nldd-progress-bar-segment value="30"></nldd-progress-bar-segment>
+				<nldd-progress-bar-segment-indicator value="40"></nldd-progress-bar-segment-indicator>
+				<nldd-progress-bar-segment-indicator value="30"></nldd-progress-bar-segment-indicator>
+				<nldd-progress-bar-segment-indicator value="30"></nldd-progress-bar-segment-indicator>
 			</nldd-progress-bar>
 		`);
 		await waitForUpdate(el);
@@ -192,9 +192,9 @@ describe('nldd-progress-bar', () => {
 	it('distribution mode with names: aria-valuetext enumerates names', async () => {
 		el = await fixture(`
 			<nldd-progress-bar mode="distribution" max="500">
-				<nldd-progress-bar-segment value="200" name="Foto's"></nldd-progress-bar-segment>
-				<nldd-progress-bar-segment value="150" name="Video's"></nldd-progress-bar-segment>
-				<nldd-progress-bar-segment value="150" name="Vrij"></nldd-progress-bar-segment>
+				<nldd-progress-bar-segment-indicator value="200" name="Foto's"></nldd-progress-bar-segment-indicator>
+				<nldd-progress-bar-segment-indicator value="150" name="Video's"></nldd-progress-bar-segment-indicator>
+				<nldd-progress-bar-segment-indicator value="150" name="Vrij"></nldd-progress-bar-segment-indicator>
 			</nldd-progress-bar>
 		`);
 		await waitForUpdate(el);
@@ -207,28 +207,28 @@ describe('nldd-progress-bar', () => {
 	   Segment width computation
 	   ============================================================ */
 
-	it('sets --context-progress-bar-segment-width on each segment', async () => {
+	it('sets --context-progress-bar-segment-indicator-width on each segment', async () => {
 		el = await fixture(`
 			<nldd-progress-bar max="100">
-				<nldd-progress-bar-segment value="30"></nldd-progress-bar-segment>
-				<nldd-progress-bar-segment value="20"></nldd-progress-bar-segment>
+				<nldd-progress-bar-segment-indicator value="30"></nldd-progress-bar-segment-indicator>
+				<nldd-progress-bar-segment-indicator value="20"></nldd-progress-bar-segment-indicator>
 			</nldd-progress-bar>
 		`);
 		await waitForUpdate(el);
-		const segments = el.querySelectorAll<HTMLElement>('nldd-progress-bar-segment');
-		expect(segments[0]!.style.getPropertyValue('--context-progress-bar-segment-width')).toBe('30%');
-		expect(segments[1]!.style.getPropertyValue('--context-progress-bar-segment-width')).toBe('20%');
+		const segments = el.querySelectorAll<HTMLElement>('nldd-progress-bar-segment-indicator');
+		expect(segments[0]!.style.getPropertyValue('--context-progress-bar-segment-indicator-width')).toBe('30%');
+		expect(segments[1]!.style.getPropertyValue('--context-progress-bar-segment-indicator-width')).toBe('20%');
 	});
 
 	it('hides segments with value <= 0', async () => {
 		el = await fixture(`
 			<nldd-progress-bar max="100">
-				<nldd-progress-bar-segment value="50"></nldd-progress-bar-segment>
-				<nldd-progress-bar-segment value="0"></nldd-progress-bar-segment>
+				<nldd-progress-bar-segment-indicator value="50"></nldd-progress-bar-segment-indicator>
+				<nldd-progress-bar-segment-indicator value="0"></nldd-progress-bar-segment-indicator>
 			</nldd-progress-bar>
 		`);
 		await waitForUpdate(el);
-		const segments = el.querySelectorAll<HTMLElement>('nldd-progress-bar-segment');
+		const segments = el.querySelectorAll<HTMLElement>('nldd-progress-bar-segment-indicator');
 		expect(segments[0]!.hidden).toBe(false);
 		expect(segments[1]!.hidden).toBe(true);
 	});
@@ -237,16 +237,16 @@ describe('nldd-progress-bar', () => {
 		const warnSpy = vi.spyOn(console, 'warn').mockImplementation(() => {});
 		el = await fixture(`
 			<nldd-progress-bar max="100">
-				<nldd-progress-bar-segment value="100"></nldd-progress-bar-segment>
-				<nldd-progress-bar-segment value="50"></nldd-progress-bar-segment>
+				<nldd-progress-bar-segment-indicator value="100"></nldd-progress-bar-segment-indicator>
+				<nldd-progress-bar-segment-indicator value="50"></nldd-progress-bar-segment-indicator>
 			</nldd-progress-bar>
 		`);
 		await waitForUpdate(el);
-		const segments = el.querySelectorAll<HTMLElement>('nldd-progress-bar-segment');
+		const segments = el.querySelectorAll<HTMLElement>('nldd-progress-bar-segment-indicator');
 		// 100 / 150 ≈ 66.67%
-		expect(segments[0]!.style.getPropertyValue('--context-progress-bar-segment-width')).toMatch(/^66\.6/);
+		expect(segments[0]!.style.getPropertyValue('--context-progress-bar-segment-indicator-width')).toMatch(/^66\.6/);
 		// 50 / 150 ≈ 33.33%
-		expect(segments[1]!.style.getPropertyValue('--context-progress-bar-segment-width')).toMatch(/^33\.3/);
+		expect(segments[1]!.style.getPropertyValue('--context-progress-bar-segment-indicator-width')).toMatch(/^33\.3/);
 		expect(warnSpy).toHaveBeenCalled();
 		warnSpy.mockRestore();
 	});
@@ -254,14 +254,14 @@ describe('nldd-progress-bar', () => {
 	it('re-syncs when a segment value changes', async () => {
 		el = await fixture(`
 			<nldd-progress-bar max="100">
-				<nldd-progress-bar-segment value="30"></nldd-progress-bar-segment>
+				<nldd-progress-bar-segment-indicator value="30"></nldd-progress-bar-segment-indicator>
 			</nldd-progress-bar>
 		`);
 		await waitForUpdate(el);
-		const segment = el.querySelector<NLDDProgressBarSegment>('nldd-progress-bar-segment')!;
+		const segment = el.querySelector<NLDDProgressBarSegmentIndicator>('nldd-progress-bar-segment-indicator')!;
 		segment.value = 70;
 		await waitForUpdate(el);
-		expect((segment as unknown as HTMLElement).style.getPropertyValue('--context-progress-bar-segment-width')).toBe('70%');
+		expect((segment as unknown as HTMLElement).style.getPropertyValue('--context-progress-bar-segment-indicator-width')).toBe('70%');
 	});
 
 
@@ -278,7 +278,7 @@ describe('nldd-progress-bar', () => {
 	it('does not render the indicator when there are segments', async () => {
 		el = await fixture(`
 			<nldd-progress-bar indeterminate>
-				<nldd-progress-bar-segment value="30"></nldd-progress-bar-segment>
+				<nldd-progress-bar-segment-indicator value="30"></nldd-progress-bar-segment-indicator>
 			</nldd-progress-bar>
 		`);
 		await waitForUpdate(el);
@@ -293,20 +293,20 @@ describe('nldd-progress-bar', () => {
 	it('renders an internal segment when value is set and no children', async () => {
 		el = await fixture('<nldd-progress-bar value="60" color="success"></nldd-progress-bar>');
 		await waitForUpdate(el);
-		const internal = el.shadowRoot!.querySelector<HTMLElement>('.progress-bar__segment');
+		const internal = el.shadowRoot!.querySelector<HTMLElement>('.progress-bar__segment-indicator');
 		expect(internal).not.toBeNull();
 		expect(internal!.getAttribute('color')).toBe('success');
-		expect(internal!.style.getPropertyValue('--context-progress-bar-segment-width')).toBe('60%');
+		expect(internal!.style.getPropertyValue('--context-progress-bar-segment-indicator-width')).toBe('60%');
 	});
 
 	it('does not render internal segment when slotted children exist', async () => {
 		el = await fixture(`
 			<nldd-progress-bar value="60">
-				<nldd-progress-bar-segment value="30"></nldd-progress-bar-segment>
+				<nldd-progress-bar-segment-indicator value="30"></nldd-progress-bar-segment-indicator>
 			</nldd-progress-bar>
 		`);
 		await waitForUpdate(el);
-		expect(el.shadowRoot!.querySelector('.progress-bar__segment')).toBeNull();
+		expect(el.shadowRoot!.querySelector('.progress-bar__segment-indicator')).toBeNull();
 	});
 
 
@@ -317,106 +317,106 @@ describe('nldd-progress-bar', () => {
 	it('auto-generates tooltip with name + percentage for slotted segments', async () => {
 		el = await fixture(`
 			<nldd-progress-bar max="100">
-				<nldd-progress-bar-segment value="30" name="Upload"></nldd-progress-bar-segment>
-				<nldd-progress-bar-segment value="20" name="Verwerken"></nldd-progress-bar-segment>
+				<nldd-progress-bar-segment-indicator value="30" name="Upload"></nldd-progress-bar-segment-indicator>
+				<nldd-progress-bar-segment-indicator value="20" name="Verwerken"></nldd-progress-bar-segment-indicator>
 			</nldd-progress-bar>
 		`);
 		await waitForUpdate(el);
-		const seg = el.querySelector<NLDDProgressBarSegment>('nldd-progress-bar-segment')!;
+		const seg = el.querySelector<NLDDProgressBarSegmentIndicator>('nldd-progress-bar-segment-indicator')!;
 		expect(seg._autoTooltipText).toBe('Upload: 30%');
 	});
 
 	it('auto-generates tooltip without name as just percentage', async () => {
 		el = await fixture(`
 			<nldd-progress-bar max="100">
-				<nldd-progress-bar-segment value="30"></nldd-progress-bar-segment>
-				<nldd-progress-bar-segment value="20"></nldd-progress-bar-segment>
+				<nldd-progress-bar-segment-indicator value="30"></nldd-progress-bar-segment-indicator>
+				<nldd-progress-bar-segment-indicator value="20"></nldd-progress-bar-segment-indicator>
 			</nldd-progress-bar>
 		`);
 		await waitForUpdate(el);
-		const seg = el.querySelector<NLDDProgressBarSegment>('nldd-progress-bar-segment')!;
+		const seg = el.querySelector<NLDDProgressBarSegmentIndicator>('nldd-progress-bar-segment-indicator')!;
 		expect(seg._autoTooltipText).toBe('30%');
 	});
 
 	it('tooltip follows value-format="absolute"', async () => {
 		el = await fixture(`
 			<nldd-progress-bar max="500" value-format="absolute">
-				<nldd-progress-bar-segment value="200" name="Foto's"></nldd-progress-bar-segment>
-				<nldd-progress-bar-segment value="100" name="Video's"></nldd-progress-bar-segment>
+				<nldd-progress-bar-segment-indicator value="200" name="Foto's"></nldd-progress-bar-segment-indicator>
+				<nldd-progress-bar-segment-indicator value="100" name="Video's"></nldd-progress-bar-segment-indicator>
 			</nldd-progress-bar>
 		`);
 		await waitForUpdate(el);
-		const seg = el.querySelector<NLDDProgressBarSegment>('nldd-progress-bar-segment')!;
+		const seg = el.querySelector<NLDDProgressBarSegmentIndicator>('nldd-progress-bar-segment-indicator')!;
 		expect(seg._autoTooltipText).toBe("Foto's: 200");
 	});
 
 	it('tooltip follows value-format="fraction"', async () => {
 		el = await fixture(`
 			<nldd-progress-bar max="100" value-format="fraction">
-				<nldd-progress-bar-segment value="30" name="Upload"></nldd-progress-bar-segment>
-				<nldd-progress-bar-segment value="20" name="Verwerken"></nldd-progress-bar-segment>
+				<nldd-progress-bar-segment-indicator value="30" name="Upload"></nldd-progress-bar-segment-indicator>
+				<nldd-progress-bar-segment-indicator value="20" name="Verwerken"></nldd-progress-bar-segment-indicator>
 			</nldd-progress-bar>
 		`);
 		await waitForUpdate(el);
-		const seg = el.querySelector<NLDDProgressBarSegment>('nldd-progress-bar-segment')!;
+		const seg = el.querySelector<NLDDProgressBarSegmentIndicator>('nldd-progress-bar-segment-indicator')!;
 		expect(seg._autoTooltipText).toBe('Upload: 30 / 100');
 	});
 
 	it('suppresses auto-tooltip on single slotted segment when caption is shown', async () => {
 		el = await fixture(`
 			<nldd-progress-bar max="100" text="Uploaden">
-				<nldd-progress-bar-segment value="30" name="Upload"></nldd-progress-bar-segment>
+				<nldd-progress-bar-segment-indicator value="30" name="Upload"></nldd-progress-bar-segment-indicator>
 			</nldd-progress-bar>
 		`);
 		await waitForUpdate(el);
-		const seg = el.querySelector<NLDDProgressBarSegment>('nldd-progress-bar-segment')!;
+		const seg = el.querySelector<NLDDProgressBarSegmentIndicator>('nldd-progress-bar-segment-indicator')!;
 		expect(seg._autoTooltipText).toBe('');
 	});
 
 	it('shows auto-tooltip on single slotted segment in tooltip mode', async () => {
 		el = await fixture(`
 			<nldd-progress-bar max="100" value-display="tooltip">
-				<nldd-progress-bar-segment value="30" name="Upload"></nldd-progress-bar-segment>
+				<nldd-progress-bar-segment-indicator value="30" name="Upload"></nldd-progress-bar-segment-indicator>
 			</nldd-progress-bar>
 		`);
 		await waitForUpdate(el);
-		const seg = el.querySelector<NLDDProgressBarSegment>('nldd-progress-bar-segment')!;
+		const seg = el.querySelector<NLDDProgressBarSegmentIndicator>('nldd-progress-bar-segment-indicator')!;
 		expect(seg._autoTooltipText).toBe('Upload: 30%');
 	});
 
 	it('segment tooltip-text attribute overrides auto-generated text', async () => {
 		el = await fixture(`
 			<nldd-progress-bar max="500">
-				<nldd-progress-bar-segment value="200" name="Foto's" tooltip-text="200 GB van 500 GB"></nldd-progress-bar-segment>
+				<nldd-progress-bar-segment-indicator value="200" name="Foto's" tooltip-text="200 GB van 500 GB"></nldd-progress-bar-segment-indicator>
 			</nldd-progress-bar>
 		`);
 		await waitForUpdate(el);
-		const seg = el.querySelector<NLDDProgressBarSegment>('nldd-progress-bar-segment')!;
+		const seg = el.querySelector<NLDDProgressBarSegmentIndicator>('nldd-progress-bar-segment-indicator')!;
 		expect(seg._effectiveTooltip).toBe('200 GB van 500 GB');
 	});
 
 	it('renders an nldd-tooltip around the tooltip-area', async () => {
-		el = await fixture<NLDDProgressBarSegment>(
-			'<nldd-progress-bar-segment value="30" tooltip-text="Hover me"></nldd-progress-bar-segment>',
+		el = await fixture<NLDDProgressBarSegmentIndicator>(
+			'<nldd-progress-bar-segment-indicator value="30" tooltip-text="Hover me"></nldd-progress-bar-segment-indicator>',
 		);
 		await waitForUpdate(el);
 		const tooltip = el.shadowRoot!.querySelector('nldd-tooltip');
 		expect(tooltip).not.toBeNull();
 		expect(tooltip!.getAttribute('text')).toBe('Hover me');
-		expect(tooltip!.querySelector('.progress-bar-segment__tooltip-area')).not.toBeNull();
+		expect(tooltip!.querySelector('.progress-bar-segment-indicator__tooltip-area')).not.toBeNull();
 	});
 
 	it('internal segment tooltip is suppressed when caption is shown', async () => {
 		el = await fixture('<nldd-progress-bar value="60" text="Uploaden"></nldd-progress-bar>');
 		await waitForUpdate(el);
-		const internal = el.shadowRoot!.querySelector<NLDDProgressBarSegment>('.progress-bar__segment')!;
+		const internal = el.shadowRoot!.querySelector<NLDDProgressBarSegmentIndicator>('.progress-bar__segment-indicator')!;
 		expect(internal._autoTooltipText).toBe('');
 	});
 
 	it('internal segment gets a tooltip in tooltip mode', async () => {
 		el = await fixture('<nldd-progress-bar value="60" value-display="tooltip"></nldd-progress-bar>');
 		await waitForUpdate(el);
-		const internal = el.shadowRoot!.querySelector<NLDDProgressBarSegment>('.progress-bar__segment')!;
+		const internal = el.shadowRoot!.querySelector<NLDDProgressBarSegmentIndicator>('.progress-bar__segment-indicator')!;
 		expect(internal._autoTooltipText).toBe('60%');
 	});
 
@@ -442,7 +442,7 @@ describe('nldd-progress-bar', () => {
 	it('rounds aria-valuenow to avoid float screenreader output', async () => {
 		el = await fixture(`
 			<nldd-progress-bar max="3">
-				<nldd-progress-bar-segment value="1"></nldd-progress-bar-segment>
+				<nldd-progress-bar-segment-indicator value="1"></nldd-progress-bar-segment-indicator>
 			</nldd-progress-bar>
 		`);
 		await waitForUpdate(el);
@@ -463,7 +463,7 @@ describe('nldd-progress-bar', () => {
 	});
 });
 
-describe('nldd-progress-bar-segment', () => {
+describe('nldd-progress-bar-segment-indicator', () => {
 	let el: HTMLElement;
 
 	afterEach(() => {
@@ -471,15 +471,15 @@ describe('nldd-progress-bar-segment', () => {
 	});
 
 	it('renders without errors', async () => {
-		el = await fixture('<nldd-progress-bar-segment value="30"></nldd-progress-bar-segment>');
+		el = await fixture('<nldd-progress-bar-segment-indicator value="30"></nldd-progress-bar-segment-indicator>');
 		await waitForUpdate(el);
 		expect(el.shadowRoot).not.toBeNull();
 	});
 
 	it('defaults color to "accent"', async () => {
-		el = await fixture<NLDDProgressBarSegment>('<nldd-progress-bar-segment value="30"></nldd-progress-bar-segment>');
+		el = await fixture<NLDDProgressBarSegmentIndicator>('<nldd-progress-bar-segment-indicator value="30"></nldd-progress-bar-segment-indicator>');
 		await waitForUpdate(el);
-		expect((el as unknown as NLDDProgressBarSegment).color).toBe('accent');
+		expect((el as unknown as NLDDProgressBarSegmentIndicator).color).toBe('accent');
 	});
 
 	/* ============================================================

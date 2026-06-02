@@ -154,8 +154,8 @@ export const Colors = {
 export const MultiSegmentProgress = {
 	render: () => html`
 		<nldd-progress-bar mode="progress" max="100" text="Verwerking" value-text="2 van 3 stappen voltooid">
-			<nldd-progress-bar-segment value="40" color="success" name="Geüpload"></nldd-progress-bar-segment>
-			<nldd-progress-bar-segment value="30" color="accent" name="Verwerken"></nldd-progress-bar-segment>
+			<nldd-progress-bar-segment-indicator value="40" color="success" name="Geüpload"></nldd-progress-bar-segment-indicator>
+			<nldd-progress-bar-segment-indicator value="30" color="accent" name="Verwerken"></nldd-progress-bar-segment-indicator>
 		</nldd-progress-bar>
 	`,
 	parameters: {
@@ -171,9 +171,9 @@ export const MultiSegmentProgress = {
 export const Distribution = {
 	render: () => html`
 		<nldd-progress-bar mode="distribution" size="lg" max="500" text="Opslag" value-text="350 GB van 500 GB">
-			<nldd-progress-bar-segment value="200" color="hemelblauw" name="Foto's" tooltip-text="Foto's: 200 GB (40%)"></nldd-progress-bar-segment>
-			<nldd-progress-bar-segment value="100" color="oranje" name="Video's" tooltip-text="Video's: 100 GB (20%)"></nldd-progress-bar-segment>
-			<nldd-progress-bar-segment value="50" color="paars" name="Documenten" tooltip-text="Documenten: 50 GB (10%)"></nldd-progress-bar-segment>
+			<nldd-progress-bar-segment-indicator value="200" color="hemelblauw" name="Foto's" tooltip-text="Foto's: 200 GB (40%)"></nldd-progress-bar-segment-indicator>
+			<nldd-progress-bar-segment-indicator value="100" color="oranje" name="Video's" tooltip-text="Video's: 100 GB (20%)"></nldd-progress-bar-segment-indicator>
+			<nldd-progress-bar-segment-indicator value="50" color="paars" name="Documenten" tooltip-text="Documenten: 50 GB (10%)"></nldd-progress-bar-segment-indicator>
 		</nldd-progress-bar>
 	`,
 	parameters: {

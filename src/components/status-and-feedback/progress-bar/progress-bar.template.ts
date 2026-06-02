@@ -10,13 +10,13 @@ export function progressBarTemplate(component: NLDDProgressBar, onSlotChange: ()
 	const hasCaption = component._hasCaption;
 	const isExiting = component._indeterminateExiting;
 	const isEntering = component._indeterminateEntering;
-	// Indicator renders during indeterminate and during an exit-fade.
-	const showIndeterminateIndicator = (component.indeterminate || isExiting) && !component._hasSegments;
-	// Segment renders during determinate and during an enter-shrink (otherwise
-	// it can't shrink — it would unmount immediately). Its dynamic attributes
-	// (width, mode, tooltip-text, grow/shrink) are applied by _syncSegments
-	// so the slotted and internal paths share one code path.
-	const showInternalSegment = !component._hasSegments
+	// The indeterminate indicator renders while indeterminate, and during its exit-fade.
+	const showIndeterminateIndicator = (component.indeterminate || isExiting) && !component._hasSegmentIndicators;
+	// The internal segment-indicator renders while determinate, and during an
+	// enter-shrink (otherwise it can't shrink — it would unmount immediately).
+	// Its dynamic attributes (width, mode, tooltip-text, grow/shrink) are applied
+	// by _syncSegmentIndicators so the slotted and internal paths share one code path.
+	const showInternalSegmentIndicator = !component._hasSegmentIndicators
 		&& component.value !== null && component.value > 0
 		&& (!component.indeterminate || isEntering);
 	// Round so aria-valuenow doesn't produce floats (some screenreaders
@@ -42,6 +42,13 @@ export function progressBarTemplate(component: NLDDProgressBar, onSlotChange: ()
 			aria-valuenow=${ifDefined(ariaValueNow)}
 			aria-valuetext=${component._ariaValueText}
 		>
+			${showInternalSegmentIndicator ? html`
+				<nldd-progress-bar-segment-indicator class="progress-bar__segment-indicator"
+					.value=${component.value!}
+					color=${component.color}
+				></nldd-progress-bar-segment-indicator>
+			` : nothing}
+			<slot @slotchange=${onSlotChange}></slot>
 			${showIndeterminateIndicator ? html`
 				<div class=${classMap({
 					'progress-bar__indeterminate-indicator': true,
@@ -49,13 +56,6 @@ export function progressBarTemplate(component: NLDDProgressBar, onSlotChange: ()
 					'is-fading-in': isEntering && component.indeterminate,
 				})}></div>
 			` : nothing}
-			${showInternalSegment ? html`
-				<nldd-progress-bar-segment class="progress-bar__segment"
-					.value=${component.value!}
-					color=${component.color}
-				></nldd-progress-bar-segment>
-			` : nothing}
-			<slot @slotchange=${onSlotChange}></slot>
 		</div>
 	`;
 }

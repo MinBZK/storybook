@@ -157,8 +157,8 @@ export const Colors = {
 export const MultiSegmentProgress = {
 	render: () => html`
 		<nldd-progress-circle mode="progress" size="80" max="100" text="Verwerking">
-			<nldd-progress-circle-segment value="40" color="success" name="Geüpload"></nldd-progress-circle-segment>
-			<nldd-progress-circle-segment value="30" color="accent" name="Verwerken"></nldd-progress-circle-segment>
+			<nldd-progress-circle-segment-indicator value="40" color="success" name="Geüpload"></nldd-progress-circle-segment-indicator>
+			<nldd-progress-circle-segment-indicator value="30" color="accent" name="Verwerken"></nldd-progress-circle-segment-indicator>
 		</nldd-progress-circle>
 	`,
 	parameters: {
@@ -174,10 +174,10 @@ export const MultiSegmentProgress = {
 export const Distribution = {
 	render: () => html`
 		<nldd-progress-circle mode="distribution" size="80" max="500" text="Opslag (500 GB)">
-			<nldd-progress-circle-segment value="200" color="hemelblauw" name="Foto's"></nldd-progress-circle-segment>
-			<nldd-progress-circle-segment value="100" color="oranje" name="Video's"></nldd-progress-circle-segment>
-			<nldd-progress-circle-segment value="50" color="paars" name="Documenten"></nldd-progress-circle-segment>
-			<nldd-progress-circle-segment value="150" color="coolgray" name="Vrij"></nldd-progress-circle-segment>
+			<nldd-progress-circle-segment-indicator value="200" color="hemelblauw" name="Foto's"></nldd-progress-circle-segment-indicator>
+			<nldd-progress-circle-segment-indicator value="100" color="oranje" name="Video's"></nldd-progress-circle-segment-indicator>
+			<nldd-progress-circle-segment-indicator value="50" color="paars" name="Documenten"></nldd-progress-circle-segment-indicator>
+			<nldd-progress-circle-segment-indicator value="150" color="coolgray" name="Vrij"></nldd-progress-circle-segment-indicator>
 		</nldd-progress-circle>
 	`,
 	parameters: {
@@ -198,7 +198,7 @@ export const Indeterminate = {
 		controls: { disable: true },
 		docs: {
 			description: {
-				story: 'Een vast segment draait rond de cirkel. Bij `prefers-reduced-motion` wordt de animatie vervangen door een rustige pulse.',
+				story: 'Een vaste boog draait rond de cirkel. Bij `prefers-reduced-motion` wordt de animatie vervangen door een rustige pulse.',
 			},
 		},
 	},

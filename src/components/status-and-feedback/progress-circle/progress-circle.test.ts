@@ -74,20 +74,20 @@ describe('nldd-progress-circle', () => {
 	it('renders one segment circle per slotted segment', async () => {
 		el = await fixture(`
 			<nldd-progress-circle max="100">
-				<nldd-progress-circle-segment value="30" color="success"></nldd-progress-circle-segment>
-				<nldd-progress-circle-segment value="20" color="accent"></nldd-progress-circle-segment>
+				<nldd-progress-circle-segment-indicator value="30" color="success"></nldd-progress-circle-segment-indicator>
+				<nldd-progress-circle-segment-indicator value="20" color="accent"></nldd-progress-circle-segment-indicator>
 			</nldd-progress-circle>
 		`);
 		await waitForUpdate(el);
-		const segments = el.shadowRoot!.querySelectorAll('.progress-circle__segment');
+		const segments = el.shadowRoot!.querySelectorAll('.progress-circle__segment-indicator');
 		expect(segments.length).toBe(2);
 	});
 
 	it('distribution mode reads aria-valuetext as enumerated percentages', async () => {
 		el = await fixture(`
 			<nldd-progress-circle mode="distribution" max="500">
-				<nldd-progress-circle-segment value="200" name="Foto's"></nldd-progress-circle-segment>
-				<nldd-progress-circle-segment value="150" name="Video's"></nldd-progress-circle-segment>
+				<nldd-progress-circle-segment-indicator value="200" name="Foto's"></nldd-progress-circle-segment-indicator>
+				<nldd-progress-circle-segment-indicator value="150" name="Video's"></nldd-progress-circle-segment-indicator>
 			</nldd-progress-circle>
 		`);
 		await waitForUpdate(el);
@@ -134,7 +134,7 @@ describe('nldd-progress-circle', () => {
 		el = await fixture('<nldd-progress-circle value="60" color="accent"></nldd-progress-circle>');
 		await waitForUpdate(el);
 		const track = el.shadowRoot!.querySelector('.progress-circle__track')!;
-		const seg = el.shadowRoot!.querySelector('.progress-circle__segment')!;
+		const seg = el.shadowRoot!.querySelector('.progress-circle__segment-indicator')!;
 		// Filter ids carry a per-instance suffix, so match by prefix.
 		expect(track.getAttribute('filter')).toMatch(/^url\(#progress-circle-border-track-/);
 		expect(seg.getAttribute('filter')).toMatch(/^url\(#progress-circle-border-accent-/);
@@ -157,7 +157,7 @@ describe('nldd-progress-circle', () => {
 	});
 });
 
-describe('nldd-progress-circle-segment', () => {
+describe('nldd-progress-circle-segment-indicator', () => {
 	let el: HTMLElement;
 
 	afterEach(() => {
@@ -165,14 +165,14 @@ describe('nldd-progress-circle-segment', () => {
 	});
 
 	it('renders without errors', async () => {
-		el = await fixture('<nldd-progress-circle-segment value="30"></nldd-progress-circle-segment>');
+		el = await fixture('<nldd-progress-circle-segment-indicator value="30"></nldd-progress-circle-segment-indicator>');
 		await waitForUpdate(el);
 		expect(el.shadowRoot).not.toBeNull();
 	});
 
 	it('reflects value, color, and name attributes', async () => {
 		el = await fixture(
-			'<nldd-progress-circle-segment value="40" color="success" name="Foto\'s"></nldd-progress-circle-segment>',
+			'<nldd-progress-circle-segment-indicator value="40" color="success" name="Foto\'s"></nldd-progress-circle-segment-indicator>',
 		);
 		await waitForUpdate(el);
 		const seg = el as unknown as { value: number; color: string; name: string };
@@ -185,7 +185,7 @@ describe('nldd-progress-circle-segment', () => {
 	});
 
 	it('renders no visible content (data-only element — parent renders the SVG arc)', async () => {
-		el = await fixture('<nldd-progress-circle-segment value="50"></nldd-progress-circle-segment>');
+		el = await fixture('<nldd-progress-circle-segment-indicator value="50"></nldd-progress-circle-segment-indicator>');
 		await waitForUpdate(el);
 		// Lit leaves marker comments in the shadow root for empty templates;
 		// what matters is that there are no actual elements.
@@ -195,8 +195,8 @@ describe('nldd-progress-circle-segment', () => {
 	it('is included in the parent\'s _buildArcs output', async () => {
 		const parent = await fixture(`
 			<nldd-progress-circle mode="distribution" max="500">
-				<nldd-progress-circle-segment value="200" color="success" name="Foto's"></nldd-progress-circle-segment>
-				<nldd-progress-circle-segment value="150" color="accent" name="Video's"></nldd-progress-circle-segment>
+				<nldd-progress-circle-segment-indicator value="200" color="success" name="Foto's"></nldd-progress-circle-segment-indicator>
+				<nldd-progress-circle-segment-indicator value="150" color="accent" name="Video's"></nldd-progress-circle-segment-indicator>
 			</nldd-progress-circle>
 		`);
 		await waitForUpdate(parent);
@@ -214,8 +214,8 @@ describe('nldd-progress-circle-segment', () => {
 	it('zero-value segment still gets pushed (with length 0) so CSS transitions can animate later', async () => {
 		const parent = await fixture(`
 			<nldd-progress-circle max="100">
-				<nldd-progress-circle-segment value="0" color="accent"></nldd-progress-circle-segment>
-				<nldd-progress-circle-segment value="40" color="success"></nldd-progress-circle-segment>
+				<nldd-progress-circle-segment-indicator value="0" color="accent"></nldd-progress-circle-segment-indicator>
+				<nldd-progress-circle-segment-indicator value="40" color="success"></nldd-progress-circle-segment-indicator>
 			</nldd-progress-circle>
 		`);
 		await waitForUpdate(parent);
