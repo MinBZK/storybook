@@ -377,10 +377,7 @@ nldd-rich-text hr {
 }
 
 
-/* # Table
-   Spans the full container width by default so wide data tables aren't
-   cramped to the main text width. Same min-block-spacing floor as
-   blockquote so it always reads as a distinct chunk even in flat mode. */
+/* # Table */
 
 nldd-rich-text > table {
 	grid-column: main-start / full-end;
@@ -393,7 +390,11 @@ nldd-rich-text table {
 		0px,
 		calc(var(--components-rich-text-spacing-snug) - var(--_spacing))
 	);
-	border-collapse: collapse;
+	border-collapse: separate;
+	border-spacing: 0;
+	border: var(--semantics-tables-border-color) solid var(--semantics-tables-border-width);
+	border-radius: var(--semantics-tables-corner-radius);
+	background-color: var(--semantics-surfaces-background-color);
 	font: var(--primitives-font-body-md-regular-tight);
 	overflow-x: auto;
 	-webkit-overflow-scrolling: touch;
@@ -406,26 +407,46 @@ nldd-rich-text table {
 	}
 }
 
-
-/* # Table Header Cell */
+/* ## Table Header Cell */
 
 nldd-rich-text th {
-	padding: var(--primitives-space-6);
-	border-bottom: var(--semantics-dividers-thickness) solid var(--semantics-dividers-color);
-	font: var(--primitives-font-body-md-bold-snug);
+	min-width: var(--primitives-area-160);
+	min-height: var(--semantics-tables-row-min-height);
+	padding-block: var(--semantics-tables-row-padding-block);
+	padding-inline: calc(var(--semantics-tables-column-gap) / 2);
+	border-bottom: var(--semantics-tables-border-width) solid var(--semantics-tables-border-color);
+	font: var(--primitives-font-body-md-bold-tight);
 	text-align: left;
 }
 
-
-/* # Table Data Cell */
+/* ## Table Data Cell */
 
 nldd-rich-text td {
 	min-width: var(--primitives-area-160);
-	padding: var(--primitives-space-6);
-	border-bottom: var(--semantics-dividers-thickness) solid var(--semantics-dividers-color);
-	font: var(--primitives-font-body-md-regular-snug);
+	min-height: var(--semantics-tables-row-min-height);
+	padding-block: var(--semantics-tables-row-padding-block);
+	padding-inline: calc(var(--semantics-tables-column-gap) / 2);
+	border-bottom: var(--semantics-tables-border-width) solid var(--semantics-tables-border-color);
+	font: var(--primitives-font-body-md-regular-tight);
+	text-align: left;
 
 	@container (min-width: 641px) {
 		min-width: unset;
 	}
+}
+
+/* ## Table Outer Cells */
+
+nldd-rich-text tr > :is(th, td):first-child {
+	padding-inline-start: var(--semantics-tables-row-padding-inline);
+}
+
+nldd-rich-text tr > :is(th, td):last-child {
+	padding-inline-end: var(--semantics-tables-row-padding-inline);
+}
+
+/* ## Table Last Row */
+
+nldd-rich-text tr:last-child > :is(th, td) {
+	border-bottom: none;
 }
