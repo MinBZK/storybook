@@ -3,10 +3,12 @@
  *
  * Exports both NLDDTable and NLDDTableRow.
  *
- * A data table that mirrors `nldd-list` visually (simple/box variants,
- * surfaces, row dividers) but aligns content into shared columns using a CSS
- * grid + subgrid. Column widths are defined ONCE on the table via the
- * `columns` attribute (a CSS grid track list), like an HTML `<colgroup>`.
+ * A data table presented as a boxed surface (rounded corners, an inset border
+ * ring, a base or tinted fill) that aligns content into shared columns using a
+ * CSS grid + subgrid. Row dividers run full-bleed to the edges; the inline
+ * padding lives on the rows, so it insets the cell content but not the dividers.
+ * Column widths are defined ONCE on the table via the `columns` attribute (a
+ * CSS grid track list), like an HTML `<colgroup>`.
  * Rows are `<nldd-table-row>` elements whose children are the existing
  * `nldd-cell` family — every row uses `grid-template-columns: subgrid`, so all
  * rows snap to the same columns.
@@ -15,8 +17,8 @@
  * cells become column headers (role="columnheader").
  *
  * Responsive: two complementary strategies. (1) Give columns a minimum width
- * (e.g. `minmax(160px,1fr)`) and wrap the table in an `overflow-x: auto`
- * container — it scrolls horizontally when too narrow, no coordination needed.
+ * (e.g. `minmax(160px,1fr)`) — the table is its own scroll container, so it
+ * scrolls horizontally when too narrow (no wrapper needed).
  * (2) Drop columns at breakpoints: provide `sm-columns`/`md-columns`/
  * `lg-columns` (shorter track lists) and hide the dropped columns' cells with
  * `hide-below`/`hide-above` at the matching breakpoint. The table picks the
@@ -28,8 +30,7 @@
  *
  * @element nldd-table
  *
- * @attr {'simple'|'box'} variant - Visual treatment; 'box' adds a rounded surface + border ring (default 'simple')
- * @attr {'tinted'|'base'} background - Surface fill for variant="box" (default 'tinted')
+ * @attr {'base'|'tinted'} background - Surface fill of the box (default 'base')
  * @attr {string} columns - CSS grid track list defining the columns once, e.g. "minmax(200px,1fr) 120px 80px"
  * @attr {string} sm-columns - Track list when the table is sm-wide (≤640px); falls back to `columns`
  * @attr {string} md-columns - Track list when the table is md-wide (641–1007px); falls back to `columns`
@@ -58,8 +59,7 @@ import type { NLDDTableTranslations } from './table.i18n.js';
 import { breakpoints } from '../../../assets/styles/breakpoints.js';
 import '../../status-and-feedback/inline-dialog/inline-dialog.js';
 
-export type TableVariant = 'simple' | 'box';
-export type TableBackground = 'tinted' | 'base';
+export type TableBackground = 'base' | 'tinted';
 
 // Standard container breakpoints. The table picks its track list against its
 // own content-box width; the same values back the cells' `hide-below`.
@@ -74,10 +74,7 @@ export class NLDDTable extends LitElement {
 	static override styles = tableStyles;
 
 	@property({ type: String, reflect: true })
-	variant: TableVariant = 'simple';
-
-	@property({ type: String, reflect: true })
-	background?: TableBackground;
+	background: TableBackground = 'base';
 
 	/** CSS grid track list applied once as the table's columns. */
 	@property({ type: String, reflect: true })
@@ -210,11 +207,10 @@ export class NLDDTable extends LitElement {
 
 	/** Make the table focusable while it scrolls horizontally so keyboard users
 	 *  can pan it (mirrors nldd-code-viewer / nldd-rich-text), and keep its
-	 *  accessible name in sync. Both variants are their own scroll container
-	 *  (overflow-x: auto); the overflow-x check (not width alone) keeps a
-	 *  hypothetical non-scrolling variant from becoming a dead focus stop. The
-	 *  consumer's accessible-label wins; when the table scrolls without one, a
-	 *  translated fallback names the focusable region. */
+	 *  accessible name in sync. The table is its own scroll container
+	 *  (overflow-x: auto); the overflow-x check (not width alone) is defensive.
+	 *  The consumer's accessible-label wins; when the table scrolls without one,
+	 *  a translated fallback names the focusable region. */
 	private _syncHostA11y(): void {
 		const overflowX = getComputedStyle(this).overflowX;
 		const scrollableOverflow = overflowX === 'auto' || overflowX === 'scroll';

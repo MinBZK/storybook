@@ -55,11 +55,13 @@ describe('nldd-table', () => {
 		expect(el.getAttribute('aria-label')).toBe('Gebruikers');
 	});
 
-	it('reflects the box variant + background attributes', async () => {
-		el = await fixture<NLDDTable>('<nldd-table columns="1fr" variant="box" background="base"></nldd-table>');
+	it('defaults the background to base and reflects tinted', async () => {
+		el = await fixture<NLDDTable>('<nldd-table columns="1fr"></nldd-table>');
 		await waitForUpdate(el);
-		expect(el.getAttribute('variant')).toBe('box');
 		expect(el.getAttribute('background')).toBe('base');
+		(el as unknown as NLDDTable).background = 'tinted';
+		await waitForUpdate(el);
+		expect(el.getAttribute('background')).toBe('tinted');
 	});
 
 	it('reflects the responsive column attributes', async () => {
@@ -101,11 +103,11 @@ describe('nldd-table', () => {
 
 	// Two cells across two fixed 300px tracks force a 600px content width.
 	const wideBox = (label = '') =>
-		`<div style="width: 200px"><nldd-table variant="box" columns="300px 300px"${label ? ` accessible-label="${label}"` : ''}>`
+		`<div style="width: 200px"><nldd-table columns="300px 300px"${label ? ` accessible-label="${label}"` : ''}>`
 		+ '<nldd-table-row><nldd-cell>A</nldd-cell><nldd-cell>B</nldd-cell></nldd-table-row>'
 		+ '</nldd-table></div>';
 
-	it('becomes focusable and labelled when the box overflows horizontally', async () => {
+	it('becomes focusable and labelled when it overflows horizontally', async () => {
 		const host = await fixture(wideBox());
 		const table = host.querySelector('nldd-table') as HTMLElement;
 		await waitForUpdate(table);
@@ -128,7 +130,7 @@ describe('nldd-table', () => {
 
 	it('is not focusable when the columns fit', async () => {
 		const host = await fixture(
-			'<div style="width: 600px"><nldd-table variant="box" columns="100px 100px">'
+			'<div style="width: 600px"><nldd-table columns="100px 100px">'
 			+ '<nldd-table-row><nldd-cell>A</nldd-cell><nldd-cell>B</nldd-cell></nldd-table-row>'
 			+ '</nldd-table></div>',
 		);
@@ -139,23 +141,9 @@ describe('nldd-table', () => {
 		cleanup(host);
 	});
 
-	it('makes the simple variant focusable when it overflows too', async () => {
-		// Both variants are their own horizontal scroll container now.
-		const host = await fixture(
-			'<div style="width: 200px"><nldd-table columns="300px 300px">'
-			+ '<nldd-table-row><nldd-cell>A</nldd-cell><nldd-cell>B</nldd-cell></nldd-table-row>'
-			+ '</nldd-table></div>',
-		);
-		const table = host.querySelector('nldd-table') as HTMLElement;
-		await waitForUpdate(table);
-		await nextFrames();
-		expect(table.getAttribute('tabindex')).toBe('0');
-		cleanup(host);
-	});
-
-	it('a selected row does not add scroll width when the columns fit (simple)', async () => {
-		// The simple selected highlight is clipped flush, so it must not turn a
-		// fitting table into a (focusable) scroller via a stray scrollbar.
+	it('a selected row does not add scroll width when the columns fit', async () => {
+		// The selected tint is a row background within the border-box (no bleed),
+		// so it must not turn a fitting table into a (focusable) scroller.
 		const host = await fixture(
 			'<div style="width: 600px"><nldd-table columns="100px 100px">'
 			+ '<nldd-table-row selected><nldd-cell>A</nldd-cell><nldd-cell>B</nldd-cell></nldd-table-row>'
@@ -176,7 +164,7 @@ describe('nldd-table', () => {
 		const dialog = el.shadowRoot!.querySelector('nldd-inline-dialog');
 		expect(dialog).not.toBeNull();
 		// Falls back to the Dutch i18n default.
-		expect(dialog!.getAttribute('text')).toBe('Geen resultaten');
+		expect(dialog!.getAttribute('text')).toBe('Geen items');
 	});
 
 	it('keeps role="table" with a valid row/cell around the empty dialog', async () => {

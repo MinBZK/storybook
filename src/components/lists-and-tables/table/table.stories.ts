@@ -8,9 +8,10 @@ import '../../actions/button/button.js';
 import '../../status-and-feedback/inline-dialog/inline-dialog.js';
 
 /**
- * De Table toont data in uitgelijnde kolommen. Visueel lijkt het op
- * `nldd-list` (simple/box-varianten, oppervlakken, rij-dividers), maar de
- * inhoud wordt uitgelijnd via een CSS grid + subgrid.
+ * De Table toont data in uitgelijnde kolommen. Het is altijd een box (afgeronde
+ * hoeken, rand, base of tinted vulling); de inhoud wordt uitgelijnd via een CSS
+ * grid + subgrid. Dividers lopen full-bleed tot de zijkanten; de inline-padding
+ * zit op de rijen en springt alleen de cel-inhoud in.
  *
  * ## Kolombreedtes — één keer, zoals een HTML-tabel
  * Definieer de kolommen één keer op de table via het `columns`-attribuut: een
@@ -42,8 +43,7 @@ export default {
 		status: { type: 'beta' },
 	},
 	args: {
-		variant: 'simple',
-		background: 'tinted',
+		background: 'base',
 		columns: 'minmax(160px, 1fr) minmax(200px, 1fr) 120px',
 		smColumns: '',
 		mdColumns: '',
@@ -53,17 +53,11 @@ export default {
 		emptySupportingText: '',
 	},
 	argTypes: {
-		variant: {
-			control: 'select',
-			options: ['simple', 'box'],
-			description: 'Visuele variant; "box" voegt een afgerond oppervlak met rand toe.',
-			table: { defaultValue: { summary: 'simple' } },
-		},
 		background: {
 			control: 'select',
-			options: ['tinted', 'base'],
-			description: 'Oppervlak-vulling voor variant="box".',
-			table: { defaultValue: { summary: 'tinted' } },
+			options: ['base', 'tinted'],
+			description: 'Oppervlak-vulling van de box.',
+			table: { defaultValue: { summary: 'base' } },
 		},
 		columns: {
 			control: 'text',
@@ -96,7 +90,7 @@ export default {
 		emptyText: {
 			name: 'empty-text',
 			control: 'text',
-			description: 'Tekst van de standaard empty-state-dialog. Valt terug op i18n ("Geen resultaten").',
+			description: 'Tekst van de standaard empty-state-dialog. Valt terug op i18n ("Geen items").',
 			table: { defaultValue: { summary: '' } },
 		},
 		emptySupportingText: {
@@ -108,9 +102,8 @@ export default {
 	},
 };
 
-const Template = ({ variant, background, columns, smColumns, mdColumns, lgColumns, accessibleLabel, emptyText, emptySupportingText }: Record<string, any>) => html`
+const Template = ({ background, columns, smColumns, mdColumns, lgColumns, accessibleLabel, emptyText, emptySupportingText }: Record<string, any>) => html`
 	<nldd-table
-		variant=${variant}
 		background=${background}
 		columns=${columns}
 		sm-columns=${smColumns || nothing}
@@ -147,57 +140,42 @@ export const Default = {
 	render: Template,
 };
 
-export const Box = {
-	name: 'Box variant',
+export const Tinted = {
+	name: 'Tinted background',
 	render: Template,
-	args: { variant: 'box' },
-};
-
-export const BoxBase = {
-	name: 'Box variant (background="base")',
-	render: Template,
-	args: { variant: 'box', background: 'base' },
+	args: { background: 'tinted' },
+	parameters: {
+		docs: {
+			description: {
+				story: 'De tabel is altijd een box. Standaard is de achtergrond `base`; zet `background="tinted"` voor een getinte vulling (bijvoorbeeld op een witte pagina).',
+			},
+		},
+	},
 };
 
 export const WithoutHeader = {
 	name: 'Without header',
 	render: () => html`
-	<div style="display: flex; flex-direction: column; gap: 24px;">
-		<nldd-table columns="minmax(160px, 1fr) 140px" accessible-label="Instellingen (simple)">
-			<nldd-table-row>
-				<nldd-text-cell text="Tweefactor-authenticatie"></nldd-text-cell>
-				<nldd-text-cell text="Aan"></nldd-text-cell>
-			</nldd-table-row>
-			<nldd-table-row>
-				<nldd-text-cell text="E-mailnotificaties"></nldd-text-cell>
-				<nldd-text-cell text="Uit"></nldd-text-cell>
-			</nldd-table-row>
-			<nldd-table-row>
-				<nldd-text-cell text="Taal"></nldd-text-cell>
-				<nldd-text-cell text="Nederlands"></nldd-text-cell>
-			</nldd-table-row>
-		</nldd-table>
-		<nldd-table variant="box" columns="minmax(160px, 1fr) 140px" accessible-label="Instellingen (box)">
-			<nldd-table-row>
-				<nldd-text-cell text="Tweefactor-authenticatie"></nldd-text-cell>
-				<nldd-text-cell text="Aan"></nldd-text-cell>
-			</nldd-table-row>
-			<nldd-table-row>
-				<nldd-text-cell text="E-mailnotificaties"></nldd-text-cell>
-				<nldd-text-cell text="Uit"></nldd-text-cell>
-			</nldd-table-row>
-			<nldd-table-row>
-				<nldd-text-cell text="Taal"></nldd-text-cell>
-				<nldd-text-cell text="Nederlands"></nldd-text-cell>
-			</nldd-table-row>
-		</nldd-table>
-	</div>
+	<nldd-table columns="minmax(160px, 1fr) 140px" accessible-label="Instellingen">
+		<nldd-table-row>
+			<nldd-text-cell text="Tweefactor-authenticatie"></nldd-text-cell>
+			<nldd-text-cell text="Aan"></nldd-text-cell>
+		</nldd-table-row>
+		<nldd-table-row>
+			<nldd-text-cell text="E-mailnotificaties"></nldd-text-cell>
+			<nldd-text-cell text="Uit"></nldd-text-cell>
+		</nldd-table-row>
+		<nldd-table-row>
+			<nldd-text-cell text="Taal"></nldd-text-cell>
+			<nldd-text-cell text="Nederlands"></nldd-text-cell>
+		</nldd-table-row>
+	</nldd-table>
 `,
 	parameters: {
 		controls: { disable: true },
 		docs: {
 			description: {
-				story: 'De header-slot is optioneel: zonder header zijn er alleen body-rijen (cellen krijgen `role="cell"`). Handig voor key-value-tabellen. In de **simple**-variant houdt de laatste rij zijn divider als onderrand; in **box** sluit de box-rand af.',
+				story: 'De header-slot is optioneel: zonder header zijn er alleen body-rijen (cellen krijgen `role="cell"`). Handig voor key-value-tabellen.',
 			},
 		},
 	},
@@ -237,7 +215,7 @@ export const Alignment = {
 export const WithSelectionColumn = {
 	name: 'Selection column (checkbox)',
 	render: () => html`
-	<nldd-table variant="box" columns="40px minmax(160px, 1fr) 120px" accessible-label="Gebruikers met selectie">
+	<nldd-table columns="40px minmax(160px, 1fr) 120px" accessible-label="Gebruikers met selectie">
 		<nldd-table-row slot="header">
 			<nldd-cell horizontal-alignment="center"><nldd-checkbox accessible-label="Selecteer alles"></nldd-checkbox></nldd-cell>
 			<nldd-text-cell text="**Naam**"></nldd-text-cell>
@@ -266,52 +244,32 @@ export const WithSelectionColumn = {
 };
 
 export const SelectedRow = {
-	name: 'Selected row (simple & box)',
+	name: 'Selected row',
 	render: () => html`
-	<div style="display: flex; flex-direction: column; gap: 24px;">
-		<nldd-table columns="minmax(160px, 1fr) 120px" accessible-label="Simple met selectie">
-			<nldd-table-row slot="header">
-				<nldd-text-cell text="**Naam**"></nldd-text-cell>
-				<nldd-text-cell text="**Rol**"></nldd-text-cell>
-			</nldd-table-row>
-			<nldd-table-row>
-				<nldd-text-cell text="Eva de Vries"></nldd-text-cell>
-				<nldd-text-cell text="Beheerder"></nldd-text-cell>
-			</nldd-table-row>
-			<nldd-table-row selected>
-				<nldd-text-cell text="Daan Jansen"></nldd-text-cell>
-				<nldd-text-cell text="Redacteur"></nldd-text-cell>
-			</nldd-table-row>
-			<nldd-table-row>
-				<nldd-text-cell text="Sanne Bakker"></nldd-text-cell>
-				<nldd-text-cell text="Lezer"></nldd-text-cell>
-			</nldd-table-row>
-		</nldd-table>
-		<nldd-table variant="box" columns="minmax(160px, 1fr) 120px" accessible-label="Box met selectie">
-			<nldd-table-row slot="header">
-				<nldd-text-cell text="**Naam**"></nldd-text-cell>
-				<nldd-text-cell text="**Rol**"></nldd-text-cell>
-			</nldd-table-row>
-			<nldd-table-row>
-				<nldd-text-cell text="Eva de Vries"></nldd-text-cell>
-				<nldd-text-cell text="Beheerder"></nldd-text-cell>
-			</nldd-table-row>
-			<nldd-table-row selected>
-				<nldd-text-cell text="Daan Jansen"></nldd-text-cell>
-				<nldd-text-cell text="Redacteur"></nldd-text-cell>
-			</nldd-table-row>
-			<nldd-table-row>
-				<nldd-text-cell text="Sanne Bakker"></nldd-text-cell>
-				<nldd-text-cell text="Lezer"></nldd-text-cell>
-			</nldd-table-row>
-		</nldd-table>
-	</div>
+	<nldd-table columns="minmax(160px, 1fr) 120px" accessible-label="Gebruikers met selectie">
+		<nldd-table-row slot="header">
+			<nldd-text-cell text="**Naam**"></nldd-text-cell>
+			<nldd-text-cell text="**Rol**"></nldd-text-cell>
+		</nldd-table-row>
+		<nldd-table-row>
+			<nldd-text-cell text="Eva de Vries"></nldd-text-cell>
+			<nldd-text-cell text="Beheerder"></nldd-text-cell>
+		</nldd-table-row>
+		<nldd-table-row selected>
+			<nldd-text-cell text="Daan Jansen"></nldd-text-cell>
+			<nldd-text-cell text="Redacteur"></nldd-text-cell>
+		</nldd-table-row>
+		<nldd-table-row>
+			<nldd-text-cell text="Sanne Bakker"></nldd-text-cell>
+			<nldd-text-cell text="Lezer"></nldd-text-cell>
+		</nldd-table-row>
+	</nldd-table>
 `,
 	parameters: {
 		controls: { disable: true },
 		docs: {
 			description: {
-				story: 'De selected-state strekt door tot de tabelranden — in box steekt de highlight uit voorbij de inline-padding tot de box-rand, in simple vult hij de volle breedte. Zelfde behandeling als `nldd-list-item[selected]`.',
+				story: 'Markeer een rij met het `selected`-attribuut. De tint loopt full-bleed door tot de tabelranden (hoeken volgen de box) — zelfde behandeling als `nldd-list-item[selected]`.',
 			},
 		},
 	},
@@ -373,22 +331,11 @@ export const HorizontalScroll = {
 				<nldd-text-cell text="Communicatie"></nldd-text-cell>
 				<nldd-text-cell text="Actief"></nldd-text-cell>
 			</nldd-table-row>`;
-		const label = (text: string) => html`
-			<p style="margin: 0 0 4px; font: var(--primitives-font-body-sm-regular-flat); color: var(--semantics-content-secondary-color);">${text}</p>`;
 		return html`
-			<div style="display: flex; flex-direction: column; gap: 24px; max-width: 460px;">
-				<div>
-					${label('Simple — scrollt zelf, focusbaar met toetsenbord')}
-					<nldd-table columns="180px 220px 140px 160px 120px" accessible-label="Brede simpele tabel die horizontaal scrollt">
-						${rows()}
-					</nldd-table>
-				</div>
-				<div>
-					${label('Box — scrollt zelf, focusbaar met toetsenbord')}
-					<nldd-table variant="box" columns="180px 220px 140px 160px 120px" accessible-label="Brede box-tabel die horizontaal scrollt">
-						${rows()}
-					</nldd-table>
-				</div>
+			<div style="max-width: 460px;">
+				<nldd-table columns="180px 220px 140px 160px 120px" accessible-label="Brede tabel die horizontaal scrollt">
+					${rows()}
+				</nldd-table>
 			</div>
 		`;
 	},
@@ -396,7 +343,7 @@ export const HorizontalScroll = {
 		controls: { disable: true },
 		docs: {
 			description: {
-				story: 'Laag 1 — horizontaal scrollen: de tabel is in beide varianten zelf een horizontale scroll-container. Geef kolommen een vaste/min-breedte; past de tabel niet, dan scrollt hij en wordt hij focusbaar (toetsenbord kan pannen). In simple wordt de uitstekende selectie-achtergrond afgekapt op de rand — wil je dat niet, verberg kolommen (`hide-below`) of kies de box-variant.',
+				story: 'Laag 1 — horizontaal scrollen: de tabel is zelf een horizontale scroll-container. Geef kolommen een vaste/min-breedte; past de tabel niet, dan scrollt hij en wordt hij focusbaar (toetsenbord kan pannen). Wil je niet scrollen? Verberg kolommen met `hide-below`.',
 			},
 		},
 	},
@@ -467,7 +414,7 @@ const emptyHeader = () => html`
 export const EmptyDefault = {
 	name: 'Empty: default dialog',
 	render: () => html`
-		<nldd-table variant="box" columns="minmax(160px, 1fr) minmax(200px, 1fr) 120px" accessible-label="Gebruikers">
+		<nldd-table columns="minmax(160px, 1fr) minmax(200px, 1fr) 120px" accessible-label="Gebruikers">
 			${emptyHeader()}
 		</nldd-table>
 	`,
@@ -475,7 +422,7 @@ export const EmptyDefault = {
 		controls: { disable: true },
 		docs: {
 			description: {
-				story: 'Heeft de tabel geen zichtbare body-rijen, dan toont hij een standaard `nldd-inline-dialog` met i18n-tekst ("Geen resultaten"). De header wordt in de lege staat verborgen, zodat alleen de melding zichtbaar is. Geen configuratie nodig.',
+				story: 'Heeft de tabel geen zichtbare body-rijen, dan toont hij een standaard `nldd-inline-dialog` met i18n-tekst ("Geen items"). De header wordt in de lege staat verborgen, zodat alleen de melding zichtbaar is. Geen configuratie nodig.',
 			},
 		},
 	},
@@ -485,7 +432,6 @@ export const EmptyWithAttributes = {
 	name: 'Empty: aangepaste tekst',
 	render: () => html`
 		<nldd-table
-			variant="box"
 			columns="minmax(160px, 1fr) minmax(200px, 1fr) 120px"
 			accessible-label="Gebruikers"
 			empty-text="Niets gevonden"
@@ -507,7 +453,7 @@ export const EmptyWithAttributes = {
 export const EmptySlotOverride = {
 	name: 'Empty: slot override',
 	render: () => html`
-		<nldd-table variant="box" columns="minmax(160px, 1fr) minmax(200px, 1fr) 120px" accessible-label="Gebruikers">
+		<nldd-table columns="minmax(160px, 1fr) minmax(200px, 1fr) 120px" accessible-label="Gebruikers">
 			${emptyHeader()}
 			<nldd-inline-dialog
 				slot="empty"

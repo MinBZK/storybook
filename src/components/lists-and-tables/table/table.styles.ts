@@ -4,21 +4,26 @@ import { inheritedTextReset } from '../../../assets/styles/slotted-reset.js';
 export const tableStyles = css`
 	:host {
 		--_columns: none;
-		--_corner-radius: var(--components-table-corner-radius);
-		--_column-gap: var(--components-table-column-gap);
-		--_padding-inline: var(--components-table-row-padding-inline);
-		--_background-color: var(--semantics-surfaces-tinted-background-color);
-		--_border-color: var(--semantics-surfaces-tinted-border-color);
+		--_corner-radius: var(--semantics-tables-corner-radius);
+		--_column-gap: var(--semantics-tables-column-gap);
+		--_background-color: var(--semantics-surfaces-background-color);
+		--_border-color: var(--semantics-surfaces-border-color);
+		/* Shared so the focus-visible rule can compose the focus ring over the
+		   border ring with var(...) instead of repeating the inset literal. */
+		--_border-shadow: inset 0 0 0 var(--semantics-tables-border-width) var(--_border-color);
 
 		${inheritedTextReset}
 		box-sizing: border-box;
 		display: grid;
 		grid-template-columns: var(--_columns);
 		width: 100%;
-		/* Both variants are their own horizontal scroll container: the columns
-		   scroll when they don't fit, and the table is made focusable in JS
-		   while it scrolls so keyboard users can pan it. overflow-y stays hidden
-		   (the box variant relies on it to clip its rounded corners). */
+		/* The table is always a boxed surface and its own horizontal scroll
+		   container: the columns scroll when they don't fit and the table is made
+		   focusable in JS while it scrolls. overflow-y stays hidden so the rounded
+		   corners keep clipping the rows (and their full-bleed dividers). */
+		border-radius: var(--_corner-radius);
+		box-shadow: var(--_border-shadow);
+		background-color: var(--_background-color);
 		overflow-x: auto;
 		overflow-y: hidden;
 		column-gap: var(--_column-gap);
@@ -29,37 +34,31 @@ export const tableStyles = css`
 		display: none;
 	}
 
-	:host([variant="box"][background="base"]) {
-		--_background-color: var(--semantics-surfaces-background-color);
-		--_border-color: var(--semantics-surfaces-border-color);
+	/* Default surface is base; tinted is opt-in. */
+	:host([background="tinted"]) {
+		--_background-color: var(--semantics-surfaces-tinted-background-color);
+		--_border-color: var(--semantics-surfaces-tinted-border-color);
 	}
 
-	/* Box adds a rounded surface + inset border ring. padding-inline insets the
-	   rows from the ring while their subgrid stays aligned (padding on the rows
-	   would break it). */
-	:host([variant="box"]) {
-		border-radius: var(--_corner-radius);
-		box-shadow: inset 0 0 0 var(--semantics-dividers-thickness) var(--_border-color);
-		background-color: var(--_background-color);
-		padding-inline: var(--_padding-inline);
+	/* Keyboard focus while the table scrolls (it gains tabindex in JS): the
+	   project focus ring, layered over the border ring (mirrors nldd-code-viewer).
+	   Focus first (outer), border second (inner). */
+	:host(:focus-visible) {
+		outline: var(--semantics-focus-ring-outline);
+		outline-offset: var(--semantics-focus-ring-outline-offset);
+		box-shadow: var(--semantics-focus-ring-box-shadow), var(--_border-shadow);
 	}
 
-	/* Context messages to the rows: the border ring closes the table off, so the
-	   outer row edges drop their dividers; the selected highlight squares its
-	   corners and gains the inline padding as bleed so it reaches the box edge. */
-	:host([variant="box"]) {
-		--context-table-edge-divider-width: 0;
-		--context-table-selected-radius: 0;
-		--context-table-selected-extra-bleed: var(--components-table-row-padding-inline);
+	:host(:focus:not(:focus-visible)) {
+		outline: none;
 	}
 
 	slot {
 		display: contents;
 	}
 
-	/* Empty state spans all columns below the rows; the cell padding gives the
-	   message room (in box the host padding-inline insets it further). The
-	   header is hidden in the empty state so only the message shows. */
+	/* Empty state spans all columns below the rows; its own padding gives the
+	   message room. The header is hidden in the empty state (only the message). */
 	.table__empty {
 		grid-column: 1 / -1;
 	}
@@ -79,19 +78,21 @@ export const tableStyles = css`
 
 export const tableRowStyles = css`
 	:host {
-		--_padding-block: var(--components-table-row-padding-block);
-		--_divider-color: var(--semantics-dividers-color);
-		--_divider-thickness: var(--semantics-dividers-thickness);
+		--_min-height: var(--semantics-tables-row-min-height);
+		--_padding-block: var(--semantics-tables-row-padding-block);
+		--_padding-inline: var(--semantics-tables-row-padding-inline);
+		--_divider-color: var(--semantics-tables-border-color);
+		--_divider-thickness: var(--semantics-tables-border-width);
 
 		${inheritedTextReset}
 		box-sizing: border-box;
 		display: grid;
-		position: relative;
-		isolation: isolate;
 		grid-column: 1 / -1;
 		grid-template-columns: subgrid;
+		min-height: var(--_min-height);
 		border-bottom: var(--_divider-thickness) solid var(--_divider-color);
 		padding-block: var(--_padding-block);
+		padding-inline: var(--_padding-inline);
 		align-items: center;
 	}
 
@@ -99,51 +100,22 @@ export const tableRowStyles = css`
 		display: none;
 	}
 
-	/* Selection mirrors nldd-list-item: tint the content, draw the highlight
-	   behind the cells (slot::after below). */
+	/* Selection: a full-bleed row tint (reaches the box edges, corners clipped by
+	   the table) plus the selected content color, from the shared table tokens. */
 	:host([selected]) {
-		--context-cell-content-color: var(--components-list-item-is-selected-content-color);
+		background-color: var(--semantics-tables-row-is-selected-background-color);
+		--context-cell-content-color: var(--semantics-tables-row-is-selected-content-color);
 	}
 
-	/* First/last rows close the table's outer edges in the simple variant; box
-	   zeroes the width via the edge context var (its border ring is the edge). */
-	:host(:first-child) {
-		border-top: var(--context-table-edge-divider-width, var(--_divider-thickness)) solid var(--_divider-color);
-	}
-
+	/* The box's border ring is the table's outer frame, so the last row drops its
+	   divider (no doubling on the ring). Inner dividers run full-bleed to the
+	   sides — the padding only insets the cell content, not the row's border. */
 	:host(:last-child) {
-		border-bottom-width: var(--context-table-edge-divider-width, var(--_divider-thickness));
-	}
-
-	/* The header is the first child but its bottom divider already separates it
-	   from the body, so it carries no top edge (overrides :host(:first-child)). */
-	:host([slot="header"]) {
-		border-top: none;
+		border-bottom: none;
 	}
 
 	/* display:contents so the cells become grid items of this subgrid. */
 	slot {
 		display: contents;
-	}
-
-	/* The selected highlight sits behind the cells. The table is a horizontal
-	   scroll container, so the highlight must not bleed past the content edge
-	   (that would add scroll width — a stray scrollbar). In box it reaches the
-	   inline padding edge (--context-table-selected-extra-bleed = the padding)
-	   and squares its corners; in simple it stays flush (no bleed — the list's
-	   past-the-edge stick-out is clipped here). A display:contents element
-	   renders its ::after as a child of :host, so no extra DOM node is needed —
-	   and the subgrid must stay on :host. */
-	slot::after {
-		content: '';
-		position: absolute;
-		inset-block: 0;
-		inset-inline: calc(-1 * var(--context-table-selected-extra-bleed, 0px));
-		z-index: -1;
-		border-radius: var(--context-table-selected-radius, var(--components-list-item-indicator-corner-radius));
-	}
-
-	:host([selected]) slot::after {
-		background-color: var(--components-list-item-is-selected-background-color);
 	}
 `;
