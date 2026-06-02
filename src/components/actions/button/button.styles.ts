@@ -192,7 +192,6 @@ export const buttonStyles = css`
 	.button {
 		box-sizing: border-box;
 		display: inline-flex;
-		position: relative;
 		margin: 0;
 		border: none;
 		border-radius: var(--_corner-radius);
