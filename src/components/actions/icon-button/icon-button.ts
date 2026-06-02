@@ -78,6 +78,9 @@ export class NLDDIconButton extends LitElement {
 	 * hidden) icon, marks the inner control `aria-busy="true"` and blocks
 	 * activation — without dropping the control from the tab order (unlike
 	 * `disabled`).
+	 *
+	 * Activation is blocked by stopping the click (as `disabled` does), so a
+	 * `click` listener delegated on an ancestor receives nothing while loading.
 	 */
 	@property({ type: Boolean, reflect: true })
 	loading = false;
