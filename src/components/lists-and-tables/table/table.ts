@@ -218,8 +218,8 @@ export class NLDDTable extends LitElement {
 	 *  can pan it (mirrors nldd-code-viewer / nldd-rich-text), and keep its
 	 *  accessible name in sync. The table is its own scroll container
 	 *  (overflow-x: auto); the overflow-x check (not width alone) is defensive.
-	 *  accessible-label is the name (role="table" needs one) whether or not the
-	 *  table scrolls; a missing label is DEV-warned, not auto-filled. */
+	 *  accessible-label is the name (role="table" needs one); when the table is
+	 *  focusable without one, a generic fallback names the region (SC 4.1.2). */
 	private _syncHostA11y(): void {
 		const overflowX = getComputedStyle(this).overflowX;
 		const scrollableOverflow = overflowX === 'auto' || overflowX === 'scroll';
@@ -229,12 +229,15 @@ export class NLDDTable extends LitElement {
 		} else {
 			this.removeAttribute('tabindex');
 		}
-		// accessible-label is the table's name (role="table" requires one) and
-		// also names the focusable scroll region. Independent of scrolling; a
-		// missing label is DEV-warned in updated(), not papered over with a
-		// generic scroll name.
+		// accessible-label is the table's name (role="table" requires one). A
+		// focusable scroll region also needs an accessible name (SC 4.1.2), so
+		// when the table scrolls without a label we fall back to a generic one
+		// rather than ship a nameless focusable element. A missing label is
+		// still DEV-warned in updated().
 		if (this.accessibleLabel) {
 			this.setAttribute('aria-label', this.accessibleLabel);
+		} else if (scrollable) {
+			this.setAttribute('aria-label', this._t('components.table.accessible-label'));
 		} else {
 			this.removeAttribute('aria-label');
 		}

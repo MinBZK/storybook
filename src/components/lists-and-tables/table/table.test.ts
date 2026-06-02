@@ -113,14 +113,14 @@ describe('nldd-table', () => {
 		+ '<nldd-table-row><nldd-cell>A</nldd-cell><nldd-cell>B</nldd-cell></nldd-table-row>'
 		+ '</nldd-table></div>';
 
-	it('becomes focusable but unnamed when it overflows without an accessible-label', async () => {
+	it('falls back to a generic name when it overflows without an accessible-label', async () => {
 		const host = await fixture(wideBox());
 		const table = host.querySelector('nldd-table') as HTMLElement;
 		await waitForUpdate(table);
 		await nextFrames();
 		expect(table.getAttribute('tabindex')).toBe('0');
-		// No accessible-label → no name is invented (the consumer is DEV-warned).
-		expect(table.hasAttribute('aria-label')).toBe(false);
+		// A focusable region needs an accessible name (SC 4.1.2) → generic fallback.
+		expect(table.getAttribute('aria-label')).toBe('Tabel');
 		cleanup(host);
 	});
 
