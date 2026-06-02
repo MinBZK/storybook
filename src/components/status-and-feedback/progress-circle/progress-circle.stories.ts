@@ -184,7 +184,7 @@ export const Distribution = {
 		controls: { disable: true },
 		docs: {
 			description: {
-				story: 'In `distribution` mode vullen de segmenten de hele cirkel. Gaps tussen segmenten zijn 2 graden. Tooltip toont alle categorieën met percentages.',
+				story: 'In `distribution` mode zijn de segmenten categorieën binnen een totaal, geen voortgang. Net als progress meten ze tegen `max`; hier vult de `Vrij`-categorie (150) het restant aan tot 500, zodat de cirkel helemaal gevuld is. Gaps tussen segmenten zijn 2px. Tooltip toont alle categorieën met percentages.',
 			},
 		},
 	},
