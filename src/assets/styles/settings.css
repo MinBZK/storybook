@@ -869,8 +869,8 @@
 
 	/* ## Surfaces */
 
-	--semantics-surfaces-background-color: light-dark(var(--primitives-color-neutral-0), var(--primitives-color-neutral-100));
-	--semantics-surfaces-border-color: light-dark(var(--primitives-color-neutral-50), var(--primitives-color-neutral-150));
+	--semantics-surfaces-base-background-color: light-dark(var(--primitives-color-neutral-0), var(--primitives-color-neutral-100));
+	--semantics-surfaces-base-border-color: light-dark(var(--primitives-color-neutral-50), var(--primitives-color-neutral-150));
 	--semantics-surfaces-tinted-background-color: light-dark(var(--primitives-color-neutral-25), var(--primitives-color-neutral-75));
 	--semantics-surfaces-tinted-border-color: light-dark(var(--primitives-color-neutral-50), var(--primitives-color-neutral-150));
 	--semantics-surfaces-corner-radius: var(--primitives-corner-radius-lg);
@@ -1034,7 +1034,7 @@
 	--semantics-input-fields-border-thickness: var(--primitives-border-width-regular);
 	--semantics-input-fields-border-color: light-dark(var(--primitives-color-neutral-550), var(--primitives-color-neutral-650));
 	--semantics-input-fields-border: var(--semantics-input-fields-border-thickness) solid var(--semantics-input-fields-border-color);
-	--semantics-input-fields-background-color: var(--semantics-surfaces-background-color);
+	--semantics-input-fields-background-color: var(--semantics-surfaces-base-background-color);
 	--semantics-input-fields-placeholder-color: light-dark(var(--primitives-color-neutral-550), var(--primitives-color-neutral-650));
 	--semantics-input-fields-is-valid-border-color: light-dark(var(--primitives-color-success-550), var(--primitives-color-success-650));
 	--semantics-input-fields-is-valid-icon-color: light-dark(var(--primitives-color-success-550), var(--primitives-color-success-650));
@@ -1123,7 +1123,7 @@
 
 	--semantics-focus-ring-outline: var(--primitives-border-width-regular) solid var(--primitives-color-accent-600);
 	--semantics-focus-ring-outline-offset: var(--primitives-border-width-regular);
-	--semantics-focus-ring-box-shadow: 0 0 0 calc(var(--primitives-border-width-regular) * 3) var(--semantics-surfaces-background-color);
+	--semantics-focus-ring-box-shadow: 0 0 0 calc(var(--primitives-border-width-regular) * 3) var(--semantics-surfaces-base-background-color);
 
 
 	/* ## Categories — filled
@@ -1317,9 +1317,9 @@
 	/* ## Box */
 
 	--components-box-background-color: var(--semantics-surfaces-tinted-background-color);
-	--components-box-base-background-color: var(--semantics-surfaces-background-color);
+	--components-box-base-background-color: var(--semantics-surfaces-base-background-color);
 	--components-box-border-color: var(--semantics-surfaces-tinted-border-color);
-	--components-box-base-border-color: var(--semantics-surfaces-border-color);
+	--components-box-base-border-color: var(--semantics-surfaces-base-border-color);
 	--components-box-corner-radius: var(--semantics-surfaces-corner-radius);
 	--components-box-padding: var(--primitives-space-16);
 
@@ -1343,7 +1343,7 @@
 
 	--components-checkbox-border-thickness: var(--primitives-border-width-regular);
 	--components-checkbox-border-color: light-dark(var(--primitives-color-neutral-550), var(--primitives-color-neutral-650));
-	--components-checkbox-background-color: var(--semantics-surfaces-background-color);
+	--components-checkbox-background-color: var(--semantics-surfaces-base-background-color);
 	--components-checkbox-is-hovered-border-color: light-dark(var(--primitives-color-neutral-600), var(--primitives-color-neutral-700));
 	--components-checkbox-is-active-border-color: light-dark(var(--primitives-color-neutral-650), var(--primitives-color-neutral-750));
 	--components-checkbox-is-selected-background-color: var(--semantics-controls-is-highlighted-indicator-color);
@@ -1654,7 +1654,7 @@
 
 	--components-radio-button-border-thickness: var(--primitives-border-width-regular);
 	--components-radio-button-border-color: light-dark(var(--primitives-color-neutral-550), var(--primitives-color-neutral-650));
-	--components-radio-button-background-color: var(--semantics-surfaces-background-color);
+	--components-radio-button-background-color: var(--semantics-surfaces-base-background-color);
 	--components-radio-button-is-hovered-border-color: light-dark(var(--primitives-color-neutral-600), var(--primitives-color-neutral-700));
 	--components-radio-button-is-active-border-color: light-dark(var(--primitives-color-neutral-650), var(--primitives-color-neutral-750));
 	--components-radio-button-is-selected-background-color: var(--semantics-controls-is-highlighted-indicator-color);
@@ -1683,10 +1683,10 @@
 
 	--components-switch-border-thickness: var(--primitives-border-width-regular);
 	--components-switch-border-color: light-dark(var(--primitives-color-neutral-550), var(--primitives-color-neutral-650));
-	--components-switch-background-color: var(--semantics-surfaces-background-color);
+	--components-switch-background-color: var(--semantics-surfaces-base-background-color);
 	--components-switch-thumb-border-thickness: var(--primitives-border-width-regular);
 	--components-switch-thumb-border-color: light-dark(var(--primitives-color-neutral-550), var(--primitives-color-neutral-650));
-	--components-switch-thumb-background-color: var(--semantics-surfaces-background-color);
+	--components-switch-thumb-background-color: var(--semantics-surfaces-base-background-color);
 	--components-switch-icon-color: light-dark(var(--primitives-color-neutral-550), var(--primitives-color-neutral-650));
 	--components-switch-is-selected-background-color: var(--semantics-controls-is-highlighted-indicator-color);
 	--components-switch-is-selected-thumb-background-color: var(--semantics-controls-is-highlighted-contrast-color);
@@ -1751,7 +1751,7 @@
 	/* ## Timeline track cell */
 
 	--components-timeline-track-cell-color: light-dark(var(--primitives-color-accent-750), var(--primitives-color-accent-650));
-	--components-timeline-track-cell-future-background-color: var(--semantics-surfaces-background-color);
+	--components-timeline-track-cell-future-background-color: var(--semantics-surfaces-base-background-color);
 
 	/* ## Title */
 

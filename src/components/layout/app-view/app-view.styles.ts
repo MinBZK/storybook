@@ -6,7 +6,7 @@ export const appViewStyles = css`
 	/* # Host */
 
 	:host {
-		--context-parent-background-color: var(--semantics-surfaces-background-color);
+		--context-parent-background-color: var(--semantics-surfaces-base-background-color);
 		--_background-color: var(--context-parent-background-color);
 
 		display: flex;

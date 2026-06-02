@@ -6,8 +6,8 @@ export const tableStyles = css`
 		--_columns: none;
 		--_corner-radius: var(--semantics-tables-corner-radius);
 		--_column-gap: var(--semantics-tables-column-gap);
-		--_background-color: var(--semantics-surfaces-background-color);
-		--_border-color: var(--semantics-surfaces-border-color);
+		--_background-color: var(--semantics-surfaces-base-background-color);
+		--_border-color: var(--semantics-surfaces-base-border-color);
 		/* Shared so the focus-visible rule can compose the focus ring over the
 		   border ring with var(...) instead of repeating the inset literal. */
 		--_border-shadow: inset 0 0 0 var(--semantics-tables-border-width) var(--_border-color);

@@ -11,5 +11,5 @@
  *                   otherwise keeps Storybook's own white docs background) */
 body,
 .docs-story {
-	background-color: var(--semantics-surfaces-background-color);
+	background-color: var(--semantics-surfaces-base-background-color);
 }

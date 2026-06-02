@@ -188,7 +188,7 @@ export const badgeStyles = css`
 		display: inline-flex;
 		border-radius: var(--components-badge-corner-radius);
 		box-shadow:
-			0 0 0 1px var(--context-parent-background-color, var(--semantics-surfaces-background-color)),
+			0 0 0 1px var(--context-parent-background-color, var(--semantics-surfaces-base-background-color)),
 			inset 0 0 0 var(--_border-width) var(--_border-color);
 		background-color: var(--_background-color);
 		min-width: var(--_height);

@@ -395,7 +395,7 @@ nldd-rich-text table {
 	border-spacing: 0;
 	border: var(--semantics-tables-border-color) solid var(--semantics-tables-border-width);
 	border-radius: var(--semantics-tables-corner-radius);
-	background-color: var(--semantics-surfaces-background-color);
+	background-color: var(--semantics-surfaces-base-background-color);
 	font: var(--primitives-font-body-md-regular-tight);
 	overflow-x: auto;
 	-webkit-overflow-scrolling: touch;

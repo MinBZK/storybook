@@ -31,8 +31,8 @@ export const codeViewerStyles = css`
 	}
 
 	:host([background="base"]) {
-		--_background-color: var(--semantics-surfaces-background-color);
-		--_border-color: var(--semantics-surfaces-border-color);
+		--_background-color: var(--semantics-surfaces-base-background-color);
+		--_border-color: var(--semantics-surfaces-base-border-color);
 	}
 
 	/* variant="simple" drops the entire frame (no rounded corners, no

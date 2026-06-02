@@ -29,7 +29,7 @@ export const windowStyles = css`
 		border: none;
 		border-radius: var(--semantics-overlays-corner-radius);
 		box-shadow: var(--semantics-overlays-box-shadow);
-		background-color: var(--semantics-surfaces-background-color);
+		background-color: var(--semantics-surfaces-base-background-color);
 		width: var(--components-window-default-width);
 		max-width: calc(100vw - var(--semantics-overlays-inset) * 2);
 		max-height: calc(100dvh - var(--semantics-overlays-inset) * 2);

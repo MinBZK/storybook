@@ -35,8 +35,8 @@ export const listStyles = css`
 	}
 
 	:host([background="base"]) {
-		--_background-color: var(--semantics-surfaces-background-color);
-		--_border-color: var(--semantics-surfaces-border-color);
+		--_background-color: var(--semantics-surfaces-base-background-color);
+		--_border-color: var(--semantics-surfaces-base-border-color);
 	}
 
 	:host([variant="box"]) .list__items {
@@ -90,7 +90,7 @@ export const listStyles = css`
 		opacity: var(--_drag-clone-opacity);
 		z-index: var(--_drag-clone-z-index);
 		border-radius: var(--components-list-item-indicator-corner-radius);
-		background: var(--semantics-surfaces-background-color);
+		background: var(--semantics-surfaces-base-background-color);
 		pointer-events: none;
 		width: var(--_drag-clone-width);
 		height: var(--_drag-clone-height);

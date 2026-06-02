@@ -51,7 +51,7 @@ export const menuStyles = css`
 		box-sizing: border-box;
 		border-radius: var(--semantics-overlays-corner-radius);
 		box-shadow: var(--components-menu-box-shadow);
-		background: var(--semantics-surfaces-background-color);
+		background: var(--semantics-surfaces-base-background-color);
 		width: var(--_width);
 		padding: var(--_padding);
 		flex-direction: column;

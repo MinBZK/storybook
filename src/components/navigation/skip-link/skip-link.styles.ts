@@ -34,7 +34,7 @@ export const skipLinkStyles = css`
 		z-index: var(--_z-index);
 		border-radius: var(--semantics-controls-md-corner-radius);
 		box-shadow: var(--_box-shadow);
-		background-color: var(--semantics-surfaces-background-color);
+		background-color: var(--semantics-surfaces-base-background-color);
 		pointer-events: none;
 		justify-content: center;
 	}
