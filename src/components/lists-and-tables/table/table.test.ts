@@ -244,6 +244,21 @@ describe('nldd-table-row', () => {
 		expect(el.getAttribute('role')).toBe('row');
 	});
 
+	it('reflects selection to aria-selected on a body row', async () => {
+		el = await fixture<NLDDTableRow>('<nldd-table-row></nldd-table-row>');
+		await waitForUpdate(el);
+		expect(el.getAttribute('aria-selected')).toBe('false');
+		(el as unknown as NLDDTableRow).selected = true;
+		await waitForUpdate(el);
+		expect(el.getAttribute('aria-selected')).toBe('true');
+	});
+
+	it('does not set aria-selected on a header row', async () => {
+		el = await fixture('<nldd-table-row slot="header"></nldd-table-row>');
+		await waitForUpdate(el);
+		expect(el.hasAttribute('aria-selected')).toBe(false);
+	});
+
 	it('assigns role="cell" to slotted cells in a body row', async () => {
 		el = await fixture('<nldd-table-row><nldd-cell></nldd-cell><nldd-text-cell text="A"></nldd-text-cell></nldd-table-row>');
 		await waitForUpdate(el);
