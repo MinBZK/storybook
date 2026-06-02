@@ -1,13 +1,10 @@
 import { describe, it, expect, afterEach, vi } from 'vitest';
-import { fixture, cleanup, waitForUpdate } from '../../../test-utils.js';
+import { fixture, cleanup, waitForUpdate, nextFrames } from '../../../test-utils.js';
 import type { NLDDTable, NLDDTableRow } from './table.js';
 import './table.js';
 import '../cells/cell/cell.js';
 import '../cells/text-cell/text-cell.js';
 import '../cells/icon-cell/icon-cell.js';
-
-const nextFrames = () =>
-	new Promise((r) => requestAnimationFrame(() => requestAnimationFrame(() => r(null))));
 
 describe('nldd-table', () => {
 	let el: HTMLElement;
