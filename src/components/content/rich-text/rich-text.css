@@ -424,7 +424,7 @@ nldd-rich-text th {
 	padding-inline: calc(var(--semantics-tables-column-gap) / 2);
 	border-bottom: var(--semantics-tables-border-width) solid var(--semantics-tables-border-color);
 	font: var(--primitives-font-body-md-bold-tight);
-	text-align: left;
+	text-align: start;
 }
 
 /* ## Table Data Cell */
