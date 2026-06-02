@@ -52,11 +52,12 @@ describe('nldd-table', () => {
 		expect(el.getAttribute('aria-label')).toBe('Gebruikers');
 	});
 
-	it('DEV-warns and sets no aria-label when accessible-label is missing', async () => {
+	it('DEV-warns and falls back to a generic name when accessible-label is missing', async () => {
 		const warn = vi.spyOn(console, 'warn').mockImplementation(() => {});
 		el = await fixture<NLDDTable>('<nldd-table columns="1fr"></nldd-table>');
 		await waitForUpdate(el);
-		expect(el.hasAttribute('aria-label')).toBe(false);
+		// Never nameless: a generic fallback names it, and the consumer is warned.
+		expect(el.getAttribute('aria-label')).toBe('Tabel');
 		expect(warn).toHaveBeenCalledWith(expect.stringContaining('accessible-label'));
 		warn.mockRestore();
 	});

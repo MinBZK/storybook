@@ -35,7 +35,7 @@
  * @attr {string} sm-columns - Track list when the table is sm-wide (≤640px); falls back to `columns`
  * @attr {string} md-columns - Track list when the table is md-wide (641–1007px); falls back to `columns`
  * @attr {string} lg-columns - Track list when the table is lg-wide (≥1008px); falls back to `columns`
- * @attr {string} accessible-label - Accessible name for the table. Required for accessibility — role="table" needs a name; a missing label is DEV-warned.
+ * @attr {string} accessible-label - Accessible name for the table. Strongly recommended — role="table" needs a name. A missing label is DEV-warned and a generic fallback name is used.
  * @attr {boolean} selectable - Opt into row selection: body rows expose aria-selected (true/false). Without it, rows omit aria-selected so a non-selectable table isn't announced as selectable.
  * @attr {string} empty-text - Text for the default empty-state dialog (falls back to the Dutch i18n default). Ignored when `[slot=empty]` is filled
  * @attr {string} empty-supporting-text - Supporting text for the default empty-state dialog. Ignored when `[slot=empty]` is filled
@@ -218,8 +218,8 @@ export class NLDDTable extends LitElement {
 	 *  can pan it (mirrors nldd-code-viewer / nldd-rich-text), and keep its
 	 *  accessible name in sync. The table is its own scroll container
 	 *  (overflow-x: auto); the overflow-x check (not width alone) is defensive.
-	 *  accessible-label is the name (role="table" needs one); when the table is
-	 *  focusable without one, a generic fallback names the region (SC 4.1.2). */
+	 *  accessible-label is the name (role="table" needs one); when it is absent a
+	 *  generic fallback keeps the table (and any focusable region) named. */
 	private _syncHostA11y(): void {
 		const overflowX = getComputedStyle(this).overflowX;
 		const scrollableOverflow = overflowX === 'auto' || overflowX === 'scroll';
@@ -229,17 +229,15 @@ export class NLDDTable extends LitElement {
 		} else {
 			this.removeAttribute('tabindex');
 		}
-		// accessible-label is the table's name (role="table" requires one). A
-		// focusable scroll region also needs an accessible name (SC 4.1.2), so
-		// when the table scrolls without a label we fall back to a generic one
-		// rather than ship a nameless focusable element. A missing label is
-		// still DEV-warned in updated().
+		// accessible-label is the table's name (role="table" requires one). When
+		// it is absent we fall back to a generic name so the table is never
+		// nameless — and any focusable scroll region always has a name (SC 4.1.2).
+		// A missing label is still DEV-warned in updated() to prompt a meaningful
+		// one rather than rely on the fallback.
 		if (this.accessibleLabel) {
 			this.setAttribute('aria-label', this.accessibleLabel);
-		} else if (scrollable) {
-			this.setAttribute('aria-label', this._t('components.table.accessible-label'));
 		} else {
-			this.removeAttribute('aria-label');
+			this.setAttribute('aria-label', this._t('components.table.accessible-label'));
 		}
 	}
 
