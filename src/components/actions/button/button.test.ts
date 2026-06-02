@@ -479,6 +479,21 @@ describe('nldd-button – loading', () => {
 		expect(el.shadowRoot!.querySelector('.button__activity-indicator')).not.toBeNull();
 	});
 
+	it('renders the activity indicator + aria-busy on the <a> when loading with href', async () => {
+		el = await fixture<NLDDButton>('<nldd-button loading href="/opslaan" text="Opslaan"></nldd-button>');
+		await waitForUpdate(el);
+		const anchor = el.shadowRoot!.querySelector('a');
+		expect(anchor).not.toBeNull();
+		expect(anchor!.getAttribute('aria-busy')).toBe('true');
+		const indicator = el.shadowRoot!.querySelector('nldd-activity-indicator');
+		expect(indicator).not.toBeNull();
+		// Sibling of the <a> (not inside it) and not aria-hidden, so its
+		// role="status" live region announces loading without joining the
+		// link's content-derived accessible name.
+		expect(anchor!.contains(indicator)).toBe(false);
+		expect(indicator!.hasAttribute('aria-hidden')).toBe(false);
+	});
+
 	it('renders no activity indicator when not loading', async () => {
 		el = await fixture<NLDDButton>('<nldd-button text="Opslaan"></nldd-button>');
 		await waitForUpdate(el);

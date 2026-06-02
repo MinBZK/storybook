@@ -26,6 +26,7 @@ export const buttonStyles = css`
 
 		${inheritedTextReset}
 		display: inline-block;
+		position: relative;
 		max-width: 100%;
 		user-select: none;
 		-webkit-tap-highlight-color: transparent;
@@ -273,9 +274,11 @@ export const buttonStyles = css`
 		opacity: 0;
 	}
 
-	/* Wrapper overlaid on the button (position:relative); the activity-indicator
-	   inside fills it and centres its circle, which inherits the button's
-	   content color via currentColor. */
+	/* Wrapper overlaid on the control, positioned against the host (which is
+	   position:relative). It lives outside the <button>/<a> so the indicator's
+	   role="status" live region announces loading without joining the button's
+	   accessible name. The activity-indicator inside fills it and centres its
+	   circle, which inherits the content color via currentColor. */
 	.button__activity-indicator {
 		position: absolute;
 		inset: 0;

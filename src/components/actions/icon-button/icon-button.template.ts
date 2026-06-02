@@ -38,10 +38,13 @@ export function template(this: NLDDIconButton) {
 	const isDisclosure = this.expandable || !!this.popupType;
 	const ariaExpanded = isDisclosure ? String(this.expanded) : (this.expanded ? 'true' : nothing);
 
-	// Loading: an activity indicator (wrapped in a positioned container)
-	// overlays the (visually hidden) icon. `instant` so it shows the moment
-	// loading starts; aria-hidden because the inner control already carries
-	// aria-busy. Sizes: xs:16, sm:20, md:24, lg:28.
+	// Loading: an activity indicator overlays the (opacity-hidden) icon.
+	// `instant` so it shows the moment loading starts. It is NOT aria-hidden:
+	// its role="status" live region announces "Laden". The icon-button's name
+	// comes from aria-label, so the nested live text doesn't affect it (and
+	// keeping it inside the control avoids splitting the optional tooltip
+	// wrapper). aria-busy stays as supplementary state. Sizes: xs:16, sm:20,
+	// md:24, lg:28.
 	const ariaBusy = this.loading ? 'true' : nothing;
 	const loadingSize = this.size === 'xs' ? '16'
 		: this.size === 'sm' ? '20'
@@ -53,7 +56,6 @@ export function template(this: NLDDIconButton) {
 				<nldd-activity-indicator
 					timing="instant"
 					size=${loadingSize}
-					aria-hidden="true"
 				></nldd-activity-indicator>
 			</div>
 		`

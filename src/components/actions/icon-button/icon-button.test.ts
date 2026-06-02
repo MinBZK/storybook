@@ -509,6 +509,19 @@ describe('nldd-icon-button – loading', () => {
 		expect(el.shadowRoot!.querySelector('.icon-button__activity-indicator')).not.toBeNull();
 	});
 
+	it('renders the activity indicator + aria-busy on the <a> when loading with href', async () => {
+		el = await fixture<NLDDIconButton>('<nldd-icon-button loading href="/opslaan" icon="download" accessible-label="Opslaan" tooltip-timing="never"></nldd-icon-button>');
+		await waitForUpdate(el);
+		const anchor = el.shadowRoot!.querySelector('a');
+		expect(anchor).not.toBeNull();
+		expect(anchor!.getAttribute('aria-busy')).toBe('true');
+		const indicator = el.shadowRoot!.querySelector('nldd-activity-indicator');
+		expect(indicator).not.toBeNull();
+		// Not aria-hidden: its role="status" live region announces loading.
+		// (Kept inside the control — the icon-button's aria-label carries the name.)
+		expect(indicator!.hasAttribute('aria-hidden')).toBe(false);
+	});
+
 	it('renders no activity indicator when not loading', async () => {
 		el = await fixture<NLDDIconButton>('<nldd-icon-button icon="download" text="Opslaan"></nldd-icon-button>');
 		await waitForUpdate(el);
