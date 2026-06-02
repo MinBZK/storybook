@@ -12,7 +12,7 @@ export const progressBarStyles = css`
 		--_track-border-color: var(--components-progress-bar-track-border-color);
 		--_track-border-width: var(--components-progress-bar-track-border-width);
 		--_corner-radius: var(--components-progress-bar-corner-radius);
-		--_segmentIndicator-indicator-gap: var(--components-progress-bar-progress-segment-indicator-gap);
+		--_segment-indicator-gap: var(--components-progress-bar-progress-segment-indicator-gap);
 		--_caption-gap: var(--components-progress-bar-caption-gap);
 		--_text-color: var(--components-progress-bar-text-color);
 		--_supporting-text-color: var(--components-progress-bar-supporting-text-color);
@@ -41,7 +41,7 @@ export const progressBarStyles = css`
 	:host([size="lg"]) { --_height: var(--components-progress-bar-lg-height); }
 
 	:host([mode="distribution"]) {
-		--_segmentIndicator-indicator-gap: var(--components-progress-bar-distribution-segment-indicator-gap);
+		--_segment-indicator-gap: var(--components-progress-bar-distribution-segment-indicator-gap);
 		--_corner-radius: var(--components-progress-bar-distribution-corner-radius);
 	}
 
@@ -108,7 +108,7 @@ export const progressBarStyles = css`
 		width: 100%;
 		height: var(--_height);
 		overflow: hidden;
-		gap: var(--_segmentIndicator-indicator-gap);
+		gap: var(--_segment-indicator-gap);
 		container-type: inline-size;
 	}
 
