@@ -1,5 +1,5 @@
 import { html, nothing } from 'lit';
-import './code-editor.ts';
+import './code-editor.js';
 
 export default {
 	title: 'Components/Inputs/Code Editor',

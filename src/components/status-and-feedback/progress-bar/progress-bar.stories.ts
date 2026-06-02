@@ -1,5 +1,5 @@
 import { html, nothing } from 'lit';
-import './progress-bar.ts';
+import './progress-bar.js';
 
 const SEMANTIC_COLORS = ['neutral', 'accent', 'success', 'warning', 'critical'] as const;
 

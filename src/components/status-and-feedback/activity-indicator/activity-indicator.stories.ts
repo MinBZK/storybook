@@ -1,5 +1,5 @@
 import { html } from 'lit';
-import './activity-indicator.ts';
+import './activity-indicator.js';
 import '../progress-circle/progress-circle.js';
 import '../progress-bar/progress-bar.js';
 

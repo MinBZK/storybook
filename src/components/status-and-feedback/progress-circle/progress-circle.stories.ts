@@ -1,5 +1,5 @@
 import { html, nothing } from 'lit';
-import './progress-circle.ts';
+import './progress-circle.js';
 
 const SEMANTIC_COLORS = ['neutral', 'accent', 'success', 'warning', 'critical'] as const;
 
