@@ -13,6 +13,7 @@ nldd-rich-text {
 
 	container-type: inline-size;
 	display: grid;
+	width: 100%;
 	grid-template-columns:
 		[full-start]   0
 		[wide-start]   0
