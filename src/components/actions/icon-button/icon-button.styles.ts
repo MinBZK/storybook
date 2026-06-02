@@ -309,5 +309,8 @@ export const iconButtonStyles = css`
 	.icon-button__activity-indicator {
 		position: absolute;
 		inset: 0;
+		/* Re-establish the content color here: the indicator lives outside
+		   .icon-button now, so its currentColor stroke can no longer inherit it. */
+		color: var(--_content-color);
 	}
 `;
