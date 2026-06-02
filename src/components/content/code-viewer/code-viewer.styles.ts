@@ -127,13 +127,7 @@ export const codeViewerStyles = css`
 		position: absolute;
 		top: var(--_actions-area-padding);
 		right: var(--_actions-area-padding);
-		bottom: var(--_actions-area-padding);
 		z-index: var(--_actions-z-index);
-	}
-
-	.code-viewer__copy-button {
-		position: sticky;
-		top: var(--_actions-area-padding);
 	}
 
 	/* Visually-hidden live region announces copy success/failure to
