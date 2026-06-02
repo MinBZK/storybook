@@ -109,6 +109,7 @@ export class NLDDTable extends LitElement {
 	translations: Partial<NLDDTableTranslations> = {};
 
 	private _warnedColumns = false;
+	private _warnedLabel = false;
 	private _resizeObserver?: ResizeObserver;
 	private _rowsObserver?: MutationObserver;
 	/** Last observed content-box width, to resolve the active track list. */
@@ -209,8 +210,8 @@ export class NLDDTable extends LitElement {
 	 *  can pan it (mirrors nldd-code-viewer / nldd-rich-text), and keep its
 	 *  accessible name in sync. The table is its own scroll container
 	 *  (overflow-x: auto); the overflow-x check (not width alone) is defensive.
-	 *  The consumer's accessible-label wins; when the table scrolls without one,
-	 *  a translated fallback names the focusable region. */
+	 *  accessible-label is the name (role="table" needs one) whether or not the
+	 *  table scrolls; a missing label is DEV-warned, not auto-filled. */
 	private _syncHostA11y(): void {
 		const overflowX = getComputedStyle(this).overflowX;
 		const scrollableOverflow = overflowX === 'auto' || overflowX === 'scroll';
@@ -220,10 +221,12 @@ export class NLDDTable extends LitElement {
 		} else {
 			this.removeAttribute('tabindex');
 		}
+		// accessible-label is the table's name (role="table" requires one) and
+		// also names the focusable scroll region. Independent of scrolling; a
+		// missing label is DEV-warned in updated(), not papered over with a
+		// generic scroll name.
 		if (this.accessibleLabel) {
 			this.setAttribute('aria-label', this.accessibleLabel);
-		} else if (scrollable) {
-			this.setAttribute('aria-label', this._t('components.table.scroll-label'));
 		} else {
 			this.removeAttribute('aria-label');
 		}
@@ -244,6 +247,12 @@ export class NLDDTable extends LitElement {
 			console.warn('<nldd-table>: no `columns` set. Define a CSS grid track list (e.g. columns="200px 1fr 80px") so cells align into columns.');
 		} else if (this.columns) {
 			this._warnedColumns = false;
+		}
+		if (import.meta.env?.DEV && !this.accessibleLabel && !this._warnedLabel) {
+			this._warnedLabel = true;
+			console.warn('<nldd-table>: no `accessible-label` set. role="table" needs an accessible name — add accessible-label="…".');
+		} else if (this.accessibleLabel) {
+			this._warnedLabel = false;
 		}
 	}
 

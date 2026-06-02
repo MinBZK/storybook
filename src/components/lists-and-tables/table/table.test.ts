@@ -1,4 +1,4 @@
-import { describe, it, expect, afterEach } from 'vitest';
+import { describe, it, expect, afterEach, vi } from 'vitest';
 import { fixture, cleanup, waitForUpdate } from '../../../test-utils.js';
 import type { NLDDTable, NLDDTableRow } from './table.js';
 import './table.js';
@@ -55,6 +55,15 @@ describe('nldd-table', () => {
 		expect(el.getAttribute('aria-label')).toBe('Gebruikers');
 	});
 
+	it('DEV-warns and sets no aria-label when accessible-label is missing', async () => {
+		const warn = vi.spyOn(console, 'warn').mockImplementation(() => {});
+		el = await fixture<NLDDTable>('<nldd-table columns="1fr"></nldd-table>');
+		await waitForUpdate(el);
+		expect(el.hasAttribute('aria-label')).toBe(false);
+		expect(warn).toHaveBeenCalledWith(expect.stringContaining('accessible-label'));
+		warn.mockRestore();
+	});
+
 	it('defaults the background to base and reflects tinted', async () => {
 		el = await fixture<NLDDTable>('<nldd-table columns="1fr"></nldd-table>');
 		await waitForUpdate(el);
@@ -107,14 +116,14 @@ describe('nldd-table', () => {
 		+ '<nldd-table-row><nldd-cell>A</nldd-cell><nldd-cell>B</nldd-cell></nldd-table-row>'
 		+ '</nldd-table></div>';
 
-	it('becomes focusable and labelled when it overflows horizontally', async () => {
+	it('becomes focusable but unnamed when it overflows without an accessible-label', async () => {
 		const host = await fixture(wideBox());
 		const table = host.querySelector('nldd-table') as HTMLElement;
 		await waitForUpdate(table);
 		await nextFrames();
 		expect(table.getAttribute('tabindex')).toBe('0');
-		// No accessible-label → translated fallback names the focusable region.
-		expect(table.getAttribute('aria-label')).toBe('Scrollbare tabel');
+		// No accessible-label → no name is invented (the consumer is DEV-warned).
+		expect(table.hasAttribute('aria-label')).toBe(false);
 		cleanup(host);
 	});
 
