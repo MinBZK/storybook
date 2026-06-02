@@ -408,11 +408,18 @@ nldd-rich-text table {
 	}
 }
 
+/* ## Table Row */
+
+nldd-rich-text tr {
+	/* Row min-height: `min-height` does not apply to a table-cell per spec, so
+	   set it on the row, where `height` acts as a minimum. Mirrors nldd-table. */
+	height: var(--semantics-tables-row-min-height);
+}
+
 /* ## Table Header Cell */
 
 nldd-rich-text th {
 	min-width: var(--primitives-area-160);
-	min-height: var(--semantics-tables-row-min-height);
 	padding-block: var(--semantics-tables-row-padding-block);
 	padding-inline: calc(var(--semantics-tables-column-gap) / 2);
 	border-bottom: var(--semantics-tables-border-width) solid var(--semantics-tables-border-color);
@@ -424,7 +431,6 @@ nldd-rich-text th {
 
 nldd-rich-text td {
 	min-width: var(--primitives-area-160);
-	min-height: var(--semantics-tables-row-min-height);
 	padding-block: var(--semantics-tables-row-padding-block);
 	padding-inline: calc(var(--semantics-tables-column-gap) / 2);
 	border-bottom: var(--semantics-tables-border-width) solid var(--semantics-tables-border-color);
