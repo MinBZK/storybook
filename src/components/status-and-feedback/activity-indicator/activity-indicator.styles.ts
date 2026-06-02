@@ -12,6 +12,9 @@ export const activityIndicatorStyles = css`
 		--_stroke-width: 2;
 		--_rotation-duration: 0.8s;
 		--_fade-duration: var(--primitives-transition-duration-slow);
+		--_fade-easing: ease-out;
+		--_pulse-duration: 2s;
+		--_pulse-easing: ease-in-out;
 		--_max-width: var(--primitives-area-240);
 		--_gap: var(--primitives-space-4);
 		--_text-font: var(--primitives-font-body-sm-regular-flat);
@@ -62,7 +65,7 @@ export const activityIndicatorStyles = css`
 		max-width: var(--_max-width);
 		align-items: center;
 		gap: var(--_gap);
-		animation: activity-indicator-fade-in var(--_fade-duration) ease-out;
+		animation: activity-indicator-fade-in var(--_fade-duration) var(--_fade-easing);
 	}
 
 	@keyframes activity-indicator-fade-in {
@@ -137,7 +140,7 @@ export const activityIndicatorStyles = css`
 		.activity-indicator__indicator {
 			/* Drop the rotation (vestibular safety); keep the 25 / 100 arc and
 			   pulse its opacity instead, mirroring nldd-progress-circle. */
-			animation: activity-indicator-pulse 2s ease-in-out infinite;
+			animation: activity-indicator-pulse var(--_pulse-duration) var(--_pulse-easing) infinite;
 		}
 
 		@keyframes activity-indicator-pulse {
