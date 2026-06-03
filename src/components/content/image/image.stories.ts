@@ -48,7 +48,7 @@ export default {
 		aspectRatio: '16/9',
 		objectFit: 'cover',
 		objectPosition: 'center',
-		shape: 'rounded',
+		shape: 'square',
 		srcset: '',
 		sizes: '',
 		lqip: '',
@@ -99,7 +99,7 @@ export default {
 			control: 'select',
 			options: ['square', 'rounded', 'circle'],
 			description: 'Hoekvorm',
-			table: { defaultValue: { summary: 'rounded' } },
+			table: { defaultValue: { summary: 'square' } },
 		},
 		srcset: {
 			control: 'text',

@@ -17,10 +17,7 @@ export const imageStyles = css`
 		--_error-text-color: var(--components-image-error-text-color);
 		--_error-font: var(--components-image-error-font);
 		--_error-padding: var(--primitives-space-8);
-		--_error-card-padding-block: var(--primitives-space-12);
-		--_error-card-padding-inline: var(--primitives-space-16);
-		--_error-card-gap: var(--primitives-space-2);
-		--_error-card-corner-radius: var(--primitives-corner-radius-md);
+		--_error-gap: var(--primitives-space-2);
 		--_caption-row-gap: var(--primitives-space-8);
 		--_object-fit: cover;
 		--_object-position: center;
@@ -56,9 +53,10 @@ export const imageStyles = css`
 
 
 	/* ## Shape variants
-	   Rounded is the default (already set via the --_corner-radius in :host
-	   pointing at the design-system token). Square overrides to 0, circle to
-	   50% for avatar-style use (combine with aspect-ratio 1/1 for a true circle). */
+	   The :host base --_corner-radius is the design-system rounded token, used by
+	   shape="rounded". The default shape is "square" (set on the property), which
+	   overrides to 0; circle overrides to 50% for avatar-style use (combine with
+	   aspect-ratio 1/1 for a true circle). */
 
 	:host([shape="square"]) { --_corner-radius: 0; }
 	:host([shape="circle"]) { --_corner-radius: 50%; }
@@ -79,14 +77,14 @@ export const imageStyles = css`
 
 	/* # Media wrapper
 	   The box that constrains the image. aspect-ratio is set as an inline style
-	   from the component when provided, so we don't need a CSS var. The
-	   background acts as a placeholder while the image loads. */
+	   from the component when provided, so we don't need a CSS var. The media is
+	   transparent by default; an LQIP paints it while loading, and the error
+	   state paints it grey (see "Error state" below). */
 
 	.image__media {
 		display: block;
 		position: relative;
 		overflow: hidden;
-		background-color: var(--_background-color);
 		max-width: 100%;
 		border-radius: var(--_corner-radius);
 	}
@@ -305,7 +303,7 @@ export const imageStyles = css`
 		transition: opacity 300ms ease-out;
 	}
 
-	.image__media--lqip .image__img--loaded {
+	:host([loaded]) .image__media--lqip .image__img {
 		opacity: 1;
 	}
 
@@ -322,7 +320,7 @@ export const imageStyles = css`
 	   Listeners stay attached — only DOM removal detaches them — so the next
 	   src change still triggers load/error. */
 
-	.image__img--errored {
+	:host([errored]) .image__img {
 		display: none;
 	}
 
@@ -346,31 +344,23 @@ export const imageStyles = css`
 
 
 	/* # Error state
-	   Centred card with icon + alt-text shown when the image fails to load.
-	   Sits over whatever background --_background-color provides (the LQIP
-	   gradient when present, otherwise the neutral fallback color). The
-	   card has its own neutral background so the icon + label stay legible
-	   against the LQIP behind it. */
+	   Centred icon + alt-text shown when the image fails to load. The media is
+	   painted grey (--_background-color) via :host([errored]) so the icon and
+	   label stay legible — no separate card needed. */
+
+	:host([errored]) .image__media {
+		background-color: var(--_background-color);
+	}
 
 	.image__error {
 		position: absolute;
 		inset: 0;
 		display: flex;
-		align-items: center;
-		justify-content: center;
-		padding: var(--_error-padding);
-	}
-
-	.image__error-card {
-		box-sizing: border-box;
-		display: flex;
 		flex-direction: column;
 		align-items: center;
-		max-width: 100%;
-		padding: var(--_error-card-padding-block) var(--_error-card-padding-inline);
-		gap: var(--_error-card-gap);
-		background-color: var(--_background-color);
-		border-radius: var(--_error-card-corner-radius);
+		justify-content: center;
+		gap: var(--_error-gap);
+		padding: var(--_error-padding);
 		color: var(--_error-text-color);
 		font: var(--_error-font);
 		text-align: center;
@@ -390,6 +380,7 @@ export const imageStyles = css`
 		gap: var(--_caption-row-gap);
 		color: var(--_caption-color);
 		font: var(--_caption-font);
+		text-wrap: pretty;
 	}
 
 	.image__credit {

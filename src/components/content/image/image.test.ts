@@ -68,11 +68,11 @@ describe('nldd-image', () => {
 		expect(el.getAttribute('shape')).toBe('circle');
 	});
 
-	it('defaults shape to rounded', async () => {
+	it('defaults shape to square', async () => {
 		el = await fixture<NLDDImage>('<nldd-image src="/foo.jpg" alt="Foo"></nldd-image>');
 		await waitForUpdate(el);
-		expect((el as unknown as NLDDImage).shape).toBe('rounded');
-		expect(el.getAttribute('shape')).toBe('rounded');
+		expect((el as unknown as NLDDImage).shape).toBe('square');
+		expect(el.getAttribute('shape')).toBe('square');
 	});
 
 	it('defaults width to "full" and applies no host max-width', async () => {
@@ -133,7 +133,7 @@ describe('nldd-image', () => {
 		await waitForUpdate(el);
 		// Text now contains the translated default + the alt, so SR users get a
 		// meaningful announcement on the empty → non-empty transition.
-		expect(status!.textContent).toBe('Afbeelding kon niet worden geladen: Beschrijving');
+		expect(status!.textContent).toBe('Afbeelding is niet geladen: Beschrijving');
 	});
 
 	it('does not announce in the status region for decorative errored images', async () => {
