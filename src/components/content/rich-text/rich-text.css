@@ -299,6 +299,7 @@ nldd-rich-text figcaption {
 	color: var(--semantics-content-secondary-color);
 	font: var(--primitives-font-body-xs-regular-snug);
 	text-align: left;
+	text-wrap: pretty;
 }
 
 
