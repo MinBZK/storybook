@@ -454,6 +454,10 @@ nldd-rich-text tr > :is(th, td):last-child {
 
 /* ## Table Last Row */
 
-nldd-rich-text tr:last-child > :is(th, td) {
+/* Only the final BODY row drops its bottom border (the table's own border
+   closes it off). Without the `tbody` scope an unscoped `tr:last-child` also
+   matches the header row — it is the last (only) child of `thead` — which
+   wrongly stripped the header underline on tables that render a `<thead>`. */
+nldd-rich-text tbody tr:last-child > :is(th, td) {
 	border-bottom: none;
 }
