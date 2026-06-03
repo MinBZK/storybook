@@ -767,7 +767,7 @@ A horizontal group of mutually exclusive (radio) or multi-select (checkbox) opti
 | `value` | `string` | Selected value for radio type |
 | `size` | `string` | Control size: 'sm' \| 'md' (default: 'md') |
 | `type` | `string` | Input type: 'radio' \| 'checkbox' (default: 'radio') |
-| `variant` | `string` | Content type for all items: 'text' \| 'icon' (default: 'text') |
+| `variant` | `string` | Content type for all items: 'text' \| 'icon' \| 'icon-and-text' (default: 'text') |
 | `disabled` | `boolean` | Disabled state for all items |
 | `width` | `string` | Width mode: 'full' (stretches to container), 'fit-content' (per-item content size), or any CSS length (e.g. '240px') |
 | `name` | `string` | Name for form submission, forwarded to native inputs |
@@ -793,7 +793,7 @@ A horizontal group of mutually exclusive (radio) or multi-select (checkbox) opti
 | `value` | `string` | Value for this item |
 | `selected` | `boolean` | Whether this item is selected (set by parent) |
 | `disabled` | `boolean` | Disabled state |
-| `text` | `string` | Text label (shown when parent variant="text", always used as aria-label and tooltip for icon items) |
+| `text` | `string` | Text label (shown for variant "text" and "icon-and-text"; used as aria-label and tooltip for variant "icon") |
 | `icon` | `string` | Icon name for nldd-icon |
 
 **Slots**
@@ -1487,169 +1487,6 @@ Een zwevend venster gebaseerd op het native <dialog>-element. Kan modaal of niet
 | `open` | Wanneer het venster wordt geopend |
 | `close` | Wanneer het venster volledig is gesloten |
 
-## Lists & menus
-
-### `<nldd-cell>`
-
-A generic cell for wrapping arbitrary content in a list item. Controls vertical alignment and sizing without imposing content opinions. `vertical-alignment="center"` (default) stretches the cell to fill the full row height and centers its content within that space. Use `min-height` to set a minimum centered region. For strict top alignment without a minimum height, use `vertical-alignment="top"`.
-
-**Attributes**
-
-| Attribuut | Type | Beschrijving |
-| --- | --- | --- |
-| `width` | `string` | 'full' \| 'fit-content' \| CSS length (e.g. '120px', '10rem'). Default: 'fit-content' |
-| `min-width` | `string` | Minimum width as CSS length (e.g. '80px', '5rem') |
-| `max-width` | `string` | Maximum width as CSS length (e.g. '200px', '20rem') |
-| `min-height` | `string` | Minimum height as CSS length (e.g. '44px', '3rem') |
-| `vertical-alignment` | `'top' \| 'center' \| 'bottom'` | Vertical alignment of slotted content (default: 'center') |
-| `horizontal-alignment` | `'left' \| 'center' \| 'right'` | Horizontal alignment of slotted content (default: 'left') |
-
-**Slots**
-
-| Slot | Beschrijving |
-| --- | --- |
-| _(default)_ | Default slot for any content (buttons, switches, icons, etc.) |
-
-### `<nldd-description-cell>`
-
-A cell component for displaying a title-description pair in lists. `vertical-alignment="center"` (default) stretches the cell to fill the full row height and centers its content within that space. Use `min-height` to set a minimum centered region. For strict top alignment without a minimum height, use `vertical-alignment="top"`.
-
-**Attributes**
-
-| Attribuut | Type | Beschrijving |
-| --- | --- | --- |
-| `width` | `string` | 'full' \| 'fit-content' \| CSS length (e.g. '200px', '20rem'). Default: 'full' |
-| `min-width` | `string` | Minimum width as CSS length (e.g. '80px', '5rem') |
-| `max-width` | `string` | Maximum width as CSS length (e.g. '300px', '20rem') |
-| `min-height` | `string` | Minimum height as CSS length (e.g. '44px', '3rem') |
-| `vertical-alignment` | `'top' \| 'center' \| 'bottom'` | Vertical alignment (default: 'center') |
-
-**Slots**
-
-| Slot | Beschrijving |
-| --- | --- |
-| `title` | The label displayed above the description |
-| `description` | The description content |
-
-### `<nldd-drag-handle-cell>`
-
-A cell that displays a drag handle for reorderable list items. Always vertically centered and sized to fit the handle. To enable drag-to-reorder, add the `reorderable-only` attribute to this element. This attribute is required for `nldd-list` to detect the drag handle in the composed event path and activate pointer and keyboard drag mode: ```html <nldd-list reorderable> <nldd-list-item> <nldd-drag-handle-cell slot="start" reorderable-only></nldd-drag-handle-cell> <nldd-text-cell text="Item"></nldd-text-cell> </nldd-list-item> </nldd-list> ``` Without `reorderable-only`, pointer and keyboard drag will never trigger.
-
-**Attributes**
-
-| Attribuut | Type | Beschrijving |
-| --- | --- | --- |
-| `size` | `string` | Handle size: 'sm' \| 'md' (default: 'md') |
-
-### `<nldd-icon-cell>`
-
-A cell component for displaying icons in lists with configurable alignment and size. Set `icon` to render an `nldd-icon` by name, or slot custom content as an escape hatch for non-standard iconography.
-
-**Attributes**
-
-| Attribuut | Type | Beschrijving |
-| --- | --- | --- |
-| `vertical-alignment` | `string` | Vertical alignment: 'top' \| 'center' \| 'bottom' (default: 'center') |
-| `size` | `string` | Size: '16' \| '20' \| '24' \| '32' (default: '24') |
-| `color` | `'default' \| 'secondary' \| 'accent' \| 'success' \| 'warning' \| 'critical'` | Color variant of the icon (default: 'default') |
-| `icon` | `string` | Icon name (renders `<nldd-icon>`). Takes precedence over the default slot. |
-
-**Slots**
-
-| Slot | Beschrijving |
-| --- | --- |
-| _(default)_ | Fallback for custom icon content when `icon` is not set. |
-
-### `<nldd-list>`
-
-A container for `nldd-list-item` elements, with optional header and footer slots. The `type` attribute switches the list's a11y role and behavior: - `list` (default) — `role="list"`, items `role="listitem"`. Reorderable allowed. Items may individually be buttons or links; the list itself has no special keyboard semantics. - `navigation` — host `role="navigation"`, items with `selected` get `aria-current="page"` on their inner `<a>` or `<button>`. Selection state is consumer-managed: the list never mutates `selected` itself. On reorder (type="list" + reorderable), the list dispatches `nldd-reorder` with `fromIndex` / `toIndex` and expects the consumer to mutate the DOM (or their data model that renders the DOM). Focus is restored to the moved item's drag handle via a single `requestAnimationFrame` — this assumes the consumer reorders **synchronously** in the event handler. Async renderers (React, Vue, …) that update the DOM on a later tick will miss the focus restore and should manage focus themselves after their render commits. to `nldd-inline-dialog` with `empty-text` / `empty-supporting-text` (falling back to Dutch i18n "Geen resultaten"). Slot content overrides the default dialog entirely.
-
-### `<nldd-list-item>`
-
-A row within an `nldd-list`, providing layout for start, main and end areas. Renders as a link when `href` is set, as a button when `type="button"`, or as a plain container otherwise. The item synchronises its ARIA with its parent `nldd-list`'s `type`: - `list` parent → `role="listitem"` - `navigation` parent → `role="listitem"` + `aria-current="page"` on the inner `<a>` / `<button>` when `selected`
-
-### `<nldd-spacer-cell>`
-
-A cell component that provides fixed horizontal spacing within list items.
-
-**Attributes**
-
-| Attribuut | Type | Beschrijving |
-| --- | --- | --- |
-| `size` | `string` | Spacer size in pixels: '2' \| '4' \| '6' \| '8' \| '10' \| '12' \| '16' \| '20' \| '24' \| '28' \| '32' \| '40' \| '44' \| '48' \| '56' \| '64' \| '80' \| '96' (default: '16') |
-
-### `<nldd-text-cell>`
-
-A cell component for displaying text content in lists with configurable alignment, size and color. This is the most fundamental list cell component. `vertical-alignment="center"` (default) stretches the cell to fill the full row height and centers its content within that space. Use `min-height` to set a minimum centered region. For strict top alignment without a minimum height, use `vertical-alignment="top"`. Each text region (overline, main text, supporting text) accepts either a string attribute or slotted DOM content. The slot is the source of truth: if the consumer provides slotted content, it replaces the attribute-based render for that region. Use slots when you need inline elements like `<nldd-tag>`, `<a>` or `<nldd-icon>` mixed with text. Note that `query` highlighting and `**bold**` parsing only apply to the attribute path — slotted content is rendered as-is.
-
-**Attributes**
-
-| Attribuut | Type | Beschrijving |
-| --- | --- | --- |
-| `size` | `string` | Cell size: 'sm' \| 'md' (default: 'md') |
-| `color` | `string` | Text color variant: 'default' \| 'secondary' \| 'accent' \| 'success' \| 'warning' \| 'critical' (default: 'default'). All non-default/-secondary variants apply to all three text fields so the cell reads as a coherent state. |
-| `width` | `string` | 'full' \| 'fit-content' \| CSS length (e.g. '200px', '20rem'). Default: 'full' |
-| `min-width` | `string` | Minimum width as CSS length (e.g. '80px', '5rem') |
-| `max-width` | `string` | Maximum width as CSS length (e.g. '200px', '20rem') |
-| `min-height` | `string` | Minimum height as CSS length (e.g. '44px', '3rem') |
-| `horizontal-alignment` | `string` | Horizontal alignment: 'left' \| 'center' \| 'right' (default: 'left') |
-| `vertical-alignment` | `string` | Vertical alignment: 'top' \| 'center' \| 'bottom' (default: 'center') |
-| `text` | `string` | Main text content. Supports **bold** syntax for inline bold segments. Falls back to default slot. |
-| `overline` | `string` | Optional overline text displayed above the main content. Supports **bold**. Falls back to `overline` slot. |
-| `supporting-text` | `string` | Optional supporting text displayed below the main content. Supports **bold**. Falls back to `supporting-text` slot. |
-| `query` | `string` | Query substring to bold-highlight across text fields. Empty = no marking. |
-| `query-mark-mode` | `string` | 'match' \| 'predictive' (default: 'predictive') |
-
-**Slots**
-
-| Slot | Beschrijving |
-| --- | --- |
-| `overline` | Rich content for the overline region. Overrides the `overline` attribute when content is assigned. |
-| _(default)_ | (default) Rich content for the main text region. Overrides the `text` attribute when content is assigned. |
-| `supporting-text` | Rich content for the supporting text region. Overrides the `supporting-text` attribute when content is assigned. |
-
-### `<nldd-timeline-track-cell>`
-
-A cell component for displaying timeline track indicators in lists. Shows a vertical line with a dot indicating timeline position and state. The line extends into the surrounding list-item's block padding via the `--context-list-item-padding-block` cascade so consecutive steps connect without gaps.
-
-**Attributes**
-
-| Attribuut | Type | Beschrijving |
-| --- | --- | --- |
-| `step` | `'past' \| 'future' \| 'none'` | Timeline step state (default: 'past') |
-| `child` | `'first' \| 'between' \| 'last'` | Position in timeline (default: 'between') |
-
-### `<nldd-title-cell>`
-
-A cell component for displaying a title with optional overline and subtitle in lists. `vertical-alignment="center"` (default) stretches the cell to fill the full row height and centers its content within that space. Use `min-height` to set a minimum centered region. For strict top alignment without a minimum height, use `vertical-alignment="top"`. Each text region (overline, title, supporting text) accepts either a string attribute or slotted DOM content. The slot is the source of truth: if the consumer provides slotted content, it replaces the attribute-based render for that region. Use slots when you need inline elements like `<nldd-tag>`, `<nldd-icon>` or other components mixed with text. Note that `query` highlighting and `**bold**` parsing only apply to the attribute path — slotted content is rendered as-is.
-
-**Attributes**
-
-| Attribuut | Type | Beschrijving |
-| --- | --- | --- |
-| `size` | `1\|2\|3\|4\|5\|6` | Visual size of the title (default: 5) |
-| `color` | `'default' \| 'secondary' \| 'accent' \| 'success' \| 'warning' \| 'critical'` | Text color variant (default: 'default'). `secondary` demotes the title to match the muted overline/supporting-text. `accent`, `success`, `warning` and `critical` tint all three regions so the cell reads as a coherent state. |
-| `width` | `string` | 'full' \| 'fit-content' \| CSS length (e.g. '200px', '20rem'). Default: 'full' |
-| `min-width` | `string` | Minimum width as CSS length (e.g. '80px', '5rem') |
-| `max-width` | `string` | Maximum width as CSS length (e.g. '300px', '20rem') |
-| `min-height` | `string` | Minimum height as CSS length (e.g. '44px', '3rem') |
-| `horizontal-alignment` | `'left' \| 'center' \| 'right'` | Horizontal alignment (default: 'left') |
-| `vertical-alignment` | `'top' \| 'center' \| 'bottom'` | Vertical alignment (default: 'center') |
-| `text` | `string` | Title text content. Supports **bold** syntax for inline bold segments. Falls back to default slot. |
-| `overline` | `string` | Optional overline text displayed above the title. Supports **bold**. Falls back to `overline` slot. |
-| `supporting-text` | `string` | Optional supporting text displayed below the title. Supports **bold**. Falls back to `supporting-text` slot. |
-| `heading-level` | `number` | Heading level for the title element: 1–6 (default: none, renders a <p>) |
-| `query` | `string` | Query substring to bold-highlight across text fields. Empty = no marking. |
-| `query-mark-mode` | `string` | 'match' \| 'predictive' (default: 'predictive') |
-
-**Slots**
-
-| Slot | Beschrijving |
-| --- | --- |
-| `overline` | Rich content for the overline region. Overrides the `overline` attribute when content is assigned. |
-| _(default)_ | (default) Rich content for the title. Overrides the `text` attribute when content is assigned. |
-| `supporting-text` | Rich content for the supporting text region. Overrides the `supporting-text` attribute when content is assigned. |
-
 ## Navigation
 
 ### `<nldd-breadcrumbs>`
@@ -1889,6 +1726,27 @@ A toolbar for page and container headings with optional navigation and action bu
 
 ## Status & feedback
 
+### `<nldd-activity-indicator>`
+
+Layout placeholder that fills its parent and centres an indeterminate activity indicator. By default the indicator is held back for 1000ms so brief loading states don't flash; once the delay passes it fades in. Set `timing="instant"` to skip the delay (the fade-in still plays) — this is what embedding components such as `nldd-button` use for their loading state. The default indicator is a simple icon-sized circle drawn in `currentColor`, with an optional label below (hidden unless `show-text` is set). Drop a `<nldd-progress-circle>`, `<nldd-progress-bar>` or any element in the slot to override it. Reconnect behaviour: every `connectedCallback` resets the timer and hides the indicator again. If a consumer toggles the element via a conditional render (remove + re-insert) the indicator disappears and re-fades after another delay. Keep the element mounted and toggle visibility / `hidden` instead if you want the timer to run only once. Accessibility: while connected and not `complete` the host is a polite live region (`role="status"`). The label (`text`, or the translated "Laden" fallback) always renders as the region's content — visually hidden when `show-text` is off (the default) — so assistive tech announces the loading state when the indicator appears. Set `complete` (or unmount) to clear it.
+
+**Attributes**
+
+| Attribuut | Type | Beschrijving |
+| --- | --- | --- |
+| `size` | `string` | Circle diameter on the icon scale: 16,20,24,28,32,40,44,48,56,64,80,96 (default '32') |
+| `show-text` | `boolean` | Show the label under the indicator (default false; the label still feeds the accessible name) |
+| `text` | `string` | Label text. Falls back to the translated "Laden" when unset. |
+| `timing` | `'default'\|'instant'` | 'default' waits 1000ms before showing (anti-flash); 'instant' shows immediately (the fade-in still plays). Default 'default'. |
+| `complete` | `boolean` | Mark the loader as finished while keeping the element mounted; clears aria-busy and hides the indicator. |
+| `translations` | `object` | Override translation keys; unset keys fall back to Dutch |
+
+**Slots**
+
+| Slot | Beschrijving |
+| --- | --- |
+| _(default)_ | Optional custom indicator; overrides the default circle (and its visually-hidden label). Consumers replacing the slot supply their own indicator semantics; the host's role="status" still marks the loading region. |
+
 ### `<nldd-badge>`
 
 Een notificatie-indicator, vaak voor ongelezen aantallen of statusdots. Kan tekst, een getal en/of een icoon tonen. Zonder inhoud verschijnt automatisch een stip. Gebruik in een hoek van een ander element (bijv. een icon) of standalone.
@@ -1913,8 +1771,8 @@ An inline notification with a tinted background per variant. Use for persistent,
 
 | Attribuut | Type | Beschrijving |
 | --- | --- | --- |
-| `variant` | `'neutral'\|'success'\|'warning'\|'critical'` | Colour and default icon (default: 'neutral') |
-| `icon` | `string` | Icon override. Default per variant: neutral → info-circle-filled, success → check-circle-filled, warning → exclamation-triangle-filled, critical → exclamation-circle-filled |
+| `variant` | `'neutral'\|'accent'\|'success'\|'warning'\|'critical'` | Colour and default icon (default: 'neutral') |
+| `icon` | `string` | Icon override. Default per variant: neutral → info-circle-filled, accent → info-circle-filled, success → check-circle-filled, warning → exclamation-triangle-filled, critical → exclamation-circle-filled |
 | `text` | `string` | Main text (heading or paragraph, depending on heading-level) |
 | `supporting-text` | `string` | Supporting text below the heading |
 | `heading-level` | `1\|2\|3\|4\|5\|6` | Renders text as h1–h6; absent renders a p |
@@ -1985,28 +1843,9 @@ A modal window with overlay backdrop, based on the native <dialog> element. Inte
 | `open` | When the dialog is opened |
 | `close` | When the dialog is fully closed |
 
-### `<nldd-progress>`
-
-Layout placeholder that fills its parent and centres an indeterminate progress indicator. Holds the indicator back for 1000ms so brief loading states don't flash a spinner; once the delay passes the indicator fades in. Default is an indeterminate `<nldd-progress-circle>` with the translated "Laden" label. Drop anything in the slot (a progress-bar, a customised progress-circle, etc.) to override. Reconnect behaviour: every `connectedCallback` resets the timer and hides the indicator again. If a consumer toggles the element via a conditional render (remove + re-insert) the spinner will disappear and re-fade after another 1000ms. Keep the element mounted and toggle visibility / `hidden` instead if you want the timer to run only once. Accessibility: the host element carries `aria-busy="true"` for as long as it is connected and not marked `complete`, including the silent 1000 ms pre-spinner window. AT users landing on the region during that window are told loading is in progress, even before the visual spinner appears. Two patterns to signal "done": 1. (Preferred.) Unmount `<nldd-progress>` entirely. aria-busy goes away with the element, and the indicator's `progressbar` role disappears from the AT tree. 2. Set the boolean `complete` attribute. aria-busy is cleared and the indicator is hidden, but the element stays in the DOM. Use this when you want a CSS transition out, or when the wrapper sits in a layout slot that would collapse if unmounted.
-
-**Attributes**
-
-| Attribuut | Type | Beschrijving |
-| --- | --- | --- |
-| `text` | `string` | Label under the default indicator. Falls back to the translated "Laden" string when unset. Ignored when the slot is filled. |
-| `no-label` | `boolean` | Suppress the label under the default indicator entirely. Use when the surrounding UI already conveys "loading" and an extra "Laden" caption would be redundant noise. |
-| `complete` | `boolean` | Mark the loader as finished while keeping the element mounted; clears aria-busy and hides the indicator. |
-| `translations` | `object` | Override translation keys; unset keys fall back to Dutch |
-
-**Slots**
-
-| Slot | Beschrijving |
-| --- | --- |
-| _(default)_ | Optional custom indicator; overrides the default progress-circle. The host carries `aria-busy="true"` for AT users, but the default ARIA semantics on the visible indicator (role="progressbar", aria-valuetext) come from the built-in `<nldd-progress-circle>`. Consumers replacing the slot are responsible for supplying their own progressbar role / label on the custom indicator. |
-
 ### `<nldd-progress-bar>`
 
-Exports both NLDDProgressBar and NLDDProgressBarSegment. A progress bar that supports a single value (loading-style) or multiple segments (multi-stage progress, or distribution like storage usage). The consumer provides raw values; the component computes percentages from `max`. Two modes: - `progress` (default): segments sum toward `max`; remaining space is empty track. ARIA reads "X% voltooid". - `distribution`: segments fill the bar; ARIA enumerates segments. If the sum of segment values exceeds `max`, segments are normalized proportionally to fit and a warning is logged.
+Exports both NLDDProgressBar and NLDDProgressBarSegmentIndicator. A progress bar that supports a single value (loading-style) or multiple segments (multi-stage progress, or distribution like storage usage). The consumer provides raw values; the component computes percentages from `max`. Two modes: - `progress` (default): segments sum toward `max`; remaining space is empty track. ARIA reads "X% voltooid". - `distribution`: segments fill the bar; ARIA enumerates segments. If the sum of segment values exceeds `max`, segments are normalized proportionally to fit and a warning is logged.
 
 **Attributes**
 
@@ -2018,7 +1857,8 @@ Exports both NLDDProgressBar and NLDDProgressBarSegment. A progress bar that sup
 | `color` | `string` | Color for the single-segment shorthand (default: 'accent') |
 | `size` | `'sm'\|'md'\|'lg'` | Height of the bar (default: 'md') |
 | `text` | `string` | Label above the bar (left) |
-| `value-format` | `'percentage'\|'absolute'\|'fraction'\|'none'` | Format for the value at the top right (default: 'percentage') |
+| `value-format` | `'percentage'\|'absolute'\|'fraction'` | Format for the displayed value (default: 'percentage') |
+| `value-display` | `'inline'\|'tooltip'\|'none'` | Where the value shows: inline in the caption, in a tooltip on the bar, or hidden (default: 'inline') |
 | `value-text` | `string` | Full override of the displayed value |
 | `accessible-label` | `string` | Full override of aria-valuetext |
 | `indeterminate` | `boolean` | Shows a sliding indicator animation (only without segments) |
@@ -2028,9 +1868,9 @@ Exports both NLDDProgressBar and NLDDProgressBarSegment. A progress bar that sup
 
 | Slot | Beschrijving |
 | --- | --- |
-| _(default)_ | Place for nldd-progress-bar-segment elements |
+| _(default)_ | Place for nldd-progress-bar-segment-indicator elements |
 
-### `<nldd-progress-bar-segment>`
+### `<nldd-progress-bar-segment-indicator>`
 
 **Attributes**
 
@@ -2043,7 +1883,7 @@ Exports both NLDDProgressBar and NLDDProgressBarSegment. A progress bar that sup
 
 ### `<nldd-progress-circle>`
 
-Exports both NLDDProgressCircle and NLDDProgressCircleSegment. A circular progress indicator that mirrors the API of nldd-progress-bar: single-value or multi-segment, progress or distribution mode, 24 colours, fade transitions between determinate/indeterminate, indeterminate indicator. Visual differences vs the bar: - SVG arcs instead of rectangular bars. - Label below the circle (not above). - No centre text; the consumer can wrap the circle if needed. - One combined tooltip on the whole circle showing all segment info (no per-segment tooltips). - Indeterminate uses a rotating elastic arc (Material-style) instead of the bar's Knight Rider scanner.
+Exports both NLDDProgressCircle and NLDDProgressCircleSegmentIndicator. A circular progress indicator that mirrors the API of nldd-progress-bar: single-value or multi-segment, progress or distribution mode, 24 colours, fade transitions between determinate/indeterminate, indeterminate indicator. Visual differences vs the bar: - SVG arcs instead of rectangular bars. - Label below the circle (not above). - No centre text; the consumer can wrap the circle if needed. - One combined tooltip on the whole circle showing all segment info (no per-segment tooltips). - Indeterminate uses a rotating elastic arc (Material-style) instead of the bar's Knight Rider scanner.
 
 **Attributes**
 
@@ -2055,12 +1895,14 @@ Exports both NLDDProgressCircle and NLDDProgressCircleSegment. A circular progre
 | `color` | `string` | Color. Semantic (neutral, accent, success, warning, critical) or a Rijkskleur. Default 'accent'. |
 | `size` | `string` | Circle diameter in px. Matches nldd-icon sizes: 16, 20, 24, 28, 32, 40, 44, 48, 56, 64, 80, 96 (default: '28') |
 | `text` | `string` | Label below the circle |
-| `value-format` | `'percentage'\|'absolute'\|'fraction'\|'none'` | Format the tooltip uses for the auto-text |
-| `accessible-label` | `string` | Full override of aria-valuetext (and tooltip text) |
+| `value-format` | `'percentage'\|'absolute'\|'fraction'` | Format of the displayed value (default: 'percentage') |
+| `value-display` | `'inline'\|'tooltip'\|'none'` | Where the value shows: inline below the label, in a tooltip, or hidden (default: 'tooltip') |
+| `value-text` | `string` | Full override of the displayed value (inline + tooltip) |
+| `accessible-label` | `string` | Full override of aria-valuetext |
 | `indeterminate` | `boolean` | Renders the rotating elastic arc animation |
 | `translations` | `object` | Override translation keys; unset keys fall back to Dutch |
 
-### `<nldd-progress-circle-segment>`
+### `<nldd-progress-circle-segment-indicator>`
 
 **Attributes**
 
@@ -2070,14 +1912,218 @@ Exports both NLDDProgressCircle and NLDDProgressCircleSegment. A circular progre
 | `color` | `string` | Color (semantic or Rijkskleur). Default 'accent'. |
 | `name` | `string` | Optional name used in the combined tooltip + screenreader text |
 
+## lists-and-tables
+
+### `<nldd-cell>`
+
+A generic cell for wrapping arbitrary content in a list item. Controls vertical alignment and sizing without imposing content opinions. `vertical-alignment="center"` (default) stretches the cell to fill the full row height and centers its content within that space. Use `min-height` to set a minimum centered region. For strict top alignment without a minimum height, use `vertical-alignment="top"`.
+
+**Attributes**
+
+| Attribuut | Type | Beschrijving |
+| --- | --- | --- |
+| `width` | `string` | 'full' \| 'fit-content' \| CSS length (e.g. '120px', '10rem'). Default: 'fit-content' |
+| `min-width` | `string` | Minimum width as CSS length (e.g. '80px', '5rem') |
+| `max-width` | `string` | Maximum width as CSS length (e.g. '200px', '20rem') |
+| `min-height` | `string` | Minimum height as CSS length (e.g. '44px', '3rem') |
+| `vertical-alignment` | `'top' \| 'center' \| 'bottom'` | Vertical alignment of slotted content (default: 'center') |
+| `horizontal-alignment` | `'left' \| 'center' \| 'right'` | Horizontal alignment of slotted content (default: 'left') |
+
+**Slots**
+
+| Slot | Beschrijving |
+| --- | --- |
+| _(default)_ | Default slot for any content (buttons, switches, icons, etc.) |
+
+### `<nldd-description-cell>`
+
+A cell component for displaying a title-description pair in lists. `vertical-alignment="center"` (default) stretches the cell to fill the full row height and centers its content within that space. Use `min-height` to set a minimum centered region. For strict top alignment without a minimum height, use `vertical-alignment="top"`.
+
+**Attributes**
+
+| Attribuut | Type | Beschrijving |
+| --- | --- | --- |
+| `width` | `string` | 'full' \| 'fit-content' \| CSS length (e.g. '200px', '20rem'). Default: 'full' |
+| `min-width` | `string` | Minimum width as CSS length (e.g. '80px', '5rem') |
+| `max-width` | `string` | Maximum width as CSS length (e.g. '300px', '20rem') |
+| `min-height` | `string` | Minimum height as CSS length (e.g. '44px', '3rem') |
+| `vertical-alignment` | `'top' \| 'center' \| 'bottom'` | Vertical alignment (default: 'center') |
+
+**Slots**
+
+| Slot | Beschrijving |
+| --- | --- |
+| `title` | The label displayed above the description |
+| `description` | The description content |
+
+### `<nldd-drag-handle-cell>`
+
+A cell that displays a drag handle for reorderable list items. Always vertically centered and sized to fit the handle. To enable drag-to-reorder, add the `reorderable-only` attribute to this element. This attribute is required for `nldd-list` to detect the drag handle in the composed event path and activate pointer and keyboard drag mode: ```html <nldd-list reorderable> <nldd-list-item> <nldd-drag-handle-cell slot="start" reorderable-only></nldd-drag-handle-cell> <nldd-text-cell text="Item"></nldd-text-cell> </nldd-list-item> </nldd-list> ``` Without `reorderable-only`, pointer and keyboard drag will never trigger.
+
+**Attributes**
+
+| Attribuut | Type | Beschrijving |
+| --- | --- | --- |
+| `size` | `string` | Handle size: 'sm' \| 'md' (default: 'md') |
+
+### `<nldd-icon-cell>`
+
+A cell component for displaying icons in lists with configurable alignment and size. Set `icon` to render an `nldd-icon` by name, or slot custom content as an escape hatch for non-standard iconography.
+
+**Attributes**
+
+| Attribuut | Type | Beschrijving |
+| --- | --- | --- |
+| `vertical-alignment` | `string` | Vertical alignment: 'top' \| 'center' \| 'bottom' (default: 'center') |
+| `size` | `string` | Size: '16' \| '20' \| '24' \| '32' (default: '24') |
+| `color` | `'default' \| 'secondary' \| 'accent' \| 'success' \| 'warning' \| 'critical'` | Color variant of the icon (default: 'default') |
+| `icon` | `string` | Icon name (renders `<nldd-icon>`). Takes precedence over the default slot. |
+
+**Slots**
+
+| Slot | Beschrijving |
+| --- | --- |
+| _(default)_ | Fallback for custom icon content when `icon` is not set. |
+
+### `<nldd-list>`
+
+A container for `nldd-list-item` elements, with optional header and footer slots. The `type` attribute switches the list's a11y role and behavior: - `list` (default) — `role="list"`, items `role="listitem"`. Reorderable allowed. Items may individually be buttons or links; the list itself has no special keyboard semantics. - `navigation` — host `role="navigation"`, items with `selected` get `aria-current="page"` on their inner `<a>` or `<button>`. Selection state is consumer-managed: the list never mutates `selected` itself. On reorder (type="list" + reorderable), the list dispatches `nldd-reorder` with `fromIndex` / `toIndex` and expects the consumer to mutate the DOM (or their data model that renders the DOM). Focus is restored to the moved item's drag handle via a single `requestAnimationFrame` — this assumes the consumer reorders **synchronously** in the event handler. Async renderers (React, Vue, …) that update the DOM on a later tick will miss the focus restore and should manage focus themselves after their render commits. to `nldd-inline-dialog` with `empty-text` / `empty-supporting-text` (falling back to Dutch i18n "Geen resultaten"). Slot content overrides the default dialog entirely.
+
+### `<nldd-list-item>`
+
+A row within an `nldd-list`, providing layout for start, main and end areas. Renders as a link when `href` is set, as a button when `type="button"`, or as a plain container otherwise. The item synchronises its ARIA with its parent `nldd-list`'s `type`: - `list` parent → `role="listitem"` - `navigation` parent → `role="listitem"` + `aria-current="page"` on the inner `<a>` / `<button>` when `selected`
+
+### `<nldd-spacer-cell>`
+
+A cell component that provides fixed horizontal spacing within list items.
+
+**Attributes**
+
+| Attribuut | Type | Beschrijving |
+| --- | --- | --- |
+| `size` | `string` | Spacer size in pixels: '2' \| '4' \| '6' \| '8' \| '10' \| '12' \| '16' \| '20' \| '24' \| '28' \| '32' \| '40' \| '44' \| '48' \| '56' \| '64' \| '80' \| '96' (default: '16') |
+
+### `<nldd-table>`
+
+Exports both NLDDTable and NLDDTableRow. A data table presented as a boxed surface (rounded corners, an inset border ring, a base or tinted fill) that aligns content into shared columns using a CSS grid + subgrid. Row dividers run full-bleed to the edges; the inline padding lives on the rows, so it insets the cell content but not the dividers. Column widths are defined ONCE on the table via the `columns` attribute (a CSS grid track list), like an HTML `<colgroup>`. Rows are `<nldd-table-row>` elements whose children are the existing `nldd-cell` family — every row uses `grid-template-columns: subgrid`, so all rows snap to the same columns. Header: put one `<nldd-table-row slot="header">` in the `header` slot. Its cells become column headers (role="columnheader"). Responsive: two complementary strategies. (1) Give columns a minimum width (e.g. `minmax(160px,1fr)`) — the table is its own scroll container, so it scrolls horizontally when too narrow (no wrapper needed). (2) Drop columns at breakpoints: provide `sm-columns`/`md-columns`/ `lg-columns` (shorter track lists) and hide the dropped columns' cells with `hide-below`/`hide-above` at the matching breakpoint. The table picks the track list for its own width via the standard sm/md/lg breakpoints. Selection and sorting are intentionally NOT built in: add a column with an `nldd-cell` + `nldd-checkbox` for selection, and drive sorting from an external control (e.g. a dropdown).
+
+**Attributes**
+
+| Attribuut | Type | Beschrijving |
+| --- | --- | --- |
+| `background` | `'base'\|'tinted'` | Surface fill of the box (default 'base') |
+| `columns` | `string` | CSS grid track list defining the columns once, e.g. "minmax(200px,1fr) 120px 80px" |
+| `sm-columns` | `string` | Track list when the table is sm-wide (≤640px); falls back to `columns` |
+| `md-columns` | `string` | Track list when the table is md-wide (641–1007px); falls back to `columns` |
+| `lg-columns` | `string` | Track list when the table is lg-wide (≥1008px); falls back to `columns` |
+| `accessible-label` | `string` | Accessible name for the table. Strongly recommended — role="table" needs a name. A missing label is DEV-warned and a generic fallback name is used. |
+| `selectable` | `boolean` | Opt into row selection: body rows expose aria-selected (true/false). Without it, rows omit aria-selected so a non-selectable table isn't announced as selectable. |
+| `empty-text` | `string` | Text for the default empty-state dialog (falls back to the Dutch i18n default). Ignored when `[slot=empty]` is filled |
+| `empty-supporting-text` | `string` | Supporting text for the default empty-state dialog. Ignored when `[slot=empty]` is filled |
+| `translations` | `object` | Override translation keys; unset keys fall back to Dutch |
+
+**Slots**
+
+| Slot | Beschrijving |
+| --- | --- |
+| `header` | One `<nldd-table-row slot="header">` carrying the column headers |
+| _(default)_ | The body rows (`<nldd-table-row>`) |
+| `empty` | Shown when there are no visible body rows (the header is hidden too). Defaults to `nldd-inline-dialog` with `empty-text` / `empty-supporting-text` |
+
+### `<nldd-table-row>`
+
+**Attributes**
+
+| Attribuut | Type | Beschrijving |
+| --- | --- | --- |
+| `selected` | `boolean` | Highlights the row (same treatment as nldd-list-item[selected]) |
+
+**Slots**
+
+| Slot | Beschrijving |
+| --- | --- |
+| _(default)_ | The row's cells (`nldd-cell` and variants), one per column |
+
+### `<nldd-text-cell>`
+
+A cell component for displaying text content in lists with configurable alignment, size and color. This is the most fundamental list cell component. `vertical-alignment="center"` (default) stretches the cell to fill the full row height and centers its content within that space. Use `min-height` to set a minimum centered region. For strict top alignment without a minimum height, use `vertical-alignment="top"`. Each text region (overline, main text, supporting text) accepts either a string attribute or slotted DOM content. The slot is the source of truth: if the consumer provides slotted content, it replaces the attribute-based render for that region. Use slots when you need inline elements like `<nldd-tag>`, `<a>` or `<nldd-icon>` mixed with text. Note that `query` highlighting and `**bold**` parsing only apply to the attribute path — slotted content is rendered as-is.
+
+**Attributes**
+
+| Attribuut | Type | Beschrijving |
+| --- | --- | --- |
+| `size` | `string` | Cell size: 'sm' \| 'md' (default: 'md') |
+| `color` | `string` | Text color variant: 'default' \| 'secondary' \| 'accent' \| 'success' \| 'warning' \| 'critical' (default: 'default'). All non-default/-secondary variants apply to all three text fields so the cell reads as a coherent state. |
+| `width` | `string` | 'full' \| 'fit-content' \| CSS length (e.g. '200px', '20rem'). Default: 'full' |
+| `min-width` | `string` | Minimum width as CSS length (e.g. '80px', '5rem') |
+| `max-width` | `string` | Maximum width as CSS length (e.g. '200px', '20rem') |
+| `min-height` | `string` | Minimum height as CSS length (e.g. '44px', '3rem') |
+| `horizontal-alignment` | `string` | Horizontal alignment: 'left' \| 'center' \| 'right' (default: 'left') |
+| `vertical-alignment` | `string` | Vertical alignment: 'top' \| 'center' \| 'bottom' (default: 'center') |
+| `text` | `string` | Main text content. Supports **bold** syntax for inline bold segments. Falls back to default slot. |
+| `overline` | `string` | Optional overline text displayed above the main content. Supports **bold**. Falls back to `overline` slot. |
+| `supporting-text` | `string` | Optional supporting text displayed below the main content. Supports **bold**. Falls back to `supporting-text` slot. |
+| `query` | `string` | Query substring to bold-highlight across text fields. Empty = no marking. |
+| `query-mark-mode` | `string` | 'match' \| 'predictive' (default: 'predictive') |
+
+**Slots**
+
+| Slot | Beschrijving |
+| --- | --- |
+| `overline` | Rich content for the overline region. Overrides the `overline` attribute when content is assigned. |
+| _(default)_ | (default) Rich content for the main text region. Overrides the `text` attribute when content is assigned. |
+| `supporting-text` | Rich content for the supporting text region. Overrides the `supporting-text` attribute when content is assigned. |
+
+### `<nldd-timeline-track-cell>`
+
+A cell component for displaying timeline track indicators in lists. Shows a vertical line with a dot indicating timeline position and state. The line extends into the surrounding list-item's block padding via the `--context-list-item-padding-block` cascade so consecutive steps connect without gaps.
+
+**Attributes**
+
+| Attribuut | Type | Beschrijving |
+| --- | --- | --- |
+| `step` | `'past' \| 'future' \| 'none'` | Timeline step state (default: 'past') |
+| `child` | `'first' \| 'between' \| 'last'` | Position in timeline (default: 'between') |
+
+### `<nldd-title-cell>`
+
+A cell component for displaying a title with optional overline and subtitle in lists. `vertical-alignment="center"` (default) stretches the cell to fill the full row height and centers its content within that space. Use `min-height` to set a minimum centered region. For strict top alignment without a minimum height, use `vertical-alignment="top"`. Each text region (overline, title, supporting text) accepts either a string attribute or slotted DOM content. The slot is the source of truth: if the consumer provides slotted content, it replaces the attribute-based render for that region. Use slots when you need inline elements like `<nldd-tag>`, `<nldd-icon>` or other components mixed with text. Note that `query` highlighting and `**bold**` parsing only apply to the attribute path — slotted content is rendered as-is.
+
+**Attributes**
+
+| Attribuut | Type | Beschrijving |
+| --- | --- | --- |
+| `size` | `1\|2\|3\|4\|5\|6` | Visual size of the title (default: 5) |
+| `color` | `'default' \| 'secondary' \| 'accent' \| 'success' \| 'warning' \| 'critical'` | Text color variant (default: 'default'). `secondary` demotes the title to match the muted overline/supporting-text. `accent`, `success`, `warning` and `critical` tint all three regions so the cell reads as a coherent state. |
+| `width` | `string` | 'full' \| 'fit-content' \| CSS length (e.g. '200px', '20rem'). Default: 'full' |
+| `min-width` | `string` | Minimum width as CSS length (e.g. '80px', '5rem') |
+| `max-width` | `string` | Maximum width as CSS length (e.g. '300px', '20rem') |
+| `min-height` | `string` | Minimum height as CSS length (e.g. '44px', '3rem') |
+| `horizontal-alignment` | `'left' \| 'center' \| 'right'` | Horizontal alignment (default: 'left') |
+| `vertical-alignment` | `'top' \| 'center' \| 'bottom'` | Vertical alignment (default: 'center') |
+| `text` | `string` | Title text content. Supports **bold** syntax for inline bold segments. Falls back to default slot. |
+| `overline` | `string` | Optional overline text displayed above the title. Supports **bold**. Falls back to `overline` slot. |
+| `supporting-text` | `string` | Optional supporting text displayed below the title. Supports **bold**. Falls back to `supporting-text` slot. |
+| `heading-level` | `number` | Heading level for the title element: 1–6 (default: none, renders a <p>) |
+| `query` | `string` | Query substring to bold-highlight across text fields. Empty = no marking. |
+| `query-mark-mode` | `string` | 'match' \| 'predictive' (default: 'predictive') |
+
+**Slots**
+
+| Slot | Beschrijving |
+| --- | --- |
+| `overline` | Rich content for the overline region. Overrides the `overline` attribute when content is assigned. |
+| _(default)_ | (default) Rich content for the title. Overrides the `text` attribute when content is assigned. |
+| `supporting-text` | Rich content for the supporting text region. Overrides the `supporting-text` attribute when content is assigned. |
+
 ## Iconen
 
-Geldige `name`-waarden voor `<nldd-icon>` (158 iconen + 149 aliassen). Verzin geen naam; kies er een uit deze set.
+Geldige `name`-waarden voor `<nldd-icon>` (160 iconen + 152 aliassen). Verzin geen naam; kies er een uit deze set.
 
 **Iconen**
 
-`apartment-building`, `arrow-2-counter-clockwise`, `arrow-down`, `arrow-down-in-bucket`, `arrow-left`, `arrow-right`, `arrow-u-turn-backward`, `arrow-u-turn-forward`, `arrow-up`, `arrow-up-arrow-down`, `bell`, `bold`, `bookmark`, `bookmark-filled`, `books-vertical`, `brackets-ellipsis`, `bullet-list`, `business-suitcase`, `calendar-event`, `caret-down`, `caret-down-extra-small`, `caret-down-small`, `caret-left`, `caret-left-extra-small`, `caret-left-small`, `caret-right`, `caret-right-extra-small`, `caret-right-small`, `caret-up`, `caret-up-extra-small`, `caret-up-small`, `certificate`, `chart-x-y-axis-line`, `check-circle-filled`, `check-list`, `check-mark`, `check-mark-circle`, `check-mark-extra-small`, `check-mark-small`, `chevron-double-left`, `chevron-double-left-extra-small`, `chevron-double-left-small`, `chevron-double-right`, `chevron-double-right-extra-small`, `chevron-double-right-small`, `chevron-down`, `chevron-down-extra-small`, `chevron-down-small`, `chevron-left`, `chevron-left-chevron-right`, `chevron-left-extra-small`, `chevron-left-forward-slash-chevron-right`, `chevron-left-small`, `chevron-right`, `chevron-right-extra-small`, `chevron-right-small`, `chevron-up`, `chevron-up-chevron-down`, `chevron-up-extra-small`, `chevron-up-small`, `circle-dashed`, `circle-filled`, `circle-filled-extra-small`, `circle-filled-small`, `clipboard`, `clipboard-rectangle`, `clock`, `clock-arrow-clockwise`, `clock-arrow-counter-clockwise`, `cloud`, `cloud-arrow-down`, `cloud-arrow-up`, `cylinder-split`, `cylinder-split-slash`, `dismiss`, `dismiss-circle`, `dismiss-circle-filled`, `dismiss-extra-small`, `dismiss-small`, `ellipsis`, `envelope`, `euro-sign`, `exclamation-circle`, `exclamation-circle-filled`, `exclamation-triangle`, `exclamation-triangle-filled`, `eye`, `eye-slash`, `eyeglasses`, `face-frowning`, `face-smiling`, `face-smiling-badge-plus`, `file-text`, `flag`, `flag-filled`, `folder`, `folder-stack`, `gear`, `globe`, `heart`, `heart-filled`, `house`, `inbox`, `info-circle`, `info-circle-filled`, `italic`, `link`, `list`, `list-arrow-down`, `list-arrow-up`, `list-decreasing-lines`, `lock-closed`, `lock-open`, `magnifier`, `message-rectangle-text`, `minus`, `minus-extra-small`, `minus-small`, `moon`, `numbered-list`, `paper-plane`, `paperclip`, `pencil`, `pencil-on-square`, `person`, `person-2`, `person-badge-gear`, `person-circle`, `photo`, `photo-slash`, `plus`, `plus-small`, `puzzle-piece`, `puzzle-piece-filled`, `question-mark-circle`, `rectangle-stack`, `scissor`, `shield-check-mark`, `ship-wheel`, `slash-circle`, `sparkles`, `square-arrow-right`, `square-arrow-right-inward`, `square-arrow-right-top`, `square-arrow-up`, `square-on-square`, `square-plus-on-square`, `star`, `star-filled`, `starburst-filled`, `sun`, `table-badge-arrow-down`, `tag`, `terminal`, `text-quote`, `timer`, `trash`, `underlined`
+`apartment-building`, `arrow-2-counter-clockwise`, `arrow-down`, `arrow-down-in-bucket`, `arrow-left`, `arrow-right`, `arrow-right-in-bucket`, `arrow-right-out-bucket`, `arrow-u-turn-backward`, `arrow-u-turn-forward`, `arrow-up`, `arrow-up-arrow-down`, `bell`, `bold`, `book`, `bookmark`, `bookmark-filled`, `books-vertical`, `brackets-ellipsis`, `bullet-list`, `business-suitcase`, `calendar-event`, `caret-down`, `caret-down-extra-small`, `caret-down-small`, `caret-left`, `caret-left-extra-small`, `caret-left-small`, `caret-right`, `caret-right-extra-small`, `caret-right-small`, `caret-up`, `caret-up-extra-small`, `caret-up-small`, `certificate`, `chart-x-y-axis-line`, `check-circle-filled`, `check-list`, `check-mark`, `check-mark-circle`, `check-mark-extra-small`, `check-mark-small`, `chevron-double-left`, `chevron-double-left-extra-small`, `chevron-double-left-small`, `chevron-double-right`, `chevron-double-right-extra-small`, `chevron-double-right-small`, `chevron-down`, `chevron-down-extra-small`, `chevron-down-small`, `chevron-left`, `chevron-left-chevron-right`, `chevron-left-extra-small`, `chevron-left-forward-slash-chevron-right`, `chevron-left-small`, `chevron-right`, `chevron-right-extra-small`, `chevron-right-small`, `chevron-up`, `chevron-up-chevron-down`, `chevron-up-extra-small`, `chevron-up-small`, `circle-dashed`, `circle-filled`, `circle-filled-extra-small`, `circle-filled-small`, `clipboard`, `clipboard-rectangle`, `clock`, `clock-arrow-clockwise`, `clock-arrow-counter-clockwise`, `cloud`, `cloud-arrow-down`, `cloud-arrow-up`, `cylinder-split`, `cylinder-split-slash`, `dismiss`, `dismiss-circle`, `dismiss-circle-filled`, `dismiss-extra-small`, `dismiss-small`, `ellipsis`, `envelope`, `euro-sign`, `exclamation-circle`, `exclamation-circle-filled`, `exclamation-triangle`, `exclamation-triangle-filled`, `eye`, `eye-slash`, `eyeglasses`, `face-frowning`, `face-smiling`, `face-smiling-badge-plus`, `file-text`, `flag`, `flag-filled`, `folder`, `folder-stack`, `gear`, `globe`, `heart`, `heart-filled`, `house`, `inbox`, `info-circle`, `info-circle-filled`, `italic`, `lightbulb`, `link`, `list`, `list-arrow-down`, `list-arrow-up`, `list-decreasing-lines`, `lock-closed`, `lock-open`, `magnifier`, `message-rectangle-text`, `minus`, `minus-extra-small`, `minus-small`, `moon`, `numbered-list`, `paper-plane`, `paperclip`, `pencil`, `pencil-on-square`, `person`, `person-2`, `person-badge-gear`, `person-circle`, `photo`, `photo-slash`, `plus`, `plus-small`, `puzzle-piece`, `puzzle-piece-filled`, `question-mark-circle`, `rectangle-stack`, `scissor`, `shield-check-mark`, `ship-wheel`, `slash-circle`, `sparkles`, `square-arrow-right-top`, `square-arrow-up`, `square-on-square`, `square-plus-on-square`, `star`, `star-filled`, `starburst-filled`, `sun`, `table-badge-arrow-down`, `tag`, `terminal`, `text-quote`, `timer`, `trash`, `underlined`
 
 **Aliassen** (verwijzen naar een icoon hierboven)
 
-`account`, `add`, `add-emoji`, `add-small`, `ai`, `alarm`, `alert`, `analytics`, `annotation`, `attach`, `attachment`, `back`, `backlog`, `backup-in-cloud`, `blocked`, `blockquote`, `bookmarked`, `books`, `broken-image`, `building`, `calendar`, `category`, `chart-line`, `checked`, `checked-extra-small`, `checked-small`, `checklist`, `cli`, `code`, `comment`, `console`, `copy`, `countdown`, `cut`, `dark-mode`, `database`, `database-disabled`, `database-unavailable`, `day`, `delete`, `deploy`, `diploma`, `directories`, `directory`, `document`, `download`, `download-from-cloud`, `download-table`, `duplicate`, `edit`, `email`, `embed`, `error`, `event`, `exit`, `extension`, `external-link`, `favorite`, `file`, `filter`, `flagged`, `forbidden`, `forward`, `frowning`, `future`, `global-settings`, `graph`, `group`, `happy`, `help`, `hidden`, `hide`, `history`, `home`, `hyperlink`, `icon-placeholder`, `image`, `info`, `information`, `invalid`, `k8s`, `kubernetes`, `label`, `languages`, `license`, `light-mode`, `lock`, `locked`, `login`, `logout`, `love`, `magic`, `mail`, `menu`, `module`, `more`, `new`, `night`, `notification`, `notifications`, `now`, `office`, `paste`, `plugin`, `profile`, `promotion`, `question`, `rated`, `rating`, `reading-list`, `redo`, `refresh`, `reload`, `remove`, `remove-extra-small`, `remove-small`, `sad`, `search`, `secure`, `security`, `send`, `share`, `show`, `smiling`, `sort`, `sort-ascending`, `sort-descending`, `stack`, `success`, `sync`, `tasks`, `team`, `time`, `todos`, `undo`, `unlocked`, `unsecure`, `upload-to-cloud`, `url`, `user`, `user-admin`, `user-settings`, `users`, `valid`, `verified`, `visible`, `warning`, `work`, `write`
+`account`, `add`, `add-emoji`, `add-small`, `ai`, `alarm`, `alert`, `analytics`, `annotation`, `attach`, `attachment`, `back`, `backlog`, `backup-in-cloud`, `blocked`, `blockquote`, `bookmarked`, `books`, `broken-image`, `building`, `calendar`, `category`, `chart-line`, `checked`, `checked-extra-small`, `checked-small`, `checklist`, `cli`, `code`, `comment`, `console`, `copy`, `countdown`, `cut`, `dark-mode`, `database`, `database-disabled`, `database-unavailable`, `day`, `delete`, `deploy`, `diploma`, `directories`, `directory`, `document`, `download`, `download-from-cloud`, `download-table`, `duplicate`, `edit`, `email`, `embed`, `error`, `event`, `exit`, `extension`, `external-link`, `favorite`, `file`, `filter`, `flagged`, `forbidden`, `forward`, `frowning`, `future`, `global-settings`, `graph`, `group`, `guide`, `happy`, `help`, `hidden`, `hide`, `history`, `home`, `hyperlink`, `icon-placeholder`, `idea`, `image`, `info`, `information`, `invalid`, `k8s`, `kubernetes`, `label`, `languages`, `license`, `light-mode`, `lock`, `locked`, `login`, `logout`, `love`, `magic`, `mail`, `menu`, `module`, `more`, `new`, `night`, `notification`, `notifications`, `now`, `office`, `paste`, `plugin`, `profile`, `promotion`, `question`, `rated`, `rating`, `read`, `reading-list`, `redo`, `refresh`, `reload`, `remove`, `remove-extra-small`, `remove-small`, `sad`, `search`, `secure`, `security`, `send`, `share`, `show`, `smiling`, `sort`, `sort-ascending`, `sort-descending`, `stack`, `success`, `sync`, `tasks`, `team`, `time`, `todos`, `undo`, `unlocked`, `unsecure`, `upload-to-cloud`, `url`, `user`, `user-admin`, `user-settings`, `users`, `valid`, `verified`, `visible`, `warning`, `work`, `write`
