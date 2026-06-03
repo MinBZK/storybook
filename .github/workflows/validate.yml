@@ -35,7 +35,9 @@ jobs:
       # root CHANGELOG by the release pipeline (@semantic-release/exec), so it
       # only needs to be current at release time, not per-PR.
       - name: Check skill component reference is in sync
+        shell: bash
         run: |
+          set -e
           npm run generate:component-reference
           git diff --exit-code skills/nldd/reference.md \
             || (echo "::error::skills/nldd/reference.md is verouderd. Draai 'npm run generate:component-reference' en commit het resultaat." && exit 1)

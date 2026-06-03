@@ -298,7 +298,9 @@ function collectIconNames() {
 	let aliases = [];
 	try {
 		const src = readFileSync(aliasesFile, 'utf-8');
-		aliases = [...src.matchAll(/^\s*'([^']+)'\s*:/gm)].map((m) => m[1]);
+		// Match both single- and double-quoted keys so a formatter rewriting
+		// icon-aliases.js to double quotes does not silently drop every alias.
+		aliases = [...src.matchAll(/^\s*['"]([^'"]+)['"]\s*:/gm)].map((m) => m[1]);
 	} catch (err) {
 		// The aliases file is optional; only a missing file is tolerated.
 		// Surface anything else (permission, read errors) instead of hiding it.
