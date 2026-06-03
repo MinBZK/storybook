@@ -15,6 +15,10 @@ the type of conventional-commit determines the release. Conventional types
 `chore`, `docs`, `ci`, `style`, `test`, `build` are intentionally omitted
 here; consult the commit history if you need that level of detail.
 
+## <small>0.8.55 (2026-06-03)</small>
+
+* feat(plugin): consumentenskill voor het design system (#118) ([118c607](https://github.com/MinBZK/storybook/commit/118c607)), closes [#118](https://github.com/MinBZK/storybook/issues/118)
+
 ### Added
 
 - **Consumer plugin (`nldd`)** — a Claude Code plugin with a single skill for developers building applications on `@nldd/design-system`, separate from the maintainer skills (`/component`, `/css`) that exist for the system itself. It pairs a handwritten vision and usage patterns (`skills/nldd/SKILL.md`) with a generated component reference (`skills/nldd/reference.md`, every `nldd-*` element with its attributes, slots, and events from JSDoc, plus the full icon set) and a generated copy of this changelog. Working examples cover plain HTML, Vue 3, layout/CSS tokens, and a full content page. The reference and changelog are regenerated and committed by the release pipeline so they stay in sync with the shipped version.
