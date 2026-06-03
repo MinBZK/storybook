@@ -53,6 +53,12 @@ export class NLDDOneThirdTwoThirdsSection extends PageSectionMixin(LitElement) {
 		}
 	}
 
+	_onSlotChange(e: Event) {
+		const slot = e.target as HTMLSlotElement;
+		const wrapper = slot.parentElement as HTMLElement;
+		wrapper.hidden = slot.assignedElements().length === 0;
+	}
+
 	override render() {
 		return oneThirdTwoThirdsSectionTemplate(this);
 	}
