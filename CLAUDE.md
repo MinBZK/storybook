@@ -96,3 +96,13 @@ Versies worden **automatisch** verhoogd door semantic-release bij merge naar mai
 | Niet-herkend (geen conventionele prefix) | Patch (behandeld als feat) |
 
 **Handmatig versie verhogen is niet nodig.** Gebruik conventionele commits en CI doet de rest.
+
+## Changelog
+
+`CHANGELOG.md` wordt door semantic-release beheerd: bij elke merge naar main zet het een nieuw versieblok (`## <small>x.y.z (datum)</small>`) bovenaan, afgeleid van de conventionele commits.
+
+Wil je toch handmatig iets toevoegen (bijv. iets dat semantic-release niet uit de commits haalt):
+
+- Zet de entry **direct bovenaan**, boven het nieuwste versieblok. **Geen `## Unreleased`-kopje** — dat past niet in het door semantic-release gegenereerde format.
+- Gebruik de Keep-a-Changelog-secties (`### Added`, `### Fixed`, `### Breaking`, …), zoals de bestaande versieblokken.
+- Regenereer daarna de skill-kopie: `npm run generate:skill-changelog` (of `npm run generate:skill-docs`). `skills/nldd/changelog.md` is een gegenereerde kopie van de root-CHANGELOG en moet in sync blijven.
