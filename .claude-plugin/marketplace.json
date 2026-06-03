@@ -1,0 +1,30 @@
+{
+  "$schema": "https://anthropic.com/claude-code/marketplace.schema.json",
+  "name": "nldd-plugins",
+  "metadata": {
+    "description": "Plugin voor het NLDD Design System (Nederlandse Digitale Dienst, Rijksoverheid)"
+  },
+  "owner": {
+    "name": "MinBZK"
+  },
+  "plugins": [
+    {
+      "name": "nldd",
+      "description": "Bouw applicaties met het NLDD Design System (@nldd/design-system): de visie erachter en hoe je de web components goed gebruikt. Voor consumenten van het pakket, niet voor wie het systeem zelf onderhoudt.",
+      "version": "0.1.0",
+      "author": {
+        "name": "MinBZK"
+      },
+      "source": "./",
+      "category": "productivity",
+      "tags": [
+        "overheid",
+        "design-system",
+        "web-components",
+        "frontend",
+        "toegankelijkheid",
+        "rijksoverheid"
+      ]
+    }
+  ]
+}
