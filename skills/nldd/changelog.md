@@ -1,3 +1,9 @@
+<!--
+  GEGENEREERD BESTAND — niet handmatig bewerken.
+  Kopie van de root CHANGELOG.md (onderhouden door semantic-release).
+  Hergenereren: npm run generate:skill-docs
+-->
+
 # Changelog
 
 All notable changes to the NLDD design system are documented here.
