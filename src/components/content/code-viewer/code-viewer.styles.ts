@@ -24,6 +24,10 @@ export const codeViewerStyles = css`
 		${inheritedTextReset}
 		display: flex;
 		position: relative;
+		/* Own stacking context so the absolutely-positioned actions button
+		   (z-index: var(--_actions-z-index)) stays scoped to the code-viewer
+		   and can't paint over other layers on the page. */
+		isolation: isolate;
 	}
 
 	:host([hidden]) {
