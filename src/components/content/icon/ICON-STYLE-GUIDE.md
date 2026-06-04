@@ -167,7 +167,7 @@ Een **badge** is een klein overlay-element op het icoon. De badge-naam beschrijf
 
 | Suffix | Voorbeeld |
 |--------|-----------|
-| `-badge-{inhoud}` | `person-badge-gear`, `table-badge-arrow-down` |
+| `-badge-{inhoud}` | `person-badge-gear`, `table-cells-badge-arrow-down` |
 
 Richting staat in de naam zelf (niet als los suffix):
 
