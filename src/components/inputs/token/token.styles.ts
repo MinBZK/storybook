@@ -7,6 +7,8 @@ export const tokenStyles = css`
 	/* # Host */
 
 	:host {
+		--_highlight-border-color: var(--semantics-buttons-neutral-tinted-highlight-border-color);
+
 		${inheritedTextReset}
 		display: inline-block;
 		user-select: none;
@@ -33,13 +35,23 @@ export const tokenStyles = css`
 		border-radius: var(--semantics-controls-sm-corner-radius);
 		background: none;
 		background-color: var(--semantics-buttons-neutral-tinted-background-color);
+		position: relative;
 		height: var(--semantics-controls-sm-min-size);
 		padding: 0 var(--primitives-space-6);
 		align-items: center;
-		color: var(--semantics-buttons-neutral-tinted-content-color);
+		color: var(--semantics-buttons-neutral-tinted-primary-content-color);
 		font: var(--semantics-buttons-sm-font);
 		transition: background-color var(--primitives-transition-duration-fast) var(--primitives-transition-easing-default);
 		appearance: none;
+	}
+
+	.token::after {
+		content: '';
+		position: absolute;
+		inset: 0;
+		border-radius: inherit;
+		box-shadow: inset 0 0 0 var(--primitives-border-width-thin) var(--_highlight-border-color);
+		pointer-events: none;
 	}
 
 	@media (prefers-reduced-motion: reduce) {
@@ -50,31 +62,36 @@ export const tokenStyles = css`
 
 	@media (hover: hover) {
 		:host([control="menu"]) .token:hover:not(:disabled) {
+			--_highlight-border-color: var(--semantics-buttons-neutral-tinted-is-hovered-highlight-border-color);
 			background-color: var(--semantics-buttons-neutral-tinted-is-hovered-background-color);
-			color: var(--semantics-buttons-neutral-tinted-is-hovered-content-color);
+			color: var(--semantics-buttons-neutral-tinted-is-hovered-primary-content-color);
 		}
 	}
 
 	:host([control="menu"]) .token:active:not(:disabled) {
+		--_highlight-border-color: var(--semantics-buttons-neutral-tinted-is-active-highlight-border-color);
 		background-color: var(--semantics-buttons-neutral-tinted-is-active-background-color);
-		color: var(--semantics-buttons-neutral-tinted-is-active-content-color);
+		color: var(--semantics-buttons-neutral-tinted-is-active-primary-content-color);
 	}
 
 	:host([expanded]) .token {
+		--_highlight-border-color: var(--semantics-buttons-neutral-tinted-is-expanded-highlight-border-color);
 		background-color: var(--semantics-buttons-neutral-tinted-is-expanded-background-color);
-		color: var(--semantics-buttons-neutral-tinted-is-expanded-content-color);
+		color: var(--semantics-buttons-neutral-tinted-is-expanded-primary-content-color);
 	}
 
 	@media (hover: hover) {
 		:host([expanded]) .token:hover:not(:disabled) {
+			--_highlight-border-color: var(--semantics-buttons-neutral-tinted-is-expanded-is-hovered-highlight-border-color);
 			background-color: var(--semantics-buttons-neutral-tinted-is-expanded-is-hovered-background-color);
-			color: var(--semantics-buttons-neutral-tinted-is-expanded-is-hovered-content-color);
+			color: var(--semantics-buttons-neutral-tinted-is-expanded-is-hovered-primary-content-color);
 		}
 	}
 
 	:host([expanded]) .token:active:not(:disabled) {
+		--_highlight-border-color: var(--semantics-buttons-neutral-tinted-is-expanded-is-active-highlight-border-color);
 		background-color: var(--semantics-buttons-neutral-tinted-is-expanded-is-active-background-color);
-		color: var(--semantics-buttons-neutral-tinted-is-expanded-is-active-content-color);
+		color: var(--semantics-buttons-neutral-tinted-is-expanded-is-active-primary-content-color);
 	}
 
 	:host([control="menu"]) .token:focus-visible {
