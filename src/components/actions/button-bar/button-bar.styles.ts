@@ -10,16 +10,11 @@ export const buttonBarStyles = css`
 		--_background-color: var(--semantics-buttons-neutral-tinted-background-color);
 		--_size: var(--semantics-controls-md-min-size);
 		--_divider-color: var(--semantics-buttons-neutral-tinted-divider-color);
+		--_highlight-border-color: var(--semantics-buttons-neutral-tinted-highlight-border-color);
 		--_divider-length: var(--semantics-buttons-md-divider-length);
 
 		display: inline-flex;
 		isolation: isolate;
-	}
-
-	:host([size="sm"]) {
-		--_corner-radius: var(--semantics-controls-sm-corner-radius);
-		--_size: var(--semantics-controls-sm-min-size);
-		--_divider-length: var(--semantics-buttons-sm-divider-length);
 	}
 
 	:host([size="xs"]) {
@@ -28,12 +23,31 @@ export const buttonBarStyles = css`
 		--_divider-length: var(--semantics-buttons-xs-divider-length);
 	}
 
+	:host([size="sm"]) {
+		--_corner-radius: var(--semantics-controls-sm-corner-radius);
+		--_size: var(--semantics-controls-sm-min-size);
+		--_divider-length: var(--semantics-buttons-sm-divider-length);
+	}
+
+	:host([size="lg"]) {
+		--_corner-radius: var(--semantics-controls-lg-corner-radius);
+		--_size: var(--semantics-controls-lg-min-size);
+		--_divider-length: var(--semantics-buttons-lg-divider-length);
+	}
+
 	/* ## Accent Filled (Primary) */
 
 	:host([variant="accent-filled"]),
 	:host([variant="primary"]) {
 		--_background-color: var(--semantics-buttons-accent-filled-background-color);
 		--_divider-color: var(--semantics-buttons-accent-filled-divider-color);
+		--_highlight-border-color: var(--semantics-buttons-accent-filled-highlight-border-color);
+	}
+
+	:host([variant="neutral-base"]) {
+		--_background-color: var(--semantics-buttons-neutral-base-background-color);
+		--_divider-color: var(--semantics-buttons-neutral-base-divider-color);
+		--_highlight-border-color: var(--semantics-buttons-neutral-base-highlight-border-color);
 	}
 
 	:host([hidden]) {
@@ -55,12 +69,22 @@ export const buttonBarStyles = css`
 
 	.button-bar {
 		display: flex;
+		position: relative;
 		border-radius: var(--_corner-radius);
 		background-color: var(--_background-color);
 		height: var(--_size);
 		flex-direction: row;
 		justify-content: center;
 		align-items: center;
+	}
+
+	.button-bar::after {
+		content: '';
+		position: absolute;
+		inset: 0;
+		border-radius: inherit;
+		box-shadow: inset 0 0 0 var(--primitives-border-width-thin) var(--_highlight-border-color);
+		pointer-events: none;
 	}
 
 
