@@ -33,6 +33,11 @@ export const toolbarStyles = css`
 		--_subtitle-font: var(--primitives-font-body-xxs-regular-flat);
 	}
 
+	:host([size="lg"]) {
+		--_gap: var(--components-toolbar-lg-gap);
+		--_title-group-height: var(--semantics-controls-lg-min-size);
+	}
+
 	:host([hidden]) {
 		display: none;
 	}
