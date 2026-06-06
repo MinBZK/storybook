@@ -14,11 +14,10 @@ export function toggleButtonTemplate(component: NLDDToggleButton): TemplateResul
 	const showText = component.variant !== 'icon' && !!component.text;
 	const showIcon = component.variant !== 'text' && component._hasIcon;
 
-	/* When the icon area would be empty, show a placeholder so the control
-	 * isn't blank: icon-only always needs it; icon-and-text only when there's
-	 * no text to fall back on. */
+	/* The icon and icon-and-text variants reserve an icon area; show a placeholder
+	 * whenever the consumer provided no icon (attribute or slot). */
 	const showPlaceholder = component.variant === 'icon'
-		|| (component.variant === 'icon-and-text' && !component.text);
+		|| component.variant === 'icon-and-text';
 
 	/* When variant="icon" hides a provided text, fall the text back to
 	 * aria-label so screen readers still announce the button. Explicit

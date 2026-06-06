@@ -2,7 +2,7 @@
  * Nederlandse Digitale Dienst Toolbar Component (Lit + TypeScript)
  *
  * @element nldd-toolbar
- * @attr {string} size - Toolbar size, propagated to all child controls: 'sm' | 'md' (default: 'md')
+ * @attr {string} size - Toolbar size, propagated to all child controls: 'sm' | 'md' | 'lg' (default: 'md'). At 'lg' the overflow button (and lg-capable children like nldd-icon-button) stack their label below the icon.
  * @attr {boolean} show-item-labels - When true, shows a text label below each toolbar item and the overflow button
  * @attr {string} label - Accessible label for the toolbar. Only needed when multiple toolbars appear on the same page
  *
@@ -33,7 +33,7 @@ if (!customElements.get('nldd-toolbar-title')) {
 }
 
 // # Types
-type Size = 'sm' | 'md';
+type Size = 'sm' | 'md' | 'lg';
 
 // # Component
 

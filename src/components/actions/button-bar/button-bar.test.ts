@@ -115,6 +115,33 @@ describe('nldd-button-bar – child building & attribute propagation', () => {
 		expect(el.querySelector('nldd-icon-button')!.getAttribute('size')).toBe('sm');
 	});
 
+	it('propagates lg size to icon-button children', async () => {
+		el = await fixture<NLDDButtonBar>(`
+			<nldd-button-bar size="lg">
+				<nldd-icon-button icon="chevron-left" text="Vorige"></nldd-icon-button>
+				<nldd-button-bar-divider></nldd-button-bar-divider>
+				<nldd-icon-button icon="chevron-right" text="Volgende"></nldd-icon-button>
+			</nldd-button-bar>
+		`);
+		await waitForUpdate(el);
+
+		el.querySelectorAll('nldd-icon-button').forEach(btn => {
+			expect(btn.getAttribute('size')).toBe('lg');
+		});
+	});
+
+	it('sets no-highlight-border on button children (the bar draws the group border)', async () => {
+		el = await fixture<NLDDButtonBar>(`
+			<nldd-button-bar>
+				<nldd-button text="A"></nldd-button>
+				<nldd-icon-button icon="x" text="Close"></nldd-icon-button>
+			</nldd-button-bar>
+		`);
+		await waitForUpdate(el);
+		expect(el.querySelector('nldd-button')!.hasAttribute('no-highlight-border')).toBe(true);
+		expect(el.querySelector('nldd-icon-button')!.hasAttribute('no-highlight-border')).toBe(true);
+	});
+
 	it('propagates initial variant to button children', async () => {
 		el = await fixture<NLDDButtonBar>(`
 			<nldd-button-bar variant="accent-filled">

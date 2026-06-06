@@ -188,6 +188,33 @@ describe('nldd-toolbar', () => {
 		expect(menuItem?.getAttribute('size')).toBeNull();
 	});
 
+	it('propagates lg size to toolbar item children', async () => {
+		el = await fixture(`
+			<nldd-toolbar size="lg">
+				<nldd-toolbar-item slot="start" label="Item">
+					<nldd-icon-button aria-label="Item"></nldd-icon-button>
+				</nldd-toolbar-item>
+			</nldd-toolbar>
+		`);
+		await waitForUpdate(el);
+		const button = el.querySelector('nldd-icon-button');
+		expect(button?.getAttribute('size')).toBe('lg');
+	});
+
+	it('renders the overflow button at the toolbar size', async () => {
+		el = await fixture(`
+			<nldd-toolbar size="lg">
+				<nldd-toolbar-item slot="start" label="Item">
+					<nldd-icon-button aria-label="Item"></nldd-icon-button>
+					<nldd-menu-item slot="overflow" text="Item"></nldd-menu-item>
+				</nldd-toolbar-item>
+			</nldd-toolbar>
+		`);
+		await waitForUpdate(el);
+		const overflowButton = el.shadowRoot?.querySelector('.toolbar__overflow-button nldd-icon-button');
+		expect(overflowButton?.getAttribute('size')).toBe('lg');
+	});
+
 	// ## MutationObserver
 
 	it('rebuilds children when a new item is added', async () => {

@@ -33,6 +33,7 @@ export default {
 				'accent-filled',
 				'accent-transparent',
 				'neutral-tinted',
+				'neutral-base',
 				'neutral-transparent',
 				'critical-tinted',
 				'critical-transparent',
@@ -55,6 +56,14 @@ export default {
 			description: 'Width mode: "full" (stretches to container) or any CSS length (e.g. "240px")',
 			table: {
 				defaultValue: { summary: '' },
+			},
+		},
+		hideLgText: {
+			name: 'hide-lg-text',
+			control: 'boolean',
+			description: 'In lg-formaat: verbergt het tekstlabel en vergroot het icoon één stap (28px)',
+			table: {
+				defaultValue: { summary: 'false' },
 			},
 		},
 		expandable: {
@@ -89,7 +98,7 @@ export default {
 			options: ICONS,
 			description: 'Icoon naam voor nldd-icon',
 			table: {
-				defaultValue: { summary: 'dismiss' },
+				defaultValue: { summary: 'icon-placeholder' },
 			},
 		},
 		type: {
@@ -144,6 +153,7 @@ export default {
 		variant: 'neutral-tinted',
 		size: 'md',
 		width: '',
+		hideLgText: false,
 		expandable: false,
 		expanded: false,
 		popupType: '',
@@ -159,16 +169,17 @@ export default {
 	},
 };
 
-const Template = ({ variant, size, width, expandable, expanded, popupType, text, icon, type, href, target, accessibleLabel, tooltipTiming, loading, disabled }: Record<string, any>) => html`
+const Template = ({ variant, size, width, hideLgText, expandable, expanded, popupType, text, icon, type, href, target, accessibleLabel, tooltipTiming, loading, disabled }: Record<string, any>) => html`
 	<nldd-icon-button
 		variant=${variant}
 		size=${size}
+		width=${width || nothing}
+		?hide-lg-text=${hideLgText}
 		icon=${icon}
 		text=${text}
 		popup-type=${popupType || nothing}
 		?expandable=${expandable}
 		?expanded=${expanded}
-		width=${width || nothing}
 		type=${type}
 		href=${href || nothing}
 		target=${target || nothing}
@@ -211,6 +222,7 @@ export const AppearanceBased = {
 		<nldd-icon-button variant="accent-filled" icon="add" text="Voeg toe"></nldd-icon-button>
 		<nldd-icon-button variant="accent-transparent" icon="add" text="Voeg toe"></nldd-icon-button>
 		<nldd-icon-button variant="neutral-tinted" icon="add" text="Voeg toe"></nldd-icon-button>
+		<nldd-icon-button variant="neutral-base" icon="add" text="Voeg toe"></nldd-icon-button>
 		<nldd-icon-button variant="neutral-transparent" icon="add" text="Voeg toe"></nldd-icon-button>
 		<nldd-icon-button variant="critical-tinted" icon="delete" text="Verwijder"></nldd-icon-button>
 		<nldd-icon-button variant="critical-transparent" icon="delete" text="Verwijder"></nldd-icon-button>

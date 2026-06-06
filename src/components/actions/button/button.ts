@@ -3,7 +3,8 @@
  *
  * @element nldd-button
  * @attr {string} variant - Button variant: 'primary' | 'secondary' | 'destructive' | 'accent-filled' | 'accent-transparent' | 'neutral-tinted' | 'neutral-transparent' | 'critical-tinted' | 'critical-transparent'
- * @attr {string} size - Button size: 'xs' | 'sm' | 'md' (default: 'md')
+ * @attr {string} size - Button size: 'xs' | 'sm' | 'md' | 'lg' (default: 'md'). 'lg' uses larger text and 24px start/end icons.
+ * @attr {string} horizontal-alignment - Horizontal alignment of the button content: 'left' | 'center' | 'right' (default: 'center'). Most visible with width="full" or a fixed width.
  * @attr {boolean} disabled - Disabled state
  * @attr {string} type - Button type for form submission: 'button' | 'submit' | 'reset' (ignored when href is set)
  * @attr {boolean} expandable - Whether the button has a icon to indicate it opens a menu or popover
@@ -11,7 +12,9 @@
  * @attr {string}  popup-type - Type of popup container this button opens: 'menu' | 'listbox' | 'dialog' | 'tree' | 'grid'. Sets aria-haspopup on the inner button and forces aria-expanded to always be present (true/false) so screen readers know the popup state.
  * @attr {string} width - Width mode: 'full' (stretches to container) or any CSS length (e.g. '240px')
  * @attr {string} text - Button text
+ * @attr {string} supporting-text - Supporting text shown below the text (md/lg) or after it (sm/xs), in a secondary color. Part of the accessible name.
  * @attr {boolean} single-line - When true, truncates overflowing text with an ellipsis instead of letting it wrap. Requires the button (or an ancestor) to constrain the width.
+ * @attr {boolean} no-highlight-border - Removes the per-variant highlight border (e.g. when nldd-button-bar draws a single group border instead).
  * @attr {string} start-icon - Icon name for the start icon (before text)
  * @attr {string} end-icon - Icon name for the end icon (after text)
  * @attr {string} accessible-label - Accessible label for the button, overrides text for screen readers
@@ -40,10 +43,11 @@ type Variant =
 	| 'accent-filled'
 	| 'accent-transparent'
 	| 'neutral-tinted'
+	| 'neutral-base'
 	| 'neutral-transparent'
 	| 'critical-tinted'
 	| 'critical-transparent';
-type Size = 'xs' | 'sm' | 'md';
+type Size = 'xs' | 'sm' | 'md' | 'lg';
 type ButtonType = 'button' | 'submit' | 'reset';
 type PopupType = 'menu' | 'listbox' | 'dialog' | 'tree' | 'grid';
 
@@ -62,6 +66,10 @@ export class NLDDButton extends LitElement {
 
 	@property({ type: String, reflect: true })
 	size: Size = 'md';
+
+	/** Horizontal alignment of the button content. Most visible with width="full" or a fixed width. */
+	@property({ type: String, reflect: true, attribute: 'horizontal-alignment' })
+	horizontalAlignment: 'left' | 'center' | 'right' = 'center';
 
 	/** Width mode: 'full' (stretch to container) or any CSS length. */
 	@property({ type: String, reflect: true })
@@ -128,8 +136,16 @@ export class NLDDButton extends LitElement {
 	@property({ type: String })
 	text = '';
 
+	/** Supporting text: below the text (md/lg) or after it (sm/xs), in a secondary color. Part of the accessible name. */
+	@property({ type: String, attribute: 'supporting-text' })
+	supportingText = '';
+
 	@property({ type: Boolean, reflect: true, attribute: 'single-line' })
 	singleLine = false;
+
+	/** Removes the per-variant highlight border (e.g. when nldd-button-bar draws a single group border instead). */
+	@property({ type: Boolean, reflect: true, attribute: 'no-highlight-border' })
+	noHighlightBorder = false;
 
 	/** Icon name for the start icon (before text). When not set, the start-icon slot is used. */
 	@property({ type: String, attribute: 'start-icon' })

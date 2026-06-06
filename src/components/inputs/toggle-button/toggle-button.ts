@@ -7,7 +7,7 @@
  * @element nldd-toggle-button
  *
  * @attr {'button' | 'checkbox' | 'radio'} type - Underlying element (default: 'button')
- * @attr {'xs' | 'sm' | 'md'}              size - Button size (default: 'md')
+ * @attr {'xs' | 'sm' | 'md' | 'lg'}       size - Button size (default: 'md')
  * @attr {boolean}                         selected         - Selected state
  * @attr {boolean}                         disabled         - Disabled state
  * @attr {string}                          value            - Value for form submission (checkbox/radio)
@@ -29,7 +29,7 @@ import { toggleButtonTemplate } from './toggle-button.template.js';
 import './../../content/icon/icon.js';
 
 export type ToggleButtonType = 'button' | 'checkbox' | 'radio';
-export type ToggleButtonSize = 'xs' | 'sm' | 'md';
+export type ToggleButtonSize = 'xs' | 'sm' | 'md' | 'lg';
 export type ToggleButtonVariant = 'text' | 'icon' | 'icon-and-text';
 
 @customElement('nldd-toggle-button')
@@ -64,7 +64,8 @@ export class NLDDToggleButton extends LitElement {
 	@property({ type: String })
 	text = '';
 
-	/** Icon name for the nldd-icon element. When not set, the icon slot is used. */
+	/** Icon name for the nldd-icon element. When not set, the icon slot is used; the
+	 *  icon and icon-and-text variants show a placeholder icon when neither is provided. */
 	@property({ type: String })
 	icon = '';
 

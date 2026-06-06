@@ -15,6 +15,10 @@ the type of conventional-commit determines the release. Conventional types
 `chore`, `docs`, `ci`, `style`, `test`, `build` are intentionally omitted
 here; consult the commit history if you need that level of detail.
 
+## <small>0.8.56 (2026-06-03)</small>
+
+* feat(plugin): marktplaats voor de nldd-plugin (#121) ([a883ba0](https://github.com/MinBZK/storybook/commit/a883ba0)), closes [#121](https://github.com/MinBZK/storybook/issues/121)
+
 ## <small>0.8.55 (2026-06-03)</small>
 
 * feat(plugin): consumentenskill voor het design system (#118) ([118c607](https://github.com/MinBZK/storybook/commit/118c607)), closes [#118](https://github.com/MinBZK/storybook/issues/118)

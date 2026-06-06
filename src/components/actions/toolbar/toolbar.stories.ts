@@ -7,6 +7,7 @@ import '../../content/icon/icon.js';
 import '../../actions/menu/menu.js';
 import '../../inputs/search-field/search-field.js';
 import '../../inputs/segmented-control/segmented-control.js';
+import '../../navigation/tab-bar/tab-bar.js';
 
 export default {
 	title: 'Components/Actions/Toolbar',
@@ -15,8 +16,8 @@ export default {
 	argTypes: {
 		size: {
 			control: 'select',
-			options: ['sm', 'md'],
-			description: 'Grootte van de toolbar',
+			options: ['sm', 'md', 'lg'],
+			description: 'Grootte van de toolbar. Bij "lg" stapelen de overflow-knop en lg-controls (zoals nldd-icon-button) hun label onder het icoon — bedoeld als grote icon-button actiebalk.',
 			table: { defaultValue: { summary: 'md' } },
 		},
 		showItemLabels: {
@@ -869,4 +870,32 @@ export const WithPinnedAndDynamicOverflow = {
 			></nldd-menu-item>
 		</nldd-toolbar>
 	`),
+};
+
+export const MobieleActiebalk = {
+	name: 'Mobiele actiebalk (lg)',
+	render: () => resizable(html`
+		<div style="display: flex; gap: var(--primitives-space-16); align-items: center;">
+			<nldd-tab-bar size="lg" accessible-label="Hoofdnavigatie">
+				<nldd-tab-bar-item selected text="Home" icon="home"></nldd-tab-bar-item>
+				<nldd-tab-bar-item text="Profiel" icon="profile"></nldd-tab-bar-item>
+				<nldd-tab-bar-item text="Zoeken" icon="search"></nldd-tab-bar-item>
+			</nldd-tab-bar>
+			<nldd-toolbar size="lg" label="Acties">
+				<nldd-toolbar-item slot="end" label="Zoeken">
+					<nldd-icon-button text="Zoeken" icon="search"></nldd-icon-button>
+					<nldd-menu-item slot="overflow" text="Zoeken"></nldd-menu-item>
+				</nldd-toolbar-item>
+				<nldd-toolbar-item slot="end" label="Downloaden">
+					<nldd-icon-button text="Downloaden" icon="download"></nldd-icon-button>
+					<nldd-menu-item slot="overflow" text="Downloaden"></nldd-menu-item>
+				</nldd-toolbar-item>
+				<nldd-toolbar-item slot="end" label="Profiel">
+					<nldd-icon-button text="Profiel" icon="profile"></nldd-icon-button>
+					<nldd-menu-item slot="overflow" text="Profiel"></nldd-menu-item>
+				</nldd-toolbar-item>
+			</nldd-toolbar>
+		</div>
+	`),
+	parameters: { controls: { disable: true } },
 };

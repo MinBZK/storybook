@@ -16,10 +16,16 @@ export default {
 	argTypes: {
 		variant: {
 			control: 'select',
-			options: ['(auto)', 'icon-and-text', 'text', 'icon', 'compact'],
+			options: ['(auto)', 'icon-and-text', 'text', 'icon'],
 			mapping: { '(auto)': '' },
-			description: 'Standaard variant voor alle items. Kan per item worden overschreven met een eigen variant attribuut. Bij "(auto)" bepaalt elk item dat zelf op basis van text/icon. "compact" stapelt het icoon boven de tekst.',
+			description: 'Standaard variant voor alle items. Kan per item worden overschreven met een eigen variant attribuut. Bij "(auto)" bepaalt elk item dat zelf op basis van text/icon. Bepaalt de layout bij elke grootte.',
 			table: { defaultValue: { summary: '(auto)' } },
+		},
+		size: {
+			control: 'select',
+			options: ['md', 'lg'],
+			description: 'Grootte. "lg" vergroot het touch target en behoudt de variant-layout: icon-and-text stapelt het icoon boven de tekst (mobiele bottom-bar stijl), text toont grote tekst, icon toont een groter icon-only control.',
+			table: { defaultValue: { summary: 'md' } },
 		},
 		centered: {
 			control: 'boolean',
@@ -34,6 +40,7 @@ export default {
 	},
 	args: {
 		variant: '',
+		size: 'md',
 		centered: false,
 		accessibleLabel: '',
 	},
@@ -47,9 +54,10 @@ const tabBarItems = html`
 	<nldd-tab-bar-item text="Zoeken" icon="search"></nldd-tab-bar-item>
 `;
 
-const Template = ({ variant, centered, accessibleLabel }: Record<string, any>) => html`
+const Template = ({ variant, size, centered, accessibleLabel }: Record<string, any>) => html`
 	<nldd-tab-bar
 		variant=${variant || nothing}
+		size=${size || nothing}
 		?centered=${centered}
 		accessible-label=${accessibleLabel || nothing}
 	>
@@ -80,11 +88,20 @@ export const MetIconenVariant = {
 };
 
 
-export const Compact = {
+export const Groot = {
+	name: 'Groot (lg)',
 	render: () => html`
-	<nldd-tab-bar variant="compact">
-		${tabBarItems}
-	</nldd-tab-bar>
+	<div style="display: flex; flex-direction: column; gap: 24px; align-items: flex-start;">
+		<nldd-tab-bar size="lg" variant="icon-and-text" accessible-label="Icon en tekst">
+			${tabBarItems}
+		</nldd-tab-bar>
+		<nldd-tab-bar size="lg" variant="text" accessible-label="Tekst">
+			${tabBarItems}
+		</nldd-tab-bar>
+		<nldd-tab-bar size="lg" variant="icon" accessible-label="Icoon">
+			${tabBarItems}
+		</nldd-tab-bar>
+	</div>
 `,
 	parameters: { controls: { disable: true } },
 };

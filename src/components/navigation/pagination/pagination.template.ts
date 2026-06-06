@@ -52,6 +52,7 @@ export function paginationTemplate(component: NLDDPagination): TemplateResult {
 					icon="chevron-left-small"
 					text=${t('components.pagination.previous-action')}
 					variant="neutral-tinted"
+					no-highlight-border
 					?disabled=${isDisabled || atFirst}
 					href=${hasHref && !isDisabled && !atFirst ? component._hrefForPage(component.current - 1) : nothing}
 					@click=${(e: Event) => { if (hasHref) e.preventDefault(); component._goToPage(component.current - 1); }}
@@ -95,6 +96,7 @@ export function paginationTemplate(component: NLDDPagination): TemplateResult {
 					icon="chevron-right-small"
 					text=${t('components.pagination.next-action')}
 					variant="neutral-tinted"
+					no-highlight-border
 					?disabled=${isDisabled || atLast}
 					href=${hasHref && !isDisabled && !atLast ? component._hrefForPage(component.current + 1) : nothing}
 					@click=${(e: Event) => { if (hasHref) e.preventDefault(); component._goToPage(component.current + 1); }}

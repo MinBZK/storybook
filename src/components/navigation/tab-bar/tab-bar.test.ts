@@ -121,14 +121,46 @@ describe('nldd-tab-bar-item – content variant detection', () => {
 		expect(el.getAttribute('variant')).toBe('icon');
 	});
 
-	it('keeps an explicit variant="compact" on the item', async () => {
+	it('reflects size="lg" and resolves a variant attribute that drives the lg layout', async () => {
 		el = await fixture<NLDDTabBarItem>(`
-			<nldd-tab-bar-item variant="compact" text="Tab">
-				<svg slot="icon"></svg>
-			</nldd-tab-bar-item>
+			<nldd-tab-bar-item size="lg" text="Tab" icon="home"></nldd-tab-bar-item>
 		`);
 		await waitForUpdate(el);
-		expect(el.getAttribute('variant')).toBe('compact');
+		expect(el.getAttribute('size')).toBe('lg');
+		expect(el.getAttribute('variant')).toBe('icon-and-text');
+	});
+
+	it('keeps both icon and text visible at size="lg" with variant="icon-and-text"', async () => {
+		el = await fixture<NLDDTabBarItem>(`
+			<nldd-tab-bar-item size="lg" variant="icon-and-text" text="Tab" icon="home"></nldd-tab-bar-item>
+		`);
+		await waitForUpdate(el);
+		const iconEl = el.shadowRoot!.querySelector('.tab-bar__item-icon')!;
+		const textEl = el.shadowRoot!.querySelector('.tab-bar__item-text')!;
+		expect(getComputedStyle(iconEl).display).not.toBe('none');
+		expect(getComputedStyle(textEl).display).not.toBe('none');
+	});
+
+	it('hides the icon at size="lg" with variant="text"', async () => {
+		el = await fixture<NLDDTabBarItem>(`
+			<nldd-tab-bar-item size="lg" variant="text" text="Tab" icon="home"></nldd-tab-bar-item>
+		`);
+		await waitForUpdate(el);
+		const iconEl = el.shadowRoot!.querySelector('.tab-bar__item-icon')!;
+		const textEl = el.shadowRoot!.querySelector('.tab-bar__item-text')!;
+		expect(getComputedStyle(iconEl).display).toBe('none');
+		expect(getComputedStyle(textEl).display).not.toBe('none');
+	});
+
+	it('hides the text at size="lg" with variant="icon"', async () => {
+		el = await fixture<NLDDTabBarItem>(`
+			<nldd-tab-bar-item size="lg" variant="icon" text="Tab" icon="home"></nldd-tab-bar-item>
+		`);
+		await waitForUpdate(el);
+		const iconEl = el.shadowRoot!.querySelector('.tab-bar__item-icon')!;
+		const textEl = el.shadowRoot!.querySelector('.tab-bar__item-text')!;
+		expect(getComputedStyle(textEl).display).toBe('none');
+		expect(getComputedStyle(iconEl).display).not.toBe('none');
 	});
 
 	it('uses the icon attribute for variant detection (icon-and-text)', async () => {
@@ -144,6 +176,19 @@ describe('nldd-tab-bar-item – content variant detection', () => {
 		expect(icon).not.toBeNull();
 		expect(icon!.getAttribute('name')).toBe('house');
 		expect(el.shadowRoot!.querySelector('.tab-bar__item-icon slot')).toBeNull();
+	});
+
+	it('variant="icon-and-text" with text but no icon shows the placeholder', async () => {
+		el = await fixture<NLDDTabBarItem>('<nldd-tab-bar-item variant="icon-and-text" text="Home"></nldd-tab-bar-item>');
+		await waitForUpdate(el);
+		expect(el.shadowRoot!.querySelector('nldd-icon[name="icon-placeholder"]')).not.toBeNull();
+		expect(el.shadowRoot!.querySelector('.tab-bar__item-text')!.textContent?.trim()).toBe('Home');
+	});
+
+	it('variant="text" without an icon shows no placeholder', async () => {
+		el = await fixture<NLDDTabBarItem>('<nldd-tab-bar-item variant="text" text="Home"></nldd-tab-bar-item>');
+		await waitForUpdate(el);
+		expect(el.shadowRoot!.querySelector('nldd-icon[name="icon-placeholder"]')).toBeNull();
 	});
 });
 
@@ -199,6 +244,17 @@ describe('nldd-tab-bar-item – icon variant accessibility', () => {
 		`);
 		await waitForUpdate(el);
 		expect(el.shadowRoot!.querySelector('nldd-tooltip')).toBeNull();
+	});
+
+	it('applies icon-only affordances at size="lg" with variant="icon"', async () => {
+		el = await fixture<NLDDTabBarItem>(`
+			<nldd-tab-bar-item size="lg" variant="icon" text="Home">
+				<svg slot="icon"></svg>
+			</nldd-tab-bar-item>
+		`);
+		await waitForUpdate(el);
+		expect(el.shadowRoot!.querySelector('[role="tab"]')!.getAttribute('aria-label')).toBe('Home');
+		expect(el.shadowRoot!.querySelector('nldd-tooltip')!.getAttribute('text')).toBe('Home');
 	});
 });
 
@@ -423,37 +479,37 @@ describe('nldd-tab-bar – variant propagation', () => {
 		expect(items[1].getAttribute('variant')).toBe('icon');
 	});
 
-	it('parent variant="compact" propagates to items', async () => {
+	it('parent size="lg" propagates to items', async () => {
 		el = await fixture<NLDDTabBar>(`
-			<nldd-tab-bar variant="compact">
+			<nldd-tab-bar size="lg">
 				<nldd-tab-bar-item><svg slot="icon"></svg>Home</nldd-tab-bar-item>
 			</nldd-tab-bar>
 		`);
 		await waitForUpdate(el);
-		expect(getItems(el)[0].getAttribute('variant')).toBe('compact');
+		expect(getItems(el)[0].getAttribute('size')).toBe('lg');
 	});
 
-	it('item variant overrides parent variant="compact"', async () => {
+	it('parent size overrides a size set on the item (no per-item override)', async () => {
 		el = await fixture<NLDDTabBar>(`
-			<nldd-tab-bar variant="compact">
-				<nldd-tab-bar-item variant="text"><svg slot="icon"></svg>Home</nldd-tab-bar-item>
+			<nldd-tab-bar size="lg">
+				<nldd-tab-bar-item size="md"><svg slot="icon"></svg>Home</nldd-tab-bar-item>
 			</nldd-tab-bar>
 		`);
 		await waitForUpdate(el);
-		expect(getItems(el)[0].getAttribute('variant')).toBe('text');
+		expect(getItems(el)[0].getAttribute('size')).toBe('lg');
 	});
 
-	it('removes variant="compact" from items when parent variant is cleared', async () => {
+	it('resets item size to md when the parent size changes back', async () => {
 		el = await fixture<NLDDTabBar>(`
-			<nldd-tab-bar variant="compact">
+			<nldd-tab-bar size="lg">
 				<nldd-tab-bar-item text="Home" icon="home"></nldd-tab-bar-item>
 			</nldd-tab-bar>
 		`);
 		await waitForUpdate(el);
-		el.variant = '';
+		expect(getItems(el)[0].getAttribute('size')).toBe('lg');
+		el.size = 'md';
 		await waitForUpdate(el);
-		// Falls back to auto-detect — text + icon → icon-and-text
-		expect(getItems(el)[0].getAttribute('variant')).toBe('icon-and-text');
+		expect(getItems(el)[0].getAttribute('size')).toBe('md');
 	});
 });
 

@@ -32,6 +32,21 @@ import { NLDDButton, NLDDCheckbox, NLDDSwitch } from '@nldd/design-system';
 
 Bekijk de live component documentatie: **https://minbzk.github.io/storybook/**
 
+## Claude Code plugin
+
+Deze repository is ook een Claude Code marketplace. De `nldd`-plugin geeft
+Claude de kennis om applicaties te bouwen bovenop `@nldd/design-system`: de
+juiste tags, attributen, CSS-tokens en patronen.
+
+Toevoegen en installeren:
+
+```
+/plugin marketplace add MinBZK/storybook
+/plugin install nldd@nldd-plugins
+```
+
+Bijwerken naar een nieuwere versie doe je met `/plugin marketplace update nldd-plugins`.
+
 ## Development setup
 
 ```bash

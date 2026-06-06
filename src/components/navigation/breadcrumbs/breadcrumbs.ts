@@ -5,9 +5,8 @@
  * `<nav>` landmark wrapping a `<div role="list">` (with each item carrying
  * `role="listitem"`). Explicit ARIA roles travel reliably across the slot
  * boundary where the implicit `<ol>`/`<li>` mapping is inconsistent across
- * AT + browser combos. The host itself is its own container-query scope so
- * the sm-viewport "‹ {parent}" fallback reacts to the breadcrumbs' own
- * width, not the viewport.
+ * AT + browser combos. The trail wraps onto multiple lines when it doesn't
+ * fit, so it adapts to any width.
  *
  * @element nldd-breadcrumbs
  *
@@ -128,65 +127,6 @@ export class NLDDBreadcrumbs extends LitElement {
 			console.warn(`<nldd-breadcrumbs>: missing translation for "${key}"`);
 		}
 		return value ?? '';
-	}
-
-	/**
-	 * All slotted nldd-breadcrumbs-item children, in DOM order. Items MUST
-	 * be direct children of nldd-breadcrumbs — wrapping them in another
-	 * element (e.g. `<ul><nldd-breadcrumbs-item>`) is unsupported and will
-	 * make them invisible to this component (separator handling, sm-viewport
-	 * fallback, etc. all key off this set).
-	 */
-	_items(): NLDDBreadcrumbsItem[] {
-		return Array.from(this.querySelectorAll(':scope > nldd-breadcrumbs-item'));
-	}
-
-	/**
-	 * The parent (one-level-up) item: the last non-current item with an
-	 * `href` — the level-up link needs somewhere to navigate. Returns null
-	 * when no eligible parent exists; the level-up element is not rendered
-	 * in that case (so it can't appear in the link list of any AT).
-	 */
-	_parentItem(): NLDDBreadcrumbsItem | null {
-		const items = this._items();
-		for (let i = items.length - 1; i >= 0; i--) {
-			if (!items[i].current && items[i].href) return items[i];
-		}
-		return null;
-	}
-
-	_onSlotChange = () => {
-		// CSS reads `[has-parent]` directly; no need for @state. Toggling
-		// the attribute is enough.
-		this.toggleAttribute('has-parent', !!this._parentItem());
-		this._observeItemAttrs();
-		this.requestUpdate();
-	};
-
-	// MutationObserver covers the case where a consumer mutates `href` or
-	// `current` on an already-slotted item — slotchange doesn't fire for
-	// attribute changes, so has-parent + the level-up template would
-	// otherwise desync from the actual state.
-	private _itemObserver?: MutationObserver;
-
-	private _observeItemAttrs(): void {
-		this._itemObserver?.disconnect();
-		this._itemObserver = new MutationObserver(() => {
-			this.toggleAttribute('has-parent', !!this._parentItem());
-			this.requestUpdate();
-		});
-		for (const item of this._items()) {
-			this._itemObserver.observe(item, {
-				attributes: true,
-				attributeFilter: ['href', 'current'],
-			});
-		}
-	}
-
-	override disconnectedCallback(): void {
-		super.disconnectedCallback();
-		this._itemObserver?.disconnect();
-		this._itemObserver = undefined;
 	}
 
 	override render() {

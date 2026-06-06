@@ -8,6 +8,7 @@ export const stepperStyles = css`
 	:host {
 		--_corner-radius: var(--semantics-controls-md-corner-radius);
 		--_divider-length: var(--semantics-buttons-md-divider-length);
+		--_highlight-border-color: var(--semantics-buttons-neutral-tinted-highlight-border-color);
 
 		display: inline-flex;
 		isolation: isolate;
@@ -19,14 +20,14 @@ export const stepperStyles = css`
 		display: none;
 	}
 
-	:host([size="sm"]) {
-		--_corner-radius: var(--semantics-controls-sm-corner-radius);
-		--_divider-length: var(--semantics-buttons-sm-divider-length);
-	}
-
 	:host([size="xs"]) {
 		--_corner-radius: var(--semantics-controls-xs-corner-radius);
 		--_divider-length: var(--semantics-buttons-xs-divider-length);
+	}
+
+	:host([size="sm"]) {
+		--_corner-radius: var(--semantics-controls-sm-corner-radius);
+		--_divider-length: var(--semantics-buttons-sm-divider-length);
 	}
 
 	:host([disabled]) {
@@ -43,10 +44,20 @@ export const stepperStyles = css`
 
 	.stepper {
 		display: inline-flex;
+		position: relative;
 		border-radius: var(--_corner-radius);
 		background-color: var(--semantics-buttons-neutral-tinted-background-color);
 		flex-direction: row;
 		align-items: center;
+	}
+
+	.stepper::after {
+		content: '';
+		position: absolute;
+		inset: 0;
+		border-radius: inherit;
+		box-shadow: inset 0 0 0 var(--primitives-border-width-thin) var(--_highlight-border-color);
+		pointer-events: none;
 	}
 
 	.stepper:focus-visible {

@@ -7,7 +7,7 @@
  * @element nldd-segmented-control
  * @attr {string}  value         - Selected value for radio type
  * @prop {string[]} values        - Selected values for checkbox type (property binding only, not an attribute)
- * @attr {string}  size          - Control size: 'sm' | 'md' (default: 'md')
+ * @attr {string}  size          - Control size: 'sm' | 'md' | 'lg' (default: 'md')
  * @attr {string}  type          - Input type: 'radio' | 'checkbox' (default: 'radio')
  * @attr {string}  variant       - Content type for all items: 'text' | 'icon' | 'icon-and-text' (default: 'text')
  * @attr {boolean} disabled      - Disabled state for all items
@@ -45,7 +45,7 @@ import {
 } from './segmented-control.template.js';
 import './../../content/icon/icon.js';
 
-export type SegmentedControlSize = 'sm' | 'md';
+export type SegmentedControlSize = 'sm' | 'md' | 'lg';
 export type SegmentedControlType = 'radio' | 'checkbox';
 export type SegmentedControlVariant = 'text' | 'icon' | 'icon-and-text';
 
@@ -65,7 +65,7 @@ export class NLDDSegmentedControlItem extends LitElement {
 	@property({ type: Boolean, reflect: true })
 	disabled = false;
 
-	/** Set by nldd-segmented-control. Not part of the public API. */
+	/** Control size: 'sm' | 'md' | 'lg'. Set by nldd-segmented-control. Not part of the public API. */
 	@property({ type: String, reflect: true })
 	size: SegmentedControlSize = 'md';
 
@@ -85,7 +85,8 @@ export class NLDDSegmentedControlItem extends LitElement {
 	@property({ type: String })
 	text = '';
 
-	/** Icon name for nldd-icon. When not set, the icon slot is used. */
+	/** Icon name for nldd-icon. When not set, the icon slot is used; the icon and
+	 *  icon-and-text variants show a placeholder icon when neither is provided. */
 	@property({ type: String })
 	icon = '';
 
