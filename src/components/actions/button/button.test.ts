@@ -54,6 +54,63 @@ describe('nldd-button', () => {
 		const inner = el.shadowRoot!.querySelector('button');
 		expect(inner!.hasAttribute('aria-label')).toBe(false);
 	});
+
+	it('reflects the size attribute (lg)', async () => {
+		el = await fixture('<nldd-button size="lg" text="Groot"></nldd-button>');
+		await waitForUpdate(el);
+		expect(el.getAttribute('size')).toBe('lg');
+	});
+
+	it('defaults horizontal-alignment to center', async () => {
+		el = await fixture('<nldd-button text="X"></nldd-button>');
+		await waitForUpdate(el);
+		expect(el.getAttribute('horizontal-alignment')).toBe('center');
+	});
+
+	it('reflects the horizontal-alignment attribute', async () => {
+		el = await fixture('<nldd-button horizontal-alignment="left" text="X"></nldd-button>');
+		await waitForUpdate(el);
+		expect(el.getAttribute('horizontal-alignment')).toBe('left');
+	});
+
+	it('renders supporting text when set', async () => {
+		el = await fixture('<nldd-button text="Opslaan" supporting-text="Alle wijzigingen"></nldd-button>');
+		await waitForUpdate(el);
+		const supporting = el.shadowRoot!.querySelector('.button__supporting-text');
+		expect(supporting).not.toBeNull();
+		expect(supporting!.textContent).toContain('Alle wijzigingen');
+	});
+
+	it('does not render a supporting-text element when not set', async () => {
+		el = await fixture('<nldd-button text="Opslaan"></nldd-button>');
+		await waitForUpdate(el);
+		expect(el.shadowRoot!.querySelector('.button__supporting-text')).toBeNull();
+	});
+
+	it('includes supporting text in the button content (part of the accessible name)', async () => {
+		el = await fixture('<nldd-button text="Opslaan" supporting-text="Alle wijzigingen"></nldd-button>');
+		await waitForUpdate(el);
+		const content = el.shadowRoot!.querySelector('.button__content')!;
+		expect(content.textContent).toContain('Opslaan');
+		expect(content.textContent).toContain('Alle wijzigingen');
+	});
+
+	it('adds the has-supporting-text class to the inner control when supporting text is set', async () => {
+		el = await fixture('<nldd-button text="Opslaan" supporting-text="Alle wijzigingen"></nldd-button>');
+		await waitForUpdate(el);
+		const inner = el.shadowRoot!.querySelector('.button')!;
+		expect(inner.classList.contains('has-supporting-text')).toBe(true);
+	});
+
+	it('pins the expandable disclosure chevron to the right (absolute, outside content)', async () => {
+		el = await fixture('<nldd-button text="Kies" expandable></nldd-button>');
+		await waitForUpdate(el);
+		const disclosure = el.shadowRoot!.querySelector('.button__disclosure-icon')!;
+		expect(disclosure).not.toBeNull();
+		expect(disclosure.parentElement!.classList.contains('button')).toBe(true);
+		expect(el.shadowRoot!.querySelector('.button__content .button__disclosure-icon')).toBeNull();
+		expect(getComputedStyle(disclosure).position).toBe('absolute');
+	});
 });
 
 describe('nldd-button – icon attributes', () => {
@@ -79,7 +136,7 @@ describe('nldd-button – icon attributes', () => {
 		const endIcon = el.shadowRoot!.querySelector('.button__end-icon');
 
 		expect(startIcon).not.toBeNull();
-		expect(startIcon!.getAttribute('name')).toBe('heart');
+		expect(startIcon!.querySelector('nldd-icon')!.getAttribute('name')).toBe('heart');
 		expect(endIcon).toBeNull();
 	});
 
@@ -92,7 +149,7 @@ describe('nldd-button – icon attributes', () => {
 
 		expect(startIcon).toBeNull();
 		expect(endIcon).not.toBeNull();
-		expect(endIcon!.getAttribute('name')).toBe('arrow-right');
+		expect(endIcon!.querySelector('nldd-icon')!.getAttribute('name')).toBe('arrow-right');
 	});
 
 	it('renders both start and end icons', async () => {
@@ -103,9 +160,41 @@ describe('nldd-button – icon attributes', () => {
 		const endIcon = el.shadowRoot!.querySelector('.button__end-icon');
 
 		expect(startIcon).not.toBeNull();
-		expect(startIcon!.getAttribute('name')).toBe('heart');
+		expect(startIcon!.querySelector('nldd-icon')!.getAttribute('name')).toBe('heart');
 		expect(endIcon).not.toBeNull();
-		expect(endIcon!.getAttribute('name')).toBe('chevron-down-small');
+		expect(endIcon!.querySelector('nldd-icon')!.getAttribute('name')).toBe('chevron-down-small');
+	});
+
+	it('wraps the start/end icon in a container span (class on the container, not on nldd-icon)', async () => {
+		el = await fixture<NLDDButton>('<nldd-button text="X" start-icon="heart" end-icon="arrow-right"></nldd-button>');
+		await waitForUpdate(el);
+		const start = el.shadowRoot!.querySelector('.button__start-icon')!;
+		const end = el.shadowRoot!.querySelector('.button__end-icon')!;
+		expect(start.tagName.toLowerCase()).toBe('span');
+		expect(start.querySelector('nldd-icon')).not.toBeNull();
+		expect(end.tagName.toLowerCase()).toBe('span');
+		expect(end.querySelector('nldd-icon')).not.toBeNull();
+	});
+
+	it('reflects the no-highlight-border attribute', async () => {
+		el = await fixture<NLDDButton>('<nldd-button text="X" no-highlight-border></nldd-button>');
+		await waitForUpdate(el);
+		expect(el.hasAttribute('no-highlight-border')).toBe(true);
+	});
+
+	it('hides the expandable chevron while loading but keeps it laid out', async () => {
+		el = await fixture<NLDDButton>('<nldd-button text="Kies" expandable loading></nldd-button>');
+		await waitForUpdate(el);
+		const disclosure = el.shadowRoot!.querySelector('.button__disclosure-icon')!;
+		expect(disclosure).not.toBeNull();
+		expect(getComputedStyle(disclosure).opacity).toBe('0');
+		expect(getComputedStyle(disclosure).display).not.toBe('none');
+	});
+
+	it('accepts the neutral-base variant', async () => {
+		el = await fixture<NLDDButton>('<nldd-button text="X" variant="neutral-base"></nldd-button>');
+		await waitForUpdate(el);
+		expect(el.getAttribute('variant')).toBe('neutral-base');
 	});
 
 	it('renders start-icon slot when start-icon attribute is not set', async () => {

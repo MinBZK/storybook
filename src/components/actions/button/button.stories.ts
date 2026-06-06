@@ -34,6 +34,7 @@ export default {
 				'accent-filled',
 				'accent-transparent',
 				'neutral-tinted',
+				'neutral-base',
 				'neutral-transparent',
 				'critical-tinted',
 				'critical-transparent',
@@ -45,10 +46,19 @@ export default {
 		},
 		size: {
 			control: 'select',
-			options: ['xs', 'sm', 'md'],
-			description: 'Grootte van de knop',
+			options: ['xs', 'sm', 'md', 'lg'],
+			description: 'Grootte van de knop. "lg" gebruikt groter font en 24px start/end-iconen.',
 			table: {
 				defaultValue: { summary: 'md' },
+			},
+		},
+		horizontalAlignment: {
+			name: 'horizontal-alignment',
+			control: 'select',
+			options: ['left', 'center', 'right'],
+			description: 'Horizontale uitlijning van de content. Vooral zichtbaar bij width="full" of een vaste breedte.',
+			table: {
+				defaultValue: { summary: 'center' },
 			},
 		},
 		width: {
@@ -84,6 +94,11 @@ export default {
 		text: {
 			control: 'text',
 			description: 'Tekst van de knop',
+		},
+		supportingText: {
+			name: 'supporting-text',
+			control: 'text',
+			description: 'Ondersteunende tekst: onder de tekst (md/lg) of erachter (sm/xs), in een secundaire kleur. Telt mee in de toegankelijke naam.',
 		},
 		singleLine: {
 			name: 'single-line',
@@ -153,11 +168,13 @@ export default {
 	args: {
 		variant: 'neutral-tinted',
 		size: 'md',
+		horizontalAlignment: 'center',
 		width: '',
 		expandable: false,
 		expanded: false,
 		popupType: '',
 		text: 'Button',
+		supportingText: '',
 		singleLine: false,
 		startIcon: '',
 		endIcon: '',
@@ -170,13 +187,15 @@ export default {
 	},
 };
 
-const Template = ({ variant, size, width, expandable, expanded, popupType, text, singleLine, startIcon, endIcon, type, href, target, accessibleLabel, loading, disabled }: Record<string, any>) => html`
+const Template = ({ variant, size, horizontalAlignment, width, expandable, expanded, popupType, text, supportingText, singleLine, startIcon, endIcon, type, href, target, accessibleLabel, loading, disabled }: Record<string, any>) => html`
 	<nldd-button
 		variant=${variant}
 		size=${size}
+		horizontal-alignment=${horizontalAlignment}
 		width=${width || nothing}
 		type=${type}
 		text=${text}
+		supporting-text=${supportingText || nothing}
 		href=${href || nothing}
 		target=${target || nothing}
 		start-icon=${startIcon || nothing}
@@ -196,6 +215,31 @@ export const Default = {
 	args: {
 		text: 'Button',
 	},
+};
+
+export const HorizontalAlignment = {
+	name: 'Horizontal align (full width)',
+	render: () => html`
+		<div style="display: flex; flex-direction: column; gap: 16px; width: 320px;">
+			<nldd-button width="full" horizontal-alignment="left" text="Links" start-icon="download"></nldd-button>
+			<nldd-button width="full" horizontal-alignment="center" text="Midden" start-icon="download"></nldd-button>
+			<nldd-button width="full" horizontal-alignment="right" text="Rechts" start-icon="download"></nldd-button>
+		</div>
+	`,
+	parameters: { controls: { disable: true } },
+};
+
+export const WithSupportingText = {
+	name: 'Supporting text',
+	render: () => html`
+		<div style="display: flex; flex-direction: column; gap: 16px; align-items: flex-start;">
+			<nldd-button horizontal-alignment="left" size="lg" text="Opslaan" supporting-text="Alle wijzigingen" start-icon="download"></nldd-button>
+			<nldd-button horizontal-alignment="left" size="md" text="Opslaan" supporting-text="Alle wijzigingen" start-icon="download"></nldd-button>
+			<nldd-button horizontal-alignment="left" size="sm" text="Opslaan" supporting-text="3 items" start-icon="download"></nldd-button>
+			<nldd-button horizontal-alignment="left" size="xs" text="Opslaan" supporting-text="3 items" start-icon="download"></nldd-button>
+		</div>
+	`,
+	parameters: { controls: { disable: true } },
 };
 
 export const RoleBased = {
@@ -222,6 +266,7 @@ export const AppearanceBased = {
 		<nldd-button variant="accent-filled" text="Accent Filled"></nldd-button>
 		<nldd-button variant="accent-transparent" text="Accent Transparent"></nldd-button>
 		<nldd-button variant="neutral-tinted" text="Neutral Tinted"></nldd-button>
+		<nldd-button variant="neutral-base" text="Neutral Base"></nldd-button>
 		<nldd-button variant="neutral-transparent" text="Neutral Transparent"></nldd-button>
 		<nldd-button variant="critical-tinted" text="Critical Tinted"></nldd-button>
 		<nldd-button variant="critical-transparent" text="Critical Transparent"></nldd-button>
@@ -235,6 +280,7 @@ export const AppearanceBased = {
 export const Sizes = {
 	render: () => html`
 	<div style="display: flex; flex-wrap: wrap; gap: 16px; align-items: center;">
+		<nldd-button size="lg" text="Large"></nldd-button>
 		<nldd-button size="md" text="Medium"></nldd-button>
 		<nldd-button size="sm" text="Small"></nldd-button>
 		<nldd-button size="xs" text="Extra Small"></nldd-button>
@@ -248,6 +294,7 @@ export const Sizes = {
 export const WithStartIcon = {
 	render: () => html`
 	<div style="display: flex; flex-wrap: wrap; gap: 16px; align-items: center;">
+		<nldd-button size="lg" text="Download" start-icon="download"></nldd-button>
 		<nldd-button size="md" text="Download" start-icon="download"></nldd-button>
 		<nldd-button size="sm" text="Download" start-icon="download"></nldd-button>
 		<nldd-button size="xs" text="Download" start-icon="download"></nldd-button>
@@ -266,6 +313,7 @@ export const WithStartIcon = {
 export const WithEndIcon = {
 	render: () => html`
 	<div style="display: flex; flex-wrap: wrap; gap: 16px; align-items: center;">
+		<nldd-button size="lg" text="Volgende" end-icon="arrow-right"></nldd-button>
 		<nldd-button size="md" text="Volgende" end-icon="arrow-right"></nldd-button>
 		<nldd-button size="sm" text="Volgende" end-icon="arrow-right"></nldd-button>
 		<nldd-button size="xs" text="Volgende" end-icon="arrow-right"></nldd-button>
@@ -284,6 +332,7 @@ export const WithEndIcon = {
 export const WithBothIcons = {
 	render: () => html`
 	<div style="display: flex; flex-wrap: wrap; gap: 16px; align-items: center;">
+		<nldd-button size="lg" text="Download bestand" start-icon="download" end-icon="arrow-right"></nldd-button>
 		<nldd-button size="md" text="Download bestand" start-icon="download" end-icon="arrow-right"></nldd-button>
 		<nldd-button size="sm" text="Download bestand" start-icon="download" end-icon="arrow-right"></nldd-button>
 		<nldd-button size="xs" text="Download bestand" start-icon="download" end-icon="arrow-right"></nldd-button>
@@ -302,6 +351,7 @@ export const WithBothIcons = {
 export const WithDisclosureIcon = {
 	render: () => html`
 	<div style="display: flex; flex-wrap: wrap; gap: 16px; align-items: center;">
+		<nldd-button expandable size="lg" text="Opties"></nldd-button>
 		<nldd-button expandable size="md" text="Opties"></nldd-button>
 		<nldd-button expandable size="sm" text="Opties"></nldd-button>
 		<nldd-button expandable size="xs" text="Opties"></nldd-button>
@@ -320,6 +370,7 @@ export const WithDisclosureIcon = {
 export const Loading = {
 	render: () => html`
 	<div style="display: flex; flex-wrap: wrap; gap: 16px; align-items: center;">
+		<nldd-button loading size="lg" variant="primary" text="Opslaan" start-icon="download"></nldd-button>
 		<nldd-button loading variant="primary" text="Opslaan"></nldd-button>
 		<nldd-button loading variant="neutral-tinted" text="Opslaan" start-icon="download"></nldd-button>
 		<nldd-button loading variant="critical-tinted" text="Verwijderen"></nldd-button>
