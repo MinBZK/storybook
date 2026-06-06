@@ -39,12 +39,15 @@ export function tabBarItemTemplate(component: NLDDTabBarItem): TemplateResult {
 	const tabindex = component.selected || component._isFallbackFocusable ? '0' : '-1';
 	const isIconVariant = component._effectiveVariant === 'icon';
 	const iconLabel = isIconVariant ? component.text || nothing : nothing;
+	/* The icon and icon-and-text variants reserve an icon area; fill it with a
+	 * placeholder whenever the consumer provided no icon. */
+	const showPlaceholder = isIconVariant || component._effectiveVariant === 'icon-and-text';
 
 	const content = html`
 		<span class="tab-bar__item-icon" aria-hidden="true">
 			${component.icon
 				? html`<nldd-icon name=${component.icon}></nldd-icon>`
-				: html`<slot name="icon" @slotchange=${component._onIconSlotChange}>${isIconVariant ? html`<nldd-icon name="icon-placeholder"></nldd-icon>` : nothing}</slot>`}
+				: html`<slot name="icon" @slotchange=${component._onIconSlotChange}>${showPlaceholder ? html`<nldd-icon name="icon-placeholder"></nldd-icon>` : nothing}</slot>`}
 		</span>
 		<span class="tab-bar__item-text">
 			${component.text}
