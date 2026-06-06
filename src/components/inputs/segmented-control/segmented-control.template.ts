@@ -8,9 +8,9 @@ export function segmentedControlTemplate(component: NLDDSegmentedControl): Templ
 
 export function segmentedControlItemTemplate(component: NLDDSegmentedControlItem): TemplateResult {
 	const isIcon = component.variant === 'icon';
-	/* Placeholder fills an otherwise-empty icon area: icon-only always needs
-	 * it; icon-and-text only when there's no text to fall back on. */
-	const showPlaceholder = isIcon || (component.variant === 'icon-and-text' && !component.text);
+	/* The icon and icon-and-text variants reserve an icon area; fill it with a
+	 * placeholder whenever the consumer provided no icon. */
+	const showPlaceholder = isIcon || component.variant === 'icon-and-text';
 	const labelText = component.text || nothing;
 
 	const label = html`
