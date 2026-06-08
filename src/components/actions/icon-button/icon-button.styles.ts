@@ -248,6 +248,14 @@ export const iconButtonStyles = css`
 		--_is-expanded-highlight-border-color: transparent;
 	}
 
+	/* The neutral-base expanded block sets the hovered/active highlight-border
+	   colours at a higher specificity than the base no-highlight-border reset;
+	   re-assert transparency for the expanded state so no-highlight-border holds. */
+	:host([no-highlight-border][expanded]) {
+		--_is-hovered-highlight-border-color: transparent;
+		--_is-active-highlight-border-color: transparent;
+	}
+
 
 	/* # Block */
 
