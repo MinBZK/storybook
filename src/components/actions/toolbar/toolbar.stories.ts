@@ -367,7 +367,7 @@ export const WithOverflow = {
 					accessible-label="Lijsttype"
 				>
 					<nldd-segmented-control-item value="none" text="Geen" icon="minus-small"></nldd-segmented-control-item>
-					<nldd-segmented-control-item value="bullet" text="Lijst" icon="bullet-list"></nldd-segmented-control-item>
+					<nldd-segmented-control-item value="bullet" text="Opsomming" icon="bullet-list"></nldd-segmented-control-item>
 					<nldd-segmented-control-item value="numbered" text="Genummerd" icon="numbered-list"></nldd-segmented-control-item>
 				</nldd-segmented-control>
 				<nldd-menu-group slot="overflow" text="Lijst">
@@ -377,7 +377,7 @@ export const WithOverflow = {
 						type="checkbox"
 					></nldd-menu-item>
 					<nldd-menu-item
-						text="Lijst"
+						text="Opsomming"
 						icon="bullet-list"
 						type="checkbox"
 					></nldd-menu-item>
@@ -458,7 +458,7 @@ export const WithPriority = {
 					accessible-label="Lijsttype"
 				>
 					<nldd-segmented-control-item value="none" text="Geen" icon="minus-small"></nldd-segmented-control-item>
-					<nldd-segmented-control-item value="bullet" text="Lijst" icon="bullet-list"></nldd-segmented-control-item>
+					<nldd-segmented-control-item value="bullet" text="Opsomming" icon="bullet-list"></nldd-segmented-control-item>
 					<nldd-segmented-control-item value="numbered" text="Genummerd" icon="numbered-list"></nldd-segmented-control-item>
 				</nldd-segmented-control>
 				<nldd-menu-group slot="overflow" text="Lijst">
@@ -468,7 +468,7 @@ export const WithPriority = {
 						type="checkbox"
 					></nldd-menu-item>
 					<nldd-menu-item
-						text="Lijst"
+						text="Opsomming"
 						icon="bullet-list"
 						type="checkbox"
 					></nldd-menu-item>
@@ -698,7 +698,7 @@ export const WithPinnedAndDynamicOverflow = {
 					accessible-label="Lijsttype"
 				>
 					<nldd-segmented-control-item value="none" text="Geen" icon="minus-small"></nldd-segmented-control-item>
-					<nldd-segmented-control-item value="bullet" text="Lijst" icon="bullet-list"></nldd-segmented-control-item>
+					<nldd-segmented-control-item value="bullet" text="Opsomming" icon="bullet-list"></nldd-segmented-control-item>
 					<nldd-segmented-control-item value="numbered" text="Genummerd" icon="numbered-list"></nldd-segmented-control-item>
 				</nldd-segmented-control>
 				<nldd-menu-group slot="overflow" text="Lijst">
@@ -708,7 +708,7 @@ export const WithPinnedAndDynamicOverflow = {
 						type="checkbox"
 					></nldd-menu-item>
 					<nldd-menu-item
-						text="Lijst"
+						text="Opsomming"
 						icon="bullet-list"
 						type="checkbox"
 					></nldd-menu-item>
