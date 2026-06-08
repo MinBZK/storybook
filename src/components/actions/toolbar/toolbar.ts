@@ -118,7 +118,9 @@ export class NLDDToolbarTitle extends LitElement {
 	// toggled directly as attributes during measurement (synchronous). Not a
 	// reactive property for the same reflection-timing reason as the item.
 
-	override updated(changedProperties: Map<string, unknown>): void {
+	// willUpdate (not updated) so the size CSS variables are written before the
+	// toolbar measures the title with getBoundingClientRect() on the same frame.
+	override willUpdate(changedProperties: Map<string, unknown>): void {
 		if (changedProperties.has('minWidth')) this._reflectSizeVar('--_title-group-min-width', this.minWidth);
 		if (changedProperties.has('width')) this._reflectSizeVar('--_title-width', this.width);
 		if (changedProperties.has('maxWidth')) this._reflectSizeVar('--_title-max-width', this.maxWidth);
