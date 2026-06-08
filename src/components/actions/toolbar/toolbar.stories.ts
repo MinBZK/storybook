@@ -112,6 +112,7 @@ export const WithTitleGroup = {
 					<nldd-menu-item
 						slot="overflow"
 						text="Annuleer"
+						icon="dismiss-circle"
 					></nldd-menu-item>
 				</nldd-toolbar-item>
 				<nldd-toolbar-item
@@ -409,6 +410,7 @@ export const WithOverflow = {
 				<nldd-menu-item
 					slot="overflow"
 					text="Annuleer"
+					icon="dismiss-circle"
 				></nldd-menu-item>
 			</nldd-toolbar-item>
 			<nldd-toolbar-item
@@ -508,6 +510,7 @@ export const WithPriority = {
 				<nldd-menu-item
 					slot="overflow"
 					text="Annuleer"
+					icon="dismiss-circle"
 				></nldd-menu-item>
 			</nldd-toolbar-item>
 			<nldd-toolbar-item
@@ -563,6 +566,7 @@ export const WithFluidItem = {
 				<nldd-menu-item
 					slot="overflow"
 					text="Annuleer"
+					icon="dismiss-circle"
 				></nldd-menu-item>
 			</nldd-toolbar-item>
 			<nldd-toolbar-item
@@ -624,7 +628,7 @@ export const WithPinnedOverflow = {
 			<nldd-menu-item
 				slot="overflow"
 				text="Instellingen"
-				icon="gear"
+				icon="settings"
 			></nldd-menu-item>
 			<nldd-menu-item
 				slot="overflow"
@@ -669,7 +673,7 @@ export const WithPinnedOverflowOnly = {
 			<nldd-menu-item
 				slot="overflow"
 				text="Delen"
-				icon="send"
+				icon="share"
 			></nldd-menu-item>
 			<nldd-menu-divider slot="overflow"></nldd-menu-divider>
 			<nldd-menu-item
@@ -769,7 +773,7 @@ export const WithPinnedAndDynamicOverflow = {
 			<nldd-menu-item
 				slot="overflow"
 				text="Instellingen"
-				icon="gear"
+				icon="settings"
 			></nldd-menu-item>
 			<nldd-menu-divider slot="overflow"></nldd-menu-divider>
 			<nldd-menu-item
