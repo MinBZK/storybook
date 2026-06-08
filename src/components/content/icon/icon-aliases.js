@@ -320,6 +320,7 @@ export const aliases = {
 
 	// square-arrow-up
 	'share': 'square-arrow-up',
+	'export': 'square-arrow-up',
 
 	// square-on-square
 	'copy': 'square-on-square',
@@ -413,4 +414,8 @@ export const aliases = {
 
 	// square-and-arrow-down
 	'save': 'square-and-arrow-down',
+	'import': 'square-and-arrow-down',
+
+	// pipeline-machine-gear
+	'pipeline-runner': 'pipeline-machine-gear',
 };
