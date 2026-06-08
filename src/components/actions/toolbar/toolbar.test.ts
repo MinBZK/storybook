@@ -132,6 +132,57 @@ describe('nldd-toolbar', () => {
 		expect(toolbar._endChildren[0].label).toBe('End Item');
 	});
 
+	// ## Title rendering
+
+	it('item renders its own label in its shadow root', async () => {
+		el = await fixture(`
+			<nldd-toolbar>
+				<nldd-toolbar-item slot="start" label="Bewerken">
+					<nldd-icon-button aria-label="Bewerken"></nldd-icon-button>
+				</nldd-toolbar-item>
+			</nldd-toolbar>
+		`);
+		await waitForUpdate(el);
+		const item = el.querySelector('nldd-toolbar-item')!;
+		const label = item.shadowRoot?.querySelector('.toolbar__item-label');
+		expect(label?.textContent).toBe('Bewerken');
+	});
+
+	it('title renders text and supporting text in its shadow root', async () => {
+		el = await fixture(`
+			<nldd-toolbar>
+				<nldd-toolbar-title slot="center" text="Titel" supporting-text="Subtitel"></nldd-toolbar-title>
+			</nldd-toolbar>
+		`);
+		await waitForUpdate(el);
+		const title = el.querySelector('nldd-toolbar-title')!;
+		expect(title.shadowRoot?.querySelector('.toolbar__title')?.textContent).toBe('Titel');
+		expect(title.shadowRoot?.querySelector('.toolbar__subtitle')?.textContent).toBe('Subtitel');
+	});
+
+	it('centers title text when align="center" (overriding the inherited-text reset)', async () => {
+		el = await fixture(`
+			<nldd-toolbar>
+				<nldd-toolbar-title slot="center" text="Titel" align="center"></nldd-toolbar-title>
+			</nldd-toolbar>
+		`);
+		await waitForUpdate(el);
+		const title = el.querySelector('nldd-toolbar-title')!;
+		const titleText = title.shadowRoot!.querySelector('.toolbar__title') as HTMLElement;
+		expect(getComputedStyle(titleText).textAlign).toBe('center');
+	});
+
+	it('maps title min-width to --_title-group-min-width', async () => {
+		el = await fixture(`
+			<nldd-toolbar>
+				<nldd-toolbar-title slot="center" text="Titel" min-width="300px"></nldd-toolbar-title>
+			</nldd-toolbar>
+		`);
+		await waitForUpdate(el);
+		const title = el.querySelector('nldd-toolbar-title') as HTMLElement;
+		expect(title.style.getPropertyValue('--_title-group-min-width')).toBe('300px');
+	});
+
 	// ## Overflow items
 
 	it('separates overflow items from toolbar-item children', async () => {
@@ -259,7 +310,11 @@ describe('nldd-toolbar', () => {
 
 		expect(toolbar._startChildren.length).toBe(1);
 
-		const slot = el.shadowRoot?.querySelector('slot[name^="child-"]');
+		// The item host keeps its original slot assignment and stays projected
+		// into the parent's named slot — it is not lost on a descendant change.
+		const item = el.querySelector('nldd-toolbar-item')!;
+		expect(item.getAttribute('slot')).toBe('start');
+		const slot = el.shadowRoot?.querySelector('slot[name="start"]');
 		expect(slot).not.toBeNull();
 	});
 

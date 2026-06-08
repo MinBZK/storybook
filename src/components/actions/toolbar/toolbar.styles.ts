@@ -6,8 +6,61 @@ export const toolbarItemStyles = css`
 
 	/* # Host */
 
+	:host {
+		--_item-min-width: 0px;
+		--_item-width: auto;
+
+		display: inline-flex;
+		flex-direction: column;
+		flex-grow: 0;
+		flex-shrink: 0;
+		align-items: center;
+	}
+
+	:host([fluid]) {
+		min-width: var(--_item-min-width);
+		flex-shrink: 1;
+		flex-basis: var(--_item-width);
+	}
+
+	:host([solo-fluid]) {
+		flex-grow: 1;
+		flex-shrink: 1;
+		flex-basis: 0;
+	}
+
 	:host([hidden]) {
 		display: none;
+	}
+
+
+	/* # Block */
+
+	.toolbar__item-content {
+		display: inline-flex;
+		width: 100%;
+		align-items: center;
+		justify-content: center;
+	}
+
+	:host([fluid]) .toolbar__item-content ::slotted(*),
+	:host([solo-fluid]) .toolbar__item-content ::slotted(*) {
+		width: 100%;
+	}
+
+
+	/* # Elements */
+
+	.toolbar__item-label {
+		display: none;
+		margin-top: var(--primitives-space-4);
+		color: var(--semantics-content-color);
+		font: var(--primitives-font-body-xs-regular-flat);
+		white-space: nowrap;
+	}
+
+	:host([show-item-labels]) .toolbar__item-label {
+		display: block;
 	}
 
 
@@ -15,6 +68,99 @@ export const toolbarItemStyles = css`
 
 	slot[name="overflow"] {
 		display: none;
+	}
+`;
+
+export const toolbarTitleStyles = css`
+
+
+	/* # Host */
+
+	:host {
+		--_title-group-min-width: 200px;
+		--_title-group-height: var(--semantics-controls-md-min-size);
+		--_title-font: var(--primitives-font-body-lg-medium-flat);
+		--_subtitle-font: var(--primitives-font-body-xs-regular-flat);
+
+		${inheritedTextReset}
+		display: inline-flex;
+		min-width: var(--_title-group-min-width);
+		height: var(--_title-group-height);
+		overflow: hidden;
+		flex-direction: column;
+		flex-shrink: 1;
+		justify-content: center;
+	}
+
+	:host([size="sm"]) {
+		--_title-group-height: var(--semantics-controls-sm-min-size);
+		--_title-font: var(--primitives-font-body-sm-medium-flat);
+		--_subtitle-font: var(--primitives-font-body-xxs-regular-flat);
+	}
+
+	:host([size="lg"]) {
+		--_title-group-height: var(--semantics-controls-lg-min-size);
+	}
+
+	:host([solo-fluid]) {
+		min-width: 0;
+		flex-grow: 1;
+		flex-shrink: 1;
+		flex-basis: 0;
+	}
+
+	:host([align="center"]) {
+		align-items: center;
+	}
+
+	:host([align="left"]) {
+		align-items: flex-start;
+	}
+
+	:host([hidden]) {
+		display: none;
+	}
+
+
+	/* # Elements */
+
+	/* text-align lives on the text elements, not :host: the inheritedTextReset on
+	   :host locks text-align to start, so a host-level override would need
+	   !important. The title/subtitle are shadow elements outside that reset. */
+	.toolbar__title {
+		margin: 0;
+		max-width: 100%;
+		overflow: hidden;
+		color: var(--semantics-content-color);
+		font: var(--_title-font);
+		text-overflow: ellipsis;
+		white-space: nowrap;
+	}
+
+	:host([align="center"]) .toolbar__title {
+		text-align: center;
+	}
+
+	:host([align="left"]) .toolbar__title {
+		text-align: left;
+	}
+
+	.toolbar__subtitle {
+		margin: 0;
+		max-width: 100%;
+		overflow: hidden;
+		color: var(--semantics-content-secondary-color);
+		font: var(--_subtitle-font);
+		text-overflow: ellipsis;
+		white-space: nowrap;
+	}
+
+	:host([align="center"]) .toolbar__subtitle {
+		text-align: center;
+	}
+
+	:host([align="left"]) .toolbar__subtitle {
+		text-align: left;
 	}
 `;
 
@@ -31,12 +177,6 @@ export const toolbarStyles = css`
 		--_center-width: 0px;
 		--_end-width: 0px;
 		--_overflow-button-width: 0px;
-		--_item-min-width: 0px;
-		--_item-width: auto;
-		--_title-group-min-width: 200px;
-		--_title-group-height: var(--semantics-controls-md-min-size);
-		--_title-font: var(--primitives-font-body-lg-medium-flat);
-		--_subtitle-font: var(--primitives-font-body-xs-regular-flat);
 
 		${inheritedTextReset}
 		box-sizing: border-box;
@@ -45,14 +185,10 @@ export const toolbarStyles = css`
 
 	:host([size="sm"]) {
 		--_gap: var(--components-toolbar-sm-gap);
-		--_title-group-height: var(--semantics-controls-sm-min-size);
-		--_title-font: var(--primitives-font-body-sm-medium-flat);
-		--_subtitle-font: var(--primitives-font-body-xxs-regular-flat);
 	}
 
 	:host([size="lg"]) {
 		--_gap: var(--components-toolbar-lg-gap);
-		--_title-group-height: var(--semantics-controls-lg-min-size);
 	}
 
 	:host([hidden]) {
@@ -131,57 +267,6 @@ export const toolbarStyles = css`
 	}
 
 
-	/* # Item */
-
-	.toolbar__item {
-		display: inline-flex;
-		flex-direction: column;
-		flex-grow: 0;
-		flex-shrink: 0;
-		align-items: center;
-	}
-
-	.toolbar__item.is-fluid {
-		min-width: var(--_item-min-width);
-		flex-shrink: 1;
-		flex-basis: var(--_item-width);
-	}
-
-	.toolbar__item.is-solo-fluid {
-		flex-grow: 1;
-		flex-shrink: 1;
-		flex-basis: 0;
-	}
-
-	.toolbar__item.is-hidden {
-		display: none;
-	}
-
-	.toolbar__item-content {
-		display: inline-flex;
-		width: 100%;
-		align-items: center;
-		justify-content: center;
-	}
-
-	.toolbar__item.is-fluid .toolbar__item-content ::slotted(*),
-	.toolbar__item.is-solo-fluid .toolbar__item-content ::slotted(*) {
-		width: 100%;
-	}
-
-	.toolbar__item-label {
-		display: none;
-		margin-top: var(--primitives-space-4);
-		color: var(--semantics-content-color);
-		font: var(--primitives-font-body-xs-regular-flat);
-		white-space: nowrap;
-	}
-
-	:host([show-item-labels]) .toolbar__item-label {
-		display: block;
-	}
-
-
 	/* # Overflow button */
 
 	.toolbar__overflow-button {
@@ -196,61 +281,15 @@ export const toolbarStyles = css`
 		display: none;
 	}
 
-	.toolbar__overflow-button .toolbar__item-label {
+	.toolbar__overflow-button-label {
 		display: none;
-	}
-
-	:host([show-item-labels]) .toolbar__overflow-button .toolbar__item-label {
-		display: block;
-	}
-
-
-	/* # Title group */
-
-	.toolbar__title-group {
-		display: inline-flex;
-		min-width: var(--_title-group-min-width);
-		height: var(--_title-group-height);
-		overflow: hidden;
-		flex-direction: column;
-		flex-shrink: 1;
-		justify-content: center;
-	}
-
-	.toolbar__title-group.is-solo-fluid {
-		min-width: 0;
-		flex-grow: 1;
-		flex-shrink: 1;
-		flex-basis: 0;
-	}
-
-	.toolbar__title-group--center-text-align {
-		align-items: center;
-		text-align: center;
-	}
-
-	.toolbar__title-group--left-text-align {
-		align-items: flex-start;
-		text-align: left;
-	}
-
-	.toolbar__title {
-		margin: 0;
-		max-width: 100%;
-		overflow: hidden;
+		margin-top: var(--primitives-space-4);
 		color: var(--semantics-content-color);
-		font: var(--_title-font);
-		text-overflow: ellipsis;
+		font: var(--primitives-font-body-xs-regular-flat);
 		white-space: nowrap;
 	}
 
-	.toolbar__subtitle {
-		margin: 0;
-		max-width: 100%;
-		overflow: hidden;
-		color: var(--semantics-content-secondary-color);
-		font: var(--_subtitle-font);
-		text-overflow: ellipsis;
-		white-space: nowrap;
+	:host([show-item-labels]) .toolbar__overflow-button-label {
+		display: block;
 	}
 `;

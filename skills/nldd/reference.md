@@ -195,6 +195,17 @@ A split button combines a primary action button with a dropdown trigger. The mai
 | _(default)_ | The control shown in the toolbar (e.g. nldd-icon-button) |
 | `overflow` | nldd-menu-item / nldd-menu-divider children, shown in the overflow menu when this item overflows |
 
+### `<nldd-toolbar-title>`
+
+**Attributes**
+
+| Attribuut | Type | Beschrijving |
+| --- | --- | --- |
+| `text` | `string` | Title text. |
+| `supporting-text` | `string` | Secondary supporting text shown below the title. |
+| `align` | `string` | Text alignment: 'left' \| 'center' (default: 'left'). |
+| `min-width` | `string` | Minimum width as a CSS length (e.g. '200px', default '200px'). |
+
 ## Content
 
 ### `<nldd-blockquote>`

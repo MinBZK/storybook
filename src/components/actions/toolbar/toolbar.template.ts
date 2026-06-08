@@ -1,100 +1,38 @@
 import { html, nothing } from 'lit';
-import { styleMap } from 'lit/directives/style-map.js';
+import type { NLDDToolbar, NLDDToolbarItem, NLDDToolbarTitle } from './toolbar.js';
 import type { NLDDToolbarTranslations } from './toolbar.i18n.js';
 import '../icon-button/icon-button.js';
 
 // # Item template
 
-export function toolbarItemTemplate() {
+export function toolbarItemTemplate(component: NLDDToolbarItem) {
 	return html`
-		<slot></slot>
+		<div class="toolbar__item-content">
+			<slot></slot>
+		</div>
+		${component.label ? html`<span class="toolbar__item-label">${component.label}</span>` : nothing}
 		<slot name="overflow"></slot>
+	`;
+}
+
+// # Title template
+
+export function toolbarTitleTemplate(component: NLDDToolbarTitle) {
+	return html`
+		${component.text ? html`<p class="toolbar__title">${component.text}</p>` : nothing}
+		${component.supportingText ? html`<p class="toolbar__subtitle">${component.supportingText}</p>` : nothing}
 	`;
 }
 
 // # Types
 export type ToolbarChild =
-	| { type: 'title'; title: string; supportingText: string; align: string; minWidth: string; id: number }
+	| { type: 'title'; element: Element; minWidth: string; id: number }
 	| { type: 'item'; element: Element; label: string; id: number; priority: number; overflowItems: Element[]; minWidth: string; width: string; isFluid: boolean }
 	| { type: 'other'; element: Element; id: number };
 
-// # Helpers
-function resolveWidth(width: string): string {
-	if (!width) return '';
-	if (width.endsWith('%')) {
-		const ratio = parseFloat(width) / 100;
-		return `calc(var(--_width) * ${ratio})`;
-	}
-	return width;
-}
-
-function renderChildren(
-	children: ToolbarChild[],
-	allChildren: ToolbarChild[],
-	overflowIds: Set<number>,
-	suppressSoloFluid = false,
-) {
-	return children.map((child) => {
-		if (child.type === 'title') {
-			const alignClass = child.align === 'center'
-				? 'toolbar__title-group--center-text-align'
-				: 'toolbar__title-group--left-text-align';
-			const visibleItems = allChildren.filter(c =>
-				!overflowIds.has(c.id) && (c.type === 'item' || c.type === 'title')
-			);
-			const solo = visibleItems.length === 1 && visibleItems[0].id === child.id;
-			return html`
-				<div
-					class="toolbar__title-group ${alignClass} ${solo ? 'is-solo-fluid' : ''}"
-					data-child-id=${child.id}
-					style=${styleMap({ '--_title-group-min-width': child.minWidth })}
-				>
-					${child.title ? html`<p class="toolbar__title">${child.title}</p>` : nothing}
-					${child.supportingText ? html`<p class="toolbar__subtitle">${child.supportingText}</p>` : nothing}
-				</div>
-			`;
-		}
-		if (child.type === 'item') {
-			const isOverflowed = overflowIds.has(child.id);
-			const visibleItems = allChildren.filter(c =>
-				!overflowIds.has(c.id) && (c.type === 'item' || c.type === 'title')
-			);
-			const soloFluid = !suppressSoloFluid && !isOverflowed && child.isFluid && visibleItems.length === 1 && visibleItems[0].id === child.id;
-			const cssVars: Record<string, string> = {};
-			if (!soloFluid && child.isFluid) {
-				if (child.minWidth) cssVars['--_item-min-width'] = child.minWidth;
-				if (child.width) cssVars['--_item-width'] = resolveWidth(child.width);
-			}
-			const classes = [
-				'toolbar__item',
-				soloFluid ? 'is-solo-fluid' : child.isFluid ? 'is-fluid' : '',
-				isOverflowed ? 'is-hidden' : '',
-			].filter(Boolean).join(' ');
-			return html`
-				<div
-					class=${classes}
-					data-child-id=${child.id}
-					aria-hidden=${isOverflowed ? 'true' : nothing}
-					style=${styleMap(cssVars)}
-				>
-					<div class="toolbar__item-content">
-						<slot name="child-${child.id}"></slot>
-					</div>
-					${child.label ? html`<span class="toolbar__item-label">${child.label}</span>` : nothing}
-				</div>
-			`;
-		}
-		return html`<slot name="child-${child.id}"></slot>`;
-	});
-}
-
 // # Template
 export function template(
-	startChildren: ToolbarChild[],
-	centerChildren: ToolbarChild[],
-	endChildren: ToolbarChild[],
-	overflowIds: Set<number>,
-	size: string,
+	component: NLDDToolbar,
 	hasCenterChildren: boolean,
 	leftSpacerZero: boolean,
 	rightSpacerZero: boolean,
@@ -105,8 +43,6 @@ export function template(
 	centerOnly: boolean,
 	t: (key: keyof NLDDToolbarTranslations) => string,
 ) {
-	const allChildren = [...startChildren, ...centerChildren, ...endChildren];
-
 	// Overflow button: aria-controls is intentionally omitted. ARIA IDREF
 	// attributes cannot cross shadow DOM boundaries, and the menu is
 	// reparented to document.body while this button lives in the toolbar's
@@ -122,31 +58,31 @@ export function template(
 			aria-label=${label || nothing}
 		>
 			<div class="toolbar__items">
-				${renderChildren(startChildren, allChildren, overflowIds)}
+				<slot name="start"></slot>
 				${hasCenterChildren ? html`
 					${centerOnly ? html`
 						<div class="toolbar__center-fill">
-							${renderChildren(centerChildren, allChildren, overflowIds, true)}
+							<slot name="center"></slot>
 						</div>
 					` : html`
 						${leftSpacerZero ? nothing : html`<div class="toolbar__left-spacer"></div>`}
-						${renderChildren(centerChildren, allChildren, overflowIds)}
+						<slot name="center"></slot>
 						${rightSpacerZero ? nothing : html`<div class="toolbar__right-spacer"></div>`}
 					`}
 				` : isSoloFluidItem ? nothing : html`
 					<div class="toolbar__flexible-spacer"></div>
 				`}
-				${renderChildren(endChildren, allChildren, overflowIds)}
+				<slot name="end"></slot>
 			</div>
 			<div class="toolbar__overflow-button ${hasOverflow ? '' : 'is-hidden'}">
-				<nldd-icon-button size=${size}
+				<nldd-icon-button size=${component.size}
 					icon="ellipsis"
 					text=${t('components.toolbar.overflow-action')}
 					tooltip-timing="never"
 					popup-type="menu"
 					?expanded=${menuOpen}
 				></nldd-icon-button>
-				<span class="toolbar__item-label">${t('components.toolbar.overflow-action')}</span>
+				<span class="toolbar__overflow-button-label">${t('components.toolbar.overflow-action')}</span>
 			</div>
 		</div>
 	`;
