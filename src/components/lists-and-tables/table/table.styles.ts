@@ -71,6 +71,13 @@ export const tableStyles = css`
 		padding: var(--primitives-space-16);
 	}
 
+	/* Empty state: collapse the column tracks to a single box-wide column so the
+	   message spans the surface instead of the (wider) data columns — otherwise
+	   the empty box scrolls horizontally. */
+	:host(.is-empty) {
+		grid-template-columns: minmax(0, 1fr);
+	}
+
 	:host(.is-empty) slot[name="header"] {
 		display: none;
 	}
