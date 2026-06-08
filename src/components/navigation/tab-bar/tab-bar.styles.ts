@@ -85,6 +85,8 @@ export const tabBarItemStyles = css`
 	/* # Host */
 
 	:host {
+		--_z-index-content: 1;
+
 		${inheritedTextReset}
 		display: inline-block;
 		position: relative;
@@ -209,7 +211,7 @@ export const tabBarItemStyles = css`
 	.tab-bar__item-icon {
 		display: flex;
 		position: relative;
-		z-index: 1;
+		z-index: var(--_z-index-content);
 		width: var(--semantics-buttons-md-icon-size);
 		height: var(--semantics-buttons-md-icon-size);
 		flex-shrink: 0;
@@ -244,7 +246,7 @@ export const tabBarItemStyles = css`
 
 	.tab-bar__item-text {
 		position: relative;
-		z-index: 1;
+		z-index: var(--_z-index-content);
 	}
 
 	:host([variant="icon-and-text"][size="lg"]) .tab-bar__item-text {

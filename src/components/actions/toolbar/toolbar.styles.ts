@@ -120,7 +120,7 @@ export const toolbarStyles = css`
 
 	.toolbar__overflow-button-label {
 		display: none;
-		margin-top: var(--primitives-space-4);
+		margin-top: var(--components-toolbar-label-margin-top);
 		color: var(--semantics-content-color);
 		font: var(--primitives-font-body-xs-regular-flat);
 		white-space: nowrap;
@@ -186,7 +186,7 @@ export const toolbarItemStyles = css`
 
 	.toolbar__item-label {
 		display: none;
-		margin-top: var(--primitives-space-4);
+		margin-top: var(--components-toolbar-label-margin-top);
 		color: var(--semantics-content-color);
 		font: var(--primitives-font-body-xs-regular-flat);
 		white-space: nowrap;
