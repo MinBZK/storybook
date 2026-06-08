@@ -34,7 +34,7 @@ de `.d.ts` bestanden van het pakket.
 | `popup-type` | `string` | Type of popup container this button opens: 'menu' \| 'listbox' \| 'dialog' \| 'tree' \| 'grid'. Sets aria-haspopup on the inner button and forces aria-expanded to always be present (true/false) so screen readers know the popup state. |
 | `width` | `string` | Width mode: 'full' (stretches to container) or any CSS length (e.g. '240px') |
 | `text` | `string` | Button text |
-| `supporting-text` | `string` | Supporting text shown below the text (md/lg) or after it (sm/xs), in a secondary color. Part of the accessible name. |
+| `supporting-text` | `string` | Supporting text shown below the text (md/lg) or after it (sm/xs), in a secondary color. Part of the accessible name (unless `accessible-label` is set, which replaces the whole accessible name). |
 | `single-line` | `boolean` | When true, truncates overflowing text with an ellipsis instead of letting it wrap. Requires the button (or an ancestor) to constrain the width. |
 | `no-highlight-border` | `boolean` | Removes the per-variant highlight border (e.g. when nldd-button-bar draws a single group border instead). |
 | `start-icon` | `string` | Icon name for the start icon (before text) |
@@ -102,6 +102,7 @@ A container for grouping related buttons together, either horizontally or vertic
 | `variant` | `string` | Button variant: 'accent-filled' \| 'accent-transparent' \| 'neutral-tinted' \| 'neutral-transparent' \| 'critical-tinted' \| 'critical-transparent' \| 'primary' \| 'secondary' \| 'destructive' |
 | `size` | `string` | Button size: 'xs' \| 'sm' \| 'md' \| 'lg' (default: 'md') |
 | `hide-lg-text` | `boolean` | In lg size, hides the text label and enlarges the icon by one step (28px) |
+| `no-highlight-border` | `boolean` | Removes the per-variant highlight border (e.g. when a control group draws a single border instead). |
 | `disabled` | `boolean` | Disabled state |
 | `type` | `string` | Button type for form submission: 'button' \| 'submit' \| 'reset' (ignored when href is set) |
 | `expandable` | `boolean` | Whether the button opens a menu or popover and shows chevron next to the icon |

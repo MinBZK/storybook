@@ -5,6 +5,7 @@
  * @attr {string}  variant           - Button variant: 'accent-filled' | 'accent-transparent' | 'neutral-tinted' | 'neutral-transparent' | 'critical-tinted' | 'critical-transparent' | 'primary' | 'secondary' | 'destructive'
  * @attr {string}  size              - Button size: 'xs' | 'sm' | 'md' | 'lg' (default: 'md')
  * @attr {boolean} hide-lg-text      - In lg size, hides the text label and enlarges the icon by one step (28px)
+ * @attr {boolean} no-highlight-border - Removes the per-variant highlight border (e.g. when a control group draws a single border instead).
  * @attr {boolean} disabled          - Disabled state
  * @attr {string}  type              - Button type for form submission: 'button' | 'submit' | 'reset' (ignored when href is set)
  * @attr {boolean} expandable        - Whether the button opens a menu or popover and shows chevron next to the icon
