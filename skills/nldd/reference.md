@@ -183,7 +183,7 @@ A split button combines a primary action button with a dropdown trigger. The mai
 
 | Attribuut | Type | Beschrijving |
 | --- | --- | --- |
-| `width` | `string` | Fluid width: a percentage of the toolbar width (e.g. '40%') or any CSS length (e.g. '240px'). Setting it (or min-width) makes the item fluid so it grows to fill the available space. |
+| `width` | `string` | Fluid width: a percentage (e.g. '40%') or any CSS length (e.g. '240px'). Setting it (or min-width) makes the item fluid so it grows to fill the available space. |
 | `min-width` | `string` | Minimum (fluid) width as a CSS length (e.g. '240px'). Setting it also makes the item fluid. |
 | `label` | `string` | Text label shown below the item when the toolbar has show-item-labels. |
 | `priority` | `number` | Overflow order: items with a lower priority move into the overflow menu first (default 0). |

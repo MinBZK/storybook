@@ -14,7 +14,7 @@
  * ---
  *
  * @element nldd-toolbar-item
- * @attr {string} width - Fluid width: a percentage of the toolbar width (e.g. '40%') or any CSS length (e.g. '240px'). Setting it (or min-width) makes the item fluid so it grows to fill the available space.
+ * @attr {string} width - Fluid width: a percentage (e.g. '40%') or any CSS length (e.g. '240px'). Setting it (or min-width) makes the item fluid so it grows to fill the available space.
  * @attr {string} min-width - Minimum (fluid) width as a CSS length (e.g. '240px'). Setting it also makes the item fluid.
  * @attr {string} label - Text label shown below the item when the toolbar has show-item-labels.
  * @attr {number} priority - Overflow order: items with a lower priority move into the overflow menu first (default 0).
@@ -48,7 +48,7 @@ type TitleAlign = 'left' | 'center';
 export class NLDDToolbarItem extends LitElement {
 	static override styles = toolbarItemStyles;
 
-	/** Fluid width: a percentage of the toolbar width (e.g. '40%') or any CSS length (e.g. '240px'). Setting it (or min-width) makes the item fluid so it grows to fill the available space. */
+	/** Fluid width: a percentage (e.g. '40%') or any CSS length (e.g. '240px'). Setting it (or min-width) makes the item fluid so it grows to fill the available space. */
 	@property({ type: String })
 	width = '';
 
@@ -361,7 +361,7 @@ export class NLDDToolbar extends LitElement {
 					host.style.removeProperty('--_item-min-width');
 				}
 				if (child.isFluid && child.width) {
-					host.style.setProperty('--_item-width', resolveWidth(child.width));
+					host.style.setProperty('--_item-width', child.width);
 				} else {
 					host.style.removeProperty('--_item-width');
 				}
@@ -708,16 +708,6 @@ export class NLDDToolbar extends LitElement {
 			(key) => this._t(key),
 		);
 	}
-}
-
-// # Helpers
-function resolveWidth(width: string): string {
-	if (!width) return '';
-	if (width.endsWith('%')) {
-		const ratio = parseFloat(width) / 100;
-		return `calc(var(--_width) * ${ratio})`;
-	}
-	return width;
 }
 
 declare global {
