@@ -875,27 +875,27 @@ export const WithPinnedAndDynamicOverflow = {
 export const MobieleActiebalk = {
 	name: 'Mobiele actiebalk (lg)',
 	render: () => resizable(html`
-		<div style="display: flex; gap: var(--primitives-space-16); align-items: center;">
-			<nldd-tab-bar size="lg" accessible-label="Hoofdnavigatie">
-				<nldd-tab-bar-item selected text="Home" icon="home"></nldd-tab-bar-item>
-				<nldd-tab-bar-item text="Profiel" icon="profile"></nldd-tab-bar-item>
-				<nldd-tab-bar-item text="Zoeken" icon="search"></nldd-tab-bar-item>
-			</nldd-tab-bar>
-			<nldd-toolbar size="lg" label="Acties">
-				<nldd-toolbar-item slot="end" label="Zoeken">
-					<nldd-icon-button text="Zoeken" icon="search"></nldd-icon-button>
-					<nldd-menu-item slot="overflow" text="Zoeken"></nldd-menu-item>
-				</nldd-toolbar-item>
-				<nldd-toolbar-item slot="end" label="Downloaden">
-					<nldd-icon-button text="Downloaden" icon="download"></nldd-icon-button>
-					<nldd-menu-item slot="overflow" text="Downloaden"></nldd-menu-item>
-				</nldd-toolbar-item>
-				<nldd-toolbar-item slot="end" label="Profiel">
-					<nldd-icon-button text="Profiel" icon="profile"></nldd-icon-button>
-					<nldd-menu-item slot="overflow" text="Profiel"></nldd-menu-item>
-				</nldd-toolbar-item>
-			</nldd-toolbar>
-		</div>
+		<nldd-toolbar size="lg" label="Acties">
+			<nldd-toolbar-item slot="start" priority="10">
+				<nldd-tab-bar accessible-label="Hoofdnavigatie">
+					<nldd-tab-bar-item selected text="Home" icon="home"></nldd-tab-bar-item>
+					<nldd-tab-bar-item text="Profiel" icon="profile"></nldd-tab-bar-item>
+					<nldd-tab-bar-item text="Zoeken" icon="search"></nldd-tab-bar-item>
+				</nldd-tab-bar>
+			</nldd-toolbar-item>
+			<nldd-toolbar-item slot="end" label="Zoeken">
+				<nldd-icon-button text="Zoeken" icon="search"></nldd-icon-button>
+				<nldd-menu-item slot="overflow" text="Zoeken"></nldd-menu-item>
+			</nldd-toolbar-item>
+			<nldd-toolbar-item slot="end" label="Downloaden">
+				<nldd-icon-button text="Downloaden" icon="download"></nldd-icon-button>
+				<nldd-menu-item slot="overflow" text="Downloaden"></nldd-menu-item>
+			</nldd-toolbar-item>
+			<nldd-toolbar-item slot="end" label="Profiel">
+				<nldd-icon-button text="Profiel" icon="profile"></nldd-icon-button>
+				<nldd-menu-item slot="overflow" text="Profiel"></nldd-menu-item>
+			</nldd-toolbar-item>
+		</nldd-toolbar>
 	`),
 	parameters: { controls: { disable: true } },
 };
