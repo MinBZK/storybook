@@ -1122,7 +1122,8 @@
 	--semantics-input-fields-is-invalid-icon-color: light-dark(var(--primitives-color-critical-550), var(--primitives-color-critical-650));
 	--semantics-input-fields-is-read-only-background-color: light-dark(var(--primitives-color-neutral-50), var(--primitives-color-neutral-150));
 	--semantics-input-fields-is-read-only-border-color: light-dark(var(--primitives-color-neutral-50), var(--primitives-color-neutral-150));
-	--semantics-input-fields-is-autofill-background-color: light-dark(var(--primitives-color-mark-50), var(--primitives-color-mark-150));
+	--semantics-input-fields-is-autofill-background-color: light-dark(var(--primitives-color-mark-50), var(--primitives-color-mark-950));
+	--semantics-input-fields-is-autofill-content-color: light-dark(var(--primitives-color-mark-800), var(--primitives-color-mark-200));
 
 	--semantics-input-fields-xs-text-font: var(--primitives-font-body-xs-regular-flat);
 	/* Font for the invisible native <select>: Safari derives the option popup size from this,

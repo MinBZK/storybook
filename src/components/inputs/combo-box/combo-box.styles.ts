@@ -106,7 +106,7 @@ export const comboBoxStyles = css`
 	.combo-box__input:-webkit-autofill:disabled,
 	.combo-box__input:autofill:disabled {
 		box-shadow: 0 0 0 999px var(--_background-color) inset;
-		-webkit-text-fill-color: var(--semantics-content-color);
+		-webkit-text-fill-color: var(--semantics-input-fields-is-autofill-content-color);
 	}
 
 	.combo-box__input-fade {
