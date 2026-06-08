@@ -196,7 +196,9 @@ export class NLDDButton extends LitElement {
 		const isEmpty = !this.text && !this.accessibleLabel;
 		if (import.meta.env?.DEV && isEmpty && !this._warnedA11y) {
 			this._warnedA11y = true;
-			console.warn('<nldd-button>: button has no text or accessible-label. This produces an inaccessible button (WCAG SC 4.1.2).');
+			console.warn(this.supportingText
+				? '<nldd-button>: supporting-text is set but text is empty, so the accessible name omits the main label. Set the text attribute (or accessible-label) so screen readers announce it.'
+				: '<nldd-button>: button has no text or accessible-label. This produces an inaccessible button (WCAG SC 4.1.2).');
 		} else if (!isEmpty) {
 			this._warnedA11y = false;
 		}
