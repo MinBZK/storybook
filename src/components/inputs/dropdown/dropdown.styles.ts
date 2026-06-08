@@ -65,9 +65,6 @@ export const dropdownStyles = css`
 		--_is-hovered-content-color: var(--semantics-buttons-neutral-tinted-is-expanded-is-hovered-primary-content-color);
 		--_is-active-background-color: var(--semantics-buttons-neutral-tinted-is-expanded-is-active-background-color);
 		--_is-active-content-color: var(--semantics-buttons-neutral-tinted-is-expanded-is-active-primary-content-color);
-	}
-
-	:host([expanded]) {
 		--_highlight-border-color: var(--_is-expanded-highlight-border-color);
 	}
 
