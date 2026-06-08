@@ -2043,3 +2043,36 @@ describe('nldd-menu touch-scroll press suppression', () => {
 		});
 	});
 });
+
+describe('nldd-menu _menuItemFromPoint', () => {
+	let el: HTMLElement;
+	const fromPoint = (m: HTMLElement, x: number, y: number) =>
+		(m as unknown as { _menuItemFromPoint(x: number, y: number): Element | null })._menuItemFromPoint(x, y);
+
+	afterEach(() => {
+		if (el) cleanup(el);
+		vi.restoreAllMocks();
+	});
+
+	it('resolves the menu-item under the pointer', async () => {
+		el = await fixture('<nldd-menu><nldd-menu-item text="A"></nldd-menu-item></nldd-menu>');
+		await waitForUpdate(el);
+		const item = el.querySelector('nldd-menu-item')!;
+		vi.spyOn(document, 'elementFromPoint').mockReturnValue(item);
+		expect(fromPoint(el, 5, 5)).toBe(item);
+	});
+
+	it('returns null when nothing is at the point', async () => {
+		el = await fixture('<nldd-menu></nldd-menu>');
+		await waitForUpdate(el);
+		vi.spyOn(document, 'elementFromPoint').mockReturnValue(null);
+		expect(fromPoint(el, 0, 0)).toBeNull();
+	});
+
+	it('returns null when the element is not a menu-item and has no shadow root', async () => {
+		el = await fixture('<nldd-menu></nldd-menu>');
+		await waitForUpdate(el);
+		vi.spyOn(document, 'elementFromPoint').mockReturnValue(document.createElement('div'));
+		expect(fromPoint(el, 0, 0)).toBeNull();
+	});
+});
