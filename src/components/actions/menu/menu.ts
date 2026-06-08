@@ -1463,7 +1463,9 @@ export class NLDDMenu extends LitElement {
 	 */
 	private _menuItemFromPoint(x: number, y: number): NLDDMenuItem | null {
 		let root: Document | ShadowRoot = document;
-		for (;;) {
+		// Depth guard: a backstop against pathologically deep shadow nesting;
+		// real menus are at most a few roots deep.
+		for (let depth = 0; depth < 20; depth++) {
 			const el: Element | null = root.elementFromPoint(x, y);
 			if (!el) return null;
 			const item = el.closest('nldd-menu-item') as NLDDMenuItem | null;
@@ -1471,6 +1473,7 @@ export class NLDDMenu extends LitElement {
 			if (!el.shadowRoot) return null;
 			root = el.shadowRoot;
 		}
+		return null;
 	}
 
 	private _handleDocumentPointerdown = (event: PointerEvent): void => {
