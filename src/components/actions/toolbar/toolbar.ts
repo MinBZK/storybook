@@ -562,14 +562,7 @@ export class NLDDToolbar extends LitElement {
 		const prioritized = this._getPrioritizedItems();
 		const newOverflowIds = new Set<number>();
 
-		// Same-priority items overflow as one group: prioritized is sorted by
-		// priority, so collect runs of equal priority and hide them together.
-		const priorityGroups: Extract<ToolbarChild, { type: 'item' }>[][] = [];
-		for (const child of prioritized) {
-			const last = priorityGroups[priorityGroups.length - 1];
-			if (last && last[0].priority === child.priority) last.push(child);
-			else priorityGroups.push([child]);
-		}
+		const priorityGroups = groupForOverflow(prioritized);
 
 		for (const group of priorityGroups) {
 			if (!isOverflowing()) break;
@@ -661,6 +654,7 @@ export class NLDDToolbar extends LitElement {
 					const id = this._getId(el);
 					const label = el.getAttribute('label') ?? '';
 					const priority = parseInt(el.getAttribute('priority') ?? '0', 10);
+					const hasPriority = el.hasAttribute('priority');
 					const minWidth = el.getAttribute('min-width') ?? '';
 					const maxWidth = el.getAttribute('max-width') ?? '';
 					const width = el.getAttribute('width') ?? '';
@@ -672,7 +666,7 @@ export class NLDDToolbar extends LitElement {
 					});
 					overflowItems.forEach(child => child.setAttribute('slot', 'overflow'));
 
-					return { type: 'item', element: el, label, id, priority, overflowItems, minWidth, maxWidth, width, isFluid } as ToolbarChild;
+					return { type: 'item', element: el, label, id, priority, hasPriority, overflowItems, minWidth, maxWidth, width, isFluid } as ToolbarChild;
 				}
 
 				const id = this._getId(el);
@@ -730,6 +724,25 @@ export class NLDDToolbar extends LitElement {
 			(key) => this._t(key),
 		);
 	}
+}
+
+// # Helpers
+
+/**
+ * Groups prioritized items for overflow. Items with an explicit priority that
+ * share a value form one group (they overflow together); items without a
+ * priority attribute each form their own group (they overflow individually).
+ */
+export function groupForOverflow(
+	items: Extract<ToolbarChild, { type: 'item' }>[],
+): Extract<ToolbarChild, { type: 'item' }>[][] {
+	const groups: Extract<ToolbarChild, { type: 'item' }>[][] = [];
+	for (const child of items) {
+		const last = groups[groups.length - 1];
+		if (last && child.hasPriority && last[0].hasPriority && last[0].priority === child.priority) last.push(child);
+		else groups.push([child]);
+	}
+	return groups;
 }
 
 declare global {

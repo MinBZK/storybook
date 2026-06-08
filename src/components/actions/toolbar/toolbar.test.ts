@@ -1,6 +1,6 @@
 import { describe, it, expect, afterEach, vi } from 'vitest';
 import { fixture, cleanup, waitForUpdate } from '../../../test-utils.js';
-import './toolbar.js';
+import { groupForOverflow } from './toolbar.js';
 
 describe('nldd-toolbar', () => {
 	let el: HTMLElement;
@@ -458,5 +458,17 @@ describe('nldd-toolbar', () => {
 			expect(hiddenCount === 0 || hiddenCount === group.length).toBe(true);
 		}
 		expect(items.some(i => i.hidden)).toBe(true);
+	});
+
+	it('groups only explicit priorities for overflow (no priority attribute = individual)', () => {
+		const item = (id: number, priority: number, hasPriority: boolean) =>
+			({ type: 'item', id, priority, hasPriority }) as unknown as Parameters<typeof groupForOverflow>[0][number];
+		const ids = (groups: ReturnType<typeof groupForOverflow>) => groups.map(g => g.map(c => c.id));
+		// No priority attribute → each item is its own group (overflows individually).
+		expect(ids(groupForOverflow([item(1, 0, false), item(2, 0, false)]))).toEqual([[1], [2]]);
+		// Shared explicit priority → one group; a different priority → its own group.
+		expect(ids(groupForOverflow([item(1, 1, true), item(2, 1, true), item(3, 2, true)]))).toEqual([[1, 2], [3]]);
+		// Explicit and default-0 are never merged.
+		expect(ids(groupForOverflow([item(1, 0, false), item(2, 1, true), item(3, 1, true)]))).toEqual([[1], [2, 3]]);
 	});
 });

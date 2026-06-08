@@ -27,7 +27,7 @@ export function toolbarTitleTemplate(component: NLDDToolbarTitle) {
 // # Types
 export type ToolbarChild =
 	| { type: 'title'; element: Element; minWidth: string; id: number }
-	| { type: 'item'; element: Element; label: string; id: number; priority: number; overflowItems: Element[]; minWidth: string; maxWidth: string; width: string; isFluid: boolean }
+	| { type: 'item'; element: Element; label: string; id: number; priority: number; hasPriority: boolean; overflowItems: Element[]; minWidth: string; maxWidth: string; width: string; isFluid: boolean }
 	| { type: 'other'; element: Element; id: number };
 
 // # Template
