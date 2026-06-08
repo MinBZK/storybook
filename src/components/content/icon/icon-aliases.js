@@ -410,4 +410,7 @@ export const aliases = {
 
 	// table-cells
 	'table': 'table-cells',
+
+	// square-and-arrow-down
+	'save': 'square-and-arrow-down',
 };
