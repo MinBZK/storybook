@@ -57,10 +57,12 @@ export const Default = {
 				<nldd-menu-item
 					slot="overflow"
 					text="Vorige"
+					icon="chevron-left"
 				></nldd-menu-item>
 				<nldd-menu-item
 					slot="overflow"
 					text="Volgende"
+					icon="chevron-right"
 				></nldd-menu-item>
 			</nldd-toolbar-item>
 			<nldd-toolbar-item
@@ -71,6 +73,7 @@ export const Default = {
 				<nldd-menu-item
 					slot="overflow"
 					text="Sla op"
+					icon="save"
 				></nldd-menu-item>
 			</nldd-toolbar-item>
 		</nldd-toolbar>
@@ -93,6 +96,7 @@ export const WithTitleGroup = {
 					<nldd-menu-item
 						slot="overflow"
 						text="Terug"
+						icon="chevron-left"
 					></nldd-menu-item>
 				</nldd-toolbar-item>
 				<nldd-toolbar-title
@@ -118,6 +122,7 @@ export const WithTitleGroup = {
 					<nldd-menu-item
 						slot="overflow"
 						text="Sla op"
+						icon="save"
 					></nldd-menu-item>
 				</nldd-toolbar-item>
 			</nldd-toolbar>
@@ -133,6 +138,7 @@ export const WithTitleGroup = {
 					<nldd-menu-item
 						slot="overflow"
 						text="Terug"
+						icon="chevron-left"
 					></nldd-menu-item>
 				</nldd-toolbar-item>
 				<nldd-toolbar-title
@@ -149,6 +155,7 @@ export const WithTitleGroup = {
 					<nldd-menu-item
 						slot="overflow"
 						text="Sla op"
+						icon="save"
 					></nldd-menu-item>
 				</nldd-toolbar-item>
 			</nldd-toolbar>
@@ -171,6 +178,7 @@ export const Sizes = {
 							<nldd-menu-item
 								slot="overflow"
 								text="Bewerken"
+								icon="edit"
 							></nldd-menu-item>
 						</nldd-toolbar-item>
 						<nldd-toolbar-item
@@ -181,6 +189,7 @@ export const Sizes = {
 							<nldd-menu-item
 								slot="overflow"
 								text="Dupliceer"
+								icon="duplicate"
 							></nldd-menu-item>
 						</nldd-toolbar-item>
 						<nldd-toolbar-item
@@ -191,6 +200,7 @@ export const Sizes = {
 							<nldd-menu-item
 								slot="overflow"
 								text="Sla op"
+								icon="save"
 							></nldd-menu-item>
 						</nldd-toolbar-item>
 					</nldd-toolbar>
@@ -208,6 +218,7 @@ export const Sizes = {
 							<nldd-menu-item
 								slot="overflow"
 								text="Bewerken"
+								icon="edit"
 							></nldd-menu-item>
 						</nldd-toolbar-item>
 						<nldd-toolbar-item
@@ -218,6 +229,7 @@ export const Sizes = {
 							<nldd-menu-item
 								slot="overflow"
 								text="Dupliceer"
+								icon="duplicate"
 							></nldd-menu-item>
 						</nldd-toolbar-item>
 						<nldd-toolbar-item
@@ -228,6 +240,7 @@ export const Sizes = {
 							<nldd-menu-item
 								slot="overflow"
 								text="Sla op"
+								icon="save"
 							></nldd-menu-item>
 						</nldd-toolbar-item>
 					</nldd-toolbar>
@@ -406,6 +419,7 @@ export const WithOverflow = {
 				<nldd-menu-item
 					slot="overflow"
 					text="Sla op"
+					icon="save"
 				></nldd-menu-item>
 			</nldd-toolbar-item>
 		</nldd-toolbar>
@@ -505,6 +519,7 @@ export const WithPriority = {
 				<nldd-menu-item
 					slot="overflow"
 					text="Sla op"
+					icon="save"
 				></nldd-menu-item>
 			</nldd-toolbar-item>
 		</nldd-toolbar>
@@ -523,6 +538,7 @@ export const WithFluidItem = {
 				<nldd-menu-item
 					slot="overflow"
 					text="Terug"
+					icon="chevron-left"
 				></nldd-menu-item>
 			</nldd-toolbar-item>
 			<nldd-toolbar-item
@@ -536,6 +552,7 @@ export const WithFluidItem = {
 				<nldd-menu-item
 					slot="overflow"
 					text="Zoeken"
+					icon="search"
 				></nldd-menu-item>
 			</nldd-toolbar-item>
 			<nldd-toolbar-item
@@ -557,6 +574,7 @@ export const WithFluidItem = {
 				<nldd-menu-item
 					slot="overflow"
 					text="Sla op"
+					icon="save"
 				></nldd-menu-item>
 			</nldd-toolbar-item>
 		</nldd-toolbar>
@@ -599,16 +617,19 @@ export const WithPinnedOverflow = {
 				<nldd-menu-item
 					slot="overflow"
 					text="Sla op"
+					icon="save"
 				></nldd-menu-item>
 			</nldd-toolbar-item>
 			<nldd-menu-divider slot="overflow"></nldd-menu-divider>
 			<nldd-menu-item
 				slot="overflow"
 				text="Instellingen"
+				icon="gear"
 			></nldd-menu-item>
 			<nldd-menu-item
 				slot="overflow"
 				text="Help"
+				icon="help"
 			></nldd-menu-item>
 		</nldd-toolbar>
 	`),
@@ -622,6 +643,11 @@ export const WithPinnedOverflowOnly = {
 				label="Terug"
 			>
 				<nldd-icon-button text="Terug" icon="chevron-left"></nldd-icon-button>
+				<nldd-menu-item
+					slot="overflow"
+					text="Terug"
+					icon="chevron-left"
+				></nldd-menu-item>
 			</nldd-toolbar-item>
 			<nldd-toolbar-title
 				slot="start"
@@ -638,15 +664,18 @@ export const WithPinnedOverflowOnly = {
 			<nldd-menu-item
 				slot="overflow"
 				text="Exporteren"
+				icon="export"
 			></nldd-menu-item>
 			<nldd-menu-item
 				slot="overflow"
 				text="Delen"
+				icon="send"
 			></nldd-menu-item>
 			<nldd-menu-divider slot="overflow"></nldd-menu-divider>
 			<nldd-menu-item
 				slot="overflow"
 				text="Verwijder"
+				icon="delete"
 			></nldd-menu-item>
 		</nldd-toolbar>
 	`),
@@ -728,21 +757,25 @@ export const WithPinnedAndDynamicOverflow = {
 				<nldd-menu-item
 					slot="overflow"
 					text="Sla op"
+					icon="save"
 				></nldd-menu-item>
 			</nldd-toolbar-item>
 			<nldd-menu-divider slot="overflow"></nldd-menu-divider>
 			<nldd-menu-item
 				slot="overflow"
 				text="Exporteren"
+				icon="export"
 			></nldd-menu-item>
 			<nldd-menu-item
 				slot="overflow"
 				text="Instellingen"
+				icon="gear"
 			></nldd-menu-item>
 			<nldd-menu-divider slot="overflow"></nldd-menu-divider>
 			<nldd-menu-item
 				slot="overflow"
 				text="Verwijder"
+				icon="delete"
 			></nldd-menu-item>
 		</nldd-toolbar>
 	`),
