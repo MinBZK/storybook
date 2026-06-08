@@ -205,7 +205,9 @@ A split button combines a primary action button with a dropdown trigger. The mai
 | `text` | `string` | Title text. |
 | `supporting-text` | `string` | Secondary supporting text shown below the title. |
 | `align` | `string` | Text alignment: 'left' \| 'center' (default: 'left'). |
+| `width` | `string` | Preferred (fluid) width as a CSS length or percentage; the title grows toward it and shrinks to min-width. |
 | `min-width` | `string` | Minimum width as a CSS length (e.g. '200px', default '200px'). |
+| `max-width` | `string` | Maximum width as a CSS length (e.g. '480px'). |
 
 ## Content
 

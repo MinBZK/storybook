@@ -211,6 +211,8 @@ export const toolbarTitleStyles = css`
 
 	:host {
 		--_title-group-min-width: 200px;
+		--_title-width: auto;
+		--_title-max-width: none;
 		--_title-group-height: var(--semantics-controls-md-min-size);
 		--_title-font: var(--primitives-font-body-lg-medium-flat);
 		--_subtitle-font: var(--primitives-font-body-xs-regular-flat);
@@ -218,10 +220,12 @@ export const toolbarTitleStyles = css`
 		${inheritedTextReset}
 		display: inline-flex;
 		min-width: var(--_title-group-min-width);
+		max-width: var(--_title-max-width);
 		height: var(--_title-group-height);
 		overflow: hidden;
 		flex-direction: column;
 		flex-shrink: 1;
+		flex-basis: var(--_title-width);
 		justify-content: center;
 	}
 

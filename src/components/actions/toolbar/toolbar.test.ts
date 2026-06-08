@@ -183,6 +183,18 @@ describe('nldd-toolbar', () => {
 		expect(title.style.getPropertyValue('--_title-group-min-width')).toBe('300px');
 	});
 
+	it('maps title width and max-width to custom properties', async () => {
+		el = await fixture(`
+			<nldd-toolbar>
+				<nldd-toolbar-title slot="center" text="Titel" width="40%" max-width="480px"></nldd-toolbar-title>
+			</nldd-toolbar>
+		`);
+		await waitForUpdate(el);
+		const title = el.querySelector('nldd-toolbar-title')!;
+		expect(title.style.getPropertyValue('--_title-width')).toBe('40%');
+		expect(title.style.getPropertyValue('--_title-max-width')).toBe('480px');
+	});
+
 	// ## Overflow items
 
 	it('separates overflow items from toolbar-item children', async () => {

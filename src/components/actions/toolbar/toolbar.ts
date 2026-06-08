@@ -29,7 +29,9 @@
  * @attr {string} text - Title text.
  * @attr {string} supporting-text - Secondary supporting text shown below the title.
  * @attr {string} align - Text alignment: 'left' | 'center' (default: 'left').
+ * @attr {string} width - Preferred (fluid) width as a CSS length or percentage; the title grows toward it and shrinks to min-width.
  * @attr {string} min-width - Minimum width as a CSS length (e.g. '200px', default '200px').
+ * @attr {string} max-width - Maximum width as a CSS length (e.g. '480px').
  */
 import { LitElement } from 'lit';
 import { customElement, property, state } from 'lit/decorators.js';
@@ -99,8 +101,14 @@ export class NLDDToolbarTitle extends LitElement {
 	@property({ type: String, reflect: true })
 	align: TitleAlign = 'left';
 
+	@property({ type: String })
+	width = '';
+
 	@property({ type: String, attribute: 'min-width' })
 	minWidth = '';
+
+	@property({ type: String, attribute: 'max-width' })
+	maxWidth = '';
 
 	/** Set by nldd-toolbar; not part of the public API. */
 	@property({ type: String, reflect: true })
@@ -111,12 +119,16 @@ export class NLDDToolbarTitle extends LitElement {
 	// reactive property for the same reflection-timing reason as the item.
 
 	override updated(changedProperties: Map<string, unknown>): void {
-		if (changedProperties.has('minWidth')) {
-			if (this.minWidth) {
-				this.style.setProperty('--_title-group-min-width', this.minWidth);
-			} else {
-				this.style.removeProperty('--_title-group-min-width');
-			}
+		if (changedProperties.has('minWidth')) this._reflectSizeVar('--_title-group-min-width', this.minWidth);
+		if (changedProperties.has('width')) this._reflectSizeVar('--_title-width', this.width);
+		if (changedProperties.has('maxWidth')) this._reflectSizeVar('--_title-max-width', this.maxWidth);
+	}
+
+	private _reflectSizeVar(prop: string, value: string): void {
+		if (value) {
+			this.style.setProperty(prop, value);
+		} else {
+			this.style.removeProperty(prop);
 		}
 	}
 
