@@ -49,31 +49,26 @@ type TitleAlign = 'left' | 'center';
 export class NLDDToolbarItem extends LitElement {
 	static override styles = toolbarItemStyles;
 
-	/** Fluid width: a percentage (e.g. '40%') or any CSS length (e.g. '240px'). Setting it (or min-width or max-width) makes the item fluid so it grows to fill the available space. */
 	@property({ type: String })
 	width = '';
 
-	/** Minimum (fluid) width as a CSS length (e.g. '240px'). Setting it also makes the item fluid. */
 	@property({ type: String, attribute: 'min-width' })
 	minWidth = '';
 
-	/** Maximum (fluid) width as a CSS length (e.g. '480px'). Setting it also makes the item fluid. */
 	@property({ type: String, attribute: 'max-width' })
 	maxWidth = '';
 
-	/** Text label shown below the item when the toolbar has show-item-labels. */
 	@property({ type: String })
 	label = '';
 
-	/** Overflow order: items with a lower priority move into the overflow menu first. */
 	@property({ type: Number })
 	priority = 0;
 
-	/** Control size: 'sm' | 'md' | 'lg'. Set by nldd-toolbar. Not part of the public API. */
+	/** Set by nldd-toolbar; not part of the public API. */
 	@property({ type: String, reflect: true })
 	size: Size = 'md';
 
-	/** Set by nldd-toolbar. Not part of the public API. */
+	/** Set by nldd-toolbar; not part of the public API. */
 	@property({ type: Boolean, reflect: true, attribute: 'show-item-labels' })
 	showItemLabels = false;
 
@@ -95,23 +90,19 @@ export class NLDDToolbarItem extends LitElement {
 export class NLDDToolbarTitle extends LitElement {
 	static override styles = toolbarTitleStyles;
 
-	/** Title text. */
 	@property({ type: String })
 	text = '';
 
-	/** Secondary supporting text shown below the title. */
 	@property({ type: String, attribute: 'supporting-text' })
 	supportingText = '';
 
-	/** Text alignment: 'left' | 'center'. */
 	@property({ type: String, reflect: true })
 	align: TitleAlign = 'left';
 
-	/** Minimum width as a CSS length (e.g. '200px'). */
 	@property({ type: String, attribute: 'min-width' })
 	minWidth = '';
 
-	/** Control size: 'sm' | 'md' | 'lg'. Set by nldd-toolbar. Not part of the public API. */
+	/** Set by nldd-toolbar; not part of the public API. */
 	@property({ type: String, reflect: true })
 	size: Size = 'md';
 
@@ -141,19 +132,12 @@ export class NLDDToolbarTitle extends LitElement {
 export class NLDDToolbar extends LitElement {
 	static override styles = toolbarStyles;
 
-	/** Controls the size of toolbar items. Propagated automatically to all child controls. */
 	@property({ type: String, reflect: true })
 	size: Size = 'md';
 
-	/** When true, shows a text label below each toolbar item and the overflow button. */
 	@property({ type: Boolean, reflect: true, attribute: 'show-item-labels' })
 	showItemLabels = false;
 
-	/**
-	 * Accessible label for the toolbar, exposed as `aria-label` on the `role="toolbar"` container.
-	 * Only needed when multiple toolbars appear on the same page so screen readers can distinguish them.
-	 * @example `<nldd-toolbar label="Formatting">`
-	 */
 	@property({ type: String, reflect: true })
 	label = '';
 
