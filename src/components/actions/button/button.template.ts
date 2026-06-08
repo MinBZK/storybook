@@ -49,6 +49,14 @@ export function template(this: NLDDButton, helpers: TemplateHelpers) {
 	const isDisclosure = this.expandable || !!this.popupType;
 	const ariaExpanded = isDisclosure ? String(this.expanded) : (this.expanded ? 'true' : nothing);
 
+	// `supporting-text` renders in a sibling span next to the text; the
+	// accessible-name flat-string algorithm concatenates them without a
+	// separator ("OpslaanAlle wijzigingen"). With no explicit accessible-label,
+	// build one with a space so screen readers announce the two apart. (Slotted
+	// text can't be read here — those consumers should set accessible-label.)
+	const ariaLabel = this.accessibleLabel
+		|| (this.text && this.supportingText ? `${this.text} ${this.supportingText}` : nothing);
+
 	// Loading: an activity indicator overlays the (opacity-hidden) content. It
 	// sits OUTSIDE the <button>/<a> (a sibling, overlaid via the host's
 	// position:relative) so its role="status" live region can announce "Laden"
@@ -75,7 +83,7 @@ export function template(this: NLDDButton, helpers: TemplateHelpers) {
 				target=${this.target || nothing}
 				rel=${resolvedRel || nothing}
 				aria-disabled=${this.disabled ? 'true' : nothing}
-				aria-label=${this.accessibleLabel || nothing}
+				aria-label=${ariaLabel}
 				aria-haspopup=${this.popupType || nothing}
 				aria-expanded=${ariaExpanded}
 				aria-busy=${ariaBusy}
@@ -97,7 +105,7 @@ export function template(this: NLDDButton, helpers: TemplateHelpers) {
 			type=${this.type}
 			?disabled=${this.disabled}
 			aria-disabled=${this.disabled ? 'true' : nothing}
-			aria-label=${this.accessibleLabel || nothing}
+			aria-label=${ariaLabel}
 			aria-haspopup=${this.popupType || nothing}
 			aria-expanded=${ariaExpanded}
 			aria-busy=${ariaBusy}

@@ -137,7 +137,7 @@ export class NLDDButton extends LitElement {
 	text = '';
 
 	/** Supporting text: below the text (md/lg) or after it (sm/xs), in a secondary color. Part of the accessible name (unless `accessible-label` is set, which replaces the whole accessible name). */
-	@property({ type: String, attribute: 'supporting-text' })
+	@property({ type: String, reflect: true, attribute: 'supporting-text' })
 	supportingText = '';
 
 	@property({ type: Boolean, reflect: true, attribute: 'single-line' })

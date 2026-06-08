@@ -629,4 +629,16 @@ describe('nldd-button – loading', () => {
 		await waitForUpdate(el);
 		expect(el.shadowRoot!.querySelector('button')!.hasAttribute('disabled')).toBe(false);
 	});
+
+	it('joins text and supporting-text in the accessible name with a space', async () => {
+		el = await fixture<NLDDButton>('<nldd-button text="Opslaan" supporting-text="Alle wijzigingen"></nldd-button>');
+		await waitForUpdate(el);
+		expect(el.shadowRoot!.querySelector('button')!.getAttribute('aria-label')).toBe('Opslaan Alle wijzigingen');
+	});
+
+	it('lets accessible-label override the supporting-text-derived name', async () => {
+		el = await fixture<NLDDButton>('<nldd-button text="Opslaan" supporting-text="Alle wijzigingen" accessible-label="Bewaar"></nldd-button>');
+		await waitForUpdate(el);
+		expect(el.shadowRoot!.querySelector('button')!.getAttribute('aria-label')).toBe('Bewaar');
+	});
 });
