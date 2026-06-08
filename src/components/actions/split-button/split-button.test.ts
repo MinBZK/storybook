@@ -82,6 +82,11 @@ describe('nldd-split-button', () => {
 		el.appendChild(menu);
 		await waitForUpdate(el);
 
+		// The wired menu and its item stay in the split-button's light DOM
+		// (the architecture pierces shadow boundaries instead of moving nodes).
+		expect(el.querySelector('nldd-menu nldd-menu-item')).not.toBeNull();
+		expect(el.shadowRoot!.querySelector('nldd-menu')).toBeNull();
+
 		let menuClickFired = false;
 		el.addEventListener('menu-click', () => { menuClickFired = true; });
 		const trigger = el.shadowRoot!.querySelector<HTMLElement>('.split-button__popup-button nldd-icon-button')!;
