@@ -58,7 +58,7 @@ export const imageStyles = css`
 	   overrides to 0; circle overrides to 50% for avatar-style use (combine with
 	   aspect-ratio 1/1 for a true circle). */
 
-	:host([shape="square"]) { --_corner-radius: 0; }
+	:host([shape="square"]) { --_corner-radius: var(--primitives-corner-radius-none); }
 	:host([shape="circle"]) { --_corner-radius: 50%; }
 
 
