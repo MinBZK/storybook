@@ -66,11 +66,11 @@ export class NLDDToolbarItem extends LitElement {
 	@property({ type: Number })
 	priority = 0;
 
-	/** Set by nldd-toolbar; not part of the public API. */
+	/** Set by nldd-toolbar; not part of the public API. @internal */
 	@property({ type: String, reflect: true })
 	size: Size = 'md';
 
-	/** Set by nldd-toolbar; not part of the public API. */
+	/** Set by nldd-toolbar; not part of the public API. @internal */
 	@property({ type: Boolean, reflect: true, attribute: 'show-item-labels' })
 	showItemLabels = false;
 
@@ -110,7 +110,7 @@ export class NLDDToolbarTitle extends LitElement {
 	@property({ type: String, attribute: 'max-width' })
 	maxWidth = '';
 
-	/** Set by nldd-toolbar; not part of the public API. */
+	/** Set by nldd-toolbar; not part of the public API. @internal */
 	@property({ type: String, reflect: true })
 	size: Size = 'md';
 
@@ -732,6 +732,8 @@ export class NLDDToolbar extends LitElement {
  * Groups prioritized items for overflow. Items with an explicit priority that
  * share a value form one group (they overflow together); items without a
  * priority attribute each form their own group (they overflow individually).
+ *
+ * @internal Exported for unit tests only; not part of the public API.
  */
 export function groupForOverflow(
 	items: Extract<ToolbarChild, { type: 'item' }>[],
