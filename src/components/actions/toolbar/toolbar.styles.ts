@@ -156,6 +156,7 @@ export const toolbarItemStyles = css`
 	}
 
 	:host([solo-fluid]) {
+		min-width: 0;
 		flex-grow: 1;
 		flex-shrink: 1;
 		flex-basis: 0;
