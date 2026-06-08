@@ -434,4 +434,29 @@ describe('nldd-toolbar', () => {
 		expect(overflow.length).toBe(1);
 		expect(overflow[0].tagName.toLowerCase()).toBe('nldd-menu-group');
 	});
+
+	it('overflows same-priority items together (whole groups)', async () => {
+		el = await fixture(`
+			<nldd-toolbar style="display:block;width:120px" label="T">
+				<nldd-toolbar-item slot="start" priority="1"><div style="width:50px;height:24px"></div><nldd-menu-item slot="overflow" text="A"></nldd-menu-item></nldd-toolbar-item>
+				<nldd-toolbar-item slot="start" priority="1"><div style="width:50px;height:24px"></div><nldd-menu-item slot="overflow" text="B"></nldd-menu-item></nldd-toolbar-item>
+				<nldd-toolbar-item slot="start" priority="2"><div style="width:50px;height:24px"></div><nldd-menu-item slot="overflow" text="C"></nldd-menu-item></nldd-toolbar-item>
+				<nldd-toolbar-item slot="start" priority="2"><div style="width:50px;height:24px"></div><nldd-menu-item slot="overflow" text="D"></nldd-menu-item></nldd-toolbar-item>
+			</nldd-toolbar>
+		`);
+		await waitForUpdate(el);
+		(el as unknown as { _measureAndUpdate(): void })._measureAndUpdate();
+		const items = [...el.querySelectorAll('nldd-toolbar-item')] as HTMLElement[];
+		const byPriority: Record<string, HTMLElement[]> = {};
+		for (const item of items) {
+			const p = item.getAttribute('priority')!;
+			if (!byPriority[p]) byPriority[p] = [];
+			byPriority[p].push(item);
+		}
+		for (const group of Object.values(byPriority)) {
+			const hiddenCount = group.filter(i => i.hidden).length;
+			expect(hiddenCount === 0 || hiddenCount === group.length).toBe(true);
+		}
+		expect(items.some(i => i.hidden)).toBe(true);
+	});
 });

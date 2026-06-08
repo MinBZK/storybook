@@ -562,19 +562,34 @@ export class NLDDToolbar extends LitElement {
 		const prioritized = this._getPrioritizedItems();
 		const newOverflowIds = new Set<number>();
 
+		// Same-priority items overflow as one group: prioritized is sorted by
+		// priority, so collect runs of equal priority and hide them together.
+		const priorityGroups: Extract<ToolbarChild, { type: 'item' }>[][] = [];
 		for (const child of prioritized) {
+			const last = priorityGroups[priorityGroups.length - 1];
+			if (last && last[0].priority === child.priority) last.push(child);
+			else priorityGroups.push([child]);
+		}
+
+		for (const group of priorityGroups) {
 			if (!isOverflowing()) break;
 
-			if (child.isFluid) {
-				const remainingVisible = itemChildren.filter(c => {
+			// Fluid-guard (per group): never hide the last fluid fallback. If
+			// hiding this group would leave no non-fluid item visible, stop and
+			// let a remaining fluid item shrink (solo-fluid) instead.
+			if (group.some(c => c.isFluid)) {
+				const groupIds = new Set(group.map(c => c.id));
+				const nonFluidVisibleOutside = itemChildren.filter(c => {
 					const host = c.element as HTMLElement;
-					return !host.hidden && !host.hasAttribute('fluid') && !host.hasAttribute('solo-fluid');
+					return !host.hidden && !host.hasAttribute('fluid') && !host.hasAttribute('solo-fluid') && !groupIds.has(c.id);
 				});
-				if (remainingVisible.length === 0) break;
+				if (nonFluidVisibleOutside.length === 0) break;
 			}
 
-			newOverflowIds.add(child.id);
-			(child.element as HTMLElement).hidden = true;
+			for (const child of group) {
+				newOverflowIds.add(child.id);
+				(child.element as HTMLElement).hidden = true;
+			}
 			void itemsEl.offsetWidth;
 		}
 
