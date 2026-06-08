@@ -1,6 +1,23 @@
 import { css } from 'lit';
 import { inheritedTextReset } from '../../../assets/styles/slotted-reset.js';
 
+export const toolbarItemStyles = css`
+
+
+	/* # Host */
+
+	:host([hidden]) {
+		display: none;
+	}
+
+
+	/* # Slots */
+
+	slot[name="overflow"] {
+		display: none;
+	}
+`;
+
 export const toolbarStyles = css`
 
 
@@ -154,7 +171,7 @@ export const toolbarStyles = css`
 
 	.toolbar__item-label {
 		display: none;
-		margin-top: var(--primitives-space-2);
+		margin-top: var(--primitives-space-4);
 		color: var(--semantics-content-color);
 		font: var(--primitives-font-body-xs-regular-flat);
 		white-space: nowrap;

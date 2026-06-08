@@ -3,6 +3,15 @@ import { styleMap } from 'lit/directives/style-map.js';
 import type { NLDDToolbarTranslations } from './toolbar.i18n.js';
 import '../icon-button/icon-button.js';
 
+// # Item template
+
+export function toolbarItemTemplate() {
+	return html`
+		<slot></slot>
+		<slot name="overflow"></slot>
+	`;
+}
+
 // # Types
 export type ToolbarChild =
 	| { type: 'title'; title: string; supportingText: string; align: string; minWidth: string; id: number }

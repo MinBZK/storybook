@@ -25,7 +25,8 @@ de `.d.ts` bestanden van het pakket.
 | Attribuut | Type | Beschrijving |
 | --- | --- | --- |
 | `variant` | `string` | Button variant: 'primary' \| 'secondary' \| 'destructive' \| 'accent-filled' \| 'accent-transparent' \| 'neutral-tinted' \| 'neutral-transparent' \| 'critical-tinted' \| 'critical-transparent' |
-| `size` | `string` | Button size: 'xs' \| 'sm' \| 'md' (default: 'md') |
+| `size` | `string` | Button size: 'xs' \| 'sm' \| 'md' \| 'lg' (default: 'md'). 'lg' uses larger text and 24px start/end icons. |
+| `horizontal-alignment` | `string` | Horizontal alignment of the button content: 'left' \| 'center' \| 'right' (default: 'center'). Most visible with width="full" or a fixed width. |
 | `disabled` | `boolean` | Disabled state |
 | `type` | `string` | Button type for form submission: 'button' \| 'submit' \| 'reset' (ignored when href is set) |
 | `expandable` | `boolean` | Whether the button has a icon to indicate it opens a menu or popover |
@@ -33,7 +34,9 @@ de `.d.ts` bestanden van het pakket.
 | `popup-type` | `string` | Type of popup container this button opens: 'menu' \| 'listbox' \| 'dialog' \| 'tree' \| 'grid'. Sets aria-haspopup on the inner button and forces aria-expanded to always be present (true/false) so screen readers know the popup state. |
 | `width` | `string` | Width mode: 'full' (stretches to container) or any CSS length (e.g. '240px') |
 | `text` | `string` | Button text |
+| `supporting-text` | `string` | Supporting text shown below the text (md/lg) or after it (sm/xs), in a secondary color. Part of the accessible name. |
 | `single-line` | `boolean` | When true, truncates overflowing text with an ellipsis instead of letting it wrap. Requires the button (or an ancestor) to constrain the width. |
+| `no-highlight-border` | `boolean` | Removes the per-variant highlight border (e.g. when nldd-button-bar draws a single group border instead). |
 | `start-icon` | `string` | Icon name for the start icon (before text) |
 | `end-icon` | `string` | Icon name for the end icon (after text) |
 | `accessible-label` | `string` | Accessible label for the button, overrides text for screen readers |
@@ -63,7 +66,7 @@ A horizontal container for grouping buttons with a neutral background. Automatic
 
 | Attribuut | Type | Beschrijving |
 | --- | --- | --- |
-| `size` | `string` | Bar size: 'xs' \| 'sm' \| 'md' (default: 'md') |
+| `size` | `string` | Bar size: 'xs' \| 'sm' \| 'md' \| 'lg' (default: 'md'). At 'lg', icon-button children stack their label below the icon (mobile action-bar style). |
 | `variant` | `string` | Button variant (default: 'neutral-tinted') |
 | `disabled` | `boolean` | Disabled state |
 
@@ -98,6 +101,7 @@ A container for grouping related buttons together, either horizontally or vertic
 | --- | --- | --- |
 | `variant` | `string` | Button variant: 'accent-filled' \| 'accent-transparent' \| 'neutral-tinted' \| 'neutral-transparent' \| 'critical-tinted' \| 'critical-transparent' \| 'primary' \| 'secondary' \| 'destructive' |
 | `size` | `string` | Button size: 'xs' \| 'sm' \| 'md' \| 'lg' (default: 'md') |
+| `hide-lg-text` | `boolean` | In lg size, hides the text label and enlarges the icon by one step (28px) |
 | `disabled` | `boolean` | Disabled state |
 | `type` | `string` | Button type for form submission: 'button' \| 'submit' \| 'reset' (ignored when href is set) |
 | `expandable` | `boolean` | Whether the button opens a menu or popover and shows chevron next to the icon |
@@ -105,7 +109,7 @@ A container for grouping related buttons together, either horizontally or vertic
 | `popup-type` | `string` | Type of popup container this button opens: 'menu' \| 'listbox' \| 'dialog' \| 'tree' \| 'grid'. Sets aria-haspopup on the inner button and forces aria-expanded to always be present (true/false) so screen readers know the popup state. |
 | `width` | `string` | Width mode: 'full' (stretches to container) or any CSS length (e.g. '240px') |
 | `text` | `string` | Button text, used as aria-label and shown below the icon in lg size |
-| `icon` | `string` | Icon name for the nldd-icon element |
+| `icon` | `string` | Icon name for the nldd-icon element. Defaults to a placeholder icon when neither this attribute nor the icon slot is set. |
 | `accessible-label` | `string` | Accessible label for screen readers. Overrides text as aria-label and title tooltip. Use when the visible text alone lacks context for screen readers (e.g. text "Toon", accessible-label "Toon wachtwoord"). The text is still shown visually in lg size regardless. |
 | `tooltip-timing` | `string` | Forwarded to the inner nldd-tooltip's `timing`: 'default' (700 ms show-delay), 'instant', or 'never' (suppress the visual tooltip; screen readers still get the aria-label). Use 'never' when the surrounding context already explains the button (e.g. spin buttons in nldd-number-field, the chevron in nldd-split-button). |
 | `href` | `string` | When set, renders an <a> element instead of <button> |
@@ -117,7 +121,7 @@ A container for grouping related buttons together, either horizontally or vertic
 
 | Slot | Beschrijving |
 | --- | --- |
-| `icon` | Slot for a custom icon (e.g. custom SVG). Only used when icon attribute is not set. |
+| `icon` | Slot for a custom icon (e.g. custom SVG). Only used when icon attribute is not set; falls back to a placeholder icon when the slot is empty. |
 
 **Events**
 
@@ -127,25 +131,32 @@ A container for grouping related buttons together, either horizontally or vertic
 
 ### `<nldd-split-button>`
 
-A split button combines a primary action button with a dropdown trigger. The main button performs the default action, while the icon button opens a menu. Any `nldd-menu-item` and `nldd-menu-divider` children in the light DOM are **moved** into an internal `nldd-menu` inside the component's shadow DOM on mount (and on subsequent add/remove via MutationObserver). Consumers can no longer `querySelector` those items from the split-button afterwards — query through the menu via custom events or keep their own references. When no items are slotted, the chevron dispatches `menu-click` and the consumer is expected to manage their own popover.
+A split button combines a primary action button with a dropdown trigger. The main button performs the default action, while the icon button opens a menu. Provide the dropdown by slotting an `nldd-menu` (with its `nldd-menu-item` / `nldd-menu-divider` children) directly: ```html <nldd-split-button text="Opslaan"> <nldd-menu> <nldd-menu-item text="Opslaan als…"></nldd-menu-item> </nldd-menu> </nldd-split-button> ``` The slotted menu stays in the light DOM — no item-moving — so consumers keep their references and the full nldd-menu API (submenus, groups, config). The split-button anchors it to the chevron and opens it on click. When no `nldd-menu` is slotted, the chevron dispatches `menu-click` and the consumer manages their own popover.
 
 **Attributes**
 
 | Attribuut | Type | Beschrijving |
 | --- | --- | --- |
-| `size` | `string` | Button size: 'xs' \| 'sm' \| 'md' (default: 'md') |
+| `size` | `string` | Button size: 'xs' \| 'sm' \| 'md' \| 'lg' (default: 'md') |
 | `variant` | `string` | Button variant (default: 'neutral-tinted') |
 | `disabled` | `boolean` | Disabled state |
+| `width` | `string` | Width mode: 'full' (stretches to container) or any CSS length; the main action button fills the available space |
 | `text` | `string` | Button text for the primary action |
 | `icon` | `string` | Icon name shown before the text on the primary action button |
 | `translations` | `object` | Translations; unset keys fall back to Dutch |
+
+**Slots**
+
+| Slot | Beschrijving |
+| --- | --- |
+| _(default)_ | A single `nldd-menu` that the chevron opens. |
 
 **Events**
 
 | Event | Beschrijving |
 | --- | --- |
 | `action-click` | Fired when the main button is clicked |
-| `menu-click` | Fired when the dropdown trigger is clicked and no items are slotted |
+| `menu-click` | Fired when the dropdown trigger is clicked and no nldd-menu is slotted |
 
 ### `<nldd-toolbar>`
 
@@ -153,7 +164,7 @@ A split button combines a primary action button with a dropdown trigger. The mai
 
 | Attribuut | Type | Beschrijving |
 | --- | --- | --- |
-| `size` | `string` | Toolbar size, propagated to all child controls: 'sm' \| 'md' (default: 'md') |
+| `size` | `string` | Toolbar size, propagated to all child controls: 'sm' \| 'md' \| 'lg' (default: 'md'). At 'lg' the overflow button (and lg-capable children like nldd-icon-button) stack their label below the icon. |
 | `show-item-labels` | `boolean` | When true, shows a text label below each toolbar item and the overflow button |
 | `label` | `string` | Accessible label for the toolbar. Only needed when multiple toolbars appear on the same page |
 
@@ -165,6 +176,24 @@ A split button combines a primary action button with a dropdown trigger. The mai
 | `center` | nldd-toolbar-item and nldd-toolbar-title elements placed at the center |
 | `end` | nldd-toolbar-item and nldd-toolbar-title elements placed at the end |
 | `overflow` | nldd-menu-item and nldd-menu-divider elements always shown in the overflow menu |
+
+### `<nldd-toolbar-item>`
+
+**Attributes**
+
+| Attribuut | Type | Beschrijving |
+| --- | --- | --- |
+| `width` | `string` | Fluid width: a percentage of the toolbar width (e.g. '40%') or any CSS length (e.g. '240px'). Setting it (or min-width) makes the item fluid so it grows to fill the available space. |
+| `min-width` | `string` | Minimum (fluid) width as a CSS length (e.g. '240px'). Setting it also makes the item fluid. |
+| `label` | `string` | Text label shown below the item when the toolbar has show-item-labels. |
+| `priority` | `number` | Overflow order: items with a lower priority move into the overflow menu first (default 0). |
+
+**Slots**
+
+| Slot | Beschrijving |
+| --- | --- |
+| _(default)_ | The control shown in the toolbar (e.g. nldd-icon-button) |
+| `overflow` | nldd-menu-item / nldd-menu-divider children, shown in the overflow menu when this item overflows |
 
 ## Content
 
@@ -765,7 +794,7 @@ A horizontal group of mutually exclusive (radio) or multi-select (checkbox) opti
 | Attribuut | Type | Beschrijving |
 | --- | --- | --- |
 | `value` | `string` | Selected value for radio type |
-| `size` | `string` | Control size: 'sm' \| 'md' (default: 'md') |
+| `size` | `string` | Control size: 'sm' \| 'md' \| 'lg' (default: 'md') |
 | `type` | `string` | Input type: 'radio' \| 'checkbox' (default: 'radio') |
 | `variant` | `string` | Content type for all items: 'text' \| 'icon' \| 'icon-and-text' (default: 'text') |
 | `disabled` | `boolean` | Disabled state for all items |
@@ -907,7 +936,7 @@ A selectable button that toggles between selected and unselected. Available as a
 | Attribuut | Type | Beschrijving |
 | --- | --- | --- |
 | `type` | `'button' \| 'checkbox' \| 'radio'` | Underlying element (default: 'button') |
-| `size` | `'xs' \| 'sm' \| 'md'` | Button size (default: 'md') |
+| `size` | `'xs' \| 'sm' \| 'md' \| 'lg'` | Button size (default: 'md') |
 | `selected` | `boolean` | Selected state |
 | `disabled` | `boolean` | Disabled state |
 | `value` | `string` | Value for form submission (checkbox/radio) |
@@ -1491,7 +1520,7 @@ Een zwevend venster gebaseerd op het native <dialog>-element. Kan modaal of niet
 
 ### `<nldd-breadcrumbs>`
 
-A trail of `nldd-breadcrumbs-item`s separated by `›`, rendered as a `<nav>` landmark wrapping a `<div role="list">` (with each item carrying `role="listitem"`). Explicit ARIA roles travel reliably across the slot boundary where the implicit `<ol>`/`<li>` mapping is inconsistent across AT + browser combos. The host itself is its own container-query scope so the sm-viewport "‹ {parent}" fallback reacts to the breadcrumbs' own width, not the viewport.
+A trail of `nldd-breadcrumbs-item`s separated by `›`, rendered as a `<nav>` landmark wrapping a `<div role="list">` (with each item carrying `role="listitem"`). Explicit ARIA roles travel reliably across the slot boundary where the implicit `<ol>`/`<li>` mapping is inconsistent across AT + browser combos. The trail wraps onto multiple lines when it doesn't fit, so it adapts to any width.
 
 **Attributes**
 
@@ -1677,7 +1706,8 @@ A horizontal navigation bar with mutually exclusive tabs. Exports both NLDDTabBa
 
 | Attribuut | Type | Beschrijving |
 | --- | --- | --- |
-| `variant` | `string` | Visual mode: 'icon-and-text' \| 'text' \| 'icon' \| 'compact'. 'compact' stacks the icon above the text. When unset, the variant is inferred from each item's content. |
+| `variant` | `string` | Visual mode: 'icon-and-text' \| 'text' \| 'icon'. When unset, the variant is inferred from each item's content. Drives the layout at every size. |
+| `size` | `string` | Size: 'md' \| 'lg' (default: 'md'). 'lg' enlarges the touch target; the per-variant layout is preserved (icon-and-text stacks the icon over the text, text renders large text, icon renders a larger icon-only control). |
 | `navigation` | `boolean` | Renders a nav landmark instead of tablist; use for href-based items that navigate between routes |
 | `centered` | `boolean` | Centers the tabs in the container (host fills the row, tabs group in the middle) |
 | `accessible-label` | `string` | Accessible name for the navigation region; defaults to 'Tabs' |

@@ -10,24 +10,56 @@
  * @slot center   - nldd-toolbar-item and nldd-toolbar-title elements placed at the center
  * @slot end      - nldd-toolbar-item and nldd-toolbar-title elements placed at the end
  * @slot overflow - nldd-menu-item and nldd-menu-divider elements always shown in the overflow menu
+ *
+ * ---
+ *
+ * @element nldd-toolbar-item
+ * @attr {string} width - Fluid width: a percentage of the toolbar width (e.g. '40%') or any CSS length (e.g. '240px'). Setting it (or min-width) makes the item fluid so it grows to fill the available space.
+ * @attr {string} min-width - Minimum (fluid) width as a CSS length (e.g. '240px'). Setting it also makes the item fluid.
+ * @attr {string} label - Text label shown below the item when the toolbar has show-item-labels.
+ * @attr {number} priority - Overflow order: items with a lower priority move into the overflow menu first (default 0).
+ *
+ * @slot - The control shown in the toolbar (e.g. nldd-icon-button)
+ * @slot overflow - nldd-menu-item / nldd-menu-divider children, shown in the overflow menu when this item overflows
  */
 import { LitElement } from 'lit';
 import { customElement, property, state } from 'lit/decorators.js';
-import { toolbarStyles } from './toolbar.styles.js';
-import { template, type ToolbarChild } from './toolbar.template.js';
+import { toolbarStyles, toolbarItemStyles } from './toolbar.styles.js';
+import { template, toolbarItemTemplate, type ToolbarChild } from './toolbar.template.js';
 import { nlddToolbarTranslations } from './toolbar.i18n.js';
 import type { NLDDToolbarTranslations } from './toolbar.i18n.js';
 import { NLDDMenu } from '../../actions/menu/menu.js';
 
-// # Marker elements
-if (!customElements.get('nldd-toolbar-item')) {
-	customElements.define('nldd-toolbar-item', class extends HTMLElement {
-		constructor() {
-			super();
-			this.attachShadow({ mode: 'open' }).innerHTML = '<slot></slot><slot name="overflow" style="display:none"></slot>';
-		}
-	});
+// # nldd-toolbar-item
+
+@customElement('nldd-toolbar-item')
+export class NLDDToolbarItem extends LitElement {
+	static override styles = toolbarItemStyles;
+
+	/** Fluid width: a percentage of the toolbar width (e.g. '40%') or any CSS length (e.g. '240px'). Setting it (or min-width) makes the item fluid so it grows to fill the available space. */
+	@property({ type: String })
+	width = '';
+
+	/** Minimum (fluid) width as a CSS length (e.g. '240px'). Setting it also makes the item fluid. */
+	@property({ type: String, attribute: 'min-width' })
+	minWidth = '';
+
+	/** Text label shown below the item when the toolbar has show-item-labels. */
+	@property({ type: String })
+	label = '';
+
+	/** Overflow order: items with a lower priority move into the overflow menu first. */
+	@property({ type: Number })
+	priority = 0;
+
+	override render() {
+		return toolbarItemTemplate();
+	}
 }
+
+
+// # Marker elements
+
 if (!customElements.get('nldd-toolbar-title')) {
 	customElements.define('nldd-toolbar-title', class extends HTMLElement {});
 }
@@ -590,7 +622,7 @@ export class NLDDToolbar extends LitElement {
 declare global {
 	interface HTMLElementTagNameMap {
 		'nldd-toolbar': NLDDToolbar;
-		'nldd-toolbar-item': HTMLElement;
+		'nldd-toolbar-item': NLDDToolbarItem;
 		'nldd-toolbar-title': HTMLElement;
 	}
 }
