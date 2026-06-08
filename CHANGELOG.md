@@ -14,7 +14,8 @@ here; consult the commit history if you need that level of detail.
 - **A coordinated `lg` size** across the action and navigation controls — `nldd-button`, `nldd-icon-button`, `nldd-button-bar`, `nldd-split-button`, `nldd-toolbar`, `nldd-tab-bar`, `nldd-toggle-button`, and `nldd-segmented-control` — for larger touch targets and stacked icon-over-text action-bar affordances.
 - **`neutral-base` button variant** — a new low-emphasis variant backed by a dedicated token set (neutral-base, per-state secondary-content, highlight-border).
 - **Highlight border for controls and control groups** — a per-state highlight border drawn through an `::after` overlay (so it spans dismiss buttons instead of being clipped), both on individual controls (buttons, tokens, dropdowns) and as a single grouped border around control groups (steppers, pagination, tab bars, toggle and segmented controls, document tabs, split buttons, button bars).
-- **33 new icons** plus an `s-curve-path` icon (aliases `path`, `traject`).
+- **`nldd-toolbar` items and title as elements** — `nldd-toolbar-item` and `nldd-toolbar-title` are declared custom elements that render and size their own box (`width` / `min-width` / `max-width`); the toolbar measures and lays them out, accepts `nldd-menu-group` in the overflow menu, and overflows items that share an explicit `priority` together.
+- **A batch of new icons** (named in full under Added) — including an `s-curve-path` icon (aliases `path`, `traject`) and `square-and-arrow-down` (aliases `save`, `import`).
 - **Breadcrumbs** keep the full trail and wrap on small screens — the small-screen collapse-to-back-link is gone.
 
 ### Added
@@ -29,7 +30,8 @@ here; consult the commit history if you need that level of detail.
 - **`nldd-document-tab-bar`**: per-state secondary content.
 - **`nldd-image`**: `loaded` and `errored` host attributes for consumer CSS, and a transparent media background (grey only on error, LQIP while loading).
 - **`nldd-page-sections`** (`one-half-one-half`, `one-third-two-thirds`, `two-thirds-one-third`): `__header` and `__footer` slots, rendered only when slotted.
-- **Icons**: 33 new icons normalized to the house format, the `s-curve-path` icon (aliases `path`, `traject`), and aliases for the new icons.
+- **`nldd-toolbar`**: `nldd-toolbar-item` and `nldd-toolbar-title` are now declared elements that render their own box and own their sizing — item `width` / `min-width` / `max-width` / `label` / `priority`, title `text` / `supporting-text` / `align` / `min-width` / `width` / `max-width`. The overflow menu also accepts `nldd-menu-group`, and items that share an explicit `priority` move in and out of the overflow menu together.
+- **Icons** — new icons, normalized to the house format: `accessibility`, `app`, `arrow-left-right`, `binoculars`, `blocks-9`, `book-batch-play`, `brick-wall`, `centralized-network`, `cylinder-2-big-small-split`, `cylinder-split-badge-lock`, `desk-with-screen`, `diamond`, `file-box`, `file-text-batch-check-mark`, `file-text-pencil`, `foundation`, `globe-rack-server`, `handshake`, `key`, `leaf`, `pencil-ruler`, `pipeline-corner-2`, `pipeline-machine-gear`, `pipeline-valve`, `point-bottom-left-to-point-top-right-s-curve-path` (the `s-curve-path` icon; aliases `path`, `traject`), `radar`, `score-meter`, `seal-check-mark`, `shield`, `shield-lock`, `shopping-cart`, `square-and-arrow-down` (aliases `save`, `import`), `stack-code`, and `table-cells`. New aliases for existing icons: `export` (→ square-arrow-up), `settings` (→ gear), and `pipeline-runner` (→ pipeline-machine-gear).
 
 ### Changed
 
