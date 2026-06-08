@@ -474,5 +474,7 @@ describe('nldd-toolbar', () => {
 		expect(ids(groupForOverflow([item(1, 1, true), item(2, 1, true), item(3, 2, true)]))).toEqual([[1, 2], [3]]);
 		// Explicit and default-0 are never merged.
 		expect(ids(groupForOverflow([item(1, 0, false), item(2, 1, true), item(3, 1, true)]))).toEqual([[1], [2, 3]]);
+		// Same explicit priority groups across positions (non-adjacent).
+		expect(ids(groupForOverflow([item(1, 1, true), item(2, 2, true), item(3, 1, true)]))).toEqual([[1, 3], [2]]);
 	});
 });

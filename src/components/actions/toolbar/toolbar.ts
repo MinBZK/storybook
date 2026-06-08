@@ -18,7 +18,7 @@
  * @attr {string} min-width - Minimum (fluid) width as a CSS length (e.g. '240px'). Setting it also makes the item fluid.
  * @attr {string} max-width - Maximum (fluid) width as a CSS length (e.g. '480px'). Setting it also makes the item fluid.
  * @attr {string} label - Text label shown below the item when the toolbar has show-item-labels.
- * @attr {number} priority - Overflow order: items with a lower priority move into the overflow menu first (default 0).
+ * @attr {number} priority - Overflow order: items with a lower priority move into the overflow menu first (default 0). Items sharing a priority overflow together, regardless of position.
  * @attr {boolean} fluid - Set by nldd-toolbar, not a consumer attribute: marks an item that grows or shrinks to fill space. Toggled synchronously during measurement, so it can appear or disappear between layout frames — do not style against it.
  * @attr {boolean} solo-fluid - Set by nldd-toolbar, not a consumer attribute: the sole fluid item, allowed to shrink below its content. Same synchronous-toggle caveat as fluid.
  * @attr {boolean} hidden - Set by nldd-toolbar, not a consumer attribute, when the item moves into the overflow menu. Same synchronous-toggle caveat.
@@ -740,8 +740,9 @@ type OverflowGroups = OverflowItem[][];
 
 /**
  * Groups prioritized items for overflow. Items with an explicit priority that
- * share a value form one group (they overflow together); items without a
- * priority attribute each form their own group (they overflow individually).
+ * share a value form one group and overflow together regardless of their
+ * position; items without a priority attribute each form their own group
+ * (they overflow individually).
  *
  * @internal Exported for unit tests only; not part of the public API.
  */
@@ -749,10 +750,20 @@ export function groupForOverflow(
 	items: OverflowItem[],
 ): OverflowGroups {
 	const groups: OverflowGroups = [];
+	const byPriority = new Map<number, OverflowItem[]>();
 	for (const child of items) {
-		const last = groups[groups.length - 1];
-		if (last && child.hasPriority && last[0].hasPriority && last[0].priority === child.priority) last.push(child);
-		else groups.push([child]);
+		if (!child.hasPriority) {
+			groups.push([child]);
+			continue;
+		}
+		const existing = byPriority.get(child.priority);
+		if (existing) {
+			existing.push(child);
+			continue;
+		}
+		const group: OverflowItem[] = [child];
+		byPriority.set(child.priority, group);
+		groups.push(group);
 	}
 	return groups;
 }
