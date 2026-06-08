@@ -404,9 +404,6 @@ export const aliases = {
 	// shield
 	'protection': 'shield',
 
-	// shield-lock
-	'privacy': 'shield-lock',
-
 	// shopping-cart
 	'cart': 'shopping-cart',
 
@@ -419,4 +416,7 @@ export const aliases = {
 
 	// pipeline-machine-gear
 	'pipeline-runner': 'pipeline-machine-gear',
+
+	// hand
+	'privacy': 'hand',
 };
