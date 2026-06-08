@@ -14,8 +14,9 @@
  * ---
  *
  * @element nldd-toolbar-item
- * @attr {string} width - Fluid width: a percentage (e.g. '40%') or any CSS length (e.g. '240px'). Setting it (or min-width) makes the item fluid so it grows to fill the available space.
+ * @attr {string} width - Fluid width: a percentage (e.g. '40%') or any CSS length (e.g. '240px'). Setting it (or min-width or max-width) makes the item fluid so it grows to fill the available space.
  * @attr {string} min-width - Minimum (fluid) width as a CSS length (e.g. '240px'). Setting it also makes the item fluid.
+ * @attr {string} max-width - Maximum (fluid) width as a CSS length (e.g. '480px'). Setting it also makes the item fluid.
  * @attr {string} label - Text label shown below the item when the toolbar has show-item-labels.
  * @attr {number} priority - Overflow order: items with a lower priority move into the overflow menu first (default 0).
  *
@@ -48,13 +49,17 @@ type TitleAlign = 'left' | 'center';
 export class NLDDToolbarItem extends LitElement {
 	static override styles = toolbarItemStyles;
 
-	/** Fluid width: a percentage (e.g. '40%') or any CSS length (e.g. '240px'). Setting it (or min-width) makes the item fluid so it grows to fill the available space. */
+	/** Fluid width: a percentage (e.g. '40%') or any CSS length (e.g. '240px'). Setting it (or min-width or max-width) makes the item fluid so it grows to fill the available space. */
 	@property({ type: String })
 	width = '';
 
 	/** Minimum (fluid) width as a CSS length (e.g. '240px'). Setting it also makes the item fluid. */
 	@property({ type: String, attribute: 'min-width' })
 	minWidth = '';
+
+	/** Maximum (fluid) width as a CSS length (e.g. '480px'). Setting it also makes the item fluid. */
+	@property({ type: String, attribute: 'max-width' })
+	maxWidth = '';
 
 	/** Text label shown below the item when the toolbar has show-item-labels. */
 	@property({ type: String })
@@ -365,6 +370,11 @@ export class NLDDToolbar extends LitElement {
 				} else {
 					host.style.removeProperty('--_item-width');
 				}
+				if (child.isFluid && child.maxWidth) {
+					host.style.setProperty('--_item-max-width', child.maxWidth);
+				} else {
+					host.style.removeProperty('--_item-max-width');
+				}
 				// Forward size to the inner control(s).
 				Array.from(host.children).forEach(inner => {
 					if (inner.getAttribute('slot') !== 'overflow') {
@@ -641,8 +651,9 @@ export class NLDDToolbar extends LitElement {
 					const label = el.getAttribute('label') ?? '';
 					const priority = parseInt(el.getAttribute('priority') ?? '0', 10);
 					const minWidth = el.getAttribute('min-width') ?? '';
+					const maxWidth = el.getAttribute('max-width') ?? '';
 					const width = el.getAttribute('width') ?? '';
-					const isFluid = !!(minWidth || width);
+					const isFluid = !!(minWidth || maxWidth || width);
 
 					const overflowItems = Array.from(el.children).filter(child => {
 						const childTag = child.tagName.toLowerCase();
@@ -650,7 +661,7 @@ export class NLDDToolbar extends LitElement {
 					});
 					overflowItems.forEach(child => child.setAttribute('slot', 'overflow'));
 
-					return { type: 'item', element: el, label, id, priority, overflowItems, minWidth, width, isFluid } as ToolbarChild;
+					return { type: 'item', element: el, label, id, priority, overflowItems, minWidth, maxWidth, width, isFluid } as ToolbarChild;
 				}
 
 				const id = this._getId(el);
@@ -679,7 +690,7 @@ export class NLDDToolbar extends LitElement {
 		this._prioritizedItemsCache = null;
 		this._syncHosts();
 
-		const itemAttributeFilter = ['label', 'priority', 'min-width', 'width', 'text', 'disabled', 'selected', 'type'];
+		const itemAttributeFilter = ['label', 'priority', 'min-width', 'max-width', 'width', 'text', 'disabled', 'selected', 'type'];
 		this._observer?.observe(this, { childList: true, attributes: true, subtree: true, attributeFilter: itemAttributeFilter });
 
 		this._isBuilding = false;

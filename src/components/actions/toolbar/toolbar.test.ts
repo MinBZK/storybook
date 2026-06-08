@@ -378,7 +378,21 @@ describe('nldd-toolbar', () => {
 		expect(toolbar._startChildren[0].isFluid).toBe(true);
 	});
 
-	it('does not mark item as fluid without min-width or width', async () => {
+	it('marks item as fluid when max-width attribute is set', async () => {
+		el = await fixture(`
+			<nldd-toolbar>
+				<nldd-toolbar-item slot="start" label="Capped" max-width="480px">
+					<nldd-icon-button aria-label="Capped"></nldd-icon-button>
+				</nldd-toolbar-item>
+			</nldd-toolbar>
+		`);
+		await waitForUpdate(el);
+		const toolbar = el as unknown as { _startChildren: { isFluid: boolean; maxWidth: string }[] };
+		expect(toolbar._startChildren[0].isFluid).toBe(true);
+		expect(toolbar._startChildren[0].maxWidth).toBe('480px');
+	});
+
+	it('does not mark item as fluid without min-width, max-width or width', async () => {
 		el = await fixture(`
 			<nldd-toolbar>
 				<nldd-toolbar-item slot="start" label="Normal">
