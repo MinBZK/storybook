@@ -110,4 +110,16 @@ describe('nldd-split-button', () => {
 		expect((el as HTMLElement).style.getPropertyValue('--_width')).toBe('100%');
 		expect((el as HTMLElement).style.width).toBe('');
 	});
+
+	it('anchors a declaratively-slotted menu to the popup button', async () => {
+		el = await fixture(`
+			<nldd-split-button text="Opslaan">
+				<nldd-menu><nldd-menu-item text="A"></nldd-menu-item></nldd-menu>
+			</nldd-split-button>
+		`);
+		await waitForUpdate(el);
+		const menu = el.querySelector('nldd-menu') as unknown as { anchorElement: Element | null };
+		const wrapper = el.shadowRoot!.querySelector('.split-button__popup-button');
+		expect(menu.anchorElement).toBe(wrapper);
+	});
 });

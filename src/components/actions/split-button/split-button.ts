@@ -106,6 +106,13 @@ export class NLDDSplitButton extends LitElement {
 		this._popupButtonWrapper?.addEventListener('pointerdown', () => {
 			this._menuWasOpenOnPointerdown = this._menu?.matches(':popover-open') ?? false;
 		});
+
+		// If the menu was slotted declaratively, _handleSlotChange may have run
+		// before @query resolved _popupButtonWrapper and couldn't anchor it. The
+		// wrapper exists now — anchor a menu that's still waiting for it.
+		if (this._menu && this._popupButtonWrapper) {
+			this._menu.anchorElement = this._popupButtonWrapper;
+		}
 	}
 
 	override disconnectedCallback(): void {
