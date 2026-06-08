@@ -13,10 +13,10 @@ export const buttonStyles = css`
 		--_block-padding: var(--semantics-controls-md-block-padding);
 		--_inline-padding: calc((var(--_min-size) - var(--_icon-size)) / 2);
 		--_gap: var(--semantics-buttons-md-gap);
-		--_font: var(--semantics-buttons-md-font);
+		--_font: var(--semantics-buttons-md-primary-text-font);
 		--_icon-size: var(--semantics-buttons-md-icon-size);
 		--_disclosure-icon-size: var(--primitives-space-20);
-		--_supporting-font: var(--primitives-font-body-xs-regular-flat);
+		--_supporting-font: var(--semantics-buttons-md-supporting-text-font);
 		--_background-color: var(--semantics-buttons-neutral-tinted-background-color);
 		--_primary-content-color: var(--semantics-buttons-neutral-tinted-primary-content-color);
 		--_secondary-content-color: var(--semantics-buttons-neutral-tinted-secondary-content-color);
@@ -44,10 +44,10 @@ export const buttonStyles = css`
 		--_min-size: var(--semantics-controls-xs-min-size);
 		--_block-padding: var(--semantics-controls-xs-block-padding);
 		--_gap: var(--semantics-buttons-xs-gap);
-		--_font: var(--semantics-buttons-xs-font);
+		--_font: var(--semantics-buttons-xs-primary-text-font);
 		--_icon-size: var(--semantics-buttons-xs-icon-size);
 		--_disclosure-icon-size: var(--primitives-space-16);
-		--_supporting-font: var(--primitives-font-body-xxs-regular-flat);
+		--_supporting-font: var(--semantics-buttons-xs-supporting-text-font);
 	}
 
 	:host([size="sm"]) {
@@ -55,10 +55,10 @@ export const buttonStyles = css`
 		--_min-size: var(--semantics-controls-sm-min-size);
 		--_block-padding: var(--semantics-controls-sm-block-padding);
 		--_gap: var(--semantics-buttons-sm-gap);
-		--_font: var(--semantics-buttons-sm-font);
+		--_font: var(--semantics-buttons-sm-primary-text-font);
 		--_icon-size: var(--semantics-buttons-sm-icon-size);
 		--_disclosure-icon-size: var(--primitives-space-18);
-		--_supporting-font: var(--primitives-font-body-xxs-regular-flat);
+		--_supporting-font: var(--semantics-buttons-sm-supporting-text-font);
 	}
 
 	:host([size="lg"]) {
@@ -66,10 +66,10 @@ export const buttonStyles = css`
 		--_min-size: var(--semantics-controls-lg-min-size);
 		--_block-padding: var(--semantics-controls-lg-block-padding);
 		--_gap: var(--semantics-buttons-lg-gap);
-		--_font: var(--semantics-buttons-lg-font);
+		--_font: var(--semantics-buttons-lg-primary-text-font);
 		--_icon-size: var(--semantics-buttons-lg-icon-size);
 		--_disclosure-icon-size: var(--primitives-space-24);
-		--_supporting-font: var(--primitives-font-body-sm-regular-flat);
+		--_supporting-font: var(--semantics-buttons-lg-supporting-text-font);
 	}
 
 	/* ## Neutral Base */
@@ -454,14 +454,14 @@ export const buttonStyles = css`
 	}
 
 	:host([size="md"]) .button.has-supporting-text {
-		--_font: var(--semantics-buttons-sm-font);
+		--_font: var(--semantics-buttons-sm-primary-text-font);
 		--_icon-size: var(--semantics-buttons-lg-icon-size);
 		--_inline-padding: calc((var(--_min-size) - var(--_icon-size)) / 2);
 		--_block-padding: var(--primitives-space-4);
 	}
 
 	:host([size="lg"]) .button.has-supporting-text {
-		--_font: var(--semantics-buttons-md-font);
+		--_font: var(--semantics-buttons-md-primary-text-font);
 		--_icon-size: var(--primitives-space-32);
 		--_inline-padding: calc((var(--_min-size) - var(--_icon-size)) / 2);
 		--_block-padding: var(--primitives-space-4);

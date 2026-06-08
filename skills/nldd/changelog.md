@@ -51,6 +51,7 @@ here; consult the commit history if you need that level of detail.
 
 - **`nldd-tab-bar`**: the `compact` variant is removed. Use `size="lg"` — the icon-and-text variant at `lg` stacks the icon over the text, which is what `compact` did.
 - **Button content-color tokens renamed**: `--semantics-buttons-*-content-color` → `--semantics-buttons-*-primary-content-color`, system-wide. Update any custom CSS that references them.
+- **Button font tokens renamed**: `--semantics-buttons-{xs,sm,md,lg}-font` → `--semantics-buttons-{size}-primary-text-font`, system-wide. The supporting text gets its own per-size token (`--semantics-buttons-{size}-supporting-text-font`) instead of an inline primitive. Update any custom CSS that references the old names.
 - **`nldd-button`**: the `horizontal-align` attribute is renamed to `horizontal-alignment`.
 - **Icon renamed**: `table-badge-arrow-down` → `table-cells-badge-arrow-down`.
 - **`nldd-image`**: the error translation key is renamed to `error-text`.

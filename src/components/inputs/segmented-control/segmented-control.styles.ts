@@ -88,7 +88,7 @@ export const segmentedControlItemStyles = css`
 		--_min-size: var(--semantics-controls-md-min-size);
 		--_padding-inline: var(--primitives-space-12);
 		--_gap: var(--semantics-buttons-md-gap);
-		--_font: var(--semantics-buttons-md-font);
+		--_font: var(--semantics-buttons-md-primary-text-font);
 		--_icon-size: var(--semantics-buttons-md-icon-size);
 		--_icon-only-icon-size: var(--semantics-buttons-md-icon-only-icon-size);
 		--_highlight-border-color: transparent;
@@ -109,7 +109,7 @@ export const segmentedControlItemStyles = css`
 		--_min-size: var(--semantics-controls-sm-min-size);
 		--_padding-inline: var(--primitives-space-8);
 		--_gap: var(--semantics-buttons-sm-gap);
-		--_font: var(--semantics-buttons-sm-font);
+		--_font: var(--semantics-buttons-sm-primary-text-font);
 		--_icon-size: var(--semantics-buttons-sm-icon-size);
 		--_icon-only-icon-size: var(--semantics-buttons-sm-icon-only-icon-size);
 	}
@@ -119,7 +119,7 @@ export const segmentedControlItemStyles = css`
 		--_min-size: var(--semantics-controls-lg-min-size);
 		--_padding-inline: var(--primitives-space-16);
 		--_gap: var(--semantics-buttons-lg-gap);
-		--_font: var(--semantics-buttons-lg-font);
+		--_font: var(--semantics-buttons-lg-primary-text-font);
 		--_icon-size: var(--semantics-buttons-lg-icon-size);
 		--_icon-only-icon-size: var(--primitives-space-28);
 	}

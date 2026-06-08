@@ -949,10 +949,14 @@
 
 	/* ## Buttons */
 
-	--semantics-buttons-xs-font: var(--primitives-font-body-xs-medium-flat);
-	--semantics-buttons-sm-font: var(--primitives-font-body-sm-medium-flat);
-	--semantics-buttons-md-font: var(--primitives-font-body-md-medium-flat);
-	--semantics-buttons-lg-font: var(--primitives-font-body-lg-medium-flat);
+	--semantics-buttons-xs-primary-text-font: var(--primitives-font-body-xs-medium-flat);
+	--semantics-buttons-xs-supporting-text-font: var(--primitives-font-body-xxs-regular-flat);
+	--semantics-buttons-sm-primary-text-font: var(--primitives-font-body-sm-medium-flat);
+	--semantics-buttons-sm-supporting-text-font: var(--primitives-font-body-xxs-regular-flat);
+	--semantics-buttons-md-primary-text-font: var(--primitives-font-body-md-medium-flat);
+	--semantics-buttons-md-supporting-text-font: var(--primitives-font-body-xs-regular-flat);
+	--semantics-buttons-lg-primary-text-font: var(--primitives-font-body-lg-medium-flat);
+	--semantics-buttons-lg-supporting-text-font: var(--primitives-font-body-sm-regular-flat);
 
 	--semantics-buttons-xs-divider-length: var(--primitives-space-14);
 	--semantics-buttons-sm-divider-length: var(--primitives-space-20);

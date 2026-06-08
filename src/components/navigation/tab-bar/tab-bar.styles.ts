@@ -112,7 +112,7 @@ export const tabBarItemStyles = css`
 		align-items: center;
 		justify-content: center;
 		color: var(--semantics-buttons-neutral-tinted-primary-content-color);
-		font: var(--semantics-buttons-md-font);
+		font: var(--semantics-buttons-md-primary-text-font);
 		text-decoration: none;
 		appearance: none;
 	}
@@ -147,7 +147,7 @@ export const tabBarItemStyles = css`
 	:host([variant="text"][size="lg"]) .tab-bar__item {
 		min-height: var(--semantics-controls-lg-min-size);
 		padding: var(--semantics-controls-lg-block-padding) var(--primitives-space-16);
-		font: var(--semantics-buttons-lg-font);
+		font: var(--semantics-buttons-lg-primary-text-font);
 	}
 
 	:host([variant="icon"][size="lg"]) .tab-bar__item {

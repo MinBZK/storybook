@@ -86,7 +86,7 @@ export const paginationStyles = css`
 		align-items: center;
 		justify-content: center;
 		color: inherit;
-		font: var(--semantics-buttons-md-font);
+		font: var(--semantics-buttons-md-primary-text-font);
 		appearance: none;
 	}
 
@@ -158,7 +158,7 @@ export const paginationStyles = css`
 		align-items: center;
 		justify-content: center;
 		color: inherit;
-		font: var(--semantics-buttons-md-font);
+		font: var(--semantics-buttons-md-primary-text-font);
 	}
 
 
@@ -243,7 +243,7 @@ export const paginationStyles = css`
 		padding-inline-start: var(--primitives-space-12);
 		padding-inline-end: calc(var(--primitives-space-24) + var(--primitives-space-12));
 		color: inherit;
-		font: var(--semantics-buttons-md-font);
+		font: var(--semantics-buttons-md-primary-text-font);
 		appearance: none;
 	}
 
