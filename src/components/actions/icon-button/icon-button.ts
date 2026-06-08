@@ -254,6 +254,12 @@ export class NLDDIconButton extends LitElement {
 		this.shadowRoot?.querySelector<HTMLElement>('.icon-button')?.focus(options);
 	}
 
+	// Stable reference (not an inline arrow) so Lit does not re-add the slot
+	// listener every render; mirrors the other @slotchange handlers.
+	_onIconSlotChange(): void {
+		this.requestUpdate();
+	}
+
 	override render() {
 		return template.call(this);
 	}

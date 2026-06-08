@@ -8,7 +8,7 @@ function renderContent(component: NLDDIconButton) {
 			<span class="icon-button__icon">
 				${component.icon
 					? html`<nldd-icon name=${component.icon}></nldd-icon>`
-					: html`<slot name="icon" @slotchange=${() => component.requestUpdate()}>
+					: html`<slot name="icon" @slotchange=${component._onIconSlotChange}>
 							<nldd-icon name="icon-placeholder"></nldd-icon>
 						</slot>`}
 			</span>
