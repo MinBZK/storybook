@@ -55,7 +55,7 @@ export function template(this: NLDDButton, helpers: TemplateHelpers) {
 	// build one with a space so screen readers announce the two apart. (Slotted
 	// text can't be read here — those consumers should set accessible-label.)
 	const ariaLabel = this.accessibleLabel
-		|| (this.text && this.supportingText ? `${this.text} ${this.supportingText}` : nothing);
+		|| (this.text && this.supportingText ? `${this.text}, ${this.supportingText}` : nothing);
 
 	// Loading: an activity indicator overlays the (opacity-hidden) content. It
 	// sits OUTSIDE the <button>/<a> (a sibling, overlaid via the host's

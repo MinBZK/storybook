@@ -187,11 +187,14 @@ export const buttonStyles = css`
 	:host([expanded]) {
 		--_background-color: var(--semantics-buttons-neutral-tinted-is-expanded-background-color);
 		--_primary-content-color: var(--semantics-buttons-neutral-tinted-is-expanded-primary-content-color);
+		--_secondary-content-color: var(--semantics-buttons-neutral-tinted-is-expanded-secondary-content-color);
 		--_highlight-border-color: var(--_is-expanded-highlight-border-color);
 		--_is-hovered-background-color: var(--semantics-buttons-neutral-tinted-is-expanded-is-hovered-background-color);
 		--_is-hovered-primary-content-color: var(--semantics-buttons-neutral-tinted-is-expanded-is-hovered-primary-content-color);
+		--_is-hovered-secondary-content-color: var(--semantics-buttons-neutral-tinted-is-expanded-is-hovered-secondary-content-color);
 		--_is-active-background-color: var(--semantics-buttons-neutral-tinted-is-expanded-is-active-background-color);
 		--_is-active-primary-content-color: var(--semantics-buttons-neutral-tinted-is-expanded-is-active-primary-content-color);
+		--_is-active-secondary-content-color: var(--semantics-buttons-neutral-tinted-is-expanded-is-active-secondary-content-color);
 	}
 
 	:host([expanded][variant="neutral-base"]) {
