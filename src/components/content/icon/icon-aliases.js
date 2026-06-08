@@ -166,6 +166,7 @@ export const aliases = {
 
 	// gear
 	'global-settings': 'gear',
+	'settings': 'gear',
 
 	// globe
 	'languages': 'globe',
