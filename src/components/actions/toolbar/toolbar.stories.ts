@@ -169,7 +169,7 @@ export const Sizes = {
 		<div style="display: flex; flex-direction: column; gap: 16px;">
 			<div>
 				<p style="font-size: 0.75rem; color: var(--semantics-content-color); margin: 0 0 8px;">md (default)</p>
-				${resizable(html`
+				${html`
 					<nldd-toolbar size="md">
 						<nldd-toolbar-item
 							slot="start"
@@ -205,11 +205,11 @@ export const Sizes = {
 							></nldd-menu-item>
 						</nldd-toolbar-item>
 					</nldd-toolbar>
-				`)}
+				`}
 			</div>
 			<div>
 				<p style="font-size: 0.75rem; color: var(--semantics-content-color); margin: 0 0 8px;">sm</p>
-				${resizable(html`
+				${html`
 					<nldd-toolbar size="sm">
 						<nldd-toolbar-item
 							slot="start"
@@ -245,7 +245,7 @@ export const Sizes = {
 							></nldd-menu-item>
 						</nldd-toolbar-item>
 					</nldd-toolbar>
-				`)}
+				`}
 			</div>
 		</div>
 	`,
@@ -256,7 +256,7 @@ export const LabelsToggle = {
 		<div style="display: flex; flex-direction: column; gap: 16px;">
 			<div>
 				<p style="font-size: 0.75rem; color: var(--semantics-content-color); margin: 0 0 8px;">Zonder labels</p>
-				${resizable(html`
+				${html`
 					<nldd-toolbar size="md">
 						<nldd-toolbar-item
 							slot="start"
@@ -290,11 +290,11 @@ export const LabelsToggle = {
 							</nldd-menu-group>
 						</nldd-toolbar-item>
 					</nldd-toolbar>
-				`)}
+				`}
 			</div>
 			<div>
 				<p style="font-size: 0.75rem; color: var(--semantics-content-color); margin: 0 0 8px;">Met labels</p>
-				${resizable(html`
+				${html`
 					<nldd-toolbar
 						size="md"
 						show-item-labels
@@ -331,13 +331,14 @@ export const LabelsToggle = {
 							</nldd-menu-group>
 						</nldd-toolbar-item>
 					</nldd-toolbar>
-				`)}
+				`}
 			</div>
 		</div>
 	`,
 };
 
 export const WithOverflow = {
+	name: 'Overflow',
 	render: () => resizable(html`
 		<nldd-toolbar size="md">
 			<nldd-toolbar-item
@@ -429,6 +430,7 @@ export const WithOverflow = {
 };
 
 export const WithPriority = {
+	name: 'Overflow with Priority',
 	render: () => resizable(html`
 		<nldd-toolbar size="md">
 			<nldd-toolbar-item
@@ -586,6 +588,7 @@ export const WithFluidItem = {
 };
 
 export const WithPinnedOverflow = {
+	name: 'With pinned overflow items',
 	render: () => resizable(html`
 		<nldd-toolbar size="md">
 			<nldd-toolbar-item
@@ -640,6 +643,7 @@ export const WithPinnedOverflow = {
 };
 
 export const WithPinnedAndDynamicOverflow = {
+	name: 'With Pinned And Priority Overflow',
 	render: () => resizable(html`
 		<nldd-toolbar size="md">
 			<nldd-toolbar-item
