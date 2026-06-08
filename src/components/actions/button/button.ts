@@ -4,7 +4,7 @@
  * @element nldd-button
  * @attr {string} variant - Button variant: 'primary' | 'secondary' | 'destructive' | 'accent-filled' | 'accent-transparent' | 'neutral-tinted' | 'neutral-transparent' | 'critical-tinted' | 'critical-transparent'
  * @attr {string} size - Button size: 'xs' | 'sm' | 'md' | 'lg' (default: 'md'). 'lg' uses larger text and 24px start/end icons.
- * @attr {string} horizontal-alignment - Horizontal alignment of the button content: 'left' | 'center' | 'right' (default: 'center'). Most visible with width="full" or a fixed width.
+ * @attr {string} horizontal-alignment - Horizontal alignment of the button content: 'left' | 'center' | 'right' (default: unset, centered). Most visible with width="full" or a fixed width.
  * @attr {boolean} disabled - Disabled state
  * @attr {string} type - Button type for form submission: 'button' | 'submit' | 'reset' (ignored when href is set)
  * @attr {boolean} expandable - Whether the button has a icon to indicate it opens a menu or popover
@@ -69,7 +69,7 @@ export class NLDDButton extends LitElement {
 
 	/** Horizontal alignment of the button content. Most visible with width="full" or a fixed width. */
 	@property({ type: String, reflect: true, attribute: 'horizontal-alignment' })
-	horizontalAlignment: 'left' | 'center' | 'right' = 'center';
+	horizontalAlignment: 'left' | 'center' | 'right' | '' = '';
 
 	/** Width mode: 'full' (stretch to container) or any CSS length. */
 	@property({ type: String, reflect: true })

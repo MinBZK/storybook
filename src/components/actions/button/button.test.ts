@@ -61,10 +61,12 @@ describe('nldd-button', () => {
 		expect(el.getAttribute('size')).toBe('lg');
 	});
 
-	it('defaults horizontal-alignment to center', async () => {
+	it('does not reflect horizontal-alignment="center" by default', async () => {
 		el = await fixture('<nldd-button text="X"></nldd-button>');
 		await waitForUpdate(el);
-		expect(el.getAttribute('horizontal-alignment')).toBe('center');
+		// Default is '' (centered via CSS); the old default reflected
+		// horizontal-alignment="center" onto every button, which was noise.
+		expect(el.getAttribute('horizontal-alignment')).not.toBe('center');
 	});
 
 	it('reflects the horizontal-alignment attribute', async () => {

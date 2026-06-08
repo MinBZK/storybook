@@ -485,7 +485,7 @@ export const buttonStyles = css`
 		display: block;
 		position: absolute;
 		top: 50%;
-		right: var(--_inline-padding);
+		inset-inline-end: var(--_inline-padding);
 		width: var(--_disclosure-icon-size);
 		height: var(--_disclosure-icon-size);
 		transform: translateY(-50%);
