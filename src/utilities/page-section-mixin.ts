@@ -128,6 +128,15 @@ export function PageSectionMixin<TBase extends Constructor<LitElement>>(
 			if (changed.has('height')) this._applyHeight();
 		}
 
+		// Hide a slot wrapper (header/footer) when the slot has no assigned
+		// elements, so empty regions collapse. Shared by every page section.
+		_onSlotChange(e: Event): void {
+			const slot = e.target as HTMLSlotElement;
+			const wrapper = slot.parentElement;
+			if (!wrapper) return;
+			wrapper.hidden = slot.assignedElements().length === 0;
+		}
+
 		private _applyBackground(): void {
 			if (this.background === 'base' || this.background === 'tinted') {
 				const token = BACKGROUND_TOKEN[this.background];
@@ -244,6 +253,7 @@ export function PageSectionMixin<TBase extends Constructor<LitElement>>(
 				lgPaddingTop?: PageSectionPadding;
 				lgPaddingBottom?: PageSectionPadding;
 				height?: string;
+				_onSlotChange(e: Event): void;
 			}
 		>;
 }
