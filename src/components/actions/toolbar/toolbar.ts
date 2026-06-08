@@ -728,6 +728,11 @@ export class NLDDToolbar extends LitElement {
 
 // # Helpers
 
+/** A toolbar child narrowed to an item; the overflow grouping operates on these. */
+type OverflowItem = Extract<ToolbarChild, { type: 'item' }>;
+/** Items bucketed into overflow groups (each inner array overflows together). */
+type OverflowGroups = OverflowItem[][];
+
 /**
  * Groups prioritized items for overflow. Items with an explicit priority that
  * share a value form one group (they overflow together); items without a
@@ -736,9 +741,9 @@ export class NLDDToolbar extends LitElement {
  * @internal Exported for unit tests only; not part of the public API.
  */
 export function groupForOverflow(
-	items: Extract<ToolbarChild, { type: 'item' }>[],
-): Extract<ToolbarChild, { type: 'item' }>[][] {
-	const groups: Extract<ToolbarChild, { type: 'item' }>[][] = [];
+	items: OverflowItem[],
+): OverflowGroups {
+	const groups: OverflowGroups = [];
 	for (const child of items) {
 		const last = groups[groups.length - 1];
 		if (last && child.hasPriority && last[0].hasPriority && last[0].priority === child.priority) last.push(child);
