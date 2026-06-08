@@ -9,7 +9,7 @@
  * @slot start    - nldd-toolbar-item and nldd-toolbar-title elements placed at the start
  * @slot center   - nldd-toolbar-item and nldd-toolbar-title elements placed at the center
  * @slot end      - nldd-toolbar-item and nldd-toolbar-title elements placed at the end
- * @slot overflow - nldd-menu-item and nldd-menu-divider elements always shown in the overflow menu
+ * @slot overflow - nldd-menu-item, nldd-menu-divider and nldd-menu-group elements always shown in the overflow menu
  *
  * ---
  *
@@ -21,7 +21,7 @@
  * @attr {number} priority - Overflow order: items with a lower priority move into the overflow menu first (default 0).
  *
  * @slot - The control shown in the toolbar (e.g. nldd-icon-button)
- * @slot overflow - nldd-menu-item / nldd-menu-divider children, shown in the overflow menu when this item overflows
+ * @slot overflow - nldd-menu-item / nldd-menu-divider / nldd-menu-group children, shown in the overflow menu when this item overflows
  *
  * ---
  *
@@ -641,7 +641,7 @@ export class NLDDToolbar extends LitElement {
 
 					const overflowItems = Array.from(el.children).filter(child => {
 						const childTag = child.tagName.toLowerCase();
-						return childTag === 'nldd-menu-item' || childTag === 'nldd-menu-divider';
+						return childTag === 'nldd-menu-item' || childTag === 'nldd-menu-divider' || childTag === 'nldd-menu-group';
 					});
 					overflowItems.forEach(child => child.setAttribute('slot', 'overflow'));
 
@@ -657,7 +657,7 @@ export class NLDDToolbar extends LitElement {
 		this._pinnedOverflowItems = Array.from(this.children).filter(el => {
 			const tag = el.tagName.toLowerCase();
 			return el.getAttribute('slot') === 'overflow' &&
-				(tag === 'nldd-menu-item' || tag === 'nldd-menu-divider');
+				(tag === 'nldd-menu-item' || tag === 'nldd-menu-divider' || tag === 'nldd-menu-group');
 		});
 	}
 

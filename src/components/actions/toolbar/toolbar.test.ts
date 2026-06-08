@@ -404,4 +404,22 @@ describe('nldd-toolbar', () => {
 		const toolbar = el as unknown as { _startChildren: { isFluid: boolean }[] };
 		expect(toolbar._startChildren[0].isFluid).toBe(false);
 	});
+
+	it('treats a menu-group as an overflow item', async () => {
+		el = await fixture(`
+			<nldd-toolbar>
+				<nldd-toolbar-item slot="start" label="Opmaak">
+					<nldd-icon-button aria-label="Opmaak"></nldd-icon-button>
+					<nldd-menu-group slot="overflow" text="Opmaak">
+						<nldd-menu-item text="Vet"></nldd-menu-item>
+					</nldd-menu-group>
+				</nldd-toolbar-item>
+			</nldd-toolbar>
+		`);
+		await waitForUpdate(el);
+		const toolbar = el as unknown as { _startChildren: { overflowItems: Element[] }[] };
+		const overflow = toolbar._startChildren[0].overflowItems;
+		expect(overflow.length).toBe(1);
+		expect(overflow[0].tagName.toLowerCase()).toBe('nldd-menu-group');
+	});
 });

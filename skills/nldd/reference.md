@@ -175,7 +175,7 @@ A split button combines a primary action button with a dropdown trigger. The mai
 | `start` | nldd-toolbar-item and nldd-toolbar-title elements placed at the start |
 | `center` | nldd-toolbar-item and nldd-toolbar-title elements placed at the center |
 | `end` | nldd-toolbar-item and nldd-toolbar-title elements placed at the end |
-| `overflow` | nldd-menu-item and nldd-menu-divider elements always shown in the overflow menu |
+| `overflow` | nldd-menu-item, nldd-menu-divider and nldd-menu-group elements always shown in the overflow menu |
 
 ### `<nldd-toolbar-item>`
 
@@ -194,7 +194,7 @@ A split button combines a primary action button with a dropdown trigger. The mai
 | Slot | Beschrijving |
 | --- | --- |
 | _(default)_ | The control shown in the toolbar (e.g. nldd-icon-button) |
-| `overflow` | nldd-menu-item / nldd-menu-divider children, shown in the overflow menu when this item overflows |
+| `overflow` | nldd-menu-item / nldd-menu-divider / nldd-menu-group children, shown in the overflow menu when this item overflows |
 
 ### `<nldd-toolbar-title>`
 
