@@ -213,4 +213,27 @@ describe('nldd-image', () => {
 			cleanup(el);
 		}
 	});
+
+	it('sets the loaded host attribute when the image loads', async () => {
+		// No src: a relative URL would 404 in the test env and fire a real
+		// `error`, racing the synthetic `load` below. The load handler doesn't
+		// depend on src, so dispatching directly is enough.
+		el = await fixture<NLDDImage>('<nldd-image alt="Foo"></nldd-image>');
+		await waitForUpdate(el);
+		const img = el.shadowRoot!.querySelector('img')!;
+		img.dispatchEvent(new Event('load'));
+		await waitForUpdate(el);
+		expect(el.hasAttribute('loaded')).toBe(true);
+		expect(el.hasAttribute('errored')).toBe(false);
+	});
+
+	it('sets the errored host attribute when the image fails to load', async () => {
+		el = await fixture<NLDDImage>('<nldd-image src="/missing.jpg" alt="Foo"></nldd-image>');
+		await waitForUpdate(el);
+		const img = el.shadowRoot!.querySelector('img')!;
+		img.dispatchEvent(new Event('error'));
+		await waitForUpdate(el);
+		expect(el.hasAttribute('errored')).toBe(true);
+		expect(el.hasAttribute('loaded')).toBe(false);
+	});
 });
