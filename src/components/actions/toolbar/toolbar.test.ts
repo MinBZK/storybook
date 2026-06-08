@@ -461,6 +461,10 @@ describe('nldd-toolbar', () => {
 	});
 
 	it('groups only explicit priorities for overflow (no priority attribute = individual)', () => {
+		// Partial fixture cast to the item type: groupForOverflow only reads
+		// type/priority/hasPriority, so the remaining ToolbarChild fields are
+		// intentionally omitted. If that type gains a required field this cast hides
+		// it — revisit when the groupForOverflow input changes.
 		const item = (id: number, priority: number, hasPriority: boolean) =>
 			({ type: 'item', id, priority, hasPriority }) as unknown as Parameters<typeof groupForOverflow>[0][number];
 		const ids = (groups: ReturnType<typeof groupForOverflow>) => groups.map(g => g.map(c => c.id));

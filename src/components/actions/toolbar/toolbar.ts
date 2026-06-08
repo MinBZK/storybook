@@ -19,6 +19,9 @@
  * @attr {string} max-width - Maximum (fluid) width as a CSS length (e.g. '480px'). Setting it also makes the item fluid.
  * @attr {string} label - Text label shown below the item when the toolbar has show-item-labels.
  * @attr {number} priority - Overflow order: items with a lower priority move into the overflow menu first (default 0).
+ * @attr {boolean} fluid - Set by nldd-toolbar, not a consumer attribute: marks an item that grows or shrinks to fill space. Toggled synchronously during measurement, so it can appear or disappear between layout frames — do not style against it.
+ * @attr {boolean} solo-fluid - Set by nldd-toolbar, not a consumer attribute: the sole fluid item, allowed to shrink below its content. Same synchronous-toggle caveat as fluid.
+ * @attr {boolean} hidden - Set by nldd-toolbar, not a consumer attribute, when the item moves into the overflow menu. Same synchronous-toggle caveat.
  *
  * @slot - The control shown in the toolbar (e.g. nldd-icon-button)
  * @slot overflow - nldd-menu-item / nldd-menu-divider / nldd-menu-group children, shown in the overflow menu when this item overflows

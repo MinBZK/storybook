@@ -189,6 +189,9 @@ A split button combines a primary action button with a dropdown trigger. The mai
 | `max-width` | `string` | Maximum (fluid) width as a CSS length (e.g. '480px'). Setting it also makes the item fluid. |
 | `label` | `string` | Text label shown below the item when the toolbar has show-item-labels. |
 | `priority` | `number` | Overflow order: items with a lower priority move into the overflow menu first (default 0). |
+| `fluid` | `boolean` | Set by nldd-toolbar, not a consumer attribute: marks an item that grows or shrinks to fill space. Toggled synchronously during measurement, so it can appear or disappear between layout frames — do not style against it. |
+| `solo-fluid` | `boolean` | Set by nldd-toolbar, not a consumer attribute: the sole fluid item, allowed to shrink below its content. Same synchronous-toggle caveat as fluid. |
+| `hidden` | `boolean` | Set by nldd-toolbar, not a consumer attribute, when the item moves into the overflow menu. Same synchronous-toggle caveat. |
 
 **Slots**
 
