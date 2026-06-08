@@ -165,6 +165,10 @@ export const documentTabBarStyles = css`
 		justify-content: center;
 	}
 
+	a.document-tab-bar__item-tab {
+		cursor: var(--semantics-controls-link-cursor);
+	}
+
 	.document-tab-bar__drag-clone .document-tab-bar__item-text {
 		overflow: hidden;
 		font: var(--components-document-tab-bar-tab-title-font);

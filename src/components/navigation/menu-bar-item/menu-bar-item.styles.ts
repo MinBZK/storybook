@@ -50,6 +50,10 @@ export const menuBarItemStyles = css`
 		appearance: none;
 	}
 
+	a.menu-bar-item {
+		cursor: var(--semantics-controls-link-cursor);
+	}
+
 	/* ## Hover indicator (::before) */
 
 	.menu-bar-item::before {

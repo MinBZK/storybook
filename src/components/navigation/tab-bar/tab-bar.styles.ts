@@ -115,6 +115,10 @@ export const tabBarItemStyles = css`
 		appearance: none;
 	}
 
+	a.tab-bar__item {
+		cursor: var(--semantics-controls-link-cursor);
+	}
+
 	:host([variant="icon-and-text"]:not([size="lg"])) .tab-bar__item {
 		height: var(--semantics-controls-md-min-size);
 		padding: var(--primitives-space-8) var(--primitives-space-12);
