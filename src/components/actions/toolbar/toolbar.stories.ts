@@ -260,14 +260,17 @@ export const LabelsToggle = {
 							<nldd-menu-group slot="overflow" text="Tekststijl">
 								<nldd-menu-item
 									text="Vet"
+									icon="bold"
 									type="checkbox"
 								></nldd-menu-item>
 								<nldd-menu-item
 									text="Cursief"
+									icon="italic"
 									type="checkbox"
 								></nldd-menu-item>
 								<nldd-menu-item
 									text="Onderstrepen"
+									icon="underlined"
 									type="checkbox"
 								></nldd-menu-item>
 							</nldd-menu-group>
@@ -298,14 +301,17 @@ export const LabelsToggle = {
 							<nldd-menu-group slot="overflow" text="Tekststijl">
 								<nldd-menu-item
 									text="Vet"
+									icon="bold"
 									type="checkbox"
 								></nldd-menu-item>
 								<nldd-menu-item
 									text="Cursief"
+									icon="italic"
 									type="checkbox"
 								></nldd-menu-item>
 								<nldd-menu-item
 									text="Onderstrepen"
+									icon="underlined"
 									type="checkbox"
 								></nldd-menu-item>
 							</nldd-menu-group>
@@ -336,14 +342,17 @@ export const WithOverflow = {
 				<nldd-menu-group slot="overflow" text="Tekststijl">
 					<nldd-menu-item
 						text="Vet"
+						icon="bold"
 						type="checkbox"
 					></nldd-menu-item>
 					<nldd-menu-item
 						text="Cursief"
+						icon="italic"
 						type="checkbox"
 					></nldd-menu-item>
 					<nldd-menu-item
 						text="Onderstrepen"
+						icon="underlined"
 						type="checkbox"
 					></nldd-menu-item>
 				</nldd-menu-group>
@@ -364,14 +373,17 @@ export const WithOverflow = {
 				<nldd-menu-group slot="overflow" text="Lijst">
 					<nldd-menu-item
 						text="Geen"
+						icon="minus-small"
 						type="checkbox"
 					></nldd-menu-item>
 					<nldd-menu-item
 						text="Lijst"
+						icon="bullet-list"
 						type="checkbox"
 					></nldd-menu-item>
 					<nldd-menu-item
 						text="Genummerd"
+						icon="numbered-list"
 						type="checkbox"
 					></nldd-menu-item>
 				</nldd-menu-group>
@@ -384,52 +396,6 @@ export const WithOverflow = {
 				<nldd-menu-item
 					slot="overflow"
 					text="Annuleer"
-				></nldd-menu-item>
-			</nldd-toolbar-item>
-			<nldd-toolbar-item
-				slot="end"
-				label="Sla op"
-			>
-				<nldd-button variant="primary" text="Sla op"></nldd-button>
-				<nldd-menu-item
-					slot="overflow"
-					text="Sla op"
-				></nldd-menu-item>
-			</nldd-toolbar-item>
-		</nldd-toolbar>
-	`),
-};
-
-export const WithOverflowPartial = {
-	render: () => resizable(html`
-		<nldd-toolbar size="md">
-			<nldd-toolbar-item
-				slot="start"
-				label="Vet"
-			>
-				<nldd-icon-button text="Vet" icon="bold"></nldd-icon-button>
-				<nldd-menu-item
-					slot="overflow"
-					text="Vet"
-					type="checkbox"
-				></nldd-menu-item>
-			</nldd-toolbar-item>
-			<nldd-toolbar-item
-				slot="start"
-				label="Cursief"
-			>
-				<nldd-icon-button text="Cursief" icon="italic"></nldd-icon-button>
-				<!-- Geen overflow slot: wordt stilzwijgend overgeslagen in het menu -->
-			</nldd-toolbar-item>
-			<nldd-toolbar-item
-				slot="start"
-				label="Onderstrepen"
-			>
-				<nldd-icon-button text="Onderstrepen" icon="underlined"></nldd-icon-button>
-				<nldd-menu-item
-					slot="overflow"
-					text="Onderstrepen"
-					type="checkbox"
 				></nldd-menu-item>
 			</nldd-toolbar-item>
 			<nldd-toolbar-item
@@ -466,14 +432,17 @@ export const WithPriority = {
 				<nldd-menu-group slot="overflow" text="Tekststijl">
 					<nldd-menu-item
 						text="Vet"
+						icon="bold"
 						type="checkbox"
 					></nldd-menu-item>
 					<nldd-menu-item
 						text="Cursief"
+						icon="italic"
 						type="checkbox"
 					></nldd-menu-item>
 					<nldd-menu-item
 						text="Onderstrepen"
+						icon="underlined"
 						type="checkbox"
 					></nldd-menu-item>
 				</nldd-menu-group>
@@ -495,14 +464,17 @@ export const WithPriority = {
 				<nldd-menu-group slot="overflow" text="Lijst">
 					<nldd-menu-item
 						text="Geen"
+						icon="minus-small"
 						type="checkbox"
 					></nldd-menu-item>
 					<nldd-menu-item
 						text="Lijst"
+						icon="bullet-list"
 						type="checkbox"
 					></nldd-menu-item>
 					<nldd-menu-item
 						text="Genummerd"
+						icon="numbered-list"
 						type="checkbox"
 					></nldd-menu-item>
 				</nldd-menu-group>
@@ -609,10 +581,12 @@ export const WithPinnedOverflow = {
 				<nldd-menu-group slot="overflow" text="Tekststijl">
 					<nldd-menu-item
 						text="Vet"
+						icon="bold"
 						type="checkbox"
 					></nldd-menu-item>
 					<nldd-menu-item
 						text="Cursief"
+						icon="italic"
 						type="checkbox"
 					></nldd-menu-item>
 				</nldd-menu-group>
@@ -698,14 +672,17 @@ export const WithPinnedAndDynamicOverflow = {
 				<nldd-menu-group slot="overflow" text="Tekststijl">
 					<nldd-menu-item
 						text="Vet"
+						icon="bold"
 						type="checkbox"
 					></nldd-menu-item>
 					<nldd-menu-item
 						text="Cursief"
+						icon="italic"
 						type="checkbox"
 					></nldd-menu-item>
 					<nldd-menu-item
 						text="Onderstrepen"
+						icon="underlined"
 						type="checkbox"
 					></nldd-menu-item>
 				</nldd-menu-group>
@@ -727,14 +704,17 @@ export const WithPinnedAndDynamicOverflow = {
 				<nldd-menu-group slot="overflow" text="Lijst">
 					<nldd-menu-item
 						text="Geen"
+						icon="minus-small"
 						type="checkbox"
 					></nldd-menu-item>
 					<nldd-menu-item
 						text="Lijst"
+						icon="bullet-list"
 						type="checkbox"
 					></nldd-menu-item>
 					<nldd-menu-item
 						text="Genummerd"
+						icon="numbered-list"
 						type="checkbox"
 					></nldd-menu-item>
 				</nldd-menu-group>
