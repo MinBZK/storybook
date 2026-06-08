@@ -736,6 +736,7 @@ export const WithPinnedAndDynamicOverflow = {
 			<nldd-menu-divider slot="overflow"></nldd-menu-divider>
 			<nldd-menu-item
 				slot="overflow"
+				destructive
 				text="Verwijder"
 				icon="delete"
 			></nldd-menu-item>
