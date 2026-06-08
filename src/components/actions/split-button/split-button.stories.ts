@@ -147,9 +147,7 @@ export const Sizes = {
 export const VolleBreedte = {
 	name: 'Volle breedte',
 	render: () => html`
-	<div style="width: 320px;">
-		<nldd-split-button text="Opslaan" width="full">${menu}</nldd-split-button>
-	</div>
+	<nldd-split-button text="Opslaan" width="full">${menu}</nldd-split-button>
 `,
 	parameters: {
 		controls: { disable: true },
