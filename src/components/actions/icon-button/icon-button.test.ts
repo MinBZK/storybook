@@ -550,4 +550,17 @@ describe('nldd-icon-button – loading', () => {
 		await waitForUpdate(el);
 		expect(el.shadowRoot!.querySelector('button')!.hasAttribute('disabled')).toBe(false);
 	});
+
+	it('renders the icon-placeholder fallback and keeps _hasIcon false when no icon is provided', async () => {
+		el = await fixture<NLDDIconButton>('<nldd-icon-button accessible-label="X"></nldd-icon-button>');
+		await waitForUpdate(el);
+		expect(el.shadowRoot!.querySelector('nldd-icon[name="icon-placeholder"]')).not.toBeNull();
+		expect((el as unknown as { _hasIcon: boolean })._hasIcon).toBe(false);
+	});
+
+	it('sets _hasIcon true once an icon is slotted (via _onIconSlotChange)', async () => {
+		el = await fixture<NLDDIconButton>('<nldd-icon-button accessible-label="X"><svg slot="icon"></svg></nldd-icon-button>');
+		await waitForUpdate(el);
+		expect((el as unknown as { _hasIcon: boolean })._hasIcon).toBe(true);
+	});
 });
