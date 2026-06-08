@@ -155,7 +155,10 @@ export class NLDDSplitButton extends LitElement {
 		this.dispatchEvent(new CustomEvent('menu-click', { bubbles: true, composed: true }));
 	}
 
-	override updated(changedProperties: Map<string, unknown>): void {
+	// willUpdate (not updated) so the host width is resolved before the first
+	// render rather than one frame after it — otherwise an explicit width
+	// briefly flashes at the auto default.
+	override willUpdate(changedProperties: Map<string, unknown>): void {
 		if (changedProperties.has('width')) {
 			// 'full' switches the host to block + 100% via CSS; a valid CSS length
 			// is applied inline. Either way --_width drives the inner layout so the
