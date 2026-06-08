@@ -110,9 +110,6 @@ export const dropdownStyles = css`
 	.dropdown:active {
 		background-color: var(--_is-active-background-color);
 		color: var(--_is-active-content-color);
-	}
-
-	.dropdown:active {
 		--_highlight-border-color: var(--_is-active-highlight-border-color);
 	}
 

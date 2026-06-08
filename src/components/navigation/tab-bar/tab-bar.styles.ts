@@ -7,6 +7,7 @@ export const tabBarStyles = css`
 	/* # Host */
 
 	:host {
+		--_gap: var(--primitives-space-1);
 		--_z-index-selected: 1;
 		--_z-index-focus: 2;
 
@@ -49,7 +50,7 @@ export const tabBarStyles = css`
 		flex-direction: row;
 		align-items: center;
 		justify-content: center;
-		gap: var(--primitives-space-1);
+		gap: var(--_gap);
 	}
 
 	:host([size="lg"]) .tab-bar__items {
