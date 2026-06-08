@@ -639,52 +639,6 @@ export const WithPinnedOverflow = {
 	`),
 };
 
-export const WithPinnedOverflowOnly = {
-	render: () => resizable(html`
-		<nldd-toolbar size="md">
-			<nldd-toolbar-item
-				slot="start"
-				label="Terug"
-			>
-				<nldd-icon-button text="Terug" icon="chevron-left"></nldd-icon-button>
-				<nldd-menu-item
-					slot="overflow"
-					text="Terug"
-					icon="chevron-left"
-				></nldd-menu-item>
-			</nldd-toolbar-item>
-			<nldd-toolbar-title
-				slot="start"
-				text="Document titel"
-				supporting-text="Laatste wijziging: vandaag"
-			></nldd-toolbar-title>
-			<nldd-toolbar-item
-				slot="end"
-				label="Sla op"
-			>
-				<nldd-button variant="primary" text="Sla op"></nldd-button>
-			</nldd-toolbar-item>
-			<nldd-menu-divider slot="overflow"></nldd-menu-divider>
-			<nldd-menu-item
-				slot="overflow"
-				text="Exporteren"
-				icon="export"
-			></nldd-menu-item>
-			<nldd-menu-item
-				slot="overflow"
-				text="Delen"
-				icon="share"
-			></nldd-menu-item>
-			<nldd-menu-divider slot="overflow"></nldd-menu-divider>
-			<nldd-menu-item
-				slot="overflow"
-				text="Verwijder"
-				icon="delete"
-			></nldd-menu-item>
-		</nldd-toolbar>
-	`),
-};
-
 export const WithPinnedAndDynamicOverflow = {
 	render: () => resizable(html`
 		<nldd-toolbar size="md">
