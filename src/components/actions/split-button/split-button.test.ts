@@ -96,4 +96,18 @@ describe('nldd-split-button', () => {
 		expect(menuClickFired).toBe(false);
 		expect(menu.matches(':popover-open')).toBe(true);
 	});
+
+	it('applies an explicit width to the host and --_width', async () => {
+		el = await fixture('<nldd-split-button text="Opslaan" width="240px"></nldd-split-button>');
+		await waitForUpdate(el);
+		expect((el as HTMLElement).style.width).toBe('240px');
+		expect((el as HTMLElement).style.getPropertyValue('--_width')).toBe('100%');
+	});
+
+	it('treats width="full" as 100% via --_width without an inline width', async () => {
+		el = await fixture('<nldd-split-button text="Opslaan" width="full"></nldd-split-button>');
+		await waitForUpdate(el);
+		expect((el as HTMLElement).style.getPropertyValue('--_width')).toBe('100%');
+		expect((el as HTMLElement).style.width).toBe('');
+	});
 });
