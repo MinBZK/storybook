@@ -45,6 +45,7 @@ here; consult the commit history if you need that level of detail.
 - **`nldd-card`**: square corners (border-radius removed).
 - **`nldd-inline-dialog`**: smaller icons (md 48 → 40px, lg 56 → 48px).
 - **`nldd-breadcrumbs`**: keeps the full trail and wraps on small screens; the small-screen collapse-to-back-link and its container-query machinery are removed.
+- **Input fields**: autofill stays light in both color schemes — a light-yellow background with dark-amber text — instead of inverting in dark mode, via the new `--semantics-input-fields-is-autofill-content-color` token.
 
 ### Breaking
 
@@ -58,6 +59,8 @@ here; consult the commit history if you need that level of detail.
 
 - **`nldd-rich-text`**: the table-header underline is kept (the last-row border is scoped to `tbody`).
 - **`nldd-code-viewer`**: the actions button gets an isolated stacking context.
+- **`nldd-table`**: the empty state no longer scrolls horizontally — the message spans the box width instead of the data columns.
+- **`nldd-tab-bar`, `nldd-document-tab-bar`, `nldd-menu-bar-item`**: the link (anchor) variant shows the link cursor, matching `nldd-button`.
 
 ## <small>0.8.56 (2026-06-03)</small>
 
