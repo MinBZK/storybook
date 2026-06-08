@@ -26,7 +26,7 @@ de `.d.ts` bestanden van het pakket.
 | --- | --- | --- |
 | `variant` | `string` | Button variant: 'primary' \| 'secondary' \| 'destructive' \| 'accent-filled' \| 'accent-transparent' \| 'neutral-tinted' \| 'neutral-transparent' \| 'critical-tinted' \| 'critical-transparent' |
 | `size` | `string` | Button size: 'xs' \| 'sm' \| 'md' \| 'lg' (default: 'md'). 'lg' uses larger text and 24px start/end icons. |
-| `horizontal-alignment` | `string` | Horizontal alignment of the button content: 'left' \| 'center' \| 'right' (default: 'center'). Most visible with width="full" or a fixed width. |
+| `horizontal-alignment` | `string` | Horizontal alignment of the button content: 'left' \| 'center' \| 'right' (default: unset, centered). Most visible with width="full" or a fixed width. |
 | `disabled` | `boolean` | Disabled state |
 | `type` | `string` | Button type for form submission: 'button' \| 'submit' \| 'reset' (ignored when href is set) |
 | `expandable` | `boolean` | Whether the button has a icon to indicate it opens a menu or popover |
