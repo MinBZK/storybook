@@ -466,7 +466,7 @@ export const WithPriority = {
 			<nldd-toolbar-item
 				slot="start"
 				label="Lijst"
-				priority="2"
+				priority="1"
 			>
 				<nldd-segmented-control
 					type="radio"
