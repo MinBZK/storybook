@@ -758,18 +758,23 @@ export const MobieleActiebalk = {
 					<nldd-tab-bar-item text="Profiel" icon="profile"></nldd-tab-bar-item>
 					<nldd-tab-bar-item text="Zoeken" icon="search"></nldd-tab-bar-item>
 				</nldd-tab-bar>
+				<nldd-menu-group slot="overflow" text="Hoofdnavigatie">
+					<nldd-menu-item text="Home" icon="home"></nldd-menu-item>
+					<nldd-menu-item text="Profiel" icon="profile"></nldd-menu-item>
+					<nldd-menu-item text="Zoeken" icon="search"></nldd-menu-item>
+				</nldd-menu-group>
 			</nldd-toolbar-item>
 			<nldd-toolbar-item slot="end" label="Zoeken">
 				<nldd-icon-button text="Zoeken" icon="search"></nldd-icon-button>
-				<nldd-menu-item slot="overflow" text="Zoeken"></nldd-menu-item>
+				<nldd-menu-item slot="overflow" text="Zoeken" icon="search"></nldd-menu-item>
 			</nldd-toolbar-item>
 			<nldd-toolbar-item slot="end" label="Downloaden">
 				<nldd-icon-button text="Downloaden" icon="download"></nldd-icon-button>
-				<nldd-menu-item slot="overflow" text="Downloaden"></nldd-menu-item>
+				<nldd-menu-item slot="overflow" text="Downloaden" icon="download"></nldd-menu-item>
 			</nldd-toolbar-item>
 			<nldd-toolbar-item slot="end" label="Profiel">
 				<nldd-icon-button text="Profiel" icon="profile"></nldd-icon-button>
-				<nldd-menu-item slot="overflow" text="Profiel"></nldd-menu-item>
+				<nldd-menu-item slot="overflow" text="Profiel" icon="profile"></nldd-menu-item>
 			</nldd-toolbar-item>
 		</nldd-toolbar>
 	`),
