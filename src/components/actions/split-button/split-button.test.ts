@@ -17,7 +17,7 @@ describe('nldd-split-button', () => {
 		expect(el.shadowRoot).not.toBeNull();
 	});
 
-	it('without slotted items, chevron click dispatches menu-click', async () => {
+	it('without a slotted menu, chevron click dispatches menu-click', async () => {
 		el = await fixture('<nldd-split-button text="Opslaan"></nldd-split-button>');
 		await waitForUpdate(el);
 
@@ -31,11 +31,13 @@ describe('nldd-split-button', () => {
 		expect(fired).toBe(true);
 	});
 
-	it('with slotted items, chevron click opens the internal menu instead of firing menu-click', async () => {
+	it('with a slotted nldd-menu, chevron click opens it instead of firing menu-click', async () => {
 		el = await fixture(`
 			<nldd-split-button text="Opslaan">
-				<nldd-menu-item text="Opslaan als…"></nldd-menu-item>
-				<nldd-menu-item text="Verwijderen"></nldd-menu-item>
+				<nldd-menu>
+					<nldd-menu-item text="Opslaan als…"></nldd-menu-item>
+					<nldd-menu-item text="Verwijderen"></nldd-menu-item>
+				</nldd-menu>
 			</nldd-split-button>
 		`);
 		await waitForUpdate(el);
@@ -43,7 +45,7 @@ describe('nldd-split-button', () => {
 		let menuClickFired = false;
 		el.addEventListener('menu-click', () => { menuClickFired = true; });
 
-		const menu = el.shadowRoot!.querySelector<HTMLElement>('.split-button__menu')!;
+		const menu = el.querySelector<HTMLElement>('nldd-menu')!;
 		const trigger = el.shadowRoot!.querySelector<HTMLElement>('.split-button__popup-button nldd-icon-button')!;
 		trigger.click();
 		await waitForUpdate(el);
@@ -52,40 +54,72 @@ describe('nldd-split-button', () => {
 		expect(menu.matches(':popover-open')).toBe(true);
 	});
 
-	it('moves slotted menu-items into the internal menu', async () => {
+	it('keeps the slotted menu and its items in the light DOM (no moving)', async () => {
 		el = await fixture(`
 			<nldd-split-button text="Opslaan">
-				<nldd-menu-item text="A"></nldd-menu-item>
-				<nldd-menu-item text="B"></nldd-menu-item>
+				<nldd-menu>
+					<nldd-menu-item text="A"></nldd-menu-item>
+					<nldd-menu-item text="B"></nldd-menu-item>
+				</nldd-menu>
 			</nldd-split-button>
 		`);
 		await waitForUpdate(el);
 
-		const menu = el.shadowRoot!.querySelector<HTMLElement>('.split-button__menu')!;
+		const menu = el.querySelector('nldd-menu')!;
 		expect(menu.querySelectorAll('nldd-menu-item').length).toBe(2);
-		expect(el.querySelectorAll(':scope > nldd-menu-item').length).toBe(0);
+		// Nothing is moved into the split-button's shadow DOM.
+		expect(el.shadowRoot!.querySelector('nldd-menu')).toBeNull();
 	});
 
-	it('picks up menu-items added after first render', async () => {
+	it('wires an nldd-menu added after first render', async () => {
 		el = await fixture('<nldd-split-button text="Opslaan"></nldd-split-button>');
 		await waitForUpdate(el);
 
+		const menu = document.createElement('nldd-menu');
 		const item = document.createElement('nldd-menu-item');
-		item.setAttribute('text', 'Later toegevoegd');
-		el.appendChild(item);
+		item.setAttribute('text', 'Later');
+		menu.appendChild(item);
+		el.appendChild(menu);
 		await waitForUpdate(el);
 
-		const menu = el.shadowRoot!.querySelector<HTMLElement>('.split-button__menu')!;
-		expect(menu.querySelectorAll('nldd-menu-item').length).toBe(1);
-		expect(el.querySelectorAll(':scope > nldd-menu-item').length).toBe(0);
+		// The wired menu and its item stay in the split-button's light DOM
+		// (the architecture pierces shadow boundaries instead of moving nodes).
+		expect(el.querySelector('nldd-menu nldd-menu-item')).not.toBeNull();
+		expect(el.shadowRoot!.querySelector('nldd-menu')).toBeNull();
 
-		// With items now present, chevron should open the menu instead of firing menu-click.
 		let menuClickFired = false;
 		el.addEventListener('menu-click', () => { menuClickFired = true; });
 		const trigger = el.shadowRoot!.querySelector<HTMLElement>('.split-button__popup-button nldd-icon-button')!;
 		trigger.click();
 		await waitForUpdate(el);
+
 		expect(menuClickFired).toBe(false);
 		expect(menu.matches(':popover-open')).toBe(true);
+	});
+
+	it('applies an explicit width to the host and --_width', async () => {
+		el = await fixture('<nldd-split-button text="Opslaan" width="240px"></nldd-split-button>');
+		await waitForUpdate(el);
+		expect((el as HTMLElement).style.width).toBe('240px');
+		expect((el as HTMLElement).style.getPropertyValue('--_width')).toBe('100%');
+	});
+
+	it('treats width="full" as 100% via --_width without an inline width', async () => {
+		el = await fixture('<nldd-split-button text="Opslaan" width="full"></nldd-split-button>');
+		await waitForUpdate(el);
+		expect((el as HTMLElement).style.getPropertyValue('--_width')).toBe('100%');
+		expect((el as HTMLElement).style.width).toBe('');
+	});
+
+	it('anchors a declaratively-slotted menu to the popup button', async () => {
+		el = await fixture(`
+			<nldd-split-button text="Opslaan">
+				<nldd-menu><nldd-menu-item text="A"></nldd-menu-item></nldd-menu>
+			</nldd-split-button>
+		`);
+		await waitForUpdate(el);
+		const menu = el.querySelector('nldd-menu') as unknown as { anchorElement: Element | null };
+		const wrapper = el.shadowRoot!.querySelector('.split-button__popup-button');
+		expect(menu.anchorElement).toBe(wrapper);
 	});
 });

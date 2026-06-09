@@ -4,6 +4,8 @@
  * @element nldd-icon-button
  * @attr {string}  variant           - Button variant: 'accent-filled' | 'accent-transparent' | 'neutral-tinted' | 'neutral-transparent' | 'critical-tinted' | 'critical-transparent' | 'primary' | 'secondary' | 'destructive'
  * @attr {string}  size              - Button size: 'xs' | 'sm' | 'md' | 'lg' (default: 'md')
+ * @attr {boolean} hide-lg-text      - In lg size, hides the text label and enlarges the icon by one step (28px)
+ * @attr {boolean} no-highlight-border - Removes the per-variant highlight border (e.g. when a control group draws a single border instead).
  * @attr {boolean} disabled          - Disabled state
  * @attr {string}  type              - Button type for form submission: 'button' | 'submit' | 'reset' (ignored when href is set)
  * @attr {boolean} expandable        - Whether the button opens a menu or popover and shows chevron next to the icon
@@ -11,7 +13,8 @@
  * @attr {string}  popup-type        - Type of popup container this button opens: 'menu' | 'listbox' | 'dialog' | 'tree' | 'grid'. Sets aria-haspopup on the inner button and forces aria-expanded to always be present (true/false) so screen readers know the popup state.
  * @attr {string}  width             - Width mode: 'full' (stretches to container) or any CSS length (e.g. '240px')
  * @attr {string}  text              - Button text, used as aria-label and shown below the icon in lg size
- * @attr {string}  icon              - Icon name for the nldd-icon element
+ * @attr {string}  icon              - Icon name for the nldd-icon element. Defaults to a placeholder icon
+ *                                     when neither this attribute nor the icon slot is set.
  * @attr {string}  accessible-label  - Accessible label for screen readers. Overrides text as aria-label
  *                                     and title tooltip. Use when the visible text alone lacks context for screen
  *                                     readers (e.g. text "Toon", accessible-label "Toon wachtwoord").
@@ -27,7 +30,8 @@
  * @attr {string}  rel               - Link rel attribute; defaults to 'noopener noreferrer' when target is '_blank'
  * @attr {string}  popovertarget     - ID of a popover element to toggle; forwarded to the inner <button>
  *
- * @slot icon - Slot for a custom icon (e.g. custom SVG). Only used when icon attribute is not set.
+ * @slot icon - Slot for a custom icon (e.g. custom SVG). Only used when icon attribute is not set;
+ *              falls back to a placeholder icon when the slot is empty.
  *
  * @example
  * ```html
@@ -51,6 +55,7 @@ export type Variant =
 	| 'accent-filled'
 	| 'accent-transparent'
 	| 'neutral-tinted'
+	| 'neutral-base'
 	| 'neutral-transparent'
 	| 'critical-tinted'
 	| 'critical-transparent';
@@ -73,6 +78,10 @@ export class NLDDIconButton extends LitElement {
 	@property({ type: String, reflect: true })
 	size: Size = 'md';
 
+	/** In lg size, hides the text label and enlarges the icon by one step (28px). */
+	@property({ type: Boolean, reflect: true, attribute: 'hide-lg-text' })
+	hideLgText = false;
+
 	/**
 	 * Loading state. Shows an activity indicator centred over the (visually
 	 * hidden) icon, marks the inner control `aria-busy="true"` and blocks
@@ -87,6 +96,10 @@ export class NLDDIconButton extends LitElement {
 
 	@property({ type: Boolean, reflect: true })
 	disabled = false;
+
+	/** Removes the per-variant highlight border (e.g. when nldd-button-bar draws a single group border instead). */
+	@property({ type: Boolean, reflect: true, attribute: 'no-highlight-border' })
+	noHighlightBorder = false;
 
 	@property({ type: String, reflect: true })
 	type: ButtonType = 'button';
@@ -138,7 +151,8 @@ export class NLDDIconButton extends LitElement {
 	@property({ type: String })
 	text = '';
 
-	/** Icon name for the nldd-icon element. When not set, the icon slot is used. */
+	/** Icon name for the nldd-icon element. When not set, the icon slot is used,
+	 *  falling back to a placeholder icon when that slot is also empty. */
 	@property({ type: String })
 	icon = '';
 
@@ -238,6 +252,12 @@ export class NLDDIconButton extends LitElement {
 	 */
 	override focus(options?: FocusOptions): void {
 		this.shadowRoot?.querySelector<HTMLElement>('.icon-button')?.focus(options);
+	}
+
+	// Stable reference (not an inline arrow) so Lit does not re-add the slot
+	// listener every render; mirrors the other @slotchange handlers.
+	_onIconSlotChange(): void {
+		this.requestUpdate();
 	}
 
 	override render() {

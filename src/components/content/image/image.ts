@@ -33,7 +33,7 @@
  *   "16:9" colon notation is also accepted for convenience.
  * @attr {'cover'|'contain'|'fill'|'scale-down'|'none'} object-fit - default: 'cover'
  * @attr {'center'|'top'|'bottom'|'left'|'right'} object-position - default: 'center'
- * @attr {'square'|'rounded'|'circle'} shape - Corner shape (default: 'rounded')
+ * @attr {'square'|'rounded'|'circle'} shape - Corner shape (default: 'square')
  * @attr {string}  caption - Caption text shown below the image
  * @attr {string}  credit - Smaller credit/attribution text shown beside the caption
  * @attr {boolean} decorative - Decorative image: alt is forced empty + aria-hidden
@@ -117,7 +117,7 @@ export class NLDDImage extends LitElement {
 	objectPosition: ImageObjectPosition = 'center';
 
 	@property({ type: String, reflect: true })
-	shape: ImageShape = 'rounded';
+	shape: ImageShape = 'square';
 
 	@property({ type: String })
 	caption = '';
@@ -259,6 +259,11 @@ export class NLDDImage extends LitElement {
 				this._warnedAlt = false;
 			}
 		}
+		// Reflect load/error state to host attributes so the whole component —
+		// and consumer CSS (`nldd-image[loaded]` / `[errored]`) — can react to
+		// it, not just the internal <img>.
+		this.toggleAttribute('loaded', this._imageLoaded);
+		this.toggleAttribute('errored', this._imageErrored);
 	}
 
 	/** DEV-only "missing alt" warning latch; see updated(). */

@@ -68,11 +68,11 @@ describe('nldd-image', () => {
 		expect(el.getAttribute('shape')).toBe('circle');
 	});
 
-	it('defaults shape to rounded', async () => {
+	it('defaults shape to square', async () => {
 		el = await fixture<NLDDImage>('<nldd-image src="/foo.jpg" alt="Foo"></nldd-image>');
 		await waitForUpdate(el);
-		expect((el as unknown as NLDDImage).shape).toBe('rounded');
-		expect(el.getAttribute('shape')).toBe('rounded');
+		expect((el as unknown as NLDDImage).shape).toBe('square');
+		expect(el.getAttribute('shape')).toBe('square');
 	});
 
 	it('defaults width to "full" and applies no host max-width', async () => {
@@ -133,7 +133,7 @@ describe('nldd-image', () => {
 		await waitForUpdate(el);
 		// Text now contains the translated default + the alt, so SR users get a
 		// meaningful announcement on the empty → non-empty transition.
-		expect(status!.textContent).toBe('Afbeelding kon niet worden geladen: Beschrijving');
+		expect(status!.textContent).toBe('Afbeelding is niet geladen: Beschrijving');
 	});
 
 	it('does not announce in the status region for decorative errored images', async () => {
@@ -212,5 +212,28 @@ describe('nldd-image', () => {
 			expect(media.classList.contains('image__media--lqip')).toBe(false);
 			cleanup(el);
 		}
+	});
+
+	it('sets the loaded host attribute when the image loads', async () => {
+		// No src: a relative URL would 404 in the test env and fire a real
+		// `error`, racing the synthetic `load` below. The load handler doesn't
+		// depend on src, so dispatching directly is enough.
+		el = await fixture<NLDDImage>('<nldd-image alt="Foo"></nldd-image>');
+		await waitForUpdate(el);
+		const img = el.shadowRoot!.querySelector('img')!;
+		img.dispatchEvent(new Event('load'));
+		await waitForUpdate(el);
+		expect(el.hasAttribute('loaded')).toBe(true);
+		expect(el.hasAttribute('errored')).toBe(false);
+	});
+
+	it('sets the errored host attribute when the image fails to load', async () => {
+		el = await fixture<NLDDImage>('<nldd-image src="/missing.jpg" alt="Foo"></nldd-image>');
+		await waitForUpdate(el);
+		const img = el.shadowRoot!.querySelector('img')!;
+		img.dispatchEvent(new Event('error'));
+		await waitForUpdate(el);
+		expect(el.hasAttribute('errored')).toBe(true);
+		expect(el.hasAttribute('loaded')).toBe(false);
 	});
 });

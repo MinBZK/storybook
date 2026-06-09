@@ -165,10 +165,14 @@ export const documentTabBarStyles = css`
 		justify-content: center;
 	}
 
+	a.document-tab-bar__item-tab {
+		cursor: var(--semantics-controls-link-cursor);
+	}
+
 	.document-tab-bar__drag-clone .document-tab-bar__item-text {
 		overflow: hidden;
 		font: var(--components-document-tab-bar-tab-title-font);
-		color: var(--semantics-buttons-neutral-tinted-content-color);
+		color: var(--semantics-buttons-neutral-tinted-primary-content-color);
 		text-overflow: ellipsis;
 		white-space: nowrap;
 	}
@@ -179,7 +183,7 @@ export const documentTabBarStyles = css`
 
 	.document-tab-bar__drag-clone.is-selected .document-tab-bar__item-text,
 	.document-tab-bar__drag-clone.is-selected .document-tab-bar__item-supporting-text {
-		color: var(--semantics-buttons-neutral-tinted-is-selected-content-color);
+		color: var(--semantics-buttons-neutral-tinted-is-selected-primary-content-color);
 	}
 
 	.document-tab-bar__drag-clone .document-tab-bar__item-supporting-text {
@@ -214,6 +218,15 @@ export const documentTabBarItemStyles = css`
 	/* # Host */
 
 	:host {
+		--_highlight-border-color: var(--semantics-buttons-neutral-tinted-highlight-border-color);
+		--_is-hovered-highlight-border-color: var(--semantics-buttons-neutral-tinted-is-hovered-highlight-border-color);
+		--_is-active-highlight-border-color: var(--semantics-buttons-neutral-tinted-is-active-highlight-border-color);
+		--_is-selected-highlight-border-color: var(--semantics-buttons-neutral-tinted-is-selected-highlight-border-color);
+		--_is-selected-is-hovered-highlight-border-color: var(--semantics-buttons-neutral-tinted-is-selected-is-hovered-highlight-border-color);
+		--_is-selected-is-active-highlight-border-color: var(--semantics-buttons-neutral-tinted-is-selected-is-active-highlight-border-color);
+
+		--_secondary-content-color: var(--semantics-buttons-neutral-tinted-secondary-content-color);
+
 		${inheritedTextReset}
 		container-type: inline-size;
 		display: block;
@@ -242,10 +255,12 @@ export const documentTabBarItemStyles = css`
 	.document-tab-bar__item-tab {
 		display: flex;
 		box-sizing: border-box;
+		position: relative;
 		margin: 0;
 		border: none;
 		border-radius: var(--semantics-controls-md-corner-radius);
 		background-color: var(--semantics-buttons-neutral-tinted-background-color);
+		box-shadow: inset 0 0 0 var(--primitives-border-width-thin) var(--_highlight-border-color);
 		width: 100%;
 		height: 100%;
 		min-width: 0;
@@ -263,21 +278,34 @@ export const documentTabBarItemStyles = css`
 	@media (hover: hover) {
 		.document-tab-bar__item-tab:hover {
 			background-color: var(--semantics-buttons-neutral-tinted-is-hovered-background-color);
+			--_highlight-border-color: var(--_is-hovered-highlight-border-color);
+			--_secondary-content-color: var(--semantics-buttons-neutral-tinted-is-hovered-secondary-content-color);
 		}
 	}
 
 	.document-tab-bar__item-tab:active {
 		background-color: var(--semantics-buttons-neutral-tinted-is-active-background-color);
+		--_highlight-border-color: var(--_is-active-highlight-border-color);
+		--_secondary-content-color: var(--semantics-buttons-neutral-tinted-is-active-secondary-content-color);
 	}
 
 	:host([selected]) .document-tab-bar__item-tab {
 		background-color: var(--semantics-buttons-neutral-tinted-is-selected-background-color);
+		--_highlight-border-color: var(--_is-selected-highlight-border-color);
+		--_secondary-content-color: var(--semantics-buttons-neutral-tinted-is-selected-secondary-content-color);
 	}
 
 	@media (hover: hover) {
 		:host([selected]) .document-tab-bar__item-tab:hover {
 			background-color: var(--semantics-buttons-neutral-tinted-is-selected-background-color);
+			--_highlight-border-color: var(--_is-selected-is-hovered-highlight-border-color);
+			--_secondary-content-color: var(--semantics-buttons-neutral-tinted-is-selected-is-hovered-secondary-content-color);
 		}
+	}
+
+	:host([selected]) .document-tab-bar__item-tab:active {
+		--_highlight-border-color: var(--_is-selected-is-active-highlight-border-color);
+		--_secondary-content-color: var(--semantics-buttons-neutral-tinted-is-selected-is-active-secondary-content-color);
 	}
 
 	/* ## Focus */
@@ -285,7 +313,7 @@ export const documentTabBarItemStyles = css`
 	.document-tab-bar__item-tab:focus-visible {
 		outline: var(--semantics-focus-ring-outline);
 		outline-offset: var(--semantics-focus-ring-outline-offset);
-		box-shadow: var(--semantics-focus-ring-box-shadow);
+		box-shadow: var(--semantics-focus-ring-box-shadow), inset 0 0 0 var(--primitives-border-width-thin) var(--_highlight-border-color);
 	}
 
 
@@ -314,26 +342,26 @@ export const documentTabBarItemStyles = css`
 		overflow: hidden;
 		padding-inline-end: var(--primitives-space-6);
 		font: var(--components-document-tab-bar-tab-title-font);
-		color: var(--semantics-buttons-neutral-tinted-content-color);
+		color: var(--semantics-buttons-neutral-tinted-primary-content-color);
 		text-overflow: ellipsis;
 		white-space: nowrap;
 	}
 
 	:host([selected]) .document-tab-bar__item-text {
-		color: var(--semantics-buttons-neutral-tinted-is-selected-content-color);
+		color: var(--semantics-buttons-neutral-tinted-is-selected-primary-content-color);
 	}
 
 	.document-tab-bar__item-short-text {
 		overflow: hidden;
 		padding-inline-end: var(--primitives-space-6);
 		font: var(--components-document-tab-bar-tab-title-font);
-		color: var(--semantics-buttons-neutral-tinted-content-color);
+		color: var(--semantics-buttons-neutral-tinted-primary-content-color);
 		text-overflow: ellipsis;
 		white-space: nowrap;
 	}
 
 	:host([selected]) .document-tab-bar__item-short-text {
-		color: var(--semantics-buttons-neutral-tinted-is-selected-content-color);
+		color: var(--semantics-buttons-neutral-tinted-is-selected-primary-content-color);
 	}
 
 
@@ -343,26 +371,18 @@ export const documentTabBarItemStyles = css`
 		overflow: hidden;
 		padding-inline-end: var(--primitives-space-6);
 		font: var(--primitives-font-body-xs-regular-flat);
-		color: var(--semantics-buttons-neutral-tinted-secondary-content-color);
+		color: var(--_secondary-content-color);
 		text-overflow: ellipsis;
 		white-space: nowrap;
-	}
-
-	:host([selected]) .document-tab-bar__item-supporting-text {
-		color: var(--semantics-buttons-neutral-tinted-is-selected-secondary-content-color);
 	}
 
 	.document-tab-bar__item-short-supporting-text {
 		overflow: hidden;
 		padding-inline-end: var(--primitives-space-6);
 		font: var(--primitives-font-body-xs-regular-flat);
-		color: var(--semantics-buttons-neutral-tinted-secondary-content-color);
+		color: var(--_secondary-content-color);
 		text-overflow: ellipsis;
 		white-space: nowrap;
-	}
-
-	:host([selected]) .document-tab-bar__item-short-supporting-text {
-		color: var(--semantics-buttons-neutral-tinted-is-selected-secondary-content-color);
 	}
 
 
@@ -382,7 +402,7 @@ export const documentTabBarItemStyles = css`
 		padding: var(--primitives-space-4);
 		align-items: center;
 		justify-content: center;
-		color: var(--semantics-buttons-neutral-tinted-content-color);
+		color: var(--semantics-buttons-neutral-tinted-primary-content-color);
 		transform: translateY(-50%);
 		appearance: none;
 	}
@@ -398,7 +418,7 @@ export const documentTabBarItemStyles = css`
 	}
 
 	:host([selected]) .document-tab-bar__item-dismiss-button {
-		color: var(--semantics-buttons-neutral-tinted-is-selected-content-color);
+		color: var(--semantics-buttons-neutral-tinted-is-selected-primary-content-color);
 	}
 
 	@media (hover: hover) {

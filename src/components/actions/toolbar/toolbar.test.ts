@@ -1,6 +1,6 @@
 import { describe, it, expect, afterEach, vi } from 'vitest';
 import { fixture, cleanup, waitForUpdate } from '../../../test-utils.js';
-import './toolbar.js';
+import { groupForOverflow } from './toolbar.js';
 
 describe('nldd-toolbar', () => {
 	let el: HTMLElement;
@@ -132,6 +132,69 @@ describe('nldd-toolbar', () => {
 		expect(toolbar._endChildren[0].label).toBe('End Item');
 	});
 
+	// ## Title rendering
+
+	it('item renders its own label in its shadow root', async () => {
+		el = await fixture(`
+			<nldd-toolbar>
+				<nldd-toolbar-item slot="start" label="Bewerken">
+					<nldd-icon-button aria-label="Bewerken"></nldd-icon-button>
+				</nldd-toolbar-item>
+			</nldd-toolbar>
+		`);
+		await waitForUpdate(el);
+		const item = el.querySelector('nldd-toolbar-item')!;
+		const label = item.shadowRoot?.querySelector('.toolbar__item-label');
+		expect(label?.textContent).toBe('Bewerken');
+	});
+
+	it('title renders text and supporting text in its shadow root', async () => {
+		el = await fixture(`
+			<nldd-toolbar>
+				<nldd-toolbar-title slot="center" text="Titel" supporting-text="Subtitel"></nldd-toolbar-title>
+			</nldd-toolbar>
+		`);
+		await waitForUpdate(el);
+		const title = el.querySelector('nldd-toolbar-title')!;
+		expect(title.shadowRoot?.querySelector('.toolbar__title')?.textContent).toBe('Titel');
+		expect(title.shadowRoot?.querySelector('.toolbar__subtitle')?.textContent).toBe('Subtitel');
+	});
+
+	it('centers title text when align="center" (overriding the inherited-text reset)', async () => {
+		el = await fixture(`
+			<nldd-toolbar>
+				<nldd-toolbar-title slot="center" text="Titel" align="center"></nldd-toolbar-title>
+			</nldd-toolbar>
+		`);
+		await waitForUpdate(el);
+		const title = el.querySelector('nldd-toolbar-title')!;
+		const titleText = title.shadowRoot!.querySelector('.toolbar__title') as HTMLElement;
+		expect(getComputedStyle(titleText).textAlign).toBe('center');
+	});
+
+	it('maps title min-width to --_title-group-min-width', async () => {
+		el = await fixture(`
+			<nldd-toolbar>
+				<nldd-toolbar-title slot="center" text="Titel" min-width="300px"></nldd-toolbar-title>
+			</nldd-toolbar>
+		`);
+		await waitForUpdate(el);
+		const title = el.querySelector('nldd-toolbar-title') as HTMLElement;
+		expect(title.style.getPropertyValue('--_title-group-min-width')).toBe('300px');
+	});
+
+	it('maps title width and max-width to custom properties', async () => {
+		el = await fixture(`
+			<nldd-toolbar>
+				<nldd-toolbar-title slot="center" text="Titel" width="40%" max-width="480px"></nldd-toolbar-title>
+			</nldd-toolbar>
+		`);
+		await waitForUpdate(el);
+		const title = el.querySelector('nldd-toolbar-title')!;
+		expect(title.style.getPropertyValue('--_title-width')).toBe('40%');
+		expect(title.style.getPropertyValue('--_title-max-width')).toBe('480px');
+	});
+
 	// ## Overflow items
 
 	it('separates overflow items from toolbar-item children', async () => {
@@ -188,6 +251,33 @@ describe('nldd-toolbar', () => {
 		expect(menuItem?.getAttribute('size')).toBeNull();
 	});
 
+	it('propagates lg size to toolbar item children', async () => {
+		el = await fixture(`
+			<nldd-toolbar size="lg">
+				<nldd-toolbar-item slot="start" label="Item">
+					<nldd-icon-button aria-label="Item"></nldd-icon-button>
+				</nldd-toolbar-item>
+			</nldd-toolbar>
+		`);
+		await waitForUpdate(el);
+		const button = el.querySelector('nldd-icon-button');
+		expect(button?.getAttribute('size')).toBe('lg');
+	});
+
+	it('renders the overflow button at the toolbar size', async () => {
+		el = await fixture(`
+			<nldd-toolbar size="lg">
+				<nldd-toolbar-item slot="start" label="Item">
+					<nldd-icon-button aria-label="Item"></nldd-icon-button>
+					<nldd-menu-item slot="overflow" text="Item"></nldd-menu-item>
+				</nldd-toolbar-item>
+			</nldd-toolbar>
+		`);
+		await waitForUpdate(el);
+		const overflowButton = el.shadowRoot?.querySelector('.toolbar__overflow-button nldd-icon-button');
+		expect(overflowButton?.getAttribute('size')).toBe('lg');
+	});
+
 	// ## MutationObserver
 
 	it('rebuilds children when a new item is added', async () => {
@@ -232,7 +322,11 @@ describe('nldd-toolbar', () => {
 
 		expect(toolbar._startChildren.length).toBe(1);
 
-		const slot = el.shadowRoot?.querySelector('slot[name^="child-"]');
+		// The item host keeps its original slot assignment and stays projected
+		// into the parent's named slot — it is not lost on a descendant change.
+		const item = el.querySelector('nldd-toolbar-item')!;
+		expect(item.getAttribute('slot')).toBe('start');
+		const slot = el.shadowRoot?.querySelector('slot[name="start"]');
 		expect(slot).not.toBeNull();
 	});
 
@@ -296,7 +390,21 @@ describe('nldd-toolbar', () => {
 		expect(toolbar._startChildren[0].isFluid).toBe(true);
 	});
 
-	it('does not mark item as fluid without min-width or width', async () => {
+	it('marks item as fluid when max-width attribute is set', async () => {
+		el = await fixture(`
+			<nldd-toolbar>
+				<nldd-toolbar-item slot="start" label="Capped" max-width="480px">
+					<nldd-icon-button aria-label="Capped"></nldd-icon-button>
+				</nldd-toolbar-item>
+			</nldd-toolbar>
+		`);
+		await waitForUpdate(el);
+		const toolbar = el as unknown as { _startChildren: { isFluid: boolean; maxWidth: string }[] };
+		expect(toolbar._startChildren[0].isFluid).toBe(true);
+		expect(toolbar._startChildren[0].maxWidth).toBe('480px');
+	});
+
+	it('does not mark item as fluid without min-width, max-width or width', async () => {
 		el = await fixture(`
 			<nldd-toolbar>
 				<nldd-toolbar-item slot="start" label="Normal">
@@ -307,5 +415,66 @@ describe('nldd-toolbar', () => {
 		await waitForUpdate(el);
 		const toolbar = el as unknown as { _startChildren: { isFluid: boolean }[] };
 		expect(toolbar._startChildren[0].isFluid).toBe(false);
+	});
+
+	it('treats a menu-group as an overflow item', async () => {
+		el = await fixture(`
+			<nldd-toolbar>
+				<nldd-toolbar-item slot="start" label="Opmaak">
+					<nldd-icon-button aria-label="Opmaak"></nldd-icon-button>
+					<nldd-menu-group slot="overflow" text="Opmaak">
+						<nldd-menu-item text="Vet"></nldd-menu-item>
+					</nldd-menu-group>
+				</nldd-toolbar-item>
+			</nldd-toolbar>
+		`);
+		await waitForUpdate(el);
+		const toolbar = el as unknown as { _startChildren: { overflowItems: Element[] }[] };
+		const overflow = toolbar._startChildren[0].overflowItems;
+		expect(overflow.length).toBe(1);
+		expect(overflow[0].tagName.toLowerCase()).toBe('nldd-menu-group');
+	});
+
+	it('overflows same-priority items together (whole groups)', async () => {
+		el = await fixture(`
+			<nldd-toolbar style="display:block;width:120px" label="T">
+				<nldd-toolbar-item slot="start" priority="1"><div style="width:50px;height:24px"></div><nldd-menu-item slot="overflow" text="A"></nldd-menu-item></nldd-toolbar-item>
+				<nldd-toolbar-item slot="start" priority="1"><div style="width:50px;height:24px"></div><nldd-menu-item slot="overflow" text="B"></nldd-menu-item></nldd-toolbar-item>
+				<nldd-toolbar-item slot="start" priority="2"><div style="width:50px;height:24px"></div><nldd-menu-item slot="overflow" text="C"></nldd-menu-item></nldd-toolbar-item>
+				<nldd-toolbar-item slot="start" priority="2"><div style="width:50px;height:24px"></div><nldd-menu-item slot="overflow" text="D"></nldd-menu-item></nldd-toolbar-item>
+			</nldd-toolbar>
+		`);
+		await waitForUpdate(el);
+		(el as unknown as { _measureAndUpdate(): void })._measureAndUpdate();
+		const items = [...el.querySelectorAll('nldd-toolbar-item')] as HTMLElement[];
+		const byPriority: Record<string, HTMLElement[]> = {};
+		for (const item of items) {
+			const p = item.getAttribute('priority')!;
+			if (!byPriority[p]) byPriority[p] = [];
+			byPriority[p].push(item);
+		}
+		for (const group of Object.values(byPriority)) {
+			const hiddenCount = group.filter(i => i.hidden).length;
+			expect(hiddenCount === 0 || hiddenCount === group.length).toBe(true);
+		}
+		expect(items.some(i => i.hidden)).toBe(true);
+	});
+
+	it('groups only explicit priorities for overflow (no priority attribute = individual)', () => {
+		// Partial fixture cast to the item type: groupForOverflow only reads
+		// type/priority/hasPriority, so the remaining ToolbarChild fields are
+		// intentionally omitted. If that type gains a required field this cast hides
+		// it — revisit when the groupForOverflow input changes.
+		const item = (id: number, priority: number, hasPriority: boolean) =>
+			({ type: 'item', id, priority, hasPriority }) as unknown as Parameters<typeof groupForOverflow>[0][number];
+		const ids = (groups: ReturnType<typeof groupForOverflow>) => groups.map(g => g.map(c => c.id));
+		// No priority attribute → each item is its own group (overflows individually).
+		expect(ids(groupForOverflow([item(1, 0, false), item(2, 0, false)]))).toEqual([[1], [2]]);
+		// Shared explicit priority → one group; a different priority → its own group.
+		expect(ids(groupForOverflow([item(1, 1, true), item(2, 1, true), item(3, 2, true)]))).toEqual([[1, 2], [3]]);
+		// Explicit and default-0 are never merged.
+		expect(ids(groupForOverflow([item(1, 0, false), item(2, 1, true), item(3, 1, true)]))).toEqual([[1], [2, 3]]);
+		// Same explicit priority groups across positions (non-adjacent).
+		expect(ids(groupForOverflow([item(1, 1, true), item(2, 2, true), item(3, 1, true)]))).toEqual([[1, 3], [2]]);
 	});
 });

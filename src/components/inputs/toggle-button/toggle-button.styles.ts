@@ -11,9 +11,15 @@ export const toggleButtonStyles = css`
 		--_min-size: var(--semantics-controls-md-min-size);
 		--_padding: var(--semantics-controls-md-block-padding) var(--semantics-controls-md-inline-padding);
 		--_gap: var(--semantics-buttons-md-gap);
-		--_font: var(--semantics-buttons-md-font);
+		--_font: var(--semantics-buttons-md-primary-text-font);
 		--_icon-size: var(--semantics-buttons-md-icon-size);
 		--_icon-only-icon-size: var(--semantics-buttons-md-icon-only-icon-size);
+		--_highlight-border-color: var(--semantics-buttons-neutral-tinted-highlight-border-color);
+		--_is-hovered-highlight-border-color: var(--semantics-buttons-neutral-tinted-is-hovered-highlight-border-color);
+		--_is-active-highlight-border-color: var(--semantics-buttons-neutral-tinted-is-active-highlight-border-color);
+		--_is-selected-highlight-border-color: var(--semantics-buttons-neutral-tinted-is-selected-highlight-border-color);
+		--_is-selected-is-hovered-highlight-border-color: var(--semantics-buttons-neutral-tinted-is-selected-is-hovered-highlight-border-color);
+		--_is-selected-is-active-highlight-border-color: var(--semantics-buttons-neutral-tinted-is-selected-is-active-highlight-border-color);
 
 		${inheritedTextReset}
 		display: inline-block;
@@ -25,24 +31,35 @@ export const toggleButtonStyles = css`
 		display: none;
 	}
 
-	:host([size="sm"]) {
-		--_corner-radius: var(--semantics-controls-sm-corner-radius);
-		--_min-size: var(--semantics-controls-sm-min-size);
-		--_padding: var(--semantics-controls-sm-block-padding) var(--semantics-controls-sm-inline-padding);
-		--_gap: var(--semantics-buttons-sm-gap);
-		--_font: var(--semantics-buttons-sm-font);
-		--_icon-size: var(--semantics-buttons-sm-icon-size);
-		--_icon-only-icon-size: var(--semantics-buttons-sm-icon-only-icon-size);
-	}
-
 	:host([size="xs"]) {
 		--_corner-radius: var(--semantics-controls-xs-corner-radius);
 		--_min-size: var(--semantics-controls-xs-min-size);
 		--_padding: var(--semantics-controls-xs-block-padding) var(--semantics-controls-xs-inline-padding);
 		--_gap: var(--semantics-buttons-xs-gap);
-		--_font: var(--semantics-buttons-xs-font);
+		--_font: var(--semantics-buttons-xs-primary-text-font);
 		--_icon-size: var(--semantics-buttons-xs-icon-size);
 		--_icon-only-icon-size: var(--semantics-buttons-xs-icon-only-icon-size);
+	}
+
+	:host([size="sm"]) {
+		--_corner-radius: var(--semantics-controls-sm-corner-radius);
+		--_min-size: var(--semantics-controls-sm-min-size);
+		--_padding: var(--semantics-controls-sm-block-padding) var(--semantics-controls-sm-inline-padding);
+		--_gap: var(--semantics-buttons-sm-gap);
+		--_font: var(--semantics-buttons-sm-primary-text-font);
+		--_icon-size: var(--semantics-buttons-sm-icon-size);
+		--_icon-only-icon-size: var(--semantics-buttons-sm-icon-only-icon-size);
+	}
+
+	:host([size="lg"]) {
+		--_corner-radius: var(--semantics-controls-lg-corner-radius);
+		--_min-size: var(--semantics-controls-lg-min-size);
+		--_padding: var(--semantics-controls-lg-block-padding) var(--semantics-controls-lg-inline-padding);
+		--_gap: var(--semantics-buttons-lg-gap);
+		--_font: var(--semantics-buttons-lg-primary-text-font);
+		--_icon-size: var(--semantics-buttons-lg-icon-size);
+		--_icon-only-icon-size: var(--primitives-space-28);
+		--_stacked-text-font: var(--primitives-font-body-xxs-medium-flat);
 	}
 
 	:host([disabled]) {
@@ -62,13 +79,14 @@ export const toggleButtonStyles = css`
 		border-radius: var(--_corner-radius);
 		background: none;
 		background-color: var(--semantics-buttons-neutral-tinted-background-color);
+		box-shadow: inset 0 0 0 var(--primitives-border-width-thin) var(--_highlight-border-color);
 		width: var(--_min-size);
 		min-height: var(--_min-size);
 		padding: 0;
 		gap: var(--_gap);
 		align-items: center;
 		justify-content: center;
-		color: var(--semantics-buttons-neutral-tinted-content-color);
+		color: var(--semantics-buttons-neutral-tinted-primary-content-color);
 		font: var(--_font);
 		white-space: nowrap;
 		text-decoration: none;
@@ -83,41 +101,46 @@ export const toggleButtonStyles = css`
 	@media (hover: hover) {
 		.toggle-button:hover,
 		.toggle-button:has(.toggle-button__input:hover) {
+			--_highlight-border-color: var(--_is-hovered-highlight-border-color);
 			background-color: var(--semantics-buttons-neutral-tinted-is-hovered-background-color);
-			color: var(--semantics-buttons-neutral-tinted-is-hovered-content-color);
+			color: var(--semantics-buttons-neutral-tinted-is-hovered-primary-content-color);
 		}
 	}
 
 	.toggle-button:active,
 	.toggle-button:has(.toggle-button__input:active) {
+		--_highlight-border-color: var(--_is-active-highlight-border-color);
 		background-color: var(--semantics-buttons-neutral-tinted-is-active-background-color);
-		color: var(--semantics-buttons-neutral-tinted-is-active-content-color);
+		color: var(--semantics-buttons-neutral-tinted-is-active-primary-content-color);
 	}
 
 	:host([selected]) .toggle-button {
+		--_highlight-border-color: var(--_is-selected-highlight-border-color);
 		background-color: var(--semantics-buttons-neutral-tinted-is-selected-background-color);
-		color: var(--semantics-buttons-neutral-tinted-is-selected-content-color);
+		color: var(--semantics-buttons-neutral-tinted-is-selected-primary-content-color);
 	}
 
 	@media (hover: hover) {
 		:host([selected]) .toggle-button:hover,
 		:host([selected]) .toggle-button:has(.toggle-button__input:hover) {
+			--_highlight-border-color: var(--_is-selected-is-hovered-highlight-border-color);
 			background-color: var(--semantics-buttons-neutral-tinted-is-selected-is-hovered-background-color);
-			color: var(--semantics-buttons-neutral-tinted-is-selected-is-hovered-content-color);
+			color: var(--semantics-buttons-neutral-tinted-is-selected-is-hovered-primary-content-color);
 		}
 	}
 
 	:host([selected]) .toggle-button:active,
 	:host([selected]) .toggle-button:has(.toggle-button__input:active) {
+		--_highlight-border-color: var(--_is-selected-is-active-highlight-border-color);
 		background-color: var(--semantics-buttons-neutral-tinted-is-selected-is-active-background-color);
-		color: var(--semantics-buttons-neutral-tinted-is-selected-is-active-content-color);
+		color: var(--semantics-buttons-neutral-tinted-is-selected-is-active-primary-content-color);
 	}
 
 	.toggle-button:focus-visible,
 	.toggle-button:has(.toggle-button__input:focus-visible) {
 		outline: var(--semantics-focus-ring-outline);
 		outline-offset: var(--semantics-focus-ring-outline-offset);
-		box-shadow: var(--semantics-focus-ring-box-shadow);
+		box-shadow: var(--semantics-focus-ring-box-shadow), inset 0 0 0 var(--primitives-border-width-thin) var(--_highlight-border-color);
 	}
 
 	.toggle-button:focus:not(:focus-visible) {
@@ -143,6 +166,19 @@ export const toggleButtonStyles = css`
 	.toggle-button:has(.toggle-button__text) ::slotted([slot="icon"]) {
 		width: var(--_icon-size);
 		height: var(--_icon-size);
+	}
+
+	:host([size="lg"][variant="icon-and-text"]) .toggle-button,
+	:host([size="lg"][variant=""]) .toggle-button:has(.toggle-button__text):has(.toggle-button__icon) {
+		width: auto;
+		padding: var(--primitives-space-8);
+		gap: var(--primitives-space-2);
+		flex-direction: column;
+	}
+
+	:host([size="lg"][variant="icon-and-text"]) .toggle-button__text,
+	:host([size="lg"][variant=""]) .toggle-button:has(.toggle-button__icon) .toggle-button__text {
+		font: var(--_stacked-text-font);
 	}
 
 	/* variant="text" keeps the icon slot in shadow DOM (so slotchange still

@@ -91,6 +91,11 @@ export const oneHalfOneHalfSectionStyles = css`
 		}
 	}
 
+	.one-half-one-half-section__header[hidden],
+	.one-half-one-half-section__footer[hidden] {
+		display: none;
+	}
+
 	.one-half-one-half-section__columns {
 		display: flex;
 		flex-wrap: wrap;

@@ -9,6 +9,9 @@ export function template(this: NLDDSplitButton) {
 				size=${this.size}
 				text=${this.text}
 				start-icon=${this.icon || nothing}
+				horizontal-alignment="left"
+				width="full"
+				no-highlight-border
 				?disabled=${this.disabled}
 				@click=${this._handleActionClick}
 			></nldd-button>
@@ -20,6 +23,8 @@ export function template(this: NLDDSplitButton) {
 					icon="chevron-down-small"
 					text=${this._t('components.split-button.menu-action')}
 					tooltip-timing="never"
+					no-highlight-border
+					hide-lg-text
 					?disabled=${this.disabled}
 					?expanded=${this._menuIsOpen}
 					popup-type="menu"
@@ -27,6 +32,6 @@ export function template(this: NLDDSplitButton) {
 				></nldd-icon-button>
 			</div>
 		</div>
-		<nldd-menu class="split-button__menu"></nldd-menu>
+		<slot @slotchange=${this._handleSlotChange}></slot>
 	`;
 }

@@ -7,6 +7,7 @@ import '../../content/icon/icon.js';
 import '../../actions/menu/menu.js';
 import '../../inputs/search-field/search-field.js';
 import '../../inputs/segmented-control/segmented-control.js';
+import '../../navigation/tab-bar/tab-bar.js';
 
 export default {
 	title: 'Components/Actions/Toolbar',
@@ -15,8 +16,8 @@ export default {
 	argTypes: {
 		size: {
 			control: 'select',
-			options: ['sm', 'md'],
-			description: 'Grootte van de toolbar',
+			options: ['sm', 'md', 'lg'],
+			description: 'Grootte van de toolbar. Bij "lg" stapelen de overflow-knop en lg-controls (zoals nldd-icon-button) hun label onder het icoon — bedoeld als grote icon-button actiebalk.',
 			table: { defaultValue: { summary: 'md' } },
 		},
 		showItemLabels: {
@@ -56,10 +57,12 @@ export const Default = {
 				<nldd-menu-item
 					slot="overflow"
 					text="Vorige"
+					icon="chevron-left"
 				></nldd-menu-item>
 				<nldd-menu-item
 					slot="overflow"
 					text="Volgende"
+					icon="chevron-right"
 				></nldd-menu-item>
 			</nldd-toolbar-item>
 			<nldd-toolbar-item
@@ -70,57 +73,7 @@ export const Default = {
 				<nldd-menu-item
 					slot="overflow"
 					text="Sla op"
-				></nldd-menu-item>
-			</nldd-toolbar-item>
-		</nldd-toolbar>
-	`),
-};
-
-export const WithLabels = {
-	args: { size: 'md', showItemLabels: true },
-	render: (args: Record<string, any>) => resizable(html`
-		<nldd-toolbar
-			size=${args.size}
-			?show-item-labels=${args.showItemLabels}
-		>
-			<nldd-toolbar-item
-				slot="start"
-				label="Tekststijl"
-			>
-				<nldd-segmented-control
-					type="checkbox"
-					variant="icon"
-					size=${args.size}
-					accessible-label="Tekststijl"
-				>
-					<nldd-segmented-control-item value="vet" text="Vet" icon="bold"></nldd-segmented-control-item>
-					<nldd-segmented-control-item value="cursief" text="Cursief" icon="italic"></nldd-segmented-control-item>
-					<nldd-segmented-control-item value="onderstrepen" text="Onderstrepen" icon="underlined"></nldd-segmented-control-item>
-				</nldd-segmented-control>
-				<nldd-menu-item
-					slot="overflow"
-					text="Vet"
-					type="checkbox"
-				></nldd-menu-item>
-				<nldd-menu-item
-					slot="overflow"
-					text="Cursief"
-					type="checkbox"
-				></nldd-menu-item>
-				<nldd-menu-item
-					slot="overflow"
-					text="Onderstrepen"
-					type="checkbox"
-				></nldd-menu-item>
-			</nldd-toolbar-item>
-			<nldd-toolbar-item
-				slot="end"
-				label="Sla op"
-			>
-				<nldd-button variant="primary" text="Sla op"></nldd-button>
-				<nldd-menu-item
-					slot="overflow"
-					text="Sla op"
+					icon="save"
 				></nldd-menu-item>
 			</nldd-toolbar-item>
 		</nldd-toolbar>
@@ -129,126 +82,86 @@ export const WithLabels = {
 
 export const WithTitleGroup = {
 	args: { size: 'md', showItemLabels: false },
-	render: (args: Record<string, any>) => resizable(html`
-		<nldd-toolbar
-			size=${args.size}
-			?show-item-labels=${args.showItemLabels}
-		>
-			<nldd-toolbar-item
-				slot="start"
-				label="Terug"
+	render: (args: Record<string, any>) => html`
+		<div style="display: flex; flex-direction: column; gap: 16px;">
+			<nldd-toolbar
+				size=${args.size}
+				?show-item-labels=${args.showItemLabels}
 			>
-				<nldd-icon-button text="Terug" icon="chevron-left"></nldd-icon-button>
-				<nldd-menu-item
-					slot="overflow"
-					text="Terug"
-				></nldd-menu-item>
-			</nldd-toolbar-item>
-			<nldd-toolbar-title
-				slot="start"
-				text="Document titel"
-				supporting-text="Laatste wijziging: vandaag"
-			></nldd-toolbar-title>
-			<nldd-toolbar-item
-				slot="end"
-				label="Annuleer"
+				<nldd-toolbar-item
+					slot="start"
+					label="Terug"
+				>
+					<nldd-icon-button text="Terug" icon="chevron-left"></nldd-icon-button>
+					<nldd-menu-item
+						slot="overflow"
+						text="Terug"
+						icon="chevron-left"
+					></nldd-menu-item>
+				</nldd-toolbar-item>
+				<nldd-toolbar-title
+					slot="start"
+					text="Document titel"
+					supporting-text="Laatste wijziging: vandaag"
+				></nldd-toolbar-title>
+				<nldd-toolbar-item
+					slot="end"
+					label="Annuleer"
+				>
+					<nldd-button text="Annuleer"></nldd-button>
+					<nldd-menu-item
+						slot="overflow"
+						text="Annuleer"
+						icon="dismiss-circle"
+					></nldd-menu-item>
+				</nldd-toolbar-item>
+				<nldd-toolbar-item
+					slot="end"
+					label="Sla op"
+				>
+					<nldd-button variant="primary" text="Sla op"></nldd-button>
+					<nldd-menu-item
+						slot="overflow"
+						text="Sla op"
+						icon="save"
+					></nldd-menu-item>
+				</nldd-toolbar-item>
+			</nldd-toolbar>
+			<nldd-toolbar
+				size=${args.size}
+				?show-item-labels=${args.showItemLabels}
 			>
-				<nldd-button text="Annuleer"></nldd-button>
-				<nldd-menu-item
-					slot="overflow"
-					text="Annuleer"
-				></nldd-menu-item>
-			</nldd-toolbar-item>
-			<nldd-toolbar-item
-				slot="end"
-				label="Sla op"
-			>
-				<nldd-button variant="primary" text="Sla op"></nldd-button>
-				<nldd-menu-item
-					slot="overflow"
-					text="Sla op"
-				></nldd-menu-item>
-			</nldd-toolbar-item>
-		</nldd-toolbar>
-	`),
-};
-
-export const WithTitleGroupCentered = {
-	args: { size: 'md', showItemLabels: false },
-	render: (args: Record<string, any>) => resizable(html`
-		<nldd-toolbar
-			size=${args.size}
-			?show-item-labels=${args.showItemLabels}
-		>
-			<nldd-toolbar-item
-				slot="start"
-				label="Terug"
-			>
-				<nldd-icon-button text="Terug" icon="chevron-left"></nldd-icon-button>
-				<nldd-menu-item
-					slot="overflow"
-					text="Terug"
-				></nldd-menu-item>
-			</nldd-toolbar-item>
-			<nldd-toolbar-title
-				slot="center"
-				text="Document titel"
-				supporting-text="Laatste wijziging: vandaag"
-				align="center"
-			></nldd-toolbar-title>
-			<nldd-toolbar-item
-				slot="end"
-				label="Sla op"
-			>
-				<nldd-button variant="primary" text="Sla op"></nldd-button>
-				<nldd-menu-item
-					slot="overflow"
-					text="Sla op"
-				></nldd-menu-item>
-			</nldd-toolbar-item>
-		</nldd-toolbar>
-	`),
-};
-
-export const SizeSmall = {
-	args: { size: 'sm', showItemLabels: false },
-	render: (args: Record<string, any>) => resizable(html`
-		<nldd-toolbar
-			size=${args.size}
-			?show-item-labels=${args.showItemLabels}
-		>
-			<nldd-toolbar-item
-				slot="start"
-				label="Bewerken"
-			>
-				<nldd-button text="Bewerken"></nldd-button>
-				<nldd-menu-item
-					slot="overflow"
-					text="Bewerken"
-				></nldd-menu-item>
-			</nldd-toolbar-item>
-			<nldd-toolbar-item
-				slot="start"
-				label="Dupliceer"
-			>
-				<nldd-button text="Dupliceer"></nldd-button>
-				<nldd-menu-item
-					slot="overflow"
-					text="Dupliceer"
-				></nldd-menu-item>
-			</nldd-toolbar-item>
-			<nldd-toolbar-item
-				slot="end"
-				label="Sla op"
-			>
-				<nldd-button variant="primary" text="Sla op"></nldd-button>
-				<nldd-menu-item
-					slot="overflow"
-					text="Sla op"
-				></nldd-menu-item>
-			</nldd-toolbar-item>
-		</nldd-toolbar>
-	`),
+				<nldd-toolbar-item
+					slot="start"
+					label="Terug"
+				>
+					<nldd-icon-button text="Terug" icon="chevron-left"></nldd-icon-button>
+					<nldd-menu-item
+						slot="overflow"
+						text="Terug"
+						icon="chevron-left"
+					></nldd-menu-item>
+				</nldd-toolbar-item>
+				<nldd-toolbar-title
+					slot="center"
+					text="Document titel"
+					supporting-text="Laatste wijziging: vandaag"
+					align="center"
+				></nldd-toolbar-title>
+				<nldd-toolbar-item
+					slot="end"
+					label="Sla op"
+				>
+					<nldd-button variant="primary" text="Sla op"></nldd-button>
+					<nldd-menu-item
+						slot="overflow"
+						text="Sla op"
+						icon="save"
+					></nldd-menu-item>
+				</nldd-toolbar-item>
+			</nldd-toolbar>
+		</div>
+	`,
 };
 
 export const Sizes = {
@@ -256,7 +169,7 @@ export const Sizes = {
 		<div style="display: flex; flex-direction: column; gap: 16px;">
 			<div>
 				<p style="font-size: 0.75rem; color: var(--semantics-content-color); margin: 0 0 8px;">md (default)</p>
-				${resizable(html`
+				${html`
 					<nldd-toolbar size="md">
 						<nldd-toolbar-item
 							slot="start"
@@ -266,6 +179,7 @@ export const Sizes = {
 							<nldd-menu-item
 								slot="overflow"
 								text="Bewerken"
+								icon="edit"
 							></nldd-menu-item>
 						</nldd-toolbar-item>
 						<nldd-toolbar-item
@@ -276,6 +190,7 @@ export const Sizes = {
 							<nldd-menu-item
 								slot="overflow"
 								text="Dupliceer"
+								icon="duplicate"
 							></nldd-menu-item>
 						</nldd-toolbar-item>
 						<nldd-toolbar-item
@@ -286,14 +201,15 @@ export const Sizes = {
 							<nldd-menu-item
 								slot="overflow"
 								text="Sla op"
+								icon="save"
 							></nldd-menu-item>
 						</nldd-toolbar-item>
 					</nldd-toolbar>
-				`)}
+				`}
 			</div>
 			<div>
 				<p style="font-size: 0.75rem; color: var(--semantics-content-color); margin: 0 0 8px;">sm</p>
-				${resizable(html`
+				${html`
 					<nldd-toolbar size="sm">
 						<nldd-toolbar-item
 							slot="start"
@@ -303,6 +219,7 @@ export const Sizes = {
 							<nldd-menu-item
 								slot="overflow"
 								text="Bewerken"
+								icon="edit"
 							></nldd-menu-item>
 						</nldd-toolbar-item>
 						<nldd-toolbar-item
@@ -313,6 +230,7 @@ export const Sizes = {
 							<nldd-menu-item
 								slot="overflow"
 								text="Dupliceer"
+								icon="duplicate"
 							></nldd-menu-item>
 						</nldd-toolbar-item>
 						<nldd-toolbar-item
@@ -323,10 +241,11 @@ export const Sizes = {
 							<nldd-menu-item
 								slot="overflow"
 								text="Sla op"
+								icon="save"
 							></nldd-menu-item>
 						</nldd-toolbar-item>
 					</nldd-toolbar>
-				`)}
+				`}
 			</div>
 		</div>
 	`,
@@ -337,7 +256,7 @@ export const LabelsToggle = {
 		<div style="display: flex; flex-direction: column; gap: 16px;">
 			<div>
 				<p style="font-size: 0.75rem; color: var(--semantics-content-color); margin: 0 0 8px;">Zonder labels</p>
-				${resizable(html`
+				${html`
 					<nldd-toolbar size="md">
 						<nldd-toolbar-item
 							slot="start"
@@ -352,28 +271,30 @@ export const LabelsToggle = {
 								<nldd-segmented-control-item value="cursief" text="Cursief" icon="italic"></nldd-segmented-control-item>
 								<nldd-segmented-control-item value="onderstrepen" text="Onderstrepen" icon="underlined"></nldd-segmented-control-item>
 							</nldd-segmented-control>
-							<nldd-menu-item
-								slot="overflow"
-								text="Vet"
-								type="checkbox"
-							></nldd-menu-item>
-							<nldd-menu-item
-								slot="overflow"
-								text="Cursief"
-								type="checkbox"
-							></nldd-menu-item>
-							<nldd-menu-item
-								slot="overflow"
-								text="Onderstrepen"
-								type="checkbox"
-							></nldd-menu-item>
+							<nldd-menu-group slot="overflow" text="Tekststijl">
+								<nldd-menu-item
+									text="Vet"
+									icon="bold"
+									type="checkbox"
+								></nldd-menu-item>
+								<nldd-menu-item
+									text="Cursief"
+									icon="italic"
+									type="checkbox"
+								></nldd-menu-item>
+								<nldd-menu-item
+									text="Onderstrepen"
+									icon="underlined"
+									type="checkbox"
+								></nldd-menu-item>
+							</nldd-menu-group>
 						</nldd-toolbar-item>
 					</nldd-toolbar>
-				`)}
+				`}
 			</div>
 			<div>
 				<p style="font-size: 0.75rem; color: var(--semantics-content-color); margin: 0 0 8px;">Met labels</p>
-				${resizable(html`
+				${html`
 					<nldd-toolbar
 						size="md"
 						show-item-labels
@@ -391,30 +312,33 @@ export const LabelsToggle = {
 								<nldd-segmented-control-item value="cursief" text="Cursief" icon="italic"></nldd-segmented-control-item>
 								<nldd-segmented-control-item value="onderstrepen" text="Onderstrepen" icon="underlined"></nldd-segmented-control-item>
 							</nldd-segmented-control>
-							<nldd-menu-item
-								slot="overflow"
-								text="Vet"
-								type="checkbox"
-							></nldd-menu-item>
-							<nldd-menu-item
-								slot="overflow"
-								text="Cursief"
-								type="checkbox"
-							></nldd-menu-item>
-							<nldd-menu-item
-								slot="overflow"
-								text="Onderstrepen"
-								type="checkbox"
-							></nldd-menu-item>
+							<nldd-menu-group slot="overflow" text="Tekststijl">
+								<nldd-menu-item
+									text="Vet"
+									icon="bold"
+									type="checkbox"
+								></nldd-menu-item>
+								<nldd-menu-item
+									text="Cursief"
+									icon="italic"
+									type="checkbox"
+								></nldd-menu-item>
+								<nldd-menu-item
+									text="Onderstrepen"
+									icon="underlined"
+									type="checkbox"
+								></nldd-menu-item>
+							</nldd-menu-group>
 						</nldd-toolbar-item>
 					</nldd-toolbar>
-				`)}
+				`}
 			</div>
 		</div>
 	`,
 };
 
 export const WithOverflow = {
+	name: 'Overflow',
 	render: () => resizable(html`
 		<nldd-toolbar size="md">
 			<nldd-toolbar-item
@@ -430,21 +354,23 @@ export const WithOverflow = {
 					<nldd-segmented-control-item value="cursief" text="Cursief" icon="italic"></nldd-segmented-control-item>
 					<nldd-segmented-control-item value="onderstrepen" text="Onderstrepen" icon="underlined"></nldd-segmented-control-item>
 				</nldd-segmented-control>
-				<nldd-menu-item
-					slot="overflow"
-					text="Vet"
-					type="checkbox"
-				></nldd-menu-item>
-				<nldd-menu-item
-					slot="overflow"
-					text="Cursief"
-					type="checkbox"
-				></nldd-menu-item>
-				<nldd-menu-item
-					slot="overflow"
-					text="Onderstrepen"
-					type="checkbox"
-				></nldd-menu-item>
+				<nldd-menu-group slot="overflow" text="Tekststijl">
+					<nldd-menu-item
+						text="Vet"
+						icon="bold"
+						type="checkbox"
+					></nldd-menu-item>
+					<nldd-menu-item
+						text="Cursief"
+						icon="italic"
+						type="checkbox"
+					></nldd-menu-item>
+					<nldd-menu-item
+						text="Onderstrepen"
+						icon="underlined"
+						type="checkbox"
+					></nldd-menu-item>
+				</nldd-menu-group>
 			</nldd-toolbar-item>
 			<nldd-toolbar-item
 				slot="start"
@@ -456,24 +382,26 @@ export const WithOverflow = {
 					accessible-label="Lijsttype"
 				>
 					<nldd-segmented-control-item value="none" text="Geen" icon="minus-small"></nldd-segmented-control-item>
-					<nldd-segmented-control-item value="bullet" text="Lijst" icon="bullet-list"></nldd-segmented-control-item>
+					<nldd-segmented-control-item value="bullet" text="Opsomming" icon="bullet-list"></nldd-segmented-control-item>
 					<nldd-segmented-control-item value="numbered" text="Genummerd" icon="numbered-list"></nldd-segmented-control-item>
 				</nldd-segmented-control>
-				<nldd-menu-item
-					slot="overflow"
-					text="Geen"
-					type="checkbox"
-				></nldd-menu-item>
-				<nldd-menu-item
-					slot="overflow"
-					text="Lijst"
-					type="checkbox"
-				></nldd-menu-item>
-				<nldd-menu-item
-					slot="overflow"
-					text="Genummerd"
-					type="checkbox"
-				></nldd-menu-item>
+				<nldd-menu-group slot="overflow" text="Lijst">
+					<nldd-menu-item
+						text="Geen"
+						icon="minus-small"
+						type="checkbox"
+					></nldd-menu-item>
+					<nldd-menu-item
+						text="Opsomming"
+						icon="bullet-list"
+						type="checkbox"
+					></nldd-menu-item>
+					<nldd-menu-item
+						text="Genummerd"
+						icon="numbered-list"
+						type="checkbox"
+					></nldd-menu-item>
+				</nldd-menu-group>
 			</nldd-toolbar-item>
 			<nldd-toolbar-item
 				slot="end"
@@ -483,6 +411,7 @@ export const WithOverflow = {
 				<nldd-menu-item
 					slot="overflow"
 					text="Annuleer"
+					icon="dismiss-circle"
 				></nldd-menu-item>
 			</nldd-toolbar-item>
 			<nldd-toolbar-item
@@ -493,52 +422,7 @@ export const WithOverflow = {
 				<nldd-menu-item
 					slot="overflow"
 					text="Sla op"
-				></nldd-menu-item>
-			</nldd-toolbar-item>
-		</nldd-toolbar>
-	`),
-};
-
-export const WithOverflowPartial = {
-	render: () => resizable(html`
-		<nldd-toolbar size="md">
-			<nldd-toolbar-item
-				slot="start"
-				label="Vet"
-			>
-				<nldd-icon-button text="Vet" icon="bold"></nldd-icon-button>
-				<nldd-menu-item
-					slot="overflow"
-					text="Vet"
-					type="checkbox"
-				></nldd-menu-item>
-			</nldd-toolbar-item>
-			<nldd-toolbar-item
-				slot="start"
-				label="Cursief"
-			>
-				<nldd-icon-button text="Cursief" icon="italic"></nldd-icon-button>
-				<!-- Geen overflow slot: wordt stilzwijgend overgeslagen in het menu -->
-			</nldd-toolbar-item>
-			<nldd-toolbar-item
-				slot="start"
-				label="Onderstrepen"
-			>
-				<nldd-icon-button text="Onderstrepen" icon="underlined"></nldd-icon-button>
-				<nldd-menu-item
-					slot="overflow"
-					text="Onderstrepen"
-					type="checkbox"
-				></nldd-menu-item>
-			</nldd-toolbar-item>
-			<nldd-toolbar-item
-				slot="end"
-				label="Sla op"
-			>
-				<nldd-button variant="primary" text="Sla op"></nldd-button>
-				<nldd-menu-item
-					slot="overflow"
-					text="Sla op"
+					icon="save"
 				></nldd-menu-item>
 			</nldd-toolbar-item>
 		</nldd-toolbar>
@@ -546,6 +430,7 @@ export const WithOverflowPartial = {
 };
 
 export const WithPriority = {
+	name: 'Overflow with Priority',
 	render: () => resizable(html`
 		<nldd-toolbar size="md">
 			<nldd-toolbar-item
@@ -562,26 +447,28 @@ export const WithPriority = {
 					<nldd-segmented-control-item value="cursief" text="Cursief" icon="italic"></nldd-segmented-control-item>
 					<nldd-segmented-control-item value="onderstrepen" text="Onderstrepen" icon="underlined"></nldd-segmented-control-item>
 				</nldd-segmented-control>
-				<nldd-menu-item
-					slot="overflow"
-					text="Vet"
-					type="checkbox"
-				></nldd-menu-item>
-				<nldd-menu-item
-					slot="overflow"
-					text="Cursief"
-					type="checkbox"
-				></nldd-menu-item>
-				<nldd-menu-item
-					slot="overflow"
-					text="Onderstrepen"
-					type="checkbox"
-				></nldd-menu-item>
+				<nldd-menu-group slot="overflow" text="Tekststijl">
+					<nldd-menu-item
+						text="Vet"
+						icon="bold"
+						type="checkbox"
+					></nldd-menu-item>
+					<nldd-menu-item
+						text="Cursief"
+						icon="italic"
+						type="checkbox"
+					></nldd-menu-item>
+					<nldd-menu-item
+						text="Onderstrepen"
+						icon="underlined"
+						type="checkbox"
+					></nldd-menu-item>
+				</nldd-menu-group>
 			</nldd-toolbar-item>
 			<nldd-toolbar-item
 				slot="start"
 				label="Lijst"
-				priority="2"
+				priority="1"
 			>
 				<nldd-segmented-control
 					type="radio"
@@ -589,24 +476,26 @@ export const WithPriority = {
 					accessible-label="Lijsttype"
 				>
 					<nldd-segmented-control-item value="none" text="Geen" icon="minus-small"></nldd-segmented-control-item>
-					<nldd-segmented-control-item value="bullet" text="Lijst" icon="bullet-list"></nldd-segmented-control-item>
+					<nldd-segmented-control-item value="bullet" text="Opsomming" icon="bullet-list"></nldd-segmented-control-item>
 					<nldd-segmented-control-item value="numbered" text="Genummerd" icon="numbered-list"></nldd-segmented-control-item>
 				</nldd-segmented-control>
-				<nldd-menu-item
-					slot="overflow"
-					text="Geen"
-					type="checkbox"
-				></nldd-menu-item>
-				<nldd-menu-item
-					slot="overflow"
-					text="Lijst"
-					type="checkbox"
-				></nldd-menu-item>
-				<nldd-menu-item
-					slot="overflow"
-					text="Genummerd"
-					type="checkbox"
-				></nldd-menu-item>
+				<nldd-menu-group slot="overflow" text="Lijst">
+					<nldd-menu-item
+						text="Geen"
+						icon="minus-small"
+						type="checkbox"
+					></nldd-menu-item>
+					<nldd-menu-item
+						text="Opsomming"
+						icon="bullet-list"
+						type="checkbox"
+					></nldd-menu-item>
+					<nldd-menu-item
+						text="Genummerd"
+						icon="numbered-list"
+						type="checkbox"
+					></nldd-menu-item>
+				</nldd-menu-group>
 			</nldd-toolbar-item>
 			<nldd-toolbar-title
 				slot="center"
@@ -623,6 +512,7 @@ export const WithPriority = {
 				<nldd-menu-item
 					slot="overflow"
 					text="Annuleer"
+					icon="dismiss-circle"
 				></nldd-menu-item>
 			</nldd-toolbar-item>
 			<nldd-toolbar-item
@@ -634,6 +524,7 @@ export const WithPriority = {
 				<nldd-menu-item
 					slot="overflow"
 					text="Sla op"
+					icon="save"
 				></nldd-menu-item>
 			</nldd-toolbar-item>
 		</nldd-toolbar>
@@ -652,6 +543,7 @@ export const WithFluidItem = {
 				<nldd-menu-item
 					slot="overflow"
 					text="Terug"
+					icon="chevron-left"
 				></nldd-menu-item>
 			</nldd-toolbar-item>
 			<nldd-toolbar-item
@@ -665,6 +557,7 @@ export const WithFluidItem = {
 				<nldd-menu-item
 					slot="overflow"
 					text="Zoeken"
+					icon="search"
 				></nldd-menu-item>
 			</nldd-toolbar-item>
 			<nldd-toolbar-item
@@ -675,6 +568,7 @@ export const WithFluidItem = {
 				<nldd-menu-item
 					slot="overflow"
 					text="Annuleer"
+					icon="dismiss-circle"
 				></nldd-menu-item>
 			</nldd-toolbar-item>
 			<nldd-toolbar-item
@@ -686,6 +580,7 @@ export const WithFluidItem = {
 				<nldd-menu-item
 					slot="overflow"
 					text="Sla op"
+					icon="save"
 				></nldd-menu-item>
 			</nldd-toolbar-item>
 		</nldd-toolbar>
@@ -693,6 +588,7 @@ export const WithFluidItem = {
 };
 
 export const WithPinnedOverflow = {
+	name: 'With pinned overflow items',
 	render: () => resizable(html`
 		<nldd-toolbar size="md">
 			<nldd-toolbar-item
@@ -707,16 +603,18 @@ export const WithPinnedOverflow = {
 					<nldd-segmented-control-item value="vet" text="Vet" icon="bold"></nldd-segmented-control-item>
 					<nldd-segmented-control-item value="cursief" text="Cursief" icon="italic"></nldd-segmented-control-item>
 				</nldd-segmented-control>
-				<nldd-menu-item
-					slot="overflow"
-					text="Vet"
-					type="checkbox"
-				></nldd-menu-item>
-				<nldd-menu-item
-					slot="overflow"
-					text="Cursief"
-					type="checkbox"
-				></nldd-menu-item>
+				<nldd-menu-group slot="overflow" text="Tekststijl">
+					<nldd-menu-item
+						text="Vet"
+						icon="bold"
+						type="checkbox"
+					></nldd-menu-item>
+					<nldd-menu-item
+						text="Cursief"
+						icon="italic"
+						type="checkbox"
+					></nldd-menu-item>
+				</nldd-menu-group>
 			</nldd-toolbar-item>
 			<nldd-toolbar-item
 				slot="end"
@@ -726,60 +624,26 @@ export const WithPinnedOverflow = {
 				<nldd-menu-item
 					slot="overflow"
 					text="Sla op"
+					icon="save"
 				></nldd-menu-item>
 			</nldd-toolbar-item>
 			<nldd-menu-divider slot="overflow"></nldd-menu-divider>
 			<nldd-menu-item
 				slot="overflow"
 				text="Instellingen"
+				icon="settings"
 			></nldd-menu-item>
 			<nldd-menu-item
 				slot="overflow"
 				text="Help"
-			></nldd-menu-item>
-		</nldd-toolbar>
-	`),
-};
-
-export const WithPinnedOverflowOnly = {
-	render: () => resizable(html`
-		<nldd-toolbar size="md">
-			<nldd-toolbar-item
-				slot="start"
-				label="Terug"
-			>
-				<nldd-icon-button text="Terug" icon="chevron-left"></nldd-icon-button>
-			</nldd-toolbar-item>
-			<nldd-toolbar-title
-				slot="start"
-				text="Document titel"
-				supporting-text="Laatste wijziging: vandaag"
-			></nldd-toolbar-title>
-			<nldd-toolbar-item
-				slot="end"
-				label="Sla op"
-			>
-				<nldd-button variant="primary" text="Sla op"></nldd-button>
-			</nldd-toolbar-item>
-			<nldd-menu-divider slot="overflow"></nldd-menu-divider>
-			<nldd-menu-item
-				slot="overflow"
-				text="Exporteren"
-			></nldd-menu-item>
-			<nldd-menu-item
-				slot="overflow"
-				text="Delen"
-			></nldd-menu-item>
-			<nldd-menu-divider slot="overflow"></nldd-menu-divider>
-			<nldd-menu-item
-				slot="overflow"
-				text="Verwijder"
+				icon="help"
 			></nldd-menu-item>
 		</nldd-toolbar>
 	`),
 };
 
 export const WithPinnedAndDynamicOverflow = {
+	name: 'With Pinned And Priority Overflow',
 	render: () => resizable(html`
 		<nldd-toolbar size="md">
 			<nldd-toolbar-item
@@ -796,21 +660,23 @@ export const WithPinnedAndDynamicOverflow = {
 					<nldd-segmented-control-item value="cursief" text="Cursief" icon="italic"></nldd-segmented-control-item>
 					<nldd-segmented-control-item value="onderstrepen" text="Onderstrepen" icon="underlined"></nldd-segmented-control-item>
 				</nldd-segmented-control>
-				<nldd-menu-item
-					slot="overflow"
-					text="Vet"
-					type="checkbox"
-				></nldd-menu-item>
-				<nldd-menu-item
-					slot="overflow"
-					text="Cursief"
-					type="checkbox"
-				></nldd-menu-item>
-				<nldd-menu-item
-					slot="overflow"
-					text="Onderstrepen"
-					type="checkbox"
-				></nldd-menu-item>
+				<nldd-menu-group slot="overflow" text="Tekststijl">
+					<nldd-menu-item
+						text="Vet"
+						icon="bold"
+						type="checkbox"
+					></nldd-menu-item>
+					<nldd-menu-item
+						text="Cursief"
+						icon="italic"
+						type="checkbox"
+					></nldd-menu-item>
+					<nldd-menu-item
+						text="Onderstrepen"
+						icon="underlined"
+						type="checkbox"
+					></nldd-menu-item>
+				</nldd-menu-group>
 			</nldd-toolbar-item>
 			<nldd-toolbar-item
 				slot="start"
@@ -823,24 +689,26 @@ export const WithPinnedAndDynamicOverflow = {
 					accessible-label="Lijsttype"
 				>
 					<nldd-segmented-control-item value="none" text="Geen" icon="minus-small"></nldd-segmented-control-item>
-					<nldd-segmented-control-item value="bullet" text="Lijst" icon="bullet-list"></nldd-segmented-control-item>
+					<nldd-segmented-control-item value="bullet" text="Opsomming" icon="bullet-list"></nldd-segmented-control-item>
 					<nldd-segmented-control-item value="numbered" text="Genummerd" icon="numbered-list"></nldd-segmented-control-item>
 				</nldd-segmented-control>
-				<nldd-menu-item
-					slot="overflow"
-					text="Geen"
-					type="checkbox"
-				></nldd-menu-item>
-				<nldd-menu-item
-					slot="overflow"
-					text="Lijst"
-					type="checkbox"
-				></nldd-menu-item>
-				<nldd-menu-item
-					slot="overflow"
-					text="Genummerd"
-					type="checkbox"
-				></nldd-menu-item>
+				<nldd-menu-group slot="overflow" text="Lijst">
+					<nldd-menu-item
+						text="Geen"
+						icon="minus-small"
+						type="checkbox"
+					></nldd-menu-item>
+					<nldd-menu-item
+						text="Opsomming"
+						icon="bullet-list"
+						type="checkbox"
+					></nldd-menu-item>
+					<nldd-menu-item
+						text="Genummerd"
+						icon="numbered-list"
+						type="checkbox"
+					></nldd-menu-item>
+				</nldd-menu-group>
 			</nldd-toolbar-item>
 			<nldd-toolbar-item
 				slot="end"
@@ -851,22 +719,60 @@ export const WithPinnedAndDynamicOverflow = {
 				<nldd-menu-item
 					slot="overflow"
 					text="Sla op"
+					icon="save"
 				></nldd-menu-item>
 			</nldd-toolbar-item>
 			<nldd-menu-divider slot="overflow"></nldd-menu-divider>
 			<nldd-menu-item
 				slot="overflow"
 				text="Exporteren"
+				icon="export"
 			></nldd-menu-item>
 			<nldd-menu-item
 				slot="overflow"
 				text="Instellingen"
+				icon="settings"
 			></nldd-menu-item>
 			<nldd-menu-divider slot="overflow"></nldd-menu-divider>
 			<nldd-menu-item
 				slot="overflow"
+				destructive
 				text="Verwijder"
+				icon="delete"
 			></nldd-menu-item>
 		</nldd-toolbar>
 	`),
+};
+
+export const MobieleActiebalk = {
+	name: 'Mobiele actiebalk (lg)',
+	render: () => resizable(html`
+		<nldd-toolbar size="lg" label="Acties">
+			<nldd-toolbar-item slot="start" priority="10">
+				<nldd-tab-bar accessible-label="Hoofdnavigatie">
+					<nldd-tab-bar-item selected text="Home" icon="home"></nldd-tab-bar-item>
+					<nldd-tab-bar-item text="Profiel" icon="profile"></nldd-tab-bar-item>
+					<nldd-tab-bar-item text="Zoeken" icon="search"></nldd-tab-bar-item>
+				</nldd-tab-bar>
+				<nldd-menu-group slot="overflow" text="Hoofdnavigatie">
+					<nldd-menu-item text="Home" icon="home"></nldd-menu-item>
+					<nldd-menu-item text="Profiel" icon="profile"></nldd-menu-item>
+					<nldd-menu-item text="Zoeken" icon="search"></nldd-menu-item>
+				</nldd-menu-group>
+			</nldd-toolbar-item>
+			<nldd-toolbar-item slot="end" label="Zoeken">
+				<nldd-icon-button text="Zoeken" icon="search"></nldd-icon-button>
+				<nldd-menu-item slot="overflow" text="Zoeken" icon="search"></nldd-menu-item>
+			</nldd-toolbar-item>
+			<nldd-toolbar-item slot="end" label="Downloaden">
+				<nldd-icon-button text="Downloaden" icon="download"></nldd-icon-button>
+				<nldd-menu-item slot="overflow" text="Downloaden" icon="download"></nldd-menu-item>
+			</nldd-toolbar-item>
+			<nldd-toolbar-item slot="end" label="Profiel">
+				<nldd-icon-button text="Profiel" icon="profile"></nldd-icon-button>
+				<nldd-menu-item slot="overflow" text="Profiel" icon="profile"></nldd-menu-item>
+			</nldd-toolbar-item>
+		</nldd-toolbar>
+	`),
+	parameters: { controls: { disable: true } },
 };

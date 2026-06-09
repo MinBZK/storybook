@@ -91,6 +91,11 @@ export const oneThirdTwoThirdsSectionStyles = css`
 		}
 	}
 
+	.one-third-two-thirds-section__header[hidden],
+	.one-third-two-thirds-section__footer[hidden] {
+		display: none;
+	}
+
 	.one-third-two-thirds-section__columns {
 		display: flex;
 		flex-wrap: wrap;

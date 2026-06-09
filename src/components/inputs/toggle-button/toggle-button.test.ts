@@ -216,10 +216,10 @@ describe('nldd-toggle-button – variant', () => {
 		expect(el.shadowRoot!.querySelector('nldd-icon[name="icon-placeholder"]')).not.toBeNull();
 	});
 
-	it('variant="icon-and-text" without an icon falls back to text (no placeholder)', async () => {
+	it('variant="icon-and-text" with text but no icon shows the placeholder', async () => {
 		el = await fixture<NLDDToggleButton>('<nldd-toggle-button variant="icon-and-text" text="Label"></nldd-toggle-button>');
 		await waitForUpdate(el);
-		expect(el.shadowRoot!.querySelector('nldd-icon[name="icon-placeholder"]')).toBeNull();
+		expect(el.shadowRoot!.querySelector('nldd-icon[name="icon-placeholder"]')).not.toBeNull();
 		expect(el.shadowRoot!.querySelector('.toggle-button__text')).not.toBeNull();
 	});
 

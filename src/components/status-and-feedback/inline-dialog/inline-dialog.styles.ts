@@ -7,7 +7,7 @@ export const inlineDialogStyles = css`
 	/* # Host */
 
 	:host {
-		--_icon-size: var(--primitives-space-48);
+		--_icon-size: var(--primitives-space-40);
 		--_icon-color: var(--components-inline-dialog-icon-color);
 		--_text-font: var(--primitives-font-body-md-bold-tight);
 		--_supporting-text-font: var(--primitives-font-body-sm-regular-tight);
@@ -20,7 +20,7 @@ export const inlineDialogStyles = css`
 	}
 
 	:host([size="lg"]) {
-		--_icon-size: var(--primitives-space-56);
+		--_icon-size: var(--primitives-space-48);
 		--_text-font: var(--primitives-font-body-lg-bold-tight);
 		--_supporting-text-font: var(--primitives-font-body-md-regular-tight);
 	}

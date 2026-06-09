@@ -4,26 +4,36 @@
  * A split button combines a primary action button with a dropdown trigger.
  * The main button performs the default action, while the icon button opens a menu.
  *
- * Any `nldd-menu-item` and `nldd-menu-divider` children in the light DOM are
- * **moved** into an internal `nldd-menu` inside the component's shadow DOM on
- * mount (and on subsequent add/remove via MutationObserver). Consumers can no
- * longer `querySelector` those items from the split-button afterwards — query
- * through the menu via custom events or keep their own references.
+ * Provide the dropdown by slotting an `nldd-menu` (with its `nldd-menu-item` /
+ * `nldd-menu-divider` children) directly:
  *
- * When no items are slotted, the chevron dispatches `menu-click` and the
- * consumer is expected to manage their own popover.
+ * ```html
+ * <nldd-split-button text="Opslaan">
+ *   <nldd-menu>
+ *     <nldd-menu-item text="Opslaan als…"></nldd-menu-item>
+ *   </nldd-menu>
+ * </nldd-split-button>
+ * ```
+ *
+ * The slotted menu stays in the light DOM — no item-moving — so consumers keep
+ * their references and the full nldd-menu API (submenus, groups, config). The
+ * split-button anchors it to the chevron and opens it on click. When no
+ * `nldd-menu` is slotted, the chevron dispatches `menu-click` and the consumer
+ * manages their own popover.
  *
  * @element nldd-split-button
- * @attr {string} size - Button size: 'xs' | 'sm' | 'md' (default: 'md')
+ * @attr {string} size - Button size: 'xs' | 'sm' | 'md' | 'lg' (default: 'md')
  * @attr {string} variant - Button variant (default: 'neutral-tinted')
  * @attr {boolean} disabled - Disabled state
+ * @attr {string} width - Width mode: 'full' (stretches to container) or any CSS length; the main action button fills the available space
  * @attr {string} text - Button text for the primary action
  * @attr {string} icon - Icon name shown before the text on the primary action button
  * @attr {object} translations - Translations; unset keys fall back to Dutch
  *
+ * @slot - A single `nldd-menu` that the chevron opens.
+ *
  * @fires action-click - Fired when the main button is clicked
- * @fires menu-click - Fired when the dropdown trigger is clicked and no items
- *                     are slotted
+ * @fires menu-click - Fired when the dropdown trigger is clicked and no nldd-menu is slotted
  */
 import { LitElement } from 'lit';
 import { customElement, property, query, state } from 'lit/decorators.js';
@@ -36,7 +46,7 @@ import './../icon-button/icon-button.js';
 import '../../actions/menu/menu.js';
 import type { NLDDMenu } from '../../actions/menu/menu.js';
 
-export type Size = 'xs' | 'sm' | 'md';
+export type Size = 'xs' | 'sm' | 'md' | 'lg';
 
 @customElement('nldd-split-button')
 export class NLDDSplitButton extends LitElement {
@@ -51,6 +61,10 @@ export class NLDDSplitButton extends LitElement {
 	@property({ type: Boolean, reflect: true })
 	disabled = false;
 
+	/** Width mode: 'full' (stretch to container) or any CSS length. The main action button fills the available space. */
+	@property({ type: String, reflect: true })
+	width = '';
+
 	/** Button text for the primary action. */
 	@property({ type: String })
 	text = '';
@@ -62,22 +76,17 @@ export class NLDDSplitButton extends LitElement {
 	@property({ type: Object })
 	translations: Partial<NLDDSplitButtonTranslations> = {};
 
-	// Wrapper div around the inner `nldd-icon-button`. The pointerdown
-	// listener below attaches to the wrapper because pointerdown bubbles
-	// up from the nested icon-button — both work as the snapshot point.
+	// Wrapper div around the inner `nldd-icon-button`. The pointerdown listener
+	// attaches here because pointerdown bubbles up from the nested icon-button.
 	@query('.split-button__popup-button')
 	private _popupButtonWrapper?: HTMLDivElement;
-
-	@query('.split-button__menu')
-	private _menu?: NLDDMenu;
 
 	@state()
 	_menuIsOpen = false;
 
-	@state()
-	_hasMenuItems = false;
+	/** The consumer-slotted `nldd-menu`, or null when none is provided. */
+	private _menu: NLDDMenu | null = null;
 	private _menuWasOpenOnPointerdown = false;
-	private _childObserver?: MutationObserver;
 
 	// — i18n —————————————————————————————————————————————————————————————————
 
@@ -88,52 +97,45 @@ export class NLDDSplitButton extends LitElement {
 	// — Lifecycle ————————————————————————————————————————————————————————————
 
 	override firstUpdated(): void {
-		this._syncMenuItems();
-		// Watch for children added or removed after first render. Moving items
-		// into the menu (in _syncMenuItems) itself triggers a childList mutation
-		// — the re-entry is harmless because subsequent syncs find no items to
-		// move and just update the flag.
-		this._childObserver = new MutationObserver(() => this._syncMenuItems());
-		this._childObserver.observe(this, { childList: true });
 		// Capture open-state BEFORE the browser's light-dismiss fires on
-		// pointerdown. The subsequent click handler uses this snapshot to
-		// decide: was the popover open? → user clicked to close (no-op,
-		// light-dismiss already closed it). Was it closed? → open it.
-		// Pointerdown fires for mouse, touch and pen — `mousedown` alone
-		// would skip touch on mobile, where no mousedown precedes the
-		// synthetic click; the snapshot would stay false and the handler
-		// would re-open an already-light-dismissed menu.
+		// pointerdown. The click handler uses this snapshot to decide: was the
+		// popover open? → user clicked to close (no-op, light-dismiss already
+		// closed it). Was it closed? → open it. Pointerdown fires for mouse,
+		// touch and pen — `mousedown` alone would skip touch on mobile, where
+		// no mousedown precedes the synthetic click.
 		this._popupButtonWrapper?.addEventListener('pointerdown', () => {
 			this._menuWasOpenOnPointerdown = this._menu?.matches(':popover-open') ?? false;
 		});
+
+		// If the menu was slotted declaratively, _handleSlotChange may have run
+		// before @query resolved _popupButtonWrapper and couldn't anchor it. The
+		// wrapper exists now — anchor a menu that's still waiting for it.
+		if (this._menu && this._popupButtonWrapper) {
+			this._menu.anchorElement = this._popupButtonWrapper;
+		}
 	}
 
 	override disconnectedCallback(): void {
 		super.disconnectedCallback();
-		this._childObserver?.disconnect();
-		this._childObserver = undefined;
 		this._menu?.removeEventListener('toggle', this._handleMenuToggle);
 	}
 
 	/**
-	 * Moves any `nldd-menu-item` / `nldd-menu-divider` children from the light
-	 * DOM into the internal `nldd-menu` (so nldd-menu's `querySelectorAll`
-	 * sees them) and syncs `_hasMenuItems` against the menu's current content.
-	 * Safe to call repeatedly — already-moved items are no longer in
-	 * `this.children`.
+	 * Wires the slotted `nldd-menu` to the chevron: anchors it to the popup
+	 * button and tracks its open state. Re-runs whenever the slotted content
+	 * changes (menu added, removed or replaced).
 	 */
-	private _syncMenuItems(): void {
-		if (!this._menu || !this._popupButtonWrapper) return;
-		const toMove = Array.from(this.children).filter((el) =>
-			el.matches('nldd-menu-item, nldd-menu-divider'),
-		);
-		toMove.forEach((item) => this._menu!.appendChild(item));
-		const hadItems = this._hasMenuItems;
-		this._hasMenuItems =
-			this._menu.querySelectorAll('nldd-menu-item, nldd-menu-divider').length > 0;
-		if (this._hasMenuItems && !hadItems) {
-			this._menu.anchorElement = this._popupButtonWrapper;
-			this._menu.addEventListener('toggle', this._handleMenuToggle);
+	_handleSlotChange(event: Event): void {
+		const slot = event.target as HTMLSlotElement;
+		const menu =
+			(slot.assignedElements().find((el) => el.matches('nldd-menu')) as NLDDMenu | undefined) ?? null;
+		if (menu === this._menu) return;
+		this._menu?.removeEventListener('toggle', this._handleMenuToggle);
+		this._menu = menu;
+		this._menuIsOpen = false;
+		if (menu) {
+			if (this._popupButtonWrapper) menu.anchorElement = this._popupButtonWrapper;
+			menu.addEventListener('toggle', this._handleMenuToggle);
 		}
 	}
 
@@ -150,7 +152,7 @@ export class NLDDSplitButton extends LitElement {
 	_handleMenuClick(e: MouseEvent): void {
 		if (this.disabled) return;
 		e.stopPropagation();
-		if (this._hasMenuItems && this._menu) {
+		if (this._menu) {
 			const wasOpen = this._menuWasOpenOnPointerdown;
 			this._menuWasOpenOnPointerdown = false;
 			if (wasOpen) return; // light-dismiss already closed it
@@ -158,6 +160,26 @@ export class NLDDSplitButton extends LitElement {
 			return;
 		}
 		this.dispatchEvent(new CustomEvent('menu-click', { bubbles: true, composed: true }));
+	}
+
+	// willUpdate (not updated) so the host width is resolved before the first
+	// render rather than one frame after it — otherwise an explicit width
+	// briefly flashes at the auto default.
+	override willUpdate(changedProperties: Map<string, unknown>): void {
+		if (changedProperties.has('width')) {
+			// 'full' switches the host to block + 100% via CSS; a valid CSS length
+			// is applied inline. Either way --_width drives the inner layout so the
+			// split-button stretches and the main button fills the free space.
+			const w = this.width;
+			const isFull = w === 'full';
+			const isValidLength = !!w && !isFull && CSS.supports('width', w);
+			this.style.width = isValidLength ? w : '';
+			if (isFull || isValidLength) {
+				this.style.setProperty('--_width', '100%');
+			} else {
+				this.style.removeProperty('--_width');
+			}
+		}
 	}
 
 	override render() {

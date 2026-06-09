@@ -1445,14 +1445,37 @@ export class NLDDMenu extends LitElement {
 		// keyboard shortcut), bail — elementFromPoint could otherwise resolve
 		// to an item in a different, newly-opened menu and fire its select.
 		if (!this._isOpen) return;
-		const target = document.elementFromPoint(event.clientX, event.clientY);
-		const releaseItem = target?.closest('nldd-menu-item') as NLDDMenuItem | null;
+		const releaseItem = this._menuItemFromPoint(event.clientX, event.clientY);
 		if (!releaseItem || releaseItem === startItem || releaseItem.disabled) return;
 		// Different item — fire its select. Browser won't dispatch click here
 		// because pointerdown and pointerup landed on different targets, so
 		// there's no double-fire to suppress.
 		releaseItem._handleClick();
 	};
+
+	/**
+	 * Resolves the menu-item under the pointer, piercing shadow boundaries.
+	 * `document.elementFromPoint` stops at the outermost shadow host, so a menu
+	 * nested inside another component's shadow DOM (e.g. nldd-split-button)
+	 * resolves the release target to that host and never finds the item — which
+	 * silently disables press-drag-release there. Descending the shadow roots
+	 * restores it and is a no-op for light-DOM menus.
+	 */
+	private _menuItemFromPoint(x: number, y: number): NLDDMenuItem | null {
+		let root: Document | ShadowRoot = document;
+		// Depth guard: a backstop against pathologically deep shadow nesting;
+		// real menus are at most a few roots deep.
+		const MAX_PIERCE_DEPTH = 20;
+		for (let depth = 0; depth < MAX_PIERCE_DEPTH; depth++) {
+			const el: Element | null = root.elementFromPoint(x, y);
+			if (!el) return null;
+			const item = el.closest('nldd-menu-item') as NLDDMenuItem | null;
+			if (item) return item;
+			if (!el.shadowRoot) return null;
+			root = el.shadowRoot;
+		}
+		return null;
+	}
 
 	private _handleDocumentPointerdown = (event: PointerEvent): void => {
 		if (!this._isOpen) return;

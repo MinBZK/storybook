@@ -15,6 +15,54 @@ the type of conventional-commit determines the release. Conventional types
 `chore`, `docs`, `ci`, `style`, `test`, `build` are intentionally omitted
 here; consult the commit history if you need that level of detail.
 
+### Highlights
+
+- **A coordinated `lg` size** across the action and navigation controls — `nldd-button`, `nldd-icon-button`, `nldd-button-bar`, `nldd-split-button`, `nldd-toolbar`, `nldd-tab-bar`, `nldd-toggle-button`, and `nldd-segmented-control` — for larger touch targets and stacked icon-over-text action-bar affordances.
+- **`neutral-base` button variant** — a new low-emphasis variant backed by a dedicated token set (neutral-base, per-state secondary-content, highlight-border).
+- **Highlight border for controls and control groups** — a per-state highlight border drawn through an `::after` overlay (so it spans dismiss buttons instead of being clipped), both on individual controls (buttons, tokens, dropdowns) and as a single grouped border around control groups (steppers, pagination, tab bars, toggle and segmented controls, document tabs, split buttons, button bars).
+- **`nldd-toolbar` items and title as elements** — `nldd-toolbar-item` and `nldd-toolbar-title` are declared custom elements that render and size their own box (`width` / `min-width` / `max-width`); the toolbar measures and lays them out, accepts `nldd-menu-group` in the overflow menu, and overflows items that share an explicit `priority` together.
+- **35 new icons** — `accessibility` (`a11y`), `app`, `arrow-left-right`, `binoculars` (`explore`, `discover`), `blocks-9` (`building-blocks`), `book-batch-play`, `brick-wall`, `centralized-network`, `cylinder-2-big-small-split` (`coins`), `cylinder-split-badge-lock`, `desk-with-screen` (`workplace`), `diamond` (`gem`, `quality`), `file-box` (`archive`), `file-text-batch-check-mark`, `file-text-pencil`, `foundation`, `globe-rack-server` (`dns`), `hand` (`privacy`), `handshake`, `key`, `leaf` (`sustainability`), `pencil-ruler` (`design`), `pipeline-corner-2` (`pipeline`), `pipeline-machine-gear` (`pipeline-runner`), `pipeline-valve`, `point-bottom-left-to-point-top-right-s-curve-path` (`path`, `traject`), `radar` (`monitoring`), `score-meter`, `seal-check-mark` (`certified`), `shield` (`protection`), `shield-lock`, `shopping-cart` (`cart`), `square-and-arrow-down` (`save`, `import`), `stack-code`, `table-cells` (`table`).
+- **Breadcrumbs** keep the full trail and wrap on small screens — the small-screen collapse-to-back-link is gone.
+
+### Added
+
+- **`lg` size** on `nldd-button`, `nldd-icon-button`, `nldd-button-bar`, `nldd-split-button`, `nldd-toolbar`, `nldd-tab-bar`, `nldd-toggle-button`, and `nldd-segmented-control`.
+- **`neutral-base` button variant** plus the `--semantics-*` neutral-base, per-state secondary-content, and highlight-border tokens.
+- **Highlight border**, drawn via an `::after` overlay (so it spans dismiss buttons instead of being clipped): a per-state border on individual controls (`nldd-button`, `nldd-token`, `nldd-dropdown`), and a single grouped border around control groups (`nldd-stepper`, `nldd-pagination` — focus drawn above the selected item, `nldd-tab-bar`, `nldd-toggle-button`, `nldd-segmented-control`, `nldd-document-tab-bar`, `nldd-split-button`, `nldd-button-bar`).
+- **`icon-placeholder` fallback** on `nldd-tab-bar`, `nldd-toggle-button`, `nldd-segmented-control`, and `nldd-icon-button` — the icon and icon-and-text variants show a placeholder when no icon is supplied.
+- **`nldd-button`**: a `supporting-text` attribute.
+- **`nldd-icon-button`**: `hide-lg-text` — an icon-only `lg` control with a 28px icon and edge-stable padding.
+- **`nldd-split-button`**: a full-width, left-aligned action with `no-highlight-border` on the nested controls, plus a `width` attribute (and `nldd-menu` press-drag-release now pierces shadow boundaries so it works inside the split button).
+- **`nldd-document-tab-bar`**: per-state secondary content.
+- **`nldd-image`**: `loaded` and `errored` host attributes for consumer CSS, and a transparent media background (grey only on error, LQIP while loading).
+- **`nldd-page-sections`** (`one-half-one-half`, `one-third-two-thirds`, `two-thirds-one-third`): `__header` and `__footer` slots, rendered only when slotted.
+- **`nldd-toolbar`**: `nldd-toolbar-item` and `nldd-toolbar-title` are now declared elements that render their own box and own their sizing — item `width` / `min-width` / `max-width` / `label` / `priority`, title `text` / `supporting-text` / `align` / `min-width` / `width` / `max-width`. The overflow menu also accepts `nldd-menu-group`, and items that share an explicit `priority` move in and out of the overflow menu together.
+- **Icons** — the new icons (listed in Highlights) are normalized to the house format. New aliases for existing icons: `export` (→ square-arrow-up) and `settings` (→ gear).
+
+### Changed
+
+- **`nldd-image`**: the default shape is now square (was rounded); the `image__error-card` wrapper is dropped (the errored media provides the backdrop).
+- **`nldd-card`**: square corners (border-radius removed).
+- **`nldd-inline-dialog`**: smaller icons (md 48 → 40px, lg 56 → 48px).
+- **`nldd-breadcrumbs`**: keeps the full trail and wraps on small screens; the small-screen collapse-to-back-link and its container-query machinery are removed.
+- **Input fields**: autofill stays light in both color schemes — a light-yellow background with dark-amber text — instead of inverting in dark mode, via the new `--semantics-input-fields-is-autofill-content-color` token.
+
+### Breaking
+
+- **`nldd-tab-bar`**: the `compact` variant is removed. Use `size="lg"` — the icon-and-text variant at `lg` stacks the icon over the text, which is what `compact` did.
+- **Button content-color tokens renamed**: `--semantics-buttons-*-content-color` → `--semantics-buttons-*-primary-content-color`, system-wide. Update any custom CSS that references them.
+- **Button font tokens renamed**: `--semantics-buttons-{xs,sm,md,lg}-font` → `--semantics-buttons-{size}-primary-text-font`, system-wide. The supporting text gets its own per-size token (`--semantics-buttons-{size}-supporting-text-font`) instead of an inline primitive. Update any custom CSS that references the old names.
+- **`nldd-button`**: the `horizontal-align` attribute is renamed to `horizontal-alignment`.
+- **Icon renamed**: `table-badge-arrow-down` → `table-cells-badge-arrow-down`.
+- **`nldd-image`**: the error translation key is renamed to `error-text`.
+
+### Fixed
+
+- **`nldd-rich-text`**: the table-header underline is kept (the last-row border is scoped to `tbody`).
+- **`nldd-code-viewer`**: the actions button gets an isolated stacking context.
+- **`nldd-table`**: the empty state no longer scrolls horizontally — the message spans the box width instead of the data columns.
+- **`nldd-tab-bar`, `nldd-document-tab-bar`, `nldd-menu-bar-item`**: the link (anchor) variant shows the link cursor, matching `nldd-button`.
+
 ## <small>0.8.56 (2026-06-03)</small>
 
 * feat(plugin): marktplaats voor de nldd-plugin (#121) ([a883ba0](https://github.com/MinBZK/storybook/commit/a883ba0)), closes [#121](https://github.com/MinBZK/storybook/issues/121)

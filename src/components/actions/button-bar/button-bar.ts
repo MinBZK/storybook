@@ -6,7 +6,7 @@
  * Renders nldd-button-bar-divider elements as internal dividers — no separate component needed.
  *
  * @element nldd-button-bar
- * @attr {string} size - Bar size: 'xs' | 'sm' | 'md' (default: 'md')
+ * @attr {string} size - Bar size: 'xs' | 'sm' | 'md' | 'lg' (default: 'md'). At 'lg', icon-button children stack their label below the icon (mobile action-bar style).
  * @attr {string} variant - Button variant (default: 'neutral-tinted')
  * @attr {boolean} disabled - Disabled state
  *
@@ -23,7 +23,7 @@ if (!customElements.get('nldd-button-bar-divider')) {
 	customElements.define('nldd-button-bar-divider', class extends HTMLElement {});
 }
 
-export type Size = 'xs' | 'sm' | 'md';
+export type Size = 'xs' | 'sm' | 'md' | 'lg';
 
 export type BarChild =
 	| { type: 'divider'; id: number }
@@ -149,6 +149,8 @@ export class NLDDButtonBar extends LitElement {
 			if (BUTTON_TAGS.includes(tag)) {
 				el.setAttribute('size', this.size);
 				el.setAttribute('variant', this.variant);
+				// The bar draws one group border (.button-bar::after); children drop theirs.
+				el.setAttribute('no-highlight-border', '');
 			}
 
 			const id = this._idCounter++;

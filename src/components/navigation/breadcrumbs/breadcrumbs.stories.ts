@@ -39,11 +39,10 @@ export const Standaard = {
 };
 
 /**
- * Op een sm-viewport (≤640px) wisselt het component automatisch van het
- * volledige kruimelpad naar een "‹ {ouder}"-link, gestuurd door een
- * `@container`-query op de breadcrumbs zelf.
+ * In een smalle container wrapt het kruimelpad over meerdere regels, zodat het
+ * op elke breedte past. Er is geen aparte terugknop-variant meer.
  */
-export const SmFallback = {
+export const SmalleContainer = {
 	render: () => html`
 		<div style="max-width: 320px; border: 1px dashed var(--semantics-dividers-color); padding: 16px;">
 			<nldd-breadcrumbs>

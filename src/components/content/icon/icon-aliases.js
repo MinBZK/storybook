@@ -166,6 +166,7 @@ export const aliases = {
 
 	// gear
 	'global-settings': 'gear',
+	'settings': 'gear',
 
 	// globe
 	'languages': 'globe',
@@ -320,6 +321,7 @@ export const aliases = {
 
 	// square-arrow-up
 	'share': 'square-arrow-up',
+	'export': 'square-arrow-up',
 
 	// square-on-square
 	'copy': 'square-on-square',
@@ -334,8 +336,8 @@ export const aliases = {
 	'day': 'sun',
 	'light-mode': 'sun',
 
-	// table-badge-arrow-down
-	'download-table': 'table-badge-arrow-down',
+	// table-cells-badge-arrow-down
+	'download-table': 'table-cells-badge-arrow-down',
 
 	// tag
 	'label': 'tag',
@@ -353,4 +355,68 @@ export const aliases = {
 
 	// trash
 	'delete': 'trash',
+
+	// point-bottom-left-to-point-top-right-s-curve-path
+	'path': 'point-bottom-left-to-point-top-right-s-curve-path',
+	'traject': 'point-bottom-left-to-point-top-right-s-curve-path',
+
+	// pipeline-corner-2
+	'pipeline': 'pipeline-corner-2',
+
+	// pencil-ruler
+	'design': 'pencil-ruler',
+
+	// globe-rack-server
+	'dns': 'globe-rack-server',
+
+	// file-box
+	'archive': 'file-box',
+
+	// cylinder-2-big-small-split
+	'coins': 'cylinder-2-big-small-split',
+
+	// blocks-9
+	'building-blocks': 'blocks-9',
+
+	// leaf
+	'sustainability': 'leaf',
+
+	// desk-with-screen
+	'workplace': 'desk-with-screen',
+
+	// accessibility
+	'a11y': 'accessibility',
+
+	// binoculars
+	'explore': 'binoculars',
+	'discover': 'binoculars',
+
+	// diamond
+	'gem': 'diamond',
+	'quality': 'diamond',
+
+	// radar
+	'monitoring': 'radar',
+
+	// seal-check-mark
+	'certified': 'seal-check-mark',
+
+	// shield
+	'protection': 'shield',
+
+	// shopping-cart
+	'cart': 'shopping-cart',
+
+	// table-cells
+	'table': 'table-cells',
+
+	// square-and-arrow-down
+	'save': 'square-and-arrow-down',
+	'import': 'square-and-arrow-down',
+
+	// pipeline-machine-gear
+	'pipeline-runner': 'pipeline-machine-gear',
+
+	// hand
+	'privacy': 'hand',
 };

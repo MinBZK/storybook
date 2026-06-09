@@ -1,11 +1,13 @@
 import { html, TemplateResult } from 'lit';
 import type { NLDDOneThirdTwoThirdsSection } from './one-third-two-thirds-section.js';
 
-export function oneThirdTwoThirdsSectionTemplate(_component: NLDDOneThirdTwoThirdsSection): TemplateResult {
+export function oneThirdTwoThirdsSectionTemplate(component: NLDDOneThirdTwoThirdsSection): TemplateResult {
 	return html`
 		<section class="one-third-two-thirds-section">
 			<div class="one-third-two-thirds-section__body">
-				<slot name="header"></slot>
+				<header class="one-third-two-thirds-section__header" hidden>
+					<slot name="header" @slotchange=${component._onSlotChange}></slot>
+				</header>
 				<div class="one-third-two-thirds-section__columns">
 					<div class="one-third-two-thirds-section__left-column">
 						<slot name="left"></slot>
@@ -15,7 +17,9 @@ export function oneThirdTwoThirdsSectionTemplate(_component: NLDDOneThirdTwoThir
 						<slot name="right"></slot>
 					</div>
 				</div>
-				<slot name="footer"></slot>
+				<footer class="one-third-two-thirds-section__footer" hidden>
+					<slot name="footer" @slotchange=${component._onSlotChange}></slot>
+				</footer>
 			</div>
 		</section>
 	`;

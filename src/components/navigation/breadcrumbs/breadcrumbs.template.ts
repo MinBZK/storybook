@@ -1,34 +1,18 @@
 import { html, nothing, type TemplateResult } from 'lit';
-import { ifDefined } from 'lit/directives/if-defined.js';
 import type { NLDDBreadcrumbs, NLDDBreadcrumbsItem } from './breadcrumbs.js';
 import '../../content/icon/icon.js';
 
 export function breadcrumbsTemplate(component: NLDDBreadcrumbs): TemplateResult {
 	const label = component._t('components.breadcrumbs.accessible-label');
-	const levelUpLabel = component._t('components.breadcrumbs.level-up-label');
-	const parent = component._parentItem();
-	const levelUpText = parent ? (parent.text || parent.textContent?.trim() || levelUpLabel) : '';
 
 	return html`
 		<nav class="breadcrumbs"
 			aria-label=${label || nothing}
 		>
-			${parent ? html`
-				<a class="breadcrumbs__level-up"
-					href=${ifDefined(parent.href)}
-				>
-					<span class="breadcrumbs__level-up-icon"
-						aria-hidden="true"
-					>
-						<nldd-icon name="chevron-left"></nldd-icon>
-					</span>
-					<span class="breadcrumbs__level-up-text">${levelUpText}</span>
-				</a>
-			` : nothing}
 			<div class="breadcrumbs__items"
 				role="list"
 			>
-				<slot @slotchange=${component._onSlotChange}></slot>
+				<slot></slot>
 			</div>
 		</nav>
 	`;

@@ -24,8 +24,9 @@ de `.d.ts` bestanden van het pakket.
 
 | Attribuut | Type | Beschrijving |
 | --- | --- | --- |
-| `variant` | `string` | Button variant: 'primary' \| 'secondary' \| 'destructive' \| 'accent-filled' \| 'accent-transparent' \| 'neutral-tinted' \| 'neutral-transparent' \| 'critical-tinted' \| 'critical-transparent' |
-| `size` | `string` | Button size: 'xs' \| 'sm' \| 'md' (default: 'md') |
+| `variant` | `string` | Button variant: 'primary' \| 'secondary' \| 'destructive' \| 'accent-filled' \| 'accent-transparent' \| 'neutral-tinted' \| 'neutral-base' \| 'neutral-transparent' \| 'critical-tinted' \| 'critical-transparent' |
+| `size` | `string` | Button size: 'xs' \| 'sm' \| 'md' \| 'lg' (default: 'md'). 'lg' uses larger text and 24px start/end icons. |
+| `horizontal-alignment` | `string` | Horizontal alignment of the button content: 'left' \| 'center' \| 'right' (default: unset, centered). Most visible with width="full" or a fixed width. |
 | `disabled` | `boolean` | Disabled state |
 | `type` | `string` | Button type for form submission: 'button' \| 'submit' \| 'reset' (ignored when href is set) |
 | `expandable` | `boolean` | Whether the button has a icon to indicate it opens a menu or popover |
@@ -33,7 +34,9 @@ de `.d.ts` bestanden van het pakket.
 | `popup-type` | `string` | Type of popup container this button opens: 'menu' \| 'listbox' \| 'dialog' \| 'tree' \| 'grid'. Sets aria-haspopup on the inner button and forces aria-expanded to always be present (true/false) so screen readers know the popup state. |
 | `width` | `string` | Width mode: 'full' (stretches to container) or any CSS length (e.g. '240px') |
 | `text` | `string` | Button text |
+| `supporting-text` | `string` | Supporting text shown below the text (md/lg) or after it (sm/xs), in a secondary color. Part of the accessible name (unless `accessible-label` is set, which replaces the whole accessible name). |
 | `single-line` | `boolean` | When true, truncates overflowing text with an ellipsis instead of letting it wrap. Requires the button (or an ancestor) to constrain the width. |
+| `no-highlight-border` | `boolean` | Removes the per-variant highlight border (e.g. when nldd-button-bar draws a single group border instead). |
 | `start-icon` | `string` | Icon name for the start icon (before text) |
 | `end-icon` | `string` | Icon name for the end icon (after text) |
 | `accessible-label` | `string` | Accessible label for the button, overrides text for screen readers |
@@ -63,7 +66,7 @@ A horizontal container for grouping buttons with a neutral background. Automatic
 
 | Attribuut | Type | Beschrijving |
 | --- | --- | --- |
-| `size` | `string` | Bar size: 'xs' \| 'sm' \| 'md' (default: 'md') |
+| `size` | `string` | Bar size: 'xs' \| 'sm' \| 'md' \| 'lg' (default: 'md'). At 'lg', icon-button children stack their label below the icon (mobile action-bar style). |
 | `variant` | `string` | Button variant (default: 'neutral-tinted') |
 | `disabled` | `boolean` | Disabled state |
 
@@ -98,6 +101,8 @@ A container for grouping related buttons together, either horizontally or vertic
 | --- | --- | --- |
 | `variant` | `string` | Button variant: 'accent-filled' \| 'accent-transparent' \| 'neutral-tinted' \| 'neutral-transparent' \| 'critical-tinted' \| 'critical-transparent' \| 'primary' \| 'secondary' \| 'destructive' |
 | `size` | `string` | Button size: 'xs' \| 'sm' \| 'md' \| 'lg' (default: 'md') |
+| `hide-lg-text` | `boolean` | In lg size, hides the text label and enlarges the icon by one step (28px) |
+| `no-highlight-border` | `boolean` | Removes the per-variant highlight border (e.g. when a control group draws a single border instead). |
 | `disabled` | `boolean` | Disabled state |
 | `type` | `string` | Button type for form submission: 'button' \| 'submit' \| 'reset' (ignored when href is set) |
 | `expandable` | `boolean` | Whether the button opens a menu or popover and shows chevron next to the icon |
@@ -105,7 +110,7 @@ A container for grouping related buttons together, either horizontally or vertic
 | `popup-type` | `string` | Type of popup container this button opens: 'menu' \| 'listbox' \| 'dialog' \| 'tree' \| 'grid'. Sets aria-haspopup on the inner button and forces aria-expanded to always be present (true/false) so screen readers know the popup state. |
 | `width` | `string` | Width mode: 'full' (stretches to container) or any CSS length (e.g. '240px') |
 | `text` | `string` | Button text, used as aria-label and shown below the icon in lg size |
-| `icon` | `string` | Icon name for the nldd-icon element |
+| `icon` | `string` | Icon name for the nldd-icon element. Defaults to a placeholder icon when neither this attribute nor the icon slot is set. |
 | `accessible-label` | `string` | Accessible label for screen readers. Overrides text as aria-label and title tooltip. Use when the visible text alone lacks context for screen readers (e.g. text "Toon", accessible-label "Toon wachtwoord"). The text is still shown visually in lg size regardless. |
 | `tooltip-timing` | `string` | Forwarded to the inner nldd-tooltip's `timing`: 'default' (700 ms show-delay), 'instant', or 'never' (suppress the visual tooltip; screen readers still get the aria-label). Use 'never' when the surrounding context already explains the button (e.g. spin buttons in nldd-number-field, the chevron in nldd-split-button). |
 | `href` | `string` | When set, renders an <a> element instead of <button> |
@@ -117,7 +122,7 @@ A container for grouping related buttons together, either horizontally or vertic
 
 | Slot | Beschrijving |
 | --- | --- |
-| `icon` | Slot for a custom icon (e.g. custom SVG). Only used when icon attribute is not set. |
+| `icon` | Slot for a custom icon (e.g. custom SVG). Only used when icon attribute is not set; falls back to a placeholder icon when the slot is empty. |
 
 **Events**
 
@@ -127,25 +132,32 @@ A container for grouping related buttons together, either horizontally or vertic
 
 ### `<nldd-split-button>`
 
-A split button combines a primary action button with a dropdown trigger. The main button performs the default action, while the icon button opens a menu. Any `nldd-menu-item` and `nldd-menu-divider` children in the light DOM are **moved** into an internal `nldd-menu` inside the component's shadow DOM on mount (and on subsequent add/remove via MutationObserver). Consumers can no longer `querySelector` those items from the split-button afterwards — query through the menu via custom events or keep their own references. When no items are slotted, the chevron dispatches `menu-click` and the consumer is expected to manage their own popover.
+A split button combines a primary action button with a dropdown trigger. The main button performs the default action, while the icon button opens a menu. Provide the dropdown by slotting an `nldd-menu` (with its `nldd-menu-item` / `nldd-menu-divider` children) directly: ```html <nldd-split-button text="Opslaan"> <nldd-menu> <nldd-menu-item text="Opslaan als…"></nldd-menu-item> </nldd-menu> </nldd-split-button> ``` The slotted menu stays in the light DOM — no item-moving — so consumers keep their references and the full nldd-menu API (submenus, groups, config). The split-button anchors it to the chevron and opens it on click. When no `nldd-menu` is slotted, the chevron dispatches `menu-click` and the consumer manages their own popover.
 
 **Attributes**
 
 | Attribuut | Type | Beschrijving |
 | --- | --- | --- |
-| `size` | `string` | Button size: 'xs' \| 'sm' \| 'md' (default: 'md') |
+| `size` | `string` | Button size: 'xs' \| 'sm' \| 'md' \| 'lg' (default: 'md') |
 | `variant` | `string` | Button variant (default: 'neutral-tinted') |
 | `disabled` | `boolean` | Disabled state |
+| `width` | `string` | Width mode: 'full' (stretches to container) or any CSS length; the main action button fills the available space |
 | `text` | `string` | Button text for the primary action |
 | `icon` | `string` | Icon name shown before the text on the primary action button |
 | `translations` | `object` | Translations; unset keys fall back to Dutch |
+
+**Slots**
+
+| Slot | Beschrijving |
+| --- | --- |
+| _(default)_ | A single `nldd-menu` that the chevron opens. |
 
 **Events**
 
 | Event | Beschrijving |
 | --- | --- |
 | `action-click` | Fired when the main button is clicked |
-| `menu-click` | Fired when the dropdown trigger is clicked and no items are slotted |
+| `menu-click` | Fired when the dropdown trigger is clicked and no nldd-menu is slotted |
 
 ### `<nldd-toolbar>`
 
@@ -153,7 +165,7 @@ A split button combines a primary action button with a dropdown trigger. The mai
 
 | Attribuut | Type | Beschrijving |
 | --- | --- | --- |
-| `size` | `string` | Toolbar size, propagated to all child controls: 'sm' \| 'md' (default: 'md') |
+| `size` | `string` | Toolbar size, propagated to all child controls: 'sm' \| 'md' \| 'lg' (default: 'md'). At 'lg' the overflow button (and lg-capable children like nldd-icon-button) stack their label below the icon. |
 | `show-item-labels` | `boolean` | When true, shows a text label below each toolbar item and the overflow button |
 | `label` | `string` | Accessible label for the toolbar. Only needed when multiple toolbars appear on the same page |
 
@@ -164,7 +176,42 @@ A split button combines a primary action button with a dropdown trigger. The mai
 | `start` | nldd-toolbar-item and nldd-toolbar-title elements placed at the start |
 | `center` | nldd-toolbar-item and nldd-toolbar-title elements placed at the center |
 | `end` | nldd-toolbar-item and nldd-toolbar-title elements placed at the end |
-| `overflow` | nldd-menu-item and nldd-menu-divider elements always shown in the overflow menu |
+| `overflow` | nldd-menu-item, nldd-menu-divider and nldd-menu-group elements always shown in the overflow menu |
+
+### `<nldd-toolbar-item>`
+
+**Attributes**
+
+| Attribuut | Type | Beschrijving |
+| --- | --- | --- |
+| `width` | `string` | Fluid width: a percentage (e.g. '40%') or any CSS length (e.g. '240px'). Setting it (or min-width or max-width) makes the item fluid so it grows to fill the available space. |
+| `min-width` | `string` | Minimum (fluid) width as a CSS length (e.g. '240px'). Setting it also makes the item fluid. |
+| `max-width` | `string` | Maximum (fluid) width as a CSS length (e.g. '480px'). Setting it also makes the item fluid. |
+| `label` | `string` | Text label shown below the item when the toolbar has show-item-labels. |
+| `priority` | `number` | Overflow order: items with a lower priority move into the overflow menu first (default 0). Items sharing a priority overflow together, regardless of position. |
+| `fluid` | `boolean` | Set by nldd-toolbar, not a consumer attribute: marks an item that grows or shrinks to fill space. Toggled synchronously during measurement, so it can appear or disappear between layout frames — do not style against it. It is not reflected as a JS property — read it with hasAttribute('fluid'). |
+| `solo-fluid` | `boolean` | Set by nldd-toolbar, not a consumer attribute: the sole fluid item, allowed to shrink below its content. Same synchronous-toggle and property-read caveats as fluid. |
+| `hidden` | `boolean` | Set by nldd-toolbar, not a consumer attribute, when the item moves into the overflow menu. Same synchronous-toggle caveat. |
+
+**Slots**
+
+| Slot | Beschrijving |
+| --- | --- |
+| _(default)_ | The control shown in the toolbar (e.g. nldd-icon-button) |
+| `overflow` | nldd-menu-item / nldd-menu-divider / nldd-menu-group children, shown in the overflow menu when this item overflows |
+
+### `<nldd-toolbar-title>`
+
+**Attributes**
+
+| Attribuut | Type | Beschrijving |
+| --- | --- | --- |
+| `text` | `string` | Title text. |
+| `supporting-text` | `string` | Secondary supporting text shown below the title. |
+| `align` | `string` | Text alignment: 'left' \| 'center' (default: 'left'). |
+| `width` | `string` | Preferred (fluid) width as a CSS length or percentage; the title grows toward it and shrinks to min-width. |
+| `min-width` | `string` | Minimum width as a CSS length (e.g. '200px', default '200px'). |
+| `max-width` | `string` | Maximum width as a CSS length (e.g. '480px'). |
 
 ## Content
 
@@ -237,7 +284,7 @@ Wraps a native `<img>` with design-system styling: corner radius variants, aspec
 | `aspect-ratio` | `string` | Aspect ratio in CSS form (e.g. "16/9", "1/1", "4/3"). "16:9" colon notation is also accepted for convenience. |
 | `object-fit` | `'cover'\|'contain'\|'fill'\|'scale-down'\|'none'` | default: 'cover' |
 | `object-position` | `'center'\|'top'\|'bottom'\|'left'\|'right'` | default: 'center' |
-| `shape` | `'square'\|'rounded'\|'circle'` | Corner shape (default: 'rounded') |
+| `shape` | `'square'\|'rounded'\|'circle'` | Corner shape (default: 'square') |
 | `caption` | `string` | Caption text shown below the image |
 | `credit` | `string` | Smaller credit/attribution text shown beside the caption |
 | `decorative` | `boolean` | Decorative image: alt is forced empty + aria-hidden |
@@ -765,7 +812,7 @@ A horizontal group of mutually exclusive (radio) or multi-select (checkbox) opti
 | Attribuut | Type | Beschrijving |
 | --- | --- | --- |
 | `value` | `string` | Selected value for radio type |
-| `size` | `string` | Control size: 'sm' \| 'md' (default: 'md') |
+| `size` | `string` | Control size: 'sm' \| 'md' \| 'lg' (default: 'md') |
 | `type` | `string` | Input type: 'radio' \| 'checkbox' (default: 'radio') |
 | `variant` | `string` | Content type for all items: 'text' \| 'icon' \| 'icon-and-text' (default: 'text') |
 | `disabled` | `boolean` | Disabled state for all items |
@@ -907,7 +954,7 @@ A selectable button that toggles between selected and unselected. Available as a
 | Attribuut | Type | Beschrijving |
 | --- | --- | --- |
 | `type` | `'button' \| 'checkbox' \| 'radio'` | Underlying element (default: 'button') |
-| `size` | `'xs' \| 'sm' \| 'md'` | Button size (default: 'md') |
+| `size` | `'xs' \| 'sm' \| 'md' \| 'lg'` | Button size (default: 'md') |
 | `selected` | `boolean` | Selected state |
 | `disabled` | `boolean` | Disabled state |
 | `value` | `string` | Value for form submission (checkbox/radio) |
@@ -1491,7 +1538,7 @@ Een zwevend venster gebaseerd op het native <dialog>-element. Kan modaal of niet
 
 ### `<nldd-breadcrumbs>`
 
-A trail of `nldd-breadcrumbs-item`s separated by `›`, rendered as a `<nav>` landmark wrapping a `<div role="list">` (with each item carrying `role="listitem"`). Explicit ARIA roles travel reliably across the slot boundary where the implicit `<ol>`/`<li>` mapping is inconsistent across AT + browser combos. The host itself is its own container-query scope so the sm-viewport "‹ {parent}" fallback reacts to the breadcrumbs' own width, not the viewport.
+A trail of `nldd-breadcrumbs-item`s separated by `›`, rendered as a `<nav>` landmark wrapping a `<div role="list">` (with each item carrying `role="listitem"`). Explicit ARIA roles travel reliably across the slot boundary where the implicit `<ol>`/`<li>` mapping is inconsistent across AT + browser combos. The trail wraps onto multiple lines when it doesn't fit, so it adapts to any width.
 
 **Attributes**
 
@@ -1677,7 +1724,8 @@ A horizontal navigation bar with mutually exclusive tabs. Exports both NLDDTabBa
 
 | Attribuut | Type | Beschrijving |
 | --- | --- | --- |
-| `variant` | `string` | Visual mode: 'icon-and-text' \| 'text' \| 'icon' \| 'compact'. 'compact' stacks the icon above the text. When unset, the variant is inferred from each item's content. |
+| `variant` | `string` | Visual mode: 'icon-and-text' \| 'text' \| 'icon'. When unset, the variant is inferred from each item's content. Drives the layout at every size. |
+| `size` | `string` | Size: 'md' \| 'lg' (default: 'md'). 'lg' enlarges the touch target; the per-variant layout is preserved (icon-and-text stacks the icon over the text, text renders large text, icon renders a larger icon-only control). |
 | `navigation` | `boolean` | Renders a nav landmark instead of tablist; use for href-based items that navigate between routes |
 | `centered` | `boolean` | Centers the tabs in the container (host fills the row, tabs group in the middle) |
 | `accessible-label` | `string` | Accessible name for the navigation region; defaults to 'Tabs' |
@@ -2118,12 +2166,12 @@ A cell component for displaying a title with optional overline and subtitle in l
 
 ## Iconen
 
-Geldige `name`-waarden voor `<nldd-icon>` (160 iconen + 152 aliassen). Verzin geen naam; kies er een uit deze set.
+Geldige `name`-waarden voor `<nldd-icon>` (195 iconen + 178 aliassen). Verzin geen naam; kies er een uit deze set.
 
 **Iconen**
 
-`apartment-building`, `arrow-2-counter-clockwise`, `arrow-down`, `arrow-down-in-bucket`, `arrow-left`, `arrow-right`, `arrow-right-in-bucket`, `arrow-right-out-bucket`, `arrow-u-turn-backward`, `arrow-u-turn-forward`, `arrow-up`, `arrow-up-arrow-down`, `bell`, `bold`, `book`, `bookmark`, `bookmark-filled`, `books-vertical`, `brackets-ellipsis`, `bullet-list`, `business-suitcase`, `calendar-event`, `caret-down`, `caret-down-extra-small`, `caret-down-small`, `caret-left`, `caret-left-extra-small`, `caret-left-small`, `caret-right`, `caret-right-extra-small`, `caret-right-small`, `caret-up`, `caret-up-extra-small`, `caret-up-small`, `certificate`, `chart-x-y-axis-line`, `check-circle-filled`, `check-list`, `check-mark`, `check-mark-circle`, `check-mark-extra-small`, `check-mark-small`, `chevron-double-left`, `chevron-double-left-extra-small`, `chevron-double-left-small`, `chevron-double-right`, `chevron-double-right-extra-small`, `chevron-double-right-small`, `chevron-down`, `chevron-down-extra-small`, `chevron-down-small`, `chevron-left`, `chevron-left-chevron-right`, `chevron-left-extra-small`, `chevron-left-forward-slash-chevron-right`, `chevron-left-small`, `chevron-right`, `chevron-right-extra-small`, `chevron-right-small`, `chevron-up`, `chevron-up-chevron-down`, `chevron-up-extra-small`, `chevron-up-small`, `circle-dashed`, `circle-filled`, `circle-filled-extra-small`, `circle-filled-small`, `clipboard`, `clipboard-rectangle`, `clock`, `clock-arrow-clockwise`, `clock-arrow-counter-clockwise`, `cloud`, `cloud-arrow-down`, `cloud-arrow-up`, `cylinder-split`, `cylinder-split-slash`, `dismiss`, `dismiss-circle`, `dismiss-circle-filled`, `dismiss-extra-small`, `dismiss-small`, `ellipsis`, `envelope`, `euro-sign`, `exclamation-circle`, `exclamation-circle-filled`, `exclamation-triangle`, `exclamation-triangle-filled`, `eye`, `eye-slash`, `eyeglasses`, `face-frowning`, `face-smiling`, `face-smiling-badge-plus`, `file-text`, `flag`, `flag-filled`, `folder`, `folder-stack`, `gear`, `globe`, `heart`, `heart-filled`, `house`, `inbox`, `info-circle`, `info-circle-filled`, `italic`, `lightbulb`, `link`, `list`, `list-arrow-down`, `list-arrow-up`, `list-decreasing-lines`, `lock-closed`, `lock-open`, `magnifier`, `message-rectangle-text`, `minus`, `minus-extra-small`, `minus-small`, `moon`, `numbered-list`, `paper-plane`, `paperclip`, `pencil`, `pencil-on-square`, `person`, `person-2`, `person-badge-gear`, `person-circle`, `photo`, `photo-slash`, `plus`, `plus-small`, `puzzle-piece`, `puzzle-piece-filled`, `question-mark-circle`, `rectangle-stack`, `scissor`, `shield-check-mark`, `ship-wheel`, `slash-circle`, `sparkles`, `square-arrow-right-top`, `square-arrow-up`, `square-on-square`, `square-plus-on-square`, `star`, `star-filled`, `starburst-filled`, `sun`, `table-badge-arrow-down`, `tag`, `terminal`, `text-quote`, `timer`, `trash`, `underlined`
+`accessibility`, `apartment-building`, `app`, `arrow-2-counter-clockwise`, `arrow-down`, `arrow-down-in-bucket`, `arrow-left`, `arrow-left-right`, `arrow-right`, `arrow-right-in-bucket`, `arrow-right-out-bucket`, `arrow-u-turn-backward`, `arrow-u-turn-forward`, `arrow-up`, `arrow-up-arrow-down`, `bell`, `binoculars`, `blocks-9`, `bold`, `book`, `book-batch-play`, `bookmark`, `bookmark-filled`, `books-vertical`, `brackets-ellipsis`, `brick-wall`, `bullet-list`, `business-suitcase`, `calendar-event`, `caret-down`, `caret-down-extra-small`, `caret-down-small`, `caret-left`, `caret-left-extra-small`, `caret-left-small`, `caret-right`, `caret-right-extra-small`, `caret-right-small`, `caret-up`, `caret-up-extra-small`, `caret-up-small`, `centralized-network`, `certificate`, `chart-x-y-axis-line`, `check-circle-filled`, `check-list`, `check-mark`, `check-mark-circle`, `check-mark-extra-small`, `check-mark-small`, `chevron-double-left`, `chevron-double-left-extra-small`, `chevron-double-left-small`, `chevron-double-right`, `chevron-double-right-extra-small`, `chevron-double-right-small`, `chevron-down`, `chevron-down-extra-small`, `chevron-down-small`, `chevron-left`, `chevron-left-chevron-right`, `chevron-left-extra-small`, `chevron-left-forward-slash-chevron-right`, `chevron-left-small`, `chevron-right`, `chevron-right-extra-small`, `chevron-right-small`, `chevron-up`, `chevron-up-chevron-down`, `chevron-up-extra-small`, `chevron-up-small`, `circle-dashed`, `circle-filled`, `circle-filled-extra-small`, `circle-filled-small`, `clipboard`, `clipboard-rectangle`, `clock`, `clock-arrow-clockwise`, `clock-arrow-counter-clockwise`, `cloud`, `cloud-arrow-down`, `cloud-arrow-up`, `cylinder-2-big-small-split`, `cylinder-split`, `cylinder-split-badge-lock`, `cylinder-split-slash`, `desk-with-screen`, `diamond`, `dismiss`, `dismiss-circle`, `dismiss-circle-filled`, `dismiss-extra-small`, `dismiss-small`, `ellipsis`, `envelope`, `euro-sign`, `exclamation-circle`, `exclamation-circle-filled`, `exclamation-triangle`, `exclamation-triangle-filled`, `eye`, `eye-slash`, `eyeglasses`, `face-frowning`, `face-smiling`, `face-smiling-badge-plus`, `file-box`, `file-text`, `file-text-batch-check-mark`, `file-text-pencil`, `flag`, `flag-filled`, `folder`, `folder-stack`, `foundation`, `gear`, `globe`, `globe-rack-server`, `hand`, `handshake`, `heart`, `heart-filled`, `house`, `inbox`, `info-circle`, `info-circle-filled`, `italic`, `key`, `leaf`, `lightbulb`, `link`, `list`, `list-arrow-down`, `list-arrow-up`, `list-decreasing-lines`, `lock-closed`, `lock-open`, `magnifier`, `message-rectangle-text`, `minus`, `minus-extra-small`, `minus-small`, `moon`, `numbered-list`, `paper-plane`, `paperclip`, `pencil`, `pencil-on-square`, `pencil-ruler`, `person`, `person-2`, `person-badge-gear`, `person-circle`, `photo`, `photo-slash`, `pipeline-corner-2`, `pipeline-machine-gear`, `pipeline-valve`, `plus`, `plus-small`, `point-bottom-left-to-point-top-right-s-curve-path`, `puzzle-piece`, `puzzle-piece-filled`, `question-mark-circle`, `radar`, `rectangle-stack`, `scissor`, `score-meter`, `seal-check-mark`, `shield`, `shield-check-mark`, `shield-lock`, `ship-wheel`, `shopping-cart`, `slash-circle`, `sparkles`, `square-and-arrow-down`, `square-arrow-right-top`, `square-arrow-up`, `square-on-square`, `square-plus-on-square`, `stack-code`, `star`, `star-filled`, `starburst-filled`, `sun`, `table-cells`, `table-cells-badge-arrow-down`, `tag`, `terminal`, `text-quote`, `timer`, `trash`, `underlined`
 
 **Aliassen** (verwijzen naar een icoon hierboven)
 
-`account`, `add`, `add-emoji`, `add-small`, `ai`, `alarm`, `alert`, `analytics`, `annotation`, `attach`, `attachment`, `back`, `backlog`, `backup-in-cloud`, `blocked`, `blockquote`, `bookmarked`, `books`, `broken-image`, `building`, `calendar`, `category`, `chart-line`, `checked`, `checked-extra-small`, `checked-small`, `checklist`, `cli`, `code`, `comment`, `console`, `copy`, `countdown`, `cut`, `dark-mode`, `database`, `database-disabled`, `database-unavailable`, `day`, `delete`, `deploy`, `diploma`, `directories`, `directory`, `document`, `download`, `download-from-cloud`, `download-table`, `duplicate`, `edit`, `email`, `embed`, `error`, `event`, `exit`, `extension`, `external-link`, `favorite`, `file`, `filter`, `flagged`, `forbidden`, `forward`, `frowning`, `future`, `global-settings`, `graph`, `group`, `guide`, `happy`, `help`, `hidden`, `hide`, `history`, `home`, `hyperlink`, `icon-placeholder`, `idea`, `image`, `info`, `information`, `invalid`, `k8s`, `kubernetes`, `label`, `languages`, `license`, `light-mode`, `lock`, `locked`, `login`, `logout`, `love`, `magic`, `mail`, `menu`, `module`, `more`, `new`, `night`, `notification`, `notifications`, `now`, `office`, `paste`, `plugin`, `profile`, `promotion`, `question`, `rated`, `rating`, `read`, `reading-list`, `redo`, `refresh`, `reload`, `remove`, `remove-extra-small`, `remove-small`, `sad`, `search`, `secure`, `security`, `send`, `share`, `show`, `smiling`, `sort`, `sort-ascending`, `sort-descending`, `stack`, `success`, `sync`, `tasks`, `team`, `time`, `todos`, `undo`, `unlocked`, `unsecure`, `upload-to-cloud`, `url`, `user`, `user-admin`, `user-settings`, `users`, `valid`, `verified`, `visible`, `warning`, `work`, `write`
+`a11y`, `account`, `add`, `add-emoji`, `add-small`, `ai`, `alarm`, `alert`, `analytics`, `annotation`, `archive`, `attach`, `attachment`, `back`, `backlog`, `backup-in-cloud`, `blocked`, `blockquote`, `bookmarked`, `books`, `broken-image`, `building`, `building-blocks`, `calendar`, `cart`, `category`, `certified`, `chart-line`, `checked`, `checked-extra-small`, `checked-small`, `checklist`, `cli`, `code`, `coins`, `comment`, `console`, `copy`, `countdown`, `cut`, `dark-mode`, `database`, `database-disabled`, `database-unavailable`, `day`, `delete`, `deploy`, `design`, `diploma`, `directories`, `directory`, `discover`, `dns`, `document`, `download`, `download-from-cloud`, `download-table`, `duplicate`, `edit`, `email`, `embed`, `error`, `event`, `exit`, `explore`, `export`, `extension`, `external-link`, `favorite`, `file`, `filter`, `flagged`, `forbidden`, `forward`, `frowning`, `future`, `gem`, `global-settings`, `graph`, `group`, `guide`, `happy`, `help`, `hidden`, `hide`, `history`, `home`, `hyperlink`, `icon-placeholder`, `idea`, `image`, `import`, `info`, `information`, `invalid`, `k8s`, `kubernetes`, `label`, `languages`, `license`, `light-mode`, `lock`, `locked`, `login`, `logout`, `love`, `magic`, `mail`, `menu`, `module`, `monitoring`, `more`, `new`, `night`, `notification`, `notifications`, `now`, `office`, `paste`, `path`, `pipeline`, `pipeline-runner`, `plugin`, `privacy`, `profile`, `promotion`, `protection`, `quality`, `question`, `rated`, `rating`, `read`, `reading-list`, `redo`, `refresh`, `reload`, `remove`, `remove-extra-small`, `remove-small`, `sad`, `save`, `search`, `secure`, `security`, `send`, `settings`, `share`, `show`, `smiling`, `sort`, `sort-ascending`, `sort-descending`, `stack`, `success`, `sustainability`, `sync`, `table`, `tasks`, `team`, `time`, `todos`, `traject`, `undo`, `unlocked`, `unsecure`, `upload-to-cloud`, `url`, `user`, `user-admin`, `user-settings`, `users`, `valid`, `verified`, `visible`, `warning`, `work`, `workplace`, `write`

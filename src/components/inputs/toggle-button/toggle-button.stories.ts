@@ -36,7 +36,7 @@ export default {
 		},
 		size: {
 			control: 'select',
-			options: ['xs', 'sm', 'md'],
+			options: ['xs', 'sm', 'md', 'lg'],
 			description: 'Grootte',
 			table: {
 				defaultValue: { summary: 'md' },
@@ -197,9 +197,33 @@ export const AlleGrootten = {
 		<nldd-toggle-button size="xs" text="Zoeken" icon="search"></nldd-toggle-button>
 		<nldd-toggle-button size="sm" text="Zoeken" icon="search"></nldd-toggle-button>
 		<nldd-toggle-button size="md" text="Zoeken" icon="search"></nldd-toggle-button>
+		<nldd-toggle-button size="lg" text="Zoeken" icon="search"></nldd-toggle-button>
 	</div>
 `,
 	parameters: { controls: { disable: true } },
+};
+
+
+/* ============================================================
+   Groot (lg)
+   ============================================================ */
+
+export const Groot = {
+	render: () => html`
+	<div style="display: flex; gap: 1rem; align-items: flex-start;">
+		<nldd-toggle-button size="lg" variant="text" text="Bewaren"></nldd-toggle-button>
+		<nldd-toggle-button size="lg" variant="icon" icon="heart" accessible-label="Bewaren"></nldd-toggle-button>
+		<nldd-toggle-button size="lg" variant="icon-and-text" text="Bewaren" icon="heart"></nldd-toggle-button>
+	</div>
+`,
+	parameters: {
+		controls: { disable: true },
+		docs: {
+			description: {
+				story: 'In `size="lg"` bepaalt de `variant` de presentatie: `text` is een grote tekstknop, `icon` een vierkante knop met groot icoon (28px), en `icon-and-text` stapelt een icoon (24px) met klein tekstlabel eronder — een actiebalk-affordance.',
+			},
+	},
+},
 };
 
 

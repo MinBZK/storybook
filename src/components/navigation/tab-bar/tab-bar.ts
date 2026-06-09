@@ -5,7 +5,8 @@
  * Exports both NLDDTabBar and NLDDTabBarItem.
  *
  * @element nldd-tab-bar
- * @attr {string}  variant           - Visual mode: 'icon-and-text' | 'text' | 'icon' | 'compact'. 'compact' stacks the icon above the text. When unset, the variant is inferred from each item's content.
+ * @attr {string}  variant           - Visual mode: 'icon-and-text' | 'text' | 'icon'. When unset, the variant is inferred from each item's content. Drives the layout at every size.
+ * @attr {string}  size              - Size: 'md' | 'lg' (default: 'md'). 'lg' enlarges the touch target; the per-variant layout is preserved (icon-and-text stacks the icon over the text, text renders large text, icon renders a larger icon-only control).
  * @attr {boolean} navigation        - Renders a nav landmark instead of tablist; use for href-based items that navigate between routes
  * @attr {boolean} centered          - Centers the tabs in the container (host fills the row, tabs group in the middle)
  * @attr {string}  accessible-label  - Accessible name for the navigation region; defaults to 'Tabs'
@@ -46,20 +47,26 @@ export class NLDDTabBarItem extends LitElement {
 
 	/** Set by nldd-tab-bar. Not part of the public API. */
 	@property({ type: String })
-	_groupVariant: 'icon-and-text' | 'text' | 'icon' | 'compact' | '' = '';
+	_groupVariant: 'icon-and-text' | 'text' | 'icon' | '' = '';
 
 	// Author-set variant captured once in connectedCallback.
 	// Not a Lit property to avoid a feedback loop with the setAttribute
 	// call in updated() which writes the resolved value to the same attribute.
-	private _authorVariant: 'icon-and-text' | 'text' | 'icon' | 'compact' | '' = '';
+	private _authorVariant: 'icon-and-text' | 'text' | 'icon' | '' = '';
 
 	@property({ type: String })
 	text = '';
 
+	/** Icon name for nldd-icon. The icon and icon-and-text variants show a
+	 *  placeholder icon when no icon (attribute or slot) is provided. */
 	@property({ type: String, reflect: true })
 	icon = '';
 
-	get _effectiveVariant(): 'icon-and-text' | 'text' | 'icon' | 'compact' {
+	/** Set by nldd-tab-bar. Sizes the variant-driven layout: 'md' (default) or 'lg' (larger touch target). */
+	@property({ type: String, reflect: true })
+	size: 'md' | 'lg' = 'md';
+
+	get _effectiveVariant(): 'icon-and-text' | 'text' | 'icon' {
 		if (this._authorVariant) return this._authorVariant;
 		if (this._groupVariant) return this._groupVariant;
 		const hasIcon = Boolean(this.icon) || this._hasIconSlot;
@@ -84,7 +91,7 @@ export class NLDDTabBarItem extends LitElement {
 		this.setAttribute('role', 'none');
 		// Capture author intent before updated() overwrites the attribute with the resolved value
 		const attr = this.getAttribute('variant');
-		if (attr === 'text' || attr === 'icon' || attr === 'icon-and-text' || attr === 'compact') {
+		if (attr === 'text' || attr === 'icon' || attr === 'icon-and-text') {
 			this._authorVariant = attr;
 		}
 	}
@@ -130,7 +137,11 @@ export class NLDDTabBar extends LitElement {
 	centered = false;
 
 	@property({ type: String, reflect: true })
-	variant: 'icon-and-text' | 'text' | 'icon' | 'compact' | '' = '';
+	variant: 'icon-and-text' | 'text' | 'icon' | '' = '';
+
+	/** Size: 'md' (default) or 'lg'. 'lg' enlarges the touch target while keeping the per-variant layout. */
+	@property({ type: String, reflect: true })
+	size: 'md' | 'lg' = 'md';
 
 	@property({ type: Boolean, reflect: true })
 	navigation = false;
@@ -163,6 +174,7 @@ export class NLDDTabBar extends LitElement {
 	override updated(changedProperties: Map<string, unknown>): void {
 		if (
 			changedProperties.has('variant') ||
+			changedProperties.has('size') ||
 			changedProperties.has('navigation')
 		) {
 			this._syncItems();
@@ -184,6 +196,7 @@ export class NLDDTabBar extends LitElement {
 
 		items.forEach(item => {
 			item._groupVariant = this.variant;
+			item.size = this.size;
 			item._navigation = this.navigation;
 		});
 

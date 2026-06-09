@@ -463,12 +463,13 @@ describe('nldd-segmented-control-item – tooltip', () => {
 		expect(el.shadowRoot!.querySelector('nldd-icon[name="icon-placeholder"]')).not.toBeNull();
 	});
 
-	it('icon-and-text without an icon falls back to text (no placeholder)', async () => {
+	it('icon-and-text with text but no icon shows the placeholder', async () => {
 		el = await fixture<NLDDSegmentedControlItem>(`
 			<nldd-segmented-control-item variant="icon-and-text" text="Vet"></nldd-segmented-control-item>
 		`);
 		await waitForUpdate(el);
-		expect(el.shadowRoot!.querySelector('nldd-icon[name="icon-placeholder"]')).toBeNull();
+		expect(el.shadowRoot!.querySelector('nldd-icon[name="icon-placeholder"]')).not.toBeNull();
+		expect(el.shadowRoot!.querySelector('.segmented-control__item-text')!.textContent?.trim()).toBe('Vet');
 	});
 
 	it('icon-and-text without an icon or text shows the placeholder', async () => {

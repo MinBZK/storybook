@@ -8,7 +8,9 @@ function renderContent(component: NLDDIconButton) {
 			<span class="icon-button__icon">
 				${component.icon
 					? html`<nldd-icon name=${component.icon}></nldd-icon>`
-					: html`<slot name="icon" @slotchange=${component.requestUpdate}></slot>`}
+					: html`<slot name="icon" @slotchange=${component._onIconSlotChange}>
+							<nldd-icon name="icon-placeholder"></nldd-icon>
+						</slot>`}
 			</span>
 			${component.expandable ? html`
 				<span class="icon-button__disclosure-icon">
@@ -28,7 +30,7 @@ export function template(this: NLDDIconButton) {
 
 	// Tooltip text: accessible-label always, or text when not visible (non-lg)
 	const tooltipText = this.accessibleLabel
-		|| (this.size !== 'lg' ? this.text : '');
+		|| ((this.size !== 'lg' || this.hideLgText) ? this.text : '');
 
 	// `expandable` (disclosure widget signal) or `popup-type` (popup container
 	// signal) both require aria-expanded to always be present so screen

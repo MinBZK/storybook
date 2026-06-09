@@ -11,14 +11,14 @@ export default {
 	argTypes: {
 		variant: {
 			control: 'select',
-			options: ['neutral-tinted', 'secondary', 'accent-filled', 'primary'],
+			options: ['neutral-tinted', 'neutral-base', 'secondary', 'accent-filled', 'primary'],
 			description: 'Button bar variant',
 			table: { defaultValue: { summary: 'neutral-tinted' } },
 		},
 		size: {
 			control: 'select',
-			options: ['xs', 'sm', 'md'],
-			description: 'Button bar size',
+			options: ['xs', 'sm', 'md', 'lg'],
+			description: 'Button bar size. Bij "lg" stapelen icon-button children hun label onder het icoon (mobiele actiebalk).',
 			table: { defaultValue: { summary: 'md' } },
 		},
 		disabled: {
@@ -43,12 +43,17 @@ export const Default = {
 export const Variants = {
 	render: () => html`
 		<div style="display: flex; flex-wrap: wrap; gap: 16px; align-items: center;">
-			<nldd-button-bar variant="neutral-tinted">
+			<nldd-button-bar variant="primary">
 				<nldd-button text="Bewerk"></nldd-button>
 				<nldd-button-bar-divider></nldd-button-bar-divider>
 				<nldd-icon-button icon="trash" text="Verwijder"></nldd-icon-button>
 			</nldd-button-bar>
-			<nldd-button-bar variant="accent-filled">
+			<nldd-button-bar variant="secondary">
+				<nldd-button text="Bewerk"></nldd-button>
+				<nldd-button-bar-divider></nldd-button-bar-divider>
+				<nldd-icon-button icon="trash" text="Verwijder"></nldd-icon-button>
+			</nldd-button-bar>
+			<nldd-button-bar variant="neutral-base">
 				<nldd-button text="Bewerk"></nldd-button>
 				<nldd-button-bar-divider></nldd-button-bar-divider>
 				<nldd-icon-button icon="trash" text="Verwijder"></nldd-icon-button>
@@ -60,6 +65,13 @@ export const Variants = {
 export const Sizes = {
 	render: () => html`
 		<div style="display: flex; flex-wrap: wrap; gap: 16px; align-items: center;">
+			<nldd-button-bar size="lg">
+				<nldd-button text="Bewerk"></nldd-button>
+				<nldd-button-bar-divider></nldd-button-bar-divider>
+				<nldd-button text="Dupliceer"></nldd-button>
+				<nldd-button-bar-divider></nldd-button-bar-divider>
+				<nldd-icon-button icon="trash" text="Verwijder" hide-lg-text></nldd-icon-button>
+			</nldd-button-bar>
 			<nldd-button-bar size="md">
 				<nldd-button text="Bewerk"></nldd-button>
 				<nldd-button-bar-divider></nldd-button-bar-divider>

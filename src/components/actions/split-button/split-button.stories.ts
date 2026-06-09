@@ -28,7 +28,7 @@ export default {
 	argTypes: {
 		variant: {
 			control: 'select',
-			options: ['neutral-tinted', 'secondary', 'accent-filled', 'primary'],
+			options: ['neutral-tinted', 'neutral-base', 'secondary', 'accent-filled', 'primary'],
 			description: 'Button variant',
 			table: {
 				defaultValue: { summary: 'neutral-tinted' },
@@ -36,11 +36,15 @@ export default {
 		},
 		size: {
 			control: 'select',
-			options: ['xs', 'sm', 'md'],
+			options: ['xs', 'sm', 'md', 'lg'],
 			description: 'Button size',
 			table: {
 				defaultValue: { summary: 'md' },
 			},
+		},
+		width: {
+			control: 'text',
+			description: "Breedte: 'full' of een CSS-lengte (bijv. '320px'). De actieknop vult de ruimte op.",
 		},
 		text: {
 			control: 'text',
@@ -62,29 +66,33 @@ export default {
 	args: {
 		variant: 'neutral-tinted',
 		size: 'md',
+		width: '',
 		text: 'Opslaan',
 		icon: '',
 		disabled: false,
 	},
 };
 
-const menuItems = html`
-	<nldd-menu-item text="Opslaan als…" @select=${action('select: save-as')}></nldd-menu-item>
-	<nldd-menu-item text="Opslaan en sluiten" @select=${action('select: save-and-close')}></nldd-menu-item>
-	<nldd-menu-divider></nldd-menu-divider>
-	<nldd-menu-item text="Verwijderen" @select=${action('select: delete')}></nldd-menu-item>
+const menu = html`
+	<nldd-menu>
+		<nldd-menu-item text="Opslaan als…" @select=${action('select: save-as')}></nldd-menu-item>
+		<nldd-menu-item text="Opslaan en sluiten" @select=${action('select: save-and-close')}></nldd-menu-item>
+		<nldd-menu-divider></nldd-menu-divider>
+		<nldd-menu-item text="Verwijderen" @select=${action('select: delete')}></nldd-menu-item>
+	</nldd-menu>
 `;
 
-const Template = ({ size, variant, text, icon, disabled }: Record<string, any>) => html`
+const Template = ({ variant, size, width, text, icon, disabled }: Record<string, any>) => html`
 	<nldd-split-button
-		text=${text}
-		size=${size}
 		variant=${variant}
+		size=${size}
+		width=${width || nothing}
+		text=${text}
 		icon=${icon || nothing}
 		?disabled=${disabled}
 		@action-click=${action('action-click')}
 		@menu-click=${action('menu-click')}
-	>${menuItems}</nldd-split-button>
+	>${menu}</nldd-split-button>
 `;
 
 export const Default = {
@@ -96,8 +104,9 @@ export const Default = {
 export const Variants = {
 	render: () => html`
 	<div style="display: flex; flex-wrap: wrap; gap: 16px; align-items: center;">
-		<nldd-split-button text="Opslaan" variant="neutral-tinted">${menuItems}</nldd-split-button>
-		<nldd-split-button text="Opslaan" variant="accent-filled">${menuItems}</nldd-split-button>
+		<nldd-split-button text="Opslaan" variant="primary">${menu}</nldd-split-button>
+		<nldd-split-button text="Opslaan" variant="secondary">${menu}</nldd-split-button>
+		<nldd-split-button text="Opslaan" variant="neutral-base">${menu}</nldd-split-button>
 	</div>
 `,
 	parameters: {
@@ -109,8 +118,9 @@ export const Variants = {
 export const WithStartIcon = {
 	render: () => html`
 	<div style="display: flex; flex-wrap: wrap; gap: 16px; align-items: center;">
-		<nldd-split-button text="Opslaan" icon="check-mark">${menuItems}</nldd-split-button>
-		<nldd-split-button text="Download" icon="download" variant="accent-filled">${menuItems}</nldd-split-button>
+		<nldd-split-button text="Opslaan" icon="check-mark" variant="primary">${menu}</nldd-split-button>
+		<nldd-split-button text="Opslaan" icon="check-mark" variant="secondary">${menu}</nldd-split-button>
+		<nldd-split-button text="Opslaan" icon="check-mark" variant="neutral-base">${menu}</nldd-split-button>
 	</div>
 `,
 	parameters: {
@@ -122,10 +132,22 @@ export const WithStartIcon = {
 export const Sizes = {
 	render: () => html`
 	<div style="display: flex; flex-wrap: wrap; gap: 16px; align-items: center;">
-		<nldd-split-button text="Opslaan" size="md">${menuItems}</nldd-split-button>
-		<nldd-split-button text="Opslaan" size="sm">${menuItems}</nldd-split-button>
-		<nldd-split-button text="Opslaan" size="xs">${menuItems}</nldd-split-button>
+		<nldd-split-button text="Opslaan" size="lg">${menu}</nldd-split-button>
+		<nldd-split-button text="Opslaan" size="md">${menu}</nldd-split-button>
+		<nldd-split-button text="Opslaan" size="sm">${menu}</nldd-split-button>
+		<nldd-split-button text="Opslaan" size="xs">${menu}</nldd-split-button>
 	</div>
+`,
+	parameters: {
+		controls: { disable: true },
+	},
+};
+
+// Full width — the main action button fills the available space
+export const VolleBreedte = {
+	name: 'Volle breedte',
+	render: () => html`
+	<nldd-split-button text="Opslaan" width="full">${menu}</nldd-split-button>
 `,
 	parameters: {
 		controls: { disable: true },
@@ -136,9 +158,9 @@ export const Sizes = {
 export const Disabled = {
 	render: () => html`
 	<div style="display: flex; flex-wrap: wrap; gap: 16px; align-items: center;">
-		<nldd-split-button text="Opslaan" disabled size="md">${menuItems}</nldd-split-button>
-		<nldd-split-button text="Opslaan" disabled size="sm">${menuItems}</nldd-split-button>
-		<nldd-split-button text="Opslaan" disabled size="xs">${menuItems}</nldd-split-button>
+		<nldd-split-button text="Opslaan" disabled size="md">${menu}</nldd-split-button>
+		<nldd-split-button text="Opslaan" disabled size="sm">${menu}</nldd-split-button>
+		<nldd-split-button text="Opslaan" disabled size="xs">${menu}</nldd-split-button>
 	</div>
 `,
 	parameters: {

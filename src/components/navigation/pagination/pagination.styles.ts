@@ -7,6 +7,9 @@ export const paginationStyles = css`
 	/* # Host */
 
 	:host {
+		--_z-index-selected: 1;
+		--_z-index-focus: 2;
+
 		${inheritedTextReset}
 		display: block;
 		container-type: inline-size;
@@ -34,9 +37,19 @@ export const paginationStyles = css`
 
 	.pagination {
 		display: inline-flex;
+		position: relative;
 		border-radius: var(--semantics-controls-md-corner-radius);
 		background-color: var(--semantics-buttons-neutral-tinted-background-color);
 		align-items: center;
+	}
+
+	.pagination::after {
+		content: '';
+		position: absolute;
+		inset: 0;
+		border-radius: inherit;
+		box-shadow: inset 0 0 0 var(--primitives-border-width-thin) var(--semantics-buttons-neutral-tinted-highlight-border-color);
+		pointer-events: none;
 	}
 
 	@media (forced-colors: active) {
@@ -48,20 +61,24 @@ export const paginationStyles = css`
 	.pagination__previous-button:focus-within,
 	.pagination__next-button:focus-within {
 		position: relative;
-		z-index: 1;
+		z-index: var(--_z-index-selected);
 	}
 
 
 	/* # Page button */
 
 	.pagination__page-button {
+		--_highlight-border-color: transparent;
+
 		box-sizing: border-box;
 		display: inline-flex;
 		position: relative;
+		z-index: var(--_z-index-selected);
 		margin: 0;
 		border: none;
 		border-radius: var(--semantics-controls-md-corner-radius);
 		background: transparent;
+		box-shadow: inset 0 0 0 var(--primitives-border-width-thin) var(--_highlight-border-color);
 		min-width: var(--semantics-controls-md-min-size);
 		height: var(--semantics-controls-md-min-size);
 		padding-block: var(--primitives-space-8);
@@ -69,7 +86,7 @@ export const paginationStyles = css`
 		align-items: center;
 		justify-content: center;
 		color: inherit;
-		font: var(--semantics-buttons-md-font);
+		font: var(--semantics-buttons-md-primary-text-font);
 		appearance: none;
 	}
 
@@ -84,24 +101,27 @@ export const paginationStyles = css`
 		}
 
 		.pagination__page-button.is-current:hover {
+			--_highlight-border-color: var(--semantics-buttons-neutral-tinted-is-selected-is-hovered-highlight-border-color);
 			background-color: var(--semantics-buttons-neutral-tinted-is-selected-is-hovered-background-color);
-			color: var(--semantics-buttons-neutral-tinted-is-selected-is-hovered-content-color);
+			color: var(--semantics-buttons-neutral-tinted-is-selected-is-hovered-primary-content-color);
 		}
 	}
 
 	.pagination__page-button:active:not(.is-current) {
 		background-color: var(--semantics-buttons-neutral-tinted-is-active-background-color);
-		color: var(--semantics-buttons-neutral-tinted-is-active-content-color);
+		color: var(--semantics-buttons-neutral-tinted-is-active-primary-content-color);
 	}
 
 	.pagination__page-button.is-current {
+		--_highlight-border-color: var(--semantics-buttons-neutral-tinted-is-selected-highlight-border-color);
 		background-color: var(--semantics-buttons-neutral-tinted-is-selected-background-color);
-		color: var(--semantics-buttons-neutral-tinted-is-selected-content-color);
+		color: var(--semantics-buttons-neutral-tinted-is-selected-primary-content-color);
 	}
 
 	.pagination__page-button.is-current:active {
+		--_highlight-border-color: var(--semantics-buttons-neutral-tinted-is-selected-is-active-highlight-border-color);
 		background-color: var(--semantics-buttons-neutral-tinted-is-selected-is-active-background-color);
-		color: var(--semantics-buttons-neutral-tinted-is-selected-is-active-content-color);
+		color: var(--semantics-buttons-neutral-tinted-is-selected-is-active-primary-content-color);
 	}
 
 	@media (forced-colors: active) {
@@ -112,10 +132,10 @@ export const paginationStyles = css`
 	}
 
 	.pagination__page-button:focus-visible {
-		z-index: 1;
+		z-index: var(--_z-index-focus);
 		outline: var(--semantics-focus-ring-outline);
 		outline-offset: var(--semantics-focus-ring-outline-offset);
-		box-shadow: var(--semantics-focus-ring-box-shadow);
+		box-shadow: var(--semantics-focus-ring-box-shadow), inset 0 0 0 var(--primitives-border-width-thin) var(--_highlight-border-color);
 	}
 
 	@media (forced-colors: active) {
@@ -138,7 +158,7 @@ export const paginationStyles = css`
 		align-items: center;
 		justify-content: center;
 		color: inherit;
-		font: var(--semantics-buttons-md-font);
+		font: var(--semantics-buttons-md-primary-text-font);
 	}
 
 
@@ -168,9 +188,9 @@ export const paginationStyles = css`
 		--_background-color: transparent;
 		--_content-color: inherit;
 		--_is-hovered-background-color: var(--semantics-buttons-neutral-tinted-is-hovered-background-color);
-		--_is-hovered-content-color: var(--semantics-buttons-neutral-tinted-is-hovered-content-color);
+		--_is-hovered-content-color: var(--semantics-buttons-neutral-tinted-is-hovered-primary-content-color);
 		--_is-active-background-color: var(--semantics-buttons-neutral-tinted-is-active-background-color);
-		--_is-active-content-color: var(--semantics-buttons-neutral-tinted-is-active-content-color);
+		--_is-active-content-color: var(--semantics-buttons-neutral-tinted-is-active-primary-content-color);
 
 		display: inline-flex;
 		position: relative;
@@ -198,11 +218,11 @@ export const paginationStyles = css`
 
 	:host([select-expanded]) .pagination__select-wrapper {
 		--_background-color: var(--semantics-buttons-neutral-tinted-is-expanded-background-color);
-		--_content-color: var(--semantics-buttons-neutral-tinted-is-expanded-content-color);
+		--_content-color: var(--semantics-buttons-neutral-tinted-is-expanded-primary-content-color);
 		--_is-hovered-background-color: var(--semantics-buttons-neutral-tinted-is-expanded-is-hovered-background-color);
-		--_is-hovered-content-color: var(--semantics-buttons-neutral-tinted-is-expanded-is-hovered-content-color);
+		--_is-hovered-content-color: var(--semantics-buttons-neutral-tinted-is-expanded-is-hovered-primary-content-color);
 		--_is-active-background-color: var(--semantics-buttons-neutral-tinted-is-expanded-is-active-background-color);
-		--_is-active-content-color: var(--semantics-buttons-neutral-tinted-is-expanded-is-active-content-color);
+		--_is-active-content-color: var(--semantics-buttons-neutral-tinted-is-expanded-is-active-primary-content-color);
 	}
 
 	@media (prefers-reduced-motion: reduce) {
@@ -223,7 +243,7 @@ export const paginationStyles = css`
 		padding-inline-start: var(--primitives-space-12);
 		padding-inline-end: calc(var(--primitives-space-24) + var(--primitives-space-12));
 		color: inherit;
-		font: var(--semantics-buttons-md-font);
+		font: var(--semantics-buttons-md-primary-text-font);
 		appearance: none;
 	}
 

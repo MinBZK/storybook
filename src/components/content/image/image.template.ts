@@ -32,14 +32,8 @@ export function imageTemplate(component: NLDDImage) {
 		'image__media--lqip': hasLqip && !component._imageErrored,
 	});
 
-	const imgClasses = classMap({
-		'image__img': true,
-		'image__img--loaded': component._imageLoaded,
-		'image__img--errored': component._imageErrored,
-	});
-
 	const fallbackImg = html`
-		<img class=${imgClasses}
+		<img class="image__img"
 			src=${component.src || nothing}
 			alt=${component.decorative ? '' : component.alt}
 			aria-hidden=${component.decorative ? 'true' : nothing}
@@ -68,10 +62,8 @@ export function imageTemplate(component: NLDDImage) {
 		<div class="image__error"
 			aria-hidden=${component.decorative ? 'true' : nothing}
 		>
-			<div class="image__error-card">
-				<nldd-icon name="broken-image" size="32" color="secondary-content"></nldd-icon>
-				${component.decorative ? nothing : html`<span class="image__error-text">${component.alt}</span>`}
-			</div>
+			<nldd-icon name="broken-image" size="32" color="secondary-content"></nldd-icon>
+			${component.decorative ? nothing : html`<span class="image__error-text">${component.alt}</span>`}
 		</div>
 	` : nothing;
 
@@ -84,7 +76,7 @@ export function imageTemplate(component: NLDDImage) {
 	// Append the alt only — never the raw src. A CDN URL with a long path
 	// and query string is noise to AT users; when alt is empty (valid in
 	// production, DEV-warned) we announce the plain translated message.
-	const errorBase = component._t('components.image.error-status-message');
+	const errorBase = component._t('components.image.error-text');
 	const errorStatusMessage = component._imageErrored && !component.decorative
 		? (component.alt ? `${errorBase}: ${component.alt}` : errorBase)
 		: '';

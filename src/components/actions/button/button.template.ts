@@ -12,27 +12,34 @@ function renderContent(component: NLDDButton) {
 	return html`
 		<span class="button__content">
 			${component.startIcon ? html`
-				<nldd-icon class="button__start-icon"
-					name=${component.startIcon}
-				></nldd-icon>
+				<span class="button__start-icon">
+					<nldd-icon name=${component.startIcon}></nldd-icon>
+				</span>
 			` : html`<slot name="start-icon"></slot>`}
-			<span class="button__text">${component.text ? component.text : html`<slot name="text"></slot>`}</span>
+			<span class="button__text-area">
+				<span class="button__text">${component.text ? component.text : html`<slot name="text"></slot>`}</span>
+				${component.supportingText ? html`<span class="button__supporting-text">${component.supportingText}</span>` : nothing}
+			</span>
 			${component.endIcon ? html`
-				<nldd-icon class="button__end-icon"
-					name=${component.endIcon}
-				></nldd-icon>
+				<span class="button__end-icon">
+					<nldd-icon name=${component.endIcon}></nldd-icon>
+				</span>
 			` : html`<slot name="end-icon"></slot>`}
-			${component.expandable ? html`
-				<nldd-icon class="button__disclosure-icon"
-					name="chevron-down-small"
-				></nldd-icon>
-			` : nothing}
 		</span>
+		${component.expandable ? html`
+			<nldd-icon class="button__disclosure-icon"
+				name="chevron-down-small"
+			></nldd-icon>
+		` : nothing}
 	`;
 }
 
 export function template(this: NLDDButton, helpers: TemplateHelpers) {
 	const content = renderContent(this);
+
+	const buttonClass = ['button',
+		this.supportingText ? 'has-supporting-text' : '',
+	].filter(Boolean).join(' ');
 
 	// `expandable` (disclosure widget signal) or `popup-type` (popup container
 	// signal) both require aria-expanded to always be present so screen
@@ -41,6 +48,17 @@ export function template(this: NLDDButton, helpers: TemplateHelpers) {
 	// irrelevant ARIA attributes.
 	const isDisclosure = this.expandable || !!this.popupType;
 	const ariaExpanded = isDisclosure ? String(this.expanded) : (this.expanded ? 'true' : nothing);
+
+	// `supporting-text` renders in a sibling span next to the text; the
+	// accessible-name flat-string algorithm concatenates them without a
+	// separator ("OpslaanAlle wijzigingen"). With no explicit accessible-label,
+	// join them with a comma so screen readers announce the two apart. Filtering
+	// empties keeps a name when only supporting-text is set — otherwise an
+	// icon-less button would be nameless. (Slotted text can't be read here —
+	// those consumers should set accessible-label.) Without supporting-text,
+	// `nothing` sets no aria-label at all, so the name is the visible text content.
+	const ariaLabel = this.accessibleLabel
+		|| (this.supportingText ? [this.text, this.supportingText].filter(Boolean).join(', ') : nothing);
 
 	// Loading: an activity indicator overlays the (opacity-hidden) content. It
 	// sits OUTSIDE the <button>/<a> (a sibling, overlaid via the host's
@@ -54,7 +72,7 @@ export function template(this: NLDDButton, helpers: TemplateHelpers) {
 			<div class="button__activity-indicator">
 				<nldd-activity-indicator
 					timing="instant"
-					size=${this.size === 'xs' ? '16' : this.size === 'sm' ? '20' : '24'}
+					size=${this.size === 'xs' ? '16' : this.size === 'sm' ? '20' : this.size === 'lg' ? '28' : '24'}
 				></nldd-activity-indicator>
 			</div>
 		`
@@ -63,12 +81,12 @@ export function template(this: NLDDButton, helpers: TemplateHelpers) {
 	if (this.href) {
 		const resolvedRel = this._resolvedRel();
 		return html`
-			<a class="button"
+			<a class=${buttonClass}
 				href=${this.href}
 				target=${this.target || nothing}
 				rel=${resolvedRel || nothing}
 				aria-disabled=${this.disabled ? 'true' : nothing}
-				aria-label=${this.accessibleLabel || nothing}
+				aria-label=${ariaLabel}
 				aria-haspopup=${this.popupType || nothing}
 				aria-expanded=${ariaExpanded}
 				aria-busy=${ariaBusy}
@@ -86,11 +104,11 @@ export function template(this: NLDDButton, helpers: TemplateHelpers) {
 	// browsers don't support the Popover API at all, so the menu this button
 	// drives is non-functional regardless. No per-binding capability check.
 	return html`
-		<button class="button"
+		<button class=${buttonClass}
 			type=${this.type}
 			?disabled=${this.disabled}
 			aria-disabled=${this.disabled ? 'true' : nothing}
-			aria-label=${this.accessibleLabel || nothing}
+			aria-label=${ariaLabel}
 			aria-haspopup=${this.popupType || nothing}
 			aria-expanded=${ariaExpanded}
 			aria-busy=${ariaBusy}

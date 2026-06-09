@@ -7,6 +7,10 @@ export const tabBarStyles = css`
 	/* # Host */
 
 	:host {
+		--_gap: var(--primitives-space-1);
+		--_z-index-selected: 1;
+		--_z-index-focus: 2;
+
 		${inheritedTextReset}
 		display: inline-block;
 		position: relative;
@@ -40,23 +44,39 @@ export const tabBarStyles = css`
 
 	.tab-bar__items {
 		display: flex;
+		position: relative;
 		border-radius: var(--semantics-controls-md-corner-radius);
 		background-color: var(--semantics-buttons-neutral-tinted-background-color);
 		flex-direction: row;
 		align-items: center;
 		justify-content: center;
+		gap: var(--_gap);
 	}
 
-	:host([variant="compact"]) .tab-bar__items {
+	:host([size="lg"]) .tab-bar__items {
 		border-radius: var(--semantics-controls-lg-corner-radius);
+	}
+
+	.tab-bar__items::after {
+		content: '';
+		position: absolute;
+		inset: 0;
+		border-radius: inherit;
+		box-shadow: inset 0 0 0 var(--primitives-border-width-thin) var(--semantics-buttons-neutral-tinted-highlight-border-color);
+		pointer-events: none;
 	}
 
 
 	/* # Focus */
 
+	::slotted(nldd-tab-bar-item[selected]) {
+		position: relative;
+		z-index: var(--_z-index-selected);
+	}
+
 	::slotted(nldd-tab-bar-item:focus-within) {
 		position: relative;
-		z-index: 1;
+		z-index: var(--_z-index-focus);
 	}
 `;
 
@@ -66,6 +86,10 @@ export const tabBarItemStyles = css`
 	/* # Host */
 
 	:host {
+		--_lg-item-padding: var(--primitives-space-8);
+		--_highlight-border-color: transparent;
+		--_z-index-content: 1;
+
 		${inheritedTextReset}
 		display: inline-block;
 		position: relative;
@@ -90,33 +114,49 @@ export const tabBarItemStyles = css`
 		padding: 0;
 		align-items: center;
 		justify-content: center;
-		color: var(--semantics-buttons-neutral-tinted-content-color);
-		font: var(--semantics-buttons-md-font);
+		color: var(--semantics-buttons-neutral-tinted-primary-content-color);
+		font: var(--semantics-buttons-md-primary-text-font);
 		text-decoration: none;
 		appearance: none;
 	}
 
-	:host([variant="icon-and-text"]) .tab-bar__item {
+	a.tab-bar__item {
+		cursor: var(--semantics-controls-link-cursor);
+	}
+
+	:host([variant="icon-and-text"]:not([size="lg"])) .tab-bar__item {
 		height: var(--semantics-controls-md-min-size);
 		padding: var(--primitives-space-8) var(--primitives-space-12);
 		gap: var(--semantics-buttons-md-gap);
 	}
 
-	:host([variant="text"]) .tab-bar__item {
+	:host([variant="text"]:not([size="lg"])) .tab-bar__item {
 		height: var(--semantics-controls-md-min-size);
 		padding: var(--primitives-space-8) var(--primitives-space-12);
 	}
 
-	:host([variant="icon"]) .tab-bar__item {
+	:host([variant="icon"]:not([size="lg"])) .tab-bar__item {
 		width: var(--semantics-controls-md-min-size);
 		height: var(--semantics-controls-md-min-size);
 		padding: 0;
 	}
 
-	:host([variant="compact"]) .tab-bar__item {
+	:host([variant="icon-and-text"][size="lg"]) .tab-bar__item {
 		height: var(--semantics-controls-lg-min-size);
-		padding: var(--primitives-space-8);
+		padding: var(--_lg-item-padding);
 		flex-direction: column;
+	}
+
+	:host([variant="text"][size="lg"]) .tab-bar__item {
+		min-height: var(--semantics-controls-lg-min-size);
+		padding: var(--semantics-controls-lg-block-padding) var(--primitives-space-16);
+		font: var(--semantics-buttons-lg-primary-text-font);
+	}
+
+	:host([variant="icon"][size="lg"]) .tab-bar__item {
+		width: var(--semantics-controls-lg-min-size);
+		height: var(--semantics-controls-lg-min-size);
+		padding: var(--_lg-item-padding);
 	}
 
 	@media (hover: hover) {
@@ -125,24 +165,31 @@ export const tabBarItemStyles = css`
 		}
 
 		:host([selected]) .tab-bar__item:hover {
+			--_highlight-border-color: var(--semantics-buttons-neutral-tinted-is-selected-is-hovered-highlight-border-color);
+
 			background-color: var(--semantics-buttons-neutral-tinted-is-selected-is-hovered-background-color);
-			color: var(--semantics-buttons-neutral-tinted-is-selected-is-hovered-content-color);
+			color: var(--semantics-buttons-neutral-tinted-is-selected-is-hovered-primary-content-color);
 		}
 	}
 
 	.tab-bar__item:active {
 		background-color: var(--semantics-buttons-neutral-tinted-is-active-background-color);
-		color: var(--semantics-buttons-neutral-tinted-is-active-content-color);
+		color: var(--semantics-buttons-neutral-tinted-is-active-primary-content-color);
 	}
 
 	:host([selected]) .tab-bar__item {
+		--_highlight-border-color: var(--semantics-buttons-neutral-tinted-is-selected-highlight-border-color);
+
 		background-color: var(--semantics-buttons-neutral-tinted-is-selected-background-color);
-		color: var(--semantics-buttons-neutral-tinted-is-selected-content-color);
+		color: var(--semantics-buttons-neutral-tinted-is-selected-primary-content-color);
+		box-shadow: inset 0 0 0 var(--primitives-border-width-thin) var(--_highlight-border-color);
 	}
 
 	:host([selected]) .tab-bar__item:active {
+		--_highlight-border-color: var(--semantics-buttons-neutral-tinted-is-selected-is-active-highlight-border-color);
+
 		background-color: var(--semantics-buttons-neutral-tinted-is-selected-is-active-background-color);
-		color: var(--semantics-buttons-neutral-tinted-is-selected-is-active-content-color);
+		color: var(--semantics-buttons-neutral-tinted-is-selected-is-active-primary-content-color);
 	}
 
 	@media (forced-colors: active) {
@@ -157,13 +204,17 @@ export const tabBarItemStyles = css`
 		box-shadow: var(--semantics-focus-ring-box-shadow);
 	}
 
+	:host([selected]) .tab-bar__item:focus-visible {
+		box-shadow: var(--semantics-focus-ring-box-shadow), inset 0 0 0 var(--primitives-border-width-thin) var(--_highlight-border-color);
+	}
+
 
 	/* # Elements */
 
 	.tab-bar__item-icon {
 		display: flex;
 		position: relative;
-		z-index: 1;
+		z-index: var(--_z-index-content);
 		width: var(--semantics-buttons-md-icon-size);
 		height: var(--semantics-buttons-md-icon-size);
 		flex-shrink: 0;
@@ -171,14 +222,19 @@ export const tabBarItemStyles = css`
 		justify-content: center;
 	}
 
-	:host([variant="icon"]) .tab-bar__item-icon {
+	:host([variant="icon"]:not([size="lg"])) .tab-bar__item-icon {
 		width: var(--semantics-buttons-md-icon-only-icon-size);
 		height: var(--semantics-buttons-md-icon-only-icon-size);
 	}
 
-	:host([variant="compact"]) .tab-bar__item-icon {
+	:host([variant="icon-and-text"][size="lg"]) .tab-bar__item-icon {
 		width: var(--semantics-buttons-md-icon-only-icon-size);
 		height: var(--semantics-buttons-md-icon-only-icon-size);
+	}
+
+	:host([variant="icon"][size="lg"]) .tab-bar__item-icon {
+		width: var(--semantics-buttons-lg-icon-only-icon-size);
+		height: var(--semantics-buttons-lg-icon-only-icon-size);
 	}
 
 	:host([variant="text"]) .tab-bar__item-icon {
@@ -193,10 +249,10 @@ export const tabBarItemStyles = css`
 
 	.tab-bar__item-text {
 		position: relative;
-		z-index: 1;
+		z-index: var(--_z-index-content);
 	}
 
-	:host([variant="compact"]) .tab-bar__item-text {
+	:host([variant="icon-and-text"][size="lg"]) .tab-bar__item-text {
 		font: var(--primitives-font-body-xxs-medium-flat);
 	}
 

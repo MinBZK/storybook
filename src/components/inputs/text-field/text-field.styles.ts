@@ -110,7 +110,7 @@ export const textFieldStyles = css`
 	.text-field__input:-webkit-autofill:disabled,
 	.text-field__input:autofill:disabled {
 		box-shadow: 0 0 0 999px var(--_background-color) inset;
-		-webkit-text-fill-color: var(--semantics-content-color);
+		-webkit-text-fill-color: var(--semantics-input-fields-is-autofill-content-color);
 	}
 
 	.text-field__input-fade {

@@ -22,7 +22,21 @@ describe('nldd-breadcrumbs', () => {
 		expect(nav!.getAttribute('aria-label')).toBe('Kruimelpad');
 	});
 
-	it('toggles has-parent when a non-current href item is slotted', async () => {
+	it('renders every item into the list and never collapses to a back link', async () => {
+		el = await fixture(`
+			<nldd-breadcrumbs>
+				<nldd-breadcrumbs-item text="Home" href="/"></nldd-breadcrumbs-item>
+				<nldd-breadcrumbs-item text="Documentatie" href="/docs/"></nldd-breadcrumbs-item>
+				<nldd-breadcrumbs-item text="Here" current></nldd-breadcrumbs-item>
+			</nldd-breadcrumbs>
+		`);
+		await waitForUpdate(el);
+		const slot = el.shadowRoot!.querySelector('slot')!;
+		expect(slot.assignedElements().length).toBe(3);
+		expect(el.shadowRoot!.querySelector('.breadcrumbs__level-up')).toBeNull();
+	});
+
+	it('lets the items wrap so the trail fits any width', async () => {
 		el = await fixture(`
 			<nldd-breadcrumbs>
 				<nldd-breadcrumbs-item text="Home" href="/"></nldd-breadcrumbs-item>
@@ -30,90 +44,8 @@ describe('nldd-breadcrumbs', () => {
 			</nldd-breadcrumbs>
 		`);
 		await waitForUpdate(el);
-		expect(el.hasAttribute('has-parent')).toBe(true);
-	});
-
-	it('does not set has-parent when no eligible parent exists', async () => {
-		el = await fixture(`
-			<nldd-breadcrumbs>
-				<nldd-breadcrumbs-item text="Here" current></nldd-breadcrumbs-item>
-			</nldd-breadcrumbs>
-		`);
-		await waitForUpdate(el);
-		expect(el.hasAttribute('has-parent')).toBe(false);
-	});
-
-	it('does not set has-parent when the only non-current item has no href', async () => {
-		el = await fixture(`
-			<nldd-breadcrumbs>
-				<nldd-breadcrumbs-item text="Section"></nldd-breadcrumbs-item>
-				<nldd-breadcrumbs-item text="Here" current></nldd-breadcrumbs-item>
-			</nldd-breadcrumbs>
-		`);
-		await waitForUpdate(el);
-		expect(el.hasAttribute('has-parent')).toBe(false);
-	});
-
-	it('uses the parent item text in the level-up link', async () => {
-		el = await fixture(`
-			<nldd-breadcrumbs>
-				<nldd-breadcrumbs-item text="Documentation" href="/docs/"></nldd-breadcrumbs-item>
-				<nldd-breadcrumbs-item text="Here" current></nldd-breadcrumbs-item>
-			</nldd-breadcrumbs>
-		`);
-		await waitForUpdate(el);
-		const levelUpText = el.shadowRoot!.querySelector('.breadcrumbs__level-up-text');
-		expect(levelUpText?.textContent?.trim()).toBe('Documentation');
-	});
-
-	it('falls back to the slotted textContent when parent has no text attribute', async () => {
-		el = await fixture(`
-			<nldd-breadcrumbs>
-				<nldd-breadcrumbs-item href="/docs/">Slotted parent</nldd-breadcrumbs-item>
-				<nldd-breadcrumbs-item text="Here" current></nldd-breadcrumbs-item>
-			</nldd-breadcrumbs>
-		`);
-		await waitForUpdate(el);
-		const levelUpText = el.shadowRoot!.querySelector('.breadcrumbs__level-up-text');
-		expect(levelUpText?.textContent?.trim()).toBe('Slotted parent');
-	});
-
-	it('does not render the level-up link when there is no parent', async () => {
-		el = await fixture(`
-			<nldd-breadcrumbs>
-				<nldd-breadcrumbs-item text="Here" current></nldd-breadcrumbs-item>
-			</nldd-breadcrumbs>
-		`);
-		await waitForUpdate(el);
-		expect(el.shadowRoot!.querySelector('.breadcrumbs__level-up')).toBeNull();
-	});
-
-	it('falls back to the i18n level-up label when the parent has no text', async () => {
-		el = await fixture(`
-			<nldd-breadcrumbs>
-				<nldd-breadcrumbs-item href="/"></nldd-breadcrumbs-item>
-				<nldd-breadcrumbs-item text="Here" current></nldd-breadcrumbs-item>
-			</nldd-breadcrumbs>
-		`);
-		await waitForUpdate(el);
-		const levelUpText = el.shadowRoot!.querySelector('.breadcrumbs__level-up-text');
-		expect(levelUpText?.textContent?.trim()).toBe('Eén niveau omhoog');
-	});
-
-	it('re-evaluates has-parent when an item href mutates after render', async () => {
-		el = await fixture(`
-			<nldd-breadcrumbs>
-				<nldd-breadcrumbs-item text="Section"></nldd-breadcrumbs-item>
-				<nldd-breadcrumbs-item text="Here" current></nldd-breadcrumbs-item>
-			</nldd-breadcrumbs>
-		`);
-		await waitForUpdate(el);
-		expect(el.hasAttribute('has-parent')).toBe(false);
-		el.querySelector('nldd-breadcrumbs-item')!.setAttribute('href', '/section');
-		// waitForUpdate already covers the MO microtask + Lit re-render cycle.
-		await waitForUpdate(el);
-		expect(el.hasAttribute('has-parent')).toBe(true);
-		expect(el.shadowRoot!.querySelector('.breadcrumbs__level-up')).not.toBeNull();
+		const items = el.shadowRoot!.querySelector('.breadcrumbs__items')!;
+		expect(getComputedStyle(items).flexWrap).toBe('wrap');
 	});
 });
 
