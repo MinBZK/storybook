@@ -184,6 +184,12 @@ describe('nldd-button – icon attributes', () => {
 		expect(el.hasAttribute('no-highlight-border')).toBe(true);
 	});
 
+	it('makes the highlight border transparent when no-highlight-border is set', async () => {
+		el = await fixture<NLDDButton>('<nldd-button text="X" no-highlight-border></nldd-button>');
+		await waitForUpdate(el);
+		expect(getComputedStyle(el).getPropertyValue('--_highlight-border-color').trim()).toBe('transparent');
+	});
+
 	it('hides the expandable chevron while loading but keeps it laid out', async () => {
 		el = await fixture<NLDDButton>('<nldd-button text="Kies" expandable loading></nldd-button>');
 		await waitForUpdate(el);
