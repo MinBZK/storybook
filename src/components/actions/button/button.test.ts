@@ -56,7 +56,7 @@ describe('nldd-button', () => {
 	});
 
 	it('reflects the size attribute (lg)', async () => {
-		el = await fixture('<nldd-button size="lg" text="Groot"></nldd-button>');
+		el = await fixture<NLDDButton>('<nldd-button size="lg" text="Groot"></nldd-button>');
 		await waitForUpdate(el);
 		expect(el.getAttribute('size')).toBe('lg');
 	});
