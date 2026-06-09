@@ -25,7 +25,6 @@ export const iconButtonStyles = css`
 		--_is-active-background-color: var(--semantics-buttons-neutral-tinted-is-active-background-color);
 		--_is-active-primary-content-color: var(--semantics-buttons-neutral-tinted-is-active-primary-content-color);
 		--_is-active-highlight-border-color: var(--semantics-buttons-neutral-tinted-is-active-highlight-border-color);
-		--_is-expanded-highlight-border-color: var(--semantics-buttons-neutral-tinted-is-expanded-highlight-border-color);
 
 		${inheritedTextReset}
 		display: inline-block;
@@ -64,8 +63,6 @@ export const iconButtonStyles = css`
 		--_text-display: none;
 	}
 
-	/* ## Neutral Base */
-
 	:host([variant="neutral-base"]) {
 		--_background-color: var(--semantics-buttons-neutral-base-background-color);
 		--_primary-content-color: var(--semantics-buttons-neutral-base-primary-content-color);
@@ -76,10 +73,7 @@ export const iconButtonStyles = css`
 		--_is-active-background-color: var(--semantics-buttons-neutral-base-is-active-background-color);
 		--_is-active-primary-content-color: var(--semantics-buttons-neutral-base-is-active-primary-content-color);
 		--_is-active-highlight-border-color: var(--semantics-buttons-neutral-base-is-active-highlight-border-color);
-		--_is-expanded-highlight-border-color: var(--semantics-buttons-neutral-base-is-expanded-highlight-border-color);
 	}
-
-	/* ## Neutral Transparent */
 
 	:host([variant="neutral-transparent"]) {
 		--_background-color: transparent;
@@ -91,10 +85,7 @@ export const iconButtonStyles = css`
 		--_is-active-background-color: transparent;
 		--_is-active-primary-content-color: var(--semantics-buttons-neutral-transparent-is-active-primary-content-color);
 		--_is-active-highlight-border-color: transparent;
-		--_is-expanded-highlight-border-color: transparent;
 	}
-
-	/* ## Accent Filled (Primary) */
 
 	:host([variant="accent-filled"]),
 	:host([variant="primary"]) {
@@ -107,10 +98,7 @@ export const iconButtonStyles = css`
 		--_is-active-background-color: var(--semantics-buttons-accent-filled-is-active-background-color);
 		--_is-active-primary-content-color: var(--semantics-buttons-accent-filled-is-active-primary-content-color);
 		--_is-active-highlight-border-color: var(--semantics-buttons-accent-filled-is-active-highlight-border-color);
-		--_is-expanded-highlight-border-color: var(--semantics-buttons-accent-filled-is-expanded-highlight-border-color);
 	}
-
-	/* ## Accent Transparent */
 
 	:host([variant="accent-transparent"]) {
 		--_background-color: transparent;
@@ -122,10 +110,7 @@ export const iconButtonStyles = css`
 		--_is-active-background-color: transparent;
 		--_is-active-primary-content-color: var(--semantics-buttons-accent-transparent-is-active-primary-content-color);
 		--_is-active-highlight-border-color: transparent;
-		--_is-expanded-highlight-border-color: transparent;
 	}
-
-	/* ## Critical Tinted (Destructive) */
 
 	:host([variant="critical-tinted"]),
 	:host([variant="destructive"]) {
@@ -138,10 +123,7 @@ export const iconButtonStyles = css`
 		--_is-active-background-color: var(--semantics-buttons-critical-tinted-is-active-background-color);
 		--_is-active-primary-content-color: var(--semantics-buttons-critical-tinted-is-active-primary-content-color);
 		--_is-active-highlight-border-color: var(--semantics-buttons-critical-tinted-is-active-highlight-border-color);
-		--_is-expanded-highlight-border-color: var(--semantics-buttons-critical-tinted-highlight-border-color);
 	}
-
-	/* ## Critical Transparent */
 
 	:host([variant="critical-transparent"]) {
 		--_background-color: transparent;
@@ -153,7 +135,6 @@ export const iconButtonStyles = css`
 		--_is-active-background-color: transparent;
 		--_is-active-primary-content-color: var(--semantics-buttons-critical-transparent-is-active-primary-content-color);
 		--_is-active-highlight-border-color: transparent;
-		--_is-expanded-highlight-border-color: transparent;
 	}
 
 	/* ## Expanded — default (incl. unknown variant) */
@@ -161,16 +142,19 @@ export const iconButtonStyles = css`
 	:host([expanded]) {
 		--_background-color: var(--semantics-buttons-neutral-tinted-is-expanded-background-color);
 		--_primary-content-color: var(--semantics-buttons-neutral-tinted-is-expanded-primary-content-color);
-		--_highlight-border-color: var(--_is-expanded-highlight-border-color);
+		--_highlight-border-color: var(--semantics-buttons-neutral-tinted-is-expanded-highlight-border-color);
 		--_is-hovered-background-color: var(--semantics-buttons-neutral-tinted-is-expanded-is-hovered-background-color);
 		--_is-hovered-primary-content-color: var(--semantics-buttons-neutral-tinted-is-expanded-is-hovered-primary-content-color);
+		--_is-hovered-highlight-border-color: var(--semantics-buttons-neutral-tinted-is-expanded-is-hovered-highlight-border-color);
 		--_is-active-background-color: var(--semantics-buttons-neutral-tinted-is-expanded-is-active-background-color);
 		--_is-active-primary-content-color: var(--semantics-buttons-neutral-tinted-is-expanded-is-active-primary-content-color);
+		--_is-active-highlight-border-color: var(--semantics-buttons-neutral-tinted-is-expanded-is-active-highlight-border-color);
 	}
 
 	:host([expanded][variant="neutral-base"]) {
 		--_background-color: var(--semantics-buttons-neutral-base-is-expanded-background-color);
 		--_primary-content-color: var(--semantics-buttons-neutral-base-is-expanded-primary-content-color);
+		--_highlight-border-color: var(--semantics-buttons-neutral-base-is-expanded-highlight-border-color);
 		--_is-hovered-background-color: var(--semantics-buttons-neutral-base-is-expanded-is-hovered-background-color);
 		--_is-hovered-primary-content-color: var(--semantics-buttons-neutral-base-is-expanded-is-hovered-primary-content-color);
 		--_is-hovered-highlight-border-color: var(--semantics-buttons-neutral-base-is-expanded-is-hovered-highlight-border-color);
@@ -179,51 +163,66 @@ export const iconButtonStyles = css`
 		--_is-active-highlight-border-color: var(--semantics-buttons-neutral-base-is-expanded-is-active-highlight-border-color);
 	}
 
+	:host([expanded][variant="neutral-transparent"]) {
+		--_background-color: transparent;
+		--_primary-content-color: var(--semantics-buttons-neutral-transparent-primary-content-color);
+		--_highlight-border-color: transparent;
+		--_is-hovered-background-color: transparent;
+		--_is-hovered-primary-content-color: var(--semantics-buttons-neutral-transparent-is-hovered-primary-content-color);
+		--_is-hovered-highlight-border-color: transparent;
+		--_is-active-background-color: transparent;
+		--_is-active-primary-content-color: var(--semantics-buttons-neutral-transparent-is-active-primary-content-color);
+		--_is-active-highlight-border-color: transparent;
+	}
+
 	:host([expanded][variant="accent-filled"]),
 	:host([expanded][variant="primary"]) {
 		--_background-color: var(--semantics-buttons-accent-filled-is-expanded-background-color);
 		--_primary-content-color: var(--semantics-buttons-accent-filled-is-expanded-primary-content-color);
+		--_highlight-border-color: var(--semantics-buttons-accent-filled-is-expanded-highlight-border-color);
 		--_is-hovered-background-color: var(--semantics-buttons-accent-filled-is-expanded-is-hovered-background-color);
 		--_is-hovered-primary-content-color: var(--semantics-buttons-accent-filled-is-expanded-is-hovered-primary-content-color);
+		--_is-hovered-highlight-border-color: var(--semantics-buttons-accent-filled-is-expanded-is-hovered-highlight-border-color);
 		--_is-active-background-color: var(--semantics-buttons-accent-filled-is-expanded-is-active-background-color);
 		--_is-active-primary-content-color: var(--semantics-buttons-accent-filled-is-expanded-is-active-primary-content-color);
-	}
-
-	:host([expanded][variant="neutral-transparent"]) {
-		--_background-color: transparent;
-		--_primary-content-color: var(--semantics-buttons-neutral-transparent-primary-content-color);
-		--_is-hovered-background-color: transparent;
-		--_is-hovered-primary-content-color: var(--semantics-buttons-neutral-transparent-is-hovered-primary-content-color);
-		--_is-active-background-color: transparent;
-		--_is-active-primary-content-color: var(--semantics-buttons-neutral-transparent-is-active-primary-content-color);
+		--_is-active-highlight-border-color: var(--semantics-buttons-accent-filled-is-expanded-is-active-highlight-border-color);
 	}
 
 	:host([expanded][variant="accent-transparent"]) {
 		--_background-color: transparent;
 		--_primary-content-color: var(--semantics-buttons-accent-transparent-primary-content-color);
+		--_highlight-border-color: transparent;
 		--_is-hovered-background-color: transparent;
 		--_is-hovered-primary-content-color: var(--semantics-buttons-accent-transparent-is-hovered-primary-content-color);
+		--_is-hovered-highlight-border-color: transparent;
 		--_is-active-background-color: transparent;
 		--_is-active-primary-content-color: var(--semantics-buttons-accent-transparent-is-active-primary-content-color);
+		--_is-active-highlight-border-color: transparent;
 	}
 
 	:host([expanded][variant="critical-tinted"]),
 	:host([expanded][variant="destructive"]) {
-		--_background-color: var(--semantics-buttons-critical-tinted-background-color);
-		--_primary-content-color: var(--semantics-buttons-critical-tinted-primary-content-color);
-		--_is-hovered-background-color: var(--semantics-buttons-critical-tinted-is-hovered-background-color);
-		--_is-hovered-primary-content-color: var(--semantics-buttons-critical-tinted-is-hovered-primary-content-color);
-		--_is-active-background-color: var(--semantics-buttons-critical-tinted-is-active-background-color);
-		--_is-active-primary-content-color: var(--semantics-buttons-critical-tinted-is-active-primary-content-color);
+		--_background-color: var(--semantics-buttons-critical-tinted-is-expanded-background-color);
+		--_primary-content-color: var(--semantics-buttons-critical-tinted-is-expanded-primary-content-color);
+		--_highlight-border-color: var(--semantics-buttons-critical-tinted-is-expanded-highlight-border-color);
+		--_is-hovered-background-color: var(--semantics-buttons-critical-tinted-is-expanded-is-hovered-background-color);
+		--_is-hovered-primary-content-color: var(--semantics-buttons-critical-tinted-is-expanded-is-hovered-primary-content-color);
+		--_is-hovered-highlight-border-color: var(--semantics-buttons-critical-tinted-is-expanded-is-hovered-highlight-border-color);
+		--_is-active-background-color: var(--semantics-buttons-critical-tinted-is-expanded-is-active-background-color);
+		--_is-active-primary-content-color: var(--semantics-buttons-critical-tinted-is-expanded-is-active-primary-content-color);
+		--_is-active-highlight-border-color: var(--semantics-buttons-critical-tinted-is-expanded-is-active-highlight-border-color);
 	}
 
 	:host([expanded][variant="critical-transparent"]) {
 		--_background-color: transparent;
 		--_primary-content-color: var(--semantics-buttons-critical-transparent-primary-content-color);
+		--_highlight-border-color: transparent;
 		--_is-hovered-background-color: transparent;
 		--_is-hovered-primary-content-color: var(--semantics-buttons-critical-transparent-is-hovered-primary-content-color);
+		--_is-hovered-highlight-border-color: transparent;
 		--_is-active-background-color: transparent;
 		--_is-active-primary-content-color: var(--semantics-buttons-critical-transparent-is-active-primary-content-color);
+		--_is-active-highlight-border-color: transparent;
 	}
 
 	:host([width="full"]) {
@@ -241,17 +240,9 @@ export const iconButtonStyles = css`
 		pointer-events: none;
 	}
 
-	:host([no-highlight-border]) {
-		--_highlight-border-color: transparent;
-		--_is-hovered-highlight-border-color: transparent;
-		--_is-active-highlight-border-color: transparent;
-		--_is-expanded-highlight-border-color: transparent;
-	}
-
-	/* The neutral-base expanded block sets the hovered/active highlight-border
-	   colours at a higher specificity than the base no-highlight-border reset;
-	   re-assert transparency for the expanded state so no-highlight-border holds. */
+	:host([no-highlight-border]),
 	:host([no-highlight-border][expanded]) {
+		--_highlight-border-color: transparent;
 		--_is-hovered-highlight-border-color: transparent;
 		--_is-active-highlight-border-color: transparent;
 	}
@@ -383,8 +374,6 @@ export const iconButtonStyles = css`
 	.icon-button__activity-indicator {
 		position: absolute;
 		inset: 0;
-		/* Re-establish the content color here: the indicator lives outside
-		   .icon-button now, so its currentColor stroke can no longer inherit it. */
 		color: var(--_primary-content-color);
 	}
 `;
