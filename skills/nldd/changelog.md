@@ -15,6 +15,10 @@ the type of conventional-commit determines the release. Conventional types
 `chore`, `docs`, `ci`, `style`, `test`, `build` are intentionally omitted
 here; consult the commit history if you need that level of detail.
 
+## <small>0.8.57 (2026-06-09)</small>
+
+* feat!: lg size, highlight borders, new icons, and toolbar/input refinements (#122) ([e9f0570](https://github.com/MinBZK/storybook/commit/e9f0570)), closes [#122](https://github.com/MinBZK/storybook/issues/122)
+
 ### Highlights
 
 - **A coordinated `lg` size** across the action and navigation controls — `nldd-button`, `nldd-icon-button`, `nldd-button-bar`, `nldd-split-button`, `nldd-toolbar`, `nldd-tab-bar`, `nldd-toggle-button`, and `nldd-segmented-control` — for larger touch targets and stacked icon-over-text action-bar affordances.
