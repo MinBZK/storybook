@@ -14,6 +14,7 @@ export const toolbarStyles = css`
 		--_center-width: 0px;
 		--_end-width: 0px;
 		--_overflow-button-width: 0px;
+		--_label-margin-top: var(--primitives-space-4);
 
 		${inheritedTextReset}
 		box-sizing: border-box;
@@ -120,7 +121,7 @@ export const toolbarStyles = css`
 
 	.toolbar__overflow-button-label {
 		display: none;
-		margin-top: var(--components-toolbar-label-margin-top);
+		margin-top: var(--_label-margin-top);
 		color: var(--semantics-content-color);
 		font: var(--primitives-font-body-xs-regular-flat);
 		white-space: nowrap;
@@ -140,6 +141,7 @@ export const toolbarItemStyles = css`
 		--_item-max-width: none;
 		--_item-min-width: 0px;
 		--_item-width: auto;
+		--_label-margin-top: var(--primitives-space-4);
 
 		display: inline-flex;
 		max-width: var(--_item-max-width);
@@ -186,7 +188,7 @@ export const toolbarItemStyles = css`
 
 	.toolbar__item-label {
 		display: none;
-		margin-top: var(--components-toolbar-label-margin-top);
+		margin-top: var(--_label-margin-top);
 		color: var(--semantics-content-color);
 		font: var(--primitives-font-body-xs-regular-flat);
 		white-space: nowrap;

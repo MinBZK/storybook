@@ -1878,7 +1878,6 @@
 	--components-toolbar-sm-gap: var(--primitives-space-6);
 	--components-toolbar-md-gap: var(--primitives-space-8);
 	--components-toolbar-lg-gap: var(--primitives-space-8);
-	--components-toolbar-label-margin-top: var(--primitives-space-4);
 
 	/* ## Tooltip */
 
