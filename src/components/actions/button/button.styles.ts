@@ -389,10 +389,6 @@ export const buttonStyles = css`
 		transition: opacity var(--primitives-transition-duration-slow) var(--primitives-transition-easing-default);
 	}
 
-	:host([size="md"]) .button.has-supporting-text .button__text-area {
-		padding-inline: calc(var(--_gap) + var(--primitives-space-2));
-	}
-
 	/* Loading crossfades the content out (opacity, not visibility, so the button
 	   keeps its accessible name) while the indicator fades in. The content stays
 	   laid out, so the button keeps its width. */
