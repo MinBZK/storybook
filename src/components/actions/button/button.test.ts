@@ -636,6 +636,12 @@ describe('nldd-button – loading', () => {
 		expect(el.shadowRoot!.querySelector('button')!.getAttribute('aria-label')).toBe('Opslaan, Alle wijzigingen');
 	});
 
+	it('falls back to supporting-text for the accessible name when text is empty', async () => {
+		el = await fixture<NLDDButton>('<nldd-button supporting-text="Alle wijzigingen"></nldd-button>');
+		await waitForUpdate(el);
+		expect(el.shadowRoot!.querySelector('button')!.getAttribute('aria-label')).toBe('Alle wijzigingen');
+	});
+
 	it('lets accessible-label override the supporting-text-derived name', async () => {
 		el = await fixture<NLDDButton>('<nldd-button text="Opslaan" supporting-text="Alle wijzigingen" accessible-label="Bewaar"></nldd-button>');
 		await waitForUpdate(el);

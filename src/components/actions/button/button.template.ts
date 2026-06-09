@@ -52,10 +52,12 @@ export function template(this: NLDDButton, helpers: TemplateHelpers) {
 	// `supporting-text` renders in a sibling span next to the text; the
 	// accessible-name flat-string algorithm concatenates them without a
 	// separator ("OpslaanAlle wijzigingen"). With no explicit accessible-label,
-	// build one with a space so screen readers announce the two apart. (Slotted
-	// text can't be read here — those consumers should set accessible-label.)
+	// join them with a comma so screen readers announce the two apart. Filtering
+	// empties keeps a name when only supporting-text is set — otherwise an
+	// icon-less button would be nameless. (Slotted text can't be read here —
+	// those consumers should set accessible-label.)
 	const ariaLabel = this.accessibleLabel
-		|| (this.text && this.supportingText ? `${this.text}, ${this.supportingText}` : nothing);
+		|| (this.supportingText ? [this.text, this.supportingText].filter(Boolean).join(', ') : nothing);
 
 	// Loading: an activity indicator overlays the (opacity-hidden) content. It
 	// sits OUTSIDE the <button>/<a> (a sibling, overlaid via the host's
