@@ -1105,6 +1105,18 @@
 	--semantics-buttons-critical-tinted-is-active-highlight-border-color: light-dark(var(--primitives-color-critical-200), var(--primitives-color-critical-300));
 	--semantics-buttons-critical-tinted-is-active-primary-content-color: light-dark(var(--primitives-color-critical-750), var(--primitives-color-critical-800));
 	--semantics-buttons-critical-tinted-is-active-secondary-content-color: light-dark(var(--primitives-color-critical-700), var(--primitives-color-critical-800));
+	--semantics-buttons-critical-tinted-is-expanded-background-color: light-dark(var(--primitives-color-critical-150), var(--primitives-color-critical-300));
+	--semantics-buttons-critical-tinted-is-expanded-highlight-border-color: light-dark(var(--primitives-color-critical-200), var(--primitives-color-critical-350));
+	--semantics-buttons-critical-tinted-is-expanded-primary-content-color: light-dark(var(--primitives-color-critical-800), var(--primitives-color-critical-850));
+	--semantics-buttons-critical-tinted-is-expanded-secondary-content-color: light-dark(var(--primitives-color-critical-750), var(--primitives-color-critical-850));
+	--semantics-buttons-critical-tinted-is-expanded-is-hovered-background-color: light-dark(var(--primitives-color-critical-200), var(--primitives-color-critical-350));
+	--semantics-buttons-critical-tinted-is-expanded-is-hovered-highlight-border-color: light-dark(var(--primitives-color-critical-250), var(--primitives-color-critical-400));
+	--semantics-buttons-critical-tinted-is-expanded-is-hovered-primary-content-color: light-dark(var(--primitives-color-critical-850), var(--primitives-color-critical-900));
+	--semantics-buttons-critical-tinted-is-expanded-is-hovered-secondary-content-color: light-dark(var(--primitives-color-critical-800), var(--primitives-color-critical-900));
+	--semantics-buttons-critical-tinted-is-expanded-is-active-background-color: light-dark(var(--primitives-color-critical-250), var(--primitives-color-critical-400));
+	--semantics-buttons-critical-tinted-is-expanded-is-active-highlight-border-color: light-dark(var(--primitives-color-critical-300), var(--primitives-color-critical-450));
+	--semantics-buttons-critical-tinted-is-expanded-is-active-primary-content-color: light-dark(var(--primitives-color-critical-900), var(--primitives-color-critical-950));
+	--semantics-buttons-critical-tinted-is-expanded-is-active-secondary-content-color: light-dark(var(--primitives-color-critical-850), var(--primitives-color-critical-950));
 
 	--semantics-buttons-critical-transparent-primary-content-color: light-dark(var(--primitives-color-critical-600), var(--primitives-color-critical-650));
 	--semantics-buttons-critical-transparent-secondary-content-color: light-dark(var(--primitives-color-critical-550), var(--primitives-color-critical-650));
