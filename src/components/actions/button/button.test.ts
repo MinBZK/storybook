@@ -636,7 +636,7 @@ describe('nldd-button – loading', () => {
 		expect(el.shadowRoot!.querySelector('button')!.hasAttribute('disabled')).toBe(false);
 	});
 
-	it('joins text and supporting-text in the accessible name with a space', async () => {
+	it('joins text and supporting-text in the accessible name with a comma and space', async () => {
 		el = await fixture<NLDDButton>('<nldd-button text="Opslaan" supporting-text="Alle wijzigingen"></nldd-button>');
 		await waitForUpdate(el);
 		expect(el.shadowRoot!.querySelector('button')!.getAttribute('aria-label')).toBe('Opslaan, Alle wijzigingen');
