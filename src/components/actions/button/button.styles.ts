@@ -467,14 +467,14 @@ export const buttonStyles = css`
 
 	:host([size="md"]) .button.has-supporting-text {
 		--_font: var(--semantics-buttons-sm-primary-text-font);
-		--_icon-size: var(--semantics-buttons-lg-icon-size);
+		--_icon-size: var(--semantics-buttons-md-with-supporting-text-icon-size);
 		--_inline-padding: calc((var(--_min-size) - var(--_icon-size)) / 2);
 		--_block-padding: var(--primitives-space-4);
 	}
 
 	:host([size="lg"]) .button.has-supporting-text {
 		--_font: var(--semantics-buttons-md-primary-text-font);
-		--_icon-size: var(--primitives-space-32);
+		--_icon-size: var(--semantics-buttons-lg-with-supporting-text-icon-size);
 		--_inline-padding: calc((var(--_min-size) - var(--_icon-size)) / 2);
 		--_block-padding: var(--primitives-space-4);
 	}
