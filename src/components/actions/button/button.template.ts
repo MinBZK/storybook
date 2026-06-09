@@ -55,7 +55,8 @@ export function template(this: NLDDButton, helpers: TemplateHelpers) {
 	// join them with a comma so screen readers announce the two apart. Filtering
 	// empties keeps a name when only supporting-text is set — otherwise an
 	// icon-less button would be nameless. (Slotted text can't be read here —
-	// those consumers should set accessible-label.)
+	// those consumers should set accessible-label.) Without supporting-text,
+	// `nothing` sets no aria-label at all, so the name is the visible text content.
 	const ariaLabel = this.accessibleLabel
 		|| (this.supportingText ? [this.text, this.supportingText].filter(Boolean).join(', ') : nothing);
 
