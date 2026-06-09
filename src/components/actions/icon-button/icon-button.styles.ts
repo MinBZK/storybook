@@ -58,8 +58,8 @@ export const iconButtonStyles = css`
 	}
 
 	:host([size="lg"][hide-lg-text]) {
-		--_padding: calc((var(--semantics-controls-lg-min-size) - var(--primitives-space-28)) / 2);
-		--_icon-size: var(--primitives-space-28);
+		--_padding: calc((var(--semantics-controls-lg-min-size) - var(--semantics-buttons-lg-icon-only-icon-size)) / 2);
+		--_icon-size: var(--semantics-buttons-lg-icon-only-icon-size);
 		--_text-display: none;
 	}
 

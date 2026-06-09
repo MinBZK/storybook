@@ -89,7 +89,6 @@ export const tabBarItemStyles = css`
 		--_lg-item-padding: var(--primitives-space-8);
 		--_highlight-border-color: transparent;
 		--_z-index-content: 1;
-		--_lg-icon-only-icon-size: var(--primitives-space-28);
 
 		${inheritedTextReset}
 		display: inline-block;
@@ -234,8 +233,8 @@ export const tabBarItemStyles = css`
 	}
 
 	:host([variant="icon"][size="lg"]) .tab-bar__item-icon {
-		width: var(--_lg-icon-only-icon-size);
-		height: var(--_lg-icon-only-icon-size);
+		width: var(--semantics-buttons-lg-icon-only-icon-size);
+		height: var(--semantics-buttons-lg-icon-only-icon-size);
 	}
 
 	:host([variant="text"]) .tab-bar__item-icon {
