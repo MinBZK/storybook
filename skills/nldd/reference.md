@@ -232,6 +232,25 @@ Toont een citaat met optionele bron-attributie.
 | _(default)_ | De citaat-paragra(a)f(en) — gebruik bij voorkeur <p>-elementen |
 | `attribution` | Optionele bronvermelding (auteur, titel, etc.) |
 
+### `<nldd-byline>`
+
+Een redactionele regel die auteurs of redacteuren toont: optionele avatar(s), een naamregel en ondersteunende tekst (bijvoorbeeld functie of datum). Alle onderdelen zijn optioneel. De naamregel en ondersteunende tekst kunnen als attribuut of als slot worden aangeleverd. Gebruik de slots voor rijkere inhoud, zoals een `<time datetime="…">` voor machine-leesbare datums of een link naar het auteursprofiel. Geslotte inhoud vervangt het bijbehorende attribuut (het attribuut is de fallback van de slot). Bij meerdere redacteuren overlappen de avatars elkaar subtiel; elke avatar krijgt een ring in de surface-kleur (zelfde mechaniek als badge) zodat ze visueel gescheiden blijven. Op een gekleurde ondergrond kan de ringkleur meegegeven worden via `--context-parent-background-color`. Avatars worden geslot als `<img slot="avatars">`. Zet `alt=""` wanneer de namen al in de tekst staan (decoratief); geef anders een beschrijvende alt-tekst op.
+
+**Attributes**
+
+| Attribuut | Type | Beschrijving |
+| --- | --- | --- |
+| `text` | `string` | Naamregel (bijv. "Jan Jansen en Piet Pietersen"); fallback wanneer de text-slot leeg is |
+| `supporting-text` | `string` | Ondersteunende tekst onder de naamregel (bijv. rol of datum); fallback wanneer de supporting-text-slot leeg is |
+
+**Slots**
+
+| Slot | Beschrijving |
+| --- | --- |
+| `avatars` | Eén of meer img-elementen; gestyled als ronde, overlappende avatars |
+| `text` | Naamregel als rijke inhoud (bijv. een link naar het auteursprofiel) |
+| `supporting-text` | Ondersteunende tekst als rijke inhoud (bijv. een time-element) |
+
 ### `<nldd-code-viewer>`
 
 A block of monospaced text for code, traces, output dumps, etc. Renders a styled `<pre>` with the design-system's monospace family, tinted background and standard content color. Whitespace is preserved (`white-space: pre`); long lines scroll horizontally by default. Set `wrap` to break long lines onto the next visual line — useful for prose-like content (YAML strings, formatted output) where horizontal scrolling is more disruptive than wrapping. Set `language` to one of the supported grammars (yaml, json, javascript, typescript, css, html, xml, bash, markdown, rust, gherkin, toml, sql, python) to highlight the slot content with Prism. Without `language` the slot content is rendered raw, no highlighting applied. Grammars are loaded lazily on first use, so a page that never sets `language` ships zero grammar code. Token colors are exposed as `--components-code-viewer-token-*` custom properties on the host. Override them per-instance to swap the theme: ```css nldd-code-viewer { --components-code-viewer-token-keyword-color: var(--my-purple); --components-code-viewer-token-string-color: var(--my-green); } ```

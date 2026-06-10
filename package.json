@@ -71,6 +71,10 @@
       "types": "./dist/components/content/code-viewer/code-viewer.d.ts",
       "default": "./dist/components/content/code-viewer/code-viewer.js"
     },
+    "./byline": {
+      "types": "./dist/components/content/byline/byline.d.ts",
+      "default": "./dist/components/content/byline/byline.js"
+    },
     "./form": {
       "types": "./dist/components/forms/form/form.d.ts",
       "default": "./dist/components/forms/form/form.js"

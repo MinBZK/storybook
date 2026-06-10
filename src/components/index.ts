@@ -31,6 +31,7 @@ export { NLDDBlockquote } from './content/blockquote/blockquote.js';
 export { NLDDTag } from './content/tag/tag.js';
 export { NLDDKeyboardShortcut } from './content/keyboard-shortcut/keyboard-shortcut.js';
 export { NLDDCodeViewer } from './content/code-viewer/code-viewer.js';
+export { NLDDByline } from './content/byline/byline.js';
 
 
 // # Forms components
