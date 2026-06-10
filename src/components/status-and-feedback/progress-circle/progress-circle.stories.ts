@@ -22,7 +22,7 @@ const ALL_COLORS = [...SEMANTIC_COLORS, ...RIJKSLEUREN];
  * determinate/indeterminate. Label staat onder de cirkel.
  */
 export default {
-	title: 'Components/Status & Feedback/Progress circle',
+	title: 'Components/Status & Feedback/Progress Circle',
 	component: 'nldd-progress-circle',
 	tags: ['autodocs'],
 	parameters: {
