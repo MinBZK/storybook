@@ -8,17 +8,26 @@
  * AT + browser combos. The trail wraps onto multiple lines when it doesn't
  * fit, so it adapts to any width.
  *
+ * Vanaf vier niveaus klapt het pad standaard in tot
+ * `Home › … › {bovenliggende pagina} › {huidige pagina}`. De ellipsis is een
+ * knop die bij activeren de verborgen niveaus op hun plek toont (eenmalig;
+ * de focus verplaatst naar het eerste onthulde niveau). De verborgen items
+ * blijven in de DOM, zodat zoekmachines en agents het volledige pad zien.
+ * Zet `no-collapse` om het pad altijd volledig te tonen.
+ *
  * @element nldd-breadcrumbs
  *
  * @attr {string}  accessible-label - Override the nav's aria-label.
  *                                    Defaults to the i18n value (NL: "Kruimelpad").
+ * @attr {boolean} no-collapse      - Toon altijd alle niveaus; schakelt het
+ *                                    inklappen vanaf vier niveaus uit.
  * @attr {object}  translations     - Override translation keys; unset keys
  *                                    fall back to the Dutch default.
  *
  * @slot - `nldd-breadcrumbs-item` children.
  */
 import { LitElement, type PropertyValues } from 'lit';
-import { customElement, property } from 'lit/decorators.js';
+import { customElement, property, state } from 'lit/decorators.js';
 import { breadcrumbsStyles, breadcrumbsItemStyles } from './breadcrumbs.styles.js';
 import { breadcrumbsTemplate, breadcrumbsItemTemplate } from './breadcrumbs.template.js';
 import { nlddBreadcrumbsTranslations, type NLDDBreadcrumbsTranslations } from './breadcrumbs.i18n.js';
@@ -77,6 +86,15 @@ export class NLDDBreadcrumbsItem extends LitElement {
 		}
 	}
 
+	/**
+	 * Delegates focus to the inner link, so the parent can move focus to a
+	 * revealed item after expanding the collapsed trail. Non-link items
+	 * (plain text, current page) have nothing focusable and stay a no-op.
+	 */
+	override focus(options?: FocusOptions): void {
+		this.shadowRoot?.querySelector<HTMLElement>('.breadcrumbs__item-link')?.focus(options);
+	}
+
 	override render() {
 		return breadcrumbsItemTemplate(this);
 	}
@@ -101,10 +119,55 @@ export class NLDDBreadcrumbs extends LitElement {
 	@property({ type: String, attribute: 'accessible-label' })
 	accessibleLabel = '';
 
+	@property({ type: Boolean, reflect: true, attribute: 'no-collapse' })
+	noCollapse = false;
+
 	@property({ type: Object })
 	translations: Partial<NLDDBreadcrumbsTranslations> = {};
 
+	@state()
+	_collapsed = false;
+
+	/** One-shot: once the user expands the trail it stays expanded. */
+	private _expanded = false;
+
 	private _mergedTranslations: NLDDBreadcrumbsTranslations = { ...nlddBreadcrumbsTranslations };
+
+	private _items(): NLDDBreadcrumbsItem[] {
+		return Array.from(this.children).filter(
+			(child): child is NLDDBreadcrumbsItem => child.tagName === 'NLDD-BREADCRUMBS-ITEM',
+		);
+	}
+
+	/**
+	 * Applies the collapsed state to the light-DOM items. While collapsed the
+	 * first item moves to the "first" slot (so the shadow ellipsis can sit
+	 * between it and the tail) and the middle items get a marker attribute
+	 * that hides them via the item's own styles. The consumer's `hidden`
+	 * attribute is deliberately left alone. Re-runs are idempotent, so the
+	 * slotchange this triggers settles immediately.
+	 */
+	_syncCollapse = (): void => {
+		const items = this._items();
+		const collapsed = !this.noCollapse && !this._expanded && items.length >= 4;
+		items.forEach((item, index) => {
+			if (collapsed && index === 0) {
+				item.setAttribute('slot', 'first');
+			} else if (item.getAttribute('slot') === 'first') {
+				item.removeAttribute('slot');
+			}
+			item.toggleAttribute('data-nldd-collapsed', collapsed && index >= 1 && index <= items.length - 3);
+		});
+		this._collapsed = collapsed;
+	};
+
+	/** @internal Expands the trail and moves focus to the first revealed link. */
+	_expand = (): void => {
+		const revealed = this._items().filter((item) => item.hasAttribute('data-nldd-collapsed'));
+		this._expanded = true;
+		this._syncCollapse();
+		revealed.find((item) => item.href && !item.current)?.focus();
+	};
 
 	override willUpdate(changed: PropertyValues): void {
 		if (changed.has('translations') || changed.has('accessibleLabel')) {
@@ -116,6 +179,10 @@ export class NLDDBreadcrumbs extends LitElement {
 				this._mergedTranslations['components.breadcrumbs.accessible-label'] = this.accessibleLabel;
 			}
 		}
+	}
+
+	override updated(changed: PropertyValues): void {
+		if (changed.has('noCollapse')) this._syncCollapse();
 	}
 
 	_t(key: keyof NLDDBreadcrumbsTranslations): string {

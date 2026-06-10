@@ -1557,13 +1557,14 @@ Een zwevend venster gebaseerd op het native <dialog>-element. Kan modaal of niet
 
 ### `<nldd-breadcrumbs>`
 
-A trail of `nldd-breadcrumbs-item`s separated by `›`, rendered as a `<nav>` landmark wrapping a `<div role="list">` (with each item carrying `role="listitem"`). Explicit ARIA roles travel reliably across the slot boundary where the implicit `<ol>`/`<li>` mapping is inconsistent across AT + browser combos. The trail wraps onto multiple lines when it doesn't fit, so it adapts to any width.
+A trail of `nldd-breadcrumbs-item`s separated by `›`, rendered as a `<nav>` landmark wrapping a `<div role="list">` (with each item carrying `role="listitem"`). Explicit ARIA roles travel reliably across the slot boundary where the implicit `<ol>`/`<li>` mapping is inconsistent across AT + browser combos. The trail wraps onto multiple lines when it doesn't fit, so it adapts to any width. Vanaf vier niveaus klapt het pad standaard in tot `Home › … › {bovenliggende pagina} › {huidige pagina}`. De ellipsis is een knop die bij activeren de verborgen niveaus op hun plek toont (eenmalig; de focus verplaatst naar het eerste onthulde niveau). De verborgen items blijven in de DOM, zodat zoekmachines en agents het volledige pad zien. Zet `no-collapse` om het pad altijd volledig te tonen.
 
 **Attributes**
 
 | Attribuut | Type | Beschrijving |
 | --- | --- | --- |
 | `accessible-label` | `string` | Override the nav's aria-label. Defaults to the i18n value (NL: "Kruimelpad"). |
+| `no-collapse` | `boolean` | Toon altijd alle niveaus; schakelt het inklappen vanaf vier niveaus uit. |
 | `translations` | `object` | Override translation keys; unset keys fall back to the Dutch default. |
 
 **Slots**
