@@ -11,7 +11,7 @@ export const statusBarStyles = css`
 		--_background-color: var(--components-status-bar-neutral-background-color);
 		--_height: var(--components-status-bar-height);
 		--_inline-padding: var(--components-status-bar-inline-padding);
-		--_gap: var(--primitives-space-6);
+		--_gap: var(--primitives-space-2);
 		--_content-color: var(--components-status-bar-neutral-content-color);
 		--_font: var(--components-status-bar-font);
 		--_is-hovered-background-color: var(--components-status-bar-neutral-is-hovered-background-color);
