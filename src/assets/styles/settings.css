@@ -1785,9 +1785,6 @@
 	/* ## Status bar */
 
 	--components-status-bar-height: var(--semantics-controls-xs-min-size);
-	--components-status-bar-corner-radius: var(--primitives-corner-radius-none);
-	--components-status-bar-inline-padding: var(--primitives-space-8);
-	--components-status-bar-font: var(--primitives-font-body-xs-medium-flat);
 	--components-status-bar-neutral-background-color: var(--semantics-categories-filled-neutral-background-color);
 	--components-status-bar-neutral-is-hovered-background-color: var(--semantics-categories-filled-neutral-border-color);
 	--components-status-bar-neutral-content-color: var(--semantics-categories-filled-neutral-content-color);

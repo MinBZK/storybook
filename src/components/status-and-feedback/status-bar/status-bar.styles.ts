@@ -7,13 +7,13 @@ export const statusBarStyles = css`
 	/* # Host */
 
 	:host {
-		--_corner-radius: var(--components-status-bar-corner-radius);
+		--_corner-radius: var(--primitives-corner-radius-none);
 		--_background-color: var(--components-status-bar-neutral-background-color);
 		--_height: var(--components-status-bar-height);
-		--_inline-padding: var(--components-status-bar-inline-padding);
+		--_inline-padding: var(--primitives-space-8);
 		--_gap: var(--primitives-space-2);
 		--_content-color: var(--components-status-bar-neutral-content-color);
-		--_font: var(--components-status-bar-font);
+		--_font: var(--primitives-font-body-xs-medium-flat);
 		--_is-hovered-background-color: var(--components-status-bar-neutral-is-hovered-background-color);
 		--_end-icon-size: var(--primitives-space-16);
 
