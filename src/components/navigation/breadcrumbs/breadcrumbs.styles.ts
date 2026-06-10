@@ -58,7 +58,6 @@ export const breadcrumbsStyles = css`
 
 	.breadcrumbs__ellipsis-button:hover {
 		color: var(--semantics-links-is-hovered-color);
-		text-decoration: underline;
 	}
 
 	.breadcrumbs__ellipsis-button:active {
