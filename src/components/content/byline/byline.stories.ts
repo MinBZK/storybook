@@ -1,5 +1,6 @@
 import { html, nothing } from 'lit';
 import './byline.js';
+import '../../navigation/link/link.js';
 
 // Self-contained SVG avatars (data URIs) so the stories don't depend on
 // external images or the static assets folder.
@@ -100,7 +101,7 @@ export const MetTimeEnLink = {
 				src=${AVATAR_1}
 				alt=""
 			>
-			<span slot="text">Door <a href="#auteur">Jan Jansen</a></span>
+			<span slot="text">Door <nldd-link href="#auteur" text="Jan Jansen"></nldd-link></span>
 			<time slot="supporting-text"
 				datetime="2026-06-12"
 			>12 juni 2026</time>
