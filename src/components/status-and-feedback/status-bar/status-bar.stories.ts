@@ -10,7 +10,7 @@ import './status-bar.js';
  * zelf de status benoemen ("Storing: …", "Gepland onderhoud …"), zodat de
  * betekenis niet alleen uit kleur volgt.
  *
- * De hele balk kan klikbaar zijn: zet `href` (link) of `action` (button;
+ * De hele balk kan klikbaar zijn: zet `href` (link) of `button` (button;
  * luister naar `click`). Er verschijnt dan een chevron als affordance.
  * Maximaal één actie per balk — meer acties of links in lopende tekst horen
  * in een `nldd-banner`.
@@ -43,7 +43,7 @@ export default {
 		text: 'Gepland onderhoud op zaterdag 14 juni, 22:00–00:00',
 		href: '',
 		target: '',
-		action: false,
+		button: false,
 	},
 	argTypes: {
 		variant: {
@@ -67,7 +67,7 @@ export default {
 			description: 'Link target; alleen gebruikt bij href',
 			table: { defaultValue: { summary: '(geen)' } },
 		},
-		action: {
+		button: {
 			control: 'boolean',
 			description: 'Maakt de hele balk een button; genegeerd als href is gezet',
 			table: { defaultValue: { summary: false } },
@@ -81,7 +81,7 @@ const Template = (args: Record<string, any>) => html`
 		text=${args.text}
 		href=${args.href || nothing}
 		target=${args.target || nothing}
-		?action=${args.action}
+		?button=${args.button}
 	></nldd-status-bar>
 `;
 
@@ -116,7 +116,7 @@ export const AlsButton = {
 	render: () => html`
 		<nldd-status-bar variant="accent"
 			text="U werkt in een testomgeving — terug naar de live-omgeving"
-			action
+			button
 		></nldd-status-bar>
 	`,
 	parameters: { controls: { disable: true } },

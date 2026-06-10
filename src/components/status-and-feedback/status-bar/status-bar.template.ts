@@ -2,7 +2,7 @@ import { html, nothing } from 'lit';
 import type { NLDDStatusBar } from './status-bar.js';
 
 export function statusBarTemplate(component: NLDDStatusBar) {
-	const interactive = Boolean(component.href || component.action);
+	const interactive = Boolean(component.href || component.button);
 	const content = html`
 		<span class="status-bar__text">${component.text}</span>
 		${interactive ? html`
@@ -20,7 +20,7 @@ export function statusBarTemplate(component: NLDDStatusBar) {
 			>${content}</a>
 		`;
 	}
-	if (component.action) {
+	if (component.button) {
 		return html`
 			<button class="status-bar"
 				type="button"

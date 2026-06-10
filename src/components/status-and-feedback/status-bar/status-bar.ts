@@ -8,7 +8,7 @@
  * benoemen ("Storing: …", "Gepland onderhoud …"), zodat de betekenis niet
  * alleen uit kleur volgt (WCAG 1.4.1).
  *
- * De hele balk kan klikbaar zijn: zet `href` (rendert een `<a>`) of `action`
+ * De hele balk kan klikbaar zijn: zet `href` (rendert een `<a>`) of `button`
  * (rendert een `<button>`; luister naar het native `click` event). Zonder
  * beide is de balk statisch. Bij interactie verschijnt een chevron als
  * affordance. Maximaal één actie per balk; meerdere acties of links in
@@ -27,7 +27,7 @@
  * @attr {string}  href   - Maakt de hele balk een link (rendert een <a>)
  * @attr {string}  target - Link target (bijv. '_blank'); alleen gebruikt bij href
  * @attr {string}  rel    - Link rel; standaard 'noopener noreferrer' bij target='_blank'
- * @attr {boolean} action - Maakt de hele balk een button; genegeerd als href is gezet
+ * @attr {boolean} button - Maakt de hele balk een button; genegeerd als href is gezet
  */
 import { LitElement } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
@@ -59,7 +59,7 @@ export class NLDDStatusBar extends LitElement {
 	rel = '';
 
 	@property({ type: Boolean, reflect: true })
-	action = false;
+	button = false;
 
 	constructor() {
 		super();

@@ -36,8 +36,8 @@ describe('nldd-list-item', () => {
 		expect(el.shadowRoot!.querySelector('div.list-item')).not.toBeNull();
 	});
 
-	it('renders a button when action is set', async () => {
-		el = await fixture('<nldd-list-item action></nldd-list-item>');
+	it('renders a button when button is set', async () => {
+		el = await fixture('<nldd-list-item button></nldd-list-item>');
 		await waitForUpdate(el);
 		expect(el.shadowRoot!.querySelector('button.list-item__action')).not.toBeNull();
 	});
@@ -96,7 +96,7 @@ describe('nldd-list-item', () => {
 		// The :host([selected]:focus-within) CSS rule promotes a selected item
 		// to the highlighted state on focus. Verify the selector semantics
 		// (which the CSS then keys off of).
-		el = await fixture('<nldd-list-item action selected></nldd-list-item>');
+		el = await fixture('<nldd-list-item button selected></nldd-list-item>');
 		await waitForUpdate(el);
 		const action = el.shadowRoot!.querySelector<HTMLButtonElement>('.list-item__action')!;
 
@@ -111,7 +111,7 @@ describe('nldd-list-item', () => {
 
 
 	it('forces focus on the action on click (Safari/Firefox workaround)', async () => {
-		el = await fixture('<nldd-list-item action></nldd-list-item>');
+		el = await fixture('<nldd-list-item button></nldd-list-item>');
 		await waitForUpdate(el);
 		const action = el.shadowRoot!.querySelector<HTMLButtonElement>('.list-item__action')!;
 		action.click();
@@ -129,7 +129,7 @@ describe('nldd-list-item', () => {
 		});
 
 		it('adds is-pointer-focus class on mouse focus', async () => {
-			el = await fixture('<nldd-list-item action></nldd-list-item>');
+			el = await fixture('<nldd-list-item button></nldd-list-item>');
 			await waitForUpdate(el);
 			document.dispatchEvent(new PointerEvent('pointerdown', { pointerType: 'mouse' }));
 			const action = el.shadowRoot!.querySelector('.list-item__action') as HTMLElement;
@@ -139,7 +139,7 @@ describe('nldd-list-item', () => {
 		});
 
 		it('does not add is-pointer-focus class on keyboard focus', async () => {
-			el = await fixture('<nldd-list-item action></nldd-list-item>');
+			el = await fixture('<nldd-list-item button></nldd-list-item>');
 			await waitForUpdate(el);
 			document.dispatchEvent(new KeyboardEvent('keydown', { key: 'Tab' }));
 			const action = el.shadowRoot!.querySelector('.list-item__action') as HTMLElement;
@@ -149,7 +149,7 @@ describe('nldd-list-item', () => {
 		});
 
 		it('removes is-pointer-focus class on blur', async () => {
-			el = await fixture('<nldd-list-item action></nldd-list-item>');
+			el = await fixture('<nldd-list-item button></nldd-list-item>');
 			await waitForUpdate(el);
 			document.dispatchEvent(new PointerEvent('pointerdown', { pointerType: 'mouse' }));
 			const action = el.shadowRoot!.querySelector('.list-item__action') as HTMLElement;
@@ -196,7 +196,7 @@ describe('nldd-list-item', () => {
 	it('navigation parent: aria-current="page" on inner button when selected', async () => {
 		const wrapper = await fixture(`
 			<nldd-list type="navigation">
-				<nldd-list-item id="a" action selected></nldd-list-item>
+				<nldd-list-item id="a" button selected></nldd-list-item>
 			</nldd-list>
 		`);
 		await waitForUpdate(wrapper);

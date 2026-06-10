@@ -1962,7 +1962,7 @@ Exports both NLDDProgressCircle and NLDDProgressCircleSegmentIndicator. A circul
 
 ### `<nldd-status-bar>`
 
-Een smalle, paginabrede statusbalk (24px) met een diepe achtergrondkleur per variant. Gebruik voor persistente systeemtoestand: een storing, gepland onderhoud, een conceptweergave of een lopende opname. De balk toont bewust geen icoon en ondersteunt alleen tekst — de tekst zelf moet de status benoemen ("Storing: …", "Gepland onderhoud …"), zodat de betekenis niet alleen uit kleur volgt (WCAG 1.4.1). De hele balk kan klikbaar zijn: zet `href` (rendert een `<a>`) of `action` (rendert een `<button>`; luister naar het native `click` event). Zonder beide is de balk statisch. Bij interactie verschijnt een chevron als affordance. Maximaal één actie per balk; meerdere acties of links in lopende tekst horen in nldd-banner. role en aria-live worden automatisch gezet op basis van de variant: - critical → role="alert" (onderbreekt screen reader) - overige → role="status" aria-live="polite" Niet overschrijfbaar — is een rustiger component nodig, kies dan een ander.
+Een smalle, paginabrede statusbalk (24px) met een diepe achtergrondkleur per variant. Gebruik voor persistente systeemtoestand: een storing, gepland onderhoud, een conceptweergave of een lopende opname. De balk toont bewust geen icoon en ondersteunt alleen tekst — de tekst zelf moet de status benoemen ("Storing: …", "Gepland onderhoud …"), zodat de betekenis niet alleen uit kleur volgt (WCAG 1.4.1). De hele balk kan klikbaar zijn: zet `href` (rendert een `<a>`) of `button` (rendert een `<button>`; luister naar het native `click` event). Zonder beide is de balk statisch. Bij interactie verschijnt een chevron als affordance. Maximaal één actie per balk; meerdere acties of links in lopende tekst horen in nldd-banner. role en aria-live worden automatisch gezet op basis van de variant: - critical → role="alert" (onderbreekt screen reader) - overige → role="status" aria-live="polite" Niet overschrijfbaar — is een rustiger component nodig, kies dan een ander.
 
 **Attributes**
 
@@ -1973,7 +1973,7 @@ Een smalle, paginabrede statusbalk (24px) met een diepe achtergrondkleur per var
 | `href` | `string` | Maakt de hele balk een link (rendert een <a>) |
 | `target` | `string` | Link target (bijv. '_blank'); alleen gebruikt bij href |
 | `rel` | `string` | Link rel; standaard 'noopener noreferrer' bij target='_blank' |
-| `action` | `boolean` | Maakt de hele balk een button; genegeerd als href is gezet |
+| `button` | `boolean` | Maakt de hele balk een button; genegeerd als href is gezet |
 
 ## lists-and-tables
 
@@ -2054,7 +2054,7 @@ A container for `nldd-list-item` elements, with optional header and footer slots
 
 ### `<nldd-list-item>`
 
-A row within an `nldd-list`, providing layout for start, main and end areas. Renders as a link when `href` is set, as a button when `action` is set, or as a plain container otherwise. The item synchronises its ARIA with its parent `nldd-list`'s `type`: - `list` parent → `role="listitem"` - `navigation` parent → `role="listitem"` + `aria-current="page"` on the inner `<a>` / `<button>` when `selected`
+A row within an `nldd-list`, providing layout for start, main and end areas. Renders as a link when `href` is set, as a button when `button` is set, or as a plain container otherwise. The item synchronises its ARIA with its parent `nldd-list`'s `type`: - `list` parent → `role="listitem"` - `navigation` parent → `role="listitem"` + `aria-current="page"` on the inner `<a>` / `<button>` when `selected`
 
 ### `<nldd-spacer-cell>`
 

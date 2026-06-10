@@ -27,7 +27,7 @@ export default {
 			control: 'text',
 			description: 'Maakt het hele item een link',
 		},
-		action: {
+		button: {
 			control: 'boolean',
 			description: 'Maakt het hele item een button; genegeerd als href is gezet',
 			table: { defaultValue: { summary: false } },
@@ -40,11 +40,11 @@ export const Default = {
 		size: 'md',
 		selected: false,
 		href: '',
-		action: false,
+		button: false,
 	},
 	render: (args: Record<string, any>) => html`
 		<nldd-list variant="simple">
-			<nldd-list-item size=${args.size} ?selected=${args.selected} href=${args.href || nothing} ?action=${args.action}>
+			<nldd-list-item size=${args.size} ?selected=${args.selected} href=${args.href || nothing} ?button=${args.button}>
 				<nldd-text-cell text="Text cell" supporting-text="Supporting text"></nldd-text-cell>
 			</nldd-list-item>
 		</nldd-list>
@@ -90,10 +90,10 @@ export const Selected = {
 export const AlsButton = {
 	render: () => html`
 		<nldd-list variant="simple">
-			<nldd-list-item action>
+			<nldd-list-item button>
 				<nldd-text-cell text="Clickable button item"></nldd-text-cell>
 			</nldd-list-item>
-			<nldd-list-item action>
+			<nldd-list-item button>
 				<nldd-text-cell text="Another button item"></nldd-text-cell>
 			</nldd-list-item>
 		</nldd-list>

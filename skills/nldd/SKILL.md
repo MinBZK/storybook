@@ -252,7 +252,7 @@ Bouw rijen op uit cellen binnen een `nldd-list-item`. Niet uit losse divs.
 
 ```html
 <nldd-list variant="simple">
-  <nldd-list-item size="md" action>
+  <nldd-list-item size="md" button>
     <nldd-text-cell text="Titel" supporting-text="Ondertitel"></nldd-text-cell>
   </nldd-list-item>
 </nldd-list>

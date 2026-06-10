@@ -10,7 +10,7 @@ export type ListItemSize = 'sm' | 'md';
 
 /**
  * A row within an `nldd-list`, providing layout for start, main and end areas.
- * Renders as a link when `href` is set, as a button when `action` is set, or
+ * Renders as a link when `href` is set, as a button when `button` is set, or
  * as a plain container otherwise.
  *
  * The item synchronises its ARIA with its parent `nldd-list`'s `type`:
@@ -34,7 +34,7 @@ export class NLDDListItem extends LitElement {
 
 	/** When set, renders the item as a button; ignored when href is set. */
 	@property({ type: Boolean, reflect: true })
-	action = false;
+	button = false;
 
 	/** When set, renders the item as a link. */
 	@property({ reflect: true })
@@ -95,7 +95,7 @@ export class NLDDListItem extends LitElement {
 	}
 
 	override updated(changed: Map<string, unknown>) {
-		if (changed.has('selected') || changed.has('action') || changed.has('href') || changed.has('_parentType')) {
+		if (changed.has('selected') || changed.has('button') || changed.has('href') || changed.has('_parentType')) {
 			this._updateAriaState();
 		}
 	}
@@ -194,7 +194,7 @@ export class NLDDListItem extends LitElement {
 
 	override render() {
 		return template(
-			this.action,
+			this.button,
 			this.href,
 			this._showStart,
 			this._showEnd,
