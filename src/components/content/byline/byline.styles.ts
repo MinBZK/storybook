@@ -7,7 +7,7 @@ export const bylineStyles = css`
 	/* # Host */
 
 	:host {
-		--_gap: var(--primitives-space-12);
+		--_gap: var(--primitives-space-8);
 		--_avatar-overlap: var(--primitives-space-8);
 		--_avatar-size: var(--components-byline-avatar-size);
 		--_avatar-border-width: var(--primitives-border-width-regular);
