@@ -50,6 +50,13 @@ describe('nldd-list-item', () => {
 		expect(anchor?.getAttribute('href')).toBe('/test');
 	});
 
+	it('href wins over button when both are set', async () => {
+		el = await fixture('<nldd-list-item button href="/test"></nldd-list-item>');
+		await waitForUpdate(el);
+		expect(el.shadowRoot!.querySelector('a.list-item__action')).not.toBeNull();
+		expect(el.shadowRoot!.querySelector('button')).toBeNull();
+	});
+
 	it('sets is-boxed class when inside a box list', async () => {
 		const wrapper = await fixture(`
 			<nldd-list variant="box">
