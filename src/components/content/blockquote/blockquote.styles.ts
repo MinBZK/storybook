@@ -71,6 +71,10 @@ export const blockquoteStyles = css`
 		content: '— ' / '';
 	}
 
+	.blockquote__attribution.is-byline::before {
+		content: none;
+	}
+
 	.blockquote__attribution[hidden] {
 		display: none;
 	}

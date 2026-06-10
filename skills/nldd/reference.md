@@ -230,7 +230,7 @@ Toont een citaat met optionele bron-attributie.
 | Slot | Beschrijving |
 | --- | --- |
 | _(default)_ | De citaat-paragra(a)f(en) — gebruik bij voorkeur <p>-elementen |
-| `attribution` | Optionele bronvermelding (auteur, titel, etc.) |
+| `attribution` | Optionele bronvermelding (auteur, titel, etc.). Ook een nldd-byline mag hier; het kastlijntje ("— ") wordt dan weggelaten. |
 
 ### `<nldd-byline>`
 
