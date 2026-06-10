@@ -28,12 +28,7 @@ export const bylineStyles = css`
 	}
 
 
-	/* # Avatars
-	   Slotted imgs overlap via a negative inline-start margin; the wrapper
-	   compensates the first one with padding so the stack starts flush.
-	   Each avatar gets a ring in the surface color (the badge mechanic) so
-	   overlapping photos stay visually separated. Later avatars paint on
-	   top in natural order. */
+	/* # Avatars */
 
 	.byline__avatars {
 		display: flex;
@@ -62,15 +57,15 @@ export const bylineStyles = css`
 	}
 
 
-	/* # Main */
+	/* # Text area */
 
-	.byline__main {
+	.byline__text-area {
 		display: flex;
 		min-width: 0;
 		flex-direction: column;
 	}
 
-	.byline__main[hidden] {
+	.byline__text-area[hidden] {
 		display: none;
 	}
 

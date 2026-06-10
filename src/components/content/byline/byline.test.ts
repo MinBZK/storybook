@@ -24,10 +24,10 @@ describe('nldd-byline', () => {
 		expect(el.shadowRoot!.querySelector('.byline__supporting-text')!.textContent).toBe('Redacteur');
 	});
 
-	it('hides the main area without text and supporting-text', async () => {
+	it('hides the text area without text and supporting-text', async () => {
 		el = await fixture(`<nldd-byline><img slot="avatars" src="${AVATAR}" alt=""></nldd-byline>`);
 		await waitForUpdate(el);
-		expect(el.shadowRoot!.querySelector('.byline__main')!.hasAttribute('hidden')).toBe(true);
+		expect(el.shadowRoot!.querySelector('.byline__text-area')!.hasAttribute('hidden')).toBe(true);
 	});
 
 	it('hides the supporting-text element when not set', async () => {
@@ -50,7 +50,7 @@ describe('nldd-byline', () => {
 			</nldd-byline>
 		`);
 		await waitForUpdate(el);
-		expect(el.shadowRoot!.querySelector('.byline__main')!.hasAttribute('hidden')).toBe(false);
+		expect(el.shadowRoot!.querySelector('.byline__text-area')!.hasAttribute('hidden')).toBe(false);
 		expect(el.shadowRoot!.querySelector('.byline__text')!.hasAttribute('hidden')).toBe(false);
 		expect(el.shadowRoot!.querySelector('.byline__supporting-text')!.hasAttribute('hidden')).toBe(false);
 		const textSlot = el.shadowRoot!.querySelector<HTMLSlotElement>('slot[name="text"]')!;
@@ -67,17 +67,17 @@ describe('nldd-byline', () => {
 		expect(el.shadowRoot!.querySelector<HTMLSlotElement>('slot[name="text"]')!.assignedElements().length).toBe(0);
 	});
 
-	it('shows the main area when slotted content is added at runtime', async () => {
+	it('shows the text area when slotted content is added at runtime', async () => {
 		el = await fixture('<nldd-byline></nldd-byline>');
 		await waitForUpdate(el);
-		expect(el.shadowRoot!.querySelector('.byline__main')!.hasAttribute('hidden')).toBe(true);
+		expect(el.shadowRoot!.querySelector('.byline__text-area')!.hasAttribute('hidden')).toBe(true);
 		const time = document.createElement('time');
 		time.setAttribute('slot', 'supporting-text');
 		time.setAttribute('datetime', '2026-06-12');
 		time.textContent = '12 juni 2026';
 		el.appendChild(time);
 		await waitForUpdate(el);
-		expect(el.shadowRoot!.querySelector('.byline__main')!.hasAttribute('hidden')).toBe(false);
+		expect(el.shadowRoot!.querySelector('.byline__text-area')!.hasAttribute('hidden')).toBe(false);
 		expect(el.shadowRoot!.querySelector('.byline__text')!.hasAttribute('hidden')).toBe(true);
 	});
 
