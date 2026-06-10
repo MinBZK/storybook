@@ -1797,8 +1797,8 @@
 	--components-status-bar-success-background-color: var(--semantics-categories-filled-success-background-color);
 	--components-status-bar-success-is-hovered-background-color: var(--semantics-categories-filled-success-border-color);
 	--components-status-bar-success-content-color: var(--semantics-categories-filled-success-content-color);
-	--components-status-bar-warning-background-color: var(--semantics-categories-filled-warning-background-color);
-	--components-status-bar-warning-is-hovered-background-color: var(--semantics-categories-filled-warning-border-color);
+	--components-status-bar-warning-background-color: light-dark(var(--primitives-color-warning-350), var(--primitives-color-warning-650));
+	--components-status-bar-warning-is-hovered-background-color: light-dark(var(--primitives-color-warning-400), var(--primitives-color-warning-600));
 	--components-status-bar-warning-content-color: var(--semantics-categories-filled-warning-content-color);
 	--components-status-bar-critical-background-color: var(--semantics-categories-filled-critical-background-color);
 	--components-status-bar-critical-is-hovered-background-color: var(--semantics-categories-filled-critical-border-color);
