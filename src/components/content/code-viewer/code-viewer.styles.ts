@@ -28,6 +28,10 @@ export const codeViewerStyles = css`
 		   (z-index: var(--_actions-z-index)) stays scoped to the code-viewer
 		   and can't paint over other layers on the page. */
 		isolation: isolate;
+		/* iOS Safari inflates text in wide scrollable blocks (text autosizing);
+		   lock the size so code renders at the authored font-size on mobile. */
+		-webkit-text-size-adjust: 100%;
+		text-size-adjust: 100%;
 	}
 
 	:host([hidden]) {
