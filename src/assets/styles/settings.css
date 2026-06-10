@@ -1433,7 +1433,6 @@
 	/* ## Byline */
 
 	--components-byline-avatar-size: var(--primitives-space-40);
-	--components-byline-avatar-border-color: var(--semantics-surfaces-base-background-color);
 	--components-byline-text-color: var(--semantics-content-color);
 	--components-byline-supporting-text-color: var(--semantics-content-secondary-color);
 
