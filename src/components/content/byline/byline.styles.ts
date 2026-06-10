@@ -9,12 +9,12 @@ export const bylineStyles = css`
 	:host {
 		--_gap: var(--primitives-space-8);
 		--_avatar-overlap: var(--primitives-space-8);
-		--_avatar-size: var(--components-byline-avatar-size);
+		--_avatar-size: var(--primitives-space-40);
 		--_avatar-border-width: var(--primitives-border-width-regular);
 		--_avatar-border-color: var(--context-parent-background-color, var(--semantics-surfaces-base-background-color));
-		--_text-color: var(--components-byline-text-color);
+		--_text-color: var(--semantics-content-color);
 		--_text-font: var(--primitives-font-body-md-medium-tight);
-		--_supporting-text-color: var(--components-byline-supporting-text-color);
+		--_supporting-text-color: var(--semantics-content-secondary-color);
 		--_supporting-text-font: var(--primitives-font-body-sm-regular-tight);
 
 		${inheritedTextReset}

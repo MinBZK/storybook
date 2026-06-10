@@ -1430,12 +1430,6 @@
 	--components-button-group-sm-gap: var(--primitives-space-6);
 	--components-button-group-md-gap: var(--primitives-space-8);
 
-	/* ## Byline */
-
-	--components-byline-avatar-size: var(--primitives-space-40);
-	--components-byline-text-color: var(--semantics-content-color);
-	--components-byline-supporting-text-color: var(--semantics-content-secondary-color);
-
 	/* ## Card */
 
 	--components-card-background-color: light-dark(var(--primitives-color-neutral-0), var(--primitives-color-neutral-75));
