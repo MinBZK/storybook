@@ -155,6 +155,10 @@ export const aliases = {
 	'document': 'file-text',
 	'file': 'file-text',
 
+	// file-text-stack
+	'documents': 'file-text-stack',
+	'text-documents': 'file-text-stack',
+
 	// flag-filled
 	'flagged': 'flag-filled',
 
