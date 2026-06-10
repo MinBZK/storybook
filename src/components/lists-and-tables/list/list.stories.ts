@@ -138,7 +138,7 @@ export const Variants = {
 export const WithMultipleColumns = {
 	render: () => html`
 		<nldd-list variant="box">
-			<nldd-list-item type="button">
+			<nldd-list-item action>
 				<nldd-spacer-cell slot="start" size="12"></nldd-spacer-cell>
 				<nldd-icon-cell slot="start" size="24" vertical-alignment="top">
 					<nldd-icon name="calendar-event"></nldd-icon>
@@ -157,7 +157,7 @@ export const WithMultipleColumns = {
 					<nldd-icon name="chevron-right"></nldd-icon>
 				</nldd-icon-cell>
 			</nldd-list-item>
-			<nldd-list-item type="button">
+			<nldd-list-item action>
 				<nldd-spacer-cell slot="start" size="12"></nldd-spacer-cell>
 				<nldd-icon-cell slot="start" size="24" vertical-alignment="top">
 					<nldd-icon name="certificate"></nldd-icon>
@@ -183,7 +183,7 @@ export const WithMultipleColumns = {
 export const WithInteractiveItems = {
 	render: () => html`
 		<nldd-list variant="box">
-			<nldd-list-item type="button">
+			<nldd-list-item action>
 				<nldd-text-cell text="Knop-item"></nldd-text-cell>
 			</nldd-list-item>
 			<nldd-list-item href="/settings">

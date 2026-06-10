@@ -2054,7 +2054,7 @@ A container for `nldd-list-item` elements, with optional header and footer slots
 
 ### `<nldd-list-item>`
 
-A row within an `nldd-list`, providing layout for start, main and end areas. Renders as a link when `href` is set, as a button when `type="button"`, or as a plain container otherwise. The item synchronises its ARIA with its parent `nldd-list`'s `type`: - `list` parent → `role="listitem"` - `navigation` parent → `role="listitem"` + `aria-current="page"` on the inner `<a>` / `<button>` when `selected`
+A row within an `nldd-list`, providing layout for start, main and end areas. Renders as a link when `href` is set, as a button when `action` is set, or as a plain container otherwise. The item synchronises its ARIA with its parent `nldd-list`'s `type`: - `list` parent → `role="listitem"` - `navigation` parent → `role="listitem"` + `aria-current="page"` on the inner `<a>` / `<button>` when `selected`
 
 ### `<nldd-spacer-cell>`
 
