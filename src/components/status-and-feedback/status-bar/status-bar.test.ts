@@ -43,7 +43,7 @@ describe('nldd-status-bar', () => {
 	it('does not render a chevron when static', async () => {
 		el = await fixture('<nldd-status-bar text="Status"></nldd-status-bar>');
 		await waitForUpdate(el);
-		expect(el.shadowRoot!.querySelector('.status-bar__end-icon')).toBeNull();
+		expect(el.shadowRoot!.querySelector('.status-bar__action-icon')).toBeNull();
 	});
 
 	it('renders an <a> with chevron when href is set', async () => {
@@ -52,7 +52,7 @@ describe('nldd-status-bar', () => {
 		const link = el.shadowRoot!.querySelector('a.status-bar');
 		expect(link).not.toBeNull();
 		expect(link!.getAttribute('href')).toBe('/status');
-		expect(el.shadowRoot!.querySelector('.status-bar__end-icon nldd-icon')).not.toBeNull();
+		expect(el.shadowRoot!.querySelector('.status-bar__action-icon nldd-icon')).not.toBeNull();
 	});
 
 	it('renders a <button type="button"> with chevron when button is set', async () => {
@@ -61,7 +61,7 @@ describe('nldd-status-bar', () => {
 		const button = el.shadowRoot!.querySelector('button.status-bar');
 		expect(button).not.toBeNull();
 		expect(button!.getAttribute('type')).toBe('button');
-		expect(el.shadowRoot!.querySelector('.status-bar__end-icon nldd-icon')).not.toBeNull();
+		expect(el.shadowRoot!.querySelector('.status-bar__action-icon nldd-icon')).not.toBeNull();
 	});
 
 	it('href wins over button when both are set', async () => {

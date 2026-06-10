@@ -6,7 +6,7 @@ export function statusBarTemplate(component: NLDDStatusBar) {
 	const content = html`
 		<span class="status-bar__text">${component.text}</span>
 		${interactive ? html`
-			<span class="status-bar__end-icon"
+			<span class="status-bar__action-icon"
 				aria-hidden="true"
 			>
 				<nldd-icon name="chevron-right-small"></nldd-icon>

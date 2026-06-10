@@ -15,7 +15,7 @@ export const statusBarStyles = css`
 		--_content-color: var(--components-status-bar-neutral-content-color);
 		--_font: var(--primitives-font-body-xs-medium-flat);
 		--_is-hovered-background-color: var(--components-status-bar-neutral-is-hovered-background-color);
-		--_end-icon-size: var(--primitives-space-16);
+		--_action-icon-size: var(--primitives-space-16);
 
 		${inheritedTextReset}
 		display: block;
@@ -118,11 +118,11 @@ export const statusBarStyles = css`
 	}
 
 
-	/* # End icon */
+	/* # Action icon */
 
-	.status-bar__end-icon {
+	.status-bar__action-icon {
 		display: flex;
 		flex-shrink: 0;
-		width: var(--_end-icon-size);
+		width: var(--_action-icon-size);
 	}
 `;
