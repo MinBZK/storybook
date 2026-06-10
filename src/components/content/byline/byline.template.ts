@@ -5,12 +5,20 @@ export function bylineTemplate(component: NLDDByline) {
 	const hasText = Boolean(component.text) || component._hasSlottedText;
 	const hasSupportingText = Boolean(component.supportingText) || component._hasSlottedSupportingText;
 	return html`
-		<div class="byline__avatars" ?hidden=${!component._hasAvatars}>
+		<div class="byline__avatars"
+			?hidden=${!component._hasAvatars}
+		>
 			<slot name="avatars"></slot>
 		</div>
-		<div class="byline__text-area" ?hidden=${!hasText && !hasSupportingText}>
-			<p class="byline__text" ?hidden=${!hasText}><slot name="text">${component.text}</slot></p>
-			<p class="byline__supporting-text" ?hidden=${!hasSupportingText}><slot name="supporting-text">${component.supportingText}</slot></p>
+		<div class="byline__text-area"
+			?hidden=${!hasText && !hasSupportingText}
+		>
+			<p class="byline__text"
+				?hidden=${!hasText}
+			><slot name="text">${component.text}</slot></p>
+			<p class="byline__supporting-text"
+				?hidden=${!hasSupportingText}
+			><slot name="supporting-text">${component.supportingText}</slot></p>
 		</div>
 	`;
 }

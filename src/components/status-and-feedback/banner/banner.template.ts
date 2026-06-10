@@ -14,7 +14,9 @@ export function bannerTemplate(component: NLDDBanner) {
 		}
 	};
 	return html`
-		<div class="banner__icon" aria-hidden="true">
+		<div class="banner__icon"
+			aria-hidden="true"
+		>
 			<nldd-icon name=${component._resolvedIcon}></nldd-icon>
 		</div>
 		<div class="banner__main">
@@ -26,10 +28,14 @@ export function bannerTemplate(component: NLDDBanner) {
 					` : nothing}
 				</div>
 			` : nothing}
-			<div class="banner__content" ?hidden=${!component._hasContent}>
+			<div class="banner__content"
+				?hidden=${!component._hasContent}
+			>
 				<slot></slot>
 			</div>
-			<div class="banner__actions" ?hidden=${!component._hasActions}>
+			<div class="banner__actions"
+				?hidden=${!component._hasActions}
+			>
 				<nldd-button-group orientation="horizontal">
 					<slot name="actions"></slot>
 				</nldd-button-group>

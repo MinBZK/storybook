@@ -80,7 +80,9 @@ export function imageTemplate(component: NLDDImage) {
 	const errorStatusMessage = component._imageErrored && !component.decorative
 		? (component.alt ? `${errorBase}: ${component.alt}` : errorBase)
 		: '';
-	const liveRegion = html`<span class="image__status" aria-live="polite">${errorStatusMessage}</span>`;
+	const liveRegion = html`<span class="image__status"
+		aria-live="polite"
+	>${errorStatusMessage}</span>`;
 
 	const media = html`
 		<div class=${mediaClasses}

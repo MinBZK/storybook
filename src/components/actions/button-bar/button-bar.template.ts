@@ -4,7 +4,10 @@ import type { NLDDButtonBar, BarChild } from './button-bar.js';
 
 export function template(this: NLDDButtonBar) {
 	return html`
-		<div class="button-bar" part="bar" role="group">
+		<div class="button-bar"
+			part="bar"
+			role="group"
+		>
 			${repeat(this._children, c => c.id, c => renderChild.call(this, c))}
 		</div>
 	`;

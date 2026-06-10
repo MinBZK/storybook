@@ -14,9 +14,15 @@ export function checkboxTemplate(component: NLDDCheckbox): TemplateResult {
 			aria-label=${component.accessibleLabel || nothing}
 			@change=${component._handleChange}
 		>
-		<div class="checkbox__box" aria-hidden="true">
-			<nldd-icon class="checkbox__check-icon" name="check-mark-small"></nldd-icon>
-			<nldd-icon class="checkbox__indeterminate-icon" name="minus-extra-small"></nldd-icon>
+		<div class="checkbox__box"
+			aria-hidden="true"
+		>
+			<nldd-icon class="checkbox__check-icon"
+				name="check-mark-small"
+			></nldd-icon>
+			<nldd-icon class="checkbox__indeterminate-icon"
+				name="minus-extra-small"
+			></nldd-icon>
 		</div>
 	`;
 }

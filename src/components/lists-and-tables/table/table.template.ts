@@ -15,8 +15,13 @@ export function tableTemplate(emptyText: string, emptySupportingText: string) {
 	return html`
 		<slot name="header"></slot>
 		<slot></slot>
-		<div class="table__empty" role="row" hidden>
-			<div class="table__empty-cell" role="cell">
+		<div class="table__empty"
+			role="row"
+			hidden
+		>
+			<div class="table__empty-cell"
+				role="cell"
+			>
 				<slot name="empty">
 					<nldd-inline-dialog
 						text=${emptyText}

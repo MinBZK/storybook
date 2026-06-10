@@ -37,14 +37,19 @@ export function menuTemplate(this: NLDDMenu, isEmpty: boolean, variant: 'menu' |
 					@click=${this._handleBack}
 					@mouseenter=${this._handleBackMouseenter}
 				>
-					<nldd-icon-cell class="menu__back-icon" size="20" icon="chevron-left"></nldd-icon-cell>
+					<nldd-icon-cell class="menu__back-icon"
+						size="20"
+						icon="chevron-left"
+					></nldd-icon-cell>
 					<nldd-spacer-cell size="6"></nldd-spacer-cell>
 					<nldd-text-cell text=${this._parentItem!.text}></nldd-text-cell>
 				</button>
 				<!-- Pure visual divider; role="none" keeps strict ARIA validators
 				     quiet (a focusable role="separator" inside a menu would need
 				     aria-valuenow et al.; this one is decorative). -->
-				<div class="menu__back-button-divider" role="none"></div>
+				<div class="menu__back-button-divider"
+					role="none"
+				></div>
 			` : nothing}
 			<slot></slot>
 			${isEmpty ? html`
@@ -95,10 +100,15 @@ export function menuItemTemplate(this: NLDDMenuItem, variant: 'menu' | 'listbox'
 				<nldd-spacer-cell size="4"></nldd-spacer-cell>
 			` : nothing}
 			${this.icon ? html`
-				<nldd-icon-cell class="menu__item-icon" size="20" icon=${this.icon}></nldd-icon-cell>
+				<nldd-icon-cell class="menu__item-icon"
+					size="20"
+					icon=${this.icon}
+				></nldd-icon-cell>
 				<nldd-spacer-cell size="8"></nldd-spacer-cell>
 			` : nothing}
-			<nldd-text-cell class="menu__item-text" text=${this.text} query=${this.query} query-mark-mode=${this.queryMarkMode}></nldd-text-cell>
+			<nldd-text-cell class="menu__item-text"
+				text=${this.text} query=${this.query} query-mark-mode=${this.queryMarkMode}
+			></nldd-text-cell>
 			${this.details ? html`
 				<nldd-spacer-cell size="8"></nldd-spacer-cell>
 				<nldd-text-cell class="menu__item-details"
@@ -131,7 +141,9 @@ export function menuItemTemplate(this: NLDDMenuItem, variant: 'menu' | 'listbox'
 }
 
 export function menuDividerTemplate() {
-	return html`<div class="menu__divider" role="separator"></div>`;
+	return html`<div class="menu__divider"
+		role="separator"
+	></div>`;
 }
 
 export function menuGroupTemplate(component: NLDDMenuGroup) {

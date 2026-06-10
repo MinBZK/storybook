@@ -15,7 +15,9 @@ export function template(component: NLDDKeyboardShortcut) {
 	return html`
 		<kbd class="keyboard-shortcut">
 			${keys.map((key, index) => html`
-				${index > 0 ? html`<span class="keyboard-shortcut__separator" aria-hidden="true">+</span>` : ''}
+				${index > 0 ? html`<span class="keyboard-shortcut__separator"
+					aria-hidden="true"
+				>+</span>` : ''}
 				<kbd class="keyboard-shortcut__key">${key}</kbd>
 			`)}
 		</kbd>
