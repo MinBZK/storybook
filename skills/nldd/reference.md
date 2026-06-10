@@ -1960,6 +1960,21 @@ Exports both NLDDProgressCircle and NLDDProgressCircleSegmentIndicator. A circul
 | `color` | `string` | Color (semantic or Rijkskleur). Default 'accent'. |
 | `name` | `string` | Optional name used in the combined tooltip + screenreader text |
 
+### `<nldd-status-bar>`
+
+Een smalle, paginabrede statusbalk (24px) met een diepe achtergrondkleur per variant. Gebruik voor persistente systeemtoestand: een storing, gepland onderhoud, een conceptweergave of een lopende opname. De balk toont bewust geen icoon en ondersteunt alleen tekst — de tekst zelf moet de status benoemen ("Storing: …", "Gepland onderhoud …"), zodat de betekenis niet alleen uit kleur volgt (WCAG 1.4.1). De hele balk kan klikbaar zijn: zet `href` (rendert een `<a>`) of `action` (rendert een `<button>`; luister naar het native `click` event). Zonder beide is de balk statisch. Bij interactie verschijnt een chevron als affordance. Maximaal één actie per balk; meerdere acties of links in lopende tekst horen in nldd-banner. role en aria-live worden automatisch gezet op basis van de variant: - critical → role="alert" (onderbreekt screen reader) - overige → role="status" aria-live="polite" Niet overschrijfbaar — is een rustiger component nodig, kies dan een ander.
+
+**Attributes**
+
+| Attribuut | Type | Beschrijving |
+| --- | --- | --- |
+| `variant` | `'neutral'\|'accent'\|'success'\|'warning'\|'critical'` | Kleur van de balk (standaard: 'neutral') |
+| `text` | `string` | De statustekst (één regel; afgekapt met ellipsis) |
+| `href` | `string` | Maakt de hele balk een link (rendert een <a>) |
+| `target` | `string` | Link target (bijv. '_blank'); alleen gebruikt bij href |
+| `rel` | `string` | Link rel; standaard 'noopener noreferrer' bij target='_blank' |
+| `action` | `boolean` | Maakt de hele balk een button; genegeerd als href is gezet |
+
 ## lists-and-tables
 
 ### `<nldd-cell>`

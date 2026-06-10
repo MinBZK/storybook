@@ -367,6 +367,10 @@
       "types": "./dist/components/status-and-feedback/activity-indicator/activity-indicator.d.ts",
       "default": "./dist/components/status-and-feedback/activity-indicator/activity-indicator.js"
     },
+    "./status-bar": {
+      "types": "./dist/components/status-and-feedback/status-bar/status-bar.d.ts",
+      "default": "./dist/components/status-and-feedback/status-bar/status-bar.js"
+    },
     "./styles": "./dist/css/global.css",
     "./styles/tokens": "./dist/css/settings.css",
     "./tokens": {

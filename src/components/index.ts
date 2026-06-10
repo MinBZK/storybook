@@ -146,5 +146,6 @@ export { NLDDBadge } from './status-and-feedback/badge/badge.js';
 export { NLDDProgressBar, NLDDProgressBarSegmentIndicator } from './status-and-feedback/progress-bar/progress-bar.js';
 export { NLDDProgressCircle, NLDDProgressCircleSegmentIndicator } from './status-and-feedback/progress-circle/progress-circle.js';
 export { NLDDActivityIndicator } from './status-and-feedback/activity-indicator/activity-indicator.js';
+export { NLDDStatusBar } from './status-and-feedback/status-bar/status-bar.js';
 
 // Auto-register happens on import of individual component files

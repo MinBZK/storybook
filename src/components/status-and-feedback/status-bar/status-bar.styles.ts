@@ -1,0 +1,128 @@
+import { css } from 'lit';
+import { inheritedTextReset } from '../../../assets/styles/slotted-reset.js';
+
+export const statusBarStyles = css`
+
+
+	/* # Host */
+
+	:host {
+		--_corner-radius: var(--components-status-bar-corner-radius);
+		--_background-color: var(--components-status-bar-neutral-background-color);
+		--_height: var(--components-status-bar-height);
+		--_inline-padding: var(--components-status-bar-inline-padding);
+		--_gap: var(--primitives-space-6);
+		--_content-color: var(--components-status-bar-neutral-content-color);
+		--_font: var(--components-status-bar-font);
+		--_is-hovered-background-color: var(--components-status-bar-neutral-is-hovered-background-color);
+		--_end-icon-size: var(--primitives-space-16);
+
+		${inheritedTextReset}
+		display: block;
+	}
+
+	:host([hidden]) {
+		display: none;
+	}
+
+	:host([variant="accent"]) {
+		--_background-color: var(--components-status-bar-accent-background-color);
+		--_content-color: var(--components-status-bar-accent-content-color);
+		--_is-hovered-background-color: var(--components-status-bar-accent-is-hovered-background-color);
+	}
+
+	:host([variant="success"]) {
+		--_background-color: var(--components-status-bar-success-background-color);
+		--_content-color: var(--components-status-bar-success-content-color);
+		--_is-hovered-background-color: var(--components-status-bar-success-is-hovered-background-color);
+	}
+
+	:host([variant="warning"]) {
+		--_background-color: var(--components-status-bar-warning-background-color);
+		--_content-color: var(--components-status-bar-warning-content-color);
+		--_is-hovered-background-color: var(--components-status-bar-warning-is-hovered-background-color);
+	}
+
+	:host([variant="critical"]) {
+		--_background-color: var(--components-status-bar-critical-background-color);
+		--_content-color: var(--components-status-bar-critical-content-color);
+		--_is-hovered-background-color: var(--components-status-bar-critical-is-hovered-background-color);
+	}
+
+
+	/* # Bar
+	   One rule for all three render modes (div, a, button); the resets
+	   neutralise the a/button UA styles so the modes are visually
+	   identical. */
+
+	.status-bar {
+		appearance: none;
+		box-sizing: border-box;
+		display: flex;
+		margin: 0;
+		border: none;
+		border-radius: var(--_corner-radius);
+		background-color: var(--_background-color);
+		width: 100%;
+		height: var(--_height);
+		overflow: hidden;
+		padding-inline: var(--_inline-padding);
+		gap: var(--_gap);
+		align-items: center;
+		justify-content: center;
+		color: var(--_content-color);
+		font: var(--_font);
+		text-decoration: none;
+		white-space: nowrap;
+	}
+
+	@media (forced-colors: active) {
+		.status-bar {
+			border: var(--primitives-border-width-thin) solid CanvasText;
+		}
+	}
+
+	a.status-bar:hover,
+	button.status-bar:hover {
+		background-color: var(--_is-hovered-background-color);
+	}
+
+
+	/* # Focus */
+
+	.status-bar:focus-visible {
+		outline: var(--semantics-focus-ring-outline);
+		outline-offset: var(--semantics-focus-ring-outline-offset);
+		box-shadow: var(--semantics-focus-ring-box-shadow);
+	}
+
+	.status-bar:focus:not(:focus-visible) {
+		outline: none;
+	}
+
+	@media (forced-colors: active) {
+		.status-bar:focus-visible {
+			outline: 2px solid CanvasText;
+		}
+	}
+
+
+	/* # Text */
+
+	.status-bar__text {
+		display: block;
+		min-width: 0;
+		overflow: hidden;
+		text-overflow: ellipsis;
+		white-space: nowrap;
+	}
+
+
+	/* # End icon */
+
+	.status-bar__end-icon {
+		display: flex;
+		flex-shrink: 0;
+		width: var(--_end-icon-size);
+	}
+`;
