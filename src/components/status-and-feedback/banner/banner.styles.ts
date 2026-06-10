@@ -15,7 +15,6 @@ export const bannerStyles = css`
 		--_icon-color: var(--components-banner-neutral-icon-color);
 		--_icon-size: var(--primitives-space-32);
 		--_content-color: var(--components-banner-content-color);
-		--_content-secondary-color: var(--components-banner-content-secondary-color);
 		--_text-icon-offset: calc((var(--_icon-size) - var(--primitives-font-size-100) * var(--primitives-line-height-tight)) / 2);
 		--_column-gap: var(--primitives-space-8);
 		--_dismissible-padding-right: var(--primitives-space-44);
@@ -114,7 +113,6 @@ export const bannerStyles = css`
 
 	.banner__supporting-text {
 		margin: 0;
-		color: var(--_content-secondary-color);
 		font: var(--primitives-font-body-md-regular-tight);
 		text-wrap: pretty;
 	}
