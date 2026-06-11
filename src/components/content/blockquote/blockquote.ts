@@ -38,7 +38,9 @@ export class NLDDBlockquote extends LitElement {
 		});
 		// A byline brings its own layout (avatars + stacked text); the leading
 		// em-dash assumes inline text and would wrap onto its own line above
-		// the block, so it is suppressed for byline attributions.
+		// the block, so it is suppressed for byline attributions. Matched by
+		// tag name rather than instanceof to avoid statically importing (and so
+		// bundling) nldd-byline into every blockquote consumer.
 		this._hasBylineAttribution = slot.assignedElements({ flatten: true }).some(el => el.tagName === 'NLDD-BYLINE');
 	};
 
