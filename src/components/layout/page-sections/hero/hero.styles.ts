@@ -206,10 +206,12 @@ export const heroStyles = css`
 	.hero__figure {
 		display: grid;
 		position: relative;
-		overflow: hidden;
-		/* Painted in the panel color so subpixel seams between the media and
-		   the panel (fractional aspect-ratio heights) never show through as a
-		   light hairline. */
+		/* No overflow clipping here: that would zero the grid's automatic
+		   content minimum and stop the hero from growing with the panel.
+		   The background rounds with the border-radius by itself; the media
+		   clips itself. Painted in the panel color so subpixel seams between
+		   the media and the panel (fractional aspect-ratio heights) never
+		   show through as a light hairline. */
 		background-color: var(--_main-background-color);
 		flex-grow: 1;
 		grid-template-columns: 100%;
@@ -272,6 +274,8 @@ export const heroStyles = css`
 	.hero__media {
 		position: absolute;
 		inset: 0;
+		overflow: hidden;
+		border-radius: inherit;
 	}
 
 	.hero__media[hidden] {
@@ -340,13 +344,13 @@ export const heroStyles = css`
 	   squeezed out. Only relevant in the overlay layout (md and up). */
 	:host([data-has-media]:not([data-main-corner="none"]):is([main-position="bottom-left"], [main-position="bottom-right"])) .hero__main {
 		@container (min-width: ${mdMin}) {
-			margin-top: calc(var(--_corner-radius) * 2);
+			margin-top: var(--_corner-radius);
 		}
 	}
 
 	:host([data-has-media]:not([data-main-corner="none"]):is([main-position="top-left"], [main-position="top-right"])) .hero__main {
 		@container (min-width: ${mdMin}) {
-			margin-bottom: calc(var(--_corner-radius) * 2);
+			margin-bottom: var(--_corner-radius);
 		}
 	}
 
