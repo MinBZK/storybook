@@ -68,12 +68,6 @@ export const heroStyles = css`
 		--_main-width: 100%;
 	}
 
-	/* main-width="full" is meaningless on a full-height edge panel;
-	   fall back to the default width. */
-	:host(:is([main-position="left"], [main-position="right"])[main-width="full"]) {
-		--_main-width: 50%;
-	}
-
 	:host([main-background="base"]) {
 		--_main-background-color: var(--semantics-surfaces-base-background-color);
 		--_main-content-color: var(--semantics-content-color);
@@ -186,31 +180,24 @@ export const heroStyles = css`
 	}
 
 
-	/* # Body */
+	/* # Body
+	   The shape element: width-constrained to the section measure, with one
+	   rounded corner, the media behind and the main panel placed in the
+	   single grid cell.
+
+	   No overflow clipping here: that would zero the grid's automatic
+	   content minimum and stop the hero from growing with the panel. The
+	   background rounds with the border-radius by itself; the media clips
+	   itself. Painted in the panel color so subpixel seams between the media
+	   and the panel (fractional aspect-ratio heights) never show through as
+	   a light hairline. */
 
 	.hero__body {
-		display: flex;
-		width: 100%;
-		max-width: var(--_max-width);
-		flex-direction: column;
-		flex-grow: 1;
-	}
-
-
-	/* # Figure
-	   The shape element: one rounded corner (clipped), media behind, the
-	   main panel placed in the single grid cell. */
-
-	.hero__figure {
 		display: grid;
 		position: relative;
-		/* No overflow clipping here: that would zero the grid's automatic
-		   content minimum and stop the hero from growing with the panel.
-		   The background rounds with the border-radius by itself; the media
-		   clips itself. Painted in the panel color so subpixel seams between
-		   the media and the panel (fractional aspect-ratio heights) never
-		   show through as a light hairline. */
 		background-color: var(--_main-background-color);
+		width: 100%;
+		max-width: var(--_max-width);
 		flex-grow: 1;
 		grid-template-columns: 100%;
 	}
@@ -218,33 +205,33 @@ export const heroStyles = css`
 	/* Without media a base-colored shape would be invisible on the base
 	   surface; border the sides that meet the rounded corner, like
 	   blockquote does. */
-	:host(:not([data-has-media])[main-background="base"][data-media-corner="top-left"]) .hero__figure {
+	:host(:not([data-has-media])[main-background="base"][data-media-corner="top-left"]) .hero__body {
 		border-top: var(--primitives-border-width-regular) solid var(--semantics-content-color);
 		border-left: var(--primitives-border-width-regular) solid var(--semantics-content-color);
 	}
 
-	:host(:not([data-has-media])[main-background="base"][data-media-corner="top-right"]) .hero__figure {
+	:host(:not([data-has-media])[main-background="base"][data-media-corner="top-right"]) .hero__body {
 		border-top: var(--primitives-border-width-regular) solid var(--semantics-content-color);
 		border-right: var(--primitives-border-width-regular) solid var(--semantics-content-color);
 	}
 
-	:host(:not([data-has-media])[main-background="base"][data-media-corner="bottom-left"]) .hero__figure {
+	:host(:not([data-has-media])[main-background="base"][data-media-corner="bottom-left"]) .hero__body {
 		border-bottom: var(--primitives-border-width-regular) solid var(--semantics-content-color);
 		border-left: var(--primitives-border-width-regular) solid var(--semantics-content-color);
 	}
 
-	:host(:not([data-has-media])[main-background="base"][data-media-corner="bottom-right"]) .hero__figure {
+	:host(:not([data-has-media])[main-background="base"][data-media-corner="bottom-right"]) .hero__body {
 		border-bottom: var(--primitives-border-width-regular) solid var(--semantics-content-color);
 		border-right: var(--primitives-border-width-regular) solid var(--semantics-content-color);
 	}
 
-	/* A ghost cell sets the figure's minimum height from the aspect ratio
+	/* A ghost cell sets the body's minimum height from the aspect ratio
 	   without forcing it: the panel shares the same grid cell, so a taller
 	   panel grows the row past this floor. Putting the ratio on a ghost
-	   (instead of aspect-ratio on the figure) keeps growth content-driven
+	   (instead of aspect-ratio on the body) keeps growth content-driven
 	   rather than rigidly tied to the width. align-self: start stops the
 	   stretch fit from cancelling the ratio. */
-	:host([data-has-media]) .hero__figure::before {
+	:host([data-has-media]) .hero__body::before {
 		@container (min-width: ${mdMin}) {
 			content: '';
 			aspect-ratio: 21 / 9;
@@ -254,31 +241,31 @@ export const heroStyles = css`
 	}
 
 	/* Without media the full-bleed panel would paint square over the
-	   figure's rounded corner; clipping is safe here because there is no
+	   body's rounded corner; clipping is safe here because there is no
 	   aspect-ratio in this mode, so the content minimum still sizes the
-	   figure. */
-	:host(:not([data-has-media])) .hero__figure {
+	   body. */
+	:host(:not([data-has-media])) .hero__body {
 		overflow: hidden;
 	}
 
-	:host([data-media-corner="top-left"]) .hero__figure {
+	:host([data-media-corner="top-left"]) .hero__body {
 		border-top-left-radius: var(--_corner-radius);
 	}
 
-	:host([data-media-corner="top-right"]) .hero__figure {
+	:host([data-media-corner="top-right"]) .hero__body {
 		border-top-right-radius: var(--_corner-radius);
 	}
 
-	:host([data-media-corner="bottom-left"]) .hero__figure {
+	:host([data-media-corner="bottom-left"]) .hero__body {
 		border-bottom-left-radius: var(--_corner-radius);
 	}
 
-	:host([data-media-corner="bottom-right"]) .hero__figure {
+	:host([data-media-corner="bottom-right"]) .hero__body {
 		border-bottom-right-radius: var(--_corner-radius);
 	}
 
 	@media (forced-colors: active) {
-		.hero__figure {
+		.hero__body {
 			border: var(--primitives-border-width-thin) solid CanvasText;
 		}
 	}
@@ -408,41 +395,41 @@ export const heroStyles = css`
 
 
 	/* # Mobile
-	   Small containers stack the figure: media on top (or below for the
-	   top positions), the panel full width and cornerless; the figure's
+	   Small containers stack the body: media on top (or below for the
+	   top positions), the panel full width and cornerless; the body's
 	   rounded corner moves to the media so the panel reads as a plain
 	   surface. Placed after the corner rules so the equal-specificity
 	   zero-out wins on source order. */
 
 	@container (max-width: ${smMax}) {
-		.hero__figure {
+		.hero__body {
 			display: flex;
 			flex-direction: column;
 		}
 
-		:host(:is([main-position="top-left"], [main-position="top-right"])) .hero__figure {
+		:host(:is([main-position="top-left"], [main-position="top-right"])) .hero__body {
 			flex-direction: column-reverse;
 		}
 
-		:host([data-media-corner]) .hero__figure {
+		:host([data-media-corner]) .hero__body {
 			border-radius: 0;
 		}
 
 		.hero__media {
 			position: static;
 			overflow: hidden;
-			aspect-ratio: 4 / 3;
+			aspect-ratio: 21 / 9;
 		}
 
 		/* On mobile the rounded corner always sits at the top: a bottom
 		   corner flips to its top counterpart, also when the consumer set
-		   one explicitly. The radius goes on the figure so its painted
+		   one explicitly. The radius goes on the body so its painted
 		   background rounds along; the media inherits it. */
-		:host(:is([data-media-corner="top-left"], [data-media-corner="bottom-left"])) .hero__figure {
+		:host(:is([data-media-corner="top-left"], [data-media-corner="bottom-left"])) .hero__body {
 			border-top-left-radius: var(--_corner-radius);
 		}
 
-		:host(:is([data-media-corner="top-right"], [data-media-corner="bottom-right"])) .hero__figure {
+		:host(:is([data-media-corner="top-right"], [data-media-corner="bottom-right"])) .hero__body {
 			border-top-right-radius: var(--_corner-radius);
 		}
 
