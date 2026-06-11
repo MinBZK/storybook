@@ -49,8 +49,60 @@ nldd-rich-text[hidden] {
 	display: none;
 }
 
+/* # Child placement
+   Text reads at the main measure; everything else (components, tables,
+   code) gets the full span by default so new components automatically
+   receive room. justify-self: start makes that room available without
+   forcing it: width-100% children fill the span, the rest shrinkwraps.
+   In the left-aligned layout the full/wide start lines collapse onto
+   main-start, so `full` and `wide` read as rightward bleed there and as
+   symmetric spans in [centered]. */
+
 nldd-rich-text > * {
+	grid-column: full;
+	justify-self: start;
+}
+
+nldd-rich-text[centered] > * {
+	justify-self: center;
+}
+
+nldd-rich-text > :is(h1, h2, h3, h4, h5, h6, p, ul, ol, dl, div, section) {
 	grid-column: main;
+	/* Fill the main column so short text blocks keep a shared left edge —
+	   justify-self: center would otherwise float a shrinkwrapped heading
+	   loose from the paragraphs below it. border-box keeps padded elements
+	   (ul/ol list indent) inside the column. */
+	box-sizing: border-box;
+	width: 100%;
+}
+
+nldd-rich-text > :is(img, figure, video, iframe) {
+	grid-column: wide;
+}
+
+/* Deliberate exception: a blockquote anchors on the text's left edge and
+   bleeds to wide-end, also in [centered] — the pull-quote accent. */
+nldd-rich-text > blockquote {
+	grid-column: main-start / wide-end;
+}
+
+nldd-rich-text > :is(pre, nldd-code-viewer) {
+	width: 100%;
+}
+
+/* Per-item override for editors; wins on specificity from every default
+   above. */
+nldd-rich-text > [data-width="main"] {
+	grid-column: main;
+}
+
+nldd-rich-text > [data-width="wide"] {
+	grid-column: wide;
+}
+
+nldd-rich-text > [data-width="full"] {
+	grid-column: full;
 }
 
 nldd-rich-text > :first-child {
@@ -305,10 +357,6 @@ nldd-rich-text figcaption {
 
 /* # Blockquote */
 
-nldd-rich-text > blockquote {
-	grid-column: main-start / wide-end;
-}
-
 nldd-rich-text blockquote {
 	display: flex;
 	flex-direction: column;
@@ -368,22 +416,17 @@ nldd-rich-text img {
 
 /* # Horizontal Rule */
 
-nldd-rich-text > hr {
-	grid-column: full;
-}
-
 nldd-rich-text hr {
 	margin: 0;
 	border: none;
 	border-top: var(--semantics-dividers-thickness) solid var(--semantics-dividers-color);
+	/* An hr has no content, so the justify-self: start default would
+	   shrinkwrap it to zero width. */
+	width: 100%;
 }
 
 
 /* # Table */
-
-nldd-rich-text > table {
-	grid-column: main-start / full-end;
-}
 
 nldd-rich-text table {
 	display: block;

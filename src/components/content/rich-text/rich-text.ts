@@ -5,6 +5,16 @@
  * typography. Uses no shadow DOM so styles apply to all nested elements.
  * Import nldd-rich-text.css globally in your application.
  *
+ * ## Breedtezones
+ * Kinderen worden in drie zones geplaatst: tekst (headings, paragrafen,
+ * lijsten, div/section) leest op de `main`-maat; media (img, figure, video,
+ * iframe, blockquote) krijgt het `wide`-accent; al het overige — tabellen,
+ * codeblokken en élke component — krijgt de volledige `full`-span met
+ * `justify-self: start`, zodat de ruimte beschikbaar is maar niet geforceerd
+ * wordt. Per kind te overschrijven met `data-width="main" | "wide" | "full"`.
+ * In de linkse layout lezen wide en full als bleed naar rechts; met
+ * `centered` zijn ze symmetrisch.
+ *
  * @element nldd-rich-text
  *
  * @attr {string}  spacing  - Spacing between elements: 'flat' | 'tight' | 'snug' (default) | 'loose'

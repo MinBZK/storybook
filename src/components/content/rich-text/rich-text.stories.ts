@@ -1,5 +1,6 @@
 import { html } from 'lit';
 import './rich-text.js';
+import '../../status-and-feedback/banner/banner.js';
 
 export default {
 	title: 'Components/Content/Rich Text',
@@ -356,4 +357,39 @@ export const AllSizes = {
 		</div>
 	`,
 	storyName: 'Alle groottes (container query)',
+};
+
+/**
+ * Drie breedtezones: tekst leest op de `main`-maat, media (afbeeldingen,
+ * blockquotes) krijgt het `wide`-accent en tabellen, codeblokken en
+ * componenten krijgen de volle breedte (`full`) — beschikbaar, niet
+ * geforceerd, dankzij `justify-self: start`. Per kind te overschrijven met
+ * `data-width="main" | "wide" | "full"`; de laatste paragraaf hieronder
+ * staat bewust op wide. Zet `centered` aan voor de symmetrische variant.
+ */
+export const Breedtezones = {
+	render: (args: Record<string, any>) => html`
+		<nldd-rich-text spacing=${args.spacing} ?centered=${args.centered}>
+			<h2>Zorgtoeslag per huishoudtype</h2>
+			<p>De hoogte van de zorgtoeslag hangt af van het toetsingsinkomen en het huishoudtype. Onderstaande tabel toont de maximale bedragen per maand; de tabel pakt automatisch de volledige beschikbare breedte.</p>
+			<table>
+				<thead>
+					<tr><th>Huishoudtype</th><th>Toetsingsinkomen</th><th>Maximale toeslag</th><th>Afbouwpercentage</th><th>Drempelinkomen</th></tr>
+				</thead>
+				<tbody>
+					<tr><td>Alleenstaande</td><td>tot € 37.496</td><td>€ 127</td><td>13,68%</td><td>€ 26.819</td></tr>
+					<tr><td>Met partner</td><td>tot € 47.368</td><td>€ 243</td><td>13,68%</td><td>€ 33.525</td></tr>
+				</tbody>
+			</table>
+			<p>Afbeeldingen krijgen het wide-accent: iets breder dan de tekst, zonder de pagina te domineren.</p>
+			<img src="sample-images/butterfly-960.jpg"
+				alt="Vlinder op een bloem"
+			>
+			<p>Componenten zoals een banner vallen onder de full-default en vullen de beschikbare breedte met hun eigen gedrag.</p>
+			<nldd-banner variant="accent"
+				text="Een component pakt automatisch de volle breedte"
+			></nldd-banner>
+			<p data-width="wide">Deze paragraaf staat bewust op <code>data-width="wide"</code> en leest dus iets breder dan de main-maat — de per-item override wint van elke default.</p>
+		</nldd-rich-text>
+	`,
 };
