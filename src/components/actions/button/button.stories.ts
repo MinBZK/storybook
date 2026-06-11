@@ -452,9 +452,20 @@ export const OpKleurvlak = {
 				<nldd-button-group orientation="horizontal">
 					<nldd-button variant="inherit-filled"
 						text="Inherit filled"
+						supporting-text="Met ondertekst"
 					></nldd-button>
 					<nldd-button variant="inherit-tinted"
 						text="Inherit tinted"
+					></nldd-button>
+					<nldd-button variant="inherit-filled"
+						text="Open"
+						expandable
+						expanded
+					></nldd-button>
+					<nldd-button variant="inherit-tinted"
+						text="Open"
+						expandable
+						expanded
 					></nldd-button>
 				</nldd-button-group>
 			</div>

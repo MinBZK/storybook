@@ -188,23 +188,28 @@ export const buttonStyles = css`
 		--_inherit-filled-label-color: var(--context-parent-background-color, var(--semantics-buttons-inherit-filled-primary-content-color));
 		--_background-color: var(--semantics-buttons-inherit-filled-background-color);
 		--_primary-content-color: var(--_inherit-filled-label-color);
-		--_secondary-content-color: color-mix(in oklab, var(--_inherit-filled-label-color) var(--semantics-content-secondary-opacity), transparent);
+		/* secondary mixes currentColor, not the label token: the content
+		   layer below sets currentColor to the resolved label, so re-running
+		   the contrast flip here would invert it (white label → black mix). */
+		--_secondary-content-color: color-mix(in oklab, currentColor var(--semantics-content-secondary-opacity), transparent);
 		--_highlight-border-color: var(--semantics-buttons-inherit-filled-highlight-border-color);
 		--_is-hovered-background-color: var(--semantics-buttons-inherit-filled-is-hovered-background-color);
 		--_is-hovered-primary-content-color: var(--_inherit-filled-label-color);
-		--_is-hovered-secondary-content-color: color-mix(in oklab, var(--_inherit-filled-label-color) var(--semantics-content-secondary-opacity), transparent);
+		--_is-hovered-secondary-content-color: color-mix(in oklab, currentColor var(--semantics-content-secondary-opacity), transparent);
 		--_is-hovered-highlight-border-color: var(--semantics-buttons-inherit-filled-is-hovered-highlight-border-color);
 		--_is-active-background-color: var(--semantics-buttons-inherit-filled-is-active-background-color);
 		--_is-active-primary-content-color: var(--_inherit-filled-label-color);
-		--_is-active-secondary-content-color: color-mix(in oklab, var(--_inherit-filled-label-color) var(--semantics-content-secondary-opacity), transparent);
+		--_is-active-secondary-content-color: color-mix(in oklab, currentColor var(--semantics-content-secondary-opacity), transparent);
 		--_is-active-highlight-border-color: var(--semantics-buttons-inherit-filled-is-active-highlight-border-color);
 	}
 
 	/* For inherit-filled the inner button keeps the inherited on-color:
 	   its currentColor background and the label's contrast flip resolve
 	   against it, and would otherwise self-reference the label. The label
-	   color moves to the content layer instead. The higher specificity of
-	   these rules deliberately also pins the color through hover/active. */
+	   color moves to the content layer instead, which also makes currentColor
+	   there the resolved label so secondary text fades correctly. The higher
+	   specificity of these rules deliberately pins the color through
+	   hover/active/expanded. */
 	:host([variant="inherit-filled"]) .button {
 		color: inherit;
 	}
@@ -320,6 +325,40 @@ export const buttonStyles = css`
 		--_is-active-primary-content-color: var(--semantics-buttons-critical-transparent-is-active-primary-content-color);
 		--_is-active-secondary-content-color: var(--semantics-buttons-critical-transparent-is-active-secondary-content-color);
 		--_is-active-highlight-border-color: transparent;
+	}
+
+	/* The on-color variants keep their currentColor-derived content; expanded
+	   only deepens the background. Content is restated (not inherited from the
+	   resting block) because the default [expanded] block has equal
+	   specificity and later source order, so it would otherwise win. */
+	:host([expanded][variant="inherit-tinted"]) {
+		--_background-color: var(--semantics-buttons-inherit-tinted-is-expanded-background-color);
+		--_primary-content-color: currentColor;
+		--_secondary-content-color: color-mix(in oklab, currentColor var(--semantics-content-secondary-opacity), transparent);
+		--_highlight-border-color: var(--semantics-buttons-inherit-tinted-is-expanded-highlight-border-color);
+		--_is-hovered-background-color: var(--semantics-buttons-inherit-tinted-is-expanded-is-hovered-background-color);
+		--_is-hovered-primary-content-color: currentColor;
+		--_is-hovered-secondary-content-color: color-mix(in oklab, currentColor var(--semantics-content-secondary-opacity), transparent);
+		--_is-hovered-highlight-border-color: var(--semantics-buttons-inherit-tinted-is-expanded-is-hovered-highlight-border-color);
+		--_is-active-background-color: var(--semantics-buttons-inherit-tinted-is-expanded-is-active-background-color);
+		--_is-active-primary-content-color: currentColor;
+		--_is-active-secondary-content-color: color-mix(in oklab, currentColor var(--semantics-content-secondary-opacity), transparent);
+		--_is-active-highlight-border-color: var(--semantics-buttons-inherit-tinted-is-expanded-is-active-highlight-border-color);
+	}
+
+	:host([expanded][variant="inherit-filled"]) {
+		--_background-color: var(--semantics-buttons-inherit-filled-is-expanded-background-color);
+		--_primary-content-color: var(--_inherit-filled-label-color);
+		--_secondary-content-color: color-mix(in oklab, currentColor var(--semantics-content-secondary-opacity), transparent);
+		--_highlight-border-color: var(--semantics-buttons-inherit-filled-is-expanded-highlight-border-color);
+		--_is-hovered-background-color: var(--semantics-buttons-inherit-filled-is-expanded-is-hovered-background-color);
+		--_is-hovered-primary-content-color: var(--_inherit-filled-label-color);
+		--_is-hovered-secondary-content-color: color-mix(in oklab, currentColor var(--semantics-content-secondary-opacity), transparent);
+		--_is-hovered-highlight-border-color: var(--semantics-buttons-inherit-filled-is-expanded-is-hovered-highlight-border-color);
+		--_is-active-background-color: var(--semantics-buttons-inherit-filled-is-expanded-is-active-background-color);
+		--_is-active-primary-content-color: var(--_inherit-filled-label-color);
+		--_is-active-secondary-content-color: color-mix(in oklab, currentColor var(--semantics-content-secondary-opacity), transparent);
+		--_is-active-highlight-border-color: var(--semantics-buttons-inherit-filled-is-expanded-is-active-highlight-border-color);
 	}
 
 	:host([width="full"]) {

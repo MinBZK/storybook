@@ -266,6 +266,34 @@ export const iconButtonStyles = css`
 		--_is-active-highlight-border-color: transparent;
 	}
 
+	/* The on-color variants keep their currentColor-derived content; expanded
+	   only deepens the background. Content is restated (not inherited from the
+	   resting block) because the default [expanded] block has equal
+	   specificity and later source order. See nldd-button for the rationale. */
+	:host([expanded][variant="inherit-tinted"]) {
+		--_background-color: var(--semantics-buttons-inherit-tinted-is-expanded-background-color);
+		--_primary-content-color: currentColor;
+		--_highlight-border-color: var(--semantics-buttons-inherit-tinted-is-expanded-highlight-border-color);
+		--_is-hovered-background-color: var(--semantics-buttons-inherit-tinted-is-expanded-is-hovered-background-color);
+		--_is-hovered-primary-content-color: currentColor;
+		--_is-hovered-highlight-border-color: var(--semantics-buttons-inherit-tinted-is-expanded-is-hovered-highlight-border-color);
+		--_is-active-background-color: var(--semantics-buttons-inherit-tinted-is-expanded-is-active-background-color);
+		--_is-active-primary-content-color: currentColor;
+		--_is-active-highlight-border-color: var(--semantics-buttons-inherit-tinted-is-expanded-is-active-highlight-border-color);
+	}
+
+	:host([expanded][variant="inherit-filled"]) {
+		--_background-color: var(--semantics-buttons-inherit-filled-is-expanded-background-color);
+		--_primary-content-color: var(--_inherit-filled-label-color);
+		--_highlight-border-color: var(--semantics-buttons-inherit-filled-is-expanded-highlight-border-color);
+		--_is-hovered-background-color: var(--semantics-buttons-inherit-filled-is-expanded-is-hovered-background-color);
+		--_is-hovered-primary-content-color: var(--_inherit-filled-label-color);
+		--_is-hovered-highlight-border-color: var(--semantics-buttons-inherit-filled-is-expanded-is-hovered-highlight-border-color);
+		--_is-active-background-color: var(--semantics-buttons-inherit-filled-is-expanded-is-active-background-color);
+		--_is-active-primary-content-color: var(--_inherit-filled-label-color);
+		--_is-active-highlight-border-color: var(--semantics-buttons-inherit-filled-is-expanded-is-active-highlight-border-color);
+	}
+
 	:host([width="full"]) {
 		display: block;
 		width: 100%;
