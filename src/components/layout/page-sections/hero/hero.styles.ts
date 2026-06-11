@@ -406,12 +406,13 @@ export const heroStyles = css`
 
 		/* On mobile the rounded corner always sits at the top: a bottom
 		   corner flips to its top counterpart, also when the consumer set
-		   one explicitly. */
-		:host(:is([data-media-corner="top-left"], [data-media-corner="bottom-left"])) .hero__media {
+		   one explicitly. The radius goes on the figure so its painted
+		   background rounds along; the media inherits it. */
+		:host(:is([data-media-corner="top-left"], [data-media-corner="bottom-left"])) .hero__figure {
 			border-top-left-radius: var(--_corner-radius);
 		}
 
-		:host(:is([data-media-corner="top-right"], [data-media-corner="bottom-right"])) .hero__media {
+		:host(:is([data-media-corner="top-right"], [data-media-corner="bottom-right"])) .hero__figure {
 			border-top-right-radius: var(--_corner-radius);
 		}
 

@@ -3,6 +3,7 @@ import './hero.js';
 import '../../../content/title/title.js';
 import '../../../content/rich-text/rich-text.js';
 import '../../../actions/button/button.js';
+import '../../spacer/spacer.js';
 
 const MEDIA = 'sample-images/butterfly-1200.jpg';
 
@@ -95,6 +96,7 @@ const Template = (args: Record<string, any>) => html`
 		>
 			<h1>Regels die voor je werken</h1>
 		</nldd-title>
+		<nldd-spacer size="8"></nldd-spacer>
 		<nldd-rich-text color="inherit">
 			<p>De Nederlandse Digitale Dienst maakt regels begrijpelijk en uitvoerbaar.</p>
 		</nldd-rich-text>
@@ -201,6 +203,7 @@ export const MetRichText = {
 			>
 				<h1>Volle hoogte links</h1>
 			</nldd-title>
+			<nldd-spacer size="8"></nldd-spacer>
 			<nldd-rich-text color="inherit">
 				<p>Het paneel beslaat de volle hoogte en is hoekloos; de media-hoek zit rechtsboven. Ook <a href="#">links</a> erven de contentkleur.</p>
 			</nldd-rich-text>
