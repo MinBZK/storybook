@@ -148,9 +148,7 @@ export const heroStyles = css`
 		--_main-corner-radius: calc(var(--_corner-radius) / 2);
 
 		@container (max-width: ${smMax}) {
-			/* Full-bleed on mobile: drop the section gutters so the media
-			   reaches the viewport edges. The panel keeps its own text
-			   padding for legibility. */
+			/* Full-bleed: no section gutters on mobile. */
 			padding-inline: 0;
 			padding-top: var(--_sm-padding-top, var(--_padding-top, var(--semantics-page-sections-sm-margin-block)));
 			padding-bottom: var(--_sm-padding-bottom, var(--_padding-bottom, var(--semantics-page-sections-sm-margin-block)));
@@ -175,16 +173,11 @@ export const heroStyles = css`
 
 
 	/* # Body
-	   The shape element: width-constrained to the section measure, with one
-	   rounded corner, the media behind and the main panel placed in the
-	   single grid cell.
-
-	   No overflow clipping here: that would zero the grid's automatic
-	   content minimum and stop the hero from growing with the panel. The
-	   background rounds with the border-radius by itself; the media clips
-	   itself. Painted in the panel color so subpixel seams between the media
-	   and the panel (fractional aspect-ratio heights) never show through as
-	   a light hairline. */
+	   No overflow clipping here: it would zero the grid's automatic content
+	   minimum and stop the hero from growing with the panel. The background
+	   is painted in the panel color so subpixel seams between the media and
+	   the panel (fractional aspect-ratio heights) never show as a light
+	   hairline. */
 
 	.hero__body {
 		display: grid;
@@ -388,12 +381,9 @@ export const heroStyles = css`
 	}
 
 
-	/* # Mobile
-	   Small containers stack the body: media on top (or below for the
-	   top positions), the panel full width and cornerless; the body's
-	   rounded corner moves to the media so the panel reads as a plain
-	   surface. Placed after the corner rules so the equal-specificity
-	   zero-out wins on source order. */
+	/* # Mobile — stack media over a full-width cornerless panel.
+	   Placed after the corner rules so the equal-specificity zero-out
+	   wins on source order. */
 
 	@container (max-width: ${smMax}) {
 		.hero__body {
