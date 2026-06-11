@@ -699,7 +699,7 @@ Andere regels die hetzelfde slotted element raken (`:hover`, `@media`, een speci
 
 **Taal:**
 - [ ] Story namen, JSDoc en component docs in het Nederlands
-- [ ] Code comments in het Engels
+- [ ] Code comments in het Engels — **US English** (`color`, `behavior`, `center`, `gray`, `-ize`), niet Brits
 
 **Shadow DOM:**
 - [ ] Geen `part` attributen op shadow DOM elementen

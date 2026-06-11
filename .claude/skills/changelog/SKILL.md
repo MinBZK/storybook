@@ -90,6 +90,8 @@ Bullet-lijst onder elk kopje; begin met de component/het token vetgedrukt:
 - **Tokens** — welke `--semantics-*`-range is toegevoegd en waarvoor.
 ```
 
+**Taal: US English.** De changelog is Engelstalig en gebruikt Amerikaanse spelling — `color` (niet `colour`), `behavior` (niet `behaviour`), `center` (niet `centre`), `gray` (niet `grey`), `-ize` (niet `-ise`). Dit sluit aan op de codebase, waar API's, tokens en attributen (`color`, `--semantics-*-color`) al Amerikaans zijn.
+
 ## Helpers
 
 - **Startpunt:** `npm run changelog:draft` — print een platte lijst van alle commits sinds de laatste `v*`-tag (met GitHub-links), om uit te curaten: highlights kiezen, ruis trimmen, in secties groeperen.
