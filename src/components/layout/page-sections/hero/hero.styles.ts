@@ -147,16 +147,6 @@ export const heroStyles = css`
 		   breakpoint overrides to track them. */
 		--_main-corner-radius: calc(var(--_corner-radius) / 2);
 
-		@container (min-width: ${mdMin}) and (max-width: ${mdMax}) {
-			--_corner-radius: calc(var(--semantics-brand-ribbon-md-width) * 2);
-			--_main-padding: var(--primitives-space-24);
-		}
-
-		@container (min-width: ${lgMin}) {
-			--_corner-radius: calc(var(--semantics-brand-ribbon-lg-width) * 2);
-			--_main-padding: var(--primitives-space-32);
-		}
-
 		@container (max-width: ${smMax}) {
 			/* Full-bleed on mobile: drop the section gutters so the media
 			   reaches the viewport edges. The panel keeps its own text
@@ -167,12 +157,16 @@ export const heroStyles = css`
 		}
 
 		@container (min-width: ${mdMin}) and (max-width: ${mdMax}) {
+			--_corner-radius: calc(var(--semantics-brand-ribbon-md-width) * 2);
+			--_main-padding: var(--primitives-space-24);
 			padding-inline: var(--semantics-page-sections-md-margin-inline);
 			padding-top: var(--_md-padding-top, var(--_padding-top, var(--semantics-page-sections-md-margin-block)));
 			padding-bottom: var(--_md-padding-bottom, var(--_padding-bottom, var(--semantics-page-sections-md-margin-block)));
 		}
 
 		@container (min-width: ${lgMin}) {
+			--_corner-radius: calc(var(--semantics-brand-ribbon-lg-width) * 2);
+			--_main-padding: var(--primitives-space-32);
 			padding-inline: var(--semantics-page-sections-lg-margin-inline);
 			padding-top: var(--_lg-padding-top, var(--_padding-top, var(--semantics-page-sections-lg-margin-block)));
 			padding-bottom: var(--_lg-padding-bottom, var(--_padding-bottom, var(--semantics-page-sections-lg-margin-block)));
