@@ -183,8 +183,7 @@ export const heroStyles = css`
 		--_main-corner-radius: calc(var(--_corner-radius) / 2);
 
 		@container (max-width: ${smMax}) {
-			/* Full-bleed: no section gutters on mobile. */
-			padding-inline: 0;
+			padding-inline: var(--semantics-page-sections-sm-margin-inline);
 			padding-top: var(--_sm-padding-top, var(--_padding-top, var(--semantics-page-sections-sm-margin-block)));
 			padding-bottom: var(--_sm-padding-bottom, var(--_padding-bottom, var(--semantics-page-sections-sm-margin-block)));
 		}
