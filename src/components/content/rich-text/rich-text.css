@@ -405,7 +405,7 @@ nldd-rich-text q {
 
 nldd-rich-text img {
 	display: block;
-	border-radius: var(--primitives-corner-radius-sm);
+	border-radius: var(--semantics-controls-md-corner-radius);
 	max-width: 100%;
 	height: auto;
 }
