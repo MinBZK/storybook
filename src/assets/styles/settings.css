@@ -890,8 +890,13 @@
 	--semantics-content-secondary-color: light-dark(var(--primitives-color-neutral-600), var(--primitives-color-neutral-700));
 	--semantics-content-secondary-opacity: 75%;
 	/* Pure white or black, whichever contrasts most with currentColor;
-	   resolves at used-value time against the element that uses it. */
-	--semantics-content-contrast-color: oklch(from currentColor calc((0.65 - l) * infinity) 0 h);
+	   resolves at used-value time against the element that uses it. The
+	   flip needs relative color syntax (baseline since 2024) — the
+	   @supports block below upgrades this; legacy engines keep white. On
+	   those engines inherit-tinted still reads (its label is currentColor)
+	   and inherit-filled with a parent-background context is unaffected;
+	   only context-less inherit-filled on a dark surface degrades. */
+	--semantics-content-contrast-color: white;
 	--semantics-content-accent-color: light-dark(var(--primitives-color-accent-750), var(--primitives-color-accent-650));
 	--semantics-content-critical-color: light-dark(var(--primitives-color-critical-600), var(--primitives-color-critical-650));
 	--semantics-content-warning-color: light-dark(var(--primitives-color-warning-600), var(--primitives-color-warning-650));
@@ -1152,25 +1157,26 @@
 	   component (a var() here would freeze against :root); these tokens
 	   carry the white/black contrast flip as its fallback. */
 
-	--semantics-buttons-inherit-tinted-background-color: color-mix(in oklab, var(--semantics-content-contrast-color) 15%, transparent);
+	--semantics-buttons-inherit-tinted-background-color: color-mix(in oklab, var(--semantics-content-contrast-color) 20%, transparent);
 	--semantics-buttons-inherit-tinted-primary-content-color: currentColor;
 	--semantics-buttons-inherit-tinted-secondary-content-color: color-mix(in oklab, currentColor var(--semantics-content-secondary-opacity), transparent);
 	--semantics-buttons-inherit-tinted-highlight-border-color: color-mix(in oklab, var(--semantics-content-contrast-color) 10%, transparent);
 	--semantics-buttons-inherit-tinted-is-hovered-background-color: color-mix(in oklab, var(--semantics-content-contrast-color) 25%, transparent);
 	--semantics-buttons-inherit-tinted-is-hovered-primary-content-color: currentColor;
 	--semantics-buttons-inherit-tinted-is-hovered-secondary-content-color: color-mix(in oklab, currentColor var(--semantics-content-secondary-opacity), transparent);
-	--semantics-buttons-inherit-tinted-is-hovered-highlight-border-color: color-mix(in oklab, var(--semantics-content-contrast-color) 20%, transparent);
-	--semantics-buttons-inherit-tinted-is-active-background-color: color-mix(in oklab, var(--semantics-content-contrast-color) 35%, transparent);
+	--semantics-buttons-inherit-tinted-is-hovered-highlight-border-color: color-mix(in oklab, var(--semantics-content-contrast-color) 10%, transparent);
+	--semantics-buttons-inherit-tinted-is-active-background-color: color-mix(in oklab, var(--semantics-content-contrast-color) 30%, transparent);
 	--semantics-buttons-inherit-tinted-is-active-primary-content-color: currentColor;
 	--semantics-buttons-inherit-tinted-is-active-secondary-content-color: color-mix(in oklab, currentColor var(--semantics-content-secondary-opacity), transparent);
-	--semantics-buttons-inherit-tinted-is-active-highlight-border-color: color-mix(in oklab, var(--semantics-content-contrast-color) 30%, transparent);
+	--semantics-buttons-inherit-tinted-is-active-highlight-border-color: color-mix(in oklab, var(--semantics-content-contrast-color) 10%, transparent);
+
 	--semantics-buttons-inherit-filled-background-color: currentColor;
 	--semantics-buttons-inherit-filled-primary-content-color: var(--semantics-content-contrast-color);
-	--semantics-buttons-inherit-filled-highlight-border-color: color-mix(in oklab, var(--semantics-content-contrast-color) 10%, currentColor);
-	--semantics-buttons-inherit-filled-is-hovered-background-color: color-mix(in oklab, currentColor 90%, transparent);
-	--semantics-buttons-inherit-filled-is-hovered-highlight-border-color: color-mix(in oklab, var(--semantics-content-contrast-color) 15%, currentColor);
-	--semantics-buttons-inherit-filled-is-active-background-color: color-mix(in oklab, currentColor 82%, transparent);
-	--semantics-buttons-inherit-filled-is-active-highlight-border-color: color-mix(in oklab, var(--semantics-content-contrast-color) 20%, currentColor);
+	--semantics-buttons-inherit-filled-highlight-border-color: currentColor;
+	--semantics-buttons-inherit-filled-is-hovered-background-color: color-mix(in oklab, currentColor 92%, transparent);
+	--semantics-buttons-inherit-filled-is-hovered-highlight-border-color: currentColor;
+	--semantics-buttons-inherit-filled-is-active-background-color: color-mix(in oklab, currentColor 85%, transparent);
+	--semantics-buttons-inherit-filled-is-active-highlight-border-color: currentColor;
 
 	/* ## Input fields */
 
@@ -1965,4 +1971,14 @@
 
 :root[data-scheme="dark"] {
 	color-scheme: dark;
+}
+
+/* Upgrade the contrast color to the white/black flip where relative color
+   syntax is available (Baseline since 2024). Tests the exact expression so
+   engines that parse `from currentColor` but not the channel-keyword calc
+   keep the white fallback from :root. */
+@supports (color: oklch(from currentColor calc((0.65 - l) * infinity) 0 h)) {
+	:root {
+		--semantics-content-contrast-color: oklch(from currentColor calc((0.65 - l) * infinity) 0 h);
+	}
 }
