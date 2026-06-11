@@ -240,9 +240,18 @@ export const heroStyles = css`
 		border-right: var(--primitives-border-width-regular) solid var(--semantics-content-color);
 	}
 
-	:host([data-has-media]) .hero__figure {
+	/* A ghost cell sets the figure's minimum height from the aspect ratio
+	   without forcing it: the panel shares the same grid cell, so a taller
+	   panel grows the row past this floor. Putting the ratio on a ghost
+	   (instead of aspect-ratio on the figure) keeps growth content-driven
+	   rather than rigidly tied to the width. align-self: start stops the
+	   stretch fit from cancelling the ratio. */
+	:host([data-has-media]) .hero__figure::before {
 		@container (min-width: ${mdMin}) {
+			content: '';
 			aspect-ratio: 21 / 9;
+			grid-area: 1 / 1;
+			align-self: start;
 		}
 	}
 
