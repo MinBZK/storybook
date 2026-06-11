@@ -19,6 +19,11 @@
  *
  * @attr {string}  spacing  - Spacing between elements: 'flat' | 'tight' | 'snug' (default) | 'loose'
  * @attr {boolean} centered - Centers the main column inside the container; without it, content is left-aligned
+ * @attr {string}  color    - 'inherit' laat alle tekst de kleur van de ondergrond
+ *   volgen (voor gekleurde vlakken zoals de filled-categories). Links blijven
+ *   onderstreept als affordance; secundaire tekst (figcaption) krijgt dezelfde
+ *   kleur op verlaagde dekking. Bekende v1-gaten: inline code, mark, tabellen
+ *   en hr behouden hun eigen surfaces. Leeg = standaard contentkleuren.
  * @attr {object}  translations - Override translation keys; unset keys fall back to Dutch
  */
 import { LitElement } from 'lit';
@@ -37,6 +42,9 @@ export class NLDDRichText extends LitElement {
 
 	@property({ type: Boolean, reflect: true })
 	centered = false;
+
+	@property({ type: String, reflect: true })
+	color: '' | 'inherit' = '';
 
 	@property({ type: Object })
 	translations: Partial<NLDDRichTextTranslations> = {};

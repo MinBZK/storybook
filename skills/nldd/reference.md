@@ -347,6 +347,7 @@ A container for rich text content that automatically applies responsive typograp
 | --- | --- | --- |
 | `spacing` | `string` | Spacing between elements: 'flat' \| 'tight' \| 'snug' (default) \| 'loose' |
 | `centered` | `boolean` | Centers the main column inside the container; without it, content is left-aligned |
+| `color` | `string` | 'inherit' laat alle tekst de kleur van de ondergrond volgen (voor gekleurde vlakken zoals de filled-categories). Links blijven onderstreept als affordance; secundaire tekst (figcaption) krijgt dezelfde kleur op verlaagde dekking. Bekende v1-gaten: inline code, mark, tabellen en hr behouden hun eigen surfaces. Leeg = standaard contentkleuren. |
 | `translations` | `object` | Override translation keys; unset keys fall back to Dutch |
 
 ### `<nldd-tag>`
@@ -380,6 +381,7 @@ A title bar with an optional overline, title, and subtitle on the left, and a sl
 | Attribuut | Type | Beschrijving |
 | --- | --- | --- |
 | `size` | `number` | Visual size of the title: 1–6 (default: 3) |
+| `color` | `string` | 'inherit' laat de titel de tekstkleur van de ondergrond volgen (voor gekleurde vlakken zoals de filled-categories); overline en subtitle krijgen dezelfde kleur op verlaagde dekking. Leeg = standaard contentkleuren. |
 
 **Slots**
 

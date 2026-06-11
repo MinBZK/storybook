@@ -49,6 +49,35 @@ nldd-rich-text[hidden] {
 	display: none;
 }
 
+/* # Color inherit
+   color="inherit" makes all text follow the surface's text color (e.g. a
+   filled-categories panel that sets a pure white/black content color).
+   Links keep the underline as their affordance and signal hover with a
+   thicker line instead of a color shift; figcaption takes the same color
+   at the system-wide secondary opacity tier. Known v1 gaps: inline code,
+   mark, tables and hr keep their own surfaces. */
+
+nldd-rich-text[color="inherit"] {
+	color: inherit;
+}
+
+nldd-rich-text[color="inherit"] a {
+	color: currentColor;
+}
+
+nldd-rich-text[color="inherit"] a:hover {
+	color: currentColor;
+	text-decoration-thickness: var(--primitives-border-width-regular);
+}
+
+nldd-rich-text[color="inherit"] a:active {
+	color: currentColor;
+}
+
+nldd-rich-text[color="inherit"] figcaption {
+	color: color-mix(in oklab, currentColor var(--semantics-content-secondary-opacity), transparent);
+}
+
 /* # Child placement
    Text reads at the main measure; everything else (components, tables,
    code) gets the full span by default so new components automatically

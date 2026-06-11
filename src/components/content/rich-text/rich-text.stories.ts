@@ -393,3 +393,37 @@ export const Breedtezones = {
 		</nldd-rich-text>
 	`,
 };
+
+/**
+ * Met `color="inherit"` volgt alle tekst de kleur van de ondergrond — voor
+ * gekleurde vlakken zoals de filled-categories. Links blijven onderstreept
+ * als affordance (hover toont een dikkere lijn in plaats van een
+ * kleurverschuiving); figcaption krijgt dezelfde kleur op verlaagde
+ * dekking. Bekende v1-gaten: inline code, mark, tabellen en hr behouden
+ * hun eigen surfaces.
+ */
+export const OpKleurvlak = {
+	render: () => html`
+		<div style="display: flex; flex-direction: column; gap: 16px;">
+			<div style="background: var(--semantics-categories-filled-donkerblauw-background-color); color: var(--semantics-categories-filled-donkerblauw-content-color); padding: 24px; border-radius: var(--primitives-corner-radius-md);">
+				<nldd-rich-text color="inherit">
+					<h3>Op een donker vlak</h3>
+					<p>Alle tekst erft de contentkleur van het vlak, inclusief <a href="#">links met hun onderstreping</a> en <strong>nadruk</strong>.</p>
+					<figure>
+						<img src="sample-images/butterfly-480.jpg"
+							alt="Vlinder op een bloem"
+						>
+						<figcaption>Figuur 1 — de figcaption staat op verlaagde dekking</figcaption>
+					</figure>
+				</nldd-rich-text>
+			</div>
+			<div style="background: var(--semantics-categories-filled-oranje-background-color); color: var(--semantics-categories-filled-oranje-content-color); padding: 24px; border-radius: var(--primitives-corner-radius-md);">
+				<nldd-rich-text color="inherit">
+					<h3>Op een middenton</h3>
+					<p>De filled-categories leveren puur zwart of wit als contentkleur, zodat ook middentonen <a href="#">voldoende contrast</a> houden.</p>
+				</nldd-rich-text>
+			</div>
+		</div>
+	`,
+	parameters: { controls: { disable: true } },
+};

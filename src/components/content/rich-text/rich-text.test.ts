@@ -36,4 +36,9 @@ describe('nldd-rich-text', () => {
 		el = await fixture('<nldd-rich-text spacing="loose"></nldd-rich-text>');
 		expect(el.getAttribute('spacing')).toBe('loose');
 	});
+
+	it('reflects the color attribute', async () => {
+		el = await fixture('<nldd-rich-text color="inherit"></nldd-rich-text>');
+		expect(el.getAttribute('color')).toBe('inherit');
+	});
 });
