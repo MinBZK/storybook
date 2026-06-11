@@ -456,7 +456,11 @@ nldd-rich-text hr {
 
 nldd-rich-text table {
 	display: block;
-	width: 100%;
+	/* Mobile scroll: the block shrinks to its content (so the border hugs
+	   narrow tables) but caps at the container, scrolling when the columns
+	   need more room. width: auto would instead fill 100% as a block. */
+	width: max-content;
+	max-width: 100%;
 	margin-block: max(
 		0px,
 		calc(var(--components-rich-text-spacing-snug) - var(--_spacing))
@@ -473,6 +477,7 @@ nldd-rich-text table {
 
 	@container (min-width: 641px) {
 		display: table;
+		width: 100%;
 		overflow-x: unset;
 		scrollbar-width: unset;
 	}
