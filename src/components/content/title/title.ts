@@ -7,6 +7,10 @@
  * @element nldd-title
  *
  * @attr {number} size - Visual size of the title: 1–6 (default: 3)
+ * @attr {string} color - 'inherit' laat de titel de tekstkleur van de
+ *   ondergrond volgen (voor gekleurde vlakken zoals de filled-categories);
+ *   overline en subtitle krijgen dezelfde kleur op verlaagde dekking.
+ *   Leeg = standaard contentkleuren.
  *
  * @slot overline - Optional overline above the title
  * @slot - Title text (use h1–h6 for semantics)
@@ -19,6 +23,7 @@ import { titleStyles } from './title.styles.js';
 import { titleTemplate } from './title.template.js';
 
 type Size = 1 | 2 | 3 | 4 | 5 | 6;
+type TitleColor = '' | 'inherit';
 
 @customElement('nldd-title')
 export class NLDDTitle extends LitElement {
@@ -26,6 +31,9 @@ export class NLDDTitle extends LitElement {
 
 	@property({ type: Number, reflect: true })
 	size: Size = 3;
+
+	@property({ type: String, reflect: true })
+	color: TitleColor = '';
 
 	override render() {
 		return titleTemplate();
