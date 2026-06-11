@@ -1141,6 +1141,34 @@
 	--semantics-buttons-critical-transparent-is-active-primary-content-color: light-dark(var(--primitives-color-critical-700), var(--primitives-color-critical-750));
 	--semantics-buttons-critical-transparent-is-active-secondary-content-color: light-dark(var(--primitives-color-critical-550), var(--primitives-color-critical-650));
 
+	/* ### Buttons — inherit (on-color)
+	   For buttons on colored surfaces: the values derive from currentColor
+	   at used-value time (currentColor stays unresolved inside tokens,
+	   unlike var()). The filled label prefers the surface color via
+	   --context-parent-background-color — that indirection lives in the
+	   component (a var() here would freeze against :root); these tokens
+	   carry the white/black contrast flip as its fallback. */
+
+	--semantics-buttons-inherit-tinted-background-color: color-mix(in oklab, currentColor 15%, transparent);
+	--semantics-buttons-inherit-tinted-primary-content-color: currentColor;
+	--semantics-buttons-inherit-tinted-secondary-content-color: color-mix(in oklab, currentColor var(--semantics-content-secondary-opacity), transparent);
+	--semantics-buttons-inherit-tinted-highlight-border-color: color-mix(in oklab, currentColor 25%, transparent);
+	--semantics-buttons-inherit-tinted-is-hovered-background-color: color-mix(in oklab, currentColor 25%, transparent);
+	--semantics-buttons-inherit-tinted-is-hovered-primary-content-color: currentColor;
+	--semantics-buttons-inherit-tinted-is-hovered-secondary-content-color: color-mix(in oklab, currentColor var(--semantics-content-secondary-opacity), transparent);
+	--semantics-buttons-inherit-tinted-is-hovered-highlight-border-color: color-mix(in oklab, currentColor 35%, transparent);
+	--semantics-buttons-inherit-tinted-is-active-background-color: color-mix(in oklab, currentColor 35%, transparent);
+	--semantics-buttons-inherit-tinted-is-active-primary-content-color: currentColor;
+	--semantics-buttons-inherit-tinted-is-active-secondary-content-color: color-mix(in oklab, currentColor var(--semantics-content-secondary-opacity), transparent);
+	--semantics-buttons-inherit-tinted-is-active-highlight-border-color: color-mix(in oklab, currentColor 45%, transparent);
+	--semantics-buttons-inherit-filled-background-color: currentColor;
+	--semantics-buttons-inherit-filled-primary-content-color: oklch(from currentColor calc((0.65 - l) * infinity) 0 h);
+	--semantics-buttons-inherit-filled-highlight-border-color: transparent;
+	--semantics-buttons-inherit-filled-is-hovered-background-color: color-mix(in oklab, currentColor 90%, transparent);
+	--semantics-buttons-inherit-filled-is-hovered-highlight-border-color: transparent;
+	--semantics-buttons-inherit-filled-is-active-background-color: color-mix(in oklab, currentColor 82%, transparent);
+	--semantics-buttons-inherit-filled-is-active-highlight-border-color: transparent;
+
 	/* ## Input fields */
 
 	--semantics-input-fields-border-thickness: var(--primitives-border-width-regular);

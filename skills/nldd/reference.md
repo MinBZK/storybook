@@ -24,7 +24,7 @@ de `.d.ts` bestanden van het pakket.
 
 | Attribuut | Type | Beschrijving |
 | --- | --- | --- |
-| `variant` | `string` | Button variant: 'primary' \| 'secondary' \| 'destructive' \| 'accent-filled' \| 'accent-transparent' \| 'neutral-tinted' \| 'neutral-base' \| 'neutral-transparent' \| 'critical-tinted' \| 'critical-transparent' |
+| `variant` | `string` | Button variant: 'primary' \| 'secondary' \| 'destructive' \| 'accent-filled' \| 'accent-transparent' \| 'neutral-tinted' \| 'neutral-base' \| 'neutral-transparent' \| 'critical-tinted' \| 'critical-transparent' \| 'inherit-filled' \| 'inherit-tinted'. De inherit-varianten leiden hun kleuren af van currentColor, voor knoppen op gekleurde vlakken; inherit-filled gebruikt de vlakkleur (--context-parent-background-color) als labelkleur met een wit/zwart-contrastflip als fallback. |
 | `size` | `string` | Button size: 'xs' \| 'sm' \| 'md' \| 'lg' (default: 'md'). 'lg' uses larger text and 24px start/end icons. |
 | `horizontal-alignment` | `string` | Horizontal alignment of the button content: 'left' \| 'center' \| 'right' (default: unset, centered). Most visible with width="full" or a fixed width. |
 | `disabled` | `boolean` | Disabled state |
@@ -99,7 +99,7 @@ A container for grouping related buttons together, either horizontally or vertic
 
 | Attribuut | Type | Beschrijving |
 | --- | --- | --- |
-| `variant` | `string` | Button variant: 'accent-filled' \| 'accent-transparent' \| 'neutral-tinted' \| 'neutral-transparent' \| 'critical-tinted' \| 'critical-transparent' \| 'primary' \| 'secondary' \| 'destructive' |
+| `variant` | `string` | Button variant: 'accent-filled' \| 'accent-transparent' \| 'neutral-tinted' \| 'neutral-transparent' \| 'critical-tinted' \| 'critical-transparent' \| 'inherit-filled' \| 'inherit-tinted' \| 'primary' \| 'secondary' \| 'destructive'. De inherit-varianten leiden hun kleuren af van currentColor, voor knoppen op gekleurde vlakken. |
 | `size` | `string` | Button size: 'xs' \| 'sm' \| 'md' \| 'lg' (default: 'md') |
 | `hide-lg-text` | `boolean` | In lg size, hides the text label and enlarges the icon by one step (28px) |
 | `no-highlight-border` | `boolean` | Removes the per-variant highlight border (e.g. when a control group draws a single border instead). |

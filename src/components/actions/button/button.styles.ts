@@ -163,6 +163,56 @@ export const buttonStyles = css`
 		--_is-active-highlight-border-color: transparent;
 	}
 
+	/* The on-color variants derive from currentColor (which stays
+	   unresolved inside the tokens). The filled label prefers the surface
+	   color from --context-parent-background-color; that var() must resolve
+	   here on the host — inside a :root token it would freeze — with the
+	   tokens' white/black contrast flip as fallback. */
+
+	:host([variant="inherit-tinted"]) {
+		--_background-color: var(--semantics-buttons-inherit-tinted-background-color);
+		--_primary-content-color: var(--semantics-buttons-inherit-tinted-primary-content-color);
+		--_secondary-content-color: var(--semantics-buttons-inherit-tinted-secondary-content-color);
+		--_highlight-border-color: var(--semantics-buttons-inherit-tinted-highlight-border-color);
+		--_is-hovered-background-color: var(--semantics-buttons-inherit-tinted-is-hovered-background-color);
+		--_is-hovered-primary-content-color: var(--semantics-buttons-inherit-tinted-is-hovered-primary-content-color);
+		--_is-hovered-secondary-content-color: var(--semantics-buttons-inherit-tinted-is-hovered-secondary-content-color);
+		--_is-hovered-highlight-border-color: var(--semantics-buttons-inherit-tinted-is-hovered-highlight-border-color);
+		--_is-active-background-color: var(--semantics-buttons-inherit-tinted-is-active-background-color);
+		--_is-active-primary-content-color: var(--semantics-buttons-inherit-tinted-is-active-primary-content-color);
+		--_is-active-secondary-content-color: var(--semantics-buttons-inherit-tinted-is-active-secondary-content-color);
+		--_is-active-highlight-border-color: var(--semantics-buttons-inherit-tinted-is-active-highlight-border-color);
+	}
+
+	:host([variant="inherit-filled"]) {
+		--_inherit-filled-label-color: var(--context-parent-background-color, var(--semantics-buttons-inherit-filled-primary-content-color));
+		--_background-color: var(--semantics-buttons-inherit-filled-background-color);
+		--_primary-content-color: var(--_inherit-filled-label-color);
+		--_secondary-content-color: color-mix(in oklab, var(--_inherit-filled-label-color) var(--semantics-content-secondary-opacity), transparent);
+		--_highlight-border-color: var(--semantics-buttons-inherit-filled-highlight-border-color);
+		--_is-hovered-background-color: var(--semantics-buttons-inherit-filled-is-hovered-background-color);
+		--_is-hovered-primary-content-color: var(--_inherit-filled-label-color);
+		--_is-hovered-secondary-content-color: color-mix(in oklab, var(--_inherit-filled-label-color) var(--semantics-content-secondary-opacity), transparent);
+		--_is-hovered-highlight-border-color: var(--semantics-buttons-inherit-filled-is-hovered-highlight-border-color);
+		--_is-active-background-color: var(--semantics-buttons-inherit-filled-is-active-background-color);
+		--_is-active-primary-content-color: var(--_inherit-filled-label-color);
+		--_is-active-secondary-content-color: color-mix(in oklab, var(--_inherit-filled-label-color) var(--semantics-content-secondary-opacity), transparent);
+		--_is-active-highlight-border-color: var(--semantics-buttons-inherit-filled-is-active-highlight-border-color);
+	}
+
+	/* For inherit-filled the inner button keeps the inherited on-color:
+	   its currentColor background and the label's contrast flip resolve
+	   against it, and would otherwise self-reference the label. The label
+	   color moves to the content layer instead. The higher specificity of
+	   these rules deliberately also pins the color through hover/active. */
+	:host([variant="inherit-filled"]) .button {
+		color: inherit;
+	}
+
+	:host([variant="inherit-filled"]) .button > * {
+		color: var(--_primary-content-color);
+	}
+
 	/* ## Expanded — default (incl. unknown variant) */
 
 	:host([expanded]) {

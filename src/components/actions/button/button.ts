@@ -2,7 +2,7 @@
  * Nederlandse Digitale Dienst Button Component (Lit + TypeScript)
  *
  * @element nldd-button
- * @attr {string} variant - Button variant: 'primary' | 'secondary' | 'destructive' | 'accent-filled' | 'accent-transparent' | 'neutral-tinted' | 'neutral-base' | 'neutral-transparent' | 'critical-tinted' | 'critical-transparent'
+ * @attr {string} variant - Button variant: 'primary' | 'secondary' | 'destructive' | 'accent-filled' | 'accent-transparent' | 'neutral-tinted' | 'neutral-base' | 'neutral-transparent' | 'critical-tinted' | 'critical-transparent' | 'inherit-filled' | 'inherit-tinted'. De inherit-varianten leiden hun kleuren af van currentColor, voor knoppen op gekleurde vlakken; inherit-filled gebruikt de vlakkleur (--context-parent-background-color) als labelkleur met een wit/zwart-contrastflip als fallback.
  * @attr {string} size - Button size: 'xs' | 'sm' | 'md' | 'lg' (default: 'md'). 'lg' uses larger text and 24px start/end icons.
  * @attr {string} horizontal-alignment - Horizontal alignment of the button content: 'left' | 'center' | 'right' (default: unset, centered). Most visible with width="full" or a fixed width.
  * @attr {boolean} disabled - Disabled state
@@ -46,7 +46,9 @@ type Variant =
 	| 'neutral-base'
 	| 'neutral-transparent'
 	| 'critical-tinted'
-	| 'critical-transparent';
+	| 'critical-transparent'
+	| 'inherit-filled'
+	| 'inherit-tinted';
 type Size = 'xs' | 'sm' | 'md' | 'lg';
 type ButtonType = 'button' | 'submit' | 'reset';
 type PopupType = 'menu' | 'listbox' | 'dialog' | 'tree' | 'grid';

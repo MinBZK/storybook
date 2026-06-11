@@ -433,3 +433,43 @@ export const TextSlot = {
 		},
 	},
 };
+
+/**
+ * De inherit-varianten leiden hun kleuren af van `currentColor` en zijn
+ * bedoeld voor gekleurde vlakken (zoals de hero-main of filled-categories).
+ * `inherit-filled` gebruikt de vlakkleur als labelkleur wanneer het vlak
+ * `--context-parent-background-color` cascadet (zoals de hero doet); zonder
+ * die context valt het label terug op een wit/zwart-contrastflip — zie het
+ * derde vlak.
+ */
+export const OpKleurvlak = {
+	render: () => html`
+		<div style="display: flex; flex-direction: column; gap: 16px;">
+			<div style="background: var(--semantics-categories-filled-donkerblauw-background-color); color: var(--semantics-categories-filled-donkerblauw-content-color); --context-parent-background-color: var(--semantics-categories-filled-donkerblauw-background-color); padding: 24px; border-radius: var(--primitives-corner-radius-md); display: flex; gap: 8px;">
+				<nldd-button variant="inherit-filled"
+					text="Inherit filled"
+				></nldd-button>
+				<nldd-button variant="inherit-tinted"
+					text="Inherit tinted"
+				></nldd-button>
+			</div>
+			<div style="background: var(--semantics-categories-filled-oranje-background-color); color: var(--semantics-categories-filled-oranje-content-color); --context-parent-background-color: var(--semantics-categories-filled-oranje-background-color); padding: 24px; border-radius: var(--primitives-corner-radius-md); display: flex; gap: 8px;">
+				<nldd-button variant="inherit-filled"
+					text="Inherit filled"
+				></nldd-button>
+				<nldd-button variant="inherit-tinted"
+					text="Inherit tinted"
+				></nldd-button>
+			</div>
+			<div style="background: oklch(0.45 0.12 300); color: oklch(1 0 0); padding: 24px; border-radius: var(--primitives-corner-radius-md); display: flex; gap: 8px;">
+				<nldd-button variant="inherit-filled"
+					text="Zonder context (flip)"
+				></nldd-button>
+				<nldd-button variant="inherit-tinted"
+					text="Inherit tinted"
+				></nldd-button>
+			</div>
+		</div>
+	`,
+	parameters: { controls: { disable: true } },
+};
