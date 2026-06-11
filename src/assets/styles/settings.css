@@ -867,6 +867,15 @@
 
 	/* # Semantics */
 
+	/* ## Brand
+	   Width of the rijkslogo ribbon (wapenlint); per the rijkshuisstijl this
+	   measure also drives the rounded-corner radius of shape elements
+	   (0.5X-3X of the ribbon width). */
+
+	--semantics-brand-ribbon-sm-width: var(--primitives-space-40);
+	--semantics-brand-ribbon-md-width: var(--primitives-space-44);
+	--semantics-brand-ribbon-lg-width: var(--primitives-space-48);
+
 	/* ## Surfaces */
 
 	--semantics-surfaces-base-background-color: light-dark(var(--primitives-color-neutral-0), var(--primitives-color-neutral-100));
