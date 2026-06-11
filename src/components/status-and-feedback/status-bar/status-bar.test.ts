@@ -124,4 +124,13 @@ describe('nldd-status-bar', () => {
 		expect(el.getAttribute('role')).toBe('alert');
 		expect(el.hasAttribute('aria-live')).toBe(false);
 	});
+
+	it('restores role="status" and aria-live when switching away from critical', async () => {
+		el = await fixture('<nldd-status-bar variant="critical"></nldd-status-bar>');
+		await waitForUpdate(el);
+		(el as NLDDStatusBar).variant = 'accent';
+		await waitForUpdate(el);
+		expect(el.getAttribute('role')).toBe('status');
+		expect(el.getAttribute('aria-live')).toBe('polite');
+	});
 });

@@ -73,8 +73,8 @@ export class NLDDStatusBar extends LitElement {
 		this._applyAriaForVariant(initialVariant ?? 'neutral');
 	}
 
-	/** Auto-secure rel for new-tab links unless the consumer set one. */
-	public _resolvedRel(): string {
+	/** @internal Auto-secure rel for new-tab links unless the consumer set one. */
+	_resolvedRel(): string {
 		if (this.rel) return this.rel;
 		return this.target === '_blank' ? 'noopener noreferrer' : '';
 	}
