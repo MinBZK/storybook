@@ -91,6 +91,13 @@ nldd-rich-text > blockquote {
 	width: 100%;
 }
 
+/* Same anchoring for native tables: text edge left, full bleed right.
+   (nldd-table stays on the generic full default; use data-width to
+   override per table.) */
+nldd-rich-text > table {
+	grid-column: main-start / full-end;
+}
+
 nldd-rich-text > :is(pre, nldd-code-viewer) {
 	width: 100%;
 }
