@@ -1155,15 +1155,15 @@
 	--semantics-buttons-inherit-tinted-background-color: color-mix(in oklab, var(--semantics-content-contrast-color) 15%, transparent);
 	--semantics-buttons-inherit-tinted-primary-content-color: currentColor;
 	--semantics-buttons-inherit-tinted-secondary-content-color: color-mix(in oklab, currentColor var(--semantics-content-secondary-opacity), transparent);
-	--semantics-buttons-inherit-tinted-highlight-border-color: color-mix(in oklab, var(--semantics-content-contrast-color) 25%, transparent);
+	--semantics-buttons-inherit-tinted-highlight-border-color: color-mix(in oklab, var(--semantics-content-contrast-color) 20%, transparent);
 	--semantics-buttons-inherit-tinted-is-hovered-background-color: color-mix(in oklab, var(--semantics-content-contrast-color) 25%, transparent);
 	--semantics-buttons-inherit-tinted-is-hovered-primary-content-color: currentColor;
 	--semantics-buttons-inherit-tinted-is-hovered-secondary-content-color: color-mix(in oklab, currentColor var(--semantics-content-secondary-opacity), transparent);
-	--semantics-buttons-inherit-tinted-is-hovered-highlight-border-color: color-mix(in oklab, var(--semantics-content-contrast-color) 35%, transparent);
+	--semantics-buttons-inherit-tinted-is-hovered-highlight-border-color: color-mix(in oklab, var(--semantics-content-contrast-color) 30%, transparent);
 	--semantics-buttons-inherit-tinted-is-active-background-color: color-mix(in oklab, var(--semantics-content-contrast-color) 35%, transparent);
 	--semantics-buttons-inherit-tinted-is-active-primary-content-color: currentColor;
 	--semantics-buttons-inherit-tinted-is-active-secondary-content-color: color-mix(in oklab, currentColor var(--semantics-content-secondary-opacity), transparent);
-	--semantics-buttons-inherit-tinted-is-active-highlight-border-color: color-mix(in oklab, var(--semantics-content-contrast-color) 45%, transparent);
+	--semantics-buttons-inherit-tinted-is-active-highlight-border-color: color-mix(in oklab, var(--semantics-content-contrast-color) 40%, transparent);
 	--semantics-buttons-inherit-filled-background-color: currentColor;
 	--semantics-buttons-inherit-filled-primary-content-color: var(--semantics-content-contrast-color);
 	--semantics-buttons-inherit-filled-highlight-border-color: transparent;
