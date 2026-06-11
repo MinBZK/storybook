@@ -82,9 +82,13 @@ nldd-rich-text > :is(img, figure, video, iframe) {
 }
 
 /* Deliberate exception: a blockquote anchors on the text's left edge and
-   bleeds to wide-end, also in [centered] — the pull-quote accent. */
+   bleeds to wide-end, also in [centered] — the pull-quote accent. The
+   explicit width pins both edges; justify-self would otherwise shrinkwrap
+   and re-center it. */
 nldd-rich-text > blockquote {
 	grid-column: main-start / wide-end;
+	box-sizing: border-box;
+	width: 100%;
 }
 
 nldd-rich-text > :is(pre, nldd-code-viewer) {
@@ -409,6 +413,7 @@ nldd-rich-text q {
 
 nldd-rich-text img {
 	display: block;
+	border-radius: var(--primitives-corner-radius-sm);
 	max-width: 100%;
 	height: auto;
 }
