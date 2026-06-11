@@ -308,6 +308,11 @@ export const heroStyles = css`
 	/* # Main */
 
 	.hero__main {
+		/* Cascade the panel color so descendants that key off the parent
+		   background (inherit-filled buttons, badge rings) read this
+		   surface. */
+		--context-parent-background-color: var(--_main-background-color);
+
 		box-sizing: border-box;
 		display: flex;
 		position: relative;
