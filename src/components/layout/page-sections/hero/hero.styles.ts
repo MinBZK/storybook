@@ -358,20 +358,43 @@ export const heroStyles = css`
 		}
 	}
 
+	/* The two sides meeting the panel's rounded corner get a step more
+	   padding so content clears the curve. Only md and up — mobile zeroes
+	   the corner. */
 	:host([data-main-corner="top-left"]) .hero__main {
 		border-top-left-radius: var(--_main-corner-radius);
+
+		@container (min-width: ${mdMin}) {
+			padding-top: calc(var(--_main-padding) + var(--primitives-space-8));
+			padding-left: calc(var(--_main-padding) + var(--primitives-space-8));
+		}
 	}
 
 	:host([data-main-corner="top-right"]) .hero__main {
 		border-top-right-radius: var(--_main-corner-radius);
+
+		@container (min-width: ${mdMin}) {
+			padding-top: calc(var(--_main-padding) + var(--primitives-space-8));
+			padding-right: calc(var(--_main-padding) + var(--primitives-space-8));
+		}
 	}
 
 	:host([data-main-corner="bottom-left"]) .hero__main {
 		border-bottom-left-radius: var(--_main-corner-radius);
+
+		@container (min-width: ${mdMin}) {
+			padding-bottom: calc(var(--_main-padding) + var(--primitives-space-8));
+			padding-left: calc(var(--_main-padding) + var(--primitives-space-8));
+		}
 	}
 
 	:host([data-main-corner="bottom-right"]) .hero__main {
 		border-bottom-right-radius: var(--_main-corner-radius);
+
+		@container (min-width: ${mdMin}) {
+			padding-bottom: calc(var(--_main-padding) + var(--primitives-space-8));
+			padding-right: calc(var(--_main-padding) + var(--primitives-space-8));
+		}
 	}
 
 	@media (forced-colors: active) {
