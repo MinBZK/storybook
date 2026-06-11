@@ -67,7 +67,7 @@ nldd-rich-text[centered] > * {
 	justify-self: center;
 }
 
-nldd-rich-text > :is(h1, h2, h3, h4, h5, h6, p, ul, ol, dl, div, section) {
+nldd-rich-text > :is(h1, h2, h3, h4, h5, h6, p, ul, ol, dl, div, section, blockquote) {
 	grid-column: main;
 	/* Fill the main column so short text blocks keep a shared left edge —
 	   justify-self: center would otherwise float a shrinkwrapped heading
@@ -77,25 +77,10 @@ nldd-rich-text > :is(h1, h2, h3, h4, h5, h6, p, ul, ol, dl, div, section) {
 	width: 100%;
 }
 
-nldd-rich-text > :is(img, figure, video, iframe) {
+/* nldd-table stays on the generic full default; use data-width to
+   override per table. */
+nldd-rich-text > :is(img, figure, video, iframe, table) {
 	grid-column: wide;
-}
-
-/* Deliberate exception: a blockquote anchors on the text's left edge and
-   bleeds to wide-end, also in [centered] — the pull-quote accent. The
-   explicit width pins both edges; justify-self would otherwise shrinkwrap
-   and re-center it. */
-nldd-rich-text > blockquote {
-	grid-column: main-start / wide-end;
-	box-sizing: border-box;
-	width: 100%;
-}
-
-/* Same anchoring for native tables: text edge left, full bleed right.
-   (nldd-table stays on the generic full default; use data-width to
-   override per table.) */
-nldd-rich-text > table {
-	grid-column: main-start / full-end;
 }
 
 nldd-rich-text > :is(pre, nldd-code-viewer) {

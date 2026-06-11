@@ -7,13 +7,13 @@
  *
  * ## Breedtezones
  * Kinderen worden in drie zones geplaatst: tekst (headings, paragrafen,
- * lijsten, div/section) leest op de `main`-maat; media (img, figure, video,
- * iframe, blockquote) krijgt het `wide`-accent; al het overige — tabellen,
- * codeblokken en élke component — krijgt de volledige `full`-span met
- * `justify-self: start`, zodat de ruimte beschikbaar is maar niet geforceerd
- * wordt. Per kind te overschrijven met `data-width="main" | "wide" | "full"`.
- * In de linkse layout lezen wide en full als bleed naar rechts; met
- * `centered` zijn ze symmetrisch.
+ * lijsten, blockquote, div/section) leest op de `main`-maat; media en
+ * tabellen (img, figure, video, iframe, table) krijgen het `wide`-accent;
+ * al het overige — codeblokken en élke component — krijgt de volledige
+ * `full`-span met `justify-self: start`, zodat de ruimte beschikbaar is
+ * maar niet geforceerd wordt. Per kind te overschrijven met
+ * `data-width="main" | "wide" | "full"`. In de linkse layout lezen wide en
+ * full als bleed naar rechts; met `centered` zijn ze symmetrisch.
  *
  * @element nldd-rich-text
  *
