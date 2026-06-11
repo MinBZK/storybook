@@ -4,7 +4,6 @@ import './progress-bar.js';
 const SEMANTIC_COLORS = ['neutral', 'accent', 'success', 'warning', 'critical'] as const;
 
 const RIJKSLEUREN = [
-	'coolgray',
 	'lintblauw', 'donkerblauw', 'hemelblauw', 'lichtblauw',
 	'paars', 'violet',
 	'robijnrood', 'roze', 'rood', 'oranje',

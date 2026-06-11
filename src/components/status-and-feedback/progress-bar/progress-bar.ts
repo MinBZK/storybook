@@ -60,8 +60,7 @@ export type ProgressBarValueFormat = 'percentage' | 'absolute' | 'fraction';
 export type ProgressBarValueDisplay = 'inline' | 'tooltip' | 'none';
 
 export type ProgressBarColor =
-	| 'neutral' | 'accent' | 'success' | 'warning' | 'critical'
-	| 'coolgray'
+| 'neutral' | 'accent' | 'success' | 'warning' | 'critical'
 	| 'lintblauw' | 'donkerblauw' | 'hemelblauw' | 'lichtblauw'
 	| 'paars' | 'violet'
 	| 'robijnrood' | 'roze' | 'rood' | 'oranje'

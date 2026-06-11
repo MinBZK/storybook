@@ -24,8 +24,7 @@ import { nlddBadgeTranslations } from './badge.i18n.js';
 import './../../content/icon/icon.js';
 
 type Color =
-	| 'critical' | 'accent' | 'neutral' | 'warning' | 'success'
-	| 'coolgray'
+| 'critical' | 'accent' | 'neutral' | 'warning' | 'success'
 	| 'lintblauw' | 'donkerblauw' | 'hemelblauw' | 'lichtblauw'
 	| 'paars' | 'violet'
 	| 'robijnrood' | 'roze' | 'rood' | 'oranje'

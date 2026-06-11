@@ -358,7 +358,7 @@ Een compacte label voor categorieën, statussen of metadata. Niet interactief. V
 
 | Attribuut | Type | Beschrijving |
 | --- | --- | --- |
-| `color` | `string` | Kleurvariant. Semantisch: 'neutral' \| 'accent' \| 'success' \| 'warning' \| 'critical'. Rijkskleuren: 'coolgray' \| 'lintblauw' \| 'donkerblauw' \| 'hemelblauw' \| 'lichtblauw' \| 'paars' \| 'violet' \| 'robijnrood' \| 'roze' \| 'rood' \| 'oranje' \| 'donkergeel' \| 'geel' \| 'donkerbruin' \| 'bruin' \| 'donkergroen' \| 'groen' \| 'mosgroen' \| 'mintgroen'. (default: 'neutral') |
+| `color` | `string` | Kleurvariant. Semantisch: 'neutral' \| 'accent' \| 'success' \| 'warning' \| 'critical'. Rijkskleuren: 'lintblauw' \| 'donkerblauw' \| 'hemelblauw' \| 'lichtblauw' \| 'paars' \| 'violet' \| 'robijnrood' \| 'roze' \| 'rood' \| 'oranje' \| 'donkergeel' \| 'geel' \| 'donkerbruin' \| 'bruin' \| 'donkergroen' \| 'groen' \| 'mosgroen' \| 'mintgroen'. (default: 'neutral') |
 | `size` | `string` | Tag grootte: 'sm' \| 'md' (default: 'md') |
 | `text` | `string` | Tag tekst (alternatief voor default slot) |
 | `icon` | `string` | Icoon voor de tekst |

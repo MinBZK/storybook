@@ -5,7 +5,7 @@
  * Voor interactieve chips (filter, dismiss) gebruik je <nldd-token>.
  *
  * @element nldd-tag
- * @attr {string} color - Kleurvariant. Semantisch: 'neutral' | 'accent' | 'success' | 'warning' | 'critical'. Rijkskleuren: 'coolgray' | 'lintblauw' | 'donkerblauw' | 'hemelblauw' | 'lichtblauw' | 'paars' | 'violet' | 'robijnrood' | 'roze' | 'rood' | 'oranje' | 'donkergeel' | 'geel' | 'donkerbruin' | 'bruin' | 'donkergroen' | 'groen' | 'mosgroen' | 'mintgroen'. (default: 'neutral')
+ * @attr {string} color - Kleurvariant. Semantisch: 'neutral' | 'accent' | 'success' | 'warning' | 'critical'. Rijkskleuren: 'lintblauw' | 'donkerblauw' | 'hemelblauw' | 'lichtblauw' | 'paars' | 'violet' | 'robijnrood' | 'roze' | 'rood' | 'oranje' | 'donkergeel' | 'geel' | 'donkerbruin' | 'bruin' | 'donkergroen' | 'groen' | 'mosgroen' | 'mintgroen'. (default: 'neutral')
  * @attr {string} size - Tag grootte: 'sm' | 'md' (default: 'md')
  * @attr {string} text - Tag tekst (alternatief voor default slot)
  * @attr {string} icon - Icoon voor de tekst
@@ -30,7 +30,6 @@ type Color =
 	| 'warning'
 	| 'critical'
 	// Rijkskleuren
-	| 'coolgray'
 	| 'lintblauw'
 	| 'donkerblauw'
 	| 'hemelblauw'

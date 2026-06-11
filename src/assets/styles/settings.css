@@ -1300,9 +1300,6 @@
 	--semantics-categories-filled-success-border-color: var(--primitives-color-success-550);
 	--semantics-categories-filled-success-content-color: light-dark(var(--primitives-color-success-0), var(--primitives-color-success-1000));
 
-	--semantics-categories-filled-coolgray-background-color: var(--primitives-color-coolgray-500);
-	--semantics-categories-filled-coolgray-border-color: var(--primitives-color-coolgray-550);
-	--semantics-categories-filled-coolgray-content-color: light-dark(var(--primitives-color-coolgray-0), var(--primitives-color-coolgray-1000));
 	--semantics-categories-filled-lintblauw-background-color: light-dark(var(--primitives-color-lintblauw-750), var(--primitives-color-lintblauw-400));
 	--semantics-categories-filled-lintblauw-border-color: light-dark(var(--primitives-color-lintblauw-800), var(--primitives-color-lintblauw-500));
 	--semantics-categories-filled-lintblauw-content-color: light-dark(var(--primitives-color-lintblauw-0), var(--primitives-color-lintblauw-1000));
@@ -1384,9 +1381,6 @@
 	--components-badge-success-border-color: var(--semantics-categories-filled-success-border-color);
 	--components-badge-success-content-color: var(--semantics-categories-filled-success-content-color);
 
-	--components-badge-coolgray-background-color: var(--semantics-categories-filled-coolgray-background-color);
-	--components-badge-coolgray-border-color: var(--semantics-categories-filled-coolgray-border-color);
-	--components-badge-coolgray-content-color: var(--semantics-categories-filled-coolgray-content-color);
 	--components-badge-lintblauw-background-color: var(--semantics-categories-filled-lintblauw-background-color);
 	--components-badge-lintblauw-border-color: var(--semantics-categories-filled-lintblauw-border-color);
 	--components-badge-lintblauw-content-color: var(--semantics-categories-filled-lintblauw-content-color);
@@ -1690,8 +1684,6 @@
 
 	/* ### Progress bar — rijkskleuren */
 
-	--components-progress-bar-coolgray-background-color: var(--semantics-categories-filled-coolgray-background-color);
-	--components-progress-bar-coolgray-border-color: var(--semantics-categories-filled-coolgray-border-color);
 	--components-progress-bar-lintblauw-background-color: var(--semantics-categories-filled-lintblauw-background-color);
 	--components-progress-bar-lintblauw-border-color: var(--semantics-categories-filled-lintblauw-border-color);
 	--components-progress-bar-donkerblauw-background-color: var(--semantics-categories-filled-donkerblauw-background-color);
@@ -1760,8 +1752,6 @@
 
 	/* ### Progress circle — rijkskleuren */
 
-	--components-progress-circle-coolgray-background-color: var(--semantics-categories-filled-coolgray-background-color);
-	--components-progress-circle-coolgray-border-color: var(--semantics-categories-filled-coolgray-border-color);
 	--components-progress-circle-lintblauw-background-color: var(--semantics-categories-filled-lintblauw-background-color);
 	--components-progress-circle-lintblauw-border-color: var(--semantics-categories-filled-lintblauw-border-color);
 	--components-progress-circle-donkerblauw-background-color: var(--semantics-categories-filled-donkerblauw-background-color);
@@ -1877,8 +1867,6 @@
 
 	/* ### Tag — rijkskleuren */
 
-	--components-tag-coolgray-background-color: light-dark(var(--primitives-color-coolgray-75), var(--primitives-color-coolgray-150));
-	--components-tag-coolgray-content-color: var(--primitives-color-coolgray-750);
 	--components-tag-lintblauw-background-color: light-dark(var(--primitives-color-lintblauw-75), var(--primitives-color-lintblauw-150));
 	--components-tag-lintblauw-content-color: var(--primitives-color-lintblauw-750);
 	--components-tag-donkerblauw-background-color: light-dark(var(--primitives-color-donkerblauw-75), var(--primitives-color-donkerblauw-150));

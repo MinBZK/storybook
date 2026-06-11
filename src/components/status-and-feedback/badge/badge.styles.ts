@@ -62,12 +62,6 @@ export const badgeStyles = css`
 
 	/* ## Color — rijkskleuren */
 
-	:host([color="coolgray"]) {
-		--_background-color: var(--components-badge-coolgray-background-color);
-		--_border-color: var(--components-badge-coolgray-border-color);
-		--_content-color: var(--components-badge-coolgray-content-color);
-	}
-
 	:host([color="lintblauw"]) {
 		--_background-color: var(--components-badge-lintblauw-background-color);
 		--_border-color: var(--components-badge-lintblauw-border-color);

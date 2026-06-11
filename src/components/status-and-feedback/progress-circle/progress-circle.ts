@@ -57,8 +57,7 @@ export type ProgressCircleValueFormat = 'percentage' | 'absolute' | 'fraction';
 export type ProgressCircleValueDisplay = 'inline' | 'tooltip' | 'none';
 
 export type ProgressCircleColor =
-	| 'neutral' | 'accent' | 'success' | 'warning' | 'critical'
-	| 'coolgray'
+| 'neutral' | 'accent' | 'success' | 'warning' | 'critical'
 	| 'lintblauw' | 'donkerblauw' | 'hemelblauw' | 'lichtblauw'
 	| 'paars' | 'violet'
 	| 'robijnrood' | 'roze' | 'rood' | 'oranje'

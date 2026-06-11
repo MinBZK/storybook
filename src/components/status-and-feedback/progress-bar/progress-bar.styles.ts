@@ -53,8 +53,6 @@ export const progressBarStyles = css`
 	:host([color="success"]) { --_indeterminate-background-color: var(--components-progress-bar-success-background-color); --_indeterminate-border-color: var(--components-progress-bar-success-border-color); }
 	:host([color="warning"]) { --_indeterminate-background-color: var(--components-progress-bar-warning-background-color); --_indeterminate-border-color: var(--components-progress-bar-warning-border-color); }
 	:host([color="critical"]) { --_indeterminate-background-color: var(--components-progress-bar-critical-background-color); --_indeterminate-border-color: var(--components-progress-bar-critical-border-color); }
-
-	:host([color="coolgray"]) { --_indeterminate-background-color: var(--components-progress-bar-coolgray-background-color); --_indeterminate-border-color: var(--components-progress-bar-coolgray-border-color); }
 	:host([color="lintblauw"]) { --_indeterminate-background-color: var(--components-progress-bar-lintblauw-background-color); --_indeterminate-border-color: var(--components-progress-bar-lintblauw-border-color); }
 	:host([color="donkerblauw"]) { --_indeterminate-background-color: var(--components-progress-bar-donkerblauw-background-color); --_indeterminate-border-color: var(--components-progress-bar-donkerblauw-border-color); }
 	:host([color="hemelblauw"]) { --_indeterminate-background-color: var(--components-progress-bar-hemelblauw-background-color); --_indeterminate-border-color: var(--components-progress-bar-hemelblauw-border-color); }
@@ -301,11 +299,6 @@ export const progressBarSegmentIndicatorStyles = css`
 
 
 	/* ## Variants — Rijkskleuren */
-
-	:host([color="coolgray"]) {
-		--_background-color: var(--components-progress-bar-coolgray-background-color);
-		--_border-color: var(--components-progress-bar-coolgray-border-color);
-	}
 	:host([color="lintblauw"]) {
 		--_background-color: var(--components-progress-bar-lintblauw-background-color);
 		--_border-color: var(--components-progress-bar-lintblauw-border-color);

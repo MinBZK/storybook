@@ -39,7 +39,6 @@ export default {
 				// Semantisch
 				'neutral', 'accent', 'success', 'warning', 'critical',
 				// Rijkskleuren
-				'coolgray', 'lintblauw', 'donkerblauw', 'hemelblauw', 'lichtblauw',
 				'paars', 'violet', 'robijnrood', 'roze', 'rood',
 				'oranje', 'donkergeel', 'geel', 'donkerbruin', 'bruin',
 				'donkergroen', 'groen', 'mosgroen', 'mintgroen',
@@ -112,7 +111,6 @@ export const Colors = {
 			<nldd-tag color="success" text="success"></nldd-tag>
 			<nldd-tag color="warning" text="warning"></nldd-tag>
 			<nldd-tag color="critical" text="critical"></nldd-tag>
-			<nldd-tag color="coolgray" text="coolgray"></nldd-tag>
 			<nldd-tag color="lintblauw" text="lintblauw"></nldd-tag>
 			<nldd-tag color="donkerblauw" text="donkerblauw"></nldd-tag>
 			<nldd-tag color="hemelblauw" text="hemelblauw"></nldd-tag>

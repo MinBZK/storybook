@@ -79,11 +79,6 @@ export const heroStyles = css`
 		--_main-content-color: var(--semantics-content-color);
 	}
 
-	:host([main-background="coolgray"]) {
-		--_main-background-color: var(--semantics-categories-filled-coolgray-background-color);
-		--_main-content-color: var(--semantics-categories-filled-coolgray-content-color);
-	}
-
 	:host([main-background="lintblauw"]) {
 		--_main-background-color: var(--semantics-categories-filled-lintblauw-background-color);
 		--_main-content-color: var(--semantics-categories-filled-lintblauw-content-color);

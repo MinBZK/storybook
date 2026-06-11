@@ -66,7 +66,7 @@ export default {
 		mainBackground: {
 			name: 'main-background',
 			control: 'select',
-			options: ['base', 'accent', 'coolgray', 'lintblauw', 'donkerblauw', 'hemelblauw', 'lichtblauw', 'paars', 'violet', 'robijnrood', 'roze', 'rood', 'oranje', 'donkergeel'],
+			options: ['base', 'accent', 'lintblauw', 'donkerblauw', 'hemelblauw', 'lichtblauw', 'paars', 'violet', 'robijnrood', 'roze', 'rood', 'oranje', 'donkergeel'],
 			description: 'Vlakkleur van het paneel: base of een filled-category',
 			table: { defaultValue: { summary: 'accent' } },
 		},

@@ -55,11 +55,6 @@ export const tagStyles = css`
 
 	/* ### Rijkskleuren */
 
-	:host([color="coolgray"]) {
-		--_background-color: var(--components-tag-coolgray-background-color);
-		--_content-color: var(--components-tag-coolgray-content-color);
-	}
-
 	:host([color="lintblauw"]) {
 		--_background-color: var(--components-tag-lintblauw-background-color);
 		--_content-color: var(--components-tag-lintblauw-content-color);

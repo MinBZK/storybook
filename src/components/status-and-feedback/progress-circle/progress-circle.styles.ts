@@ -112,7 +112,6 @@ export const progressCircleStyles = css`
 	.progress-circle__segment-indicator--success { stroke: var(--components-progress-circle-success-background-color); }
 	.progress-circle__segment-indicator--warning { stroke: var(--components-progress-circle-warning-background-color); }
 	.progress-circle__segment-indicator--critical { stroke: var(--components-progress-circle-critical-background-color); }
-	.progress-circle__segment-indicator--coolgray { stroke: var(--components-progress-circle-coolgray-background-color); }
 	.progress-circle__segment-indicator--lintblauw { stroke: var(--components-progress-circle-lintblauw-background-color); }
 	.progress-circle__segment-indicator--donkerblauw { stroke: var(--components-progress-circle-donkerblauw-background-color); }
 	.progress-circle__segment-indicator--hemelblauw { stroke: var(--components-progress-circle-hemelblauw-background-color); }
@@ -173,7 +172,6 @@ export const progressCircleStyles = css`
 	:host([color="success"]) { --_indeterminate-background-color: var(--components-progress-circle-success-background-color); --_indeterminate-border-color: var(--components-progress-circle-success-border-color); }
 	:host([color="warning"]) { --_indeterminate-background-color: var(--components-progress-circle-warning-background-color); --_indeterminate-border-color: var(--components-progress-circle-warning-border-color); }
 	:host([color="critical"]) { --_indeterminate-background-color: var(--components-progress-circle-critical-background-color); --_indeterminate-border-color: var(--components-progress-circle-critical-border-color); }
-	:host([color="coolgray"]) { --_indeterminate-background-color: var(--components-progress-circle-coolgray-background-color); --_indeterminate-border-color: var(--components-progress-circle-coolgray-border-color); }
 	:host([color="lintblauw"]) { --_indeterminate-background-color: var(--components-progress-circle-lintblauw-background-color); --_indeterminate-border-color: var(--components-progress-circle-lintblauw-border-color); }
 	:host([color="donkerblauw"]) { --_indeterminate-background-color: var(--components-progress-circle-donkerblauw-background-color); --_indeterminate-border-color: var(--components-progress-circle-donkerblauw-border-color); }
 	:host([color="hemelblauw"]) { --_indeterminate-background-color: var(--components-progress-circle-hemelblauw-background-color); --_indeterminate-border-color: var(--components-progress-circle-hemelblauw-border-color); }

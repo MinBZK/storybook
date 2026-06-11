@@ -15,7 +15,6 @@ import { ICONS } from './../../content/icon/icon.js';
  */
 const SEMANTIC_COLORS = ['critical', 'accent', 'neutral', 'warning', 'success'];
 const RIJKSLEUREN = [
-	'coolgray',
 	'lintblauw', 'donkerblauw', 'hemelblauw', 'lichtblauw',
 	'paars', 'violet',
 	'robijnrood', 'roze', 'rood', 'oranje',
