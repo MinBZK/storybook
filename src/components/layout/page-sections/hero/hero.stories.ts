@@ -1,8 +1,9 @@
-import { html } from 'lit';
+import { html, nothing } from 'lit';
 import './hero.js';
 import '../../../content/title/title.js';
 import '../../../content/rich-text/rich-text.js';
 import '../../../actions/button/button.js';
+import '../../../actions/button-group/button-group.js';
 import '../../spacer/spacer.js';
 
 const MEDIA = 'sample-images/butterfly-1200.jpg';
@@ -47,6 +48,7 @@ export default {
 		mainWidth: '1/2',
 		mainBackground: 'accent',
 		mediaCorner: 'auto',
+		height: '',
 	},
 	argTypes: {
 		mainPosition: {
@@ -77,6 +79,11 @@ export default {
 			description: 'Afgeronde hoek van het mediavlak; auto volgt main-position',
 			table: { defaultValue: { summary: 'auto' } },
 		},
+		height: {
+			control: 'text',
+			description: 'Minimale hoogte van de sectie, elke CSS-lengte (bijv. 600px of 100dvh); de hero groeit verder met de content',
+			table: { defaultValue: { summary: '(geen)' } },
+		},
 	},
 };
 
@@ -86,6 +93,7 @@ const Template = (args: Record<string, any>) => html`
 		main-width=${args.mainWidth}
 		main-background=${args.mainBackground}
 		media-corner=${args.mediaCorner}
+		height=${args.height || nothing}
 	>
 		<img slot="media"
 			src=${MEDIA}
@@ -101,14 +109,14 @@ const Template = (args: Record<string, any>) => html`
 			<p>De Nederlandse Digitale Dienst maakt regels begrijpelijk en uitvoerbaar.</p>
 		</nldd-rich-text>
 		<nldd-spacer size="16"></nldd-spacer>
-		<div style="display: flex; gap: 8px;">
+		<nldd-button-group orientation="horizontal">
 			<nldd-button variant="inherit-filled"
 				text="Bekijk de regels"
 			></nldd-button>
 			<nldd-button variant="inherit-tinted"
 				text="Meer informatie"
 			></nldd-button>
-		</div>
+		</nldd-button-group>
 	</nldd-hero>
 `;
 

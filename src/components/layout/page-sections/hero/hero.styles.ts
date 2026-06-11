@@ -334,6 +334,29 @@ export const heroStyles = css`
 		width: 100%;
 	}
 
+	/* Without media the big corner radius sits on the panel itself; give
+	   the two corner-adjacent sides extra room so content stays clear of
+	   the curve. */
+	:host(:not([data-has-media])[data-media-corner="top-left"]) .hero__main {
+		padding-top: calc(var(--_main-padding) + var(--_corner-radius) / 2);
+		padding-left: calc(var(--_main-padding) + var(--_corner-radius) / 2);
+	}
+
+	:host(:not([data-has-media])[data-media-corner="top-right"]) .hero__main {
+		padding-top: calc(var(--_main-padding) + var(--_corner-radius) / 2);
+		padding-right: calc(var(--_main-padding) + var(--_corner-radius) / 2);
+	}
+
+	:host(:not([data-has-media])[data-media-corner="bottom-left"]) .hero__main {
+		padding-bottom: calc(var(--_main-padding) + var(--_corner-radius) / 2);
+		padding-left: calc(var(--_main-padding) + var(--_corner-radius) / 2);
+	}
+
+	:host(:not([data-has-media])[data-media-corner="bottom-right"]) .hero__main {
+		padding-bottom: calc(var(--_main-padding) + var(--_corner-radius) / 2);
+		padding-right: calc(var(--_main-padding) + var(--_corner-radius) / 2);
+	}
+
 	:host([main-position="top-left"]) .hero__main {
 		align-self: start;
 	}
