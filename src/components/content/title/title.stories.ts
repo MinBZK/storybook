@@ -1,4 +1,4 @@
-import { html } from 'lit';
+import { html, nothing } from 'lit';
 import './title.js';
 import '../../actions/button/button.js';
 import '../../layout/spacer/spacer.js';
@@ -38,15 +38,25 @@ export default {
 			description: 'Visuele grootte van de titel',
 			table: { defaultValue: { summary: '3' } },
 		},
+		color: {
+			control: 'select',
+			options: ['(geen)', 'inherit'],
+			mapping: { '(geen)': '' },
+			description: 'inherit laat de titel de tekstkleur van de ondergrond volgen (voor gekleurde vlakken)',
+			table: { defaultValue: { summary: '(geen)' } },
+		},
 	},
 	args: {
 		size: 3,
+		color: '',
 	},
 };
 
-export const Standaard = ({ size }: Record<string, any>) => html`
+export const Standaard = ({ size, color }: Record<string, any>) => html`
 	<div style="display: block; padding: 24px; container-type: inline-size; container-name: layout-container;">
-		<nldd-title size=${size}>
+		<nldd-title size=${size}
+			color=${color || nothing}
+		>
 			<h1>Paginatitel</h1>
 			<nldd-button slot="actions" variant="secondary" size="sm" text="Actie"></nldd-button>
 		</nldd-title>
