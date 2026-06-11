@@ -68,7 +68,7 @@ here; consult the commit history if you need that level of detail.
 - **`nldd-icon-button`**: `hide-lg-text` — an icon-only `lg` control with a 28px icon and edge-stable padding.
 - **`nldd-split-button`**: a full-width, left-aligned action with `no-highlight-border` on the nested controls, plus a `width` attribute (and `nldd-menu` press-drag-release now pierces shadow boundaries so it works inside the split button).
 - **`nldd-document-tab-bar`**: per-state secondary content.
-- **`nldd-image`**: `loaded` and `errored` host attributes for consumer CSS, and a transparent media background (grey only on error, LQIP while loading).
+- **`nldd-image`**: `loaded` and `errored` host attributes for consumer CSS, and a transparent media background (gray only on error, LQIP while loading).
 - **`nldd-page-sections`** (`one-half-one-half`, `one-third-two-thirds`, `two-thirds-one-third`): `__header` and `__footer` slots, rendered only when slotted.
 - **`nldd-toolbar`**: `nldd-toolbar-item` and `nldd-toolbar-title` are now declared elements that render their own box and own their sizing — item `width` / `min-width` / `max-width` / `label` / `priority`, title `text` / `supporting-text` / `align` / `min-width` / `width` / `max-width`. The overflow menu also accepts `nldd-menu-group`, and items that share an explicit `priority` move in and out of the overflow menu together.
 - **Icons** — the new icons (listed in Highlights) are normalized to the house format. New aliases for existing icons: `export` (→ square-arrow-up) and `settings` (→ gear).
@@ -207,7 +207,7 @@ here; consult the commit history if you need that level of detail.
 - `nldd-progress`: `complete` boolean attribute clears `aria-busy` and hides the indicator while keeping the element mounted (for consumers who can't unmount). `no-label` boolean attribute suppresses the visible "Laden" caption when the surrounding UI already conveys loading.
 - `nldd-image`: visually-hidden `aria-live="polite"` status region announces load failures mid-session (WCAG 4.1.3 Status Messages). The region stays empty until `_imageErrored` flips, so screen readers learn about a dynamic `src` swap that errored even though the visible error overlay was already there. Decorative images stay silent.
 - `nldd-image`: `loading` and `fetchpriority` exposed as Storybook controls with LCP guidance; the `loading` JSDoc now warns that leaving `lazy` on a hero / LCP image silently regresses Core Web Vitals.
-- `nldd-tooltip`: `nldd-tooltip-dismiss` event fired when Escape is pressed while `open=true`. The consumer controls the open lifecycle (e.g. an action-feedback timer) so we can't unilaterally clear it; the event lets them honour WCAG 1.4.13 (dismissible hover / focus content) without losing control.
+- `nldd-tooltip`: `nldd-tooltip-dismiss` event fired when Escape is pressed while `open=true`. The consumer controls the open lifecycle (e.g. an action-feedback timer) so we can't unilaterally clear it; the event lets them honor WCAG 1.4.13 (dismissible hover / focus content) without losing control.
 - DEV-mode warnings on `nldd-image` for missing `alt` on non-decorative images and for non-positive `width` values that silently fall back to `full`.
 - `nldd-collection`: arrow-key navigation when horizontal-scroll regions overflow, with a keyboard focus state on the scroll container.
 - `nldd-tooltip`: `open` attribute for forced visibility.
@@ -313,7 +313,7 @@ here; consult the commit history if you need that level of detail.
 
 ### Breaking Changes
 
-- `background="default"` is now `background="base"` on `nldd-app-view`, `nldd-page` and the five split-view components (`nldd-split-view-pane`, `bar`, `navigation`, `side-by-side`, `stacked`). Same paint behaviour, just a clearer name that matches the new `PageSectionMixin` vocabulary. Migration: search/replace `background="default"` → `background="base"` on these elements.
+- `background="default"` is now `background="base"` on `nldd-app-view`, `nldd-page` and the five split-view components (`nldd-split-view-pane`, `bar`, `navigation`, `side-by-side`, `stacked`). Same paint behavior, just a clearer name that matches the new `PageSectionMixin` vocabulary. Migration: search/replace `background="default"` → `background="base"` on these elements.
 - `<nldd-menu-bar-item expandable>` items must now be wrapped in an explicit `<nldd-menu>`. Previously menu-bar-item auto-created a body-attached menu and cloned the slotted items into it (which dropped JS event listeners). Migration:
 
   ```html
@@ -431,7 +431,7 @@ Substantial branch: several components reworked, **7 breaking changes**, plus ac
 
 ### Breaking Changes
 
-- **menu**: drill-in chain reworked — opener no longer toggles its submenu; anchor state is synced. Open/close behaviour changes; review any code reaching into menu internals.
+- **menu**: drill-in chain reworked — opener no longer toggles its submenu; anchor state is synced. Open/close behavior changes; review any code reaching into menu internals.
 - **rich-text**: rebuilt on CSS grid with named columns + new `centered` mode; blockquotes/tables now bleed wider. Check custom rich-text styling.
 - **sheet**: `full-height` boolean removed → `height` attribute (`full` default | `fit-content` | CSS length); `width` for side sheets.
 - **icon-button**: `hide-tooltip` removed → `tooltip-timing` (`default` | `instant` | `never`).
