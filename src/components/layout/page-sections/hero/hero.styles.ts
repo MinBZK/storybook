@@ -128,6 +128,41 @@ export const heroStyles = css`
 		--_main-content-color: var(--semantics-categories-filled-donkergeel-content-color);
 	}
 
+	:host([main-background="geel"]) {
+		--_main-background-color: var(--semantics-categories-filled-geel-background-color);
+		--_main-content-color: var(--semantics-categories-filled-geel-content-color);
+	}
+
+	:host([main-background="donkerbruin"]) {
+		--_main-background-color: var(--semantics-categories-filled-donkerbruin-background-color);
+		--_main-content-color: var(--semantics-categories-filled-donkerbruin-content-color);
+	}
+
+	:host([main-background="bruin"]) {
+		--_main-background-color: var(--semantics-categories-filled-bruin-background-color);
+		--_main-content-color: var(--semantics-categories-filled-bruin-content-color);
+	}
+
+	:host([main-background="donkergroen"]) {
+		--_main-background-color: var(--semantics-categories-filled-donkergroen-background-color);
+		--_main-content-color: var(--semantics-categories-filled-donkergroen-content-color);
+	}
+
+	:host([main-background="groen"]) {
+		--_main-background-color: var(--semantics-categories-filled-groen-background-color);
+		--_main-content-color: var(--semantics-categories-filled-groen-content-color);
+	}
+
+	:host([main-background="mosgroen"]) {
+		--_main-background-color: var(--semantics-categories-filled-mosgroen-background-color);
+		--_main-content-color: var(--semantics-categories-filled-mosgroen-content-color);
+	}
+
+	:host([main-background="mintgroen"]) {
+		--_main-background-color: var(--semantics-categories-filled-mintgroen-background-color);
+		--_main-content-color: var(--semantics-categories-filled-mintgroen-content-color);
+	}
+
 
 	/* # Block */
 
