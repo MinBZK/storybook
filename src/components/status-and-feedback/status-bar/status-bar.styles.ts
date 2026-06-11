@@ -15,6 +15,7 @@ export const statusBarStyles = css`
 		--_content-color: var(--components-status-bar-neutral-content-color);
 		--_font: var(--primitives-font-body-xs-medium-flat);
 		--_is-hovered-background-color: var(--components-status-bar-neutral-is-hovered-background-color);
+		--_is-active-background-color: var(--components-status-bar-neutral-is-active-background-color);
 		--_action-icon-size: var(--primitives-space-16);
 
 		${inheritedTextReset}
@@ -29,24 +30,28 @@ export const statusBarStyles = css`
 		--_background-color: var(--components-status-bar-accent-background-color);
 		--_content-color: var(--components-status-bar-accent-content-color);
 		--_is-hovered-background-color: var(--components-status-bar-accent-is-hovered-background-color);
+		--_is-active-background-color: var(--components-status-bar-accent-is-active-background-color);
 	}
 
 	:host([variant="success"]) {
 		--_background-color: var(--components-status-bar-success-background-color);
 		--_content-color: var(--components-status-bar-success-content-color);
 		--_is-hovered-background-color: var(--components-status-bar-success-is-hovered-background-color);
+		--_is-active-background-color: var(--components-status-bar-success-is-active-background-color);
 	}
 
 	:host([variant="warning"]) {
 		--_background-color: var(--components-status-bar-warning-background-color);
 		--_content-color: var(--components-status-bar-warning-content-color);
 		--_is-hovered-background-color: var(--components-status-bar-warning-is-hovered-background-color);
+		--_is-active-background-color: var(--components-status-bar-warning-is-active-background-color);
 	}
 
 	:host([variant="critical"]) {
 		--_background-color: var(--components-status-bar-critical-background-color);
 		--_content-color: var(--components-status-bar-critical-content-color);
 		--_is-hovered-background-color: var(--components-status-bar-critical-is-hovered-background-color);
+		--_is-active-background-color: var(--components-status-bar-critical-is-active-background-color);
 	}
 
 
@@ -89,6 +94,11 @@ export const statusBarStyles = css`
 	a.status-bar:hover,
 	button.status-bar:hover {
 		background-color: var(--_is-hovered-background-color);
+	}
+
+	a.status-bar:active,
+	button.status-bar:active {
+		background-color: var(--_is-active-background-color);
 	}
 
 
