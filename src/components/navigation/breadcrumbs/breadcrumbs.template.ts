@@ -13,7 +13,7 @@ export function breadcrumbsTemplate(component: NLDDBreadcrumbs): TemplateResult 
 				role="list"
 			>
 				<slot name="first"
-					@slotchange=${component._syncCollapse}
+					@slotchange=${component._onSlotChange}
 				></slot>
 				${component._collapsed ? html`
 					<span class="breadcrumbs__ellipsis"
@@ -28,7 +28,7 @@ export function breadcrumbsTemplate(component: NLDDBreadcrumbs): TemplateResult 
 						><nldd-icon name="chevron-right-small"></nldd-icon></span>
 					</span>
 				` : nothing}
-				<slot @slotchange=${component._syncCollapse}></slot>
+				<slot @slotchange=${component._onSlotChange}></slot>
 			</div>
 		</nav>
 	`;

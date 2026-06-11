@@ -135,9 +135,17 @@ export class NLDDBreadcrumbs extends LitElement {
 
 	private _items(): NLDDBreadcrumbsItem[] {
 		return Array.from(this.children).filter(
-			(child): child is NLDDBreadcrumbsItem => child.tagName === 'NLDD-BREADCRUMBS-ITEM',
+			(child): child is NLDDBreadcrumbsItem => child instanceof NLDDBreadcrumbsItem,
 		);
 	}
+
+	/** Defers the slotchange-driven sync to a microtask: _syncCollapse moves
+	 *  an item between slots, which fires another slotchange — running it
+	 *  inline could mutate the DOM while Lit is mid-render. The direct calls
+	 *  from updated() and _expand() stay synchronous. */
+	_onSlotChange = (): void => {
+		void Promise.resolve().then(() => this._syncCollapse());
+	};
 
 	/**
 	 * Applies the collapsed state to the light-DOM items. While collapsed the
@@ -161,12 +169,14 @@ export class NLDDBreadcrumbs extends LitElement {
 		this._collapsed = collapsed;
 	};
 
-	/** @internal Expands the trail and moves focus to the first revealed link. */
+	/** @internal Expands the trail and moves focus to a revealed item.
+	 *  Prefers the first revealed link; falls back to the first revealed item
+	 *  so focus is never silently dropped (WCAG 2.4.3). */
 	_expand = (): void => {
 		const revealed = this._items().filter((item) => item.hasAttribute('data-nldd-collapsed'));
 		this._expanded = true;
 		this._syncCollapse();
-		revealed.find((item) => item.href && !item.current)?.focus();
+		(revealed.find((item) => item.href && !item.current) ?? revealed[0])?.focus();
 	};
 
 	override willUpdate(changed: PropertyValues): void {

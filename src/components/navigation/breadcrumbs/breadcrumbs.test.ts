@@ -185,6 +185,9 @@ describe('nldd-breadcrumbs collapsing', () => {
 		extra.setAttribute('text', 'Extra');
 		extra.setAttribute('href', '/extra/');
 		el.insertBefore(extra, el.querySelectorAll('nldd-breadcrumbs-item')[1]!);
+		// Twice: the slot insertion triggers slotchange → a deferred (microtask)
+		// _syncCollapse, so let that cycle fully settle before asserting.
+		await waitForUpdate(el);
 		await waitForUpdate(el);
 		expect(el.shadowRoot!.querySelector('.breadcrumbs__ellipsis-button')).toBeNull();
 		expect(el.querySelector('[data-nldd-collapsed]')).toBeNull();
