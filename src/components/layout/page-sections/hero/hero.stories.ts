@@ -14,7 +14,7 @@ const MEDIA = 'sample-images/butterfly-1200.jpg';
  * een tekstpaneel op zes mogelijke posities. De media-hoek volgt automatisch
  * uit `main-position`:
  *
- * | `main-position` | media-hoek | panelhoek |
+ * | `main-position` | media-hoek | main-hoek |
  * | --- | --- | --- |
  * | bottom-left (default) | rechtsboven | rechtsboven |
  * | bottom-right | linksonder | linksboven |

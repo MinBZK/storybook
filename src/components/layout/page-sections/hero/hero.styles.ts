@@ -164,7 +164,10 @@ export const heroStyles = css`
 		}
 
 		@container (max-width: ${smMax}) {
-			padding-inline: var(--semantics-page-sections-sm-margin-inline);
+			/* Full-bleed on mobile: drop the section gutters so the media
+			   reaches the viewport edges. The panel keeps its own text
+			   padding for legibility. */
+			padding-inline: 0;
 			padding-top: var(--_sm-padding-top, var(--_padding-top, var(--semantics-page-sections-sm-margin-block)));
 			padding-bottom: var(--_sm-padding-bottom, var(--_padding-bottom, var(--semantics-page-sections-sm-margin-block)));
 		}
@@ -334,26 +337,13 @@ export const heroStyles = css`
 		width: 100%;
 	}
 
-	/* Without media the big corner radius sits on the panel itself; give
-	   the two corner-adjacent sides extra room so content stays clear of
-	   the curve. */
-	:host(:not([data-has-media])[data-media-corner="top-left"]) .hero__main {
-		padding-top: calc(var(--_main-padding) + var(--_corner-radius) / 2);
+	/* Without media the big corner radius sits on the panel itself; give the
+	   corner-adjacent inline side extra room so content clears the curve. */
+	:host(:not([data-has-media]):is([data-media-corner="top-left"], [data-media-corner="bottom-left"])) .hero__main {
 		padding-left: calc(var(--_main-padding) + var(--_corner-radius) / 2);
 	}
 
-	:host(:not([data-has-media])[data-media-corner="top-right"]) .hero__main {
-		padding-top: calc(var(--_main-padding) + var(--_corner-radius) / 2);
-		padding-right: calc(var(--_main-padding) + var(--_corner-radius) / 2);
-	}
-
-	:host(:not([data-has-media])[data-media-corner="bottom-left"]) .hero__main {
-		padding-bottom: calc(var(--_main-padding) + var(--_corner-radius) / 2);
-		padding-left: calc(var(--_main-padding) + var(--_corner-radius) / 2);
-	}
-
-	:host(:not([data-has-media])[data-media-corner="bottom-right"]) .hero__main {
-		padding-bottom: calc(var(--_main-padding) + var(--_corner-radius) / 2);
+	:host(:not([data-has-media]):is([data-media-corner="top-right"], [data-media-corner="bottom-right"])) .hero__main {
 		padding-right: calc(var(--_main-padding) + var(--_corner-radius) / 2);
 	}
 
