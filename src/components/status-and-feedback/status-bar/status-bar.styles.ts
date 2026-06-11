@@ -82,6 +82,10 @@ export const statusBarStyles = css`
 		}
 	}
 
+	a.status-bar {
+		cursor: var(--semantics-controls-link-cursor);
+	}
+
 	a.status-bar:hover,
 	button.status-bar:hover {
 		background-color: var(--_is-hovered-background-color);
