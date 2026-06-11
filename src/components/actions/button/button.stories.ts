@@ -1,5 +1,6 @@
 import { html, nothing } from 'lit';
 import './button.js';
+import '../button-group/button-group.js';
 import { ICONS } from './../../content/icon/icon.js';
 
 /**
@@ -447,29 +448,35 @@ export const TextSlot = {
 export const OpKleurvlak = {
 	render: () => html`
 		<div style="display: flex; flex-direction: column; gap: 16px;">
-			<div style="background: var(--semantics-categories-filled-donkerblauw-background-color); color: var(--semantics-categories-filled-donkerblauw-content-color); --context-parent-background-color: var(--semantics-categories-filled-donkerblauw-background-color); padding: 24px; border-radius: var(--primitives-corner-radius-md); display: flex; gap: 8px;">
-				<nldd-button variant="inherit-filled"
-					text="Inherit filled"
-				></nldd-button>
-				<nldd-button variant="inherit-tinted"
-					text="Inherit tinted"
-				></nldd-button>
+			<div style="background: var(--semantics-categories-filled-donkerblauw-background-color); color: var(--semantics-categories-filled-donkerblauw-content-color); --context-parent-background-color: var(--semantics-categories-filled-donkerblauw-background-color); padding: 24px; border-radius: var(--primitives-corner-radius-md);">
+				<nldd-button-group orientation="horizontal">
+					<nldd-button variant="inherit-filled"
+						text="Inherit filled"
+					></nldd-button>
+					<nldd-button variant="inherit-tinted"
+						text="Inherit tinted"
+					></nldd-button>
+				</nldd-button-group>
 			</div>
-			<div style="background: var(--semantics-categories-filled-oranje-background-color); color: var(--semantics-categories-filled-oranje-content-color); --context-parent-background-color: var(--semantics-categories-filled-oranje-background-color); padding: 24px; border-radius: var(--primitives-corner-radius-md); display: flex; gap: 8px;">
-				<nldd-button variant="inherit-filled"
-					text="Inherit filled"
-				></nldd-button>
-				<nldd-button variant="inherit-tinted"
-					text="Inherit tinted"
-				></nldd-button>
+			<div style="background: var(--semantics-categories-filled-oranje-background-color); color: var(--semantics-categories-filled-oranje-content-color); --context-parent-background-color: var(--semantics-categories-filled-oranje-background-color); padding: 24px; border-radius: var(--primitives-corner-radius-md);">
+				<nldd-button-group orientation="horizontal">
+					<nldd-button variant="inherit-filled"
+						text="Inherit filled"
+					></nldd-button>
+					<nldd-button variant="inherit-tinted"
+						text="Inherit tinted"
+					></nldd-button>
+				</nldd-button-group>
 			</div>
-			<div style="background: oklch(0.45 0.12 300); color: oklch(1 0 0); padding: 24px; border-radius: var(--primitives-corner-radius-md); display: flex; gap: 8px;">
-				<nldd-button variant="inherit-filled"
-					text="Zonder context (flip)"
-				></nldd-button>
-				<nldd-button variant="inherit-tinted"
-					text="Inherit tinted"
-				></nldd-button>
+			<div style="background: oklch(0.45 0.12 300); color: oklch(1 0 0); padding: 24px; border-radius: var(--primitives-corner-radius-md);">
+				<nldd-button-group orientation="horizontal">
+					<nldd-button variant="inherit-filled"
+						text="Zonder context (flip)"
+					></nldd-button>
+					<nldd-button variant="inherit-tinted"
+						text="Inherit tinted"
+					></nldd-button>
+				</nldd-button-group>
 			</div>
 		</div>
 	`,

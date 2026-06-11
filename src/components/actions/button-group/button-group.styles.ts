@@ -20,10 +20,12 @@ export const buttonGroupStyles = css`
 		--_gap: var(--components-button-group-sm-gap);
 	}
 
-	/* ## Horizontal */
+	/* ## Horizontal
+	   The row keeps the full width (like vertical) so full-width children
+	   can actually stretch; content-sized buttons still sit left within
+	   the row. */
 
 	:host([orientation="horizontal"]) {
-		--_width: auto;
 		--_flex-direction: row;
 		--_flex-wrap: wrap;
 	}
