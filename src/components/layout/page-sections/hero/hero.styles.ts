@@ -246,6 +246,14 @@ export const heroStyles = css`
 		}
 	}
 
+	/* Without media the full-bleed panel would paint square over the
+	   figure's rounded corner; clipping is safe here because there is no
+	   aspect-ratio in this mode, so the content minimum still sizes the
+	   figure. */
+	:host(:not([data-has-media])) .hero__figure {
+		overflow: hidden;
+	}
+
 	:host([data-media-corner="top-left"]) .hero__figure {
 		border-top-left-radius: var(--_corner-radius);
 	}

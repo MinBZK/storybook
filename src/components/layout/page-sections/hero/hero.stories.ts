@@ -100,6 +100,12 @@ const Template = (args: Record<string, any>) => html`
 		<nldd-rich-text color="inherit">
 			<p>De Nederlandse Digitale Dienst maakt regels begrijpelijk en uitvoerbaar.</p>
 		</nldd-rich-text>
+		<nldd-spacer size="16"></nldd-spacer>
+		<div>
+			<nldd-button variant="neutral-base"
+				text="Bekijk de regels"
+			></nldd-button>
+		</div>
 	</nldd-hero>
 `;
 
