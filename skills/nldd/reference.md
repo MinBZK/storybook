@@ -1218,6 +1218,31 @@ A section that spans the full width without horizontal padding. Useful for backg
 | _(default)_ | Main content |
 | `footer` | Content below the main content |
 
+### `<nldd-hero>`
+
+Een paginakop volgens de rijkshuisstijl-vormtaal: een mediavlak met exact één afgeronde hoek (radius afgeleid van de lintbreedte) en een tekstpaneel (de main) dat op zes posities kan staan. De radius is van het component en niet instelbaar: 1X lintbreedte op smalle containers, 2X op md/lg. De media-hoek volgt automatisch uit `main-position` (zie de tabel in de stories) en is per geval te overschrijven met `corner`. Het paneel krijgt zijn eigen enkele afgeronde hoek op de hoek die diagonaal het mediavlak in wijst — behalve wanneer het een volledige rand beslaat (`left`/`right`, `main-width="full"` of de gestapelde mobiele weergave): dan is het paneel hoekloos. Zonder media vult de main het volledige vlak. Met `main-background` krijgt het paneel een vlakkleur uit de filled-categories; die leveren een pure witte of zwarte contentkleur mee, zodat componenten met `color="inherit"` (title, rich-text) gegarandeerd contrast houden. Per de rijkshuisstijl wordt de radius nooit geanimeerd.
+
+**Attributes**
+
+| Attribuut | Type | Beschrijving |
+| --- | --- | --- |
+| `main-position` | `'top-left'\|'top-right'\|'bottom-left'\|'bottom-right'\|'left'\|'right'` | Positie van het tekstpaneel (default: 'bottom-left'); 'left'/'right' beslaan de volle hoogte |
+| `main-width` | `'1/2'\|'2/3'\|'3/4'\|'full'` | Breedte van het paneel (default: '1/2'); 'full' maakt een volle boven- of onderstrook en wordt bij 'left'/'right' genegeerd |
+| `main-background` | `string` | Vlakkleur van het paneel uit de filled-categories (semantisch: 'neutral'\|'accent'\|'success'\|'warning'\|'critical', of een rijkskleur zoals 'lintblauw'\|'donkerblauw'\|'oranje'); leeg = de base surface |
+| `corner` | `'auto'\|'top-left'\|'top-right'\|'bottom-left'\|'bottom-right'` | Afgeronde hoek van het mediavlak; 'auto' (default) volgt main-position |
+| `background` | `'inherit'\|'base'\|'tinted'` | Surface achter de hero (sectie-API) |
+| `scheme` | `'inherit'\|'light'\|'dark'\|'inverted'` | Kleurschema (sectie-API) |
+| `width` | `string` | Body max-width; 'full' verwijdert de begrenzing (sectie-API) |
+| `height` | `string` | Minimale hoogte van de sectie (sectie-API) |
+| `padding-block` | `string` | Blokpadding-override, ook per rand en responsief (sectie-API) |
+
+**Slots**
+
+| Slot | Beschrijving |
+| --- | --- |
+| `media` | Afbeelding of illustratie (img of nldd-image); vult het vlak en wordt geclipt |
+| _(default)_ | Inhoud van het tekstpaneel (bijv. nldd-title en nldd-rich-text met color="inherit") |
+
 ### `<nldd-navigation-split-view>`
 
 A four-column layout with a sidebar, secondary sidebar, main content area, and inspector. The sidebars show navigation or lists, the main area shows primary content, and the inspector shows additional details or properties of the selection. Panes are shown automatically when content is slotted into them.

@@ -203,6 +203,10 @@
       "types": "./dist/components/layout/page-sections/simple-section/simple-section.d.ts",
       "default": "./dist/components/layout/page-sections/simple-section/simple-section.js"
     },
+    "./hero": {
+      "types": "./dist/components/layout/page-sections/hero/hero.d.ts",
+      "default": "./dist/components/layout/page-sections/hero/hero.js"
+    },
     "./full-bleed-section": {
       "types": "./dist/components/layout/page-sections/full-bleed-section/full-bleed-section.d.ts",
       "default": "./dist/components/layout/page-sections/full-bleed-section/full-bleed-section.js"

@@ -81,6 +81,7 @@ export { NLDDSplitViewPane } from './layout/split-views/split-view-pane/split-vi
 export { NLDDPage } from './layout/page/page.js';
 
 export { NLDDSimpleSection } from './layout/page-sections/simple-section/simple-section.js';
+export { NLDDHero } from './layout/page-sections/hero/hero.js';
 export { NLDDFullBleedSection } from './layout/page-sections/full-bleed-section/full-bleed-section.js';
 export { NLDDOneThirdTwoThirdsSection } from './layout/page-sections/one-third-two-thirds-section/one-third-two-thirds-section.js';
 export { NLDDTwoThirdsOneThirdSection } from './layout/page-sections/two-thirds-one-third-section/two-thirds-one-third-section.js';

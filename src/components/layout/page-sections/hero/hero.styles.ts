@@ -1,0 +1,398 @@
+import { css, unsafeCSS } from 'lit';
+import { breakpoints } from '../../../../assets/styles/breakpoints.js';
+import { inheritedTextReset, slottedReset } from '../../../../assets/styles/slotted-reset.js';
+
+const smMax = unsafeCSS(breakpoints.smMax);
+const mdMin = unsafeCSS(breakpoints.mdMin);
+const mdMax = unsafeCSS(breakpoints.mdMax);
+const lgMin = unsafeCSS(breakpoints.lgMin);
+
+export const heroStyles = css`
+
+
+	/* # Host */
+
+	:host {
+		container-type: inline-size;
+		/* Block-padding overrides from PageSectionMixin; 'initial' makes the
+		   var() in .hero fall back to the responsive default until the mixin
+		   sets a value inline on the host. */
+		--_padding-top: initial;
+		--_padding-bottom: initial;
+		--_sm-padding-top: initial;
+		--_sm-padding-bottom: initial;
+		--_md-padding-top: initial;
+		--_md-padding-bottom: initial;
+		--_lg-padding-top: initial;
+		--_lg-padding-bottom: initial;
+		--_max-width: var(--semantics-page-sections-body-max-width);
+		/* Rijkshuisstijl shape language: the corner radius derives from the
+		   ribbon width — 1X on small containers, 2X on md/lg. Never animated. */
+		--_corner-radius: calc(var(--semantics-brand-ribbon-sm-width) * 1);
+		--_main-width: 50%;
+		--_main-background-color: var(--semantics-surfaces-base-background-color);
+		--_main-content-color: var(--semantics-content-color);
+		--_main-padding: var(--primitives-space-16);
+
+		${inheritedTextReset}
+		display: flex;
+		width: 100%;
+		flex-direction: column;
+		align-items: center;
+	}
+
+	:host([hidden]) {
+		display: none;
+	}
+
+	:host(:last-child),
+	:host(.is-last) {
+		flex-grow: 1;
+	}
+
+	:host([width="full"]) {
+		--_max-width: none;
+	}
+
+	:host([main-width="2/3"]) {
+		--_main-width: 66.667%;
+	}
+
+	:host([main-width="3/4"]) {
+		--_main-width: 75%;
+	}
+
+	:host([main-width="full"]) {
+		--_main-width: 100%;
+	}
+
+	/* main-width="full" is meaningless on a full-height edge panel;
+	   fall back to the default width. */
+	:host(:is([main-position="left"], [main-position="right"])[main-width="full"]) {
+		--_main-width: 50%;
+	}
+
+	:host([main-background="neutral"]) {
+		--_main-background-color: var(--semantics-categories-filled-neutral-background-color);
+		--_main-content-color: var(--semantics-categories-filled-neutral-content-color);
+	}
+
+	:host([main-background="accent"]) {
+		--_main-background-color: var(--semantics-categories-filled-accent-background-color);
+		--_main-content-color: var(--semantics-categories-filled-accent-content-color);
+	}
+
+	:host([main-background="success"]) {
+		--_main-background-color: var(--semantics-categories-filled-success-background-color);
+		--_main-content-color: var(--semantics-categories-filled-success-content-color);
+	}
+
+	:host([main-background="warning"]) {
+		--_main-background-color: var(--semantics-categories-filled-warning-background-color);
+		--_main-content-color: var(--semantics-categories-filled-warning-content-color);
+	}
+
+	:host([main-background="critical"]) {
+		--_main-background-color: var(--semantics-categories-filled-critical-background-color);
+		--_main-content-color: var(--semantics-categories-filled-critical-content-color);
+	}
+
+	:host([main-background="coolgray"]) {
+		--_main-background-color: var(--semantics-categories-filled-coolgray-background-color);
+		--_main-content-color: var(--semantics-categories-filled-coolgray-content-color);
+	}
+
+	:host([main-background="lintblauw"]) {
+		--_main-background-color: var(--semantics-categories-filled-lintblauw-background-color);
+		--_main-content-color: var(--semantics-categories-filled-lintblauw-content-color);
+	}
+
+	:host([main-background="donkerblauw"]) {
+		--_main-background-color: var(--semantics-categories-filled-donkerblauw-background-color);
+		--_main-content-color: var(--semantics-categories-filled-donkerblauw-content-color);
+	}
+
+	:host([main-background="hemelblauw"]) {
+		--_main-background-color: var(--semantics-categories-filled-hemelblauw-background-color);
+		--_main-content-color: var(--semantics-categories-filled-hemelblauw-content-color);
+	}
+
+	:host([main-background="lichtblauw"]) {
+		--_main-background-color: var(--semantics-categories-filled-lichtblauw-background-color);
+		--_main-content-color: var(--semantics-categories-filled-lichtblauw-content-color);
+	}
+
+	:host([main-background="paars"]) {
+		--_main-background-color: var(--semantics-categories-filled-paars-background-color);
+		--_main-content-color: var(--semantics-categories-filled-paars-content-color);
+	}
+
+	:host([main-background="violet"]) {
+		--_main-background-color: var(--semantics-categories-filled-violet-background-color);
+		--_main-content-color: var(--semantics-categories-filled-violet-content-color);
+	}
+
+	:host([main-background="robijnrood"]) {
+		--_main-background-color: var(--semantics-categories-filled-robijnrood-background-color);
+		--_main-content-color: var(--semantics-categories-filled-robijnrood-content-color);
+	}
+
+	:host([main-background="roze"]) {
+		--_main-background-color: var(--semantics-categories-filled-roze-background-color);
+		--_main-content-color: var(--semantics-categories-filled-roze-content-color);
+	}
+
+	:host([main-background="rood"]) {
+		--_main-background-color: var(--semantics-categories-filled-rood-background-color);
+		--_main-content-color: var(--semantics-categories-filled-rood-content-color);
+	}
+
+	:host([main-background="oranje"]) {
+		--_main-background-color: var(--semantics-categories-filled-oranje-background-color);
+		--_main-content-color: var(--semantics-categories-filled-oranje-content-color);
+	}
+
+	:host([main-background="donkergeel"]) {
+		--_main-background-color: var(--semantics-categories-filled-donkergeel-background-color);
+		--_main-content-color: var(--semantics-categories-filled-donkergeel-content-color);
+	}
+
+
+	/* # Block */
+
+	.hero {
+		box-sizing: border-box;
+		display: flex;
+		width: 100%;
+		flex-direction: column;
+		flex-grow: 1;
+		align-items: center;
+
+		/* The responsive overrides live here, not on :host — a container
+		   query inside :host would match an ancestor container, while these
+		   must query the host's own inline size. */
+		@container (min-width: ${mdMin}) and (max-width: ${mdMax}) {
+			--_corner-radius: calc(var(--semantics-brand-ribbon-md-width) * 2);
+			--_main-padding: var(--primitives-space-24);
+		}
+
+		@container (min-width: ${lgMin}) {
+			--_corner-radius: calc(var(--semantics-brand-ribbon-lg-width) * 2);
+			--_main-padding: var(--primitives-space-32);
+		}
+
+		@container (max-width: ${smMax}) {
+			padding-inline: var(--semantics-page-sections-sm-margin-inline);
+			padding-top: var(--_sm-padding-top, var(--_padding-top, var(--semantics-page-sections-sm-margin-block)));
+			padding-bottom: var(--_sm-padding-bottom, var(--_padding-bottom, var(--semantics-page-sections-sm-margin-block)));
+		}
+
+		@container (min-width: ${mdMin}) and (max-width: ${mdMax}) {
+			padding-inline: var(--semantics-page-sections-md-margin-inline);
+			padding-top: var(--_md-padding-top, var(--_padding-top, var(--semantics-page-sections-md-margin-block)));
+			padding-bottom: var(--_md-padding-bottom, var(--_padding-bottom, var(--semantics-page-sections-md-margin-block)));
+		}
+
+		@container (min-width: ${lgMin}) {
+			padding-inline: var(--semantics-page-sections-lg-margin-inline);
+			padding-top: var(--_lg-padding-top, var(--_padding-top, var(--semantics-page-sections-lg-margin-block)));
+			padding-bottom: var(--_lg-padding-bottom, var(--_padding-bottom, var(--semantics-page-sections-lg-margin-block)));
+		}
+	}
+
+
+	/* # Body */
+
+	.hero__body {
+		display: flex;
+		width: 100%;
+		max-width: var(--_max-width);
+		flex-direction: column;
+		flex-grow: 1;
+	}
+
+
+	/* # Figure
+	   The shape element: one rounded corner (clipped), media behind, the
+	   main panel placed in the single grid cell. */
+
+	.hero__figure {
+		display: grid;
+		position: relative;
+		overflow: hidden;
+		flex-grow: 1;
+		grid-template-columns: 100%;
+	}
+
+	:host([data-has-media]) .hero__figure {
+		@container (min-width: ${mdMin}) {
+			aspect-ratio: 21 / 9;
+		}
+	}
+
+	:host([data-corner="top-left"]) .hero__figure {
+		border-top-left-radius: var(--_corner-radius);
+	}
+
+	:host([data-corner="top-right"]) .hero__figure {
+		border-top-right-radius: var(--_corner-radius);
+	}
+
+	:host([data-corner="bottom-left"]) .hero__figure {
+		border-bottom-left-radius: var(--_corner-radius);
+	}
+
+	:host([data-corner="bottom-right"]) .hero__figure {
+		border-bottom-right-radius: var(--_corner-radius);
+	}
+
+	@media (forced-colors: active) {
+		.hero__figure {
+			border: var(--primitives-border-width-thin) solid CanvasText;
+		}
+	}
+
+
+	/* # Media */
+
+	.hero__media {
+		position: absolute;
+		inset: 0;
+	}
+
+	.hero__media[hidden] {
+		display: none;
+	}
+
+	.hero__media ::slotted(img) {
+		${slottedReset}
+		display: block !important;
+		width: 100% !important;
+		height: 100% !important;
+		object-fit: cover !important;
+	}
+
+	.hero__media ::slotted(nldd-image) {
+		display: block !important;
+		width: 100% !important;
+		height: 100% !important;
+	}
+
+
+	/* # Main */
+
+	.hero__main {
+		box-sizing: border-box;
+		display: flex;
+		position: relative;
+		grid-area: 1 / 1;
+		align-self: end;
+		justify-self: start;
+		background-color: var(--_main-background-color);
+		width: var(--_main-width);
+		padding: var(--_main-padding);
+		flex-direction: column;
+		color: var(--_main-content-color);
+	}
+
+	:host(:not([data-has-media])) .hero__main {
+		width: 100%;
+	}
+
+	:host([main-position="top-left"]) .hero__main {
+		align-self: start;
+	}
+
+	:host([main-position="top-right"]) .hero__main {
+		align-self: start;
+		justify-self: end;
+	}
+
+	:host([main-position="bottom-right"]) .hero__main {
+		justify-self: end;
+	}
+
+	:host([main-position="left"]) .hero__main {
+		align-self: stretch;
+	}
+
+	:host([main-position="right"]) .hero__main {
+		align-self: stretch;
+		justify-self: end;
+	}
+
+	:host([data-main-corner="top-left"]) .hero__main {
+		border-top-left-radius: var(--_corner-radius);
+	}
+
+	:host([data-main-corner="top-right"]) .hero__main {
+		border-top-right-radius: var(--_corner-radius);
+	}
+
+	:host([data-main-corner="bottom-left"]) .hero__main {
+		border-bottom-left-radius: var(--_corner-radius);
+	}
+
+	:host([data-main-corner="bottom-right"]) .hero__main {
+		border-bottom-right-radius: var(--_corner-radius);
+	}
+
+	@media (forced-colors: active) {
+		.hero__main {
+			border: var(--primitives-border-width-thin) solid CanvasText;
+		}
+	}
+
+
+	/* # Mobile
+	   Small containers stack the figure: media on top (or below for the
+	   top positions), the panel full width and cornerless; the figure's
+	   rounded corner moves to the media so the panel reads as a plain
+	   surface. Placed after the corner rules so the equal-specificity
+	   zero-out wins on source order. */
+
+	@container (max-width: ${smMax}) {
+		.hero__figure {
+			display: flex;
+			flex-direction: column;
+		}
+
+		:host(:is([main-position="top-left"], [main-position="top-right"])) .hero__figure {
+			flex-direction: column-reverse;
+		}
+
+		:host([data-corner]) .hero__figure {
+			border-radius: 0;
+		}
+
+		.hero__media {
+			position: static;
+			overflow: hidden;
+			aspect-ratio: 4 / 3;
+		}
+
+		:host([data-corner="top-left"]) .hero__media {
+			border-top-left-radius: var(--_corner-radius);
+		}
+
+		:host([data-corner="top-right"]) .hero__media {
+			border-top-right-radius: var(--_corner-radius);
+		}
+
+		:host([data-corner="bottom-left"]) .hero__media {
+			border-bottom-left-radius: var(--_corner-radius);
+		}
+
+		:host([data-corner="bottom-right"]) .hero__media {
+			border-bottom-right-radius: var(--_corner-radius);
+		}
+
+		:host([data-main-corner]) .hero__main {
+			border-radius: 0;
+		}
+
+		.hero__main {
+			width: 100%;
+		}
+	}
+`;
