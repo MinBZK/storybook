@@ -1220,7 +1220,7 @@ A section that spans the full width without horizontal padding. Useful for backg
 
 ### `<nldd-hero>`
 
-Een paginakop volgens de rijkshuisstijl-vormtaal: een mediavlak met exact één afgeronde hoek (radius afgeleid van de lintbreedte) en een tekstpaneel (de main) dat op zes posities kan staan. De radius is van het component en niet instelbaar: 1X lintbreedte op smalle containers, 2X op md/lg. De media-hoek volgt automatisch uit `main-position` (zie de tabel in de stories) en is per geval te overschrijven met `corner`. Het paneel krijgt zijn eigen enkele afgeronde hoek op de hoek die diagonaal het mediavlak in wijst — behalve wanneer het een volledige rand beslaat (`left`/`right`, `main-width="full"` of de gestapelde mobiele weergave): dan is het paneel hoekloos. Zonder media vult de main het volledige vlak. Met `main-background` krijgt het paneel een vlakkleur uit de filled-categories; die leveren een pure witte of zwarte contentkleur mee, zodat componenten met `color="inherit"` (title, rich-text) gegarandeerd contrast houden. Per de rijkshuisstijl wordt de radius nooit geanimeerd.
+Een paginakop volgens de rijkshuisstijl-vormtaal: een mediavlak met exact één afgeronde hoek (radius afgeleid van de lintbreedte) en een tekstpaneel (de main) dat op zes posities kan staan. De radius is van het component en niet instelbaar: 1,5X lintbreedte op smalle containers, 2X op md/lg. De media-hoek volgt automatisch uit `main-position` (zie de tabel in de stories) en is per geval te overschrijven met `media-corner`. Het paneel krijgt zijn eigen afgeronde hoek — op halve maat, zodat de tekst niet tegen de rand komt — op de hoek die diagonaal het mediavlak in wijst. Beslaat het paneel een volledige rand (`left`/`right`, `main-width="full"` of de gestapelde mobiele weergave), dan is het hoekloos. Op mobiel zit de media-hoek altijd aan de bovenkant (een onderhoek klapt naar zijn bovenhoek) en is hij een halve stap groter (1,5X). Zonder media vult de main het volledige vlak; met `main-background="base"` krijgt het vlak dan een rand op de zijden die de afgeronde hoek raken, zoals blockquote. Met `main-background` krijgt het paneel een vlakkleur uit de filled-categories; die leveren een pure witte of zwarte contentkleur mee, zodat componenten met `color="inherit"` (title, rich-text) gegarandeerd contrast houden. Per de rijkshuisstijl wordt de radius nooit geanimeerd.
 
 **Attributes**
 
@@ -1228,8 +1228,8 @@ Een paginakop volgens de rijkshuisstijl-vormtaal: een mediavlak met exact één 
 | --- | --- | --- |
 | `main-position` | `'top-left'\|'top-right'\|'bottom-left'\|'bottom-right'\|'left'\|'right'` | Positie van het tekstpaneel (default: 'bottom-left'); 'left'/'right' beslaan de volle hoogte |
 | `main-width` | `'1/2'\|'2/3'\|'3/4'\|'full'` | Breedte van het paneel (default: '1/2'); 'full' maakt een volle boven- of onderstrook en wordt bij 'left'/'right' genegeerd |
-| `main-background` | `string` | Vlakkleur van het paneel uit de filled-categories (semantisch: 'neutral'\|'accent'\|'success'\|'warning'\|'critical', of een rijkskleur zoals 'lintblauw'\|'donkerblauw'\|'oranje'); leeg = de base surface |
-| `corner` | `'auto'\|'top-left'\|'top-right'\|'bottom-left'\|'bottom-right'` | Afgeronde hoek van het mediavlak; 'auto' (default) volgt main-position |
+| `main-background` | `string` | Vlakkleur van het paneel: 'base' (de base surface) of een filled-category — 'accent' (default) of een rijkskleur zoals 'lintblauw'\|'donkerblauw'\|'oranje' |
+| `media-corner` | `'auto'\|'top-left'\|'top-right'\|'bottom-left'\|'bottom-right'` | Afgeronde hoek van het mediavlak; 'auto' (default) volgt main-position |
 | `background` | `'inherit'\|'base'\|'tinted'` | Surface achter de hero (sectie-API) |
 | `scheme` | `'inherit'\|'light'\|'dark'\|'inverted'` | Kleurschema (sectie-API) |
 | `width` | `string` | Body max-width; 'full' verwijdert de begrenzing (sectie-API) |

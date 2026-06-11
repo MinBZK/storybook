@@ -27,11 +27,13 @@ export const heroStyles = css`
 		--_lg-padding-bottom: initial;
 		--_max-width: var(--semantics-page-sections-body-max-width);
 		/* Rijkshuisstijl shape language: the corner radius derives from the
-		   ribbon width — 1X on small containers, 2X on md/lg. Never animated. */
-		--_corner-radius: calc(var(--semantics-brand-ribbon-sm-width) * 1);
+		   ribbon width — 1.5X on small containers, 2X on md/lg, and the panel
+		   corner at half the media radius so text clears the curve. Never
+		   animated. */
+		--_corner-radius: calc(var(--semantics-brand-ribbon-sm-width) * 1.5);
 		--_main-width: 50%;
-		--_main-background-color: var(--semantics-surfaces-base-background-color);
-		--_main-content-color: var(--semantics-content-color);
+		--_main-background-color: var(--semantics-categories-filled-accent-background-color);
+		--_main-content-color: var(--semantics-categories-filled-accent-content-color);
 		--_main-padding: var(--primitives-space-16);
 
 		${inheritedTextReset}
@@ -72,29 +74,9 @@ export const heroStyles = css`
 		--_main-width: 50%;
 	}
 
-	:host([main-background="neutral"]) {
-		--_main-background-color: var(--semantics-categories-filled-neutral-background-color);
-		--_main-content-color: var(--semantics-categories-filled-neutral-content-color);
-	}
-
-	:host([main-background="accent"]) {
-		--_main-background-color: var(--semantics-categories-filled-accent-background-color);
-		--_main-content-color: var(--semantics-categories-filled-accent-content-color);
-	}
-
-	:host([main-background="success"]) {
-		--_main-background-color: var(--semantics-categories-filled-success-background-color);
-		--_main-content-color: var(--semantics-categories-filled-success-content-color);
-	}
-
-	:host([main-background="warning"]) {
-		--_main-background-color: var(--semantics-categories-filled-warning-background-color);
-		--_main-content-color: var(--semantics-categories-filled-warning-content-color);
-	}
-
-	:host([main-background="critical"]) {
-		--_main-background-color: var(--semantics-categories-filled-critical-background-color);
-		--_main-content-color: var(--semantics-categories-filled-critical-content-color);
+	:host([main-background="base"]) {
+		--_main-background-color: var(--semantics-surfaces-base-background-color);
+		--_main-content-color: var(--semantics-content-color);
 	}
 
 	:host([main-background="coolgray"]) {
@@ -170,7 +152,12 @@ export const heroStyles = css`
 
 		/* The responsive overrides live here, not on :host — a container
 		   query inside :host would match an ancestor container, while these
-		   must query the host's own inline size. */
+		   must query the host's own inline size. The derived panel radius is
+		   also declared here (not on :host): a custom property resolves its
+		   var() on the declaring element, so it must sit below the
+		   breakpoint overrides to track them. */
+		--_main-corner-radius: calc(var(--_corner-radius) / 2);
+
 		@container (min-width: ${mdMin}) and (max-width: ${mdMax}) {
 			--_corner-radius: calc(var(--semantics-brand-ribbon-md-width) * 2);
 			--_main-padding: var(--primitives-space-24);
@@ -220,8 +207,35 @@ export const heroStyles = css`
 		display: grid;
 		position: relative;
 		overflow: hidden;
+		/* Painted in the panel color so subpixel seams between the media and
+		   the panel (fractional aspect-ratio heights) never show through as a
+		   light hairline. */
+		background-color: var(--_main-background-color);
 		flex-grow: 1;
 		grid-template-columns: 100%;
+	}
+
+	/* Without media a base-colored shape would be invisible on the base
+	   surface; border the sides that meet the rounded corner, like
+	   blockquote does. */
+	:host(:not([data-has-media])[main-background="base"][data-media-corner="top-left"]) .hero__figure {
+		border-top: var(--primitives-border-width-regular) solid var(--semantics-content-color);
+		border-left: var(--primitives-border-width-regular) solid var(--semantics-content-color);
+	}
+
+	:host(:not([data-has-media])[main-background="base"][data-media-corner="top-right"]) .hero__figure {
+		border-top: var(--primitives-border-width-regular) solid var(--semantics-content-color);
+		border-right: var(--primitives-border-width-regular) solid var(--semantics-content-color);
+	}
+
+	:host(:not([data-has-media])[main-background="base"][data-media-corner="bottom-left"]) .hero__figure {
+		border-bottom: var(--primitives-border-width-regular) solid var(--semantics-content-color);
+		border-left: var(--primitives-border-width-regular) solid var(--semantics-content-color);
+	}
+
+	:host(:not([data-has-media])[main-background="base"][data-media-corner="bottom-right"]) .hero__figure {
+		border-bottom: var(--primitives-border-width-regular) solid var(--semantics-content-color);
+		border-right: var(--primitives-border-width-regular) solid var(--semantics-content-color);
 	}
 
 	:host([data-has-media]) .hero__figure {
@@ -230,19 +244,19 @@ export const heroStyles = css`
 		}
 	}
 
-	:host([data-corner="top-left"]) .hero__figure {
+	:host([data-media-corner="top-left"]) .hero__figure {
 		border-top-left-radius: var(--_corner-radius);
 	}
 
-	:host([data-corner="top-right"]) .hero__figure {
+	:host([data-media-corner="top-right"]) .hero__figure {
 		border-top-right-radius: var(--_corner-radius);
 	}
 
-	:host([data-corner="bottom-left"]) .hero__figure {
+	:host([data-media-corner="bottom-left"]) .hero__figure {
 		border-bottom-left-radius: var(--_corner-radius);
 	}
 
-	:host([data-corner="bottom-right"]) .hero__figure {
+	:host([data-media-corner="bottom-right"]) .hero__figure {
 		border-bottom-right-radius: var(--_corner-radius);
 	}
 
@@ -321,20 +335,35 @@ export const heroStyles = css`
 		justify-self: end;
 	}
 
+	/* A grown corner panel keeps at least the corner-radius height of media
+	   visible on its media-facing side, so the rounded corner never gets
+	   squeezed out. Only relevant in the overlay layout (md and up). */
+	:host([data-has-media]:not([data-main-corner="none"]):is([main-position="bottom-left"], [main-position="bottom-right"])) .hero__main {
+		@container (min-width: ${mdMin}) {
+			margin-top: calc(var(--_corner-radius) * 2);
+		}
+	}
+
+	:host([data-has-media]:not([data-main-corner="none"]):is([main-position="top-left"], [main-position="top-right"])) .hero__main {
+		@container (min-width: ${mdMin}) {
+			margin-bottom: calc(var(--_corner-radius) * 2);
+		}
+	}
+
 	:host([data-main-corner="top-left"]) .hero__main {
-		border-top-left-radius: var(--_corner-radius);
+		border-top-left-radius: var(--_main-corner-radius);
 	}
 
 	:host([data-main-corner="top-right"]) .hero__main {
-		border-top-right-radius: var(--_corner-radius);
+		border-top-right-radius: var(--_main-corner-radius);
 	}
 
 	:host([data-main-corner="bottom-left"]) .hero__main {
-		border-bottom-left-radius: var(--_corner-radius);
+		border-bottom-left-radius: var(--_main-corner-radius);
 	}
 
 	:host([data-main-corner="bottom-right"]) .hero__main {
-		border-bottom-right-radius: var(--_corner-radius);
+		border-bottom-right-radius: var(--_main-corner-radius);
 	}
 
 	@media (forced-colors: active) {
@@ -361,7 +390,7 @@ export const heroStyles = css`
 			flex-direction: column-reverse;
 		}
 
-		:host([data-corner]) .hero__figure {
+		:host([data-media-corner]) .hero__figure {
 			border-radius: 0;
 		}
 
@@ -371,20 +400,15 @@ export const heroStyles = css`
 			aspect-ratio: 4 / 3;
 		}
 
-		:host([data-corner="top-left"]) .hero__media {
+		/* On mobile the rounded corner always sits at the top: a bottom
+		   corner flips to its top counterpart, also when the consumer set
+		   one explicitly. */
+		:host(:is([data-media-corner="top-left"], [data-media-corner="bottom-left"])) .hero__media {
 			border-top-left-radius: var(--_corner-radius);
 		}
 
-		:host([data-corner="top-right"]) .hero__media {
+		:host(:is([data-media-corner="top-right"], [data-media-corner="bottom-right"])) .hero__media {
 			border-top-right-radius: var(--_corner-radius);
-		}
-
-		:host([data-corner="bottom-left"]) .hero__media {
-			border-bottom-left-radius: var(--_corner-radius);
-		}
-
-		:host([data-corner="bottom-right"]) .hero__media {
-			border-bottom-right-radius: var(--_corner-radius);
 		}
 
 		:host([data-main-corner]) .hero__main {

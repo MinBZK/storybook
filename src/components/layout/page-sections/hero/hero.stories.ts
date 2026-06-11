@@ -1,4 +1,4 @@
-import { html, nothing } from 'lit';
+import { html } from 'lit';
 import './hero.js';
 import '../../../content/title/title.js';
 import '../../../content/rich-text/rich-text.js';
@@ -8,7 +8,7 @@ const MEDIA = 'sample-images/butterfly-1200.jpg';
 
 /**
  * Een paginakop volgens de rijkshuisstijl-vormtaal: een mediavlak met exact
- * één afgeronde hoek (1X lintbreedte op smalle containers, 2X op md/lg) en
+ * één afgeronde hoek (1,5X lintbreedte op smalle containers, 2X op md/lg) en
  * een tekstpaneel op zes mogelijke posities. De media-hoek volgt automatisch
  * uit `main-position`:
  *
@@ -20,12 +20,15 @@ const MEDIA = 'sample-images/butterfly-1200.jpg';
  * | top-right | linksboven | linksonder |
  * | left / right (volle hoogte) | rechtsboven / linksboven | geen |
  *
- * Met `corner` is de media-hoek per geval te overschrijven. Beslaat het
- * paneel een volledige rand (`left`/`right`, `main-width="full"` of de
- * gestapelde mobiele weergave), dan is het paneel hoekloos. Zonder media
- * vult de main het volledige vlak. Gebruik `main-background` voor een
- * vlakkleur uit de filled-categories en zet binnenin `color="inherit"` op
- * title en rich-text voor gegarandeerd contrast.
+ * Met `media-corner` is de media-hoek per geval te overschrijven. Het paneel
+ * krijgt zijn hoek op halve maat zodat de tekst niet tegen de rand komt;
+ * beslaat het een volledige rand (`left`/`right`, `main-width="full"` of de
+ * gestapelde mobiele weergave), dan is het hoekloos. Op mobiel zit de
+ * media-hoek altijd aan de bovenkant en is hij een halve stap groter (1,5X).
+ * Zonder media vult de main het volledige vlak. `main-background` is
+ * standaard `accent`; met `base` krijgt het vlak zonder media een rand op de
+ * hoekzijden, zoals blockquote. Zet binnenin `color="inherit"` op title en
+ * rich-text voor gegarandeerd contrast op de filled-kleuren.
  */
 export default {
 	title: 'Components/Layout/Page Sections/Hero',
@@ -41,8 +44,8 @@ export default {
 	args: {
 		mainPosition: 'bottom-left',
 		mainWidth: '1/2',
-		mainBackground: 'donkerblauw',
-		corner: 'auto',
+		mainBackground: 'accent',
+		mediaCorner: 'auto',
 	},
 	argTypes: {
 		mainPosition: {
@@ -62,12 +65,12 @@ export default {
 		mainBackground: {
 			name: 'main-background',
 			control: 'select',
-			options: ['(geen)', 'neutral', 'accent', 'success', 'warning', 'critical', 'coolgray', 'lintblauw', 'donkerblauw', 'hemelblauw', 'lichtblauw', 'paars', 'violet', 'robijnrood', 'roze', 'rood', 'oranje', 'donkergeel'],
-			mapping: { '(geen)': '' },
-			description: 'Vlakkleur van het paneel uit de filled-categories',
-			table: { defaultValue: { summary: '(geen)' } },
+			options: ['base', 'accent', 'coolgray', 'lintblauw', 'donkerblauw', 'hemelblauw', 'lichtblauw', 'paars', 'violet', 'robijnrood', 'roze', 'rood', 'oranje', 'donkergeel'],
+			description: 'Vlakkleur van het paneel: base of een filled-category',
+			table: { defaultValue: { summary: 'accent' } },
 		},
-		corner: {
+		mediaCorner: {
+			name: 'media-corner',
 			control: 'select',
 			options: ['auto', 'top-left', 'top-right', 'bottom-left', 'bottom-right'],
 			description: 'Afgeronde hoek van het mediavlak; auto volgt main-position',
@@ -80,8 +83,8 @@ const Template = (args: Record<string, any>) => html`
 	<nldd-hero
 		main-position=${args.mainPosition}
 		main-width=${args.mainWidth}
-		main-background=${args.mainBackground || nothing}
-		corner=${args.corner}
+		main-background=${args.mainBackground}
+		media-corner=${args.mediaCorner}
 	>
 		<img slot="media"
 			src=${MEDIA}
@@ -91,8 +94,10 @@ const Template = (args: Record<string, any>) => html`
 			size="2"
 		>
 			<h1>Regels die voor je werken</h1>
-			<p slot="subtitle">De Nederlandse Digitale Dienst</p>
 		</nldd-title>
+		<nldd-rich-text color="inherit">
+			<p>De Nederlandse Digitale Dienst maakt regels begrijpelijk en uitvoerbaar.</p>
+		</nldd-rich-text>
 	</nldd-hero>
 `;
 
@@ -151,19 +156,29 @@ export const VolleStrook = {
 };
 
 /**
- * Zonder media vult de main het volledige vlak; de enige afgeronde hoek zit
- * dan op het paneel zelf en volgt nog steeds `main-position` of `corner`.
+ * Zonder media vult de main het volledige vlak; de afgeronde hoek zit dan op
+ * het vlak zelf en volgt nog steeds `main-position` of `media-corner`. Met
+ * `main-background="base"` krijgt het vlak een rand op de zijden die de
+ * hoek raken, zoals blockquote — anders zou de vorm onzichtbaar zijn.
  */
 export const ZonderMedia = {
 	render: () => html`
-		<nldd-hero main-background="hemelblauw">
-			<nldd-title color="inherit"
-				size="2"
-			>
-				<h1>Kleurvlak zonder fotografie</h1>
-				<p slot="subtitle">De main beslaat de volledige hero</p>
-			</nldd-title>
-		</nldd-hero>
+		<div style="display: flex; flex-direction: column; gap: 24px;">
+			<nldd-hero main-background="hemelblauw">
+				<nldd-title color="inherit"
+					size="2"
+				>
+					<h1>Kleurvlak zonder fotografie</h1>
+					<p slot="subtitle">De main beslaat de volledige hero</p>
+				</nldd-title>
+			</nldd-hero>
+			<nldd-hero main-background="base">
+				<nldd-title size="2">
+					<h1>Base zonder media</h1>
+					<p slot="subtitle">Rand op de hoekzijden, zoals blockquote</p>
+				</nldd-title>
+			</nldd-hero>
+		</div>
 	`,
 	parameters: { controls: { disable: true } },
 };

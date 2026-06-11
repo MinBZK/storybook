@@ -22,6 +22,7 @@ describe('nldd-hero', () => {
 		await waitForUpdate(el);
 		expect(el.getAttribute('main-position')).toBe('bottom-left');
 		expect(el.getAttribute('main-width')).toBe('1/2');
+		expect(el.getAttribute('main-background')).toBe('accent');
 	});
 
 
@@ -37,7 +38,7 @@ describe('nldd-hero', () => {
 	])('main-position="%s" resolves media corner "%s" and main corner "%s"', async (position, mediaCorner, mainCorner) => {
 		el = await fixture(`<nldd-hero main-position="${position}">${MEDIA}</nldd-hero>`);
 		await waitForUpdate(el);
-		expect(el.getAttribute('data-corner')).toBe(mediaCorner);
+		expect(el.getAttribute('data-media-corner')).toBe(mediaCorner);
 		expect(el.getAttribute('data-main-corner')).toBe(mainCorner);
 	});
 
@@ -47,7 +48,7 @@ describe('nldd-hero', () => {
 	])('full-height main-position="%s" resolves media corner "%s" and a cornerless panel', async (position, mediaCorner) => {
 		el = await fixture(`<nldd-hero main-position="${position}">${MEDIA}</nldd-hero>`);
 		await waitForUpdate(el);
-		expect(el.getAttribute('data-corner')).toBe(mediaCorner);
+		expect(el.getAttribute('data-media-corner')).toBe(mediaCorner);
 		expect(el.getAttribute('data-main-corner')).toBe('none');
 	});
 
@@ -57,10 +58,10 @@ describe('nldd-hero', () => {
 		expect(el.getAttribute('data-main-corner')).toBe('none');
 	});
 
-	it('corner overrides the automatic media corner', async () => {
-		el = await fixture(`<nldd-hero corner="bottom-right">${MEDIA}</nldd-hero>`);
+	it('media-corner overrides the automatic media corner', async () => {
+		el = await fixture(`<nldd-hero media-corner="bottom-right">${MEDIA}</nldd-hero>`);
 		await waitForUpdate(el);
-		expect(el.getAttribute('data-corner')).toBe('bottom-right');
+		expect(el.getAttribute('data-media-corner')).toBe('bottom-right');
 	});
 
 
