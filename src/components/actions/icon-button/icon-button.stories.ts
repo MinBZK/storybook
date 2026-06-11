@@ -37,6 +37,8 @@ export default {
 				'neutral-transparent',
 				'critical-tinted',
 				'critical-transparent',
+				'inherit-filled',
+				'inherit-tinted',
 			],
 			description: 'Visuele stijlvariant',
 			table: {
