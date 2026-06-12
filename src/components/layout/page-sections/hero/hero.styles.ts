@@ -379,14 +379,18 @@ export const heroStyles = css`
 
 	/* A grown corner panel keeps at least the corner-radius height of media
 	   visible on its media-facing side, so the rounded corner never gets
-	   squeezed out. Only relevant in the overlay layout (md and up). */
-	:host([data-has-media]:not([data-main-corner="none"]):is([main-position="bottom-left"], [main-position="bottom-right"])) .hero__main {
+	   squeezed out. Keyed off the JS-computed main corner (top-* sits the panel
+	   at the bottom → margin-top; bottom-* → margin-bottom) rather than
+	   main-position, so it still holds when main-position is left to its default
+	   and the attribute isn't reflected. The cornerless left/right panels have
+	   data-main-corner="none" and fall through. Only in the overlay layout (md+). */
+	:host([data-has-media]:is([data-main-corner="top-left"], [data-main-corner="top-right"])) .hero__main {
 		@container (min-width: ${mdMin}) {
 			margin-top: var(--_corner-radius);
 		}
 	}
 
-	:host([data-has-media]:not([data-main-corner="none"]):is([main-position="top-left"], [main-position="top-right"])) .hero__main {
+	:host([data-has-media]:is([data-main-corner="bottom-left"], [data-main-corner="bottom-right"])) .hero__main {
 		@container (min-width: ${mdMin}) {
 			margin-bottom: var(--_corner-radius);
 		}
