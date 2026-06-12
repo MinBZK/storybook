@@ -12,6 +12,7 @@ export const bylineStyles = css`
 		--_avatar-size: var(--primitives-space-40);
 		--_avatar-border-width: var(--primitives-border-width-regular);
 		--_avatar-border-color: var(--context-parent-background-color, var(--semantics-surfaces-base-background-color));
+		--_avatar-corner-radius: var(--primitives-corner-radius-full);
 		--_text-color: var(--semantics-content-color);
 		--_text-font: var(--primitives-font-body-md-medium-tight);
 		--_supporting-text-color: var(--semantics-content-secondary-color);
@@ -43,7 +44,7 @@ export const bylineStyles = css`
 		${slottedReset}
 		display: block !important;
 		margin-inline-start: calc(-1 * var(--_avatar-overlap)) !important;
-		border-radius: var(--primitives-corner-radius-full) !important;
+		border-radius: var(--_avatar-corner-radius) !important;
 		box-shadow: 0 0 0 var(--_avatar-border-width) var(--_avatar-border-color) !important;
 		width: var(--_avatar-size) !important;
 		height: var(--_avatar-size) !important;
