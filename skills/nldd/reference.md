@@ -1240,7 +1240,7 @@ Een paginakop volgens de rijkshuisstijl-vormtaal: een mediavlak met exact één 
 
 | Slot | Beschrijving |
 | --- | --- |
-| `media` | Afbeelding of illustratie (img of nldd-image); vult het vlak en wordt geclipt |
+| `media` | Afbeelding of illustratie (img of nldd-image); vult het vlak en wordt geclipt. Zet `alt=""` wanneer de afbeelding decoratief is; geef anders een beschrijvende alt-tekst op. |
 | _(default)_ | Inhoud van het tekstpaneel (bijv. nldd-title en nldd-rich-text met color="inherit") |
 
 ### `<nldd-navigation-split-view>`
