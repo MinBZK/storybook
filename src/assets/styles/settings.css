@@ -1908,9 +1908,9 @@
 	--components-status-bar-success-is-hovered-background-color: var(--semantics-categories-success-filled-highlight-border-color);
 	--components-status-bar-success-is-active-background-color: var(--primitives-color-success-600);
 	--components-status-bar-success-content-color: var(--semantics-categories-success-filled-primary-content-color);
-	--components-status-bar-warning-background-color: light-dark(var(--primitives-color-warning-350), var(--primitives-color-warning-650));
-	--components-status-bar-warning-is-hovered-background-color: light-dark(var(--primitives-color-warning-400), var(--primitives-color-warning-600));
-	--components-status-bar-warning-is-active-background-color: light-dark(var(--primitives-color-warning-450), var(--primitives-color-warning-550));
+	--components-status-bar-warning-background-color: var(--semantics-categories-warning-filled-background-color);
+	--components-status-bar-warning-is-hovered-background-color: var(--semantics-categories-warning-filled-highlight-border-color);
+	--components-status-bar-warning-is-active-background-color: var(--primitives-color-warning-500);
 	--components-status-bar-warning-content-color: var(--semantics-categories-warning-filled-primary-content-color);
 	--components-status-bar-critical-background-color: var(--semantics-categories-critical-filled-background-color);
 	--components-status-bar-critical-is-hovered-background-color: var(--semantics-categories-critical-filled-highlight-border-color);
