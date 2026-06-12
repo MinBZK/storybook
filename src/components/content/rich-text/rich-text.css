@@ -63,6 +63,10 @@ nldd-rich-text[color="inherit"] {
 
 nldd-rich-text[color="inherit"] a {
 	color: currentColor;
+	/* Pin the underline to the inherited color in every state. The hover rule
+	   below only changes thickness, so without this an underline could keep the
+	   default link blue and leak it against a colored surface. */
+	text-decoration-color: currentColor;
 }
 
 nldd-rich-text[color="inherit"] a:hover {
