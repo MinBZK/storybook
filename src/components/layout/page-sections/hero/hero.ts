@@ -41,7 +41,8 @@
  * @attr {string} height - Minimale hoogte van de sectie (sectie-API)
  * @attr {string} padding-block - Blokpadding-override, ook per rand en responsief (sectie-API)
  *
- * @slot media - Afbeelding of illustratie (img of nldd-image); vult het vlak en wordt geclipt
+ * @slot media - Afbeelding of illustratie (img of nldd-image); vult het vlak en wordt geclipt.
+ *   Zet `alt=""` wanneer de afbeelding decoratief is; geef anders een beschrijvende alt-tekst op.
  * @slot - Inhoud van het tekstpaneel (bijv. nldd-title en nldd-rich-text met color="inherit")
  */
 import { LitElement, type PropertyValues } from 'lit';
@@ -110,6 +111,8 @@ export class NLDDHero extends PageSectionMixin(LitElement) {
 		super.willUpdate(changed);
 		// Resolve the corner logic once per update and expose it as host data
 		// attributes the stylesheet keys off — keeps the per-corner CSS flat.
+		// mainPosition is typed, but HTML attributes are not — fall back to the
+		// default for an unknown or empty value (the design-system convention).
 		const position = AUTO_CORNER[this.mainPosition] ? this.mainPosition : 'bottom-left';
 		const mediaCorner = this.mediaCorner !== 'auto'
 			? this.mediaCorner
