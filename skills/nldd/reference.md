@@ -1228,7 +1228,7 @@ Een paginakop volgens de rijkshuisstijl-vormtaal: een mediavlak met exact één 
 | --- | --- | --- |
 | `main-position` | `'top-left'\|'top-right'\|'bottom-left'\|'bottom-right'\|'left'\|'right'` | Positie van het tekstpaneel (default: 'bottom-left'); 'left'/'right' beslaan de volle hoogte |
 | `main-width` | `'1/2'\|'2/3'\|'3/4'\|'full'` | Breedte van het paneel (default: '1/2'); 'full' maakt een volle boven- of onderstrook en wordt bij 'left'/'right' genegeerd |
-| `main-background` | `string` | Vlakkleur van het paneel: 'base' (de base surface) of een filled-category — 'accent' (default) of een rijkskleur zoals 'lintblauw'\|'donkerblauw'\|'oranje' |
+| `main-background` | `string` | Vlakkleur van het paneel: 'base' (de base surface) of een categoriekleur — 'accent' (default) of een rijkskleur zoals 'lintblauw'\|'donkerblauw'\|'oranje' |
 | `media-corner` | `'auto'\|'top-left'\|'top-right'\|'bottom-left'\|'bottom-right'` | Afgeronde hoek van het mediavlak; 'auto' (default) volgt main-position |
 | `background` | `'inherit'\|'base'\|'tinted'` | Surface achter de hero (sectie-API) |
 | `scheme` | `'inherit'\|'light'\|'dark'\|'inverted'` | Kleurschema (sectie-API) |
