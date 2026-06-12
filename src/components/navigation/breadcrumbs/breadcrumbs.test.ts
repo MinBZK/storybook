@@ -186,6 +186,27 @@ describe('nldd-breadcrumbs collapsing', () => {
 		expect(deepActiveElement()).toBe(firstRevealed.shadowRoot!.querySelector('a'));
 	});
 
+	it('lands focus on a revealed plain-text crumb instead of dropping it (WCAG 2.4.3)', async () => {
+		// Middle crumbs without href render as plain text — no inner link to
+		// delegate focus to. Expanding must still move focus onto a revealed
+		// crumb (its host), not silently drop it to <body>.
+		el = await fixture(`
+			<nldd-breadcrumbs>
+				<nldd-breadcrumbs-item text="Home" href="/"></nldd-breadcrumbs-item>
+				<nldd-breadcrumbs-item text="Sectie"></nldd-breadcrumbs-item>
+				<nldd-breadcrumbs-item text="Subsectie"></nldd-breadcrumbs-item>
+				<nldd-breadcrumbs-item text="Pagina" href="/p/"></nldd-breadcrumbs-item>
+				<nldd-breadcrumbs-item text="Huidige" current></nldd-breadcrumbs-item>
+			</nldd-breadcrumbs>
+		`);
+		await waitForUpdate(el);
+		el.shadowRoot!.querySelector<HTMLButtonElement>('.breadcrumbs__ellipsis-button')!.click();
+		await waitForUpdate(el);
+		const firstRevealed = el.querySelectorAll('nldd-breadcrumbs-item')[1]!;
+		expect(firstRevealed.shadowRoot!.querySelector('a')).toBeNull();   // plain text, no link
+		expect(deepActiveElement()).toBe(firstRevealed);
+	});
+
 	it('stays expanded when items change afterwards', async () => {
 		el = await fixture(FIVE_LEVELS);
 		await waitForUpdate(el);

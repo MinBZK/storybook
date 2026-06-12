@@ -88,11 +88,19 @@ export class NLDDBreadcrumbsItem extends LitElement {
 
 	/**
 	 * Delegates focus to the inner link, so the parent can move focus to a
-	 * revealed item after expanding the collapsed trail. Non-link items
-	 * (plain text, current page) have nothing focusable and stay a no-op.
+	 * revealed item after expanding the collapsed trail. A plain-text or current
+	 * crumb has no inner link; it makes its own host focusable (tabindex="-1")
+	 * and takes focus there instead, so the parent can land focus on any
+	 * revealed item rather than dropping it to <body> (WCAG 2.4.3).
 	 */
 	override focus(options?: FocusOptions): void {
-		this.shadowRoot?.querySelector<HTMLElement>('.breadcrumbs__item-link')?.focus(options);
+		const link = this.shadowRoot?.querySelector<HTMLElement>('.breadcrumbs__item-link');
+		if (link) {
+			link.focus(options);
+			return;
+		}
+		this.tabIndex = -1;
+		super.focus(options);
 	}
 
 	override render() {
