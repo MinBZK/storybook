@@ -202,4 +202,29 @@ describe('nldd-breadcrumbs collapsing', () => {
 		expect(el.shadowRoot!.querySelector('.breadcrumbs__ellipsis-button')).toBeNull();
 		expect(el.querySelector('[data-nldd-collapsed]')).toBeNull();
 	});
+
+	it('stays expanded after the whole trail is replaced (one-shot, e.g. SPA navigation)', async () => {
+		el = await fixture(FIVE_LEVELS);
+		await waitForUpdate(el);
+		el.shadowRoot!.querySelector<HTMLButtonElement>('.breadcrumbs__ellipsis-button')!.click();
+		await waitForUpdate(el);
+		expect(el.querySelector('[data-nldd-collapsed]')).toBeNull();
+
+		// Swap in a brand-new four-plus-level trail, as a persistent breadcrumbs
+		// element would see on a route change. The one-shot _expanded flag is
+		// deliberately not reset, so the fresh trail stays fully expanded.
+		el.replaceChildren();
+		['Home', 'Zorg', 'Aanvragen', 'Status', 'Detail'].forEach((text, i, all) => {
+			const item = document.createElement('nldd-breadcrumbs-item');
+			item.setAttribute('text', text);
+			if (i < all.length - 1) item.setAttribute('href', `/${i}/`);
+			else item.setAttribute('current', '');
+			el.appendChild(item);
+		});
+		await waitForUpdate(el);
+		await waitForUpdate(el);
+
+		expect(el.shadowRoot!.querySelector('.breadcrumbs__ellipsis-button')).toBeNull();
+		expect(el.querySelector('[data-nldd-collapsed]')).toBeNull();
+	});
 });
