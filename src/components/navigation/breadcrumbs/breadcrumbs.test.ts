@@ -164,6 +164,16 @@ describe('nldd-breadcrumbs collapsing', () => {
 		expect(el.querySelector('[data-nldd-collapsed]')).toBeNull();
 	});
 
+	it('re-collapses when no-collapse is removed at runtime', async () => {
+		el = await fixture(FIVE_LEVELS.replace('<nldd-breadcrumbs>', '<nldd-breadcrumbs no-collapse>'));
+		await waitForUpdate(el);
+		expect(el.querySelector('[data-nldd-collapsed]')).toBeNull();
+		el.removeAttribute('no-collapse');
+		await waitForUpdate(el);
+		expect(el.querySelector('[data-nldd-collapsed]')).not.toBeNull();
+		expect(el.shadowRoot!.querySelector('.breadcrumbs__ellipsis-button')).not.toBeNull();
+	});
+
 	it('expands on click: reveals all levels, removes the button, moves focus', async () => {
 		el = await fixture(FIVE_LEVELS);
 		await waitForUpdate(el);
