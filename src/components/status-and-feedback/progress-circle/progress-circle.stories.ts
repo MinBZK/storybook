@@ -4,7 +4,7 @@ import './progress-circle.js';
 const SEMANTIC_COLORS = ['neutral', 'accent', 'success', 'warning', 'critical'] as const;
 
 const RIJKSLEUREN = [
-		'lintblauw', 'donkerblauw', 'hemelblauw', 'lichtblauw',
+	'lintblauw', 'donkerblauw', 'hemelblauw', 'lichtblauw',
 	'paars', 'violet',
 	'robijnrood', 'roze', 'rood', 'oranje',
 	'donkergeel', 'geel',
