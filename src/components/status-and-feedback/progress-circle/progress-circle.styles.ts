@@ -107,29 +107,29 @@ export const progressCircleStyles = css`
 
 	/* ## Arc color per variant */
 
-	.progress-circle__segment-indicator--neutral { stroke: var(--components-progress-circle-neutral-background-color); }
-	.progress-circle__segment-indicator--accent { stroke: var(--components-progress-circle-accent-background-color); }
-	.progress-circle__segment-indicator--success { stroke: var(--components-progress-circle-success-background-color); }
-	.progress-circle__segment-indicator--warning { stroke: var(--components-progress-circle-warning-background-color); }
-	.progress-circle__segment-indicator--critical { stroke: var(--components-progress-circle-critical-background-color); }
-	.progress-circle__segment-indicator--lintblauw { stroke: var(--components-progress-circle-lintblauw-background-color); }
-	.progress-circle__segment-indicator--donkerblauw { stroke: var(--components-progress-circle-donkerblauw-background-color); }
-	.progress-circle__segment-indicator--hemelblauw { stroke: var(--components-progress-circle-hemelblauw-background-color); }
-	.progress-circle__segment-indicator--lichtblauw { stroke: var(--components-progress-circle-lichtblauw-background-color); }
-	.progress-circle__segment-indicator--paars { stroke: var(--components-progress-circle-paars-background-color); }
-	.progress-circle__segment-indicator--violet { stroke: var(--components-progress-circle-violet-background-color); }
-	.progress-circle__segment-indicator--robijnrood { stroke: var(--components-progress-circle-robijnrood-background-color); }
-	.progress-circle__segment-indicator--roze { stroke: var(--components-progress-circle-roze-background-color); }
-	.progress-circle__segment-indicator--rood { stroke: var(--components-progress-circle-rood-background-color); }
-	.progress-circle__segment-indicator--oranje { stroke: var(--components-progress-circle-oranje-background-color); }
-	.progress-circle__segment-indicator--donkergeel { stroke: var(--components-progress-circle-donkergeel-background-color); }
-	.progress-circle__segment-indicator--geel { stroke: var(--components-progress-circle-geel-background-color); }
-	.progress-circle__segment-indicator--donkerbruin { stroke: var(--components-progress-circle-donkerbruin-background-color); }
-	.progress-circle__segment-indicator--bruin { stroke: var(--components-progress-circle-bruin-background-color); }
-	.progress-circle__segment-indicator--donkergroen { stroke: var(--components-progress-circle-donkergroen-background-color); }
-	.progress-circle__segment-indicator--groen { stroke: var(--components-progress-circle-groen-background-color); }
-	.progress-circle__segment-indicator--mosgroen { stroke: var(--components-progress-circle-mosgroen-background-color); }
-	.progress-circle__segment-indicator--mintgroen { stroke: var(--components-progress-circle-mintgroen-background-color); }
+	.progress-circle__segment-indicator--neutral { stroke: var(--semantics-categories-neutral-filled-background-color); }
+	.progress-circle__segment-indicator--accent { stroke: var(--semantics-categories-accent-filled-background-color); }
+	.progress-circle__segment-indicator--success { stroke: var(--semantics-categories-success-filled-background-color); }
+	.progress-circle__segment-indicator--warning { stroke: var(--semantics-categories-warning-filled-background-color); }
+	.progress-circle__segment-indicator--critical { stroke: var(--semantics-categories-critical-filled-background-color); }
+	.progress-circle__segment-indicator--lintblauw { stroke: var(--semantics-categories-lintblauw-filled-background-color); }
+	.progress-circle__segment-indicator--donkerblauw { stroke: var(--semantics-categories-donkerblauw-filled-background-color); }
+	.progress-circle__segment-indicator--hemelblauw { stroke: var(--semantics-categories-hemelblauw-filled-background-color); }
+	.progress-circle__segment-indicator--lichtblauw { stroke: var(--semantics-categories-lichtblauw-filled-background-color); }
+	.progress-circle__segment-indicator--paars { stroke: var(--semantics-categories-paars-filled-background-color); }
+	.progress-circle__segment-indicator--violet { stroke: var(--semantics-categories-violet-filled-background-color); }
+	.progress-circle__segment-indicator--robijnrood { stroke: var(--semantics-categories-robijnrood-filled-background-color); }
+	.progress-circle__segment-indicator--roze { stroke: var(--semantics-categories-roze-filled-background-color); }
+	.progress-circle__segment-indicator--rood { stroke: var(--semantics-categories-rood-filled-background-color); }
+	.progress-circle__segment-indicator--oranje { stroke: var(--semantics-categories-oranje-filled-background-color); }
+	.progress-circle__segment-indicator--donkergeel { stroke: var(--semantics-categories-donkergeel-filled-background-color); }
+	.progress-circle__segment-indicator--geel { stroke: var(--semantics-categories-geel-filled-background-color); }
+	.progress-circle__segment-indicator--donkerbruin { stroke: var(--semantics-categories-donkerbruin-filled-background-color); }
+	.progress-circle__segment-indicator--bruin { stroke: var(--semantics-categories-bruin-filled-background-color); }
+	.progress-circle__segment-indicator--donkergroen { stroke: var(--semantics-categories-donkergroen-filled-background-color); }
+	.progress-circle__segment-indicator--groen { stroke: var(--semantics-categories-groen-filled-background-color); }
+	.progress-circle__segment-indicator--mosgroen { stroke: var(--semantics-categories-mosgroen-filled-background-color); }
+	.progress-circle__segment-indicator--mintgroen { stroke: var(--semantics-categories-mintgroen-filled-background-color); }
 
 
 	/* # Spinner (indeterminate)
@@ -163,33 +163,33 @@ export const progressCircleStyles = css`
 	/* # Indeterminate fill + border colour follow the color variant; default accent (blue) */
 
 	:host {
-		--_indeterminate-background-color: var(--components-progress-circle-accent-background-color);
-		--_indeterminate-border-color: var(--components-progress-circle-accent-border-color);
+		--_indeterminate-background-color: var(--semantics-categories-accent-filled-background-color);
+		--_indeterminate-border-color: var(--semantics-categories-accent-filled-highlight-border-color);
 	}
 
-	:host([color="neutral"]) { --_indeterminate-background-color: var(--components-progress-circle-neutral-background-color); --_indeterminate-border-color: var(--components-progress-circle-neutral-border-color); }
-	:host([color="accent"]) { --_indeterminate-background-color: var(--components-progress-circle-accent-background-color); --_indeterminate-border-color: var(--components-progress-circle-accent-border-color); }
-	:host([color="success"]) { --_indeterminate-background-color: var(--components-progress-circle-success-background-color); --_indeterminate-border-color: var(--components-progress-circle-success-border-color); }
-	:host([color="warning"]) { --_indeterminate-background-color: var(--components-progress-circle-warning-background-color); --_indeterminate-border-color: var(--components-progress-circle-warning-border-color); }
-	:host([color="critical"]) { --_indeterminate-background-color: var(--components-progress-circle-critical-background-color); --_indeterminate-border-color: var(--components-progress-circle-critical-border-color); }
-	:host([color="lintblauw"]) { --_indeterminate-background-color: var(--components-progress-circle-lintblauw-background-color); --_indeterminate-border-color: var(--components-progress-circle-lintblauw-border-color); }
-	:host([color="donkerblauw"]) { --_indeterminate-background-color: var(--components-progress-circle-donkerblauw-background-color); --_indeterminate-border-color: var(--components-progress-circle-donkerblauw-border-color); }
-	:host([color="hemelblauw"]) { --_indeterminate-background-color: var(--components-progress-circle-hemelblauw-background-color); --_indeterminate-border-color: var(--components-progress-circle-hemelblauw-border-color); }
-	:host([color="lichtblauw"]) { --_indeterminate-background-color: var(--components-progress-circle-lichtblauw-background-color); --_indeterminate-border-color: var(--components-progress-circle-lichtblauw-border-color); }
-	:host([color="paars"]) { --_indeterminate-background-color: var(--components-progress-circle-paars-background-color); --_indeterminate-border-color: var(--components-progress-circle-paars-border-color); }
-	:host([color="violet"]) { --_indeterminate-background-color: var(--components-progress-circle-violet-background-color); --_indeterminate-border-color: var(--components-progress-circle-violet-border-color); }
-	:host([color="robijnrood"]) { --_indeterminate-background-color: var(--components-progress-circle-robijnrood-background-color); --_indeterminate-border-color: var(--components-progress-circle-robijnrood-border-color); }
-	:host([color="roze"]) { --_indeterminate-background-color: var(--components-progress-circle-roze-background-color); --_indeterminate-border-color: var(--components-progress-circle-roze-border-color); }
-	:host([color="rood"]) { --_indeterminate-background-color: var(--components-progress-circle-rood-background-color); --_indeterminate-border-color: var(--components-progress-circle-rood-border-color); }
-	:host([color="oranje"]) { --_indeterminate-background-color: var(--components-progress-circle-oranje-background-color); --_indeterminate-border-color: var(--components-progress-circle-oranje-border-color); }
-	:host([color="donkergeel"]) { --_indeterminate-background-color: var(--components-progress-circle-donkergeel-background-color); --_indeterminate-border-color: var(--components-progress-circle-donkergeel-border-color); }
-	:host([color="geel"]) { --_indeterminate-background-color: var(--components-progress-circle-geel-background-color); --_indeterminate-border-color: var(--components-progress-circle-geel-border-color); }
-	:host([color="donkerbruin"]) { --_indeterminate-background-color: var(--components-progress-circle-donkerbruin-background-color); --_indeterminate-border-color: var(--components-progress-circle-donkerbruin-border-color); }
-	:host([color="bruin"]) { --_indeterminate-background-color: var(--components-progress-circle-bruin-background-color); --_indeterminate-border-color: var(--components-progress-circle-bruin-border-color); }
-	:host([color="donkergroen"]) { --_indeterminate-background-color: var(--components-progress-circle-donkergroen-background-color); --_indeterminate-border-color: var(--components-progress-circle-donkergroen-border-color); }
-	:host([color="groen"]) { --_indeterminate-background-color: var(--components-progress-circle-groen-background-color); --_indeterminate-border-color: var(--components-progress-circle-groen-border-color); }
-	:host([color="mosgroen"]) { --_indeterminate-background-color: var(--components-progress-circle-mosgroen-background-color); --_indeterminate-border-color: var(--components-progress-circle-mosgroen-border-color); }
-	:host([color="mintgroen"]) { --_indeterminate-background-color: var(--components-progress-circle-mintgroen-background-color); --_indeterminate-border-color: var(--components-progress-circle-mintgroen-border-color); }
+	:host([color="neutral"]) { --_indeterminate-background-color: var(--semantics-categories-neutral-filled-background-color); --_indeterminate-border-color: var(--semantics-categories-neutral-filled-highlight-border-color); }
+	:host([color="accent"]) { --_indeterminate-background-color: var(--semantics-categories-accent-filled-background-color); --_indeterminate-border-color: var(--semantics-categories-accent-filled-highlight-border-color); }
+	:host([color="success"]) { --_indeterminate-background-color: var(--semantics-categories-success-filled-background-color); --_indeterminate-border-color: var(--semantics-categories-success-filled-highlight-border-color); }
+	:host([color="warning"]) { --_indeterminate-background-color: var(--semantics-categories-warning-filled-background-color); --_indeterminate-border-color: var(--semantics-categories-warning-filled-highlight-border-color); }
+	:host([color="critical"]) { --_indeterminate-background-color: var(--semantics-categories-critical-filled-background-color); --_indeterminate-border-color: var(--semantics-categories-critical-filled-highlight-border-color); }
+	:host([color="lintblauw"]) { --_indeterminate-background-color: var(--semantics-categories-lintblauw-filled-background-color); --_indeterminate-border-color: var(--semantics-categories-lintblauw-filled-highlight-border-color); }
+	:host([color="donkerblauw"]) { --_indeterminate-background-color: var(--semantics-categories-donkerblauw-filled-background-color); --_indeterminate-border-color: var(--semantics-categories-donkerblauw-filled-highlight-border-color); }
+	:host([color="hemelblauw"]) { --_indeterminate-background-color: var(--semantics-categories-hemelblauw-filled-background-color); --_indeterminate-border-color: var(--semantics-categories-hemelblauw-filled-highlight-border-color); }
+	:host([color="lichtblauw"]) { --_indeterminate-background-color: var(--semantics-categories-lichtblauw-filled-background-color); --_indeterminate-border-color: var(--semantics-categories-lichtblauw-filled-highlight-border-color); }
+	:host([color="paars"]) { --_indeterminate-background-color: var(--semantics-categories-paars-filled-background-color); --_indeterminate-border-color: var(--semantics-categories-paars-filled-highlight-border-color); }
+	:host([color="violet"]) { --_indeterminate-background-color: var(--semantics-categories-violet-filled-background-color); --_indeterminate-border-color: var(--semantics-categories-violet-filled-highlight-border-color); }
+	:host([color="robijnrood"]) { --_indeterminate-background-color: var(--semantics-categories-robijnrood-filled-background-color); --_indeterminate-border-color: var(--semantics-categories-robijnrood-filled-highlight-border-color); }
+	:host([color="roze"]) { --_indeterminate-background-color: var(--semantics-categories-roze-filled-background-color); --_indeterminate-border-color: var(--semantics-categories-roze-filled-highlight-border-color); }
+	:host([color="rood"]) { --_indeterminate-background-color: var(--semantics-categories-rood-filled-background-color); --_indeterminate-border-color: var(--semantics-categories-rood-filled-highlight-border-color); }
+	:host([color="oranje"]) { --_indeterminate-background-color: var(--semantics-categories-oranje-filled-background-color); --_indeterminate-border-color: var(--semantics-categories-oranje-filled-highlight-border-color); }
+	:host([color="donkergeel"]) { --_indeterminate-background-color: var(--semantics-categories-donkergeel-filled-background-color); --_indeterminate-border-color: var(--semantics-categories-donkergeel-filled-highlight-border-color); }
+	:host([color="geel"]) { --_indeterminate-background-color: var(--semantics-categories-geel-filled-background-color); --_indeterminate-border-color: var(--semantics-categories-geel-filled-highlight-border-color); }
+	:host([color="donkerbruin"]) { --_indeterminate-background-color: var(--semantics-categories-donkerbruin-filled-background-color); --_indeterminate-border-color: var(--semantics-categories-donkerbruin-filled-highlight-border-color); }
+	:host([color="bruin"]) { --_indeterminate-background-color: var(--semantics-categories-bruin-filled-background-color); --_indeterminate-border-color: var(--semantics-categories-bruin-filled-highlight-border-color); }
+	:host([color="donkergroen"]) { --_indeterminate-background-color: var(--semantics-categories-donkergroen-filled-background-color); --_indeterminate-border-color: var(--semantics-categories-donkergroen-filled-highlight-border-color); }
+	:host([color="groen"]) { --_indeterminate-background-color: var(--semantics-categories-groen-filled-background-color); --_indeterminate-border-color: var(--semantics-categories-groen-filled-highlight-border-color); }
+	:host([color="mosgroen"]) { --_indeterminate-background-color: var(--semantics-categories-mosgroen-filled-background-color); --_indeterminate-border-color: var(--semantics-categories-mosgroen-filled-highlight-border-color); }
+	:host([color="mintgroen"]) { --_indeterminate-background-color: var(--semantics-categories-mintgroen-filled-background-color); --_indeterminate-border-color: var(--semantics-categories-mintgroen-filled-highlight-border-color); }
 
 
 	/* # Caption (label + value) */

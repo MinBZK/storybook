@@ -32,8 +32,8 @@ export const heroStyles = css`
 		   animated. */
 		--_corner-radius: calc(var(--semantics-brand-ribbon-sm-width) * 1.5);
 		--_main-width: 50%;
-		--_main-background-color: var(--semantics-categories-filled-accent-background-color);
-		--_main-content-color: var(--semantics-categories-filled-accent-content-color);
+		--_main-background-color: var(--semantics-categories-accent-filled-background-color);
+		--_main-content-color: var(--semantics-categories-accent-filled-primary-content-color);
 		--_main-padding: var(--primitives-space-16);
 
 		${inheritedTextReset}
@@ -74,93 +74,93 @@ export const heroStyles = css`
 	}
 
 	:host([main-background="lintblauw"]) {
-		--_main-background-color: var(--semantics-categories-filled-lintblauw-background-color);
-		--_main-content-color: var(--semantics-categories-filled-lintblauw-content-color);
+		--_main-background-color: var(--semantics-categories-lintblauw-filled-background-color);
+		--_main-content-color: var(--semantics-categories-lintblauw-filled-primary-content-color);
 	}
 
 	:host([main-background="donkerblauw"]) {
-		--_main-background-color: var(--semantics-categories-filled-donkerblauw-background-color);
-		--_main-content-color: var(--semantics-categories-filled-donkerblauw-content-color);
+		--_main-background-color: var(--semantics-categories-donkerblauw-filled-background-color);
+		--_main-content-color: var(--semantics-categories-donkerblauw-filled-primary-content-color);
 	}
 
 	:host([main-background="hemelblauw"]) {
-		--_main-background-color: var(--semantics-categories-filled-hemelblauw-background-color);
-		--_main-content-color: var(--semantics-categories-filled-hemelblauw-content-color);
+		--_main-background-color: var(--semantics-categories-hemelblauw-filled-background-color);
+		--_main-content-color: var(--semantics-categories-hemelblauw-filled-primary-content-color);
 	}
 
 	:host([main-background="lichtblauw"]) {
-		--_main-background-color: var(--semantics-categories-filled-lichtblauw-background-color);
-		--_main-content-color: var(--semantics-categories-filled-lichtblauw-content-color);
+		--_main-background-color: var(--semantics-categories-lichtblauw-filled-background-color);
+		--_main-content-color: var(--semantics-categories-lichtblauw-filled-primary-content-color);
 	}
 
 	:host([main-background="paars"]) {
-		--_main-background-color: var(--semantics-categories-filled-paars-background-color);
-		--_main-content-color: var(--semantics-categories-filled-paars-content-color);
+		--_main-background-color: var(--semantics-categories-paars-filled-background-color);
+		--_main-content-color: var(--semantics-categories-paars-filled-primary-content-color);
 	}
 
 	:host([main-background="violet"]) {
-		--_main-background-color: var(--semantics-categories-filled-violet-background-color);
-		--_main-content-color: var(--semantics-categories-filled-violet-content-color);
+		--_main-background-color: var(--semantics-categories-violet-filled-background-color);
+		--_main-content-color: var(--semantics-categories-violet-filled-primary-content-color);
 	}
 
 	:host([main-background="robijnrood"]) {
-		--_main-background-color: var(--semantics-categories-filled-robijnrood-background-color);
-		--_main-content-color: var(--semantics-categories-filled-robijnrood-content-color);
+		--_main-background-color: var(--semantics-categories-robijnrood-filled-background-color);
+		--_main-content-color: var(--semantics-categories-robijnrood-filled-primary-content-color);
 	}
 
 	:host([main-background="roze"]) {
-		--_main-background-color: var(--semantics-categories-filled-roze-background-color);
-		--_main-content-color: var(--semantics-categories-filled-roze-content-color);
+		--_main-background-color: var(--semantics-categories-roze-filled-background-color);
+		--_main-content-color: var(--semantics-categories-roze-filled-primary-content-color);
 	}
 
 	:host([main-background="rood"]) {
-		--_main-background-color: var(--semantics-categories-filled-rood-background-color);
-		--_main-content-color: var(--semantics-categories-filled-rood-content-color);
+		--_main-background-color: var(--semantics-categories-rood-filled-background-color);
+		--_main-content-color: var(--semantics-categories-rood-filled-primary-content-color);
 	}
 
 	:host([main-background="oranje"]) {
-		--_main-background-color: var(--semantics-categories-filled-oranje-background-color);
-		--_main-content-color: var(--semantics-categories-filled-oranje-content-color);
+		--_main-background-color: var(--semantics-categories-oranje-filled-background-color);
+		--_main-content-color: var(--semantics-categories-oranje-filled-primary-content-color);
 	}
 
 	:host([main-background="donkergeel"]) {
-		--_main-background-color: var(--semantics-categories-filled-donkergeel-background-color);
-		--_main-content-color: var(--semantics-categories-filled-donkergeel-content-color);
+		--_main-background-color: var(--semantics-categories-donkergeel-filled-background-color);
+		--_main-content-color: var(--semantics-categories-donkergeel-filled-primary-content-color);
 	}
 
 	:host([main-background="geel"]) {
-		--_main-background-color: var(--semantics-categories-filled-geel-background-color);
-		--_main-content-color: var(--semantics-categories-filled-geel-content-color);
+		--_main-background-color: var(--semantics-categories-geel-filled-background-color);
+		--_main-content-color: var(--semantics-categories-geel-filled-primary-content-color);
 	}
 
 	:host([main-background="donkerbruin"]) {
-		--_main-background-color: var(--semantics-categories-filled-donkerbruin-background-color);
-		--_main-content-color: var(--semantics-categories-filled-donkerbruin-content-color);
+		--_main-background-color: var(--semantics-categories-donkerbruin-filled-background-color);
+		--_main-content-color: var(--semantics-categories-donkerbruin-filled-primary-content-color);
 	}
 
 	:host([main-background="bruin"]) {
-		--_main-background-color: var(--semantics-categories-filled-bruin-background-color);
-		--_main-content-color: var(--semantics-categories-filled-bruin-content-color);
+		--_main-background-color: var(--semantics-categories-bruin-filled-background-color);
+		--_main-content-color: var(--semantics-categories-bruin-filled-primary-content-color);
 	}
 
 	:host([main-background="donkergroen"]) {
-		--_main-background-color: var(--semantics-categories-filled-donkergroen-background-color);
-		--_main-content-color: var(--semantics-categories-filled-donkergroen-content-color);
+		--_main-background-color: var(--semantics-categories-donkergroen-filled-background-color);
+		--_main-content-color: var(--semantics-categories-donkergroen-filled-primary-content-color);
 	}
 
 	:host([main-background="groen"]) {
-		--_main-background-color: var(--semantics-categories-filled-groen-background-color);
-		--_main-content-color: var(--semantics-categories-filled-groen-content-color);
+		--_main-background-color: var(--semantics-categories-groen-filled-background-color);
+		--_main-content-color: var(--semantics-categories-groen-filled-primary-content-color);
 	}
 
 	:host([main-background="mosgroen"]) {
-		--_main-background-color: var(--semantics-categories-filled-mosgroen-background-color);
-		--_main-content-color: var(--semantics-categories-filled-mosgroen-content-color);
+		--_main-background-color: var(--semantics-categories-mosgroen-filled-background-color);
+		--_main-content-color: var(--semantics-categories-mosgroen-filled-primary-content-color);
 	}
 
 	:host([main-background="mintgroen"]) {
-		--_main-background-color: var(--semantics-categories-filled-mintgroen-background-color);
-		--_main-content-color: var(--semantics-categories-filled-mintgroen-content-color);
+		--_main-background-color: var(--semantics-categories-mintgroen-filled-background-color);
+		--_main-content-color: var(--semantics-categories-mintgroen-filled-primary-content-color);
 	}
 
 

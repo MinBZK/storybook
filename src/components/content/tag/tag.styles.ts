@@ -8,11 +8,11 @@ export const tagStyles = css`
 
 	:host {
 		--_corner-radius: var(--components-tag-md-corner-radius);
-		--_background-color: var(--components-tag-neutral-background-color);
+		--_background-color: var(--semantics-categories-neutral-filled-background-color);
 		--_min-height: var(--primitives-space-24);
 		--_inline-padding: var(--primitives-space-6);
 		--_gap: var(--primitives-space-3);
-		--_content-color: var(--components-tag-neutral-content-color);
+		--_content-color: var(--semantics-categories-neutral-filled-primary-content-color);
 		--_font: var(--primitives-font-body-sm-medium-flat);
 		--_icon-size: var(--primitives-space-16);
 		--_icon-offset-correction: var(--primitives-space-1);
@@ -34,115 +34,115 @@ export const tagStyles = css`
 	/* ## Color */
 
 	:host([color="accent"]) {
-		--_background-color: var(--components-tag-accent-background-color);
-		--_content-color: var(--components-tag-accent-content-color);
+		--_background-color: var(--semantics-categories-accent-filled-background-color);
+		--_content-color: var(--semantics-categories-accent-filled-primary-content-color);
 	}
 
 	:host([color="success"]) {
-		--_background-color: var(--components-tag-success-background-color);
-		--_content-color: var(--components-tag-success-content-color);
+		--_background-color: var(--semantics-categories-success-filled-background-color);
+		--_content-color: var(--semantics-categories-success-filled-primary-content-color);
 	}
 
 	:host([color="warning"]) {
-		--_background-color: var(--components-tag-warning-background-color);
-		--_content-color: var(--components-tag-warning-content-color);
+		--_background-color: var(--semantics-categories-warning-filled-background-color);
+		--_content-color: var(--semantics-categories-warning-filled-primary-content-color);
 	}
 
 	:host([color="critical"]) {
-		--_background-color: var(--components-tag-critical-background-color);
-		--_content-color: var(--components-tag-critical-content-color);
+		--_background-color: var(--semantics-categories-critical-filled-background-color);
+		--_content-color: var(--semantics-categories-critical-filled-primary-content-color);
 	}
 
 	/* ### Rijkskleuren */
 
 	:host([color="lintblauw"]) {
-		--_background-color: var(--components-tag-lintblauw-background-color);
-		--_content-color: var(--components-tag-lintblauw-content-color);
+		--_background-color: var(--semantics-categories-lintblauw-filled-background-color);
+		--_content-color: var(--semantics-categories-lintblauw-filled-primary-content-color);
 	}
 
 	:host([color="donkerblauw"]) {
-		--_background-color: var(--components-tag-donkerblauw-background-color);
-		--_content-color: var(--components-tag-donkerblauw-content-color);
+		--_background-color: var(--semantics-categories-donkerblauw-filled-background-color);
+		--_content-color: var(--semantics-categories-donkerblauw-filled-primary-content-color);
 	}
 
 	:host([color="hemelblauw"]) {
-		--_background-color: var(--components-tag-hemelblauw-background-color);
-		--_content-color: var(--components-tag-hemelblauw-content-color);
+		--_background-color: var(--semantics-categories-hemelblauw-filled-background-color);
+		--_content-color: var(--semantics-categories-hemelblauw-filled-primary-content-color);
 	}
 
 	:host([color="lichtblauw"]) {
-		--_background-color: var(--components-tag-lichtblauw-background-color);
-		--_content-color: var(--components-tag-lichtblauw-content-color);
+		--_background-color: var(--semantics-categories-lichtblauw-filled-background-color);
+		--_content-color: var(--semantics-categories-lichtblauw-filled-primary-content-color);
 	}
 
 	:host([color="paars"]) {
-		--_background-color: var(--components-tag-paars-background-color);
-		--_content-color: var(--components-tag-paars-content-color);
+		--_background-color: var(--semantics-categories-paars-filled-background-color);
+		--_content-color: var(--semantics-categories-paars-filled-primary-content-color);
 	}
 
 	:host([color="violet"]) {
-		--_background-color: var(--components-tag-violet-background-color);
-		--_content-color: var(--components-tag-violet-content-color);
+		--_background-color: var(--semantics-categories-violet-filled-background-color);
+		--_content-color: var(--semantics-categories-violet-filled-primary-content-color);
 	}
 
 	:host([color="robijnrood"]) {
-		--_background-color: var(--components-tag-robijnrood-background-color);
-		--_content-color: var(--components-tag-robijnrood-content-color);
+		--_background-color: var(--semantics-categories-robijnrood-filled-background-color);
+		--_content-color: var(--semantics-categories-robijnrood-filled-primary-content-color);
 	}
 
 	:host([color="roze"]) {
-		--_background-color: var(--components-tag-roze-background-color);
-		--_content-color: var(--components-tag-roze-content-color);
+		--_background-color: var(--semantics-categories-roze-filled-background-color);
+		--_content-color: var(--semantics-categories-roze-filled-primary-content-color);
 	}
 
 	:host([color="rood"]) {
-		--_background-color: var(--components-tag-rood-background-color);
-		--_content-color: var(--components-tag-rood-content-color);
+		--_background-color: var(--semantics-categories-rood-filled-background-color);
+		--_content-color: var(--semantics-categories-rood-filled-primary-content-color);
 	}
 
 	:host([color="oranje"]) {
-		--_background-color: var(--components-tag-oranje-background-color);
-		--_content-color: var(--components-tag-oranje-content-color);
+		--_background-color: var(--semantics-categories-oranje-filled-background-color);
+		--_content-color: var(--semantics-categories-oranje-filled-primary-content-color);
 	}
 
 	:host([color="donkergeel"]) {
-		--_background-color: var(--components-tag-donkergeel-background-color);
-		--_content-color: var(--components-tag-donkergeel-content-color);
+		--_background-color: var(--semantics-categories-donkergeel-filled-background-color);
+		--_content-color: var(--semantics-categories-donkergeel-filled-primary-content-color);
 	}
 
 	:host([color="geel"]) {
-		--_background-color: var(--components-tag-geel-background-color);
-		--_content-color: var(--components-tag-geel-content-color);
+		--_background-color: var(--semantics-categories-geel-filled-background-color);
+		--_content-color: var(--semantics-categories-geel-filled-primary-content-color);
 	}
 
 	:host([color="donkerbruin"]) {
-		--_background-color: var(--components-tag-donkerbruin-background-color);
-		--_content-color: var(--components-tag-donkerbruin-content-color);
+		--_background-color: var(--semantics-categories-donkerbruin-filled-background-color);
+		--_content-color: var(--semantics-categories-donkerbruin-filled-primary-content-color);
 	}
 
 	:host([color="bruin"]) {
-		--_background-color: var(--components-tag-bruin-background-color);
-		--_content-color: var(--components-tag-bruin-content-color);
+		--_background-color: var(--semantics-categories-bruin-filled-background-color);
+		--_content-color: var(--semantics-categories-bruin-filled-primary-content-color);
 	}
 
 	:host([color="donkergroen"]) {
-		--_background-color: var(--components-tag-donkergroen-background-color);
-		--_content-color: var(--components-tag-donkergroen-content-color);
+		--_background-color: var(--semantics-categories-donkergroen-filled-background-color);
+		--_content-color: var(--semantics-categories-donkergroen-filled-primary-content-color);
 	}
 
 	:host([color="groen"]) {
-		--_background-color: var(--components-tag-groen-background-color);
-		--_content-color: var(--components-tag-groen-content-color);
+		--_background-color: var(--semantics-categories-groen-filled-background-color);
+		--_content-color: var(--semantics-categories-groen-filled-primary-content-color);
 	}
 
 	:host([color="mosgroen"]) {
-		--_background-color: var(--components-tag-mosgroen-background-color);
-		--_content-color: var(--components-tag-mosgroen-content-color);
+		--_background-color: var(--semantics-categories-mosgroen-filled-background-color);
+		--_content-color: var(--semantics-categories-mosgroen-filled-primary-content-color);
 	}
 
 	:host([color="mintgroen"]) {
-		--_background-color: var(--components-tag-mintgroen-background-color);
-		--_content-color: var(--components-tag-mintgroen-content-color);
+		--_background-color: var(--semantics-categories-mintgroen-filled-background-color);
+		--_content-color: var(--semantics-categories-mintgroen-filled-primary-content-color);
 	}
 
 	:host([hidden]) {

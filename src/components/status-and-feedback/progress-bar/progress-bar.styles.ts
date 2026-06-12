@@ -18,8 +18,8 @@ export const progressBarStyles = css`
 		--_supporting-text-color: var(--components-progress-bar-supporting-text-color);
 		--_text-font: var(--components-progress-bar-text-font);
 		--_supporting-text-font: var(--components-progress-bar-supporting-text-font);
-		--_indeterminate-background-color: var(--components-progress-bar-accent-background-color);
-		--_indeterminate-border-color: var(--components-progress-bar-accent-border-color);
+		--_indeterminate-background-color: var(--semantics-categories-accent-filled-background-color);
+		--_indeterminate-border-color: var(--semantics-categories-accent-filled-highlight-border-color);
 		--_indeterminate-border-width: var(--components-progress-bar-segment-indicator-border-width);
 		--_indeterminate-bar-width: 20%;
 		--_indeterminate-duration: 800ms;
@@ -48,29 +48,29 @@ export const progressBarStyles = css`
 
 	/* ## Indeterminate fill + border colour follow the variant; default is accent (blue) */
 
-	:host([color="neutral"]) { --_indeterminate-background-color: var(--components-progress-bar-neutral-background-color); --_indeterminate-border-color: var(--components-progress-bar-neutral-border-color); }
-	:host([color="accent"]) { --_indeterminate-background-color: var(--components-progress-bar-accent-background-color); --_indeterminate-border-color: var(--components-progress-bar-accent-border-color); }
-	:host([color="success"]) { --_indeterminate-background-color: var(--components-progress-bar-success-background-color); --_indeterminate-border-color: var(--components-progress-bar-success-border-color); }
-	:host([color="warning"]) { --_indeterminate-background-color: var(--components-progress-bar-warning-background-color); --_indeterminate-border-color: var(--components-progress-bar-warning-border-color); }
-	:host([color="critical"]) { --_indeterminate-background-color: var(--components-progress-bar-critical-background-color); --_indeterminate-border-color: var(--components-progress-bar-critical-border-color); }
-	:host([color="lintblauw"]) { --_indeterminate-background-color: var(--components-progress-bar-lintblauw-background-color); --_indeterminate-border-color: var(--components-progress-bar-lintblauw-border-color); }
-	:host([color="donkerblauw"]) { --_indeterminate-background-color: var(--components-progress-bar-donkerblauw-background-color); --_indeterminate-border-color: var(--components-progress-bar-donkerblauw-border-color); }
-	:host([color="hemelblauw"]) { --_indeterminate-background-color: var(--components-progress-bar-hemelblauw-background-color); --_indeterminate-border-color: var(--components-progress-bar-hemelblauw-border-color); }
-	:host([color="lichtblauw"]) { --_indeterminate-background-color: var(--components-progress-bar-lichtblauw-background-color); --_indeterminate-border-color: var(--components-progress-bar-lichtblauw-border-color); }
-	:host([color="paars"]) { --_indeterminate-background-color: var(--components-progress-bar-paars-background-color); --_indeterminate-border-color: var(--components-progress-bar-paars-border-color); }
-	:host([color="violet"]) { --_indeterminate-background-color: var(--components-progress-bar-violet-background-color); --_indeterminate-border-color: var(--components-progress-bar-violet-border-color); }
-	:host([color="robijnrood"]) { --_indeterminate-background-color: var(--components-progress-bar-robijnrood-background-color); --_indeterminate-border-color: var(--components-progress-bar-robijnrood-border-color); }
-	:host([color="roze"]) { --_indeterminate-background-color: var(--components-progress-bar-roze-background-color); --_indeterminate-border-color: var(--components-progress-bar-roze-border-color); }
-	:host([color="rood"]) { --_indeterminate-background-color: var(--components-progress-bar-rood-background-color); --_indeterminate-border-color: var(--components-progress-bar-rood-border-color); }
-	:host([color="oranje"]) { --_indeterminate-background-color: var(--components-progress-bar-oranje-background-color); --_indeterminate-border-color: var(--components-progress-bar-oranje-border-color); }
-	:host([color="donkergeel"]) { --_indeterminate-background-color: var(--components-progress-bar-donkergeel-background-color); --_indeterminate-border-color: var(--components-progress-bar-donkergeel-border-color); }
-	:host([color="geel"]) { --_indeterminate-background-color: var(--components-progress-bar-geel-background-color); --_indeterminate-border-color: var(--components-progress-bar-geel-border-color); }
-	:host([color="donkerbruin"]) { --_indeterminate-background-color: var(--components-progress-bar-donkerbruin-background-color); --_indeterminate-border-color: var(--components-progress-bar-donkerbruin-border-color); }
-	:host([color="bruin"]) { --_indeterminate-background-color: var(--components-progress-bar-bruin-background-color); --_indeterminate-border-color: var(--components-progress-bar-bruin-border-color); }
-	:host([color="donkergroen"]) { --_indeterminate-background-color: var(--components-progress-bar-donkergroen-background-color); --_indeterminate-border-color: var(--components-progress-bar-donkergroen-border-color); }
-	:host([color="groen"]) { --_indeterminate-background-color: var(--components-progress-bar-groen-background-color); --_indeterminate-border-color: var(--components-progress-bar-groen-border-color); }
-	:host([color="mosgroen"]) { --_indeterminate-background-color: var(--components-progress-bar-mosgroen-background-color); --_indeterminate-border-color: var(--components-progress-bar-mosgroen-border-color); }
-	:host([color="mintgroen"]) { --_indeterminate-background-color: var(--components-progress-bar-mintgroen-background-color); --_indeterminate-border-color: var(--components-progress-bar-mintgroen-border-color); }
+	:host([color="neutral"]) { --_indeterminate-background-color: var(--semantics-categories-neutral-filled-background-color); --_indeterminate-border-color: var(--semantics-categories-neutral-filled-highlight-border-color); }
+	:host([color="accent"]) { --_indeterminate-background-color: var(--semantics-categories-accent-filled-background-color); --_indeterminate-border-color: var(--semantics-categories-accent-filled-highlight-border-color); }
+	:host([color="success"]) { --_indeterminate-background-color: var(--semantics-categories-success-filled-background-color); --_indeterminate-border-color: var(--semantics-categories-success-filled-highlight-border-color); }
+	:host([color="warning"]) { --_indeterminate-background-color: var(--semantics-categories-warning-filled-background-color); --_indeterminate-border-color: var(--semantics-categories-warning-filled-highlight-border-color); }
+	:host([color="critical"]) { --_indeterminate-background-color: var(--semantics-categories-critical-filled-background-color); --_indeterminate-border-color: var(--semantics-categories-critical-filled-highlight-border-color); }
+	:host([color="lintblauw"]) { --_indeterminate-background-color: var(--semantics-categories-lintblauw-filled-background-color); --_indeterminate-border-color: var(--semantics-categories-lintblauw-filled-highlight-border-color); }
+	:host([color="donkerblauw"]) { --_indeterminate-background-color: var(--semantics-categories-donkerblauw-filled-background-color); --_indeterminate-border-color: var(--semantics-categories-donkerblauw-filled-highlight-border-color); }
+	:host([color="hemelblauw"]) { --_indeterminate-background-color: var(--semantics-categories-hemelblauw-filled-background-color); --_indeterminate-border-color: var(--semantics-categories-hemelblauw-filled-highlight-border-color); }
+	:host([color="lichtblauw"]) { --_indeterminate-background-color: var(--semantics-categories-lichtblauw-filled-background-color); --_indeterminate-border-color: var(--semantics-categories-lichtblauw-filled-highlight-border-color); }
+	:host([color="paars"]) { --_indeterminate-background-color: var(--semantics-categories-paars-filled-background-color); --_indeterminate-border-color: var(--semantics-categories-paars-filled-highlight-border-color); }
+	:host([color="violet"]) { --_indeterminate-background-color: var(--semantics-categories-violet-filled-background-color); --_indeterminate-border-color: var(--semantics-categories-violet-filled-highlight-border-color); }
+	:host([color="robijnrood"]) { --_indeterminate-background-color: var(--semantics-categories-robijnrood-filled-background-color); --_indeterminate-border-color: var(--semantics-categories-robijnrood-filled-highlight-border-color); }
+	:host([color="roze"]) { --_indeterminate-background-color: var(--semantics-categories-roze-filled-background-color); --_indeterminate-border-color: var(--semantics-categories-roze-filled-highlight-border-color); }
+	:host([color="rood"]) { --_indeterminate-background-color: var(--semantics-categories-rood-filled-background-color); --_indeterminate-border-color: var(--semantics-categories-rood-filled-highlight-border-color); }
+	:host([color="oranje"]) { --_indeterminate-background-color: var(--semantics-categories-oranje-filled-background-color); --_indeterminate-border-color: var(--semantics-categories-oranje-filled-highlight-border-color); }
+	:host([color="donkergeel"]) { --_indeterminate-background-color: var(--semantics-categories-donkergeel-filled-background-color); --_indeterminate-border-color: var(--semantics-categories-donkergeel-filled-highlight-border-color); }
+	:host([color="geel"]) { --_indeterminate-background-color: var(--semantics-categories-geel-filled-background-color); --_indeterminate-border-color: var(--semantics-categories-geel-filled-highlight-border-color); }
+	:host([color="donkerbruin"]) { --_indeterminate-background-color: var(--semantics-categories-donkerbruin-filled-background-color); --_indeterminate-border-color: var(--semantics-categories-donkerbruin-filled-highlight-border-color); }
+	:host([color="bruin"]) { --_indeterminate-background-color: var(--semantics-categories-bruin-filled-background-color); --_indeterminate-border-color: var(--semantics-categories-bruin-filled-highlight-border-color); }
+	:host([color="donkergroen"]) { --_indeterminate-background-color: var(--semantics-categories-donkergroen-filled-background-color); --_indeterminate-border-color: var(--semantics-categories-donkergroen-filled-highlight-border-color); }
+	:host([color="groen"]) { --_indeterminate-background-color: var(--semantics-categories-groen-filled-background-color); --_indeterminate-border-color: var(--semantics-categories-groen-filled-highlight-border-color); }
+	:host([color="mosgroen"]) { --_indeterminate-background-color: var(--semantics-categories-mosgroen-filled-background-color); --_indeterminate-border-color: var(--semantics-categories-mosgroen-filled-highlight-border-color); }
+	:host([color="mintgroen"]) { --_indeterminate-background-color: var(--semantics-categories-mintgroen-filled-background-color); --_indeterminate-border-color: var(--semantics-categories-mintgroen-filled-highlight-border-color); }
 
 
 	/* # Caption */
@@ -215,8 +215,8 @@ export const progressBarSegmentIndicatorStyles = css`
 	:host {
 		--_width: var(--context-progress-bar-segment-indicator-width, 0%);
 		--_min-width: var(--components-progress-bar-segment-indicator-min-width);
-		--_background-color: var(--components-progress-bar-accent-background-color);
-		--_border-color: var(--components-progress-bar-accent-border-color);
+		--_background-color: var(--semantics-categories-accent-filled-background-color);
+		--_border-color: var(--semantics-categories-accent-filled-highlight-border-color);
 		--_border-width: var(--components-progress-bar-segment-indicator-border-width);
 
 		box-sizing: border-box;
@@ -277,99 +277,99 @@ export const progressBarSegmentIndicatorStyles = css`
 	/* ## Variants — semantic */
 
 	:host([color="neutral"]) {
-		--_background-color: var(--components-progress-bar-neutral-background-color);
-		--_border-color: var(--components-progress-bar-neutral-border-color);
+		--_background-color: var(--semantics-categories-neutral-filled-background-color);
+		--_border-color: var(--semantics-categories-neutral-filled-highlight-border-color);
 	}
 	:host([color="accent"]) {
-		--_background-color: var(--components-progress-bar-accent-background-color);
-		--_border-color: var(--components-progress-bar-accent-border-color);
+		--_background-color: var(--semantics-categories-accent-filled-background-color);
+		--_border-color: var(--semantics-categories-accent-filled-highlight-border-color);
 	}
 	:host([color="success"]) {
-		--_background-color: var(--components-progress-bar-success-background-color);
-		--_border-color: var(--components-progress-bar-success-border-color);
+		--_background-color: var(--semantics-categories-success-filled-background-color);
+		--_border-color: var(--semantics-categories-success-filled-highlight-border-color);
 	}
 	:host([color="warning"]) {
-		--_background-color: var(--components-progress-bar-warning-background-color);
-		--_border-color: var(--components-progress-bar-warning-border-color);
+		--_background-color: var(--semantics-categories-warning-filled-background-color);
+		--_border-color: var(--semantics-categories-warning-filled-highlight-border-color);
 	}
 	:host([color="critical"]) {
-		--_background-color: var(--components-progress-bar-critical-background-color);
-		--_border-color: var(--components-progress-bar-critical-border-color);
+		--_background-color: var(--semantics-categories-critical-filled-background-color);
+		--_border-color: var(--semantics-categories-critical-filled-highlight-border-color);
 	}
 
 
 	/* ## Variants — Rijkskleuren */
 	:host([color="lintblauw"]) {
-		--_background-color: var(--components-progress-bar-lintblauw-background-color);
-		--_border-color: var(--components-progress-bar-lintblauw-border-color);
+		--_background-color: var(--semantics-categories-lintblauw-filled-background-color);
+		--_border-color: var(--semantics-categories-lintblauw-filled-highlight-border-color);
 	}
 	:host([color="donkerblauw"]) {
-		--_background-color: var(--components-progress-bar-donkerblauw-background-color);
-		--_border-color: var(--components-progress-bar-donkerblauw-border-color);
+		--_background-color: var(--semantics-categories-donkerblauw-filled-background-color);
+		--_border-color: var(--semantics-categories-donkerblauw-filled-highlight-border-color);
 	}
 	:host([color="hemelblauw"]) {
-		--_background-color: var(--components-progress-bar-hemelblauw-background-color);
-		--_border-color: var(--components-progress-bar-hemelblauw-border-color);
+		--_background-color: var(--semantics-categories-hemelblauw-filled-background-color);
+		--_border-color: var(--semantics-categories-hemelblauw-filled-highlight-border-color);
 	}
 	:host([color="lichtblauw"]) {
-		--_background-color: var(--components-progress-bar-lichtblauw-background-color);
-		--_border-color: var(--components-progress-bar-lichtblauw-border-color);
+		--_background-color: var(--semantics-categories-lichtblauw-filled-background-color);
+		--_border-color: var(--semantics-categories-lichtblauw-filled-highlight-border-color);
 	}
 	:host([color="paars"]) {
-		--_background-color: var(--components-progress-bar-paars-background-color);
-		--_border-color: var(--components-progress-bar-paars-border-color);
+		--_background-color: var(--semantics-categories-paars-filled-background-color);
+		--_border-color: var(--semantics-categories-paars-filled-highlight-border-color);
 	}
 	:host([color="violet"]) {
-		--_background-color: var(--components-progress-bar-violet-background-color);
-		--_border-color: var(--components-progress-bar-violet-border-color);
+		--_background-color: var(--semantics-categories-violet-filled-background-color);
+		--_border-color: var(--semantics-categories-violet-filled-highlight-border-color);
 	}
 	:host([color="robijnrood"]) {
-		--_background-color: var(--components-progress-bar-robijnrood-background-color);
-		--_border-color: var(--components-progress-bar-robijnrood-border-color);
+		--_background-color: var(--semantics-categories-robijnrood-filled-background-color);
+		--_border-color: var(--semantics-categories-robijnrood-filled-highlight-border-color);
 	}
 	:host([color="roze"]) {
-		--_background-color: var(--components-progress-bar-roze-background-color);
-		--_border-color: var(--components-progress-bar-roze-border-color);
+		--_background-color: var(--semantics-categories-roze-filled-background-color);
+		--_border-color: var(--semantics-categories-roze-filled-highlight-border-color);
 	}
 	:host([color="rood"]) {
-		--_background-color: var(--components-progress-bar-rood-background-color);
-		--_border-color: var(--components-progress-bar-rood-border-color);
+		--_background-color: var(--semantics-categories-rood-filled-background-color);
+		--_border-color: var(--semantics-categories-rood-filled-highlight-border-color);
 	}
 	:host([color="oranje"]) {
-		--_background-color: var(--components-progress-bar-oranje-background-color);
-		--_border-color: var(--components-progress-bar-oranje-border-color);
+		--_background-color: var(--semantics-categories-oranje-filled-background-color);
+		--_border-color: var(--semantics-categories-oranje-filled-highlight-border-color);
 	}
 	:host([color="donkergeel"]) {
-		--_background-color: var(--components-progress-bar-donkergeel-background-color);
-		--_border-color: var(--components-progress-bar-donkergeel-border-color);
+		--_background-color: var(--semantics-categories-donkergeel-filled-background-color);
+		--_border-color: var(--semantics-categories-donkergeel-filled-highlight-border-color);
 	}
 	:host([color="geel"]) {
-		--_background-color: var(--components-progress-bar-geel-background-color);
-		--_border-color: var(--components-progress-bar-geel-border-color);
+		--_background-color: var(--semantics-categories-geel-filled-background-color);
+		--_border-color: var(--semantics-categories-geel-filled-highlight-border-color);
 	}
 	:host([color="donkerbruin"]) {
-		--_background-color: var(--components-progress-bar-donkerbruin-background-color);
-		--_border-color: var(--components-progress-bar-donkerbruin-border-color);
+		--_background-color: var(--semantics-categories-donkerbruin-filled-background-color);
+		--_border-color: var(--semantics-categories-donkerbruin-filled-highlight-border-color);
 	}
 	:host([color="bruin"]) {
-		--_background-color: var(--components-progress-bar-bruin-background-color);
-		--_border-color: var(--components-progress-bar-bruin-border-color);
+		--_background-color: var(--semantics-categories-bruin-filled-background-color);
+		--_border-color: var(--semantics-categories-bruin-filled-highlight-border-color);
 	}
 	:host([color="donkergroen"]) {
-		--_background-color: var(--components-progress-bar-donkergroen-background-color);
-		--_border-color: var(--components-progress-bar-donkergroen-border-color);
+		--_background-color: var(--semantics-categories-donkergroen-filled-background-color);
+		--_border-color: var(--semantics-categories-donkergroen-filled-highlight-border-color);
 	}
 	:host([color="groen"]) {
-		--_background-color: var(--components-progress-bar-groen-background-color);
-		--_border-color: var(--components-progress-bar-groen-border-color);
+		--_background-color: var(--semantics-categories-groen-filled-background-color);
+		--_border-color: var(--semantics-categories-groen-filled-highlight-border-color);
 	}
 	:host([color="mosgroen"]) {
-		--_background-color: var(--components-progress-bar-mosgroen-background-color);
-		--_border-color: var(--components-progress-bar-mosgroen-border-color);
+		--_background-color: var(--semantics-categories-mosgroen-filled-background-color);
+		--_border-color: var(--semantics-categories-mosgroen-filled-highlight-border-color);
 	}
 	:host([color="mintgroen"]) {
-		--_background-color: var(--components-progress-bar-mintgroen-background-color);
-		--_border-color: var(--components-progress-bar-mintgroen-border-color);
+		--_background-color: var(--semantics-categories-mintgroen-filled-background-color);
+		--_border-color: var(--semantics-categories-mintgroen-filled-highlight-border-color);
 	}
 
 
