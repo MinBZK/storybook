@@ -1896,25 +1896,30 @@
 	/* ## Status bar */
 
 	--components-status-bar-height: var(--semantics-controls-xs-min-size);
+
+	/* Interaction states darken the filled background by one palette step on
+	   hover and two on active, in both light and dark mode — so every variant
+	   deepens consistently instead of borrowing the decorative highlight-border
+	   color (which is not always darker than its own fill). */
 	--components-status-bar-neutral-background-color: var(--semantics-categories-neutral-filled-background-color);
-	--components-status-bar-neutral-is-hovered-background-color: var(--semantics-categories-neutral-filled-highlight-border-color);
-	--components-status-bar-neutral-is-active-background-color: var(--primitives-color-neutral-600);
+	--components-status-bar-neutral-is-hovered-background-color: light-dark(var(--primitives-color-neutral-650), var(--primitives-color-neutral-500));
+	--components-status-bar-neutral-is-active-background-color: light-dark(var(--primitives-color-neutral-700), var(--primitives-color-neutral-550));
 	--components-status-bar-neutral-content-color: var(--semantics-categories-neutral-filled-primary-content-color);
 	--components-status-bar-accent-background-color: var(--semantics-categories-accent-filled-background-color);
-	--components-status-bar-accent-is-hovered-background-color: var(--semantics-categories-accent-filled-highlight-border-color);
-	--components-status-bar-accent-is-active-background-color: light-dark(var(--primitives-color-accent-850), var(--primitives-color-accent-550));
+	--components-status-bar-accent-is-hovered-background-color: light-dark(var(--primitives-color-accent-800), var(--primitives-color-accent-450));
+	--components-status-bar-accent-is-active-background-color: light-dark(var(--primitives-color-accent-850), var(--primitives-color-accent-500));
 	--components-status-bar-accent-content-color: var(--semantics-categories-accent-filled-primary-content-color);
 	--components-status-bar-success-background-color: var(--semantics-categories-success-filled-background-color);
-	--components-status-bar-success-is-hovered-background-color: var(--semantics-categories-success-filled-highlight-border-color);
+	--components-status-bar-success-is-hovered-background-color: var(--primitives-color-success-550);
 	--components-status-bar-success-is-active-background-color: var(--primitives-color-success-600);
 	--components-status-bar-success-content-color: var(--semantics-categories-success-filled-primary-content-color);
 	--components-status-bar-warning-background-color: var(--semantics-categories-warning-filled-background-color);
-	--components-status-bar-warning-is-hovered-background-color: var(--semantics-categories-warning-filled-highlight-border-color);
-	--components-status-bar-warning-is-active-background-color: var(--primitives-color-warning-500);
+	--components-status-bar-warning-is-hovered-background-color: light-dark(var(--primitives-color-warning-450), var(--primitives-color-warning-650));
+	--components-status-bar-warning-is-active-background-color: light-dark(var(--primitives-color-warning-500), var(--primitives-color-warning-700));
 	--components-status-bar-warning-content-color: var(--semantics-categories-warning-filled-primary-content-color);
 	--components-status-bar-critical-background-color: var(--semantics-categories-critical-filled-background-color);
-	--components-status-bar-critical-is-hovered-background-color: var(--semantics-categories-critical-filled-highlight-border-color);
-	--components-status-bar-critical-is-active-background-color: light-dark(var(--primitives-color-critical-650), var(--primitives-color-critical-550));
+	--components-status-bar-critical-is-hovered-background-color: light-dark(var(--primitives-color-critical-700), var(--primitives-color-critical-500));
+	--components-status-bar-critical-is-active-background-color: light-dark(var(--primitives-color-critical-750), var(--primitives-color-critical-550));
 	--components-status-bar-critical-content-color: var(--semantics-categories-critical-filled-primary-content-color);
 
 	/* ## Switch */
