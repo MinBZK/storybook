@@ -964,8 +964,8 @@
 	--semantics-categories-success-filled-secondary-content-color: light-dark(var(--primitives-color-success-0), var(--primitives-color-success-1000));
 	--semantics-categories-success-tinted-background-color: light-dark(var(--primitives-color-success-50), var(--primitives-color-success-75));
 	--semantics-categories-success-tinted-highlight-border-color: light-dark(var(--primitives-color-success-100), var(--primitives-color-success-150));
-	--semantics-categories-success-tinted-primary-content-color: var(--primitives-color-success-600);
-	--semantics-categories-success-tinted-secondary-content-color: var(--primitives-color-success-600);
+	--semantics-categories-success-tinted-primary-content-color: var(--primitives-color-success-650);
+	--semantics-categories-success-tinted-secondary-content-color: var(--primitives-color-success-650);
 	--semantics-categories-success-reference-background-color: light-dark(var(--primitives-color-success-500), var(--primitives-color-success-500));
 	--semantics-categories-success-reference-highlight-border-color: light-dark(var(--primitives-color-success-550), var(--primitives-color-success-450));
 	--semantics-categories-success-reference-primary-content-color: light-dark(var(--primitives-color-success-0), var(--primitives-color-success-1000));
