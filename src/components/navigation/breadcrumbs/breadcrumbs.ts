@@ -142,7 +142,10 @@ export class NLDDBreadcrumbs extends LitElement {
 	/** Defers the slotchange-driven sync to a microtask: _syncCollapse moves
 	 *  an item between slots, which fires another slotchange — running it
 	 *  inline could mutate the DOM while Lit is mid-render. The direct calls
-	 *  from updated() and _expand() stay synchronous. */
+	 *  from updated() and _expand() stay synchronous.
+	 *
+	 *  An arrow-function class field (not a method) on purpose: it gives a
+	 *  stable per-instance reference so add/removeEventListener pair up. */
 	_onSlotChange = (): void => {
 		void Promise.resolve().then(() => this._syncCollapse());
 	};
