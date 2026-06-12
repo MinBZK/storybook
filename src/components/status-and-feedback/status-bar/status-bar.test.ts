@@ -22,6 +22,14 @@ describe('nldd-status-bar', () => {
 		expect(el.getAttribute('variant')).toBe('neutral');
 	});
 
+	it('reflects the variant property to the attribute', async () => {
+		el = await fixture('<nldd-status-bar></nldd-status-bar>');
+		await waitForUpdate(el);
+		(el as NLDDStatusBar).variant = 'warning';
+		await waitForUpdate(el);
+		expect(el.getAttribute('variant')).toBe('warning');
+	});
+
 	it('renders text', async () => {
 		el = await fixture('<nldd-status-bar text="Gepland onderhoud"></nldd-status-bar>');
 		await waitForUpdate(el);
