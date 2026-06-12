@@ -62,7 +62,10 @@ export function codeViewerTemplate(component: NLDDCodeViewer): TemplateResult {
 					></nldd-icon-button>
 				</nldd-tooltip>
 			</div>
-			<div class="code-viewer__live-region" role="status" aria-live="polite">${liveRegionText}</div>
+			<div class="code-viewer__live-region"
+				role="status"
+				aria-live="polite"
+			>${liveRegionText}</div>
 		</div>
 	`}`;
 }

@@ -19,7 +19,7 @@ const areas = (showStart: boolean, showEnd: boolean) => html`
 `;
 
 export const template = (
-	type: string | undefined,
+	button: boolean,
 	href: string | undefined,
 	showStart: boolean,
 	showEnd: boolean,
@@ -31,7 +31,7 @@ export const template = (
 			>${areas(showStart, showEnd)}</a>
 		</div>`;
 	}
-	if (type === 'button') {
+	if (button) {
 		return html`<div class="list-item">
 			<button class="list-item__action"
 				type="button"

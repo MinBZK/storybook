@@ -58,13 +58,17 @@ export function paginationTemplate(component: NLDDPagination): TemplateResult {
 					@click=${(e: Event) => { if (hasHref) e.preventDefault(); component._goToPage(component.current - 1); }}
 				></nldd-icon-button>
 			</div>
-			<div class="pagination__divider" aria-hidden="true">
+			<div class="pagination__divider"
+				aria-hidden="true"
+			>
 				<div class="pagination__divider-line"></div>
 			</div>
 			<div class="pagination__page-buttons">
 				${pages.map((page) =>
 					page === 'ellipsis'
-						? html`<div class="pagination__ellipsis" aria-hidden="true">&hellip;</div>`
+						? html`<div class="pagination__ellipsis"
+								aria-hidden="true"
+							>&hellip;</div>`
 						: renderPageButton(page as number)
 				)}
 			</div>
@@ -88,7 +92,9 @@ export function paginationTemplate(component: NLDDPagination): TemplateResult {
 					</div>
 				</div>
 			</div>
-			<div class="pagination__divider" aria-hidden="true">
+			<div class="pagination__divider"
+				aria-hidden="true"
+			>
 				<div class="pagination__divider-line"></div>
 			</div>
 			<div class="pagination__next-button">

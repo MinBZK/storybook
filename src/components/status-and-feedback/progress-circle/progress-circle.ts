@@ -58,7 +58,6 @@ export type ProgressCircleValueDisplay = 'inline' | 'tooltip' | 'none';
 
 export type ProgressCircleColor =
 	| 'neutral' | 'accent' | 'success' | 'warning' | 'critical'
-	| 'coolgray'
 	| 'lintblauw' | 'donkerblauw' | 'hemelblauw' | 'lichtblauw'
 	| 'paars' | 'violet'
 	| 'robijnrood' | 'roze' | 'rood' | 'oranje'

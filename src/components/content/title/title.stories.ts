@@ -1,4 +1,4 @@
-import { html } from 'lit';
+import { html, nothing } from 'lit';
 import './title.js';
 import '../../actions/button/button.js';
 import '../../layout/spacer/spacer.js';
@@ -38,15 +38,25 @@ export default {
 			description: 'Visuele grootte van de titel',
 			table: { defaultValue: { summary: '3' } },
 		},
+		color: {
+			control: 'select',
+			options: ['(default)', 'inherit'],
+			mapping: { '(default)': '' },
+			description: 'inherit laat de titel de tekstkleur van de ondergrond volgen (voor gekleurde vlakken)',
+			table: { defaultValue: { summary: '(default)' } },
+		},
 	},
 	args: {
 		size: 3,
+		color: '',
 	},
 };
 
-export const Standaard = ({ size }: Record<string, any>) => html`
+export const Standaard = ({ size, color }: Record<string, any>) => html`
 	<div style="display: block; padding: 24px; container-type: inline-size; container-name: layout-container;">
-		<nldd-title size=${size}>
+		<nldd-title size=${size}
+			color=${color || nothing}
+		>
 			<h1>Paginatitel</h1>
 			<nldd-button slot="actions" variant="secondary" size="sm" text="Actie"></nldd-button>
 		</nldd-title>
@@ -114,5 +124,37 @@ export const AlleGrootten = {
 		`)}
 	</div>
 `,
+	parameters: { controls: { disable: true } },
+};
+
+/**
+ * Met `color="inherit"` volgt de titel de tekstkleur van de ondergrond —
+ * voor gekleurde vlakken zoals de filled-categories, die een puur witte of
+ * zwarte contentkleur meeleveren. De overline en subtitle krijgen dezelfde
+ * kleur op de systeembrede secundaire dekking.
+ */
+export const OpKleurvlak = {
+	render: () => html`
+		<div style="display: flex; flex-direction: column; gap: 16px;">
+			<div style="background: var(--semantics-categories-donkerblauw-filled-background-color); color: var(--semantics-categories-donkerblauw-filled-primary-content-color); padding: 24px; border-radius: var(--primitives-corner-radius-md);">
+				<nldd-title color="inherit"
+					size="2"
+				>
+					<p slot="overline">Donker vlak</p>
+					<h2>Titel volgt de contentkleur</h2>
+					<p slot="subtitle">Subtitle op verlaagde dekking</p>
+				</nldd-title>
+			</div>
+			<div style="background: var(--semantics-categories-oranje-filled-background-color); color: var(--semantics-categories-oranje-filled-primary-content-color); padding: 24px; border-radius: var(--primitives-corner-radius-md);">
+				<nldd-title color="inherit"
+					size="2"
+				>
+					<p slot="overline">Middenton</p>
+					<h2>Zwarte content op oranje</h2>
+					<p slot="subtitle">Subtitle op verlaagde dekking</p>
+				</nldd-title>
+			</div>
+		</div>
+	`,
 	parameters: { controls: { disable: true } },
 };

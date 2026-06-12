@@ -4,7 +4,6 @@ import './progress-circle.js';
 const SEMANTIC_COLORS = ['neutral', 'accent', 'success', 'warning', 'critical'] as const;
 
 const RIJKSLEUREN = [
-	'coolgray',
 	'lintblauw', 'donkerblauw', 'hemelblauw', 'lichtblauw',
 	'paars', 'violet',
 	'robijnrood', 'roze', 'rood', 'oranje',
@@ -22,7 +21,7 @@ const ALL_COLORS = [...SEMANTIC_COLORS, ...RIJKSLEUREN];
  * determinate/indeterminate. Label staat onder de cirkel.
  */
 export default {
-	title: 'Components/Status & Feedback/Progress circle',
+	title: 'Components/Status & Feedback/Progress Circle',
 	component: 'nldd-progress-circle',
 	tags: ['autodocs'],
 	parameters: {
@@ -177,7 +176,7 @@ export const Distribution = {
 			<nldd-progress-circle-segment-indicator value="200" color="hemelblauw" name="Foto's"></nldd-progress-circle-segment-indicator>
 			<nldd-progress-circle-segment-indicator value="100" color="oranje" name="Video's"></nldd-progress-circle-segment-indicator>
 			<nldd-progress-circle-segment-indicator value="50" color="paars" name="Documenten"></nldd-progress-circle-segment-indicator>
-			<nldd-progress-circle-segment-indicator value="150" color="coolgray" name="Vrij"></nldd-progress-circle-segment-indicator>
+			<nldd-progress-circle-segment-indicator value="150" color="neutral" name="Vrij"></nldd-progress-circle-segment-indicator>
 		</nldd-progress-circle>
 	`,
 	parameters: {

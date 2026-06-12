@@ -4,7 +4,6 @@ import './progress-bar.js';
 const SEMANTIC_COLORS = ['neutral', 'accent', 'success', 'warning', 'critical'] as const;
 
 const RIJKSLEUREN = [
-	'coolgray',
 	'lintblauw', 'donkerblauw', 'hemelblauw', 'lichtblauw',
 	'paars', 'violet',
 	'robijnrood', 'roze', 'rood', 'oranje',
@@ -22,7 +21,7 @@ const ALL_COLORS = [...SEMANTIC_COLORS, ...RIJKSLEUREN];
  * opslaggebruik). Geef ruwe getallen mee — wij berekenen percentages.
  */
 export default {
-	title: 'Components/Status & Feedback/Progress bar',
+	title: 'Components/Status & Feedback/Progress Bar',
 	component: 'nldd-progress-bar',
 	tags: ['autodocs'],
 	parameters: {

@@ -8,11 +8,13 @@ export const tagStyles = css`
 
 	:host {
 		--_corner-radius: var(--components-tag-md-corner-radius);
-		--_background-color: var(--components-tag-neutral-background-color);
+		--_background-color: var(--semantics-categories-neutral-tinted-background-color);
 		--_min-height: var(--primitives-space-24);
 		--_inline-padding: var(--primitives-space-6);
 		--_gap: var(--primitives-space-3);
-		--_content-color: var(--components-tag-neutral-content-color);
+		--_content-color: var(--semantics-categories-neutral-tinted-primary-content-color);
+		--_border-color: var(--semantics-categories-neutral-tinted-highlight-border-color);
+		--_border-width: var(--primitives-border-width-thin);
 		--_font: var(--primitives-font-body-sm-medium-flat);
 		--_icon-size: var(--primitives-space-16);
 		--_icon-offset-correction: var(--primitives-space-1);
@@ -34,120 +36,137 @@ export const tagStyles = css`
 	/* ## Color */
 
 	:host([color="accent"]) {
-		--_background-color: var(--components-tag-accent-background-color);
-		--_content-color: var(--components-tag-accent-content-color);
+		--_background-color: var(--semantics-categories-accent-tinted-background-color);
+		--_content-color: var(--semantics-categories-accent-tinted-primary-content-color);
+		--_border-color: var(--semantics-categories-accent-tinted-highlight-border-color);
 	}
 
 	:host([color="success"]) {
-		--_background-color: var(--components-tag-success-background-color);
-		--_content-color: var(--components-tag-success-content-color);
+		--_background-color: var(--semantics-categories-success-tinted-background-color);
+		--_content-color: var(--semantics-categories-success-tinted-primary-content-color);
+		--_border-color: var(--semantics-categories-success-tinted-highlight-border-color);
 	}
 
 	:host([color="warning"]) {
-		--_background-color: var(--components-tag-warning-background-color);
-		--_content-color: var(--components-tag-warning-content-color);
+		--_background-color: var(--semantics-categories-warning-tinted-background-color);
+		--_content-color: var(--semantics-categories-warning-tinted-primary-content-color);
+		--_border-color: var(--semantics-categories-warning-tinted-highlight-border-color);
 	}
 
 	:host([color="critical"]) {
-		--_background-color: var(--components-tag-critical-background-color);
-		--_content-color: var(--components-tag-critical-content-color);
+		--_background-color: var(--semantics-categories-critical-tinted-background-color);
+		--_content-color: var(--semantics-categories-critical-tinted-primary-content-color);
+		--_border-color: var(--semantics-categories-critical-tinted-highlight-border-color);
 	}
 
 	/* ### Rijkskleuren */
 
-	:host([color="coolgray"]) {
-		--_background-color: var(--components-tag-coolgray-background-color);
-		--_content-color: var(--components-tag-coolgray-content-color);
-	}
-
 	:host([color="lintblauw"]) {
-		--_background-color: var(--components-tag-lintblauw-background-color);
-		--_content-color: var(--components-tag-lintblauw-content-color);
+		--_background-color: var(--semantics-categories-lintblauw-tinted-background-color);
+		--_content-color: var(--semantics-categories-lintblauw-tinted-primary-content-color);
+		--_border-color: var(--semantics-categories-lintblauw-tinted-highlight-border-color);
 	}
 
 	:host([color="donkerblauw"]) {
-		--_background-color: var(--components-tag-donkerblauw-background-color);
-		--_content-color: var(--components-tag-donkerblauw-content-color);
+		--_background-color: var(--semantics-categories-donkerblauw-tinted-background-color);
+		--_content-color: var(--semantics-categories-donkerblauw-tinted-primary-content-color);
+		--_border-color: var(--semantics-categories-donkerblauw-tinted-highlight-border-color);
 	}
 
 	:host([color="hemelblauw"]) {
-		--_background-color: var(--components-tag-hemelblauw-background-color);
-		--_content-color: var(--components-tag-hemelblauw-content-color);
+		--_background-color: var(--semantics-categories-hemelblauw-tinted-background-color);
+		--_content-color: var(--semantics-categories-hemelblauw-tinted-primary-content-color);
+		--_border-color: var(--semantics-categories-hemelblauw-tinted-highlight-border-color);
 	}
 
 	:host([color="lichtblauw"]) {
-		--_background-color: var(--components-tag-lichtblauw-background-color);
-		--_content-color: var(--components-tag-lichtblauw-content-color);
+		--_background-color: var(--semantics-categories-lichtblauw-tinted-background-color);
+		--_content-color: var(--semantics-categories-lichtblauw-tinted-primary-content-color);
+		--_border-color: var(--semantics-categories-lichtblauw-tinted-highlight-border-color);
 	}
 
 	:host([color="paars"]) {
-		--_background-color: var(--components-tag-paars-background-color);
-		--_content-color: var(--components-tag-paars-content-color);
+		--_background-color: var(--semantics-categories-paars-tinted-background-color);
+		--_content-color: var(--semantics-categories-paars-tinted-primary-content-color);
+		--_border-color: var(--semantics-categories-paars-tinted-highlight-border-color);
 	}
 
 	:host([color="violet"]) {
-		--_background-color: var(--components-tag-violet-background-color);
-		--_content-color: var(--components-tag-violet-content-color);
+		--_background-color: var(--semantics-categories-violet-tinted-background-color);
+		--_content-color: var(--semantics-categories-violet-tinted-primary-content-color);
+		--_border-color: var(--semantics-categories-violet-tinted-highlight-border-color);
 	}
 
 	:host([color="robijnrood"]) {
-		--_background-color: var(--components-tag-robijnrood-background-color);
-		--_content-color: var(--components-tag-robijnrood-content-color);
+		--_background-color: var(--semantics-categories-robijnrood-tinted-background-color);
+		--_content-color: var(--semantics-categories-robijnrood-tinted-primary-content-color);
+		--_border-color: var(--semantics-categories-robijnrood-tinted-highlight-border-color);
 	}
 
 	:host([color="roze"]) {
-		--_background-color: var(--components-tag-roze-background-color);
-		--_content-color: var(--components-tag-roze-content-color);
+		--_background-color: var(--semantics-categories-roze-tinted-background-color);
+		--_content-color: var(--semantics-categories-roze-tinted-primary-content-color);
+		--_border-color: var(--semantics-categories-roze-tinted-highlight-border-color);
 	}
 
 	:host([color="rood"]) {
-		--_background-color: var(--components-tag-rood-background-color);
-		--_content-color: var(--components-tag-rood-content-color);
+		--_background-color: var(--semantics-categories-rood-tinted-background-color);
+		--_content-color: var(--semantics-categories-rood-tinted-primary-content-color);
+		--_border-color: var(--semantics-categories-rood-tinted-highlight-border-color);
 	}
 
 	:host([color="oranje"]) {
-		--_background-color: var(--components-tag-oranje-background-color);
-		--_content-color: var(--components-tag-oranje-content-color);
+		--_background-color: var(--semantics-categories-oranje-tinted-background-color);
+		--_content-color: var(--semantics-categories-oranje-tinted-primary-content-color);
+		--_border-color: var(--semantics-categories-oranje-tinted-highlight-border-color);
 	}
 
 	:host([color="donkergeel"]) {
-		--_background-color: var(--components-tag-donkergeel-background-color);
-		--_content-color: var(--components-tag-donkergeel-content-color);
+		--_background-color: var(--semantics-categories-donkergeel-tinted-background-color);
+		--_content-color: var(--semantics-categories-donkergeel-tinted-primary-content-color);
+		--_border-color: var(--semantics-categories-donkergeel-tinted-highlight-border-color);
 	}
 
 	:host([color="geel"]) {
-		--_background-color: var(--components-tag-geel-background-color);
-		--_content-color: var(--components-tag-geel-content-color);
+		--_background-color: var(--semantics-categories-geel-tinted-background-color);
+		--_content-color: var(--semantics-categories-geel-tinted-primary-content-color);
+		--_border-color: var(--semantics-categories-geel-tinted-highlight-border-color);
 	}
 
 	:host([color="donkerbruin"]) {
-		--_background-color: var(--components-tag-donkerbruin-background-color);
-		--_content-color: var(--components-tag-donkerbruin-content-color);
+		--_background-color: var(--semantics-categories-donkerbruin-tinted-background-color);
+		--_content-color: var(--semantics-categories-donkerbruin-tinted-primary-content-color);
+		--_border-color: var(--semantics-categories-donkerbruin-tinted-highlight-border-color);
 	}
 
 	:host([color="bruin"]) {
-		--_background-color: var(--components-tag-bruin-background-color);
-		--_content-color: var(--components-tag-bruin-content-color);
+		--_background-color: var(--semantics-categories-bruin-tinted-background-color);
+		--_content-color: var(--semantics-categories-bruin-tinted-primary-content-color);
+		--_border-color: var(--semantics-categories-bruin-tinted-highlight-border-color);
 	}
 
 	:host([color="donkergroen"]) {
-		--_background-color: var(--components-tag-donkergroen-background-color);
-		--_content-color: var(--components-tag-donkergroen-content-color);
+		--_background-color: var(--semantics-categories-donkergroen-tinted-background-color);
+		--_content-color: var(--semantics-categories-donkergroen-tinted-primary-content-color);
+		--_border-color: var(--semantics-categories-donkergroen-tinted-highlight-border-color);
 	}
 
 	:host([color="groen"]) {
-		--_background-color: var(--components-tag-groen-background-color);
-		--_content-color: var(--components-tag-groen-content-color);
+		--_background-color: var(--semantics-categories-groen-tinted-background-color);
+		--_content-color: var(--semantics-categories-groen-tinted-primary-content-color);
+		--_border-color: var(--semantics-categories-groen-tinted-highlight-border-color);
 	}
 
 	:host([color="mosgroen"]) {
-		--_background-color: var(--components-tag-mosgroen-background-color);
-		--_content-color: var(--components-tag-mosgroen-content-color);
+		--_background-color: var(--semantics-categories-mosgroen-tinted-background-color);
+		--_content-color: var(--semantics-categories-mosgroen-tinted-primary-content-color);
+		--_border-color: var(--semantics-categories-mosgroen-tinted-highlight-border-color);
 	}
 
 	:host([color="mintgroen"]) {
-		--_background-color: var(--components-tag-mintgroen-background-color);
-		--_content-color: var(--components-tag-mintgroen-content-color);
+		--_background-color: var(--semantics-categories-mintgroen-tinted-background-color);
+		--_content-color: var(--semantics-categories-mintgroen-tinted-primary-content-color);
+		--_border-color: var(--semantics-categories-mintgroen-tinted-highlight-border-color);
 	}
 
 	:host([hidden]) {
@@ -161,6 +180,9 @@ export const tagStyles = css`
 		box-sizing: border-box;
 		display: inline-flex;
 		border-radius: var(--_corner-radius);
+		/* Inset box-shadow rather than a border so the outline never adds to
+		   the tag's size or shifts the text. */
+		box-shadow: inset 0 0 0 var(--_border-width) var(--_border-color);
 		background-color: var(--_background-color);
 		min-height: var(--_min-height);
 		padding: 0 var(--_inline-padding);
@@ -169,6 +191,14 @@ export const tagStyles = css`
 		color: var(--_content-color);
 		font: var(--_font);
 		white-space: nowrap;
+	}
+
+	@media (forced-colors: active) {
+		.tag {
+			border: var(--primitives-border-width-thin) solid CanvasText;
+			background-color: Canvas;
+			color: CanvasText;
+		}
 	}
 
 

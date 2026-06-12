@@ -18,7 +18,9 @@ export function collectionTemplate(component: NLDDCollection): TemplateResult {
 				<slot @slotchange=${(e: Event) => component._onSlotChange(e)}></slot>
 			</div>
 		</div>
-		<footer class="collection__footer" ?hidden=${!showFooter}>
+		<footer class="collection__footer"
+			?hidden=${!showFooter}
+		>
 			<slot name="footer" @slotchange=${component._onFooterSlotChange}>
 				${isHorizontal ? html`
 					<nldd-button-bar>

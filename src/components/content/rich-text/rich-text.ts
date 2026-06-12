@@ -5,10 +5,25 @@
  * typography. Uses no shadow DOM so styles apply to all nested elements.
  * Import nldd-rich-text.css globally in your application.
  *
+ * ## Breedtezones
+ * Kinderen worden in drie zones geplaatst: tekst (headings, paragrafen,
+ * lijsten, blockquote, div/section) leest op de `main`-maat; media en
+ * tabellen (img, figure, video, iframe, table) krijgen het `wide`-accent;
+ * al het overige — codeblokken en élke component — krijgt de volledige
+ * `full`-span met `justify-self: start`, zodat de ruimte beschikbaar is
+ * maar niet geforceerd wordt. Per kind te overschrijven met
+ * `data-width="main" | "wide" | "full"`. In de linkse layout lezen wide en
+ * full als bleed naar rechts; met `centered` zijn ze symmetrisch.
+ *
  * @element nldd-rich-text
  *
  * @attr {string}  spacing  - Spacing between elements: 'flat' | 'tight' | 'snug' (default) | 'loose'
  * @attr {boolean} centered - Centers the main column inside the container; without it, content is left-aligned
+ * @attr {string}  color    - 'inherit' laat alle tekst de kleur van de ondergrond
+ *   volgen (voor gekleurde vlakken zoals de filled-categories). Links blijven
+ *   onderstreept als affordance; secundaire tekst (figcaption) krijgt dezelfde
+ *   kleur op verlaagde dekking. Bekende v1-gaten: inline code, mark, tabellen
+ *   en hr behouden hun eigen surfaces. Leeg = standaard contentkleuren.
  * @attr {object}  translations - Override translation keys; unset keys fall back to Dutch
  */
 import { LitElement } from 'lit';
@@ -27,6 +42,9 @@ export class NLDDRichText extends LitElement {
 
 	@property({ type: Boolean, reflect: true })
 	centered = false;
+
+	@property({ type: String, reflect: true })
+	color: '' | 'inherit' = '';
 
 	@property({ type: Object })
 	translations: Partial<NLDDRichTextTranslations> = {};

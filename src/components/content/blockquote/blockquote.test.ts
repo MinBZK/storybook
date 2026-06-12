@@ -35,4 +35,18 @@ describe('nldd-blockquote', () => {
 		const footer = el.shadowRoot!.querySelector('.blockquote__attribution') as HTMLElement;
 		expect(footer.hasAttribute('hidden')).toBe(false);
 	});
+
+	it('suppresses the em-dash for a byline attribution', async () => {
+		el = await fixture('<nldd-blockquote>Quote<nldd-byline slot="attribution" text="Jan"></nldd-byline></nldd-blockquote>');
+		await waitForUpdate(el);
+		const footer = el.shadowRoot!.querySelector('.blockquote__attribution') as HTMLElement;
+		expect(footer.classList.contains('is-byline')).toBe(true);
+	});
+
+	it('keeps the em-dash for a plain text attribution', async () => {
+		el = await fixture('<nldd-blockquote>Quote<span slot="attribution">Author</span></nldd-blockquote>');
+		await waitForUpdate(el);
+		const footer = el.shadowRoot!.querySelector('.blockquote__attribution') as HTMLElement;
+		expect(footer.classList.contains('is-byline')).toBe(false);
+	});
 });

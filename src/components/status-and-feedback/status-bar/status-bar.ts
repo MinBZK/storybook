@@ -1,0 +1,111 @@
+/**
+ * NLDD Design System Status Bar Component (Lit + TypeScript)
+ *
+ * Een smalle, paginabrede statusbalk (24px) met een diepe achtergrondkleur
+ * per variant. Gebruik voor persistente systeemtoestand: een storing, gepland
+ * onderhoud, een conceptweergave of een lopende opname. De balk toont bewust
+ * geen icoon en ondersteunt alleen tekst — de tekst zelf moet de status
+ * benoemen ("Storing: …", "Gepland onderhoud …"), zodat de betekenis niet
+ * alleen uit kleur volgt (WCAG 1.4.1).
+ *
+ * De hele balk kan klikbaar zijn: zet `href` (rendert een `<a>`) of `button`
+ * (rendert een `<button>`; luister naar het native `click` event). Zonder
+ * beide is de balk statisch. Bij interactie verschijnt een chevron als
+ * affordance. Maximaal één actie per balk; meerdere acties of links in
+ * lopende tekst horen in nldd-banner.
+ *
+ * ## ARIA
+ * role en aria-live worden automatisch gezet op basis van de variant:
+ * - critical → role="alert" (impliceert aria-live="assertive"; onderbreekt de screen reader)
+ * - overige  → role="status" aria-live="polite"
+ * Niet overschrijfbaar — is een rustiger component nodig, kies dan een ander.
+ * Gebruik `critical` alleen voor een echte noodsituatie: role="alert" onderbreekt
+ * de screen reader bij élke wijziging van de inhoud, dus plaats er geen tekst in
+ * die regelmatig verandert (zoals een aftellende timer).
+ *
+ * @element nldd-status-bar
+ *
+ * @attr {'neutral'|'accent'|'success'|'warning'|'critical'} variant - Kleur van de balk (standaard: 'neutral')
+ * @attr {string}  text   - De statustekst (één regel; afgekapt met ellipsis)
+ * @attr {string}  href   - Maakt de hele balk een link (rendert een <a>)
+ * @attr {string}  target - Link target (bijv. '_blank'); alleen gebruikt bij href
+ * @attr {string}  rel    - Link rel; standaard 'noopener noreferrer' bij target='_blank'
+ * @attr {boolean} button - Maakt de hele balk een button; genegeerd als href is gezet
+ */
+import { LitElement } from 'lit';
+import { customElement, property } from 'lit/decorators.js';
+import { statusBarStyles } from './status-bar.styles.js';
+import { statusBarTemplate } from './status-bar.template.js';
+import '../../content/icon/icon.js';
+
+export type StatusBarVariant = 'neutral' | 'accent' | 'success' | 'warning' | 'critical';
+
+@customElement('nldd-status-bar')
+export class NLDDStatusBar extends LitElement {
+	static override styles = statusBarStyles;
+
+	@property({ type: String, reflect: true })
+	variant: StatusBarVariant = 'neutral';
+
+	@property({ type: String })
+	text = '';
+
+	@property({ type: String })
+	href = '';
+
+	/** Link target (e.g. '_blank'). Only used when href is set. */
+	@property({ type: String })
+	target = '';
+
+	/** Link rel attribute. Only used when href is set. */
+	@property({ type: String })
+	rel = '';
+
+	@property({ type: Boolean, reflect: true })
+	button = false;
+
+	constructor() {
+		super();
+		// AT requires role + aria-live to be present on the element by the time
+		// it's first inserted into the DOM, otherwise the initial announcement
+		// is missed. Reading the raw attribute here (instead of waiting for
+		// Lit to project the @property) covers both HTML-declared and
+		// document.createElement + setAttribute flows. updated() keeps the
+		// host in sync when variant changes at runtime.
+		const initialVariant = this.getAttribute('variant') as StatusBarVariant | null;
+		this._applyAriaForVariant(initialVariant ?? 'neutral');
+	}
+
+	/** @internal Auto-secure rel for new-tab links unless the consumer set one. */
+	_resolvedRel(): string {
+		if (this.rel) return this.rel;
+		return this.target === '_blank' ? 'noopener noreferrer' : '';
+	}
+
+	override updated(changed: Map<string, unknown>): void {
+		if (changed.has('variant')) this._applyAriaForVariant(this.variant);
+	}
+
+	private _applyAriaForVariant(variant: StatusBarVariant): void {
+		if (variant === 'critical') {
+			this.setAttribute('role', 'alert');
+			this.removeAttribute('aria-live');
+		} else {
+			this.setAttribute('role', 'status');
+			this.setAttribute('aria-live', 'polite');
+		}
+		// The bar is announced as one unit; without aria-atomic some screen
+		// readers announce only the changed subtree on text updates.
+		this.setAttribute('aria-atomic', 'true');
+	}
+
+	override render() {
+		return statusBarTemplate(this);
+	}
+}
+
+declare global {
+	interface HTMLElementTagNameMap {
+		'nldd-status-bar': NLDDStatusBar;
+	}
+}

@@ -31,6 +31,7 @@ export { NLDDBlockquote } from './content/blockquote/blockquote.js';
 export { NLDDTag } from './content/tag/tag.js';
 export { NLDDKeyboardShortcut } from './content/keyboard-shortcut/keyboard-shortcut.js';
 export { NLDDCodeViewer } from './content/code-viewer/code-viewer.js';
+export { NLDDByline } from './content/byline/byline.js';
 
 
 // # Forms components
@@ -80,6 +81,7 @@ export { NLDDSplitViewPane } from './layout/split-views/split-view-pane/split-vi
 export { NLDDPage } from './layout/page/page.js';
 
 export { NLDDSimpleSection } from './layout/page-sections/simple-section/simple-section.js';
+export { NLDDHero } from './layout/page-sections/hero/hero.js';
 export { NLDDFullBleedSection } from './layout/page-sections/full-bleed-section/full-bleed-section.js';
 export { NLDDOneThirdTwoThirdsSection } from './layout/page-sections/one-third-two-thirds-section/one-third-two-thirds-section.js';
 export { NLDDTwoThirdsOneThirdSection } from './layout/page-sections/two-thirds-one-third-section/two-thirds-one-third-section.js';
@@ -146,5 +148,6 @@ export { NLDDBadge } from './status-and-feedback/badge/badge.js';
 export { NLDDProgressBar, NLDDProgressBarSegmentIndicator } from './status-and-feedback/progress-bar/progress-bar.js';
 export { NLDDProgressCircle, NLDDProgressCircleSegmentIndicator } from './status-and-feedback/progress-circle/progress-circle.js';
 export { NLDDActivityIndicator } from './status-and-feedback/activity-indicator/activity-indicator.js';
+export { NLDDStatusBar } from './status-and-feedback/status-bar/status-bar.js';
 
 // Auto-register happens on import of individual component files

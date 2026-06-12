@@ -19,7 +19,9 @@ export function tabBarTemplate(component: NLDDTabBar): TemplateResult {
 
 	if (isNavigation) {
 		return html`
-			<nav class="tab-bar" aria-label=${label}>
+			<nav class="tab-bar"
+				aria-label=${label}
+			>
 				${itemsContainer}
 			</nav>
 		`;
@@ -44,7 +46,9 @@ export function tabBarItemTemplate(component: NLDDTabBarItem): TemplateResult {
 	const showPlaceholder = isIconVariant || component._effectiveVariant === 'icon-and-text';
 
 	const content = html`
-		<span class="tab-bar__item-icon" aria-hidden="true">
+		<span class="tab-bar__item-icon"
+			aria-hidden="true"
+		>
 			${component.icon
 				? html`<nldd-icon name=${component.icon}></nldd-icon>`
 				: html`<slot name="icon" @slotchange=${component._onIconSlotChange}>${showPlaceholder ? html`<nldd-icon name="icon-placeholder"></nldd-icon>` : nothing}</slot>`}

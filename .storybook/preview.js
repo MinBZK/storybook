@@ -29,7 +29,11 @@ const preview = {
 		// backgrounds toolbar is redundant — hide it.
 		backgrounds: { disable: true },
 		docs: {
-			toc: true,
+			// The autodocs table of contents lists every heading; on the
+			// Markdown-rendered changelog that's a long, repetitive list of
+			// version blocks. Off by default — opt in per page with
+			// parameters={{ docs: { toc: true } }} on its <Meta>.
+			toc: false,
 		},
 		options: {
 			storySort: {

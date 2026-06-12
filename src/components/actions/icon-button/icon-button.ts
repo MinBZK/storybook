@@ -2,7 +2,7 @@
  * Nederlandse Digitale Dienst Icon Button Component (Lit + TypeScript)
  *
  * @element nldd-icon-button
- * @attr {string}  variant           - Button variant: 'accent-filled' | 'accent-transparent' | 'neutral-tinted' | 'neutral-transparent' | 'critical-tinted' | 'critical-transparent' | 'primary' | 'secondary' | 'destructive'
+ * @attr {string}  variant           - Button variant: 'accent-filled' | 'accent-transparent' | 'neutral-tinted' | 'neutral-transparent' | 'critical-tinted' | 'critical-transparent' | 'inherit-filled' | 'inherit-tinted' | 'primary' | 'secondary' | 'destructive'. De inherit-varianten leiden hun kleuren af van currentColor, voor knoppen op gekleurde vlakken.
  * @attr {string}  size              - Button size: 'xs' | 'sm' | 'md' | 'lg' (default: 'md')
  * @attr {boolean} hide-lg-text      - In lg size, hides the text label and enlarges the icon by one step (28px)
  * @attr {boolean} no-highlight-border - Removes the per-variant highlight border (e.g. when a control group draws a single border instead).
@@ -58,7 +58,9 @@ export type Variant =
 	| 'neutral-base'
 	| 'neutral-transparent'
 	| 'critical-tinted'
-	| 'critical-transparent';
+	| 'critical-transparent'
+	| 'inherit-filled'
+	| 'inherit-tinted';
 export type ButtonType = 'button' | 'submit' | 'reset';
 export type PopupType = 'menu' | 'listbox' | 'dialog' | 'tree' | 'grid';
 

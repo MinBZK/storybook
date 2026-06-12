@@ -13,7 +13,9 @@ export function radioButtonTemplate(component: NLDDRadioButton): TemplateResult 
 			aria-label=${component.accessibleLabel || nothing}
 			@change=${component._handleChange}
 		>
-		<div class="radio-button__outer-shape" aria-hidden="true">
+		<div class="radio-button__outer-shape"
+			aria-hidden="true"
+		>
 			<div class="radio-button__inner-shape"></div>
 		</div>
 	`;

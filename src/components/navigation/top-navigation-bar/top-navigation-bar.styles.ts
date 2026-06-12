@@ -13,7 +13,7 @@ export const topNavigationBarStyles = css`
 	/* # Host */
 
 	:host {
-		--_logo-width: var(--primitives-space-40);
+		--_logo-width: var(--semantics-brand-ribbon-sm-width);
 		--_wordmark-content-color: light-dark(var(--primitives-color-reference-lintblauw), var(--primitives-color-neutral-1000));
 
 		${inheritedTextReset}
@@ -71,15 +71,15 @@ export const topNavigationBarStyles = css`
 		justify-content: center;
 
 		@container (max-width: ${smMax}) {
-			--_logo-width: var(--primitives-space-40);
+			--_logo-width: var(--semantics-brand-ribbon-sm-width);
 		}
 
 		@container (min-width: ${mdMin}) and (max-width: ${mdMax}) {
-			--_logo-width: var(--primitives-space-44);
+			--_logo-width: var(--semantics-brand-ribbon-md-width);
 		}
 
 		@container (min-width: ${lgMin}) {
-			--_logo-width: var(--primitives-space-48);
+			--_logo-width: var(--semantics-brand-ribbon-lg-width);
 		}
 	}
 

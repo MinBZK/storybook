@@ -5,13 +5,17 @@ export function simpleSectionTemplate(component: NLDDSimpleSection): TemplateRes
 	return html`
 		<section class="simple-section">
 			<div class="simple-section__body">
-				<header class="simple-section__header" hidden>
+				<header class="simple-section__header"
+					hidden
+				>
 					<slot name="header" @slotchange=${component._onSlotChange}></slot>
 				</header>
 				<div class="simple-section__main">
 					<slot></slot>
 				</div>
-				<footer class="simple-section__footer" hidden>
+				<footer class="simple-section__footer"
+					hidden
+				>
 					<slot name="footer" @slotchange=${component._onSlotChange}></slot>
 				</footer>
 			</div>

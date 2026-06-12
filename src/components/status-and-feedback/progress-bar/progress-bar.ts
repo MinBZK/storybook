@@ -61,7 +61,6 @@ export type ProgressBarValueDisplay = 'inline' | 'tooltip' | 'none';
 
 export type ProgressBarColor =
 	| 'neutral' | 'accent' | 'success' | 'warning' | 'critical'
-	| 'coolgray'
 	| 'lintblauw' | 'donkerblauw' | 'hemelblauw' | 'lichtblauw'
 	| 'paars' | 'violet'
 	| 'robijnrood' | 'roze' | 'rood' | 'oranje'

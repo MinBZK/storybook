@@ -13,7 +13,9 @@ export function tokenTemplate(component: NLDDToken): TemplateResult {
 				@click=${component._handleMenuClick}
 			>
 				<span class="token__text"><slot></slot></span>
-				<nldd-icon class="token__icon" name="chevron-down-small"></nldd-icon>
+				<nldd-icon class="token__icon"
+					name="chevron-down-small"
+				></nldd-icon>
 			</button>
 		`;
 	}

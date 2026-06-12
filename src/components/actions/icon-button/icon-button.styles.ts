@@ -137,6 +137,46 @@ export const iconButtonStyles = css`
 		--_is-active-highlight-border-color: transparent;
 	}
 
+	/* The on-color variants derive from currentColor; see nldd-button for
+	   the full rationale. The filled label resolves the context var here on
+	   the host, with the tokens' white/black contrast flip as fallback. */
+
+	:host([variant="inherit-tinted"]) {
+		--_background-color: var(--semantics-buttons-inherit-tinted-background-color);
+		--_primary-content-color: var(--semantics-buttons-inherit-tinted-primary-content-color);
+		--_highlight-border-color: var(--semantics-buttons-inherit-tinted-highlight-border-color);
+		--_is-hovered-background-color: var(--semantics-buttons-inherit-tinted-is-hovered-background-color);
+		--_is-hovered-primary-content-color: var(--semantics-buttons-inherit-tinted-is-hovered-primary-content-color);
+		--_is-hovered-highlight-border-color: var(--semantics-buttons-inherit-tinted-is-hovered-highlight-border-color);
+		--_is-active-background-color: var(--semantics-buttons-inherit-tinted-is-active-background-color);
+		--_is-active-primary-content-color: var(--semantics-buttons-inherit-tinted-is-active-primary-content-color);
+		--_is-active-highlight-border-color: var(--semantics-buttons-inherit-tinted-is-active-highlight-border-color);
+	}
+
+	:host([variant="inherit-filled"]) {
+		--_background-color: var(--semantics-buttons-inherit-filled-background-color);
+		--_primary-content-color: var(--context-parent-background-color, var(--semantics-buttons-inherit-filled-primary-content-color));
+		--_highlight-border-color: var(--semantics-buttons-inherit-filled-highlight-border-color);
+		--_is-hovered-background-color: var(--semantics-buttons-inherit-filled-is-hovered-background-color);
+		--_is-hovered-primary-content-color: var(--semantics-buttons-inherit-filled-is-hovered-primary-content-color);
+		--_is-hovered-highlight-border-color: var(--semantics-buttons-inherit-filled-is-hovered-highlight-border-color);
+		--_is-active-background-color: var(--semantics-buttons-inherit-filled-is-active-background-color);
+		--_is-active-primary-content-color: var(--semantics-buttons-inherit-filled-is-active-primary-content-color);
+		--_is-active-highlight-border-color: var(--semantics-buttons-inherit-filled-is-active-highlight-border-color);
+	}
+
+	/* For inherit-filled the inner button keeps the inherited on-color:
+	   its currentColor background and the label's contrast flip resolve
+	   against it, and would otherwise self-reference the label. The label
+	   color moves to the content layer instead; see nldd-button. */
+	:host([variant="inherit-filled"]) .icon-button {
+		color: inherit;
+	}
+
+	:host([variant="inherit-filled"]) .icon-button > * {
+		color: var(--_primary-content-color);
+	}
+
 	/* ## Expanded — default (incl. unknown variant) */
 
 	:host([expanded]) {
@@ -223,6 +263,34 @@ export const iconButtonStyles = css`
 		--_is-active-background-color: transparent;
 		--_is-active-primary-content-color: var(--semantics-buttons-critical-transparent-is-active-primary-content-color);
 		--_is-active-highlight-border-color: transparent;
+	}
+
+	/* The on-color variants keep their currentColor-derived content; expanded
+	   only deepens the background. Content is restated (not inherited from the
+	   resting block) because the default [expanded] block has equal
+	   specificity and later source order. See nldd-button for the rationale. */
+	:host([expanded][variant="inherit-tinted"]) {
+		--_background-color: var(--semantics-buttons-inherit-tinted-is-expanded-background-color);
+		--_primary-content-color: var(--semantics-buttons-inherit-tinted-is-expanded-primary-content-color);
+		--_highlight-border-color: var(--semantics-buttons-inherit-tinted-is-expanded-highlight-border-color);
+		--_is-hovered-background-color: var(--semantics-buttons-inherit-tinted-is-expanded-is-hovered-background-color);
+		--_is-hovered-primary-content-color: var(--semantics-buttons-inherit-tinted-is-expanded-is-hovered-primary-content-color);
+		--_is-hovered-highlight-border-color: var(--semantics-buttons-inherit-tinted-is-expanded-is-hovered-highlight-border-color);
+		--_is-active-background-color: var(--semantics-buttons-inherit-tinted-is-expanded-is-active-background-color);
+		--_is-active-primary-content-color: var(--semantics-buttons-inherit-tinted-is-expanded-is-active-primary-content-color);
+		--_is-active-highlight-border-color: var(--semantics-buttons-inherit-tinted-is-expanded-is-active-highlight-border-color);
+	}
+
+	:host([expanded][variant="inherit-filled"]) {
+		--_background-color: var(--semantics-buttons-inherit-filled-is-expanded-background-color);
+		--_primary-content-color: var(--context-parent-background-color, var(--semantics-buttons-inherit-filled-is-expanded-primary-content-color));
+		--_highlight-border-color: var(--semantics-buttons-inherit-filled-is-expanded-highlight-border-color);
+		--_is-hovered-background-color: var(--semantics-buttons-inherit-filled-is-expanded-is-hovered-background-color);
+		--_is-hovered-primary-content-color: var(--semantics-buttons-inherit-filled-is-expanded-is-hovered-primary-content-color);
+		--_is-hovered-highlight-border-color: var(--semantics-buttons-inherit-filled-is-expanded-is-hovered-highlight-border-color);
+		--_is-active-background-color: var(--semantics-buttons-inherit-filled-is-expanded-is-active-background-color);
+		--_is-active-primary-content-color: var(--semantics-buttons-inherit-filled-is-expanded-is-active-primary-content-color);
+		--_is-active-highlight-border-color: var(--semantics-buttons-inherit-filled-is-expanded-is-active-highlight-border-color);
 	}
 
 	:host([width="full"]) {

@@ -54,4 +54,23 @@ describe('nldd-title', () => {
 		expect(el.querySelector('[slot="actions"]')?.textContent?.trim()).toBe('Actie');
 		expect(el.shadowRoot!.querySelector('slot[name="actions"]')!.assignedElements().length).toBeGreaterThan(0);
 	});
+
+	it('color="inherit" follows the surrounding text color, the default does not', async () => {
+		// The vitest page does not load settings.css, so define the token the
+		// default path resolves against — otherwise both paths would inherit.
+		el = await fixture(`
+			<div>
+				<style>:root { --semantics-content-color: rgb(99, 99, 99); }</style>
+				<div style="color: rgb(10, 20, 30);">
+					<nldd-title color="inherit"><h2 id="inherit-title">A</h2></nldd-title>
+					<nldd-title><h2 id="default-title">B</h2></nldd-title>
+				</div>
+			</div>
+		`);
+		const titles = el.querySelectorAll('nldd-title');
+		await waitForUpdate(titles[0] as HTMLElement);
+		await waitForUpdate(titles[1] as HTMLElement);
+		expect(getComputedStyle(el.querySelector('#inherit-title')!).color).toBe('rgb(10, 20, 30)');
+		expect(getComputedStyle(el.querySelector('#default-title')!).color).toBe('rgb(99, 99, 99)');
+	});
 });

@@ -25,7 +25,6 @@ import './../../content/icon/icon.js';
 
 type Color =
 	| 'critical' | 'accent' | 'neutral' | 'warning' | 'success'
-	| 'coolgray'
 	| 'lintblauw' | 'donkerblauw' | 'hemelblauw' | 'lichtblauw'
 	| 'paars' | 'violet'
 	| 'robijnrood' | 'roze' | 'rood' | 'oranje'

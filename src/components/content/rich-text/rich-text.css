@@ -49,8 +49,89 @@ nldd-rich-text[hidden] {
 	display: none;
 }
 
+/* # Color inherit
+   color="inherit" makes all text follow the surface's text color (e.g. a
+   filled-categories panel that sets a pure white/black content color).
+   Links keep the underline as their affordance and signal hover with a
+   thicker line instead of a color shift; figcaption takes the same color
+   at the system-wide secondary opacity tier. Known v1 gaps: inline code,
+   mark, tables and hr keep their own surfaces. */
+
+nldd-rich-text[color="inherit"] {
+	color: inherit;
+}
+
+nldd-rich-text[color="inherit"] a {
+	color: currentColor;
+	/* Pin the underline to the inherited color in every state. The hover rule
+	   below only changes thickness, so without this an underline could keep the
+	   default link blue and leak it against a colored surface. */
+	text-decoration-color: currentColor;
+}
+
+nldd-rich-text[color="inherit"] a:hover {
+	color: currentColor;
+	text-decoration-thickness: var(--primitives-border-width-regular);
+}
+
+nldd-rich-text[color="inherit"] a:active {
+	color: currentColor;
+}
+
+nldd-rich-text[color="inherit"] figcaption {
+	color: color-mix(in oklab, currentColor var(--semantics-content-secondary-opacity), transparent);
+}
+
+/* # Child placement
+   Text reads at the main measure; everything else (components, tables,
+   code) gets the full span by default so new components automatically
+   receive room. justify-self: start makes that room available without
+   forcing it: width-100% children fill the span, the rest shrinkwraps.
+   In the left-aligned layout the full/wide start lines collapse onto
+   main-start, so `full` and `wide` read as rightward bleed there and as
+   symmetric spans in [centered]. */
+
 nldd-rich-text > * {
+	grid-column: full;
+	justify-self: start;
+}
+
+nldd-rich-text[centered] > * {
+	justify-self: center;
+}
+
+nldd-rich-text > :is(h1, h2, h3, h4, h5, h6, p, ul, ol, dl, div, section, blockquote) {
 	grid-column: main;
+	/* Fill the main column so short text blocks keep a shared left edge —
+	   justify-self: center would otherwise float a shrinkwrapped heading
+	   loose from the paragraphs below it. border-box keeps padded elements
+	   (ul/ol list indent) inside the column. */
+	box-sizing: border-box;
+	width: 100%;
+}
+
+/* nldd-table stays on the generic full default; use data-width to
+   override per table. */
+nldd-rich-text > :is(img, figure, video, iframe, table) {
+	grid-column: wide;
+}
+
+nldd-rich-text > :is(pre, nldd-code-viewer) {
+	width: 100%;
+}
+
+/* Per-item override for editors; wins on specificity from every default
+   above. */
+nldd-rich-text > [data-width="main"] {
+	grid-column: main;
+}
+
+nldd-rich-text > [data-width="wide"] {
+	grid-column: wide;
+}
+
+nldd-rich-text > [data-width="full"] {
+	grid-column: full;
 }
 
 nldd-rich-text > :first-child {
@@ -305,10 +386,6 @@ nldd-rich-text figcaption {
 
 /* # Blockquote */
 
-nldd-rich-text > blockquote {
-	grid-column: main-start / wide-end;
-}
-
 nldd-rich-text blockquote {
 	display: flex;
 	flex-direction: column;
@@ -361,6 +438,7 @@ nldd-rich-text q {
 
 nldd-rich-text img {
 	display: block;
+	border-radius: var(--semantics-controls-md-corner-radius);
 	max-width: 100%;
 	height: auto;
 }
@@ -368,26 +446,25 @@ nldd-rich-text img {
 
 /* # Horizontal Rule */
 
-nldd-rich-text > hr {
-	grid-column: full;
-}
-
 nldd-rich-text hr {
 	margin: 0;
 	border: none;
 	border-top: var(--semantics-dividers-thickness) solid var(--semantics-dividers-color);
+	/* An hr has no content, so the justify-self: start default would
+	   shrinkwrap it to zero width. */
+	width: 100%;
 }
 
 
 /* # Table */
 
-nldd-rich-text > table {
-	grid-column: main-start / full-end;
-}
-
 nldd-rich-text table {
 	display: block;
-	width: 100%;
+	/* Mobile scroll: the block shrinks to its content (so the border hugs
+	   narrow tables) but caps at the container, scrolling when the columns
+	   need more room. width: auto would instead fill 100% as a block. */
+	width: max-content;
+	max-width: 100%;
 	margin-block: max(
 		0px,
 		calc(var(--components-rich-text-spacing-snug) - var(--_spacing))
@@ -404,6 +481,7 @@ nldd-rich-text table {
 
 	@container (min-width: 641px) {
 		display: table;
+		width: 100%;
 		overflow-x: unset;
 		scrollbar-width: unset;
 	}

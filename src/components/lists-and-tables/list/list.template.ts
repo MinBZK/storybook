@@ -29,7 +29,9 @@ export const template = (
 				aria-label=${ifDefined(skipItemsLabel || isEmpty ? undefined : itemsLabel)}
 			>
 				<slot></slot>
-				<div class="list__empty" ?hidden=${!isEmpty}>
+				<div class="list__empty"
+					?hidden=${!isEmpty}
+				>
 					<slot name="empty">
 						<nldd-inline-dialog
 							text=${emptyText}

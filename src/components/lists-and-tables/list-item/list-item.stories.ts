@@ -23,16 +23,14 @@ export default {
 			description: 'Whether the item is selected',
 			table: { defaultValue: { summary: 'false' } },
 		},
-		type: {
-			control: 'select',
-			options: ['(geen)', 'button'],
-			mapping: { '(geen)': '' },
-			description: 'Interactive mode of the list item',
-			table: { defaultValue: { summary: '(geen)' } },
-		},
 		href: {
 			control: 'text',
-			description: 'Wanneer gezet, wordt het item als link gerenderd in plaats van het opgegeven type',
+			description: 'Maakt het hele item een link',
+		},
+		button: {
+			control: 'boolean',
+			description: 'Maakt het hele item een button; genegeerd als href is gezet',
+			table: { defaultValue: { summary: false } },
 		},
 	},
 };
@@ -41,12 +39,12 @@ export const Default = {
 	args: {
 		size: 'md',
 		selected: false,
-		type: '',
 		href: '',
+		button: false,
 	},
 	render: (args: Record<string, any>) => html`
 		<nldd-list variant="simple">
-			<nldd-list-item size=${args.size} ?selected=${args.selected} type=${args.type || nothing} href=${args.href || nothing}>
+			<nldd-list-item size=${args.size} ?selected=${args.selected} href=${args.href || nothing} ?button=${args.button}>
 				<nldd-text-cell text="Text cell" supporting-text="Supporting text"></nldd-text-cell>
 			</nldd-list-item>
 		</nldd-list>
@@ -89,20 +87,20 @@ export const Selected = {
 	`,
 };
 
-export const TypeButton = {
+export const AlsButton = {
 	render: () => html`
 		<nldd-list variant="simple">
-			<nldd-list-item type="button">
+			<nldd-list-item button>
 				<nldd-text-cell text="Clickable button item"></nldd-text-cell>
 			</nldd-list-item>
-			<nldd-list-item type="button">
+			<nldd-list-item button>
 				<nldd-text-cell text="Another button item"></nldd-text-cell>
 			</nldd-list-item>
 		</nldd-list>
 	`,
 };
 
-export const TypeLink = {
+export const AlsLink = {
 	render: () => html`
 		<nldd-list variant="simple">
 			<nldd-list-item href="/settings">

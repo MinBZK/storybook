@@ -5,7 +5,9 @@ export function oneThirdTwoThirdsSectionTemplate(component: NLDDOneThirdTwoThird
 	return html`
 		<section class="one-third-two-thirds-section">
 			<div class="one-third-two-thirds-section__body">
-				<header class="one-third-two-thirds-section__header" hidden>
+				<header class="one-third-two-thirds-section__header"
+					hidden
+				>
 					<slot name="header" @slotchange=${component._onSlotChange}></slot>
 				</header>
 				<div class="one-third-two-thirds-section__columns">
@@ -17,7 +19,9 @@ export function oneThirdTwoThirdsSectionTemplate(component: NLDDOneThirdTwoThird
 						<slot name="right"></slot>
 					</div>
 				</div>
-				<footer class="one-third-two-thirds-section__footer" hidden>
+				<footer class="one-third-two-thirds-section__footer"
+					hidden
+				>
 					<slot name="footer" @slotchange=${component._onSlotChange}></slot>
 				</footer>
 			</div>

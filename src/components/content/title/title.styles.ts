@@ -226,6 +226,21 @@ export const titleStyles = css`
 		overflow-wrap: anywhere !important;
 	}
 
+	/* color="inherit": follow the surface's text color (e.g. a
+	   filled-categories panel that sets a pure white/black content color);
+	   overline and subtitle take the same color at the system-wide
+	   secondary opacity tier. !important matches the hardened slotted
+	   rules above. */
+
+	:host([color="inherit"]) ::slotted(:not([slot])) {
+		color: inherit !important;
+	}
+
+	:host([color="inherit"]) ::slotted([slot="overline"]),
+	:host([color="inherit"]) ::slotted([slot="subtitle"]) {
+		color: color-mix(in oklab, currentColor var(--semantics-content-secondary-opacity), transparent) !important;
+	}
+
 	.title__actions {
 		display: flex;
 		flex-direction: row;

@@ -24,7 +24,7 @@ de `.d.ts` bestanden van het pakket.
 
 | Attribuut | Type | Beschrijving |
 | --- | --- | --- |
-| `variant` | `string` | Button variant: 'primary' \| 'secondary' \| 'destructive' \| 'accent-filled' \| 'accent-transparent' \| 'neutral-tinted' \| 'neutral-base' \| 'neutral-transparent' \| 'critical-tinted' \| 'critical-transparent' |
+| `variant` | `string` | Button variant: 'primary' \| 'secondary' \| 'destructive' \| 'accent-filled' \| 'accent-transparent' \| 'neutral-tinted' \| 'neutral-base' \| 'neutral-transparent' \| 'critical-tinted' \| 'critical-transparent' \| 'inherit-filled' \| 'inherit-tinted'. De inherit-varianten leiden hun kleuren af van currentColor, voor knoppen op gekleurde vlakken; inherit-filled gebruikt de vlakkleur (--context-parent-background-color) als labelkleur met een wit/zwart-contrastflip als fallback. |
 | `size` | `string` | Button size: 'xs' \| 'sm' \| 'md' \| 'lg' (default: 'md'). 'lg' uses larger text and 24px start/end icons. |
 | `horizontal-alignment` | `string` | Horizontal alignment of the button content: 'left' \| 'center' \| 'right' (default: unset, centered). Most visible with width="full" or a fixed width. |
 | `disabled` | `boolean` | Disabled state |
@@ -99,7 +99,7 @@ A container for grouping related buttons together, either horizontally or vertic
 
 | Attribuut | Type | Beschrijving |
 | --- | --- | --- |
-| `variant` | `string` | Button variant: 'accent-filled' \| 'accent-transparent' \| 'neutral-tinted' \| 'neutral-transparent' \| 'critical-tinted' \| 'critical-transparent' \| 'primary' \| 'secondary' \| 'destructive' |
+| `variant` | `string` | Button variant: 'accent-filled' \| 'accent-transparent' \| 'neutral-tinted' \| 'neutral-transparent' \| 'critical-tinted' \| 'critical-transparent' \| 'inherit-filled' \| 'inherit-tinted' \| 'primary' \| 'secondary' \| 'destructive'. De inherit-varianten leiden hun kleuren af van currentColor, voor knoppen op gekleurde vlakken. |
 | `size` | `string` | Button size: 'xs' \| 'sm' \| 'md' \| 'lg' (default: 'md') |
 | `hide-lg-text` | `boolean` | In lg size, hides the text label and enlarges the icon by one step (28px) |
 | `no-highlight-border` | `boolean` | Removes the per-variant highlight border (e.g. when a control group draws a single border instead). |
@@ -230,7 +230,26 @@ Toont een citaat met optionele bron-attributie.
 | Slot | Beschrijving |
 | --- | --- |
 | _(default)_ | De citaat-paragra(a)f(en) — gebruik bij voorkeur <p>-elementen |
-| `attribution` | Optionele bronvermelding (auteur, titel, etc.) |
+| `attribution` | Optionele bronvermelding (auteur, titel, etc.). Ook een nldd-byline mag hier; het kastlijntje ("— ") wordt dan weggelaten. |
+
+### `<nldd-byline>`
+
+Een redactionele regel die auteurs of redacteuren toont: optionele avatar(s), een naamregel en ondersteunende tekst (bijvoorbeeld functie of datum). Alle onderdelen zijn optioneel. De naamregel en ondersteunende tekst kunnen als attribuut of als slot worden aangeleverd. Gebruik de slots voor rijkere inhoud, zoals een `<time datetime="…">` voor machine-leesbare datums of een link naar het auteursprofiel. Geslotte inhoud vervangt het bijbehorende attribuut (het attribuut is de fallback van de slot). Bij meerdere redacteuren overlappen de avatars elkaar subtiel; elke avatar krijgt een ring in de surface-kleur (zelfde mechaniek als badge) zodat ze visueel gescheiden blijven. Op een gekleurde ondergrond kan de ringkleur meegegeven worden via `--context-parent-background-color`. Avatars worden geslot als `<img slot="avatars">`. Zet `alt=""` wanneer de namen al in de tekst staan (decoratief); geef anders een beschrijvende alt-tekst op.
+
+**Attributes**
+
+| Attribuut | Type | Beschrijving |
+| --- | --- | --- |
+| `text` | `string` | Naamregel (bijv. "Jan Jansen en Piet Pietersen"); fallback wanneer de text-slot leeg is |
+| `supporting-text` | `string` | Ondersteunende tekst onder de naamregel (bijv. rol of datum); fallback wanneer de supporting-text-slot leeg is |
+
+**Slots**
+
+| Slot | Beschrijving |
+| --- | --- |
+| `avatars` | Eén of meer img-elementen; gestyled als ronde, overlappende avatars |
+| `text` | Naamregel als rijke inhoud (bijv. een link naar het auteursprofiel) |
+| `supporting-text` | Ondersteunende tekst als rijke inhoud (bijv. een time-element) |
 
 ### `<nldd-code-viewer>`
 
@@ -320,7 +339,7 @@ Toont een toetsencombinatie (zoals Cmd+K of Ctrl+Shift+P) in één gecombineerde
 
 ### `<nldd-rich-text>`
 
-A container for rich text content that automatically applies responsive typography. Uses no shadow DOM so styles apply to all nested elements. Import nldd-rich-text.css globally in your application.
+A container for rich text content that automatically applies responsive typography. Uses no shadow DOM so styles apply to all nested elements. Import nldd-rich-text.css globally in your application. Kinderen worden in drie zones geplaatst: tekst (headings, paragrafen, lijsten, blockquote, div/section) leest op de `main`-maat; media en tabellen (img, figure, video, iframe, table) krijgen het `wide`-accent; al het overige — codeblokken en élke component — krijgt de volledige `full`-span met `justify-self: start`, zodat de ruimte beschikbaar is maar niet geforceerd wordt. Per kind te overschrijven met `data-width="main" | "wide" | "full"`. In de linkse layout lezen wide en full als bleed naar rechts; met `centered` zijn ze symmetrisch.
 
 **Attributes**
 
@@ -328,6 +347,7 @@ A container for rich text content that automatically applies responsive typograp
 | --- | --- | --- |
 | `spacing` | `string` | Spacing between elements: 'flat' \| 'tight' \| 'snug' (default) \| 'loose' |
 | `centered` | `boolean` | Centers the main column inside the container; without it, content is left-aligned |
+| `color` | `string` | 'inherit' laat alle tekst de kleur van de ondergrond volgen (voor gekleurde vlakken zoals de filled-categories). Links blijven onderstreept als affordance; secundaire tekst (figcaption) krijgt dezelfde kleur op verlaagde dekking. Bekende v1-gaten: inline code, mark, tabellen en hr behouden hun eigen surfaces. Leeg = standaard contentkleuren. |
 | `translations` | `object` | Override translation keys; unset keys fall back to Dutch |
 
 ### `<nldd-tag>`
@@ -338,7 +358,7 @@ Een compacte label voor categorieën, statussen of metadata. Niet interactief. V
 
 | Attribuut | Type | Beschrijving |
 | --- | --- | --- |
-| `color` | `string` | Kleurvariant. Semantisch: 'neutral' \| 'accent' \| 'success' \| 'warning' \| 'critical'. Rijkskleuren: 'coolgray' \| 'lintblauw' \| 'donkerblauw' \| 'hemelblauw' \| 'lichtblauw' \| 'paars' \| 'violet' \| 'robijnrood' \| 'roze' \| 'rood' \| 'oranje' \| 'donkergeel' \| 'geel' \| 'donkerbruin' \| 'bruin' \| 'donkergroen' \| 'groen' \| 'mosgroen' \| 'mintgroen'. (default: 'neutral') |
+| `color` | `string` | Kleurvariant. Semantisch: 'neutral' \| 'accent' \| 'success' \| 'warning' \| 'critical'. Rijkskleuren: 'lintblauw' \| 'donkerblauw' \| 'hemelblauw' \| 'lichtblauw' \| 'paars' \| 'violet' \| 'robijnrood' \| 'roze' \| 'rood' \| 'oranje' \| 'donkergeel' \| 'geel' \| 'donkerbruin' \| 'bruin' \| 'donkergroen' \| 'groen' \| 'mosgroen' \| 'mintgroen'. (default: 'neutral') |
 | `size` | `string` | Tag grootte: 'sm' \| 'md' (default: 'md') |
 | `text` | `string` | Tag tekst (alternatief voor default slot) |
 | `icon` | `string` | Icoon voor de tekst |
@@ -361,6 +381,7 @@ A title bar with an optional overline, title, and subtitle on the left, and a sl
 | Attribuut | Type | Beschrijving |
 | --- | --- | --- |
 | `size` | `number` | Visual size of the title: 1–6 (default: 3) |
+| `color` | `string` | 'inherit' laat de titel de tekstkleur van de ondergrond volgen (voor gekleurde vlakken zoals de filled-categories); overline en subtitle krijgen dezelfde kleur op verlaagde dekking. Leeg = standaard contentkleuren. |
 
 **Slots**
 
@@ -1197,6 +1218,31 @@ A section that spans the full width without horizontal padding. Useful for backg
 | _(default)_ | Main content |
 | `footer` | Content below the main content |
 
+### `<nldd-hero>`
+
+Een paginakop volgens de rijkshuisstijl-vormtaal: een mediavlak met exact één afgeronde hoek (radius afgeleid van de lintbreedte) en een tekstpaneel (de main) dat op zes posities kan staan. De radius is van het component en niet instelbaar: 1,5X lintbreedte op smalle containers, 2X op md/lg. De media-hoek volgt automatisch uit `main-position` (zie de tabel in de stories) en is per geval te overschrijven met `media-corner`. Het paneel krijgt zijn eigen afgeronde hoek — op halve maat, zodat de tekst niet tegen de rand komt — op de hoek die diagonaal het mediavlak in wijst. Beslaat het paneel een volledige rand (`left`/`right`, `main-width="full"` of de gestapelde mobiele weergave), dan is het hoekloos. Op mobiel zit de media-hoek altijd aan de bovenkant (een onderhoek klapt naar zijn bovenhoek) en is hij een halve stap groter (1,5X). Zonder media vult de main het volledige vlak; met `main-background="base"` krijgt het vlak dan een rand op de zijden die de afgeronde hoek raken, zoals blockquote. Met `main-background` krijgt het paneel een vlakkleur uit de filled-categories; die leveren een pure witte of zwarte contentkleur mee, zodat componenten met `color="inherit"` (title, rich-text) gegarandeerd contrast houden. Per de rijkshuisstijl wordt de radius nooit geanimeerd.
+
+**Attributes**
+
+| Attribuut | Type | Beschrijving |
+| --- | --- | --- |
+| `main-position` | `'top-left'\|'top-right'\|'bottom-left'\|'bottom-right'\|'left'\|'right'` | Positie van het tekstpaneel (default: 'bottom-left'); 'left'/'right' beslaan de volle hoogte |
+| `main-width` | `'1/2'\|'2/3'\|'3/4'\|'full'` | Breedte van het paneel (default: '1/2'); 'full' maakt een volle boven- of onderstrook en wordt bij 'left'/'right' genegeerd |
+| `main-background` | `string` | Vlakkleur van het paneel: 'base' (de base surface) of een categoriekleur — 'accent' (default) of een rijkskleur zoals 'lintblauw'\|'donkerblauw'\|'oranje' |
+| `media-corner` | `'auto'\|'top-left'\|'top-right'\|'bottom-left'\|'bottom-right'` | Afgeronde hoek van het mediavlak; 'auto' (default) volgt main-position |
+| `background` | `'inherit'\|'base'\|'tinted'` | Surface achter de hero (sectie-API) |
+| `scheme` | `'inherit'\|'light'\|'dark'\|'inverted'` | Kleurschema (sectie-API) |
+| `width` | `string` | Body max-width; 'full' verwijdert de begrenzing (sectie-API) |
+| `height` | `string` | Minimale hoogte van de sectie (sectie-API) |
+| `padding-block` | `string` | Blokpadding-override, ook per rand en responsief (sectie-API) |
+
+**Slots**
+
+| Slot | Beschrijving |
+| --- | --- |
+| `media` | Afbeelding of illustratie (img of nldd-image); vult het vlak en wordt geclipt. Zet `alt=""` wanneer de afbeelding decoratief is; geef anders een beschrijvende alt-tekst op. |
+| _(default)_ | Inhoud van het tekstpaneel (bijv. nldd-title en nldd-rich-text met color="inherit") |
+
 ### `<nldd-navigation-split-view>`
 
 A four-column layout with a sidebar, secondary sidebar, main content area, and inspector. The sidebars show navigation or lists, the main area shows primary content, and the inspector shows additional details or properties of the selection. Panes are shown automatically when content is slotted into them.
@@ -1538,13 +1584,14 @@ Een zwevend venster gebaseerd op het native <dialog>-element. Kan modaal of niet
 
 ### `<nldd-breadcrumbs>`
 
-A trail of `nldd-breadcrumbs-item`s separated by `›`, rendered as a `<nav>` landmark wrapping a `<div role="list">` (with each item carrying `role="listitem"`). Explicit ARIA roles travel reliably across the slot boundary where the implicit `<ol>`/`<li>` mapping is inconsistent across AT + browser combos. The trail wraps onto multiple lines when it doesn't fit, so it adapts to any width.
+A trail of `nldd-breadcrumbs-item`s separated by `›`, rendered as a `<nav>` landmark wrapping a `<div role="list">` (with each item carrying `role="listitem"`). Explicit ARIA roles travel reliably across the slot boundary where the implicit `<ol>`/`<li>` mapping is inconsistent across AT + browser combos. The trail wraps onto multiple lines when it doesn't fit, so it adapts to any width. Vanaf vier niveaus klapt het pad standaard in tot `Home › … › {bovenliggende pagina} › {huidige pagina}`. De ellipsis is een knop die bij activeren de verborgen niveaus op hun plek toont (eenmalig; de focus verplaatst naar het eerste onthulde niveau). De verborgen items blijven in de DOM, zodat zoekmachines en agents het volledige pad zien. Zet `no-collapse` om het pad altijd volledig te tonen.
 
 **Attributes**
 
 | Attribuut | Type | Beschrijving |
 | --- | --- | --- |
 | `accessible-label` | `string` | Override the nav's aria-label. Defaults to the i18n value (NL: "Kruimelpad"). |
+| `no-collapse` | `boolean` | Toon altijd alle niveaus; schakelt het inklappen vanaf vier niveaus uit. |
 | `translations` | `object` | Override translation keys; unset keys fall back to the Dutch default. |
 
 **Slots**
@@ -1960,6 +2007,21 @@ Exports both NLDDProgressCircle and NLDDProgressCircleSegmentIndicator. A circul
 | `color` | `string` | Color (semantic or Rijkskleur). Default 'accent'. |
 | `name` | `string` | Optional name used in the combined tooltip + screenreader text |
 
+### `<nldd-status-bar>`
+
+Een smalle, paginabrede statusbalk (24px) met een diepe achtergrondkleur per variant. Gebruik voor persistente systeemtoestand: een storing, gepland onderhoud, een conceptweergave of een lopende opname. De balk toont bewust geen icoon en ondersteunt alleen tekst — de tekst zelf moet de status benoemen ("Storing: …", "Gepland onderhoud …"), zodat de betekenis niet alleen uit kleur volgt (WCAG 1.4.1). De hele balk kan klikbaar zijn: zet `href` (rendert een `<a>`) of `button` (rendert een `<button>`; luister naar het native `click` event). Zonder beide is de balk statisch. Bij interactie verschijnt een chevron als affordance. Maximaal één actie per balk; meerdere acties of links in lopende tekst horen in nldd-banner. role en aria-live worden automatisch gezet op basis van de variant: - critical → role="alert" (impliceert aria-live="assertive"; onderbreekt de screen reader) - overige → role="status" aria-live="polite" Niet overschrijfbaar — is een rustiger component nodig, kies dan een ander. Gebruik `critical` alleen voor een echte noodsituatie: role="alert" onderbreekt de screen reader bij élke wijziging van de inhoud, dus plaats er geen tekst in die regelmatig verandert (zoals een aftellende timer).
+
+**Attributes**
+
+| Attribuut | Type | Beschrijving |
+| --- | --- | --- |
+| `variant` | `'neutral'\|'accent'\|'success'\|'warning'\|'critical'` | Kleur van de balk (standaard: 'neutral') |
+| `text` | `string` | De statustekst (één regel; afgekapt met ellipsis) |
+| `href` | `string` | Maakt de hele balk een link (rendert een <a>) |
+| `target` | `string` | Link target (bijv. '_blank'); alleen gebruikt bij href |
+| `rel` | `string` | Link rel; standaard 'noopener noreferrer' bij target='_blank' |
+| `button` | `boolean` | Maakt de hele balk een button; genegeerd als href is gezet |
+
 ## lists-and-tables
 
 ### `<nldd-cell>`
@@ -2039,7 +2101,7 @@ A container for `nldd-list-item` elements, with optional header and footer slots
 
 ### `<nldd-list-item>`
 
-A row within an `nldd-list`, providing layout for start, main and end areas. Renders as a link when `href` is set, as a button when `type="button"`, or as a plain container otherwise. The item synchronises its ARIA with its parent `nldd-list`'s `type`: - `list` parent → `role="listitem"` - `navigation` parent → `role="listitem"` + `aria-current="page"` on the inner `<a>` / `<button>` when `selected`
+A row within an `nldd-list`, providing layout for start, main and end areas. Renders as a link when `href` is set, as a button when `button` is set, or as a plain container otherwise. The item synchronises its ARIA with its parent `nldd-list`'s `type`: - `list` parent → `role="listitem"` - `navigation` parent → `role="listitem"` + `aria-current="page"` on the inner `<a>` / `<button>` when `selected`
 
 ### `<nldd-spacer-cell>`
 

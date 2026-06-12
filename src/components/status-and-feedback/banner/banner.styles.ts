@@ -9,13 +9,12 @@ export const bannerStyles = css`
 	:host {
 		--_corner-radius: var(--components-banner-corner-radius);
 		--_padding: var(--components-banner-padding);
-		--_background-color: var(--components-banner-neutral-background-color);
-		--_border-color: var(--components-banner-neutral-border-color);
+		--_background-color: var(--semantics-categories-neutral-tinted-background-color);
+		--_border-color: var(--semantics-categories-neutral-tinted-highlight-border-color);
 		--_border-width: var(--primitives-border-width-thin);
-		--_icon-color: var(--components-banner-neutral-icon-color);
+		--_icon-color: var(--semantics-categories-neutral-filled-background-color);
 		--_icon-size: var(--primitives-space-32);
 		--_content-color: var(--components-banner-content-color);
-		--_content-secondary-color: var(--components-banner-content-secondary-color);
 		--_text-icon-offset: calc((var(--_icon-size) - var(--primitives-font-size-100) * var(--primitives-line-height-tight)) / 2);
 		--_column-gap: var(--primitives-space-8);
 		--_dismissible-padding-right: var(--primitives-space-44);
@@ -26,10 +25,6 @@ export const bannerStyles = css`
 		box-sizing: border-box;
 		display: grid;
 		position: relative;
-		/* Inset box-shadow paints the 1px edge inside the radius without
-		   taking layout space, matching the highlight pattern nldd-box
-		   uses. forced-colors fallback below restores a real border for
-		   Windows High Contrast users (box-shadow is dropped there). */
 		border-radius: var(--_corner-radius);
 		box-shadow: inset 0 0 0 var(--_border-width) var(--_border-color);
 		background-color: var(--_background-color);
@@ -49,27 +44,33 @@ export const bannerStyles = css`
 	}
 
 	:host([variant="accent"]) {
-		--_background-color: var(--components-banner-accent-background-color);
-		--_border-color: var(--components-banner-accent-border-color);
-		--_icon-color: var(--components-banner-accent-icon-color);
+		--_background-color: var(--semantics-categories-accent-tinted-background-color);
+		--_border-color: var(--semantics-categories-accent-tinted-highlight-border-color);
+		--_icon-color: var(--semantics-categories-accent-reference-background-color);
 	}
 
 	:host([variant="success"]) {
-		--_background-color: var(--components-banner-success-background-color);
-		--_border-color: var(--components-banner-success-border-color);
-		--_icon-color: var(--components-banner-success-icon-color);
+		--_background-color: var(--semantics-categories-success-tinted-background-color);
+		--_border-color: var(--semantics-categories-success-tinted-highlight-border-color);
+		--_icon-color: var(--semantics-categories-success-reference-background-color);
 	}
 
 	:host([variant="warning"]) {
-		--_background-color: var(--components-banner-warning-background-color);
-		--_border-color: var(--components-banner-warning-border-color);
-		--_icon-color: var(--components-banner-warning-icon-color);
+		--_background-color: var(--semantics-categories-warning-tinted-background-color);
+		--_border-color: var(--semantics-categories-warning-tinted-highlight-border-color);
+		--_icon-color: var(--semantics-categories-warning-reference-background-color);
 	}
 
 	:host([variant="critical"]) {
-		--_background-color: var(--components-banner-critical-background-color);
-		--_border-color: var(--components-banner-critical-border-color);
-		--_icon-color: var(--components-banner-critical-icon-color);
+		--_background-color: var(--semantics-categories-critical-tinted-background-color);
+		--_border-color: var(--semantics-categories-critical-tinted-highlight-border-color);
+		--_icon-color: var(--semantics-categories-critical-reference-background-color);
+	}
+
+	@media (forced-colors: active) {
+		:host {
+			border: var(--_border-width) solid CanvasText;
+		}
 	}
 
 
@@ -114,7 +115,6 @@ export const bannerStyles = css`
 
 	.banner__supporting-text {
 		margin: 0;
-		color: var(--_content-secondary-color);
 		font: var(--primitives-font-body-md-regular-tight);
 		text-wrap: pretty;
 	}
@@ -144,19 +144,5 @@ export const bannerStyles = css`
 		position: absolute;
 		top: 0;
 		right: 0;
-	}
-
-
-	/* # Accessibility
-	   forced-colors / Windows High Contrast strips box-shadow, so the inset
-	   edge would disappear and the banner would lose its semantic frame
-	   against the system background. Restore it with a real border in that
-	   mode. CanvasText is the system foreground color so the border always
-	   meets contrast. */
-
-	@media (forced-colors: active) {
-		:host {
-			border: var(--_border-width) solid CanvasText;
-		}
 	}
 `;

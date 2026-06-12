@@ -51,7 +51,6 @@
 :root {
 	color-scheme: light dark;
 
-
 	/* # Primitives */
 
 	/* ## Functional Colors */
@@ -227,7 +226,6 @@
 	--primitives-color-mark-950: var(--primitives-color-donkergeel-950);
 	--primitives-color-mark-975: var(--primitives-color-donkergeel-975);
 	--primitives-color-mark-1000: var(--primitives-color-donkergeel-1000);
-
 
 	--primitives-color-reference-coolgray: #64748b;
 	--primitives-color-reference-lintblauw: #154273;
@@ -864,8 +862,16 @@
 		0px 0px 2px 0px light-dark(rgba(0, 0, 0, 0.02), rgba(0, 0, 0, 0.06))
 	;
 
-
 	/* # Semantics */
+
+	/* ## Brand
+	   Width of the rijkslogo ribbon (wapenlint); per the rijkshuisstijl this
+	   measure also drives the rounded-corner radius of shape elements
+	   (0.5X-3X of the ribbon width). */
+
+	--semantics-brand-ribbon-sm-width: var(--primitives-space-40);
+	--semantics-brand-ribbon-md-width: var(--primitives-space-44);
+	--semantics-brand-ribbon-lg-width: var(--primitives-space-48);
 
 	/* ## Surfaces */
 
@@ -879,12 +885,343 @@
 
 	--semantics-content-color: light-dark(var(--primitives-color-neutral-800), var(--primitives-color-neutral-900));
 	--semantics-content-secondary-color: light-dark(var(--primitives-color-neutral-600), var(--primitives-color-neutral-700));
+	--semantics-content-secondary-opacity: 75%;
+	--semantics-content-contrast-color: oklch(from currentColor calc((0.65 - l) * infinity) 0 h);
 	--semantics-content-accent-color: light-dark(var(--primitives-color-accent-750), var(--primitives-color-accent-650));
 	--semantics-content-critical-color: light-dark(var(--primitives-color-critical-600), var(--primitives-color-critical-650));
 	--semantics-content-warning-color: light-dark(var(--primitives-color-warning-600), var(--primitives-color-warning-650));
 	--semantics-content-success-color: light-dark(var(--primitives-color-success-600), var(--primitives-color-success-650));
 	--semantics-content-mark-background-color: light-dark(var(--primitives-color-mark-100), var(--primitives-color-mark-200));
 	--semantics-content-mark-color: light-dark(var(--primitives-color-mark-900), var(--primitives-color-mark-800));
+
+	/* ## Categories
+	   Distinguishing colors voor groep-onderscheid, per kleur in drie stijlen:
+	   - filled:    verzadigd vlak (badges, progress-bar segmenten)
+	   - tinted:    zachte tint met gekleurde tekst (tags, banner)
+	   - reference: de echte rijkshuisstijl-merkkleur, gelijk in light en dark (hero)
+	   Elke stijl: background, highlight-border, primary- en secondary-content. */
+
+	/* neutral */
+	--semantics-categories-neutral-filled-background-color: light-dark(var(--primitives-color-neutral-600), var(--primitives-color-neutral-450));
+	--semantics-categories-neutral-filled-highlight-border-color: light-dark(var(--primitives-color-neutral-650), var(--primitives-color-neutral-500));
+	--semantics-categories-neutral-filled-primary-content-color: light-dark(var(--primitives-color-neutral-0), var(--primitives-color-neutral-1000));
+	--semantics-categories-neutral-filled-secondary-content-color: light-dark(var(--primitives-color-neutral-0), var(--primitives-color-neutral-1000));
+	--semantics-categories-neutral-tinted-background-color: light-dark(var(--primitives-color-neutral-50), var(--primitives-color-neutral-75));
+	--semantics-categories-neutral-tinted-highlight-border-color: light-dark(var(--primitives-color-neutral-100), var(--primitives-color-neutral-150));
+	--semantics-categories-neutral-tinted-primary-content-color: var(--primitives-color-neutral-750);
+	--semantics-categories-neutral-tinted-secondary-content-color: var(--primitives-color-neutral-750);
+	--semantics-categories-neutral-reference-background-color: light-dark(var(--primitives-color-neutral-600), var(--primitives-color-neutral-400));
+	--semantics-categories-neutral-reference-highlight-border-color: light-dark(var(--primitives-color-neutral-650), var(--primitives-color-neutral-450));
+	--semantics-categories-neutral-reference-primary-content-color: light-dark(var(--primitives-color-neutral-0), var(--primitives-color-neutral-1000));
+	--semantics-categories-neutral-reference-secondary-content-color: light-dark(var(--primitives-color-neutral-0), var(--primitives-color-neutral-1000));
+
+	/* accent */
+	--semantics-categories-accent-filled-background-color: light-dark(var(--primitives-color-accent-750), var(--primitives-color-accent-400));
+	--semantics-categories-accent-filled-highlight-border-color: light-dark(var(--primitives-color-accent-800), var(--primitives-color-accent-500));
+	--semantics-categories-accent-filled-primary-content-color: light-dark(var(--primitives-color-accent-0), var(--primitives-color-accent-1000));
+	--semantics-categories-accent-filled-secondary-content-color: light-dark(var(--primitives-color-accent-0), var(--primitives-color-accent-1000));
+	--semantics-categories-accent-tinted-background-color: light-dark(var(--primitives-color-accent-50), var(--primitives-color-accent-75));
+	--semantics-categories-accent-tinted-highlight-border-color: light-dark(var(--primitives-color-accent-100), var(--primitives-color-accent-150));
+	--semantics-categories-accent-tinted-primary-content-color: var(--primitives-color-accent-700);
+	--semantics-categories-accent-tinted-secondary-content-color: var(--primitives-color-accent-700);
+	--semantics-categories-accent-reference-background-color: light-dark(var(--primitives-color-accent-750), var(--primitives-color-accent-250));
+	--semantics-categories-accent-reference-highlight-border-color: light-dark(var(--primitives-color-accent-800), var(--primitives-color-accent-200));
+	--semantics-categories-accent-reference-primary-content-color: light-dark(var(--primitives-color-accent-0), var(--primitives-color-accent-1000));
+	--semantics-categories-accent-reference-secondary-content-color: light-dark(var(--primitives-color-accent-0), var(--primitives-color-accent-1000));
+
+	/* critical */
+	--semantics-categories-critical-filled-background-color: light-dark(var(--primitives-color-critical-650), var(--primitives-color-critical-450));
+	--semantics-categories-critical-filled-highlight-border-color: light-dark(var(--primitives-color-critical-600), var(--primitives-color-critical-500));
+	--semantics-categories-critical-filled-primary-content-color: light-dark(var(--primitives-color-critical-0), var(--primitives-color-critical-1000));
+	--semantics-categories-critical-filled-secondary-content-color: light-dark(var(--primitives-color-critical-0), var(--primitives-color-critical-1000));
+	--semantics-categories-critical-tinted-background-color: light-dark(var(--primitives-color-critical-50), var(--primitives-color-critical-75));
+	--semantics-categories-critical-tinted-highlight-border-color: light-dark(var(--primitives-color-critical-100), var(--primitives-color-critical-150));
+	--semantics-categories-critical-tinted-primary-content-color: var(--primitives-color-critical-600);
+	--semantics-categories-critical-tinted-secondary-content-color: var(--primitives-color-critical-600);
+	--semantics-categories-critical-reference-background-color: light-dark(var(--primitives-color-critical-550), var(--primitives-color-critical-450));
+	--semantics-categories-critical-reference-highlight-border-color: light-dark(var(--primitives-color-critical-600), var(--primitives-color-critical-400));
+	--semantics-categories-critical-reference-primary-content-color: light-dark(var(--primitives-color-critical-0), var(--primitives-color-critical-1000));
+	--semantics-categories-critical-reference-secondary-content-color: light-dark(var(--primitives-color-critical-0), var(--primitives-color-critical-1000));
+
+	/* warning */
+	--semantics-categories-warning-filled-background-color: light-dark(var(--primitives-color-warning-400), var(--primitives-color-warning-600));
+	--semantics-categories-warning-filled-highlight-border-color: light-dark(var(--primitives-color-warning-450), var(--primitives-color-warning-650));
+	--semantics-categories-warning-filled-primary-content-color: light-dark(var(--primitives-color-warning-1000), var(--primitives-color-warning-0));
+	--semantics-categories-warning-filled-secondary-content-color: light-dark(var(--primitives-color-warning-1000), var(--primitives-color-warning-0));
+	--semantics-categories-warning-tinted-background-color: light-dark(var(--primitives-color-warning-50), var(--primitives-color-warning-75));
+	--semantics-categories-warning-tinted-highlight-border-color: light-dark(var(--primitives-color-warning-100), var(--primitives-color-warning-150));
+	--semantics-categories-warning-tinted-primary-content-color: var(--primitives-color-warning-650);
+	--semantics-categories-warning-tinted-secondary-content-color: var(--primitives-color-warning-650);
+	--semantics-categories-warning-reference-background-color: light-dark(var(--primitives-color-warning-400), var(--primitives-color-warning-600));
+	--semantics-categories-warning-reference-highlight-border-color: light-dark(var(--primitives-color-warning-450), var(--primitives-color-warning-550));
+	--semantics-categories-warning-reference-primary-content-color: light-dark(var(--primitives-color-warning-1000), var(--primitives-color-warning-0));
+	--semantics-categories-warning-reference-secondary-content-color: light-dark(var(--primitives-color-warning-1000), var(--primitives-color-warning-0));
+
+	/* success */
+	--semantics-categories-success-filled-background-color: var(--primitives-color-success-500);
+	--semantics-categories-success-filled-highlight-border-color: var(--primitives-color-success-550);
+	--semantics-categories-success-filled-primary-content-color: light-dark(var(--primitives-color-success-0), var(--primitives-color-success-1000));
+	--semantics-categories-success-filled-secondary-content-color: light-dark(var(--primitives-color-success-0), var(--primitives-color-success-1000));
+	--semantics-categories-success-tinted-background-color: light-dark(var(--primitives-color-success-50), var(--primitives-color-success-75));
+	--semantics-categories-success-tinted-highlight-border-color: light-dark(var(--primitives-color-success-100), var(--primitives-color-success-150));
+	--semantics-categories-success-tinted-primary-content-color: var(--primitives-color-success-650);
+	--semantics-categories-success-tinted-secondary-content-color: var(--primitives-color-success-650);
+	--semantics-categories-success-reference-background-color: light-dark(var(--primitives-color-success-500), var(--primitives-color-success-500));
+	--semantics-categories-success-reference-highlight-border-color: light-dark(var(--primitives-color-success-550), var(--primitives-color-success-450));
+	--semantics-categories-success-reference-primary-content-color: light-dark(var(--primitives-color-success-0), var(--primitives-color-success-1000));
+	--semantics-categories-success-reference-secondary-content-color: light-dark(var(--primitives-color-success-0), var(--primitives-color-success-1000));
+
+	/* lintblauw */
+	--semantics-categories-lintblauw-filled-background-color: light-dark(var(--primitives-color-lintblauw-750), var(--primitives-color-lintblauw-400));
+	--semantics-categories-lintblauw-filled-highlight-border-color: light-dark(var(--primitives-color-lintblauw-800), var(--primitives-color-lintblauw-500));
+	--semantics-categories-lintblauw-filled-primary-content-color: light-dark(var(--primitives-color-lintblauw-0), var(--primitives-color-lintblauw-1000));
+	--semantics-categories-lintblauw-filled-secondary-content-color: light-dark(var(--primitives-color-lintblauw-0), var(--primitives-color-lintblauw-1000));
+	--semantics-categories-lintblauw-tinted-background-color: light-dark(var(--primitives-color-lintblauw-50), var(--primitives-color-lintblauw-75));
+	--semantics-categories-lintblauw-tinted-highlight-border-color: light-dark(var(--primitives-color-lintblauw-100), var(--primitives-color-lintblauw-150));
+	--semantics-categories-lintblauw-tinted-primary-content-color: var(--primitives-color-lintblauw-700);
+	--semantics-categories-lintblauw-tinted-secondary-content-color: var(--primitives-color-lintblauw-700);
+	--semantics-categories-lintblauw-reference-background-color: light-dark(var(--primitives-color-lintblauw-750), var(--primitives-color-lintblauw-250));
+	--semantics-categories-lintblauw-reference-highlight-border-color: light-dark(var(--primitives-color-lintblauw-800), var(--primitives-color-lintblauw-200));
+	--semantics-categories-lintblauw-reference-primary-content-color: light-dark(var(--primitives-color-lintblauw-0), var(--primitives-color-lintblauw-1000));
+	--semantics-categories-lintblauw-reference-secondary-content-color: light-dark(var(--primitives-color-lintblauw-0), var(--primitives-color-lintblauw-1000));
+
+	/* donkerblauw */
+	--semantics-categories-donkerblauw-filled-background-color: light-dark(var(--primitives-color-donkerblauw-600), var(--primitives-color-donkerblauw-400));
+	--semantics-categories-donkerblauw-filled-highlight-border-color: light-dark(var(--primitives-color-donkerblauw-650), var(--primitives-color-donkerblauw-500));
+	--semantics-categories-donkerblauw-filled-primary-content-color: light-dark(var(--primitives-color-donkerblauw-0), var(--primitives-color-donkerblauw-1000));
+	--semantics-categories-donkerblauw-filled-secondary-content-color: light-dark(var(--primitives-color-donkerblauw-0), var(--primitives-color-donkerblauw-1000));
+	--semantics-categories-donkerblauw-tinted-background-color: light-dark(var(--primitives-color-donkerblauw-50), var(--primitives-color-donkerblauw-75));
+	--semantics-categories-donkerblauw-tinted-highlight-border-color: light-dark(var(--primitives-color-donkerblauw-100), var(--primitives-color-donkerblauw-150));
+	--semantics-categories-donkerblauw-tinted-primary-content-color: var(--primitives-color-donkerblauw-700);
+	--semantics-categories-donkerblauw-tinted-secondary-content-color: var(--primitives-color-donkerblauw-700);
+	--semantics-categories-donkerblauw-reference-background-color: light-dark(var(--primitives-color-donkerblauw-600), var(--primitives-color-donkerblauw-400));
+	--semantics-categories-donkerblauw-reference-highlight-border-color: light-dark(var(--primitives-color-donkerblauw-650), var(--primitives-color-donkerblauw-350));
+	--semantics-categories-donkerblauw-reference-primary-content-color: light-dark(var(--primitives-color-donkerblauw-0), var(--primitives-color-donkerblauw-1000));
+	--semantics-categories-donkerblauw-reference-secondary-content-color: light-dark(var(--primitives-color-donkerblauw-0), var(--primitives-color-donkerblauw-1000));
+
+	/* hemelblauw */
+	--semantics-categories-hemelblauw-filled-background-color: var(--primitives-color-hemelblauw-500);
+	--semantics-categories-hemelblauw-filled-highlight-border-color: var(--primitives-color-hemelblauw-550);
+	--semantics-categories-hemelblauw-filled-primary-content-color: light-dark(var(--primitives-color-hemelblauw-0), var(--primitives-color-hemelblauw-1000));
+	--semantics-categories-hemelblauw-filled-secondary-content-color: light-dark(var(--primitives-color-hemelblauw-0), var(--primitives-color-hemelblauw-1000));
+	--semantics-categories-hemelblauw-tinted-background-color: light-dark(var(--primitives-color-hemelblauw-50), var(--primitives-color-hemelblauw-75));
+	--semantics-categories-hemelblauw-tinted-highlight-border-color: light-dark(var(--primitives-color-hemelblauw-100), var(--primitives-color-hemelblauw-150));
+	--semantics-categories-hemelblauw-tinted-primary-content-color: var(--primitives-color-hemelblauw-650);
+	--semantics-categories-hemelblauw-tinted-secondary-content-color: var(--primitives-color-hemelblauw-650);
+	--semantics-categories-hemelblauw-reference-background-color: light-dark(var(--primitives-color-hemelblauw-500), var(--primitives-color-hemelblauw-500));
+	--semantics-categories-hemelblauw-reference-highlight-border-color: light-dark(var(--primitives-color-hemelblauw-550), var(--primitives-color-hemelblauw-450));
+	--semantics-categories-hemelblauw-reference-primary-content-color: light-dark(var(--primitives-color-hemelblauw-0), var(--primitives-color-hemelblauw-1000));
+	--semantics-categories-hemelblauw-reference-secondary-content-color: light-dark(var(--primitives-color-hemelblauw-0), var(--primitives-color-hemelblauw-1000));
+
+	/* lichtblauw */
+	--semantics-categories-lichtblauw-filled-background-color: light-dark(var(--primitives-color-lichtblauw-350), var(--primitives-color-lichtblauw-800));
+	--semantics-categories-lichtblauw-filled-highlight-border-color: light-dark(var(--primitives-color-lichtblauw-450), var(--primitives-color-lichtblauw-850));
+	--semantics-categories-lichtblauw-filled-primary-content-color: light-dark(var(--primitives-color-lichtblauw-1000), var(--primitives-color-lichtblauw-0));
+	--semantics-categories-lichtblauw-filled-secondary-content-color: light-dark(var(--primitives-color-lichtblauw-1000), var(--primitives-color-lichtblauw-0));
+	--semantics-categories-lichtblauw-tinted-background-color: light-dark(var(--primitives-color-lichtblauw-50), var(--primitives-color-lichtblauw-75));
+	--semantics-categories-lichtblauw-tinted-highlight-border-color: light-dark(var(--primitives-color-lichtblauw-100), var(--primitives-color-lichtblauw-150));
+	--semantics-categories-lichtblauw-tinted-primary-content-color: var(--primitives-color-lichtblauw-650);
+	--semantics-categories-lichtblauw-tinted-secondary-content-color: var(--primitives-color-lichtblauw-650);
+	--semantics-categories-lichtblauw-reference-background-color: light-dark(var(--primitives-color-lichtblauw-200), var(--primitives-color-lichtblauw-800));
+	--semantics-categories-lichtblauw-reference-highlight-border-color: light-dark(var(--primitives-color-lichtblauw-250), var(--primitives-color-lichtblauw-750));
+	--semantics-categories-lichtblauw-reference-primary-content-color: light-dark(var(--primitives-color-lichtblauw-1000), var(--primitives-color-lichtblauw-0));
+	--semantics-categories-lichtblauw-reference-secondary-content-color: light-dark(var(--primitives-color-lichtblauw-1000), var(--primitives-color-lichtblauw-0));
+
+	/* paars */
+	--semantics-categories-paars-filled-background-color: light-dark(var(--primitives-color-paars-850), var(--primitives-color-paars-400));
+	--semantics-categories-paars-filled-highlight-border-color: light-dark(var(--primitives-color-paars-900), var(--primitives-color-paars-500));
+	--semantics-categories-paars-filled-primary-content-color: light-dark(var(--primitives-color-paars-0), var(--primitives-color-paars-1000));
+	--semantics-categories-paars-filled-secondary-content-color: light-dark(var(--primitives-color-paars-0), var(--primitives-color-paars-1000));
+	--semantics-categories-paars-tinted-background-color: light-dark(var(--primitives-color-paars-50), var(--primitives-color-paars-75));
+	--semantics-categories-paars-tinted-highlight-border-color: light-dark(var(--primitives-color-paars-100), var(--primitives-color-paars-150));
+	--semantics-categories-paars-tinted-primary-content-color: var(--primitives-color-paars-750);
+	--semantics-categories-paars-tinted-secondary-content-color: var(--primitives-color-paars-750);
+	--semantics-categories-paars-reference-background-color: light-dark(var(--primitives-color-paars-850), var(--primitives-color-paars-150));
+	--semantics-categories-paars-reference-highlight-border-color: light-dark(var(--primitives-color-paars-900), var(--primitives-color-paars-100));
+	--semantics-categories-paars-reference-primary-content-color: light-dark(var(--primitives-color-paars-0), var(--primitives-color-paars-1000));
+	--semantics-categories-paars-reference-secondary-content-color: light-dark(var(--primitives-color-paars-0), var(--primitives-color-paars-1000));
+
+	/* violet */
+	--semantics-categories-violet-filled-background-color: light-dark(var(--primitives-color-violet-650), var(--primitives-color-violet-400));
+	--semantics-categories-violet-filled-highlight-border-color: light-dark(var(--primitives-color-violet-700), var(--primitives-color-violet-500));
+	--semantics-categories-violet-filled-primary-content-color: light-dark(var(--primitives-color-violet-0), var(--primitives-color-violet-1000));
+	--semantics-categories-violet-filled-secondary-content-color: light-dark(var(--primitives-color-violet-0), var(--primitives-color-violet-1000));
+	--semantics-categories-violet-tinted-background-color: light-dark(var(--primitives-color-violet-50), var(--primitives-color-violet-75));
+	--semantics-categories-violet-tinted-highlight-border-color: light-dark(var(--primitives-color-violet-100), var(--primitives-color-violet-150));
+	--semantics-categories-violet-tinted-primary-content-color: var(--primitives-color-violet-650);
+	--semantics-categories-violet-tinted-secondary-content-color: var(--primitives-color-violet-650);
+	--semantics-categories-violet-reference-background-color: light-dark(var(--primitives-color-violet-650), var(--primitives-color-violet-350));
+	--semantics-categories-violet-reference-highlight-border-color: light-dark(var(--primitives-color-violet-700), var(--primitives-color-violet-300));
+	--semantics-categories-violet-reference-primary-content-color: light-dark(var(--primitives-color-violet-0), var(--primitives-color-violet-1000));
+	--semantics-categories-violet-reference-secondary-content-color: light-dark(var(--primitives-color-violet-0), var(--primitives-color-violet-1000));
+
+	/* robijnrood */
+	--semantics-categories-robijnrood-filled-background-color: light-dark(var(--primitives-color-robijnrood-600), var(--primitives-color-robijnrood-400));
+	--semantics-categories-robijnrood-filled-highlight-border-color: light-dark(var(--primitives-color-robijnrood-650), var(--primitives-color-robijnrood-500));
+	--semantics-categories-robijnrood-filled-primary-content-color: light-dark(var(--primitives-color-robijnrood-0), var(--primitives-color-robijnrood-1000));
+	--semantics-categories-robijnrood-filled-secondary-content-color: light-dark(var(--primitives-color-robijnrood-0), var(--primitives-color-robijnrood-1000));
+	--semantics-categories-robijnrood-tinted-background-color: light-dark(var(--primitives-color-robijnrood-50), var(--primitives-color-robijnrood-75));
+	--semantics-categories-robijnrood-tinted-highlight-border-color: light-dark(var(--primitives-color-robijnrood-100), var(--primitives-color-robijnrood-150));
+	--semantics-categories-robijnrood-tinted-primary-content-color: var(--primitives-color-robijnrood-600);
+	--semantics-categories-robijnrood-tinted-secondary-content-color: var(--primitives-color-robijnrood-600);
+	--semantics-categories-robijnrood-reference-background-color: light-dark(var(--primitives-color-robijnrood-550), var(--primitives-color-robijnrood-450));
+	--semantics-categories-robijnrood-reference-highlight-border-color: light-dark(var(--primitives-color-robijnrood-600), var(--primitives-color-robijnrood-400));
+	--semantics-categories-robijnrood-reference-primary-content-color: light-dark(var(--primitives-color-robijnrood-0), var(--primitives-color-robijnrood-1000));
+	--semantics-categories-robijnrood-reference-secondary-content-color: light-dark(var(--primitives-color-robijnrood-0), var(--primitives-color-robijnrood-1000));
+
+	/* roze */
+	--semantics-categories-roze-filled-background-color: light-dark(var(--primitives-color-roze-350), var(--primitives-color-roze-750));
+	--semantics-categories-roze-filled-highlight-border-color: light-dark(var(--primitives-color-roze-450), var(--primitives-color-roze-800));
+	--semantics-categories-roze-filled-primary-content-color: light-dark(var(--primitives-color-roze-1000), var(--primitives-color-roze-0));
+	--semantics-categories-roze-filled-secondary-content-color: light-dark(var(--primitives-color-roze-1000), var(--primitives-color-roze-0));
+	--semantics-categories-roze-tinted-background-color: light-dark(var(--primitives-color-roze-50), var(--primitives-color-roze-75));
+	--semantics-categories-roze-tinted-highlight-border-color: light-dark(var(--primitives-color-roze-100), var(--primitives-color-roze-150));
+	--semantics-categories-roze-tinted-primary-content-color: var(--primitives-color-roze-650);
+	--semantics-categories-roze-tinted-secondary-content-color: var(--primitives-color-roze-650);
+	--semantics-categories-roze-reference-background-color: light-dark(var(--primitives-color-roze-250), var(--primitives-color-roze-750));
+	--semantics-categories-roze-reference-highlight-border-color: light-dark(var(--primitives-color-roze-300), var(--primitives-color-roze-700));
+	--semantics-categories-roze-reference-primary-content-color: light-dark(var(--primitives-color-roze-1000), var(--primitives-color-roze-0));
+	--semantics-categories-roze-reference-secondary-content-color: light-dark(var(--primitives-color-roze-1000), var(--primitives-color-roze-0));
+
+	/* rood */
+	--semantics-categories-rood-filled-background-color: light-dark(var(--primitives-color-rood-550), var(--primitives-color-rood-450));
+	--semantics-categories-rood-filled-highlight-border-color: light-dark(var(--primitives-color-rood-600), var(--primitives-color-rood-500));
+	--semantics-categories-rood-filled-primary-content-color: light-dark(var(--primitives-color-rood-0), var(--primitives-color-rood-1000));
+	--semantics-categories-rood-filled-secondary-content-color: light-dark(var(--primitives-color-rood-0), var(--primitives-color-rood-1000));
+	--semantics-categories-rood-tinted-background-color: light-dark(var(--primitives-color-rood-50), var(--primitives-color-rood-75));
+	--semantics-categories-rood-tinted-highlight-border-color: light-dark(var(--primitives-color-rood-100), var(--primitives-color-rood-150));
+	--semantics-categories-rood-tinted-primary-content-color: var(--primitives-color-rood-600);
+	--semantics-categories-rood-tinted-secondary-content-color: var(--primitives-color-rood-600);
+	--semantics-categories-rood-reference-background-color: light-dark(var(--primitives-color-rood-550), var(--primitives-color-rood-450));
+	--semantics-categories-rood-reference-highlight-border-color: light-dark(var(--primitives-color-rood-600), var(--primitives-color-rood-400));
+	--semantics-categories-rood-reference-primary-content-color: light-dark(var(--primitives-color-rood-0), var(--primitives-color-rood-1000));
+	--semantics-categories-rood-reference-secondary-content-color: light-dark(var(--primitives-color-rood-0), var(--primitives-color-rood-1000));
+
+	/* oranje */
+	--semantics-categories-oranje-filled-background-color: light-dark(var(--primitives-color-oranje-400), var(--primitives-color-oranje-600));
+	--semantics-categories-oranje-filled-highlight-border-color: light-dark(var(--primitives-color-oranje-450), var(--primitives-color-oranje-650));
+	--semantics-categories-oranje-filled-primary-content-color: light-dark(var(--primitives-color-oranje-1000), var(--primitives-color-oranje-0));
+	--semantics-categories-oranje-filled-secondary-content-color: light-dark(var(--primitives-color-oranje-1000), var(--primitives-color-oranje-0));
+	--semantics-categories-oranje-tinted-background-color: light-dark(var(--primitives-color-oranje-50), var(--primitives-color-oranje-75));
+	--semantics-categories-oranje-tinted-highlight-border-color: light-dark(var(--primitives-color-oranje-100), var(--primitives-color-oranje-150));
+	--semantics-categories-oranje-tinted-primary-content-color: var(--primitives-color-oranje-650);
+	--semantics-categories-oranje-tinted-secondary-content-color: var(--primitives-color-oranje-650);
+	--semantics-categories-oranje-reference-background-color: light-dark(var(--primitives-color-oranje-400), var(--primitives-color-oranje-600));
+	--semantics-categories-oranje-reference-highlight-border-color: light-dark(var(--primitives-color-oranje-450), var(--primitives-color-oranje-550));
+	--semantics-categories-oranje-reference-primary-content-color: light-dark(var(--primitives-color-oranje-1000), var(--primitives-color-oranje-0));
+	--semantics-categories-oranje-reference-secondary-content-color: light-dark(var(--primitives-color-oranje-1000), var(--primitives-color-oranje-0));
+
+	/* donkergeel */
+	--semantics-categories-donkergeel-filled-background-color: light-dark(var(--primitives-color-donkergeel-350), var(--primitives-color-donkergeel-800));
+	--semantics-categories-donkergeel-filled-highlight-border-color: light-dark(var(--primitives-color-donkergeel-450), var(--primitives-color-donkergeel-850));
+	--semantics-categories-donkergeel-filled-primary-content-color: light-dark(var(--primitives-color-donkergeel-1000), var(--primitives-color-donkergeel-0));
+	--semantics-categories-donkergeel-filled-secondary-content-color: light-dark(var(--primitives-color-donkergeel-1000), var(--primitives-color-donkergeel-0));
+	--semantics-categories-donkergeel-tinted-background-color: light-dark(var(--primitives-color-donkergeel-50), var(--primitives-color-donkergeel-75));
+	--semantics-categories-donkergeel-tinted-highlight-border-color: light-dark(var(--primitives-color-donkergeel-100), var(--primitives-color-donkergeel-150));
+	--semantics-categories-donkergeel-tinted-primary-content-color: var(--primitives-color-donkergeel-650);
+	--semantics-categories-donkergeel-tinted-secondary-content-color: var(--primitives-color-donkergeel-650);
+	--semantics-categories-donkergeel-reference-background-color: light-dark(var(--primitives-color-donkergeel-200), var(--primitives-color-donkergeel-800));
+	--semantics-categories-donkergeel-reference-highlight-border-color: light-dark(var(--primitives-color-donkergeel-250), var(--primitives-color-donkergeel-750));
+	--semantics-categories-donkergeel-reference-primary-content-color: light-dark(var(--primitives-color-donkergeel-1000), var(--primitives-color-donkergeel-0));
+	--semantics-categories-donkergeel-reference-secondary-content-color: light-dark(var(--primitives-color-donkergeel-1000), var(--primitives-color-donkergeel-0));
+
+	/* geel */
+	--semantics-categories-geel-filled-background-color: light-dark(var(--primitives-color-geel-350), var(--primitives-color-geel-900));
+	--semantics-categories-geel-filled-highlight-border-color: light-dark(var(--primitives-color-geel-450), var(--primitives-color-geel-950));
+	--semantics-categories-geel-filled-primary-content-color: light-dark(var(--primitives-color-geel-1000), var(--primitives-color-geel-0));
+	--semantics-categories-geel-filled-secondary-content-color: light-dark(var(--primitives-color-geel-1000), var(--primitives-color-geel-0));
+	--semantics-categories-geel-tinted-background-color: light-dark(var(--primitives-color-geel-50), var(--primitives-color-geel-75));
+	--semantics-categories-geel-tinted-highlight-border-color: light-dark(var(--primitives-color-geel-100), var(--primitives-color-geel-150));
+	--semantics-categories-geel-tinted-primary-content-color: var(--primitives-color-geel-650);
+	--semantics-categories-geel-tinted-secondary-content-color: var(--primitives-color-geel-650);
+	--semantics-categories-geel-reference-background-color: light-dark(var(--primitives-color-geel-100), var(--primitives-color-geel-900));
+	--semantics-categories-geel-reference-highlight-border-color: light-dark(var(--primitives-color-geel-150), var(--primitives-color-geel-850));
+	--semantics-categories-geel-reference-primary-content-color: light-dark(var(--primitives-color-geel-1000), var(--primitives-color-geel-0));
+	--semantics-categories-geel-reference-secondary-content-color: light-dark(var(--primitives-color-geel-1000), var(--primitives-color-geel-0));
+
+	/* donkerbruin */
+	--semantics-categories-donkerbruin-filled-background-color: light-dark(var(--primitives-color-donkerbruin-750), var(--primitives-color-donkerbruin-400));
+	--semantics-categories-donkerbruin-filled-highlight-border-color: light-dark(var(--primitives-color-donkerbruin-800), var(--primitives-color-donkerbruin-500));
+	--semantics-categories-donkerbruin-filled-primary-content-color: light-dark(var(--primitives-color-donkerbruin-0), var(--primitives-color-donkerbruin-1000));
+	--semantics-categories-donkerbruin-filled-secondary-content-color: light-dark(var(--primitives-color-donkerbruin-0), var(--primitives-color-donkerbruin-1000));
+	--semantics-categories-donkerbruin-tinted-background-color: light-dark(var(--primitives-color-donkerbruin-50), var(--primitives-color-donkerbruin-75));
+	--semantics-categories-donkerbruin-tinted-highlight-border-color: light-dark(var(--primitives-color-donkerbruin-100), var(--primitives-color-donkerbruin-150));
+	--semantics-categories-donkerbruin-tinted-primary-content-color: var(--primitives-color-donkerbruin-700);
+	--semantics-categories-donkerbruin-tinted-secondary-content-color: var(--primitives-color-donkerbruin-700);
+	--semantics-categories-donkerbruin-reference-background-color: light-dark(var(--primitives-color-donkerbruin-750), var(--primitives-color-donkerbruin-250));
+	--semantics-categories-donkerbruin-reference-highlight-border-color: light-dark(var(--primitives-color-donkerbruin-800), var(--primitives-color-donkerbruin-200));
+	--semantics-categories-donkerbruin-reference-primary-content-color: light-dark(var(--primitives-color-donkerbruin-0), var(--primitives-color-donkerbruin-1000));
+	--semantics-categories-donkerbruin-reference-secondary-content-color: light-dark(var(--primitives-color-donkerbruin-0), var(--primitives-color-donkerbruin-1000));
+
+	/* bruin */
+	--semantics-categories-bruin-filled-background-color: var(--primitives-color-bruin-500);
+	--semantics-categories-bruin-filled-highlight-border-color: var(--primitives-color-bruin-550);
+	--semantics-categories-bruin-filled-primary-content-color: light-dark(var(--primitives-color-bruin-0), var(--primitives-color-bruin-1000));
+	--semantics-categories-bruin-filled-secondary-content-color: light-dark(var(--primitives-color-bruin-0), var(--primitives-color-bruin-1000));
+	--semantics-categories-bruin-tinted-background-color: light-dark(var(--primitives-color-bruin-50), var(--primitives-color-bruin-75));
+	--semantics-categories-bruin-tinted-highlight-border-color: light-dark(var(--primitives-color-bruin-100), var(--primitives-color-bruin-150));
+	--semantics-categories-bruin-tinted-primary-content-color: var(--primitives-color-bruin-700);
+	--semantics-categories-bruin-tinted-secondary-content-color: var(--primitives-color-bruin-700);
+	--semantics-categories-bruin-reference-background-color: light-dark(var(--primitives-color-bruin-500), var(--primitives-color-bruin-500));
+	--semantics-categories-bruin-reference-highlight-border-color: light-dark(var(--primitives-color-bruin-550), var(--primitives-color-bruin-450));
+	--semantics-categories-bruin-reference-primary-content-color: light-dark(var(--primitives-color-bruin-0), var(--primitives-color-bruin-1000));
+	--semantics-categories-bruin-reference-secondary-content-color: light-dark(var(--primitives-color-bruin-0), var(--primitives-color-bruin-1000));
+
+	/* donkergroen */
+	--semantics-categories-donkergroen-filled-background-color: light-dark(var(--primitives-color-donkergroen-700), var(--primitives-color-donkergroen-400));
+	--semantics-categories-donkergroen-filled-highlight-border-color: light-dark(var(--primitives-color-donkergroen-750), var(--primitives-color-donkergroen-500));
+	--semantics-categories-donkergroen-filled-primary-content-color: light-dark(var(--primitives-color-donkergroen-0), var(--primitives-color-donkergroen-1000));
+	--semantics-categories-donkergroen-filled-secondary-content-color: light-dark(var(--primitives-color-donkergroen-0), var(--primitives-color-donkergroen-1000));
+	--semantics-categories-donkergroen-tinted-background-color: light-dark(var(--primitives-color-donkergroen-50), var(--primitives-color-donkergroen-75));
+	--semantics-categories-donkergroen-tinted-highlight-border-color: light-dark(var(--primitives-color-donkergroen-100), var(--primitives-color-donkergroen-150));
+	--semantics-categories-donkergroen-tinted-primary-content-color: var(--primitives-color-donkergroen-700);
+	--semantics-categories-donkergroen-tinted-secondary-content-color: var(--primitives-color-donkergroen-700);
+	--semantics-categories-donkergroen-reference-background-color: light-dark(var(--primitives-color-donkergroen-700), var(--primitives-color-donkergroen-300));
+	--semantics-categories-donkergroen-reference-highlight-border-color: light-dark(var(--primitives-color-donkergroen-750), var(--primitives-color-donkergroen-250));
+	--semantics-categories-donkergroen-reference-primary-content-color: light-dark(var(--primitives-color-donkergroen-0), var(--primitives-color-donkergroen-1000));
+	--semantics-categories-donkergroen-reference-secondary-content-color: light-dark(var(--primitives-color-donkergroen-0), var(--primitives-color-donkergroen-1000));
+
+	/* groen */
+	--semantics-categories-groen-filled-background-color: var(--primitives-color-groen-500);
+	--semantics-categories-groen-filled-highlight-border-color: var(--primitives-color-groen-550);
+	--semantics-categories-groen-filled-primary-content-color: light-dark(var(--primitives-color-groen-0), var(--primitives-color-groen-1000));
+	--semantics-categories-groen-filled-secondary-content-color: light-dark(var(--primitives-color-groen-0), var(--primitives-color-groen-1000));
+	--semantics-categories-groen-tinted-background-color: light-dark(var(--primitives-color-groen-50), var(--primitives-color-groen-75));
+	--semantics-categories-groen-tinted-highlight-border-color: light-dark(var(--primitives-color-groen-100), var(--primitives-color-groen-150));
+	--semantics-categories-groen-tinted-primary-content-color: var(--primitives-color-groen-650);
+	--semantics-categories-groen-tinted-secondary-content-color: var(--primitives-color-groen-650);
+	--semantics-categories-groen-reference-background-color: light-dark(var(--primitives-color-groen-500), var(--primitives-color-groen-500));
+	--semantics-categories-groen-reference-highlight-border-color: light-dark(var(--primitives-color-groen-550), var(--primitives-color-groen-450));
+	--semantics-categories-groen-reference-primary-content-color: light-dark(var(--primitives-color-groen-0), var(--primitives-color-groen-1000));
+	--semantics-categories-groen-reference-secondary-content-color: light-dark(var(--primitives-color-groen-0), var(--primitives-color-groen-1000));
+
+	/* mosgroen */
+	--semantics-categories-mosgroen-filled-background-color: var(--primitives-color-mosgroen-500);
+	--semantics-categories-mosgroen-filled-highlight-border-color: var(--primitives-color-mosgroen-550);
+	--semantics-categories-mosgroen-filled-primary-content-color: light-dark(var(--primitives-color-mosgroen-0), var(--primitives-color-mosgroen-1000));
+	--semantics-categories-mosgroen-filled-secondary-content-color: light-dark(var(--primitives-color-mosgroen-0), var(--primitives-color-mosgroen-1000));
+	--semantics-categories-mosgroen-tinted-background-color: light-dark(var(--primitives-color-mosgroen-50), var(--primitives-color-mosgroen-75));
+	--semantics-categories-mosgroen-tinted-highlight-border-color: light-dark(var(--primitives-color-mosgroen-100), var(--primitives-color-mosgroen-150));
+	--semantics-categories-mosgroen-tinted-primary-content-color: var(--primitives-color-mosgroen-650);
+	--semantics-categories-mosgroen-tinted-secondary-content-color: var(--primitives-color-mosgroen-650);
+	--semantics-categories-mosgroen-reference-background-color: light-dark(var(--primitives-color-mosgroen-500), var(--primitives-color-mosgroen-500));
+	--semantics-categories-mosgroen-reference-highlight-border-color: light-dark(var(--primitives-color-mosgroen-550), var(--primitives-color-mosgroen-450));
+	--semantics-categories-mosgroen-reference-primary-content-color: light-dark(var(--primitives-color-mosgroen-0), var(--primitives-color-mosgroen-1000));
+	--semantics-categories-mosgroen-reference-secondary-content-color: light-dark(var(--primitives-color-mosgroen-0), var(--primitives-color-mosgroen-1000));
+
+	/* mintgroen */
+	--semantics-categories-mintgroen-filled-background-color: light-dark(var(--primitives-color-mintgroen-350), var(--primitives-color-mintgroen-800));
+	--semantics-categories-mintgroen-filled-highlight-border-color: light-dark(var(--primitives-color-mintgroen-450), var(--primitives-color-mintgroen-850));
+	--semantics-categories-mintgroen-filled-primary-content-color: light-dark(var(--primitives-color-mintgroen-1000), var(--primitives-color-mintgroen-0));
+	--semantics-categories-mintgroen-filled-secondary-content-color: light-dark(var(--primitives-color-mintgroen-1000), var(--primitives-color-mintgroen-0));
+	--semantics-categories-mintgroen-tinted-background-color: light-dark(var(--primitives-color-mintgroen-50), var(--primitives-color-mintgroen-75));
+	--semantics-categories-mintgroen-tinted-highlight-border-color: light-dark(var(--primitives-color-mintgroen-100), var(--primitives-color-mintgroen-150));
+	--semantics-categories-mintgroen-tinted-primary-content-color: var(--primitives-color-mintgroen-650);
+	--semantics-categories-mintgroen-tinted-secondary-content-color: var(--primitives-color-mintgroen-650);
+	--semantics-categories-mintgroen-reference-background-color: light-dark(var(--primitives-color-mintgroen-200), var(--primitives-color-mintgroen-800));
+	--semantics-categories-mintgroen-reference-highlight-border-color: light-dark(var(--primitives-color-mintgroen-250), var(--primitives-color-mintgroen-750));
+	--semantics-categories-mintgroen-reference-primary-content-color: light-dark(var(--primitives-color-mintgroen-1000), var(--primitives-color-mintgroen-0));
+	--semantics-categories-mintgroen-reference-secondary-content-color: light-dark(var(--primitives-color-mintgroen-1000), var(--primitives-color-mintgroen-0));
 
 	/* ## Links */
 
@@ -1131,6 +1468,64 @@
 	--semantics-buttons-critical-transparent-is-active-primary-content-color: light-dark(var(--primitives-color-critical-700), var(--primitives-color-critical-750));
 	--semantics-buttons-critical-transparent-is-active-secondary-content-color: light-dark(var(--primitives-color-critical-550), var(--primitives-color-critical-650));
 
+	/* ### Buttons — inherit (on-color)
+	   For buttons on colored surfaces: the values derive from currentColor
+	   at used-value time (currentColor stays unresolved inside tokens,
+	   unlike var()). The filled label prefers the surface color via
+	   --context-parent-background-color — that indirection lives in the
+	   component (a var() here would freeze against :root); these tokens
+	   carry the white/black contrast flip as its fallback. */
+
+	--semantics-buttons-inherit-tinted-background-color: color-mix(in oklab, var(--semantics-content-contrast-color) 20%, transparent);
+	--semantics-buttons-inherit-tinted-primary-content-color: currentColor;
+	--semantics-buttons-inherit-tinted-secondary-content-color: var(--semantics-buttons-inherit-tinted-primary-content-color);
+	--semantics-buttons-inherit-tinted-highlight-border-color: color-mix(in oklab, var(--semantics-content-contrast-color) 10%, transparent);
+	--semantics-buttons-inherit-tinted-is-hovered-background-color: color-mix(in oklab, var(--semantics-content-contrast-color) 25%, transparent);
+	--semantics-buttons-inherit-tinted-is-hovered-primary-content-color: var(--semantics-buttons-inherit-tinted-primary-content-color);
+	--semantics-buttons-inherit-tinted-is-hovered-secondary-content-color: var(--semantics-buttons-inherit-tinted-secondary-content-color);
+	--semantics-buttons-inherit-tinted-is-hovered-highlight-border-color: color-mix(in oklab, var(--semantics-content-contrast-color) 10%, transparent);
+	--semantics-buttons-inherit-tinted-is-active-background-color: color-mix(in oklab, var(--semantics-content-contrast-color) 30%, transparent);
+	--semantics-buttons-inherit-tinted-is-active-primary-content-color: var(--semantics-buttons-inherit-tinted-primary-content-color);
+	--semantics-buttons-inherit-tinted-is-active-secondary-content-color: var(--semantics-buttons-inherit-tinted-secondary-content-color);
+	--semantics-buttons-inherit-tinted-is-active-highlight-border-color: color-mix(in oklab, var(--semantics-content-contrast-color) 10%, transparent);
+	--semantics-buttons-inherit-tinted-is-expanded-background-color: color-mix(in oklab, var(--semantics-content-contrast-color) 30%, transparent);
+	--semantics-buttons-inherit-tinted-is-expanded-primary-content-color: var(--semantics-buttons-inherit-tinted-primary-content-color);
+	--semantics-buttons-inherit-tinted-is-expanded-secondary-content-color: var(--semantics-buttons-inherit-tinted-secondary-content-color);
+	--semantics-buttons-inherit-tinted-is-expanded-highlight-border-color: color-mix(in oklab, var(--semantics-content-contrast-color) 10%, transparent);
+	--semantics-buttons-inherit-tinted-is-expanded-is-hovered-background-color: color-mix(in oklab, var(--semantics-content-contrast-color) 35%, transparent);
+	--semantics-buttons-inherit-tinted-is-expanded-is-hovered-primary-content-color: var(--semantics-buttons-inherit-tinted-primary-content-color);
+	--semantics-buttons-inherit-tinted-is-expanded-is-hovered-secondary-content-color: var(--semantics-buttons-inherit-tinted-secondary-content-color);
+	--semantics-buttons-inherit-tinted-is-expanded-is-hovered-highlight-border-color: color-mix(in oklab, var(--semantics-content-contrast-color) 10%, transparent);
+	--semantics-buttons-inherit-tinted-is-expanded-is-active-background-color: color-mix(in oklab, var(--semantics-content-contrast-color) 40%, transparent);
+	--semantics-buttons-inherit-tinted-is-expanded-is-active-primary-content-color: var(--semantics-buttons-inherit-tinted-primary-content-color);
+	--semantics-buttons-inherit-tinted-is-expanded-is-active-secondary-content-color: var(--semantics-buttons-inherit-tinted-secondary-content-color);
+	--semantics-buttons-inherit-tinted-is-expanded-is-active-highlight-border-color: color-mix(in oklab, var(--semantics-content-contrast-color) 10%, transparent);
+
+	--semantics-buttons-inherit-filled-background-color: currentColor;
+	--semantics-buttons-inherit-filled-primary-content-color: var(--semantics-content-contrast-color);
+	--semantics-buttons-inherit-filled-secondary-content-color: currentColor;
+	--semantics-buttons-inherit-filled-highlight-border-color: currentColor;
+	--semantics-buttons-inherit-filled-is-hovered-background-color: color-mix(in oklab, currentColor 92%, transparent);
+	--semantics-buttons-inherit-filled-is-hovered-highlight-border-color: currentColor;
+	--semantics-buttons-inherit-filled-is-hovered-primary-content-color: var(--semantics-buttons-inherit-filled-primary-content-color);
+	--semantics-buttons-inherit-filled-is-hovered-secondary-content-color: var(--semantics-buttons-inherit-filled-secondary-content-color);
+	--semantics-buttons-inherit-filled-is-active-background-color: color-mix(in oklab, currentColor 85%, transparent);
+	--semantics-buttons-inherit-filled-is-active-highlight-border-color: currentColor;
+	--semantics-buttons-inherit-filled-is-active-primary-content-color: var(--semantics-buttons-inherit-filled-primary-content-color);
+	--semantics-buttons-inherit-filled-is-active-secondary-content-color: var(--semantics-buttons-inherit-filled-secondary-content-color);
+	--semantics-buttons-inherit-filled-is-expanded-background-color: color-mix(in oklab, currentColor 85%, transparent);
+	--semantics-buttons-inherit-filled-is-expanded-highlight-border-color: currentColor;
+	--semantics-buttons-inherit-filled-is-expanded-primary-content-color: var(--semantics-buttons-inherit-filled-primary-content-color);
+	--semantics-buttons-inherit-filled-is-expanded-secondary-content-color: var(--semantics-buttons-inherit-filled-secondary-content-color);
+	--semantics-buttons-inherit-filled-is-expanded-is-hovered-background-color: color-mix(in oklab, currentColor 80%, transparent);
+	--semantics-buttons-inherit-filled-is-expanded-is-hovered-highlight-border-color: currentColor;
+	--semantics-buttons-inherit-filled-is-expanded-is-hovered-primary-content-color: var(--semantics-buttons-inherit-filled-primary-content-color);
+	--semantics-buttons-inherit-filled-is-expanded-is-hovered-secondary-content-color: var(--semantics-buttons-inherit-filled-secondary-content-color);
+	--semantics-buttons-inherit-filled-is-expanded-is-active-background-color: color-mix(in oklab, currentColor 75%, transparent);
+	--semantics-buttons-inherit-filled-is-expanded-is-active-highlight-border-color: currentColor;
+	--semantics-buttons-inherit-filled-is-expanded-is-active-primary-content-color: var(--semantics-buttons-inherit-filled-primary-content-color);
+	--semantics-buttons-inherit-filled-is-expanded-is-active-secondary-content-color: var(--semantics-buttons-inherit-filled-secondary-content-color);
+
 	/* ## Input fields */
 
 	--semantics-input-fields-border-thickness: var(--primitives-border-width-regular);
@@ -1228,90 +1623,6 @@
 	--semantics-focus-ring-outline-offset: var(--primitives-border-width-regular);
 	--semantics-focus-ring-box-shadow: 0 0 0 calc(var(--primitives-border-width-regular) * 3) var(--semantics-surfaces-base-background-color);
 
-
-	/* ## Categories — filled
-	   Distinguishing colors voor groep-onderscheid in een verzadigde stijl
-	   (badges, progress-bar segmenten). Voor een zachtere stijl (tags, chips)
-	   is er ruimte voor een toekomstige `categories-tinted` set. Filled-regel:
-	   bg = referentie-step zo dicht mogelijk. Border = bg + 50, geforceerd naar
-	   minimum 450 (light) / 500 (dark). Bij geforceerde border: bg = border − 100.
-	   Content-color flipt met mode zodat tekst altijd contrast houdt. */
-
-	--semantics-categories-filled-accent-background-color: light-dark(var(--primitives-color-accent-750), var(--primitives-color-accent-400));
-	--semantics-categories-filled-accent-border-color: light-dark(var(--primitives-color-accent-800), var(--primitives-color-accent-500));
-	--semantics-categories-filled-accent-content-color: light-dark(var(--primitives-color-accent-0), var(--primitives-color-accent-1000));
-	--semantics-categories-filled-critical-background-color: light-dark(var(--primitives-color-critical-550), var(--primitives-color-critical-450));
-	--semantics-categories-filled-critical-border-color: light-dark(var(--primitives-color-critical-600), var(--primitives-color-critical-500));
-	--semantics-categories-filled-critical-content-color: light-dark(var(--primitives-color-critical-0), var(--primitives-color-critical-1000));
-	--semantics-categories-filled-neutral-background-color: var(--primitives-color-neutral-500);
-	--semantics-categories-filled-neutral-border-color: var(--primitives-color-neutral-550);
-	--semantics-categories-filled-neutral-content-color: light-dark(var(--primitives-color-neutral-0), var(--primitives-color-neutral-1000));
-	--semantics-categories-filled-warning-background-color: light-dark(var(--primitives-color-warning-400), var(--primitives-color-warning-600));
-	--semantics-categories-filled-warning-border-color: light-dark(var(--primitives-color-warning-450), var(--primitives-color-warning-650));
-	--semantics-categories-filled-warning-content-color: light-dark(var(--primitives-color-warning-1000), var(--primitives-color-warning-0));
-	--semantics-categories-filled-success-background-color: var(--primitives-color-success-500);
-	--semantics-categories-filled-success-border-color: var(--primitives-color-success-550);
-	--semantics-categories-filled-success-content-color: light-dark(var(--primitives-color-success-0), var(--primitives-color-success-1000));
-
-	--semantics-categories-filled-coolgray-background-color: var(--primitives-color-coolgray-500);
-	--semantics-categories-filled-coolgray-border-color: var(--primitives-color-coolgray-550);
-	--semantics-categories-filled-coolgray-content-color: light-dark(var(--primitives-color-coolgray-0), var(--primitives-color-coolgray-1000));
-	--semantics-categories-filled-lintblauw-background-color: light-dark(var(--primitives-color-lintblauw-750), var(--primitives-color-lintblauw-400));
-	--semantics-categories-filled-lintblauw-border-color: light-dark(var(--primitives-color-lintblauw-800), var(--primitives-color-lintblauw-500));
-	--semantics-categories-filled-lintblauw-content-color: light-dark(var(--primitives-color-lintblauw-0), var(--primitives-color-lintblauw-1000));
-	--semantics-categories-filled-donkerblauw-background-color: light-dark(var(--primitives-color-donkerblauw-600), var(--primitives-color-donkerblauw-400));
-	--semantics-categories-filled-donkerblauw-border-color: light-dark(var(--primitives-color-donkerblauw-650), var(--primitives-color-donkerblauw-500));
-	--semantics-categories-filled-donkerblauw-content-color: light-dark(var(--primitives-color-donkerblauw-0), var(--primitives-color-donkerblauw-1000));
-	--semantics-categories-filled-hemelblauw-background-color: var(--primitives-color-hemelblauw-500);
-	--semantics-categories-filled-hemelblauw-border-color: var(--primitives-color-hemelblauw-550);
-	--semantics-categories-filled-hemelblauw-content-color: light-dark(var(--primitives-color-hemelblauw-0), var(--primitives-color-hemelblauw-1000));
-	--semantics-categories-filled-lichtblauw-background-color: light-dark(var(--primitives-color-lichtblauw-350), var(--primitives-color-lichtblauw-800));
-	--semantics-categories-filled-lichtblauw-border-color: light-dark(var(--primitives-color-lichtblauw-450), var(--primitives-color-lichtblauw-850));
-	--semantics-categories-filled-lichtblauw-content-color: light-dark(var(--primitives-color-lichtblauw-1000), var(--primitives-color-lichtblauw-0));
-	--semantics-categories-filled-paars-background-color: light-dark(var(--primitives-color-paars-850), var(--primitives-color-paars-400));
-	--semantics-categories-filled-paars-border-color: light-dark(var(--primitives-color-paars-900), var(--primitives-color-paars-500));
-	--semantics-categories-filled-paars-content-color: light-dark(var(--primitives-color-paars-0), var(--primitives-color-paars-1000));
-	--semantics-categories-filled-violet-background-color: light-dark(var(--primitives-color-violet-650), var(--primitives-color-violet-400));
-	--semantics-categories-filled-violet-border-color: light-dark(var(--primitives-color-violet-700), var(--primitives-color-violet-500));
-	--semantics-categories-filled-violet-content-color: light-dark(var(--primitives-color-violet-0), var(--primitives-color-violet-1000));
-	--semantics-categories-filled-robijnrood-background-color: light-dark(var(--primitives-color-robijnrood-600), var(--primitives-color-robijnrood-400));
-	--semantics-categories-filled-robijnrood-border-color: light-dark(var(--primitives-color-robijnrood-650), var(--primitives-color-robijnrood-500));
-	--semantics-categories-filled-robijnrood-content-color: light-dark(var(--primitives-color-robijnrood-0), var(--primitives-color-robijnrood-1000));
-	--semantics-categories-filled-roze-background-color: light-dark(var(--primitives-color-roze-350), var(--primitives-color-roze-750));
-	--semantics-categories-filled-roze-border-color: light-dark(var(--primitives-color-roze-450), var(--primitives-color-roze-800));
-	--semantics-categories-filled-roze-content-color: light-dark(var(--primitives-color-roze-1000), var(--primitives-color-roze-0));
-	--semantics-categories-filled-rood-background-color: light-dark(var(--primitives-color-rood-550), var(--primitives-color-rood-450));
-	--semantics-categories-filled-rood-border-color: light-dark(var(--primitives-color-rood-600), var(--primitives-color-rood-500));
-	--semantics-categories-filled-rood-content-color: light-dark(var(--primitives-color-rood-0), var(--primitives-color-rood-1000));
-	--semantics-categories-filled-oranje-background-color: light-dark(var(--primitives-color-oranje-400), var(--primitives-color-oranje-600));
-	--semantics-categories-filled-oranje-border-color: light-dark(var(--primitives-color-oranje-450), var(--primitives-color-oranje-650));
-	--semantics-categories-filled-oranje-content-color: light-dark(var(--primitives-color-oranje-1000), var(--primitives-color-oranje-0));
-	--semantics-categories-filled-donkergeel-background-color: light-dark(var(--primitives-color-donkergeel-350), var(--primitives-color-donkergeel-800));
-	--semantics-categories-filled-donkergeel-border-color: light-dark(var(--primitives-color-donkergeel-450), var(--primitives-color-donkergeel-850));
-	--semantics-categories-filled-donkergeel-content-color: light-dark(var(--primitives-color-donkergeel-1000), var(--primitives-color-donkergeel-0));
-	--semantics-categories-filled-geel-background-color: light-dark(var(--primitives-color-geel-350), var(--primitives-color-geel-900));
-	--semantics-categories-filled-geel-border-color: light-dark(var(--primitives-color-geel-450), var(--primitives-color-geel-950));
-	--semantics-categories-filled-geel-content-color: light-dark(var(--primitives-color-geel-1000), var(--primitives-color-geel-0));
-	--semantics-categories-filled-donkerbruin-background-color: light-dark(var(--primitives-color-donkerbruin-750), var(--primitives-color-donkerbruin-400));
-	--semantics-categories-filled-donkerbruin-border-color: light-dark(var(--primitives-color-donkerbruin-800), var(--primitives-color-donkerbruin-500));
-	--semantics-categories-filled-donkerbruin-content-color: light-dark(var(--primitives-color-donkerbruin-0), var(--primitives-color-donkerbruin-1000));
-	--semantics-categories-filled-bruin-background-color: var(--primitives-color-bruin-500);
-	--semantics-categories-filled-bruin-border-color: var(--primitives-color-bruin-550);
-	--semantics-categories-filled-bruin-content-color: light-dark(var(--primitives-color-bruin-0), var(--primitives-color-bruin-1000));
-	--semantics-categories-filled-donkergroen-background-color: light-dark(var(--primitives-color-donkergroen-700), var(--primitives-color-donkergroen-400));
-	--semantics-categories-filled-donkergroen-border-color: light-dark(var(--primitives-color-donkergroen-750), var(--primitives-color-donkergroen-500));
-	--semantics-categories-filled-donkergroen-content-color: light-dark(var(--primitives-color-donkergroen-0), var(--primitives-color-donkergroen-1000));
-	--semantics-categories-filled-groen-background-color: var(--primitives-color-groen-500);
-	--semantics-categories-filled-groen-border-color: var(--primitives-color-groen-550);
-	--semantics-categories-filled-groen-content-color: light-dark(var(--primitives-color-groen-0), var(--primitives-color-groen-1000));
-	--semantics-categories-filled-mosgroen-background-color: var(--primitives-color-mosgroen-500);
-	--semantics-categories-filled-mosgroen-border-color: var(--primitives-color-mosgroen-550);
-	--semantics-categories-filled-mosgroen-content-color: light-dark(var(--primitives-color-mosgroen-0), var(--primitives-color-mosgroen-1000));
-	--semantics-categories-filled-mintgroen-background-color: light-dark(var(--primitives-color-mintgroen-350), var(--primitives-color-mintgroen-800));
-	--semantics-categories-filled-mintgroen-border-color: light-dark(var(--primitives-color-mintgroen-450), var(--primitives-color-mintgroen-850));
-	--semantics-categories-filled-mintgroen-content-color: light-dark(var(--primitives-color-mintgroen-1000), var(--primitives-color-mintgroen-0));
-
-
 	/* # Components */
 
 	/* ## Badge */
@@ -1319,103 +1630,11 @@
 	--components-badge-corner-radius: var(--primitives-corner-radius-full);
 	--components-badge-border-width: var(--primitives-border-width-thin);
 
-	/* Kleur-varianten verwijzen door naar semantics-categories. */
-
-	--components-badge-critical-background-color: var(--semantics-categories-filled-critical-background-color);
-	--components-badge-critical-border-color: var(--semantics-categories-filled-critical-border-color);
-	--components-badge-critical-content-color: var(--semantics-categories-filled-critical-content-color);
-	--components-badge-accent-background-color: var(--semantics-categories-filled-accent-background-color);
-	--components-badge-accent-border-color: var(--semantics-categories-filled-accent-border-color);
-	--components-badge-accent-content-color: var(--semantics-categories-filled-accent-content-color);
-	--components-badge-neutral-background-color: var(--semantics-categories-filled-neutral-background-color);
-	--components-badge-neutral-border-color: var(--semantics-categories-filled-neutral-border-color);
-	--components-badge-neutral-content-color: var(--semantics-categories-filled-neutral-content-color);
-	--components-badge-warning-background-color: var(--semantics-categories-filled-warning-background-color);
-	--components-badge-warning-border-color: var(--semantics-categories-filled-warning-border-color);
-	--components-badge-warning-content-color: var(--semantics-categories-filled-warning-content-color);
-	--components-badge-success-background-color: var(--semantics-categories-filled-success-background-color);
-	--components-badge-success-border-color: var(--semantics-categories-filled-success-border-color);
-	--components-badge-success-content-color: var(--semantics-categories-filled-success-content-color);
-
-	--components-badge-coolgray-background-color: var(--semantics-categories-filled-coolgray-background-color);
-	--components-badge-coolgray-border-color: var(--semantics-categories-filled-coolgray-border-color);
-	--components-badge-coolgray-content-color: var(--semantics-categories-filled-coolgray-content-color);
-	--components-badge-lintblauw-background-color: var(--semantics-categories-filled-lintblauw-background-color);
-	--components-badge-lintblauw-border-color: var(--semantics-categories-filled-lintblauw-border-color);
-	--components-badge-lintblauw-content-color: var(--semantics-categories-filled-lintblauw-content-color);
-	--components-badge-donkerblauw-background-color: var(--semantics-categories-filled-donkerblauw-background-color);
-	--components-badge-donkerblauw-border-color: var(--semantics-categories-filled-donkerblauw-border-color);
-	--components-badge-donkerblauw-content-color: var(--semantics-categories-filled-donkerblauw-content-color);
-	--components-badge-hemelblauw-background-color: var(--semantics-categories-filled-hemelblauw-background-color);
-	--components-badge-hemelblauw-border-color: var(--semantics-categories-filled-hemelblauw-border-color);
-	--components-badge-hemelblauw-content-color: var(--semantics-categories-filled-hemelblauw-content-color);
-	--components-badge-lichtblauw-background-color: var(--semantics-categories-filled-lichtblauw-background-color);
-	--components-badge-lichtblauw-border-color: var(--semantics-categories-filled-lichtblauw-border-color);
-	--components-badge-lichtblauw-content-color: var(--semantics-categories-filled-lichtblauw-content-color);
-	--components-badge-paars-background-color: var(--semantics-categories-filled-paars-background-color);
-	--components-badge-paars-border-color: var(--semantics-categories-filled-paars-border-color);
-	--components-badge-paars-content-color: var(--semantics-categories-filled-paars-content-color);
-	--components-badge-violet-background-color: var(--semantics-categories-filled-violet-background-color);
-	--components-badge-violet-border-color: var(--semantics-categories-filled-violet-border-color);
-	--components-badge-violet-content-color: var(--semantics-categories-filled-violet-content-color);
-	--components-badge-robijnrood-background-color: var(--semantics-categories-filled-robijnrood-background-color);
-	--components-badge-robijnrood-border-color: var(--semantics-categories-filled-robijnrood-border-color);
-	--components-badge-robijnrood-content-color: var(--semantics-categories-filled-robijnrood-content-color);
-	--components-badge-roze-background-color: var(--semantics-categories-filled-roze-background-color);
-	--components-badge-roze-border-color: var(--semantics-categories-filled-roze-border-color);
-	--components-badge-roze-content-color: var(--semantics-categories-filled-roze-content-color);
-	--components-badge-rood-background-color: var(--semantics-categories-filled-rood-background-color);
-	--components-badge-rood-border-color: var(--semantics-categories-filled-rood-border-color);
-	--components-badge-rood-content-color: var(--semantics-categories-filled-rood-content-color);
-	--components-badge-oranje-background-color: var(--semantics-categories-filled-oranje-background-color);
-	--components-badge-oranje-border-color: var(--semantics-categories-filled-oranje-border-color);
-	--components-badge-oranje-content-color: var(--semantics-categories-filled-oranje-content-color);
-	--components-badge-donkergeel-background-color: var(--semantics-categories-filled-donkergeel-background-color);
-	--components-badge-donkergeel-border-color: var(--semantics-categories-filled-donkergeel-border-color);
-	--components-badge-donkergeel-content-color: var(--semantics-categories-filled-donkergeel-content-color);
-	--components-badge-geel-background-color: var(--semantics-categories-filled-geel-background-color);
-	--components-badge-geel-border-color: var(--semantics-categories-filled-geel-border-color);
-	--components-badge-geel-content-color: var(--semantics-categories-filled-geel-content-color);
-	--components-badge-donkerbruin-background-color: var(--semantics-categories-filled-donkerbruin-background-color);
-	--components-badge-donkerbruin-border-color: var(--semantics-categories-filled-donkerbruin-border-color);
-	--components-badge-donkerbruin-content-color: var(--semantics-categories-filled-donkerbruin-content-color);
-	--components-badge-bruin-background-color: var(--semantics-categories-filled-bruin-background-color);
-	--components-badge-bruin-border-color: var(--semantics-categories-filled-bruin-border-color);
-	--components-badge-bruin-content-color: var(--semantics-categories-filled-bruin-content-color);
-	--components-badge-donkergroen-background-color: var(--semantics-categories-filled-donkergroen-background-color);
-	--components-badge-donkergroen-border-color: var(--semantics-categories-filled-donkergroen-border-color);
-	--components-badge-donkergroen-content-color: var(--semantics-categories-filled-donkergroen-content-color);
-	--components-badge-groen-background-color: var(--semantics-categories-filled-groen-background-color);
-	--components-badge-groen-border-color: var(--semantics-categories-filled-groen-border-color);
-	--components-badge-groen-content-color: var(--semantics-categories-filled-groen-content-color);
-	--components-badge-mosgroen-background-color: var(--semantics-categories-filled-mosgroen-background-color);
-	--components-badge-mosgroen-border-color: var(--semantics-categories-filled-mosgroen-border-color);
-	--components-badge-mosgroen-content-color: var(--semantics-categories-filled-mosgroen-content-color);
-	--components-badge-mintgroen-background-color: var(--semantics-categories-filled-mintgroen-background-color);
-	--components-badge-mintgroen-border-color: var(--semantics-categories-filled-mintgroen-border-color);
-	--components-badge-mintgroen-content-color: var(--semantics-categories-filled-mintgroen-content-color);
-
 	/* ## Banner */
 
 	--components-banner-corner-radius: var(--semantics-surfaces-corner-radius);
 	--components-banner-padding: var(--primitives-space-12);
 	--components-banner-content-color: var(--semantics-content-color);
-	--components-banner-content-secondary-color: var(--semantics-content-secondary-color);
-	--components-banner-neutral-background-color: light-dark(var(--primitives-color-neutral-50), var(--primitives-color-neutral-75));
-	--components-banner-neutral-border-color: light-dark(var(--primitives-color-neutral-100), var(--primitives-color-neutral-150));
-	--components-banner-neutral-icon-color: light-dark(var(--primitives-color-neutral-700), var(--primitives-color-neutral-550));
-	--components-banner-accent-background-color: light-dark(var(--primitives-color-accent-50), var(--primitives-color-accent-75));
-	--components-banner-accent-border-color: light-dark(var(--primitives-color-accent-100), var(--primitives-color-accent-150));
-	--components-banner-accent-icon-color: light-dark(var(--primitives-color-accent-600), var(--primitives-color-accent-500));
-	--components-banner-success-background-color: light-dark(var(--primitives-color-success-50), var(--primitives-color-success-75));
-	--components-banner-success-border-color: light-dark(var(--primitives-color-success-100), var(--primitives-color-success-150));
-	--components-banner-success-icon-color: light-dark(var(--primitives-color-success-500), var(--primitives-color-success-600));
-	--components-banner-warning-background-color: light-dark(var(--primitives-color-warning-50), var(--primitives-color-warning-75));
-	--components-banner-warning-border-color: light-dark(var(--primitives-color-warning-100), var(--primitives-color-warning-150));
-	--components-banner-warning-icon-color: light-dark(var(--primitives-color-warning-450), var(--primitives-color-warning-700));
-	--components-banner-critical-background-color: light-dark(var(--primitives-color-critical-50), var(--primitives-color-critical-75));
-	--components-banner-critical-border-color: light-dark(var(--primitives-color-critical-100), var(--primitives-color-critical-150));
-	--components-banner-critical-icon-color: light-dark(var(--primitives-color-critical-550), var(--primitives-color-critical-600));
 
 	/* ## Box */
 
@@ -1627,61 +1846,7 @@
 	--components-progress-bar-text-font: var(--primitives-font-body-md-regular-tight);
 	--components-progress-bar-supporting-text-font: var(--primitives-font-body-md-regular-tight);
 
-	/* ### Progress bar — semantic variants */
-
 	--components-progress-bar-segment-indicator-border-width: var(--primitives-border-width-thin);
-
-	--components-progress-bar-neutral-background-color: var(--semantics-categories-filled-neutral-background-color);
-	--components-progress-bar-neutral-border-color: var(--semantics-categories-filled-neutral-border-color);
-	--components-progress-bar-accent-background-color: var(--semantics-categories-filled-accent-background-color);
-	--components-progress-bar-accent-border-color: var(--semantics-categories-filled-accent-border-color);
-	--components-progress-bar-success-background-color: var(--semantics-categories-filled-success-background-color);
-	--components-progress-bar-success-border-color: var(--semantics-categories-filled-success-border-color);
-	--components-progress-bar-warning-background-color: var(--semantics-categories-filled-warning-background-color);
-	--components-progress-bar-warning-border-color: var(--semantics-categories-filled-warning-border-color);
-	--components-progress-bar-critical-background-color: var(--semantics-categories-filled-critical-background-color);
-	--components-progress-bar-critical-border-color: var(--semantics-categories-filled-critical-border-color);
-
-	/* ### Progress bar — rijkskleuren */
-
-	--components-progress-bar-coolgray-background-color: var(--semantics-categories-filled-coolgray-background-color);
-	--components-progress-bar-coolgray-border-color: var(--semantics-categories-filled-coolgray-border-color);
-	--components-progress-bar-lintblauw-background-color: var(--semantics-categories-filled-lintblauw-background-color);
-	--components-progress-bar-lintblauw-border-color: var(--semantics-categories-filled-lintblauw-border-color);
-	--components-progress-bar-donkerblauw-background-color: var(--semantics-categories-filled-donkerblauw-background-color);
-	--components-progress-bar-donkerblauw-border-color: var(--semantics-categories-filled-donkerblauw-border-color);
-	--components-progress-bar-hemelblauw-background-color: var(--semantics-categories-filled-hemelblauw-background-color);
-	--components-progress-bar-hemelblauw-border-color: var(--semantics-categories-filled-hemelblauw-border-color);
-	--components-progress-bar-lichtblauw-background-color: var(--semantics-categories-filled-lichtblauw-background-color);
-	--components-progress-bar-lichtblauw-border-color: var(--semantics-categories-filled-lichtblauw-border-color);
-	--components-progress-bar-paars-background-color: var(--semantics-categories-filled-paars-background-color);
-	--components-progress-bar-paars-border-color: var(--semantics-categories-filled-paars-border-color);
-	--components-progress-bar-violet-background-color: var(--semantics-categories-filled-violet-background-color);
-	--components-progress-bar-violet-border-color: var(--semantics-categories-filled-violet-border-color);
-	--components-progress-bar-robijnrood-background-color: var(--semantics-categories-filled-robijnrood-background-color);
-	--components-progress-bar-robijnrood-border-color: var(--semantics-categories-filled-robijnrood-border-color);
-	--components-progress-bar-roze-background-color: var(--semantics-categories-filled-roze-background-color);
-	--components-progress-bar-roze-border-color: var(--semantics-categories-filled-roze-border-color);
-	--components-progress-bar-rood-background-color: var(--semantics-categories-filled-rood-background-color);
-	--components-progress-bar-rood-border-color: var(--semantics-categories-filled-rood-border-color);
-	--components-progress-bar-oranje-background-color: var(--semantics-categories-filled-oranje-background-color);
-	--components-progress-bar-oranje-border-color: var(--semantics-categories-filled-oranje-border-color);
-	--components-progress-bar-donkergeel-background-color: var(--semantics-categories-filled-donkergeel-background-color);
-	--components-progress-bar-donkergeel-border-color: var(--semantics-categories-filled-donkergeel-border-color);
-	--components-progress-bar-geel-background-color: var(--semantics-categories-filled-geel-background-color);
-	--components-progress-bar-geel-border-color: var(--semantics-categories-filled-geel-border-color);
-	--components-progress-bar-donkerbruin-background-color: var(--semantics-categories-filled-donkerbruin-background-color);
-	--components-progress-bar-donkerbruin-border-color: var(--semantics-categories-filled-donkerbruin-border-color);
-	--components-progress-bar-bruin-background-color: var(--semantics-categories-filled-bruin-background-color);
-	--components-progress-bar-bruin-border-color: var(--semantics-categories-filled-bruin-border-color);
-	--components-progress-bar-donkergroen-background-color: var(--semantics-categories-filled-donkergroen-background-color);
-	--components-progress-bar-donkergroen-border-color: var(--semantics-categories-filled-donkergroen-border-color);
-	--components-progress-bar-groen-background-color: var(--semantics-categories-filled-groen-background-color);
-	--components-progress-bar-groen-border-color: var(--semantics-categories-filled-groen-border-color);
-	--components-progress-bar-mosgroen-background-color: var(--semantics-categories-filled-mosgroen-background-color);
-	--components-progress-bar-mosgroen-border-color: var(--semantics-categories-filled-mosgroen-border-color);
-	--components-progress-bar-mintgroen-background-color: var(--semantics-categories-filled-mintgroen-background-color);
-	--components-progress-bar-mintgroen-border-color: var(--semantics-categories-filled-mintgroen-border-color);
 
 	/* ## Progress circle */
 
@@ -1698,60 +1863,6 @@
 	   as a degree-based token (as it used to be) made the gap drift visually
 	   on small / large rings; the constants moved into TS and the tokens
 	   were dropped. */
-
-	/* ### Progress circle — semantic variants */
-
-	--components-progress-circle-neutral-background-color: var(--semantics-categories-filled-neutral-background-color);
-	--components-progress-circle-neutral-border-color: var(--semantics-categories-filled-neutral-border-color);
-	--components-progress-circle-accent-background-color: var(--semantics-categories-filled-accent-background-color);
-	--components-progress-circle-accent-border-color: var(--semantics-categories-filled-accent-border-color);
-	--components-progress-circle-success-background-color: var(--semantics-categories-filled-success-background-color);
-	--components-progress-circle-success-border-color: var(--semantics-categories-filled-success-border-color);
-	--components-progress-circle-warning-background-color: var(--semantics-categories-filled-warning-background-color);
-	--components-progress-circle-warning-border-color: var(--semantics-categories-filled-warning-border-color);
-	--components-progress-circle-critical-background-color: var(--semantics-categories-filled-critical-background-color);
-	--components-progress-circle-critical-border-color: var(--semantics-categories-filled-critical-border-color);
-
-	/* ### Progress circle — rijkskleuren */
-
-	--components-progress-circle-coolgray-background-color: var(--semantics-categories-filled-coolgray-background-color);
-	--components-progress-circle-coolgray-border-color: var(--semantics-categories-filled-coolgray-border-color);
-	--components-progress-circle-lintblauw-background-color: var(--semantics-categories-filled-lintblauw-background-color);
-	--components-progress-circle-lintblauw-border-color: var(--semantics-categories-filled-lintblauw-border-color);
-	--components-progress-circle-donkerblauw-background-color: var(--semantics-categories-filled-donkerblauw-background-color);
-	--components-progress-circle-donkerblauw-border-color: var(--semantics-categories-filled-donkerblauw-border-color);
-	--components-progress-circle-hemelblauw-background-color: var(--semantics-categories-filled-hemelblauw-background-color);
-	--components-progress-circle-hemelblauw-border-color: var(--semantics-categories-filled-hemelblauw-border-color);
-	--components-progress-circle-lichtblauw-background-color: var(--semantics-categories-filled-lichtblauw-background-color);
-	--components-progress-circle-lichtblauw-border-color: var(--semantics-categories-filled-lichtblauw-border-color);
-	--components-progress-circle-paars-background-color: var(--semantics-categories-filled-paars-background-color);
-	--components-progress-circle-paars-border-color: var(--semantics-categories-filled-paars-border-color);
-	--components-progress-circle-violet-background-color: var(--semantics-categories-filled-violet-background-color);
-	--components-progress-circle-violet-border-color: var(--semantics-categories-filled-violet-border-color);
-	--components-progress-circle-robijnrood-background-color: var(--semantics-categories-filled-robijnrood-background-color);
-	--components-progress-circle-robijnrood-border-color: var(--semantics-categories-filled-robijnrood-border-color);
-	--components-progress-circle-roze-background-color: var(--semantics-categories-filled-roze-background-color);
-	--components-progress-circle-roze-border-color: var(--semantics-categories-filled-roze-border-color);
-	--components-progress-circle-rood-background-color: var(--semantics-categories-filled-rood-background-color);
-	--components-progress-circle-rood-border-color: var(--semantics-categories-filled-rood-border-color);
-	--components-progress-circle-oranje-background-color: var(--semantics-categories-filled-oranje-background-color);
-	--components-progress-circle-oranje-border-color: var(--semantics-categories-filled-oranje-border-color);
-	--components-progress-circle-donkergeel-background-color: var(--semantics-categories-filled-donkergeel-background-color);
-	--components-progress-circle-donkergeel-border-color: var(--semantics-categories-filled-donkergeel-border-color);
-	--components-progress-circle-geel-background-color: var(--semantics-categories-filled-geel-background-color);
-	--components-progress-circle-geel-border-color: var(--semantics-categories-filled-geel-border-color);
-	--components-progress-circle-donkerbruin-background-color: var(--semantics-categories-filled-donkerbruin-background-color);
-	--components-progress-circle-donkerbruin-border-color: var(--semantics-categories-filled-donkerbruin-border-color);
-	--components-progress-circle-bruin-background-color: var(--semantics-categories-filled-bruin-background-color);
-	--components-progress-circle-bruin-border-color: var(--semantics-categories-filled-bruin-border-color);
-	--components-progress-circle-donkergroen-background-color: var(--semantics-categories-filled-donkergroen-background-color);
-	--components-progress-circle-donkergroen-border-color: var(--semantics-categories-filled-donkergroen-border-color);
-	--components-progress-circle-groen-background-color: var(--semantics-categories-filled-groen-background-color);
-	--components-progress-circle-groen-border-color: var(--semantics-categories-filled-groen-border-color);
-	--components-progress-circle-mosgroen-background-color: var(--semantics-categories-filled-mosgroen-background-color);
-	--components-progress-circle-mosgroen-border-color: var(--semantics-categories-filled-mosgroen-border-color);
-	--components-progress-circle-mintgroen-background-color: var(--semantics-categories-filled-mintgroen-background-color);
-	--components-progress-circle-mintgroen-border-color: var(--semantics-categories-filled-mintgroen-border-color);
 
 	/* ## Radio button */
 
@@ -1782,6 +1893,35 @@
 	--components-rich-text-spacing-snug: calc(var(--components-rich-text-grid-size) / 2);
 	--components-rich-text-spacing-loose: var(--components-rich-text-grid-size);
 
+	/* ## Status bar */
+
+	--components-status-bar-height: var(--semantics-controls-xs-min-size);
+
+	/* Interaction states darken the filled background by one palette step on
+	   hover and two on active, in both light and dark mode — so every variant
+	   deepens consistently instead of borrowing the decorative highlight-border
+	   color (which is not always darker than its own fill). */
+	--components-status-bar-neutral-background-color: var(--semantics-categories-neutral-filled-background-color);
+	--components-status-bar-neutral-is-hovered-background-color: light-dark(var(--primitives-color-neutral-650), var(--primitives-color-neutral-500));
+	--components-status-bar-neutral-is-active-background-color: light-dark(var(--primitives-color-neutral-700), var(--primitives-color-neutral-550));
+	--components-status-bar-neutral-content-color: var(--semantics-categories-neutral-filled-primary-content-color);
+	--components-status-bar-accent-background-color: var(--semantics-categories-accent-filled-background-color);
+	--components-status-bar-accent-is-hovered-background-color: light-dark(var(--primitives-color-accent-800), var(--primitives-color-accent-450));
+	--components-status-bar-accent-is-active-background-color: light-dark(var(--primitives-color-accent-850), var(--primitives-color-accent-500));
+	--components-status-bar-accent-content-color: var(--semantics-categories-accent-filled-primary-content-color);
+	--components-status-bar-success-background-color: var(--semantics-categories-success-filled-background-color);
+	--components-status-bar-success-is-hovered-background-color: var(--primitives-color-success-550);
+	--components-status-bar-success-is-active-background-color: var(--primitives-color-success-600);
+	--components-status-bar-success-content-color: var(--semantics-categories-success-filled-primary-content-color);
+	--components-status-bar-warning-background-color: var(--semantics-categories-warning-filled-background-color);
+	--components-status-bar-warning-is-hovered-background-color: light-dark(var(--primitives-color-warning-450), var(--primitives-color-warning-650));
+	--components-status-bar-warning-is-active-background-color: light-dark(var(--primitives-color-warning-500), var(--primitives-color-warning-700));
+	--components-status-bar-warning-content-color: var(--semantics-categories-warning-filled-primary-content-color);
+	--components-status-bar-critical-background-color: var(--semantics-categories-critical-filled-background-color);
+	--components-status-bar-critical-is-hovered-background-color: light-dark(var(--primitives-color-critical-700), var(--primitives-color-critical-500));
+	--components-status-bar-critical-is-active-background-color: light-dark(var(--primitives-color-critical-750), var(--primitives-color-critical-550));
+	--components-status-bar-critical-content-color: var(--semantics-categories-critical-filled-primary-content-color);
+
 	/* ## Switch */
 
 	--components-switch-border-thickness: var(--primitives-border-width-regular);
@@ -1799,57 +1939,6 @@
 
 	--components-tag-sm-corner-radius: var(--primitives-corner-radius-xxs);
 	--components-tag-md-corner-radius: var(--primitives-corner-radius-xs);
-	--components-tag-neutral-background-color: light-dark(var(--primitives-color-neutral-75), var(--primitives-color-neutral-150));
-	--components-tag-neutral-content-color: var(--primitives-color-neutral-800);
-	--components-tag-accent-background-color: light-dark(var(--primitives-color-accent-75), var(--primitives-color-accent-150));
-	--components-tag-accent-content-color: var(--primitives-color-accent-750);
-	--components-tag-success-background-color: light-dark(var(--primitives-color-success-75), var(--primitives-color-success-150));
-	--components-tag-success-content-color: var(--primitives-color-success-750);
-	--components-tag-warning-background-color: light-dark(var(--primitives-color-warning-75), var(--primitives-color-warning-150));
-	--components-tag-warning-content-color: var(--primitives-color-warning-750);
-	--components-tag-critical-background-color: light-dark(var(--primitives-color-critical-75), var(--primitives-color-critical-150));
-	--components-tag-critical-content-color: var(--primitives-color-critical-750);
-
-	/* ### Tag — rijkskleuren */
-
-	--components-tag-coolgray-background-color: light-dark(var(--primitives-color-coolgray-75), var(--primitives-color-coolgray-150));
-	--components-tag-coolgray-content-color: var(--primitives-color-coolgray-750);
-	--components-tag-lintblauw-background-color: light-dark(var(--primitives-color-lintblauw-75), var(--primitives-color-lintblauw-150));
-	--components-tag-lintblauw-content-color: var(--primitives-color-lintblauw-750);
-	--components-tag-donkerblauw-background-color: light-dark(var(--primitives-color-donkerblauw-75), var(--primitives-color-donkerblauw-150));
-	--components-tag-donkerblauw-content-color: var(--primitives-color-donkerblauw-750);
-	--components-tag-hemelblauw-background-color: light-dark(var(--primitives-color-hemelblauw-75), var(--primitives-color-hemelblauw-150));
-	--components-tag-hemelblauw-content-color: var(--primitives-color-hemelblauw-750);
-	--components-tag-lichtblauw-background-color: light-dark(var(--primitives-color-lichtblauw-75), var(--primitives-color-lichtblauw-150));
-	--components-tag-lichtblauw-content-color: var(--primitives-color-lichtblauw-750);
-	--components-tag-paars-background-color: light-dark(var(--primitives-color-paars-75), var(--primitives-color-paars-150));
-	--components-tag-paars-content-color: var(--primitives-color-paars-750);
-	--components-tag-violet-background-color: light-dark(var(--primitives-color-violet-75), var(--primitives-color-violet-150));
-	--components-tag-violet-content-color: var(--primitives-color-violet-750);
-	--components-tag-robijnrood-background-color: light-dark(var(--primitives-color-robijnrood-75), var(--primitives-color-robijnrood-150));
-	--components-tag-robijnrood-content-color: var(--primitives-color-robijnrood-750);
-	--components-tag-roze-background-color: light-dark(var(--primitives-color-roze-75), var(--primitives-color-roze-150));
-	--components-tag-roze-content-color: var(--primitives-color-roze-750);
-	--components-tag-rood-background-color: light-dark(var(--primitives-color-rood-75), var(--primitives-color-rood-150));
-	--components-tag-rood-content-color: var(--primitives-color-rood-750);
-	--components-tag-oranje-background-color: light-dark(var(--primitives-color-oranje-75), var(--primitives-color-oranje-150));
-	--components-tag-oranje-content-color: var(--primitives-color-oranje-750);
-	--components-tag-donkergeel-background-color: light-dark(var(--primitives-color-donkergeel-75), var(--primitives-color-donkergeel-150));
-	--components-tag-donkergeel-content-color: var(--primitives-color-donkergeel-750);
-	--components-tag-geel-background-color: light-dark(var(--primitives-color-geel-75), var(--primitives-color-geel-150));
-	--components-tag-geel-content-color: var(--primitives-color-geel-750);
-	--components-tag-donkerbruin-background-color: light-dark(var(--primitives-color-donkerbruin-75), var(--primitives-color-donkerbruin-150));
-	--components-tag-donkerbruin-content-color: var(--primitives-color-donkerbruin-750);
-	--components-tag-bruin-background-color: light-dark(var(--primitives-color-bruin-75), var(--primitives-color-bruin-150));
-	--components-tag-bruin-content-color: var(--primitives-color-bruin-750);
-	--components-tag-donkergroen-background-color: light-dark(var(--primitives-color-donkergroen-75), var(--primitives-color-donkergroen-150));
-	--components-tag-donkergroen-content-color: var(--primitives-color-donkergroen-750);
-	--components-tag-groen-background-color: light-dark(var(--primitives-color-groen-75), var(--primitives-color-groen-150));
-	--components-tag-groen-content-color: var(--primitives-color-groen-750);
-	--components-tag-mosgroen-background-color: light-dark(var(--primitives-color-mosgroen-75), var(--primitives-color-mosgroen-150));
-	--components-tag-mosgroen-content-color: var(--primitives-color-mosgroen-750);
-	--components-tag-mintgroen-background-color: light-dark(var(--primitives-color-mintgroen-75), var(--primitives-color-mintgroen-150));
-	--components-tag-mintgroen-content-color: var(--primitives-color-mintgroen-750);
 
 	/* ## Timeline track cell */
 

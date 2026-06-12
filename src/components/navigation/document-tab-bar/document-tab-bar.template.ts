@@ -35,14 +35,18 @@ export function documentTabBarTemplate(component: NLDDDocumentTabBar): TemplateR
 				?expanded=${component._menuOpen}
 			></nldd-icon-button>
 		</div>
-		<div class="document-tab-bar__end" hidden>
+		<div class="document-tab-bar__end"
+			hidden
+		>
 			<slot name="end" @slotchange=${component._onEndSlotChange}></slot>
 		</div>
 	`;
 
 	return html`
 		${isNavigation
-			? html`<nav class="document-tab-bar" aria-label=${label}>${inner}</nav>`
+			? html`<nav class="document-tab-bar"
+					aria-label=${label}
+				>${inner}</nav>`
 			: html`<div class="document-tab-bar">${inner}</div>`}
 		<div class="document-tab-bar__polite-announcer"
 			role="status"
@@ -70,7 +74,9 @@ export function documentTabBarItemTemplate(component: NLDDDocumentTabBarItem): T
 		: component.text;
 
 	const tabContent = html`
-		<span class="document-tab-bar__item-normal" aria-hidden="true">
+		<span class="document-tab-bar__item-normal"
+			aria-hidden="true"
+		>
 			<span class="document-tab-bar__item-text">${component.text}</span>
 			${component.supportingText
 				? html`<span class="document-tab-bar__item-supporting-text">${component.supportingText}</span>`
