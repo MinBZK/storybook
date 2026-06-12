@@ -97,6 +97,16 @@ describe('nldd-hero', () => {
 		expect(el.hasAttribute('data-has-media')).toBe(true);
 	});
 
+	it('removes data-has-media when the slotted media is removed', async () => {
+		el = await fixture(`<nldd-hero>${MEDIA}</nldd-hero>`);
+		await waitForUpdate(el);
+		expect(el.hasAttribute('data-has-media')).toBe(true);
+		el.querySelector('img[slot="media"]')!.remove();
+		await waitForUpdate(el);
+		expect(el.hasAttribute('data-has-media')).toBe(false);
+		expect(el.getAttribute('data-main-corner')).toBe('none');
+	});
+
 
 	/* ============================================================
 	   Width (max-width) inline style
@@ -119,4 +129,11 @@ describe('nldd-hero', () => {
 		await waitForUpdate(el);
 		expect(el.style.getPropertyValue('--_max-width')).toBe('');
 	});
+
+	it.each(['clamp(300px, 50%, 600px)', 'min(600px, 100%)', 'max(320px, 40vw)'])(
+		'accepts the CSS math function width "%s"', async (value) => {
+			el = await fixture(`<nldd-hero width="${value}"></nldd-hero>`);
+			await waitForUpdate(el);
+			expect(el.style.getPropertyValue('--_max-width')).not.toBe('');
+		});
 });
