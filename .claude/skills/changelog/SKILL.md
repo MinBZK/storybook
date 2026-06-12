@@ -71,6 +71,15 @@ Volgorde: **`### Highlights` altijd eerst**, daarna per type. Gebruik alleen wat
 | `### Breaking` | Breaking changes: renames, verwijderde/gewijzigde API, gewijzigde import-paden. Maak prominent — het is het major-/SemVer-signaal. |
 | `### Fixed` | Bugfixes. |
 
+### Alleen wijzigingen t.o.v. de laatste release
+
+`Changed`, `Breaking` en `Fixed` (en `Deprecated`/`Removed`) gaan **uitsluitend over wat al in een eerdere release zat**. Een component, token of feature die in dezelfde nog-niet-uitgebrachte batch onder `Added` staat, hoort **niet óók** onder `Changed`/`Breaking`/`Fixed` — er valt niets te wijzigen, breken of fixen t.o.v. de vorige versie; dat gedrag is gewoon deel van de `Added`-beschrijving.
+
+- ❌ Nieuw `nldd-hero` → een `Changed`-regel "hero-achtergrond gebruikt nu reference".
+- ✅ Beschrijf die achtergrondkleur in de `Added`-bullet van `nldd-hero` zelf.
+
+Iets dat je tijdens dezelfde batch toevoegt én daarna weer aanpast, blijft dus één `Added`-entry met de eindstand — geen apart `Changed`/`Fixed`.
+
 ### Industrie-standaard kopjes (Keep a Changelog 1.1.0)
 
 Dit project volgt [Keep a Changelog](https://keepachangelog.com/en/1.1.0/). De **officiële standaard change-types** zijn:
