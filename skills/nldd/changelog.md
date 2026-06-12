@@ -22,18 +22,20 @@ here; consult the commit history if you need that level of detail.
 - **Rich-text width zones.** Tables, code blocks and components now span wider than the reading column by default, with a `data-width` per-child override. *(Breaking.)*
 - **Breadcrumbs collapse** deep trails behind an ellipsis by default. *(Breaking.)*
 - **`coolgray` removed** as a category/color value, and **`nldd-list-item`** now opts into its button mode with a boolean `button` attribute. *(Breaking.)*
+- **Category color styles.** Every category color now comes in three styles — `filled` (saturated), `tinted` (a soft tint with colored text and a same-hue outline) and `reference` (the true rijkshuisstijl brand color) — addressed as `--semantics-categories-{color}-{style}-*`. `nldd-tag` and `nldd-banner` adopt `tinted`; the hero paints its panel with `reference`. *(Breaking.)*
 
 ### Added
 
 - **`nldd-status-bar`** (status & feedback) — a 24px-high, full-width status strip with a deep background per variant (`neutral`, `accent`, `success`, `warning`, `critical`). Text-only; set `href` to make the whole strip a link or `button` to make it a button, otherwise it is static. `role` / `aria-live` follow the variant.
 - **`nldd-byline`** (content) — a byline with an optional `avatars` slot (overlapping, ring-separated images), a name line and supporting text. The name and supporting text accept rich content via slots (e.g. a `<time>` element or a link).
-- **`nldd-hero`** (layout / page sections) — a rijkshuisstijl page header: a media surface with exactly one rounded corner (radius derived from the logo ribbon width) and a text panel placeable on six positions (`main-position`) at `1/2`, `2/3`, `3/4` or `full` width (`main-width`). `main-background` paints the panel with a filled-category surface; without media the panel fills the hero. Full-bleed on mobile.
+- **`nldd-hero`** (layout / page sections) — a rijkshuisstijl page header: a media surface with exactly one rounded corner (radius derived from the logo ribbon width) and a text panel placeable on six positions (`main-position`) at `1/2`, `2/3`, `3/4` or `full` width (`main-width`). `main-background` paints the panel with the reference (true brand) category color, identical in light and dark mode; without media the panel fills the hero.
 - **`color="inherit"`** on `nldd-title` and `nldd-rich-text` — all text follows the surface color (`currentColor`) for use on colored panels; links keep their underline, secondary text takes a reduced-opacity tier.
-- **`inherit-filled` and `inherit-tinted` button variants** on `nldd-button` and `nldd-icon-button` — derive their colors from `currentColor` for colored surfaces. `inherit-filled` uses the surface color as its label via `--context-parent-background-color`, with a white/black contrast flip as fallback. Both support the `expanded` state.
+- **`inherit-filled` and `inherit-tinted` button variants** on `nldd-button` and `nldd-icon-button` — derive their colors from `currentColor` for colored surfaces. `inherit-filled` uses the surface color as its label via `--context-parent-background-color`, with a white/black contrast flip as fallback. Both support the `expanded` state, and their supporting text takes the full label color (not a faded tier) so it keeps the same guaranteed contrast.
 - **Brand ribbon tokens** — `--semantics-brand-ribbon-{sm,md,lg}-width`, the rijkslogo ribbon width that also drives the hero corner radius.
 - **On-color tokens** — `--semantics-content-secondary-opacity` (secondary-text opacity tier) and `--semantics-content-contrast-color` (the white/black-against-`currentColor` flip).
 - **`nldd-blockquote`** accepts an `nldd-byline` as its `attribution` (the leading em-dash is dropped for a byline).
 - **Rich-text images** get the controls medium corner radius.
+- **Category `tinted` and `reference` color styles** — alongside `filled`, each category color exposes a `tinted` style (a soft tint with a same-hue outline and colored text, ~525 steps deeper for AA contrast) and a `reference` style (the true rijkshuisstijl brand color, identical in light and dark mode via a mirrored step). Each style provides `background`, `highlight-border`, `primary-content` and `secondary-content` colors.
 
 ### Breaking
 
@@ -42,11 +44,15 @@ here; consult the commit history if you need that level of detail.
 - **`nldd-rich-text` width zones** — children other than text now span wider by default. Text (headings, paragraphs, lists, `div` / `section`) and blockquotes stay at the reading measure; `img` / `figure` / `video` / `iframe` and tables take the wide accent; code blocks and components span the full column. Override per child with `data-width="main|wide|full"`.
 - **`coolgray` removed** — no longer a color/category value on `nldd-badge`, `nldd-tag`, `nldd-progress-bar`, `nldd-progress-circle` or the hero `main-background`; the matching filled-semantics and component tokens are gone. The `neutral` palette (which aliases the coolgray primitives) is unaffected.
 - **`--components-banner-content-secondary-color` removed** — banner supporting text now always uses the primary content color. Consumers who overrode this token to recolor the supporting text will need to remove that override.
+- **Category tokens renamed and regrouped** — `--semantics-categories-filled-{color}-*` is now `--semantics-categories-{color}-filled-*`, grouped per color and moved directly below the content colors. `border-color` is renamed `highlight-border-color`, and `content-color` splits into `primary-content-color` / `secondary-content-color`.
+- **Per-component category tokens removed** — the `--components-{badge,tag,progress-bar,progress-circle,banner}-{color}-{background,border,content,icon}-color` pass-throughs are gone; these components now read the `--semantics-categories-{color}-{style}-*` tokens directly. Point any external references at the semantic category tokens.
 
 ### Changed
 
 - **Banner supporting text** now uses the primary content color instead of the secondary color.
 - **`nldd-button-group`** keeps full width in its horizontal orientation, so full-width children stretch; content-sized buttons still sit at the start of the row.
+- **`nldd-tag`** now uses the `tinted` category style — a soft tinted fill with same-hue text and a subtle same-hue outline, replacing the saturated filled look.
+- **`nldd-banner`** is repainted from the shared category `tinted` tokens (its bundled `--components-banner-{color}-*` tokens are removed); the icon shifts one color step lighter.
 
 ### Fixed
 
