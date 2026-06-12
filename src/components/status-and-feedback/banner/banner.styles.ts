@@ -12,10 +12,7 @@ export const bannerStyles = css`
 		--_background-color: var(--semantics-categories-neutral-tinted-background-color);
 		--_border-color: var(--semantics-categories-neutral-tinted-highlight-border-color);
 		--_border-width: var(--primitives-border-width-thin);
-		/* Icons take the saturated reference (brand) color — they're decorative
-		   (not needed to understand the message), so the lower contrast against
-		   the tint is acceptable in exchange for the truer color. */
-		--_icon-color: var(--semantics-categories-neutral-reference-background-color);
+		--_icon-color: var(--semantics-categories-neutral-filled-background-color);
 		--_icon-size: var(--primitives-space-32);
 		--_content-color: var(--components-banner-content-color);
 		--_text-icon-offset: calc((var(--_icon-size) - var(--primitives-font-size-100) * var(--primitives-line-height-tight)) / 2);
@@ -28,10 +25,6 @@ export const bannerStyles = css`
 		box-sizing: border-box;
 		display: grid;
 		position: relative;
-		/* Inset box-shadow paints the 1px edge inside the radius without
-		   taking layout space, matching the highlight pattern nldd-box
-		   uses. forced-colors fallback below restores a real border for
-		   Windows High Contrast users (box-shadow is dropped there). */
 		border-radius: var(--_corner-radius);
 		box-shadow: inset 0 0 0 var(--_border-width) var(--_border-color);
 		background-color: var(--_background-color);
@@ -72,6 +65,12 @@ export const bannerStyles = css`
 		--_background-color: var(--semantics-categories-critical-tinted-background-color);
 		--_border-color: var(--semantics-categories-critical-tinted-highlight-border-color);
 		--_icon-color: var(--semantics-categories-critical-reference-background-color);
+	}
+
+	@media (forced-colors: active) {
+		:host {
+			border: var(--_border-width) solid CanvasText;
+		}
 	}
 
 
@@ -145,19 +144,5 @@ export const bannerStyles = css`
 		position: absolute;
 		top: 0;
 		right: 0;
-	}
-
-
-	/* # Accessibility
-	   forced-colors / Windows High Contrast strips box-shadow, so the inset
-	   edge would disappear and the banner would lose its semantic frame
-	   against the system background. Restore it with a real border in that
-	   mode. CanvasText is the system foreground color so the border always
-	   meets contrast. */
-
-	@media (forced-colors: active) {
-		:host {
-			border: var(--_border-width) solid CanvasText;
-		}
 	}
 `;
