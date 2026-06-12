@@ -17,7 +17,7 @@ here; consult the commit history if you need that level of detail.
 - **Breadcrumbs collapse** deep trails behind an ellipsis by default. *(Breaking.)*
 - **`coolgray` removed** as a category/color value, and **`nldd-list-item`** now opts into its button mode with a boolean `button` attribute. *(Breaking.)*
 - **Category color styles.** Every category color now comes in three styles — `filled` (saturated), `tinted` (a soft tint with colored text and a same-hue outline) and `reference` (the true rijkshuisstijl brand color) — addressed as `--semantics-categories-{color}-{style}-*`. `nldd-tag` and `nldd-banner` adopt `tinted`; the hero paints its panel with `reference`. *(Breaking.)*
-- **UX-patterns reference.** A new `Docs/UX-patronen` Storybook page gathers the design system's interface principles — input and forms, navigation, feedback, microcopy, visual hierarchy and process — as one reference for design and review.
+- **Design-guidelines reference.** A new `Docs/Ontwerprichtlijnen` Storybook page gathers the design system's interface principles — input and forms, navigation, feedback, microcopy, visual hierarchy and process — as one reference for design and review.
 
 ### Added
 
