@@ -272,13 +272,13 @@ export const iconButtonStyles = css`
 	   specificity and later source order. See nldd-button for the rationale. */
 	:host([expanded][variant="inherit-tinted"]) {
 		--_background-color: var(--semantics-buttons-inherit-tinted-is-expanded-background-color);
-		--_primary-content-color: currentColor;
+		--_primary-content-color: var(--semantics-buttons-inherit-tinted-is-expanded-primary-content-color);
 		--_highlight-border-color: var(--semantics-buttons-inherit-tinted-is-expanded-highlight-border-color);
 		--_is-hovered-background-color: var(--semantics-buttons-inherit-tinted-is-expanded-is-hovered-background-color);
-		--_is-hovered-primary-content-color: currentColor;
+		--_is-hovered-primary-content-color: var(--semantics-buttons-inherit-tinted-is-expanded-is-hovered-primary-content-color);
 		--_is-hovered-highlight-border-color: var(--semantics-buttons-inherit-tinted-is-expanded-is-hovered-highlight-border-color);
 		--_is-active-background-color: var(--semantics-buttons-inherit-tinted-is-expanded-is-active-background-color);
-		--_is-active-primary-content-color: currentColor;
+		--_is-active-primary-content-color: var(--semantics-buttons-inherit-tinted-is-expanded-is-active-primary-content-color);
 		--_is-active-highlight-border-color: var(--semantics-buttons-inherit-tinted-is-expanded-is-active-highlight-border-color);
 	}
 

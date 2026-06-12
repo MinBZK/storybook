@@ -185,12 +185,16 @@ export const buttonStyles = css`
 	}
 
 	:host([variant="inherit-filled"]) {
+		/* The label is the surface color via the context var, with the token's
+		   white/black contrast flip as fallback. Resolved here on the host —
+		   not in the token — because the context var is only in scope below the
+		   parent surface, not at :root where the token is declared. */
 		--_inherit-filled-label-color: var(--context-parent-background-color, var(--semantics-buttons-inherit-filled-primary-content-color));
 		--_background-color: var(--semantics-buttons-inherit-filled-background-color);
 		--_primary-content-color: var(--_inherit-filled-label-color);
-		/* secondary mixes currentColor, not the label token: the content
-		   layer below sets currentColor to the resolved label, so re-running
-		   the contrast flip here would invert it (white label → black mix). */
+		/* Secondary mixes currentColor, not the label token: the content layer
+		   below sets currentColor to the resolved label, so re-running the
+		   contrast flip here would invert it (white label → black mix). */
 		--_secondary-content-color: color-mix(in oklab, currentColor var(--semantics-content-secondary-opacity), transparent);
 		--_highlight-border-color: var(--semantics-buttons-inherit-filled-highlight-border-color);
 		--_is-hovered-background-color: var(--semantics-buttons-inherit-filled-is-hovered-background-color);
@@ -333,16 +337,16 @@ export const buttonStyles = css`
 	   specificity and later source order, so it would otherwise win. */
 	:host([expanded][variant="inherit-tinted"]) {
 		--_background-color: var(--semantics-buttons-inherit-tinted-is-expanded-background-color);
-		--_primary-content-color: currentColor;
-		--_secondary-content-color: color-mix(in oklab, currentColor var(--semantics-content-secondary-opacity), transparent);
+		--_primary-content-color: var(--semantics-buttons-inherit-tinted-is-expanded-primary-content-color);
+		--_secondary-content-color: var(--semantics-buttons-inherit-tinted-is-expanded-secondary-content-color);
 		--_highlight-border-color: var(--semantics-buttons-inherit-tinted-is-expanded-highlight-border-color);
 		--_is-hovered-background-color: var(--semantics-buttons-inherit-tinted-is-expanded-is-hovered-background-color);
-		--_is-hovered-primary-content-color: currentColor;
-		--_is-hovered-secondary-content-color: color-mix(in oklab, currentColor var(--semantics-content-secondary-opacity), transparent);
+		--_is-hovered-primary-content-color: var(--semantics-buttons-inherit-tinted-is-expanded-is-hovered-primary-content-color);
+		--_is-hovered-secondary-content-color: var(--semantics-buttons-inherit-tinted-is-expanded-is-hovered-secondary-content-color);
 		--_is-hovered-highlight-border-color: var(--semantics-buttons-inherit-tinted-is-expanded-is-hovered-highlight-border-color);
 		--_is-active-background-color: var(--semantics-buttons-inherit-tinted-is-expanded-is-active-background-color);
-		--_is-active-primary-content-color: currentColor;
-		--_is-active-secondary-content-color: color-mix(in oklab, currentColor var(--semantics-content-secondary-opacity), transparent);
+		--_is-active-primary-content-color: var(--semantics-buttons-inherit-tinted-is-expanded-is-active-primary-content-color);
+		--_is-active-secondary-content-color: var(--semantics-buttons-inherit-tinted-is-expanded-is-active-secondary-content-color);
 		--_is-active-highlight-border-color: var(--semantics-buttons-inherit-tinted-is-expanded-is-active-highlight-border-color);
 	}
 
