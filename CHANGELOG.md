@@ -46,7 +46,7 @@ here; consult the commit history if you need that level of detail.
 - **Banner supporting text** now uses the primary content color instead of the secondary color.
 - **`nldd-button-group`** keeps full width in its horizontal orientation, so full-width children stretch; content-sized buttons still sit at the start of the row.
 - **`nldd-tag`** now uses the `tinted` category style — a soft tinted fill with same-hue text and a subtle same-hue outline, replacing the saturated filled look.
-- **`nldd-banner`** is repainted from the shared category `tinted` tokens (its bundled `--components-banner-{color}-*` tokens are removed); the icon shifts one color step lighter.
+- **`nldd-banner`** is repainted from the shared category `tinted` tokens (its bundled `--components-banner-{color}-*` tokens are removed); the icon takes the saturated `reference` brand color (it is decorative, so the softer contrast against the tint is acceptable).
 
 ### Fixed
 

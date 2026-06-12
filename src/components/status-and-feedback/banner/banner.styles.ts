@@ -12,7 +12,10 @@ export const bannerStyles = css`
 		--_background-color: var(--semantics-categories-neutral-tinted-background-color);
 		--_border-color: var(--semantics-categories-neutral-tinted-highlight-border-color);
 		--_border-width: var(--primitives-border-width-thin);
-		--_icon-color: var(--semantics-categories-neutral-tinted-primary-content-color);
+		/* Icons take the saturated reference (brand) color — they're decorative
+		   (not needed to understand the message), so the lower contrast against
+		   the tint is acceptable in exchange for the truer color. */
+		--_icon-color: var(--semantics-categories-neutral-reference-background-color);
 		--_icon-size: var(--primitives-space-32);
 		--_content-color: var(--components-banner-content-color);
 		--_text-icon-offset: calc((var(--_icon-size) - var(--primitives-font-size-100) * var(--primitives-line-height-tight)) / 2);
@@ -50,25 +53,25 @@ export const bannerStyles = css`
 	:host([variant="accent"]) {
 		--_background-color: var(--semantics-categories-accent-tinted-background-color);
 		--_border-color: var(--semantics-categories-accent-tinted-highlight-border-color);
-		--_icon-color: var(--semantics-categories-accent-tinted-primary-content-color);
+		--_icon-color: var(--semantics-categories-accent-reference-background-color);
 	}
 
 	:host([variant="success"]) {
 		--_background-color: var(--semantics-categories-success-tinted-background-color);
 		--_border-color: var(--semantics-categories-success-tinted-highlight-border-color);
-		--_icon-color: var(--semantics-categories-success-tinted-primary-content-color);
+		--_icon-color: var(--semantics-categories-success-reference-background-color);
 	}
 
 	:host([variant="warning"]) {
 		--_background-color: var(--semantics-categories-warning-tinted-background-color);
 		--_border-color: var(--semantics-categories-warning-tinted-highlight-border-color);
-		--_icon-color: var(--semantics-categories-warning-tinted-primary-content-color);
+		--_icon-color: var(--semantics-categories-warning-reference-background-color);
 	}
 
 	:host([variant="critical"]) {
 		--_background-color: var(--semantics-categories-critical-tinted-background-color);
 		--_border-color: var(--semantics-categories-critical-tinted-highlight-border-color);
-		--_icon-color: var(--semantics-categories-critical-tinted-primary-content-color);
+		--_icon-color: var(--semantics-categories-critical-reference-background-color);
 	}
 
 
