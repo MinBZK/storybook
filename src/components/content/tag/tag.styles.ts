@@ -195,7 +195,7 @@ export const tagStyles = css`
 
 	@media (forced-colors: active) {
 		.tag {
-			border: 1px solid CanvasText;
+			border: var(--primitives-border-width-thin) solid CanvasText;
 			background-color: Canvas;
 			color: CanvasText;
 		}
