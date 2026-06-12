@@ -95,7 +95,7 @@ export function progressCircleTemplate(component: NLDDProgressCircle, onSlotChan
 						<filter id="progress-circle-border-${color}-${uid}" filterUnits="userSpaceOnUse" x="-10" y="-10" width="120" height="120" color-interpolation-filters="sRGB">
 							<feMorphology in="SourceGraphic" operator="erode" radius=${borderErodeRadius} result="eroded"></feMorphology>
 							<feComposite operator="out" in="SourceGraphic" in2="eroded" result="edge"></feComposite>
-							<feFlood style="flood-color: var(--components-progress-circle-${color}-border-color)" result="flood"></feFlood>
+							<feFlood style="flood-color: var(--semantics-categories-${color}-filled-highlight-border-color)" result="flood"></feFlood>
 							<feComposite operator="in" in="flood" in2="edge" result="colored"></feComposite>
 							<feComposite operator="over" in="colored" in2="SourceGraphic"></feComposite>
 						</filter>
