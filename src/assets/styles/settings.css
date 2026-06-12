@@ -1159,7 +1159,9 @@
 
 	--semantics-buttons-inherit-tinted-background-color: color-mix(in oklab, var(--semantics-content-contrast-color) 20%, transparent);
 	--semantics-buttons-inherit-tinted-primary-content-color: currentColor;
-	--semantics-buttons-inherit-tinted-secondary-content-color: color-mix(in oklab, currentColor var(--semantics-content-secondary-opacity), transparent);
+	/* Secondary equals primary (no fade) so supporting text keeps the same
+	   guaranteed on-color contrast as the label. */
+	--semantics-buttons-inherit-tinted-secondary-content-color: var(--semantics-buttons-inherit-tinted-primary-content-color);
 	--semantics-buttons-inherit-tinted-highlight-border-color: color-mix(in oklab, var(--semantics-content-contrast-color) 10%, transparent);
 	--semantics-buttons-inherit-tinted-is-hovered-background-color: color-mix(in oklab, var(--semantics-content-contrast-color) 25%, transparent);
 	--semantics-buttons-inherit-tinted-is-hovered-primary-content-color: var(--semantics-buttons-inherit-tinted-primary-content-color);
