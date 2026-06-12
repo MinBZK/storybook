@@ -96,4 +96,27 @@ describe('nldd-hero', () => {
 		await waitForUpdate(el);
 		expect(el.hasAttribute('data-has-media')).toBe(true);
 	});
+
+
+	/* ============================================================
+	   Width (max-width) inline style
+	   ============================================================ */
+
+	it('width="full" sets no --_max-width inline style', async () => {
+		el = await fixture('<nldd-hero width="full"></nldd-hero>');
+		await waitForUpdate(el);
+		expect(el.style.getPropertyValue('--_max-width')).toBe('');
+	});
+
+	it('a CSS-length width feeds --_max-width inline', async () => {
+		el = await fixture('<nldd-hero width="600px"></nldd-hero>');
+		await waitForUpdate(el);
+		expect(el.style.getPropertyValue('--_max-width')).toBe('600px');
+	});
+
+	it('an invalid width sets no --_max-width', async () => {
+		el = await fixture('<nldd-hero width="not-a-length"></nldd-hero>');
+		await waitForUpdate(el);
+		expect(el.style.getPropertyValue('--_max-width')).toBe('');
+	});
 });
