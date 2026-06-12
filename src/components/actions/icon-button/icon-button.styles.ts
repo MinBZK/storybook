@@ -158,10 +158,10 @@ export const iconButtonStyles = css`
 		--_primary-content-color: var(--context-parent-background-color, var(--semantics-buttons-inherit-filled-primary-content-color));
 		--_highlight-border-color: var(--semantics-buttons-inherit-filled-highlight-border-color);
 		--_is-hovered-background-color: var(--semantics-buttons-inherit-filled-is-hovered-background-color);
-		--_is-hovered-primary-content-color: var(--_primary-content-color);
+		--_is-hovered-primary-content-color: var(--semantics-buttons-inherit-filled-is-hovered-primary-content-color);
 		--_is-hovered-highlight-border-color: var(--semantics-buttons-inherit-filled-is-hovered-highlight-border-color);
 		--_is-active-background-color: var(--semantics-buttons-inherit-filled-is-active-background-color);
-		--_is-active-primary-content-color: var(--_primary-content-color);
+		--_is-active-primary-content-color: var(--semantics-buttons-inherit-filled-is-active-primary-content-color);
 		--_is-active-highlight-border-color: var(--semantics-buttons-inherit-filled-is-active-highlight-border-color);
 	}
 
@@ -283,13 +283,13 @@ export const iconButtonStyles = css`
 
 	:host([expanded][variant="inherit-filled"]) {
 		--_background-color: var(--semantics-buttons-inherit-filled-is-expanded-background-color);
-		--_primary-content-color: var(--context-parent-background-color, var(--semantics-buttons-inherit-filled-primary-content-color));
+		--_primary-content-color: var(--context-parent-background-color, var(--semantics-buttons-inherit-filled-is-expanded-primary-content-color));
 		--_highlight-border-color: var(--semantics-buttons-inherit-filled-is-expanded-highlight-border-color);
 		--_is-hovered-background-color: var(--semantics-buttons-inherit-filled-is-expanded-is-hovered-background-color);
-		--_is-hovered-primary-content-color: var(--_primary-content-color);
+		--_is-hovered-primary-content-color: var(--semantics-buttons-inherit-filled-is-expanded-is-hovered-primary-content-color);
 		--_is-hovered-highlight-border-color: var(--semantics-buttons-inherit-filled-is-expanded-is-hovered-highlight-border-color);
 		--_is-active-background-color: var(--semantics-buttons-inherit-filled-is-expanded-is-active-background-color);
-		--_is-active-primary-content-color: var(--_primary-content-color);
+		--_is-active-primary-content-color: var(--semantics-buttons-inherit-filled-is-expanded-is-active-primary-content-color);
 		--_is-active-highlight-border-color: var(--semantics-buttons-inherit-filled-is-expanded-is-active-highlight-border-color);
 	}
 
