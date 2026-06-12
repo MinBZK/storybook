@@ -16,9 +16,12 @@
  *
  * ## ARIA
  * role en aria-live worden automatisch gezet op basis van de variant:
- * - critical → role="alert" (onderbreekt screen reader)
+ * - critical → role="alert" (impliceert aria-live="assertive"; onderbreekt de screen reader)
  * - overige  → role="status" aria-live="polite"
  * Niet overschrijfbaar — is een rustiger component nodig, kies dan een ander.
+ * Gebruik `critical` alleen voor een echte noodsituatie: role="alert" onderbreekt
+ * de screen reader bij élke wijziging van de inhoud, dus plaats er geen tekst in
+ * die regelmatig verandert (zoals een aftellende timer).
  *
  * @element nldd-status-bar
  *
