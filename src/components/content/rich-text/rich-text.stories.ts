@@ -412,7 +412,7 @@ export const Breedtezones = {
 export const OpKleurvlak = {
 	render: () => html`
 		<div style="display: flex; flex-direction: column; gap: 16px;">
-			<div style="background: var(--semantics-categories-filled-donkerblauw-background-color); color: var(--semantics-categories-filled-donkerblauw-content-color); padding: 24px; border-radius: var(--primitives-corner-radius-md);">
+			<div style="background: var(--semantics-categories-donkerblauw-filled-background-color); color: var(--semantics-categories-donkerblauw-filled-primary-content-color); padding: 24px; border-radius: var(--primitives-corner-radius-md);">
 				<nldd-rich-text color="inherit">
 					<h3>Op een donker vlak</h3>
 					<p>Alle tekst erft de contentkleur van het vlak, inclusief <a href="#">links met hun onderstreping</a> en <strong>nadruk</strong>.</p>
@@ -424,7 +424,7 @@ export const OpKleurvlak = {
 					</figure>
 				</nldd-rich-text>
 			</div>
-			<div style="background: var(--semantics-categories-filled-oranje-background-color); color: var(--semantics-categories-filled-oranje-content-color); padding: 24px; border-radius: var(--primitives-corner-radius-md);">
+			<div style="background: var(--semantics-categories-oranje-filled-background-color); color: var(--semantics-categories-oranje-filled-primary-content-color); padding: 24px; border-radius: var(--primitives-corner-radius-md);">
 				<nldd-rich-text color="inherit">
 					<h3>Op een middenton</h3>
 					<p>De filled-categories leveren puur zwart of wit als contentkleur, zodat ook middentonen <a href="#">voldoende contrast</a> houden.</p>

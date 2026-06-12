@@ -136,7 +136,7 @@ export const AlleGrootten = {
 export const OpKleurvlak = {
 	render: () => html`
 		<div style="display: flex; flex-direction: column; gap: 16px;">
-			<div style="background: var(--semantics-categories-filled-donkerblauw-background-color); color: var(--semantics-categories-filled-donkerblauw-content-color); padding: 24px; border-radius: var(--primitives-corner-radius-md);">
+			<div style="background: var(--semantics-categories-donkerblauw-filled-background-color); color: var(--semantics-categories-donkerblauw-filled-primary-content-color); padding: 24px; border-radius: var(--primitives-corner-radius-md);">
 				<nldd-title color="inherit"
 					size="2"
 				>
@@ -145,7 +145,7 @@ export const OpKleurvlak = {
 					<p slot="subtitle">Subtitle op verlaagde dekking</p>
 				</nldd-title>
 			</div>
-			<div style="background: var(--semantics-categories-filled-oranje-background-color); color: var(--semantics-categories-filled-oranje-content-color); padding: 24px; border-radius: var(--primitives-corner-radius-md);">
+			<div style="background: var(--semantics-categories-oranje-filled-background-color); color: var(--semantics-categories-oranje-filled-primary-content-color); padding: 24px; border-radius: var(--primitives-corner-radius-md);">
 				<nldd-title color="inherit"
 					size="2"
 				>

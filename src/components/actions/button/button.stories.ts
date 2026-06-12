@@ -448,7 +448,7 @@ export const TextSlot = {
 export const OpKleurvlak = {
 	render: () => html`
 		<div style="display: flex; flex-direction: column; gap: 16px;">
-			<div style="background: var(--semantics-categories-filled-donkerblauw-background-color); color: var(--semantics-categories-filled-donkerblauw-content-color); --context-parent-background-color: var(--semantics-categories-filled-donkerblauw-background-color); padding: 24px; border-radius: var(--primitives-corner-radius-md);">
+			<div style="background: var(--semantics-categories-donkerblauw-filled-background-color); color: var(--semantics-categories-donkerblauw-filled-primary-content-color); --context-parent-background-color: var(--semantics-categories-donkerblauw-filled-background-color); padding: 24px; border-radius: var(--primitives-corner-radius-md);">
 				<nldd-button-group orientation="horizontal">
 					<nldd-button variant="inherit-filled"
 						text="Inherit filled"
@@ -469,7 +469,7 @@ export const OpKleurvlak = {
 					></nldd-button>
 				</nldd-button-group>
 			</div>
-			<div style="background: var(--semantics-categories-filled-oranje-background-color); color: var(--semantics-categories-filled-oranje-content-color); --context-parent-background-color: var(--semantics-categories-filled-oranje-background-color); padding: 24px; border-radius: var(--primitives-corner-radius-md);">
+			<div style="background: var(--semantics-categories-oranje-filled-background-color); color: var(--semantics-categories-oranje-filled-primary-content-color); --context-parent-background-color: var(--semantics-categories-oranje-filled-background-color); padding: 24px; border-radius: var(--primitives-corner-radius-md);">
 				<nldd-button-group orientation="horizontal">
 					<nldd-button variant="inherit-filled"
 						text="Inherit filled"
