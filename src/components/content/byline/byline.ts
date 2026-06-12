@@ -80,9 +80,10 @@ export class NLDDByline extends LitElement {
 	override connectedCallback(): void {
 		super.connectedCallback();
 		// Re-attach when reconnecting after a previous disconnect; firstUpdated
-		// doesn't fire again. Guard on listener presence so we don't run twice
-		// on the very first connect.
-		if (this.shadowRoot && this._slotListeners.length === 0) {
+		// doesn't fire again. hasUpdated is false until the first render, so the
+		// very first connect is skipped here — firstUpdated does the initial
+		// attach once the slots actually exist.
+		if (this.hasUpdated && this._slotListeners.length === 0) {
 			this._attachSlotListeners();
 		}
 	}
