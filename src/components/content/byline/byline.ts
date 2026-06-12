@@ -45,7 +45,7 @@ export class NLDDByline extends LitElement {
 	supportingText = '';
 
 	@state()
-	_hasAvatars = false;
+	_hasSlottedAvatars = false;
 
 	@state()
 	_hasSlottedText = false;
@@ -53,48 +53,18 @@ export class NLDDByline extends LitElement {
 	@state()
 	_hasSlottedSupportingText = false;
 
-	/** Stored slot-change listener references so disconnectedCallback can
-	 *  remove them; kept symmetric with addEventListener like nldd-banner. */
-	private _slotListeners: Array<[HTMLSlotElement, () => void]> = [];
-
-	/** Re-runs every connectedCallback (i.e. also after a move-and-reinsert),
-	 *  unlike firstUpdated which is one-shot. */
-	private _attachSlotListeners(): void {
-		const track = (name: string, apply: (hasContent: boolean) => void): void => {
-			const slot = this.shadowRoot?.querySelector<HTMLSlotElement>(`slot[name="${name}"]`);
-			if (!slot) return;
-			const sync = () => { apply(slot.assignedElements().length > 0); };
-			slot.addEventListener('slotchange', sync);
-			this._slotListeners.push([slot, sync]);
-			sync();
-		};
-		track('avatars', (has) => { this._hasAvatars = has; });
-		track('text', (has) => { this._hasSlottedText = has; });
-		track('supporting-text', (has) => { this._hasSlottedSupportingText = has; });
-	}
-
-	override firstUpdated(): void {
-		this._attachSlotListeners();
-	}
-
-	override connectedCallback(): void {
-		super.connectedCallback();
-		// Re-attach when reconnecting after a previous disconnect; firstUpdated
-		// doesn't fire again. hasUpdated is false until the first render, so the
-		// very first connect is skipped here — firstUpdated does the initial
-		// attach once the slots actually exist.
-		if (this.hasUpdated && this._slotListeners.length === 0) {
-			this._attachSlotListeners();
-		}
-	}
-
-	override disconnectedCallback(): void {
-		for (const [slot, sync] of this._slotListeners) {
-			slot.removeEventListener('slotchange', sync);
-		}
-		this._slotListeners = [];
-		super.disconnectedCallback();
-	}
+	/** Tracks slot content so the text / supporting-text attribute fallbacks
+	 *  only render when their slot is empty. Bound per slot in the template via
+	 *  @slotchange, so Lit owns the listener lifecycle (it survives a
+	 *  move-and-reinsert) — no manual connect/disconnect bookkeeping. slotchange
+	 *  also fires for the initial assignment, so the first render is covered. */
+	_onSlotChange = (e: Event): void => {
+		const slot = e.target as HTMLSlotElement;
+		const has = slot.assignedElements().length > 0;
+		if (slot.name === 'avatars') this._hasSlottedAvatars = has;
+		else if (slot.name === 'text') this._hasSlottedText = has;
+		else if (slot.name === 'supporting-text') this._hasSlottedSupportingText = has;
+	};
 
 	override render() {
 		return bylineTemplate(this);

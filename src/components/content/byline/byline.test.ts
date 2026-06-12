@@ -123,4 +123,15 @@ describe('nldd-byline', () => {
 		await waitForUpdate(el);
 		expect(el.shadowRoot!.querySelector('.byline__avatars')!.hasAttribute('hidden')).toBe(false);
 	});
+
+	it('keeps slot tracking across a disconnect and reconnect', async () => {
+		el = await fixture(`<nldd-byline text="Jan Jansen"><img slot="avatars" src="${AVATAR}" alt=""></nldd-byline>`);
+		await waitForUpdate(el);
+		expect(el.shadowRoot!.querySelector('.byline__avatars')!.hasAttribute('hidden')).toBe(false);
+		const parent = el.parentNode!;
+		parent.removeChild(el);
+		parent.appendChild(el);
+		await waitForUpdate(el);
+		expect(el.shadowRoot!.querySelector('.byline__avatars')!.hasAttribute('hidden')).toBe(false);
+	});
 });
