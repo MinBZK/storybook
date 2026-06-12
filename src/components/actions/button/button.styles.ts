@@ -185,34 +185,31 @@ export const buttonStyles = css`
 	}
 
 	:host([variant="inherit-filled"]) {
-		/* The label is the surface color via the context var, with the token's
-		   white/black contrast flip as fallback. Resolved here on the host —
-		   not in the token — because the context var is only in scope below the
-		   parent surface, not at :root where the token is declared. */
-		--_inherit-filled-label-color: var(--context-parent-background-color, var(--semantics-buttons-inherit-filled-primary-content-color));
+		/* The label (primary) is the surface color via the context var, with the
+		   token's white/black contrast flip as fallback. Resolved here on the
+		   host — not in the token — because the context var is only in scope
+		   below the parent surface, not at :root where the token is declared.
+		   Secondary and the per-state content track the primary, so supporting
+		   text keeps the label's guaranteed contrast against the filled surface. */
 		--_background-color: var(--semantics-buttons-inherit-filled-background-color);
-		--_primary-content-color: var(--_inherit-filled-label-color);
-		/* Secondary equals primary (the label, no fade) so supporting text keeps
-		   the same guaranteed contrast against the filled surface. */
-		--_secondary-content-color: var(--_inherit-filled-label-color);
+		--_primary-content-color: var(--context-parent-background-color, var(--semantics-buttons-inherit-filled-primary-content-color));
+		--_secondary-content-color: var(--_primary-content-color);
 		--_highlight-border-color: var(--semantics-buttons-inherit-filled-highlight-border-color);
 		--_is-hovered-background-color: var(--semantics-buttons-inherit-filled-is-hovered-background-color);
-		--_is-hovered-primary-content-color: var(--_inherit-filled-label-color);
-		--_is-hovered-secondary-content-color: var(--_inherit-filled-label-color);
+		--_is-hovered-primary-content-color: var(--_primary-content-color);
+		--_is-hovered-secondary-content-color: var(--_primary-content-color);
 		--_is-hovered-highlight-border-color: var(--semantics-buttons-inherit-filled-is-hovered-highlight-border-color);
 		--_is-active-background-color: var(--semantics-buttons-inherit-filled-is-active-background-color);
-		--_is-active-primary-content-color: var(--_inherit-filled-label-color);
-		--_is-active-secondary-content-color: var(--_inherit-filled-label-color);
+		--_is-active-primary-content-color: var(--_primary-content-color);
+		--_is-active-secondary-content-color: var(--_primary-content-color);
 		--_is-active-highlight-border-color: var(--semantics-buttons-inherit-filled-is-active-highlight-border-color);
 	}
 
 	/* For inherit-filled the inner button keeps the inherited on-color:
 	   its currentColor background and the label's contrast flip resolve
 	   against it, and would otherwise self-reference the label. The label
-	   color moves to the content layer instead, which also makes currentColor
-	   there the resolved label so secondary text fades correctly. The higher
-	   specificity of these rules deliberately pins the color through
-	   hover/active/expanded. */
+	   color moves to the content layer instead. The higher specificity of
+	   these rules deliberately pins the color through hover/active/expanded. */
 	:host([variant="inherit-filled"]) .button {
 		color: inherit;
 	}
@@ -351,16 +348,16 @@ export const buttonStyles = css`
 
 	:host([expanded][variant="inherit-filled"]) {
 		--_background-color: var(--semantics-buttons-inherit-filled-is-expanded-background-color);
-		--_primary-content-color: var(--_inherit-filled-label-color);
-		--_secondary-content-color: var(--_inherit-filled-label-color);
+		--_primary-content-color: var(--context-parent-background-color, var(--semantics-buttons-inherit-filled-primary-content-color));
+		--_secondary-content-color: var(--_primary-content-color);
 		--_highlight-border-color: var(--semantics-buttons-inherit-filled-is-expanded-highlight-border-color);
 		--_is-hovered-background-color: var(--semantics-buttons-inherit-filled-is-expanded-is-hovered-background-color);
-		--_is-hovered-primary-content-color: var(--_inherit-filled-label-color);
-		--_is-hovered-secondary-content-color: var(--_inherit-filled-label-color);
+		--_is-hovered-primary-content-color: var(--_primary-content-color);
+		--_is-hovered-secondary-content-color: var(--_primary-content-color);
 		--_is-hovered-highlight-border-color: var(--semantics-buttons-inherit-filled-is-expanded-is-hovered-highlight-border-color);
 		--_is-active-background-color: var(--semantics-buttons-inherit-filled-is-expanded-is-active-background-color);
-		--_is-active-primary-content-color: var(--_inherit-filled-label-color);
-		--_is-active-secondary-content-color: var(--_inherit-filled-label-color);
+		--_is-active-primary-content-color: var(--_primary-content-color);
+		--_is-active-secondary-content-color: var(--_primary-content-color);
 		--_is-active-highlight-border-color: var(--semantics-buttons-inherit-filled-is-expanded-is-active-highlight-border-color);
 	}
 
