@@ -9,6 +9,10 @@ the type of conventional-commit determines the release. Conventional types
 `chore`, `docs`, `ci`, `style`, `test`, `build` are intentionally omitted
 here; consult the commit history if you need that level of detail.
 
+## <small>0.8.58 (2026-06-12)</small>
+
+* feat!: status bar, byline, hero, on-color support, and rich-text width zones (#123) ([5932b63](https://github.com/MinBZK/storybook/commit/5932b63)), closes [#123](https://github.com/MinBZK/storybook/issues/123)
+
 ### Highlights
 
 - **Three new components.** `nldd-status-bar` (a 24px page-level status strip with a deep background per variant, optionally a link or button), `nldd-byline` (author/editor line with overlapping avatars, a name and supporting text) and `nldd-hero` (a rijkshuisstijl page header with the shape-language rounded corner and a positionable text panel).
