@@ -133,4 +133,15 @@ describe('nldd-status-bar', () => {
 		expect(el.getAttribute('role')).toBe('status');
 		expect(el.getAttribute('aria-live')).toBe('polite');
 	});
+
+	it('keeps aria-atomic="true" across a variant change', async () => {
+		el = await fixture('<nldd-status-bar variant="neutral"></nldd-status-bar>');
+		await waitForUpdate(el);
+		(el as NLDDStatusBar).variant = 'critical';
+		await waitForUpdate(el);
+		expect(el.getAttribute('aria-atomic')).toBe('true');
+		(el as NLDDStatusBar).variant = 'success';
+		await waitForUpdate(el);
+		expect(el.getAttribute('aria-atomic')).toBe('true');
+	});
 });
