@@ -31,7 +31,7 @@
  * @attr {'1/2'|'2/3'|'3/4'|'full'} main-width - Breedte van het paneel (default: '1/2');
  *   'full' maakt een volle boven- of onderstrook en wordt bij 'left'/'right' genegeerd
  * @attr {string} main-background - Vlakkleur van het paneel: 'base' (de base surface)
- *   of een filled-category — 'accent' (default) of een rijkskleur zoals
+ *   of een categoriekleur — 'accent' (default) of een rijkskleur zoals
  *   'lintblauw'|'donkerblauw'|'oranje'
  * @attr {'auto'|'top-left'|'top-right'|'bottom-left'|'bottom-right'} media-corner -
  *   Afgeronde hoek van het mediavlak; 'auto' (default) volgt main-position
@@ -53,6 +53,14 @@ import { heroTemplate } from './hero.template.js';
 export type HeroMainPosition = 'top-left' | 'top-right' | 'bottom-left' | 'bottom-right' | 'left' | 'right';
 export type HeroCorner = 'top-left' | 'top-right' | 'bottom-left' | 'bottom-right';
 export type HeroMainWidth = '1/2' | '2/3' | '3/4' | 'full';
+export type HeroMainBackground =
+	| 'base' | 'accent'
+	| 'lintblauw' | 'donkerblauw' | 'hemelblauw' | 'lichtblauw'
+	| 'paars' | 'violet'
+	| 'robijnrood' | 'roze' | 'rood' | 'oranje'
+	| 'donkergeel' | 'geel'
+	| 'donkerbruin' | 'bruin'
+	| 'donkergroen' | 'groen' | 'mosgroen' | 'mintgroen';
 
 /* The media corner per panel position — a curated lookup straight from the
  * rijkshuisstijl examples, not a formula. */
@@ -86,7 +94,7 @@ export class NLDDHero extends PageSectionMixin(LitElement) {
 	mainWidth: HeroMainWidth = '1/2';
 
 	@property({ type: String, reflect: true, attribute: 'main-background' })
-	mainBackground = 'accent';
+	mainBackground: HeroMainBackground = 'accent';
 
 	@property({ type: String, reflect: true, attribute: 'media-corner' })
 	mediaCorner: 'auto' | HeroCorner = 'auto';
