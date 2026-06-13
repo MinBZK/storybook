@@ -263,4 +263,18 @@ describe('nldd-keyboard-shortcut size', () => {
 		const key = ks.shadowRoot!.querySelector('.keyboard-shortcut__key')!;
 		expect(getComputedStyle(key).fontSize).toBe('22px');
 	});
+
+	it('size="inherit" nudges the box keycaps up onto the text baseline', async () => {
+		el = await fixture('<nldd-keyboard-shortcut size="inherit" keys="Cmd+K" always-visible></nldd-keyboard-shortcut>');
+		await waitForUpdate(el);
+		const container = el.shadowRoot!.querySelector('.keyboard-shortcut')!;
+		expect(getComputedStyle(container).position).toBe('relative');
+	});
+
+	it('size="inherit" on the simple variant keeps the shortcut in normal flow (no nudge)', async () => {
+		el = await fixture('<nldd-keyboard-shortcut size="inherit" variant="simple" keys="Cmd+K" always-visible></nldd-keyboard-shortcut>');
+		await waitForUpdate(el);
+		const container = el.shadowRoot!.querySelector('.keyboard-shortcut')!;
+		expect(getComputedStyle(container).position).toBe('static');
+	});
 });

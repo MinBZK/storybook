@@ -87,6 +87,14 @@ export const keyboardShortcutStyles = css`
 		align-items: center;
 	}
 
+	/* Inline box keycaps (size="inherit") sit a hair low against the text
+	   baseline; nudge the whole shortcut up so it lines up with the surrounding
+	   text. Only the box variant has the keycap; simple text aligns on its own. */
+	:host([size="inherit"][variant="box"]) .keyboard-shortcut {
+		position: relative;
+		top: -0.05em;
+	}
+
 
 	/* # Elements */
 
