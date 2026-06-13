@@ -114,6 +114,8 @@ export function menuItemTemplate(this: NLDDMenuItem, variant: 'menu' | 'listbox'
 		${(this.shortcut || this.shortcutMac || this.shortcutWindows || this.shortcutLinux) ? html`
 			<nldd-keyboard-shortcut class="menu__item-shortcut"
 				size="sm"
+				variant="simple"
+				color="inherit"
 				keys=${this.shortcut || nothing}
 				mac-keys=${this.shortcutMac || nothing}
 				windows-keys=${this.shortcutWindows || nothing}
