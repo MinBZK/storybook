@@ -126,6 +126,12 @@ export class NLDDKeyboardShortcut extends LitElement {
 			.filter(Boolean);
 	}
 
+	override willUpdate(): void {
+		// Reflect whether the '+' delimiter is dropped (simple variant on macOS)
+		// so the styles can add a little breathing room between the bare keys.
+		this.toggleAttribute('data-no-delimiter', this._omitDelimiter);
+	}
+
 	override render() {
 		return template(this);
 	}

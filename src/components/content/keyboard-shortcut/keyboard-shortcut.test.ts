@@ -226,29 +226,34 @@ describe('nldd-keyboard-shortcut variant', () => {
 		expect(getComputedStyle(key).boxShadow).toBe('none');
 	});
 
-	it('simple variant has no gap between keys', async () => {
-		el = await fixture('<nldd-keyboard-shortcut variant="simple" keys="Cmd+K" always-visible></nldd-keyboard-shortcut>');
+	it('simple variant has no gap between keys when the delimiter is shown', async () => {
+		el = await fixture('<nldd-keyboard-shortcut variant="simple" debug-os="windows" keys="Ctrl+K" always-visible></nldd-keyboard-shortcut>');
 		await waitForUpdate(el);
 		expect(getComputedStyle(el.shadowRoot!.querySelector('.keyboard-shortcut')!).gap).toBe('0px');
 	});
 
-	it('simple variant omits the "+" separator on macOS', async () => {
+	it('simple variant omits the "+" separator on macOS and flags data-no-delimiter', async () => {
 		el = await fixture('<nldd-keyboard-shortcut variant="simple" debug-os="mac" mac-keys="⌘+K" keys="Ctrl+K" always-visible></nldd-keyboard-shortcut>');
 		await waitForUpdate(el);
 		expect(el.shadowRoot!.querySelector('.keyboard-shortcut__separator')).toBeNull();
 		expect(el.shadowRoot!.querySelectorAll('.keyboard-shortcut__key').length).toBe(2);
+		expect(el.hasAttribute('data-no-delimiter')).toBe(true);
+		// the bare keys get a little gap instead of the delimiter
+		expect(getComputedStyle(el.shadowRoot!.querySelector('.keyboard-shortcut')!).gap).not.toBe('0px');
 	});
 
-	it('simple variant keeps the "+" separator on non-macOS', async () => {
+	it('simple variant keeps the "+" separator (no data-no-delimiter) on non-macOS', async () => {
 		el = await fixture('<nldd-keyboard-shortcut variant="simple" debug-os="windows" keys="Ctrl+K" always-visible></nldd-keyboard-shortcut>');
 		await waitForUpdate(el);
 		expect(el.shadowRoot!.querySelector('.keyboard-shortcut__separator')).not.toBeNull();
+		expect(el.hasAttribute('data-no-delimiter')).toBe(false);
 	});
 
-	it('box variant keeps the "+" separator on macOS', async () => {
+	it('box variant keeps the "+" separator (no data-no-delimiter) on macOS', async () => {
 		el = await fixture('<nldd-keyboard-shortcut variant="box" debug-os="mac" mac-keys="⌘+K" keys="Ctrl+K" always-visible></nldd-keyboard-shortcut>');
 		await waitForUpdate(el);
 		expect(el.shadowRoot!.querySelector('.keyboard-shortcut__separator')).not.toBeNull();
+		expect(el.hasAttribute('data-no-delimiter')).toBe(false);
 	});
 });
 

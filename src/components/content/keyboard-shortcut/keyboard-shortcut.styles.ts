@@ -87,11 +87,22 @@ export const keyboardShortcutStyles = css`
 		white-space: nowrap;
 	}
 
+	/* The box variant renders the keys as keycaps in the NLDD monospace font. */
+	:host([variant="box"]) .keyboard-shortcut__key {
+		font-family: var(--primitives-font-family-monospace);
+	}
+
 	/* 'simple' variant: drop the keycap box and render each key as plain inline
 	   text — a lighter hint for inline use (e.g. a menu item). No gap between
-	   keys/separators so it reads as one run of text ("Ctrl+C", "⌘K"). */
+	   keys/separators so it reads as one run of text ("Ctrl+C"). */
 	:host([variant="simple"]) .keyboard-shortcut {
 		gap: 0;
+	}
+
+	/* …but when the delimiter is dropped (simple variant on macOS) the bare keys
+	   need a little breathing room so they don't run together (⌘ Z, not ⌘Z). */
+	:host([data-no-delimiter]) .keyboard-shortcut {
+		gap: 0.25em;
 	}
 
 	:host([variant="simple"]) .keyboard-shortcut__key {
