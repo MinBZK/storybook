@@ -330,6 +330,7 @@ Toont een toetsencombinatie (zoals Cmd+K of Ctrl+Shift+P) in één gecombineerde
 | `linux-keys` | `string` | Optionele override voor Linux/ChromeOS. |
 | `size` | `string` | Grootte: 'sm' \| 'md' (default: 'md') |
 | `always-visible` | `boolean` | Toon ook op touch-only devices waar shortcuts niet aanroepbaar zijn. |
+| `color` | `string` | 'neutral' (default) gebruikt de eigen component-kleuren. 'inherit' laat de toetsen en scheidingstekens de omringende tekstkleur (currentColor) volgen, met een doorschijnende contrast-vulling en highlight-rand — handig op een gevulde vlakkleur of een gemarkeerde rij. |
 
 **Slots**
 

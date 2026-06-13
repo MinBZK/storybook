@@ -43,6 +43,14 @@ export default {
 				defaultValue: { summary: 'md' },
 			},
 		},
+		color: {
+			control: 'select',
+			options: ['neutral', 'inherit'],
+			description: "'neutral' (default) gebruikt de eigen kleuren; 'inherit' volgt de omringende tekstkleur (currentColor) met een doorschijnende contrast-vulling",
+			table: {
+				defaultValue: { summary: 'neutral' },
+			},
+		},
 		alwaysVisible: {
 			name: 'always-visible',
 			control: 'boolean',
@@ -73,6 +81,7 @@ export default {
 	},
 	args: {
 		size: 'md',
+		color: 'neutral',
 		alwaysVisible: false,
 		keys: 'Ctrl+K',
 		macKeys: '',
@@ -81,9 +90,10 @@ export default {
 	},
 };
 
-const Template = ({ size, alwaysVisible, keys, macKeys, windowsKeys, linuxKeys }: Record<string, any>) => html`
+const Template = ({ size, color, alwaysVisible, keys, macKeys, windowsKeys, linuxKeys }: Record<string, any>) => html`
 	<nldd-keyboard-shortcut
 		size=${size}
+		color=${color || nothing}
 		?always-visible=${alwaysVisible}
 		keys=${keys}
 		mac-keys=${macKeys || nothing}
@@ -123,6 +133,19 @@ export const Sizes = {
 	`,
 	parameters: {
 		controls: { disable: true },
+	},
+};
+
+export const Inherit = {
+	render: () => html`
+		<div style="display: flex; gap: 16px; align-items: center; padding: 16px; border-radius: 8px; background: var(--semantics-categories-donkerblauw-reference-background-color); color: var(--semantics-categories-donkerblauw-reference-primary-content-color);">
+			<nldd-keyboard-shortcut color="inherit" keys="Cmd+K"></nldd-keyboard-shortcut>
+			<nldd-keyboard-shortcut color="inherit" keys="Ctrl+Shift+P"></nldd-keyboard-shortcut>
+		</div>
+	`,
+	parameters: {
+		controls: { disable: true },
+		docs: { description: { story: '`color="inherit"` laat de toetsen en scheidingstekens de omringende tekstkleur volgen (currentColor) — hier wit op een donkerblauw vlak. De toetsen worden een omtrek in die kleur.' } },
 	},
 };
 

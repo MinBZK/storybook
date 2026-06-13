@@ -169,3 +169,32 @@ describe('nldd-keyboard-shortcut', () => {
 		});
 	});
 });
+
+describe('nldd-keyboard-shortcut color', () => {
+	let el: HTMLElement;
+
+	afterEach(() => {
+		if (el) cleanup(el);
+	});
+
+	it('reflects the color attribute', async () => {
+		el = await fixture('<nldd-keyboard-shortcut color="inherit" keys="Cmd+K" always-visible></nldd-keyboard-shortcut>');
+		await waitForUpdate(el);
+		expect(el.getAttribute('color')).toBe('inherit');
+	});
+
+	it('color="inherit" points the key + separator colors at currentColor', async () => {
+		el = await fixture('<nldd-keyboard-shortcut color="inherit" keys="Cmd+K" always-visible></nldd-keyboard-shortcut>');
+		await waitForUpdate(el);
+		const cs = getComputedStyle(el);
+		expect(cs.getPropertyValue('--_content-color').trim()).toBe('currentColor');
+		expect(cs.getPropertyValue('--_separator-color').trim()).toBe('currentColor');
+	});
+
+	it('defaults to color="neutral" with its own color tokens', async () => {
+		el = await fixture('<nldd-keyboard-shortcut keys="Cmd+K" always-visible></nldd-keyboard-shortcut>');
+		await waitForUpdate(el);
+		expect(el.getAttribute('color')).toBe('neutral');
+		expect(getComputedStyle(el).getPropertyValue('--_content-color').trim()).not.toBe('currentColor');
+	});
+});

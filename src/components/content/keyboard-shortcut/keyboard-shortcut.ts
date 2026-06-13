@@ -22,6 +22,10 @@
  * @attr {string} linux-keys - Optionele override voor Linux/ChromeOS.
  * @attr {string} size - Grootte: 'sm' | 'md' (default: 'md')
  * @attr {boolean} always-visible - Toon ook op touch-only devices waar shortcuts niet aanroepbaar zijn.
+ * @attr {string} color - 'neutral' (default) gebruikt de eigen component-kleuren. 'inherit'
+ *   laat de toetsen en scheidingstekens de omringende tekstkleur (currentColor) volgen, met
+ *   een doorschijnende contrast-vulling en highlight-rand — handig op een gevulde vlakkleur
+ *   of een gemarkeerde rij.
  *
  * @slot - Optionele custom <kbd>-elementen. Wordt genegeerd als keys is opgegeven.
  */
@@ -33,6 +37,7 @@ import { template } from './keyboard-shortcut.template.js';
 import { detectOS, type OS } from '../../../utilities/os.js';
 
 type Size = 'sm' | 'md';
+type Color = 'neutral' | 'inherit';
 
 @customElement('nldd-keyboard-shortcut')
 export class NLDDKeyboardShortcut extends LitElement {
@@ -52,6 +57,15 @@ export class NLDDKeyboardShortcut extends LitElement {
 
 	@property({ type: String, reflect: true })
 	size: Size = 'md';
+
+	/**
+	 * 'neutral' (default) uses the component's own palette. 'inherit' makes the
+	 * keys and separators adopt the surrounding text color (currentColor), with a
+	 * translucent contrast fill and highlight border — useful on filled panels or
+	 * highlighted rows.
+	 */
+	@property({ type: String, reflect: true })
+	color: Color = 'neutral';
 
 	@property({ type: Boolean, reflect: true, attribute: 'always-visible' })
 	alwaysVisible = false;
