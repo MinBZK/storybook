@@ -128,10 +128,10 @@ export const WithDivider = {
 	render: () => html`
 		<nldd-button id="button-divider" expandable text="Open menu"></nldd-button>
 		<nldd-menu id="menu-divider" anchor="button-divider">
-			<nldd-menu-item text="Hernoemen"></nldd-menu-item>
-			<nldd-menu-item text="Dupliceren"></nldd-menu-item>
+			<nldd-menu-item text="Hernoemen" icon="write"></nldd-menu-item>
+			<nldd-menu-item text="Dupliceren" icon="duplicate"></nldd-menu-item>
 			<nldd-menu-divider></nldd-menu-divider>
-			<nldd-menu-item text="Verwijderen" destructive></nldd-menu-item>
+			<nldd-menu-item text="Verwijderen" icon="delete" destructive></nldd-menu-item>
 		</nldd-menu>
 	`,
 };
