@@ -350,7 +350,9 @@ const defaultFilterFn = (query: string, item: NLDDMenuItem): boolean => {
  * @attr {string}  empty-text           - Text of the default empty-state dialog. Falls back
  *                                        to Dutch i18n "Geen opties beschikbaar".
  * @attr {string}  empty-supporting-text - Supporting text of the default empty-state dialog.
- * @attr {string}  width                - Explicit width. Sets --_width internally.
+ * @attr {string}  width                - Explicit width, pinned exactly. Without it the
+ *                                        menu sizes to its content between a minimum and a
+ *                                        viewport-aware maximum (min(100vw - inset, 640px)).
  * @attr {number}  max-items            - Maximum number of visible items before scrolling.
  *                                        Sets --_max-items internally. Default: 0 (no limit).
  * @attr {object}  translations         - Override one or more translation keys.
@@ -388,7 +390,11 @@ export class NLDDMenu extends LitElement {
 	emptySupportingText = '';
 
 
-	/** Explicit width. Sets --_width internally. */
+	/**
+	 * Explicit width, pinned exactly (sets --_width and clamps min/max to it).
+	 * Leave unset to let the menu size to its content between a minimum and a
+	 * viewport-aware maximum of min(100vw - inset, 640px).
+	 */
 	@property({ type: String, reflect: true })
 	width = '';
 
@@ -557,9 +563,17 @@ export class NLDDMenu extends LitElement {
 	override updated(changedProperties: Map<string, unknown>): void {
 		if (changedProperties.has('width')) {
 			if (this.width) {
+				// An explicit width pins the menu to exactly that size — clamp the
+				// content-driven min/max to it too, so callers that need an exact
+				// width (e.g. combo-box matching its input) aren't widened by the
+				// default minimum or capped by the default maximum.
 				this.style.setProperty('--_width', this.width);
+				this.style.setProperty('--_min-width', this.width);
+				this.style.setProperty('--_max-width', this.width);
 			} else {
 				this.style.removeProperty('--_width');
+				this.style.removeProperty('--_min-width');
+				this.style.removeProperty('--_max-width');
 			}
 		}
 		if (changedProperties.has('maxItems')) {

@@ -79,6 +79,22 @@ export const Links = {
 	`,
 };
 
+/**
+ * Het menu groeit standaard mee met de breedste regel — handig voor lange
+ * labels — tot een maximum van `min(100vw - inset, 640px)`. Korte menu's houden
+ * de minimumbreedte aan; met een expliciete `width` zet je een vaste breedte.
+ */
+export const BredeInhoud = {
+	render: () => html`
+		<nldd-button id="button-wide" expandable text="Acties"></nldd-button>
+		<nldd-menu id="menu-wide" anchor="button-wide">
+			<nldd-menu-item text="Document downloaden als ondertekende PDF"></nldd-menu-item>
+			<nldd-menu-item text="Deel met alle medewerkers van de afdeling"></nldd-menu-item>
+			<nldd-menu-item text="Archiveer en verwijder uit het overzicht"></nldd-menu-item>
+		</nldd-menu>
+	`,
+};
+
 export const WithDivider = {
 	render: () => html`
 		<nldd-button id="button-divider" expandable text="Open menu"></nldd-button>

@@ -8,7 +8,14 @@ export const menuStyles = css`
 
 	:host {
 		--_viewport-margin: var(--primitives-space-16);
-		--_width: var(--primitives-area-280);
+		/* No fixed width by default: the menu sizes to its content between a
+		   comfortable minimum and a viewport-aware maximum, so wide content
+		   (long labels, shortcuts) gets the room it needs. 'initial' makes the
+		   var() in .menu fall back to max-content until an explicit width
+		   attribute pins all three to one value (see menu.ts). */
+		--_width: initial;
+		--_min-width: var(--primitives-area-280);
+		--_max-width: min(100vw - 2 * var(--_viewport-margin), var(--primitives-area-640));
 		--_max-height: calc(infinity * 1px);
 		--_max-items: 9999;
 		--_padding: var(--primitives-space-8);
@@ -52,7 +59,9 @@ export const menuStyles = css`
 		border-radius: var(--semantics-overlays-corner-radius);
 		box-shadow: var(--components-menu-box-shadow);
 		background: var(--semantics-surfaces-base-background-color);
-		width: var(--_width);
+		width: var(--_width, max-content);
+		min-width: var(--_min-width);
+		max-width: var(--_max-width);
 		padding: var(--_padding);
 		flex-direction: column;
 		max-height: min(var(--_max-height), calc(var(--_max-items) * var(--_item-size) + var(--_padding) * 2));
