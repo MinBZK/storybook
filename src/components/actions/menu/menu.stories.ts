@@ -18,13 +18,18 @@ export const Default = {
 	`,
 };
 
+/**
+ * `details` toont een secundair label rechts van het item — bijvoorbeeld de
+ * huidige waarde of een aantal. Voor sneltoetsen is er het aparte
+ * `shortcut`-attribuut (zie de KeyboardShortcuts-story).
+ */
 export const WithDetails = {
 	render: () => html`
-		<nldd-button id="button-details" expandable text="Open menu"></nldd-button>
+		<nldd-button id="button-details" expandable text="Voorkeuren"></nldd-button>
 		<nldd-menu id="menu-details" anchor="button-details">
-			<nldd-menu-item text="Bewerk" details="Cmd+E"></nldd-menu-item>
-			<nldd-menu-item text="Kopieer" details="Cmd+C"></nldd-menu-item>
-			<nldd-menu-item text="Plak" details="Cmd+V"></nldd-menu-item>
+			<nldd-menu-item text="Taal" details="Nederlands"></nldd-menu-item>
+			<nldd-menu-item text="Tijdzone" details="Amsterdam"></nldd-menu-item>
+			<nldd-menu-item text="Thema" details="Systeem"></nldd-menu-item>
 		</nldd-menu>
 	`,
 };
@@ -123,11 +128,10 @@ export const WithDivider = {
 	render: () => html`
 		<nldd-button id="button-divider" expandable text="Open menu"></nldd-button>
 		<nldd-menu id="menu-divider" anchor="button-divider">
-			<nldd-menu-item text="Bewerk" details="Cmd+E"></nldd-menu-item>
-			<nldd-menu-item text="Kopieer" details="Cmd+C"></nldd-menu-item>
-			<nldd-menu-item text="Plak" details="Cmd+V"></nldd-menu-item>
+			<nldd-menu-item text="Hernoemen"></nldd-menu-item>
+			<nldd-menu-item text="Dupliceren"></nldd-menu-item>
 			<nldd-menu-divider></nldd-menu-divider>
-			<nldd-menu-item text="Sluiten"></nldd-menu-item>
+			<nldd-menu-item text="Verwijderen" destructive></nldd-menu-item>
 		</nldd-menu>
 	`,
 };
