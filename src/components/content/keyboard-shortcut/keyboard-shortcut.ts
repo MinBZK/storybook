@@ -20,7 +20,8 @@
  * @attr {string} mac-keys - Optionele override voor macOS (incl. iPhone/iPad/iPod).
  * @attr {string} windows-keys - Optionele override voor Windows.
  * @attr {string} linux-keys - Optionele override voor Linux/ChromeOS.
- * @attr {string} size - Grootte: 'sm' | 'md' (default: 'md')
+ * @attr {string} size - Grootte: 'sm' | 'md' | 'inherit' (default: 'md'). 'inherit' neemt de
+ *   font-size over van de container; bij de box-variant schalen de keycaps dan mee in em.
  * @attr {string} variant - 'box' (default) toont elke toets als keycap met vulling en
  *   highlight-rand; 'simple' toont de toetsen als platte tekst met scheidingstekens —
  *   lichter, voor inline gebruik zoals in een menu-item.
@@ -39,7 +40,7 @@ import { keyboardShortcutStyles } from './keyboard-shortcut.styles.js';
 import { template } from './keyboard-shortcut.template.js';
 import { detectOS, type OS } from '../../../utilities/os.js';
 
-type Size = 'sm' | 'md';
+type Size = 'sm' | 'md' | 'inherit';
 type Color = 'neutral' | 'inherit';
 type Variant = 'box' | 'simple';
 
@@ -94,8 +95,19 @@ export class NLDDKeyboardShortcut extends LitElement {
 	@property({ type: String, attribute: 'debug-os' })
 	debugOS: OS | '' = '';
 
+	/** @internal Resolved OS — the debug override when set, else detection. */
+	get _resolvedOS(): OS {
+		return this.debugOS || detectOS();
+	}
+
+	/** @internal The simple variant drops the '+' delimiter on macOS, matching
+	 *  how macOS menus join modifiers (e.g. ⌘⇧K) without separators. */
+	get _omitDelimiter(): boolean {
+		return this.variant === 'simple' && this._resolvedOS === 'mac';
+	}
+
 	get _resolvedKeys(): string {
-		const os = this.debugOS || detectOS();
+		const os = this._resolvedOS;
 		if (os === 'mac' && this.macKeys) return this.macKeys;
 		if (os === 'windows' && this.windowsKeys) return this.windowsKeys;
 		if (os === 'linux' && this.linuxKeys) return this.linuxKeys;

@@ -37,8 +37,8 @@ export default {
 	argTypes: {
 		size: {
 			control: 'select',
-			options: ['sm', 'md'],
-			description: 'Grootte van de container',
+			options: ['sm', 'md', 'inherit'],
+			description: "Grootte: 'sm' | 'md' | 'inherit' ('inherit' neemt de font-size van de container over en schaalt de keycaps in em)",
 			table: {
 				defaultValue: { summary: 'md' },
 			},
@@ -143,6 +143,20 @@ export const Sizes = {
 	`,
 	parameters: {
 		controls: { disable: true },
+	},
+};
+
+export const SchaaltMee = {
+	render: () => html`
+		<div style="display: flex; flex-direction: column; gap: 12px; align-items: flex-start;">
+			<span style="font-size: 14px;">Druk <nldd-keyboard-shortcut size="inherit" keys="Ctrl+K" mac-keys="⌘+K"></nldd-keyboard-shortcut> om te zoeken (14px).</span>
+			<span style="font-size: 20px;">Druk <nldd-keyboard-shortcut size="inherit" keys="Ctrl+K" mac-keys="⌘+K"></nldd-keyboard-shortcut> om te zoeken (20px).</span>
+			<span style="font-size: 14px;">Of als tekst: <nldd-keyboard-shortcut size="inherit" variant="simple" keys="Ctrl+K" mac-keys="⌘+K"></nldd-keyboard-shortcut>.</span>
+		</div>
+	`,
+	parameters: {
+		controls: { disable: true },
+		docs: { description: { story: '`size="inherit"` schaalt mee met de font-size van de omringende tekst — de box-keycaps in em, de simple-variant als platte tekst.' } },
 	},
 };
 

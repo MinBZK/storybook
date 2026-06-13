@@ -9,7 +9,7 @@ export const keyboardShortcutStyles = css`
 	:host {
 		--_size: var(--components-keyboard-shortcut-md-size);
 		--_inline-padding: var(--primitives-space-4);
-		--_font: var(--primitives-font-body-xs-regular-flat);
+		--_font: var(--primitives-font-body-md-regular-flat);
 		--_content-color: var(--components-keyboard-shortcut-content-color);
 		--_separator-color: var(--components-keyboard-shortcut-separator-color);
 		--_highlight-border-color: var(--components-keyboard-shortcut-border-color);
@@ -34,7 +34,17 @@ export const keyboardShortcutStyles = css`
 
 	:host([size="sm"]) {
 		--_size: var(--components-keyboard-shortcut-sm-size);
-		--_font: var(--primitives-font-body-xxs-regular-flat);
+		--_font: var(--primitives-font-body-sm-regular-flat);
+	}
+
+	/* size="inherit": scale with the surrounding text. The font is inherited
+	   from the container, and the box keycaps are sized in em so they stay
+	   proportional to — and aligned with — their context (e.g. a keycap beside
+	   body text, or a shortcut hint in a menu item). */
+	:host([size="inherit"]) {
+		--_size: 1.5em;
+		--_inline-padding: 0.35em;
+		--_font: inherit;
 	}
 
 	:host([hidden]) {
@@ -78,7 +88,12 @@ export const keyboardShortcutStyles = css`
 	}
 
 	/* 'simple' variant: drop the keycap box and render each key as plain inline
-	   text with separators — a lighter hint for inline use (e.g. a menu item). */
+	   text — a lighter hint for inline use (e.g. a menu item). No gap between
+	   keys/separators so it reads as one run of text ("Ctrl+C", "⌘K"). */
+	:host([variant="simple"]) .keyboard-shortcut {
+		gap: 0;
+	}
+
 	:host([variant="simple"]) .keyboard-shortcut__key {
 		box-shadow: none;
 		background-color: transparent;

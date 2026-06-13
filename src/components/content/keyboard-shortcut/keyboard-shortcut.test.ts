@@ -225,4 +225,45 @@ describe('nldd-keyboard-shortcut variant', () => {
 		expect(getComputedStyle(key).paddingLeft).toBe('0px');
 		expect(getComputedStyle(key).boxShadow).toBe('none');
 	});
+
+	it('simple variant has no gap between keys', async () => {
+		el = await fixture('<nldd-keyboard-shortcut variant="simple" keys="Cmd+K" always-visible></nldd-keyboard-shortcut>');
+		await waitForUpdate(el);
+		expect(getComputedStyle(el.shadowRoot!.querySelector('.keyboard-shortcut')!).gap).toBe('0px');
+	});
+
+	it('simple variant omits the "+" separator on macOS', async () => {
+		el = await fixture('<nldd-keyboard-shortcut variant="simple" debug-os="mac" mac-keys="⌘+K" keys="Ctrl+K" always-visible></nldd-keyboard-shortcut>');
+		await waitForUpdate(el);
+		expect(el.shadowRoot!.querySelector('.keyboard-shortcut__separator')).toBeNull();
+		expect(el.shadowRoot!.querySelectorAll('.keyboard-shortcut__key').length).toBe(2);
+	});
+
+	it('simple variant keeps the "+" separator on non-macOS', async () => {
+		el = await fixture('<nldd-keyboard-shortcut variant="simple" debug-os="windows" keys="Ctrl+K" always-visible></nldd-keyboard-shortcut>');
+		await waitForUpdate(el);
+		expect(el.shadowRoot!.querySelector('.keyboard-shortcut__separator')).not.toBeNull();
+	});
+
+	it('box variant keeps the "+" separator on macOS', async () => {
+		el = await fixture('<nldd-keyboard-shortcut variant="box" debug-os="mac" mac-keys="⌘+K" keys="Ctrl+K" always-visible></nldd-keyboard-shortcut>');
+		await waitForUpdate(el);
+		expect(el.shadowRoot!.querySelector('.keyboard-shortcut__separator')).not.toBeNull();
+	});
+});
+
+describe('nldd-keyboard-shortcut size', () => {
+	let el: HTMLElement;
+
+	afterEach(() => {
+		if (el) cleanup(el);
+	});
+
+	it('size="inherit" scales the keycap box in em', async () => {
+		el = await fixture('<nldd-keyboard-shortcut size="inherit" keys="Cmd+K" always-visible></nldd-keyboard-shortcut>');
+		await waitForUpdate(el);
+		const cs = getComputedStyle(el);
+		expect(cs.getPropertyValue('--_size').trim()).toBe('1.5em');
+		expect(cs.getPropertyValue('--_inline-padding').trim()).toBe('0.35em');
+	});
 });

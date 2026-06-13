@@ -328,7 +328,7 @@ Toont een toetsencombinatie (zoals Cmd+K of Ctrl+Shift+P) in één gecombineerde
 | `mac-keys` | `string` | Optionele override voor macOS (incl. iPhone/iPad/iPod). |
 | `windows-keys` | `string` | Optionele override voor Windows. |
 | `linux-keys` | `string` | Optionele override voor Linux/ChromeOS. |
-| `size` | `string` | Grootte: 'sm' \| 'md' (default: 'md') |
+| `size` | `string` | Grootte: 'sm' \| 'md' \| 'inherit' (default: 'md'). 'inherit' neemt de font-size over van de container; bij de box-variant schalen de keycaps dan mee in em. |
 | `variant` | `string` | 'box' (default) toont elke toets als keycap met vulling en highlight-rand; 'simple' toont de toetsen als platte tekst met scheidingstekens — lichter, voor inline gebruik zoals in een menu-item. |
 | `always-visible` | `boolean` | Toon ook op touch-only devices waar shortcuts niet aanroepbaar zijn. |
 | `color` | `string` | 'neutral' (default) gebruikt de eigen component-kleuren. 'inherit' laat de toetsen en scheidingstekens de omringende tekstkleur (currentColor) volgen, met een doorschijnende contrast-vulling en highlight-rand — handig op een gevulde vlakkleur of een gemarkeerde rij. |
