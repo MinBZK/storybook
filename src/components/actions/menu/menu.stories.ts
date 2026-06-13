@@ -76,10 +76,10 @@ export const Links = {
 	render: () => html`
 		<nldd-button id="button-links" expandable text="Account"></nldd-button>
 		<nldd-menu id="menu-links" anchor="button-links">
-			<nldd-menu-item text="Mijn profiel" href="#profiel" icon="person"></nldd-menu-item>
-			<nldd-menu-item text="Instellingen" href="#instellingen"></nldd-menu-item>
+			<nldd-menu-item text="Mijn profiel" href="#profiel" icon="user"></nldd-menu-item>
+			<nldd-menu-item text="Instellingen" href="#instellingen" icon="settings"></nldd-menu-item>
 			<nldd-menu-divider></nldd-menu-divider>
-			<nldd-menu-item text="Uitloggen" href="#uitloggen"></nldd-menu-item>
+			<nldd-menu-item text="Uitloggen" href="#uitloggen" icon="logout"></nldd-menu-item>
 		</nldd-menu>
 	`,
 };
@@ -218,14 +218,14 @@ export const WithGroups = {
 		<nldd-button id="button-groups" expandable text="Open menu"></nldd-button>
 		<nldd-menu id="menu-groups" anchor="button-groups">
 			<nldd-menu-group text="Bestand">
-				<nldd-menu-item text="Nieuw" details="Cmd+N"></nldd-menu-item>
-				<nldd-menu-item text="Open…" details="Cmd+O"></nldd-menu-item>
-				<nldd-menu-item text="Opslaan" details="Cmd+S"></nldd-menu-item>
+				<nldd-menu-item text="Nieuw"></nldd-menu-item>
+				<nldd-menu-item text="Open…"></nldd-menu-item>
+				<nldd-menu-item text="Opslaan"></nldd-menu-item>
 			</nldd-menu-group>
 			<nldd-menu-group text="Bewerken">
-				<nldd-menu-item text="Knip" details="Cmd+X"></nldd-menu-item>
-				<nldd-menu-item text="Kopieer" details="Cmd+C"></nldd-menu-item>
-				<nldd-menu-item text="Plak" details="Cmd+V"></nldd-menu-item>
+				<nldd-menu-item text="Knip"></nldd-menu-item>
+				<nldd-menu-item text="Kopieer"></nldd-menu-item>
+				<nldd-menu-item text="Plak"></nldd-menu-item>
 			</nldd-menu-group>
 		</nldd-menu>
 	`,
@@ -252,7 +252,7 @@ export const WithMultiLevelSubmenu = {
 							<nldd-menu-item text="Plan.pdf"></nldd-menu-item>
 						</nldd-menu>
 					</nldd-menu-item>
-					<nldd-menu-item text="Sluiten" details="Cmd+W"></nldd-menu-item>
+					<nldd-menu-item text="Sluiten"></nldd-menu-item>
 				</nldd-menu>
 			</nldd-menu-item>
 			<nldd-menu-item text="Bewerken"></nldd-menu-item>
@@ -271,7 +271,7 @@ export const WithSubmenu = {
 	render: () => html`
 		<nldd-button id="button-submenu" expandable text="Open menu"></nldd-button>
 		<nldd-menu id="menu-submenu" anchor="button-submenu">
-			<nldd-menu-item text="Nieuw" details="Cmd+N"></nldd-menu-item>
+			<nldd-menu-item text="Nieuw"></nldd-menu-item>
 			<nldd-menu-item text="Open recent">
 				<nldd-menu>
 					<nldd-menu-item text="2026-Q2.xlsx"></nldd-menu-item>
@@ -287,7 +287,7 @@ export const WithSubmenu = {
 				</nldd-menu>
 			</nldd-menu-item>
 			<nldd-menu-divider></nldd-menu-divider>
-			<nldd-menu-item text="Sluiten" details="Cmd+W"></nldd-menu-item>
+			<nldd-menu-item text="Sluiten"></nldd-menu-item>
 		</nldd-menu>
 	`,
 	parameters: {
@@ -303,7 +303,7 @@ export const DebugSafeTriangle = {
 	render: () => html`
 		<nldd-button id="button-debug-triangle" expandable text="Open menu"></nldd-button>
 		<nldd-menu id="menu-debug-triangle" anchor="button-debug-triangle" debug-safe-triangle>
-			<nldd-menu-item text="Nieuw" details="Cmd+N"></nldd-menu-item>
+			<nldd-menu-item text="Nieuw"></nldd-menu-item>
 			<nldd-menu-item text="Open recent">
 				<nldd-menu debug-safe-triangle>
 					<nldd-menu-item text="2026-Q2.xlsx"></nldd-menu-item>
