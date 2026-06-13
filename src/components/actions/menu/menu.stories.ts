@@ -41,6 +41,24 @@ export const WithIcons = {
 	`,
 };
 
+/**
+ * Met een `href` rendert een item als echte link (`<a>`), zodat middenklik,
+ * "openen in nieuw tabblad" en "kopieer linkadres" werken. Een geselecteerd
+ * link-item krijgt `aria-current="page"`. href wordt genegeerd voor
+ * submenu-openers, checkbox/radio-items en uitgeschakelde items.
+ */
+export const Links = {
+	render: () => html`
+		<nldd-button id="button-links" expandable text="Account"></nldd-button>
+		<nldd-menu id="menu-links" anchor="button-links">
+			<nldd-menu-item text="Mijn profiel" href="#profiel" icon="person"></nldd-menu-item>
+			<nldd-menu-item text="Instellingen" href="#instellingen"></nldd-menu-item>
+			<nldd-menu-divider></nldd-menu-divider>
+			<nldd-menu-item text="Uitloggen" href="#uitloggen"></nldd-menu-item>
+		</nldd-menu>
+	`,
+};
+
 export const WithDivider = {
 	render: () => html`
 		<nldd-button id="button-divider" expandable text="Open menu"></nldd-button>

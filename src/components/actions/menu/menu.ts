@@ -83,6 +83,11 @@ if (!customElements.get('nldd-menu-group')) {
  *
  * @attr {string}  text      - Display text. Supports **bold** markdown syntax.
  * @attr {string}  value     - Form value. Falls back to text when not set.
+ * @attr {string}  href      - Optional link target. A plain button item with an
+ *                             href renders as an `<a>` so it is a real link
+ *                             (middle-click, open in new tab, copy link). Ignored
+ *                             for submenu openers, checkbox/radio items, and while
+ *                             disabled.
  * @attr {string}  aliases   - Space-separated alternative search terms.
  * @attr {string}  details   - Secondary label shown on the right side.
  * @attr {string}  icon      - Icon name rendered before the text (nldd-icon name).
@@ -107,6 +112,15 @@ export class NLDDMenuItem extends LitElement {
 
 	@property({ type: String, reflect: true })
 	value = '';
+
+	/**
+	 * Optional link target. When set on a plain button item — not a submenu
+	 * opener, checkbox, or radio, and not disabled — the item renders as an
+	 * `<a href>` so it behaves as a real link. Leaves activation untouched: a
+	 * click still fires `select` and the anchor navigates.
+	 */
+	@property({ type: String, reflect: true })
+	href = '';
 
 	/** Space-separated alternative search terms used by nldd-menu's filter. */
 	@property({ type: String, reflect: true })

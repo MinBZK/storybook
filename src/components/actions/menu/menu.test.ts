@@ -265,6 +265,83 @@ describe('nldd-menu-item', () => {
 	});
 });
 
+describe('nldd-menu-item href (link items)', () => {
+	let el: HTMLElement;
+
+	afterEach(() => {
+		if (el) cleanup(el);
+	});
+
+	const action = (item: Element): HTMLElement => item.shadowRoot?.querySelector('.menu__item') as HTMLElement;
+
+	it('renders a button item with an href as an anchor link', async () => {
+		el = await fixture('<nldd-menu><nldd-menu-item text="Profiel" href="/profiel"></nldd-menu-item></nldd-menu>');
+		await waitForUpdate(el);
+		const item = el.querySelector('nldd-menu-item')!;
+		const a = action(item);
+		expect(a.tagName).toBe('A');
+		expect(a.getAttribute('href')).toBe('/profiel');
+		expect(a.getAttribute('role')).toBe('menuitem');
+		expect(item.shadowRoot!.querySelector('button.menu__item')).toBeNull();
+		expect(a.querySelector('.menu__item-text')?.getAttribute('text')).toBe('Profiel');
+	});
+
+	it('sets aria-current="page" on a selected link item', async () => {
+		el = await fixture('<nldd-menu><nldd-menu-item text="Home" href="/" selected></nldd-menu-item></nldd-menu>');
+		await waitForUpdate(el);
+		expect(action(el.querySelector('nldd-menu-item')!).getAttribute('aria-current')).toBe('page');
+	});
+
+	it('ignores href for checkbox and radio items (stays a button)', async () => {
+		el = await fixture(`
+			<nldd-menu>
+				<nldd-menu-item text="A" type="checkbox" href="/a"></nldd-menu-item>
+				<nldd-menu-item text="B" type="radio" href="/b"></nldd-menu-item>
+			</nldd-menu>
+		`);
+		await waitForUpdate(el);
+		const items = el.querySelectorAll('nldd-menu-item');
+		expect(action(items[0]).tagName).toBe('BUTTON');
+		expect(action(items[1]).tagName).toBe('BUTTON');
+	});
+
+	it('ignores href on a submenu opener (stays a button)', async () => {
+		el = await fixture(`
+			<nldd-menu>
+				<nldd-menu-item text="Parent" href="/parent">
+					<nldd-menu>
+						<nldd-menu-item text="Child"></nldd-menu-item>
+					</nldd-menu>
+				</nldd-menu-item>
+			</nldd-menu>
+		`);
+		await waitForUpdate(el);
+		const parent = el.querySelector('nldd-menu-item')!;
+		await (parent as { updateComplete?: Promise<unknown> }).updateComplete;
+		expect(action(parent).tagName).toBe('BUTTON');
+	});
+
+	it('renders a disabled href item as a disabled button, not a link', async () => {
+		el = await fixture('<nldd-menu><nldd-menu-item text="X" href="/x" disabled></nldd-menu-item></nldd-menu>');
+		await waitForUpdate(el);
+		const a = action(el.querySelector('nldd-menu-item')!);
+		expect(a.tagName).toBe('BUTTON');
+		expect(a.hasAttribute('disabled')).toBe(true);
+	});
+
+	it('fires select when a link item is activated', async () => {
+		el = await fixture('<nldd-menu><nldd-menu-item text="Profiel" href="#profiel"></nldd-menu-item></nldd-menu>');
+		await waitForUpdate(el);
+		const item = el.querySelector('nldd-menu-item')!;
+		let fired = false;
+		item.addEventListener('select', () => { fired = true; });
+		const a = action(item);
+		a.addEventListener('click', e => e.preventDefault(), { once: true }); // keep the test from navigating
+		a.click();
+		expect(fired).toBe(true);
+	});
+});
+
 describe('nldd-menu filter', () => {
 	let el: HTMLElement;
 

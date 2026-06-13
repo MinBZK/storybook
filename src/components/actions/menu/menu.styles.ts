@@ -219,6 +219,14 @@ export const menuItemStyles = css`
 		}
 	}
 
+	/* A link item (href) renders as <a>; strip the UA link color/underline so
+	   it is visually identical to the button variant. The text colour is owned
+	   by the inner nldd-text-cell. */
+	a.menu__item {
+		color: inherit;
+		text-decoration: none;
+	}
+
 	.menu__item:focus-visible {
 		position: relative;
 		z-index: 1;

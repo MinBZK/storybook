@@ -78,54 +78,70 @@ export function menuItemTemplate(this: NLDDMenuItem, variant: 'menu' | 'listbox'
 	const hasCheckState = this.type !== 'button' && variant === 'menu';
 	const role = itemRoleMap[this.type][variant];
 	const hasSubmenu = this._hasSubmenu;
-	return html`
-		<button class="menu__item"
-			type="button"
-			role=${role}
-			?disabled=${this.disabled}
-			aria-checked=${hasCheckState ? String(this.selected) : nothing}
-			aria-selected=${variant === 'listbox' ? String(this.selected) : nothing}
-			aria-haspopup=${hasSubmenu ? 'menu' : nothing}
-			aria-expanded=${hasSubmenu ? String(this._submenuOpen) : nothing}
-			aria-controls=${hasSubmenu && this._submenuEl?.id ? this._submenuEl.id : nothing}
-			.popoverTargetElement=${this._submenuEl}
-			@click=${this._handleClick}
-		>
-			${hasCheckState ? html`
-				<nldd-icon-cell class="menu__item-check"
-					size="24"
-					horizontal-alignment="center"
-					icon=${this.selected ? 'check-mark' : nothing}
-				></nldd-icon-cell>
-				<nldd-spacer-cell size="4"></nldd-spacer-cell>
-			` : nothing}
-			${this.icon ? html`
-				<nldd-icon-cell class="menu__item-icon"
-					size="20"
-					icon=${this.icon}
-				></nldd-icon-cell>
-				<nldd-spacer-cell size="8"></nldd-spacer-cell>
-			` : nothing}
-			<nldd-text-cell class="menu__item-text"
-				text=${this.text} query=${this.query} query-mark-mode=${this.queryMarkMode}
+	// A plain button item with an href renders as a real link. Submenu openers,
+	// checkbox/radio items, and disabled items keep the button — they need its
+	// richer behaviour (popover invoker, check state, inert disabling).
+	const asLink = !!this.href && this.type === 'button' && !hasSubmenu && !this.disabled;
+
+	const content = html`
+		${hasCheckState ? html`
+			<nldd-icon-cell class="menu__item-check"
+				size="24"
+				horizontal-alignment="center"
+				icon=${this.selected ? 'check-mark' : nothing}
+			></nldd-icon-cell>
+			<nldd-spacer-cell size="4"></nldd-spacer-cell>
+		` : nothing}
+		${this.icon ? html`
+			<nldd-icon-cell class="menu__item-icon"
+				size="20"
+				icon=${this.icon}
+			></nldd-icon-cell>
+			<nldd-spacer-cell size="8"></nldd-spacer-cell>
+		` : nothing}
+		<nldd-text-cell class="menu__item-text"
+			text=${this.text} query=${this.query} query-mark-mode=${this.queryMarkMode}
+		></nldd-text-cell>
+		${this.details ? html`
+			<nldd-spacer-cell size="8"></nldd-spacer-cell>
+			<nldd-text-cell class="menu__item-details"
+				width="fit-content"
+				horizontal-alignment="right"
+				color="secondary"
+				text=${this.details}
 			></nldd-text-cell>
-			${this.details ? html`
-				<nldd-spacer-cell size="8"></nldd-spacer-cell>
-				<nldd-text-cell class="menu__item-details"
-					width="fit-content"
-					horizontal-alignment="right"
-					color="secondary"
-					text=${this.details}
-				></nldd-text-cell>
-			` : nothing}
-			${hasSubmenu ? html`
-				<nldd-spacer-cell size="6"></nldd-spacer-cell>
-				<nldd-icon-cell class="menu__item-submenu-indicator"
-					size="20"
-					icon="chevron-right"
-				></nldd-icon-cell>
-			` : nothing}
-		</button>
+		` : nothing}
+		${hasSubmenu ? html`
+			<nldd-spacer-cell size="6"></nldd-spacer-cell>
+			<nldd-icon-cell class="menu__item-submenu-indicator"
+				size="20"
+				icon="chevron-right"
+			></nldd-icon-cell>
+		` : nothing}
+	`;
+
+	return html`
+		${asLink ? html`
+			<a class="menu__item"
+				href=${this.href}
+				role=${role}
+				aria-current=${this.selected ? 'page' : nothing}
+				@click=${this._handleClick}
+			>${content}</a>
+		` : html`
+			<button class="menu__item"
+				type="button"
+				role=${role}
+				?disabled=${this.disabled}
+				aria-checked=${hasCheckState ? String(this.selected) : nothing}
+				aria-selected=${variant === 'listbox' ? String(this.selected) : nothing}
+				aria-haspopup=${hasSubmenu ? 'menu' : nothing}
+				aria-expanded=${hasSubmenu ? String(this._submenuOpen) : nothing}
+				aria-controls=${hasSubmenu && this._submenuEl?.id ? this._submenuEl.id : nothing}
+				.popoverTargetElement=${this._submenuEl}
+				@click=${this._handleClick}
+			>${content}</button>
+		`}
 		<!--
 			Project the slotted nldd-menu (the submenu, if any) into the flat
 			tree. Without this slot, a light-DOM child nldd-menu sits outside
