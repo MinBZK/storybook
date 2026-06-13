@@ -113,7 +113,7 @@ export function menuItemTemplate(this: NLDDMenuItem, variant: 'menu' | 'listbox'
 		` : nothing}
 		${(this.shortcut || this.shortcutMac || this.shortcutWindows || this.shortcutLinux) ? html`
 			<nldd-spacer-cell size="8"></nldd-spacer-cell>
-			<nldd-text-cell width="fit-content" size="sm" color="secondary" horizontal-alignment="right">
+			<nldd-text-cell width="fit-content" size="md" color="secondary" horizontal-alignment="right">
 				<nldd-keyboard-shortcut
 					size="inherit"
 					variant="simple"
