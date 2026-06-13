@@ -149,27 +149,44 @@ export const AllePosities = {
 
 /**
  * `main-width="full"` maakt een volle boven- of onderstrook; het paneel is
- * dan hoekloos en de hoekkeuze van het mediavlak blijft uit `main-position`
- * volgen (bottom-left + full geeft dus een andere media-hoek dan
- * bottom-right + full).
+ * dan hoekloos en het mediavlak staat als losse strook boven of onder het
+ * paneel in plaats van erachter. De media-hoek schuift mee naar de buitenrand
+ * van die strook (weg van het paneel), zodat hij zichtbaar blijft.
  */
 export const VolleStrook = {
 	render: () => html`
-		<nldd-hero main-position="bottom-left"
-			main-width="full"
-			main-background="lintblauw"
-		>
-			<img slot="media"
-				src=${MEDIA}
-				alt=""
+		<div style="display: flex; flex-direction: column; gap: 24px;">
+			<nldd-hero main-position="bottom-left"
+				main-width="full"
+				main-background="lintblauw"
 			>
-			<nldd-title color="inherit"
-				size="3"
+				<img slot="media"
+					src=${MEDIA}
+					alt=""
+				>
+				<nldd-title color="inherit"
+					size="3"
+				>
+					<h1>Volle onderstrook</h1>
+					<p slot="subtitle">main-position="bottom-left" — het mediavlak staat erboven</p>
+				</nldd-title>
+			</nldd-hero>
+			<nldd-hero main-position="top-left"
+				main-width="full"
+				main-background="lintblauw"
 			>
-				<h1>Volle onderstrook</h1>
-				<p slot="subtitle">main-width="full" — het paneel is hoekloos</p>
-			</nldd-title>
-		</nldd-hero>
+				<img slot="media"
+					src=${MEDIA}
+					alt=""
+				>
+				<nldd-title color="inherit"
+					size="3"
+				>
+					<h1>Volle bovenstrook</h1>
+					<p slot="subtitle">main-position="top-left" — het mediavlak staat eronder</p>
+				</nldd-title>
+			</nldd-hero>
+		</div>
 	`,
 	parameters: { controls: { disable: true } },
 };

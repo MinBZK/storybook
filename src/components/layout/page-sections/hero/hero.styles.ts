@@ -252,7 +252,7 @@ export const heroStyles = css`
 	   (instead of aspect-ratio on the body) keeps growth content-driven
 	   rather than rigidly tied to the width. align-self: start stops the
 	   stretch fit from cancelling the ratio. */
-	:host([data-has-media]) .hero__body::before {
+	:host([data-has-media]:not([main-width="full"])) .hero__body::before {
 		@container (min-width: ${mdMin}) {
 			content: '';
 			aspect-ratio: 21 / 9;
@@ -438,6 +438,34 @@ export const heroStyles = css`
 	@media (forced-colors: active) {
 		.hero__main {
 			border: var(--primitives-border-width-thin) solid CanvasText;
+		}
+	}
+
+
+	/* # Full-width strip (md+)
+	   With main-width="full" the panel is a full top or bottom strip and the
+	   media stacks on the opposite side instead of sitting behind it — the
+	   overlay's absolute media would otherwise hide its own rounded corner under
+	   the panel. Switch the body to a column so the two blocks stack: a bottom
+	   panel keeps the media on top, a top panel (column-reverse) drops it below.
+	   The media keeps the overlay's 21/9 strip. Below sm every layout already
+	   stacks, so this only targets md and up. The rounded corner still follows
+	   data-media-corner — resolved to the strip's outer edge in hero.ts — so the
+	   per-corner body rules above keep painting it. */
+
+	@container (min-width: ${mdMin}) {
+		:host([data-has-media][main-width="full"]) .hero__body {
+			display: flex;
+			flex-direction: column;
+		}
+
+		:host([data-has-media][main-width="full"]:is([main-position="top-left"], [main-position="top-right"])) .hero__body {
+			flex-direction: column-reverse;
+		}
+
+		:host([data-has-media][main-width="full"]) .hero__media {
+			position: static;
+			aspect-ratio: 21 / 9;
 		}
 	}
 
