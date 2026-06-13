@@ -340,10 +340,13 @@ export class NLDDTopNavigationBar extends withTranslations(LitElement, nlddTopNa
 			const safeHref = sanitizeUrl(item.href);
 
 			if (safeHref) {
-				listItem.setAttribute('type', 'link');
 				listItem.setAttribute('href', safeHref);
 			} else {
-				listItem.setAttribute('type', 'button');
+				// nldd-list-item renders a real <button type="button"> from its
+				// boolean `button` attribute and has no `type` API. Setting
+				// type="button" was a no-op, leaving the item an inert <div> that
+				// keyboard users could not reach — opt in via `button` instead.
+				listItem.setAttribute('button', '');
 			}
 			if (item.current) listItem.setAttribute('selected', '');
 

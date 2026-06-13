@@ -194,6 +194,48 @@ describe('nldd-top-navigation-bar – menu sheet async guards', () => {
 	});
 });
 
+describe('nldd-top-navigation-bar – menu sheet items', () => {
+	let el: NLDDTopNavigationBar;
+
+	afterEach(() => {
+		if (el) cleanup(el);
+		document.querySelectorAll('nldd-sheet').forEach(s => s.remove());
+	});
+
+	it('renders non-link items as real buttons and link items as anchors', async () => {
+		el = await fixture<NLDDTopNavigationBar>(`
+			<nldd-top-navigation-bar website-title="Test">
+				<nldd-menu-bar slot="global">
+					<nldd-menu-bar-item text="Home" href="/home"></nldd-menu-bar-item>
+					<nldd-menu-bar-item text="Zoeken"></nldd-menu-bar-item>
+				</nldd-menu-bar>
+			</nldd-top-navigation-bar>
+		`);
+		await waitForUpdate(el);
+
+		// Opens the sheet (loads deps) and syncs the list items into it.
+		await (el as any)._onMenuButtonClick();
+		const list = (el as any)._globalMenuSheetList as HTMLElement;
+		const listItems = Array.from(list.querySelectorAll('nldd-list-item')) as HTMLElement[];
+		expect(listItems.length).toBe(2);
+		await Promise.all(listItems.map(li => (li as any).updateComplete));
+
+		const [linkItem, buttonItem] = listItems;
+
+		// Link item → anchor, no bogus type attribute
+		expect(linkItem.getAttribute('href')).toBe('/home');
+		expect(linkItem.getAttribute('type')).toBeNull();
+		expect(linkItem.shadowRoot!.querySelector('a.list-item__action')).not.toBeNull();
+
+		// Non-link item → real <button type="button">, opted in via `button`
+		expect(buttonItem.hasAttribute('button')).toBe(true);
+		expect(buttonItem.getAttribute('type')).toBeNull();
+		const btn = buttonItem.shadowRoot!.querySelector('button.list-item__action') as HTMLButtonElement;
+		expect(btn).not.toBeNull();
+		expect(btn.getAttribute('type')).toBe('button');
+	});
+});
+
 describe('nldd-top-navigation-bar – back button', () => {
 	let el: NLDDTopNavigationBar;
 
