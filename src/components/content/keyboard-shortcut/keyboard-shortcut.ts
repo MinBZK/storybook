@@ -100,12 +100,6 @@ export class NLDDKeyboardShortcut extends LitElement {
 		return this.debugOS || detectOS();
 	}
 
-	/** @internal The simple variant drops the '+' delimiter on macOS, matching
-	 *  how macOS menus join modifiers (e.g. ⌘⇧K) without separators. */
-	get _omitDelimiter(): boolean {
-		return this.variant === 'simple' && this._resolvedOS === 'mac';
-	}
-
 	get _resolvedKeys(): string {
 		const os = this._resolvedOS;
 		if (os === 'mac' && this.macKeys) return this.macKeys;
@@ -124,12 +118,6 @@ export class NLDDKeyboardShortcut extends LitElement {
 			.split('+')
 			.map(k => k.trim().replace(new RegExp(MARKER, 'g'), '+'))
 			.filter(Boolean);
-	}
-
-	override willUpdate(): void {
-		// Reflect whether the '+' delimiter is dropped (simple variant on macOS)
-		// so the styles can add a little breathing room between the bare keys.
-		this.toggleAttribute('data-no-delimiter', this._omitDelimiter);
 	}
 
 	override render() {

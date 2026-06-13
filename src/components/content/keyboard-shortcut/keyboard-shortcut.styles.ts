@@ -9,7 +9,13 @@ export const keyboardShortcutStyles = css`
 	:host {
 		--_size: var(--components-keyboard-shortcut-md-size);
 		--_inline-padding: var(--primitives-space-4);
-		--_font: var(--primitives-font-body-md-regular-flat);
+		/* box (default): monospace keys at a reduced size — the keycap box makes
+		   them read larger, and monospace renders large, so md uses size-80 and
+		   sm size-70. The simple variant overrides to the body font at full size. */
+		--_font-family: var(--primitives-font-family-monospace);
+		--_font-size: var(--primitives-font-size-80);
+		--_font-weight: var(--primitives-font-weight-body-regular);
+		--_line-height: var(--primitives-line-height-flat);
 		--_content-color: var(--components-keyboard-shortcut-content-color);
 		--_separator-color: var(--components-keyboard-shortcut-separator-color);
 		--_highlight-border-color: var(--components-keyboard-shortcut-border-color);
@@ -34,17 +40,32 @@ export const keyboardShortcutStyles = css`
 
 	:host([size="sm"]) {
 		--_size: var(--components-keyboard-shortcut-sm-size);
-		--_font: var(--primitives-font-body-sm-regular-flat);
+		--_font-size: var(--primitives-font-size-70);
 	}
 
-	/* size="inherit": scale with the surrounding text. The font is inherited
-	   from the container, and the box keycaps are sized in em so they stay
-	   proportional to — and aligned with — their context (e.g. a keycap beside
-	   body text, or a shortcut hint in a menu item). */
+	/* size="inherit": scale with the surrounding text. The box keycaps are sized
+	   in em so they stay proportional to their context; the font is reduced to
+	   0.75em because monospace renders large. */
 	:host([size="inherit"]) {
 		--_size: 1.5em;
 		--_inline-padding: 0.35em;
-		--_font: inherit;
+		--_font-size: 0.75em;
+	}
+
+	/* simple variant: the body font at full size (no keycap to compensate for). */
+	:host([variant="simple"]) {
+		--_font-family: var(--primitives-font-family-body);
+		--_font-size: var(--primitives-font-size-100);
+	}
+
+	:host([variant="simple"][size="sm"]) {
+		--_font-size: var(--primitives-font-size-90);
+	}
+
+	/* simple + inherit: take only the font-size from the container, keeping the
+	   component's own (body) family — so it never picks up an unexpected font. */
+	:host([variant="simple"][size="inherit"]) {
+		--_font-size: inherit;
 	}
 
 	:host([hidden]) {
@@ -83,13 +104,11 @@ export const keyboardShortcutStyles = css`
 		align-items: center;
 		justify-content: center;
 		color: var(--_content-color);
-		font: var(--_font);
+		font-family: var(--_font-family);
+		font-size: var(--_font-size);
+		font-weight: var(--_font-weight);
+		line-height: var(--_line-height);
 		white-space: nowrap;
-	}
-
-	/* The box variant renders the keys as keycaps in the NLDD monospace font. */
-	:host([variant="box"]) .keyboard-shortcut__key {
-		font-family: var(--primitives-font-family-monospace);
 	}
 
 	/* 'simple' variant: drop the keycap box and render each key as plain inline
@@ -97,12 +116,6 @@ export const keyboardShortcutStyles = css`
 	   keys/separators so it reads as one run of text ("Ctrl+C"). */
 	:host([variant="simple"]) .keyboard-shortcut {
 		gap: 0;
-	}
-
-	/* …but when the delimiter is dropped (simple variant on macOS) the bare keys
-	   need a little breathing room so they don't run together (⌘ Z, not ⌘Z). */
-	:host([data-no-delimiter]) .keyboard-shortcut {
-		gap: 0.25em;
 	}
 
 	:host([variant="simple"]) .keyboard-shortcut__key {
@@ -130,6 +143,9 @@ export const keyboardShortcutStyles = css`
 
 	.keyboard-shortcut__separator {
 		color: var(--_separator-color);
-		font: var(--_font);
+		font-family: var(--_font-family);
+		font-size: var(--_font-size);
+		font-weight: var(--_font-weight);
+		line-height: var(--_line-height);
 	}
 `;

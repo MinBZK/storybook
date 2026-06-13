@@ -12,14 +12,10 @@ export function template(component: NLDDKeyboardShortcut) {
 		`;
 	}
 
-	// macOS joins modifiers without a delimiter (⌘⇧K); the simple variant follows
-	// that there, so drop the '+' separators.
-	const omitDelimiter = component._omitDelimiter;
-
 	return html`
 		<kbd class="keyboard-shortcut">
 			${keys.map((key, index) => html`
-				${index > 0 && !omitDelimiter ? html`<span class="keyboard-shortcut__separator"
+				${index > 0 ? html`<span class="keyboard-shortcut__separator"
 					aria-hidden="true"
 				>+</span>` : ''}
 				<kbd class="keyboard-shortcut__key">${key}</kbd>

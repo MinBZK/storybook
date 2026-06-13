@@ -226,31 +226,14 @@ describe('nldd-keyboard-shortcut variant', () => {
 		expect(getComputedStyle(key).boxShadow).toBe('none');
 	});
 
-	it('simple variant has no gap between keys when the delimiter is shown', async () => {
-		el = await fixture('<nldd-keyboard-shortcut variant="simple" debug-os="windows" keys="Ctrl+K" always-visible></nldd-keyboard-shortcut>');
+	it('simple variant has no gap between keys', async () => {
+		el = await fixture('<nldd-keyboard-shortcut variant="simple" keys="Ctrl+K" always-visible></nldd-keyboard-shortcut>');
 		await waitForUpdate(el);
 		expect(getComputedStyle(el.shadowRoot!.querySelector('.keyboard-shortcut')!).gap).toBe('0px');
 	});
 
-	it('simple variant omits the "+" separator on macOS and flags data-no-delimiter', async () => {
-		el = await fixture('<nldd-keyboard-shortcut variant="simple" debug-os="mac" mac-keys="⌘+K" keys="Ctrl+K" always-visible></nldd-keyboard-shortcut>');
-		await waitForUpdate(el);
-		expect(el.shadowRoot!.querySelector('.keyboard-shortcut__separator')).toBeNull();
-		expect(el.shadowRoot!.querySelectorAll('.keyboard-shortcut__key').length).toBe(2);
-		expect(el.hasAttribute('data-no-delimiter')).toBe(true);
-		// the bare keys get a little gap instead of the delimiter
-		expect(getComputedStyle(el.shadowRoot!.querySelector('.keyboard-shortcut')!).gap).not.toBe('0px');
-	});
-
-	it('simple variant keeps the "+" separator (no data-no-delimiter) on non-macOS', async () => {
-		el = await fixture('<nldd-keyboard-shortcut variant="simple" debug-os="windows" keys="Ctrl+K" always-visible></nldd-keyboard-shortcut>');
-		await waitForUpdate(el);
-		expect(el.shadowRoot!.querySelector('.keyboard-shortcut__separator')).not.toBeNull();
-		expect(el.hasAttribute('data-no-delimiter')).toBe(false);
-	});
-
-	it('box variant keeps the "+" separator (no data-no-delimiter) on macOS', async () => {
-		el = await fixture('<nldd-keyboard-shortcut variant="box" debug-os="mac" mac-keys="⌘+K" keys="Ctrl+K" always-visible></nldd-keyboard-shortcut>');
+	it('renders the "+" separator on macOS too (no OS exception)', async () => {
+		el = await fixture('<nldd-keyboard-shortcut variant="simple" debug-os="mac" keys="Ctrl+K" mac-keys="Cmd+K" always-visible></nldd-keyboard-shortcut>');
 		await waitForUpdate(el);
 		expect(el.shadowRoot!.querySelector('.keyboard-shortcut__separator')).not.toBeNull();
 		expect(el.hasAttribute('data-no-delimiter')).toBe(false);
@@ -264,11 +247,20 @@ describe('nldd-keyboard-shortcut size', () => {
 		if (el) cleanup(el);
 	});
 
-	it('size="inherit" scales the keycap box in em', async () => {
+	it('size="inherit" scales the box keycaps in em with a 0.75em font', async () => {
 		el = await fixture('<nldd-keyboard-shortcut size="inherit" keys="Cmd+K" always-visible></nldd-keyboard-shortcut>');
 		await waitForUpdate(el);
 		const cs = getComputedStyle(el);
 		expect(cs.getPropertyValue('--_size').trim()).toBe('1.5em');
 		expect(cs.getPropertyValue('--_inline-padding').trim()).toBe('0.35em');
+		expect(cs.getPropertyValue('--_font-size').trim()).toBe('0.75em');
+	});
+
+	it('size="inherit" on the simple variant takes the container font-size', async () => {
+		el = await fixture('<div style="font-size: 22px;"><nldd-keyboard-shortcut size="inherit" variant="simple" keys="Cmd+K" always-visible></nldd-keyboard-shortcut></div>');
+		const ks = el.querySelector('nldd-keyboard-shortcut')!;
+		await waitForUpdate(ks);
+		const key = ks.shadowRoot!.querySelector('.keyboard-shortcut__key')!;
+		expect(getComputedStyle(key).fontSize).toBe('22px');
 	});
 });
