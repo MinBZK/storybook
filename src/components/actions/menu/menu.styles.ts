@@ -227,6 +227,14 @@ export const menuItemStyles = css`
 		text-decoration: none;
 	}
 
+	/* Shortcut hint at the trailing edge. The leading margin (rather than a
+	   spacer-cell) gives it breathing room and collapses with the element when
+	   it hides itself on touch-only devices — no stray trailing gap. */
+	.menu__item-shortcut {
+		flex-shrink: 0;
+		margin-inline-start: var(--primitives-space-8);
+	}
+
 	.menu__item:focus-visible {
 		position: relative;
 		z-index: 1;

@@ -342,6 +342,46 @@ describe('nldd-menu-item href (link items)', () => {
 	});
 });
 
+describe('nldd-menu-item shortcut (display only)', () => {
+	let el: HTMLElement;
+
+	afterEach(() => {
+		if (el) cleanup(el);
+	});
+
+	const shortcutEl = (item: Element) => item.shadowRoot?.querySelector('nldd-keyboard-shortcut');
+
+	it('renders a keyboard-shortcut hint when shortcut is set', async () => {
+		el = await fixture('<nldd-menu><nldd-menu-item text="Bewerk" shortcut="Cmd+E"></nldd-menu-item></nldd-menu>');
+		await waitForUpdate(el);
+		const ks = shortcutEl(el.querySelector('nldd-menu-item')!);
+		expect(ks).not.toBeNull();
+		expect(ks!.getAttribute('keys')).toBe('Cmd+E');
+	});
+
+	it('passes per-OS overrides through to the hint', async () => {
+		el = await fixture('<nldd-menu><nldd-menu-item text="Opslaan" shortcut="Ctrl+S" shortcut-mac="Cmd+S"></nldd-menu-item></nldd-menu>');
+		await waitForUpdate(el);
+		const ks = shortcutEl(el.querySelector('nldd-menu-item')!)!;
+		expect(ks.getAttribute('keys')).toBe('Ctrl+S');
+		expect(ks.getAttribute('mac-keys')).toBe('Cmd+S');
+	});
+
+	it('renders no hint without a shortcut', async () => {
+		el = await fixture('<nldd-menu><nldd-menu-item text="Plain"></nldd-menu-item></nldd-menu>');
+		await waitForUpdate(el);
+		expect(shortcutEl(el.querySelector('nldd-menu-item')!)).toBeNull();
+	});
+
+	it('shows the hint on a link item as well', async () => {
+		el = await fixture('<nldd-menu><nldd-menu-item text="Zoek" href="#zoek" shortcut="Cmd+F"></nldd-menu-item></nldd-menu>');
+		await waitForUpdate(el);
+		const item = el.querySelector('nldd-menu-item')!;
+		expect(item.shadowRoot!.querySelector('a.menu__item')).not.toBeNull();
+		expect(shortcutEl(item)!.getAttribute('keys')).toBe('Cmd+F');
+	});
+});
+
 describe('nldd-menu filter', () => {
 	let el: HTMLElement;
 

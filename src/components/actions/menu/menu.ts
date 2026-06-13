@@ -10,6 +10,7 @@ import '../../lists-and-tables/cells/icon-cell/icon-cell.js';
 import '../../lists-and-tables/cells/spacer-cell/spacer-cell.js';
 import '../../lists-and-tables/cells/text-cell/text-cell.js';
 import '../../content/icon/icon.js';
+import '../../content/keyboard-shortcut/keyboard-shortcut.js';
 import '../../status-and-feedback/inline-dialog/inline-dialog.js';
 import { isKeyboardMode, isTouchMode } from '../../../utilities/input-modality.js';
 import { breakpoints } from '../../../assets/styles/breakpoints.js';
@@ -90,6 +91,12 @@ if (!customElements.get('nldd-menu-group')) {
  *                             disabled.
  * @attr {string}  aliases   - Space-separated alternative search terms.
  * @attr {string}  details   - Secondary label shown on the right side.
+ * @attr {string}  shortcut  - Keyboard shortcut hint shown on the right, e.g. 'Cmd+E'.
+ *                             Display only (rendered via nldd-keyboard-shortcut) — it does
+ *                             not bind the key; wire up the handling in your app. Hidden on
+ *                             touch-only devices, where it isn't invokable.
+ * @attr {string}  shortcut-mac / shortcut-windows / shortcut-linux - Per-OS overrides for
+ *                             `shortcut`, picked by detected OS (falls back to `shortcut`).
  * @attr {string}  icon      - Icon name rendered before the text (nldd-icon name).
  * @attr {string}  type      - Item type: 'button' | 'checkbox' | 'radio'. Default: 'button'.
  * @attr {boolean} selected        - Selected state for checkbox and radio types.
@@ -128,6 +135,26 @@ export class NLDDMenuItem extends LitElement {
 
 	@property({ type: String, reflect: true })
 	details = '';
+
+	/**
+	 * Keyboard shortcut hint shown on the right, rendered via
+	 * nldd-keyboard-shortcut (keys separated by '+', e.g. 'Cmd+E'). Display only:
+	 * it does not bind the shortcut — wire up the key handling in your app. The
+	 * hint is hidden on touch-only devices, where it isn't invokable.
+	 */
+	@property({ type: String, reflect: true })
+	shortcut = '';
+
+	/** Per-OS overrides for `shortcut`; the detected OS picks the matching one,
+	 *  falling back to `shortcut`. Mirrors nldd-keyboard-shortcut. */
+	@property({ type: String, reflect: true, attribute: 'shortcut-mac' })
+	shortcutMac = '';
+
+	@property({ type: String, reflect: true, attribute: 'shortcut-windows' })
+	shortcutWindows = '';
+
+	@property({ type: String, reflect: true, attribute: 'shortcut-linux' })
+	shortcutLinux = '';
 
 	/** Icon name rendered before the text (looked up via nldd-icon). */
 	@property({ type: String, reflect: true })

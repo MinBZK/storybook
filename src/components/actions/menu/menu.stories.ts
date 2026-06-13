@@ -29,6 +29,26 @@ export const WithDetails = {
 	`,
 };
 
+/**
+ * Met `shortcut` toont een item zijn sneltoets als nette `<kbd>`-toetsen (via
+ * nldd-keyboard-shortcut) in plaats van platte `details`-tekst. Dit is puur ter
+ * weergave — het component bindt de toets niet; koppel de afhandeling zelf in je
+ * applicatie. Gebruik `shortcut-mac`/`shortcut-windows`/`shortcut-linux` voor
+ * platform-specifieke weergave. Op touch-only apparaten verdwijnt de hint, want
+ * daar is hij niet aanroepbaar.
+ */
+export const KeyboardShortcuts = {
+	render: () => html`
+		<nldd-button id="button-shortcuts" expandable text="Bewerken"></nldd-button>
+		<nldd-menu id="menu-shortcuts" anchor="button-shortcuts">
+			<nldd-menu-item text="Ongedaan maken" shortcut="Ctrl+Z" shortcut-mac="Cmd+Z"></nldd-menu-item>
+			<nldd-menu-item text="Knippen" shortcut="Ctrl+X" shortcut-mac="Cmd+X"></nldd-menu-item>
+			<nldd-menu-item text="Kopiëren" shortcut="Ctrl+C" shortcut-mac="Cmd+C"></nldd-menu-item>
+			<nldd-menu-item text="Plakken" shortcut="Ctrl+V" shortcut-mac="Cmd+V"></nldd-menu-item>
+		</nldd-menu>
+	`,
+};
+
 export const WithIcons = {
 	render: () => html`
 		<nldd-button id="button-icons" expandable text="Open menu"></nldd-button>
