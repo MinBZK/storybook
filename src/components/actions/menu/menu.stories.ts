@@ -95,6 +95,30 @@ export const BredeInhoud = {
 	`,
 };
 
+/**
+ * Met een expliciete `width` zet je het menu op een vaste breedte; leeg laten
+ * laat het meegroeien met de inhoud (tussen een minimum en
+ * `min(100vw - inset, 640px)`). Speel met de control.
+ */
+export const Breedte = {
+	render: (args: Record<string, any>) => html`
+		<nldd-button id="button-breedte" expandable text="Open menu"></nldd-button>
+		<nldd-menu id="menu-breedte" anchor="button-breedte" width=${args.width}>
+			<nldd-menu-item text="Nederland" value="nl"></nldd-menu-item>
+			<nldd-menu-item text="België" value="be"></nldd-menu-item>
+			<nldd-menu-item text="Duitsland" value="de"></nldd-menu-item>
+		</nldd-menu>
+	`,
+	args: { width: '' },
+	argTypes: {
+		width: {
+			control: 'text',
+			description: 'Expliciete breedte (any CSS length, bv. "320px"). Leeg = mee met de inhoud.',
+			table: { defaultValue: { summary: '' } },
+		},
+	},
+};
+
 export const WithDivider = {
 	render: () => html`
 		<nldd-button id="button-divider" expandable text="Open menu"></nldd-button>
