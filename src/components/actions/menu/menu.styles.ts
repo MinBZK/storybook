@@ -230,10 +230,12 @@ export const menuItemStyles = css`
 
 	/* A link item (href) renders as <a>; strip the UA link color/underline so
 	   it is visually identical to the button variant. The text colour is owned
-	   by the inner nldd-text-cell. */
+	   by the inner nldd-text-cell. The control cursor token (default, like the
+	   other controls) replaces the UA link pointer and stays overridable. */
 	a.menu__item {
 		color: inherit;
 		text-decoration: none;
+		cursor: var(--semantics-controls-link-cursor);
 	}
 
 	/* Shortcut hint at the trailing edge. The leading margin (rather than a
