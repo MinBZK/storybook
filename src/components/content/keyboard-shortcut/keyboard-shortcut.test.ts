@@ -198,3 +198,31 @@ describe('nldd-keyboard-shortcut color', () => {
 		expect(getComputedStyle(el).getPropertyValue('--_content-color').trim()).not.toBe('currentColor');
 	});
 });
+
+describe('nldd-keyboard-shortcut variant', () => {
+	let el: HTMLElement;
+
+	afterEach(() => {
+		if (el) cleanup(el);
+	});
+
+	it('defaults to variant="box"', async () => {
+		el = await fixture('<nldd-keyboard-shortcut keys="Cmd+K" always-visible></nldd-keyboard-shortcut>');
+		await waitForUpdate(el);
+		expect(el.getAttribute('variant')).toBe('box');
+	});
+
+	it('reflects variant="simple"', async () => {
+		el = await fixture('<nldd-keyboard-shortcut variant="simple" keys="Cmd+K" always-visible></nldd-keyboard-shortcut>');
+		await waitForUpdate(el);
+		expect(el.getAttribute('variant')).toBe('simple');
+	});
+
+	it('simple variant strips the keycap box (no padding, no shadow)', async () => {
+		el = await fixture('<nldd-keyboard-shortcut variant="simple" keys="Cmd+K" always-visible></nldd-keyboard-shortcut>');
+		await waitForUpdate(el);
+		const key = el.shadowRoot!.querySelector('.keyboard-shortcut__key')!;
+		expect(getComputedStyle(key).paddingLeft).toBe('0px');
+		expect(getComputedStyle(key).boxShadow).toBe('none');
+	});
+});

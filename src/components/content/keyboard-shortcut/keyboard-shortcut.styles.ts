@@ -77,13 +77,28 @@ export const keyboardShortcutStyles = css`
 		white-space: nowrap;
 	}
 
-	/* Forced colors strip box-shadows, so the inset highlight border disappears —
-	   fall back to a real border in system colors to keep the key outlined. */
+	/* 'simple' variant: drop the keycap box and render each key as plain inline
+	   text with separators — a lighter hint for inline use (e.g. a menu item). */
+	:host([variant="simple"]) .keyboard-shortcut__key {
+		box-shadow: none;
+		background-color: transparent;
+		border-radius: 0;
+		min-width: 0;
+		height: auto;
+		padding: 0;
+	}
+
+	/* Forced colors strip box-shadows, so the box variant's inset highlight
+	   border disappears — fall back to a real border there. The simple variant
+	   has no box, so it stays plain text in system colors. */
 	@media (forced-colors: active) {
 		.keyboard-shortcut__key {
+			color: CanvasText;
+		}
+
+		:host(:not([variant="simple"])) .keyboard-shortcut__key {
 			border: var(--components-keyboard-shortcut-border-thickness) solid CanvasText;
 			background-color: Canvas;
-			color: CanvasText;
 		}
 	}
 

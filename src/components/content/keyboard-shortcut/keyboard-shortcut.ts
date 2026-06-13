@@ -21,6 +21,9 @@
  * @attr {string} windows-keys - Optionele override voor Windows.
  * @attr {string} linux-keys - Optionele override voor Linux/ChromeOS.
  * @attr {string} size - Grootte: 'sm' | 'md' (default: 'md')
+ * @attr {string} variant - 'box' (default) toont elke toets als keycap met vulling en
+ *   highlight-rand; 'simple' toont de toetsen als platte tekst met scheidingstekens —
+ *   lichter, voor inline gebruik zoals in een menu-item.
  * @attr {boolean} always-visible - Toon ook op touch-only devices waar shortcuts niet aanroepbaar zijn.
  * @attr {string} color - 'neutral' (default) gebruikt de eigen component-kleuren. 'inherit'
  *   laat de toetsen en scheidingstekens de omringende tekstkleur (currentColor) volgen, met
@@ -38,6 +41,7 @@ import { detectOS, type OS } from '../../../utilities/os.js';
 
 type Size = 'sm' | 'md';
 type Color = 'neutral' | 'inherit';
+type Variant = 'box' | 'simple';
 
 @customElement('nldd-keyboard-shortcut')
 export class NLDDKeyboardShortcut extends LitElement {
@@ -57,6 +61,14 @@ export class NLDDKeyboardShortcut extends LitElement {
 
 	@property({ type: String, reflect: true })
 	size: Size = 'md';
+
+	/**
+	 * 'box' (default) renders each key as a keycap with a fill and highlight
+	 * border. 'simple' renders the keys as plain text with separators — lighter,
+	 * for inline use such as inside a menu item.
+	 */
+	@property({ type: String, reflect: true })
+	variant: Variant = 'box';
 
 	/**
 	 * 'neutral' (default) uses the component's own palette. 'inherit' makes the

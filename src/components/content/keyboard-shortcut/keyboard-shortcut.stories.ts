@@ -43,6 +43,14 @@ export default {
 				defaultValue: { summary: 'md' },
 			},
 		},
+		variant: {
+			control: 'select',
+			options: ['box', 'simple'],
+			description: "'box' (default) toont elke toets als keycap; 'simple' toont de toetsen als platte tekst — lichter, voor inline gebruik zoals in een menu",
+			table: {
+				defaultValue: { summary: 'box' },
+			},
+		},
 		color: {
 			control: 'select',
 			options: ['neutral', 'inherit'],
@@ -81,6 +89,7 @@ export default {
 	},
 	args: {
 		size: 'md',
+		variant: 'box',
 		color: 'neutral',
 		alwaysVisible: false,
 		keys: 'Ctrl+K',
@@ -90,9 +99,10 @@ export default {
 	},
 };
 
-const Template = ({ size, color, alwaysVisible, keys, macKeys, windowsKeys, linuxKeys }: Record<string, any>) => html`
+const Template = ({ size, variant, color, alwaysVisible, keys, macKeys, windowsKeys, linuxKeys }: Record<string, any>) => html`
 	<nldd-keyboard-shortcut
 		size=${size}
+		variant=${variant}
 		color=${color || nothing}
 		?always-visible=${alwaysVisible}
 		keys=${keys}
@@ -133,6 +143,19 @@ export const Sizes = {
 	`,
 	parameters: {
 		controls: { disable: true },
+	},
+};
+
+export const Varianten = {
+	render: () => html`
+		<div style="display: flex; gap: 24px; align-items: center;">
+			<nldd-keyboard-shortcut variant="box" keys="Cmd+K"></nldd-keyboard-shortcut>
+			<nldd-keyboard-shortcut variant="simple" keys="Cmd+K"></nldd-keyboard-shortcut>
+		</div>
+	`,
+	parameters: {
+		controls: { disable: true },
+		docs: { description: { story: '`variant="box"` (default, keycaps) naast `variant="simple"` (platte tekst — lichter, voor inline gebruik zoals in een menu).' } },
 	},
 };
 
