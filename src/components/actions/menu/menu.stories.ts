@@ -41,10 +41,10 @@ export const KeyboardShortcuts = {
 	render: () => html`
 		<nldd-button id="button-shortcuts" expandable text="Bewerken"></nldd-button>
 		<nldd-menu id="menu-shortcuts" anchor="button-shortcuts">
-			<nldd-menu-item text="Ongedaan maken" shortcut="Ctrl+Z" shortcut-mac="Cmd+Z"></nldd-menu-item>
-			<nldd-menu-item text="Knippen" shortcut="Ctrl+X" shortcut-mac="Cmd+X"></nldd-menu-item>
-			<nldd-menu-item text="Kopiëren" shortcut="Ctrl+C" shortcut-mac="Cmd+C"></nldd-menu-item>
-			<nldd-menu-item text="Plakken" shortcut="Ctrl+V" shortcut-mac="Cmd+V"></nldd-menu-item>
+			<nldd-menu-item text="Ongedaan maken" shortcut="Ctrl+Z" shortcut-mac="⌘+Z"></nldd-menu-item>
+			<nldd-menu-item text="Knippen" shortcut="Ctrl+X" shortcut-mac="⌘+X"></nldd-menu-item>
+			<nldd-menu-item text="Kopiëren" shortcut="Ctrl+C" shortcut-mac="⌘+C"></nldd-menu-item>
+			<nldd-menu-item text="Plakken" shortcut="Ctrl+V" shortcut-mac="⌘+V"></nldd-menu-item>
 		</nldd-menu>
 	`,
 };

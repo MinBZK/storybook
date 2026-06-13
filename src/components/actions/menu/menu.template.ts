@@ -112,15 +112,18 @@ export function menuItemTemplate(this: NLDDMenuItem, variant: 'menu' | 'listbox'
 			></nldd-text-cell>
 		` : nothing}
 		${(this.shortcut || this.shortcutMac || this.shortcutWindows || this.shortcutLinux) ? html`
-			<nldd-keyboard-shortcut class="menu__item-shortcut"
-				size="sm"
-				variant="simple"
-				color="inherit"
-				keys=${this.shortcut || nothing}
-				mac-keys=${this.shortcutMac || nothing}
-				windows-keys=${this.shortcutWindows || nothing}
-				linux-keys=${this.shortcutLinux || nothing}
-			></nldd-keyboard-shortcut>
+			<nldd-spacer-cell size="8"></nldd-spacer-cell>
+			<nldd-text-cell width="fit-content">
+				<nldd-keyboard-shortcut
+					size="inherit"
+					variant="simple"
+					color="inherit"
+					keys=${this.shortcut || nothing}
+					mac-keys=${this.shortcutMac || nothing}
+					windows-keys=${this.shortcutWindows || nothing}
+					linux-keys=${this.shortcutLinux || nothing}
+				></nldd-keyboard-shortcut>
+			</nldd-text-cell>
 		` : nothing}
 		${hasSubmenu ? html`
 			<nldd-spacer-cell size="6"></nldd-spacer-cell>
