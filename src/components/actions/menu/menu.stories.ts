@@ -1,4 +1,4 @@
-import { html } from 'lit';
+import { html, nothing } from 'lit';
 import './menu.js';
 import '../../actions/button/button.js';
 
@@ -108,13 +108,13 @@ export const BredeInhoud = {
 export const Breedte = {
 	render: (args: Record<string, any>) => html`
 		<nldd-button id="button-breedte" expandable text="Open menu"></nldd-button>
-		<nldd-menu id="menu-breedte" anchor="button-breedte" width=${args.width}>
+		<nldd-menu id="menu-breedte" anchor="button-breedte" width=${args.width || nothing}>
 			<nldd-menu-item text="Nederland" value="nl"></nldd-menu-item>
 			<nldd-menu-item text="België" value="be"></nldd-menu-item>
 			<nldd-menu-item text="Duitsland" value="de"></nldd-menu-item>
 		</nldd-menu>
 	`,
-	args: { width: '' },
+	args: { width: '360px' },
 	argTypes: {
 		width: {
 			control: 'text',
