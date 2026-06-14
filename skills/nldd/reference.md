@@ -1836,6 +1836,7 @@ Layout placeholder that fills its parent and centres an indeterminate activity i
 | `text` | `string` | Label text. Falls back to the translated "Laden" when unset. |
 | `timing` | `'default'\|'instant'` | 'default' waits 1000ms before showing (anti-flash); 'instant' shows immediately (the fade-in still plays). Default 'default'. |
 | `complete` | `boolean` | Mark the loader as finished while keeping the element mounted; clears aria-busy and hides the indicator. |
+| `backdrop` | `boolean` | Dim and blur the content underneath with a frosted backdrop while loading (opt-in, default false). Uses the context parent background colour (fallback: base surface) at one minus the disabled opacity, plus a backdrop blur. |
 | `translations` | `object` | Override translation keys; unset keys fall back to Dutch |
 
 **Slots**

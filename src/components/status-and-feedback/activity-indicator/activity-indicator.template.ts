@@ -11,6 +11,7 @@ export function activityIndicatorTemplate(component: NLDDActivityIndicator) {
 	// role="status" host; show-text only controls whether it is visible.
 	const text = component._accessibleName;
 	return html`
+		${component.backdrop ? html`<div class="activity-indicator__backdrop" aria-hidden="true"></div>` : nothing}
 		<div class="activity-indicator">
 			<slot>
 				<svg class="activity-indicator__circle"

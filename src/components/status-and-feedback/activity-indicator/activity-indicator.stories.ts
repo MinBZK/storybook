@@ -152,3 +152,36 @@ export const CustomCircleViaSlot = {
 		controls: { disable: true },
 	},
 };
+
+/**
+ * Met `backdrop` dimt én blurt de indicator de achterliggende content met een
+ * frosted laag in `--context-parent-background-color` (fallback: de base
+ * surface) op `1 − disabled-opacity`. De content blijft zichtbaar maar leest
+ * als inactief tijdens het laden. Opt-in (standaard onzichtbaar); je plaatst de
+ * indicator zelf over de content — hier absoluut over een paneel.
+ */
+export const Backdrop = {
+	name: 'Backdrop over content',
+	render: ({ backdrop }: Record<string, unknown>) => html`
+		<div style="position: relative; width: 320px; padding: 20px; border-radius: 12px; overflow: hidden; background: var(--semantics-surfaces-base-background-color); box-shadow: 0 1px 4px rgba(0, 0, 0, 0.12);">
+			<p style="margin: 0 0 8px; font: var(--primitives-font-body-md-medium-tight); color: var(--semantics-content-color);">Aanvraag indienen</p>
+			<p style="margin: 0; font: var(--primitives-font-body-sm-regular-tight); color: var(--semantics-content-secondary-color);">
+				Deze gegevens worden verwerkt. De content blijft zichtbaar maar dimt en blurt achter de indicator, zodat duidelijk is dat het proces nog loopt.
+			</p>
+			<nldd-activity-indicator ?backdrop=${backdrop as boolean} show-text text="Bezig met verwerken…" timing="instant"
+				style="position: absolute; inset: 0;"
+			></nldd-activity-indicator>
+		</div>
+	`,
+	args: { backdrop: true },
+	argTypes: {
+		backdrop: {
+			control: 'boolean',
+			description: 'Dim én blur de achterliggende content met een frosted laag. Opt-in; standaard uit.',
+			table: { defaultValue: { summary: 'false' } },
+		},
+	},
+	parameters: {
+		controls: { include: ['backdrop'] },
+	},
+};
