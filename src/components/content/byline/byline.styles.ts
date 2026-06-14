@@ -1,5 +1,8 @@
-import { css } from 'lit';
+import { css, unsafeCSS } from 'lit';
+import { breakpoints } from '../../../assets/styles/breakpoints.js';
 import { slottedReset, inheritedTextReset } from '../../../assets/styles/slotted-reset.js';
+
+const smMax = unsafeCSS(breakpoints.smMax);
 
 export const bylineStyles = css`
 
@@ -19,13 +22,31 @@ export const bylineStyles = css`
 		--_supporting-text-font: var(--primitives-font-body-sm-regular-tight);
 
 		${inheritedTextReset}
+		container-type: inline-size;
+		display: block;
+	}
+
+	:host([hidden]) {
+		display: none;
+	}
+
+
+	/* # Byline */
+
+	.byline {
 		display: flex;
 		align-items: center;
 		gap: var(--_gap);
 	}
 
-	:host([hidden]) {
-		display: none;
+	/* On a small container (≤ sm) a byline with multiple avatars stacks the
+	   avatar row above the names, so the text keeps the full width instead of
+	   being squeezed next to the avatars. A single-avatar byline stays inline. */
+	@container (max-width: ${smMax}) {
+		.byline[data-multiple-avatars] {
+			flex-direction: column;
+			align-items: flex-start;
+		}
 	}
 
 

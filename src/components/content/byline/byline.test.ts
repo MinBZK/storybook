@@ -112,6 +112,25 @@ describe('nldd-byline', () => {
 		expect(el.shadowRoot!.querySelector('.byline__avatars')!.hasAttribute('hidden')).toBe(false);
 	});
 
+	it('flags the wrapper as multiple-avatars only with two or more avatars', async () => {
+		el = await fixture(`
+			<nldd-byline text="Jan, Petra en Ahmed">
+				<img slot="avatars" src="${AVATAR}" alt="">
+				<img slot="avatars" src="${AVATAR}" alt="">
+			</nldd-byline>
+		`);
+		await waitForUpdate(el);
+		expect((el as any)._avatarCount).toBe(2);
+		expect(el.shadowRoot!.querySelector('.byline')!.hasAttribute('data-multiple-avatars')).toBe(true);
+	});
+
+	it('does not flag a single-avatar byline as multiple', async () => {
+		el = await fixture(`<nldd-byline text="Jan Jansen"><img slot="avatars" src="${AVATAR}" alt=""></nldd-byline>`);
+		await waitForUpdate(el);
+		expect((el as any)._avatarCount).toBe(1);
+		expect(el.shadowRoot!.querySelector('.byline')!.hasAttribute('data-multiple-avatars')).toBe(false);
+	});
+
 	it('updates avatar visibility when avatars are added at runtime', async () => {
 		el = await fixture('<nldd-byline text="Jan Jansen"></nldd-byline>');
 		await waitForUpdate(el);
