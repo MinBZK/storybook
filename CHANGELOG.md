@@ -27,6 +27,10 @@ here; consult the commit history if you need that level of detail.
 
 - **`nldd-byline`** — on a small container (≤ sm), a byline with two or more avatars stacks the avatar row above the names so the text keeps the full width; single-avatar bylines stay inline.
 
+### Breaking
+
+- **`nldd-menu`** — the `translations` key `components.menu.back` was renamed to `components.menu.back-action` (matching the existing `components.menu.submenu-back-action`); the rendered label is unchanged. Update any `translations` override that sets the old key.
+
 ### Fixed
 
 - **`nldd-hero`** — full-width media (`main-width="full"`) now stacks beside the text panel instead of behind it, so the media's rounded corner is no longer hidden by the panel.

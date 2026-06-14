@@ -507,7 +507,7 @@ export class NLDDMenu extends LitElement {
 	 * Bestand" instead of an ambiguous "Bestand, button". Only used when
 	 * this menu is itself a submenu in drill-in mode. */
 	get _resolvedBackLabel(): string {
-		const back = this._t('components.menu.back');
+		const back = this._t('components.menu.back-action');
 		const parent = this._parentItem?.text ?? '';
 		return parent ? `${back}: ${parent}` : back;
 	}
@@ -1258,7 +1258,7 @@ export class NLDDMenu extends LitElement {
 					this._announce(
 						dest
 							? this._t('components.menu.submenu-back-action', { title: dest })
-							: this._t('components.menu.back'),
+							: this._t('components.menu.back-action'),
 					);
 				}
 			}
