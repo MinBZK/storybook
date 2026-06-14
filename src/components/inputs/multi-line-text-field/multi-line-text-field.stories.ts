@@ -197,13 +197,29 @@ export const Sizes = {
 	parameters: { controls: { disable: true } },
 };
 
+/**
+ * Met `resize="auto"` groeit het veld mee met de inhoud (native
+ * `field-sizing: content`), zonder sleep-handvat. Het ingestelde aantal `rows`
+ * blijft daarbij de ondergrens: het veld wordt nooit korter dan dat aantal
+ * regels, maar groeit er wel voorbij. Hieronder een veld met `rows="2"` naast
+ * één met `rows="5"` — beide groeien mee, maar starten op hun eigen minimum.
+ */
 export const AutoResize = {
 	render: () => html`
-		<nldd-multi-line-text-field
-			placeholder="Typ hier — het veld groeit mee met de inhoud"
-			resize="auto"
-			rows="2"
-		></nldd-multi-line-text-field>
+		<div style="display: flex; flex-direction: column; gap: 1rem;">
+			<nldd-multi-line-text-field
+				accessible-label="Groeit mee, minimaal 2 regels"
+				placeholder="Groeit mee met de inhoud — minimaal 2 regels"
+				resize="auto"
+				rows="2"
+			></nldd-multi-line-text-field>
+			<nldd-multi-line-text-field
+				accessible-label="Groeit mee, minimaal 5 regels"
+				placeholder="Zelfde gedrag, maar minimaal 5 regels hoog"
+				resize="auto"
+				rows="5"
+			></nldd-multi-line-text-field>
+		</div>
 	`,
 	parameters: { controls: { disable: true } },
 };

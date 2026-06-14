@@ -15,6 +15,7 @@ export const multiLineTextFieldStyles = css`
 		--_text-font: var(--semantics-input-fields-md-text-font);
 		--_icon-area-size: calc(var(--_min-size) - var(--semantics-input-fields-border-thickness) * 2);
 		--_validation-icon-size: var(--semantics-input-fields-md-validation-icon-size);
+		--_rows: 3;
 
 		${inheritedTextReset}
 		display: block;
@@ -106,6 +107,11 @@ export const multiLineTextFieldStyles = css`
 	:host([resize="auto"]) .multi-line-text-field__input {
 		resize: none;
 		field-sizing: content;
+		/* Keep the configured rows as the floor: field-sizing grows the field with
+		   content, and this min-height stops it shrinking below that many lines.
+		   The host exposes the count as --_rows; one row already fits in
+		   --_min-size, so each extra row adds one line height. */
+		min-height: calc(var(--_min-size) - var(--semantics-input-fields-border-thickness) * 2 + (var(--_rows) - 1) * 1lh);
 	}
 
 	:host([valid]) .multi-line-text-field__input,
