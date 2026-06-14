@@ -33,6 +33,7 @@ export default {
 		text: '',
 		showText: false,
 		timing: 'default',
+		backdrop: false,
 	},
 	argTypes: {
 		size: {
@@ -58,15 +59,26 @@ export default {
 			description: '`default` wacht 1000ms (anti-flash); `instant` toont direct (fade-in speelt nog).',
 			table: { defaultValue: { summary: 'default' } },
 		},
+		backdrop: {
+			control: 'boolean',
+			description: 'Dim én blur de achterliggende content met een frosted laag terwijl er geladen wordt. Opt-in.',
+			table: { defaultValue: { summary: 'false' } },
+		},
 	},
 };
 
-const Template = ({ size, text, showText, timing }: Record<string, unknown>) => html`
-	<div style="height: 240px; display: flex;">
+const Template = ({ size, text, showText, timing, backdrop }: Record<string, unknown>) => html`
+	<div style="position: relative; width: 360px; padding: 20px; border-radius: 12px; overflow: hidden; background: var(--semantics-surfaces-base-background-color); box-shadow: 0 1px 4px rgba(0, 0, 0, 0.12);">
+		<p style="margin: 0 0 8px; font: var(--primitives-font-body-md-medium-tight); color: var(--semantics-content-color);">Voorbeeldcontent</p>
+		<p style="margin: 0; font: var(--primitives-font-body-sm-regular-tight); color: var(--semantics-content-secondary-color);">
+			Inhoud achter de indicator. Zet de backdrop-control aan om te zien hoe deze content dimt en blurt tijdens het laden.
+		</p>
 		<nldd-activity-indicator size=${size as string}
 			text=${text as string}
 			?show-text=${showText as boolean}
 			timing=${timing as string}
+			?backdrop=${backdrop as boolean}
+			style="position: absolute; inset: 0;"
 		></nldd-activity-indicator>
 	</div>
 `;
@@ -174,13 +186,6 @@ export const Backdrop = {
 		</div>
 	`,
 	args: { backdrop: true },
-	argTypes: {
-		backdrop: {
-			control: 'boolean',
-			description: 'Dim én blur de achterliggende content met een frosted laag. Opt-in; standaard uit.',
-			table: { defaultValue: { summary: 'false' } },
-		},
-	},
 	parameters: {
 		controls: { include: ['backdrop'] },
 	},
