@@ -7,15 +7,9 @@ export const menuStyles = css`
 	/* # Host */
 
 	:host {
-		--_viewport-margin: var(--primitives-space-16);
-		/* No fixed width by default: the menu sizes to its content between a
-		   comfortable minimum and a viewport-aware maximum, so wide content
-		   (long labels, shortcuts) gets the room it needs. 'initial' makes the
-		   var() in .menu fall back to max-content until an explicit width
-		   attribute pins all three to one value (see menu.ts). */
 		--_width: initial;
 		--_min-width: var(--primitives-area-280);
-		--_max-width: min(100vw - 2 * var(--_viewport-margin), var(--primitives-area-640));
+		--_max-width: min(100vw - 2 * var(--primitives-space-16), var(--primitives-area-640));
 		--_max-height: calc(infinity * 1px);
 		--_max-items: 9999;
 		--_padding: var(--primitives-space-8);
@@ -334,7 +328,7 @@ export const menuGroupStyles = css`
 
 	/* # Title */
 
-	.menu-group__title {
+	.menu__group-title {
 		margin: 0;
 		padding-top: 0;
 		padding-right: var(--primitives-space-8);
@@ -351,7 +345,7 @@ export const menuGroupStyles = css`
 	 * a11y tree exposes role + aria-labelledby reliably (display: contents
 	 * has historical a11y-tree bugs in older WebKit/Chromium). */
 
-	.menu-group__items {
+	.menu__group-items {
 		display: block;
 	}
 `;

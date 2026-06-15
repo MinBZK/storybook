@@ -519,7 +519,7 @@ describe('nldd-menu-group', () => {
 	it('renders the text in the title element', async () => {
 		el = await fixture('<nldd-menu-group text="Bestand"></nldd-menu-group>');
 		await waitForUpdate(el);
-		const title = el.shadowRoot!.querySelector('.menu-group__title');
+		const title = el.shadowRoot!.querySelector('.menu__group-title');
 		expect(title?.textContent).toBe('Bestand');
 	});
 
@@ -531,7 +531,7 @@ describe('nldd-menu-group', () => {
 		`);
 		await waitForUpdate(el);
 		const groupContainer = el.shadowRoot!.querySelector('[role="group"]');
-		const title = el.shadowRoot!.querySelector('.menu-group__title');
+		const title = el.shadowRoot!.querySelector('.menu__group-title');
 		expect(groupContainer).not.toBeNull();
 		expect(title?.id).toBeTruthy();
 		expect(groupContainer?.getAttribute('aria-labelledby')).toBe(title!.id);
@@ -543,7 +543,7 @@ describe('nldd-menu-group', () => {
 		// so the group label survives while standalone announcement does not.
 		el = await fixture('<nldd-menu-group text="Bestand"></nldd-menu-group>');
 		await waitForUpdate(el);
-		const title = el.shadowRoot!.querySelector('.menu-group__title');
+		const title = el.shadowRoot!.querySelector('.menu__group-title');
 		expect(title?.getAttribute('aria-hidden')).toBe('true');
 	});
 

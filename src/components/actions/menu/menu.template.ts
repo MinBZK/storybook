@@ -182,11 +182,11 @@ export function menuGroupTemplate(component: NLDDMenuGroup) {
 	// label reference still reads the hidden node's text content, which is
 	// the standard pattern for this kind of labelling.
 	return html`
-		<div class="menu-group__title"
+		<div class="menu__group-title"
 			id=${component._titleId}
 			aria-hidden="true"
 		>${component.text}</div>
-		<div class="menu-group__items"
+		<div class="menu__group-items"
 			role="group"
 			aria-labelledby=${component._titleId}
 		>
