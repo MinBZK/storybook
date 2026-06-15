@@ -7,9 +7,10 @@ export const menuStyles = css`
 	/* # Host */
 
 	:host {
+		--_viewport-margin: var(--primitives-space-16);
 		--_width: initial;
 		--_min-width: var(--primitives-area-280);
-		--_max-width: min(100vw - 2 * var(--primitives-space-16), var(--primitives-area-640));
+		--_max-width: min(100vw - 2 * var(--_viewport-margin), var(--primitives-area-640));
 		--_max-height: calc(infinity * 1px);
 		--_max-items: 9999;
 		--_padding: var(--primitives-space-8);
