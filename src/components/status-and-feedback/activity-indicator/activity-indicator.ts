@@ -31,6 +31,7 @@
  * @attr {string} text - Label text. Falls back to the translated "Laden" when unset.
  * @attr {'default'|'instant'} timing - 'default' waits 1000ms before showing (anti-flash); 'instant' shows immediately (the fade-in still plays). Default 'default'.
  * @attr {boolean} complete - Mark the loader as finished while keeping the element mounted; clears aria-busy and hides the indicator.
+ * @attr {boolean} backdrop - Dim and blur the content underneath with a frosted backdrop while loading (opt-in, default false). Uses the context parent background colour (fallback: base surface) at one minus the disabled opacity, plus a backdrop blur.
  * @attr {object} translations - Override translation keys; unset keys fall back to Dutch
  *
  * @slot - Optional custom indicator; overrides the default circle (and its
@@ -76,6 +77,13 @@ export class NLDDActivityIndicator extends LitElement {
 	 *  Clears aria-busy and hides the indicator. Default false. */
 	@property({ type: Boolean, reflect: true })
 	complete = false;
+
+	/** Dim and blur the content underneath with a frosted backdrop while
+	 *  loading. The layer takes the context parent background colour (fallback:
+	 *  base surface) at one minus the disabled opacity, plus a backdrop blur.
+	 *  Opt-in; default false. */
+	@property({ type: Boolean, reflect: true })
+	backdrop = false;
 
 	@property({ type: Object })
 	translations: Partial<NLDDActivityIndicatorTranslations> = {};

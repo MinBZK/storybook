@@ -168,4 +168,56 @@ describe('nldd-activity-indicator', () => {
 			vi.useRealTimers();
 		}
 	});
+
+	it('renders the backdrop when backdrop is set and the indicator is visible', async () => {
+		el = await fixture('<nldd-activity-indicator timing="instant" backdrop></nldd-activity-indicator>');
+		await waitForUpdate(el);
+		expect(el.shadowRoot!.querySelector('.activity-indicator__backdrop')).not.toBeNull();
+	});
+
+	it('blurs the content behind the backdrop', async () => {
+		el = await fixture('<nldd-activity-indicator timing="instant" backdrop></nldd-activity-indicator>');
+		await waitForUpdate(el);
+		const bd = el.shadowRoot!.querySelector('.activity-indicator__backdrop')!;
+		// Tests run in real chromium (Playwright), which computes backdrop-filter
+		// from the stylesheet — so this resolves to an actual radius, e.g.
+		// "blur(3px)". If the rule were dropped it would compute to "none" and
+		// this assertion would fail (it can't silently pass on an empty string).
+		const filter = getComputedStyle(bd).backdropFilter;
+		expect(filter).toMatch(/blur\(\d/);
+	});
+
+	it('omits the backdrop by default', async () => {
+		el = await fixture('<nldd-activity-indicator timing="instant"></nldd-activity-indicator>');
+		await waitForUpdate(el);
+		expect(el.shadowRoot!.querySelector('.activity-indicator__backdrop')).toBeNull();
+	});
+
+	it('reflects the backdrop attribute', async () => {
+		el = await fixture<NLDDActivityIndicator>('<nldd-activity-indicator backdrop></nldd-activity-indicator>');
+		await waitForUpdate(el);
+		expect(el.hasAttribute('backdrop')).toBe(true);
+		expect((el as unknown as NLDDActivityIndicator).backdrop).toBe(true);
+	});
+
+	it('does not render the backdrop during the anti-flash delay', async () => {
+		el = await fixture('<nldd-activity-indicator backdrop></nldd-activity-indicator>');
+		await waitForUpdate(el);
+		expect(el.shadowRoot!.querySelector('.activity-indicator__backdrop')).toBeNull();
+	});
+
+	it('drops the backdrop when complete is set', async () => {
+		vi.useFakeTimers();
+		try {
+			el = await fixture<NLDDActivityIndicator>('<nldd-activity-indicator timing="instant" backdrop></nldd-activity-indicator>');
+			const litEl = el as HTMLElement & { updateComplete: Promise<boolean> };
+			await litEl.updateComplete;
+			expect(el.shadowRoot!.querySelector('.activity-indicator__backdrop')).not.toBeNull();
+			(el as unknown as NLDDActivityIndicator).complete = true;
+			await litEl.updateComplete;
+			expect(el.shadowRoot!.querySelector('.activity-indicator__backdrop')).toBeNull();
+		} finally {
+			vi.useRealTimers();
+		}
+	});
 });

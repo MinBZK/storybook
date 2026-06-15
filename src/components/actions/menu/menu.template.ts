@@ -1,5 +1,6 @@
 import { html, nothing } from 'lit';
 import type { NLDDMenuItem, NLDDMenu, NLDDMenuGroup } from './menu.js';
+import { sanitizeUrl } from '../../../utilities/sanitize-url.js';
 
 const menuRoleMap = {
 	menu: 'menu',
@@ -37,7 +38,7 @@ export function menuTemplate(this: NLDDMenu, isEmpty: boolean, variant: 'menu' |
 					@click=${this._handleBack}
 					@mouseenter=${this._handleBackMouseenter}
 				>
-					<nldd-icon-cell class="menu__back-icon"
+					<nldd-icon-cell
 						size="20"
 						icon="chevron-left"
 					></nldd-icon-cell>
@@ -78,54 +79,104 @@ export function menuItemTemplate(this: NLDDMenuItem, variant: 'menu' | 'listbox'
 	const hasCheckState = this.type !== 'button' && variant === 'menu';
 	const role = itemRoleMap[this.type][variant];
 	const hasSubmenu = this._hasSubmenu;
-	return html`
-		<button class="menu__item"
-			type="button"
-			role=${role}
-			?disabled=${this.disabled}
-			aria-checked=${hasCheckState ? String(this.selected) : nothing}
-			aria-selected=${variant === 'listbox' ? String(this.selected) : nothing}
-			aria-haspopup=${hasSubmenu ? 'menu' : nothing}
-			aria-expanded=${hasSubmenu ? String(this._submenuOpen) : nothing}
-			aria-controls=${hasSubmenu && this._submenuEl?.id ? this._submenuEl.id : nothing}
-			.popoverTargetElement=${this._submenuEl}
-			@click=${this._handleClick}
-		>
-			${hasCheckState ? html`
-				<nldd-icon-cell class="menu__item-check"
-					size="24"
-					horizontal-alignment="center"
-					icon=${this.selected ? 'check-mark' : nothing}
-				></nldd-icon-cell>
-				<nldd-spacer-cell size="4"></nldd-spacer-cell>
-			` : nothing}
-			${this.icon ? html`
-				<nldd-icon-cell class="menu__item-icon"
-					size="20"
-					icon=${this.icon}
-				></nldd-icon-cell>
-				<nldd-spacer-cell size="8"></nldd-spacer-cell>
-			` : nothing}
-			<nldd-text-cell class="menu__item-text"
-				text=${this.text} query=${this.query} query-mark-mode=${this.queryMarkMode}
+	// A plain button item with an href renders as a real link. Submenu openers,
+	// checkbox/radio items, and disabled items keep the button — they need its
+	// richer behaviour (popover invoker, check state, inert disabling).
+	// Sanitize the href so a caller-supplied javascript:/data:/vbscript:/blob:
+	// URL can't become an XSS vector; a blocked URL yields '' and falls back to
+	// the button branch. Mirrors the nav-bar sheet (top-navigation-bar.ts).
+	const safeHref = sanitizeUrl(this.href) ?? '';
+	const asLink = !!safeHref && this.type === 'button' && !hasSubmenu && !this.disabled;
+
+	const content = html`
+		${hasCheckState ? html`
+			<nldd-icon-cell
+				size="24"
+				horizontal-alignment="center"
+				icon=${this.selected ? 'check-mark' : nothing}
+			></nldd-icon-cell>
+			<nldd-spacer-cell size="4"></nldd-spacer-cell>
+		` : nothing}
+		${this.icon ? html`
+			<nldd-icon-cell
+				size="20"
+				icon=${this.icon}
+			></nldd-icon-cell>
+			<nldd-spacer-cell size="8"></nldd-spacer-cell>
+		` : nothing}
+		<nldd-text-cell
+			text=${this.text}
+			query=${this.query}
+			query-mark-mode=${this.queryMarkMode}
+		></nldd-text-cell>
+		${this.details ? html`
+			<nldd-spacer-cell size="8"></nldd-spacer-cell>
+			<nldd-text-cell
+				width="fit-content"
+				horizontal-alignment="right"
+				color="secondary"
+				text=${this.details}
 			></nldd-text-cell>
-			${this.details ? html`
-				<nldd-spacer-cell size="8"></nldd-spacer-cell>
-				<nldd-text-cell class="menu__item-details"
-					width="fit-content"
-					horizontal-alignment="right"
-					color="secondary"
-					text=${this.details}
-				></nldd-text-cell>
-			` : nothing}
-			${hasSubmenu ? html`
-				<nldd-spacer-cell size="6"></nldd-spacer-cell>
-				<nldd-icon-cell class="menu__item-submenu-indicator"
-					size="20"
-					icon="chevron-right"
-				></nldd-icon-cell>
-			` : nothing}
-		</button>
+		` : nothing}
+		<!--
+			Accessibility (intentional decision): the shortcut is deliberately NOT
+			aria-hidden. It is announced as part of the item's accessible name —
+			e.g. "Ongedaan maken Ctrl Z" — so screen-reader users learn the
+			accelerator, the way native OS menus surface it. aria-keyshortcuts was
+			considered and rejected: the menu item itself does not handle the key
+			(the application's global shortcut does), so the plain announcement is
+			the deliberate choice rather than a missing aria-hidden.
+		-->
+		${(this.shortcut || this.shortcutMac || this.shortcutWindows || this.shortcutLinux) ? html`
+			<nldd-spacer-cell size="8"></nldd-spacer-cell>
+			<nldd-text-cell
+				width="fit-content"
+				size="md"
+				color="secondary"
+				horizontal-alignment="right"
+			>
+				<nldd-keyboard-shortcut
+					size="inherit"
+					variant="simple"
+					color="inherit"
+					keys=${this.shortcut || nothing}
+					mac-keys=${this.shortcutMac || nothing}
+					windows-keys=${this.shortcutWindows || nothing}
+					linux-keys=${this.shortcutLinux || nothing}
+				></nldd-keyboard-shortcut>
+			</nldd-text-cell>
+		` : nothing}
+		${hasSubmenu ? html`
+			<nldd-spacer-cell size="6"></nldd-spacer-cell>
+			<nldd-icon-cell
+				size="20"
+				icon="chevron-right"
+			></nldd-icon-cell>
+		` : nothing}
+	`;
+
+	return html`
+		${asLink ? html`
+			<a class="menu__item"
+				href=${safeHref}
+				role=${role}
+				aria-current=${this.selected ? 'page' : nothing}
+				@click=${this._handleClick}
+			>${content}</a>
+		` : html`
+			<button class="menu__item"
+				type="button"
+				role=${role}
+				?disabled=${this.disabled}
+				aria-checked=${hasCheckState ? String(this.selected) : nothing}
+				aria-selected=${variant === 'listbox' ? String(this.selected) : nothing}
+				aria-haspopup=${hasSubmenu ? 'menu' : nothing}
+				aria-expanded=${hasSubmenu ? String(this._submenuOpen) : nothing}
+				aria-controls=${hasSubmenu && this._submenuEl?.id ? this._submenuEl.id : nothing}
+				.popoverTargetElement=${this._submenuEl}
+				@click=${this._handleClick}
+			>${content}</button>
+		`}
 		<!--
 			Project the slotted nldd-menu (the submenu, if any) into the flat
 			tree. Without this slot, a light-DOM child nldd-menu sits outside
@@ -152,11 +203,11 @@ export function menuGroupTemplate(component: NLDDMenuGroup) {
 	// label reference still reads the hidden node's text content, which is
 	// the standard pattern for this kind of labelling.
 	return html`
-		<div class="menu-group__title"
+		<div class="menu__group-title"
 			id=${component._titleId}
 			aria-hidden="true"
 		>${component.text}</div>
-		<div class="menu-group__items"
+		<div class="menu__group-items"
 			role="group"
 			aria-labelledby=${component._titleId}
 		>

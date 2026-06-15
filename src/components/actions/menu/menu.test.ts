@@ -132,6 +132,19 @@ describe('nldd-menu', () => {
 		el.dispatchEvent(new KeyboardEvent('keydown', { key: 'End', bubbles: true }));
 		expect(spy).toHaveBeenCalled();
 	});
+
+	it('pins --_width, --_min-width and --_max-width to an explicit width, and clears all three when unset', async () => {
+		el = await fixture('<nldd-menu width="320px"><nldd-menu-item text="Item"></nldd-menu-item></nldd-menu>');
+		await waitForUpdate(el);
+		expect(el.style.getPropertyValue('--_width')).toBe('320px');
+		expect(el.style.getPropertyValue('--_min-width')).toBe('320px');
+		expect(el.style.getPropertyValue('--_max-width')).toBe('320px');
+		(el as unknown as { width: string }).width = '';
+		await waitForUpdate(el);
+		expect(el.style.getPropertyValue('--_width')).toBe('');
+		expect(el.style.getPropertyValue('--_min-width')).toBe('');
+		expect(el.style.getPropertyValue('--_max-width')).toBe('');
+	});
 });
 
 describe('nldd-menu-item', () => {
@@ -156,16 +169,16 @@ describe('nldd-menu-item', () => {
 	it('renders an icon-cell when the icon attribute is set', async () => {
 		el = await fixture('<nldd-menu-item text="Save" icon="file"></nldd-menu-item>');
 		await waitForUpdate(el);
-		const iconCell = el.shadowRoot!.querySelector('.menu__item-icon');
+		// Target the content icon by its value, so this stays unambiguous even if
+		// the item later also renders a check icon-cell (checkbox/radio types).
+		const iconCell = el.shadowRoot!.querySelector('nldd-icon-cell[icon="file"]');
 		expect(iconCell).not.toBeNull();
-		// icon-cell forwards its `icon` attribute to an internal <nldd-icon>.
-		expect(iconCell!.getAttribute('icon')).toBe('file');
 	});
 
 	it('does not render an icon-cell when the icon attribute is missing', async () => {
 		el = await fixture('<nldd-menu-item text="Save"></nldd-menu-item>');
 		await waitForUpdate(el);
-		expect(el.shadowRoot!.querySelector('.menu__item-icon')).toBeNull();
+		expect(el.shadowRoot!.querySelector('nldd-icon-cell')).toBeNull();
 	});
 
 	it('reflects details attribute', async () => {
@@ -262,6 +275,133 @@ describe('nldd-menu-item', () => {
 		el = await fixture('<nldd-menu-item text="Item"></nldd-menu-item>');
 		await waitForUpdate(el);
 		expect(getButton(el).getAttribute('aria-checked')).toBeNull();
+	});
+});
+
+describe('nldd-menu-item href (link items)', () => {
+	let el: HTMLElement;
+
+	afterEach(() => {
+		if (el) cleanup(el);
+	});
+
+	const action = (item: Element): HTMLElement => item.shadowRoot?.querySelector('.menu__item') as HTMLElement;
+
+	it('renders a button item with an href as an anchor link', async () => {
+		el = await fixture('<nldd-menu><nldd-menu-item text="Profiel" href="/profiel"></nldd-menu-item></nldd-menu>');
+		await waitForUpdate(el);
+		const item = el.querySelector('nldd-menu-item')!;
+		const a = action(item);
+		expect(a.tagName).toBe('A');
+		expect(a.getAttribute('href')).toBe('/profiel');
+		expect(a.getAttribute('role')).toBe('menuitem');
+		expect(item.shadowRoot!.querySelector('button.menu__item')).toBeNull();
+		expect(a.querySelector('nldd-text-cell')?.getAttribute('text')).toBe('Profiel');
+	});
+
+	it('sets aria-current="page" on a selected link item', async () => {
+		el = await fixture('<nldd-menu><nldd-menu-item text="Home" href="/" selected></nldd-menu-item></nldd-menu>');
+		await waitForUpdate(el);
+		expect(action(el.querySelector('nldd-menu-item')!).getAttribute('aria-current')).toBe('page');
+	});
+
+	it('ignores href for checkbox and radio items (stays a button)', async () => {
+		el = await fixture(`
+			<nldd-menu>
+				<nldd-menu-item text="A" type="checkbox" href="/a"></nldd-menu-item>
+				<nldd-menu-item text="B" type="radio" href="/b"></nldd-menu-item>
+			</nldd-menu>
+		`);
+		await waitForUpdate(el);
+		const items = el.querySelectorAll('nldd-menu-item');
+		expect(action(items[0]).tagName).toBe('BUTTON');
+		expect(action(items[1]).tagName).toBe('BUTTON');
+	});
+
+	it('ignores href on a submenu opener (stays a button)', async () => {
+		el = await fixture(`
+			<nldd-menu>
+				<nldd-menu-item text="Parent" href="/parent">
+					<nldd-menu>
+						<nldd-menu-item text="Child"></nldd-menu-item>
+					</nldd-menu>
+				</nldd-menu-item>
+			</nldd-menu>
+		`);
+		await waitForUpdate(el);
+		const parent = el.querySelector('nldd-menu-item')!;
+		await (parent as { updateComplete?: Promise<unknown> }).updateComplete;
+		expect(action(parent).tagName).toBe('BUTTON');
+	});
+
+	it('renders a disabled href item as a disabled button, not a link', async () => {
+		el = await fixture('<nldd-menu><nldd-menu-item text="X" href="/x" disabled></nldd-menu-item></nldd-menu>');
+		await waitForUpdate(el);
+		const a = action(el.querySelector('nldd-menu-item')!);
+		expect(a.tagName).toBe('BUTTON');
+		expect(a.hasAttribute('disabled')).toBe(true);
+	});
+
+	it('sanitizes a dangerous href: a javascript: URL falls back to a button with no link', async () => {
+		el = await fixture('<nldd-menu><nldd-menu-item text="X" href="javascript:alert(1)"></nldd-menu-item></nldd-menu>');
+		await waitForUpdate(el);
+		const item = el.querySelector('nldd-menu-item')!;
+		// Blocked protocol → no anchor renders, so the payload never reaches an href.
+		expect(item.shadowRoot!.querySelector('a.menu__item')).toBeNull();
+		expect(action(item).tagName).toBe('BUTTON');
+		expect(item.shadowRoot!.querySelector('[href]')).toBeNull();
+	});
+
+	it('fires select when a link item is activated', async () => {
+		el = await fixture('<nldd-menu><nldd-menu-item text="Profiel" href="#profiel"></nldd-menu-item></nldd-menu>');
+		await waitForUpdate(el);
+		const item = el.querySelector('nldd-menu-item')!;
+		let fired = false;
+		item.addEventListener('select', () => { fired = true; });
+		const a = action(item);
+		a.addEventListener('click', e => e.preventDefault(), { once: true }); // keep the test from navigating
+		a.click();
+		expect(fired).toBe(true);
+	});
+});
+
+describe('nldd-menu-item shortcut (display only)', () => {
+	let el: HTMLElement;
+
+	afterEach(() => {
+		if (el) cleanup(el);
+	});
+
+	const shortcutEl = (item: Element) => item.shadowRoot?.querySelector('nldd-keyboard-shortcut');
+
+	it('renders a keyboard-shortcut hint when shortcut is set', async () => {
+		el = await fixture('<nldd-menu><nldd-menu-item text="Bewerk" shortcut="Cmd+E"></nldd-menu-item></nldd-menu>');
+		await waitForUpdate(el);
+		const ks = shortcutEl(el.querySelector('nldd-menu-item')!);
+		expect(ks).not.toBeNull();
+		expect(ks!.getAttribute('keys')).toBe('Cmd+E');
+	});
+
+	it('passes per-OS overrides through to the hint', async () => {
+		el = await fixture('<nldd-menu><nldd-menu-item text="Opslaan" shortcut="Ctrl+S" shortcut-mac="Cmd+S"></nldd-menu-item></nldd-menu>');
+		await waitForUpdate(el);
+		const ks = shortcutEl(el.querySelector('nldd-menu-item')!)!;
+		expect(ks.getAttribute('keys')).toBe('Ctrl+S');
+		expect(ks.getAttribute('mac-keys')).toBe('Cmd+S');
+	});
+
+	it('renders no hint without a shortcut', async () => {
+		el = await fixture('<nldd-menu><nldd-menu-item text="Plain"></nldd-menu-item></nldd-menu>');
+		await waitForUpdate(el);
+		expect(shortcutEl(el.querySelector('nldd-menu-item')!)).toBeNull();
+	});
+
+	it('shows the hint on a link item as well', async () => {
+		el = await fixture('<nldd-menu><nldd-menu-item text="Zoek" href="#zoek" shortcut="Cmd+F"></nldd-menu-item></nldd-menu>');
+		await waitForUpdate(el);
+		const item = el.querySelector('nldd-menu-item')!;
+		expect(item.shadowRoot!.querySelector('a.menu__item')).not.toBeNull();
+		expect(shortcutEl(item)!.getAttribute('keys')).toBe('Cmd+F');
 	});
 });
 
@@ -402,7 +542,7 @@ describe('nldd-menu-group', () => {
 	it('renders the text in the title element', async () => {
 		el = await fixture('<nldd-menu-group text="Bestand"></nldd-menu-group>');
 		await waitForUpdate(el);
-		const title = el.shadowRoot!.querySelector('.menu-group__title');
+		const title = el.shadowRoot!.querySelector('.menu__group-title');
 		expect(title?.textContent).toBe('Bestand');
 	});
 
@@ -414,7 +554,7 @@ describe('nldd-menu-group', () => {
 		`);
 		await waitForUpdate(el);
 		const groupContainer = el.shadowRoot!.querySelector('[role="group"]');
-		const title = el.shadowRoot!.querySelector('.menu-group__title');
+		const title = el.shadowRoot!.querySelector('.menu__group-title');
 		expect(groupContainer).not.toBeNull();
 		expect(title?.id).toBeTruthy();
 		expect(groupContainer?.getAttribute('aria-labelledby')).toBe(title!.id);
@@ -426,7 +566,7 @@ describe('nldd-menu-group', () => {
 		// so the group label survives while standalone announcement does not.
 		el = await fixture('<nldd-menu-group text="Bestand"></nldd-menu-group>');
 		await waitForUpdate(el);
-		const title = el.shadowRoot!.querySelector('.menu-group__title');
+		const title = el.shadowRoot!.querySelector('.menu__group-title');
 		expect(title?.getAttribute('aria-hidden')).toBe('true');
 	});
 
@@ -540,7 +680,7 @@ describe('nldd-menu-item with submenu', () => {
 			</nldd-menu-item>
 		`);
 		await waitForUpdate(el);
-		const indicator = el.shadowRoot!.querySelector('.menu__item-submenu-indicator');
+		const indicator = el.shadowRoot!.querySelector('nldd-icon-cell[icon="chevron-right"]');
 		expect(indicator).not.toBeNull();
 	});
 

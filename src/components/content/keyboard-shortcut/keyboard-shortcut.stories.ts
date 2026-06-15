@@ -37,10 +37,26 @@ export default {
 	argTypes: {
 		size: {
 			control: 'select',
-			options: ['sm', 'md'],
-			description: 'Grootte van de container',
+			options: ['sm', 'md', 'inherit'],
+			description: "Grootte: 'sm' | 'md' | 'inherit' ('inherit' neemt de font-size van de container over en schaalt de keycaps in em)",
 			table: {
 				defaultValue: { summary: 'md' },
+			},
+		},
+		variant: {
+			control: 'select',
+			options: ['box', 'simple'],
+			description: "'box' (default) toont elke toets als keycap; 'simple' toont de toetsen als platte tekst — lichter, voor inline gebruik zoals in een menu",
+			table: {
+				defaultValue: { summary: 'box' },
+			},
+		},
+		color: {
+			control: 'select',
+			options: ['neutral', 'inherit'],
+			description: "'neutral' (default) gebruikt de eigen kleuren; 'inherit' volgt de omringende tekstkleur (currentColor) met een doorschijnende contrast-vulling",
+			table: {
+				defaultValue: { summary: 'neutral' },
 			},
 		},
 		alwaysVisible: {
@@ -73,6 +89,8 @@ export default {
 	},
 	args: {
 		size: 'md',
+		variant: 'box',
+		color: 'neutral',
 		alwaysVisible: false,
 		keys: 'Ctrl+K',
 		macKeys: '',
@@ -81,9 +99,11 @@ export default {
 	},
 };
 
-const Template = ({ size, alwaysVisible, keys, macKeys, windowsKeys, linuxKeys }: Record<string, any>) => html`
+const Template = ({ size, variant, color, alwaysVisible, keys, macKeys, windowsKeys, linuxKeys }: Record<string, any>) => html`
 	<nldd-keyboard-shortcut
 		size=${size}
+		variant=${variant}
+		color=${color || nothing}
 		?always-visible=${alwaysVisible}
 		keys=${keys}
 		mac-keys=${macKeys || nothing}
@@ -123,6 +143,46 @@ export const Sizes = {
 	`,
 	parameters: {
 		controls: { disable: true },
+	},
+};
+
+export const SchaaltMee = {
+	render: () => html`
+		<div style="display: flex; flex-direction: column; gap: 12px; align-items: flex-start;">
+			<span style="font-size: 14px;">Druk <nldd-keyboard-shortcut size="inherit" keys="Ctrl+K" mac-keys="Cmd+K"></nldd-keyboard-shortcut> om te zoeken (14px).</span>
+			<span style="font-size: 20px;">Druk <nldd-keyboard-shortcut size="inherit" keys="Ctrl+K" mac-keys="Cmd+K"></nldd-keyboard-shortcut> om te zoeken (20px).</span>
+			<span style="font-size: 14px;">Of als tekst: <nldd-keyboard-shortcut size="inherit" variant="simple" keys="Ctrl+K" mac-keys="Cmd+K"></nldd-keyboard-shortcut>.</span>
+		</div>
+	`,
+	parameters: {
+		controls: { disable: true },
+		docs: { description: { story: '`size="inherit"` schaalt mee met de font-size van de omringende tekst — de box-keycaps in em, de simple-variant als platte tekst.' } },
+	},
+};
+
+export const Varianten = {
+	render: () => html`
+		<div style="display: flex; gap: 24px; align-items: center;">
+			<nldd-keyboard-shortcut variant="box" keys="Cmd+K"></nldd-keyboard-shortcut>
+			<nldd-keyboard-shortcut variant="simple" keys="Cmd+K"></nldd-keyboard-shortcut>
+		</div>
+	`,
+	parameters: {
+		controls: { disable: true },
+		docs: { description: { story: '`variant="box"` (default, keycaps) naast `variant="simple"` (platte tekst — lichter, voor inline gebruik zoals in een menu).' } },
+	},
+};
+
+export const Inherit = {
+	render: () => html`
+		<div style="display: flex; gap: 16px; align-items: center; padding: 16px; border-radius: 8px; background: var(--semantics-categories-donkerblauw-reference-background-color); color: var(--semantics-categories-donkerblauw-reference-primary-content-color);">
+			<nldd-keyboard-shortcut color="inherit" keys="Cmd+K"></nldd-keyboard-shortcut>
+			<nldd-keyboard-shortcut color="inherit" keys="Ctrl+Shift+P"></nldd-keyboard-shortcut>
+		</div>
+	`,
+	parameters: {
+		controls: { disable: true },
+		docs: { description: { story: '`color="inherit"` laat de toetsen en scheidingstekens de omringende tekstkleur volgen (currentColor) — hier wit op een donkerblauw vlak. De toetsen worden een omtrek in die kleur.' } },
 	},
 };
 

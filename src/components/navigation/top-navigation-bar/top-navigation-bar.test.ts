@@ -194,6 +194,156 @@ describe('nldd-top-navigation-bar – menu sheet async guards', () => {
 	});
 });
 
+describe('nldd-top-navigation-bar – menu sheet items', () => {
+	let el: NLDDTopNavigationBar;
+
+	afterEach(() => {
+		if (el) cleanup(el);
+		document.querySelectorAll('nldd-sheet').forEach(s => s.remove());
+	});
+
+	it('renders non-link items as real buttons and link items as anchors', async () => {
+		el = await fixture<NLDDTopNavigationBar>(`
+			<nldd-top-navigation-bar website-title="Test">
+				<nldd-menu-bar slot="global">
+					<nldd-menu-bar-item text="Home" href="/home"></nldd-menu-bar-item>
+					<nldd-menu-bar-item text="Zoeken"></nldd-menu-bar-item>
+				</nldd-menu-bar>
+			</nldd-top-navigation-bar>
+		`);
+		await waitForUpdate(el);
+
+		// Opens the sheet (loads deps) and syncs the list items into it.
+		await (el as any)._onMenuButtonClick();
+		const list = (el as any)._globalMenuSheetList as HTMLElement;
+		const listItems = Array.from(list.querySelectorAll('nldd-list-item')) as HTMLElement[];
+		expect(listItems.length).toBe(2);
+		await Promise.all(listItems.map(li => (li as any).updateComplete));
+
+		const [linkItem, buttonItem] = listItems;
+
+		// Link item → anchor, no bogus type attribute
+		expect(linkItem.getAttribute('href')).toBe('/home');
+		expect(linkItem.getAttribute('type')).toBeNull();
+		expect(linkItem.shadowRoot!.querySelector('a.list-item__action')).not.toBeNull();
+
+		// Non-link item → real <button type="button">, opted in via `button`
+		expect(buttonItem.hasAttribute('button')).toBe(true);
+		expect(buttonItem.getAttribute('type')).toBeNull();
+		const btn = buttonItem.shadowRoot!.querySelector('button.list-item__action') as HTMLButtonElement;
+		expect(btn).not.toBeNull();
+		expect(btn.getAttribute('type')).toBe('button');
+	});
+});
+
+describe('nldd-top-navigation-bar – menu sheet drill-down', () => {
+	let el: NLDDTopNavigationBar;
+
+	afterEach(() => {
+		if (el) cleanup(el);
+		document.querySelectorAll('nldd-sheet').forEach(s => s.remove());
+	});
+
+	const drillFixture = `
+		<nldd-top-navigation-bar website-title="Test">
+			<nldd-menu-bar slot="global">
+				<nldd-menu-bar-item text="Home" href="/home"></nldd-menu-bar-item>
+				<nldd-menu-bar-item text="Onderwerpen" expandable>
+					<nldd-menu>
+						<nldd-menu-item text="Zorg"></nldd-menu-item>
+						<nldd-menu-item text="Wonen"></nldd-menu-item>
+					</nldd-menu>
+				</nldd-menu-bar-item>
+			</nldd-menu-bar>
+		</nldd-top-navigation-bar>
+	`;
+
+	async function openSheet(host: NLDDTopNavigationBar): Promise<HTMLElement> {
+		// Call the menu-button handler directly rather than dispatching a DOM
+		// click: it's async (it lazy-loads the sheet's dependencies) and returns a
+		// promise we can await; a synthetic click gives no handle to await on.
+		await (host as any)._onMenuButtonClick();
+		const list = (host as any)._globalMenuSheetList as HTMLElement;
+		await Promise.all(
+			Array.from(list.querySelectorAll('nldd-list-item')).map(li => (li as any).updateComplete),
+		);
+		return list;
+	}
+
+	const labels = (list: HTMLElement): (string | null | undefined)[] =>
+		Array.from(list.querySelectorAll('nldd-list-item'))
+			.map(r => r.querySelector('nldd-text-cell')?.getAttribute('text'));
+
+	it('shows a chevron on parent rows, drills into the submenu, and walks back', async () => {
+		el = await fixture<NLDDTopNavigationBar>(drillFixture);
+		await waitForUpdate(el);
+		const list = await openSheet(el);
+		const titleBar = (el as any)._globalMenuSheetTitleBar as HTMLElement;
+		expect(titleBar).not.toBeNull();
+
+		// Root: a link row + a submenu row with a chevron, no back button.
+		expect(labels(list)).toEqual(['Home', 'Onderwerpen']);
+		expect(titleBar.getAttribute('text')).toBe('Menu');
+		expect(titleBar.hasAttribute('back-text')).toBe(false);
+		const parentRow = list.querySelectorAll('nldd-list-item')[1] as HTMLElement;
+		expect(parentRow.hasAttribute('button')).toBe(true);
+		expect(parentRow.querySelector('nldd-icon-cell[slot="end"]')?.getAttribute('icon')).toBe('chevron-right-small');
+
+		// Drill in → submenu items, title becomes the parent, back points home.
+		parentRow.shadowRoot!.querySelector<HTMLButtonElement>('button.list-item__action')!.click();
+		await waitForUpdate(el);
+		expect(labels(list)).toEqual(['Zorg', 'Wonen']);
+		expect(titleBar.getAttribute('text')).toBe('Onderwerpen');
+		expect(titleBar.getAttribute('back-text')).toBe('Menu');
+
+		// Back → root again.
+		titleBar.dispatchEvent(new CustomEvent('back', { bubbles: true, composed: true }));
+		await waitForUpdate(el);
+		expect(labels(list)).toEqual(['Home', 'Onderwerpen']);
+		expect(titleBar.hasAttribute('back-text')).toBe(false);
+	});
+
+	it('returns focus to the opener row when walking back (APG)', async () => {
+		el = await fixture<NLDDTopNavigationBar>(drillFixture);
+		await waitForUpdate(el);
+		const list = await openSheet(el);
+		// Drill into "Onderwerpen" (the second row).
+		(list.querySelectorAll('nldd-list-item')[1] as HTMLElement)
+			.shadowRoot!.querySelector<HTMLButtonElement>('button.list-item__action')!.click();
+		await waitForUpdate(el);
+		// Walk back to the root level.
+		const titleBar = (el as any)._globalMenuSheetTitleBar as HTMLElement;
+		expect(titleBar).not.toBeNull();
+		titleBar.dispatchEvent(new CustomEvent('back', { bubbles: true, composed: true }));
+		await waitForUpdate(el);
+		await new Promise(resolve => requestAnimationFrame(() => resolve(null)));
+		// Focus lands on the "Onderwerpen" opener row, not the first ("Home") row.
+		const rows = Array.from(list.querySelectorAll('nldd-list-item')) as HTMLElement[];
+		expect(rows[1].matches(':focus-within')).toBe(true);
+		expect(rows[0].matches(':focus-within')).toBe(false);
+	});
+
+	it('forwards a submenu leaf selection (without throwing on the closed popover)', async () => {
+		el = await fixture<NLDDTopNavigationBar>(drillFixture);
+		await waitForUpdate(el);
+		const list = await openSheet(el);
+
+		(list.querySelectorAll('nldd-list-item')[1] as HTMLElement)
+			.shadowRoot!.querySelector<HTMLButtonElement>('button.list-item__action')!.click();
+		await waitForUpdate(el);
+
+		const zorgItem = el.querySelector('nldd-menu-item')!; // first submenu item
+		let selected = false;
+		zorgItem.addEventListener('select', () => { selected = true; });
+
+		const zorgRow = list.querySelectorAll('nldd-list-item')[0] as HTMLElement;
+		await (zorgRow as any).updateComplete;
+		zorgRow.shadowRoot!.querySelector<HTMLButtonElement>('button.list-item__action')!.click();
+
+		expect(selected).toBe(true);
+	});
+});
+
 describe('nldd-top-navigation-bar – back button', () => {
 	let el: NLDDTopNavigationBar;
 

@@ -201,6 +201,42 @@ export const SmallViewport = {
 	parameters: { controls: { disable: true } },
 };
 
+/**
+ * Een meerlaagse hoofdnavigatie: een globaal item met een geneste `<nldd-menu>`
+ * wordt op mobiel een aparte laag in de menu-sheet. Open de sheet via de
+ * "Menu"-knop, tik op een rij met een chevron om in te zoomen; de titelbalk
+ * toont dan een terugknop naar het vorige niveau. Submenu's mogen zelf weer
+ * submenu's hebben ("Wonen" hieronder), zodat je net zo diep kunt navigeren als
+ * de content vraagt.
+ */
+export const MeerlaagsMenu = {
+	render: () => html`
+		<div style="${layoutArea} max-width: 400px;">
+			<nldd-top-navigation-bar website-title="Rijksoverheid">
+				<nldd-menu-bar slot="global">
+					<nldd-menu-bar-item text="Home" current></nldd-menu-bar-item>
+					<nldd-menu-bar-item text="Onderwerpen" expandable>
+						<nldd-menu>
+							<nldd-menu-item text="Zorg en gezondheid"></nldd-menu-item>
+							<nldd-menu-item text="Wonen">
+								<nldd-menu>
+									<nldd-menu-item text="Huren"></nldd-menu-item>
+									<nldd-menu-item text="Kopen"></nldd-menu-item>
+									<nldd-menu-item text="Verbouwen"></nldd-menu-item>
+								</nldd-menu>
+							</nldd-menu-item>
+							<nldd-menu-item text="Werk en inkomen"></nldd-menu-item>
+						</nldd-menu>
+					</nldd-menu-bar-item>
+					<nldd-menu-bar-item text="Actueel"></nldd-menu-bar-item>
+					<nldd-menu-bar-item text="Contact"></nldd-menu-bar-item>
+				</nldd-menu-bar>
+			</nldd-top-navigation-bar>
+		</div>
+	`,
+	parameters: { controls: { disable: true } },
+};
+
 export const ManyGlobalItems = {
 	render: () => html`
 		<div style=${layoutArea}>

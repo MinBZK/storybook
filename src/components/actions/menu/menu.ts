@@ -10,6 +10,7 @@ import '../../lists-and-tables/cells/icon-cell/icon-cell.js';
 import '../../lists-and-tables/cells/spacer-cell/spacer-cell.js';
 import '../../lists-and-tables/cells/text-cell/text-cell.js';
 import '../../content/icon/icon.js';
+import '../../content/keyboard-shortcut/keyboard-shortcut.js';
 import '../../status-and-feedback/inline-dialog/inline-dialog.js';
 import { isKeyboardMode, isTouchMode } from '../../../utilities/input-modality.js';
 import { breakpoints } from '../../../assets/styles/breakpoints.js';
@@ -83,8 +84,19 @@ if (!customElements.get('nldd-menu-group')) {
  *
  * @attr {string}  text      - Display text. Supports **bold** markdown syntax.
  * @attr {string}  value     - Form value. Falls back to text when not set.
+ * @attr {string}  href      - Optional link target. A plain button item with an
+ *                             href renders as an `<a>` so it is a real link
+ *                             (middle-click, open in new tab, copy link). Ignored
+ *                             for submenu openers, checkbox/radio items, and while
+ *                             disabled.
  * @attr {string}  aliases   - Space-separated alternative search terms.
  * @attr {string}  details   - Secondary label shown on the right side.
+ * @attr {string}  shortcut  - Keyboard shortcut hint shown on the right, e.g. 'Cmd+E'.
+ *                             Display only (rendered via nldd-keyboard-shortcut) — it does
+ *                             not bind the key; wire up the handling in your app. Hidden on
+ *                             touch-only devices, where it isn't invokable.
+ * @attr {string}  shortcut-mac / shortcut-windows / shortcut-linux - Per-OS overrides for
+ *                             `shortcut`, picked by detected OS (falls back to `shortcut`).
  * @attr {string}  icon      - Icon name rendered before the text (nldd-icon name).
  * @attr {string}  type      - Item type: 'button' | 'checkbox' | 'radio'. Default: 'button'.
  * @attr {boolean} selected        - Selected state for checkbox and radio types.
@@ -108,14 +120,27 @@ export class NLDDMenuItem extends LitElement {
 	@property({ type: String, reflect: true })
 	value = '';
 
-	/** Space-separated alternative search terms used by nldd-menu's filter. */
+	@property({ type: String, reflect: true })
+	href = '';
+
 	@property({ type: String, reflect: true })
 	aliases = '';
 
 	@property({ type: String, reflect: true })
 	details = '';
 
-	/** Icon name rendered before the text (looked up via nldd-icon). */
+	@property({ type: String, reflect: true })
+	shortcut = '';
+
+	@property({ type: String, reflect: true, attribute: 'shortcut-mac' })
+	shortcutMac = '';
+
+	@property({ type: String, reflect: true, attribute: 'shortcut-windows' })
+	shortcutWindows = '';
+
+	@property({ type: String, reflect: true, attribute: 'shortcut-linux' })
+	shortcutLinux = '';
+
 	@property({ type: String, reflect: true })
 	icon = '';
 
@@ -309,7 +334,9 @@ const defaultFilterFn = (query: string, item: NLDDMenuItem): boolean => {
  * @attr {string}  empty-text           - Text of the default empty-state dialog. Falls back
  *                                        to Dutch i18n "Geen opties beschikbaar".
  * @attr {string}  empty-supporting-text - Supporting text of the default empty-state dialog.
- * @attr {string}  width                - Explicit width. Sets --_width internally.
+ * @attr {string}  width                - Explicit width, pinned exactly. Without it the
+ *                                        menu sizes to its content between a minimum and a
+ *                                        viewport-aware maximum (min(100vw - inset, 640px)).
  * @attr {number}  max-items            - Maximum number of visible items before scrolling.
  *                                        Sets --_max-items internally. Default: 0 (no limit).
  * @attr {object}  translations         - Override one or more translation keys.
@@ -347,7 +374,11 @@ export class NLDDMenu extends LitElement {
 	emptySupportingText = '';
 
 
-	/** Explicit width. Sets --_width internally. */
+	/**
+	 * Explicit width, pinned exactly (sets --_width and clamps min/max to it).
+	 * Leave unset to let the menu size to its content between a minimum and a
+	 * viewport-aware maximum of min(100vw - inset, 640px).
+	 */
 	@property({ type: String, reflect: true })
 	width = '';
 
@@ -460,7 +491,7 @@ export class NLDDMenu extends LitElement {
 	 * Bestand" instead of an ambiguous "Bestand, button". Only used when
 	 * this menu is itself a submenu in drill-in mode. */
 	get _resolvedBackLabel(): string {
-		const back = this._t('components.menu.back');
+		const back = this._t('components.menu.back-action');
 		const parent = this._parentItem?.text ?? '';
 		return parent ? `${back}: ${parent}` : back;
 	}
@@ -516,9 +547,17 @@ export class NLDDMenu extends LitElement {
 	override updated(changedProperties: Map<string, unknown>): void {
 		if (changedProperties.has('width')) {
 			if (this.width) {
+				// An explicit width pins the menu to exactly that size — clamp the
+				// content-driven min/max to it too, so callers that need an exact
+				// width (e.g. combo-box matching its input) aren't widened by the
+				// default minimum or capped by the default maximum.
 				this.style.setProperty('--_width', this.width);
+				this.style.setProperty('--_min-width', this.width);
+				this.style.setProperty('--_max-width', this.width);
 			} else {
 				this.style.removeProperty('--_width');
+				this.style.removeProperty('--_min-width');
+				this.style.removeProperty('--_max-width');
 			}
 		}
 		if (changedProperties.has('maxItems')) {
@@ -1203,7 +1242,7 @@ export class NLDDMenu extends LitElement {
 					this._announce(
 						dest
 							? this._t('components.menu.submenu-back-action', { title: dest })
-							: this._t('components.menu.back'),
+							: this._t('components.menu.back-action'),
 					);
 				}
 			}

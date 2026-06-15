@@ -16,6 +16,10 @@
  * zodat ze visueel gescheiden blijven. Op een gekleurde ondergrond kan de
  * ringkleur meegegeven worden via `--context-parent-background-color`.
  *
+ * Op smalle breedtes (een sm-container, ≤ 640px) met meerdere avatars komt
+ * de avatarrij boven de namen te staan, zodat de tekst de volle breedte
+ * houdt; met één avatar blijft de byline op één regel.
+ *
  * Avatars worden geslot als `<img slot="avatars">`. Zet `alt=""` wanneer
  * de namen al in de tekst staan (decoratief); geef anders een
  * beschrijvende alt-tekst op.
@@ -47,6 +51,12 @@ export class NLDDByline extends LitElement {
 	@state()
 	_hasSlottedAvatars = false;
 
+	/** Number of slotted avatars. Drives the responsive layout: with two or
+	 *  more avatars, a small-container byline stacks the avatars above the
+	 *  names (see the `data-multiple-avatars` hook in the template/styles). */
+	@state()
+	_avatarCount = 0;
+
 	@state()
 	_hasSlottedText = false;
 
@@ -60,10 +70,13 @@ export class NLDDByline extends LitElement {
 	 *  also fires for the initial assignment, so the first render is covered. */
 	_onSlotChange = (e: Event): void => {
 		const slot = e.target as HTMLSlotElement;
-		const has = slot.assignedElements().length > 0;
-		if (slot.name === 'avatars') this._hasSlottedAvatars = has;
-		else if (slot.name === 'text') this._hasSlottedText = has;
-		else if (slot.name === 'supporting-text') this._hasSlottedSupportingText = has;
+		const count = slot.assignedElements().length;
+		if (slot.name === 'avatars') {
+			this._avatarCount = count;
+			this._hasSlottedAvatars = count > 0;
+		}
+		else if (slot.name === 'text') this._hasSlottedText = count > 0;
+		else if (slot.name === 'supporting-text') this._hasSlottedSupportingText = count > 0;
 	};
 
 	override render() {

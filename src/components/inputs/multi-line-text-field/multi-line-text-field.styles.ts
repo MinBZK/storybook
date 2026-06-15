@@ -11,10 +11,11 @@ export const multiLineTextFieldStyles = css`
 		--_background-color: var(--semantics-input-fields-background-color);
 		--_corner-radius: var(--semantics-controls-md-corner-radius);
 		--_inline-padding: calc(var(--semantics-controls-md-inline-padding) - var(--semantics-input-fields-border-thickness));
-		--_min-size: var(--semantics-controls-md-min-size);
+		--_min-height: var(--semantics-controls-md-min-size);
 		--_text-font: var(--semantics-input-fields-md-text-font);
-		--_icon-area-size: calc(var(--_min-size) - var(--semantics-input-fields-border-thickness) * 2);
+		--_icon-area-size: calc(var(--_min-height) - var(--semantics-input-fields-border-thickness) * 2);
 		--_validation-icon-size: var(--semantics-input-fields-md-validation-icon-size);
+		--_rows: 3;
 
 		${inheritedTextReset}
 		display: block;
@@ -30,7 +31,7 @@ export const multiLineTextFieldStyles = css`
 	:host([size="sm"]) {
 		--_corner-radius: var(--semantics-controls-sm-corner-radius);
 		--_inline-padding: calc(var(--semantics-controls-sm-inline-padding) - var(--semantics-input-fields-border-thickness));
-		--_min-size: var(--semantics-controls-sm-min-size);
+		--_min-height: var(--semantics-controls-sm-min-size);
 		--_text-font: var(--semantics-input-fields-sm-text-font);
 		--_validation-icon-size: var(--semantics-input-fields-sm-validation-icon-size);
 	}
@@ -87,8 +88,8 @@ export const multiLineTextFieldStyles = css`
 		border: none;
 		background: transparent;
 		width: 100%;
-		min-height: calc(var(--_min-size) - var(--semantics-input-fields-border-thickness) * 2);
-		padding-block: calc((var(--_min-size) - var(--semantics-input-fields-border-thickness) * 2 - 1lh) / 2);
+		min-height: calc(var(--_min-height) - var(--semantics-input-fields-border-thickness) * 2);
+		padding-block: calc((var(--_min-height) - var(--semantics-input-fields-border-thickness) * 2 - 1lh) / 2);
 		padding-inline: var(--_inline-padding);
 		color: var(--semantics-content-color);
 		font: var(--_text-font);
@@ -106,6 +107,11 @@ export const multiLineTextFieldStyles = css`
 	:host([resize="auto"]) .multi-line-text-field__input {
 		resize: none;
 		field-sizing: content;
+		/* Keep the configured rows as the floor: field-sizing grows the field with
+		   content, and this min-height stops it shrinking below that many lines.
+		   The host exposes the count as --_rows; one row already fits in
+		   --_min-height, so each extra row adds one line height. */
+		min-height: calc(var(--_min-height) - var(--semantics-input-fields-border-thickness) * 2 + (var(--_rows) - 1) * 1lh);
 	}
 
 	:host([valid]) .multi-line-text-field__input,

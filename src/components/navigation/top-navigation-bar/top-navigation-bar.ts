@@ -18,6 +18,29 @@ interface Sheet extends HTMLElement {
 	hide(): void;
 }
 
+/** One entry rendered as a row in the menu sheet — derived from a global
+ * menu-bar-item (top level) or a submenu's menu-item (deeper levels). */
+interface SheetEntry {
+	text: string;
+	/** Sanitized href; empty when the row is a button rather than a link. */
+	href: string;
+	/** Marks the row as the current/selected one. */
+	selected: boolean;
+	/** Child nldd-menu when this row drills into a deeper level, else null. */
+	submenu: Element | null;
+	/** Triggers the source item's action — only used for button (non-link,
+	 *  non-submenu) rows. */
+	activate: () => void;
+}
+
+/** One level on the sheet's drill-down stack. `container` is the element whose
+ * direct children make up the level: the global nldd-menu-bar at the root, or a
+ * nldd-menu submenu deeper in. */
+interface SheetLevel {
+	title: string;
+	container: Element | null;
+}
+
 // # nldd-top-navigation-bar
 
 @customElement('nldd-top-navigation-bar')
@@ -75,6 +98,10 @@ export class NLDDTopNavigationBar extends withTranslations(LitElement, nlddTopNa
 
 	private _globalMenuSheet: Sheet | null = null;
 	private _globalMenuSheetList: HTMLElement | null = null;
+	private _globalMenuSheetTitleBar: HTMLElement | null = null;
+	/** Drill-down stack for the menu sheet; the last entry is the visible
+	 * level. Reset to the root level each time the sheet opens. */
+	private _sheetStack: SheetLevel[] = [];
 
 	private _resizeObserver: ResizeObserver | null = null;
 	private _compactRAF: number | null = null;
@@ -88,9 +115,15 @@ export class NLDDTopNavigationBar extends withTranslations(LitElement, nlddTopNa
 	override willUpdate(changed: PropertyValues): void {
 		super.willUpdate(changed);
 		if (changed.has('translations')) {
-			this._globalMenuSheet?.setAttribute('accessible-label', this._t('components.top-navigation-bar.menu-action'));
-			this._globalMenuSheet?.querySelector('nldd-top-title-bar')?.setAttribute('text', this._menuText);
-			this._globalMenuSheet?.querySelector('nldd-top-title-bar')?.setAttribute('dismiss-text', this._t('components.top-navigation-bar.menu-sheet-dismiss-action'));
+			this._globalMenuSheet?.setAttribute('accessible-label', this._menuText);
+			this._globalMenuSheetTitleBar?.setAttribute('dismiss-text', this._t('components.top-navigation-bar.menu-sheet-dismiss-action'));
+			// Keep the sheet's root-level title in sync with the translated menu
+			// label, then re-render so the visible level — and any back button
+			// pointing at the root — picks it up.
+			if (this._sheetStack.length > 0) {
+				this._sheetStack[0].title = this._menuText;
+				this._renderSheetLevel();
+			}
 			this._syncSlottedMenuBarLabels();
 		}
 	}
@@ -164,6 +197,8 @@ export class NLDDTopNavigationBar extends withTranslations(LitElement, nlddTopNa
 		this._globalMenuSheet?.remove();
 		this._globalMenuSheet = null;
 		this._globalMenuSheetList = null;
+		this._globalMenuSheetTitleBar = null;
+		this._sheetStack = [];
 	}
 
 	override firstUpdated(): void {
@@ -299,6 +334,8 @@ export class NLDDTopNavigationBar extends withTranslations(LitElement, nlddTopNa
 			import('../../lists-and-tables/list/list.js'),
 			import('../../lists-and-tables/list-item/list-item.js'),
 			import('../../lists-and-tables/cells/text-cell/text-cell.js'),
+			import('../../lists-and-tables/cells/icon-cell/icon-cell.js'),
+			import('../../content/icon/icon.js'),
 		]);
 	}
 
@@ -312,8 +349,13 @@ export class NLDDTopNavigationBar extends withTranslations(LitElement, nlddTopNa
 
 		const titleBar = document.createElement('nldd-top-title-bar');
 		titleBar.setAttribute('slot', 'header');
-		titleBar.setAttribute('text', this._menuText);
 		titleBar.setAttribute('dismiss-text', this._t('components.top-navigation-bar.menu-sheet-dismiss-action'));
+		// The back button (rendered by _renderSheetLevel on deeper levels) walks
+		// one level up. nldd-sheet already handles the `dismiss` event itself;
+		// `back` is ours, so listen for it directly on the title bar. Its title
+		// (`text`) and `back-text` are set per level in _renderSheetLevel.
+		titleBar.addEventListener('back', this._onSheetBack);
+		this._globalMenuSheetTitleBar = titleBar;
 		page.appendChild(titleBar);
 
 		const section = document.createElement('nldd-simple-section');
@@ -329,34 +371,124 @@ export class NLDDTopNavigationBar extends withTranslations(LitElement, nlddTopNa
 		return sheet;
 	}
 
-	private _syncGlobalMenuSheetItems(): void {
-		if (!this._globalMenuSheetList) return;
-		this._globalMenuSheetList.replaceChildren();
+	/** Reset the sheet to its root level (the global menu-bar) and render it.
+	 * Called every time the sheet opens, so a reopened sheet always starts at
+	 * the top regardless of where the user drilled to last time. */
+	private _resetSheetToRoot(): void {
+		this._sheetStack = [{ title: this._menuText, container: this._getSlottedMenuBar(this._globalSlot) }];
+		this._renderSheetLevel();
+	}
 
-		const items = this._getSlottedItems(this._globalSlot);
+	/** Back button: pop one drill-down level and re-render, moving focus into
+	 * the now-visible parent level. */
+	private _onSheetBack = (): void => {
+		if (this._sheetStack.length <= 1) return;
+		// The popped level's title is the text of the row that opened it; pass it
+		// so focus returns to that row (APG menu pattern), not the first one.
+		const openerText = this._sheetStack[this._sheetStack.length - 1].title;
+		this._sheetStack.pop();
+		this._renderSheetLevel(true, openerText);
+	};
 
-		for (const item of items) {
+	/** Read the rows for a level from its container — the global menu-bar's
+	 * menu-bar-items at the root, or a submenu's menu-items deeper in. */
+	private _readSheetEntries(container: Element | null): SheetEntry[] {
+		if (!container) return [];
+
+		if (container.tagName === 'NLDD-MENU-BAR') {
+			const items = Array.from(container.querySelectorAll(':scope > nldd-menu-bar-item')) as NLDDMenuBarItem[];
+			return items.map(item => ({
+				text: item.text,
+				href: sanitizeUrl(item.href) ?? '',
+				selected: item.current,
+				submenu: item.querySelector(':scope > nldd-menu'),
+				activate: () => item.click(),
+			}));
+		}
+
+		// A submenu: its own menu-items (also those wrapped in a group). Reading
+		// is enough — the source nldd-menu is never moved, so the desktop
+		// popover it also serves stays intact.
+		const items = Array.from(
+			container.querySelectorAll(':scope > nldd-menu-item, :scope > nldd-menu-group > nldd-menu-item'),
+		) as HTMLElement[];
+		return items.map(item => ({
+			text: (item as { text?: string }).text || item.getAttribute('text') || '',
+			href: sanitizeUrl((item as { href?: string }).href || '') ?? '',
+			selected: item.hasAttribute('selected'),
+			submenu: item.querySelector(':scope > nldd-menu'),
+			// A leaf menu-item's own click would call hidePopover() on its
+			// (closed) submenu and throw; dispatch the same `select` event it
+			// fires instead, so consumer listeners react without the popover call.
+			activate: () => item.dispatchEvent(new CustomEvent('select', { bubbles: true, composed: true })),
+		}));
+	}
+
+	/** Render the current (top-of-stack) level into the sheet: update the title
+	 * bar (title + back button) and rebuild the list. Pass `moveFocus` after a
+	 * drill or back so focus lands on the new level's first row. */
+	private _renderSheetLevel(moveFocus = false, focusOpenerText?: string): void {
+		const list = this._globalMenuSheetList;
+		const titleBar = this._globalMenuSheetTitleBar;
+		if (!list || !titleBar || this._sheetStack.length === 0) return;
+
+		const depth = this._sheetStack.length;
+		const level = this._sheetStack[depth - 1];
+
+		titleBar.setAttribute('text', level.title);
+		if (depth > 1) {
+			// The title-bar convention is that the back button shows the
+			// previous level's title (e.g. "Menu").
+			titleBar.setAttribute('back-text', this._sheetStack[depth - 2].title);
+		} else {
+			titleBar.removeAttribute('back-text');
+		}
+
+		list.replaceChildren();
+		let openerItem: HTMLElement | null = null;
+		for (const entry of this._readSheetEntries(level.container)) {
 			const listItem = document.createElement('nldd-list-item');
-			const safeHref = sanitizeUrl(item.href);
-
-			if (safeHref) {
-				listItem.setAttribute('type', 'link');
-				listItem.setAttribute('href', safeHref);
-			} else {
-				listItem.setAttribute('type', 'button');
-			}
-			if (item.current) listItem.setAttribute('selected', '');
-
 			const textCell = document.createElement('nldd-text-cell');
-			textCell.setAttribute('text', item.text);
+			textCell.setAttribute('text', entry.text);
 			listItem.appendChild(textCell);
 
-			listItem.addEventListener('click', () => {
-				if (!safeHref) item.click();
-				this._globalMenuSheet?.hide();
-			});
+			if (entry.submenu) {
+				// Drill-in row: a button with a trailing chevron that pushes the
+				// submenu as the next level.
+				listItem.setAttribute('button', '');
+				const chevron = document.createElement('nldd-icon-cell');
+				chevron.setAttribute('slot', 'end');
+				chevron.setAttribute('icon', 'chevron-right-small');
+				listItem.appendChild(chevron);
+				const { text, submenu } = entry;
+				listItem.addEventListener('click', () => {
+					this._sheetStack.push({ title: text, container: submenu });
+					this._renderSheetLevel(true);
+				});
+			} else if (entry.href) {
+				listItem.setAttribute('href', entry.href);
+				listItem.addEventListener('click', () => this._globalMenuSheet?.hide());
+			} else {
+				listItem.setAttribute('button', '');
+				const { activate } = entry;
+				listItem.addEventListener('click', () => {
+					activate();
+					this._globalMenuSheet?.hide();
+				});
+			}
+			if (entry.selected) listItem.setAttribute('selected', '');
+			if (focusOpenerText !== undefined && entry.text === focusOpenerText) openerItem = listItem;
 
-			this._globalMenuSheetList!.appendChild(listItem);
+			list.appendChild(listItem);
+		}
+
+		if (moveFocus) {
+			// nldd-list-item overrides focus() to delegate to its inner button/
+			// anchor, so this lands on the actionable element (keyboard a11y). On
+			// back, focus the row that opened the sub-level; otherwise the first.
+			requestAnimationFrame(() => {
+				(openerItem ?? list.querySelector<HTMLElement>('nldd-list-item'))?.focus();
+			});
 		}
 	}
 
@@ -382,7 +514,7 @@ export class NLDDTopNavigationBar extends withTranslations(LitElement, nlddTopNa
 				if (menuButtonItem) (menuButtonItem as NLDDMenuBarItem).expanded = false;
 			});
 		}
-		this._syncGlobalMenuSheetItems();
+		this._resetSheetToRoot();
 		// Defer show() so the current click event completes before the modal backdrop appears
 		requestAnimationFrame(() => {
 			this._globalMenuSheet?.show();

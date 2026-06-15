@@ -234,7 +234,7 @@ Toont een citaat met optionele bron-attributie.
 
 ### `<nldd-byline>`
 
-Een redactionele regel die auteurs of redacteuren toont: optionele avatar(s), een naamregel en ondersteunende tekst (bijvoorbeeld functie of datum). Alle onderdelen zijn optioneel. De naamregel en ondersteunende tekst kunnen als attribuut of als slot worden aangeleverd. Gebruik de slots voor rijkere inhoud, zoals een `<time datetime="…">` voor machine-leesbare datums of een link naar het auteursprofiel. Geslotte inhoud vervangt het bijbehorende attribuut (het attribuut is de fallback van de slot). Bij meerdere redacteuren overlappen de avatars elkaar subtiel; elke avatar krijgt een ring in de surface-kleur (zelfde mechaniek als badge) zodat ze visueel gescheiden blijven. Op een gekleurde ondergrond kan de ringkleur meegegeven worden via `--context-parent-background-color`. Avatars worden geslot als `<img slot="avatars">`. Zet `alt=""` wanneer de namen al in de tekst staan (decoratief); geef anders een beschrijvende alt-tekst op.
+Een redactionele regel die auteurs of redacteuren toont: optionele avatar(s), een naamregel en ondersteunende tekst (bijvoorbeeld functie of datum). Alle onderdelen zijn optioneel. De naamregel en ondersteunende tekst kunnen als attribuut of als slot worden aangeleverd. Gebruik de slots voor rijkere inhoud, zoals een `<time datetime="…">` voor machine-leesbare datums of een link naar het auteursprofiel. Geslotte inhoud vervangt het bijbehorende attribuut (het attribuut is de fallback van de slot). Bij meerdere redacteuren overlappen de avatars elkaar subtiel; elke avatar krijgt een ring in de surface-kleur (zelfde mechaniek als badge) zodat ze visueel gescheiden blijven. Op een gekleurde ondergrond kan de ringkleur meegegeven worden via `--context-parent-background-color`. Op smalle breedtes (een sm-container, ≤ 640px) met meerdere avatars komt de avatarrij boven de namen te staan, zodat de tekst de volle breedte houdt; met één avatar blijft de byline op één regel. Avatars worden geslot als `<img slot="avatars">`. Zet `alt=""` wanneer de namen al in de tekst staan (decoratief); geef anders een beschrijvende alt-tekst op.
 
 **Attributes**
 
@@ -328,8 +328,10 @@ Toont een toetsencombinatie (zoals Cmd+K of Ctrl+Shift+P) in één gecombineerde
 | `mac-keys` | `string` | Optionele override voor macOS (incl. iPhone/iPad/iPod). |
 | `windows-keys` | `string` | Optionele override voor Windows. |
 | `linux-keys` | `string` | Optionele override voor Linux/ChromeOS. |
-| `size` | `string` | Grootte: 'sm' \| 'md' (default: 'md') |
+| `size` | `string` | Grootte: 'sm' \| 'md' \| 'inherit' (default: 'md'). 'inherit' neemt de font-size over van de container; bij de box-variant schalen de keycaps dan mee in em. |
+| `variant` | `string` | 'box' (default) toont elke toets als keycap met vulling en highlight-rand; 'simple' toont de toetsen als platte tekst met scheidingstekens — lichter, voor inline gebruik zoals in een menu-item. |
 | `always-visible` | `boolean` | Toon ook op touch-only devices waar shortcuts niet aanroepbaar zijn. |
+| `color` | `string` | 'neutral' (default) gebruikt de eigen component-kleuren. 'inherit' laat de toetsen en scheidingstekens de omringende tekstkleur (currentColor) volgen, met een doorschijnende contrast-vulling en highlight-rand — handig op een gevulde vlakkleur of een gemarkeerde rij. |
 
 **Slots**
 
@@ -1220,7 +1222,7 @@ A section that spans the full width without horizontal padding. Useful for backg
 
 ### `<nldd-hero>`
 
-Een paginakop volgens de rijkshuisstijl-vormtaal: een mediavlak met exact één afgeronde hoek (radius afgeleid van de lintbreedte) en een tekstpaneel (de main) dat op zes posities kan staan. De radius is van het component en niet instelbaar: 1,5X lintbreedte op smalle containers, 2X op md/lg. De media-hoek volgt automatisch uit `main-position` (zie de tabel in de stories) en is per geval te overschrijven met `media-corner`. Het paneel krijgt zijn eigen afgeronde hoek — op halve maat, zodat de tekst niet tegen de rand komt — op de hoek die diagonaal het mediavlak in wijst. Beslaat het paneel een volledige rand (`left`/`right`, `main-width="full"` of de gestapelde mobiele weergave), dan is het hoekloos. Op mobiel zit de media-hoek altijd aan de bovenkant (een onderhoek klapt naar zijn bovenhoek) en is hij een halve stap groter (1,5X). Zonder media vult de main het volledige vlak; met `main-background="base"` krijgt het vlak dan een rand op de zijden die de afgeronde hoek raken, zoals blockquote. Met `main-background` krijgt het paneel een vlakkleur uit de filled-categories; die leveren een pure witte of zwarte contentkleur mee, zodat componenten met `color="inherit"` (title, rich-text) gegarandeerd contrast houden. Per de rijkshuisstijl wordt de radius nooit geanimeerd.
+Een paginakop volgens de rijkshuisstijl-vormtaal: een mediavlak met exact één afgeronde hoek (radius afgeleid van de lintbreedte) en een tekstpaneel (de main) dat op zes posities kan staan. De radius is van het component en niet instelbaar: 1,5X lintbreedte op smalle containers, 2X op md/lg. De media-hoek volgt automatisch uit `main-position` (zie de tabel in de stories) en is per geval te overschrijven met `media-corner`. Het paneel krijgt zijn eigen afgeronde hoek — op halve maat, zodat de tekst niet tegen de rand komt — op de hoek die diagonaal het mediavlak in wijst. Beslaat het paneel een volledige rand (`left`/`right`, `main-width="full"` of de gestapelde mobiele weergave), dan is het hoekloos. Bij `main-width="full"` staat het mediavlak als losse strook boven of onder het paneel — niet erachter — en schuift de media-hoek mee naar de buitenrand van die strook (weg van het paneel), zodat hij zichtbaar blijft. Op mobiel zit de media-hoek altijd aan de bovenkant (een onderhoek klapt naar zijn bovenhoek) en is hij een halve stap groter (1,5X). Zonder media vult de main het volledige vlak; met `main-background="base"` krijgt het vlak dan een rand op de zijden die de afgeronde hoek raken, zoals blockquote. Met `main-background` krijgt het paneel een vlakkleur uit de filled-categories; die leveren een pure witte of zwarte contentkleur mee, zodat componenten met `color="inherit"` (title, rich-text) gegarandeerd contrast houden. Per de rijkshuisstijl wordt de radius nooit geanimeerd.
 
 **Attributes**
 
@@ -1834,6 +1836,7 @@ Layout placeholder that fills its parent and centres an indeterminate activity i
 | `text` | `string` | Label text. Falls back to the translated "Laden" when unset. |
 | `timing` | `'default'\|'instant'` | 'default' waits 1000ms before showing (anti-flash); 'instant' shows immediately (the fade-in still plays). Default 'default'. |
 | `complete` | `boolean` | Mark the loader as finished while keeping the element mounted; clears aria-busy and hides the indicator. |
+| `backdrop` | `boolean` | Dim and blur the content underneath with a frosted backdrop while loading (opt-in, default false). Uses the context parent background colour (fallback: base surface) at one minus the disabled opacity, plus a backdrop blur. |
 | `translations` | `object` | Override translation keys; unset keys fall back to Dutch |
 
 **Slots**

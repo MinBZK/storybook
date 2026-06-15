@@ -169,3 +169,112 @@ describe('nldd-keyboard-shortcut', () => {
 		});
 	});
 });
+
+describe('nldd-keyboard-shortcut color', () => {
+	let el: HTMLElement;
+
+	afterEach(() => {
+		if (el) cleanup(el);
+	});
+
+	it('reflects the color attribute', async () => {
+		el = await fixture('<nldd-keyboard-shortcut color="inherit" keys="Cmd+K" always-visible></nldd-keyboard-shortcut>');
+		await waitForUpdate(el);
+		expect(el.getAttribute('color')).toBe('inherit');
+	});
+
+	it('color="inherit" points the key + separator colors at currentColor', async () => {
+		el = await fixture('<nldd-keyboard-shortcut color="inherit" keys="Cmd+K" always-visible></nldd-keyboard-shortcut>');
+		await waitForUpdate(el);
+		const cs = getComputedStyle(el);
+		expect(cs.getPropertyValue('--_content-color').trim()).toBe('currentColor');
+		expect(cs.getPropertyValue('--_separator-color').trim()).toBe('currentColor');
+	});
+
+	it('defaults to color="neutral" with its own color tokens', async () => {
+		el = await fixture('<nldd-keyboard-shortcut keys="Cmd+K" always-visible></nldd-keyboard-shortcut>');
+		await waitForUpdate(el);
+		expect(el.getAttribute('color')).toBe('neutral');
+		expect(getComputedStyle(el).getPropertyValue('--_content-color').trim()).not.toBe('currentColor');
+	});
+});
+
+describe('nldd-keyboard-shortcut variant', () => {
+	let el: HTMLElement;
+
+	afterEach(() => {
+		if (el) cleanup(el);
+	});
+
+	it('defaults to variant="box"', async () => {
+		el = await fixture('<nldd-keyboard-shortcut keys="Cmd+K" always-visible></nldd-keyboard-shortcut>');
+		await waitForUpdate(el);
+		expect(el.getAttribute('variant')).toBe('box');
+	});
+
+	it('reflects variant="simple"', async () => {
+		el = await fixture('<nldd-keyboard-shortcut variant="simple" keys="Cmd+K" always-visible></nldd-keyboard-shortcut>');
+		await waitForUpdate(el);
+		expect(el.getAttribute('variant')).toBe('simple');
+	});
+
+	it('simple variant strips the keycap box (no padding, no shadow)', async () => {
+		el = await fixture('<nldd-keyboard-shortcut variant="simple" keys="Cmd+K" always-visible></nldd-keyboard-shortcut>');
+		await waitForUpdate(el);
+		const key = el.shadowRoot!.querySelector('.keyboard-shortcut__key')!;
+		expect(getComputedStyle(key).paddingLeft).toBe('0px');
+		expect(getComputedStyle(key).boxShadow).toBe('none');
+	});
+
+	it('simple variant has no gap between keys', async () => {
+		el = await fixture('<nldd-keyboard-shortcut variant="simple" keys="Ctrl+K" always-visible></nldd-keyboard-shortcut>');
+		await waitForUpdate(el);
+		expect(getComputedStyle(el.shadowRoot!.querySelector('.keyboard-shortcut')!).gap).toBe('0px');
+	});
+
+	it('renders the "+" separator on macOS too (no OS exception)', async () => {
+		el = await fixture('<nldd-keyboard-shortcut variant="simple" debug-os="mac" keys="Ctrl+K" mac-keys="Cmd+K" always-visible></nldd-keyboard-shortcut>');
+		await waitForUpdate(el);
+		expect(el.shadowRoot!.querySelector('.keyboard-shortcut__separator')).not.toBeNull();
+		expect(el.hasAttribute('data-no-delimiter')).toBe(false);
+	});
+});
+
+describe('nldd-keyboard-shortcut size', () => {
+	let el: HTMLElement;
+
+	afterEach(() => {
+		if (el) cleanup(el);
+	});
+
+	it('size="inherit" scales the box keycaps in em with a 0.75em font', async () => {
+		el = await fixture('<nldd-keyboard-shortcut size="inherit" keys="Cmd+K" always-visible></nldd-keyboard-shortcut>');
+		await waitForUpdate(el);
+		const cs = getComputedStyle(el);
+		expect(cs.getPropertyValue('--_size').trim()).toBe('1.5em');
+		expect(cs.getPropertyValue('--_inline-padding').trim()).toBe('0.35em');
+		expect(cs.getPropertyValue('--_font-size').trim()).toBe('0.75em');
+	});
+
+	it('size="inherit" on the simple variant takes the container font-size', async () => {
+		el = await fixture('<div style="font-size: 22px;"><nldd-keyboard-shortcut size="inherit" variant="simple" keys="Cmd+K" always-visible></nldd-keyboard-shortcut></div>');
+		const ks = el.querySelector('nldd-keyboard-shortcut')!;
+		await waitForUpdate(ks);
+		const key = ks.shadowRoot!.querySelector('.keyboard-shortcut__key')!;
+		expect(getComputedStyle(key).fontSize).toBe('22px');
+	});
+
+	it('size="inherit" nudges the box keycaps up onto the text baseline', async () => {
+		el = await fixture('<nldd-keyboard-shortcut size="inherit" keys="Cmd+K" always-visible></nldd-keyboard-shortcut>');
+		await waitForUpdate(el);
+		const container = el.shadowRoot!.querySelector('.keyboard-shortcut')!;
+		expect(getComputedStyle(container).position).toBe('relative');
+	});
+
+	it('size="inherit" on the simple variant keeps the shortcut in normal flow (no nudge)', async () => {
+		el = await fixture('<nldd-keyboard-shortcut size="inherit" variant="simple" keys="Cmd+K" always-visible></nldd-keyboard-shortcut>');
+		await waitForUpdate(el);
+		const container = el.shadowRoot!.querySelector('.keyboard-shortcut')!;
+		expect(getComputedStyle(container).position).toBe('static');
+	});
+});

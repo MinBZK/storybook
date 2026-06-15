@@ -1,6 +1,14 @@
-import { Meta, Markdown } from '@storybook/addon-docs/blocks';
+---
+name: ontwerprichtlijnen
+description: "Een verzameling ontwerprichtlijnen en interface-principes. Gebruik deze skill wanneer er iets ontworpen, gebouwd of beoordeeld wordt aan een interface — websites, apps, dashboards, forms, componenten, mockups — zodat de keuzes aansluiten bij deze voorkeuren. Trigger ook bij vragen over \"hoe zou je dit vormgeven\", interactie-design, microcopy, of het reviewen van bestaande UI."
+user-invocable: true
+---
 
-<Meta title="Docs/Ontwerprichtlijnen" />
+<!--
+  GEGENEREERD BESTAND — niet handmatig bewerken.
+  Bron: src/docs/design-guidelines.mdx (Storybook "Docs/Ontwerprichtlijnen").
+  Hergenereren: npm run generate:skill-docs
+-->
 
 # Ontwerprichtlijnen
 

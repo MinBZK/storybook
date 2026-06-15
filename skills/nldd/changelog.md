@@ -15,6 +15,34 @@ the type of conventional-commit determines the release. Conventional types
 `chore`, `docs`, `ci`, `style`, `test`, `build` are intentionally omitted
 here; consult the commit history if you need that level of detail.
 
+### Highlights
+
+- **Richer menus.** `nldd-menu` items can now be links (`href`) and show keyboard-shortcut hints, and the menu sizes to its content up to a viewport-aware maximum.
+- **Multi-level mobile navigation.** The `nldd-top-navigation-bar` mobile menu sheet now supports nested, multi-level menus with drill-down navigation and a back button per level.
+- **Keyboard-shortcut variants.** `nldd-keyboard-shortcut` gained `box` and `simple` variants, `sm` / `md` / `inherit` sizes and `neutral` / `inherit` colors, so a shortcut fits both a standalone keycap and inline running text.
+- **Loading backdrop.** `nldd-activity-indicator` can dim and blur the content behind it while loading (opt-in `backdrop`), and a static-skeleton-loading principle was added to the `Docs/Ontwerprichtlijnen` reference.
+
+### Added
+
+- **`nldd-menu`** — menu items accept an `href` (rendered as a real `<a>`, so middle-click and open-in-new-tab work) and a keyboard-shortcut hint (`shortcut`, `shortcut-mac`, `shortcut-windows`, `shortcut-linux`); the menu now sizes to its content between a minimum and `min(100vw - inset, 640px)`, with an explicit `width` to pin it.
+- **`nldd-keyboard-shortcut`** — a `box` (keycap) and `simple` (plain-text) variant, `sm` / `md` / `inherit` sizes (the `inherit` size scales with the surrounding text), and `neutral` / `inherit` colors (the latter follows `currentColor`, e.g. on a colored panel).
+- **`nldd-activity-indicator`** — an opt-in `backdrop` that dims and blurs the content underneath while loading: the context parent background color (fallback: base surface) at one minus the disabled opacity, plus a backdrop blur.
+- **`nldd-top-navigation-bar`** — the mobile menu sheet supports multi-level (drill-down) menus, with a back button per level.
+
+### Changed
+
+- **`nldd-byline`** — on a small container (≤ sm), a byline with two or more avatars stacks the avatar row above the names so the text keeps the full width; single-avatar bylines stay inline.
+
+### Breaking
+
+- **`nldd-menu`** — the `translations` key `components.menu.back` was renamed to `components.menu.back-action` (matching the existing `components.menu.submenu-back-action`); the rendered label is unchanged. Update any `translations` override that sets the old key.
+
+### Fixed
+
+- **`nldd-hero`** — full-width media (`main-width="full"`) now stacks beside the text panel instead of behind it, so the media's rounded corner is no longer hidden by the panel.
+- **`nldd-multi-line-text-field`** — with `resize="auto"`, the configured `rows` is honored as a minimum height, so the field no longer shrinks below it (it still grows with content).
+- **`nldd-top-navigation-bar`** — menu sheet list items render as real `<button>` elements.
+
 ## <small>0.8.58 (2026-06-12)</small>
 
 * feat!: status bar, byline, hero, on-color support, and rich-text width zones (#123) ([5932b63](https://github.com/MinBZK/storybook/commit/5932b63)), closes [#123](https://github.com/MinBZK/storybook/issues/123)

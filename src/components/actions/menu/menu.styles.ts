@@ -8,7 +8,9 @@ export const menuStyles = css`
 
 	:host {
 		--_viewport-margin: var(--primitives-space-16);
-		--_width: var(--primitives-area-280);
+		--_width: initial;
+		--_min-width: var(--primitives-area-280);
+		--_max-width: min(100vw - 2 * var(--_viewport-margin), var(--primitives-area-640));
 		--_max-height: calc(infinity * 1px);
 		--_max-items: 9999;
 		--_padding: var(--primitives-space-8);
@@ -52,7 +54,9 @@ export const menuStyles = css`
 		border-radius: var(--semantics-overlays-corner-radius);
 		box-shadow: var(--components-menu-box-shadow);
 		background: var(--semantics-surfaces-base-background-color);
-		width: var(--_width);
+		width: var(--_width, max-content);
+		min-width: var(--_min-width);
+		max-width: var(--_max-width);
 		padding: var(--_padding);
 		flex-direction: column;
 		max-height: min(var(--_max-height), calc(var(--_max-items) * var(--_item-size) + var(--_padding) * 2));
@@ -219,6 +223,16 @@ export const menuItemStyles = css`
 		}
 	}
 
+	/* A link item (href) renders as <a>; strip the UA link color/underline so
+	   it is visually identical to the button variant. The text colour is owned
+	   by the inner nldd-text-cell. The control cursor token (default, like the
+	   other controls) replaces the UA link pointer and stays overridable. */
+	a.menu__item {
+		color: inherit;
+		text-decoration: none;
+		cursor: var(--semantics-controls-link-cursor);
+	}
+
 	.menu__item:focus-visible {
 		position: relative;
 		z-index: 1;
@@ -315,7 +329,7 @@ export const menuGroupStyles = css`
 
 	/* # Title */
 
-	.menu-group__title {
+	.menu__group-title {
 		margin: 0;
 		padding-top: 0;
 		padding-right: var(--primitives-space-8);
@@ -332,7 +346,7 @@ export const menuGroupStyles = css`
 	 * a11y tree exposes role + aria-labelledby reliably (display: contents
 	 * has historical a11y-tree bugs in older WebKit/Chromium). */
 
-	.menu-group__items {
+	.menu__group-items {
 		display: block;
 	}
 `;

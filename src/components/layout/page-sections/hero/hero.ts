@@ -11,7 +11,10 @@
  * krijgt zijn eigen afgeronde hoek — op halve maat, zodat de tekst niet
  * tegen de rand komt — op de hoek die diagonaal het mediavlak in wijst.
  * Beslaat het paneel een volledige rand (`left`/`right`, `main-width="full"`
- * of de gestapelde mobiele weergave), dan is het hoekloos. Op mobiel zit de
+ * of de gestapelde mobiele weergave), dan is het hoekloos. Bij
+ * `main-width="full"` staat het mediavlak als losse strook boven of onder het
+ * paneel — niet erachter — en schuift de media-hoek mee naar de buitenrand van
+ * die strook (weg van het paneel), zodat hij zichtbaar blijft. Op mobiel zit de
  * media-hoek altijd aan de bovenkant (een onderhoek klapt naar zijn
  * bovenhoek) en is hij een halve stap groter (1,5X). Zonder media vult de
  * main het volledige vlak; met `main-background="base"` krijgt het vlak dan
@@ -114,11 +117,23 @@ export class NLDDHero extends PageSectionMixin(LitElement) {
 		// mainPosition is typed, but HTML attributes are not — fall back to the
 		// default for an unknown or empty value (the design-system convention).
 		const position = AUTO_CORNER[this.mainPosition] ? this.mainPosition : 'bottom-left';
-		const mediaCorner = this.mediaCorner !== 'auto'
+		const edge = position === 'left' || position === 'right';
+		let mediaCorner: HeroCorner = this.mediaCorner !== 'auto'
 			? this.mediaCorner
 			: AUTO_CORNER[position];
+		// At main-width="full" the media stacks above or below the full-width
+		// panel instead of sitting behind it, so its rounded corner must land on
+		// the strip's outer edge to stay visible: a bottom panel puts the media
+		// (and its corner) on top, a top panel puts it below. Keep the horizontal
+		// side, force the vertical side away from the panel — even when the corner
+		// was set explicitly, mirroring the mobile rule. The full-height left/right
+		// panels ignore main-width="full", so they keep their curated corner.
+		if (this.mainWidth === 'full' && this._hasMedia && !edge) {
+			const panelAtTop = position === 'top-left' || position === 'top-right';
+			const side = mediaCorner.endsWith('left') ? 'left' : 'right';
+			mediaCorner = `${panelAtTop ? 'bottom' : 'top'}-${side}`;
+		}
 		this.setAttribute('data-media-corner', mediaCorner);
-		const edge = position === 'left' || position === 'right';
 		const mainCorner = (!this._hasMedia || edge || this.mainWidth === 'full')
 			? null
 			: MAIN_CORNER[position];

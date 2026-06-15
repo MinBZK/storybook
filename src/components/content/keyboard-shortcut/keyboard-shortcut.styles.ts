@@ -8,18 +8,50 @@ export const keyboardShortcutStyles = css`
 
 	:host {
 		--_size: var(--components-keyboard-shortcut-md-size);
-		--_inline-padding: var(--primitives-space-6);
-		--_font: var(--primitives-font-body-xs-regular-flat);
+		--_inline-padding: var(--primitives-space-4);
+		--_font-family: var(--primitives-font-family-monospace);
+		--_font-size: var(--primitives-font-size-80);
+		--_font-weight: var(--primitives-font-weight-body-regular);
+		--_line-height: var(--primitives-line-height-flat);
+		--_content-color: var(--components-keyboard-shortcut-content-color);
+		--_separator-color: var(--components-keyboard-shortcut-separator-color);
+		--_highlight-border-color: var(--components-keyboard-shortcut-border-color);
+		--_background-color: var(--components-keyboard-shortcut-background-color);
 
 		${inheritedTextReset}
 		display: inline-flex;
 		vertical-align: middle;
 	}
 
+	:host([color="inherit"]) {
+		--_content-color: currentColor;
+		--_separator-color: currentColor;
+		--_highlight-border-color: color-mix(in oklab, var(--semantics-content-contrast-color) 10%, transparent);
+		--_background-color: color-mix(in oklab, var(--semantics-content-contrast-color) 20%, transparent);
+	}
+
 	:host([size="sm"]) {
 		--_size: var(--components-keyboard-shortcut-sm-size);
-		--_inline-padding: var(--primitives-space-4);
-		--_font: var(--primitives-font-body-xxs-regular-flat);
+		--_font-size: var(--primitives-font-size-70);
+	}
+
+	:host([size="inherit"]) {
+		--_size: 1.5em;
+		--_inline-padding: 0.35em;
+		--_font-size: 0.75em;
+	}
+
+	:host([variant="simple"]) {
+		--_font-family: var(--primitives-font-family-body);
+		--_font-size: var(--primitives-font-size-100);
+	}
+
+	:host([variant="simple"][size="sm"]) {
+		--_font-size: var(--primitives-font-size-90);
+	}
+
+	:host([variant="simple"][size="inherit"]) {
+		--_font-size: inherit;
 	}
 
 	:host([hidden]) {
@@ -37,8 +69,13 @@ export const keyboardShortcutStyles = css`
 
 	.keyboard-shortcut {
 		display: inline-flex;
-		gap: var(--primitives-space-4);
+		gap: var(--primitives-space-2);
 		align-items: center;
+	}
+
+	:host([size="inherit"][variant="box"]) .keyboard-shortcut {
+		position: relative;
+		top: -0.05em;
 	}
 
 
@@ -47,29 +84,51 @@ export const keyboardShortcutStyles = css`
 	.keyboard-shortcut__key {
 		box-sizing: border-box;
 		display: inline-flex;
-		border: var(--components-keyboard-shortcut-border-thickness) solid var(--components-keyboard-shortcut-border-color);
+		box-shadow: inset 0 0 0 var(--components-keyboard-shortcut-border-thickness) var(--_highlight-border-color);
 		border-radius: var(--components-keyboard-shortcut-corner-radius);
-		background-color: var(--components-keyboard-shortcut-background-color);
+		background-color: var(--_background-color);
 		min-width: var(--_size);
 		height: var(--_size);
 		padding: 0 var(--_inline-padding);
 		align-items: center;
 		justify-content: center;
-		color: var(--components-keyboard-shortcut-content-color);
-		font: var(--_font);
+		color: var(--_content-color);
+		font-family: var(--_font-family);
+		font-size: var(--_font-size);
+		font-weight: var(--_font-weight);
+		line-height: var(--_line-height);
 		white-space: nowrap;
+	}
+
+	:host([variant="simple"]) .keyboard-shortcut {
+		gap: 0;
+	}
+
+	:host([variant="simple"]) .keyboard-shortcut__key {
+		box-shadow: none;
+		background-color: transparent;
+		border-radius: 0;
+		min-width: 0;
+		height: auto;
+		padding: 0;
 	}
 
 	@media (forced-colors: active) {
 		.keyboard-shortcut__key {
-			border-color: CanvasText;
-			background-color: Canvas;
 			color: CanvasText;
+		}
+
+		:host(:not([variant="simple"])) .keyboard-shortcut__key {
+			border: var(--components-keyboard-shortcut-border-thickness) solid CanvasText;
+			background-color: Canvas;
 		}
 	}
 
 	.keyboard-shortcut__separator {
-		color: var(--components-keyboard-shortcut-separator-color);
-		font: var(--_font);
+		color: var(--_separator-color);
+		font-family: var(--_font-family);
+		font-size: var(--_font-size);
+		font-weight: var(--_font-weight);
+		line-height: var(--_line-height);
 	}
 `;

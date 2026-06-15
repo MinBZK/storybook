@@ -119,6 +119,12 @@ export class NLDDMultiLineTextField extends LitElement {
 				this.style.removeProperty('--_width');
 			}
 		}
+		if (changed.has('rows')) {
+			// Expose rows to CSS so the resize="auto" min-height can floor the field
+			// at the configured number of lines (field-sizing: content otherwise
+			// ignores the rows attribute and lets it shrink to one line).
+			this.style.setProperty('--_rows', String(this.rows));
+		}
 		if (changed.has('resize') && this.resize === 'auto' && this._textarea) {
 			// Manual resize sets inline width/height on the textarea, which would
 			// override field-sizing: content. Clear them when switching to auto.

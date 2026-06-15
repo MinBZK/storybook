@@ -1,4 +1,4 @@
-import { html } from 'lit';
+import { html, nothing } from 'lit';
 import './menu.js';
 import '../../actions/button/button.js';
 
@@ -18,13 +18,38 @@ export const Default = {
 	`,
 };
 
+/**
+ * `details` toont een secundair label rechts van het item — bijvoorbeeld de
+ * huidige waarde of een aantal. Voor sneltoetsen is er het aparte
+ * `shortcut`-attribuut (zie de KeyboardShortcuts-story).
+ */
 export const WithDetails = {
 	render: () => html`
-		<nldd-button id="button-details" expandable text="Open menu"></nldd-button>
+		<nldd-button id="button-details" expandable text="Voorkeuren"></nldd-button>
 		<nldd-menu id="menu-details" anchor="button-details">
-			<nldd-menu-item text="Bewerk" details="Cmd+E"></nldd-menu-item>
-			<nldd-menu-item text="Kopieer" details="Cmd+C"></nldd-menu-item>
-			<nldd-menu-item text="Plak" details="Cmd+V"></nldd-menu-item>
+			<nldd-menu-item text="Taal" details="Nederlands"></nldd-menu-item>
+			<nldd-menu-item text="Tijdzone" details="Amsterdam"></nldd-menu-item>
+			<nldd-menu-item text="Thema" details="Systeem"></nldd-menu-item>
+		</nldd-menu>
+	`,
+};
+
+/**
+ * Met `shortcut` toont een item zijn sneltoets als nette `<kbd>`-toetsen (via
+ * nldd-keyboard-shortcut) in plaats van platte `details`-tekst. Dit is puur ter
+ * weergave — het component bindt de toets niet; koppel de afhandeling zelf in je
+ * applicatie. Gebruik `shortcut-mac`/`shortcut-windows`/`shortcut-linux` voor
+ * platform-specifieke weergave. Op touch-only apparaten verdwijnt de hint, want
+ * daar is hij niet aanroepbaar.
+ */
+export const KeyboardShortcuts = {
+	render: () => html`
+		<nldd-button id="button-shortcuts" expandable text="Bewerken"></nldd-button>
+		<nldd-menu id="menu-shortcuts" anchor="button-shortcuts">
+			<nldd-menu-item text="Ongedaan maken" shortcut="Ctrl+Z" shortcut-mac="Cmd+Z"></nldd-menu-item>
+			<nldd-menu-item text="Knippen" shortcut="Ctrl+X" shortcut-mac="Cmd+X"></nldd-menu-item>
+			<nldd-menu-item text="Kopiëren" shortcut="Ctrl+C" shortcut-mac="Cmd+C"></nldd-menu-item>
+			<nldd-menu-item text="Plakken" shortcut="Ctrl+V" shortcut-mac="Cmd+V"></nldd-menu-item>
 		</nldd-menu>
 	`,
 };
@@ -41,15 +66,72 @@ export const WithIcons = {
 	`,
 };
 
+/**
+ * Met een `href` rendert een item als echte link (`<a>`), zodat middenklik,
+ * "openen in nieuw tabblad" en "kopieer linkadres" werken. Een geselecteerd
+ * link-item krijgt `aria-current="page"`. href wordt genegeerd voor
+ * submenu-openers, checkbox/radio-items en uitgeschakelde items.
+ */
+export const Links = {
+	render: () => html`
+		<nldd-button id="button-links" expandable text="Account"></nldd-button>
+		<nldd-menu id="menu-links" anchor="button-links">
+			<nldd-menu-item text="Mijn profiel" href="#profiel" icon="user"></nldd-menu-item>
+			<nldd-menu-item text="Instellingen" href="#instellingen" icon="settings"></nldd-menu-item>
+			<nldd-menu-divider></nldd-menu-divider>
+			<nldd-menu-item text="Uitloggen" href="#uitloggen" icon="logout"></nldd-menu-item>
+		</nldd-menu>
+	`,
+};
+
+/**
+ * Het menu groeit standaard mee met de breedste regel — handig voor lange
+ * labels — tot een maximum van `min(100vw - inset, 640px)`. Korte menu's houden
+ * de minimumbreedte aan; met een expliciete `width` zet je een vaste breedte.
+ */
+export const BredeInhoud = {
+	render: () => html`
+		<nldd-button id="button-wide" expandable text="Acties"></nldd-button>
+		<nldd-menu id="menu-wide" anchor="button-wide">
+			<nldd-menu-item text="Document downloaden als ondertekende PDF"></nldd-menu-item>
+			<nldd-menu-item text="Deel met alle medewerkers van de afdeling"></nldd-menu-item>
+			<nldd-menu-item text="Archiveer en verwijder uit het overzicht"></nldd-menu-item>
+		</nldd-menu>
+	`,
+};
+
+/**
+ * Met een expliciete `width` zet je het menu op een vaste breedte; leeg laten
+ * laat het meegroeien met de inhoud (tussen een minimum en
+ * `min(100vw - inset, 640px)`). Speel met de control.
+ */
+export const Breedte = {
+	render: (args: Record<string, any>) => html`
+		<nldd-button id="button-breedte" expandable text="Open menu"></nldd-button>
+		<nldd-menu id="menu-breedte" anchor="button-breedte" width=${args.width || nothing}>
+			<nldd-menu-item text="Nederland" value="nl"></nldd-menu-item>
+			<nldd-menu-item text="België" value="be"></nldd-menu-item>
+			<nldd-menu-item text="Duitsland" value="de"></nldd-menu-item>
+		</nldd-menu>
+	`,
+	args: { width: '360px' },
+	argTypes: {
+		width: {
+			control: 'text',
+			description: 'Expliciete breedte (any CSS length, bv. "320px"). Leeg = mee met de inhoud.',
+			table: { defaultValue: { summary: '' } },
+		},
+	},
+};
+
 export const WithDivider = {
 	render: () => html`
 		<nldd-button id="button-divider" expandable text="Open menu"></nldd-button>
 		<nldd-menu id="menu-divider" anchor="button-divider">
-			<nldd-menu-item text="Bewerk" details="Cmd+E"></nldd-menu-item>
-			<nldd-menu-item text="Kopieer" details="Cmd+C"></nldd-menu-item>
-			<nldd-menu-item text="Plak" details="Cmd+V"></nldd-menu-item>
+			<nldd-menu-item text="Hernoemen" icon="write"></nldd-menu-item>
+			<nldd-menu-item text="Dupliceren" icon="duplicate"></nldd-menu-item>
 			<nldd-menu-divider></nldd-menu-divider>
-			<nldd-menu-item text="Sluiten"></nldd-menu-item>
+			<nldd-menu-item text="Verwijderen" icon="delete" destructive></nldd-menu-item>
 		</nldd-menu>
 	`,
 };
@@ -136,14 +218,14 @@ export const WithGroups = {
 		<nldd-button id="button-groups" expandable text="Open menu"></nldd-button>
 		<nldd-menu id="menu-groups" anchor="button-groups">
 			<nldd-menu-group text="Bestand">
-				<nldd-menu-item text="Nieuw" details="Cmd+N"></nldd-menu-item>
-				<nldd-menu-item text="Open…" details="Cmd+O"></nldd-menu-item>
-				<nldd-menu-item text="Opslaan" details="Cmd+S"></nldd-menu-item>
+				<nldd-menu-item text="Nieuw"></nldd-menu-item>
+				<nldd-menu-item text="Open…"></nldd-menu-item>
+				<nldd-menu-item text="Opslaan"></nldd-menu-item>
 			</nldd-menu-group>
 			<nldd-menu-group text="Bewerken">
-				<nldd-menu-item text="Knip" details="Cmd+X"></nldd-menu-item>
-				<nldd-menu-item text="Kopieer" details="Cmd+C"></nldd-menu-item>
-				<nldd-menu-item text="Plak" details="Cmd+V"></nldd-menu-item>
+				<nldd-menu-item text="Knip"></nldd-menu-item>
+				<nldd-menu-item text="Kopieer"></nldd-menu-item>
+				<nldd-menu-item text="Plak"></nldd-menu-item>
 			</nldd-menu-group>
 		</nldd-menu>
 	`,
@@ -170,7 +252,7 @@ export const WithMultiLevelSubmenu = {
 							<nldd-menu-item text="Plan.pdf"></nldd-menu-item>
 						</nldd-menu>
 					</nldd-menu-item>
-					<nldd-menu-item text="Sluiten" details="Cmd+W"></nldd-menu-item>
+					<nldd-menu-item text="Sluiten"></nldd-menu-item>
 				</nldd-menu>
 			</nldd-menu-item>
 			<nldd-menu-item text="Bewerken"></nldd-menu-item>
@@ -189,7 +271,7 @@ export const WithSubmenu = {
 	render: () => html`
 		<nldd-button id="button-submenu" expandable text="Open menu"></nldd-button>
 		<nldd-menu id="menu-submenu" anchor="button-submenu">
-			<nldd-menu-item text="Nieuw" details="Cmd+N"></nldd-menu-item>
+			<nldd-menu-item text="Nieuw"></nldd-menu-item>
 			<nldd-menu-item text="Open recent">
 				<nldd-menu>
 					<nldd-menu-item text="2026-Q2.xlsx"></nldd-menu-item>
@@ -205,7 +287,7 @@ export const WithSubmenu = {
 				</nldd-menu>
 			</nldd-menu-item>
 			<nldd-menu-divider></nldd-menu-divider>
-			<nldd-menu-item text="Sluiten" details="Cmd+W"></nldd-menu-item>
+			<nldd-menu-item text="Sluiten"></nldd-menu-item>
 		</nldd-menu>
 	`,
 	parameters: {
@@ -221,7 +303,7 @@ export const DebugSafeTriangle = {
 	render: () => html`
 		<nldd-button id="button-debug-triangle" expandable text="Open menu"></nldd-button>
 		<nldd-menu id="menu-debug-triangle" anchor="button-debug-triangle" debug-safe-triangle>
-			<nldd-menu-item text="Nieuw" details="Cmd+N"></nldd-menu-item>
+			<nldd-menu-item text="Nieuw"></nldd-menu-item>
 			<nldd-menu-item text="Open recent">
 				<nldd-menu debug-safe-triangle>
 					<nldd-menu-item text="2026-Q2.xlsx"></nldd-menu-item>

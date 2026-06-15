@@ -121,6 +121,27 @@ describe('nldd-multi-line-text-field', () => {
 		expect(textarea.rows).toBe(3);
 	});
 
+	it('exposes rows to CSS as --_rows on the host (auto-resize floor)', async () => {
+		el = await fixture('<nldd-multi-line-text-field resize="auto" rows="5"></nldd-multi-line-text-field>');
+		await waitForUpdate(el);
+		expect(el.style.getPropertyValue('--_rows')).toBe('5');
+	});
+
+	it('defaults --_rows to 3 on the host', async () => {
+		el = await fixture('<nldd-multi-line-text-field></nldd-multi-line-text-field>');
+		await waitForUpdate(el);
+		expect(el.style.getPropertyValue('--_rows')).toBe('3');
+	});
+
+	it('updates --_rows when rows changes at runtime', async () => {
+		el = await fixture('<nldd-multi-line-text-field resize="auto" rows="2"></nldd-multi-line-text-field>');
+		await waitForUpdate(el);
+		expect(el.style.getPropertyValue('--_rows')).toBe('2');
+		(el as any).rows = 6;
+		await waitForUpdate(el);
+		expect(el.style.getPropertyValue('--_rows')).toBe('6');
+	});
+
 	it('forwards accessible-label to the inner textarea', async () => {
 		el = await fixture('<nldd-multi-line-text-field accessible-label="Toelichting"></nldd-multi-line-text-field>');
 		await waitForUpdate(el);

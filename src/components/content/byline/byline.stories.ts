@@ -90,6 +90,39 @@ export const MeerdereRedacteuren = {
 };
 
 /**
+ * Op een smalle container (≤ 640px) met meerdere avatars komt de avatarrij
+ * boven de namen te staan, zodat de tekst de volle breedte houdt. Met één
+ * avatar blijft de byline op één regel — zie het verschil tussen de twee
+ * kaders hieronder. Het schakelpunt is de breedte van de byline zelf
+ * (container query), niet die van het scherm.
+ */
+export const SmalleContainer = {
+	render: () => html`
+		<div style="display: flex; flex-direction: column; gap: 24px; max-width: 360px;">
+			<div style="outline: 1px dashed #cbd5e1; padding: 16px;">
+				<nldd-byline
+					text="Jan Jansen, Petra Pietersen en Ahmed Karim"
+					supporting-text="Laatst bijgewerkt op 12 juni 2026"
+				>
+					<img slot="avatars" src=${AVATAR_1} alt="">
+					<img slot="avatars" src=${AVATAR_2} alt="">
+					<img slot="avatars" src=${AVATAR_3} alt="">
+				</nldd-byline>
+			</div>
+			<div style="outline: 1px dashed #cbd5e1; padding: 16px;">
+				<nldd-byline
+					text="Jan Jansen"
+					supporting-text="Redacteur — 12 juni 2026"
+				>
+					<img slot="avatars" src=${AVATAR_1} alt="">
+				</nldd-byline>
+			</div>
+		</div>
+	`,
+	parameters: { controls: { disable: true } },
+};
+
+/**
  * Gebruik de `text`- en `supporting-text`-slots voor rijke inhoud: een
  * `<time datetime="…">` voor machine-leesbare datums of een link naar het
  * auteursprofiel. Geslotte inhoud vervangt het bijbehorende attribuut.

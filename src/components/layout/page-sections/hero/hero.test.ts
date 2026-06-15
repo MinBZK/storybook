@@ -66,6 +66,48 @@ describe('nldd-hero', () => {
 
 
 	/* ============================================================
+	   Full-width strip: media stacks beside the panel, so its corner
+	   moves to the strip's outer edge (away from the panel)
+	   ============================================================ */
+
+	it.each([
+		['bottom-left', 'top-right'],
+		['bottom-right', 'top-left'],
+		['top-left', 'bottom-right'],
+		['top-right', 'bottom-left'],
+	])('main-width="full" main-position="%s" moves the media corner to the outer edge "%s"', async (position, mediaCorner) => {
+		el = await fixture(`<nldd-hero main-width="full" main-position="${position}">${MEDIA}</nldd-hero>`);
+		await waitForUpdate(el);
+		expect(el.getAttribute('data-media-corner')).toBe(mediaCorner);
+		expect(el.getAttribute('data-main-corner')).toBe('none');
+	});
+
+	it('main-width="full" keeps an explicit media-corner side but forces it to the outer edge', async () => {
+		// Bottom panel → media on top → a bottom-* corner flips to top-*, side kept.
+		el = await fixture(`<nldd-hero main-width="full" main-position="bottom-left" media-corner="bottom-right">${MEDIA}</nldd-hero>`);
+		await waitForUpdate(el);
+		expect(el.getAttribute('data-media-corner')).toBe('top-right');
+	});
+
+	it('main-width="full" without media keeps the curated corner', async () => {
+		// No media means no strip to reposition; the corner stays as curated.
+		el = await fixture('<nldd-hero main-width="full" main-position="top-left"></nldd-hero>');
+		await waitForUpdate(el);
+		expect(el.getAttribute('data-media-corner')).toBe('top-right');
+	});
+
+	it.each([
+		['left', 'top-right'],
+		['right', 'top-left'],
+	])('main-width="full" is ignored for the full-height main-position="%s"', async (position, mediaCorner) => {
+		el = await fixture(`<nldd-hero main-width="full" main-position="${position}">${MEDIA}</nldd-hero>`);
+		await waitForUpdate(el);
+		expect(el.getAttribute('data-media-corner')).toBe(mediaCorner);
+		expect(el.getAttribute('data-main-corner')).toBe('none');
+	});
+
+
+	/* ============================================================
 	   Media slot
 	   ============================================================ */
 

@@ -18,6 +18,7 @@ export const activityIndicatorStyles = css`
 		--_max-width: var(--primitives-area-240);
 		--_gap: var(--primitives-space-4);
 		--_text-font: var(--primitives-font-body-sm-regular-flat);
+		--_backdrop-blur: 3px;
 
 		${inheritedTextReset}
 		box-sizing: border-box;
@@ -33,6 +34,12 @@ export const activityIndicatorStyles = css`
 
 	:host([hidden]) {
 		display: none;
+	}
+
+	/* The opt-in backdrop is an absolutely-positioned layer that fills the host,
+	   so the host has to be its containing block. */
+	:host([backdrop]) {
+		position: relative;
 	}
 
 
@@ -59,6 +66,9 @@ export const activityIndicatorStyles = css`
 	   circle and the label stay centred via align-items. */
 
 	.activity-indicator {
+		/* position:relative so it paints above the absolutely-positioned backdrop
+		   (both are z-index:auto; the backdrop comes first in the DOM). */
+		position: relative;
 		display: flex;
 		flex-direction: column;
 		width: 100%;
@@ -70,6 +80,24 @@ export const activityIndicatorStyles = css`
 
 	@keyframes activity-indicator-fade-in {
 		from { opacity: 0; }
+	}
+
+	/* Opt-in dimming layer (the backdrop attribute): the context parent
+	   background colour — fallback the base surface — at one minus the disabled
+	   opacity, so the content underneath reads as inactive while loading. Fades
+	   in with the indicator. */
+	.activity-indicator__backdrop {
+		position: absolute;
+		inset: 0;
+		/* Frosted dim: the parent surface — fallback base surface — as a
+		   translucent fill at one minus the disabled opacity (a translucent
+		   colour, not element opacity, which would hide the blur), plus a blur so
+		   the content behind reads as inactive. backdrop-filter degrades
+		   gracefully where unsupported, leaving just the translucent fill. */
+		background-color: color-mix(in oklab, var(--context-parent-background-color, var(--semantics-surfaces-base-background-color)) calc((1 - var(--primitives-opacity-disabled)) * 100%), transparent);
+		-webkit-backdrop-filter: blur(var(--_backdrop-blur));
+		backdrop-filter: blur(var(--_backdrop-blur));
+		animation: activity-indicator-fade-in var(--_fade-duration) var(--_fade-easing);
 	}
 
 	/* display:contents so the default circle + label (or a slotted override)
@@ -133,7 +161,8 @@ export const activityIndicatorStyles = css`
 	/* # Accessibility */
 
 	@media (prefers-reduced-motion: reduce) {
-		.activity-indicator {
+		.activity-indicator,
+		.activity-indicator__backdrop {
 			animation: none;
 		}
 

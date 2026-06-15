@@ -20,8 +20,16 @@
  * @attr {string} mac-keys - Optionele override voor macOS (incl. iPhone/iPad/iPod).
  * @attr {string} windows-keys - Optionele override voor Windows.
  * @attr {string} linux-keys - Optionele override voor Linux/ChromeOS.
- * @attr {string} size - Grootte: 'sm' | 'md' (default: 'md')
+ * @attr {string} size - Grootte: 'sm' | 'md' | 'inherit' (default: 'md'). 'inherit' neemt de
+ *   font-size over van de container; bij de box-variant schalen de keycaps dan mee in em.
+ * @attr {string} variant - 'box' (default) toont elke toets als keycap met vulling en
+ *   highlight-rand; 'simple' toont de toetsen als platte tekst met scheidingstekens —
+ *   lichter, voor inline gebruik zoals in een menu-item.
  * @attr {boolean} always-visible - Toon ook op touch-only devices waar shortcuts niet aanroepbaar zijn.
+ * @attr {string} color - 'neutral' (default) gebruikt de eigen component-kleuren. 'inherit'
+ *   laat de toetsen en scheidingstekens de omringende tekstkleur (currentColor) volgen, met
+ *   een doorschijnende contrast-vulling en highlight-rand — handig op een gevulde vlakkleur
+ *   of een gemarkeerde rij.
  *
  * @slot - Optionele custom <kbd>-elementen. Wordt genegeerd als keys is opgegeven.
  */
@@ -32,7 +40,9 @@ import { keyboardShortcutStyles } from './keyboard-shortcut.styles.js';
 import { template } from './keyboard-shortcut.template.js';
 import { detectOS, type OS } from '../../../utilities/os.js';
 
-type Size = 'sm' | 'md';
+type Size = 'sm' | 'md' | 'inherit';
+type Color = 'neutral' | 'inherit';
+type Variant = 'box' | 'simple';
 
 @customElement('nldd-keyboard-shortcut')
 export class NLDDKeyboardShortcut extends LitElement {
@@ -53,6 +63,23 @@ export class NLDDKeyboardShortcut extends LitElement {
 	@property({ type: String, reflect: true })
 	size: Size = 'md';
 
+	/**
+	 * 'box' (default) renders each key as a keycap with a fill and highlight
+	 * border. 'simple' renders the keys as plain text with separators — lighter,
+	 * for inline use such as inside a menu item.
+	 */
+	@property({ type: String, reflect: true })
+	variant: Variant = 'box';
+
+	/**
+	 * 'neutral' (default) uses the component's own palette. 'inherit' makes the
+	 * keys and separators adopt the surrounding text color (currentColor), with a
+	 * translucent contrast fill and highlight border — useful on filled panels or
+	 * highlighted rows.
+	 */
+	@property({ type: String, reflect: true })
+	color: Color = 'neutral';
+
 	@property({ type: Boolean, reflect: true, attribute: 'always-visible' })
 	alwaysVisible = false;
 
@@ -68,8 +95,13 @@ export class NLDDKeyboardShortcut extends LitElement {
 	@property({ type: String, attribute: 'debug-os' })
 	debugOS: OS | '' = '';
 
+	/** @internal Resolved OS — the debug override when set, else detection. */
+	get _resolvedOS(): OS {
+		return this.debugOS || detectOS();
+	}
+
 	get _resolvedKeys(): string {
-		const os = this.debugOS || detectOS();
+		const os = this._resolvedOS;
 		if (os === 'mac' && this.macKeys) return this.macKeys;
 		if (os === 'windows' && this.windowsKeys) return this.windowsKeys;
 		if (os === 'linux' && this.linuxKeys) return this.linuxKeys;
