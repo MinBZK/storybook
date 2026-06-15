@@ -9,9 +9,6 @@ export const keyboardShortcutStyles = css`
 	:host {
 		--_size: var(--components-keyboard-shortcut-md-size);
 		--_inline-padding: var(--primitives-space-4);
-		/* box (default): monospace keys at a reduced size — the keycap box makes
-		   them read larger, and monospace renders large, so md uses size-80 and
-		   sm size-70. The simple variant overrides to the body font at full size. */
 		--_font-family: var(--primitives-font-family-monospace);
 		--_font-size: var(--primitives-font-size-80);
 		--_font-weight: var(--primitives-font-weight-body-regular);
@@ -26,11 +23,6 @@ export const keyboardShortcutStyles = css`
 		vertical-align: middle;
 	}
 
-	/* color="inherit": the keys follow the surrounding text color (a filled
-	   panel, a highlighted menu item, …) — text and separators take currentColor,
-	   while the fill and highlight border become a translucent contrast overlay,
-	   exactly like the button's inherit-tinted variant. The forced-colors block
-	   below still wins with system colors. */
 	:host([color="inherit"]) {
 		--_content-color: currentColor;
 		--_separator-color: currentColor;
@@ -43,16 +35,12 @@ export const keyboardShortcutStyles = css`
 		--_font-size: var(--primitives-font-size-70);
 	}
 
-	/* size="inherit": scale with the surrounding text. The box keycaps are sized
-	   in em so they stay proportional to their context; the font is reduced to
-	   0.75em because monospace renders large. */
 	:host([size="inherit"]) {
 		--_size: 1.5em;
 		--_inline-padding: 0.35em;
 		--_font-size: 0.75em;
 	}
 
-	/* simple variant: the body font at full size (no keycap to compensate for). */
 	:host([variant="simple"]) {
 		--_font-family: var(--primitives-font-family-body);
 		--_font-size: var(--primitives-font-size-100);
@@ -62,8 +50,6 @@ export const keyboardShortcutStyles = css`
 		--_font-size: var(--primitives-font-size-90);
 	}
 
-	/* simple + inherit: take only the font-size from the container, keeping the
-	   component's own (body) family — so it never picks up an unexpected font. */
 	:host([variant="simple"][size="inherit"]) {
 		--_font-size: inherit;
 	}
@@ -87,9 +73,6 @@ export const keyboardShortcutStyles = css`
 		align-items: center;
 	}
 
-	/* Inline box keycaps (size="inherit") sit a hair low against the text
-	   baseline; nudge the whole shortcut up so it lines up with the surrounding
-	   text. Only the box variant has the keycap; simple text aligns on its own. */
 	:host([size="inherit"][variant="box"]) .keyboard-shortcut {
 		position: relative;
 		top: -0.05em;
@@ -101,8 +84,6 @@ export const keyboardShortcutStyles = css`
 	.keyboard-shortcut__key {
 		box-sizing: border-box;
 		display: inline-flex;
-		/* Highlight border as an inset shadow (no layout box), like the button —
-		   the key reads as a subtle inner outline rather than a hard border. */
 		box-shadow: inset 0 0 0 var(--components-keyboard-shortcut-border-thickness) var(--_highlight-border-color);
 		border-radius: var(--components-keyboard-shortcut-corner-radius);
 		background-color: var(--_background-color);
@@ -119,9 +100,6 @@ export const keyboardShortcutStyles = css`
 		white-space: nowrap;
 	}
 
-	/* 'simple' variant: drop the keycap box and render each key as plain inline
-	   text — a lighter hint for inline use (e.g. a menu item). No gap between
-	   keys/separators so it reads as one run of text ("Ctrl+C"). */
 	:host([variant="simple"]) .keyboard-shortcut {
 		gap: 0;
 	}
@@ -135,9 +113,6 @@ export const keyboardShortcutStyles = css`
 		padding: 0;
 	}
 
-	/* Forced colors strip box-shadows, so the box variant's inset highlight
-	   border disappears — fall back to a real border there. The simple variant
-	   has no box, so it stays plain text in system colors. */
 	@media (forced-colors: active) {
 		.keyboard-shortcut__key {
 			color: CanvasText;
