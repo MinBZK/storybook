@@ -355,10 +355,12 @@ export const buttonStyles = css`
 		--_is-active-highlight-border-color: var(--semantics-buttons-inherit-filled-is-expanded-is-active-highlight-border-color);
 	}
 
+	/* width:100% (host) + --_width:100% (inner .button) fill the container in
+	   both row and column flex layouts. No flex-grow: in a column it grows the
+	   main axis (height) and stretches the button vertically. */
 	:host([width="full"]) {
 		display: block;
 		width: 100%;
-		flex-grow: 1;
 	}
 
 	:host([horizontal-alignment="left"]) .button {
