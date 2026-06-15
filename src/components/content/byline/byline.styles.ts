@@ -11,7 +11,7 @@ export const bylineStyles = css`
 
 	:host {
 		--_gap: var(--primitives-space-8);
-		--_avatar-overlap: var(--primitives-space-8);
+		--_avatar-overlap-size: var(--primitives-space-8);
 		--_avatar-size: var(--primitives-space-40);
 		--_avatar-border-width: var(--primitives-border-width-regular);
 		--_avatar-border-color: var(--context-parent-background-color, var(--semantics-surfaces-base-background-color));
@@ -39,11 +39,8 @@ export const bylineStyles = css`
 		gap: var(--_gap);
 	}
 
-	/* On a small container (≤ sm) a byline with multiple avatars stacks the
-	   avatar row above the names, so the text keeps the full width instead of
-	   being squeezed next to the avatars. A single-avatar byline stays inline. */
-	@container (max-width: ${smMax}) {
-		.byline[data-multiple-avatars] {
+	.byline[data-multiple-avatars] {
+		@container (max-width: ${smMax}) {
 			flex-direction: column;
 			align-items: flex-start;
 		}
@@ -54,7 +51,7 @@ export const bylineStyles = css`
 
 	.byline__avatars {
 		display: flex;
-		padding-inline-start: var(--_avatar-overlap);
+		padding-inline-start: var(--_avatar-overlap-size);
 	}
 
 	.byline__avatars[hidden] {
@@ -64,7 +61,7 @@ export const bylineStyles = css`
 	.byline__avatars ::slotted(img) {
 		${slottedReset}
 		display: block !important;
-		margin-inline-start: calc(-1 * var(--_avatar-overlap)) !important;
+		margin-inline-start: calc(-1 * var(--_avatar-overlap-size)) !important;
 		border-radius: var(--_avatar-corner-radius) !important;
 		box-shadow: 0 0 0 var(--_avatar-border-width) var(--_avatar-border-color) !important;
 		width: var(--_avatar-size) !important;
