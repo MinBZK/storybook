@@ -132,6 +132,19 @@ describe('nldd-menu', () => {
 		el.dispatchEvent(new KeyboardEvent('keydown', { key: 'End', bubbles: true }));
 		expect(spy).toHaveBeenCalled();
 	});
+
+	it('pins --_width, --_min-width and --_max-width to an explicit width, and clears all three when unset', async () => {
+		el = await fixture('<nldd-menu width="320px"><nldd-menu-item text="Item"></nldd-menu-item></nldd-menu>');
+		await waitForUpdate(el);
+		expect(el.style.getPropertyValue('--_width')).toBe('320px');
+		expect(el.style.getPropertyValue('--_min-width')).toBe('320px');
+		expect(el.style.getPropertyValue('--_max-width')).toBe('320px');
+		(el as unknown as { width: string }).width = '';
+		await waitForUpdate(el);
+		expect(el.style.getPropertyValue('--_width')).toBe('');
+		expect(el.style.getPropertyValue('--_min-width')).toBe('');
+		expect(el.style.getPropertyValue('--_max-width')).toBe('');
+	});
 });
 
 describe('nldd-menu-item', () => {

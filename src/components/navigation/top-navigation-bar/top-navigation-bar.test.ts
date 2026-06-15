@@ -279,6 +279,7 @@ describe('nldd-top-navigation-bar – menu sheet drill-down', () => {
 		await waitForUpdate(el);
 		const list = await openSheet(el);
 		const titleBar = (el as any)._globalMenuSheetTitleBar as HTMLElement;
+		expect(titleBar).not.toBeNull();
 
 		// Root: a link row + a submenu row with a chevron, no back button.
 		expect(labels(list)).toEqual(['Home', 'Onderwerpen']);
@@ -312,6 +313,7 @@ describe('nldd-top-navigation-bar – menu sheet drill-down', () => {
 		await waitForUpdate(el);
 		// Walk back to the root level.
 		const titleBar = (el as any)._globalMenuSheetTitleBar as HTMLElement;
+		expect(titleBar).not.toBeNull();
 		titleBar.dispatchEvent(new CustomEvent('back', { bubbles: true, composed: true }));
 		await waitForUpdate(el);
 		await new Promise(resolve => requestAnimationFrame(() => resolve(null)));
