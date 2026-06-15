@@ -342,6 +342,16 @@ describe('nldd-menu-item href (link items)', () => {
 		expect(a.hasAttribute('disabled')).toBe(true);
 	});
 
+	it('sanitizes a dangerous href: a javascript: URL falls back to a button with no link', async () => {
+		el = await fixture('<nldd-menu><nldd-menu-item text="X" href="javascript:alert(1)"></nldd-menu-item></nldd-menu>');
+		await waitForUpdate(el);
+		const item = el.querySelector('nldd-menu-item')!;
+		// Blocked protocol → no anchor renders, so the payload never reaches an href.
+		expect(item.shadowRoot!.querySelector('a.menu__item')).toBeNull();
+		expect(action(item).tagName).toBe('BUTTON');
+		expect(item.shadowRoot!.querySelector('[href]')).toBeNull();
+	});
+
 	it('fires select when a link item is activated', async () => {
 		el = await fixture('<nldd-menu><nldd-menu-item text="Profiel" href="#profiel"></nldd-menu-item></nldd-menu>');
 		await waitForUpdate(el);

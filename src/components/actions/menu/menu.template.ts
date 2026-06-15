@@ -1,5 +1,6 @@
 import { html, nothing } from 'lit';
 import type { NLDDMenuItem, NLDDMenu, NLDDMenuGroup } from './menu.js';
+import { sanitizeUrl } from '../../../utilities/sanitize-url.js';
 
 const menuRoleMap = {
 	menu: 'menu',
@@ -81,7 +82,11 @@ export function menuItemTemplate(this: NLDDMenuItem, variant: 'menu' | 'listbox'
 	// A plain button item with an href renders as a real link. Submenu openers,
 	// checkbox/radio items, and disabled items keep the button — they need its
 	// richer behaviour (popover invoker, check state, inert disabling).
-	const asLink = !!this.href && this.type === 'button' && !hasSubmenu && !this.disabled;
+	// Sanitize the href so a caller-supplied javascript:/data:/vbscript:/blob:
+	// URL can't become an XSS vector; a blocked URL yields '' and falls back to
+	// the button branch. Mirrors the nav-bar sheet (top-navigation-bar.ts).
+	const safeHref = sanitizeUrl(this.href) ?? '';
+	const asLink = !!safeHref && this.type === 'button' && !hasSubmenu && !this.disabled;
 
 	const content = html`
 		${hasCheckState ? html`
@@ -144,7 +149,7 @@ export function menuItemTemplate(this: NLDDMenuItem, variant: 'menu' | 'listbox'
 	return html`
 		${asLink ? html`
 			<a class="menu__item"
-				href=${this.href}
+				href=${safeHref}
 				role=${role}
 				aria-current=${this.selected ? 'page' : nothing}
 				@click=${this._handleClick}
