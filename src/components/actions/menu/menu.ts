@@ -120,33 +120,18 @@ export class NLDDMenuItem extends LitElement {
 	@property({ type: String, reflect: true })
 	value = '';
 
-	/**
-	 * Optional link target. When set on a plain button item — not a submenu
-	 * opener, checkbox, or radio, and not disabled — the item renders as an
-	 * `<a href>` so it behaves as a real link. Leaves activation untouched: a
-	 * click still fires `select` and the anchor navigates.
-	 */
 	@property({ type: String, reflect: true })
 	href = '';
 
-	/** Space-separated alternative search terms used by nldd-menu's filter. */
 	@property({ type: String, reflect: true })
 	aliases = '';
 
 	@property({ type: String, reflect: true })
 	details = '';
 
-	/**
-	 * Keyboard shortcut hint shown on the right, rendered via
-	 * nldd-keyboard-shortcut (keys separated by '+', e.g. 'Cmd+E'). Display only:
-	 * it does not bind the shortcut — wire up the key handling in your app. The
-	 * hint is hidden on touch-only devices, where it isn't invokable.
-	 */
 	@property({ type: String, reflect: true })
 	shortcut = '';
 
-	/** Per-OS overrides for `shortcut`; the detected OS picks the matching one,
-	 *  falling back to `shortcut`. Mirrors nldd-keyboard-shortcut. */
 	@property({ type: String, reflect: true, attribute: 'shortcut-mac' })
 	shortcutMac = '';
 
@@ -156,7 +141,6 @@ export class NLDDMenuItem extends LitElement {
 	@property({ type: String, reflect: true, attribute: 'shortcut-linux' })
 	shortcutLinux = '';
 
-	/** Icon name rendered before the text (looked up via nldd-icon). */
 	@property({ type: String, reflect: true })
 	icon = '';
 
