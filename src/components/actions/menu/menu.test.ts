@@ -156,7 +156,7 @@ describe('nldd-menu-item', () => {
 	it('renders an icon-cell when the icon attribute is set', async () => {
 		el = await fixture('<nldd-menu-item text="Save" icon="file"></nldd-menu-item>');
 		await waitForUpdate(el);
-		const iconCell = el.shadowRoot!.querySelector('.menu__item-icon');
+		const iconCell = el.shadowRoot!.querySelector('nldd-icon-cell');
 		expect(iconCell).not.toBeNull();
 		// icon-cell forwards its `icon` attribute to an internal <nldd-icon>.
 		expect(iconCell!.getAttribute('icon')).toBe('file');
@@ -165,7 +165,7 @@ describe('nldd-menu-item', () => {
 	it('does not render an icon-cell when the icon attribute is missing', async () => {
 		el = await fixture('<nldd-menu-item text="Save"></nldd-menu-item>');
 		await waitForUpdate(el);
-		expect(el.shadowRoot!.querySelector('.menu__item-icon')).toBeNull();
+		expect(el.shadowRoot!.querySelector('nldd-icon-cell')).toBeNull();
 	});
 
 	it('reflects details attribute', async () => {
@@ -283,7 +283,7 @@ describe('nldd-menu-item href (link items)', () => {
 		expect(a.getAttribute('href')).toBe('/profiel');
 		expect(a.getAttribute('role')).toBe('menuitem');
 		expect(item.shadowRoot!.querySelector('button.menu__item')).toBeNull();
-		expect(a.querySelector('.menu__item-text')?.getAttribute('text')).toBe('Profiel');
+		expect(a.querySelector('nldd-text-cell')?.getAttribute('text')).toBe('Profiel');
 	});
 
 	it('sets aria-current="page" on a selected link item', async () => {
@@ -657,7 +657,7 @@ describe('nldd-menu-item with submenu', () => {
 			</nldd-menu-item>
 		`);
 		await waitForUpdate(el);
-		const indicator = el.shadowRoot!.querySelector('.menu__item-submenu-indicator');
+		const indicator = el.shadowRoot!.querySelector('nldd-icon-cell[icon="chevron-right"]');
 		expect(indicator).not.toBeNull();
 	});
 
