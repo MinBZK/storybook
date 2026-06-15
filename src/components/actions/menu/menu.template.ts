@@ -37,7 +37,8 @@ export function menuTemplate(this: NLDDMenu, isEmpty: boolean, variant: 'menu' |
 					@click=${this._handleBack}
 					@mouseenter=${this._handleBackMouseenter}
 				>
-					<nldd-icon-cell						size="20"
+					<nldd-icon-cell
+						size="20"
 						icon="chevron-left"
 					></nldd-icon-cell>
 					<nldd-spacer-cell size="6"></nldd-spacer-cell>
@@ -84,23 +85,29 @@ export function menuItemTemplate(this: NLDDMenuItem, variant: 'menu' | 'listbox'
 
 	const content = html`
 		${hasCheckState ? html`
-			<nldd-icon-cell				size="24"
+			<nldd-icon-cell
+				size="24"
 				horizontal-alignment="center"
 				icon=${this.selected ? 'check-mark' : nothing}
 			></nldd-icon-cell>
 			<nldd-spacer-cell size="4"></nldd-spacer-cell>
 		` : nothing}
 		${this.icon ? html`
-			<nldd-icon-cell				size="20"
+			<nldd-icon-cell
+				size="20"
 				icon=${this.icon}
 			></nldd-icon-cell>
 			<nldd-spacer-cell size="8"></nldd-spacer-cell>
 		` : nothing}
-		<nldd-text-cell			text=${this.text} query=${this.query} query-mark-mode=${this.queryMarkMode}
+		<nldd-text-cell
+			text=${this.text}
+			query=${this.query}
+			query-mark-mode=${this.queryMarkMode}
 		></nldd-text-cell>
 		${this.details ? html`
 			<nldd-spacer-cell size="8"></nldd-spacer-cell>
-			<nldd-text-cell				width="fit-content"
+			<nldd-text-cell
+				width="fit-content"
 				horizontal-alignment="right"
 				color="secondary"
 				text=${this.details}
@@ -108,7 +115,12 @@ export function menuItemTemplate(this: NLDDMenuItem, variant: 'menu' | 'listbox'
 		` : nothing}
 		${(this.shortcut || this.shortcutMac || this.shortcutWindows || this.shortcutLinux) ? html`
 			<nldd-spacer-cell size="8"></nldd-spacer-cell>
-			<nldd-text-cell width="fit-content" size="md" color="secondary" horizontal-alignment="right">
+			<nldd-text-cell
+				width="fit-content"
+				size="md"
+				color="secondary"
+				horizontal-alignment="right"
+			>
 				<nldd-keyboard-shortcut
 					size="inherit"
 					variant="simple"
@@ -122,7 +134,8 @@ export function menuItemTemplate(this: NLDDMenuItem, variant: 'menu' | 'listbox'
 		` : nothing}
 		${hasSubmenu ? html`
 			<nldd-spacer-cell size="6"></nldd-spacer-cell>
-			<nldd-icon-cell				size="20"
+			<nldd-icon-cell
+				size="20"
 				icon="chevron-right"
 			></nldd-icon-cell>
 		` : nothing}
