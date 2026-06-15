@@ -259,6 +259,9 @@ describe('nldd-top-navigation-bar – menu sheet drill-down', () => {
 	`;
 
 	async function openSheet(host: NLDDTopNavigationBar): Promise<HTMLElement> {
+		// Call the menu-button handler directly rather than dispatching a DOM
+		// click: it's async (it lazy-loads the sheet's dependencies) and returns a
+		// promise we can await; a synthetic click gives no handle to await on.
 		await (host as any)._onMenuButtonClick();
 		const list = (host as any)._globalMenuSheetList as HTMLElement;
 		await Promise.all(
@@ -297,6 +300,25 @@ describe('nldd-top-navigation-bar – menu sheet drill-down', () => {
 		await waitForUpdate(el);
 		expect(labels(list)).toEqual(['Home', 'Onderwerpen']);
 		expect(titleBar.hasAttribute('back-text')).toBe(false);
+	});
+
+	it('returns focus to the opener row when walking back (APG)', async () => {
+		el = await fixture<NLDDTopNavigationBar>(drillFixture);
+		await waitForUpdate(el);
+		const list = await openSheet(el);
+		// Drill into "Onderwerpen" (the second row).
+		(list.querySelectorAll('nldd-list-item')[1] as HTMLElement)
+			.shadowRoot!.querySelector<HTMLButtonElement>('button.list-item__action')!.click();
+		await waitForUpdate(el);
+		// Walk back to the root level.
+		const titleBar = (el as any)._globalMenuSheetTitleBar as HTMLElement;
+		titleBar.dispatchEvent(new CustomEvent('back', { bubbles: true, composed: true }));
+		await waitForUpdate(el);
+		await new Promise(resolve => requestAnimationFrame(() => resolve(null)));
+		// Focus lands on the "Onderwerpen" opener row, not the first ("Home") row.
+		const rows = Array.from(list.querySelectorAll('nldd-list-item')) as HTMLElement[];
+		expect(rows[1].matches(':focus-within')).toBe(true);
+		expect(rows[0].matches(':focus-within')).toBe(false);
 	});
 
 	it('forwards a submenu leaf selection (without throwing on the closed popover)', async () => {

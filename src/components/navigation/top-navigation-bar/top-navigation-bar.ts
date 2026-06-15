@@ -383,8 +383,11 @@ export class NLDDTopNavigationBar extends withTranslations(LitElement, nlddTopNa
 	 * the now-visible parent level. */
 	private _onSheetBack = (): void => {
 		if (this._sheetStack.length <= 1) return;
+		// The popped level's title is the text of the row that opened it; pass it
+		// so focus returns to that row (APG menu pattern), not the first one.
+		const openerText = this._sheetStack[this._sheetStack.length - 1].title;
 		this._sheetStack.pop();
-		this._renderSheetLevel(true);
+		this._renderSheetLevel(true, openerText);
 	};
 
 	/** Read the rows for a level from its container — the global menu-bar's
@@ -424,7 +427,7 @@ export class NLDDTopNavigationBar extends withTranslations(LitElement, nlddTopNa
 	/** Render the current (top-of-stack) level into the sheet: update the title
 	 * bar (title + back button) and rebuild the list. Pass `moveFocus` after a
 	 * drill or back so focus lands on the new level's first row. */
-	private _renderSheetLevel(moveFocus = false): void {
+	private _renderSheetLevel(moveFocus = false, focusOpenerText?: string): void {
 		const list = this._globalMenuSheetList;
 		const titleBar = this._globalMenuSheetTitleBar;
 		if (!list || !titleBar || this._sheetStack.length === 0) return;
@@ -442,6 +445,7 @@ export class NLDDTopNavigationBar extends withTranslations(LitElement, nlddTopNa
 		}
 
 		list.replaceChildren();
+		let openerItem: HTMLElement | null = null;
 		for (const entry of this._readSheetEntries(level.container)) {
 			const listItem = document.createElement('nldd-list-item');
 			const textCell = document.createElement('nldd-text-cell');
@@ -473,13 +477,17 @@ export class NLDDTopNavigationBar extends withTranslations(LitElement, nlddTopNa
 				});
 			}
 			if (entry.selected) listItem.setAttribute('selected', '');
+			if (focusOpenerText !== undefined && entry.text === focusOpenerText) openerItem = listItem;
 
 			list.appendChild(listItem);
 		}
 
 		if (moveFocus) {
+			// nldd-list-item overrides focus() to delegate to its inner button/
+			// anchor, so this lands on the actionable element (keyboard a11y). On
+			// back, focus the row that opened the sub-level; otherwise the first.
 			requestAnimationFrame(() => {
-				list.querySelector<HTMLElement>('nldd-list-item')?.focus();
+				(openerItem ?? list.querySelector<HTMLElement>('nldd-list-item'))?.focus();
 			});
 		}
 	}
