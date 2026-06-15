@@ -156,10 +156,10 @@ describe('nldd-menu-item', () => {
 	it('renders an icon-cell when the icon attribute is set', async () => {
 		el = await fixture('<nldd-menu-item text="Save" icon="file"></nldd-menu-item>');
 		await waitForUpdate(el);
-		const iconCell = el.shadowRoot!.querySelector('nldd-icon-cell');
+		// Target the content icon by its value, so this stays unambiguous even if
+		// the item later also renders a check icon-cell (checkbox/radio types).
+		const iconCell = el.shadowRoot!.querySelector('nldd-icon-cell[icon="file"]');
 		expect(iconCell).not.toBeNull();
-		// icon-cell forwards its `icon` attribute to an internal <nldd-icon>.
-		expect(iconCell!.getAttribute('icon')).toBe('file');
 	});
 
 	it('does not render an icon-cell when the icon attribute is missing', async () => {
