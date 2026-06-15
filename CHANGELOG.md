@@ -9,6 +9,10 @@ the type of conventional-commit determines the release. Conventional types
 `chore`, `docs`, `ci`, `style`, `test`, `build` are intentionally omitted
 here; consult the commit history if you need that level of detail.
 
+## <small>0.8.59 (2026-06-15)</small>
+
+* feat!: richer menus, multi-level mobile nav, keyboard-shortcut variants, and a loading backdrop (#12 ([8b01ea9](https://github.com/MinBZK/storybook/commit/8b01ea9)), closes [#124](https://github.com/MinBZK/storybook/issues/124)
+
 ### Highlights
 
 - **Richer menus.** `nldd-menu` items can now be links (`href`) and show keyboard-shortcut hints, and the menu sizes to its content up to a viewport-aware maximum.
