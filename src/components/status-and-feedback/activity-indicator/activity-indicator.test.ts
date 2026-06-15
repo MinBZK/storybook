@@ -179,9 +179,12 @@ describe('nldd-activity-indicator', () => {
 		el = await fixture('<nldd-activity-indicator timing="instant" backdrop></nldd-activity-indicator>');
 		await waitForUpdate(el);
 		const bd = el.shadowRoot!.querySelector('.activity-indicator__backdrop')!;
-		const cs = getComputedStyle(bd);
-		const filter = cs.backdropFilter || (cs as unknown as { webkitBackdropFilter: string }).webkitBackdropFilter || '';
-		expect(filter).toContain('blur');
+		// Tests run in real chromium (Playwright), which computes backdrop-filter
+		// from the stylesheet — so this resolves to an actual radius, e.g.
+		// "blur(3px)". If the rule were dropped it would compute to "none" and
+		// this assertion would fail (it can't silently pass on an empty string).
+		const filter = getComputedStyle(bd).backdropFilter;
+		expect(filter).toMatch(/blur\(\d/);
 	});
 
 	it('omits the backdrop by default', async () => {
