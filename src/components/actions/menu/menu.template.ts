@@ -118,6 +118,15 @@ export function menuItemTemplate(this: NLDDMenuItem, variant: 'menu' | 'listbox'
 				text=${this.details}
 			></nldd-text-cell>
 		` : nothing}
+		<!--
+			Accessibility (intentional decision): the shortcut is deliberately NOT
+			aria-hidden. It is announced as part of the item's accessible name —
+			e.g. "Ongedaan maken Ctrl Z" — so screen-reader users learn the
+			accelerator, the way native OS menus surface it. aria-keyshortcuts was
+			considered and rejected: the menu item itself does not handle the key
+			(the application's global shortcut does), so the plain announcement is
+			the deliberate choice rather than a missing aria-hidden.
+		-->
 		${(this.shortcut || this.shortcutMac || this.shortcutWindows || this.shortcutLinux) ? html`
 			<nldd-spacer-cell size="8"></nldd-spacer-cell>
 			<nldd-text-cell
