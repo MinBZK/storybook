@@ -906,8 +906,8 @@
 	--semantics-categories-neutral-filled-highlight-border-color: light-dark(var(--primitives-color-neutral-650), var(--primitives-color-neutral-500));
 	--semantics-categories-neutral-filled-primary-content-color: light-dark(var(--primitives-color-neutral-0), var(--primitives-color-neutral-1000));
 	--semantics-categories-neutral-filled-secondary-content-color: light-dark(var(--primitives-color-neutral-0), var(--primitives-color-neutral-1000));
-	--semantics-categories-neutral-tinted-background-color: light-dark(var(--primitives-color-neutral-50), var(--primitives-color-neutral-75));
-	--semantics-categories-neutral-tinted-highlight-border-color: light-dark(var(--primitives-color-neutral-100), var(--primitives-color-neutral-150));
+	--semantics-categories-neutral-tinted-background-color: light-dark(var(--primitives-color-neutral-50), var(--primitives-color-neutral-150));
+	--semantics-categories-neutral-tinted-highlight-border-color: light-dark(var(--primitives-color-neutral-100), var(--primitives-color-neutral-200));
 	--semantics-categories-neutral-tinted-primary-content-color: var(--primitives-color-neutral-750);
 	--semantics-categories-neutral-tinted-secondary-content-color: var(--primitives-color-neutral-750);
 	--semantics-categories-neutral-reference-background-color: light-dark(var(--primitives-color-neutral-600), var(--primitives-color-neutral-400));
