@@ -48,6 +48,14 @@ import { NLDDMenu } from '../../actions/menu/menu.js';
 type Size = 'sm' | 'md' | 'lg';
 type TitleAlign = 'left' | 'center';
 
+// Consumer-set sizing props shared by nldd-toolbar-item and nldd-toolbar-title,
+// read off generic Elements during measurement.
+interface SizingElement {
+	minWidth: string;
+	maxWidth: string;
+	width: string;
+}
+
 // Consumer sizing (width/min-width/max-width) reflects to attributes —
 // frameworks such as Vue set `width` as a DOM property, and the attribute
 // should stay inspectable in the DOM. The '' default maps to null so it
@@ -659,7 +667,7 @@ export class NLDDToolbar extends LitElement {
 					return {
 						type: 'title',
 						element: el,
-						minWidth: (el as Element & { minWidth: string }).minWidth || '200px',
+						minWidth: (el as Element & SizingElement).minWidth || '200px',
 						id,
 					} as ToolbarChild;
 				}
@@ -673,7 +681,7 @@ export class NLDDToolbar extends LitElement {
 					// `width` as a DOM property (el.width exists) rather than an attribute,
 					// so getAttribute('width') misses it. Lit mirrors attribute-set values
 					// onto these properties too, so reading the property covers both.
-					const sizing = el as Element & { minWidth: string; maxWidth: string; width: string };
+					const sizing = el as Element & SizingElement;
 					const minWidth = sizing.minWidth || '';
 					const maxWidth = sizing.maxWidth || '';
 					const width = sizing.width || '';
