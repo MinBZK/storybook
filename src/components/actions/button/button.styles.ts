@@ -574,6 +574,13 @@ export const buttonStyles = css`
 		padding-inline-end: calc(var(--_inline-padding) + var(--_gap) + var(--_disclosure-icon-size));
 	}
 
+	/* The button already reserves a --_gap before the disclosure icon, so drop
+	   the text-area's own end-padding to avoid doubling the gap. Icon-only
+	   expandable buttons keep their gap via the reservation above. */
+	:host([expandable]) .button__text-area {
+		padding-inline-end: 0;
+	}
+
 	.button__disclosure-icon {
 		display: block;
 		position: absolute;
