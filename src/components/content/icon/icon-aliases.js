@@ -322,6 +322,7 @@ export const aliases = {
 
 	// square-arrow-right-top
 	'external-link': 'square-arrow-right-top',
+	'open-new-page': 'square-arrow-right-top',
 
 	// square-arrow-up
 	'share': 'square-arrow-up',
