@@ -355,13 +355,15 @@ function main() {
 		...[...byCategory.keys()].filter((k) => !(k in CATEGORY_TITLES)).sort(),
 	];
 
-	const header = `${generatedHeader(
+	const header = generatedHeader(
 		[
 			'Bron: de JSDoc (@element / @attr / @slot / @fires) van elk component in',
 			'src/components, plus de iconnamen uit content/icon/icons en icon-aliases.',
 		],
 		'npm run generate:component-reference',
-	)}# Componentreferentie — @nldd/design-system
+	);
+
+	const intro = `# Componentreferentie — @nldd/design-system
 
 Elk custom element met zijn attributen, slots en events. Dit is een offline
 snelreferentie; de levende documentatie met voorbeelden staat in
@@ -388,7 +390,7 @@ de \`.d.ts\` bestanden van het pakket.
 	const iconInfo = collectIconNames();
 	sections.push(renderIcons(iconInfo));
 
-	const body = header + sections.join('\n');
+	const body = header + intro + sections.join('\n');
 	writeGenerated(outputPath, body.replace(/\n{3,}/g, '\n\n').trimEnd() + '\n');
 	console.log(`Components: ${total} across ${orderedCategories.length} categories`);
 	console.log(`Icons: ${iconInfo.names.length} names + ${iconInfo.aliases.length} aliases`);
