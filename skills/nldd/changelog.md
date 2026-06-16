@@ -15,6 +15,11 @@ the type of conventional-commit determines the release. Conventional types
 `chore`, `docs`, `ci`, `style`, `test`, `build` are intentionally omitted
 here; consult the commit history if you need that level of detail.
 
+## <small>0.8.60 (2026-06-16)</small>
+
+* fix(plugin): laat plugin-versie de pakketversie volgen (#126) ([d90d9fd](https://github.com/MinBZK/storybook/commit/d90d9fd)), closes [#126](https://github.com/MinBZK/storybook/issues/126)
+* refactor(skills): vouw ontwerprichtlijnen in de nldd-consumer-skill (#125) ([a53eaef](https://github.com/MinBZK/storybook/commit/a53eaef)), closes [#125](https://github.com/MinBZK/storybook/issues/125)
+
 ## <small>0.8.59 (2026-06-15)</small>
 
 * feat!: richer menus, multi-level mobile nav, keyboard-shortcut variants, and a loading backdrop (#12 ([8b01ea9](https://github.com/MinBZK/storybook/commit/8b01ea9)), closes [#124](https://github.com/MinBZK/storybook/issues/124)
