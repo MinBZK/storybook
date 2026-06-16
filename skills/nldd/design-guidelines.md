@@ -1,6 +1,8 @@
-import { Meta, Markdown } from '@storybook/addon-docs/blocks';
-
-<Meta title="Docs/Ontwerprichtlijnen" />
+<!--
+  GEGENEREERD BESTAND — niet handmatig bewerken.
+  Kopie van src/docs/design-guidelines.mdx (Storybook "Docs/Ontwerprichtlijnen").
+  Hergenereren: npm run generate:skill-docs
+-->
 
 # Ontwerprichtlijnen
 

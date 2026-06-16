@@ -14,33 +14,19 @@
  * Usage: node scripts/generate-skill-changelog.js
  */
 
-import { readFileSync, writeFileSync } from 'node:fs';
 import { resolve, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { generatedHeader, readSource, writeGenerated } from './lib/skill-doc.js';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const sourcePath = resolve(__dirname, '../CHANGELOG.md');
 const outputPath = resolve(__dirname, '../skills/nldd/changelog.md');
 
-const header = `<!--
-  GEGENEREERD BESTAND — niet handmatig bewerken.
-  Kopie van de root CHANGELOG.md (onderhouden door semantic-release).
-  Hergenereren: npm run generate:skill-docs
--->
+const header = generatedHeader('Kopie van de root CHANGELOG.md (onderhouden door semantic-release).');
 
-`;
+const changelog = readSource(
+	sourcePath,
+	'Draai dit script na een release, als semantic-release de CHANGELOG heeft bijgewerkt.',
+);
 
-let changelog;
-try {
-	changelog = readFileSync(sourcePath, 'utf-8');
-} catch (err) {
-	if (err.code === 'ENOENT') {
-		console.error(`CHANGELOG.md not found at ${sourcePath}.`);
-		console.error('Draai dit script na een release, als semantic-release de CHANGELOG heeft bijgewerkt.');
-		process.exit(1);
-	}
-	throw err;
-}
-writeFileSync(outputPath, header + changelog);
-
-console.log(`Wrote ${outputPath} (${changelog.split('\n').length} lines)`);
+writeGenerated(outputPath, header + changelog);
