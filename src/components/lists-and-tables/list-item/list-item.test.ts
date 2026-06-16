@@ -57,6 +57,22 @@ describe('nldd-list-item', () => {
 		expect(el.shadowRoot!.querySelector('button')).toBeNull();
 	});
 
+	it('forwards target and rel to the anchor', async () => {
+		el = await fixture('<nldd-list-item href="/test" target="_blank" rel="noopener"></nldd-list-item>');
+		await waitForUpdate(el);
+		const anchor = el.shadowRoot!.querySelector('a.list-item__action');
+		expect(anchor?.getAttribute('target')).toBe('_blank');
+		expect(anchor?.getAttribute('rel')).toBe('noopener');
+	});
+
+	it('omits target and rel when not set', async () => {
+		el = await fixture('<nldd-list-item href="/test"></nldd-list-item>');
+		await waitForUpdate(el);
+		const anchor = el.shadowRoot!.querySelector('a.list-item__action');
+		expect(anchor?.hasAttribute('target')).toBe(false);
+		expect(anchor?.hasAttribute('rel')).toBe(false);
+	});
+
 	it('sets is-boxed class when inside a box list', async () => {
 		const wrapper = await fixture(`
 			<nldd-list variant="box">

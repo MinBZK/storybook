@@ -1,4 +1,4 @@
-import { html } from 'lit';
+import { html, nothing } from 'lit';
 import { classMap } from 'lit/directives/class-map.js';
 
 const areas = (showStart: boolean, showEnd: boolean) => html`
@@ -21,6 +21,8 @@ const areas = (showStart: boolean, showEnd: boolean) => html`
 export const template = (
 	button: boolean,
 	href: string | undefined,
+	target: string | undefined,
+	rel: string | undefined,
 	showStart: boolean,
 	showEnd: boolean,
 ) => {
@@ -28,6 +30,8 @@ export const template = (
 		return html`<div class="list-item">
 			<a class="list-item__action"
 				href=${href}
+				target=${target ?? nothing}
+				rel=${rel ?? nothing}
 			>${areas(showStart, showEnd)}</a>
 		</div>`;
 	}

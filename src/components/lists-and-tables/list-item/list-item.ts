@@ -11,7 +11,8 @@ export type ListItemSize = 'sm' | 'md';
 /**
  * A row within an `nldd-list`, providing layout for start, main and end areas.
  * Renders as a link when `href` is set, as a button when `button` is set, or
- * as a plain container otherwise.
+ * as a plain container otherwise. When it renders as a link, `target` and `rel`
+ * are forwarded to the inner `<a>` (e.g. `target="_blank" rel="noopener"`).
  *
  * The item synchronises its ARIA with its parent `nldd-list`'s `type`:
  * - `list` parent       → `role="listitem"`
@@ -39,6 +40,14 @@ export class NLDDListItem extends LitElement {
 	/** When set, renders the item as a link. */
 	@property({ reflect: true })
 	href?: string;
+
+	/** Link target (e.g. '_blank' to open in a new tab). Forwarded to the `<a>`; only applies with href. */
+	@property({ reflect: true })
+	target?: string;
+
+	/** Link rel (e.g. 'noopener'). Forwarded to the `<a>`; only applies with href. */
+	@property({ reflect: true })
+	rel?: string;
 
 	/** Set by the parent nldd-list when reorderable is enabled. Used as a CSS hook for drag handle visibility. */
 	@property({ type: Boolean, reflect: true })
@@ -196,6 +205,8 @@ export class NLDDListItem extends LitElement {
 		return template(
 			this.button,
 			this.href,
+			this.target,
+			this.rel,
 			this._showStart,
 			this._showEnd,
 		);
