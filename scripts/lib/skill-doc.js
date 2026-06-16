@@ -6,7 +6,8 @@
  * each script; everything else lives here.
  */
 
-import { readFileSync, writeFileSync } from 'node:fs';
+import { mkdirSync, readFileSync, writeFileSync } from 'node:fs';
+import { dirname } from 'node:path';
 
 /**
  * Build the standard generated-file comment header.
@@ -57,6 +58,7 @@ export function readSource(path, missingHint) {
  * @param {string} contents - the full file contents (header + body).
  */
 export function writeGenerated(path, contents) {
+	mkdirSync(dirname(path), { recursive: true });
 	writeFileSync(path, contents);
 	console.log(`Wrote ${path} (${contents.split('\n').length} lines)`);
 }
