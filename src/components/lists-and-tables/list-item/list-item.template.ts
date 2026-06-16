@@ -25,6 +25,7 @@ export const template = (
 	rel: string | undefined,
 	showStart: boolean,
 	showEnd: boolean,
+	newTabLabel?: string,
 ) => {
 	if (href) {
 		return html`<div class="list-item">
@@ -32,7 +33,9 @@ export const template = (
 				href=${href}
 				target=${target ?? nothing}
 				rel=${rel ?? nothing}
-			>${areas(showStart, showEnd)}</a>
+			>${areas(showStart, showEnd)}${
+				newTabLabel ? html`<span class="list-item__new-tab-hint">${newTabLabel}</span>` : nothing
+			}</a>
 		</div>`;
 	}
 	if (button) {

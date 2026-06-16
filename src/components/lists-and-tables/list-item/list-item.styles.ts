@@ -94,6 +94,18 @@ export const listItemStyles = css`
 		cursor: var(--semantics-controls-link-cursor);
 	}
 
+	.list-item__new-tab-hint {
+		position: absolute;
+		margin: -1px;
+		border: 0;
+		width: 1px;
+		height: 1px;
+		overflow: hidden;
+		padding: 0;
+		white-space: nowrap;
+		clip-path: inset(50%);
+	}
+
 
 	/* # Indicator */
 

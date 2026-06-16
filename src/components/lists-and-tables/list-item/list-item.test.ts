@@ -73,6 +73,30 @@ describe('nldd-list-item', () => {
 		expect(anchor?.hasAttribute('rel')).toBe(false);
 	});
 
+	it('injects a visually hidden "opens in new tab" announcement into the link when target="_blank"', async () => {
+		el = await fixture('<nldd-list-item href="/test" target="_blank"></nldd-list-item>');
+		await waitForUpdate(el);
+		const hint = el.shadowRoot!.querySelector('a.list-item__action .list-item__new-tab-hint');
+		expect(hint).not.toBeNull();
+		expect(hint?.textContent).toBe('Opent in nieuw tabblad');
+	});
+
+	it('does not add the new-tab announcement for same-tab links', async () => {
+		el = await fixture('<nldd-list-item href="/test"></nldd-list-item>');
+		await waitForUpdate(el);
+		expect(el.shadowRoot!.querySelector('.list-item__new-tab-hint')).toBeNull();
+	});
+
+	it('lets the consumer override the new-tab announcement via translations', async () => {
+		el = await fixture('<nldd-list-item href="/test" target="_blank"></nldd-list-item>');
+		(el as unknown as { translations: Record<string, string> }).translations = {
+			'components.list-item.opens-in-new-tab-label': 'opens in a new tab',
+		};
+		await waitForUpdate(el);
+		const hint = el.shadowRoot!.querySelector('.list-item__new-tab-hint');
+		expect(hint?.textContent).toBe('opens in a new tab');
+	});
+
 	it('sets is-boxed class when inside a box list', async () => {
 		const wrapper = await fixture(`
 			<nldd-list variant="box">

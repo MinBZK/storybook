@@ -25,7 +25,7 @@ here; consult the commit history if you need that level of detail.
 ### Added
 
 - **Icons** — `arrow-left-to-line` / `arrow-right-to-line` and `chevron-left-to-line` / `chevron-right-to-line` ("move to edge" affordances), `file-text-stack` (with `documents` aliases), and an `open-new-page` alias for `square-arrow-right-top`.
-- **`nldd-list-item`** — forwards `target` and `rel` to the underlying `<a>`, so a link row can open in a new tab (`target="_blank" rel="noopener"`).
+- **`nldd-list-item`** — forwards `target` and `rel` to the underlying `<a>`, so a link row can open in a new tab (`target="_blank" rel="noopener"`). With `target="_blank"` it also injects a visually hidden "opens in new tab" announcement for assistive technology (WCAG 2.1 SC 3.2.2), overridable via the `translations` property.
 
 ### Breaking
 
