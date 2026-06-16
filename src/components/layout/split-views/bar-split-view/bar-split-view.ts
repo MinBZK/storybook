@@ -5,8 +5,11 @@
  * Each child determines its order per breakpoint via sm-order, md-order, and lg-order.
  * Children without order attributes are sorted by DOM order.
  *
- * All bars are in normal flow at every breakpoint and stack vertically with
- * dividers between them on md and lg. Dividers are suppressed on sm.
+ * All bars are in normal flow at every breakpoint and stack vertically. A
+ * divider is drawn only where the main pane meets an adjacent bar — directly
+ * above and/or below main — at every breakpoint (including sm). Two stacked
+ * bars on the same side never get a divider between them, so a toolbar and a
+ * tab-bar read as one visual unit. Consumers never manage dividers themselves.
  *
  * ## Slot names
  * Give each bar a unique slot name (e.g. slot="toolbar", slot="status-bar").
@@ -24,11 +27,6 @@
  * @attr {'sm'|'md'|'lg'} above - Show this panel from this breakpoint and larger
  * @attr {'sm'|'md'|'lg'} below - Show this panel up to and including this breakpoint
  * @attr {'sm'|'md'|'lg'} only  - Show this panel only at this breakpoint
- *
- * Divider control per child:
- * @attr no-divider - Suppress dividers adjacent to this bar. Setting it on
- *                    either side of a seam removes that divider — handy for
- *                    grouping a toolbar and tab-bar into one visual unit.
  *
  * @slot main  - Central panel for primary content
  * @slot *     - Any other unique slot name creates a bar panel
@@ -67,7 +65,7 @@ export class NLDDBarSplitView extends LitElement {
 		this._currentBreakpoint = this._getBreakpoint(this.getBoundingClientRect().width);
 
 		this._observer = new MutationObserver(() => this.requestUpdate());
-		this._observer.observe(this, { childList: true, attributes: true, attributeFilter: ['above', 'below', 'only', 'sm-order', 'md-order', 'lg-order', 'no-divider'], subtree: false });
+		this._observer.observe(this, { childList: true, attributes: true, attributeFilter: ['above', 'below', 'only', 'sm-order', 'md-order', 'lg-order'], subtree: false });
 
 		this._resizeObserver = new ResizeObserver(() => {
 			const bp = this._getBreakpoint(this.getBoundingClientRect().width);
