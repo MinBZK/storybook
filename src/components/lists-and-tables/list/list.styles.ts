@@ -15,6 +15,7 @@ export const listStyles = css`
 
 		display: block;
 		position: relative;
+		width: 100%;
 		isolation: isolate;
 	}
 
