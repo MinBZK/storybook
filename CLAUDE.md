@@ -110,3 +110,9 @@ Wil je toch handmatig iets toevoegen (bijv. iets dat semantic-release niet uit d
 ## Ontwerprichtlijnen
 
 De ontwerprichtlijnen staan in `src/docs/design-guidelines.mdx` (Storybook "Docs/Ontwerprichtlijnen"): dat is de enige bron. Wijzig je ze, draai dan `npm run generate:skill-principles` (of `npm run generate:skill-docs`) en commit het resultaat. `skills/nldd/design-guidelines.md` is een gegenereerde kopie die met de plugin meereist en in sync moet blijven; er is geen aparte ontwerprichtlijnen-skill meer. Houd de tekst em-dash-vrij (komma's, punten of haakjes). Heb je de directory `.claude/skills/ontwerprichtlijnen/` lokaal nog staan (van de oude generator), verwijder die dan handmatig; hij is nu een ongetrackte overblijver.
+
+## Plugin-versie
+
+De Claude Code plugin (`.claude-plugin/plugin.json` + `.claude-plugin/marketplace.json`) levert de nldd-consumer-skill via `source: "./"`. Claude Code cachet een plugin op de versie in `plugin.json`: verandert die versie niet, dan halen consumers de skill nooit opnieuw op, hoezeer de inhoud ook is gewijzigd.
+
+Daarom volgt de plugin-versie automatisch de pakketversie. `package.json` is de enige bron; `npm run generate:plugin-version` (onderdeel van `generate:skill-docs`) schrijft die versie naar beide plugin-manifesten. semantic-release draait dit in `prepareCmd` en commit de manifesten mee in de release-commit, zodat de plugin-versie meebeweegt met elke release die de skill-docs verandert. Bewerk de `version`-velden niet handmatig.
