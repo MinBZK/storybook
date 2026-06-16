@@ -53,7 +53,11 @@ standaard.
   dan waarom.
 - **Minimaliseer chroom.** Een platte pagina met inhoud is bijna altijd beter
   dan dezelfde inhoud verpakt in een modal, een sheet en een werkbalk. Voeg een
-  laag pas toe als de taak erom vraagt.
+  laag pas toe als de taak erom vraagt. Let op de keerzijde: chroom of een
+  control weghalen alleen om het beeld op te ruimen verschuift de complexiteit,
+  het lost niets op. Het bredere principe (UI in de content verwerken, niet
+  minder controls om het minder controls) staat in
+  [`design-guidelines.md`](design-guidelines.md).
 
 ### Progressieve onthulling op smalle schermen
 
@@ -214,12 +218,17 @@ Dit zijn geen uitwisselbare overlays. Elk heeft een doel:
 | Surface | Gebruik voor | Niet voor |
 |---------|--------------|-----------|
 | **`nldd-sheet`** | Secundaire inhoud die context behoudt: formulieren, bewerk-oppervlakken, detail. Schuift in vanaf de zijkant (onderkant op mobiel). | Korte bevestigingen. |
-| **`nldd-modal-dialog`** | Hoogrisico-bevestigingen en kritieke meldingen ("weet je het zeker?"). Onderbreekt bewust. | Data-invoer of complexe formulieren. |
+| **`nldd-modal-dialog`** | Het uiterste geval: een onomkeerbare actie waar geen veiliger weg omheen is. Onderbreekt bewust. | Data-invoer, complexe formulieren, of bevestigingen die ook met undo kunnen. |
 | **`nldd-popover`** | Lichte, niet-blokkerende panelen verankerd aan een trigger: filters, snelacties, zoekvelden. Sluit bij Esc en klik-buiten. | Inhoud die de hele aandacht vraagt. |
 
 *Vuistregel:* secundaire inhoud op een smal scherm hoort in een **sheet**, niet
 in een modal. Een modal onderbreekt; reserveer dat voor momenten die een
 onderbreking verdienen.
+
+> Wanneer is een modal überhaupt gerechtvaardigd, en wat is het primary-label in
+> een bevestiging? Dat zijn ontwerpkeuzes, geen component-mechaniek. De voorkeur
+> is undo boven confirm en een contextueel-window (popover) boven een modal; zie
+> [`design-guidelines.md`](design-guidelines.md) ("Feedback en state").
 
 ### Imperatieve API spiegelen (sheets, popovers, modals)
 
@@ -291,6 +300,12 @@ server-respons.
 shadow-DOM-trucs, zodat screenreaders de fout aan het veld koppelen. De
 validatie-*regels* (wanneer is iets fout) zijn aan jou; het systeem regelt
 alleen de presentatie en de toegankelijke koppeling.
+
+*Ontwerpkeuzes rond formulieren* (markeer optionele velden in plaats van
+verplichte, volg de gedachtegang van de gebruiker in de vraagvolgorde, één veld
+voor de volledige naam) staan in [`design-guidelines.md`](design-guidelines.md)
+("Invoer en formulieren"). Het `optional`-attribuut op `nldd-form-field` toont
+daarbij zelf de "Optioneel"-badge.
 
 ### Custom events lezen via `event.detail`
 
@@ -394,6 +409,12 @@ bestaat, zonder foutmelding, alleen een stille terugval op de default.
 4. **[`changelog.md`](changelog.md)**: de release notes per versie. Raadpleeg
    dit als een attribuut, slot of gedrag pas vanaf een bepaalde versie bestaat,
    of om te zien wat er sinds jouw versie is veranderd.
+5. **[`design-guidelines.md`](design-guidelines.md)**: de interface- en
+   ontwerpvoorkeuren van het systeem (invoer en formulieren, navigatie, feedback
+   en state, microcopy, visuele hiërarchie, strategie). Dit is de canonieke bron
+   voor *ontwerp*keuzes; raadpleeg het bij vormgeven, microcopy schrijven of een
+   UI reviewen. Deze SKILL.md beschrijft de component-*mechaniek*, de guidelines
+   beschrijven de keuzes erachter.
 
 **Iconen.** `nldd-icon name="…"` accepteert namen uit een vaste set. De
 volledige lijst (iconen plus aliassen) staat onder "Iconen" in
@@ -410,8 +431,10 @@ upgraden client-side; render geen kritieke inhoud uitsluitend in hun shadow
 DOM). De componenten zelf zijn los getest binnen het design system; jouw
 app-tests schrijf je met je eigen testopstelling.
 
-> Voor onderhouders: `reference.md` en `changelog.md` zijn gegenereerd
-> (uit respectievelijk de JSDoc van de componenten en de root-CHANGELOG). Draai
-> `npm run generate:skill-docs` na een API-wijziging of release en commit het
-> resultaat. Het zijn echte bestanden, geen symlinks: een plugin wordt naar een
-> geïsoleerde cache gekopieerd waarbij symlinks buiten de plugin-map wegvallen.
+> Voor onderhouders: `reference.md`, `changelog.md` en `design-guidelines.md`
+> zijn gegenereerd (uit respectievelijk de JSDoc van de componenten, de
+> root-CHANGELOG en `src/docs/design-guidelines.mdx`). Draai
+> `npm run generate:skill-docs` na een API-wijziging, release of wijziging in de
+> ontwerprichtlijnen en commit het resultaat. Het zijn echte bestanden, geen
+> symlinks: een plugin wordt naar een geïsoleerde cache gekopieerd waarbij
+> symlinks buiten de plugin-map wegvallen.

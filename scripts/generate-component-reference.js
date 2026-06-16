@@ -14,9 +14,10 @@
  * Usage: node scripts/generate-component-reference.js
  */
 
-import { readFileSync, writeFileSync, readdirSync } from 'node:fs';
+import { readFileSync, readdirSync } from 'node:fs';
 import { resolve, dirname, join, sep } from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { generatedHeader, writeGenerated } from './lib/skill-doc.js';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const componentsDir = resolve(__dirname, '../src/components');
@@ -354,14 +355,13 @@ function main() {
 		...[...byCategory.keys()].filter((k) => !(k in CATEGORY_TITLES)).sort(),
 	];
 
-	const header = `<!--
-  GEGENEREERD BESTAND — niet handmatig bewerken.
-  Bron: de JSDoc (@element / @attr / @slot / @fires) van elk component in
-  src/components, plus de iconnamen uit content/icon/icons en icon-aliases.
-  Hergenereren: npm run generate:component-reference
--->
-
-# Componentreferentie — @nldd/design-system
+	const header = `${generatedHeader(
+		[
+			'Bron: de JSDoc (@element / @attr / @slot / @fires) van elk component in',
+			'src/components, plus de iconnamen uit content/icon/icons en icon-aliases.',
+		],
+		'npm run generate:component-reference',
+	)}# Componentreferentie — @nldd/design-system
 
 Elk custom element met zijn attributen, slots en events. Dit is een offline
 snelreferentie; de levende documentatie met voorbeelden staat in
@@ -389,9 +389,7 @@ de \`.d.ts\` bestanden van het pakket.
 	sections.push(renderIcons(iconInfo));
 
 	const body = header + sections.join('\n');
-	writeFileSync(outputPath, body.replace(/\n{3,}/g, '\n\n').trimEnd() + '\n');
-
-	console.log(`Wrote ${outputPath}`);
+	writeGenerated(outputPath, body.replace(/\n{3,}/g, '\n\n').trimEnd() + '\n');
 	console.log(`Components: ${total} across ${orderedCategories.length} categories`);
 	console.log(`Icons: ${iconInfo.names.length} names + ${iconInfo.aliases.length} aliases`);
 }
