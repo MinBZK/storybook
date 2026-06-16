@@ -5,22 +5,24 @@ import '../split-view-divider/split-view-divider.js';
 
 export function barSplitViewTemplate(component: NLDDBarSplitView): TemplateResult {
 	const sorted = component._getSortedChildren();
-	const isSm = component._currentBreakpoint === 'sm';
+	// Render sequence: the sorted bars and main, plus an appended main slot when
+	// the consumer didn't provide one, so a main area is always present.
+	const blocks = sorted.map(el => ({ slot: el.slot, isMain: el.slot === 'main' }));
+	if (!blocks.some(block => block.isMain)) blocks.push({ slot: 'main', isMain: true });
 
 	return html`
 		<div class="bar-split-view">
-			${sorted.map((el, index) => {
-				const isMain = el.slot === 'main';
-				const isLast = index === sorted.length - 1;
-				const next = sorted[index + 1];
-				const showDivider = !isSm
-					&& !isLast
-					&& !el.hasAttribute('no-divider')
-					&& !next?.hasAttribute('no-divider');
+			${blocks.map((block, index) => {
+				const next = blocks[index + 1];
+				// A divider sits only on a seam where the main pane meets an
+				// adjacent bar — never between two stacked bars. With a single
+				// main that is at most two seams (one above, one below main), at
+				// every breakpoint. Consumers never manage dividers themselves.
+				const showDivider = next ? block.isMain !== next.isMain : false;
 
 				return html`
-					<div class=${classMap({ 'bar-split-view__main': isMain, 'bar-split-view__bar': !isMain })}>
-						<slot name=${el.slot}></slot>
+					<div class=${classMap({ 'bar-split-view__main': block.isMain, 'bar-split-view__bar': !block.isMain })}>
+						<slot name=${block.slot}></slot>
 					</div>
 					${showDivider ? html`
 						<div class="bar-split-view__divider">
@@ -29,11 +31,6 @@ export function barSplitViewTemplate(component: NLDDBarSplitView): TemplateResul
 					` : nothing}
 				`;
 			})}
-			${!sorted.some(el => el.slot === 'main') ? html`
-				<div class="bar-split-view__main">
-					<slot name="main"></slot>
-				</div>
-			` : nothing}
 		</div>
 	`;
 }

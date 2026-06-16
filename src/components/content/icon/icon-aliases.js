@@ -155,6 +155,10 @@ export const aliases = {
 	'document': 'file-text',
 	'file': 'file-text',
 
+	// file-text-stack
+	'documents': 'file-text-stack',
+	'text-documents': 'file-text-stack',
+
 	// flag-filled
 	'flagged': 'flag-filled',
 
@@ -318,6 +322,7 @@ export const aliases = {
 
 	// square-arrow-right-top
 	'external-link': 'square-arrow-right-top',
+	'open-new-page': 'square-arrow-right-top',
 
 	// square-arrow-up
 	'share': 'square-arrow-up',

@@ -9,6 +9,28 @@ the type of conventional-commit determines the release. Conventional types
 `chore`, `docs`, `ci`, `style`, `test`, `build` are intentionally omitted
 here; consult the commit history if you need that level of detail.
 
+### Highlights
+
+- **Edge-navigation and document icons.** New `arrow-left-to-line` / `arrow-right-to-line` and `chevron-left-to-line` / `chevron-right-to-line` glyphs for "move to edge" affordances, a `file-text-stack` document icon, and an `open-new-page` alias.
+- **Automatic `nldd-bar-split-view` dividers (breaking).** Dividers now appear only where the main pane meets an adjacent bar, on every breakpoint; the consumer-managed `no-divider` attribute is removed.
+- **List rows can open in a new tab.** `nldd-list-item` forwards `target` and `rel` to its anchor.
+- **Dark-mode and layout polish.** Neutral tags and banners no longer blend into a tinted surface in dark mode, alongside `nldd-button` full-width / disclosure-gap and `nldd-toolbar` item-sizing fixes.
+
+### Added
+
+- **Icons** — `arrow-left-to-line` / `arrow-right-to-line` and `chevron-left-to-line` / `chevron-right-to-line` ("move to edge" affordances), `file-text-stack` (with `documents` aliases), and an `open-new-page` alias for `square-arrow-right-top`.
+- **`nldd-list-item`** — forwards `target` and `rel` to the underlying `<a>`, so a link row can open in a new tab (`target="_blank" rel="noopener noreferrer"`). With `target="_blank"` it also injects a visually hidden "opens in new tab" announcement for assistive technology (WCAG 2.1 SC 3.2.2), overridable via the `translations` property.
+
+### Breaking
+
+- **`nldd-bar-split-view`** — dividers are now placed automatically wherever the main pane meets an adjacent bar (directly above and/or below it), at every breakpoint including `sm`, and never between two stacked bars on the same side. The consumer-managed `no-divider` attribute is **removed and ignored** — drop any usage. Bars on `sm` now show a divider where they meet main (previously `sm` had none).
+
+### Fixed
+
+- **`nldd-toolbar`** — toolbar item sizing (`width` / `min-width` / `max-width`) is now read as a DOM property as well as an attribute, so framework-set values (e.g. a Vue `width` binding) are no longer missed; real values reflect back to attributes while defaults stay unset.
+- **`nldd-button`** — `full-width` no longer stretches the button vertically inside a column flex parent, and the disclosure icon (when `expandable`) no longer doubles the trailing gap.
+- **`nldd-tag` / `nldd-banner`** — the neutral tinted background no longer collapses onto the tinted surface in dark mode (both resolved to the same gray, hiding the chip); it now sits a step lighter, with its border preserved.
+
 ## <small>0.8.60 (2026-06-16)</small>
 
 * fix(plugin): laat plugin-versie de pakketversie volgen (#126) ([d90d9fd](https://github.com/MinBZK/storybook/commit/d90d9fd)), closes [#126](https://github.com/MinBZK/storybook/issues/126)

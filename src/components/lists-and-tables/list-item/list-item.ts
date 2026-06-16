@@ -3,6 +3,8 @@ import { customElement, property, query, state } from 'lit/decorators.js';
 import { listItemStyles } from './list-item.styles.js';
 import { template } from './list-item.template.js';
 import { isPointerMode } from '../../../utilities/input-modality.js';
+import { withTranslations } from '../../../utilities/with-translations.js';
+import { nlddListItemTranslations } from './list-item.i18n.js';
 import type { NLDDList, ListType } from '../list/list.js';
 import '../cells/spacer-cell/spacer-cell.js';
 
@@ -11,7 +13,10 @@ export type ListItemSize = 'sm' | 'md';
 /**
  * A row within an `nldd-list`, providing layout for start, main and end areas.
  * Renders as a link when `href` is set, as a button when `button` is set, or
- * as a plain container otherwise.
+ * as a plain container otherwise. When it renders as a link, `target` and `rel`
+ * are forwarded to the inner `<a>` (e.g. `target="_blank" rel="noopener noreferrer"`). With
+ * `target="_blank"` the item also injects a visually hidden "opens in new tab"
+ * announcement for assistive technology (WCAG 2.1 SC 3.2.2).
  *
  * The item synchronises its ARIA with its parent `nldd-list`'s `type`:
  * - `list` parent       → `role="listitem"`
@@ -23,7 +28,7 @@ export type ListItemSize = 'sm' | 'md';
  * @slot end     - Content at the end of the row
  */
 @customElement('nldd-list-item')
-export class NLDDListItem extends LitElement {
+export class NLDDListItem extends withTranslations(LitElement, nlddListItemTranslations) {
 	static override styles = [listItemStyles];
 
 	@property({ reflect: true })
@@ -39,6 +44,19 @@ export class NLDDListItem extends LitElement {
 	/** When set, renders the item as a link. */
 	@property({ reflect: true })
 	href?: string;
+
+	/**
+	 * Link target (e.g. '_blank' to open in a new tab). Forwarded to the `<a>`; only applies with href.
+	 * When set to '_blank', the item appends a visually hidden "opens in new tab" announcement to the
+	 * link so the change of context is conveyed to assistive technology (WCAG 2.1 SC 3.2.2). Override
+	 * the wording via the `translations` property.
+	 */
+	@property({ reflect: true })
+	target?: string;
+
+	/** Link rel (e.g. 'noopener noreferrer'). Forwarded to the `<a>`; only applies with href. */
+	@property({ reflect: true })
+	rel?: string;
 
 	/** Set by the parent nldd-list when reorderable is enabled. Used as a CSS hook for drag handle visibility. */
 	@property({ type: Boolean, reflect: true })
@@ -193,11 +211,18 @@ export class NLDDListItem extends LitElement {
 	}
 
 	override render() {
+		const newTabLabel =
+			this.href && this.target === '_blank'
+				? this._t('components.list-item.opens-in-new-tab-label')
+				: undefined;
 		return template(
 			this.button,
 			this.href,
+			this.target,
+			this.rel,
 			this._showStart,
 			this._showEnd,
+			newTabLabel,
 		);
 	}
 }

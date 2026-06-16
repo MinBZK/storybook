@@ -358,7 +358,6 @@ export const buttonStyles = css`
 	:host([width="full"]) {
 		display: block;
 		width: 100%;
-		flex-grow: 1;
 	}
 
 	:host([horizontal-alignment="left"]) .button {
@@ -570,6 +569,10 @@ export const buttonStyles = css`
 
 	:host([expandable]) .button {
 		padding-inline-end: calc(var(--_inline-padding) + var(--_gap) + var(--_disclosure-icon-size));
+	}
+
+	:host([expandable]) .button__text-area {
+		padding-inline-end: 0;
 	}
 
 	.button__disclosure-icon {

@@ -16,9 +16,11 @@ import '../../../actions/menu/menu.js';
  * onbeperkt aantal balkpanelen. Geef elke balk een unieke slotnaam (bijv.
  * slot="toolbar", slot="status-bar"). Het main-paneel gebruikt altijd slot="main".
  *
- * Balken zijn zichtbaar zodra er inhoud in hun slot staat. Op sm-viewports
- * worden balken absoluut over het main-gebied gepositioneerd; op md en lg staan
- * alle panelen in de flow met een scheiding ertussen.
+ * Balken staan op elke viewport in de flow en stapelen verticaal. Er komt
+ * alleen een scheidingslijn waar het main-paneel aan een balk grenst — direct
+ * boven en/of onder main, óók op sm. Tussen twee gestapelde balken aan dezelfde
+ * kant komt nooit een lijn, zodat bijv. een toolbar en tab-bar één geheel vormen.
+ * De consument hoeft zelf geen dividers te plaatsen of te onderdrukken.
  *
  * Gebruik sm-order, md-order en lg-order om de volgorde per breekpunt te bepalen.
  * Zonder orderattributen wordt DOM-volgorde gebruikt.

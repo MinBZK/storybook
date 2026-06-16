@@ -48,19 +48,36 @@ import { NLDDMenu } from '../../actions/menu/menu.js';
 type Size = 'sm' | 'md' | 'lg';
 type TitleAlign = 'left' | 'center';
 
+// Consumer-set sizing props shared by nldd-toolbar-item and nldd-toolbar-title,
+// read off generic Elements during measurement.
+interface SizingElement {
+	minWidth: string;
+	maxWidth: string;
+	width: string;
+}
+
+// Consumer sizing (width/min-width/max-width) reflects to attributes —
+// frameworks such as Vue set `width` as a DOM property, and the attribute
+// should stay inspectable in the DOM. The '' default maps to null so it
+// never reflects as an empty attribute.
+const sizingConverter = {
+	toAttribute: (value: string): string | null => value || null,
+	fromAttribute: (value: string | null): string => value ?? '',
+};
+
 // # nldd-toolbar-item
 
 @customElement('nldd-toolbar-item')
 export class NLDDToolbarItem extends LitElement {
 	static override styles = toolbarItemStyles;
 
-	@property({ type: String })
+	@property({ reflect: true, converter: sizingConverter })
 	width = '';
 
-	@property({ type: String, attribute: 'min-width' })
+	@property({ attribute: 'min-width', reflect: true, converter: sizingConverter })
 	minWidth = '';
 
-	@property({ type: String, attribute: 'max-width' })
+	@property({ attribute: 'max-width', reflect: true, converter: sizingConverter })
 	maxWidth = '';
 
 	@property({ type: String })
@@ -104,13 +121,13 @@ export class NLDDToolbarTitle extends LitElement {
 	@property({ type: String, reflect: true })
 	align: TitleAlign = 'left';
 
-	@property({ type: String })
+	@property({ reflect: true, converter: sizingConverter })
 	width = '';
 
-	@property({ type: String, attribute: 'min-width' })
+	@property({ attribute: 'min-width', reflect: true, converter: sizingConverter })
 	minWidth = '';
 
-	@property({ type: String, attribute: 'max-width' })
+	@property({ attribute: 'max-width', reflect: true, converter: sizingConverter })
 	maxWidth = '';
 
 	/** Set by nldd-toolbar; not part of the public API. @internal */
@@ -650,7 +667,7 @@ export class NLDDToolbar extends LitElement {
 					return {
 						type: 'title',
 						element: el,
-						minWidth: el.getAttribute('min-width') ?? '200px',
+						minWidth: (el as Element & SizingElement).minWidth || '200px',
 						id,
 					} as ToolbarChild;
 				}
@@ -660,9 +677,14 @@ export class NLDDToolbar extends LitElement {
 					const label = el.getAttribute('label') ?? '';
 					const priority = parseInt(el.getAttribute('priority') ?? '0', 10);
 					const hasPriority = el.hasAttribute('priority');
-					const minWidth = el.getAttribute('min-width') ?? '';
-					const maxWidth = el.getAttribute('max-width') ?? '';
-					const width = el.getAttribute('width') ?? '';
+					// Read sizing as properties, not attributes: frameworks such as Vue set
+					// `width` as a DOM property (el.width exists) rather than an attribute,
+					// so getAttribute('width') misses it. Lit mirrors attribute-set values
+					// onto these properties too, so reading the property covers both.
+					const sizing = el as Element & SizingElement;
+					const minWidth = sizing.minWidth || '';
+					const maxWidth = sizing.maxWidth || '';
+					const width = sizing.width || '';
 					const isFluid = !!(minWidth || maxWidth || width);
 
 					const overflowItems = Array.from(el.children).filter(child => {

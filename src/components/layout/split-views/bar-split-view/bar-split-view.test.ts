@@ -52,30 +52,6 @@ describe('nldd-bar-split-view', () => {
 		expect(el.shadowRoot!.querySelectorAll('.bar-split-view__bar').length).toBe(2);
 	});
 
-	it('renders no dividers on sm viewports', async () => {
-		el = await fixture(`
-			<nldd-bar-split-view>
-				<div slot="toolbar">Toolbar</div>
-				<div slot="main">Main</div>
-				<div slot="status">Status</div>
-			</nldd-bar-split-view>
-		`);
-		await waitForUpdate(el);
-		expect(el.shadowRoot!.querySelectorAll('.bar-split-view__divider').length).toBe(0);
-	});
-
-	it('renders dividers between panes on md viewports', async () => {
-		el = await fixture(`
-			<nldd-bar-split-view>
-				<div slot="toolbar">Toolbar</div>
-				<div slot="main">Main</div>
-				<div slot="status">Status</div>
-			</nldd-bar-split-view>
-		`);
-		await setBreakpoint(el, 'md');
-		expect(el.shadowRoot!.querySelectorAll('.bar-split-view__divider').length).toBe(2);
-	});
-
 	it('renders no dividers when no bars are present, even on md', async () => {
 		el = await fixture('<nldd-bar-split-view><div slot="main">Main</div></nldd-bar-split-view>');
 		await setBreakpoint(el, 'md');
@@ -207,60 +183,90 @@ describe('nldd-bar-split-view', () => {
 		expect(slotNames).toContain('mobile-bar');
 	});
 
-	describe('no-divider attribute', () => {
-		it('suppresses the divider after a bar marked no-divider', async () => {
-			el = await fixture(`
-				<nldd-bar-split-view>
-					<div slot="toolbar" no-divider>Toolbar</div>
-					<div slot="document-tabs">Tabs</div>
-					<div slot="main">Main</div>
-				</nldd-bar-split-view>
-			`);
-			await setBreakpoint(el, 'md');
-			// Without no-divider we'd get 2 dividers (toolbar↓tabs, tabs↓main).
-			// no-divider on toolbar removes the toolbar↓tabs seam, leaving 1.
-			expect(el.shadowRoot!.querySelectorAll('.bar-split-view__divider').length).toBe(1);
-		});
+	describe('dividers — only where main meets an adjacent bar', () => {
+		const dividerCount = (host: HTMLElement) =>
+			host.shadowRoot!.querySelectorAll('.bar-split-view__divider').length;
 
-		it('suppresses both adjacent seams when a middle bar is marked', async () => {
+		it('draws a divider between main and a single bar above it', async () => {
 			el = await fixture(`
 				<nldd-bar-split-view>
 					<div slot="toolbar">Toolbar</div>
-					<div slot="document-tabs" no-divider>Tabs</div>
 					<div slot="main">Main</div>
 				</nldd-bar-split-view>
 			`);
-			await setBreakpoint(el, 'md');
-			// "No divider next to this bar" — both toolbar↓tabs and tabs↓main
-			// are suppressed because tabs has no-divider.
-			expect(el.shadowRoot!.querySelectorAll('.bar-split-view__divider').length).toBe(0);
+			await waitForUpdate(el);
+			expect(dividerCount(el)).toBe(1);
 		});
 
-		it('marking either side of a single seam suffices to remove it', async () => {
+		it('draws a divider on both sides of main when bars sit above and below', async () => {
 			el = await fixture(`
 				<nldd-bar-split-view>
-					<div slot="main">Main</div>
-					<div slot="status" no-divider>Status</div>
-				</nldd-bar-split-view>
-			`);
-			await setBreakpoint(el, 'md');
-			// Single seam main↓status removed because status has no-divider.
-			expect(el.shadowRoot!.querySelectorAll('.bar-split-view__divider').length).toBe(0);
-		});
-
-		it('keeps unaffected dividers when only one seam is suppressed', async () => {
-			el = await fixture(`
-				<nldd-bar-split-view>
-					<div slot="toolbar" no-divider>Toolbar</div>
-					<div slot="document-tabs">Tabs</div>
+					<div slot="toolbar">Toolbar</div>
 					<div slot="main">Main</div>
 					<div slot="status">Status</div>
 				</nldd-bar-split-view>
 			`);
+			await waitForUpdate(el);
+			expect(dividerCount(el)).toBe(2);
+		});
+
+		it('never draws a divider between two stacked bars', async () => {
+			el = await fixture(`
+				<nldd-bar-split-view>
+					<div slot="toolbar">Toolbar</div>
+					<div slot="document-tabs">Tabs</div>
+					<div slot="main">Main</div>
+				</nldd-bar-split-view>
+			`);
+			await waitForUpdate(el);
+			// toolbar↕tabs is a bar↕bar seam (no divider); only tabs↕main draws one.
+			expect(dividerCount(el)).toBe(1);
+		});
+
+		it('groups multiple bars per side behind a single seam divider', async () => {
+			el = await fixture(`
+				<nldd-bar-split-view>
+					<div slot="toolbar">Toolbar</div>
+					<div slot="document-tabs">Tabs</div>
+					<div slot="main">Main</div>
+					<div slot="status">Status</div>
+					<div slot="mobile-bar">Mobile</div>
+				</nldd-bar-split-view>
+			`);
+			await waitForUpdate(el);
+			// Above main: toolbar,tabs → one seam (tabs↕main). Below main:
+			// status,mobile → one seam (main↕status). Bar↕bar seams: none.
+			expect(dividerCount(el)).toBe(2);
+		});
+
+		it('places the divider directly adjacent to the main pane', async () => {
+			el = await fixture(`
+				<nldd-bar-split-view>
+					<div slot="toolbar">Toolbar</div>
+					<div slot="document-tabs">Tabs</div>
+					<div slot="main">Main</div>
+				</nldd-bar-split-view>
+			`);
+			await waitForUpdate(el);
+			const wrapper = el.shadowRoot!.querySelector('.bar-split-view')!;
+			const children = Array.from(wrapper.children);
+			const dividerIndex = children.findIndex(c => c.classList.contains('bar-split-view__divider'));
+			const mainIndex = children.findIndex(c => c.classList.contains('bar-split-view__main'));
+			expect(dividerIndex).toBe(mainIndex - 1);
+		});
+
+		it('draws the same dividers on sm and md (breakpoint-independent)', async () => {
+			el = await fixture(`
+				<nldd-bar-split-view>
+					<div slot="toolbar">Toolbar</div>
+					<div slot="main">Main</div>
+					<div slot="status">Status</div>
+				</nldd-bar-split-view>
+			`);
+			await waitForUpdate(el); // jsdom width 0 → sm
+			expect(dividerCount(el)).toBe(2);
 			await setBreakpoint(el, 'md');
-			// 4 panes → 3 seams. no-divider on toolbar removes the toolbar↓tabs
-			// seam; the tabs↓main and main↓status seams remain.
-			expect(el.shadowRoot!.querySelectorAll('.bar-split-view__divider').length).toBe(2);
+			expect(dividerCount(el)).toBe(2);
 		});
 	});
 });
