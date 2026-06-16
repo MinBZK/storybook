@@ -355,9 +355,6 @@ export const buttonStyles = css`
 		--_is-active-highlight-border-color: var(--semantics-buttons-inherit-filled-is-expanded-is-active-highlight-border-color);
 	}
 
-	/* width:100% (host) + --_width:100% (inner .button) fill the container in
-	   both row and column flex layouts. No flex-grow: in a column it grows the
-	   main axis (height) and stretches the button vertically. */
 	:host([width="full"]) {
 		display: block;
 		width: 100%;
@@ -574,9 +571,6 @@ export const buttonStyles = css`
 		padding-inline-end: calc(var(--_inline-padding) + var(--_gap) + var(--_disclosure-icon-size));
 	}
 
-	/* The button already reserves a --_gap before the disclosure icon, so drop
-	   the text-area's own end-padding to avoid doubling the gap. Icon-only
-	   expandable buttons keep their gap via the reservation above. */
 	:host([expandable]) .button__text-area {
 		padding-inline-end: 0;
 	}
