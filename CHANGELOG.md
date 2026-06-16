@@ -9,6 +9,11 @@ the type of conventional-commit determines the release. Conventional types
 `chore`, `docs`, `ci`, `style`, `test`, `build` are intentionally omitted
 here; consult the commit history if you need that level of detail.
 
+## <small>0.8.62 (2026-06-16)</small>
+
+* fix(list): fill the width under justify-self: start parents (rich-text) (#129) ([fd11dc3](https://github.com/MinBZK/storybook/commit/fd11dc3)), closes [#129](https://github.com/MinBZK/storybook/issues/129)
+* ci(release): generate the plugin version after the npm version bump (#128) ([75bc4dd](https://github.com/MinBZK/storybook/commit/75bc4dd)), closes [#128](https://github.com/MinBZK/storybook/issues/128)
+
 ## <small>0.8.61 (2026-06-16)</small>
 
 * feat!: edge & document icons, list-item links, automatic bar-split-view dividers, and dark-mode fixe ([32e05fa](https://github.com/MinBZK/storybook/commit/32e05fa)), closes [#127](https://github.com/MinBZK/storybook/issues/127)
