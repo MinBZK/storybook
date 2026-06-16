@@ -14,7 +14,7 @@ export type ListItemSize = 'sm' | 'md';
  * A row within an `nldd-list`, providing layout for start, main and end areas.
  * Renders as a link when `href` is set, as a button when `button` is set, or
  * as a plain container otherwise. When it renders as a link, `target` and `rel`
- * are forwarded to the inner `<a>` (e.g. `target="_blank" rel="noopener"`). With
+ * are forwarded to the inner `<a>` (e.g. `target="_blank" rel="noopener noreferrer"`). With
  * `target="_blank"` the item also injects a visually hidden "opens in new tab"
  * announcement for assistive technology (WCAG 2.1 SC 3.2.2).
  *
@@ -54,7 +54,7 @@ export class NLDDListItem extends withTranslations(LitElement, nlddListItemTrans
 	@property({ reflect: true })
 	target?: string;
 
-	/** Link rel (e.g. 'noopener'). Forwarded to the `<a>`; only applies with href. */
+	/** Link rel (e.g. 'noopener noreferrer'). Forwarded to the `<a>`; only applies with href. */
 	@property({ reflect: true })
 	rel?: string;
 

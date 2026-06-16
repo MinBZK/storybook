@@ -2103,7 +2103,7 @@ A container for `nldd-list-item` elements, with optional header and footer slots
 
 ### `<nldd-list-item>`
 
-A row within an `nldd-list`, providing layout for start, main and end areas. Renders as a link when `href` is set, as a button when `button` is set, or as a plain container otherwise. When it renders as a link, `target` and `rel` are forwarded to the inner `<a>` (e.g. `target="_blank" rel="noopener"`). With `target="_blank"` the item also injects a visually hidden "opens in new tab" announcement for assistive technology (WCAG 2.1 SC 3.2.2). The item synchronises its ARIA with its parent `nldd-list`'s `type`: - `list` parent → `role="listitem"` - `navigation` parent → `role="listitem"` + `aria-current="page"` on the inner `<a>` / `<button>` when `selected`
+A row within an `nldd-list`, providing layout for start, main and end areas. Renders as a link when `href` is set, as a button when `button` is set, or as a plain container otherwise. When it renders as a link, `target` and `rel` are forwarded to the inner `<a>` (e.g. `target="_blank" rel="noopener noreferrer"`). With `target="_blank"` the item also injects a visually hidden "opens in new tab" announcement for assistive technology (WCAG 2.1 SC 3.2.2). The item synchronises its ARIA with its parent `nldd-list`'s `type`: - `list` parent → `role="listitem"` - `navigation` parent → `role="listitem"` + `aria-current="page"` on the inner `<a>` / `<button>` when `selected`
 
 ### `<nldd-spacer-cell>`
 

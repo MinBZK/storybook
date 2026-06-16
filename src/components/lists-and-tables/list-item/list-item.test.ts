@@ -58,11 +58,11 @@ describe('nldd-list-item', () => {
 	});
 
 	it('forwards target and rel to the anchor', async () => {
-		el = await fixture('<nldd-list-item href="/test" target="_blank" rel="noopener"></nldd-list-item>');
+		el = await fixture('<nldd-list-item href="/test" target="_blank" rel="noopener noreferrer"></nldd-list-item>');
 		await waitForUpdate(el);
 		const anchor = el.shadowRoot!.querySelector('a.list-item__action');
 		expect(anchor?.getAttribute('target')).toBe('_blank');
-		expect(anchor?.getAttribute('rel')).toBe('noopener');
+		expect(anchor?.getAttribute('rel')).toBe('noopener noreferrer');
 	});
 
 	it('omits target and rel when not set', async () => {
