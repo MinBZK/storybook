@@ -83,6 +83,14 @@ export const aliases = {
 	// chevron-right
 	'forward': 'chevron-right',
 
+	// chevron-left-to-line
+	'skip-to-start': 'chevron-left-to-line',
+	'first': 'chevron-left-to-line',
+
+	// chevron-right-to-line
+	'skip-to-end': 'chevron-right-to-line',
+	'last': 'chevron-right-to-line',
+
 	// circle-dashed
 	'icon-placeholder': 'circle-dashed',
 
