@@ -1736,6 +1736,17 @@
 	--components-inline-dialog-icon-warning-color: light-dark(var(--primitives-color-warning-350), var(--primitives-color-warning-650));
 	--components-inline-dialog-icon-success-color: light-dark(var(--primitives-color-success-500), var(--primitives-color-success-500));
 
+	/* ## Just in time education */
+
+	--components-just-in-time-education-main-background-color: color-mix(in srgb, var(--semantics-surfaces-base-background-color) 92%, transparent);
+	--components-just-in-time-education-main-padding: var(--primitives-space-16);
+	--components-just-in-time-education-text-color: var(--semantics-content-color);
+	--components-just-in-time-education-text-font: var(--primitives-font-body-lg-medium-tight);
+	--components-just-in-time-education-supporting-text-color: var(--semantics-content-color);
+	--components-just-in-time-education-supporting-text-font: var(--primitives-font-body-md-regular-tight);
+	--components-just-in-time-education-arrow-color: var(--semantics-content-color);
+	--components-just-in-time-education-arrow-length: var(--primitives-space-64);
+
 	/* ## Keyboard shortcut */
 
 	--components-keyboard-shortcut-sm-size: var(--primitives-space-20);
