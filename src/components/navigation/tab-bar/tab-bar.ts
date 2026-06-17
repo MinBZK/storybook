@@ -214,10 +214,17 @@ export class NLDDTabBar extends LitElement {
 
 	private _handleItemSelect = (event: CustomEvent): void => {
 		event.stopPropagation();
-		const items = this._getItems();
-		items.forEach(item => {
-			item.selected = item === event.detail.item;
-		});
+		// Navigation tabs are controlled by the consumer (selection follows the
+		// route), so don't self-select on click — matching the keyboard path, which
+		// already skips auto-activation for navigation tabs. A click that doesn't
+		// actually navigate (e.g. blocked by a guard) must not leave the tab
+		// looking selected. Content-switching tabs still self-manage.
+		if (!this.navigation) {
+			const items = this._getItems();
+			items.forEach(item => {
+				item.selected = item === event.detail.item;
+			});
+		}
 		this.dispatchEvent(new CustomEvent('tabchange', {
 			bubbles: true,
 			composed: true,

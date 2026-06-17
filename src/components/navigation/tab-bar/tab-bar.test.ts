@@ -711,6 +711,24 @@ describe('nldd-tab-bar – navigation mode', () => {
 		expect(linkB.getAttribute('aria-current')).toBeNull();
 	});
 
+	it('does not self-select on click in navigation mode (the consumer owns selection)', async () => {
+		el = await fixture<NLDDTabBar>(`
+			<nldd-tab-bar navigation accessible-label="Navigatie">
+				<nldd-tab-bar-item text="Home" href="/home" selected></nldd-tab-bar-item>
+				<nldd-tab-bar-item text="Profiel" href="/profiel"></nldd-tab-bar-item>
+			</nldd-tab-bar>
+		`);
+		await waitForUpdate(el);
+		const items = getItems(el);
+		// The item fires `select` on click; in navigation mode the bar must NOT flip
+		// selection itself — a click that doesn't navigate (guard/popover) would
+		// otherwise leave the wrong tab looking selected.
+		items[1].dispatchEvent(new CustomEvent('select', { bubbles: true, composed: true, detail: { item: items[1] } }));
+		await waitForUpdate(el);
+		expect(items[1].hasAttribute('selected')).toBe(false);
+		expect(items[0].hasAttribute('selected')).toBe(true);
+	});
+
 	it('does not set aria-selected on link items in navigation mode', async () => {
 		el = await fixture<NLDDTabBar>(`
 			<nldd-tab-bar navigation accessible-label="Navigatie">
