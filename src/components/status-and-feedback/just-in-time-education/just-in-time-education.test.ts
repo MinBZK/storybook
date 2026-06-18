@@ -263,4 +263,19 @@ describe('nldd-just-in-time-education – sluit-routes', () => {
 		await openCoachMark();
 		expect(el.shadowRoot!.activeElement).toBeNull();
 	});
+
+	it('gebruikt role="dialog" wanneer dismissable en role="note" wanneer niet', async () => {
+		el = await fixture<NLDDJustInTimeEducation>(MARKUP_DISMISSABLE);
+		await waitForUpdate(el);
+		const dialog = el.shadowRoot!.querySelector('.just-in-time-education')!;
+		expect(dialog.getAttribute('role')).toBe('dialog');
+		expect(dialog.getAttribute('aria-modal')).toBe('false');
+		cleanup(el);
+
+		el = await fixture<NLDDJustInTimeEducation>(MARKUP);
+		await waitForUpdate(el);
+		const note = el.shadowRoot!.querySelector('.just-in-time-education')!;
+		expect(note.getAttribute('role')).toBe('note');
+		expect(note.getAttribute('aria-modal')).toBeNull();
+	});
 });
