@@ -252,6 +252,27 @@ describe('nldd-icon-button – href / link rendering', () => {
 		expect(el.shadowRoot!.querySelector('a')!.getAttribute('rel')).toBe('noopener noreferrer');
 	});
 
+	it('folds the "opens in new tab" announcement into aria-label when target=_blank', async () => {
+		el = await fixture<NLDDIconButton>('<nldd-icon-button href="/overzicht" target="_blank" icon="arrow-left" text="Terug"></nldd-icon-button>');
+		await waitForUpdate(el);
+		// The control always carries an aria-label, so the hint joins it (a hidden
+		// span would be overridden by aria-label in the accessible-name cascade).
+		expect(el.shadowRoot!.querySelector('a')!.getAttribute('aria-label')).toBe('Terug, Opent in nieuw tabblad');
+	});
+
+	it('omits the new-tab announcement when target is not _blank', async () => {
+		el = await fixture<NLDDIconButton>('<nldd-icon-button href="/overzicht" icon="arrow-left" text="Terug"></nldd-icon-button>');
+		await waitForUpdate(el);
+		expect(el.shadowRoot!.querySelector('a')!.getAttribute('aria-label')).toBe('Terug');
+	});
+
+	it('overrides the new-tab wording via the translations property', async () => {
+		el = await fixture<NLDDIconButton>('<nldd-icon-button href="/overzicht" target="_blank" icon="arrow-left" text="Terug"></nldd-icon-button>');
+		el.translations = { 'components.icon-button.opens-in-new-tab-text': 'Opens in a new tab' };
+		await waitForUpdate(el);
+		expect(el.shadowRoot!.querySelector('a')!.getAttribute('aria-label')).toBe('Terug, Opens in a new tab');
+	});
+
 	it('sets aria-disabled on the anchor when disabled', async () => {
 		el = await fixture<NLDDIconButton>('<nldd-icon-button href="/overzicht" disabled icon="arrow-left" text="Terug"></nldd-icon-button>');
 		await waitForUpdate(el);

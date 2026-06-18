@@ -3,7 +3,9 @@
  *
  * A container for displaying collections of items.
  * Supports grid, list, and horizontal scroll layouts.
- * In grid and list modes, items are paginated via a load-more button.
+ * In grid and list modes, items are paginated via a load-more button. In
+ * horizontal scroll, the prev/next controls and the edge fade appear only when
+ * the items overflow the container.
  * With `lazy-load`, the next items are automatically loaded when
  * the load-more button comes into view.
  *
@@ -149,6 +151,10 @@ export class NLDDCollection extends LitElement {
 			this._intersectionObserver?.disconnect();
 			this._intersectionObserver = undefined;
 		}
+
+		// Reflect overflow state so the styles show the fade + peek space only
+		// when the items actually scroll (see :host([scrollable]) in the styles).
+		this.toggleAttribute('scrollable', this.layout === 'horizontal-scroll' && this._isScrollable);
 	}
 
 	private _setupScrollListeners(): void {
@@ -179,7 +185,13 @@ export class NLDDCollection extends LitElement {
 		const slot = e.target as HTMLSlotElement;
 		const items = slot.assignedElements() as HTMLElement[];
 		this._totalCount = items.length;
-		if (this.layout !== 'horizontal-scroll') {
+		if (this.layout === 'horizontal-scroll') {
+			// Adding/removing items changes the content width (scrollWidth) but not
+			// the scroll container's own box, so the ResizeObserver never fires.
+			// Recompute overflow here so the fade + controls react to a content
+			// change right away, not only on the next resize.
+			this._scrollListener();
+		} else {
 			this._applyVisibility(items);
 		}
 	}

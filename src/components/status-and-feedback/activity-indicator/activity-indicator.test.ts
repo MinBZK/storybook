@@ -25,13 +25,13 @@ describe('nldd-activity-indicator', () => {
 	it('hides the indicator initially so brief loads do not flash (timing="default")', async () => {
 		el = await fixture('<nldd-activity-indicator></nldd-activity-indicator>');
 		await waitForUpdate(el);
-		expect(el.shadowRoot!.querySelector('.activity-indicator')).toBeNull();
+		expect(el.hasAttribute('loading')).toBe(false);
 	});
 
 	it('shows the indicator immediately when timing="instant"', async () => {
 		el = await fixture('<nldd-activity-indicator timing="instant"></nldd-activity-indicator>');
 		await waitForUpdate(el);
-		expect(el.shadowRoot!.querySelector('.activity-indicator')).not.toBeNull();
+		expect(el.hasAttribute('loading')).toBe(true);
 	});
 
 	it('cancels the delay and shows immediately when timing flips to "instant" after connect', async () => {
@@ -41,11 +41,11 @@ describe('nldd-activity-indicator', () => {
 			const litEl = el as HTMLElement & { updateComplete: Promise<boolean> };
 			await litEl.updateComplete;
 			// default timing → hidden during the delay window
-			expect(el.shadowRoot!.querySelector('.activity-indicator')).toBeNull();
+			expect(el.hasAttribute('loading')).toBe(false);
 			// flip to instant → visible right away, without waiting out the delay
 			(el as unknown as NLDDActivityIndicator).timing = 'instant';
 			await litEl.updateComplete;
-			expect(el.shadowRoot!.querySelector('.activity-indicator')).not.toBeNull();
+			expect(el.hasAttribute('loading')).toBe(true);
 		} finally {
 			vi.useRealTimers();
 		}
@@ -66,10 +66,10 @@ describe('nldd-activity-indicator', () => {
 			el = await fixture<NLDDActivityIndicator>('<nldd-activity-indicator></nldd-activity-indicator>');
 			const litEl = el as HTMLElement & { updateComplete: Promise<boolean> };
 			await litEl.updateComplete;
-			expect(el.shadowRoot!.querySelector('.activity-indicator')).toBeNull();
+			expect(el.hasAttribute('loading')).toBe(false);
 			await vi.advanceTimersByTimeAsync(1000);
 			await litEl.updateComplete;
-			expect(el.shadowRoot!.querySelector('.activity-indicator')).not.toBeNull();
+			expect(el.hasAttribute('loading')).toBe(true);
 		} finally {
 			vi.useRealTimers();
 		}
@@ -115,17 +115,17 @@ describe('nldd-activity-indicator', () => {
 			el = await fixture<NLDDActivityIndicator>('<nldd-activity-indicator timing="instant"></nldd-activity-indicator>');
 			const litEl = el as HTMLElement & { updateComplete: Promise<boolean> };
 			await litEl.updateComplete;
-			expect(el.shadowRoot!.querySelector('.activity-indicator')).not.toBeNull();
+			expect(el.hasAttribute('loading')).toBe(true);
 			expect(el.getAttribute('role')).toBe('status');
 			// Flip complete → indicator goes, role goes.
 			(el as unknown as NLDDActivityIndicator).complete = true;
 			await litEl.updateComplete;
-			expect(el.shadowRoot!.querySelector('.activity-indicator')).toBeNull();
+			expect(el.hasAttribute('loading')).toBe(false);
 			expect(el.hasAttribute('role')).toBe(false);
 			// And the inverse: clearing complete brings them back.
 			(el as unknown as NLDDActivityIndicator).complete = false;
 			await litEl.updateComplete;
-			expect(el.shadowRoot!.querySelector('.activity-indicator')).not.toBeNull();
+			expect(el.hasAttribute('loading')).toBe(true);
 			expect(el.getAttribute('role')).toBe('status');
 		} finally {
 			vi.useRealTimers();
@@ -141,7 +141,7 @@ describe('nldd-activity-indicator', () => {
 			expect(el.hasAttribute('role')).toBe(false);
 			await vi.advanceTimersByTimeAsync(1000);
 			await litEl.updateComplete;
-			expect(el.shadowRoot!.querySelector('.activity-indicator')).toBeNull();
+			expect(el.hasAttribute('loading')).toBe(false);
 		} finally {
 			vi.useRealTimers();
 		}
@@ -155,28 +155,28 @@ describe('nldd-activity-indicator', () => {
 			await litEl.updateComplete;
 			await vi.advanceTimersByTimeAsync(1000);
 			await litEl.updateComplete;
-			expect(el.shadowRoot!.querySelector('.activity-indicator')).not.toBeNull();
+			expect(el.hasAttribute('loading')).toBe(true);
 			const parent = el.parentElement!;
 			parent.removeChild(el);
 			parent.appendChild(el);
 			await litEl.updateComplete;
-			expect(el.shadowRoot!.querySelector('.activity-indicator')).toBeNull();
+			expect(el.hasAttribute('loading')).toBe(false);
 			await vi.advanceTimersByTimeAsync(1000);
 			await litEl.updateComplete;
-			expect(el.shadowRoot!.querySelector('.activity-indicator')).not.toBeNull();
+			expect(el.hasAttribute('loading')).toBe(true);
 		} finally {
 			vi.useRealTimers();
 		}
 	});
 
-	it('renders the backdrop when backdrop is set and the indicator is visible', async () => {
-		el = await fixture('<nldd-activity-indicator timing="instant" backdrop></nldd-activity-indicator>');
+	it('renders the backdrop automatically in overlay mode', async () => {
+		el = await fixture('<nldd-activity-indicator timing="instant"><div>Content</div></nldd-activity-indicator>');
 		await waitForUpdate(el);
 		expect(el.shadowRoot!.querySelector('.activity-indicator__backdrop')).not.toBeNull();
 	});
 
 	it('blurs the content behind the backdrop', async () => {
-		el = await fixture('<nldd-activity-indicator timing="instant" backdrop></nldd-activity-indicator>');
+		el = await fixture('<nldd-activity-indicator timing="instant"><div>Content</div></nldd-activity-indicator>');
 		await waitForUpdate(el);
 		const bd = el.shadowRoot!.querySelector('.activity-indicator__backdrop')!;
 		// Tests run in real chromium (Playwright), which computes backdrop-filter
@@ -187,37 +187,98 @@ describe('nldd-activity-indicator', () => {
 		expect(filter).toMatch(/blur\(\d/);
 	});
 
-	it('omits the backdrop by default', async () => {
+	it('omits the backdrop in standalone mode (no content)', async () => {
 		el = await fixture('<nldd-activity-indicator timing="instant"></nldd-activity-indicator>');
 		await waitForUpdate(el);
 		expect(el.shadowRoot!.querySelector('.activity-indicator__backdrop')).toBeNull();
 	});
 
-	it('reflects the backdrop attribute', async () => {
-		el = await fixture<NLDDActivityIndicator>('<nldd-activity-indicator backdrop></nldd-activity-indicator>');
-		await waitForUpdate(el);
-		expect(el.hasAttribute('backdrop')).toBe(true);
-		expect((el as unknown as NLDDActivityIndicator).backdrop).toBe(true);
-	});
-
-	it('does not render the backdrop during the anti-flash delay', async () => {
-		el = await fixture('<nldd-activity-indicator backdrop></nldd-activity-indicator>');
+	it('opts out of the backdrop with no-backdrop in overlay mode', async () => {
+		el = await fixture('<nldd-activity-indicator timing="instant" no-backdrop><div>Content</div></nldd-activity-indicator>');
 		await waitForUpdate(el);
 		expect(el.shadowRoot!.querySelector('.activity-indicator__backdrop')).toBeNull();
 	});
 
-	it('drops the backdrop when complete is set', async () => {
+	it('reflects the no-backdrop attribute', async () => {
+		el = await fixture<NLDDActivityIndicator>('<nldd-activity-indicator no-backdrop></nldd-activity-indicator>');
+		await waitForUpdate(el);
+		expect(el.hasAttribute('no-backdrop')).toBe(true);
+		expect((el as unknown as NLDDActivityIndicator).noBackdrop).toBe(true);
+	});
+
+	it('keeps the overlay unloaded during the anti-flash delay', async () => {
+		el = await fixture('<nldd-activity-indicator><div>Content</div></nldd-activity-indicator>');
+		await waitForUpdate(el);
+		// The backdrop element is always present in overlay mode; the loading
+		// attribute (absent here, during the delay) drives its visibility via CSS.
+		expect(el.hasAttribute('loading')).toBe(false);
+	});
+
+	it('hides the overlay (clears loading) when complete is set', async () => {
 		vi.useFakeTimers();
 		try {
-			el = await fixture<NLDDActivityIndicator>('<nldd-activity-indicator timing="instant" backdrop></nldd-activity-indicator>');
+			el = await fixture<NLDDActivityIndicator>('<nldd-activity-indicator timing="instant"><div>Content</div></nldd-activity-indicator>');
 			const litEl = el as HTMLElement & { updateComplete: Promise<boolean> };
 			await litEl.updateComplete;
+			// The backdrop stays in the DOM the whole overlay lifetime; the loading
+			// attribute drives its CSS-only fade in and out.
 			expect(el.shadowRoot!.querySelector('.activity-indicator__backdrop')).not.toBeNull();
+			expect(el.hasAttribute('loading')).toBe(true);
 			(el as unknown as NLDDActivityIndicator).complete = true;
 			await litEl.updateComplete;
-			expect(el.shadowRoot!.querySelector('.activity-indicator__backdrop')).toBeNull();
+			expect(el.shadowRoot!.querySelector('.activity-indicator__backdrop')).not.toBeNull();
+			expect(el.hasAttribute('loading')).toBe(false);
 		} finally {
 			vi.useRealTimers();
 		}
+	});
+
+	it('sets has-content and makes the wrapped content inert while loading', async () => {
+		el = await fixture(`
+			<nldd-activity-indicator timing="instant">
+				<button>Action</button>
+			</nldd-activity-indicator>
+		`);
+		await waitForUpdate(el);
+		expect(el.hasAttribute('has-content')).toBe(true);
+		const content = el.shadowRoot!.querySelector('.activity-indicator__content')!;
+		expect(content.hasAttribute('inert')).toBe(true);
+		expect(content.getAttribute('aria-busy')).toBe('true');
+	});
+
+	it('lifts inert from the content when complete', async () => {
+		el = await fixture<NLDDActivityIndicator>(`
+			<nldd-activity-indicator timing="instant">
+				<button>Action</button>
+			</nldd-activity-indicator>
+		`);
+		await waitForUpdate(el);
+		const content = el.shadowRoot!.querySelector('.activity-indicator__content')!;
+		expect(content.hasAttribute('inert')).toBe(true);
+		(el as unknown as NLDDActivityIndicator).complete = true;
+		await waitForUpdate(el);
+		expect(content.hasAttribute('inert')).toBe(false);
+		expect(content.getAttribute('aria-busy')).toBe('false');
+	});
+
+	it('stays standalone (no has-content, no inert) without slotted content', async () => {
+		el = await fixture('<nldd-activity-indicator timing="instant"></nldd-activity-indicator>');
+		await waitForUpdate(el);
+		expect(el.hasAttribute('has-content')).toBe(false);
+		expect(el.shadowRoot!.querySelector('.activity-indicator__content')!.hasAttribute('inert')).toBe(false);
+	});
+
+	it('renders a custom indicator from the indicator slot', async () => {
+		el = await fixture(`
+			<nldd-activity-indicator timing="instant">
+				<span slot="indicator" data-testid="custom">Custom</span>
+			</nldd-activity-indicator>
+		`);
+		await waitForUpdate(el);
+		// slot="indicator" is not default-slot content, so the host stays standalone.
+		expect(el.hasAttribute('has-content')).toBe(false);
+		const slot = el.shadowRoot!.querySelector<HTMLSlotElement>('slot[name="indicator"]')!;
+		expect(slot.assignedElements().length).toBe(1);
+		expect(slot.assignedElements()[0].getAttribute('data-testid')).toBe('custom');
 	});
 });

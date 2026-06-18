@@ -62,6 +62,17 @@ export const AlleenLegalBar = {
 };
 
 /**
+ * Lege footer — geen breadcrumbs, main of legal-bar. De grijze band valt weg en
+ * alleen het Rijksoverheid-lintje blijft over.
+ */
+export const Leeg = {
+	render: () => html`
+		<nldd-page-footer></nldd-page-footer>
+	`,
+	parameters: { controls: { disable: true } },
+};
+
+/**
  * Breadcrumbs en main zonder legal-bar — bijvoorbeeld in een
  * applicatie-context waar wettelijke links elders staan.
  */

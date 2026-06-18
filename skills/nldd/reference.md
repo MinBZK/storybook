@@ -41,8 +41,9 @@ de `.d.ts` bestanden van het pakket.
 | `end-icon` | `string` | Icon name for the end icon (after text) |
 | `accessible-label` | `string` | Accessible label for the button, overrides text for screen readers |
 | `href` | `string` | When set, renders an <a> element instead of <button> |
-| `target` | `string` | Link target (e.g. '_blank'); only used when href is set |
+| `target` | `string` | Link target (e.g. '_blank'); only used when href is set. With '_blank' the button adds a visually hidden "opens in new tab" announcement for screen readers (WCAG 2.1 SC 3.2.2). |
 | `rel` | `string` | Link rel attribute; defaults to 'noopener noreferrer' when target is '_blank' |
+| `translations` | `object` | Override translation keys (e.g. the "opens in new tab" announcement); unset keys fall back to Dutch. |
 
 **Slots**
 
@@ -114,8 +115,9 @@ A container for grouping related buttons together, either horizontally or vertic
 | `accessible-label` | `string` | Accessible label for screen readers. Overrides text as aria-label and title tooltip. Use when the visible text alone lacks context for screen readers (e.g. text "Toon", accessible-label "Toon wachtwoord"). The text is still shown visually in lg size regardless. |
 | `tooltip-timing` | `string` | Forwarded to the inner nldd-tooltip's `timing`: 'default' (700 ms show-delay), 'instant', or 'never' (suppress the visual tooltip; screen readers still get the aria-label). Use 'never' when the surrounding context already explains the button (e.g. spin buttons in nldd-number-field, the chevron in nldd-split-button). |
 | `href` | `string` | When set, renders an <a> element instead of <button> |
-| `target` | `string` | Link target (e.g. '_blank'); only used when href is set |
+| `target` | `string` | Link target (e.g. '_blank'); only used when href is set. With '_blank' the "opens in new tab" announcement is folded into the aria-label for screen readers (WCAG 2.1 SC 3.2.2). |
 | `rel` | `string` | Link rel attribute; defaults to 'noopener noreferrer' when target is '_blank' |
+| `translations` | `object` | Override translation keys (e.g. the "opens in new tab" announcement); unset keys fall back to Dutch. |
 | `popovertarget` | `string` | ID of a popover element to toggle; forwarded to the inner <button> |
 
 **Slots**
@@ -234,7 +236,7 @@ Toont een citaat met optionele bron-attributie.
 
 ### `<nldd-byline>`
 
-Een redactionele regel die auteurs of redacteuren toont: optionele avatar(s), een naamregel en ondersteunende tekst (bijvoorbeeld functie of datum). Alle onderdelen zijn optioneel. De naamregel en ondersteunende tekst kunnen als attribuut of als slot worden aangeleverd. Gebruik de slots voor rijkere inhoud, zoals een `<time datetime="…">` voor machine-leesbare datums of een link naar het auteursprofiel. Geslotte inhoud vervangt het bijbehorende attribuut (het attribuut is de fallback van de slot). Bij meerdere redacteuren overlappen de avatars elkaar subtiel; elke avatar krijgt een ring in de surface-kleur (zelfde mechaniek als badge) zodat ze visueel gescheiden blijven. Op een gekleurde ondergrond kan de ringkleur meegegeven worden via `--context-parent-background-color`. Op smalle breedtes (een sm-container, ≤ 640px) met meerdere avatars komt de avatarrij boven de namen te staan, zodat de tekst de volle breedte houdt; met één avatar blijft de byline op één regel. Avatars worden geslot als `<img slot="avatars">`. Zet `alt=""` wanneer de namen al in de tekst staan (decoratief); geef anders een beschrijvende alt-tekst op.
+Een redactionele regel die auteurs of redacteuren toont: optionele avatar(s), een naamregel en ondersteunende tekst (bijvoorbeeld functie of datum). Alle onderdelen zijn optioneel. De naamregel en ondersteunende tekst kunnen als attribuut of als slot worden aangeleverd. Gebruik de slots voor rijkere inhoud, zoals een `<time datetime="…">` voor machine-leesbare datums of een link naar het auteursprofiel. Geslotte inhoud vervangt het bijbehorende attribuut (het attribuut is de fallback van de slot). Bij meerdere redacteuren overlappen de avatars elkaar subtiel; elke avatar krijgt een ring in de surface-kleur (zelfde mechaniek als badge) zodat ze visueel gescheiden blijven. Op een gekleurde ondergrond kan de ringkleur meegegeven worden via `--context-parent-background-color`. Op smalle breedtes (een sm-container, ≤ 640px) met meerdere avatars komt de avatarrij boven de namen te staan, zodat de tekst de volle breedte houdt; met één avatar blijft de byline op één regel. Avatars worden geslot als `<img slot="avatars">`. Zet `alt=""` wanneer de namen al in de tekst staan (decoratief); geef anders een beschrijvende alt-tekst op. Voor één avatar kun je in plaats van slotten ook `avatar-src` (met optioneel `avatar-srcset`) als attribuut meegeven; de afmetingen liggen vast (40px), dus `sizes` zet het component zelf. Meerdere avatars gaan altijd via de slot, en geslotte avatars hebben voorrang op `avatar-src`.
 
 **Attributes**
 
@@ -242,6 +244,9 @@ Een redactionele regel die auteurs of redacteuren toont: optionele avatar(s), ee
 | --- | --- | --- |
 | `text` | `string` | Naamregel (bijv. "Jan Jansen en Piet Pietersen"); fallback wanneer de text-slot leeg is |
 | `supporting-text` | `string` | Ondersteunende tekst onder de naamregel (bijv. rol of datum); fallback wanneer de supporting-text-slot leeg is |
+| `avatar-src` | `string` | Bron van één avatar (alternatief voor de avatars-slot); genegeerd zodra de avatars-slot gevuld is |
+| `avatar-srcset` | `string` | Responsive source set voor de avatar-src-afbeelding |
+| `avatar-alt` | `string` | Alt-tekst voor de avatar-src-afbeelding; leeg = decoratief |
 
 **Slots**
 
@@ -1127,7 +1132,7 @@ Een visueel afgebakende kaart met optionele header, body en footer secties. De k
 
 ### `<nldd-collection>`
 
-A container for displaying collections of items. Supports grid, list, and horizontal scroll layouts. In grid and list modes, items are paginated via a load-more button. With `lazy-load`, the next items are automatically loaded when the load-more button comes into view.
+A container for displaying collections of items. Supports grid, list, and horizontal scroll layouts. In grid and list modes, items are paginated via a load-more button. In horizontal scroll, the prev/next controls and the edge fade appear only when the items overflow the container. With `lazy-load`, the next items are automatically loaded when the load-more button comes into view.
 
 **Attributes**
 
@@ -1658,7 +1663,7 @@ Hyperlink component met twee modi: 1. **Standalone (sized)** — set `size="xs"|
 | Attribuut | Type | Beschrijving |
 | --- | --- | --- |
 | `href` | `string` | Link doel |
-| `target` | `string` | Link target (bijv. '_blank'); stelt rel automatisch bij |
+| `target` | `string` | Link target (bijv. '_blank'); stelt rel automatisch bij. Bij '_blank' voegt de link een visueel verborgen "Opent in nieuw tabblad"-melding toe voor screenreaders (WCAG 2.1 SC 3.2.2). |
 | `rel` | `string` | Link rel attribuut; standaard 'noopener noreferrer' bij target='_blank' |
 | `size` | `string` | Tekstgrootte: 'xs' \| 'sm' \| 'md' \| 'lg' \| 'inherit'. Leeg = inherit. |
 | `text` | `string` | Link tekst (alternatief voor default slot) |
@@ -1666,6 +1671,7 @@ Hyperlink component met twee modi: 1. **Standalone (sized)** — set `size="xs"|
 | `end-icon` | `string` | Icoon na de tekst |
 | `accessible-label` | `string` | Toegankelijk label voor screen readers |
 | `disabled` | `boolean` | Uitgeschakelde staat |
+| `translations` | `object` | Overschrijf vertaalsleutels (bijv. de "Opent in nieuw tabblad"-melding); niet-gezette sleutels vallen terug op Nederlands. |
 
 **Slots**
 
@@ -1824,7 +1830,7 @@ A toolbar for page and container headings with optional navigation and action bu
 
 ### `<nldd-activity-indicator>`
 
-Layout placeholder that fills its parent and centres an indeterminate activity indicator. By default the indicator is held back for 1000ms so brief loading states don't flash; once the delay passes it fades in. Set `timing="instant"` to skip the delay (the fade-in still plays) — this is what embedding components such as `nldd-button` use for their loading state. The default indicator is a simple icon-sized circle drawn in `currentColor`, with an optional label below (hidden unless `show-text` is set). Drop a `<nldd-progress-circle>`, `<nldd-progress-bar>` or any element in the slot to override it. Reconnect behaviour: every `connectedCallback` resets the timer and hides the indicator again. If a consumer toggles the element via a conditional render (remove + re-insert) the indicator disappears and re-fades after another delay. Keep the element mounted and toggle visibility / `hidden` instead if you want the timer to run only once. Accessibility: while connected and not `complete` the host is a polite live region (`role="status"`). The label (`text`, or the translated "Laden" fallback) always renders as the region's content — visually hidden when `show-text` is off (the default) — so assistive tech announces the loading state when the indicator appears. Set `complete` (or unmount) to clear it.
+Layout placeholder that fills its parent and centres an indeterminate activity indicator. By default the indicator is held back for 1000ms so brief loading states don't flash; once the delay passes it fades in. Set `timing="instant"` to skip the delay (the fade-in still plays) — this is what embedding components such as `nldd-button` use for their loading state. The default indicator is a simple icon-sized circle drawn in `currentColor`, with an optional label below (hidden unless `show-text` is set). Drop a `<nldd-progress-circle>`, `<nldd-progress-bar>` or any element in the `indicator` slot to override it. Overlay mode: put content in the default slot and the indicator wraps it — it becomes a `position: relative` container, renders the spinner over a dimming backdrop (opt out with `no-backdrop`), and makes the content `inert` so its controls can't be focused or clicked. Toggle loading with `complete` (`?complete=${!isLoading}`). With no slotted content it stays the standalone placeholder described above. Reconnect behaviour: every `connectedCallback` resets the timer and hides the indicator again. If a consumer toggles the element via a conditional render (remove + re-insert) the indicator disappears and re-fades after another delay. Keep the element mounted and toggle visibility / `hidden` instead if you want the timer to run only once. Accessibility: while connected and not `complete` the host is a polite live region (`role="status"`). The label (`text`, or the translated "Laden" fallback) always renders as the region's content — visually hidden when `show-text` is off (the default) — so assistive tech announces the loading state when the indicator appears. Set `complete` (or unmount) to clear it.
 
 **Attributes**
 
@@ -1835,14 +1841,15 @@ Layout placeholder that fills its parent and centres an indeterminate activity i
 | `text` | `string` | Label text. Falls back to the translated "Laden" when unset. |
 | `timing` | `'default'\|'instant'` | 'default' waits 1000ms before showing (anti-flash); 'instant' shows immediately (the fade-in still plays). Default 'default'. |
 | `complete` | `boolean` | Mark the loader as finished while keeping the element mounted; clears aria-busy and hides the indicator. |
-| `backdrop` | `boolean` | Dim and blur the content underneath with a frosted backdrop while loading (opt-in, default false). Uses the context parent background colour (fallback: base surface) at one minus the disabled opacity, plus a backdrop blur. |
+| `no-backdrop` | `boolean` | Overlay mode dims and blurs the wrapped content with a frosted backdrop by default; set this to show only the indicator panel without dimming. No effect in standalone mode. |
 | `translations` | `object` | Override translation keys; unset keys fall back to Dutch |
 
 **Slots**
 
 | Slot | Beschrijving |
 | --- | --- |
-| _(default)_ | Optional custom indicator; overrides the default circle (and its visually-hidden label). Consumers replacing the slot supply their own indicator semantics; the host's role="status" still marks the loading region. |
+| _(default)_ | Content to wrap (overlay mode); made inert while loading. Leave empty for the standalone placeholder. |
+| `indicator` | Optional custom indicator; overrides the default circle (and its visually-hidden label). Consumers replacing it supply their own indicator semantics; the host's role="status" still marks the loading region. |
 
 ### `<nldd-badge>`
 
@@ -1911,6 +1918,34 @@ An inline status component for empty state, confirmations and feedback. Fills th
 | --- | --- |
 | _(default)_ | Optional custom content between text and actions |
 | `actions` | nldd-button elements, wrapped in nldd-button-group (max 3) |
+
+### `<nldd-just-in-time-education>`
+
+Een guided-discovery coach-mark. Plaats een control (bijv. nldd-search-field) in de default slot; zolang `active` is gezet tilt het component een callout (titel + supporting text + dismiss) in de top layer via de Popover API (`popover="manual"`), geankerd aan het control met Floating UI. Geen backdrop, non-modaal: de achtergrond blijft interactief. Het control zelf blijft op zijn plek in de flow staan. Met `dismissable` beheert het component het sluiten en vuurt het nldd-close: - de gebruiker voert de geadviseerde interactie uit op het control -> close{completed} - de dismiss-knop -> close{dismissed} - een klik/toets BUITEN de coach-mark -> close{ignored} Zonder `dismissable` sluit niets vanzelf (geen knop, geen buiten- of slot-klik); dan bepaalt de consumer het sluiten zelf via `active` of `complete()`. `complete()` werkt altijd en sluit met close{completed} (bijv. pas bij een echte zoekopdracht).
+
+**Attributes**
+
+| Attribuut | Type | Beschrijving |
+| --- | --- | --- |
+| `active` | `boolean` | Toon de coach-mark. App-gestuurd; standaard false. |
+| `text` | `string` | Titel van de callout. |
+| `supporting-text` | `string` | Ondersteunende tekst onder de titel. |
+| `placement` | `string` | 'auto' \| 'top' \| 'bottom' \| 'left' \| 'right' (standaard 'auto'). |
+| `dismissable` | `boolean` | Toon de dismiss-knop en sta sluiten toe via 1 klik/toets buiten de coach-mark. Standaard false: dan beheert de consumer het sluiten zelf. |
+| `arrow-length` | `string` | Pijllengte en dus de afstand tussen card en control, als CSS-lengte (bijv. \`333px\`, \`30vh\`). Leeg = DS-standaard; onder 40px wordt geklemd. |
+| `no-arrow` | `boolean` | Verberg de pijl; de card staat dan dicht tegen het control. |
+
+**Slots**
+
+| Slot | Beschrijving |
+| --- | --- |
+| _(default)_ | Het control waar de coach-mark naar wijst (blijft in de normale flow). |
+
+**Events**
+
+| Event | Beschrijving |
+| --- | --- |
+| `nldd-close` | Wanneer de coach-mark sluit. detail: { reason: 'completed' \| 'dismissed' \| 'ignored' }. |
 
 ### `<nldd-modal-dialog>`
 
@@ -2011,7 +2046,7 @@ Exports both NLDDProgressCircle and NLDDProgressCircleSegmentIndicator. A circul
 
 ### `<nldd-status-bar>`
 
-Een smalle, paginabrede statusbalk (24px) met een diepe achtergrondkleur per variant. Gebruik voor persistente systeemtoestand: een storing, gepland onderhoud, een conceptweergave of een lopende opname. De balk toont bewust geen icoon en ondersteunt alleen tekst — de tekst zelf moet de status benoemen ("Storing: …", "Gepland onderhoud …"), zodat de betekenis niet alleen uit kleur volgt (WCAG 1.4.1). De hele balk kan klikbaar zijn: zet `href` (rendert een `<a>`) of `button` (rendert een `<button>`; luister naar het native `click` event). Zonder beide is de balk statisch. Bij interactie verschijnt een chevron als affordance. Maximaal één actie per balk; meerdere acties of links in lopende tekst horen in nldd-banner. role en aria-live worden automatisch gezet op basis van de variant: - critical → role="alert" (impliceert aria-live="assertive"; onderbreekt de screen reader) - overige → role="status" aria-live="polite" Niet overschrijfbaar — is een rustiger component nodig, kies dan een ander. Gebruik `critical` alleen voor een echte noodsituatie: role="alert" onderbreekt de screen reader bij élke wijziging van de inhoud, dus plaats er geen tekst in die regelmatig verandert (zoals een aftellende timer).
+Een smalle, paginabrede statusbalk (24px) met een diepe achtergrondkleur per variant. Gebruik voor persistente systeemtoestand: een storing, gepland onderhoud, een conceptweergave of een lopende opname. De balk toont bewust geen icoon en ondersteunt alleen tekst — de tekst zelf moet de status benoemen ("Storing: …", "Gepland onderhoud …"), zodat de betekenis niet alleen uit kleur volgt (WCAG 1.4.1). Houd de tekst kort: de balk toont één regel en kapt af met ellipsis, zeker op smallere schermen. Bij een lang bericht met veel informatie hoort alleen de kern in de balk; verwijs voor de rest naar een losse pagina of sheet (bijvoorbeeld via `href` of `button`) waar de gebruiker verder kan lezen. De hele balk kan klikbaar zijn: zet `href` (rendert een `<a>`) of `button` (rendert een `<button>`; luister naar het native `click` event). Zonder beide is de balk statisch. Bij interactie verschijnt een chevron als affordance. Maximaal één actie per balk; meerdere acties of links in lopende tekst horen in nldd-banner. role en aria-live worden automatisch gezet op basis van de variant: - critical → role="alert" (impliceert aria-live="assertive"; onderbreekt de screen reader) - overige → role="status" aria-live="polite" Niet overschrijfbaar — is een rustiger component nodig, kies dan een ander. Gebruik `critical` alleen voor een echte noodsituatie: role="alert" onderbreekt de screen reader bij élke wijziging van de inhoud, dus plaats er geen tekst in die regelmatig verandert (zoals een aftellende timer).
 
 **Attributes**
 

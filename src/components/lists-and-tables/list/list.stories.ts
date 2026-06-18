@@ -43,6 +43,11 @@ export default {
 			description: 'Verbergt scheidingslijnen tussen lijstitems',
 			table: { type: { summary: 'boolean' }, defaultValue: { summary: 'false' } },
 		},
+		'arrow-navigation': {
+			control: 'boolean',
+			description: 'Roving-tabindex: ArrowUp/Down verplaatsen focus tussen de interactieve items (Home/End naar eerste/laatste), en de hele lijst wordt één Tab-stop. Alleen focus, geen selectie. Alleen voor simpele lijsten (elk item één actie, geen losse controls); wederzijds uitsluitend met `reorderable`. Zichtbaar effect alleen bij interactieve items — zie de "Arrow navigation"-story.',
+			table: { type: { summary: 'boolean' }, defaultValue: { summary: 'false' } },
+		},
 		'empty-text': {
 			control: 'text',
 			description: 'Tekst van de standaard empty-state-dialog. Valt terug op i18n ("Geen items").',
@@ -76,6 +81,7 @@ export const Default = {
 		background: 'tinted',
 		type: 'list',
 		'no-dividers': false,
+		'arrow-navigation': false,
 		'empty-text': '',
 		'empty-supporting-text': '',
 	},
@@ -85,6 +91,7 @@ export const Default = {
 			background=${args.variant === 'box' ? args.background : nothing}
 			type=${args.type}
 			?no-dividers=${args['no-dividers']}
+			?arrow-navigation=${args['arrow-navigation']}
 			empty-text=${args['empty-text']}
 			empty-supporting-text=${args['empty-supporting-text']}
 		>
@@ -99,6 +106,35 @@ export const Default = {
 			</nldd-list-item>
 		</nldd-list>
 	`,
+};
+
+export const ArrowNavigation = {
+	name: 'Arrow navigation',
+	args: {
+		'arrow-navigation': true,
+		variant: 'simple',
+		type: 'list',
+	},
+	render: (args: Record<string, any>) => html`
+		<nldd-list
+			?arrow-navigation=${args['arrow-navigation']}
+			variant=${args.variant}
+			type=${args.type}
+		>
+			<nldd-list-item button><nldd-text-cell text="Profiel"></nldd-text-cell></nldd-list-item>
+			<nldd-list-item button selected><nldd-text-cell text="Meldingen"></nldd-text-cell></nldd-list-item>
+			<nldd-list-item button><nldd-text-cell text="Beveiliging"></nldd-text-cell></nldd-list-item>
+			<nldd-list-item button><nldd-text-cell text="Facturen"></nldd-text-cell></nldd-list-item>
+			<nldd-list-item button><nldd-text-cell text="Voorkeuren"></nldd-text-cell></nldd-list-item>
+		</nldd-list>
+	`,
+	parameters: {
+		docs: {
+			description: {
+				story: 'Met `arrow-navigation` wordt de lijst één Tab-stop. Tab focust het eerste (of `selected`) item; ArrowUp/ArrowDown lopen door de items (wrappend), Home/End springen naar eerste/laatste, en Tab verlaat de lijst weer. Pijltjes verplaatsen alleen focus, niet de selectie. Gebruik het alleen op simpele lijsten waar elk item één actie heeft (geen losse controls in een item); het is wederzijds uitsluitend met `reorderable`.',
+			},
+		},
+	},
 };
 
 export const Variants = {

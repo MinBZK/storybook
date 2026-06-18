@@ -36,6 +36,22 @@ describe('nldd-status-bar', () => {
 		expect(el.shadowRoot!.querySelector('.status-bar__text')!.textContent).toBe('Gepland onderhoud');
 	});
 
+	it('upgrades via document.createElement (the Vue/React path) with the live-region role', async () => {
+		// Vue, React and other createElement-based renderers build autonomous custom
+		// elements with document.createElement, which throws NotSupportedError if the
+		// constructor adds attributes. This is the exact path the parser-based
+		// fixture() helper does NOT exercise, so it guards a real regression: the
+		// aria setup must live in connectedCallback, not the constructor.
+		el = document.createElement('nldd-status-bar');
+		const wrapper = document.createElement('div');
+		wrapper.appendChild(el);
+		document.body.appendChild(wrapper);
+		await waitForUpdate(el);
+		expect(el.shadowRoot).not.toBeNull();
+		expect(el.getAttribute('role')).toBe('status');
+		expect(el.getAttribute('aria-live')).toBe('polite');
+	});
+
 
 	/* ============================================================
 	   Render modes (static / link / button)

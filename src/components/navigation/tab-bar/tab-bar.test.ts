@@ -141,6 +141,47 @@ describe('nldd-tab-bar-item – content variant detection', () => {
 		expect(getComputedStyle(textEl).display).not.toBe('none');
 	});
 
+	it('keeps the item text on one line and truncates it with an ellipsis', async () => {
+		el = await fixture<NLDDTabBarItem>(`
+			<nldd-tab-bar-item variant="text" text="Een lange tablabel die niet in de balk past"></nldd-tab-bar-item>
+		`);
+		await waitForUpdate(el);
+		const cs = getComputedStyle(el.shadowRoot!.querySelector('.tab-bar__item-text')!);
+		expect(cs.whiteSpace).toBe('nowrap');
+		expect(cs.textOverflow).toBe('ellipsis');
+	});
+
+	it('caps the bar at its container and truncates only the overflowing tab', async () => {
+		// Real layout assertion in a narrow container: the bar must not exceed it,
+		// the long tab truncates, and short tabs keep their own (content) width
+		// instead of all shrinking proportionally (the grid-track behaviour).
+		const host = document.createElement('div');
+		host.style.width = '320px';
+		document.body.appendChild(host);
+		host.innerHTML = `
+			<nldd-tab-bar variant="text">
+				<nldd-tab-bar-item text="Home" selected></nldd-tab-bar-item>
+				<nldd-tab-bar-item text="Profiel"></nldd-tab-bar-item>
+				<nldd-tab-bar-item text="Een hele lange tablabel die echt niet in deze smalle balk past"></nldd-tab-bar-item>
+			</nldd-tab-bar>`;
+		const bar = host.querySelector('nldd-tab-bar') as HTMLElement & { updateComplete: Promise<boolean> };
+		const items = [...host.querySelectorAll('nldd-tab-bar-item')] as (HTMLElement & { updateComplete: Promise<boolean> })[];
+		await bar.updateComplete;
+		await Promise.all(items.map(i => i.updateComplete));
+		await new Promise(r => setTimeout(r, 0));
+
+		const textOf = (item: Element) => item.shadowRoot!.querySelector('.tab-bar__item-text') as HTMLElement;
+		expect(bar.getBoundingClientRect().width).toBeLessThanOrEqual(321);
+		// Overflowing tab: rendered text is clipped.
+		const long = textOf(items[2]);
+		expect(long.scrollWidth).toBeGreaterThan(long.clientWidth);
+		// Short tab keeps its content width: its text is not clipped.
+		const home = textOf(items[0]);
+		expect(home.scrollWidth).toBeLessThanOrEqual(home.clientWidth + 1);
+
+		host.remove();
+	});
+
 	it('hides the icon at size="lg" with variant="text"', async () => {
 		el = await fixture<NLDDTabBarItem>(`
 			<nldd-tab-bar-item size="lg" variant="text" text="Tab" icon="home"></nldd-tab-bar-item>
@@ -709,6 +750,24 @@ describe('nldd-tab-bar – navigation mode', () => {
 		const linkB = items[1].shadowRoot!.querySelector('a')!;
 		expect(linkA.getAttribute('aria-current')).toBe('page');
 		expect(linkB.getAttribute('aria-current')).toBeNull();
+	});
+
+	it('does not self-select on click in navigation mode (the consumer owns selection)', async () => {
+		el = await fixture<NLDDTabBar>(`
+			<nldd-tab-bar navigation accessible-label="Navigatie">
+				<nldd-tab-bar-item text="Home" href="/home" selected></nldd-tab-bar-item>
+				<nldd-tab-bar-item text="Profiel" href="/profiel"></nldd-tab-bar-item>
+			</nldd-tab-bar>
+		`);
+		await waitForUpdate(el);
+		const items = getItems(el);
+		// The item fires `select` on click; in navigation mode the bar must NOT flip
+		// selection itself — a click that doesn't navigate (guard/popover) would
+		// otherwise leave the wrong tab looking selected.
+		items[1].dispatchEvent(new CustomEvent('select', { bubbles: true, composed: true, detail: { item: items[1] } }));
+		await waitForUpdate(el);
+		expect(items[1].hasAttribute('selected')).toBe(false);
+		expect(items[0].hasAttribute('selected')).toBe(true);
 	});
 
 	it('does not set aria-selected on link items in navigation mode', async () => {

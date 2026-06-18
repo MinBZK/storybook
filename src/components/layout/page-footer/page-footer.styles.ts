@@ -20,10 +20,15 @@ export const pageFooterStyles = css`
 		container-type: inline-size;
 		display: block;
 		background-color: var(--components-page-footer-background-color);
+		width: 100%;
 	}
 
 	:host([hidden]) {
 		display: none;
+	}
+
+	:host([empty]) {
+		background-color: transparent;
 	}
 
 	.page-footer {
@@ -50,6 +55,10 @@ export const pageFooterStyles = css`
 			padding-inline: var(--semantics-page-sections-lg-margin-inline);
 			--_lintje-width: var(--primitives-space-48);
 		}
+	}
+
+	:host([empty]) .page-footer {
+		min-height: var(--_lintje-height);
 	}
 
 	.page-footer::after {

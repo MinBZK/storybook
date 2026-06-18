@@ -25,7 +25,8 @@ export const template = (
 	rel: string | undefined,
 	showStart: boolean,
 	showEnd: boolean,
-	newTabLabel?: string,
+	opensInNewTabLabel?: string,
+	rovingTabindex?: string,
 ) => {
 	if (href) {
 		return html`<div class="list-item">
@@ -33,8 +34,9 @@ export const template = (
 				href=${href}
 				target=${target ?? nothing}
 				rel=${rel ?? nothing}
+				tabindex=${rovingTabindex ?? nothing}
 			>${areas(showStart, showEnd)}${
-				newTabLabel ? html`<span class="list-item__new-tab-hint">${newTabLabel}</span>` : nothing
+				opensInNewTabLabel ? html`<span class="list-item__opens-in-new-tab-hint">${opensInNewTabLabel}</span>` : nothing
 			}</a>
 		</div>`;
 	}
@@ -42,6 +44,7 @@ export const template = (
 		return html`<div class="list-item">
 			<button class="list-item__action"
 				type="button"
+				tabindex=${rovingTabindex ?? nothing}
 			>${areas(showStart, showEnd)}</button>
 		</div>`;
 	}

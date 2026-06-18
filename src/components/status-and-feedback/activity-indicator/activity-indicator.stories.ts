@@ -2,6 +2,7 @@ import { html } from 'lit';
 import './activity-indicator.js';
 import '../progress-circle/progress-circle.js';
 import '../progress-bar/progress-bar.js';
+import '../../actions/button/button.js';
 
 /**
  * Een layout placeholder die de beschikbare ruimte vult en een indeterminate
@@ -14,8 +15,13 @@ import '../progress-bar/progress-bar.js';
  * `instant` voor hun loading-state.
  *
  * Standaard zonder label (`show-text` uit); de tekst voedt wél de accessible
- * name. Zet eigen content in de slot (een progress-bar of progress-circle) om
- * de indicator volledig te vervangen.
+ * name. Een eigen indicator (progress-bar of progress-circle) zet je in de
+ * `indicator`-slot.
+ *
+ * Overlay-modus: zet content in de default slot en de indicator wordt de
+ * container eromheen — de spinner (en optionele backdrop) komt erover en de
+ * content wordt `inert` (knoppen niet focusbaar of klikbaar) zolang er geladen
+ * wordt. Schakel met `complete` (`?complete=${!isLoading}`).
  */
 export default {
 	title: 'Components/Status & Feedback/Activity Indicator',
@@ -33,7 +39,8 @@ export default {
 		text: '',
 		showText: false,
 		timing: 'default',
-		backdrop: false,
+		noBackdrop: false,
+		complete: false,
 	},
 	argTypes: {
 		size: {
@@ -59,28 +66,37 @@ export default {
 			description: '`default` wacht 1000ms (anti-flash); `instant` toont direct (fade-in speelt nog).',
 			table: { defaultValue: { summary: 'default' } },
 		},
-		backdrop: {
+		noBackdrop: {
+			name: 'no-backdrop',
 			control: 'boolean',
-			description: 'Dim én blur de achterliggende content met een frosted laag terwijl er geladen wordt. Opt-in.',
+			description: 'Overlay-modus dimt + blurt de geneste content standaard; zet dit aan om alleen het indicator-paneel te tonen zonder dimmen. Geen effect zonder content.',
+			table: { defaultValue: { summary: 'false' } },
+		},
+		complete: {
+			control: 'boolean',
+			description: 'Markeer als klaar: verbergt de indicator en heft de inert op de geneste content op. In overlay-modus bind je `?complete=${!isLoading}`.',
 			table: { defaultValue: { summary: 'false' } },
 		},
 	},
 };
 
-const Template = ({ size, text, showText, timing, backdrop }: Record<string, unknown>) => html`
-	<div style="position: relative; width: 360px; padding: 20px; border-radius: 12px; overflow: hidden; background: var(--semantics-surfaces-base-background-color); box-shadow: 0 1px 4px rgba(0, 0, 0, 0.12);">
-		<p style="margin: 0 0 8px; font: var(--primitives-font-body-md-medium-tight); color: var(--semantics-content-color);">Voorbeeldcontent</p>
-		<p style="margin: 0; font: var(--primitives-font-body-sm-regular-tight); color: var(--semantics-content-secondary-color);">
-			Inhoud achter de indicator. Zet de backdrop-control aan om te zien hoe deze content dimt en blurt tijdens het laden.
-		</p>
-		<nldd-activity-indicator size=${size as string}
-			text=${text as string}
-			?show-text=${showText as boolean}
-			timing=${timing as string}
-			?backdrop=${backdrop as boolean}
-			style="position: absolute; inset: 0;"
-		></nldd-activity-indicator>
-	</div>
+const Template = ({ size, text, showText, timing, noBackdrop, complete }: Record<string, unknown>) => html`
+	<nldd-activity-indicator size=${size as string}
+		text=${text as string}
+		?show-text=${showText as boolean}
+		timing=${timing as string}
+		?no-backdrop=${noBackdrop as boolean}
+		?complete=${complete as boolean}
+		style="width: 360px; border-radius: 12px; overflow: hidden; background: var(--semantics-surfaces-base-background-color); box-shadow: 0 1px 4px rgba(0, 0, 0, 0.12);"
+	>
+		<div style="padding: 20px; display: flex; flex-direction: column; gap: 12px; align-items: flex-start;">
+			<p style="margin: 0; font: var(--primitives-font-body-md-medium-tight); color: var(--semantics-content-color);">Voorbeeldcontent</p>
+			<p style="margin: 0; font: var(--primitives-font-body-sm-regular-tight); color: var(--semantics-content-secondary-color);">
+				De content zit nu IN de activity indicator, geen wrapper-div meer. Tijdens het laden is deze inert: de knop kan niet gefocust of geklikt worden.
+			</p>
+			<nldd-button text="Knop in de content"></nldd-button>
+		</div>
+	</nldd-activity-indicator>
 `;
 
 export const Default = {
@@ -142,7 +158,7 @@ export const ProgressBarViaSlot = {
 	render: () => html`
 		<div style="height: 240px; display: flex;">
 			<nldd-activity-indicator timing="instant">
-				<nldd-progress-bar indeterminate text="Uploaden"></nldd-progress-bar>
+				<nldd-progress-bar slot="indicator" indeterminate text="Uploaden"></nldd-progress-bar>
 			</nldd-activity-indicator>
 		</div>
 	`,
@@ -156,7 +172,7 @@ export const CustomCircleViaSlot = {
 	render: () => html`
 		<div style="height: 240px; display: flex;">
 			<nldd-activity-indicator timing="instant">
-				<nldd-progress-circle size="64" color="success" indeterminate text="Verwerken"></nldd-progress-circle>
+				<nldd-progress-circle slot="indicator" size="64" color="success" indeterminate text="Verwerken"></nldd-progress-circle>
 			</nldd-activity-indicator>
 		</div>
 	`,
@@ -166,27 +182,27 @@ export const CustomCircleViaSlot = {
 };
 
 /**
- * Met `backdrop` dimt én blurt de indicator de achterliggende content met een
- * frosted laag in `--context-parent-background-color` (fallback: de base
- * surface) op `1 − disabled-opacity`. De content blijft zichtbaar maar leest
- * als inactief tijdens het laden. Opt-in (standaard onzichtbaar); je plaatst de
- * indicator zelf over de content — hier absoluut over een paneel.
+ * In overlay-modus dimt én blurt de indicator de geneste content standaard met
+ * een frosted laag in `--context-parent-background-color` (fallback: de base
+ * surface) op `1 − disabled-opacity`. De content blijft zichtbaar maar leest als
+ * inactief tijdens het laden. Zet `no-backdrop` om alleen het paneel te tonen.
  */
 export const Backdrop = {
 	name: 'Backdrop over content',
-	render: ({ backdrop }: Record<string, unknown>) => html`
-		<div style="position: relative; width: 320px; padding: 20px; border-radius: 12px; overflow: hidden; background: var(--semantics-surfaces-base-background-color); box-shadow: 0 1px 4px rgba(0, 0, 0, 0.12);">
-			<p style="margin: 0 0 8px; font: var(--primitives-font-body-md-medium-tight); color: var(--semantics-content-color);">Aanvraag indienen</p>
-			<p style="margin: 0; font: var(--primitives-font-body-sm-regular-tight); color: var(--semantics-content-secondary-color);">
-				Deze gegevens worden verwerkt. De content blijft zichtbaar maar dimt en blurt achter de indicator, zodat duidelijk is dat het proces nog loopt.
-			</p>
-			<nldd-activity-indicator ?backdrop=${backdrop as boolean} show-text text="Bezig met verwerken…" timing="instant"
-				style="position: absolute; inset: 0;"
-			></nldd-activity-indicator>
-		</div>
+	render: ({ noBackdrop }: Record<string, unknown>) => html`
+		<nldd-activity-indicator ?no-backdrop=${noBackdrop as boolean} show-text text="Bezig met verwerken…" timing="instant"
+			style="width: 320px; border-radius: 12px; overflow: hidden; background: var(--semantics-surfaces-base-background-color); box-shadow: 0 1px 4px rgba(0, 0, 0, 0.12);"
+		>
+			<div style="padding: 20px; display: flex; flex-direction: column; gap: 8px;">
+				<p style="margin: 0; font: var(--primitives-font-body-md-medium-tight); color: var(--semantics-content-color);">Aanvraag indienen</p>
+				<p style="margin: 0; font: var(--primitives-font-body-sm-regular-tight); color: var(--semantics-content-secondary-color);">
+					Deze gegevens worden verwerkt. De content blijft zichtbaar maar dimt en blurt achter de indicator, zodat duidelijk is dat het proces nog loopt.
+				</p>
+			</div>
+		</nldd-activity-indicator>
 	`,
-	args: { backdrop: true },
+	args: { noBackdrop: false },
 	parameters: {
-		controls: { include: ['backdrop'] },
+		controls: { include: ['noBackdrop'] },
 	},
 };

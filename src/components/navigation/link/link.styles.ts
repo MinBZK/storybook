@@ -141,4 +141,18 @@ export const linkStyles = css`
 	:host([size="inherit"]) .link__end-icon {
 		top: 0.2em;
 	}
+
+	/* Visually-hidden "opens in new tab" announcement (target="_blank"); part of
+	   the link's accessible name but never shown. Standard visually-hidden recipe. */
+	.link__opens-in-new-tab-hint {
+		position: absolute;
+		margin: -1px;
+		border: 0;
+		width: 1px;
+		height: 1px;
+		overflow: hidden;
+		padding: 0;
+		white-space: nowrap;
+		clip-path: inset(50%);
+	}
 `;

@@ -19,8 +19,9 @@
  * @attr {string} end-icon - Icon name for the end icon (after text)
  * @attr {string} accessible-label - Accessible label for the button, overrides text for screen readers
  * @attr {string} href - When set, renders an <a> element instead of <button>
- * @attr {string} target - Link target (e.g. '_blank'); only used when href is set
+ * @attr {string} target - Link target (e.g. '_blank'); only used when href is set. With '_blank' the button adds a visually hidden "opens in new tab" announcement for screen readers (WCAG 2.1 SC 3.2.2).
  * @attr {string} rel - Link rel attribute; defaults to 'noopener noreferrer' when target is '_blank'
+ * @attr {object} translations - Override translation keys (e.g. the "opens in new tab" announcement); unset keys fall back to Dutch.
  *
  * @slot text - Slot for custom button content (e.g. text with inline markup). Used when the text attribute is empty or not set (an empty string counts as "not set", since the attribute and the unset property are indistinguishable). Provide accessible-label when the slotted content isn't plain text.
  * @slot start-icon - Slot for a custom start icon (e.g. custom SVG). Only used when start-icon attribute is not set.
@@ -33,6 +34,8 @@ import { LitElement } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
 import { buttonStyles } from './button.styles.js';
 import { template } from './button.template.js';
+import { withTranslations } from '../../../utilities/with-translations.js';
+import { nlddButtonTranslations } from './button.i18n.js';
 import './../../content/icon/icon.js';
 import './../../status-and-feedback/activity-indicator/activity-indicator.js';
 
@@ -54,7 +57,7 @@ type ButtonType = 'button' | 'submit' | 'reset';
 type PopupType = 'menu' | 'listbox' | 'dialog' | 'tree' | 'grid';
 
 @customElement('nldd-button')
-export class NLDDButton extends LitElement {
+export class NLDDButton extends withTranslations(LitElement, nlddButtonTranslations) {
 	static override styles = buttonStyles;
 
 	// Form-associated so a type="submit"/"reset" button can drive its form.

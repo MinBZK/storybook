@@ -19,6 +19,8 @@ export const activityIndicatorStyles = css`
 		--_gap: var(--primitives-space-4);
 		--_text-font: var(--primitives-font-body-sm-regular-flat);
 		--_backdrop-blur: 3px;
+		--_overlay-panel-padding: var(--primitives-space-12);
+		--_overlay-panel-corner-radius: var(--primitives-corner-radius-md);
 
 		${inheritedTextReset}
 		box-sizing: border-box;
@@ -36,10 +38,13 @@ export const activityIndicatorStyles = css`
 		display: none;
 	}
 
-	/* The opt-in backdrop is an absolutely-positioned layer that fills the host,
-	   so the host has to be its containing block. */
-	:host([backdrop]) {
+	/* Overlay mode (content in the default slot): the host wraps the content and
+	   is the containing block for the absolutely-positioned indicator + backdrop,
+	   so it sizes to the content instead of filling its parent. */
+	:host([has-content]) {
+		display: block;
 		position: relative;
+		height: auto;
 	}
 
 
@@ -60,35 +65,75 @@ export const activityIndicatorStyles = css`
 
 
 	/* # Block
-	   Fades the indicator in once it becomes visible (both timing modes), and
-	   stacks the default circle + label as a centred column. width:100% +
+	   Stacks the default circle + label as a centred column. width:100% +
 	   max-width gives a slotted progress-bar a width to fill; the fixed-size
 	   circle and the label stay centred via align-items. */
 
 	.activity-indicator {
 		/* position:relative so it paints above the absolutely-positioned backdrop
-		   (both are z-index:auto; the backdrop comes first in the DOM). */
+		   (both are z-index:auto; the backdrop comes first in the DOM). Hidden by
+		   default; the loading host attribute fades it (and the backdrop) in and
+		   out — opacity + display via transition-behavior: allow-discrete, with a
+		   starting-style for the entry. */
 		position: relative;
-		display: flex;
-		flex-direction: column;
+		display: none;
+		opacity: 0;
+		pointer-events: none;
 		width: 100%;
 		max-width: var(--_max-width);
+		flex-direction: column;
 		align-items: center;
 		gap: var(--_gap);
-		animation: activity-indicator-fade-in var(--_fade-duration) var(--_fade-easing);
+		transition-property: opacity, display;
+		transition-duration: var(--_fade-duration);
+		transition-timing-function: var(--_fade-easing);
+		transition-behavior: allow-discrete;
 	}
 
-	@keyframes activity-indicator-fade-in {
-		from { opacity: 0; }
+	:host([loading]) .activity-indicator {
+		display: flex;
+		opacity: 1;
 	}
 
-	/* Opt-in dimming layer (the backdrop attribute): the context parent
-	   background colour — fallback the base surface — at one minus the disabled
-	   opacity, so the content underneath reads as inactive while loading. Fades
-	   in with the indicator. */
+	@starting-style {
+		:host([loading]) .activity-indicator {
+			opacity: 0;
+		}
+	}
+
+	/* Overlay mode: the wrapped content flows normally; the indicator + backdrop
+	   sit on top as absolute layers that fill the host. */
+	.activity-indicator__content {
+		display: block;
+	}
+
+	/* Overlay mode: the indicator + label sit on a small rounded base-surface
+	   panel that hugs them with padding (not the full component width) so they
+	   keep contrast over the dimmed content, and read in the content colour
+	   instead of inheriting currentColor. */
+	:host([has-content]) .activity-indicator {
+		box-sizing: border-box;
+		position: absolute;
+		top: 50%;
+		left: 50%;
+		border-radius: var(--_overlay-panel-corner-radius);
+		background-color: var(--semantics-surfaces-base-background-color);
+		width: max-content;
+		max-width: calc(100% - var(--primitives-space-32));
+		padding: var(--_overlay-panel-padding);
+		color: var(--semantics-content-color);
+		transform: translate(-50%, -50%);
+	}
+
+	/* Dimming layer (overlay mode, on by default; opt out with no-backdrop): the
+	   context parent background colour — fallback the base surface — at one minus
+	   the disabled opacity, so the content underneath reads as inactive while
+	   loading. Fades in and out with the indicator via the loading attribute. */
 	.activity-indicator__backdrop {
 		position: absolute;
 		inset: 0;
+		display: none;
+		opacity: 0;
 		/* Frosted dim: the parent surface — fallback base surface — as a
 		   translucent fill at one minus the disabled opacity (a translucent
 		   colour, not element opacity, which would hide the blur), plus a blur so
@@ -97,7 +142,22 @@ export const activityIndicatorStyles = css`
 		background-color: color-mix(in oklab, var(--context-parent-background-color, var(--semantics-surfaces-base-background-color)) calc((1 - var(--primitives-opacity-disabled)) * 100%), transparent);
 		-webkit-backdrop-filter: blur(var(--_backdrop-blur));
 		backdrop-filter: blur(var(--_backdrop-blur));
-		animation: activity-indicator-fade-in var(--_fade-duration) var(--_fade-easing);
+		pointer-events: none;
+		transition-property: opacity, display;
+		transition-duration: var(--_fade-duration);
+		transition-timing-function: var(--_fade-easing);
+		transition-behavior: allow-discrete;
+	}
+
+	:host([loading]) .activity-indicator__backdrop {
+		display: block;
+		opacity: 1;
+	}
+
+	@starting-style {
+		:host([loading]) .activity-indicator__backdrop {
+			opacity: 0;
+		}
 	}
 
 	/* display:contents so the default circle + label (or a slotted override)
@@ -163,7 +223,7 @@ export const activityIndicatorStyles = css`
 	@media (prefers-reduced-motion: reduce) {
 		.activity-indicator,
 		.activity-indicator__backdrop {
-			animation: none;
+			transition: none;
 		}
 
 		.activity-indicator__indicator {

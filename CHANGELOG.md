@@ -9,6 +9,32 @@ the type of conventional-commit determines the release. Conventional types
 `chore`, `docs`, `ci`, `style`, `test`, `build` are intentionally omitted
 here; consult the commit history if you need that level of detail.
 
+### Highlights
+
+- **`nldd-just-in-time-education` coach-mark.** A new component for in-context guidance: anchored to a control with a curved dashed arrow, a dimming overlay, and three dismiss routes. Near a viewport edge it degrades gracefully — the arrow shortens first, then the card narrows (down to a usable floor), and the arrow drops once it would fall below its minimum.
+- **`nldd-activity-indicator` overlay mode.** Put content in the default slot and the indicator overlays it on a small rounded panel over a frosted backdrop, making the content `inert` while loading; fades in and out via the loading state. (See Breaking.)
+- **`nldd-status-bar` now mounts under Vue, React and other `createElement`-based frameworks** (reported by a consuming team). The ARIA setup moved from the constructor to `connectedCallback`: a custom-element constructor may not add attributes, so `document.createElement` previously threw `NotSupportedError` and the bar never upgraded (no shadow root, no role, height 0).
+- **`nldd-inline-dialog`** no longer trips Lit's change-in-update warning on the initial slot sync (reported by a consuming team).
+- **List arrow-key navigation.** Opt-in `arrow-navigation` on `nldd-list`: ArrowUp/Down move focus between the interactive items (wrapping), Home/End jump to first/last, and the list becomes a single tab stop so Tab moves past the rest. Focus only (selection stays consumer-managed). For simple lists where each item has one action; mutually exclusive with `reorderable`.
+
+### Added
+
+- **"Opens in new tab" announcement** on `nldd-button`, `nldd-icon-button` and `nldd-link` for `target="_blank"` links, mirroring `nldd-list-item` (WCAG 2.1 SC 3.2.2). Wording overridable via `translations`.
+- **`nldd-byline` single avatar** via `avatar-src` / `avatar-srcset` attributes — no slot needed for one avatar.
+
+### Fixed
+
+- **`nldd-tab-bar` stays within its container** and truncates overflowing item text with an ellipsis (column-grid layout); short tabs keep their own width and icon-only items keep their fixed size. It also no longer self-selects in navigation mode.
+- **`nldd-list-item` press feedback no longer flashes while scrolling on touch** — it is cleared when the touch turns into a scroll (`pointercancel`).
+- **`nldd-collection`** shows its scroll controls and edge fade only when the content actually overflows.
+- **`nldd-page-footer`** with no content shows only the accent line, without the grey surface.
+- `width: 100%` fixes on `nldd-form-field`, `nldd-form-actions` and `nldd-document-tab-bar`.
+
+### Breaking
+
+- **`nldd-activity-indicator`:** a custom indicator override moved from the default slot to the new `indicator` slot, since the default slot now holds the wrapped content — `<nldd-progress-bar slot="indicator">`.
+- **`nldd-list-item` translation key** `components.list-item.opens-in-new-tab-label` was renamed to `components.list-item.opens-in-new-tab-text`; update any `translations` override.
+
 ## <small>0.8.62 (2026-06-16)</small>
 
 * fix(list): fill the width under justify-self: start parents (rich-text) (#129) ([fd11dc3](https://github.com/MinBZK/storybook/commit/fd11dc3)), closes [#129](https://github.com/MinBZK/storybook/issues/129)

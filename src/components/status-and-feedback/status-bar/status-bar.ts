@@ -8,6 +8,11 @@
  * benoemen ("Storing: …", "Gepland onderhoud …"), zodat de betekenis niet
  * alleen uit kleur volgt (WCAG 1.4.1).
  *
+ * Houd de tekst kort: de balk toont één regel en kapt af met ellipsis, zeker
+ * op smallere schermen. Bij een lang bericht met veel informatie hoort alleen
+ * de kern in de balk; verwijs voor de rest naar een losse pagina of sheet
+ * (bijvoorbeeld via `href` of `button`) waar de gebruiker verder kan lezen.
+ *
  * De hele balk kan klikbaar zijn: zet `href` (rendert een `<a>`) of `button`
  * (rendert een `<button>`; luister naar het native `click` event). Zonder
  * beide is de balk statisch. Bij interactie verschijnt een chevron als
@@ -64,16 +69,16 @@ export class NLDDStatusBar extends LitElement {
 	@property({ type: Boolean, reflect: true })
 	button = false;
 
-	constructor() {
-		super();
-		// AT requires role + aria-live to be present on the element by the time
-		// it's first inserted into the DOM, otherwise the initial announcement
-		// is missed. Reading the raw attribute here (instead of waiting for
-		// Lit to project the @property) covers both HTML-declared and
-		// document.createElement + setAttribute flows. updated() keeps the
-		// host in sync when variant changes at runtime.
-		const initialVariant = this.getAttribute('variant') as StatusBarVariant | null;
-		this._applyAriaForVariant(initialVariant ?? 'neutral');
+	override connectedCallback(): void {
+		super.connectedCallback();
+		// Set role + aria-live here, NOT in the constructor: the custom-element
+		// spec forbids a constructor from adding attributes to its element, so
+		// document.createElement (the path Vue, React and other createElement-based
+		// frameworks use) would throw NotSupportedError and the element would never
+		// upgrade. connectedCallback runs at insertion, before the first render, so
+		// the live-region role is present from the start; updated() keeps it in sync
+		// on later variant changes.
+		this._applyAriaForVariant(this.variant);
 	}
 
 	/** @internal Auto-secure rel for new-tab links unless the consumer set one. */
@@ -87,6 +92,12 @@ export class NLDDStatusBar extends LitElement {
 	}
 
 	private _applyAriaForVariant(variant: StatusBarVariant): void {
+		// role + aria-live are component-owned and tied to the variant for correct
+		// announcement (critical = assertive alert, else polite status). They are
+		// (re)applied unconditionally on every connect/variant change, NOT guarded
+		// behind "consumer hasn't set role" — deliberately, since the docs state they
+		// are not consumer-overridable: a wrong role here (e.g. presentation on a
+		// critical alert) would silently break the a11y contract.
 		if (variant === 'critical') {
 			this.setAttribute('role', 'alert');
 			this.removeAttribute('aria-live');

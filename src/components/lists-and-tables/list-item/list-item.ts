@@ -71,6 +71,16 @@ export class NLDDListItem extends withTranslations(LitElement, nlddListItemTrans
 	@state()
 	private _parentType: ListType = 'list';
 
+	/** Set by the parent nldd-list when `arrow-navigation` (roving tabindex) is on.
+	 *  Switches the inner action from a normal tab stop to a roving one. */
+	@state()
+	_arrowNavigation = false;
+
+	/** Set by the parent nldd-list: when arrow-navigation is on, exactly one item
+	 *  is the roving entry point (tabindex 0); the rest are tabindex -1. */
+	@state()
+	_rovingActive = false;
+
 	@query('.list-item__action')
 	private _action?: HTMLElement;
 
@@ -88,6 +98,12 @@ export class NLDDListItem extends withTranslations(LitElement, nlddListItemTrans
 		this.addEventListener('focusin', this._handleFocusIn);
 		this.addEventListener('focusout', this._handleFocusOut);
 		this.addEventListener('click', this._handleClick);
+		// Press feedback: shown on press, cleared on release or when a touch
+		// turns into a scroll (the browser fires pointercancel for that pointer),
+		// so `active` never sticks while the user scrolls the list.
+		this.addEventListener('pointerdown', this._onPointerDown);
+		this.addEventListener('pointerup', this._clearPressed);
+		this.addEventListener('pointercancel', this._clearPressed);
 	}
 
 	override disconnectedCallback() {
@@ -97,6 +113,9 @@ export class NLDDListItem extends withTranslations(LitElement, nlddListItemTrans
 		this.removeEventListener('focusin', this._handleFocusIn);
 		this.removeEventListener('focusout', this._handleFocusOut);
 		this.removeEventListener('click', this._handleClick);
+		this.removeEventListener('pointerdown', this._onPointerDown);
+		this.removeEventListener('pointerup', this._clearPressed);
+		this.removeEventListener('pointercancel', this._clearPressed);
 	}
 
 	override firstUpdated() {
@@ -202,6 +221,16 @@ export class NLDDListItem extends withTranslations(LitElement, nlddListItemTrans
 		this._action?.classList.remove('is-pointer-focus');
 	};
 
+	private _onPointerDown = (e: PointerEvent) => {
+		// Primary button / touch / pen only (mouse right-click has button > 0).
+		if (e.button > 0) return;
+		this._action?.classList.add('is-pressed');
+	};
+
+	private _clearPressed = () => {
+		this._action?.classList.remove('is-pressed');
+	};
+
 	/**
 	 * Delegates focus to the inner `.list-item__action` (the button or anchor),
 	 * so consumers can call `listItemEl.focus()` without reaching into shadow DOM.
@@ -211,10 +240,16 @@ export class NLDDListItem extends withTranslations(LitElement, nlddListItemTrans
 	}
 
 	override render() {
-		const newTabLabel =
+		const opensInNewTabLabel =
 			this.href && this.target === '_blank'
-				? this._t('components.list-item.opens-in-new-tab-label')
+				? this._t('components.list-item.opens-in-new-tab-text')
 				: undefined;
+		// Roving tabindex: when the list runs arrow-navigation, exactly one item is
+		// the tab stop (0) and the rest are reachable only via the arrow keys (-1).
+		// Off → undefined leaves the native button/link as a normal tab stop.
+		const rovingTabindex = this._arrowNavigation
+			? (this._rovingActive ? '0' : '-1')
+			: undefined;
 		return template(
 			this.button,
 			this.href,
@@ -222,7 +257,8 @@ export class NLDDListItem extends withTranslations(LitElement, nlddListItemTrans
 			this.rel,
 			this._showStart,
 			this._showEnd,
-			newTabLabel,
+			opensInNewTabLabel,
+			rovingTabindex,
 		);
 	}
 }

@@ -24,6 +24,7 @@ export const documentTabBarStyles = css`
 		${inheritedTextReset}
 		display: block;
 		position: relative;
+		width: 100%;
 		isolation: isolate;
 		user-select: none;
 		-webkit-tap-highlight-color: transparent;

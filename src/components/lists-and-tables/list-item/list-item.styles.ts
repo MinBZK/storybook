@@ -94,7 +94,7 @@ export const listItemStyles = css`
 		cursor: var(--semantics-controls-link-cursor);
 	}
 
-	.list-item__new-tab-hint {
+	.list-item__opens-in-new-tab-hint {
 		position: absolute;
 		margin: -1px;
 		border: 0;
@@ -164,14 +164,15 @@ export const listItemStyles = css`
 	}
 
 	/* Press feedback — works on touch where :hover doesn't. Same visual as
-	   :hover (the gated mouse rule above) so it reads consistently across
-	   input modes. */
-	.list-item__action:active {
+	   :hover (the gated mouse rule above) so it reads consistently across input
+	   modes. JS-driven (.is-pressed) rather than :active so a touch that turns
+	   into a scroll clears the press (pointercancel) instead of flashing it. */
+	.list-item__action.is-pressed {
 		--_background-color: var(--components-list-item-is-hovered-background-color);
 		--context-cell-content-color: var(--components-list-item-is-hovered-content-color);
 	}
 
-	:host([selected]) .list-item__action:active {
+	:host([selected]) .list-item__action.is-pressed {
 		--_background-color: var(--components-list-item-is-highlighted-background-color);
 		--context-cell-content-color: var(--components-list-item-is-highlighted-content-color);
 	}

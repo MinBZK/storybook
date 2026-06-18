@@ -377,3 +377,124 @@ describe('nldd-list', () => {
 		expect(assigned[0].getAttribute('text')).toBe('Custom');
 	});
 });
+
+describe('nldd-list – arrow navigation (roving tabindex)', () => {
+	let el: HTMLElement;
+
+	afterEach(() => {
+		if (el) cleanup(el);
+	});
+
+	const MARKUP = `
+		<nldd-list arrow-navigation>
+			<nldd-list-item button text="Een"></nldd-list-item>
+			<nldd-list-item button text="Twee"></nldd-list-item>
+			<nldd-list-item button text="Drie"></nldd-list-item>
+		</nldd-list>
+	`;
+
+	// The list pushes roving state onto items in a microtask, which the items
+	// then render. waitForUpdate(list) drains the list's own update + a macrotask,
+	// but NOT the items' follow-up render, so this helper additionally awaits each
+	// item's updateComplete (and returns them) before any tabindex is asserted.
+	async function settle(list: HTMLElement) {
+		await waitForUpdate(list);
+		const items = [...list.querySelectorAll('nldd-list-item')] as (HTMLElement & { updateComplete: Promise<boolean> })[];
+		await Promise.all(items.map(i => i.updateComplete));
+		return items;
+	}
+
+	const tabindexOf = (item: Element) =>
+		item.shadowRoot!.querySelector<HTMLElement>('.list-item__action')!.getAttribute('tabindex');
+
+	const arrow = (key: string) => el.dispatchEvent(new KeyboardEvent('keydown', { key, bubbles: true }));
+
+	it('makes the list a single tab stop: the first item is 0, the rest -1', async () => {
+		el = await fixture(MARKUP);
+		const items = await settle(el);
+		expect(tabindexOf(items[0])).toBe('0');
+		expect(tabindexOf(items[1])).toBe('-1');
+		expect(tabindexOf(items[2])).toBe('-1');
+	});
+
+	it('leaves items as their own tab stops when arrow-navigation is off', async () => {
+		el = await fixture(MARKUP.replace('arrow-navigation', ''));
+		const items = await settle(el);
+		items.forEach(i => expect(tabindexOf(i)).toBeNull());
+	});
+
+	it('ArrowDown/ArrowUp move the roving tab stop and wrap around', async () => {
+		el = await fixture(MARKUP);
+		let items = await settle(el);
+		arrow('ArrowDown');
+		items = await settle(el);
+		expect(tabindexOf(items[1])).toBe('0');
+		expect(tabindexOf(items[0])).toBe('-1');
+		// Wrap forward: Drie -> Een.
+		arrow('ArrowDown');
+		await settle(el);
+		arrow('ArrowDown');
+		items = await settle(el);
+		expect(tabindexOf(items[0])).toBe('0');
+		// Wrap backward: Een -> Drie.
+		arrow('ArrowUp');
+		items = await settle(el);
+		expect(tabindexOf(items[2])).toBe('0');
+	});
+
+	it('Home and End jump to the first and last item', async () => {
+		el = await fixture(MARKUP);
+		let items = await settle(el);
+		arrow('End');
+		items = await settle(el);
+		expect(tabindexOf(items[2])).toBe('0');
+		arrow('Home');
+		items = await settle(el);
+		expect(tabindexOf(items[0])).toBe('0');
+	});
+
+	it('ignores arrow-navigation when reorderable is also set (reorderable wins)', async () => {
+		el = await fixture(`
+			<nldd-list arrow-navigation reorderable>
+				<nldd-list-item button text="Een"></nldd-list-item>
+				<nldd-list-item button text="Twee"></nldd-list-item>
+			</nldd-list>
+		`);
+		const items = await settle(el);
+		items.forEach(i => expect(tabindexOf(i)).toBeNull());
+	});
+
+	it('skips non-interactive items (no button/href) in the roving order', async () => {
+		el = await fixture(`
+			<nldd-list arrow-navigation>
+				<nldd-list-item button text="Een"></nldd-list-item>
+				<nldd-list-item text="Tussenkop"></nldd-list-item>
+				<nldd-list-item button text="Twee"></nldd-list-item>
+			</nldd-list>
+		`);
+		const items = await settle(el);
+		// The non-interactive middle item has no action element, so it never
+		// becomes a roving tab stop.
+		expect(items[1].shadowRoot!.querySelector('.list-item__action')).toBeNull();
+		expect(tabindexOf(items[0])).toBe('0');
+		expect(tabindexOf(items[2])).toBe('-1');
+		// ArrowDown from the first interactive item lands on the next interactive
+		// item, skipping the non-interactive one.
+		arrow('ArrowDown');
+		const after = await settle(el);
+		expect(tabindexOf(after[2])).toBe('0');
+		expect(tabindexOf(after[0])).toBe('-1');
+	});
+
+	it('advertises the arrow keys via aria-keyshortcuts + aria-description while active', async () => {
+		el = await fixture(MARKUP);
+		await settle(el);
+		expect(el.getAttribute('aria-keyshortcuts')).toBe('ArrowUp ArrowDown Home End');
+		expect(el.getAttribute('aria-description')).toBe('Gebruik de pijltjestoetsen om door de lijst te navigeren.');
+
+		el.removeAttribute('arrow-navigation');
+		await settle(el);
+		expect(el.hasAttribute('aria-keyshortcuts')).toBe(false);
+		expect(el.hasAttribute('aria-description')).toBe(false);
+	});
+});
