@@ -1738,10 +1738,10 @@
 
 	/* ## Just in time education */
 
-	--components-just-in-time-education-main-background-color: color-mix(in srgb, var(--semantics-surfaces-base-background-color) 92%, transparent);
+	--components-just-in-time-education-main-background-color: color-mix(in srgb, var(--semantics-surfaces-base-background-color) var(--primitives-opacity-90), transparent);
 	--components-just-in-time-education-main-padding: var(--primitives-space-16);
 	--components-just-in-time-education-text-color: var(--semantics-content-color);
-	--components-just-in-time-education-text-font: var(--primitives-font-body-lg-medium-tight);
+	--components-just-in-time-education-text-font: var(--primitives-font-body-lg-bold-tight);
 	--components-just-in-time-education-supporting-text-color: var(--semantics-content-color);
 	--components-just-in-time-education-supporting-text-font: var(--primitives-font-body-md-regular-tight);
 	--components-just-in-time-education-arrow-color: var(--semantics-content-color);
