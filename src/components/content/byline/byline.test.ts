@@ -153,4 +153,34 @@ describe('nldd-byline', () => {
 		await waitForUpdate(el);
 		expect(el.shadowRoot!.querySelector('.byline__avatars')!.hasAttribute('hidden')).toBe(false);
 	});
+
+
+	/* ============================================================
+	   Avatar via attribuut (de slot heeft voorrang)
+	   ============================================================ */
+
+	it('renders an internal avatar from avatar-src when nothing is slotted', async () => {
+		el = await fixture(`<nldd-byline text="Jan Jansen" avatar-src="${AVATAR}"></nldd-byline>`);
+		await waitForUpdate(el);
+		const img = el.shadowRoot!.querySelector<HTMLImageElement>('.byline__avatar');
+		expect(img).not.toBeNull();
+		expect(img!.getAttribute('src')).toBe(AVATAR);
+		expect(img!.getAttribute('sizes')).toBe('40px');
+		expect(el.shadowRoot!.querySelector('.byline__avatars')!.hasAttribute('hidden')).toBe(false);
+	});
+
+	it('applies avatar-srcset and avatar-alt to the internal avatar', async () => {
+		el = await fixture(`<nldd-byline avatar-src="${AVATAR}" avatar-srcset="${AVATAR} 2x" avatar-alt="Jan Jansen"></nldd-byline>`);
+		await waitForUpdate(el);
+		const img = el.shadowRoot!.querySelector<HTMLImageElement>('.byline__avatar')!;
+		expect(img.getAttribute('srcset')).toBe(`${AVATAR} 2x`);
+		expect(img.getAttribute('alt')).toBe('Jan Jansen');
+	});
+
+	it('lets a slotted avatar win over avatar-src (no internal avatar)', async () => {
+		el = await fixture(`<nldd-byline avatar-src="${AVATAR}"><img slot="avatars" src="${AVATAR}" alt=""></nldd-byline>`);
+		await waitForUpdate(el);
+		expect(el.shadowRoot!.querySelector('.byline__avatar')).toBeNull();
+		expect(el.shadowRoot!.querySelector<HTMLSlotElement>('slot[name="avatars"]')!.assignedElements().length).toBe(1);
+	});
 });

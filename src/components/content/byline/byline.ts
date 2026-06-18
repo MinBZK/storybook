@@ -24,10 +24,18 @@
  * de namen al in de tekst staan (decoratief); geef anders een
  * beschrijvende alt-tekst op.
  *
+ * Voor één avatar kun je in plaats van slotten ook `avatar-src` (met
+ * optioneel `avatar-srcset`) als attribuut meegeven; de afmetingen liggen
+ * vast (40px), dus `sizes` zet het component zelf. Meerdere avatars gaan
+ * altijd via de slot, en geslotte avatars hebben voorrang op `avatar-src`.
+ *
  * @element nldd-byline
  *
  * @attr {string} text            - Naamregel (bijv. "Jan Jansen en Piet Pietersen"); fallback wanneer de text-slot leeg is
  * @attr {string} supporting-text - Ondersteunende tekst onder de naamregel (bijv. rol of datum); fallback wanneer de supporting-text-slot leeg is
+ * @attr {string} avatar-src      - Bron van één avatar (alternatief voor de avatars-slot); genegeerd zodra de avatars-slot gevuld is
+ * @attr {string} avatar-srcset   - Responsive source set voor de avatar-src-afbeelding
+ * @attr {string} avatar-alt      - Alt-tekst voor de avatar-src-afbeelding; leeg = decoratief
  *
  * @slot avatars         - Eén of meer img-elementen; gestyled als ronde, overlappende avatars
  * @slot text            - Naamregel als rijke inhoud (bijv. een link naar het auteursprofiel)
@@ -47,6 +55,15 @@ export class NLDDByline extends LitElement {
 
 	@property({ type: String, attribute: 'supporting-text' })
 	supportingText = '';
+
+	@property({ type: String, attribute: 'avatar-src' })
+	avatarSrc = '';
+
+	@property({ type: String, attribute: 'avatar-srcset' })
+	avatarSrcset = '';
+
+	@property({ type: String, attribute: 'avatar-alt' })
+	avatarAlt = '';
 
 	@state()
 	_hasSlottedAvatars = false;

@@ -24,6 +24,7 @@ export const bylineStyles = css`
 		${inheritedTextReset}
 		container-type: inline-size;
 		display: block;
+		width: 100%;
 	}
 
 	:host([hidden]) {
@@ -69,8 +70,19 @@ export const bylineStyles = css`
 		object-fit: cover !important;
 	}
 
+	.byline__avatar {
+		display: block;
+		margin-inline-start: calc(-1 * var(--_avatar-overlap-size));
+		border-radius: var(--_avatar-corner-radius);
+		box-shadow: 0 0 0 var(--_avatar-border-width) var(--_avatar-border-color);
+		width: var(--_avatar-size);
+		height: var(--_avatar-size);
+		object-fit: cover;
+	}
+
 	@media (forced-colors: active) {
-		.byline__avatars ::slotted(img) {
+		.byline__avatars ::slotted(img),
+		.byline__avatar {
 			border: var(--_avatar-border-width) solid Canvas !important;
 		}
 	}

@@ -66,6 +66,23 @@ export const Standaard = {
 	render: Template,
 };
 
+/**
+ * Eén avatar kun je ook via het `avatar-src`-attribuut meegeven (met optioneel
+ * `avatar-srcset`), zonder een `<img slot="avatars">` te slotten. Handig voor de
+ * veelvoorkomende enkele-auteur-byline; `sizes` zet het component zelf omdat de
+ * avatar vast 40px is. Meerdere avatars gaan altijd via de slot.
+ */
+export const EnkeleAvatarViaAttribuut = {
+	render: () => html`
+		<nldd-byline
+			avatar-src=${AVATAR_1}
+			text="Jan Jansen"
+			supporting-text="Redacteur — 12 juni 2026"
+		></nldd-byline>
+	`,
+	parameters: { controls: { disable: true } },
+};
+
 export const MeerdereRedacteuren = {
 	render: () => html`
 		<nldd-byline
