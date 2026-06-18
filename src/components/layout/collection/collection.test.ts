@@ -66,7 +66,7 @@ describe('nldd-collection', () => {
 			</nldd-collection>
 		`);
 		await waitForUpdate(el);
-		await waitForUpdate(el);
+		await waitForUpdate(el); // wait for ResizeObserver/scroll-listener to settle
 		expect(el.shadowRoot!.querySelectorAll('nldd-icon-button').length).toBe(0);
 		expect(el.shadowRoot!.querySelector('.collection__footer')!.hasAttribute('hidden')).toBe(true);
 		expect(el.hasAttribute('scrollable')).toBe(false);
@@ -79,7 +79,7 @@ describe('nldd-collection', () => {
 			</nldd-collection>
 		`);
 		await waitForUpdate(el);
-		await waitForUpdate(el);
+		await waitForUpdate(el); // wait for ResizeObserver/scroll-listener to settle
 		expect(el.hasAttribute('scrollable')).toBe(false);
 		for (let i = 0; i < 3; i++) {
 			const item = document.createElement('div');
@@ -88,7 +88,7 @@ describe('nldd-collection', () => {
 			el.appendChild(item);
 		}
 		await waitForUpdate(el);
-		await waitForUpdate(el);
+		await waitForUpdate(el); // wait for ResizeObserver/scroll-listener to settle
 		expect(el.hasAttribute('scrollable')).toBe(true);
 		expect(el.shadowRoot!.querySelectorAll('nldd-icon-button').length).toBe(2);
 	});
@@ -131,7 +131,7 @@ describe('nldd-collection', () => {
 			</nldd-collection>
 		`);
 		await waitForUpdate(el);
-		await waitForUpdate(el);
+		await waitForUpdate(el); // wait for ResizeObserver/scroll-listener to settle
 		const itemsEl = el.shadowRoot!.querySelector<HTMLElement>('.collection__items')!;
 		expect(itemsEl.hasAttribute('tabindex')).toBe(false);
 	});
