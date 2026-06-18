@@ -92,6 +92,12 @@ export class NLDDStatusBar extends LitElement {
 	}
 
 	private _applyAriaForVariant(variant: StatusBarVariant): void {
+		// role + aria-live are component-owned and tied to the variant for correct
+		// announcement (critical = assertive alert, else polite status). They are
+		// (re)applied unconditionally on every connect/variant change, NOT guarded
+		// behind "consumer hasn't set role" — deliberately, since the docs state they
+		// are not consumer-overridable: a wrong role here (e.g. presentation on a
+		// critical alert) would silently break the a11y contract.
 		if (variant === 'critical') {
 			this.setAttribute('role', 'alert');
 			this.removeAttribute('aria-live');
