@@ -105,7 +105,8 @@ export function template(this: NLDDButton, helpers: TemplateHelpers) {
 				aria-busy=${ariaBusy}
 				@click=${helpers.handleClick}
 			>
-				${content}${renderOpensInNewTabHint ? html`<span class="button__opens-in-new-tab-hint">${opensInNewTabHint}</span>` : nothing}
+				${content}
+				${renderOpensInNewTabHint ? html`<span class="button__opens-in-new-tab-hint">${opensInNewTabHint}</span>` : nothing}
 			</a>
 			${loadingIndicator}
 		`;

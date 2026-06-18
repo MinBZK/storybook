@@ -25,7 +25,8 @@ export function bylineTemplate(component: NLDDByline) {
 			<div class="byline__avatars"
 				?hidden=${!hasAvatars}
 			>
-				<slot name="avatars" @slotchange=${component._onSlotChange}></slot>${avatarImage}
+				<slot name="avatars" @slotchange=${component._onSlotChange}></slot>
+				${avatarImage}
 			</div>
 			<div class="byline__text-area"
 				?hidden=${!hasText && !hasSupportingText}
