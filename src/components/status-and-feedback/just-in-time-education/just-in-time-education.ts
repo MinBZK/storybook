@@ -170,16 +170,22 @@ export class NLDDJustInTimeEducation extends withTranslations<NLDDJustInTimeEduc
 		if (!container) return;
 		if (!container.matches(':popover-open')) container.showPopover();
 		this._startPositioning();
-		// Announce the tip to assistive tech without moving focus. role="dialog" is
-		// only read once focus enters, but a coach-mark deliberately leaves focus on
-		// the control it points at; this polite live region notifies AT on open
-		// instead. Cleared on close (below) so re-opening re-announces.
+		// Announce the tip text via a polite live region. Focusing into the callout
+		// (dismissable, below) only makes AT read the dialog label and the focused
+		// element, not the tip body, so the live region carries the actual message;
+		// non-dismissable keeps focus on the control entirely. Cleared on close
+		// (below) so re-opening re-announces.
 		const announcer = this._announcerEl;
 		if (announcer) announcer.textContent = [this.text, this.supportingText].filter(Boolean).join('. ');
 		// Outside-click/keystroke dismissal only applies when dismissable. Defer
 		// attaching the listeners to the next task so the click or keystroke that
 		// opened the coach-mark isn't itself treated as an "outside" action.
 		if (!this.dismissable) return;
+		// Move focus into the callout so the dismiss button is keyboard-reachable
+		// (Tab from here lands on it; Shift+Tab returns to the control) and
+		// role="dialog" is announced on focus-enter. Focus returns to the control on
+		// close (see _closePopover). The container has tabindex="-1" for this.
+		container.focus();
 		if (this._attachTimeout) clearTimeout(this._attachTimeout);
 		this._attachTimeout = setTimeout(() => {
 			this._attachTimeout = null;
@@ -191,10 +197,16 @@ export class NLDDJustInTimeEducation extends withTranslations<NLDDJustInTimeEduc
 
 	private _closePopover(): void {
 		const container = this._containerEl;
+		// Capture before hiding: was focus inside the callout (e.g. on the dismiss
+		// button)? If so, return it to the control so keyboard focus isn't dropped
+		// to the body. If the user already moved focus out (engaged the control,
+		// clicked away), leave it where they put it.
+		const focusWasInside = container?.matches(':focus-within') ?? false;
 		if (container?.matches(':popover-open')) container.hidePopover();
 		this._stopPositioning();
 		const announcer = this._announcerEl;
 		if (announcer) announcer.textContent = '';
+		if (focusWasInside) this._getControl()?.focus();
 		if (this._attachTimeout) {
 			clearTimeout(this._attachTimeout);
 			this._attachTimeout = null;

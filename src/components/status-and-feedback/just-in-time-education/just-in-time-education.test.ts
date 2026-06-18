@@ -247,4 +247,20 @@ describe('nldd-just-in-time-education – sluit-routes', () => {
 
 		sibling.remove();
 	});
+
+	it('verplaatst focus naar de callout bij openen (dismissable) en terug naar het control bij sluiten', async () => {
+		await openCoachMark(MARKUP_DISMISSABLE);
+		const container = el.shadowRoot!.querySelector('.just-in-time-education')!;
+		expect(el.shadowRoot!.activeElement).toBe(container);
+
+		// Closing while focus is inside the callout returns it to the slotted control.
+		el.active = false;
+		await waitForUpdate(el);
+		expect(document.activeElement).toBe(el.querySelector('button'));
+	});
+
+	it('laat focus met rust bij openen wanneer niet dismissable', async () => {
+		await openCoachMark();
+		expect(el.shadowRoot!.activeElement).toBeNull();
+	});
 });

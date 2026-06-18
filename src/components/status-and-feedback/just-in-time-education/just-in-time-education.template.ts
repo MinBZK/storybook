@@ -17,6 +17,7 @@ export function justInTimeEducationTemplate(component: NLDDJustInTimeEducation):
 			popover="manual"
 			role="dialog"
 			aria-modal="false"
+			tabindex="-1"
 			aria-label=${component._t('components.just-in-time-education.accessible-label')}
 		>
 			<div class="just-in-time-education__main">
