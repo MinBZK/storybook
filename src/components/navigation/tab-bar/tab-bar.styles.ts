@@ -14,6 +14,7 @@ export const tabBarStyles = css`
 		${inheritedTextReset}
 		display: inline-block;
 		position: relative;
+		max-width: 100%;
 		isolation: isolate;
 		user-select: none;
 		-webkit-tap-highlight-color: transparent;
@@ -43,13 +44,14 @@ export const tabBarStyles = css`
 	}
 
 	.tab-bar__items {
-		display: flex;
+		display: grid;
 		position: relative;
 		border-radius: var(--semantics-controls-md-corner-radius);
 		background-color: var(--semantics-buttons-neutral-tinted-background-color);
-		flex-direction: row;
+		min-width: 0;
+		grid-auto-flow: column;
+		grid-auto-columns: auto;
 		align-items: center;
-		justify-content: center;
 		gap: var(--_gap);
 	}
 
@@ -100,6 +102,14 @@ export const tabBarItemStyles = css`
 		display: none;
 	}
 
+	/* Text-bearing items may shrink (their grid track narrows below content) so the
+	 * text can truncate. Icon-only items keep min-width:auto, so their track floors
+	 * at the fixed touch-target size — an icon can't truncate. */
+	:host([variant="text"]),
+	:host([variant="icon-and-text"]) {
+		min-width: 0;
+	}
+
 
 	/* # Block */
 
@@ -122,6 +132,13 @@ export const tabBarItemStyles = css`
 
 	a.tab-bar__item {
 		cursor: var(--semantics-controls-link-cursor);
+	}
+
+	/* Text-bearing items fill their (shrinkable) grid track so the text can
+	 * truncate; icon-only items keep their fixed square size. */
+	:host([variant="text"]) .tab-bar__item,
+	:host([variant="icon-and-text"]) .tab-bar__item {
+		width: 100%;
 	}
 
 	:host([variant="icon-and-text"]:not([size="lg"])) .tab-bar__item {
@@ -250,6 +267,11 @@ export const tabBarItemStyles = css`
 	.tab-bar__item-text {
 		position: relative;
 		z-index: var(--_z-index-content);
+		min-width: 0;
+		max-width: 100%;
+		overflow: hidden;
+		white-space: nowrap;
+		text-overflow: ellipsis;
 	}
 
 	:host([variant="icon-and-text"][size="lg"]) .tab-bar__item-text {
