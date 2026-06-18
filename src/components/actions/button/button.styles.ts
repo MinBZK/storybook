@@ -539,7 +539,7 @@ export const buttonStyles = css`
 
 	/* Visually-hidden "opens in new tab" announcement (href + target="_blank");
 	   part of the link's accessible name but never shown. Standard recipe. */
-	.button__new-tab-hint {
+	.button__opens-in-new-tab-hint {
 		position: absolute;
 		margin: -1px;
 		border: 0;

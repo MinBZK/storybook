@@ -51,7 +51,7 @@ export function template(this: NLDDButton, helpers: TemplateHelpers) {
 
 	// A new-tab link is a change of context, so announce it (WCAG 2.1 SC 3.2.2).
 	// Only the <a> path (href) can open a new tab.
-	const newTabHint = this.href && this.target === '_blank'
+	const opensInNewTabHint = this.href && this.target === '_blank'
 		? this._t('components.button.opens-in-new-tab-text')
 		: '';
 
@@ -69,9 +69,9 @@ export function template(this: NLDDButton, helpers: TemplateHelpers) {
 	// and the visually-hidden span below appends the hint (it also reaches slotted
 	// text, which can't be read into a string here).
 	const ariaLabel = baseAriaLabel
-		? [baseAriaLabel, newTabHint].filter(Boolean).join(', ')
+		? [baseAriaLabel, opensInNewTabHint].filter(Boolean).join(', ')
 		: nothing;
-	const renderNewTabHint = !!newTabHint && !baseAriaLabel;
+	const renderOpensInNewTabHint = !!opensInNewTabHint && !baseAriaLabel;
 
 	// Loading: an activity indicator overlays the (opacity-hidden) content. It
 	// sits OUTSIDE the <button>/<a> (a sibling, overlaid via the host's
@@ -105,7 +105,7 @@ export function template(this: NLDDButton, helpers: TemplateHelpers) {
 				aria-busy=${ariaBusy}
 				@click=${helpers.handleClick}
 			>
-				${content}${renderNewTabHint ? html`<span class="button__new-tab-hint">${newTabHint}</span>` : nothing}
+				${content}${renderOpensInNewTabHint ? html`<span class="button__opens-in-new-tab-hint">${opensInNewTabHint}</span>` : nothing}
 			</a>
 			${loadingIndicator}
 		`;

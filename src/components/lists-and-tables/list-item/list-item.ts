@@ -240,7 +240,7 @@ export class NLDDListItem extends withTranslations(LitElement, nlddListItemTrans
 	}
 
 	override render() {
-		const newTabLabel =
+		const opensInNewTabLabel =
 			this.href && this.target === '_blank'
 				? this._t('components.list-item.opens-in-new-tab-text')
 				: undefined;
@@ -257,7 +257,7 @@ export class NLDDListItem extends withTranslations(LitElement, nlddListItemTrans
 			this.rel,
 			this._showStart,
 			this._showEnd,
-			newTabLabel,
+			opensInNewTabLabel,
 			rovingTabindex,
 		);
 	}

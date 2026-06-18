@@ -94,7 +94,7 @@ export const listItemStyles = css`
 		cursor: var(--semantics-controls-link-cursor);
 	}
 
-	.list-item__new-tab-hint {
+	.list-item__opens-in-new-tab-hint {
 		position: absolute;
 		margin: -1px;
 		border: 0;

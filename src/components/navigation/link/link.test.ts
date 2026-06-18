@@ -58,7 +58,7 @@ describe('nldd-link', () => {
 		el = await fixture('<nldd-link href="https://example.com" target="_blank" text="External"></nldd-link>');
 		await waitForUpdate(el);
 		const anchor = el.shadowRoot!.querySelector('a')!;
-		expect(anchor.querySelector('.link__new-tab-hint')?.textContent).toBe('Opent in nieuw tabblad');
+		expect(anchor.querySelector('.link__opens-in-new-tab-hint')?.textContent).toBe('Opent in nieuw tabblad');
 		// The name stays content-derived (visible text + hint), so no aria-label override.
 		expect(anchor.hasAttribute('aria-label')).toBe(false);
 	});
@@ -69,14 +69,14 @@ describe('nldd-link', () => {
 		const anchor = el.shadowRoot!.querySelector('a')!;
 		expect(anchor.getAttribute('aria-label')).toBe('Externe site, Opent in nieuw tabblad');
 		// A hidden span would lose to aria-label, so it isn't rendered.
-		expect(anchor.querySelector('.link__new-tab-hint')).toBeNull();
+		expect(anchor.querySelector('.link__opens-in-new-tab-hint')).toBeNull();
 	});
 
 	it('omits the new-tab hint when target is not _blank', async () => {
 		el = await fixture('<nldd-link href="/local" text="Local"></nldd-link>');
 		await waitForUpdate(el);
 		const anchor = el.shadowRoot!.querySelector('a')!;
-		expect(anchor.querySelector('.link__new-tab-hint')).toBeNull();
+		expect(anchor.querySelector('.link__opens-in-new-tab-hint')).toBeNull();
 		expect(anchor.hasAttribute('aria-label')).toBe(false);
 	});
 
@@ -84,14 +84,14 @@ describe('nldd-link', () => {
 		el = await fixture('<nldd-link href="https://example.com" target="_blank" disabled text="External"></nldd-link>');
 		await waitForUpdate(el);
 		const anchor = el.shadowRoot!.querySelector('a')!;
-		expect(anchor.querySelector('.link__new-tab-hint')).toBeNull();
+		expect(anchor.querySelector('.link__opens-in-new-tab-hint')).toBeNull();
 	});
 
 	it('overrides the new-tab wording via the translations property', async () => {
 		el = await fixture('<nldd-link href="https://example.com" target="_blank" text="External"></nldd-link>');
 		(el as NLDDLink).translations = { 'components.link.opens-in-new-tab-text': 'Opens in a new tab' };
 		await waitForUpdate(el);
-		expect(el.shadowRoot!.querySelector('.link__new-tab-hint')?.textContent).toBe('Opens in a new tab');
+		expect(el.shadowRoot!.querySelector('.link__opens-in-new-tab-hint')?.textContent).toBe('Opens in a new tab');
 	});
 
 	it('removes href and adds role="link" + tabindex=0 when disabled', async () => {

@@ -29,11 +29,11 @@ export function template(this: NLDDIconButton) {
 	// The control always carries an aria-label, which wins the accessible-name
 	// cascade, so fold the hint into it rather than into a hidden span (which it
 	// would override). Only the <a> path (href) can open a new tab.
-	const newTabHint = this.href && this.target === '_blank'
+	const opensInNewTabHint = this.href && this.target === '_blank'
 		? this._t('components.icon-button.opens-in-new-tab-text')
 		: '';
 	const baseLabel = this.accessibleLabel || this.text || '';
-	const label = [baseLabel, newTabHint].filter(Boolean).join(', ') || nothing;
+	const label = [baseLabel, opensInNewTabHint].filter(Boolean).join(', ') || nothing;
 	const content = renderContent(this);
 
 	// Tooltip text: accessible-label always, or text when not visible (non-lg).
