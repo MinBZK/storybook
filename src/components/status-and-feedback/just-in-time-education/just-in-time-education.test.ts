@@ -269,7 +269,8 @@ describe('nldd-just-in-time-education – sluit-routes', () => {
 		await waitForUpdate(el);
 		const dialog = el.shadowRoot!.querySelector('.just-in-time-education')!;
 		expect(dialog.getAttribute('role')).toBe('dialog');
-		expect(dialog.getAttribute('aria-modal')).toBe('false');
+		// aria-modal is omitted entirely: "false" is the default for role="dialog".
+		expect(dialog.getAttribute('aria-modal')).toBeNull();
 		cleanup(el);
 
 		el = await fixture<NLDDJustInTimeEducation>(MARKUP);
@@ -277,5 +278,19 @@ describe('nldd-just-in-time-education – sluit-routes', () => {
 		const note = el.shadowRoot!.querySelector('.just-in-time-education')!;
 		expect(note.getAttribute('role')).toBe('note');
 		expect(note.getAttribute('aria-modal')).toBeNull();
+	});
+
+	it('sluit met "dismissed" bij Escape terwijl focus in de callout zit (dismissable)', async () => {
+		await openCoachMark(MARKUP_DISMISSABLE);
+		const container = el.shadowRoot!.querySelector<HTMLElement>('.just-in-time-education')!;
+		expect(el.shadowRoot!.activeElement).toBe(container);
+
+		let reason: string | undefined;
+		el.addEventListener('nldd-close', (e: Event) => { reason = (e as CustomEvent).detail.reason; });
+
+		container.dispatchEvent(new KeyboardEvent('keydown', { key: 'Escape', bubbles: true }));
+		await waitForUpdate(el);
+		expect(reason).toBe('dismissed');
+		expect(el.active).toBe(false);
 	});
 });

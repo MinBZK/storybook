@@ -423,7 +423,9 @@ export class NLDDJustInTimeEducation extends withTranslations<NLDDJustInTimeEduc
 	}
 
 	/** Route 1: the advised interaction on the slotted control (only when
-	 *  dismissable; otherwise the consumer drives completion via complete()). */
+	 *  dismissable; otherwise the consumer drives completion via complete()).
+	 *  A mouse click fires pointerdown then focusin, both landing here; the
+	 *  !this.active guard makes the second call a no-op so 'completed' fires once. */
 	_handleAdvisedInteraction(): void {
 		if (!this.active || !this.dismissable) return;
 		this._close('completed');
@@ -442,6 +444,16 @@ export class NLDDJustInTimeEducation extends withTranslations<NLDDJustInTimeEduc
 	/** Route 3: the dismiss button. */
 	_handleDismiss(): void {
 		this._close('dismissed');
+	}
+
+	/** Escape while focus is inside the callout dismisses it (the ARIA non-modal
+	 *  dialog expectation). The document capture listener (route 2) treats inside
+	 *  events as not-outside and bails, so Escape is handled here. stopPropagation
+	 *  keeps it from also closing an ancestor (e.g. a modal the coach-mark sits in). */
+	_handleCalloutKeydown(e: KeyboardEvent): void {
+		if (e.key !== 'Escape' || !this.dismissable) return;
+		e.stopPropagation();
+		this._handleDismiss();
 	}
 
 	/** Programmatically mark the advised interaction as done (success close). */
