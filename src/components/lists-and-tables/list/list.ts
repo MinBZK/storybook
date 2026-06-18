@@ -77,6 +77,22 @@ export class NLDDList extends LitElement {
 	noDividers = false;
 
 	/**
+	 * Roving-tabindex arrow-key navigation. When set, ArrowUp/ArrowDown move focus
+	 * between the (interactive) items, Home/End jump to the first/last, and the
+	 * whole list becomes a single tab stop — so Tab moves past the rest instead of
+	 * stepping through every item. Arrows move focus only; selection stays
+	 * consumer-managed.
+	 *
+	 * Pragmatic by design: the `list`/`navigation` role is kept (no widget role).
+	 * Use it only on **simple** lists where each item has a single action and no
+	 * extra controls (a control in a `start`/`end` slot would not be reachable as
+	 * its own tab stop). Mutually exclusive with `reorderable` (both use the arrow
+	 * keys); when both are set, `reorderable` wins and this is ignored.
+	 */
+	@property({ type: Boolean, reflect: true, attribute: 'arrow-navigation' })
+	arrowNavigation = false;
+
+	/**
 	 * Text for the default empty-state dialog. Falls back to the Dutch
 	 * i18n default ("Geen resultaten"). Ignored when consumers slot their
 	 * own content into `[slot=empty]`.
@@ -129,6 +145,7 @@ export class NLDDList extends LitElement {
 		});
 		this._updateItems();
 		this._updateEmpty();
+		this._warnArrowNav();
 
 		const headerSlot = this.shadowRoot?.querySelector<HTMLSlotElement>('slot[name="header"]');
 		headerSlot?.addEventListener('slotchange', () => {
@@ -176,23 +193,26 @@ export class NLDDList extends LitElement {
 		this.style.containerName = 'cells-container';
 		this.addEventListener('pointerdown', this._onPointerDown);
 		this.addEventListener('keydown', this._onKeyDown);
+		this.addEventListener('focusin', this._onFocusIn);
 	}
 
 	override disconnectedCallback() {
 		super.disconnectedCallback();
 		this.removeEventListener('pointerdown', this._onPointerDown);
 		this.removeEventListener('keydown', this._onKeyDown);
+		this.removeEventListener('focusin', this._onFocusIn);
 		this._itemsObserver?.disconnect();
 		this._itemsObserver = null;
 		this._cancelDrag();
 	}
 
 	override updated(changed: Map<string, unknown>) {
-		if (changed.has('reorderable') || changed.has('type')) {
+		if (changed.has('reorderable') || changed.has('type') || changed.has('arrowNavigation')) {
 			if (this.reorderable && this.type !== 'list' && import.meta.env?.DEV) {
 				console.warn('nldd-list: `reorderable` is only valid when type="list". Ignoring.');
 			}
 			this._updateItems();
+			this._warnArrowNav();
 		}
 		if (changed.has('translations')) {
 			this._mergedTranslations = { ...nlddListTranslations, ...this.translations };
@@ -250,11 +270,115 @@ export class NLDDList extends LitElement {
 				item.removeAttribute('reorderable');
 			}
 		});
+		this._updateRoving();
 	}
 
 	private _updateEmpty() {
 		const items = this._getItems();
 		this._isEmpty = items.length === 0 || items.every(item => item.hasAttribute('hidden'));
+	}
+
+	// — Arrow navigation (roving tabindex) ————————————————————————————————————
+
+	/** Arrow-navigation is effective only when reorderable isn't already claiming
+	 *  the arrow keys for drag-reorder (reorderable wins). */
+	private get _arrowNavActive(): boolean {
+		return this.arrowNavigation && !(this.reorderable && this.type === 'list');
+	}
+
+	/** Interactive, visible items — the roving stops. Non-interactive items (no
+	 *  link/button) and hidden items are skipped. */
+	private _getInteractiveItems(): NLDDListItem[] {
+		return this._getItems().filter(
+			(item) => !item.hasAttribute('hidden') && Boolean(item.href || item.button),
+		);
+	}
+
+	private _rovingScheduled = false;
+
+	/** Push roving state onto the items, deferred to a microtask: _updateItems can
+	 *  run inside the update lifecycle (firstUpdated/updated), and setting the
+	 *  items' reactive state there would trip Lit's change-in-update warning.
+	 *  Coalesced so repeated item updates schedule it only once. */
+	private _updateRoving() {
+		if (this._rovingScheduled) return;
+		this._rovingScheduled = true;
+		queueMicrotask(() => {
+			this._rovingScheduled = false;
+			this._applyRoving();
+		});
+	}
+
+	/** Sets the arrow-navigation flag on all items and a single roving entry point
+	 *  (keep the current one if still valid, else the selected item, else the first
+	 *  interactive item). */
+	private _applyRoving() {
+		const active = this._arrowNavActive;
+		const items = this._getItems();
+		items.forEach((item) => { item._arrowNavigation = active; });
+		if (!active) {
+			items.forEach((item) => { item._rovingActive = false; });
+			return;
+		}
+		const interactive = this._getInteractiveItems();
+		if (interactive.length === 0) return;
+		const entry = interactive.find((item) => item._rovingActive)
+			?? interactive.find((item) => item.selected)
+			?? interactive[0];
+		items.forEach((item) => { item._rovingActive = item === entry; });
+	}
+
+	private _setRovingActive(activeItem: NLDDListItem) {
+		this._getItems().forEach((item) => { item._rovingActive = item === activeItem; });
+	}
+
+	private _onFocusIn = (event: FocusEvent) => {
+		if (!this._arrowNavActive) return;
+		const item = (event.composedPath() as Element[]).find(
+			(el) => el instanceof Element && el.tagName.toLowerCase() === 'nldd-list-item',
+		) as NLDDListItem | undefined;
+		// Keep the roving entry point wherever focus actually lands (Tab in, a
+		// click, or programmatic focus), so arrows continue from there.
+		if (item && (item.href || item.button) && !item._rovingActive) {
+			this._setRovingActive(item);
+		}
+	};
+
+	private _onArrowNav(event: KeyboardEvent) {
+		const { key } = event;
+		if (key !== 'ArrowUp' && key !== 'ArrowDown' && key !== 'Home' && key !== 'End') return;
+		const items = this._getInteractiveItems();
+		if (items.length === 0) return;
+		const current = items.findIndex((item) => item._rovingActive);
+		let next: number;
+		if (key === 'Home') {
+			next = 0;
+		} else if (key === 'End') {
+			next = items.length - 1;
+		} else {
+			const dir = key === 'ArrowDown' ? 1 : -1;
+			const base = current === -1 ? (dir === 1 ? -1 : 0) : current;
+			next = (base + dir + items.length) % items.length; // wrap around
+		}
+		event.preventDefault();
+		const target = items[next];
+		this._setRovingActive(target);
+		target.focus();
+	}
+
+	private _warnArrowNav() {
+		if (!import.meta.env?.DEV) return;
+		if (this.arrowNavigation && this.reorderable && this.type === 'list') {
+			console.warn('nldd-list: `arrow-navigation` and `reorderable` both use the arrow keys; `reorderable` wins and arrow-navigation is ignored.');
+		}
+		if (this._arrowNavActive) {
+			const hasExtraControls = this._getInteractiveItems().some(
+				(item) => item.querySelector('a[href], button, input, select, textarea, [tabindex]') !== null,
+			);
+			if (hasExtraControls) {
+				console.warn('nldd-list: `arrow-navigation` is for simple lists, but a list-item has an extra focusable control (slotted) that will not be reachable as its own tab stop. Remove the control or disable arrow-navigation.');
+			}
+		}
 	}
 
 	// — Drag: pointer ————————————————————————————————————————————————————————
@@ -336,6 +460,12 @@ export class NLDDList extends LitElement {
 	// Mirrors nldd-document-tab-bar: no grab-and-drop cycle — each arrow press
 	// reorders the DOM, fires nldd-reorder and restores focus on the handle.
 	private _onKeyDown = (event: KeyboardEvent) => {
+		// Arrow-navigation and reorder both claim the arrow keys; _arrowNavActive
+		// is false whenever reorderable wins, so the two never run together.
+		if (this._arrowNavActive) {
+			this._onArrowNav(event);
+			return;
+		}
 		if (!this.reorderable || this.type !== 'list') return;
 		if (event.key !== 'ArrowUp' && event.key !== 'ArrowDown') return;
 

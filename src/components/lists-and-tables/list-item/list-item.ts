@@ -71,6 +71,16 @@ export class NLDDListItem extends withTranslations(LitElement, nlddListItemTrans
 	@state()
 	private _parentType: ListType = 'list';
 
+	/** Set by the parent nldd-list when `arrow-navigation` (roving tabindex) is on.
+	 *  Switches the inner action from a normal tab stop to a roving one. */
+	@state()
+	_arrowNavigation = false;
+
+	/** Set by the parent nldd-list: when arrow-navigation is on, exactly one item
+	 *  is the roving entry point (tabindex 0); the rest are tabindex -1. */
+	@state()
+	_rovingActive = false;
+
 	@query('.list-item__action')
 	private _action?: HTMLElement;
 
@@ -215,6 +225,12 @@ export class NLDDListItem extends withTranslations(LitElement, nlddListItemTrans
 			this.href && this.target === '_blank'
 				? this._t('components.list-item.opens-in-new-tab-text')
 				: undefined;
+		// Roving tabindex: when the list runs arrow-navigation, exactly one item is
+		// the tab stop (0) and the rest are reachable only via the arrow keys (-1).
+		// Off → undefined leaves the native button/link as a normal tab stop.
+		const rovingTabindex = this._arrowNavigation
+			? (this._rovingActive ? '0' : '-1')
+			: undefined;
 		return template(
 			this.button,
 			this.href,
@@ -223,6 +239,7 @@ export class NLDDListItem extends withTranslations(LitElement, nlddListItemTrans
 			this._showStart,
 			this._showEnd,
 			newTabLabel,
+			rovingTabindex,
 		);
 	}
 }
