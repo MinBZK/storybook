@@ -201,8 +201,8 @@ export const Backdrop = {
 			</div>
 		</nldd-activity-indicator>
 	`,
-	args: { backdrop: true },
+	args: { noBackdrop: false },
 	parameters: {
-		controls: { include: ['backdrop'] },
+		controls: { include: ['noBackdrop'] },
 	},
 };
