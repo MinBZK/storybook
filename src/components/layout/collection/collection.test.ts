@@ -45,9 +45,51 @@ describe('nldd-collection', () => {
 		expect(el.shadowRoot!.querySelector('nldd-button')).toBeNull();
 	});
 
-	it('renders scroll navigation on horizontal-scroll layout', async () => {
-		el = await fixture('<nldd-collection layout="horizontal-scroll"></nldd-collection>');
+	it('renders scroll navigation when horizontal content overflows', async () => {
+		el = await fixture(`
+			<nldd-collection layout="horizontal-scroll" style="width: 200px;">
+				<div style="width: 300px; flex-shrink: 0;">Item 1</div>
+				<div style="width: 300px; flex-shrink: 0;">Item 2</div>
+				<div style="width: 300px; flex-shrink: 0;">Item 3</div>
+			</nldd-collection>
+		`);
 		await waitForUpdate(el);
+		await waitForUpdate(el); // wait for ResizeObserver/scroll-listener to settle
+		expect(el.shadowRoot!.querySelectorAll('nldd-icon-button').length).toBe(2);
+		expect(el.hasAttribute('scrollable')).toBe(true);
+	});
+
+	it('hides the scroll navigation when horizontal content fits', async () => {
+		el = await fixture(`
+			<nldd-collection layout="horizontal-scroll" style="width: 1000px;">
+				<div style="width: 100px;">Item 1</div>
+			</nldd-collection>
+		`);
+		await waitForUpdate(el);
+		await waitForUpdate(el);
+		expect(el.shadowRoot!.querySelectorAll('nldd-icon-button').length).toBe(0);
+		expect(el.shadowRoot!.querySelector('.collection__footer')!.hasAttribute('hidden')).toBe(true);
+		expect(el.hasAttribute('scrollable')).toBe(false);
+	});
+
+	it('updates overflow state when items are added at runtime (no resize needed)', async () => {
+		el = await fixture(`
+			<nldd-collection layout="horizontal-scroll" style="width: 200px;">
+				<div style="width: 100px; flex-shrink: 0;">Item 1</div>
+			</nldd-collection>
+		`);
+		await waitForUpdate(el);
+		await waitForUpdate(el);
+		expect(el.hasAttribute('scrollable')).toBe(false);
+		for (let i = 0; i < 3; i++) {
+			const item = document.createElement('div');
+			item.style.cssText = 'width: 300px; flex-shrink: 0;';
+			item.textContent = 'Extra';
+			el.appendChild(item);
+		}
+		await waitForUpdate(el);
+		await waitForUpdate(el);
+		expect(el.hasAttribute('scrollable')).toBe(true);
 		expect(el.shadowRoot!.querySelectorAll('nldd-icon-button').length).toBe(2);
 	});
 

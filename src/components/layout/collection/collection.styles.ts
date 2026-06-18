@@ -68,10 +68,10 @@ export const collectionStyles = css`
 	/* ## Horizontal scroll */
 
 	:host([layout="horizontal-scroll"]) .collection__items {
-		margin-inline-start: calc(var(--primitives-space-16) * -1);
+		margin-inline: calc(var(--primitives-space-16) * -1);
 		margin-block: calc(var(--primitives-space-16) * -1);
 		overflow-x: auto;
-		padding-inline-start: var(--primitives-space-16);
+		padding-inline: var(--primitives-space-16);
 		padding-block: var(--primitives-space-16);
 		flex-direction: row;
 		flex-wrap: nowrap;
@@ -80,20 +80,16 @@ export const collectionStyles = css`
 		-webkit-overflow-scrolling: touch;
 		scrollbar-width: none;
 		scroll-padding-inline-start: var(--primitives-space-16);
+	}
+
+	:host([layout="horizontal-scroll"][scrollable]) .collection__items {
 		mask-image: linear-gradient(
 			to right,
 			transparent 0,
 			black var(--primitives-space-16),
-			black calc(100% - var(--primitives-space-48)),
+			black calc(100% - var(--primitives-space-16)),
 			transparent 100%
 		);
-	}
-
-	:host([layout="horizontal-scroll"]) .collection__items::after {
-		content: '';
-		flex-grow: 0;
-		flex-shrink: 0;
-		flex-basis: var(--primitives-space-48);
 	}
 
 	:host([layout="horizontal-scroll"]) .collection__items::-webkit-scrollbar {
@@ -101,6 +97,7 @@ export const collectionStyles = css`
 	}
 
 	:host([layout="horizontal-scroll"]) .collection__items ::slotted(*) {
+		max-width: 100%;
 		flex-grow: 1;
 		flex-shrink: 0;
 		flex-basis: var(--_item-width);

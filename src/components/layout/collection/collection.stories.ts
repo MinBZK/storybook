@@ -13,8 +13,8 @@ import '../page-sections/simple-section/simple-section.js';
 /**
  * Gebruik een collection om een verzameling items weer te geven in een grid-,
  * lijst- of horizontale scrolllay-out. De koptekst is optioneel. Bij horizontale
- * scroll worden navigatieknoppen getoond; bij grid en lijst een optionele
- * laad-meer-knop.
+ * scroll verschijnen navigatieknoppen (en een fade aan de randen) zodra de items
+ * niet meer in de container passen; bij grid en lijst een optionele laad-meer-knop.
  *
  * ## Gebruik
  * ```html
@@ -175,6 +175,19 @@ export const HorizontaalScrollend = {
 	render: () => html`
 	<nldd-collection layout="horizontal-scroll">
 		${scrollItems}
+	</nldd-collection>
+`,
+	parameters: { controls: { disable: true } },
+};
+
+/**
+ * Passen alle items samen binnen de container, dan is er niets te scrollen:
+ * geen navigatieknoppen en geen fade. De items vullen de volle breedte.
+ */
+export const HorizontaalPassend = {
+	render: () => html`
+	<nldd-collection layout="horizontal-scroll">
+		${scrollItems.slice(0, 2)}
 	</nldd-collection>
 `,
 	parameters: { controls: { disable: true } },

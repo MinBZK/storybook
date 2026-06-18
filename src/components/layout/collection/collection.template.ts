@@ -5,8 +5,10 @@ import type { NLDDCollection } from './collection.js';
 export function collectionTemplate(component: NLDDCollection): TemplateResult {
 	const isHorizontal = component.layout === 'horizontal-scroll';
 	const showLoadMore = !isHorizontal && component.showLoadMore && component._hasMore;
-	const showFooter = isHorizontal || showLoadMore || component._hasFooterSlot;
 	const scrollable = isHorizontal && component._isScrollable;
+	// The horizontal nav controls (and so the footer) only make sense when the
+	// items actually overflow. A consumer footer slot keeps the footer regardless.
+	const showFooter = scrollable || showLoadMore || component._hasFooterSlot;
 
 	return html`
 		<div class="collection__scroll-area">
@@ -22,7 +24,7 @@ export function collectionTemplate(component: NLDDCollection): TemplateResult {
 			?hidden=${!showFooter}
 		>
 			<slot name="footer" @slotchange=${component._onFooterSlotChange}>
-				${isHorizontal ? html`
+				${scrollable ? html`
 					<nldd-button-bar>
 						<nldd-icon-button
 							icon="chevron-left"
