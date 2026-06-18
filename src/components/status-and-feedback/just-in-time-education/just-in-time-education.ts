@@ -95,7 +95,7 @@ export class NLDDJustInTimeEducation extends withTranslations<NLDDJustInTimeEduc
 	private _resolvedSide: 'top' | 'bottom' | 'left' | 'right' | null = null;
 	private _lastViewportWidth = 0;
 	private _lastViewportHeight = 0;
-	_arrowMarkerId = `nldd-jite-arrow-${++jiteCounter}`;
+	readonly _arrowMarkerId = `nldd-jite-arrow-${++jiteCounter}`;
 
 	override updated(changed: PropertyValues): void {
 		if (changed.has('arrowLength')) {
