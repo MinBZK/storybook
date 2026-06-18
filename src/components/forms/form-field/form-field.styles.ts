@@ -14,6 +14,7 @@ export const formFieldStyles = css`
 
 		${inheritedTextReset}
 		display: block;
+		width: 100%;
 		container-type: inline-size;
 	}
 

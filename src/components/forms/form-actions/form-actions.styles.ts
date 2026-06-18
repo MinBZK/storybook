@@ -10,6 +10,7 @@ export const formActionsStyles = css`
 
 	:host {
 		display: block;
+		width: 100%;
 		container-type: inline-size;
 	}
 
