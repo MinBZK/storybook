@@ -266,7 +266,7 @@ export const justInTimeEducationStyles = css`
 		fill: none;
 		stroke: currentColor;
 		stroke-width: 2;
-		stroke-linecap: round;
+		stroke-linecap: butt;
 		stroke-dasharray: 3 4;
 	}
 
