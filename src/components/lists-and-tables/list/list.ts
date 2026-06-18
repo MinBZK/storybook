@@ -372,6 +372,11 @@ export class NLDDList extends LitElement {
 			console.warn('nldd-list: `arrow-navigation` and `reorderable` both use the arrow keys; `reorderable` wins and arrow-navigation is ignored.');
 		}
 		if (this._arrowNavActive) {
+			// Best-effort, light-DOM only: a slotted custom element (e.g. nldd-switch)
+			// keeps its focusable control in its own shadow root, so this query won't
+			// catch every extra control. Detecting custom elements generically would
+			// false-positive on non-interactive ones (nldd-icon, nldd-badge), so this
+			// stays a heuristic dev aid for the documented "simple lists" case.
 			const hasExtraControls = this._getInteractiveItems().some(
 				(item) => item.querySelector('a[href], button, input, select, textarea, [tabindex]') !== null,
 			);
