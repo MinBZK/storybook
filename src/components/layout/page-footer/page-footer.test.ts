@@ -33,6 +33,19 @@ describe('nldd-page-footer', () => {
 		expect(breadcrumbs.hidden).toBe(true);
 		expect(main.hidden).toBe(true);
 		expect(legal.hidden).toBe(true);
+		// Empty footer drops the grey band — only the lintje shows. See
+		// :host([empty]) in the styles.
+		expect(el.hasAttribute('empty')).toBe(true);
+	});
+
+	it('clears empty once any row has content', async () => {
+		el = await fixture(`
+			<nldd-page-footer>
+				<div>Main content</div>
+			</nldd-page-footer>
+		`);
+		await waitForUpdate(el);
+		expect(el.hasAttribute('empty')).toBe(false);
 	});
 
 	it('reveals the breadcrumbs and legal-bar wrappers when their slots have content', async () => {
