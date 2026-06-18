@@ -9,8 +9,15 @@
  *
  * The default indicator is a simple icon-sized circle drawn in `currentColor`,
  * with an optional label below (hidden unless `show-text` is set). Drop a
- * `<nldd-progress-circle>`, `<nldd-progress-bar>` or any element in the slot
- * to override it.
+ * `<nldd-progress-circle>`, `<nldd-progress-bar>` or any element in the
+ * `indicator` slot to override it.
+ *
+ * Overlay mode: put content in the default slot and the indicator wraps it — it
+ * becomes a `position: relative` container, renders the spinner over a dimming
+ * backdrop (opt out with `no-backdrop`), and makes the content `inert` so its
+ * controls can't be focused or clicked. Toggle loading with `complete`
+ * (`?complete=${!isLoading}`). With no slotted content it stays the standalone
+ * placeholder described above.
  *
  * Reconnect behaviour: every `connectedCallback` resets the timer and hides
  * the indicator again. If a consumer toggles the element via a conditional
@@ -31,12 +38,18 @@
  * @attr {string} text - Label text. Falls back to the translated "Laden" when unset.
  * @attr {'default'|'instant'} timing - 'default' waits 1000ms before showing (anti-flash); 'instant' shows immediately (the fade-in still plays). Default 'default'.
  * @attr {boolean} complete - Mark the loader as finished while keeping the element mounted; clears aria-busy and hides the indicator.
- * @attr {boolean} backdrop - Dim and blur the content underneath with a frosted backdrop while loading (opt-in, default false). Uses the context parent background colour (fallback: base surface) at one minus the disabled opacity, plus a backdrop blur.
+ * @attr {boolean} no-backdrop - Overlay mode dims and blurs the wrapped content with a frosted backdrop by default; set this to show only the indicator panel without dimming. No effect in standalone mode.
  * @attr {object} translations - Override translation keys; unset keys fall back to Dutch
  *
- * @slot - Optional custom indicator; overrides the default circle (and its
- *   visually-hidden label). Consumers replacing the slot supply their own
- *   indicator semantics; the host's role="status" still marks the loading region.
+ * @slot - Content to wrap (overlay mode); made inert while loading. Leave empty
+ *   for the standalone placeholder.
+ * @slot indicator - Optional custom indicator; overrides the default circle (and
+ *   its visually-hidden label). Consumers replacing it supply their own indicator
+ *   semantics; the host's role="status" still marks the loading region.
+ *
+ * @migration The custom-indicator override moved from the default slot to the
+ *   `indicator` slot, since the default slot now holds wrapped content:
+ *   `<nldd-progress-bar slot="indicator">`.
  */
 import { LitElement } from 'lit';
 import { customElement, property, state } from 'lit/decorators.js';
@@ -78,12 +91,13 @@ export class NLDDActivityIndicator extends LitElement {
 	@property({ type: Boolean, reflect: true })
 	complete = false;
 
-	/** Dim and blur the content underneath with a frosted backdrop while
-	 *  loading. The layer takes the context parent background colour (fallback:
-	 *  base surface) at one minus the disabled opacity, plus a backdrop blur.
-	 *  Opt-in; default false. */
-	@property({ type: Boolean, reflect: true })
-	backdrop = false;
+	/** Opt out of the dimming backdrop in overlay mode. With wrapped content the
+	 *  backdrop is on by default — the content is inert, so it should read as
+	 *  inactive — so set `no-backdrop` to show only the indicator panel without
+	 *  dimming/blurring the content. No effect in standalone mode (no content to
+	 *  dim). */
+	@property({ type: Boolean, reflect: true, attribute: 'no-backdrop' })
+	noBackdrop = false;
 
 	@property({ type: Object })
 	translations: Partial<NLDDActivityIndicatorTranslations> = {};
@@ -91,7 +105,21 @@ export class NLDDActivityIndicator extends LitElement {
 	@state()
 	_visible = false;
 
+	/** Whether the default slot holds wrapped content (overlay mode) instead of
+	 *  being empty (standalone placeholder). Drives the host layout and whether
+	 *  the content is made inert while loading. */
+	@state()
+	_hasContent = false;
+
 	private _delayTimeout?: ReturnType<typeof setTimeout>;
+
+	/** Track default-slot content so the component can switch between the
+	 *  standalone placeholder and the content-wrapping overlay, and disable the
+	 *  wrapped content (via `inert`) while loading. */
+	_onContentSlotChange = (e: Event): void => {
+		const slot = e.target as HTMLSlotElement;
+		this._hasContent = slot.assignedElements().length > 0;
+	};
 
 	public _t(key: keyof NLDDActivityIndicatorTranslations): string {
 		return this.translations[key] ?? nlddActivityIndicatorTranslations[key];
@@ -158,6 +186,14 @@ export class NLDDActivityIndicator extends LitElement {
 		} else {
 			this.setAttribute('role', 'status');
 		}
+	}
+
+	override updated(): void {
+		// Reflect derived state as host attributes the styles key off: `loading`
+		// drives the indicator + backdrop fade (in AND out); `has-content` switches
+		// between the standalone placeholder and the content-wrapping overlay.
+		this.toggleAttribute('loading', this._visible && !this.complete);
+		this.toggleAttribute('has-content', this._hasContent);
 	}
 
 	override render() {
