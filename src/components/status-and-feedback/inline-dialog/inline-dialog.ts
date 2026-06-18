@@ -89,6 +89,9 @@ export class NLDDInlineDialog extends LitElement {
 		// change-in-update warning. A microtask runs after this update completes,
 		// so the follow-up render (when a slot has content) is scheduled cleanly.
 		// slotchange handles every later change; this covers the initial state.
+		// SSR caveat (no SSR today): on hydration the first paint can land before this
+		// microtask drains, briefly showing the empty-slot state. If SSR is adopted,
+		// move this into willUpdate (or a second requestUpdate in firstUpdated).
 		queueMicrotask(() => {
 			syncContent();
 			syncActions();
