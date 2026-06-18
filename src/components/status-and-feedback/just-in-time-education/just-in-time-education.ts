@@ -35,6 +35,13 @@
  * wordt bepaald door de beschikbare ruimte (horizontaal de viewport, verticaal
  * het hele document) bij openen en bij window-resize; scrollen laat de kant vast
  * en verschuift de callout alleen mee met het control.
+ *
+ * @note Focus-model (dismissable): de callout is een bewust NIET-modale dialog
+ * (`role="dialog"`, geen `aria-modal`, geen focus-trap). Bij openen gaat focus
+ * erin zodat de dismiss-knop bereikbaar is en Escape sluit; Tab verlaat de callout
+ * daarna expres naar de pagina, want de coach-mark wijst naar een control dat de
+ * gebruiker moet kunnen bereiken, dus focus vasthouden zou het doel ondermijnen.
+ * Niet-dismissable gebruikt `role="note"` en verplaatst focus nooit.
  */
 
 import { LitElement } from 'lit';
@@ -63,7 +70,7 @@ export class NLDDJustInTimeEducation extends withTranslations<NLDDJustInTimeEduc
 	// direct child). Structural attributes (style/class/id/slot/hidden) and the
 	// internal data-arrow-side deliberately stay on the host.
 	private static readonly _ownAttributes = new Set([
-		'active', 'text', 'supporting-text', 'placement', 'dismissable', 'arrow-length', 'no-arrow',
+		'active', 'text', 'supporting-text', 'placement', 'dismissable', 'arrow-length', 'no-arrow', 'translations',
 		'data-arrow-side', 'data-arrow-collapsed', 'style', 'class', 'id', 'slot', 'hidden',
 	]);
 
@@ -223,6 +230,9 @@ export class NLDDJustInTimeEducation extends withTranslations<NLDDJustInTimeEduc
 		// autoUpdate re-runs on scroll/resize/layout shifts so the container keeps
 		// tracking the control. Scrolling only translates the callout; the side is
 		// re-decided only when the viewport changes (see _updatePosition).
+		// _updatePosition is async and intentionally not awaited: autoUpdate is
+		// rAF-debounced, so overlapping runs are rare and harmless — each just writes
+		// the latest geometry, and the last write wins.
 		this._cleanupAutoUpdate = autoUpdate(control, container, () => this._updatePosition(control, container));
 	}
 
