@@ -98,6 +98,12 @@ export class NLDDListItem extends withTranslations(LitElement, nlddListItemTrans
 		this.addEventListener('focusin', this._handleFocusIn);
 		this.addEventListener('focusout', this._handleFocusOut);
 		this.addEventListener('click', this._handleClick);
+		// Press feedback: shown on press, cleared on release or when a touch
+		// turns into a scroll (the browser fires pointercancel for that pointer),
+		// so `active` never sticks while the user scrolls the list.
+		this.addEventListener('pointerdown', this._onPointerDown);
+		this.addEventListener('pointerup', this._clearPressed);
+		this.addEventListener('pointercancel', this._clearPressed);
 	}
 
 	override disconnectedCallback() {
@@ -107,6 +113,9 @@ export class NLDDListItem extends withTranslations(LitElement, nlddListItemTrans
 		this.removeEventListener('focusin', this._handleFocusIn);
 		this.removeEventListener('focusout', this._handleFocusOut);
 		this.removeEventListener('click', this._handleClick);
+		this.removeEventListener('pointerdown', this._onPointerDown);
+		this.removeEventListener('pointerup', this._clearPressed);
+		this.removeEventListener('pointercancel', this._clearPressed);
 	}
 
 	override firstUpdated() {
@@ -210,6 +219,16 @@ export class NLDDListItem extends withTranslations(LitElement, nlddListItemTrans
 
 	private _handleFocusOut = () => {
 		this._action?.classList.remove('is-pointer-focus');
+	};
+
+	private _onPointerDown = (e: PointerEvent) => {
+		// Primary button / touch / pen only (mouse right-click has button > 0).
+		if (e.button > 0) return;
+		this._action?.classList.add('is-pressed');
+	};
+
+	private _clearPressed = () => {
+		this._action?.classList.remove('is-pressed');
 	};
 
 	/**

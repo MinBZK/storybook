@@ -300,4 +300,25 @@ describe('nldd-list-item', () => {
 		expect(deepActiveElement()).toBe(action);
 		cleanup(el);
 	});
+
+	it('shows press feedback on pointerdown and clears it on pointercancel (touch-scroll)', async () => {
+		el = await fixture('<nldd-list-item button>Item</nldd-list-item>');
+		await waitForUpdate(el);
+		const action = el.shadowRoot!.querySelector('.list-item__action')!;
+		el.dispatchEvent(new PointerEvent('pointerdown', { bubbles: true, composed: true, button: 0 }));
+		expect(action.classList.contains('is-pressed')).toBe(true);
+		// A touch that becomes a scroll fires pointercancel — the press must clear.
+		el.dispatchEvent(new PointerEvent('pointercancel', { bubbles: true, composed: true }));
+		expect(action.classList.contains('is-pressed')).toBe(false);
+	});
+
+	it('clears press feedback on pointerup', async () => {
+		el = await fixture('<nldd-list-item button>Item</nldd-list-item>');
+		await waitForUpdate(el);
+		const action = el.shadowRoot!.querySelector('.list-item__action')!;
+		el.dispatchEvent(new PointerEvent('pointerdown', { bubbles: true, composed: true, button: 0 }));
+		expect(action.classList.contains('is-pressed')).toBe(true);
+		el.dispatchEvent(new PointerEvent('pointerup', { bubbles: true, composed: true }));
+		expect(action.classList.contains('is-pressed')).toBe(false);
+	});
 });
