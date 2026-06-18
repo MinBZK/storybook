@@ -258,7 +258,7 @@ describe('nldd-activity-indicator', () => {
 		(el as unknown as NLDDActivityIndicator).complete = true;
 		await waitForUpdate(el);
 		expect(content.hasAttribute('inert')).toBe(false);
-		expect(content.hasAttribute('aria-busy')).toBe(false);
+		expect(content.getAttribute('aria-busy')).toBe('false');
 	});
 
 	it('stays standalone (no has-content, no inert) without slotted content', async () => {
