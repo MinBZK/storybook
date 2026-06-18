@@ -281,7 +281,11 @@ export class NLDDList extends LitElement {
 	// — Arrow navigation (roving tabindex) ————————————————————————————————————
 
 	/** Arrow-navigation is effective only when reorderable isn't already claiming
-	 *  the arrow keys for drag-reorder (reorderable wins). */
+	 *  the arrow keys for drag-reorder (reorderable wins). The guard also checks
+	 *  `type === 'list'` on purpose: reorderable is inert without it, so there is no
+	 *  conflict to resolve. `arrow-navigation reorderable` without `type="list"`
+	 *  therefore keeps arrow-nav active (reorderable does nothing), and
+	 *  `_warnArrowNav` likewise only warns for the real reorderable-list conflict. */
 	private get _arrowNavActive(): boolean {
 		return this.arrowNavigation && !(this.reorderable && this.type === 'list');
 	}

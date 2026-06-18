@@ -462,4 +462,26 @@ describe('nldd-list – arrow navigation (roving tabindex)', () => {
 		const items = await settle(el);
 		items.forEach(i => expect(tabindexOf(i)).toBeNull());
 	});
+
+	it('skips non-interactive items (no button/href) in the roving order', async () => {
+		el = await fixture(`
+			<nldd-list arrow-navigation>
+				<nldd-list-item button text="Een"></nldd-list-item>
+				<nldd-list-item text="Tussenkop"></nldd-list-item>
+				<nldd-list-item button text="Twee"></nldd-list-item>
+			</nldd-list>
+		`);
+		const items = await settle(el);
+		// The non-interactive middle item has no action element, so it never
+		// becomes a roving tab stop.
+		expect(items[1].shadowRoot!.querySelector('.list-item__action')).toBeNull();
+		expect(tabindexOf(items[0])).toBe('0');
+		expect(tabindexOf(items[2])).toBe('-1');
+		// ArrowDown from the first interactive item lands on the next interactive
+		// item, skipping the non-interactive one.
+		arrow('ArrowDown');
+		const after = await settle(el);
+		expect(tabindexOf(after[2])).toBe('0');
+		expect(tabindexOf(after[0])).toBe('-1');
+	});
 });
