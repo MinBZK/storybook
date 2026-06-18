@@ -571,6 +571,7 @@ Er is geen automatische formatter. Volg deze regels handmatig.
   - Een element met **één enkel attribuut** mag op één regel
 - **Nooit een class op een child component** — gebruik een wrapper element
 - Geen lege regels in templates
+- **Element-content op een eigen ingesprongen regel** — ook een enkele `${...}`-interpolatie; de open- en sluittag staan dan op hun eigen regel. Zo blijven regels kort en tonen diffs alleen de gewijzigde inhoud, niet de hele tag-regel. Geldt voor losstaande elementen in de template-body. Een kort inline `html`-fragment binnen een expressie of ternary mag op één regel blijven (zie het voorbeeld hieronder); dat opsplitsen levert juist lelijke fragmenten op.
 
 ```html
 <!-- GOED — class + meerdere attributen -->
@@ -593,6 +594,17 @@ Er is geen automatische formatter. Volg deze regels handmatig.
 <span class="checkbox__icon">
 	<nldd-icon name="check-mark-small"></nldd-icon>
 </span>
+
+<!-- GOED — element-content op een eigen regel -->
+<p class="dialog__supporting-text">
+	${component.supportingText}
+</p>
+
+<!-- GOED — kort inline html-fragment in een ternary: mag op één regel -->
+${component.hasBadge ? html`<span class="dialog__badge">${component.badge}</span>` : nothing}
+
+<!-- FOUT — content inline op de tag-regel -->
+<p class="dialog__supporting-text">${component.supportingText}</p>
 
 <!-- FOUT — class op child component -->
 <nldd-icon class="checkbox__icon" name="check-mark-small"></nldd-icon>
