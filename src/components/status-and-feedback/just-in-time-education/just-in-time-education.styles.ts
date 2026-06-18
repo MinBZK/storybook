@@ -7,7 +7,8 @@ export const justInTimeEducationStyles = css`
 	/* # Host */
 
 	:host {
-		--_desired-arrow-length: max(var(--primitives-space-40), var(--components-just-in-time-education-arrow-length));
+		--_arrow-length: var(--primitives-space-64); /* JS overrides this with the arrow-length attribute when valid */
+		--_desired-arrow-length: max(var(--primitives-space-40), var(--_arrow-length));
 		--_no-arrow-gap: var(--primitives-space-16);
 		--_gap: min(var(--_desired-arrow-length), var(--_available-distance));
 		--_available-distance: 9999px; /* JS sets the px distance to the viewport/document edge; default = no clamp */
@@ -23,6 +24,13 @@ export const justInTimeEducationStyles = css`
 		--_hide-duration: var(--primitives-transition-duration-medium);
 		--_offset: 0; /* px, unitless — read by JS */
 		--_shift-padding: 8; /* px, unitless — read by JS */
+		--_main-padding: var(--primitives-space-16);
+		--_main-background-color: color-mix(in srgb, var(--semantics-surfaces-base-background-color) 90%, transparent);
+		--_text-color: var(--semantics-content-color);
+		--_text-font: var(--primitives-font-body-lg-bold-tight);
+		--_supporting-text-color: var(--semantics-content-color);
+		--_supporting-text-font: var(--primitives-font-body-md-regular-tight);
+		--_arrow-color: var(--semantics-content-color);
 
 		${inheritedTextReset}
 		display: contents;
@@ -151,7 +159,7 @@ export const justInTimeEducationStyles = css`
 		position: relative;
 		isolation: isolate;
 		pointer-events: auto;
-		padding: var(--components-just-in-time-education-main-padding);
+		padding: var(--_main-padding);
 		display: flex;
 		flex-direction: column;
 		align-items: center;
@@ -200,7 +208,7 @@ export const justInTimeEducationStyles = css`
 		z-index: var(--_background-z-index);
 		inset: calc(-1 * var(--_background-blur));
 		border-radius: var(--_corner-radius);
-		background-color: var(--components-just-in-time-education-main-background-color);
+		background-color: var(--_main-background-color);
 		filter: blur(var(--_background-blur));
 		transform: translate3d(0, 0, 0);
 	}
@@ -224,16 +232,16 @@ export const justInTimeEducationStyles = css`
 
 	.just-in-time-education__text {
 		margin: 0;
-		color: var(--components-just-in-time-education-text-color);
-		font: var(--components-just-in-time-education-text-font);
+		color: var(--_text-color);
+		font: var(--_text-font);
 		font-style: italic;
 		text-wrap: pretty;
 	}
 
 	.just-in-time-education__supporting-text {
 		margin: 0;
-		color: var(--components-just-in-time-education-supporting-text-color);
-		font: var(--components-just-in-time-education-supporting-text-font);
+		color: var(--_supporting-text-color);
+		font: var(--_supporting-text-font);
 		font-style: italic;
 		text-wrap: pretty;
 	}
@@ -252,7 +260,7 @@ export const justInTimeEducationStyles = css`
 		position: absolute;
 		pointer-events: none;
 		overflow: visible;
-		color: var(--components-just-in-time-education-arrow-color);
+		color: var(--_arrow-color);
 		transform: translate3d(0, 0, 0);
 	}
 

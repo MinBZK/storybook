@@ -25,8 +25,6 @@
  * @attr {string}  arrow-length    - Pijllengte en dus de afstand tussen card en control, als CSS-lengte (bijv. \`333px\`, \`30vh\`). Leeg = DS-standaard; onder 40px wordt geklemd.
  * @attr {boolean} no-arrow        - Verberg de pijl; de card staat dan dicht tegen het control.
  *
- * @cssprop [--components-just-in-time-education-arrow-length] - Onderliggende token voor de pijllengte; doorgaans via het \`arrow-length\`-attribuut gezet, maar ook direct themebaar via CSS.
- *
  * @slot - Het control waar de coach-mark naar wijst (blijft in de normale flow).
  *
  * @fires nldd-close - Wanneer de coach-mark sluit. detail: { reason: 'completed' | 'dismissed' | 'ignored' }.
@@ -102,16 +100,16 @@ export class NLDDJustInTimeEducation extends withTranslations<NLDDJustInTimeEduc
 
 	override updated(changed: PropertyValues): void {
 		if (changed.has('arrowLength')) {
-			// The arrow-length attribute takes any CSS length and feeds the public
-			// --components-* token; the CSS clamps it (min 40) into --_gap. Only
+			// The arrow-length attribute takes any CSS length and feeds the local
+			// --_arrow-length var; the CSS clamps it (min 40) into --_gap. Only
 			// a valid length is forwarded — an invalid value (e.g. "d") would poison
 			// the max()/calc() that consume it, making --_max-width and the arrow gap
 			// invalid (the card would lose its width cap and the arrow misrender).
 			// Invalid or empty falls back to the DS default by removing the override.
 			if (this.arrowLength && CSS.supports('width', this.arrowLength)) {
-				this.style.setProperty('--components-just-in-time-education-arrow-length', this.arrowLength);
+				this.style.setProperty('--_arrow-length', this.arrowLength);
 			} else {
-				this.style.removeProperty('--components-just-in-time-education-arrow-length');
+				this.style.removeProperty('--_arrow-length');
 			}
 		}
 		if (changed.has('active')) {
