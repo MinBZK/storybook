@@ -6,6 +6,9 @@ export function activityIndicatorTemplate(component: NLDDActivityIndicator) {
 	// Disable + busy-mark the wrapped content while loading (overlay mode). `inert`
 	// works over the flat tree, so it reaches the slotted (light-DOM) content and
 	// takes its controls out of the tab order — which pointer-events alone can't.
+	// (aria-busy below marks the content as busy in the DOM; note that inert also
+	// removes the subtree from the a11y tree, so AT relies on the role="status"
+	// host, not this aria-busy, for the loading announcement.)
 	const disableContent = component._visible && !component.complete && component._hasContent;
 	// The backdrop dims the inert content in overlay mode (unless opted out). It
 	// renders for the whole overlay-mode lifetime; the `loading` host attribute —
