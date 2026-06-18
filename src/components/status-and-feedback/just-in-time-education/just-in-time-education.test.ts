@@ -68,6 +68,19 @@ describe('nldd-just-in-time-education', () => {
 		expect(el.style.getPropertyValue('--components-just-in-time-education-arrow-length')).toBe('');
 	});
 
+	it('negeert een ongeldige arrow-length en valt terug op de standaard', async () => {
+		el = await fixture<NLDDJustInTimeEducation>(MARKUP);
+		await waitForUpdate(el);
+		el.arrowLength = '120px';
+		await waitForUpdate(el);
+		expect(el.style.getPropertyValue('--components-just-in-time-education-arrow-length')).toBe('120px');
+		// An invalid value (e.g. "d") is rejected and the override removed, so the
+		// max()/calc() that consume the token stay valid (DS default applies).
+		el.arrowLength = 'd';
+		await waitForUpdate(el);
+		expect(el.style.getPropertyValue('--components-just-in-time-education-arrow-length')).toBe('');
+	});
+
 	it('geeft niet-eigen attributen door aan de slotted control, eigen niet', async () => {
 		el = await fixture<NLDDJustInTimeEducation>('<nldd-just-in-time-education text="x" size="lg"><button>Zoeken</button></nldd-just-in-time-education>');
 		await waitForUpdate(el);

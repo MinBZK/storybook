@@ -66,7 +66,7 @@ export class NLDDJustInTimeEducation extends withTranslations<NLDDJustInTimeEduc
 	// internal data-arrow-side deliberately stay on the host.
 	private static readonly _ownAttributes = new Set([
 		'active', 'text', 'supporting-text', 'placement', 'dismissable', 'arrow-length', 'no-arrow',
-		'data-arrow-side', 'style', 'class', 'id', 'slot', 'hidden',
+		'data-arrow-side', 'data-arrow-collapsed', 'style', 'class', 'id', 'slot', 'hidden',
 	]);
 
 	/** Show the coach-mark. Controlled by the app; defaults to false. */
@@ -103,9 +103,16 @@ export class NLDDJustInTimeEducation extends withTranslations<NLDDJustInTimeEduc
 	override updated(changed: PropertyValues): void {
 		if (changed.has('arrowLength')) {
 			// The arrow-length attribute takes any CSS length and feeds the public
-			// --components-* token; the CSS clamps it (min 40) into --_arrow-gap.
-			if (this.arrowLength) this.style.setProperty('--components-just-in-time-education-arrow-length', this.arrowLength);
-			else this.style.removeProperty('--components-just-in-time-education-arrow-length');
+			// --components-* token; the CSS clamps it (min 40) into --_gap. Only
+			// a valid length is forwarded — an invalid value (e.g. "d") would poison
+			// the max()/calc() that consume it, making --_max-width and the arrow gap
+			// invalid (the card would lose its width cap and the arrow misrender).
+			// Invalid or empty falls back to the DS default by removing the override.
+			if (this.arrowLength && CSS.supports('width', this.arrowLength)) {
+				this.style.setProperty('--components-just-in-time-education-arrow-length', this.arrowLength);
+			} else {
+				this.style.removeProperty('--components-just-in-time-education-arrow-length');
+			}
 		}
 		if (changed.has('active')) {
 			if (this.active) this._open();
@@ -231,20 +238,26 @@ export class NLDDJustInTimeEducation extends withTranslations<NLDDJustInTimeEduc
 		// wrong until a manual resize.
 		if (this.getAttribute('data-arrow-side') !== side) this.setAttribute('data-arrow-side', side);
 
-		// Shrink the arrow gap as the card nears the document's top/bottom edge:
-		// clamp --_available-room to the room left for the gap (distance to the edge
-		// minus the card height); the CSS min() lets the gap fall to 0. Set BEFORE
-		// the compute so the (smaller) padding is already in place. Left/right
-		// placements aren't limited this way.
+		// Keep the callout inside the room left as it nears an edge. Vertical
+		// (top/bottom): --_available-distance is the room for the arrow gap once the
+		// card height is reserved, measured against the whole document; the CSS
+		// lets the gap fall to 0. Horizontal (left/right): --_available-distance is the
+		// room to the viewport edge, and the CSS reserves the main width first — so
+		// the arrow gap shrinks to 0 first, then the container cap narrows the main.
+		// Set BEFORE the compute so the (smaller) padding is already in place.
 		const cardHeight = this._cardEl?.getBoundingClientRect().height ?? 0;
 		const controlRect = control.getBoundingClientRect();
-		let availableRoom = '9999px';
+		let availableDistance = '9999px';
 		if (side === 'top') {
-			availableRoom = `${Math.max(0, controlRect.top + window.scrollY - cardHeight)}px`;
+			availableDistance = `${Math.max(0, controlRect.top + window.scrollY - cardHeight)}px`;
 		} else if (side === 'bottom') {
-			availableRoom = `${Math.max(0, document.documentElement.scrollHeight - (controlRect.bottom + window.scrollY) - cardHeight)}px`;
+			availableDistance = `${Math.max(0, document.documentElement.scrollHeight - (controlRect.bottom + window.scrollY) - cardHeight)}px`;
+		} else if (side === 'left') {
+			availableDistance = `${Math.max(0, controlRect.left)}px`;
+		} else if (side === 'right') {
+			availableDistance = `${Math.max(0, window.innerWidth - controlRect.right)}px`;
 		}
-		this.style.setProperty('--_available-room', availableRoom);
+		this.style.setProperty('--_available-distance', availableDistance);
 
 		// Top/bottom: shift along the horizontal (main) axis so the card keeps its
 		// preferred width near a viewport edge, sliding toward the side with room
@@ -252,6 +265,26 @@ export class NLDDJustInTimeEducation extends withTranslations<NLDDJustInTimeEduc
 		// — it would push the card off the control vertically (sticking to the
 		// viewport) instead of letting it sit beside the control.
 		const isVertical = side === 'top' || side === 'bottom';
+
+		// Drop the arrow (rather than draw it stunted) when the room would force the
+		// gap below its minimum — uniformly for top/bottom and left/right. The gap
+		// room is what's left after reserving the card: its height for top/bottom
+		// (already folded into availableDistance) or the main's reserved width for
+		// left/right (--_main-width = area-320 + an optional dismiss button).
+		// Decided only from edge-room + fixed reserves, never the
+		// post-collapse layout, so it can't oscillate. The consumer's own no-arrow
+		// already hides it. Set the host hook BEFORE the compute (like
+		// data-arrow-side) so the smaller gap is in place; CSS hides the arrow itself.
+		const minArrow = parseFloat(styles.getPropertyValue('--primitives-space-40')) || 40;
+		let gapRoom = parseFloat(availableDistance);
+		if (!isVertical) {
+			const mainReserve = (parseFloat(styles.getPropertyValue('--primitives-area-320')) || 320)
+				+ (this.dismissable ? (parseFloat(styles.getPropertyValue('--primitives-space-44')) || 44) : 0);
+			gapRoom -= mainReserve;
+		}
+		const collapsed = !this.noArrow && gapRoom < minArrow;
+		this.toggleAttribute('data-arrow-collapsed', collapsed);
+
 		const { x, y } = await computePosition(control, container, {
 			placement: side,
 			strategy: 'fixed',
@@ -292,6 +325,8 @@ export class NLDDJustInTimeEducation extends withTranslations<NLDDJustInTimeEduc
 		const path = this.shadowRoot?.querySelector<SVGPathElement>('.just-in-time-education__arrow-path');
 		const card = this._cardEl;
 		if (!svg || !path || !card) return;
+		// Auto-collapsed near an edge: the arrow is hidden, so skip the geometry.
+		if (this.hasAttribute('data-arrow-collapsed')) return;
 
 		const containerRect = container.getBoundingClientRect();
 		const cardRect = card.getBoundingClientRect();
