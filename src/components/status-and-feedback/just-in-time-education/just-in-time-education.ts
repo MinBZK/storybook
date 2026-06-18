@@ -132,6 +132,10 @@ export class NLDDJustInTimeEducation extends withTranslations<NLDDJustInTimeEduc
 		return this.shadowRoot?.querySelector('.just-in-time-education__main') ?? null;
 	}
 
+	private get _announcerEl(): HTMLElement | null {
+		return this.shadowRoot?.querySelector('.just-in-time-education__announcer') ?? null;
+	}
+
 	private _getControl(): HTMLElement | null {
 		const slot = this.shadowRoot?.querySelector('slot');
 		const assigned = slot?.assignedElements({ flatten: true });
@@ -166,6 +170,12 @@ export class NLDDJustInTimeEducation extends withTranslations<NLDDJustInTimeEduc
 		if (!container) return;
 		if (!container.matches(':popover-open')) container.showPopover();
 		this._startPositioning();
+		// Announce the tip to assistive tech without moving focus. role="dialog" is
+		// only read once focus enters, but a coach-mark deliberately leaves focus on
+		// the control it points at; this polite live region notifies AT on open
+		// instead. Cleared on close (below) so re-opening re-announces.
+		const announcer = this._announcerEl;
+		if (announcer) announcer.textContent = [this.text, this.supportingText].filter(Boolean).join('. ');
 		// Outside-click/keystroke dismissal only applies when dismissable. Defer
 		// attaching the listeners to the next task so the click or keystroke that
 		// opened the coach-mark isn't itself treated as an "outside" action.
@@ -183,6 +193,8 @@ export class NLDDJustInTimeEducation extends withTranslations<NLDDJustInTimeEduc
 		const container = this._containerEl;
 		if (container?.matches(':popover-open')) container.hidePopover();
 		this._stopPositioning();
+		const announcer = this._announcerEl;
+		if (announcer) announcer.textContent = '';
 		if (this._attachTimeout) {
 			clearTimeout(this._attachTimeout);
 			this._attachTimeout = null;

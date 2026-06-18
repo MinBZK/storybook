@@ -281,4 +281,21 @@ export const justInTimeEducationStyles = css`
 	.just-in-time-education__arrow-head {
 		fill: currentColor;
 	}
+
+
+	/* # Live-region announcer */
+
+	/* Visually hidden but present in the a11y tree, so the polite announcement set
+	 * on open reaches assistive tech without moving focus into the callout. */
+	.just-in-time-education__announcer {
+		position: absolute;
+		margin: -1px;
+		border: 0;
+		width: 1px;
+		height: 1px;
+		overflow: hidden;
+		padding: 0;
+		white-space: nowrap;
+		clip-path: inset(50%);
+	}
 `;

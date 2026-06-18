@@ -9,6 +9,10 @@ export function justInTimeEducationTemplate(component: NLDDJustInTimeEducation):
 			@focusin=${component._handleAdvisedInteraction}
 			@pointerdown=${component._handleAdvisedInteraction}
 		></slot>
+		<div class="just-in-time-education__announcer"
+			aria-live="polite"
+			aria-atomic="true"
+		></div>
 		<div class="just-in-time-education"
 			popover="manual"
 			role="dialog"

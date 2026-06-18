@@ -131,6 +131,18 @@ describe('nldd-just-in-time-education – sluit-routes', () => {
 		expect(isCalloutOpen(el)).toBe(false);
 	});
 
+	it('kondigt de tip aan via een polite live region bij openen en wist die bij sluiten', async () => {
+		await openCoachMark();
+
+		const announcer = el.shadowRoot!.querySelector('.just-in-time-education__announcer')!;
+		expect(announcer.getAttribute('aria-live')).toBe('polite');
+		expect(announcer.textContent).toBe('Begin hier. Typ een trefwoord');
+
+		el.active = false;
+		await waitForUpdate(el);
+		expect(announcer.textContent).toBe('');
+	});
+
 	it('de geadviseerde interactie op het control sluit met "completed" wanneer dismissable', async () => {
 		await openCoachMark(MARKUP_DISMISSABLE);
 
