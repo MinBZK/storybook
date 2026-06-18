@@ -49,16 +49,29 @@ export function template(this: NLDDButton, helpers: TemplateHelpers) {
 	const isDisclosure = this.expandable || !!this.popupType;
 	const ariaExpanded = isDisclosure ? String(this.expanded) : (this.expanded ? 'true' : nothing);
 
+	// A new-tab link is a change of context, so announce it (WCAG 2.1 SC 3.2.2).
+	// Only the <a> path (href) can open a new tab.
+	const newTabHint = this.href && this.target === '_blank'
+		? this._t('components.button.opens-in-new-tab-text')
+		: '';
+
 	// `supporting-text` renders in a sibling span next to the text; the
 	// accessible-name flat-string algorithm concatenates them without a
 	// separator ("OpslaanAlle wijzigingen"). With no explicit accessible-label,
 	// join them with a comma so screen readers announce the two apart. Filtering
 	// empties keeps a name when only supporting-text is set — otherwise an
 	// icon-less button would be nameless. (Slotted text can't be read here —
-	// those consumers should set accessible-label.) Without supporting-text,
-	// `nothing` sets no aria-label at all, so the name is the visible text content.
-	const ariaLabel = this.accessibleLabel
-		|| (this.supportingText ? [this.text, this.supportingText].filter(Boolean).join(', ') : nothing);
+	// those consumers should set accessible-label.)
+	const baseAriaLabel = this.accessibleLabel
+		|| (this.supportingText ? [this.text, this.supportingText].filter(Boolean).join(', ') : '');
+	// aria-label wins the accessible-name cascade, so when one is set the new-tab
+	// hint must live inside it; otherwise `nothing` leaves the name content-derived
+	// and the visually-hidden span below appends the hint (it also reaches slotted
+	// text, which can't be read into a string here).
+	const ariaLabel = baseAriaLabel
+		? [baseAriaLabel, newTabHint].filter(Boolean).join(', ')
+		: nothing;
+	const renderNewTabHint = !!newTabHint && !baseAriaLabel;
 
 	// Loading: an activity indicator overlays the (opacity-hidden) content. It
 	// sits OUTSIDE the <button>/<a> (a sibling, overlaid via the host's
@@ -92,7 +105,7 @@ export function template(this: NLDDButton, helpers: TemplateHelpers) {
 				aria-busy=${ariaBusy}
 				@click=${helpers.handleClick}
 			>
-				${content}
+				${content}${renderNewTabHint ? html`<span class="button__new-tab-hint">${newTabHint}</span>` : nothing}
 			</a>
 			${loadingIndicator}
 		`;

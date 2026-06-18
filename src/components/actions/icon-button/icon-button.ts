@@ -26,8 +26,9 @@
  *                                     already explains the button (e.g. spin buttons in
  *                                     nldd-number-field, the chevron in nldd-split-button).
  * @attr {string}  href              - When set, renders an <a> element instead of <button>
- * @attr {string}  target            - Link target (e.g. '_blank'); only used when href is set
+ * @attr {string}  target            - Link target (e.g. '_blank'); only used when href is set. With '_blank' the "opens in new tab" announcement is folded into the aria-label for screen readers (WCAG 2.1 SC 3.2.2).
  * @attr {string}  rel               - Link rel attribute; defaults to 'noopener noreferrer' when target is '_blank'
+ * @attr {object}  translations      - Override translation keys (e.g. the "opens in new tab" announcement); unset keys fall back to Dutch.
  * @attr {string}  popovertarget     - ID of a popover element to toggle; forwarded to the inner <button>
  *
  * @slot icon - Slot for a custom icon (e.g. custom SVG). Only used when icon attribute is not set;
@@ -44,6 +45,8 @@ import { LitElement } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
 import { iconButtonStyles } from './icon-button.styles.js';
 import { template } from './icon-button.template.js';
+import { withTranslations } from '../../../utilities/with-translations.js';
+import { nlddIconButtonTranslations } from './icon-button.i18n.js';
 import './../../content/icon/icon.js';
 import './../../status-and-feedback/activity-indicator/activity-indicator.js';
 
@@ -65,7 +68,7 @@ export type ButtonType = 'button' | 'submit' | 'reset';
 export type PopupType = 'menu' | 'listbox' | 'dialog' | 'tree' | 'grid';
 
 @customElement('nldd-icon-button')
-export class NLDDIconButton extends LitElement {
+export class NLDDIconButton extends withTranslations(LitElement, nlddIconButtonTranslations) {
 	static override styles = iconButtonStyles;
 
 	// Form-associated so a type="submit"/"reset" icon-button can drive its

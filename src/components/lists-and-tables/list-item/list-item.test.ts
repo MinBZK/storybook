@@ -90,7 +90,7 @@ describe('nldd-list-item', () => {
 	it('lets the consumer override the new-tab announcement via translations', async () => {
 		el = await fixture('<nldd-list-item href="/test" target="_blank"></nldd-list-item>');
 		(el as unknown as { translations: Record<string, string> }).translations = {
-			'components.list-item.opens-in-new-tab-label': 'opens in a new tab',
+			'components.list-item.opens-in-new-tab-text': 'opens in a new tab',
 		};
 		await waitForUpdate(el);
 		const hint = el.shadowRoot!.querySelector('.list-item__new-tab-hint');

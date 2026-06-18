@@ -18,7 +18,7 @@
  *
  * @element nldd-link
  * @attr {string} href - Link doel
- * @attr {string} target - Link target (bijv. '_blank'); stelt rel automatisch bij
+ * @attr {string} target - Link target (bijv. '_blank'); stelt rel automatisch bij. Bij '_blank' voegt de link een visueel verborgen "Opent in nieuw tabblad"-melding toe voor screenreaders (WCAG 2.1 SC 3.2.2).
  * @attr {string} rel - Link rel attribuut; standaard 'noopener noreferrer' bij target='_blank'
  * @attr {string} size - Tekstgrootte: 'xs' | 'sm' | 'md' | 'lg' | 'inherit'. Leeg = inherit.
  * @attr {string} text - Link tekst (alternatief voor default slot)
@@ -26,6 +26,7 @@
  * @attr {string} end-icon - Icoon na de tekst
  * @attr {string} accessible-label - Toegankelijk label voor screen readers
  * @attr {boolean} disabled - Uitgeschakelde staat
+ * @attr {object} translations - Overschrijf vertaalsleutels (bijv. de "Opent in nieuw tabblad"-melding); niet-gezette sleutels vallen terug op Nederlands.
  *
  * @slot - Link tekst (alternatief voor text attribuut)
  * @slot start-icon - Custom icoon voor de tekst
@@ -36,12 +37,14 @@ import { LitElement } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
 import { linkStyles } from './link.styles.js';
 import { template } from './link.template.js';
+import { withTranslations } from '../../../utilities/with-translations.js';
+import { nlddLinkTranslations } from './link.i18n.js';
 import './../../content/icon/icon.js';
 
 type Size = 'xs' | 'sm' | 'md' | 'lg' | 'inherit';
 
 @customElement('nldd-link')
-export class NLDDLink extends LitElement {
+export class NLDDLink extends withTranslations(LitElement, nlddLinkTranslations) {
 	static override styles = linkStyles;
 
 	@property({ type: String, reflect: true })
