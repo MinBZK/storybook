@@ -71,7 +71,7 @@ export class NLDDJustInTimeEducation extends withTranslations<NLDDJustInTimeEduc
 	// internal data-arrow-side deliberately stay on the host.
 	private static readonly _ownAttributes = new Set([
 		'active', 'text', 'supporting-text', 'placement', 'dismissable', 'arrow-length', 'no-arrow', 'translations',
-		'data-arrow-side', 'data-arrow-collapsed', 'style', 'class', 'id', 'slot', 'hidden',
+		'data-arrow-side', 'data-arrow-collapsed', 'style', 'class', 'id', 'role', 'slot', 'hidden',
 	]);
 
 	@property({ type: Boolean, reflect: true })
