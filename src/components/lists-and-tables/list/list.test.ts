@@ -486,13 +486,15 @@ describe('nldd-list – arrow navigation (roving tabindex)', () => {
 		expect(tabindexOf(after[0])).toBe('-1');
 	});
 
-	it('advertises the arrow keys via aria-keyshortcuts on the host while active', async () => {
+	it('advertises the arrow keys via aria-keyshortcuts + aria-description while active', async () => {
 		el = await fixture(MARKUP);
 		await settle(el);
 		expect(el.getAttribute('aria-keyshortcuts')).toBe('ArrowUp ArrowDown Home End');
+		expect(el.getAttribute('aria-description')).toBe('Gebruik de pijltjestoetsen om door de lijst te navigeren.');
 
 		el.removeAttribute('arrow-navigation');
 		await settle(el);
 		expect(el.hasAttribute('aria-keyshortcuts')).toBe(false);
+		expect(el.hasAttribute('aria-description')).toBe(false);
 	});
 });

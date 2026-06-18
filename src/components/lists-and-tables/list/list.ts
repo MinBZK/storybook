@@ -328,10 +328,16 @@ export class NLDDList extends LitElement {
 		const items = this._getItems();
 		items.forEach((item) => { item._arrowNavigation = active; });
 		// Best-effort AT discoverability: role="list"/"navigation" doesn't imply
-		// arrow-key navigation the way listbox/menu would, so advertise the keys
-		// (see the arrowNavigation JSDoc — known limitation for this pragmatic pattern).
-		if (active) this.setAttribute('aria-keyshortcuts', 'ArrowUp ArrowDown Home End');
-		else this.removeAttribute('aria-keyshortcuts');
+		// arrow-key navigation the way listbox/menu would, so advertise the keys via
+		// aria-keyshortcuts (queryable) and a plain-language aria-description (surfaced
+		// when AT reaches the list). See the arrowNavigation JSDoc — known limitation.
+		if (active) {
+			this.setAttribute('aria-keyshortcuts', 'ArrowUp ArrowDown Home End');
+			this.setAttribute('aria-description', this._t('components.list.arrow-navigation-description-text'));
+		} else {
+			this.removeAttribute('aria-keyshortcuts');
+			this.removeAttribute('aria-description');
+		}
 		if (!active) {
 			items.forEach((item) => { item._rovingActive = false; });
 			return;
@@ -344,8 +350,10 @@ export class NLDDList extends LitElement {
 		items.forEach((item) => { item._rovingActive = item === entry; });
 	}
 
-	private _setRovingActive(activeItem: NLDDListItem) {
-		this._getItems().forEach((item) => { item._rovingActive = item === activeItem; });
+	// items defaults to all items; _onArrowNav passes the interactive set it already
+	// computed (non-interactive items are kept out of roving, so they stay false).
+	private _setRovingActive(activeItem: NLDDListItem, items: NLDDListItem[] = this._getItems()) {
+		items.forEach((item) => { item._rovingActive = item === activeItem; });
 	}
 
 	private _onFocusIn = (event: FocusEvent) => {
@@ -378,7 +386,7 @@ export class NLDDList extends LitElement {
 		}
 		event.preventDefault();
 		const target = items[next];
-		this._setRovingActive(target);
+		this._setRovingActive(target, items);
 		target.focus();
 	}
 
