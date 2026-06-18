@@ -394,10 +394,11 @@ describe('nldd-list – arrow navigation (roving tabindex)', () => {
 	`;
 
 	// The list pushes roving state onto items in a microtask, which the items
-	// then render; wait for both to settle.
+	// then render. waitForUpdate(list) drains the list's own update + a macrotask,
+	// but NOT the items' follow-up render, so this helper additionally awaits each
+	// item's updateComplete (and returns them) before any tabindex is asserted.
 	async function settle(list: HTMLElement) {
-		await (list as HTMLElement & { updateComplete: Promise<boolean> }).updateComplete;
-		await new Promise(r => setTimeout(r, 0));
+		await waitForUpdate(list);
 		const items = [...list.querySelectorAll('nldd-list-item')] as (HTMLElement & { updateComplete: Promise<boolean> })[];
 		await Promise.all(items.map(i => i.updateComplete));
 		return items;
