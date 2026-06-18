@@ -41,7 +41,8 @@
  * erin zodat de dismiss-knop bereikbaar is en Escape sluit; Tab verlaat de callout
  * daarna expres naar de pagina, want de coach-mark wijst naar een control dat de
  * gebruiker moet kunnen bereiken, dus focus vasthouden zou het doel ondermijnen.
- * Niet-dismissable gebruikt `role="note"` en verplaatst focus nooit.
+ * Niet-dismissable gebruikt een benoemde `role="region"` (aria-label = de titel) en
+ * verplaatst focus nooit; de polite live region kondigt de tip aan.
  */
 
 import { LitElement } from 'lit';

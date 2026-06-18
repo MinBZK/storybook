@@ -264,20 +264,24 @@ describe('nldd-just-in-time-education – sluit-routes', () => {
 		expect(el.shadowRoot!.activeElement).toBeNull();
 	});
 
-	it('gebruikt role="dialog" wanneer dismissable en role="note" wanneer niet', async () => {
+	it('gebruikt role="dialog" + tabindex bij dismissable, role="region" zonder tabindex bij niet, titel als aria-label', async () => {
 		el = await fixture<NLDDJustInTimeEducation>(MARKUP_DISMISSABLE);
 		await waitForUpdate(el);
 		const dialog = el.shadowRoot!.querySelector('.just-in-time-education')!;
 		expect(dialog.getAttribute('role')).toBe('dialog');
-		// aria-modal is omitted entirely: "false" is the default for role="dialog".
+		expect(dialog.getAttribute('tabindex')).toBe('-1');
+		// aria-label reflects the title (not a static string); aria-modal is omitted
+		// since "false" is the default for role="dialog".
+		expect(dialog.getAttribute('aria-label')).toBe('Begin hier');
 		expect(dialog.getAttribute('aria-modal')).toBeNull();
 		cleanup(el);
 
 		el = await fixture<NLDDJustInTimeEducation>(MARKUP);
 		await waitForUpdate(el);
-		const note = el.shadowRoot!.querySelector('.just-in-time-education')!;
-		expect(note.getAttribute('role')).toBe('note');
-		expect(note.getAttribute('aria-modal')).toBeNull();
+		const region = el.shadowRoot!.querySelector('.just-in-time-education')!;
+		expect(region.getAttribute('role')).toBe('region');
+		expect(region.getAttribute('tabindex')).toBeNull();
+		expect(region.getAttribute('aria-label')).toBe('Begin hier');
 	});
 
 	it('sluit met "dismissed" bij Escape terwijl focus in de callout zit (dismissable)', async () => {
