@@ -267,7 +267,7 @@ export const justInTimeEducationStyles = css`
 		stroke: currentColor;
 		stroke-width: 2;
 		stroke-linecap: butt;
-		stroke-dasharray: 3 4;
+		stroke-dasharray: 5 3;
 	}
 
 	.just-in-time-education__arrow-head {
