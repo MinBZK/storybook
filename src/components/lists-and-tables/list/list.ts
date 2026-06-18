@@ -88,6 +88,13 @@ export class NLDDList extends LitElement {
 	 * extra controls (a control in a `start`/`end` slot would not be reachable as
 	 * its own tab stop). Mutually exclusive with `reorderable` (both use the arrow
 	 * keys); when both are set, `reorderable` wins and this is ignored.
+	 *
+	 * Known a11y limitation: because the role stays `list`/`navigation` (not
+	 * `listbox`/`menu`), screen readers do not auto-announce that the arrow keys
+	 * navigate. As a best-effort signal the host carries
+	 * `aria-keyshortcuts="ArrowUp ArrowDown Home End"` while active, but blind users
+	 * may still not discover the feature — another reason to keep it to genuinely
+	 * simple lists.
 	 */
 	@property({ type: Boolean, reflect: true, attribute: 'arrow-navigation' })
 	arrowNavigation = false;
@@ -320,6 +327,11 @@ export class NLDDList extends LitElement {
 		const active = this._arrowNavActive;
 		const items = this._getItems();
 		items.forEach((item) => { item._arrowNavigation = active; });
+		// Best-effort AT discoverability: role="list"/"navigation" doesn't imply
+		// arrow-key navigation the way listbox/menu would, so advertise the keys
+		// (see the arrowNavigation JSDoc — known limitation for this pragmatic pattern).
+		if (active) this.setAttribute('aria-keyshortcuts', 'ArrowUp ArrowDown Home End');
+		else this.removeAttribute('aria-keyshortcuts');
 		if (!active) {
 			items.forEach((item) => { item._rovingActive = false; });
 			return;

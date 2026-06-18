@@ -485,4 +485,14 @@ describe('nldd-list – arrow navigation (roving tabindex)', () => {
 		expect(tabindexOf(after[2])).toBe('0');
 		expect(tabindexOf(after[0])).toBe('-1');
 	});
+
+	it('advertises the arrow keys via aria-keyshortcuts on the host while active', async () => {
+		el = await fixture(MARKUP);
+		await settle(el);
+		expect(el.getAttribute('aria-keyshortcuts')).toBe('ArrowUp ArrowDown Home End');
+
+		el.removeAttribute('arrow-navigation');
+		await settle(el);
+		expect(el.hasAttribute('aria-keyshortcuts')).toBe(false);
+	});
 });
