@@ -9,6 +9,10 @@ the type of conventional-commit determines the release. Conventional types
 `chore`, `docs`, `ci`, `style`, `test`, `build` are intentionally omitted
 here; consult the commit history if you need that level of detail.
 
+## <small>0.8.63 (2026-06-18)</small>
+
+* feat: just-in-time-education, list arrow-key navigation, activity-indicator overlay, plus consumer-r ([1e6bf86](https://github.com/MinBZK/storybook/commit/1e6bf86)), closes [#130](https://github.com/MinBZK/storybook/issues/130)
+
 ### Highlights
 
 - **`nldd-just-in-time-education` coach-mark.** A new component for in-context guidance: anchored to a control with a curved dashed arrow, a dimming overlay, and three dismiss routes. Near a viewport edge it degrades gracefully — the arrow shortens first, then the card narrows (down to a usable floor), and the arrow drops once it would fall below its minimum.
