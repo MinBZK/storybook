@@ -84,8 +84,15 @@ export class NLDDInlineDialog extends LitElement {
 		const syncActions = () => { this._hasActions = hasMeaningfulContent(actionsSlot); };
 		contentSlot?.addEventListener('slotchange', syncContent);
 		actionsSlot?.addEventListener('slotchange', syncActions);
-		syncContent();
-		syncActions();
+		// Defer the initial sync out of the update lifecycle: setting reactive
+		// state synchronously here re-enters the current update and triggers Lit's
+		// change-in-update warning. A microtask runs after this update completes,
+		// so the follow-up render (when a slot has content) is scheduled cleanly.
+		// slotchange handles every later change; this covers the initial state.
+		queueMicrotask(() => {
+			syncContent();
+			syncActions();
+		});
 	}
 
 	override render() {
