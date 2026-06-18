@@ -69,16 +69,16 @@ export class NLDDStatusBar extends LitElement {
 	@property({ type: Boolean, reflect: true })
 	button = false;
 
-	constructor() {
-		super();
-		// AT requires role + aria-live to be present on the element by the time
-		// it's first inserted into the DOM, otherwise the initial announcement
-		// is missed. Reading the raw attribute here (instead of waiting for
-		// Lit to project the @property) covers both HTML-declared and
-		// document.createElement + setAttribute flows. updated() keeps the
-		// host in sync when variant changes at runtime.
-		const initialVariant = this.getAttribute('variant') as StatusBarVariant | null;
-		this._applyAriaForVariant(initialVariant ?? 'neutral');
+	override connectedCallback(): void {
+		super.connectedCallback();
+		// Set role + aria-live here, NOT in the constructor: the custom-element
+		// spec forbids a constructor from adding attributes to its element, so
+		// document.createElement (the path Vue, React and other createElement-based
+		// frameworks use) would throw NotSupportedError and the element would never
+		// upgrade. connectedCallback runs at insertion, before the first render, so
+		// the live-region role is present from the start; updated() keeps it in sync
+		// on later variant changes.
+		this._applyAriaForVariant(this.variant);
 	}
 
 	/** @internal Auto-secure rel for new-tab links unless the consumer set one. */
