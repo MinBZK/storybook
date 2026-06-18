@@ -67,7 +67,6 @@ export class NLDDJustInTimeEducation extends withTranslations<NLDDJustInTimeEduc
 		'data-arrow-side', 'data-arrow-collapsed', 'style', 'class', 'id', 'slot', 'hidden',
 	]);
 
-	/** Show the coach-mark. Controlled by the app; defaults to false. */
 	@property({ type: Boolean, reflect: true })
 	active = false;
 
@@ -268,7 +267,7 @@ export class NLDDJustInTimeEducation extends withTranslations<NLDDJustInTimeEduc
 		// gap below its minimum — uniformly for top/bottom and left/right. The gap
 		// room is what's left after reserving the card: its height for top/bottom
 		// (already folded into availableDistance) or the main's reserved width for
-		// left/right (--_main-width = area-320 + an optional dismiss button).
+		// left/right (--_main-width = --_text-width + an optional --_dismiss-width).
 		// Decided only from edge-room + fixed reserves, never the
 		// post-collapse layout, so it can't oscillate. The consumer's own no-arrow
 		// already hides it. Set the host hook BEFORE the compute (like
@@ -276,8 +275,8 @@ export class NLDDJustInTimeEducation extends withTranslations<NLDDJustInTimeEduc
 		const minArrow = parseFloat(styles.getPropertyValue('--primitives-space-40')) || 40;
 		let gapRoom = parseFloat(availableDistance);
 		if (!isVertical) {
-			const mainReserve = (parseFloat(styles.getPropertyValue('--primitives-area-320')) || 320)
-				+ (this.dismissable ? (parseFloat(styles.getPropertyValue('--primitives-space-44')) || 44) : 0);
+			const mainReserve = (parseFloat(styles.getPropertyValue('--_text-width')) || 320)
+				+ (this.dismissable ? (parseFloat(styles.getPropertyValue('--_dismiss-width')) || 44) : 0);
 			gapRoom -= mainReserve;
 		}
 		const collapsed = !this.noArrow && gapRoom < minArrow;

@@ -11,7 +11,12 @@ function isCalloutOpen(el: NLDDJustInTimeEducation): boolean {
 	return container?.matches(':popover-open') ?? false;
 }
 
-/** Yield one macrotask so the deferred outside-interaction listeners attach. */
+/**
+ * Yield one macrotask so the deferred outside-interaction listeners attach.
+ * Distinct from waitForUpdate (which drains a Lit render + MutationObserver
+ * cycle): this is only for the document-level listeners the component registers
+ * on the next task, not for any reactive state.
+ */
 function nextTask(): Promise<void> {
 	return new Promise(resolve => setTimeout(resolve, 0));
 }
@@ -207,5 +212,27 @@ describe('nldd-just-in-time-education – sluit-routes', () => {
 
 		expect(reason).toBeUndefined();
 		expect(el.active).toBe(true);
+	});
+
+	it('sluit met "ignored" bij een klik in een ANDERE shadow root (composed-path is shadow-aware)', async () => {
+		await openCoachMark(MARKUP_DISMISSABLE);
+		await nextTask();
+
+		// A click whose origin sits in a different shadow tree: its composedPath
+		// never includes the coach-mark host, so the shadow-aware check must still
+		// treat it as outside.
+		const sibling = document.createElement('div');
+		const innerButton = document.createElement('button');
+		sibling.attachShadow({ mode: 'open' }).appendChild(innerButton);
+		document.body.appendChild(sibling);
+
+		let reason: string | undefined;
+		el.addEventListener('nldd-close', (e: Event) => { reason = (e as CustomEvent).detail.reason; });
+
+		innerButton.click();
+		await waitForUpdate(el);
+		expect(reason).toBe('ignored');
+
+		sibling.remove();
 	});
 });

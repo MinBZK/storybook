@@ -17,8 +17,16 @@ export function justInTimeEducationTemplate(component: NLDDJustInTimeEducation):
 		>
 			<div class="just-in-time-education__main">
 				<div class="just-in-time-education__text-area">
-					<p class="just-in-time-education__text">${component.text}</p>
-					<p class="just-in-time-education__supporting-text">${component.supportingText}</p>
+					${component.text ? html`
+						<p class="just-in-time-education__text">
+							${component.text}
+						</p>
+					` : nothing}
+					${component.supportingText ? html`
+						<p class="just-in-time-education__supporting-text">
+							${component.supportingText}
+						</p>
+					` : nothing}
 				</div>
 				${component.dismissable ? html`
 					<div class="just-in-time-education__dismiss-button">
