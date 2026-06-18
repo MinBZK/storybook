@@ -10,6 +10,12 @@ import './status-bar.js';
  * zelf de status benoemen ("Storing: …", "Gepland onderhoud …"), zodat de
  * betekenis niet alleen uit kleur volgt.
  *
+ * Houd de tekst kort: de balk toont één regel en kapt af met ellipsis, zeker
+ * op smallere schermen. Heb je een lang bericht met veel informatie, zet dan
+ * alleen de kern in de balk en verwijs naar een losse pagina of sheet waar de
+ * gebruiker verder kan lezen (bijvoorbeeld door de balk een `href` of `button`
+ * te geven).
+ *
  * De hele balk kan klikbaar zijn: zet `href` (link) of `button` (button;
  * luister naar `click`). Er verschijnt dan een chevron als affordance.
  * Maximaal één actie per balk — meer acties of links in lopende tekst horen
@@ -128,5 +134,12 @@ export const LangeTekst = {
 			<nldd-status-bar variant="warning" text="Gepland onderhoud op zaterdag 14 juni van 22:00 tot 00:00 — sommige onderdelen zijn dan tijdelijk niet bereikbaar"></nldd-status-bar>
 		</div>
 	`,
-	parameters: { controls: { disable: true } },
+	parameters: {
+		controls: { disable: true },
+		docs: {
+			description: {
+				story: 'De balk toont één regel en kapt lange tekst af met ellipsis, hier op een smal scherm (360px). Heb je een lang bericht met veel informatie, verwijs dan naar een losse pagina of sheet waar de gebruiker verder kan lezen in plaats van te vertrouwen op de afgekapte balk.',
+			},
+		},
+	},
 };

@@ -8,6 +8,11 @@
  * benoemen ("Storing: …", "Gepland onderhoud …"), zodat de betekenis niet
  * alleen uit kleur volgt (WCAG 1.4.1).
  *
+ * Houd de tekst kort: de balk toont één regel en kapt af met ellipsis, zeker
+ * op smallere schermen. Bij een lang bericht met veel informatie hoort alleen
+ * de kern in de balk; verwijs voor de rest naar een losse pagina of sheet
+ * (bijvoorbeeld via `href` of `button`) waar de gebruiker verder kan lezen.
+ *
  * De hele balk kan klikbaar zijn: zet `href` (rendert een `<a>`) of `button`
  * (rendert een `<button>`; luister naar het native `click` event). Zonder
  * beide is de balk statisch. Bij interactie verschijnt een chevron als
