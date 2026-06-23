@@ -125,6 +125,47 @@ export const Lists = {
 	`,
 };
 
+export const DefinitionList = {
+	args: { spacing: 'snug' },
+	render: (args: Record<string, any>) => {
+		const content = html`
+			<h3>Artikel 1. Begrippen</h3>
+			<dl>
+				<dt>Alleenstaande</dt>
+				<dd>De verzekerde die geen partner heeft.</dd>
+				<dt>Partner</dt>
+				<dd>De persoon die met de verzekerde een gezamenlijke huishouding voert.</dd>
+				<dt>Toetsingsinkomen</dt>
+				<dd>Het inkomen als bedoeld in artikel 8.</dd>
+				<dd>Inclusief het inkomen van een eventuele toeslagpartner.</dd>
+			</dl>
+		`;
+		return html`
+			<div style="display: flex; flex-direction: column; gap: 2rem;">
+				<div>
+					<p style="font: var(--primitives-font-body-sm-bold-tight); color: var(--semantics-content-color); margin: 0 0 8px;">sm (&lt; 641px) — gestapeld</p>
+					<div style="width: 393px; border: 1px dashed var(--semantics-dividers-color); padding: 16px;">
+						<nldd-rich-text spacing=${args.spacing} ?centered=${args.centered} color=${args.color || nothing}>${content}</nldd-rich-text>
+					</div>
+				</div>
+				<div>
+					<p style="font: var(--primitives-font-body-sm-bold-tight); color: var(--semantics-content-color); margin: 0 0 8px;">md (≥ 641px) — term links (240px), definitie rechts</p>
+					<div style="width: 834px; border: 1px dashed var(--semantics-dividers-color); padding: 16px;">
+						<nldd-rich-text spacing=${args.spacing} ?centered=${args.centered} color=${args.color || nothing}>${content}</nldd-rich-text>
+					</div>
+				</div>
+				<div>
+					<p style="font: var(--primitives-font-body-sm-bold-tight); color: var(--semantics-content-color); margin: 0 0 8px;">lg (≥ 1008px) — term links (240px), definitie rechts</p>
+					<div style="width: 1200px; border: 1px dashed var(--semantics-dividers-color); padding: 16px;">
+						<nldd-rich-text spacing=${args.spacing} ?centered=${args.centered} color=${args.color || nothing}>${content}</nldd-rich-text>
+					</div>
+				</div>
+			</div>
+		`;
+	},
+	storyName: 'Definitielijst',
+};
+
 export const InlineElements = {
 	args: { spacing: 'snug' },
 	render: (args: Record<string, any>) => html`

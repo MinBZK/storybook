@@ -10,6 +10,9 @@ nldd-rich-text {
 		0px,
 		calc(100% - var(--components-rich-text-main-max-width))
 	);
+	--_dt-width: var(--primitives-area-240);
+	--_dl-column-gap: var(--primitives-space-16);
+	--_dl-gap: calc(var(--_spacing) / 2);
 
 	container-type: inline-size;
 	display: grid;
@@ -303,6 +306,49 @@ nldd-rich-text li {
 
 nldd-rich-text li > * + * {
 	margin-top: var(--_spacing);
+}
+
+
+/* # Definition list */
+
+nldd-rich-text dl {
+	margin: 0;
+	display: grid;
+	column-gap: var(--_dl-column-gap);
+
+	@container (max-width: 640px) {
+		grid-template-columns: 1fr;
+	}
+
+	@container (min-width: 641px) {
+		grid-template-columns: var(--_dt-width) 1fr;
+	}
+}
+
+nldd-rich-text dt {
+	font-weight: var(--primitives-font-weight-body-bold);
+
+	@container (min-width: 641px) {
+		grid-column: 1;
+	}
+}
+
+nldd-rich-text dd {
+	margin-inline: 0;
+
+	@container (min-width: 641px) {
+		grid-column: 2;
+	}
+}
+
+nldd-rich-text dt:not(:first-child) {
+	margin-top: var(--_dl-gap);
+}
+
+nldd-rich-text dt:not(:first-child) + dd {
+	@container (min-width: 641px) {
+		margin-top: var(--_dl-gap);
+	}
 }
 
 
