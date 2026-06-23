@@ -5,9 +5,17 @@
  * De kaart heeft een elevated look als standaard. Padding wordt overgelaten
  * aan geneste containers.
  *
+ * Met `href` wordt de hele kaart een link (een overlay-anchor over de kaart).
+ * Geneste interactieve content (bijv. footer-knoppen) moet je erboven tillen met
+ * `position: relative; z-index: 1` om klikbaar te blijven.
+ *
  * @element nldd-card
  *
- * @attr {string} accessible-label - Toegankelijke naam voor de kaart (aria-label)
+ * @attr {string} accessible-label - Toegankelijke naam van de kaart; bij `href` benoemt deze de link, anders de kaart-region
+ * @attr {string} href             - Maakt de hele kaart een link naar deze URL (leeg = geen link)
+ * @attr {string} target           - Link target voor href (bijv. '_blank'); stelt rel automatisch bij en voegt bij '_blank' een "Opent in nieuw tabblad"-melding toe
+ * @attr {string} rel              - Link rel voor href; standaard 'noopener noreferrer' bij target='_blank'
+ * @attr {object} translations     - Overschrijf vertaalsleutels (bijv. de "Opent in nieuw tabblad"-melding)
  *
  * @slot header - Header-content (bijv. nldd-title)
  * @slot - Body-content
@@ -18,13 +26,40 @@ import { LitElement } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
 import { cardStyles } from './card.styles.js';
 import { cardTemplate } from './card.template.js';
+import { withTranslations } from '../../../utilities/with-translations.js';
+import { nlddCardTranslations } from './card.i18n.js';
 
 @customElement('nldd-card')
-export class NLDDCard extends LitElement {
+export class NLDDCard extends withTranslations(LitElement, nlddCardTranslations) {
 	static override styles = cardStyles;
 
 	@property({ type: String, attribute: 'accessible-label' })
 	accessibleLabel: string | undefined;
+
+	/** When set, the whole card becomes one link to this URL via an overlay anchor.
+	 *  Nested interactive content must be raised above it (position: relative;
+	 *  z-index: 1) to stay clickable. */
+	@property({ type: String, reflect: true })
+	href = '';
+
+	@property({ type: String })
+	target = '';
+
+	@property({ type: String })
+	rel = '';
+
+	/** Resolve rel for the overlay link: add noopener noreferrer for _blank
+	 *  (mirrors nldd-link), merged with any consumer-set rel. */
+	_resolvedRel(): string {
+		const base = this.rel ?? '';
+		if (this.target !== '_blank') return base;
+		const parts = new Set(base.split(/\s+/).filter(Boolean));
+		parts.add('noopener');
+		parts.add('noreferrer');
+		return [...parts].join(' ');
+	}
+
+	private _warnedLabel = false;
 
 	override connectedCallback() {
 		super.connectedCallback();
@@ -39,6 +74,21 @@ export class NLDDCard extends LitElement {
 		// element's identity, written once and kept.
 		this.style.containerType = 'inline-size';
 		this.style.containerName = 'layout-container';
+	}
+
+	override updated(): void {
+		// A linked card with no accessible name is a silent a11y failure — the
+		// overlay anchor has no text. Warn once in dev (like nldd-image does for
+		// alt); stay quiet in production.
+		if (import.meta.env?.DEV) {
+			const missing = !!this.href && !(this.accessibleLabel ?? '').trim();
+			if (missing && !this._warnedLabel) {
+				this._warnedLabel = true;
+				console.warn('<nldd-card>: a card with `href` needs `accessible-label` so the link has an accessible name.');
+			} else if (!missing) {
+				this._warnedLabel = false;
+			}
+		}
 	}
 
 	_onSlotChange = (e: Event): void => {

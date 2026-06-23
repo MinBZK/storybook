@@ -45,9 +45,26 @@ export default {
 			control: 'text',
 			description: 'Toegankelijk label voor screen readers',
 		},
+		href: {
+			control: 'text',
+			description: 'Maakt de hele kaart een link naar deze URL (leeg = geen link)',
+		},
+		target: {
+			control: 'select',
+			options: ['(geen)', '_blank'],
+			mapping: { '(geen)': '' },
+			description: 'Link target voor href',
+		},
+		rel: {
+			control: 'text',
+			description: 'Link rel voor href (bijv. noopener)',
+		},
 	},
 	args: {
 		accessibleLabel: '',
+		href: '',
+		target: '',
+		rel: '',
 	},
 };
 
@@ -131,3 +148,38 @@ export const MetAfbeelding = () => html`
 		</nldd-container>
 	</nldd-card>
 `;
+
+/**
+ * Met `href` wordt de hele kaart een link (overlay-anchor). Klikken waar dan ook
+ * volgt de link. Geneste interactieve content blijft klikbaar door 'm op te tillen
+ * met `position: relative; z-index: 1` — zoals de "Markeer"-knop hieronder.
+ */
+export const KlikbareKaart = (args: Record<string, any>) => html`
+	<nldd-card href=${args.href || nothing}
+		target=${args.target || nothing}
+		rel=${args.rel || nothing}
+		accessible-label=${args.accessibleLabel || nothing}
+		style="max-width: 360px;"
+	>
+		<nldd-container slot="header" padding-top="16" padding-inline="16">
+			<nldd-title size="4"><h3>Dossier 2024-001</h3></nldd-title>
+		</nldd-container>
+		<nldd-container padding="16">
+			<nldd-rich-text>
+				<p>De hele kaart is een link. Klik waar dan ook om het dossier te openen.</p>
+			</nldd-rich-text>
+		</nldd-container>
+		<nldd-container slot="footer" padding-inline="16" padding-bottom="16">
+			<nldd-button-group orientation="horizontal">
+				<nldd-button variant="secondary"
+					text="Markeer"
+					style="position: relative; z-index: 1;"
+				></nldd-button>
+			</nldd-button-group>
+		</nldd-container>
+	</nldd-card>
+`;
+KlikbareKaart.args = {
+	href: '#',
+	accessibleLabel: 'Dossier 2024-001',
+};

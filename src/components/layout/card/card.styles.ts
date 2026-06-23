@@ -28,6 +28,7 @@ export const cardStyles = css`
 		overflow: hidden;
 		flex-direction: column;
 		flex-grow: 1;
+		isolation: isolate;
 	}
 
 	.card::after {
@@ -37,6 +38,22 @@ export const cardStyles = css`
 		border-radius: inherit;
 		box-shadow: var(--_highlight-border);
 		pointer-events: none;
+	}
+
+
+	/* # Link */
+
+	.card__link {
+		position: absolute;
+		inset: 0;
+		z-index: 0;
+		border-radius: inherit;
+	}
+
+	.card:has(.card__link:focus-visible) {
+		outline: var(--semantics-focus-ring-outline);
+		outline-offset: var(--semantics-focus-ring-outline-offset);
+		box-shadow: var(--components-card-box-shadow), var(--semantics-focus-ring-box-shadow);
 	}
 
 
