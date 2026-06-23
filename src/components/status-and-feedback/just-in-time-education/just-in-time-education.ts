@@ -31,10 +31,11 @@
  *
  * @note Rendert via de native Popover API (`popover="manual"`) in de top layer,
  * dus het escapet ancestor stacking contexts en `overflow: hidden` clipping.
- * Positionering via Floating UI met `strategy: 'fixed'` + `autoUpdate`. De kant
- * wordt bepaald door de beschikbare ruimte (horizontaal de viewport, verticaal
- * het hele document) bij openen en bij window-resize; scrollen laat de kant vast
- * en verschuift de callout alleen mee met het control.
+ * Positionering via Floating UI met `position: absolute` (default strategy) +
+ * `autoUpdate`: de callout staat in de documentstroom en scrollt native mee met
+ * de pagina, dus scrollen vraagt geen herpositionering. De kant wordt bepaald uit
+ * de beschikbare ruimte (horizontaal de viewport, verticaal het hele document)
+ * bij openen en bij window-resize.
  *
  * @note Focus-model (dismissable): de callout is een bewust NIET-modale dialog
  * (`role="dialog"`, geen `aria-modal`, geen focus-trap). Bij openen gaat focus
@@ -319,7 +320,6 @@ export class NLDDJustInTimeEducation extends withTranslations<NLDDJustInTimeEduc
 
 		const { x, y } = await computePosition(control, container, {
 			placement: side,
-			strategy: 'fixed',
 			middleware: isVertical ? [offset(off), shift({ padding: pad })] : [offset(off)],
 		});
 		container.style.left = `${x}px`;
