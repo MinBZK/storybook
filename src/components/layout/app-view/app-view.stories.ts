@@ -47,7 +47,7 @@ export default {
 export const MetHorizontalSplitView = ({ background }: { background: string }) => html`
 	<nldd-app-view style="height: 600px;" background=${background}>
 		<nldd-navigation-split-view>
-			<nldd-page sticky-header slot="sidebar">
+			<nldd-page sticky-header slot="primary-sidebar">
 				<nldd-container slot="header" padding="16">
 					<nldd-rich-text>
 						<strong>Zijbalk</strong>
@@ -133,7 +133,7 @@ export const TintedPerPaneel = {
 	render: () => html`
 	<nldd-app-view style="height: 600px;">
 		<nldd-navigation-split-view>
-			<nldd-page sticky-header slot="sidebar" background="tinted">
+			<nldd-page sticky-header slot="primary-sidebar" background="tinted">
 				<nldd-container slot="header" padding="16">
 					<nldd-rich-text>
 						<strong>Zijbalk (tinted)</strong>

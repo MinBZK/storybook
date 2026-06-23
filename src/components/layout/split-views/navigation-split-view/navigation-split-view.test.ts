@@ -14,7 +14,7 @@ async function setWidth(el: NLDDNavigationSplitView, width: number) {
 async function fixtureAllPanes(width = 1280) {
 	const el = await fixture<NLDDNavigationSplitView>(`
 		<nldd-navigation-split-view>
-			<nldd-split-view-pane slot="sidebar"></nldd-split-view-pane>
+			<nldd-split-view-pane slot="primary-sidebar"></nldd-split-view-pane>
 			<nldd-split-view-pane slot="secondary-sidebar"></nldd-split-view-pane>
 			<nldd-split-view-pane slot="main" has-content></nldd-split-view-pane>
 			<nldd-split-view-pane slot="inspector"></nldd-split-view-pane>
@@ -44,6 +44,28 @@ describe('nldd-navigation-split-view', () => {
 		el = await fixture('<nldd-navigation-split-view></nldd-navigation-split-view>');
 		await waitForUpdate(el);
 		expect(el.inspectorAutoHidden).toBe(false);
+	});
+});
+
+
+/* ============================================================
+   Primary sidebar — deprecated 'sidebar' slot alias
+   ============================================================ */
+
+describe('nldd-navigation-split-view – primary sidebar alias', () => {
+	let el: NLDDNavigationSplitView;
+
+	afterEach(() => { cleanup(el); vi.restoreAllMocks(); });
+
+	it('treats the deprecated slot="sidebar" alias as a primary sidebar', async () => {
+		el = await fixture<NLDDNavigationSplitView>(`
+			<nldd-navigation-split-view>
+				<nldd-split-view-pane slot="sidebar" has-content></nldd-split-view-pane>
+				<nldd-split-view-pane slot="main" has-content></nldd-split-view-pane>
+			</nldd-navigation-split-view>
+		`);
+		await setWidth(el, 1280);
+		expect(el.shadowRoot!.querySelector('.navigation-split-view__primary-sidebar-pane')).not.toBeNull();
 	});
 });
 
