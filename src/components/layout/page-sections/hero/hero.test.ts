@@ -58,8 +58,8 @@ describe('nldd-hero', () => {
 		expect(el.getAttribute('data-main-corner')).toBe('none');
 	});
 
-	it('media-corner overrides the automatic media corner', async () => {
-		el = await fixture(`<nldd-hero media-corner="bottom-right">${MEDIA}</nldd-hero>`);
+	it('media-corner-position overrides the automatic media corner', async () => {
+		el = await fixture(`<nldd-hero media-corner-position="bottom-right">${MEDIA}</nldd-hero>`);
 		await waitForUpdate(el);
 		expect(el.getAttribute('data-media-corner')).toBe('bottom-right');
 	});
@@ -82,9 +82,9 @@ describe('nldd-hero', () => {
 		expect(el.getAttribute('data-main-corner')).toBe('none');
 	});
 
-	it('main-width="full" keeps an explicit media-corner side but forces it to the outer edge', async () => {
+	it('main-width="full" keeps an explicit media-corner-position side but forces it to the outer edge', async () => {
 		// Bottom panel → media on top → a bottom-* corner flips to top-*, side kept.
-		el = await fixture(`<nldd-hero main-width="full" main-position="bottom-left" media-corner="bottom-right">${MEDIA}</nldd-hero>`);
+		el = await fixture(`<nldd-hero main-width="full" main-position="bottom-left" media-corner-position="bottom-right">${MEDIA}</nldd-hero>`);
 		await waitForUpdate(el);
 		expect(el.getAttribute('data-media-corner')).toBe('top-right');
 	});
@@ -178,4 +178,52 @@ describe('nldd-hero', () => {
 			await waitForUpdate(el);
 			expect(el.style.getPropertyValue('--_max-width')).not.toBe('');
 		});
+
+
+	/* ============================================================
+	   Media via attributes (media-src / media-aspect-ratio)
+	   ============================================================ */
+
+	it('media-src renders an internal img and marks the host with media', async () => {
+		el = await fixture('<nldd-hero media-src="data:," media-alt=""></nldd-hero>');
+		await waitForUpdate(el);
+		expect(el.hasAttribute('data-has-media')).toBe(true);
+		const img = el.shadowRoot!.querySelector('.hero__media img');
+		expect(img).not.toBeNull();
+		expect(img!.getAttribute('src')).toBe('data:,');
+	});
+
+	it('slotted media wins over media-src (no internal img)', async () => {
+		el = await fixture(`<nldd-hero media-src="data:,">${MEDIA}</nldd-hero>`);
+		await waitForUpdate(el);
+		expect(el.hasAttribute('data-has-media')).toBe(true);
+		expect(el.shadowRoot!.querySelector('.hero__media img')).toBeNull();
+	});
+
+	it('media-aspect-ratio feeds --_media-aspect-ratio inline', async () => {
+		el = await fixture('<nldd-hero media-aspect-ratio="16/9"></nldd-hero>');
+		await waitForUpdate(el);
+		expect(el.style.getPropertyValue('--_media-aspect-ratio')).toBe('16/9');
+	});
+
+	it('media-aspect-ratio accepts colon notation', async () => {
+		el = await fixture('<nldd-hero media-aspect-ratio="16:9"></nldd-hero>');
+		await waitForUpdate(el);
+		expect(el.style.getPropertyValue('--_media-aspect-ratio')).toBe('16/9');
+	});
+
+	it('an invalid media-aspect-ratio sets no inline var', async () => {
+		el = await fixture('<nldd-hero media-aspect-ratio="not-a-ratio"></nldd-hero>');
+		await waitForUpdate(el);
+		expect(el.style.getPropertyValue('--_media-aspect-ratio')).toBe('');
+	});
+
+	it('clearing media-aspect-ratio reverts to the default ratio', async () => {
+		el = await fixture('<nldd-hero media-aspect-ratio="16/9"></nldd-hero>');
+		await waitForUpdate(el);
+		expect(el.style.getPropertyValue('--_media-aspect-ratio')).toBe('16/9');
+		el.removeAttribute('media-aspect-ratio');
+		await waitForUpdate(el);
+		expect(el.style.getPropertyValue('--_media-aspect-ratio')).toBe('');
+	});
 });

@@ -7,7 +7,7 @@
  * niet instelbaar: 1,5X lintbreedte op smalle containers, 2X op md/lg.
  *
  * De media-hoek volgt automatisch uit `main-position` (zie de tabel in de
- * stories) en is per geval te overschrijven met `media-corner`. Het paneel
+ * stories) en is per geval te overschrijven met `media-corner-position`. Het paneel
  * krijgt zijn eigen afgeronde hoek — op halve maat, zodat de tekst niet
  * tegen de rand komt — op de hoek die diagonaal het mediavlak in wijst.
  * Beslaat het paneel een volledige rand (`left`/`right`, `main-width="full"`
@@ -36,8 +36,15 @@
  * @attr {string} main-background - Vlakkleur van het paneel: 'base' (de base surface)
  *   of een categoriekleur — 'accent' (default) of een rijkskleur zoals
  *   'lintblauw'|'donkerblauw'|'oranje'
- * @attr {'auto'|'top-left'|'top-right'|'bottom-left'|'bottom-right'} media-corner -
+ * @attr {'auto'|'top-left'|'top-right'|'bottom-left'|'bottom-right'} media-corner-position -
  *   Afgeronde hoek van het mediavlak; 'auto' (default) volgt main-position
+ * @attr {string} media-aspect-ratio - Aspect ratio van het mediavlak (CSS-vorm, '16/9' of '16:9');
+ *   default '21/9'. Bepaalt op md/lg de hoogte van de hero, op sm de hoogte van het mediavlak
+ * @attr {string} media-src - Bron van het mediavlak (alternatief voor de media-slot);
+ *   genegeerd zodra de media-slot gevuld is
+ * @attr {string} media-srcset - Responsive source set voor media-src
+ * @attr {string} media-sizes - Source sizes-hint voor media-src
+ * @attr {string} media-alt - Alt-tekst voor media-src; leeg = decoratief
  * @attr {'inherit'|'base'|'tinted'} background - Surface achter de hero (sectie-API)
  * @attr {'inherit'|'light'|'dark'|'inverted'} scheme - Kleurschema (sectie-API)
  * @attr {string} width - Body max-width; 'full' verwijdert de begrenzing (sectie-API)
@@ -45,7 +52,8 @@
  * @attr {string} padding-block - Blokpadding-override, ook per rand en responsief (sectie-API)
  *
  * @slot media - Afbeelding of illustratie (img of nldd-image); vult het vlak en wordt geclipt.
- *   Zet `alt=""` wanneer de afbeelding decoratief is; geef anders een beschrijvende alt-tekst op.
+ *   Heeft voorrang op de media-src-attributen. Zet `alt=""` wanneer de afbeelding decoratief is;
+ *   geef anders een beschrijvende alt-tekst op.
  * @slot - Inhoud van het tekstpaneel (bijv. nldd-title en nldd-rich-text met color="inherit")
  */
 import { LitElement, type PropertyValues } from 'lit';
@@ -100,15 +108,40 @@ export class NLDDHero extends PageSectionMixin(LitElement) {
 	@property({ type: String, reflect: true, attribute: 'main-background' })
 	mainBackground: HeroMainBackground = 'accent';
 
-	@property({ type: String, reflect: true, attribute: 'media-corner' })
-	mediaCorner: 'auto' | HeroCorner = 'auto';
+	@property({ type: String, reflect: true, attribute: 'media-corner-position' })
+	mediaCornerPosition: 'auto' | HeroCorner = 'auto';
+
+	/** Media aspect-ratio in CSS form ('16/9' or '16:9'); default '21/9'. Drives
+	 *  the hero height on md/lg and the media strip height on sm. */
+	@property({ type: String, reflect: true, attribute: 'media-aspect-ratio' })
+	mediaAspectRatio = '';
 
 	/** Width mode: 'full' (removes body max-width) or any CSS length. */
 	@property({ type: String, reflect: true })
 	width = '';
 
+	/** Hybrid media source: media-src renders an internal <img>, but a slotted
+	 *  media element wins (mirrors nldd-image / nldd-byline). srcset/sizes/alt
+	 *  feed that internal img. */
+	@property({ type: String, attribute: 'media-src' })
+	mediaSrc = '';
+
+	@property({ type: String, attribute: 'media-srcset' })
+	mediaSrcset = '';
+
+	@property({ type: String, attribute: 'media-sizes' })
+	mediaSizes = '';
+
+	@property({ type: String, attribute: 'media-alt' })
+	mediaAlt = '';
+
 	@state()
-	_hasMedia = false;
+	_slotHasMedia = false;
+
+	/** Media is present when the slot has content or media-src is set. */
+	get _hasMedia(): boolean {
+		return this.mediaSrc !== '' || this._slotHasMedia;
+	}
 
 	override willUpdate(changed: PropertyValues): void {
 		super.willUpdate(changed);
@@ -118,8 +151,8 @@ export class NLDDHero extends PageSectionMixin(LitElement) {
 		// default for an unknown or empty value (the design-system convention).
 		const position = AUTO_CORNER[this.mainPosition] ? this.mainPosition : 'bottom-left';
 		const edge = position === 'left' || position === 'right';
-		let mediaCorner: HeroCorner = this.mediaCorner !== 'auto'
-			? this.mediaCorner
+		let mediaCorner: HeroCorner = this.mediaCornerPosition !== 'auto'
+			? this.mediaCornerPosition
 			: AUTO_CORNER[position];
 		// At main-width="full" the media stacks above or below the full-width
 		// panel instead of sitting behind it, so its rounded corner must land on
@@ -153,12 +186,23 @@ export class NLDDHero extends PageSectionMixin(LitElement) {
 				this.style.removeProperty('--_max-width');
 			}
 		}
+		if (changed.has('mediaAspectRatio')) {
+			// Accept '16:9' as well as '16/9' (like nldd-image). Clearing the
+			// attribute makes Lit set the property to null, so guard with ?? '';
+			// the empty value falls back to the stylesheet's --_media-aspect-ratio.
+			const ratio = (this.mediaAspectRatio ?? '').replace(':', '/').trim();
+			if (ratio && CSS.supports('aspect-ratio', ratio)) {
+				this.style.setProperty('--_media-aspect-ratio', ratio);
+			} else {
+				this.style.removeProperty('--_media-aspect-ratio');
+			}
+		}
 	}
 
 	/** @internal Tracks the media slot so the no-media mode can collapse it. */
 	_onMediaSlotChange(e: Event): void {
 		const slot = e.target as HTMLSlotElement;
-		this._hasMedia = slot.assignedElements().length > 0;
+		this._slotHasMedia = slot.assignedElements().length > 0;
 	}
 
 	override render() {
