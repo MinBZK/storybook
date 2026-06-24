@@ -35,7 +35,7 @@ here; consult the commit history if you need that level of detail.
 
 ### Breaking
 
-- **`nldd-window`** — no longer draggable: the `movable` attribute and the `window-drag-handle` hook are removed. The window stays positionable via `top`/`left`/`right`/`bottom`/`centered`.
+- **`nldd-window`** — no longer draggable: drag-to-move added more complexity than a window inside a browser tab warrants. The `movable` attribute and the `window-drag-handle` hook are removed; the window stays positionable via `top`/`left`/`right`/`bottom`/`centered`. For genuine window management, open content in a new browser tab instead.
 - **`nldd-breadcrumbs`** — no auto-collapse: the `no-collapse` attribute and the ellipsis expand button are removed. The trail always renders in full and wraps onto multiple lines.
 
 ## <small>0.8.63 (2026-06-18)</small>
