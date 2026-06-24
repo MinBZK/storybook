@@ -12,23 +12,7 @@ export function breadcrumbsTemplate(component: NLDDBreadcrumbs): TemplateResult 
 			<div class="breadcrumbs__items"
 				role="list"
 			>
-				<slot name="first"
-					@slotchange=${component._onSlotChange}
-				></slot>
-				${component._collapsed ? html`
-					<span class="breadcrumbs__ellipsis"
-						role="listitem"
-					>
-						<button class="breadcrumbs__ellipsis-button"
-							aria-label=${component._t('components.breadcrumbs.show-all-levels') || nothing}
-							@click=${component._expand}
-						>&hellip;</button>
-						<span class="breadcrumbs__separator"
-							aria-hidden="true"
-						><nldd-icon name="chevron-right-small"></nldd-icon></span>
-					</span>
-				` : nothing}
-				<slot @slotchange=${component._onSlotChange}></slot>
+				<slot></slot>
 			</div>
 		</nav>
 	`;

@@ -1,5 +1,5 @@
 import { describe, it, expect, afterEach } from 'vitest';
-import { fixture, cleanup, waitForUpdate, deepActiveElement } from '../../../test-utils.js';
+import { fixture, cleanup, waitForUpdate } from '../../../test-utils.js';
 import './breadcrumbs.js';
 
 describe('nldd-breadcrumbs', () => {
@@ -22,7 +22,7 @@ describe('nldd-breadcrumbs', () => {
 		expect(nav!.getAttribute('aria-label')).toBe('Kruimelpad');
 	});
 
-	it('renders every item into the list and never collapses to a back link', async () => {
+	it('renders every item into the list', async () => {
 		el = await fixture(`
 			<nldd-breadcrumbs>
 				<nldd-breadcrumbs-item text="Home" href="/"></nldd-breadcrumbs-item>
@@ -31,9 +31,8 @@ describe('nldd-breadcrumbs', () => {
 			</nldd-breadcrumbs>
 		`);
 		await waitForUpdate(el);
-		const slot = el.shadowRoot!.querySelector('slot:not([name])')!;
+		const slot = el.shadowRoot!.querySelector<HTMLSlotElement>('slot:not([name])')!;
 		expect(slot.assignedElements().length).toBe(3);
-		expect(el.shadowRoot!.querySelector('.breadcrumbs__level-up')).toBeNull();
 	});
 
 	it('lets the items wrap so the trail fits any width', async () => {
@@ -104,148 +103,5 @@ describe('nldd-breadcrumbs-item', () => {
 		const sep = el.shadowRoot!.querySelector('.breadcrumbs__separator');
 		expect(sep).not.toBeNull();
 		expect(sep?.querySelector('nldd-icon')?.getAttribute('name')).toBe('chevron-right-small');
-	});
-});
-
-describe('nldd-breadcrumbs collapsing', () => {
-	let el: HTMLElement;
-
-	afterEach(() => {
-		if (el) cleanup(el);
-	});
-
-	const FIVE_LEVELS = `
-		<nldd-breadcrumbs>
-			<nldd-breadcrumbs-item text="Home" href="/"></nldd-breadcrumbs-item>
-			<nldd-breadcrumbs-item text="Burgerzaken" href="/a/"></nldd-breadcrumbs-item>
-			<nldd-breadcrumbs-item text="Reisdocumenten" href="/a/b/"></nldd-breadcrumbs-item>
-			<nldd-breadcrumbs-item text="Aanvragen" href="/a/b/c/"></nldd-breadcrumbs-item>
-			<nldd-breadcrumbs-item text="Huidige" current></nldd-breadcrumbs-item>
-		</nldd-breadcrumbs>
-	`;
-
-	it('collapses to first + ellipsis + parent + current at four or more levels', async () => {
-		el = await fixture(FIVE_LEVELS);
-		await waitForUpdate(el);
-		const items = el.querySelectorAll('nldd-breadcrumbs-item');
-		expect(el.shadowRoot!.querySelector('.breadcrumbs__ellipsis-button')).not.toBeNull();
-		expect(items[0]!.getAttribute('slot')).toBe('first');
-		expect(items[0]!.hasAttribute('data-nldd-collapsed')).toBe(false);
-		expect(items[1]!.hasAttribute('data-nldd-collapsed')).toBe(true);
-		expect(items[2]!.hasAttribute('data-nldd-collapsed')).toBe(true);
-		expect(items[3]!.hasAttribute('data-nldd-collapsed')).toBe(false);
-		expect(items[4]!.hasAttribute('data-nldd-collapsed')).toBe(false);
-	});
-
-	it('labels the ellipsis button via i18n', async () => {
-		el = await fixture(FIVE_LEVELS);
-		await waitForUpdate(el);
-		const button = el.shadowRoot!.querySelector('.breadcrumbs__ellipsis-button')!;
-		expect(button.getAttribute('aria-label')).toBe('Toon alle niveaus');
-	});
-
-	it('does not collapse with three levels', async () => {
-		el = await fixture(`
-			<nldd-breadcrumbs>
-				<nldd-breadcrumbs-item text="Home" href="/"></nldd-breadcrumbs-item>
-				<nldd-breadcrumbs-item text="Documentatie" href="/docs/"></nldd-breadcrumbs-item>
-				<nldd-breadcrumbs-item text="Huidige" current></nldd-breadcrumbs-item>
-			</nldd-breadcrumbs>
-		`);
-		await waitForUpdate(el);
-		expect(el.shadowRoot!.querySelector('.breadcrumbs__ellipsis-button')).toBeNull();
-		expect(el.querySelector('[data-nldd-collapsed]')).toBeNull();
-	});
-
-	it('does not collapse with no-collapse set', async () => {
-		el = await fixture(FIVE_LEVELS.replace('<nldd-breadcrumbs>', '<nldd-breadcrumbs no-collapse>'));
-		await waitForUpdate(el);
-		expect(el.shadowRoot!.querySelector('.breadcrumbs__ellipsis-button')).toBeNull();
-		expect(el.querySelector('[data-nldd-collapsed]')).toBeNull();
-	});
-
-	it('re-collapses when no-collapse is removed at runtime', async () => {
-		el = await fixture(FIVE_LEVELS.replace('<nldd-breadcrumbs>', '<nldd-breadcrumbs no-collapse>'));
-		await waitForUpdate(el);
-		expect(el.querySelector('[data-nldd-collapsed]')).toBeNull();
-		el.removeAttribute('no-collapse');
-		await waitForUpdate(el);
-		expect(el.querySelector('[data-nldd-collapsed]')).not.toBeNull();
-		expect(el.shadowRoot!.querySelector('.breadcrumbs__ellipsis-button')).not.toBeNull();
-	});
-
-	it('expands on click: reveals all levels, removes the button, moves focus', async () => {
-		el = await fixture(FIVE_LEVELS);
-		await waitForUpdate(el);
-		const button = el.shadowRoot!.querySelector<HTMLButtonElement>('.breadcrumbs__ellipsis-button')!;
-		button.click();
-		await waitForUpdate(el);
-		expect(el.querySelector('[data-nldd-collapsed]')).toBeNull();
-		expect(el.shadowRoot!.querySelector('.breadcrumbs__ellipsis-button')).toBeNull();
-		const firstRevealed = el.querySelectorAll('nldd-breadcrumbs-item')[1]!;
-		expect(deepActiveElement()).toBe(firstRevealed.shadowRoot!.querySelector('a'));
-	});
-
-	it('lands focus on a revealed plain-text crumb instead of dropping it (WCAG 2.4.3)', async () => {
-		// Middle crumbs without href render as plain text — no inner link to
-		// delegate focus to. Expanding must still move focus onto a revealed
-		// crumb (its host), not silently drop it to <body>.
-		el = await fixture(`
-			<nldd-breadcrumbs>
-				<nldd-breadcrumbs-item text="Home" href="/"></nldd-breadcrumbs-item>
-				<nldd-breadcrumbs-item text="Sectie"></nldd-breadcrumbs-item>
-				<nldd-breadcrumbs-item text="Subsectie"></nldd-breadcrumbs-item>
-				<nldd-breadcrumbs-item text="Pagina" href="/p/"></nldd-breadcrumbs-item>
-				<nldd-breadcrumbs-item text="Huidige" current></nldd-breadcrumbs-item>
-			</nldd-breadcrumbs>
-		`);
-		await waitForUpdate(el);
-		el.shadowRoot!.querySelector<HTMLButtonElement>('.breadcrumbs__ellipsis-button')!.click();
-		await waitForUpdate(el);
-		const firstRevealed = el.querySelectorAll('nldd-breadcrumbs-item')[1]!;
-		expect(firstRevealed.shadowRoot!.querySelector('a')).toBeNull();   // plain text, no link
-		expect(deepActiveElement()).toBe(firstRevealed);
-	});
-
-	it('stays expanded when items change afterwards', async () => {
-		el = await fixture(FIVE_LEVELS);
-		await waitForUpdate(el);
-		el.shadowRoot!.querySelector<HTMLButtonElement>('.breadcrumbs__ellipsis-button')!.click();
-		await waitForUpdate(el);
-		const extra = document.createElement('nldd-breadcrumbs-item');
-		extra.setAttribute('text', 'Extra');
-		extra.setAttribute('href', '/extra/');
-		el.insertBefore(extra, el.querySelectorAll('nldd-breadcrumbs-item')[1]!);
-		// Twice: the slot insertion triggers slotchange → a deferred (microtask)
-		// _syncCollapse, so let that cycle fully settle before asserting.
-		await waitForUpdate(el);
-		await waitForUpdate(el);
-		expect(el.shadowRoot!.querySelector('.breadcrumbs__ellipsis-button')).toBeNull();
-		expect(el.querySelector('[data-nldd-collapsed]')).toBeNull();
-	});
-
-	it('stays expanded after the whole trail is replaced (one-shot, e.g. SPA navigation)', async () => {
-		el = await fixture(FIVE_LEVELS);
-		await waitForUpdate(el);
-		el.shadowRoot!.querySelector<HTMLButtonElement>('.breadcrumbs__ellipsis-button')!.click();
-		await waitForUpdate(el);
-		expect(el.querySelector('[data-nldd-collapsed]')).toBeNull();
-
-		// Swap in a brand-new four-plus-level trail, as a persistent breadcrumbs
-		// element would see on a route change. The one-shot _expanded flag is
-		// deliberately not reset, so the fresh trail stays fully expanded.
-		el.replaceChildren();
-		['Home', 'Zorg', 'Aanvragen', 'Status', 'Detail'].forEach((text, i, all) => {
-			const item = document.createElement('nldd-breadcrumbs-item');
-			item.setAttribute('text', text);
-			if (i < all.length - 1) item.setAttribute('href', `/${i}/`);
-			else item.setAttribute('current', '');
-			el.appendChild(item);
-		});
-		await waitForUpdate(el);
-		await waitForUpdate(el);
-
-		expect(el.shadowRoot!.querySelector('.breadcrumbs__ellipsis-button')).toBeNull();
-		expect(el.querySelector('[data-nldd-collapsed]')).toBeNull();
 	});
 });
