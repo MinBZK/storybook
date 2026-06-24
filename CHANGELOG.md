@@ -9,6 +9,29 @@ the type of conventional-commit determines the release. Conventional types
 `chore`, `docs`, `ci`, `style`, `test`, `build` are intentionally omitted
 here; consult the commit history if you need that level of detail.
 
+### Highlights
+
+- **A filterable listbox for `nldd-list`.** New `type="listbox"` turns a list into a combobox-pattern listbox: it renders its own search input, `.list__items` becomes a `role="listbox"` of `role="option"` items, and the active option moves via `aria-activedescendant` while focus stays in the input (the highlight is gated on input focus). Filtering stays consumer-managed; `toolbar` and `search-bar-end` slots and an `accessible-label` round it out.
+
+### Added
+
+- **`nldd-list` listbox** — `type="listbox"`: a filterable combobox-pattern listbox with a built-in search field, `role="listbox"`/`role="option"` items, an active option that moves via `aria-activedescendant` (focus stays in the input), plus `toolbar` and `search-bar-end` slots and an `accessible-label`.
+- **`nldd-container`** — fills the full width of a flex parent (`width: 100%` + `box-sizing: border-box`).
+
+### Changed
+
+- **Link colors** (default/hover/active, light + dark) now use the `accent` palette instead of `lintblauw`.
+- **`nldd-icon`** — the `privacy` alias now points at `shield-lock` (was `hand`).
+
+### Fixed
+
+- **`nldd-list`** — switching `variant` at runtime (box to simple) no longer leaves items wrongly boxed; the list now drives `variant`/`type` onto its items instead of relying on a per-item observer.
+
+### Breaking
+
+- **`nldd-window`** — no longer draggable: the `movable` attribute and the `window-drag-handle` hook are removed. The window stays positionable via `top`/`left`/`right`/`bottom`/`centered`.
+- **`nldd-breadcrumbs`** — no auto-collapse: the `no-collapse` attribute and the ellipsis expand button are removed. The trail always renders in full and wraps onto multiple lines.
+
 ## <small>0.8.63 (2026-06-18)</small>
 
 * feat: just-in-time-education, list arrow-key navigation, activity-indicator overlay, plus consumer-r ([1e6bf86](https://github.com/MinBZK/storybook/commit/1e6bf86)), closes [#130](https://github.com/MinBZK/storybook/issues/130)
