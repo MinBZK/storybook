@@ -16,21 +16,28 @@ here; consult the commit history if you need that level of detail.
 ### Added
 
 - **`nldd-list` listbox** — `type="listbox"`: a filterable combobox-pattern listbox with a built-in search field, `role="listbox"`/`role="option"` items, an active option that moves via `aria-activedescendant` (focus stays in the input), plus `toolbar` and `search-bar-end` slots and an `accessible-label`.
+- **`nldd-hero` media** — `media-aspect-ratio` (default 21/9) plus `media-src` / `media-srcset` / `media-sizes` / `media-alt` render an internal `<img>`; slotted media still wins when present. (See Breaking for the `media-corner` rename.)
+- **`nldd-rich-text` definition lists** — responsive `dl` / `dt` / `dd` term-definition layout.
+- **`nldd-card` links** — `href` / `target` / `rel` make the whole card a clickable link via an overlay anchor; `target="_blank"` auto-resolves `rel` and announces a new-tab hint, and `accessible-label` names the link.
 - **`nldd-container`** — fills the full width of a flex parent (`width: 100%` + `box-sizing: border-box`).
 
 ### Changed
 
 - **Link colors** (default/hover/active, light + dark) now use the `accent` palette instead of `lintblauw`.
+- **`nldd-search-field`** — clicking the leading icon or the field's gutter now focuses the input (native `<label>`, no JS); an empty field no longer reserves a dead click zone on the right.
+- **`nldd-navigation-split-view`** — `sidebar` is renamed to `primary-sidebar`; the old slot, attributes and sheet methods keep working as deprecated aliases.
 - **`nldd-icon`** — the `privacy` alias now points at `shield-lock` (was `hand`).
 
 ### Fixed
 
 - **`nldd-list`** — switching `variant` at runtime (box to simple) no longer leaves items wrongly boxed; the list now drives `variant`/`type` onto its items instead of relying on a per-item observer.
+- **`nldd-just-in-time-education`** — the callout is positioned absolutely so it scrolls natively with the page, fixing the Safari bounce.
 
 ### Breaking
 
 - **`nldd-window`** — no longer draggable: drag-to-move added more complexity than a window inside a browser tab warrants. The `movable` attribute and the `window-drag-handle` hook are removed; the window stays positionable via `top`/`left`/`right`/`bottom`/`centered`. For genuine window management, open content in a new browser tab instead.
 - **`nldd-breadcrumbs`** — no auto-collapse: the `no-collapse` attribute and the ellipsis expand button are removed. The trail always renders in full and wraps onto multiple lines.
+- **`nldd-hero`** — the `media-corner` attribute is renamed to `media-corner-position` (freeing the `media-corner` namespace for the new media attributes).
 
 ## <small>0.8.63 (2026-06-18)</small>
 
