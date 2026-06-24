@@ -1,15 +1,17 @@
 import { LitElement } from 'lit';
-import { customElement, property, state } from 'lit/decorators.js';
+import { customElement, property, query, state } from 'lit/decorators.js';
 import { listStyles } from './list.styles.js';
 import { template } from './list.template.js';
 import type { NLDDListItem } from '../list-item/list-item.js';
 import { nlddListTranslations } from './list.i18n.js';
 import type { NLDDListTranslations } from './list.i18n.js';
 import '../../status-and-feedback/inline-dialog/inline-dialog.js';
+import '../../content/icon/icon.js';
+import '../../actions/icon-button/icon-button.js';
 
 export type ListVariant = 'simple' | 'box';
 export type ListBackground = 'tinted' | 'base';
-export type ListType = 'list' | 'navigation';
+export type ListType = 'list' | 'navigation' | 'listbox';
 
 export interface NLDDReorderEventDetail {
 	fromIndex: number;
@@ -17,7 +19,7 @@ export interface NLDDReorderEventDetail {
 }
 
 /**
- * A container for `nldd-list-item` elements, with optional header and footer slots.
+ * A container for `nldd-list-item` elements.
  *
  * The `type` attribute switches the list's a11y role and behavior:
  * - `list` (default) — `role="list"`, items `role="listitem"`. Reorderable allowed.
@@ -25,8 +27,36 @@ export interface NLDDReorderEventDetail {
  *                     has no special keyboard semantics.
  * - `navigation`     — host `role="navigation"`, items with `selected` get
  *                     `aria-current="page"` on their inner `<a>` or `<button>`.
+ * - `listbox`        — an accessible, filterable listbox (combobox pattern). The
+ *                     list renders its OWN search input (`role="combobox"`) pinned
+ *                     above the options; `.list__items` becomes `role="listbox"`
+ *                     and items become `role="option"`. Focus stays in the input,
+ *                     the active option moves via `aria-activedescendant`, and
+ *                     filtering is consumer-managed via the `input` event (toggle
+ *                     `[hidden]` on items). See "Listbox" below.
  *
  * Selection state is consumer-managed: the list never mutates `selected` itself.
+ *
+ * ### Listbox
+ *
+ * In `type="listbox"` the list owns a native `<input role="combobox">` (mirroring
+ * how `nldd-combo-box` wires an input to a slotted listbox). Keyboard, handled on
+ * the input so focus never leaves it:
+ * - ArrowDown / ArrowUp — move the active option among the VISIBLE (non-`[hidden]`)
+ *   options (wrap around).
+ * - Home / End — first / last visible option.
+ * - Enter — activate the active option by triggering its inner action (a link
+ *   navigates, a button fires the consumer's handler). Selection stays
+ *   consumer-managed.
+ * - Escape — clear the search value (and refire `input`).
+ *
+ * On every active change the input's `aria-activedescendant` is set to the active
+ * option's id and the option is scrolled into view. The active option (`_highlighted`
+ * on the item, a highlight) is distinct from `selected`. Filtering is the
+ * consumer's job: listen to `input` (`{ detail: { value } }`) and toggle `[hidden]`
+ * on items; after the visible set changes the list resets the active option to the
+ * first visible one. `reorderable` and `arrow-navigation` are ignored in listbox
+ * mode (listbox has its own keyboard).
  *
  * ### Reorder
  *
@@ -39,14 +69,22 @@ export interface NLDDReorderEventDetail {
  * should manage focus themselves after their render commits.
  *
  * @slot         - List items (`nldd-list-item`)
- * @slot header  - Content above the list body (e.g. `nldd-title`)
- * @slot footer  - Content below the list body (e.g. a short description)
+ * @slot toolbar - Controls below the search field (filters, sort, counts,
+ *                 view toggles). Available for every type; collapses when empty.
+ * @slot search-bar-end - Controls inline at the end of the search bar, beside the
+ *                 search field (e.g. a filter or options button). Listbox only;
+ *                 collapses when empty.
  * @slot empty   - Shown when no items are visible (all `[hidden]` or none). Defaults
  *                 to `nldd-inline-dialog` with `empty-text` / `empty-supporting-text`
- *                 (falling back to Dutch i18n "Geen resultaten"). Slot content
- *                 overrides the default dialog entirely.
+ *                 (falling back to Dutch i18n "Geen items"). Slot content
+ *                 overrides the default dialog entirely. In `type="listbox"` it is
+ *                 suppressed while the search field is empty (no query yet), so the
+ *                 consumer can show just the search field or its own hint outside
+ *                 the list.
  *
  * @fires nldd-reorder - Reorderable `type="list"`: `{ fromIndex, toIndex }` on drop
+ * @fires input        - `type="listbox"`: search value changed; `{ value }`. Toggle
+ *                       `[hidden]` on items to filter.
  */
 @customElement('nldd-list')
 export class NLDDList extends LitElement {
@@ -100,8 +138,18 @@ export class NLDDList extends LitElement {
 	arrowNavigation = false;
 
 	/**
+	 * Only in `type="listbox"`: caps the options' scroll region at this CSS
+	 * length (any value `CSS.supports('max-height', …)` accepts, e.g. "320px").
+	 * The search input stays pinned above and the options scroll; the active
+	 * option is kept in view via `scrollIntoView`. Unset → no cap. No effect
+	 * outside listbox mode.
+	 */
+	@property({ type: String, reflect: true })
+	height = '';
+
+	/**
 	 * Text for the default empty-state dialog. Falls back to the Dutch
-	 * i18n default ("Geen resultaten"). Ignored when consumers slot their
+	 * i18n default ("Geen items"). Ignored when consumers slot their
 	 * own content into `[slot=empty]`.
 	 */
 	@property({ type: String, attribute: 'empty-text' })
@@ -114,6 +162,13 @@ export class NLDDList extends LitElement {
 	@property({ type: String, attribute: 'empty-supporting-text' })
 	emptySupportingText = '';
 
+	/** Accessible name for the list, forwarded to the inner role: the list in
+	 *  `type=list`, the search field in `type=listbox`. For `type=navigation`,
+	 *  set `aria-label` / `aria-labelledby` on the element directly (it is a
+	 *  landmark). Falls back to the default i18n label when unset. */
+	@property({ type: String, attribute: 'accessible-label' })
+	accessibleLabel = '';
+
 	/** Override one or more translation keys. Unset keys fall back to the Dutch default. */
 	@property({ type: Object })
 	translations: Partial<NLDDListTranslations> = {};
@@ -122,10 +177,41 @@ export class NLDDList extends LitElement {
 	private _mergedTranslations = { ...nlddListTranslations };
 
 	@state()
-	private _hasHeader = false;
+	private _hasToolbar = false;
+
+	@state()
+	private _hasSearchBarEnd = false;
 
 	@state()
 	private _isEmpty = false;
+
+	// — Listbox state ————————————————————————————————————————————————————————
+
+	/** Current search value (listbox mode). Mirrored to the input. */
+	@state()
+	private _searchValue = '';
+
+	/** ID of the active option (listbox mode), or '' when none. Fed to the
+	 *  input's aria-activedescendant. Distinct from selection. */
+	@state()
+	private _activeId = '';
+
+	/** Whether the search input has focus. aria-activedescendant is the input's
+	 *  virtual focus, so the active-option highlight only shows while it is
+	 *  focused; _activeId is remembered across blur so focus resumes there. */
+	@state()
+	private _searchFocused = false;
+
+	/** Stable id for `.list__items` (the listbox), referenced by the input's
+	 *  aria-controls. Per-instance, like nldd-combo-box's `_menuId`. */
+	private static _idCounter = 0;
+	readonly _listboxId = `nldd-list-listbox-${NLDDList._idCounter++}`;
+
+	/** Counter for auto-assigned option ids (listbox mode). */
+	private static _optionIdCounter = 0;
+
+	@query('.list__search-field-input')
+	private _searchInput?: HTMLInputElement;
 
 	// — Drag state ——————————————————————————————————————————————————————————
 
@@ -154,10 +240,16 @@ export class NLDDList extends LitElement {
 		this._updateEmpty();
 		this._warnArrowNav();
 
-		const headerSlot = this.shadowRoot?.querySelector<HTMLSlotElement>('slot[name="header"]');
-		headerSlot?.addEventListener('slotchange', () => {
-			this._hasHeader = (headerSlot.assignedElements().length > 0);
-		});
+		const toolbarSlot = this.shadowRoot?.querySelector<HTMLSlotElement>('slot[name="toolbar"]');
+		const syncToolbar = () => { this._hasToolbar = (toolbarSlot?.assignedElements().length ?? 0) > 0; };
+		toolbarSlot?.addEventListener('slotchange', syncToolbar);
+		syncToolbar();
+
+		// The search-bar-end slot only renders in listbox; sync its initial presence
+		// here. The @slotchange binding in the template keeps it updated afterwards
+		// and re-binds whenever the search bar (re)renders on a type change.
+		const searchBarEndSlot = this.shadowRoot?.querySelector<HTMLSlotElement>('slot[name="search-bar-end"]');
+		if (searchBarEndSlot) this._hasSearchBarEnd = searchBarEndSlot.assignedElements().length > 0;
 
 		// Watch direct children for add/remove (nldd-list-item gains/lose) and
 		// for `hidden` toggles on those direct children (consumer-driven
@@ -201,6 +293,7 @@ export class NLDDList extends LitElement {
 		this.addEventListener('pointerdown', this._onPointerDown);
 		this.addEventListener('keydown', this._onKeyDown);
 		this.addEventListener('focusin', this._onFocusIn);
+		this.addEventListener('click', this._onListClick);
 	}
 
 	override disconnectedCallback() {
@@ -208,6 +301,7 @@ export class NLDDList extends LitElement {
 		this.removeEventListener('pointerdown', this._onPointerDown);
 		this.removeEventListener('keydown', this._onKeyDown);
 		this.removeEventListener('focusin', this._onFocusIn);
+		this.removeEventListener('click', this._onListClick);
 		this._itemsObserver?.disconnect();
 		this._itemsObserver = null;
 		this._cancelDrag();
@@ -221,17 +315,40 @@ export class NLDDList extends LitElement {
 			this._updateItems();
 			this._warnArrowNav();
 		}
+		if (changed.has('variant')) {
+			this._updateItemContext();
+		}
 		if (changed.has('translations')) {
 			this._mergedTranslations = { ...nlddListTranslations, ...this.translations };
 		}
 		if (changed.has('type')) {
 			this._applyHostType();
+			// Leaving listbox mode: drop the active highlight and reset state so a
+			// stale `_highlighted`/aria-activedescendant doesn't survive the switch.
+			if (changed.get('type') === 'listbox' && this.type !== 'listbox') {
+				this._activeId = '';
+				this._getItems().forEach(item => { item._highlighted = false; });
+			}
+		}
+		if (changed.has('height')) {
+			// Mirror the width/height inline-style pattern: validate, then feed a
+			// local var the CSS reads as max-height on the scroll region.
+			const h = this.height;
+			if (h && CSS.supports('max-height', h)) {
+				this.style.setProperty('--_max-height', h);
+			} else {
+				this.style.removeProperty('--_max-height');
+			}
 		}
 	}
 
 	// — Host attribute routing ————————————————————————————————————————————————
 
 	private _applyHostType() {
+		// Only `navigation` puts a role on the host. `list` and `listbox` leave
+		// the host role-less: `list` carries role="list" on `.list__items`, and
+		// `listbox` carries role="listbox" there — putting a second widget role
+		// on the host would nest landmarks/roles incorrectly.
 		if (this.type === 'navigation') {
 			this.setAttribute('role', 'navigation');
 			if (!this.hasAttribute('aria-label') && !this.hasAttribute('aria-labelledby')) {
@@ -264,12 +381,20 @@ export class NLDDList extends LitElement {
 		) as NLDDListItem[];
 	}
 
+	/** Visible (non-`[hidden]`) items, in DOM order. The active-option model and
+	 *  listbox keyboard operate over this set. */
+	private _getVisibleItems(): NLDDListItem[] {
+		return this._getItems().filter(item => !item.hasAttribute('hidden'));
+	}
+
 	private _updateItems() {
 		const items = this._getItems();
 		const visibleItems = items.filter(item => !item.hasAttribute('hidden'));
+		const firstVisible = visibleItems[0];
 		const lastVisible = visibleItems[visibleItems.length - 1];
 		const reorderActive = this.reorderable && this.type === 'list';
 		items.forEach((item) => {
+			item.classList.toggle('is-first', item === firstVisible);
 			item.classList.toggle('is-last', item === lastVisible);
 			if (reorderActive) {
 				item.setAttribute('reorderable', '');
@@ -277,13 +402,219 @@ export class NLDDList extends LitElement {
 				item.removeAttribute('reorderable');
 			}
 		});
+		this._updateItemContext();
 		this._updateRoving();
+		if (this.type === 'listbox') this._updateListboxOptions();
+	}
+
+	private _contextScheduled = false;
+
+	/** Push the list's variant + type onto every item, deferred to a microtask:
+	 *  _updateItems runs inside the update lifecycle (firstUpdated/updated), and
+	 *  setting the items' reactive state there would trip Lit's change-in-update
+	 *  warning. Coalesced so repeated item updates schedule it only once. */
+	private _updateItemContext() {
+		if (this._contextScheduled) return;
+		this._contextScheduled = true;
+		queueMicrotask(() => {
+			this._contextScheduled = false;
+			this._applyItemContext();
+		});
+	}
+
+	/** The list owns variant + type; every item mirrors them (is-boxed styling and
+	 *  the option/listitem role). Pushing from the list, not a per-item observer,
+	 *  means a runtime variant/type switch, or a freshly added item, always tracks
+	 *  the list. */
+	private _applyItemContext() {
+		this._getItems().forEach((item) => {
+			item._applyVariant(this.variant);
+			item._applyParentType(this.type);
+		});
 	}
 
 	private _updateEmpty() {
 		const items = this._getItems();
 		this._isEmpty = items.length === 0 || items.every(item => item.hasAttribute('hidden'));
 	}
+
+	// — Listbox: active-option model ————————————————————————————————————————————
+
+	/** Every option needs a stable id for aria-activedescendant. Assign one to
+	 *  any item that lacks one (consumer-supplied ids win). */
+	private _ensureOptionId(item: NLDDListItem): string {
+		if (!item.id) {
+			item.id = `nldd-list-option-${NLDDList._optionIdCounter++}`;
+		}
+		return item.id;
+	}
+
+	/** Keep the active option valid after the visible set changes (initial
+	 *  render, slot change, or consumer-driven `[hidden]` filtering): ensure ids,
+	 *  reset the active option to the first visible one when the current active is
+	 *  gone (or none was set), push `_highlighted` onto the items, and refresh the
+	 *  input's aria-activedescendant. When nothing is visible the empty state
+	 *  shows and aria-activedescendant is cleared. Deferred to a microtask for the
+	 *  same reason as roving — it can run inside the update lifecycle and would
+	 *  otherwise trip Lit's change-in-update warning. */
+	private _listboxScheduled = false;
+	private _updateListboxOptions() {
+		if (this._listboxScheduled) return;
+		this._listboxScheduled = true;
+		queueMicrotask(() => {
+			this._listboxScheduled = false;
+			this._applyListboxOptions();
+		});
+	}
+
+	private _applyListboxOptions() {
+		if (this.type !== 'listbox') return;
+		const visible = this._getVisibleItems();
+		visible.forEach(item => this._ensureOptionId(item));
+		// Keep the active option if it's still visible, otherwise fall back to the
+		// first visible option (or none when the list is empty).
+		const current = visible.find(item => item.id === this._activeId);
+		const active = current ?? visible[0];
+		this._activeId = active?.id ?? '';
+		this._syncHighlight();
+	}
+
+	/** Move the active option to `item`: update state, reflect aria-activedescendant
+	 *  on the input, and scroll the option into view (it may be inside the capped
+	 *  scroll region). */
+	private _setActiveOption(item: NLDDListItem) {
+		this._activeId = this._ensureOptionId(item);
+		this._syncHighlight();
+		item.scrollIntoView({ block: 'nearest' });
+	}
+
+	/** Reflect the active descendant onto the items, but only while the search
+	 *  input is focused (aria-activedescendant is its virtual focus). _activeId is
+	 *  remembered across blur so focus resumes at the same option; the template
+	 *  gates aria-activedescendant on _searchFocused the same way. */
+	private _syncHighlight() {
+		const active = this._searchFocused ? this._activeItem : null;
+		this._getItems().forEach(i => { i._highlighted = i === active; });
+	}
+
+	/** The currently active option element, or null. */
+	private get _activeItem(): NLDDListItem | null {
+		if (!this._activeId) return null;
+		return this._getVisibleItems().find(item => item.id === this._activeId) ?? null;
+	}
+
+	// — Listbox: search input ————————————————————————————————————————————————————
+
+	/** Dispatch the consumer-facing `input` event so it can filter (toggle
+	 *  `[hidden]` on items). Composed + bubbling, `{ detail: { value } }`. */
+	private _emitListboxInput(value: string) {
+		this.dispatchEvent(new CustomEvent('input', {
+			detail: { value },
+			bubbles: true,
+			composed: true,
+		}));
+	}
+
+	private _onSearchInput = (event: Event) => {
+		// The native input event is composed and would escape the shadow root
+		// alongside our own CustomEvent, reaching consumers as a second `input`
+		// without a `detail`. Stop it so the only `input` they see is ours,
+		// carrying { value }.
+		event.stopPropagation();
+		const input = event.target as HTMLInputElement;
+		this._searchValue = input.value;
+		this._emitListboxInput(this._searchValue);
+	};
+
+	/** Clear the search value (clear button / Escape) and refire `input` so the
+	 *  consumer refilters. Focus stays on the input. */
+	private _clearSearch() {
+		this._searchValue = '';
+		if (this._searchInput) this._searchInput.value = '';
+		this._emitListboxInput('');
+		this._searchInput?.focus();
+	}
+
+	private _onClearClick = () => {
+		this._clearSearch();
+	};
+
+	/** Track whether the search-bar-end slot has content, so its wrapper (and the
+	 *  bar gap) collapses when empty. Bound in the template so it follows the slot
+	 *  even though the search bar only renders in listbox mode. */
+	private _onSearchBarEndSlotChange = (event: Event) => {
+		this._hasSearchBarEnd = (event.target as HTMLSlotElement).assignedElements().length > 0;
+	};
+
+	private _onSearchFocus = () => {
+		this._searchFocused = true;
+		// Resume at the remembered active option, or the first visible one if none
+		// is set or it was filtered away.
+		this._applyListboxOptions();
+	};
+
+	private _onSearchBlur = () => {
+		this._searchFocused = false;
+		this._syncHighlight();
+	};
+
+	/** Clicking an option moves the (remembered) active descendant to it, so the
+	 *  highlight resumes there when the search input regains focus. */
+	private _onListClick = (event: MouseEvent) => {
+		if (this.type !== 'listbox') return;
+		const item = (event.target as Element | null)?.closest?.('nldd-list-item') as NLDDListItem | null;
+		if (item && item.parentElement === this && !item.hasAttribute('hidden')) {
+			this._activeId = this._ensureOptionId(item);
+		}
+	};
+
+	/**
+	 * Listbox keyboard, handled on the search input — focus never leaves it.
+	 * Arrows/Home/End move the active option among the visible set; Enter
+	 * activates it by triggering its inner action; Escape clears the value.
+	 */
+	private _onSearchKeyDown = (event: KeyboardEvent) => {
+		const { key } = event;
+		if (key === 'Escape') {
+			if (this._searchValue !== '') {
+				event.preventDefault();
+				this._clearSearch();
+			}
+			return;
+		}
+		if (key === 'Enter') {
+			const active = this._activeItem;
+			if (active) {
+				event.preventDefault();
+				// Trigger the option's inner action: a link navigates, a button
+				// fires the consumer's handler. Selection stays consumer-managed.
+				active.shadowRoot?.querySelector<HTMLElement>('.list-item__action')?.click();
+				// Enter is keyboard interaction, so keep focus on the search input
+				// (the combobox model: the active option is the virtual focus via
+				// aria-activedescendant). The option's click would otherwise pull DOM
+				// focus onto it; refocus so typing/arrowing continues and the
+				// highlight stays.
+				this._searchInput?.focus();
+			}
+			return;
+		}
+		if (key !== 'ArrowDown' && key !== 'ArrowUp' && key !== 'Home' && key !== 'End') return;
+		const visible = this._getVisibleItems();
+		if (visible.length === 0) return;
+		event.preventDefault();
+		const current = visible.findIndex(item => item.id === this._activeId);
+		let next: number;
+		if (key === 'Home') {
+			next = 0;
+		} else if (key === 'End') {
+			next = visible.length - 1;
+		} else {
+			const dir = key === 'ArrowDown' ? 1 : -1;
+			const base = current === -1 ? (dir === 1 ? -1 : 0) : current;
+			next = (base + dir + visible.length) % visible.length; // wrap around
+		}
+		this._setActiveOption(visible[next]);
+	};
 
 	// — Arrow navigation (roving tabindex) ————————————————————————————————————
 
@@ -294,6 +625,9 @@ export class NLDDList extends LitElement {
 	 *  therefore keeps arrow-nav active (reorderable does nothing), and
 	 *  `_warnArrowNav` likewise only warns for the real reorderable-list conflict. */
 	private get _arrowNavActive(): boolean {
+		// Listbox has its own keyboard (on the search input) and supersedes the
+		// roving-tabindex arrow-nav — never run both.
+		if (this.type === 'listbox') return false;
 		return this.arrowNavigation && !(this.reorderable && this.type === 'list');
 	}
 
@@ -709,14 +1043,29 @@ export class NLDDList extends LitElement {
 	}
 
 	override render() {
-		return template(
-			this._t('components.list.items-label-text'),
-			this._hasHeader,
-			this.type,
-			this._isEmpty,
-			this.emptyText || this._t('components.list.empty-text'),
-			this.emptySupportingText,
-		);
+		return template({
+			itemsLabel: this.accessibleLabel || this._t('components.list.items-label-text'),
+			hasToolbar: this._hasToolbar,
+			type: this.type,
+			isEmpty: this._isEmpty,
+			emptyText: this.emptyText || this._t('components.list.empty-text'),
+			emptySupportingText: this.emptySupportingText,
+			listbox: {
+				listboxId: this._listboxId,
+				searchValue: this._searchValue,
+				activeId: this._searchFocused ? this._activeId : '',
+				searchPlaceholder: this._t('components.list.search-placeholder-text'),
+				searchAccessibleLabel: this.accessibleLabel || this._t('components.list.search-placeholder-text'),
+				searchClearLabel: this._t('components.list.search-clear-text'),
+				hasSearchBarEnd: this._hasSearchBarEnd,
+				onSearchInput: this._onSearchInput,
+				onSearchKeyDown: this._onSearchKeyDown,
+				onSearchFocus: this._onSearchFocus,
+				onSearchBlur: this._onSearchBlur,
+				onClearClick: this._onClearClick,
+				onSearchBarEndSlotChange: this._onSearchBarEndSlotChange,
+			},
+		});
 	}
 }
 

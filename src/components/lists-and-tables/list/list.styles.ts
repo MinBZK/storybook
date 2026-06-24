@@ -12,6 +12,17 @@ export const listStyles = css`
 		--_drag-clone-z-index: 100;
 		--_drag-clone-width: 0px;
 		--_drag-clone-height: 0px;
+		--_max-height: none;
+		--_background-color: transparent;
+		--_highlight-border-color: transparent;
+		--_gap: var(--primitives-space-8);
+		--_search-field-min-size: var(--semantics-controls-md-min-size);
+		--_search-field-icon-size: var(--primitives-space-24);
+		--_search-field-end-padding-right: calc((var(--_search-field-min-size) - var(--semantics-controls-sm-min-size)) / 2 - var(--semantics-input-fields-border-thickness));
+		--_search-field-z-index-button-focus: 1;
+		--_search-bar-gap: var(--primitives-space-8);
+		--_toolbar-gap: var(--primitives-space-8);
+		--_empty-padding: var(--primitives-space-16);
 
 		display: block;
 		position: relative;
@@ -23,44 +34,56 @@ export const listStyles = css`
 		--context-list-divider-display: none;
 	}
 
-
-	/* ## Background + border
-	   Only the box variant has a surface. simple is a plain vertical
-	   strip with no chrome. variant="box" defaults to the tinted
-	   surface; an explicit background="base" picks the base semantic
-	   pair (same shape nldd-box uses). */
-
 	:host([variant="box"]) {
 		--_background-color: var(--semantics-surfaces-tinted-background-color);
-		--_border-color: var(--semantics-surfaces-tinted-border-color);
+		--_highlight-border-color: var(--semantics-surfaces-tinted-border-color);
 	}
 
-	:host([background="base"]) {
+	:host([variant="box"][background="base"]) {
 		--_background-color: var(--semantics-surfaces-base-background-color);
-		--_border-color: var(--semantics-surfaces-base-border-color);
+		--_highlight-border-color: var(--semantics-surfaces-base-border-color);
 	}
 
-	:host([variant="box"]) .list__items {
+	:host([variant="box"]) .list__main {
+		position: relative;
 		border-radius: var(--components-list-corner-radius);
 		background-color: var(--_background-color);
-		/* Inner box-shadow paints the border ring inside the radius
-		   without taking layout space, matching nldd-box / nldd-banner. */
-		box-shadow: inset 0 0 0 1px var(--_border-color);
+		box-shadow: inset 0 0 0 1px var(--_highlight-border-color);
 		overflow: hidden;
 	}
 
 
 	/* # Elements */
 
-	.list__body {
+	.list {
 		display: flex;
 		flex-direction: column;
-		gap: var(--primitives-space-8);
+		gap: var(--_gap);
 	}
 
-	.list__header,
-	.list__footer {
+	.list__header {
 		display: contents;
+	}
+
+	.list__toolbar {
+		display: flex;
+		flex-direction: row;
+		flex-wrap: wrap;
+		align-items: center;
+		gap: var(--_toolbar-gap);
+	}
+
+	.list__toolbar[hidden] {
+		display: none;
+	}
+
+	.list__main {
+		display: flex;
+		flex-direction: column;
+	}
+
+	.list__main[hidden] {
+		display: none;
 	}
 
 	.list__items {
@@ -68,12 +91,121 @@ export const listStyles = css`
 		flex-direction: column;
 	}
 
+	.list__items[hidden] {
+		display: none;
+	}
+
+	:host([type="listbox"]) .list__items {
+		max-height: var(--_max-height);
+		overflow-x: hidden;
+		overflow-y: auto;
+	}
+
+	:host([type="listbox"][variant="simple"]) .list__items {
+		padding-inline: var(--components-list-item-indicator-inline-inset);
+	}
+
 	.list__empty {
-		padding: var(--primitives-space-16);
+		padding: var(--_empty-padding);
 	}
 
 	.list__empty[hidden] {
 		display: none;
+	}
+
+	/* ## Search */
+
+	.list__search-bar {
+		display: flex;
+		flex-direction: row;
+		align-items: center;
+		gap: var(--_search-bar-gap);
+	}
+
+	.list__search-bar-end {
+		display: flex;
+		flex-shrink: 0;
+		flex-direction: row;
+		align-items: center;
+		gap: var(--_search-bar-gap);
+	}
+
+	.list__search-bar-end[hidden] {
+		display: none;
+	}
+
+	.list__search-field {
+		box-sizing: border-box;
+		display: flex;
+		position: relative;
+		border: var(--semantics-input-fields-border);
+		border-radius: var(--semantics-controls-md-corner-radius);
+		background-color: var(--semantics-input-fields-background-color);
+		width: 100%;
+		min-width: 0;
+		min-height: var(--_search-field-min-size);
+		flex-direction: row;
+		align-items: center;
+	}
+
+	.list__search-field:has(.list__search-field-input:focus-visible) {
+		outline: var(--semantics-focus-ring-outline);
+		outline-offset: var(--semantics-focus-ring-outline-offset);
+		box-shadow: var(--semantics-focus-ring-box-shadow);
+	}
+
+	.list__search-field-label {
+		display: flex;
+		min-width: 0;
+		flex-grow: 1;
+		align-self: stretch;
+		flex-direction: row;
+		align-items: center;
+	}
+
+	.list__search-field-icon {
+		display: flex;
+		margin-inline: calc((var(--_search-field-min-size) - var(--_search-field-icon-size)) / 2 - var(--semantics-input-fields-border-thickness));
+		width: var(--_search-field-icon-size);
+		height: var(--_search-field-icon-size);
+		flex-shrink: 0;
+		align-items: center;
+		justify-content: center;
+		color: var(--semantics-content-secondary-color);
+	}
+
+	.list__search-field-input {
+		box-sizing: border-box;
+		margin: 0;
+		outline: none;
+		border: none;
+		background: transparent;
+		min-width: 0;
+		padding: 0;
+		flex-grow: 1;
+		flex-shrink: 1;
+		flex-basis: 0;
+		align-self: stretch;
+		color: var(--semantics-content-color);
+		font: var(--semantics-input-fields-md-text-font);
+		appearance: none;
+	}
+
+	.list__search-field-input::placeholder {
+		color: var(--semantics-input-fields-placeholder-color);
+	}
+
+	.list__search-field-end {
+		display: flex;
+		position: relative;
+		padding-right: var(--_search-field-end-padding-right);
+		flex-shrink: 0;
+		align-items: center;
+	}
+
+	.list__search-field-clear:focus-within {
+		position: relative;
+		z-index: var(--_search-field-z-index-button-focus);
 	}
 
 	::slotted(.nldd-list-drag-placeholder) {
@@ -114,14 +246,10 @@ export const listStyles = css`
 	}
 
 
-	/* # Accessibility
-	   forced-colors / Windows High Contrast strips box-shadow, so the
-	   inset border on the box variant would disappear. Restore the
-	   frame with a real border in that mode — same fallback nldd-box
-	   and nldd-banner use. */
+	/* # Accessibility*/
 
 	@media (forced-colors: active) {
-		:host([variant="box"]) .list__items {
+		:host([variant="box"]) .list__main {
 			border: 1px solid CanvasText;
 		}
 	}

@@ -22,6 +22,9 @@ export type ListItemSize = 'sm' | 'md';
  * - `list` parent       → `role="listitem"`
  * - `navigation` parent → `role="listitem"` + `aria-current="page"` on the
  *                         inner `<a>` / `<button>` when `selected`
+ * - `listbox` parent    → `role="option"` + `aria-selected` reflecting `selected`.
+ *                         The list points its search input's `aria-activedescendant`
+ *                         at the active option via `_highlighted` (separate from `selected`).
  *
  * @slot         - Main content area
  * @slot start   - Content at the start of the row
@@ -81,11 +84,18 @@ export class NLDDListItem extends withTranslations(LitElement, nlddListItemTrans
 	@state()
 	_rovingActive = false;
 
+	/** Set by the parent nldd-list in `type="listbox"`: marks this option as
+	 *  highlighted — the active descendant the search input's `aria-activedescendant`
+	 *  points at. Kept SEPARATE from `selected`: the highlight moves with the arrow
+	 *  keys, selection stays consumer-managed. Named for the visual state (not
+	 *  `_active`, which would clash with the pressed / `:active` feedback). */
+	@state()
+	_highlighted = false;
+
 	@query('.list-item__action')
 	private _action?: HTMLElement;
 
 	private _isBoxed = false;
-	private _listObserver: MutationObserver | null = null;
 
 	override connectedCallback() {
 		super.connectedCallback();
@@ -108,8 +118,6 @@ export class NLDDListItem extends withTranslations(LitElement, nlddListItemTrans
 
 	override disconnectedCallback() {
 		super.disconnectedCallback();
-		this._listObserver?.disconnect();
-		this._listObserver = null;
 		this.removeEventListener('focusin', this._handleFocusIn);
 		this.removeEventListener('focusout', this._handleFocusOut);
 		this.removeEventListener('click', this._handleClick);
@@ -137,11 +145,18 @@ export class NLDDListItem extends withTranslations(LitElement, nlddListItemTrans
 		}
 	}
 
+	/** True when the item is an option in a `type="listbox"` parent. */
+	get _isListboxOption(): boolean {
+		return this._parentType === 'listbox';
+	}
+
 	/**
-	 * Syncs the item with the closest parent nldd-list (variant + type).
-	 * Called once in firstUpdated. If the item is moved to a different nldd-list
-	 * after first render, the MutationObserver will still watch the original list.
-	 * This is acceptable as moving items between lists is not a supported use case.
+	 * Reads the initial variant + type from the closest parent nldd-list, once in
+	 * firstUpdated, so the item is styled correctly on first paint. Later changes
+	 * are PUSHED by the list: its `updated` / `_updateItems` calls `_applyVariant`
+	 * and `_applyParentType` on every item, so the list is the single source of
+	 * truth and a runtime variant/type switch (or an item moved to another list)
+	 * always tracks its current parent.
 	 */
 	private _syncWithList() {
 		const list = this.closest<NLDDList>('nldd-list');
@@ -153,31 +168,33 @@ export class NLDDListItem extends withTranslations(LitElement, nlddListItemTrans
 		}
 		this._applyVariant(list.variant);
 		this._applyParentType(list.type);
-		this._listObserver = new MutationObserver(() => {
-			this._applyVariant(list.variant);
-			this._applyParentType(list.type);
-		});
-		this._listObserver.observe(list, {
-			attributes: true,
-			attributeFilter: ['variant', 'type'],
-		});
 	}
 
-	private _applyVariant(variant: string) {
+	_applyVariant(variant: string) {
 		this._isBoxed = variant === 'box';
 		this.classList.toggle('is-boxed', this._isBoxed);
 		this._updateVisibility();
 	}
 
-	private _applyParentType(type: ListType) {
+	_applyParentType(type: ListType) {
 		this._parentType = type;
 	}
 
 	private _updateAriaState() {
-		this.setAttribute('role', 'listitem');
+		// In a listbox parent the item is an `option`, not a `listitem`, and
+		// carries aria-selected so AT announces selection state. The active
+		// option (the input's aria-activedescendant) is conveyed via `_highlighted`
+		// (a highlight class), kept separate from selection.
+		if (this._isListboxOption) {
+			this.setAttribute('role', 'option');
+			this.setAttribute('aria-selected', String(this.selected));
+		} else {
+			this.setAttribute('role', 'listitem');
+			this.removeAttribute('aria-selected');
+		}
 
 		// aria-current on the inner action (link/button) — navigation only
-		const action = this.shadowRoot?.querySelector<HTMLElement>('.list-item__action');
+		const action = this._action;
 		if (this._parentType === 'navigation' && this.selected && action) {
 			action.setAttribute('aria-current', 'page');
 		} else {
@@ -244,12 +261,19 @@ export class NLDDListItem extends withTranslations(LitElement, nlddListItemTrans
 			this.href && this.target === '_blank'
 				? this._t('components.list-item.opens-in-new-tab-text')
 				: undefined;
-		// Roving tabindex: when the list runs arrow-navigation, exactly one item is
-		// the tab stop (0) and the rest are reachable only via the arrow keys (-1).
-		// Off → undefined leaves the native button/link as a normal tab stop.
-		const rovingTabindex = this._arrowNavigation
-			? (this._rovingActive ? '0' : '-1')
-			: undefined;
+		// Listbox options are never separate tab stops — only the list's own
+		// search input is in the tab order, and active moves via
+		// aria-activedescendant. Roving tabindex (arrow-navigation) supersedes
+		// nothing here: the two modes are mutually exclusive on the parent list.
+		// Otherwise, roving tabindex: when the list runs arrow-navigation,
+		// exactly one item is the tab stop (0) and the rest are reachable only
+		// via the arrow keys (-1). Off → undefined leaves the native
+		// button/link as a normal tab stop.
+		const actionTabindex = this._isListboxOption
+			? '-1'
+			: this._arrowNavigation
+				? (this._rovingActive ? '0' : '-1')
+				: undefined;
 		return template(
 			this.button,
 			this.href,
@@ -258,7 +282,8 @@ export class NLDDListItem extends withTranslations(LitElement, nlddListItemTrans
 			this._showStart,
 			this._showEnd,
 			opensInNewTabLabel,
-			rovingTabindex,
+			actionTabindex,
+			this._highlighted,
 		);
 	}
 }

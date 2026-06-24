@@ -26,29 +26,33 @@ export const template = (
 	showStart: boolean,
 	showEnd: boolean,
 	opensInNewTabLabel?: string,
-	rovingTabindex?: string,
+	actionTabindex?: string,
+	isHighlighted = false,
 ) => {
+	// `is-highlighted` paints the listbox active-option highlight (separate from
+	// selected). Only the list sets `_highlighted`, and only in listbox mode.
+	const blockClass = classMap({ 'list-item': true, 'is-highlighted': isHighlighted });
 	if (href) {
-		return html`<div class="list-item">
+		return html`<div class=${blockClass}>
 			<a class="list-item__action"
 				href=${href}
 				target=${target ?? nothing}
 				rel=${rel ?? nothing}
-				tabindex=${rovingTabindex ?? nothing}
+				tabindex=${actionTabindex ?? nothing}
 			>${areas(showStart, showEnd)}${
 				opensInNewTabLabel ? html`<span class="list-item__opens-in-new-tab-hint">${opensInNewTabLabel}</span>` : nothing
 			}</a>
 		</div>`;
 	}
 	if (button) {
-		return html`<div class="list-item">
+		return html`<div class=${blockClass}>
 			<button class="list-item__action"
 				type="button"
-				tabindex=${rovingTabindex ?? nothing}
+				tabindex=${actionTabindex ?? nothing}
 			>${areas(showStart, showEnd)}</button>
 		</div>`;
 	}
-	return html`<div class="list-item">
+	return html`<div class=${blockClass}>
 		${areas(showStart, showEnd)}
 	</div>`;
 };

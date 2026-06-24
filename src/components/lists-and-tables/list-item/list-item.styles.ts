@@ -109,15 +109,16 @@ export const listItemStyles = css`
 
 	/* # Indicator */
 
-	/* Non-interactive: items without an inner action get the selection
-	   indicator directly on .list-item, driven only by :host([selected]) */
-
-	.list-item:not(:has(.list-item__action))::before {
+	/* The selection / state fill. Non-interactive items carry it on .list-item
+	   (driven only by :host([selected])); interactive items carry it on
+	   .list-item__action (and respond to hover / focus / press below). */
+	.list-item:not(:has(.list-item__action))::before,
+	.list-item__action::before {
 		content: '';
 		display: block;
 		position: absolute;
 		inset-block: 0;
-		inset-inline: min(calc(var(--primitives-space-8) * -1), calc(var(--components-list-item-indicator-corner-radius) * -1));
+		inset-inline: calc(-1 * var(--components-list-item-indicator-inline-inset));
 		z-index: var(--_z-index-indicator);
 		border-radius: var(--components-list-item-indicator-corner-radius);
 		background-color: var(--_background-color);
@@ -127,21 +128,6 @@ export const listItemStyles = css`
 	:host([selected]) {
 		--_background-color: var(--components-list-item-is-selected-background-color);
 		--context-cell-content-color: var(--components-list-item-is-selected-content-color);
-	}
-
-	/* Interactive: items with a link/button inner element; indicator responds
-	   to hover and focus on top of the selected state */
-
-	.list-item__action::before {
-		content: '';
-		display: block;
-		position: absolute;
-		inset-block: 0;
-		inset-inline: min(calc(var(--primitives-space-8) * -1), calc(var(--components-list-item-indicator-corner-radius) * -1));
-		z-index: var(--_z-index-indicator);
-		border-radius: var(--components-list-item-indicator-corner-radius);
-		background-color: var(--_background-color);
-		pointer-events: none;
 	}
 
 	/* hover only on hover-capable devices: avoids touch-scroll flashing the
@@ -172,17 +158,20 @@ export const listItemStyles = css`
 		--context-cell-content-color: var(--components-list-item-is-hovered-content-color);
 	}
 
-	:host([selected]) .list-item__action.is-pressed {
-		--_background-color: var(--components-list-item-is-highlighted-background-color);
-		--context-cell-content-color: var(--components-list-item-is-highlighted-content-color);
-	}
-
 	:host([selected]) .list-item__action {
 		--_background-color: var(--components-list-item-is-selected-background-color);
 		--context-cell-content-color: var(--components-list-item-is-selected-content-color);
 	}
 
-	:host([selected]) .list-item__action:focus {
+	/* Highlight accent — the strongest fill. Shown for a selected item that is
+	   pressed or focused, for the listbox active descendant (.is-highlighted —
+	   the option the search input's aria-activedescendant points at), and for a
+	   selected active descendant (.is-highlighted on the action, to outweigh the
+	   selected fill). The hover+focus variant sits in the @media block above. */
+	:host([selected]) .list-item__action.is-pressed,
+	:host([selected]) .list-item__action:focus,
+	.list-item.is-highlighted,
+	:host([selected]) .list-item.is-highlighted .list-item__action {
 		--_background-color: var(--components-list-item-is-highlighted-background-color);
 		--context-cell-content-color: var(--components-list-item-is-highlighted-content-color);
 	}
@@ -202,7 +191,7 @@ export const listItemStyles = css`
 
 	:host(:not(.is-boxed)) .list-item__action:focus-visible:not(.is-pointer-focus)::after {
 		inset-block: 0;
-		inset-inline: min(calc(var(--primitives-space-8) * -1), calc(var(--components-list-item-indicator-corner-radius) * -1));
+		inset-inline: calc(-1 * var(--components-list-item-indicator-inline-inset));
 		border-radius: var(--components-list-item-indicator-corner-radius);
 	}
 
@@ -218,6 +207,35 @@ export const listItemStyles = css`
 	:host(.is-boxed:last-child) .list-item__action:focus-visible:not(.is-pointer-focus)::after {
 		border-bottom-left-radius: calc(var(--components-list-corner-radius) - var(--_focus-outline-offset));
 		border-bottom-right-radius: calc(var(--components-list-corner-radius) - var(--_focus-outline-offset));
+	}
+
+
+	/* # Boxed indicator + first/last corners
+	   In a box the rows fill the frame edge-to-edge, so the indicator drops its
+	   outward inline bleed and pill radius (inset-inline / border-radius 0).
+	   Without this, overflow-x: hidden on .list__items clips the bled-out rounded
+	   corners back to a square edge. The first/last VISIBLE row then rounds its
+	   outer corners to the box radius, so the fill follows the frame (and bounce /
+	   overscroll, where the rounded clip can leak, shows rounded rows). Visible-
+	   aware via .is-first / .is-last (set by the list), so it tracks the filtered
+	   set in a listbox. */
+
+	:host(.is-boxed) .list-item__action::before,
+	:host(.is-boxed) .list-item:not(:has(.list-item__action))::before {
+		inset-inline: 0;
+		border-radius: 0;
+	}
+
+	:host(.is-boxed.is-first) .list-item__action::before,
+	:host(.is-boxed.is-first) .list-item:not(:has(.list-item__action))::before {
+		border-top-left-radius: var(--components-list-corner-radius);
+		border-top-right-radius: var(--components-list-corner-radius);
+	}
+
+	:host(.is-boxed.is-last) .list-item__action::before,
+	:host(.is-boxed.is-last) .list-item:not(:has(.list-item__action))::before {
+		border-bottom-left-radius: var(--components-list-corner-radius);
+		border-bottom-right-radius: var(--components-list-corner-radius);
 	}
 
 
@@ -266,7 +284,8 @@ export const listItemStyles = css`
 	}
 
 	:host([selected]) .list-item__divider,
-	:host(.is-boxed.is-last) .list-item__divider {
+	:host(.is-boxed.is-last) .list-item__divider,
+	.list-item.is-highlighted .list-item__divider {
 		display: none;
 	}
 `;
