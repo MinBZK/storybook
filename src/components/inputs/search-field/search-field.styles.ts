@@ -73,6 +73,15 @@ export const searchFieldStyles = css`
 
 	/* # Elements */
 
+	.search-field__label {
+		display: flex;
+		min-width: 0;
+		flex-grow: 1;
+		align-self: stretch;
+		flex-direction: row;
+		align-items: center;
+	}
+
 	.search-field__search-icon {
 		display: flex;
 		margin-inline: calc((var(--_min-size) - var(--_search-icon-size)) / 2 - var(--semantics-input-fields-border-thickness));
