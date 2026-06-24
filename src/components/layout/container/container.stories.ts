@@ -238,12 +238,8 @@ export const Standaard = {
 			vertical-alignment=${ifDefined(args.verticalAlignment)}
 			style="outline: 1px dashed var(--primitives-color-neutral-150);"
 		>
-			<nldd-container padding="12" style="outline: 1px dashed var(--primitives-color-neutral-150);">
-				<nldd-rich-text><p>Eerste container.</p></nldd-rich-text>
-			</nldd-container>
-			<nldd-container padding="12" style="outline: 1px dashed var(--primitives-color-neutral-150);">
-				<nldd-rich-text><p>Tweede container.</p></nldd-rich-text>
-			</nldd-container>
+			<nldd-rich-text><p>Eerste item.</p></nldd-rich-text>
+			<nldd-rich-text><p>Tweede item.</p></nldd-rich-text>
 		</nldd-container>
 	`,
 };

@@ -43,6 +43,8 @@ export const containerStyles = css`
 
 		container-type: inline-size;
 		display: block;
+		box-sizing: border-box;
+		width: 100%;
 		height: auto;
 		padding-top: var(--_padding-top);
 		padding-right: var(--_padding-right);
