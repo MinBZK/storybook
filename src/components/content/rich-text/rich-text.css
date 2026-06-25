@@ -399,6 +399,12 @@ nldd-rich-text code {
 	font-size: 0.85em;
 }
 
+/* Inside table cells, let long code tokens (e.g. type_spec.precision) break so
+   they don't force a column wide; in running text code stays intact. */
+nldd-rich-text :is(th, td) code {
+	overflow-wrap: anywhere;
+}
+
 
 /* # Mark */
 
