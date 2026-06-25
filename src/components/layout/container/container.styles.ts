@@ -146,10 +146,44 @@ export const containerStyles = css`
 		break-inside: avoid;
 	}
 
+	/* Masonry â native CSS grid-lanes where supported, CSS multicol fallback
+	   otherwise. CSS-only (no JS). Fallback flows column-order; native masonry
+	   packs shortest-column (row-order). */
+	:host([layout="masonry"]) .container {
+		display: block;
+		columns: var(--_min-column-width);
+		column-gap: var(--_gap);
+	}
+
+	:host([layout="masonry"]) ::slotted(*) {
+		break-inside: avoid;
+		/* multicol has no row-gap; item margin supplies the vertical gap. The
+		   native branch resets this (grid-lanes gap covers both axes). */
+		margin-bottom: var(--_gap);
+	}
+
+	@supports (display: grid-lanes) {
+		:host([layout="masonry"]) .container {
+			display: grid-lanes;
+			grid-template-columns: repeat(
+				var(--_column-count, auto-fill),
+				minmax(var(--_track-min, var(--_min-column-width)), 1fr)
+			);
+		}
+
+		:host([layout="masonry"]) ::slotted(*) {
+			margin-bottom: 0;
+		}
+	}
+
 	:host([layout="columns"][column-count]) .container,
 	:host([layout="columns"][sm-column-count]) .container,
 	:host([layout="columns"][md-column-count]) .container,
-	:host([layout="columns"][lg-column-count]) .container {
+	:host([layout="columns"][lg-column-count]) .container,
+	:host([layout="masonry"][column-count]) .container,
+	:host([layout="masonry"][sm-column-count]) .container,
+	:host([layout="masonry"][md-column-count]) .container,
+	:host([layout="masonry"][lg-column-count]) .container {
 		column-count: var(--_column-count);
 		column-width: auto;
 	}

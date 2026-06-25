@@ -97,7 +97,7 @@ export default {
 	argTypes: {
 		layout: {
 			control: 'select',
-			options: ['(geen)', 'stack', 'row', 'wrap', 'grid', 'columns'],
+			options: ['(geen)', 'stack', 'row', 'wrap', 'grid', 'columns', 'masonry'],
 			mapping: { '(geen)': undefined },
 			description: 'Layout-modus',
 			table: { defaultValue: { summary: 'stack' } },
@@ -307,6 +307,20 @@ export const LayoutColumns = {
 		</nldd-container>
 	`,
 	storyName: 'Layout — columns (multicol, min 280px)',
+};
+
+export const LayoutMasonry = {
+	render: () => html`
+		<nldd-container layout="masonry" gap="16" padding="16" style="outline: 1px dashed var(--primitives-color-neutral-150);">
+			<nldd-rich-text style="background: var(--primitives-color-neutral-100); border-radius: 8px; padding: 12px;"><h3>Kort</h3><p>Een blok met een enkele regel.</p></nldd-rich-text>
+			<nldd-rich-text style="background: var(--primitives-color-neutral-100); border-radius: 8px; padding: 12px;"><h3>Langer</h3><p>Dit blok heeft meer tekst zodat de hoogtes verschillen en het masonry-effect zichtbaar wordt.</p></nldd-rich-text>
+			<nldd-rich-text style="background: var(--primitives-color-neutral-100); border-radius: 8px; padding: 12px;"><h3>Kort</h3><p>Ook een kort blok.</p></nldd-rich-text>
+			<nldd-rich-text style="background: var(--primitives-color-neutral-100); border-radius: 8px; padding: 12px;"><h3>Lang</h3><p>Nog een blok met flink meer inhoud, meerdere zinnen achter elkaar, zodat de kolommen ongelijk vullen en items naar de kortste kolom schuiven (native) of in kolomvolgorde stromen (fallback).</p></nldd-rich-text>
+			<nldd-rich-text style="background: var(--primitives-color-neutral-100); border-radius: 8px; padding: 12px;"><h3>Middel</h3><p>Een paar regels tekst hier, net iets meer dan kort.</p></nldd-rich-text>
+			<nldd-rich-text style="background: var(--primitives-color-neutral-100); border-radius: 8px; padding: 12px;"><h3>Kort</h3><p>Laatste, kort.</p></nldd-rich-text>
+		</nldd-container>
+	`,
+	storyName: 'Layout — masonry (native grid masonry, multicol fallback)',
 };
 
 export const OrderRow = {

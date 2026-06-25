@@ -58,6 +58,18 @@ describe('nldd-container', () => {
 		expect(el.getAttribute('layout')).toBe('columns');
 	});
 
+	it('layout=masonry uses native grid masonry where supported, multicol fallback otherwise', async () => {
+		el = await fixture('<nldd-container layout="masonry"><div>a</div></nldd-container>');
+		await waitForUpdate(el);
+		const inner = el.shadowRoot!.querySelector('.container') as HTMLElement;
+		// native CSS grid masonry where supported, CSS multicol (block) fallback otherwise.
+		expect(['block', 'grid-lanes']).toContain(getComputedStyle(inner).display);
+		expect(el.getAttribute('layout')).toBe('masonry');
+		// slotted children avoid breaking across columns (both branches).
+		const child = el.querySelector('div') as HTMLElement;
+		expect(getComputedStyle(child).breakInside).toBe('avoid');
+	});
+
 	it('column-count="4" sets the --_column-count var on the inner', async () => {
 		el = await fixture('<nldd-container layout="grid" column-count="4"></nldd-container>');
 		await waitForUpdate(el);
