@@ -40,6 +40,24 @@ describe('nldd-top-navigation-bar', () => {
 		expect(el).toBeInstanceOf(customElements.get('nldd-top-navigation-bar'));
 	});
 
+	it('width="full" sets no --_max-width inline style', async () => {
+		el = await fixture('<nldd-top-navigation-bar width="full"></nldd-top-navigation-bar>');
+		await waitForUpdate(el);
+		expect(el.style.getPropertyValue('--_max-width')).toBe('');
+	});
+
+	it('a CSS-length width feeds --_max-width inline', async () => {
+		el = await fixture('<nldd-top-navigation-bar width="800px"></nldd-top-navigation-bar>');
+		await waitForUpdate(el);
+		expect(el.style.getPropertyValue('--_max-width')).toBe('800px');
+	});
+
+	it('an invalid width sets no --_max-width', async () => {
+		el = await fixture('<nldd-top-navigation-bar width="not-a-length"></nldd-top-navigation-bar>');
+		await waitForUpdate(el);
+		expect(el.style.getPropertyValue('--_max-width')).toBe('');
+	});
+
 	it('renders logo by default', async () => {
 		el = await fixture('<nldd-top-navigation-bar></nldd-top-navigation-bar>');
 		await waitForUpdate(el);

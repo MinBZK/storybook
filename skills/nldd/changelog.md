@@ -31,6 +31,7 @@ here; consult the commit history if you need that level of detail.
 - **`nldd-card` links** — `href` / `target` / `rel` make the whole card a clickable link via an overlay anchor; `target="_blank"` auto-resolves `rel` and announces a new-tab hint, and `accessible-label` names the link.
 - **`nldd-container`** — fills the full width of a flex parent (`width: 100%` + `box-sizing: border-box`).
 - **`nldd-sidebar-section`** — a page section with a left sidebar: a sticky, scrollable tinted box (max 320px) beside the main when wide, collapsing into a left sheet (bottom on mobile) with a default title bar (the `sidebar-label` as title plus a close button, overridable via the `sheet-top-title-bar` slot) when narrow. The collapse is container-driven (the section's own width via a ResizeObserver), and `no-collapse` stacks the sidebar above the main instead. It reflects a read-only `collapsed` attribute, fires `collapse-change`, and exposes `show()` / `hide()` / `toggle()` for the sheet (the consumer owns the trigger, revealed via `[collapsed]`). Tunable via `width`, `sticky-top` / `sticky-bottom` (default 16px) and `sidebar-label`.
+- **`nldd-top-navigation-bar`** — a `width` attribute caps the bar content to a max-width so it lines up with page-section content; `full` spans the full width, or a CSS length overrides the default.
 
 ### Changed
 

@@ -15,6 +15,7 @@ export const topNavigationBarStyles = css`
 	:host {
 		--_logo-width: var(--semantics-brand-ribbon-sm-width);
 		--_wordmark-content-color: light-dark(var(--primitives-color-reference-lintblauw), var(--primitives-color-neutral-1000));
+		--_max-width: var(--semantics-page-sections-body-max-width);
 
 		${inheritedTextReset}
 		container-type: inline-size;
@@ -35,6 +36,20 @@ export const topNavigationBarStyles = css`
 		margin: 0 auto;
 		width: 100%;
 		flex-direction: column;
+
+		/* Cap to the page-section content width (+ the bar inline margin) so it
+		   lines up with page sections; width=full removes the cap. */
+		@container (min-width: ${mdMin}) and (max-width: ${mdMax}) {
+			max-width: calc(var(--_max-width) + var(--semantics-page-sections-md-margin-inline) * 2);
+		}
+
+		@container (min-width: ${lgMin}) {
+			max-width: calc(var(--_max-width) + var(--semantics-page-sections-lg-margin-inline) * 2);
+		}
+	}
+
+	:host([width="full"]) .top-navigation-bar {
+		max-width: none;
 	}
 
 
