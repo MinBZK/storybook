@@ -18,6 +18,9 @@ here; consult the commit history if you need that level of detail.
 ### Highlights
 
 - **A filterable listbox for `nldd-list`.** New `type="listbox"` turns a list into a combobox-pattern listbox: it renders its own search input, `.list__items` becomes a `role="listbox"` of `role="option"` items, and the active option moves via `aria-activedescendant` while focus stays in the input (the highlight is gated on input focus). Filtering stays consumer-managed; `toolbar` and `search-bar-end` slots and an `accessible-label` round it out.
+- **Configurable `nldd-hero` media.** A `media-aspect-ratio` (default 21/9) plus `media-src` / `media-srcset` / `media-sizes` / `media-alt` render the hero image internally, so a simple hero needs no slotted `<img>`; slotted media still wins when present. (The old `media-corner` attribute is renamed to `media-corner-position` — see Breaking.)
+- **Definition lists in `nldd-rich-text`.** Responsive `dl` / `dt` / `dd` term-definition layout, so glossaries and key/value content render as aligned term/definition pairs that adapt to the available width.
+- **`nldd-card` as a link.** `href` / `target` / `rel` turn the whole card into a clickable link via an overlay anchor; `target="_blank"` auto-resolves `rel` and announces a new-tab hint, and `accessible-label` names the link without a double announcement.
 
 ### Added
 
