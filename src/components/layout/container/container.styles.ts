@@ -254,6 +254,8 @@ export const containerStyles = css`
 	   sm/md/lg-order → order → 0. No-op for layout="columns" (multicol). */
 
 	::slotted(*) {
+		/* Keep padded slotted items inside their track (multicol/grid columns). */
+		box-sizing: border-box;
 		order: var(--_slot-order, 0);
 	}
 

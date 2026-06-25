@@ -42,6 +42,7 @@ here; consult the commit history if you need that level of detail.
 - **`nldd-list`** — switching `variant` at runtime (box to simple) no longer leaves items wrongly boxed; the list now drives `variant`/`type` onto its items instead of relying on a per-item observer.
 - **`nldd-just-in-time-education`** — the callout is positioned absolutely so it scrolls natively with the page, fixing the Safari bounce.
 - **`nldd-rich-text`** — table columns size to their content: the `th` min-width is unset on containers ≥ 641px (the data cells already did this), and inline code inside cells may wrap so long tokens (e.g. `type_spec.precision`) no longer force a column wide.
+- **`nldd-rich-text` / `nldd-container`** — the rich-text host (and container slotted items) now use `box-sizing: border-box`, so padding or a border no longer makes the element overflow its slot or grid/column track.
 
 ### Breaking
 

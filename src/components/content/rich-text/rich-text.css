@@ -15,6 +15,7 @@ nldd-rich-text {
 	--_dl-gap: calc(var(--_spacing) / 2);
 
 	container-type: inline-size;
+	box-sizing: border-box;
 	display: grid;
 	width: 100%;
 	grid-template-columns:
