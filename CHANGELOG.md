@@ -33,11 +33,13 @@ here; consult the commit history if you need that level of detail.
 - **`nldd-navigation-split-view`** — `sidebar` is renamed to `primary-sidebar`; the old slot, attributes and sheet methods keep working as deprecated aliases.
 - **`nldd-icon`** — the `privacy` alias now points at `shield-lock` (was `hand`).
 - **`nldd-button`** — the space between the icons and the label is now a flex gap on the button content instead of padding on the text, so text-only buttons share the same inline edge padding as icon buttons (text buttons end up marginally tighter; the icon-to-label spacing is unchanged).
+- **`nldd-collection`** — the `list` layout is renamed to `stack` to match `nldd-container`; `list` keeps working as a deprecated alias.
 
 ### Fixed
 
 - **`nldd-list`** — switching `variant` at runtime (box to simple) no longer leaves items wrongly boxed; the list now drives `variant`/`type` onto its items instead of relying on a per-item observer.
 - **`nldd-just-in-time-education`** — the callout is positioned absolutely so it scrolls natively with the page, fixing the Safari bounce.
+- **`nldd-rich-text`** — table header cells (`th`) no longer keep a 160px min-width on containers ≥ 641px, so columns size to their content (the data cells already unset it; the header now mirrors them).
 
 ### Breaking
 

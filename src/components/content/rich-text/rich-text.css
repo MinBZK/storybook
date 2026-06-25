@@ -10,7 +10,7 @@ nldd-rich-text {
 		0px,
 		calc(100% - var(--components-rich-text-main-max-width))
 	);
-	--_dt-width: var(--primitives-area-240);
+	--_dt-width: var(--primitives-area-200);
 	--_dl-column-gap: var(--primitives-space-16);
 	--_dl-gap: calc(var(--_spacing) / 2);
 
@@ -550,6 +550,10 @@ nldd-rich-text th {
 	border-bottom: var(--semantics-tables-border-width) solid var(--semantics-tables-border-color);
 	font: var(--primitives-font-body-md-bold-tight);
 	text-align: start;
+
+	@container (min-width: 641px) {
+		min-width: unset;
+	}
 }
 
 /* ## Table Data Cell */
