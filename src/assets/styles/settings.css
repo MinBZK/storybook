@@ -1894,6 +1894,12 @@
 	--components-rich-text-spacing-snug: calc(var(--components-rich-text-grid-size) / 2);
 	--components-rich-text-spacing-loose: var(--components-rich-text-grid-size);
 
+	/* ## Sidebar Section */
+
+	--components-sidebar-section-sidebar-box-background-color: var(--semantics-surfaces-tinted-background-color);
+	--components-sidebar-section-sidebar-box-border-color: var(--semantics-surfaces-tinted-border-color);
+	--components-sidebar-section-sidebar-box-corner-radius: var(--semantics-surfaces-corner-radius);
+
 	/* ## Status bar */
 
 	--components-status-bar-height: var(--semantics-controls-xs-min-size);

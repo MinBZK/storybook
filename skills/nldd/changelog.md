@@ -18,6 +18,7 @@ here; consult the commit history if you need that level of detail.
 ### Highlights
 
 - **A filterable listbox for `nldd-list`.** New `type="listbox"` turns a list into a combobox-pattern listbox: it renders its own search input, `.list__items` becomes a `role="listbox"` of `role="option"` items, and the active option moves via `aria-activedescendant` while focus stays in the input (the highlight is gated on input focus). Filtering stays consumer-managed; `toolbar` and `search-bar-end` slots and an `accessible-label` round it out.
+- **`nldd-sidebar-section` page section.** A sidebar beside the main content: a sticky, scrollable tinted box (max 320px) when the section is wide, collapsing into a left sheet (a bottom sheet on mobile) with a built-in title bar when it gets narrow. The switch follows the section's own width (a ResizeObserver), not the viewport, so it adapts to the space it sits in; `no-collapse` opts out and stacks the sidebar above the main instead. Ideal for list and overview pages with a filter sidebar, or long articles with a table of contents.
 - **Configurable `nldd-hero` media.** A `media-aspect-ratio` (default 21/9) plus `media-src` / `media-srcset` / `media-sizes` / `media-alt` render the hero image internally, so a simple hero needs no slotted `<img>`; slotted media still wins when present. (The old `media-corner` attribute is renamed to `media-corner-position` — see Breaking.)
 - **Definition lists in `nldd-rich-text`.** Responsive `dl` / `dt` / `dd` term-definition layout, so glossaries and key/value content render as aligned term/definition pairs that adapt to the available width.
 - **`nldd-card` as a link.** `href` / `target` / `rel` turn the whole card into a clickable link via an overlay anchor; `target="_blank"` auto-resolves `rel` and announces a new-tab hint, and `accessible-label` names the link without a double announcement.
@@ -29,6 +30,7 @@ here; consult the commit history if you need that level of detail.
 - **`nldd-rich-text` definition lists** — responsive `dl` / `dt` / `dd` term-definition layout.
 - **`nldd-card` links** — `href` / `target` / `rel` make the whole card a clickable link via an overlay anchor; `target="_blank"` auto-resolves `rel` and announces a new-tab hint, and `accessible-label` names the link.
 - **`nldd-container`** — fills the full width of a flex parent (`width: 100%` + `box-sizing: border-box`).
+- **`nldd-sidebar-section`** — a page section with a left sidebar: a sticky, scrollable tinted box (max 320px) beside the main when wide, collapsing into a left sheet (bottom on mobile) with a default title bar (the `sidebar-label` as title plus a close button, overridable via the `sheet-top-title-bar` slot) when narrow. The collapse is container-driven (the section's own width via a ResizeObserver), and `no-collapse` stacks the sidebar above the main instead. It reflects a read-only `collapsed` attribute, fires `collapse-change`, and exposes `show()` / `hide()` / `toggle()` for the sheet (the consumer owns the trigger, revealed via `[collapsed]`). Tunable via `width`, `sticky-top` / `sticky-bottom` (default 16px) and `sidebar-label`.
 
 ### Changed
 
@@ -36,6 +38,7 @@ here; consult the commit history if you need that level of detail.
 - **`nldd-search-field`** — clicking the leading icon or the field's gutter now focuses the input (native `<label>`, no JS); an empty field no longer reserves a dead click zone on the right.
 - **`nldd-navigation-split-view`** — `sidebar` is renamed to `primary-sidebar`; the old slot, attributes and sheet methods keep working as deprecated aliases.
 - **`nldd-icon`** — the `privacy` alias now points at `shield-lock` (was `hand`).
+- **`nldd-button`** — the space between the icons and the label is now a flex gap on the button content instead of padding on the text, so text-only buttons share the same inline edge padding as icon buttons (text buttons end up marginally tighter; the icon-to-label spacing is unchanged).
 
 ### Fixed
 

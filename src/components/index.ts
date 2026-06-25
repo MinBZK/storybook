@@ -86,6 +86,7 @@ export { NLDDFullBleedSection } from './layout/page-sections/full-bleed-section/
 export { NLDDOneThirdTwoThirdsSection } from './layout/page-sections/one-third-two-thirds-section/one-third-two-thirds-section.js';
 export { NLDDTwoThirdsOneThirdSection } from './layout/page-sections/two-thirds-one-third-section/two-thirds-one-third-section.js';
 export { NLDDOneHalfOneHalfSection } from './layout/page-sections/one-half-one-half-section/one-half-one-half-section.js';
+export { NLDDSidebarSection } from './layout/page-sections/sidebar-section/sidebar-section.js';
 
 export { NLDDBox } from './layout/box/box.js';
 export { NLDDCard } from './layout/card/card.js';

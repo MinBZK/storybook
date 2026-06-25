@@ -467,7 +467,9 @@ export const buttonStyles = css`
 		max-width: 100%;
 		min-width: 0;
 		align-items: center;
-		gap: 0;
+		/* Space between the icons and the text-area. Was padding-inline on the
+		   text-area; a flex gap keeps it off the text and out of the no-icon edges. */
+		gap: var(--_gap);
 		transition: opacity var(--primitives-transition-duration-slow) var(--primitives-transition-easing-default);
 	}
 
@@ -511,7 +513,6 @@ export const buttonStyles = css`
 		display: flex;
 		flex-direction: column;
 		min-width: 0;
-		padding-inline: var(--_gap);
 	}
 
 	:host([size="xs"]) .button__text-area,
@@ -583,10 +584,6 @@ export const buttonStyles = css`
 
 	:host([expandable]) .button {
 		padding-inline-end: calc(var(--_inline-padding) + var(--_gap) + var(--_disclosure-icon-size));
-	}
-
-	:host([expandable]) .button__text-area {
-		padding-inline-end: 0;
 	}
 
 	.button__disclosure-icon {
