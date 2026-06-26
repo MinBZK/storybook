@@ -1,10 +1,11 @@
 import { css, unsafeCSS } from 'lit';
 import { breakpoints } from '../../../assets/styles/breakpoints.js';
-import { slottedReset, inheritedTextReset } from '../../../assets/styles/slotted-reset.js';
+import { boxSizingReset, slottedReset, inheritedTextReset } from '../../../assets/styles/style-resets.js';
 
 const mdMin = unsafeCSS(breakpoints.mdMin);
 
 export const formFieldStyles = css`
+	${boxSizingReset}
 
 
 	/* # Host */

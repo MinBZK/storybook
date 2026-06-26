@@ -58,6 +58,30 @@ describe('nldd-top-navigation-bar', () => {
 		expect(el.style.getPropertyValue('--_max-width')).toBe('');
 	});
 
+	it('caps each bar to the content width and never overflows (page-section layout)', async () => {
+		el = await fixture(navWithGlobalItems());
+		await waitForUpdate(el);
+		// settings.css tokens are not loaded in the unit-test page; inject the few
+		// this layout reads (values mirror settings.css) so the var() lengths resolve.
+		el.style.setProperty('--semantics-page-sections-sm-margin-inline', '16px');
+		el.style.setProperty('--semantics-page-sections-md-margin-inline', '40px');
+		el.style.setProperty('--semantics-page-sections-lg-margin-inline', '56px');
+		el.style.setProperty('--semantics-page-sections-body-max-width', '1280px');
+		el.style.setProperty('--components-menu-bar-item-inline-padding', '8px');
+		const sr = el.shadowRoot!;
+		const host = el.getBoundingClientRect();
+		const logoBar = sr.querySelector('.top-navigation-bar__logo-bar')!.getBoundingClientRect();
+		const mainBar = sr.querySelector('.top-navigation-bar__main-bar')!.getBoundingClientRect();
+		// the wrapper inline margin insets every bar from the host edge
+		expect(logoBar.left).toBeGreaterThan(host.left);
+		expect(logoBar.right).toBeLessThan(host.right);
+		// logo bar and main bar cap + centre to the same content box
+		expect(Math.abs(logoBar.left - mainBar.left)).toBeLessThanOrEqual(1);
+		expect(Math.abs(logoBar.right - mainBar.right)).toBeLessThanOrEqual(1);
+		// the menu negative inline margin must not force a horizontal scrollbar
+		expect(el.scrollWidth).toBeLessThanOrEqual(el.clientWidth + 1);
+	});
+
 	it('renders logo by default', async () => {
 		el = await fixture('<nldd-top-navigation-bar></nldd-top-navigation-bar>');
 		await waitForUpdate(el);

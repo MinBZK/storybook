@@ -1,7 +1,8 @@
 import { css } from 'lit';
-import { inheritedTextReset } from '../../../assets/styles/slotted-reset.js';
+import { boxSizingReset, inheritedTextReset } from '../../../assets/styles/style-resets.js';
 
 export const passwordFieldStyles = css`
+	${boxSizingReset}
 
 
 	/* # Host */

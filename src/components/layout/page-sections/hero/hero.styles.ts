@@ -1,6 +1,6 @@
 import { css, unsafeCSS } from 'lit';
 import { breakpoints } from '../../../../assets/styles/breakpoints.js';
-import { inheritedTextReset, slottedReset } from '../../../../assets/styles/slotted-reset.js';
+import { boxSizingReset, inheritedTextReset, slottedReset } from '../../../../assets/styles/style-resets.js';
 
 const smMax = unsafeCSS(breakpoints.smMax);
 const mdMin = unsafeCSS(breakpoints.mdMin);
@@ -8,6 +8,7 @@ const mdMax = unsafeCSS(breakpoints.mdMax);
 const lgMin = unsafeCSS(breakpoints.lgMin);
 
 export const heroStyles = css`
+	${boxSizingReset}
 
 
 	/* # Host */

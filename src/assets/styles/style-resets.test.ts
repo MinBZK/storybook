@@ -1,6 +1,6 @@
 import { describe, it, expect, afterEach } from 'vitest';
 import { fixture, cleanup } from '../../test-utils.js';
-import { hostileHostCss } from './slotted-reset.fixtures.js';
+import { hostileHostCss } from './style-resets.fixtures.js';
 import '../../components/content/title/title.js';
 import '../../components/inputs/dropdown/dropdown.js';
 import '../../components/forms/form-field/form-field.js';
@@ -9,7 +9,7 @@ import '../../components/content/blockquote/blockquote.js';
 import '../../components/lists-and-tables/cells/description-cell/description-cell.js';
 
 /**
- * Regression coverage for the slotted-reset (./slotted-reset.ts).
+ * Regression coverage for the style-resets (./style-resets.ts).
  *
  * Per component: render it, snapshot the slotted element's computed style, then
  * inject a hostile host stylesheet (Tailwind Preflight + aggressive overrides) at
@@ -24,7 +24,7 @@ import '../../components/lists-and-tables/cells/description-cell/description-cel
  * getComputedStyle resolves the actual cascade — ::slotted and cross-tree
  * !important included. These assertions would NOT hold under jsdom.
  */
-describe('slotted-reset: host CSS cannot bleed into slotted content', () => {
+describe('style-resets: host CSS cannot bleed into slotted content', () => {
 	let el: HTMLElement | undefined;
 	let injected: HTMLStyleElement | undefined;
 
