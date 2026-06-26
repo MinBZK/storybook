@@ -98,7 +98,7 @@ export default {
 	argTypes: {
 		layout: {
 			control: 'select',
-			options: ['(geen)', 'stack', 'row', 'wrap', 'grid', 'columns', 'masonry'],
+			options: ['(geen)', 'stack', 'row', 'wrap', 'grid', 'columns', 'lanes'],
 			mapping: { '(geen)': undefined },
 			description: 'Layout-modus',
 			table: { defaultValue: { summary: 'stack' } },
@@ -310,9 +310,9 @@ export const LayoutColumns = {
 	storyName: 'Layout — columns (multicol, min 280px)',
 };
 
-export const LayoutMasonry = {
+export const LayoutLanes = {
 	render: () => html`
-		<nldd-container layout="masonry" gap="16" padding="16" style="outline: 1px dashed var(--primitives-color-neutral-150);">
+		<nldd-container layout="lanes" gap="16" padding="16" style="outline: 1px dashed var(--primitives-color-neutral-150);">
 			<nldd-card>
 				<nldd-container padding="16">
 					<nldd-rich-text><h3>Kort</h3><p>Een blok met een enkele regel.</p></nldd-rich-text>
@@ -345,7 +345,7 @@ export const LayoutMasonry = {
 			</nldd-card>
 		</nldd-container>
 	`,
-	storyName: 'Layout — masonry (native grid-lanes, multicol fallback)',
+	storyName: 'Layout — lanes (native grid-lanes, multicol fallback)',
 };
 
 export const OrderRow = {

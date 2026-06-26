@@ -146,16 +146,16 @@ export const containerStyles = css`
 		break-inside: avoid;
 	}
 
-	/* Masonry â native CSS grid-lanes where supported, CSS multicol fallback
-	   otherwise. CSS-only (no JS). Fallback flows column-order; native masonry
+	/* Lanes â native CSS grid-lanes where supported, CSS multicol fallback
+	   otherwise. CSS-only (no JS). Fallback flows column-order; native lanes
 	   packs shortest-column (row-order). */
-	:host([layout="masonry"]) .container {
+	:host([layout="lanes"]) .container {
 		display: block;
 		columns: var(--_min-column-width);
 		column-gap: var(--_gap);
 	}
 
-	:host([layout="masonry"]) ::slotted(*) {
+	:host([layout="lanes"]) ::slotted(*) {
 		break-inside: avoid;
 		/* multicol has no row-gap; item margin supplies the vertical gap. The
 		   native branch resets this (grid-lanes gap covers both axes). */
@@ -163,7 +163,7 @@ export const containerStyles = css`
 	}
 
 	@supports (display: grid-lanes) {
-		:host([layout="masonry"]) .container {
+		:host([layout="lanes"]) .container {
 			display: grid-lanes;
 			grid-template-columns: repeat(
 				var(--_column-count, auto-fill),
@@ -171,7 +171,7 @@ export const containerStyles = css`
 			);
 		}
 
-		:host([layout="masonry"]) ::slotted(*) {
+		:host([layout="lanes"]) ::slotted(*) {
 			margin-bottom: 0;
 		}
 	}
@@ -180,10 +180,10 @@ export const containerStyles = css`
 	:host([layout="columns"][sm-column-count]) .container,
 	:host([layout="columns"][md-column-count]) .container,
 	:host([layout="columns"][lg-column-count]) .container,
-	:host([layout="masonry"][column-count]) .container,
-	:host([layout="masonry"][sm-column-count]) .container,
-	:host([layout="masonry"][md-column-count]) .container,
-	:host([layout="masonry"][lg-column-count]) .container {
+	:host([layout="lanes"][column-count]) .container,
+	:host([layout="lanes"][sm-column-count]) .container,
+	:host([layout="lanes"][md-column-count]) .container,
+	:host([layout="lanes"][lg-column-count]) .container {
 		column-count: var(--_column-count);
 		column-width: auto;
 	}

@@ -46,14 +46,14 @@
  * That lets a footer in a narrow sidebar choose its own column count
  * independent of the surrounding page width.
  *
- * `layout="masonry"` packs items into balanced columns using native CSS grid
- * masonry where supported, falling back to CSS multicol (column-order)
+ * `layout="lanes"` packs items into balanced columns using native CSS grid
+ * lanes where supported, falling back to CSS multicol (column-order)
  * elsewhere. CSS-only, no JS. Honours `gap` on both axes and `column-count`.
  *
  * @element nldd-container
  *
- * @attr {string}  layout                 - 'stack' | 'row' | 'wrap' | 'grid' | 'columns' | 'masonry' (default: 'stack')
- * @attr {number}  column-count           - Force N columns (1-8) for layout=grid/columns/masonry
+ * @attr {string}  layout                 - 'stack' | 'row' | 'wrap' | 'grid' | 'columns' | 'lanes' (default: 'stack')
+ * @attr {number}  column-count           - Force N columns (1-8) for layout=grid/columns/lanes
  * @attr {number}  sm-column-count        - Column count when this container is sm-wide
  * @attr {number}  md-column-count        - Column count when this container is md-wide
  * @attr {number}  lg-column-count        - Column count when this container is lg-wide
@@ -86,7 +86,7 @@ type PaddingSize =
 	| '0' | '2' | '4' | '6' | '8' | '10' | '12' | '16' | '20' | '24'
 	| '28' | '32' | '40' | '44' | '48' | '56' | '64' | '80' | '96';
 
-type Layout = 'stack' | 'row' | 'wrap' | 'grid' | 'columns' | 'masonry';
+type Layout = 'stack' | 'row' | 'wrap' | 'grid' | 'columns' | 'lanes';
 type ColumnCount = 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8;
 type HorizontalAlignment = 'left' | 'center' | 'right';
 type VerticalAlignment = 'top' | 'center' | 'bottom';
@@ -265,9 +265,9 @@ export class NLDDContainer extends LitElement {
 		const vertical = this.verticalAlignment ? VERTICAL_TO_FLEX[this.verticalAlignment] : null;
 		const isFlexRow = this.layout === 'row' || this.layout === 'wrap';
 		const isGrid = this.layout === 'grid';
-		// Multicol/masonry have no alignment hooks; null the props so native
-		// masonry (a grid) does not inherit the flex-column mapping below.
-		const isMulticol = this.layout === 'columns' || this.layout === 'masonry';
+		// Multicol/lanes have no alignment hooks; null the props so native
+		// lanes (a grid) does not inherit the flex-column mapping below.
+		const isMulticol = this.layout === 'columns' || this.layout === 'lanes';
 		if (isMulticol) {
 			setProp('--_justify-content', null);
 			setProp('--_justify-items', null);

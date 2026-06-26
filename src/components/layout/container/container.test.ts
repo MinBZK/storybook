@@ -58,13 +58,13 @@ describe('nldd-container', () => {
 		expect(el.getAttribute('layout')).toBe('columns');
 	});
 
-	it('layout=masonry uses native grid masonry where supported, multicol fallback otherwise', async () => {
-		el = await fixture('<nldd-container layout="masonry"><div>a</div></nldd-container>');
+	it('layout=lanes uses native grid lanes where supported, multicol fallback otherwise', async () => {
+		el = await fixture('<nldd-container layout="lanes"><div>a</div></nldd-container>');
 		await waitForUpdate(el);
 		const inner = el.shadowRoot!.querySelector('.container') as HTMLElement;
-		// native CSS grid masonry where supported, CSS multicol (block) fallback otherwise.
+		// native CSS grid lanes where supported, CSS multicol (block) fallback otherwise.
 		expect(['block', 'grid-lanes']).toContain(getComputedStyle(inner).display);
-		expect(el.getAttribute('layout')).toBe('masonry');
+		expect(el.getAttribute('layout')).toBe('lanes');
 		// slotted children avoid breaking across columns (both branches).
 		const child = el.querySelector('div') as HTMLElement;
 		expect(getComputedStyle(child).breakInside).toBe('avoid');
