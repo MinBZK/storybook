@@ -88,32 +88,46 @@ const popupTheme = EditorView.theme({
 		margin: '0',
 		padding: 'var(--primitives-space-8)',
 	},
-	'.cm-tooltip-autocomplete > ul > li': {
+	// The .cm-tooltip prefix matches CodeMirror's own specificity so these win
+	// over its cramped defaults (1px 3px padding, pointer cursor).
+	'.cm-tooltip.cm-tooltip-autocomplete > ul > li': {
 		display: 'flex',
 		alignItems: 'center',
 		gap: 'var(--primitives-space-8)',
 		// At least control size sm tall; bumped to md on touch (below).
 		minHeight: 'var(--semantics-controls-sm-min-size)',
 		boxSizing: 'border-box',
+		// Space left and right, like a menu item.
 		padding: 'var(--primitives-space-4) var(--primitives-space-8)',
 		borderRadius: 'var(--semantics-controls-sm-corner-radius)',
 		color: 'var(--semantics-content-color)',
+		cursor: 'default',
 	},
-	'.cm-tooltip-autocomplete > ul > li[aria-selected]': {
+	'.cm-tooltip.cm-tooltip-autocomplete > ul > li[aria-selected]': {
 		backgroundColor: 'var(--components-menu-item-is-highlighted-background-color)',
 		color: 'var(--components-menu-item-is-highlighted-content-color)',
+	},
+	// Hover highlight like a menu item, gated to hover-capable pointers.
+	'@media (hover: hover)': {
+		'.cm-tooltip.cm-tooltip-autocomplete > ul > li:hover': {
+			backgroundColor: 'var(--components-menu-item-is-highlighted-background-color)',
+			color: 'var(--components-menu-item-is-highlighted-content-color)',
+		},
+		'.cm-tooltip.cm-tooltip-autocomplete > ul > li:hover .cm-completionDetail': {
+			color: 'inherit',
+		},
 	},
 	'.cm-completionDetail': {
 		marginLeft: 'auto',
 		color: 'var(--semantics-content-secondary-color)',
 		fontStyle: 'normal',
 	},
-	'.cm-tooltip-autocomplete > ul > li[aria-selected] .cm-completionDetail': {
+	'.cm-tooltip.cm-tooltip-autocomplete > ul > li[aria-selected] .cm-completionDetail': {
 		color: 'inherit',
 	},
 	// Larger touch targets on coarse pointers (control size md height).
 	'@media (pointer: coarse)': {
-		'.cm-tooltip-autocomplete > ul > li': {
+		'.cm-tooltip.cm-tooltip-autocomplete > ul > li': {
 			minHeight: 'var(--semantics-controls-md-min-size)',
 		},
 	},
