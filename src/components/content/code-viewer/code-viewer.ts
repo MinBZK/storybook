@@ -1,54 +1,42 @@
 /**
  * Nederlandse Digitale Dienst Code Viewer Component (Lit + TypeScript)
  *
- * A block of monospaced text for code, traces, output dumps, etc.
- * Renders a styled `<pre>` with the design-system's monospace family,
- * tinted background and standard content color.
+ * A read-only block of code/text built on a non-editable CodeMirror 6 view.
+ * Visually pairs with nldd-code-editor (same engine, same token palette).
  *
- * Whitespace is preserved (`white-space: pre`); long lines scroll
- * horizontally by default. Set `wrap` to break long lines onto the
- * next visual line — useful for prose-like content (YAML strings,
- * formatted output) where horizontal scrolling is more disruptive
- * than wrapping.
+ * Whitespace is preserved; long lines scroll horizontally by default. Set
+ * `wrap` to break long lines onto the next visual line.
  *
  * ## Syntax highlighting
  * Set `language` to one of the supported grammars (yaml, json, javascript,
  * typescript, css, html, xml, bash, markdown, rust, gherkin, toml, sql,
- * python) to highlight the slot content
- * with Prism. Without `language` the slot content is rendered raw, no
- * highlighting applied. Grammars are loaded lazily on first use, so a
- * page that never sets `language` ships zero grammar code.
+ * python) to highlight the content. Without `language` the content renders
+ * plain. Grammars are loaded lazily on first use, so a page that never sets
+ * `language` ships zero grammar code.
  *
  * ### Theming
- * Token colors are exposed as `--components-code-viewer-token-*` custom
- * properties on the host. Override them per-instance to swap the theme:
- *
- * ```css
- * nldd-code-viewer {
- *   --components-code-viewer-token-keyword-color: var(--my-purple);
- *   --components-code-viewer-token-string-color: var(--my-green);
- * }
- * ```
+ * Token colors are the `--components-code-viewer-token-*` custom properties
+ * (shared with the editor via the CodeMirror highlight style). Override them
+ * per-instance to swap the theme.
  *
  * @element nldd-code-viewer
  *
  * @attr {'simple'|'box'} variant - Visual style. `box` (default) is a framed
  *   card with rounded corners, padding, fill, and a 1px border ring. `simple`
- *   drops the entire frame (no corners, no padding, no fill, no ring) — use
- *   when embedding inside a parent that supplies its own surface.
+ *   drops the entire frame — use when embedding inside a parent surface.
  * @attr {'tinted'|'base'} background - Surface fill when `variant="box"`.
- *   `tinted` (default) for a card on a plain page; `base` for a card on an
- *   already-tinted parent (the border ring picks the +2-step semantic so the
- *   frame still reads against a card-on-card).
- * @attr {string} language - Grammar to highlight with (yaml, json, javascript, typescript, css, html, xml, bash, markdown, rust, gherkin, toml, sql, python). Empty disables highlighting.
+ * @attr {string} language - Grammar to highlight with. Empty disables highlighting.
  * @attr {boolean} no-copy - Hide the copy-to-clipboard button (shown by default).
  * @attr {boolean} wrap - Wrap long lines instead of horizontal scroll
  *
- * @slot - Default slot for the code/text content
+ * @slot - Default slot for the code/text content (also the copy source)
  */
-import { LitElement } from 'lit';
 import { customElement, property, state } from 'lit/decorators.js';
-import Prism from 'prismjs';
+import { EditorView } from '@codemirror/view';
+import { Compartment, EditorState, type Extension } from '@codemirror/state';
+import { NLDDCodeMirrorElement } from '../../../utilities/codemirror/codemirror-element.js';
+import { nlddCodeMirrorTheme } from '../../../utilities/codemirror/theme.js';
+import { loadLanguage } from '../../../utilities/codemirror/languages.js';
 import { codeViewerStyles } from './code-viewer.styles.js';
 import { codeViewerTemplate } from './code-viewer.template.js';
 import { nlddCodeViewerTranslations } from './code-viewer.i18n.js';
@@ -61,51 +49,11 @@ export type CodeViewerCopyState = 'idle' | 'success' | 'failure';
 
 const COPY_FEEDBACK_DURATION_MS = 2000;
 
-/* Map our public language names to Prism grammar loaders. `html` and `xml`
- * share the markup grammar (covers html/xml/svg). Static `import()` calls let
- * the bundler emit one chunk per file, so consumers only download
- * grammars they actually render. */
-const GRAMMAR_LOADERS: Record<string, () => Promise<unknown>> = {
-	yaml: () => import('prismjs/components/prism-yaml.js'),
-	json: () => import('prismjs/components/prism-json.js'),
-	javascript: () => import('prismjs/components/prism-javascript.js'),
-	typescript: () => import('prismjs/components/prism-typescript.js'),
-	css: () => import('prismjs/components/prism-css.js'),
-	html: () => import('prismjs/components/prism-markup.js'),
-	xml: () => import('prismjs/components/prism-markup.js'),
-	bash: () => import('prismjs/components/prism-bash.js'),
-	markdown: () => import('prismjs/components/prism-markdown.js'),
-	rust: () => import('prismjs/components/prism-rust.js'),
-	gherkin: () => import('prismjs/components/prism-gherkin.js'),
-	toml: () => import('prismjs/components/prism-toml.js'),
-	sql: () => import('prismjs/components/prism-sql.js'),
-	python: () => import('prismjs/components/prism-python.js'),
-};
-
-const grammarLoads = new Map<string, Promise<unknown>>();
-
-function loadGrammar(language: string): Promise<unknown> | undefined {
-	const loader = GRAMMAR_LOADERS[language];
-	if (!loader) return undefined;
-	let pending = grammarLoads.get(language);
-	if (!pending) {
-		// Drop the cache entry on failure so a subsequent attempt can retry
-		// the import (e.g. transient chunk-load failure on a flaky network).
-		pending = loader().catch((err) => {
-			grammarLoads.delete(language);
-			throw err;
-		});
-		grammarLoads.set(language, pending);
-	}
-	return pending;
-}
-
 @customElement('nldd-code-viewer')
-export class NLDDCodeViewer extends LitElement {
+export class NLDDCodeViewer extends NLDDCodeMirrorElement {
 	static override styles = codeViewerStyles;
 
-	/** Visual style. `box` (default) is a framed card; `simple` drops the
-	 *  entire frame for embedding in a consumer-provided container. */
+	/** Visual style. `box` (default) is a framed card; `simple` drops the frame. */
 	@property({ type: String, reflect: true })
 	variant: 'simple' | 'box' = 'box';
 
@@ -128,18 +76,31 @@ export class NLDDCodeViewer extends LitElement {
 	translations: Partial<NLDDCodeViewerTranslations> = {};
 
 	@state()
-	_highlightedHtml = '';
-
-	@state()
 	_isScrollable = false;
 
 	@state()
 	_copyState: CodeViewerCopyState = 'idle';
 
-	private _highlightPending: Promise<void> = Promise.resolve();
+	private _languageCompartment = new Compartment();
+	private _wrapCompartment = new Compartment();
+	private _languagePending: Promise<void> = Promise.resolve();
 	private _unsubscribeScheme?: () => void;
 	private _resizeObserver?: ResizeObserver;
 	private _copyResetTimer?: ReturnType<typeof setTimeout>;
+
+	protected getEditorParent(): HTMLElement | null | undefined {
+		return this.shadowRoot?.querySelector('.code-viewer') as HTMLElement | null;
+	}
+
+	protected buildExtensions(): Extension[] {
+		return [
+			nlddCodeMirrorTheme,
+			EditorView.editable.of(false),
+			EditorState.readOnly.of(true),
+			this._wrapCompartment.of(this.wrap ? EditorView.lineWrapping : []),
+			this._languageCompartment.of([]),
+		];
+	}
 
 	override render() {
 		return codeViewerTemplate(this);
@@ -147,12 +108,10 @@ export class NLDDCodeViewer extends LitElement {
 
 	override connectedCallback(): void {
 		super.connectedCallback();
-		/* The .code-viewer block has overflow-x: auto and tends to scroll wide
-		 * content. Browsers cache off-screen tiles for its scroll layer and
-		 * don't reliably invalidate them when light-dark() colors flip with
-		 * color-scheme, so scroll back after a theme switch shows stale
-		 * paint. Drop the layer on each scheme change to repaint clean. */
-		this._unsubscribeScheme = onColorSchemeChange(() => this._repaintCodeBlock());
+		/* CodeMirror's scroller caches off-screen tiles; light-dark() colors
+		 * don't reliably repaint on a color-scheme flip, so drop the layer on
+		 * each scheme change to repaint clean. */
+		this._unsubscribeScheme = onColorSchemeChange(() => this._repaint());
 	}
 
 	override disconnectedCallback(): void {
@@ -166,41 +125,91 @@ export class NLDDCodeViewer extends LitElement {
 	}
 
 	override firstUpdated(): void {
-		const pre = this.shadowRoot?.querySelector('.code-viewer') as HTMLElement | null;
-		if (!pre) return;
-		this._resizeObserver = new ResizeObserver(() => this._updateScrollable(pre));
-		this._resizeObserver.observe(pre);
-		this._updateScrollable(pre);
-	}
-
-	_onSlotChange(e: Event) {
-		this._refreshHighlight(e.target as HTMLSlotElement);
-	}
-
-	override updated(changed: Map<string, unknown>) {
-		if (changed.has('language')) this._refreshHighlight();
-		/* Re-evaluate scrollability whenever something other than _isScrollable
-		 * itself changes. Content swaps (slot/highlight) and wrap toggles can
-		 * change overflow without resizing the pre, so ResizeObserver alone
-		 * misses them. */
-		if (changed.size > 0 && !(changed.size === 1 && changed.has('_isScrollable'))) {
-			const pre = this.shadowRoot?.querySelector('.code-viewer') as HTMLElement | null;
-			if (pre) this._updateScrollable(pre);
+		this.mountEditor(this._getRawText());
+		const scroller = this.view?.scrollDOM;
+		if (scroller) {
+			this._resizeObserver = new ResizeObserver(() => this._updateScrollable());
+			this._resizeObserver.observe(scroller);
 		}
+		if (this.language) this._applyLanguage();
+		this._updateScrollable();
+	}
+
+	override updated(changed: Map<string, unknown>): void {
+		if (!this.view) return;
+		if (changed.has('language')) this._applyLanguage();
+		if (changed.has('wrap')) {
+			this.reconfigure(this._wrapCompartment, this.wrap ? EditorView.lineWrapping : []);
+			this._updateScrollable();
+		}
+	}
+
+	_onSlotChange(): void {
+		this.setDoc(this._getRawText());
+		this._updateScrollable();
 	}
 
 	public _t(key: keyof NLDDCodeViewerTranslations): string {
 		return this.translations[key] ?? nlddCodeViewerTranslations[key];
 	}
 
-	private _updateScrollable(pre: HTMLElement): void {
-		this._isScrollable = !this.wrap && pre.scrollWidth > pre.clientWidth;
+	/* Lazy grammar loading is async; surface the in-flight load through
+	 * updateComplete so consumers (and tests) can await el.updateComplete and
+	 * see the final highlighted output. */
+	override async getUpdateComplete(): Promise<boolean> {
+		const result = await super.getUpdateComplete();
+		await this._languagePending;
+		return result;
 	}
 
-	/* Read the raw, unhighlighted slot text. Prism wraps tokens in spans for
-	 * the visual highlight, but the user clicking "copy" wants what they'd
-	 * have typed — so go to the assigned light-DOM nodes, not the rendered
-	 * shadow content. */
+	private _applyLanguage(): void {
+		this._languagePending = this._runLanguage();
+	}
+
+	private async _runLanguage(): Promise<void> {
+		const lang = this.language;
+		if (!lang) {
+			this.reconfigure(this._languageCompartment, []);
+			return;
+		}
+		const pending = loadLanguage(lang);
+		if (!pending) {
+			this.reconfigure(this._languageCompartment, []);
+			return;
+		}
+		try {
+			const support = await pending;
+			// The attribute may have changed while the grammar was loading.
+			if (this.language === lang) {
+				this.reconfigure(this._languageCompartment, support);
+				this._updateScrollable();
+			}
+		} catch {
+			this.reconfigure(this._languageCompartment, []);
+		}
+	}
+
+	/* The horizontally-scrollable region is CodeMirror's scroller. Mark it
+	 * focusable + labelled when content overflows so keyboard and screen-reader
+	 * users can reach and announce it (WCAG 2.1.1). */
+	private _updateScrollable(): void {
+		const scroller = this.view?.scrollDOM;
+		if (!scroller) return;
+		const scrollable = !this.wrap && scroller.scrollWidth > scroller.clientWidth;
+		this._isScrollable = scrollable;
+		if (scrollable) {
+			scroller.setAttribute('tabindex', '0');
+			scroller.setAttribute('role', 'region');
+			scroller.setAttribute('aria-label', this._t('components.code-viewer.region-label'));
+		} else {
+			scroller.removeAttribute('tabindex');
+			scroller.removeAttribute('role');
+			scroller.removeAttribute('aria-label');
+		}
+	}
+
+	/* Read the raw slot text — what the user would have typed — not the
+	 * rendered (tokenised) CodeMirror DOM. Also the document source. */
 	private _getRawText(): string {
 		const slot = this.shadowRoot?.querySelector('slot');
 		if (!slot) return '';
@@ -222,61 +231,15 @@ export class NLDDCodeViewer extends LitElement {
 		}, COPY_FEEDBACK_DURATION_MS);
 	}
 
-	/** Escape on the open feedback tooltip dismisses it early (WCAG 1.4.13:
-	 *  persistent hover/focus content must be dismissible without moving
-	 *  focus). nldd-tooltip emits nldd-tooltip-dismiss because the consumer
-	 *  owns its open lifecycle; we honour it by clearing the feedback state
-	 *  and cancelling the auto-reset timer. */
+	/** Escape on the open feedback tooltip dismisses it early (WCAG 1.4.13). */
 	public _onCopyDismiss(): void {
 		clearTimeout(this._copyResetTimer);
 		this._copyState = 'idle';
 	}
 
-	private _repaintCodeBlock(): void {
-		const block = this.shadowRoot?.querySelector('.code-viewer') as HTMLElement | null;
-		if (block) forceScrollLayerRepaint(block);
-	}
-
-	/* Lazy grammar loading is async; surface the in-flight highlight
-	 * through updateComplete so consumers (and tests) can `await
-	 * el.updateComplete` and see the final highlighted output. */
-	override async getUpdateComplete(): Promise<boolean> {
-		const result = await super.getUpdateComplete();
-		await this._highlightPending;
-		return result;
-	}
-
-	private _refreshHighlight(slot?: HTMLSlotElement) {
-		this._highlightPending = this._runHighlight(slot);
-	}
-
-	private async _runHighlight(slot?: HTMLSlotElement) {
-		if (!this.language) {
-			this._highlightedHtml = '';
-			return;
-		}
-		const language = this.language;
-		if (!Prism.languages[language]) {
-			const pending = loadGrammar(language);
-			if (!pending) {
-				this._highlightedHtml = '';
-				return;
-			}
-			await pending;
-			if (this.language !== language) return;
-		}
-		const grammar = Prism.languages[language];
-		if (!grammar) {
-			this._highlightedHtml = '';
-			return;
-		}
-		const target = slot ?? this.shadowRoot?.querySelector('slot');
-		if (!target) return;
-		const text = target
-			.assignedNodes({ flatten: true })
-			.map((n) => n.textContent ?? '')
-			.join('');
-		this._highlightedHtml = Prism.highlight(text, grammar, language);
+	private _repaint(): void {
+		const scroller = this.view?.scrollDOM;
+		if (scroller) forceScrollLayerRepaint(scroller);
 	}
 }
 

@@ -1,9 +1,9 @@
-import type { LanguageSupport } from '@codemirror/language';
+import { LanguageSupport, StreamLanguage } from '@codemirror/language';
 
 /* Lazy per-language loading: each grammar is a separate dynamic import, so a
  * page only downloads the grammars it actually renders (mirrors how the old
- * Prism-based code-viewer loaded grammars on demand). More languages are added
- * here as the code-viewer migrates. */
+ * Prism-based code-viewer loaded grammars on demand). Shared by the editor
+ * and the read-only viewer. */
 type Loader = () => Promise<LanguageSupport>;
 
 const loaders: Record<string, Loader> = {
@@ -11,6 +11,17 @@ const loaders: Record<string, Loader> = {
 	yaml: async () => (await import('@codemirror/lang-yaml')).yaml(),
 	javascript: async () => (await import('@codemirror/lang-javascript')).javascript(),
 	typescript: async () => (await import('@codemirror/lang-javascript')).javascript({ typescript: true }),
+	css: async () => (await import('@codemirror/lang-css')).css(),
+	html: async () => (await import('@codemirror/lang-html')).html(),
+	xml: async () => (await import('@codemirror/lang-xml')).xml(),
+	python: async () => (await import('@codemirror/lang-python')).python(),
+	rust: async () => (await import('@codemirror/lang-rust')).rust(),
+	sql: async () => (await import('@codemirror/lang-sql')).sql(),
+	markdown: async () => (await import('@codemirror/lang-markdown')).markdown(),
+	// No official lang-* package — wrap the legacy StreamLanguage modes.
+	bash: async () => new LanguageSupport(StreamLanguage.define((await import('@codemirror/legacy-modes/mode/shell')).shell)),
+	toml: async () => new LanguageSupport(StreamLanguage.define((await import('@codemirror/legacy-modes/mode/toml')).toml)),
+	gherkin: async () => new LanguageSupport(StreamLanguage.define((await import('@codemirror/legacy-modes/mode/gherkin')).gherkin)),
 };
 
 const cache = new Map<string, Promise<LanguageSupport>>();
