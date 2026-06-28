@@ -162,6 +162,10 @@ export const textEditorStyles = css`
 	.cm-md-mention-chip {
 		display: inline-flex;
 		align-items: center;
+		/* Centre on the line (not the inline-flex baseline, which is the icon's
+		   bottom) so the token doesn't grow the line height. */
+		vertical-align: middle;
+		line-height: 1;
 		gap: 0.1em;
 		/* In-flow (not absolute): the icon always moves with the token. Safari can
 		   fail to repaint an absolutely-positioned child when CodeMirror
