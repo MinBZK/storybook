@@ -2,7 +2,8 @@ import { html, nothing } from 'lit';
 import './text-editor.js';
 import '../../actions/toolbar/toolbar.js';
 import '../../inputs/segmented-control/segmented-control.js';
-import '../../inputs/dropdown/dropdown.js';
+import '../../actions/button/button.js';
+import '../../actions/menu/menu.js';
 
 const SAMPLE = `# Zorgtoeslag
 
@@ -182,10 +183,11 @@ export const WithToolbar = {
 			const value = event.detail.value as string;
 			editorOf(event.currentTarget as Element)?.setList(value === 'numbered' ? 'ordered' : value);
 		};
-		const onHeadingChange = (event: Event) => {
-			const dropdown = event.currentTarget as Element;
-			const select = dropdown.querySelector('select');
-			if (select) editorOf(dropdown)?.setHeading(Number(select.value));
+		const HEADING_LABELS = ['Normaal', 'Heading 1', 'Heading 2', 'Heading 3', 'Heading 4', 'Heading 5', 'Heading 6'];
+		const onHeadingSelect = (event: Event) => {
+			const item = event.target as HTMLElement;
+			if (item?.tagName !== 'NLDD-MENU-ITEM') return;
+			editorOf(event.currentTarget as Element)?.setHeading(Number(item.getAttribute('value') ?? 0));
 		};
 		// Editor → controls: reflect the active formats at the caret.
 		const onState = (event: CustomEvent) => {
@@ -200,8 +202,11 @@ export const WithToolbar = {
 			reflect('quote', ['quote']);
 			const list: any = root.querySelector('[data-group="list"]');
 			if (list) list.value = active.orderedList ? 'numbered' : active.bulletList ? 'bullet' : 'none';
-			const heading = root.querySelector('[data-group="heading"] select') as HTMLSelectElement | null;
-			if (heading) heading.value = String(active.heading);
+			const headingButton: any = root.querySelector('[data-group="heading"]');
+			if (headingButton) headingButton.text = HEADING_LABELS[active.heading] ?? 'Normaal';
+			root.querySelectorAll('#heading-menu nldd-menu-item').forEach((item) => {
+				(item as any).selected = Number(item.getAttribute('value')) === active.heading;
+			});
 		};
 		return html`
 			<div class="demo-editor" @nldd-text-editor-state=${onState}>
@@ -255,17 +260,16 @@ export const WithToolbar = {
 						</nldd-segmented-control>
 					</nldd-toolbar-item>
 					<nldd-toolbar-item slot="start" label="Tekststijl">
-						<nldd-dropdown data-group="heading" size="sm" width="160px" @change=${onHeadingChange}>
-							<select aria-label="Tekststijl">
-								<option value="0">Normaal</option>
-								<option value="1">Heading 1</option>
-								<option value="2">Heading 2</option>
-								<option value="3">Heading 3</option>
-							</select>
-						</nldd-dropdown>
+						<nldd-button id="heading-button" data-group="heading" expandable text="Normaal"></nldd-button>
+						<nldd-menu id="heading-menu" anchor="heading-button" @select=${onHeadingSelect}>
+							<nldd-menu-item type="radio" value="0" text="Normaal" selected></nldd-menu-item>
+							<nldd-menu-item type="radio" value="1" text="Heading 1"></nldd-menu-item>
+							<nldd-menu-item type="radio" value="2" text="Heading 2"></nldd-menu-item>
+							<nldd-menu-item type="radio" value="3" text="Heading 3"></nldd-menu-item>
+						</nldd-menu>
 					</nldd-toolbar-item>
 				</nldd-toolbar>
-				<nldd-text-editor variant="box" rows="10" .value=${SAMPLE} accessible-label="Tekst"></nldd-text-editor>
+				<nldd-text-editor variant="simple" rows="10" .value=${SAMPLE} accessible-label="Tekst"></nldd-text-editor>
 			</div>
 		`;
 	},
@@ -273,7 +277,7 @@ export const WithToolbar = {
 		controls: { disable: true },
 		docs: {
 			description: {
-				story: 'De editor is headless. Deze toolbar is opgebouwd uit DS-componenten — `nldd-toolbar` met icon-`nldd-segmented-control`s (nadruk vet/cursief, code, citaat, en een exclusieve lijst-keuze geen/opsomming/genummerd) en een `nldd-dropdown` voor de tekststijl (Normaal/Heading 1/…). Tweerichtings gekoppeld: de controls sturen de editor (`runCommand`, `setList`, `setHeading`) en het `nldd-text-editor-state`-event zet hun actieve staat. Sneltoetsen Cmd/Ctrl+B/I/E/K werken ook.',
+				story: 'De editor is headless. Deze toolbar is opgebouwd uit DS-componenten — `nldd-toolbar` met icon-`nldd-segmented-control`s (nadruk vet/cursief, code, citaat, en een exclusieve lijst-keuze geen/opsomming/genummerd) en een uitklapbare `nldd-button` met een `nldd-menu` voor de tekststijl (Normaal/Heading 1/…). Tweerichtings gekoppeld: de controls sturen de editor (`runCommand`, `setList`, `setHeading`) en het `nldd-text-editor-state`-event zet hun actieve staat. Sneltoetsen Cmd/Ctrl+B/I/E/K werken ook.',
 			},
 		},
 	},
