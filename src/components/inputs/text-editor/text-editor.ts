@@ -14,10 +14,11 @@
  *
  * Headless: there is no built-in toolbar. A consumer drives formatting via the
  * command methods (toggleBold/toggleItalic/toggleInlineCode/toggleStrikethrough/
- * toggleHeading/toggleBulletList/toggleQuote/toggleLink/runCommand), reads the
- * active formats with getState(), listens to the nldd-text-editor-state event
- * to render toggle states, and forwards padding clicks with focusFromPoint().
- * Cmd/Ctrl+B/I/E/K are bound out of the box. Commands keep focus on the editor.
+ * toggleHeading/toggleBulletList/toggleQuote/toggleLink/runCommand to toggle, and
+ * setHeading/setList for picker-style "set" semantics), reads the active formats
+ * with getState(), listens to the nldd-text-editor-state event to render toggle
+ * states, and forwards padding clicks with focusFromPoint(). Cmd/Ctrl+B/I/E/K are
+ * bound out of the box. Commands keep focus on the editor.
  *
  * @element nldd-text-editor
  *
@@ -55,7 +56,9 @@ import { markdownEditing } from './text-editor.markdown.js';
 import {
 	toggleInlineWrap,
 	toggleHeading as cmToggleHeading,
+	setHeading as cmSetHeading,
 	toggleBulletList as cmToggleBulletList,
+	setList as cmSetList,
 	toggleQuote as cmToggleQuote,
 	toggleLink as cmToggleLink,
 	readActiveFormats,
@@ -247,8 +250,20 @@ export class NLDDTextEditor extends NLDDCodeMirrorElement {
 		if (this.view) cmToggleHeading(this.view, level);
 	}
 
+	/** Set the block to a heading level (0 = paragraph) without toggling — for a
+	 *  picker where choosing a level always applies it. */
+	setHeading(level: HeadingLevel): void {
+		if (this.view) cmSetHeading(this.view, level);
+	}
+
 	toggleBulletList(): void {
 		if (this.view) cmToggleBulletList(this.view);
+	}
+
+	/** Set the list type, replacing any existing list ('none' strips it) — for an
+	 *  exclusive list picker. */
+	setList(type: 'none' | 'bullet' | 'ordered'): void {
+		if (this.view) cmSetList(this.view, type);
 	}
 
 	toggleQuote(): void {

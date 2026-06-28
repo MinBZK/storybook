@@ -23,7 +23,7 @@ export const textEditorStyles = css`
 		   list/quote markers are mono so the hanging indent equals their width. */
 		--_marker-advance: calc(0.6 * var(--_marker-font-size));
 		/* The # marker scales to this fraction of its heading (see below). */
-		--_heading-marker-scale: 60%;
+		--_heading-marker-scale: 75%;
 		--_rows: 6;
 
 		${inheritedTextReset}

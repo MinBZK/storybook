@@ -16,6 +16,7 @@ export interface TextEditorActiveFormats {
 	strikethrough: boolean;
 	link: boolean;
 	bulletList: boolean;
+	orderedList: boolean;
 	quote: boolean;
 	heading: HeadingLevel;
 }
@@ -33,6 +34,7 @@ export const EMPTY_FORMATS: TextEditorActiveFormats = {
 	strikethrough: false,
 	link: false,
 	bulletList: false,
+	orderedList: false,
 	quote: false,
 	heading: 0,
 };
@@ -109,6 +111,15 @@ export function toggleHeading(view: EditorView, level: HeadingLevel): void {
 	});
 }
 
+/** Set the selected lines to heading `level` (0 = paragraph), without toggling.
+ *  Suited to a picker where choosing a level always applies it. */
+export function setHeading(view: EditorView, level: HeadingLevel): void {
+	mapSelectedLines(view, (text) => {
+		const body = text.replace(/^#{1,6}\s+/, '');
+		return level === 0 ? body : `${'#'.repeat(level)} ${body}`;
+	});
+}
+
 export function toggleBulletList(view: EditorView): void {
 	const re = /^(\s*)[-*]\s+/;
 	const allBulleted = everySelectedLine(view, (t) => re.test(t) || t.trim() === '');
@@ -117,6 +128,33 @@ export function toggleBulletList(view: EditorView): void {
 		if (allBulleted) return t.replace(re, '$1');
 		return re.test(t) ? t : t.replace(/^(\s*)/, '$1- ');
 	});
+}
+
+const LIST_STRIP_RE = /^(\s*)(?:[-*+]|\d+[.)])\s+/;
+
+/** Set the selected lines to a list of `type`, replacing any existing list
+ *  marker; `'none'` strips it. Ordered items are numbered within the selection.
+ *  Unlike the toggles, this cleanly switches between list types (for a picker). */
+export function setList(view: EditorView, type: 'none' | 'bullet' | 'ordered'): void {
+	const { state } = view;
+	const { from, to } = state.selection.main;
+	const first = state.doc.lineAt(from).number;
+	const last = state.doc.lineAt(to).number;
+	const changes: { from: number; to: number; insert: string }[] = [];
+	let number = 0;
+	for (let i = first; i <= last; i++) {
+		const line = state.doc.line(i);
+		const stripped = line.text.replace(LIST_STRIP_RE, '$1');
+		let next = stripped;
+		if (type !== 'none' && stripped.trim() !== '') {
+			number += 1;
+			const marker = type === 'bullet' ? '- ' : `${number}. `;
+			next = stripped.replace(/^(\s*)/, `$1${marker}`);
+		}
+		if (next !== line.text) changes.push({ from: line.from, to: line.to, insert: next });
+	}
+	if (changes.length) view.dispatch({ changes });
+	view.focus();
 }
 
 export function toggleQuote(view: EditorView): void {
@@ -156,6 +194,7 @@ export function readActiveFormats(view: EditorView): TextEditorActiveFormats {
 		strikethrough: has('Strikethrough'),
 		link: has('Link'),
 		bulletList: has('BulletList'),
+		orderedList: has('OrderedList'),
 		quote: has('Blockquote'),
 		heading: (headingMatch ? headingMatch[1].length : 0) as HeadingLevel,
 	};

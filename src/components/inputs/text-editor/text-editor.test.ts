@@ -199,4 +199,46 @@ describe('nldd-text-editor', () => {
 		expect(el2.value).toBe('*tekst*');
 		cleanup(el2);
 	});
+
+	it('setList sets and switches list types', async () => {
+		const el2 = await withValue('punt');
+		const api = el2 as unknown as { view: { dispatch(spec: unknown): void }; setList(t: string): void };
+		api.view.dispatch({ selection: { anchor: 0 } });
+		api.setList('bullet');
+		await waitForUpdate(el2);
+		expect(el2.value).toBe('- punt');
+		api.setList('ordered');
+		await waitForUpdate(el2);
+		expect(el2.value).toBe('1. punt');
+		api.setList('none');
+		await waitForUpdate(el2);
+		expect(el2.value).toBe('punt');
+		cleanup(el2);
+	});
+
+	it('setHeading sets a level without toggling off', async () => {
+		const el2 = await withValue('Titel');
+		const api = el2 as unknown as { view: { dispatch(spec: unknown): void }; setHeading(l: number): void };
+		api.view.dispatch({ selection: { anchor: 0 } });
+		api.setHeading(2);
+		await waitForUpdate(el2);
+		expect(el2.value).toBe('## Titel');
+		api.setHeading(2);
+		await waitForUpdate(el2);
+		expect(el2.value).toBe('## Titel');
+		api.setHeading(0);
+		await waitForUpdate(el2);
+		expect(el2.value).toBe('Titel');
+		cleanup(el2);
+	});
+
+	it('getState reports the ordered-list type', async () => {
+		const el2 = await withValue('1. een');
+		const api = el2 as unknown as { view: { dispatch(spec: unknown): void }; getState(): { active: { orderedList: boolean; bulletList: boolean } } };
+		api.view.dispatch({ selection: { anchor: 3 } });
+		const active = api.getState().active;
+		expect(active.orderedList).toBe(true);
+		expect(active.bulletList).toBe(false);
+		cleanup(el2);
+	});
 });
