@@ -947,6 +947,35 @@ A switch toggle with an inline label for use in forms.
 | --- | --- |
 | `change` | When checked state changes; detail: { checked: boolean, value: string } |
 
+### `<nldd-text-editor>`
+
+A hybrid markdown editor built on CodeMirror 6 (via NLDDCodeMirrorElement): the document stays plain markdown text, but formatting is shown inline (bold is bold, headings are larger, links are coloured) while the syntax markers stay visible, only dimmed — the iA Writer / Kirby approach. No WYSIWYG tree, so the data stays portable. Default `variant="simple"` is bare (no frame, no focus ring) for use inside a composition (e.g. a message field) that owns its chrome and focus; the caret is a prominent accent. `variant="box"` adds a framed surface + focus ring. `font` is `sans` (default, best for prose) or `mono`. Headless: there is no built-in toolbar — a consumer drives formatting via the command/state API (added incrementally) and forwards padding clicks with `focusFromPoint()`.
+
+**Attributes**
+
+| Attribuut | Type | Beschrijving |
+| --- | --- | --- |
+| `value` | `string` | Editor content (markdown) |
+| `placeholder` | `string` | Placeholder text shown while empty |
+| `input-id` | `string` | Sets the id on the editable element. Set automatically by nldd-form-field. |
+| `disabled` | `boolean` | Disabled state |
+| `name` | `string` | Field name for form submission |
+| `readonly` | `boolean` | Readonly state (focusable and selectable, not editable) |
+| `required` | `boolean` | Required state |
+| `wrap` | `boolean` | Wrap long lines (default true; prose wraps) |
+| `rows` | `number` | Minimum visible rows (the floor in every resize mode). Default: 6. |
+| `resize` | `string` | 'none' (fixed) \| 'vertical' (default) \| 'auto' (grow) |
+| `variant` | `string` | 'simple' (default, bare) \| 'box' (framed surface) |
+| `font` | `string` | 'sans' (default) \| 'mono' |
+| `accessible-label` | `string` | Accessible label forwarded to the editor. Set automatically by nldd-form-field. |
+
+**Events**
+
+| Event | Beschrijving |
+| --- | --- |
+| `input` | When the content changes (detail: { value }) |
+| `change` | When the content is committed on blur (detail: { value }) |
+
 ### `<nldd-text-field>`
 
 **Attributes**
