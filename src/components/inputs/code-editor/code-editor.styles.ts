@@ -105,9 +105,10 @@ export const codeEditorStyles = css`
 		tab-size: 2;
 	}
 
-	/* Simple variant has no focus ring, so the caret is the focus cue: make it
-	   a prominent accent and a touch thicker. */
-	:host([variant="simple"]) .cm-cursor {
+	/* Prominent accent caret in both variants (box additionally has the focus
+	   ring). The [variant] attribute is always present, so this outweighs the
+	   theme's default cursor colour. */
+	:host([variant]) .cm-cursor {
 		border-left-color: var(--primitives-color-accent-600);
 		border-left-width: 2px;
 	}
