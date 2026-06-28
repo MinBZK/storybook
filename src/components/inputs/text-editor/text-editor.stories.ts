@@ -3,6 +3,7 @@ import './text-editor.js';
 import '../../actions/toolbar/toolbar.js';
 import '../../inputs/segmented-control/segmented-control.js';
 import '../../actions/button/button.js';
+import '../../actions/icon-button/icon-button.js';
 import '../../actions/menu/menu.js';
 
 const SAMPLE = `# Zorgtoeslag
@@ -189,6 +190,7 @@ export const WithToolbar = {
 			if (item?.tagName !== 'NLDD-MENU-ITEM') return;
 			editorOf(event.currentTarget as Element)?.setHeading(Number(item.getAttribute('value') ?? 0));
 		};
+		const onLink = (event: Event) => editorOf(event.currentTarget as Element)?.toggleLink();
 		// Editor → controls: reflect the active formats at the caret.
 		const onState = (event: CustomEvent) => {
 			const active = event.detail.active;
@@ -234,6 +236,9 @@ export const WithToolbar = {
 							<nldd-segmented-control-item value="inlineCode" text="Code" icon="code"></nldd-segmented-control-item>
 						</nldd-segmented-control>
 					</nldd-toolbar-item>
+					<nldd-toolbar-item slot="start" label="Link">
+						<nldd-icon-button icon="link" text="Link" @click=${onLink}></nldd-icon-button>
+					</nldd-toolbar-item>
 					<nldd-toolbar-item slot="start" label="Citaat">
 						<nldd-segmented-control
 							data-group="quote"
@@ -263,9 +268,13 @@ export const WithToolbar = {
 						<nldd-button id="heading-button" data-group="heading" expandable text="Normaal"></nldd-button>
 						<nldd-menu id="heading-menu" anchor="heading-button" @select=${onHeadingSelect}>
 							<nldd-menu-item type="radio" value="0" text="Normaal" selected></nldd-menu-item>
+							<nldd-menu-divider></nldd-menu-divider>
 							<nldd-menu-item type="radio" value="1" text="Heading 1"></nldd-menu-item>
 							<nldd-menu-item type="radio" value="2" text="Heading 2"></nldd-menu-item>
 							<nldd-menu-item type="radio" value="3" text="Heading 3"></nldd-menu-item>
+							<nldd-menu-item type="radio" value="4" text="Heading 4"></nldd-menu-item>
+							<nldd-menu-item type="radio" value="5" text="Heading 5"></nldd-menu-item>
+							<nldd-menu-item type="radio" value="6" text="Heading 6"></nldd-menu-item>
 						</nldd-menu>
 					</nldd-toolbar-item>
 				</nldd-toolbar>
