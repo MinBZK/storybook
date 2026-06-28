@@ -163,7 +163,7 @@ export const textEditorStyles = css`
 		position: relative;
 		/* Left padding reserves a fixed slot for the @ icon (positioned into it
 		   below); right padding is breathing room. */
-		padding-inline: 1.2em 0.4em;
+		padding-inline: 1.4em 0.4em;
 		color: var(--semantics-categories-accent-tinted-primary-content-color);
 		background-color: var(--semantics-categories-accent-tinted-background-color);
 		border-radius: var(--primitives-corner-radius-sm);
@@ -176,8 +176,8 @@ export const textEditorStyles = css`
 		left: 0.3em;
 		top: 50%;
 		transform: translateY(-50%);
-		width: 0.85em;
-		height: 0.85em;
+		width: 1em;
+		height: 1em;
 	}
 	.cm-md-url { color: var(--semantics-input-fields-placeholder-color); }
 	/* Blockquote reads at the lg (20px) step in sans, primary content colour; in
