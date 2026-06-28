@@ -564,7 +564,7 @@ A checkbox with an inline label for use in forms.
 
 ### `<nldd-code-editor>`
 
-A monospace editor for code, YAML, JSON and other technical content, built on CodeMirror 6 (via NLDDCodeMirrorElement). Visually pairs with nldd-code-viewer for a matching read-only surface. Default `variant="simple"` is a bare editor (no frame), for use inside an nldd-form-field that supplies its own chrome. `variant="box"` adds the framed surface (border ring, tinted fill, padding, radius) for standalone use. Optional `language` enables lazy syntax highlighting; `line-numbers` adds a gutter. Spellcheck/autocorrect are off since they don't help on code.
+A monospace editor for code, YAML, JSON and other technical content, built on CodeMirror 6 (via NLDDCodeMirrorElement). Visually pairs with nldd-code-viewer for a matching read-only surface. Default `variant="simple"` is a bare editor (no frame, no focus ring) for use inside an nldd-form-field or a consumer composition that owns its own focus treatment; the caret is rendered as a prominent accent as the focus cue. `variant="box"` adds the framed surface (border ring, tinted fill, padding, radius) and a focus ring for standalone use. Optional `language` enables lazy syntax highlighting; `line-numbers` adds a gutter. The inner (clickable) padding is settable with `padding`.
 
 **Attributes**
 
@@ -578,10 +578,11 @@ A monospace editor for code, YAML, JSON and other technical content, built on Co
 | `readonly` | `boolean` | Readonly state (focusable and selectable, not editable) |
 | `required` | `boolean` | Required state |
 | `wrap` | `boolean` | Wrap long lines instead of horizontal scroll |
-| `rows` | `number` | Minimum visible rows. Default: 6. |
-| `resize` | `string` | 'none' \| 'vertical' (default) \| 'auto' |
+| `rows` | `number` | Minimum visible rows (the floor in every resize mode). Default: 6. |
+| `resize` | `string` | 'none' (fixed) \| 'vertical' (default) \| 'auto' (grow) |
 | `variant` | `string` | 'simple' (default, bare) \| 'box' (framed surface) |
-| `language` | `string` | Highlight grammar (json, yaml, javascript, typescript). Empty disables highlighting. |
+| `padding` | `string` | Inner clickable padding as a spacing token (e.g. "16"). Default: 0 for simple, 16 for box. |
+| `language` | `string` | Highlight grammar (yaml, json, javascript, typescript, css, html, xml, bash, markdown, rust, gherkin, toml, sql, python). Empty disables highlighting. |
 | `line-numbers` | `boolean` | Show a line-number gutter |
 | `accessible-label` | `string` | Accessible label forwarded to the editor. Set automatically by nldd-form-field. |
 
