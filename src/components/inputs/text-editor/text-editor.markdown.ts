@@ -5,6 +5,7 @@ import { GFM } from '@lezer/markdown';
 import { StateField, type EditorState, type Extension, type Range } from '@codemirror/state';
 import type { SyntaxNode } from '@lezer/common';
 import { MENTION_HREF_PREFIX } from './text-editor.mentions.js';
+import '../../content/icon/icon.js';
 
 /* Hybrid markdown rendering: the document stays plain markdown text, but the
  * formatting is shown inline (bold is bold, headings are larger, links are
@@ -161,11 +162,12 @@ class MentionWidget extends WidgetType {
 		const chip = document.createElement('span');
 		chip.className = 'cm-md-mention-chip';
 		chip.setAttribute('data-user', this.id);
-		// The @ is a separate, vertically-centred prefix element so it aligns
-		// optically with the name rather than sitting low as inline text.
-		const at = document.createElement('span');
+		// The @ is rendered as the DS 'at' icon — a separate, vertically-centred
+		// prefix that aligns cleanly with the name.
+		const at = document.createElement('nldd-icon');
 		at.className = 'cm-md-mention-chip__at';
-		at.textContent = '@';
+		at.setAttribute('name', 'at');
+		at.setAttribute('aria-hidden', 'true');
 		const name = document.createElement('span');
 		name.textContent = this.label;
 		chip.append(at, name);

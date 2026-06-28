@@ -170,9 +170,10 @@ export const textEditorStyles = css`
 		font-weight: 600;
 		white-space: nowrap;
 	}
-	/* The @ as a de-emphasised, optically-centred prefix. */
+	/* The @ icon as a de-emphasised, optically-centred prefix (fills this box). */
 	.cm-md-mention-chip__at {
-		font-size: 0.9em;
+		width: 0.85em;
+		height: 0.85em;
 		opacity: 0.7;
 	}
 	.cm-md-url { color: var(--semantics-input-fields-placeholder-color); }
