@@ -163,7 +163,7 @@ export const textEditorStyles = css`
 		position: relative;
 		/* Left padding reserves a fixed slot for the @ icon (positioned into it
 		   below); right padding is breathing room. */
-		padding-inline: 1.4em 0.4em;
+		padding-inline: 1.25em 0.25em;
 		color: var(--semantics-categories-accent-tinted-primary-content-color);
 		background-color: var(--semantics-categories-accent-tinted-background-color);
 		border-radius: var(--primitives-corner-radius-sm);
@@ -173,7 +173,7 @@ export const textEditorStyles = css`
 	/* The @ icon sits in the reserved left slot, vertically centred. */
 	.cm-md-mention-chip__at {
 		position: absolute;
-		left: 0.3em;
+		left: 0.15em;
 		top: 50%;
 		transform: translateY(-50%);
 		width: 1em;
