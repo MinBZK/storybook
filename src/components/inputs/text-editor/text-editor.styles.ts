@@ -22,6 +22,8 @@ export const textEditorStyles = css`
 		/* JetBrains Mono advance (600/1000 em) at the marker size; leading
 		   list/quote markers are mono so the hanging indent equals their width. */
 		--_marker-advance: calc(0.6 * var(--_marker-font-size));
+		/* The # marker scales to this fraction of its heading (see below). */
+		--_heading-marker-scale: 60%;
 		--_rows: 6;
 
 		${inheritedTextReset}
@@ -129,6 +131,12 @@ export const textEditorStyles = css`
 	.cm-md-h4 { font: var(--primitives-font-display-4-sm); }
 	.cm-md-h5 { font: var(--primitives-font-display-5-sm); }
 	.cm-md-h6 { font: var(--primitives-font-display-6-sm); }
+	/* The # marker grows with its heading (a fraction of it) so it reads as part
+	   of the heading without dominating. Headings aren't a hanging-indent prefix,
+	   so this size is free to vary. */
+	:is(.cm-md-h1, .cm-md-h2, .cm-md-h3, .cm-md-h4, .cm-md-h5, .cm-md-h6) .cm-md-mark {
+		font-size: var(--_heading-marker-scale);
+	}
 	.cm-md-strong { font-weight: 700; }
 	.cm-md-emphasis { font-style: italic; }
 	.cm-md-strike { text-decoration: line-through; }

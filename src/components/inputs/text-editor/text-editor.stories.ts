@@ -199,7 +199,7 @@ export const WithToolbar = {
 						>
 							<nldd-segmented-control-item value="bold" text="Vet" icon="bold"></nldd-segmented-control-item>
 							<nldd-segmented-control-item value="italic" text="Cursief" icon="italic"></nldd-segmented-control-item>
-							<nldd-segmented-control-item value="inlineCode" text="Code" icon="stack-code"></nldd-segmented-control-item>
+							<nldd-segmented-control-item value="inlineCode" text="Code" icon="code"></nldd-segmented-control-item>
 						</nldd-segmented-control>
 					</nldd-toolbar-item>
 					<nldd-toolbar-item slot="start" label="Blok">
