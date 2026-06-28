@@ -82,7 +82,8 @@ const popupTheme = EditorView.theme({
 	// body font wins over its monospace default — names read better in sans.
 	'.cm-tooltip.cm-tooltip-autocomplete > ul': {
 		fontFamily: 'var(--primitives-font-family-body)',
-		fontSize: 'var(--primitives-font-size-90)',
+		// Match the editor body (and the inserted chip), not a smaller popup size.
+		fontSize: 'var(--primitives-font-size-100)',
 		maxHeight: '14em',
 		// A small inset around the items, like nldd-menu.
 		margin: '0',
