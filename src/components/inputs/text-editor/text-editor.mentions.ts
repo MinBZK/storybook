@@ -1,11 +1,15 @@
 import {
 	autocompletion,
+	completionStatus,
+	startCompletion,
 	type Completion,
 	type CompletionContext,
 	type CompletionResult,
 } from '@codemirror/autocomplete';
 import { EditorView } from '@codemirror/view';
 import type { Extension } from '@codemirror/state';
+
+const MENTION_QUERY = /@[\w.\-]*$/;
 
 /* @-mention typeahead. The editor is headless and does not know any users, so
  * the consumer supplies candidates through a source callback. Selecting one
@@ -139,12 +143,24 @@ const popupTheme = EditorView.theme({
  * returns (a promise of) candidates; selecting one inserts the token and calls
  * `onInsert`. Without a source it is inert.
  */
+// CodeMirror only opens completion while typing, not on deletion. When a
+// backspace brings the query back into a matching state ("@anb" → "@an"),
+// re-open the popup right away instead of waiting for the next character.
+const reopenOnDelete = EditorView.updateListener.of((update) => {
+	if (!update.docChanged || completionStatus(update.state) !== null) return;
+	if (!update.transactions.some((tr) => tr.isUserEvent('delete'))) return;
+	const { head } = update.state.selection.main;
+	const before = update.state.sliceDoc(update.state.doc.lineAt(head).from, head);
+	if (MENTION_QUERY.test(before)) startCompletion(update.view);
+});
+
 export function mentions(
 	getSource: () => MentionSource | undefined,
 	onInsert: (detail: MentionInsertedDetail) => void,
 ): Extension {
 	return [
 		autocompletion({ override: [completionSource(getSource, onInsert)], icons: false }),
+		reopenOnDelete,
 		popupTheme,
 	];
 }
