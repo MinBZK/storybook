@@ -2,7 +2,7 @@ import { ViewPlugin, Decoration, type DecorationSet, EditorView, type ViewUpdate
 import { syntaxTree } from '@codemirror/language';
 import { markdown } from '@codemirror/lang-markdown';
 import { GFM } from '@lezer/markdown';
-import type { Extension, Range } from '@codemirror/state';
+import { StateField, type EditorState, type Extension, type Range } from '@codemirror/state';
 
 /* Hybrid markdown rendering: the document stays plain markdown text, but the
  * formatting is shown inline (bold is bold, headings are larger, links are
@@ -21,6 +21,8 @@ const NODE_CLASS: Record<string, string> = {
 	Emphasis: 'cm-md-emphasis',
 	Strikethrough: 'cm-md-strike',
 	InlineCode: 'cm-md-code',
+	FencedCode: 'cm-md-codeblock',
+	CodeBlock: 'cm-md-codeblock',
 	Link: 'cm-md-link',
 	URL: 'cm-md-url',
 	Blockquote: 'cm-md-quote',
@@ -38,7 +40,8 @@ function classDeco(cls: string): Decoration {
 	return (classDecoCache[cls] ??= Decoration.mark({ class: cls }));
 }
 
-function buildDecorations(view: EditorView): DecorationSet {
+// Inline/content styling — no layout change, so a viewport-scoped plugin.
+function buildMarkDecorations(view: EditorView): DecorationSet {
 	const ranges: Range<Decoration>[] = [];
 	for (const { from, to } of view.visibleRanges) {
 		syntaxTree(view.state).iterate({
@@ -52,29 +55,59 @@ function buildDecorations(view: EditorView): DecorationSet {
 			},
 		});
 	}
-	// Decoration.set sorts the (possibly overlapping) ranges for us.
 	return Decoration.set(ranges, true);
 }
 
-const hybridMarkdownPlugin = ViewPlugin.fromClass(
+const markDecorationPlugin = ViewPlugin.fromClass(
 	class {
 		decorations: DecorationSet;
 
 		constructor(view: EditorView) {
-			this.decorations = buildDecorations(view);
+			this.decorations = buildMarkDecorations(view);
 		}
 
 		update(update: ViewUpdate): void {
 			if (update.docChanged || update.viewportChanged) {
-				this.decorations = buildDecorations(update.view);
+				this.decorations = buildMarkDecorations(update.view);
 			}
 		}
 	},
 	{ decorations: (plugin) => plugin.decorations },
 );
 
+/* Hanging indent: wrapped continuation lines of a list item or blockquote
+ * align under the first line's text. The marker prefix is kept in the source,
+ * so the indent equals its width (in ch — exact for mono, close for sans).
+ * Line decorations affect layout, so this lives in a StateField (not a plugin). */
+const HANGING_RE = /^(\s*(?:[-*+]|\d+[.)])\s+|\s*>+\s?)/;
+const hangingDecoCache: Record<number, Decoration> = {};
+function hangingDeco(width: number): Decoration {
+	return (hangingDecoCache[width] ??= Decoration.line({
+		attributes: { style: `text-indent:-${width}ch;padding-left:${width}ch` },
+	}));
+}
+
+function buildHangingIndent(state: EditorState): DecorationSet {
+	const ranges: Range<Decoration>[] = [];
+	for (let i = 1; i <= state.doc.lines; i++) {
+		const line = state.doc.line(i);
+		const match = line.text.match(HANGING_RE);
+		if (match && match[1].length) {
+			ranges.push(hangingDeco(match[1].length).range(line.from));
+		}
+	}
+	return Decoration.set(ranges);
+}
+
+const hangingIndentField = StateField.define<DecorationSet>({
+	create: (state) => buildHangingIndent(state),
+	update: (value, tr) => (tr.docChanged ? buildHangingIndent(tr.state) : value),
+	provide: (field) => EditorView.decorations.from(field),
+});
+
 /** Markdown language (with GFM) plus the hybrid inline-styling decorations. */
 export const markdownEditing: Extension = [
 	markdown({ extensions: GFM }),
-	hybridMarkdownPlugin,
+	markDecorationPlugin,
+	hangingIndentField,
 ];

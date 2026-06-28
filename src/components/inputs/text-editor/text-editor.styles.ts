@@ -124,13 +124,20 @@ export const textEditorStyles = css`
 	.cm-md-strong { font-weight: 700; }
 	.cm-md-emphasis { font-style: italic; }
 	.cm-md-strike { text-decoration: line-through; }
+	/* Code uses the 16px monospace step so it sits next to the 18px body. */
 	.cm-md-code {
 		background-color: var(--semantics-surfaces-tinted-background-color);
 		padding: 0 0.2em;
 		font-family: var(--primitives-font-family-monospace);
+		font-size: var(--primitives-font-size-90);
+	}
+	.cm-md-codeblock {
+		font-family: var(--primitives-font-family-monospace);
+		font-size: var(--primitives-font-size-90);
 	}
 	.cm-md-link { color: var(--semantics-links-color); }
 	.cm-md-url { color: var(--semantics-input-fields-placeholder-color); }
-	.cm-md-quote { color: var(--semantics-input-fields-placeholder-color); font-style: italic; }
+	/* Blockquote reads at the lg (20px) step. */
+	.cm-md-quote { color: var(--semantics-input-fields-placeholder-color); font-style: italic; font-size: var(--primitives-font-size-200); }
 	.cm-md-mark { opacity: 0.45; }
 `;
