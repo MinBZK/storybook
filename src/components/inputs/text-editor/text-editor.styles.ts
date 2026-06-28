@@ -105,7 +105,10 @@ export const textEditorStyles = css`
 		min-height: calc(var(--_rows) * 1lh);
 	}
 
-	:host([variant="simple"]) .cm-cursor {
+	/* Prominent accent caret in both variants (box additionally has the focus
+	   ring). The [variant] attribute is always present, so this outweighs the
+	   theme's default cursor colour. */
+	:host([variant]) .cm-cursor {
 		border-left-color: var(--primitives-color-accent-600);
 		border-left-width: 2px;
 	}
