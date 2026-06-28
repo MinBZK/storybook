@@ -1,5 +1,7 @@
 import { html, nothing } from 'lit';
 import './text-editor.js';
+import '../../actions/toolbar/toolbar.js';
+import '../../inputs/segmented-control/segmented-control.js';
 
 const SAMPLE = `# Zorgtoeslag
 
@@ -161,27 +163,59 @@ export const Placeholder = {
 
 export const WithToolbar = {
 	render: () => {
-		// The editor is headless: this demo toolbar lives in the consumer and
-		// drives formatting via runCommand(). mousedown+preventDefault keeps the
-		// selection/focus on the editor.
-		const run = (name: string, payload?: unknown) => (event: Event) => {
-			const toolbar = (event.currentTarget as HTMLElement).closest('.demo-editor');
-			const editor = toolbar?.querySelector('nldd-text-editor') as (HTMLElement & { runCommand(n: string, p?: unknown): void }) | null;
-			editor?.runCommand(name, payload);
+		// The editor is headless. This demo builds a real toolbar from DS
+		// components (nldd-toolbar + icon nldd-segmented-control) and wires it both
+		// ways: the controls drive the editor via runCommand(), and the editor's
+		// nldd-text-editor-state event drives the controls' active state. No
+		// preventDefault is needed — the commands restore focus to the editor.
+		const INLINE = ['bold', 'italic', 'inlineCode'];
+		const BLOCK = ['quote', 'bulletList'];
+		const editorOf = (el: Element): any => el.closest('.demo-editor')?.querySelector('nldd-text-editor');
+		const reconcile = (el: Element, keys: string[], values: string[]) => {
+			const editor = editorOf(el);
+			if (!editor) return;
+			const active = editor.getState().active;
+			const desired = new Set(values);
+			keys.forEach((key) => { if (desired.has(key) !== Boolean(active[key])) editor.runCommand(key); });
 		};
-		const keepFocus = (event: Event) => event.preventDefault();
-		const btn = 'border:0.5px solid var(--semantics-surfaces-tinted-border-color); background:var(--semantics-surfaces-base-background-color); border-radius:6px; padding:4px 10px; cursor:pointer;';
+		const onState = (event: CustomEvent) => {
+			const active = event.detail.active;
+			const root = event.currentTarget as Element;
+			const inline: any = root.querySelector('[data-group="inline"]');
+			const block: any = root.querySelector('[data-group="block"]');
+			if (inline) inline.values = INLINE.filter((key) => active[key]);
+			if (block) block.values = BLOCK.filter((key) => active[key]);
+		};
 		return html`
-			<div class="demo-editor">
-				<div style="display:flex; gap:6px; margin-bottom:8px; flex-wrap:wrap;">
-					<button style=${btn} @mousedown=${keepFocus} @click=${run('bold')}>Vet</button>
-					<button style=${btn} @mousedown=${keepFocus} @click=${run('italic')}>Cursief</button>
-					<button style=${btn} @mousedown=${keepFocus} @click=${run('inlineCode')}>Code</button>
-					<button style=${btn} @mousedown=${keepFocus} @click=${run('heading', 2)}>H2</button>
-					<button style=${btn} @mousedown=${keepFocus} @click=${run('bulletList')}>Lijst</button>
-					<button style=${btn} @mousedown=${keepFocus} @click=${run('quote')}>Quote</button>
-				</div>
-				<nldd-text-editor variant="box" rows="8" .value=${SAMPLE} accessible-label="Tekst"></nldd-text-editor>
+			<div class="demo-editor" @nldd-text-editor-state=${onState}>
+				<nldd-toolbar size="md" style="margin-bottom: 8px;">
+					<nldd-toolbar-item slot="start" label="Tekststijl">
+						<nldd-segmented-control
+							data-group="inline"
+							type="checkbox"
+							variant="icon"
+							accessible-label="Tekststijl"
+							@change=${(event: CustomEvent) => reconcile(event.currentTarget as Element, INLINE, event.detail.values)}
+						>
+							<nldd-segmented-control-item value="bold" text="Vet" icon="bold"></nldd-segmented-control-item>
+							<nldd-segmented-control-item value="italic" text="Cursief" icon="italic"></nldd-segmented-control-item>
+							<nldd-segmented-control-item value="inlineCode" text="Code" icon="stack-code"></nldd-segmented-control-item>
+						</nldd-segmented-control>
+					</nldd-toolbar-item>
+					<nldd-toolbar-item slot="start" label="Blok">
+						<nldd-segmented-control
+							data-group="block"
+							type="checkbox"
+							variant="icon"
+							accessible-label="Blok"
+							@change=${(event: CustomEvent) => reconcile(event.currentTarget as Element, BLOCK, event.detail.values)}
+						>
+							<nldd-segmented-control-item value="quote" text="Citaat" icon="text-quote"></nldd-segmented-control-item>
+							<nldd-segmented-control-item value="bulletList" text="Lijst" icon="bullet-list"></nldd-segmented-control-item>
+						</nldd-segmented-control>
+					</nldd-toolbar-item>
+				</nldd-toolbar>
+				<nldd-text-editor variant="box" rows="10" .value=${SAMPLE} accessible-label="Tekst"></nldd-text-editor>
 			</div>
 		`;
 	},
@@ -189,7 +223,7 @@ export const WithToolbar = {
 		controls: { disable: true },
 		docs: {
 			description: {
-				story: 'De editor is headless: deze toolbar leeft bij de consumer en stuurt de editor aan via `runCommand()` (of de losse `toggleBold()`-achtige methods). `mousedown`+`preventDefault` houdt de selectie vast. Luister op `nldd-text-editor-state` om de actieve/ingedrukte staat van knoppen te tonen. Sneltoetsen Cmd/Ctrl+B/I/E/K werken ook.',
+				story: 'De editor is headless. Deze toolbar is opgebouwd uit DS-componenten (`nldd-toolbar` met icon-`nldd-segmented-control`) en is tweerichtings gekoppeld: de controls sturen de editor via `runCommand()`, en het `nldd-text-editor-state`-event zet de actieve (ingedrukte) staat van de controls. Quote en code gebruiken hun eigen iconen (`text-quote`, `stack-code`). Sneltoetsen Cmd/Ctrl+B/I/E/K werken ook.',
 			},
 		},
 	},

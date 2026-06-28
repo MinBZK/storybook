@@ -16,10 +16,12 @@ export const textEditorStyles = css`
 		--_content-color: var(--semantics-content-color);
 		/* Prose: 18px body at 1.5 line-height (snug) for readability. */
 		--_font: var(--primitives-font-body-md-regular-snug);
-		--_base-font-size: var(--primitives-font-size-100);
-		/* JetBrains Mono advance (600/1000 em). Leading list/quote markers render
-		   in mono so the hanging indent equals their width exactly. */
-		--_marker-advance: 0.6em;
+		/* Markers render one step down (16px mono): monospace reads larger than
+		   the sans body beside it, matching the DS mono/body pairing. */
+		--_marker-font-size: var(--primitives-font-size-90);
+		/* JetBrains Mono advance (600/1000 em) at the marker size; leading
+		   list/quote markers are mono so the hanging indent equals their width. */
+		--_marker-advance: calc(0.6 * var(--_marker-font-size));
 		--_rows: 6;
 
 		${inheritedTextReset}
@@ -39,7 +41,6 @@ export const textEditorStyles = css`
 	/* Monospace option (default is the sans body font, best for prose). */
 	:host([font="mono"]) {
 		--_font: var(--primitives-font-monospace-md-regular-snug);
-		--_base-font-size: var(--primitives-font-size-90);
 	}
 
 
@@ -144,21 +145,23 @@ export const textEditorStyles = css`
 	}
 	.cm-md-link { color: var(--semantics-links-color); }
 	.cm-md-url { color: var(--semantics-input-fields-placeholder-color); }
-	/* Blockquote reads at the lg (20px) step, in the primary content colour. */
+	/* Blockquote reads at the lg (20px) step in sans, primary content colour; in
+	   the mono variant it stays at the 16px body size. */
 	.cm-md-quote { color: var(--semantics-content-color); font-style: italic; font-size: var(--primitives-font-size-200); }
+	:host([font="mono"]) .cm-md-quote { font-size: var(--primitives-font-size-90); }
 	/* Markers: dimmed (secondary colour, not opacity, so contrast holds) and
-	   monospace at the base text size — tidy, and a fixed-width leading prefix. */
+	   monospace at the 16px marker size — tidy, and a fixed-width leading prefix. */
 	.cm-md-mark {
 		color: var(--semantics-content-secondary-color);
 		font-family: var(--primitives-font-family-monospace);
-		font-size: var(--_base-font-size);
+		font-size: var(--_marker-font-size);
 	}
 	/* The leading prefix (and anything nested in it, e.g. a blockquote's own
-	   span) renders at the base size, so its width stays prefixLength × the mono
-	   advance and the hanging indent lines up exactly. */
+	   span) renders at the marker size, so its width stays prefixLength × the
+	   mono advance and the hanging indent lines up exactly. */
 	.cm-md-listprefix,
 	.cm-md-listprefix * {
 		font-family: var(--primitives-font-family-monospace);
-		font-size: var(--_base-font-size);
+		font-size: var(--_marker-font-size);
 	}
 `;
