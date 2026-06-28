@@ -36,9 +36,12 @@
  * @attr {string} font             - 'sans' (default) | 'mono'
  * @attr {string} accessible-label - Accessible label forwarded to the editor. Set automatically by nldd-form-field.
  *
- * @fires input                  - When the content changes (detail: { value })
- * @fires change                 - When the content is committed on blur (detail: { value })
- * @fires nldd-text-editor-state - When the selection or content changes (detail: TextEditorState), for toolbar toggle state
+ * @prop {MentionSource} mentionSource - Consumer-supplied @-mention candidate source (property only). Without it, @-typeahead is inert.
+ *
+ * @fires input                    - When the content changes (detail: { value })
+ * @fires change                   - When the content is committed on blur (detail: { value })
+ * @fires nldd-text-editor-state   - When the selection or content changes (detail: TextEditorState), for toolbar toggle state
+ * @fires nldd-text-editor-mention - When an @-mention is inserted (detail: MentionInsertedDetail with id, label, from, to)
  */
 import { LitElement, type PropertyValues } from 'lit';
 import { customElement, property, query } from 'lit/decorators.js';
@@ -53,6 +56,7 @@ import { defaultKeymap, history, historyKeymap } from '@codemirror/commands';
 import { NLDDCodeMirrorElement } from '../../../utilities/codemirror/codemirror-element.js';
 import { nlddCodeMirrorTheme } from '../../../utilities/codemirror/theme.js';
 import { markdownEditing } from './text-editor.markdown.js';
+import { mentions, type MentionSource, type MentionInsertedDetail } from './text-editor.mentions.js';
 import {
 	toggleInlineWrap,
 	toggleHeading as cmToggleHeading,
@@ -73,6 +77,7 @@ export type ResizeMode = 'none' | 'vertical' | 'auto';
 export type TextEditorVariant = 'box' | 'simple';
 export type TextEditorFont = 'sans' | 'mono';
 export type { HeadingLevel, TextEditorState, TextEditorActiveFormats } from './text-editor.commands.js';
+export type { MentionCandidate, MentionSource, MentionInsertedDetail } from './text-editor.mentions.js';
 
 @customElement('nldd-text-editor')
 export class NLDDTextEditor extends NLDDCodeMirrorElement {
@@ -129,6 +134,12 @@ export class NLDDTextEditor extends NLDDCodeMirrorElement {
 	@property({ type: String, attribute: 'accessible-label' })
 	accessibleLabel = '';
 
+	/** Consumer-supplied @-mention source: called with the text typed after `@`
+	 *  and returns (a promise of) candidates. Property only (set via JS); without
+	 *  it, @-typeahead is inert. */
+	@property({ attribute: false })
+	mentionSource?: MentionSource;
+
 	@query('.text-editor')
 	private _container!: HTMLElement;
 
@@ -145,6 +156,7 @@ export class NLDDTextEditor extends NLDDCodeMirrorElement {
 		return [
 			nlddCodeMirrorTheme,
 			markdownEditing,
+			mentions(() => this.mentionSource, (detail) => this._emitMention(detail)),
 			history(),
 			drawSelection(),
 			keymap.of([
@@ -301,6 +313,14 @@ export class NLDDTextEditor extends NLDDCodeMirrorElement {
 	private _emitState(): void {
 		this.dispatchEvent(new CustomEvent('nldd-text-editor-state', {
 			detail: this.getState(),
+			bubbles: true,
+			composed: true,
+		}));
+	}
+
+	private _emitMention(detail: MentionInsertedDetail): void {
+		this.dispatchEvent(new CustomEvent('nldd-text-editor-mention', {
+			detail,
 			bubbles: true,
 			composed: true,
 		}));

@@ -152,6 +152,8 @@ export const textEditorStyles = css`
 		font-size: var(--primitives-font-size-90);
 	}
 	.cm-md-link { color: var(--semantics-links-color); }
+	/* @-mention: accent + semibold, no background so the selection shows through. */
+	.cm-md-mention { color: var(--semantics-content-accent-color); font-weight: 600; }
 	.cm-md-url { color: var(--semantics-input-fields-placeholder-color); }
 	/* Blockquote reads at the lg (20px) step in sans, primary content colour; in
 	   the mono variant it stays at the 16px body size. */

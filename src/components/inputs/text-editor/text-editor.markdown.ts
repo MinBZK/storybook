@@ -3,6 +3,8 @@ import { syntaxTree } from '@codemirror/language';
 import { markdown } from '@codemirror/lang-markdown';
 import { GFM } from '@lezer/markdown';
 import { StateField, type EditorState, type Extension, type Range } from '@codemirror/state';
+import type { SyntaxNode } from '@lezer/common';
+import { MENTION_HREF_PREFIX } from './text-editor.mentions.js';
 
 /* Hybrid markdown rendering: the document stays plain markdown text, but the
  * formatting is shown inline (bold is bold, headings are larger, links are
@@ -23,7 +25,6 @@ const NODE_CLASS: Record<string, string> = {
 	InlineCode: 'cm-md-code',
 	FencedCode: 'cm-md-codeblock',
 	CodeBlock: 'cm-md-codeblock',
-	Link: 'cm-md-link',
 	URL: 'cm-md-url',
 	Blockquote: 'cm-md-quote',
 };
@@ -40,6 +41,34 @@ function classDeco(cls: string): Decoration {
 	return (classDecoCache[cls] ??= Decoration.mark({ class: cls }));
 }
 
+function linkTextRange(link: SyntaxNode): { from: number; to: number } | null {
+	const marks: SyntaxNode[] = [];
+	for (let child = link.firstChild; child; child = child.nextSibling) {
+		if (child.name === 'LinkMark') marks.push(child);
+	}
+	if (marks.length < 2) return null;
+	const from = marks[0].to; // after the opening '['
+	const to = marks[1].from; // before the closing ']'
+	return to > from ? { from, to } : null;
+}
+
+// A mention link (`[@Naam](user:id)`) gets a chip on its @Naam text; a normal
+// link is coloured across its whole range. Either way the markers and URL are
+// still visited as children and dimmed.
+function decorateLink(state: EditorState, link: SyntaxNode, ranges: Range<Decoration>[]): void {
+	let url: SyntaxNode | null = null;
+	for (let child = link.firstChild; child; child = child.nextSibling) {
+		if (child.name === 'URL') { url = child; break; }
+	}
+	const isMention = url !== null && state.sliceDoc(url.from, url.to).startsWith(MENTION_HREF_PREFIX);
+	if (isMention) {
+		const text = linkTextRange(link);
+		if (text) ranges.push(classDeco('cm-md-mention').range(text.from, text.to));
+	} else {
+		ranges.push(classDeco('cm-md-link').range(link.from, link.to));
+	}
+}
+
 // Inline/content styling — no layout change, so a viewport-scoped plugin.
 function buildMarkDecorations(view: EditorView): DecorationSet {
 	const ranges: Range<Decoration>[] = [];
@@ -49,6 +78,10 @@ function buildMarkDecorations(view: EditorView): DecorationSet {
 			to,
 			enter: (node) => {
 				if (node.from >= node.to) return;
+				if (node.name === 'Link') {
+					decorateLink(view.state, node.node, ranges);
+					return;
+				}
 				const cls = NODE_CLASS[node.name];
 				if (cls) ranges.push(classDeco(cls).range(node.from, node.to));
 				else if (MARK_NODES.has(node.name)) ranges.push(dimDeco.range(node.from, node.to));

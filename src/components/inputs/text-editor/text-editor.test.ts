@@ -1,6 +1,7 @@
 import { describe, it, expect, afterEach } from 'vitest';
 import { fixture, cleanup, waitForUpdate } from '../../../test-utils.ts';
 import './text-editor.ts';
+import { mentionToken } from './text-editor.mentions.ts';
 
 type TextEditorEl = HTMLElement & { value: string; updateComplete: Promise<boolean> };
 
@@ -240,5 +241,28 @@ describe('nldd-text-editor', () => {
 		expect(active.orderedList).toBe(true);
 		expect(active.bulletList).toBe(false);
 		cleanup(el2);
+	});
+
+
+	/* ============================================================
+	   @-mentions
+	   ============================================================ */
+
+	it('rendert een @-mention als chip', async () => {
+		const el2 = await withValue('Hoi [@Anouk](user:1), kijk even.');
+		expect(el2.shadowRoot!.querySelector('.cm-md-mention')).not.toBeNull();
+		cleanup(el2);
+	});
+
+	it('een gewone link is geen mention-chip', async () => {
+		const el2 = await withValue('Zie [site](https://example.org).');
+		const sr = el2.shadowRoot!;
+		expect(sr.querySelector('.cm-md-link')).not.toBeNull();
+		expect(sr.querySelector('.cm-md-mention')).toBeNull();
+		cleanup(el2);
+	});
+
+	it('mentionToken bouwt een markdown-link met user-id', () => {
+		expect(mentionToken({ id: '42', label: 'Anouk' })).toBe('[@Anouk](user:42)');
 	});
 });

@@ -164,6 +164,39 @@ export const Placeholder = {
 	parameters: { controls: { disable: true } },
 };
 
+export const Mentions = {
+	render: () => {
+		const users = [
+			{ id: '1', label: 'Anouk de Vries', detail: 'Beleid' },
+			{ id: '2', label: 'Bram Jansen', detail: 'Communicatie' },
+			{ id: '3', label: 'Chen Wei', detail: 'Data' },
+			{ id: '4', label: 'Dewi Pratama', detail: 'Juridisch' },
+			{ id: '5', label: 'Emma Bakker', detail: 'Beleid' },
+		];
+		const source = (query: string) =>
+			users.filter((user) => user.label.toLowerCase().includes(query.toLowerCase()));
+		const sample = 'Bespreek dit met [@Anouk de Vries](user:1) en [@Bram Jansen](user:2).\n\nTyp `@` om iemand te noemen.';
+		return html`
+			<nldd-text-editor
+				variant="box"
+				rows="8"
+				accessible-label="Tekst"
+				.value=${sample}
+				.mentionSource=${source}
+				@nldd-text-editor-mention=${(event: CustomEvent) => console.info('mention:', event.detail)}
+			></nldd-text-editor>
+		`;
+	},
+	parameters: {
+		controls: { disable: true },
+		docs: {
+			description: {
+				story: 'Typ `@` voor een typeahead. De editor kent zelf geen gebruikers: de consumer levert kandidaten via de `mentionSource`-property (aangeroepen met de tekst na `@`). Een keuze voegt een markdown-token `[@Naam](user:id)` in (als chip gerenderd, degradeert tot een gewone link) en vuurt `nldd-text-editor-mention` met id + range.',
+			},
+		},
+	},
+};
+
 export const WithToolbar = {
 	render: () => {
 		// The editor is headless. This demo builds a real toolbar from DS
