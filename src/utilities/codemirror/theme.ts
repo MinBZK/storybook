@@ -36,13 +36,14 @@ const baseTheme = EditorView.theme({
 	'.cm-placeholder': {
 		color: 'var(--semantics-input-fields-placeholder-color)',
 	},
-	// The focused selector matches CodeMirror's own deep one
-	// (`&.cm-focused > .cm-scroller > .cm-selectionLayer .cm-selectionBackground`)
-	// so our colour wins on equal specificity — otherwise CM's light base theme
-	// paints the focused selection lavender, unreadable on the dark surface.
-	// Higher alpha in dark mode so the selection reads against that surface.
+	// A solid selection colour. accent-200/300 are themselves light-dark; the
+	// outer light-dark() steps up to accent-300 in dark mode, where the base
+	// surface sits a little higher, so the selection keeps enough contrast.
+	// The focused selector matches CodeMirror's own deep one so our colour wins on
+	// equal specificity — otherwise CM's light base theme paints the focused
+	// selection lavender, unreadable on a dark surface.
 	'&.cm-focused > .cm-scroller > .cm-selectionLayer .cm-selectionBackground, .cm-selectionBackground, .cm-content ::selection': {
-		backgroundColor: 'light-dark(color-mix(in srgb, var(--primitives-color-accent-600) 24%, transparent), color-mix(in srgb, var(--primitives-color-accent-600) 48%, transparent))',
+		backgroundColor: 'light-dark(var(--primitives-color-accent-200), var(--primitives-color-accent-300))',
 	},
 	'.cm-gutters': {
 		border: 'none',
