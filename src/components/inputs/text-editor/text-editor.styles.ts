@@ -160,22 +160,22 @@ export const textEditorStyles = css`
 	.cm-md-mention { color: var(--semantics-content-accent-color); font-weight: 600; }
 	/* @-mention chip: the collapsed, atomic pill that replaces the token. */
 	.cm-md-mention-chip {
-		position: relative;
-		/* Left padding reserves a fixed slot for the @ icon (positioned into it
-		   below); right padding is breathing room. */
-		padding-inline: 1.25em 0.25em;
+		display: inline-flex;
+		align-items: center;
+		gap: 0.1em;
+		/* In-flow (not absolute): the icon always moves with the token. Safari can
+		   fail to repaint an absolutely-positioned child when CodeMirror
+		   repositions the widget, leaving the @ at a stale location. */
+		padding-inline: 0.15em 0.25em;
 		color: var(--semantics-categories-accent-tinted-primary-content-color);
 		background-color: var(--semantics-categories-accent-tinted-background-color);
 		border-radius: var(--primitives-corner-radius-sm);
 		font-weight: 600;
 		white-space: nowrap;
 	}
-	/* The @ icon sits in the reserved left slot, vertically centred. */
+	/* The @ icon: a fixed-size, vertically-centred prefix (flex item). */
 	.cm-md-mention-chip__at {
-		position: absolute;
-		left: 0.15em;
-		top: 50%;
-		transform: translateY(-50%);
+		flex: none;
 		width: 1em;
 		height: 1em;
 	}
