@@ -140,10 +140,10 @@ export const textEditorStyles = css`
 	.cm-md-strong { font-weight: 700; }
 	.cm-md-emphasis { font-style: italic; }
 	.cm-md-strike { text-decoration: line-through; }
-	/* Code uses the 16px monospace step so it sits next to the 18px body. */
+	/* Inline code: 16px monospace step (sits next to the 18px body). No
+	   background — it would paint over the selection layer drawn beneath the text
+	   and hide it; the monospace font and dimmed backticks keep it recognisable. */
 	.cm-md-code {
-		background-color: var(--semantics-surfaces-tinted-background-color);
-		padding: 0 0.2em;
 		font-family: var(--primitives-font-family-monospace);
 		font-size: var(--primitives-font-size-90);
 	}
