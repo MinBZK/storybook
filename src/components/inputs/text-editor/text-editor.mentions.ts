@@ -108,14 +108,14 @@ const popupTheme = EditorView.theme({
 		backgroundColor: 'var(--components-menu-item-is-highlighted-background-color)',
 		color: 'var(--components-menu-item-is-highlighted-content-color)',
 	},
-	// Hover highlight like a menu item, gated to hover-capable pointers.
+	// CodeMirror keeps the keyboard-selected option active on hover (Enter still
+	// applies that one), so hover can't share the accent 'highlighted' look —
+	// that would imply two active rows. Give hover a subtler nldd-list-item look,
+	// only on rows that aren't the keyboard selection.
 	'@media (hover: hover)': {
-		'.cm-tooltip.cm-tooltip-autocomplete > ul > li:hover': {
-			backgroundColor: 'var(--components-menu-item-is-highlighted-background-color)',
-			color: 'var(--components-menu-item-is-highlighted-content-color)',
-		},
-		'.cm-tooltip.cm-tooltip-autocomplete > ul > li:hover .cm-completionDetail': {
-			color: 'inherit',
+		'.cm-tooltip.cm-tooltip-autocomplete > ul > li:not([aria-selected]):hover': {
+			backgroundColor: 'var(--components-list-item-is-hovered-background-color)',
+			color: 'var(--components-list-item-is-hovered-content-color)',
 		},
 	},
 	'.cm-completionDetail': {
