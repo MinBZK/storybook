@@ -1,4 +1,4 @@
-import { ViewPlugin, Decoration, type DecorationSet, EditorView, type ViewUpdate } from '@codemirror/view';
+import { ViewPlugin, Decoration, type DecorationSet, EditorView, WidgetType, type ViewUpdate } from '@codemirror/view';
 import { syntaxTree } from '@codemirror/language';
 import { markdown } from '@codemirror/lang-markdown';
 import { GFM } from '@lezer/markdown';
@@ -145,9 +145,65 @@ const hangingIndentField = StateField.define<DecorationSet>({
 	provide: (field) => EditorView.decorations.from(field),
 });
 
+/* @-mentions collapse fully: the whole `[@Naam](user:id)` token is replaced by
+ * an atomic chip widget — the syntax is hidden, the id is protected, and the
+ * cursor steps over it (backspace removes the whole mention). */
+class MentionWidget extends WidgetType {
+	constructor(readonly label: string, readonly id: string) {
+		super();
+	}
+
+	eq(other: MentionWidget): boolean {
+		return other.label === this.label && other.id === this.id;
+	}
+
+	toDOM(): HTMLElement {
+		const chip = document.createElement('span');
+		chip.className = 'cm-md-mention-chip';
+		chip.textContent = `@${this.label}`;
+		chip.setAttribute('data-user', this.id);
+		return chip;
+	}
+}
+
+function buildMentionChips(state: EditorState): DecorationSet {
+	const ranges: Range<Decoration>[] = [];
+	syntaxTree(state).iterate({
+		enter: (node) => {
+			if (node.name !== 'Link') return;
+			const link = node.node;
+			let url: SyntaxNode | null = null;
+			for (let child = link.firstChild; child; child = child.nextSibling) {
+				if (child.name === 'URL') { url = child; break; }
+			}
+			if (!url || !state.sliceDoc(url.from, url.to).startsWith(MENTION_HREF_PREFIX)) return;
+			const text = linkTextRange(link);
+			if (!text) return;
+			const label = state.sliceDoc(text.from, text.to).replace(/^@/, '');
+			const id = state.sliceDoc(url.from, url.to).slice(MENTION_HREF_PREFIX.length);
+			ranges.push(Decoration.replace({ widget: new MentionWidget(label, id) }).range(link.from, link.to));
+		},
+	});
+	return Decoration.set(ranges, true);
+}
+
+const mentionChipField = StateField.define<DecorationSet>({
+	create: (state) => buildMentionChips(state),
+	update: (value, tr) => (tr.docChanged ? buildMentionChips(tr.state) : value),
+	provide: (field) => EditorView.decorations.from(field),
+});
+
+// Treat each chip as one unit so the cursor steps over it and backspace removes
+// the whole mention rather than breaking the hidden (user:id) syntax.
+const mentionAtomicRanges = EditorView.atomicRanges.of(
+	(view) => view.state.field(mentionChipField, false) ?? Decoration.none,
+);
+
 /** Markdown language (with GFM) plus the hybrid inline-styling decorations. */
 export const markdownEditing: Extension = [
 	markdown({ extensions: GFM }),
 	markDecorationPlugin,
 	hangingIndentField,
+	mentionChipField,
+	mentionAtomicRanges,
 ];

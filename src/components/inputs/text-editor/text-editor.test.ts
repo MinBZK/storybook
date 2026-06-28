@@ -248,9 +248,13 @@ describe('nldd-text-editor', () => {
 	   @-mentions
 	   ============================================================ */
 
-	it('rendert een @-mention als chip', async () => {
+	it('klapt een @-mention volledig weg tot een chip', async () => {
 		const el2 = await withValue('Hoi [@Anouk](user:1), kijk even.');
-		expect(el2.shadowRoot!.querySelector('.cm-md-mention')).not.toBeNull();
+		const chip = el2.shadowRoot!.querySelector('.cm-md-mention-chip');
+		expect(chip).not.toBeNull();
+		expect(chip!.textContent).toBe('@Anouk');
+		// the raw markdown syntax is replaced, not shown
+		expect(el2.shadowRoot!.querySelector('.cm-content')!.textContent).not.toContain('(user:1)');
 		cleanup(el2);
 	});
 
@@ -258,7 +262,7 @@ describe('nldd-text-editor', () => {
 		const el2 = await withValue('Zie [site](https://example.org).');
 		const sr = el2.shadowRoot!;
 		expect(sr.querySelector('.cm-md-link')).not.toBeNull();
-		expect(sr.querySelector('.cm-md-mention')).toBeNull();
+		expect(sr.querySelector('.cm-md-mention-chip')).toBeNull();
 		cleanup(el2);
 	});
 
