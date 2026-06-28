@@ -14,8 +14,8 @@ export const codeEditorStyles = css`
 		--_background-color: transparent;
 		--_border-color: transparent;
 		--_border-shadow: none;
-		--_block-padding: 0;
-		--_inline-padding: 0;
+		--_padding-block: 0px;
+		--_padding-inline: 0px;
 		--_content-color: var(--semantics-content-color);
 		--_font: var(--primitives-font-monospace-sm-regular-snug);
 		--_rows: 6;
@@ -42,19 +42,19 @@ export const codeEditorStyles = css`
 	}
 
 
-	/* ## Variant — box adds the framed surface (border ring, fill, padding, radius) */
+	/* ## Variant — box adds the framed surface + a default content padding */
 
 	:host([variant="box"]) {
 		--_corner-radius: var(--primitives-corner-radius-lg);
 		--_background-color: var(--semantics-surfaces-tinted-background-color);
 		--_border-color: var(--semantics-surfaces-tinted-border-color);
 		--_border-shadow: inset 0 0 0 1px var(--_border-color);
-		--_block-padding: var(--primitives-space-16);
-		--_inline-padding: var(--primitives-space-16);
+		--_padding-block: var(--primitives-space-16);
+		--_padding-inline: var(--primitives-space-16);
 	}
 
 
-	/* # Block */
+	/* # Block — the frame only; CodeMirror fills it, padding lives on the content */
 
 	.code-editor {
 		box-sizing: border-box;
@@ -64,12 +64,10 @@ export const codeEditorStyles = css`
 		box-shadow: var(--_border-shadow);
 		background-color: var(--_background-color);
 		min-height: 0;
-		overflow: hidden;
 		flex-direction: column;
 		flex-grow: 1;
 		flex-shrink: 1;
 		flex-basis: auto;
-		padding: var(--_block-padding) var(--_inline-padding);
 		color: var(--_content-color);
 		font: var(--_font);
 	}
@@ -79,31 +77,41 @@ export const codeEditorStyles = css`
 		pointer-events: none;
 	}
 
-	.code-editor:focus-within {
+	/* Focus ring only on the box variant. The simple variant relies on a
+	   prominent caret and lets a wrapping composition own its focus treatment. */
+	:host([variant="box"]) .code-editor:focus-within {
 		outline: var(--semantics-focus-ring-outline);
 		outline-offset: var(--semantics-focus-ring-outline-offset);
-		/* Comma-compose so the focus ring layers over the box variant's inset
-		   border ring instead of replacing it (none in the simple variant). */
 		box-shadow: var(--semantics-focus-ring-box-shadow), var(--_border-shadow);
 	}
 
 
 	/* # CodeMirror surface */
 
-	.cm-editor {
-		min-height: 0;
-		flex-grow: 1;
-		flex-shrink: 1;
-		flex-basis: auto;
-		height: 100%;
-	}
-
-	.cm-content {
+	/* Padding lives on the content so the whole padded area is clickable and a
+	   click maps to the nearest line — no dead zone around the text. */
+	/* :host bumps specificity above the shared theme's .cm-content reset. */
+	:host .cm-content {
+		padding: var(--_padding-block) var(--_padding-inline);
 		min-height: calc(var(--_rows) * 1lh);
 		tab-size: 2;
 	}
 
+	/* Simple variant has no focus ring, so the caret is the focus cue: make it
+	   a prominent accent and a touch thicker. */
+	:host([variant="simple"]) .cm-cursor {
+		border-left-color: var(--primitives-color-accent-600);
+		border-left-width: 2px;
+	}
+
+	/* Resize model — rows is the floor in every mode:
+	   none = fixed height, vertical = drag up from the floor, auto = grow. */
+	:host([resize="none"]) .cm-editor {
+		height: calc(var(--_rows) * 1lh + 2 * var(--_padding-block));
+	}
+
 	:host([resize="vertical"]) .cm-scroller {
 		resize: vertical;
+		min-height: calc(var(--_rows) * 1lh + 2 * var(--_padding-block));
 	}
 `;

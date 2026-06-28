@@ -28,6 +28,7 @@ export default {
 	},
 	args: {
 		variant: 'simple',
+		padding: undefined,
 		language: '',
 		lineNumbers: false,
 		value: '',
@@ -43,12 +44,19 @@ export default {
 		variant: {
 			control: 'select',
 			options: ['simple', 'box'],
-			description: 'Visuele variant. "simple" (default) is kaal; "box" voegt rand, vulling, padding en hoeken toe.',
+			description: 'Visuele variant. "simple" (default) is kaal zonder focusring; "box" voegt rand, vulling, padding, hoeken en focusring toe.',
 			table: { defaultValue: { summary: 'simple' } },
+		},
+		padding: {
+			control: 'select',
+			options: ['(default)', '0', '8', '16', '24', '32'],
+			mapping: { '(default)': undefined },
+			description: 'Binnen-(klikbare)-padding als spacing-token. Default: 0 voor simple, 16 voor box.',
+			table: { defaultValue: { summary: '(default)' } },
 		},
 		language: {
 			control: 'select',
-			options: ['(geen)', 'json', 'yaml', 'javascript', 'typescript'],
+			options: ['(geen)', 'yaml', 'json', 'javascript', 'typescript', 'css', 'html', 'xml', 'bash', 'markdown', 'rust', 'gherkin', 'toml', 'sql', 'python'],
 			mapping: { '(geen)': '' },
 			description: 'Grammatica voor syntax-highlighting (lazy geladen). Leeg = geen highlighting.',
 			table: { defaultValue: { summary: '(geen)' } },
@@ -71,13 +79,13 @@ export default {
 		},
 		rows: {
 			control: 'number',
-			description: 'Minimale zichtbare regels',
+			description: 'Minimale zichtbare regels (de vloer in elke resize-modus)',
 			table: { defaultValue: { summary: 6 } },
 		},
 		resize: {
 			control: 'select',
 			options: ['none', 'vertical', 'auto'],
-			description: 'Resize-gedrag van de editor',
+			description: 'Resize-gedrag. none = vast, vertical = slepen vanaf rows, auto = groeit mee.',
 			table: { defaultValue: { summary: 'vertical' } },
 		},
 		wrap: {
@@ -106,6 +114,7 @@ export default {
 
 const Template = ({
 	variant,
+	padding,
 	language,
 	lineNumbers,
 	value,
@@ -119,6 +128,7 @@ const Template = ({
 }: Record<string, any>) => html`
 	<nldd-code-editor
 		variant=${variant as string}
+		padding=${padding || nothing}
 		language=${language || nothing}
 		?line-numbers=${lineNumbers}
 		.value=${value || ''}
@@ -171,6 +181,25 @@ export const LineNumbers = {
 		></nldd-code-editor>
 	`,
 	parameters: { controls: { disable: true } },
+};
+
+export const Simple = {
+	render: () => html`
+		<nldd-code-editor
+			variant="simple"
+			language="yaml"
+			rows="8"
+			.value=${SAMPLE_YAML}
+			accessible-label="Code"
+		></nldd-code-editor>
+	`,
+	parameters: {
+		docs: {
+			description: {
+				story: 'De simple variant heeft geen kader of focusring — bij focus toont een prominente accent-caret waar je staat. Bedoeld om in een eigen compositie (bv. een message field) te plaatsen die zelf de focusbehandeling levert.',
+			},
+		},
+	},
 };
 
 export const Wrap = {
