@@ -75,15 +75,20 @@ const markDecorationPlugin = ViewPlugin.fromClass(
 	{ decorations: (plugin) => plugin.decorations },
 );
 
-/* Hanging indent: wrapped continuation lines of a list item or blockquote
- * align under the first line's text. The marker prefix is kept in the source,
- * so the indent equals its width (in ch — exact for mono, close for sans).
- * Line decorations affect layout, so this lives in a StateField (not a plugin). */
+/* Hanging indent: wrapped continuation lines of a list item or blockquote align
+ * under the first line's text. The leading marker prefix is rendered in
+ * monospace (cm-md-listprefix), so its width is exactly prefixLength × the mono
+ * advance (--_marker-advance). The indent uses that same product, so the first
+ * line's text and every wrapped line line up — no per-line measurement, and it
+ * holds in both the sans and mono body fonts. Layout-affecting → a StateField. */
 const HANGING_RE = /^(\s*(?:[-*+]|\d+[.)])\s+|\s*>+\s?)/;
-const hangingDecoCache: Record<number, Decoration> = {};
-function hangingDeco(width: number): Decoration {
-	return (hangingDecoCache[width] ??= Decoration.line({
-		attributes: { style: `text-indent:-${width}ch;padding-left:${width}ch` },
+const prefixMonoDeco = Decoration.mark({ class: 'cm-md-listprefix' });
+const hangingLineCache: Record<number, Decoration> = {};
+function hangingLineDeco(length: number): Decoration {
+	return (hangingLineCache[length] ??= Decoration.line({
+		attributes: {
+			style: `text-indent:calc(${length} * var(--_marker-advance) * -1);padding-left:calc(${length} * var(--_marker-advance))`,
+		},
 	}));
 }
 
@@ -93,10 +98,12 @@ function buildHangingIndent(state: EditorState): DecorationSet {
 		const line = state.doc.line(i);
 		const match = line.text.match(HANGING_RE);
 		if (match && match[1].length) {
-			ranges.push(hangingDeco(match[1].length).range(line.from));
+			const length = match[1].length;
+			ranges.push(hangingLineDeco(length).range(line.from));
+			ranges.push(prefixMonoDeco.range(line.from, line.from + length));
 		}
 	}
-	return Decoration.set(ranges);
+	return Decoration.set(ranges, true);
 }
 
 const hangingIndentField = StateField.define<DecorationSet>({

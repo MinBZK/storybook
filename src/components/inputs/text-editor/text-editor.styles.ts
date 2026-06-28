@@ -14,7 +14,12 @@ export const textEditorStyles = css`
 		--_padding-block: 0px;
 		--_padding-inline: 0px;
 		--_content-color: var(--semantics-content-color);
-		--_font: var(--semantics-input-fields-md-text-font);
+		/* Prose: 18px body at 1.5 line-height (snug) for readability. */
+		--_font: var(--primitives-font-body-md-regular-snug);
+		--_base-font-size: var(--primitives-font-size-100);
+		/* JetBrains Mono advance (600/1000 em). Leading list/quote markers render
+		   in mono so the hanging indent equals their width exactly. */
+		--_marker-advance: 0.6em;
 		--_rows: 6;
 
 		${inheritedTextReset}
@@ -34,6 +39,7 @@ export const textEditorStyles = css`
 	/* Monospace option (default is the sans body font, best for prose). */
 	:host([font="mono"]) {
 		--_font: var(--primitives-font-monospace-md-regular-snug);
+		--_base-font-size: var(--primitives-font-size-90);
 	}
 
 
@@ -112,15 +118,16 @@ export const textEditorStyles = css`
 
 
 	/* # Hybrid markdown decorations
-	   Sizes are em-relative so they scale with the editor font; markers are
-	   dimmed (not hidden) so the markdown source stays legible. */
+	   Headings follow rich-text's display scale at its sm step. Markers are kept
+	   visible but dimmed in monospace, which also gives the leading list/quote
+	   prefix a predictable width for the hanging indent (see --_marker-advance). */
 
-	.cm-md-h1 { font-size: 1.6em; font-weight: 700; line-height: 1.3; }
-	.cm-md-h2 { font-size: 1.4em; font-weight: 700; line-height: 1.3; }
-	.cm-md-h3 { font-size: 1.2em; font-weight: 700; }
-	.cm-md-h4 { font-weight: 700; }
-	.cm-md-h5 { font-weight: 700; }
-	.cm-md-h6 { font-weight: 700; }
+	.cm-md-h1 { font: var(--primitives-font-display-1-sm); }
+	.cm-md-h2 { font: var(--primitives-font-display-2-sm); }
+	.cm-md-h3 { font: var(--primitives-font-display-3-sm); }
+	.cm-md-h4 { font: var(--primitives-font-display-4-sm); }
+	.cm-md-h5 { font: var(--primitives-font-display-5-sm); }
+	.cm-md-h6 { font: var(--primitives-font-display-6-sm); }
 	.cm-md-strong { font-weight: 700; }
 	.cm-md-emphasis { font-style: italic; }
 	.cm-md-strike { text-decoration: line-through; }
@@ -137,7 +144,21 @@ export const textEditorStyles = css`
 	}
 	.cm-md-link { color: var(--semantics-links-color); }
 	.cm-md-url { color: var(--semantics-input-fields-placeholder-color); }
-	/* Blockquote reads at the lg (20px) step. */
-	.cm-md-quote { color: var(--semantics-input-fields-placeholder-color); font-style: italic; font-size: var(--primitives-font-size-200); }
-	.cm-md-mark { opacity: 0.45; }
+	/* Blockquote reads at the lg (20px) step, in the primary content colour. */
+	.cm-md-quote { color: var(--semantics-content-color); font-style: italic; font-size: var(--primitives-font-size-200); }
+	/* Markers: dimmed (secondary colour, not opacity, so contrast holds) and
+	   monospace at the base text size — tidy, and a fixed-width leading prefix. */
+	.cm-md-mark {
+		color: var(--semantics-content-secondary-color);
+		font-family: var(--primitives-font-family-monospace);
+		font-size: var(--_base-font-size);
+	}
+	/* The leading prefix (and anything nested in it, e.g. a blockquote's own
+	   span) renders at the base size, so its width stays prefixLength × the mono
+	   advance and the hanging indent lines up exactly. */
+	.cm-md-listprefix,
+	.cm-md-listprefix * {
+		font-family: var(--primitives-font-family-monospace);
+		font-size: var(--_base-font-size);
+	}
 `;
