@@ -10,12 +10,15 @@ export const codeEditorStyles = css`
 	/* # Host */
 
 	:host {
-		--_corner-radius: var(--primitives-corner-radius-lg);
-		--_background-color: var(--semantics-surfaces-tinted-background-color);
-		--_block-padding: var(--primitives-space-16);
-		--_inline-padding: var(--primitives-space-16);
+		--_corner-radius: 0;
+		--_background-color: transparent;
+		--_border-color: transparent;
+		--_border-shadow: none;
+		--_block-padding: 0;
+		--_inline-padding: 0;
 		--_content-color: var(--semantics-content-color);
 		--_font: var(--primitives-font-monospace-sm-regular-snug);
+		--_rows: 6;
 
 		/* iOS Safari auto-zooms a focused field rendered under 16px (sm is ~14px).
 		   Bump to the 16px md size on touch to prevent it; non-touch keeps the
@@ -25,9 +28,6 @@ export const codeEditorStyles = css`
 		}
 
 		${inheritedTextReset}
-		/* flex column + min-height:0 + flex:1 makes the host a good flex
-		   citizen so a fixed-height parent grows the textarea; with no set
-		   height it falls back to the rows attribute. */
 		display: flex;
 		min-height: 0;
 		flex-direction: column;
@@ -42,6 +42,18 @@ export const codeEditorStyles = css`
 	}
 
 
+	/* ## Variant — box adds the framed surface (border ring, fill, padding, radius) */
+
+	:host([variant="box"]) {
+		--_corner-radius: var(--primitives-corner-radius-lg);
+		--_background-color: var(--semantics-surfaces-tinted-background-color);
+		--_border-color: var(--semantics-surfaces-tinted-border-color);
+		--_border-shadow: inset 0 0 0 1px var(--_border-color);
+		--_block-padding: var(--primitives-space-16);
+		--_inline-padding: var(--primitives-space-16);
+	}
+
+
 	/* # Block */
 
 	.code-editor {
@@ -49,6 +61,7 @@ export const codeEditorStyles = css`
 		display: flex;
 		position: relative;
 		border-radius: var(--_corner-radius);
+		box-shadow: var(--_border-shadow);
 		background-color: var(--_background-color);
 		min-height: 0;
 		overflow: hidden;
@@ -56,65 +69,41 @@ export const codeEditorStyles = css`
 		flex-grow: 1;
 		flex-shrink: 1;
 		flex-basis: auto;
+		padding: var(--_block-padding) var(--_inline-padding);
+		color: var(--_content-color);
+		font: var(--_font);
 	}
 
 	:host([disabled]) .code-editor {
 		opacity: var(--primitives-opacity-disabled);
+		pointer-events: none;
 	}
 
 	.code-editor:focus-within {
 		outline: var(--semantics-focus-ring-outline);
 		outline-offset: var(--semantics-focus-ring-outline-offset);
-		box-shadow: var(--semantics-focus-ring-box-shadow);
+		/* Comma-compose so the focus ring layers over the box variant's inset
+		   border ring instead of replacing it (none in the simple variant). */
+		box-shadow: var(--semantics-focus-ring-box-shadow), var(--_border-shadow);
 	}
 
 
-	/* # Elements */
+	/* # CodeMirror surface */
 
-	.code-editor__input {
-		box-sizing: border-box;
-		display: block;
-		margin: 0;
-		outline: none;
-		border: none;
-		background: transparent;
-		width: 100%;
+	.cm-editor {
 		min-height: 0;
-		padding: var(--_block-padding) var(--_inline-padding);
 		flex-grow: 1;
 		flex-shrink: 1;
 		flex-basis: auto;
-		color: var(--_content-color);
-		font: var(--_font);
+		height: 100%;
+	}
+
+	.cm-content {
+		min-height: calc(var(--_rows) * 1lh);
 		tab-size: 2;
-		white-space: pre;
-		overflow-wrap: normal;
-		appearance: none;
 	}
 
-	:host([wrap]) .code-editor__input {
-		white-space: pre-wrap;
-		overflow-wrap: break-word;
-	}
-
-	:host([resize="vertical"]) .code-editor__input {
+	:host([resize="vertical"]) .cm-scroller {
 		resize: vertical;
-	}
-
-	:host([resize="none"]) .code-editor__input {
-		resize: none;
-	}
-
-	:host([resize="auto"]) .code-editor__input {
-		resize: none;
-		field-sizing: content;
-	}
-
-	:host([disabled]) .code-editor__input {
-		pointer-events: none;
-	}
-
-	.code-editor__input::placeholder {
-		color: var(--semantics-input-fields-placeholder-color);
 	}
 `;
