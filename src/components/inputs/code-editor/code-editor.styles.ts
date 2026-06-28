@@ -90,9 +90,17 @@ export const codeEditorStyles = css`
 
 	/* Padding lives on the content so the whole padded area is clickable and a
 	   click maps to the nearest line — no dead zone around the text. */
-	/* :host bumps specificity above the shared theme's .cm-content reset. */
+	/* Inline padding sits on the scroller so it lands left of the line-number
+	   gutter (the gutter stays inset with the text). Block + right padding sit
+	   on the content so the padded area is clickable and horizontal scrolling
+	   keeps its end padding. :host beats the shared theme's .cm-content reset. */
+	:host .cm-scroller {
+		padding-left: var(--_padding-inline);
+	}
+
 	:host .cm-content {
-		padding: var(--_padding-block) var(--_padding-inline);
+		padding-block: var(--_padding-block);
+		padding-right: var(--_padding-inline);
 		min-height: calc(var(--_rows) * 1lh);
 		tab-size: 2;
 	}

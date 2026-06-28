@@ -150,7 +150,7 @@ export class NLDDCodeEditor extends NLDDCodeMirrorElement {
 			keymap.of([...defaultKeymap, ...historyKeymap]),
 			this._placeholderCompartment.of(this._placeholderExtension()),
 			this._wrapCompartment.of(this.wrap ? EditorView.lineWrapping : []),
-			this._lineNumbersCompartment.of(this.lineNumbers ? cmLineNumbers() : []),
+			this._lineNumbersCompartment.of(this._lineNumbersExtension()),
 			this._editableCompartment.of(this._editableExtension()),
 			this._attrsCompartment.of(this._attrsExtension()),
 			this._languageCompartment.of([]),
@@ -177,6 +177,20 @@ export class NLDDCodeEditor extends NLDDCodeMirrorElement {
 
 	private _placeholderExtension(): Extension {
 		return this.placeholder ? cmPlaceholder(this.placeholder) : [];
+	}
+
+	private _lineNumbersExtension(): Extension {
+		if (!this.lineNumbers) return [];
+		// Clicking a line number moves the caret to the start of that line.
+		return cmLineNumbers({
+			domEventHandlers: {
+				mousedown: (view, line) => {
+					view.dispatch({ selection: { anchor: line.from } });
+					view.focus();
+					return true;
+				},
+			},
+		});
 	}
 
 	private _attrsExtension(): Extension {
@@ -215,7 +229,7 @@ export class NLDDCodeEditor extends NLDDCodeMirrorElement {
 				this.reconfigure(this._wrapCompartment, this.wrap ? EditorView.lineWrapping : []);
 			}
 			if (changed.has('lineNumbers')) {
-				this.reconfigure(this._lineNumbersCompartment, this.lineNumbers ? cmLineNumbers() : []);
+				this.reconfigure(this._lineNumbersCompartment, this._lineNumbersExtension());
 			}
 			if (changed.has('placeholder')) {
 				this.reconfigure(this._placeholderCompartment, this._placeholderExtension());
