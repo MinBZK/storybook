@@ -193,6 +193,11 @@ export class NLDDCodeEditor extends NLDDCodeMirrorElement {
 		this._initialValue = this.value;
 		this.style.setProperty('--_rows', String(this.rows));
 		this.mountEditor(this.value);
+		// A press on the scroller's own padding (outside .cm-content) doesn't
+		// place a caret; forward it to the nearest line so the padding is
+		// clickable too. CM attaches its own handlers to the content, not the
+		// scroller, so this is a plain listener on the scroller element.
+		this.view?.scrollDOM.addEventListener('pointerdown', this._onScrollerPointerDown);
 		this._internals.setFormValue(this.value);
 		if (this.language) void this._applyLanguage();
 		this._checkAccessibleLabel();
@@ -268,6 +273,14 @@ export class NLDDCodeEditor extends NLDDCodeMirrorElement {
 			composed: true,
 		}));
 	}
+
+	private _onScrollerPointerDown = (event: PointerEvent): void => {
+		// Only the scroller's own padding — not the content/gutter inside it.
+		// pointerdown covers mouse, touch and pen in one event.
+		if (event.target !== this.view?.scrollDOM) return;
+		this.focusFromPoint(event.clientX, event.clientY);
+		event.preventDefault();
+	};
 
 	/* Ran from updated(), not firstUpdated(): a parent nldd-form-field sets
 	 * input-id slightly after our first render, so checking earlier triggers
