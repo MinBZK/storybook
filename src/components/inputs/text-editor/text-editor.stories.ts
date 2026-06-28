@@ -212,7 +212,7 @@ export const WithToolbar = {
 		};
 		return html`
 			<div class="demo-editor" @nldd-text-editor-state=${onState}>
-				<nldd-toolbar size="md" style="margin-bottom: 8px;">
+				<nldd-toolbar size="md" style="margin-bottom: 16px;">
 					<nldd-toolbar-item slot="start" label="Nadruk">
 						<nldd-segmented-control
 							data-group="inline"
