@@ -160,8 +160,15 @@ class MentionWidget extends WidgetType {
 	toDOM(): HTMLElement {
 		const chip = document.createElement('span');
 		chip.className = 'cm-md-mention-chip';
-		chip.textContent = `@${this.label}`;
 		chip.setAttribute('data-user', this.id);
+		// The @ is a separate, vertically-centred prefix element so it aligns
+		// optically with the name rather than sitting low as inline text.
+		const at = document.createElement('span');
+		at.className = 'cm-md-mention-chip__at';
+		at.textContent = '@';
+		const name = document.createElement('span');
+		name.textContent = this.label;
+		chip.append(at, name);
 		return chip;
 	}
 }
