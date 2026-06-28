@@ -47,6 +47,7 @@ export { NLDDFormSection } from './forms/form-section/form-section.js';
 export { NLDDTextField } from './inputs/text-field/text-field.js';
 export { NLDDMultiLineTextField } from './inputs/multi-line-text-field/multi-line-text-field.js';
 export { NLDDCodeEditor } from './inputs/code-editor/code-editor.js';
+export { NLDDTextEditor } from './inputs/text-editor/text-editor.js';
 export { NLDDPasswordField } from './inputs/password-field/password-field.js';
 export { NLDDSearchField } from './inputs/search-field/search-field.js';
 export { NLDDNumberField } from './inputs/number-field/number-field.js';
