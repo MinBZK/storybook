@@ -73,10 +73,10 @@ function completionSource(
 const popupTheme = EditorView.theme({
 	'.cm-tooltip.cm-tooltip-autocomplete': {
 		border: '1px solid var(--semantics-surfaces-tinted-border-color)',
-		borderRadius: 'var(--primitives-corner-radius-md)',
+		// No radius on the menu itself, like nldd-menu (overlays-corner-radius).
+		borderRadius: 'var(--semantics-overlays-corner-radius)',
 		backgroundColor: 'var(--semantics-surfaces-base-background-color)',
 		boxShadow: 'var(--components-menu-box-shadow)',
-		overflow: 'hidden',
 	},
 	// Match CM's own specificity (.cm-tooltip.cm-tooltip-autocomplete) so the
 	// body font wins over its monospace default — names read better in sans.
@@ -84,6 +84,9 @@ const popupTheme = EditorView.theme({
 		fontFamily: 'var(--primitives-font-family-body)',
 		fontSize: 'var(--primitives-font-size-90)',
 		maxHeight: '14em',
+		// A small inset around the items, like nldd-menu.
+		margin: '0',
+		padding: 'var(--primitives-space-8)',
 	},
 	'.cm-tooltip-autocomplete > ul > li': {
 		display: 'flex',
@@ -92,7 +95,8 @@ const popupTheme = EditorView.theme({
 		// At least control size sm tall; bumped to md on touch (below).
 		minHeight: 'var(--semantics-controls-sm-min-size)',
 		boxSizing: 'border-box',
-		padding: '4px 12px',
+		padding: 'var(--primitives-space-4) var(--primitives-space-8)',
+		borderRadius: 'var(--semantics-controls-sm-corner-radius)',
 		color: 'var(--semantics-content-color)',
 	},
 	'.cm-tooltip-autocomplete > ul > li[aria-selected]': {
