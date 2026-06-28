@@ -1,5 +1,6 @@
 import { html, nothing } from 'lit';
 import './code-editor.js';
+import '../../layout/container/container.js';
 
 const SAMPLE_YAML = `# wet_op_de_zorgtoeslag — artikel 2
 $id: zorgtoeslagwet
@@ -15,6 +16,19 @@ const SAMPLE_JSON = `{
   "threshold": 32502
 }`;
 
+/* A layout container owns the (responsive) space; this small bridge forwards
+ * clicks on the container's own padding to the editor so clicking next to the
+ * text still starts editing on the nearest line. */
+const forwardClickToEditor = (event: PointerEvent) => {
+	const container = event.currentTarget as HTMLElement;
+	// Shadow retargeting: padding clicks have target === container; clicks in
+	// the editor have target === the editor — only forward the former.
+	if (event.target !== container) return;
+	event.preventDefault();
+	const editor = container.querySelector('nldd-code-editor') as (HTMLElement & { focusFromPoint(x: number, y: number): void }) | null;
+	editor?.focusFromPoint(event.clientX, event.clientY);
+};
+
 export default {
 	title: 'Components/Inputs/Code Editor',
 	component: 'nldd-code-editor',
@@ -28,7 +42,6 @@ export default {
 	},
 	args: {
 		variant: 'simple',
-		padding: undefined,
 		language: '',
 		lineNumbers: false,
 		value: '',
@@ -44,15 +57,8 @@ export default {
 		variant: {
 			control: 'select',
 			options: ['simple', 'box'],
-			description: 'Visuele variant. "simple" (default) is kaal zonder focusring; "box" voegt rand, vulling, padding, hoeken en focusring toe.',
+			description: 'Visuele variant. "simple" (default) is kaal zonder focusring en zonder eigen ruimte; "box" voegt rand, vulling, padding, hoeken en focusring toe.',
 			table: { defaultValue: { summary: 'simple' } },
-		},
-		padding: {
-			control: 'select',
-			options: ['(default)', '0', '8', '16', '24', '32'],
-			mapping: { '(default)': undefined },
-			description: 'Binnen-(klikbare)-padding als spacing-token. Default: 0 voor simple, 16 voor box.',
-			table: { defaultValue: { summary: '(default)' } },
 		},
 		language: {
 			control: 'select',
@@ -64,7 +70,7 @@ export default {
 		lineNumbers: {
 			name: 'line-numbers',
 			control: 'boolean',
-			description: 'Toon een regelnummer-gutter',
+			description: 'Toon een regelnummer-gutter (klik een nummer om de caret naar die regel te zetten)',
 			table: { defaultValue: { summary: false } },
 		},
 		value: {
@@ -114,7 +120,6 @@ export default {
 
 const Template = ({
 	variant,
-	padding,
 	language,
 	lineNumbers,
 	value,
@@ -128,7 +133,6 @@ const Template = ({
 }: Record<string, any>) => html`
 	<nldd-code-editor
 		variant=${variant as string}
-		padding=${padding || nothing}
 		language=${language || nothing}
 		?line-numbers=${lineNumbers}
 		.value=${value || ''}
@@ -196,7 +200,33 @@ export const Simple = {
 	parameters: {
 		docs: {
 			description: {
-				story: 'De simple variant heeft geen kader of focusring — bij focus toont een prominente accent-caret waar je staat. Bedoeld om in een eigen compositie (bv. een message field) te plaatsen die zelf de focusbehandeling levert.',
+				story: 'De simple variant heeft geen kader, focusring of eigen ruimte — bij focus toont een prominente accent-caret waar je staat. Bedoeld om in een eigen compositie (bv. een message field) te plaatsen die zelf de chrome en focusbehandeling levert.',
+			},
+		},
+	},
+};
+
+export const InContainer = {
+	render: () => html`
+		<nldd-container
+			padding="24"
+			@pointerdown=${forwardClickToEditor}
+			style="background: var(--semantics-surfaces-tinted-background-color); border-radius: var(--primitives-corner-radius-lg);"
+		>
+			<nldd-code-editor
+				variant="simple"
+				language="yaml"
+				rows="6"
+				.value=${SAMPLE_YAML}
+				accessible-label="Code"
+			></nldd-code-editor>
+		</nldd-container>
+	`,
+	parameters: {
+		controls: { disable: true },
+		docs: {
+			description: {
+				story: 'Een generieke `nldd-container` bepaalt de (responsive) ruimte; een klein bruggetje stuurt kliks op de container-padding door naar de editor via `focusFromPoint()`. Klik in de rand rond de tekst — de caret springt naar de dichtstbijzijnde regel, zonder dat de editor zelf padding hoeft te beheren.',
 			},
 		},
 	},

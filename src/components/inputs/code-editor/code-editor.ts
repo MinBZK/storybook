@@ -5,14 +5,18 @@
  * on CodeMirror 6 (via NLDDCodeMirrorElement). Visually pairs with
  * nldd-code-viewer for a matching read-only surface.
  *
- * Default `variant="simple"` is a bare editor (no frame, no focus ring) for
- * use inside an nldd-form-field or a consumer composition that owns its own
- * focus treatment; the caret is rendered as a prominent accent as the focus
- * cue. `variant="box"` adds the framed surface (border ring, tinted fill,
- * padding, radius) and a focus ring for standalone use.
+ * Default `variant="simple"` is a bare, flush editor (no frame, no focus ring)
+ * for use inside an nldd-form-field or a consumer composition that owns its own
+ * chrome and focus treatment; the caret is rendered as a prominent accent as
+ * the focus cue. `variant="box"` adds the framed surface (border ring, tinted
+ * fill, inner padding, radius) and a focus ring for standalone use.
+ *
+ * The simple variant has no surrounding space of its own: let a layout
+ * container own the spacing and forward clicks with `focusFromPoint()` so
+ * clicking the padding still starts editing.
  *
  * Optional `language` enables lazy syntax highlighting; `line-numbers` adds a
- * gutter. The inner (clickable) padding is settable with `padding`.
+ * gutter (click a number to move the caret to that line).
  *
  * @element nldd-code-editor
  *
@@ -27,7 +31,6 @@
  * @attr {number} rows             - Minimum visible rows (the floor in every resize mode). Default: 6.
  * @attr {string} resize           - 'none' (fixed) | 'vertical' (default) | 'auto' (grow)
  * @attr {string} variant          - 'simple' (default, bare) | 'box' (framed surface)
- * @attr {string} padding          - Inner clickable padding as a spacing token (e.g. "16"). Default: 0 for simple, 16 for box.
  * @attr {string} language         - Highlight grammar (yaml, json, javascript, typescript, css, html, xml, bash, markdown, rust, gherkin, toml, sql, python). Empty disables highlighting.
  * @attr {boolean} line-numbers    - Show a line-number gutter
  * @attr {string} accessible-label - Accessible label forwarded to the editor. Set automatically by nldd-form-field.
@@ -54,17 +57,6 @@ import { codeEditorTemplate } from './code-editor.template.js';
 
 export type ResizeMode = 'none' | 'vertical' | 'auto';
 export type CodeEditorVariant = 'box' | 'simple';
-
-export type PaddingSize =
-	| '0' | '2' | '4' | '6' | '8' | '10' | '12' | '16' | '20' | '24'
-	| '28' | '32' | '40' | '44' | '48' | '56' | '64' | '80' | '96';
-
-/* Map a spacing-scale token to a CSS length (mirrors nldd-container). */
-function paddingSizeToValue(size: PaddingSize | undefined): string | null {
-	if (size === undefined) return null;
-	if (size === '0') return '0px';
-	return `var(--primitives-space-${size})`;
-}
 
 @customElement('nldd-code-editor')
 export class NLDDCodeEditor extends NLDDCodeMirrorElement {
@@ -114,9 +106,6 @@ export class NLDDCodeEditor extends NLDDCodeMirrorElement {
 
 	@property({ type: String, reflect: true })
 	variant: CodeEditorVariant = 'simple';
-
-	@property({ type: String, reflect: true })
-	padding?: PaddingSize;
 
 	@property({ type: String, reflect: true })
 	language = '';
@@ -203,7 +192,6 @@ export class NLDDCodeEditor extends NLDDCodeMirrorElement {
 	override firstUpdated(): void {
 		this._initialValue = this.value;
 		this.style.setProperty('--_rows', String(this.rows));
-		this._applyPadding();
 		this.mountEditor(this.value);
 		this._internals.setFormValue(this.value);
 		if (this.language) void this._applyLanguage();
@@ -211,9 +199,6 @@ export class NLDDCodeEditor extends NLDDCodeMirrorElement {
 	}
 
 	override updated(changed: PropertyValues): void {
-		if (changed.has('padding')) {
-			this._applyPadding();
-		}
 		if (changed.has('rows')) {
 			this.style.setProperty('--_rows', String(this.rows));
 		}
@@ -242,19 +227,6 @@ export class NLDDCodeEditor extends NLDDCodeMirrorElement {
 			}
 		}
 		this._checkAccessibleLabel();
-	}
-
-	/* Inner padding lives on the CodeMirror content (so it's clickable). The
-	   attribute overrides the per-variant default via an inline custom prop. */
-	private _applyPadding(): void {
-		const value = paddingSizeToValue(this.padding);
-		if (value === null) {
-			this.style.removeProperty('--_padding-block');
-			this.style.removeProperty('--_padding-inline');
-		} else {
-			this.style.setProperty('--_padding-block', value);
-			this.style.setProperty('--_padding-inline', value);
-		}
 	}
 
 	private async _applyLanguage(): Promise<void> {

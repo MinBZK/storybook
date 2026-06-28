@@ -55,6 +55,21 @@ export abstract class NLDDCodeMirrorElement extends LitElement {
 		this.view?.dispatch({ effects: compartment.reconfigure(extension) });
 	}
 
+	/**
+	 * Focus the editor and place the caret on the line nearest a viewport point.
+	 * Lets a wrapping composition forward clicks from its own padding —
+	 * `editor.focusFromPoint(event.clientX, event.clientY)` — so a layout
+	 * container can own the surrounding space without the editor knowing about
+	 * it. No-op on a non-editable view.
+	 */
+	focusFromPoint(x: number, y: number): void {
+		const view = this.view;
+		if (!view) return;
+		const pos = view.posAtCoords({ x, y }, false) ?? view.state.doc.length;
+		view.dispatch({ selection: { anchor: pos } });
+		view.focus();
+	}
+
 	override disconnectedCallback(): void {
 		super.disconnectedCallback();
 		this.destroyEditor();
