@@ -78,16 +78,21 @@ const popupTheme = EditorView.theme({
 		boxShadow: 'var(--components-menu-box-shadow)',
 		overflow: 'hidden',
 	},
-	'.cm-tooltip-autocomplete > ul': {
+	// Match CM's own specificity (.cm-tooltip.cm-tooltip-autocomplete) so the
+	// body font wins over its monospace default — names read better in sans.
+	'.cm-tooltip.cm-tooltip-autocomplete > ul': {
 		fontFamily: 'var(--primitives-font-family-body)',
 		fontSize: 'var(--primitives-font-size-90)',
 		maxHeight: '14em',
 	},
 	'.cm-tooltip-autocomplete > ul > li': {
 		display: 'flex',
-		alignItems: 'baseline',
+		alignItems: 'center',
 		gap: 'var(--primitives-space-8)',
-		padding: '6px 12px',
+		// At least control size sm tall; bumped to md on touch (below).
+		minHeight: 'var(--semantics-controls-sm-min-size)',
+		boxSizing: 'border-box',
+		padding: '4px 12px',
 		color: 'var(--semantics-content-color)',
 	},
 	'.cm-tooltip-autocomplete > ul > li[aria-selected]': {
@@ -101,6 +106,12 @@ const popupTheme = EditorView.theme({
 	},
 	'.cm-tooltip-autocomplete > ul > li[aria-selected] .cm-completionDetail': {
 		color: 'inherit',
+	},
+	// Larger touch targets on coarse pointers (control size md height).
+	'@media (pointer: coarse)': {
+		'.cm-tooltip-autocomplete > ul > li': {
+			minHeight: 'var(--semantics-controls-md-min-size)',
+		},
 	},
 });
 
