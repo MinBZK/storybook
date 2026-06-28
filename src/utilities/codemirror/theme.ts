@@ -37,7 +37,8 @@ const baseTheme = EditorView.theme({
 		color: 'var(--semantics-input-fields-placeholder-color)',
 	},
 	'&.cm-focused .cm-selectionBackground, .cm-selectionBackground, .cm-content ::selection': {
-		backgroundColor: 'color-mix(in srgb, var(--primitives-color-accent-600) 22%, transparent)',
+		// Higher alpha in dark mode so the selection reads against the dark surface.
+		backgroundColor: 'light-dark(color-mix(in srgb, var(--primitives-color-accent-600) 24%, transparent), color-mix(in srgb, var(--primitives-color-accent-600) 48%, transparent))',
 	},
 	'.cm-gutters': {
 		border: 'none',
