@@ -158,3 +158,39 @@ export const Placeholder = {
 	`,
 	parameters: { controls: { disable: true } },
 };
+
+export const WithToolbar = {
+	render: () => {
+		// The editor is headless: this demo toolbar lives in the consumer and
+		// drives formatting via runCommand(). mousedown+preventDefault keeps the
+		// selection/focus on the editor.
+		const run = (name: string, payload?: unknown) => (event: Event) => {
+			const toolbar = (event.currentTarget as HTMLElement).closest('.demo-editor');
+			const editor = toolbar?.querySelector('nldd-text-editor') as (HTMLElement & { runCommand(n: string, p?: unknown): void }) | null;
+			editor?.runCommand(name, payload);
+		};
+		const keepFocus = (event: Event) => event.preventDefault();
+		const btn = 'border:0.5px solid var(--semantics-surfaces-tinted-border-color); background:var(--semantics-surfaces-base-background-color); border-radius:6px; padding:4px 10px; cursor:pointer;';
+		return html`
+			<div class="demo-editor">
+				<div style="display:flex; gap:6px; margin-bottom:8px; flex-wrap:wrap;">
+					<button style=${btn} @mousedown=${keepFocus} @click=${run('bold')}>Vet</button>
+					<button style=${btn} @mousedown=${keepFocus} @click=${run('italic')}>Cursief</button>
+					<button style=${btn} @mousedown=${keepFocus} @click=${run('inlineCode')}>Code</button>
+					<button style=${btn} @mousedown=${keepFocus} @click=${run('heading', 2)}>H2</button>
+					<button style=${btn} @mousedown=${keepFocus} @click=${run('bulletList')}>Lijst</button>
+					<button style=${btn} @mousedown=${keepFocus} @click=${run('quote')}>Quote</button>
+				</div>
+				<nldd-text-editor variant="box" rows="8" .value=${SAMPLE} accessible-label="Tekst"></nldd-text-editor>
+			</div>
+		`;
+	},
+	parameters: {
+		controls: { disable: true },
+		docs: {
+			description: {
+				story: 'De editor is headless: deze toolbar leeft bij de consumer en stuurt de editor aan via `runCommand()` (of de losse `toggleBold()`-achtige methods). `mousedown`+`preventDefault` houdt de selectie vast. Luister op `nldd-text-editor-state` om de actieve/ingedrukte staat van knoppen te tonen. Sneltoetsen Cmd/Ctrl+B/I/E/K werken ook.',
+			},
+		},
+	},
+};

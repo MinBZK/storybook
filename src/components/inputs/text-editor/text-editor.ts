@@ -12,9 +12,12 @@
  * caret is a prominent accent. `variant="box"` adds a framed surface + focus
  * ring. `font` is `sans` (default, best for prose) or `mono`.
  *
- * Headless: there is no built-in toolbar — a consumer drives formatting via
- * the command/state API (added incrementally) and forwards padding clicks with
- * `focusFromPoint()`.
+ * Headless: there is no built-in toolbar. A consumer drives formatting via the
+ * command methods (toggleBold/toggleItalic/toggleInlineCode/toggleStrikethrough/
+ * toggleHeading/toggleBulletList/toggleQuote/toggleLink/runCommand), reads the
+ * active formats with getState(), listens to the nldd-text-editor-state event
+ * to render toggle states, and forwards padding clicks with focusFromPoint().
+ * Cmd/Ctrl+B/I/E/K are bound out of the box. Commands keep focus on the editor.
  *
  * @element nldd-text-editor
  *
@@ -32,8 +35,9 @@
  * @attr {string} font             - 'sans' (default) | 'mono'
  * @attr {string} accessible-label - Accessible label forwarded to the editor. Set automatically by nldd-form-field.
  *
- * @fires input  - When the content changes (detail: { value })
- * @fires change - When the content is committed on blur (detail: { value })
+ * @fires input                  - When the content changes (detail: { value })
+ * @fires change                 - When the content is committed on blur (detail: { value })
+ * @fires nldd-text-editor-state - When the selection or content changes (detail: TextEditorState), for toolbar toggle state
  */
 import { LitElement, type PropertyValues } from 'lit';
 import { customElement, property, query } from 'lit/decorators.js';
@@ -48,12 +52,24 @@ import { defaultKeymap, history, historyKeymap } from '@codemirror/commands';
 import { NLDDCodeMirrorElement } from '../../../utilities/codemirror/codemirror-element.js';
 import { nlddCodeMirrorTheme } from '../../../utilities/codemirror/theme.js';
 import { markdownEditing } from './text-editor.markdown.js';
+import {
+	toggleInlineWrap,
+	toggleHeading as cmToggleHeading,
+	toggleBulletList as cmToggleBulletList,
+	toggleQuote as cmToggleQuote,
+	toggleLink as cmToggleLink,
+	readActiveFormats,
+	EMPTY_FORMATS,
+	type HeadingLevel,
+	type TextEditorState,
+} from './text-editor.commands.js';
 import { textEditorStyles } from './text-editor.styles.js';
 import { textEditorTemplate } from './text-editor.template.js';
 
 export type ResizeMode = 'none' | 'vertical' | 'auto';
 export type TextEditorVariant = 'box' | 'simple';
 export type TextEditorFont = 'sans' | 'mono';
+export type { HeadingLevel, TextEditorState, TextEditorActiveFormats } from './text-editor.commands.js';
 
 @customElement('nldd-text-editor')
 export class NLDDTextEditor extends NLDDCodeMirrorElement {
@@ -128,13 +144,21 @@ export class NLDDTextEditor extends NLDDCodeMirrorElement {
 			markdownEditing,
 			history(),
 			drawSelection(),
-			keymap.of([...defaultKeymap, ...historyKeymap]),
+			keymap.of([
+				{ key: 'Mod-b', run: (view) => { toggleInlineWrap(view, '**', 'StrongEmphasis'); return true; } },
+				{ key: 'Mod-i', run: (view) => { toggleInlineWrap(view, '*', 'Emphasis'); return true; } },
+				{ key: 'Mod-e', run: (view) => { toggleInlineWrap(view, '`', 'InlineCode'); return true; } },
+				{ key: 'Mod-k', run: (view) => { cmToggleLink(view); return true; } },
+				...defaultKeymap,
+				...historyKeymap,
+			]),
 			this._placeholderCompartment.of(this._placeholderExtension()),
 			this._wrapCompartment.of(this.wrap ? EditorView.lineWrapping : []),
 			this._editableCompartment.of(this._editableExtension()),
 			this._attrsCompartment.of(this._attrsExtension()),
 			EditorView.updateListener.of((u) => {
 				if (u.docChanged) this._onDocChanged();
+				if (u.docChanged || u.selectionSet) this._emitState();
 			}),
 			EditorView.domEventHandlers({
 				focus: () => {
@@ -199,6 +223,76 @@ export class NLDDTextEditor extends NLDDCodeMirrorElement {
 		}
 		this._checkAccessibleLabel();
 	}
+
+
+	/* # Headless command API */
+
+	toggleBold(): void {
+		if (this.view) toggleInlineWrap(this.view, '**', 'StrongEmphasis');
+	}
+
+	toggleItalic(): void {
+		if (this.view) toggleInlineWrap(this.view, '*', 'Emphasis');
+	}
+
+	toggleInlineCode(): void {
+		if (this.view) toggleInlineWrap(this.view, '`', 'InlineCode');
+	}
+
+	toggleStrikethrough(): void {
+		if (this.view) toggleInlineWrap(this.view, '~~', 'Strikethrough');
+	}
+
+	toggleHeading(level: HeadingLevel): void {
+		if (this.view) cmToggleHeading(this.view, level);
+	}
+
+	toggleBulletList(): void {
+		if (this.view) cmToggleBulletList(this.view);
+	}
+
+	toggleQuote(): void {
+		if (this.view) cmToggleQuote(this.view);
+	}
+
+	toggleLink(href = ''): void {
+		if (this.view) cmToggleLink(this.view, href);
+	}
+
+	/** Escape hatch: run a command by name (bold, italic, inlineCode,
+	 *  strikethrough, bulletList, quote, heading [payload: level], link
+	 *  [payload: href]). */
+	runCommand(name: string, payload?: unknown): void {
+		switch (name) {
+			case 'bold': this.toggleBold(); break;
+			case 'italic': this.toggleItalic(); break;
+			case 'inlineCode': this.toggleInlineCode(); break;
+			case 'strikethrough': this.toggleStrikethrough(); break;
+			case 'bulletList': this.toggleBulletList(); break;
+			case 'quote': this.toggleQuote(); break;
+			case 'heading': this.toggleHeading((typeof payload === 'number' ? payload : 1) as HeadingLevel); break;
+			case 'link': this.toggleLink(typeof payload === 'string' ? payload : ''); break;
+		}
+	}
+
+	/** The formats active at the current selection (drives a toolbar's state). */
+	getState(): TextEditorState {
+		return {
+			active: this.view ? readActiveFormats(this.view) : { ...EMPTY_FORMATS },
+			empty: this.view ? this.view.state.selection.main.empty : true,
+		};
+	}
+
+	private _emitState(): void {
+		this.dispatchEvent(new CustomEvent('nldd-text-editor-state', {
+			detail: this.getState(),
+			bubbles: true,
+			composed: true,
+		}));
+	}
+
+
+	/* # Internals */
 
 	private _onScrollerPointerDown = (event: PointerEvent): void => {
 		if (event.target !== this.view?.scrollDOM) return;

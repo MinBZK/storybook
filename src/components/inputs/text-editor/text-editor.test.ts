@@ -128,4 +128,75 @@ describe('nldd-text-editor', () => {
 		expect(el2.value).toBe('hersteld');
 		cleanup(el2);
 	});
+
+
+	/* ============================================================
+	   Headless command / state API
+	   ============================================================ */
+
+	it('toggleBold wraps and unwraps the selection', async () => {
+		const el2 = await withValue('woord');
+		const api = el2 as unknown as { view: { dispatch(spec: unknown): void }; toggleBold(): void };
+		api.view.dispatch({ selection: { anchor: 0, head: 5 } });
+		api.toggleBold();
+		await waitForUpdate(el2);
+		expect(el2.value).toBe('**woord**');
+		api.toggleBold();
+		await waitForUpdate(el2);
+		expect(el2.value).toBe('woord');
+		cleanup(el2);
+	});
+
+	it('toggleHeading sets and toggles a heading prefix', async () => {
+		const el2 = await withValue('Titel');
+		const api = el2 as unknown as { view: { dispatch(spec: unknown): void }; toggleHeading(l: number): void };
+		api.view.dispatch({ selection: { anchor: 0 } });
+		api.toggleHeading(2);
+		await waitForUpdate(el2);
+		expect(el2.value).toBe('## Titel');
+		api.toggleHeading(2);
+		await waitForUpdate(el2);
+		expect(el2.value).toBe('Titel');
+		cleanup(el2);
+	});
+
+	it('toggleBulletList prefixes the line', async () => {
+		const el2 = await withValue('punt');
+		const api = el2 as unknown as { view: { dispatch(spec: unknown): void }; toggleBulletList(): void };
+		api.view.dispatch({ selection: { anchor: 0 } });
+		api.toggleBulletList();
+		await waitForUpdate(el2);
+		expect(el2.value).toBe('- punt');
+		cleanup(el2);
+	});
+
+	it('getState reports the active formats at the selection', async () => {
+		const el2 = await withValue('**vet**');
+		const api = el2 as unknown as { view: { dispatch(spec: unknown): void }; getState(): { active: { bold: boolean; italic: boolean } } };
+		api.view.dispatch({ selection: { anchor: 3 } });
+		const state = api.getState();
+		expect(state.active.bold).toBe(true);
+		expect(state.active.italic).toBe(false);
+		cleanup(el2);
+	});
+
+	it('emits nldd-text-editor-state on selection change', async () => {
+		const el2 = await withValue('# Kop');
+		let detail: { active: { heading: number } } | undefined;
+		el2.addEventListener('nldd-text-editor-state', ((e: CustomEvent) => { detail = e.detail; }) as EventListener);
+		(el2 as unknown as { view: { dispatch(spec: unknown): void } }).view.dispatch({ selection: { anchor: 3 } });
+		await waitForUpdate(el2);
+		expect(detail?.active.heading).toBe(1);
+		cleanup(el2);
+	});
+
+	it('runCommand dispatches by name', async () => {
+		const el2 = await withValue('tekst');
+		const api = el2 as unknown as { view: { dispatch(spec: unknown): void }; runCommand(name: string, payload?: unknown): void };
+		api.view.dispatch({ selection: { anchor: 0, head: 5 } });
+		api.runCommand('italic');
+		await waitForUpdate(el2);
+		expect(el2.value).toBe('*tekst*');
+		cleanup(el2);
+	});
 });
