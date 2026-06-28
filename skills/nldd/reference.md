@@ -258,15 +258,15 @@ Een redactionele regel die auteurs of redacteuren toont: optionele avatar(s), ee
 
 ### `<nldd-code-viewer>`
 
-A block of monospaced text for code, traces, output dumps, etc. Renders a styled `<pre>` with the design-system's monospace family, tinted background and standard content color. Whitespace is preserved (`white-space: pre`); long lines scroll horizontally by default. Set `wrap` to break long lines onto the next visual line — useful for prose-like content (YAML strings, formatted output) where horizontal scrolling is more disruptive than wrapping. Set `language` to one of the supported grammars (yaml, json, javascript, typescript, css, html, xml, bash, markdown, rust, gherkin, toml, sql, python) to highlight the slot content with Prism. Without `language` the slot content is rendered raw, no highlighting applied. Grammars are loaded lazily on first use, so a page that never sets `language` ships zero grammar code. Token colors are exposed as `--components-code-viewer-token-*` custom properties on the host. Override them per-instance to swap the theme: ```css nldd-code-viewer { --components-code-viewer-token-keyword-color: var(--my-purple); --components-code-viewer-token-string-color: var(--my-green); } ```
+A read-only block of code/text built on a non-editable CodeMirror 6 view. Visually pairs with nldd-code-editor (same engine, same token palette). Whitespace is preserved; long lines scroll horizontally by default. Set `wrap` to break long lines onto the next visual line. Set `language` to one of the supported grammars (yaml, json, javascript, typescript, css, html, xml, bash, markdown, rust, gherkin, toml, sql, python) to highlight the content. Without `language` the content renders plain. Grammars are loaded lazily on first use, so a page that never sets `language` ships zero grammar code. Token colors are the `--components-code-viewer-token-*` custom properties (shared with the editor via the CodeMirror highlight style). Override them per-instance to swap the theme.
 
 **Attributes**
 
 | Attribuut | Type | Beschrijving |
 | --- | --- | --- |
-| `variant` | `'simple'\|'box'` | Visual style. `box` (default) is a framed card with rounded corners, padding, fill, and a 1px border ring. `simple` drops the entire frame (no corners, no padding, no fill, no ring) — use when embedding inside a parent that supplies its own surface. |
-| `background` | `'tinted'\|'base'` | Surface fill when `variant="box"`. `tinted` (default) for a card on a plain page; `base` for a card on an already-tinted parent (the border ring picks the +2-step semantic so the frame still reads against a card-on-card). |
-| `language` | `string` | Grammar to highlight with (yaml, json, javascript, typescript, css, html, xml, bash, markdown, rust, gherkin, toml, sql, python). Empty disables highlighting. |
+| `variant` | `'simple'\|'box'` | Visual style. `box` (default) is a framed card with rounded corners, padding, fill, and a 1px border ring. `simple` drops the entire frame — use when embedding inside a parent surface. |
+| `background` | `'tinted'\|'base'` | Surface fill when `variant="box"`. |
+| `language` | `string` | Grammar to highlight with. Empty disables highlighting. |
 | `no-copy` | `boolean` | Hide the copy-to-clipboard button (shown by default). |
 | `wrap` | `boolean` | Wrap long lines instead of horizontal scroll |
 
@@ -274,7 +274,7 @@ A block of monospaced text for code, traces, output dumps, etc. Renders a styled
 
 | Slot | Beschrijving |
 | --- | --- |
-| _(default)_ | Default slot for the code/text content |
+| _(default)_ | Default slot for the code/text content (also the copy source) |
 
 ### `<nldd-icon>`
 
@@ -564,30 +564,33 @@ A checkbox with an inline label for use in forms.
 
 ### `<nldd-code-editor>`
 
-A monospace text editor for code, YAML, JSON, and other technical content. Visually pairs with `nldd-code` (same tinted background, same monospace font, same rounded corners) so a read-only view and the editable counterpart look like the same surface. Built on a native `<textarea>` — no syntax highlighting, no line numbers. Reach for a real editor library (CodeMirror, Monaco) when those features are required. Spellcheck and autocorrect are disabled by default since they don't help on code; long lines scroll horizontally unless `wrap` is set.
+A monospace editor for code, YAML, JSON and other technical content, built on CodeMirror 6 (via NLDDCodeMirrorElement). Visually pairs with nldd-code-viewer for a matching read-only surface. Default `variant="simple"` is a bare editor (no frame), for use inside an nldd-form-field that supplies its own chrome. `variant="box"` adds the framed surface (border ring, tinted fill, padding, radius) for standalone use. Optional `language` enables lazy syntax highlighting; `line-numbers` adds a gutter. Spellcheck/autocorrect are off since they don't help on code.
 
 **Attributes**
 
 | Attribuut | Type | Beschrijving |
 | --- | --- | --- |
-| `value` | `string` | The textarea value |
-| `placeholder` | `string` | Placeholder text |
-| `input-id` | `string` | Sets the id on the native textarea. Set automatically by nldd-form-field. |
+| `value` | `string` | Editor content |
+| `placeholder` | `string` | Placeholder text shown while empty |
+| `input-id` | `string` | Sets the id on the editable element. Set automatically by nldd-form-field. |
 | `disabled` | `boolean` | Disabled state |
-| `name` | `string` | Textarea name for form submission |
-| `readonly` | `boolean` | Readonly state |
+| `name` | `string` | Field name for form submission |
+| `readonly` | `boolean` | Readonly state (focusable and selectable, not editable) |
 | `required` | `boolean` | Required state |
 | `wrap` | `boolean` | Wrap long lines instead of horizontal scroll |
-| `rows` | `number` | Initial visible rows (minimum height). Default: 6. |
-| `resize` | `string` | 'none' \| 'vertical' (default) \| 'auto'. 'auto' grows with content (native field-sizing). |
-| `accessible-label` | `string` | Accessible label forwarded to the inner textarea. Set automatically by nldd-form-field. |
+| `rows` | `number` | Minimum visible rows. Default: 6. |
+| `resize` | `string` | 'none' \| 'vertical' (default) \| 'auto' |
+| `variant` | `string` | 'simple' (default, bare) \| 'box' (framed surface) |
+| `language` | `string` | Highlight grammar (json, yaml, javascript, typescript). Empty disables highlighting. |
+| `line-numbers` | `boolean` | Show a line-number gutter |
+| `accessible-label` | `string` | Accessible label forwarded to the editor. Set automatically by nldd-form-field. |
 
 **Events**
 
 | Event | Beschrijving |
 | --- | --- |
-| `input` | When value changes |
-| `change` | When value is committed (blur) |
+| `input` | When the content changes (detail: { value }) |
+| `change` | When the content is committed on blur (detail: { value }) |
 
 ### `<nldd-combo-box>`
 
