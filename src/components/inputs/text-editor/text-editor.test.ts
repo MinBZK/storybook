@@ -282,4 +282,46 @@ describe('nldd-text-editor', () => {
 		expect(el2.shadowRoot!.querySelector('.cm-md-mention-chip[data-selected]')).not.toBeNull();
 		cleanup(el2);
 	});
+
+
+	/* ============================================================
+	   Annotations
+	   ============================================================ */
+
+	async function withAnnotations(markdown: string, list: unknown[]): Promise<TextEditorEl> {
+		const el2 = await withValue(markdown);
+		(el2 as unknown as { annotations: unknown[] }).annotations = list;
+		await el2.updateComplete;
+		await waitForUpdate(el2);
+		return el2;
+	}
+
+	it('rendert een annotatie als dashed-underline + badge', async () => {
+		const el2 = await withAnnotations('Een zin met tekst.', [{ id: 'a1', start: 4, end: 7, quote: 'zin' }]);
+		const sr = el2.shadowRoot!;
+		expect(sr.querySelector('.cm-annotation')).not.toBeNull();
+		expect(sr.querySelector('.cm-annotation-badge')).not.toBeNull();
+		cleanup(el2);
+	});
+
+	it('merget overlappende annotaties tot een badge met telling', async () => {
+		const el2 = await withAnnotations('Een zin met tekst hier.', [
+			{ id: 'a1', start: 4, end: 12 },
+			{ id: 'a2', start: 8, end: 17 },
+		]);
+		const badges = el2.shadowRoot!.querySelectorAll('.cm-annotation-badge');
+		expect(badges.length).toBe(1);
+		expect(badges[0].textContent).toBe('2');
+		cleanup(el2);
+	});
+
+	it('mapt annotatie-ankers mee door bewerkingen heen', async () => {
+		const el2 = await withAnnotations('xy tekst hier.', [{ id: 'a1', start: 3, end: 8, quote: 'tekst' }]);
+		const view = (el2 as unknown as { view: { dispatch(spec: unknown): void } }).view;
+		view.dispatch({ changes: { from: 0, insert: 'AB' } });
+		await waitForUpdate(el2);
+		// Still anchored (shifted right by the insertion), so it keeps rendering.
+		expect(el2.shadowRoot!.querySelector('.cm-annotation')).not.toBeNull();
+		cleanup(el2);
+	});
 });

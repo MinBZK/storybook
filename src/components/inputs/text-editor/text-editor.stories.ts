@@ -197,6 +197,41 @@ export const Mentions = {
 	},
 };
 
+export const Annotations = {
+	render: () => {
+		const sample =
+			'De Rijksoverheid werkt aan een toegankelijk design system. Componenten zijn herbruikbaar en consistent.\n\nFeedback is welkom op elk onderdeel.';
+		const at = (needle: string) => {
+			const start = sample.indexOf(needle);
+			return { start, end: start + needle.length, quote: needle };
+		};
+		const annotations = [
+			{ id: 'a1', ...at('toegankelijk design system') },
+			{ id: 'a2', ...at('herbruikbaar en consistent') },
+			// Two annotations on the same text merge into one underline + a "2" badge.
+			{ id: 'a3', ...at('Feedback') },
+			{ id: 'a4', ...at('Feedback is welkom') },
+		];
+		return html`
+			<nldd-text-editor
+				variant="box"
+				rows="8"
+				accessible-label="Tekst"
+				.value=${sample}
+				.annotations=${annotations}
+			></nldd-text-editor>
+		`;
+	},
+	parameters: {
+		controls: { disable: true },
+		docs: {
+			description: {
+				story: 'Annotaties leven buiten de markdown (de tekst blijft schoon); de consumer levert ze via de `annotations`-property. Elke annotatie ankert op een teken-offset (met de geciteerde tekst voor her-ankeren) en rendert als een lichte tint plus een dashed underline, met een telbadge aan het einde. Eén kleur voor alle annotaties: het type komt uit de pane van de consumer, niet uit de kleur. Annotaties op dezelfde tekst mergen tot een onderstreping met een gecombineerde telling.',
+			},
+		},
+	},
+};
+
 export const WithToolbar = {
 	render: () => {
 		// The editor is headless. This demo builds a real toolbar from DS

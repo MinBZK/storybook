@@ -24,6 +24,12 @@ export const textEditorStyles = css`
 		--_marker-advance: calc(0.6 * var(--_marker-font-size));
 		/* The # marker scales to this fraction of its heading (see below). */
 		--_heading-marker-scale: 75%;
+		/* Annotation overlay: one role for all annotations (type is shown via
+		   text by the consumer, not via colour). */
+		--_annotation-tint: var(--semantics-categories-geel-tinted-background-color);
+		--_annotation-line: var(--semantics-categories-geel-filled-background-color);
+		--_annotation-badge-bg: var(--semantics-categories-geel-filled-background-color);
+		--_annotation-badge-text: var(--semantics-categories-geel-filled-primary-content-color);
 		--_rows: 6;
 
 		${inheritedTextReset}
@@ -208,5 +214,51 @@ export const textEditorStyles = css`
 	.cm-md-listprefix * {
 		font-family: var(--primitives-font-family-monospace);
 		font-size: var(--_marker-font-size);
+	}
+
+
+	/* # Annotation overlay
+	   A light body tint + a dashed underline mark the annotated text; a solid
+	   badge (the nub) sits at the end carrying the count. One role for all
+	   annotations — the type is communicated by the consumer's pane, not colour.
+	   The dashed line is a non-colour cue (with the badge) for accessibility. */
+
+	.cm-annotation {
+		background-color: var(--_annotation-tint);
+		text-decoration-line: underline;
+		text-decoration-style: dashed;
+		text-decoration-color: var(--_annotation-line);
+		text-decoration-thickness: 1.5px;
+		text-underline-offset: 0.2em;
+	}
+
+	.cm-annotation-badge {
+		box-sizing: border-box;
+		display: inline-flex;
+		align-items: center;
+		justify-content: center;
+		min-width: 1.15em;
+		height: 1.15em;
+		margin-inline-start: 0.2em;
+		padding-inline: 0.25em;
+		border: 0;
+		border-radius: var(--primitives-corner-radius-full);
+		background-color: var(--_annotation-badge-bg);
+		color: var(--_annotation-badge-text);
+		vertical-align: middle;
+		font-family: var(--primitives-font-family-body);
+		font-size: 0.7em;
+		font-weight: 700;
+		line-height: 1;
+		cursor: pointer;
+	}
+
+	@media (forced-colors: active) {
+		.cm-annotation {
+			text-decoration-color: currentColor;
+		}
+		.cm-annotation-badge {
+			border: 1px solid currentColor;
+		}
 	}
 `;

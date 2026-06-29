@@ -18,7 +18,10 @@
  * setHeading/setList for picker-style "set" semantics), reads the active formats
  * with getState(), listens to the nldd-text-editor-state event to render toggle
  * states, and forwards padding clicks with focusFromPoint(). Cmd/Ctrl+B/I/E/K are
- * bound out of the box. Commands keep focus on the editor.
+ * bound out of the box. Commands keep focus on the editor. An @-mention typeahead
+ * (mentionSource) collapses to an atomic chip, and a W3C-style annotation overlay
+ * (annotations) marks ranges with a dashed underline, light tint and a count badge
+ * without touching the underlying text.
  *
  * @element nldd-text-editor
  *
@@ -37,6 +40,7 @@
  * @attr {string} accessible-label - Accessible label forwarded to the editor. Set automatically by nldd-form-field.
  *
  * @prop {MentionSource} mentionSource - Consumer-supplied @-mention candidate source (property only). Without it, @-typeahead is inert.
+ * @prop {Annotation[]} annotations - Consumer-supplied annotation overlay (property only). Anchored by offset and mapped through edits; the text stays clean.
  *
  * @fires input                    - When the content changes (detail: { value })
  * @fires change                   - When the content is committed on blur (detail: { value })
@@ -57,6 +61,7 @@ import { NLDDCodeMirrorElement } from '../../../utilities/codemirror/codemirror-
 import { nlddCodeMirrorTheme } from '../../../utilities/codemirror/theme.js';
 import { markdownEditing, mentionRangeAt } from './text-editor.markdown.js';
 import { mentions, type MentionSource, type MentionInsertedDetail } from './text-editor.mentions.js';
+import { annotations as annotationExtension, setAnnotations, type Annotation } from './text-editor.annotations.js';
 import {
 	toggleInlineWrap,
 	toggleHeading as cmToggleHeading,
@@ -78,6 +83,7 @@ export type TextEditorVariant = 'box' | 'simple';
 export type TextEditorFont = 'sans' | 'mono';
 export type { HeadingLevel, TextEditorState, TextEditorActiveFormats } from './text-editor.commands.js';
 export type { MentionCandidate, MentionSource, MentionInsertedDetail } from './text-editor.mentions.js';
+export type { Annotation } from './text-editor.annotations.js';
 
 @customElement('nldd-text-editor')
 export class NLDDTextEditor extends NLDDCodeMirrorElement {
@@ -140,6 +146,12 @@ export class NLDDTextEditor extends NLDDCodeMirrorElement {
 	@property({ attribute: false })
 	mentionSource?: MentionSource;
 
+	/** Consumer-supplied annotations (W3C-style overlay). Property only (set via
+	 *  JS). The text stays clean; these render as a dashed underline + tint and a
+	 *  count badge, anchored by offset and mapped through edits. */
+	@property({ attribute: false })
+	annotations: Annotation[] = [];
+
 	@query('.text-editor')
 	private _container!: HTMLElement;
 
@@ -157,6 +169,7 @@ export class NLDDTextEditor extends NLDDCodeMirrorElement {
 			nlddCodeMirrorTheme,
 			markdownEditing,
 			mentions(() => this.mentionSource, (detail) => this._emitMention(detail)),
+			annotationExtension,
 			history(),
 			drawSelection(),
 			keymap.of([
@@ -213,6 +226,7 @@ export class NLDDTextEditor extends NLDDCodeMirrorElement {
 		// Clicking a mention selects the whole token (capture, to beat CM's own
 		// caret placement).
 		this.view?.contentDOM.addEventListener('pointerdown', this._onMentionPointerDown, true);
+		this._syncAnnotations();
 		this._internals.setFormValue(this.value);
 		this._checkAccessibleLabel();
 	}
@@ -238,8 +252,15 @@ export class NLDDTextEditor extends NLDDCodeMirrorElement {
 			if (changed.has('accessibleLabel') || changed.has('inputId')) {
 				this.reconfigure(this._attrsCompartment, this._attrsExtension());
 			}
+			if (changed.has('annotations')) {
+				this._syncAnnotations();
+			}
 		}
 		this._checkAccessibleLabel();
+	}
+
+	private _syncAnnotations(): void {
+		this.view?.dispatch({ effects: setAnnotations.of(this.annotations) });
 	}
 
 
