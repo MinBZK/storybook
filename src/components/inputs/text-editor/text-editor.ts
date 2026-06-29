@@ -55,7 +55,7 @@ import { Compartment, EditorState, type Extension } from '@codemirror/state';
 import { defaultKeymap, history, historyKeymap } from '@codemirror/commands';
 import { NLDDCodeMirrorElement } from '../../../utilities/codemirror/codemirror-element.js';
 import { nlddCodeMirrorTheme } from '../../../utilities/codemirror/theme.js';
-import { markdownEditing } from './text-editor.markdown.js';
+import { markdownEditing, mentionRangeAt } from './text-editor.markdown.js';
 import { mentions, type MentionSource, type MentionInsertedDetail } from './text-editor.mentions.js';
 import {
 	toggleInlineWrap,
@@ -210,6 +210,9 @@ export class NLDDTextEditor extends NLDDCodeMirrorElement {
 		// A press on the scroller's own padding (outside .cm-content) doesn't
 		// place a caret; forward it to the nearest line.
 		this.view?.scrollDOM.addEventListener('pointerdown', this._onScrollerPointerDown);
+		// Clicking a mention selects the whole token (capture, to beat CM's own
+		// caret placement).
+		this.view?.contentDOM.addEventListener('pointerdown', this._onMentionPointerDown, true);
 		this._internals.setFormValue(this.value);
 		this._checkAccessibleLabel();
 	}
@@ -333,6 +336,17 @@ export class NLDDTextEditor extends NLDDCodeMirrorElement {
 		if (event.target !== this.view?.scrollDOM) return;
 		this.focusFromPoint(event.clientX, event.clientY);
 		event.preventDefault();
+	};
+
+	private _onMentionPointerDown = (event: PointerEvent): void => {
+		const chip = (event.target as HTMLElement | null)?.closest?.('.cm-md-mention-chip');
+		if (!chip || !this.view) return;
+		const range = mentionRangeAt(this.view.state, this.view.posAtDOM(chip));
+		if (!range) return;
+		event.preventDefault();
+		event.stopPropagation();
+		this.view.dispatch({ selection: { anchor: range.from, head: range.to } });
+		this.view.focus();
 	};
 
 	private _onDocChanged(): void {

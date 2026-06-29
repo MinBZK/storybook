@@ -270,4 +270,16 @@ describe('nldd-text-editor', () => {
 	it('mentionToken bouwt een markdown-link met user-id', () => {
 		expect(mentionToken({ id: '42', label: 'Anouk' })).toBe('[@Anouk](user:42)');
 	});
+
+	it('markeert een mention als geselecteerd wanneer de selectie het token dekt', async () => {
+		const el2 = await withValue('Hoi [@Anouk](user:1).');
+		const view = (el2 as unknown as { view: { state: { doc: { toString(): string } }; dispatch(spec: unknown): void } }).view;
+		const text = view.state.doc.toString();
+		const from = text.indexOf('[@Anouk');
+		const to = text.indexOf(')', text.indexOf('(user:1')) + 1;
+		view.dispatch({ selection: { anchor: from, head: to } });
+		await waitForUpdate(el2);
+		expect(el2.shadowRoot!.querySelector('.cm-md-mention-chip[data-selected]')).not.toBeNull();
+		cleanup(el2);
+	});
 });

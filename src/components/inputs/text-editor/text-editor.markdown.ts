@@ -150,18 +150,19 @@ const hangingIndentField = StateField.define<DecorationSet>({
  * an atomic chip widget — the syntax is hidden, the id is protected, and the
  * cursor steps over it (backspace removes the whole mention). */
 class MentionWidget extends WidgetType {
-	constructor(readonly label: string, readonly id: string) {
+	constructor(readonly label: string, readonly id: string, readonly selected: boolean) {
 		super();
 	}
 
 	eq(other: MentionWidget): boolean {
-		return other.label === this.label && other.id === this.id;
+		return other.label === this.label && other.id === this.id && other.selected === this.selected;
 	}
 
 	toDOM(): HTMLElement {
 		const chip = document.createElement('span');
 		chip.className = 'cm-md-mention-chip';
 		chip.setAttribute('data-user', this.id);
+		if (this.selected) chip.setAttribute('data-selected', '');
 		// The @ is rendered as the DS 'at' icon — a separate, vertically-centred
 		// prefix that aligns cleanly with the name.
 		const at = document.createElement('nldd-icon');
@@ -177,6 +178,7 @@ class MentionWidget extends WidgetType {
 
 function buildMentionChips(state: EditorState): DecorationSet {
 	const ranges: Range<Decoration>[] = [];
+	const sel = state.selection.main;
 	syntaxTree(state).iterate({
 		enter: (node) => {
 			if (node.name !== 'Link') return;
@@ -190,7 +192,8 @@ function buildMentionChips(state: EditorState): DecorationSet {
 			if (!text) return;
 			const label = state.sliceDoc(text.from, text.to).replace(/^@/, '');
 			const id = state.sliceDoc(url.from, url.to).slice(MENTION_HREF_PREFIX.length);
-			ranges.push(Decoration.replace({ widget: new MentionWidget(label, id) }).range(link.from, link.to));
+			const selected = !sel.empty && sel.from <= link.from && sel.to >= link.to;
+			ranges.push(Decoration.replace({ widget: new MentionWidget(label, id, selected) }).range(link.from, link.to));
 		},
 	});
 	return Decoration.set(ranges, true);
@@ -198,7 +201,9 @@ function buildMentionChips(state: EditorState): DecorationSet {
 
 const mentionChipField = StateField.define<DecorationSet>({
 	create: (state) => buildMentionChips(state),
-	update: (value, tr) => (tr.docChanged ? buildMentionChips(tr.state) : value),
+	// Rebuild on doc changes and on selection changes (the latter drives the
+	// selected/darker state of a covered mention).
+	update: (value, tr) => (tr.docChanged || !tr.startState.selection.eq(tr.state.selection) ? buildMentionChips(tr.state) : value),
 	provide: (field) => EditorView.decorations.from(field),
 });
 
@@ -216,3 +221,21 @@ export const markdownEditing: Extension = [
 	mentionChipField,
 	mentionAtomicRanges,
 ];
+
+/** Find the document range of the mention token whose chip contains `pos`, or
+ *  null. Used by the component to select a mention on click. */
+export function mentionRangeAt(state: EditorState, pos: number): { from: number; to: number } | null {
+	let node: SyntaxNode | null = syntaxTree(state).resolveInner(pos, 1);
+	for (; node; node = node.parent) {
+		if (node.name === 'Link') {
+			let url: SyntaxNode | null = null;
+			for (let child = node.firstChild; child; child = child.nextSibling) {
+				if (child.name === 'URL') { url = child; break; }
+			}
+			if (url && state.sliceDoc(url.from, url.to).startsWith(MENTION_HREF_PREFIX)) {
+				return { from: node.from, to: node.to };
+			}
+		}
+	}
+	return null;
+}

@@ -183,6 +183,11 @@ export const textEditorStyles = css`
 		width: 1em;
 		height: 1em;
 	}
+	/* Selected mention (clicked, or covered by the selection): solid dark accent. */
+	.cm-md-mention-chip[data-selected] {
+		color: var(--semantics-categories-accent-filled-primary-content-color);
+		background-color: var(--semantics-categories-accent-filled-background-color);
+	}
 	.cm-md-url { color: var(--semantics-input-fields-placeholder-color); }
 	/* Blockquote reads at the lg (20px) step in sans, primary content colour; in
 	   the mono variant it stays at the 16px body size. */
