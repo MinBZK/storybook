@@ -54,6 +54,10 @@ class DragMove {
 
 	start(event: MouseEvent): boolean {
 		if (event.button !== 0 || event.shiftKey || event.altKey || event.metaKey || event.ctrlKey) return false;
+		// Leave multi-click to CM (double = word, triple = line). Otherwise the third
+		// click of a triple lands on the word the second click selected, starts a drag,
+		// and collapses to a caret on release — so it took a fourth click to select.
+		if (event.detail >= 2) return false;
 		if (this.view.state.readOnly) return false;
 		// Mentions own their own click (select-on-click); don't hijack it as a drag.
 		if ((event.target as HTMLElement | null)?.closest?.('.cm-md-mention-chip')) return false;

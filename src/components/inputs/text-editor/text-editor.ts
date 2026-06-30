@@ -214,6 +214,18 @@ export class NLDDTextEditor extends NLDDCodeMirrorElement {
 				blur: () => {
 					if (this.value !== this._valueAtFocus) this._emitChange();
 				},
+				// Triple-click selects the whole paragraph (the doc line), like macOS.
+				// CM's own triple-click stops at the visual line, which under wrapping is
+				// just one wrapped row.
+				mousedown: (event, view) => {
+					if (event.detail < 3) return false;
+					const pos = view.posAtCoords({ x: event.clientX, y: event.clientY });
+					if (pos === null) return false;
+					const line = view.state.doc.lineAt(pos);
+					view.dispatch({ selection: { anchor: line.from, head: line.to } });
+					event.preventDefault();
+					return true;
+				},
 			}),
 		];
 	}
