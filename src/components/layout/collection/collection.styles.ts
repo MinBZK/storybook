@@ -61,10 +61,9 @@ export const collectionStyles = css`
 		grid-template-columns: repeat(auto-fill, minmax(min(var(--_item-width), 100%), 1fr));
 	}
 
-	/* ## Stack ('list' is a deprecated alias) */
+	/* ## Stack */
 
-	:host([layout="stack"]) .collection__items,
-	:host([layout="list"]) .collection__items {
+	:host([layout="stack"]) .collection__items {
 		flex-direction: column;
 	}
 

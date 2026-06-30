@@ -1142,7 +1142,7 @@ A container for displaying collections of items. Supports grid, stack, and horiz
 
 | Attribuut | Type | Beschrijving |
 | --- | --- | --- |
-| `layout` | `string` | Layout mode: 'grid' \| 'stack' \| 'horizontal-scroll' (default: 'grid'). 'list' is a deprecated alias for 'stack'. |
+| `layout` | `string` | Layout mode: 'grid' \| 'stack' \| 'horizontal-scroll' (default: 'grid') |
 | `show-load-more` | `boolean` | Show load-more button in grid/stack (default: false) |
 | `max-items` | `number` | Number of visible items per page (default: 24) |
 | `lazy-load` | `boolean` | Automatically load more items when the button becomes visible |

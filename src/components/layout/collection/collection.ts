@@ -11,7 +11,7 @@
  *
  * @element nldd-collection
  *
- * @attr {string} layout - Layout mode: 'grid' | 'stack' | 'horizontal-scroll' (default: 'grid'). 'list' is a deprecated alias for 'stack'.
+ * @attr {string} layout - Layout mode: 'grid' | 'stack' | 'horizontal-scroll' (default: 'grid')
  * @attr {boolean} show-load-more - Show load-more button in grid/stack (default: false)
  * @attr {number} max-items - Number of visible items per page (default: 24)
  * @attr {boolean} lazy-load - Automatically load more items when the button becomes visible
@@ -43,7 +43,7 @@ import '../../actions/button-bar/button-bar.js';
 import '../../actions/icon-button/icon-button.js';
 import '../../content/icon/icon.js';
 
-type Layout = 'grid' | 'stack' | 'horizontal-scroll' | 'list'; // 'list' is a deprecated alias for 'stack'
+type Layout = 'grid' | 'stack' | 'horizontal-scroll';
 
 @customElement('nldd-collection')
 export class NLDDCollection extends LitElement {
