@@ -37,6 +37,24 @@ const MARK_NODES = new Set([
 ]);
 
 const dimDeco = Decoration.mark({ class: 'cm-md-mark' });
+
+// A bullet list's -, * or + is shown as a real bullet (the source stays as
+// typed). It keeps the marker's monospace width so the hanging indent lines up.
+class BulletWidget extends WidgetType {
+	eq(): boolean {
+		return true;
+	}
+
+	toDOM(): HTMLElement {
+		const dot = document.createElement('span');
+		dot.className = 'cm-md-bullet';
+		dot.textContent = '•';
+		return dot;
+	}
+}
+const bulletWidget = new BulletWidget();
+const bulletDeco = Decoration.replace({ widget: bulletWidget });
+
 const classDecoCache: Record<string, Decoration> = {};
 function classDeco(cls: string): Decoration {
 	return (classDecoCache[cls] ??= Decoration.mark({ class: cls }));
@@ -85,6 +103,8 @@ function buildMarkDecorations(view: EditorView): DecorationSet {
 				}
 				const cls = NODE_CLASS[node.name];
 				if (cls) ranges.push(classDeco(cls).range(node.from, node.to));
+				else if (node.name === 'ListMark' && /^[-*+]$/.test(view.state.sliceDoc(node.from, node.to)))
+					ranges.push(bulletDeco.range(node.from, node.to));
 				else if (MARK_NODES.has(node.name)) ranges.push(dimDeco.range(node.from, node.to));
 			},
 		});

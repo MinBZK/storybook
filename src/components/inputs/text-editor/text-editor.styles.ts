@@ -29,8 +29,6 @@ export const textEditorStyles = css`
 		--_annotation-tint: var(--semantics-categories-geel-tinted-background-color);
 		/* A clearly darker yellow for the selected slice within an annotation. */
 		--_annotation-selected: var(--semantics-categories-geel-filled-background-color);
-		--_annotation-badge-bg: var(--semantics-categories-geel-filled-background-color);
-		--_annotation-badge-text: var(--semantics-categories-geel-filled-primary-content-color);
 		--_rows: 6;
 
 		${inheritedTextReset}
@@ -216,6 +214,13 @@ export const textEditorStyles = css`
 		font-family: var(--primitives-font-family-monospace);
 		font-size: var(--_marker-font-size);
 	}
+	/* The -, * or + of a bullet list, shown as a real bullet at the monospace
+	   marker width so the hanging indent still lines up. */
+	.cm-md-bullet {
+		font-family: var(--primitives-font-family-monospace);
+		font-size: var(--_marker-font-size);
+		color: var(--semantics-content-color);
+	}
 
 
 	/* # Annotation overlay
@@ -247,10 +252,15 @@ export const textEditorStyles = css`
 		background-color: var(--_annotation-selected);
 	}
 
-	/* Solid nub, centred in the reserved right space (a small gap before it). */
+	/* Solid nub, centred in the reserved right space (a small gap before it). A
+	   badge-component-style chip: one step below the filled colour, a highlight
+	   border, the dark filled content colour for the count, darkening on
+	   hover/active. The default cursor (it's not a link), and a ::before that
+	   enlarges the hit area into the reserved space around it. */
 	.cm-annotation-badge {
 		box-sizing: border-box;
 		display: inline-flex;
+		position: relative;
 		align-items: center;
 		justify-content: center;
 		min-width: 1.5em;
@@ -259,8 +269,9 @@ export const textEditorStyles = css`
 		padding-inline: 0.3em;
 		border: 0;
 		border-radius: var(--primitives-corner-radius-full);
-		background-color: var(--_annotation-badge-bg);
-		color: var(--_annotation-badge-text);
+		background-color: var(--semantics-categories-geel-tinted-highlight-border-color);
+		box-shadow: inset 0 0 0 var(--primitives-border-width-regular) var(--semantics-categories-geel-filled-highlight-border-color);
+		color: var(--semantics-categories-geel-filled-primary-content-color);
 		/* vertical-align: middle centres on the text x-height, which sits a hair
 		   below the tinted block's true centre; nudge up to sit dead-centre. */
 		vertical-align: middle;
@@ -269,7 +280,29 @@ export const textEditorStyles = css`
 		font-size: 0.62em;
 		font-weight: 700;
 		line-height: 1;
-		cursor: pointer;
+		cursor: default;
+	}
+
+	.cm-annotation-badge::before {
+		content: '';
+		position: absolute;
+		inset-block: -0.3em;
+		inset-inline: -0.55em -0.45em;
+	}
+
+	@media (hover: hover) {
+		.cm-annotation-badge:hover {
+			background-color: var(--semantics-categories-geel-filled-background-color);
+		}
+	}
+
+	.cm-annotation-badge:active {
+		background-color: var(--semantics-categories-geel-filled-highlight-border-color);
+	}
+
+	/* In a fully-selected annotation the nub darkens with the block. */
+	.cm-annotation-selected .cm-annotation-badge {
+		background-color: var(--semantics-categories-geel-filled-highlight-border-color);
 	}
 
 	/* The same focus ring as the rest of the system, on keyboard focus only. */
