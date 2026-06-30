@@ -13,6 +13,7 @@ export interface TextEditorActiveFormats {
 	bold: boolean;
 	italic: boolean;
 	inlineCode: boolean;
+	codeBlock: boolean;
 	strikethrough: boolean;
 	link: boolean;
 	bulletList: boolean;
@@ -31,6 +32,7 @@ export const EMPTY_FORMATS: TextEditorActiveFormats = {
 	bold: false,
 	italic: false,
 	inlineCode: false,
+	codeBlock: false,
 	strikethrough: false,
 	link: false,
 	bulletList: false,
@@ -264,6 +266,9 @@ export function readActiveFormats(view: EditorView): TextEditorActiveFormats {
 		bold: has('StrongEmphasis'),
 		italic: has('Emphasis'),
 		inlineCode: has('InlineCode'),
+		// In a code block on any of its lines (fences or content), read at line.from
+		// so it's stable and covers every line — like the quote detection.
+		codeBlock: enclosing(view, lineStart, 'FencedCode') !== null || enclosing(view, lineStart, 'CodeBlock') !== null,
 		strikethrough: has('Strikethrough'),
 		link: realLinkAt(view, pos) !== null,
 		// Lists from the line's own marker. (Resolving the tree at a line-end caret

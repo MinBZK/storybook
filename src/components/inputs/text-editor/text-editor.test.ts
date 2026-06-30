@@ -277,6 +277,19 @@ describe('nldd-text-editor', () => {
 		cleanup(el2);
 	});
 
+	it('getState detecteert een codeblok op de fence- en inhoudsregels', async () => {
+		const el2 = await withValue('```\nconst x = 1;\n```');
+		const api = el2 as unknown as {
+			view: { dispatch(spec: unknown): void; state: { doc: { line(n: number): { from: number } } } };
+			getState(): { active: { codeBlock: boolean } };
+		};
+		api.view.dispatch({ selection: { anchor: api.view.state.doc.line(2).from + 2 } }); // content
+		expect(api.getState().active.codeBlock).toBe(true);
+		api.view.dispatch({ selection: { anchor: api.view.state.doc.line(1).from } }); // opening fence
+		expect(api.getState().active.codeBlock).toBe(true);
+		cleanup(el2);
+	});
+
 	it('getState reports the ordered-list type', async () => {
 		const el2 = await withValue('1. een');
 		const api = el2 as unknown as { view: { dispatch(spec: unknown): void }; getState(): { active: { orderedList: boolean; bulletList: boolean } } };

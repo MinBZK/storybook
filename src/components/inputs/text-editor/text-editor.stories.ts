@@ -3,7 +3,6 @@ import './text-editor.js';
 import '../../actions/toolbar/toolbar.js';
 import '../../inputs/segmented-control/segmented-control.js';
 import '../../actions/button/button.js';
-import '../../actions/icon-button/icon-button.js';
 import '../../actions/menu/menu.js';
 
 const SAMPLE = `# Zorgtoeslag
@@ -57,6 +56,7 @@ const onToolbarState = (event: CustomEvent) => {
 	};
 	reflect('inline', ['bold', 'italic']);
 	reflect('code', ['inlineCode']);
+	reflect('codeBlock', ['codeBlock']);
 	reflect('link', ['link']);
 	reflect('quote', ['quote']);
 	const list: any = root.querySelector('[data-group="list"]');
@@ -142,7 +142,15 @@ function toolbarEditor(editor: unknown) {
 					</nldd-segmented-control>
 				</nldd-toolbar-item>
 				<nldd-toolbar-item slot="start" label="Codeblok">
-					<nldd-icon-button icon="code-block" text="Codeblok" @click=${onCodeBlock}></nldd-icon-button>
+					<nldd-segmented-control
+						data-group="codeBlock"
+						type="checkbox"
+						variant="icon"
+						accessible-label="Codeblok"
+						@change=${onCodeBlock}
+					>
+						<nldd-segmented-control-item value="codeBlock" text="Codeblok" icon="code-block"></nldd-segmented-control-item>
+					</nldd-segmented-control>
 				</nldd-toolbar-item>
 				<nldd-toolbar-item slot="start" label="Tekststijl">
 					<nldd-button id="heading-button" data-group="heading" expandable text="Paragraaf"></nldd-button>
