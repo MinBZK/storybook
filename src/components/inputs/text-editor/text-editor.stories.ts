@@ -2,6 +2,7 @@ import { html, nothing } from 'lit';
 import './text-editor.js';
 import '../../actions/toolbar/toolbar.js';
 import '../../inputs/segmented-control/segmented-control.js';
+import '../../inputs/toggle-button/toggle-button.js';
 import '../../actions/button/button.js';
 import '../../actions/menu/menu.js';
 
@@ -50,15 +51,20 @@ const onIndentChange = (event: CustomEvent) => {
 const onToolbarState = (event: CustomEvent) => {
 	const active = event.detail.active;
 	const root = event.currentTarget as Element;
+	// Multi-select segmented controls reflect via .values; single toggle buttons via .selected.
 	const reflect = (group: string, keys: string[]) => {
 		const el: any = root.querySelector(`[data-group="${group}"]`);
 		if (el) el.values = keys.filter((key) => active[key]);
 	};
+	const reflectToggle = (group: string, key: string) => {
+		const el: any = root.querySelector(`[data-group="${group}"]`);
+		if (el) el.selected = Boolean(active[key]);
+	};
 	reflect('inline', ['bold', 'italic']);
-	reflect('code', ['inlineCode']);
-	reflect('codeBlock', ['codeBlock']);
-	reflect('link', ['link']);
-	reflect('quote', ['quote']);
+	reflectToggle('code', 'inlineCode');
+	reflectToggle('codeBlock', 'codeBlock');
+	reflectToggle('link', 'link');
+	reflectToggle('quote', 'quote');
 	const list: any = root.querySelector('[data-group="list"]');
 	if (list) list.value = active.orderedList ? 'numbered' : active.bulletList ? 'bullet' : 'none';
 	const headingButton: any = root.querySelector('[data-group="heading"]');
@@ -84,37 +90,31 @@ function toolbarEditor(editor: unknown) {
 					</nldd-segmented-control>
 				</nldd-toolbar-item>
 				<nldd-toolbar-item slot="start" label="Code">
-					<nldd-segmented-control
+					<nldd-toggle-button
 						data-group="code"
-						type="checkbox"
 						variant="icon"
+						icon="code"
 						accessible-label="Code"
-						@change=${(event: CustomEvent) => reconcile(event.currentTarget as Element, ['inlineCode'], event.detail.values)}
-					>
-						<nldd-segmented-control-item value="inlineCode" text="Code" icon="code"></nldd-segmented-control-item>
-					</nldd-segmented-control>
+						@change=${(event: CustomEvent) => editorOf(event.currentTarget as Element)?.runCommand('inlineCode')}
+					></nldd-toggle-button>
 				</nldd-toolbar-item>
 				<nldd-toolbar-item slot="start" label="Link">
-					<nldd-segmented-control
+					<nldd-toggle-button
 						data-group="link"
-						type="checkbox"
 						variant="icon"
+						icon="link"
 						accessible-label="Link"
 						@change=${onLink}
-					>
-						<nldd-segmented-control-item value="link" text="Link" icon="link"></nldd-segmented-control-item>
-					</nldd-segmented-control>
+					></nldd-toggle-button>
 				</nldd-toolbar-item>
 				<nldd-toolbar-item slot="start" label="Citaat">
-					<nldd-segmented-control
+					<nldd-toggle-button
 						data-group="quote"
-						type="checkbox"
 						variant="icon"
+						icon="text-quote"
 						accessible-label="Citaat"
-						@change=${(event: CustomEvent) => reconcile(event.currentTarget as Element, ['quote'], event.detail.values)}
-					>
-						<nldd-segmented-control-item value="quote" text="Citaat" icon="text-quote"></nldd-segmented-control-item>
-					</nldd-segmented-control>
+						@change=${(event: CustomEvent) => editorOf(event.currentTarget as Element)?.runCommand('quote')}
+					></nldd-toggle-button>
 				</nldd-toolbar-item>
 				<nldd-toolbar-item slot="start" label="Lijst">
 					<nldd-segmented-control
@@ -142,15 +142,13 @@ function toolbarEditor(editor: unknown) {
 					</nldd-segmented-control>
 				</nldd-toolbar-item>
 				<nldd-toolbar-item slot="start" label="Codeblok">
-					<nldd-segmented-control
+					<nldd-toggle-button
 						data-group="codeBlock"
-						type="checkbox"
 						variant="icon"
+						icon="code-block"
 						accessible-label="Codeblok"
 						@change=${onCodeBlock}
-					>
-						<nldd-segmented-control-item value="codeBlock" text="Codeblok" icon="code-block"></nldd-segmented-control-item>
-					</nldd-segmented-control>
+					></nldd-toggle-button>
 				</nldd-toolbar-item>
 				<nldd-toolbar-item slot="start" label="Tekststijl">
 					<nldd-button id="heading-button" data-group="heading" expandable text="Paragraaf"></nldd-button>
