@@ -25,8 +25,10 @@ export const textEditorStyles = css`
 		/* The # marker scales to this fraction of its heading (see below). */
 		--_heading-marker-scale: 75%;
 		/* Code chip/block background, a touch darker when the text is selected. */
-		--_code-bg: light-dark(var(--primitives-color-neutral-100), var(--primitives-color-neutral-800));
-		--_code-bg-selected: light-dark(var(--primitives-color-neutral-200), var(--primitives-color-neutral-700));
+		/* Same tint level as the annotation (mark-50/75) and mention chip, so code,
+		   annotations and mentions read as one family of inline highlights. */
+		--_code-bg: light-dark(var(--primitives-color-neutral-50), var(--primitives-color-neutral-75));
+		--_code-bg-selected: var(--primitives-color-neutral-200);
 		/* Annotation + badge palette — the "mark" (donkergeel) highlight family. One
 		   role for all annotations (type is shown via text by the consumer, not via
 		   colour). The badge border sits one step (50) above its fill in every
@@ -127,7 +129,10 @@ export const textEditorStyles = css`
 	   ring). The [variant] attribute is always present, so this outweighs the
 	   theme's default cursor colour. */
 	:host([variant]) .cm-cursor {
-		border-left-color: var(--primitives-color-accent-600);
+		/* accent-700: it keeps a >=525 lightness gap from both the base and tinted
+		   surfaces in light and dark (accent-600 fell just short on white), so the
+		   caret stays clearly visible without washing out. */
+		border-left-color: var(--primitives-color-accent-700);
 		border-left-width: 2px;
 	}
 
@@ -171,16 +176,24 @@ export const textEditorStyles = css`
 		background-color: var(--_code-bg);
 		border-radius: var(--primitives-corner-radius-sm);
 	}
+	/* Code block: a full-width line background per content line, so consecutive
+	   lines form one filled surface (the fence lines stay clean). The first and
+	   last content lines round the top and bottom corners. */
 	.cm-md-codeblock {
-		/* Tint only the content (not the fence lines), rounded and a touch roomier
-		   than inline code so the block reads as one padded surface. */
-		padding-inline: 0.4em;
+		padding-inline: 0.5em;
 		font-family: var(--primitives-font-family-monospace);
 		font-size: var(--primitives-font-size-90);
 		background-color: var(--_code-bg);
-		border-radius: var(--primitives-corner-radius-sm);
-		-webkit-box-decoration-break: clone;
-		box-decoration-break: clone;
+	}
+	.cm-md-codeblock-first {
+		padding-top: 0.2em;
+		border-start-start-radius: var(--primitives-corner-radius-sm);
+		border-start-end-radius: var(--primitives-corner-radius-sm);
+	}
+	.cm-md-codeblock-last {
+		padding-bottom: 0.2em;
+		border-end-start-radius: var(--primitives-corner-radius-sm);
+		border-end-end-radius: var(--primitives-corner-radius-sm);
 	}
 	/* Selected slice of a code span — drawSelection hides the native ::selection,
 	   so a decoration (cm-md-code-selected / cm-md-codeblock-selected) paints the

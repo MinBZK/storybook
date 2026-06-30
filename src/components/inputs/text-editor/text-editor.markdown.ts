@@ -24,10 +24,8 @@ const NODE_CLASS: Record<string, string> = {
 	Emphasis: 'cm-md-emphasis',
 	Strikethrough: 'cm-md-strike',
 	InlineCode: 'cm-md-code',
-	// Only the content of a fenced block is tinted (CodeText), so the ``` fence
-	// lines stay background-free. Indented code blocks have no fences → whole node.
-	CodeText: 'cm-md-codeblock',
-	CodeBlock: 'cm-md-codeblock',
+	// Fenced/indented code blocks are tinted per content line (see line decorations
+	// below), not here, so the whole block reads as one filled surface.
 	URL: 'cm-md-url',
 	Blockquote: 'cm-md-quote',
 };
@@ -42,6 +40,30 @@ const dimDeco = Decoration.mark({ class: 'cm-md-mark' });
 const classDecoCache: Record<string, Decoration> = {};
 function classDeco(cls: string): Decoration {
 	return (classDecoCache[cls] ??= Decoration.mark({ class: cls }));
+}
+
+// A code block is tinted as full-width line backgrounds — one filled surface — so
+// the fence lines stay clean and the content reads as a block, not per-word chips.
+// The first/last content lines round the top/bottom corners.
+const codeblockLine = Decoration.line({ class: 'cm-md-codeblock' });
+const codeblockFirstLine = Decoration.line({ class: 'cm-md-codeblock-first' });
+const codeblockLastLine = Decoration.line({ class: 'cm-md-codeblock-last' });
+
+function addCodeblockLines(state: EditorState, from: number, to: number, sel: { from: number; to: number; empty: boolean }, ranges: Range<Decoration>[]): void {
+	const firstLine = state.doc.lineAt(from).number;
+	const lastLine = state.doc.lineAt(Math.max(from, to - 1)).number;
+	for (let ln = firstLine; ln <= lastLine; ln++) {
+		const line = state.doc.line(ln);
+		ranges.push(codeblockLine.range(line.from));
+		if (ln === firstLine) ranges.push(codeblockFirstLine.range(line.from));
+		if (ln === lastLine) ranges.push(codeblockLastLine.range(line.from));
+		// Darken the selected slice of this line (drawSelection hides ::selection).
+		if (!sel.empty) {
+			const f = Math.max(line.from, sel.from);
+			const t = Math.min(line.to, sel.to);
+			if (t > f) ranges.push(classDeco('cm-md-codeblock-selected').range(f, t));
+		}
+	}
 }
 
 function linkTextRange(link: SyntaxNode): { from: number; to: number } | null {
@@ -86,15 +108,19 @@ function buildMarkDecorations(view: EditorView): DecorationSet {
 					decorateLink(view.state, node.node, ranges);
 					return;
 				}
+				if (node.name === 'CodeText' || node.name === 'CodeBlock') {
+					addCodeblockLines(view.state, node.from, node.to, sel, ranges);
+					return;
+				}
 				const cls = NODE_CLASS[node.name];
 				if (cls) {
 					ranges.push(classDeco(cls).range(node.from, node.to));
-					// Code spans darken on selection. drawSelection hides the native
+					// Inline code darkens on selection. drawSelection hides the native
 					// ::selection, so paint the darker tint over the selected slice.
-					if (!sel.empty && (cls === 'cm-md-code' || cls === 'cm-md-codeblock')) {
+					if (!sel.empty && cls === 'cm-md-code') {
 						const f = Math.max(node.from, sel.from);
 						const t = Math.min(node.to, sel.to);
-						if (t > f) ranges.push(classDeco(`${cls}-selected`).range(f, t));
+						if (t > f) ranges.push(classDeco('cm-md-code-selected').range(f, t));
 					}
 				} else if (MARK_NODES.has(node.name)) {
 					ranges.push(dimDeco.range(node.from, node.to));
