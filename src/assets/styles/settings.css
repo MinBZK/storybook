@@ -1897,7 +1897,7 @@
 	/* ## Sidebar Section */
 
 	--components-sidebar-section-sidebar-box-background-color: var(--semantics-surfaces-tinted-background-color);
-	--components-sidebar-section-sidebar-box-border-color: var(--semantics-surfaces-tinted-border-color);
+	--components-sidebar-section-sidebar-box-highlight-border-color: var(--semantics-surfaces-tinted-border-color);
 	--components-sidebar-section-sidebar-box-corner-radius: var(--semantics-surfaces-corner-radius);
 
 	/* ## Status bar */
