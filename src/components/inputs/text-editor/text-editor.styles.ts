@@ -266,7 +266,7 @@ export const textEditorStyles = css`
 		/* A 1px inset highlight border one small step above the fill, applied as a
 		   box-shadow like nldd-badge. */
 		box-shadow: inset 0 0 0 var(--primitives-border-width-thin) light-dark(var(--primitives-color-geel-150), var(--primitives-color-geel-350));
-		color: var(--semantics-categories-geel-filled-primary-content-color);
+		color: light-dark(var(--primitives-color-mark-1000), var(--primitives-color-mark-0));
 		/* vertical-align: middle centres on the text x-height, which sits a hair
 		   below the tinted block's true centre; nudge up to sit dead-centre. */
 		vertical-align: middle;
@@ -295,9 +295,12 @@ export const textEditorStyles = css`
 		background-color: var(--semantics-categories-geel-filled-highlight-border-color);
 	}
 
-	/* In a fully-selected annotation the nub darkens with the block. */
+	/* In a fully-selected annotation the nub darkens with the block, and its border
+	   steps up with it (one step above the fill — the geel scale has no geel-500,
+	   so this uses the next step). */
 	.cm-annotation-selected .cm-annotation-badge {
 		background-color: var(--semantics-categories-geel-filled-highlight-border-color);
+		box-shadow: inset 0 0 0 var(--primitives-border-width-thin) light-dark(var(--primitives-color-geel-650), var(--primitives-color-geel-1000));
 	}
 
 	/* The same focus ring as the rest of the system, on keyboard focus only. */
