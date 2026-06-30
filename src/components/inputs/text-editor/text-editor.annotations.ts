@@ -42,21 +42,16 @@ const annotationField = StateField.define<Anchored[]>({
 			if (effect.is(setAnnotations)) return anchorAll(effect.value, tr.state.doc.length);
 		}
 		if (tr.docChanged) {
-			const caret = tr.startState.selection.main;
+			// The annotation never grows at its boundaries: from sticks right
+			// (assoc 1), to sticks left (assoc -1). Text typed right after the nub
+			// lands outside the annotation immediately. (Typing *inside* the range
+			// still extends it, since those positions map within [from, to].)
 			return value
-				.map((anchored) => {
-					// The end normally sticks left (assoc -1): text typed after the nub
-					// lands outside. But when the caret sat just *inside* the end — at
-					// `to`, leaning left toward the text (before the nub) — extend the
-					// annotation so you can keep typing within it.
-					const extendEnd = caret.empty && caret.head === anchored.to && caret.assoc < 0;
-					return {
-						id: anchored.id,
-						// from sticks right (assoc 1) so typing just before it stays outside.
-						from: tr.changes.mapPos(anchored.from, 1),
-						to: tr.changes.mapPos(anchored.to, extendEnd ? 1 : -1),
-					};
-				})
+				.map((anchored) => ({
+					id: anchored.id,
+					from: tr.changes.mapPos(anchored.from, 1),
+					to: tr.changes.mapPos(anchored.to, -1),
+				}))
 				.filter((anchored) => anchored.to > anchored.from);
 		}
 		return value;
