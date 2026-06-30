@@ -214,14 +214,6 @@ export const textEditorStyles = css`
 		font-family: var(--primitives-font-family-monospace);
 		font-size: var(--_marker-font-size);
 	}
-	/* The -, * or + of a bullet list, shown as a real bullet. It keeps the
-	   monospace marker advance for layout (so the hanging indent still lines up)
-	   and is scaled up visually with a transform — which doesn't affect layout. */
-	.cm-md-bullet {
-		font-family: var(--primitives-font-family-monospace);
-		font-size: var(--_marker-font-size);
-		color: var(--semantics-content-color);
-	}
 
 
 	/* # Annotation overlay
@@ -268,10 +260,12 @@ export const textEditorStyles = css`
 		height: 1.5em;
 		margin-inline: 0.4em 0.3em;
 		padding-inline: 0.3em;
+		border: 0;
 		border-radius: var(--primitives-corner-radius-full);
 		background-color: var(--semantics-categories-geel-tinted-highlight-border-color);
-		/* A crisp 2px highlight border, one small step above the fill. */
-		border: var(--primitives-border-width-regular) solid light-dark(var(--primitives-color-geel-150), var(--primitives-color-geel-350));
+		/* A 1px inset highlight border one small step above the fill, applied as a
+		   box-shadow like nldd-badge. */
+		box-shadow: inset 0 0 0 var(--primitives-border-width-thin) light-dark(var(--primitives-color-geel-150), var(--primitives-color-geel-350));
 		color: var(--semantics-categories-geel-filled-primary-content-color);
 		/* vertical-align: middle centres on the text x-height, which sits a hair
 		   below the tinted block's true centre; nudge up to sit dead-centre. */
