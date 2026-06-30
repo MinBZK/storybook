@@ -24,6 +24,9 @@ export const textEditorStyles = css`
 		--_marker-advance: calc(0.6 * var(--_marker-font-size));
 		/* The # marker scales to this fraction of its heading (see below). */
 		--_heading-marker-scale: 75%;
+		/* Code chip/block background, a touch darker when the text is selected. */
+		--_code-bg: light-dark(var(--primitives-color-neutral-100), var(--primitives-color-neutral-800));
+		--_code-bg-selected: light-dark(var(--primitives-color-neutral-200), var(--primitives-color-neutral-700));
 		/* Annotation + badge palette — the "mark" (donkergeel) highlight family. One
 		   role for all annotations (type is shown via text by the consumer, not via
 		   colour). The badge border sits one step (50) above its fill in every
@@ -158,16 +161,28 @@ export const textEditorStyles = css`
 	.cm-md-strong { font-weight: 700; }
 	.cm-md-emphasis { font-style: italic; }
 	.cm-md-strike { text-decoration: line-through; }
-	/* Inline code: 16px monospace step (sits next to the 18px body). No
-	   background — it would paint over the selection layer drawn beneath the text
-	   and hide it; the monospace font and dimmed backticks keep it recognisable. */
+	/* Inline code: 16px monospace step (sits next to the 18px body) on a subtle
+	   chip background. drawSelection's layer sits behind the chip, so the selected
+	   text is shown via a darker ::selection background instead (a full selection
+	   darkens the whole token, a partial one just the selected run). */
 	.cm-md-code {
 		font-family: var(--primitives-font-family-monospace);
 		font-size: var(--primitives-font-size-90);
+		background-color: var(--_code-bg);
+		border-radius: var(--primitives-corner-radius-sm);
+	}
+	.cm-md-code::selection {
+		background-color: var(--_code-bg-selected);
 	}
 	.cm-md-codeblock {
 		font-family: var(--primitives-font-family-monospace);
 		font-size: var(--primitives-font-size-90);
+		background-color: var(--_code-bg);
+		-webkit-box-decoration-break: clone;
+		box-decoration-break: clone;
+	}
+	.cm-md-codeblock::selection {
+		background-color: var(--_code-bg-selected);
 	}
 	.cm-md-link { color: var(--semantics-links-color); }
 	/* @-mention: accent + semibold (shown only in the brief pre-parse state;
