@@ -42,6 +42,8 @@ interface DragState {
 	from: number;
 	to: number;
 	dragging: boolean;
+	/** A whole mention token is being dragged (a plain click keeps it selected). */
+	isMention: boolean;
 }
 
 class DragMove {
@@ -59,11 +61,31 @@ class DragMove {
 		if (sel.empty) return false;
 		const pos = this.view.posAtCoords({ x: event.clientX, y: event.clientY });
 		if (pos === null || pos < sel.from || pos > sel.to) return false; // not on the selection
-		this.state = { startX: event.clientX, startY: event.clientY, from: sel.from, to: sel.to, dragging: false };
+		this.state = { startX: event.clientX, startY: event.clientY, from: sel.from, to: sel.to, dragging: false, isMention: false };
 		window.addEventListener('mousemove', this.onMove, true);
 		window.addEventListener('mouseup', this.onUp, true);
 		event.preventDefault(); // we own this press; CM shouldn't start a new selection
 		return true;
+	}
+
+	/** Begin a drag of an explicit range (a mention token) seeded from a pointer
+	 *  press the component already handled. The mention is selected on press, so a
+	 *  plain release keeps it selected; dragging past the threshold moves the whole
+	 *  token. mousemove/mouseup still fire after a prevented pointerdown. */
+	startFor(seed: { clientX: number; clientY: number }, from: number, to: number): void {
+		if (this.view.state.readOnly) return;
+		this.state = { startX: seed.clientX, startY: seed.clientY, from, to, dragging: false, isMention: true };
+		// Pointer events, not mouse: the component preventDefault'd the pointerdown to
+		// own the press, which can suppress the compatibility mousemove/mouseup.
+		window.addEventListener('pointermove', this.onMove, true);
+		window.addEventListener('pointerup', this.onUp, true);
+	}
+
+	private removeListeners(): void {
+		window.removeEventListener('mousemove', this.onMove, true);
+		window.removeEventListener('mouseup', this.onUp, true);
+		window.removeEventListener('pointermove', this.onMove, true);
+		window.removeEventListener('pointerup', this.onUp, true);
 	}
 
 	private onMove = (event: MouseEvent): void => {
@@ -87,8 +109,7 @@ class DragMove {
 	};
 
 	private onUp = (event: MouseEvent): void => {
-		window.removeEventListener('mousemove', this.onMove, true);
-		window.removeEventListener('mouseup', this.onUp, true);
+		this.removeListeners();
 		this.view.scrollDOM.style.cursor = '';
 		this.clearGhost();
 		const st = this.state;
@@ -97,8 +118,9 @@ class DragMove {
 		if (!st) return;
 		const pos = this.view.posAtCoords({ x: event.clientX, y: event.clientY });
 		if (!st.dragging) {
-			// A plain click on the selection collapses the caret there.
-			if (pos !== null) this.view.dispatch({ selection: { anchor: pos } });
+			// A plain click on a mention keeps it selected (set on press); on a text
+			// selection it collapses the caret where you clicked.
+			if (!st.isMention && pos !== null) this.view.dispatch({ selection: { anchor: pos } });
 			this.view.focus();
 			return;
 		}
@@ -145,13 +167,12 @@ class DragMove {
 	}
 
 	destroy(): void {
-		window.removeEventListener('mousemove', this.onMove, true);
-		window.removeEventListener('mouseup', this.onUp, true);
+		this.removeListeners();
 		this.clearGhost();
 	}
 }
 
-const dragMovePlugin = ViewPlugin.fromClass(DragMove, {
+export const dragMovePlugin = ViewPlugin.fromClass(DragMove, {
 	eventHandlers: {
 		mousedown(this: DragMove, event: MouseEvent) {
 			return this.start(event);

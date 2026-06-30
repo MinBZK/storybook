@@ -64,7 +64,7 @@ import { nlddCodeMirrorTheme } from '../../../utilities/codemirror/theme.js';
 import { markdownEditing, mentionRangeAt, mentionRangeEndingAt, mentionRangeStartingAt } from './text-editor.markdown.js';
 import { mentions, type MentionSource, type MentionInsertedDetail } from './text-editor.mentions.js';
 import { annotations as annotationExtension, setAnnotations, type Annotation } from './text-editor.annotations.js';
-import { dragToMove } from './text-editor.drag.js';
+import { dragToMove, dragMovePlugin } from './text-editor.drag.js';
 import { linkOpenTooltip } from './text-editor.links.js';
 import {
 	toggleInlineWrap,
@@ -425,6 +425,11 @@ export class NLDDTextEditor extends NLDDCodeMirrorElement {
 		event.stopPropagation();
 		this.view.dispatch({ selection: { anchor: range.from, head: range.to } });
 		this.view.focus();
+		// Hand off to the drag machinery: a plain release keeps the mention selected,
+		// dragging past the threshold moves the whole token. Left button, no modifiers.
+		if (event.button === 0 && !event.shiftKey && !event.altKey && !event.metaKey && !event.ctrlKey) {
+			this.view.plugin(dragMovePlugin)?.startFor(event, range.from, range.to);
+		}
 	};
 
 	private _onDocChanged(): void {
