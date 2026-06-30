@@ -182,6 +182,12 @@ export const aliases = {
 	// house
 	'home': 'house',
 
+	// indent-decrease
+	'outdent': 'indent-decrease',
+
+	// indent-increase
+	'indent': 'indent-increase',
+
 	// info-circle
 	'info': 'info-circle',
 	'information': 'info-circle',
