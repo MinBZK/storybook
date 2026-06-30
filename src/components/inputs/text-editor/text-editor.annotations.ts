@@ -105,8 +105,12 @@ class AnnotationBadge extends WidgetType {
 // inclusiveEnd lets the nub widget (placed at the range end) nest *inside* this
 // mark span, so it shares the tint and wraps together with the text.
 const annotationMark = Decoration.mark({ class: 'cm-annotation', inclusiveEnd: true });
+// When the whole annotation is selected, darken the base mark itself (including
+// the nub it contains) — one uniform block, no detached right side.
+const annotationFullSelectedMark = Decoration.mark({ class: 'cm-annotation cm-annotation-selected', inclusiveEnd: true });
 // drawSelection paints the selection behind the text, so it's hidden under the
-// tint; this darker-yellow mark renders the selected slice on top instead.
+// tint; this darker-yellow mark renders a *partial* selected slice on top (it's
+// a smaller range than the base, so it always nests inside and shows).
 const annotationSelectedMark = Decoration.mark({ class: 'cm-annotation-selected' });
 
 function buildAnnotationDecorations(
@@ -115,9 +119,10 @@ function buildAnnotationDecorations(
 ): DecorationSet {
 	const ranges: Range<Decoration>[] = [];
 	for (const group of groupOverlapping(anchored)) {
-		ranges.push(annotationMark.range(group.from, group.to));
-		// The selected slice of an annotation reads as a darker-yellow selection.
-		if (!sel.empty) {
+		const fullySelected = !sel.empty && sel.from <= group.from && sel.to >= group.to;
+		ranges.push((fullySelected ? annotationFullSelectedMark : annotationMark).range(group.from, group.to));
+		// A partial selection darkens just the selected slice.
+		if (!fullySelected && !sel.empty) {
 			const from = Math.max(group.from, sel.from);
 			const to = Math.min(group.to, sel.to);
 			if (to > from) ranges.push(annotationSelectedMark.range(from, to));

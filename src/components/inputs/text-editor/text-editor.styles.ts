@@ -27,9 +27,8 @@ export const textEditorStyles = css`
 		/* Annotation overlay: one role for all annotations (type is shown via
 		   text by the consumer, not via colour). */
 		--_annotation-tint: var(--semantics-categories-geel-tinted-background-color);
-		/* A darker yellow for the selected slice within an annotation. */
-		--_annotation-selected: var(--semantics-categories-geel-tinted-highlight-border-color);
-		--_annotation-line: var(--semantics-categories-geel-filled-background-color);
+		/* A clearly darker yellow for the selected slice within an annotation. */
+		--_annotation-selected: var(--semantics-categories-geel-filled-background-color);
 		--_annotation-badge-bg: var(--semantics-categories-geel-filled-background-color);
 		--_annotation-badge-text: var(--semantics-categories-geel-filled-primary-content-color);
 		--_rows: 6;
@@ -166,35 +165,31 @@ export const textEditorStyles = css`
 	/* @-mention: accent + semibold (shown only in the brief pre-parse state;
 	   normally the whole token collapses to the chip below). */
 	.cm-md-mention { color: var(--semantics-content-accent-color); font-weight: 600; }
-	/* @-mention chip: the collapsed, atomic pill that replaces the token. */
+	/* @-mention chip: the collapsed, atomic pill that replaces the token. It uses
+	   the same inline-tag treatment as the annotation marker (display: inline with
+	   visual block padding, so it never grows the line) — so the two tags match in
+	   size, shape and position and align with the selection the same way. */
 	.cm-md-mention-chip {
-		display: inline-flex;
-		align-items: center;
-		/* List/quote lines carry a negative text-indent (the hanging indent), which
-		   is inherited; Safari applies it to the chip's content and shoves the @
-		   over the name. Reset it so the chip lays out the same everywhere. */
-		text-indent: 0;
-		/* Centre on the line (not the inline-flex baseline, which is the icon's
-		   bottom) and keep the token a touch shorter than the line so it doesn't
-		   grow the line height while still giving the pill some height. */
-		vertical-align: middle;
-		line-height: 1.3;
-		gap: 0.1em;
-		/* In-flow (not absolute): the icon always moves with the token. Safari can
-		   fail to repaint an absolutely-positioned child when CodeMirror
-		   repositions the widget, leaving the @ at a stale location. */
-		padding-inline: 0.15em 0.25em;
+		padding-block: 0.15em;
+		padding-inline: 0.3em;
 		color: var(--semantics-categories-accent-tinted-primary-content-color);
 		background-color: var(--semantics-categories-accent-tinted-background-color);
 		border-radius: var(--primitives-corner-radius-sm);
 		font-weight: 600;
 		white-space: nowrap;
+		-webkit-box-decoration-break: clone;
+		box-decoration-break: clone;
+		/* List/quote lines carry a negative text-indent (the hanging indent), which
+		   is inherited; Safari applies it to the chip and shoves the @ over the
+		   name. Reset it so the chip lays out the same everywhere. */
+		text-indent: 0;
 	}
-	/* The @ icon: a fixed-size, vertically-centred prefix (flex item). */
+	/* The @ icon: a fixed-size inline prefix, nudged to sit on the text centre. */
 	.cm-md-mention-chip__at {
-		flex: none;
-		width: 1em;
-		height: 1em;
+		width: 0.95em;
+		height: 0.95em;
+		margin-inline-end: 0.1em;
+		vertical-align: -0.16em;
 	}
 	/* Selected mention (clicked, or covered by the selection): solid dark accent. */
 	.cm-md-mention-chip[data-selected] {
@@ -244,11 +239,6 @@ export const textEditorStyles = css`
 		padding-inline: 0.3em 0;
 		-webkit-box-decoration-break: clone;
 		box-decoration-break: clone;
-		text-decoration-line: underline;
-		text-decoration-style: dashed;
-		text-decoration-color: var(--_annotation-line);
-		text-decoration-thickness: 1.5px;
-		text-underline-offset: 0.2em;
 	}
 
 	/* Selected slice within an annotation: a darker yellow (drawSelection's layer
@@ -294,9 +284,9 @@ export const textEditorStyles = css`
 	}
 
 	@media (forced-colors: active) {
-		.cm-annotation {
+		.cm-annotation,
+		.cm-md-mention-chip {
 			outline: 1px solid currentColor;
-			text-decoration-color: currentColor;
 		}
 	}
 `;
