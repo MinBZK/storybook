@@ -631,6 +631,18 @@ describe('nldd-list – listbox', () => {
 		expect(itemsEl().id).toBeTruthy();
 	});
 
+	it('sets aria-expanded="false" when no options are visible (popup hidden)', async () => {
+		el = await fixture(MARKUP);
+		await settle(el);
+		// Three options visible: the listbox popup is shown.
+		expect(searchInput().getAttribute('aria-expanded')).toBe('true');
+		// Consumer filters to no matches by hiding every option; .list__items is
+		// hidden, so per the APG combobox pattern the input must report collapsed.
+		el.querySelectorAll('nldd-list-item').forEach(i => i.setAttribute('hidden', ''));
+		await settle(el);
+		expect(searchInput().getAttribute('aria-expanded')).toBe('false');
+	});
+
 	it('assigns an id to options that lack one and seeds the first as active', async () => {
 		el = await fixture(MARKUP);
 		const items = await settle(el);
