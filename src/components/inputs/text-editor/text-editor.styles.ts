@@ -270,6 +270,17 @@ export const textEditorStyles = css`
 		cursor: pointer;
 	}
 
+	/* The same focus ring as the rest of the system, on keyboard focus only. */
+	.cm-annotation-badge:focus-visible {
+		outline: var(--semantics-focus-ring-outline);
+		outline-offset: var(--semantics-focus-ring-outline-offset);
+		box-shadow: var(--semantics-focus-ring-box-shadow);
+	}
+
+	.cm-annotation-badge:focus:not(:focus-visible) {
+		outline: none;
+	}
+
 	@media (forced-colors: active) {
 		.cm-annotation {
 			outline: 1px solid currentColor;
