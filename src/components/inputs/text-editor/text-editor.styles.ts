@@ -223,8 +223,21 @@ export const textEditorStyles = css`
 	   annotations — the type is communicated by the consumer's pane, not colour.
 	   The dashed line is a non-colour cue (with the badge) for accessibility. */
 
+	/* One cohesive yellow block: the light tint with rounded corners and a reserved
+	   space on the right for the solid nub (which lives inside this run, so it
+	   shares the tint and wraps with the text). The dashed underline stays as a
+	   non-colour cue. box-decoration-break keeps the tint + rounding on every
+	   wrapped fragment; padding-block extends the tint without growing the line
+	   (vertical padding on an inline box is visual only). */
 	.cm-annotation {
 		background-color: var(--_annotation-tint);
+		border-radius: var(--primitives-corner-radius-sm);
+		padding-block: 0.15em;
+		/* No trailing padding: the right-hand space is the nub's margin instead, so
+		   it can't wrap to a fragment of its own (margins don't break). */
+		padding-inline: 0.3em 0;
+		-webkit-box-decoration-break: clone;
+		box-decoration-break: clone;
 		text-decoration-line: underline;
 		text-decoration-style: dashed;
 		text-decoration-color: var(--_annotation-line);
@@ -232,22 +245,23 @@ export const textEditorStyles = css`
 		text-underline-offset: 0.2em;
 	}
 
+	/* Solid nub, centred in the reserved right space (a small gap before it). */
 	.cm-annotation-badge {
 		box-sizing: border-box;
 		display: inline-flex;
 		align-items: center;
 		justify-content: center;
-		min-width: 1.15em;
-		height: 1.15em;
-		margin-inline-start: 0.2em;
-		padding-inline: 0.25em;
+		min-width: 1.5em;
+		height: 1.5em;
+		margin-inline: 0.4em 0.3em;
+		padding-inline: 0.3em;
 		border: 0;
 		border-radius: var(--primitives-corner-radius-full);
 		background-color: var(--_annotation-badge-bg);
 		color: var(--_annotation-badge-text);
 		vertical-align: middle;
 		font-family: var(--primitives-font-family-body);
-		font-size: 0.7em;
+		font-size: 0.62em;
 		font-weight: 700;
 		line-height: 1;
 		cursor: pointer;
@@ -255,10 +269,8 @@ export const textEditorStyles = css`
 
 	@media (forced-colors: active) {
 		.cm-annotation {
+			outline: 1px solid currentColor;
 			text-decoration-color: currentColor;
-		}
-		.cm-annotation-badge {
-			border: 1px solid currentColor;
 		}
 	}
 `;

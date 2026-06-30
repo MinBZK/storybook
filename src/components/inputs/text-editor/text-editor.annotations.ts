@@ -85,25 +85,31 @@ class AnnotationBadge extends WidgetType {
 	}
 
 	toDOM(): HTMLElement {
+		// The nub sits inside the body tint (placed at the range end, side -1) so it
+		// inherits the same yellow and wraps with the text — one cohesive block, like
+		// the @ icon inside a mention chip.
 		const badge = document.createElement('button');
 		badge.className = 'cm-annotation-badge';
 		badge.type = 'button';
 		badge.dataset.annotations = this.ids.join(' ');
-		// A bare marker for one, the count for several.
+		// A bare nub for one, the count for several.
 		if (this.ids.length > 1) badge.textContent = String(this.ids.length);
 		badge.setAttribute('aria-label', `${this.ids.length} annotatie${this.ids.length > 1 ? 's' : ''}`);
 		return badge;
 	}
 }
 
-const annotationMark = Decoration.mark({ class: 'cm-annotation' });
+// inclusiveEnd lets the nub widget (placed at the range end) nest *inside* this
+// mark span, so it shares the tint and wraps together with the text.
+const annotationMark = Decoration.mark({ class: 'cm-annotation', inclusiveEnd: true });
 
 function buildAnnotationDecorations(anchored: Anchored[]): DecorationSet {
 	const ranges: Range<Decoration>[] = [];
 	for (const group of groupOverlapping(anchored)) {
 		ranges.push(annotationMark.range(group.from, group.to));
-		// Badge at the end of the range (operators like diff +/- go at the start).
-		ranges.push(Decoration.widget({ widget: new AnnotationBadge(group.ids), side: 1 }).range(group.to));
+		// Nub at the end, inside the mark (side -1) so it shares the tint and wraps
+		// with the text (operators like diff +/- would instead go at the start).
+		ranges.push(Decoration.widget({ widget: new AnnotationBadge(group.ids), side: -1 }).range(group.to));
 	}
 	return Decoration.set(ranges, true);
 }
