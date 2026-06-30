@@ -222,20 +222,33 @@ export const markdownEditing: Extension = [
 	mentionAtomicRanges,
 ];
 
-/** Find the document range of the mention token whose chip contains `pos`, or
- *  null. Used by the component to select a mention on click. */
-export function mentionRangeAt(state: EditorState, pos: number): { from: number; to: number } | null {
-	let node: SyntaxNode | null = syntaxTree(state).resolveInner(pos, 1);
-	for (; node; node = node.parent) {
-		if (node.name === 'Link') {
-			let url: SyntaxNode | null = null;
-			for (let child = node.firstChild; child; child = child.nextSibling) {
-				if (child.name === 'URL') { url = child; break; }
-			}
-			if (url && state.sliceDoc(url.from, url.to).startsWith(MENTION_HREF_PREFIX)) {
-				return { from: node.from, to: node.to };
-			}
+// The mention Link node at `pos` (resolving toward `side`), or null.
+function mentionLinkAt(state: EditorState, pos: number, side: -1 | 1): SyntaxNode | null {
+	for (let node: SyntaxNode | null = syntaxTree(state).resolveInner(pos, side); node; node = node.parent) {
+		if (node.name !== 'Link') continue;
+		let url: SyntaxNode | null = null;
+		for (let child = node.firstChild; child; child = child.nextSibling) {
+			if (child.name === 'URL') { url = child; break; }
 		}
+		if (url && state.sliceDoc(url.from, url.to).startsWith(MENTION_HREF_PREFIX)) return node;
 	}
 	return null;
+}
+
+/** The mention token whose chip contains `pos` (used to select it on click). */
+export function mentionRangeAt(state: EditorState, pos: number): { from: number; to: number } | null {
+	const link = mentionLinkAt(state, pos, 1);
+	return link ? { from: link.from, to: link.to } : null;
+}
+
+/** A mention token ending exactly at `pos` (cursor just after it — backspace). */
+export function mentionRangeEndingAt(state: EditorState, pos: number): { from: number; to: number } | null {
+	const link = mentionLinkAt(state, pos, -1);
+	return link && link.to === pos ? { from: link.from, to: link.to } : null;
+}
+
+/** A mention token starting exactly at `pos` (cursor just before it — delete). */
+export function mentionRangeStartingAt(state: EditorState, pos: number): { from: number; to: number } | null {
+	const link = mentionLinkAt(state, pos, 1);
+	return link && link.from === pos ? { from: link.from, to: link.to } : null;
 }

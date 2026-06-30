@@ -284,6 +284,25 @@ describe('nldd-text-editor', () => {
 		expect(mentionToken({ id: '42', label: 'Anouk' })).toBe('[@Anouk](user:42)');
 	});
 
+	it('verwijdert een mention in twee stappen (backspace selecteert, dan verwijdert)', async () => {
+		const el2 = await withValue('Hoi [@Anouk](user:1) daar.');
+		const view = (el2 as unknown as { view: { state: { doc: { toString(): string } }; dispatch(s: unknown): void; contentDOM: HTMLElement } }).view;
+		const token = '[@Anouk](user:1)';
+		const to = view.state.doc.toString().indexOf(token) + token.length;
+		view.dispatch({ selection: { anchor: to } });
+		const backspace = () => view.contentDOM.dispatchEvent(new KeyboardEvent('keydown', { key: 'Backspace', bubbles: true, cancelable: true }));
+		backspace();
+		await waitForUpdate(el2);
+		// First press selects the whole token (shown as selected), without deleting.
+		expect(el2.value).toContain(token);
+		expect(el2.shadowRoot!.querySelector('.cm-md-mention-chip[data-selected]')).not.toBeNull();
+		backspace();
+		await waitForUpdate(el2);
+		// Second press removes it.
+		expect(el2.value).not.toContain(token);
+		cleanup(el2);
+	});
+
 	it('markeert een mention als geselecteerd wanneer de selectie het token dekt', async () => {
 		const el2 = await withValue('Hoi [@Anouk](user:1).');
 		const view = (el2 as unknown as { view: { state: { doc: { toString(): string } }; dispatch(spec: unknown): void } }).view;

@@ -60,7 +60,7 @@ import { Compartment, EditorState, type Extension } from '@codemirror/state';
 import { defaultKeymap, history, historyKeymap } from '@codemirror/commands';
 import { NLDDCodeMirrorElement } from '../../../utilities/codemirror/codemirror-element.js';
 import { nlddCodeMirrorTheme } from '../../../utilities/codemirror/theme.js';
-import { markdownEditing, mentionRangeAt } from './text-editor.markdown.js';
+import { markdownEditing, mentionRangeAt, mentionRangeEndingAt, mentionRangeStartingAt } from './text-editor.markdown.js';
 import { mentions, type MentionSource, type MentionInsertedDetail } from './text-editor.mentions.js';
 import { annotations as annotationExtension, setAnnotations, type Annotation } from './text-editor.annotations.js';
 import {
@@ -179,6 +179,10 @@ export class NLDDTextEditor extends NLDDCodeMirrorElement {
 				{ key: 'Mod-i', run: (view) => { toggleInlineWrap(view, '*', 'Emphasis'); return true; } },
 				{ key: 'Mod-e', run: (view) => { toggleInlineWrap(view, '`', 'InlineCode'); return true; } },
 				{ key: 'Mod-k', run: (view) => { cmToggleLink(view); return true; } },
+				// A mention deletes in two steps: the first Backspace/Delete next to it
+				// selects the whole token, the second removes it.
+				{ key: 'Backspace', run: (view) => this._selectMentionBeforeDelete(view, -1) },
+				{ key: 'Delete', run: (view) => this._selectMentionBeforeDelete(view, 1) },
 				...defaultKeymap,
 				...historyKeymap,
 			]),
@@ -263,6 +267,20 @@ export class NLDDTextEditor extends NLDDCodeMirrorElement {
 
 	private _syncAnnotations(): void {
 		this.view?.dispatch({ effects: setAnnotations.of(this.annotations) });
+	}
+
+	// Two-step mention deletion: select the token on the first key, remove on the
+	// second. dir -1 = Backspace (token ends at the caret), +1 = Delete (starts).
+	private _selectMentionBeforeDelete(view: EditorView, dir: -1 | 1): boolean {
+		const sel = view.state.selection.main;
+		// A non-empty selection (e.g. an already-selected mention) → let the default
+		// command delete it.
+		if (!sel.empty) return false;
+		const range =
+			dir < 0 ? mentionRangeEndingAt(view.state, sel.head) : mentionRangeStartingAt(view.state, sel.head);
+		if (!range) return false; // not next to a mention → normal backspace/delete
+		view.dispatch({ selection: { anchor: range.from, head: range.to } });
+		return true;
 	}
 
 
