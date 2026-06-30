@@ -392,4 +392,22 @@ describe('nldd-text-editor', () => {
 		expect(el2.shadowRoot!.querySelector('.cm-annotation')).not.toBeNull();
 		cleanup(el2);
 	});
+
+	it('behoudt een annotatie als de lijst-marker via setList wordt verwijderd', async () => {
+		// The annotated word sits after the "- " marker. setList('none') must touch
+		// only the marker, not rewrite the whole line (which would collapse the anchor).
+		const el2 = await withAnnotations('- Een actiepunt hier.', [{ id: 'a1', start: 6, end: 15, quote: 'actiepunt' }]);
+		const sr = el2.shadowRoot!;
+		expect(sr.querySelector('.cm-annotation')).not.toBeNull();
+		const api = el2 as unknown as {
+			view: { dispatch(s: unknown): void; state: { doc: { toString(): string } } };
+			setList(t: string): void;
+		};
+		api.view.dispatch({ selection: { anchor: 8 } });
+		api.setList('none');
+		await waitForUpdate(el2);
+		expect(api.view.state.doc.toString().startsWith('Een actiepunt')).toBe(true); // marker stripped
+		expect(sr.querySelector('.cm-annotation')).not.toBeNull(); // annotation survived
+		cleanup(el2);
+	});
 });

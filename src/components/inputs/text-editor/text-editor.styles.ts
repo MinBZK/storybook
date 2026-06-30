@@ -162,26 +162,31 @@ export const textEditorStyles = css`
 	.cm-md-emphasis { font-style: italic; }
 	.cm-md-strike { text-decoration: line-through; }
 	/* Inline code: 16px monospace step (sits next to the 18px body) on a subtle
-	   chip background. drawSelection's layer sits behind the chip, so the selected
-	   text is shown via a darker ::selection background instead (a full selection
-	   darkens the whole token, a partial one just the selected run). */
+	   chip background. The selected run is darkened with a decoration (see
+	   cm-md-code-selected below), since drawSelection hides the native selection. */
 	.cm-md-code {
+		padding-inline: 0.2em;
 		font-family: var(--primitives-font-family-monospace);
 		font-size: var(--primitives-font-size-90);
 		background-color: var(--_code-bg);
 		border-radius: var(--primitives-corner-radius-sm);
 	}
-	.cm-md-code::selection {
-		background-color: var(--_code-bg-selected);
-	}
 	.cm-md-codeblock {
+		/* Tint only the content (not the fence lines), rounded and a touch roomier
+		   than inline code so the block reads as one padded surface. */
+		padding-inline: 0.4em;
 		font-family: var(--primitives-font-family-monospace);
 		font-size: var(--primitives-font-size-90);
 		background-color: var(--_code-bg);
+		border-radius: var(--primitives-corner-radius-sm);
 		-webkit-box-decoration-break: clone;
 		box-decoration-break: clone;
 	}
-	.cm-md-codeblock::selection {
+	/* Selected slice of a code span — drawSelection hides the native ::selection,
+	   so a decoration (cm-md-code-selected / cm-md-codeblock-selected) paints the
+	   darker tint over the part that's selected. */
+	.cm-md-code-selected,
+	.cm-md-codeblock-selected {
 		background-color: var(--_code-bg-selected);
 	}
 	.cm-md-link { color: var(--semantics-links-color); }
@@ -394,5 +399,36 @@ export const textEditorStyles = css`
 		text-overflow: ellipsis;
 		opacity: 0.65;
 		pointer-events: none;
+	}
+
+	/* "Open link" panel that floats under the caret when it sits in a real link. */
+	.cm-tooltip {
+		border: var(--primitives-border-width-thin) solid var(--semantics-surfaces-base-border-color);
+		border-radius: var(--primitives-corner-radius-sm);
+		background-color: var(--semantics-surfaces-base-background-color);
+		box-shadow: var(--components-tooltip-box-shadow);
+	}
+	.cm-link-tooltip__open {
+		display: inline-flex;
+		align-items: center;
+		gap: var(--primitives-space-4);
+		padding: var(--primitives-space-4) var(--primitives-space-8);
+		color: var(--semantics-links-color);
+		font: var(--_font);
+		text-decoration: none;
+	}
+	.cm-link-tooltip__open:hover {
+		text-decoration: underline;
+	}
+	.cm-link-tooltip__url {
+		max-width: 28ch;
+		overflow: hidden;
+		white-space: nowrap;
+		text-overflow: ellipsis;
+	}
+	.cm-link-tooltip__open nldd-icon {
+		flex: none;
+		width: 1em;
+		height: 1em;
 	}
 `;

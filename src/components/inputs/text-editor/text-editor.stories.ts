@@ -59,6 +59,7 @@ const onToolbarState = (event: CustomEvent) => {
 	};
 	reflect('inline', ['bold', 'italic']);
 	reflect('code', ['inlineCode']);
+	reflect('link', ['link']);
 	reflect('quote', ['quote']);
 	const list: any = root.querySelector('[data-group="list"]');
 	if (list) list.value = active.orderedList ? 'numbered' : active.bulletList ? 'bullet' : 'none';
@@ -95,21 +96,15 @@ function toolbarEditor(editor: unknown) {
 						<nldd-segmented-control-item value="inlineCode" text="Code" icon="code"></nldd-segmented-control-item>
 					</nldd-segmented-control>
 				</nldd-toolbar-item>
-				<nldd-toolbar-item slot="start" label="Codeblok">
-					<nldd-icon-button icon="code-block" text="Codeblok" @click=${onCodeBlock}></nldd-icon-button>
-				</nldd-toolbar-item>
 				<nldd-toolbar-item slot="start" label="Link">
-					<nldd-icon-button icon="link" text="Link" @click=${onLink}></nldd-icon-button>
-				</nldd-toolbar-item>
-				<nldd-toolbar-item slot="start" label="Inspringen">
 					<nldd-segmented-control
-						type="radio"
+						data-group="link"
+						type="checkbox"
 						variant="icon"
-						accessible-label="Inspringen"
-						@change=${onIndentChange}
+						accessible-label="Link"
+						@change=${onLink}
 					>
-						<nldd-segmented-control-item value="increase" text="Meer inspringen" icon="indent-increase"></nldd-segmented-control-item>
-						<nldd-segmented-control-item value="decrease" text="Minder inspringen" icon="indent-decrease"></nldd-segmented-control-item>
+						<nldd-segmented-control-item value="link" text="Link" icon="link"></nldd-segmented-control-item>
 					</nldd-segmented-control>
 				</nldd-toolbar-item>
 				<nldd-toolbar-item slot="start" label="Citaat">
@@ -136,6 +131,20 @@ function toolbarEditor(editor: unknown) {
 						<nldd-segmented-control-item value="bullet" text="Opsomming" icon="bullet-list"></nldd-segmented-control-item>
 						<nldd-segmented-control-item value="numbered" text="Genummerd" icon="numbered-list"></nldd-segmented-control-item>
 					</nldd-segmented-control>
+				</nldd-toolbar-item>
+				<nldd-toolbar-item slot="start" label="Inspringen">
+					<nldd-segmented-control
+						type="radio"
+						variant="icon"
+						accessible-label="Inspringen"
+						@change=${onIndentChange}
+					>
+						<nldd-segmented-control-item value="increase" text="Meer inspringen" icon="indent-increase"></nldd-segmented-control-item>
+						<nldd-segmented-control-item value="decrease" text="Minder inspringen" icon="indent-decrease"></nldd-segmented-control-item>
+					</nldd-segmented-control>
+				</nldd-toolbar-item>
+				<nldd-toolbar-item slot="start" label="Codeblok">
+					<nldd-icon-button icon="code-block" text="Codeblok" @click=${onCodeBlock}></nldd-icon-button>
 				</nldd-toolbar-item>
 				<nldd-toolbar-item slot="start" label="Tekststijl">
 					<nldd-button id="heading-button" data-group="heading" expandable text="Paragraaf"></nldd-button>
@@ -383,7 +392,7 @@ export const Mixed = {
 		const sample = [
 			'# Projectupdate toegankelijkheid',
 			'',
-			'We verbeteren het **burgerportaal** met [@Anouk de Vries](user:1). De `WCAG 2.2`-criteria zijn daarbij leidend.',
+			'We verbeteren het **burgerportaal** met [@Anouk de Vries](user:1). De `WCAG 2.2`-criteria zijn leidend, zie de [WCAG-richtlijn](https://www.w3.org/TR/WCAG22/).',
 			'',
 			'## Actiepunten',
 			'',
@@ -392,6 +401,12 @@ export const Mixed = {
 			'- Screenreader-tests inplannen voor de livegang',
 			'',
 			'> Let op: de deadline is volgende week vrijdag.',
+			'',
+			'Voer de toegankelijkheidscheck uit met:',
+			'',
+			'```bash',
+			'npm run test:a11y',
+			'```',
 			'',
 			'Noem iemand met `@` of selecteer tekst voor een annotatie.',
 		].join('\n');

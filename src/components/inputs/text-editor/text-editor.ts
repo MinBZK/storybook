@@ -65,6 +65,7 @@ import { markdownEditing, mentionRangeAt, mentionRangeEndingAt, mentionRangeStar
 import { mentions, type MentionSource, type MentionInsertedDetail } from './text-editor.mentions.js';
 import { annotations as annotationExtension, setAnnotations, type Annotation } from './text-editor.annotations.js';
 import { dragToMove } from './text-editor.drag.js';
+import { linkOpenTooltip } from './text-editor.links.js';
 import {
 	toggleInlineWrap,
 	toggleHeading as cmToggleHeading,
@@ -181,6 +182,7 @@ export class NLDDTextEditor extends NLDDCodeMirrorElement {
 			markdownEditing,
 			mentions(() => this.mentionSource, (detail) => this._emitMention(detail)),
 			annotationExtension,
+			linkOpenTooltip,
 			history(),
 			drawSelection(),
 			dropCursor(),

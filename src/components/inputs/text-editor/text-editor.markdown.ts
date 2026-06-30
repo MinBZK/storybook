@@ -24,7 +24,9 @@ const NODE_CLASS: Record<string, string> = {
 	Emphasis: 'cm-md-emphasis',
 	Strikethrough: 'cm-md-strike',
 	InlineCode: 'cm-md-code',
-	FencedCode: 'cm-md-codeblock',
+	// Only the content of a fenced block is tinted (CodeText), so the ``` fence
+	// lines stay background-free. Indented code blocks have no fences → whole node.
+	CodeText: 'cm-md-codeblock',
 	CodeBlock: 'cm-md-codeblock',
 	URL: 'cm-md-url',
 	Blockquote: 'cm-md-quote',
@@ -73,6 +75,7 @@ function decorateLink(state: EditorState, link: SyntaxNode, ranges: Range<Decora
 // Inline/content styling — no layout change, so a viewport-scoped plugin.
 function buildMarkDecorations(view: EditorView): DecorationSet {
 	const ranges: Range<Decoration>[] = [];
+	const sel = view.state.selection.main;
 	for (const { from, to } of view.visibleRanges) {
 		syntaxTree(view.state).iterate({
 			from,
@@ -84,8 +87,18 @@ function buildMarkDecorations(view: EditorView): DecorationSet {
 					return;
 				}
 				const cls = NODE_CLASS[node.name];
-				if (cls) ranges.push(classDeco(cls).range(node.from, node.to));
-				else if (MARK_NODES.has(node.name)) ranges.push(dimDeco.range(node.from, node.to));
+				if (cls) {
+					ranges.push(classDeco(cls).range(node.from, node.to));
+					// Code spans darken on selection. drawSelection hides the native
+					// ::selection, so paint the darker tint over the selected slice.
+					if (!sel.empty && (cls === 'cm-md-code' || cls === 'cm-md-codeblock')) {
+						const f = Math.max(node.from, sel.from);
+						const t = Math.min(node.to, sel.to);
+						if (t > f) ranges.push(classDeco(`${cls}-selected`).range(f, t));
+					}
+				} else if (MARK_NODES.has(node.name)) {
+					ranges.push(dimDeco.range(node.from, node.to));
+				}
 			},
 		});
 	}
@@ -101,7 +114,8 @@ const markDecorationPlugin = ViewPlugin.fromClass(
 		}
 
 		update(update: ViewUpdate): void {
-			if (update.docChanged || update.viewportChanged) {
+			// selectionSet too: the selected slice of a code span is tinted darker.
+			if (update.docChanged || update.viewportChanged || update.selectionSet) {
 				this.decorations = buildMarkDecorations(update.view);
 			}
 		}

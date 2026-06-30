@@ -74,6 +74,23 @@ export function toggleInlineWrap(view: EditorView, marker: string, nodeName: str
 	view.focus();
 }
 
+/** Build a change that turns `line.text` into `next` by touching only the span
+ *  that differs (shared prefix and suffix are left untouched). Replacing the whole
+ *  line would collapse any annotation anchored inside it — its offsets map to the
+ *  line boundary. Returns null when nothing changed. */
+function minimalLineChange(
+	line: { from: number; text: string },
+	next: string,
+): { from: number; to: number; insert: string } | null {
+	const old = line.text;
+	if (next === old) return null;
+	let p = 0;
+	while (p < old.length && p < next.length && old[p] === next[p]) p++;
+	let s = 0;
+	while (s < old.length - p && s < next.length - p && old[old.length - 1 - s] === next[next.length - 1 - s]) s++;
+	return { from: line.from + p, to: line.from + old.length - s, insert: next.slice(p, next.length - s) };
+}
+
 function mapSelectedLines(view: EditorView, transform: (text: string) => string): void {
 	const { state } = view;
 	const { from, to } = state.selection.main;
@@ -82,8 +99,8 @@ function mapSelectedLines(view: EditorView, transform: (text: string) => string)
 	const changes: { from: number; to: number; insert: string }[] = [];
 	for (let i = first; i <= last; i++) {
 		const line = state.doc.line(i);
-		const next = transform(line.text);
-		if (next !== line.text) changes.push({ from: line.from, to: line.to, insert: next });
+		const change = minimalLineChange(line, transform(line.text));
+		if (change) changes.push(change);
 	}
 	if (changes.length) view.dispatch({ changes });
 	view.focus();
@@ -151,7 +168,9 @@ export function setList(view: EditorView, type: 'none' | 'bullet' | 'ordered'): 
 			const marker = type === 'bullet' ? '- ' : `${number}. `;
 			next = stripped.replace(/^(\s*)/, `$1${marker}`);
 		}
-		if (next !== line.text) changes.push({ from: line.from, to: line.to, insert: next });
+		// Only rewrite the marker, not the whole line — keeps annotations alive.
+		const change = minimalLineChange(line, next);
+		if (change) changes.push(change);
 	}
 	// Removing a marker from a line that still sits against a list item would leave
 	// it a lazy continuation (markdown keeps parsing it as part of the list, so the
