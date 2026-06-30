@@ -246,6 +246,24 @@ describe('nldd-text-editor', () => {
 		cleanup(el2);
 	});
 
+	it('toggleLink unwraps a link the caret is in', async () => {
+		const el2 = await withValue('Zie [site](https://example.org) hier.');
+		const api = el2 as unknown as { view: { dispatch(spec: unknown): void }; toggleLink(): void };
+		api.view.dispatch({ selection: { anchor: el2.value.indexOf('site') + 1 } });
+		api.toggleLink();
+		await waitForUpdate(el2);
+		expect(el2.value).toBe('Zie site hier.');
+		cleanup(el2);
+	});
+
+	it('getState detecteert een blockquote met de caret aan het regeleinde', async () => {
+		const el2 = await withValue('> Een citaat');
+		const api = el2 as unknown as { view: { dispatch(spec: unknown): void }; getState(): { active: { quote: boolean } } };
+		api.view.dispatch({ selection: { anchor: el2.value.length } });
+		expect(api.getState().active.quote).toBe(true);
+		cleanup(el2);
+	});
+
 	it('getState reports the ordered-list type', async () => {
 		const el2 = await withValue('1. een');
 		const api = el2 as unknown as { view: { dispatch(spec: unknown): void }; getState(): { active: { orderedList: boolean; bulletList: boolean } } };

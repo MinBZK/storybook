@@ -182,7 +182,29 @@ export function toggleQuote(view: EditorView): void {
 
 /** Wrap the selection as a markdown link. Caret lands where the user types next:
  *  inside `[]` if there's no text, inside `()` if there's no href, else after. */
+// The non-mention Link node enclosing `pos`, or null. Mentions own their click,
+// so they don't count as a "link" for the link button.
+function realLinkAt(view: EditorView, pos: number): SyntaxNode | null {
+	const link = enclosing(view, pos, 'Link');
+	if (!link) return null;
+	for (let child = link.firstChild; child; child = child.nextSibling) {
+		if (child.name === 'URL' && view.state.sliceDoc(child.from, child.to).startsWith('user:')) return null;
+	}
+	return link;
+}
+
 export function toggleLink(view: EditorView, href = ''): void {
+	// In a link already → unwrap it (drop the [ ]( ) markers, keep the text).
+	const link = realLinkAt(view, view.state.selection.main.head);
+	if (link) {
+		const text = view.state.sliceDoc(link.from, link.to).replace(/^\[(.*)\]\([^)]*\)$/, '$1');
+		view.dispatch({
+			changes: { from: link.from, to: link.to, insert: text },
+			selection: EditorSelection.range(link.from, link.from + text.length),
+		});
+		view.focus();
+		return;
+	}
 	view.dispatch(view.state.changeByRange((range) => {
 		const text = view.state.sliceDoc(range.from, range.to);
 		const insert = `[${text}](${href})`;
@@ -206,13 +228,13 @@ export function readActiveFormats(view: EditorView): TextEditorActiveFormats {
 		italic: has('Emphasis'),
 		inlineCode: has('InlineCode'),
 		strikethrough: has('Strikethrough'),
-		link: has('Link'),
-		// Detect lists from the line's own marker: the syntax tree at a line-end
-		// caret can resolve into the next line's list (possibly a different type),
-		// which made the toolbar state flip-flop.
+		link: realLinkAt(view, pos) !== null,
+		// Detect lists + quotes from the line's own marker: the syntax tree at a
+		// line-end caret can resolve into the next line (possibly a different type),
+		// which made the toolbar state flip-flop / drop at a blockquote's end.
 		bulletList: /^\s*[-*+]\s/.test(lineText),
 		orderedList: /^\s*\d+[.)]\s/.test(lineText),
-		quote: has('Blockquote'),
+		quote: /^\s*>/.test(lineText),
 		heading: (headingMatch ? headingMatch[1].length : 0) as HeadingLevel,
 	};
 }
