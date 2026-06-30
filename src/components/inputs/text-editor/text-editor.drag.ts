@@ -114,7 +114,8 @@ class DragMove {
 	private showGhost(from: number, to: number): void {
 		const ghost = document.createElement('div');
 		ghost.className = 'cm-drag-ghost';
-		ghost.textContent = this.view.state.sliceDoc(from, to);
+		// Show a mention as plain @Name — drop the markdown link wrapper and user id.
+		ghost.textContent = this.view.state.sliceDoc(from, to).replace(/\[(@[^\]]*)\]\(user:[^)]*\)/g, '$1');
 		this.view.dom.appendChild(ghost);
 		this.ghost = ghost;
 	}

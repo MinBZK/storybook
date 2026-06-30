@@ -240,9 +240,17 @@ export const textEditorStyles = css`
 	}
 
 	/* Selected slice within an annotation: a darker yellow (drawSelection's layer
-	   sits behind the tint, so this stands in for the hidden selection). */
+	   sits behind the tint, so this stands in for the hidden selection) with the
+	   text at the strongest content colour, like the rest of the selection. */
 	.cm-annotation-selected {
 		background-color: var(--_annotation-selected);
+		color: var(--primitives-color-neutral-1000);
+	}
+
+	/* Selected text takes the strongest content colour (more contrast on the
+	   selection) — both plain text and text inside an annotation. */
+	.cm-content ::selection {
+		color: var(--primitives-color-neutral-1000);
 	}
 
 	/* Solid nub, centred in the reserved right space (a small gap before it). A
