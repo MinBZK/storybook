@@ -88,6 +88,13 @@ export const listStyles = css`
 		display: none;
 	}
 
+	/* Listbox: give the options a bit more breathing room from the pinned
+	   search bar (and toolbar) above them than the default inter-row gap, so
+	   the search field reads as a zone distinct from the scrolling options. */
+	:host([type="listbox"]) .list__main {
+		margin-block-start: var(--primitives-space-8);
+	}
+
 	.list__items {
 		display: flex;
 		flex-direction: column;
