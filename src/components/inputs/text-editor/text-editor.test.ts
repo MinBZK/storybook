@@ -322,11 +322,25 @@ describe('nldd-text-editor', () => {
 
 	async function withAnnotations(markdown: string, list: unknown[]): Promise<TextEditorEl> {
 		const el2 = await withValue(markdown);
+		(el2 as unknown as { annotatable: boolean }).annotatable = true;
 		(el2 as unknown as { annotations: unknown[] }).annotations = list;
 		await el2.updateComplete;
 		await waitForUpdate(el2);
 		return el2;
 	}
+
+	it('rendert geen annotaties zonder het annotatable-attribuut', async () => {
+		const el2 = await withValue('Een zin met tekst.');
+		(el2 as unknown as { annotations: unknown[] }).annotations = [{ id: 'a1', start: 4, end: 7, quote: 'zin' }];
+		await el2.updateComplete;
+		await waitForUpdate(el2);
+		expect(el2.shadowRoot!.querySelector('.cm-annotation')).toBeNull();
+		(el2 as unknown as { annotatable: boolean }).annotatable = true;
+		await el2.updateComplete;
+		await waitForUpdate(el2);
+		expect(el2.shadowRoot!.querySelector('.cm-annotation')).not.toBeNull();
+		cleanup(el2);
+	});
 
 	it('rendert een annotatie als dashed-underline + badge met telling 1', async () => {
 		const el2 = await withAnnotations('Een zin met tekst.', [{ id: 'a1', start: 4, end: 7, quote: 'zin' }]);

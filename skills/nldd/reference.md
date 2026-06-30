@@ -968,6 +968,7 @@ A hybrid markdown editor built on CodeMirror 6 (via NLDDCodeMirrorElement): the 
 | `variant` | `string` | 'simple' (default, bare) \| 'box' (framed surface) |
 | `font` | `string` | 'sans' (default) \| 'mono' |
 | `accessible-label` | `string` | Accessible label forwarded to the editor. Set automatically by nldd-form-field. |
+| `annotatable` | `boolean` | Enable the annotation overlay (off by default). Annotations only render when this is set. |
 
 **Events**
 

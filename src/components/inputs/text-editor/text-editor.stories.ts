@@ -331,6 +331,7 @@ export const Annotations = {
 			<nldd-text-editor
 				variant="box"
 				rows="8"
+				annotatable
 				accessible-label="Tekst"
 				.value=${sample}
 				.annotations=${annotations}
@@ -388,6 +389,7 @@ export const Mixed = {
 			<nldd-text-editor
 				variant="simple"
 				rows="15"
+				annotatable
 				accessible-label="Tekst"
 				.value=${sample}
 				.mentionSource=${source}

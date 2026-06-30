@@ -40,7 +40,8 @@
  * @attr {string} accessible-label - Accessible label forwarded to the editor. Set automatically by nldd-form-field.
  *
  * @prop {MentionSource} mentionSource - Consumer-supplied @-mention candidate source (property only). Without it, @-typeahead is inert.
- * @prop {Annotation[]} annotations - Consumer-supplied annotation overlay (property only). Anchored by offset and mapped through edits; the text stays clean.
+ * @attr {boolean} annotatable - Enable the annotation overlay (off by default). Annotations only render when this is set.
+ * @prop {Annotation[]} annotations - Consumer-supplied annotation overlay (property only). Anchored by offset and mapped through edits; the text stays clean. Requires `annotatable`.
  *
  * @fires input                    - When the content changes (detail: { value })
  * @fires change                   - When the content is committed on blur (detail: { value })
@@ -148,9 +149,16 @@ export class NLDDTextEditor extends NLDDCodeMirrorElement {
 	@property({ attribute: false })
 	mentionSource?: MentionSource;
 
+	/** Whether the annotation overlay is enabled. Off by default; set the
+	 *  `annotatable` attribute to turn it on (so the comment affordance and the
+	 *  overlay only appear when the consumer opts in). */
+	@property({ type: Boolean, reflect: true })
+	annotatable = false;
+
 	/** Consumer-supplied annotations (W3C-style overlay). Property only (set via
-	 *  JS). The text stays clean; these render as a dashed underline + tint and a
-	 *  count badge, anchored by offset and mapped through edits. */
+	 *  JS). Render only when `annotatable` is on. The text stays clean; these
+	 *  render as a light tint and a count badge, anchored by offset and mapped
+	 *  through edits. */
 	@property({ attribute: false })
 	annotations: Annotation[] = [];
 
@@ -260,7 +268,7 @@ export class NLDDTextEditor extends NLDDCodeMirrorElement {
 			if (changed.has('accessibleLabel') || changed.has('inputId')) {
 				this.reconfigure(this._attrsCompartment, this._attrsExtension());
 			}
-			if (changed.has('annotations')) {
+			if (changed.has('annotations') || changed.has('annotatable')) {
 				this._syncAnnotations();
 			}
 		}
@@ -268,7 +276,8 @@ export class NLDDTextEditor extends NLDDCodeMirrorElement {
 	}
 
 	private _syncAnnotations(): void {
-		this.view?.dispatch({ effects: setAnnotations.of(this.annotations) });
+		// Annotations only render when the consumer opts in via `annotatable`.
+		this.view?.dispatch({ effects: setAnnotations.of(this.annotatable ? this.annotations : []) });
 	}
 
 	// Two-step mention deletion: select the token on the first key, remove on the
