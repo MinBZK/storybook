@@ -48,7 +48,7 @@ class BulletWidget extends WidgetType {
 	toDOM(): HTMLElement {
 		const dot = document.createElement('span');
 		dot.className = 'cm-md-bullet';
-		dot.textContent = '•';
+		dot.textContent = '●';
 		return dot;
 	}
 }
