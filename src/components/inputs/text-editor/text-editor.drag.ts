@@ -60,7 +60,7 @@ class DragMove {
 		if (event.detail >= 2) return false;
 		if (this.view.state.readOnly) return false;
 		// Mentions own their own click (select-on-click); don't hijack it as a drag.
-		if ((event.target as HTMLElement | null)?.closest?.('.cm-md-mention-chip')) return false;
+		if ((event.target as HTMLElement | null)?.closest?.('.cm-md-mention-token')) return false;
 		const sel = this.view.state.selection.main;
 		if (sel.empty) return false;
 		const pos = this.view.posAtCoords({ x: event.clientX, y: event.clientY });

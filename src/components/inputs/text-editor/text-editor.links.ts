@@ -33,12 +33,12 @@ function linkTooltip(state: EditorState): Tooltip | null {
 			const dom = document.createElement('div');
 			dom.className = 'cm-link-tooltip';
 			const open = document.createElement('a');
-			open.className = 'cm-link-tooltip__open';
+			open.className = 'cm-link-tooltip-open';
 			open.href = info.href;
 			open.target = '_blank';
 			open.rel = 'noopener noreferrer';
 			const label = document.createElement('span');
-			label.className = 'cm-link-tooltip__url';
+			label.className = 'cm-link-tooltip-url';
 			label.textContent = info.href;
 			const icon = document.createElement('nldd-icon');
 			icon.setAttribute('name', 'external-link');

@@ -19,7 +19,7 @@
  * with getState(), listens to the nldd-text-editor-state event to render toggle
  * states, and forwards padding clicks with focusFromPoint(). Cmd/Ctrl+B/I/E/K are
  * bound out of the box. Commands keep focus on the editor. An @-mention typeahead
- * (mentionSource) collapses to an atomic chip, and a W3C-style annotation overlay
+ * (mentionSource) collapses to an atomic token, and a W3C-style annotation overlay
  * (annotations) marks ranges with a dashed underline, light tint and a count badge
  * without touching the underlying text.
  *
@@ -429,9 +429,9 @@ export class NLDDTextEditor extends NLDDCodeMirrorElement {
 	};
 
 	private _onMentionPointerDown = (event: PointerEvent): void => {
-		const chip = (event.target as HTMLElement | null)?.closest?.('.cm-md-mention-chip');
-		if (!chip || !this.view) return;
-		const range = mentionRangeAt(this.view.state, this.view.posAtDOM(chip));
+		const token = (event.target as HTMLElement | null)?.closest?.('.cm-md-mention-token');
+		if (!token || !this.view) return;
+		const range = mentionRangeAt(this.view.state, this.view.posAtDOM(token));
 		if (!range) return;
 		event.preventDefault();
 		event.stopPropagation();

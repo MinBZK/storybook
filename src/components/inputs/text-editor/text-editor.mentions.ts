@@ -14,7 +14,7 @@ const MENTION_QUERY = /@[\w.\-]*$/;
 /* @-mention typeahead. The editor is headless and does not know any users, so
  * the consumer supplies candidates through a source callback. Selecting one
  * inserts a markdown-compatible token that degrades to a plain link outside the
- * editor; the chip rendering lives in the markdown decoration layer. */
+ * editor; the token rendering lives in the markdown decoration layer. */
 
 export interface MentionCandidate {
 	/** Stable id stored in the token (`user:<id>`). */
@@ -86,7 +86,7 @@ const popupTheme = EditorView.theme({
 	// body font wins over its monospace default — names read better in sans.
 	'.cm-tooltip.cm-tooltip-autocomplete > ul': {
 		fontFamily: 'var(--primitives-font-family-body)',
-		// Match the editor body (and the inserted chip), not a smaller popup size.
+		// Match the editor body (and the inserted token), not a smaller popup size.
 		fontSize: 'var(--primitives-font-size-100)',
 		maxHeight: '14em',
 		// A small inset around the items, like nldd-menu.

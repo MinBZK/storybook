@@ -77,7 +77,7 @@ function linkTextRange(link: SyntaxNode): { from: number; to: number } | null {
 	return to > from ? { from, to } : null;
 }
 
-// A mention link (`[@Naam](user:id)`) gets a chip on its @Naam text; a normal
+// A mention link (`[@Naam](user:id)`) gets a token on its @Naam text; a normal
 // link is coloured across its whole range. Either way the markers and URL are
 // still visited as children and dimmed.
 function decorateLink(state: EditorState, link: SyntaxNode, ranges: Range<Decoration>[]): void {
@@ -187,7 +187,7 @@ const hangingIndentField = StateField.define<DecorationSet>({
 });
 
 /* @-mentions collapse fully: the whole `[@Naam](user:id)` token is replaced by
- * an atomic chip widget — the syntax is hidden, the id is protected, and the
+ * an atomic token widget — the syntax is hidden, the id is protected, and the
  * cursor steps over it (backspace removes the whole mention). */
 class MentionWidget extends WidgetType {
 	constructor(readonly label: string, readonly id: string, readonly selected: boolean) {
@@ -199,20 +199,20 @@ class MentionWidget extends WidgetType {
 	}
 
 	toDOM(): HTMLElement {
-		const chip = document.createElement('span');
-		chip.className = 'cm-md-mention-chip';
-		chip.setAttribute('data-user', this.id);
-		if (this.selected) chip.setAttribute('data-selected', '');
+		const token = document.createElement('span');
+		token.className = 'cm-md-mention-token';
+		token.setAttribute('data-user', this.id);
+		if (this.selected) token.setAttribute('data-selected', '');
 		// The @ is rendered as the DS 'at' icon — a separate, vertically-centred
 		// prefix that aligns cleanly with the name.
 		const at = document.createElement('nldd-icon');
-		at.className = 'cm-md-mention-chip__at';
+		at.className = 'cm-md-mention-token-icon';
 		at.setAttribute('name', 'at');
 		at.setAttribute('aria-hidden', 'true');
 		const name = document.createElement('span');
 		name.textContent = this.label;
-		chip.append(at, name);
-		return chip;
+		token.append(at, name);
+		return token;
 	}
 }
 
@@ -247,7 +247,7 @@ const mentionChipField = StateField.define<DecorationSet>({
 	provide: (field) => EditorView.decorations.from(field),
 });
 
-// Treat each chip as one unit so the cursor steps over it and backspace removes
+// Treat each token as one unit so the cursor steps over it and backspace removes
 // the whole mention rather than breaking the hidden (user:id) syntax.
 const mentionAtomicRanges = EditorView.atomicRanges.of(
 	(view) => view.state.field(mentionChipField, false) ?? Decoration.none,
@@ -275,7 +275,7 @@ function mentionLinkAt(state: EditorState, pos: number, side: -1 | 1): SyntaxNod
 	return null;
 }
 
-/** The mention token whose chip contains `pos` (used to select it on click). */
+/** The mention whose collapsed token contains `pos` (used to select it on click). */
 export function mentionRangeAt(state: EditorState, pos: number): { from: number; to: number } | null {
 	const link = mentionLinkAt(state, pos, 1);
 	return link ? { from: link.from, to: link.to } : null;

@@ -340,7 +340,7 @@ export const Mentions = {
 		controls: { disable: true },
 		docs: {
 			description: {
-				story: 'Typ `@` voor een typeahead. De editor kent zelf geen gebruikers: de consumer levert kandidaten via de `mentionSource`-property (aangeroepen met de tekst na `@`). Een keuze voegt een markdown-token `[@Naam](user:id)` in (als chip gerenderd, degradeert tot een gewone link) en vuurt `nldd-text-editor-mention` met id + range.',
+				story: 'Typ `@` voor een typeahead. De editor kent zelf geen gebruikers: de consumer levert kandidaten via de `mentionSource`-property (aangeroepen met de tekst na `@`). Een keuze voegt een markdown-token `[@Naam](user:id)` in (als token gerenderd, degradeert tot een gewone link) en vuurt `nldd-text-editor-mention` met id + range.',
 			},
 		},
 	},
@@ -442,7 +442,7 @@ export const Mixed = {
 		controls: { disable: true },
 		docs: {
 			description: {
-				story: 'Alles samen: een echte toolbar (DS-componenten, headless gekoppeld) boven een `simple`-editor met annotaties en @-mentions, door verschillende soorten content heen (koppen, vet, inline code, een lijst, een blockquote en links). De annotatie-overlay en de mention-chips bestaan naast elkaar zonder elkaar in de weg te zitten; de tekst blijft schone markdown.',
+				story: 'Alles samen: een echte toolbar (DS-componenten, headless gekoppeld) boven een `simple`-editor met annotaties en @-mentions, door verschillende soorten content heen (koppen, vet, inline code, een lijst, een blockquote en links). De annotatie-overlay en de mention-tokens bestaan naast elkaar zonder elkaar in de weg te zitten; de tekst blijft schone markdown.',
 			},
 		},
 	},

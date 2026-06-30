@@ -92,7 +92,7 @@ class AnnotationBadge extends WidgetType {
 	toDOM(): HTMLElement {
 		// The nub sits inside the body tint (placed at the range end, side -1) so it
 		// inherits the same yellow and wraps with the text — one cohesive block, like
-		// the @ icon inside a mention chip.
+		// the @ icon inside a mention token.
 		const badge = document.createElement('button');
 		badge.className = 'cm-annotation-badge';
 		badge.type = 'button';

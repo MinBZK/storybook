@@ -307,10 +307,10 @@ describe('nldd-text-editor', () => {
 
 	it('klapt een @-mention volledig weg tot een chip', async () => {
 		const el2 = await withValue('Hoi [@Anouk](user:1), kijk even.');
-		const chip = el2.shadowRoot!.querySelector('.cm-md-mention-chip');
+		const chip = el2.shadowRoot!.querySelector('.cm-md-mention-token');
 		expect(chip).not.toBeNull();
 		// the @ is the 'at' icon, followed by the name; raw syntax is replaced
-		expect(chip!.querySelector('.cm-md-mention-chip__at')).not.toBeNull();
+		expect(chip!.querySelector('.cm-md-mention-token-icon')).not.toBeNull();
 		expect(chip!.textContent).toContain('Anouk');
 		expect(el2.shadowRoot!.querySelector('.cm-content')!.textContent).not.toContain('(user:1)');
 		cleanup(el2);
@@ -320,7 +320,7 @@ describe('nldd-text-editor', () => {
 		const el2 = await withValue('Zie [site](https://example.org).');
 		const sr = el2.shadowRoot!;
 		expect(sr.querySelector('.cm-md-link')).not.toBeNull();
-		expect(sr.querySelector('.cm-md-mention-chip')).toBeNull();
+		expect(sr.querySelector('.cm-md-mention-token')).toBeNull();
 		cleanup(el2);
 	});
 
@@ -339,7 +339,7 @@ describe('nldd-text-editor', () => {
 		await waitForUpdate(el2);
 		// First press selects the whole token (shown as selected), without deleting.
 		expect(el2.value).toContain(token);
-		expect(el2.shadowRoot!.querySelector('.cm-md-mention-chip[data-selected]')).not.toBeNull();
+		expect(el2.shadowRoot!.querySelector('.cm-md-mention-token[data-selected]')).not.toBeNull();
 		backspace();
 		await waitForUpdate(el2);
 		// Second press removes it.
@@ -355,7 +355,7 @@ describe('nldd-text-editor', () => {
 		const to = text.indexOf(')', text.indexOf('(user:1')) + 1;
 		view.dispatch({ selection: { anchor: from, head: to } });
 		await waitForUpdate(el2);
-		expect(el2.shadowRoot!.querySelector('.cm-md-mention-chip[data-selected]')).not.toBeNull();
+		expect(el2.shadowRoot!.querySelector('.cm-md-mention-token[data-selected]')).not.toBeNull();
 		cleanup(el2);
 	});
 
