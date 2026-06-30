@@ -41,7 +41,10 @@ export function sidebarSectionTemplate(component: NLDDSidebarSection): TemplateR
 		>
 			${collapsed ? html`
 				<nldd-page sticky-header>
-					<slot name="sheet-top-title-bar" slot="header">
+					<slot
+						name="sheet-top-title-bar"
+						slot="header"
+					>
 						<nldd-top-title-bar
 							text=${sidebarLabel}
 							dismiss-text=${component._sheetDismissText}

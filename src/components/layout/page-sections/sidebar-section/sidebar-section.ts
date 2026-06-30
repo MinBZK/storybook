@@ -71,37 +71,21 @@ import type { NLDDSheet } from '../../sheet/sheet.js';
 export class NLDDSidebarSection extends PageSectionMixin(LitElement) {
 	static override styles = sidebarSectionStyles;
 
-	/** Body max-width: 'full' removes the constraint, or any CSS length overrides it. */
 	@property({ type: String, reflect: true })
 	width = '';
 
-	/** Sticky top inset on lg (CSS length). Default = 16px. */
 	@property({ type: String, reflect: true, attribute: 'sticky-top' })
 	stickyTop = '';
 
-	/** Sticky bottom inset on lg (CSS length). Default = 16px. */
 	@property({ type: String, reflect: true, attribute: 'sticky-bottom' })
 	stickyBottom = '';
 
-	/** Accessible name for the sidebar (the aside landmark on lg and the sheet on sm/md). */
 	@property({ type: String, attribute: 'sidebar-label' })
 	sidebarLabel = '';
 
-	/**
-	 * Opt out of the sheet collapse. When set, a narrow section never moves the
-	 * sidebar into a sheet — the sidebar and main simply stack (the sidebar
-	 * full-width above the main) instead. `collapsed` then stays `false` at any width.
-	 */
 	@property({ type: Boolean, reflect: true, attribute: 'no-collapse' })
 	noCollapse = false;
 
-	/**
-	 * Read-only, reflected: `true` while the sidebar is collapsed into a sheet
-	 * (the section is narrower than lg). Driven by the section's own width via a
-	 * ResizeObserver — don't set it. Target it via CSS
-	 * (`nldd-sidebar-section[collapsed] .my-chrome`), or read it / listen to
-	 * `collapse-change`, to reveal sheet-only chrome and wire a trigger to `show()`.
-	 */
 	@property({ type: Boolean, reflect: true })
 	collapsed = false;
 
@@ -119,7 +103,7 @@ export class NLDDSidebarSection extends PageSectionMixin(LitElement) {
 
 	/** Dismiss-button label for the sheet's default title bar (i18n). */
 	get _sheetDismissText(): string {
-		return nlddSidebarSectionTranslations['components.sidebar-section.sheet-dismiss-text'];
+		return nlddSidebarSectionTranslations['components.sidebar-section.sheet-dismiss-action'];
 	}
 
 	override connectedCallback(): void {
