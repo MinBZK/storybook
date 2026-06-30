@@ -4,6 +4,8 @@ import '../../actions/toolbar/toolbar.js';
 import '../../inputs/segmented-control/segmented-control.js';
 import '../../inputs/toggle-button/toggle-button.js';
 import '../../actions/button/button.js';
+import '../../actions/button-bar/button-bar.js';
+import '../../actions/icon-button/icon-button.js';
 import '../../actions/menu/menu.js';
 
 const SAMPLE = `# Zorgtoeslag
@@ -43,11 +45,8 @@ const onHeadingSelect = (event: Event) => {
 };
 const onLink = (event: Event) => editorOf(event.currentTarget as Element)?.toggleLink();
 const onCodeBlock = (event: Event) => editorOf(event.currentTarget as Element)?.toggleCodeBlock();
-const onIndentChange = (event: CustomEvent) => {
-	const control = event.currentTarget as Element;
-	if (event.detail.value === 'increase') editorOf(control)?.indent();
-	else if (event.detail.value === 'decrease') editorOf(control)?.outdent();
-};
+const onIndent = (event: Event) => editorOf(event.currentTarget as Element)?.indent();
+const onOutdent = (event: Event) => editorOf(event.currentTarget as Element)?.outdent();
 const onToolbarState = (event: CustomEvent) => {
 	const active = event.detail.active;
 	const root = event.currentTarget as Element;
@@ -131,15 +130,11 @@ function toolbarEditor(editor: unknown) {
 					</nldd-segmented-control>
 				</nldd-toolbar-item>
 				<nldd-toolbar-item slot="start" label="Inspringen">
-					<nldd-segmented-control
-						type="button"
-						variant="icon"
-						accessible-label="Inspringen"
-						@change=${onIndentChange}
-					>
-						<nldd-segmented-control-item value="increase" text="Meer inspringen" icon="indent-increase"></nldd-segmented-control-item>
-						<nldd-segmented-control-item value="decrease" text="Minder inspringen" icon="indent-decrease"></nldd-segmented-control-item>
-					</nldd-segmented-control>
+					<nldd-button-bar>
+						<nldd-icon-button icon="indent-increase" text="Meer inspringen" @click=${onIndent}></nldd-icon-button>
+						<nldd-button-bar-divider></nldd-button-bar-divider>
+						<nldd-icon-button icon="indent-decrease" text="Minder inspringen" @click=${onOutdent}></nldd-icon-button>
+					</nldd-button-bar>
 				</nldd-toolbar-item>
 				<nldd-toolbar-item slot="start" label="Codeblok">
 					<nldd-toggle-button
