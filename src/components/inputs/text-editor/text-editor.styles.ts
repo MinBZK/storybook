@@ -323,4 +323,15 @@ export const textEditorStyles = css`
 			outline: 1px solid currentColor;
 		}
 	}
+
+	/* Drop cursor shown while dragging selected text to a new spot. */
+	.cm-drag-drop-cursor {
+		display: inline-block;
+		width: 0;
+		height: 1.1em;
+		margin-inline: -1px;
+		border-left: var(--primitives-border-width-regular) solid var(--primitives-color-accent-600);
+		vertical-align: text-bottom;
+		pointer-events: none;
+	}
 `;

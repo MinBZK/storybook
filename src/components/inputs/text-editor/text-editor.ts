@@ -63,6 +63,7 @@ import { nlddCodeMirrorTheme } from '../../../utilities/codemirror/theme.js';
 import { markdownEditing, mentionRangeAt, mentionRangeEndingAt, mentionRangeStartingAt } from './text-editor.markdown.js';
 import { mentions, type MentionSource, type MentionInsertedDetail } from './text-editor.mentions.js';
 import { annotations as annotationExtension, setAnnotations, type Annotation } from './text-editor.annotations.js';
+import { dragToMove } from './text-editor.drag.js';
 import {
 	toggleInlineWrap,
 	toggleHeading as cmToggleHeading,
@@ -174,6 +175,7 @@ export class NLDDTextEditor extends NLDDCodeMirrorElement {
 			history(),
 			drawSelection(),
 			dropCursor(),
+			dragToMove,
 			keymap.of([
 				{ key: 'Mod-b', run: (view) => { toggleInlineWrap(view, '**', 'StrongEmphasis'); return true; } },
 				{ key: 'Mod-i', run: (view) => { toggleInlineWrap(view, '*', 'Emphasis'); return true; } },
