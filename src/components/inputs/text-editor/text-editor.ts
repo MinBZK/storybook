@@ -58,7 +58,7 @@ import {
 	placeholder as cmPlaceholder,
 } from '@codemirror/view';
 import { Compartment, EditorState, type Extension } from '@codemirror/state';
-import { defaultKeymap, history, historyKeymap } from '@codemirror/commands';
+import { defaultKeymap, history, historyKeymap, indentMore, indentLess } from '@codemirror/commands';
 import { NLDDCodeMirrorElement } from '../../../utilities/codemirror/codemirror-element.js';
 import { nlddCodeMirrorTheme } from '../../../utilities/codemirror/theme.js';
 import { markdownEditing, mentionRangeAt, mentionRangeEndingAt, mentionRangeStartingAt } from './text-editor.markdown.js';
@@ -73,6 +73,7 @@ import {
 	setList as cmSetList,
 	toggleQuote as cmToggleQuote,
 	toggleLink as cmToggleLink,
+	toggleCodeBlock as cmToggleCodeBlock,
 	readActiveFormats,
 	EMPTY_FORMATS,
 	type HeadingLevel,
@@ -339,6 +340,26 @@ export class NLDDTextEditor extends NLDDCodeMirrorElement {
 
 	toggleLink(href = ''): void {
 		if (this.view) cmToggleLink(this.view, href);
+	}
+
+	toggleCodeBlock(): void {
+		if (this.view) cmToggleCodeBlock(this.view);
+	}
+
+	/** Increase the leading indentation of the selected lines. */
+	indent(): void {
+		if (this.view) {
+			indentMore(this.view);
+			this.view.focus();
+		}
+	}
+
+	/** Decrease the leading indentation of the selected lines. */
+	outdent(): void {
+		if (this.view) {
+			indentLess(this.view);
+			this.view.focus();
+		}
 	}
 
 	/** Escape hatch: run a command by name (bold, italic, inlineCode,

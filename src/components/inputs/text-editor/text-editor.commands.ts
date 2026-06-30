@@ -217,6 +217,23 @@ export function toggleLink(view: EditorView, href = ''): void {
 	view.focus();
 }
 
+/** Wrap the selected lines in a ``` fenced code block, or unwrap if already in one. */
+export function toggleCodeBlock(view: EditorView): void {
+	const { state } = view;
+	const { from, to } = state.selection.main;
+	const first = state.doc.lineAt(from);
+	const last = state.doc.lineAt(to);
+	const prev = first.number > 1 ? state.doc.line(first.number - 1) : null;
+	const next = last.number < state.doc.lines ? state.doc.line(last.number + 1) : null;
+	const fenced = !!prev?.text.trim().startsWith('```') && !!next?.text.trim().startsWith('```');
+	if (fenced && prev && next) {
+		view.dispatch({ changes: [{ from: prev.from, to: first.from }, { from: last.to, to: next.to }] });
+	} else {
+		view.dispatch({ changes: [{ from: first.from, insert: '```\n' }, { from: last.to, insert: '\n```' }] });
+	}
+	view.focus();
+}
+
 export function readActiveFormats(view: EditorView): TextEditorActiveFormats {
 	const { state } = view;
 	const pos = state.selection.main.head;

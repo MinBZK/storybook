@@ -42,6 +42,9 @@ const onHeadingSelect = (event: Event) => {
 	editorOf(event.currentTarget as Element)?.setHeading(Number(item.getAttribute('value') ?? 0));
 };
 const onLink = (event: Event) => editorOf(event.currentTarget as Element)?.toggleLink();
+const onCodeBlock = (event: Event) => editorOf(event.currentTarget as Element)?.toggleCodeBlock();
+const onIndent = (event: Event) => editorOf(event.currentTarget as Element)?.indent();
+const onOutdent = (event: Event) => editorOf(event.currentTarget as Element)?.outdent();
 const onToolbarState = (event: CustomEvent) => {
 	const active = event.detail.active;
 	const root = event.currentTarget as Element;
@@ -87,8 +90,15 @@ function toolbarEditor(editor: unknown) {
 						<nldd-segmented-control-item value="inlineCode" text="Code" icon="code"></nldd-segmented-control-item>
 					</nldd-segmented-control>
 				</nldd-toolbar-item>
+				<nldd-toolbar-item slot="start" label="Codeblok">
+					<nldd-icon-button icon="code-block" text="Codeblok" @click=${onCodeBlock}></nldd-icon-button>
+				</nldd-toolbar-item>
 				<nldd-toolbar-item slot="start" label="Link">
 					<nldd-icon-button icon="link" text="Link" @click=${onLink}></nldd-icon-button>
+				</nldd-toolbar-item>
+				<nldd-toolbar-item slot="start" label="Inspringen">
+					<nldd-icon-button icon="indent-decrease" text="Minder inspringen" @click=${onOutdent}></nldd-icon-button>
+					<nldd-icon-button icon="indent-increase" text="Meer inspringen" @click=${onIndent}></nldd-icon-button>
 				</nldd-toolbar-item>
 				<nldd-toolbar-item slot="start" label="Citaat">
 					<nldd-segmented-control
