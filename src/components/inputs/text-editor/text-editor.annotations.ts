@@ -92,8 +92,8 @@ class AnnotationBadge extends WidgetType {
 		badge.className = 'cm-annotation-badge';
 		badge.type = 'button';
 		badge.dataset.annotations = this.ids.join(' ');
-		// A bare nub for one, the count for several.
-		if (this.ids.length > 1) badge.textContent = String(this.ids.length);
+		// The count, always shown (1 for a single annotation, 2+ for a merged group).
+		badge.textContent = String(this.ids.length);
 		badge.setAttribute('aria-label', `${this.ids.length} annotatie${this.ids.length > 1 ? 's' : ''}`);
 		return badge;
 	}

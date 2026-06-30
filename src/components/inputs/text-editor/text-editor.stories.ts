@@ -232,6 +232,65 @@ export const Annotations = {
 	},
 };
 
+export const Mixed = {
+	render: () => {
+		const users = [
+			{ id: '1', label: 'Anouk de Vries', detail: 'Beleid' },
+			{ id: '2', label: 'Bram Jansen', detail: 'Communicatie' },
+			{ id: '3', label: 'Chen Wei', detail: 'Data' },
+			{ id: '4', label: 'Dewi Pratama', detail: 'Juridisch' },
+		];
+		const source = (query: string) =>
+			users.filter((user) => user.label.toLowerCase().includes(query.toLowerCase()));
+		const sample = [
+			'# Projectupdate toegankelijkheid',
+			'',
+			'We verbeteren het **burgerportaal** met [@Anouk de Vries](user:1). De `WCAG 2.2`-criteria zijn daarbij leidend.',
+			'',
+			'## Actiepunten',
+			'',
+			'- Contrast op de knoppen verhogen',
+			'- Focus-states nalopen met [@Bram Jansen](user:2)',
+			'- Screenreader-tests inplannen voor de livegang',
+			'',
+			'> Let op: de deadline is volgende week vrijdag.',
+			'',
+			'Noem iemand met `@` of selecteer tekst voor een annotatie.',
+		].join('\n');
+		const at = (needle: string) => {
+			const start = sample.indexOf(needle);
+			return { start, end: start + needle.length, quote: needle };
+		};
+		const annotations = [
+			{ id: 'm1', ...at('leidend') },
+			{ id: 'm2', ...at('Contrast op de knoppen verhogen') },
+			{ id: 'm3', ...at('deadline is volgende week vrijdag') },
+			// Overlapping pair → one block with a "2" badge.
+			{ id: 'm4', ...at('Screenreader-tests') },
+			{ id: 'm5', ...at('Screenreader-tests inplannen voor de livegang') },
+		];
+		return html`
+			<nldd-text-editor
+				variant="box"
+				rows="15"
+				accessible-label="Tekst"
+				.value=${sample}
+				.mentionSource=${source}
+				.annotations=${annotations}
+				@nldd-text-editor-mention=${(event: CustomEvent) => console.info('mention:', event.detail)}
+			></nldd-text-editor>
+		`;
+	},
+	parameters: {
+		controls: { disable: true },
+		docs: {
+			description: {
+				story: 'Annotaties en @-mentions samen, door verschillende soorten content heen: koppen, vet, inline code, een lijst, een blockquote en links. De annotatie-overlay en de mention-chips bestaan naast elkaar zonder elkaar in de weg te zitten; de tekst blijft schone markdown.',
+			},
+		},
+	},
+};
+
 export const WithToolbar = {
 	render: () => {
 		// The editor is headless. This demo builds a real toolbar from DS

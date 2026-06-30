@@ -296,11 +296,15 @@ describe('nldd-text-editor', () => {
 		return el2;
 	}
 
-	it('rendert een annotatie als dashed-underline + badge', async () => {
+	it('rendert een annotatie als dashed-underline + badge met telling 1', async () => {
 		const el2 = await withAnnotations('Een zin met tekst.', [{ id: 'a1', start: 4, end: 7, quote: 'zin' }]);
 		const sr = el2.shadowRoot!;
 		expect(sr.querySelector('.cm-annotation')).not.toBeNull();
-		expect(sr.querySelector('.cm-annotation-badge')).not.toBeNull();
+		const badge = sr.querySelector('.cm-annotation-badge');
+		expect(badge).not.toBeNull();
+		expect(badge!.textContent).toBe('1');
+		// The nub lives inside the tinted block (one cohesive element).
+		expect(badge!.closest('.cm-annotation')).not.toBeNull();
 		cleanup(el2);
 	});
 

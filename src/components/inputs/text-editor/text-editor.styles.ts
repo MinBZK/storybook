@@ -259,7 +259,10 @@ export const textEditorStyles = css`
 		border-radius: var(--primitives-corner-radius-full);
 		background-color: var(--_annotation-badge-bg);
 		color: var(--_annotation-badge-text);
+		/* vertical-align: middle centres on the text x-height, which sits a hair
+		   below the tinted block's true centre; nudge up to sit dead-centre. */
 		vertical-align: middle;
+		transform: translateY(-0.12em);
 		font-family: var(--primitives-font-family-body);
 		font-size: 0.62em;
 		font-weight: 700;
