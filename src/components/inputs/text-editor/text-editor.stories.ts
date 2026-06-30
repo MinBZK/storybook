@@ -66,6 +66,10 @@ const onToolbarState = (event: CustomEvent) => {
 	reflectToggle('quote', 'quote');
 	const list: any = root.querySelector('[data-group="list"]');
 	if (list) list.value = active.orderedList ? 'numbered' : active.bulletList ? 'bullet' : 'none';
+	// Indent only nests list items, so disable it outside a list (a plain paragraph
+	// indented 4 spaces would become a code block).
+	const indentBar: any = root.querySelector('[data-group="indent"]');
+	if (indentBar) indentBar.disabled = !(active.bulletList || active.orderedList);
 	const headingButton: any = root.querySelector('[data-group="heading"]');
 	if (headingButton) headingButton.text = HEADING_LABELS[active.heading] ?? 'Paragraaf';
 	root.querySelectorAll('#heading-menu nldd-menu-item').forEach((item) => {
@@ -130,7 +134,7 @@ function toolbarEditor(editor: unknown) {
 					</nldd-segmented-control>
 				</nldd-toolbar-item>
 				<nldd-toolbar-item slot="start" label="Inspringen">
-					<nldd-button-bar>
+					<nldd-button-bar data-group="indent">
 						<nldd-icon-button icon="indent-increase" text="Meer inspringen" @click=${onIndent}></nldd-icon-button>
 						<nldd-button-bar-divider></nldd-button-bar-divider>
 						<nldd-icon-button icon="indent-decrease" text="Minder inspringen" @click=${onOutdent}></nldd-icon-button>
