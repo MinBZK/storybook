@@ -199,15 +199,19 @@ export function readActiveFormats(view: EditorView): TextEditorActiveFormats {
 	const { state } = view;
 	const pos = state.selection.main.head;
 	const has = (name: string) => enclosing(view, pos, name) !== null;
-	const headingMatch = state.doc.lineAt(pos).text.match(/^(#{1,6})\s/);
+	const lineText = state.doc.lineAt(pos).text;
+	const headingMatch = lineText.match(/^(#{1,6})\s/);
 	return {
 		bold: has('StrongEmphasis'),
 		italic: has('Emphasis'),
 		inlineCode: has('InlineCode'),
 		strikethrough: has('Strikethrough'),
 		link: has('Link'),
-		bulletList: has('BulletList'),
-		orderedList: has('OrderedList'),
+		// Detect lists from the line's own marker: the syntax tree at a line-end
+		// caret can resolve into the next line's list (possibly a different type),
+		// which made the toolbar state flip-flop.
+		bulletList: /^\s*[-*+]\s/.test(lineText),
+		orderedList: /^\s*\d+[.)]\s/.test(lineText),
 		quote: has('Blockquote'),
 		heading: (headingMatch ? headingMatch[1].length : 0) as HeadingLevel,
 	};
