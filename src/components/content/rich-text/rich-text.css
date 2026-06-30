@@ -342,11 +342,17 @@ nldd-rich-text dd {
 	}
 }
 
-nldd-rich-text dt:not(:first-child) {
+/* Gap before each new definition group: a dt that starts a group, i.e. the
+   first dt after the previous group's dd. (The old dt:not(:first-child) also
+   gapped a second, synonym dt within the same group.) */
+nldd-rich-text dd + dt {
 	margin-top: var(--_dl-gap);
 }
 
-nldd-rich-text dt:not(:first-child) + dd {
+/* Wide-viewport companion: in the two-column grid the new group's dd shares
+   its row with that group-starting dt, so it needs the same top margin to
+   stay aligned. */
+nldd-rich-text dd + dt + dd {
 	@container (min-width: 641px) {
 		margin-top: var(--_dl-gap);
 	}
