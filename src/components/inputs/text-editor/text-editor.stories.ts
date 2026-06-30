@@ -19,6 +19,121 @@ Een **vetgedrukte** en *cursieve* zin met \`inline code\` en een [link](https://
 
 Tekst met ~~doorhaling~~ (GFM).`;
 
+/* Shared toolbar demo. The editor is headless: this builds a real toolbar from
+ * DS components and wires it both ways — the controls drive the editor's command
+ * API, and the editor's nldd-text-editor-state event drives the controls. Used
+ * by the WithToolbar and Mixed stories (pass the editor template in). */
+const editorOf = (el: Element): any => el.closest('.demo-editor')?.querySelector('nldd-text-editor');
+const reconcile = (el: Element, keys: string[], values: string[]) => {
+	const editor = editorOf(el);
+	if (!editor) return;
+	const active = editor.getState().active;
+	const desired = new Set(values);
+	keys.forEach((key) => { if (desired.has(key) !== Boolean(active[key])) editor.runCommand(key); });
+};
+const onListChange = (event: CustomEvent) => {
+	const value = event.detail.value as string;
+	editorOf(event.currentTarget as Element)?.setList(value === 'numbered' ? 'ordered' : value);
+};
+const HEADING_LABELS = ['Paragraaf', 'Heading 1', 'Heading 2', 'Heading 3', 'Heading 4', 'Heading 5', 'Heading 6'];
+const onHeadingSelect = (event: Event) => {
+	const item = event.target as HTMLElement;
+	if (item?.tagName !== 'NLDD-MENU-ITEM') return;
+	editorOf(event.currentTarget as Element)?.setHeading(Number(item.getAttribute('value') ?? 0));
+};
+const onLink = (event: Event) => editorOf(event.currentTarget as Element)?.toggleLink();
+const onToolbarState = (event: CustomEvent) => {
+	const active = event.detail.active;
+	const root = event.currentTarget as Element;
+	const reflect = (group: string, keys: string[]) => {
+		const el: any = root.querySelector(`[data-group="${group}"]`);
+		if (el) el.values = keys.filter((key) => active[key]);
+	};
+	reflect('inline', ['bold', 'italic']);
+	reflect('code', ['inlineCode']);
+	reflect('quote', ['quote']);
+	const list: any = root.querySelector('[data-group="list"]');
+	if (list) list.value = active.orderedList ? 'numbered' : active.bulletList ? 'bullet' : 'none';
+	const headingButton: any = root.querySelector('[data-group="heading"]');
+	if (headingButton) headingButton.text = HEADING_LABELS[active.heading] ?? 'Paragraaf';
+	root.querySelectorAll('#heading-menu nldd-menu-item').forEach((item) => {
+		(item as any).selected = Number(item.getAttribute('value')) === active.heading;
+	});
+};
+function toolbarEditor(editor: unknown) {
+	return html`
+		<div class="demo-editor" @nldd-text-editor-state=${onToolbarState}>
+			<nldd-toolbar size="md" style="margin-bottom: 16px;">
+				<nldd-toolbar-item slot="start" label="Nadruk">
+					<nldd-segmented-control
+						data-group="inline"
+						type="checkbox"
+						variant="icon"
+						accessible-label="Nadruk"
+						@change=${(event: CustomEvent) => reconcile(event.currentTarget as Element, ['bold', 'italic'], event.detail.values)}
+					>
+						<nldd-segmented-control-item value="bold" text="Vet" icon="bold"></nldd-segmented-control-item>
+						<nldd-segmented-control-item value="italic" text="Cursief" icon="italic"></nldd-segmented-control-item>
+					</nldd-segmented-control>
+				</nldd-toolbar-item>
+				<nldd-toolbar-item slot="start" label="Code">
+					<nldd-segmented-control
+						data-group="code"
+						type="checkbox"
+						variant="icon"
+						accessible-label="Code"
+						@change=${(event: CustomEvent) => reconcile(event.currentTarget as Element, ['inlineCode'], event.detail.values)}
+					>
+						<nldd-segmented-control-item value="inlineCode" text="Code" icon="code"></nldd-segmented-control-item>
+					</nldd-segmented-control>
+				</nldd-toolbar-item>
+				<nldd-toolbar-item slot="start" label="Link">
+					<nldd-icon-button icon="link" text="Link" @click=${onLink}></nldd-icon-button>
+				</nldd-toolbar-item>
+				<nldd-toolbar-item slot="start" label="Citaat">
+					<nldd-segmented-control
+						data-group="quote"
+						type="checkbox"
+						variant="icon"
+						accessible-label="Citaat"
+						@change=${(event: CustomEvent) => reconcile(event.currentTarget as Element, ['quote'], event.detail.values)}
+					>
+						<nldd-segmented-control-item value="quote" text="Citaat" icon="text-quote"></nldd-segmented-control-item>
+					</nldd-segmented-control>
+				</nldd-toolbar-item>
+				<nldd-toolbar-item slot="start" label="Lijst">
+					<nldd-segmented-control
+						data-group="list"
+						type="radio"
+						variant="icon"
+						value="none"
+						accessible-label="Lijst"
+						@change=${onListChange}
+					>
+						<nldd-segmented-control-item value="none" text="Geen lijst" icon="minus"></nldd-segmented-control-item>
+						<nldd-segmented-control-item value="bullet" text="Opsomming" icon="bullet-list"></nldd-segmented-control-item>
+						<nldd-segmented-control-item value="numbered" text="Genummerd" icon="numbered-list"></nldd-segmented-control-item>
+					</nldd-segmented-control>
+				</nldd-toolbar-item>
+				<nldd-toolbar-item slot="start" label="Tekststijl">
+					<nldd-button id="heading-button" data-group="heading" expandable text="Paragraaf"></nldd-button>
+					<nldd-menu id="heading-menu" anchor="heading-button" @select=${onHeadingSelect}>
+						<nldd-menu-item type="radio" value="0" text="Paragraaf" selected></nldd-menu-item>
+						<nldd-menu-divider></nldd-menu-divider>
+						<nldd-menu-item type="radio" value="1" text="Heading 1"></nldd-menu-item>
+						<nldd-menu-item type="radio" value="2" text="Heading 2"></nldd-menu-item>
+						<nldd-menu-item type="radio" value="3" text="Heading 3"></nldd-menu-item>
+						<nldd-menu-item type="radio" value="4" text="Heading 4"></nldd-menu-item>
+						<nldd-menu-item type="radio" value="5" text="Heading 5"></nldd-menu-item>
+						<nldd-menu-item type="radio" value="6" text="Heading 6"></nldd-menu-item>
+					</nldd-menu>
+				</nldd-toolbar-item>
+			</nldd-toolbar>
+			${editor}
+		</div>
+	`;
+}
+
 export default {
 	title: 'Components/Inputs/Text Editor',
 	component: 'nldd-text-editor',
@@ -269,9 +384,9 @@ export const Mixed = {
 			{ id: 'm4', ...at('Screenreader-tests') },
 			{ id: 'm5', ...at('Screenreader-tests inplannen voor de livegang') },
 		];
-		return html`
+		return toolbarEditor(html`
 			<nldd-text-editor
-				variant="box"
+				variant="simple"
 				rows="15"
 				accessible-label="Tekst"
 				.value=${sample}
@@ -279,136 +394,23 @@ export const Mixed = {
 				.annotations=${annotations}
 				@nldd-text-editor-mention=${(event: CustomEvent) => console.info('mention:', event.detail)}
 			></nldd-text-editor>
-		`;
+		`);
 	},
 	parameters: {
 		controls: { disable: true },
 		docs: {
 			description: {
-				story: 'Annotaties en @-mentions samen, door verschillende soorten content heen: koppen, vet, inline code, een lijst, een blockquote en links. De annotatie-overlay en de mention-chips bestaan naast elkaar zonder elkaar in de weg te zitten; de tekst blijft schone markdown.',
+				story: 'Alles samen: een echte toolbar (DS-componenten, headless gekoppeld) boven een `simple`-editor met annotaties en @-mentions, door verschillende soorten content heen (koppen, vet, inline code, een lijst, een blockquote en links). De annotatie-overlay en de mention-chips bestaan naast elkaar zonder elkaar in de weg te zitten; de tekst blijft schone markdown.',
 			},
 		},
 	},
 };
 
 export const WithToolbar = {
-	render: () => {
-		// The editor is headless. This demo builds a real toolbar from DS
-		// components (nldd-toolbar + icon nldd-segmented-controls + nldd-dropdown)
-		// and wires it both ways: the controls drive the editor's command API, and
-		// the editor's nldd-text-editor-state event drives the controls' state. No
-		// preventDefault is needed — the commands restore focus to the editor.
-		const editorOf = (el: Element): any => el.closest('.demo-editor')?.querySelector('nldd-text-editor');
-		// Multi-toggle (checkbox) group → toggle each key whose state differs.
-		const reconcile = (el: Element, keys: string[], values: string[]) => {
-			const editor = editorOf(el);
-			if (!editor) return;
-			const active = editor.getState().active;
-			const desired = new Set(values);
-			keys.forEach((key) => { if (desired.has(key) !== Boolean(active[key])) editor.runCommand(key); });
-		};
-		const onListChange = (event: CustomEvent) => {
-			const value = event.detail.value as string;
-			editorOf(event.currentTarget as Element)?.setList(value === 'numbered' ? 'ordered' : value);
-		};
-		const HEADING_LABELS = ['Paragraaf', 'Heading 1', 'Heading 2', 'Heading 3', 'Heading 4', 'Heading 5', 'Heading 6'];
-		const onHeadingSelect = (event: Event) => {
-			const item = event.target as HTMLElement;
-			if (item?.tagName !== 'NLDD-MENU-ITEM') return;
-			editorOf(event.currentTarget as Element)?.setHeading(Number(item.getAttribute('value') ?? 0));
-		};
-		const onLink = (event: Event) => editorOf(event.currentTarget as Element)?.toggleLink();
-		// Editor → controls: reflect the active formats at the caret.
-		const onState = (event: CustomEvent) => {
-			const active = event.detail.active;
-			const root = event.currentTarget as Element;
-			const reflect = (group: string, keys: string[]) => {
-				const el: any = root.querySelector(`[data-group="${group}"]`);
-				if (el) el.values = keys.filter((key) => active[key]);
-			};
-			reflect('inline', ['bold', 'italic']);
-			reflect('code', ['inlineCode']);
-			reflect('quote', ['quote']);
-			const list: any = root.querySelector('[data-group="list"]');
-			if (list) list.value = active.orderedList ? 'numbered' : active.bulletList ? 'bullet' : 'none';
-			const headingButton: any = root.querySelector('[data-group="heading"]');
-			if (headingButton) headingButton.text = HEADING_LABELS[active.heading] ?? 'Paragraaf';
-			root.querySelectorAll('#heading-menu nldd-menu-item').forEach((item) => {
-				(item as any).selected = Number(item.getAttribute('value')) === active.heading;
-			});
-		};
-		return html`
-			<div class="demo-editor" @nldd-text-editor-state=${onState}>
-				<nldd-toolbar size="md" style="margin-bottom: 16px;">
-					<nldd-toolbar-item slot="start" label="Nadruk">
-						<nldd-segmented-control
-							data-group="inline"
-							type="checkbox"
-							variant="icon"
-							accessible-label="Nadruk"
-							@change=${(event: CustomEvent) => reconcile(event.currentTarget as Element, ['bold', 'italic'], event.detail.values)}
-						>
-							<nldd-segmented-control-item value="bold" text="Vet" icon="bold"></nldd-segmented-control-item>
-							<nldd-segmented-control-item value="italic" text="Cursief" icon="italic"></nldd-segmented-control-item>
-						</nldd-segmented-control>
-					</nldd-toolbar-item>
-					<nldd-toolbar-item slot="start" label="Code">
-						<nldd-segmented-control
-							data-group="code"
-							type="checkbox"
-							variant="icon"
-							accessible-label="Code"
-							@change=${(event: CustomEvent) => reconcile(event.currentTarget as Element, ['inlineCode'], event.detail.values)}
-						>
-							<nldd-segmented-control-item value="inlineCode" text="Code" icon="code"></nldd-segmented-control-item>
-						</nldd-segmented-control>
-					</nldd-toolbar-item>
-					<nldd-toolbar-item slot="start" label="Link">
-						<nldd-icon-button icon="link" text="Link" @click=${onLink}></nldd-icon-button>
-					</nldd-toolbar-item>
-					<nldd-toolbar-item slot="start" label="Citaat">
-						<nldd-segmented-control
-							data-group="quote"
-							type="checkbox"
-							variant="icon"
-							accessible-label="Citaat"
-							@change=${(event: CustomEvent) => reconcile(event.currentTarget as Element, ['quote'], event.detail.values)}
-						>
-							<nldd-segmented-control-item value="quote" text="Citaat" icon="text-quote"></nldd-segmented-control-item>
-						</nldd-segmented-control>
-					</nldd-toolbar-item>
-					<nldd-toolbar-item slot="start" label="Lijst">
-						<nldd-segmented-control
-							data-group="list"
-							type="radio"
-							variant="icon"
-							value="none"
-							accessible-label="Lijst"
-							@change=${onListChange}
-						>
-							<nldd-segmented-control-item value="none" text="Geen lijst" icon="minus"></nldd-segmented-control-item>
-							<nldd-segmented-control-item value="bullet" text="Opsomming" icon="bullet-list"></nldd-segmented-control-item>
-							<nldd-segmented-control-item value="numbered" text="Genummerd" icon="numbered-list"></nldd-segmented-control-item>
-						</nldd-segmented-control>
-					</nldd-toolbar-item>
-					<nldd-toolbar-item slot="start" label="Tekststijl">
-						<nldd-button id="heading-button" data-group="heading" expandable text="Paragraaf"></nldd-button>
-						<nldd-menu id="heading-menu" anchor="heading-button" @select=${onHeadingSelect}>
-							<nldd-menu-item type="radio" value="0" text="Paragraaf" selected></nldd-menu-item>
-							<nldd-menu-divider></nldd-menu-divider>
-							<nldd-menu-item type="radio" value="1" text="Heading 1"></nldd-menu-item>
-							<nldd-menu-item type="radio" value="2" text="Heading 2"></nldd-menu-item>
-							<nldd-menu-item type="radio" value="3" text="Heading 3"></nldd-menu-item>
-							<nldd-menu-item type="radio" value="4" text="Heading 4"></nldd-menu-item>
-							<nldd-menu-item type="radio" value="5" text="Heading 5"></nldd-menu-item>
-							<nldd-menu-item type="radio" value="6" text="Heading 6"></nldd-menu-item>
-						</nldd-menu>
-					</nldd-toolbar-item>
-				</nldd-toolbar>
-				<nldd-text-editor variant="simple" rows="10" .value=${SAMPLE} accessible-label="Tekst"></nldd-text-editor>
-			</div>
-		`;
-	},
+	render: () =>
+		toolbarEditor(
+			html`<nldd-text-editor variant="simple" rows="10" .value=${SAMPLE} accessible-label="Tekst"></nldd-text-editor>`,
+		),
 	parameters: {
 		controls: { disable: true },
 		docs: {
