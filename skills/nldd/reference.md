@@ -844,7 +844,7 @@ A horizontal group of mutually exclusive (radio) or multi-select (checkbox) opti
 | --- | --- | --- |
 | `value` | `string` | Selected value for radio type |
 | `size` | `string` | Control size: 'sm' \| 'md' \| 'lg' (default: 'md') |
-| `type` | `string` | Input type: 'radio' \| 'checkbox' (default: 'radio') |
+| `type` | `string` | Input type: 'radio' \| 'checkbox' \| 'button' (default: 'radio'). 'button' items are momentary actions (no selected state): each click fires change, useful for grouped commands like indent/outdent. |
 | `variant` | `string` | Content type for all items: 'text' \| 'icon' \| 'icon-and-text' (default: 'text') |
 | `disabled` | `boolean` | Disabled state for all items |
 | `width` | `string` | Width mode: 'full' (stretches to container), 'fit-content' (per-item content size), or any CSS length (e.g. '240px') |

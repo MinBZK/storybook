@@ -202,6 +202,48 @@ describe('nldd-segmented-control – radio change', () => {
 
 
 /* ============================================================
+   Button (momentary) change event
+   ============================================================ */
+
+describe('nldd-segmented-control – button type', () => {
+	let el: NLDDSegmentedControl;
+
+	afterEach(() => {
+		if (el) cleanup(el);
+	});
+
+	function buttonFixture(): string {
+		return `
+			<nldd-segmented-control type="button" accessible-label="Indent">
+				<nldd-segmented-control-item value="increase" text="More"></nldd-segmented-control-item>
+				<nldd-segmented-control-item value="decrease" text="Less"></nldd-segmented-control-item>
+			</nldd-segmented-control>
+		`;
+	}
+
+	it('renders items as native buttons with no selected state', async () => {
+		el = await fixture<NLDDSegmentedControl>(buttonFixture());
+		await waitForUpdate(el);
+		expect(getInput(getItems(el)[0]).type).toBe('button');
+		expect(getItems(el)[0].selected).toBe(false);
+		expect(el.getAttribute('role')).toBe('group');
+	});
+
+	it('fires change on every press (momentary, not deduped like radio)', async () => {
+		el = await fixture<NLDDSegmentedControl>(buttonFixture());
+		await waitForUpdate(el);
+		const values: string[] = [];
+		el.addEventListener('change', ((e: CustomEvent) => values.push(e.detail.value)) as EventListener);
+		const input = getInput(getItems(el)[0]);
+		input.click();
+		input.click();
+		expect(values).toEqual(['increase', 'increase']);
+		expect(el.value).toBe(''); // no persistent selection
+	});
+});
+
+
+/* ============================================================
    Checkbox change event
    ============================================================ */
 

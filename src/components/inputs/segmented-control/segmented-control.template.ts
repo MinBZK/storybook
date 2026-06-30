@@ -17,12 +17,13 @@ export function segmentedControlItemTemplate(component: NLDDSegmentedControlItem
 		<label class="segmented-control__item">
 			<input class="segmented-control__item-input"
 				type=${component.inputType}
-				name=${component.groupName || nothing}
-				value=${component.value}
+				name=${component.inputType === 'button' ? nothing : (component.groupName || nothing)}
+				value=${component.inputType === 'button' ? nothing : component.value}
 				.checked=${component.selected}
 				?disabled=${component.disabled}
 				aria-label=${isIcon ? labelText : nothing}
 				@change=${component._handleChange}
+				@click=${component._handleClick}
 			>
 			<span class="segmented-control__item-icon"
 				aria-hidden=${isIcon ? nothing : 'true'}
