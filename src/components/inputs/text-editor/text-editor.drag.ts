@@ -46,6 +46,7 @@ interface DragState {
 
 class DragMove {
 	private state: DragState | null = null;
+	private ghost: HTMLElement | null = null;
 
 	constructor(private readonly view: EditorView) {}
 
@@ -71,8 +72,11 @@ class DragMove {
 		if (!st.dragging) {
 			if (Math.abs(event.clientX - st.startX) + Math.abs(event.clientY - st.startY) < 4) return;
 			st.dragging = true;
-			this.view.scrollDOM.style.cursor = 'grabbing';
+			// Default cursor (no grab handle) plus a translucent copy of the text.
+			this.view.scrollDOM.style.cursor = 'default';
+			this.showGhost(st.from, st.to);
 		}
+		this.moveGhost(event.clientX, event.clientY);
 		const pos = this.view.posAtCoords({ x: event.clientX, y: event.clientY });
 		// No drop cursor while hovering inside the dragged range (a no-op target).
 		const drop = pos === null || (pos >= st.from && pos <= st.to) ? null : pos;
@@ -83,6 +87,7 @@ class DragMove {
 		window.removeEventListener('mousemove', this.onMove, true);
 		window.removeEventListener('mouseup', this.onUp, true);
 		this.view.scrollDOM.style.cursor = '';
+		this.clearGhost();
 		const st = this.state;
 		this.state = null;
 		this.view.dispatch({ effects: setDropPos.of(null) });
@@ -105,9 +110,31 @@ class DragMove {
 		this.view.focus();
 	};
 
+	// A translucent copy of the dragged text that follows the pointer.
+	private showGhost(from: number, to: number): void {
+		const ghost = document.createElement('div');
+		ghost.className = 'cm-drag-ghost';
+		ghost.textContent = this.view.state.sliceDoc(from, to);
+		this.view.dom.appendChild(ghost);
+		this.ghost = ghost;
+	}
+
+	private moveGhost(x: number, y: number): void {
+		if (this.ghost) {
+			this.ghost.style.left = `${x + 12}px`;
+			this.ghost.style.top = `${y + 12}px`;
+		}
+	}
+
+	private clearGhost(): void {
+		this.ghost?.remove();
+		this.ghost = null;
+	}
+
 	destroy(): void {
 		window.removeEventListener('mousemove', this.onMove, true);
 		window.removeEventListener('mouseup', this.onUp, true);
+		this.clearGhost();
 	}
 }
 

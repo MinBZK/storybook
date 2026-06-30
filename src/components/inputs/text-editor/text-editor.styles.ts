@@ -331,4 +331,22 @@ export const textEditorStyles = css`
 		vertical-align: text-bottom;
 		pointer-events: none;
 	}
+
+	/* A translucent copy of the dragged text, trailing the pointer (bottom-right).
+	   Carries the selection colour so it reads as the picked-up selection. */
+	.cm-drag-ghost {
+		position: fixed;
+		z-index: 5;
+		max-width: 24ch;
+		padding: 0 var(--primitives-space-4);
+		border-radius: var(--primitives-corner-radius-sm);
+		background-color: light-dark(var(--primitives-color-accent-150), var(--primitives-color-accent-250));
+		color: var(--_content-color);
+		font: var(--_font);
+		white-space: nowrap;
+		overflow: hidden;
+		text-overflow: ellipsis;
+		opacity: 0.65;
+		pointer-events: none;
+	}
 `;
