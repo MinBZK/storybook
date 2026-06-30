@@ -258,6 +258,7 @@ export function readActiveFormats(view: EditorView): TextEditorActiveFormats {
 	const pos = state.selection.main.head;
 	const has = (name: string) => enclosing(view, pos, name) !== null;
 	const lineText = state.doc.lineAt(pos).text;
+	const lineStart = state.doc.lineAt(pos).from;
 	const headingMatch = lineText.match(/^(#{1,6})\s/);
 	return {
 		bold: has('StrongEmphasis'),
@@ -265,12 +266,14 @@ export function readActiveFormats(view: EditorView): TextEditorActiveFormats {
 		inlineCode: has('InlineCode'),
 		strikethrough: has('Strikethrough'),
 		link: realLinkAt(view, pos) !== null,
-		// Detect lists + quotes from the line's own marker: the syntax tree at a
-		// line-end caret can resolve into the next line (possibly a different type),
-		// which made the toolbar state flip-flop / drop at a blockquote's end.
+		// Lists from the line's own marker. (Resolving the tree at a line-end caret
+		// can spill into the next line and flip-flop the toolbar state.)
 		bulletList: /^\s*[-*+]\s/.test(lineText),
 		orderedList: /^\s*\d+[.)]\s/.test(lineText),
-		quote: /^\s*>/.test(lineText),
+		// Quote from the Blockquote node at the line's *start* — that catches lazy
+		// continuation lines (part of the quote but with no '>') too, while resolving
+		// at line.from (not the caret) keeps it stable at the line end.
+		quote: enclosing(view, lineStart, 'Blockquote') !== null,
 		heading: (headingMatch ? headingMatch[1].length : 0) as HeadingLevel,
 	};
 }

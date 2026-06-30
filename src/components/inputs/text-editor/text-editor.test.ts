@@ -264,6 +264,19 @@ describe('nldd-text-editor', () => {
 		cleanup(el2);
 	});
 
+	it('getState detecteert een blockquote op een lazy-continuation-regel (geen >)', async () => {
+		// The second line has no '>' but is part of the quote (a lazy continuation),
+		// so the quote button should still light up there.
+		const el2 = await withValue('> Eerste regel\nTweede regel zonder marker');
+		const api = el2 as unknown as {
+			view: { dispatch(spec: unknown): void; state: { doc: { line(n: number): { from: number } } } };
+			getState(): { active: { quote: boolean } };
+		};
+		api.view.dispatch({ selection: { anchor: api.view.state.doc.line(2).from + 3 } });
+		expect(api.getState().active.quote).toBe(true);
+		cleanup(el2);
+	});
+
 	it('getState reports the ordered-list type', async () => {
 		const el2 = await withValue('1. een');
 		const api = el2 as unknown as { view: { dispatch(spec: unknown): void }; getState(): { active: { orderedList: boolean; bulletList: boolean } } };
