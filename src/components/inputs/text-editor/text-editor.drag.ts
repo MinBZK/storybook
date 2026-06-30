@@ -99,13 +99,20 @@ class DragMove {
 			this.view.focus();
 			return;
 		}
-		if (pos !== null && (pos < st.from || pos > st.to)) {
+		const rect = this.view.scrollDOM.getBoundingClientRect();
+		const inside =
+			event.clientX >= rect.left && event.clientX <= rect.right && event.clientY >= rect.top && event.clientY <= rect.bottom;
+		if (inside && pos !== null && (pos < st.from || pos > st.to)) {
 			const text = this.view.state.sliceDoc(st.from, st.to);
 			const insertAt = pos > st.to ? pos - (st.to - st.from) : pos;
 			this.view.dispatch({
 				changes: [{ from: st.from, to: st.to }, { from: pos, insert: text }],
 				selection: { anchor: insertAt, head: insertAt + text.length },
 			});
+		} else {
+			// Dropped outside the editor (or back onto the selection): leave the text
+			// where it was and keep it selected — effectively undoing the drag.
+			this.view.dispatch({ selection: { anchor: st.from, head: st.to } });
 		}
 		this.view.focus();
 	};

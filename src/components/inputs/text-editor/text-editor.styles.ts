@@ -252,6 +252,11 @@ export const textEditorStyles = css`
 	.cm-content ::selection {
 		color: var(--primitives-color-neutral-1000);
 	}
+	/* But a selected mention chip is dark (filled accent), so its text stays light
+	   (the on-accent content colour) for contrast. */
+	.cm-md-mention-chip ::selection {
+		color: var(--semantics-categories-accent-filled-primary-content-color);
+	}
 
 	/* Solid nub, centred in the reserved right space (a small gap before it). A
 	   badge-component-style chip: one step below the filled colour, a highlight
