@@ -77,8 +77,11 @@ class DragMove {
 			this.showGhost(st.from, st.to);
 		}
 		this.moveGhost(event.clientX, event.clientY);
-		const pos = this.view.posAtCoords({ x: event.clientX, y: event.clientY });
-		// No drop cursor while hovering inside the dragged range (a no-op target).
+		// No drop cursor when outside the editor (the drop would be undone) or while
+		// hovering inside the dragged range (a no-op target).
+		const pos = this.isInside(event.clientX, event.clientY)
+			? this.view.posAtCoords({ x: event.clientX, y: event.clientY })
+			: null;
 		const drop = pos === null || (pos >= st.from && pos <= st.to) ? null : pos;
 		this.view.dispatch({ effects: setDropPos.of(drop) });
 	};
@@ -99,10 +102,7 @@ class DragMove {
 			this.view.focus();
 			return;
 		}
-		const rect = this.view.scrollDOM.getBoundingClientRect();
-		const inside =
-			event.clientX >= rect.left && event.clientX <= rect.right && event.clientY >= rect.top && event.clientY <= rect.bottom;
-		if (inside && pos !== null && (pos < st.from || pos > st.to)) {
+		if (this.isInside(event.clientX, event.clientY) && pos !== null && (pos < st.from || pos > st.to)) {
 			const text = this.view.state.sliceDoc(st.from, st.to);
 			const insertAt = pos > st.to ? pos - (st.to - st.from) : pos;
 			this.view.dispatch({
@@ -116,6 +116,11 @@ class DragMove {
 		}
 		this.view.focus();
 	};
+
+	private isInside(x: number, y: number): boolean {
+		const r = this.view.scrollDOM.getBoundingClientRect();
+		return x >= r.left && x <= r.right && y >= r.top && y <= r.bottom;
+	}
 
 	// A translucent copy of the dragged text that follows the pointer.
 	private showGhost(from: number, to: number): void {
