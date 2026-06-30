@@ -24,11 +24,21 @@ export const textEditorStyles = css`
 		--_marker-advance: calc(0.6 * var(--_marker-font-size));
 		/* The # marker scales to this fraction of its heading (see below). */
 		--_heading-marker-scale: 75%;
-		/* Annotation overlay: one role for all annotations (type is shown via
-		   text by the consumer, not via colour). */
-		--_annotation-tint: var(--semantics-categories-geel-tinted-background-color);
-		/* A clearly darker yellow for the selected slice within an annotation. */
-		--_annotation-selected: var(--semantics-categories-geel-filled-background-color);
+		/* Annotation + badge palette — the "mark" (donkergeel) highlight family. One
+		   role for all annotations (type is shown via text by the consumer, not via
+		   colour). The badge border sits one step (50) above its fill in every
+		   state; hover/active/selected each step the fill (and border) up by 50. */
+		--_annotation-tint: light-dark(var(--primitives-color-mark-50), var(--primitives-color-mark-75));
+		--_annotation-selected: light-dark(var(--primitives-color-mark-350), var(--primitives-color-mark-900));
+		--_badge-bg: light-dark(var(--primitives-color-mark-100), var(--primitives-color-mark-150));
+		--_badge-border: light-dark(var(--primitives-color-mark-150), var(--primitives-color-mark-200));
+		--_badge-bg-hover: light-dark(var(--primitives-color-mark-150), var(--primitives-color-mark-200));
+		--_badge-border-hover: light-dark(var(--primitives-color-mark-200), var(--primitives-color-mark-250));
+		--_badge-bg-active: light-dark(var(--primitives-color-mark-200), var(--primitives-color-mark-250));
+		--_badge-border-active: light-dark(var(--primitives-color-mark-250), var(--primitives-color-mark-300));
+		--_badge-bg-selected: light-dark(var(--primitives-color-mark-450), var(--primitives-color-mark-950));
+		--_badge-border-selected: light-dark(var(--primitives-color-mark-500), var(--primitives-color-mark-1000));
+		--_badge-text: var(--primitives-color-mark-1000);
 		--_rows: 6;
 
 		${inheritedTextReset}
@@ -275,11 +285,11 @@ export const textEditorStyles = css`
 		padding-inline: 0.3em;
 		border: 0;
 		border-radius: var(--primitives-corner-radius-full);
-		background-color: var(--semantics-categories-geel-tinted-highlight-border-color);
-		/* A 1px inset highlight border one small step above the fill, applied as a
+		background-color: var(--_badge-bg);
+		/* A 1px inset highlight border one step above the fill, applied as a
 		   box-shadow like nldd-badge. */
-		box-shadow: inset 0 0 0 var(--primitives-border-width-thin) light-dark(var(--primitives-color-geel-150), var(--primitives-color-geel-350));
-		color: light-dark(var(--primitives-color-mark-1000), var(--primitives-color-mark-0));
+		box-shadow: inset 0 0 0 var(--primitives-border-width-thin) var(--_badge-border);
+		color: var(--_badge-text);
 		/* vertical-align: middle centres on the text x-height, which sits a hair
 		   below the tinted block's true centre; nudge up to sit dead-centre. */
 		vertical-align: middle;
@@ -300,20 +310,21 @@ export const textEditorStyles = css`
 
 	@media (hover: hover) {
 		.cm-annotation-badge:hover {
-			background-color: var(--semantics-categories-geel-filled-background-color);
+			background-color: var(--_badge-bg-hover);
+			box-shadow: inset 0 0 0 var(--primitives-border-width-thin) var(--_badge-border-hover);
 		}
 	}
 
 	.cm-annotation-badge:active {
-		background-color: var(--semantics-categories-geel-filled-highlight-border-color);
+		background-color: var(--_badge-bg-active);
+		box-shadow: inset 0 0 0 var(--primitives-border-width-thin) var(--_badge-border-active);
 	}
 
-	/* In a fully-selected annotation the nub darkens with the block, and its border
-	   steps up with it (one step above the fill — the geel scale has no geel-500,
-	   so this uses the next step). */
+	/* In a fully-selected annotation the nub darkens with the block, its border one
+	   step above the fill. */
 	.cm-annotation-selected .cm-annotation-badge {
-		background-color: var(--semantics-categories-geel-filled-highlight-border-color);
-		box-shadow: inset 0 0 0 var(--primitives-border-width-thin) light-dark(var(--primitives-color-geel-650), var(--primitives-color-geel-1000));
+		background-color: var(--_badge-bg-selected);
+		box-shadow: inset 0 0 0 var(--primitives-border-width-thin) var(--_badge-border-selected);
 	}
 
 	/* The same focus ring as the rest of the system, on keyboard focus only. */
