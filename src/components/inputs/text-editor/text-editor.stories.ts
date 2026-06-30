@@ -43,8 +43,13 @@ const onHeadingSelect = (event: Event) => {
 };
 const onLink = (event: Event) => editorOf(event.currentTarget as Element)?.toggleLink();
 const onCodeBlock = (event: Event) => editorOf(event.currentTarget as Element)?.toggleCodeBlock();
-const onIndent = (event: Event) => editorOf(event.currentTarget as Element)?.indent();
-const onOutdent = (event: Event) => editorOf(event.currentTarget as Element)?.outdent();
+const onIndentChange = (event: CustomEvent) => {
+	const control = event.currentTarget as Element & { value: string };
+	if (event.detail.value === 'increase') editorOf(control)?.indent();
+	else if (event.detail.value === 'decrease') editorOf(control)?.outdent();
+	// Momentary: clear the selection so the same button can be pressed again.
+	control.value = '';
+};
 const onToolbarState = (event: CustomEvent) => {
 	const active = event.detail.active;
 	const root = event.currentTarget as Element;
@@ -97,8 +102,15 @@ function toolbarEditor(editor: unknown) {
 					<nldd-icon-button icon="link" text="Link" @click=${onLink}></nldd-icon-button>
 				</nldd-toolbar-item>
 				<nldd-toolbar-item slot="start" label="Inspringen">
-					<nldd-icon-button icon="indent-decrease" text="Minder inspringen" @click=${onOutdent}></nldd-icon-button>
-					<nldd-icon-button icon="indent-increase" text="Meer inspringen" @click=${onIndent}></nldd-icon-button>
+					<nldd-segmented-control
+						type="radio"
+						variant="icon"
+						accessible-label="Inspringen"
+						@change=${onIndentChange}
+					>
+						<nldd-segmented-control-item value="increase" text="Meer inspringen" icon="indent-increase"></nldd-segmented-control-item>
+						<nldd-segmented-control-item value="decrease" text="Minder inspringen" icon="indent-decrease"></nldd-segmented-control-item>
+					</nldd-segmented-control>
 				</nldd-toolbar-item>
 				<nldd-toolbar-item slot="start" label="Citaat">
 					<nldd-segmented-control

@@ -346,9 +346,12 @@ export class NLDDTextEditor extends NLDDCodeMirrorElement {
 		if (this.view) cmToggleCodeBlock(this.view);
 	}
 
-	/** Increase the leading indentation of the selected lines. */
+	/** Nest the selected list item(s) one level deeper. Only acts inside a list —
+	 *  indenting a plain paragraph would turn it into an indented code block. */
 	indent(): void {
-		if (this.view) {
+		if (!this.view) return;
+		const active = this.getState().active;
+		if (active.bulletList || active.orderedList) {
 			indentMore(this.view);
 			this.view.focus();
 		}

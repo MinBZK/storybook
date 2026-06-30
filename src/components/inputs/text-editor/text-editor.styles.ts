@@ -32,7 +32,7 @@ export const textEditorStyles = css`
 		   colour). The badge border sits one step (50) above its fill in every
 		   state; hover/active/selected each step the fill (and border) up by 50. */
 		--_annotation-tint: light-dark(var(--primitives-color-mark-50), var(--primitives-color-mark-75));
-		--_annotation-selected: light-dark(var(--primitives-color-mark-350), var(--primitives-color-mark-900));
+		--_annotation-selected: light-dark(var(--primitives-color-mark-300), var(--primitives-color-mark-850));
 		--_badge-bg: light-dark(var(--primitives-color-mark-100), var(--primitives-color-mark-150));
 		--_badge-border: light-dark(var(--primitives-color-mark-150), var(--primitives-color-mark-200));
 		--_badge-bg-hover: light-dark(var(--primitives-color-mark-150), var(--primitives-color-mark-200));
@@ -200,6 +200,9 @@ export const textEditorStyles = css`
 		border-radius: var(--primitives-corner-radius-sm);
 		font-weight: 600;
 		white-space: nowrap;
+		/* It's an atomic token, not editable text — show the default arrow, not the
+		   text I-beam. */
+		cursor: default;
 		-webkit-box-decoration-break: clone;
 		box-decoration-break: clone;
 		/* List/quote lines carry a negative text-indent (the hanging indent), which
@@ -269,13 +272,17 @@ export const textEditorStyles = css`
 	   text at the strongest content colour, like the rest of the selection. */
 	.cm-annotation-selected {
 		background-color: var(--_annotation-selected);
-		color: var(--primitives-color-neutral-1000);
+		color: var(--primitives-color-neutral-950);
 	}
 
 	/* Selected text takes the strongest content colour (more contrast on the
-	   selection) — both plain text and text inside an annotation. */
+	   selection). Plain text goes fully dark; a selected annotation sits a step
+	   lower (it has its own tinted marker). */
 	.cm-content ::selection {
 		color: var(--primitives-color-neutral-1000);
+	}
+	.cm-annotation ::selection {
+		color: var(--primitives-color-neutral-950);
 	}
 	/* But a selected mention chip is dark (filled accent), so its text stays light
 	   (the on-accent content colour) for contrast. */
@@ -308,7 +315,7 @@ export const textEditorStyles = css`
 		/* vertical-align: middle centres on the text x-height, which sits a hair
 		   below the tinted block's true centre; nudge up to sit dead-centre. */
 		vertical-align: middle;
-		transform: translateY(-0.12em);
+		transform: translateY(-0.03em);
 		font-family: var(--primitives-font-family-body);
 		font-size: 0.62em;
 		font-weight: 700;
