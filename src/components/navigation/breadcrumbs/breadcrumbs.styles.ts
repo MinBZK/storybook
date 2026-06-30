@@ -1,5 +1,5 @@
 import { css } from 'lit';
-import { boxSizingReset, inheritedTextReset } from '../../../assets/styles/style-resets.js';
+import { inheritedTextReset } from '../../../assets/styles/style-resets.js';
 
 /* The chevron separator rendered after each breadcrumb item; the item host
    defines --_separator-vertical-offset. */
@@ -17,7 +17,9 @@ const separatorStyles = css`
 `;
 
 export const breadcrumbsStyles = css`
-	${boxSizingReset}
+	:host {
+		box-sizing: border-box;
+	}
 	:host {
 		${inheritedTextReset}
 		display: block;

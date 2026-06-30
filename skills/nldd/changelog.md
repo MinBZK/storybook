@@ -49,7 +49,7 @@ here; consult the commit history if you need that level of detail.
 - **`nldd-just-in-time-education`** — the callout is positioned absolutely so it scrolls natively with the page, fixing the Safari bounce.
 - **`nldd-rich-text`** — table columns size to their content: the `th` min-width is unset on containers ≥ 641px (the data cells already did this), and inline code inside cells may wrap so long tokens (e.g. `type_spec.precision`) no longer force a column wide.
 - **`nldd-rich-text` / `nldd-container`** — the rich-text host (and container slotted items) now use `box-sizing: border-box`, so padding or a border no longer makes the element overflow its slot or grid/column track.
-- **All component hosts** now pin `box-sizing: border-box` (a shared `boxSizingReset`), so a consumer's global box-sizing reset (e.g. Tailwind Preflight) can no longer change a component host's box model.
+- **All component hosts** now pin `box-sizing: border-box`, so a consumer's global box-sizing reset (e.g. Tailwind Preflight) can no longer change a component host's box model.
 
 ### Breaking
 

@@ -1,4 +1,3 @@
-import { boxSizingReset } from '../../../assets/styles/style-resets.js';
 import { css, unsafeCSS } from 'lit';
 import { breakpoints } from '../../../assets/styles/breakpoints.js';
 
@@ -6,7 +5,9 @@ const mdMin = unsafeCSS(breakpoints.mdMin);
 const lgMin = unsafeCSS(breakpoints.lgMin);
 
 export const collectionStyles = css`
-	${boxSizingReset}
+	:host {
+		box-sizing: border-box;
+	}
 
 
 	/* # Host */

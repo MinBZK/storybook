@@ -1,8 +1,9 @@
 import { css } from 'lit';
-import { boxSizingReset } from '../../../assets/styles/style-resets.js';
 
 export const toggleButtonGroupStyles = css`
-	${boxSizingReset}
+	:host {
+		box-sizing: border-box;
+	}
 
 
 	/* # Host */

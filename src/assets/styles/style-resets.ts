@@ -58,13 +58,3 @@ export const inheritedTextReset = css`
 	word-spacing: normal !important;
 	text-transform: none !important;
 `;
-
-// Pin box-sizing on the host: a consumer `* { box-sizing }` reset matches our
-// host (their light DOM); :host (specificity :host > *) keeps it deterministically
-// border-box, immune to whatever the consumer resets to. Place at the start of a
-// component's css template.
-export const boxSizingReset = css`
-	:host {
-		box-sizing: border-box;
-	}
-`;

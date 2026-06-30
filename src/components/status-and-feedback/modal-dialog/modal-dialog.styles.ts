@@ -1,11 +1,13 @@
 import { css, unsafeCSS } from 'lit';
 import { breakpoints } from '../../../assets/styles/breakpoints.js';
-import { boxSizingReset, inheritedTextReset } from '../../../assets/styles/style-resets.js';
+import { inheritedTextReset } from '../../../assets/styles/style-resets.js';
 
 const mdMin = unsafeCSS(breakpoints.mdMin);
 
 export const modalDialogStyles = css`
-	${boxSizingReset}
+	:host {
+		box-sizing: border-box;
+	}
 
 
 	/* # Host */

@@ -1,8 +1,9 @@
 import { css } from 'lit';
-import { boxSizingReset } from '../../../../assets/styles/style-resets.js';
 
 export const sideBySideSplitViewStyles = css`
-	${boxSizingReset}
+	:host {
+		box-sizing: border-box;
+	}
 
 
 	/* # Host */

@@ -1,9 +1,11 @@
 import { css } from 'lit';
-import { boxSizingReset, inheritedTextReset } from '../../../assets/styles/style-resets.js';
+import { inheritedTextReset } from '../../../assets/styles/style-resets.js';
 
 
 export const skipLinkStyles = css`
-	${boxSizingReset}
+	:host {
+		box-sizing: border-box;
+	}
 
 
 	/* # Host */

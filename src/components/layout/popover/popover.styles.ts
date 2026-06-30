@@ -1,4 +1,3 @@
-import { boxSizingReset } from '../../../assets/styles/style-resets.js';
 import { css, unsafeCSS } from 'lit';
 import { breakpoints } from '../../../assets/styles/breakpoints.js';
 
@@ -6,7 +5,9 @@ const smMax = unsafeCSS(breakpoints.smMax);
 const mdMin = unsafeCSS(breakpoints.mdMin);
 
 export const popoverStyles = css`
-	${boxSizingReset}
+	:host {
+		box-sizing: border-box;
+	}
 
 
 	/* # Host */

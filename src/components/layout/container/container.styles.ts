@@ -1,4 +1,3 @@
-import { boxSizingReset } from '../../../assets/styles/style-resets.js';
 import { css, unsafeCSS } from 'lit';
 import { breakpoints } from '../../../assets/styles/breakpoints.js';
 
@@ -8,7 +7,9 @@ const mdMax = unsafeCSS(breakpoints.mdMax);
 const lgMin = unsafeCSS(breakpoints.lgMin);
 
 export const containerStyles = css`
-	${boxSizingReset}
+	:host {
+		box-sizing: border-box;
+	}
 
 
 	/* # Host — outer chrome (padding + scheme + query container) */

@@ -1,11 +1,12 @@
-import { boxSizingReset } from '../../../../assets/styles/style-resets.js';
 import { css, unsafeCSS } from 'lit';
 import { breakpoints } from '../../../../assets/styles/breakpoints.js';
 
 const mdMin = unsafeCSS(breakpoints.mdMin);
 
 export const splitViewPaneStyles = css`
-	${boxSizingReset}
+	:host {
+		box-sizing: border-box;
+	}
 
 
 	/* # Host */

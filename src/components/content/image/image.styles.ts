@@ -1,8 +1,10 @@
 import { css } from 'lit';
-import { boxSizingReset, slottedReset, inheritedTextReset } from '../../../assets/styles/style-resets.js';
+import { slottedReset, inheritedTextReset } from '../../../assets/styles/style-resets.js';
 
 export const imageStyles = css`
-	${boxSizingReset}
+	:host {
+		box-sizing: border-box;
+	}
 
 
 	/* # Host */
