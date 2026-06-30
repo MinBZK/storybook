@@ -214,6 +214,9 @@ export const aliases = {
 	'unlocked': 'lock-open',
 	'unsecure': 'lock-open',
 
+	// rectangle-code
+	'code-block': 'rectangle-code',
+
 	// scissor
 	'cut': 'scissor',
 
