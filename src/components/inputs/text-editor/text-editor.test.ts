@@ -217,6 +217,19 @@ describe('nldd-text-editor', () => {
 		cleanup(el2);
 	});
 
+	it('setList none breaks a middle item out of the list (no lazy continuation)', async () => {
+		const el2 = await withValue('- een\n- twee\n- drie');
+		const api = el2 as unknown as { view: { state: { doc: { toString(): string } }; dispatch(s: unknown): void }; setList(t: string): void };
+		const pos = api.view.state.doc.toString().indexOf('twee');
+		api.view.dispatch({ selection: { anchor: pos } });
+		api.setList('none');
+		await waitForUpdate(el2);
+		// 'twee' becomes a real paragraph, fenced by blank lines so markdown stops
+		// treating it as part of the list.
+		expect(el2.value).toBe('- een\n\ntwee\n\n- drie');
+		cleanup(el2);
+	});
+
 	it('setHeading sets a level without toggling off', async () => {
 		const el2 = await withValue('Titel');
 		const api = el2 as unknown as { view: { dispatch(spec: unknown): void }; setHeading(l: number): void };

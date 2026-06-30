@@ -153,6 +153,19 @@ export function setList(view: EditorView, type: 'none' | 'bullet' | 'ordered'): 
 		}
 		if (next !== line.text) changes.push({ from: line.from, to: line.to, insert: next });
 	}
+	// Removing a marker from a line that still sits against a list item would leave
+	// it a lazy continuation (markdown keeps parsing it as part of the list, so the
+	// toolbar stays "list"). Insert blank lines to break it out into a paragraph.
+	if (type === 'none') {
+		const isListLine = (n: number) =>
+			n >= 1 && n <= state.doc.lines && /^\s*(?:[-*+]|\d+[.)])\s+/.test(state.doc.line(n).text);
+		if (first > 1 && isListLine(first - 1) && state.doc.line(first).text.trim() !== '') {
+			changes.push({ from: state.doc.line(first - 1).to, to: state.doc.line(first - 1).to, insert: '\n' });
+		}
+		if (last < state.doc.lines && isListLine(last + 1)) {
+			changes.push({ from: state.doc.line(last).to, to: state.doc.line(last).to, insert: '\n' });
+		}
+	}
 	if (changes.length) view.dispatch({ changes });
 	view.focus();
 }
