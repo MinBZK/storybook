@@ -53,6 +53,7 @@ import {
 	EditorView,
 	keymap,
 	drawSelection,
+	dropCursor,
 	placeholder as cmPlaceholder,
 } from '@codemirror/view';
 import { Compartment, EditorState, type Extension } from '@codemirror/state';
@@ -172,6 +173,7 @@ export class NLDDTextEditor extends NLDDCodeMirrorElement {
 			annotationExtension,
 			history(),
 			drawSelection(),
+			dropCursor(),
 			keymap.of([
 				{ key: 'Mod-b', run: (view) => { toggleInlineWrap(view, '**', 'StrongEmphasis'); return true; } },
 				{ key: 'Mod-i', run: (view) => { toggleInlineWrap(view, '*', 'Emphasis'); return true; } },

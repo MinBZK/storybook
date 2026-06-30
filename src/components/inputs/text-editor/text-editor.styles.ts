@@ -170,6 +170,10 @@ export const textEditorStyles = css`
 	.cm-md-mention-chip {
 		display: inline-flex;
 		align-items: center;
+		/* List/quote lines carry a negative text-indent (the hanging indent), which
+		   is inherited; Safari applies it to the chip's content and shoves the @
+		   over the name. Reset it so the chip lays out the same everywhere. */
+		text-indent: 0;
 		/* Centre on the line (not the inline-flex baseline, which is the icon's
 		   bottom) and keep the token a touch shorter than the line so it doesn't
 		   grow the line height while still giving the pill some height. */
