@@ -42,11 +42,14 @@ const annotationField = StateField.define<Anchored[]>({
 			if (effect.is(setAnnotations)) return anchorAll(effect.value, tr.state.doc.length);
 		}
 		if (tr.docChanged) {
+			// Map the anchors so the annotation doesn't grow when typing at either
+			// boundary: from sticks right (assoc 1), to sticks left (assoc -1).
+			// Typing just after the badge then lands outside the annotation.
 			return value
 				.map((anchored) => ({
 					id: anchored.id,
-					from: tr.changes.mapPos(anchored.from),
-					to: tr.changes.mapPos(anchored.to, 1),
+					from: tr.changes.mapPos(anchored.from, 1),
+					to: tr.changes.mapPos(anchored.to, -1),
 				}))
 				.filter((anchored) => anchored.to > anchored.from);
 		}
@@ -102,11 +105,23 @@ class AnnotationBadge extends WidgetType {
 // inclusiveEnd lets the nub widget (placed at the range end) nest *inside* this
 // mark span, so it shares the tint and wraps together with the text.
 const annotationMark = Decoration.mark({ class: 'cm-annotation', inclusiveEnd: true });
+// drawSelection paints the selection behind the text, so it's hidden under the
+// tint; this darker-yellow mark renders the selected slice on top instead.
+const annotationSelectedMark = Decoration.mark({ class: 'cm-annotation-selected' });
 
-function buildAnnotationDecorations(anchored: Anchored[]): DecorationSet {
+function buildAnnotationDecorations(
+	anchored: Anchored[],
+	sel: { from: number; to: number; empty: boolean },
+): DecorationSet {
 	const ranges: Range<Decoration>[] = [];
 	for (const group of groupOverlapping(anchored)) {
 		ranges.push(annotationMark.range(group.from, group.to));
+		// The selected slice of an annotation reads as a darker-yellow selection.
+		if (!sel.empty) {
+			const from = Math.max(group.from, sel.from);
+			const to = Math.min(group.to, sel.to);
+			if (to > from) ranges.push(annotationSelectedMark.range(from, to));
+		}
 		// Nub at the end, inside the mark (side -1) so it shares the tint and wraps
 		// with the text (operators like diff +/- would instead go at the start).
 		ranges.push(Decoration.widget({ widget: new AnnotationBadge(group.ids), side: -1 }).range(group.to));
@@ -114,9 +129,22 @@ function buildAnnotationDecorations(anchored: Anchored[]): DecorationSet {
 	return Decoration.set(ranges, true);
 }
 
-const annotationDecorations = EditorView.decorations.compute([annotationField], (state) =>
-	buildAnnotationDecorations(state.field(annotationField)),
-);
+// A field (not a computed facet) so it can also react to selection changes,
+// which drive the darker-yellow selected slice.
+const annotationDecorations = StateField.define<DecorationSet>({
+	create: (state) => buildAnnotationDecorations(state.field(annotationField), state.selection.main),
+	update: (value, tr) => {
+		if (
+			tr.docChanged ||
+			!tr.startState.selection.eq(tr.state.selection) ||
+			tr.effects.some((effect) => effect.is(setAnnotations))
+		) {
+			return buildAnnotationDecorations(tr.state.field(annotationField), tr.state.selection.main);
+		}
+		return value;
+	},
+	provide: (field) => EditorView.decorations.from(field),
+});
 
 /** The annotation overlay: anchoring + dashed-underline/tint/badge rendering. */
 export const annotations: Extension = [annotationField, annotationDecorations];

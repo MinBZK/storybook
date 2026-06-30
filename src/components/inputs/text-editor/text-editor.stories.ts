@@ -311,7 +311,7 @@ export const WithToolbar = {
 			const value = event.detail.value as string;
 			editorOf(event.currentTarget as Element)?.setList(value === 'numbered' ? 'ordered' : value);
 		};
-		const HEADING_LABELS = ['Normaal', 'Heading 1', 'Heading 2', 'Heading 3', 'Heading 4', 'Heading 5', 'Heading 6'];
+		const HEADING_LABELS = ['Paragraaf', 'Heading 1', 'Heading 2', 'Heading 3', 'Heading 4', 'Heading 5', 'Heading 6'];
 		const onHeadingSelect = (event: Event) => {
 			const item = event.target as HTMLElement;
 			if (item?.tagName !== 'NLDD-MENU-ITEM') return;
@@ -332,7 +332,7 @@ export const WithToolbar = {
 			const list: any = root.querySelector('[data-group="list"]');
 			if (list) list.value = active.orderedList ? 'numbered' : active.bulletList ? 'bullet' : 'none';
 			const headingButton: any = root.querySelector('[data-group="heading"]');
-			if (headingButton) headingButton.text = HEADING_LABELS[active.heading] ?? 'Normaal';
+			if (headingButton) headingButton.text = HEADING_LABELS[active.heading] ?? 'Paragraaf';
 			root.querySelectorAll('#heading-menu nldd-menu-item').forEach((item) => {
 				(item as any).selected = Number(item.getAttribute('value')) === active.heading;
 			});
@@ -392,9 +392,9 @@ export const WithToolbar = {
 						</nldd-segmented-control>
 					</nldd-toolbar-item>
 					<nldd-toolbar-item slot="start" label="Tekststijl">
-						<nldd-button id="heading-button" data-group="heading" expandable text="Normaal"></nldd-button>
+						<nldd-button id="heading-button" data-group="heading" expandable text="Paragraaf"></nldd-button>
 						<nldd-menu id="heading-menu" anchor="heading-button" @select=${onHeadingSelect}>
-							<nldd-menu-item type="radio" value="0" text="Normaal" selected></nldd-menu-item>
+							<nldd-menu-item type="radio" value="0" text="Paragraaf" selected></nldd-menu-item>
 							<nldd-menu-divider></nldd-menu-divider>
 							<nldd-menu-item type="radio" value="1" text="Heading 1"></nldd-menu-item>
 							<nldd-menu-item type="radio" value="2" text="Heading 2"></nldd-menu-item>
@@ -413,7 +413,7 @@ export const WithToolbar = {
 		controls: { disable: true },
 		docs: {
 			description: {
-				story: 'De editor is headless. Deze toolbar is opgebouwd uit DS-componenten — `nldd-toolbar` met icon-`nldd-segmented-control`s (nadruk vet/cursief, code, citaat, en een exclusieve lijst-keuze geen/opsomming/genummerd) en een uitklapbare `nldd-button` met een `nldd-menu` voor de tekststijl (Normaal/Heading 1/…). Tweerichtings gekoppeld: de controls sturen de editor (`runCommand`, `setList`, `setHeading`) en het `nldd-text-editor-state`-event zet hun actieve staat. Sneltoetsen Cmd/Ctrl+B/I/E/K werken ook.',
+				story: 'De editor is headless. Deze toolbar is opgebouwd uit DS-componenten — `nldd-toolbar` met icon-`nldd-segmented-control`s (nadruk vet/cursief, code, citaat, en een exclusieve lijst-keuze geen/opsomming/genummerd) en een uitklapbare `nldd-button` met een `nldd-menu` voor de tekststijl (Paragraaf/Heading 1/…). Tweerichtings gekoppeld: de controls sturen de editor (`runCommand`, `setList`, `setHeading`) en het `nldd-text-editor-state`-event zet hun actieve staat. Sneltoetsen Cmd/Ctrl+B/I/E/K werken ook.',
 			},
 		},
 	},

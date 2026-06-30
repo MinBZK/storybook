@@ -27,6 +27,8 @@ export const textEditorStyles = css`
 		/* Annotation overlay: one role for all annotations (type is shown via
 		   text by the consumer, not via colour). */
 		--_annotation-tint: var(--semantics-categories-geel-tinted-background-color);
+		/* A darker yellow for the selected slice within an annotation. */
+		--_annotation-selected: var(--semantics-categories-geel-tinted-highlight-border-color);
 		--_annotation-line: var(--semantics-categories-geel-filled-background-color);
 		--_annotation-badge-bg: var(--semantics-categories-geel-filled-background-color);
 		--_annotation-badge-text: var(--semantics-categories-geel-filled-primary-content-color);
@@ -243,6 +245,12 @@ export const textEditorStyles = css`
 		text-decoration-color: var(--_annotation-line);
 		text-decoration-thickness: 1.5px;
 		text-underline-offset: 0.2em;
+	}
+
+	/* Selected slice within an annotation: a darker yellow (drawSelection's layer
+	   sits behind the tint, so this stands in for the hidden selection). */
+	.cm-annotation-selected {
+		background-color: var(--_annotation-selected);
 	}
 
 	/* Solid nub, centred in the reserved right space (a small gap before it). */
