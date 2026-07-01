@@ -58,16 +58,19 @@ import {
 	placeholder as cmPlaceholder,
 } from '@codemirror/view';
 import { Compartment, EditorState, type Extension } from '@codemirror/state';
-import { defaultKeymap, history, historyKeymap, indentMore, indentLess } from '@codemirror/commands';
+import { defaultKeymap, history, historyKeymap, indentLess } from '@codemirror/commands';
 import { NLDDCodeMirrorElement } from '../../../utilities/codemirror/codemirror-element.js';
 import { nlddCodeMirrorTheme } from '../../../utilities/codemirror/theme.js';
 import { markdownEditing, mentionRangeAt, mentionRangeEndingAt, mentionRangeStartingAt } from './text-editor.markdown.js';
 import { mentions, type MentionSource, type MentionInsertedDetail } from './text-editor.mentions.js';
 import { annotations as annotationExtension, setAnnotations, type Annotation } from './text-editor.annotations.js';
 import { dragToMove, dragMovePlugin } from './text-editor.drag.js';
-import { linkOpenTooltip } from './text-editor.links.js';
+import { linkOpenBadge } from './text-editor.links.js';
 import {
 	toggleInlineWrap,
+	indentListItems as cmIndentListItems,
+	canIndentListItem as cmCanIndent,
+	canOutdentListItem as cmCanOutdent,
 	toggleHeading as cmToggleHeading,
 	setHeading as cmSetHeading,
 	toggleBulletList as cmToggleBulletList,
@@ -182,7 +185,7 @@ export class NLDDTextEditor extends NLDDCodeMirrorElement {
 			markdownEditing,
 			mentions(() => this.mentionSource, (detail) => this._emitMention(detail)),
 			annotationExtension,
-			linkOpenTooltip,
+			linkOpenBadge,
 			history(),
 			drawSelection(),
 			dropCursor(),
@@ -360,15 +363,11 @@ export class NLDDTextEditor extends NLDDCodeMirrorElement {
 		if (this.view) cmToggleCodeBlock(this.view);
 	}
 
-	/** Nest the selected list item(s) one level deeper. Only acts inside a list —
-	 *  indenting a plain paragraph would turn it into an indented code block. */
+	/** Nest the selected list item(s) under the preceding item at the same level.
+	 *  Only list items move, and only as far as that parent's content column — so a
+	 *  first or standalone item can't be over-indented into an indented code block. */
 	indent(): void {
-		if (!this.view) return;
-		const active = this.getState().active;
-		if (active.bulletList || active.orderedList) {
-			indentMore(this.view);
-			this.view.focus();
-		}
+		if (this.view) cmIndentListItems(this.view);
 	}
 
 	/** Decrease the leading indentation of the selected lines. */
@@ -400,6 +399,8 @@ export class NLDDTextEditor extends NLDDCodeMirrorElement {
 		return {
 			active: this.view ? readActiveFormats(this.view) : { ...EMPTY_FORMATS },
 			empty: this.view ? this.view.state.selection.main.empty : true,
+			canIndent: this.view ? cmCanIndent(this.view) : false,
+			canOutdent: this.view ? cmCanOutdent(this.view) : false,
 		};
 	}
 

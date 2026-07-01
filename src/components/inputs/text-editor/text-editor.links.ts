@@ -1,61 +1,90 @@
-import { showTooltip, type Tooltip } from '@codemirror/view';
-import { StateField, type EditorState } from '@codemirror/state';
+import {
+	Decoration,
+	ViewPlugin,
+	WidgetType,
+	type DecorationSet,
+	type EditorView,
+	type ViewUpdate,
+} from '@codemirror/view';
+import { RangeSetBuilder, type EditorState } from '@codemirror/state';
 import { syntaxTree } from '@codemirror/language';
 import type { SyntaxNode } from '@lezer/common';
 import { MENTION_HREF_PREFIX } from './text-editor.mentions.js';
 import '../../content/icon/icon.js';
 
-/* When the caret sits in a real (non-mention) link, float a small panel under it
- * with the destination and a button to open it in a new tab — so a link can be
- * followed without leaving the editor, and its href is visible at a glance. */
+/* Render a small "open in new tab" badge right after every real (non-mention)
+ * link, so a link can be followed without leaving the editor — directly clickable,
+ * no need to place the caret first. Mentions own their own click, so they're skipped. */
 
-function realLinkInfo(state: EditorState, pos: number): { from: number; href: string } | null {
-	for (let node: SyntaxNode | null = syntaxTree(state).resolveInner(pos, 1); node; node = node.parent) {
-		if (node.name !== 'Link') continue;
-		let url: SyntaxNode | null = null;
-		for (let child = node.firstChild; child; child = child.nextSibling) {
-			if (child.name === 'URL') { url = child; break; }
-		}
-		const href = url ? state.sliceDoc(url.from, url.to) : '';
-		if (href.startsWith(MENTION_HREF_PREFIX)) return null; // mentions own their click
-		return { from: node.from, href };
+class LinkOpenWidget extends WidgetType {
+	constructor(readonly href: string) {
+		super();
+	}
+
+	eq(other: LinkOpenWidget): boolean {
+		return other.href === this.href;
+	}
+
+	toDOM(): HTMLElement {
+		const anchor = document.createElement('a');
+		anchor.className = 'cm-link-open';
+		anchor.href = this.href;
+		anchor.target = '_blank';
+		anchor.rel = 'noopener noreferrer';
+		anchor.setAttribute('aria-label', `Open link in nieuw tabblad: ${this.href}`);
+		const icon = document.createElement('nldd-icon');
+		icon.setAttribute('name', 'external-link');
+		icon.setAttribute('aria-hidden', 'true');
+		anchor.append(icon);
+		// The editor steals mousedown to place the caret; keep the click ours.
+		anchor.addEventListener('mousedown', (event) => event.preventDefault());
+		return anchor;
+	}
+
+	ignoreEvent(): boolean {
+		return true; // let the anchor handle its own click
+	}
+}
+
+/** The link's destination, or null for a mention or a link without a URL. */
+function hrefOf(state: EditorState, link: SyntaxNode): string | null {
+	for (let child = link.firstChild; child; child = child.nextSibling) {
+		if (child.name !== 'URL') continue;
+		const href = state.sliceDoc(child.from, child.to);
+		return href && !href.startsWith(MENTION_HREF_PREFIX) ? href : null;
 	}
 	return null;
 }
 
-function linkTooltip(state: EditorState): Tooltip | null {
-	const info = realLinkInfo(state, state.selection.main.head);
-	if (!info || !info.href) return null; // only once there's an actual URL to open
-	return {
-		pos: info.from,
-		above: false,
-		create: () => {
-			const dom = document.createElement('div');
-			dom.className = 'cm-link-tooltip';
-			const open = document.createElement('a');
-			open.className = 'cm-link-tooltip-open';
-			open.href = info.href;
-			open.target = '_blank';
-			open.rel = 'noopener noreferrer';
-			const label = document.createElement('span');
-			label.className = 'cm-link-tooltip-url';
-			label.textContent = info.href;
-			const icon = document.createElement('nldd-icon');
-			icon.setAttribute('name', 'external-link');
-			icon.setAttribute('aria-hidden', 'true');
-			open.append(label, icon);
-			// The editor steals mousedown to place the caret; keep the click ours.
-			open.addEventListener('mousedown', (event) => event.preventDefault());
-			dom.append(open);
-			return { dom };
-		},
-	};
+function buildBadges(view: EditorView): DecorationSet {
+	const builder = new RangeSetBuilder<Decoration>();
+	const tree = syntaxTree(view.state);
+	for (const { from, to } of view.visibleRanges) {
+		tree.iterate({
+			from,
+			to,
+			enter: (node) => {
+				if (node.name !== 'Link') return;
+				const href = hrefOf(view.state, node.node);
+				if (href) builder.add(node.to, node.to, Decoration.widget({ widget: new LinkOpenWidget(href), side: 1 }));
+			},
+		});
+	}
+	return builder.finish();
 }
 
-/** Shows an "open link" panel under the caret whenever it's inside a real link. */
-export const linkOpenTooltip = StateField.define<Tooltip | null>({
-	create: linkTooltip,
-	update: (value, tr) =>
-		tr.docChanged || !tr.startState.selection.eq(tr.state.selection) ? linkTooltip(tr.state) : value,
-	provide: (field) => showTooltip.from(field),
-});
+/** Adds an "open link" badge after every real link in the viewport. */
+export const linkOpenBadge = ViewPlugin.fromClass(
+	class {
+		decorations: DecorationSet;
+
+		constructor(view: EditorView) {
+			this.decorations = buildBadges(view);
+		}
+
+		update(update: ViewUpdate): void {
+			if (update.docChanged || update.viewportChanged) this.decorations = buildBadges(update.view);
+		}
+	},
+	{ decorations: (plugin) => plugin.decorations }
+);

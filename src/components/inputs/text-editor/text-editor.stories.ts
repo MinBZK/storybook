@@ -41,10 +41,20 @@ const HEADING_LABELS = ['Paragraaf', 'Heading 1', 'Heading 2', 'Heading 3', 'Hea
 const onHeadingSelect = (event: Event) => {
 	const item = event.target as HTMLElement;
 	if (item?.tagName !== 'NLDD-MENU-ITEM') return;
-	editorOf(event.currentTarget as Element)?.setHeading(Number(item.getAttribute('value') ?? 0));
+	const editor = editorOf(event.currentTarget as Element);
+	if (!editor) return;
+	const value = item.getAttribute('value') ?? '0';
+	const inCodeBlock = editor.getState().active.codeBlock;
+	if (value === 'codeblock') {
+		if (!inCodeBlock) editor.toggleCodeBlock(); // wrap; re-selecting it is a no-op
+		return;
+	}
+	// A text style: a code block is its own block type, so step out of it first —
+	// that's what makes "Paragraaf" double as the way out of a code block.
+	if (inCodeBlock) editor.toggleCodeBlock();
+	editor.setHeading(Number(value));
 };
 const onLink = (event: Event) => editorOf(event.currentTarget as Element)?.toggleLink();
-const onCodeBlock = (event: Event) => editorOf(event.currentTarget as Element)?.toggleCodeBlock();
 const onIndent = (event: Event) => editorOf(event.currentTarget as Element)?.indent();
 const onOutdent = (event: Event) => editorOf(event.currentTarget as Element)?.outdent();
 const onToolbarState = (event: CustomEvent) => {
@@ -59,21 +69,51 @@ const onToolbarState = (event: CustomEvent) => {
 		const el: any = root.querySelector(`[data-group="${group}"]`);
 		if (el) el.selected = Boolean(active[key]);
 	};
-	reflect('inline', ['bold', 'italic']);
+	reflect('inline', ['bold', 'italic', 'strikethrough']);
 	reflectToggle('code', 'inlineCode');
-	reflectToggle('codeBlock', 'codeBlock');
 	reflectToggle('link', 'link');
 	reflectToggle('quote', 'quote');
 	const list: any = root.querySelector('[data-group="list"]');
 	if (list) list.value = active.orderedList ? 'numbered' : active.bulletList ? 'bullet' : 'none';
-	// Indent only nests list items, so disable it outside a list (a plain paragraph
-	// indented 4 spaces would become a code block).
+
+	// Formatting inside code is literal text, not markup: lock the inline formats in
+	// any code, and the block formats inside a code block — only the code-block toggle
+	// stays (to get back out).
+	const inCode = active.inlineCode || active.codeBlock;
+	const setDisabled = (group: string, cond: boolean) => {
+		const el: any = root.querySelector(`[data-group="${group}"]`);
+		if (el) el.disabled = cond;
+	};
+	setDisabled('inline', inCode);
+	setDisabled('link', inCode);
+	setDisabled('code', active.codeBlock);
+	setDisabled('quote', active.codeBlock);
+	setDisabled('list', active.codeBlock);
+
+	// Indent buttons reflect what's possible: increase only with a parent to nest
+	// under, decrease only when the item is already nested. When neither applies,
+	// disable the whole bar so its divider dims too, not just the two buttons.
 	const indentBar: any = root.querySelector('[data-group="indent"]');
-	if (indentBar) indentBar.disabled = !(active.bulletList || active.orderedList);
+	if (indentBar) {
+		const { canIndent, canOutdent } = event.detail;
+		indentBar.disabled = !canIndent && !canOutdent;
+		// The bar re-syncs its children from a snapshot whenever `disabled` flips; set
+		// the per-button state after that settles so a half-usable bar keeps the exact
+		// arrow we want enabled.
+		indentBar.updateComplete.then(() => {
+			const [increase, decrease] = indentBar.querySelectorAll('nldd-icon-button');
+			if (increase) increase.disabled = !canIndent;
+			if (decrease) decrease.disabled = !canOutdent;
+		});
+	}
+
+	// The block-type menu also carries "Codeblok", and it stays enabled in a code
+	// block — picking "Paragraaf" is how you get back out.
 	const headingButton: any = root.querySelector('[data-group="heading"]');
-	if (headingButton) headingButton.text = HEADING_LABELS[active.heading] ?? 'Paragraaf';
+	if (headingButton) headingButton.text = active.codeBlock ? 'Codeblok' : (HEADING_LABELS[active.heading] ?? 'Paragraaf');
 	root.querySelectorAll('#heading-menu nldd-menu-item').forEach((item) => {
-		(item as any).selected = Number(item.getAttribute('value')) === active.heading;
+		const value = item.getAttribute('value');
+		(item as any).selected = active.codeBlock ? value === 'codeblock' : Number(value) === active.heading;
 	});
 };
 function toolbarEditor(editor: unknown) {
@@ -86,10 +126,11 @@ function toolbarEditor(editor: unknown) {
 						type="checkbox"
 						variant="icon"
 						accessible-label="Nadruk"
-						@change=${(event: CustomEvent) => reconcile(event.currentTarget as Element, ['bold', 'italic'], event.detail.values)}
+						@change=${(event: CustomEvent) => reconcile(event.currentTarget as Element, ['bold', 'italic', 'strikethrough'], event.detail.values)}
 					>
 						<nldd-segmented-control-item value="bold" text="Vet" icon="bold"></nldd-segmented-control-item>
 						<nldd-segmented-control-item value="italic" text="Cursief" icon="italic"></nldd-segmented-control-item>
+						<nldd-segmented-control-item value="strikethrough" text="Doorhalen" icon="strikethrough"></nldd-segmented-control-item>
 					</nldd-segmented-control>
 				</nldd-toolbar-item>
 				<nldd-toolbar-item slot="start" label="Code">
@@ -140,15 +181,6 @@ function toolbarEditor(editor: unknown) {
 						<nldd-icon-button icon="indent-decrease" text="Minder inspringen" @click=${onOutdent}></nldd-icon-button>
 					</nldd-button-bar>
 				</nldd-toolbar-item>
-				<nldd-toolbar-item slot="start" label="Codeblok">
-					<nldd-toggle-button
-						data-group="codeBlock"
-						variant="icon"
-						icon="code-block"
-						accessible-label="Codeblok"
-						@change=${onCodeBlock}
-					></nldd-toggle-button>
-				</nldd-toolbar-item>
 				<nldd-toolbar-item slot="start" label="Tekststijl">
 					<nldd-button id="heading-button" data-group="heading" expandable text="Paragraaf"></nldd-button>
 					<nldd-menu id="heading-menu" anchor="heading-button" @select=${onHeadingSelect}>
@@ -160,6 +192,8 @@ function toolbarEditor(editor: unknown) {
 						<nldd-menu-item type="radio" value="4" text="Heading 4"></nldd-menu-item>
 						<nldd-menu-item type="radio" value="5" text="Heading 5"></nldd-menu-item>
 						<nldd-menu-item type="radio" value="6" text="Heading 6"></nldd-menu-item>
+						<nldd-menu-divider></nldd-menu-divider>
+						<nldd-menu-item type="radio" value="codeblock" text="Codeblok"></nldd-menu-item>
 					</nldd-menu>
 				</nldd-toolbar-item>
 			</nldd-toolbar>

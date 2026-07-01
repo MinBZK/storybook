@@ -26,6 +26,9 @@ export interface TextEditorState {
 	active: TextEditorActiveFormats;
 	/** Whether the selection is collapsed (a caret, no range). */
 	empty: boolean;
+	/** Whether the list item at the caret can be nested deeper / outdented. */
+	canIndent: boolean;
+	canOutdent: boolean;
 }
 
 export const EMPTY_FORMATS: TextEditorActiveFormats = {
@@ -163,7 +166,10 @@ export function setList(view: EditorView, type: 'none' | 'bullet' | 'ordered'): 
 	let number = 0;
 	for (let i = first; i <= last; i++) {
 		const line = state.doc.line(i);
-		const stripped = line.text.replace(LIST_STRIP_RE, '$1');
+		// 'none' clears the leading indent too — bare text can't carry list
+		// indentation (4+ spaces would even parse as a code block); the list types
+		// keep it ($1) so nesting survives a switch between bullet and ordered.
+		const stripped = line.text.replace(LIST_STRIP_RE, type === 'none' ? '' : '$1');
 		let next = stripped;
 		if (type !== 'none' && stripped.trim() !== '') {
 			number += 1;
@@ -174,21 +180,65 @@ export function setList(view: EditorView, type: 'none' | 'bullet' | 'ordered'): 
 		const change = minimalLineChange(line, next);
 		if (change) changes.push(change);
 	}
-	// Removing a marker from a line that still sits against a list item would leave
-	// it a lazy continuation (markdown keeps parsing it as part of the list, so the
-	// toolbar stays "list"). Insert blank lines to break it out into a paragraph.
-	if (type === 'none') {
-		const isListLine = (n: number) =>
-			n >= 1 && n <= state.doc.lines && /^\s*(?:[-*+]|\d+[.)])\s+/.test(state.doc.line(n).text);
-		if (first > 1 && isListLine(first - 1) && state.doc.line(first).text.trim() !== '') {
-			changes.push({ from: state.doc.line(first - 1).to, to: state.doc.line(first - 1).to, insert: '\n' });
+	if (changes.length) view.dispatch({ changes });
+	view.focus();
+}
+
+/** Nest the selected list item(s) under the nearest preceding item at the same
+ *  level, indenting only as far as that parent's content column. That keeps the
+ *  item a valid nested list — 4+ spaces with no parent would parse as an indented
+ *  code block — so a first or standalone item (no parent) is left untouched. */
+export function indentListItems(view: EditorView): void {
+	const { state } = view;
+	const { from, to } = state.selection.main;
+	const first = state.doc.lineAt(from).number;
+	const last = state.doc.lineAt(to).number;
+	const changes: { from: number; insert: string }[] = [];
+	for (let i = first; i <= last; i++) {
+		const line = state.doc.line(i);
+		const match = line.text.match(LIST_STRIP_RE);
+		if (!match) continue;
+		const indent = match[1].length;
+		// Walk up to the nearest list item at this level or shallower — the item we
+		// nest under. A blank line is skipped (loose lists); a non-list line ends it.
+		let parentContentColumn = -1;
+		for (let j = i - 1; j >= 1; j--) {
+			const text = state.doc.line(j).text;
+			if (text.trim() === '') continue;
+			const prev = text.match(LIST_STRIP_RE);
+			if (!prev) break;
+			if (prev[1].length <= indent) { parentContentColumn = prev[0].length; break; }
 		}
-		if (last < state.doc.lines && isListLine(last + 1)) {
-			changes.push({ from: state.doc.line(last).to, to: state.doc.line(last).to, insert: '\n' });
+		if (parentContentColumn > indent) {
+			changes.push({ from: line.from, insert: ' '.repeat(parentContentColumn - indent) });
 		}
 	}
 	if (changes.length) view.dispatch({ changes });
 	view.focus();
+}
+
+/** Whether the list item at the caret can be nested deeper (it has a preceding
+ *  item at the same level to nest under). Drives the indent button's disabled state. */
+export function canIndentListItem(view: EditorView): boolean {
+	const { state } = view;
+	const line = state.doc.lineAt(state.selection.main.head);
+	const match = line.text.match(LIST_STRIP_RE);
+	if (!match) return false;
+	const indent = match[1].length;
+	for (let j = line.number - 1; j >= 1; j--) {
+		const text = state.doc.line(j).text;
+		if (text.trim() === '') continue;
+		const prev = text.match(LIST_STRIP_RE);
+		if (!prev) return false;
+		if (prev[1].length <= indent) return prev[0].length > indent;
+	}
+	return false;
+}
+
+/** Whether the list item at the caret is nested (indented) and so can be outdented. */
+export function canOutdentListItem(view: EditorView): boolean {
+	const match = view.state.doc.lineAt(view.state.selection.main.head).text.match(LIST_STRIP_RE);
+	return !!match && match[1].length > 0;
 }
 
 export function toggleQuote(view: EditorView): void {

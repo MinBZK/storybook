@@ -217,16 +217,28 @@ describe('nldd-text-editor', () => {
 		cleanup(el2);
 	});
 
-	it('setList none breaks a middle item out of the list (no lazy continuation)', async () => {
+	it('setList none strips only the marker, no blank lines inserted', async () => {
 		const el2 = await withValue('- een\n- twee\n- drie');
 		const api = el2 as unknown as { view: { state: { doc: { toString(): string } }; dispatch(s: unknown): void }; setList(t: string): void };
 		const pos = api.view.state.doc.toString().indexOf('twee');
 		api.view.dispatch({ selection: { anchor: pos } });
 		api.setList('none');
 		await waitForUpdate(el2);
-		// 'twee' becomes a real paragraph, fenced by blank lines so markdown stops
-		// treating it as part of the list.
-		expect(el2.value).toBe('- een\n\ntwee\n\n- drie');
+		// Just removes the marker, like deleting it by hand — no surrounding blank
+		// lines. The toolbar reads "no list" from the (now marker-less) line.
+		expect(el2.value).toBe('- een\ntwee\n- drie');
+		cleanup(el2);
+	});
+
+	it('setList none verwijdert ook de inspring van een genest item', async () => {
+		const el2 = await withValue('- ouder\n  - kind');
+		const api = el2 as unknown as { view: { state: { doc: { toString(): string } }; dispatch(s: unknown): void }; setList(t: string): void };
+		const pos = api.view.state.doc.toString().indexOf('kind');
+		api.view.dispatch({ selection: { anchor: pos } });
+		api.setList('none');
+		await waitForUpdate(el2);
+		// The child loses its marker AND its indent — bare text can't be list-indented.
+		expect(el2.value).toBe('- ouder\nkind');
 		cleanup(el2);
 	});
 
@@ -300,6 +312,55 @@ describe('nldd-text-editor', () => {
 		cleanup(el2);
 	});
 
+	it('indent nestelt onder een vorig item en maakt van een los item geen codeblok', async () => {
+		type IndentApi = {
+			view: { dispatch(s: unknown): void; state: { doc: { line(n: number): { text: string; from: number } } } };
+			indent(): void;
+		};
+		// A standalone first item has no parent, so indenting must not add 4 spaces
+		// (which markdown would read as an indented code block).
+		const standalone = await withValue('Tekst.\n\n- Los item');
+		const a1 = standalone as unknown as IndentApi;
+		a1.view.dispatch({ selection: { anchor: a1.view.state.doc.line(3).from + 2 } });
+		a1.indent();
+		a1.indent();
+		expect(a1.view.state.doc.line(3).text).toBe('- Los item');
+		cleanup(standalone);
+		// An item with a sibling above nests one level, and no deeper.
+		const nested = await withValue('- a\n- b');
+		const a2 = nested as unknown as IndentApi;
+		a2.view.dispatch({ selection: { anchor: a2.view.state.doc.line(2).from + 2 } });
+		a2.indent();
+		expect(a2.view.state.doc.line(2).text).toBe('  - b');
+		a2.view.dispatch({ selection: { anchor: a2.view.state.doc.line(2).from + 4 } });
+		a2.indent();
+		expect(a2.view.state.doc.line(2).text).toBe('  - b');
+		cleanup(nested);
+	});
+
+	it('getState meldt canIndent/canOutdent (drijft de indent-knoppen)', async () => {
+		const el2 = await withValue('- a\n- b');
+		const api = el2 as unknown as {
+			view: { dispatch(s: unknown): void; state: { doc: { line(n: number): { from: number } } } };
+			getState(): { canIndent: boolean; canOutdent: boolean };
+			indent(): void;
+		};
+		// First item: no parent to nest under, not nested.
+		api.view.dispatch({ selection: { anchor: api.view.state.doc.line(1).from + 2 } });
+		expect(api.getState().canIndent).toBe(false);
+		expect(api.getState().canOutdent).toBe(false);
+		// Second item: can nest under the first, not nested yet.
+		api.view.dispatch({ selection: { anchor: api.view.state.doc.line(2).from + 2 } });
+		expect(api.getState().canIndent).toBe(true);
+		expect(api.getState().canOutdent).toBe(false);
+		// Once nested: no deeper parent, but it can be outdented.
+		api.indent();
+		api.view.dispatch({ selection: { anchor: api.view.state.doc.line(2).from + 4 } });
+		expect(api.getState().canIndent).toBe(false);
+		expect(api.getState().canOutdent).toBe(true);
+		cleanup(el2);
+	});
+
 
 	/* ============================================================
 	   @-mentions
@@ -321,6 +382,15 @@ describe('nldd-text-editor', () => {
 		const sr = el2.shadowRoot!;
 		expect(sr.querySelector('.cm-md-link')).not.toBeNull();
 		expect(sr.querySelector('.cm-md-mention-token')).toBeNull();
+		cleanup(el2);
+	});
+
+	it('toont een open-link badge na een echte link, niet na een mention', async () => {
+		const el2 = await withValue('Zie [site](https://example.org) en [@Anouk](user:1).');
+		const badges = el2.shadowRoot!.querySelectorAll('.cm-link-open');
+		expect(badges.length).toBe(1); // the mention owns its own click, so it's skipped
+		expect(badges[0].getAttribute('href')).toBe('https://example.org');
+		expect(badges[0].getAttribute('target')).toBe('_blank');
 		cleanup(el2);
 	});
 

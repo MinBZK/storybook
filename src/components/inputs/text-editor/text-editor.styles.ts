@@ -230,6 +230,12 @@ export const textEditorStyles = css`
 	.cm-md-codeblock-selected {
 		background-color: var(--_code-token-background-is-selected);
 	}
+	/* CM nests the base code mark inside the selected one, so the inner base tint
+	   would paint over the darker selected tint (leaving the token light, or split
+	   on a partial overlap). Clear it so the whole selected run reads as one block. */
+	.cm-md-code-selected .cm-md-code {
+		background-color: transparent;
+	}
 
 	/* @-mention: accent + semibold (shown only in the brief pre-parse state;
 	   normally the whole token collapses to the rendered token below). */
@@ -287,7 +293,13 @@ export const textEditorStyles = css`
 	}
 
 	.cm-md-url {
-		color: var(--semantics-input-fields-placeholder-color);
+		color: var(--semantics-content-secondary-color);
+	}
+
+	/* The markdown highlight style tints the URL token (teal); make its span inherit
+	   the dimmed colour so the address reads as secondary, like the surrounding marks. */
+	.cm-md-url span {
+		color: inherit;
 	}
 
 	/* Blockquote reads at the lg (20px) step in sans, primary content colour; in
@@ -380,10 +392,11 @@ export const textEditorStyles = css`
 		background-color: var(--_annotation-token-badge-background);
 		box-shadow: inset 0 0 0 var(--primitives-border-width-thin) var(--_annotation-token-badge-highlight-border);
 		color: var(--_annotation-token-badge-content-color);
-		/* vertical-align: middle centres on the text x-height, which sits a hair
-		   below the tinted block's true centre; nudge up to sit dead-centre. */
+		/* vertical-align: middle lands the nub on the line-box centre, which reads a
+		   touch high next to the ink (glyphs sit lower, toward the baseline); nudge
+		   down onto the text's optical middle. */
 		vertical-align: middle;
-		transform: translateY(-0.03em);
+		transform: translateY(0.1em);
 		font-family: var(--primitives-font-family-body);
 		font-size: 0.62em;
 		font-weight: 700;
@@ -464,7 +477,7 @@ export const textEditorStyles = css`
 		pointer-events: none;
 	}
 
-	/* "Open link" panel that floats under the caret when it sits in a real link. */
+	/* CodeMirror's floating panels — currently the @mention picker. */
 	.cm-tooltip {
 		border: var(--primitives-border-width-thin) solid var(--semantics-surfaces-base-border-color);
 		border-radius: var(--primitives-corner-radius-sm);
@@ -472,28 +485,23 @@ export const textEditorStyles = css`
 		box-shadow: var(--components-tooltip-box-shadow);
 	}
 
-	.cm-link-tooltip-open {
+	/* "Open link" badge rendered inline right after every real link: a dimmed
+	   external-link icon that brightens to the link colour on hover. */
+	.cm-link-open {
 		display: inline-flex;
 		align-items: center;
-		gap: var(--primitives-space-4);
-		padding: var(--primitives-space-4) var(--primitives-space-8);
-		color: var(--semantics-links-color);
-		font: var(--_font);
+		vertical-align: text-bottom;
+		margin-inline-start: var(--primitives-space-4);
+		color: var(--semantics-content-secondary-color);
 		text-decoration: none;
+		cursor: pointer;
 	}
 
-	.cm-link-tooltip-open:hover {
-		text-decoration: underline;
+	.cm-link-open:hover {
+		color: var(--semantics-links-color);
 	}
 
-	.cm-link-tooltip-url {
-		max-width: 28ch;
-		overflow: hidden;
-		white-space: nowrap;
-		text-overflow: ellipsis;
-	}
-
-	.cm-link-tooltip-open nldd-icon {
+	.cm-link-open nldd-icon {
 		flex: none;
 		width: 1em;
 		height: 1em;
