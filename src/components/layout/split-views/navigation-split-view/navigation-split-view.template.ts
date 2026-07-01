@@ -6,8 +6,9 @@ import '../split-view-divider/split-view-divider.js';
 export function navigationSplitViewTemplate(component: NLDDNavigationSplitView): TemplateResult {
 	return html`
 		<div class="navigation-split-view">
-			${component._showSidebar ? html`
-				<div class="navigation-split-view__sidebar-pane">
+			${component._showPrimarySidebar ? html`
+				<div class="navigation-split-view__primary-sidebar-pane">
+					<slot name="primary-sidebar"></slot>
 					<slot name="sidebar"></slot>
 				</div>
 				<nldd-split-view-divider orientation="vertical"></nldd-split-view-divider>
@@ -40,17 +41,18 @@ export function navigationSplitViewTemplate(component: NLDDNavigationSplitView):
 					</div>
 				</dialog>
 			` : nothing}
-			${component.sidebarAsSheet ? html`
-				<dialog class="navigation-split-view__sidebar-sheet"
-					aria-label=${component.sidebarAccessibleLabel}
+			${component._asSheet ? html`
+				<dialog class="navigation-split-view__primary-sidebar-sheet"
+					aria-label=${component._resolvedPrimarySidebarLabel}
 					aria-modal="true"
-					@click=${component._handleSidebarSheetClick}
-					@cancel=${component._handleSidebarSheetCancel}
+					@click=${component._handlePrimarySidebarSheetClick}
+					@cancel=${component._handlePrimarySidebarSheetCancel}
 				>
-					<div class="navigation-split-view__sidebar-sheet-body">
+					<div class="navigation-split-view__primary-sidebar-sheet-body">
 						${component._hasSecondarySidebar && component._paneHasContent('secondary-sidebar') ? html`
 							<slot name="secondary-sidebar"></slot>
 						` : html`
+							<slot name="primary-sidebar"></slot>
 							<slot name="sidebar"></slot>
 						`}
 					</div>

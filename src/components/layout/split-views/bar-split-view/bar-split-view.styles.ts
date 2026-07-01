@@ -1,6 +1,9 @@
 import { css } from 'lit';
 
 export const barSplitViewStyles = css`
+	:host {
+		box-sizing: border-box;
+	}
 
 
 	/* # Host */

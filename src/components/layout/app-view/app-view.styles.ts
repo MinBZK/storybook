@@ -1,6 +1,9 @@
 import { css } from 'lit';
 
 export const appViewStyles = css`
+	:host {
+		box-sizing: border-box;
+	}
 
 
 	/* # Host */

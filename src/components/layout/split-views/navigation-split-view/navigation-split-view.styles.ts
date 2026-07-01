@@ -7,6 +7,9 @@ const mdMax = unsafeCSS(breakpoints.mdMax);
 const lgMin = unsafeCSS(breakpoints.lgMin);
 
 export const navigationSplitViewStyles = css`
+	:host {
+		box-sizing: border-box;
+	}
 
 
 	/* # Host */
@@ -14,7 +17,7 @@ export const navigationSplitViewStyles = css`
 	:host {
 		--_background-color: var(--context-parent-background-color, var(--semantics-surfaces-base-background-color));
 		/* Pane min-widths — read by JS via getComputedStyle in firstUpdated */
-		--_sidebar-min-width: var(--primitives-area-320);
+		--_primary-sidebar-min-width: var(--primitives-area-320);
 		--_secondary-sidebar-min-width: var(--primitives-area-320);
 		--_main-min-width: var(--primitives-area-480);
 		--_inspector-min-width: var(--primitives-area-320);
@@ -48,12 +51,12 @@ export const navigationSplitViewStyles = css`
 		to { transform: translateX(100%); }
 	}
 
-	@keyframes navigation-split-view-sidebar-slide-in {
+	@keyframes navigation-split-view-primary-sidebar-slide-in {
 		from { transform: translateX(-100%); }
 		to { transform: translateX(0); }
 	}
 
-	@keyframes navigation-split-view-sidebar-slide-out {
+	@keyframes navigation-split-view-primary-sidebar-slide-out {
 		from { transform: translateX(0); }
 		to { transform: translateX(-100%); }
 	}
@@ -85,9 +88,9 @@ export const navigationSplitViewStyles = css`
 
 	/* # Elements */
 
-	.navigation-split-view__sidebar-pane {
+	.navigation-split-view__primary-sidebar-pane {
 		display: flex;
-		min-width: var(--_sidebar-min-width);
+		min-width: var(--_primary-sidebar-min-width);
 		min-height: 0;
 		overflow: hidden;
 		flex-direction: column;
@@ -115,7 +118,7 @@ export const navigationSplitViewStyles = css`
 	}
 
 	/* Full-stack: the single visible pane fills the space, no minimum */
-	:host(.full-stack) .navigation-split-view__sidebar-pane,
+	:host(.full-stack) .navigation-split-view__primary-sidebar-pane,
 	:host(.full-stack) .navigation-split-view__secondary-sidebar-pane,
 	:host(.full-stack) .navigation-split-view__main-pane {
 		min-width: 0;
@@ -125,7 +128,7 @@ export const navigationSplitViewStyles = css`
 	}
 
 	/* Inline sidebar panes suppress their dismiss button */
-	.navigation-split-view__sidebar-pane,
+	.navigation-split-view__primary-sidebar-pane,
 	.navigation-split-view__secondary-sidebar-pane {
 		--context-dismiss-button-display: none;
 	}
@@ -220,7 +223,7 @@ export const navigationSplitViewStyles = css`
 		flex-grow: 1;
 	}
 
-	.navigation-split-view__sidebar-sheet {
+	.navigation-split-view__primary-sidebar-sheet {
 		display: flex;
 		position: fixed;
 		margin: 0;
@@ -275,7 +278,7 @@ export const navigationSplitViewStyles = css`
 			}
 
 			@media (min-width: ${mdMin}) {
-				animation: navigation-split-view-sidebar-slide-in var(--semantics-sheets-side-animation-duration) var(--primitives-transition-easing-default) both;
+				animation: navigation-split-view-primary-sidebar-slide-in var(--semantics-sheets-side-animation-duration) var(--primitives-transition-easing-default) both;
 			}
 		}
 
@@ -285,13 +288,13 @@ export const navigationSplitViewStyles = css`
 			}
 
 			@media (min-width: ${mdMin}) {
-				animation: navigation-split-view-sidebar-slide-out var(--semantics-sheets-side-animation-duration) var(--primitives-transition-easing-default) both;
+				animation: navigation-split-view-primary-sidebar-slide-out var(--semantics-sheets-side-animation-duration) var(--primitives-transition-easing-default) both;
 			}
 		}
 	}
 
-	.navigation-split-view__sidebar-sheet-body {
-		/* Show dismiss button inside sidebar sheet */
+	.navigation-split-view__primary-sidebar-sheet-body {
+		/* Show dismiss button inside primary sidebar sheet */
 		--context-dismiss-button-display: block;
 
 		display: flex;
@@ -304,8 +307,8 @@ export const navigationSplitViewStyles = css`
 	@media (prefers-reduced-motion: reduce) {
 		.navigation-split-view__inspector-sheet[open],
 		.navigation-split-view__inspector-sheet.is-closing,
-		.navigation-split-view__sidebar-sheet[open],
-		.navigation-split-view__sidebar-sheet.is-closing {
+		.navigation-split-view__primary-sidebar-sheet[open],
+		.navigation-split-view__primary-sidebar-sheet.is-closing {
 			animation: none;
 		}
 	}

@@ -1,7 +1,10 @@
 import { css } from 'lit';
-import { inheritedTextReset } from '../../../assets/styles/slotted-reset.js';
+import { inheritedTextReset } from '../../../assets/styles/style-resets.js';
 
 export const justInTimeEducationStyles = css`
+	:host {
+		box-sizing: border-box;
+	}
 
 
 	/* # Host */
@@ -82,7 +85,7 @@ export const justInTimeEducationStyles = css`
 	 * the base rule holds the (slower) hide timing, :popover-open the show. */
 	.just-in-time-education {
 		box-sizing: border-box;
-		position: fixed;
+		position: absolute;
 		opacity: 0;
 		margin: 0;
 		border: none;

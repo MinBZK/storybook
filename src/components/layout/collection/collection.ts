@@ -2,8 +2,8 @@
  * Nederlandse Digitale Dienst Collection Component (Lit + TypeScript)
  *
  * A container for displaying collections of items.
- * Supports grid, list, and horizontal scroll layouts.
- * In grid and list modes, items are paginated via a load-more button. In
+ * Supports grid, stack, and horizontal scroll layouts.
+ * In grid and stack modes, items are paginated via a load-more button. In
  * horizontal scroll, the prev/next controls and the edge fade appear only when
  * the items overflow the container.
  * With `lazy-load`, the next items are automatically loaded when
@@ -11,8 +11,8 @@
  *
  * @element nldd-collection
  *
- * @attr {string} layout - Layout mode: 'grid' | 'list' | 'horizontal-scroll' (default: 'grid')
- * @attr {boolean} show-load-more - Show load-more button in grid/list (default: false)
+ * @attr {string} layout - Layout mode: 'grid' | 'stack' | 'horizontal-scroll' (default: 'grid')
+ * @attr {boolean} show-load-more - Show load-more button in grid/stack (default: false)
  * @attr {number} max-items - Number of visible items per page (default: 24)
  * @attr {boolean} lazy-load - Automatically load more items when the button becomes visible
  * @attr {string}  item-width - Preferred width for each item (e.g. '280px', '20rem'). In grid
@@ -43,7 +43,7 @@ import '../../actions/button-bar/button-bar.js';
 import '../../actions/icon-button/icon-button.js';
 import '../../content/icon/icon.js';
 
-type Layout = 'grid' | 'list' | 'horizontal-scroll';
+type Layout = 'grid' | 'stack' | 'horizontal-scroll';
 
 @customElement('nldd-collection')
 export class NLDDCollection extends LitElement {

@@ -423,5 +423,5 @@ export const aliases = {
 	'pipeline-runner': 'pipeline-machine-gear',
 
 	// hand
-	'privacy': 'hand',
+	'privacy': 'shield-lock',
 };

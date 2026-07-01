@@ -7,6 +7,9 @@ const mdMax = unsafeCSS(breakpoints.mdMax);
 const lgMin = unsafeCSS(breakpoints.lgMin);
 
 export const fullBleedSectionStyles = css`
+	:host {
+		box-sizing: border-box;
+	}
 
 
 	/* # Host */

@@ -6,6 +6,9 @@ const mdMin = unsafeCSS(breakpoints.mdMin);
 const lgMin = unsafeCSS(breakpoints.lgMin);
 
 export const sheetStyles = css`
+	:host {
+		box-sizing: border-box;
+	}
 
 
 	/* # Host */

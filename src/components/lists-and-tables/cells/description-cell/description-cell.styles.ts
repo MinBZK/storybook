@@ -1,7 +1,10 @@
 import { css } from 'lit';
-import { slottedReset, inheritedTextReset } from '../../../../assets/styles/slotted-reset.js';
+import { slottedReset, inheritedTextReset } from '../../../../assets/styles/style-resets.js';
 
 export const descriptionCellStyles = css`
+	:host {
+		box-sizing: border-box;
+	}
 
 
 	/* # Host */

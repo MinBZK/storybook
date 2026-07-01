@@ -1,7 +1,10 @@
 import { css } from 'lit';
-import { inheritedTextReset } from '../../../assets/styles/slotted-reset.js';
+import { inheritedTextReset } from '../../../assets/styles/style-resets.js';
 
 export const tableStyles = css`
+	:host {
+		box-sizing: border-box;
+	}
 	:host {
 		--_columns: none;
 		--_corner-radius: var(--semantics-tables-corner-radius);

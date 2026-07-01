@@ -11,7 +11,7 @@ import '../../layout/container/container.js';
 /**
  * Een zwevend venster gebaseerd op het native `<dialog>`-element.
  * Kan modaal of niet-modaal worden weergegeven. Positioneerbaar via
- * CSS-waarden en optioneel versleepbaar.
+ * CSS-waarden.
  *
  * ## Gebruik
  * ```html
@@ -83,11 +83,6 @@ export default {
 			description: 'Niet-modaal (geen backdrop of focusvergrendeling)',
 			table: { defaultValue: { summary: false } },
 		},
-		movable: {
-			control: 'boolean',
-			description: 'Verplaatsbaar (op sm uitgeschakeld)',
-			table: { defaultValue: { summary: false } },
-		},
 	},
 	args: {
 		scheme: 'inherit',
@@ -99,7 +94,6 @@ export default {
 		left: '',
 		accessibleLabel: 'Voorbeeldvenster',
 		modeless: false,
-		movable: false,
 	},
 };
 
@@ -127,7 +121,6 @@ const Template = (args: Record<string, unknown>) => html`
 		left=${args.left || nothing}
 		accessible-label=${args.accessibleLabel || nothing}
 		?modeless=${args.modeless}
-		?movable=${args.movable}
 	>
 		<nldd-page sticky-header>
 			<nldd-top-title-bar
@@ -166,35 +159,6 @@ export const NietModaal = {
 		docs: {
 			description: {
 				story: 'Niet-modaal venster zonder backdrop en focusvergrendeling.',
-			},
-		},
-	},
-};
-
-export const Versleepbaar = {
-	render: () => html`
-		<nldd-button text="Open versleepbaar venster" @click=${openNext}></nldd-button>
-		<nldd-window
-			modeless
-			movable
-			accessible-label="Versleepbaar venster"
-		>
-			<nldd-page sticky-header>
-				<nldd-top-title-bar
-					slot="header"
-					text="Versleep mij"
-					dismiss-text="Sluit"
-					window-drag-handle
-				></nldd-top-title-bar>
-				${pageContent}
-			</nldd-page>
-		</nldd-window>
-	`,
-	parameters: {
-		controls: { disable: true },
-		docs: {
-			description: {
-				story: 'Versleepbaar venster. De `nldd-top-title-bar` heeft het `window-drag-handle` attribuut, waardoor alleen de titelbalk als greep functioneert.',
 			},
 		},
 	},

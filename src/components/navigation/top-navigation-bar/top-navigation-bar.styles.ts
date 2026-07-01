@@ -1,6 +1,6 @@
 import { css, unsafeCSS } from 'lit';
 import { breakpoints } from '../../../assets/styles/breakpoints.js';
-import { inheritedTextReset } from '../../../assets/styles/slotted-reset.js';
+import { inheritedTextReset } from '../../../assets/styles/style-resets.js';
 
 const smMax = unsafeCSS(breakpoints.smMax);
 const mdMin = unsafeCSS(breakpoints.mdMin);
@@ -8,6 +8,9 @@ const mdMax = unsafeCSS(breakpoints.mdMax);
 const lgMin = unsafeCSS(breakpoints.lgMin);
 
 export const topNavigationBarStyles = css`
+	:host {
+		box-sizing: border-box;
+	}
 
 
 	/* # Host */
@@ -15,6 +18,7 @@ export const topNavigationBarStyles = css`
 	:host {
 		--_logo-width: var(--semantics-brand-ribbon-sm-width);
 		--_wordmark-content-color: light-dark(var(--primitives-color-reference-lintblauw), var(--primitives-color-neutral-1000));
+		--_max-width: var(--semantics-page-sections-body-max-width);
 
 		${inheritedTextReset}
 		container-type: inline-size;
@@ -32,20 +36,13 @@ export const topNavigationBarStyles = css`
 	.top-navigation-bar {
 		box-sizing: border-box;
 		display: flex;
-		margin: 0 auto;
-		width: 100%;
 		flex-direction: column;
-	}
-
-
-	/* # Logo bar */
-
-	.top-navigation-bar__logo-bar {
-		display: grid;
-		grid-template-columns: 1fr auto 1fr;
-		gap: var(--primitives-space-8);
 		align-items: center;
+		width: 100%;
 
+		/* The page-section inline margin lives on the wrapper; each bar caps to
+		   the content width and centres, so bar content lines up with page
+		   sections. width=full drops the cap (bars fill the margin box). */
 		@container (max-width: ${smMax}) {
 			padding-inline: var(--semantics-page-sections-sm-margin-inline);
 		}
@@ -57,6 +54,22 @@ export const topNavigationBarStyles = css`
 		@container (min-width: ${lgMin}) {
 			padding-inline: var(--semantics-page-sections-lg-margin-inline);
 		}
+	}
+
+	:host([width="full"]) {
+		--_max-width: none;
+	}
+
+
+	/* # Logo bar */
+
+	.top-navigation-bar__logo-bar {
+		display: grid;
+		grid-template-columns: 1fr auto 1fr;
+		gap: var(--primitives-space-8);
+		align-items: center;
+		width: 100%;
+		max-width: var(--_max-width);
 	}
 
 	/* ## Logo */
@@ -173,22 +186,23 @@ export const topNavigationBarStyles = css`
 
 	.top-navigation-bar__main-bar {
 		display: flex;
+		width: 100%;
+		max-width: var(--_max-width);
 
 		@container (max-width: ${smMax}) {
-			padding-inline: calc(var(--semantics-page-sections-sm-margin-inline) - var(--components-menu-bar-item-inline-padding));
 			flex-direction: column;
 		}
 
 		@container (min-width: ${mdMin}) and (max-width: ${mdMax}) {
-			padding-inline: calc(var(--semantics-page-sections-md-margin-inline) - var(--components-menu-bar-item-inline-padding));
 			flex-direction: row;
 			align-items: center;
+			gap: var(--components-menu-bar-item-inline-padding);
 		}
 
 		@container (min-width: ${lgMin}) {
-			padding-inline: calc(var(--semantics-page-sections-lg-margin-inline) - var(--components-menu-bar-item-inline-padding));
 			flex-direction: row;
 			align-items: center;
+			gap: var(--components-menu-bar-item-inline-padding);
 		}
 	}
 
@@ -225,7 +239,6 @@ export const topNavigationBarStyles = css`
 
 		@container (min-width: ${mdMin}) {
 			font: var(--components-top-navigation-bar-title-md-font);
-			margin-inline: var(--components-menu-bar-item-inline-padding);
 		}
 
 		@container (min-width: ${lgMin}) {
@@ -252,6 +265,9 @@ export const topNavigationBarStyles = css`
 		align-items: center;
 		gap: var(--primitives-space-12);
 		flex-grow: 1;
+		/* Pull the menu out by the menu-bar items own inline padding so the first
+		   and last item text (not its hit-area) lines up with the content edge. */
+		margin-inline: calc(-1 * var(--components-menu-bar-item-inline-padding));
 	}
 
 	/* ## Menu bar start */

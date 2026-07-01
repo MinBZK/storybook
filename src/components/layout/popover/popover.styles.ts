@@ -5,6 +5,9 @@ const smMax = unsafeCSS(breakpoints.smMax);
 const mdMin = unsafeCSS(breakpoints.mdMin);
 
 export const popoverStyles = css`
+	:host {
+		box-sizing: border-box;
+	}
 
 
 	/* # Host */

@@ -55,6 +55,13 @@ export class NLDDTopNavigationBar extends withTranslations(LitElement, nlddTopNa
 	@property({ type: Boolean, attribute: 'no-logo', reflect: true })
 	noLogo = false;
 
+	/**
+	 * Caps the bar content to a max-width so it lines up with page-section
+	 * content. `full` spans the full width; any CSS length overrides the default.
+	 */
+	@property({ type: String, reflect: true })
+	width = '';
+
 	// ## Logo properties
 
 	@property({ type: String, attribute: 'logo-title' })
@@ -125,6 +132,14 @@ export class NLDDTopNavigationBar extends withTranslations(LitElement, nlddTopNa
 				this._renderSheetLevel();
 			}
 			this._syncSlottedMenuBarLabels();
+		}
+		if (changed.has('width')) {
+			const w = this.width;
+			if (w && w !== 'full' && CSS.supports('max-width', w)) {
+				this.style.setProperty('--_max-width', w);
+			} else {
+				this.style.removeProperty('--_max-width');
+			}
 		}
 	}
 

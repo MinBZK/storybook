@@ -1114,13 +1114,17 @@ Use a box to visually group related components in a distinct, contained region. 
 
 ### `<nldd-card>`
 
-Een visueel afgebakende kaart met optionele header, body en footer secties. De kaart heeft een elevated look als standaard. Padding wordt overgelaten aan geneste containers.
+Een visueel afgebakende kaart met optionele header, body en footer secties. De kaart heeft een elevated look als standaard. Padding wordt overgelaten aan geneste containers. Met `href` wordt de hele kaart een link (een overlay-anchor over de kaart). Geneste interactieve content (bijv. footer-knoppen) moet je erboven tillen met `position: relative; z-index: 1` om klikbaar te blijven.
 
 **Attributes**
 
 | Attribuut | Type | Beschrijving |
 | --- | --- | --- |
-| `accessible-label` | `string` | Toegankelijke naam voor de kaart (aria-label) |
+| `accessible-label` | `string` | Toegankelijke naam van de kaart; bij `href` benoemt deze de link, anders de kaart-region |
+| `href` | `string` | Maakt de hele kaart een link naar deze URL (leeg = geen link) |
+| `target` | `string` | Link target voor href (bijv. '_blank'); stelt rel automatisch bij en voegt bij '_blank' een "Opent in nieuw tabblad"-melding toe |
+| `rel` | `string` | Link rel voor href; standaard 'noopener noreferrer' bij target='_blank' |
+| `translations` | `object` | Overschrijf vertaalsleutels (bijv. de "Opent in nieuw tabblad"-melding) |
 
 **Slots**
 
@@ -1132,14 +1136,14 @@ Een visueel afgebakende kaart met optionele header, body en footer secties. De k
 
 ### `<nldd-collection>`
 
-A container for displaying collections of items. Supports grid, list, and horizontal scroll layouts. In grid and list modes, items are paginated via a load-more button. In horizontal scroll, the prev/next controls and the edge fade appear only when the items overflow the container. With `lazy-load`, the next items are automatically loaded when the load-more button comes into view.
+A container for displaying collections of items. Supports grid, stack, and horizontal scroll layouts. In grid and stack modes, items are paginated via a load-more button. In horizontal scroll, the prev/next controls and the edge fade appear only when the items overflow the container. With `lazy-load`, the next items are automatically loaded when the load-more button comes into view.
 
 **Attributes**
 
 | Attribuut | Type | Beschrijving |
 | --- | --- | --- |
-| `layout` | `string` | Layout mode: 'grid' \| 'list' \| 'horizontal-scroll' (default: 'grid') |
-| `show-load-more` | `boolean` | Show load-more button in grid/list (default: false) |
+| `layout` | `string` | Layout mode: 'grid' \| 'stack' \| 'horizontal-scroll' (default: 'grid') |
+| `show-load-more` | `boolean` | Show load-more button in grid/stack (default: false) |
 | `max-items` | `number` | Number of visible items per page (default: 24) |
 | `lazy-load` | `boolean` | Automatically load more items when the button becomes visible |
 | `item-width` | `string` | Preferred width for each item (e.g. '280px', '20rem'). In grid layout used as the minimum column width (columns will be at least this wide; 1fr if container allows more). In horizontal scroll used as flex-basis. Never forces horizontal overflow — the value is clamped to container width. |
@@ -1160,14 +1164,14 @@ A container for displaying collections of items. Supports grid, list, and horizo
 
 ### `<nldd-container>`
 
-A simple layout primitive: pick a layout mode, give it a gap, optionally align contents, and add padding. Padding can be set for all sides, per axis (inline/block), or per individual side. Specificity: per side > per axis > all sides. Responsive padding and gap have sm/md/lg variants. Each variant emits both an @media (viewport) and @container (layout-container) query. When inside a layout-container the @container query wins; otherwise the @media query provides the viewport-based fallback. Layout modes: - `stack` (default): block items, stacked vertically. The "what you expect from DOM flow" mode. - `row`: flex row, no wrapping. Items shrink or overflow. - `wrap`: flex row, items wrap to new lines. - `grid`: CSS grid, auto-fit columns at min 280px wide. - `columns`: CSS multi-column flow, 280px minimum column width, items don't split across column breaks. Alignment maps to the layout's natural axis: - `stack`: vertical = main-axis (justify-content), horizontal = cross-axis (align-items) - `row` / `wrap`: horizontal = main-axis, vertical = cross-axis - `grid`: horizontal = justify-items, vertical = align-items (per cell) - `columns`: alignment props have no effect (CSS multicol doesn't expose alignment) Item order is set per-child via attributes on the slotted children themselves: `<child order="3">` for a fixed position, or `<child sm-order="N">` / `<child md-order="N">` / `<child lg-order="N">` to override per breakpoint (resolved against THIS container's width via @container queries, same scope as the responsive padding/gap). The container observes slot changes and child attribute mutations and bridges these to `--_slot-order` / `--_slot-sm-order` / etc. custom properties on each child's inline style, which the container's CSS then reads via `::slotted(*)` inside @container queries. Cascade: `sm-order` falls back to `order` falls back to `0` at sm (and analogously for md/lg). No-op for `layout="columns"` (CSS multicol has no per-item ordering hook). The `column-count` attribute (1-8) forces an exact column count for `layout="grid"` (overrides auto-fit) and `layout="columns"` (overrides the natural width-driven count). `sm-column-count` / `md-column-count` / `lg-column-count` resolve against this container's OWN width via an `@container (...)` query on the host — not against the viewport. That lets a footer in a narrow sidebar choose its own column count independent of the surrounding page width.
+A simple layout primitive: pick a layout mode, give it a gap, optionally align contents, and add padding. Padding can be set for all sides, per axis (inline/block), or per individual side. Specificity: per side > per axis > all sides. Responsive padding and gap have sm/md/lg variants. Each variant emits both an @media (viewport) and @container (layout-container) query. When inside a layout-container the @container query wins; otherwise the @media query provides the viewport-based fallback. Layout modes: - `stack` (default): block items, stacked vertically. The "what you expect from DOM flow" mode. - `row`: flex row, no wrapping. Items shrink or overflow. - `wrap`: flex row, items wrap to new lines. - `grid`: CSS grid, auto-fit columns at min 280px wide. - `columns`: CSS multi-column flow, 280px minimum column width, items don't split across column breaks. Alignment maps to the layout's natural axis: - `stack`: vertical = main-axis (justify-content), horizontal = cross-axis (align-items) - `row` / `wrap`: horizontal = main-axis, vertical = cross-axis - `grid`: horizontal = justify-items, vertical = align-items (per cell) - `columns`: alignment props have no effect (CSS multicol doesn't expose alignment) Item order is set per-child via attributes on the slotted children themselves: `<child order="3">` for a fixed position, or `<child sm-order="N">` / `<child md-order="N">` / `<child lg-order="N">` to override per breakpoint (resolved against THIS container's width via @container queries, same scope as the responsive padding/gap). The container observes slot changes and child attribute mutations and bridges these to `--_slot-order` / `--_slot-sm-order` / etc. custom properties on each child's inline style, which the container's CSS then reads via `::slotted(*)` inside @container queries. Cascade: `sm-order` falls back to `order` falls back to `0` at sm (and analogously for md/lg). No-op for `layout="columns"` (CSS multicol has no per-item ordering hook). The `column-count` attribute (1-8) forces an exact column count for `layout="grid"` (overrides auto-fit) and `layout="columns"` (overrides the natural width-driven count). `sm-column-count` / `md-column-count` / `lg-column-count` resolve against this container's OWN width via an `@container (...)` query on the host — not against the viewport. That lets a footer in a narrow sidebar choose its own column count independent of the surrounding page width. `layout="lanes"` packs items into balanced columns using native CSS grid lanes where supported, falling back to CSS multicol (column-order) elsewhere. CSS-only, no JS. Honours `gap` on both axes and `column-count`.
 
 **Attributes**
 
 | Attribuut | Type | Beschrijving |
 | --- | --- | --- |
-| `layout` | `string` | 'stack' \| 'row' \| 'wrap' \| 'grid' \| 'columns' (default: 'stack') |
-| `column-count` | `number` | Force N columns (1-8) for layout=grid/columns |
+| `layout` | `string` | 'stack' \| 'row' \| 'wrap' \| 'grid' \| 'columns' \| 'lanes' (default: 'stack') |
+| `column-count` | `number` | Force N columns (1-8) for layout=grid/columns/lanes |
 | `sm-column-count` | `number` | Column count when this container is sm-wide |
 | `md-column-count` | `number` | Column count when this container is md-wide |
 | `lg-column-count` | `number` | Column count when this container is lg-wide |
@@ -1226,7 +1230,7 @@ A section that spans the full width without horizontal padding. Useful for backg
 
 ### `<nldd-hero>`
 
-Een paginakop volgens de rijkshuisstijl-vormtaal: een mediavlak met exact één afgeronde hoek (radius afgeleid van de lintbreedte) en een tekstpaneel (de main) dat op zes posities kan staan. De radius is van het component en niet instelbaar: 1,5X lintbreedte op smalle containers, 2X op md/lg. De media-hoek volgt automatisch uit `main-position` (zie de tabel in de stories) en is per geval te overschrijven met `media-corner`. Het paneel krijgt zijn eigen afgeronde hoek — op halve maat, zodat de tekst niet tegen de rand komt — op de hoek die diagonaal het mediavlak in wijst. Beslaat het paneel een volledige rand (`left`/`right`, `main-width="full"` of de gestapelde mobiele weergave), dan is het hoekloos. Bij `main-width="full"` staat het mediavlak als losse strook boven of onder het paneel — niet erachter — en schuift de media-hoek mee naar de buitenrand van die strook (weg van het paneel), zodat hij zichtbaar blijft. Op mobiel zit de media-hoek altijd aan de bovenkant (een onderhoek klapt naar zijn bovenhoek) en is hij een halve stap groter (1,5X). Zonder media vult de main het volledige vlak; met `main-background="base"` krijgt het vlak dan een rand op de zijden die de afgeronde hoek raken, zoals blockquote. Met `main-background` krijgt het paneel een vlakkleur uit de filled-categories; die leveren een pure witte of zwarte contentkleur mee, zodat componenten met `color="inherit"` (title, rich-text) gegarandeerd contrast houden. Per de rijkshuisstijl wordt de radius nooit geanimeerd.
+Een paginakop volgens de rijkshuisstijl-vormtaal: een mediavlak met exact één afgeronde hoek (radius afgeleid van de lintbreedte) en een tekstpaneel (de main) dat op zes posities kan staan. De radius is van het component en niet instelbaar: 1,5X lintbreedte op smalle containers, 2X op md/lg. De media-hoek volgt automatisch uit `main-position` (zie de tabel in de stories) en is per geval te overschrijven met `media-corner-position`. Het paneel krijgt zijn eigen afgeronde hoek — op halve maat, zodat de tekst niet tegen de rand komt — op de hoek die diagonaal het mediavlak in wijst. Beslaat het paneel een volledige rand (`left`/`right`, `main-width="full"` of de gestapelde mobiele weergave), dan is het hoekloos. Bij `main-width="full"` staat het mediavlak als losse strook boven of onder het paneel — niet erachter — en schuift de media-hoek mee naar de buitenrand van die strook (weg van het paneel), zodat hij zichtbaar blijft. Op mobiel zit de media-hoek altijd aan de bovenkant (een onderhoek klapt naar zijn bovenhoek) en is hij een halve stap groter (1,5X). Zonder media vult de main het volledige vlak; met `main-background="base"` krijgt het vlak dan een rand op de zijden die de afgeronde hoek raken, zoals blockquote. Met `main-background` krijgt het paneel een vlakkleur uit de filled-categories; die leveren een pure witte of zwarte contentkleur mee, zodat componenten met `color="inherit"` (title, rich-text) gegarandeerd contrast houden. Per de rijkshuisstijl wordt de radius nooit geanimeerd.
 
 **Attributes**
 
@@ -1235,7 +1239,12 @@ Een paginakop volgens de rijkshuisstijl-vormtaal: een mediavlak met exact één 
 | `main-position` | `'top-left'\|'top-right'\|'bottom-left'\|'bottom-right'\|'left'\|'right'` | Positie van het tekstpaneel (default: 'bottom-left'); 'left'/'right' beslaan de volle hoogte |
 | `main-width` | `'1/2'\|'2/3'\|'3/4'\|'full'` | Breedte van het paneel (default: '1/2'); 'full' maakt een volle boven- of onderstrook en wordt bij 'left'/'right' genegeerd |
 | `main-background` | `string` | Vlakkleur van het paneel: 'base' (de base surface) of een categoriekleur — 'accent' (default) of een rijkskleur zoals 'lintblauw'\|'donkerblauw'\|'oranje' |
-| `media-corner` | `'auto'\|'top-left'\|'top-right'\|'bottom-left'\|'bottom-right'` | Afgeronde hoek van het mediavlak; 'auto' (default) volgt main-position |
+| `media-corner-position` | `'auto'\|'top-left'\|'top-right'\|'bottom-left'\|'bottom-right'` | Afgeronde hoek van het mediavlak; 'auto' (default) volgt main-position |
+| `media-aspect-ratio` | `string` | Aspect ratio van het mediavlak (CSS-vorm, '16/9' of '16:9'); default '21/9'. Bepaalt op md/lg de hoogte van de hero, op sm de hoogte van het mediavlak |
+| `media-src` | `string` | Bron van het mediavlak (alternatief voor de media-slot); genegeerd zodra de media-slot gevuld is |
+| `media-srcset` | `string` | Responsive source set voor media-src |
+| `media-sizes` | `string` | Source sizes-hint voor media-src |
+| `media-alt` | `string` | Alt-tekst voor media-src; leeg = decoratief |
 | `background` | `'inherit'\|'base'\|'tinted'` | Surface achter de hero (sectie-API) |
 | `scheme` | `'inherit'\|'light'\|'dark'\|'inverted'` | Kleurschema (sectie-API) |
 | `width` | `string` | Body max-width; 'full' verwijdert de begrenzing (sectie-API) |
@@ -1246,12 +1255,12 @@ Een paginakop volgens de rijkshuisstijl-vormtaal: een mediavlak met exact één 
 
 | Slot | Beschrijving |
 | --- | --- |
-| `media` | Afbeelding of illustratie (img of nldd-image); vult het vlak en wordt geclipt. Zet `alt=""` wanneer de afbeelding decoratief is; geef anders een beschrijvende alt-tekst op. |
+| `media` | Afbeelding of illustratie (img of nldd-image); vult het vlak en wordt geclipt. Heeft voorrang op de media-src-attributen. Zet `alt=""` wanneer de afbeelding decoratief is; geef anders een beschrijvende alt-tekst op. |
 | _(default)_ | Inhoud van het tekstpaneel (bijv. nldd-title en nldd-rich-text met color="inherit") |
 
 ### `<nldd-navigation-split-view>`
 
-A four-column layout with a sidebar, secondary sidebar, main content area, and inspector. The sidebars show navigation or lists, the main area shows primary content, and the inspector shows additional details or properties of the selection. Panes are shown automatically when content is slotted into them.
+A four-column layout with a primary sidebar, secondary sidebar, main content area, and inspector. The sidebars show navigation or lists, the main area shows primary content, and the inspector shows additional details or properties of the selection. Panes are shown automatically when content is slotted into them.
 
 **Attributes**
 
@@ -1259,18 +1268,21 @@ A four-column layout with a sidebar, secondary sidebar, main content area, and i
 | --- | --- | --- |
 | `inspector-auto-hidden` | `boolean` | Inspector hidden to free up space for other panes (read-only, set by the split view) |
 | `inspector-as-sheet` | `boolean` | Always show the inspector as a sheet regardless of available space |
-| `sidebar-as-sheet` | `boolean` | Always show the sidebar as a sheet, keeping main visible at full width |
+| `primary-sidebar-as-sheet` | `boolean` | Always show the primary sidebar as a sheet, keeping main visible at full width |
 | `inspector-accessible-label` | `string` | Accessible name for the inspector sheet dialog (default: 'Details') |
-| `sidebar-accessible-label` | `string` | Accessible name for the sidebar sheet dialog (default: 'Navigatie') |
+| `primary-sidebar-accessible-label` | `string` | Accessible name for the primary sidebar sheet dialog (default: 'Navigatie') |
+| `sidebar-as-sheet` | `boolean` | @deprecated alias for primary-sidebar-as-sheet (kept for backwards compatibility) |
+| `sidebar-accessible-label` | `string` | @deprecated alias for primary-sidebar-accessible-label (kept for backwards compatibility) |
 
 **Slots**
 
 | Slot | Beschrijving |
 | --- | --- |
-| `sidebar` | Left pane for primary navigation |
+| `primary-sidebar` | Left pane for primary navigation |
 | `secondary-sidebar` | Second pane for secondary navigation (shown when slotted) |
 | `main` | Center pane for primary content |
 | `inspector` | Right pane for details or properties |
+| `sidebar` | @deprecated alias for the primary-sidebar slot (kept for backwards compatibility) |
 
 ### `<nldd-one-half-one-half-section>`
 
@@ -1438,6 +1450,39 @@ A horizontal split view with multiple equal panes side by side. The number of pa
 | `pane-2` | Second pane |
 | `pane-n` | Each subsequent pane based on the `panes` attribute |
 
+### `<nldd-sidebar-section>`
+
+A page section with a left sidebar alongside the main content. - **Wide (section >= 1008px):** two columns. The sidebar is a sticky, scrollable tinted box (max-width 320px) beside the main content. Its sticky top/bottom insets default to 16px; override with `sticky-top` / `sticky-bottom` so it clears other sticky page elements (e.g. a sticky header). - **Narrow (section < 1008px):** the sidebar collapses behind a sheet (a left panel on md+ viewports, a bottom sheet on mobile), and the host reflects a `collapsed` attribute. The consumer owns the trigger: place any chrome (a button, a chosen-filters bar, …) wherever you want, show it only while collapsed (e.g. `nldd-sidebar-section[collapsed] .my-trigger { … }` or by reading `collapsed` / listening to `collapse-change`), and call `show()` / `toggle()` to open the sheet. Bind `aria-expanded` via the `open`/`close` events. The sheet gets a sticky title bar by default — the `sidebar-label` as title plus a "Sluit" button — overridable via the `sheet-top-title-bar` slot. The sidebar content lives in `slot="sidebar"`. Its slot outlet moves between the box (expanded) and the sheet (collapsed) so there is a single, never-duplicated copy — the light DOM (and its state) is preserved across the switch. The box <-> sheet switch follows the section's OWN width (a ResizeObserver on the host), not the viewport — so a sidebar-section in a narrow column or a split-view pane collapses to the sheet just like one in a narrow viewport, and the sidebar never stacks above or crowds the main. Set `no-collapse` to opt out: a narrow section then stacks the sidebar (full-width) above the main instead of using a sheet. Inherits block `padding` and `height` from PageSectionMixin.
+
+**Attributes**
+
+| Attribuut | Type | Beschrijving |
+| --- | --- | --- |
+| `collapsed` | `boolean` | Read-only, reflected: true while the sidebar is a sheet (the section is narrower than lg). Target it via CSS to reveal sheet-only chrome. |
+| `no-collapse` | `boolean` | Opt out of the sheet: a narrow section stacks the sidebar above the main instead of collapsing. `collapsed` then stays false. |
+| `width` | `string` | Body max-width: 'full' removes the constraint; any CSS length overrides the default. |
+| `sticky-top` | `string` | Sticky top inset on lg (CSS length; default = 16px). |
+| `sticky-bottom]-` | `string` | Sticky bottom inset on lg (CSS length; default = 16px). |
+| `sidebar-label]-` | `string` | Accessible name for the sidebar (the aside landmark on lg and the sheet on sm/md). Default 'Zijbalk'. |
+
+**Slots**
+
+| Slot | Beschrijving |
+| --- | --- |
+| _(default)_ | Main content |
+| `sidebar` | Sidebar content (sticky box when expanded, a left/bottom sheet when collapsed). The box and the sheet add no padding of their own — wrap the content in a padded container (e.g. nldd-container) for inset spacing. |
+| `sheet-top-title-bar` | Replaces the sheet's default title bar (when collapsed). Empty falls back to an `nldd-top-title-bar` with the `sidebar-label` as title and a "Sluit" button. |
+| `header` | Content above the columns |
+| `footer` | Content below the columns |
+
+**Events**
+
+| Event | Beschrijving |
+| --- | --- |
+| `open` | The sidebar sheet opened. |
+| `close` | The sidebar sheet closed. |
+| `collapse-change` | The collapsed state flipped because the section's width crossed the lg breakpoint; `{ collapsed }`. |
+
 ### `<nldd-simple-section>`
 
 A basic section with responsive padding and gap based on container size. Contains optional header and footer slots. The padding and spacing between slots adjust automatically via container queries.
@@ -1554,14 +1599,13 @@ A section with 2/3 main content on the left and a 1/3 sidebar on the right. The 
 
 ### `<nldd-window>`
 
-Een zwevend venster gebaseerd op het native <dialog>-element. Kan modaal of niet-modaal worden weergegeven. Positioneerbaar via CSS-waarden en optioneel versleepbaar. Geen eigen header — consumers gebruiken nldd-page met sticky-header binnenin voor een title bar.
+Een zwevend venster gebaseerd op het native <dialog>-element. Kan modaal of niet-modaal worden weergegeven. Positioneerbaar via CSS-waarden. Geen eigen header — consumers gebruiken nldd-page met sticky-header binnenin voor een title bar.
 
 **Attributes**
 
 | Attribuut | Type | Beschrijving |
 | --- | --- | --- |
 | `modeless` | `boolean` | Niet-modaal (geen backdrop of focusvergrendeling); standaard is het venster modaal |
-| `movable` | `boolean` | Verplaatsbaar via pointer (op sm uitgeschakeld). Geen keyboard-equivalent (WCAG 2.1.1 path-dependent exception). |
 | `accessible-label` | `string` | (verplicht) Toegankelijke naam (aria-label). Valt terug op de i18n default ('Venster') als niet gezet — geef altijd een unieke, beschrijvende naam per venster. |
 | `translations` | `object` | Override translation keys; unset keys vallen terug op de Nederlandse default. |
 | `top` | `string` | CSS top positie van de bovenrand (bijv. '0', '100px') |
@@ -1590,14 +1634,13 @@ Een zwevend venster gebaseerd op het native <dialog>-element. Kan modaal of niet
 
 ### `<nldd-breadcrumbs>`
 
-A trail of `nldd-breadcrumbs-item`s separated by `›`, rendered as a `<nav>` landmark wrapping a `<div role="list">` (with each item carrying `role="listitem"`). Explicit ARIA roles travel reliably across the slot boundary where the implicit `<ol>`/`<li>` mapping is inconsistent across AT + browser combos. The trail wraps onto multiple lines when it doesn't fit, so it adapts to any width. Vanaf vier niveaus klapt het pad standaard in tot `Home › … › {bovenliggende pagina} › {huidige pagina}`. De ellipsis is een knop die bij activeren de verborgen niveaus op hun plek toont (eenmalig; de focus verplaatst naar het eerste onthulde niveau). De verborgen items blijven in de DOM, zodat zoekmachines en agents het volledige pad zien. Zet `no-collapse` om het pad altijd volledig te tonen.
+A trail of `nldd-breadcrumbs-item`s separated by `›`, rendered as a `<nav>` landmark wrapping a `<div role="list">` (with each item carrying `role="listitem"`). Explicit ARIA roles travel reliably across the slot boundary where the implicit `<ol>`/`<li>` mapping is inconsistent across AT + browser combos. The trail wraps onto multiple lines when it doesn't fit, so it adapts to any width.
 
 **Attributes**
 
 | Attribuut | Type | Beschrijving |
 | --- | --- | --- |
 | `accessible-label` | `string` | Override the nav's aria-label. Defaults to the i18n value (NL: "Kruimelpad"). |
-| `no-collapse` | `boolean` | Toon altijd alle niveaus; schakelt het inklappen vanaf vier niveaus uit. |
 | `translations` | `object` | Override translation keys; unset keys fall back to the Dutch default. |
 
 **Slots**
@@ -2134,11 +2177,11 @@ A cell component for displaying icons in lists with configurable alignment and s
 
 ### `<nldd-list>`
 
-A container for `nldd-list-item` elements, with optional header and footer slots. The `type` attribute switches the list's a11y role and behavior: - `list` (default) — `role="list"`, items `role="listitem"`. Reorderable allowed. Items may individually be buttons or links; the list itself has no special keyboard semantics. - `navigation` — host `role="navigation"`, items with `selected` get `aria-current="page"` on their inner `<a>` or `<button>`. Selection state is consumer-managed: the list never mutates `selected` itself. On reorder (type="list" + reorderable), the list dispatches `nldd-reorder` with `fromIndex` / `toIndex` and expects the consumer to mutate the DOM (or their data model that renders the DOM). Focus is restored to the moved item's drag handle via a single `requestAnimationFrame` — this assumes the consumer reorders **synchronously** in the event handler. Async renderers (React, Vue, …) that update the DOM on a later tick will miss the focus restore and should manage focus themselves after their render commits. to `nldd-inline-dialog` with `empty-text` / `empty-supporting-text` (falling back to Dutch i18n "Geen resultaten"). Slot content overrides the default dialog entirely.
+A container for `nldd-list-item` elements. The `type` attribute switches the list's a11y role and behavior: - `list` (default) — `role="list"`, items `role="listitem"`. Reorderable allowed. Items may individually be buttons or links; the list itself has no special keyboard semantics. - `navigation` — host `role="navigation"`, items with `selected` get `aria-current="page"` on their inner `<a>` or `<button>`. - `listbox` — an accessible, filterable listbox (combobox pattern). The list renders its OWN search input (`role="combobox"`) pinned above the options; `.list__items` becomes `role="listbox"` and items become `role="option"`. Focus stays in the input, the active option moves via `aria-activedescendant`, and filtering is consumer-managed via the `input` event (toggle `[hidden]` on items). See "Listbox" below. Selection state is consumer-managed: the list never mutates `selected` itself. In `type="listbox"` the list owns a native `<input role="combobox">` (mirroring how `nldd-combo-box` wires an input to a slotted listbox). Keyboard, handled on the input so focus never leaves it: - ArrowDown / ArrowUp — move the active option among the VISIBLE (non-`[hidden]`) options (wrap around). - Home / End — first / last visible option. - Enter — activate the active option by triggering its inner action (a link navigates, a button fires the consumer's handler). Selection stays consumer-managed. - Escape — clear the search value (and refire `input`). On every active change the input's `aria-activedescendant` is set to the active option's id and the option is scrolled into view. The active option (`_highlighted` on the item, a highlight) is distinct from `selected`. Filtering is the consumer's job: listen to `input` (`{ detail: { value } }`) and toggle `[hidden]` on items; after the visible set changes the list resets the active option to the first visible one. `reorderable` and `arrow-navigation` are ignored in listbox mode (listbox has its own keyboard). On reorder (type="list" + reorderable), the list dispatches `nldd-reorder` with `fromIndex` / `toIndex` and expects the consumer to mutate the DOM (or their data model that renders the DOM). Focus is restored to the moved item's drag handle via a single `requestAnimationFrame` — this assumes the consumer reorders **synchronously** in the event handler. Async renderers (React, Vue, …) that update the DOM on a later tick will miss the focus restore and should manage focus themselves after their render commits. view toggles). Available for every type; collapses when empty. search field (e.g. a filter or options button). Listbox only; collapses when empty. to `nldd-inline-dialog` with `empty-text` / `empty-supporting-text` (falling back to Dutch i18n "Geen items"). Slot content overrides the default dialog entirely. In `type="listbox"` it is suppressed while the search field is empty (no query yet), so the consumer can show just the search field or its own hint outside the list. `[hidden]` on items to filter.
 
 ### `<nldd-list-item>`
 
-A row within an `nldd-list`, providing layout for start, main and end areas. Renders as a link when `href` is set, as a button when `button` is set, or as a plain container otherwise. When it renders as a link, `target` and `rel` are forwarded to the inner `<a>` (e.g. `target="_blank" rel="noopener noreferrer"`). With `target="_blank"` the item also injects a visually hidden "opens in new tab" announcement for assistive technology (WCAG 2.1 SC 3.2.2). The item synchronises its ARIA with its parent `nldd-list`'s `type`: - `list` parent → `role="listitem"` - `navigation` parent → `role="listitem"` + `aria-current="page"` on the inner `<a>` / `<button>` when `selected`
+A row within an `nldd-list`, providing layout for start, main and end areas. Renders as a link when `href` is set, as a button when `button` is set, or as a plain container otherwise. When it renders as a link, `target` and `rel` are forwarded to the inner `<a>` (e.g. `target="_blank" rel="noopener noreferrer"`). With `target="_blank"` the item also injects a visually hidden "opens in new tab" announcement for assistive technology (WCAG 2.1 SC 3.2.2). The item synchronises its ARIA with its parent `nldd-list`'s `type`: - `list` parent → `role="listitem"` - `navigation` parent → `role="listitem"` + `aria-current="page"` on the inner `<a>` / `<button>` when `selected` - `listbox` parent → `role="option"` + `aria-selected` reflecting `selected`. The list points its search input's `aria-activedescendant` at the active option via `_highlighted` (separate from `selected`).
 
 ### `<nldd-spacer-cell>`
 

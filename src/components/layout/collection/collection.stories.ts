@@ -39,14 +39,14 @@ export default {
 	argTypes: {
 		layout: {
 			control: { type: 'select' },
-			options: ['grid', 'list', 'horizontal-scroll'],
+			options: ['grid', 'stack', 'horizontal-scroll'],
 			description: 'Lay-outmodus',
 			table: { defaultValue: { summary: 'grid' } },
 		},
 		showLoadMore: {
 			name: 'show-load-more',
 			control: 'boolean',
-			description: 'Toon laad-meer-knop (alleen bij grid en list)',
+			description: 'Toon laad-meer-knop (alleen bij grid en stack)',
 			table: { defaultValue: { summary: 'false' } },
 		},
 		lazyLoad: {
@@ -162,9 +162,9 @@ export const GridLazyLoad = {
 	parameters: { controls: { disable: true } },
 };
 
-export const Lijst = {
+export const Stapel = {
 	render: () => html`
-	<nldd-collection layout="list" show-load-more max-items="6">
+	<nldd-collection layout="stack" show-load-more max-items="6">
 		${listItems}
 	</nldd-collection>
 `,

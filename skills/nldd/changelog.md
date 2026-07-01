@@ -15,6 +15,48 @@ the type of conventional-commit determines the release. Conventional types
 `chore`, `docs`, `ci`, `style`, `test`, `build` are intentionally omitted
 here; consult the commit history if you need that level of detail.
 
+### Highlights
+
+- **A filterable listbox for `nldd-list`.** New `type="listbox"` turns a list into a combobox-pattern listbox: it renders its own search input, `.list__items` becomes a `role="listbox"` of `role="option"` items, and the active option moves via `aria-activedescendant` while focus stays in the input (the highlight is gated on input focus). Filtering stays consumer-managed; `toolbar` and `search-bar-end` slots and an `accessible-label` round it out.
+- **`nldd-sidebar-section` page section.** A sidebar beside the main content: a sticky, scrollable tinted box (max 320px) when the section is wide, collapsing into a left sheet (a bottom sheet on mobile) with a built-in title bar when it gets narrow. The switch follows the section's own width (a ResizeObserver), not the viewport, so it adapts to the space it sits in; `no-collapse` opts out and stacks the sidebar above the main instead. Ideal for list and overview pages with a filter sidebar, or long articles with a table of contents.
+- **Configurable `nldd-hero` media.** A `media-aspect-ratio` (default 21/9) plus `media-src` / `media-srcset` / `media-sizes` / `media-alt` render the hero image internally, so a simple hero needs no slotted `<img>`; slotted media still wins when present. (The old `media-corner` attribute is renamed to `media-corner-position` — see Breaking.)
+- **Definition lists in `nldd-rich-text`.** Responsive `dl` / `dt` / `dd` term-definition layout, so glossaries and key/value content render as aligned term/definition pairs that adapt to the available width.
+- **`nldd-card` as a link.** `href` / `target` / `rel` turn the whole card into a clickable link via an overlay anchor; `target="_blank"` auto-resolves `rel` and announces a new-tab hint, and `accessible-label` names the link without a double announcement.
+
+### Added
+
+- **`nldd-list` listbox** — `type="listbox"`: a filterable combobox-pattern listbox with a built-in search field, `role="listbox"`/`role="option"` items, an active option that moves via `aria-activedescendant` (focus stays in the input), plus `toolbar` and `search-bar-end` slots and an `accessible-label`.
+- **`nldd-hero` media** — `media-aspect-ratio` (default 21/9) plus `media-src` / `media-srcset` / `media-sizes` / `media-alt` render an internal `<img>`; slotted media still wins when present. (See Breaking for the `media-corner` rename.)
+- **`nldd-rich-text` definition lists** — responsive `dl` / `dt` / `dd` term-definition layout.
+- **`nldd-card` links** — `href` / `target` / `rel` make the whole card a clickable link via an overlay anchor; `target="_blank"` auto-resolves `rel` and announces a new-tab hint, and `accessible-label` names the link.
+- **`nldd-container`** — fills the full width of a flex parent (`width: 100%` + `box-sizing: border-box`).
+- **`nldd-container` lanes** — `layout="lanes"`: native CSS grid-lanes where supported, CSS multicol fallback otherwise (CSS-only, no JS). Honours `gap` on both axes and `column-count`.
+- **`nldd-sidebar-section`** — a page section with a left sidebar: a sticky, scrollable tinted box (max 320px) beside the main when wide, collapsing into a left sheet (bottom on mobile) with a default title bar (the `sidebar-label` as title plus a close button, overridable via the `sheet-top-title-bar` slot) when narrow. The collapse is container-driven (the section's own width via a ResizeObserver), and `no-collapse` stacks the sidebar above the main instead. It reflects a read-only `collapsed` attribute, fires `collapse-change`, and exposes `show()` / `hide()` / `toggle()` for the sheet (the consumer owns the trigger, revealed via `[collapsed]`). Tunable via `width`, `sticky-top` / `sticky-bottom` (default 16px) and `sidebar-label`.
+- **`nldd-top-navigation-bar`** — a `width` attribute caps the bar content to a max-width so it lines up with page-section content; `full` spans the full width, or a CSS length overrides the default.
+
+### Changed
+
+- **Link colors** (default/hover/active, light + dark) now use the `accent` palette instead of `lintblauw`.
+- **`nldd-search-field`** — clicking the leading icon or the field's gutter now focuses the input (native `<label>`, no JS); an empty field no longer reserves a dead click zone on the right.
+- **`nldd-navigation-split-view`** — `sidebar` is renamed to `primary-sidebar`; the old slot, attributes and sheet methods keep working as deprecated aliases.
+- **`nldd-icon`** — the `privacy` alias now points at `shield-lock` (was `hand`).
+- **`nldd-button`** — the space between the icons and the label is now a flex gap on the button content instead of padding on the text, so text-only buttons share the same inline edge padding as icon buttons (text buttons end up marginally tighter; the icon-to-label spacing is unchanged).
+- **`nldd-collection`** — the `list` layout is renamed to `stack` to match `nldd-container`.
+
+### Fixed
+
+- **`nldd-list`** — switching `variant` at runtime (box to simple) no longer leaves items wrongly boxed; the list now drives `variant`/`type` onto its items instead of relying on a per-item observer.
+- **`nldd-just-in-time-education`** — the callout is positioned absolutely so it scrolls natively with the page, fixing the Safari bounce.
+- **`nldd-rich-text`** — table columns size to their content: the `th` min-width is unset on containers ≥ 641px (the data cells already did this), and inline code inside cells may wrap so long tokens (e.g. `type_spec.precision`) no longer force a column wide.
+- **`nldd-rich-text` / `nldd-container`** — the rich-text host (and container slotted items) now use `box-sizing: border-box`, so padding or a border no longer makes the element overflow its slot or grid/column track.
+- **All component hosts** now pin `box-sizing: border-box`, so a consumer's global box-sizing reset (e.g. Tailwind Preflight) can no longer change a component host's box model.
+
+### Breaking
+
+- **`nldd-window`** — no longer draggable: drag-to-move added more complexity than a window inside a browser tab warrants. The `movable` attribute and the `window-drag-handle` hook are removed; the window stays positionable via `top`/`left`/`right`/`bottom`/`centered`. For genuine window management, open content in a new browser tab instead.
+- **`nldd-breadcrumbs`** — no auto-collapse: the `no-collapse` attribute and the ellipsis expand button are removed. The trail always renders in full and wraps onto multiple lines.
+- **`nldd-hero`** — the `media-corner` attribute is renamed to `media-corner-position` (freeing the `media-corner` namespace for the new media attributes).
+
 ## <small>0.8.63 (2026-06-18)</small>
 
 * feat: just-in-time-education, list arrow-key navigation, activity-indicator overlay, plus consumer-r ([1e6bf86](https://github.com/MinBZK/storybook/commit/1e6bf86)), closes [#130](https://github.com/MinBZK/storybook/issues/130)

@@ -1,10 +1,10 @@
-import { css, unsafeCSS } from 'lit';
-import { breakpoints } from '../../../assets/styles/breakpoints.js';
-import { inheritedTextReset } from '../../../assets/styles/slotted-reset.js';
-
-const smMax = unsafeCSS(breakpoints.smMax);
+import { css } from 'lit';
+import { inheritedTextReset } from '../../../assets/styles/style-resets.js';
 
 export const windowStyles = css`
+	:host {
+		box-sizing: border-box;
+	}
 
 
 	/* # Host */
@@ -63,31 +63,7 @@ export const windowStyles = css`
 		flex-grow: 1;
 	}
 
-	:host([movable]:not([has-drag-handle])) .window__body {
-		cursor: grab;
-	}
-
-	:host([movable]:not([has-drag-handle])) .window__body:active {
-		cursor: grabbing;
-	}
-
-	/* Drag handle cursor is set via JS in _detectDragHandle because
-	   ::slotted cannot reach nested elements (e.g. nldd-top-title-bar
-	   inside nldd-page). */
-
 	::slotted(*) {
 		min-height: 0;
-	}
-
-	/* ## Responsive: sm — dragging disabled */
-
-	@media (max-width: ${smMax}) {
-		:host([movable]:not([has-drag-handle])) .window__body {
-			cursor: default;
-		}
-
-		:host([movable]:not([has-drag-handle])) .window__body:active {
-			cursor: default;
-		}
 	}
 `;

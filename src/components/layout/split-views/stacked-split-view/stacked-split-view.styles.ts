@@ -1,6 +1,9 @@
 import { css } from 'lit';
 
 export const stackedSplitViewStyles = css`
+	:host {
+		box-sizing: border-box;
+	}
 
 
 	/* # Host */

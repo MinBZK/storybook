@@ -10,8 +10,12 @@ nldd-rich-text {
 		0px,
 		calc(100% - var(--components-rich-text-main-max-width))
 	);
+	--_dt-width: var(--primitives-area-200);
+	--_dl-column-gap: var(--primitives-space-16);
+	--_dl-gap: calc(var(--_spacing) / 2);
 
 	container-type: inline-size;
+	box-sizing: border-box;
 	display: grid;
 	width: 100%;
 	grid-template-columns:
@@ -306,6 +310,55 @@ nldd-rich-text li > * + * {
 }
 
 
+/* # Definition list */
+
+nldd-rich-text dl {
+	margin: 0;
+	display: grid;
+	column-gap: var(--_dl-column-gap);
+
+	@container (max-width: 640px) {
+		grid-template-columns: 1fr;
+	}
+
+	@container (min-width: 641px) {
+		grid-template-columns: var(--_dt-width) 1fr;
+	}
+}
+
+nldd-rich-text dt {
+	font-weight: var(--primitives-font-weight-body-bold);
+
+	@container (min-width: 641px) {
+		grid-column: 1;
+	}
+}
+
+nldd-rich-text dd {
+	margin-inline: 0;
+
+	@container (min-width: 641px) {
+		grid-column: 2;
+	}
+}
+
+/* Gap before each new definition group: a dt that starts a group, i.e. the
+   first dt after the previous group's dd. (The old dt:not(:first-child) also
+   gapped a second, synonym dt within the same group.) */
+nldd-rich-text dd + dt {
+	margin-top: var(--_dl-gap);
+}
+
+/* Wide-viewport companion: in the two-column grid the new group's dd shares
+   its row with that group-starting dt, so it needs the same top margin to
+   stay aligned. */
+nldd-rich-text dd + dt + dd {
+	@container (min-width: 641px) {
+		margin-top: var(--_dl-gap);
+	}
+}
+
+
 /* # Link */
 
 nldd-rich-text a {
@@ -351,6 +404,12 @@ nldd-rich-text code {
 	background-color: var(--semantics-surfaces-tinted-background-color);
 	font-family: var(--primitives-font-family-monospace);
 	font-size: 0.85em;
+}
+
+/* Inside table cells, let long code tokens (e.g. type_spec.precision) break so
+   they don't force a column wide; in running text code stays intact. */
+nldd-rich-text :is(th, td) code {
+	overflow-wrap: anywhere;
 }
 
 
@@ -504,6 +563,10 @@ nldd-rich-text th {
 	border-bottom: var(--semantics-tables-border-width) solid var(--semantics-tables-border-color);
 	font: var(--primitives-font-body-md-bold-tight);
 	text-align: start;
+
+	@container (min-width: 641px) {
+		min-width: unset;
+	}
 }
 
 /* ## Table Data Cell */

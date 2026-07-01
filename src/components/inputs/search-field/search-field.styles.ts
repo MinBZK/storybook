@@ -1,7 +1,10 @@
 import { css } from 'lit';
-import { inheritedTextReset } from '../../../assets/styles/slotted-reset.js';
+import { inheritedTextReset } from '../../../assets/styles/style-resets.js';
 
 export const searchFieldStyles = css`
+	:host {
+		box-sizing: border-box;
+	}
 
 
 	/* # Host */
@@ -72,6 +75,15 @@ export const searchFieldStyles = css`
 
 
 	/* # Elements */
+
+	.search-field__label {
+		display: flex;
+		min-width: 0;
+		flex-grow: 1;
+		align-self: stretch;
+		flex-direction: row;
+		align-items: center;
+	}
 
 	.search-field__search-icon {
 		display: flex;

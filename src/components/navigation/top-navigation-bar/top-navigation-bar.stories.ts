@@ -12,6 +12,7 @@ export default {
 	},
 	args: {
 		noLogo: false,
+		width: '',
 		logoTitle: '',
 		logoSubtitle: '',
 		logoSupportingText1: '',
@@ -24,6 +25,7 @@ export default {
 	},
 	argTypes: {
 		noLogo: { name: 'no-logo', control: 'boolean', description: 'Verberg het logo', table: { defaultValue: { summary: false } } },
+		width: { name: 'width', control: 'text', description: 'Begrenst de bar-content tot een max-width zodat-ie uitlijnt met page-sections; "full" = volle breedte, of een CSS-lengte.', table: { defaultValue: { summary: '' } } },
 		logoTitle: { name: 'logo-title', control: 'text', description: 'Woordmerk titel (toont woordmerk naast logo)', table: { defaultValue: { summary: '' } } },
 		logoSubtitle: { name: 'logo-subtitle', control: 'text', description: 'Woordmerk subtitel', table: { defaultValue: { summary: '' } } },
 		logoSupportingText1: { name: 'logo-supporting-text-1', control: 'text', description: 'Woordmerk ondersteunende tekst regel 1', table: { defaultValue: { summary: '' } } },
@@ -44,6 +46,7 @@ const layoutArea = 'background-color: var(--semantics-surfaces-base-background-c
 
 const Template = ({
 	noLogo,
+	width,
 	logoTitle,
 	logoSubtitle,
 	logoSupportingText1,
@@ -57,6 +60,7 @@ const Template = ({
 	<div style=${layoutArea}>
 		<nldd-top-navigation-bar
 			?no-logo=${noLogo}
+			width=${width || nothing}
 			logo-title=${logoTitle || nothing}
 			logo-subtitle=${logoSubtitle || nothing}
 			logo-supporting-text-1=${logoSupportingText1 || nothing}

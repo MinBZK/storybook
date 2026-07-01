@@ -22,7 +22,7 @@ const MEDIA = 'sample-images/butterfly-1200.jpg';
  * | top-right | linksboven | linksonder |
  * | left / right (volle hoogte) | rechtsboven / linksboven | geen |
  *
- * Met `media-corner` is de media-hoek per geval te overschrijven. Het paneel
+ * Met `media-corner-position` is de media-hoek per geval te overschrijven. Het paneel
  * krijgt zijn hoek op halve maat zodat de tekst niet tegen de rand komt;
  * beslaat het een volledige rand (`left`/`right`, `main-width="full"` of de
  * gestapelde mobiele weergave), dan is het hoekloos. Op mobiel zit de
@@ -47,7 +47,12 @@ export default {
 		mainPosition: 'bottom-left',
 		mainWidth: '1/2',
 		mainBackground: 'accent',
-		mediaCorner: 'auto',
+		mediaCornerPosition: 'auto',
+		mediaAspectRatio: '',
+		mediaSrc: MEDIA,
+		mediaSrcset: '',
+		mediaSizes: '',
+		mediaAlt: '',
 		height: '',
 	},
 	argTypes: {
@@ -72,12 +77,44 @@ export default {
 			description: 'Vlakkleur van het paneel: base of een filled-category',
 			table: { defaultValue: { summary: 'accent' } },
 		},
-		mediaCorner: {
-			name: 'media-corner',
+		mediaCornerPosition: {
+			name: 'media-corner-position',
 			control: 'select',
 			options: ['auto', 'top-left', 'top-right', 'bottom-left', 'bottom-right'],
 			description: 'Afgeronde hoek van het mediavlak; auto volgt main-position',
 			table: { defaultValue: { summary: 'auto' } },
+		},
+		mediaAspectRatio: {
+			name: 'media-aspect-ratio',
+			control: 'select',
+			options: ['21/9', '16/9', '3/2'],
+			mapping: { '21/9': '' },
+			description: 'Aspect ratio van het mediavlak; bepaalt op md/lg de hoogte van de hero',
+			table: { defaultValue: { summary: '21/9' } },
+		},
+		mediaSrc: {
+			name: 'media-src',
+			control: 'text',
+			description: 'Bron van het mediavlak (alternatief voor de media-slot)',
+			table: { defaultValue: { summary: '(geen)' } },
+		},
+		mediaSrcset: {
+			name: 'media-srcset',
+			control: 'text',
+			description: 'Responsive source set voor media-src',
+			table: { defaultValue: { summary: '(geen)' } },
+		},
+		mediaSizes: {
+			name: 'media-sizes',
+			control: 'text',
+			description: 'Source sizes-hint voor media-src',
+			table: { defaultValue: { summary: '(geen)' } },
+		},
+		mediaAlt: {
+			name: 'media-alt',
+			control: 'text',
+			description: 'Alt-tekst voor media-src; leeg = decoratief',
+			table: { defaultValue: { summary: '(geen)' } },
 		},
 		height: {
 			control: 'text',
@@ -92,13 +129,14 @@ const Template = (args: Record<string, any>) => html`
 		main-position=${args.mainPosition}
 		main-width=${args.mainWidth}
 		main-background=${args.mainBackground}
-		media-corner=${args.mediaCorner}
+		media-corner-position=${args.mediaCornerPosition}
+		media-aspect-ratio=${args.mediaAspectRatio || nothing}
+		media-src=${args.mediaSrc || nothing}
+		media-srcset=${args.mediaSrcset || nothing}
+		media-sizes=${args.mediaSizes || nothing}
+		media-alt=${args.mediaAlt || nothing}
 		height=${args.height || nothing}
 	>
-		<img slot="media"
-			src=${MEDIA}
-			alt=""
-		>
 		<nldd-title color="inherit"
 			size="2"
 		>
@@ -193,7 +231,7 @@ export const VolleStrook = {
 
 /**
  * Zonder media vult de main het volledige vlak; de afgeronde hoek zit dan op
- * het vlak zelf en volgt nog steeds `main-position` of `media-corner`. Met
+ * het vlak zelf en volgt nog steeds `main-position` of `media-corner-position`. Met
  * `main-background="base"` krijgt het vlak een rand op de zijden die de
  * hoek raken, zoals blockquote — anders zou de vorm onzichtbaar zijn.
  */

@@ -1,6 +1,6 @@
 import { css, unsafeCSS } from 'lit';
 import { breakpoints } from '../../../../assets/styles/breakpoints.js';
-import { inheritedTextReset, slottedReset } from '../../../../assets/styles/slotted-reset.js';
+import { inheritedTextReset, slottedReset } from '../../../../assets/styles/style-resets.js';
 
 const smMax = unsafeCSS(breakpoints.smMax);
 const mdMin = unsafeCSS(breakpoints.mdMin);
@@ -8,6 +8,9 @@ const mdMax = unsafeCSS(breakpoints.mdMax);
 const lgMin = unsafeCSS(breakpoints.lgMin);
 
 export const heroStyles = css`
+	:host {
+		box-sizing: border-box;
+	}
 
 
 	/* # Host */
@@ -31,6 +34,7 @@ export const heroStyles = css`
 		   corner at half the media radius so text clears the curve. Never
 		   animated. */
 		--_corner-radius: calc(var(--semantics-brand-ribbon-sm-width) * 1.5);
+		--_media-aspect-ratio: 21 / 9;
 		--_main-width: 50%;
 		--_main-background-color: var(--semantics-categories-accent-reference-background-color);
 		--_main-content-color: var(--semantics-categories-accent-reference-primary-content-color);
@@ -255,7 +259,7 @@ export const heroStyles = css`
 	:host([data-has-media]:not([main-width="full"])) .hero__body::before {
 		@container (min-width: ${mdMin}) {
 			content: '';
-			aspect-ratio: 21 / 9;
+			aspect-ratio: var(--_media-aspect-ratio);
 			grid-area: 1 / 1;
 			align-self: start;
 		}
@@ -317,6 +321,13 @@ export const heroStyles = css`
 		display: block !important;
 		width: 100% !important;
 		height: 100% !important;
+	}
+
+	.hero__media img {
+		display: block;
+		width: 100%;
+		height: 100%;
+		object-fit: cover;
 	}
 
 
@@ -465,7 +476,7 @@ export const heroStyles = css`
 
 		:host([data-has-media][main-width="full"]) .hero__media {
 			position: static;
-			aspect-ratio: 21 / 9;
+			aspect-ratio: var(--_media-aspect-ratio);
 		}
 	}
 
@@ -491,7 +502,7 @@ export const heroStyles = css`
 		.hero__media {
 			position: static;
 			overflow: hidden;
-			aspect-ratio: 21 / 9;
+			aspect-ratio: var(--_media-aspect-ratio);
 		}
 
 		/* On mobile the rounded corner always sits at the top: a bottom

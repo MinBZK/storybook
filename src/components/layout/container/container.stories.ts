@@ -3,6 +3,7 @@ import { ifDefined } from 'lit/directives/if-defined.js';
 import './container.js';
 import '../../content/rich-text/rich-text.js';
 import '../../content/tag/tag.js';
+import '../card/card.js';
 
 const SIZES = ['0', '2', '4', '6', '8', '10', '12', '16', '20', '24', '28', '32', '40', '44', '48', '56', '64', '80', '96'];
 
@@ -97,7 +98,7 @@ export default {
 	argTypes: {
 		layout: {
 			control: 'select',
-			options: ['(geen)', 'stack', 'row', 'wrap', 'grid', 'columns'],
+			options: ['(geen)', 'stack', 'row', 'wrap', 'grid', 'columns', 'lanes'],
 			mapping: { '(geen)': undefined },
 			description: 'Layout-modus',
 			table: { defaultValue: { summary: 'stack' } },
@@ -238,12 +239,8 @@ export const Standaard = {
 			vertical-alignment=${ifDefined(args.verticalAlignment)}
 			style="outline: 1px dashed var(--primitives-color-neutral-150);"
 		>
-			<nldd-container padding="12" style="outline: 1px dashed var(--primitives-color-neutral-150);">
-				<nldd-rich-text><p>Eerste container.</p></nldd-rich-text>
-			</nldd-container>
-			<nldd-container padding="12" style="outline: 1px dashed var(--primitives-color-neutral-150);">
-				<nldd-rich-text><p>Tweede container.</p></nldd-rich-text>
-			</nldd-container>
+			<nldd-rich-text><p>Eerste item.</p></nldd-rich-text>
+			<nldd-rich-text><p>Tweede item.</p></nldd-rich-text>
 		</nldd-container>
 	`,
 };
@@ -311,6 +308,44 @@ export const LayoutColumns = {
 		</nldd-container>
 	`,
 	storyName: 'Layout — columns (multicol, min 280px)',
+};
+
+export const LayoutLanes = {
+	render: () => html`
+		<nldd-container layout="lanes" gap="16" padding="16" style="outline: 1px dashed var(--primitives-color-neutral-150);">
+			<nldd-card>
+				<nldd-container padding="16">
+					<nldd-rich-text><h3>Kort</h3><p>Een blok met een enkele regel.</p></nldd-rich-text>
+				</nldd-container>
+			</nldd-card>
+			<nldd-card>
+				<nldd-container padding="16">
+					<nldd-rich-text><h3>Langer</h3><p>Dit blok heeft meer tekst zodat de hoogtes verschillen en het masonry-effect zichtbaar wordt.</p></nldd-rich-text>
+				</nldd-container>
+			</nldd-card>
+			<nldd-card>
+				<nldd-container padding="16">
+					<nldd-rich-text><h3>Kort</h3><p>Ook een kort blok.</p></nldd-rich-text>
+				</nldd-container>
+			</nldd-card>
+			<nldd-card>
+				<nldd-container padding="16">
+					<nldd-rich-text><h3>Lang</h3><p>Nog een blok met flink meer inhoud, meerdere zinnen achter elkaar, zodat de kolommen ongelijk vullen en items naar de kortste kolom schuiven (native) of in kolomvolgorde stromen (fallback).</p></nldd-rich-text>
+				</nldd-container>
+			</nldd-card>
+			<nldd-card>
+				<nldd-container padding="16">
+					<nldd-rich-text><h3>Middel</h3><p>Een paar regels tekst hier, net iets meer dan kort.</p></nldd-rich-text>
+				</nldd-container>
+			</nldd-card>
+			<nldd-card>
+				<nldd-container padding="16">
+					<nldd-rich-text><h3>Kort</h3><p>Laatste, kort.</p></nldd-rich-text>
+				</nldd-container>
+			</nldd-card>
+		</nldd-container>
+	`,
+	storyName: 'Layout — lanes (native grid-lanes, multicol fallback)',
 };
 
 export const OrderRow = {

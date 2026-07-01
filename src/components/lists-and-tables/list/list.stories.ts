@@ -11,6 +11,8 @@ import '../../content/title/title.js';
 import '../../content/rich-text/rich-text.js';
 import '../../status-and-feedback/inline-dialog/inline-dialog.js';
 import '../../actions/button/button.js';
+import '../../inputs/toggle-button-group/toggle-button-group.js';
+import '../../inputs/toggle-button/toggle-button.js';
 import '../../layout/spacer/spacer.js';
 import '../../layout/box/box.js';
 
@@ -34,8 +36,8 @@ export default {
 		},
 		type: {
 			control: 'select',
-			options: ['list', 'navigation'],
-			description: 'A11y-semantiek: `list` (role="list") of `navigation` (landmark met `aria-current` op het actieve item)',
+			options: ['list', 'navigation', 'listbox'],
+			description: 'A11y-semantiek: `list` (role="list"), `navigation` (landmark met `aria-current` op het actieve item) of `listbox` (filterbare listbox met eigen zoekveld, combobox-patroon)',
 			table: { defaultValue: { summary: 'list' } },
 		},
 		'no-dividers': {
@@ -58,6 +60,12 @@ export default {
 			description: 'Ondersteunende tekst van de standaard empty-state-dialog.',
 			table: { type: { summary: 'string' } },
 		},
+		height: {
+			control: 'text',
+			description: 'Alleen bij `type="listbox"`: maximale hoogte van het scrollbare opties-gebied (elke CSS-lengte, bijv. "320px"). Het zoekveld blijft erboven staan en de opties scrollen. Leeg = geen limiet.',
+			table: { type: { summary: 'string' } },
+			if: { arg: 'type', eq: 'listbox' },
+		},
 	},
 	parameters: {
 		docs: {
@@ -67,6 +75,7 @@ export default {
 
 - **\`list\`** (default) — semantische lijst (\`role="list"\`) zonder speciaal toetsenbordgedrag. Items kunnen individueel knoppen of links zijn. Gebruik dit voor instellingen-lijsten, data-overzichten en lijsten van kaarten.
 - **\`navigation\`** — way-finding tussen pagina's of app-secties. Items zijn links of knoppen, elk afzonderlijk focusbaar via Tab. Het actieve item krijgt \`aria-current="page"\` op basis van de \`selected\`-prop. Gebruik dit voor sidebars, in-app menu's en master/detail pickers.
+- **\`listbox\`** — een toegankelijke, filterbare listbox (combobox-patroon). De lijst rendert zijn **eigen zoekveld** (\`role="combobox"\`) bovenaan; \`.list__items\` wordt \`role="listbox"\` en items worden \`role="option"\`. Focus blijft in het zoekveld, de actieve optie verschuift via \`aria-activedescendant\` (pijltjes/Home/End), Enter activeert de actieve optie, Escape wist de zoekterm. Filteren is consumer-werk: luister naar het \`input\`-event (\`{ detail: { value } }\`) en zet \`[hidden]\` op items die niet matchen.
 
 Selectie-state wordt **altijd door de consumer beheerd**: de lijst muteert nooit zelf \`selected\`.
 				`.trim(),
@@ -84,6 +93,7 @@ export const Default = {
 		'arrow-navigation': false,
 		'empty-text': '',
 		'empty-supporting-text': '',
+		height: '',
 	},
 	render: (args: Record<string, any>) => html`
 		<nldd-list
@@ -94,6 +104,7 @@ export const Default = {
 			?arrow-navigation=${args['arrow-navigation']}
 			empty-text=${args['empty-text']}
 			empty-supporting-text=${args['empty-supporting-text']}
+			height=${args.type === 'listbox' && args.height ? args.height : nothing}
 		>
 			<nldd-list-item>
 				<nldd-text-cell text="Item 1"></nldd-text-cell>
@@ -264,6 +275,127 @@ export const TypeNavigation = {
 };
 
 
+// — Type: listbox ——————————————————————————————————————————————————————————————
+
+// Shared imperative builder for the listbox stories: the consumer's filter
+// handler toggles [hidden] on items in response to the list's `input` event
+// (a stateless Lit template cannot). Parameterised by variant so the box and
+// simple stories share one implementation (search field, toolbar filter, scroll).
+const buildListbox = (variant: 'box' | 'simple') => {
+	// Consumer's own data: a searchable label plus a category the toolbar filters on.
+	const data = [
+		{ label: 'Aardappelen', category: 'groente' },
+		{ label: 'Broccoli', category: 'groente' },
+		{ label: 'Courgette', category: 'groente' },
+		{ label: 'Doperwten', category: 'groente' },
+		{ label: 'Erwten', category: 'groente' },
+		{ label: 'Frambozen', category: 'fruit' },
+		{ label: 'Granaatappel', category: 'fruit' },
+		{ label: 'Honingmeloen', category: 'fruit' },
+		{ label: 'IJsbergsla', category: 'groente' },
+		{ label: 'Knoflook', category: 'groente' },
+		{ label: 'Limoen', category: 'fruit' },
+		{ label: 'Mango', category: 'fruit' },
+		{ label: 'Nectarine', category: 'fruit' },
+		{ label: 'Olijven', category: 'fruit' },
+		{ label: 'Paprika', category: 'groente' },
+	];
+
+	const el = document.createElement('div');
+
+	// Consumer-managed filtering: combine the search query with the toolbar's
+	// category radio. An item stays visible when it matches the text AND the
+	// selected category ("alles" = no category filter). The list resets the
+	// active option to the first visible one after the set changes.
+	let query = '';
+	let category = 'alles';
+	const apply = () => {
+		el.querySelectorAll('nldd-list-item').forEach((item: Element, i: number) => {
+			const matchesText = query === '' || data[i].label.toLowerCase().includes(query);
+			const matchesCategory = category === 'alles' || data[i].category === category;
+			item.toggleAttribute('hidden', !(matchesText && matchesCategory));
+		});
+	};
+
+	const onInput = (e: Record<string, any>) => {
+		query = String(e.detail.value).toLowerCase();
+		apply();
+	};
+
+	// Toolbar radio: nldd-toggle-button-group (type="radio") bubbles `change`
+	// ({ selected, value }) for the newly selected button; switch the category.
+	const onCategoryChange = (e: Record<string, any>) => {
+		if (e.detail.selected) category = e.detail.value;
+		apply();
+	};
+
+	// Consumer-managed selection: a click sets `selected` on the activated
+	// option (Enter triggers the item's inner button, which clicks through here).
+	const onClick = (e: Record<string, any>) => {
+		const item = e.target.closest('nldd-list-item');
+		if (!item) return;
+		const list = item.closest('nldd-list');
+		list.querySelectorAll('nldd-list-item').forEach((i: any) => i.removeAttribute('selected'));
+		item.setAttribute('selected', '');
+	};
+
+	render(html`
+		<nldd-list
+			type="listbox"
+			variant=${variant}
+			height="280px"
+			empty-text="Geen resultaten"
+			empty-supporting-text="Probeer een andere zoekterm of filter."
+			@input=${onInput}
+			@click=${onClick}
+		>
+			<nldd-toggle-button-group
+				slot="toolbar"
+				type="radio"
+				name="categorie"
+				size="sm"
+				accessible-label="Filter op categorie"
+				@change=${onCategoryChange}
+			>
+				<nldd-toggle-button value="alles" text="Alles" selected></nldd-toggle-button>
+				<nldd-toggle-button value="groente" text="Groente"></nldd-toggle-button>
+				<nldd-toggle-button value="fruit" text="Fruit"></nldd-toggle-button>
+			</nldd-toggle-button-group>
+			${data.map(({ label }) => html`
+				<nldd-list-item button>
+					<nldd-text-cell text="${label}"></nldd-text-cell>
+				</nldd-list-item>
+			`)}
+		</nldd-list>
+	`, el);
+	return el;
+};
+
+export const Listbox = {
+	render: () => buildListbox('box'),
+	parameters: {
+		controls: { disable: true },
+		docs: {
+			description: {
+				story: 'Met `type="listbox"` rendert de lijst zijn eigen zoekveld (combobox-patroon) en wordt `.list__items` een `role="listbox"` met `role="option"`-items. Focus blijft in het zoekveld; ArrowUp/ArrowDown lopen door de zichtbare opties (wrappend), Home/End springen naar eerste/laatste, Enter activeert de actieve optie en Escape wist de zoekterm. De actieve optie verschuift via `aria-activedescendant` en blijft in beeld dankzij `scrollIntoView`. Filteren wordt door de consumer beheerd: deze story luistert naar `input` en zet `[hidden]` op niet-matchende items. `height` maakt van de opties een scrollgebied onder het gepinde zoekveld.',
+			},
+		},
+	},
+};
+
+export const ListboxSimple = {
+	render: () => buildListbox('simple'),
+	parameters: {
+		controls: { disable: true },
+		docs: {
+			description: {
+				story: 'Dezelfde filterbare listbox als `Listbox` (inclusief de toolbar-filter en scroll), maar met `variant="simple"`: een platte strip zonder box-kader. Handig om de highlight-indicator, de afgeronde hoeken en de uitlijning van de opties t.o.v. het zoekveld in de simple-variant te vergelijken met de box-variant.',
+			},
+		},
+	},
+};
+
+
 // — Reorderable ———————————————————————————————————————————————————————————————
 
 export const ReorderableList = {
@@ -312,31 +444,6 @@ export const ReorderableList = {
 };
 
 
-// — Header & footer ———————————————————————————————————————————————————————————
-
-export const WithHeaderAndFooter = {
-	render: () => html`
-		<div style="container-type: inline-size; container-name: layout-container;">
-			<nldd-list variant="box">
-				<nldd-title slot="header" size="4">
-					<h5>Meldingen</h5>
-				</nldd-title>
-				<nldd-list-item>
-					<nldd-text-cell text="Meldingen toestaan"></nldd-text-cell>
-				</nldd-list-item>
-				<nldd-list-item>
-					<nldd-text-cell text="Geluiden"></nldd-text-cell>
-				</nldd-list-item>
-				<nldd-list-item>
-					<nldd-text-cell text="Badges"></nldd-text-cell>
-				</nldd-list-item>
-				<nldd-rich-text slot="footer">
-					<p>Meldingen worden alleen verstuurd wanneer de app actief is op je apparaat.</p>
-				</nldd-rich-text>
-			</nldd-list>
-		</div>
-	`,
-};
 
 
 // — Empty slot ————————————————————————————————————————————————————————————————

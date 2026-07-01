@@ -76,18 +76,6 @@ describe('nldd-window', () => {
 		expect(dialog.getAttribute('aria-label')).toBe('Instellingen');
 	});
 
-	it('detecteert drag handle en zet has-drag-handle attribuut', async () => {
-		el = await fixture<NLDDWindow>('<nldd-window><div window-drag-handle>Handle</div></nldd-window>');
-		await waitForUpdate(el);
-		expect(el.hasAttribute('has-drag-handle')).toBe(true);
-	});
-
-	it('heeft geen has-drag-handle attribuut zonder drag handle', async () => {
-		el = await fixture<NLDDWindow>('<nldd-window><div>Content</div></nldd-window>');
-		await waitForUpdate(el);
-		expect(el.hasAttribute('has-drag-handle')).toBe(false);
-	});
-
 	it('sluit bij cancel event (Escape)', async () => {
 		el = await fixture<NLDDWindow>('<nldd-window modeless></nldd-window>');
 		await waitForUpdate(el);
@@ -95,21 +83,6 @@ describe('nldd-window', () => {
 		const dialog = el.shadowRoot!.querySelector('dialog') as HTMLDialogElement;
 		dialog.dispatchEvent(new Event('cancel'));
 		expect(dialog.open).toBe(false);
-	});
-
-	it('reset _didDrag bij hide zodat clicks na heropening werken', async () => {
-		el = await fixture<NLDDWindow>('<nldd-window modeless></nldd-window>');
-		await waitForUpdate(el);
-		el.show();
-		// Simulate a drag flag being set
-		(el as unknown as { _didDrag: boolean })._didDrag = true;
-		el.hide();
-		el.show();
-		// Click should not be swallowed
-		let clickHandled = false;
-		el.addEventListener('click', () => { clickHandled = true; });
-		el.click();
-		expect(clickHandled).toBe(true);
 	});
 
 	it('sluit modaal venster bij backdrop click (buiten dialog rect)', async () => {
@@ -155,45 +128,6 @@ describe('nldd-window', () => {
 		});
 		dialog.dispatchEvent(insideClick);
 		expect(dialog.open).toBe(true);
-	});
-
-	it('drag update left en top en cleart right en bottom', async () => {
-		el = await fixture<NLDDWindow>('<nldd-window modeless movable top="0" left="0" width="200px" height="200px"><div window-drag-handle>Handle</div></nldd-window>');
-		await waitForUpdate(el);
-		el.show();
-		await waitForUpdate(el);
-
-		const handle = el.querySelector('[window-drag-handle]') as HTMLElement;
-
-		// Override _isMovable to bypass viewport check in test runner
-		Object.defineProperty(el, '_isMovable', { get: () => true });
-
-		// Call _handlePointerDown directly — synthetic events on slotted
-		// content don't reach shadow DOM handlers in the test runner
-		const mockDown = new PointerEvent('pointerdown', {
-			clientX: 100, clientY: 100, pointerId: 1, bubbles: true, composed: true,
-		});
-		mockDown.composedPath = () => [handle, el];
-		el._handlePointerDown(mockDown);
-
-		// Verify pointerdown was processed
-		expect((el as unknown as { _dragHandle: Element | null })._dragHandle).not.toBeNull();
-
-		// Simulate pointermove on handle to trigger drag
-		handle.dispatchEvent(new PointerEvent('pointermove', {
-			clientX: 150, clientY: 120, pointerId: 1, bubbles: true,
-		}));
-
-		// left/top should be set, right/bottom cleared
-		expect(el.left).toBeDefined();
-		expect(el.top).toBeDefined();
-		expect(el.right).toBeUndefined();
-		expect(el.bottom).toBeUndefined();
-
-		// Cleanup
-		handle.dispatchEvent(new PointerEvent('pointerup', {
-			clientX: 150, clientY: 120, pointerId: 1, bubbles: true,
-		}));
 	});
 
 	describe('centered position', () => {

@@ -58,7 +58,7 @@ export const Standaard = ({ hasContent }: Record<string, any>) => html`
 		style="height: 600px;"
 
 	>
-		<nldd-split-view-pane slot="sidebar">
+		<nldd-split-view-pane slot="primary-sidebar">
 			<nldd-page sticky-header>
 				<nldd-top-title-bar
 					slot="header"

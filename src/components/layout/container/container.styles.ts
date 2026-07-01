@@ -7,6 +7,9 @@ const mdMax = unsafeCSS(breakpoints.mdMax);
 const lgMin = unsafeCSS(breakpoints.lgMin);
 
 export const containerStyles = css`
+	:host {
+		box-sizing: border-box;
+	}
 
 
 	/* # Host — outer chrome (padding + scheme + query container) */
@@ -43,6 +46,8 @@ export const containerStyles = css`
 
 		container-type: inline-size;
 		display: block;
+		box-sizing: border-box;
+		width: 100%;
 		height: auto;
 		padding-top: var(--_padding-top);
 		padding-right: var(--_padding-right);
@@ -144,10 +149,44 @@ export const containerStyles = css`
 		break-inside: avoid;
 	}
 
+	/* Lanes â native CSS grid-lanes where supported, CSS multicol fallback
+	   otherwise. CSS-only (no JS). Fallback flows column-order; native lanes
+	   packs shortest-column (row-order). */
+	:host([layout="lanes"]) .container {
+		display: block;
+		columns: var(--_min-column-width);
+		column-gap: var(--_gap);
+	}
+
+	:host([layout="lanes"]) ::slotted(*) {
+		break-inside: avoid;
+		/* multicol has no row-gap; item margin supplies the vertical gap. The
+		   native branch resets this (grid-lanes gap covers both axes). */
+		margin-bottom: var(--_gap);
+	}
+
+	@supports (display: grid-lanes) {
+		:host([layout="lanes"]) .container {
+			display: grid-lanes;
+			grid-template-columns: repeat(
+				var(--_column-count, auto-fill),
+				minmax(var(--_track-min, var(--_min-column-width)), 1fr)
+			);
+		}
+
+		:host([layout="lanes"]) ::slotted(*) {
+			margin-bottom: 0;
+		}
+	}
+
 	:host([layout="columns"][column-count]) .container,
 	:host([layout="columns"][sm-column-count]) .container,
 	:host([layout="columns"][md-column-count]) .container,
-	:host([layout="columns"][lg-column-count]) .container {
+	:host([layout="columns"][lg-column-count]) .container,
+	:host([layout="lanes"][column-count]) .container,
+	:host([layout="lanes"][sm-column-count]) .container,
+	:host([layout="lanes"][md-column-count]) .container,
+	:host([layout="lanes"][lg-column-count]) .container {
 		column-count: var(--_column-count);
 		column-width: auto;
 	}
@@ -218,6 +257,8 @@ export const containerStyles = css`
 	   sm/md/lg-order → order → 0. No-op for layout="columns" (multicol). */
 
 	::slotted(*) {
+		/* Keep padded slotted items inside their track (multicol/grid columns). */
+		box-sizing: border-box;
 		order: var(--_slot-order, 0);
 	}
 

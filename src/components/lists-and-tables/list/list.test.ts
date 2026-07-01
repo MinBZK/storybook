@@ -2,6 +2,7 @@ import { describe, it, expect, afterEach } from 'vitest';
 import { fixture, cleanup, waitForUpdate } from '../../../test-utils.js';
 import './list.js';
 import '../list-item/list-item.js';
+import '../cells/text-cell/text-cell.js';
 
 describe('nldd-list', () => {
 	let el: HTMLElement;
@@ -28,15 +29,16 @@ describe('nldd-list', () => {
 		expect(el.getAttribute('variant')).toBe('box');
 	});
 
-	it('renders header slot', async () => {
-		el = await fixture(`
-			<nldd-list>
-				<span slot="header">Header content</span>
-			</nldd-list>
-		`);
+	it('drops is-boxed on items when the list variant switches box -> simple', async () => {
+		el = await fixture('<nldd-list variant="box"><nldd-list-item>A</nldd-list-item></nldd-list>');
+		const item = el.querySelector('nldd-list-item')!;
 		await waitForUpdate(el);
-		const header = el.querySelector('[slot="header"]');
-		expect(header?.textContent).toBe('Header content');
+		await (item as { updateComplete: Promise<unknown> }).updateComplete;
+		expect(item.classList.contains('is-boxed')).toBe(true);
+
+		el.setAttribute('variant', 'simple');
+		await waitForUpdate(el);
+		expect(item.classList.contains('is-boxed')).toBe(false);
 	});
 
 	it('reflects no-dividers attribute', async () => {
@@ -49,17 +51,6 @@ describe('nldd-list', () => {
 		el = await fixture('<nldd-list no-dividers></nldd-list>');
 		await waitForUpdate(el);
 		expect(getComputedStyle(el).getPropertyValue('--context-list-divider-display').trim()).toBe('none');
-	});
-
-	it('renders footer slot', async () => {
-		el = await fixture(`
-			<nldd-list>
-				<span slot="footer">Footer content</span>
-			</nldd-list>
-		`);
-		await waitForUpdate(el);
-		const footer = el.querySelector('[slot="footer"]');
-		expect(footer?.textContent).toBe('Footer content');
 	});
 
 
@@ -218,13 +209,28 @@ describe('nldd-list', () => {
 		expect(el.hasAttribute('role')).toBe(false);
 	});
 
-	it('drops role="list" on .list__items when the list is empty', async () => {
-		// Empty-state slot renders non-listitem content (nldd-inline-dialog);
-		// keeping role="list" would violate ARIA's listitem-only child rule.
+	it('keeps role="list" on .list__items when empty, hiding it instead', async () => {
+		// The empty-state (non-listitem nldd-inline-dialog) is now a SIBLING of
+		// .list__items inside .list__main, so .list__items only ever holds items.
+		// The role can stay set unconditionally — .list__items is hidden when empty,
+		// so an empty role="list" is never exposed to AT.
 		el = await fixture('<nldd-list></nldd-list>');
 		await waitForUpdate(el);
 		const itemsEl = el.shadowRoot!.querySelector('.list__items');
-		expect(itemsEl?.hasAttribute('role')).toBe(false);
+		expect(itemsEl?.getAttribute('role')).toBe('list');
+		expect(itemsEl?.hasAttribute('hidden')).toBe(true);
+	});
+
+	it('.list__empty is a sibling of .list__items inside .list__main', async () => {
+		el = await fixture('<nldd-list></nldd-list>');
+		await waitForUpdate(el);
+		const main = el.shadowRoot!.querySelector('.list__main')!;
+		const items = main.querySelector(':scope > .list__items');
+		const empty = main.querySelector(':scope > .list__empty');
+		expect(items).not.toBeNull();
+		expect(empty).not.toBeNull();
+		// Empty is no longer nested inside the items container.
+		expect(items!.querySelector('.list__empty')).toBeNull();
 	});
 
 
@@ -376,6 +382,69 @@ describe('nldd-list', () => {
 		expect(assigned.length).toBe(1);
 		expect(assigned[0].getAttribute('text')).toBe('Custom');
 	});
+
+	it('toolbar slot: hidden when empty', async () => {
+		el = await fixture('<nldd-list></nldd-list>');
+		await waitForUpdate(el);
+		const toolbar = el.shadowRoot!.querySelector<HTMLElement>('.list__toolbar')!;
+		expect(toolbar.hasAttribute('hidden')).toBe(true);
+	});
+
+	it('toolbar slot: visible when filled, for any type', async () => {
+		el = await fixture('<nldd-list type="navigation"><div slot="toolbar">Filters</div></nldd-list>');
+		await waitForUpdate(el);
+		const toolbar = el.shadowRoot!.querySelector<HTMLElement>('.list__toolbar')!;
+		expect(toolbar.hasAttribute('hidden')).toBe(false);
+	});
+
+	it('marks the first and last visible items with is-first / is-last', async () => {
+		el = await fixture(`
+			<nldd-list>
+				<nldd-list-item>A</nldd-list-item>
+				<nldd-list-item>B</nldd-list-item>
+				<nldd-list-item>C</nldd-list-item>
+			</nldd-list>
+		`);
+		await waitForUpdate(el);
+		const items = [...el.querySelectorAll('nldd-list-item')];
+		expect(items[0].classList.contains('is-first')).toBe(true);
+		expect(items[2].classList.contains('is-last')).toBe(true);
+		expect(items[1].classList.contains('is-first')).toBe(false);
+		expect(items[1].classList.contains('is-last')).toBe(false);
+		// Hiding the first row promotes the next visible one to is-first.
+		items[0].setAttribute('hidden', '');
+		await waitForUpdate(el);
+		expect(items[0].classList.contains('is-first')).toBe(false);
+		expect(items[1].classList.contains('is-first')).toBe(true);
+	});
+
+	it('search-bar-end slot: hidden when empty (listbox)', async () => {
+		el = await fixture('<nldd-list type="listbox"></nldd-list>');
+		await waitForUpdate(el);
+		const end = el.shadowRoot!.querySelector<HTMLElement>('.list__search-bar-end')!;
+		expect(end.hasAttribute('hidden')).toBe(true);
+	});
+
+	it('search-bar-end slot: visible when filled', async () => {
+		el = await fixture('<nldd-list type="listbox"><button slot="search-bar-end">Filter</button></nldd-list>');
+		await waitForUpdate(el);
+		const end = el.shadowRoot!.querySelector<HTMLElement>('.list__search-bar-end')!;
+		expect(end.hasAttribute('hidden')).toBe(false);
+	});
+
+	it('accessible-label labels the inner role=list (type=list)', async () => {
+		el = await fixture('<nldd-list accessible-label="Mijn meldingen"></nldd-list>');
+		await waitForUpdate(el);
+		const items = el.shadowRoot!.querySelector('.list__items')!;
+		expect(items.getAttribute('aria-label')).toBe('Mijn meldingen');
+	});
+
+	it('accessible-label labels the search input (type=listbox)', async () => {
+		el = await fixture('<nldd-list type="listbox" accessible-label="Zoek een gemeente"></nldd-list>');
+		await waitForUpdate(el);
+		const input = el.shadowRoot!.querySelector('.list__search-field-input')!;
+		expect(input.getAttribute('aria-label')).toBe('Zoek een gemeente');
+	});
 });
 
 describe('nldd-list – arrow navigation (roving tabindex)', () => {
@@ -496,5 +565,266 @@ describe('nldd-list – arrow navigation (roving tabindex)', () => {
 		await settle(el);
 		expect(el.hasAttribute('aria-keyshortcuts')).toBe(false);
 		expect(el.hasAttribute('aria-description')).toBe(false);
+	});
+});
+
+describe('nldd-list – listbox', () => {
+	let el: HTMLElement;
+
+	afterEach(() => {
+		if (el) cleanup(el);
+	});
+
+	const MARKUP = `
+		<nldd-list type="listbox">
+			<nldd-list-item button selected><nldd-text-cell text="Aardappelen"></nldd-text-cell></nldd-list-item>
+			<nldd-list-item button><nldd-text-cell text="Broccoli"></nldd-text-cell></nldd-list-item>
+			<nldd-list-item button><nldd-text-cell text="Courgette"></nldd-text-cell></nldd-list-item>
+		</nldd-list>
+	`;
+
+	// The list pushes _highlighted onto items in a microtask, then the items render.
+	// waitForUpdate(list) drains the list + a macrotask but not the items'
+	// follow-up render, so additionally await each item's updateComplete.
+	async function settle(list: HTMLElement) {
+		await waitForUpdate(list);
+		const items = [...list.querySelectorAll('nldd-list-item')] as (HTMLElement & { updateComplete: Promise<boolean> })[];
+		await Promise.all(items.map(i => i.updateComplete));
+		// The active-option highlight + aria-activedescendant only show while the
+		// search input is focused (listbox virtual focus), so focus it for these tests.
+		el.shadowRoot?.querySelector<HTMLInputElement>('.list__search-field-input')?.focus();
+		await waitForUpdate(list);
+		await Promise.all(items.map(i => i.updateComplete));
+		return items;
+	}
+
+	const searchInput = () => el.shadowRoot!.querySelector<HTMLInputElement>('.list__search-field-input')!;
+	const itemsEl = () => el.shadowRoot!.querySelector('.list__items')!;
+	const keydown = (key: string) => searchInput().dispatchEvent(new KeyboardEvent('keydown', { key, bubbles: true }));
+
+	it('sets role="listbox" on .list__items and role="option" on items', async () => {
+		el = await fixture(MARKUP);
+		await settle(el);
+		expect(itemsEl().getAttribute('role')).toBe('listbox');
+		// The host carries no widget role — the listbox role lives on .list__items.
+		expect(el.hasAttribute('role')).toBe(false);
+		const items = el.querySelectorAll('nldd-list-item');
+		items.forEach(i => expect(i.getAttribute('role')).toBe('option'));
+	});
+
+	it('reflects selected as aria-selected on the option', async () => {
+		el = await fixture(MARKUP);
+		await settle(el);
+		const items = el.querySelectorAll('nldd-list-item');
+		expect(items[0].getAttribute('aria-selected')).toBe('true');
+		expect(items[1].getAttribute('aria-selected')).toBe('false');
+	});
+
+	it('renders the search input with role="combobox" and aria-controls pointing at .list__items', async () => {
+		el = await fixture(MARKUP);
+		await settle(el);
+		const input = searchInput();
+		expect(input).not.toBeNull();
+		expect(input.getAttribute('role')).toBe('combobox');
+		expect(input.getAttribute('aria-expanded')).toBe('true');
+		expect(input.getAttribute('aria-controls')).toBe(itemsEl().id);
+		expect(itemsEl().id).toBeTruthy();
+	});
+
+	it('sets aria-expanded="false" when no options are visible (popup hidden)', async () => {
+		el = await fixture(MARKUP);
+		await settle(el);
+		// Three options visible: the listbox popup is shown.
+		expect(searchInput().getAttribute('aria-expanded')).toBe('true');
+		// Consumer filters to no matches by hiding every option; .list__items is
+		// hidden, so per the APG combobox pattern the input must report collapsed.
+		el.querySelectorAll('nldd-list-item').forEach(i => i.setAttribute('hidden', ''));
+		await settle(el);
+		expect(searchInput().getAttribute('aria-expanded')).toBe('false');
+	});
+
+	it('assigns an id to options that lack one and seeds the first as active', async () => {
+		el = await fixture(MARKUP);
+		const items = await settle(el);
+		items.forEach(i => expect(i.id).toBeTruthy());
+		// First visible option is active on first render; aria-activedescendant
+		// points at it.
+		expect(searchInput().getAttribute('aria-activedescendant')).toBe(items[0].id);
+	});
+
+	it('ArrowDown moves the active option and updates aria-activedescendant', async () => {
+		el = await fixture(MARKUP);
+		const items = await settle(el);
+		keydown('ArrowDown');
+		await settle(el);
+		expect(searchInput().getAttribute('aria-activedescendant')).toBe(items[1].id);
+		expect(items[1].shadowRoot!.querySelector('.list-item.is-highlighted')).not.toBeNull();
+		expect(items[0].shadowRoot!.querySelector('.list-item.is-highlighted')).toBeNull();
+	});
+
+	it('ArrowUp from the first option wraps to the last', async () => {
+		el = await fixture(MARKUP);
+		const items = await settle(el);
+		keydown('ArrowUp');
+		await settle(el);
+		expect(searchInput().getAttribute('aria-activedescendant')).toBe(items[2].id);
+	});
+
+	it('Home and End jump to the first and last option', async () => {
+		el = await fixture(MARKUP);
+		const items = await settle(el);
+		keydown('End');
+		await settle(el);
+		expect(searchInput().getAttribute('aria-activedescendant')).toBe(items[2].id);
+		keydown('Home');
+		await settle(el);
+		expect(searchInput().getAttribute('aria-activedescendant')).toBe(items[0].id);
+	});
+
+	it('Enter activates the active option by clicking its inner action', async () => {
+		el = await fixture(MARKUP);
+		const items = await settle(el);
+		keydown('ArrowDown'); // active = items[1]
+		await settle(el);
+		let clicked = false;
+		items[1].addEventListener('click', () => { clicked = true; });
+		keydown('Enter');
+		expect(clicked).toBe(true);
+	});
+
+	it('dispatches a composed, bubbling input event with { value } on search input', async () => {
+		el = await fixture(MARKUP);
+		await settle(el);
+		let detailValue: string | null = null;
+		el.addEventListener('input', (e: Event) => { detailValue = (e as CustomEvent).detail.value; });
+		const input = searchInput();
+		input.value = 'bro';
+		input.dispatchEvent(new Event('input', { bubbles: true, composed: true }));
+		expect(detailValue).toBe('bro');
+	});
+
+	it('resets the active option to the first visible one after [hidden] filtering', async () => {
+		el = await fixture(MARKUP);
+		const items = await settle(el);
+		// Simulate a consumer filter that hides the first option.
+		items[0].setAttribute('hidden', '');
+		await settle(el);
+		// Active falls back to the first VISIBLE option (now items[1]).
+		expect(searchInput().getAttribute('aria-activedescendant')).toBe(items[1].id);
+		expect(items[1].shadowRoot!.querySelector('.list-item.is-highlighted')).not.toBeNull();
+	});
+
+	it('with an empty search and no visible options, clears aria-activedescendant and keeps the empty state and .list__main hidden', async () => {
+		el = await fixture(MARKUP);
+		const items = await settle(el);
+		items.forEach(i => i.setAttribute('hidden', ''));
+		await settle(el);
+		expect(searchInput().getAttribute('aria-activedescendant')).toBe(null);
+		// An empty search has no "no results" meaning yet → the empty state is
+		// suppressed and .list__main collapses, so only the search field shows.
+		const empty = el.shadowRoot!.querySelector<HTMLElement>('.list__empty')!;
+		expect(empty.hasAttribute('hidden')).toBe(true);
+		const main = el.shadowRoot!.querySelector<HTMLElement>('.list__main')!;
+		expect(main.hasAttribute('hidden')).toBe(true);
+		// .list__items keeps role="listbox" but is hidden (no visible options).
+		expect(itemsEl().getAttribute('role')).toBe('listbox');
+		expect(itemsEl().hasAttribute('hidden')).toBe(true);
+	});
+
+	it('shows the empty state when a search query is present but nothing matches', async () => {
+		el = await fixture(MARKUP);
+		const items = await settle(el);
+		// A query with no matches: set the search value, then the consumer hides all.
+		const input = searchInput();
+		input.value = 'zzz';
+		input.dispatchEvent(new Event('input', { bubbles: true, composed: true }));
+		items.forEach(i => i.setAttribute('hidden', ''));
+		await settle(el);
+		expect(searchInput().getAttribute('aria-activedescendant')).toBe(null);
+		const empty = el.shadowRoot!.querySelector<HTMLElement>('.list__empty')!;
+		expect(empty.hasAttribute('hidden')).toBe(false);
+		const main = el.shadowRoot!.querySelector<HTMLElement>('.list__main')!;
+		expect(main.hasAttribute('hidden')).toBe(false);
+	});
+
+	it('Escape clears the search value and refires input', async () => {
+		el = await fixture(MARKUP);
+		await settle(el);
+		const input = searchInput();
+		input.value = 'bro';
+		input.dispatchEvent(new Event('input', { bubbles: true, composed: true }));
+		await settle(el);
+		let cleared: string | null = null;
+		el.addEventListener('input', (e: Event) => { cleared = (e as CustomEvent).detail.value; });
+		keydown('Escape');
+		await settle(el);
+		expect(cleared).toBe('');
+		expect(input.value).toBe('');
+	});
+
+	it('sets the inner action tabindex to -1 so only the search input is a tab stop', async () => {
+		el = await fixture(MARKUP);
+		const items = await settle(el);
+		items.forEach(i => {
+			const action = i.shadowRoot!.querySelector<HTMLElement>('.list-item__action')!;
+			expect(action.getAttribute('tabindex')).toBe('-1');
+		});
+	});
+
+	it('height sets a max-height and scroll on .list__items', async () => {
+		el = await fixture('<nldd-list type="listbox" height="200px"><nldd-list-item button><nldd-text-cell text="Een"></nldd-text-cell></nldd-list-item></nldd-list>');
+		await settle(el);
+		const items = itemsEl() as HTMLElement;
+		expect(getComputedStyle(items).maxHeight).toBe('200px');
+		expect(getComputedStyle(items).overflowY).toBe('auto');
+	});
+
+	it('ignores an invalid height (no cap)', async () => {
+		el = await fixture('<nldd-list type="listbox" height="not-a-length"><nldd-list-item button><nldd-text-cell text="Een"></nldd-text-cell></nldd-list-item></nldd-list>');
+		await settle(el);
+		expect(el.style.getPropertyValue('--_max-height')).toBe('');
+	});
+
+	it('does not run roving arrow-navigation in listbox mode', async () => {
+		el = await fixture('<nldd-list type="listbox" arrow-navigation><nldd-list-item button><nldd-text-cell text="Een"></nldd-text-cell></nldd-list-item></nldd-list>');
+		await settle(el);
+		// arrow-navigation is superseded by the listbox keyboard: no aria-keyshortcuts.
+		expect(el.hasAttribute('aria-keyshortcuts')).toBe(false);
+	});
+
+	it('hides the active highlight + aria-activedescendant when the input blurs', async () => {
+		el = await fixture(MARKUP);
+		const items = await settle(el);
+		expect(searchInput().getAttribute('aria-activedescendant')).toBe(items[0].id);
+		searchInput().blur();
+		await waitForUpdate(el);
+		await Promise.all(items.map(i => i.updateComplete));
+		expect(searchInput().getAttribute('aria-activedescendant')).toBe(null);
+		expect(items[0].shadowRoot!.querySelector('.list-item.is-highlighted')).toBeNull();
+	});
+
+	it('clicking an option moves the active descendant there (resumes on refocus)', async () => {
+		el = await fixture(MARKUP);
+		const items = await settle(el);
+		// Click the third option; the click moves focus out of the input.
+		items[2].shadowRoot!.querySelector<HTMLElement>('.list-item__action')!.click();
+		// Refocusing resumes the highlight at the clicked option, not the first.
+		searchInput().focus();
+		await waitForUpdate(el);
+		await Promise.all(items.map(i => i.updateComplete));
+		expect(searchInput().getAttribute('aria-activedescendant')).toBe(items[2].id);
+		expect(items[2].shadowRoot!.querySelector('.list-item.is-highlighted')).not.toBeNull();
+		expect(items[0].shadowRoot!.querySelector('.list-item.is-highlighted')).toBeNull();
+	});
+
+	it('keeps focus on the search input after Enter activates an option', async () => {
+		el = await fixture(MARKUP);
+		const items = await settle(el);
+		let clicked = false;
+		items[0].addEventListener('click', () => { clicked = true; });
+		keydown('Enter');
+		await waitForUpdate(el);
+		expect(clicked).toBe(true);
+		expect(el.shadowRoot!.activeElement).toBe(searchInput());
 	});
 });

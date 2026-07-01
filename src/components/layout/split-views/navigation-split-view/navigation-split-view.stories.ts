@@ -18,7 +18,7 @@ import '../../../navigation/top-title-bar/top-title-bar.js';
  * ## Gebruik
  * ```html
  * <nldd-navigation-split-view>
- *   <nldd-split-view-pane slot="sidebar">...</nldd-split-view-pane>
+ *   <nldd-split-view-pane slot="primary-sidebar">...</nldd-split-view-pane>
  *   <nldd-split-view-pane slot="secondary-sidebar">...</nldd-split-view-pane>
  *   <nldd-split-view-pane slot="main" has-content>...</nldd-split-view-pane>
  *   <nldd-split-view-pane slot="inspector">...</nldd-split-view-pane>
@@ -46,8 +46,8 @@ export default {
 			description: 'Toon de inspecteur altijd als sheet, ongeacht beschikbare ruimte',
 			table: { defaultValue: { summary: 'false' } },
 		},
-		sidebarAsSheet: {
-			name: 'sidebar-as-sheet',
+		primarySidebarAsSheet: {
+			name: 'primary-sidebar-as-sheet',
 			control: 'boolean',
 			description: 'Toon de zijbalk altijd als sheet, inhoudsgebied blijft altijd zichtbaar',
 			table: { defaultValue: { summary: 'false' } },
@@ -55,13 +55,13 @@ export default {
 	},
 	args: {
 		inspectorAsSheet: false,
-		sidebarAsSheet: false,
+		primarySidebarAsSheet: false,
 	},
 };
 
-export const Standaard = ({ inspectorAsSheet, sidebarAsSheet }: Record<string, any>) => {
+export const Standaard = ({ inspectorAsSheet, primarySidebarAsSheet }: Record<string, any>) => {
 	customElements.whenDefined('nldd-navigation-split-view').then(() => {
-		const splitView = document.getElementById('split-view-demo') as (HTMLElement & { showInspectorSheet: () => void; showSidebarSheet: () => void }) | null;
+		const splitView = document.getElementById('split-view-demo') as (HTMLElement & { showInspectorSheet: () => void; showPrimarySidebarSheet: () => void }) | null;
 		const inspectorButton = document.getElementById('inspector-toggle');
 		const navButton = document.getElementById('sidebar-toggle');
 		if (!splitView) return;
@@ -74,7 +74,7 @@ export const Standaard = ({ inspectorAsSheet, sidebarAsSheet }: Record<string, a
 
 		const updateNavButton = () => {
 			if (navButton) {
-				navButton.hidden = !splitView.hasAttribute('sidebar-as-sheet');
+				navButton.hidden = !splitView.hasAttribute('primary-sidebar-as-sheet');
 			}
 		};
 
@@ -83,11 +83,11 @@ export const Standaard = ({ inspectorAsSheet, sidebarAsSheet }: Record<string, a
 
 		new MutationObserver(() => { updateInspectorButton(); updateNavButton(); }).observe(splitView, {
 			attributes: true,
-			attributeFilter: ['inspector-auto-hidden', 'inspector-as-sheet', 'sidebar-as-sheet'],
+			attributeFilter: ['inspector-auto-hidden', 'inspector-as-sheet', 'primary-sidebar-as-sheet'],
 		});
 
 		inspectorButton?.addEventListener('click', () => splitView.showInspectorSheet());
-		navButton?.addEventListener('click', () => splitView.showSidebarSheet());
+		navButton?.addEventListener('click', () => splitView.showPrimarySidebarSheet());
 	});
 
 	return html`
@@ -95,9 +95,9 @@ export const Standaard = ({ inspectorAsSheet, sidebarAsSheet }: Record<string, a
 			id="split-view-demo"
 			style="height: 600px;"
 			?inspector-as-sheet=${inspectorAsSheet}
-			?sidebar-as-sheet=${sidebarAsSheet}
+			?primary-sidebar-as-sheet=${primarySidebarAsSheet}
 		>
-			<nldd-split-view-pane slot="sidebar">
+			<nldd-split-view-pane slot="primary-sidebar">
 				<nldd-page sticky-header>
 					<nldd-top-title-bar
 						slot="header"
@@ -221,7 +221,7 @@ export const GenestdeSplitView = {
 	<nldd-navigation-split-view
 		style="height: 600px;"
 	>
-		<nldd-split-view-pane slot="sidebar">
+		<nldd-split-view-pane slot="primary-sidebar">
 			<nldd-page sticky-header>
 				<nldd-top-title-bar
 					slot="header"

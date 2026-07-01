@@ -3,6 +3,8 @@ export const nlddListTranslations = {
 	'components.list.navigation-label-text': 'Navigatie',
 	'components.list.empty-text': 'Geen items',
 	'components.list.arrow-navigation-description-text': 'Gebruik de pijltjestoetsen om door de lijst te navigeren.',
+	'components.list.search-placeholder-text': 'Zoeken',
+	'components.list.search-clear-action': 'Wis zoekopdracht',
 	'components.list.reorder-moved-text': 'Item verplaatst naar positie {position}.',
 	'components.list.reorder-dropped-text': 'Item neergezet op positie {position}.',
 	'components.list.reorder-no-change-text': 'Item neergezet. Positie ongewijzigd.',

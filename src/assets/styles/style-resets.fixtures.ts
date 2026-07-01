@@ -1,10 +1,10 @@
 /**
- * A deliberately hostile host stylesheet for slotted-reset regression coverage:
+ * A deliberately hostile host stylesheet for style-resets regression coverage:
  * Tailwind Preflight's key resets plus aggressive direct and inherited overrides
  * (including an `!important`, to prove a shadow `!important` still wins). Inject it
- * at document level around slotted content; the slotted-reset must neutralise it.
+ * at document level around slotted content; the style-resets must neutralise it.
  *
- * Used by the slotted-reset regression test (slotted-reset.test.ts). Lives next
+ * Used by the style-resets regression test (style-resets.test.ts). Lives next
  * to the stylesheet it guards rather than in test-utils.ts.
  */
 export const hostileHostCss = `

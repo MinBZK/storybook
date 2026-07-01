@@ -4,6 +4,9 @@ import { breakpoints } from '../../../assets/styles/breakpoints.js';
 const mdMin = unsafeCSS(breakpoints.mdMin);
 
 export const formActionsStyles = css`
+	:host {
+		box-sizing: border-box;
+	}
 
 
 	/* # Host */
