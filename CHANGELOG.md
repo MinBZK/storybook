@@ -9,6 +9,10 @@ the type of conventional-commit determines the release. Conventional types
 `chore`, `docs`, `ci`, `style`, `test`, `build` are intentionally omitted
 here; consult the commit history if you need that level of detail.
 
+## <small>0.8.64 (2026-07-01)</small>
+
+* feat: filterable listbox, sidebar-section, hero media, container lanes + box-sizing hardening (#135) ([bf48d70](https://github.com/MinBZK/storybook/commit/bf48d70)), closes [#135](https://github.com/MinBZK/storybook/issues/135)
+
 ### Highlights
 
 - **A filterable listbox for `nldd-list`.** New `type="listbox"` turns a list into a combobox-pattern listbox: it renders its own search input, `.list__items` becomes a `role="listbox"` of `role="option"` items, and the active option moves via `aria-activedescendant` while focus stays in the input (the highlight is gated on input focus). Filtering stays consumer-managed; `toolbar` and `search-bar-end` slots and an `accessible-label` round it out.
