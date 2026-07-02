@@ -64,6 +64,7 @@ import { nlddCodeMirrorTheme } from '../../../utilities/codemirror/theme.js';
 import { markdownEditing, mentionRangeAt, mentionRangeEndingAt, mentionRangeStartingAt } from './text-editor.markdown.js';
 import { mentions, type MentionSource, type MentionInsertedDetail } from './text-editor.mentions.js';
 import { annotations as annotationExtension, setAnnotations, type Annotation } from './text-editor.annotations.js';
+import { orderedListRenumber } from './text-editor.ordered-list.js';
 import { dragToMove, dragMovePlugin } from './text-editor.drag.js';
 import { linkOpenBadge } from './text-editor.links.js';
 import {
@@ -185,6 +186,11 @@ export class NLDDTextEditor extends NLDDCodeMirrorElement {
 			nlddCodeMirrorTheme,
 			markdownEditing,
 			mentions(() => this.mentionSource, (detail) => this._emitMention(detail)),
+			// Prec.low so this transaction filter runs *before* the annotation filter
+			// (filters run low-precedence first), letting the annotation map through the
+			// renumber changes too — otherwise a marker growing from 1 to 11 drifts a
+			// token on that line.
+			Prec.low(orderedListRenumber),
 			annotationExtension,
 			// Prec.highest so the badge nests inside a heading/bold run and scales with
 			// it, like the mention and annotation, instead of staying at the base size.
