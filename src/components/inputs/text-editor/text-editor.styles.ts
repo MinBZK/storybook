@@ -29,7 +29,7 @@ export const textEditorStyles = css`
 		--_marker-advance: calc(0.6 * var(--_marker-font-size));
 		/* Bullet-list dot: size relative to the marker, and the dimmed marker colour so
 		   it reads as syntax. Tweak these to restyle every bullet. */
-		--_bullet-size: 0.34em;
+		--_bullet-size: 0.45em;
 		--_bullet-color: var(--semantics-content-secondary-color);
 		--_heading-marker-scale: 75%;
 		--_token-corner-radius: var(--primitives-corner-radius-sm);
@@ -503,7 +503,7 @@ export const textEditorStyles = css`
 		   it. The em is the badge's own (scaled-down) font size, so the value is larger
 		   than it looks and scales with the token in headings. */
 		vertical-align: middle;
-		transform: translateY(-0.08em);
+		transform: translateY(-0.11em);
 		font-family: var(--primitives-font-family-body);
 		font-size: calc(var(--_annotation-badge-font-scale) * 1em);
 		font-weight: 700;
