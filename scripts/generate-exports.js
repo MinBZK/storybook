@@ -56,6 +56,9 @@ const exports = {
 	...componentExports,
 	'./styles': './dist/css/global.css',
 	'./styles/tokens': './dist/css/settings.css',
+	// Opt-in FOUC guard — hides the page until custom elements upgrade. Kept out
+	// of ./styles because hiding the body is opinionated; import it explicitly.
+	'./styles/fouc': './dist/css/fouc.css',
 	// JS-accessible design tokens (breakpoints, etc.) — for consumers that
 	// need to drive matchMedia / layout logic from the same source as CSS.
 	// Aggregator lives at src/assets/styles/tokens.ts.
