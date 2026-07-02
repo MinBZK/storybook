@@ -1,5 +1,6 @@
 import { EditorView, ViewPlugin, Decoration, WidgetType } from '@codemirror/view';
 import { StateEffect, StateField, type Extension } from '@codemirror/state';
+import { stripSentinels } from './text-editor.annotation-sentinels.js';
 
 /* Drag-to-move for selected text. The editor lives in a shadow DOM, where the
  * browser refuses to start a native drag of the selection (the document-level
@@ -129,7 +130,9 @@ class DragMove {
 			return;
 		}
 		if (this.isInside(event.clientX, event.clientY) && pos !== null && (pos < st.from || pos > st.to)) {
-			const text = this.view.state.sliceDoc(st.from, st.to);
+			// Move clean text: any annotation sentinels in the slice are dropped here,
+			// and the document filter re-adds the ones it needs at the new location.
+			const text = stripSentinels(this.view.state.sliceDoc(st.from, st.to));
 			const insertAt = pos > st.to ? pos - (st.to - st.from) : pos;
 			this.view.dispatch({
 				changes: [{ from: st.from, to: st.to }, { from: pos, insert: text }],
@@ -153,7 +156,7 @@ class DragMove {
 		const ghost = document.createElement('div');
 		ghost.className = 'cm-drag-ghost';
 		// Show a mention as plain @Name — drop the markdown link wrapper and user id.
-		ghost.textContent = this.view.state.sliceDoc(from, to).replace(/\[(@[^\]]*)\]\(user:[^)]*\)/g, '$1');
+		ghost.textContent = stripSentinels(this.view.state.sliceDoc(from, to)).replace(/\[(@[^\]]*)\]\(user:[^)]*\)/g, '$1');
 		this.view.dom.appendChild(ghost);
 		this.ghost = ghost;
 	}

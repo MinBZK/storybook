@@ -502,7 +502,8 @@ describe('nldd-text-editor', () => {
 		api.view.dispatch({ selection: { anchor: 8 } });
 		api.setList('none');
 		await waitForUpdate(el2);
-		expect(api.view.state.doc.toString().startsWith('Een actiepunt')).toBe(true); // marker stripped
+		// Check the clean value (the document carries annotation sentinels).
+		expect((el2 as unknown as { value: string }).value.startsWith('Een actiepunt')).toBe(true); // marker stripped
 		expect(sr.querySelector('.cm-annotation')).not.toBeNull(); // annotation survived
 		cleanup(el2);
 	});

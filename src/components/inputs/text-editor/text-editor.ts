@@ -57,8 +57,8 @@ import {
 	dropCursor,
 	placeholder as cmPlaceholder,
 } from '@codemirror/view';
-import { Compartment, EditorState, type Extension } from '@codemirror/state';
-import { defaultKeymap, history, historyKeymap, indentLess } from '@codemirror/commands';
+import { Compartment, EditorState, Prec, type Extension } from '@codemirror/state';
+import { defaultKeymap, history, historyKeymap, indentLess, undo as cmUndo, redo as cmRedo, undoDepth, redoDepth } from '@codemirror/commands';
 import { NLDDCodeMirrorElement } from '../../../utilities/codemirror/codemirror-element.js';
 import { nlddCodeMirrorTheme } from '../../../utilities/codemirror/theme.js';
 import { markdownEditing, mentionRangeAt, mentionRangeEndingAt, mentionRangeStartingAt } from './text-editor.markdown.js';
@@ -85,6 +85,7 @@ import {
 } from './text-editor.commands.js';
 import { textEditorStyles } from './text-editor.styles.js';
 import { textEditorTemplate } from './text-editor.template.js';
+import { stripSentinels } from './text-editor.annotation-sentinels.js';
 
 export type ResizeMode = 'none' | 'vertical' | 'auto';
 export type TextEditorVariant = 'box' | 'simple';
@@ -185,7 +186,9 @@ export class NLDDTextEditor extends NLDDCodeMirrorElement {
 			markdownEditing,
 			mentions(() => this.mentionSource, (detail) => this._emitMention(detail)),
 			annotationExtension,
-			linkOpenBadge,
+			// Prec.highest so the badge nests inside a heading/bold run and scales with
+			// it, like the mention and annotation, instead of staying at the base size.
+			Prec.highest(linkOpenBadge),
 			history(),
 			drawSelection(),
 			dropCursor(),
@@ -263,6 +266,10 @@ export class NLDDTextEditor extends NLDDCodeMirrorElement {
 		this._syncAnnotations();
 		this._internals.setFormValue(this.value);
 		this._checkAccessibleLabel();
+		// Emit one state snapshot on mount so a consumer's toolbar initialises to the
+		// real state (e.g. undo/redo disabled with no history yet) instead of its
+		// default, without waiting for the first edit or selection change.
+		this._emitState();
 	}
 
 	override updated(changed: PropertyValues): void {
@@ -271,7 +278,10 @@ export class NLDDTextEditor extends NLDDCodeMirrorElement {
 		}
 		if (this.view) {
 			if (changed.has('value')) {
-				this.setDoc(this.value);
+				// Only push an external value change into the document; a value that just
+				// mirrors the current (sentinel-stripped) doc must not trigger a rewrite,
+				// which would strip the sentinels the filter then re-adds (caret churn).
+				if (stripSentinels(this.doc) !== this.value) this.setDoc(this.value);
 				this._internals.setFormValue(this.value);
 			}
 			if (changed.has('disabled') || changed.has('readonly')) {
@@ -378,9 +388,61 @@ export class NLDDTextEditor extends NLDDCodeMirrorElement {
 		}
 	}
 
+	/** Undo the last change. History is built in, so Cmd/Ctrl+Z works too. */
+	undo(): void {
+		if (this.view) {
+			cmUndo(this.view);
+			this.view.focus();
+		}
+	}
+
+	/** Redo the last undone change (Cmd/Ctrl+Shift+Z / Ctrl+Y also work). */
+	redo(): void {
+		if (this.view) {
+			cmRedo(this.view);
+			this.view.focus();
+		}
+	}
+
+	/** Copy the current selection to the clipboard, sentinel-free. No-op when the
+	 *  selection is empty or the clipboard is unavailable (e.g. permission denied). */
+	async copy(): Promise<void> {
+		if (!this.view) return;
+		const { from, to } = this.view.state.selection.main;
+		if (from === to) return;
+		const text = stripSentinels(this.view.state.sliceDoc(from, to));
+		try { await navigator.clipboard.writeText(text); } catch { /* clipboard blocked */ }
+		this.view.focus();
+	}
+
+	/** Cut the current selection to the clipboard and remove it from the document.
+	 *  No-op when the selection is empty. */
+	async cut(): Promise<void> {
+		if (!this.view) return;
+		const { from, to } = this.view.state.selection.main;
+		if (from === to) return;
+		const text = stripSentinels(this.view.state.sliceDoc(from, to));
+		try { await navigator.clipboard.writeText(text); } catch { /* clipboard blocked */ }
+		if (!this.view) return;
+		this.view.dispatch(this.view.state.replaceSelection(''));
+		this.view.focus();
+	}
+
+	/** Paste clipboard text at the caret, replacing any selection. Sentinels that
+	 *  rode in from another editor are stripped. No-op when the clipboard is empty
+	 *  or unreadable. */
+	async paste(): Promise<void> {
+		if (!this.view) return;
+		let text = '';
+		try { text = await navigator.clipboard.readText(); } catch { return; /* clipboard blocked */ }
+		if (!text || !this.view) return;
+		this.view.dispatch(this.view.state.replaceSelection(stripSentinels(text)));
+		this.view.focus();
+	}
+
 	/** Escape hatch: run a command by name (bold, italic, inlineCode,
 	 *  strikethrough, bulletList, quote, heading [payload: level], link
-	 *  [payload: href]). */
+	 *  [payload: href], copy, cut, paste). */
 	runCommand(name: string, payload?: unknown): void {
 		switch (name) {
 			case 'bold': this.toggleBold(); break;
@@ -391,6 +453,9 @@ export class NLDDTextEditor extends NLDDCodeMirrorElement {
 			case 'quote': this.toggleQuote(); break;
 			case 'heading': this.toggleHeading((typeof payload === 'number' ? payload : 1) as HeadingLevel); break;
 			case 'link': this.toggleLink(typeof payload === 'string' ? payload : ''); break;
+			case 'copy': void this.copy(); break;
+			case 'cut': void this.cut(); break;
+			case 'paste': void this.paste(); break;
 		}
 	}
 
@@ -401,6 +466,8 @@ export class NLDDTextEditor extends NLDDCodeMirrorElement {
 			empty: this.view ? this.view.state.selection.main.empty : true,
 			canIndent: this.view ? cmCanIndent(this.view) : false,
 			canOutdent: this.view ? cmCanOutdent(this.view) : false,
+			canUndo: this.view ? undoDepth(this.view.state) > 0 : false,
+			canRedo: this.view ? redoDepth(this.view.state) > 0 : false,
 		};
 	}
 
@@ -446,7 +513,8 @@ export class NLDDTextEditor extends NLDDCodeMirrorElement {
 	};
 
 	private _onDocChanged(): void {
-		const text = this.doc;
+		// The document carries annotation sentinels; the exposed value never does.
+		const text = stripSentinels(this.doc);
 		if (text === this.value) return;
 		this.value = text;
 		this._internals.setFormValue(text);
