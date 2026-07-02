@@ -29,6 +29,9 @@ export interface TextEditorState {
 	/** Whether the list item at the caret can be nested deeper / outdented. */
 	canIndent: boolean;
 	canOutdent: boolean;
+	/** Whether there is history to undo / redo (drives the history buttons). */
+	canUndo: boolean;
+	canRedo: boolean;
 }
 
 export const EMPTY_FORMATS: TextEditorActiveFormats = {
@@ -44,11 +47,21 @@ export const EMPTY_FORMATS: TextEditorActiveFormats = {
 	heading: 0,
 };
 
-function enclosing(view: EditorView, pos: number, nodeName: string): SyntaxNode | null {
-	for (let n: SyntaxNode | null = syntaxTree(view.state).resolveInner(pos, 1); n; n = n.parent) {
+function enclosing(view: EditorView, pos: number, nodeName: string, side: -1 | 0 | 1 = 1): SyntaxNode | null {
+	for (let n: SyntaxNode | null = syntaxTree(view.state).resolveInner(pos, side); n; n = n.parent) {
 		if (n.name === nodeName) return n;
 	}
 	return null;
+}
+
+/** An inline format is "active" for the caret only when the node encloses it on
+ *  *both* sides. At the outer edge (just before the opening marker or just after
+ *  the closing one) only one side is inside, and text typed there lands outside
+ *  the format — so the toolbar must not light up. This mirrors what typing does. */
+function enclosingInline(view: EditorView, pos: number, nodeName: string): SyntaxNode | null {
+	const left = enclosing(view, pos, nodeName, -1);
+	const right = enclosing(view, pos, nodeName, 1);
+	return left && right && left.from === right.from && left.to === right.to ? right : null;
 }
 
 /** Wrap (or, if already wrapped, unwrap) each selection range with `marker`. */
@@ -308,27 +321,31 @@ export function toggleCodeBlock(view: EditorView): void {
 export function readActiveFormats(view: EditorView): TextEditorActiveFormats {
 	const { state } = view;
 	const pos = state.selection.main.head;
-	const has = (name: string) => enclosing(view, pos, name) !== null;
+	// Inline marks light up only when the caret is *within* them on both sides,
+	// so an edge caret (where typed text lands outside the format) stays inactive.
+	const has = (name: string) => enclosingInline(view, pos, name) !== null;
 	const lineText = state.doc.lineAt(pos).text;
 	const lineStart = state.doc.lineAt(pos).from;
 	const headingMatch = lineText.match(/^(#{1,6})\s/);
+	// In a code block a leading marker is literal text, not a list/heading — the
+	// regex-based checks below would otherwise report it. (The syntax-tree checks,
+	// like bold or quote, already ignore code content.)
+	const codeBlock = enclosing(view, lineStart, 'FencedCode') !== null || enclosing(view, lineStart, 'CodeBlock') !== null;
 	return {
 		bold: has('StrongEmphasis'),
 		italic: has('Emphasis'),
 		inlineCode: has('InlineCode'),
-		// In a code block on any of its lines (fences or content), read at line.from
-		// so it's stable and covers every line — like the quote detection.
-		codeBlock: enclosing(view, lineStart, 'FencedCode') !== null || enclosing(view, lineStart, 'CodeBlock') !== null,
+		codeBlock,
 		strikethrough: has('Strikethrough'),
 		link: realLinkAt(view, pos) !== null,
 		// Lists from the line's own marker. (Resolving the tree at a line-end caret
 		// can spill into the next line and flip-flop the toolbar state.)
-		bulletList: /^\s*[-*+]\s/.test(lineText),
-		orderedList: /^\s*\d+[.)]\s/.test(lineText),
+		bulletList: !codeBlock && /^\s*[-*+]\s/.test(lineText),
+		orderedList: !codeBlock && /^\s*\d+[.)]\s/.test(lineText),
 		// Quote from the Blockquote node at the line's *start* — that catches lazy
 		// continuation lines (part of the quote but with no '>') too, while resolving
 		// at line.from (not the caret) keeps it stable at the line end.
 		quote: enclosing(view, lineStart, 'Blockquote') !== null,
-		heading: (headingMatch ? headingMatch[1].length : 0) as HeadingLevel,
+		heading: (codeBlock || !headingMatch ? 0 : headingMatch[1].length) as HeadingLevel,
 	};
 }
