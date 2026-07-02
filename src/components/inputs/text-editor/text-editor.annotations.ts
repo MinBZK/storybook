@@ -53,6 +53,17 @@ const setAnchored = StateEffect.define<CleanAnn[]>();
  *  filter uses this to carry annotations inside the block along with their text. */
 export const annotationMove = StateEffect.define<{ from: number; to: number; insertAt: number }>();
 
+/** A cut→paste inside the same editor: re-attach the annotations that were cut at the
+ *  paste point. `at` is the CLEAN paste offset; each entry's from/to are relative to
+ *  the pasted text. Carries the original ids, so a cut→paste is a move, not a copy. */
+export const pasteAnnotations = StateEffect.define<{ at: number; anns: CleanAnn[] }>();
+
+/** The annotations currently anchored in the document, in clean offsets. Lets the
+ *  host capture what sits inside a cut so it can re-attach them on paste. */
+export function currentAnnotations(state: EditorState): readonly CleanAnn[] {
+	return state.field(annotationField, false) ?? [];
+}
+
 function anchorClean(list: readonly Annotation[], cleanLength: number): CleanAnn[] {
 	return list
 		.map((a) => ({
@@ -283,6 +294,20 @@ const annotationSentinelFilter = EditorState.transactionFilter.of((tr) => {
 				return { id: a.id, from: docToClean(postUserDoc, from), to: docToClean(postUserDoc, to) };
 			})
 			.filter((a) => a.to > a.from);
+		// A cut→paste re-attaches the cut annotations at the paste point (clean offsets
+		// relative to the pasted text), clamped into the document.
+		const paste = tr.effects.find((e) => e.is(pasteAnnotations))?.value;
+		if (paste) {
+			anns = anns.concat(
+				paste.anns
+					.map((a) => ({
+						id: a.id,
+						from: Math.max(0, Math.min(paste.at + a.from, cleanLen)),
+						to: Math.max(0, Math.min(paste.at + a.to, cleanLen)),
+					}))
+					.filter((a) => a.to > a.from),
+			);
+		}
 	}
 	const groups: CleanGroup[] = groupOverlapping(anns);
 	const changes = reconcileSentinels(postUserDoc, groups);

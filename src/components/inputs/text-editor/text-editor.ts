@@ -63,7 +63,7 @@ import { NLDDCodeMirrorElement } from '../../../utilities/codemirror/codemirror-
 import { nlddCodeMirrorTheme } from '../../../utilities/codemirror/theme.js';
 import { markdownEditing, mentionRangeAt, mentionRangeEndingAt, mentionRangeStartingAt } from './text-editor.markdown.js';
 import { mentions, type MentionSource, type MentionInsertedDetail } from './text-editor.mentions.js';
-import { annotations as annotationExtension, setAnnotations, type Annotation } from './text-editor.annotations.js';
+import { annotations as annotationExtension, setAnnotations, pasteAnnotations, currentAnnotations, type Annotation } from './text-editor.annotations.js';
 import { orderedListRenumber } from './text-editor.ordered-list.js';
 import { dragToMove, dragMovePlugin } from './text-editor.drag.js';
 import { linkOpenBadge } from './text-editor.links.js';
@@ -87,7 +87,7 @@ import {
 } from './text-editor.commands.js';
 import { textEditorStyles } from './text-editor.styles.js';
 import { textEditorTemplate } from './text-editor.template.js';
-import { stripSentinels } from './text-editor.annotation-sentinels.js';
+import { stripSentinels, docToClean } from './text-editor.annotation-sentinels.js';
 
 export type ResizeMode = 'none' | 'vertical' | 'auto';
 export type TextEditorVariant = 'box' | 'simple';
@@ -421,6 +421,23 @@ export class NLDDTextEditor extends NLDDCodeMirrorElement {
 		}
 	}
 
+	/** Text and annotations of the last cut, so a same-editor paste can move the
+	 *  annotations along with their text. Cleared by copy and by a matching paste. */
+	private _cutBuffer: { text: string; anns: { id: string; from: number; to: number }[] } | null = null;
+
+	/** The annotations lying fully inside the current selection, offset relative to
+	 *  the selection's clean start. */
+	private _annotationsInSelection(): { id: string; from: number; to: number }[] {
+		if (!this.view) return [];
+		const { from, to } = this.view.state.selection.main;
+		const doc = this.view.state.doc.toString();
+		const cleanFrom = docToClean(doc, from);
+		const cleanTo = docToClean(doc, to);
+		return currentAnnotations(this.view.state)
+			.filter((a) => a.from >= cleanFrom && a.to <= cleanTo)
+			.map((a) => ({ id: a.id, from: a.from - cleanFrom, to: a.to - cleanFrom }));
+	}
+
 	/** Copy the current selection to the clipboard, sentinel-free. No-op when the
 	 *  selection is empty or the clipboard is unavailable (e.g. permission denied). */
 	async copy(): Promise<void> {
@@ -428,17 +445,22 @@ export class NLDDTextEditor extends NLDDCodeMirrorElement {
 		const { from, to } = this.view.state.selection.main;
 		if (from === to) return;
 		const text = stripSentinels(this.view.state.sliceDoc(from, to));
+		// A copy is a plain-text copy: forget any pending cut so its annotations don't
+		// bleed onto the next paste.
+		this._cutBuffer = null;
 		try { await navigator.clipboard.writeText(text); } catch { /* clipboard blocked */ }
 		this.view.focus();
 	}
 
 	/** Cut the current selection to the clipboard and remove it from the document.
-	 *  No-op when the selection is empty. */
+	 *  Its annotations are remembered so a paste back into this editor moves them
+	 *  along. No-op when the selection is empty. */
 	async cut(): Promise<void> {
 		if (!this.view) return;
 		const { from, to } = this.view.state.selection.main;
 		if (from === to) return;
 		const text = stripSentinels(this.view.state.sliceDoc(from, to));
+		this._cutBuffer = { text, anns: this._annotationsInSelection() };
 		try { await navigator.clipboard.writeText(text); } catch { /* clipboard blocked */ }
 		if (!this.view) return;
 		this.view.dispatch(this.view.state.replaceSelection(''));
@@ -446,14 +468,22 @@ export class NLDDTextEditor extends NLDDCodeMirrorElement {
 	}
 
 	/** Paste clipboard text at the caret, replacing any selection. Sentinels that
-	 *  rode in from another editor are stripped. No-op when the clipboard is empty
-	 *  or unreadable. */
+	 *  rode in from another editor are stripped. When the text matches a cut made in
+	 *  this editor, its annotations travel with it (a move); otherwise it's plain
+	 *  text. No-op when the clipboard is empty or unreadable. */
 	async paste(): Promise<void> {
 		if (!this.view) return;
-		let text = '';
-		try { text = await navigator.clipboard.readText(); } catch { return; /* clipboard blocked */ }
+		let raw = '';
+		try { raw = await navigator.clipboard.readText(); } catch { return; /* clipboard blocked */ }
+		const text = stripSentinels(raw);
 		if (!text || !this.view) return;
-		this.view.dispatch(this.view.state.replaceSelection(stripSentinels(text)));
+		const buffer = this._cutBuffer;
+		const carry = buffer && buffer.text === text && buffer.anns.length > 0;
+		const at = docToClean(this.view.state.doc.toString(), this.view.state.selection.main.from);
+		const spec = this.view.state.replaceSelection(text);
+		this.view.dispatch(carry ? { ...spec, effects: pasteAnnotations.of({ at, anns: buffer!.anns }) } : spec);
+		// One-shot: a second paste of the same cut would duplicate the ids, so drop it.
+		if (carry) this._cutBuffer = null;
 		this.view.focus();
 	}
 

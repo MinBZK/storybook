@@ -3,7 +3,7 @@ import { EditorView } from '@codemirror/view';
 import { fixture, cleanup, waitForUpdate } from '../../../test-utils.ts';
 import './text-editor.ts';
 import { ANNOTATION_SENTINEL as S, stripSentinels, docToClean } from './text-editor.annotation-sentinels.ts';
-import { annotationMove } from './text-editor.annotations.ts';
+import { annotationMove, pasteAnnotations, currentAnnotations } from './text-editor.annotations.ts';
 
 /* Caret behaviour around an annotation edge. Each edge has two stops — just inside
  * (grows on typing) and just outside (does not) — thanks to a sentinel character.
@@ -186,6 +186,35 @@ describe('nldd-text-editor annotation caret', () => {
 		await waitForUpdate(el);
 		expect(annotatedText(el)).toBe('WORD'); // survived the move, still marks WORD
 		expect(el.value.endsWith('WORD')).toBe(true); // and travelled to the drop point
+	});
+
+	// A cut→paste inside the editor moves the annotation with its text (same id),
+	// re-attaching it at the paste point. Mirrors what cut()/paste() dispatch, minus
+	// the system clipboard (which the headless test can't use).
+	it('re-attaches a cut annotation at the paste point with its id', async () => {
+		el = await make('aaa WORD bbb', [{ id: 'keep', start: 4, end: 8, quote: 'WORD' }]);
+		// Capture the annotation in the selection (relative to its clean start), as cut() does.
+		const doc: string = el.view.state.doc.toString();
+		const from = doc.indexOf('WORD');
+		const cf = docToClean(doc, from);
+		const captured = currentAnnotations(el.view.state)
+			.filter((a) => a.from >= cf && a.to <= cf + 4)
+			.map((a) => ({ id: a.id, from: a.from - cf, to: a.to - cf }));
+		// Cut: delete the selection (the annotation collapses away with it).
+		el.view.dispatch({ selection: { anchor: from, head: from + 4 } });
+		el.view.dispatch(el.view.state.replaceSelection(''));
+		await waitForUpdate(el);
+		expect(el.shadowRoot!.querySelector('.cm-annotation')).toBeNull();
+		// Paste at the end, re-attaching the annotation.
+		el.view.dispatch({ selection: { anchor: el.view.state.doc.length } });
+		const at = docToClean(el.view.state.doc.toString(), el.view.state.selection.main.from);
+		const spec = el.view.state.replaceSelection('WORD');
+		el.view.dispatch({ ...spec, effects: pasteAnnotations.of({ at, anns: captured }) });
+		await waitForUpdate(el);
+		expect(annotatedText(el)).toBe('WORD');
+		expect(el.value.endsWith('WORD')).toBe(true);
+		const badge = el.shadowRoot!.querySelector('.cm-annotation-badge') as HTMLElement;
+		expect(badge?.dataset.annotations).toBe('keep'); // same id: it moved, not copied
 	});
 
 	// The badge must never wrap onto a line by itself: its last word and the badge
