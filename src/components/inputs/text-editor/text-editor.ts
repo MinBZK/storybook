@@ -243,6 +243,26 @@ export class NLDDTextEditor extends NLDDCodeMirrorElement {
 					event.preventDefault();
 					return true;
 				},
+				// Native Cmd/Ctrl+X/C/V go through these DOM events, not the toolbar's
+				// methods, so mirror the annotation-carrying logic here too.
+				cut: (_event, view) => {
+					const { from, to } = view.state.selection.main;
+					this._cutBuffer = from === to
+						? null
+						: { text: stripSentinels(view.state.sliceDoc(from, to)), anns: this._annotationsInSelection() };
+					return false; // let CodeMirror perform the actual cut (clipboard + delete)
+				},
+				copy: () => {
+					this._cutBuffer = null; // a plain copy must not carry a pending cut's annotations
+					return false;
+				},
+				paste: (event) => {
+					const raw = event.clipboardData?.getData('text/plain');
+					if (raw === undefined) return false; // no clipboard data — let CodeMirror handle it
+					this._pasteText(stripSentinels(raw));
+					event.preventDefault();
+					return true;
+				},
 			}),
 		];
 	}
@@ -475,16 +495,22 @@ export class NLDDTextEditor extends NLDDCodeMirrorElement {
 		if (!this.view) return;
 		let raw = '';
 		try { raw = await navigator.clipboard.readText(); } catch { return; /* clipboard blocked */ }
-		const text = stripSentinels(raw);
-		if (!text || !this.view) return;
+		this._pasteText(stripSentinels(raw));
+		this.view?.focus();
+	}
+
+	/** Insert `text` at the selection, re-attaching the cut annotations when it matches
+	 *  a cut made in this editor (a move, one-shot). Shared by the toolbar's paste()
+	 *  and the native Cmd/Ctrl+V handler. */
+	private _pasteText(text: string): void {
+		if (!this.view || !text) return;
 		const buffer = this._cutBuffer;
-		const carry = buffer && buffer.text === text && buffer.anns.length > 0;
+		const carry = !!(buffer && buffer.text === text && buffer.anns.length > 0);
 		const at = docToClean(this.view.state.doc.toString(), this.view.state.selection.main.from);
 		const spec = this.view.state.replaceSelection(text);
 		this.view.dispatch(carry ? { ...spec, effects: pasteAnnotations.of({ at, anns: buffer!.anns }) } : spec);
 		// One-shot: a second paste of the same cut would duplicate the ids, so drop it.
 		if (carry) this._cutBuffer = null;
-		this.view.focus();
 	}
 
 	/** Escape hatch: run a command by name (bold, italic, inlineCode,

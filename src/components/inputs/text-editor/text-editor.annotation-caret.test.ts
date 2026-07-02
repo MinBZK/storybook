@@ -217,6 +217,29 @@ describe('nldd-text-editor annotation caret', () => {
 		expect(badge?.dataset.annotations).toBe('keep'); // same id: it moved, not copied
 	});
 
+	// The native Cmd/Ctrl+X and +V go through DOM clipboard events, not the toolbar
+	// methods. The cut event fills the buffer; the paste event re-attaches. (Headless
+	// CodeMirror doesn't run the native cut's delete, so we delete by hand to stand in
+	// for it.)
+	it('carries the annotation through native cut/paste clipboard events', async () => {
+		el = await make('aaa WORD bbb', [{ id: 'kb', start: 4, end: 8, quote: 'WORD' }]);
+		const cd = el.view.contentDOM as HTMLElement;
+		const from = el.view.state.doc.toString().indexOf('WORD');
+		el.view.dispatch({ selection: { anchor: from, head: from + 4 } });
+		cd.dispatchEvent(new ClipboardEvent('cut', { clipboardData: new DataTransfer(), bubbles: true, cancelable: true }));
+		el.view.dispatch(el.view.state.replaceSelection('')); // stand in for the native cut's delete
+		await waitForUpdate(el);
+		expect(el.shadowRoot!.querySelector('.cm-annotation')).toBeNull();
+		el.view.dispatch({ selection: { anchor: el.view.state.doc.length } });
+		const dt = new DataTransfer();
+		dt.setData('text/plain', 'WORD');
+		cd.dispatchEvent(new ClipboardEvent('paste', { clipboardData: dt, bubbles: true, cancelable: true }));
+		await waitForUpdate(el);
+		expect(el.value).toBe('aaa  bbbWORD');
+		expect(annotatedText(el)).toBe('WORD');
+		expect((el.shadowRoot!.querySelector('.cm-annotation-badge') as HTMLElement)?.dataset.annotations).toBe('kb');
+	});
+
 	// The badge must never wrap onto a line by itself: its last word and the badge
 	// share a nowrap span, so they wrap together. Structural check — the badge sits
 	// inside a .cm-annotation-tail that also holds the annotation's last word.
