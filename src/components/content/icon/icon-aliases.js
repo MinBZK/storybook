@@ -257,6 +257,9 @@ export const aliases = {
 	'attachment': 'paperclip',
 	'attach': 'paperclip',
 
+	// parking-sign-square
+	'parking': 'parking-sign-square',
+
 	// pencil
 	'write': 'pencil',
 
