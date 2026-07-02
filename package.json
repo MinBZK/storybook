@@ -103,6 +103,10 @@
       "types": "./dist/components/inputs/code-editor/code-editor.d.ts",
       "default": "./dist/components/inputs/code-editor/code-editor.js"
     },
+    "./text-editor": {
+      "types": "./dist/components/inputs/text-editor/text-editor.d.ts",
+      "default": "./dist/components/inputs/text-editor/text-editor.js"
+    },
     "./password-field": {
       "types": "./dist/components/inputs/password-field/password-field.d.ts",
       "default": "./dist/components/inputs/password-field/password-field.js"

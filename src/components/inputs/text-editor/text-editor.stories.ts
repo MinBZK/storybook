@@ -7,6 +7,7 @@ import '../../actions/button/button.js';
 import '../../actions/button-bar/button-bar.js';
 import '../../actions/icon-button/icon-button.js';
 import '../../actions/menu/menu.js';
+import '../../layout/spacer/spacer.js';
 
 const SAMPLE = `# Zorgtoeslag
 
@@ -57,6 +58,55 @@ const onHeadingSelect = (event: Event) => {
 const onLink = (event: Event) => editorOf(event.currentTarget as Element)?.toggleLink();
 const onIndent = (event: Event) => editorOf(event.currentTarget as Element)?.indent();
 const onOutdent = (event: Event) => editorOf(event.currentTarget as Element)?.outdent();
+const onUndo = (event: Event) => editorOf(event.currentTarget as Element)?.undo();
+const onRedo = (event: Event) => editorOf(event.currentTarget as Element)?.redo();
+const onCopy = (event: Event) => editorOf(event.currentTarget as Element)?.copy();
+const onCut = (event: Event) => editorOf(event.currentTarget as Element)?.cut();
+const onPaste = (event: Event) => editorOf(event.currentTarget as Element)?.paste();
+
+// Run one overflow-menu action against its editor. Mirrors the inline handlers
+// (onHeadingSelect/onListChange/…) so an overflowed control behaves the same.
+const runOverflowAction = (editor: any, action: string): void => {
+	if (action.startsWith('heading:')) {
+		const value = action.slice('heading:'.length);
+		const inCodeBlock = editor.getState().active.codeBlock;
+		if (value === 'codeblock') { if (!inCodeBlock) editor.toggleCodeBlock(); return; }
+		if (inCodeBlock) editor.toggleCodeBlock();
+		editor.setHeading(Number(value));
+		return;
+	}
+	if (action.startsWith('list:')) {
+		const value = action.slice('list:'.length);
+		editor.setList(value === 'numbered' ? 'ordered' : value);
+		return;
+	}
+	switch (action) {
+		case 'copy': case 'cut': case 'paste':
+		case 'undo': case 'redo':
+		case 'indent': case 'outdent':
+			editor[action](); break;
+		case 'link': editor.toggleLink(); break;
+		default: editor.runCommand(action); // bold, italic, strikethrough, inlineCode, quote
+	}
+};
+
+// Overflow menu-items are cloned into a menu in document.body, so their @click
+// listeners are lost — but the `select` event bubbles (composed). We catch it at
+// the document, resolve the editor via the overflow menu's anchor (the overflow
+// button lives in the toolbar's shadow root, itself inside a .demo-editor), and
+// run the item's `value` as an action. Scoped to the toolbar's own overflow menu
+// so the inline heading menu (its own @select handler) isn't double-handled.
+document.addEventListener('select', (event: Event) => {
+	const item = event.target as HTMLElement | null;
+	if (item?.tagName !== 'NLDD-MENU-ITEM') return;
+	const menu = item.closest('nldd-menu') as (HTMLElement & { anchorElement?: Element | null }) | null;
+	if (!menu?.id.startsWith('nldd-toolbar-overflow-menu')) return;
+	const action = item.getAttribute('value');
+	if (!action) return;
+	const toolbar = (menu.anchorElement?.getRootNode() as ShadowRoot | null)?.host as Element | undefined;
+	const editor = toolbar?.closest('.demo-editor')?.querySelector('nldd-text-editor');
+	if (editor) runOverflowAction(editor, action);
+});
 const onToolbarState = (event: CustomEvent) => {
 	const active = event.detail.active;
 	const root = event.currentTarget as Element;
@@ -90,6 +140,29 @@ const onToolbarState = (event: CustomEvent) => {
 	setDisabled('quote', active.codeBlock);
 	setDisabled('list', active.codeBlock);
 
+	// History buttons: enable undo/redo only when there's history in that direction,
+	// and dim the whole bar (divider included) when neither applies.
+	const historyBar: any = root.querySelector('[data-group="history"]');
+	if (historyBar) {
+		const { canUndo, canRedo } = event.detail;
+		historyBar.disabled = !canUndo && !canRedo;
+		historyBar.updateComplete.then(() => {
+			const [undoButton, redoButton] = historyBar.querySelectorAll('nldd-icon-button');
+			if (undoButton) undoButton.disabled = !canUndo;
+			if (redoButton) redoButton.disabled = !canRedo;
+		});
+	}
+
+	// Clipboard bar: copy and cut need a selection; paste is always available.
+	const clipboardBar: any = root.querySelector('[data-group="clipboard"]');
+	if (clipboardBar) {
+		clipboardBar.updateComplete.then(() => {
+			const [copyButton, cutButton] = clipboardBar.querySelectorAll('nldd-icon-button');
+			if (copyButton) copyButton.disabled = event.detail.empty;
+			if (cutButton) cutButton.disabled = event.detail.empty;
+		});
+	}
+
 	// Indent buttons reflect what's possible: increase only with a parent to nest
 	// under, decrease only when the item is already nested. When neither applies,
 	// disable the whole bar so its divider dims too, not just the two buttons.
@@ -115,11 +188,61 @@ const onToolbarState = (event: CustomEvent) => {
 		const value = item.getAttribute('value');
 		(item as any).selected = active.codeBlock ? value === 'codeblock' : Number(value) === active.heading;
 	});
+
+	// Mirror the disabled state onto the overflow fallbacks, so an overflowed control
+	// is just as unusable in the menu as it is in the bar. Set it on both the light-DOM
+	// originals (used for the next clone) and the live clones in the toolbar's overflow
+	// menu (which sits in document.body and doesn't re-clone on a mere state change).
+	const toolbar = root.querySelector('nldd-toolbar');
+	const overflowMenu = Array.from(document.querySelectorAll('nldd-menu[id^="nldd-toolbar-overflow-menu"]'))
+		.find((menu) => (menu as any).anchorElement?.getRootNode()?.host === toolbar) ?? null;
+	const { canUndo, canRedo, canIndent, canOutdent, empty } = event.detail;
+	const disabledByValue: Record<string, boolean> = {
+		bold: inCode, italic: inCode, strikethrough: inCode,
+		inlineCode: active.codeBlock,
+		link: inCode,
+		quote: active.codeBlock,
+		'list:none': active.codeBlock, 'list:bullet': active.codeBlock, 'list:numbered': active.codeBlock,
+		indent: !canIndent, outdent: !canOutdent,
+		copy: empty, cut: empty,
+		undo: !canUndo, redo: !canRedo,
+	};
+	for (const [value, disabled] of Object.entries(disabledByValue)) {
+		const selector = `nldd-menu-item[value="${value}"]`;
+		root.querySelectorAll(selector).forEach((item) => { (item as any).disabled = disabled; });
+		overflowMenu?.querySelectorAll(selector).forEach((item) => { (item as any).disabled = disabled; });
+	}
+
+	// And mirror the active/checked state onto the checkbox and radio fallbacks, so an
+	// overflowed toggle shows the same checkmark (and radio group the same selection)
+	// as the control it stands in for. Momentary actions (indent, clipboard, history)
+	// carry no state and are absent here.
+	const noList = !active.bulletList && !active.orderedList;
+	const selectedByValue: Record<string, boolean> = {
+		bold: active.bold, italic: active.italic, strikethrough: active.strikethrough,
+		inlineCode: active.inlineCode,
+		link: active.link,
+		quote: active.quote,
+		'list:none': noList, 'list:bullet': active.bulletList, 'list:numbered': active.orderedList,
+		'heading:0': !active.codeBlock && active.heading === 0,
+		'heading:1': !active.codeBlock && active.heading === 1,
+		'heading:2': !active.codeBlock && active.heading === 2,
+		'heading:3': !active.codeBlock && active.heading === 3,
+		'heading:4': !active.codeBlock && active.heading === 4,
+		'heading:5': !active.codeBlock && active.heading === 5,
+		'heading:6': !active.codeBlock && active.heading === 6,
+		'heading:codeblock': active.codeBlock,
+	};
+	for (const [value, selected] of Object.entries(selectedByValue)) {
+		const selector = `nldd-menu-item[value="${value}"]`;
+		root.querySelectorAll(selector).forEach((item) => { (item as any).selected = selected; });
+		overflowMenu?.querySelectorAll(selector).forEach((item) => { (item as any).selected = selected; });
+	}
 };
 function toolbarEditor(editor: unknown) {
 	return html`
 		<div class="demo-editor" @nldd-text-editor-state=${onToolbarState}>
-			<nldd-toolbar size="md" style="margin-bottom: 16px;">
+			<nldd-toolbar size="md">
 				<nldd-toolbar-item slot="start" label="Nadruk">
 					<nldd-segmented-control
 						data-group="inline"
@@ -132,6 +255,11 @@ function toolbarEditor(editor: unknown) {
 						<nldd-segmented-control-item value="italic" text="Cursief" icon="italic"></nldd-segmented-control-item>
 						<nldd-segmented-control-item value="strikethrough" text="Doorhalen" icon="strikethrough"></nldd-segmented-control-item>
 					</nldd-segmented-control>
+					<nldd-menu-group slot="overflow" text="Nadruk">
+						<nldd-menu-item type="checkbox" value="bold" text="Vet" icon="bold"></nldd-menu-item>
+						<nldd-menu-item type="checkbox" value="italic" text="Cursief" icon="italic"></nldd-menu-item>
+						<nldd-menu-item type="checkbox" value="strikethrough" text="Doorhalen" icon="strikethrough"></nldd-menu-item>
+					</nldd-menu-group>
 				</nldd-toolbar-item>
 				<nldd-toolbar-item slot="start" label="Code">
 					<nldd-toggle-button
@@ -141,6 +269,7 @@ function toolbarEditor(editor: unknown) {
 						accessible-label="Code"
 						@change=${(event: CustomEvent) => editorOf(event.currentTarget as Element)?.runCommand('inlineCode')}
 					></nldd-toggle-button>
+					<nldd-menu-item slot="overflow" type="checkbox" value="inlineCode" text="Code" icon="code"></nldd-menu-item>
 				</nldd-toolbar-item>
 				<nldd-toolbar-item slot="start" label="Link">
 					<nldd-toggle-button
@@ -150,6 +279,7 @@ function toolbarEditor(editor: unknown) {
 						accessible-label="Link"
 						@change=${onLink}
 					></nldd-toggle-button>
+					<nldd-menu-item slot="overflow" type="checkbox" value="link" text="Link" icon="link"></nldd-menu-item>
 				</nldd-toolbar-item>
 				<nldd-toolbar-item slot="start" label="Citaat">
 					<nldd-toggle-button
@@ -159,6 +289,7 @@ function toolbarEditor(editor: unknown) {
 						accessible-label="Citaat"
 						@change=${(event: CustomEvent) => editorOf(event.currentTarget as Element)?.runCommand('quote')}
 					></nldd-toggle-button>
+					<nldd-menu-item slot="overflow" type="checkbox" value="quote" text="Citaat" icon="text-quote"></nldd-menu-item>
 				</nldd-toolbar-item>
 				<nldd-toolbar-item slot="start" label="Lijst">
 					<nldd-segmented-control
@@ -173,6 +304,11 @@ function toolbarEditor(editor: unknown) {
 						<nldd-segmented-control-item value="bullet" text="Opsomming" icon="bullet-list"></nldd-segmented-control-item>
 						<nldd-segmented-control-item value="numbered" text="Genummerd" icon="numbered-list"></nldd-segmented-control-item>
 					</nldd-segmented-control>
+					<nldd-menu-group slot="overflow" text="Lijst">
+						<nldd-menu-item type="radio" value="list:none" text="Geen lijst" icon="minus"></nldd-menu-item>
+						<nldd-menu-item type="radio" value="list:bullet" text="Opsomming" icon="bullet-list"></nldd-menu-item>
+						<nldd-menu-item type="radio" value="list:numbered" text="Genummerd" icon="numbered-list"></nldd-menu-item>
+					</nldd-menu-group>
 				</nldd-toolbar-item>
 				<nldd-toolbar-item slot="start" label="Inspringen">
 					<nldd-button-bar data-group="indent">
@@ -180,6 +316,10 @@ function toolbarEditor(editor: unknown) {
 						<nldd-button-bar-divider></nldd-button-bar-divider>
 						<nldd-icon-button icon="indent-decrease" text="Minder inspringen" @click=${onOutdent}></nldd-icon-button>
 					</nldd-button-bar>
+					<nldd-menu-group slot="overflow" text="Inspringen">
+						<nldd-menu-item value="indent" text="Meer inspringen" icon="indent-increase"></nldd-menu-item>
+						<nldd-menu-item value="outdent" text="Minder inspringen" icon="indent-decrease"></nldd-menu-item>
+					</nldd-menu-group>
 				</nldd-toolbar-item>
 				<nldd-toolbar-item slot="start" label="Tekststijl">
 					<nldd-button id="heading-button" data-group="heading" expandable text="Paragraaf"></nldd-button>
@@ -195,8 +335,44 @@ function toolbarEditor(editor: unknown) {
 						<nldd-menu-divider></nldd-menu-divider>
 						<nldd-menu-item type="radio" value="codeblock" text="Codeblok"></nldd-menu-item>
 					</nldd-menu>
+					<nldd-menu-group slot="overflow" text="Tekststijl">
+						<nldd-menu-item type="radio" value="heading:0" text="Paragraaf"></nldd-menu-item>
+						<nldd-menu-item type="radio" value="heading:1" text="Heading 1"></nldd-menu-item>
+						<nldd-menu-item type="radio" value="heading:2" text="Heading 2"></nldd-menu-item>
+						<nldd-menu-item type="radio" value="heading:3" text="Heading 3"></nldd-menu-item>
+						<nldd-menu-item type="radio" value="heading:4" text="Heading 4"></nldd-menu-item>
+						<nldd-menu-item type="radio" value="heading:5" text="Heading 5"></nldd-menu-item>
+						<nldd-menu-item type="radio" value="heading:6" text="Heading 6"></nldd-menu-item>
+						<nldd-menu-item type="radio" value="heading:codeblock" text="Codeblok"></nldd-menu-item>
+					</nldd-menu-group>
+				</nldd-toolbar-item>
+				<nldd-toolbar-item slot="end" label="Klembord">
+					<nldd-button-bar data-group="clipboard">
+						<nldd-icon-button icon="copy" text="Kopieer" @click=${onCopy}></nldd-icon-button>
+						<nldd-button-bar-divider></nldd-button-bar-divider>
+						<nldd-icon-button icon="cut" text="Knip" @click=${onCut}></nldd-icon-button>
+						<nldd-button-bar-divider></nldd-button-bar-divider>
+						<nldd-icon-button icon="paste" text="Plak" @click=${onPaste}></nldd-icon-button>
+					</nldd-button-bar>
+					<nldd-menu-group slot="overflow" text="Klembord">
+						<nldd-menu-item value="copy" text="Kopieer" icon="copy"></nldd-menu-item>
+						<nldd-menu-item value="cut" text="Knip" icon="cut"></nldd-menu-item>
+						<nldd-menu-item value="paste" text="Plak" icon="paste"></nldd-menu-item>
+					</nldd-menu-group>
+				</nldd-toolbar-item>
+				<nldd-toolbar-item slot="end" label="Geschiedenis">
+					<nldd-button-bar data-group="history">
+						<nldd-icon-button icon="undo" text="Maak ongedaan" @click=${onUndo}></nldd-icon-button>
+						<nldd-button-bar-divider></nldd-button-bar-divider>
+						<nldd-icon-button icon="redo" text="Voer opnieuw uit" @click=${onRedo}></nldd-icon-button>
+					</nldd-button-bar>
+					<nldd-menu-group slot="overflow" text="Geschiedenis">
+						<nldd-menu-item value="undo" text="Maak ongedaan" icon="undo"></nldd-menu-item>
+						<nldd-menu-item value="redo" text="Voer opnieuw uit" icon="redo"></nldd-menu-item>
+					</nldd-menu-group>
 				</nldd-toolbar-item>
 			</nldd-toolbar>
+			<nldd-spacer size="24"></nldd-spacer>
 			${editor}
 		</div>
 	`;
