@@ -167,6 +167,10 @@ export const textEditorStyles = css`
 		   caret stays clearly visible without washing out. */
 		border-left-color: var(--primitives-color-accent-700);
 		border-left-width: 2px;
+		/* A thin surface-coloured halo, like the drop cursor, so the caret stays legible
+		   even over a tinted token (annotation, inline code) where the accent alone can
+		   blend in. Blinks with the caret (opacity covers the shadow too). */
+		box-shadow: 0 0 0 var(--primitives-border-width-thin) var(--semantics-surfaces-base-background-color);
 		/* CodeMirror draws the caret ~0.6px left of the text position. At a line start
 		   with no inline padding (the simple variant) that overhangs the scroller's
 		   overflow edge, so the left of the 2px gets clipped and the caret looks thinner
@@ -526,15 +530,18 @@ export const textEditorStyles = css`
 		}
 	}
 
-	/* Drop cursor shown while dragging selected text to a new spot. */
+	/* Drop cursor shown while dragging selected text to a new spot. An absolutely
+	   positioned overlay (not an inline widget), so it never splits an annotation it
+	   lands inside. A thin surface-coloured halo keeps the accent bar clearly visible
+	   over tinted tokens too. Left/top/height are set by the drop-cursor plugin. */
 	.cm-drag-drop-cursor {
-		display: inline-block;
-		width: 0;
-		height: 1.1em;
-		margin-inline: -1px;
-		border-left: var(--primitives-border-width-regular) solid var(--primitives-color-accent-600);
-		vertical-align: text-bottom;
+		position: absolute;
+		width: var(--primitives-border-width-regular);
+		border-radius: var(--primitives-border-width-thin);
+		background-color: var(--primitives-color-accent-600);
+		box-shadow: 0 0 0 var(--primitives-border-width-thin) var(--semantics-surfaces-base-background-color);
 		pointer-events: none;
+		z-index: 4;
 	}
 
 	/* A translucent copy of the dragged text, trailing the pointer (bottom-right).

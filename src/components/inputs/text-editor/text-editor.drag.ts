@@ -1,4 +1,4 @@
-import { EditorView, ViewPlugin, Decoration, WidgetType } from '@codemirror/view';
+import { EditorView, ViewPlugin, type ViewUpdate } from '@codemirror/view';
 import { StateEffect, StateField, type Extension } from '@codemirror/state';
 import { stripSentinels } from './text-editor.annotation-sentinels.js';
 
@@ -11,31 +11,79 @@ import { stripSentinels } from './text-editor.annotation-sentinels.js';
 
 const setDropPos = StateEffect.define<number | null>();
 
-class DropCursorWidget extends WidgetType {
-	eq(): boolean {
-		return true;
-	}
-
-	toDOM(): HTMLElement {
-		const el = document.createElement('span');
-		el.className = 'cm-drag-drop-cursor';
-		return el;
-	}
-}
-const dropWidget = Decoration.widget({ widget: new DropCursorWidget(), side: 1 });
-
-// Holds the live drop position during a drag and draws the drop cursor there.
+// Holds the live drop position during a drag; the overlay plugin draws the cursor.
 const dropPosField = StateField.define<number | null>({
 	create: () => null,
 	update(value, tr) {
 		for (const effect of tr.effects) if (effect.is(setDropPos)) return effect.value;
 		return value === null ? null : tr.changes.mapPos(value);
 	},
-	provide: (field) =>
-		EditorView.decorations.from(field, (pos) =>
-			pos === null ? Decoration.none : Decoration.set([dropWidget.range(pos)]),
-		),
 });
+
+interface DropRect { left: number; top: number; height: number }
+
+// Draws the drop cursor as an absolutely-positioned overlay instead of an inline
+// widget. An inline widget dropped inside an annotation splits its tint into two
+// rounded pills; an overlay sits above the text, so the annotation stays whole and
+// the cursor can be a clearly visible bar. The position is read in a measure pass,
+// so coordsAtPos (a layout read) never runs mid-update.
+class DropCursorLayer {
+	private cursor: HTMLElement | null = null;
+
+	constructor(private readonly view: EditorView) {}
+
+	update(update: ViewUpdate): void {
+		const pos = update.state.field(dropPosField);
+		if (pos === null) {
+			this.remove();
+		} else if (
+			update.startState.field(dropPosField) !== pos ||
+			update.docChanged ||
+			update.geometryChanged
+		) {
+			this.view.requestMeasure({ read: this.readPos, write: this.drawCursor });
+		}
+	}
+
+	private readPos = (): DropRect | null => {
+		const pos = this.view.state.field(dropPosField);
+		if (pos === null) return null;
+		const rect = this.view.coordsAtPos(pos, 1);
+		if (!rect) return null;
+		const base = this.view.scrollDOM.getBoundingClientRect();
+		return {
+			left: rect.left - base.left + this.view.scrollDOM.scrollLeft,
+			top: rect.top - base.top + this.view.scrollDOM.scrollTop,
+			height: rect.bottom - rect.top,
+		};
+	};
+
+	private drawCursor = (rect: DropRect | null): void => {
+		if (!rect) {
+			this.remove();
+			return;
+		}
+		if (!this.cursor) {
+			this.cursor = document.createElement('div');
+			this.cursor.className = 'cm-drag-drop-cursor';
+			this.view.scrollDOM.appendChild(this.cursor);
+		}
+		this.cursor.style.left = `${rect.left}px`;
+		this.cursor.style.top = `${rect.top}px`;
+		this.cursor.style.height = `${rect.height}px`;
+	};
+
+	private remove(): void {
+		this.cursor?.remove();
+		this.cursor = null;
+	}
+
+	destroy(): void {
+		this.remove();
+	}
+}
+
+const dropCursorLayer = ViewPlugin.fromClass(DropCursorLayer);
 
 interface DragState {
 	startX: number;
@@ -188,4 +236,4 @@ export const dragMovePlugin = ViewPlugin.fromClass(DragMove, {
 });
 
 /** Drag selected text to move it (shadow-DOM-safe; native DnD won't start here). */
-export const dragToMove: Extension = [dropPosField, dragMovePlugin];
+export const dragToMove: Extension = [dropPosField, dropCursorLayer, dragMovePlugin];
