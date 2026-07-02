@@ -1612,6 +1612,7 @@ export class NLDDMenu extends LitElement {
 		if (!this.hasAttribute('popover')) {
 			this.setAttribute('popover', '');
 		}
+		this.addEventListener('beforetoggle', this._handleBeforeToggle);
 		this.addEventListener('toggle', this._handleToggle);
 		this.addEventListener('keydown', this._handleKeydown);
 		this.addEventListener('mouseenter', this._handleMenuItemMouseenter, true);
@@ -1637,6 +1638,7 @@ export class NLDDMenu extends LitElement {
 		if (this._activeSubmenu) {
 			(this._activeSubmenu as HTMLElement).hidePopover?.();
 		}
+		this.removeEventListener('beforetoggle', this._handleBeforeToggle);
 		this.removeEventListener('toggle', this._handleToggle);
 		this.removeEventListener('keydown', this._handleKeydown);
 		this.removeEventListener('mouseenter', this._handleMenuItemMouseenter, true);
@@ -2037,6 +2039,14 @@ export class NLDDMenu extends LitElement {
 		}
 	}
 
+	// A popover paints at its default position the instant it opens, before our async
+	// Floating UI reposition runs — a visible flash in the wrong place. Clearing
+	// `positioned` here (beforetoggle fires *before* the popover is shown) keeps it
+	// hidden via CSS until `_handleToggle` re-sets it once placed.
+	private _handleBeforeToggle = (event: Event): void => {
+		if ((event as ToggleEvent).newState === 'open') this.removeAttribute('positioned');
+	};
+
 	private _handleToggle = async (event: Event): Promise<void> => {
 		const toggleEvent = event as ToggleEvent;
 		this._isOpen = toggleEvent.newState === 'open';
@@ -2068,6 +2078,7 @@ export class NLDDMenu extends LitElement {
 		});
 
 		await this.reposition();
+		this.setAttribute('positioned', ''); // placed — reveal it (see _handleBeforeToggle)
 		const anchorEl = this._getAnchorEl();
 		if (anchorEl) {
 			this._cleanupAutoUpdate = autoUpdate(anchorEl, this, () => this.reposition());
