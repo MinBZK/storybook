@@ -167,6 +167,12 @@ class AnnotationStart extends WidgetType {
 const startSentinelDeco = Decoration.replace({ widget: new AnnotationStart() });
 // Dummy value for the atomic-range set (positions only; never rendered).
 const atomicMark = Decoration.mark({});
+// Glues the annotated text's last word to the badge so the badge never wraps onto
+// a line by itself (an orphan). Only the tail is nowrap, so a long annotation still
+// wraps at its earlier spaces.
+// inclusiveEnd so the mark wraps the trailing badge widget at its end boundary,
+// keeping the badge inside the nowrap span (a plain mark would leave it a sibling).
+const badgeTailMark = Decoration.mark({ class: 'cm-annotation-tail', inclusiveEnd: true });
 
 interface Built {
 	deco: DecorationSet;
@@ -203,6 +209,12 @@ function buildAll(state: EditorState): Built {
 			const t = Math.min(tintTo, sel.to);
 			if (t > f) deco.push(annotationSelectedMark.range(f, t));
 		}
+		// The badge end (just past it): the sentinel slot when present, else the text end.
+		const badgeEnd = endSent !== null ? endSent + 1 : textTo;
+		// Start of the annotated text's last word — nowrap from here through the badge
+		// keeps the two together so the badge can't orphan onto the next line.
+		const tail = doc.slice(docFrom, textTo).match(/\S+$/);
+		if (tail) deco.push(badgeTailMark.range(docFrom + (tail.index ?? 0), badgeEnd));
 		if (endSent !== null) {
 			// Two caret stops: the badge replaces the end sentinel, atomic so the caret
 			// treats it as a unit and stops just before (inside) and just after (outside).

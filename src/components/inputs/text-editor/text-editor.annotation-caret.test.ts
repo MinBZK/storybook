@@ -162,6 +162,18 @@ describe('nldd-text-editor annotation caret', () => {
 		expect(el.view.state.doc.toString()).not.toContain(S);
 	});
 
+	// The badge must never wrap onto a line by itself: its last word and the badge
+	// share a nowrap span, so they wrap together. Structural check — the badge sits
+	// inside a .cm-annotation-tail that also holds the annotation's last word.
+	it('keeps the badge in a nowrap span with the last word', async () => {
+		el = await make('alpha beta gamma', [{ id: 'a1', start: 0, end: 16, quote: 'alpha beta gamma' }]);
+		const tail = el.shadowRoot!.querySelector('.cm-annotation-tail');
+		expect(tail).not.toBeNull();
+		expect(tail!.querySelector('.cm-annotation-badge')).not.toBeNull(); // badge lives in the tail
+		const tailText = (tail!.textContent ?? '').replace(new RegExp(S, 'g'), '').replace(/\d+$/, '');
+		expect(tailText).toBe('gamma'); // only the last word, not the whole annotation
+	});
+
 	// a11y: sentinels are replace-widgets, so the raw U+2060 never reaches the
 	// rendered text a screen reader linearizes; the start widget announces nothing.
 	it('never exposes the sentinel character to assistive tech', async () => {

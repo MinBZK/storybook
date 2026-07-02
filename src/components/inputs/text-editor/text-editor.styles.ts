@@ -424,6 +424,13 @@ export const textEditorStyles = css`
 		box-decoration-break: clone;
 	}
 
+	/* The annotated text's last word plus the badge, kept on one line so the badge
+	   never wraps onto a line by itself. Only this tail is nowrap; earlier words in a
+	   long annotation still wrap normally. :host to beat CM's own white-space rule. */
+	:host .cm-annotation-tail {
+		white-space: nowrap;
+	}
+
 	/* Selected slice within an annotation: a darker yellow (drawSelection's layer
 	   sits behind the tint, so this stands in for the hidden selection) with the
 	   text at the strongest content colour, like the rest of the selection. */
