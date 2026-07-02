@@ -185,3 +185,50 @@ describe('nldd-text-editor annotation caret', () => {
 		expect(apply(EditorView.clipboardInputFilter, `X${S}Y`)).toBe('XY');
 	});
 });
+
+// Undo/redo re-anchoring. The sentinel filter doesn't run on history transactions,
+// so the document (and its sentinels) revert while the clean anchors would drift —
+// invertedEffects restores the anchors in step. And loading annotations must not
+// create an undo step, so the first undo reverts a real edit, not the annotations.
+describe('nldd-text-editor annotation history', () => {
+	let el: HistoryEl;
+	afterEach(() => cleanup(el));
+
+	type HistoryEl = El & { undo(): void; redo(): void; getState(): { canUndo: boolean } };
+
+	// Value set via the attribute so the loaded document is the history baseline
+	// (a value set as a property would itself be an undoable transaction).
+	async function loaded(value: string, anns: unknown[]): Promise<HistoryEl> {
+		const node = await fixture<HistoryEl>(`<nldd-text-editor accessible-label="t" annotatable value="${value}"></nldd-text-editor>`);
+		node.annotations = anns;
+		await node.updateComplete;
+		await waitForUpdate(node);
+		return node;
+	}
+
+	it('does not put loading annotations on the undo stack', async () => {
+		el = await loaded('AAAA leidend BBBB', [{ id: 'a', start: 5, end: 12, quote: 'leidend' }]);
+		expect(el.getState().canUndo).toBe(false);
+		el.undo(); // a stray undo must not strip the annotation
+		await waitForUpdate(el);
+		expect(annotatedText(el)).toBe('leidend');
+		expect(el.value).toBe('AAAA leidend BBBB');
+	});
+
+	it('keeps annotations anchored across undo and redo of an edit', async () => {
+		el = await loaded('AAAA leidend BBBB', [{ id: 'a', start: 5, end: 12, quote: 'leidend' }]);
+		el.view.dispatch({ changes: { from: 0, insert: 'XX ' }, userEvent: 'input.type' });
+		await waitForUpdate(el);
+		expect(annotatedText(el)).toBe('leidend'); // still on its text after the edit
+
+		el.undo();
+		await waitForUpdate(el);
+		expect(el.value).toBe('AAAA leidend BBBB');
+		expect(annotatedText(el)).toBe('leidend'); // re-anchored, not drifted
+
+		el.redo();
+		await waitForUpdate(el);
+		expect(el.value).toBe('XX AAAA leidend BBBB');
+		expect(annotatedText(el)).toBe('leidend');
+	});
+});

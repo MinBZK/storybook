@@ -1,5 +1,6 @@
 import { Decoration, type DecorationSet, EditorView, WidgetType } from '@codemirror/view';
 import { EditorState, Prec, StateEffect, StateField, type Extension, type Range } from '@codemirror/state';
+import { invertedEffects } from '@codemirror/commands';
 import {
 	ANNOTATION_SENTINEL as S,
 	stripSentinels,
@@ -264,6 +265,17 @@ const annotationSentinelFilter = EditorState.transactionFilter.of((tr) => {
 	return [tr, { changes, effects: [setAnchored.of(anns)], sequential: true }];
 });
 
+// The transaction filter re-anchors the field on live edits, but it does NOT run on
+// history transactions — so on undo/redo the document (and its sentinels) revert while
+// the clean anchors would keep their pre-undo positions, drifting the annotations.
+// invertedEffects stores the field's prior value alongside each anchoring change, so
+// history restores the anchors in step with the document it belongs to.
+const annotationHistory = invertedEffects.of((tr) => {
+	if (!tr.effects.some((e) => e.is(setAnchored))) return [];
+	const prior = tr.startState.field(annotationField, false) ?? [];
+	return [setAnchored.of(prior)];
+});
+
 // Keep sentinels out of the clipboard: copy/cut strip them from the outgoing text,
 // and paste strips any that rode in from another editor instance. The document's own
 // filter re-adds the sentinels it needs, so clipboard text stays clean either way.
@@ -282,5 +294,6 @@ export const annotations: Extension = [
 	Prec.highest(annotationRender),
 	annotationAtomic,
 	annotationSentinelFilter,
+	annotationHistory,
 	annotationClipboard,
 ];

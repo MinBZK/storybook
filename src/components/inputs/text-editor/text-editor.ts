@@ -57,7 +57,7 @@ import {
 	dropCursor,
 	placeholder as cmPlaceholder,
 } from '@codemirror/view';
-import { Compartment, EditorState, Prec, type Extension } from '@codemirror/state';
+import { Compartment, EditorState, Prec, Transaction, type Extension } from '@codemirror/state';
 import { defaultKeymap, history, historyKeymap, indentLess, undo as cmUndo, redo as cmRedo, undoDepth, redoDepth } from '@codemirror/commands';
 import { NLDDCodeMirrorElement } from '../../../utilities/codemirror/codemirror-element.js';
 import { nlddCodeMirrorTheme } from '../../../utilities/codemirror/theme.js';
@@ -305,7 +305,13 @@ export class NLDDTextEditor extends NLDDCodeMirrorElement {
 
 	private _syncAnnotations(): void {
 		// Annotations only render when the consumer opts in via `annotatable`.
-		this.view?.dispatch({ effects: setAnnotations.of(this.annotatable ? this.annotations : []) });
+		// addToHistory:false keeps this consumer-driven re-anchoring (and the sentinel
+		// changes the filter appends) out of the text-edit undo stack — otherwise the
+		// first undo after load would strip the annotations instead of a real edit.
+		this.view?.dispatch({
+			effects: setAnnotations.of(this.annotatable ? this.annotations : []),
+			annotations: Transaction.addToHistory.of(false),
+		});
 	}
 
 	// Two-step mention deletion: select the token on the first key, remove on the
