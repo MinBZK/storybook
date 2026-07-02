@@ -9,6 +9,31 @@ the type of conventional-commit determines the release. Conventional types
 `chore`, `docs`, `ci`, `style`, `test`, `build` are intentionally omitted
 here; consult the commit history if you need that level of detail.
 
+### Highlights
+
+- **`nldd-text-editor` — a hybrid Markdown editor.** A CodeMirror 6 editor that shows Markdown source with live styling instead of a separate preview: headings, bold, italic, strikethrough, inline code and fenced code blocks (tinted as one surface, darker where selected), links (with an open-in-new-tab badge), bullet lists (drawn as a filled dot) and ordered lists (auto-renumbered to run in sequence as you type). It stays headless: a command API drives every action and it emits its active state back so a consumer toolbar can own the chrome. `@`-mentions collapse to a token, and opt-in annotations render a tinted range with a count badge that stays anchored across typing, undo/redo, drag-to-move and same-editor cut/paste.
+- **New icons.** Nine icons — `at`, `highlighter`, `strikethrough`, `indent-increase` / `indent-decrease`, `markdown-rectangle`, `rectangle-chevron-left-forward-slash-chevron-right`, `house-and-appartment-building` and `parking-sign-square` — with `indent` / `outdent`, `code-block` and `parking` aliases.
+- **`nldd-code-editor` and `nldd-code-viewer` on CodeMirror 6.** Both are rebuilt on the same CodeMirror 6 foundation as the new text editor, for consistent syntax highlighting across many grammars (yaml, json, javascript, typescript, css, html, xml, bash, markdown, rust, gherkin, toml, sql, python). The code editor gains `simple` (bare, caret-only) and `box` variants, `rows` / `resize` sizing, line numbers and line wrapping; the read-only code viewer keeps its copy button and gains `simple` / `box` variants and a `tinted` / `base` background.
+- **No more position flash on popovers.** `nldd-menu`, `nldd-popover`, `nldd-tooltip` and `nldd-just-in-time-education` no longer flash at the popover's default spot before Floating UI places them; each stays hidden until it is positioned.
+- **Built-in FOUC guard.** `@nldd/design-system/styles` now keeps the page hidden until every custom element has upgraded (or a 200ms fallback), so pre-upgrade web components no longer flash unstyled.
+
+### Added
+
+- **`nldd-text-editor`** — a headless, hybrid Markdown editor (CodeMirror 6). Live source styling for headings, `**bold**`, `*italic*`, `~~strikethrough~~`, inline code, fenced code blocks (one tinted surface), links (plus an open-in-new-tab badge), bullet lists (a styleable filled dot) and ordered lists (renumbered to stay 1, 2, 3). `simple` and `box` variants, `sans` / `mono` fonts, `rows` / `resize` / `wrap`, and a form value that is always clean Markdown. A command API (`toggleBold`, `setList`, `setHeading`, `indent` / `outdent`, `toggleLink`, `toggleCodeBlock`, `undo` / `redo`, `copy` / `cut` / `paste`, `runCommand`) plus a `nldd-text-editor-state` event let a consumer toolbar own the chrome; selected text can be dragged to move it (shadow-DOM-safe). `@`-mentions collapse to a token from a consumer `mentionSource` and fire `nldd-text-editor-mention`. Opt-in annotations (`annotatable` + `annotations`) render a tinted range with a count badge, anchored by clean offset and preserved across edits, undo/redo, drag and same-editor cut/paste.
+- **FOUC guard in `@nldd/design-system/styles`** — the page stays hidden until every custom element upgrades (`:defined`) or `--nldd-fouc-timeout` (default 200ms), whichever comes first; pure CSS, no JS. Also available standalone at `@nldd/design-system/styles/fouc`.
+- **`nldd-segmented-control`** — a momentary `button` item type for one-shot actions (used by the editor's indent controls), alongside the existing radio and checkbox types.
+- **Icons** — `at`, `highlighter`, `strikethrough`, `indent-increase`, `indent-decrease`, `markdown-rectangle`, `rectangle-chevron-left-forward-slash-chevron-right`, `house-and-appartment-building` and `parking-sign-square`, with `indent` / `outdent`, `code-block` and `parking` aliases.
+
+### Changed
+
+- **`nldd-code-editor`** — rebuilt on CodeMirror 6, sharing a foundation and highlight style with the code viewer and text editor. A `simple` (bare, flush, caret-only) and a `box` (framed surface) variant, `rows` / `resize` / `wrap` sizing, `line-numbers`, and highlight grammars for yaml, json, javascript, typescript, css, html, xml, bash, markdown, rust, gherkin, toml, sql and python. Clicking the padding or a line number now places the caret, and the accent caret is used in both variants.
+- **`nldd-code-viewer`** — rebuilt on a read-only CodeMirror 6 view, so its highlighting matches the editors. `simple` / `box` variants, a `tinted` / `base` box background, `language`, `wrap`, and the copy-to-clipboard button (hide it with `no-copy`).
+
+### Fixed
+
+- **Popover positioning** — `nldd-menu`, `nldd-popover`, `nldd-tooltip` and `nldd-just-in-time-education` no longer flash at the popover's default position for a frame before Floating UI places them.
+- **`nldd-multi-line-text-field`** — the configured `rows` is now the minimum height in every resize mode, not only `resize="auto"`; a fixed or non-resizable field no longer collapses below its `rows`.
+
 ## <small>0.8.64 (2026-07-01)</small>
 
 * feat: filterable listbox, sidebar-section, hero media, container lanes + box-sizing hardening (#135) ([bf48d70](https://github.com/MinBZK/storybook/commit/bf48d70)), closes [#135](https://github.com/MinBZK/storybook/issues/135)
