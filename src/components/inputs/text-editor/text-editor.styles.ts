@@ -17,6 +17,10 @@ export const textEditorStyles = css`
 		/* Prose: 18px body at 1.5 line-height (snug) for readability. */
 		--_font: var(--primitives-font-body-md-regular-snug);
 		--_code-font: var(--primitives-font-monospace-md-regular-snug);
+		/* Inline code sizes as a fraction of its surroundings (the DS mono/body step:
+		   16px next to 18px), so code inside a heading scales with it instead of
+		   staying at a fixed 16px. */
+		--_code-font-size: calc(var(--primitives-font-size-90) / var(--primitives-font-size-100) * 1em);
 		/* Markers render one step down (16px mono): monospace reads larger than
 		   the sans body beside it, matching the DS mono/body pairing. */
 		--_marker-font-size: var(--primitives-font-size-90);
@@ -27,8 +31,17 @@ export const textEditorStyles = css`
 		--_token-corner-radius: var(--primitives-corner-radius-sm);
 		--_token-block-padding: 0.15em;
 		--_token-inline-padding: 0.3em;
+		/* Vertical padding for an inline token that inherits the block font (tint,
+		   mention): fills the line up to its line-height, never past it, so tokens on
+		   adjacent lines never overlap. 1lh and em resolve on the token, so it adapts
+		   to a heading's tighter line. (~1.2em is the text's own box.) */
+		--_token-block-padding-fit: max(0em, (1lh - 1.2em) / 2);
 		--_code-token-background: light-dark(var(--primitives-color-neutral-50), var(--primitives-color-neutral-150));
 		--_code-token-background-is-selected: light-dark(var(--primitives-color-neutral-200), var(--primitives-color-neutral-300));
+		/* The fenced code block matches the inline token padding, so the surface
+		   reads like the chips (its own vars, easy to nudge roomier if needed). */
+		--_code-block-inline-padding: var(--_token-inline-padding);
+		--_code-block-block-padding: var(--_token-block-padding);
 		--_annotation-token-background: light-dark(var(--primitives-color-mark-75), var(--primitives-color-mark-150));
 		--_annotation-token-background-is-selected: light-dark(var(--primitives-color-mark-200), var(--primitives-color-mark-400));
 		--_annotation-token-badge-content-color: var(--primitives-color-mark-1000);
@@ -40,6 +53,26 @@ export const textEditorStyles = css`
 		--_annotation-token-badge-highlight-border-active: light-dark(var(--primitives-color-mark-400), var(--primitives-color-mark-450));
 		--_annotation-token-badge-background-selected: light-dark(var(--primitives-color-mark-450), var(--primitives-color-mark-950));
 		--_annotation-token-badge-highlight-border-selected: light-dark(var(--primitives-color-mark-500), var(--primitives-color-mark-1000));
+		/* Badge box in its own em, and its font as a fraction of the token font. The
+		   badge height in token units is size × font-scale (used to inset the token's
+		   right space to match the badge's vertical gap). */
+		--_annotation-badge-size: 1.5em;
+		--_annotation-badge-font-scale: 0.62;
+		/* The link badge's box (round chip). Its icon is a fraction of THIS, not of the
+		   font, so the icon keeps the same ratio when the chip shrinks in a tight line. */
+		--_link-badge-size: calc(1em + 2 * var(--_token-block-padding-fit));
+		--_link-badge-content-color: var(--semantics-categories-accent-tinted-primary-content-color);
+		--_link-badge-background: var(--semantics-categories-accent-tinted-background-color);
+		--_link-badge-highlight-border: var(--semantics-categories-accent-tinted-highlight-border-color);
+		/* Hover/active stay in the tinted family, each one accent step up from the
+		   tinted bg (50/75 → 75/100 → 100/150) and border (100/150 → 150/200 → 200/250). */
+		--_link-badge-background-hover: light-dark(var(--primitives-color-accent-75), var(--primitives-color-accent-100));
+		--_link-badge-background-active: light-dark(var(--primitives-color-accent-100), var(--primitives-color-accent-150));
+		--_link-badge-highlight-border-hover: light-dark(var(--primitives-color-accent-150), var(--primitives-color-accent-200));
+		--_link-badge-highlight-border-active: light-dark(var(--primitives-color-accent-200), var(--primitives-color-accent-250));
+		/* The @ icon size, so the token's left padding can mirror the icon's vertical
+		   inset (equal space to its left, top and bottom). */
+		--_mention-icon-size: 0.95em;
 		--_mention-token-background: var(--semantics-categories-accent-tinted-background-color);
 		--_mention-token-content-color: var(--semantics-categories-accent-tinted-primary-content-color);
 		--_mention-token-background-is-selected: var(--semantics-categories-accent-filled-background-color);
@@ -134,6 +167,11 @@ export const textEditorStyles = css`
 		   caret stays clearly visible without washing out. */
 		border-left-color: var(--primitives-color-accent-700);
 		border-left-width: 2px;
+		/* CodeMirror draws the caret ~0.6px left of the text position. At a line start
+		   with no inline padding (the simple variant) that overhangs the scroller's
+		   overflow edge, so the left of the 2px gets clipped and the caret looks thinner
+		   there than mid-line. Nudge it right so the full width stays inside the content. */
+		transform: translateX(0.6px);
 	}
 
 	:host([resize="none"]) .cm-editor {
@@ -195,9 +233,16 @@ export const textEditorStyles = css`
 	   chip background. The selected run is darkened with a decoration (see
 	   cm-md-code-selected below), since drawSelection hides the native selection. */
 	.cm-md-code {
-		padding-block: var(--_token-block-padding);
-		padding-inline: var(--_token-inline-padding);
-		font: var(--_code-font);
+		padding-block: var(--_token-block-padding-fit);
+		/* No inline padding: the tint hugs the backticks, which are the visible bounds
+		   anyway. A padded mark has no coordsAt hook, so the caret at its edge would
+		   otherwise jump by the padding depending on the direction it arrives from. */
+		/* Monospace, sized as a fraction of its context; line-height is left to inherit
+		   from the block so the chip fits the line (a fixed snug line-height would make
+		   it overflow inside a tight heading). Weight stays regular, not the heading's. */
+		font-family: var(--primitives-font-family-monospace);
+		font-size: var(--_code-font-size);
+		font-weight: var(--primitives-font-weight-body-regular);
 		background-color: var(--_code-token-background);
 		border-radius: var(--_token-corner-radius);
 	}
@@ -205,20 +250,23 @@ export const textEditorStyles = css`
 	/* Code block: a full-width line background per content line, so consecutive
 	   lines form one filled surface (the fence lines stay clean). The first and
 	   last content lines round the top and bottom corners. */
-	.cm-md-codeblock {
-		padding-inline: var(--_token-inline-padding);
+	/* :host beats the shared theme's ".cm-line { padding: 0 }" reset (equal
+	   specificity otherwise wins on source order), same as .cm-content above —
+	   without it the block padding never lands and the surface reads cramped. */
+	:host .cm-md-codeblock {
+		padding-inline: var(--_code-block-inline-padding);
 		font: var(--_code-font);
 		background-color: var(--_code-token-background);
 	}
 
-	.cm-md-codeblock-first {
-		padding-top: var(--_token-block-padding);
+	:host .cm-md-codeblock-first {
+		padding-top: var(--_code-block-block-padding);
 		border-start-start-radius: var(--_token-corner-radius);
 		border-start-end-radius: var(--_token-corner-radius);
 	}
 
-	.cm-md-codeblock-last {
-		padding-bottom: var(--_token-block-padding);
+	:host .cm-md-codeblock-last {
+		padding-bottom: var(--_code-block-block-padding);
 		border-end-start-radius: var(--_token-corner-radius);
 		border-end-end-radius: var(--_token-corner-radius);
 	}
@@ -237,6 +285,14 @@ export const textEditorStyles = css`
 		background-color: transparent;
 	}
 
+	/* Whole code block selected: the line background (its padding-inline, the
+	   first/last line's block padding, and the rounded corners) takes the selected
+	   tint, so the block lights up edge to edge — the padding included, like a
+	   fully selected token. :host to beat the base ".cm-md-codeblock" background. */
+	:host .cm-md-codeblock-line-selected {
+		background-color: var(--_code-token-background-is-selected);
+	}
+
 	/* @-mention: accent + semibold (shown only in the brief pre-parse state;
 	   normally the whole token collapses to the rendered token below). */
 
@@ -250,8 +306,11 @@ export const textEditorStyles = css`
 	   visual block padding, so it never grows the line) — so the two tags match in
 	   size, shape and position and align with the selection the same way. */
 	.cm-md-mention-token {
-		padding-block: var(--_token-block-padding);
-		padding-inline: var(--_token-inline-padding);
+		padding-block: var(--_token-block-padding-fit);
+		/* Left space equals the @ icon's vertical inset (token height minus the icon,
+		   halved), so the icon sits equally clear left, top and bottom; the right keeps
+		   the normal token inset around the name. */
+		padding-inline: max(0em, (max(1.2em, 1lh) - var(--_mention-icon-size)) / 2) var(--_token-inline-padding);
 		color: var(--_mention-token-content-color);
 		background-color: var(--_mention-token-background);
 		border-radius: var(--_token-corner-radius);
@@ -270,8 +329,8 @@ export const textEditorStyles = css`
 
 	/* The @ icon: a fixed-size inline prefix, nudged to sit on the text centre. */
 	.cm-md-mention-token-icon {
-		width: 0.95em;
-		height: 0.95em;
+		width: var(--_mention-icon-size);
+		height: var(--_mention-icon-size);
 		margin-inline-end: 0.1em;
 		vertical-align: -0.16em;
 	}
@@ -322,6 +381,13 @@ export const textEditorStyles = css`
 		font-size: var(--_marker-font-size);
 	}
 
+	/* Code backticks match the code content size (they inherit the code span, which is
+	   already the step-down ratio) rather than the fixed marker size, so they scale
+	   together with the code inside a heading. */
+	.cm-md-code .cm-md-mark {
+		font-size: 1em;
+	}
+
 	/* The leading prefix (and anything nested in it, e.g. a blockquote's own
 	   span) renders at the marker size, so its width stays prefixLength × the
 	   mono advance and the hanging indent lines up exactly. */
@@ -347,8 +413,13 @@ export const textEditorStyles = css`
 	.cm-annotation {
 		background-color: var(--_annotation-token-background);
 		border-radius: var(--_token-corner-radius);
-		padding-block: var(--_token-block-padding);
-		padding-inline: var(--_token-inline-padding) 0;
+		padding-block: var(--_token-block-padding-fit);
+		/* Right space mirrors the badge's vertical inset (token height minus the badge,
+		   halved), so the badge sits equally clear of the top, bottom and right edges.
+		   Token height is max(1.2em text box, 1lh); the badge height in token units is
+		   its box × its font scale. */
+		padding-inline: var(--_token-inline-padding)
+			max(0em, (max(1.2em, 1lh) - var(--_annotation-badge-size) * var(--_annotation-badge-font-scale)) / 2);
 		-webkit-box-decoration-break: clone;
 		box-decoration-break: clone;
 	}
@@ -383,9 +454,9 @@ export const textEditorStyles = css`
 		position: relative;
 		align-items: center;
 		justify-content: center;
-		min-width: 1.5em;
-		height: 1.5em;
-		margin-inline: 0.4em 0.3em;
+		min-width: var(--_annotation-badge-size);
+		height: var(--_annotation-badge-size);
+		margin-inline: 0.4em 0;
 		padding-inline: 0.3em;
 		border: 0;
 		border-radius: var(--primitives-corner-radius-full);
@@ -393,12 +464,12 @@ export const textEditorStyles = css`
 		box-shadow: inset 0 0 0 var(--primitives-border-width-thin) var(--_annotation-token-badge-highlight-border);
 		color: var(--_annotation-token-badge-content-color);
 		/* vertical-align: middle lands the nub on the line-box centre, which reads a
-		   touch high next to the ink (glyphs sit lower, toward the baseline); nudge
-		   down onto the text's optical middle. */
+		   touch low next to the ink (the optical middle of the mixed-case text sits
+		   higher than the x-height centre); nudge up onto it. */
 		vertical-align: middle;
-		transform: translateY(0.1em);
+		transform: translateY(-0.08em);
 		font-family: var(--primitives-font-family-body);
-		font-size: 0.62em;
+		font-size: calc(var(--_annotation-badge-font-scale) * 1em);
 		font-weight: 700;
 		line-height: 1;
 		cursor: default;
@@ -485,25 +556,58 @@ export const textEditorStyles = css`
 		box-shadow: var(--components-tooltip-box-shadow);
 	}
 
-	/* "Open link" badge rendered inline right after every real link: a dimmed
-	   external-link icon that brightens to the link colour on hover. */
+	/* "Open link" badge rendered inline right after every real link: a round chip
+	   carrying an external-link icon, so a link can be followed without placing the
+	   caret first. The same badge shape + focus ring as the annotation nub, but a
+	   neutral (not annotation-yellow) fill — it's a link affordance, not a comment. */
 	.cm-link-open {
+		box-sizing: border-box;
 		display: inline-flex;
 		align-items: center;
-		vertical-align: text-bottom;
-		margin-inline-start: var(--primitives-space-4);
-		color: var(--semantics-content-secondary-color);
+		justify-content: center;
+		/* A round chip that fits the line (a heading's tighter line included), kept
+		   square so border-radius renders a full circle. */
+		min-width: var(--_link-badge-size);
+		height: var(--_link-badge-size);
+		border-radius: var(--primitives-corner-radius-full);
+		background-color: var(--_link-badge-background);
+		box-shadow: inset 0 0 0 var(--primitives-border-width-thin) var(--_link-badge-highlight-border);
+		color: var(--_link-badge-content-color);
+		/* Match the annotation nub's optical centring next to the ink. */
+		vertical-align: middle;
+		transform: translateY(-0.05em);
 		text-decoration: none;
 		cursor: pointer;
 	}
 
-	.cm-link-open:hover {
-		color: var(--semantics-links-color);
+	@media (hover: hover) {
+		.cm-link-open:hover {
+			background-color: var(--_link-badge-background-hover);
+			box-shadow: inset 0 0 0 var(--primitives-border-width-thin) var(--_link-badge-highlight-border-hover);
+		}
+	}
+
+	.cm-link-open:active {
+		background-color: var(--_link-badge-background-active);
+		box-shadow: inset 0 0 0 var(--primitives-border-width-thin) var(--_link-badge-highlight-border-active);
 	}
 
 	.cm-link-open nldd-icon {
 		flex: none;
-		width: 1em;
-		height: 1em;
+		/* A fixed fraction of the chip, so the icon keeps its proportion when the chip
+		   shrinks in a tight line (a heading) instead of appearing to grow. */
+		width: calc(0.65 * var(--_link-badge-size));
+		height: calc(0.65 * var(--_link-badge-size));
+	}
+
+	/* The same focus ring as the annotation badge, on keyboard focus only. */
+	.cm-link-open:focus-visible {
+		outline: var(--semantics-focus-ring-outline);
+		outline-offset: var(--semantics-focus-ring-outline-offset);
+		box-shadow: var(--semantics-focus-ring-box-shadow);
+	}
+
+	.cm-link-open:focus:not(:focus-visible) {
+		outline: none;
 	}
 `;

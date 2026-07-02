@@ -2,7 +2,7 @@ import { ViewPlugin, Decoration, type DecorationSet, EditorView, WidgetType, typ
 import { syntaxTree } from '@codemirror/language';
 import { markdown } from '@codemirror/lang-markdown';
 import { GFM } from '@lezer/markdown';
-import { StateField, type EditorState, type Extension, type Range } from '@codemirror/state';
+import { Prec, StateField, type EditorState, type Extension, type Range } from '@codemirror/state';
 import type { SyntaxNode } from '@lezer/common';
 import { MENTION_HREF_PREFIX } from './text-editor.mentions.js';
 import '../../content/icon/icon.js';
@@ -39,7 +39,10 @@ const MARK_NODES = new Set([
 const dimDeco = Decoration.mark({ class: 'cm-md-mark' });
 const classDecoCache: Record<string, Decoration> = {};
 function classDeco(cls: string): Decoration {
-	return (classDecoCache[cls] ??= Decoration.mark({ class: cls }));
+	// inclusiveEnd so a formatting run (heading, bold, …) wraps a trailing widget at
+	// its end — e.g. an annotation badge whose annotation ends the run — instead of
+	// letting that widget fall outside the run's font context.
+	return (classDecoCache[cls] ??= Decoration.mark({ class: cls, inclusiveEnd: true }));
 }
 
 // A code block is tinted as full-width line backgrounds — one filled surface — so
@@ -48,22 +51,58 @@ function classDeco(cls: string): Decoration {
 const codeblockLine = Decoration.line({ class: 'cm-md-codeblock' });
 const codeblockFirstLine = Decoration.line({ class: 'cm-md-codeblock-first' });
 const codeblockLastLine = Decoration.line({ class: 'cm-md-codeblock-last' });
+// Whole-block selection: recolours the full-width line background (padding and
+// rounded corners included), so a fully selected block lights up as one surface
+// — the block analogue of a fully selected inline-code / annotation token.
+const codeblockSelectedLine = Decoration.line({ class: 'cm-md-codeblock-line-selected' });
 
-function addCodeblockLines(state: EditorState, from: number, to: number, sel: { from: number; to: number; empty: boolean }, ranges: Range<Decoration>[]): void {
-	const firstLine = state.doc.lineAt(from).number;
-	const lastLine = state.doc.lineAt(Math.max(from, to - 1)).number;
-	for (let ln = firstLine; ln <= lastLine; ln++) {
+function tintCodeLines(state: EditorState, lineNumbers: number[], sel: { from: number; to: number; empty: boolean }, ranges: Range<Decoration>[]): void {
+	if (lineNumbers.length === 0) return;
+	// The block is "fully selected" when the selection spans from the first content
+	// line's start through the last content line's end (it may reach further). Then
+	// every line background lights up; otherwise only the selected text slice does.
+	const firstLine = state.doc.line(lineNumbers[0]);
+	const lastLine = state.doc.line(lineNumbers[lineNumbers.length - 1]);
+	const blockFullySelected = !sel.empty && sel.from <= firstLine.from && sel.to >= lastLine.to;
+	lineNumbers.forEach((ln, index) => {
 		const line = state.doc.line(ln);
 		ranges.push(codeblockLine.range(line.from));
-		if (ln === firstLine) ranges.push(codeblockFirstLine.range(line.from));
-		if (ln === lastLine) ranges.push(codeblockLastLine.range(line.from));
-		// Darken the selected slice of this line (drawSelection hides ::selection).
-		if (!sel.empty) {
+		if (index === 0) ranges.push(codeblockFirstLine.range(line.from));
+		if (index === lineNumbers.length - 1) ranges.push(codeblockLastLine.range(line.from));
+		if (blockFullySelected) {
+			ranges.push(codeblockSelectedLine.range(line.from));
+		} else if (!sel.empty) {
+			// Darken the selected slice of this line (drawSelection hides ::selection).
 			const f = Math.max(line.from, sel.from);
 			const t = Math.min(line.to, sel.to);
 			if (t > f) ranges.push(classDeco('cm-md-codeblock-selected').range(f, t));
 		}
+	});
+}
+
+// Indented code block (no fences): every line in the node range is content.
+function addCodeblockLines(state: EditorState, from: number, to: number, sel: { from: number; to: number; empty: boolean }, ranges: Range<Decoration>[]): void {
+	const first = state.doc.lineAt(from).number;
+	const last = state.doc.lineAt(Math.max(from, to - 1)).number;
+	const lines: number[] = [];
+	for (let ln = first; ln <= last; ln++) lines.push(ln);
+	tintCodeLines(state, lines, sel, ranges);
+}
+
+// Fenced block: tint the content lines only — the ``` fence lines (and the info
+// string) stay clean. Anchored on the whole FencedCode node, not its CodeText child,
+// so a trailing empty line inside the fence is grey right away; CodeText doesn't cover
+// that blank line, so it used to stay untinted until a keystroke grew the node.
+function addFencedCodeLines(state: EditorState, node: SyntaxNode, sel: { from: number; to: number; empty: boolean }, ranges: Range<Decoration>[]): void {
+	const fenceLines = new Set<number>();
+	for (let child = node.firstChild; child; child = child.nextSibling) {
+		if (child.name === 'CodeMark') fenceLines.add(state.doc.lineAt(child.from).number);
 	}
+	const first = state.doc.lineAt(node.from).number;
+	const last = state.doc.lineAt(Math.max(node.from, node.to - 1)).number;
+	const lines: number[] = [];
+	for (let ln = first; ln <= last; ln++) if (!fenceLines.has(ln)) lines.push(ln);
+	tintCodeLines(state, lines, sel, ranges);
 }
 
 function linkTextRange(link: SyntaxNode): { from: number; to: number } | null {
@@ -108,19 +147,36 @@ function buildMarkDecorations(view: EditorView): DecorationSet {
 					decorateLink(view.state, node.node, ranges);
 					return;
 				}
-				if (node.name === 'CodeText' || node.name === 'CodeBlock') {
+				// Fenced blocks tint from the FencedCode node (covers blank lines too),
+				// indented blocks from CodeBlock. Neither returns false, so the fence
+				// CodeMarks are still visited and dimmed as children.
+				if (node.name === 'FencedCode') {
+					addFencedCodeLines(view.state, node.node, sel, ranges);
+					return;
+				}
+				if (node.name === 'CodeBlock') {
 					addCodeblockLines(view.state, node.from, node.to, sel, ranges);
 					return;
 				}
 				const cls = NODE_CLASS[node.name];
 				if (cls) {
-					ranges.push(classDeco(cls).range(node.from, node.to));
-					// Inline code darkens on selection. drawSelection hides the native
-					// ::selection, so paint the darker tint over the selected slice.
-					if (!sel.empty && cls === 'cm-md-code') {
-						const f = Math.max(node.from, sel.from);
-						const t = Math.min(node.to, sel.to);
-						if (t > f) ranges.push(classDeco('cm-md-code-selected').range(f, t));
+					// Inline code darkens on selection (drawSelection hides the native
+					// ::selection). A *fully* selected chip recolours the base element
+					// itself — one mark with both classes — so it keeps its padding and
+					// rounded corners, like a selected mention/annotation token. The
+					// padless overlay slice (used only for a partial selection below)
+					// would instead square off the chip.
+					const codeFullySelected =
+						cls === 'cm-md-code' && !sel.empty && sel.from <= node.from && sel.to >= node.to;
+					if (codeFullySelected) {
+						ranges.push(classDeco('cm-md-code cm-md-code-selected').range(node.from, node.to));
+					} else {
+						ranges.push(classDeco(cls).range(node.from, node.to));
+						if (!sel.empty && cls === 'cm-md-code') {
+							const f = Math.max(node.from, sel.from);
+							const t = Math.min(node.to, sel.to);
+							if (t > f) ranges.push(classDeco('cm-md-code-selected').range(f, t));
+						}
 					}
 				} else if (MARK_NODES.has(node.name)) {
 					ranges.push(dimDeco.range(node.from, node.to));
@@ -166,12 +222,23 @@ function hangingLineDeco(length: number): Decoration {
 	}));
 }
 
+/** Whether `pos` sits inside a fenced or indented code block — where a leading
+ *  `-`/`1.`/`>` is literal code, not a list or quote marker. */
+function inCodeBlock(state: EditorState, pos: number): boolean {
+	for (let n: SyntaxNode | null = syntaxTree(state).resolveInner(pos, 1); n; n = n.parent) {
+		if (n.name === 'FencedCode' || n.name === 'CodeBlock') return true;
+	}
+	return false;
+}
+
 function buildHangingIndent(state: EditorState): DecorationSet {
 	const ranges: Range<Decoration>[] = [];
 	for (let i = 1; i <= state.doc.lines; i++) {
 		const line = state.doc.line(i);
 		const match = line.text.match(HANGING_RE);
-		if (match && match[1].length) {
+		// Code-block lines are literal text: a leading marker isn't a list/quote, so it
+		// gets no hanging indent.
+		if (match && match[1].length && !inCodeBlock(state, line.from)) {
 			const length = match[1].length;
 			ranges.push(hangingLineDeco(length).range(line.from));
 			ranges.push(prefixMonoDeco.range(line.from, line.from + length));
@@ -258,7 +325,10 @@ export const markdownEditing: Extension = [
 	markdown({ extensions: GFM }),
 	markDecorationPlugin,
 	hangingIndentField,
-	mentionChipField,
+	// Prec.highest keeps the mention chip the innermost decoration, so it nests inside
+	// a heading/bold run and inherits its font (scaling with it) instead of sitting at
+	// the base size as an outer sibling.
+	Prec.highest(mentionChipField),
 	mentionAtomicRanges,
 ];
 

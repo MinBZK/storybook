@@ -10,6 +10,7 @@ import { RangeSetBuilder, type EditorState } from '@codemirror/state';
 import { syntaxTree } from '@codemirror/language';
 import type { SyntaxNode } from '@lezer/common';
 import { MENTION_HREF_PREFIX } from './text-editor.mentions.js';
+import { textCaretBox } from './text-editor.caret.js';
 import '../../content/icon/icon.js';
 
 /* Render a small "open in new tab" badge right after every real (non-mention)
@@ -44,6 +45,15 @@ class LinkOpenWidget extends WidgetType {
 	ignoreEvent(): boolean {
 		return true; // let the anchor handle its own click
 	}
+
+	/** Keep the caret at the badge's right edge text-height, not the badge's own box
+	 *  height (which is taller and would flip with the cursor's arrival direction). */
+	coordsAt(dom: HTMLElement): { left: number; right: number; top: number; bottom: number } | null {
+		const badge = dom.getBoundingClientRect();
+		const box = textCaretBox(dom) ?? { top: badge.top, bottom: badge.bottom };
+		const x = badge.right + parseFloat(getComputedStyle(dom).marginRight);
+		return { left: x, right: x, top: box.top, bottom: box.bottom };
+	}
 }
 
 /** The link's destination, or null for a mention or a link without a URL. */
@@ -66,7 +76,10 @@ function buildBadges(view: EditorView): DecorationSet {
 			enter: (node) => {
 				if (node.name !== 'Link') return;
 				const href = hrefOf(view.state, node.node);
-				if (href) builder.add(node.to, node.to, Decoration.widget({ widget: new LinkOpenWidget(href), side: 1 }));
+				// side -1 draws the badge before the caret, so the caret at the link end
+				// sits to the RIGHT of the badge — text typed there lands after it, not
+				// wedged between the link and the badge.
+				if (href) builder.add(node.to, node.to, Decoration.widget({ widget: new LinkOpenWidget(href), side: -1 }));
 			},
 		});
 	}
