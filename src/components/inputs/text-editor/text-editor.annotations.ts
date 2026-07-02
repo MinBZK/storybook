@@ -48,6 +48,11 @@ export const setAnnotations = StateEffect.define<readonly Annotation[]>();
  *  updates from this, so anchoring lives in one place (the filter). */
 const setAnchored = StateEffect.define<CleanAnn[]>();
 
+/** A drag-move, in CLEAN offsets: the block [from, to) is being relocated so its
+ *  first character lands at `insertAt`. mapPos can't follow moved content, so the
+ *  filter uses this to carry annotations inside the block along with their text. */
+export const annotationMove = StateEffect.define<{ from: number; to: number; insertAt: number }>();
+
 function anchorClean(list: readonly Annotation[], cleanLength: number): CleanAnn[] {
 	return list
 		.map((a) => ({
@@ -262,8 +267,16 @@ const annotationSentinelFilter = EditorState.transactionFilter.of((tr) => {
 		// character typed just inside the end — before the sentinel — grows it, while
 		// one typed just outside — after the sentinel — does not), then back to clean.
 		const oldSents = sentinelPositions(tr.startState.doc.toString());
+		const move = tr.effects.find((e) => e.is(annotationMove))?.value;
 		anns = (tr.startState.field(annotationField, false) ?? [])
 			.map((a) => {
+				// A drag relocates whole annotations with their text. mapPos can't follow
+				// moved content (a delete + a separate insert), so an annotation sitting
+				// fully inside the moved block is translated to its landing spot instead of
+				// being collapsed by the delete.
+				if (move && a.from >= move.from && a.to <= move.to) {
+					return { id: a.id, from: move.insertAt + (a.from - move.from), to: move.insertAt + (a.to - move.from) };
+				}
 				const doc = annToDoc(a, oldSents);
 				const from = tr.changes.mapPos(doc.from, -1);
 				const to = tr.changes.mapPos(doc.to, 1);

@@ -1,6 +1,7 @@
 import { EditorView, ViewPlugin, type ViewUpdate } from '@codemirror/view';
 import { StateEffect, StateField, type Extension } from '@codemirror/state';
-import { stripSentinels } from './text-editor.annotation-sentinels.js';
+import { stripSentinels, docToClean } from './text-editor.annotation-sentinels.js';
+import { annotationMove } from './text-editor.annotations.js';
 
 /* Drag-to-move for selected text. The editor lives in a shadow DOM, where the
  * browser refuses to start a native drag of the selection (the document-level
@@ -180,11 +181,19 @@ class DragMove {
 		if (this.isInside(event.clientX, event.clientY) && pos !== null && (pos < st.from || pos > st.to)) {
 			// Move clean text: any annotation sentinels in the slice are dropped here,
 			// and the document filter re-adds the ones it needs at the new location.
+			const doc = this.view.state.doc.toString();
 			const text = stripSentinels(this.view.state.sliceDoc(st.from, st.to));
 			const insertAt = pos > st.to ? pos - (st.to - st.from) : pos;
+			// Clean-coordinate move info so annotations inside the block travel with it
+			// (drop is always outside the block, so pos is before delFrom or after delTo).
+			const delFrom = docToClean(doc, st.from);
+			const delTo = docToClean(doc, st.to);
+			const cleanPos = docToClean(doc, pos);
+			const cleanInsertAt = cleanPos > delTo ? cleanPos - (delTo - delFrom) : cleanPos;
 			this.view.dispatch({
 				changes: [{ from: st.from, to: st.to }, { from: pos, insert: text }],
 				selection: { anchor: insertAt, head: insertAt + text.length },
+				effects: annotationMove.of({ from: delFrom, to: delTo, insertAt: cleanInsertAt }),
 			});
 		} else {
 			// Dropped outside the editor (or back onto the selection): leave the text

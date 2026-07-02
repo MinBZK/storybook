@@ -2,7 +2,8 @@ import { describe, it, expect, afterEach } from 'vitest';
 import { EditorView } from '@codemirror/view';
 import { fixture, cleanup, waitForUpdate } from '../../../test-utils.ts';
 import './text-editor.ts';
-import { ANNOTATION_SENTINEL as S } from './text-editor.annotation-sentinels.ts';
+import { ANNOTATION_SENTINEL as S, stripSentinels, docToClean } from './text-editor.annotation-sentinels.ts';
+import { annotationMove } from './text-editor.annotations.ts';
 
 /* Caret behaviour around an annotation edge. Each edge has two stops — just inside
  * (grows on typing) and just outside (does not) — thanks to a sentinel character.
@@ -160,6 +161,31 @@ describe('nldd-text-editor annotation caret', () => {
 		await waitForUpdate(el);
 		expect(el.value).toBe('abc  ghi');
 		expect(el.view.state.doc.toString()).not.toContain(S);
+	});
+
+	// Dragging annotated text moves the annotation with it. A drag is a delete + a
+	// separate insert, which mapPos can't follow, so the drag hands the filter a move
+	// hint; an annotation fully inside the block is translated, not collapsed.
+	it('carries an annotation along when its block is dragged', async () => {
+		el = await make('start WORD end', [{ id: 'a1', start: 6, end: 10, quote: 'WORD' }]);
+		const doc: string = el.view.state.doc.toString();
+		// Drag the annotation region (start sentinel through end sentinel) to the end,
+		// mirroring what text-editor.drag.ts dispatches.
+		const dFrom = doc.indexOf('WORD') - 1;
+		const dTo = doc.indexOf('WORD') + 'WORD'.length + 1;
+		const text = stripSentinels(doc.slice(dFrom, dTo));
+		const pos = doc.length;
+		const delFrom = docToClean(doc, dFrom);
+		const delTo = docToClean(doc, dTo);
+		const cleanPos = docToClean(doc, pos);
+		const cleanInsertAt = cleanPos > delTo ? cleanPos - (delTo - delFrom) : cleanPos;
+		el.view.dispatch({
+			changes: [{ from: dFrom, to: dTo }, { from: pos, insert: text }],
+			effects: annotationMove.of({ from: delFrom, to: delTo, insertAt: cleanInsertAt }),
+		});
+		await waitForUpdate(el);
+		expect(annotatedText(el)).toBe('WORD'); // survived the move, still marks WORD
+		expect(el.value.endsWith('WORD')).toBe(true); // and travelled to the drop point
 	});
 
 	// The badge must never wrap onto a line by itself: its last word and the badge
