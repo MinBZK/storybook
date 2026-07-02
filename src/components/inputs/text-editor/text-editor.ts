@@ -79,6 +79,7 @@ import {
 	toggleQuote as cmToggleQuote,
 	toggleLink as cmToggleLink,
 	toggleCodeBlock as cmToggleCodeBlock,
+	clearListMarkerBackward,
 	readActiveFormats,
 	EMPTY_FORMATS,
 	type HeadingLevel,
@@ -199,6 +200,10 @@ export class NLDDTextEditor extends NLDDCodeMirrorElement {
 			drawSelection(),
 			dropCursor(),
 			dragToMove,
+			// Prec.highest so this beats the markdown language's deleteMarkupBackward,
+			// which would otherwise leave alignment whitespace when a non-first list
+			// marker is backspaced. Falls through (returns false) off a list marker.
+			Prec.highest(keymap.of([{ key: 'Backspace', run: clearListMarkerBackward }])),
 			keymap.of([
 				{ key: 'Mod-b', run: (view) => { toggleInlineWrap(view, '**', 'StrongEmphasis'); return true; } },
 				{ key: 'Mod-i', run: (view) => { toggleInlineWrap(view, '*', 'Emphasis'); return true; } },

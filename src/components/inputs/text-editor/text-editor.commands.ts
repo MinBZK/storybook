@@ -254,6 +254,30 @@ export function canOutdentListItem(view: EditorView): boolean {
 	return !!match && match[1].length > 0;
 }
 
+/** Backspace at a list item's content start (right after the marker) removes the
+ *  marker and its trailing space — the item's own indent is kept — so a top-level
+ *  item cleanly returns to column 0 for every number, not just the first. CodeMirror's
+ *  default deleteMarkupBackward instead aligns the content under the previous item,
+ *  leaving stray whitespace on items 2, 3, … Returns false (so other handlers run)
+ *  unless the caret sits exactly at a list marker's end outside a code block. */
+export function clearListMarkerBackward(view: EditorView): boolean {
+	const { state } = view;
+	const sel = state.selection.main;
+	if (!sel.empty) return false;
+	const line = state.doc.lineAt(sel.head);
+	const marker = line.text.match(/^(\s*)(?:\d+[.)]|[-*+])\s/);
+	if (!marker || sel.head !== line.from + marker[0].length) return false;
+	// A leading marker in a code block is literal text, not a list.
+	if (enclosing(view, line.from, 'FencedCode') || enclosing(view, line.from, 'CodeBlock')) return false;
+	const from = line.from + marker[1].length; // keep the item's own indent
+	view.dispatch({
+		changes: { from, to: line.from + marker[0].length },
+		selection: { anchor: from },
+		userEvent: 'delete.backward',
+	});
+	return true;
+}
+
 export function toggleQuote(view: EditorView): void {
 	const re = /^(\s*)>\s?/;
 	const allQuoted = everySelectedLine(view, (t) => re.test(t) || t.trim() === '');

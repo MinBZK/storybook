@@ -96,6 +96,19 @@ describe('nldd-text-editor ordered-list renumbering (integration)', () => {
 		cleanup(elA);
 	});
 
+	// Backspacing a non-first marker must clear it as cleanly as the first item, not
+	// leave the alignment whitespace CodeMirror's deleteMarkupBackward would insert.
+	it('clears a non-first list marker without leaving whitespace', async () => {
+		const elB = await fixture<El>('<nldd-text-editor accessible-label="t"></nldd-text-editor>');
+		elB.value = '1. a\n2. ';
+		await elB.updateComplete; await waitForUpdate(elB);
+		elB.view.dispatch({ selection: { anchor: elB.view.state.doc.length } }); // end of "2. "
+		elB.view.contentDOM.dispatchEvent(new KeyboardEvent('keydown', { key: 'Backspace', bubbles: true, cancelable: true }));
+		await waitForUpdate(elB);
+		expect(elB.value).toBe('1. a\n'); // marker gone, no stray leading space
+		cleanup(elB);
+	});
+
 	// The renumber filter runs before the annotation filter (Prec.low), so a marker
 	// that changes width maps the token on its line too instead of drifting it.
 	it('does not drift an annotation when a marker would grow', async () => {
