@@ -178,6 +178,10 @@ function buildMarkDecorations(view: EditorView): DecorationSet {
 							if (t > f) ranges.push(classDeco('cm-md-code-selected').range(f, t));
 						}
 					}
+				} else if (node.name === 'ListMark' && /^[-*+]$/.test(view.state.sliceDoc(node.from, node.to))) {
+					// A bullet marker (- * +) renders as a styled filled dot; ordered
+					// markers (1.) and other syntax stay dimmed literal text.
+					ranges.push(classDeco('cm-md-mark cm-md-bullet').range(node.from, node.to));
 				} else if (MARK_NODES.has(node.name)) {
 					ranges.push(dimDeco.range(node.from, node.to));
 				}

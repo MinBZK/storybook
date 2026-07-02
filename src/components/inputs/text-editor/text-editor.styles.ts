@@ -27,6 +27,10 @@ export const textEditorStyles = css`
 		/* JetBrains Mono advance (600/1000 em) at the marker size; leading
 		   list/quote markers are mono so the hanging indent equals their width. */
 		--_marker-advance: calc(0.6 * var(--_marker-font-size));
+		/* Bullet-list dot: size relative to the marker, and the dimmed marker colour so
+		   it reads as syntax. Tweak these to restyle every bullet. */
+		--_bullet-size: 0.34em;
+		--_bullet-color: var(--semantics-content-secondary-color);
 		--_heading-marker-scale: 75%;
 		--_token-corner-radius: var(--primitives-corner-radius-sm);
 		--_token-block-padding: 0.15em;
@@ -392,6 +396,26 @@ export const textEditorStyles = css`
 		font-size: 1em;
 	}
 
+	/* Bullet-list marker: hide the literal dash (its box keeps the mono advance so
+	   wrapped lines still align under the text) and draw a filled dot in its place.
+	   Fully styleable via --_bullet-size / --_bullet-color above. */
+	.cm-md-bullet {
+		position: relative;
+		color: transparent;
+	}
+
+	.cm-md-bullet::before {
+		content: '';
+		position: absolute;
+		top: 50%;
+		left: 50%;
+		width: var(--_bullet-size);
+		height: var(--_bullet-size);
+		transform: translate(-50%, -50%);
+		border-radius: var(--primitives-corner-radius-full);
+		background-color: var(--_bullet-color);
+	}
+
 	/* The leading prefix (and anything nested in it, e.g. a blockquote's own
 	   span) renders at the marker size, so its width stays prefixLength × the
 	   mono advance and the hanging indent lines up exactly. */
@@ -474,9 +498,10 @@ export const textEditorStyles = css`
 		background-color: var(--_annotation-token-badge-background);
 		box-shadow: inset 0 0 0 var(--primitives-border-width-thin) var(--_annotation-token-badge-highlight-border);
 		color: var(--_annotation-token-badge-content-color);
-		/* vertical-align: middle lands the nub on the line-box centre, which reads a
-		   touch low next to the ink (the optical middle of the mixed-case text sits
-		   higher than the x-height centre); nudge up onto it. */
+		/* vertical-align: middle lands the nub ~1px below the text's em-box centre, and
+		   the optical middle of the ink sits higher again, so it reads low; nudge up onto
+		   it. The em is the badge's own (scaled-down) font size, so the value is larger
+		   than it looks and scales with the token in headings. */
 		vertical-align: middle;
 		transform: translateY(-0.08em);
 		font-family: var(--primitives-font-family-body);
