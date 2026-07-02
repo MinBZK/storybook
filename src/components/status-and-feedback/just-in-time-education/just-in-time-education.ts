@@ -177,8 +177,16 @@ export class NLDDJustInTimeEducation extends withTranslations<NLDDJustInTimeEduc
 	private _open(): void {
 		const container = this._containerEl;
 		if (!container) return;
-		if (!container.matches(':popover-open')) container.showPopover();
+		if (!container.matches(':popover-open')) {
+			// Hold it invisible until Floating UI has placed it, so it fades in at the
+			// control instead of flashing at the popover's default position.
+			container.removeAttribute('positioned');
+			container.showPopover();
+		}
 		this._startPositioning();
+		// Safety net: with no control to anchor to, positioning never runs — reveal it
+		// anyway so the opacity gate can't leave it stuck invisible.
+		if (!this._getControl()) container.setAttribute('positioned', '');
 		// Announce the tip text via a polite live region. Focusing into the callout
 		// (dismissable, below) only makes AT read the dialog label and the focused
 		// element, not the tip body, so the live region carries the actual message;
@@ -324,6 +332,7 @@ export class NLDDJustInTimeEducation extends withTranslations<NLDDJustInTimeEduc
 		});
 		container.style.left = `${x}px`;
 		container.style.top = `${y}px`;
+		container.setAttribute('positioned', ''); // placed — let it fade in (see _open)
 		this._updateArrow(control, container, side);
 	}
 

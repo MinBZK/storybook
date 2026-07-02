@@ -134,7 +134,12 @@ export class NLDDTooltip extends LitElement {
 			const tooltip = this._getTooltipElement();
 			if (tooltip) {
 				if (this._visible) {
-					if (!tooltip.matches(':popover-open')) tooltip.showPopover();
+					if (!tooltip.matches(':popover-open')) {
+						// Hold it invisible until Floating UI has placed it, so it fades in at
+						// the right spot instead of flashing at the popover's default position.
+						tooltip.removeAttribute('positioned');
+						tooltip.showPopover();
+					}
 					this._updatePosition();
 				} else if (tooltip.matches(':popover-open')) {
 					tooltip.hidePopover();
@@ -329,7 +334,8 @@ export class NLDDTooltip extends LitElement {
 		const version = ++this._positionVersion;
 		const trigger = this._getTriggerElement();
 		const tooltip = this._getTooltipElement();
-		if (!trigger || !tooltip) return;
+		// No trigger to anchor to: reveal it anyway so the opacity gate can't strand it.
+		if (!trigger || !tooltip) { tooltip?.setAttribute('positioned', ''); return; }
 
 		/* Wait for custom fonts so the first measurement matches the
 		 * steady-state width. Without this, on a fresh page load the
@@ -357,6 +363,7 @@ export class NLDDTooltip extends LitElement {
 		if (version !== this._positionVersion) return;
 		tooltip.style.left = `${x}px`;
 		tooltip.style.top = `${y}px`;
+		tooltip.setAttribute('positioned', ''); // placed — let it fade in (see _visible handler)
 	}
 
 	override disconnectedCallback(): void {

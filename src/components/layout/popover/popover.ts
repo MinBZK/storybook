@@ -154,6 +154,7 @@ export class NLDDPopover extends LitElement {
 		if (!this.hasAttribute('popover')) this.setAttribute('popover', '');
 		if (!this.hasAttribute('tabindex')) this.setAttribute('tabindex', '-1');
 		if (!this.hasAttribute('role')) this.setAttribute('role', 'dialog');
+		this.addEventListener('beforetoggle', this._handleBeforeToggle);
 		this.addEventListener('toggle', this._handleToggle);
 		this.addEventListener('keydown', this._handleKeydown);
 		document.addEventListener('pointerdown', this._handleDocumentPointerdown, true);
@@ -176,6 +177,7 @@ export class NLDDPopover extends LitElement {
 
 	override disconnectedCallback(): void {
 		super.disconnectedCallback();
+		this.removeEventListener('beforetoggle', this._handleBeforeToggle);
 		this.removeEventListener('toggle', this._handleToggle);
 		this.removeEventListener('keydown', this._handleKeydown);
 		document.removeEventListener('pointerdown', this._handleDocumentPointerdown, true);
@@ -471,6 +473,15 @@ export class NLDDPopover extends LitElement {
 		}
 	};
 
+	// On the desktop (Floating UI) layout a popover paints at its default position the
+	// instant it opens, before the async reposition runs — a flash in the wrong place.
+	// Clearing `positioned` here (beforetoggle fires before the popover is shown) keeps
+	// it hidden via CSS until reposition() has placed it. (The sm bottom-sheet is
+	// CSS-animated, so its hide rule is scoped to md; this is harmless there.)
+	private _handleBeforeToggle = (event: Event): void => {
+		if ((event as ToggleEvent).newState === 'open') this.removeAttribute('positioned');
+	};
+
 	private _handleToggle = async (event: Event): Promise<void> => {
 		const toggleEvent = event as ToggleEvent;
 		this._isOpen = toggleEvent.newState === 'open';
@@ -488,6 +499,7 @@ export class NLDDPopover extends LitElement {
 
 		this._previousFocus = (document.activeElement as HTMLElement | null) ?? this._getAnchorEl() as HTMLElement | null;
 		await this.reposition();
+		this.setAttribute('positioned', ''); // placed — reveal it (see _handleBeforeToggle)
 		// Start scroll/resize/layout-change tracking. Floating UI's autoUpdate
 		// luistert naar ancestor scroll, window resize, en ResizeObserver op
 		// de anchor — dekt window-resize binnen viewport-breakpoint, dynamic

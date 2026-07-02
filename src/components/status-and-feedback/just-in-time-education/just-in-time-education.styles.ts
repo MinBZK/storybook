@@ -142,6 +142,14 @@ export const justInTimeEducationStyles = css`
 			overlay var(--_show-duration) allow-discrete;
 	}
 
+	/* Stay invisible (no fade) until Floating UI has placed it, so the fade-in plays at
+	   the control rather than flashing at the popover's default spot. The positioned
+	   attribute is set once _updatePosition writes the coordinates. */
+	.just-in-time-education:popover-open:not([positioned]) {
+		opacity: 0;
+		transition: none;
+	}
+
 	@starting-style {
 		.just-in-time-education:popover-open {
 			opacity: 0;
