@@ -35,6 +35,7 @@ import { customElement, property } from 'lit/decorators.js';
 import { buttonStyles } from './button.styles.js';
 import { template } from './button.template.js';
 import { withTranslations } from '../../../utilities/with-translations.js';
+import { reflectNonDefault } from '../../../utilities/reflect-non-default.js';
 import { nlddButtonTranslations } from './button.i18n.js';
 import './../../content/icon/icon.js';
 import './../../status-and-feedback/activity-indicator/activity-indicator.js';
@@ -69,7 +70,7 @@ export class NLDDButton extends withTranslations(LitElement, nlddButtonTranslati
 	@property({ type: String, reflect: true })
 	variant: Variant = 'neutral-tinted';
 
-	@property({ type: String, reflect: true })
+	@property({ reflect: true, converter: reflectNonDefault<Size>('md') })
 	size: Size = 'md';
 
 	/** Horizontal alignment of the button content. Most visible with width="full" or a fixed width. */

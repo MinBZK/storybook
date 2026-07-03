@@ -38,6 +38,7 @@
  */
 import { LitElement } from 'lit';
 import { customElement, property, state } from 'lit/decorators.js';
+import { reflectNonDefault } from '../../../utilities/reflect-non-default.js';
 import { toolbarStyles, toolbarItemStyles, toolbarTitleStyles } from './toolbar.styles.js';
 import { template, toolbarItemTemplate, toolbarTitleTemplate, type ToolbarChild } from './toolbar.template.js';
 import { nlddToolbarTranslations } from './toolbar.i18n.js';
@@ -131,7 +132,7 @@ export class NLDDToolbarTitle extends LitElement {
 	@property({ type: String, attribute: 'supporting-text' })
 	supportingText = '';
 
-	@property({ type: String, reflect: true })
+	@property({ reflect: true, converter: reflectNonDefault<TitleAlign>('left') })
 	align: TitleAlign = 'left';
 
 	@property({ reflect: true, converter: sizingConverter })

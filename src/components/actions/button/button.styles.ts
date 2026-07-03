@@ -561,6 +561,7 @@ export const buttonStyles = css`
 		white-space: nowrap;
 	}
 
+	:host(:not([size])) .button.has-supporting-text,
 	:host([size="md"]) .button.has-supporting-text {
 		--_font: var(--semantics-buttons-sm-primary-text-font);
 		--_icon-size: var(--semantics-buttons-md-with-supporting-text-icon-size);
