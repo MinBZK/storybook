@@ -39,6 +39,7 @@
  */
 import { LitElement, nothing } from 'lit';
 import { customElement, property, state } from 'lit/decorators.js';
+import { reflectNonDefault } from '../../../utilities/reflect-non-default.js';
 import { progressCircleStyles, progressCircleSegmentIndicatorStyles } from './progress-circle.styles.js';
 import { progressCircleTemplate, getCircumference, getStrokeWidthPx } from './progress-circle.template.js';
 import { nlddProgressCircleTranslations } from './progress-circle.i18n.js';
@@ -75,7 +76,7 @@ export class NLDDProgressCircleSegmentIndicator extends LitElement {
 	@property({ type: Number, reflect: true })
 	value = 0;
 
-	@property({ type: String, reflect: true })
+	@property({ reflect: true, converter: reflectNonDefault<ProgressCircleColor>('accent') })
 	color: ProgressCircleColor = 'accent';
 
 	@property({ type: String, reflect: true })
@@ -106,10 +107,10 @@ export class NLDDProgressCircle extends LitElement {
 	@property({ type: Number, reflect: true })
 	value: number | null = null;
 
-	@property({ type: String, reflect: true })
+	@property({ reflect: true, converter: reflectNonDefault<ProgressCircleColor>('accent') })
 	color: ProgressCircleColor = 'accent';
 
-	@property({ type: String, reflect: true })
+	@property({ reflect: true, converter: reflectNonDefault<ProgressCircleSize>('28') })
 	size: ProgressCircleSize = '28';
 
 	@property({ type: String, reflect: true })

@@ -42,6 +42,7 @@
  */
 import { LitElement, html } from 'lit';
 import { customElement, property, state } from 'lit/decorators.js';
+import { reflectNonDefault } from '../../../utilities/reflect-non-default.js';
 import { progressBarStyles, progressBarSegmentIndicatorStyles } from './progress-bar.styles.js';
 import { progressBarTemplate } from './progress-bar.template.js';
 import { nlddProgressBarTranslations } from './progress-bar.i18n.js';
@@ -78,7 +79,7 @@ export class NLDDProgressBarSegmentIndicator extends LitElement {
 	@property({ type: Number, reflect: true })
 	value = 0;
 
-	@property({ type: String, reflect: true })
+	@property({ reflect: true, converter: reflectNonDefault<ProgressBarColor>('accent') })
 	color: ProgressBarColor = 'accent';
 
 	@property({ type: String, reflect: true })
@@ -144,10 +145,10 @@ export class NLDDProgressBar extends LitElement {
 	@property({ type: Number, reflect: true })
 	value: number | null = null;
 
-	@property({ type: String, reflect: true })
+	@property({ reflect: true, converter: reflectNonDefault<ProgressBarColor>('accent') })
 	color: ProgressBarColor = 'accent';
 
-	@property({ type: String, reflect: true })
+	@property({ reflect: true, converter: reflectNonDefault<ProgressBarSize>('md') })
 	size: ProgressBarSize = 'md';
 
 	@property({ type: String, reflect: true })

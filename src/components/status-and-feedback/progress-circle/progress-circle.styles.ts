@@ -40,7 +40,6 @@ export const progressCircleStyles = css`
 	:host([size="16"]) { --_size: var(--primitives-space-16); --_stroke-width: calc(3px * 100 / 16); }
 	:host([size="20"]) { --_size: var(--primitives-space-20); --_stroke-width: calc(4px * 100 / 20); }
 	:host([size="24"]) { --_size: var(--primitives-space-24); --_stroke-width: calc(4px * 100 / 24); }
-	:host([size="28"]) { --_size: var(--primitives-space-28); --_stroke-width: calc(4px * 100 / 28); }
 	:host([size="32"]) { --_size: var(--primitives-space-32); --_stroke-width: calc(5px * 100 / 32); }
 	:host([size="40"]) { --_size: var(--primitives-space-40); --_stroke-width: calc(5px * 100 / 40); }
 	:host([size="44"]) { --_size: var(--primitives-space-44); --_stroke-width: calc(6px * 100 / 44); }
@@ -171,7 +170,6 @@ export const progressCircleStyles = css`
 	}
 
 	:host([color="neutral"]) { --_indeterminate-background-color: var(--semantics-categories-neutral-filled-background-color); --_indeterminate-border-color: var(--semantics-categories-neutral-filled-highlight-border-color); }
-	:host([color="accent"]) { --_indeterminate-background-color: var(--semantics-categories-accent-filled-background-color); --_indeterminate-border-color: var(--semantics-categories-accent-filled-highlight-border-color); }
 	:host([color="success"]) { --_indeterminate-background-color: var(--semantics-categories-success-filled-background-color); --_indeterminate-border-color: var(--semantics-categories-success-filled-highlight-border-color); }
 	:host([color="warning"]) { --_indeterminate-background-color: var(--semantics-categories-warning-filled-background-color); --_indeterminate-border-color: var(--semantics-categories-warning-filled-highlight-border-color); }
 	:host([color="critical"]) { --_indeterminate-background-color: var(--semantics-categories-critical-filled-background-color); --_indeterminate-border-color: var(--semantics-categories-critical-filled-highlight-border-color); }

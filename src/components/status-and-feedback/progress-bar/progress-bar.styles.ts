@@ -40,7 +40,6 @@ export const progressBarStyles = css`
 	}
 
 	:host([size="sm"]) { --_height: var(--components-progress-bar-sm-height); }
-	:host([size="md"]) { --_height: var(--components-progress-bar-md-height); }
 	:host([size="lg"]) { --_height: var(--components-progress-bar-lg-height); }
 
 	:host([mode="distribution"]) {
@@ -52,7 +51,6 @@ export const progressBarStyles = css`
 	/* ## Indeterminate fill + border colour follow the variant; default is accent (blue) */
 
 	:host([color="neutral"]) { --_indeterminate-background-color: var(--semantics-categories-neutral-filled-background-color); --_indeterminate-border-color: var(--semantics-categories-neutral-filled-highlight-border-color); }
-	:host([color="accent"]) { --_indeterminate-background-color: var(--semantics-categories-accent-filled-background-color); --_indeterminate-border-color: var(--semantics-categories-accent-filled-highlight-border-color); }
 	:host([color="success"]) { --_indeterminate-background-color: var(--semantics-categories-success-filled-background-color); --_indeterminate-border-color: var(--semantics-categories-success-filled-highlight-border-color); }
 	:host([color="warning"]) { --_indeterminate-background-color: var(--semantics-categories-warning-filled-background-color); --_indeterminate-border-color: var(--semantics-categories-warning-filled-highlight-border-color); }
 	:host([color="critical"]) { --_indeterminate-background-color: var(--semantics-categories-critical-filled-background-color); --_indeterminate-border-color: var(--semantics-categories-critical-filled-highlight-border-color); }
@@ -282,10 +280,6 @@ export const progressBarSegmentIndicatorStyles = css`
 	:host([color="neutral"]) {
 		--_background-color: var(--semantics-categories-neutral-filled-background-color);
 		--_border-color: var(--semantics-categories-neutral-filled-highlight-border-color);
-	}
-	:host([color="accent"]) {
-		--_background-color: var(--semantics-categories-accent-filled-background-color);
-		--_border-color: var(--semantics-categories-accent-filled-highlight-border-color);
 	}
 	:host([color="success"]) {
 		--_background-color: var(--semantics-categories-success-filled-background-color);
