@@ -55,7 +55,7 @@ export class NLDDTabBarItem extends LitElement {
 	// call in updated() which writes the resolved value to the same attribute.
 	private _authorVariant: 'icon-and-text' | 'text' | 'icon' | '' = '';
 
-	@property({ type: String })
+	@property({ reflect: true, converter: reflectNonDefault<string>('') })
 	text = '';
 
 	/** Icon name for nldd-icon. The icon and icon-and-text variants show a

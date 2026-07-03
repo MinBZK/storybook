@@ -15,6 +15,7 @@
 
 import { LitElement, type PropertyValues } from 'lit';
 import { customElement, property, query, state } from 'lit/decorators.js';
+import { reflectNonDefault } from '../../../utilities/reflect-non-default.js';
 import { menuBarStyles } from './menu-bar.styles.js';
 import { template } from './menu-bar.template.js';
 import { withTranslations } from '../../../utilities/with-translations.js';
@@ -36,7 +37,7 @@ interface PopoverMenu extends HTMLElement {
 export class NLDDMenuBar extends withTranslations(LitElement, nlddMenuBarTranslations) {
 	static override styles = menuBarStyles;
 
-	@property({ type: String, attribute: 'overflow-text' })
+	@property({ reflect: true, attribute: 'overflow-text', converter: reflectNonDefault<string>('') })
 	overflowText = '';
 
 	@property({ type: String, attribute: 'accessible-label' })

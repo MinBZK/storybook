@@ -23,6 +23,7 @@
 
 import { LitElement } from 'lit';
 import { customElement, property, state } from 'lit/decorators.js';
+import { reflectNonDefault } from '../../../utilities/reflect-non-default.js';
 import { topTitleBarStyles } from './top-title-bar.styles.js';
 import { topTitleBarTemplate } from './top-title-bar.template.js';
 import type { NLDDPage } from '../../layout/page/page.js';
@@ -31,22 +32,22 @@ import type { NLDDPage } from '../../layout/page/page.js';
 export class NLDDTopTitleBar extends LitElement {
 	static override styles = topTitleBarStyles;
 
-	@property({ type: String })
+	@property({ reflect: true, converter: reflectNonDefault<string>('') })
 	text = '';
 
-	@property({ type: String, attribute: 'supporting-text' })
+	@property({ reflect: true, attribute: 'supporting-text', converter: reflectNonDefault<string>('') })
 	supportingText = '';
 
 	@property({ type: String, attribute: 'collapse-anchor' })
 	collapseAnchor = '';
 
-	@property({ type: String, attribute: 'back-text' })
+	@property({ reflect: true, attribute: 'back-text', converter: reflectNonDefault<string>('') })
 	backText = '';
 
 	@property({ type: String, attribute: 'back-href' })
 	backHref = '';
 
-	@property({ type: String, attribute: 'dismiss-text' })
+	@property({ reflect: true, attribute: 'dismiss-text', converter: reflectNonDefault<string>('') })
 	dismissText = '';
 
 	@state()
