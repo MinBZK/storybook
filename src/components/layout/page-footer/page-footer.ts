@@ -22,6 +22,7 @@
  */
 import { LitElement, type PropertyValues } from 'lit';
 import { customElement, property, state } from 'lit/decorators.js';
+import { reflectNonDefault } from '../../../utilities/reflect-non-default.js';
 import {
 	pageFooterStyles,
 	pageFooterLegalBarStyles,
@@ -53,7 +54,7 @@ export class NLDDPageFooterLegalBarItem extends LitElement {
 	@property({ type: String, reflect: true })
 	href?: string;
 
-	@property({ type: String, reflect: true })
+	@property({ reflect: true, converter: reflectNonDefault<string>('') })
 	text = '';
 
 	override render() {

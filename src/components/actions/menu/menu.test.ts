@@ -426,7 +426,8 @@ describe('nldd-menu filter', () => {
 		expect(items[0].getAttribute('query')).toBe('aa');
 		expect(items[0].hasAttribute('hidden')).toBe(false);
 		expect(items[1].hasAttribute('hidden')).toBe(true);
-		expect(items[1].getAttribute('query')).toBe('');
+		expect((items[1] as unknown as { query: string }).query).toBe('');
+		expect(items[1].hasAttribute('query')).toBe(false);
 	});
 
 	it('clears all queries when query is empty', async () => {

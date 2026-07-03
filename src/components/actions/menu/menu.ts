@@ -57,7 +57,7 @@ if (!customElements.get('nldd-menu-divider')) {
 export class NLDDMenuGroup extends LitElement {
 	static override styles = menuGroupStyles;
 
-	@property({ type: String, reflect: true })
+	@property({ reflect: true, converter: reflectNonDefault<string>('') })
 	text = '';
 
 	// SSR caveat: this counter is per module instance, not per render. If
@@ -115,7 +115,7 @@ if (!customElements.get('nldd-menu-group')) {
 export class NLDDMenuItem extends LitElement {
 	static override styles = menuItemStyles;
 
-	@property({ type: String, reflect: true })
+	@property({ reflect: true, converter: reflectNonDefault<string>('') })
 	text = '';
 
 	@property({ type: String, reflect: true })
@@ -124,22 +124,22 @@ export class NLDDMenuItem extends LitElement {
 	@property({ type: String, reflect: true })
 	href = '';
 
-	@property({ type: String, reflect: true })
+	@property({ reflect: true, converter: reflectNonDefault<string>('') })
 	aliases = '';
 
-	@property({ type: String, reflect: true })
+	@property({ reflect: true, converter: reflectNonDefault<string>('') })
 	details = '';
 
-	@property({ type: String, reflect: true })
+	@property({ reflect: true, converter: reflectNonDefault<string>('') })
 	shortcut = '';
 
-	@property({ type: String, reflect: true, attribute: 'shortcut-mac' })
+	@property({ reflect: true, attribute: 'shortcut-mac', converter: reflectNonDefault<string>('') })
 	shortcutMac = '';
 
-	@property({ type: String, reflect: true, attribute: 'shortcut-windows' })
+	@property({ reflect: true, attribute: 'shortcut-windows', converter: reflectNonDefault<string>('') })
 	shortcutWindows = '';
 
-	@property({ type: String, reflect: true, attribute: 'shortcut-linux' })
+	@property({ reflect: true, attribute: 'shortcut-linux', converter: reflectNonDefault<string>('') })
 	shortcutLinux = '';
 
 	@property({ type: String, reflect: true })
@@ -157,7 +157,7 @@ export class NLDDMenuItem extends LitElement {
 	@property({ type: Boolean, reflect: true })
 	disabled = false;
 
-	@property({ type: String, reflect: true })
+	@property({ reflect: true, converter: reflectNonDefault<string>('') })
 	query = '';
 
 	@property({ reflect: true, attribute: 'query-mark-mode', converter: reflectNonDefault<QueryMarkMode>('predictive') })
@@ -368,10 +368,10 @@ export class NLDDMenu extends LitElement {
 	@property({ reflect: true, converter: reflectNonDefault<'menu' | 'listbox'>('menu') })
 	variant: 'menu' | 'listbox' = 'menu';
 
-	@property({ type: String, attribute: 'empty-text' })
+	@property({ reflect: true, attribute: 'empty-text', converter: reflectNonDefault<string>('') })
 	emptyText = '';
 
-	@property({ type: String, attribute: 'empty-supporting-text' })
+	@property({ reflect: true, attribute: 'empty-supporting-text', converter: reflectNonDefault<string>('') })
 	emptySupportingText = '';
 
 

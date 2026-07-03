@@ -62,7 +62,7 @@ export class NLDDCodeViewer extends NLDDCodeMirrorElement {
 	@property({ reflect: true, converter: reflectNonDefault<'tinted' | 'base'>('tinted') })
 	background: 'tinted' | 'base' = 'tinted';
 
-	@property({ type: String, reflect: true })
+	@property({ reflect: true, converter: reflectNonDefault<string>('') })
 	language = '';
 
 	/** Hide the copy-to-clipboard button (shown by default). */

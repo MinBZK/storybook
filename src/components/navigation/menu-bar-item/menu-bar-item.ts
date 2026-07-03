@@ -53,7 +53,7 @@ interface PopoverMenu extends HTMLElement {
 export class NLDDMenuBarItem extends LitElement {
 	static override styles = menuBarItemStyles;
 
-	@property({ type: String, reflect: true })
+	@property({ reflect: true, converter: reflectNonDefault<string>('') })
 	text = '';
 
 	@property({ type: Boolean, reflect: true })

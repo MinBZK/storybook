@@ -72,7 +72,7 @@ const DEFAULT_HIDE_DELAY_MS = 50;
 export class NLDDTooltip extends LitElement {
 	static override styles = tooltipStyles;
 
-	@property({ type: String, reflect: true })
+	@property({ reflect: true, converter: reflectNonDefault<string>('') })
 	text = '';
 
 	/** Programmatically force the tooltip visible regardless of hover/focus. */
