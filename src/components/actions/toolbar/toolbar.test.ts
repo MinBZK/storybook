@@ -278,6 +278,42 @@ describe('nldd-toolbar', () => {
 		expect(overflowButton?.getAttribute('size')).toBe('lg');
 	});
 
+	it('forwards a select from an overflow clone to the original item', async () => {
+		el = await fixture(`
+			<nldd-toolbar>
+				<nldd-toolbar-item slot="start" label="Item A">
+					<nldd-icon-button aria-label="A"></nldd-icon-button>
+					<nldd-menu-item slot="overflow" text="A"></nldd-menu-item>
+				</nldd-toolbar-item>
+			</nldd-toolbar>
+		`);
+		await waitForUpdate(el);
+
+		const original = el.querySelector('nldd-menu-item[slot="overflow"]')!;
+		let fired = false;
+		original.addEventListener('select', () => { fired = true; });
+
+		// The test env has no real layout, so force the item into overflow and
+		// build the clone menu directly.
+		const tb = el as unknown as {
+			_createMenu(): void;
+			_syncMenuItems(): void;
+			_getPrioritizedItems(): { id: number; overflowItems: Element[] }[];
+			_overflowIds: Set<number>;
+			_menu: HTMLElement;
+		};
+		tb._createMenu();
+		const child = tb._getPrioritizedItems().find(c => c.overflowItems.length > 0)!;
+		tb._overflowIds = new Set([child.id]);
+		tb._syncMenuItems();
+
+		const clone = tb._menu.querySelector('nldd-menu-item');
+		expect(clone).not.toBeNull();
+		clone!.dispatchEvent(new CustomEvent('select', { bubbles: true, composed: true }));
+
+		expect(fired).toBe(true);
+	});
+
 	// ## MutationObserver
 
 	it('rebuilds children when a new item is added', async () => {

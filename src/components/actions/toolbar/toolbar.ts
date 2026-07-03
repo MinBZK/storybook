@@ -83,6 +83,12 @@ export class NLDDToolbarItem extends LitElement {
 	@property({ type: String })
 	label = '';
 
+	// NB: read via getAttribute('priority') by the parent toolbar, and
+	// hasAttribute('priority') distinguishes an explicit priority from the
+	// default. So set it as an ATTRIBUTE (`priority="2"`), not a bound property
+	// (`el.priority = 2` / Vue's `:priority`) — the latter never reaches the
+	// attribute. Not reflected on purpose: reflecting would stamp the default 0
+	// onto every item and break that hasAttribute("explicit?") signal.
 	@property({ type: Number })
 	priority = 0;
 
@@ -210,6 +216,10 @@ export class NLDDToolbar extends LitElement {
 
 	private _childIds = new WeakMap<Element, number>();
 	private _idCounter = 0;
+	/** Maps the stamped `data-toolbar-oid` of an overflow item (and its
+	 *  descendants) back to the original element, so a clone's `select` can be
+	 *  forwarded to the original. Rebuilt on every _syncMenuItems. */
+	private _overflowOriginalById = new Map<string, Element>();
 	private _itemWidths = new Map<number, number>();
 	private _observer: MutationObserver | null = null;
 	private _resizeObserver: ResizeObserver | null = null;
@@ -300,9 +310,34 @@ export class NLDDToolbar extends LitElement {
 		menu.addEventListener('toggle', (event: Event) => {
 			this._menuOpen = (event as ToggleEvent).newState === 'open';
 		});
+		menu.addEventListener('select', this._onOverflowMenuSelect);
 		document.body.appendChild(menu);
 		this._menu = menu;
 	}
+
+	/** The overflow menu holds CLONES of the slotted overflow items (see
+	 *  _syncMenuItems), so a clone's `select` never reaches the original element's
+	 *  listeners. Forward it: map the clicked clone back to its original via the
+	 *  `data-toolbar-oid` stamped at clone time, then re-dispatch `select` on the
+	 *  original so a consumer's `@select` handler (or a live-bound attribute) on
+	 *  the real overflow item fires. */
+	private _onOverflowMenuSelect = (event: Event): void => {
+		let oid: string | null = null;
+		for (const node of event.composedPath()) {
+			if (node instanceof Element && node.hasAttribute('data-toolbar-oid')) {
+				oid = node.getAttribute('data-toolbar-oid');
+				break;
+			}
+		}
+		if (!oid) return;
+		const original = this._overflowOriginalById.get(oid);
+		if (!original) return;
+		original.dispatchEvent(new CustomEvent('select', {
+			bubbles: true,
+			composed: true,
+			detail: (event as CustomEvent).detail,
+		}));
+	};
 
 	private _syncMenuAnchor(): void {
 		if (!this._menu) return;
@@ -342,6 +377,25 @@ export class NLDDToolbar extends LitElement {
 	private _syncMenuItems(): void {
 		if (!this._menu) return;
 		this._menu.innerHTML = '';
+		this._overflowOriginalById.clear();
+
+		// Stamp the original (and every descendant) with a stable id — copied into
+		// the clone by cloneNode — so _onOverflowMenuSelect can map a clone's
+		// `select` back to the original. `data-toolbar-oid` is outside the
+		// observer's attributeFilter, so stamping never retriggers a re-sync.
+		const cloneWithForwarding = (el: Element): Element => {
+			for (const node of [el, ...el.querySelectorAll('*')]) {
+				let oid = node.getAttribute('data-toolbar-oid');
+				if (!oid) {
+					oid = `oid-${this._idCounter++}`;
+					node.setAttribute('data-toolbar-oid', oid);
+				}
+				this._overflowOriginalById.set(oid, node);
+			}
+			const clone = el.cloneNode(true) as Element;
+			clone.removeAttribute('slot');
+			return clone;
+		};
 
 		const prioritized = [...this._getPrioritizedItems()].reverse();
 
@@ -349,17 +403,13 @@ export class NLDDToolbar extends LitElement {
 			if (!this._overflowIds.has(child.id)) return;
 			if (child.overflowItems.length === 0) return;
 			child.overflowItems.forEach(el => {
-				const clone = el.cloneNode(true) as Element;
-				clone.removeAttribute('slot');
-				this._menu!.appendChild(clone);
+				this._menu!.appendChild(cloneWithForwarding(el));
 			});
 		});
 
 		if (this._pinnedOverflowItems.length > 0) {
 			this._pinnedOverflowItems.forEach(el => {
-				const clone = el.cloneNode(true) as Element;
-				clone.removeAttribute('slot');
-				this._menu!.appendChild(clone);
+				this._menu!.appendChild(cloneWithForwarding(el));
 			});
 		}
 	}
