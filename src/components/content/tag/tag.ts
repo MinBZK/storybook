@@ -62,7 +62,7 @@ export class NLDDTag extends LitElement {
 	@property({ reflect: true, converter: reflectNonDefault<Size>('md') })
 	size: Size = 'md';
 
-	@property({ type: String })
+	@property({ reflect: true, converter: reflectNonDefault<string>('') })
 	text = '';
 
 	@property({ type: String })

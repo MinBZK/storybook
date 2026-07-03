@@ -125,7 +125,7 @@ export class NLDDIconButton extends withTranslations(LitElement, nlddIconButtonT
 	popupType?: PopupType;
 
 	/** Width mode: 'full' (stretch to container) or any CSS length. */
-	@property({ type: String, reflect: true })
+	@property({ reflect: true, converter: reflectNonDefault<string>('') })
 	width = '';
 
 	@property({ type: String })
@@ -154,7 +154,7 @@ export class NLDDIconButton extends withTranslations(LitElement, nlddIconButtonT
 	popoverTargetAction: 'toggle' | 'show' | 'hide' = 'toggle';
 
 	/** Button text, used as aria-label and shown below the icon in lg size. */
-	@property({ type: String })
+	@property({ reflect: true, converter: reflectNonDefault<string>('') })
 	text = '';
 
 	/** Icon name for the nldd-icon element. When not set, the icon slot is used,

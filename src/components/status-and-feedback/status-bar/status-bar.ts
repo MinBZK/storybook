@@ -53,7 +53,7 @@ export class NLDDStatusBar extends LitElement {
 	@property({ reflect: true, converter: reflectNonDefault<StatusBarVariant>('neutral') })
 	variant: StatusBarVariant = 'neutral';
 
-	@property({ type: String })
+	@property({ reflect: true, converter: reflectNonDefault<string>('') })
 	text = '';
 
 	@property({ type: String })

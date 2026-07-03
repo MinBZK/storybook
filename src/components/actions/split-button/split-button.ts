@@ -63,11 +63,11 @@ export class NLDDSplitButton extends LitElement {
 	disabled = false;
 
 	/** Width mode: 'full' (stretch to container) or any CSS length. The main action button fills the available space. */
-	@property({ type: String, reflect: true })
+	@property({ reflect: true, converter: reflectNonDefault<string>('') })
 	width = '';
 
 	/** Button text for the primary action. */
-	@property({ type: String })
+	@property({ reflect: true, converter: reflectNonDefault<string>('') })
 	text = '';
 
 	/** Icon name shown before the text on the primary action button. */

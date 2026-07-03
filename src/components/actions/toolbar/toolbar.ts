@@ -72,13 +72,13 @@ const sizingConverter = {
 export class NLDDToolbarItem extends LitElement {
 	static override styles = toolbarItemStyles;
 
-	@property({ reflect: true, converter: sizingConverter })
+	@property({ reflect: true, converter: reflectNonDefault<string>('') })
 	width = '';
 
-	@property({ attribute: 'min-width', reflect: true, converter: sizingConverter })
+	@property({ reflect: true, attribute: 'min-width', converter: reflectNonDefault<string>('') })
 	minWidth = '';
 
-	@property({ attribute: 'max-width', reflect: true, converter: sizingConverter })
+	@property({ reflect: true, attribute: 'max-width', converter: reflectNonDefault<string>('') })
 	maxWidth = '';
 
 	@property({ type: String })
@@ -126,22 +126,22 @@ export class NLDDToolbarItem extends LitElement {
 export class NLDDToolbarTitle extends LitElement {
 	static override styles = toolbarTitleStyles;
 
-	@property({ type: String })
+	@property({ reflect: true, converter: reflectNonDefault<string>('') })
 	text = '';
 
-	@property({ type: String, attribute: 'supporting-text' })
+	@property({ reflect: true, attribute: 'supporting-text', converter: reflectNonDefault<string>('') })
 	supportingText = '';
 
 	@property({ reflect: true, converter: reflectNonDefault<TitleAlign>('left') })
 	align: TitleAlign = 'left';
 
-	@property({ reflect: true, converter: sizingConverter })
+	@property({ reflect: true, converter: reflectNonDefault<string>('') })
 	width = '';
 
-	@property({ attribute: 'min-width', reflect: true, converter: sizingConverter })
+	@property({ reflect: true, attribute: 'min-width', converter: reflectNonDefault<string>('') })
 	minWidth = '';
 
-	@property({ attribute: 'max-width', reflect: true, converter: sizingConverter })
+	@property({ reflect: true, attribute: 'max-width', converter: reflectNonDefault<string>('') })
 	maxWidth = '';
 
 	/** Set by nldd-toolbar; not part of the public API. @internal */

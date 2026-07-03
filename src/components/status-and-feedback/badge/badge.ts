@@ -44,7 +44,7 @@ export class NLDDBadge extends withTranslations(LitElement, nlddBadgeTranslation
 	@property({ reflect: true, converter: reflectNonDefault<Size>('md') })
 	size: Size = 'md';
 
-	@property({ type: String })
+	@property({ reflect: true, converter: reflectNonDefault<string>('') })
 	text = '';
 
 	@property({ type: Number, reflect: true })
