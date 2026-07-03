@@ -57,7 +57,6 @@ export const activityIndicatorStyles = css`
 	:host([size="20"]) { --_circle-size: var(--primitives-space-20); }
 	:host([size="24"]) { --_circle-size: var(--primitives-space-24); }
 	:host([size="28"]) { --_circle-size: var(--primitives-space-28); }
-	:host([size="32"]) { --_circle-size: var(--primitives-space-32); }
 	:host([size="40"]) { --_circle-size: var(--primitives-space-40); }
 	:host([size="44"]) { --_circle-size: var(--primitives-space-44); }
 	:host([size="48"]) { --_circle-size: var(--primitives-space-48); }

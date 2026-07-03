@@ -13,6 +13,7 @@
  */
 import { LitElement } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
+import { reflectNonDefault } from '../../../../utilities/reflect-non-default.js';
 import { timelineTrackCellStyles } from './timeline-track-cell.styles.js';
 import { timelineTrackCellTemplate } from './timeline-track-cell.template.js';
 
@@ -23,7 +24,7 @@ type Child = 'first' | 'between' | 'last';
 export class NLDDTimelineTrackCell extends LitElement {
 	static override styles = timelineTrackCellStyles;
 
-	@property({ type: String, reflect: true })
+	@property({ reflect: true, converter: reflectNonDefault<Step>('past') })
 	step: Step = 'past';
 
 	@property({ type: String, reflect: true })
