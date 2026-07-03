@@ -30,7 +30,9 @@ describe('nldd-sheet', () => {
 	it('defaults to placement right', async () => {
 		el = await fixture('<nldd-sheet></nldd-sheet>');
 		await waitForUpdate(el);
-		expect(el.getAttribute('placement')).toBe('right');
+		// The default (right) is kept out of the DOM; the property is the source of truth.
+		expect((el as unknown as { placement: string }).placement).toBe('right');
+		expect(el.hasAttribute('placement')).toBe(false);
 	});
 
 	it('defaults to modal (modeless attribute absent)', async () => {

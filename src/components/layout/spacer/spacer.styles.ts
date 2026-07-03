@@ -47,7 +47,6 @@ export const spacerStyles = css`
 	:host([size="8"]) { --_size: var(--primitives-space-8); }
 	:host([size="10"]) { --_size: var(--primitives-space-10); }
 	:host([size="12"]) { --_size: var(--primitives-space-12); }
-	:host([size="16"]) { --_size: var(--primitives-space-16); }
 	:host([size="20"]) { --_size: var(--primitives-space-20); }
 	:host([size="24"]) { --_size: var(--primitives-space-24); }
 	:host([size="28"]) { --_size: var(--primitives-space-28); }

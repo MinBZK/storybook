@@ -37,6 +37,7 @@
 
 import { LitElement } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
+import { reflectNonDefault } from '../../../utilities/reflect-non-default.js';
 import { sheetStyles } from './sheet.styles.js';
 import { sheetTemplate } from './sheet.template.js';
 import { isPointerMode } from '../../../utilities/input-modality.js';
@@ -47,7 +48,7 @@ type Placement = 'left' | 'right' | 'bottom';
 export class NLDDSheet extends LitElement {
 	static override styles = sheetStyles;
 
-	@property({ type: String, reflect: true })
+	@property({ reflect: true, converter: reflectNonDefault<Placement>('right') })
 	placement: Placement = 'right';
 
 	/**
