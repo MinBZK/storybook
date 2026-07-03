@@ -130,7 +130,7 @@ export const tabBarItemStyles = css`
 		border: none;
 		border-radius: var(--semantics-controls-md-corner-radius);
 		background: none;
-		padding: 0;
+		padding: var(--_block-padding) var(--_inline-padding);
 		align-items: center;
 		justify-content: center;
 		color: var(--semantics-buttons-neutral-tinted-primary-content-color);
@@ -152,19 +152,16 @@ export const tabBarItemStyles = css`
 
 	:host([variant="icon-and-text"]:not([size="lg"])) .tab-bar__item {
 		height: var(--semantics-controls-md-min-size);
-		padding: var(--_block-padding) var(--_inline-padding);
 		gap: var(--semantics-buttons-md-gap);
 	}
 
 	:host([variant="text"]:not([size="lg"])) .tab-bar__item {
 		height: var(--semantics-controls-md-min-size);
-		padding: var(--_block-padding) var(--_inline-padding);
 	}
 
 	:host([variant="icon"]:not([size="lg"])) .tab-bar__item {
 		width: var(--semantics-controls-md-min-size);
 		height: var(--semantics-controls-md-min-size);
-		padding: 0;
 	}
 
 	:host([variant="icon-and-text"][size="lg"]) .tab-bar__item {
@@ -175,7 +172,6 @@ export const tabBarItemStyles = css`
 
 	:host([variant="text"][size="lg"]) .tab-bar__item {
 		min-height: var(--semantics-controls-lg-min-size);
-		padding: var(--_block-padding) var(--_inline-padding);
 		font: var(--semantics-buttons-lg-primary-text-font);
 	}
 
