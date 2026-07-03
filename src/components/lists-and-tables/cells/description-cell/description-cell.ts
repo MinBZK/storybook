@@ -21,6 +21,7 @@
  */
 import { LitElement } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
+import { reflectNonDefault } from '../../../../utilities/reflect-non-default.js';
 import { descriptionCellStyles } from './description-cell.styles.js';
 import { template } from './description-cell.template.js';
 import { VisibilityMixin } from '../../../../utilities/visibility-mixin.js';
@@ -32,7 +33,7 @@ export class NLDDDescriptionCell extends VisibilityMixin(LitElement, 'cells-cont
 	static override styles = [descriptionCellStyles];
 
 	/** 'full' | 'fit-content' | CSS length (e.g. '200px', '20rem'). */
-	@property({ type: String, reflect: true })
+	@property({ reflect: true, converter: reflectNonDefault<string>('full') })
 	width: string = 'full';
 
 	@property({ type: String, reflect: true, attribute: 'min-width' })

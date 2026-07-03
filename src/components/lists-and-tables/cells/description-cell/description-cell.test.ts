@@ -18,7 +18,9 @@ describe('nldd-description-cell', () => {
 	it('defaults to full width', async () => {
 		el = await fixture('<nldd-description-cell></nldd-description-cell>');
 		await waitForUpdate(el);
-		expect(el.getAttribute('width')).toBe('full');
+		// The default (full) is kept out of the DOM; the property is the source of truth.
+		expect((el as unknown as { width: string }).width).toBe('full');
+		expect(el.hasAttribute('width')).toBe(false);
 	});
 
 	it('reflects width attribute', async () => {

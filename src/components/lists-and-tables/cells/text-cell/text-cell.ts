@@ -54,6 +54,7 @@
  */
 import { LitElement } from 'lit';
 import { customElement, property, state } from 'lit/decorators.js';
+import { reflectNonDefault } from '../../../../utilities/reflect-non-default.js';
 import { textCellStyles } from './text-cell.styles.js';
 import { template } from './text-cell.template.js';
 import { VisibilityMixin } from '../../../../utilities/visibility-mixin.js';
@@ -74,7 +75,7 @@ export class NLDDTextCell extends VisibilityMixin(LitElement, 'cells-container')
 	@property({ type: String, reflect: true })
 	color: Color = 'default';
 
-	@property({ type: String, reflect: true })
+	@property({ reflect: true, converter: reflectNonDefault<string>('full') })
 	width: string = 'full';
 
 	@property({ type: String, reflect: true, attribute: 'min-width' })
