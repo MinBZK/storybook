@@ -83,13 +83,20 @@ export class NLDDToolbarItem extends LitElement {
 	@property({ type: String })
 	label = '';
 
-	// NB: read via getAttribute('priority') by the parent toolbar, and
-	// hasAttribute('priority') distinguishes an explicit priority from the
-	// default. So set it as an ATTRIBUTE (`priority="2"`), not a bound property
-	// (`el.priority = 2` / Vue's `:priority`) — the latter never reaches the
-	// attribute. Not reflected on purpose: reflecting would stamp the default 0
-	// onto every item and break that hasAttribute("explicit?") signal.
-	@property({ type: Number })
+	// Overflow order. The parent toolbar reads this as a PROPERTY (el.priority), so
+	// both a bound property (Vue/React `:priority`, `el.priority = 2`) and a plain
+	// attribute (`priority="2"`) work. Reflected so an explicit value is visible in
+	// the DOM and a runtime property change re-triggers the toolbar's overflow
+	// recompute (its observer watches the attribute). The converter reflects the
+	// default 0 as *no attribute* (toAttribute → null), so the DOM isn't polluted
+	// with `priority="0"` on every item; 0 means "no explicit priority".
+	@property({
+		reflect: true,
+		converter: {
+			fromAttribute: (value: string | null) => (value == null ? 0 : Number(value)),
+			toAttribute: (value: number) => (value === 0 ? null : String(value)),
+		},
+	})
 	priority = 0;
 
 	/** Set by nldd-toolbar; not part of the public API. @internal */
@@ -725,8 +732,15 @@ export class NLDDToolbar extends LitElement {
 				if (tag === 'nldd-toolbar-item') {
 					const id = this._getId(el);
 					const label = el.getAttribute('label') ?? '';
-					const priority = parseInt(el.getAttribute('priority') ?? '0', 10);
-					const hasPriority = el.hasAttribute('priority');
+					// Read priority as a property, not an attribute: for a custom element,
+					// Vue/React set `priority` as a DOM property (`'priority' in el`), not an
+					// attribute, and it isn't reflected — so getAttribute misses it (same
+					// reason the sizing props below are read as properties). Lit mirrors an
+					// attribute-set value onto the property too, so this covers plain HTML.
+					// Priority 0 is the default and counts as "no explicit priority" (the
+					// item overflows individually rather than grouping).
+					const priority = (el as Element & { priority?: number }).priority ?? 0;
+					const hasPriority = priority !== 0;
 					// Read sizing as properties, not attributes: frameworks such as Vue set
 					// `width` as a DOM property (el.width exists) rather than an attribute,
 					// so getAttribute('width') misses it. Lit mirrors attribute-set values

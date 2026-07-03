@@ -278,6 +278,51 @@ describe('nldd-toolbar', () => {
 		expect(overflowButton?.getAttribute('size')).toBe('lg');
 	});
 
+	it('reflects an explicit priority to the attribute but keeps the default 0 attribute-less', async () => {
+		el = await fixture(`
+			<nldd-toolbar>
+				<nldd-toolbar-item slot="end" label="A"><nldd-icon-button aria-label="A"></nldd-icon-button></nldd-toolbar-item>
+			</nldd-toolbar>
+		`);
+		await waitForUpdate(el);
+		const item = el.querySelector('nldd-toolbar-item') as HTMLElement & { priority: number; updateComplete: Promise<boolean> };
+		// Default 0 does not pollute the DOM.
+		expect(item.hasAttribute('priority')).toBe(false);
+		// An explicit property value reflects, so it is visible and the toolbar's
+		// attribute observer sees runtime changes.
+		item.priority = 2;
+		await item.updateComplete;
+		expect(item.getAttribute('priority')).toBe('2');
+		// Back to the default removes the attribute again.
+		item.priority = 0;
+		await item.updateComplete;
+		expect(item.hasAttribute('priority')).toBe(false);
+	});
+
+	it('reads a priority set as a DOM property (framework binding), not only the attribute', async () => {
+		el = await fixture(`
+			<nldd-toolbar>
+				<nldd-toolbar-item slot="end" label="A"><nldd-icon-button aria-label="A"></nldd-icon-button></nldd-toolbar-item>
+			</nldd-toolbar>
+		`);
+		await waitForUpdate(el);
+		const item = el.querySelector('nldd-toolbar-item') as HTMLElement & { priority: number; updateComplete: Promise<boolean> };
+		item.priority = 5; // property only — no attribute, the way Vue/React bind it
+		await item.updateComplete;
+
+		const tb = el as unknown as {
+			_buildChildren(): void;
+			_endChildren: { type: string; priority?: number; hasPriority?: boolean }[];
+		};
+		tb._buildChildren();
+		const child = tb._endChildren.find(c => c.type === 'item');
+		// The toolbar reads el.priority (the property), so a framework binding that
+		// never touches the attribute still lands. (Reflection then mirrors it back
+		// to the attribute — covered by the reflect test above.)
+		expect(child?.priority).toBe(5);
+		expect(child?.hasPriority).toBe(true);
+	});
+
 	it('forwards a select from an overflow clone to the original item', async () => {
 		el = await fixture(`
 			<nldd-toolbar>
