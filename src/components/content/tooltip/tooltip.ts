@@ -49,6 +49,7 @@ import { LitElement } from 'lit';
 import type { PropertyValues } from 'lit';
 import { customElement, property, state } from 'lit/decorators.js';
 import { computePosition, flip, shift, offset } from '@floating-ui/dom';
+import { reflectNonDefault } from '../../../utilities/reflect-non-default.js';
 import { tooltipStyles } from './tooltip.styles.js';
 import { tooltipTemplate } from './tooltip.template.js';
 import { isTouchMode } from '../../../utilities/input-modality.js';
@@ -78,10 +79,10 @@ export class NLDDTooltip extends LitElement {
 	@property({ type: Boolean, reflect: true })
 	open = false;
 
-	@property({ type: String, reflect: true })
+	@property({ reflect: true, converter: reflectNonDefault<Placement>('bottom') })
 	placement: Placement = 'bottom';
 
-	@property({ type: String, reflect: true })
+	@property({ reflect: true, converter: reflectNonDefault<Timing>('default') })
 	timing: Timing = 'default';
 
 	private get _effectivePlacement(): Placement {

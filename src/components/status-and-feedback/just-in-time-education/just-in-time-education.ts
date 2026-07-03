@@ -51,6 +51,7 @@ import type { PropertyValues } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
 import { computePosition, autoUpdate, offset, shift } from '@floating-ui/dom';
 import { withTranslations } from '../../../utilities/with-translations.js';
+import { reflectNonDefault } from '../../../utilities/reflect-non-default.js';
 import { justInTimeEducationStyles } from './just-in-time-education.styles.js';
 import { justInTimeEducationTemplate } from './just-in-time-education.template.js';
 import { nlddJustInTimeEducationTranslations } from './just-in-time-education.i18n.js';
@@ -85,7 +86,7 @@ export class NLDDJustInTimeEducation extends withTranslations<NLDDJustInTimeEduc
 	@property({ type: String, reflect: true, attribute: 'supporting-text' })
 	supportingText = '';
 
-	@property({ type: String, reflect: true })
+	@property({ reflect: true, converter: reflectNonDefault<Placement>('auto') })
 	placement: Placement = 'auto';
 
 	@property({ type: Boolean, reflect: true })

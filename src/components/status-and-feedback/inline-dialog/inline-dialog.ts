@@ -19,6 +19,7 @@
  */
 import { LitElement } from 'lit';
 import { customElement, property, state } from 'lit/decorators.js';
+import { reflectNonDefault } from '../../../utilities/reflect-non-default.js';
 import { inlineDialogStyles } from './inline-dialog.styles.js';
 import { inlineDialogTemplate } from './inline-dialog.template.js';
 import '../../content/icon/icon.js';
@@ -35,7 +36,7 @@ export class NLDDInlineDialog extends LitElement {
 	@property({ type: String, reflect: true })
 	variant: InlineDialogVariant | '' = '';
 
-	@property({ type: String, reflect: true })
+	@property({ reflect: true, converter: reflectNonDefault<InlineDialogSize>('md') })
 	size: InlineDialogSize = 'md';
 
 	@property({ type: String, reflect: true })

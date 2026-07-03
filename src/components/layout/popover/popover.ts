@@ -79,6 +79,7 @@
 import { LitElement, PropertyValues } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
 import { computePosition, flip, shift, size, autoUpdate, type Placement } from '@floating-ui/dom';
+import { reflectNonDefault } from '../../../utilities/reflect-non-default.js';
 import { popoverStyles } from './popover.styles.js';
 import { popoverTemplate } from './popover.template.js';
 import { nlddPopoverTranslations, type NLDDPopoverTranslations } from './popover.i18n.js';
@@ -95,7 +96,7 @@ export class NLDDPopover extends LitElement {
 	@property({ attribute: false })
 	anchorElement: Element | null = null;
 
-	@property({ type: String, reflect: true })
+	@property({ reflect: true, converter: reflectNonDefault<Placement>('bottom-start') })
 	placement: Placement = 'bottom-start';
 
 	@property({ type: String, reflect: true })

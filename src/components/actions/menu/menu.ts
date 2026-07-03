@@ -1,6 +1,7 @@
 import { LitElement } from 'lit';
 import { property, state } from 'lit/decorators.js';
 import { computePosition, flip, shift, offset, size, autoUpdate } from '@floating-ui/dom';
+import { reflectNonDefault } from '../../../utilities/reflect-non-default.js';
 import { menuStyles, menuItemStyles, menuDividerStyles, menuGroupStyles } from './menu.styles.js';
 import { menuTemplate, menuItemTemplate, menuDividerTemplate, menuGroupTemplate } from './menu.template.js';
 import { nlddMenuTranslations } from './menu.i18n.js';
@@ -159,7 +160,7 @@ export class NLDDMenuItem extends LitElement {
 	@property({ type: String, reflect: true })
 	query = '';
 
-	@property({ type: String, reflect: true, attribute: 'query-mark-mode' })
+	@property({ reflect: true, attribute: 'query-mark-mode', converter: reflectNonDefault<QueryMarkMode>('predictive') })
 	queryMarkMode: QueryMarkMode = 'predictive';
 
 	/** Set by nldd-menu. Not part of the public API. */
@@ -356,7 +357,7 @@ export class NLDDMenu extends LitElement {
 	@property({ attribute: false })
 	anchorElement: Element | null = null;
 
-	@property({ type: String, reflect: true })
+	@property({ reflect: true, converter: reflectNonDefault<string>('bottom-start') })
 	placement: string = 'bottom-start';
 
 	/**
@@ -364,7 +365,7 @@ export class NLDDMenu extends LitElement {
 	 * this switches role to "listbox" and item roles to "option" per ARIA spec.
 	 * Default: 'menu'.
 	 */
-	@property({ type: String, reflect: true })
+	@property({ reflect: true, converter: reflectNonDefault<'menu' | 'listbox'>('menu') })
 	variant: 'menu' | 'listbox' = 'menu';
 
 	@property({ type: String, attribute: 'empty-text' })
