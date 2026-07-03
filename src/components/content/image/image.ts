@@ -120,10 +120,10 @@ export class NLDDImage extends LitElement {
 	@property({ reflect: true, converter: reflectNonDefault<ImageShape>('square') })
 	shape: ImageShape = 'square';
 
-	@property({ type: String })
+	@property({ reflect: true, converter: reflectNonDefault<string>('') })
 	caption = '';
 
-	@property({ type: String })
+	@property({ reflect: true, converter: reflectNonDefault<string>('') })
 	credit = '';
 
 	@property({ type: Boolean, reflect: true })

@@ -35,6 +35,7 @@
 
 import { LitElement } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
+import { reflectNonDefault } from '../../../utilities/reflect-non-default.js';
 import { linkStyles } from './link.styles.js';
 import { template } from './link.template.js';
 import { withTranslations } from '../../../utilities/with-translations.js';
@@ -59,7 +60,7 @@ export class NLDDLink extends withTranslations(LitElement, nlddLinkTranslations)
 	@property({ type: String, reflect: true })
 	size?: Size;
 
-	@property({ type: String })
+	@property({ reflect: true, converter: reflectNonDefault<string>('') })
 	text = '';
 
 	@property({ type: String, attribute: 'start-icon' })

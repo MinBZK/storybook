@@ -49,16 +49,16 @@ type Variant = 'box' | 'simple';
 export class NLDDKeyboardShortcut extends LitElement {
 	static override styles = keyboardShortcutStyles;
 
-	@property({ type: String })
+	@property({ reflect: true, converter: reflectNonDefault<string>('') })
 	keys = '';
 
-	@property({ type: String, attribute: 'mac-keys' })
+	@property({ reflect: true, attribute: 'mac-keys', converter: reflectNonDefault<string>('') })
 	macKeys = '';
 
-	@property({ type: String, attribute: 'windows-keys' })
+	@property({ reflect: true, attribute: 'windows-keys', converter: reflectNonDefault<string>('') })
 	windowsKeys = '';
 
-	@property({ type: String, attribute: 'linux-keys' })
+	@property({ reflect: true, attribute: 'linux-keys', converter: reflectNonDefault<string>('') })
 	linuxKeys = '';
 
 	@property({ reflect: true, converter: reflectNonDefault<Size>('md') })

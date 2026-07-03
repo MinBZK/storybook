@@ -93,20 +93,20 @@ export class NLDDTitleCell extends VisibilityMixin(LitElement, 'cells-container'
 	@property({ reflect: true, attribute: 'vertical-alignment', converter: reflectNonDefault<VerticalAlignment>('center') })
 	verticalAlignment: VerticalAlignment = 'center';
 
-	@property({ type: String })
+	@property({ reflect: true, converter: reflectNonDefault<string>('') })
 	text = '';
 
-	@property({ type: String })
+	@property({ reflect: true, converter: reflectNonDefault<string>('') })
 	overline = '';
 
-	@property({ type: String, attribute: 'supporting-text' })
+	@property({ reflect: true, attribute: 'supporting-text', converter: reflectNonDefault<string>('') })
 	supportingText = '';
 
 	/** Heading level for the title element (1–6). When not set, renders a <p>. */
 	@property({ type: Number, attribute: 'heading-level' })
 	headingLevel: number | undefined = undefined;
 
-	@property({ type: String })
+	@property({ reflect: true, converter: reflectNonDefault<string>('') })
 	query = '';
 
 	@property({ type: String, attribute: 'query-mark-mode' })
