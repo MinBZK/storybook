@@ -24,6 +24,7 @@
 
 import { LitElement, type PropertyValues } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
+import { reflectNonDefault } from '../../../utilities/reflect-non-default.js';
 import { toggleButtonStyles } from './toggle-button.styles.js';
 import { toggleButtonTemplate } from './toggle-button.template.js';
 import './../../content/icon/icon.js';
@@ -45,7 +46,7 @@ export class NLDDToggleButton extends LitElement {
 	@property({ type: String, reflect: true })
 	type: ToggleButtonType = 'button';
 
-	@property({ type: String, reflect: true })
+	@property({ reflect: true, converter: reflectNonDefault<ToggleButtonSize>('md') })
 	size: ToggleButtonSize = 'md';
 
 	@property({ type: Boolean, reflect: true })

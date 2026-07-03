@@ -37,6 +37,7 @@
  */
 import { LitElement } from 'lit';
 import { customElement, property, query, state } from 'lit/decorators.js';
+import { reflectNonDefault } from '../../../utilities/reflect-non-default.js';
 import { splitButtonStyles } from './split-button.styles.js';
 import { template } from './split-button.template.js';
 import { nlddSplitButtonTranslations } from './split-button.i18n.js';
@@ -52,10 +53,10 @@ export type Size = 'xs' | 'sm' | 'md' | 'lg';
 export class NLDDSplitButton extends LitElement {
 	static override styles = splitButtonStyles;
 
-	@property({ type: String, reflect: true })
+	@property({ reflect: true, converter: reflectNonDefault<Size>('md') })
 	size: Size = 'md';
 
-	@property({ type: String, reflect: true })
+	@property({ reflect: true, converter: reflectNonDefault<string>('neutral-tinted') })
 	variant: string = 'neutral-tinted';
 
 	@property({ type: Boolean, reflect: true })

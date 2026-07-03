@@ -13,6 +13,7 @@
  */
 import { LitElement } from 'lit';
 import { customElement, property, query } from 'lit/decorators.js';
+import { reflectNonDefault } from '../../../utilities/reflect-non-default.js';
 import { buttonGroupStyles } from './button-group.styles.js';
 import { template } from './button-group.template.js';
 
@@ -23,10 +24,10 @@ type Orientation = 'horizontal' | 'vertical';
 export class NLDDButtonGroup extends LitElement {
 	static override styles = buttonGroupStyles;
 
-	@property({ type: String, reflect: true })
+	@property({ reflect: true, converter: reflectNonDefault<Size>('md') })
 	size: Size = 'md';
 
-	@property({ type: String, reflect: true })
+	@property({ reflect: true, converter: reflectNonDefault<Orientation>('vertical') })
 	orientation: Orientation = 'vertical';
 
 	@query('slot')

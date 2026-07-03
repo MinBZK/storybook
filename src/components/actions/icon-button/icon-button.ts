@@ -43,6 +43,7 @@
  */
 import { LitElement } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
+import { reflectNonDefault } from '../../../utilities/reflect-non-default.js';
 import { iconButtonStyles } from './icon-button.styles.js';
 import { template } from './icon-button.template.js';
 import { withTranslations } from '../../../utilities/with-translations.js';
@@ -77,10 +78,10 @@ export class NLDDIconButton extends withTranslations(LitElement, nlddIconButtonT
 	static formAssociated = true;
 	private _internals = this.attachInternals();
 
-	@property({ type: String, reflect: true })
+	@property({ reflect: true, converter: reflectNonDefault<Variant>('neutral-tinted') })
 	variant: Variant = 'neutral-tinted';
 
-	@property({ type: String, reflect: true })
+	@property({ reflect: true, converter: reflectNonDefault<Size>('md') })
 	size: Size = 'md';
 
 	/** In lg size, hides the text label and enlarges the icon by one step (28px). */
@@ -168,7 +169,7 @@ export class NLDDIconButton extends withTranslations(LitElement, nlddIconButtonT
 
 	/** Forwarded to the inner nldd-tooltip's `timing`. Use `'never'` to
 	 * suppress the visual tooltip; aria-label still describes the button. */
-	@property({ type: String, reflect: true, attribute: 'tooltip-timing' })
+	@property({ reflect: true, attribute: 'tooltip-timing', converter: reflectNonDefault<'default' | 'instant' | 'never'>('default') })
 	tooltipTiming: 'default' | 'instant' | 'never' = 'default';
 
 	/** When set, renders an <a> element instead of <button>. */

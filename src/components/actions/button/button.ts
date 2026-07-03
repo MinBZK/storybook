@@ -67,7 +67,7 @@ export class NLDDButton extends withTranslations(LitElement, nlddButtonTranslati
 	static formAssociated = true;
 	private _internals = this.attachInternals();
 
-	@property({ type: String, reflect: true })
+	@property({ reflect: true, converter: reflectNonDefault<Variant>('neutral-tinted') })
 	variant: Variant = 'neutral-tinted';
 
 	@property({ reflect: true, converter: reflectNonDefault<Size>('md') })

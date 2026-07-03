@@ -163,7 +163,9 @@ describe('nldd-button-bar – child building & attribute propagation', () => {
 		`);
 		await waitForUpdate(el);
 
-		expect(el.querySelector('nldd-button')!.getAttribute('variant')).toBe('neutral-tinted');
+		// neutral-tinted is the button's default, so it is kept out of the DOM;
+		// the propagated value is the source of truth on the property.
+		expect((el.querySelector('nldd-button') as unknown as { variant: string }).variant).toBe('neutral-tinted');
 
 		el.variant = 'accent-filled';
 		await waitForUpdate(el);
