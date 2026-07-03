@@ -91,6 +91,8 @@ export const tabBarItemStyles = css`
 	/* # Host */
 
 	:host {
+		--_block-padding: var(--semantics-controls-md-block-padding);
+		--_inline-padding: var(--semantics-buttons-md-inline-padding);
 		--_lg-item-padding: var(--primitives-space-8);
 		--_highlight-border-color: transparent;
 		--_z-index-content: 1;
@@ -99,6 +101,11 @@ export const tabBarItemStyles = css`
 		display: inline-block;
 		position: relative;
 		-webkit-tap-highlight-color: transparent;
+	}
+
+	:host([size="lg"]) {
+		--_block-padding: var(--semantics-controls-lg-block-padding);
+		--_inline-padding: var(--semantics-buttons-lg-inline-padding);
 	}
 
 	:host([hidden]) {
@@ -146,13 +153,13 @@ export const tabBarItemStyles = css`
 
 	:host([variant="icon-and-text"]:not([size="lg"])) .tab-bar__item {
 		height: var(--semantics-controls-md-min-size);
-		padding: var(--primitives-space-8) var(--primitives-space-12);
+		padding: var(--_block-padding) var(--_inline-padding);
 		gap: var(--semantics-buttons-md-gap);
 	}
 
 	:host([variant="text"]:not([size="lg"])) .tab-bar__item {
 		height: var(--semantics-controls-md-min-size);
-		padding: var(--primitives-space-8) var(--primitives-space-12);
+		padding: var(--_block-padding) var(--_inline-padding);
 	}
 
 	:host([variant="icon"]:not([size="lg"])) .tab-bar__item {
@@ -169,7 +176,7 @@ export const tabBarItemStyles = css`
 
 	:host([variant="text"][size="lg"]) .tab-bar__item {
 		min-height: var(--semantics-controls-lg-min-size);
-		padding: var(--semantics-controls-lg-block-padding) var(--primitives-space-16);
+		padding: var(--_block-padding) var(--_inline-padding);
 		font: var(--semantics-buttons-lg-primary-text-font);
 	}
 

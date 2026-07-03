@@ -89,7 +89,8 @@ export const segmentedControlItemStyles = css`
 	:host {
 		--_corner-radius: var(--semantics-controls-md-corner-radius);
 		--_min-size: var(--semantics-controls-md-min-size);
-		--_padding-inline: var(--primitives-space-12);
+		--_block-padding: var(--semantics-controls-md-block-padding);
+		--_inline-padding: var(--semantics-buttons-md-inline-padding);
 		--_gap: var(--semantics-buttons-md-gap);
 		--_font: var(--semantics-buttons-md-primary-text-font);
 		--_icon-size: var(--semantics-buttons-md-icon-size);
@@ -110,7 +111,8 @@ export const segmentedControlItemStyles = css`
 	:host([size="sm"]) {
 		--_corner-radius: var(--semantics-controls-sm-corner-radius);
 		--_min-size: var(--semantics-controls-sm-min-size);
-		--_padding-inline: var(--primitives-space-8);
+		--_block-padding: var(--semantics-controls-sm-block-padding);
+		--_inline-padding: var(--semantics-buttons-sm-inline-padding);
 		--_gap: var(--semantics-buttons-sm-gap);
 		--_font: var(--semantics-buttons-sm-primary-text-font);
 		--_icon-size: var(--semantics-buttons-sm-icon-size);
@@ -120,7 +122,8 @@ export const segmentedControlItemStyles = css`
 	:host([size="lg"]) {
 		--_corner-radius: var(--semantics-controls-lg-corner-radius);
 		--_min-size: var(--semantics-controls-lg-min-size);
-		--_padding-inline: var(--primitives-space-16);
+		--_block-padding: var(--semantics-controls-lg-block-padding);
+		--_inline-padding: var(--semantics-buttons-lg-inline-padding);
 		--_gap: var(--semantics-buttons-lg-gap);
 		--_font: var(--semantics-buttons-lg-primary-text-font);
 		--_icon-size: var(--semantics-buttons-lg-icon-size);
@@ -151,7 +154,7 @@ export const segmentedControlItemStyles = css`
 		width: 100%;
 		min-width: var(--_min-size);
 		height: var(--_min-size);
-		padding-inline: var(--_padding-inline);
+		padding: var(--_block-padding) var(--_inline-padding);
 		gap: var(--_gap);
 		align-items: center;
 		justify-content: center;
