@@ -31,15 +31,15 @@ export const splitViewDividerStyles = css`
 		display: flex;
 		position: relative;
 		background-color: var(--semantics-dividers-color);
-		width: 100%;
-		height: var(--_thickness);
+		width: var(--_thickness);
+		height: 100%;
 		align-items: center;
 		justify-content: center;
 	}
 
-	:host([orientation="vertical"]) .split-view-divider {
-		width: var(--_thickness);
-		height: 100%;
+	:host([orientation="horizontal"]) .split-view-divider {
+		width: 100%;
+		height: var(--_thickness);
 	}
 
 	@media (forced-colors: active) {
@@ -55,12 +55,12 @@ export const splitViewDividerStyles = css`
 		position: absolute;
 		border-radius: var(--primitives-corner-radius-full);
 		background-color: var(--semantics-content-secondary-color);
-		width: var(--primitives-space-40);
-		height: var(--primitives-space-4);
-	}
-
-	:host([orientation="vertical"]) .split-view-divider__drag-handle {
 		width: var(--primitives-space-4);
 		height: var(--primitives-space-40);
+	}
+
+	:host([orientation="horizontal"]) .split-view-divider__drag-handle {
+		width: var(--primitives-space-40);
+		height: var(--primitives-space-4);
 	}
 `;

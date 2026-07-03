@@ -13,6 +13,7 @@
  */
 import { LitElement } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
+import { reflectNonDefault } from '../../../../utilities/reflect-non-default.js';
 import { splitViewDividerStyles } from './split-view-divider.styles.js';
 import { splitViewDividerTemplate } from './split-view-divider.template.js';
 
@@ -22,7 +23,7 @@ type Orientation = 'vertical' | 'horizontal';
 export class NLDDSplitViewDivider extends LitElement {
 	static override styles = splitViewDividerStyles;
 
-	@property({ type: String, reflect: true })
+	@property({ reflect: true, converter: reflectNonDefault<Orientation>('vertical') })
 	orientation: Orientation = 'vertical';
 
 	@property({ type: Boolean, reflect: true, attribute: 'has-drag-handle' })

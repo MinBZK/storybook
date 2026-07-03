@@ -18,7 +18,9 @@ describe('nldd-cell', () => {
 	it('defaults to fit-content width', async () => {
 		el = await fixture('<nldd-cell></nldd-cell>');
 		await waitForUpdate(el);
-		expect(el.getAttribute('width')).toBe('fit-content');
+		// The default (fit-content) is kept out of the DOM; the property is the source of truth.
+		expect((el as unknown as { width: string }).width).toBe('fit-content');
+		expect(el.hasAttribute('width')).toBe(false);
 	});
 
 	it('reflects width attribute', async () => {
