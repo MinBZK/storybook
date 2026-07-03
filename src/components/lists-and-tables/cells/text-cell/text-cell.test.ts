@@ -18,7 +18,8 @@ describe('nldd-text-cell', () => {
 	it('defaults to md size', async () => {
 		el = await fixture('<nldd-text-cell></nldd-text-cell>');
 		await waitForUpdate(el);
-		expect(el.getAttribute('size')).toBe('md');
+		expect((el as unknown as { size: string }).size).toBe('md');
+		expect(el.hasAttribute('size')).toBe(false);
 	});
 
 	it('reflects size attribute', async () => {
@@ -30,7 +31,8 @@ describe('nldd-text-cell', () => {
 	it('defaults to default color', async () => {
 		el = await fixture('<nldd-text-cell></nldd-text-cell>');
 		await waitForUpdate(el);
-		expect(el.getAttribute('color')).toBe('default');
+		expect((el as unknown as { color: string }).color).toBe('default');
+		expect(el.hasAttribute('color')).toBe(false);
 	});
 
 	it('reflects color attribute', async () => {

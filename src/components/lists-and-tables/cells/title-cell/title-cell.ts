@@ -72,7 +72,7 @@ export class NLDDTitleCell extends VisibilityMixin(LitElement, 'cells-container'
 	@property({ type: Number, reflect: true })
 	size: TitleCellSize = 5;
 
-	@property({ type: String, reflect: true })
+	@property({ reflect: true, converter: reflectNonDefault<Color>('default') })
 	color: Color = 'default';
 
 	@property({ reflect: true, converter: reflectNonDefault<string>('full') })

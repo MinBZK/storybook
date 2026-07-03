@@ -69,10 +69,10 @@ type VerticalAlignment = 'top' | 'center' | 'bottom';
 export class NLDDTextCell extends VisibilityMixin(LitElement, 'cells-container') {
 	static override styles = [textCellStyles];
 
-	@property({ type: String, reflect: true })
+	@property({ reflect: true, converter: reflectNonDefault<Size>('md') })
 	size: Size = 'md';
 
-	@property({ type: String, reflect: true })
+	@property({ reflect: true, converter: reflectNonDefault<Color>('default') })
 	color: Color = 'default';
 
 	@property({ reflect: true, converter: reflectNonDefault<string>('full') })

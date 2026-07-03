@@ -31,7 +31,8 @@ describe('nldd-icon-cell', () => {
 	it('defaults to size 24', async () => {
 		el = await fixture('<nldd-icon-cell></nldd-icon-cell>');
 		await waitForUpdate(el);
-		expect(el.getAttribute('size')).toBe('24');
+		expect((el as unknown as { size: string }).size).toBe('24');
+		expect(el.hasAttribute('size')).toBe(false);
 	});
 
 	it('reflects size attribute', async () => {

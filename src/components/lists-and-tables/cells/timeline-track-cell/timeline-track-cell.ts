@@ -27,7 +27,7 @@ export class NLDDTimelineTrackCell extends LitElement {
 	@property({ reflect: true, converter: reflectNonDefault<Step>('past') })
 	step: Step = 'past';
 
-	@property({ type: String, reflect: true })
+	@property({ reflect: true, converter: reflectNonDefault<Child>('between') })
 	child: Child = 'between';
 
 	override render() {
