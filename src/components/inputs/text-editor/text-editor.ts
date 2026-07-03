@@ -120,7 +120,7 @@ export class NLDDTextEditor extends NLDDCodeMirrorElement {
 	@property({ type: String, attribute: 'input-id' })
 	inputId = '';
 
-	@property({ type: String })
+	@property({ reflect: true, converter: reflectNonDefault<string>('') })
 	placeholder = '';
 
 	@property({ type: Boolean, reflect: true })

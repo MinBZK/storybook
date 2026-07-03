@@ -83,7 +83,7 @@ export class NLDDSegmentedControlItem extends LitElement {
 	groupName = '';
 
 	/** Text label for the item. Used as visible text and as aria-label/tooltip for icon variant. */
-	@property({ type: String })
+	@property({ reflect: true, converter: reflectNonDefault<string>('') })
 	text = '';
 
 	/** Icon name for nldd-icon. When not set, the icon slot is used; the icon and

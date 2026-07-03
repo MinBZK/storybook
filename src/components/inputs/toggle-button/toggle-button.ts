@@ -62,7 +62,7 @@ export class NLDDToggleButton extends LitElement {
 	name = '';
 
 	/** Button text. */
-	@property({ type: String })
+	@property({ reflect: true, converter: reflectNonDefault<string>('') })
 	text = '';
 
 	/** Icon name for the nldd-icon element. When not set, the icon slot is used; the

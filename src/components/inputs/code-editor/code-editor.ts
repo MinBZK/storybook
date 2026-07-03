@@ -81,7 +81,7 @@ export class NLDDCodeEditor extends NLDDCodeMirrorElement {
 	@property({ type: String, attribute: 'input-id' })
 	inputId = '';
 
-	@property({ type: String })
+	@property({ reflect: true, converter: reflectNonDefault<string>('') })
 	placeholder = '';
 
 	@property({ type: Boolean, reflect: true })
@@ -108,7 +108,7 @@ export class NLDDCodeEditor extends NLDDCodeMirrorElement {
 	@property({ reflect: true, converter: reflectNonDefault<CodeEditorVariant>('simple') })
 	variant: CodeEditorVariant = 'simple';
 
-	@property({ type: String, reflect: true })
+	@property({ reflect: true, converter: reflectNonDefault<string>('') })
 	language = '';
 
 	@property({ type: Boolean, reflect: true, attribute: 'line-numbers' })

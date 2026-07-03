@@ -90,10 +90,10 @@ export class NLDDComboBox extends LitElement {
 	 * the display label. Set `text` explicitly to opt out of auto-derivation (e.g. for
 	 * custom display formats like `${item.text} (${item.id})`).
 	 */
-	@property({ type: String })
+	@property({ reflect: true, converter: reflectNonDefault<string>('') })
 	text = '';
 
-	@property({ type: String })
+	@property({ reflect: true, converter: reflectNonDefault<string>('') })
 	placeholder = '';
 
 	@property({ reflect: true, converter: reflectNonDefault<ComboBoxSize>('md') })
