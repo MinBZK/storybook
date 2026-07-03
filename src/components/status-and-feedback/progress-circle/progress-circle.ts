@@ -113,7 +113,7 @@ export class NLDDProgressCircle extends LitElement {
 	@property({ reflect: true, converter: reflectNonDefault<ProgressCircleSize>('28') })
 	size: ProgressCircleSize = '28';
 
-	@property({ type: String, reflect: true })
+	@property({ reflect: true, converter: reflectNonDefault<string>('') })
 	text = '';
 
 	@property({ reflect: true, attribute: 'value-format', converter: reflectNonDefault<ProgressCircleValueFormat>('percentage') })

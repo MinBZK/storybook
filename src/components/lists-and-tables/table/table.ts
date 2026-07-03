@@ -106,12 +106,12 @@ export class NLDDTable extends LitElement {
 
 	/** Text for the default empty-state dialog. Falls back to the Dutch i18n
 	 *  default. Ignored when consumers slot their own `[slot=empty]` content. */
-	@property({ type: String, attribute: 'empty-text' })
+	@property({ reflect: true, attribute: 'empty-text', converter: reflectNonDefault<string>('') })
 	emptyText = '';
 
 	/** Optional supporting text for the default empty-state dialog. Ignored
 	 *  when consumers slot their own `[slot=empty]` content. */
-	@property({ type: String, attribute: 'empty-supporting-text' })
+	@property({ reflect: true, attribute: 'empty-supporting-text', converter: reflectNonDefault<string>('') })
 	emptySupportingText = '';
 
 	@property({ type: Object })

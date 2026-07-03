@@ -80,10 +80,10 @@ export class NLDDJustInTimeEducation extends withTranslations<NLDDJustInTimeEduc
 	@property({ type: Boolean, reflect: true })
 	active = false;
 
-	@property({ type: String, reflect: true })
+	@property({ reflect: true, converter: reflectNonDefault<string>('') })
 	text = '';
 
-	@property({ type: String, reflect: true, attribute: 'supporting-text' })
+	@property({ reflect: true, attribute: 'supporting-text', converter: reflectNonDefault<string>('') })
 	supportingText = '';
 
 	@property({ reflect: true, converter: reflectNonDefault<Placement>('auto') })

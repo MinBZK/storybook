@@ -45,10 +45,10 @@ export class NLDDInlineDialog extends LitElement {
 	@property({ type: String, reflect: true, attribute: 'icon-color' })
 	iconColor: InlineDialogIconColor | '' = '';
 
-	@property({ type: String, reflect: true })
+	@property({ reflect: true, converter: reflectNonDefault<string>('') })
 	text = '';
 
-	@property({ type: String, reflect: true, attribute: 'supporting-text' })
+	@property({ reflect: true, attribute: 'supporting-text', converter: reflectNonDefault<string>('') })
 	supportingText = '';
 
 	@property({ type: Number, reflect: true, attribute: 'heading-level' })

@@ -79,7 +79,7 @@ export class NLDDActivityIndicator extends LitElement {
 	@property({ type: Boolean, reflect: true, attribute: 'show-text' })
 	showText = false;
 
-	@property({ type: String, reflect: true })
+	@property({ reflect: true, converter: reflectNonDefault<string>('') })
 	text = '';
 
 	/** 'default' waits {@link DELAY_MS} before showing; 'instant' shows

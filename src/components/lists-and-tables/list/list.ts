@@ -153,14 +153,14 @@ export class NLDDList extends LitElement {
 	 * i18n default ("Geen items"). Ignored when consumers slot their
 	 * own content into `[slot=empty]`.
 	 */
-	@property({ type: String, attribute: 'empty-text' })
+	@property({ reflect: true, attribute: 'empty-text', converter: reflectNonDefault<string>('') })
 	emptyText = '';
 
 	/**
 	 * Optional supporting text for the default empty-state dialog.
 	 * Ignored when consumers slot their own content into `[slot=empty]`.
 	 */
-	@property({ type: String, attribute: 'empty-supporting-text' })
+	@property({ reflect: true, attribute: 'empty-supporting-text', converter: reflectNonDefault<string>('') })
 	emptySupportingText = '';
 
 	/** Accessible name for the list, forwarded to the inner role: the list in
