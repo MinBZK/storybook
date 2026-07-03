@@ -332,6 +332,58 @@ describe('nldd-text-editor', () => {
 		cleanup(el2);
 	});
 
+	it('getSelection geeft clean offsets, de quote en empty', async () => {
+		const el2 = await withValue('hello world');
+		const api = el2 as unknown as {
+			view: { dispatch(s: unknown): void };
+			getSelection(): { start: number; end: number; quote: string; empty: boolean };
+		};
+		api.view.dispatch({ selection: { anchor: 0, head: 5 } });
+		expect(api.getSelection()).toEqual({ start: 0, end: 5, quote: 'hello', empty: false });
+		api.view.dispatch({ selection: { anchor: 3 } });
+		expect(api.getSelection().empty).toBe(true);
+		cleanup(el2);
+	});
+
+	it('getAnnotations geeft de mee-geschoven annotaties met een verse quote', async () => {
+		const el2 = await fixture<TextEditorEl & { annotatable: boolean; annotations: unknown[] }>(
+			'<nldd-text-editor accessible-label="Tekst" annotatable></nldd-text-editor>',
+		);
+		el2.value = 'hello world';
+		el2.annotations = [{ id: 'n1', start: 6, end: 11, quote: 'world' }];
+		await el2.updateComplete;
+		await waitForUpdate(el2);
+		const api = el2 as unknown as {
+			view: { dispatch(s: unknown): void };
+			getAnnotations(): { id: string; start: number; end: number; quote: string }[];
+		};
+		expect(api.getAnnotations()).toEqual([{ id: 'n1', start: 6, end: 11, quote: 'world' }]);
+		// Insert before the annotation → its clean offsets shift right, quote unchanged.
+		api.view.dispatch({ changes: { from: 0, insert: 'Xy ' } });
+		await waitForUpdate(el2);
+		expect(api.getAnnotations()).toEqual([{ id: 'n1', start: 9, end: 14, quote: 'world' }]);
+		cleanup(el2);
+	});
+
+	it('klik op de annotatie-badge emit annotation-click met de id(s)', async () => {
+		const el2 = await fixture<TextEditorEl & { annotatable: boolean; annotations: unknown[] }>(
+			'<nldd-text-editor accessible-label="Tekst" annotatable></nldd-text-editor>',
+		);
+		el2.value = 'hello world';
+		el2.annotations = [{ id: 'n1', start: 6, end: 11, quote: 'world' }];
+		await el2.updateComplete;
+		await waitForUpdate(el2);
+		const badge = el2.shadowRoot!.querySelector('.cm-annotation-badge') as HTMLElement | null;
+		expect(badge).not.toBeNull();
+		let detail: { ids: string[] } | null = null;
+		el2.addEventListener('nldd-text-editor-annotation-click', (e) => {
+			detail = (e as CustomEvent<{ ids: string[] }>).detail;
+		});
+		badge!.click();
+		expect(detail).toEqual({ ids: ['n1'] });
+		cleanup(el2);
+	});
+
 	it('indent nestelt onder een vorig item en maakt van een los item geen codeblok', async () => {
 		type IndentApi = {
 			view: { dispatch(s: unknown): void; state: { doc: { line(n: number): { text: string; from: number } } } };

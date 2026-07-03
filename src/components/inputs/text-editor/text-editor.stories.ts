@@ -592,6 +592,73 @@ export const Annotations = {
 	},
 };
 
+export const AnnotationAuthoring = {
+	render: () => {
+		const wrap = document.createElement('div');
+		wrap.style.display = 'grid';
+		wrap.style.gap = '8px';
+
+		const bar = document.createElement('div');
+		bar.style.display = 'flex';
+		bar.style.gap = '12px';
+		bar.style.alignItems = 'center';
+
+		// The "comment" affordance lives in the consumer's toolbar (not inside the
+		// editor): it reads getSelection() and adds an annotation on the range.
+		const commentBtn = document.createElement('nldd-icon-button');
+		commentBtn.setAttribute('icon', 'comment');
+		commentBtn.setAttribute('label', 'Reactie toevoegen');
+		commentBtn.setAttribute('variant', 'secondary');
+		(commentBtn as unknown as { disabled: boolean }).disabled = true;
+
+		const status = document.createElement('span');
+
+		const editor = document.createElement('nldd-text-editor');
+		editor.setAttribute('variant', 'box');
+		editor.setAttribute('rows', '6');
+		editor.setAttribute('annotatable', '');
+		editor.setAttribute('accessible-label', 'Tekst');
+		(editor as unknown as { value: string }).value =
+			'Selecteer een stuk tekst en klik op de reactie-knop om er een annotatie op te plaatsen. Klik daarna op de telbadge om de annotation-click te zien.';
+
+		interface StoryAnnotation { id: string; start: number; end: number; quote: string }
+		const annotations: StoryAnnotation[] = [];
+		let counter = 0;
+		const sync = () => {
+			(editor as unknown as { annotations: StoryAnnotation[] }).annotations = [...annotations];
+			status.textContent = `${annotations.length} annotatie(s)`;
+		};
+		sync();
+
+		// Enable the button only when there is a non-empty selection (from the state event).
+		editor.addEventListener('nldd-text-editor-state', (e) => {
+			(commentBtn as unknown as { disabled: boolean }).disabled = (e as CustomEvent<{ empty: boolean }>).detail.empty;
+		});
+		commentBtn.addEventListener('click', () => {
+			const sel = (editor as unknown as { getSelection(): StoryAnnotation & { empty: boolean } }).getSelection();
+			if (sel.empty) return;
+			counter += 1;
+			annotations.push({ id: `note-${counter}`, start: sel.start, end: sel.end, quote: sel.quote });
+			sync();
+		});
+		editor.addEventListener('nldd-text-editor-annotation-click', (e) => {
+			status.textContent = `Geklikt op: ${(e as CustomEvent<{ ids: string[] }>).detail.ids.join(', ')}`;
+		});
+
+		bar.append(commentBtn, status);
+		wrap.append(bar, editor);
+		return wrap;
+	},
+	parameters: {
+		controls: { disable: true },
+		docs: {
+			description: {
+				story: 'De volledige authoring-loop zoals een consumer (bijv. regelrecht) hem bouwt: een "reactie"-knop in de eigen toolbar leest `getSelection()` (clean offsets + quote) en voegt een annotatie toe; de knop is uitgeschakeld zolang de selectie leeg is (uit het `nldd-text-editor-state`-event). Een klik op de telbadge vuurt `nldd-text-editor-annotation-click` met de id(s). Annotaties bewegen mee met edits; `getAnnotations()` geeft de mee-geschoven posities terug om op te slaan.',
+			},
+		},
+	},
+};
+
 export const Mixed = {
 	render: () => {
 		const users = [

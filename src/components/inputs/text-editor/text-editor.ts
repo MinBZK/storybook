@@ -47,6 +47,7 @@
  * @fires change                   - When the content is committed on blur (detail: { value })
  * @fires nldd-text-editor-state   - When the selection or content changes (detail: TextEditorState), for toolbar toggle state
  * @fires nldd-text-editor-mention - When an @-mention is inserted (detail: MentionInsertedDetail with id, label, from, to)
+ * @fires nldd-text-editor-annotation-click - When an annotation's count badge is clicked (detail: { ids: string[] })
  */
 import { LitElement, type PropertyValues } from 'lit';
 import { customElement, property, query } from 'lit/decorators.js';
@@ -302,6 +303,9 @@ export class NLDDTextEditor extends NLDDCodeMirrorElement {
 		// Clicking a mention selects the whole token (capture, to beat CM's own
 		// caret placement).
 		this.view?.contentDOM.addEventListener('pointerdown', this._onMentionPointerDown, true);
+		// Clicking an annotation's count badge opens it (the consumer decides how);
+		// the tinted text itself stays plain-clickable for caret placement.
+		this.view?.contentDOM.addEventListener('click', this._onAnnotationBadgeClick);
 		this._syncAnnotations();
 		this._internals.setFormValue(this.doc);
 		this._checkAccessibleLabel();
@@ -564,6 +568,35 @@ export class NLDDTextEditor extends NLDDCodeMirrorElement {
 		};
 	}
 
+	/** The current selection in CLEAN (annotation-sentinel-free) coordinates plus
+	 *  the quoted text — the anchor a consumer needs to attach a new annotation to
+	 *  the selection (e.g. from a toolbar "comment" button). `empty` mirrors
+	 *  getState().empty for gating that button. */
+	getSelection(): { start: number; end: number; quote: string; empty: boolean } {
+		const view = this.view;
+		if (!view) return { start: 0, end: 0, quote: '', empty: true };
+		const doc = view.state.doc.toString();
+		const sel = view.state.selection.main;
+		const start = docToClean(doc, sel.from);
+		const end = docToClean(doc, sel.to);
+		return { start, end, quote: stripSentinels(doc).slice(start, end), empty: sel.empty };
+	}
+
+	/** The annotations currently in the editor, in CLEAN coordinates, each quote
+	 *  re-sliced from the current text — so a consumer can persist positions that
+	 *  moved with edits (read this on save, then write the anchors back). */
+	getAnnotations(): Annotation[] {
+		const view = this.view;
+		if (!view) return [];
+		const clean = stripSentinels(view.state.doc.toString());
+		return currentAnnotations(view.state).map((a) => ({
+			id: a.id,
+			start: a.from,
+			end: a.to,
+			quote: clean.slice(a.from, a.to),
+		}));
+	}
+
 	private _emitState(): void {
 		this.dispatchEvent(new CustomEvent('nldd-text-editor-state', {
 			detail: this.getState(),
@@ -603,6 +636,22 @@ export class NLDDTextEditor extends NLDDCodeMirrorElement {
 		if (event.button === 0 && !event.shiftKey && !event.altKey && !event.metaKey && !event.ctrlKey) {
 			this.view.plugin(dragMovePlugin)?.startFor(event, range.from, range.to);
 		}
+	};
+
+	/** A click on an annotation's count badge emits nldd-text-editor-annotation-click
+	 *  with the id(s) it covers (a merged badge carries several). The consumer opens
+	 *  its own note UI; the tinted text stays plain-clickable for caret placement. */
+	private _onAnnotationBadgeClick = (event: MouseEvent): void => {
+		const badge = (event.target as HTMLElement | null)?.closest?.('.cm-annotation-badge') as HTMLElement | null;
+		if (!badge) return;
+		const ids = (badge.dataset.annotations ?? '').split(' ').filter(Boolean);
+		if (!ids.length) return;
+		event.preventDefault();
+		this.dispatchEvent(new CustomEvent('nldd-text-editor-annotation-click', {
+			detail: { ids },
+			bubbles: true,
+			composed: true,
+		}));
 	};
 
 	private _onDocChanged(): void {
