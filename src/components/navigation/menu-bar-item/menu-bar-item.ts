@@ -74,7 +74,7 @@ export class NLDDMenuBarItem extends LitElement {
 	@property({ type: Boolean, attribute: 'icon-only', reflect: true })
 	iconOnly = false;
 
-	@property({ type: String, attribute: 'content-priority', reflect: true })
+	@property({ reflect: true, attribute: 'content-priority', converter: reflectNonDefault<string>('') })
 	contentPriority = '';
 
 	@property({ type: Boolean, reflect: true })

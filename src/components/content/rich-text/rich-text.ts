@@ -44,7 +44,7 @@ export class NLDDRichText extends LitElement {
 	@property({ type: Boolean, reflect: true })
 	centered = false;
 
-	@property({ type: String, reflect: true })
+	@property({ reflect: true, converter: reflectNonDefault<'' | 'inherit'>('') })
 	color: '' | 'inherit' = '';
 
 	@property({ type: Object })

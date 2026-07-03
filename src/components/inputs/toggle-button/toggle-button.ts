@@ -70,7 +70,7 @@ export class NLDDToggleButton extends LitElement {
 	@property({ type: String })
 	icon = '';
 
-	@property({ type: String, reflect: true })
+	@property({ reflect: true, converter: reflectNonDefault<ToggleButtonVariant | ''>('') })
 	variant: ToggleButtonVariant | '' = '';
 
 	@property({ type: String, attribute: 'accessible-label' })

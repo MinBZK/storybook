@@ -33,7 +33,7 @@ export type InlineDialogIconColor = 'secondary' | 'accent' | 'critical' | 'warni
 export class NLDDInlineDialog extends LitElement {
 	static override styles = inlineDialogStyles;
 
-	@property({ type: String, reflect: true })
+	@property({ reflect: true, converter: reflectNonDefault<InlineDialogVariant | ''>('') })
 	variant: InlineDialogVariant | '' = '';
 
 	@property({ reflect: true, converter: reflectNonDefault<InlineDialogSize>('md') })

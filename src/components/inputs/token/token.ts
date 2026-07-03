@@ -45,7 +45,7 @@ export class NLDDToken extends LitElement {
 	dismissText = 'Verwijder';
 
 	/** ID of the associated popup element. Required for ARIA compliance when control="menu". */
-	@property({ type: String, reflect: true })
+	@property({ reflect: true, converter: reflectNonDefault<string>('') })
 	controls = '';
 
 	_handleDismiss(e: Event): void {

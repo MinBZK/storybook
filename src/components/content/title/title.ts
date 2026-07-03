@@ -19,6 +19,7 @@
  */
 import { LitElement } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
+import { reflectNonDefault } from '../../../utilities/reflect-non-default.js';
 import { titleStyles } from './title.styles.js';
 import { titleTemplate } from './title.template.js';
 
@@ -32,7 +33,7 @@ export class NLDDTitle extends LitElement {
 	@property({ type: Number, reflect: true })
 	size: Size = 3;
 
-	@property({ type: String, reflect: true })
+	@property({ reflect: true, converter: reflectNonDefault<TitleColor>('') })
 	color: TitleColor = '';
 
 	override render() {

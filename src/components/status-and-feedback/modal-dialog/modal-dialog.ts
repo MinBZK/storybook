@@ -34,7 +34,7 @@ import '../inline-dialog/inline-dialog.js';
 export class NLDDModalDialog extends LitElement {
 	static override styles = modalDialogStyles;
 
-	@property({ type: String, reflect: true })
+	@property({ reflect: true, converter: reflectNonDefault<InlineDialogVariant | ''>('') })
 	variant: InlineDialogVariant | '' = '';
 
 	@property({ type: String, reflect: true })

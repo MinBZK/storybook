@@ -137,7 +137,7 @@ export class NLDDTabBar extends LitElement {
 	@property({ type: Boolean, reflect: true })
 	centered = false;
 
-	@property({ type: String, reflect: true })
+	@property({ reflect: true, converter: reflectNonDefault<'icon-and-text' | 'text' | 'icon' | ''>('') })
 	variant: 'icon-and-text' | 'text' | 'icon' | '' = '';
 
 	/** Size: 'md' (default) or 'lg'. 'lg' enlarges the touch target while keeping the per-variant layout. */

@@ -172,7 +172,7 @@ export const toggleButtonStyles = css`
 	}
 
 	:host([size="lg"][variant="icon-and-text"]) .toggle-button,
-	:host([size="lg"][variant=""]) .toggle-button:has(.toggle-button__text):has(.toggle-button__icon) {
+	:host([size="lg"]:not([variant])) .toggle-button:has(.toggle-button__text):has(.toggle-button__icon) {
 		width: auto;
 		padding: var(--primitives-space-8);
 		gap: var(--primitives-space-2);
@@ -180,7 +180,7 @@ export const toggleButtonStyles = css`
 	}
 
 	:host([size="lg"][variant="icon-and-text"]) .toggle-button__text,
-	:host([size="lg"][variant=""]) .toggle-button:has(.toggle-button__icon) .toggle-button__text {
+	:host([size="lg"]:not([variant])) .toggle-button:has(.toggle-button__icon) .toggle-button__text {
 		font: var(--_stacked-text-font);
 	}
 
