@@ -18,7 +18,9 @@ describe('nldd-collection', () => {
 	it('defaults to grid layout', async () => {
 		el = await fixture('<nldd-collection></nldd-collection>');
 		await waitForUpdate(el);
-		expect(el.getAttribute('layout')).toBe('grid');
+		// The default (grid) is kept out of the DOM; the property is the source of truth.
+		expect((el as unknown as { layout: string }).layout).toBe('grid');
+		expect(el.hasAttribute('layout')).toBe(false);
 	});
 
 	it('renders load-more button when show-load-more is set on grid layout', async () => {

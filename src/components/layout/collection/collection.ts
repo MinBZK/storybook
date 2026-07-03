@@ -34,6 +34,7 @@
  */
 import { LitElement } from 'lit';
 import { customElement, property, state, query } from 'lit/decorators.js';
+import { reflectNonDefault } from '../../../utilities/reflect-non-default.js';
 import { collectionStyles } from './collection.styles.js';
 import { collectionTemplate } from './collection.template.js';
 import { nlddCollectionTranslations } from './collection.i18n.js';
@@ -49,7 +50,7 @@ type Layout = 'grid' | 'stack' | 'horizontal-scroll';
 export class NLDDCollection extends LitElement {
 	static override styles = collectionStyles;
 
-	@property({ type: String, reflect: true })
+	@property({ reflect: true, converter: reflectNonDefault<Layout>('grid') })
 	layout: Layout = 'grid';
 
 	@property({ type: Boolean, reflect: true, attribute: 'show-load-more' })

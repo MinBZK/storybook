@@ -14,6 +14,7 @@
  */
 import { LitElement } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
+import { reflectNonDefault } from '../../../utilities/reflect-non-default.js';
 import { boxStyles } from './box.styles.js';
 import { boxTemplate } from './box.template.js';
 
@@ -23,7 +24,7 @@ export type BoxBackground = 'tinted' | 'base';
 export class NLDDBox extends LitElement {
 	static override styles = boxStyles;
 
-	@property({ reflect: true })
+	@property({ reflect: true, converter: reflectNonDefault<BoxBackground>('tinted') })
 	background: BoxBackground = 'tinted';
 
 	override render() {

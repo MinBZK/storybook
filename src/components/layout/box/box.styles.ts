@@ -21,14 +21,9 @@ export const boxStyles = css`
 
 
 	/* ## Background variants
-	   Default is tinted (matches :host above). base = card-on-tinted, the
+	   The default (tinted) lives on the :host base. base = card-on-tinted, the
 	   border ring picks the +2-step semantic so the frame still reads
 	   against an already-tinted parent. */
-
-	:host([background="tinted"]) {
-		--_background-color: var(--components-box-background-color);
-		--_border-color: var(--components-box-border-color);
-	}
 
 	:host([background="base"]) {
 		--_background-color: var(--components-box-base-background-color);
