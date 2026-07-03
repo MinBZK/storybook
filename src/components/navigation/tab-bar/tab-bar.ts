@@ -28,6 +28,7 @@
  */
 import { LitElement } from 'lit';
 import { customElement, property, state } from 'lit/decorators.js';
+import { reflectNonDefault } from '../../../utilities/reflect-non-default.js';
 import { tabBarStyles, tabBarItemStyles } from './tab-bar.styles.js';
 import { tabBarTemplate, tabBarItemTemplate } from './tab-bar.template.js';
 import { sanitizeUrl } from '../../../utilities/sanitize-url.js';
@@ -63,7 +64,7 @@ export class NLDDTabBarItem extends LitElement {
 	icon = '';
 
 	/** Set by nldd-tab-bar. Sizes the variant-driven layout: 'md' (default) or 'lg' (larger touch target). */
-	@property({ type: String, reflect: true })
+	@property({ reflect: true, converter: reflectNonDefault<'md' | 'lg'>('md') })
 	size: 'md' | 'lg' = 'md';
 
 	get _effectiveVariant(): 'icon-and-text' | 'text' | 'icon' {
@@ -140,7 +141,7 @@ export class NLDDTabBar extends LitElement {
 	variant: 'icon-and-text' | 'text' | 'icon' | '' = '';
 
 	/** Size: 'md' (default) or 'lg'. 'lg' enlarges the touch target while keeping the per-variant layout. */
-	@property({ type: String, reflect: true })
+	@property({ reflect: true, converter: reflectNonDefault<'md' | 'lg'>('md') })
 	size: 'md' | 'lg' = 'md';
 
 	@property({ type: Boolean, reflect: true })

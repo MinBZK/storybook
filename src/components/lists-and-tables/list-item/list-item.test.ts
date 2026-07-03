@@ -21,7 +21,8 @@ describe('nldd-list-item', () => {
 	it('defaults to md size', async () => {
 		el = await fixture('<nldd-list-item></nldd-list-item>');
 		await waitForUpdate(el);
-		expect(el.getAttribute('size')).toBe('md');
+		expect((el as unknown as { size: string }).size).toBe('md');
+		expect(el.hasAttribute('size')).toBe(false);
 	});
 
 	it('reflects selected attribute', async () => {

@@ -53,6 +53,7 @@
  */
 import { LitElement } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
+import { reflectNonDefault } from '../../../utilities/reflect-non-default.js';
 import { tableStyles, tableRowStyles } from './table.styles.js';
 import { tableTemplate, tableRowTemplate } from './table.template.js';
 import { nlddTableTranslations } from './table.i18n.js';
@@ -74,7 +75,7 @@ const MD_MAX = parseInt(breakpoints.mdMax, 10);
 export class NLDDTable extends LitElement {
 	static override styles = tableStyles;
 
-	@property({ type: String, reflect: true })
+	@property({ reflect: true, converter: reflectNonDefault<TableBackground>('base') })
 	background: TableBackground = 'base';
 
 	/** CSS grid track list applied once as the table's columns. */

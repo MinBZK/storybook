@@ -1,5 +1,6 @@
 import { LitElement } from 'lit';
 import { customElement, property, query, state } from 'lit/decorators.js';
+import { reflectNonDefault } from '../../../utilities/reflect-non-default.js';
 import { listStyles } from './list.styles.js';
 import { template } from './list.template.js';
 import type { NLDDListItem } from '../list-item/list-item.js';
@@ -93,7 +94,7 @@ export class NLDDList extends LitElement {
 	/** Visual style of the list. `simple` is a plain vertical strip with
 	 *  no chrome (no rounded corners, no fill, no border); `box` is a
 	 *  framed card with rounded corners, fill, and an inset border ring. */
-	@property({ reflect: true })
+	@property({ reflect: true, converter: reflectNonDefault<ListVariant>('simple') })
 	variant: ListVariant = 'simple';
 
 	/** Surface fill for `variant="box"`. `tinted` (default) for a list on
@@ -103,7 +104,7 @@ export class NLDDList extends LitElement {
 	background?: ListBackground;
 
 	/** A11y semantics. See class docblock. */
-	@property({ reflect: true })
+	@property({ reflect: true, converter: reflectNonDefault<ListType>('list') })
 	type: ListType = 'list';
 
 	/** Enables drag-to-reorder. Only valid when `type="list"` (the default). */

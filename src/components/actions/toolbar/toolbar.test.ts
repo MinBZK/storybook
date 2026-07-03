@@ -21,7 +21,8 @@ describe('nldd-toolbar', () => {
 	it('defaults to md size', async () => {
 		el = await fixture('<nldd-toolbar></nldd-toolbar>');
 		await waitForUpdate(el);
-		expect(el.getAttribute('size')).toBe('md');
+		expect((el as unknown as { size: string }).size).toBe('md');
+		expect(el.hasAttribute('size')).toBe(false);
 	});
 
 	it('reflects size attribute', async () => {

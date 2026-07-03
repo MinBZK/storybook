@@ -101,7 +101,7 @@ export class NLDDToolbarItem extends LitElement {
 	priority = 0;
 
 	/** Set by nldd-toolbar; not part of the public API. @internal */
-	@property({ type: String, reflect: true })
+	@property({ reflect: true, converter: reflectNonDefault<Size>('md') })
 	size: Size = 'md';
 
 	/** Set by nldd-toolbar; not part of the public API. @internal */
@@ -145,7 +145,7 @@ export class NLDDToolbarTitle extends LitElement {
 	maxWidth = '';
 
 	/** Set by nldd-toolbar; not part of the public API. @internal */
-	@property({ type: String, reflect: true })
+	@property({ reflect: true, converter: reflectNonDefault<Size>('md') })
 	size: Size = 'md';
 
 	// Layout state — `solo-fluid` and `hidden` — is owned by nldd-toolbar and
@@ -180,7 +180,7 @@ export class NLDDToolbarTitle extends LitElement {
 export class NLDDToolbar extends LitElement {
 	static override styles = toolbarStyles;
 
-	@property({ type: String, reflect: true })
+	@property({ reflect: true, converter: reflectNonDefault<Size>('md') })
 	size: Size = 'md';
 
 	@property({ type: Boolean, reflect: true, attribute: 'show-item-labels' })

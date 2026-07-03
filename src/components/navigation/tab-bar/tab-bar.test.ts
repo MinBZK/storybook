@@ -550,7 +550,9 @@ describe('nldd-tab-bar – variant propagation', () => {
 		expect(getItems(el)[0].getAttribute('size')).toBe('lg');
 		el.size = 'md';
 		await waitForUpdate(el);
-		expect(getItems(el)[0].getAttribute('size')).toBe('md');
+		// md is the default, so it is kept out of the DOM; the property is the source of truth.
+		expect((getItems(el)[0] as unknown as { size: string }).size).toBe('md');
+		expect(getItems(el)[0].hasAttribute('size')).toBe(false);
 	});
 });
 
