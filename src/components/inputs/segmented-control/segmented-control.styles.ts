@@ -93,7 +93,7 @@ export const segmentedControlItemStyles = css`
 		--_gap: var(--semantics-buttons-md-gap);
 		--_font: var(--semantics-buttons-md-primary-text-font);
 		--_icon-size: var(--semantics-buttons-md-icon-size);
-		--_icon-only-icon-size: var(--semantics-buttons-md-icon-only-icon-size);
+		--_icon-only-icon-size: var(--semantics-buttons-md-is-icon-only-icon-size);
 		--_highlight-border-color: transparent;
 
 		${inheritedTextReset}
@@ -114,7 +114,7 @@ export const segmentedControlItemStyles = css`
 		--_gap: var(--semantics-buttons-sm-gap);
 		--_font: var(--semantics-buttons-sm-primary-text-font);
 		--_icon-size: var(--semantics-buttons-sm-icon-size);
-		--_icon-only-icon-size: var(--semantics-buttons-sm-icon-only-icon-size);
+		--_icon-only-icon-size: var(--semantics-buttons-sm-is-icon-only-icon-size);
 	}
 
 	:host([size="lg"]) {

@@ -12,11 +12,12 @@ export const toggleButtonStyles = css`
 	:host {
 		--_corner-radius: var(--semantics-controls-md-corner-radius);
 		--_min-size: var(--semantics-controls-md-min-size);
-		--_padding: var(--semantics-controls-md-block-padding) var(--semantics-controls-md-inline-padding);
+		--_block-padding: var(--semantics-controls-md-block-padding);
+		--_inline-padding: var(--semantics-buttons-md-inline-padding);
 		--_gap: var(--semantics-buttons-md-gap);
 		--_font: var(--semantics-buttons-md-primary-text-font);
 		--_icon-size: var(--semantics-buttons-md-icon-size);
-		--_icon-only-icon-size: var(--semantics-buttons-md-icon-only-icon-size);
+		--_icon-only-icon-size: var(--semantics-buttons-md-is-icon-only-icon-size);
 		--_highlight-border-color: var(--semantics-buttons-neutral-tinted-highlight-border-color);
 		--_is-hovered-highlight-border-color: var(--semantics-buttons-neutral-tinted-is-hovered-highlight-border-color);
 		--_is-active-highlight-border-color: var(--semantics-buttons-neutral-tinted-is-active-highlight-border-color);
@@ -37,27 +38,30 @@ export const toggleButtonStyles = css`
 	:host([size="xs"]) {
 		--_corner-radius: var(--semantics-controls-xs-corner-radius);
 		--_min-size: var(--semantics-controls-xs-min-size);
-		--_padding: var(--semantics-controls-xs-block-padding) var(--semantics-controls-xs-inline-padding);
+		--_block-padding: var(--semantics-controls-xs-block-padding);
+		--_inline-padding: var(--semantics-buttons-xs-inline-padding);
 		--_gap: var(--semantics-buttons-xs-gap);
 		--_font: var(--semantics-buttons-xs-primary-text-font);
 		--_icon-size: var(--semantics-buttons-xs-icon-size);
-		--_icon-only-icon-size: var(--semantics-buttons-xs-icon-only-icon-size);
+		--_icon-only-icon-size: var(--semantics-buttons-xs-is-icon-only-icon-size);
 	}
 
 	:host([size="sm"]) {
 		--_corner-radius: var(--semantics-controls-sm-corner-radius);
 		--_min-size: var(--semantics-controls-sm-min-size);
-		--_padding: var(--semantics-controls-sm-block-padding) var(--semantics-controls-sm-inline-padding);
+		--_block-padding: var(--semantics-controls-sm-block-padding);
+		--_inline-padding: var(--semantics-buttons-sm-inline-padding);
 		--_gap: var(--semantics-buttons-sm-gap);
 		--_font: var(--semantics-buttons-sm-primary-text-font);
 		--_icon-size: var(--semantics-buttons-sm-icon-size);
-		--_icon-only-icon-size: var(--semantics-buttons-sm-icon-only-icon-size);
+		--_icon-only-icon-size: var(--semantics-buttons-sm-is-icon-only-icon-size);
 	}
 
 	:host([size="lg"]) {
 		--_corner-radius: var(--semantics-controls-lg-corner-radius);
 		--_min-size: var(--semantics-controls-lg-min-size);
-		--_padding: var(--semantics-controls-lg-block-padding) var(--semantics-controls-lg-inline-padding);
+		--_block-padding: var(--semantics-controls-lg-block-padding);
+		--_inline-padding: var(--semantics-buttons-lg-inline-padding);
 		--_gap: var(--semantics-buttons-lg-gap);
 		--_font: var(--semantics-buttons-lg-primary-text-font);
 		--_icon-size: var(--semantics-buttons-lg-icon-size);
@@ -98,7 +102,7 @@ export const toggleButtonStyles = css`
 
 	.toggle-button:has(.toggle-button__text) {
 		width: auto;
-		padding: var(--_padding);
+		padding: var(--_block-padding) var(--_inline-padding);
 	}
 
 	@media (hover: hover) {

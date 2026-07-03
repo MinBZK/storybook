@@ -243,18 +243,18 @@ export const tabBarItemStyles = css`
 	}
 
 	:host([variant="icon"]:not([size="lg"])) .tab-bar__item-icon {
-		width: var(--semantics-buttons-md-icon-only-icon-size);
-		height: var(--semantics-buttons-md-icon-only-icon-size);
+		width: var(--semantics-buttons-md-is-icon-only-icon-size);
+		height: var(--semantics-buttons-md-is-icon-only-icon-size);
 	}
 
 	:host([variant="icon-and-text"][size="lg"]) .tab-bar__item-icon {
-		width: var(--semantics-buttons-md-icon-only-icon-size);
-		height: var(--semantics-buttons-md-icon-only-icon-size);
+		width: var(--semantics-buttons-md-is-icon-only-icon-size);
+		height: var(--semantics-buttons-md-is-icon-only-icon-size);
 	}
 
 	:host([variant="icon"][size="lg"]) .tab-bar__item-icon {
-		width: var(--semantics-buttons-lg-icon-only-icon-size);
-		height: var(--semantics-buttons-lg-icon-only-icon-size);
+		width: var(--semantics-buttons-lg-is-icon-only-icon-size);
+		height: var(--semantics-buttons-lg-is-icon-only-icon-size);
 	}
 
 	:host([variant="text"]) .tab-bar__item-icon {
