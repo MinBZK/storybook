@@ -56,6 +56,7 @@
  */
 import { LitElement } from 'lit';
 import { customElement, property, state, query } from 'lit/decorators.js';
+import { reflectNonDefault } from '../../../utilities/reflect-non-default.js';
 import { comboBoxStyles } from './combo-box.styles.js';
 import { comboBoxTemplate } from './combo-box.template.js';
 import { nlddComboBoxTranslations } from './combo-box.i18n.js';
@@ -95,7 +96,7 @@ export class NLDDComboBox extends LitElement {
 	@property({ type: String })
 	placeholder = '';
 
-	@property({ type: String, reflect: true })
+	@property({ reflect: true, converter: reflectNonDefault<ComboBoxSize>('md') })
 	size: ComboBoxSize = 'md';
 
 	@property({ type: Boolean, reflect: true })
