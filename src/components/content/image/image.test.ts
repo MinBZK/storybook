@@ -72,7 +72,8 @@ describe('nldd-image', () => {
 		el = await fixture<NLDDImage>('<nldd-image src="/foo.jpg" alt="Foo"></nldd-image>');
 		await waitForUpdate(el);
 		expect((el as unknown as NLDDImage).shape).toBe('square');
-		expect(el.getAttribute('shape')).toBe('square');
+		// The default shape is not reflected — kept out of the DOM.
+		expect(el.hasAttribute('shape')).toBe(false);
 	});
 
 	it('defaults width to "full" and applies no host max-width', async () => {

@@ -58,6 +58,7 @@
 
 import { LitElement } from 'lit';
 import { customElement, property, state } from 'lit/decorators.js';
+import { reflectNonDefault } from '../../../utilities/reflect-non-default.js';
 import { imageStyles } from './image.styles.js';
 import { imageTemplate } from './image.template.js';
 import { nlddImageTranslations } from './image.i18n.js';
@@ -116,7 +117,7 @@ export class NLDDImage extends LitElement {
 	@property({ type: String, attribute: 'object-position', reflect: true })
 	objectPosition: ImageObjectPosition = 'center';
 
-	@property({ type: String, reflect: true })
+	@property({ reflect: true, converter: reflectNonDefault<ImageShape>('square') })
 	shape: ImageShape = 'square';
 
 	@property({ type: String })

@@ -32,6 +32,7 @@
  * @slot - Default slot for the code/text content (also the copy source)
  */
 import { customElement, property, state } from 'lit/decorators.js';
+import { reflectNonDefault } from '../../../utilities/reflect-non-default.js';
 import { EditorView } from '@codemirror/view';
 import { Compartment, EditorState, type Extension } from '@codemirror/state';
 import { NLDDCodeMirrorElement } from '../../../utilities/codemirror/codemirror-element.js';
@@ -54,7 +55,7 @@ export class NLDDCodeViewer extends NLDDCodeMirrorElement {
 	static override styles = codeViewerStyles;
 
 	/** Visual style. `box` (default) is a framed card; `simple` drops the frame. */
-	@property({ type: String, reflect: true })
+	@property({ reflect: true, converter: reflectNonDefault<'simple' | 'box'>('box') })
 	variant: 'simple' | 'box' = 'box';
 
 	/** Surface fill when `variant="box"`. */

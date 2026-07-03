@@ -55,13 +55,9 @@ export const imageStyles = css`
 	:host([object-position="right"]) { --_object-position: right; }
 
 
-	/* ## Shape variants
-	   The :host base --_corner-radius is the design-system rounded token, used by
-	   shape="rounded". The default shape is "square" (set on the property), which
-	   overrides to 0; circle overrides to 50% for avatar-style use (combine with
-	   aspect-ratio 1/1 for a true circle). */
+	/* ## Shape variants */
 
-	:host([shape="square"]) { --_corner-radius: var(--primitives-corner-radius-none); }
+	:host([shape="rounded"]) { --_corner-radius: var(--components-image-rounded-corner-radius); }
 	:host([shape="circle"]) { --_corner-radius: 50%; }
 
 

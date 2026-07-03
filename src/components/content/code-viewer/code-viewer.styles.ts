@@ -143,8 +143,12 @@ export const codeViewerStyles = css`
 	   same fallback nldd-box, nldd-banner, and nldd-list use. */
 
 	@media (forced-colors: active) {
-		:host([variant="box"]) .code-viewer {
+		:host .code-viewer {
 			border: 1px solid CanvasText;
+		}
+
+		:host([variant="simple"]) .code-viewer {
+			border: none;
 		}
 	}
 `;
