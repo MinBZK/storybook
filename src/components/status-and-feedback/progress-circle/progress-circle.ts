@@ -98,7 +98,7 @@ export class NLDDProgressCircleSegmentIndicator extends LitElement {
 export class NLDDProgressCircle extends LitElement {
 	static override styles = progressCircleStyles;
 
-	@property({ type: String, reflect: true })
+	@property({ reflect: true, converter: reflectNonDefault<ProgressCircleMode>('progress') })
 	mode: ProgressCircleMode = 'progress';
 
 	@property({ type: Number, reflect: true })
@@ -116,13 +116,13 @@ export class NLDDProgressCircle extends LitElement {
 	@property({ type: String, reflect: true })
 	text = '';
 
-	@property({ type: String, reflect: true, attribute: 'value-format' })
+	@property({ reflect: true, attribute: 'value-format', converter: reflectNonDefault<ProgressCircleValueFormat>('percentage') })
 	valueFormat: ProgressCircleValueFormat = 'percentage';
 
 	@property({ type: String, reflect: true, attribute: 'value-text' })
 	valueText = '';
 
-	@property({ type: String, reflect: true, attribute: 'value-display' })
+	@property({ reflect: true, attribute: 'value-display', converter: reflectNonDefault<ProgressCircleValueDisplay>('tooltip') })
 	valueDisplay: ProgressCircleValueDisplay = 'tooltip';
 
 	@property({ type: String, reflect: true, attribute: 'accessible-label' })

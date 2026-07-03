@@ -84,7 +84,7 @@ export class NLDDActivityIndicator extends LitElement {
 
 	/** 'default' waits {@link DELAY_MS} before showing; 'instant' shows
 	 *  immediately. The fade-in plays either way. */
-	@property({ type: String, reflect: true })
+	@property({ reflect: true, converter: reflectNonDefault<ActivityIndicatorTiming>('default') })
 	timing: ActivityIndicatorTiming = 'default';
 
 	/** Mark the loader as finished while keeping the element mounted.

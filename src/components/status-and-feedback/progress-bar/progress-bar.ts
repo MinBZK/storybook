@@ -136,7 +136,7 @@ export class NLDDProgressBarSegmentIndicator extends LitElement {
 export class NLDDProgressBar extends LitElement {
 	static override styles = progressBarStyles;
 
-	@property({ type: String, reflect: true })
+	@property({ reflect: true, converter: reflectNonDefault<ProgressBarMode>('progress') })
 	mode: ProgressBarMode = 'progress';
 
 	@property({ type: Number, reflect: true })
@@ -154,13 +154,13 @@ export class NLDDProgressBar extends LitElement {
 	@property({ type: String, reflect: true })
 	text = '';
 
-	@property({ type: String, reflect: true, attribute: 'value-format' })
+	@property({ reflect: true, attribute: 'value-format', converter: reflectNonDefault<ProgressBarValueFormat>('percentage') })
 	valueFormat: ProgressBarValueFormat = 'percentage';
 
 	@property({ type: String, reflect: true, attribute: 'value-text' })
 	valueText = '';
 
-	@property({ type: String, reflect: true, attribute: 'value-display' })
+	@property({ reflect: true, attribute: 'value-display', converter: reflectNonDefault<ProgressBarValueDisplay>('inline') })
 	valueDisplay: ProgressBarValueDisplay = 'inline';
 
 	@property({ type: String, reflect: true, attribute: 'accessible-label' })
