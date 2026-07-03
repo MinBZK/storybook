@@ -93,7 +93,6 @@ export const tabBarItemStyles = css`
 	:host {
 		--_block-padding: var(--semantics-controls-md-block-padding);
 		--_inline-padding: var(--semantics-buttons-md-inline-padding);
-		--_lg-item-padding: var(--primitives-space-8);
 		--_highlight-border-color: transparent;
 		--_z-index-content: 1;
 
@@ -170,7 +169,7 @@ export const tabBarItemStyles = css`
 
 	:host([variant="icon-and-text"][size="lg"]) .tab-bar__item {
 		height: var(--semantics-controls-lg-min-size);
-		padding: var(--_lg-item-padding);
+		padding: var(--primitives-space-8);
 		flex-direction: column;
 	}
 
@@ -183,7 +182,6 @@ export const tabBarItemStyles = css`
 	:host([variant="icon"][size="lg"]) .tab-bar__item {
 		width: var(--semantics-controls-lg-min-size);
 		height: var(--semantics-controls-lg-min-size);
-		padding: var(--_lg-item-padding);
 	}
 
 	@media (hover: hover) {
