@@ -177,6 +177,7 @@ export class NLDDTextEditor extends NLDDCodeMirrorElement {
 	private _wrapCompartment = new Compartment();
 	private _placeholderCompartment = new Compartment();
 	private _attrsCompartment = new Compartment();
+	private _historyCompartment = new Compartment();
 
 	protected getEditorParent(): HTMLElement | null | undefined {
 		return this._container;
@@ -196,7 +197,7 @@ export class NLDDTextEditor extends NLDDCodeMirrorElement {
 			// Prec.highest so the badge nests inside a heading/bold run and scales with
 			// it, like the mention and annotation, instead of staying at the base size.
 			Prec.highest(linkOpenBadge),
-			history(),
+			this._historyCompartment.of(history()),
 			drawSelection(),
 			dropCursor(),
 			dragToMove,
@@ -446,6 +447,18 @@ export class NLDDTextEditor extends NLDDCodeMirrorElement {
 			cmRedo(this.view);
 			this.view.focus();
 		}
+	}
+
+	/** Drop the undo/redo history, leaving the document untouched. Use after a
+	 *  consumer-driven discard so a later undo can't step back into the
+	 *  thrown-away edits. Reconfiguring the history compartment off and back on
+	 *  re-initialises it with empty stacks. */
+	clearHistory(): void {
+		const view = this.view;
+		if (!view) return;
+		view.dispatch({ effects: this._historyCompartment.reconfigure([]) });
+		view.dispatch({ effects: this._historyCompartment.reconfigure(history()) });
+		this._emitState();
 	}
 
 	/** Text and annotations of the last cut, so a same-editor paste can move the

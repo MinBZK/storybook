@@ -312,6 +312,26 @@ describe('nldd-text-editor', () => {
 		cleanup(el2);
 	});
 
+	it('clearHistory leegt de undo-stack maar laat het document staan', async () => {
+		const el2 = await withValue('hello');
+		const api = el2 as unknown as {
+			view: { dispatch(spec: unknown): void };
+			getState(): { canUndo: boolean };
+			clearHistory(): void;
+			value: string;
+		};
+		// A user-like edit so history has something to undo.
+		api.view.dispatch({ changes: { from: 5, insert: ' world' } });
+		await waitForUpdate(el2);
+		expect(api.getState().canUndo).toBe(true);
+
+		api.clearHistory();
+		await waitForUpdate(el2);
+		expect(api.getState().canUndo).toBe(false);
+		expect(api.value).toBe('hello world');
+		cleanup(el2);
+	});
+
 	it('indent nestelt onder een vorig item en maakt van een los item geen codeblok', async () => {
 		type IndentApi = {
 			view: { dispatch(s: unknown): void; state: { doc: { line(n: number): { text: string; from: number } } } };
