@@ -44,6 +44,7 @@
  */
 import { LitElement } from 'lit';
 import { customElement, property, state } from 'lit/decorators.js';
+import { reflectNonDefault } from '../../../utilities/reflect-non-default.js';
 import { bannerStyles } from './banner.styles.js';
 import { bannerTemplate } from './banner.template.js';
 import { nlddBannerTranslations } from './banner.i18n.js';
@@ -66,7 +67,7 @@ const DEFAULT_ICONS: Record<BannerVariant, string> = {
 export class NLDDBanner extends LitElement {
 	static override styles = bannerStyles;
 
-	@property({ type: String, reflect: true })
+	@property({ reflect: true, converter: reflectNonDefault<BannerVariant>('neutral') })
 	variant: BannerVariant = 'neutral';
 
 	@property({ type: String, reflect: true })

@@ -39,6 +39,7 @@
  */
 import { LitElement } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
+import { reflectNonDefault } from '../../../utilities/reflect-non-default.js';
 import { statusBarStyles } from './status-bar.styles.js';
 import { statusBarTemplate } from './status-bar.template.js';
 import '../../content/icon/icon.js';
@@ -49,7 +50,7 @@ export type StatusBarVariant = 'neutral' | 'accent' | 'success' | 'warning' | 'c
 export class NLDDStatusBar extends LitElement {
 	static override styles = statusBarStyles;
 
-	@property({ type: String, reflect: true })
+	@property({ reflect: true, converter: reflectNonDefault<StatusBarVariant>('neutral') })
 	variant: StatusBarVariant = 'neutral';
 
 	@property({ type: String })

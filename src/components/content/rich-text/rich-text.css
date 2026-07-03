@@ -46,7 +46,6 @@ nldd-rich-text[centered] {
 
 nldd-rich-text[spacing="flat"]  { --_spacing: var(--components-rich-text-spacing-flat); }
 nldd-rich-text[spacing="tight"] { --_spacing: var(--components-rich-text-spacing-tight); }
-nldd-rich-text[spacing="snug"]  { --_spacing: var(--components-rich-text-spacing-snug); }
 nldd-rich-text[spacing="loose"] { --_spacing: var(--components-rich-text-spacing-loose); }
 
 nldd-rich-text[hidden] {

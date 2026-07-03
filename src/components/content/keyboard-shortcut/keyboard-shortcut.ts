@@ -36,6 +36,7 @@
 
 import { LitElement } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
+import { reflectNonDefault } from '../../../utilities/reflect-non-default.js';
 import { keyboardShortcutStyles } from './keyboard-shortcut.styles.js';
 import { template } from './keyboard-shortcut.template.js';
 import { detectOS, type OS } from '../../../utilities/os.js';
@@ -60,7 +61,7 @@ export class NLDDKeyboardShortcut extends LitElement {
 	@property({ type: String, attribute: 'linux-keys' })
 	linuxKeys = '';
 
-	@property({ type: String, reflect: true })
+	@property({ reflect: true, converter: reflectNonDefault<Size>('md') })
 	size: Size = 'md';
 
 	/**
@@ -68,7 +69,7 @@ export class NLDDKeyboardShortcut extends LitElement {
 	 * border. 'simple' renders the keys as plain text with separators — lighter,
 	 * for inline use such as inside a menu item.
 	 */
-	@property({ type: String, reflect: true })
+	@property({ reflect: true, converter: reflectNonDefault<Variant>('box') })
 	variant: Variant = 'box';
 
 	/**
@@ -77,7 +78,7 @@ export class NLDDKeyboardShortcut extends LitElement {
 	 * translucent contrast fill and highlight border — useful on filled panels or
 	 * highlighted rows.
 	 */
-	@property({ type: String, reflect: true })
+	@property({ reflect: true, converter: reflectNonDefault<Color>('neutral') })
 	color: Color = 'neutral';
 
 	@property({ type: Boolean, reflect: true, attribute: 'always-visible' })

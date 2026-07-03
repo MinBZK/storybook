@@ -76,7 +76,7 @@ export const keyboardShortcutStyles = css`
 		align-items: center;
 	}
 
-	:host([size="inherit"][variant="box"]) .keyboard-shortcut {
+	:host([size="inherit"]:not([variant="simple"])) .keyboard-shortcut {
 		position: relative;
 		top: -0.05em;
 	}

@@ -19,7 +19,8 @@ describe('nldd-banner', () => {
 	it('defaults to variant="neutral"', async () => {
 		el = await fixture('<nldd-banner></nldd-banner>');
 		await waitForUpdate(el);
-		expect(el.getAttribute('variant')).toBe('neutral');
+		expect((el as unknown as { variant: string }).variant).toBe('neutral');
+		expect(el.hasAttribute('variant')).toBe(false);
 	});
 
 	it('renders text and supporting-text', async () => {

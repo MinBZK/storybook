@@ -17,6 +17,7 @@
 
 import { LitElement } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
+import { reflectNonDefault } from '../../../utilities/reflect-non-default.js';
 import { badgeStyles } from './badge.styles.js';
 import { template } from './badge.template.js';
 import { withTranslations } from '../../../utilities/with-translations.js';
@@ -37,10 +38,10 @@ type Size = 'sm' | 'md';
 export class NLDDBadge extends withTranslations(LitElement, nlddBadgeTranslations) {
 	static override styles = badgeStyles;
 
-	@property({ type: String, reflect: true })
+	@property({ reflect: true, converter: reflectNonDefault<Color>('critical') })
 	color: Color = 'critical';
 
-	@property({ type: String, reflect: true })
+	@property({ reflect: true, converter: reflectNonDefault<Size>('md') })
 	size: Size = 'md';
 
 	@property({ type: String })

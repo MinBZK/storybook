@@ -19,7 +19,8 @@ describe('nldd-status-bar', () => {
 	it('defaults to variant="neutral"', async () => {
 		el = await fixture('<nldd-status-bar></nldd-status-bar>');
 		await waitForUpdate(el);
-		expect(el.getAttribute('variant')).toBe('neutral');
+		expect((el as unknown as { variant: string }).variant).toBe('neutral');
+		expect(el.hasAttribute('variant')).toBe(false);
 	});
 
 	it('reflects the variant property to the attribute', async () => {
