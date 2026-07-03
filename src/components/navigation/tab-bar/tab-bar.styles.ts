@@ -159,7 +159,7 @@ export const tabBarItemStyles = css`
 		height: var(--semantics-controls-md-min-size);
 	}
 
-	:host([variant="icon"]:not([size="lg"])) .tab-bar__item {
+	:host([variant="icon"]) .tab-bar__item {
 		width: var(--semantics-controls-md-min-size);
 		height: var(--semantics-controls-md-min-size);
 	}
@@ -243,7 +243,7 @@ export const tabBarItemStyles = css`
 		justify-content: center;
 	}
 
-	:host([variant="icon"]:not([size="lg"])) .tab-bar__item-icon {
+	:host([variant="icon"]) .tab-bar__item-icon {
 		width: var(--semantics-buttons-md-is-icon-only-icon-size);
 		height: var(--semantics-buttons-md-is-icon-only-icon-size);
 	}
