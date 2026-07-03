@@ -101,10 +101,19 @@ describe('nldd-multi-line-text-field', () => {
 		expect(el.getAttribute('size')).toBe('sm');
 	});
 
-	it('reflects resize attribute to host', async () => {
-		el = await fixture('<nldd-multi-line-text-field resize="auto"></nldd-multi-line-text-field>');
+	it('reflects a non-default resize but keeps the default (auto) attribute-less', async () => {
+		el = await fixture('<nldd-multi-line-text-field></nldd-multi-line-text-field>');
 		await waitForUpdate(el);
-		expect(el.getAttribute('resize')).toBe('auto');
+		// The default (auto) is not reflected.
+		expect(el.hasAttribute('resize')).toBe(false);
+		// A non-default reflects to the attribute.
+		(el as unknown as { resize: string }).resize = 'vertical';
+		await waitForUpdate(el);
+		expect(el.getAttribute('resize')).toBe('vertical');
+		// Back to the default strips it from the DOM.
+		(el as unknown as { resize: string }).resize = 'auto';
+		await waitForUpdate(el);
+		expect(el.hasAttribute('resize')).toBe(false);
 	});
 
 	it('passes rows attribute to inner textarea', async () => {

@@ -47,7 +47,7 @@ export default {
 		value: '',
 		placeholder: '',
 		rows: 6,
-		resize: 'vertical',
+		resize: 'auto',
 		wrap: false,
 		readonly: false,
 		disabled: false,
@@ -91,8 +91,8 @@ export default {
 		resize: {
 			control: 'select',
 			options: ['none', 'vertical', 'auto'],
-			description: 'Resize-gedrag. none = vast, vertical = slepen vanaf rows, auto = groeit mee.',
-			table: { defaultValue: { summary: 'vertical' } },
+			description: 'Resize-gedrag. auto = groeit mee, vertical = slepen vanaf rows, none = vast.',
+			table: { defaultValue: { summary: 'auto' } },
 		},
 		wrap: {
 			control: 'boolean',

@@ -29,7 +29,7 @@
  * @attr {boolean} required        - Required state
  * @attr {boolean} wrap            - Wrap long lines instead of horizontal scroll
  * @attr {number} rows             - Minimum visible rows (the floor in every resize mode). Default: 6.
- * @attr {string} resize           - 'none' (fixed) | 'vertical' (default) | 'auto' (grow)
+ * @attr {string} resize           - 'none' (fixed) | 'vertical' (drag) | 'auto' (grow, default)
  * @attr {string} variant          - 'simple' (default, bare) | 'box' (framed surface)
  * @attr {string} language         - Highlight grammar (yaml, json, javascript, typescript, css, html, xml, bash, markdown, rust, gherkin, toml, sql, python). Empty disables highlighting.
  * @attr {boolean} line-numbers    - Show a line-number gutter
@@ -40,6 +40,7 @@
  */
 import { LitElement, type PropertyValues } from 'lit';
 import { customElement, property, query } from 'lit/decorators.js';
+import { reflectNonDefault } from '../../../utilities/reflect-non-default.js';
 import {
 	EditorView,
 	keymap,
@@ -101,8 +102,8 @@ export class NLDDCodeEditor extends NLDDCodeMirrorElement {
 	@property({ type: Number })
 	rows = 6;
 
-	@property({ type: String, reflect: true })
-	resize: ResizeMode = 'vertical';
+	@property({ reflect: true, converter: reflectNonDefault<ResizeMode>('auto') })
+	resize: ResizeMode = 'auto';
 
 	@property({ type: String, reflect: true })
 	variant: CodeEditorVariant = 'simple';

@@ -15,7 +15,7 @@
  * @attr {boolean} required       - Required state
  * @attr {string} autocomplete    - Autocomplete hint
  * @attr {number} rows            - Initial visible rows (minimum height). Default: 3.
- * @attr {string} resize          - 'none' | 'vertical' (default) | 'auto'.
+ * @attr {string} resize          - 'none' | 'vertical' | 'auto' (default).
  *                                  'auto' grows with content (native field-sizing), no manual handle.
  * @attr {string} accessible-label - Accessible label forwarded to the inner textarea. Set automatically by nldd-form-field.
  * @attr {boolean} no-spellcheck  - Disables browser spellchecking on the inner textarea
@@ -26,6 +26,7 @@
  */
 import { LitElement, type PropertyValues } from 'lit';
 import { customElement, property, query } from 'lit/decorators.js';
+import { reflectNonDefault } from '../../../utilities/reflect-non-default.js';
 import { multiLineTextFieldStyles } from './multi-line-text-field.styles.js';
 import { multiLineTextFieldTemplate } from './multi-line-text-field.template.js';
 
@@ -82,8 +83,8 @@ export class NLDDMultiLineTextField extends LitElement {
 	@property({ type: Number })
 	rows = 3;
 
-	@property({ type: String, reflect: true })
-	resize: ResizeMode = 'vertical';
+	@property({ reflect: true, converter: reflectNonDefault<ResizeMode>('auto') })
+	resize: ResizeMode = 'auto';
 
 	/** Accessible label forwarded to the inner <textarea>. Set automatically by nldd-form-field. */
 	@property({ type: String, attribute: 'accessible-label' })

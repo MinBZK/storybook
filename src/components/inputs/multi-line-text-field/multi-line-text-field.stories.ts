@@ -53,7 +53,7 @@ export default {
 	},
 	args: {
 		size: 'md',
-		resize: 'vertical',
+		resize: 'auto',
 		rows: 3,
 		width: '',
 		placeholder: 'Schrijf hier je toelichting',
@@ -78,8 +78,8 @@ export default {
 		resize: {
 			control: 'select',
 			options: ['none', 'vertical', 'auto'],
-			description: 'Resize gedrag. "auto" laat het veld meegroeien met de inhoud.',
-			table: { defaultValue: { summary: 'vertical' } },
+			description: 'Resize gedrag. "auto" (default) laat het veld meegroeien met de inhoud.',
+			table: { defaultValue: { summary: 'auto' } },
 		},
 		rows: {
 			control: 'number',

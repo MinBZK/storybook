@@ -100,19 +100,18 @@ export const multiLineTextFieldStyles = css`
 		color: var(--semantics-content-color);
 		font: var(--_text-font);
 		appearance: none;
+		resize: none;
+		field-sizing: content;
 	}
 
 	:host([resize="vertical"]) .multi-line-text-field__input {
 		resize: vertical;
+		field-sizing: fixed;
 	}
 
 	:host([resize="none"]) .multi-line-text-field__input {
 		resize: none;
-	}
-
-	:host([resize="auto"]) .multi-line-text-field__input {
-		resize: none;
-		field-sizing: content;
+		field-sizing: fixed;
 	}
 
 	:host([valid]) .multi-line-text-field__input,

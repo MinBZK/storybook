@@ -105,22 +105,25 @@ export const codeEditorStyles = css`
 		tab-size: 2;
 	}
 
-	/* Prominent accent caret in both variants (box additionally has the focus
-	   ring). The [variant] attribute is always present, so this outweighs the
-	   theme's default cursor colour. */
-	:host([variant]) .cm-cursor {
+	/* Accent caret. The doubled class is purely for specificity — it outweighs
+	   CodeMirror's theme cursor colour without depending on an attribute. */
+	:host .cm-cursor.cm-cursor {
 		border-left-color: var(--primitives-color-accent-600);
 		border-left-width: 2px;
 	}
 
 	/* Resize model — rows is the floor in every mode:
-	   none = fixed height, vertical = drag up from the floor, auto = grow. */
-	:host([resize="none"]) .cm-editor {
-		height: calc(var(--_rows) * 1lh + 2 * var(--_padding-block));
+	   auto (default) = grow, vertical = drag up from the floor, none = fixed. */
+	:host .cm-scroller {
+		resize: none;
+		min-height: calc(var(--_rows) * 1lh + 2 * var(--_padding-block));
 	}
 
 	:host([resize="vertical"]) .cm-scroller {
 		resize: vertical;
-		min-height: calc(var(--_rows) * 1lh + 2 * var(--_padding-block));
+	}
+
+	:host([resize="none"]) .cm-editor {
+		height: calc(var(--_rows) * 1lh + 2 * var(--_padding-block));
 	}
 `;
