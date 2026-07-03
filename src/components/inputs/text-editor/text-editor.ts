@@ -288,6 +288,13 @@ export class NLDDTextEditor extends NLDDCodeMirrorElement {
 		this._initialValue = this.value;
 		this.style.setProperty('--_rows', String(this.rows));
 		this.mountEditor(this.value);
+		this.onEditorMounted();
+	}
+
+	/* Runs on the initial mount and on every re-mount after a detach/reattach
+	 * (e.g. Vue <KeepAlive>): the view — with its scroller and content DOM — is
+	 * rebuilt, so the click forwarders and annotation state must be (re)applied. */
+	protected override onEditorMounted(): void {
 		// A press on the scroller's own padding (outside .cm-content) doesn't
 		// place a caret; forward it to the nearest line.
 		this.view?.scrollDOM.addEventListener('pointerdown', this._onScrollerPointerDown);
@@ -295,7 +302,7 @@ export class NLDDTextEditor extends NLDDCodeMirrorElement {
 		// caret placement).
 		this.view?.contentDOM.addEventListener('pointerdown', this._onMentionPointerDown, true);
 		this._syncAnnotations();
-		this._internals.setFormValue(this.value);
+		this._internals.setFormValue(this.doc);
 		this._checkAccessibleLabel();
 		// Emit one state snapshot on mount so a consumer's toolbar initialises to the
 		// real state (e.g. undo/redo disabled with no history yet) instead of its

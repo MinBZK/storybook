@@ -126,8 +126,16 @@ export class NLDDCodeViewer extends NLDDCodeMirrorElement {
 
 	override firstUpdated(): void {
 		this.mountEditor(this._getRawText());
+		this.onEditorMounted();
+	}
+
+	/* Runs on the initial mount and on every re-mount after a detach/reattach
+	 * (e.g. Vue <KeepAlive>), so the scroll observer and language survive the
+	 * view being rebuilt. */
+	protected override onEditorMounted(): void {
 		const scroller = this.view?.scrollDOM;
 		if (scroller) {
+			this._resizeObserver?.disconnect();
 			this._resizeObserver = new ResizeObserver(() => this._updateScrollable());
 			this._resizeObserver.observe(scroller);
 		}

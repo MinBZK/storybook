@@ -31,6 +31,28 @@ describe('nldd-code-viewer', () => {
 		expect(content.textContent).toContain('example content');
 	});
 
+	// Regression: a detach/reattach — as Vue <KeepAlive> does when switching a
+	// v-if panel back into view — destroyed the CodeMirror view on disconnect
+	// but never re-mounted it (Lit's firstUpdated is one-shot), so the viewer
+	// came back blank until a page reload. The base class now re-mounts from the
+	// preserved document on reconnect.
+	it('rebuilds the view with its content after a detach/reattach', async () => {
+		el = await fixture('<nldd-code-viewer language="yaml">a: 1\nb: 2</nldd-code-viewer>');
+		await waitForUpdate(el);
+		const parent = el.parentElement!;
+		const marker = document.createComment('placeholder');
+
+		// Detach (disconnectedCallback → destroyEditor), then reattach.
+		parent.replaceChild(marker, el);
+		expect(el.shadowRoot!.querySelector('.cm-content')).toBeNull();
+		parent.replaceChild(el, marker);
+		await waitForUpdate(el);
+
+		const content = el.shadowRoot!.querySelector('.cm-content')!;
+		expect(content.textContent).toContain('a: 1');
+		expect(content.textContent).toContain('b: 2');
+	});
+
 	it('reflects the wrap attribute', async () => {
 		el = await fixture('<nldd-code-viewer wrap>x</nldd-code-viewer>');
 		await waitForUpdate(el);

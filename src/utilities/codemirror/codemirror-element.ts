@@ -15,6 +15,12 @@ import { EditorState, type Compartment, type Extension } from '@codemirror/state
 export abstract class NLDDCodeMirrorElement extends LitElement {
 	protected view?: EditorView;
 
+	/** True once the view has been mounted at least once — drives re-mount on reconnect. */
+	private _hasMounted = false;
+
+	/** Document captured on disconnect so a re-mount restores the live content. */
+	private _preservedDoc?: string;
+
 	/** The shadow-DOM element the EditorView mounts into. */
 	protected abstract getEditorParent(): HTMLElement | null | undefined;
 
@@ -36,7 +42,17 @@ export abstract class NLDDCodeMirrorElement extends LitElement {
 			// CodeMirror's StyleModule injects into this root, not the document.
 			root: this.shadowRoot ?? undefined,
 		});
+		this._hasMounted = true;
 	}
+
+	/**
+	 * Per-mount setup hook, called right after the view is created — on the
+	 * initial mount (from the subclass `firstUpdated`) and on every re-mount
+	 * after a detach/reattach. Subclasses (re)attach observers, DOM listeners
+	 * and language grammars here so they survive being moved in the DOM.
+	 * Default: no-op.
+	 */
+	protected onEditorMounted(): void {}
 
 	protected destroyEditor(): void {
 		this.view?.destroy();
@@ -70,8 +86,23 @@ export abstract class NLDDCodeMirrorElement extends LitElement {
 		view.focus();
 	}
 
+	override connectedCallback(): void {
+		super.connectedCallback();
+		// A detach/reattach — Vue <KeepAlive>, a moved subtree, a <details> toggle —
+		// runs disconnectedCallback (which destroyed the view) without re-running
+		// Lit's one-shot firstUpdated. Rebuild the view from the preserved document
+		// so the editor comes back populated instead of blank until a page reload.
+		if (this._hasMounted && !this.view) {
+			this.mountEditor(this._preservedDoc ?? '');
+			if (this.view) this.onEditorMounted();
+		}
+	}
+
 	override disconnectedCallback(): void {
 		super.disconnectedCallback();
+		// Capture the live document before the view is torn down so a later
+		// re-mount (see connectedCallback) restores exactly what was on screen.
+		if (this.view) this._preservedDoc = this.doc;
 		this.destroyEditor();
 	}
 }

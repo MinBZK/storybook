@@ -193,12 +193,19 @@ export class NLDDCodeEditor extends NLDDCodeMirrorElement {
 		this._initialValue = this.value;
 		this.style.setProperty('--_rows', String(this.rows));
 		this.mountEditor(this.value);
+		this.onEditorMounted();
+	}
+
+	/* Runs on the initial mount and on every re-mount after a detach/reattach
+	 * (e.g. Vue <KeepAlive>): the view — and its scrollDOM — is rebuilt, so the
+	 * padding-click forwarder and language must be (re)applied here. */
+	protected override onEditorMounted(): void {
 		// A press on the scroller's own padding (outside .cm-content) doesn't
 		// place a caret; forward it to the nearest line so the padding is
 		// clickable too. CM attaches its own handlers to the content, not the
 		// scroller, so this is a plain listener on the scroller element.
 		this.view?.scrollDOM.addEventListener('pointerdown', this._onScrollerPointerDown);
-		this._internals.setFormValue(this.value);
+		this._internals.setFormValue(this.doc);
 		if (this.language) void this._applyLanguage();
 		this._checkAccessibleLabel();
 	}
