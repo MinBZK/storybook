@@ -143,7 +143,8 @@ describe('nldd-text-cell', () => {
 	it('defaults to left horizontal alignment', async () => {
 		el = await fixture('<nldd-text-cell></nldd-text-cell>');
 		await waitForUpdate(el);
-		expect(el.getAttribute('horizontal-alignment')).toBe('left');
+		expect((el as unknown as { horizontalAlignment: string }).horizontalAlignment).toBe('left');
+		expect(el.hasAttribute('horizontal-alignment')).toBe(false);
 	});
 
 	it('reflects horizontal-alignment attribute', async () => {
@@ -155,7 +156,8 @@ describe('nldd-text-cell', () => {
 	it('defaults to center vertical alignment', async () => {
 		el = await fixture('<nldd-text-cell></nldd-text-cell>');
 		await waitForUpdate(el);
-		expect(el.getAttribute('vertical-alignment')).toBe('center');
+		expect((el as unknown as { verticalAlignment: string }).verticalAlignment).toBe('center');
+		expect(el.hasAttribute('vertical-alignment')).toBe(false);
 	});
 
 	it('reflects vertical-alignment top', async () => {

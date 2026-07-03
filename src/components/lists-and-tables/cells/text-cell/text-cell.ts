@@ -87,10 +87,10 @@ export class NLDDTextCell extends VisibilityMixin(LitElement, 'cells-container')
 	@property({ type: String, reflect: true, attribute: 'min-height' })
 	minHeight?: string;
 
-	@property({ type: String, reflect: true, attribute: 'horizontal-alignment' })
+	@property({ reflect: true, attribute: 'horizontal-alignment', converter: reflectNonDefault<HorizontalAlignment>('left') })
 	horizontalAlignment: HorizontalAlignment = 'left';
 
-	@property({ type: String, reflect: true, attribute: 'vertical-alignment' })
+	@property({ reflect: true, attribute: 'vertical-alignment', converter: reflectNonDefault<VerticalAlignment>('center') })
 	verticalAlignment: VerticalAlignment = 'center';
 
 	@property({ type: String })

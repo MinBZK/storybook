@@ -30,7 +30,8 @@ describe('nldd-title-cell', () => {
 	it('defaults to full width', async () => {
 		el = await fixture('<nldd-title-cell></nldd-title-cell>');
 		await waitForUpdate(el);
-		expect(el.getAttribute('width')).toBe('full');
+		expect((el as unknown as { width: string }).width).toBe('full');
+		expect(el.hasAttribute('width')).toBe(false);
 	});
 
 	it('reflects width attribute', async () => {
@@ -66,7 +67,8 @@ describe('nldd-title-cell', () => {
 	it('defaults to left horizontal alignment', async () => {
 		el = await fixture('<nldd-title-cell></nldd-title-cell>');
 		await waitForUpdate(el);
-		expect(el.getAttribute('horizontal-alignment')).toBe('left');
+		expect((el as unknown as { horizontalAlignment: string }).horizontalAlignment).toBe('left');
+		expect(el.hasAttribute('horizontal-alignment')).toBe(false);
 	});
 
 	it('reflects horizontal-alignment attribute', async () => {
@@ -78,7 +80,8 @@ describe('nldd-title-cell', () => {
 	it('defaults to center vertical alignment', async () => {
 		el = await fixture('<nldd-title-cell></nldd-title-cell>');
 		await waitForUpdate(el);
-		expect(el.getAttribute('vertical-alignment')).toBe('center');
+		expect((el as unknown as { verticalAlignment: string }).verticalAlignment).toBe('center');
+		expect(el.hasAttribute('vertical-alignment')).toBe(false);
 	});
 
 	it('reflects vertical-alignment top', async () => {

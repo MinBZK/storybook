@@ -45,7 +45,7 @@ export class NLDDDescriptionCell extends VisibilityMixin(LitElement, 'cells-cont
 	@property({ type: String, reflect: true, attribute: 'min-height' })
 	minHeight?: string;
 
-	@property({ reflect: true, attribute: 'vertical-alignment' })
+	@property({ reflect: true, attribute: 'vertical-alignment', converter: reflectNonDefault<VerticalAlignment>('center') })
 	verticalAlignment: VerticalAlignment = 'center';
 
 	override updated(changed: Map<string, unknown>) {

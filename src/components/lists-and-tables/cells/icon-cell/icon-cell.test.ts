@@ -18,7 +18,8 @@ describe('nldd-icon-cell', () => {
 	it('defaults to center vertical alignment', async () => {
 		el = await fixture('<nldd-icon-cell></nldd-icon-cell>');
 		await waitForUpdate(el);
-		expect(el.getAttribute('vertical-alignment')).toBe('center');
+		expect((el as unknown as { verticalAlignment: string }).verticalAlignment).toBe('center');
+		expect(el.hasAttribute('vertical-alignment')).toBe(false);
 	});
 
 	it('reflects vertical-alignment attribute', async () => {

@@ -15,6 +15,7 @@
  */
 import { LitElement } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
+import { reflectNonDefault } from '../../../../utilities/reflect-non-default.js';
 import { iconCellStyles } from './icon-cell.styles.js';
 import { template } from './icon-cell.template.js';
 import { VisibilityMixin } from '../../../../utilities/visibility-mixin.js';
@@ -28,7 +29,7 @@ type Color = 'default' | 'secondary' | 'accent' | 'success' | 'warning' | 'criti
 export class NLDDIconCell extends VisibilityMixin(LitElement, 'cells-container') {
 	static override styles = iconCellStyles;
 
-	@property({ type: String, reflect: true, attribute: 'vertical-alignment' })
+	@property({ reflect: true, attribute: 'vertical-alignment', converter: reflectNonDefault<VerticalAlignment>('center') })
 	verticalAlignment: VerticalAlignment = 'center';
 
 	@property({ type: String, reflect: true })
