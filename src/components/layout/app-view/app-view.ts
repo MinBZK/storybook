@@ -29,6 +29,7 @@
  */
 import { LitElement, PropertyValues } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
+import { reflectNonDefault } from '../../../utilities/reflect-non-default.js';
 import { appViewStyles } from './app-view.styles.js';
 import { appViewTemplate } from './app-view.template.js';
 
@@ -52,7 +53,7 @@ function _currentOwner(): NLDDAppView | null {
 export class NLDDAppView extends LitElement {
 	static override styles = appViewStyles;
 
-	@property({ type: String, reflect: true })
+	@property({ reflect: true, converter: reflectNonDefault<'base' | 'tinted'>('base') })
 	background: 'base' | 'tinted' = 'base';
 
 	override connectedCallback(): void {

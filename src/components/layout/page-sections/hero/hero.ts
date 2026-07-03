@@ -59,6 +59,7 @@
 import { LitElement, type PropertyValues } from 'lit';
 import { customElement, property, state } from 'lit/decorators.js';
 import { PageSectionMixin } from '../../../../utilities/page-section-mixin.js';
+import { reflectNonDefault } from '../../../../utilities/reflect-non-default.js';
 import { heroStyles } from './hero.styles.js';
 import { heroTemplate } from './hero.template.js';
 
@@ -99,16 +100,16 @@ const MAIN_CORNER: Record<HeroMainPosition, HeroCorner | null> = {
 export class NLDDHero extends PageSectionMixin(LitElement) {
 	static override styles = heroStyles;
 
-	@property({ type: String, reflect: true, attribute: 'main-position' })
+	@property({ reflect: true, attribute: 'main-position', converter: reflectNonDefault<HeroMainPosition>('bottom-left') })
 	mainPosition: HeroMainPosition = 'bottom-left';
 
-	@property({ type: String, reflect: true, attribute: 'main-width' })
+	@property({ reflect: true, attribute: 'main-width', converter: reflectNonDefault<HeroMainWidth>('1/2') })
 	mainWidth: HeroMainWidth = '1/2';
 
-	@property({ type: String, reflect: true, attribute: 'main-background' })
+	@property({ reflect: true, attribute: 'main-background', converter: reflectNonDefault<HeroMainBackground>('accent') })
 	mainBackground: HeroMainBackground = 'accent';
 
-	@property({ type: String, reflect: true, attribute: 'media-corner-position' })
+	@property({ reflect: true, attribute: 'media-corner-position', converter: reflectNonDefault<'auto' | HeroCorner>('auto') })
 	mediaCornerPosition: 'auto' | HeroCorner = 'auto';
 
 	/** Media aspect-ratio in CSS form ('16/9' or '16:9'); default '21/9'. Drives

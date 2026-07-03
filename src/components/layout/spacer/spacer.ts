@@ -71,7 +71,7 @@ export class NLDDSpacer extends LitElement {
 	@property({ type: String, reflect: true, attribute: 'lg-size' })
 	lgSize?: SpacerSize;
 
-	@property({ type: String, reflect: true })
+	@property({ reflect: true, converter: reflectNonDefault<Direction>('both') })
 	direction: Direction = 'both';
 }
 

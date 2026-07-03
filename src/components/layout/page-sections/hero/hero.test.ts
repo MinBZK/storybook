@@ -20,9 +20,13 @@ describe('nldd-hero', () => {
 	it('defaults to main-position="bottom-left" and main-width="1/2"', async () => {
 		el = await fixture('<nldd-hero></nldd-hero>');
 		await waitForUpdate(el);
-		expect(el.getAttribute('main-position')).toBe('bottom-left');
-		expect(el.getAttribute('main-width')).toBe('1/2');
-		expect(el.getAttribute('main-background')).toBe('accent');
+		const h = el as unknown as { mainPosition: string; mainWidth: string; mainBackground: string };
+		expect(h.mainPosition).toBe('bottom-left');
+		expect(h.mainWidth).toBe('1/2');
+		expect(h.mainBackground).toBe('accent');
+		expect(el.hasAttribute('main-position')).toBe(false);
+		expect(el.hasAttribute('main-width')).toBe(false);
+		expect(el.hasAttribute('main-background')).toBe(false);
 	});
 
 

@@ -93,7 +93,7 @@ export class NLDDImage extends LitElement {
 	 *  attribute arrives as the string `"320"`, not the number `320` — the
 	 *  `_numericWidth` getter owns all parsing. A consumer setting the
 	 *  property directly should pass a string (`el.width = '320'`). */
-	@property({ type: String, reflect: true })
+	@property({ reflect: true, converter: reflectNonDefault<string>('full') })
 	width: string = 'full';
 
 	@property({ type: Number, reflect: true })
@@ -111,10 +111,10 @@ export class NLDDImage extends LitElement {
 	@property({ type: String, attribute: 'aspect-ratio', reflect: true })
 	aspectRatio = '';
 
-	@property({ type: String, attribute: 'object-fit', reflect: true })
+	@property({ reflect: true, attribute: 'object-fit', converter: reflectNonDefault<ImageObjectFit>('cover') })
 	objectFit: ImageObjectFit = 'cover';
 
-	@property({ type: String, attribute: 'object-position', reflect: true })
+	@property({ reflect: true, attribute: 'object-position', converter: reflectNonDefault<ImageObjectPosition>('center') })
 	objectPosition: ImageObjectPosition = 'center';
 
 	@property({ reflect: true, converter: reflectNonDefault<ImageShape>('square') })

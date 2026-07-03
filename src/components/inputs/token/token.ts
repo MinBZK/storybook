@@ -20,6 +20,7 @@
  */
 import { LitElement } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
+import { reflectNonDefault } from '../../../utilities/reflect-non-default.js';
 import { tokenStyles } from './token.styles.js';
 import { tokenTemplate } from './token.template.js';
 import './../../content/icon/icon.js';
@@ -31,7 +32,7 @@ export type TokenControl = 'none' | 'dismiss' | 'menu';
 export class NLDDToken extends LitElement {
 	static override styles = tokenStyles;
 
-	@property({ type: String, reflect: true })
+	@property({ reflect: true, converter: reflectNonDefault<TokenControl>('none') })
 	control: TokenControl = 'none';
 
 	@property({ type: Boolean, reflect: true })
