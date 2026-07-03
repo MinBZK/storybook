@@ -16,6 +16,7 @@
  */
 import { LitElement, type PropertyValues } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
+import { reflectNonDefault } from '../../../utilities/reflect-non-default.js';
 import { switchStyles } from './switch.styles.js';
 import { switchTemplate } from './switch.template.js';
 
@@ -38,7 +39,7 @@ export class NLDDSwitch extends LitElement {
 	@property({ type: Boolean, reflect: true })
 	disabled = false;
 
-	@property({ type: String, reflect: true })
+	@property({ reflect: true, converter: reflectNonDefault<SwitchSize>('sm') })
 	size: SwitchSize = 'sm';
 
 	@property({ type: String, attribute: 'accessible-label' })

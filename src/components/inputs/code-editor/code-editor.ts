@@ -105,7 +105,7 @@ export class NLDDCodeEditor extends NLDDCodeMirrorElement {
 	@property({ reflect: true, converter: reflectNonDefault<ResizeMode>('auto') })
 	resize: ResizeMode = 'auto';
 
-	@property({ type: String, reflect: true })
+	@property({ reflect: true, converter: reflectNonDefault<CodeEditorVariant>('simple') })
 	variant: CodeEditorVariant = 'simple';
 
 	@property({ type: String, reflect: true })

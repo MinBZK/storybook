@@ -67,7 +67,7 @@ export class NLDDSegmentedControlItem extends LitElement {
 	disabled = false;
 
 	/** Control size: 'sm' | 'md' | 'lg'. Set by nldd-segmented-control. Not part of the public API. */
-	@property({ type: String, reflect: true })
+	@property({ reflect: true, converter: reflectNonDefault<SegmentedControlSize>('md') })
 	size: SegmentedControlSize = 'md';
 
 	/** Set by nldd-segmented-control. Not part of the public API. */
@@ -75,7 +75,7 @@ export class NLDDSegmentedControlItem extends LitElement {
 	variant: SegmentedControlVariant = 'text';
 
 	/** Set by nldd-segmented-control. Not part of the public API. */
-	@property({ type: String, reflect: true, attribute: 'input-type' })
+	@property({ reflect: true, attribute: 'input-type', converter: reflectNonDefault<SegmentedControlType>('radio') })
 	inputType: SegmentedControlType = 'radio';
 
 	/** Set by nldd-segmented-control. Not part of the public API. */
@@ -142,7 +142,7 @@ export class NLDDSegmentedControl extends LitElement {
 	@property({ type: Array, attribute: false })
 	values: string[] = [];
 
-	@property({ type: String, reflect: true })
+	@property({ reflect: true, converter: reflectNonDefault<SegmentedControlSize>('md') })
 	size: SegmentedControlSize = 'md';
 
 	@property({ type: String, reflect: true })

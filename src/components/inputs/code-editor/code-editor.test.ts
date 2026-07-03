@@ -48,7 +48,8 @@ describe('nldd-code-editor', () => {
 	it('default variant is simple', async () => {
 		el = await fixture('<nldd-code-editor accessible-label="Code"></nldd-code-editor>');
 		await waitForUpdate(el);
-		expect(el.getAttribute('variant')).toBe('simple');
+		expect((el as unknown as { variant: string }).variant).toBe('simple');
+		expect(el.hasAttribute('variant')).toBe(false);
 	});
 
 	it('readonly blijft focusbaar (content editable, niet "false")', async () => {

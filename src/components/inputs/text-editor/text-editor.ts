@@ -144,10 +144,10 @@ export class NLDDTextEditor extends NLDDCodeMirrorElement {
 	@property({ reflect: true, converter: reflectNonDefault<ResizeMode>('auto') })
 	resize: ResizeMode = 'auto';
 
-	@property({ type: String, reflect: true })
+	@property({ reflect: true, converter: reflectNonDefault<TextEditorVariant>('simple') })
 	variant: TextEditorVariant = 'simple';
 
-	@property({ type: String, reflect: true })
+	@property({ reflect: true, converter: reflectNonDefault<TextEditorFont>('sans') })
 	font: TextEditorFont = 'sans';
 
 	@property({ type: String, attribute: 'accessible-label' })

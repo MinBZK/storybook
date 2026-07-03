@@ -68,8 +68,11 @@ describe('nldd-text-editor', () => {
 	it('default variant simple en font sans', async () => {
 		el = await fixture('<nldd-text-editor accessible-label="Tekst"></nldd-text-editor>');
 		await waitForUpdate(el);
-		expect(el.getAttribute('variant')).toBe('simple');
-		expect(el.getAttribute('font')).toBe('sans');
+		const te = el as unknown as { variant: string; font: string };
+		expect(te.variant).toBe('simple');
+		expect(te.font).toBe('sans');
+		expect(el.hasAttribute('variant')).toBe(false);
+		expect(el.hasAttribute('font')).toBe(false);
 	});
 
 	it('reflects font="mono"', async () => {

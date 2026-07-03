@@ -59,7 +59,7 @@ export class NLDDCodeViewer extends NLDDCodeMirrorElement {
 	variant: 'simple' | 'box' = 'box';
 
 	/** Surface fill when `variant="box"`. */
-	@property({ type: String, reflect: true })
+	@property({ reflect: true, converter: reflectNonDefault<'tinted' | 'base'>('tinted') })
 	background: 'tinted' | 'base' = 'tinted';
 
 	@property({ type: String, reflect: true })
