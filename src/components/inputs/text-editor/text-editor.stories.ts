@@ -390,12 +390,12 @@ export default {
 		status: { type: 'beta' },
 	},
 	args: {
-		variant: 'box',
+		variant: 'simple',
 		font: 'sans',
 		value: SAMPLE,
 		placeholder: '',
 		rows: 8,
-		resize: 'vertical',
+		resize: 'auto',
 		wrap: true,
 		readonly: false,
 		disabled: false,
@@ -432,8 +432,8 @@ export default {
 		resize: {
 			control: 'select',
 			options: ['none', 'vertical', 'auto'],
-			description: 'Resize-gedrag. none = vast, vertical = slepen vanaf rows, auto = groeit mee.',
-			table: { defaultValue: { summary: 'vertical' } },
+			description: 'Resize-gedrag. auto = groeit mee, vertical = slepen vanaf rows, none = vast.',
+			table: { defaultValue: { summary: 'auto' } },
 		},
 		wrap: {
 			control: 'boolean',
@@ -491,26 +491,26 @@ export const Default = {
 
 export const Sans = {
 	render: () => html`
-		<nldd-text-editor variant="box" font="sans" rows="10" .value=${SAMPLE} accessible-label="Tekst"></nldd-text-editor>
+		<nldd-text-editor font="sans" rows="10" .value=${SAMPLE} accessible-label="Tekst"></nldd-text-editor>
 	`,
 	parameters: { controls: { disable: true } },
 };
 
 export const Mono = {
 	render: () => html`
-		<nldd-text-editor variant="box" font="mono" rows="10" .value=${SAMPLE} accessible-label="Tekst"></nldd-text-editor>
+		<nldd-text-editor font="mono" rows="10" .value=${SAMPLE} accessible-label="Tekst"></nldd-text-editor>
 	`,
 	parameters: { controls: { disable: true } },
 };
 
-export const Simple = {
+export const Box = {
 	render: () => html`
-		<nldd-text-editor variant="simple" rows="10" .value=${SAMPLE} accessible-label="Tekst"></nldd-text-editor>
+		<nldd-text-editor variant="box" rows="10" .value=${SAMPLE} accessible-label="Tekst"></nldd-text-editor>
 	`,
 	parameters: {
 		docs: {
 			description: {
-				story: 'Kaal, zonder kader of focusring — bedoeld om in een eigen compositie (bv. een message field) te plaatsen die de chrome en focusbehandeling levert.',
+				story: 'De `box`-variant: kader, vulling, padding, hoeken en focusring — een op zichzelf staand veld. De default is `simple` (kaal), bedoeld om in een eigen compositie te plaatsen die de chrome en focusbehandeling levert.',
 			},
 		},
 	},
@@ -518,7 +518,7 @@ export const Simple = {
 
 export const Placeholder = {
 	render: () => html`
-		<nldd-text-editor variant="box" rows="6" placeholder="Schrijf hier je toelichting in markdown…" accessible-label="Tekst"></nldd-text-editor>
+		<nldd-text-editor rows="6" placeholder="Schrijf hier je toelichting in markdown…" accessible-label="Tekst"></nldd-text-editor>
 	`,
 	parameters: { controls: { disable: true } },
 };
@@ -537,7 +537,6 @@ export const Mentions = {
 		const sample = 'Bespreek dit met [@Anouk de Vries](user:1) en [@Bram Jansen](user:2).\n\nTyp `@` om iemand te noemen.';
 		return html`
 			<nldd-text-editor
-				variant="box"
 				rows="8"
 				accessible-label="Tekst"
 				.value=${sample}
@@ -573,7 +572,6 @@ export const Annotations = {
 		];
 		return html`
 			<nldd-text-editor
-				variant="box"
 				rows="8"
 				annotatable
 				accessible-label="Tekst"
@@ -614,7 +612,6 @@ export const AnnotationAuthoring = {
 		const status = document.createElement('span');
 
 		const editor = document.createElement('nldd-text-editor');
-		editor.setAttribute('variant', 'box');
 		editor.setAttribute('rows', '6');
 		editor.setAttribute('annotatable', '');
 		editor.setAttribute('accessible-label', 'Tekst');

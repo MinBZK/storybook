@@ -28,7 +28,7 @@ class LinkOpenWidget extends WidgetType {
 
 	toDOM(): HTMLElement {
 		const anchor = document.createElement('a');
-		anchor.className = 'cm-link-open';
+		anchor.className = 'cm-link-badge';
 		anchor.href = this.href;
 		anchor.target = '_blank';
 		anchor.rel = 'noopener noreferrer';

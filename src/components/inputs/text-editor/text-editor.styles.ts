@@ -163,9 +163,9 @@ export const textEditorStyles = css`
 	}
 
 	/* Prominent accent caret in both variants (box additionally has the focus
-	   ring). The [variant] attribute is always present, so this outweighs the
-	   theme's default cursor colour. */
-	:host([variant]) .cm-cursor {
+	   ring). The doubled class is purely for specificity — it outweighs
+	   CodeMirror's theme cursor colour without depending on an attribute. */
+	:host .cm-cursor.cm-cursor {
 		/* accent-700: it keeps a >=525 lightness gap from both the base and tinted
 		   surfaces in light and dark (accent-600 fell just short on white), so the
 		   caret stays clearly visible without washing out. */
@@ -182,13 +182,19 @@ export const textEditorStyles = css`
 		transform: translateX(0.6px);
 	}
 
-	:host([resize="none"]) .cm-editor {
-		height: calc(var(--_rows) * 1lh + 2 * var(--_padding-block));
+	/* Resize model — rows is the floor in every mode:
+	   auto (default) = grow, vertical = drag up from the floor, none = fixed. */
+	:host .cm-scroller {
+		resize: none;
+		min-height: calc(var(--_rows) * 1lh + 2 * var(--_padding-block));
 	}
 
 	:host([resize="vertical"]) .cm-scroller {
 		resize: vertical;
-		min-height: calc(var(--_rows) * 1lh + 2 * var(--_padding-block));
+	}
+
+	:host([resize="none"]) .cm-editor {
+		height: calc(var(--_rows) * 1lh + 2 * var(--_padding-block));
 	}
 
 
@@ -587,19 +593,11 @@ export const textEditorStyles = css`
 		pointer-events: none;
 	}
 
-	/* CodeMirror's floating panels — currently the @mention picker. */
-	.cm-tooltip {
-		border: var(--primitives-border-width-thin) solid var(--semantics-surfaces-base-border-color);
-		border-radius: var(--primitives-corner-radius-sm);
-		background-color: var(--semantics-surfaces-base-background-color);
-		box-shadow: var(--components-tooltip-box-shadow);
-	}
-
 	/* "Open link" badge rendered inline right after every real link: a round chip
 	   carrying an external-link icon, so a link can be followed without placing the
 	   caret first. The same badge shape + focus ring as the annotation nub, but a
 	   neutral (not annotation-yellow) fill — it's a link affordance, not a comment. */
-	.cm-link-open {
+	.cm-link-badge {
 		box-sizing: border-box;
 		display: inline-flex;
 		align-items: center;
@@ -620,18 +618,18 @@ export const textEditorStyles = css`
 	}
 
 	@media (hover: hover) {
-		.cm-link-open:hover {
+		.cm-link-badge:hover {
 			background-color: var(--_link-badge-background-hover);
 			box-shadow: inset 0 0 0 var(--primitives-border-width-thin) var(--_link-badge-highlight-border-hover);
 		}
 	}
 
-	.cm-link-open:active {
+	.cm-link-badge:active {
 		background-color: var(--_link-badge-background-active);
 		box-shadow: inset 0 0 0 var(--primitives-border-width-thin) var(--_link-badge-highlight-border-active);
 	}
 
-	.cm-link-open nldd-icon {
+	.cm-link-badge nldd-icon {
 		flex: none;
 		/* A fixed fraction of the chip, so the icon keeps its proportion when the chip
 		   shrinks in a tight line (a heading) instead of appearing to grow. */
@@ -640,13 +638,13 @@ export const textEditorStyles = css`
 	}
 
 	/* The same focus ring as the annotation badge, on keyboard focus only. */
-	.cm-link-open:focus-visible {
+	.cm-link-badge:focus-visible {
 		outline: var(--semantics-focus-ring-outline);
 		outline-offset: var(--semantics-focus-ring-outline-offset);
 		box-shadow: var(--semantics-focus-ring-box-shadow);
 	}
 
-	.cm-link-open:focus:not(:focus-visible) {
+	.cm-link-badge:focus:not(:focus-visible) {
 		outline: none;
 	}
 `;

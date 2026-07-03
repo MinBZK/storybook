@@ -35,6 +35,7 @@
  */
 import { LitElement } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
+import { reflectNonDefault } from '../../../utilities/reflect-non-default.js';
 import {
 	segmentedControlStyles,
 	segmentedControlItemStyles,
@@ -70,7 +71,7 @@ export class NLDDSegmentedControlItem extends LitElement {
 	size: SegmentedControlSize = 'md';
 
 	/** Set by nldd-segmented-control. Not part of the public API. */
-	@property({ type: String, reflect: true, attribute: 'variant' })
+	@property({ reflect: true, attribute: 'variant', converter: reflectNonDefault<SegmentedControlVariant>('text') })
 	variant: SegmentedControlVariant = 'text';
 
 	/** Set by nldd-segmented-control. Not part of the public API. */
@@ -148,7 +149,7 @@ export class NLDDSegmentedControl extends LitElement {
 	type: SegmentedControlType = 'radio';
 
 	/** Content type applied to all items: text, icon, or icon-and-text. Per-item mixing is not supported. */
-	@property({ type: String, reflect: true, attribute: 'variant' })
+	@property({ reflect: true, attribute: 'variant', converter: reflectNonDefault<SegmentedControlVariant>('text') })
 	variant: SegmentedControlVariant = 'text';
 
 	@property({ type: Boolean, reflect: true })

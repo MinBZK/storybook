@@ -225,22 +225,23 @@ export const segmentedControlItemStyles = css`
 	}
 
 	.segmented-control__item-icon {
-		display: flex;
+		display: none;
 		pointer-events: none;
-		width: var(--_icon-size);
-		height: var(--_icon-size);
 		flex-shrink: 0;
 		align-items: center;
 		justify-content: center;
 	}
 
-	:host([variant="icon"]) .segmented-control__item-icon {
-		width: var(--_icon-only-icon-size);
-		height: var(--_icon-only-icon-size);
+	:host([variant="icon-and-text"]) .segmented-control__item-icon {
+		display: flex;
+		width: var(--_icon-size);
+		height: var(--_icon-size);
 	}
 
-	:host([variant="text"]) .segmented-control__item-icon {
-		display: none;
+	:host([variant="icon"]) .segmented-control__item-icon {
+		display: flex;
+		width: var(--_icon-only-icon-size);
+		height: var(--_icon-only-icon-size);
 	}
 
 	::slotted(nldd-icon) {

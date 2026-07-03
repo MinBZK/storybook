@@ -459,7 +459,7 @@ describe('nldd-text-editor', () => {
 
 	it('toont een open-link badge na een echte link, niet na een mention', async () => {
 		const el2 = await withValue('Zie [site](https://example.org) en [@Anouk](user:1).');
-		const badges = el2.shadowRoot!.querySelectorAll('.cm-link-open');
+		const badges = el2.shadowRoot!.querySelectorAll('.cm-link-badge');
 		expect(badges.length).toBe(1); // the mention owns its own click, so it's skipped
 		expect(badges[0].getAttribute('href')).toBe('https://example.org');
 		expect(badges[0].getAttribute('target')).toBe('_blank');
