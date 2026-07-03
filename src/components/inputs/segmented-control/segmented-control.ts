@@ -172,7 +172,7 @@ export class NLDDSegmentedControl extends LitElement {
 	accessibleLabel = '';
 
 	/** ID of an external label element (aria-labelledby). */
-	@property({ type: String, attribute: 'accessible-labelledby' })
+	@property({ type: String, attribute: 'accessible-labelled-by' })
 	accessibleLabelledBy = '';
 
 	// — Lifecycle ——————————————————————————————————————————————————————————————
@@ -199,7 +199,7 @@ export class NLDDSegmentedControl extends LitElement {
 		// _syncFormValue() runs in updated() with the same changedProperties
 		// on first render — no need to call it explicitly here.
 		if (import.meta.env?.DEV && !this.accessibleLabel && !this.accessibleLabelledBy) {
-			console.warn('<nldd-segmented-control>: No accessible name provided. Add an accessible-label or accessible-labelledby attribute for screen reader accessibility.');
+			console.warn('<nldd-segmented-control>: No accessible name provided. Add an accessible-label or accessible-labelled-by attribute for screen reader accessibility.');
 		}
 	}
 
