@@ -248,18 +248,30 @@ export class NLDDToolbar extends LitElement {
 		super.connectedCallback();
 		this._observer = new MutationObserver((mutations) => {
 			if (this._isBuilding) return;
-			const onlyInternalMoves = mutations.every(m => {
-				// Attribute change — only rebuild for toolbar-structural elements.
-				// Changes on deeply nested descendants (e.g. nldd-segmented-control-item)
-				// are safe to ignore.
+			let needsRebuild = false;
+			let needsMenuResync = false;
+			for (const m of mutations) {
 				if (m.type === 'attributes') {
-					const tag = (m.target as Element).tagName.toLowerCase();
-					return tag !== 'nldd-toolbar-item' && tag !== 'nldd-toolbar-title';
+					const el = m.target as Element;
+					const tag = el.tagName.toLowerCase();
+					if (tag === 'nldd-toolbar-item' || tag === 'nldd-toolbar-title') {
+						// Structural attribute change (label/priority/width/…) → rebuild.
+						needsRebuild = true;
+					} else if (el.closest?.('[slot="overflow"]')) {
+						// An overflow-slot item changed (e.g. `selected`/`disabled` on a
+						// menu-item). The overflow menu holds a clone, so re-sync it —
+						// otherwise the clone freezes at its state when it was made.
+						needsMenuResync = true;
+					}
+					// Otherwise a visible control changed (e.g. nldd-segmented-control-item)
+					// — no toolbar work needed.
+				} else {
+					// childList change (items added/removed) → rebuild.
+					needsRebuild = true;
 				}
-				return false;
-			});
-			if (onlyInternalMoves) return;
-			this._buildChildren();
+			}
+			if (needsRebuild) this._buildChildren();
+			else if (needsMenuResync) this._syncMenuItems();
 		});
 		setTimeout(() => this._buildChildren(), 0);
 		this._createMenu();
