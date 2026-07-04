@@ -56,11 +56,48 @@ class LinkOpenWidget extends WidgetType {
 	}
 }
 
-/** The link's destination, or null for a mention or a link without a URL. */
-function hrefOf(state: EditorState, link: SyntaxNode): string | null {
+/** Normalise a Markdown reference label for matching: drop the surrounding
+ *  brackets, collapse internal whitespace and lowercase (labels are
+ *  case-insensitive per CommonMark). */
+function normaliseLabel(raw: string): string {
+	return raw.replace(/^\[|\]$/g, '').trim().replace(/\s+/g, ' ').toLowerCase();
+}
+
+/** Map of reference label → URL, from every link reference definition
+ *  (`[ref]: https://…`) in the doc, so reference-style links can resolve their
+ *  destination. Definitions usually sit at the bottom, so this scans the whole
+ *  tree, not just the viewport. */
+function referenceDefs(state: EditorState): Map<string, string> {
+	const defs = new Map<string, string>();
+	syntaxTree(state).iterate({
+		enter: (node) => {
+			if (node.name !== 'LinkReference') return;
+			let label: string | null = null;
+			let url: string | null = null;
+			for (let c = node.node.firstChild; c; c = c.nextSibling) {
+				if (c.name === 'LinkLabel') label = normaliseLabel(state.sliceDoc(c.from, c.to));
+				else if (c.name === 'URL') url = state.sliceDoc(c.from, c.to);
+			}
+			if (label && url && !defs.has(label)) defs.set(label, url);
+		},
+	});
+	return defs;
+}
+
+/** The link's destination, or null for a mention or a link without a resolvable
+ *  URL. Handles both inline links (`[text](url)`) and reference-style links
+ *  (`[text][ref]`), resolving the latter against `refs`. */
+function hrefOf(state: EditorState, link: SyntaxNode, refs: Map<string, string>): string | null {
+	let label: string | null = null;
 	for (let child = link.firstChild; child; child = child.nextSibling) {
-		if (child.name !== 'URL') continue;
-		const href = state.sliceDoc(child.from, child.to);
+		if (child.name === 'URL') {
+			const href = state.sliceDoc(child.from, child.to);
+			return href && !href.startsWith(MENTION_HREF_PREFIX) ? href : null;
+		}
+		if (child.name === 'LinkLabel') label = normaliseLabel(state.sliceDoc(child.from, child.to));
+	}
+	if (label) {
+		const href = refs.get(label);
 		return href && !href.startsWith(MENTION_HREF_PREFIX) ? href : null;
 	}
 	return null;
@@ -69,13 +106,14 @@ function hrefOf(state: EditorState, link: SyntaxNode): string | null {
 function buildBadges(view: EditorView): DecorationSet {
 	const builder = new RangeSetBuilder<Decoration>();
 	const tree = syntaxTree(view.state);
+	const refs = referenceDefs(view.state);
 	for (const { from, to } of view.visibleRanges) {
 		tree.iterate({
 			from,
 			to,
 			enter: (node) => {
 				if (node.name !== 'Link') return;
-				const href = hrefOf(view.state, node.node);
+				const href = hrefOf(view.state, node.node, refs);
 				// side -1 draws the badge before the caret, so the caret at the link end
 				// sits to the RIGHT of the badge — text typed there lands after it, not
 				// wedged between the link and the badge.

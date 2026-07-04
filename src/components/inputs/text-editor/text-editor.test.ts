@@ -476,6 +476,14 @@ describe('nldd-text-editor', () => {
 		cleanup(el2);
 	});
 
+	it('toont de open-link badge ook na een reference-style link', async () => {
+		const el2 = await withValue('Zie [site][ref] hier.\n\n[ref]: https://example.org');
+		const badges = el2.shadowRoot!.querySelectorAll('.cm-link-badge');
+		expect(badges.length).toBe(1); // only the [site][ref] link, not the definition
+		expect(badges[0].getAttribute('href')).toBe('https://example.org');
+		cleanup(el2);
+	});
+
 	it('mentionToken bouwt een markdown-link met user-id', () => {
 		expect(mentionToken({ id: '42', label: 'Anouk' })).toBe('[@Anouk](user:42)');
 	});
