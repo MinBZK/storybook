@@ -339,10 +339,17 @@ describe('nldd-text-editor', () => {
 		const el2 = await withValue('hello world');
 		const api = el2 as unknown as {
 			view: { dispatch(s: unknown): void };
-			getSelection(): { start: number; end: number; quote: string; empty: boolean };
+			getSelection(): { start: number; end: number; quote: string; empty: boolean; rect: DOMRect | null };
 		};
 		api.view.dispatch({ selection: { anchor: 0, head: 5 } });
-		expect(api.getSelection()).toEqual({ start: 0, end: 5, quote: 'hello', empty: false });
+		const sel = api.getSelection();
+		expect(sel.start).toBe(0);
+		expect(sel.end).toBe(5);
+		expect(sel.quote).toBe('hello');
+		expect(sel.empty).toBe(false);
+		// The selection carries a viewport rect so a consumer can anchor a popover
+		// to the selected text rather than to its own button.
+		expect(sel.rect).toBeInstanceOf(DOMRect);
 		api.view.dispatch({ selection: { anchor: 3 } });
 		expect(api.getSelection().empty).toBe(true);
 		cleanup(el2);

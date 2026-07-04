@@ -572,15 +572,35 @@ export class NLDDTextEditor extends NLDDCodeMirrorElement {
 	/** The current selection in CLEAN (annotation-sentinel-free) coordinates plus
 	 *  the quoted text — the anchor a consumer needs to attach a new annotation to
 	 *  the selection (e.g. from a toolbar "comment" button). `empty` mirrors
-	 *  getState().empty for gating that button. */
-	getSelection(): { start: number; end: number; quote: string; empty: boolean } {
+	 *  getState().empty for gating that button.
+	 *
+	 *  `rect` is the selection's bounding box in viewport coordinates (or the
+	 *  caret box when empty), so a consumer can anchor a popover to the selected
+	 *  text itself instead of to its own button. Use it as a Floating UI virtual
+	 *  anchor: `{ getBoundingClientRect: () => rect, contextElement: editorEl }`.
+	 *  It is computed from CodeMirror's layout, so it is correct even when the
+	 *  editor is not focused (clicking a toolbar button blurs the editor but the
+	 *  selection state survives). `null` when there is no view or the selection
+	 *  is scrolled out of sight. */
+	getSelection(): { start: number; end: number; quote: string; empty: boolean; rect: DOMRect | null } {
 		const view = this.view;
-		if (!view) return { start: 0, end: 0, quote: '', empty: true };
+		if (!view) return { start: 0, end: 0, quote: '', empty: true, rect: null };
 		const doc = view.state.doc.toString();
 		const sel = view.state.selection.main;
 		const start = docToClean(doc, sel.from);
 		const end = docToClean(doc, sel.to);
-		return { start, end, quote: stripSentinels(doc).slice(start, end), empty: sel.empty };
+		const a = view.coordsAtPos(sel.from);
+		const b = view.coordsAtPos(sel.to);
+		const rect =
+			a && b
+				? new DOMRect(
+						Math.min(a.left, b.left),
+						Math.min(a.top, b.top),
+						Math.max(a.right, b.right) - Math.min(a.left, b.left),
+						Math.max(a.bottom, b.bottom) - Math.min(a.top, b.top),
+					)
+				: null;
+		return { start, end, quote: stripSentinels(doc).slice(start, end), empty: sel.empty, rect };
 	}
 
 	/** The annotations currently in the editor, in CLEAN coordinates, each quote
