@@ -151,8 +151,9 @@ export const aliases = {
 	// face-smiling-badge-plus
 	'add-emoji': 'face-smiling-badge-plus',
 
+	// file
+	'document': 'file',
 	// file-text
-	'document': 'file-text',
 	'file': 'file-text',
 
 	// file-text-stack
