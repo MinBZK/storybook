@@ -47,7 +47,7 @@
  * @fires change                   - When the content is committed on blur (detail: { value })
  * @fires nldd-text-editor-state   - When the selection or content changes (detail: TextEditorState), for toolbar toggle state
  * @fires nldd-text-editor-mention - When an @-mention is inserted (detail: MentionInsertedDetail with id, label, from, to)
- * @fires nldd-text-editor-annotation-click - When an annotation's count badge is clicked (detail: { ids: string[] })
+ * @fires nldd-text-editor-annotation-click - When an annotation's count badge is clicked (detail: { ids: string[], rect: DOMRect }); rect is the badge's viewport box so a consumer can anchor its own note UI to it
  */
 import { LitElement, type PropertyValues } from 'lit';
 import { customElement, property, query } from 'lit/decorators.js';
@@ -660,8 +660,9 @@ export class NLDDTextEditor extends NLDDCodeMirrorElement {
 	};
 
 	/** A click on an annotation's count badge emits nldd-text-editor-annotation-click
-	 *  with the id(s) it covers (a merged badge carries several). The consumer opens
-	 *  its own note UI; the tinted text stays plain-clickable for caret placement. */
+	 *  with the id(s) it covers (a merged badge carries several) and the badge's
+	 *  viewport rect, so the consumer can anchor its own note UI to the badge. The
+	 *  tinted text stays plain-clickable for caret placement. */
 	private _onAnnotationBadgeClick = (event: MouseEvent): void => {
 		const badge = (event.target as HTMLElement | null)?.closest?.('.cm-annotation-badge') as HTMLElement | null;
 		if (!badge) return;
@@ -669,7 +670,7 @@ export class NLDDTextEditor extends NLDDCodeMirrorElement {
 		if (!ids.length) return;
 		event.preventDefault();
 		this.dispatchEvent(new CustomEvent('nldd-text-editor-annotation-click', {
-			detail: { ids },
+			detail: { ids, rect: badge.getBoundingClientRect() },
 			bubbles: true,
 			composed: true,
 		}));

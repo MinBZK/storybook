@@ -385,12 +385,15 @@ describe('nldd-text-editor', () => {
 		await waitForUpdate(el2);
 		const badge = el2.shadowRoot!.querySelector('.cm-annotation-badge') as HTMLElement | null;
 		expect(badge).not.toBeNull();
-		let detail: { ids: string[] } | null = null;
+		let detail: { ids: string[]; rect: DOMRect } | null = null;
 		el2.addEventListener('nldd-text-editor-annotation-click', (e) => {
-			detail = (e as CustomEvent<{ ids: string[] }>).detail;
+			detail = (e as CustomEvent<{ ids: string[]; rect: DOMRect }>).detail;
 		});
 		badge!.click();
-		expect(detail).toEqual({ ids: ['n1'] });
+		expect(detail!.ids).toEqual(['n1']);
+		// The badge's viewport rect rides along so a consumer can anchor its note UI.
+		expect(typeof detail!.rect.top).toBe('number');
+		expect(typeof detail!.rect.left).toBe('number');
 		cleanup(el2);
 	});
 
