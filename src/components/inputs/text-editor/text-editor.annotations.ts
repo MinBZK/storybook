@@ -172,10 +172,15 @@ class AnnotationStart extends WidgetType {
 		let tint = dom.nextElementSibling;
 		while (tint instanceof HTMLElement && tint.classList.contains('cm-widgetBuffer')) tint = tint.nextElementSibling;
 		if (!(tint instanceof HTMLElement) || !tint.classList.contains('cm-annotation')) return null;
-		const rect = tint.getBoundingClientRect();
 		const padLeft = parseFloat(getComputedStyle(tint).paddingInlineStart || '0');
-		const box = textCaretBox(dom) ?? { top: rect.top, bottom: rect.bottom };
-		const x = pos <= 0 ? rect.left : rect.left + padLeft;
+		// The start sentinel sits on the tint's FIRST line, so measure that line, not
+		// tint.getBoundingClientRect() — which for a multi-line annotation is the union
+		// of every line and would draw a caret as tall as the whole token. textCaretBox
+		// gives the exact body caret, but it throws (→ null) during drawSelection's
+		// measure pass; the fallback then uses the first client rect, never the union.
+		const firstLine = tint.getClientRects()[0] ?? tint.getBoundingClientRect();
+		const box = textCaretBox(dom) ?? { top: firstLine.top, bottom: firstLine.bottom };
+		const x = pos <= 0 ? firstLine.left : firstLine.left + padLeft;
 		return { left: x, right: x, top: box.top, bottom: box.bottom };
 	}
 }
