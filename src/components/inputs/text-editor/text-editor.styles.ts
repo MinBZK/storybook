@@ -55,8 +55,11 @@ export const textEditorStyles = css`
 		--_annotation-token-badge-highlight-border-hover: light-dark(var(--primitives-color-mark-350), var(--primitives-color-mark-400));
 		--_annotation-token-badge-background-active: light-dark(var(--primitives-color-mark-350), var(--primitives-color-mark-400));
 		--_annotation-token-badge-highlight-border-active: light-dark(var(--primitives-color-mark-400), var(--primitives-color-mark-450));
-		--_annotation-token-badge-background-selected: light-dark(var(--primitives-color-mark-450), var(--primitives-color-mark-950));
-		--_annotation-token-badge-highlight-border-selected: light-dark(var(--primitives-color-mark-500), var(--primitives-color-mark-1000));
+		/* Same step in both themes: mark-450 keeps light mode as-is and, in dark
+		   mode, stays a readable amber instead of jumping to a near-white fill
+		   that swallows the white (mark-1000) badge number. */
+		--_annotation-token-badge-background-selected: var(--primitives-color-mark-450);
+		--_annotation-token-badge-highlight-border-selected: var(--primitives-color-mark-500);
 		/* Badge box in its own em, and its font as a fraction of the token font. The
 		   badge height in token units is size × font-scale (used to inset the token's
 		   right space to match the badge's vertical gap). */

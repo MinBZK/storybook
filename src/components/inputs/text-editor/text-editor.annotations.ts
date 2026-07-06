@@ -140,12 +140,13 @@ class AnnotationBadge extends WidgetType {
 		const cs = getComputedStyle(dom);
 		const box = textCaretBox(dom) ?? { top: badge.top, bottom: badge.bottom };
 		// Inside edge: the text's end (before the badge's left margin). Outside edge:
-		// the tint's right edge (past its right padding), where the following text sits —
-		// so the caret lands the same spot whichever direction the cursor arrives from.
-		const tint = dom.closest('.cm-annotation');
+		// just past the badge (its right edge + margin). The badge is a single inline
+		// box on the annotation's last line, so this stays correct for multi-line
+		// annotations — where the tint's bounding box would be the union of every
+		// line and push the caret to the far right edge.
 		const x = pos <= 0
 			? badge.left - parseFloat(cs.marginLeft)
-			: tint instanceof HTMLElement ? tint.getBoundingClientRect().right : badge.right + parseFloat(cs.marginRight);
+			: badge.right + parseFloat(cs.marginRight);
 		return { left: x, right: x, top: box.top, bottom: box.bottom };
 	}
 }
