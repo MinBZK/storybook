@@ -196,8 +196,15 @@ export class NLDDSheet extends LitElement {
 		this.hide();
 	}
 
-	private _handleDismiss = (): void => {
-		this.hide();
+	private _handleDismiss = (e: Event): void => {
+		// Only our own top-title-bar's dismiss button closes the sheet. Other
+		// components fire `dismiss` for their own element (nldd-token's remove,
+		// nldd-banner, nldd-document-tab-bar); inside a sheet those must not
+		// close it.
+		const fromTitleBar = e.composedPath().some(
+			(t) => t instanceof Element && t.tagName.toLowerCase() === 'nldd-top-title-bar',
+		);
+		if (fromTitleBar) this.hide();
 	};
 
 	override render() {

@@ -196,15 +196,39 @@ describe('nldd-sheet – dismiss event', () => {
 		}
 	});
 
-	it('calls hide() when a dismiss event is dispatched on the sheet', async () => {
-		el = await fixture<NLDDSheet>('<nldd-sheet></nldd-sheet>');
+	it('calls hide() when the dismiss comes from its top-title-bar', async () => {
+		el = await fixture<NLDDSheet>(`
+			<nldd-sheet>
+				<nldd-top-title-bar dismiss-text="Sluit"></nldd-top-title-bar>
+			</nldd-sheet>
+		`);
 		await waitForUpdate(el);
 		el.show();
 
 		const hideSpy = vi.spyOn(el, 'hide');
-		el.dispatchEvent(new CustomEvent('dismiss', { bubbles: true, composed: true }));
+		el.querySelector('nldd-top-title-bar')!
+			.dispatchEvent(new CustomEvent('dismiss', { bubbles: true, composed: true }));
 
 		expect(hideSpy).toHaveBeenCalledOnce();
+	});
+
+	it('ignores a dismiss from another component inside it (e.g. nldd-token)', async () => {
+		// Regression: nldd-token (and nldd-banner, nldd-document-tab-bar) fire
+		// `dismiss` for their own element. Removing a token inside a sheet used to
+		// bubble up and close the whole sheet.
+		el = await fixture<NLDDSheet>(`
+			<nldd-sheet>
+				<nldd-token control="dismiss">Label</nldd-token>
+			</nldd-sheet>
+		`);
+		await waitForUpdate(el);
+		el.show();
+
+		const hideSpy = vi.spyOn(el, 'hide');
+		el.querySelector('nldd-token')!
+			.dispatchEvent(new CustomEvent('dismiss', { bubbles: true, composed: true }));
+
+		expect(hideSpy).not.toHaveBeenCalled();
 	});
 });
 
