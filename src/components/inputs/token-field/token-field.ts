@@ -46,12 +46,6 @@ export class NLDDTokenField extends LitElement {
 
 	static override styles = tokenFieldStyles;
 
-	// Clicking anywhere in the field focuses the inner input.
-	static override shadowRootOptions = {
-		...LitElement.shadowRootOptions,
-		delegatesFocus: true,
-	};
-
 	private _internals = this.attachInternals();
 	private _initialValues: string[] = [];
 
@@ -129,6 +123,11 @@ export class NLDDTokenField extends LitElement {
 	@state()
 	_highlightedId = '';
 
+	/** Which token carries the roving tabindex — the token group's single tab stop
+	 *  when the input is hidden (all values in, no custom, no options left). */
+	@state()
+	_rovingIndex = 0;
+
 	private static _idCounter = 0;
 	readonly _menuId = `nldd-token-field-menu-${NLDDTokenField._idCounter++}`;
 
@@ -154,6 +153,7 @@ export class NLDDTokenField extends LitElement {
 		this._resizeObserver.observe(this);
 		window.addEventListener('scroll', this._handleScrollOrResize, true);
 		window.addEventListener('resize', this._handleScrollOrResize);
+		this.addEventListener('focusout', this._handleFocusOut);
 	}
 
 	override disconnectedCallback(): void {
@@ -164,6 +164,7 @@ export class NLDDTokenField extends LitElement {
 		this._menuObserver = null;
 		window.removeEventListener('scroll', this._handleScrollOrResize, true);
 		window.removeEventListener('resize', this._handleScrollOrResize);
+		this.removeEventListener('focusout', this._handleFocusOut);
 		if (this._menu) {
 			this._menu.removeEventListener('toggle', this._handleMenuToggle);
 			this._menu.removeEventListener('select', this._handleMenuSelect);
@@ -188,6 +189,7 @@ export class NLDDTokenField extends LitElement {
 		// re-run the text filter (unhides options freed by a removed token) and
 		// re-hide the ones now selected. Close the menu if nothing is left to add.
 		if (changed.has('values')) {
+			this._rovingIndex = Math.max(0, Math.min(this._rovingIndex, this.values.length - 1));
 			this._updateFormValue();
 			if (this._menu) {
 				this._syncMenuItems();
@@ -247,10 +249,24 @@ export class NLDDTokenField extends LitElement {
 		return this.shadowRoot?.querySelector<HTMLElement>('.token-field__input-area') ?? null;
 	}
 
-	/** Delegate programmatic focus to the inner input. */
+	/** Programmatic focus goes to the inner input, or — when it is hidden (all values
+	 *  in, no custom, no options left) — to the token holding the roving tabindex. */
 	override focus(options?: FocusOptions): void {
-		this._input?.focus(options);
+		if (this._input) this._input.focus(options);
+		else this._focusTokenAt(this._rovingIndex);
 	}
+
+	/** When focus leaves the field entirely, reset the roving tab stop to the first
+	 *  token, so tabbing back in from a preceding component always starts there.
+	 *  Deferred a microtask because focusout fires before the matching focusin, so
+	 *  the incoming focus target has settled by the time this runs. A focused token
+	 *  (or the slotted menu) retargets document.activeElement to a node the field
+	 *  contains, so moves within the field don't reset. */
+	private _handleFocusOut = (): void => {
+		queueMicrotask(() => {
+			if (this.isConnected && !this.contains(document.activeElement)) this._rovingIndex = 0;
+		});
+	};
 
 	/** A token's display label: the matching slotted menu-item's text, else the
 	 *  raw value (covers values whose option is not currently present). */
@@ -446,7 +462,9 @@ export class NLDDTokenField extends LitElement {
 			this._input?.focus();
 			return;
 		}
-		tokens[Math.max(0, Math.min(index, tokens.length - 1))].focus();
+		const clamped = Math.max(0, Math.min(index, tokens.length - 1));
+		this._rovingIndex = clamped;
+		tokens[clamped].focus();
 	}
 
 	/** Arrow keys move between tokens; ArrowRight past the last returns to the
@@ -472,11 +490,16 @@ export class NLDDTokenField extends LitElement {
 				break;
 			case 'Backspace':
 			case 'Delete': {
-				// Remove the token and return focus to the input, so the next
-				// Backspace steps onto the new last token — a repeatable delete cycle.
+				// Remove the token, then keep focus in the row: on the input when it is
+				// shown (the next Backspace steps onto the new last token — a repeatable
+				// delete cycle), otherwise on the token now at this position. Without the
+				// fallback, deleting with the input hidden would drop focus to the body.
 				e.preventDefault();
 				this._removeValue(this.values[index]);
-				void this.updateComplete.then(() => this._input?.focus());
+				void this.updateComplete.then(() => {
+					if (this._showInput) this._input?.focus();
+					else this._focusTokenAt(index);
+				});
 				break;
 			}
 		}
@@ -606,8 +629,13 @@ export class NLDDTokenField extends LitElement {
 	private _commitValue(value: string): void {
 		this._addValue(value);
 		this._resetInputText();
-		this._input?.focus();
 		this._closeMenu();
+		// After the last value the input disappears (no custom, no options left); put
+		// focus on the last token instead of dropping it to the body.
+		void this.updateComplete.then(() => {
+			if (this._showInput) this._input?.focus();
+			else this._focusTokenAt(this._tokens.length - 1);
+		});
 	}
 
 	public _openMenu(): void {

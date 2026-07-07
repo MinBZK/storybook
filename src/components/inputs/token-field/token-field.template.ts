@@ -75,7 +75,8 @@ export function tokenFieldTemplate(component: NLDDTokenField): TemplateResult {
 					<nldd-token
 						text=${component._labelFor(value)}
 						control=${component.readonly ? nothing : 'dismiss'}
-						tabindex=${component.readonly ? nothing : '-1'}
+						tabindex=${component.readonly ? nothing : (!component._showInput && index === component._rovingIndex ? '0' : '-1')}
+						?roving=${!component.readonly}
 						dismiss-text=${component._t('components.token-field.dismiss-action')}
 						?disabled=${component.disabled}
 						data-value=${value}

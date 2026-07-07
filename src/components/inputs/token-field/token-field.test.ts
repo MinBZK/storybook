@@ -316,6 +316,66 @@ describe('nldd-token-field', () => {
 		expect(el.values).toEqual(['be']);
 	});
 
+	// — Roving focus / single tab stop when the input is hidden ————————————————
+
+	it('keeps one tab stop when the input is hidden (roving token, controls not tabbable)', async () => {
+		el = await withMenu();
+		el.values = ['nl', 'be']; // both options taken, no custom -> input hidden
+		await waitForUpdate(el);
+		expect(el.shadowRoot!.querySelector('.token-field__input')).toBeNull();
+		const tokens = [...el.shadowRoot!.querySelectorAll('nldd-token')];
+		expect(tokens.map((t) => t.getAttribute('tabindex'))).toEqual(['0', '-1']);
+		for (const t of tokens) {
+			expect(t.hasAttribute('roving')).toBe(true);
+			const control = t.shadowRoot!.querySelector('nldd-icon-button')!;
+			expect(control.hasAttribute('no-tab')).toBe(true);
+			expect(control.shadowRoot!.querySelector('.icon-button')!.getAttribute('tabindex')).toBe('-1');
+		}
+	});
+
+	it('focus() lands on the roving token when the input is hidden', async () => {
+		el = await withMenu();
+		el.values = ['nl', 'be'];
+		await waitForUpdate(el);
+		el.focus();
+		await waitForUpdate(el);
+		expect(el.shadowRoot!.activeElement).toBe(el.shadowRoot!.querySelectorAll('nldd-token')[0]);
+	});
+
+	it('Backspace keeps focus on a token when the input stays hidden', async () => {
+		// No menu and no custom input: the input never shows, so deleting must not
+		// drop focus to the body — it steps onto the token now at this position.
+		el = await fixture<TokenFieldEl>('<nldd-token-field accessible-label="Tags"></nldd-token-field>');
+		el.values = ['a', 'b', 'c'];
+		await waitForUpdate(el);
+		expect(el.shadowRoot!.querySelector('.token-field__input')).toBeNull();
+		el.shadowRoot!.querySelectorAll('nldd-token')[0]
+			.dispatchEvent(new KeyboardEvent('keydown', { key: 'Backspace', bubbles: true }));
+		await waitForUpdate(el);
+		await (el as unknown as { updateComplete: Promise<unknown> }).updateComplete;
+		expect(el.values).toEqual(['b', 'c']);
+		expect(el.shadowRoot!.activeElement).toBe(el.shadowRoot!.querySelectorAll('nldd-token')[0]);
+	});
+
+	it('resets the roving tab stop to the first token after focus leaves the field', async () => {
+		el = await withMenu();
+		el.values = ['nl', 'be']; // both options taken -> input hidden, roving active
+		await waitForUpdate(el);
+		const tokens = () => [...el.shadowRoot!.querySelectorAll('nldd-token')];
+		// Move the roving stop to the second token.
+		tokens()[0].dispatchEvent(new KeyboardEvent('keydown', { key: 'ArrowRight', bubbles: true }));
+		await waitForUpdate(el);
+		expect(tokens().map((t) => t.getAttribute('tabindex'))).toEqual(['-1', '0']);
+		// Focus an element outside the field: the stop returns to the first token.
+		const outside = document.createElement('button');
+		document.body.appendChild(outside);
+		outside.focus();
+		await new Promise<void>((r) => queueMicrotask(() => r()));
+		await waitForUpdate(el);
+		expect(tokens().map((t) => t.getAttribute('tabindex'))).toEqual(['0', '-1']);
+		outside.remove();
+	});
+
 	// — Readonly & required (F3.5) —————————————————————————————————————————————
 
 	it('readonly hides the input and picker and makes tokens static', async () => {

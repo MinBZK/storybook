@@ -224,4 +224,26 @@ describe('nldd-token – menu', () => {
 		await waitForUpdate(el);
 		expect(el.expanded).toBe(false);
 	});
+
+	/* ============================================================
+	   Roving container (no-tab control)
+	   ============================================================ */
+
+	it('roving forwards no-tab to the dismiss control', async () => {
+		el = await fixture<NLDDToken>('<nldd-token text="x" control="dismiss" roving></nldd-token>');
+		await waitForUpdate(el);
+		expect(el.shadowRoot!.querySelector('nldd-icon-button')!.hasAttribute('no-tab')).toBe(true);
+	});
+
+	it('roving forwards no-tab to the menu control', async () => {
+		el = await fixture<NLDDToken>('<nldd-token text="x" control="menu" roving></nldd-token>');
+		await waitForUpdate(el);
+		expect(el.shadowRoot!.querySelector('nldd-icon-button')!.hasAttribute('no-tab')).toBe(true);
+	});
+
+	it('leaves the control tabbable when not roving', async () => {
+		el = await fixture<NLDDToken>('<nldd-token text="x" control="dismiss"></nldd-token>');
+		await waitForUpdate(el);
+		expect(el.shadowRoot!.querySelector('nldd-icon-button')!.hasAttribute('no-tab')).toBe(false);
+	});
 });

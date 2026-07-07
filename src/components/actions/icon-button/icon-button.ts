@@ -116,6 +116,12 @@ export class NLDDIconButton extends withTranslations(LitElement, nlddIconButtonT
 	@property({ type: Boolean, reflect: true })
 	expanded = false;
 
+	/** Take the button out of the tab order (`tabindex="-1"`) — for a control owned by
+	 *  a roving container (e.g. an `nldd-token` in `nldd-token-field`) that manages
+	 *  focus itself. Still mouse- and script-focusable. */
+	@property({ type: Boolean, reflect: true, attribute: 'no-tab' })
+	noTab = false;
+
 	/**
 	 * Type of popup container this button opens. Sets `aria-haspopup` on the
 	 * inner button and forces `aria-expanded` to always be present (true/false)

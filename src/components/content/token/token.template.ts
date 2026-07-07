@@ -16,6 +16,7 @@ export function tokenTemplate(component: NLDDToken): TemplateResult {
 						text=${component.dismissText}
 						accessible-label=${component.dismissText}
 						tooltip-timing="never"
+						?no-tab=${component.roving}
 						?disabled=${component.disabled}
 						@click=${component._handleDismiss}
 					></nldd-icon-button>
@@ -31,6 +32,7 @@ export function tokenTemplate(component: NLDDToken): TemplateResult {
 						accessible-label=${component.menuText}
 						tooltip-timing="never"
 						popup-type="menu"
+						?no-tab=${component.roving}
 						?expanded=${component.expanded}
 						?disabled=${component.disabled}
 						@pointerdown=${component._handleMenuButtonPointerdown}
