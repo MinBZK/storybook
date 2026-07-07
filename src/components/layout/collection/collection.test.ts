@@ -148,4 +148,14 @@ describe('nldd-collection', () => {
 		const itemsEl = el.shadowRoot!.querySelector<HTMLElement>('.collection__items')!;
 		expect(itemsEl.hasAttribute('tabindex')).toBe(false);
 	});
+
+	it('the gap attribute overrides the default gap via an inline --_gap', async () => {
+		el = await fixture('<nldd-collection gap="8px"><div>Item 1</div></nldd-collection>');
+		await waitForUpdate(el);
+		expect(el.style.getPropertyValue('--_gap')).toBe('8px');
+		// Clearing it restores the responsive default (no inline override).
+		(el as HTMLElement & { gap?: string }).gap = '';
+		await waitForUpdate(el);
+		expect(el.style.getPropertyValue('--_gap')).toBe('');
+	});
 });

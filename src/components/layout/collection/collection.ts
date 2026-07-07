@@ -20,6 +20,8 @@
  *                              least this wide; 1fr if container allows more). In horizontal
  *                              scroll used as flex-basis. Never forces horizontal overflow —
  *                              the value is clamped to container width.
+ * @attr {string}  gap - Custom gap between items (any CSS length, e.g. '8px'). Overrides the
+ *                       responsive default at every breakpoint; unset keeps the default.
  * @attr {object} translations - Translation overrides; unset keys fall back to Dutch.
  *                               Available keys: 'components.collection.previous-action',
  *                               'components.collection.next-action', 'components.collection.load-more-action'
@@ -64,6 +66,11 @@ export class NLDDCollection extends LitElement {
 
 	@property({ type: String, reflect: true, attribute: 'item-width' })
 	itemWidth: string | undefined;
+
+	/** Custom gap between items (any CSS length, e.g. '8px'). Overrides the
+	 *  responsive default at every breakpoint. Unset keeps the default. */
+	@property({ type: String, reflect: true })
+	gap: string | undefined;
 
 	@property({ type: Object })
 	translations: Partial<NLDDCollectionTranslations> = {};
@@ -139,6 +146,16 @@ export class NLDDCollection extends LitElement {
 				this.style.setProperty('--_item-width', this.itemWidth);
 			} else {
 				this.style.removeProperty('--_item-width');
+			}
+		}
+
+		if (changedProperties.has('gap')) {
+			// Inline --_gap overrides the responsive default in the styles at every
+			// breakpoint; removing it restores the default.
+			if (this.gap) {
+				this.style.setProperty('--_gap', this.gap);
+			} else {
+				this.style.removeProperty('--_gap');
 			}
 		}
 

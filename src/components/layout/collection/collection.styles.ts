@@ -16,19 +16,25 @@ export const collectionStyles = css`
 		--_item-width: var(--primitives-area-280);
 		--_focus-ring-z-index: 1;
 
+		/* The gap between items (and before the load-more button). The responsive
+		   default lives in a variable so the gap attribute can override it at all
+		   breakpoints with a single inline --_gap (inline wins over these media
+		   rules). */
+		--_gap: var(--components-collection-sm-gap);
+
+		@media (min-width: ${mdMin}) {
+			--_gap: var(--components-collection-md-gap);
+		}
+
+		@media (min-width: ${lgMin}) {
+			--_gap: var(--components-collection-lg-gap);
+		}
+
 		display: flex;
 		width: 100%;
 		min-width: 0;
 		flex-direction: column;
-		gap: var(--components-collection-sm-gap);
-
-		@media (min-width: ${mdMin}) {
-			gap: var(--components-collection-md-gap);
-		}
-
-		@media (min-width: ${lgMin}) {
-			gap: var(--components-collection-lg-gap);
-		}
+		gap: var(--_gap);
 	}
 
 	:host([hidden]) {
@@ -41,15 +47,7 @@ export const collectionStyles = css`
 	.collection__items {
 		display: flex;
 		width: 100%;
-		gap: var(--components-collection-sm-gap);
-
-		@media (min-width: ${mdMin}) {
-			gap: var(--components-collection-md-gap);
-		}
-
-		@media (min-width: ${lgMin}) {
-			gap: var(--components-collection-lg-gap);
-		}
+		gap: var(--_gap);
 	}
 
 	/* ## Grid */
