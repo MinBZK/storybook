@@ -206,7 +206,7 @@ export class NLDDTokenField extends LitElement {
 		if (this.required && this.values.length === 0) {
 			this._internals.setValidity(
 				{ valueMissing: true },
-				this._t('components.token-field.required-message'),
+				this._t('components.token-field.required-error-text'),
 				this._input ?? this,
 			);
 		} else {

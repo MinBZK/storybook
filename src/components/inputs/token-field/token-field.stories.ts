@@ -46,7 +46,8 @@ export default {
 			table: { defaultValue: { summary: '(geen)' } },
 		},
 		type: {
-			control: 'text',
+			control: 'select',
+			options: ['text', 'email', 'tel', 'url'],
 			description: 'Input-type doorgegeven aan de invoer (bijv. `email`).',
 			table: { defaultValue: { summary: 'text' } },
 		},

@@ -7,8 +7,7 @@ export const tokenFieldStyles = css`
 	}
 
 
-	/* # Host — mirrors the other input fields (combo-box, text-field) so a
-	   token-field sits among plain inputs consistently. */
+	/* # Host */
 
 	:host {
 		--_width: 100%;
@@ -18,23 +17,16 @@ export const tokenFieldStyles = css`
 		--_inline-padding: calc(var(--semantics-controls-md-inline-padding) - var(--semantics-input-fields-border-thickness));
 		--_text-font: var(--semantics-input-fields-md-text-font);
 		--_validation-icon-size: var(--semantics-input-fields-md-validation-icon-size);
-		/* Square area at the trailing edge that centers the validation icon, sized
-		   like the other input fields (frame height minus the border on both sides)
-		   so the icon lines up horizontally with theirs. */
+		/* Frame height minus both borders. */
 		--_icon-area-size: calc(var(--_min-size) - var(--semantics-input-fields-border-thickness) * 2);
-		/* Uniform spacing used for both the padding (every side) and the gap
-		   between tokens. Sized so a token (controls-sm height) sits exactly in the
-		   md-height frame, accounting for the border on both sides (box-sizing is
-		   border-box): (44 - 32 - 2 * 2) / 2 = 4px. */
+		/* (md - sm - 2 * border) / 2 = (44 - 32 - 4) / 2 = 4px. */
 		--_gap: calc(
 			(
 				var(--semantics-controls-md-min-size) - var(--semantics-controls-sm-min-size) -
 					2 * var(--semantics-input-fields-border-thickness)
 			) / 2
 		);
-		/* The inline input never shrinks below this; when the remaining space on a
-		   row is smaller it wraps to the next line, growing the field's height. */
-		--_input-min-width: 160px;
+		--_input-min-width: var(--primitives-area-160);
 
 		${inheritedTextReset}
 		display: block;
@@ -59,8 +51,7 @@ export const tokenFieldStyles = css`
 	}
 
 
-	/* # Block — the field frame: a content area (wrapping tokens + inline input)
-	   and, on the right, an optional validation icon. */
+	/* # Block */
 
 	.token-field {
 		position: relative;
@@ -74,17 +65,14 @@ export const tokenFieldStyles = css`
 		background-color: var(--_background-color);
 		width: 100%;
 		min-height: var(--_min-size);
-		/* The gap sizes the block padding and the leading padding (space left of and
-		   between tokens). The trailing edge is left to the validation-icon area, so
-		   its icon lines up with the other input fields' icons. */
 		padding-block: var(--_gap);
 		padding-inline-start: var(--_gap);
 		padding-inline-end: 0;
 		cursor: text;
 	}
 
-	/* The frame's ring represents input focus only. A focused token or picker
-	   shows its own ring, so we don't double up (one ring at a time). */
+	/* :has(input:focus), not :focus-within: a focused token or picker carries its
+	   own ring, so the frame's ring is scoped to the input alone. */
 	.token-field:has(.token-field__input:focus) {
 		outline: var(--semantics-focus-ring-outline);
 		outline-offset: var(--semantics-focus-ring-outline-offset);
@@ -100,7 +88,7 @@ export const tokenFieldStyles = css`
 	}
 
 
-	/* # Content — the wrapping row of tokens followed by the inline input. */
+	/* # Content */
 
 	.token-field__content {
 		display: flex;
@@ -109,13 +97,9 @@ export const tokenFieldStyles = css`
 		gap: var(--_gap);
 		flex: 1 1 auto;
 		min-width: 0;
-		/* Without a validation icon the trailing padding mirrors the leading gap,
-		   so a full-width token doesn't butt against the right border. */
 		padding-inline-end: var(--_gap);
 	}
 
-	/* With a validation icon, reserve its area instead and keep tokens/input
-	   clear of the absolutely-positioned icon. */
 	.token-field[data-invalid] .token-field__content,
 	.token-field[data-valid] .token-field__content {
 		padding-inline-end: var(--_icon-area-size);
@@ -126,8 +110,7 @@ export const tokenFieldStyles = css`
 	}
 
 
-	/* # Field — wraps the input and picker so they always travel to a new row
-	   together. Stretches to fill the row and wraps as a unit below its min-width. */
+	/* # Field */
 
 	.token-field__field {
 		display: flex;
@@ -138,7 +121,7 @@ export const tokenFieldStyles = css`
 	}
 
 
-	/* # Input — transparent; grows to fill the field container. */
+	/* # Input */
 
 	.token-field__input {
 		${inheritedTextReset}
@@ -150,15 +133,12 @@ export const tokenFieldStyles = css`
 		background: transparent;
 		color: inherit;
 		font: var(--_text-font);
-		/* Match a token's height and corner radius so the empty field reads as one
-		   token-tall row and, once autofilled, the masked background is rounded like
-		   a token (controls-sm, same as nldd-token). */
 		height: var(--semantics-controls-sm-min-size);
+		/* Rounds the autofill mask (below) like a token. */
 		border-radius: var(--semantics-controls-sm-corner-radius);
-		/* Inline offset so the text starts at the standard input inline-padding
-		   (aligning with other fields) and keeps a little air from a token to its
-		   left; the frame already contributes the leading gap, hence subtracting it. */
 		padding: 0;
+		/* The frame already adds the leading gap, so subtract it to land on the
+		   standard inline-padding. */
 		padding-inline-start: calc(var(--_inline-padding) - var(--_gap));
 		margin: 0;
 	}
@@ -167,9 +147,7 @@ export const tokenFieldStyles = css`
 		color: var(--semantics-input-fields-placeholder-color);
 	}
 
-	/* Autofill: mask the browser's default highlight with the design's autofill
-	   background (clipped to the token corner radius above) and set a matching text
-	   colour — the same box-shadow technique as the text-field. */
+	/* Mask the browser autofill background (box-shadow inset) and its text colour. */
 	.token-field__input:-webkit-autofill,
 	.token-field__input:autofill,
 	.token-field__input:-webkit-autofill:disabled,
@@ -179,9 +157,7 @@ export const tokenFieldStyles = css`
 	}
 
 
-	/* # Picker — trailing chevron button that opens the options menu. It lives in
-	   the content flow (not the absolute icon area) so it wraps onto the last row
-	   together with the input, and keeps its size while tokens/input shrink. */
+	/* # Picker */
 
 	.token-field__picker {
 		display: flex;
@@ -195,11 +171,9 @@ export const tokenFieldStyles = css`
 	}
 
 
-	/* # Validation icon — a square area pinned to the trailing edge with the icon
-	   centered, matching the other input fields. Absolutely positioned so it never
-	   affects the frame height; the content reserves space for it (see above). The
-	   icon fills its box by default, so give it a fixed size. */
+	/* # Validation icon */
 
+	/* Absolute so it doesn't change the frame height; the content reserves its area. */
 	.token-field__validation-icon-area {
 		position: absolute;
 		inset-block: 0;
@@ -211,6 +185,7 @@ export const tokenFieldStyles = css`
 		pointer-events: none;
 	}
 
+	/* nldd-icon fills its parent, so pin a size. */
 	.token-field__validation-icon {
 		width: var(--_validation-icon-size);
 		height: var(--_validation-icon-size);
