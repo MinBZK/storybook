@@ -296,7 +296,7 @@ describe('nldd-token-field', () => {
 		const input = el.shadowRoot!.querySelector<HTMLInputElement>('.token-field__input')!;
 		input.dispatchEvent(new KeyboardEvent('keydown', { key: 'Backspace', bubbles: true }));
 		await waitForUpdate(el);
-		const token = el.shadowRoot!.querySelectorAll('.token-field__token')[0];
+		const token = el.shadowRoot!.querySelectorAll('nldd-token')[0];
 		expect(el.shadowRoot!.activeElement).toBe(token); // focused, not removed
 		expect(el.values).toEqual(['nl']);
 		token.dispatchEvent(new KeyboardEvent('keydown', { key: 'Backspace', bubbles: true }));
@@ -310,7 +310,7 @@ describe('nldd-token-field', () => {
 		el = await withMenu();
 		el.values = ['nl', 'be'];
 		await waitForUpdate(el);
-		const token = el.shadowRoot!.querySelectorAll('.token-field__token')[0];
+		const token = el.shadowRoot!.querySelectorAll('nldd-token')[0];
 		token.dispatchEvent(new KeyboardEvent('keydown', { key: 'Backspace', bubbles: true }));
 		await waitForUpdate(el);
 		expect(el.values).toEqual(['be']);

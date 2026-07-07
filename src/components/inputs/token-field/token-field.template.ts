@@ -72,7 +72,7 @@ export function tokenFieldTemplate(component: NLDDTokenField): TemplateResult {
 		>
 			${component.values.map(
 				(value, index) => html`
-					<nldd-token class="token-field__token"
+					<nldd-token
 						control=${component.readonly ? nothing : 'dismiss'}
 						tabindex=${component.readonly ? nothing : '-1'}
 						dismiss-text=${component._t('components.token-field.dismiss-action')}

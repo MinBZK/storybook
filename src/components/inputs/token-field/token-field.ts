@@ -436,7 +436,7 @@ export class NLDDTokenField extends LitElement {
 	// — Token roving navigation ————————————————————————————————————————————————
 
 	private get _tokens(): HTMLElement[] {
-		return Array.from(this.shadowRoot?.querySelectorAll<HTMLElement>('.token-field__token') ?? []);
+		return Array.from(this.shadowRoot?.querySelectorAll<HTMLElement>('nldd-token') ?? []);
 	}
 
 	/** Focus the token at `index` (clamped); focus the input when there are none. */

@@ -17,14 +17,8 @@ export const tokenFieldStyles = css`
 		--_inline-padding: calc(var(--semantics-controls-md-inline-padding) - var(--semantics-input-fields-border-thickness));
 		--_text-font: var(--semantics-input-fields-md-text-font);
 		--_validation-icon-size: var(--semantics-input-fields-md-validation-icon-size);
-		/* Frame height minus both borders. */
 		--_validation-icon-area-size: calc(var(--_min-size) - var(--semantics-input-fields-border-thickness) * 2);
-		--_gap: calc(
-			(
-				var(--semantics-controls-md-min-size) - var(--semantics-controls-sm-min-size) -
-					2 * var(--semantics-input-fields-border-thickness)
-			) / 2
-		);
+		--_gap: calc((var(--semantics-controls-md-min-size) - var(--semantics-controls-sm-min-size) - 2 * var(--semantics-input-fields-border-thickness)) / 2);
 		--_input-min-width: var(--primitives-area-200);
 
 		${inheritedTextReset}
@@ -90,13 +84,6 @@ export const tokenFieldStyles = css`
 	.token-field[data-invalid],
 	.token-field[data-valid] {
 		padding-inline-end: var(--_validation-icon-area-size);
-	}
-
-
-	/* # Token */
-
-	.token-field__token {
-		max-width: 100%;
 	}
 
 
