@@ -186,7 +186,7 @@ export const sheetStyles = css`
 		flex-grow: 1;
 	}
 
-	::slotted(*) {
+	::slotted(nldd-page) {
 		min-height: 0;
 		flex-grow: 1;
 		flex-shrink: 1;
