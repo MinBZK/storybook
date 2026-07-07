@@ -67,6 +67,8 @@ export { NLDDToggleButtonGroup } from './inputs/toggle-button-group/toggle-butto
 
 export { NLDDToken } from './inputs/token/token.js';
 
+export { NLDDTokenField } from './inputs/token-field/token-field.js';
+
 
 // # Layout components
 
