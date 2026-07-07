@@ -32,7 +32,7 @@ export class NLDDIconCell extends VisibilityMixin(LitElement, 'cells-container')
 	@property({ reflect: true, attribute: 'vertical-alignment', converter: reflectNonDefault<VerticalAlignment>('center') })
 	verticalAlignment: VerticalAlignment = 'center';
 
-	@property({ reflect: true, converter: reflectNonDefault<Size>('24') })
+	@property({ type: String, reflect: true })
 	size: Size = '24';
 
 	@property({ reflect: true, converter: reflectNonDefault<Color>('default') })

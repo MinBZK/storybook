@@ -59,7 +59,7 @@ type Direction = 'horizontal' | 'vertical' | 'both';
 export class NLDDSpacer extends LitElement {
 	static override styles = spacerStyles;
 
-	@property({ reflect: true, converter: reflectNonDefault<SpacerSize>('16') })
+	@property({ type: String, reflect: true })
 	size: SpacerSize = '16';
 
 	@property({ type: String, reflect: true, attribute: 'sm-size' })

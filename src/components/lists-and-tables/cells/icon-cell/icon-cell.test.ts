@@ -28,11 +28,11 @@ describe('nldd-icon-cell', () => {
 		expect(el.getAttribute('vertical-alignment')).toBe('top');
 	});
 
-	it('defaults to size 24', async () => {
+	it('defaults to size 24 and reflects it', async () => {
 		el = await fixture('<nldd-icon-cell></nldd-icon-cell>');
 		await waitForUpdate(el);
 		expect((el as unknown as { size: string }).size).toBe('24');
-		expect(el.hasAttribute('size')).toBe(false);
+		expect(el.getAttribute('size')).toBe('24');
 	});
 
 	it('reflects size attribute', async () => {
