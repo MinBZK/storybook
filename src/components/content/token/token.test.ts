@@ -207,6 +207,15 @@ describe('nldd-token – menu', () => {
 		expect(menu.matches(':popover-open')).toBe(true);
 	});
 
+	it('opens the menu on Enter when the host is focused (roving)', async () => {
+		el = await fixture<NLDDToken>('<nldd-token control="menu"><nldd-menu slot="menu"><nldd-menu-item text="A"></nldd-menu-item></nldd-menu></nldd-token>');
+		await waitForUpdate(el);
+		const menu = el.querySelector('nldd-menu') as HTMLElement;
+		el.dispatchEvent(new KeyboardEvent('keydown', { key: 'Enter', bubbles: true }));
+		await waitForUpdate(el);
+		expect(menu.matches(':popover-open')).toBe(true);
+	});
+
 	it('menu does not toggle when disabled', async () => {
 		el = await fixture<NLDDToken>('<nldd-token control="menu" disabled>Label</nldd-token>');
 		await waitForUpdate(el);

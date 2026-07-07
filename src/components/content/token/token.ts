@@ -112,6 +112,28 @@ export class NLDDToken extends LitElement {
 		menu.showPopover();
 	}
 
+	override connectedCallback(): void {
+		super.connectedCallback();
+		this.addEventListener('keydown', this._handleHostKeydown);
+	}
+
+	override disconnectedCallback(): void {
+		this.removeEventListener('keydown', this._handleHostKeydown);
+		super.disconnectedCallback();
+	}
+
+	/** When the token host itself is focused (a roving container such as
+	 *  nldd-token-field), Enter / Space / ArrowDown open its menu, like a menu button.
+	 *  Ignores events from the chevron, a real button that opens the menu natively. */
+	private _handleHostKeydown = (e: KeyboardEvent): void => {
+		if (this.control !== 'menu' || this.disabled) return;
+		if (e.composedPath()[0] !== this) return;
+		if (e.key === 'Enter' || e.key === ' ' || e.key === 'ArrowDown') {
+			e.preventDefault();
+			this._handleMenuClick();
+		}
+	};
+
 	/** Force the focus ring so the whole token reads as focused when it is focused
 	 *  programmatically (a token-field's roving keyboard navigation). Safari does not
 	 *  mark a tabindex=-1 host :focus-visible on a scripted focus, so ask for it
