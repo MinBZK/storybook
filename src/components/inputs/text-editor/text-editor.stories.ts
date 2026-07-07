@@ -404,8 +404,8 @@ export default {
 	argTypes: {
 		variant: {
 			control: 'select',
-			options: ['simple', 'box'],
-			description: 'Visuele variant. "simple" is kaal zonder focusring; "box" voegt rand, vulling, padding, hoeken en focusring toe.',
+			options: ['simple', 'input-field'],
+			description: 'Visuele variant. "simple" is kaal zonder focusring; "input-field" voegt rand, vulling, padding, hoeken en focusring toe.',
 			table: { defaultValue: { summary: 'simple' } },
 		},
 		font: {
@@ -503,14 +503,14 @@ export const Mono = {
 	parameters: { controls: { disable: true } },
 };
 
-export const Box = {
+export const InputField = {
 	render: () => html`
-		<nldd-text-editor variant="box" rows="10" .value=${SAMPLE} accessible-label="Tekst"></nldd-text-editor>
+		<nldd-text-editor variant="input-field" rows="10" .value=${SAMPLE} accessible-label="Tekst"></nldd-text-editor>
 	`,
 	parameters: {
 		docs: {
 			description: {
-				story: 'De `box`-variant: kader, vulling, padding, hoeken en focusring — een op zichzelf staand veld. De default is `simple` (kaal), bedoeld om in een eigen compositie te plaatsen die de chrome en focusbehandeling levert.',
+				story: 'De `input-field`-variant: kader, vulling, padding, hoeken en focusring — een op zichzelf staand veld. De default is `simple` (kaal), bedoeld om in een eigen compositie te plaatsen die de chrome en focusbehandeling levert.',
 			},
 		},
 	},

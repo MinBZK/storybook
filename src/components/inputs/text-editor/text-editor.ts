@@ -9,7 +9,7 @@
  *
  * Default `variant="simple"` is bare (no frame, no focus ring) for use inside
  * a composition (e.g. a message field) that owns its chrome and focus; the
- * caret is a prominent accent. `variant="box"` adds a framed surface + focus
+ * caret is a prominent accent. `variant="input-field"` adds a framed surface + focus
  * ring. `font` is `sans` (default, best for prose) or `mono`.
  *
  * Headless: there is no built-in toolbar. A consumer drives formatting via the
@@ -35,7 +35,7 @@
  * @attr {boolean} wrap            - Wrap long lines (default true; prose wraps)
  * @attr {number} rows             - Minimum visible rows (the floor in every resize mode). Default: 6.
  * @attr {string} resize           - 'none' (fixed) | 'vertical' (drag) | 'auto' (grow, default)
- * @attr {string} variant          - 'simple' (default, bare) | 'box' (framed surface)
+ * @attr {string} variant          - 'simple' (default, bare) | 'input-field' (framed surface)
  * @attr {string} font             - 'sans' (default) | 'mono'
  * @attr {string} accessible-label - Accessible label forwarded to the editor. Set automatically by nldd-form-field.
  *
@@ -92,7 +92,7 @@ import { textEditorTemplate } from './text-editor.template.js';
 import { stripSentinels, docToClean } from './text-editor.annotation-sentinels.js';
 
 export type ResizeMode = 'none' | 'vertical' | 'auto';
-export type TextEditorVariant = 'box' | 'simple';
+export type TextEditorVariant = 'input-field' | 'simple';
 export type TextEditorFont = 'sans' | 'mono';
 export type { HeadingLevel, TextEditorState, TextEditorActiveFormats } from './text-editor.commands.js';
 export type { MentionCandidate, MentionSource, MentionInsertedDetail } from './text-editor.mentions.js';

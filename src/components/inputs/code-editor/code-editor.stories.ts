@@ -56,8 +56,8 @@ export default {
 	argTypes: {
 		variant: {
 			control: 'select',
-			options: ['simple', 'box'],
-			description: 'Visuele variant. "simple" (default) is kaal zonder focusring en zonder eigen ruimte; "box" voegt rand, vulling, padding, hoeken en focusring toe.',
+			options: ['simple', 'input-field'],
+			description: 'Visuele variant. "simple" (default) is kaal zonder focusring en zonder eigen ruimte; "input-field" voegt rand, vulling, padding, hoeken en focusring toe.',
 			table: { defaultValue: { summary: 'simple' } },
 		},
 		language: {
@@ -150,10 +150,10 @@ export const Default = {
 	render: Template,
 };
 
-export const Box = {
+export const InputField = {
 	render: () => html`
 		<nldd-code-editor
-			variant="box"
+			variant="input-field"
 			language="yaml"
 			rows="8"
 			.value=${SAMPLE_YAML}
@@ -166,8 +166,8 @@ export const Box = {
 export const Highlighted = {
 	render: () => html`
 		<div style="display: flex; flex-direction: column; gap: 1rem;">
-			<nldd-code-editor variant="box" language="yaml" rows="8" .value=${SAMPLE_YAML} accessible-label="YAML"></nldd-code-editor>
-			<nldd-code-editor variant="box" language="json" rows="6" .value=${SAMPLE_JSON} accessible-label="JSON"></nldd-code-editor>
+			<nldd-code-editor variant="input-field" language="yaml" rows="8" .value=${SAMPLE_YAML} accessible-label="YAML"></nldd-code-editor>
+			<nldd-code-editor variant="input-field" language="json" rows="6" .value=${SAMPLE_JSON} accessible-label="JSON"></nldd-code-editor>
 		</div>
 	`,
 	parameters: { controls: { disable: true } },
@@ -176,7 +176,7 @@ export const Highlighted = {
 export const LineNumbers = {
 	render: () => html`
 		<nldd-code-editor
-			variant="box"
+			variant="input-field"
 			language="json"
 			line-numbers
 			rows="6"
@@ -235,7 +235,7 @@ export const InContainer = {
 export const Wrap = {
 	render: () => html`
 		<nldd-code-editor
-			variant="box"
+			variant="input-field"
 			wrap
 			rows="4"
 			.value=${'function deeplyNestedFunctionWithAVeryLongNameThatExceedsTheTypicalContainerWidth(parameterOne, parameterTwo, parameterThree) { return parameterOne + parameterTwo + parameterThree; }'}
@@ -248,7 +248,7 @@ export const Wrap = {
 export const ReadOnly = {
 	render: () => html`
 		<nldd-code-editor
-			variant="box"
+			variant="input-field"
 			language="json"
 			readonly
 			.value=${SAMPLE_JSON}
@@ -261,7 +261,7 @@ export const ReadOnly = {
 export const Disabled = {
 	render: () => html`
 		<nldd-code-editor
-			variant="box"
+			variant="input-field"
 			disabled
 			.value=${'# disabled\nfoo: bar'}
 			accessible-label="Code"
