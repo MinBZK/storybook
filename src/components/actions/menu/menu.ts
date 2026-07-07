@@ -1699,7 +1699,15 @@ export class NLDDMenu extends LitElement {
 	}
 
 	private _updateEmptyState(): void {
-		this._isEmpty = this._getVisibleItems().length === 0;
+		// "Empty" means nothing is shown, not nothing is navigable. Disabled items
+		// still render (greyed out), so a menu whose items are all disabled is not
+		// empty. Only filtering, which hides non-matching items, empties a menu.
+		// _getVisibleItems() drops [disabled] for keyboard nav, so it must not
+		// decide the empty state, or a fully-disabled menu wrongly shows it.
+		const shown = Array.from(
+			this.querySelectorAll('nldd-menu-item:not([hidden])'),
+		).filter(item => item.closest('nldd-menu') === this);
+		this._isEmpty = shown.length === 0;
 	}
 
 	private _updateDividerVisibility(): void {

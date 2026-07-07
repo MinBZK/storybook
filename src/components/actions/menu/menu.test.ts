@@ -503,6 +503,22 @@ describe('nldd-menu empty state', () => {
 		expect(el.shadowRoot!.querySelector('.menu__empty')).toBeNull();
 	});
 
+	it('is not empty when every item is present but disabled', async () => {
+		// Regression: a menu whose items are all disabled still shows them (greyed),
+		// so it must not fall back to the "no options" empty state. Emptiness counts
+		// shown items, not navigable ones: disabled items are skipped for keyboard
+		// nav but are still on screen. (A toolbar overflow of disabled controls hit
+		// this once the clones started propagating disabled state correctly.)
+		el = await fixture(`
+			<nldd-menu>
+				<nldd-menu-item text="Inspringen vergroten" disabled></nldd-menu-item>
+				<nldd-menu-item text="Inspringen verkleinen" disabled></nldd-menu-item>
+			</nldd-menu>
+		`);
+		await waitForUpdate(el);
+		expect(el.shadowRoot!.querySelector('.menu__empty')).toBeNull();
+	});
+
 	it('drops role on .menu when empty', async () => {
 		// Empty-state slot renders non-menuitem content; keeping role="menu" or
 		// role="listbox" would violate ARIA's required-children rules.
