@@ -242,9 +242,10 @@ export class NLDDTokenField extends LitElement {
 	/** Slotted menu options not yet selected — what the picker could still add. */
 	private get _availableOptionCount(): number {
 		let n = 0;
-		for (const item of this.querySelectorAll('nldd-menu-item')) {
-			const v = item.getAttribute('value');
-			if (v != null && !this.values.includes(v)) n++;
+		for (const el of this.querySelectorAll('nldd-menu-item')) {
+			const item = el as NLDDMenuItem;
+			const v = item.value || item.text; // property, not attribute: consumers (Vue) set the property
+			if (v && !this.values.includes(v)) n++;
 		}
 		return n;
 	}
@@ -269,9 +270,10 @@ export class NLDDTokenField extends LitElement {
 	}
 
 	public _labelFor(value: string): string {
-		for (const item of this.querySelectorAll('nldd-menu-item')) {
-			if (item.getAttribute('value') === value) {
-				return item.getAttribute('text') ?? item.textContent?.trim() ?? value;
+		for (const el of this.querySelectorAll('nldd-menu-item')) {
+			const item = el as NLDDMenuItem;
+			if ((item.value || item.text) === value) {
+				return item.text || item.textContent?.trim() || value;
 			}
 		}
 		return value;
