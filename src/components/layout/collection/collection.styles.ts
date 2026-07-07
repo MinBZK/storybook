@@ -1,7 +1,9 @@
 import { css, unsafeCSS } from 'lit';
 import { breakpoints } from '../../../assets/styles/breakpoints.js';
 
+const smMax = unsafeCSS(breakpoints.smMax);
 const mdMin = unsafeCSS(breakpoints.mdMin);
+const mdMax = unsafeCSS(breakpoints.mdMax);
 const lgMin = unsafeCSS(breakpoints.lgMin);
 
 export const collectionStyles = css`
@@ -16,13 +18,14 @@ export const collectionStyles = css`
 		--_item-width: var(--primitives-area-280);
 		--_focus-ring-z-index: 1;
 
-		/* The gap between items (and before the load-more button). The responsive
-		   default lives in a variable so the gap attribute can override it at all
-		   breakpoints with a single inline --_gap (inline wins over these media
-		   rules). */
-		--_gap: var(--components-collection-sm-gap);
+		/* The gap between items (and before the load-more button), set per breakpoint
+		   range so no two rules overlap. The gap attribute overrides it at every
+		   breakpoint with a single inline --_gap (inline wins over these media rules). */
+		@media (max-width: ${smMax}) {
+			--_gap: var(--components-collection-sm-gap);
+		}
 
-		@media (min-width: ${mdMin}) {
+		@media (min-width: ${mdMin}) and (max-width: ${mdMax}) {
 			--_gap: var(--components-collection-md-gap);
 		}
 
