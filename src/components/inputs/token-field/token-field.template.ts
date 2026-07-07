@@ -73,6 +73,7 @@ export function tokenFieldTemplate(component: NLDDTokenField): TemplateResult {
 			${component.values.map(
 				(value, index) => html`
 					<nldd-token
+						text=${component._labelFor(value)}
 						control=${component.readonly ? nothing : 'dismiss'}
 						tabindex=${component.readonly ? nothing : '-1'}
 						dismiss-text=${component._t('components.token-field.dismiss-action')}
@@ -80,7 +81,7 @@ export function tokenFieldTemplate(component: NLDDTokenField): TemplateResult {
 						data-value=${value}
 						@dismiss=${() => component._removeValue(value)}
 						@keydown=${(e: KeyboardEvent) => component._handleTokenKeydown(e, index)}
-					>${component._labelFor(value)}</nldd-token>
+					></nldd-token>
 				`,
 			)}
 			${component._showInput || component._showPicker

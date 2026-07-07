@@ -28,7 +28,7 @@ export default {
 		},
 	},
 	argTypes: {
-		label: {
+		text: {
 			control: 'text',
 			description: 'Tekst van het token',
 		},
@@ -56,7 +56,7 @@ export default {
 		},
 	},
 	args: {
-		label: 'Token',
+		text: 'Token',
 		control: 'none',
 		expanded: false,
 		disabled: false,
@@ -65,12 +65,13 @@ export default {
 
 const Template = (args: Record<string, any>) => html`
 	<nldd-token
+		text=${args.text}
 		control=${args.control}
 		?expanded=${args.expanded}
 		?disabled=${args.disabled}
 		@dismiss=${action('dismiss')}
 		@toggle=${action('toggle')}
-	>${args.label}</nldd-token>
+	></nldd-token>
 `;
 
 export const Standaard = {
@@ -104,7 +105,7 @@ export const AlleControls = {
 
 export const MetDismiss = {
 	render: Template,
-	args: { control: 'dismiss', label: 'Status: Actief' },
+	args: { control: 'dismiss', text: 'Status: Actief' },
 	parameters: {
 		docs: {
 			description: {
@@ -116,7 +117,7 @@ export const MetDismiss = {
 
 export const MetMenu = {
 	render: Template,
-	args: { control: 'menu', label: 'Datum' },
+	args: { control: 'menu', text: 'Datum' },
 	parameters: {
 		docs: {
 			description: {
@@ -128,7 +129,7 @@ export const MetMenu = {
 
 export const MenuOpen = {
 	render: Template,
-	args: { control: 'menu', expanded: true, label: 'Datum' },
+	args: { control: 'menu', expanded: true, text: 'Datum' },
 };
 
 

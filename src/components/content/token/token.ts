@@ -6,6 +6,7 @@
  *
  * @element nldd-token
  *
+ * @attr {string}                         text          - Token text; falls back to the default slot when unset.
  * @attr {'none' | 'dismiss' | 'menu'} control       - Control type (default: 'none')
  * @attr {boolean}                        expanded      - Whether the menu is open (menu only). Forwarded as aria-expanded on the menu button.
  * @attr {boolean}                        disabled      - Disabled state
@@ -31,6 +32,11 @@ export type TokenControl = 'none' | 'dismiss' | 'menu';
 @customElement('nldd-token')
 export class NLDDToken extends LitElement {
 	static override styles = tokenStyles;
+
+	/** Token text. Falls back to the default slot when unset, so slotted or richer
+	 *  content keeps working. */
+	@property({ type: String })
+	text = '';
 
 	@property({ reflect: true, converter: reflectNonDefault<TokenControl>('none') })
 	control: TokenControl = 'none';

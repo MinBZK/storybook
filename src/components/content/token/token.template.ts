@@ -12,7 +12,7 @@ export function tokenTemplate(component: NLDDToken): TemplateResult {
 				aria-controls=${component.controls || nothing}
 				@click=${component._handleMenuClick}
 			>
-				<span class="token__text"><slot></slot></span>
+				<span class="token__text">${component.text || html`<slot></slot>`}</span>
 				<nldd-icon class="token__icon"
 					name="chevron-down-small"
 				></nldd-icon>
@@ -22,7 +22,7 @@ export function tokenTemplate(component: NLDDToken): TemplateResult {
 
 	return html`
 		<div class="token">
-			<span class="token__text"><slot></slot></span>
+			<span class="token__text">${component.text || html`<slot></slot>`}</span>
 			${component.control === 'dismiss' ? html`
 				<div class="token__dismiss-action">
 					<nldd-icon-button

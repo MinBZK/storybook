@@ -46,14 +46,14 @@ describe('nldd-token-field', () => {
 		`);
 		el.values = ['a'];
 		await waitForUpdate(el);
-		expect(el.shadowRoot!.querySelector('nldd-token')!.textContent!.trim()).toBe('Alpha');
+		expect(el.shadowRoot!.querySelector('nldd-token')!.getAttribute('text')).toBe('Alpha');
 	});
 
 	it('falls back to the raw value when no matching option exists', async () => {
 		el = await fixture('<nldd-token-field accessible-label="Tags"></nldd-token-field>');
 		el.values = ['x'];
 		await waitForUpdate(el);
-		expect(el.shadowRoot!.querySelector('nldd-token')!.textContent!.trim()).toBe('x');
+		expect(el.shadowRoot!.querySelector('nldd-token')!.getAttribute('text')).toBe('x');
 	});
 
 	it('dismissing a token drops the value and fires change', async () => {
@@ -137,7 +137,7 @@ describe('nldd-token-field', () => {
 		await waitForUpdate(el);
 		expect(el.values).toEqual(['be']);
 		expect(detail).toEqual({ values: ['be'] });
-		expect(el.shadowRoot!.querySelector('nldd-token')!.textContent!.trim()).toBe('België');
+		expect(el.shadowRoot!.querySelector('nldd-token')!.getAttribute('text')).toBe('België');
 	});
 
 	it('hides options that are already selected from the menu', async () => {

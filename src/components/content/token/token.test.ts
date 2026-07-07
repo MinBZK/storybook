@@ -28,6 +28,12 @@ describe('nldd-token', () => {
 		expect(el.shadowRoot!.querySelector('button.token')).toBeNull();
 	});
 
+	it('renders the text property in the token text', async () => {
+		el = await fixture('<nldd-token text="Status: Actief"></nldd-token>');
+		await waitForUpdate(el);
+		expect(el.shadowRoot!.querySelector('.token__text')!.textContent).toContain('Status: Actief');
+	});
+
 	it('renders a div for control=dismiss', async () => {
 		el = await fixture('<nldd-token control="dismiss">Label</nldd-token>');
 		await waitForUpdate(el);
