@@ -82,7 +82,12 @@ export const AlleControls = {
 	<div style="display: flex; gap: 0.5rem; align-items: center; flex-wrap: wrap;">
 		<nldd-token text="Geen control"></nldd-token>
 		<nldd-token control="dismiss" text="Met dismiss"></nldd-token>
-		<nldd-token control="menu" text="Met menu"></nldd-token>
+		<nldd-token control="menu" text="Met menu">
+			<nldd-menu slot="menu">
+				<nldd-menu-item text="Bewerken" @select=${action('select')}></nldd-menu-item>
+				<nldd-menu-item text="Verwijder" destructive @select=${action('select')}></nldd-menu-item>
+			</nldd-menu>
+		</nldd-token>
 	</div>
 `,
 	parameters: {
@@ -103,7 +108,7 @@ export const MetMenu = {
 				<nldd-menu-item text="Toon contactgegevens" @select=${action('select: contactgegevens')}></nldd-menu-item>
 				<nldd-menu-item text="Kopieer e-mailadres" @select=${action('select: kopieer')}></nldd-menu-item>
 				<nldd-menu-divider></nldd-menu-divider>
-				<nldd-menu-item text="Verwijderen" @select=${action('select: verwijderen')}></nldd-menu-item>
+				<nldd-menu-item text="Verwijder" destructive @select=${action('select: verwijder')}></nldd-menu-item>
 			</nldd-menu>
 		</nldd-token>
 	`,
