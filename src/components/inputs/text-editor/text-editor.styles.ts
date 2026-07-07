@@ -14,21 +14,13 @@ export const textEditorStyles = css`
 		--_padding-block: 0px;
 		--_padding-inline: 0px;
 		--_content-color: var(--semantics-content-color);
-		/* Prose: 18px body at 1.5 line-height (snug) for readability. */
 		--_font: var(--primitives-font-body-md-regular-snug);
 		--_code-font: var(--primitives-font-monospace-md-regular-snug);
-		/* Inline code sizes as a fraction of its surroundings (the DS mono/body step:
-		   16px next to 18px), so code inside a heading scales with it instead of
-		   staying at a fixed 16px. */
 		--_code-font-size: calc(var(--primitives-font-size-90) / var(--primitives-font-size-100) * 1em);
-		/* Markers render one step down (16px mono): monospace reads larger than
-		   the sans body beside it, matching the DS mono/body pairing. */
 		--_marker-font-size: var(--primitives-font-size-90);
 		/* JetBrains Mono advance (600/1000 em) at the marker size; leading
 		   list/quote markers are mono so the hanging indent equals their width. */
 		--_marker-advance: calc(0.6 * var(--_marker-font-size));
-		/* Bullet-list dot: size relative to the marker, and the dimmed marker colour so
-		   it reads as syntax. Tweak these to restyle every bullet. */
 		--_bullet-size: 0.45em;
 		--_bullet-color: var(--semantics-content-secondary-color);
 		--_heading-marker-scale: 75%;
@@ -42,8 +34,6 @@ export const textEditorStyles = css`
 		--_token-block-padding-fit: max(0em, (1lh - 1.2em) / 2);
 		--_code-token-background: light-dark(var(--primitives-color-neutral-50), var(--primitives-color-neutral-150));
 		--_code-token-background-is-selected: light-dark(var(--primitives-color-neutral-200), var(--primitives-color-neutral-300));
-		/* The fenced code block matches the inline token padding, so the surface
-		   reads like the chips (its own vars, easy to nudge roomier if needed). */
 		--_code-block-inline-padding: var(--_token-inline-padding);
 		--_code-block-block-padding: var(--_token-block-padding);
 		--_annotation-token-background: light-dark(var(--primitives-color-mark-75), var(--primitives-color-mark-150));
@@ -60,25 +50,16 @@ export const textEditorStyles = css`
 		   that swallows the white (mark-1000) badge number. */
 		--_annotation-token-badge-background-selected: var(--primitives-color-mark-450);
 		--_annotation-token-badge-highlight-border-selected: var(--primitives-color-mark-500);
-		/* Badge box in its own em, and its font as a fraction of the token font. The
-		   badge height in token units is size × font-scale (used to inset the token's
-		   right space to match the badge's vertical gap). */
 		--_annotation-badge-size: 1.5em;
 		--_annotation-badge-font-scale: 0.62;
-		/* The link badge's box (round chip). Its icon is a fraction of THIS, not of the
-		   font, so the icon keeps the same ratio when the chip shrinks in a tight line. */
 		--_link-badge-size: calc(1em + 2 * var(--_token-block-padding-fit));
 		--_link-badge-content-color: var(--semantics-categories-accent-tinted-primary-content-color);
 		--_link-badge-background: var(--semantics-categories-accent-tinted-background-color);
 		--_link-badge-highlight-border: var(--semantics-categories-accent-tinted-highlight-border-color);
-		/* Hover/active stay in the tinted family, each one accent step up from the
-		   tinted bg (50/75 → 75/100 → 100/150) and border (100/150 → 150/200 → 200/250). */
 		--_link-badge-background-hover: light-dark(var(--primitives-color-accent-75), var(--primitives-color-accent-100));
 		--_link-badge-background-active: light-dark(var(--primitives-color-accent-100), var(--primitives-color-accent-150));
 		--_link-badge-highlight-border-hover: light-dark(var(--primitives-color-accent-150), var(--primitives-color-accent-200));
 		--_link-badge-highlight-border-active: light-dark(var(--primitives-color-accent-200), var(--primitives-color-accent-250));
-		/* The @ icon size, so the token's left padding can mirror the icon's vertical
-		   inset (equal space to its left, top and bottom). */
 		--_mention-icon-size: 0.95em;
 		--_mention-token-background: var(--semantics-categories-accent-tinted-background-color);
 		--_mention-token-content-color: var(--semantics-categories-accent-tinted-primary-content-color);
@@ -100,7 +81,6 @@ export const textEditorStyles = css`
 		display: none;
 	}
 
-	/* Monospace option (default is the sans body font, best for prose). */
 	:host([font="mono"]) {
 		--_font: var(--primitives-font-monospace-md-regular-snug);
 	}
@@ -110,9 +90,6 @@ export const textEditorStyles = css`
 
 	:host([variant="input-field"]) {
 		--_corner-radius: var(--primitives-corner-radius-lg);
-		/* Match the other input fields (text-field, textarea): the input-field
-		   surface + border, not the tinted surface, so an input-field editor sits among
-		   plain inputs consistently. */
 		--_background-color: var(--semantics-input-fields-background-color);
 		--_highlight-border-color: var(--semantics-input-fields-border-color);
 		--_highlight-border-shadow: inset 0 0 0 var(--semantics-input-fields-border-thickness) var(--_highlight-border-color);
@@ -188,8 +165,6 @@ export const textEditorStyles = css`
 		transform: translateX(0.6px);
 	}
 
-	/* Resize model — rows is the floor in every mode:
-	   auto (default) = grow, vertical = drag up from the floor, none = fixed. */
 	:host .cm-scroller {
 		resize: none;
 		min-height: calc(var(--_rows) * 1lh + 2 * var(--_padding-block));
@@ -233,9 +208,6 @@ export const textEditorStyles = css`
 		font: var(--primitives-font-display-6-sm);
 	}
 
-	/* The # marker grows with its heading (a fraction of it) so it reads as part
-	   of the heading without dominating. Headings aren't a hanging-indent prefix,
-	   so this size is free to vary. */
 	:is(.cm-md-h1, .cm-md-h2, .cm-md-h3, .cm-md-h4, .cm-md-h5, .cm-md-h6) .cm-md-mark {
 		font-size: var(--_heading-marker-scale);
 	}
@@ -249,17 +221,15 @@ export const textEditorStyles = css`
 		text-decoration: line-through;
 	}
 
-	/* Inline code: 16px monospace step (sits next to the 18px body) on a subtle
-	   chip background. The selected run is darkened with a decoration (see
-	   cm-md-code-selected below), since drawSelection hides the native selection. */
+	/* The selected run is darkened with a decoration (see cm-md-code-selected
+	   below), since drawSelection hides the native selection. */
 	.cm-md-code {
 		padding-block: var(--_token-block-padding-fit);
 		/* No inline padding: the tint hugs the backticks, which are the visible bounds
 		   anyway. A padded mark has no coordsAt hook, so the caret at its edge would
 		   otherwise jump by the padding depending on the direction it arrives from. */
-		/* Monospace, sized as a fraction of its context; line-height is left to inherit
-		   from the block so the chip fits the line (a fixed snug line-height would make
-		   it overflow inside a tight heading). Weight stays regular, not the heading's. */
+		/* line-height is left to inherit from the block, so a fixed snug line-height
+		   won't make the chip overflow inside a tight heading. */
 		font-family: var(--primitives-font-family-monospace);
 		font-size: var(--_code-font-size);
 		font-weight: var(--primitives-font-weight-body-regular);
@@ -267,9 +237,6 @@ export const textEditorStyles = css`
 		border-radius: var(--_token-corner-radius);
 	}
 
-	/* Code block: a full-width line background per content line, so consecutive
-	   lines form one filled surface (the fence lines stay clean). The first and
-	   last content lines round the top and bottom corners. */
 	/* :host beats the shared theme's ".cm-line { padding: 0 }" reset (equal
 	   specificity otherwise wins on source order), same as .cm-content above —
 	   without it the block padding never lands and the surface reads cramped. */
@@ -313,18 +280,11 @@ export const textEditorStyles = css`
 		background-color: var(--_code-token-background-is-selected);
 	}
 
-	/* @-mention: accent + semibold (shown only in the brief pre-parse state;
-	   normally the whole token collapses to the rendered token below). */
-
 	.cm-md-mention {
 		color: var(--semantics-content-accent-color);
 		font-weight: 600;
 	}
 
-	/* @-mention token: the collapsed, atomic pill the mention markdown renders as.
-	   It uses the same inline-tag treatment as the annotation marker (display: inline with
-	   visual block padding, so it never grows the line) — so the two tags match in
-	   size, shape and position and align with the selection the same way. */
 	.cm-md-mention-token {
 		padding-block: var(--_token-block-padding-fit);
 		/* Left space equals the @ icon's vertical inset (token height minus the icon,
@@ -336,8 +296,6 @@ export const textEditorStyles = css`
 		border-radius: var(--_token-corner-radius);
 		font-weight: 600;
 		white-space: nowrap;
-		/* It's an atomic token, not editable text — show the default arrow, not the
-		   text I-beam. */
 		cursor: default;
 		-webkit-box-decoration-break: clone;
 		box-decoration-break: clone;
@@ -347,7 +305,6 @@ export const textEditorStyles = css`
 		text-indent: 0;
 	}
 
-	/* The @ icon: a fixed-size inline prefix, nudged to sit on the text centre. */
 	.cm-md-mention-token-icon {
 		width: var(--_mention-icon-size);
 		height: var(--_mention-icon-size);
@@ -355,7 +312,6 @@ export const textEditorStyles = css`
 		vertical-align: -0.16em;
 	}
 
-	/* Selected mention (clicked, or covered by the selection): solid dark accent. */
 	.cm-md-mention-token[data-selected] {
 		color: var(--_mention-token-content-color-is-selected);
 		background-color: var(--_mention-token-background-is-selected);
@@ -381,8 +337,6 @@ export const textEditorStyles = css`
 		color: inherit;
 	}
 
-	/* Blockquote reads at the lg (20px) step in sans, primary content colour; in
-	   the mono variant it stays at the 16px body size. */
 	.cm-md-quote {
 		color: var(--semantics-content-color);
 		font-style: italic;
@@ -401,9 +355,6 @@ export const textEditorStyles = css`
 		font-size: var(--_marker-font-size);
 	}
 
-	/* Code backticks match the code content size (they inherit the code span, which is
-	   already the step-down ratio) rather than the fixed marker size, so they scale
-	   together with the code inside a heading. */
 	.cm-md-code .cm-md-mark {
 		font-size: 1em;
 	}
@@ -479,9 +430,6 @@ export const textEditorStyles = css`
 		color: var(--primitives-color-neutral-950);
 	}
 
-	/* Selected text takes the strongest content colour (more contrast on the
-	   selection). Plain text goes fully dark; a selected annotation sits a step
-	   lower (it has its own tinted marker). */
 	.cm-content ::selection {
 		color: var(--primitives-color-neutral-1000);
 	}
@@ -490,11 +438,6 @@ export const textEditorStyles = css`
 		color: var(--primitives-color-neutral-950);
 	}
 
-	/* Solid nub, centred in the reserved right space (a small gap before it). A
-	   badge-component-style chip: one step below the filled colour, a highlight
-	   border, the dark filled content colour for the count, darkening on
-	   hover/active. The default cursor (it's not a link), and a ::before that
-	   enlarges the hit area into the reserved space around it. */
 	.cm-annotation-badge {
 		box-sizing: border-box;
 		display: inline-flex;
@@ -523,6 +466,7 @@ export const textEditorStyles = css`
 		cursor: default;
 	}
 
+	/* Enlarges the badge's hit area into the reserved space around it. */
 	.cm-annotation-badge::before {
 		content: '';
 		position: absolute;
@@ -542,14 +486,11 @@ export const textEditorStyles = css`
 		box-shadow: inset 0 0 0 var(--primitives-border-width-thin) var(--_annotation-token-badge-highlight-border-active);
 	}
 
-	/* In a fully-selected annotation the nub darkens with the block, its border one
-	   step above the fill. */
 	.cm-annotation-selected .cm-annotation-badge {
 		background-color: var(--_annotation-token-badge-background-selected);
 		box-shadow: inset 0 0 0 var(--primitives-border-width-thin) var(--_annotation-token-badge-highlight-border-selected);
 	}
 
-	/* The same focus ring as the rest of the system, on keyboard focus only. */
 	.cm-annotation-badge:focus-visible {
 		outline: var(--semantics-focus-ring-outline);
 		outline-offset: var(--semantics-focus-ring-outline-offset);
@@ -581,8 +522,6 @@ export const textEditorStyles = css`
 		z-index: 4;
 	}
 
-	/* A translucent copy of the dragged text, trailing the pointer (bottom-right).
-	   Carries the selection colour so it reads as the picked-up selection. */
 	.cm-drag-ghost {
 		position: fixed;
 		z-index: 5;
@@ -599,17 +538,11 @@ export const textEditorStyles = css`
 		pointer-events: none;
 	}
 
-	/* "Open link" badge rendered inline right after every real link: a round chip
-	   carrying an external-link icon, so a link can be followed without placing the
-	   caret first. The same badge shape + focus ring as the annotation nub, but a
-	   neutral (not annotation-yellow) fill — it's a link affordance, not a comment. */
 	.cm-link-badge {
 		box-sizing: border-box;
 		display: inline-flex;
 		align-items: center;
 		justify-content: center;
-		/* A round chip that fits the line (a heading's tighter line included), kept
-		   square so border-radius renders a full circle. */
 		min-width: var(--_link-badge-size);
 		height: var(--_link-badge-size);
 		border-radius: var(--primitives-corner-radius-full);
@@ -637,13 +570,10 @@ export const textEditorStyles = css`
 
 	.cm-link-badge nldd-icon {
 		flex: none;
-		/* A fixed fraction of the chip, so the icon keeps its proportion when the chip
-		   shrinks in a tight line (a heading) instead of appearing to grow. */
 		width: calc(0.65 * var(--_link-badge-size));
 		height: calc(0.65 * var(--_link-badge-size));
 	}
 
-	/* The same focus ring as the annotation badge, on keyboard focus only. */
 	.cm-link-badge:focus-visible {
 		outline: var(--semantics-focus-ring-outline);
 		outline-offset: var(--semantics-focus-ring-outline-offset);
