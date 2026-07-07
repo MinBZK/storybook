@@ -14,6 +14,10 @@ export const tokenStyles = css`
 
 		${inheritedTextReset}
 		display: inline-block;
+		/* Never wider than the container; the label truncates with an ellipsis
+		   instead (min-width:0 lets the host shrink as a flex item). */
+		max-width: 100%;
+		min-width: 0;
 		user-select: none;
 		-webkit-tap-highlight-color: transparent;
 	}
@@ -25,6 +29,18 @@ export const tokenStyles = css`
 	:host([disabled]) {
 		opacity: var(--primitives-opacity-disabled);
 		pointer-events: none;
+	}
+
+	/* Focus ring when the host itself is focused (e.g. a token-field manages
+	   roving focus across its tokens via tabindex). Raised above adjacent tokens
+	   and the field border so the ring isn't clipped by them. */
+	:host(:focus-visible) {
+		position: relative;
+		z-index: 1;
+		outline: var(--semantics-focus-ring-outline);
+		outline-offset: var(--semantics-focus-ring-outline-offset);
+		box-shadow: var(--semantics-focus-ring-box-shadow);
+		border-radius: var(--semantics-controls-sm-corner-radius);
 	}
 
 
@@ -40,6 +56,8 @@ export const tokenStyles = css`
 		background-color: var(--semantics-buttons-neutral-tinted-background-color);
 		position: relative;
 		height: var(--semantics-controls-sm-min-size);
+		max-width: 100%;
+		min-width: 0;
 		padding: 0 var(--primitives-space-6);
 		align-items: center;
 		color: var(--semantics-buttons-neutral-tinted-primary-content-color);
@@ -128,15 +146,24 @@ export const tokenStyles = css`
 	/* # Elements */
 
 	.token__text {
-		display: flex;
+		display: block;
 		padding: 0 var(--primitives-space-2);
-		align-items: center;
+		/* Truncate a label that is longer than the (possibly shrunk) token. */
+		min-width: 0;
+		overflow: hidden;
+		text-overflow: ellipsis;
+		white-space: nowrap;
 	}
 
 	.token__icon {
 		display: block;
 		width: var(--primitives-space-16);
 		height: var(--primitives-space-16);
+		flex-shrink: 0;
+	}
+
+	/* The dismiss control keeps its size while the label shrinks. */
+	.token__dismiss-action {
 		flex-shrink: 0;
 	}
 `;
