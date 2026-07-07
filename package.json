@@ -75,6 +75,10 @@
       "types": "./dist/components/content/byline/byline.d.ts",
       "default": "./dist/components/content/byline/byline.js"
     },
+    "./token": {
+      "types": "./dist/components/content/token/token.d.ts",
+      "default": "./dist/components/content/token/token.js"
+    },
     "./form": {
       "types": "./dist/components/forms/form/form.d.ts",
       "default": "./dist/components/forms/form/form.js"
@@ -171,9 +175,9 @@
       "types": "./dist/components/inputs/toggle-button-group/toggle-button-group.d.ts",
       "default": "./dist/components/inputs/toggle-button-group/toggle-button-group.js"
     },
-    "./token": {
-      "types": "./dist/components/content/token/token.d.ts",
-      "default": "./dist/components/content/token/token.js"
+    "./token-field": {
+      "types": "./dist/components/inputs/token-field/token-field.d.ts",
+      "default": "./dist/components/inputs/token-field/token-field.js"
     },
     "./app-view": {
       "types": "./dist/components/layout/app-view/app-view.d.ts",
