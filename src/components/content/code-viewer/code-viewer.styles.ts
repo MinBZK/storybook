@@ -13,8 +13,6 @@ export const codeViewerStyles = css`
 		--_corner-radius: var(--primitives-corner-radius-lg);
 		--_background-color: var(--semantics-surfaces-tinted-background-color);
 		--_border-color: var(--semantics-surfaces-tinted-border-color);
-		/* Shared shadow value so the default and focus-visible rules can
-		   compose with var(...) instead of repeating the inset literal. */
 		--_border-shadow: inset 0 0 0 1px var(--_border-color);
 		--_block-padding: var(--primitives-space-16);
 		--_inline-padding: var(--primitives-space-16);
@@ -46,9 +44,6 @@ export const codeViewerStyles = css`
 		--_border-color: var(--semantics-surfaces-base-border-color);
 	}
 
-	/* variant="simple" drops the entire frame (no rounded corners, no
-	   padding, no fill, no border ring). The host becomes a thin wrapper
-	   around the editor — use for embedding in a consumer-supplied container. */
 	:host([variant="simple"]) {
 		--_corner-radius: 0;
 		--_background-color: transparent;
@@ -84,8 +79,6 @@ export const codeViewerStyles = css`
 		padding-right: var(--_actions-area-size);
 	}
 
-	/* variant="simple" + copy-button: pin the button flush to the host's
-	   top-right corner and keep the snippet at least as tall as the button. */
 	:host([variant="simple"]:not([no-copy])) {
 		--_actions-area-padding: 0;
 	}
@@ -123,9 +116,6 @@ export const codeViewerStyles = css`
 		right: var(--_actions-area-padding);
 		z-index: var(--_actions-z-index);
 	}
-
-	/* Visually-hidden live region announces copy success/failure to screen
-	   readers — the static accessible-label alone can't convey state changes. */
 
 	.code-viewer__live-region {
 		position: absolute;
