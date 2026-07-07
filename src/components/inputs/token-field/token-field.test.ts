@@ -376,6 +376,53 @@ describe('nldd-token-field', () => {
 		outside.remove();
 	});
 
+	it('clicking empty space focuses the last token when the input is hidden', async () => {
+		el = await withMenu();
+		el.values = ['nl', 'be']; // all options taken -> input hidden
+		await waitForUpdate(el);
+		expect(el.shadowRoot!.querySelector('.token-field__input')).toBeNull();
+		el.shadowRoot!.querySelector('.token-field')!
+			.dispatchEvent(new MouseEvent('click', { bubbles: true, composed: true }));
+		expect(el.shadowRoot!.activeElement).toBe(el.shadowRoot!.querySelectorAll('nldd-token')[1]);
+	});
+
+	it('Delete on a token moves focus to the token that took its place', async () => {
+		el = await fixture<TokenFieldEl>('<nldd-token-field accessible-label="Tags" allow-custom></nldd-token-field>');
+		el.values = ['a', 'b', 'c'];
+		await waitForUpdate(el);
+		const tokens = () => [...el.shadowRoot!.querySelectorAll('nldd-token')];
+		tokens()[1].dispatchEvent(new KeyboardEvent('keydown', { key: 'Delete', bubbles: true }));
+		await waitForUpdate(el);
+		await (el as unknown as { updateComplete: Promise<unknown> }).updateComplete;
+		expect(el.values).toEqual(['a', 'c']);
+		expect(el.shadowRoot!.activeElement).toBe(tokens()[1]); // 'c' shifted into index 1
+	});
+
+	it('Backspace on the last token returns focus to the input', async () => {
+		el = await fixture<TokenFieldEl>('<nldd-token-field accessible-label="Tags" allow-custom></nldd-token-field>');
+		el.values = ['a', 'b', 'c'];
+		await waitForUpdate(el);
+		const tokens = () => [...el.shadowRoot!.querySelectorAll('nldd-token')];
+		tokens()[2].dispatchEvent(new KeyboardEvent('keydown', { key: 'Backspace', bubbles: true }));
+		await waitForUpdate(el);
+		await (el as unknown as { updateComplete: Promise<unknown> }).updateComplete;
+		expect(el.values).toEqual(['a', 'b']);
+		expect(el.shadowRoot!.activeElement).toBe(el.shadowRoot!.querySelector('.token-field__input'));
+	});
+
+	it('ArrowLeft at the start of an empty email input steps onto the last token', async () => {
+		// type="email" inputs expose no caret (selectionStart is null); an empty value
+		// must still count as "at the start" so ArrowLeft steps into the tokens.
+		el = await fixture<TokenFieldEl>('<nldd-token-field accessible-label="E-mail" type="email" allow-custom></nldd-token-field>');
+		el.values = ['a@x.com', 'b@y.com'];
+		await waitForUpdate(el);
+		const input = el.shadowRoot!.querySelector<HTMLInputElement>('.token-field__input')!;
+		input.focus();
+		input.dispatchEvent(new KeyboardEvent('keydown', { key: 'ArrowLeft', bubbles: true }));
+		await waitForUpdate(el);
+		expect(el.shadowRoot!.activeElement).toBe(el.shadowRoot!.querySelectorAll('nldd-token')[1]);
+	});
+
 	// — Readonly & required (F3.5) —————————————————————————————————————————————
 
 	it('readonly hides the input and picker and makes tokens static', async () => {

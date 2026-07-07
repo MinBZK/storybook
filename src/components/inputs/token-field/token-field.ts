@@ -446,7 +446,11 @@ export class NLDDTokenField extends LitElement {
 
 	private _caretAtStart(): boolean {
 		const input = this._input;
-		return !!input && input.selectionStart === 0 && input.selectionEnd === 0;
+		if (!input) return false;
+		// type="email" / "number" etc. don't expose a caret (selectionStart is null),
+		// so an empty value is the only reliable "at the start" signal for those.
+		if (input.selectionStart === null) return input.value === '';
+		return input.selectionStart === 0 && input.selectionEnd === 0;
 	}
 
 	// — Token roving navigation ————————————————————————————————————————————————
@@ -467,8 +471,21 @@ export class NLDDTokenField extends LitElement {
 		tokens[clamped].focus();
 	}
 
+	/** After removing the token at `index`, move focus to the token that shifted into
+	 *  its slot (the one that was to its right). If the last token was removed, hand
+	 *  focus to the input, or to the new last token when the input is hidden. */
+	private _focusAfterRemoval(index: number): void {
+		if (this._tokens.length === 0) {
+			this._input?.focus();
+			return;
+		}
+		if (index < this._tokens.length) this._focusTokenAt(index);
+		else if (this._showInput) this._input?.focus();
+		else this._focusTokenAt(this._tokens.length - 1);
+	}
+
 	/** Arrow keys move between tokens; ArrowRight past the last returns to the
-	 *  input; Backspace/Delete removes the token and keeps focus in the row. */
+	 *  input; Backspace/Delete removes the token and steps focus onto the next one. */
 	public _handleTokenKeydown(e: KeyboardEvent, index: number): void {
 		switch (e.key) {
 			case 'ArrowLeft':
@@ -490,28 +507,27 @@ export class NLDDTokenField extends LitElement {
 				break;
 			case 'Backspace':
 			case 'Delete': {
-				// Remove the token, then keep focus in the row: on the input when it is
-				// shown (the next Backspace steps onto the new last token — a repeatable
-				// delete cycle), otherwise on the token now at this position. Without the
-				// fallback, deleting with the input hidden would drop focus to the body.
+				// Remove the token, then step focus onto the token that took its place
+				// (the one to its right), so repeated Backspace walks the row. Removing
+				// the last token hands focus back to the input, or to the new last token
+				// when the input is hidden — never dropping it to the body.
 				e.preventDefault();
 				this._removeValue(this.values[index]);
-				void this.updateComplete.then(() => {
-					if (this._showInput) this._input?.focus();
-					else this._focusTokenAt(index);
-				});
+				void this.updateComplete.then(() => this._focusAfterRemoval(index));
 				break;
 			}
 		}
 	}
 
-	/** Clicking anywhere in the field (except a token or the picker) just focuses
-	 *  the input. The menu is opened deliberately via the picker, typing, or
-	 *  ArrowDown — not by clicking the field, which felt too eager. */
+	/** Clicking empty space in the field (not a token or the picker) focuses the
+	 *  input, or — when it is hidden — the last token, so a click after the tokens
+	 *  lets you rove them with the arrow keys. The menu opens deliberately via the
+	 *  picker, typing, or ArrowDown, not by clicking the field. */
 	public _handleFieldClick(e: Event): void {
 		const target = e.target as HTMLElement;
 		if (target.closest('nldd-token') || target.closest('.token-field__picker')) return;
-		this._input?.focus();
+		if (this._showInput) this._input?.focus();
+		else this._focusTokenAt(this._tokens.length - 1);
 	}
 
 	/**
