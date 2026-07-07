@@ -23,12 +23,14 @@ here; consult the commit history if you need that level of detail.
 - **`nldd-code-editor` and `nldd-code-viewer` on CodeMirror 6.** Both are rebuilt on the same CodeMirror 6 foundation as the new text editor, for consistent syntax highlighting across many grammars (yaml, json, javascript, typescript, css, html, xml, bash, markdown, rust, gherkin, toml, sql, python). The code editor gains `simple` (bare, caret-only) and `input-field` variants, `rows` / `resize` sizing, line numbers and line wrapping; the read-only code viewer keeps its copy button and gains `simple` / `box` variants and a `tinted` / `base` background.
 - **Built-in FOUC guard.** `@nldd/design-system/styles` now keeps the page hidden until every custom element has upgraded (or a 200ms fallback), so pre-upgrade web components no longer flash unstyled.
 - **No more position flash on popovers.** `nldd-menu`, `nldd-popover`, `nldd-tooltip` and `nldd-just-in-time-education` no longer flash at the popover's default spot before Floating UI places them; each stays hidden until it is positioned.
+- **Flatter, rectangular surfaces.** Corner radii are removed from `nldd-hero` (every element is now rectangular) and from `nldd-blockquote` (and blockquotes inside `nldd-rich-text`), which also drops its top border and top padding so a quote sits flush against a plain left rule.
 
 ### Breaking
 
 - **`accessible-labelledby` renamed to `accessible-labelled-by`** — the design-system attribute on `nldd-segmented-control`, `nldd-radio-button-group` and `nldd-toggle-button-group` now separates the words. The property stays `accessibleLabelledBy` and the forwarded native `aria-labelledby` is unchanged; only the DS attribute name changes. Consumers using `accessible-labelledby` must switch to `accessible-labelled-by`.
 - **Default values are kept out of the DOM** — reflected enum and empty-string defaults are no longer written as attributes (e.g. a `nldd-button` with the default size no longer renders `size="md"`, and an empty `supporting-text` is omitted). Non-default values still reflect, so `:host([attr=…])` styling, framework property binding and inspector editing keep working. External CSS or scripts that matched a *default* attribute (e.g. `nldd-button[size="md"]` or `getAttribute('size') === 'md'`) should read the property instead. `type` and `inherit`-style props are intentionally left reflected for now.
 - **`nldd-combo-box` no longer commits free-typed values by default** — a typed value that matches no menu option is now discarded on Enter/blur (the input reverts to the current value) unless the new `allow-custom` attribute is set. Previously such values were always emitted via `change`.
+- **`nldd-hero` corners removed** — `nldd-hero` is now always rectangular and the `media-corner-position` attribute (added in 0.8.64) is gone. A no-media `main-background="base"` hero takes a full border instead of only the two corner-adjacent sides.
 
 ### Added
 
@@ -54,6 +56,9 @@ here; consult the commit history if you need that level of detail.
 - **`nldd-multi-line-text-field`** — the configured `rows` is now the minimum height in every resize mode, not only `resize="auto"`; a fixed or non-resizable field no longer collapses below its `rows`.
 - **`nldd-banner` renders under frameworks that build elements via `document.createElement`** — aria attributes are now set in `connectedCallback` instead of the constructor, which previously threw `NotSupportedError` (e.g. under Vue) and aborted the render, so banners never appeared.
 - **`nldd-text-editor` annotation undo** — annotation offsets are clamped to the document length, preventing a range error during undo when the history transiently shrinks the document.
+- **`nldd-menu` empty state** — a menu whose items are all disabled no longer shows the "no options" empty state on top of the still-visible items; emptiness counts shown items, not just navigable ones.
+- **`nldd-sheet` close** — only the sheet's own `nldd-top-title-bar` dismiss closes it; a `dismiss` from another component inside the sheet (an `nldd-token` remove button, an `nldd-banner`) no longer closes the whole sheet.
+- **`nldd-sheet` content sizing** — only a slotted `nldd-page` grows to fill the sheet, so other direct children keep their intrinsic height instead of being stretched.
 
 ## <small>0.8.64 (2026-07-01)</small>
 
