@@ -375,6 +375,13 @@ export class NLDDTextEditor extends NLDDCodeMirrorElement {
 
 	/* # Headless command API */
 
+	/** Focus the editor. delegatesFocus handles a click or tab into the host, but
+	 *  a programmatic host.focus() is routed straight to CodeMirror here, whose
+	 *  contenteditable delegatesFocus does not reliably target. */
+	override focus(): void {
+		this.view?.focus();
+	}
+
 	toggleBold(): void {
 		if (this.view) toggleInlineWrap(this.view, '**', 'StrongEmphasis');
 	}

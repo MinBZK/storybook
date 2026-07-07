@@ -65,6 +65,24 @@ describe('nldd-text-editor', () => {
 		cleanup(el2);
 	});
 
+	it('toont een bullet alleen bij "- " (met spatie), niet bij een los streepje', async () => {
+		const withSpace = await withValue('- item');
+		expect(withSpace.shadowRoot!.querySelector('.cm-md-bullet')).not.toBeNull();
+		cleanup(withSpace);
+
+		const noSpace = await withValue('-');
+		expect(noSpace.shadowRoot!.querySelector('.cm-md-bullet')).toBeNull();
+		cleanup(noSpace);
+	});
+
+	it('focus() verlegt de focus naar de interne editor', async () => {
+		const el2 = await withValue('tekst');
+		(el2 as unknown as { focus(): void }).focus();
+		const content = el2.shadowRoot!.querySelector('.cm-content');
+		expect(el2.shadowRoot!.activeElement).toBe(content);
+		cleanup(el2);
+	});
+
 	it('default variant simple en font sans', async () => {
 		el = await fixture('<nldd-text-editor accessible-label="Tekst"></nldd-text-editor>');
 		await waitForUpdate(el);
