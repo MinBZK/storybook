@@ -78,7 +78,7 @@ export class NLDDToken extends LitElement {
 		this._menu = menu;
 		menu.variant = 'menu';
 		menu.placement = 'bottom-start';
-		menu.anchorElement = this;
+		menu.anchorElement = this._menuButton ?? this;
 		menu.addEventListener('toggle', this._handleMenuToggle);
 	}
 
@@ -108,7 +108,7 @@ export class NLDDToken extends LitElement {
 		}
 		const menu = this._menu;
 		if (!menu || !('showPopover' in menu) || menu.matches(':popover-open')) return;
-		menu.anchorElement = this;
+		menu.anchorElement = this._menuButton ?? this;
 		menu.showPopover();
 	}
 

@@ -97,9 +97,12 @@ export const AlleControls = {
 
 export const MetMenu = {
 	render: () => html`
-		<nldd-token control="menu" text="Datum">
+		<nldd-token control="menu" text="jan.devries@example.nl">
 			<nldd-menu slot="menu">
-				<nldd-menu-item text="Bewerken" @select=${action('select: bewerken')}></nldd-menu-item>
+				<nldd-menu-item text="Stuur een e-mail" @select=${action('select: e-mail')}></nldd-menu-item>
+				<nldd-menu-item text="Toon contactgegevens" @select=${action('select: contactgegevens')}></nldd-menu-item>
+				<nldd-menu-item text="Kopieer e-mailadres" @select=${action('select: kopieer')}></nldd-menu-item>
+				<nldd-menu-divider></nldd-menu-divider>
 				<nldd-menu-item text="Verwijderen" @select=${action('select: verwijderen')}></nldd-menu-item>
 			</nldd-menu>
 		</nldd-token>
@@ -108,7 +111,7 @@ export const MetMenu = {
 		controls: { disable: true },
 		docs: {
 			description: {
-				story: 'Een token met een contextueel menu. Klik op de chevron; het menu opent als popover. De menu-items handelen zelf hun `select` af, de token opent, sluit en beheert de focus.',
+				story: 'Een token met een contextueel menu — bijvoorbeeld een e-mailadres met acties: een e-mail sturen, contactgegevens tonen, het adres kopiëren of de token verwijderen. Klik op de chevron; het menu opent als popover en de menu-items handelen zelf hun `select` af.',
 			},
 		},
 	},

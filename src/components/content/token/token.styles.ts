@@ -101,6 +101,11 @@ export const tokenStyles = css`
 		white-space: nowrap;
 	}
 
+	/* Keep the text off a trailing control button (which now shows its own border). */
+	:host([control]) .token__text {
+		padding-right: var(--primitives-space-6);
+	}
+
 	.token__dismiss-action,
 	.token__menu-action {
 		position: relative;

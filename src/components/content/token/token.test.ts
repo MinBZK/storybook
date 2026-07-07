@@ -190,11 +190,11 @@ describe('nldd-token – menu', () => {
 		if (el) cleanup(el);
 	});
 
-	it('wires a slotted menu to the token (anchor + menu variant)', async () => {
+	it('wires a slotted menu, anchored to the chevron button (menu variant)', async () => {
 		el = await fixture<NLDDToken>('<nldd-token control="menu"><nldd-menu slot="menu"><nldd-menu-item text="A"></nldd-menu-item></nldd-menu></nldd-token>');
 		await waitForUpdate(el);
 		const menu = el.querySelector('nldd-menu') as unknown as { anchorElement: Element | null; variant: string };
-		expect(menu.anchorElement).toBe(el);
+		expect(menu.anchorElement).toBe(el.shadowRoot!.querySelector('.token__menu-action nldd-icon-button'));
 		expect(menu.variant).toBe('menu');
 	});
 
