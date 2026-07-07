@@ -78,64 +78,22 @@ export const tokenStyles = css`
 		}
 	}
 
-	@media (hover: hover) {
-		:host([control="menu"]) .token:hover:not(:disabled) {
-			--_highlight-border-color: var(--semantics-buttons-neutral-tinted-is-hovered-highlight-border-color);
-			background-color: var(--semantics-buttons-neutral-tinted-is-hovered-background-color);
-			color: var(--semantics-buttons-neutral-tinted-is-hovered-primary-content-color);
-		}
-	}
-
-	:host([control="menu"]) .token:active:not(:disabled) {
-		--_highlight-border-color: var(--semantics-buttons-neutral-tinted-is-active-highlight-border-color);
-		background-color: var(--semantics-buttons-neutral-tinted-is-active-background-color);
-		color: var(--semantics-buttons-neutral-tinted-is-active-primary-content-color);
-	}
-
+	/* Menu open: the whole token tints to show its menu is active. The trailing
+	   chevron button owns its own hover/active/focus, so the token has none. */
 	:host([expanded]) .token {
 		--_highlight-border-color: var(--semantics-buttons-neutral-tinted-is-expanded-highlight-border-color);
 		background-color: var(--semantics-buttons-neutral-tinted-is-expanded-background-color);
 		color: var(--semantics-buttons-neutral-tinted-is-expanded-primary-content-color);
 	}
 
-	@media (hover: hover) {
-		:host([expanded]) .token:hover:not(:disabled) {
-			--_highlight-border-color: var(--semantics-buttons-neutral-tinted-is-expanded-is-hovered-highlight-border-color);
-			background-color: var(--semantics-buttons-neutral-tinted-is-expanded-is-hovered-background-color);
-			color: var(--semantics-buttons-neutral-tinted-is-expanded-is-hovered-primary-content-color);
-		}
-	}
-
-	:host([expanded]) .token:active:not(:disabled) {
-		--_highlight-border-color: var(--semantics-buttons-neutral-tinted-is-expanded-is-active-highlight-border-color);
-		background-color: var(--semantics-buttons-neutral-tinted-is-expanded-is-active-background-color);
-		color: var(--semantics-buttons-neutral-tinted-is-expanded-is-active-primary-content-color);
-	}
-
-	:host([control="menu"]) .token:focus-visible {
-		outline: var(--semantics-focus-ring-outline);
-		outline-offset: var(--semantics-focus-ring-outline-offset);
-		box-shadow: var(--semantics-focus-ring-box-shadow);
-	}
-
-	:host([control="menu"]) .token:focus:not(:focus-visible) {
-		outline: none;
-	}
-
-	/* Remove right padding so the nldd-icon-button flush-fits the token edge */
-	:host([control="dismiss"]) .token {
+	/* Remove right padding so a trailing icon-button (dismiss or menu) flush-fits the edge. */
+	:host([control]) .token {
 		padding-right: 0;
 	}
 
 	@media (forced-colors: active) {
 		.token {
 			border: 1px solid CanvasText;
-		}
-
-		:host([control="menu"]) .token:focus-visible,
-		.token__dismiss:focus-visible {
-			outline: 2px solid CanvasText;
-			outline-offset: 2px;
 		}
 	}
 
@@ -151,14 +109,8 @@ export const tokenStyles = css`
 		white-space: nowrap;
 	}
 
-	.token__icon {
-		display: block;
-		width: var(--primitives-space-16);
-		height: var(--primitives-space-16);
-		flex-shrink: 0;
-	}
-
-	.token__dismiss-action {
+	.token__dismiss-action,
+	.token__menu-action {
 		flex-shrink: 0;
 	}
 `;

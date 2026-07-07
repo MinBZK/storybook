@@ -1,25 +1,9 @@
 import { html, nothing, TemplateResult } from 'lit';
 import type { NLDDToken } from './token.js';
 
+/** A dismiss (✕) or menu (⌄) control is a trailing icon-button; the token itself
+ *  stays a plain data representation, never the button. */
 export function tokenTemplate(component: NLDDToken): TemplateResult {
-	if (component.control === 'menu') {
-		return html`
-			<button
-				class="token"
-				type="button"
-				?disabled=${component.disabled}
-				aria-expanded=${component.expanded}
-				aria-controls=${component.controls || nothing}
-				@click=${component._handleMenuClick}
-			>
-				<span class="token__text">${component.text || html`<slot></slot>`}</span>
-				<nldd-icon class="token__icon"
-					name="chevron-down-small"
-				></nldd-icon>
-			</button>
-		`;
-	}
-
 	return html`
 		<div class="token">
 			<span class="token__text">${component.text || html`<slot></slot>`}</span>
@@ -35,6 +19,23 @@ export function tokenTemplate(component: NLDDToken): TemplateResult {
 						no-highlight-border
 						?disabled=${component.disabled}
 						@click=${component._handleDismiss}
+					></nldd-icon-button>
+				</div>
+			` : nothing}
+			${component.control === 'menu' ? html`
+				<div class="token__menu-action">
+					<nldd-icon-button
+						size="sm"
+						variant="neutral-tinted"
+						icon="chevron-down-small"
+						text=${component.menuText}
+						accessible-label=${component.menuText}
+						tooltip-timing="never"
+						no-highlight-border
+						popup-type="menu"
+						?expanded=${component.expanded}
+						?disabled=${component.disabled}
+						@click=${component._handleMenuClick}
 					></nldd-icon-button>
 				</div>
 			` : nothing}

@@ -40,10 +40,12 @@ describe('nldd-token', () => {
 		expect(el.shadowRoot!.querySelector('div.token')).not.toBeNull();
 	});
 
-	it('renders a button for control=menu', async () => {
+	it('renders a div with a menu icon-button for control=menu', async () => {
 		el = await fixture('<nldd-token control="menu">Label</nldd-token>');
 		await waitForUpdate(el);
-		expect(el.shadowRoot!.querySelector('button.token')).not.toBeNull();
+		expect(el.shadowRoot!.querySelector('div.token')).not.toBeNull();
+		expect(el.shadowRoot!.querySelector('button.token')).toBeNull();
+		expect(el.shadowRoot!.querySelector('.token__menu-action nldd-icon-button')).not.toBeNull();
 	});
 
 	it('renders a dismiss action for control=dismiss', async () => {
@@ -83,18 +85,19 @@ describe('nldd-token – state', () => {
 		expect(el.hasAttribute('expanded')).toBe(true);
 	});
 
-	it('menu button has aria-expanded=false when not open', async () => {
+	it('menu icon-button is not expanded and has popup-type=menu when closed', async () => {
 		el = await fixture<NLDDToken>('<nldd-token control="menu">Label</nldd-token>');
 		await waitForUpdate(el);
-		const button = el.shadowRoot!.querySelector('button.token')!;
-		expect(button.getAttribute('aria-expanded')).toBe('false');
+		const button = el.shadowRoot!.querySelector('.token__menu-action nldd-icon-button')!;
+		expect(button.hasAttribute('expanded')).toBe(false);
+		expect(button.getAttribute('popup-type')).toBe('menu');
 	});
 
-	it('menu button has aria-expanded=true when open', async () => {
+	it('menu icon-button is expanded when the menu is open', async () => {
 		el = await fixture<NLDDToken>('<nldd-token control="menu" expanded>Label</nldd-token>');
 		await waitForUpdate(el);
-		const button = el.shadowRoot!.querySelector('button.token')!;
-		expect(button.getAttribute('aria-expanded')).toBe('true');
+		const button = el.shadowRoot!.querySelector('.token__menu-action nldd-icon-button')!;
+		expect(button.hasAttribute('expanded')).toBe(true);
 	});
 
 	it('disabled reflects as attribute', async () => {
@@ -103,12 +106,11 @@ describe('nldd-token – state', () => {
 		expect(el.hasAttribute('disabled')).toBe(true);
 	});
 
-	it('renders caret icon for control=menu', async () => {
+	it('menu icon-button uses the chevron icon', async () => {
 		el = await fixture('<nldd-token control="menu">Label</nldd-token>');
 		await waitForUpdate(el);
-		const icon = el.shadowRoot!.querySelector('.token__icon');
-		expect(icon).not.toBeNull();
-		expect(icon!.getAttribute('name')).toBe('chevron-down-small');
+		const button = el.shadowRoot!.querySelector('.token__menu-action nldd-icon-button')!;
+		expect(button.getAttribute('icon')).toBe('chevron-down-small');
 	});
 
 	it('dismiss nldd-icon-button is disabled when token is disabled', async () => {
@@ -118,11 +120,11 @@ describe('nldd-token – state', () => {
 		expect(dismiss.hasAttribute('disabled')).toBe(true);
 	});
 
-	it('menu button is disabled when token is disabled', async () => {
+	it('menu icon-button is disabled when token is disabled', async () => {
 		el = await fixture<NLDDToken>('<nldd-token control="menu" disabled>Label</nldd-token>');
 		await waitForUpdate(el);
-		const button = el.shadowRoot!.querySelector<HTMLButtonElement>('button.token')!;
-		expect(button.disabled).toBe(true);
+		const button = el.shadowRoot!.querySelector('.token__menu-action nldd-icon-button')!;
+		expect(button.hasAttribute('disabled')).toBe(true);
 	});
 });
 
@@ -187,29 +189,15 @@ describe('nldd-token – menu', () => {
 		if (el) cleanup(el);
 	});
 
-	it('sets aria-controls on menu button when controls attribute is set', async () => {
-		el = await fixture<NLDDToken>('<nldd-token control="menu" controls="my-menu">Label</nldd-token>');
-		await waitForUpdate(el);
-		const button = el.shadowRoot!.querySelector('button.token')!;
-		expect(button.getAttribute('aria-controls')).toBe('my-menu');
-	});
-
-	it('does not set aria-controls when controls attribute is not set', async () => {
-		el = await fixture<NLDDToken>('<nldd-token control="menu">Label</nldd-token>');
-		await waitForUpdate(el);
-		const button = el.shadowRoot!.querySelector('button.token')!;
-		expect(button.hasAttribute('aria-controls')).toBe(false);
-	});
-
 	it('clicking menu toggles open state', async () => {
 		el = await fixture<NLDDToken>('<nldd-token control="menu">Label</nldd-token>');
 		await waitForUpdate(el);
 
-		el.shadowRoot!.querySelector<HTMLButtonElement>('button.token')!.click();
+		el.shadowRoot!.querySelector<HTMLElement>('.token__menu-action nldd-icon-button')!.click();
 		await waitForUpdate(el);
 		expect(el.expanded).toBe(true);
 
-		el.shadowRoot!.querySelector<HTMLButtonElement>('button.token')!.click();
+		el.shadowRoot!.querySelector<HTMLElement>('.token__menu-action nldd-icon-button')!.click();
 		await waitForUpdate(el);
 		expect(el.expanded).toBe(false);
 	});
@@ -221,7 +209,7 @@ describe('nldd-token – menu', () => {
 		let detail: any;
 		el.addEventListener('toggle', (e: Event) => { detail = (e as CustomEvent).detail; });
 
-		el.shadowRoot!.querySelector<HTMLButtonElement>('button.token')!.click();
+		el.shadowRoot!.querySelector<HTMLElement>('.token__menu-action nldd-icon-button')!.click();
 		expect(detail?.expanded).toBe(true);
 	});
 

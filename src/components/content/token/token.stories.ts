@@ -201,7 +201,7 @@ export const MenuVoorbeeld = {
 		controls: { disable: true },
 		docs: {
 			description: {
-				story: 'Voorbeeld van tokens met een contextueel menu. Klik op het token om acties te tonen over de gerepresenteerde data. De `expanded` toestand wordt door de consumer beheerd.',
+				story: 'Voorbeeld van tokens met een contextueel menu. Klik op de chevron-knop om acties te tonen over de gerepresenteerde data. De `expanded` toestand wordt door de consumer beheerd.',
 			},
 	},
 },
