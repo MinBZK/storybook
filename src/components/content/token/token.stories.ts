@@ -15,12 +15,12 @@ import './token.js';
  * ```
  */
 export default {
-	title: 'Components/Inputs/Token',
+	title: 'Components/Content/Token',
 	component: 'nldd-token',
 	tags: ['autodocs'],
 	parameters: {
 		componentSource: {
-			file: 'src/components/inputs/token/token.ts',
+			file: 'src/components/content/token/token.ts',
 			repository: 'https://github.com/MinBZK/storybook',
 		},
 		status: {

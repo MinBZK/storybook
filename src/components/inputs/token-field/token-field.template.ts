@@ -1,6 +1,6 @@
 import { html, nothing, TemplateResult } from 'lit';
 import type { NLDDTokenField } from './token-field.js';
-import '../token/token.js';
+import '../../content/token/token.js';
 import '../../content/icon/icon.js';
 import '../../actions/icon-button/icon-button.js';
 

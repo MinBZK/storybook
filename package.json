@@ -172,8 +172,8 @@
       "default": "./dist/components/inputs/toggle-button-group/toggle-button-group.js"
     },
     "./token": {
-      "types": "./dist/components/inputs/token/token.d.ts",
-      "default": "./dist/components/inputs/token/token.js"
+      "types": "./dist/components/content/token/token.d.ts",
+      "default": "./dist/components/content/token/token.js"
     },
     "./app-view": {
       "types": "./dist/components/layout/app-view/app-view.d.ts",

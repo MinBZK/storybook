@@ -32,6 +32,7 @@ export { NLDDTag } from './content/tag/tag.js';
 export { NLDDKeyboardShortcut } from './content/keyboard-shortcut/keyboard-shortcut.js';
 export { NLDDCodeViewer } from './content/code-viewer/code-viewer.js';
 export { NLDDByline } from './content/byline/byline.js';
+export { NLDDToken } from './content/token/token.js';
 
 
 // # Forms components
@@ -64,8 +65,6 @@ export { NLDDSwitchField } from './inputs/switch-field/switch-field.js';
 export { NLDDSegmentedControl } from './inputs/segmented-control/segmented-control.js';
 export { NLDDToggleButton } from './inputs/toggle-button/toggle-button.js';
 export { NLDDToggleButtonGroup } from './inputs/toggle-button-group/toggle-button-group.js';
-
-export { NLDDToken } from './inputs/token/token.js';
 
 export { NLDDTokenField } from './inputs/token-field/token-field.js';
 
