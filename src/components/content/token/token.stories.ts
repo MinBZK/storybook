@@ -9,9 +9,9 @@ import './token.js';
  *
  * ## Gebruik
  * ```html
- * <nldd-token>Label</nldd-token>
- * <nldd-token control="dismiss">Verwijderbaar</nldd-token>
- * <nldd-token control="menu">Kies optie</nldd-token>
+ * <nldd-token text="Label"></nldd-token>
+ * <nldd-token control="dismiss" text="Verwijderbaar"></nldd-token>
+ * <nldd-token control="menu" text="Kies optie"></nldd-token>
  * ```
  */
 export default {
@@ -80,9 +80,9 @@ export const Standaard = {
 export const AlleControls = {
 	render: () => html`
 	<div style="display: flex; gap: 0.5rem; align-items: center; flex-wrap: wrap;">
-		<nldd-token>Geen control</nldd-token>
-		<nldd-token control="dismiss">Met dismiss</nldd-token>
-		<nldd-token control="menu">Met menu</nldd-token>
+		<nldd-token text="Geen control"></nldd-token>
+		<nldd-token control="dismiss" text="Met dismiss"></nldd-token>
+		<nldd-token control="menu" text="Met menu"></nldd-token>
 	</div>
 `,
 	parameters: {
@@ -103,9 +103,9 @@ export const AlleControls = {
 export const Uitgeschakeld = {
 	render: () => html`
 	<div style="display: flex; gap: 0.5rem; align-items: center; flex-wrap: wrap;">
-		<nldd-token disabled>Geen control</nldd-token>
-		<nldd-token control="dismiss" disabled>Met dismiss</nldd-token>
-		<nldd-token control="menu" disabled>Met menu</nldd-token>
+		<nldd-token disabled text="Geen control"></nldd-token>
+		<nldd-token control="dismiss" disabled text="Met dismiss"></nldd-token>
+		<nldd-token control="menu" disabled text="Met menu"></nldd-token>
 	</div>
 `,
 	parameters: { controls: { disable: true } },
@@ -128,10 +128,10 @@ export const FilterVoorbeeld = {
 				Actieve tokens — klik op × om een waarde te verwijderen:
 			</p>
 			<div style="display: flex; gap: 0.5rem; flex-wrap: wrap;">
-				<nldd-token control="dismiss" @dismiss=${handleDismiss}>Status: Actief</nldd-token>
-				<nldd-token control="dismiss" @dismiss=${handleDismiss}>Type: Document</nldd-token>
-				<nldd-token control="dismiss" @dismiss=${handleDismiss}>Datum: Vandaag</nldd-token>
-				<nldd-token control="dismiss" @dismiss=${handleDismiss}>Auteur: Jan de Vries</nldd-token>
+				<nldd-token control="dismiss" text="Status: Actief" @dismiss=${handleDismiss}></nldd-token>
+				<nldd-token control="dismiss" text="Type: Document" @dismiss=${handleDismiss}></nldd-token>
+				<nldd-token control="dismiss" text="Datum: Vandaag" @dismiss=${handleDismiss}></nldd-token>
+				<nldd-token control="dismiss" text="Auteur: Jan de Vries" @dismiss=${handleDismiss}></nldd-token>
 			</div>
 		</div>
 	`;
