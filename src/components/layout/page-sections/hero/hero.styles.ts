@@ -29,11 +29,6 @@ export const heroStyles = css`
 		--_lg-padding-top: initial;
 		--_lg-padding-bottom: initial;
 		--_max-width: var(--semantics-page-sections-body-max-width);
-		/* Rijkshuisstijl shape language: the corner radius derives from the
-		   ribbon width — 1.5X on small containers, 2X on md/lg, and the panel
-		   corner at half the media radius so text clears the curve. Never
-		   animated. */
-		--_corner-radius: calc(var(--semantics-brand-ribbon-sm-width) * 1.5);
 		--_media-aspect-ratio: 21 / 9;
 		--_main-width: 50%;
 		--_main-background-color: var(--semantics-categories-accent-reference-background-color);
@@ -178,13 +173,9 @@ export const heroStyles = css`
 		flex-grow: 1;
 		align-items: center;
 
-		/* The responsive overrides live here, not on :host — a container
-		   query inside :host would match an ancestor container, while these
-		   must query the host's own inline size. The derived panel radius is
-		   also declared here (not on :host): a custom property resolves its
-		   var() on the declaring element, so it must sit below the
-		   breakpoint overrides to track them. */
-		--_main-corner-radius: calc(var(--_corner-radius) / 2);
+		/* The responsive overrides live here, not on :host — a container query
+		   inside :host would match an ancestor container, while these must query
+		   the host's own inline size. */
 
 		@container (max-width: ${smMax}) {
 			padding-inline: var(--semantics-page-sections-sm-margin-inline);
@@ -193,7 +184,6 @@ export const heroStyles = css`
 		}
 
 		@container (min-width: ${mdMin}) and (max-width: ${mdMax}) {
-			--_corner-radius: calc(var(--semantics-brand-ribbon-md-width) * 2);
 			--_main-padding: var(--primitives-space-24);
 			padding-inline: var(--semantics-page-sections-md-margin-inline);
 			padding-top: var(--_md-padding-top, var(--_padding-top, var(--semantics-page-sections-md-margin-block)));
@@ -201,7 +191,6 @@ export const heroStyles = css`
 		}
 
 		@container (min-width: ${lgMin}) {
-			--_corner-radius: calc(var(--semantics-brand-ribbon-lg-width) * 2);
 			--_main-padding: var(--primitives-space-32);
 			padding-inline: var(--semantics-page-sections-lg-margin-inline);
 			padding-top: var(--_lg-padding-top, var(--_padding-top, var(--semantics-page-sections-lg-margin-block)));
@@ -227,27 +216,10 @@ export const heroStyles = css`
 		grid-template-columns: 100%;
 	}
 
-	/* Without media a base-colored shape would be invisible on the base
-	   surface; border the sides that meet the rounded corner, like
-	   blockquote does. */
-	:host(:not([data-has-media])[main-background="base"][data-media-corner="top-left"]) .hero__body {
-		border-top: var(--primitives-border-width-regular) solid var(--semantics-content-color);
-		border-left: var(--primitives-border-width-regular) solid var(--semantics-content-color);
-	}
-
-	:host(:not([data-has-media])[main-background="base"][data-media-corner="top-right"]) .hero__body {
-		border-top: var(--primitives-border-width-regular) solid var(--semantics-content-color);
-		border-right: var(--primitives-border-width-regular) solid var(--semantics-content-color);
-	}
-
-	:host(:not([data-has-media])[main-background="base"][data-media-corner="bottom-left"]) .hero__body {
-		border-bottom: var(--primitives-border-width-regular) solid var(--semantics-content-color);
-		border-left: var(--primitives-border-width-regular) solid var(--semantics-content-color);
-	}
-
-	:host(:not([data-has-media])[main-background="base"][data-media-corner="bottom-right"]) .hero__body {
-		border-bottom: var(--primitives-border-width-regular) solid var(--semantics-content-color);
-		border-right: var(--primitives-border-width-regular) solid var(--semantics-content-color);
+	/* Without media a base-colored panel would be invisible on the base surface;
+	   give it a full border so the rectangle reads. */
+	:host(:not([data-has-media])[main-background="base"]) .hero__body {
+		border: var(--primitives-border-width-regular) solid var(--semantics-content-color);
 	}
 
 	/* A ghost cell sets the body's minimum height from the aspect ratio
@@ -273,22 +245,6 @@ export const heroStyles = css`
 		overflow: hidden;
 	}
 
-	:host([data-media-corner="top-left"]) .hero__body {
-		border-top-left-radius: var(--_corner-radius);
-	}
-
-	:host([data-media-corner="top-right"]) .hero__body {
-		border-top-right-radius: var(--_corner-radius);
-	}
-
-	:host([data-media-corner="bottom-left"]) .hero__body {
-		border-bottom-left-radius: var(--_corner-radius);
-	}
-
-	:host([data-media-corner="bottom-right"]) .hero__body {
-		border-bottom-right-radius: var(--_corner-radius);
-	}
-
 	@media (forced-colors: active) {
 		.hero__body {
 			border: var(--primitives-border-width-thin) solid CanvasText;
@@ -302,7 +258,6 @@ export const heroStyles = css`
 		position: absolute;
 		inset: 0;
 		overflow: hidden;
-		border-radius: inherit;
 	}
 
 	.hero__media[hidden] {
@@ -356,16 +311,6 @@ export const heroStyles = css`
 		width: 100%;
 	}
 
-	/* Without media the big corner radius sits on the panel itself; give the
-	   corner-adjacent inline side extra room so content clears the curve. */
-	:host(:not([data-has-media]):is([data-media-corner="top-left"], [data-media-corner="bottom-left"])) .hero__main {
-		padding-left: calc(var(--_main-padding) + var(--_corner-radius) / 2);
-	}
-
-	:host(:not([data-has-media]):is([data-media-corner="top-right"], [data-media-corner="bottom-right"])) .hero__main {
-		padding-right: calc(var(--_main-padding) + var(--_corner-radius) / 2);
-	}
-
 	:host([main-position="top-left"]) .hero__main {
 		align-self: start;
 	}
@@ -388,64 +333,6 @@ export const heroStyles = css`
 		justify-self: end;
 	}
 
-	/* A grown corner panel keeps at least the corner-radius height of media
-	   visible on its media-facing side, so the rounded corner never gets
-	   squeezed out. Keyed off the JS-computed main corner (top-* sits the panel
-	   at the bottom → margin-top; bottom-* → margin-bottom) rather than
-	   main-position, so it still holds when main-position is left to its default
-	   and the attribute isn't reflected. The cornerless left/right panels have
-	   data-main-corner="none" and fall through. Only in the overlay layout (md+). */
-	:host([data-has-media]:is([data-main-corner="top-left"], [data-main-corner="top-right"])) .hero__main {
-		@container (min-width: ${mdMin}) {
-			margin-top: var(--_corner-radius);
-		}
-	}
-
-	:host([data-has-media]:is([data-main-corner="bottom-left"], [data-main-corner="bottom-right"])) .hero__main {
-		@container (min-width: ${mdMin}) {
-			margin-bottom: var(--_corner-radius);
-		}
-	}
-
-	/* The two sides meeting the panel's rounded corner get a step more
-	   padding so content clears the curve. Only md and up — mobile zeroes
-	   the corner. */
-	:host([data-main-corner="top-left"]) .hero__main {
-		border-top-left-radius: var(--_main-corner-radius);
-
-		@container (min-width: ${mdMin}) {
-			padding-top: calc(var(--_main-padding) + var(--primitives-space-8));
-			padding-left: calc(var(--_main-padding) + var(--primitives-space-8));
-		}
-	}
-
-	:host([data-main-corner="top-right"]) .hero__main {
-		border-top-right-radius: var(--_main-corner-radius);
-
-		@container (min-width: ${mdMin}) {
-			padding-top: calc(var(--_main-padding) + var(--primitives-space-8));
-			padding-right: calc(var(--_main-padding) + var(--primitives-space-8));
-		}
-	}
-
-	:host([data-main-corner="bottom-left"]) .hero__main {
-		border-bottom-left-radius: var(--_main-corner-radius);
-
-		@container (min-width: ${mdMin}) {
-			padding-bottom: calc(var(--_main-padding) + var(--primitives-space-8));
-			padding-left: calc(var(--_main-padding) + var(--primitives-space-8));
-		}
-	}
-
-	:host([data-main-corner="bottom-right"]) .hero__main {
-		border-bottom-right-radius: var(--_main-corner-radius);
-
-		@container (min-width: ${mdMin}) {
-			padding-bottom: calc(var(--_main-padding) + var(--primitives-space-8));
-			padding-right: calc(var(--_main-padding) + var(--primitives-space-8));
-		}
-	}
-
 	@media (forced-colors: active) {
 		.hero__main {
 			border: var(--primitives-border-width-thin) solid CanvasText;
@@ -455,14 +342,11 @@ export const heroStyles = css`
 
 	/* # Full-width strip (md+)
 	   With main-width="full" the panel is a full top or bottom strip and the
-	   media stacks on the opposite side instead of sitting behind it — the
-	   overlay's absolute media would otherwise hide its own rounded corner under
-	   the panel. Switch the body to a column so the two blocks stack: a bottom
-	   panel keeps the media on top, a top panel (column-reverse) drops it below.
-	   The media keeps the overlay's 21/9 strip. Below sm every layout already
-	   stacks, so this only targets md and up. The rounded corner still follows
-	   data-media-corner — resolved to the strip's outer edge in hero.ts — so the
-	   per-corner body rules above keep painting it. */
+	   media stacks on the opposite side instead of sitting behind it. Switch the
+	   body to a column so the two blocks stack: a bottom panel keeps the media on
+	   top, a top panel (column-reverse) drops it below. The media keeps the
+	   overlay's 21/9 strip. Below sm every layout already stacks, so this only
+	   targets md and up. */
 
 	@container (min-width: ${mdMin}) {
 		:host([data-has-media][main-width="full"]) .hero__body {
@@ -481,9 +365,7 @@ export const heroStyles = css`
 	}
 
 
-	/* # Mobile — stack media over a full-width cornerless panel.
-	   Placed after the corner rules so the equal-specificity zero-out
-	   wins on source order. */
+	/* # Mobile — stack media over a full-width panel. */
 
 	@container (max-width: ${smMax}) {
 		.hero__body {
@@ -495,30 +377,10 @@ export const heroStyles = css`
 			flex-direction: column-reverse;
 		}
 
-		:host([data-media-corner]) .hero__body {
-			border-radius: 0;
-		}
-
 		.hero__media {
 			position: static;
 			overflow: hidden;
 			aspect-ratio: var(--_media-aspect-ratio);
-		}
-
-		/* On mobile the rounded corner always sits at the top: a bottom
-		   corner flips to its top counterpart, also when the consumer set
-		   one explicitly. The radius goes on the body so its painted
-		   background rounds along; the media inherits it. */
-		:host(:is([data-media-corner="top-left"], [data-media-corner="bottom-left"])) .hero__body {
-			border-top-left-radius: var(--_corner-radius);
-		}
-
-		:host(:is([data-media-corner="top-right"], [data-media-corner="bottom-right"])) .hero__body {
-			border-top-right-radius: var(--_corner-radius);
-		}
-
-		:host([data-main-corner]) .hero__main {
-			border-radius: 0;
 		}
 
 		.hero__main {

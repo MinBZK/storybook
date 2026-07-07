@@ -29,85 +29,11 @@ describe('nldd-hero', () => {
 		expect(el.hasAttribute('main-background')).toBe(false);
 	});
 
-
-	/* ============================================================
-	   Corner mapping (curated lookup from the rijkshuisstijl)
-	   ============================================================ */
-
-	it.each([
-		['bottom-left', 'top-right', 'top-right'],
-		['bottom-right', 'bottom-left', 'top-left'],
-		['top-left', 'top-right', 'bottom-right'],
-		['top-right', 'top-left', 'bottom-left'],
-	])('main-position="%s" resolves media corner "%s" and main corner "%s"', async (position, mediaCorner, mainCorner) => {
-		el = await fixture(`<nldd-hero main-position="${position}">${MEDIA}</nldd-hero>`);
+	it('is rectangular — sets no corner data attributes', async () => {
+		el = await fixture(`<nldd-hero main-position="top-left">${MEDIA}</nldd-hero>`);
 		await waitForUpdate(el);
-		expect(el.getAttribute('data-media-corner')).toBe(mediaCorner);
-		expect(el.getAttribute('data-main-corner')).toBe(mainCorner);
-	});
-
-	it.each([
-		['left', 'top-right'],
-		['right', 'top-left'],
-	])('full-height main-position="%s" resolves media corner "%s" and a cornerless panel', async (position, mediaCorner) => {
-		el = await fixture(`<nldd-hero main-position="${position}">${MEDIA}</nldd-hero>`);
-		await waitForUpdate(el);
-		expect(el.getAttribute('data-media-corner')).toBe(mediaCorner);
-		expect(el.getAttribute('data-main-corner')).toBe('none');
-	});
-
-	it('main-width="full" makes the panel cornerless', async () => {
-		el = await fixture(`<nldd-hero main-width="full">${MEDIA}</nldd-hero>`);
-		await waitForUpdate(el);
-		expect(el.getAttribute('data-main-corner')).toBe('none');
-	});
-
-	it('media-corner-position overrides the automatic media corner', async () => {
-		el = await fixture(`<nldd-hero media-corner-position="bottom-right">${MEDIA}</nldd-hero>`);
-		await waitForUpdate(el);
-		expect(el.getAttribute('data-media-corner')).toBe('bottom-right');
-	});
-
-
-	/* ============================================================
-	   Full-width strip: media stacks beside the panel, so its corner
-	   moves to the strip's outer edge (away from the panel)
-	   ============================================================ */
-
-	it.each([
-		['bottom-left', 'top-right'],
-		['bottom-right', 'top-left'],
-		['top-left', 'bottom-right'],
-		['top-right', 'bottom-left'],
-	])('main-width="full" main-position="%s" moves the media corner to the outer edge "%s"', async (position, mediaCorner) => {
-		el = await fixture(`<nldd-hero main-width="full" main-position="${position}">${MEDIA}</nldd-hero>`);
-		await waitForUpdate(el);
-		expect(el.getAttribute('data-media-corner')).toBe(mediaCorner);
-		expect(el.getAttribute('data-main-corner')).toBe('none');
-	});
-
-	it('main-width="full" keeps an explicit media-corner-position side but forces it to the outer edge', async () => {
-		// Bottom panel → media on top → a bottom-* corner flips to top-*, side kept.
-		el = await fixture(`<nldd-hero main-width="full" main-position="bottom-left" media-corner-position="bottom-right">${MEDIA}</nldd-hero>`);
-		await waitForUpdate(el);
-		expect(el.getAttribute('data-media-corner')).toBe('top-right');
-	});
-
-	it('main-width="full" without media keeps the curated corner', async () => {
-		// No media means no strip to reposition; the corner stays as curated.
-		el = await fixture('<nldd-hero main-width="full" main-position="top-left"></nldd-hero>');
-		await waitForUpdate(el);
-		expect(el.getAttribute('data-media-corner')).toBe('top-right');
-	});
-
-	it.each([
-		['left', 'top-right'],
-		['right', 'top-left'],
-	])('main-width="full" is ignored for the full-height main-position="%s"', async (position, mediaCorner) => {
-		el = await fixture(`<nldd-hero main-width="full" main-position="${position}">${MEDIA}</nldd-hero>`);
-		await waitForUpdate(el);
-		expect(el.getAttribute('data-media-corner')).toBe(mediaCorner);
-		expect(el.getAttribute('data-main-corner')).toBe('none');
+		expect(el.hasAttribute('data-media-corner')).toBe(false);
+		expect(el.hasAttribute('data-main-corner')).toBe(false);
 	});
 
 
@@ -120,15 +46,13 @@ describe('nldd-hero', () => {
 		await waitForUpdate(el);
 		expect(el.hasAttribute('data-has-media')).toBe(false);
 		expect(el.shadowRoot!.querySelector('.hero__media')!.hasAttribute('hidden')).toBe(true);
-		expect(el.getAttribute('data-main-corner')).toBe('none');
 	});
 
-	it('shows the media area and the panel corner with slotted media', async () => {
+	it('shows the media area with slotted media', async () => {
 		el = await fixture(`<nldd-hero>${MEDIA}</nldd-hero>`);
 		await waitForUpdate(el);
 		expect(el.hasAttribute('data-has-media')).toBe(true);
 		expect(el.shadowRoot!.querySelector('.hero__media')!.hasAttribute('hidden')).toBe(false);
-		expect(el.getAttribute('data-main-corner')).toBe('top-right');
 	});
 
 	it('updates when media is added at runtime', async () => {
@@ -150,7 +74,6 @@ describe('nldd-hero', () => {
 		el.querySelector('img[slot="media"]')!.remove();
 		await waitForUpdate(el);
 		expect(el.hasAttribute('data-has-media')).toBe(false);
-		expect(el.getAttribute('data-main-corner')).toBe('none');
 	});
 
 

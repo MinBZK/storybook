@@ -1,31 +1,19 @@
 /**
  * NLDD Design System Hero Component (Lit + TypeScript)
  *
- * Een paginakop volgens de rijkshuisstijl-vormtaal: een mediavlak met exact
- * één afgeronde hoek (radius afgeleid van de lintbreedte) en een tekstpaneel
- * (de main) dat op zes posities kan staan. De radius is van het component en
- * niet instelbaar: 1,5X lintbreedte op smalle containers, 2X op md/lg.
+ * Een paginakop met een mediavlak en een tekstpaneel (de main) dat op zes
+ * posities kan staan. Alle vlakken zijn rechthoekig.
  *
- * De media-hoek volgt automatisch uit `main-position` (zie de tabel in de
- * stories) en is per geval te overschrijven met `media-corner-position`. Het paneel
- * krijgt zijn eigen afgeronde hoek — op halve maat, zodat de tekst niet
- * tegen de rand komt — op de hoek die diagonaal het mediavlak in wijst.
- * Beslaat het paneel een volledige rand (`left`/`right`, `main-width="full"`
- * of de gestapelde mobiele weergave), dan is het hoekloos. Bij
- * `main-width="full"` staat het mediavlak als losse strook boven of onder het
- * paneel — niet erachter — en schuift de media-hoek mee naar de buitenrand van
- * die strook (weg van het paneel), zodat hij zichtbaar blijft. Op mobiel zit de
- * media-hoek altijd aan de bovenkant (een onderhoek klapt naar zijn
- * bovenhoek) en is hij een halve stap groter (1,5X). Zonder media vult de
- * main het volledige vlak; met `main-background="base"` krijgt het vlak dan
- * een rand op de zijden die de afgeronde hoek raken, zoals blockquote.
+ * Bij `main-width="full"` staat het mediavlak als losse strook boven of onder
+ * het paneel, niet erachter. Op mobiel stapelt de media altijd boven het
+ * volle-breedte paneel. Zonder media vult de main het volledige vlak; met
+ * `main-background="base"` krijgt dat vlak een rand zodat het zichtbaar blijft
+ * op de base-surface.
  *
  * Met `main-background` krijgt het paneel een vlakkleur uit de
  * filled-categories; die leveren een pure witte of zwarte contentkleur mee,
  * zodat componenten met `color="inherit"` (title, rich-text) gegarandeerd
  * contrast houden.
- *
- * Per de rijkshuisstijl wordt de radius nooit geanimeerd.
  *
  * @element nldd-hero
  *
@@ -36,8 +24,6 @@
  * @attr {string} main-background - Vlakkleur van het paneel: 'base' (de base surface)
  *   of een categoriekleur — 'accent' (default) of een rijkskleur zoals
  *   'lintblauw'|'donkerblauw'|'oranje'
- * @attr {'auto'|'top-left'|'top-right'|'bottom-left'|'bottom-right'} media-corner-position -
- *   Afgeronde hoek van het mediavlak; 'auto' (default) volgt main-position
  * @attr {string} media-aspect-ratio - Aspect ratio van het mediavlak (CSS-vorm, '16/9' of '16:9');
  *   default '21/9'. Bepaalt op md/lg de hoogte van de hero, op sm de hoogte van het mediavlak
  * @attr {string} media-src - Bron van het mediavlak (alternatief voor de media-slot);
@@ -64,7 +50,6 @@ import { heroStyles } from './hero.styles.js';
 import { heroTemplate } from './hero.template.js';
 
 export type HeroMainPosition = 'top-left' | 'top-right' | 'bottom-left' | 'bottom-right' | 'left' | 'right';
-export type HeroCorner = 'top-left' | 'top-right' | 'bottom-left' | 'bottom-right';
 export type HeroMainWidth = '1/2' | '2/3' | '3/4' | 'full';
 export type HeroMainBackground =
 	| 'base' | 'accent'
@@ -74,27 +59,6 @@ export type HeroMainBackground =
 	| 'donkergeel' | 'geel'
 	| 'donkerbruin' | 'bruin'
 	| 'donkergroen' | 'groen' | 'mosgroen' | 'mintgroen';
-
-/* The media corner per panel position — a curated lookup straight from the
- * rijkshuisstijl examples, not a formula. */
-const AUTO_CORNER: Record<HeroMainPosition, HeroCorner> = {
-	'bottom-left': 'top-right',
-	'bottom-right': 'bottom-left',
-	'top-left': 'top-right',
-	'top-right': 'top-left',
-	'left': 'top-right',
-	'right': 'top-left',
-};
-
-/* The panel's own single corner: the one pointing diagonally into the media. */
-const MAIN_CORNER: Record<HeroMainPosition, HeroCorner | null> = {
-	'bottom-left': 'top-right',
-	'bottom-right': 'top-left',
-	'top-left': 'bottom-right',
-	'top-right': 'bottom-left',
-	'left': null,
-	'right': null,
-};
 
 @customElement('nldd-hero')
 export class NLDDHero extends PageSectionMixin(LitElement) {
@@ -108,9 +72,6 @@ export class NLDDHero extends PageSectionMixin(LitElement) {
 
 	@property({ reflect: true, attribute: 'main-background', converter: reflectNonDefault<HeroMainBackground>('accent') })
 	mainBackground: HeroMainBackground = 'accent';
-
-	@property({ reflect: true, attribute: 'media-corner-position', converter: reflectNonDefault<'auto' | HeroCorner>('auto') })
-	mediaCornerPosition: 'auto' | HeroCorner = 'auto';
 
 	/** Media aspect-ratio in CSS form ('16/9' or '16:9'); default '21/9'. Drives
 	 *  the hero height on md/lg and the media strip height on sm. */
@@ -146,32 +107,7 @@ export class NLDDHero extends PageSectionMixin(LitElement) {
 
 	override willUpdate(changed: PropertyValues): void {
 		super.willUpdate(changed);
-		// Resolve the corner logic once per update and expose it as host data
-		// attributes the stylesheet keys off — keeps the per-corner CSS flat.
-		// mainPosition is typed, but HTML attributes are not — fall back to the
-		// default for an unknown or empty value (the design-system convention).
-		const position = AUTO_CORNER[this.mainPosition] ? this.mainPosition : 'bottom-left';
-		const edge = position === 'left' || position === 'right';
-		let mediaCorner: HeroCorner = this.mediaCornerPosition !== 'auto'
-			? this.mediaCornerPosition
-			: AUTO_CORNER[position];
-		// At main-width="full" the media stacks above or below the full-width
-		// panel instead of sitting behind it, so its rounded corner must land on
-		// the strip's outer edge to stay visible: a bottom panel puts the media
-		// (and its corner) on top, a top panel puts it below. Keep the horizontal
-		// side, force the vertical side away from the panel — even when the corner
-		// was set explicitly, mirroring the mobile rule. The full-height left/right
-		// panels ignore main-width="full", so they keep their curated corner.
-		if (this.mainWidth === 'full' && this._hasMedia && !edge) {
-			const panelAtTop = position === 'top-left' || position === 'top-right';
-			const side = mediaCorner.endsWith('left') ? 'left' : 'right';
-			mediaCorner = `${panelAtTop ? 'bottom' : 'top'}-${side}`;
-		}
-		this.setAttribute('data-media-corner', mediaCorner);
-		const mainCorner = (!this._hasMedia || edge || this.mainWidth === 'full')
-			? null
-			: MAIN_CORNER[position];
-		this.setAttribute('data-main-corner', mainCorner ?? 'none');
+		// The stylesheet only keys off whether media is present.
 		this.toggleAttribute('data-has-media', this._hasMedia);
 	}
 
