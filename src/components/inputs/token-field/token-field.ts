@@ -134,6 +134,10 @@ export class NLDDTokenField extends LitElement {
 
 	private _menu: NLDDMenu | null = null;
 	private _resizeObserver: ResizeObserver | null = null;
+	/** Watches the slotted menu for options added/removed after the initial slot
+	 *  change (e.g. a framework populating them asynchronously), so the field
+	 *  re-evaluates whether to show the input/picker and re-resolves token labels. */
+	private _menuObserver: MutationObserver | null = null;
 	/** True between a picker pointerdown-while-open and its trailing click, so the
 	 *  click (which follows the native light-dismiss) doesn't reopen the menu. */
 	private _pickerPointerdownWhileOpen = false;
@@ -156,6 +160,8 @@ export class NLDDTokenField extends LitElement {
 		super.disconnectedCallback();
 		this._resizeObserver?.disconnect();
 		this._resizeObserver = null;
+		this._menuObserver?.disconnect();
+		this._menuObserver = null;
 		window.removeEventListener('scroll', this._handleScrollOrResize, true);
 		window.removeEventListener('resize', this._handleScrollOrResize);
 		if (this._menu) {
@@ -524,6 +530,16 @@ export class NLDDTokenField extends LitElement {
 		menu.addEventListener('keydown', this._handleMenuKeydown);
 		this._updateMenuWidth();
 		this._hideSelectedMenuItems();
+
+		// Options may be added/removed after this (async framework rendering).
+		// Watch child changes only — not attributes — so the field's own hidden/
+		// query toggles on items don't loop. childList picks up added menu-items.
+		this._menuObserver?.disconnect();
+		this._menuObserver = new MutationObserver(() => {
+			this._hideSelectedMenuItems();
+			this.requestUpdate();
+		});
+		this._menuObserver.observe(menu, { childList: true, subtree: true });
 	}
 
 	/** Pin the menu to the native input's width (its anchor) so it lines up under
