@@ -316,6 +316,21 @@ describe('nldd-token-field', () => {
 		expect(el.values).toEqual(['be']);
 	});
 
+	it('roving focus lands on the token’s dismiss button, not the inert host', async () => {
+		el = await withMenu();
+		el.values = ['nl'];
+		await waitForUpdate(el);
+		const input = el.shadowRoot!.querySelector<HTMLInputElement>('.token-field__input')!;
+		input.dispatchEvent(new KeyboardEvent('keydown', { key: 'Backspace', bubbles: true }));
+		await waitForUpdate(el);
+		const token = el.shadowRoot!.querySelector('nldd-token')!;
+		// The field's shadow reports the token as active (its subtree holds focus)…
+		expect(el.shadowRoot!.activeElement).toBe(token);
+		// …and within the token, focus is on the real dismiss button (a <button> that
+		// shows a focus ring on keyboard focus), not the host, whose :focus never lands.
+		expect(token.shadowRoot!.activeElement).toBe(token.shadowRoot!.querySelector('nldd-icon-button'));
+	});
+
 	// — Readonly & required (F3.5) —————————————————————————————————————————————
 
 	it('readonly hides the input and picker and makes tokens static', async () => {

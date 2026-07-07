@@ -67,6 +67,14 @@ export class NLDDToken extends LitElement {
 		}));
 	}
 
+	/** Route focus to the token's interactive control — the menu button, or the
+	 *  dismiss button — so a programmatic focus (e.g. a token-field's roving keyboard
+	 *  navigation) lands on a real, focus-ring-showing button instead of the inert
+	 *  host, whose :focus never registers. No-op for a plain, control-less token. */
+	override focus(options?: FocusOptions): void {
+		this.shadowRoot?.querySelector<HTMLElement>('button.token, nldd-icon-button')?.focus(options);
+	}
+
 	override render() {
 		return tokenTemplate(this);
 	}

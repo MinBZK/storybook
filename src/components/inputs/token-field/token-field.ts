@@ -46,12 +46,6 @@ export class NLDDTokenField extends LitElement {
 
 	static override styles = tokenFieldStyles;
 
-	// Clicking anywhere in the field focuses the inner input.
-	static override shadowRootOptions = {
-		...LitElement.shadowRootOptions,
-		delegatesFocus: true,
-	};
-
 	private _internals = this.attachInternals();
 	private _initialValues: string[] = [];
 
