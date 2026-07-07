@@ -153,8 +153,8 @@ class AnnotationBadge extends WidgetType {
 
 // inclusiveEnd lets the end sentinel's replace (the badge) nest inside the tint span.
 const annotationMark = Decoration.mark({ class: 'cm-annotation', inclusiveEnd: true });
-const annotationFullSelectedMark = Decoration.mark({ class: 'cm-annotation cm-annotation-selected', inclusiveEnd: true });
-const annotationSelectedMark = Decoration.mark({ class: 'cm-annotation-selected' });
+const annotationFullSelectedMark = Decoration.mark({ class: 'cm-annotation is-selected', inclusiveEnd: true });
+const annotationSelectedMark = Decoration.mark({ class: 'is-selected' });
 class AnnotationStart extends WidgetType {
 	eq(other: WidgetType): boolean {
 		return other instanceof AnnotationStart;

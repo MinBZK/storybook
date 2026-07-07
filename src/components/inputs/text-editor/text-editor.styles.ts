@@ -14,7 +14,7 @@ export const textEditorStyles = css`
 		--_padding-block: 0px;
 		--_padding-inline: 0px;
 		--_content-color: var(--semantics-content-color);
-		--_font: var(--primitives-font-body-md-regular-snug);
+		--_text-font: var(--primitives-font-body-md-regular-snug);
 		--_code-font: var(--primitives-font-monospace-md-regular-snug);
 		--_code-font-size: calc(var(--primitives-font-size-90) / var(--primitives-font-size-100) * 1em);
 		--_marker-font-size: var(--primitives-font-size-90);
@@ -32,39 +32,39 @@ export const textEditorStyles = css`
 		   adjacent lines never overlap. 1lh and em resolve on the token, so it adapts
 		   to a heading's tighter line. (~1.2em is the text's own box.) */
 		--_token-block-padding-fit: max(0em, (1lh - 1.2em) / 2);
-		--_code-token-background: light-dark(var(--primitives-color-neutral-50), var(--primitives-color-neutral-150));
-		--_code-token-background-is-selected: light-dark(var(--primitives-color-neutral-200), var(--primitives-color-neutral-300));
+		--_code-token-background-color: light-dark(var(--primitives-color-neutral-50), var(--primitives-color-neutral-150));
+		--_code-token-is-selected-background-color: light-dark(var(--primitives-color-neutral-200), var(--primitives-color-neutral-300));
 		--_code-block-inline-padding: var(--_token-inline-padding);
 		--_code-block-block-padding: var(--_token-block-padding);
-		--_annotation-token-background: light-dark(var(--primitives-color-mark-75), var(--primitives-color-mark-150));
-		--_annotation-token-background-is-selected: light-dark(var(--primitives-color-mark-200), var(--primitives-color-mark-400));
+		--_annotation-token-background-color: light-dark(var(--primitives-color-mark-75), var(--primitives-color-mark-150));
+		--_annotation-token-is-selected-background-color: light-dark(var(--primitives-color-mark-200), var(--primitives-color-mark-400));
 		--_annotation-token-badge-content-color: var(--primitives-color-mark-1000);
-		--_annotation-token-badge-background: light-dark(var(--primitives-color-mark-250), var(--primitives-color-mark-300));
-		--_annotation-token-badge-highlight-border: light-dark(var(--primitives-color-mark-300), var(--primitives-color-mark-350));
-		--_annotation-token-badge-background-hover: light-dark(var(--primitives-color-mark-300), var(--primitives-color-mark-350));
-		--_annotation-token-badge-highlight-border-hover: light-dark(var(--primitives-color-mark-350), var(--primitives-color-mark-400));
-		--_annotation-token-badge-background-active: light-dark(var(--primitives-color-mark-350), var(--primitives-color-mark-400));
-		--_annotation-token-badge-highlight-border-active: light-dark(var(--primitives-color-mark-400), var(--primitives-color-mark-450));
+		--_annotation-token-badge-background-color: light-dark(var(--primitives-color-mark-250), var(--primitives-color-mark-300));
+		--_annotation-token-badge-highlight-border-color: light-dark(var(--primitives-color-mark-300), var(--primitives-color-mark-350));
+		--_annotation-token-badge-is-hovered-background-color: light-dark(var(--primitives-color-mark-300), var(--primitives-color-mark-350));
+		--_annotation-token-badge-is-hovered-highlight-border-color: light-dark(var(--primitives-color-mark-350), var(--primitives-color-mark-400));
+		--_annotation-token-badge-is-active-background-color: light-dark(var(--primitives-color-mark-350), var(--primitives-color-mark-400));
+		--_annotation-token-badge-is-active-highlight-border-color: light-dark(var(--primitives-color-mark-400), var(--primitives-color-mark-450));
 		/* Same step in both themes: mark-450 keeps light mode as-is and, in dark
 		   mode, stays a readable amber instead of jumping to a near-white fill
 		   that swallows the white (mark-1000) badge number. */
-		--_annotation-token-badge-background-selected: var(--primitives-color-mark-450);
-		--_annotation-token-badge-highlight-border-selected: var(--primitives-color-mark-500);
+		--_annotation-token-is-selected-badge-background-color: var(--primitives-color-mark-450);
+		--_annotation-token-is-selected-badge-highlight-border-color: var(--primitives-color-mark-500);
 		--_annotation-badge-size: 1.5em;
 		--_annotation-badge-font-scale: 0.62;
 		--_link-badge-size: calc(1em + 2 * var(--_token-block-padding-fit));
 		--_link-badge-content-color: var(--semantics-categories-accent-tinted-primary-content-color);
-		--_link-badge-background: var(--semantics-categories-accent-tinted-background-color);
-		--_link-badge-highlight-border: var(--semantics-categories-accent-tinted-highlight-border-color);
-		--_link-badge-background-hover: light-dark(var(--primitives-color-accent-75), var(--primitives-color-accent-100));
-		--_link-badge-background-active: light-dark(var(--primitives-color-accent-100), var(--primitives-color-accent-150));
-		--_link-badge-highlight-border-hover: light-dark(var(--primitives-color-accent-150), var(--primitives-color-accent-200));
-		--_link-badge-highlight-border-active: light-dark(var(--primitives-color-accent-200), var(--primitives-color-accent-250));
+		--_link-badge-background-color: var(--semantics-categories-accent-tinted-background-color);
+		--_link-badge-highlight-border-color: var(--semantics-categories-accent-tinted-highlight-border-color);
+		--_link-badge-is-hovered-background-color: light-dark(var(--primitives-color-accent-75), var(--primitives-color-accent-100));
+		--_link-badge-is-active-background-color: light-dark(var(--primitives-color-accent-100), var(--primitives-color-accent-150));
+		--_link-badge-is-hovered-highlight-border-color: light-dark(var(--primitives-color-accent-150), var(--primitives-color-accent-200));
+		--_link-badge-is-active-highlight-border-color: light-dark(var(--primitives-color-accent-200), var(--primitives-color-accent-250));
 		--_mention-icon-size: 0.95em;
-		--_mention-token-background: var(--semantics-categories-accent-tinted-background-color);
+		--_mention-token-background-color: var(--semantics-categories-accent-tinted-background-color);
 		--_mention-token-content-color: var(--semantics-categories-accent-tinted-primary-content-color);
-		--_mention-token-background-is-selected: var(--semantics-categories-accent-filled-background-color);
-		--_mention-token-content-color-is-selected: var(--semantics-categories-accent-filled-primary-content-color);
+		--_mention-token-is-selected-background-color: var(--semantics-categories-accent-filled-background-color);
+		--_mention-token-is-selected-content-color: var(--semantics-categories-accent-filled-primary-content-color);
 		--_rows: 6;
 
 		${inheritedTextReset}
@@ -82,7 +82,7 @@ export const textEditorStyles = css`
 	}
 
 	:host([font="mono"]) {
-		--_font: var(--primitives-font-monospace-md-regular-snug);
+		--_text-font: var(--primitives-font-monospace-md-regular-snug);
 	}
 
 
@@ -113,7 +113,7 @@ export const textEditorStyles = css`
 		flex-shrink: 1;
 		flex-basis: auto;
 		color: var(--_content-color);
-		font: var(--_font);
+		font: var(--_text-font);
 	}
 
 	:host([disabled]) .text-editor {
@@ -233,7 +233,7 @@ export const textEditorStyles = css`
 		font-family: var(--primitives-font-family-monospace);
 		font-size: var(--_code-font-size);
 		font-weight: var(--primitives-font-weight-body-regular);
-		background-color: var(--_code-token-background);
+		background-color: var(--_code-token-background-color);
 		border-radius: var(--_token-corner-radius);
 	}
 
@@ -243,7 +243,7 @@ export const textEditorStyles = css`
 	:host .cm-md-codeblock {
 		padding-inline: var(--_code-block-inline-padding);
 		font: var(--_code-font);
-		background-color: var(--_code-token-background);
+		background-color: var(--_code-token-background-color);
 	}
 
 	:host .cm-md-codeblock-first {
@@ -263,7 +263,7 @@ export const textEditorStyles = css`
 	   darker tint over the part that's selected. */
 	.cm-md-code-selected,
 	.cm-md-codeblock-selected {
-		background-color: var(--_code-token-background-is-selected);
+		background-color: var(--_code-token-is-selected-background-color);
 	}
 	/* CM nests the base code mark inside the selected one, so the inner base tint
 	   would paint over the darker selected tint (leaving the token light, or split
@@ -277,7 +277,7 @@ export const textEditorStyles = css`
 	   tint, so the block lights up edge to edge — the padding included, like a
 	   fully selected token. :host to beat the base ".cm-md-codeblock" background. */
 	:host .cm-md-codeblock-line-selected {
-		background-color: var(--_code-token-background-is-selected);
+		background-color: var(--_code-token-is-selected-background-color);
 	}
 
 	.cm-md-mention {
@@ -292,7 +292,7 @@ export const textEditorStyles = css`
 		   the normal token inset around the name. */
 		padding-inline: max(0em, (max(1.2em, 1lh) - var(--_mention-icon-size)) / 2) var(--_token-inline-padding);
 		color: var(--_mention-token-content-color);
-		background-color: var(--_mention-token-background);
+		background-color: var(--_mention-token-background-color);
 		border-radius: var(--_token-corner-radius);
 		font-weight: 600;
 		white-space: nowrap;
@@ -313,14 +313,14 @@ export const textEditorStyles = css`
 	}
 
 	.cm-md-mention-token[data-selected] {
-		color: var(--_mention-token-content-color-is-selected);
-		background-color: var(--_mention-token-background-is-selected);
+		color: var(--_mention-token-is-selected-content-color);
+		background-color: var(--_mention-token-is-selected-background-color);
 	}
 
 	/* A native selection over a mention keeps its text light on the filled accent.
 	   :host bumps specificity so it wins over .cm-content ::selection wherever it sits. */
 	:host .cm-md-mention-token ::selection {
-		color: var(--_mention-token-content-color-is-selected);
+		color: var(--_mention-token-is-selected-content-color);
 	}
 
 	.cm-md-link {
@@ -402,7 +402,7 @@ export const textEditorStyles = css`
 	   wrapped fragment; padding-block extends the tint without growing the line
 	   (vertical padding on an inline box is visual only). */
 	.cm-annotation {
-		background-color: var(--_annotation-token-background);
+		background-color: var(--_annotation-token-background-color);
 		border-radius: var(--_token-corner-radius);
 		padding-block: var(--_token-block-padding-fit);
 		/* Right space mirrors the badge's vertical inset (token height minus the badge,
@@ -422,11 +422,13 @@ export const textEditorStyles = css`
 		white-space: nowrap;
 	}
 
-	/* Selected slice within an annotation: a darker yellow (drawSelection's layer
-	   sits behind the tint, so this stands in for the hidden selection) with the
-	   text at the strongest content colour, like the rest of the selection. */
-	.cm-annotation-selected {
-		background-color: var(--_annotation-token-background-is-selected);
+	/* Selected annotation text in a darker yellow: the whole annotation
+	   (.cm-annotation.is-selected) or a slice of a partly-selected one (nested,
+	   .cm-annotation .is-selected). drawSelection's layer sits behind the tint, so this
+	   stands in for the hidden selection; the text takes the strongest content colour. */
+	.cm-annotation.is-selected,
+	.cm-annotation .is-selected {
+		background-color: var(--_annotation-token-is-selected-background-color);
 		color: var(--primitives-color-neutral-950);
 	}
 
@@ -450,8 +452,8 @@ export const textEditorStyles = css`
 		padding-inline: 0.3em;
 		border: 0;
 		border-radius: var(--primitives-corner-radius-full);
-		background-color: var(--_annotation-token-badge-background);
-		box-shadow: inset 0 0 0 var(--primitives-border-width-thin) var(--_annotation-token-badge-highlight-border);
+		background-color: var(--_annotation-token-badge-background-color);
+		box-shadow: inset 0 0 0 var(--primitives-border-width-thin) var(--_annotation-token-badge-highlight-border-color);
 		color: var(--_annotation-token-badge-content-color);
 		/* vertical-align: middle lands the nub ~1px below the text's em-box centre, and
 		   the optical middle of the ink sits higher again, so it reads low; nudge up onto
@@ -476,19 +478,22 @@ export const textEditorStyles = css`
 
 	@media (hover: hover) {
 		.cm-annotation-badge:hover {
-			background-color: var(--_annotation-token-badge-background-hover);
-			box-shadow: inset 0 0 0 var(--primitives-border-width-thin) var(--_annotation-token-badge-highlight-border-hover);
+			background-color: var(--_annotation-token-badge-is-hovered-background-color);
+			box-shadow: inset 0 0 0 var(--primitives-border-width-thin) var(--_annotation-token-badge-is-hovered-highlight-border-color);
 		}
 	}
 
 	.cm-annotation-badge:active {
-		background-color: var(--_annotation-token-badge-background-active);
-		box-shadow: inset 0 0 0 var(--primitives-border-width-thin) var(--_annotation-token-badge-highlight-border-active);
+		background-color: var(--_annotation-token-badge-is-active-background-color);
+		box-shadow: inset 0 0 0 var(--primitives-border-width-thin) var(--_annotation-token-badge-is-active-highlight-border-color);
 	}
 
-	.cm-annotation-selected .cm-annotation-badge {
-		background-color: var(--_annotation-token-badge-background-selected);
-		box-shadow: inset 0 0 0 var(--primitives-border-width-thin) var(--_annotation-token-badge-highlight-border-selected);
+	/* The nub darkens with the block only when the whole annotation is selected (full
+	   mark) or the slice covering it is (a selection running through the badge). */
+	.cm-annotation.is-selected .cm-annotation-badge,
+	.cm-annotation .is-selected .cm-annotation-badge {
+		background-color: var(--_annotation-token-is-selected-badge-background-color);
+		box-shadow: inset 0 0 0 var(--primitives-border-width-thin) var(--_annotation-token-is-selected-badge-highlight-border-color);
 	}
 
 	.cm-annotation-badge:focus-visible {
@@ -512,7 +517,7 @@ export const textEditorStyles = css`
 	   positioned overlay (not an inline widget), so it never splits an annotation it
 	   lands inside. A thin surface-coloured halo keeps the accent bar clearly visible
 	   over tinted tokens too. Left/top/height are set by the drop-cursor plugin. */
-	.cm-drag-drop-cursor {
+	.cm-drag-and-drop-cursor {
 		position: absolute;
 		width: var(--primitives-border-width-regular);
 		border-radius: var(--primitives-border-width-thin);
@@ -530,7 +535,7 @@ export const textEditorStyles = css`
 		border-radius: var(--_token-corner-radius);
 		background-color: light-dark(var(--primitives-color-accent-150), var(--primitives-color-accent-250));
 		color: var(--_content-color);
-		font: var(--_font);
+		font: var(--_text-font);
 		white-space: nowrap;
 		overflow: hidden;
 		text-overflow: ellipsis;
@@ -546,8 +551,8 @@ export const textEditorStyles = css`
 		min-width: var(--_link-badge-size);
 		height: var(--_link-badge-size);
 		border-radius: var(--primitives-corner-radius-full);
-		background-color: var(--_link-badge-background);
-		box-shadow: inset 0 0 0 var(--primitives-border-width-thin) var(--_link-badge-highlight-border);
+		background-color: var(--_link-badge-background-color);
+		box-shadow: inset 0 0 0 var(--primitives-border-width-thin) var(--_link-badge-highlight-border-color);
 		color: var(--_link-badge-content-color);
 		/* Match the annotation nub's optical centring next to the ink. */
 		vertical-align: middle;
@@ -558,14 +563,14 @@ export const textEditorStyles = css`
 
 	@media (hover: hover) {
 		.cm-link-badge:hover {
-			background-color: var(--_link-badge-background-hover);
-			box-shadow: inset 0 0 0 var(--primitives-border-width-thin) var(--_link-badge-highlight-border-hover);
+			background-color: var(--_link-badge-is-hovered-background-color);
+			box-shadow: inset 0 0 0 var(--primitives-border-width-thin) var(--_link-badge-is-hovered-highlight-border-color);
 		}
 	}
 
 	.cm-link-badge:active {
-		background-color: var(--_link-badge-background-active);
-		box-shadow: inset 0 0 0 var(--primitives-border-width-thin) var(--_link-badge-highlight-border-active);
+		background-color: var(--_link-badge-is-active-background-color);
+		box-shadow: inset 0 0 0 var(--primitives-border-width-thin) var(--_link-badge-is-active-highlight-border-color);
 	}
 
 	.cm-link-badge nldd-icon {

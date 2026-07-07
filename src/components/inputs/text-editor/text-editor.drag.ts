@@ -66,7 +66,7 @@ class DropCursorLayer {
 		}
 		if (!this.cursor) {
 			this.cursor = document.createElement('div');
-			this.cursor.className = 'cm-drag-drop-cursor';
+			this.cursor.className = 'cm-drag-and-drop-cursor';
 			this.view.scrollDOM.appendChild(this.cursor);
 		}
 		this.cursor.style.left = `${rect.left}px`;
