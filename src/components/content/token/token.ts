@@ -67,12 +67,13 @@ export class NLDDToken extends LitElement {
 		}));
 	}
 
-	/** Route focus to the token's interactive control — the menu button, or the
-	 *  dismiss button — so a programmatic focus (e.g. a token-field's roving keyboard
-	 *  navigation) lands on a real, focus-ring-showing button instead of the inert
-	 *  host, whose :focus never registers. No-op for a plain, control-less token. */
+	/** Force the focus ring so the whole token reads as focused when it is focused
+	 *  programmatically (a token-field's roving keyboard navigation). Safari does not
+	 *  mark a tabindex=-1 host :focus-visible on a scripted focus, so ask for it
+	 *  explicitly; Chrome ignores the option and relies on its own keyboard heuristic. */
 	override focus(options?: FocusOptions): void {
-		this.shadowRoot?.querySelector<HTMLElement>('button.token, nldd-icon-button')?.focus(options);
+		// focusVisible isn't in lib.dom's FocusOptions yet; cast keeps the runtime option.
+		super.focus({ ...options, focusVisible: true } as FocusOptions);
 	}
 
 	override render() {
