@@ -8,21 +8,22 @@
  *
  * @attr {string}                         text          - Token text; falls back to the default slot when unset.
  * @attr {'none' | 'dismiss' | 'menu'} control       - Control type (default: 'none')
- * @attr {boolean}                        expanded      - Whether the menu is open (menu only). Forwarded as aria-expanded on the menu button.
+ * @attr {boolean}                        expanded      - Reflects whether the token's menu is open (control="menu"); managed by the token.
  * @attr {boolean}                        disabled      - Disabled state
  * @attr {string}                         dismiss-text - Accessible label for the dismiss button (default: 'Verwijder')
  * @attr {string}                         menu-text    - Accessible label for the menu button (default: 'Toon opties')
  *
  * @slot - Token text
+ * @slot menu - An nldd-menu that the token opens from its menu button (control="menu").
  *
  * @fires dismiss - When the dismiss button is clicked
- * @fires toggle  - When the menu is clicked; detail: { expanded: boolean }
  */
 import { LitElement } from 'lit';
-import { customElement, property } from 'lit/decorators.js';
+import { customElement, property, query } from 'lit/decorators.js';
 import { reflectNonDefault } from '../../../utilities/reflect-non-default.js';
 import { tokenStyles } from './token.styles.js';
 import { tokenTemplate } from './token.template.js';
+import type { NLDDMenu } from '../../actions/menu/menu.js';
 import './../../actions/icon-button/icon-button.js';
 
 export type TokenControl = 'none' | 'dismiss' | 'menu';
@@ -60,14 +61,55 @@ export class NLDDToken extends LitElement {
 		}));
 	}
 
+	@query('.token__menu-action nldd-icon-button')
+	private _menuButton?: HTMLElement;
+
+	private _menu: NLDDMenu | null = null;
+	private _pointerdownWhileOpen = false;
+
+	/** Wire a slotted nldd-menu: anchor it to the chevron button and mirror its open
+	 *  state onto `expanded`. The menu closes itself on select and on light-dismiss. */
+	_onMenuSlotChange(e: Event): void {
+		const menu = (e.target as HTMLSlotElement)
+			.assignedElements({ flatten: true })
+			.find((el) => el.tagName.toLowerCase() === 'nldd-menu') as NLDDMenu | undefined;
+		if (!menu || menu === this._menu) return;
+		this._menu?.removeEventListener('toggle', this._handleMenuToggle);
+		this._menu = menu;
+		menu.variant = 'menu';
+		menu.placement = 'bottom-start';
+		menu.anchorElement = this;
+		menu.addEventListener('toggle', this._handleMenuToggle);
+	}
+
+	private _handleMenuToggle = (e: Event): void => {
+		const open = (e as ToggleEvent).newState === 'open';
+		this.expanded = open;
+		// Closing via the menu (Escape or a selection) leaves focus in the now-hidden
+		// popover, so hand it back to the chevron. An outside click already moved focus
+		// to its target — leave that.
+		if (!open) {
+			const active = document.activeElement;
+			if (!active || active === document.body || this.contains(active)) this._menuButton?.focus();
+		}
+	};
+
+	/** Pointerdown on an open menu's button light-dismisses the popover before the
+	 *  click fires; flag it so the trailing click doesn't immediately reopen it. */
+	_handleMenuButtonPointerdown(): void {
+		if (this._menu?.matches(':popover-open')) this._pointerdownWhileOpen = true;
+	}
+
 	_handleMenuClick(): void {
 		if (this.disabled) return;
-		this.expanded = !this.expanded;
-		this.dispatchEvent(new CustomEvent('toggle', {
-			detail: { expanded: this.expanded },
-			bubbles: true,
-			composed: true,
-		}));
+		if (this._pointerdownWhileOpen) {
+			this._pointerdownWhileOpen = false;
+			return;
+		}
+		const menu = this._menu;
+		if (!menu || !('showPopover' in menu) || menu.matches(':popover-open')) return;
+		menu.anchorElement = this;
+		menu.showPopover();
 	}
 
 	/** Force the focus ring so the whole token reads as focused when it is focused

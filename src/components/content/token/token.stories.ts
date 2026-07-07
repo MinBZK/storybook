@@ -1,6 +1,7 @@
 import { action } from 'storybook/actions';
 import { html } from 'lit';
 import './token.js';
+import '../../actions/menu/menu.js';
 
 /**
  * De Token component is een visuele representatie van data —
@@ -63,7 +64,6 @@ const Template = (args: Record<string, any>) => html`
 		control=${args.control}
 		?disabled=${args.disabled}
 		@dismiss=${action('dismiss')}
-		@toggle=${action('toggle')}
 	></nldd-token>
 `;
 
@@ -93,6 +93,25 @@ export const AlleControls = {
 			},
 	},
 },
+};
+
+export const MetMenu = {
+	render: () => html`
+		<nldd-token control="menu" text="Datum">
+			<nldd-menu slot="menu">
+				<nldd-menu-item text="Bewerken" @select=${action('select: bewerken')}></nldd-menu-item>
+				<nldd-menu-item text="Verwijderen" @select=${action('select: verwijderen')}></nldd-menu-item>
+			</nldd-menu>
+		</nldd-token>
+	`,
+	parameters: {
+		controls: { disable: true },
+		docs: {
+			description: {
+				story: 'Een token met een contextueel menu. Klik op de chevron; het menu opent als popover. De menu-items handelen zelf hun `select` af, de token opent, sluit en beheert de focus.',
+			},
+		},
+	},
 };
 
 

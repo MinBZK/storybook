@@ -2,6 +2,7 @@ import { describe, it, expect, afterEach } from 'vitest';
 import { fixture, cleanup, waitForUpdate } from '../../../test-utils.js';
 import type { NLDDToken } from './token.js';
 import './token.js';
+import '../../actions/menu/menu.js';
 
 
 /* ============================================================
@@ -189,28 +190,21 @@ describe('nldd-token – menu', () => {
 		if (el) cleanup(el);
 	});
 
-	it('clicking menu toggles open state', async () => {
-		el = await fixture<NLDDToken>('<nldd-token control="menu">Label</nldd-token>');
+	it('wires a slotted menu to the token (anchor + menu variant)', async () => {
+		el = await fixture<NLDDToken>('<nldd-token control="menu"><nldd-menu slot="menu"><nldd-menu-item text="A"></nldd-menu-item></nldd-menu></nldd-token>');
 		await waitForUpdate(el);
-
-		el.shadowRoot!.querySelector<HTMLElement>('.token__menu-action nldd-icon-button')!.click();
-		await waitForUpdate(el);
-		expect(el.expanded).toBe(true);
-
-		el.shadowRoot!.querySelector<HTMLElement>('.token__menu-action nldd-icon-button')!.click();
-		await waitForUpdate(el);
-		expect(el.expanded).toBe(false);
+		const menu = el.querySelector('nldd-menu') as unknown as { anchorElement: Element | null; variant: string };
+		expect(menu.anchorElement).toBe(el);
+		expect(menu.variant).toBe('menu');
 	});
 
-	it('clicking menu dispatches toggle event with open detail', async () => {
-		el = await fixture<NLDDToken>('<nldd-token control="menu">Label</nldd-token>');
+	it('clicking the chevron opens the slotted menu as a popover', async () => {
+		el = await fixture<NLDDToken>('<nldd-token control="menu"><nldd-menu slot="menu"><nldd-menu-item text="A"></nldd-menu-item></nldd-menu></nldd-token>');
 		await waitForUpdate(el);
-
-		let detail: any;
-		el.addEventListener('toggle', (e: Event) => { detail = (e as CustomEvent).detail; });
-
+		const menu = el.querySelector('nldd-menu') as HTMLElement;
 		el.shadowRoot!.querySelector<HTMLElement>('.token__menu-action nldd-icon-button')!.click();
-		expect(detail?.expanded).toBe(true);
+		await waitForUpdate(el);
+		expect(menu.matches(':popover-open')).toBe(true);
 	});
 
 	it('menu does not toggle when disabled', async () => {

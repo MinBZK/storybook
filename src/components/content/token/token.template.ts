@@ -35,10 +35,14 @@ export function tokenTemplate(component: NLDDToken): TemplateResult {
 						popup-type="menu"
 						?expanded=${component.expanded}
 						?disabled=${component.disabled}
+						@pointerdown=${component._handleMenuButtonPointerdown}
 						@click=${component._handleMenuClick}
 					></nldd-icon-button>
 				</div>
 			` : nothing}
 		</div>
+		${component.control === 'menu'
+			? html`<slot name="menu" @slotchange=${component._onMenuSlotChange}></slot>`
+			: nothing}
 	`;
 }
