@@ -78,14 +78,6 @@ export const tokenStyles = css`
 		}
 	}
 
-	/* Menu open: the whole token tints to show its menu is active. The trailing
-	   chevron button owns its own hover/active/focus, so the token has none. */
-	:host([expanded]) .token {
-		--_highlight-border-color: var(--semantics-buttons-neutral-tinted-is-expanded-highlight-border-color);
-		background-color: var(--semantics-buttons-neutral-tinted-is-expanded-background-color);
-		color: var(--semantics-buttons-neutral-tinted-is-expanded-primary-content-color);
-	}
-
 	/* Remove right padding so a trailing icon-button (dismiss or menu) flush-fits the edge. */
 	:host([control]) .token {
 		padding-right: 0;
