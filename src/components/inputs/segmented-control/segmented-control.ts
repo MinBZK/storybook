@@ -8,7 +8,7 @@
  * @attr {string}  value         - Selected value for radio type
  * @prop {string[]} values        - Selected values for checkbox type (property binding only, not an attribute)
  * @attr {string}  size          - Control size: 'sm' | 'md' | 'lg' (default: 'md')
- * @attr {string}  type          - Input type: 'radio' | 'checkbox' | 'button' (default: 'radio'). 'button' items are momentary actions (no selected state): each click fires change, useful for grouped commands like indent/outdent.
+ * @attr {string}  type          - Input type: 'radio' | 'checkbox' (default: 'radio').
  * @attr {string}  variant       - Content type for all items: 'text' | 'icon' | 'icon-and-text' (default: 'text')
  * @attr {boolean} disabled      - Disabled state for all items
  * @attr {string}  width         - Width mode: 'full' (stretches to container), 'fit-content' (per-item content size), or any CSS length (e.g. '240px')
@@ -47,7 +47,7 @@ import {
 import './../../content/icon/icon.js';
 
 export type SegmentedControlSize = 'sm' | 'md' | 'lg';
-export type SegmentedControlType = 'radio' | 'checkbox' | 'button';
+export type SegmentedControlType = 'radio' | 'checkbox';
 export type SegmentedControlVariant = 'text' | 'icon' | 'icon-and-text';
 
 
@@ -95,17 +95,6 @@ export class NLDDSegmentedControlItem extends LitElement {
 		const input = e.target as HTMLInputElement;
 		this.dispatchEvent(new CustomEvent('item-change', {
 			detail: { value: this.value, checked: input.checked },
-			bubbles: true,
-			composed: true,
-		}));
-	}
-
-	/** Button items are momentary: a native button fires 'click', not 'change', and
-	 *  has no checked state — so each press emits item-change. */
-	public _handleClick(): void {
-		if (this.inputType !== 'button') return;
-		this.dispatchEvent(new CustomEvent('item-change', {
-			detail: { value: this.value, checked: false },
 			bubbles: true,
 			composed: true,
 		}));
@@ -179,7 +168,7 @@ export class NLDDSegmentedControl extends LitElement {
 
 	override connectedCallback(): void {
 		super.connectedCallback();
-		this.setAttribute('role', this.type === 'radio' ? 'radiogroup' : 'group');
+		this.setAttribute('role', this.type === 'checkbox' ? 'group' : 'radiogroup');
 		if (this.accessibleLabel) this.setAttribute('aria-label', this.accessibleLabel);
 		if (this.accessibleLabelledBy) this.setAttribute('aria-labelledby', this.accessibleLabelledBy);
 		this.addEventListener('item-change', this._handleItemChange as EventListener);
@@ -271,7 +260,7 @@ export class NLDDSegmentedControl extends LitElement {
 			this._syncFormValue();
 		}
 		if (changedProperties.has('type')) {
-			this.setAttribute('role', this.type === 'radio' ? 'radiogroup' : 'group');
+			this.setAttribute('role', this.type === 'checkbox' ? 'group' : 'radiogroup');
 		}
 		if (changedProperties.has('accessibleLabel')) {
 			if (this.accessibleLabel) {
@@ -330,11 +319,9 @@ export class NLDDSegmentedControl extends LitElement {
 			item.inputType = this.type;
 			item.variant = this.variant;
 			item.groupName = this.name || this._autoName;
-			item.selected = this.type === 'button'
-				? false // momentary actions have no persistent selected state
-				: this.type === 'checkbox'
-					? selectedValues.includes(item.value)
-					: item.value === this.value;
+			item.selected = this.type === 'checkbox'
+				? selectedValues.includes(item.value)
+				: item.value === this.value;
 		});
 	}
 
@@ -354,16 +341,6 @@ export class NLDDSegmentedControl extends LitElement {
 	private _handleItemChange = (e: CustomEvent<{ value: string; checked: boolean }>): void => {
 		e.stopPropagation();
 		if (this.disabled) return;
-
-		if (this.type === 'button') {
-			// Momentary: emit change on every press and keep no selection state.
-			this.dispatchEvent(new CustomEvent('change', {
-				detail: { value: e.detail.value },
-				bubbles: true,
-				composed: true,
-			}));
-			return;
-		}
 
 		if (this.type === 'checkbox') {
 			const current = this.values;
@@ -396,7 +373,7 @@ export class NLDDSegmentedControl extends LitElement {
 	 * Space-toggleable per the native checkbox interaction pattern.
 	 */
 	private _handleKeydown = (e: KeyboardEvent): void => {
-		if (this.disabled || this.type !== 'radio') return;
+		if (this.disabled || this.type === 'checkbox') return;
 
 		const items = this._getItems().filter(item => !item.disabled);
 		if (items.length === 0) return;
