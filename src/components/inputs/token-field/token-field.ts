@@ -177,7 +177,13 @@ export class NLDDTokenField extends LitElement {
 		this._updateFormValue();
 	}
 
-	override updated(changed: Map<string, unknown>): void {
+	override willUpdate(changed: Map<string, unknown>): void {
+		// React to a values change BEFORE render, so the reactive state this
+		// touches (_highlightedId, via _syncMenuItems' active-descendant sync when
+		// hiding a token's highlighted option moves the highlight) folds into this
+		// same update. The identical work in updated() sets state after the update
+		// completed, which trips Lit's change-in-update warning.
+		//
 		// A token added or removed changes which options are still available:
 		// re-run the text filter (unhides options freed by a removed token) and
 		// re-hide the ones now selected. Close the menu if nothing is left to add.
@@ -190,9 +196,12 @@ export class NLDDTokenField extends LitElement {
 		}
 		if (changed.has('required')) this._updateValidity();
 		if (changed.has('readonly') && this.readonly) this._closeMenu();
+	}
+
+	override updated(): void {
 		// The input narrows/widens as tokens come and go; keep the open menu's
-		// pinned width in step with it (this runs after layout, so the rect is
-		// current).
+		// pinned width in step with it. This reads layout (getBoundingClientRect),
+		// so it must run after render, not in willUpdate().
 		if (this._isOpen) this._updateMenuWidth();
 	}
 

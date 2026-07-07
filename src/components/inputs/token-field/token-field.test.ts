@@ -1,4 +1,4 @@
-import { describe, it, expect, afterEach } from 'vitest';
+import { describe, it, expect, afterEach, vi } from 'vitest';
 import { fixture, cleanup, waitForUpdate } from '../../../test-utils.js';
 import './token-field.js';
 
@@ -212,6 +212,30 @@ describe('nldd-token-field', () => {
 		await waitForUpdate(el);
 		await new Promise((r) => requestAnimationFrame(() => requestAnimationFrame(() => r(null))));
 		expect(el.querySelector('nldd-menu-item[highlighted]')?.getAttribute('value')).toBe('nl');
+	});
+
+	it('reacts to a values change without a change-in-update warning', async () => {
+		// Regression: reacting to a values change in updated() re-syncs the menu,
+		// which sets reactive state (_highlightedId, as filter() re-seats the
+		// highlight) after the update completed — tripping Lit's change-in-update
+		// warning. The reaction now runs in willUpdate() so it folds into the same
+		// cycle. Menu must be present: the sync is what touches the state.
+		const warn = vi.spyOn(console, 'warn').mockImplementation(() => {});
+		el = await fixture<TokenFieldEl>(`
+			<nldd-token-field accessible-label="Tags">
+				<nldd-menu>
+					<nldd-menu-item value="a" text="Alpha"></nldd-menu-item>
+					<nldd-menu-item value="b" text="Bravo"></nldd-menu-item>
+				</nldd-menu>
+			</nldd-token-field>
+		`);
+		el.values = ['a']; // a values change with a menu present re-syncs the menu
+		await waitForUpdate(el);
+		const warnedInUpdate = warn.mock.calls.some((args) =>
+			args.some((a) => typeof a === 'string' && a.includes('scheduled an update')),
+		);
+		warn.mockRestore();
+		expect(warnedInUpdate).toBe(false);
 	});
 
 	it('renders no picker for a free-text field without a menu', async () => {
