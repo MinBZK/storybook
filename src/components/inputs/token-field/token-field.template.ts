@@ -9,15 +9,17 @@ function renderValidationIcon(component: NLDDTokenField): TemplateResult | typeo
 	if (!name) return nothing;
 	return html`
 		<div class="token-field__validation-icon-area">
-			<nldd-icon class="token-field__validation-icon" name=${name} aria-hidden="true"></nldd-icon>
+			<nldd-icon class="token-field__validation-icon"
+				name=${name}
+				aria-hidden="true"
+			></nldd-icon>
 		</div>
 	`;
 }
 
 function renderInput(component: NLDDTokenField): TemplateResult {
 	return html`
-		<input
-			class="token-field__input"
+		<input class="token-field__input"
 			type=${component.type || 'text'}
 			autocomplete=${component.autocomplete || nothing}
 			spellcheck=${component.noSpellcheck ? 'false' : nothing}
@@ -60,36 +62,32 @@ function renderPicker(component: NLDDTokenField): TemplateResult {
 
 export function tokenFieldTemplate(component: NLDDTokenField): TemplateResult {
 	return html`
-		<div
-			class="token-field"
+		<div class="token-field"
 			data-invalid=${component.invalid ? '' : nothing}
 			data-valid=${component.valid && !component.invalid ? '' : nothing}
 			@click=${component._handleFieldClick}
 		>
-			<div class="token-field__content">
-				${component.values.map(
-					(value, index) => html`
-						<nldd-token
-							class="token-field__token"
-							control=${component.readonly ? nothing : 'dismiss'}
-							tabindex=${component.readonly ? nothing : '-1'}
-							dismiss-text=${component._t('components.token-field.dismiss-action')}
-							?disabled=${component.disabled}
-							data-value=${value}
-							@dismiss=${() => component._removeValue(value)}
-							@keydown=${(e: KeyboardEvent) => component._handleTokenKeydown(e, index)}
-						>${component._labelFor(value)}</nldd-token>
-					`,
-				)}
-				${component._showInput || component._showPicker
-					? html`
-						<div class="token-field__field">
-							${component._showInput ? renderInput(component) : nothing}
-							${component._showPicker ? renderPicker(component) : nothing}
-						</div>
-					`
-					: nothing}
-			</div>
+			${component.values.map(
+				(value, index) => html`
+					<nldd-token class="token-field__token"
+						control=${component.readonly ? nothing : 'dismiss'}
+						tabindex=${component.readonly ? nothing : '-1'}
+						dismiss-text=${component._t('components.token-field.dismiss-action')}
+						?disabled=${component.disabled}
+						data-value=${value}
+						@dismiss=${() => component._removeValue(value)}
+						@keydown=${(e: KeyboardEvent) => component._handleTokenKeydown(e, index)}
+					>${component._labelFor(value)}</nldd-token>
+				`,
+			)}
+			${component._showInput || component._showPicker
+				? html`
+					<div class="token-field__input-area">
+						${component._showInput ? renderInput(component) : nothing}
+						${component._showPicker ? renderPicker(component) : nothing}
+					</div>
+				`
+				: nothing}
 			${renderValidationIcon(component)}
 		</div>
 		<slot @slotchange=${component._onSlotChange}></slot>

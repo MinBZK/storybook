@@ -227,9 +227,9 @@ export class NLDDTokenField extends LitElement {
 	}
 
 	/** The input + picker wrapper — the menu's anchor, so the menu lines up under
-	 *  the whole field (including the picker), not just the input. */
-	private get _field(): HTMLElement | null {
-		return this.shadowRoot?.querySelector<HTMLElement>('.token-field__field') ?? null;
+	 *  the whole area (including the picker), not just the input. */
+	private get _inputArea(): HTMLElement | null {
+		return this.shadowRoot?.querySelector<HTMLElement>('.token-field__input-area') ?? null;
 	}
 
 	/** Delegate programmatic focus to the inner input. */
@@ -528,7 +528,7 @@ export class NLDDTokenField extends LitElement {
 	 *  the input and never extends past it. */
 	private _updateMenuWidth(): void {
 		if (!this._menu) return;
-		const rect = (this._field ?? this._input ?? this).getBoundingClientRect();
+		const rect = (this._inputArea ?? this._input ?? this).getBoundingClientRect();
 		this._menu.width = `${rect.width}px`;
 	}
 
@@ -596,7 +596,7 @@ export class NLDDTokenField extends LitElement {
 		if ((this._menu as HTMLElement).matches(':popover-open')) return;
 		// Anchor to the input + picker wrapper so the menu lines up under the whole
 		// field row (including the picker), wherever it sits after the tokens.
-		this._menu.anchorElement = this._field ?? this._input ?? this;
+		this._menu.anchorElement = this._inputArea ?? this._input ?? this;
 		this._updateMenuWidth();
 		(this._menu as HTMLElement).showPopover();
 	}

@@ -18,8 +18,7 @@ export const tokenFieldStyles = css`
 		--_text-font: var(--semantics-input-fields-md-text-font);
 		--_validation-icon-size: var(--semantics-input-fields-md-validation-icon-size);
 		/* Frame height minus both borders. */
-		--_icon-area-size: calc(var(--_min-size) - var(--semantics-input-fields-border-thickness) * 2);
-		/* (md - sm - 2 * border) / 2 = (44 - 32 - 4) / 2 = 4px. */
+		--_validation-icon-area-size: calc(var(--_min-size) - var(--semantics-input-fields-border-thickness) * 2);
 		--_gap: calc(
 			(
 				var(--semantics-controls-md-min-size) - var(--semantics-controls-sm-min-size) -
@@ -51,13 +50,14 @@ export const tokenFieldStyles = css`
 	}
 
 
-	/* # Block */
+	/* # Block — a wrapping row of tokens and the input area, with the validation
+	   icon pinned on the trailing edge. */
 
 	.token-field {
 		position: relative;
 		box-sizing: border-box;
 		display: flex;
-		flex-direction: row;
+		flex-wrap: wrap;
 		align-items: center;
 		gap: var(--_gap);
 		border: var(--semantics-input-fields-border);
@@ -66,8 +66,7 @@ export const tokenFieldStyles = css`
 		width: 100%;
 		min-height: var(--_min-size);
 		padding-block: var(--_gap);
-		padding-inline-start: var(--_gap);
-		padding-inline-end: 0;
+		padding-inline: var(--_gap);
 		cursor: text;
 	}
 
@@ -87,36 +86,29 @@ export const tokenFieldStyles = css`
 		border-color: var(--semantics-input-fields-is-valid-border-color);
 	}
 
-
-	/* # Content */
-
-	.token-field__content {
-		display: flex;
-		flex-wrap: wrap;
-		align-items: center;
-		gap: var(--_gap);
-		flex: 1 1 auto;
-		min-width: 0;
-		padding-inline-end: var(--_gap);
+	/* Reserve the validation icon's area so tokens/input stay clear of it. */
+	.token-field[data-invalid],
+	.token-field[data-valid] {
+		padding-inline-end: var(--_validation-icon-area-size);
 	}
 
-	.token-field[data-invalid] .token-field__content,
-	.token-field[data-valid] .token-field__content {
-		padding-inline-end: var(--_icon-area-size);
-	}
+
+	/* # Token */
 
 	.token-field__token {
 		max-width: 100%;
 	}
 
 
-	/* # Field */
+	/* # Input area — the input and picker travel to a new row together. */
 
-	.token-field__field {
+	.token-field__input-area {
 		display: flex;
 		align-items: center;
 		gap: var(--_gap);
-		flex: 1 1 var(--_input-min-width);
+		flex-grow: 1;
+		flex-shrink: 1;
+		flex-basis: var(--_input-min-width);
 		min-width: var(--_input-min-width);
 	}
 
@@ -126,7 +118,9 @@ export const tokenFieldStyles = css`
 	.token-field__input {
 		${inheritedTextReset}
 		box-sizing: border-box;
-		flex: 1 1 auto;
+		flex-grow: 1;
+		flex-shrink: 1;
+		flex-basis: auto;
 		min-width: 0;
 		border: none;
 		outline: none;
@@ -173,7 +167,7 @@ export const tokenFieldStyles = css`
 
 	/* # Validation icon */
 
-	/* Absolute so it doesn't change the frame height; the content reserves its area. */
+	/* Absolute so it doesn't change the frame height; the frame reserves its area. */
 	.token-field__validation-icon-area {
 		position: absolute;
 		inset-block: 0;
@@ -181,7 +175,7 @@ export const tokenFieldStyles = css`
 		display: flex;
 		align-items: center;
 		justify-content: center;
-		width: var(--_icon-area-size);
+		width: var(--_validation-icon-area-size);
 		pointer-events: none;
 	}
 
