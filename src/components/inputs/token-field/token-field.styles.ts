@@ -25,7 +25,7 @@ export const tokenFieldStyles = css`
 					2 * var(--semantics-input-fields-border-thickness)
 			) / 2
 		);
-		--_input-min-width: var(--primitives-area-160);
+		--_input-min-width: var(--primitives-area-200);
 
 		${inheritedTextReset}
 		display: block;
