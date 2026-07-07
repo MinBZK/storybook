@@ -11,11 +11,11 @@ export const tokenStyles = css`
 
 	:host {
 		--_highlight-border-color: var(--semantics-buttons-neutral-tinted-highlight-border-color);
+		--_focus-z-index: 1;
 
 		${inheritedTextReset}
 		display: inline-block;
 		max-width: 100%;
-		/* min-width:0 lets the host shrink as a flex item (enables the label ellipsis). */
 		min-width: 0;
 		user-select: none;
 		-webkit-tap-highlight-color: transparent;
@@ -33,7 +33,7 @@ export const tokenStyles = css`
 	/* z-index raises the ring above adjacent tokens so it isn't clipped. */
 	:host(:focus-visible) {
 		position: relative;
-		z-index: 1;
+		z-index: var(--_focus-z-index);
 		outline: var(--semantics-focus-ring-outline);
 		outline-offset: var(--semantics-focus-ring-outline-offset);
 		box-shadow: var(--semantics-focus-ring-box-shadow);
