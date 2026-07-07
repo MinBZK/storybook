@@ -111,6 +111,15 @@ export const tokenStyles = css`
 
 	.token__dismiss-action,
 	.token__menu-action {
+		position: relative;
 		flex-shrink: 0;
+	}
+
+	/* Lift a focused control's ring above the token's highlight border (the ::after
+	   box-shadow) and text. :focus-within, not :has(:focus-visible): the focused
+	   element sits in the icon-button's own shadow, which :has can't see across. */
+	.token__dismiss-action:focus-within,
+	.token__menu-action:focus-within {
+		z-index: 1;
 	}
 `;
