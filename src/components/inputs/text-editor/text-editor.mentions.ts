@@ -9,7 +9,7 @@ import {
 import { EditorView } from '@codemirror/view';
 import type { Extension } from '@codemirror/state';
 
-const MENTION_QUERY = /@[\w.\-]*$/;
+const MENTION_QUERY = /@[\w.-]*$/;
 
 /* @-mention typeahead. The editor is headless and does not know any users, so
  * the consumer supplies candidates through a source callback. Selecting one
@@ -47,7 +47,7 @@ function completionSource(
 	onInsert: (detail: MentionInsertedDetail) => void,
 ) {
 	return async (context: CompletionContext): Promise<CompletionResult | null> => {
-		const match = context.matchBefore(/@[\w.\-]*/);
+		const match = context.matchBefore(/@[\w.-]*/);
 		if (!match || (match.from === match.to && !context.explicit)) return null;
 		const source = getSource();
 		if (!source) return null;

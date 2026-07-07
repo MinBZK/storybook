@@ -4,7 +4,6 @@ import {
 	stripSentinels,
 	sentinelPositions,
 	reconcileSentinels,
-	desiredSentinels,
 	buildDesiredDoc,
 	canPlaceSentinel,
 } from './text-editor.annotation-sentinels.ts';

@@ -21,7 +21,7 @@ import type { ComplexAttributeConverter } from 'lit';
  */
 export function reflectNonDefault<T extends string>(defaultValue: T): ComplexAttributeConverter<T> {
 	return {
-		fromAttribute: (value: string | null): T => (value == null ? defaultValue : (value as T)),
+		fromAttribute: (value: string | null): T => (value === null ? defaultValue : (value as T)),
 		toAttribute: (value: T): string | null => (value === defaultValue ? null : value),
 	};
 }

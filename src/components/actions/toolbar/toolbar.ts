@@ -57,15 +57,6 @@ interface SizingElement {
 	width: string;
 }
 
-// Consumer sizing (width/min-width/max-width) reflects to attributes —
-// frameworks such as Vue set `width` as a DOM property, and the attribute
-// should stay inspectable in the DOM. The '' default maps to null so it
-// never reflects as an empty attribute.
-const sizingConverter = {
-	toAttribute: (value: string): string | null => value || null,
-	fromAttribute: (value: string | null): string => value ?? '',
-};
-
 // # nldd-toolbar-item
 
 @customElement('nldd-toolbar-item')
@@ -94,7 +85,7 @@ export class NLDDToolbarItem extends LitElement {
 	@property({
 		reflect: true,
 		converter: {
-			fromAttribute: (value: string | null) => (value == null ? 0 : Number(value)),
+			fromAttribute: (value: string | null) => (value === null ? 0 : Number(value)),
 			toAttribute: (value: number) => (value === 0 ? null : String(value)),
 		},
 	})

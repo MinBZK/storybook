@@ -1,3 +1,6 @@
+/* eslint-disable lit-a11y/click-events-have-key-events -- the field wrapper only
+   forwards a padding click to focus the inner input; keyboard users tab straight
+   to that input, so it needs no key handler of its own. */
 import { html, nothing, TemplateResult } from 'lit';
 import type { NLDDTokenField } from './token-field.js';
 import '../../content/token/token.js';
