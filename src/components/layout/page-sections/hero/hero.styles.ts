@@ -237,14 +237,6 @@ export const heroStyles = css`
 		}
 	}
 
-	/* Without media the full-bleed panel would paint square over the
-	   body's rounded corner; clipping is safe here because there is no
-	   aspect-ratio in this mode, so the content minimum still sizes the
-	   body. */
-	:host(:not([data-has-media])) .hero__body {
-		overflow: hidden;
-	}
-
 	@media (forced-colors: active) {
 		.hero__body {
 			border: var(--primitives-border-width-thin) solid CanvasText;
