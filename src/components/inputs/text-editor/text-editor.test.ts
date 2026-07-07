@@ -375,6 +375,67 @@ describe('nldd-text-editor', () => {
 		cleanup(el2);
 	});
 
+	it('undo van een edit herstelt de annotatie-extent', async () => {
+		const el2 = await fixture<TextEditorEl & { annotatable: boolean; annotations: unknown[] }>(
+			'<nldd-text-editor accessible-label="Tekst" annotatable></nldd-text-editor>',
+		);
+		el2.value = 'hello world foo';
+		el2.annotations = [{ id: 'n1', start: 6, end: 11, quote: 'world' }];
+		await el2.updateComplete;
+		await waitForUpdate(el2);
+		const sr = el2.shadowRoot!;
+		const tintText = () => sr.querySelector('.cm-annotation')?.textContent ?? '';
+		expect(tintText()).toContain('world');
+		const api = el2 as unknown as {
+			view: { dispatch(s: unknown): void };
+			undo(): void;
+			clearHistory(): void;
+			getAnnotations(): { id: string; start: number; end: number; quote: string }[];
+		};
+		// The loaded content is not undoable in the app; clear history so the edit is
+		// the sole step and undo reverts just it (matching a real article session).
+		api.clearHistory();
+		api.view.dispatch({ changes: { from: 0, insert: 'Xy ' }, userEvent: 'input.type' });
+		await waitForUpdate(el2);
+		expect(api.getAnnotations()).toEqual([{ id: 'n1', start: 9, end: 14, quote: 'world' }]);
+		api.undo();
+		await waitForUpdate(el2);
+		// The tint snaps back to its own text — not vanished, not swallowing the doc.
+		expect(tintText()).toContain('world');
+		expect(tintText()).not.toContain('foo');
+		expect(api.getAnnotations()).toEqual([{ id: 'n1', start: 6, end: 11, quote: 'world' }]);
+		cleanup(el2);
+	});
+
+	// Regression: an undo can revert the document out from under the annotation
+	// field (history reverts the text while non-historized sentinels linger and the
+	// field keeps its pre-revert offsets). buildAll then used to emit decoration
+	// ranges past the document end and CodeMirror threw "Position N out of range for
+	// changeset of length M" diffing them. buildAll now clamps to the clean length.
+	it('crasht niet als undo het document losraakt van de annotatie-offsets', async () => {
+		const el2 = await fixture<TextEditorEl & { annotatable: boolean; annotations: unknown[] }>(
+			'<nldd-text-editor accessible-label="Tekst" annotatable></nldd-text-editor>',
+		);
+		el2.value = 'hello world foo';
+		el2.annotations = [{ id: 'n1', start: 6, end: 11, quote: 'world' }];
+		await el2.updateComplete;
+		await waitForUpdate(el2);
+		const api = el2 as unknown as {
+			view: { dispatch(s: unknown): void };
+			undo(): void;
+			getAnnotations(): { id: string; start: number; end: number; quote: string }[];
+		};
+		// No clearHistory: the synchronous edit merges with the initial content, so a
+		// single undo reverts the text and drives the doc to just its sentinels — the
+		// exact desync that used to throw. The editor must survive it.
+		api.view.dispatch({ changes: { from: 0, insert: 'Xy ' }, userEvent: 'input.type' });
+		await waitForUpdate(el2);
+		api.undo();
+		await waitForUpdate(el2);
+		expect(api.getAnnotations().length).toBeLessThanOrEqual(1);
+		cleanup(el2);
+	});
+
 	it('klik op de annotatie-badge emit annotation-click met de id(s)', async () => {
 		const el2 = await fixture<TextEditorEl & { annotatable: boolean; annotations: unknown[] }>(
 			'<nldd-text-editor accessible-label="Tekst" annotatable></nldd-text-editor>',

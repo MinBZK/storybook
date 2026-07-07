@@ -213,9 +213,19 @@ function resolveGroup(group: Group, doc: string, sents: number[]) {
 
 function buildAll(state: EditorState): Built {
 	const doc = state.doc.toString();
-	const anns = state.field(annotationField);
 	const sel = state.selection.main;
 	const sents = sentinelPositions(doc);
+	// Clamp anchors to the CLEAN document length before building. The field and the
+	// document can be transiently inconsistent — most sharply on undo/redo, where
+	// history reverts the text (and any non-historized sentinels linger) while the
+	// field still holds pre-revert offsets. Building unclamped then emits decoration
+	// ranges past the document end, and CodeMirror throws "Position N out of range"
+	// diffing them. Clamping keeps every range in-bounds; the next consistent update
+	// re-renders the real anchors.
+	const cleanLen = doc.length - sents.length;
+	const anns = state.field(annotationField)
+		.map((a) => ({ id: a.id, from: Math.min(a.from, cleanLen), to: Math.min(a.to, cleanLen) }))
+		.filter((a) => a.to > a.from);
 	const deco: Range<Decoration>[] = [];
 	const atomic: Range<Decoration>[] = [];
 	for (const group of groupOverlapping(anns)) {
