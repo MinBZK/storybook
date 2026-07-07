@@ -72,6 +72,16 @@ export abstract class NLDDCodeMirrorElement extends LitElement {
 	}
 
 	/**
+	 * Focus the editor itself, not the host. delegatesFocus handles a click or tab
+	 * into the host, but a programmatic host.focus() is routed straight to
+	 * CodeMirror here, whose contenteditable delegatesFocus does not reliably
+	 * target.
+	 */
+	override focus(): void {
+		this.view?.focus();
+	}
+
+	/**
 	 * Focus the editor and place the caret on the line nearest a viewport point.
 	 * Lets a wrapping composition forward clicks from its own padding —
 	 * `editor.focusFromPoint(event.clientX, event.clientY)` — so a layout

@@ -39,6 +39,15 @@ describe('nldd-code-editor', () => {
 		cleanup(el2);
 	});
 
+	it('focus() verlegt de focus naar de interne editor', async () => {
+		const el2 = await fixture('<nldd-code-editor accessible-label="Code" value="foo: bar"></nldd-code-editor>');
+		await waitForUpdate(el2);
+		(el2 as unknown as { focus(): void }).focus();
+		const content = el2.shadowRoot!.querySelector('.cm-content');
+		expect(el2.shadowRoot!.activeElement).toBe(content);
+		cleanup(el2);
+	});
+
 	it('reflects the wrap attribute', async () => {
 		el = await fixture('<nldd-code-editor wrap accessible-label="Code"></nldd-code-editor>');
 		await waitForUpdate(el);
