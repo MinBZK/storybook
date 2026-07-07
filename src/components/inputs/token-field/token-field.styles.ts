@@ -61,6 +61,12 @@ export const tokenFieldStyles = css`
 		min-height: var(--_min-size);
 		padding-block: var(--_gap);
 		padding-inline: var(--_gap);
+	}
+
+	/* Text cursor only while the input is present — the frame forwards a padding click
+	   to it (_handleFieldClick). With no input (no custom values allowed and no options
+	   left) there is nothing to type into, so the frame keeps the default arrow. */
+	.token-field:has(.token-field__input) {
 		cursor: text;
 	}
 
