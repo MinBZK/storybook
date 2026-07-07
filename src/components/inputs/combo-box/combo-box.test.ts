@@ -654,3 +654,46 @@ describe('nldd-combo-box – text', () => {
 		expect(input.getAttribute('spellcheck')).toBe('false');
 	});
 });
+
+
+/* ============================================================
+   allow-custom
+   ============================================================ */
+
+describe('nldd-combo-box – allow-custom', () => {
+	let el: NLDDComboBox;
+
+	afterEach(() => {
+		if (el) cleanup(el);
+	});
+
+	const withOption = () => fixture<NLDDComboBox>(`
+		<nldd-combo-box accessible-label="Land">
+			<nldd-menu><nldd-menu-item text="Nederland" value="nl"></nldd-menu-item></nldd-menu>
+		</nldd-combo-box>
+	`);
+
+	const typeAndEnter = async (element: NLDDComboBox, text: string) => {
+		const input = element.shadowRoot!.querySelector('input')!;
+		(input as HTMLInputElement).value = text;
+		input.dispatchEvent(new Event('input', { bubbles: true }));
+		await waitForUpdate(element);
+		input.dispatchEvent(new KeyboardEvent('keydown', { key: 'Enter', bubbles: true }));
+		await waitForUpdate(element);
+	};
+
+	it('discards a non-matching typed value on Enter by default', async () => {
+		el = await withOption();
+		await waitForUpdate(el);
+		await typeAndEnter(el, 'xyz');
+		expect(el.value).toBe('');
+	});
+
+	it('commits a non-matching typed value on Enter with allow-custom', async () => {
+		el = await withOption();
+		el.allowCustom = true;
+		await waitForUpdate(el);
+		await typeAndEnter(el, 'xyz');
+		expect(el.value).toBe('xyz');
+	});
+});

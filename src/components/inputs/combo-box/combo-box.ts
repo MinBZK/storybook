@@ -23,6 +23,8 @@
  * @attr {boolean} valid        - Marks the field as valid
  * @attr {boolean} invalid      - Marks the field as invalid
  * @attr {boolean} disabled     - Disabled state
+ * @attr {boolean} allow-custom - Allow committing free-typed values that match no option
+ *                                (Enter/blur). Default false: only menu options are accepted.
  * @attr {string}  name         - Input name for form submission
  * @attr {string}  autocomplete - Browser autofill hint. Default 'off' to prevent the
  *                                native autofill panel from competing with the menu dropdown.
@@ -34,9 +36,10 @@
  * @attr {boolean} no-spellcheck - Disables browser spellchecking on the inner input
  * @attr {string}  width        - Optional fixed width (any CSS length, e.g. "240px"). Default: stretches to fill container.
  *
- * @note Free-text values: if the user types a value that does not match any menu option
- *       and presses Enter or moves focus away, the typed text is emitted as-is via the
- *       `change` event. Consumers are responsible for validating emitted values.
+ * @note Free-text values: only when `allow-custom` is set. Then a typed value that
+ *       matches no menu option is emitted as-is via the `change` event on Enter or blur
+ *       (consumers validate emitted values). Without it, such a value is discarded and
+ *       the input reverts to the current value.
  *
  * @slot - An nldd-menu element with nldd-menu-item and nldd-menu-divider children
  *
@@ -107,6 +110,12 @@ export class NLDDComboBox extends LitElement {
 
 	@property({ type: Boolean, reflect: true })
 	disabled = false;
+
+	/** Allow committing free-typed values that don't match any menu option (on
+	 *  Enter or blur). Default false: the input only accepts menu options, and a
+	 *  non-matching typed value is discarded (reverted to the current value). */
+	@property({ type: Boolean, reflect: true, attribute: 'allow-custom' })
+	allowCustom = false;
 
 	@property({ type: String, reflect: true })
 	name = '';
@@ -314,8 +323,11 @@ export class NLDDComboBox extends LitElement {
 		if (!this._isOpen) {
 			this._highlightedId = '';
 		} else {
-			// Update highlight ID after menu opens and first item is highlighted
+			// The menu clears its highlight on open; seat it on the first option by
+			// default so it's the active descendant and Enter picks it, unless
+			// something is already highlighted.
 			requestAnimationFrame(() => {
+				if (this._menu && !this._menu.getHighlighted()) this._menu.moveHighlight('next');
 				this._highlightedId = this._menu?.getHighlightedId() ?? '';
 			});
 		}
@@ -427,11 +439,16 @@ export class NLDDComboBox extends LitElement {
 		this._input?.focus();
 	}
 
-	/** Accept a custom typed value and close the menu when focus leaves the input. */
+	/** On blur: with allow-custom, accept a custom typed value; otherwise discard a
+	 *  non-matching typed value by reverting the input to the current value. */
 	public _handleBlur(e: FocusEvent): void {
 		const relatedTarget = e.relatedTarget as Node | null;
 		if (!relatedTarget || !this._menu?.contains(relatedTarget)) {
 			this._closeMenu();
+		}
+		if (!this.allowCustom) {
+			this._revertTextToValue();
+			return;
 		}
 		if (this.text !== '' && this.text !== this.value) {
 			this.value = this.text;
@@ -441,6 +458,17 @@ export class NLDDComboBox extends LitElement {
 				composed: true,
 			}));
 		}
+	}
+
+	/** Restore the input text to the current value's display label, discarding any
+	 *  free text the user typed (used when allow-custom is off). */
+	private _revertTextToValue(): void {
+		if (!this.value) {
+			this.text = '';
+		} else {
+			this._deriveTextFromMenu();
+		}
+		this._menu?.filter('');
 	}
 
 	public _handleKeydown(e: KeyboardEvent): void {
@@ -468,7 +496,7 @@ export class NLDDComboBox extends LitElement {
 				const highlighted = this._menu?.getHighlighted();
 				if (highlighted) {
 					highlighted.select();
-				} else {
+				} else if (this.allowCustom) {
 					this.value = this.text;
 					this._closeMenu();
 					this.dispatchEvent(new CustomEvent('change', {
@@ -476,6 +504,10 @@ export class NLDDComboBox extends LitElement {
 						bubbles: true,
 						composed: true,
 					}));
+				} else {
+					// No option highlighted and free text not allowed: discard it.
+					this._closeMenu();
+					this._revertTextToValue();
 				}
 				break;
 			}
