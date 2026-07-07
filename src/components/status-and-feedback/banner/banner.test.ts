@@ -72,6 +72,15 @@ describe('nldd-banner', () => {
 	   ARIA semantics
 	   ============================================================ */
 
+	it('document.createElement does not throw (no attributes set in the constructor)', () => {
+		// The Custom Elements spec forbids a constructor from adding attributes;
+		// document.createElement (used by frameworks like Vue) throws
+		// NotSupportedError if it does. Setting role/aria must wait for connect.
+		expect(() => document.createElement('nldd-banner')).not.toThrow();
+		const el = document.createElement('nldd-banner');
+		expect(el.hasAttribute('role')).toBe(false); // not yet connected
+	});
+
 	it.each(['neutral', 'success', 'warning', 'accent'] as const)('variant="%s" gets role="status" and aria-live="polite"', async (variant) => {
 		el = await fixture(`<nldd-banner variant="${variant}"></nldd-banner>`);
 		await waitForUpdate(el);

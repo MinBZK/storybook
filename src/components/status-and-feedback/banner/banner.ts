@@ -101,18 +101,6 @@ export class NLDDBanner extends LitElement {
 	private _syncContent?: () => void;
 	private _syncActions?: () => void;
 
-	constructor() {
-		super();
-		// AT requires role + aria-live to be present on the element by the time
-		// it's first inserted into the DOM, otherwise the initial announcement
-		// is missed. Reading the raw attribute here (instead of waiting for
-		// Lit to project the @property) lets us cover both HTML-declared
-		// (attribute set before constructor returns) and document.createElement
-		// + setAttribute (attribute set before appendChild) flows. updated()
-		// still keeps the host in sync when variant changes at runtime.
-		const initialVariant = this.getAttribute('variant') as BannerVariant | null;
-		this._applyAriaForVariant(initialVariant ?? 'neutral');
-	}
 
 	public _t(key: keyof NLDDBannerTranslations): string {
 		return this.translations[key] ?? nlddBannerTranslations[key];
@@ -180,6 +168,14 @@ export class NLDDBanner extends LitElement {
 
 	override connectedCallback(): void {
 		super.connectedCallback();
+		// role + aria-live must be present by the time the banner enters the DOM so
+		// AT announces it. This MUST NOT happen in the constructor: setting
+		// attributes there is forbidden by the Custom Elements spec, and
+		// document.createElement (used by frameworks like Vue) throws
+		// NotSupportedError, aborting the render. connectedCallback runs at
+		// insertion — exactly when the attributes are needed — and updated() keeps
+		// them in sync on later variant changes.
+		this._applyAriaForVariant(this.variant);
 		// Re-attach when reconnecting after a previous disconnect; firstUpdated
 		// doesn't fire again. Guard on shadowRoot existence so we don't run
 		// twice on the very first connect (firstUpdated will handle that one).
