@@ -73,12 +73,19 @@ function renderToken(component: NLDDTokenField, value: string, index: number): T
 	const tabindex = component.readonly || component.disabled
 		? nothing
 		: (!component._showInput && index === component._rovingIndex ? '0' : '-1');
+	const label = component._labelFor(value);
+	// A removable token announces that it can be removed (its ✕, or Backspace while it
+	// holds the roving focus); the plain label alone gives a screen reader no hint.
+	const ariaLabel = component.readonly
+		? nothing
+		: `${label}, ${component._t('components.token-field.removable-hint')}`;
 
 	if (!component.readonly && component.tokenControl === 'menu') {
 		return html`
 			<nldd-token
 				role="listitem"
-				text=${component._labelFor(value)}
+				aria-label=${ariaLabel}
+				text=${label}
 				control="menu"
 				tabindex=${tabindex}
 				?roving=${!component.readonly}
@@ -96,7 +103,8 @@ function renderToken(component: NLDDTokenField, value: string, index: number): T
 	return html`
 		<nldd-token
 			role="listitem"
-			text=${component._labelFor(value)}
+			aria-label=${ariaLabel}
+			text=${label}
 			control=${component.readonly ? nothing : 'dismiss'}
 			tabindex=${tabindex}
 			?roving=${!component.readonly}

@@ -559,6 +559,14 @@ describe('nldd-token-field', () => {
 			.toBe(true);
 	});
 
+	it('a removable token announces that it can be removed via its accessible name', async () => {
+		el = await withMenu(); // 'nl' -> "Nederland"
+		el.values = ['nl'];
+		await waitForUpdate(el);
+		expect(el.shadowRoot!.querySelector('nldd-token')!.getAttribute('aria-label'))
+			.toBe('Nederland, verwijderbaar');
+	});
+
 	// — Readonly & required (F3.5) —————————————————————————————————————————————
 
 	it('readonly hides the input and picker and makes tokens static', async () => {
