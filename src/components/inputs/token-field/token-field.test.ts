@@ -349,8 +349,9 @@ describe('nldd-token-field', () => {
 		el.values = ['a', 'b', 'c'];
 		await waitForUpdate(el);
 		expect(el.shadowRoot!.querySelector('.token-field__input')).toBeNull();
-		el.shadowRoot!.querySelectorAll('nldd-token')[0]
-			.dispatchEvent(new KeyboardEvent('keydown', { key: 'Backspace', bubbles: true }));
+		const token = el.shadowRoot!.querySelector<HTMLElement>('nldd-token')!;
+		token.focus();
+		token.dispatchEvent(new KeyboardEvent('keydown', { key: 'Backspace', bubbles: true }));
 		await waitForUpdate(el);
 		await (el as unknown as { updateComplete: Promise<unknown> }).updateComplete;
 		expect(el.values).toEqual(['b', 'c']);
@@ -390,7 +391,8 @@ describe('nldd-token-field', () => {
 		el = await fixture<TokenFieldEl>('<nldd-token-field accessible-label="Tags" allow-custom></nldd-token-field>');
 		el.values = ['a', 'b', 'c'];
 		await waitForUpdate(el);
-		const tokens = () => [...el.shadowRoot!.querySelectorAll('nldd-token')];
+		const tokens = () => [...el.shadowRoot!.querySelectorAll<HTMLElement>('nldd-token')];
+		tokens()[1].focus();
 		tokens()[1].dispatchEvent(new KeyboardEvent('keydown', { key: 'Delete', bubbles: true }));
 		await waitForUpdate(el);
 		await (el as unknown as { updateComplete: Promise<unknown> }).updateComplete;
@@ -402,7 +404,8 @@ describe('nldd-token-field', () => {
 		el = await fixture<TokenFieldEl>('<nldd-token-field accessible-label="Tags" allow-custom></nldd-token-field>');
 		el.values = ['a', 'b', 'c'];
 		await waitForUpdate(el);
-		const tokens = () => [...el.shadowRoot!.querySelectorAll('nldd-token')];
+		const tokens = () => [...el.shadowRoot!.querySelectorAll<HTMLElement>('nldd-token')];
+		tokens()[2].focus();
 		tokens()[2].dispatchEvent(new KeyboardEvent('keydown', { key: 'Backspace', bubbles: true }));
 		await waitForUpdate(el);
 		await (el as unknown as { updateComplete: Promise<unknown> }).updateComplete;
@@ -469,6 +472,23 @@ describe('nldd-token-field', () => {
 			.find((t) => t.getAttribute('data-value') === 'be')!;
 		(beToken.querySelector('nldd-menu-item[value="remove"]') as HTMLElement & { select(): void }).select();
 		expect(detail).toEqual({ value: 'be', action: 'remove' });
+	});
+
+	it('an app-driven removal from a token menu moves focus to the next token', async () => {
+		el = await withTokenMenu();
+		el.values = ['nl', 'be'];
+		await waitForUpdate(el);
+		el.addEventListener('token-action', (e) => {
+			const { value, action } = (e as CustomEvent<{ value: string; action: string }>).detail;
+			if (action === 'remove') el.values = el.values.filter((v) => v !== value);
+		});
+		const tokens = () => [...el.shadowRoot!.querySelectorAll<HTMLElement>('nldd-token')];
+		tokens()[0].focus(); // focus the 'nl' token, then remove it via its menu
+		tokens()[0].querySelector<HTMLElement & { select(): void }>('nldd-menu-item[value="remove"]')!.select();
+		await waitForUpdate(el);
+		await (el as unknown as { updateComplete: Promise<unknown> }).updateComplete;
+		expect(el.values).toEqual(['be']);
+		expect(el.shadowRoot!.activeElement).toBe(tokens()[0]); // 'be' shifted into index 0
 	});
 
 	// — Readonly & required (F3.5) —————————————————————————————————————————————
