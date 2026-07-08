@@ -17,8 +17,12 @@ import '../../content/icon/icon.js';
  * link, so a link can be followed without leaving the editor — directly clickable,
  * no need to place the caret first. Mentions own their own click, so they're skipped. */
 
+/** Builds the badge's accessible label from a link's destination. Supplied by the
+ *  host so the string is localizable; defaults to Dutch at the call site. */
+export type OpenInNewTabLabel = (url: string) => string;
+
 class LinkOpenWidget extends WidgetType {
-	constructor(readonly href: string) {
+	constructor(readonly href: string, readonly label: OpenInNewTabLabel) {
 		super();
 	}
 
@@ -32,7 +36,7 @@ class LinkOpenWidget extends WidgetType {
 		anchor.href = this.href;
 		anchor.target = '_blank';
 		anchor.rel = 'noopener noreferrer';
-		anchor.setAttribute('aria-label', `Open link in nieuw tabblad: ${this.href}`);
+		anchor.setAttribute('aria-label', this.label(this.href));
 		const icon = document.createElement('nldd-icon');
 		icon.setAttribute('name', 'external-link');
 		icon.setAttribute('aria-hidden', 'true');
@@ -115,7 +119,7 @@ function hrefOf(state: EditorState, link: SyntaxNode, refs: Map<string, string>)
 	return null;
 }
 
-function buildBadges(view: EditorView): DecorationSet {
+function buildBadges(view: EditorView, label: OpenInNewTabLabel): DecorationSet {
 	const builder = new RangeSetBuilder<Decoration>();
 	const tree = syntaxTree(view.state);
 	const refs = referenceDefs(view.state);
@@ -129,25 +133,28 @@ function buildBadges(view: EditorView): DecorationSet {
 				// side -1 draws the badge before the caret, so the caret at the link end
 				// sits to the RIGHT of the badge — text typed there lands after it, not
 				// wedged between the link and the badge.
-				if (href) builder.add(node.to, node.to, Decoration.widget({ widget: new LinkOpenWidget(href), side: -1 }));
+				if (href) builder.add(node.to, node.to, Decoration.widget({ widget: new LinkOpenWidget(href, label), side: -1 }));
 			},
 		});
 	}
 	return builder.finish();
 }
 
-/** Adds an "open link" badge after every real link in the viewport. */
-export const linkOpenBadge = ViewPlugin.fromClass(
-	class {
-		decorations: DecorationSet;
+/** Adds an "open link" badge after every real link in the viewport. `label` builds
+ *  the badge's accessible label from the destination, so the host can localize it. */
+export function linkOpenBadge(label: OpenInNewTabLabel): ViewPlugin<{ decorations: DecorationSet }> {
+	return ViewPlugin.fromClass(
+		class {
+			decorations: DecorationSet;
 
-		constructor(view: EditorView) {
-			this.decorations = buildBadges(view);
-		}
+			constructor(view: EditorView) {
+				this.decorations = buildBadges(view, label);
+			}
 
-		update(update: ViewUpdate): void {
-			if (update.docChanged || update.viewportChanged) this.decorations = buildBadges(update.view);
-		}
-	},
-	{ decorations: (plugin) => plugin.decorations }
-);
+			update(update: ViewUpdate): void {
+				if (update.docChanged || update.viewportChanged) this.decorations = buildBadges(update.view, label);
+			}
+		},
+		{ decorations: (plugin) => plugin.decorations }
+	);
+}

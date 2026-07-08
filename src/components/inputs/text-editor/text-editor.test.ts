@@ -558,6 +558,26 @@ describe('nldd-text-editor', () => {
 		cleanup(el2);
 	});
 
+	it('geeft de open-link badge een Nederlands aria-label met de bestemming', async () => {
+		const el2 = await withValue('Zie [site](https://example.org).');
+		const badge = el2.shadowRoot!.querySelector('.cm-link-badge');
+		expect(badge!.getAttribute('aria-label')).toBe('Open link in nieuw tabblad: https://example.org');
+		cleanup(el2);
+	});
+
+	it('overschrijft het aria-label van de open-link badge via translations', async () => {
+		const el2 = await fixture<TextEditorEl>('<nldd-text-editor accessible-label="Tekst"></nldd-text-editor>');
+		(el2 as unknown as { translations: Record<string, string> }).translations = {
+			'components.text-editor.open-in-new-tab-label': 'Open in new tab: {url}',
+		};
+		el2.value = 'Zie [site](https://example.org).';
+		await el2.updateComplete;
+		await waitForUpdate(el2);
+		const badge = el2.shadowRoot!.querySelector('.cm-link-badge');
+		expect(badge!.getAttribute('aria-label')).toBe('Open in new tab: https://example.org');
+		cleanup(el2);
+	});
+
 	it('toont de open-link badge ook na een reference-style link', async () => {
 		const el2 = await withValue('Zie [site][ref] hier.\n\n[ref]: https://example.org');
 		const badges = el2.shadowRoot!.querySelectorAll('.cm-link-badge');
@@ -644,6 +664,38 @@ describe('nldd-text-editor', () => {
 		expect(badge!.textContent).toBe('1');
 		// The nub lives inside the tinted block (one cohesive element).
 		expect(badge!.closest('.cm-annotation')).not.toBeNull();
+		cleanup(el2);
+	});
+
+	it('geeft de annotatie-badge een Nederlands aria-label (enkelvoud) met de quote', async () => {
+		const el2 = await withAnnotations('Een zin met tekst.', [{ id: 'a1', start: 4, end: 7, quote: 'zin' }]);
+		const badge = el2.shadowRoot!.querySelector('.cm-annotation-badge');
+		expect(badge!.getAttribute('aria-label')).toBe("1 annotatie op 'zin'");
+		cleanup(el2);
+	});
+
+	it('gebruikt het meervoud in het aria-label bij meerdere annotaties', async () => {
+		const el2 = await withAnnotations('Een zin met tekst hier.', [
+			{ id: 'a1', start: 4, end: 12 },
+			{ id: 'a2', start: 8, end: 17 },
+		]);
+		const badge = el2.shadowRoot!.querySelector('.cm-annotation-badge');
+		expect(badge!.getAttribute('aria-label')).toBe("2 annotaties op 'zin met tekst'");
+		cleanup(el2);
+	});
+
+	it('overschrijft het aria-label van de annotatie-badge via translations', async () => {
+		const el2 = await withValue('Een zin met tekst.');
+		(el2 as unknown as { translations: Record<string, string> }).translations = {
+			'components.text-editor.annotation-count-label': '{count} {noun} on {quote}',
+			'components.text-editor.annotation-singular-lowercase': 'annotation',
+		};
+		(el2 as unknown as { annotatable: boolean }).annotatable = true;
+		(el2 as unknown as { annotations: unknown[] }).annotations = [{ id: 'a1', start: 4, end: 7, quote: 'zin' }];
+		await el2.updateComplete;
+		await waitForUpdate(el2);
+		const badge = el2.shadowRoot!.querySelector('.cm-annotation-badge');
+		expect(badge!.getAttribute('aria-label')).toBe('1 annotation on zin');
 		cleanup(el2);
 	});
 

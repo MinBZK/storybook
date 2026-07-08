@@ -42,6 +42,7 @@
  * @prop {MentionSource} mentionSource - Consumer-supplied @-mention candidate source (property only). Without it, @-typeahead is inert.
  * @attr {boolean} annotatable - Enable the annotation overlay (off by default). Annotations only render when this is set.
  * @prop {Annotation[]} annotations - Consumer-supplied annotation overlay (property only). Anchored by offset and mapped through edits; the text stays clean. Requires `annotatable`. Assign a NEW array to apply changes (Lit dirty-checks by identity, so in-place mutation like `.push()` won't re-render): `editor.annotations = [...editor.annotations, next]`.
+ * @attr {object} translations - Override the editor's assistive-tech strings (the open-in-new-tab link badge and the annotation count badge). Unset keys fall back to Dutch.
  *
  * @fires input                    - When the content changes (detail: { value })
  * @fires change                   - When the content is committed on blur (detail: { value })
@@ -90,6 +91,7 @@ import {
 import { textEditorStyles } from './text-editor.styles.js';
 import { textEditorTemplate } from './text-editor.template.js';
 import { stripSentinels, docToClean } from './text-editor.annotation-sentinels.js';
+import { nlddTextEditorTranslations, type NLDDTextEditorTranslations } from './text-editor.i18n.js';
 
 export type ResizeMode = 'none' | 'vertical' | 'auto';
 export type TextEditorVariant = 'input-field' | 'simple';
@@ -178,6 +180,12 @@ export class NLDDTextEditor extends NLDDCodeMirrorElement {
 	@property({ attribute: false })
 	annotations: Annotation[] = [];
 
+	/** Override translation keys for the editor's assistive-tech strings (the
+	 *  open-in-new-tab link badge and the annotation count badge). Unset keys fall
+	 *  back to Dutch. */
+	@property({ type: Object })
+	translations: Partial<NLDDTextEditorTranslations> = {};
+
 	@query('.text-editor')
 	private _container!: HTMLElement;
 
@@ -191,6 +199,19 @@ export class NLDDTextEditor extends NLDDCodeMirrorElement {
 		return this._container;
 	}
 
+	/** Resolve a translation key, applying `{name}` placeholder substitution from
+	 *  `vars`. Consumer overrides via `translations` win; unset keys fall back to the
+	 *  Dutch defaults. */
+	public _t(key: keyof NLDDTextEditorTranslations, vars?: Record<string, string | number>): string {
+		let str: string = this.translations[key] ?? nlddTextEditorTranslations[key];
+		if (vars) {
+			for (const [k, v] of Object.entries(vars)) {
+				str = str.split(`{${k}}`).join(String(v));
+			}
+		}
+		return str;
+	}
+
 	protected buildExtensions(): Extension[] {
 		return [
 			nlddCodeMirrorTheme,
@@ -201,10 +222,23 @@ export class NLDDTextEditor extends NLDDCodeMirrorElement {
 			// renumber changes too — otherwise a marker growing from 1 to 11 drifts a
 			// token on that line.
 			Prec.low(orderedListRenumber),
-			annotationExtension,
+			// The label fns read `this._t` lazily, so a newly rendered badge always uses
+			// the current `translations`; overriding them before mount localizes the
+			// assistive-tech strings.
+			annotationExtension((count, quote) =>
+				this._t('components.text-editor.annotation-count-label', {
+					count,
+					noun: this._t(
+						count === 1
+							? 'components.text-editor.annotation-singular-lowercase'
+							: 'components.text-editor.annotation-plural-lowercase',
+					),
+					quote,
+				}),
+			),
 			// Prec.highest so the badge nests inside a heading/bold run and scales with
 			// it, like the mention and annotation, instead of staying at the base size.
-			Prec.highest(linkOpenBadge),
+			Prec.highest(linkOpenBadge((url) => this._t('components.text-editor.open-in-new-tab-label', { url }))),
 			this._historyCompartment.of(history()),
 			drawSelection(),
 			dropCursor(),

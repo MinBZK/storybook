@@ -123,8 +123,13 @@ function truncateQuote(text: string): string {
 	return text.length > ANNOTATION_LABEL_MAX ? `${text.slice(0, ANNOTATION_LABEL_MAX)}…` : text;
 }
 
+/** Builds an annotation badge's accessible label from the count and the (already
+ *  truncated) quoted text, choosing singular/plural. Supplied by the host so the
+ *  string is localizable; defaults to Dutch at the call site. */
+export type AnnotationCountLabel = (count: number, quote: string) => string;
+
 class AnnotationBadge extends WidgetType {
-	constructor(readonly ids: string[], readonly quote: string) {
+	constructor(readonly ids: string[], readonly quote: string, readonly label: AnnotationCountLabel) {
 		super();
 	}
 
@@ -142,9 +147,7 @@ class AnnotationBadge extends WidgetType {
 		badge.type = 'button';
 		badge.dataset.annotations = this.ids.join(' ');
 		badge.textContent = String(this.ids.length);
-		const count = this.ids.length;
-		const noun = count === 1 ? 'annotatie' : 'annotaties';
-		badge.setAttribute('aria-label', `${count} ${noun} op '${truncateQuote(this.quote)}'`);
+		badge.setAttribute('aria-label', this.label(this.ids.length, truncateQuote(this.quote)));
 		return badge;
 	}
 
@@ -228,7 +231,7 @@ function resolveGroup(group: Group, doc: string, sents: number[]) {
 	return { docFrom, textTo, startSent, endSent };
 }
 
-function buildAll(state: EditorState): Built {
+function buildAll(state: EditorState, label: AnnotationCountLabel): Built {
 	const doc = state.doc.toString();
 	const sel = state.selection.main;
 	const sents = sentinelPositions(doc);
@@ -270,12 +273,12 @@ function buildAll(state: EditorState): Built {
 		if (endSent !== null) {
 			// Two caret stops: the badge replaces the end sentinel, atomic so the caret
 			// treats it as a unit and stops just before (inside) and just after (outside).
-			deco.push(Decoration.replace({ widget: new AnnotationBadge(group.ids, quote) }).range(endSent, endSent + 1));
+			deco.push(Decoration.replace({ widget: new AnnotationBadge(group.ids, quote, label) }).range(endSent, endSent + 1));
 			atomic.push(atomicMark.range(endSent, endSent + 1));
 		} else {
 			// Guarded edge (would break the markdown parse): fall back to the old
 			// single-stop nub — a zero-width widget at the range end, inside the tint.
-			deco.push(Decoration.widget({ widget: new AnnotationBadge(group.ids, quote), side: -1 }).range(textTo));
+			deco.push(Decoration.widget({ widget: new AnnotationBadge(group.ids, quote, label), side: -1 }).range(textTo));
 		}
 		if (startSent !== null) {
 			deco.push(startSentinelDeco.range(startSent, startSent + 1));
@@ -285,18 +288,21 @@ function buildAll(state: EditorState): Built {
 	return { deco: Decoration.set(deco, true), atomic: Decoration.set(atomic, true) };
 }
 
-const annotationRender = StateField.define<Built>({
-	create: (state) => buildAll(state),
-	update: (value, tr) => {
-		if (tr.docChanged || !tr.startState.selection.eq(tr.state.selection) || tr.effects.some((e) => e.is(setAnnotations))) {
-			return buildAll(tr.state);
-		}
-		return value;
-	},
-	provide: (f) => EditorView.decorations.from(f, (v) => v.deco),
-});
-
-const annotationAtomic = EditorView.atomicRanges.of((view) => view.state.field(annotationRender).atomic);
+/** The render field carries the badge label so its accessible text is localizable.
+ *  A fresh field per overlay keeps the two concerns (rendering, atomic ranges) reading
+ *  the same instance. */
+function makeAnnotationRender(label: AnnotationCountLabel): StateField<Built> {
+	return StateField.define<Built>({
+		create: (state) => buildAll(state, label),
+		update: (value, tr) => {
+			if (tr.docChanged || !tr.startState.selection.eq(tr.state.selection) || tr.effects.some((e) => e.is(setAnnotations))) {
+				return buildAll(tr.state, label);
+			}
+			return value;
+		},
+		provide: (f) => EditorView.decorations.from(f, (v) => v.deco),
+	});
+}
 
 /** Maintains the document sentinels: after any annotation or text change, ensures
  *  exactly one sentinel at each group's start and end (minus guarded edges). Runs in
@@ -371,15 +377,21 @@ const annotationClipboard: Extension = [
 ];
 
 /** The annotation overlay: clean-coordinate anchoring, sentinel maintenance, and
- *  tint/badge rendering with a caret stop on each side of every edge. */
+ *  tint/badge rendering with a caret stop on each side of every edge. `countLabel`
+ *  builds each badge's accessible label (count + quote, singular/plural), so the
+ *  host can localize it. */
 // Prec.low keeps the tint the INNERMOST mark, so it hugs the raw text and inherits
 // its font (a heading, bold, etc.) — the token then scales with whatever it marks,
 // instead of sitting at the base font size as an outer wrapper.
-export const annotations: Extension = [
-	annotationField,
-	Prec.highest(annotationRender),
-	annotationAtomic,
-	annotationSentinelFilter,
-	annotationHistory,
-	annotationClipboard,
-];
+export function annotations(countLabel: AnnotationCountLabel): Extension {
+	const annotationRender = makeAnnotationRender(countLabel);
+	const annotationAtomic = EditorView.atomicRanges.of((view) => view.state.field(annotationRender).atomic);
+	return [
+		annotationField,
+		Prec.highest(annotationRender),
+		annotationAtomic,
+		annotationSentinelFilter,
+		annotationHistory,
+		annotationClipboard,
+	];
+}
