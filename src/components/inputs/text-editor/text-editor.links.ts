@@ -84,21 +84,33 @@ function referenceDefs(state: EditorState): Map<string, string> {
 	return defs;
 }
 
-/** The link's destination, or null for a mention or a link without a resolvable
- *  URL. Handles both inline links (`[text](url)`) and reference-style links
- *  (`[text][ref]`), resolving the latter against `refs`. */
+/** Only follow schemes that are safe to put in a clickable anchor. The editor's
+ *  value is consumer/document-supplied Markdown, so a `[text](javascript:…)` (or
+ *  `data:` / `vbscript:`) link must never become a real, clickable badge —
+ *  `target="_blank"` does NOT neutralise those; they execute in the current
+ *  document. A URL with no scheme (relative, `#anchor`, `?query`, `//host`) just
+ *  navigates, so it is allowed; a schemed URL must be http(s)/mailto/tel. */
+export function isSafeHref(href: string): boolean {
+	const trimmed = href.trim();
+	if (!/^[a-z][a-z0-9+.-]*:/i.test(trimmed)) return true; // no scheme → relative, safe
+	return /^(?:https?|mailto|tel):/i.test(trimmed);
+}
+
+/** The link's destination, or null for a mention, an unsafe scheme, or a link
+ *  without a resolvable URL. Handles both inline links (`[text](url)`) and
+ *  reference-style links (`[text][ref]`), resolving the latter against `refs`. */
 function hrefOf(state: EditorState, link: SyntaxNode, refs: Map<string, string>): string | null {
 	let label: string | null = null;
 	for (let child = link.firstChild; child; child = child.nextSibling) {
 		if (child.name === 'URL') {
 			const href = state.sliceDoc(child.from, child.to);
-			return href && !href.startsWith(MENTION_HREF_PREFIX) ? href : null;
+			return href && !href.startsWith(MENTION_HREF_PREFIX) && isSafeHref(href) ? href : null;
 		}
 		if (child.name === 'LinkLabel') label = normaliseLabel(state.sliceDoc(child.from, child.to));
 	}
 	if (label) {
 		const href = refs.get(label);
-		return href && !href.startsWith(MENTION_HREF_PREFIX) ? href : null;
+		return href && !href.startsWith(MENTION_HREF_PREFIX) && isSafeHref(href) ? href : null;
 	}
 	return null;
 }

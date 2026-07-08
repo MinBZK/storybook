@@ -566,6 +566,13 @@ describe('nldd-text-editor', () => {
 		cleanup(el2);
 	});
 
+	it('rendert geen klikbare badge voor een javascript:- of data:-link (XSS-guard)', async () => {
+		const el2 = await withValue('[safe](https://example.org) [rel](/p) [js](javascript:x) [d](data:x)');
+		const hrefs = [...el2.shadowRoot!.querySelectorAll('.cm-link-badge')].map((b) => b.getAttribute('href'));
+		expect(hrefs).toEqual(['https://example.org', '/p']); // only safe schemes become a real link
+		cleanup(el2);
+	});
+
 	it('mentionToken bouwt een markdown-link met user-id', () => {
 		expect(mentionToken({ id: '42', label: 'Anouk' })).toBe('[@Anouk](user:42)');
 	});
