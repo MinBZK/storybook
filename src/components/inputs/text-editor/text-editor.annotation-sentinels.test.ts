@@ -6,7 +6,7 @@ import {
 	reconcileSentinels,
 	buildDesiredDoc,
 	canPlaceSentinel,
-} from './text-editor.annotation-sentinels.ts';
+} from './text-editor.annotation-sentinels.js';
 
 // Apply a list of {from,to,insert} changes to a string (mimics CM's atomic apply:
 // all offsets are in the ORIGINAL string; apply right-to-left to keep them valid).

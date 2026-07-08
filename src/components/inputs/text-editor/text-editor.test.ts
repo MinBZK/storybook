@@ -1,7 +1,7 @@
 import { describe, it, expect, afterEach } from 'vitest';
-import { fixture, cleanup, waitForUpdate } from '../../../test-utils.ts';
-import './text-editor.ts';
-import { mentionToken } from './text-editor.mentions.ts';
+import { fixture, cleanup, waitForUpdate } from '../../../test-utils.js';
+import './text-editor.js';
+import { mentionToken } from './text-editor.mentions.js';
 
 type TextEditorEl = HTMLElement & { value: string; updateComplete: Promise<boolean> };
 

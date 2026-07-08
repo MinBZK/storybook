@@ -1,7 +1,7 @@
 import { describe, it, expect, afterEach } from 'vitest';
-import { fixture, cleanup, waitForUpdate } from '../../../test-utils.ts';
-import './text-editor.ts';
-import { renumberOrderedLists } from './text-editor.ordered-list.ts';
+import { fixture, cleanup, waitForUpdate } from '../../../test-utils.js';
+import './text-editor.js';
+import { renumberOrderedLists } from './text-editor.ordered-list.js';
 
 /** Apply the renumber changes to a string (highest offset first, so earlier edits
  *  don't shift later ones). */

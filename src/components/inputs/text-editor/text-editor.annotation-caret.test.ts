@@ -1,9 +1,9 @@
 import { describe, it, expect, afterEach } from 'vitest';
 import { EditorView } from '@codemirror/view';
-import { fixture, cleanup, waitForUpdate } from '../../../test-utils.ts';
-import './text-editor.ts';
-import { ANNOTATION_SENTINEL as S, stripSentinels, docToClean } from './text-editor.annotation-sentinels.ts';
-import { annotationMove, pasteAnnotations, currentAnnotations } from './text-editor.annotations.ts';
+import { fixture, cleanup, waitForUpdate } from '../../../test-utils.js';
+import './text-editor.js';
+import { ANNOTATION_SENTINEL as S, stripSentinels, docToClean } from './text-editor.annotation-sentinels.js';
+import { annotationMove, pasteAnnotations, currentAnnotations } from './text-editor.annotations.js';
 
 /* Caret behaviour around an annotation edge. Each edge has two stops — just inside
  * (grows on typing) and just outside (does not) — thanks to a sentinel character.

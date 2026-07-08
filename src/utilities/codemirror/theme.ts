@@ -52,7 +52,7 @@ const baseTheme = EditorView.theme({
 	},
 	// Breathing room between the line-number gutter and the code (VS Code-like).
 	'.cm-lineNumbers .cm-gutterElement': {
-		padding: '0 16px 0 8px',
+		padding: '0 var(--primitives-space-16) 0 var(--primitives-space-8)',
 	},
 	'.cm-activeLine, .cm-activeLineGutter': {
 		backgroundColor: 'transparent',

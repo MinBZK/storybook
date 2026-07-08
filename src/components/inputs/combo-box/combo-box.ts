@@ -93,7 +93,10 @@ export class NLDDComboBox extends LitElement {
 	 * the display label. Set `text` explicitly to opt out of auto-derivation (e.g. for
 	 * custom display formats like `${item.text} (${item.id})`).
 	 */
-	@property({ reflect: true, converter: reflectNonDefault<string>('') })
+	// Not reflected: `text` mirrors the live input value and changes on every
+	// keystroke, so reflecting it would write an attribute per character for no
+	// benefit (no styling or consumer reads the mirrored attribute).
+	@property({ type: String })
 	text = '';
 
 	@property({ reflect: true, converter: reflectNonDefault<string>('') })

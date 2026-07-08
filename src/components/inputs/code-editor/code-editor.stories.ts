@@ -130,7 +130,7 @@ const Template = ({
 	readonly,
 	disabled,
 	accessibleLabel,
-}: Record<string, any>) => html`
+}: Record<string, unknown>) => html`
 	<nldd-code-editor
 		variant=${variant as string}
 		language=${language || nothing}
