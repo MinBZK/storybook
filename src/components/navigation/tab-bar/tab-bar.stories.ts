@@ -32,6 +32,11 @@ export default {
 			description: 'Centreert de tabs in de container (host vult de rij, tabs groeperen in het midden)',
 			table: { defaultValue: { summary: false } },
 		},
+		disabled: {
+			control: 'boolean',
+			description: 'Schakelt de hele balk uit: dimt hem, blokkeert muisinteractie en haalt de tabs uit de tab-volgorde',
+			table: { defaultValue: { summary: false } },
+		},
 		accessibleLabel: {
 			name: 'accessible-label',
 			control: 'text',
@@ -42,6 +47,7 @@ export default {
 		variant: '',
 		size: 'md',
 		centered: false,
+		disabled: false,
 		accessibleLabel: '',
 	},
 };
@@ -54,11 +60,12 @@ const tabBarItems = html`
 	<nldd-tab-bar-item text="Zoeken" icon="search"></nldd-tab-bar-item>
 `;
 
-const Template = ({ variant, size, centered, accessibleLabel }: Record<string, any>) => html`
+const Template = ({ variant, size, centered, disabled, accessibleLabel }: Record<string, any>) => html`
 	<nldd-tab-bar
 		variant=${variant || nothing}
 		size=${size || nothing}
 		?centered=${centered}
+		?disabled=${disabled}
 		accessible-label=${accessibleLabel || nothing}
 	>
 		${tabBarItems}
@@ -67,6 +74,16 @@ const Template = ({ variant, size, centered, accessibleLabel }: Record<string, a
 
 export const Standaard = {
 	render: Template,
+};
+
+export const Uitgeschakeld = {
+	name: 'Uitgeschakeld (disabled)',
+	render: () => html`
+	<nldd-tab-bar disabled accessible-label="Uitgeschakeld">
+		${tabBarItems}
+	</nldd-tab-bar>
+`,
+	parameters: { controls: { disable: true } },
 };
 
 export const MetTekstVariant = {
