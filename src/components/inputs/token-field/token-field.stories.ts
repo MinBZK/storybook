@@ -164,3 +164,64 @@ export const CustomValues = {
 		></nldd-token-field>
 	`,
 };
+
+/**
+ * Menu-tokens: `token-control="menu"` geeft elke token een ⌄ die een actie-menu opent
+ * in plaats van een ✕. Het menu lever je als `nldd-token`-prototype in `slot="template"`:
+ * één zonder key is het gedeelde menu, één met `data-value="X"` is de uitzondering voor
+ * die waarde (hier heeft `nl` een extra actie). Het veld kloont het menu per token; een
+ * keuze vuurt `token-action` (`{ value, action }`) en de app beslist wat er gebeurt.
+ * Toetsenbord: focus een token en open het menu met Enter, Spatie of Pijl omlaag;
+ * pijltjes roteren tussen de tokens, Backspace verwijdert er een.
+ */
+export const MenuTokens = {
+	args: {
+		accessibleLabel: 'Landen',
+		values: ['nl', 'be', 'de'],
+	},
+	render: (args: Record<string, unknown>) => {
+		const onTokenAction = (e: Event) => {
+			const { value, action } = (e as CustomEvent<{ value: string; action: string }>).detail;
+			const field = e.currentTarget as HTMLElement & { values: string[] };
+			if (action === 'remove') {
+				field.values = field.values.filter((v) => v !== value);
+			} else if (action === 'to-start') {
+				field.values = [value, ...field.values.filter((v) => v !== value)];
+			} else if (action === 'capital') {
+				window.alert(`Hoofdstad opvragen voor: ${value}`);
+			}
+		};
+		return html`
+			<nldd-token-field
+				.values=${(args.values as string[]) ?? []}
+				accessible-label=${(args.accessibleLabel as string) ?? ''}
+				token-control="menu"
+				@token-action=${onTokenAction}
+			>
+				<nldd-menu variant="listbox">
+					<nldd-menu-item value="nl" text="Nederland"></nldd-menu-item>
+					<nldd-menu-item value="be" text="België"></nldd-menu-item>
+					<nldd-menu-item value="de" text="Duitsland"></nldd-menu-item>
+					<nldd-menu-item value="fr" text="Frankrijk"></nldd-menu-item>
+				</nldd-menu>
+
+				<!-- Gedeeld menu (geen key): geldt voor elke token zonder eigen prototype. -->
+				<nldd-token slot="template">
+					<nldd-menu slot="menu">
+						<nldd-menu-item value="to-start" text="Verplaats naar begin"></nldd-menu-item>
+						<nldd-menu-item value="remove" text="Verwijder" destructive></nldd-menu-item>
+					</nldd-menu>
+				</nldd-token>
+
+				<!-- Uitzondering voor "nl": een extra actie bovenop het gedeelde menu. -->
+				<nldd-token slot="template" data-value="nl">
+					<nldd-menu slot="menu">
+						<nldd-menu-item value="capital" text="Toon hoofdstad"></nldd-menu-item>
+						<nldd-menu-item value="to-start" text="Verplaats naar begin"></nldd-menu-item>
+						<nldd-menu-item value="remove" text="Verwijder" destructive></nldd-menu-item>
+					</nldd-menu>
+				</nldd-token>
+			</nldd-token-field>
+		`;
+	},
+};

@@ -423,6 +423,54 @@ describe('nldd-token-field', () => {
 		expect(el.shadowRoot!.activeElement).toBe(el.shadowRoot!.querySelectorAll('nldd-token')[1]);
 	});
 
+	// — Menu-control tokens (token-control="menu") ————————————————————————————
+
+	const withTokenMenu = () => fixture<TokenFieldEl>(`
+		<nldd-token-field accessible-label="Landen" token-control="menu">
+			<nldd-menu variant="listbox">
+				<nldd-menu-item value="nl" text="Nederland"></nldd-menu-item>
+				<nldd-menu-item value="be" text="België"></nldd-menu-item>
+			</nldd-menu>
+			<nldd-token slot="template">
+				<nldd-menu slot="menu">
+					<nldd-menu-item value="remove" text="Verwijder" destructive></nldd-menu-item>
+				</nldd-menu>
+			</nldd-token>
+			<nldd-token slot="template" data-value="nl">
+				<nldd-menu slot="menu">
+					<nldd-menu-item value="capital" text="Hoofdstad"></nldd-menu-item>
+					<nldd-menu-item value="remove" text="Verwijder" destructive></nldd-menu-item>
+				</nldd-menu>
+			</nldd-token>
+		</nldd-token-field>
+	`);
+
+	it('token-control="menu" clones the shared menu, and the data-value override where present', async () => {
+		el = await withTokenMenu();
+		el.values = ['nl', 'be'];
+		await waitForUpdate(el);
+		const tokens = [...el.shadowRoot!.querySelectorAll('nldd-token')];
+		expect(tokens.map((t) => t.getAttribute('control'))).toEqual(['menu', 'menu']);
+		const textsFor = (t: Element) => [...t.querySelectorAll('nldd-menu[slot="menu"] nldd-menu-item')]
+			.map((i) => i.getAttribute('text'));
+		expect(textsFor(tokens[0])).toEqual(['Hoofdstad', 'Verwijder']); // nl: override
+		expect(textsFor(tokens[1])).toEqual(['Verwijder']); // be: shared default
+	});
+
+	it('selecting a token menu action fires token-action with the value and action', async () => {
+		el = await withTokenMenu();
+		el.values = ['nl', 'be'];
+		await waitForUpdate(el);
+		let detail: { value: string; action: string } | null = null;
+		el.addEventListener('token-action', (e) => {
+			detail = (e as CustomEvent<{ value: string; action: string }>).detail;
+		});
+		const beToken = [...el.shadowRoot!.querySelectorAll('nldd-token')]
+			.find((t) => t.getAttribute('data-value') === 'be')!;
+		(beToken.querySelector('nldd-menu-item[value="remove"]') as HTMLElement & { select(): void }).select();
+		expect(detail).toEqual({ value: 'be', action: 'remove' });
+	});
+
 	// — Readonly & required (F3.5) —————————————————————————————————————————————
 
 	it('readonly hides the input and picker and makes tokens static', async () => {

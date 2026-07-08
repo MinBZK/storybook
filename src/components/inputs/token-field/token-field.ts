@@ -23,14 +23,20 @@
  * @attr {boolean}  readonly         - Readonly: static tokens, no input/picker, read-only surface
  * @attr {boolean}  required         - Marks the field required (invalid when it has no tokens)
  * @attr {boolean}  disabled         - Disabled state
+ * @attr {string}   token-control    - Trailing control per token: 'dismiss' (default, a ✕ that removes it) or 'menu' (a ⌄ opening a per-token action menu supplied by the template prototypes)
  * @attr {string}   name             - Name for form submission
  * @attr {object}   translations     - Override translation keys; unset keys fall back to Dutch
  *
  * @slot - An nldd-menu with nldd-menu-item options; each item's `value`/`text`
  *         supplies a token's value and its display label.
+ * @slot template - `nldd-token` prototypes supplying each token's action menu when
+ *                  token-control="menu": a keyless one is the shared default, a
+ *                  `data-value="X"` one overrides value X. Only the prototype's nested
+ *                  `nldd-menu` is used today; its other props are ignored.
  *
  * @fires change - When the selected values change; detail: { values: string[] }
  * @fires input  - When the input text changes; detail: { value: string }
+ * @fires token-action - When a token's menu action is chosen (token-control="menu"); detail: { value: string, action: string }
  */
 import { LitElement } from 'lit';
 import { customElement, property, state } from 'lit/decorators.js';
@@ -39,6 +45,9 @@ import { tokenFieldTemplate } from './token-field.template.js';
 import { nlddTokenFieldTranslations, type NLDDTokenFieldTranslations } from './token-field.i18n.js';
 import type { NLDDMenu, NLDDMenuItem } from '../../actions/menu/menu.js';
 import '../../actions/menu/menu.js';
+
+/** Trailing control rendered on each token. */
+export type TokenFieldControl = 'dismiss' | 'menu';
 
 @customElement('nldd-token-field')
 export class NLDDTokenField extends LitElement {
@@ -104,6 +113,12 @@ export class NLDDTokenField extends LitElement {
 
 	@property({ type: Boolean, reflect: true })
 	disabled = false;
+
+	/** Trailing control on each token: 'dismiss' shows a ✕ that removes it; 'menu'
+	 *  shows a ⌄ that opens a per-token action menu built from the `token-menu`
+	 *  template. Choosing an action fires `token-action` for the app to handle. */
+	@property({ attribute: 'token-control' })
+	tokenControl: TokenFieldControl = 'dismiss';
 
 	@property({ type: String })
 	name = '';
@@ -190,6 +205,9 @@ export class NLDDTokenField extends LitElement {
 		// re-hide the ones now selected. Close the menu if nothing is left to add.
 		if (changed.has('values')) {
 			this._rovingIndex = Math.max(0, Math.min(this._rovingIndex, this.values.length - 1));
+			for (const key of [...this._tokenMenuCache.keys()]) {
+				if (!this.values.includes(key)) this._tokenMenuCache.delete(key);
+			}
 			this._updateFormValue();
 			if (this._menu) {
 				this._syncMenuItems();
@@ -273,7 +291,9 @@ export class NLDDTokenField extends LitElement {
 	/** Slotted menu options not yet selected — what the picker could still add. */
 	private get _availableOptionCount(): number {
 		let n = 0;
-		for (const el of this.querySelectorAll('nldd-menu-item')) {
+		// Scope to the options menu (a direct-child nldd-menu); this deliberately
+		// skips nldd-menu-items inside the token-menu template prototypes.
+		for (const el of this.querySelectorAll(':scope > nldd-menu nldd-menu-item')) {
 			const item = el as NLDDMenuItem;
 			const v = item.value || item.text; // property, not attribute: consumers (Vue) set the property
 			if (v && !this.values.includes(v)) n++;
@@ -301,13 +321,43 @@ export class NLDDTokenField extends LitElement {
 	}
 
 	public _labelFor(value: string): string {
-		for (const el of this.querySelectorAll('nldd-menu-item')) {
+		// Scope to the options menu (a direct-child nldd-menu); this deliberately
+		// skips nldd-menu-items inside the token-menu template prototypes.
+		for (const el of this.querySelectorAll(':scope > nldd-menu nldd-menu-item')) {
 			const item = el as NLDDMenuItem;
 			if ((item.value || item.text) === value) {
 				return item.text || item.textContent?.trim() || value;
 			}
 		}
 		return value;
+	}
+
+	/** Cloned action menu per value, so each token's menu stays stable across
+	 *  re-renders (a fresh clone every render would drop its open/focus state). Pruned
+	 *  when a value leaves; see willUpdate. */
+	private _tokenMenuCache = new Map<string, HTMLElement>();
+
+	/** The action menu for a value's token (token-control="menu"): a clone of the
+	 *  matching `nldd-token[slot="template"][data-value]` prototype's `nldd-menu`, else
+	 *  the shared keyless prototype's. Cloned once per value and reused. Only the
+	 *  prototype's nested menu is read today; its other props are ignored. */
+	public _tokenMenuFor(value: string): HTMLElement | null {
+		const cached = this._tokenMenuCache.get(value);
+		if (cached) return cached;
+		const clone = this._cloneTokenMenu(value);
+		if (clone) this._tokenMenuCache.set(value, clone);
+		return clone;
+	}
+
+	private _cloneTokenMenu(value: string): HTMLElement | null {
+		let shared: Element | null = null;
+		let match: Element | null = null;
+		for (const proto of this.querySelectorAll('nldd-token[slot="template"]')) {
+			if ((proto as HTMLElement).dataset.value === value) { match = proto; break; }
+			if (!proto.hasAttribute('data-value')) shared ??= proto;
+		}
+		const source = (match ?? shared)?.querySelector('nldd-menu[slot="menu"]');
+		return source ? (source.cloneNode(true) as HTMLElement) : null;
 	}
 
 	public _addValue(value: string): void {
@@ -528,6 +578,19 @@ export class NLDDTokenField extends LitElement {
 		if (target.closest('nldd-token') || target.closest('.token-field__picker')) return;
 		if (this._showInput) this._input?.focus();
 		else this._focusTokenAt(this._tokens.length - 1);
+	}
+
+	/** A token's menu action was chosen (token-control="menu"): report which token
+	 *  and which action and let the app decide what happens (remove, edit, …). The
+	 *  token owns closing the menu and returning focus to its chevron. */
+	public _handleTokenAction(e: Event, value: string): void {
+		const item = e.target as NLDDMenuItem;
+		const action = item.value || item.text;
+		this.dispatchEvent(new CustomEvent('token-action', {
+			detail: { value, action },
+			bubbles: true,
+			composed: true,
+		}));
 	}
 
 	/**

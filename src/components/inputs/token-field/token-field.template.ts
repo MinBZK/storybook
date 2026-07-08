@@ -6,6 +6,7 @@ import type { NLDDTokenField } from './token-field.js';
 import '../../content/token/token.js';
 import '../../content/icon/icon.js';
 import '../../actions/icon-button/icon-button.js';
+import '../../actions/menu/menu.js';
 
 function renderValidationIcon(component: NLDDTokenField): TemplateResult | typeof nothing {
 	const name = component.invalid ? 'invalid' : component.valid ? 'valid' : null;
@@ -63,6 +64,48 @@ function renderPicker(component: NLDDTokenField): TemplateResult {
 	`;
 }
 
+/** One token in the row. `token-control="menu"` renders a ⌄ that opens a per-token
+ *  action menu — a clone of the matching `nldd-token[slot="template"]` prototype's
+ *  menu — which the token wires itself; a selection bubbles to `token-action`.
+ *  Otherwise it is a ✕ that removes the value. Readonly tokens carry no control. */
+function renderToken(component: NLDDTokenField, value: string, index: number): TemplateResult {
+	const tabindex = component.readonly
+		? nothing
+		: (!component._showInput && index === component._rovingIndex ? '0' : '-1');
+
+	if (!component.readonly && component.tokenControl === 'menu') {
+		return html`
+			<nldd-token
+				text=${component._labelFor(value)}
+				control="menu"
+				tabindex=${tabindex}
+				?roving=${!component.readonly}
+				menu-text=${component._t('components.token-field.token-menu-action')}
+				?disabled=${component.disabled}
+				data-value=${value}
+				@keydown=${(e: KeyboardEvent) => component._handleTokenKeydown(e, index)}
+				@select=${(e: Event) => component._handleTokenAction(e, value)}
+			>
+				${component._tokenMenuFor(value)}
+			</nldd-token>
+		`;
+	}
+
+	return html`
+		<nldd-token
+			text=${component._labelFor(value)}
+			control=${component.readonly ? nothing : 'dismiss'}
+			tabindex=${tabindex}
+			?roving=${!component.readonly}
+			dismiss-text=${component._t('components.token-field.dismiss-action')}
+			?disabled=${component.disabled}
+			data-value=${value}
+			@dismiss=${() => component._removeValue(value)}
+			@keydown=${(e: KeyboardEvent) => component._handleTokenKeydown(e, index)}
+		></nldd-token>
+	`;
+}
+
 export function tokenFieldTemplate(component: NLDDTokenField): TemplateResult {
 	return html`
 		<div class="token-field"
@@ -70,21 +113,7 @@ export function tokenFieldTemplate(component: NLDDTokenField): TemplateResult {
 			data-valid=${component.valid && !component.invalid ? '' : nothing}
 			@click=${component._handleFieldClick}
 		>
-			${component.values.map(
-				(value, index) => html`
-					<nldd-token
-						text=${component._labelFor(value)}
-						control=${component.readonly ? nothing : 'dismiss'}
-						tabindex=${component.readonly ? nothing : (!component._showInput && index === component._rovingIndex ? '0' : '-1')}
-						?roving=${!component.readonly}
-						dismiss-text=${component._t('components.token-field.dismiss-action')}
-						?disabled=${component.disabled}
-						data-value=${value}
-						@dismiss=${() => component._removeValue(value)}
-						@keydown=${(e: KeyboardEvent) => component._handleTokenKeydown(e, index)}
-					></nldd-token>
-				`,
-			)}
+			${component.values.map((value, index) => renderToken(component, value, index))}
 			${component._showInput || component._showPicker
 				? html`
 					<div class="token-field__input-area">
