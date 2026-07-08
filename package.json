@@ -35,6 +35,18 @@
       "types": "./dist/components/actions/menu/menu.d.ts",
       "default": "./dist/components/actions/menu/menu.js"
     },
+    "./blockquote": {
+      "types": "./dist/components/content/blockquote/blockquote.d.ts",
+      "default": "./dist/components/content/blockquote/blockquote.js"
+    },
+    "./byline": {
+      "types": "./dist/components/content/byline/byline.d.ts",
+      "default": "./dist/components/content/byline/byline.js"
+    },
+    "./code-viewer": {
+      "types": "./dist/components/content/code-viewer/code-viewer.d.ts",
+      "default": "./dist/components/content/code-viewer/code-viewer.js"
+    },
     "./icon": {
       "types": "./dist/components/content/icon/icon.d.ts",
       "default": "./dist/components/content/icon/icon.js"
@@ -43,41 +55,29 @@
       "types": "./dist/components/content/image/image.d.ts",
       "default": "./dist/components/content/image/image.js"
     },
+    "./keyboard-shortcut": {
+      "types": "./dist/components/content/keyboard-shortcut/keyboard-shortcut.d.ts",
+      "default": "./dist/components/content/keyboard-shortcut/keyboard-shortcut.js"
+    },
     "./rich-text": {
       "types": "./dist/components/content/rich-text/rich-text.d.ts",
       "default": "./dist/components/content/rich-text/rich-text.js"
-    },
-    "./title": {
-      "types": "./dist/components/content/title/title.d.ts",
-      "default": "./dist/components/content/title/title.js"
-    },
-    "./tooltip": {
-      "types": "./dist/components/content/tooltip/tooltip.d.ts",
-      "default": "./dist/components/content/tooltip/tooltip.js"
-    },
-    "./blockquote": {
-      "types": "./dist/components/content/blockquote/blockquote.d.ts",
-      "default": "./dist/components/content/blockquote/blockquote.js"
     },
     "./tag": {
       "types": "./dist/components/content/tag/tag.d.ts",
       "default": "./dist/components/content/tag/tag.js"
     },
-    "./keyboard-shortcut": {
-      "types": "./dist/components/content/keyboard-shortcut/keyboard-shortcut.d.ts",
-      "default": "./dist/components/content/keyboard-shortcut/keyboard-shortcut.js"
-    },
-    "./code-viewer": {
-      "types": "./dist/components/content/code-viewer/code-viewer.d.ts",
-      "default": "./dist/components/content/code-viewer/code-viewer.js"
-    },
-    "./byline": {
-      "types": "./dist/components/content/byline/byline.d.ts",
-      "default": "./dist/components/content/byline/byline.js"
+    "./title": {
+      "types": "./dist/components/content/title/title.d.ts",
+      "default": "./dist/components/content/title/title.js"
     },
     "./token": {
       "types": "./dist/components/content/token/token.d.ts",
       "default": "./dist/components/content/token/token.js"
+    },
+    "./tooltip": {
+      "types": "./dist/components/content/tooltip/tooltip.d.ts",
+      "default": "./dist/components/content/tooltip/tooltip.js"
     },
     "./form": {
       "types": "./dist/components/forms/form/form.d.ts",
@@ -95,46 +95,6 @@
       "types": "./dist/components/forms/form-section/form-section.d.ts",
       "default": "./dist/components/forms/form-section/form-section.js"
     },
-    "./text-field": {
-      "types": "./dist/components/inputs/text-field/text-field.d.ts",
-      "default": "./dist/components/inputs/text-field/text-field.js"
-    },
-    "./multi-line-text-field": {
-      "types": "./dist/components/inputs/multi-line-text-field/multi-line-text-field.d.ts",
-      "default": "./dist/components/inputs/multi-line-text-field/multi-line-text-field.js"
-    },
-    "./code-editor": {
-      "types": "./dist/components/inputs/code-editor/code-editor.d.ts",
-      "default": "./dist/components/inputs/code-editor/code-editor.js"
-    },
-    "./text-editor": {
-      "types": "./dist/components/inputs/text-editor/text-editor.d.ts",
-      "default": "./dist/components/inputs/text-editor/text-editor.js"
-    },
-    "./password-field": {
-      "types": "./dist/components/inputs/password-field/password-field.d.ts",
-      "default": "./dist/components/inputs/password-field/password-field.js"
-    },
-    "./search-field": {
-      "types": "./dist/components/inputs/search-field/search-field.d.ts",
-      "default": "./dist/components/inputs/search-field/search-field.js"
-    },
-    "./number-field": {
-      "types": "./dist/components/inputs/number-field/number-field.d.ts",
-      "default": "./dist/components/inputs/number-field/number-field.js"
-    },
-    "./dropdown": {
-      "types": "./dist/components/inputs/dropdown/dropdown.d.ts",
-      "default": "./dist/components/inputs/dropdown/dropdown.js"
-    },
-    "./combo-box": {
-      "types": "./dist/components/inputs/combo-box/combo-box.d.ts",
-      "default": "./dist/components/inputs/combo-box/combo-box.js"
-    },
-    "./stepper": {
-      "types": "./dist/components/inputs/stepper/stepper.d.ts",
-      "default": "./dist/components/inputs/stepper/stepper.js"
-    },
     "./checkbox": {
       "types": "./dist/components/inputs/checkbox/checkbox.d.ts",
       "default": "./dist/components/inputs/checkbox/checkbox.js"
@@ -142,6 +102,30 @@
     "./checkbox-field": {
       "types": "./dist/components/inputs/checkbox-field/checkbox-field.d.ts",
       "default": "./dist/components/inputs/checkbox-field/checkbox-field.js"
+    },
+    "./code-editor": {
+      "types": "./dist/components/inputs/code-editor/code-editor.d.ts",
+      "default": "./dist/components/inputs/code-editor/code-editor.js"
+    },
+    "./combo-box": {
+      "types": "./dist/components/inputs/combo-box/combo-box.d.ts",
+      "default": "./dist/components/inputs/combo-box/combo-box.js"
+    },
+    "./dropdown": {
+      "types": "./dist/components/inputs/dropdown/dropdown.d.ts",
+      "default": "./dist/components/inputs/dropdown/dropdown.js"
+    },
+    "./multi-line-text-field": {
+      "types": "./dist/components/inputs/multi-line-text-field/multi-line-text-field.d.ts",
+      "default": "./dist/components/inputs/multi-line-text-field/multi-line-text-field.js"
+    },
+    "./number-field": {
+      "types": "./dist/components/inputs/number-field/number-field.d.ts",
+      "default": "./dist/components/inputs/number-field/number-field.js"
+    },
+    "./password-field": {
+      "types": "./dist/components/inputs/password-field/password-field.d.ts",
+      "default": "./dist/components/inputs/password-field/password-field.js"
     },
     "./radio-button": {
       "types": "./dist/components/inputs/radio-button/radio-button.d.ts",
@@ -155,6 +139,18 @@
       "types": "./dist/components/inputs/radio-button-group/radio-button-group.d.ts",
       "default": "./dist/components/inputs/radio-button-group/radio-button-group.js"
     },
+    "./search-field": {
+      "types": "./dist/components/inputs/search-field/search-field.d.ts",
+      "default": "./dist/components/inputs/search-field/search-field.js"
+    },
+    "./segmented-control": {
+      "types": "./dist/components/inputs/segmented-control/segmented-control.d.ts",
+      "default": "./dist/components/inputs/segmented-control/segmented-control.js"
+    },
+    "./stepper": {
+      "types": "./dist/components/inputs/stepper/stepper.d.ts",
+      "default": "./dist/components/inputs/stepper/stepper.js"
+    },
     "./switch": {
       "types": "./dist/components/inputs/switch/switch.d.ts",
       "default": "./dist/components/inputs/switch/switch.js"
@@ -163,9 +159,13 @@
       "types": "./dist/components/inputs/switch-field/switch-field.d.ts",
       "default": "./dist/components/inputs/switch-field/switch-field.js"
     },
-    "./segmented-control": {
-      "types": "./dist/components/inputs/segmented-control/segmented-control.d.ts",
-      "default": "./dist/components/inputs/segmented-control/segmented-control.js"
+    "./text-editor": {
+      "types": "./dist/components/inputs/text-editor/text-editor.d.ts",
+      "default": "./dist/components/inputs/text-editor/text-editor.js"
+    },
+    "./text-field": {
+      "types": "./dist/components/inputs/text-field/text-field.d.ts",
+      "default": "./dist/components/inputs/text-field/text-field.js"
     },
     "./toggle-button": {
       "types": "./dist/components/inputs/toggle-button/toggle-button.d.ts",
