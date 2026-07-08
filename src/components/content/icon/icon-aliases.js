@@ -440,4 +440,19 @@ export const aliases = {
 
 	// hand
 	'privacy': 'shield-lock',
+
+	// arrow-up-out-bucket
+	'upload': 'arrow-up-out-bucket',
+
+	// square-grid-3x3
+	'apps': 'square-grid-3x3',
+
+	// rectangle-split-2x1
+	'columns-2': 'rectangle-split-2x1',
+
+	// rectangle-split-3x1
+	'columns-3': 'rectangle-split-3x1',
+
+	// tree-structure
+	'hierarchy': 'tree-structure',
 };
