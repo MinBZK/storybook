@@ -15,6 +15,10 @@ the type of conventional-commit determines the release. Conventional types
 `chore`, `docs`, `ci`, `style`, `test`, `build` are intentionally omitted
 here; consult the commit history if you need that level of detail.
 
+## <small>0.8.65 (2026-07-08)</small>
+
+* feat: CodeMirror text/code editors + viewer, token-field, FOUC guard, flatter surfaces & fixes (#136 ([e490366](https://github.com/MinBZK/storybook/commit/e490366)), closes [#136](https://github.com/MinBZK/storybook/issues/136)
+
 ### Highlights
 
 - **`nldd-text-editor` — a hybrid Markdown editor.** A CodeMirror 6 editor that shows Markdown source with live styling instead of a separate preview: headings, bold, italic, strikethrough, inline code and fenced code blocks (tinted as one surface, darker where selected), links (with an open-in-new-tab badge), bullet lists (drawn as a filled dot) and ordered lists (auto-renumbered to run in sequence as you type). It stays headless: a command API drives every action and it emits its active state back so a consumer toolbar can own the chrome. `@`-mentions collapse to a token, and opt-in annotations render a tinted range with a count badge that stays anchored across typing, undo/redo, drag-to-move and same-editor cut/paste.
