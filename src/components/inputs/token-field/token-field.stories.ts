@@ -177,6 +177,7 @@ export const CustomValues = {
 export const MenuTokens = {
 	args: {
 		accessibleLabel: 'Landen',
+		placeholder: 'Land toevoegen…',
 		values: ['nl', 'be', 'de'],
 	},
 	render: (args: Record<string, unknown>) => {
@@ -194,6 +195,7 @@ export const MenuTokens = {
 		return html`
 			<nldd-token-field
 				.values=${(args.values as string[]) ?? []}
+				placeholder=${(args.placeholder as string) ?? ''}
 				accessible-label=${(args.accessibleLabel as string) ?? ''}
 				token-control="menu"
 				@token-action=${onTokenAction}
