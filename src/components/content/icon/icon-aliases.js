@@ -221,6 +221,9 @@ export const aliases = {
 	'unlocked': 'lock-open',
 	'unsecure': 'lock-open',
 
+	// markdown-rectangle
+	'markdown': 'markdown-rectangle',
+
 	// rectangle-chevron-left-forward-slash-chevron-right
 	'code-block': 'rectangle-chevron-left-forward-slash-chevron-right',
 
