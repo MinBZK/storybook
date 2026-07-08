@@ -729,4 +729,22 @@ describe('nldd-text-editor', () => {
 		expect(sr.querySelector('.cm-annotation')).not.toBeNull(); // annotation survived
 		cleanup(el2);
 	});
+
+	// fix 8 (shared base): focusFromPoint is a no-op on a read-only view. A direct
+	// call on a readonly text-editor must not move the caret — the guard early-
+	// returns on state.readOnly before dispatching any selection change.
+	it('focusFromPoint does not move the caret on a read-only view', async () => {
+		const el2 = await fixture<TextEditorEl & { focusFromPoint(x: number, y: number): void }>(
+			'<nldd-text-editor readonly accessible-label="Tekst"></nldd-text-editor>',
+		);
+		el2.value = 'Eerste regel\nTweede regel\nDerde regel';
+		await el2.updateComplete;
+		await waitForUpdate(el2);
+		const view = (el2 as unknown as { view: { state: { selection: { main: { head: number } } } } }).view;
+		const before = view.state.selection.main.head;
+		el2.focusFromPoint(40, 40);
+		await waitForUpdate(el2);
+		expect(view.state.selection.main.head).toBe(before);
+		cleanup(el2);
+	});
 });

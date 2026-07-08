@@ -74,16 +74,20 @@ export const codeViewerStyles = css`
 		font: var(--_font);
 	}
 
-	:host(:not([no-copy])) .code-viewer {
+	/* Reserve the actions space only when the copy button actually renders: not
+	   opted out (no-copy) and the Clipboard API is usable (copy-unavailable is
+	   set by JS when it isn't). Both attributes suppress the button, so both drop
+	   the reserved space. */
+	:host(:not([no-copy]):not([copy-unavailable])) .code-viewer {
 		min-height: var(--_actions-area-size);
 		padding-right: var(--_actions-area-size);
 	}
 
-	:host([variant="simple"]:not([no-copy])) {
+	:host([variant="simple"]:not([no-copy]):not([copy-unavailable])) {
 		--_actions-area-padding: 0;
 	}
 
-	:host([variant="simple"]:not([no-copy])) .code-viewer {
+	:host([variant="simple"]:not([no-copy]):not([copy-unavailable])) .code-viewer {
 		min-height: var(--_actions-area-size);
 		padding-right: 0;
 	}

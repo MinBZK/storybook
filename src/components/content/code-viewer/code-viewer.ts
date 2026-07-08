@@ -50,6 +50,16 @@ export type CodeViewerCopyState = 'idle' | 'success' | 'failure';
 
 const COPY_FEEDBACK_DURATION_MS = 2000;
 
+/* navigator.clipboard is undefined off a secure context (not https/localhost),
+ * so the copy button would be a permanent dead button that only ever flashes
+ * "Kopiëren mislukt". Feature-detect and hide it when it genuinely can't work. */
+function isClipboardAvailable(): boolean {
+	return typeof window !== 'undefined'
+		&& window.isSecureContext === true
+		&& typeof navigator !== 'undefined'
+		&& typeof navigator.clipboard?.writeText === 'function';
+}
+
 @customElement('nldd-code-viewer')
 export class NLDDCodeViewer extends NLDDCodeMirrorElement {
 	static override styles = codeViewerStyles;
@@ -72,6 +82,12 @@ export class NLDDCodeViewer extends NLDDCodeMirrorElement {
 	@property({ type: Boolean, reflect: true })
 	wrap = false;
 
+	/* Reflects when the copy button is suppressed because the Clipboard API is
+	 * unavailable (non-secure context), so the CSS can drop the reserved actions
+	 * space just like it does for no-copy. Internal — not a public API. */
+	@property({ type: Boolean, reflect: true, attribute: 'copy-unavailable' })
+	_copyUnavailable = false;
+
 	/** Override one or more translation keys. Unspecified keys fall back to Dutch. */
 	@property({ type: Object })
 	translations: Partial<NLDDCodeViewerTranslations> = {};
@@ -87,7 +103,16 @@ export class NLDDCodeViewer extends NLDDCodeMirrorElement {
 	private _languagePending: Promise<void> = Promise.resolve();
 	private _unsubscribeScheme?: () => void;
 	private _resizeObserver?: ResizeObserver;
+	private _mutationObserver?: MutationObserver;
+	private _scrollableRaf?: number;
 	private _copyResetTimer?: ReturnType<typeof setTimeout>;
+
+	/* The copy button only renders when the user hasn't opted out (no-copy) AND
+	 * the Clipboard API can actually work here (secure context). Off https the
+	 * button would be dead, so we hide it rather than flash a failure. */
+	public get _canCopy(): boolean {
+		return !this.noCopy && isClipboardAvailable();
+	}
 
 	protected getEditorParent(): HTMLElement | null | undefined {
 		return this.shadowRoot?.querySelector('.code-viewer') as HTMLElement | null;
@@ -107,6 +132,24 @@ export class NLDDCodeViewer extends NLDDCodeMirrorElement {
 		return codeViewerTemplate(this);
 	}
 
+	/* The viewer's content is non-editable, so the base focus() (which targets
+	 * the .cm-content contenteditable) would land on an element that isn't the
+	 * keyboard-tab target or the labelled region. Focus the scroller instead —
+	 * the same .cm-scroller[role=region] a keyboard user tabs to and the SR
+	 * announces — but only when it's actually scrollable (focusable); otherwise
+	 * there's nothing to focus, so no-op. */
+	override focus(options?: FocusOptions): void {
+		const scroller = this.view?.scrollDOM;
+		if (this._isScrollable && scroller) scroller.focus(options);
+	}
+
+	/* The viewer's source of truth is its slot, not the CodeMirror view. On a
+	 * detach/reattach re-mount from the live slotted text so changed content
+	 * (swapped while detached) shows, rather than the doc captured on disconnect. */
+	protected override getRemountDoc(): string {
+		return this._getRawText();
+	}
+
 	override connectedCallback(): void {
 		super.connectedCallback();
 		/* CodeMirror's scroller caches off-screen tiles; light-dark() colors
@@ -121,13 +164,37 @@ export class NLDDCodeViewer extends NLDDCodeMirrorElement {
 		this._unsubscribeScheme = undefined;
 		this._resizeObserver?.disconnect();
 		this._resizeObserver = undefined;
+		this._mutationObserver?.disconnect();
+		this._mutationObserver = undefined;
+		if (this._scrollableRaf !== undefined) {
+			cancelAnimationFrame(this._scrollableRaf);
+			this._scrollableRaf = undefined;
+		}
 		clearTimeout(this._copyResetTimer);
 		this._copyResetTimer = undefined;
 	}
 
 	override firstUpdated(): void {
+		// Suppress the copy button up front where the Clipboard API can't work, so
+		// the reserved actions space is dropped on the first paint too.
+		this._copyUnavailable = !this.noCopy && !isClipboardAvailable();
 		this.mountEditor(this._getRawText());
 		this.onEditorMounted();
+	}
+
+	/* slotchange fires when the slot's assigned nodes change, but a framework that
+	 * patches an existing text node in place ({{ reactiveString }}) mutates its
+	 * characterData without swapping the node, so no slotchange fires and the view
+	 * goes stale. Watch the host's light-DOM subtree for character-data (and
+	 * childList) mutations and re-read on any of them. */
+	private _observeSlotText(): void {
+		this._mutationObserver?.disconnect();
+		this._mutationObserver = new MutationObserver(() => this._onSlotChange());
+		this._mutationObserver.observe(this, {
+			characterData: true,
+			subtree: true,
+			childList: true,
+		});
 	}
 
 	/* Runs on the initial mount and on every re-mount after a detach/reattach
@@ -137,18 +204,46 @@ export class NLDDCodeViewer extends NLDDCodeMirrorElement {
 		const scroller = this.view?.scrollDOM;
 		if (scroller) {
 			this._resizeObserver?.disconnect();
-			this._resizeObserver = new ResizeObserver(() => this._updateScrollable());
+			this._resizeObserver = new ResizeObserver((entries) => {
+				// forceScrollLayerRepaint (color-scheme flip) toggles display:none →
+				// reflow on the scroller, so it briefly reports width 0. Recomputing
+				// then would flip _isScrollable false and strip the scroll region's
+				// tabindex/role/aria-label until the next resize, leaving an
+				// overflowing block unreachable. Ignore those transient 0-width ticks.
+				if (entries.every((e) => e.contentRect.width === 0)) return;
+				this._scheduleUpdateScrollable();
+			});
 			this._resizeObserver.observe(scroller);
 		}
+		// (Re)establish the light-DOM text observer here too, so in-place text
+		// mutations are still caught after a detach/reattach re-mount (which runs
+		// onEditorMounted again, not firstUpdated).
+		this._observeSlotText();
 		if (this.language) this._applyLanguage();
 		this._updateScrollable();
 	}
 
 	override updated(changed: Map<string, unknown>): void {
+		// Keep the button-suppression flag current when no-copy toggles at runtime.
+		if (changed.has('noCopy')) {
+			this._copyUnavailable = !this.noCopy && !isClipboardAvailable();
+		}
 		if (!this.view) return;
 		if (changed.has('language')) this._applyLanguage();
 		if (changed.has('wrap')) {
 			this.reconfigure(this._wrapCompartment, this.wrap ? EditorView.lineWrapping : []);
+			this._updateScrollable();
+		}
+		// variant/background/no-copy change the block's padding (→ clientWidth), so
+		// the scrollable state can go stale until the ResizeObserver happens to
+		// fire. Recompute directly. (_copyUnavailable mirrors no-copy's own effect
+		// on padding, so treat it the same.)
+		if (
+			changed.has('variant')
+			|| changed.has('background')
+			|| changed.has('noCopy')
+			|| changed.has('_copyUnavailable')
+		) {
 			this._updateScrollable();
 		}
 	}
@@ -198,12 +293,26 @@ export class NLDDCodeViewer extends NLDDCodeMirrorElement {
 		}
 	}
 
+	/* rAF-debounce the recompute so a burst of ResizeObserver ticks (e.g. from a
+	 * wrap/theme change) collapses into one measure on the next frame, after
+	 * layout has settled. */
+	private _scheduleUpdateScrollable(): void {
+		if (this._scrollableRaf !== undefined) return;
+		this._scrollableRaf = requestAnimationFrame(() => {
+			this._scrollableRaf = undefined;
+			this._updateScrollable();
+		});
+	}
+
 	/* The horizontally-scrollable region is CodeMirror's scroller. Mark it
 	 * focusable + labelled when content overflows so keyboard and screen-reader
 	 * users can reach and announce it (WCAG 2.1.1). */
 	private _updateScrollable(): void {
 		const scroller = this.view?.scrollDOM;
 		if (!scroller) return;
+		// A transient 0-width measure (mid display:none reflow from a scroll-layer
+		// repaint) isn't a real layout — don't strip the a11y attributes over it.
+		if (scroller.clientWidth === 0 && scroller.scrollWidth === 0) return;
 		const scrollable = !this.wrap && scroller.scrollWidth > scroller.clientWidth;
 		this._isScrollable = scrollable;
 		if (scrollable) {
@@ -229,6 +338,7 @@ export class NLDDCodeViewer extends NLDDCodeMirrorElement {
 
 	public async _onCopyClick(): Promise<void> {
 		try {
+			if (!isClipboardAvailable()) throw new Error('Clipboard API unavailable');
 			await navigator.clipboard.writeText(this._getRawText());
 			this._copyState = 'success';
 		} catch {

@@ -184,9 +184,20 @@ export class NLDDCodeEditor extends NLDDCodeMirrorElement {
 	}
 
 	private _attrsExtension(): Extension {
-		const attrs: Record<string, string> = {};
+		// CodeMirror's content is a bare contenteditable; give it the textbox
+		// semantics a native <textarea> had — role, multiline, and the readonly/
+		// required state — so screen readers announce it correctly (WCAG 4.1.2).
+		const attrs: Record<string, string> = {
+			'role': 'textbox',
+			'aria-multiline': 'true',
+		};
 		if (this.accessibleLabel) attrs['aria-label'] = this.accessibleLabel;
 		if (this.inputId) attrs['id'] = this.inputId;
+		// disabled makes the field inert (contenteditable=false); readonly keeps it
+		// focusable but non-editable. Either way it's not editable, so reflect
+		// aria-readonly. aria-required mirrors the required constraint.
+		if (this.readonly || this.disabled) attrs['aria-readonly'] = 'true';
+		if (this.required) attrs['aria-required'] = 'true';
 		return EditorView.contentAttributes.of(attrs);
 	}
 
@@ -222,6 +233,11 @@ export class NLDDCodeEditor extends NLDDCodeMirrorElement {
 			}
 			if (changed.has('disabled') || changed.has('readonly')) {
 				this.reconfigure(this._editableCompartment, this._editableExtension());
+			}
+			// readonly/required/disabled also drive the content's aria-readonly/
+			// aria-required, so refresh the attrs compartment when they change.
+			if (changed.has('disabled') || changed.has('readonly') || changed.has('required')) {
+				this.reconfigure(this._attrsCompartment, this._attrsExtension());
 			}
 			if (changed.has('wrap')) {
 				this.reconfigure(this._wrapCompartment, this.wrap ? EditorView.lineWrapping : []);

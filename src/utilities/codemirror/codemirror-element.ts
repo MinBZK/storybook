@@ -54,6 +54,17 @@ export abstract class NLDDCodeMirrorElement extends LitElement {
 	 */
 	protected onEditorMounted(): void {}
 
+	/**
+	 * The document to seed the view with on a re-mount after a detach/reattach.
+	 * Defaults to the document captured on disconnect — correct for editors,
+	 * whose live view is the source of truth. A subclass whose source of truth
+	 * lives elsewhere (e.g. the viewer, backed by its slot) overrides this to
+	 * return that live text so a reattach with changed content isn't stale.
+	 */
+	protected getRemountDoc(): string {
+		return this._preservedDoc ?? '';
+	}
+
 	protected destroyEditor(): void {
 		this.view?.destroy();
 		this.view = undefined;
@@ -91,6 +102,11 @@ export abstract class NLDDCodeMirrorElement extends LitElement {
 	focusFromPoint(x: number, y: number): void {
 		const view = this.view;
 		if (!view) return;
+		// No caret to move on a read-only/disabled view — a direct call is a
+		// genuine no-op (matches this comment; also covers the read-only viewer
+		// and text-editor). Callers that forward padding clicks already guard on
+		// state.readOnly, but a bare focusFromPoint() must not move the caret.
+		if (view.state.readOnly) return;
 		const pos = view.posAtCoords({ x, y }, false) ?? view.state.doc.length;
 		view.dispatch({ selection: { anchor: pos } });
 		view.focus();
@@ -103,7 +119,7 @@ export abstract class NLDDCodeMirrorElement extends LitElement {
 		// Lit's one-shot firstUpdated. Rebuild the view from the preserved document
 		// so the editor comes back populated instead of blank until a page reload.
 		if (this._hasMounted && !this.view) {
-			this.mountEditor(this._preservedDoc ?? '');
+			this.mountEditor(this.getRemountDoc());
 			if (this.view) this.onEditorMounted();
 		}
 	}

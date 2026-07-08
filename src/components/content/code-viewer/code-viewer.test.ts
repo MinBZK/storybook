@@ -1,5 +1,5 @@
 import { describe, it, expect, afterEach, vi } from 'vitest';
-import { fixture, cleanup, waitForUpdate } from '../../../test-utils.js';
+import { fixture, cleanup, waitForUpdate, nextFrames } from '../../../test-utils.js';
 import type { NLDDCodeViewer } from './code-viewer.js';
 import './code-viewer.js';
 
@@ -236,5 +236,208 @@ describe('nldd-code-viewer', () => {
 			vi.useRealTimers();
 			Object.defineProperty(navigator, 'clipboard', { value: originalClipboard, configurable: true });
 		}
+	});
+
+	// Off a secure context navigator.clipboard is undefined, so the copy button
+	// would be a dead button that only ever flashes "Kopiëren mislukt". It must
+	// not render at all when the Clipboard API can't work.
+	it('hides the copy button on a non-secure context (no clipboard)', async () => {
+		const originalDescriptor = Object.getOwnPropertyDescriptor(window, 'isSecureContext');
+		Object.defineProperty(window, 'isSecureContext', { value: false, configurable: true });
+		try {
+			el = await fixture<NLDDCodeViewer>('<nldd-code-viewer>x</nldd-code-viewer>');
+			await waitForUpdate(el);
+			expect(el.shadowRoot!.querySelector('.code-viewer__copy-button')).toBeNull();
+			// The reserved actions space is dropped too (internal attribute).
+			expect(el.hasAttribute('copy-unavailable')).toBe(true);
+		} finally {
+			if (originalDescriptor) Object.defineProperty(window, 'isSecureContext', originalDescriptor);
+		}
+	});
+
+	it('hides the copy button when navigator.clipboard is undefined even in a secure context', async () => {
+		const originalClipboard = navigator.clipboard;
+		Object.defineProperty(navigator, 'clipboard', { value: undefined, configurable: true });
+		try {
+			el = await fixture<NLDDCodeViewer>('<nldd-code-viewer>x</nldd-code-viewer>');
+			await waitForUpdate(el);
+			expect(el.shadowRoot!.querySelector('.code-viewer__copy-button')).toBeNull();
+			expect(el.hasAttribute('copy-unavailable')).toBe(true);
+		} finally {
+			Object.defineProperty(navigator, 'clipboard', { value: originalClipboard, configurable: true });
+		}
+	});
+
+	it('renders the copy button when the clipboard is available (secure context)', async () => {
+		// The test browser is a secure context with a real clipboard; assert the
+		// positive case so the two hide-cases above are meaningful.
+		el = await fixture<NLDDCodeViewer>('<nldd-code-viewer>x</nldd-code-viewer>');
+		await waitForUpdate(el);
+		expect(el.shadowRoot!.querySelector('.code-viewer__copy-button')).not.toBeNull();
+		expect(el.hasAttribute('copy-unavailable')).toBe(false);
+	});
+
+
+	/* ============================================================
+	   Reactive slot text (character-data mutations)
+	   ============================================================ */
+
+	// A framework that patches an existing text node in place ({{ reactiveString }})
+	// mutates characterData without swapping the node, so no slotchange fires. The
+	// viewer's MutationObserver must catch it and re-read the content.
+	it('updates when a slotted text node mutates in place (no slotchange)', async () => {
+		el = await fixture<NLDDCodeViewer>('<nldd-code-viewer>before</nldd-code-viewer>');
+		await waitForUpdate(el);
+		expect(el.shadowRoot!.querySelector('.cm-content')!.textContent).toContain('before');
+
+		// Mutate the existing text node's data — no add/remove, so no slotchange.
+		const textNode = el.firstChild as Text;
+		textNode.data = 'after';
+		await waitForUpdate(el);
+
+		const content = el.shadowRoot!.querySelector('.cm-content')!;
+		expect(content.textContent).toContain('after');
+		expect(content.textContent).not.toContain('before');
+	});
+
+
+	/* ============================================================
+	   Detach / reattach with changed slot content
+	   ============================================================ */
+
+	// The base re-mounts from getRemountDoc() on reconnect; the viewer overrides it
+	// to read the live slot, so content swapped while detached shows on reattach
+	// (rather than the stale doc captured on disconnect).
+	it('reflects slot content changed while detached, on reattach', async () => {
+		el = await fixture<NLDDCodeViewer>('<nldd-code-viewer>original</nldd-code-viewer>');
+		await waitForUpdate(el);
+		const parent = el.parentElement!;
+		const marker = document.createComment('placeholder');
+
+		parent.replaceChild(marker, el);
+		// Swap the light-DOM content while detached (observers are disconnected).
+		el.textContent = 'replaced';
+		parent.replaceChild(el, marker);
+		await waitForUpdate(el);
+
+		const content = el.shadowRoot!.querySelector('.cm-content')!;
+		expect(content.textContent).toContain('replaced');
+		expect(content.textContent).not.toContain('original');
+	});
+
+
+	/* ============================================================
+	   Scrollable region a11y (ResizeObserver)
+	   ============================================================ */
+
+	// A long unwrapped line overflows horizontally; the scroller becomes the
+	// focusable, labelled scroll region (WCAG 2.1.1).
+	it('marks the scroller focusable + labelled when content overflows', async () => {
+		el = await fixture<NLDDCodeViewer>(
+			`<nldd-code-viewer style="width: 120px">${'x'.repeat(400)}</nldd-code-viewer>`,
+		);
+		await waitForUpdate(el);
+		await nextFrames();
+		const scroller = el.shadowRoot!.querySelector('.cm-scroller')!;
+		expect(scroller.getAttribute('tabindex')).toBe('0');
+		expect(scroller.getAttribute('role')).toBe('region');
+		expect(scroller.getAttribute('aria-label')).toBe('Code');
+		expect((el as unknown as NLDDCodeViewer)._isScrollable).toBe(true);
+	});
+
+	// Regression (fix 1): a width:0 ResizeObserver tick — as forceScrollLayerRepaint
+	// produces during a color-scheme flip — must NOT strip the scroll region's
+	// a11y attributes off an overflowing block.
+	it('keeps the scroll region a11y attributes across a width:0 resize tick', async () => {
+		el = await fixture<NLDDCodeViewer>(
+			`<nldd-code-viewer style="width: 120px">${'x'.repeat(400)}</nldd-code-viewer>`,
+		);
+		await waitForUpdate(el);
+		await nextFrames();
+		const scroller = el.shadowRoot!.querySelector('.cm-scroller') as HTMLElement;
+		expect(scroller.getAttribute('role')).toBe('region');
+
+		// Simulate the transient reflow: hide → force layout → show. This fires the
+		// ResizeObserver with a 0-width contentRect, which the guard must ignore.
+		const prevDisplay = scroller.style.display;
+		scroller.style.display = 'none';
+		void scroller.offsetHeight;
+		scroller.style.display = prevDisplay;
+		await nextFrames();
+
+		// Still reachable — attributes intact.
+		expect(scroller.getAttribute('tabindex')).toBe('0');
+		expect(scroller.getAttribute('role')).toBe('region');
+		expect((el as unknown as NLDDCodeViewer)._isScrollable).toBe(true);
+	});
+
+	// A direct _updateScrollable() while the scroller measures 0×0 (no layout) must
+	// be a no-op, not a strip — this is the unit-level guard behind fix 1.
+	it('_updateScrollable ignores a 0-width measurement', async () => {
+		el = await fixture<NLDDCodeViewer>(
+			`<nldd-code-viewer style="width: 120px">${'x'.repeat(400)}</nldd-code-viewer>`,
+		);
+		await waitForUpdate(el);
+		await nextFrames();
+		// _updateScrollable/_isScrollable are private on the class; reach them via a
+		// plain structural type (intersecting with the class would collapse to never).
+		const viewer = el as unknown as { _updateScrollable(): void; _isScrollable: boolean };
+		const scroller = el.shadowRoot!.querySelector('.cm-scroller') as HTMLElement;
+		expect(scroller.getAttribute('role')).toBe('region');
+
+		// Zero out layout, then call the recompute directly: it must bail rather
+		// than flip _isScrollable false and strip the attributes.
+		scroller.style.display = 'none';
+		viewer._updateScrollable();
+		scroller.style.display = '';
+		expect(viewer._isScrollable).toBe(true);
+		expect(scroller.getAttribute('role')).toBe('region');
+	});
+
+
+	/* ============================================================
+	   Sizing (wrap vs horizontal scroll)
+	   ============================================================ */
+
+	// wrap breaks long lines instead of scrolling, so the scroller never overflows
+	// and stays out of the tab order.
+	it('wrap keeps the scroller non-scrollable (no horizontal overflow)', async () => {
+		el = await fixture<NLDDCodeViewer>(
+			`<nldd-code-viewer wrap style="width: 120px">${'x'.repeat(400)}</nldd-code-viewer>`,
+		);
+		await waitForUpdate(el);
+		await nextFrames();
+		const scroller = el.shadowRoot!.querySelector('.cm-scroller') as HTMLElement;
+		expect((el as unknown as NLDDCodeViewer)._isScrollable).toBe(false);
+		expect(scroller.hasAttribute('tabindex')).toBe(false);
+		expect(scroller.hasAttribute('role')).toBe(false);
+	});
+
+
+	/* ============================================================
+	   Programmatic focus (fix 6)
+	   ============================================================ */
+
+	// A read-only viewer's focus() must land on the labelled scroll region
+	// (.cm-scroller), the same target a keyboard tab reaches — not the
+	// non-editable .cm-content the base focus() would target.
+	it('focus() targets the scroller when the content is scrollable', async () => {
+		el = await fixture<NLDDCodeViewer>(
+			`<nldd-code-viewer style="width: 120px">${'x'.repeat(400)}</nldd-code-viewer>`,
+		);
+		await waitForUpdate(el);
+		await nextFrames();
+		(el as unknown as { focus(): void }).focus();
+		const scroller = el.shadowRoot!.querySelector('.cm-scroller');
+		expect(el.shadowRoot!.activeElement).toBe(scroller);
+	});
+
+	// Nothing to focus when the content doesn't overflow (the scroller isn't
+	// focusable), so focus() is a no-op rather than landing on .cm-content.
+	it('focus() is a no-op when the content is not scrollable', async () => {
+		el = await fixture<NLDDCodeViewer>('<nldd-code-viewer>x</nldd-code-viewer>');
+		await waitForUpdate(el);
+		(el as unknown as { focus(): void }).focus();
+		expect(el.shadowRoot!.activeElement).toBeNull();
 	});
 });

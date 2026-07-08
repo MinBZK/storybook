@@ -21,7 +21,9 @@ export function codeViewerTemplate(component: NLDDCodeViewer): TemplateResult {
 			: '';
 	// CodeMirror (read-only) mounts into and owns .code-viewer; the hidden
 	// <slot> stays the declarative content source and the copy source.
-	return html`<div class="code-viewer"></div><slot @slotchange=${component._onSlotChange}></slot>${component.noCopy ? nothing : html`
+	// Render the copy button only when it can actually work (not no-copy, and a
+	// secure context with a Clipboard API); otherwise it'd be a dead button.
+	return html`<div class="code-viewer"></div><slot @slotchange=${component._onSlotChange}></slot>${!component._canCopy ? nothing : html`
 		<div class="code-viewer__actions">
 			<div class="code-viewer__copy-button">
 				<nldd-tooltip
