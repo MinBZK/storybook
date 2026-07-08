@@ -63,6 +63,12 @@ export const tokenFieldStyles = css`
 		padding-inline: var(--_gap);
 	}
 
+	/* The role="list" wrapper carries token grouping for assistive tech without
+	   affecting layout — the tokens stay flex children of .token-field. */
+	.token-field__list {
+		display: contents;
+	}
+
 	/* Text cursor only while the input is present — the frame forwards a padding click
 	   to it (_handleFieldClick). With no input (no custom values allowed and no options
 	   left) there is nothing to type into, so the frame keeps the default arrow. */

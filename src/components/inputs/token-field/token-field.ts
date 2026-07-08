@@ -72,7 +72,21 @@ export class NLDDTokenField extends LitElement {
 			toAttribute: (): null => null,
 		},
 	})
-	values: string[] = [];
+	get values(): string[] {
+		return this._values;
+	}
+
+	set values(next: string[]) {
+		// A multi-select holds a *set* of values. Dedupe on every assignment so the
+		// keyed token render can never get a duplicate key (which silently drops a
+		// token) and the submitted form value stays one entry per value.
+		const unique = next ? next.filter((v, i) => next.indexOf(v) === i) : [];
+		const old = this._values;
+		this._values = unique;
+		this.requestUpdate('values', old);
+	}
+
+	private _values: string[] = [];
 
 	@property({ type: String })
 	placeholder = '';
@@ -152,6 +166,11 @@ export class NLDDTokenField extends LitElement {
 	 *  change (e.g. a framework populating them asynchronously), so the field
 	 *  re-evaluates whether to show the input/picker and re-resolves token labels. */
 	private _menuObserver: MutationObserver | null = null;
+	/** Watches the light-DOM `[slot="template"]` prototypes for changes (menu items,
+	 *  their attributes, or an added/removed prototype) and invalidates the cloned
+	 *  per-token menus so they re-clone. These components run on live sites, not just
+	 *  static demos, so the prototypes can change at runtime. */
+	private _templateObserver: MutationObserver | null = null;
 	/** True between a picker pointerdown-while-open and its trailing click, so the
 	 *  click (which follows the native light-dismiss) doesn't reopen the menu. */
 	private _pickerPointerdownWhileOpen = false;
@@ -169,6 +188,10 @@ export class NLDDTokenField extends LitElement {
 		window.addEventListener('scroll', this._handleScrollOrResize, true);
 		window.addEventListener('resize', this._handleScrollOrResize);
 		this.addEventListener('focusout', this._handleFocusOut);
+		this._templateObserver = new MutationObserver((records) => this._onTemplateMutation(records));
+		this._templateObserver.observe(this, {
+			childList: true, subtree: true, attributes: true, characterData: true,
+		});
 	}
 
 	override disconnectedCallback(): void {
@@ -177,6 +200,8 @@ export class NLDDTokenField extends LitElement {
 		this._resizeObserver = null;
 		this._menuObserver?.disconnect();
 		this._menuObserver = null;
+		this._templateObserver?.disconnect();
+		this._templateObserver = null;
 		window.removeEventListener('scroll', this._handleScrollOrResize, true);
 		window.removeEventListener('resize', this._handleScrollOrResize);
 		this.removeEventListener('focusout', this._handleFocusOut);
@@ -191,6 +216,12 @@ export class NLDDTokenField extends LitElement {
 	override firstUpdated(): void {
 		this._initialValues = [...this.values];
 		this._updateFormValue();
+		// Give the host a lasting accessible name and grouping via ElementInternals.
+		// The input carries aria-label, but it is removed when every value is chosen
+		// (no custom, no options left) — exactly the state roving token navigation
+		// makes a first-class tab stop — so without this the field would lose its name.
+		this._internals.role = 'group';
+		this._internals.ariaLabel = this.accessibleLabel || null;
 	}
 
 	/** The index a token was just removed from through a field interaction (its ✕, a
@@ -223,6 +254,7 @@ export class NLDDTokenField extends LitElement {
 		}
 		if (changed.has('required')) this._updateValidity();
 		if (changed.has('readonly') && this.readonly) this._closeMenu();
+		if (changed.has('accessibleLabel')) this._internals.ariaLabel = this.accessibleLabel || null;
 	}
 
 	override updated(): void {
@@ -375,6 +407,23 @@ export class NLDDTokenField extends LitElement {
 		}
 		const source = (match ?? shared)?.querySelector('nldd-menu[slot="menu"]');
 		return source ? (source.cloneNode(true) as HTMLElement) : null;
+	}
+
+	/** A change to any `[slot="template"]` prototype (its menu items, their attributes,
+	 *  or an added/removed prototype) invalidates the cloned per-token menus, so they
+	 *  re-clone on the next render. The field only ever *reads* the prototypes — it
+	 *  mutates the options menu and its own shadow DOM — so filtering to template-scoped
+	 *  mutations keeps this from looping with the field's own option hiding. */
+	private _onTemplateMutation(records: MutationRecord[]): void {
+		const touchesTemplate = records.some((r) => {
+			if ((r.target as Element).closest?.('[slot="template"]')) return true;
+			return [...r.addedNodes, ...r.removedNodes].some(
+				(n) => n.nodeType === Node.ELEMENT_NODE && (n as Element).matches?.('[slot="template"]'),
+			);
+		});
+		if (!touchesTemplate) return;
+		this._tokenMenuCache.clear();
+		this.requestUpdate();
 	}
 
 	public _addValue(value: string): void {

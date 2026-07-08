@@ -509,6 +509,56 @@ describe('nldd-token-field', () => {
 		expect(deAfter.hasAttribute('expanded')).toBe(false); // no stale open state leaked
 	});
 
+	it('re-clones a token menu when its template prototype changes at runtime', async () => {
+		el = await withTokenMenu();
+		el.values = ['be']; // 'be' uses the shared prototype (["Verwijder"])
+		await waitForUpdate(el);
+		const menuTexts = () => [...el.shadowRoot!.querySelectorAll('nldd-token nldd-menu[slot="menu"] nldd-menu-item')]
+			.map((i) => i.getAttribute('text'));
+		expect(menuTexts()).toEqual(['Verwijder']);
+		// Add an action to the shared prototype at runtime; the observer re-clones it.
+		const proto = el.querySelector('nldd-token[slot="template"]:not([data-value]) nldd-menu[slot="menu"]')!;
+		const extra = document.createElement('nldd-menu-item');
+		extra.setAttribute('value', 'edit');
+		extra.setAttribute('text', 'Bewerken');
+		proto.insertBefore(extra, proto.firstChild);
+		await new Promise((r) => setTimeout(r, 0)); // let the MutationObserver fire
+		await waitForUpdate(el);
+		expect(menuTexts()).toEqual(['Bewerken', 'Verwijder']);
+	});
+
+	// — Duplicate values (F…) —————————————————————————————————————————————————
+
+	it('dedupes values on set so the keyed render never gets duplicate keys', async () => {
+		el = await fixture<TokenFieldEl>('<nldd-token-field accessible-label="Tags" allow-custom></nldd-token-field>');
+		el.values = ['a', 'a', 'b', 'a'];
+		await waitForUpdate(el);
+		expect(el.values).toEqual(['a', 'b']);
+		expect([...el.shadowRoot!.querySelectorAll<HTMLElement>('nldd-token')].map((t) => t.dataset.value))
+			.toEqual(['a', 'b']);
+	});
+
+	it('dedupes values seeded from the comma-separated attribute', async () => {
+		el = await fixture<TokenFieldEl>('<nldd-token-field accessible-label="Tags" values="a, a, b, a"></nldd-token-field>');
+		await waitForUpdate(el);
+		expect(el.values).toEqual(['a', 'b']);
+	});
+
+	// — Accessibility: host name + list grouping —————————————————————————————————
+
+	it('gives the host a group role and a name that survive the input being hidden', async () => {
+		el = await withMenu(); // accessible-label="Landen", options nl/be
+		el.values = ['nl', 'be']; // both taken -> input (and its aria-label) gone
+		await waitForUpdate(el);
+		expect(el.shadowRoot!.querySelector('.token-field__input')).toBeNull();
+		const internals = (el as unknown as { _internals: ElementInternals })._internals;
+		expect(internals.role).toBe('group');
+		expect(internals.ariaLabel).toBe('Landen');
+		expect(el.shadowRoot!.querySelector('[role="list"]')).not.toBeNull();
+		expect([...el.shadowRoot!.querySelectorAll('nldd-token')].every((t) => t.getAttribute('role') === 'listitem'))
+			.toBe(true);
+	});
+
 	// — Readonly & required (F3.5) —————————————————————————————————————————————
 
 	it('readonly hides the input and picker and makes tokens static', async () => {

@@ -77,6 +77,7 @@ function renderToken(component: NLDDTokenField, value: string, index: number): T
 	if (!component.readonly && component.tokenControl === 'menu') {
 		return html`
 			<nldd-token
+				role="listitem"
 				text=${component._labelFor(value)}
 				control="menu"
 				tabindex=${tabindex}
@@ -94,6 +95,7 @@ function renderToken(component: NLDDTokenField, value: string, index: number): T
 
 	return html`
 		<nldd-token
+			role="listitem"
 			text=${component._labelFor(value)}
 			control=${component.readonly ? nothing : 'dismiss'}
 			tabindex=${tabindex}
@@ -114,11 +116,13 @@ export function tokenFieldTemplate(component: NLDDTokenField): TemplateResult {
 			data-valid=${component.valid && !component.invalid ? '' : nothing}
 			@click=${component._handleFieldClick}
 		>
-			${repeat(
-				component.values,
-				(value) => value,
-				(value, index) => renderToken(component, value, index),
-			)}
+			<div class="token-field__list" role="list">
+				${repeat(
+					component.values,
+					(value) => value,
+					(value, index) => renderToken(component, value, index),
+				)}
+			</div>
 			${component._showInput || component._showPicker
 				? html`
 					<div class="token-field__input-area">
