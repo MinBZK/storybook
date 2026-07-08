@@ -491,6 +491,24 @@ describe('nldd-token-field', () => {
 		expect(el.shadowRoot!.activeElement).toBe(tokens()[0]); // 'be' shifted into index 0
 	});
 
+	it('an open token\'s expanded state does not leak onto another when one is removed', async () => {
+		// Keyed rendering: tokens are not reused by position, so removing an "open"
+		// (expanded) token can't carry that state onto the token that shifts into its slot.
+		el = await withTokenMenu();
+		el.values = ['nl', 'be', 'de'];
+		await waitForUpdate(el);
+		const tokenFor = (v: string) => [...el.shadowRoot!.querySelectorAll<HTMLElement>('nldd-token')]
+			.find((t) => t.dataset.value === v)!;
+		(tokenFor('be') as HTMLElement & { expanded: boolean }).expanded = true; // its menu is "open"
+		await waitForUpdate(el);
+		const deBefore = tokenFor('de');
+		el.values = ['nl', 'de']; // remove the expanded 'be'
+		await waitForUpdate(el);
+		const deAfter = tokenFor('de');
+		expect(deAfter).toBe(deBefore); // same element (kept, not reused/recreated)
+		expect(deAfter.hasAttribute('expanded')).toBe(false); // no stale open state leaked
+	});
+
 	// — Readonly & required (F3.5) —————————————————————————————————————————————
 
 	it('readonly hides the input and picker and makes tokens static', async () => {

@@ -193,9 +193,11 @@ export class NLDDTokenField extends LitElement {
 		this._updateFormValue();
 	}
 
-	/** Set by willUpdate when a single value was removed while the field held focus:
-	 *  the index to focus after render (the token that shifted in, or the input).
-	 *  Applied and cleared in updated(). */
+	/** The index a token was just removed from through a field interaction (its ✕, a
+	 *  menu action the app handled, or Backspace/Delete). Set at the interaction — when
+	 *  focus is still reliably in the field, unlike at willUpdate time after a closing
+	 *  menu has moved it — and consumed in updated() to focus the token that shifted in
+	 *  (or the input). Null for background/programmatic value changes. */
 	private _removalFocusIndex: number | null = null;
 
 	override willUpdate(changed: Map<string, unknown>): void {
@@ -213,15 +215,6 @@ export class NLDDTokenField extends LitElement {
 			for (const key of [...this._tokenMenuCache.keys()]) {
 				if (!this.values.includes(key)) this._tokenMenuCache.delete(key);
 			}
-			// If a single token was just removed while the field held focus (a ✕, a menu
-			// "remove" the app handled, or Backspace/Delete), remember where to send focus
-			// after render so it lands on the next token (or the input) instead of the
-			// body. A background/programmatic change (field not focused) leaves focus be.
-			const prev = (changed.get('values') as string[] | undefined) ?? [];
-			const removed = prev.filter((v) => !this.values.includes(v));
-			this._removalFocusIndex = removed.length === 1 && this.contains(document.activeElement)
-				? prev.indexOf(removed[0])
-				: null;
 			this._updateFormValue();
 			if (this._menu) {
 				this._syncMenuItems();
@@ -581,11 +574,12 @@ export class NLDDTokenField extends LitElement {
 				break;
 			case 'Backspace':
 			case 'Delete':
-				// Remove the token; because the field holds focus, updated() then steps
-				// it onto the token that took this one's place (or the input), so repeated
-				// Backspace walks the row and focus never drops to the body.
+				// Remove the token and mark its slot; updated() then steps focus onto the
+				// token that took this one's place (or the input), so repeated Backspace
+				// walks the row and focus never drops to the body.
 				e.preventDefault();
 				this._removeValue(this.values[index]);
+				this._removalFocusIndex = index;
 				break;
 		}
 	}
@@ -601,17 +595,28 @@ export class NLDDTokenField extends LitElement {
 		else this._focusTokenAt(this._tokens.length - 1);
 	}
 
+	/** The ✕ dismiss control: remove the value and mark its slot so updated() steps
+	 *  focus onto the token that takes its place (or the input). */
+	public _handleTokenDismiss(value: string, index: number): void {
+		this._removeValue(value);
+		this._removalFocusIndex = index;
+	}
+
 	/** A token's menu action was chosen (token-control="menu"): report which token
 	 *  and which action and let the app decide what happens (remove, edit, …). The
-	 *  token owns closing the menu and returning focus to its chevron. */
+	 *  token owns closing the menu and returning focus to its chevron. When the app
+	 *  handles the action synchronously by removing this token, mark its slot so
+	 *  updated() re-homes focus (the closing menu has left focus adrift by then). */
 	public _handleTokenAction(e: Event, value: string): void {
 		const item = e.target as NLDDMenuItem;
 		const action = item.value || item.text;
+		const index = this.values.indexOf(value);
 		this.dispatchEvent(new CustomEvent('token-action', {
 			detail: { value, action },
 			bubbles: true,
 			composed: true,
 		}));
+		if (index !== -1 && !this.values.includes(value)) this._removalFocusIndex = index;
 	}
 
 	/**

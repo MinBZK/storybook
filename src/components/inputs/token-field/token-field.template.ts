@@ -2,6 +2,7 @@
    forwards a padding click to focus the inner input; keyboard users tab straight
    to that input, so it needs no key handler of its own. */
 import { html, nothing, TemplateResult } from 'lit';
+import { repeat } from 'lit/directives/repeat.js';
 import type { NLDDTokenField } from './token-field.js';
 import '../../content/token/token.js';
 import '../../content/icon/icon.js';
@@ -100,7 +101,7 @@ function renderToken(component: NLDDTokenField, value: string, index: number): T
 			dismiss-text=${component._t('components.token-field.dismiss-action')}
 			?disabled=${component.disabled}
 			data-value=${value}
-			@dismiss=${() => component._removeValue(value)}
+			@dismiss=${() => component._handleTokenDismiss(value, index)}
 			@keydown=${(e: KeyboardEvent) => component._handleTokenKeydown(e, index)}
 		></nldd-token>
 	`;
@@ -113,7 +114,11 @@ export function tokenFieldTemplate(component: NLDDTokenField): TemplateResult {
 			data-valid=${component.valid && !component.invalid ? '' : nothing}
 			@click=${component._handleFieldClick}
 		>
-			${component.values.map((value, index) => renderToken(component, value, index))}
+			${repeat(
+				component.values,
+				(value) => value,
+				(value, index) => renderToken(component, value, index),
+			)}
 			${component._showInput || component._showPicker
 				? html`
 					<div class="token-field__input-area">
