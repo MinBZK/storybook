@@ -45,6 +45,7 @@ import { windowStyles } from './window.styles.js';
 import { windowTemplate } from './window.template.js';
 import { nlddWindowTranslations, type NLDDWindowTranslations } from './window.i18n.js';
 import { isPointerMode } from '../../../utilities/input-modality.js';
+import { isDismissFromTitleBar } from '../../../utilities/dismiss-from-title-bar.js';
 
 export type NLDDWindowScheme = 'inherit' | 'light' | 'dark';
 
@@ -236,8 +237,11 @@ export class NLDDWindow extends LitElement {
 		this.hide();
 	};
 
-	private _handleDismiss = (): void => {
-		this.hide();
+	private _handleDismiss = (e: Event): void => {
+		// Only our own top-title-bar's dismiss closes the window. A nested component
+		// (nldd-token remove, nldd-banner, nldd-document-tab-bar) fires its own
+		// dismiss inside the window; those must not close it.
+		if (isDismissFromTitleBar(e)) this.hide();
 	};
 
 	override render() {

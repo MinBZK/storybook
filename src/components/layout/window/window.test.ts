@@ -1,4 +1,4 @@
-import { describe, it, expect, beforeEach, afterEach } from 'vitest';
+import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest';
 import { fixture, cleanup, waitForUpdate } from '../../../test-utils.js';
 import type { NLDDWindow } from './window.js';
 import './window.js';
@@ -128,6 +128,34 @@ describe('nldd-window', () => {
 		});
 		dialog.dispatchEvent(insideClick);
 		expect(dialog.open).toBe(true);
+	});
+
+	it('sluit bij een dismiss van zijn top-title-bar', async () => {
+		el = await fixture<NLDDWindow>(`
+			<nldd-window>
+				<nldd-top-title-bar dismiss-text="Sluit"></nldd-top-title-bar>
+			</nldd-window>
+		`);
+		await waitForUpdate(el);
+		const hideSpy = vi.spyOn(el, 'hide');
+		el.querySelector('nldd-top-title-bar')!
+			.dispatchEvent(new CustomEvent('dismiss', { bubbles: true, composed: true }));
+		expect(hideSpy).toHaveBeenCalledOnce();
+	});
+
+	it('negeert een dismiss van een genest component (bijv. nldd-token verwijderen)', async () => {
+		// Regressie: nldd-token (en nldd-banner, nldd-document-tab-bar) vuren `dismiss`
+		// voor hun eigen element; binnen een window mag dat het venster niet sluiten.
+		el = await fixture<NLDDWindow>(`
+			<nldd-window>
+				<nldd-token control="dismiss">Label</nldd-token>
+			</nldd-window>
+		`);
+		await waitForUpdate(el);
+		const hideSpy = vi.spyOn(el, 'hide');
+		el.querySelector('nldd-token')!
+			.dispatchEvent(new CustomEvent('dismiss', { bubbles: true, composed: true }));
+		expect(hideSpy).not.toHaveBeenCalled();
 	});
 
 	describe('centered position', () => {

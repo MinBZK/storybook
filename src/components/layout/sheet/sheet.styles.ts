@@ -186,7 +186,11 @@ export const sheetStyles = css`
 		flex-grow: 1;
 	}
 
-	::slotted(nldd-page) {
+	/* A slotted page or container fills the sheet body (so its own content scrolls
+	   within the sheet). Scoped to these two so other direct children keep their
+	   intrinsic height instead of being stretched. */
+	::slotted(nldd-page),
+	::slotted(nldd-container) {
 		min-height: 0;
 		flex-grow: 1;
 		flex-shrink: 1;
