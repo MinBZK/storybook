@@ -407,24 +407,26 @@ A token component representing a piece of data — such as a person in an addres
 
 | Attribuut | Type | Beschrijving |
 | --- | --- | --- |
+| `text` | `string` | Token text; falls back to the default slot when unset. |
 | `control` | `'none' \| 'dismiss' \| 'menu'` | Control type (default: 'none') |
-| `expanded` | `boolean` | Whether the menu is open (menu only). Forwarded as aria-expanded on the menu button. |
+| `expanded` | `boolean` | Reflects whether the token's menu is open (control="menu"); managed by the token. |
 | `disabled` | `boolean` | Disabled state |
-| `dismiss-text` | `string` | Text for the dismiss button (default: 'Verwijder') |
-| `controls` | `string` | ID of the associated popup element (aria-controls). Required for ARIA compliance when control="menu". |
+| `dismiss-text` | `string` | Accessible label for the dismiss button (default: 'Verwijder') |
+| `menu-text` | `string` | Accessible label for the menu button (default: 'Toon opties') |
+| `roving` | `boolean` | Inside a roving-focus container (e.g. nldd-token-field): the host is the single tab stop, so the trailing control is not separately tabbable. |
 
 **Slots**
 
 | Slot | Beschrijving |
 | --- | --- |
 | _(default)_ | Token text |
+| `menu` | An nldd-menu that the token opens from its menu button (control="menu"). |
 
 **Events**
 
 | Event | Beschrijving |
 | --- | --- |
 | `dismiss` | When the dismiss button is clicked |
-| `toggle` | When the menu is clicked; detail: { expanded: boolean } |
 
 ### `<nldd-tooltip>`
 
@@ -1115,6 +1117,7 @@ A multi-select input that looks like a normal input field: chosen values show as
 | `readonly` | `boolean` | Readonly: static tokens, no input/picker, read-only surface |
 | `required` | `boolean` | Marks the field required (invalid when it has no tokens) |
 | `disabled` | `boolean` | Disabled state |
+| `token-control` | `string` | Trailing control per token: 'dismiss' (default, a ✕ that removes it) or 'menu' (a ⌄ opening a per-token action menu supplied by the template prototypes) |
 | `name` | `string` | Name for form submission |
 | `translations` | `object` | Override translation keys; unset keys fall back to Dutch |
 
@@ -1123,6 +1126,7 @@ A multi-select input that looks like a normal input field: chosen values show as
 | Slot | Beschrijving |
 | --- | --- |
 | _(default)_ | An nldd-menu with nldd-menu-item options; each item's `value`/`text` supplies a token's value and its display label. |
+| `template` | `nldd-token` prototypes supplying each token's action menu when token-control="menu": a keyless one is the shared default, a `data-value="X"` one overrides value X. Only the prototype's nested `nldd-menu` is used today; its other props are ignored. |
 
 **Events**
 
@@ -1130,6 +1134,7 @@ A multi-select input that looks like a normal input field: chosen values show as
 | --- | --- |
 | `change` | When the selected values change; detail: { values: string[] } |
 | `input` | When the input text changes; detail: { value: string } |
+| `token-action` | When a token's menu action is chosen (token-control="menu"); detail: { value: string, action: string } |
 
 ## Layout
 
