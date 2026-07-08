@@ -100,6 +100,7 @@ export class NLDDJustInTimeEducation extends withTranslations<NLDDJustInTimeEduc
 
 	private _cleanupAutoUpdate: (() => void) | null = null;
 	private _attachTimeout: ReturnType<typeof setTimeout> | null = null;
+	private _revealTimeout: ReturnType<typeof setTimeout> | null = null;
 	private _attributeObserver: MutationObserver | null = null;
 	private _boundDocumentInteraction = (e: Event) => this._handleDocumentInteraction(e);
 	private _resolvedSide: 'top' | 'bottom' | 'left' | 'right' | null = null;
@@ -185,9 +186,19 @@ export class NLDDJustInTimeEducation extends withTranslations<NLDDJustInTimeEduc
 			container.showPopover();
 		}
 		this._startPositioning();
-		// Safety net: with no control to anchor to, positioning never runs — reveal it
-		// anyway so the opacity gate can't leave it stuck invisible.
-		if (!this._getControl()) container.setAttribute('positioned', '');
+		// Safety net: reveal even if positioning never resolves — no control to anchor
+		// to, or the control became invalid before Floating UI placed it — so the
+		// visibility gate can't leave the callout stuck hidden while it holds focus. A
+		// brief fallback still lets a normal placement fade in at the control first.
+		if (!this._getControl()) {
+			container.setAttribute('positioned', '');
+		} else {
+			if (this._revealTimeout) clearTimeout(this._revealTimeout);
+			this._revealTimeout = setTimeout(() => {
+				this._revealTimeout = null;
+				if (this.active) container.setAttribute('positioned', '');
+			}, 200);
+		}
 		// Announce the tip text via a polite live region. Focusing into the callout
 		// (dismissable, below) only makes AT read the dialog label and the focused
 		// element, not the tip body, so the live region carries the actual message;
@@ -228,6 +239,10 @@ export class NLDDJustInTimeEducation extends withTranslations<NLDDJustInTimeEduc
 		if (this._attachTimeout) {
 			clearTimeout(this._attachTimeout);
 			this._attachTimeout = null;
+		}
+		if (this._revealTimeout) {
+			clearTimeout(this._revealTimeout);
+			this._revealTimeout = null;
 		}
 		document.removeEventListener('click', this._boundDocumentInteraction, true);
 		document.removeEventListener('keydown', this._boundDocumentInteraction, true);
@@ -333,6 +348,10 @@ export class NLDDJustInTimeEducation extends withTranslations<NLDDJustInTimeEduc
 		});
 		container.style.left = `${x}px`;
 		container.style.top = `${y}px`;
+		if (this._revealTimeout) {
+			clearTimeout(this._revealTimeout); // placed in time — no need for the fallback
+			this._revealTimeout = null;
+		}
 		container.setAttribute('positioned', ''); // placed — let it fade in (see _open)
 		this._updateArrow(control, container, side);
 	}

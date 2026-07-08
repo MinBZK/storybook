@@ -123,6 +123,10 @@ export class NLDDCodeViewer extends NLDDCodeMirrorElement {
 			nlddCodeMirrorTheme,
 			EditorView.editable.of(false),
 			EditorState.readOnly.of(true),
+			// CodeMirror puts role="textbox" on .cm-content regardless of the editable
+			// facet, so a display-only block would be announced as an editable field.
+			// Override it: this is readable content, not an input.
+			EditorView.contentAttributes.of({ role: 'document' }),
 			this._wrapCompartment.of(this.wrap ? EditorView.lineWrapping : []),
 			this._languageCompartment.of([]),
 		];

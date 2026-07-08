@@ -31,6 +31,13 @@ describe('nldd-code-viewer', () => {
 		expect(content.textContent).toContain('example content');
 	});
 
+	it('kondigt de read-only content niet aan als een editable textbox', async () => {
+		el = await fixture('<nldd-code-viewer>x</nldd-code-viewer>');
+		await waitForUpdate(el);
+		const content = el.shadowRoot!.querySelector('.cm-content')!;
+		expect(content.getAttribute('role')).toBe('document'); // not CodeMirror's default "textbox"
+	});
+
 	// Regression: a detach/reattach — as Vue <KeepAlive> does when switching a
 	// v-if panel back into view — destroyed the CodeMirror view on disconnect
 	// but never re-mounted it (Lit's firstUpdated is one-shot), so the viewer

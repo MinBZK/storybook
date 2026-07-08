@@ -55,6 +55,9 @@ export const tooltipStyles = css`
 	   the final position rather than flashing at the popover's default spot. The
 	   positioned attribute is set once _updatePosition writes the coordinates. */
 	.tooltip:popover-open:not([positioned]) {
+		/* visibility (like nldd-menu/nldd-popover) keeps the not-yet-placed tooltip out
+		   of hit-testing at its stale default spot; opacity still drives the fade. */
+		visibility: hidden;
 		opacity: 0;
 		transition: none;
 	}
