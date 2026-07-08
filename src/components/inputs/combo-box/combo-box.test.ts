@@ -733,4 +733,19 @@ describe('nldd-combo-box – allow-custom', () => {
 		expect(el.value).toBe('nl'); // stays put, not cleared or committed
 		expect(el.shadowRoot!.querySelector('input')!.value).toBe('Nederland');
 	});
+
+	it('clears the input on blur when the value matches no option (no stale text)', async () => {
+		// value "xx" has no matching menu item; typing another non-match and blurring
+		// must discard the typed text rather than leave it on screen (revert desync).
+		el = await fixture<NLDDComboBox>(`
+			<nldd-combo-box value="xx" accessible-label="Land">
+				<nldd-menu><nldd-menu-item text="Nederland" value="nl"></nldd-menu-item></nldd-menu>
+			</nldd-combo-box>
+		`);
+		await waitForUpdate(el);
+		expect(el.shadowRoot!.querySelector('input')!.value).toBe(''); // no label for "xx"
+		await typeAndBlur(el, 'zzz');
+		expect(el.value).toBe('xx'); // value untouched
+		expect(el.shadowRoot!.querySelector('input')!.value).toBe(''); // typed text discarded
+	});
 });

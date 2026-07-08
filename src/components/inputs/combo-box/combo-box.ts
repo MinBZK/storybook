@@ -463,11 +463,12 @@ export class NLDDComboBox extends LitElement {
 	/** Restore the input text to the current value's display label, discarding any
 	 *  free text the user typed (used when allow-custom is off). */
 	private _revertTextToValue(): void {
-		if (!this.value) {
-			this.text = '';
-		} else {
-			this._deriveTextFromMenu();
-		}
+		// Discard the just-typed text up front, then let _deriveTextFromMenu fill in
+		// the matching option's label. When the value matches no option (removed, or
+		// not in the menu), the text stays empty rather than lingering as the
+		// discarded non-matching entry — matching how value-set derivation behaves.
+		this.text = '';
+		this._deriveTextFromMenu();
 		this._menu?.filter('');
 	}
 
