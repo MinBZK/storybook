@@ -13,6 +13,14 @@ import type { ComplexAttributeConverter } from 'lit';
  * on the bare `:host` (not `:host([prop="<default>"])`), since a default-valued
  * element carries no attribute to select on.
  *
+ * Known edge: if markup writes the default *explicitly* (e.g. `<nldd-button
+ * size="md">`), `fromAttribute` resolves the property to the value it already
+ * holds, so Lit's default `hasChanged` sees no change, schedules no update, and
+ * `toAttribute` never runs to strip the attribute — so that one authored default
+ * attribute stays in the DOM. Visual behavior is unaffected (styling keys off the
+ * bare `:host`); it only matters to code matching `[prop="<default>"]`, which
+ * should read the property instead. Not worth a fragile `hasChanged` workaround.
+ *
  * @example
  * ```ts
  * @property({ reflect: true, converter: reflectNonDefault<Size>('md') })
