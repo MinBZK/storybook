@@ -571,6 +571,27 @@ describe('nldd-token-field', () => {
 		expect(el.shadowRoot!.querySelector('nldd-token')!.getAttribute('control')).toBeNull();
 	});
 
+	it('disabled: tokens leave the tab order and keyboard removal is inert', async () => {
+		el = await withMenu();
+		el.values = ['nl', 'be'];
+		(el as unknown as { disabled: boolean }).disabled = true;
+		await waitForUpdate(el);
+		const tokens = [...el.shadowRoot!.querySelectorAll('nldd-token')];
+		expect(tokens.every((t) => t.getAttribute('tabindex') === null)).toBe(true);
+		tokens[0].dispatchEvent(new KeyboardEvent('keydown', { key: 'Backspace', bubbles: true }));
+		await waitForUpdate(el);
+		expect(el.values).toEqual(['nl', 'be']); // not removable while disabled
+	});
+
+	it('a free-text field with no slotted menu is not exposed as a combobox', async () => {
+		el = await fixture<TokenFieldEl>('<nldd-token-field accessible-label="E-mail" allow-custom></nldd-token-field>');
+		await waitForUpdate(el);
+		const input = el.shadowRoot!.querySelector('.token-field__input')!;
+		expect(input.getAttribute('role')).toBeNull();
+		expect(input.hasAttribute('aria-controls')).toBe(false);
+		expect(input.hasAttribute('aria-haspopup')).toBe(false);
+	});
+
 	it('is invalid when required and empty, valid once a token is added', async () => {
 		const form = document.createElement('form');
 		const field = document.createElement('nldd-token-field') as TokenFieldEl;

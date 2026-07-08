@@ -28,12 +28,12 @@ function renderInput(component: NLDDTokenField): TemplateResult {
 			type=${component.type || 'text'}
 			autocomplete=${component.autocomplete || nothing}
 			spellcheck=${component.noSpellcheck ? 'false' : nothing}
-			role="combobox"
+			role=${component._hasMenu ? 'combobox' : nothing}
 			aria-label=${component.accessibleLabel || nothing}
-			aria-haspopup="listbox"
-			aria-autocomplete="list"
-			aria-controls=${component._menuId}
-			aria-expanded=${component._isOpen ? 'true' : 'false'}
+			aria-haspopup=${component._hasMenu ? 'listbox' : nothing}
+			aria-autocomplete=${component._hasMenu ? 'list' : nothing}
+			aria-controls=${component._hasMenu ? component._menuId : nothing}
+			aria-expanded=${component._hasMenu ? (component._isOpen ? 'true' : 'false') : nothing}
 			aria-activedescendant=${component._highlightedId || nothing}
 			aria-invalid=${component.invalid ? 'true' : nothing}
 			.value=${component._text}
@@ -70,7 +70,7 @@ function renderPicker(component: NLDDTokenField): TemplateResult {
  *  menu — which the token wires itself; a selection bubbles to `token-action`.
  *  Otherwise it is a ✕ that removes the value. Readonly tokens carry no control. */
 function renderToken(component: NLDDTokenField, value: string, index: number): TemplateResult {
-	const tabindex = component.readonly
+	const tabindex = component.readonly || component.disabled
 		? nothing
 		: (!component._showInput && index === component._rovingIndex ? '0' : '-1');
 

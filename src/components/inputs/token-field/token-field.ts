@@ -5,8 +5,8 @@
  * as dismissible tokens in a wrapping row, followed by an inline text input that
  * stretches to fill the remaining space and wraps to a new line (growing the
  * field) when it no longer fits. Options are supplied as a slotted nldd-menu,
- * exactly like nldd-combo-box; the filtering/menu wiring is added in a later
- * phase. This first phase is the frame + token layout + value handling.
+ * exactly like nldd-combo-box; the menu filters as you type, with a chevron picker
+ * button, arrow-key roving across the tokens and ElementInternals form participation.
  *
  * @element nldd-token-field
  * @attr {string}   values           - Initial token values as a comma-separated string
@@ -601,8 +601,10 @@ export class NLDDTokenField extends LitElement {
 	}
 
 	/** Arrow keys move between tokens; ArrowRight past the last returns to the
-	 *  input; Backspace/Delete removes the token and steps focus onto the next one. */
+	 *  input; Backspace/Delete removes the token and steps focus onto the next one.
+	 *  A disabled field is inert — no roving, no keyboard removal. */
 	public _handleTokenKeydown(e: KeyboardEvent, index: number): void {
+		if (this.disabled) return;
 		switch (e.key) {
 			case 'ArrowLeft':
 				e.preventDefault();
