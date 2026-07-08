@@ -10,6 +10,7 @@ export const codeEditorStyles = css`
 	/* # Host */
 
 	:host {
+		--__caret-width: var(--primitives-border-width-regular);
 		--_corner-radius: 0;
 		--_background-color: transparent;
 		--_border-color: transparent;
@@ -111,7 +112,7 @@ export const codeEditorStyles = css`
 	   CodeMirror's theme cursor colour without depending on an attribute. */
 	:host .cm-cursor.cm-cursor {
 		border-left-color: var(--primitives-color-accent-600);
-		border-left-width: 2px;
+		border-left-width: var(--__caret-width);
 	}
 
 	/* Resize model — rows is the floor in every mode:

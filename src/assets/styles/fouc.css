@@ -5,27 +5,23 @@
  * (or, in an Astro layout, in the frontmatter — it applies to the whole page).
  *
  * Keeps the page hidden until every custom element on it has upgraded (:defined),
- * or `--nldd-fouc-timeout` (200ms by default) — whichever comes first, so the
- * fallback still reveals the page if a component never loads. Pure CSS, no JS.
+ * or a 200ms fallback — whichever comes first, so the page still reveals if a
+ * component never loads. Pure CSS, no JS.
  *
  * Based on https://dev.to/stuffbreaker/reducing-fouc-with-web-components-1jnh
  */
-@property --nldd-fouc-loaded {
-	syntax: '<number>';
-	initial-value: 0;
-	inherits: false;
-}
-
 body {
-	animation: nldd-fouc-reveal 0s linear var(--nldd-fouc-timeout, 200ms) forwards;
+	/* The always-on animation reveals — and, via `forwards`, keeps revealed — after
+	   the fallback delay, so a later-added undefined element can't re-hide the page. */
+	animation: nldd-fouc-reveal 0s linear 200ms forwards;
 }
 
 body:has(:not(:defined)) {
-	opacity: var(--nldd-fouc-loaded, 0);
+	opacity: 0;
 }
 
 @keyframes nldd-fouc-reveal {
 	to {
-		--nldd-fouc-loaded: 1;
+		opacity: 1;
 	}
 }

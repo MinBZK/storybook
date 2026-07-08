@@ -7,6 +7,7 @@ export const textEditorStyles = css`
 	/* # Host */
 
 	:host {
+		--__caret-width: var(--primitives-border-width-regular);
 		--_corner-radius: 0;
 		--_background-color: transparent;
 		--_highlight-border-color: transparent;
@@ -153,7 +154,7 @@ export const textEditorStyles = css`
 		   surfaces in light and dark (accent-600 fell just short on white), so the
 		   caret stays clearly visible without washing out. */
 		border-left-color: var(--primitives-color-accent-700);
-		border-left-width: 2px;
+		border-left-width: var(--__caret-width);
 		/* A thin surface-coloured halo, like the drop cursor, so the caret stays legible
 		   even over a tinted token (annotation, inline code) where the accent alone can
 		   blend in. Blinks with the caret (opacity covers the shadow too). */
