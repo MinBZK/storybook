@@ -696,4 +696,41 @@ describe('nldd-combo-box – allow-custom', () => {
 		await typeAndEnter(el, 'xyz');
 		expect(el.value).toBe('xyz');
 	});
+
+	const typeAndBlur = async (element: NLDDComboBox, text: string) => {
+		const input = element.shadowRoot!.querySelector('input') as HTMLInputElement;
+		input.value = text;
+		input.dispatchEvent(new Event('input', { bubbles: true }));
+		await waitForUpdate(element);
+		input.dispatchEvent(new FocusEvent('blur', { bubbles: true }));
+		await waitForUpdate(element);
+	};
+
+	it('reverts a non-matching typed value on blur by default', async () => {
+		el = await withOption();
+		await waitForUpdate(el);
+		await typeAndBlur(el, 'xyz');
+		expect(el.value).toBe('');
+		expect(el.shadowRoot!.querySelector('input')!.value).toBe('');
+	});
+
+	it('reverts the text to the current value on blur, keeping the value', async () => {
+		el = await withOption();
+		el.value = 'nl';
+		await waitForUpdate(el);
+		const input = el.shadowRoot!.querySelector('input') as HTMLInputElement;
+		expect(input.value).toBe('Nederland'); // derived from the menu option
+		await typeAndBlur(el, 'xyz');
+		expect(el.value).toBe('nl'); // value unchanged
+		expect(input.value).toBe('Nederland'); // text reverted
+	});
+
+	it('reverts to the current value on Enter when nothing matches (no commit)', async () => {
+		el = await withOption();
+		el.value = 'nl';
+		await waitForUpdate(el);
+		await typeAndEnter(el, 'xyz');
+		expect(el.value).toBe('nl'); // stays put, not cleared or committed
+		expect(el.shadowRoot!.querySelector('input')!.value).toBe('Nederland');
+	});
 });
