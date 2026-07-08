@@ -102,7 +102,10 @@ function groupOverlapping(anns: CleanAnn[]): Group[] {
 	const groups: Group[] = [];
 	for (const a of [...anns].sort((x, y) => x.from - y.from || x.to - y.to)) {
 		const last = groups[groups.length - 1];
-		if (last && a.from <= last.to) {
+		// Strict overlap only: two ranges that merely touch (one ends where the next
+		// begins, e.g. [0,3] and [3,6]) stay separate tints/badges. The sentinel
+		// machinery already places two sentinels at such a seam.
+		if (last && a.from < last.to) {
 			last.to = Math.max(last.to, a.to);
 			last.ids.push(a.id);
 		} else {
@@ -112,13 +115,25 @@ function groupOverlapping(anns: CleanAnn[]): Group[] {
 	return groups;
 }
 
+// The badge's accessible label quotes the annotated text, truncated so a long range
+// can't produce a huge label. Screen-reader-only; the visible badge shows the count.
+const ANNOTATION_LABEL_MAX = 40;
+
+function truncateQuote(text: string): string {
+	return text.length > ANNOTATION_LABEL_MAX ? `${text.slice(0, ANNOTATION_LABEL_MAX)}…` : text;
+}
+
 class AnnotationBadge extends WidgetType {
-	constructor(readonly ids: string[]) {
+	constructor(readonly ids: string[], readonly quote: string) {
 		super();
 	}
 
 	eq(other: AnnotationBadge): boolean {
-		return other.ids.length === this.ids.length && other.ids.every((id, i) => id === this.ids[i]);
+		return (
+			other.quote === this.quote &&
+			other.ids.length === this.ids.length &&
+			other.ids.every((id, i) => id === this.ids[i])
+		);
 	}
 
 	toDOM(): HTMLElement {
@@ -127,7 +142,9 @@ class AnnotationBadge extends WidgetType {
 		badge.type = 'button';
 		badge.dataset.annotations = this.ids.join(' ');
 		badge.textContent = String(this.ids.length);
-		badge.setAttribute('aria-label', `${this.ids.length} annotatie${this.ids.length > 1 ? 's' : ''}`);
+		const count = this.ids.length;
+		const noun = count === 1 ? 'annotatie' : 'annotaties';
+		badge.setAttribute('aria-label', `${count} ${noun} op '${truncateQuote(this.quote)}'`);
 		return badge;
 	}
 
@@ -223,6 +240,7 @@ function buildAll(state: EditorState): Built {
 	// diffing them. Clamping keeps every range in-bounds; the next consistent update
 	// re-renders the real anchors.
 	const cleanLen = doc.length - sents.length;
+	const clean = stripSentinels(doc);
 	const anns = state.field(annotationField)
 		.map((a) => ({ id: a.id, from: Math.min(a.from, cleanLen), to: Math.min(a.to, cleanLen) }))
 		.filter((a) => a.to > a.from);
@@ -231,6 +249,8 @@ function buildAll(state: EditorState): Built {
 	for (const group of groupOverlapping(anns)) {
 		if (group.to <= group.from) continue;
 		const { docFrom, textTo, startSent, endSent } = resolveGroup(group, doc, sents);
+		// The annotated text (sentinel-free) for the badge's accessible label.
+		const quote = clean.slice(group.from, group.to);
 		// The tint covers the text, plus the end sentinel (badge) when present so the
 		// badge shares the tint.
 		const tintTo = endSent !== null ? textTo + 1 : textTo;
@@ -250,12 +270,12 @@ function buildAll(state: EditorState): Built {
 		if (endSent !== null) {
 			// Two caret stops: the badge replaces the end sentinel, atomic so the caret
 			// treats it as a unit and stops just before (inside) and just after (outside).
-			deco.push(Decoration.replace({ widget: new AnnotationBadge(group.ids) }).range(endSent, endSent + 1));
+			deco.push(Decoration.replace({ widget: new AnnotationBadge(group.ids, quote) }).range(endSent, endSent + 1));
 			atomic.push(atomicMark.range(endSent, endSent + 1));
 		} else {
 			// Guarded edge (would break the markdown parse): fall back to the old
 			// single-stop nub — a zero-width widget at the range end, inside the tint.
-			deco.push(Decoration.widget({ widget: new AnnotationBadge(group.ids), side: -1 }).range(textTo));
+			deco.push(Decoration.widget({ widget: new AnnotationBadge(group.ids, quote), side: -1 }).range(textTo));
 		}
 		if (startSent !== null) {
 			deco.push(startSentinelDeco.range(startSent, startSent + 1));

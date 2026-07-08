@@ -41,7 +41,7 @@
  *
  * @prop {MentionSource} mentionSource - Consumer-supplied @-mention candidate source (property only). Without it, @-typeahead is inert.
  * @attr {boolean} annotatable - Enable the annotation overlay (off by default). Annotations only render when this is set.
- * @prop {Annotation[]} annotations - Consumer-supplied annotation overlay (property only). Anchored by offset and mapped through edits; the text stays clean. Requires `annotatable`.
+ * @prop {Annotation[]} annotations - Consumer-supplied annotation overlay (property only). Anchored by offset and mapped through edits; the text stays clean. Requires `annotatable`. Assign a NEW array to apply changes (Lit dirty-checks by identity, so in-place mutation like `.push()` won't re-render): `editor.annotations = [...editor.annotations, next]`.
  *
  * @fires input                    - When the content changes (detail: { value })
  * @fires change                   - When the content is committed on blur (detail: { value })
@@ -168,7 +168,13 @@ export class NLDDTextEditor extends NLDDCodeMirrorElement {
 	/** Consumer-supplied annotations (W3C-style overlay). Property only (set via
 	 *  JS). Render only when `annotatable` is on. The text stays clean; these
 	 *  render as a light tint and a count badge, anchored by offset and mapped
-	 *  through edits. */
+	 *  through edits.
+	 *
+	 *  IMPORTANT: assign a NEW array to apply changes. Lit dirty-checks this
+	 *  property by identity, so mutating the existing array in place
+	 *  (`editor.annotations.push(next)`, `editor.annotations[0].end = 9`, …) does
+	 *  NOT trigger a re-render. Always replace it:
+	 *  `editor.annotations = [...editor.annotations, next]`. */
 	@property({ attribute: false })
 	annotations: Annotation[] = [];
 
@@ -530,7 +536,11 @@ export class NLDDTextEditor extends NLDDCodeMirrorElement {
 	private _pasteText(text: string): void {
 		if (!this.view || !text) return;
 		const buffer = this._cutBuffer;
-		const carry = !!(buffer && buffer.text === text && buffer.anns.length > 0);
+		// Normalize line endings on both sides: a Windows/other-app clipboard may hand
+		// back CRLF where the cut buffer holds LF, and an exact compare would then miss
+		// the match and silently drop the carried annotations.
+		const sameText = (a: string, b: string): boolean => a.replace(/\r\n/g, '\n') === b.replace(/\r\n/g, '\n');
+		const carry = !!(buffer && sameText(buffer.text, text) && buffer.anns.length > 0);
 		const at = docToClean(this.view.state.doc.toString(), this.view.state.selection.main.from);
 		const spec = this.view.state.replaceSelection(text);
 		this.view.dispatch(carry ? { ...spec, effects: pasteAnnotations.of({ at, anns: buffer!.anns }) } : spec);
@@ -639,6 +649,9 @@ export class NLDDTextEditor extends NLDDCodeMirrorElement {
 
 	private _onScrollerPointerDown = (event: PointerEvent): void => {
 		if (event.target !== this.view?.scrollDOM) return;
+		// No caret to move on a read-only/disabled view — leave the press alone, like
+		// the drag path (which early-returns on state.readOnly).
+		if (this.view.state.readOnly) return;
 		this.focusFromPoint(event.clientX, event.clientY);
 		event.preventDefault();
 	};
@@ -646,6 +659,9 @@ export class NLDDTextEditor extends NLDDCodeMirrorElement {
 	private _onMentionPointerDown = (event: PointerEvent): void => {
 		const token = (event.target as HTMLElement | null)?.closest?.('.cm-md-mention-token');
 		if (!token || !this.view) return;
+		// Don't dispatch a selection on a read-only/disabled view — matches the drag
+		// path, which guards its selection change on state.readOnly.
+		if (this.view.state.readOnly) return;
 		const range = mentionRangeAt(this.view.state, this.view.posAtDOM(token));
 		if (!range) return;
 		event.preventDefault();

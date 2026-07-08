@@ -156,7 +156,11 @@ export function setHeading(view: EditorView, level: HeadingLevel): void {
 }
 
 export function toggleBulletList(view: EditorView): void {
-	const re = /^(\s*)[-*]\s+/;
+	// Accept every markdown bullet char (- * +), matching readActiveFormats and the
+	// render guard. If the toggle recognised fewer chars than the state reader, a
+	// "+ item" line would report active yet the toggle couldn't strip it (it'd add
+	// another "- " instead), so state and toggle would disagree.
+	const re = /^(\s*)[-*+]\s+/;
 	const allBulleted = everySelectedLine(view, (t) => re.test(t) || t.trim() === '');
 	mapSelectedLines(view, (t) => {
 		if (t.trim() === '') return t;

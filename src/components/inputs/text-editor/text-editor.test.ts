@@ -651,6 +651,49 @@ describe('nldd-text-editor', () => {
 		cleanup(el2);
 	});
 
+	it('houdt twee aangrenzende maar losse annotaties gescheiden (twee badges)', async () => {
+		// [0,3] and [3,6] merely touch at offset 3 — they do NOT overlap, so they must
+		// stay two tints and two badges (each counting 1), not merge into one badge of 2.
+		const el2 = await withAnnotations('abcdef', [
+			{ id: 'a1', start: 0, end: 3 },
+			{ id: 'a2', start: 3, end: 6 },
+		]);
+		const sr = el2.shadowRoot!;
+		expect(sr.querySelectorAll('.cm-annotation').length).toBe(2);
+		const badges = sr.querySelectorAll('.cm-annotation-badge');
+		expect(badges.length).toBe(2);
+		expect(badges[0].textContent).toBe('1');
+		expect(badges[1].textContent).toBe('1');
+		cleanup(el2);
+	});
+
+	it('herstelt geknipte annotaties bij een plak met CRLF-regeleindes', async () => {
+		// A cut→paste re-attaches the carried annotations by comparing the cut buffer to
+		// the pasted text. A Windows/other-app clipboard returns CRLF where the buffer
+		// holds LF; line-ending normalization must let it still match and re-attach.
+		const el2 = await withAnnotations('regel1\nregel2', [{ id: 'a1', start: 0, end: 13, quote: 'regel1\nregel2' }]);
+		const sr = el2.shadowRoot!;
+		expect(sr.querySelector('.cm-annotation')).not.toBeNull();
+		const api = el2 as unknown as {
+			view: { dispatch(s: unknown): void; state: { doc: { length: number } }; contentDOM: HTMLElement };
+			cut(): Promise<void>;
+		};
+		// Select the whole annotated range and cut it (buffer holds LF text + the anns,
+		// document is emptied). clipboard.writeText is best-effort and swallowed.
+		api.view.dispatch({ selection: { anchor: 0, head: api.view.state.doc.length } });
+		await api.cut();
+		await waitForUpdate(el2);
+		expect(sr.querySelector('.cm-annotation')).toBeNull(); // gone after the cut
+		// Paste back a CRLF version of the same text via the native paste path.
+		const data = new DataTransfer();
+		data.setData('text/plain', 'regel1\r\nregel2');
+		api.view.contentDOM.dispatchEvent(new ClipboardEvent('paste', { clipboardData: data, bubbles: true, cancelable: true }));
+		await waitForUpdate(el2);
+		// CRLF normalized to LF matched the buffer, so the annotation travelled with it.
+		expect(sr.querySelector('.cm-annotation')).not.toBeNull();
+		cleanup(el2);
+	});
+
 	it('mapt annotatie-ankers mee door bewerkingen heen', async () => {
 		const el2 = await withAnnotations('xy tekst hier.', [{ id: 'a1', start: 3, end: 8, quote: 'tekst' }]);
 		const view = (el2 as unknown as { view: { dispatch(spec: unknown): void } }).view;
