@@ -55,6 +55,12 @@ export default {
 			description: 'Uitgeschakelde toestand',
 			table: { defaultValue: { summary: false } },
 		},
+		allowCustom: {
+			name: 'allow-custom',
+			control: 'boolean',
+			description: 'Sta vrij getypte waarden toe die geen menu-optie zijn (Enter/blur). Default false: alleen menu-opties.',
+			table: { defaultValue: { summary: false } },
+		},
 		name: {
 			control: 'text',
 			description: 'Naam voor formulierverwerking',
@@ -89,6 +95,7 @@ export default {
 		valid: false,
 		invalid: false,
 		disabled: false,
+		allowCustom: false,
 		name: '',
 		value: '',
 		autocomplete: 'off',
@@ -106,6 +113,7 @@ const Template = (args: Record<string, any>) => html`
 		?valid=${args.valid}
 		?invalid=${args.invalid}
 		?disabled=${args.disabled}
+		?allow-custom=${args.allowCustom}
 		name=${args.name}
 		value=${args.value}
 		autocomplete=${args.autocomplete}

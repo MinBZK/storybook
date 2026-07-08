@@ -92,7 +92,8 @@ describe('nldd-inline-dialog', () => {
 	it('defaults size to md when omitted', async () => {
 		el = await fixture('<nldd-inline-dialog></nldd-inline-dialog>');
 		await waitForUpdate(el);
-		expect(el.getAttribute('size')).toBe('md');
+		expect((el as unknown as { size: string }).size).toBe('md');
+		expect(el.hasAttribute('size')).toBe(false);
 	});
 
 	it('renders actions slot wrapped in nldd-button-group', async () => {

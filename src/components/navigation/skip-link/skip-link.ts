@@ -15,6 +15,7 @@
 
 import { LitElement } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
+import { reflectNonDefault } from '../../../utilities/reflect-non-default.js';
 import { skipLinkStyles } from './skip-link.styles.js';
 import { template } from './skip-link.template.js';
 import { withTranslations } from '../../../utilities/with-translations.js';
@@ -24,7 +25,7 @@ import { nlddSkipLinkTranslations } from './skip-link.i18n.js';
 export class NLDDSkipLink extends withTranslations(LitElement, nlddSkipLinkTranslations) {
 	static override styles = skipLinkStyles;
 
-	@property({ type: String })
+	@property({ reflect: true, converter: reflectNonDefault<string>('') })
 	text = '';
 
 	@property({ type: String })

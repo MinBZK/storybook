@@ -550,7 +550,9 @@ describe('nldd-tab-bar – variant propagation', () => {
 		expect(getItems(el)[0].getAttribute('size')).toBe('lg');
 		el.size = 'md';
 		await waitForUpdate(el);
-		expect(getItems(el)[0].getAttribute('size')).toBe('md');
+		// md is the default, so it is kept out of the DOM; the property is the source of truth.
+		expect((getItems(el)[0] as unknown as { size: string }).size).toBe('md');
+		expect(getItems(el)[0].hasAttribute('size')).toBe(false);
 	});
 });
 
@@ -704,6 +706,135 @@ describe('nldd-tab-bar – keyboard navigation', () => {
 	});
 
 });
+
+
+/* ============================================================
+   nldd-tab-bar – disabled
+   ============================================================ */
+
+describe('nldd-tab-bar – disabled', () => {
+	let el: NLDDTabBar;
+
+	afterEach(() => {
+		if (el) cleanup(el);
+	});
+
+	function innerTab(item: NLDDTabBarItem): HTMLElement {
+		return item.shadowRoot!.querySelector('[role="tab"]') as HTMLElement;
+	}
+
+	it('reflects the disabled attribute on the host', async () => {
+		el = await fixture<NLDDTabBar>(threeTabBar());
+		await waitForUpdate(el);
+		expect(el.hasAttribute('disabled')).toBe(false);
+
+		el.disabled = true;
+		await waitForUpdate(el);
+		expect(el.hasAttribute('disabled')).toBe(true);
+	});
+
+	it('marks every tab aria-disabled and drops them all from the tab order', async () => {
+		el = await fixture<NLDDTabBar>(`
+			<nldd-tab-bar disabled>
+				<nldd-tab-bar-item text="A"></nldd-tab-bar-item>
+				<nldd-tab-bar-item selected text="B"></nldd-tab-bar-item>
+				<nldd-tab-bar-item text="C"></nldd-tab-bar-item>
+			</nldd-tab-bar>
+		`);
+		await waitForUpdate(el);
+		for (const item of getItems(el)) {
+			const tab = innerTab(item);
+			expect(tab.getAttribute('aria-disabled')).toBe('true');
+			// Even the selected tab, which would otherwise be the roving entry point.
+			expect(tab.getAttribute('tabindex')).toBe('-1');
+		}
+	});
+
+	it('does not change selection or fire tabchange when a disabled tab is clicked', async () => {
+		el = await fixture<NLDDTabBar>(`
+			<nldd-tab-bar disabled>
+				<nldd-tab-bar-item selected text="A"></nldd-tab-bar-item>
+				<nldd-tab-bar-item text="B"></nldd-tab-bar-item>
+			</nldd-tab-bar>
+		`);
+		await waitForUpdate(el);
+
+		let fired = false;
+		el.addEventListener('tabchange', () => { fired = true; });
+
+		const items = getItems(el);
+		clickInner(items[1]);
+		await waitForUpdate(el);
+
+		expect(fired).toBe(false);
+		expect(items[0].selected).toBe(true);
+		expect(items[1].selected).toBe(false);
+	});
+
+	it('ignores arrow-key navigation while disabled', async () => {
+		el = await fixture<NLDDTabBar>(`
+			<nldd-tab-bar disabled>
+				<nldd-tab-bar-item selected text="A"></nldd-tab-bar-item>
+				<nldd-tab-bar-item text="B"></nldd-tab-bar-item>
+			</nldd-tab-bar>
+		`);
+		await waitForUpdate(el);
+
+		const items = getItems(el);
+		pressKey(items[0], 'ArrowRight');
+		await waitForUpdate(el);
+
+		expect(items[0].selected).toBe(true);
+		expect(items[1].selected).toBe(false);
+	});
+
+	it('restores the tab order and interactivity when re-enabled', async () => {
+		el = await fixture<NLDDTabBar>(`
+			<nldd-tab-bar disabled>
+				<nldd-tab-bar-item selected text="A"></nldd-tab-bar-item>
+				<nldd-tab-bar-item text="B"></nldd-tab-bar-item>
+			</nldd-tab-bar>
+		`);
+		await waitForUpdate(el);
+
+		el.disabled = false;
+		await waitForUpdate(el);
+
+		const items = getItems(el);
+		expect(innerTab(items[0]).getAttribute('aria-disabled')).toBeNull();
+		// Selected tab is the roving entry point again.
+		expect(innerTab(items[0]).getAttribute('tabindex')).toBe('0');
+
+		clickInner(items[1]);
+		await waitForUpdate(el);
+		expect(items[1].selected).toBe(true);
+		expect(items[0].selected).toBe(false);
+	});
+
+	it('disables link items in navigation mode (aria-disabled, no select on click)', async () => {
+		el = await fixture<NLDDTabBar>(`
+			<nldd-tab-bar navigation disabled accessible-label="Navigatie">
+				<nldd-tab-bar-item text="Home" href="/home" selected></nldd-tab-bar-item>
+				<nldd-tab-bar-item text="Profiel" href="/profiel"></nldd-tab-bar-item>
+			</nldd-tab-bar>
+		`);
+		await waitForUpdate(el);
+
+		const items = getItems(el);
+		const link = items[1].shadowRoot!.querySelector('a')!;
+		expect(link.getAttribute('aria-disabled')).toBe('true');
+		expect(link.getAttribute('tabindex')).toBe('-1');
+
+		let selectFired = false;
+		el.addEventListener('select', () => { selectFired = true; });
+		// A disabled link must swallow its own activation (preventDefault + no select).
+		const clickEvent = new MouseEvent('click', { bubbles: true, composed: true, cancelable: true });
+		link.dispatchEvent(clickEvent);
+		expect(selectFired).toBe(false);
+		expect(clickEvent.defaultPrevented).toBe(true);
+	});
+});
+
 
 /* ============================================================
    nldd-tab-bar – navigation mode

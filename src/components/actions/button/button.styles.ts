@@ -14,7 +14,7 @@ export const buttonStyles = css`
 		--_width: auto;
 		--_min-size: var(--semantics-controls-md-min-size);
 		--_block-padding: var(--semantics-controls-md-block-padding);
-		--_inline-padding: calc((var(--_min-size) - var(--_icon-size)) / 2);
+		--_inline-padding: var(--semantics-buttons-md-inline-padding);
 		--_gap: var(--semantics-buttons-md-gap);
 		--_font: var(--semantics-buttons-md-primary-text-font);
 		--_icon-size: var(--semantics-buttons-md-icon-size);
@@ -45,6 +45,7 @@ export const buttonStyles = css`
 		--_corner-radius: var(--semantics-controls-xs-corner-radius);
 		--_min-size: var(--semantics-controls-xs-min-size);
 		--_block-padding: var(--semantics-controls-xs-block-padding);
+		--_inline-padding: var(--semantics-buttons-xs-inline-padding);
 		--_gap: var(--semantics-buttons-xs-gap);
 		--_font: var(--semantics-buttons-xs-primary-text-font);
 		--_icon-size: var(--semantics-buttons-xs-icon-size);
@@ -56,6 +57,7 @@ export const buttonStyles = css`
 		--_corner-radius: var(--semantics-controls-sm-corner-radius);
 		--_min-size: var(--semantics-controls-sm-min-size);
 		--_block-padding: var(--semantics-controls-sm-block-padding);
+		--_inline-padding: var(--semantics-buttons-sm-inline-padding);
 		--_gap: var(--semantics-buttons-sm-gap);
 		--_font: var(--semantics-buttons-sm-primary-text-font);
 		--_icon-size: var(--semantics-buttons-sm-icon-size);
@@ -67,6 +69,7 @@ export const buttonStyles = css`
 		--_corner-radius: var(--semantics-controls-lg-corner-radius);
 		--_min-size: var(--semantics-controls-lg-min-size);
 		--_block-padding: var(--semantics-controls-lg-block-padding);
+		--_inline-padding: var(--semantics-buttons-lg-inline-padding);
 		--_gap: var(--semantics-buttons-lg-gap);
 		--_font: var(--semantics-buttons-lg-primary-text-font);
 		--_icon-size: var(--semantics-buttons-lg-icon-size);
@@ -561,17 +564,18 @@ export const buttonStyles = css`
 		white-space: nowrap;
 	}
 
+	:host(:not([size])) .button.has-supporting-text,
 	:host([size="md"]) .button.has-supporting-text {
 		--_font: var(--semantics-buttons-sm-primary-text-font);
-		--_icon-size: var(--semantics-buttons-md-with-supporting-text-icon-size);
-		--_inline-padding: calc((var(--_min-size) - var(--_icon-size)) / 2);
+		--_icon-size: var(--semantics-buttons-md-has-supporting-text-icon-size);
+		--_inline-padding: var(--semantics-buttons-md-has-supporting-text-inline-padding);
 		--_block-padding: var(--primitives-space-4);
 	}
 
 	:host([size="lg"]) .button.has-supporting-text {
 		--_font: var(--semantics-buttons-md-primary-text-font);
-		--_icon-size: var(--semantics-buttons-lg-with-supporting-text-icon-size);
-		--_inline-padding: calc((var(--_min-size) - var(--_icon-size)) / 2);
+		--_icon-size: var(--semantics-buttons-lg-has-supporting-text-icon-size);
+		--_inline-padding: var(--semantics-buttons-lg-has-supporting-text-inline-padding);
 		--_block-padding: var(--primitives-space-4);
 	}
 

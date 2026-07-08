@@ -1,0 +1,168 @@
+import {
+	Decoration,
+	ViewPlugin,
+	WidgetType,
+	type DecorationSet,
+	type EditorView,
+	type ViewUpdate,
+} from '@codemirror/view';
+import { RangeSetBuilder, type EditorState } from '@codemirror/state';
+import { syntaxTree } from '@codemirror/language';
+import type { SyntaxNode } from '@lezer/common';
+import { MENTION_HREF_PREFIX } from './text-editor.mentions.js';
+import { textCaretBox } from './text-editor.caret.js';
+import '../../content/icon/icon.js';
+
+/* Render a small "open in new tab" badge right after every real (non-mention)
+ * link, so a link can be followed without leaving the editor — directly clickable,
+ * no need to place the caret first. Mentions own their own click, so they're skipped. */
+
+/** Builds the badge's accessible label from a link's destination. Supplied by the
+ *  host so the string is localizable; defaults to Dutch at the call site. */
+export type OpenInNewTabLabel = (url: string) => string;
+
+class LinkOpenWidget extends WidgetType {
+	constructor(readonly href: string, readonly label: OpenInNewTabLabel) {
+		super();
+	}
+
+	eq(other: LinkOpenWidget): boolean {
+		return other.href === this.href;
+	}
+
+	toDOM(): HTMLElement {
+		const anchor = document.createElement('a');
+		anchor.className = 'cm-link-badge';
+		anchor.href = this.href;
+		anchor.target = '_blank';
+		anchor.rel = 'noopener noreferrer';
+		anchor.setAttribute('aria-label', this.label(this.href));
+		const icon = document.createElement('nldd-icon');
+		icon.setAttribute('name', 'external-link');
+		icon.setAttribute('aria-hidden', 'true');
+		anchor.append(icon);
+		// The editor steals mousedown to place the caret; keep the click ours.
+		anchor.addEventListener('mousedown', (event) => event.preventDefault());
+		return anchor;
+	}
+
+	ignoreEvent(): boolean {
+		return true; // let the anchor handle its own click
+	}
+
+	/** Keep the caret at the badge's right edge text-height, not the badge's own box
+	 *  height (which is taller and would flip with the cursor's arrival direction). */
+	coordsAt(dom: HTMLElement): { left: number; right: number; top: number; bottom: number } | null {
+		const badge = dom.getBoundingClientRect();
+		const box = textCaretBox(dom) ?? { top: badge.top, bottom: badge.bottom };
+		const x = badge.right + parseFloat(getComputedStyle(dom).marginRight);
+		return { left: x, right: x, top: box.top, bottom: box.bottom };
+	}
+}
+
+/** Normalise a Markdown reference label for matching: drop the surrounding
+ *  brackets, collapse internal whitespace and lowercase (labels are
+ *  case-insensitive per CommonMark). */
+function normaliseLabel(raw: string): string {
+	return raw.replace(/^\[|\]$/g, '').trim().replace(/\s+/g, ' ').toLowerCase();
+}
+
+/** Map of reference label → URL, from every link reference definition
+ *  (`[ref]: https://…`) in the doc, so reference-style links can resolve their
+ *  destination. Definitions usually sit at the bottom, so this scans the whole
+ *  tree, not just the viewport. */
+function referenceDefs(state: EditorState): Map<string, string> {
+	const defs = new Map<string, string>();
+	syntaxTree(state).iterate({
+		enter: (node) => {
+			if (node.name !== 'LinkReference') return;
+			let label: string | null = null;
+			let url: string | null = null;
+			for (let c = node.node.firstChild; c; c = c.nextSibling) {
+				if (c.name === 'LinkLabel') label = normaliseLabel(state.sliceDoc(c.from, c.to));
+				else if (c.name === 'URL') url = state.sliceDoc(c.from, c.to);
+			}
+			if (label && url && !defs.has(label)) defs.set(label, url);
+		},
+	});
+	return defs;
+}
+
+/** Only follow schemes that are safe to put in a clickable anchor. The editor's
+ *  value is consumer/document-supplied Markdown, so a `[text](javascript:…)` (or
+ *  `data:` / `vbscript:`) link must never become a real, clickable badge —
+ *  `target="_blank"` does NOT neutralise those; they execute in the current
+ *  document. A URL with no scheme (relative, `#anchor`, `?query`, `//host`) just
+ *  navigates, so it is allowed; a schemed URL must be http(s)/mailto/tel. */
+export function isSafeHref(href: string): boolean {
+	// Read the scheme through the SAME normalisation the URL parser applies, or a
+	// disguised scheme slips through as "relative": the parser strips leading C0
+	// controls + space and removes tab/newline/CR anywhere, so `javascript:`
+	// and `java\tscript:` both resolve to `javascript:` even though the raw string
+	// fails the scheme regex. Drop every control/space char before testing (only for
+	// the safety decision — the real href is untouched); a scheme that survives must
+	// be in the allowlist.
+	// eslint-disable-next-line no-control-regex -- matching control chars is the point: they are the bypass vectors the URL parser strips before resolving the scheme.
+	const normalised = href.replace(/[\u0000-\u0020\u007f-\u009f]/g, '');
+	if (!/^[a-z][a-z0-9+.-]*:/i.test(normalised)) return true; // no scheme → relative, safe
+	return /^(?:https?|mailto|tel):/i.test(normalised);
+}
+
+/** The link's destination, or null for a mention, an unsafe scheme, or a link
+ *  without a resolvable URL. Handles both inline links (`[text](url)`) and
+ *  reference-style links (`[text][ref]`), resolving the latter against `refs`. */
+function hrefOf(state: EditorState, link: SyntaxNode, refs: Map<string, string>): string | null {
+	let label: string | null = null;
+	for (let child = link.firstChild; child; child = child.nextSibling) {
+		if (child.name === 'URL') {
+			const href = state.sliceDoc(child.from, child.to);
+			return href && !href.startsWith(MENTION_HREF_PREFIX) && isSafeHref(href) ? href : null;
+		}
+		if (child.name === 'LinkLabel') label = normaliseLabel(state.sliceDoc(child.from, child.to));
+	}
+	if (label) {
+		const href = refs.get(label);
+		return href && !href.startsWith(MENTION_HREF_PREFIX) && isSafeHref(href) ? href : null;
+	}
+	return null;
+}
+
+function buildBadges(view: EditorView, label: OpenInNewTabLabel): DecorationSet {
+	const builder = new RangeSetBuilder<Decoration>();
+	const tree = syntaxTree(view.state);
+	const refs = referenceDefs(view.state);
+	for (const { from, to } of view.visibleRanges) {
+		tree.iterate({
+			from,
+			to,
+			enter: (node) => {
+				if (node.name !== 'Link') return;
+				const href = hrefOf(view.state, node.node, refs);
+				// side -1 draws the badge before the caret, so the caret at the link end
+				// sits to the RIGHT of the badge — text typed there lands after it, not
+				// wedged between the link and the badge.
+				if (href) builder.add(node.to, node.to, Decoration.widget({ widget: new LinkOpenWidget(href, label), side: -1 }));
+			},
+		});
+	}
+	return builder.finish();
+}
+
+/** Adds an "open link" badge after every real link in the viewport. `label` builds
+ *  the badge's accessible label from the destination, so the host can localize it. */
+export function linkOpenBadge(label: OpenInNewTabLabel): ViewPlugin<{ decorations: DecorationSet }> {
+	return ViewPlugin.fromClass(
+		class {
+			decorations: DecorationSet;
+
+			constructor(view: EditorView) {
+				this.decorations = buildBadges(view, label);
+			}
+
+			update(update: ViewUpdate): void {
+				if (update.docChanged || update.viewportChanged) this.decorations = buildBadges(update.view, label);
+			}
+		},
+		{ decorations: (plugin) => plugin.decorations }
+	);
+}

@@ -10,12 +10,16 @@ export const codeEditorStyles = css`
 	/* # Host */
 
 	:host {
-		--_corner-radius: var(--primitives-corner-radius-lg);
-		--_background-color: var(--semantics-surfaces-tinted-background-color);
-		--_block-padding: var(--primitives-space-16);
-		--_inline-padding: var(--primitives-space-16);
+		--__caret-width: var(--primitives-border-width-regular);
+		--_corner-radius: 0;
+		--_background-color: transparent;
+		--_border-color: transparent;
+		--_border-shadow: none;
+		--_padding-block: 0px;
+		--_padding-inline: 0px;
 		--_content-color: var(--semantics-content-color);
 		--_font: var(--primitives-font-monospace-sm-regular-snug);
+		--_rows: 6;
 
 		/* iOS Safari auto-zooms a focused field rendered under 16px (sm is ~14px).
 		   Bump to the 16px md size on touch to prevent it; non-touch keeps the
@@ -25,9 +29,6 @@ export const codeEditorStyles = css`
 		}
 
 		${inheritedTextReset}
-		/* flex column + min-height:0 + flex:1 makes the host a good flex
-		   citizen so a fixed-height parent grows the textarea; with no set
-		   height it falls back to the rows attribute. */
 		display: flex;
 		min-height: 0;
 		flex-direction: column;
@@ -42,79 +43,90 @@ export const codeEditorStyles = css`
 	}
 
 
-	/* # Block */
+	/* ## Variant — input-field adds the framed surface + a default content padding */
+
+	:host([variant="input-field"]) {
+		--_corner-radius: var(--primitives-corner-radius-lg);
+		/* Match the other input fields (text-field, textarea): the input-field
+		   surface + border + control padding, not the tinted surface. */
+		--_background-color: var(--semantics-input-fields-background-color);
+		--_border-color: var(--semantics-input-fields-border-color);
+		--_border-shadow: inset 0 0 0 var(--semantics-input-fields-border-thickness) var(--_border-color);
+		--_padding-block: var(--semantics-controls-md-inline-padding);
+		--_padding-inline: var(--semantics-controls-md-inline-padding);
+	}
+
+
+	/* # Block — the frame only; CodeMirror fills it, padding lives on the content */
 
 	.code-editor {
 		box-sizing: border-box;
 		display: flex;
 		position: relative;
 		border-radius: var(--_corner-radius);
+		box-shadow: var(--_border-shadow);
 		background-color: var(--_background-color);
 		min-height: 0;
-		overflow: hidden;
 		flex-direction: column;
-		flex-grow: 1;
-		flex-shrink: 1;
-		flex-basis: auto;
-	}
-
-	:host([disabled]) .code-editor {
-		opacity: var(--primitives-opacity-disabled);
-	}
-
-	.code-editor:focus-within {
-		outline: var(--semantics-focus-ring-outline);
-		outline-offset: var(--semantics-focus-ring-outline-offset);
-		box-shadow: var(--semantics-focus-ring-box-shadow);
-	}
-
-
-	/* # Elements */
-
-	.code-editor__input {
-		box-sizing: border-box;
-		display: block;
-		margin: 0;
-		outline: none;
-		border: none;
-		background: transparent;
-		width: 100%;
-		min-height: 0;
-		padding: var(--_block-padding) var(--_inline-padding);
 		flex-grow: 1;
 		flex-shrink: 1;
 		flex-basis: auto;
 		color: var(--_content-color);
 		font: var(--_font);
-		tab-size: 2;
-		white-space: pre;
-		overflow-wrap: normal;
-		appearance: none;
 	}
 
-	:host([wrap]) .code-editor__input {
-		white-space: pre-wrap;
-		overflow-wrap: break-word;
-	}
-
-	:host([resize="vertical"]) .code-editor__input {
-		resize: vertical;
-	}
-
-	:host([resize="none"]) .code-editor__input {
-		resize: none;
-	}
-
-	:host([resize="auto"]) .code-editor__input {
-		resize: none;
-		field-sizing: content;
-	}
-
-	:host([disabled]) .code-editor__input {
+	:host([disabled]) .code-editor {
+		opacity: var(--primitives-opacity-disabled);
 		pointer-events: none;
 	}
 
-	.code-editor__input::placeholder {
-		color: var(--semantics-input-fields-placeholder-color);
+	/* Focus ring only on the input-field variant. The simple variant relies on a
+	   prominent caret and lets a wrapping composition own its focus treatment. */
+	:host([variant="input-field"]) .code-editor:focus-within {
+		outline: var(--semantics-focus-ring-outline);
+		outline-offset: var(--semantics-focus-ring-outline-offset);
+		box-shadow: var(--semantics-focus-ring-box-shadow), var(--_border-shadow);
+	}
+
+
+	/* # CodeMirror surface */
+
+	/* Padding lives on the content so the whole padded area is clickable and a
+	   click maps to the nearest line — no dead zone around the text. */
+	/* Inline padding sits on the scroller so it lands left of the line-number
+	   gutter (the gutter stays inset with the text). Block + right padding sit
+	   on the content so the padded area is clickable and horizontal scrolling
+	   keeps its end padding. :host beats the shared theme's .cm-content reset. */
+	:host .cm-scroller {
+		padding-left: var(--_padding-inline);
+	}
+
+	:host .cm-content {
+		padding-block: var(--_padding-block);
+		padding-right: var(--_padding-inline);
+		min-height: calc(var(--_rows) * 1lh);
+		tab-size: 2;
+	}
+
+	/* Accent caret. The doubled class is purely for specificity — it outweighs
+	   CodeMirror's theme cursor colour without depending on an attribute. */
+	:host .cm-cursor.cm-cursor {
+		border-left-color: var(--primitives-color-accent-600);
+		border-left-width: var(--__caret-width);
+	}
+
+	/* Resize model — rows is the floor in every mode:
+	   auto (default) = grow, vertical = drag up from the floor, none = fixed. */
+	:host .cm-scroller {
+		resize: none;
+		min-height: calc(var(--_rows) * 1lh + 2 * var(--_padding-block));
+	}
+
+	:host([resize="vertical"]) .cm-scroller {
+		resize: vertical;
+	}
+
+	:host([resize="none"]) .cm-editor {
+		height: calc(var(--_rows) * 1lh + 2 * var(--_padding-block));
 	}
 `;

@@ -1235,7 +1235,6 @@
 	--semantics-blockquotes-sm-spacing: calc(var(--primitives-font-size-200) * var(--primitives-line-height-snug));
 	--semantics-blockquotes-md-spacing: calc(var(--primitives-font-size-300) * var(--primitives-line-height-snug));
 	--semantics-blockquotes-border: var(--primitives-border-width-regular) solid var(--semantics-content-color);
-	--semantics-blockquotes-corner-radius: var(--primitives-corner-radius-xxxl);
 	--semantics-blockquotes-sm-quote-font:
 		italic
 		var(--primitives-font-weight-body-regular)
@@ -1310,15 +1309,30 @@
 	--semantics-buttons-md-icon-size: var(--primitives-space-20);
 	--semantics-buttons-lg-icon-size: var(--primitives-space-24);
 
-	--semantics-buttons-xs-with-supporting-text-icon-size: var(--primitives-space-16);
-	--semantics-buttons-sm-with-supporting-text-icon-size: var(--primitives-space-18);
-	--semantics-buttons-md-with-supporting-text-icon-size: var(--primitives-space-24);
-	--semantics-buttons-lg-with-supporting-text-icon-size: var(--primitives-space-32);
+	--semantics-buttons-xs-has-supporting-text-icon-size: var(--primitives-space-16);
+	--semantics-buttons-sm-has-supporting-text-icon-size: var(--primitives-space-18);
+	--semantics-buttons-md-has-supporting-text-icon-size: var(--primitives-space-24);
+	--semantics-buttons-lg-has-supporting-text-icon-size: var(--primitives-space-32);
 
-	--semantics-buttons-xs-icon-only-icon-size: var(--primitives-space-16);
-	--semantics-buttons-sm-icon-only-icon-size: var(--primitives-space-20);
-	--semantics-buttons-md-icon-only-icon-size: var(--primitives-space-24);
-	--semantics-buttons-lg-icon-only-icon-size: var(--primitives-space-28);
+	--semantics-buttons-xs-is-icon-only-icon-size: var(--primitives-space-16);
+	--semantics-buttons-sm-is-icon-only-icon-size: var(--primitives-space-20);
+	--semantics-buttons-md-is-icon-only-icon-size: var(--primitives-space-24);
+	--semantics-buttons-lg-is-icon-only-icon-size: var(--primitives-space-28);
+
+	--semantics-buttons-xs-inline-padding: calc((var(--semantics-controls-xs-min-size) - var(--semantics-buttons-xs-icon-size)) / 2);
+	--semantics-buttons-sm-inline-padding: calc((var(--semantics-controls-sm-min-size) - var(--semantics-buttons-sm-icon-size)) / 2);
+	--semantics-buttons-md-inline-padding: calc((var(--semantics-controls-md-min-size) - var(--semantics-buttons-md-icon-size)) / 2);
+	--semantics-buttons-lg-inline-padding: calc((var(--semantics-controls-lg-min-size) - var(--semantics-buttons-lg-icon-size)) / 2);
+
+	--semantics-buttons-xs-has-supporting-text-inline-padding: calc((var(--semantics-controls-xs-min-size) - var(--semantics-buttons-xs-has-supporting-text-icon-size)) / 2);
+	--semantics-buttons-sm-has-supporting-text-inline-padding: calc((var(--semantics-controls-sm-min-size) - var(--semantics-buttons-sm-has-supporting-text-icon-size)) / 2);
+	--semantics-buttons-md-has-supporting-text-inline-padding: calc((var(--semantics-controls-md-min-size) - var(--semantics-buttons-md-has-supporting-text-icon-size)) / 2);
+	--semantics-buttons-lg-has-supporting-text-inline-padding: calc((var(--semantics-controls-lg-min-size) - var(--semantics-buttons-lg-has-supporting-text-icon-size)) / 2);
+
+	--semantics-buttons-xs-is-icon-only-inline-padding: calc((var(--semantics-controls-xs-min-size) - var(--semantics-buttons-xs-is-icon-only-icon-size)) / 2);
+	--semantics-buttons-sm-is-icon-only-inline-padding: calc((var(--semantics-controls-sm-min-size) - var(--semantics-buttons-sm-is-icon-only-icon-size)) / 2);
+	--semantics-buttons-md-is-icon-only-inline-padding: calc((var(--semantics-controls-md-min-size) - var(--semantics-buttons-md-is-icon-only-icon-size)) / 2);
+	--semantics-buttons-lg-is-icon-only-inline-padding: calc((var(--semantics-controls-lg-min-size) - var(--semantics-buttons-lg-is-icon-only-icon-size)) / 2);
 
 	--semantics-buttons-neutral-base-background-color: var(--semantics-surfaces-base-background-color);
 	--semantics-buttons-neutral-base-primary-content-color: light-dark(var(--primitives-color-neutral-900), var(--primitives-color-neutral-900));
@@ -1717,7 +1731,8 @@
 
 	/* ## Image */
 
-	--components-image-corner-radius: var(--semantics-controls-md-corner-radius);
+	--components-image-corner-radius: var(--primitives-corner-radius-none);
+	--components-image-rounded-corner-radius: var(--semantics-controls-md-corner-radius);
 	--components-image-background-color: light-dark(var(--primitives-color-neutral-75), var(--primitives-color-neutral-50));
 	--components-image-error-text-color: var(--semantics-content-color);
 	--components-image-error-font: var(--primitives-font-body-sm-regular-snug);

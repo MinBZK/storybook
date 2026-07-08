@@ -85,6 +85,7 @@ export function template(this: NLDDIconButton) {
 					aria-haspopup=${this.popupType || nothing}
 					aria-expanded=${ariaExpanded}
 					aria-busy=${ariaBusy}
+					tabindex=${this.noTab ? '-1' : nothing}
 					@click=${this._handleClick}
 				>
 					${content}
@@ -106,6 +107,7 @@ export function template(this: NLDDIconButton) {
 				aria-haspopup=${this.popupType || nothing}
 				aria-expanded=${ariaExpanded}
 				aria-busy=${ariaBusy}
+				tabindex=${this.noTab ? '-1' : nothing}
 				popovertarget=${this.popovertarget || nothing}
 				.popoverTargetElement=${this.popoverTargetElement}
 				.popoverTargetAction=${this.popoverTargetAction}

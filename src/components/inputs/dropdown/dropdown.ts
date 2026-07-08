@@ -32,6 +32,7 @@
  */
 import { LitElement } from 'lit';
 import { customElement, property, state } from 'lit/decorators.js';
+import { reflectNonDefault } from '../../../utilities/reflect-non-default.js';
 import { dropdownStyles } from './dropdown.styles.js';
 import { dropdownTemplate } from './dropdown.template.js';
 import { isPointerMode } from '../../../utilities/input-modality.js';
@@ -43,7 +44,7 @@ export type DropdownSize = 'xs' | 'sm' | 'md';
 export class NLDDDropdown extends LitElement {
 	static override styles = dropdownStyles;
 
-	@property({ type: String, reflect: true })
+	@property({ reflect: true, converter: reflectNonDefault<DropdownSize>('md') })
 	size: DropdownSize = 'md';
 
 	@property({ type: Boolean, reflect: true })

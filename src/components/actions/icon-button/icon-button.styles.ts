@@ -13,8 +13,9 @@ export const iconButtonStyles = css`
 		--_corner-radius: var(--semantics-controls-md-corner-radius);
 		--_width: auto;
 		--_min-size: var(--semantics-controls-md-min-size);
-		--_padding: calc((var(--semantics-controls-md-min-size) - var(--semantics-buttons-md-icon-only-icon-size)) / 2);
-		--_icon-size: var(--semantics-buttons-md-icon-only-icon-size);
+		--_block-padding: var(--semantics-buttons-md-is-icon-only-inline-padding);
+		--_inline-padding: var(--semantics-buttons-md-is-icon-only-inline-padding);
+		--_icon-size: var(--semantics-buttons-md-is-icon-only-icon-size);
 		--_disclosure-icon-margin-right: calc(var(--primitives-space-2) * -1);
 		--_disclosure-icon-size: var(--primitives-space-20);
 		--_text-display: none;
@@ -40,8 +41,9 @@ export const iconButtonStyles = css`
 	:host([size="xs"]) {
 		--_corner-radius: var(--semantics-controls-xs-corner-radius);
 		--_min-size: var(--semantics-controls-xs-min-size);
-		--_padding: calc((var(--semantics-controls-xs-min-size) - var(--semantics-buttons-xs-icon-only-icon-size)) / 2);
-		--_icon-size: var(--semantics-buttons-xs-icon-only-icon-size);
+		--_block-padding: var(--semantics-buttons-xs-is-icon-only-inline-padding);
+		--_inline-padding: var(--semantics-buttons-xs-is-icon-only-inline-padding);
+		--_icon-size: var(--semantics-buttons-xs-is-icon-only-icon-size);
 		--_disclosure-icon-margin-right: 0;
 		--_disclosure-icon-size: var(--primitives-space-16);
 	}
@@ -49,20 +51,23 @@ export const iconButtonStyles = css`
 	:host([size="sm"]) {
 		--_corner-radius: var(--semantics-controls-sm-corner-radius);
 		--_min-size: var(--semantics-controls-sm-min-size);
-		--_padding: calc((var(--semantics-controls-sm-min-size) - var(--semantics-buttons-sm-icon-only-icon-size)) / 2);
-		--_icon-size: var(--semantics-buttons-sm-icon-only-icon-size);
+		--_block-padding: var(--semantics-buttons-sm-is-icon-only-inline-padding);
+		--_inline-padding: var(--semantics-buttons-sm-is-icon-only-inline-padding);
+		--_icon-size: var(--semantics-buttons-sm-is-icon-only-icon-size);
 	}
 
 	:host([size="lg"]) {
 		--_corner-radius: var(--semantics-controls-lg-corner-radius);
 		--_min-size: var(--semantics-controls-lg-min-size);
-		--_padding: var(--primitives-space-8);
+		--_block-padding: var(--primitives-space-8);
+		--_inline-padding: var(--primitives-space-8);
 		--_text-display: block;
 	}
 
 	:host([size="lg"][hide-lg-text]) {
-		--_padding: calc((var(--semantics-controls-lg-min-size) - var(--semantics-buttons-lg-icon-only-icon-size)) / 2);
-		--_icon-size: var(--semantics-buttons-lg-icon-only-icon-size);
+		--_block-padding: var(--semantics-buttons-lg-is-icon-only-inline-padding);
+		--_inline-padding: var(--semantics-buttons-lg-is-icon-only-inline-padding);
+		--_icon-size: var(--semantics-buttons-lg-is-icon-only-icon-size);
 		--_text-display: none;
 	}
 
@@ -334,7 +339,7 @@ export const iconButtonStyles = css`
 		min-width: var(--_min-size);
 		height: var(--_min-size);
 		min-height: var(--_min-size);
-		padding: var(--_padding);
+		padding: var(--_block-padding) var(--_inline-padding);
 		flex-direction: column;
 		align-items: center;
 		justify-content: center;

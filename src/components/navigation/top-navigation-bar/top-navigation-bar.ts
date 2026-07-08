@@ -1,5 +1,6 @@
 import { LitElement, type PropertyValues } from 'lit';
 import { customElement, property, query } from 'lit/decorators.js';
+import { reflectNonDefault } from '../../../utilities/reflect-non-default.js';
 import { topNavigationBarStyles } from './top-navigation-bar.styles.js';
 import { template } from './top-navigation-bar.template.js';
 import { withTranslations } from '../../../utilities/with-translations.js';
@@ -49,7 +50,7 @@ export class NLDDTopNavigationBar extends withTranslations(LitElement, nlddTopNa
 
 	// ## Main properties
 
-	@property({ type: String, attribute: 'website-title' })
+	@property({ reflect: true, attribute: 'website-title', converter: reflectNonDefault<string>('') })
 	websiteTitle = '';
 
 	@property({ type: Boolean, attribute: 'no-logo', reflect: true })
@@ -64,16 +65,16 @@ export class NLDDTopNavigationBar extends withTranslations(LitElement, nlddTopNa
 
 	// ## Logo properties
 
-	@property({ type: String, attribute: 'logo-title' })
+	@property({ reflect: true, attribute: 'logo-title', converter: reflectNonDefault<string>('') })
 	logoTitle = '';
 
-	@property({ type: String, attribute: 'logo-subtitle' })
+	@property({ reflect: true, attribute: 'logo-subtitle', converter: reflectNonDefault<string>('') })
 	logoSubtitle = '';
 
-	@property({ type: String, attribute: 'logo-supporting-text-1' })
+	@property({ reflect: true, attribute: 'logo-supporting-text-1', converter: reflectNonDefault<string>('') })
 	logoSupportingText1 = '';
 
-	@property({ type: String, attribute: 'logo-supporting-text-2' })
+	@property({ reflect: true, attribute: 'logo-supporting-text-2', converter: reflectNonDefault<string>('') })
 	logoSupportingText2 = '';
 
 	// ## Link properties
@@ -89,7 +90,7 @@ export class NLDDTopNavigationBar extends withTranslations(LitElement, nlddTopNa
 	@property({ type: String, attribute: 'back-href' })
 	backHref = '';
 
-	@property({ type: String, attribute: 'back-text' })
+	@property({ reflect: true, attribute: 'back-text', converter: reflectNonDefault<string>('') })
 	backText = '';
 
 	// ## Internal state

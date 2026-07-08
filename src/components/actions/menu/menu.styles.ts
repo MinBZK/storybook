@@ -43,6 +43,14 @@ export const menuStyles = css`
 		display: none;
 	}
 
+	/* Hide the menu between opening and being placed by Floating UI, so it never
+	   flashes at the popover's default position. visibility (not display) keeps it laid
+	   out so its size can be measured for positioning. The positioned attribute is set
+	   once reposition() finishes; cleared again on every re-open. */
+	:host(:popover-open:not([positioned])) {
+		visibility: hidden;
+	}
+
 	:host([scroll-active]) {
 		--_item-is-highlighted-background-color: transparent;
 		--_item-is-highlighted-content-color: initial;

@@ -30,6 +30,7 @@
  */
 import { LitElement } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
+import { reflectNonDefault } from '../../../utilities/reflect-non-default.js';
 import { spacerStyles } from './spacer.styles.js';
 
 type SpacerSize =
@@ -70,7 +71,7 @@ export class NLDDSpacer extends LitElement {
 	@property({ type: String, reflect: true, attribute: 'lg-size' })
 	lgSize?: SpacerSize;
 
-	@property({ type: String, reflect: true })
+	@property({ reflect: true, converter: reflectNonDefault<Direction>('both') })
 	direction: Direction = 'both';
 }
 

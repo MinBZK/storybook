@@ -232,6 +232,7 @@ export const toolbarTitleStyles = css`
 		flex-shrink: 1;
 		flex-basis: var(--_title-width);
 		justify-content: center;
+		align-items: flex-start;
 	}
 
 	:host([size="sm"]) {
@@ -255,10 +256,6 @@ export const toolbarTitleStyles = css`
 		align-items: center;
 	}
 
-	:host([align="left"]) {
-		align-items: flex-start;
-	}
-
 	:host([hidden]) {
 		display: none;
 	}
@@ -277,14 +274,11 @@ export const toolbarTitleStyles = css`
 		font: var(--_title-font);
 		text-overflow: ellipsis;
 		white-space: nowrap;
+		text-align: left;
 	}
 
 	:host([align="center"]) .toolbar__title {
 		text-align: center;
-	}
-
-	:host([align="left"]) .toolbar__title {
-		text-align: left;
 	}
 
 	.toolbar__subtitle {
@@ -295,13 +289,10 @@ export const toolbarTitleStyles = css`
 		font: var(--_subtitle-font);
 		text-overflow: ellipsis;
 		white-space: nowrap;
+		text-align: left;
 	}
 
 	:host([align="center"]) .toolbar__subtitle {
 		text-align: center;
-	}
-
-	:host([align="left"]) .toolbar__subtitle {
-		text-align: left;
 	}
 `;

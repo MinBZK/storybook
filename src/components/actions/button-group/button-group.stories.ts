@@ -74,5 +74,5 @@ export const MaxEnforced = {
 		<nldd-button variant="secondary" text="Een knop te veel"></nldd-button>
 	</nldd-button-group>
 	`,
-	storyName: 'Max 3 Enforced (4th button hidden)',
+	name: 'Max 3 Enforced (4th button hidden)',
 };

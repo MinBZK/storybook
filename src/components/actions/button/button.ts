@@ -35,6 +35,7 @@ import { customElement, property } from 'lit/decorators.js';
 import { buttonStyles } from './button.styles.js';
 import { template } from './button.template.js';
 import { withTranslations } from '../../../utilities/with-translations.js';
+import { reflectNonDefault } from '../../../utilities/reflect-non-default.js';
 import { nlddButtonTranslations } from './button.i18n.js';
 import './../../content/icon/icon.js';
 import './../../status-and-feedback/activity-indicator/activity-indicator.js';
@@ -66,18 +67,18 @@ export class NLDDButton extends withTranslations(LitElement, nlddButtonTranslati
 	static formAssociated = true;
 	private _internals = this.attachInternals();
 
-	@property({ type: String, reflect: true })
+	@property({ reflect: true, converter: reflectNonDefault<Variant>('neutral-tinted') })
 	variant: Variant = 'neutral-tinted';
 
-	@property({ type: String, reflect: true })
+	@property({ reflect: true, converter: reflectNonDefault<Size>('md') })
 	size: Size = 'md';
 
 	/** Horizontal alignment of the button content. Most visible with width="full" or a fixed width. */
-	@property({ type: String, reflect: true, attribute: 'horizontal-alignment' })
+	@property({ reflect: true, attribute: 'horizontal-alignment', converter: reflectNonDefault<'left' | 'center' | 'right' | ''>('') })
 	horizontalAlignment: 'left' | 'center' | 'right' | '' = '';
 
 	/** Width mode: 'full' (stretch to container) or any CSS length. */
-	@property({ type: String, reflect: true })
+	@property({ reflect: true, converter: reflectNonDefault<string>('') })
 	width = '';
 
 	@property({ type: Boolean, reflect: true, attribute: 'expandable' })
@@ -138,11 +139,11 @@ export class NLDDButton extends withTranslations(LitElement, nlddButtonTranslati
 	disabled = false;
 
 	/** Button text. */
-	@property({ type: String })
+	@property({ reflect: true, converter: reflectNonDefault<string>('') })
 	text = '';
 
 	/** Supporting text: below the text (md/lg) or after it (sm/xs), in a secondary color. Part of the accessible name (unless `accessible-label` is set, which replaces the whole accessible name). */
-	@property({ type: String, reflect: true, attribute: 'supporting-text' })
+	@property({ reflect: true, attribute: 'supporting-text', converter: reflectNonDefault<string>('') })
 	supportingText = '';
 
 	@property({ type: Boolean, reflect: true, attribute: 'single-line' })

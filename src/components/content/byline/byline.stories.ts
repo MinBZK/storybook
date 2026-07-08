@@ -35,7 +35,7 @@ export default {
 	},
 	args: {
 		text: 'Jan Jansen',
-		supportingText: 'Redacteur — 12 juni 2026',
+		supportingText: 'Redacteur · 12 juni 2026',
 	},
 	argTypes: {
 		text: {
@@ -77,7 +77,7 @@ export const EnkeleAvatarViaAttribuut = {
 		<nldd-byline
 			avatar-src=${AVATAR_1}
 			text="Jan Jansen"
-			supporting-text="Redacteur — 12 juni 2026"
+			supporting-text="Redacteur · 12 juni 2026"
 		></nldd-byline>
 	`,
 	parameters: { controls: { disable: true } },
@@ -129,7 +129,7 @@ export const SmalleContainer = {
 			<div style="outline: 1px dashed #cbd5e1; padding: 16px;">
 				<nldd-byline
 					text="Jan Jansen"
-					supporting-text="Redacteur — 12 juni 2026"
+					supporting-text="Redacteur · 12 juni 2026"
 				>
 					<img slot="avatars" src=${AVATAR_1} alt="">
 				</nldd-byline>
@@ -164,7 +164,7 @@ export const ZonderAvatar = {
 	render: () => html`
 		<nldd-byline
 			text="Jan Jansen"
-			supporting-text="Redacteur — 12 juni 2026"
+			supporting-text="Redacteur · 12 juni 2026"
 		></nldd-byline>
 	`,
 	parameters: { controls: { disable: true } },

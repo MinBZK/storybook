@@ -10,6 +10,7 @@ export const tabBarStyles = css`
 	/* # Host */
 
 	:host {
+		--_corner-radius: var(--semantics-controls-md-corner-radius);
 		--_gap: var(--primitives-space-1);
 		--_z-index-selected: 1;
 		--_z-index-focus: 2;
@@ -23,15 +24,23 @@ export const tabBarStyles = css`
 		-webkit-tap-highlight-color: transparent;
 	}
 
-	:host([hidden]) {
-		display: none;
-	}
-
 	:host([centered]) {
 		display: block;
 		width: 100%;
 	}
 
+	:host([size="lg"]) {
+		--_corner-radius: var(--semantics-controls-lg-corner-radius);
+	}
+
+	:host([disabled]) {
+		opacity: var(--primitives-opacity-disabled);
+		pointer-events: none;
+	}
+
+	:host([hidden]) {
+		display: none;
+	}
 
 	/* # Block */
 
@@ -49,17 +58,13 @@ export const tabBarStyles = css`
 	.tab-bar__items {
 		display: grid;
 		position: relative;
-		border-radius: var(--semantics-controls-md-corner-radius);
+		border-radius: var(--_corner-radius);
 		background-color: var(--semantics-buttons-neutral-tinted-background-color);
 		min-width: 0;
 		grid-auto-flow: column;
 		grid-auto-columns: auto;
 		align-items: center;
 		gap: var(--_gap);
-	}
-
-	:host([size="lg"]) .tab-bar__items {
-		border-radius: var(--semantics-controls-lg-corner-radius);
 	}
 
 	.tab-bar__items::after {
@@ -91,7 +96,13 @@ export const tabBarItemStyles = css`
 	/* # Host */
 
 	:host {
-		--_lg-item-padding: var(--primitives-space-8);
+		--_corner-radius: var(--semantics-controls-md-corner-radius);
+		--_min-size: var(--semantics-controls-md-min-size);
+		--_block-padding: var(--semantics-controls-md-block-padding);
+		--_inline-padding: var(--semantics-buttons-md-inline-padding);
+		--_gap: var(--semantics-buttons-md-gap);
+		--_font: var(--semantics-buttons-md-primary-text-font);
+		--_icon-size: var(--semantics-buttons-md-icon-size);
 		--_highlight-border-color: transparent;
 		--_z-index-content: 1;
 
@@ -99,6 +110,36 @@ export const tabBarItemStyles = css`
 		display: inline-block;
 		position: relative;
 		-webkit-tap-highlight-color: transparent;
+	}
+
+	:host([size="lg"]) {
+		--_corner-radius: var(--semantics-controls-lg-corner-radius);
+		--_min-size: var(--semantics-controls-lg-min-size);
+		--_block-padding: var(--semantics-controls-lg-block-padding);
+		--_inline-padding: var(--semantics-buttons-lg-inline-padding);
+		--_gap: var(--semantics-buttons-lg-gap);
+		--_font: var(--semantics-buttons-lg-primary-text-font);
+		--_icon-size: var(--semantics-buttons-lg-icon-size);
+	}
+
+	:host([variant="icon"]) {
+		--_block-padding: var(--semantics-buttons-md-is-icon-only-inline-padding);
+		--_inline-padding: var(--semantics-buttons-md-is-icon-only-inline-padding);
+		--_icon-size: var(--semantics-buttons-md-is-icon-only-icon-size);
+	}
+
+	:host([variant="icon"][size="lg"]) {
+		--_block-padding: var(--semantics-buttons-lg-is-icon-only-inline-padding);
+		--_inline-padding: var(--semantics-buttons-lg-is-icon-only-inline-padding);
+		--_icon-size: var(--semantics-buttons-lg-is-icon-only-icon-size);
+	}
+
+	:host([variant="icon-and-text"][size="lg"]) {
+		--_block-padding: var(--primitives-space-8);
+		--_inline-padding: var(--primitives-space-8);
+		--_gap: var(--primitives-space-2);
+		--_font: var(--primitives-font-body-xxs-medium-flat);
+		--_icon-size: var(--semantics-buttons-md-is-icon-only-icon-size);
 	}
 
 	:host([hidden]) {
@@ -122,13 +163,18 @@ export const tabBarItemStyles = css`
 		position: relative;
 		margin: 0;
 		border: none;
-		border-radius: var(--semantics-controls-md-corner-radius);
+		border-radius: var(--_corner-radius);
+		box-shadow: inset 0 0 0 var(--primitives-border-width-thin) var(--_highlight-border-color);
 		background: none;
-		padding: 0;
+		width: 100%;
+		height: var(--_min-size);
+		padding-block: var(--_block-padding);
+		padding-inline: var(--_inline-padding);
+		gap: var(--_gap);
 		align-items: center;
 		justify-content: center;
 		color: var(--semantics-buttons-neutral-tinted-primary-content-color);
-		font: var(--semantics-buttons-md-primary-text-font);
+		font: var(--_font);
 		text-decoration: none;
 		appearance: none;
 	}
@@ -137,58 +183,18 @@ export const tabBarItemStyles = css`
 		cursor: var(--semantics-controls-link-cursor);
 	}
 
-	/* Text-bearing items fill their (shrinkable) grid track so the text can
-	 * truncate; icon-only items keep their fixed square size. */
-	:host([variant="text"]) .tab-bar__item,
-	:host([variant="icon-and-text"]) .tab-bar__item {
-		width: 100%;
-	}
-
-	:host([variant="icon-and-text"]:not([size="lg"])) .tab-bar__item {
-		height: var(--semantics-controls-md-min-size);
-		padding: var(--primitives-space-8) var(--primitives-space-12);
-		gap: var(--semantics-buttons-md-gap);
-	}
-
-	:host([variant="text"]:not([size="lg"])) .tab-bar__item {
-		height: var(--semantics-controls-md-min-size);
-		padding: var(--primitives-space-8) var(--primitives-space-12);
-	}
-
-	:host([variant="icon"]:not([size="lg"])) .tab-bar__item {
-		width: var(--semantics-controls-md-min-size);
-		height: var(--semantics-controls-md-min-size);
-		padding: 0;
+	:host([variant="icon"]) .tab-bar__item {
+		width: var(--_min-size);
 	}
 
 	:host([variant="icon-and-text"][size="lg"]) .tab-bar__item {
-		height: var(--semantics-controls-lg-min-size);
-		padding: var(--_lg-item-padding);
 		flex-direction: column;
-	}
-
-	:host([variant="text"][size="lg"]) .tab-bar__item {
-		min-height: var(--semantics-controls-lg-min-size);
-		padding: var(--semantics-controls-lg-block-padding) var(--primitives-space-16);
-		font: var(--semantics-buttons-lg-primary-text-font);
-	}
-
-	:host([variant="icon"][size="lg"]) .tab-bar__item {
-		width: var(--semantics-controls-lg-min-size);
-		height: var(--semantics-controls-lg-min-size);
-		padding: var(--_lg-item-padding);
 	}
 
 	@media (hover: hover) {
 		.tab-bar__item:hover {
 			background-color: var(--semantics-buttons-neutral-tinted-is-hovered-background-color);
-		}
-
-		:host([selected]) .tab-bar__item:hover {
-			--_highlight-border-color: var(--semantics-buttons-neutral-tinted-is-selected-is-hovered-highlight-border-color);
-
-			background-color: var(--semantics-buttons-neutral-tinted-is-selected-is-hovered-background-color);
-			color: var(--semantics-buttons-neutral-tinted-is-selected-is-hovered-primary-content-color);
+			color: var(--semantics-buttons-neutral-tinted-is-hovered-primary-content-color);
 		}
 	}
 
@@ -202,7 +208,15 @@ export const tabBarItemStyles = css`
 
 		background-color: var(--semantics-buttons-neutral-tinted-is-selected-background-color);
 		color: var(--semantics-buttons-neutral-tinted-is-selected-primary-content-color);
-		box-shadow: inset 0 0 0 var(--primitives-border-width-thin) var(--_highlight-border-color);
+	}
+
+	@media (hover: hover) {
+		:host([selected]) .tab-bar__item:hover {
+			--_highlight-border-color: var(--semantics-buttons-neutral-tinted-is-selected-is-hovered-highlight-border-color);
+
+			background-color: var(--semantics-buttons-neutral-tinted-is-selected-is-hovered-background-color);
+			color: var(--semantics-buttons-neutral-tinted-is-selected-is-hovered-primary-content-color);
+		}
 	}
 
 	:host([selected]) .tab-bar__item:active {
@@ -235,26 +249,11 @@ export const tabBarItemStyles = css`
 		display: flex;
 		position: relative;
 		z-index: var(--_z-index-content);
-		width: var(--semantics-buttons-md-icon-size);
-		height: var(--semantics-buttons-md-icon-size);
+		width: var(--_icon-size);
+		height: var(--_icon-size);
 		flex-shrink: 0;
 		align-items: center;
 		justify-content: center;
-	}
-
-	:host([variant="icon"]:not([size="lg"])) .tab-bar__item-icon {
-		width: var(--semantics-buttons-md-icon-only-icon-size);
-		height: var(--semantics-buttons-md-icon-only-icon-size);
-	}
-
-	:host([variant="icon-and-text"][size="lg"]) .tab-bar__item-icon {
-		width: var(--semantics-buttons-md-icon-only-icon-size);
-		height: var(--semantics-buttons-md-icon-only-icon-size);
-	}
-
-	:host([variant="icon"][size="lg"]) .tab-bar__item-icon {
-		width: var(--semantics-buttons-lg-icon-only-icon-size);
-		height: var(--semantics-buttons-lg-icon-only-icon-size);
 	}
 
 	:host([variant="text"]) .tab-bar__item-icon {
@@ -272,13 +271,10 @@ export const tabBarItemStyles = css`
 		z-index: var(--_z-index-content);
 		min-width: 0;
 		max-width: 100%;
+		font: var(--_font);
 		overflow: hidden;
 		white-space: nowrap;
 		text-overflow: ellipsis;
-	}
-
-	:host([variant="icon-and-text"][size="lg"]) .tab-bar__item-text {
-		font: var(--primitives-font-body-xxs-medium-flat);
 	}
 
 	:host([variant="icon"]) .tab-bar__item-text {

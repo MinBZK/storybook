@@ -1,6 +1,7 @@
 import { LitElement } from 'lit';
 import { property, state } from 'lit/decorators.js';
 import { computePosition, flip, shift, offset, size, autoUpdate } from '@floating-ui/dom';
+import { reflectNonDefault } from '../../../utilities/reflect-non-default.js';
 import { menuStyles, menuItemStyles, menuDividerStyles, menuGroupStyles } from './menu.styles.js';
 import { menuTemplate, menuItemTemplate, menuDividerTemplate, menuGroupTemplate } from './menu.template.js';
 import { nlddMenuTranslations } from './menu.i18n.js';
@@ -56,7 +57,7 @@ if (!customElements.get('nldd-menu-divider')) {
 export class NLDDMenuGroup extends LitElement {
 	static override styles = menuGroupStyles;
 
-	@property({ type: String, reflect: true })
+	@property({ reflect: true, converter: reflectNonDefault<string>('') })
 	text = '';
 
 	// SSR caveat: this counter is per module instance, not per render. If
@@ -114,7 +115,7 @@ if (!customElements.get('nldd-menu-group')) {
 export class NLDDMenuItem extends LitElement {
 	static override styles = menuItemStyles;
 
-	@property({ type: String, reflect: true })
+	@property({ reflect: true, converter: reflectNonDefault<string>('') })
 	text = '';
 
 	@property({ type: String, reflect: true })
@@ -123,22 +124,22 @@ export class NLDDMenuItem extends LitElement {
 	@property({ type: String, reflect: true })
 	href = '';
 
-	@property({ type: String, reflect: true })
+	@property({ reflect: true, converter: reflectNonDefault<string>('') })
 	aliases = '';
 
-	@property({ type: String, reflect: true })
+	@property({ reflect: true, converter: reflectNonDefault<string>('') })
 	details = '';
 
-	@property({ type: String, reflect: true })
+	@property({ reflect: true, converter: reflectNonDefault<string>('') })
 	shortcut = '';
 
-	@property({ type: String, reflect: true, attribute: 'shortcut-mac' })
+	@property({ reflect: true, attribute: 'shortcut-mac', converter: reflectNonDefault<string>('') })
 	shortcutMac = '';
 
-	@property({ type: String, reflect: true, attribute: 'shortcut-windows' })
+	@property({ reflect: true, attribute: 'shortcut-windows', converter: reflectNonDefault<string>('') })
 	shortcutWindows = '';
 
-	@property({ type: String, reflect: true, attribute: 'shortcut-linux' })
+	@property({ reflect: true, attribute: 'shortcut-linux', converter: reflectNonDefault<string>('') })
 	shortcutLinux = '';
 
 	@property({ type: String, reflect: true })
@@ -156,10 +157,10 @@ export class NLDDMenuItem extends LitElement {
 	@property({ type: Boolean, reflect: true })
 	disabled = false;
 
-	@property({ type: String, reflect: true })
+	@property({ reflect: true, converter: reflectNonDefault<string>('') })
 	query = '';
 
-	@property({ type: String, reflect: true, attribute: 'query-mark-mode' })
+	@property({ reflect: true, attribute: 'query-mark-mode', converter: reflectNonDefault<QueryMarkMode>('predictive') })
 	queryMarkMode: QueryMarkMode = 'predictive';
 
 	/** Set by nldd-menu. Not part of the public API. */
@@ -356,7 +357,7 @@ export class NLDDMenu extends LitElement {
 	@property({ attribute: false })
 	anchorElement: Element | null = null;
 
-	@property({ type: String, reflect: true })
+	@property({ reflect: true, converter: reflectNonDefault<string>('bottom-start') })
 	placement: string = 'bottom-start';
 
 	/**
@@ -364,13 +365,13 @@ export class NLDDMenu extends LitElement {
 	 * this switches role to "listbox" and item roles to "option" per ARIA spec.
 	 * Default: 'menu'.
 	 */
-	@property({ type: String, reflect: true })
+	@property({ reflect: true, converter: reflectNonDefault<'menu' | 'listbox'>('menu') })
 	variant: 'menu' | 'listbox' = 'menu';
 
-	@property({ type: String, attribute: 'empty-text' })
+	@property({ reflect: true, attribute: 'empty-text', converter: reflectNonDefault<string>('') })
 	emptyText = '';
 
-	@property({ type: String, attribute: 'empty-supporting-text' })
+	@property({ reflect: true, attribute: 'empty-supporting-text', converter: reflectNonDefault<string>('') })
 	emptySupportingText = '';
 
 
@@ -1612,6 +1613,7 @@ export class NLDDMenu extends LitElement {
 		if (!this.hasAttribute('popover')) {
 			this.setAttribute('popover', '');
 		}
+		this.addEventListener('beforetoggle', this._handleBeforeToggle);
 		this.addEventListener('toggle', this._handleToggle);
 		this.addEventListener('keydown', this._handleKeydown);
 		this.addEventListener('mouseenter', this._handleMenuItemMouseenter, true);
@@ -1637,6 +1639,7 @@ export class NLDDMenu extends LitElement {
 		if (this._activeSubmenu) {
 			(this._activeSubmenu as HTMLElement).hidePopover?.();
 		}
+		this.removeEventListener('beforetoggle', this._handleBeforeToggle);
 		this.removeEventListener('toggle', this._handleToggle);
 		this.removeEventListener('keydown', this._handleKeydown);
 		this.removeEventListener('mouseenter', this._handleMenuItemMouseenter, true);
@@ -1696,7 +1699,15 @@ export class NLDDMenu extends LitElement {
 	}
 
 	private _updateEmptyState(): void {
-		this._isEmpty = this._getVisibleItems().length === 0;
+		// "Empty" means nothing is shown, not nothing is navigable. Disabled items
+		// still render (greyed out), so a menu whose items are all disabled is not
+		// empty. Only filtering, which hides non-matching items, empties a menu.
+		// _getVisibleItems() drops [disabled] for keyboard nav, so it must not
+		// decide the empty state, or a fully-disabled menu wrongly shows it.
+		const shown = Array.from(
+			this.querySelectorAll('nldd-menu-item:not([hidden])'),
+		).filter(item => item.closest('nldd-menu') === this);
+		this._isEmpty = shown.length === 0;
 	}
 
 	private _updateDividerVisibility(): void {
@@ -2037,6 +2048,14 @@ export class NLDDMenu extends LitElement {
 		}
 	}
 
+	// A popover paints at its default position the instant it opens, before our async
+	// Floating UI reposition runs — a visible flash in the wrong place. Clearing
+	// `positioned` here (beforetoggle fires *before* the popover is shown) keeps it
+	// hidden via CSS until `_handleToggle` re-sets it once placed.
+	private _handleBeforeToggle = (event: Event): void => {
+		if ((event as ToggleEvent).newState === 'open') this.removeAttribute('positioned');
+	};
+
 	private _handleToggle = async (event: Event): Promise<void> => {
 		const toggleEvent = event as ToggleEvent;
 		this._isOpen = toggleEvent.newState === 'open';
@@ -2068,6 +2087,7 @@ export class NLDDMenu extends LitElement {
 		});
 
 		await this.reposition();
+		this.setAttribute('positioned', ''); // placed — reveal it (see _handleBeforeToggle)
 		const anchorEl = this._getAnchorEl();
 		if (anchorEl) {
 			this._cleanupAutoUpdate = autoUpdate(anchorEl, this, () => this.reposition());

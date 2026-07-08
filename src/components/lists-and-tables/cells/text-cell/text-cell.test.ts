@@ -18,7 +18,8 @@ describe('nldd-text-cell', () => {
 	it('defaults to md size', async () => {
 		el = await fixture('<nldd-text-cell></nldd-text-cell>');
 		await waitForUpdate(el);
-		expect(el.getAttribute('size')).toBe('md');
+		expect((el as unknown as { size: string }).size).toBe('md');
+		expect(el.hasAttribute('size')).toBe(false);
 	});
 
 	it('reflects size attribute', async () => {
@@ -30,7 +31,8 @@ describe('nldd-text-cell', () => {
 	it('defaults to default color', async () => {
 		el = await fixture('<nldd-text-cell></nldd-text-cell>');
 		await waitForUpdate(el);
-		expect(el.getAttribute('color')).toBe('default');
+		expect((el as unknown as { color: string }).color).toBe('default');
+		expect(el.hasAttribute('color')).toBe(false);
 	});
 
 	it('reflects color attribute', async () => {
@@ -42,7 +44,9 @@ describe('nldd-text-cell', () => {
 	it('defaults to full width', async () => {
 		el = await fixture('<nldd-text-cell></nldd-text-cell>');
 		await waitForUpdate(el);
-		expect(el.getAttribute('width')).toBe('full');
+		// The default (full) is kept out of the DOM; the property is the source of truth.
+		expect((el as unknown as { width: string }).width).toBe('full');
+		expect(el.hasAttribute('width')).toBe(false);
 	});
 
 	it('reflects width attribute', async () => {
@@ -141,7 +145,8 @@ describe('nldd-text-cell', () => {
 	it('defaults to left horizontal alignment', async () => {
 		el = await fixture('<nldd-text-cell></nldd-text-cell>');
 		await waitForUpdate(el);
-		expect(el.getAttribute('horizontal-alignment')).toBe('left');
+		expect((el as unknown as { horizontalAlignment: string }).horizontalAlignment).toBe('left');
+		expect(el.hasAttribute('horizontal-alignment')).toBe(false);
 	});
 
 	it('reflects horizontal-alignment attribute', async () => {
@@ -153,7 +158,8 @@ describe('nldd-text-cell', () => {
 	it('defaults to center vertical alignment', async () => {
 		el = await fixture('<nldd-text-cell></nldd-text-cell>');
 		await waitForUpdate(el);
-		expect(el.getAttribute('vertical-alignment')).toBe('center');
+		expect((el as unknown as { verticalAlignment: string }).verticalAlignment).toBe('center');
+		expect(el.hasAttribute('vertical-alignment')).toBe(false);
 	});
 
 	it('reflects vertical-alignment top', async () => {

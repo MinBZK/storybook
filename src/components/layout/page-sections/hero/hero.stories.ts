@@ -9,27 +9,15 @@ import '../../spacer/spacer.js';
 const MEDIA = 'sample-images/butterfly-1200.jpg';
 
 /**
- * Een paginakop volgens de rijkshuisstijl-vormtaal: een mediavlak met exact
- * één afgeronde hoek (1,5X lintbreedte op smalle containers, 2X op md/lg) en
- * een tekstpaneel op zes mogelijke posities. De media-hoek volgt automatisch
- * uit `main-position`:
+ * Een paginakop met een mediavlak en een tekstpaneel op zes mogelijke
+ * posities. Alle vlakken zijn rechthoekig.
  *
- * | `main-position` | media-hoek | main-hoek |
- * | --- | --- | --- |
- * | bottom-left (default) | rechtsboven | rechtsboven |
- * | bottom-right | linksonder | linksboven |
- * | top-left | rechtsboven | rechtsonder |
- * | top-right | linksboven | linksonder |
- * | left / right (volle hoogte) | rechtsboven / linksboven | geen |
- *
- * Met `media-corner-position` is de media-hoek per geval te overschrijven. Het paneel
- * krijgt zijn hoek op halve maat zodat de tekst niet tegen de rand komt;
- * beslaat het een volledige rand (`left`/`right`, `main-width="full"` of de
- * gestapelde mobiele weergave), dan is het hoekloos. Op mobiel zit de
- * media-hoek altijd aan de bovenkant en is hij een halve stap groter (1,5X).
- * Zonder media vult de main het volledige vlak. `main-background` is
- * standaard `accent`; met `base` krijgt het vlak zonder media een rand op de
- * hoekzijden, zoals blockquote. Zet binnenin `color="inherit"` op title en
+ * Beslaat het paneel een volledige rand (`left`/`right`, `main-width="full"`
+ * of de gestapelde mobiele weergave), dan staat de media als losse strook
+ * ernaast. Op mobiel stapelt de media altijd boven het paneel. Zonder media
+ * vult de main het volledige vlak. `main-background` is standaard `accent`;
+ * met `base` krijgt het vlak zonder media een rand zodat de vorm zichtbaar
+ * blijft op de base-surface. Zet binnenin `color="inherit"` op title en
  * rich-text voor gegarandeerd contrast op de filled-kleuren.
  */
 export default {
@@ -47,7 +35,6 @@ export default {
 		mainPosition: 'bottom-left',
 		mainWidth: '1/2',
 		mainBackground: 'accent',
-		mediaCornerPosition: 'auto',
 		mediaAspectRatio: '',
 		mediaSrc: MEDIA,
 		mediaSrcset: '',
@@ -76,13 +63,6 @@ export default {
 			options: ['base', 'accent', 'lintblauw', 'donkerblauw', 'hemelblauw', 'lichtblauw', 'paars', 'violet', 'robijnrood', 'roze', 'rood', 'oranje', 'donkergeel', 'geel', 'donkerbruin', 'bruin', 'donkergroen', 'groen', 'mosgroen', 'mintgroen'],
 			description: 'Vlakkleur van het paneel: base of een filled-category',
 			table: { defaultValue: { summary: 'accent' } },
-		},
-		mediaCornerPosition: {
-			name: 'media-corner-position',
-			control: 'select',
-			options: ['auto', 'top-left', 'top-right', 'bottom-left', 'bottom-right'],
-			description: 'Afgeronde hoek van het mediavlak; auto volgt main-position',
-			table: { defaultValue: { summary: 'auto' } },
 		},
 		mediaAspectRatio: {
 			name: 'media-aspect-ratio',
@@ -129,7 +109,6 @@ const Template = (args: Record<string, any>) => html`
 		main-position=${args.mainPosition}
 		main-width=${args.mainWidth}
 		main-background=${args.mainBackground}
-		media-corner-position=${args.mediaCornerPosition}
 		media-aspect-ratio=${args.mediaAspectRatio || nothing}
 		media-src=${args.mediaSrc || nothing}
 		media-srcset=${args.mediaSrcset || nothing}
@@ -186,10 +165,8 @@ export const AllePosities = {
 };
 
 /**
- * `main-width="full"` maakt een volle boven- of onderstrook; het paneel is
- * dan hoekloos en het mediavlak staat als losse strook boven of onder het
- * paneel in plaats van erachter. De media-hoek schuift mee naar de buitenrand
- * van die strook (weg van het paneel), zodat hij zichtbaar blijft.
+ * `main-width="full"` maakt een volle boven- of onderstrook; het mediavlak
+ * staat dan als losse strook boven of onder het paneel in plaats van erachter.
  */
 export const VolleStrook = {
 	render: () => html`
@@ -230,10 +207,9 @@ export const VolleStrook = {
 };
 
 /**
- * Zonder media vult de main het volledige vlak; de afgeronde hoek zit dan op
- * het vlak zelf en volgt nog steeds `main-position` of `media-corner-position`. Met
- * `main-background="base"` krijgt het vlak een rand op de zijden die de
- * hoek raken, zoals blockquote — anders zou de vorm onzichtbaar zijn.
+ * Zonder media vult de main het volledige vlak. Met `main-background="base"`
+ * krijgt dat vlak een rand, anders zou de rechthoek onzichtbaar zijn op de
+ * base-surface.
  */
 export const ZonderMedia = {
 	render: () => html`
@@ -249,7 +225,7 @@ export const ZonderMedia = {
 			<nldd-hero main-background="base">
 				<nldd-title size="2">
 					<h1>Base zonder media</h1>
-					<p slot="subtitle">Rand op de hoekzijden, zoals blockquote</p>
+					<p slot="subtitle">Rand zodat de vorm zichtbaar blijft</p>
 				</nldd-title>
 			</nldd-hero>
 		</div>
@@ -277,7 +253,7 @@ export const MetRichText = {
 			</nldd-title>
 			<nldd-spacer size="8"></nldd-spacer>
 			<nldd-rich-text color="inherit">
-				<p>Het paneel beslaat de volle hoogte en is hoekloos; de media-hoek zit rechtsboven. Ook <a href="#">links</a> erven de contentkleur.</p>
+				<p>Het paneel beslaat de volle hoogte; het mediavlak staat ernaast. Ook <a href="#">links</a> erven de contentkleur.</p>
 			</nldd-rich-text>
 		</nldd-hero>
 	`,

@@ -258,15 +258,15 @@ Een redactionele regel die auteurs of redacteuren toont: optionele avatar(s), ee
 
 ### `<nldd-code-viewer>`
 
-A block of monospaced text for code, traces, output dumps, etc. Renders a styled `<pre>` with the design-system's monospace family, tinted background and standard content color. Whitespace is preserved (`white-space: pre`); long lines scroll horizontally by default. Set `wrap` to break long lines onto the next visual line — useful for prose-like content (YAML strings, formatted output) where horizontal scrolling is more disruptive than wrapping. Set `language` to one of the supported grammars (yaml, json, javascript, typescript, css, html, xml, bash, markdown, rust, gherkin, toml, sql, python) to highlight the slot content with Prism. Without `language` the slot content is rendered raw, no highlighting applied. Grammars are loaded lazily on first use, so a page that never sets `language` ships zero grammar code. Token colors are exposed as `--components-code-viewer-token-*` custom properties on the host. Override them per-instance to swap the theme: ```css nldd-code-viewer { --components-code-viewer-token-keyword-color: var(--my-purple); --components-code-viewer-token-string-color: var(--my-green); } ```
+A read-only block of code/text built on a non-editable CodeMirror 6 view. Visually pairs with nldd-code-editor (same engine, same token palette). Whitespace is preserved; long lines scroll horizontally by default. Set `wrap` to break long lines onto the next visual line. Set `language` to one of the supported grammars (yaml, json, javascript, typescript, css, html, xml, bash, markdown, rust, gherkin, toml, sql, python) to highlight the content. Without `language` the content renders plain. Grammars are loaded lazily on first use, so a page that never sets `language` ships zero grammar code. Token colors are the `--components-code-viewer-token-*` custom properties (shared with the editor via the CodeMirror highlight style). Override them per-instance to swap the theme.
 
 **Attributes**
 
 | Attribuut | Type | Beschrijving |
 | --- | --- | --- |
-| `variant` | `'simple'\|'box'` | Visual style. `box` (default) is a framed card with rounded corners, padding, fill, and a 1px border ring. `simple` drops the entire frame (no corners, no padding, no fill, no ring) — use when embedding inside a parent that supplies its own surface. |
-| `background` | `'tinted'\|'base'` | Surface fill when `variant="box"`. `tinted` (default) for a card on a plain page; `base` for a card on an already-tinted parent (the border ring picks the +2-step semantic so the frame still reads against a card-on-card). |
-| `language` | `string` | Grammar to highlight with (yaml, json, javascript, typescript, css, html, xml, bash, markdown, rust, gherkin, toml, sql, python). Empty disables highlighting. |
+| `variant` | `'simple'\|'box'` | Visual style. `box` (default) is a framed card with rounded corners, padding, fill, and a 1px border ring. `simple` drops the entire frame — use when embedding inside a parent surface. |
+| `background` | `'tinted'\|'base'` | Surface fill when `variant="box"`. |
+| `language` | `string` | Grammar to highlight with. Empty disables highlighting. |
 | `no-copy` | `boolean` | Hide the copy-to-clipboard button (shown by default). |
 | `wrap` | `boolean` | Wrap long lines instead of horizontal scroll |
 
@@ -274,7 +274,7 @@ A block of monospaced text for code, traces, output dumps, etc. Renders a styled
 
 | Slot | Beschrijving |
 | --- | --- |
-| _(default)_ | Default slot for the code/text content |
+| _(default)_ | Default slot for the code/text content (also the copy source) |
 
 ### `<nldd-icon>`
 
@@ -398,6 +398,35 @@ A title bar with an optional overline, title, and subtitle on the left, and a sl
 | _(default)_ | Title text (use h1–h6 for semantics) |
 | `subtitle` | Optional subtitle below the title |
 | `actions` | Actions to the right of the title (buttons, menus, etc.) |
+
+### `<nldd-token>`
+
+A token component representing a piece of data — such as a person in an address field or an active filter value. Optionally dismissable or interactive via a contextual menu.
+
+**Attributes**
+
+| Attribuut | Type | Beschrijving |
+| --- | --- | --- |
+| `text` | `string` | Token text; falls back to the default slot when unset. |
+| `control` | `'none' \| 'dismiss' \| 'menu'` | Control type (default: 'none') |
+| `expanded` | `boolean` | Reflects whether the token's menu is open (control="menu"); managed by the token. |
+| `disabled` | `boolean` | Disabled state |
+| `dismiss-text` | `string` | Accessible label for the dismiss button (default: 'Verwijder') |
+| `menu-text` | `string` | Accessible label for the menu button (default: 'Toon opties') |
+| `roving` | `boolean` | Inside a roving-focus container (e.g. nldd-token-field): the host is the single tab stop, so the trailing control is not separately tabbable. |
+
+**Slots**
+
+| Slot | Beschrijving |
+| --- | --- |
+| _(default)_ | Token text |
+| `menu` | An nldd-menu that the token opens from its menu button (control="menu"). |
+
+**Events**
+
+| Event | Beschrijving |
+| --- | --- |
+| `dismiss` | When the dismiss button is clicked |
 
 ### `<nldd-tooltip>`
 
@@ -564,30 +593,33 @@ A checkbox with an inline label for use in forms.
 
 ### `<nldd-code-editor>`
 
-A monospace text editor for code, YAML, JSON, and other technical content. Visually pairs with `nldd-code` (same tinted background, same monospace font, same rounded corners) so a read-only view and the editable counterpart look like the same surface. Built on a native `<textarea>` — no syntax highlighting, no line numbers. Reach for a real editor library (CodeMirror, Monaco) when those features are required. Spellcheck and autocorrect are disabled by default since they don't help on code; long lines scroll horizontally unless `wrap` is set.
+A monospace editor for code, YAML, JSON and other technical content, built on CodeMirror 6 (via NLDDCodeMirrorElement). Visually pairs with nldd-code-viewer for a matching read-only surface. Default `variant="simple"` is a bare, flush editor (no frame, no focus ring) for use inside an nldd-form-field or a consumer composition that owns its own chrome and focus treatment; the caret is rendered as a prominent accent as the focus cue. `variant="input-field"` adds the framed surface (border ring, tinted fill, inner padding, radius) and a focus ring for standalone use. The simple variant has no surrounding space of its own: let a layout container own the spacing and forward clicks with `focusFromPoint()` so clicking the padding still starts editing. Optional `language` enables lazy syntax highlighting; `line-numbers` adds a gutter (click a number to move the caret to that line).
 
 **Attributes**
 
 | Attribuut | Type | Beschrijving |
 | --- | --- | --- |
-| `value` | `string` | The textarea value |
-| `placeholder` | `string` | Placeholder text |
-| `input-id` | `string` | Sets the id on the native textarea. Set automatically by nldd-form-field. |
+| `value` | `string` | Editor content |
+| `placeholder` | `string` | Placeholder text shown while empty |
+| `input-id` | `string` | Sets the id on the editable element. Set automatically by nldd-form-field. |
 | `disabled` | `boolean` | Disabled state |
-| `name` | `string` | Textarea name for form submission |
-| `readonly` | `boolean` | Readonly state |
+| `name` | `string` | Field name for form submission |
+| `readonly` | `boolean` | Readonly state (focusable and selectable, not editable) |
 | `required` | `boolean` | Required state |
 | `wrap` | `boolean` | Wrap long lines instead of horizontal scroll |
-| `rows` | `number` | Initial visible rows (minimum height). Default: 6. |
-| `resize` | `string` | 'none' \| 'vertical' (default) \| 'auto'. 'auto' grows with content (native field-sizing). |
-| `accessible-label` | `string` | Accessible label forwarded to the inner textarea. Set automatically by nldd-form-field. |
+| `rows` | `number` | Minimum visible rows (the floor in every resize mode). Default: 6. |
+| `resize` | `string` | 'none' (fixed) \| 'vertical' (drag) \| 'auto' (grow, default) |
+| `variant` | `string` | 'simple' (default, bare) \| 'input-field' (framed surface) |
+| `language` | `string` | Highlight grammar (yaml, json, javascript, typescript, css, html, xml, bash, markdown, rust, gherkin, toml, sql, python). Empty disables highlighting. |
+| `line-numbers` | `boolean` | Show a line-number gutter |
+| `accessible-label` | `string` | Accessible label forwarded to the editor. Set automatically by nldd-form-field. |
 
 **Events**
 
 | Event | Beschrijving |
 | --- | --- |
-| `input` | When value changes |
-| `change` | When value is committed (blur) |
+| `input` | When the content changes (detail: { value }) |
+| `change` | When the content is committed on blur (detail: { value }) |
 
 ### `<nldd-combo-box>`
 
@@ -604,6 +636,7 @@ A text input with autocomplete dropdown via nldd-menu. Add a slotted nldd-menu w
 | `valid` | `boolean` | Marks the field as valid |
 | `invalid` | `boolean` | Marks the field as invalid |
 | `disabled` | `boolean` | Disabled state |
+| `allow-custom` | `boolean` | Allow committing free-typed values that match no option (Enter/blur). Default false: only menu options are accepted. |
 | `name` | `string` | Input name for form submission |
 | `autocomplete` | `string` | Browser autofill hint. Default 'off' to prevent the native autofill panel from competing with the menu dropdown. Set to a valid token (e.g. 'country', 'organization') when browser autofill is desired. |
 | `accessible-label` | `string` | Accessible label forwarded as aria-label to the input. Required for screen reader accessibility. |
@@ -670,7 +703,7 @@ A visual wrapper around a native `<select>` element. The consumer provides a nat
 | `required` | `boolean` | Required state |
 | `autocomplete` | `string` | Autocomplete hint |
 | `rows` | `number` | Initial visible rows (minimum height). Default: 3. |
-| `resize` | `string` | 'none' \| 'vertical' (default) \| 'auto'. 'auto' grows with content (native field-sizing), no manual handle. |
+| `resize` | `string` | 'none' \| 'vertical' \| 'auto' (default). 'auto' grows with content (native field-sizing), no manual handle. |
 | `accessible-label` | `string` | Accessible label forwarded to the inner textarea. Set automatically by nldd-form-field. |
 | `no-spellcheck` | `boolean` | Disables browser spellchecking on the inner textarea |
 | `width` | `string` | Optional fixed width (any CSS length, e.g. "240px"). Default: stretches to fill container. |
@@ -841,7 +874,7 @@ A horizontal group of mutually exclusive (radio) or multi-select (checkbox) opti
 | --- | --- | --- |
 | `value` | `string` | Selected value for radio type |
 | `size` | `string` | Control size: 'sm' \| 'md' \| 'lg' (default: 'md') |
-| `type` | `string` | Input type: 'radio' \| 'checkbox' (default: 'radio') |
+| `type` | `string` | Input type: 'radio' \| 'checkbox' (default: 'radio'). |
 | `variant` | `string` | Content type for all items: 'text' \| 'icon' \| 'icon-and-text' (default: 'text') |
 | `disabled` | `boolean` | Disabled state for all items |
 | `width` | `string` | Width mode: 'full' (stretches to container), 'fit-content' (per-item content size), or any CSS length (e.g. '240px') |
@@ -944,6 +977,40 @@ A switch toggle with an inline label for use in forms.
 | --- | --- |
 | `change` | When checked state changes; detail: { checked: boolean, value: string } |
 
+### `<nldd-text-editor>`
+
+A hybrid markdown editor built on CodeMirror 6 (via NLDDCodeMirrorElement): the document stays plain markdown text, but formatting is shown inline (bold is bold, headings are larger, links are coloured) while the syntax markers stay visible, only dimmed — the iA Writer / Kirby approach. No WYSIWYG tree, so the data stays portable. Default `variant="simple"` is bare (no frame, no focus ring) for use inside a composition (e.g. a message field) that owns its chrome and focus; the caret is a prominent accent. `variant="input-field"` adds a framed surface + focus ring. `font` is `sans` (default, best for prose) or `mono`. Headless: there is no built-in toolbar. A consumer drives formatting via the command methods (toggleBold/toggleItalic/toggleInlineCode/toggleStrikethrough/ toggleHeading/toggleBulletList/toggleQuote/toggleLink/runCommand to toggle, and setHeading/setList for picker-style "set" semantics), reads the active formats with getState(), listens to the nldd-text-editor-state event to render toggle states, and forwards padding clicks with focusFromPoint(). Cmd/Ctrl+B/I/E/K are bound out of the box. Commands keep focus on the editor. An @-mention typeahead (mentionSource) collapses to an atomic token, and a W3C-style annotation overlay (annotations) marks ranges with a dashed underline, light tint and a count badge without touching the underlying text.
+
+**Attributes**
+
+| Attribuut | Type | Beschrijving |
+| --- | --- | --- |
+| `value` | `string` | Editor content (markdown) |
+| `placeholder` | `string` | Placeholder text shown while empty |
+| `input-id` | `string` | Sets the id on the editable element. Set automatically by nldd-form-field. |
+| `disabled` | `boolean` | Disabled state |
+| `name` | `string` | Field name for form submission |
+| `readonly` | `boolean` | Readonly state (focusable and selectable, not editable) |
+| `required` | `boolean` | Required state |
+| `wrap` | `boolean` | Wrap long lines (default true; prose wraps) |
+| `rows` | `number` | Minimum visible rows (the floor in every resize mode). Default: 6. |
+| `resize` | `string` | 'none' (fixed) \| 'vertical' (drag) \| 'auto' (grow, default) |
+| `variant` | `string` | 'simple' (default, bare) \| 'input-field' (framed surface) |
+| `font` | `string` | 'sans' (default) \| 'mono' |
+| `accessible-label` | `string` | Accessible label forwarded to the editor. Set automatically by nldd-form-field. |
+| `annotatable` | `boolean` | Enable the annotation overlay (off by default). Annotations only render when this is set. |
+| `translations` | `object` | Override the editor's assistive-tech strings (the open-in-new-tab link badge and the annotation count badge). Unset keys fall back to Dutch. |
+
+**Events**
+
+| Event | Beschrijving |
+| --- | --- |
+| `input` | When the content changes (detail: { value }) |
+| `change` | When the content is committed on blur (detail: { value }) |
+| `nldd-text-editor-state` | When the selection or content changes (detail: TextEditorState), for toolbar toggle state |
+| `nldd-text-editor-mention` | When an @-mention is inserted (detail: MentionInsertedDetail with id, label, from, to) |
+| `nldd-text-editor-annotation-click` | When an annotation's count badge is clicked (detail: { ids: string[], rect: DOMRect }); rect is the badge's viewport box so a consumer can anchor its own note UI to it |
+
 ### `<nldd-text-field>`
 
 **Attributes**
@@ -1017,7 +1084,7 @@ Groups nldd-toggle-button elements and manages selection, keyboard navigation, a
 | `size` | `'xs' \| 'sm' \| 'md'` | Forwarded to all buttons (default: 'md') |
 | `disabled` | `boolean` | Disables all buttons |
 | `accessible-label` | `string` | Accessible name for the group (aria-label) |
-| `accessible-labelledby` | `string` | ID of an external label element (aria-labelledby) |
+| `accessible-labelled-by` | `string` | ID of an external label element (aria-labelledby) |
 
 **Slots**
 
@@ -1031,32 +1098,44 @@ Groups nldd-toggle-button elements and manages selection, keyboard navigation, a
 | --- | --- |
 | `change` | Bubbles up from the changed button; detail: { selected: boolean, value: string } |
 
-### `<nldd-token>`
+### `<nldd-token-field>`
 
-A token component representing a piece of data — such as a person in an address field or an active filter value. Optionally dismissable or interactive via a contextual menu.
+A multi-select input that looks like a normal input field: chosen values show as dismissible tokens in a wrapping row, followed by an inline text input that stretches to fill the remaining space and wraps to a new line (growing the field) when it no longer fits. Options are supplied as a slotted nldd-menu, exactly like nldd-combo-box; the menu filters as you type, with a chevron picker button, arrow-key roving across the tokens and ElementInternals form participation.
 
 **Attributes**
 
 | Attribuut | Type | Beschrijving |
 | --- | --- | --- |
-| `control` | `'none' \| 'dismiss' \| 'menu'` | Control type (default: 'none') |
-| `expanded` | `boolean` | Whether the menu is open (menu only). Forwarded as aria-expanded on the menu button. |
+| `values` | `string` | Initial token values as a comma-separated string (e.g. "nl, be, de"). Not reflected; the live value is the `.values` array property. Values can't contain commas. |
+| `placeholder` | `string` | Placeholder shown in the input |
+| `type` | `string` | Input type forwarded to the inner input (e.g. 'email') |
+| `autocomplete` | `string` | Autocomplete hint forwarded to the inner input |
+| `accessible-label` | `string` | Accessible label forwarded as aria-label to the input |
+| `allow-custom` | `boolean` | Allow free-typed values (not just menu options) |
+| `valid` | `boolean` | Marks the field valid (shows the valid icon) |
+| `invalid` | `boolean` | Marks the field invalid (shows the invalid icon) |
+| `no-spellcheck` | `boolean` | Disables browser spellchecking on the inner input |
+| `readonly` | `boolean` | Readonly: static tokens, no input/picker, read-only surface |
+| `required` | `boolean` | Marks the field required (invalid when it has no tokens) |
 | `disabled` | `boolean` | Disabled state |
-| `dismiss-text` | `string` | Text for the dismiss button (default: 'Verwijder') |
-| `controls` | `string` | ID of the associated popup element (aria-controls). Required for ARIA compliance when control="menu". |
+| `token-control` | `string` | Trailing control per token: 'dismiss' (default, a ✕ that removes it) or 'menu' (a ⌄ opening a per-token action menu supplied by the template prototypes) |
+| `name` | `string` | Name for form submission |
+| `translations` | `object` | Override translation keys; unset keys fall back to Dutch |
 
 **Slots**
 
 | Slot | Beschrijving |
 | --- | --- |
-| _(default)_ | Token text |
+| _(default)_ | An nldd-menu with nldd-menu-item options; each item's `value`/`text` supplies a token's value and its display label. |
+| `template` | `nldd-token` prototypes supplying each token's action menu when token-control="menu": a keyless one is the shared default, a `data-value="X"` one overrides value X. Only the prototype's nested `nldd-menu` is used today; its other props are ignored. |
 
 **Events**
 
 | Event | Beschrijving |
 | --- | --- |
-| `dismiss` | When the dismiss button is clicked |
-| `toggle` | When the menu is clicked; detail: { expanded: boolean } |
+| `change` | When the selected values change; detail: { values: string[] } |
+| `input` | When the input text changes; detail: { value: string } |
+| `token-action` | When a token's menu action is chosen (token-control="menu"); detail: { value: string, action: string } |
 
 ## Layout
 
@@ -1147,6 +1226,7 @@ A container for displaying collections of items. Supports grid, stack, and horiz
 | `max-items` | `number` | Number of visible items per page (default: 24) |
 | `lazy-load` | `boolean` | Automatically load more items when the button becomes visible |
 | `item-width` | `string` | Preferred width for each item (e.g. '280px', '20rem'). In grid layout used as the minimum column width (columns will be at least this wide; 1fr if container allows more). In horizontal scroll used as flex-basis. Never forces horizontal overflow — the value is clamped to container width. |
+| `gap` | `string` | Custom gap between items (any CSS length, e.g. '8px'). Overrides the responsive default at every breakpoint; unset keeps the default. |
 | `translations` | `object` | Translation overrides; unset keys fall back to Dutch. Available keys: 'components.collection.previous-action', 'components.collection.next-action', 'components.collection.load-more-action' |
 
 **Slots**
@@ -1230,7 +1310,7 @@ A section that spans the full width without horizontal padding. Useful for backg
 
 ### `<nldd-hero>`
 
-Een paginakop volgens de rijkshuisstijl-vormtaal: een mediavlak met exact één afgeronde hoek (radius afgeleid van de lintbreedte) en een tekstpaneel (de main) dat op zes posities kan staan. De radius is van het component en niet instelbaar: 1,5X lintbreedte op smalle containers, 2X op md/lg. De media-hoek volgt automatisch uit `main-position` (zie de tabel in de stories) en is per geval te overschrijven met `media-corner-position`. Het paneel krijgt zijn eigen afgeronde hoek — op halve maat, zodat de tekst niet tegen de rand komt — op de hoek die diagonaal het mediavlak in wijst. Beslaat het paneel een volledige rand (`left`/`right`, `main-width="full"` of de gestapelde mobiele weergave), dan is het hoekloos. Bij `main-width="full"` staat het mediavlak als losse strook boven of onder het paneel — niet erachter — en schuift de media-hoek mee naar de buitenrand van die strook (weg van het paneel), zodat hij zichtbaar blijft. Op mobiel zit de media-hoek altijd aan de bovenkant (een onderhoek klapt naar zijn bovenhoek) en is hij een halve stap groter (1,5X). Zonder media vult de main het volledige vlak; met `main-background="base"` krijgt het vlak dan een rand op de zijden die de afgeronde hoek raken, zoals blockquote. Met `main-background` krijgt het paneel een vlakkleur uit de filled-categories; die leveren een pure witte of zwarte contentkleur mee, zodat componenten met `color="inherit"` (title, rich-text) gegarandeerd contrast houden. Per de rijkshuisstijl wordt de radius nooit geanimeerd.
+Een paginakop met een mediavlak en een tekstpaneel (de main) dat op zes posities kan staan. Alle vlakken zijn rechthoekig. Bij `main-width="full"` staat het mediavlak als losse strook boven of onder het paneel, niet erachter. Op mobiel stapelt de media altijd boven het volle-breedte paneel. Zonder media vult de main het volledige vlak; met `main-background="base"` krijgt dat vlak een rand zodat het zichtbaar blijft op de base-surface. Met `main-background` krijgt het paneel een vlakkleur uit de filled-categories; die leveren een pure witte of zwarte contentkleur mee, zodat componenten met `color="inherit"` (title, rich-text) gegarandeerd contrast houden.
 
 **Attributes**
 
@@ -1239,7 +1319,6 @@ Een paginakop volgens de rijkshuisstijl-vormtaal: een mediavlak met exact één 
 | `main-position` | `'top-left'\|'top-right'\|'bottom-left'\|'bottom-right'\|'left'\|'right'` | Positie van het tekstpaneel (default: 'bottom-left'); 'left'/'right' beslaan de volle hoogte |
 | `main-width` | `'1/2'\|'2/3'\|'3/4'\|'full'` | Breedte van het paneel (default: '1/2'); 'full' maakt een volle boven- of onderstrook en wordt bij 'left'/'right' genegeerd |
 | `main-background` | `string` | Vlakkleur van het paneel: 'base' (de base surface) of een categoriekleur — 'accent' (default) of een rijkskleur zoals 'lintblauw'\|'donkerblauw'\|'oranje' |
-| `media-corner-position` | `'auto'\|'top-left'\|'top-right'\|'bottom-left'\|'bottom-right'` | Afgeronde hoek van het mediavlak; 'auto' (default) volgt main-position |
 | `media-aspect-ratio` | `string` | Aspect ratio van het mediavlak (CSS-vorm, '16/9' of '16:9'); default '21/9'. Bepaalt op md/lg de hoogte van de hero, op sm de hoogte van het mediavlak |
 | `media-src` | `string` | Bron van het mediavlak (alternatief voor de media-slot); genegeerd zodra de media-slot gevuld is |
 | `media-srcset` | `string` | Responsive source set voor media-src |
@@ -1415,7 +1494,7 @@ An overlay component that slides in from the side or bottom of the screen. Based
 | `placement` | `string` | Sheet position: 'left' \| 'right' \| 'bottom' (default: 'right') |
 | `height` | `string` | Custom height for bottom sheets (and for any sheet on sm viewports, where all placements collapse to bottom). Accepts: `'full'` (default — viewport minus top-inset, identical to omitting the attribute), `'fit-content'` (collapse to content size), or any CSS length/percentage (e.g. `'50dvh'`, `'480px'`, `'50%'`). Always clamped to `100dvh - top-inset` so the sheet can't extend past the dismiss-tap area. No effect on side sheets at md+. |
 | `modeless` | `boolean` | Non-modal (no backdrop or focus lock); the sheet is modal by default |
-| `accessible-label` | `string` | Accessible name for the dialog, forwarded as aria-label (default: 'Dialoogvenster') |
+| `accessible-label` | `string` | Accessible name for the dialog, forwarded as aria-label (default: 'Venster') |
 | `width` | `string` | Custom width for side sheets (left/right) as a CSS length (e.g. '480px', '32rem'). Applied from the md breakpoint up; ignored on sm (bottom sheet) and for `placement="bottom"`. Clamped to `100vw - 2 * inset` so the sheet always fits. |
 
 **Slots**
@@ -1824,6 +1903,7 @@ A horizontal navigation bar with mutually exclusive tabs. Exports both NLDDTabBa
 | `variant` | `string` | Visual mode: 'icon-and-text' \| 'text' \| 'icon'. When unset, the variant is inferred from each item's content. Drives the layout at every size. |
 | `size` | `string` | Size: 'md' \| 'lg' (default: 'md'). 'lg' enlarges the touch target; the per-variant layout is preserved (icon-and-text stacks the icon over the text, text renders large text, icon renders a larger icon-only control). |
 | `navigation` | `boolean` | Renders a nav landmark instead of tablist; use for href-based items that navigate between routes |
+| `disabled` | `boolean` | Disables the whole bar: dims it, blocks pointer interaction, and takes the tabs out of the tab order |
 | `centered` | `boolean` | Centers the tabs in the container (host fills the row, tabs group in the middle) |
 | `accessible-label` | `string` | Accessible name for the navigation region; defaults to 'Tabs' |
 
@@ -2308,12 +2388,12 @@ A cell component for displaying a title with optional overline and subtitle in l
 
 ## Iconen
 
-Geldige `name`-waarden voor `<nldd-icon>` (204 iconen + 181 aliassen). Verzin geen naam; kies er een uit deze set.
+Geldige `name`-waarden voor `<nldd-icon>` (222 iconen + 191 aliassen). Verzin geen naam; kies er een uit deze set.
 
 **Iconen**
 
-`accessibility`, `apartment-building`, `app`, `arrow-2-counter-clockwise`, `arrow-down`, `arrow-down-in-bucket`, `arrow-left`, `arrow-left-right`, `arrow-left-to-line`, `arrow-right`, `arrow-right-in-bucket`, `arrow-right-out-bucket`, `arrow-right-to-line`, `arrow-u-turn-backward`, `arrow-u-turn-forward`, `arrow-up`, `arrow-up-arrow-down`, `bell`, `binoculars`, `blocks-9`, `bold`, `book`, `book-batch-play`, `bookmark`, `bookmark-filled`, `books-vertical`, `brackets-ellipsis`, `brick-wall`, `bullet-list`, `business-suitcase`, `calendar-event`, `caret-down`, `caret-down-extra-small`, `caret-down-small`, `caret-left`, `caret-left-extra-small`, `caret-left-small`, `caret-right`, `caret-right-extra-small`, `caret-right-small`, `caret-up`, `caret-up-extra-small`, `caret-up-small`, `centralized-network`, `certificate`, `chart-x-y-axis-line`, `check-circle-filled`, `check-list`, `check-mark`, `check-mark-circle`, `check-mark-extra-small`, `check-mark-small`, `chevron-double-left`, `chevron-double-left-extra-small`, `chevron-double-left-small`, `chevron-double-right`, `chevron-double-right-extra-small`, `chevron-double-right-small`, `chevron-down`, `chevron-down-extra-small`, `chevron-down-small`, `chevron-left`, `chevron-left-chevron-right`, `chevron-left-extra-small`, `chevron-left-forward-slash-chevron-right`, `chevron-left-small`, `chevron-left-to-line`, `chevron-left-to-line-extra-small`, `chevron-left-to-line-small`, `chevron-right`, `chevron-right-extra-small`, `chevron-right-small`, `chevron-right-to-line`, `chevron-right-to-line-extra-small`, `chevron-right-to-line-small`, `chevron-up`, `chevron-up-chevron-down`, `chevron-up-extra-small`, `chevron-up-small`, `circle-dashed`, `circle-filled`, `circle-filled-extra-small`, `circle-filled-small`, `clipboard`, `clipboard-rectangle`, `clock`, `clock-arrow-clockwise`, `clock-arrow-counter-clockwise`, `cloud`, `cloud-arrow-down`, `cloud-arrow-up`, `cylinder-2-big-small-split`, `cylinder-split`, `cylinder-split-badge-lock`, `cylinder-split-slash`, `desk-with-screen`, `diamond`, `dismiss`, `dismiss-circle`, `dismiss-circle-filled`, `dismiss-extra-small`, `dismiss-small`, `ellipsis`, `envelope`, `euro-sign`, `exclamation-circle`, `exclamation-circle-filled`, `exclamation-triangle`, `exclamation-triangle-filled`, `eye`, `eye-slash`, `eyeglasses`, `face-frowning`, `face-smiling`, `face-smiling-badge-plus`, `file-box`, `file-text`, `file-text-batch-check-mark`, `file-text-pencil`, `file-text-stack`, `flag`, `flag-filled`, `folder`, `folder-stack`, `foundation`, `gear`, `globe`, `globe-rack-server`, `hand`, `handshake`, `heart`, `heart-filled`, `house`, `inbox`, `info-circle`, `info-circle-filled`, `italic`, `key`, `leaf`, `lightbulb`, `link`, `list`, `list-arrow-down`, `list-arrow-up`, `list-decreasing-lines`, `lock-closed`, `lock-open`, `magnifier`, `message-rectangle-text`, `minus`, `minus-extra-small`, `minus-small`, `moon`, `numbered-list`, `paper-plane`, `paperclip`, `pencil`, `pencil-on-square`, `pencil-ruler`, `person`, `person-2`, `person-badge-gear`, `person-circle`, `photo`, `photo-slash`, `pipeline-corner-2`, `pipeline-machine-gear`, `pipeline-valve`, `plus`, `plus-small`, `point-bottom-left-to-point-top-right-s-curve-path`, `puzzle-piece`, `puzzle-piece-filled`, `question-mark-circle`, `radar`, `rectangle-stack`, `scissor`, `score-meter`, `seal-check-mark`, `shield`, `shield-check-mark`, `shield-lock`, `ship-wheel`, `shopping-cart`, `slash-circle`, `sparkles`, `square-and-arrow-down`, `square-arrow-right-top`, `square-arrow-up`, `square-on-square`, `square-plus-on-square`, `stack-code`, `star`, `star-filled`, `starburst-filled`, `sun`, `table-cells`, `table-cells-badge-arrow-down`, `tag`, `terminal`, `text-quote`, `timer`, `trash`, `underlined`
+`accessibility`, `apartment-building`, `app`, `arrow-2-counter-clockwise`, `arrow-down`, `arrow-down-in-bucket`, `arrow-left`, `arrow-left-right`, `arrow-left-to-line`, `arrow-right`, `arrow-right-in-bucket`, `arrow-right-out-bucket`, `arrow-right-to-line`, `arrow-u-turn-backward`, `arrow-u-turn-forward`, `arrow-up`, `arrow-up-arrow-down`, `arrow-up-out-bucket`, `at`, `bell`, `binoculars`, `blocks-9`, `bold`, `book`, `book-batch-play`, `bookmark`, `bookmark-filled`, `books-vertical`, `brackets-ellipsis`, `brick-wall`, `bullet-list`, `business-suitcase`, `calendar-event`, `caret-down`, `caret-down-extra-small`, `caret-down-small`, `caret-left`, `caret-left-extra-small`, `caret-left-small`, `caret-right`, `caret-right-extra-small`, `caret-right-small`, `caret-up`, `caret-up-extra-small`, `caret-up-small`, `centralized-network`, `certificate`, `chart-x-y-axis-line`, `check-circle-filled`, `check-list`, `check-mark`, `check-mark-circle`, `check-mark-extra-small`, `check-mark-small`, `chevron-double-left`, `chevron-double-left-extra-small`, `chevron-double-left-small`, `chevron-double-right`, `chevron-double-right-extra-small`, `chevron-double-right-small`, `chevron-down`, `chevron-down-extra-small`, `chevron-down-small`, `chevron-left`, `chevron-left-chevron-right`, `chevron-left-extra-small`, `chevron-left-forward-slash-chevron-right`, `chevron-left-small`, `chevron-left-to-line`, `chevron-left-to-line-extra-small`, `chevron-left-to-line-small`, `chevron-right`, `chevron-right-extra-small`, `chevron-right-small`, `chevron-right-to-line`, `chevron-right-to-line-extra-small`, `chevron-right-to-line-small`, `chevron-up`, `chevron-up-chevron-down`, `chevron-up-extra-small`, `chevron-up-small`, `circle-dashed`, `circle-filled`, `circle-filled-extra-small`, `circle-filled-small`, `clipboard`, `clipboard-rectangle`, `clock`, `clock-arrow-clockwise`, `clock-arrow-counter-clockwise`, `cloud`, `cloud-arrow-down`, `cloud-arrow-up`, `cylinder-2-big-small-split`, `cylinder-split`, `cylinder-split-badge-lock`, `cylinder-split-slash`, `desk-with-screen`, `diamond`, `dismiss`, `dismiss-circle`, `dismiss-circle-filled`, `dismiss-extra-small`, `dismiss-small`, `ellipsis`, `envelope`, `euro-sign`, `exclamation-circle`, `exclamation-circle-filled`, `exclamation-triangle`, `exclamation-triangle-filled`, `eye`, `eye-slash`, `eyeglasses`, `face-frowning`, `face-smiling`, `face-smiling-badge-plus`, `file`, `file-box`, `file-text`, `file-text-batch-check-mark`, `file-text-pencil`, `file-text-stack`, `flag`, `flag-filled`, `folder`, `folder-stack`, `foundation`, `gear`, `globe`, `globe-rack-server`, `hand`, `handshake`, `heart`, `heart-filled`, `highlighter`, `house`, `house-and-appartment-building`, `inbox`, `indent-decrease`, `indent-increase`, `info-circle`, `info-circle-filled`, `italic`, `key`, `leaf`, `lightbulb`, `link`, `list`, `list-arrow-down`, `list-arrow-up`, `list-decreasing-lines`, `lock-closed`, `lock-open`, `magnifier`, `markdown-rectangle`, `message-rectangle-text`, `minus`, `minus-extra-small`, `minus-small`, `moon`, `numbered-list`, `paper-plane`, `paperclip`, `parking-sign-square`, `pencil`, `pencil-on-square`, `pencil-ruler`, `person`, `person-2`, `person-badge-gear`, `person-circle`, `photo`, `photo-slash`, `pipeline-corner-2`, `pipeline-machine-gear`, `pipeline-valve`, `plus`, `plus-small`, `point-bottom-left-to-point-top-right-s-curve-path`, `puzzle-piece`, `puzzle-piece-filled`, `question-mark-circle`, `radar`, `rectangle`, `rectangle-chevron-left-forward-slash-chevron-right`, `rectangle-split-2x1`, `rectangle-split-3x1`, `rectangle-stack`, `scissor`, `score-meter`, `seal-check-mark`, `shield`, `shield-check-mark`, `shield-lock`, `ship-wheel`, `shopping-cart`, `sidebar-left`, `sidebar-right`, `slash-circle`, `sparkles`, `square-and-arrow-down`, `square-arrow-right-top`, `square-arrow-up`, `square-grid-3x3`, `square-on-square`, `square-plus-on-square`, `stack-code`, `star`, `star-filled`, `starburst-filled`, `strikethrough`, `sun`, `table-cells`, `table-cells-badge-arrow-down`, `tag`, `terminal`, `text-quote`, `timer`, `trash`, `tree-structure`, `underlined`
 
 **Aliassen** (verwijzen naar een icoon hierboven)
 
-`a11y`, `account`, `add`, `add-emoji`, `add-small`, `ai`, `alarm`, `alert`, `analytics`, `annotation`, `archive`, `attach`, `attachment`, `back`, `backlog`, `backup-in-cloud`, `blocked`, `blockquote`, `bookmarked`, `books`, `broken-image`, `building`, `building-blocks`, `calendar`, `cart`, `category`, `certified`, `chart-line`, `checked`, `checked-extra-small`, `checked-small`, `checklist`, `cli`, `code`, `coins`, `comment`, `console`, `copy`, `countdown`, `cut`, `dark-mode`, `database`, `database-disabled`, `database-unavailable`, `day`, `delete`, `deploy`, `design`, `diploma`, `directories`, `directory`, `discover`, `dns`, `document`, `documents`, `download`, `download-from-cloud`, `download-table`, `duplicate`, `edit`, `email`, `embed`, `error`, `event`, `exit`, `explore`, `export`, `extension`, `external-link`, `favorite`, `file`, `filter`, `flagged`, `forbidden`, `forward`, `frowning`, `future`, `gem`, `global-settings`, `graph`, `group`, `guide`, `happy`, `help`, `hidden`, `hide`, `history`, `home`, `hyperlink`, `icon-placeholder`, `idea`, `image`, `import`, `info`, `information`, `invalid`, `k8s`, `kubernetes`, `label`, `languages`, `license`, `light-mode`, `lock`, `locked`, `login`, `logout`, `love`, `magic`, `mail`, `menu`, `module`, `monitoring`, `more`, `new`, `night`, `notification`, `notifications`, `now`, `office`, `open-new-page`, `paste`, `path`, `pipeline`, `pipeline-runner`, `plugin`, `privacy`, `profile`, `promotion`, `protection`, `quality`, `question`, `rated`, `rating`, `read`, `reading-list`, `redo`, `refresh`, `reload`, `remove`, `remove-extra-small`, `remove-small`, `sad`, `save`, `search`, `secure`, `security`, `send`, `settings`, `share`, `show`, `smiling`, `sort`, `sort-ascending`, `sort-descending`, `stack`, `success`, `sustainability`, `sync`, `table`, `tasks`, `team`, `text-documents`, `time`, `todos`, `traject`, `undo`, `unlocked`, `unsecure`, `upload-to-cloud`, `url`, `user`, `user-admin`, `user-settings`, `users`, `valid`, `verified`, `visible`, `warning`, `work`, `workplace`, `write`
+`a11y`, `account`, `add`, `add-emoji`, `add-small`, `ai`, `alarm`, `alert`, `analytics`, `annotation`, `apps`, `archive`, `attach`, `attachment`, `back`, `backlog`, `backup-in-cloud`, `blocked`, `blockquote`, `bookmarked`, `books`, `broken-image`, `building`, `building-blocks`, `calendar`, `cart`, `category`, `certified`, `chart-line`, `checked`, `checked-extra-small`, `checked-small`, `checklist`, `cli`, `code`, `code-block`, `coins`, `columns-2`, `columns-3`, `comment`, `console`, `copy`, `countdown`, `cut`, `dark-mode`, `database`, `database-disabled`, `database-unavailable`, `day`, `delete`, `deploy`, `design`, `diploma`, `directories`, `directory`, `discover`, `dns`, `document`, `documents`, `download`, `download-from-cloud`, `download-table`, `duplicate`, `edit`, `email`, `embed`, `error`, `event`, `exit`, `explore`, `export`, `extension`, `external-link`, `favorite`, `file`, `filter`, `flagged`, `forbidden`, `forward`, `frowning`, `future`, `gem`, `global-settings`, `graph`, `group`, `guide`, `happy`, `help`, `hidden`, `hide`, `hierarchy`, `history`, `home`, `hyperlink`, `icon-placeholder`, `idea`, `image`, `import`, `indent`, `info`, `information`, `invalid`, `k8s`, `kubernetes`, `label`, `languages`, `license`, `light-mode`, `lock`, `locked`, `login`, `logout`, `love`, `magic`, `mail`, `markdown`, `menu`, `module`, `monitoring`, `more`, `new`, `night`, `notification`, `notifications`, `now`, `office`, `open-new-page`, `outdent`, `parking`, `paste`, `path`, `pipeline`, `pipeline-runner`, `plugin`, `privacy`, `profile`, `promotion`, `protection`, `quality`, `question`, `rated`, `rating`, `read`, `reading-list`, `redo`, `refresh`, `reload`, `remove`, `remove-extra-small`, `remove-small`, `sad`, `save`, `search`, `secure`, `security`, `send`, `settings`, `share`, `show`, `smiling`, `sort`, `sort-ascending`, `sort-descending`, `stack`, `success`, `sustainability`, `sync`, `table`, `tasks`, `team`, `text-documents`, `time`, `todos`, `traject`, `undo`, `unlocked`, `unsecure`, `upload`, `upload-to-cloud`, `url`, `user`, `user-admin`, `user-settings`, `users`, `valid`, `verified`, `visible`, `warning`, `work`, `workplace`, `write`

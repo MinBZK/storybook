@@ -15,7 +15,7 @@
  * @attr {'xs' | 'sm' | 'md'}  size                  - Forwarded to all buttons (default: 'md')
  * @attr {boolean}              disabled              - Disables all buttons
  * @attr {string}               accessible-label      - Accessible name for the group (aria-label)
- * @attr {string}               accessible-labelledby - ID of an external label element (aria-labelledby)
+ * @attr {string}               accessible-labelled-by - ID of an external label element (aria-labelledby)
  *
  * @slot - nldd-toggle-button elements
  *
@@ -24,6 +24,7 @@
 
 import { LitElement } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
+import { reflectNonDefault } from '../../../utilities/reflect-non-default.js';
 import { toggleButtonGroupStyles } from './toggle-button-group.styles.js';
 import { toggleButtonGroupTemplate } from './toggle-button-group.template.js';
 import type { NLDDToggleButton, ToggleButtonSize } from '../toggle-button/toggle-button.js';
@@ -40,7 +41,7 @@ export class NLDDToggleButtonGroup extends LitElement {
 	@property({ type: String })
 	name = '';
 
-	@property({ type: String, reflect: true })
+	@property({ reflect: true, converter: reflectNonDefault<ToggleButtonSize>('md') })
 	size: ToggleButtonSize = 'md';
 
 	@property({ type: Boolean, reflect: true })
@@ -51,7 +52,7 @@ export class NLDDToggleButtonGroup extends LitElement {
 	accessibleLabel = '';
 
 	/** ID of an external label element forwarded as aria-labelledby to the group host. */
-	@property({ type: String, attribute: 'accessible-labelledby' })
+	@property({ type: String, attribute: 'accessible-labelled-by' })
 	accessibleLabelledBy = '';
 
 	override connectedCallback(): void {
@@ -73,7 +74,7 @@ export class NLDDToggleButtonGroup extends LitElement {
 
 	override firstUpdated(): void {
 		import.meta.env?.DEV && !this.accessibleLabel && !this.accessibleLabelledBy &&
-			console.warn('<nldd-toggle-button-group>: No accessible name provided. Add an accessible-label or accessible-labelledby attribute for screen reader accessibility.');
+			console.warn('<nldd-toggle-button-group>: No accessible name provided. Add an accessible-label or accessible-labelled-by attribute for screen reader accessibility.');
 	}
 
 	override updated(changed: Map<PropertyKey, unknown>): void {

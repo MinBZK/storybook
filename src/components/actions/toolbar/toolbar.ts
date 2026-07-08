@@ -38,6 +38,7 @@
  */
 import { LitElement } from 'lit';
 import { customElement, property, state } from 'lit/decorators.js';
+import { reflectNonDefault } from '../../../utilities/reflect-non-default.js';
 import { toolbarStyles, toolbarItemStyles, toolbarTitleStyles } from './toolbar.styles.js';
 import { template, toolbarItemTemplate, toolbarTitleTemplate, type ToolbarChild } from './toolbar.template.js';
 import { nlddToolbarTranslations } from './toolbar.i18n.js';
@@ -56,38 +57,42 @@ interface SizingElement {
 	width: string;
 }
 
-// Consumer sizing (width/min-width/max-width) reflects to attributes —
-// frameworks such as Vue set `width` as a DOM property, and the attribute
-// should stay inspectable in the DOM. The '' default maps to null so it
-// never reflects as an empty attribute.
-const sizingConverter = {
-	toAttribute: (value: string): string | null => value || null,
-	fromAttribute: (value: string | null): string => value ?? '',
-};
-
 // # nldd-toolbar-item
 
 @customElement('nldd-toolbar-item')
 export class NLDDToolbarItem extends LitElement {
 	static override styles = toolbarItemStyles;
 
-	@property({ reflect: true, converter: sizingConverter })
+	@property({ reflect: true, converter: reflectNonDefault<string>('') })
 	width = '';
 
-	@property({ attribute: 'min-width', reflect: true, converter: sizingConverter })
+	@property({ reflect: true, attribute: 'min-width', converter: reflectNonDefault<string>('') })
 	minWidth = '';
 
-	@property({ attribute: 'max-width', reflect: true, converter: sizingConverter })
+	@property({ reflect: true, attribute: 'max-width', converter: reflectNonDefault<string>('') })
 	maxWidth = '';
 
 	@property({ type: String })
 	label = '';
 
-	@property({ type: Number })
+	// Overflow order. The parent toolbar reads this as a PROPERTY (el.priority), so
+	// both a bound property (Vue/React `:priority`, `el.priority = 2`) and a plain
+	// attribute (`priority="2"`) work. Reflected so an explicit value is visible in
+	// the DOM and a runtime property change re-triggers the toolbar's overflow
+	// recompute (its observer watches the attribute). The converter reflects the
+	// default 0 as *no attribute* (toAttribute → null), so the DOM isn't polluted
+	// with `priority="0"` on every item; 0 means "no explicit priority".
+	@property({
+		reflect: true,
+		converter: {
+			fromAttribute: (value: string | null) => (value === null ? 0 : Number(value)),
+			toAttribute: (value: number) => (value === 0 ? null : String(value)),
+		},
+	})
 	priority = 0;
 
 	/** Set by nldd-toolbar; not part of the public API. @internal */
-	@property({ type: String, reflect: true })
+	@property({ reflect: true, converter: reflectNonDefault<Size>('md') })
 	size: Size = 'md';
 
 	/** Set by nldd-toolbar; not part of the public API. @internal */
@@ -112,26 +117,26 @@ export class NLDDToolbarItem extends LitElement {
 export class NLDDToolbarTitle extends LitElement {
 	static override styles = toolbarTitleStyles;
 
-	@property({ type: String })
+	@property({ reflect: true, converter: reflectNonDefault<string>('') })
 	text = '';
 
-	@property({ type: String, attribute: 'supporting-text' })
+	@property({ reflect: true, attribute: 'supporting-text', converter: reflectNonDefault<string>('') })
 	supportingText = '';
 
-	@property({ type: String, reflect: true })
+	@property({ reflect: true, converter: reflectNonDefault<TitleAlign>('left') })
 	align: TitleAlign = 'left';
 
-	@property({ reflect: true, converter: sizingConverter })
+	@property({ reflect: true, converter: reflectNonDefault<string>('') })
 	width = '';
 
-	@property({ attribute: 'min-width', reflect: true, converter: sizingConverter })
+	@property({ reflect: true, attribute: 'min-width', converter: reflectNonDefault<string>('') })
 	minWidth = '';
 
-	@property({ attribute: 'max-width', reflect: true, converter: sizingConverter })
+	@property({ reflect: true, attribute: 'max-width', converter: reflectNonDefault<string>('') })
 	maxWidth = '';
 
 	/** Set by nldd-toolbar; not part of the public API. @internal */
-	@property({ type: String, reflect: true })
+	@property({ reflect: true, converter: reflectNonDefault<Size>('md') })
 	size: Size = 'md';
 
 	// Layout state — `solo-fluid` and `hidden` — is owned by nldd-toolbar and
@@ -166,7 +171,7 @@ export class NLDDToolbarTitle extends LitElement {
 export class NLDDToolbar extends LitElement {
 	static override styles = toolbarStyles;
 
-	@property({ type: String, reflect: true })
+	@property({ reflect: true, converter: reflectNonDefault<Size>('md') })
 	size: Size = 'md';
 
 	@property({ type: Boolean, reflect: true, attribute: 'show-item-labels' })
@@ -210,6 +215,10 @@ export class NLDDToolbar extends LitElement {
 
 	private _childIds = new WeakMap<Element, number>();
 	private _idCounter = 0;
+	/** Maps the stamped `data-toolbar-oid` of an overflow item (and its
+	 *  descendants) back to the original element, so a clone's `select` can be
+	 *  forwarded to the original. Rebuilt on every _syncMenuItems. */
+	private _overflowOriginalById = new Map<string, Element>();
 	private _itemWidths = new Map<number, number>();
 	private _observer: MutationObserver | null = null;
 	private _resizeObserver: ResizeObserver | null = null;
@@ -230,18 +239,30 @@ export class NLDDToolbar extends LitElement {
 		super.connectedCallback();
 		this._observer = new MutationObserver((mutations) => {
 			if (this._isBuilding) return;
-			const onlyInternalMoves = mutations.every(m => {
-				// Attribute change — only rebuild for toolbar-structural elements.
-				// Changes on deeply nested descendants (e.g. nldd-segmented-control-item)
-				// are safe to ignore.
+			let needsRebuild = false;
+			let needsMenuResync = false;
+			for (const m of mutations) {
 				if (m.type === 'attributes') {
-					const tag = (m.target as Element).tagName.toLowerCase();
-					return tag !== 'nldd-toolbar-item' && tag !== 'nldd-toolbar-title';
+					const el = m.target as Element;
+					const tag = el.tagName.toLowerCase();
+					if (tag === 'nldd-toolbar-item' || tag === 'nldd-toolbar-title') {
+						// Structural attribute change (label/priority/width/…) → rebuild.
+						needsRebuild = true;
+					} else if (el.closest?.('[slot="overflow"]')) {
+						// An overflow-slot item changed (e.g. `selected`/`disabled` on a
+						// menu-item). The overflow menu holds a clone, so re-sync it —
+						// otherwise the clone freezes at its state when it was made.
+						needsMenuResync = true;
+					}
+					// Otherwise a visible control changed (e.g. nldd-segmented-control-item)
+					// — no toolbar work needed.
+				} else {
+					// childList change (items added/removed) → rebuild.
+					needsRebuild = true;
 				}
-				return false;
-			});
-			if (onlyInternalMoves) return;
-			this._buildChildren();
+			}
+			if (needsRebuild) this._buildChildren();
+			else if (needsMenuResync) this._syncMenuItems();
 		});
 		setTimeout(() => this._buildChildren(), 0);
 		this._createMenu();
@@ -300,9 +321,34 @@ export class NLDDToolbar extends LitElement {
 		menu.addEventListener('toggle', (event: Event) => {
 			this._menuOpen = (event as ToggleEvent).newState === 'open';
 		});
+		menu.addEventListener('select', this._onOverflowMenuSelect);
 		document.body.appendChild(menu);
 		this._menu = menu;
 	}
+
+	/** The overflow menu holds CLONES of the slotted overflow items (see
+	 *  _syncMenuItems), so a clone's `select` never reaches the original element's
+	 *  listeners. Forward it: map the clicked clone back to its original via the
+	 *  `data-toolbar-oid` stamped at clone time, then re-dispatch `select` on the
+	 *  original so a consumer's `@select` handler (or a live-bound attribute) on
+	 *  the real overflow item fires. */
+	private _onOverflowMenuSelect = (event: Event): void => {
+		let oid: string | null = null;
+		for (const node of event.composedPath()) {
+			if (node instanceof Element && node.hasAttribute('data-toolbar-oid')) {
+				oid = node.getAttribute('data-toolbar-oid');
+				break;
+			}
+		}
+		if (!oid) return;
+		const original = this._overflowOriginalById.get(oid);
+		if (!original) return;
+		original.dispatchEvent(new CustomEvent('select', {
+			bubbles: true,
+			composed: true,
+			detail: (event as CustomEvent).detail,
+		}));
+	};
 
 	private _syncMenuAnchor(): void {
 		if (!this._menu) return;
@@ -342,6 +388,25 @@ export class NLDDToolbar extends LitElement {
 	private _syncMenuItems(): void {
 		if (!this._menu) return;
 		this._menu.innerHTML = '';
+		this._overflowOriginalById.clear();
+
+		// Stamp the original (and every descendant) with a stable id — copied into
+		// the clone by cloneNode — so _onOverflowMenuSelect can map a clone's
+		// `select` back to the original. `data-toolbar-oid` is outside the
+		// observer's attributeFilter, so stamping never retriggers a re-sync.
+		const cloneWithForwarding = (el: Element): Element => {
+			for (const node of [el, ...el.querySelectorAll('*')]) {
+				let oid = node.getAttribute('data-toolbar-oid');
+				if (!oid) {
+					oid = `oid-${this._idCounter++}`;
+					node.setAttribute('data-toolbar-oid', oid);
+				}
+				this._overflowOriginalById.set(oid, node);
+			}
+			const clone = el.cloneNode(true) as Element;
+			clone.removeAttribute('slot');
+			return clone;
+		};
 
 		const prioritized = [...this._getPrioritizedItems()].reverse();
 
@@ -349,17 +414,13 @@ export class NLDDToolbar extends LitElement {
 			if (!this._overflowIds.has(child.id)) return;
 			if (child.overflowItems.length === 0) return;
 			child.overflowItems.forEach(el => {
-				const clone = el.cloneNode(true) as Element;
-				clone.removeAttribute('slot');
-				this._menu!.appendChild(clone);
+				this._menu!.appendChild(cloneWithForwarding(el));
 			});
 		});
 
 		if (this._pinnedOverflowItems.length > 0) {
 			this._pinnedOverflowItems.forEach(el => {
-				const clone = el.cloneNode(true) as Element;
-				clone.removeAttribute('slot');
-				this._menu!.appendChild(clone);
+				this._menu!.appendChild(cloneWithForwarding(el));
 			});
 		}
 	}
@@ -675,8 +736,15 @@ export class NLDDToolbar extends LitElement {
 				if (tag === 'nldd-toolbar-item') {
 					const id = this._getId(el);
 					const label = el.getAttribute('label') ?? '';
-					const priority = parseInt(el.getAttribute('priority') ?? '0', 10);
-					const hasPriority = el.hasAttribute('priority');
+					// Read priority as a property, not an attribute: for a custom element,
+					// Vue/React set `priority` as a DOM property (`'priority' in el`), not an
+					// attribute, and it isn't reflected — so getAttribute misses it (same
+					// reason the sizing props below are read as properties). Lit mirrors an
+					// attribute-set value onto the property too, so this covers plain HTML.
+					// Priority 0 is the default and counts as "no explicit priority" (the
+					// item overflows individually rather than grouping).
+					const priority = (el as Element & { priority?: number }).priority ?? 0;
+					const hasPriority = priority !== 0;
 					// Read sizing as properties, not attributes: frameworks such as Vue set
 					// `width` as a DOM property (el.width exists) rather than an attribute,
 					// so getAttribute('width') misses it. Lit mirrors attribute-set values

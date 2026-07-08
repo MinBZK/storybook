@@ -1,5 +1,6 @@
 import { LitElement } from 'lit';
 import { customElement, property, query, state } from 'lit/decorators.js';
+import { reflectNonDefault } from '../../../utilities/reflect-non-default.js';
 import { listItemStyles } from './list-item.styles.js';
 import { template } from './list-item.template.js';
 import { isPointerMode } from '../../../utilities/input-modality.js';
@@ -34,7 +35,7 @@ export type ListItemSize = 'sm' | 'md';
 export class NLDDListItem extends withTranslations(LitElement, nlddListItemTranslations) {
 	static override styles = [listItemStyles];
 
-	@property({ reflect: true })
+	@property({ reflect: true, converter: reflectNonDefault<ListItemSize>('md') })
 	size: ListItemSize = 'md';
 
 	@property({ type: Boolean, reflect: true })

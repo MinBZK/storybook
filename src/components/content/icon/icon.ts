@@ -1,5 +1,6 @@
 import { LitElement } from 'lit';
 import { customElement, property, state } from 'lit/decorators.js';
+import { reflectNonDefault } from '../../../utilities/reflect-non-default.js';
 import { iconStyles } from './icon.styles.js';
 import { template } from './icon.template.js';
 import { aliases } from './icon-aliases.js';
@@ -68,10 +69,10 @@ export class NLDDIcon extends LitElement {
 	@property({ type: String })
 	name = 'circle-dashed';
 
-	@property({ type: String, reflect: true })
+	@property({ reflect: true, converter: reflectNonDefault<IconSize>('') })
 	size: IconSize = '';
 
-	@property({ type: String, reflect: true })
+	@property({ reflect: true, converter: reflectNonDefault<IconColor>('') })
 	color: IconColor = '';
 
 	@state()

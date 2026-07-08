@@ -56,6 +56,17 @@ export const popoverStyles = css`
 		display: none;
 	}
 
+	/* Desktop only: hide the popover between opening and being placed by Floating UI,
+	   so it never flashes at the popover's default position. visibility (not display)
+	   keeps it laid out so its size can be measured. The sm bottom-sheet is CSS-animated
+	   and positioned, so it is excluded. The positioned attribute is set once
+	   reposition() finishes and cleared on every re-open. */
+	@media (min-width: ${mdMin}) {
+		:host(:popover-open:not([positioned])) {
+			visibility: hidden;
+		}
+	}
+
 	:host(:focus-visible:not(.is-pointer-focus)) {
 		outline: var(--semantics-focus-ring-outline);
 		outline-offset: var(--semantics-focus-ring-outline-offset);

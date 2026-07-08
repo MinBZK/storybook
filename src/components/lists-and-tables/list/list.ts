@@ -1,5 +1,6 @@
 import { LitElement } from 'lit';
 import { customElement, property, query, state } from 'lit/decorators.js';
+import { reflectNonDefault } from '../../../utilities/reflect-non-default.js';
 import { listStyles } from './list.styles.js';
 import { template } from './list.template.js';
 import type { NLDDListItem } from '../list-item/list-item.js';
@@ -93,7 +94,7 @@ export class NLDDList extends LitElement {
 	/** Visual style of the list. `simple` is a plain vertical strip with
 	 *  no chrome (no rounded corners, no fill, no border); `box` is a
 	 *  framed card with rounded corners, fill, and an inset border ring. */
-	@property({ reflect: true })
+	@property({ reflect: true, converter: reflectNonDefault<ListVariant>('simple') })
 	variant: ListVariant = 'simple';
 
 	/** Surface fill for `variant="box"`. `tinted` (default) for a list on
@@ -103,7 +104,7 @@ export class NLDDList extends LitElement {
 	background?: ListBackground;
 
 	/** A11y semantics. See class docblock. */
-	@property({ reflect: true })
+	@property({ reflect: true, converter: reflectNonDefault<ListType>('list') })
 	type: ListType = 'list';
 
 	/** Enables drag-to-reorder. Only valid when `type="list"` (the default). */
@@ -152,14 +153,14 @@ export class NLDDList extends LitElement {
 	 * i18n default ("Geen items"). Ignored when consumers slot their
 	 * own content into `[slot=empty]`.
 	 */
-	@property({ type: String, attribute: 'empty-text' })
+	@property({ reflect: true, attribute: 'empty-text', converter: reflectNonDefault<string>('') })
 	emptyText = '';
 
 	/**
 	 * Optional supporting text for the default empty-state dialog.
 	 * Ignored when consumers slot their own content into `[slot=empty]`.
 	 */
-	@property({ type: String, attribute: 'empty-supporting-text' })
+	@property({ reflect: true, attribute: 'empty-supporting-text', converter: reflectNonDefault<string>('') })
 	emptySupportingText = '';
 
 	/** Accessible name for the list, forwarded to the inner role: the list in

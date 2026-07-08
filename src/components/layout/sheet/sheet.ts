@@ -20,7 +20,7 @@
  *                                    can't extend past the dismiss-tap area. No effect on side
  *                                    sheets at md+.
  * @attr {boolean} modeless         - Non-modal (no backdrop or focus lock); the sheet is modal by default
- * @attr {string}  accessible-label - Accessible name for the dialog, forwarded as aria-label (default: 'Dialoogvenster')
+ * @attr {string}  accessible-label - Accessible name for the dialog, forwarded as aria-label (default: 'Venster')
  * @attr {string}  width            - Custom width for side sheets (left/right) as a CSS length
  *                                    (e.g. '480px', '32rem'). Applied from the md breakpoint up;
  *                                    ignored on sm (bottom sheet) and for `placement="bottom"`.
@@ -37,9 +37,11 @@
 
 import { LitElement } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
+import { reflectNonDefault } from '../../../utilities/reflect-non-default.js';
 import { sheetStyles } from './sheet.styles.js';
 import { sheetTemplate } from './sheet.template.js';
 import { isPointerMode } from '../../../utilities/input-modality.js';
+import { isDismissFromTitleBar } from '../../../utilities/dismiss-from-title-bar.js';
 
 type Placement = 'left' | 'right' | 'bottom';
 
@@ -47,7 +49,7 @@ type Placement = 'left' | 'right' | 'bottom';
 export class NLDDSheet extends LitElement {
 	static override styles = sheetStyles;
 
-	@property({ type: String, reflect: true })
+	@property({ reflect: true, converter: reflectNonDefault<Placement>('right') })
 	placement: Placement = 'right';
 
 	/**
@@ -132,9 +134,9 @@ export class NLDDSheet extends LitElement {
 		if (!dialog) return;
 
 		// Warn once per instance when the consumer has not provided a meaningful accessible label
-		if (import.meta.env?.DEV && this.accessibleLabel === 'Dialoogvenster' && !this._hasWarnedLabel) {
+		if (import.meta.env?.DEV && this.accessibleLabel === 'Venster' && !this._hasWarnedLabel) {
 			this._hasWarnedLabel = true;
-			console.warn('<nldd-sheet>: No accessible-label provided. Screen readers will announce this dialog as "Dialoogvenster". Set accessible-label to a descriptive name matching the dialog title.');
+			console.warn('<nldd-sheet>: No accessible-label provided. Screen readers will announce this dialog as "Venster". Set accessible-label to a descriptive name matching the dialog title.');
 		}
 
 		if (this.modeless) {
@@ -195,8 +197,16 @@ export class NLDDSheet extends LitElement {
 		this.hide();
 	}
 
-	private _handleDismiss = (): void => {
-		this.hide();
+	private _handleDismiss = (e: Event): void => {
+		// Only our own top-title-bar's dismiss button closes the sheet. Other
+		// components fire `dismiss` for their own element (nldd-token's remove,
+		// nldd-banner, nldd-document-tab-bar); inside a sheet those must not close it.
+		if (isDismissFromTitleBar(e)) {
+			// Stop the matched dismiss here so a nested sheet/window's own title-bar
+			// dismiss can't keep bubbling up and also close an outer overlay.
+			e.stopPropagation();
+			this.hide();
+		}
 	};
 
 	override render() {

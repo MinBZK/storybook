@@ -16,6 +16,7 @@
  */
 import { LitElement, type PropertyValues } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
+import { reflectNonDefault } from '../../../utilities/reflect-non-default.js';
 import { stepperStyles } from './stepper.styles.js';
 import { stepperTemplate } from './stepper.template.js';
 import { nlddStepperTranslations } from './stepper.i18n.js';
@@ -50,7 +51,7 @@ export class NLDDStepper extends LitElement {
 	@property({ type: Boolean, reflect: true })
 	disabled = false;
 
-	@property({ type: String, reflect: true })
+	@property({ reflect: true, converter: reflectNonDefault<StepperSize>('md') })
 	size: StepperSize = 'md';
 
 	@property({ type: String, reflect: true })

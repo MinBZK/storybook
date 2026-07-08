@@ -33,7 +33,7 @@ export class NLDDRadioButtonGroup extends LitElement {
 	@property({ type: Boolean, reflect: true })
 	required = false;
 
-	@property({ type: String, attribute: 'accessible-labelledby' })
+	@property({ type: String, attribute: 'accessible-labelled-by' })
 	accessibleLabelledBy = '';
 
 	override connectedCallback(): void {

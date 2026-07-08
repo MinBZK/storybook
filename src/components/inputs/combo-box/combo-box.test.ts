@@ -654,3 +654,98 @@ describe('nldd-combo-box – text', () => {
 		expect(input.getAttribute('spellcheck')).toBe('false');
 	});
 });
+
+
+/* ============================================================
+   allow-custom
+   ============================================================ */
+
+describe('nldd-combo-box – allow-custom', () => {
+	let el: NLDDComboBox;
+
+	afterEach(() => {
+		if (el) cleanup(el);
+	});
+
+	const withOption = () => fixture<NLDDComboBox>(`
+		<nldd-combo-box accessible-label="Land">
+			<nldd-menu><nldd-menu-item text="Nederland" value="nl"></nldd-menu-item></nldd-menu>
+		</nldd-combo-box>
+	`);
+
+	const typeAndEnter = async (element: NLDDComboBox, text: string) => {
+		const input = element.shadowRoot!.querySelector('input')!;
+		(input as HTMLInputElement).value = text;
+		input.dispatchEvent(new Event('input', { bubbles: true }));
+		await waitForUpdate(element);
+		input.dispatchEvent(new KeyboardEvent('keydown', { key: 'Enter', bubbles: true }));
+		await waitForUpdate(element);
+	};
+
+	it('discards a non-matching typed value on Enter by default', async () => {
+		el = await withOption();
+		await waitForUpdate(el);
+		await typeAndEnter(el, 'xyz');
+		expect(el.value).toBe('');
+	});
+
+	it('commits a non-matching typed value on Enter with allow-custom', async () => {
+		el = await withOption();
+		el.allowCustom = true;
+		await waitForUpdate(el);
+		await typeAndEnter(el, 'xyz');
+		expect(el.value).toBe('xyz');
+	});
+
+	const typeAndBlur = async (element: NLDDComboBox, text: string) => {
+		const input = element.shadowRoot!.querySelector('input') as HTMLInputElement;
+		input.value = text;
+		input.dispatchEvent(new Event('input', { bubbles: true }));
+		await waitForUpdate(element);
+		input.dispatchEvent(new FocusEvent('blur', { bubbles: true }));
+		await waitForUpdate(element);
+	};
+
+	it('reverts a non-matching typed value on blur by default', async () => {
+		el = await withOption();
+		await waitForUpdate(el);
+		await typeAndBlur(el, 'xyz');
+		expect(el.value).toBe('');
+		expect(el.shadowRoot!.querySelector('input')!.value).toBe('');
+	});
+
+	it('reverts the text to the current value on blur, keeping the value', async () => {
+		el = await withOption();
+		el.value = 'nl';
+		await waitForUpdate(el);
+		const input = el.shadowRoot!.querySelector('input') as HTMLInputElement;
+		expect(input.value).toBe('Nederland'); // derived from the menu option
+		await typeAndBlur(el, 'xyz');
+		expect(el.value).toBe('nl'); // value unchanged
+		expect(input.value).toBe('Nederland'); // text reverted
+	});
+
+	it('reverts to the current value on Enter when nothing matches (no commit)', async () => {
+		el = await withOption();
+		el.value = 'nl';
+		await waitForUpdate(el);
+		await typeAndEnter(el, 'xyz');
+		expect(el.value).toBe('nl'); // stays put, not cleared or committed
+		expect(el.shadowRoot!.querySelector('input')!.value).toBe('Nederland');
+	});
+
+	it('clears the input on blur when the value matches no option (no stale text)', async () => {
+		// value "xx" has no matching menu item; typing another non-match and blurring
+		// must discard the typed text rather than leave it on screen (revert desync).
+		el = await fixture<NLDDComboBox>(`
+			<nldd-combo-box value="xx" accessible-label="Land">
+				<nldd-menu><nldd-menu-item text="Nederland" value="nl"></nldd-menu-item></nldd-menu>
+			</nldd-combo-box>
+		`);
+		await waitForUpdate(el);
+		expect(el.shadowRoot!.querySelector('input')!.value).toBe(''); // no label for "xx"
+		await typeAndBlur(el, 'zzz');
+		expect(el.value).toBe('xx'); // value untouched
+		expect(el.shadowRoot!.querySelector('input')!.value).toBe(''); // typed text discarded
+	});
+});

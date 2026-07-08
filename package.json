@@ -35,6 +35,18 @@
       "types": "./dist/components/actions/menu/menu.d.ts",
       "default": "./dist/components/actions/menu/menu.js"
     },
+    "./blockquote": {
+      "types": "./dist/components/content/blockquote/blockquote.d.ts",
+      "default": "./dist/components/content/blockquote/blockquote.js"
+    },
+    "./byline": {
+      "types": "./dist/components/content/byline/byline.d.ts",
+      "default": "./dist/components/content/byline/byline.js"
+    },
+    "./code-viewer": {
+      "types": "./dist/components/content/code-viewer/code-viewer.d.ts",
+      "default": "./dist/components/content/code-viewer/code-viewer.js"
+    },
     "./icon": {
       "types": "./dist/components/content/icon/icon.d.ts",
       "default": "./dist/components/content/icon/icon.js"
@@ -43,37 +55,29 @@
       "types": "./dist/components/content/image/image.d.ts",
       "default": "./dist/components/content/image/image.js"
     },
+    "./keyboard-shortcut": {
+      "types": "./dist/components/content/keyboard-shortcut/keyboard-shortcut.d.ts",
+      "default": "./dist/components/content/keyboard-shortcut/keyboard-shortcut.js"
+    },
     "./rich-text": {
       "types": "./dist/components/content/rich-text/rich-text.d.ts",
       "default": "./dist/components/content/rich-text/rich-text.js"
-    },
-    "./title": {
-      "types": "./dist/components/content/title/title.d.ts",
-      "default": "./dist/components/content/title/title.js"
-    },
-    "./tooltip": {
-      "types": "./dist/components/content/tooltip/tooltip.d.ts",
-      "default": "./dist/components/content/tooltip/tooltip.js"
-    },
-    "./blockquote": {
-      "types": "./dist/components/content/blockquote/blockquote.d.ts",
-      "default": "./dist/components/content/blockquote/blockquote.js"
     },
     "./tag": {
       "types": "./dist/components/content/tag/tag.d.ts",
       "default": "./dist/components/content/tag/tag.js"
     },
-    "./keyboard-shortcut": {
-      "types": "./dist/components/content/keyboard-shortcut/keyboard-shortcut.d.ts",
-      "default": "./dist/components/content/keyboard-shortcut/keyboard-shortcut.js"
+    "./title": {
+      "types": "./dist/components/content/title/title.d.ts",
+      "default": "./dist/components/content/title/title.js"
     },
-    "./code-viewer": {
-      "types": "./dist/components/content/code-viewer/code-viewer.d.ts",
-      "default": "./dist/components/content/code-viewer/code-viewer.js"
+    "./token": {
+      "types": "./dist/components/content/token/token.d.ts",
+      "default": "./dist/components/content/token/token.js"
     },
-    "./byline": {
-      "types": "./dist/components/content/byline/byline.d.ts",
-      "default": "./dist/components/content/byline/byline.js"
+    "./tooltip": {
+      "types": "./dist/components/content/tooltip/tooltip.d.ts",
+      "default": "./dist/components/content/tooltip/tooltip.js"
     },
     "./form": {
       "types": "./dist/components/forms/form/form.d.ts",
@@ -91,42 +95,6 @@
       "types": "./dist/components/forms/form-section/form-section.d.ts",
       "default": "./dist/components/forms/form-section/form-section.js"
     },
-    "./text-field": {
-      "types": "./dist/components/inputs/text-field/text-field.d.ts",
-      "default": "./dist/components/inputs/text-field/text-field.js"
-    },
-    "./multi-line-text-field": {
-      "types": "./dist/components/inputs/multi-line-text-field/multi-line-text-field.d.ts",
-      "default": "./dist/components/inputs/multi-line-text-field/multi-line-text-field.js"
-    },
-    "./code-editor": {
-      "types": "./dist/components/inputs/code-editor/code-editor.d.ts",
-      "default": "./dist/components/inputs/code-editor/code-editor.js"
-    },
-    "./password-field": {
-      "types": "./dist/components/inputs/password-field/password-field.d.ts",
-      "default": "./dist/components/inputs/password-field/password-field.js"
-    },
-    "./search-field": {
-      "types": "./dist/components/inputs/search-field/search-field.d.ts",
-      "default": "./dist/components/inputs/search-field/search-field.js"
-    },
-    "./number-field": {
-      "types": "./dist/components/inputs/number-field/number-field.d.ts",
-      "default": "./dist/components/inputs/number-field/number-field.js"
-    },
-    "./dropdown": {
-      "types": "./dist/components/inputs/dropdown/dropdown.d.ts",
-      "default": "./dist/components/inputs/dropdown/dropdown.js"
-    },
-    "./combo-box": {
-      "types": "./dist/components/inputs/combo-box/combo-box.d.ts",
-      "default": "./dist/components/inputs/combo-box/combo-box.js"
-    },
-    "./stepper": {
-      "types": "./dist/components/inputs/stepper/stepper.d.ts",
-      "default": "./dist/components/inputs/stepper/stepper.js"
-    },
     "./checkbox": {
       "types": "./dist/components/inputs/checkbox/checkbox.d.ts",
       "default": "./dist/components/inputs/checkbox/checkbox.js"
@@ -134,6 +102,30 @@
     "./checkbox-field": {
       "types": "./dist/components/inputs/checkbox-field/checkbox-field.d.ts",
       "default": "./dist/components/inputs/checkbox-field/checkbox-field.js"
+    },
+    "./code-editor": {
+      "types": "./dist/components/inputs/code-editor/code-editor.d.ts",
+      "default": "./dist/components/inputs/code-editor/code-editor.js"
+    },
+    "./combo-box": {
+      "types": "./dist/components/inputs/combo-box/combo-box.d.ts",
+      "default": "./dist/components/inputs/combo-box/combo-box.js"
+    },
+    "./dropdown": {
+      "types": "./dist/components/inputs/dropdown/dropdown.d.ts",
+      "default": "./dist/components/inputs/dropdown/dropdown.js"
+    },
+    "./multi-line-text-field": {
+      "types": "./dist/components/inputs/multi-line-text-field/multi-line-text-field.d.ts",
+      "default": "./dist/components/inputs/multi-line-text-field/multi-line-text-field.js"
+    },
+    "./number-field": {
+      "types": "./dist/components/inputs/number-field/number-field.d.ts",
+      "default": "./dist/components/inputs/number-field/number-field.js"
+    },
+    "./password-field": {
+      "types": "./dist/components/inputs/password-field/password-field.d.ts",
+      "default": "./dist/components/inputs/password-field/password-field.js"
     },
     "./radio-button": {
       "types": "./dist/components/inputs/radio-button/radio-button.d.ts",
@@ -147,6 +139,18 @@
       "types": "./dist/components/inputs/radio-button-group/radio-button-group.d.ts",
       "default": "./dist/components/inputs/radio-button-group/radio-button-group.js"
     },
+    "./search-field": {
+      "types": "./dist/components/inputs/search-field/search-field.d.ts",
+      "default": "./dist/components/inputs/search-field/search-field.js"
+    },
+    "./segmented-control": {
+      "types": "./dist/components/inputs/segmented-control/segmented-control.d.ts",
+      "default": "./dist/components/inputs/segmented-control/segmented-control.js"
+    },
+    "./stepper": {
+      "types": "./dist/components/inputs/stepper/stepper.d.ts",
+      "default": "./dist/components/inputs/stepper/stepper.js"
+    },
     "./switch": {
       "types": "./dist/components/inputs/switch/switch.d.ts",
       "default": "./dist/components/inputs/switch/switch.js"
@@ -155,9 +159,13 @@
       "types": "./dist/components/inputs/switch-field/switch-field.d.ts",
       "default": "./dist/components/inputs/switch-field/switch-field.js"
     },
-    "./segmented-control": {
-      "types": "./dist/components/inputs/segmented-control/segmented-control.d.ts",
-      "default": "./dist/components/inputs/segmented-control/segmented-control.js"
+    "./text-editor": {
+      "types": "./dist/components/inputs/text-editor/text-editor.d.ts",
+      "default": "./dist/components/inputs/text-editor/text-editor.js"
+    },
+    "./text-field": {
+      "types": "./dist/components/inputs/text-field/text-field.d.ts",
+      "default": "./dist/components/inputs/text-field/text-field.js"
     },
     "./toggle-button": {
       "types": "./dist/components/inputs/toggle-button/toggle-button.d.ts",
@@ -167,9 +175,9 @@
       "types": "./dist/components/inputs/toggle-button-group/toggle-button-group.d.ts",
       "default": "./dist/components/inputs/toggle-button-group/toggle-button-group.js"
     },
-    "./token": {
-      "types": "./dist/components/inputs/token/token.d.ts",
-      "default": "./dist/components/inputs/token/token.js"
+    "./token-field": {
+      "types": "./dist/components/inputs/token-field/token-field.d.ts",
+      "default": "./dist/components/inputs/token-field/token-field.js"
     },
     "./app-view": {
       "types": "./dist/components/layout/app-view/app-view.d.ts",
@@ -389,6 +397,7 @@
     },
     "./styles": "./dist/css/global.css",
     "./styles/tokens": "./dist/css/settings.css",
+    "./styles/fouc": "./dist/css/fouc.css",
     "./tokens": {
       "types": "./dist/assets/styles/tokens.d.ts",
       "default": "./dist/assets/styles/tokens.js"
@@ -407,7 +416,7 @@
   },
   "scripts": {
     "build": "npm run build:styles && npm run validate:styles && npm run build:components",
-    "build:styles": "mkdir -p dist/css dist/fonts && cp src/assets/styles/settings.css dist/css/settings.css && cp src/assets/styles/reset.css dist/css/reset.css && cp src/assets/styles/palettes.generated.css dist/css/palettes.generated.css && cp src/components/content/rich-text/rich-text.css dist/css/rich-text.css && cp src/components/forms/form/form.css dist/css/form.css && cp src/components/forms/form-section/form-section.css dist/css/form-section.css && printf '@import \"./settings.css\";\\n@import \"./reset.css\";\\n@import \"./rich-text.css\";\\n@import \"./form-section.css\";\\n@import \"./form.css\";\\n' > dist/css/global.css && cp src/assets/fonts/*.woff2 dist/fonts/",
+    "build:styles": "mkdir -p dist/css dist/fonts && cp src/assets/styles/settings.css dist/css/settings.css && cp src/assets/styles/reset.css dist/css/reset.css && cp src/assets/styles/palettes.generated.css dist/css/palettes.generated.css && cp src/components/content/rich-text/rich-text.css dist/css/rich-text.css && cp src/components/forms/form/form.css dist/css/form.css && cp src/components/forms/form-section/form-section.css dist/css/form-section.css && cp src/assets/styles/fouc.css dist/css/fouc.css && printf '@import \"./settings.css\";\\n@import \"./reset.css\";\\n@import \"./rich-text.css\";\\n@import \"./form-section.css\";\\n@import \"./form.css\";\\n@import \"./fouc.css\";\\n' > dist/css/global.css && cp src/assets/fonts/*.woff2 dist/fonts/",
     "generate:palettes": "node scripts/generate-palettes.js",
     "generate:component-reference": "node scripts/generate-component-reference.js",
     "generate:skill-changelog": "node scripts/generate-skill-changelog.js",
@@ -449,22 +458,21 @@
     "@semantic-release/changelog": "^6.0.3",
     "@semantic-release/exec": "^7.1.0",
     "@semantic-release/git": "^10.0.1",
-    "@storybook/addon-a11y": "^10.4.0",
-    "@storybook/addon-docs": "^10.4.0",
-    "@storybook/addon-themes": "^10.4.0",
-    "@storybook/addon-vitest": "^10.4.0",
-    "@storybook/web-components-vite": "^10.4.0",
-    "@types/prismjs": "^1.26.6",
+    "@storybook/addon-a11y": "^10.4.6",
+    "@storybook/addon-docs": "^10.4.6",
+    "@storybook/addon-themes": "^10.4.6",
+    "@storybook/addon-vitest": "^10.4.6",
+    "@storybook/web-components-vite": "^10.4.6",
     "@vitest/browser-playwright": "^4.0.16",
     "@vitest/coverage-v8": "^4.0.16",
     "conventional-changelog": "^7.2.0",
     "eslint": "^9.17.0",
     "eslint-plugin-lit-a11y": "^5.1.1",
-    "eslint-plugin-storybook": "^10.4.0",
+    "eslint-plugin-storybook": "^10.4.6",
     "globals": "^15.14.0",
     "playwright": "^1.57.0",
     "semantic-release": "^25.0.2",
-    "storybook": "^10.4.0",
+    "storybook": "^10.4.6",
     "typescript": "^5.3.0",
     "typescript-eslint": "^8.58.0",
     "vite": "^7.3.1",
@@ -481,9 +489,25 @@
   ],
   "license": "EUPL-1.2",
   "dependencies": {
+    "@codemirror/autocomplete": "^6.20.3",
+    "@codemirror/commands": "^6.10.4",
+    "@codemirror/lang-css": "^6.3.1",
+    "@codemirror/lang-html": "^6.4.11",
+    "@codemirror/lang-javascript": "^6.2.5",
+    "@codemirror/lang-json": "^6.0.2",
+    "@codemirror/lang-markdown": "^6.5.0",
+    "@codemirror/lang-python": "^6.2.1",
+    "@codemirror/lang-rust": "^6.0.2",
+    "@codemirror/lang-sql": "^6.10.0",
+    "@codemirror/lang-xml": "^6.1.0",
+    "@codemirror/lang-yaml": "^6.1.3",
+    "@codemirror/language": "^6.12.4",
+    "@codemirror/legacy-modes": "^6.5.3",
+    "@codemirror/state": "^6.7.0",
+    "@codemirror/view": "^6.43.4",
     "@floating-ui/dom": "^1.7.6",
+    "@lezer/highlight": "^1.2.3",
     "@rijkshuisstijl-community/font": "^1.1.2",
-    "lit": "^3.3.1",
-    "prismjs": "^1.30.0"
+    "lit": "^3.3.1"
   }
 }

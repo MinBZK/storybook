@@ -1,7 +1,9 @@
 import { css, unsafeCSS } from 'lit';
 import { breakpoints } from '../../../assets/styles/breakpoints.js';
 
+const smMax = unsafeCSS(breakpoints.smMax);
 const mdMin = unsafeCSS(breakpoints.mdMin);
+const mdMax = unsafeCSS(breakpoints.mdMax);
 const lgMin = unsafeCSS(breakpoints.lgMin);
 
 export const collectionStyles = css`
@@ -16,19 +18,26 @@ export const collectionStyles = css`
 		--_item-width: var(--primitives-area-280);
 		--_focus-ring-z-index: 1;
 
+		/* The gap between items (and before the load-more button), set per breakpoint
+		   range so no two rules overlap. The gap attribute overrides it at every
+		   breakpoint with a single inline --_gap (inline wins over these media rules). */
+		@media (max-width: ${smMax}) {
+			--_gap: var(--components-collection-sm-gap);
+		}
+
+		@media (min-width: ${mdMin}) and (max-width: ${mdMax}) {
+			--_gap: var(--components-collection-md-gap);
+		}
+
+		@media (min-width: ${lgMin}) {
+			--_gap: var(--components-collection-lg-gap);
+		}
+
 		display: flex;
 		width: 100%;
 		min-width: 0;
 		flex-direction: column;
-		gap: var(--components-collection-sm-gap);
-
-		@media (min-width: ${mdMin}) {
-			gap: var(--components-collection-md-gap);
-		}
-
-		@media (min-width: ${lgMin}) {
-			gap: var(--components-collection-lg-gap);
-		}
+		gap: var(--_gap);
 	}
 
 	:host([hidden]) {
@@ -41,15 +50,7 @@ export const collectionStyles = css`
 	.collection__items {
 		display: flex;
 		width: 100%;
-		gap: var(--components-collection-sm-gap);
-
-		@media (min-width: ${mdMin}) {
-			gap: var(--components-collection-md-gap);
-		}
-
-		@media (min-width: ${lgMin}) {
-			gap: var(--components-collection-lg-gap);
-		}
+		gap: var(--_gap);
 	}
 
 	/* ## Grid */

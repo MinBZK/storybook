@@ -29,6 +29,7 @@
  */
 import { LitElement, type PropertyValues } from 'lit';
 import { customElement, property, query } from 'lit/decorators.js';
+import { reflectNonDefault } from '../../../utilities/reflect-non-default.js';
 import { passwordFieldStyles } from './password-field.styles.js';
 import { passwordFieldTemplate } from './password-field.template.js';
 
@@ -47,7 +48,7 @@ export class NLDDPasswordField extends LitElement {
 
 	private _initialValue = '';
 
-	@property({ type: String, reflect: true })
+	@property({ reflect: true, converter: reflectNonDefault<'md' | 'sm'>('md') })
 	size: 'md' | 'sm' = 'md';
 
 	@property({ type: String })
@@ -56,7 +57,7 @@ export class NLDDPasswordField extends LitElement {
 	@property({ type: String, attribute: 'input-id' })
 	inputId = '';
 
-	@property({ type: String })
+	@property({ reflect: true, converter: reflectNonDefault<string>('') })
 	placeholder = '';
 
 	@property({ type: Boolean, reflect: true })

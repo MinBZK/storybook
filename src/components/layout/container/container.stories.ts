@@ -253,7 +253,7 @@ export const LayoutStack = {
 			<nldd-rich-text><p>Derde</p></nldd-rich-text>
 		</nldd-container>
 	`,
-	storyName: 'Layout — stack (default)',
+	name: 'Layout — stack (default)',
 };
 
 export const LayoutRow = {
@@ -264,7 +264,7 @@ export const LayoutRow = {
 			<nldd-rich-text><p>Derde</p></nldd-rich-text>
 		</nldd-container>
 	`,
-	storyName: 'Layout — row',
+	name: 'Layout — row',
 };
 
 export const LayoutWrap = {
@@ -277,7 +277,7 @@ export const LayoutWrap = {
 			<nldd-tag>Item vijf</nldd-tag>
 		</nldd-container>
 	`,
-	storyName: 'Layout — wrap',
+	name: 'Layout — wrap',
 };
 
 export const LayoutGrid = {
@@ -291,7 +291,7 @@ export const LayoutGrid = {
 			<nldd-rich-text><p>Cell zes</p></nldd-rich-text>
 		</nldd-container>
 	`,
-	storyName: 'Layout — grid (auto-fit, min 280px)',
+	name: 'Layout — grid (auto-fit, min 280px)',
 };
 
 export const LayoutColumns = {
@@ -307,7 +307,7 @@ export const LayoutColumns = {
 			<nldd-rich-text><p>Achtste link</p></nldd-rich-text>
 		</nldd-container>
 	`,
-	storyName: 'Layout — columns (multicol, min 280px)',
+	name: 'Layout — columns (multicol, min 280px)',
 };
 
 export const LayoutLanes = {
@@ -357,7 +357,7 @@ export const OrderRow = {
 			<nldd-rich-text order="1"><p>4 (order=1)</p></nldd-rich-text>
 		</nldd-container>
 	`,
-	storyName: 'Order — row (omgekeerd via per-child order)',
+	name: 'Order — row (omgekeerd via per-child order)',
 };
 
 export const OrderGrid = {
@@ -371,7 +371,7 @@ export const OrderGrid = {
 			<nldd-rich-text order="5"><p>6 (order=5)</p></nldd-rich-text>
 		</nldd-container>
 	`,
-	storyName: 'Order — grid (per-cell, grid-track blijft intact)',
+	name: 'Order — grid (per-cell, grid-track blijft intact)',
 };
 
 export const OrderResponsief = {
@@ -382,7 +382,7 @@ export const OrderResponsief = {
 			<nldd-rich-text order="3" sm-order="2"><p>C (lg=3, sm=2)</p></nldd-rich-text>
 		</nldd-container>
 	`,
-	storyName: 'Order — responsief (sm-order valt terug op order)',
+	name: 'Order — responsief (sm-order valt terug op order)',
 };
 
 export const OrderNegatief = {
@@ -394,7 +394,7 @@ export const OrderNegatief = {
 			<nldd-rich-text><p>Item</p></nldd-rich-text>
 		</nldd-container>
 	`,
-	storyName: 'Order — negatieve waarde duwt item naar voren',
+	name: 'Order — negatieve waarde duwt item naar voren',
 };
 
 export const ColumnCountFooter = {
@@ -406,7 +406,7 @@ export const ColumnCountFooter = {
 			<nldd-rich-text><p>Kolom 4</p></nldd-rich-text>
 		</nldd-container>
 	`,
-	storyName: 'Column-count — footer-pattern (4 / md=2 / sm=1)',
+	name: 'Column-count — footer-pattern (4 / md=2 / sm=1)',
 };
 
 export const ColumnCountGrid6 = {
@@ -415,7 +415,7 @@ export const ColumnCountGrid6 = {
 			${Array.from({ length: 12 }).map((_, i) => html`<nldd-rich-text><p>${i + 1}</p></nldd-rich-text>`)}
 		</nldd-container>
 	`,
-	storyName: 'Column-count — grid 6 kolommen',
+	name: 'Column-count — grid 6 kolommen',
 };
 
 export const ColumnCountColumns = {
@@ -424,7 +424,7 @@ export const ColumnCountColumns = {
 			${Array.from({ length: 9 }).map((_, i) => html`<nldd-rich-text><p>Item ${i + 1}</p></nldd-rich-text>`)}
 		</nldd-container>
 	`,
-	storyName: 'Column-count — multicol 3 kolommen',
+	name: 'Column-count — multicol 3 kolommen',
 };
 
 export const PaddingAlleZijden = {
@@ -433,7 +433,7 @@ export const PaddingAlleZijden = {
 			<nldd-rich-text><p>Padding aan alle zijden.</p></nldd-rich-text>
 		</nldd-container>
 	`,
-	storyName: 'Padding — alle zijden',
+	name: 'Padding — alle zijden',
 };
 
 export const PaddingInline = {
@@ -442,7 +442,7 @@ export const PaddingInline = {
 			<nldd-rich-text><p>Padding links en rechts.</p></nldd-rich-text>
 		</nldd-container>
 	`,
-	storyName: 'Padding — inline (links/rechts)',
+	name: 'Padding — inline (links/rechts)',
 };
 
 export const PaddingIndividueel = {
@@ -457,7 +457,7 @@ export const PaddingIndividueel = {
 			<nldd-rich-text><p>Individuele padding: top=8 right=32 bottom=16 left=64.</p></nldd-rich-text>
 		</nldd-container>
 	`,
-	storyName: 'Padding — individuele zijden',
+	name: 'Padding — individuele zijden',
 };
 
 export const PaddingResponsief = {
@@ -472,7 +472,7 @@ export const PaddingResponsief = {
 			<nldd-rich-text><p>Padding: 8 (default) → 16 (sm) → 24 (md) → 32 (lg).</p></nldd-rich-text>
 		</nldd-container>
 	`,
-	storyName: 'Padding — responsief',
+	name: 'Padding — responsief',
 };
 
 export const GeenPadding = {
@@ -481,7 +481,7 @@ export const GeenPadding = {
 			<nldd-rich-text><p>Geen padding.</p></nldd-rich-text>
 		</nldd-container>
 	`,
-	storyName: 'Geen padding',
+	name: 'Geen padding',
 };
 
 export const Alignment = {
@@ -498,5 +498,5 @@ export const Alignment = {
 			<nldd-rich-text><p>Op beide assen</p></nldd-rich-text>
 		</nldd-container>
 	`,
-	storyName: 'Alignment — center op beide assen',
+	name: 'Alignment — center op beide assen',
 };

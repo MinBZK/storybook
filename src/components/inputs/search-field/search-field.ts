@@ -25,6 +25,7 @@
  */
 import { LitElement, type PropertyValues } from 'lit';
 import { customElement, property, query } from 'lit/decorators.js';
+import { reflectNonDefault } from '../../../utilities/reflect-non-default.js';
 import { searchFieldStyles } from './search-field.styles.js';
 import { searchFieldTemplate } from './search-field.template.js';
 import { nlddSearchFieldTranslations } from './search-field.i18n.js';
@@ -59,7 +60,7 @@ export class NLDDSearchField extends LitElement {
 	@property({ type: String, attribute: 'accessible-label' })
 	accessibleLabel = '';
 
-	@property({ type: String, reflect: true })
+	@property({ reflect: true, converter: reflectNonDefault<SearchFieldSize>('md') })
 	size: SearchFieldSize = 'md';
 
 	@property({ type: Boolean, reflect: true })

@@ -28,6 +28,7 @@
  */
 import { LitElement } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
+import { reflectNonDefault } from '../../../utilities/reflect-non-default.js';
 import { nlddRichTextTranslations } from './rich-text.i18n.js';
 import type { NLDDRichTextTranslations } from './rich-text.i18n.js';
 
@@ -37,13 +38,13 @@ const MANAGED_LABEL_ATTR = 'data-nldd-managed-label';
 
 @customElement('nldd-rich-text')
 export class NLDDRichText extends LitElement {
-	@property({ type: String, reflect: true })
+	@property({ reflect: true, converter: reflectNonDefault<Spacing>('snug') })
 	spacing: Spacing = 'snug';
 
 	@property({ type: Boolean, reflect: true })
 	centered = false;
 
-	@property({ type: String, reflect: true })
+	@property({ reflect: true, converter: reflectNonDefault<'' | 'inherit'>('') })
 	color: '' | 'inherit' = '';
 
 	@property({ type: Object })

@@ -43,6 +43,7 @@
  */
 import { LitElement } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
+import { reflectNonDefault } from '../../../utilities/reflect-non-default.js';
 import { iconButtonStyles } from './icon-button.styles.js';
 import { template } from './icon-button.template.js';
 import { withTranslations } from '../../../utilities/with-translations.js';
@@ -77,10 +78,10 @@ export class NLDDIconButton extends withTranslations(LitElement, nlddIconButtonT
 	static formAssociated = true;
 	private _internals = this.attachInternals();
 
-	@property({ type: String, reflect: true })
+	@property({ reflect: true, converter: reflectNonDefault<Variant>('neutral-tinted') })
 	variant: Variant = 'neutral-tinted';
 
-	@property({ type: String, reflect: true })
+	@property({ reflect: true, converter: reflectNonDefault<Size>('md') })
 	size: Size = 'md';
 
 	/** In lg size, hides the text label and enlarges the icon by one step (28px). */
@@ -115,6 +116,12 @@ export class NLDDIconButton extends withTranslations(LitElement, nlddIconButtonT
 	@property({ type: Boolean, reflect: true })
 	expanded = false;
 
+	/** Take the button out of the tab order (`tabindex="-1"`) — for a control owned by
+	 *  a roving container (e.g. an `nldd-token` in `nldd-token-field`) that manages
+	 *  focus itself. Still mouse- and script-focusable. */
+	@property({ type: Boolean, reflect: true, attribute: 'no-tab' })
+	noTab = false;
+
 	/**
 	 * Type of popup container this button opens. Sets `aria-haspopup` on the
 	 * inner button and forces `aria-expanded` to always be present (true/false)
@@ -124,7 +131,7 @@ export class NLDDIconButton extends withTranslations(LitElement, nlddIconButtonT
 	popupType?: PopupType;
 
 	/** Width mode: 'full' (stretch to container) or any CSS length. */
-	@property({ type: String, reflect: true })
+	@property({ reflect: true, converter: reflectNonDefault<string>('') })
 	width = '';
 
 	@property({ type: String })
@@ -153,7 +160,7 @@ export class NLDDIconButton extends withTranslations(LitElement, nlddIconButtonT
 	popoverTargetAction: 'toggle' | 'show' | 'hide' = 'toggle';
 
 	/** Button text, used as aria-label and shown below the icon in lg size. */
-	@property({ type: String })
+	@property({ reflect: true, converter: reflectNonDefault<string>('') })
 	text = '';
 
 	/** Icon name for the nldd-icon element. When not set, the icon slot is used,
@@ -168,7 +175,7 @@ export class NLDDIconButton extends withTranslations(LitElement, nlddIconButtonT
 
 	/** Forwarded to the inner nldd-tooltip's `timing`. Use `'never'` to
 	 * suppress the visual tooltip; aria-label still describes the button. */
-	@property({ type: String, reflect: true, attribute: 'tooltip-timing' })
+	@property({ reflect: true, attribute: 'tooltip-timing', converter: reflectNonDefault<'default' | 'instant' | 'never'>('default') })
 	tooltipTiming: 'default' | 'instant' | 'never' = 'default';
 
 	/** When set, renders an <a> element instead of <button>. */

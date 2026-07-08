@@ -109,10 +109,11 @@ export const listStyles = css`
 		max-height: var(--_max-height);
 		overflow-x: hidden;
 		overflow-y: auto;
+		padding-inline: var(--components-list-item-indicator-inline-inset);
 	}
 
-	:host([type="listbox"][variant="simple"]) .list__items {
-		padding-inline: var(--components-list-item-indicator-inline-inset);
+	:host([type="listbox"][variant="box"]) .list__items {
+		padding-inline: 0;
 	}
 
 	.list__empty {

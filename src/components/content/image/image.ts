@@ -58,6 +58,7 @@
 
 import { LitElement } from 'lit';
 import { customElement, property, state } from 'lit/decorators.js';
+import { reflectNonDefault } from '../../../utilities/reflect-non-default.js';
 import { imageStyles } from './image.styles.js';
 import { imageTemplate } from './image.template.js';
 import { nlddImageTranslations } from './image.i18n.js';
@@ -92,7 +93,7 @@ export class NLDDImage extends LitElement {
 	 *  attribute arrives as the string `"320"`, not the number `320` — the
 	 *  `_numericWidth` getter owns all parsing. A consumer setting the
 	 *  property directly should pass a string (`el.width = '320'`). */
-	@property({ type: String, reflect: true })
+	@property({ reflect: true, converter: reflectNonDefault<string>('full') })
 	width: string = 'full';
 
 	@property({ type: Number, reflect: true })
@@ -110,19 +111,19 @@ export class NLDDImage extends LitElement {
 	@property({ type: String, attribute: 'aspect-ratio', reflect: true })
 	aspectRatio = '';
 
-	@property({ type: String, attribute: 'object-fit', reflect: true })
+	@property({ reflect: true, attribute: 'object-fit', converter: reflectNonDefault<ImageObjectFit>('cover') })
 	objectFit: ImageObjectFit = 'cover';
 
-	@property({ type: String, attribute: 'object-position', reflect: true })
+	@property({ reflect: true, attribute: 'object-position', converter: reflectNonDefault<ImageObjectPosition>('center') })
 	objectPosition: ImageObjectPosition = 'center';
 
-	@property({ type: String, reflect: true })
+	@property({ reflect: true, converter: reflectNonDefault<ImageShape>('square') })
 	shape: ImageShape = 'square';
 
-	@property({ type: String })
+	@property({ reflect: true, converter: reflectNonDefault<string>('') })
 	caption = '';
 
-	@property({ type: String })
+	@property({ reflect: true, converter: reflectNonDefault<string>('') })
 	credit = '';
 
 	@property({ type: Boolean, reflect: true })

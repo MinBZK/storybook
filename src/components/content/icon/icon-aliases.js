@@ -151,8 +151,9 @@ export const aliases = {
 	// face-smiling-badge-plus
 	'add-emoji': 'face-smiling-badge-plus',
 
+	// file
+	'document': 'file',
 	// file-text
-	'document': 'file-text',
 	'file': 'file-text',
 
 	// file-text-stack
@@ -181,6 +182,12 @@ export const aliases = {
 
 	// house
 	'home': 'house',
+
+	// indent-decrease
+	'outdent': 'indent-decrease',
+
+	// indent-increase
+	'indent': 'indent-increase',
 
 	// info-circle
 	'info': 'info-circle',
@@ -213,6 +220,12 @@ export const aliases = {
 	// lock-open
 	'unlocked': 'lock-open',
 	'unsecure': 'lock-open',
+
+	// markdown-rectangle
+	'markdown': 'markdown-rectangle',
+
+	// rectangle-chevron-left-forward-slash-chevron-right
+	'code-block': 'rectangle-chevron-left-forward-slash-chevron-right',
 
 	// scissor
 	'cut': 'scissor',
@@ -247,6 +260,9 @@ export const aliases = {
 	// paperclip
 	'attachment': 'paperclip',
 	'attach': 'paperclip',
+
+	// parking-sign-square
+	'parking': 'parking-sign-square',
 
 	// pencil
 	'write': 'pencil',
@@ -424,4 +440,19 @@ export const aliases = {
 
 	// hand
 	'privacy': 'shield-lock',
+
+	// arrow-up-out-bucket
+	'upload': 'arrow-up-out-bucket',
+
+	// square-grid-3x3
+	'apps': 'square-grid-3x3',
+
+	// rectangle-split-2x1
+	'columns-2': 'rectangle-split-2x1',
+
+	// rectangle-split-3x1
+	'columns-3': 'rectangle-split-3x1',
+
+	// tree-structure
+	'hierarchy': 'tree-structure',
 };

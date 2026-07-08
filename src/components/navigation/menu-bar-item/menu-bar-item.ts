@@ -31,6 +31,7 @@
 
 import { LitElement } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
+import { reflectNonDefault } from '../../../utilities/reflect-non-default.js';
 import { menuBarItemStyles } from './menu-bar-item.styles.js';
 import { template } from './menu-bar-item.template.js';
 import '../../content/icon/icon.js';
@@ -52,13 +53,13 @@ interface PopoverMenu extends HTMLElement {
 export class NLDDMenuBarItem extends LitElement {
 	static override styles = menuBarItemStyles;
 
-	@property({ type: String, reflect: true })
+	@property({ reflect: true, converter: reflectNonDefault<string>('') })
 	text = '';
 
 	@property({ type: Boolean, reflect: true })
 	current = false;
 
-	@property({ type: String, attribute: 'current-type', reflect: true })
+	@property({ reflect: true, attribute: 'current-type', converter: reflectNonDefault<'page' | 'step' | 'location' | 'date' | 'time' | 'true'>('page') })
 	currentType: 'page' | 'step' | 'location' | 'date' | 'time' | 'true' = 'page';
 
 	@property({ type: String })
@@ -73,7 +74,7 @@ export class NLDDMenuBarItem extends LitElement {
 	@property({ type: Boolean, attribute: 'icon-only', reflect: true })
 	iconOnly = false;
 
-	@property({ type: String, attribute: 'content-priority', reflect: true })
+	@property({ reflect: true, attribute: 'content-priority', converter: reflectNonDefault<string>('') })
 	contentPriority = '';
 
 	@property({ type: Boolean, reflect: true })

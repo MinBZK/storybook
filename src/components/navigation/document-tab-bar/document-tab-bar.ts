@@ -37,6 +37,7 @@
  */
 import { LitElement } from 'lit';
 import { customElement, property, state } from 'lit/decorators.js';
+import { reflectNonDefault } from '../../../utilities/reflect-non-default.js';
 import { documentTabBarStyles, documentTabBarItemStyles } from './document-tab-bar.styles.js';
 import { documentTabBarTemplate, documentTabBarItemTemplate } from './document-tab-bar.template.js';
 import { withTranslations } from '../../../utilities/with-translations.js';
@@ -66,16 +67,16 @@ export class NLDDDocumentTabBarItem extends LitElement {
 	@property({ type: Boolean, reflect: true })
 	selected = false;
 
-	@property({ type: String, attribute: 'text' })
+	@property({ reflect: true, attribute: 'text', converter: reflectNonDefault<string>('') })
 	text = '';
 
-	@property({ type: String, attribute: 'supporting-text' })
+	@property({ reflect: true, attribute: 'supporting-text', converter: reflectNonDefault<string>('') })
 	supportingText = '';
 
-	@property({ type: String, attribute: 'short-text' })
+	@property({ reflect: true, attribute: 'short-text', converter: reflectNonDefault<string>('') })
 	shortText = '';
 
-	@property({ type: String, attribute: 'short-supporting-text' })
+	@property({ reflect: true, attribute: 'short-supporting-text', converter: reflectNonDefault<string>('') })
 	shortSupportingText = '';
 
 	@property({ type: String })

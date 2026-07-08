@@ -20,6 +20,7 @@
  */
 import { LitElement } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
+import { reflectNonDefault } from '../../../../utilities/reflect-non-default.js';
 import { cellStyles } from './cell.styles.js';
 import { template } from './cell.template.js';
 import { VisibilityMixin } from '../../../../utilities/visibility-mixin.js';
@@ -31,7 +32,7 @@ export type CellHorizontalAlignment = 'left' | 'center' | 'right';
 export class NLDDCell extends VisibilityMixin(LitElement, 'cells-container') {
 	static override styles = [cellStyles];
 
-	@property({ type: String, reflect: true })
+	@property({ reflect: true, converter: reflectNonDefault<string>('fit-content') })
 	width: string = 'fit-content';
 
 	@property({ type: String, reflect: true, attribute: 'min-width' })
@@ -43,10 +44,10 @@ export class NLDDCell extends VisibilityMixin(LitElement, 'cells-container') {
 	@property({ type: String, reflect: true, attribute: 'min-height' })
 	minHeight?: string;
 
-	@property({ reflect: true, attribute: 'vertical-alignment' })
+	@property({ reflect: true, attribute: 'vertical-alignment', converter: reflectNonDefault<CellVerticalAlignment>('center') })
 	verticalAlignment: CellVerticalAlignment = 'center';
 
-	@property({ reflect: true, attribute: 'horizontal-alignment' })
+	@property({ reflect: true, attribute: 'horizontal-alignment', converter: reflectNonDefault<CellHorizontalAlignment>('left') })
 	horizontalAlignment: CellHorizontalAlignment = 'left';
 
 	override updated(changed: Map<string, unknown>) {

@@ -18,6 +18,7 @@
 
 import { LitElement } from 'lit';
 import { customElement, property, state } from 'lit/decorators.js';
+import { reflectNonDefault } from '../../../utilities/reflect-non-default.js';
 import { tagStyles } from './tag.styles.js';
 import { template } from './tag.template.js';
 import './../icon/icon.js';
@@ -55,19 +56,19 @@ type Variant = 'text' | 'icon' | 'icon-and-text';
 export class NLDDTag extends LitElement {
 	static override styles = tagStyles;
 
-	@property({ type: String, reflect: true })
+	@property({ reflect: true, converter: reflectNonDefault<Color>('neutral') })
 	color: Color = 'neutral';
 
-	@property({ type: String, reflect: true })
+	@property({ reflect: true, converter: reflectNonDefault<Size>('md') })
 	size: Size = 'md';
 
-	@property({ type: String })
+	@property({ reflect: true, converter: reflectNonDefault<string>('') })
 	text = '';
 
 	@property({ type: String })
 	icon = '';
 
-	@property({ type: String, reflect: true })
+	@property({ reflect: true, converter: reflectNonDefault<Variant | ''>('') })
 	variant: Variant | '' = '';
 
 	@property({ type: String, attribute: 'accessible-label' })

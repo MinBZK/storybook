@@ -163,7 +163,9 @@ describe('nldd-button-bar – child building & attribute propagation', () => {
 		`);
 		await waitForUpdate(el);
 
-		expect(el.querySelector('nldd-button')!.getAttribute('variant')).toBe('neutral-tinted');
+		// neutral-tinted is the button's default, so it is kept out of the DOM;
+		// the propagated value is the source of truth on the property.
+		expect((el.querySelector('nldd-button') as unknown as { variant: string }).variant).toBe('neutral-tinted');
 
 		el.variant = 'accent-filled';
 		await waitForUpdate(el);
@@ -179,12 +181,15 @@ describe('nldd-button-bar – child building & attribute propagation', () => {
 		`);
 		await waitForUpdate(el);
 
-		expect(el.querySelector('nldd-button')!.getAttribute('size')).toBe('md');
+		// Check the property, not the attribute: nldd-button omits the default
+		// `size="md"` from the DOM (the attribute only carries non-defaults), so the
+		// property is the source of truth for the propagated size.
+		expect((el.querySelector('nldd-button') as unknown as { size: string }).size).toBe('md');
 
 		el.size = 'xs';
 		await waitForUpdate(el);
 
-		expect(el.querySelector('nldd-button')!.getAttribute('size')).toBe('xs');
+		expect((el.querySelector('nldd-button') as unknown as { size: string }).size).toBe('xs');
 	});
 
 	it('propagates disabled to children', async () => {

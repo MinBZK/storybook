@@ -65,7 +65,8 @@ describe('nldd-table', () => {
 	it('defaults the background to base and reflects tinted', async () => {
 		el = await fixture<NLDDTable>('<nldd-table columns="1fr"></nldd-table>');
 		await waitForUpdate(el);
-		expect(el.getAttribute('background')).toBe('base');
+		expect((el as unknown as NLDDTable).background).toBe('base');
+		expect(el.hasAttribute('background')).toBe(false);
 		(el as unknown as NLDDTable).background = 'tinted';
 		await waitForUpdate(el);
 		expect(el.getAttribute('background')).toBe('tinted');

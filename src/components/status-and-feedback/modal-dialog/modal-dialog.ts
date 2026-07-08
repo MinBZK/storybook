@@ -23,6 +23,7 @@
  */
 import { LitElement } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
+import { reflectNonDefault } from '../../../utilities/reflect-non-default.js';
 import { modalDialogStyles } from './modal-dialog.styles.js';
 import { modalDialogTemplate } from './modal-dialog.template.js';
 import { isPointerMode } from '../../../utilities/input-modality.js';
@@ -33,16 +34,16 @@ import '../inline-dialog/inline-dialog.js';
 export class NLDDModalDialog extends LitElement {
 	static override styles = modalDialogStyles;
 
-	@property({ type: String, reflect: true })
+	@property({ reflect: true, converter: reflectNonDefault<InlineDialogVariant | ''>('') })
 	variant: InlineDialogVariant | '' = '';
 
 	@property({ type: String, reflect: true })
 	icon = '';
 
-	@property({ type: String, reflect: true })
+	@property({ reflect: true, converter: reflectNonDefault<string>('') })
 	text = '';
 
-	@property({ type: String, reflect: true, attribute: 'supporting-text' })
+	@property({ reflect: true, attribute: 'supporting-text', converter: reflectNonDefault<string>('') })
 	supportingText = '';
 
 	/** Accessible name for the dialog — forwarded as aria-label. Falls back to text. */

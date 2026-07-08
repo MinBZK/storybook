@@ -49,6 +49,7 @@ import { LitElement } from 'lit';
 import type { PropertyValues } from 'lit';
 import { customElement, property, state } from 'lit/decorators.js';
 import { computePosition, flip, shift, offset } from '@floating-ui/dom';
+import { reflectNonDefault } from '../../../utilities/reflect-non-default.js';
 import { tooltipStyles } from './tooltip.styles.js';
 import { tooltipTemplate } from './tooltip.template.js';
 import { isTouchMode } from '../../../utilities/input-modality.js';
@@ -71,17 +72,17 @@ const DEFAULT_HIDE_DELAY_MS = 50;
 export class NLDDTooltip extends LitElement {
 	static override styles = tooltipStyles;
 
-	@property({ type: String, reflect: true })
+	@property({ reflect: true, converter: reflectNonDefault<string>('') })
 	text = '';
 
 	/** Programmatically force the tooltip visible regardless of hover/focus. */
 	@property({ type: Boolean, reflect: true })
 	open = false;
 
-	@property({ type: String, reflect: true })
+	@property({ reflect: true, converter: reflectNonDefault<Placement>('bottom') })
 	placement: Placement = 'bottom';
 
-	@property({ type: String, reflect: true })
+	@property({ reflect: true, converter: reflectNonDefault<Timing>('default') })
 	timing: Timing = 'default';
 
 	private get _effectivePlacement(): Placement {
@@ -134,7 +135,12 @@ export class NLDDTooltip extends LitElement {
 			const tooltip = this._getTooltipElement();
 			if (tooltip) {
 				if (this._visible) {
-					if (!tooltip.matches(':popover-open')) tooltip.showPopover();
+					if (!tooltip.matches(':popover-open')) {
+						// Hold it invisible until Floating UI has placed it, so it fades in at
+						// the right spot instead of flashing at the popover's default position.
+						tooltip.removeAttribute('positioned');
+						tooltip.showPopover();
+					}
 					this._updatePosition();
 				} else if (tooltip.matches(':popover-open')) {
 					tooltip.hidePopover();
@@ -329,7 +335,8 @@ export class NLDDTooltip extends LitElement {
 		const version = ++this._positionVersion;
 		const trigger = this._getTriggerElement();
 		const tooltip = this._getTooltipElement();
-		if (!trigger || !tooltip) return;
+		// No trigger to anchor to: reveal it anyway so the opacity gate can't strand it.
+		if (!trigger || !tooltip) { tooltip?.setAttribute('positioned', ''); return; }
 
 		/* Wait for custom fonts so the first measurement matches the
 		 * steady-state width. Without this, on a fresh page load the
@@ -357,6 +364,7 @@ export class NLDDTooltip extends LitElement {
 		if (version !== this._positionVersion) return;
 		tooltip.style.left = `${x}px`;
 		tooltip.style.top = `${y}px`;
+		tooltip.setAttribute('positioned', ''); // placed — let it fade in (see _visible handler)
 	}
 
 	override disconnectedCallback(): void {

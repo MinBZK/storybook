@@ -38,7 +38,12 @@ export function tabBarItemTemplate(component: NLDDTabBarItem): TemplateResult {
 	const safeHref = sanitizeUrl(component.href);
 	const isLink = Boolean(safeHref);
 	const isNavigation = component._navigation;
-	const tabindex = component.selected || component._isFallbackFocusable ? '0' : '-1';
+	const isDisabled = component._groupDisabled;
+	// A disabled bar takes every tab out of the tab order; otherwise the roving
+	// tabindex keeps the selected (or fallback) tab as the single entry point.
+	const tabindex = isDisabled
+		? '-1'
+		: component.selected || component._isFallbackFocusable ? '0' : '-1';
 	const isIconVariant = component._effectiveVariant === 'icon';
 	const iconLabel = isIconVariant ? component.text || nothing : nothing;
 	/* The icon and icon-and-text variants reserve an icon area; fill it with a
@@ -67,6 +72,7 @@ export function tabBarItemTemplate(component: NLDDTabBarItem): TemplateResult {
 				role=${isNavigation ? nothing : 'tab'}
 				aria-current=${isNavigation && component.selected ? 'page' : nothing}
 				aria-selected=${!isNavigation ? (component.selected ? 'true' : 'false') : nothing}
+				aria-disabled=${isDisabled ? 'true' : nothing}
 				aria-label=${iconLabel}
 				tabindex=${tabindex}
 				@click=${component._handleClick}
@@ -78,6 +84,7 @@ export function tabBarItemTemplate(component: NLDDTabBarItem): TemplateResult {
 				type="button"
 				role="tab"
 				aria-selected=${component.selected ? 'true' : 'false'}
+				aria-disabled=${isDisabled ? 'true' : nothing}
 				aria-label=${iconLabel}
 				tabindex=${tabindex}
 				@click=${component._handleClick}

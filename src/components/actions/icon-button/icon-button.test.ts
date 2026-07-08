@@ -584,4 +584,24 @@ describe('nldd-icon-button – loading', () => {
 		await waitForUpdate(el);
 		expect((el as unknown as { _hasIcon: boolean })._hasIcon).toBe(true);
 	});
+
+	// — no-tab (control owned by a roving container) ————————————————————————————
+
+	it('no-tab takes the button out of the tab order', async () => {
+		el = await fixture<NLDDIconButton>('<nldd-icon-button icon="dismiss-small" accessible-label="Verwijder" no-tab></nldd-icon-button>');
+		await waitForUpdate(el);
+		expect(el.shadowRoot!.querySelector('.icon-button')!.getAttribute('tabindex')).toBe('-1');
+	});
+
+	it('is in the tab order by default (no tabindex attribute)', async () => {
+		el = await fixture<NLDDIconButton>('<nldd-icon-button icon="dismiss-small" accessible-label="Verwijder"></nldd-icon-button>');
+		await waitForUpdate(el);
+		expect(el.shadowRoot!.querySelector('.icon-button')!.hasAttribute('tabindex')).toBe(false);
+	});
+
+	it('no-tab takes the link variant out of the tab order', async () => {
+		el = await fixture<NLDDIconButton>('<nldd-icon-button icon="dismiss-small" accessible-label="Ga" href="#x" no-tab></nldd-icon-button>');
+		await waitForUpdate(el);
+		expect(el.shadowRoot!.querySelector('a.icon-button')!.getAttribute('tabindex')).toBe('-1');
+	});
 });

@@ -18,7 +18,9 @@ describe('nldd-split-view-divider', () => {
 	it('defaults to vertical orientation', async () => {
 		el = await fixture('<nldd-split-view-divider></nldd-split-view-divider>');
 		await waitForUpdate(el);
-		expect(el.getAttribute('orientation')).toBe('vertical');
+		// The default (vertical) is kept out of the DOM; the property is the source of truth.
+		expect((el as unknown as { orientation: string }).orientation).toBe('vertical');
+		expect(el.hasAttribute('orientation')).toBe(false);
 	});
 
 	it('does not render drag handle by default', async () => {

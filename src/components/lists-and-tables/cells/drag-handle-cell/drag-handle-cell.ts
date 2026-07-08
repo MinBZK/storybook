@@ -25,6 +25,7 @@
  */
 import { LitElement } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
+import { reflectNonDefault } from '../../../../utilities/reflect-non-default.js';
 import { dragHandleCellStyles } from './drag-handle-cell.styles.js';
 import { template } from './drag-handle-cell.template.js';
 import { nlddDragHandleCellTranslations } from './drag-handle-cell.i18n.js';
@@ -36,7 +37,7 @@ type Size = 'sm' | 'md';
 export class NLDDDragHandleCell extends LitElement {
 	static override styles = dragHandleCellStyles;
 
-	@property({ type: String, reflect: true })
+	@property({ reflect: true, converter: reflectNonDefault<Size>('md') })
 	size: Size = 'md';
 
 	/** Override one or more translation keys. Unset keys fall back to the Dutch default. */

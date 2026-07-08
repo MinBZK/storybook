@@ -16,6 +16,7 @@
  */
 import { LitElement } from 'lit';
 import { customElement, property, state } from 'lit/decorators.js';
+import { reflectNonDefault } from '../../../utilities/reflect-non-default.js';
 import { buttonBarStyles } from './button-bar.styles.js';
 import { template } from './button-bar.template.js';
 
@@ -35,10 +36,10 @@ const BUTTON_TAGS = ['nldd-button', 'nldd-icon-button'];
 export class NLDDButtonBar extends LitElement {
 	static override styles = buttonBarStyles;
 
-	@property({ type: String, reflect: true })
+	@property({ reflect: true, converter: reflectNonDefault<Size>('md') })
 	size: Size = 'md';
 
-	@property({ type: String, reflect: true })
+	@property({ reflect: true, converter: reflectNonDefault<string>('neutral-tinted') })
 	variant: string = 'neutral-tinted';
 
 	@property({ type: Boolean, reflect: true })

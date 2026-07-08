@@ -142,6 +142,17 @@ export const justInTimeEducationStyles = css`
 			overlay var(--_show-duration) allow-discrete;
 	}
 
+	/* Stay invisible (no fade) until Floating UI has placed it, so the fade-in plays at
+	   the control rather than flashing at the popover's default spot. The positioned
+	   attribute is set once _updatePosition writes the coordinates. */
+	.just-in-time-education:popover-open:not([positioned]) {
+		/* opacity, not visibility: the callout is focused synchronously on open (before
+		   Floating UI places it), and a visibility:hidden element can't take focus. The
+		   reveal-timeout in _open() guarantees it can't stay hidden while holding focus. */
+		opacity: 0;
+		transition: none;
+	}
+
 	@starting-style {
 		.just-in-time-education:popover-open {
 			opacity: 0;

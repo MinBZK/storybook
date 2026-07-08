@@ -51,6 +51,7 @@ import type { PropertyValues } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
 import { computePosition, autoUpdate, offset, shift } from '@floating-ui/dom';
 import { withTranslations } from '../../../utilities/with-translations.js';
+import { reflectNonDefault } from '../../../utilities/reflect-non-default.js';
 import { justInTimeEducationStyles } from './just-in-time-education.styles.js';
 import { justInTimeEducationTemplate } from './just-in-time-education.template.js';
 import { nlddJustInTimeEducationTranslations } from './just-in-time-education.i18n.js';
@@ -79,13 +80,13 @@ export class NLDDJustInTimeEducation extends withTranslations<NLDDJustInTimeEduc
 	@property({ type: Boolean, reflect: true })
 	active = false;
 
-	@property({ type: String, reflect: true })
+	@property({ reflect: true, converter: reflectNonDefault<string>('') })
 	text = '';
 
-	@property({ type: String, reflect: true, attribute: 'supporting-text' })
+	@property({ reflect: true, attribute: 'supporting-text', converter: reflectNonDefault<string>('') })
 	supportingText = '';
 
-	@property({ type: String, reflect: true })
+	@property({ reflect: true, converter: reflectNonDefault<Placement>('auto') })
 	placement: Placement = 'auto';
 
 	@property({ type: Boolean, reflect: true })
@@ -99,6 +100,7 @@ export class NLDDJustInTimeEducation extends withTranslations<NLDDJustInTimeEduc
 
 	private _cleanupAutoUpdate: (() => void) | null = null;
 	private _attachTimeout: ReturnType<typeof setTimeout> | null = null;
+	private _revealTimeout: ReturnType<typeof setTimeout> | null = null;
 	private _attributeObserver: MutationObserver | null = null;
 	private _boundDocumentInteraction = (e: Event) => this._handleDocumentInteraction(e);
 	private _resolvedSide: 'top' | 'bottom' | 'left' | 'right' | null = null;
@@ -177,8 +179,26 @@ export class NLDDJustInTimeEducation extends withTranslations<NLDDJustInTimeEduc
 	private _open(): void {
 		const container = this._containerEl;
 		if (!container) return;
-		if (!container.matches(':popover-open')) container.showPopover();
+		if (!container.matches(':popover-open')) {
+			// Hold it invisible until Floating UI has placed it, so it fades in at the
+			// control instead of flashing at the popover's default position.
+			container.removeAttribute('positioned');
+			container.showPopover();
+		}
 		this._startPositioning();
+		// Safety net: reveal even if positioning never resolves — no control to anchor
+		// to, or the control became invalid before Floating UI placed it — so the
+		// visibility gate can't leave the callout stuck hidden while it holds focus. A
+		// brief fallback still lets a normal placement fade in at the control first.
+		if (!this._getControl()) {
+			container.setAttribute('positioned', '');
+		} else {
+			if (this._revealTimeout) clearTimeout(this._revealTimeout);
+			this._revealTimeout = setTimeout(() => {
+				this._revealTimeout = null;
+				if (this.active) container.setAttribute('positioned', '');
+			}, 200);
+		}
 		// Announce the tip text via a polite live region. Focusing into the callout
 		// (dismissable, below) only makes AT read the dialog label and the focused
 		// element, not the tip body, so the live region carries the actual message;
@@ -219,6 +239,10 @@ export class NLDDJustInTimeEducation extends withTranslations<NLDDJustInTimeEduc
 		if (this._attachTimeout) {
 			clearTimeout(this._attachTimeout);
 			this._attachTimeout = null;
+		}
+		if (this._revealTimeout) {
+			clearTimeout(this._revealTimeout);
+			this._revealTimeout = null;
 		}
 		document.removeEventListener('click', this._boundDocumentInteraction, true);
 		document.removeEventListener('keydown', this._boundDocumentInteraction, true);
@@ -324,6 +348,11 @@ export class NLDDJustInTimeEducation extends withTranslations<NLDDJustInTimeEduc
 		});
 		container.style.left = `${x}px`;
 		container.style.top = `${y}px`;
+		if (this._revealTimeout) {
+			clearTimeout(this._revealTimeout); // placed in time — no need for the fallback
+			this._revealTimeout = null;
+		}
+		container.setAttribute('positioned', ''); // placed — let it fade in (see _open)
 		this._updateArrow(control, container, side);
 	}
 

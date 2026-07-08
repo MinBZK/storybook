@@ -18,7 +18,9 @@ describe('nldd-collection', () => {
 	it('defaults to grid layout', async () => {
 		el = await fixture('<nldd-collection></nldd-collection>');
 		await waitForUpdate(el);
-		expect(el.getAttribute('layout')).toBe('grid');
+		// The default (grid) is kept out of the DOM; the property is the source of truth.
+		expect((el as unknown as { layout: string }).layout).toBe('grid');
+		expect(el.hasAttribute('layout')).toBe(false);
 	});
 
 	it('renders load-more button when show-load-more is set on grid layout', async () => {
@@ -145,5 +147,15 @@ describe('nldd-collection', () => {
 		await waitForUpdate(el);
 		const itemsEl = el.shadowRoot!.querySelector<HTMLElement>('.collection__items')!;
 		expect(itemsEl.hasAttribute('tabindex')).toBe(false);
+	});
+
+	it('the gap attribute overrides the default gap via an inline --_gap', async () => {
+		el = await fixture('<nldd-collection gap="8px"><div>Item 1</div></nldd-collection>');
+		await waitForUpdate(el);
+		expect(el.style.getPropertyValue('--_gap')).toBe('8px');
+		// Clearing it restores the responsive default (no inline override).
+		(el as HTMLElement & { gap?: string }).gap = '';
+		await waitForUpdate(el);
+		expect(el.style.getPropertyValue('--_gap')).toBe('');
 	});
 });

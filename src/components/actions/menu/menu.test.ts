@@ -426,7 +426,8 @@ describe('nldd-menu filter', () => {
 		expect(items[0].getAttribute('query')).toBe('aa');
 		expect(items[0].hasAttribute('hidden')).toBe(false);
 		expect(items[1].hasAttribute('hidden')).toBe(true);
-		expect(items[1].getAttribute('query')).toBe('');
+		expect((items[1] as unknown as { query: string }).query).toBe('');
+		expect(items[1].hasAttribute('query')).toBe(false);
 	});
 
 	it('clears all queries when query is empty', async () => {
@@ -496,6 +497,22 @@ describe('nldd-menu empty state', () => {
 		el = await fixture(`
 			<nldd-menu>
 				<nldd-menu-item text="Item"></nldd-menu-item>
+			</nldd-menu>
+		`);
+		await waitForUpdate(el);
+		expect(el.shadowRoot!.querySelector('.menu__empty')).toBeNull();
+	});
+
+	it('is not empty when every item is present but disabled', async () => {
+		// Regression: a menu whose items are all disabled still shows them (greyed),
+		// so it must not fall back to the "no options" empty state. Emptiness counts
+		// shown items, not navigable ones: disabled items are skipped for keyboard
+		// nav but are still on screen. (A toolbar overflow of disabled controls hit
+		// this once the clones started propagating disabled state correctly.)
+		el = await fixture(`
+			<nldd-menu>
+				<nldd-menu-item text="Inspringen vergroten" disabled></nldd-menu-item>
+				<nldd-menu-item text="Inspringen verkleinen" disabled></nldd-menu-item>
 			</nldd-menu>
 		`);
 		await waitForUpdate(el);

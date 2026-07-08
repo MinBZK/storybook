@@ -54,6 +54,7 @@
  */
 import { LitElement } from 'lit';
 import { customElement, property, state } from 'lit/decorators.js';
+import { reflectNonDefault } from '../../../../utilities/reflect-non-default.js';
 import { textCellStyles } from './text-cell.styles.js';
 import { template } from './text-cell.template.js';
 import { VisibilityMixin } from '../../../../utilities/visibility-mixin.js';
@@ -68,13 +69,13 @@ type VerticalAlignment = 'top' | 'center' | 'bottom';
 export class NLDDTextCell extends VisibilityMixin(LitElement, 'cells-container') {
 	static override styles = [textCellStyles];
 
-	@property({ type: String, reflect: true })
+	@property({ reflect: true, converter: reflectNonDefault<Size>('md') })
 	size: Size = 'md';
 
-	@property({ type: String, reflect: true })
+	@property({ reflect: true, converter: reflectNonDefault<Color>('default') })
 	color: Color = 'default';
 
-	@property({ type: String, reflect: true })
+	@property({ reflect: true, converter: reflectNonDefault<string>('full') })
 	width: string = 'full';
 
 	@property({ type: String, reflect: true, attribute: 'min-width' })
@@ -86,22 +87,22 @@ export class NLDDTextCell extends VisibilityMixin(LitElement, 'cells-container')
 	@property({ type: String, reflect: true, attribute: 'min-height' })
 	minHeight?: string;
 
-	@property({ type: String, reflect: true, attribute: 'horizontal-alignment' })
+	@property({ reflect: true, attribute: 'horizontal-alignment', converter: reflectNonDefault<HorizontalAlignment>('left') })
 	horizontalAlignment: HorizontalAlignment = 'left';
 
-	@property({ type: String, reflect: true, attribute: 'vertical-alignment' })
+	@property({ reflect: true, attribute: 'vertical-alignment', converter: reflectNonDefault<VerticalAlignment>('center') })
 	verticalAlignment: VerticalAlignment = 'center';
 
-	@property({ type: String })
+	@property({ reflect: true, converter: reflectNonDefault<string>('') })
 	text = '';
 
-	@property({ type: String })
+	@property({ reflect: true, converter: reflectNonDefault<string>('') })
 	overline = '';
 
-	@property({ type: String, attribute: 'supporting-text' })
+	@property({ reflect: true, attribute: 'supporting-text', converter: reflectNonDefault<string>('') })
 	supportingText = '';
 
-	@property({ type: String })
+	@property({ reflect: true, converter: reflectNonDefault<string>('') })
 	query = '';
 
 	@property({ type: String, attribute: 'query-mark-mode' })

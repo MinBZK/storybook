@@ -194,7 +194,8 @@ describe('nldd-keyboard-shortcut color', () => {
 	it('defaults to color="neutral" with its own color tokens', async () => {
 		el = await fixture('<nldd-keyboard-shortcut keys="Cmd+K" always-visible></nldd-keyboard-shortcut>');
 		await waitForUpdate(el);
-		expect(el.getAttribute('color')).toBe('neutral');
+		expect((el as unknown as { color: string }).color).toBe('neutral');
+		expect(el.hasAttribute('color')).toBe(false);
 		expect(getComputedStyle(el).getPropertyValue('--_content-color').trim()).not.toBe('currentColor');
 	});
 });
@@ -209,7 +210,8 @@ describe('nldd-keyboard-shortcut variant', () => {
 	it('defaults to variant="box"', async () => {
 		el = await fixture('<nldd-keyboard-shortcut keys="Cmd+K" always-visible></nldd-keyboard-shortcut>');
 		await waitForUpdate(el);
-		expect(el.getAttribute('variant')).toBe('box');
+		expect((el as unknown as { variant: string }).variant).toBe('box');
+		expect(el.hasAttribute('variant')).toBe(false);
 	});
 
 	it('reflects variant="simple"', async () => {

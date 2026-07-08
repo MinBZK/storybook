@@ -19,6 +19,7 @@
  */
 import { LitElement } from 'lit';
 import { customElement, property, state } from 'lit/decorators.js';
+import { reflectNonDefault } from '../../../utilities/reflect-non-default.js';
 import { inlineDialogStyles } from './inline-dialog.styles.js';
 import { inlineDialogTemplate } from './inline-dialog.template.js';
 import '../../content/icon/icon.js';
@@ -32,10 +33,10 @@ export type InlineDialogIconColor = 'secondary' | 'accent' | 'critical' | 'warni
 export class NLDDInlineDialog extends LitElement {
 	static override styles = inlineDialogStyles;
 
-	@property({ type: String, reflect: true })
+	@property({ reflect: true, converter: reflectNonDefault<InlineDialogVariant | ''>('') })
 	variant: InlineDialogVariant | '' = '';
 
-	@property({ type: String, reflect: true })
+	@property({ reflect: true, converter: reflectNonDefault<InlineDialogSize>('md') })
 	size: InlineDialogSize = 'md';
 
 	@property({ type: String, reflect: true })
@@ -44,10 +45,10 @@ export class NLDDInlineDialog extends LitElement {
 	@property({ type: String, reflect: true, attribute: 'icon-color' })
 	iconColor: InlineDialogIconColor | '' = '';
 
-	@property({ type: String, reflect: true })
+	@property({ reflect: true, converter: reflectNonDefault<string>('') })
 	text = '';
 
-	@property({ type: String, reflect: true, attribute: 'supporting-text' })
+	@property({ reflect: true, attribute: 'supporting-text', converter: reflectNonDefault<string>('') })
 	supportingText = '';
 
 	@property({ type: Number, reflect: true, attribute: 'heading-level' })

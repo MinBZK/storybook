@@ -19,6 +19,7 @@
  */
 import { LitElement, type PropertyValues } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
+import { reflectNonDefault } from '../../../utilities/reflect-non-default.js';
 import { breadcrumbsStyles, breadcrumbsItemStyles } from './breadcrumbs.styles.js';
 import { breadcrumbsTemplate, breadcrumbsItemTemplate } from './breadcrumbs.template.js';
 import { nlddBreadcrumbsTranslations, type NLDDBreadcrumbsTranslations } from './breadcrumbs.i18n.js';
@@ -49,7 +50,7 @@ export class NLDDBreadcrumbsItem extends LitElement {
 	@property({ type: Boolean, reflect: true })
 	current = false;
 
-	@property({ type: String, reflect: true })
+	@property({ reflect: true, converter: reflectNonDefault<string>('') })
 	text = '';
 
 	override connectedCallback(): void {

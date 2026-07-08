@@ -8,6 +8,7 @@
  * @attr {string}  variant           - Visual mode: 'icon-and-text' | 'text' | 'icon'. When unset, the variant is inferred from each item's content. Drives the layout at every size.
  * @attr {string}  size              - Size: 'md' | 'lg' (default: 'md'). 'lg' enlarges the touch target; the per-variant layout is preserved (icon-and-text stacks the icon over the text, text renders large text, icon renders a larger icon-only control).
  * @attr {boolean} navigation        - Renders a nav landmark instead of tablist; use for href-based items that navigate between routes
+ * @attr {boolean} disabled          - Disables the whole bar: dims it, blocks pointer interaction, and takes the tabs out of the tab order
  * @attr {boolean} centered          - Centers the tabs in the container (host fills the row, tabs group in the middle)
  * @attr {string}  accessible-label  - Accessible name for the navigation region; defaults to 'Tabs'
  *
@@ -28,6 +29,7 @@
  */
 import { LitElement } from 'lit';
 import { customElement, property, state } from 'lit/decorators.js';
+import { reflectNonDefault } from '../../../utilities/reflect-non-default.js';
 import { tabBarStyles, tabBarItemStyles } from './tab-bar.styles.js';
 import { tabBarTemplate, tabBarItemTemplate } from './tab-bar.template.js';
 import { sanitizeUrl } from '../../../utilities/sanitize-url.js';
@@ -54,7 +56,7 @@ export class NLDDTabBarItem extends LitElement {
 	// call in updated() which writes the resolved value to the same attribute.
 	private _authorVariant: 'icon-and-text' | 'text' | 'icon' | '' = '';
 
-	@property({ type: String })
+	@property({ reflect: true, converter: reflectNonDefault<string>('') })
 	text = '';
 
 	/** Icon name for nldd-icon. The icon and icon-and-text variants show a
@@ -63,7 +65,7 @@ export class NLDDTabBarItem extends LitElement {
 	icon = '';
 
 	/** Set by nldd-tab-bar. Sizes the variant-driven layout: 'md' (default) or 'lg' (larger touch target). */
-	@property({ type: String, reflect: true })
+	@property({ reflect: true, converter: reflectNonDefault<'md' | 'lg'>('md') })
 	size: 'md' | 'lg' = 'md';
 
 	get _effectiveVariant(): 'icon-and-text' | 'text' | 'icon' {
@@ -85,6 +87,11 @@ export class NLDDTabBarItem extends LitElement {
 	/** Set by nldd-tab-bar. Marks this item as the keyboard entry point when no tab is selected. */
 	@state()
 	_isFallbackFocusable = false;
+
+	/** Set by nldd-tab-bar. True when the whole bar is disabled; drops the tab out
+	 *  of the tab order and blocks activation. */
+	@state()
+	_groupDisabled = false;
 
 	override connectedCallback(): void {
 		super.connectedCallback();
@@ -110,6 +117,12 @@ export class NLDDTabBarItem extends LitElement {
 	}
 
 	_handleClick(event: Event): void {
+		// A disabled bar is inert: swallow the activation and fire no `select`, so a
+		// clicked link never navigates and no tab flips selected.
+		if (this._groupDisabled) {
+			event.preventDefault();
+			return;
+		}
 		if (!sanitizeUrl(this.href)) {
 			event.preventDefault();
 		}
@@ -136,15 +149,20 @@ export class NLDDTabBar extends LitElement {
 	@property({ type: Boolean, reflect: true })
 	centered = false;
 
-	@property({ type: String, reflect: true })
+	@property({ reflect: true, converter: reflectNonDefault<'icon-and-text' | 'text' | 'icon' | ''>('') })
 	variant: 'icon-and-text' | 'text' | 'icon' | '' = '';
 
 	/** Size: 'md' (default) or 'lg'. 'lg' enlarges the touch target while keeping the per-variant layout. */
-	@property({ type: String, reflect: true })
+	@property({ reflect: true, converter: reflectNonDefault<'md' | 'lg'>('md') })
 	size: 'md' | 'lg' = 'md';
 
 	@property({ type: Boolean, reflect: true })
 	navigation = false;
+
+	/** Disables the whole bar: the CSS dims it and blocks pointer-events, and every
+	 *  tab is taken out of the tab order and made inert (propagated to the items). */
+	@property({ type: Boolean, reflect: true })
+	disabled = false;
 
 	@property({ type: String, attribute: 'accessible-label' })
 	accessibleLabel = '';
@@ -175,7 +193,8 @@ export class NLDDTabBar extends LitElement {
 		if (
 			changedProperties.has('variant') ||
 			changedProperties.has('size') ||
-			changedProperties.has('navigation')
+			changedProperties.has('navigation') ||
+			changedProperties.has('disabled')
 		) {
 			this._syncItems();
 		}
@@ -198,6 +217,7 @@ export class NLDDTabBar extends LitElement {
 			item._groupVariant = this.variant;
 			item.size = this.size;
 			item._navigation = this.navigation;
+			item._groupDisabled = this.disabled;
 		});
 
 		// Ensure keyboard entry point
@@ -214,6 +234,7 @@ export class NLDDTabBar extends LitElement {
 
 	private _handleItemSelect = (event: CustomEvent): void => {
 		event.stopPropagation();
+		if (this.disabled) return;
 		// Navigation tabs are controlled by the consumer (selection follows the
 		// route), so don't self-select on click — matching the keyboard path, which
 		// already skips auto-activation for navigation tabs. A click that doesn't
@@ -233,6 +254,7 @@ export class NLDDTabBar extends LitElement {
 	};
 
 	private _handleKeyDown = (event: KeyboardEvent): void => {
+		if (this.disabled) return;
 		const items = this._getItems();
 		if (items.length === 0) return;
 

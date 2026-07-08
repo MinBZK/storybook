@@ -46,7 +46,6 @@ nldd-rich-text[centered] {
 
 nldd-rich-text[spacing="flat"]  { --_spacing: var(--components-rich-text-spacing-flat); }
 nldd-rich-text[spacing="tight"] { --_spacing: var(--components-rich-text-spacing-tight); }
-nldd-rich-text[spacing="snug"]  { --_spacing: var(--components-rich-text-spacing-snug); }
 nldd-rich-text[spacing="loose"] { --_spacing: var(--components-rich-text-spacing-loose); }
 
 nldd-rich-text[hidden] {
@@ -454,11 +453,8 @@ nldd-rich-text blockquote {
 		calc(var(--semantics-blockquotes-md-spacing) - var(--_spacing))
 	);
 	margin-inline: 0;
-	padding-block-start: var(--semantics-blockquotes-md-spacing);
 	padding-inline: var(--semantics-blockquotes-md-spacing);
-	border-top: var(--semantics-blockquotes-border);
 	border-left: var(--semantics-blockquotes-border);
-	border-top-left-radius: var(--semantics-blockquotes-corner-radius);
 	font: var(--semantics-blockquotes-md-quote-font);
 
 	@container (max-width: 640px) {
@@ -467,7 +463,6 @@ nldd-rich-text blockquote {
 			0px,
 			calc(var(--semantics-blockquotes-sm-spacing) - var(--_spacing))
 		);
-		padding-block-start: var(--semantics-blockquotes-sm-spacing);
 		padding-inline: var(--semantics-blockquotes-sm-spacing);
 		font: var(--semantics-blockquotes-sm-quote-font);
 	}

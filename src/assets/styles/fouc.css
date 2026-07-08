@@ -1,0 +1,30 @@
+/* Reduce FOUC — flash of unstyled / not-yet-upgraded web components.
+ *
+ * Bundled into the design system's global stylesheet, so importing
+ * '@nldd/design-system/styles' pulls it in. Also importable on its own:
+ *   import '@nldd/design-system/styles/fouc';
+ * (or, in an Astro layout, in the frontmatter — it applies to the whole page).
+ *
+ * Keeps the page hidden until every custom element on it has upgraded (:defined),
+ * or a 200ms fallback — whichever comes first, so the page still reveals if a
+ * component never loads. Note the :defined check is page-wide: ANY undefined
+ * custom element on the page (including a non-NLDD one) holds the page hidden
+ * until it upgrades or the fallback fires. Pure CSS, no JS.
+ *
+ * Based on https://dev.to/stuffbreaker/reducing-fouc-with-web-components-1jnh
+ */
+body {
+	/* The always-on animation reveals — and, via `forwards`, keeps revealed — after
+	   the fallback delay, so a later-added undefined element can't re-hide the page. */
+	animation: nldd-fouc-reveal 0s linear 200ms forwards;
+}
+
+body:has(:not(:defined)) {
+	opacity: 0;
+}
+
+@keyframes nldd-fouc-reveal {
+	to {
+		opacity: 1;
+	}
+}

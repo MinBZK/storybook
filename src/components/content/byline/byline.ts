@@ -43,6 +43,7 @@
  */
 import { LitElement } from 'lit';
 import { customElement, property, state } from 'lit/decorators.js';
+import { reflectNonDefault } from '../../../utilities/reflect-non-default.js';
 import { bylineStyles } from './byline.styles.js';
 import { bylineTemplate } from './byline.template.js';
 
@@ -50,10 +51,10 @@ import { bylineTemplate } from './byline.template.js';
 export class NLDDByline extends LitElement {
 	static override styles = bylineStyles;
 
-	@property({ type: String })
+	@property({ reflect: true, converter: reflectNonDefault<string>('') })
 	text = '';
 
-	@property({ type: String, attribute: 'supporting-text' })
+	@property({ reflect: true, attribute: 'supporting-text', converter: reflectNonDefault<string>('') })
 	supportingText = '';
 
 	@property({ type: String, attribute: 'avatar-src' })

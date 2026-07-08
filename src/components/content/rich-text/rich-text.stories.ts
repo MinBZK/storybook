@@ -404,7 +404,7 @@ export const AllSizes = {
 			</div>
 		</div>
 	`,
-	storyName: 'Alle groottes (container query)',
+	name: 'Alle groottes (container query)',
 };
 
 /**

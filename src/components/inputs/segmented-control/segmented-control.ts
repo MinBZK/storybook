@@ -8,7 +8,7 @@
  * @attr {string}  value         - Selected value for radio type
  * @prop {string[]} values        - Selected values for checkbox type (property binding only, not an attribute)
  * @attr {string}  size          - Control size: 'sm' | 'md' | 'lg' (default: 'md')
- * @attr {string}  type          - Input type: 'radio' | 'checkbox' (default: 'radio')
+ * @attr {string}  type          - Input type: 'radio' | 'checkbox' (default: 'radio').
  * @attr {string}  variant       - Content type for all items: 'text' | 'icon' | 'icon-and-text' (default: 'text')
  * @attr {boolean} disabled      - Disabled state for all items
  * @attr {string}  width         - Width mode: 'full' (stretches to container), 'fit-content' (per-item content size), or any CSS length (e.g. '240px')
@@ -35,6 +35,7 @@
  */
 import { LitElement } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
+import { reflectNonDefault } from '../../../utilities/reflect-non-default.js';
 import {
 	segmentedControlStyles,
 	segmentedControlItemStyles,
@@ -66,15 +67,15 @@ export class NLDDSegmentedControlItem extends LitElement {
 	disabled = false;
 
 	/** Control size: 'sm' | 'md' | 'lg'. Set by nldd-segmented-control. Not part of the public API. */
-	@property({ type: String, reflect: true })
+	@property({ reflect: true, converter: reflectNonDefault<SegmentedControlSize>('md') })
 	size: SegmentedControlSize = 'md';
 
 	/** Set by nldd-segmented-control. Not part of the public API. */
-	@property({ type: String, reflect: true, attribute: 'variant' })
+	@property({ reflect: true, attribute: 'variant', converter: reflectNonDefault<SegmentedControlVariant>('text') })
 	variant: SegmentedControlVariant = 'text';
 
 	/** Set by nldd-segmented-control. Not part of the public API. */
-	@property({ type: String, reflect: true, attribute: 'input-type' })
+	@property({ reflect: true, attribute: 'input-type', converter: reflectNonDefault<SegmentedControlType>('radio') })
 	inputType: SegmentedControlType = 'radio';
 
 	/** Set by nldd-segmented-control. Not part of the public API. */
@@ -82,7 +83,7 @@ export class NLDDSegmentedControlItem extends LitElement {
 	groupName = '';
 
 	/** Text label for the item. Used as visible text and as aria-label/tooltip for icon variant. */
-	@property({ type: String })
+	@property({ reflect: true, converter: reflectNonDefault<string>('') })
 	text = '';
 
 	/** Icon name for nldd-icon. When not set, the icon slot is used; the icon and
@@ -130,14 +131,14 @@ export class NLDDSegmentedControl extends LitElement {
 	@property({ type: Array, attribute: false })
 	values: string[] = [];
 
-	@property({ type: String, reflect: true })
+	@property({ reflect: true, converter: reflectNonDefault<SegmentedControlSize>('md') })
 	size: SegmentedControlSize = 'md';
 
 	@property({ type: String, reflect: true })
 	type: SegmentedControlType = 'radio';
 
 	/** Content type applied to all items: text, icon, or icon-and-text. Per-item mixing is not supported. */
-	@property({ type: String, reflect: true, attribute: 'variant' })
+	@property({ reflect: true, attribute: 'variant', converter: reflectNonDefault<SegmentedControlVariant>('text') })
 	variant: SegmentedControlVariant = 'text';
 
 	@property({ type: Boolean, reflect: true })
@@ -160,7 +161,7 @@ export class NLDDSegmentedControl extends LitElement {
 	accessibleLabel = '';
 
 	/** ID of an external label element (aria-labelledby). */
-	@property({ type: String, attribute: 'accessible-labelledby' })
+	@property({ type: String, attribute: 'accessible-labelled-by' })
 	accessibleLabelledBy = '';
 
 	// — Lifecycle ——————————————————————————————————————————————————————————————
@@ -187,7 +188,7 @@ export class NLDDSegmentedControl extends LitElement {
 		// _syncFormValue() runs in updated() with the same changedProperties
 		// on first render — no need to call it explicitly here.
 		if (import.meta.env?.DEV && !this.accessibleLabel && !this.accessibleLabelledBy) {
-			console.warn('<nldd-segmented-control>: No accessible name provided. Add an accessible-label or accessible-labelledby attribute for screen reader accessibility.');
+			console.warn('<nldd-segmented-control>: No accessible name provided. Add an accessible-label or accessible-labelled-by attribute for screen reader accessibility.');
 		}
 	}
 

@@ -31,7 +31,8 @@ describe('nldd-app-view', () => {
 	it('defaults background to "base"', async () => {
 		el = await fixture('<nldd-app-view></nldd-app-view>');
 		await waitForUpdate(el);
-		expect(el.getAttribute('background')).toBe('base');
+		expect((el as unknown as { background: string }).background).toBe('base');
+		expect(el.hasAttribute('background')).toBe(false);
 	});
 
 	it('reflects background="tinted" attribute', async () => {

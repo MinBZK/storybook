@@ -20,7 +20,8 @@ describe('nldd-list', () => {
 	it('defaults to simple variant', async () => {
 		el = await fixture('<nldd-list></nldd-list>');
 		await waitForUpdate(el);
-		expect(el.getAttribute('variant')).toBe('simple');
+		expect((el as unknown as { variant: string }).variant).toBe('simple');
+		expect(el.hasAttribute('variant')).toBe(false);
 	});
 
 	it('reflects variant attribute', async () => {
@@ -203,7 +204,8 @@ describe('nldd-list', () => {
 			</nldd-list>
 		`);
 		await waitForUpdate(el);
-		expect(el.getAttribute('type')).toBe('list');
+		expect((el as unknown as { type: string }).type).toBe('list');
+		expect(el.hasAttribute('type')).toBe(false);
 		const itemsEl = el.shadowRoot!.querySelector('.list__items');
 		expect(itemsEl?.getAttribute('role')).toBe('list');
 		expect(el.hasAttribute('role')).toBe(false);

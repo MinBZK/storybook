@@ -34,7 +34,8 @@ describe('nldd-rich-text', () => {
 
 	it('defaults to snug spacing', async () => {
 		el = await fixture('<nldd-rich-text></nldd-rich-text>');
-		expect(el.getAttribute('spacing')).toBe('snug');
+		expect((el as unknown as { spacing: string }).spacing).toBe('snug');
+		expect(el.hasAttribute('spacing')).toBe(false);
 	});
 
 	it('reflects spacing attribute', async () => {

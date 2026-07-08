@@ -91,30 +91,27 @@ export const multiLineTextFieldStyles = css`
 		border: none;
 		background: transparent;
 		width: 100%;
-		min-height: calc(var(--_min-height) - var(--semantics-input-fields-border-thickness) * 2);
+		/* rows is the floor in every resize mode: one row already fits in
+		   --_min-height, each extra row adds one line height. (resize="auto"
+		   then grows past it via field-sizing.) */
+		min-height: calc(var(--_min-height) - var(--semantics-input-fields-border-thickness) * 2 + (var(--_rows) - 1) * 1lh);
 		padding-block: calc((var(--_min-height) - var(--semantics-input-fields-border-thickness) * 2 - 1lh) / 2);
 		padding-inline: var(--_inline-padding);
 		color: var(--semantics-content-color);
 		font: var(--_text-font);
 		appearance: none;
+		resize: none;
+		field-sizing: content;
 	}
 
 	:host([resize="vertical"]) .multi-line-text-field__input {
 		resize: vertical;
+		field-sizing: fixed;
 	}
 
 	:host([resize="none"]) .multi-line-text-field__input {
 		resize: none;
-	}
-
-	:host([resize="auto"]) .multi-line-text-field__input {
-		resize: none;
-		field-sizing: content;
-		/* Keep the configured rows as the floor: field-sizing grows the field with
-		   content, and this min-height stops it shrinking below that many lines.
-		   The host exposes the count as --_rows; one row already fits in
-		   --_min-height, so each extra row adds one line height. */
-		min-height: calc(var(--_min-height) - var(--semantics-input-fields-border-thickness) * 2 + (var(--_rows) - 1) * 1lh);
+		field-sizing: fixed;
 	}
 
 	:host([valid]) .multi-line-text-field__input,

@@ -53,6 +53,7 @@
  */
 import { LitElement } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
+import { reflectNonDefault } from '../../../utilities/reflect-non-default.js';
 import { tableStyles, tableRowStyles } from './table.styles.js';
 import { tableTemplate, tableRowTemplate } from './table.template.js';
 import { nlddTableTranslations } from './table.i18n.js';
@@ -74,7 +75,7 @@ const MD_MAX = parseInt(breakpoints.mdMax, 10);
 export class NLDDTable extends LitElement {
 	static override styles = tableStyles;
 
-	@property({ type: String, reflect: true })
+	@property({ reflect: true, converter: reflectNonDefault<TableBackground>('base') })
 	background: TableBackground = 'base';
 
 	/** CSS grid track list applied once as the table's columns. */
@@ -105,12 +106,12 @@ export class NLDDTable extends LitElement {
 
 	/** Text for the default empty-state dialog. Falls back to the Dutch i18n
 	 *  default. Ignored when consumers slot their own `[slot=empty]` content. */
-	@property({ type: String, attribute: 'empty-text' })
+	@property({ reflect: true, attribute: 'empty-text', converter: reflectNonDefault<string>('') })
 	emptyText = '';
 
 	/** Optional supporting text for the default empty-state dialog. Ignored
 	 *  when consumers slot their own `[slot=empty]` content. */
-	@property({ type: String, attribute: 'empty-supporting-text' })
+	@property({ reflect: true, attribute: 'empty-supporting-text', converter: reflectNonDefault<string>('') })
 	emptySupportingText = '';
 
 	@property({ type: Object })

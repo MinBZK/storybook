@@ -53,6 +53,7 @@
  */
 import { LitElement } from 'lit';
 import { customElement, property, state } from 'lit/decorators.js';
+import { reflectNonDefault } from '../../../utilities/reflect-non-default.js';
 import { activityIndicatorStyles } from './activity-indicator.styles.js';
 import { activityIndicatorTemplate } from './activity-indicator.template.js';
 import { nlddActivityIndicatorTranslations } from './activity-indicator.i18n.js';
@@ -70,7 +71,7 @@ export type ActivityIndicatorTiming = 'default' | 'instant';
 export class NLDDActivityIndicator extends LitElement {
 	static override styles = activityIndicatorStyles;
 
-	@property({ type: String, reflect: true })
+	@property({ reflect: true, converter: reflectNonDefault<ActivityIndicatorSize>('32') })
 	size: ActivityIndicatorSize = '32';
 
 	/** Show the label under the indicator. The label always feeds the
@@ -78,12 +79,12 @@ export class NLDDActivityIndicator extends LitElement {
 	@property({ type: Boolean, reflect: true, attribute: 'show-text' })
 	showText = false;
 
-	@property({ type: String, reflect: true })
+	@property({ reflect: true, converter: reflectNonDefault<string>('') })
 	text = '';
 
 	/** 'default' waits {@link DELAY_MS} before showing; 'instant' shows
 	 *  immediately. The fade-in plays either way. */
-	@property({ type: String, reflect: true })
+	@property({ reflect: true, converter: reflectNonDefault<ActivityIndicatorTiming>('default') })
 	timing: ActivityIndicatorTiming = 'default';
 
 	/** Mark the loader as finished while keeping the element mounted.
