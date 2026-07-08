@@ -228,8 +228,14 @@ export class NLDDCodeEditor extends NLDDCodeMirrorElement {
 		}
 		if (this.view) {
 			if (changed.has('value')) {
+				const docWas = this.doc;
 				this.setDoc(this.value);
 				this._internals.setFormValue(this.value);
+				// A programmatic value change while focused must not look like a user edit
+				// on the next blur: if setDoc actually moved the doc (i.e. this wasn't the
+				// echo of the user's own typing, where the doc already equals value),
+				// advance the focus-time baseline too.
+				if (docWas !== this.value) this._valueAtFocus = this.value;
 			}
 			if (changed.has('disabled') || changed.has('readonly')) {
 				this.reconfigure(this._editableCompartment, this._editableExtension());

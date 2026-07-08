@@ -4,7 +4,7 @@ import { markdown } from '@codemirror/lang-markdown';
 import { GFM } from '@lezer/markdown';
 import { Prec, StateField, type EditorState, type Extension, type Range } from '@codemirror/state';
 import type { SyntaxNode } from '@lezer/common';
-import { MENTION_HREF_PREFIX } from './text-editor.mentions.js';
+import { MENTION_HREF_PREFIX, unescapeMentionLabel, decodeMentionId } from './text-editor.mentions.js';
 import '../../content/icon/icon.js';
 
 /* Hybrid markdown rendering: the document stays plain markdown text, but the
@@ -304,8 +304,8 @@ function buildMentionChips(state: EditorState): DecorationSet {
 			if (!url || !state.sliceDoc(url.from, url.to).startsWith(MENTION_HREF_PREFIX)) return;
 			const text = linkTextRange(link);
 			if (!text) return;
-			const label = state.sliceDoc(text.from, text.to).replace(/^@/, '');
-			const id = state.sliceDoc(url.from, url.to).slice(MENTION_HREF_PREFIX.length);
+			const label = unescapeMentionLabel(state.sliceDoc(text.from, text.to).replace(/^@/, ''));
+			const id = decodeMentionId(state.sliceDoc(url.from, url.to).slice(MENTION_HREF_PREFIX.length));
 			const selected = !sel.empty && sel.from <= link.from && sel.to >= link.to;
 			ranges.push(Decoration.replace({ widget: new MentionWidget(label, id, selected) }).range(link.from, link.to));
 		},

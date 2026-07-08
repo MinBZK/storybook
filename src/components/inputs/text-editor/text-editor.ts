@@ -534,14 +534,16 @@ export class NLDDTextEditor extends NLDDCodeMirrorElement {
 		// bleed onto the next paste.
 		this._cutBuffer = null;
 		try { await navigator.clipboard.writeText(text); } catch { /* clipboard blocked */ }
-		this.view.focus();
+		// The await can outlive the element (disconnect destroys the view), so guard.
+		this.view?.focus();
 	}
 
 	/** Cut the current selection to the clipboard and remove it from the document.
 	 *  Its annotations are remembered so a paste back into this editor moves them
 	 *  along. No-op when the selection is empty. */
 	async cut(): Promise<void> {
-		if (!this.view) return;
+		// Cut mutates (it removes the selection), so it's a no-op on a read-only editor.
+		if (!this.view || this.view.state.readOnly) return;
 		const { from, to } = this.view.state.selection.main;
 		if (from === to) return;
 		const text = stripSentinels(this.view.state.sliceDoc(from, to));
@@ -568,7 +570,9 @@ export class NLDDTextEditor extends NLDDCodeMirrorElement {
 	 *  a cut made in this editor (a move, one-shot). Shared by the toolbar's paste()
 	 *  and the native Cmd/Ctrl+V handler. */
 	private _pasteText(text: string): void {
-		if (!this.view || !text) return;
+		// Paste mutates; refuse it on a read-only editor (covers the toolbar paste()
+		// and the native Cmd/Ctrl+V handler that both funnel through here).
+		if (!this.view || !text || this.view.state.readOnly) return;
 		const buffer = this._cutBuffer;
 		// Normalize line endings on both sides: a Windows/other-app clipboard may hand
 		// back CRLF where the cut buffer holds LF, and an exact compare would then miss

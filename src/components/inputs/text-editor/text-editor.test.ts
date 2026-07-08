@@ -1,7 +1,8 @@
 import { describe, it, expect, afterEach } from 'vitest';
 import { fixture, cleanup, waitForUpdate } from '../../../test-utils.js';
 import './text-editor.js';
-import { mentionToken } from './text-editor.mentions.js';
+import { mentionToken, unescapeMentionLabel, decodeMentionId } from './text-editor.mentions.js';
+import { isSafeHref } from './text-editor.links.js';
 
 type TextEditorEl = HTMLElement & { value: string; updateComplete: Promise<boolean> };
 
@@ -798,5 +799,75 @@ describe('nldd-text-editor', () => {
 		await waitForUpdate(el2);
 		expect(view.state.selection.main.head).toBe(before);
 		cleanup(el2);
+	});
+
+	it('command API and Backspace do not mutate a read-only editor', async () => {
+		const el2 = await fixture<TextEditorEl & { toggleBold(): void; toggleBulletList(): void; toggleQuote(): void }>(
+			'<nldd-text-editor readonly accessible-label="Tekst"></nldd-text-editor>',
+		);
+		el2.value = '- Een\n- Twee';
+		await el2.updateComplete;
+		await waitForUpdate(el2);
+		const original = el2.value;
+		const view = (el2 as unknown as { view: { state: { doc: { length: number } }; dispatch(s: unknown): void; contentDOM: HTMLElement } }).view;
+		// Select everything so the formatting commands have a range to act on.
+		view.dispatch({ selection: { anchor: 0, head: view.state.doc.length } });
+		el2.toggleBold();
+		el2.toggleBulletList();
+		el2.toggleQuote();
+		await waitForUpdate(el2);
+		expect(el2.value).toBe(original); // command API cannot mutate a read-only editor
+		// The Prec.highest Backspace binding (clear list marker) is inert too.
+		view.dispatch({ selection: { anchor: 2 } });
+		view.contentDOM.dispatchEvent(new KeyboardEvent('keydown', { key: 'Backspace', bubbles: true, cancelable: true }));
+		await waitForUpdate(el2);
+		expect(el2.value).toBe(original);
+		cleanup(el2);
+	});
+});
+
+describe('isSafeHref (open-link badge XSS guard)', () => {
+	it('allows relative URLs and the http(s) / mailto / tel allowlist', () => {
+		for (const u of ['/p', '#a', '?q=1', '//host/x', 'page.html', 'https://x.nl', 'http://x.nl', 'mailto:a@b.nl', 'tel:+31']) {
+			expect(isSafeHref(u)).toBe(true);
+		}
+	});
+
+	it('blocks javascript / vbscript / data, incl. control-byte and mid-scheme-whitespace bypasses', () => {
+		const attacks = [
+			'javascript:alert(1)', 'JAVASCRIPT:alert(1)', 'vbscript:x', 'data:text/html,x',
+			String.fromCharCode(1) + 'javascript:alert(1)', // leading control byte (trim keeps it)
+			String.fromCharCode(0) + 'javascript:alert(1)',
+			'java' + String.fromCharCode(9) + 'script:alert(1)', // tab inside the scheme (URL parser strips it)
+			'java' + String.fromCharCode(10) + 'script:alert(1)', // newline inside the scheme
+		];
+		for (const u of attacks) {
+			expect(isSafeHref(u)).toBe(false);
+		}
+	});
+});
+
+describe('mention token escaping', () => {
+	it('round-trips a plain candidate unchanged', () => {
+		expect(mentionToken({ id: '42', label: 'Anouk' })).toBe('[@Anouk](user:42)');
+		expect(unescapeMentionLabel('Anouk')).toBe('Anouk');
+		expect(decodeMentionId('42')).toBe('42');
+	});
+
+	it('neutralises a crafted label and id, and decodes them back losslessly', () => {
+		const label = 'X]  hack](y';
+		const id = 'a) b(c';
+		const token = mentionToken({ id, label });
+		// One mention boundary and one trailing ) — the payload cannot inject a second link.
+		expect(token.startsWith('[@')).toBe(true);
+		expect(token.endsWith(')')).toBe(true);
+		expect(token.split('](user:')).toHaveLength(2);
+		const labelPart = token.slice(2, token.indexOf('](user:'));
+		const idPart = token.slice(token.indexOf('](user:') + '](user:'.length, -1);
+		expect(idPart).not.toContain(')'); // no ) to close the URL destination early
+		expect(idPart).not.toContain('(');
+		// Lossless decode back to the originals.
+		expect(unescapeMentionLabel(labelPart)).toBe(label);
+		expect(decodeMentionId(idPart)).toBe(id);
 	});
 });

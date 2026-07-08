@@ -241,7 +241,12 @@ export class NLDDWindow extends LitElement {
 		// Only our own top-title-bar's dismiss closes the window. A nested component
 		// (nldd-token remove, nldd-banner, nldd-document-tab-bar) fires its own
 		// dismiss inside the window; those must not close it.
-		if (isDismissFromTitleBar(e)) this.hide();
+		if (isDismissFromTitleBar(e)) {
+			// Stop the matched dismiss here so a nested window/sheet's own title-bar
+			// dismiss can't keep bubbling up and also close an outer overlay.
+			e.stopPropagation();
+			this.hide();
+		}
 	};
 
 	override render() {

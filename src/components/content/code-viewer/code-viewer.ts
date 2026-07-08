@@ -314,9 +314,11 @@ export class NLDDCodeViewer extends NLDDCodeMirrorElement {
 	private _updateScrollable(): void {
 		const scroller = this.view?.scrollDOM;
 		if (!scroller) return;
-		// A transient 0-width measure (mid display:none reflow from a scroll-layer
-		// repaint) isn't a real layout — don't strip the a11y attributes over it.
-		if (scroller.clientWidth === 0 && scroller.scrollWidth === 0) return;
+		// A 0-width measure (mid display:none reflow, or before first layout) is never a
+		// trustworthy overflow signal — `scrollWidth > 0` against it would wrongly mark a
+		// hidden viewer scrollable. Bail; a later ResizeObserver/slot tick re-measures
+		// once the width is real.
+		if (scroller.clientWidth === 0) return;
 		const scrollable = !this.wrap && scroller.scrollWidth > scroller.clientWidth;
 		this._isScrollable = scrollable;
 		if (scrollable) {

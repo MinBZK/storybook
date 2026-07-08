@@ -100,8 +100,6 @@ export const tabBarItemStyles = css`
 		--_min-size: var(--semantics-controls-md-min-size);
 		--_block-padding: var(--semantics-controls-md-block-padding);
 		--_inline-padding: var(--semantics-buttons-md-inline-padding);
-		--_icon-only-block-padding: var(--semantics-buttons-md-is-icon-only-inline-padding);
-		--_icon-only-inline-padding: var(--semantics-buttons-md-is-icon-only-inline-padding);
 		--_gap: var(--semantics-buttons-md-gap);
 		--_font: var(--semantics-buttons-md-primary-text-font);
 		--_icon-size: var(--semantics-buttons-md-icon-size);

@@ -66,6 +66,11 @@ function enclosingInline(view: EditorView, pos: number, nodeName: string): Synta
 
 /** Wrap (or, if already wrapped, unwrap) each selection range with `marker`. */
 export function toggleInlineWrap(view: EditorView, marker: string, nodeName: string): void {
+	// CodeMirror's `readOnly` facet only gates its own built-in commands, not a raw
+	// `view.dispatch`, so every editing helper here must refuse a read-only view
+	// itself — otherwise the command API and the Mod-b/i/e/k keymap would mutate a
+	// read-only (or disabled) editor.
+	if (view.state.readOnly) return;
 	const len = marker.length;
 	view.dispatch(view.state.changeByRange((range) => {
 		const wrap = enclosing(view, range.from, nodeName);
@@ -110,6 +115,7 @@ function minimalLineChange(
 }
 
 function mapSelectedLines(view: EditorView, transform: (text: string) => string): void {
+	if (view.state.readOnly) return; // guards toggleHeading/setHeading/toggleBulletList/toggleQuote
 	const { state } = view;
 	const { from, to } = state.selection.main;
 	const first = state.doc.lineAt(from).number;
@@ -175,6 +181,7 @@ const LIST_STRIP_RE = /^(\s*)(?:[-*+]|\d+[.)])\s+/;
  *  marker; `'none'` strips it. Ordered items are numbered within the selection.
  *  Unlike the toggles, this cleanly switches between list types (for a picker). */
 export function setList(view: EditorView, type: 'none' | 'bullet' | 'ordered'): void {
+	if (view.state.readOnly) return;
 	const { state } = view;
 	const { from, to } = state.selection.main;
 	const first = state.doc.lineAt(from).number;
@@ -206,6 +213,7 @@ export function setList(view: EditorView, type: 'none' | 'bullet' | 'ordered'): 
  *  item a valid nested list — 4+ spaces with no parent would parse as an indented
  *  code block — so a first or standalone item (no parent) is left untouched. */
 export function indentListItems(view: EditorView): void {
+	if (view.state.readOnly) return;
 	const { state } = view;
 	const { from, to } = state.selection.main;
 	const first = state.doc.lineAt(from).number;
@@ -265,6 +273,11 @@ export function canOutdentListItem(view: EditorView): boolean {
  *  leaving stray whitespace on items 2, 3, … Returns false (so other handlers run)
  *  unless the caret sits exactly at a list marker's end outside a code block. */
 export function clearListMarkerBackward(view: EditorView): boolean {
+	// Consume Backspace entirely on a read-only editor. Returning false would hand it
+	// to the markdown language's deleteMarkupBackward, which (unlike @codemirror/commands)
+	// does NOT check readOnly and would delete the marker anyway. This binding is
+	// already Prec.highest to sit in front of it, so swallowing here is the fix.
+	if (view.state.readOnly) return true;
 	const { state } = view;
 	const sel = state.selection.main;
 	if (!sel.empty) return false;
@@ -306,6 +319,7 @@ function realLinkAt(view: EditorView, pos: number): SyntaxNode | null {
 }
 
 export function toggleLink(view: EditorView, href = ''): void {
+	if (view.state.readOnly) return;
 	// In a link already → unwrap it (drop the [ ]( ) markers, keep the text).
 	const link = realLinkAt(view, view.state.selection.main.head);
 	if (link) {
@@ -331,6 +345,7 @@ export function toggleLink(view: EditorView, href = ''): void {
 
 /** Wrap the selected lines in a ``` fenced code block, or unwrap if already in one. */
 export function toggleCodeBlock(view: EditorView): void {
+	if (view.state.readOnly) return;
 	const { state } = view;
 	const { from, to } = state.selection.main;
 	const first = state.doc.lineAt(from);

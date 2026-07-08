@@ -446,11 +446,15 @@ export class NLDDComboBox extends LitElement {
 	 *  non-matching typed value by reverting the input to the current value. */
 	public _handleBlur(e: FocusEvent): void {
 		const relatedTarget = e.relatedTarget as Node | null;
-		if (!relatedTarget || !this._menu?.contains(relatedTarget)) {
+		const focusMovedIntoMenu = !!relatedTarget && !!this._menu?.contains(relatedTarget);
+		if (!focusMovedIntoMenu) {
 			this._closeMenu();
 		}
 		if (!this.allowCustom) {
-			this._revertTextToValue();
+			// Don't revert while focus is moving into the menu (a click on a filtered
+			// option): that would reflow the filtered list back to full mid-click. The
+			// selection completes via _handleMenuSelect, which sets text/value itself.
+			if (!focusMovedIntoMenu) this._revertTextToValue();
 			return;
 		}
 		if (this.text !== '' && this.text !== this.value) {

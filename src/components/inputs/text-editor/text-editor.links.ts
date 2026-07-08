@@ -95,9 +95,17 @@ function referenceDefs(state: EditorState): Map<string, string> {
  *  document. A URL with no scheme (relative, `#anchor`, `?query`, `//host`) just
  *  navigates, so it is allowed; a schemed URL must be http(s)/mailto/tel. */
 export function isSafeHref(href: string): boolean {
-	const trimmed = href.trim();
-	if (!/^[a-z][a-z0-9+.-]*:/i.test(trimmed)) return true; // no scheme → relative, safe
-	return /^(?:https?|mailto|tel):/i.test(trimmed);
+	// Read the scheme through the SAME normalisation the URL parser applies, or a
+	// disguised scheme slips through as "relative": the parser strips leading C0
+	// controls + space and removes tab/newline/CR anywhere, so `javascript:`
+	// and `java\tscript:` both resolve to `javascript:` even though the raw string
+	// fails the scheme regex. Drop every control/space char before testing (only for
+	// the safety decision — the real href is untouched); a scheme that survives must
+	// be in the allowlist.
+	// eslint-disable-next-line no-control-regex -- matching control chars is the point: they are the bypass vectors the URL parser strips before resolving the scheme.
+	const normalised = href.replace(/[\u0000-\u0020\u007f-\u009f]/g, '');
+	if (!/^[a-z][a-z0-9+.-]*:/i.test(normalised)) return true; // no scheme → relative, safe
+	return /^(?:https?|mailto|tel):/i.test(normalised);
 }
 
 /** The link's destination, or null for a mention, an unsafe scheme, or a link

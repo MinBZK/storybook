@@ -1,12 +1,15 @@
 /* Reduce FOUC — flash of unstyled / not-yet-upgraded web components.
  *
- * Opt-in: import it once in your app's global scope, e.g.
+ * Bundled into the design system's global stylesheet, so importing
+ * '@nldd/design-system/styles' pulls it in. Also importable on its own:
  *   import '@nldd/design-system/styles/fouc';
  * (or, in an Astro layout, in the frontmatter — it applies to the whole page).
  *
  * Keeps the page hidden until every custom element on it has upgraded (:defined),
  * or a 200ms fallback — whichever comes first, so the page still reveals if a
- * component never loads. Pure CSS, no JS.
+ * component never loads. Note the :defined check is page-wide: ANY undefined
+ * custom element on the page (including a non-NLDD one) holds the page hidden
+ * until it upgrades or the fallback fires. Pure CSS, no JS.
  *
  * Based on https://dev.to/stuffbreaker/reducing-fouc-with-web-components-1jnh
  */

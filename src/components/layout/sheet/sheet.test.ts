@@ -230,6 +230,31 @@ describe('nldd-sheet – dismiss event', () => {
 
 		expect(hideSpy).not.toHaveBeenCalled();
 	});
+
+	it('a nested sheet title-bar dismiss closes only the inner sheet, not the outer', async () => {
+		// Both overlays listen for a bubbling `dismiss`; without stopPropagation the
+		// inner title-bar's dismiss would match the outer sheet too and close both.
+		el = await fixture<NLDDSheet>(`
+			<nldd-sheet>
+				<nldd-sheet class="inner">
+					<nldd-top-title-bar dismiss-text="Sluit"></nldd-top-title-bar>
+				</nldd-sheet>
+			</nldd-sheet>
+		`);
+		await waitForUpdate(el);
+		const inner = el.querySelector('.inner') as NLDDSheet;
+		el.show();
+		inner.show();
+		await waitForUpdate(el);
+
+		const outerHide = vi.spyOn(el, 'hide');
+		const innerHide = vi.spyOn(inner, 'hide');
+		inner.querySelector('nldd-top-title-bar')!
+			.dispatchEvent(new CustomEvent('dismiss', { bubbles: true, composed: true }));
+
+		expect(innerHide).toHaveBeenCalledOnce();
+		expect(outerHide).not.toHaveBeenCalled();
+	});
 });
 
 
