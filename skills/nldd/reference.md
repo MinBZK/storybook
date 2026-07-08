@@ -999,6 +999,7 @@ A hybrid markdown editor built on CodeMirror 6 (via NLDDCodeMirrorElement): the 
 | `font` | `string` | 'sans' (default) \| 'mono' |
 | `accessible-label` | `string` | Accessible label forwarded to the editor. Set automatically by nldd-form-field. |
 | `annotatable` | `boolean` | Enable the annotation overlay (off by default). Annotations only render when this is set. |
+| `translations` | `object` | Override the editor's assistive-tech strings (the open-in-new-tab link badge and the annotation count badge). Unset keys fall back to Dutch. |
 
 **Events**
 
@@ -1099,7 +1100,7 @@ Groups nldd-toggle-button elements and manages selection, keyboard navigation, a
 
 ### `<nldd-token-field>`
 
-A multi-select input that looks like a normal input field: chosen values show as dismissible tokens in a wrapping row, followed by an inline text input that stretches to fill the remaining space and wraps to a new line (growing the field) when it no longer fits. Options are supplied as a slotted nldd-menu, exactly like nldd-combo-box; the filtering/menu wiring is added in a later phase. This first phase is the frame + token layout + value handling.
+A multi-select input that looks like a normal input field: chosen values show as dismissible tokens in a wrapping row, followed by an inline text input that stretches to fill the remaining space and wraps to a new line (growing the field) when it no longer fits. Options are supplied as a slotted nldd-menu, exactly like nldd-combo-box; the menu filters as you type, with a chevron picker button, arrow-key roving across the tokens and ElementInternals form participation.
 
 **Attributes**
 
@@ -1493,7 +1494,7 @@ An overlay component that slides in from the side or bottom of the screen. Based
 | `placement` | `string` | Sheet position: 'left' \| 'right' \| 'bottom' (default: 'right') |
 | `height` | `string` | Custom height for bottom sheets (and for any sheet on sm viewports, where all placements collapse to bottom). Accepts: `'full'` (default — viewport minus top-inset, identical to omitting the attribute), `'fit-content'` (collapse to content size), or any CSS length/percentage (e.g. `'50dvh'`, `'480px'`, `'50%'`). Always clamped to `100dvh - top-inset` so the sheet can't extend past the dismiss-tap area. No effect on side sheets at md+. |
 | `modeless` | `boolean` | Non-modal (no backdrop or focus lock); the sheet is modal by default |
-| `accessible-label` | `string` | Accessible name for the dialog, forwarded as aria-label (default: 'Dialoogvenster') |
+| `accessible-label` | `string` | Accessible name for the dialog, forwarded as aria-label (default: 'Venster') |
 | `width` | `string` | Custom width for side sheets (left/right) as a CSS length (e.g. '480px', '32rem'). Applied from the md breakpoint up; ignored on sm (bottom sheet) and for `placement="bottom"`. Clamped to `100vw - 2 * inset` so the sheet always fits. |
 
 **Slots**
