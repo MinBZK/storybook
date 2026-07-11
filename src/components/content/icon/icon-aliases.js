@@ -460,4 +460,13 @@ export const aliases = {
 	// tree-structure
 	'hierarchy': 'tree-structure',
 	'sitemap': 'tree-structure',
+
+	// lifebuoy
+	'support': 'lifebuoy',
+
+	// network-structure
+	'network': 'network-structure',
+
+	// centralized-structure
+	'centralized-network': 'centralized-structure',
 };
