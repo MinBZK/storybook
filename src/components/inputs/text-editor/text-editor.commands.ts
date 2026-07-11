@@ -242,6 +242,42 @@ export function indentListItems(view: EditorView): void {
 	view.focus();
 }
 
+/** Un-nest the selected list item(s) by one level: the inverse of
+ *  indentListItems. Each item's leading indent drops to that of the nearest
+ *  preceding shallower item (the one it is nested under), or to column 0 when
+ *  there is no shallower parent. Keeps indent and outdent symmetric — one
+ *  outdent exactly reverses one indent. (CodeMirror's generic indentLess removed
+ *  a fixed indent unit instead, so a list indent took two outdents to undo.) */
+export function outdentListItems(view: EditorView): void {
+	if (view.state.readOnly) return;
+	const { state } = view;
+	const { from, to } = state.selection.main;
+	const first = state.doc.lineAt(from).number;
+	const last = state.doc.lineAt(to).number;
+	const changes: { from: number; to: number }[] = [];
+	for (let i = first; i <= last; i++) {
+		const line = state.doc.line(i);
+		const match = line.text.match(LIST_STRIP_RE);
+		if (!match) continue;
+		const indent = match[1].length;
+		if (indent === 0) continue;
+		// The item this one is nested under: the nearest preceding shallower list
+		// item. A blank line is skipped (loose lists); a non-list line ends the
+		// list, so an orphan indent falls back to column 0.
+		let targetIndent = 0;
+		for (let j = i - 1; j >= 1; j--) {
+			const text = state.doc.line(j).text;
+			if (text.trim() === '') continue;
+			const prev = text.match(LIST_STRIP_RE);
+			if (!prev) break;
+			if (prev[1].length < indent) { targetIndent = prev[1].length; break; }
+		}
+		changes.push({ from: line.from, to: line.from + (indent - targetIndent) });
+	}
+	if (changes.length) view.dispatch({ changes });
+	view.focus();
+}
+
 /** Whether the list item at the caret can be nested deeper (it has a preceding
  *  item at the same level to nest under). Drives the indent button's disabled state. */
 export function canIndentListItem(view: EditorView): boolean {

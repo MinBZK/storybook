@@ -61,7 +61,7 @@ import {
 	placeholder as cmPlaceholder,
 } from '@codemirror/view';
 import { Compartment, EditorState, Prec, Transaction, type Extension } from '@codemirror/state';
-import { defaultKeymap, history, historyKeymap, indentLess, undo as cmUndo, redo as cmRedo, undoDepth, redoDepth } from '@codemirror/commands';
+import { defaultKeymap, history, historyKeymap, undo as cmUndo, redo as cmRedo, undoDepth, redoDepth } from '@codemirror/commands';
 import { NLDDCodeMirrorElement } from '../../../utilities/codemirror/codemirror-element.js';
 import { nlddCodeMirrorTheme } from '../../../utilities/codemirror/theme.js';
 import { markdownEditing, mentionRangeAt, mentionRangeEndingAt, mentionRangeStartingAt } from './text-editor.markdown.js';
@@ -73,6 +73,7 @@ import { linkOpenBadge } from './text-editor.links.js';
 import {
 	toggleInlineWrap,
 	indentListItems as cmIndentListItems,
+	outdentListItems as cmOutdentListItems,
 	canIndentListItem as cmCanIndent,
 	canOutdentListItem as cmCanOutdent,
 	toggleHeading as cmToggleHeading,
@@ -470,12 +471,9 @@ export class NLDDTextEditor extends NLDDCodeMirrorElement {
 		if (this.view) cmIndentListItems(this.view);
 	}
 
-	/** Decrease the leading indentation of the selected lines. */
+	/** Un-nest the selected list item(s) by one level — the inverse of indent(). */
 	outdent(): void {
-		if (this.view) {
-			indentLess(this.view);
-			this.view.focus();
-		}
+		if (this.view) cmOutdentListItems(this.view);
 	}
 
 	/** Undo the last change. History is built in, so Cmd/Ctrl+Z works too. */

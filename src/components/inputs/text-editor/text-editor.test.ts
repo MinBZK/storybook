@@ -193,6 +193,21 @@ describe('nldd-text-editor', () => {
 		cleanup(el2);
 	});
 
+	it('one outdent exactly reverses one indent on a nested list item', async () => {
+		const el2 = await withValue('- foo\n- bar');
+		const api = el2 as unknown as { view: { dispatch(spec: unknown): void }; indent(): void; outdent(): void };
+		api.view.dispatch({ selection: { anchor: el2.value.indexOf('bar') } });
+		api.indent();
+		await waitForUpdate(el2);
+		expect(el2.value).toBe('- foo\n  - bar');
+		// A single outdent must return it to column 0, not leave a partial indent.
+		api.view.dispatch({ selection: { anchor: el2.value.indexOf('bar') } });
+		api.outdent();
+		await waitForUpdate(el2);
+		expect(el2.value).toBe('- foo\n- bar');
+		cleanup(el2);
+	});
+
 	it('getState reports the active formats at the selection', async () => {
 		const el2 = await withValue('**vet**');
 		const api = el2 as unknown as { view: { dispatch(spec: unknown): void }; getState(): { active: { bold: boolean; italic: boolean } } };
