@@ -33,8 +33,10 @@
  * @attr {string} supporting-text - Secondary supporting text shown below the title.
  * @attr {string} align - Text alignment: 'left' | 'center' (default: 'left').
  * @attr {string} width - Preferred (fluid) width as a CSS length or percentage; the title grows toward it and shrinks to min-width.
- * @attr {string} min-width - Minimum width as a CSS length (e.g. '200px', default '200px').
- * @attr {string} max-width - Maximum width as a CSS length (e.g. '480px').
+ * @attr {string} min-width - Minimum width as a CSS length (default: '0', so the title shrink-wraps its content and the next element sits against it).
+ * @attr {string} max-width - Maximum width as a CSS length (default: '240px'); the title text truncates with an ellipsis beyond it. The cap is lifted while the title is the sole toolbar element (it then stretches to fill the row).
+ *
+ * @slot action - Optional trailing control (e.g. an xs nldd-icon-button), shown inline after the title and tuned to sit against it. Empty by default.
  */
 import { LitElement } from 'lit';
 import { customElement, property, state } from 'lit/decorators.js';

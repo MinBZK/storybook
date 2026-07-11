@@ -66,4 +66,14 @@ describe('nldd-toolbar-title', () => {
 		expect(style.getPropertyValue('--_title-width')).toBe('');
 		expect(style.getPropertyValue('--_title-max-width')).toBe('');
 	});
+
+	it('renders a slotted action control after the title text', async () => {
+		el = await fixture('<nldd-toolbar-title text="Titel"><button slot="action" id="act">A</button></nldd-toolbar-title>');
+		await waitForUpdate(el);
+		const slot = el.shadowRoot!.querySelector('slot[name="action"]') as HTMLSlotElement | null;
+		expect(slot).not.toBeNull();
+		const assigned = slot!.assignedElements();
+		expect(assigned).toHaveLength(1);
+		expect(assigned[0].id).toBe('act');
+	});
 });
