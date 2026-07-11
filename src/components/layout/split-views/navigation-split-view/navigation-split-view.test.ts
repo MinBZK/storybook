@@ -114,3 +114,55 @@ describe('nldd-navigation-split-view – inspector sheet', () => {
 		expect(el.inspectorAutoHidden).toBe(false);
 	});
 });
+
+
+/* ============================================================
+   Single column + seam dividers
+   ============================================================ */
+
+describe('nldd-navigation-split-view – single column', () => {
+	let el: NLDDNavigationSplitView;
+
+	afterEach(() => { cleanup(el); vi.restoreAllMocks(); });
+
+	it('reports isSingleColumn only when collapsed to full-stack', async () => {
+		el = await fixtureAllPanes(1280);
+		expect(el.isSingleColumn).toBe(false);
+		await setWidth(el, 320);
+		expect(el.isSingleColumn).toBe(true);
+	});
+
+	it('dispatches a bubbling single-column-change event when the column count flips', async () => {
+		el = await fixtureAllPanes(1280);
+		const seen: boolean[] = [];
+		el.addEventListener('nldd-single-column-change', (e) => {
+			seen.push((e as CustomEvent<{ singleColumn: boolean }>).detail.singleColumn);
+		});
+		await setWidth(el, 320);   // → full-stack
+		await setWidth(el, 1280);  // → spatial
+		expect(seen).toEqual([true, false]);
+	});
+
+	it('renders no seam divider when only one pane is visible (full-stack)', async () => {
+		el = await fixture<NLDDNavigationSplitView>(`
+			<nldd-navigation-split-view>
+				<nldd-split-view-pane slot="primary-sidebar" has-content></nldd-split-view-pane>
+				<nldd-split-view-pane slot="main"></nldd-split-view-pane>
+			</nldd-navigation-split-view>
+		`);
+		await setWidth(el, 320);
+		expect(el.classList.contains('full-stack')).toBe(true);
+		expect(el.shadowRoot!.querySelectorAll('nldd-split-view-divider').length).toBe(0);
+	});
+
+	it('renders a seam divider between two visible panes', async () => {
+		el = await fixture<NLDDNavigationSplitView>(`
+			<nldd-navigation-split-view>
+				<nldd-split-view-pane slot="primary-sidebar" has-content></nldd-split-view-pane>
+				<nldd-split-view-pane slot="main" has-content></nldd-split-view-pane>
+			</nldd-navigation-split-view>
+		`);
+		await setWidth(el, 1280);
+		expect(el.shadowRoot!.querySelectorAll('nldd-split-view-divider').length).toBe(1);
+	});
+});

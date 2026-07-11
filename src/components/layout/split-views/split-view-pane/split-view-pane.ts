@@ -24,12 +24,17 @@
  */
 import { LitElement } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
+import { ScrollModeController } from '../../../../utilities/scroll-mode-controller.js';
 import { splitViewPaneStyles } from './split-view-pane.styles.js';
 import { splitViewPaneTemplate } from './split-view-pane.template.js';
 
 @customElement('nldd-split-view-pane')
 export class NLDDSplitViewPane extends LitElement {
 	static override styles = splitViewPaneStyles;
+
+	// Reflects --context-scroll-mode to [data-scroll] so the pane flows (does not
+	// clip) in root-scroll mode, letting a slotted nldd-page stick to the document.
+	private _scrollMode = new ScrollModeController(this);
 
 	@property({ type: Boolean, reflect: true, attribute: 'has-content' })
 	hasContent = false;

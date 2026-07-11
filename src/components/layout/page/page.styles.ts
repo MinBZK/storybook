@@ -131,4 +131,50 @@ export const pageStyles = css`
 		pointer-events: none;
 		height: var(--primitives-space-32);
 	}
+
+
+	/* # Root-scroll mode
+
+	   In root-scroll mode the DOCUMENT scrolls (see nldd-app-view), not the page.
+	   The page stops owning an inner scroll container and its sticky-header/footer
+	   become real position:sticky layers against the document, offset by the
+	   cumulative layer heights above/below (--context-layer-top/bottom, published
+	   by any bars sitting outside the page). The mode is derived upstream and
+	   delivered as --context-scroll-mode; nldd-page reflects it to [data-scroll]
+	   so these (higher-specificity, later) rules win over the nested ones. */
+	:host([data-scroll="root"]) {
+		height: auto;
+		overflow: visible;
+		overscroll-behavior: auto;
+	}
+
+	/* Undo the nested-mode clip — the document is the scroller now. */
+	:host([data-scroll="root"][sticky-header]) {
+		overflow: visible;
+	}
+
+	/* No inner scroller in root mode; content-sized (flex-shrink:0) so the sticky
+	   header/footer's containing block spans the whole document rather than being
+	   squeezed to a definite ancestor height. */
+	:host([data-scroll="root"]) .page,
+	:host([data-scroll="root"]) .page__scroll {
+		overflow: visible;
+		flex-shrink: 0;
+	}
+
+	/* Sticky against the document instead of absolute-over-a-nested-scroller.
+	   Being in normal flow it reserves its own space, so no ResizeObserver
+	   padding is needed. left/right revert to auto: those insets only mattered
+	   for the absolute overlay. */
+	:host([data-scroll="root"][sticky-header]) .page__header {
+		position: sticky;
+		top: var(--context-layer-top, 0px);
+		left: auto;
+		right: auto;
+	}
+
+	/* Footer sticks to the document bottom, above any bottom bars. */
+	:host([data-scroll="root"][sticky-footer]) .page__footer {
+		bottom: var(--context-layer-bottom, 0px);
+	}
 `;

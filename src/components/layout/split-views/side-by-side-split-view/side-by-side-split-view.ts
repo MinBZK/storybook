@@ -17,6 +17,8 @@
  */
 import { LitElement } from 'lit';
 import { customElement, property, state } from 'lit/decorators.js';
+import { SINGLE_COLUMN_CHANGE_EVENT } from '../../../../utilities/scroll-mode-controller.js';
+import type { SingleColumnChangeDetail } from '../../../../utilities/scroll-mode-controller.js';
 import { sideBySideSplitViewStyles } from './side-by-side-split-view.styles.js';
 import { sideBySideSplitViewTemplate } from './side-by-side-split-view.template.js';
 
@@ -62,11 +64,28 @@ export class NLDDSideBySideSplitView extends LitElement {
 		}
 	}
 
+	/**
+	 * True when only one pane fits. nldd-app-view reads this — and listens for the
+	 * `single-column-change` event below — to switch to document-level scroll.
+	 * @internal
+	 */
+	get isSingleColumn(): boolean {
+		return this._visiblePanes <= 1;
+	}
+
 	private _updateVisiblePanes() {
 		if (!this._paneMinWidth) return;
 		const width = this.getBoundingClientRect().width;
 		const fitting = Math.floor(width / this._paneMinWidth);
+		const wasSingleColumn = this.isSingleColumn;
 		this._visiblePanes = Math.min(this.panes, Math.max(1, fitting));
+		if (this.isSingleColumn !== wasSingleColumn) {
+			this.dispatchEvent(new CustomEvent<SingleColumnChangeDetail>(SINGLE_COLUMN_CHANGE_EVENT, {
+				bubbles: true,
+				composed: true,
+				detail: { singleColumn: this.isSingleColumn },
+			}));
+		}
 	}
 
 	override render() {

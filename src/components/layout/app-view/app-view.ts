@@ -15,11 +15,13 @@
  * Cleared when the app-view disconnects.
  *
  * ## Overscroll
- * `overscroll-behavior: none` is set on `document.documentElement` and
- * `document.body` while the app-view is connected. Combined with the
- * `overscroll-behavior: contain` on `nldd-page`'s scroll target, this
- * prevents iOS rubber-band on the viewport when scroll gestures land
- * outside an `nldd-page` (e.g. on a top-bar). Cleared on last disconnect.
+ * In nested (default) scroll mode `overscroll-behavior: none` is set on
+ * `document.documentElement` and `document.body` while the app-view is
+ * connected. Combined with `overscroll-behavior: contain` on `nldd-page`'s
+ * scroll target, this prevents iOS rubber-band on the viewport when scroll
+ * gestures land outside an `nldd-page` (e.g. on a top-bar). In root scroll mode
+ * the document itself is the scroller, so this is lifted to let the native
+ * rubber-band happen. Cleared on last disconnect.
  *
  * @element nldd-app-view
  *
@@ -30,8 +32,15 @@
 import { LitElement, PropertyValues } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
 import { reflectNonDefault } from '../../../utilities/reflect-non-default.js';
+import { ScrollModeController, SINGLE_COLUMN_CHANGE_EVENT } from '../../../utilities/scroll-mode-controller.js';
+import type { ScrollMode, ScrollModeConsumer, ScrollModeProvider } from '../../../utilities/scroll-mode-controller.js';
 import { appViewStyles } from './app-view.styles.js';
 import { appViewTemplate } from './app-view.template.js';
+
+/** A horizontal split view that reports whether it is collapsed to one column. */
+interface SingleColumnSource extends HTMLElement {
+	isSingleColumn: boolean;
+}
 
 // Track every connected app-view as a stack — the top is the current owner
 // of the body-background style. Multiple instances can briefly coexist
@@ -50,35 +59,128 @@ function _currentOwner(): NLDDAppView | null {
 }
 
 @customElement('nldd-app-view')
-export class NLDDAppView extends LitElement {
+export class NLDDAppView extends LitElement implements ScrollModeProvider {
 	static override styles = appViewStyles;
 
 	@property({ reflect: true, converter: reflectNonDefault<'base' | 'tinted'>('base') })
 	background: 'base' | 'tinted' = 'base';
 
+	// Every layout layer (this app-view, the split views, their panes, nested
+	// pages) registers here so the derived scroll mode can be pushed to it.
+	private _scrollConsumers = new Set<ScrollModeConsumer>();
+
+	// Last mode this app-view derived and published, or null when it defers to an
+	// inherited value (no horizontal split view present).
+	private _derivedMode: ScrollMode | null = null;
+
+	// Reflects --context-scroll-mode to [data-scroll] (the CSS flow branch) and,
+	// on change, re-applies the document overscroll policy below. app-view's own
+	// controller registers as a consumer too (closest() matches itself).
+	private _scrollMode = new ScrollModeController(this, () => this._applyOverscroll());
+
+	// ---- ScrollModeProvider ---------------------------------------------------
+
+	/** @internal */
+	registerScrollConsumer(consumer: ScrollModeConsumer): void {
+		this._scrollConsumers.add(consumer);
+		// Hand a newly-registered layer (e.g. a page freshly re-mounted on
+		// navigation) the current derived mode immediately, so it never depends
+		// on a possibly-stale self-read of the inherited var.
+		if (this._derivedMode) consumer.readScrollMode(this._derivedMode);
+	}
+
+	/** @internal */
+	unregisterScrollConsumer(consumer: ScrollModeConsumer): void {
+		this._scrollConsumers.delete(consumer);
+	}
+
+	// The outermost (first in document order) horizontal split view — the one
+	// whose single-column state decides whether the whole app is one scrolling
+	// column. Vertical splitters (stacked-split-view) never collapse horizontally
+	// and don't participate. Returns null for a bare-page app.
+	private _outermostSplitView(): SingleColumnSource | null {
+		return this.querySelector('nldd-navigation-split-view, nldd-side-by-side-split-view');
+	}
+
+	private _onSingleColumnChange = (): void => {
+		this._evaluateScrollMode();
+	};
+
+	/**
+	 * Derive the document-vs-nested scroll mode from the outermost horizontal
+	 * split view and push it to every registered layer. When there is no such
+	 * split view the mode is left unset so it inherits (nested by default, or a
+	 * consumer/media-query override such as the docs' bare page).
+	 */
+	private _evaluateScrollMode(): void {
+		const splitView = this._outermostSplitView();
+		// A split view that hasn't upgraded yet has no getter — wait for the
+		// `single-column-change` event it fires once it has measured itself.
+		if (splitView && typeof splitView.isSingleColumn !== 'boolean') return;
+
+		const next: ScrollMode | null = splitView
+			? (splitView.isSingleColumn ? 'root' : 'nested')
+			: null;
+		if (next === this._derivedMode) return;
+		this._derivedMode = next;
+
+		if (next) {
+			this.style.setProperty('--context-scroll-mode', next);
+		} else {
+			this.style.removeProperty('--context-scroll-mode');
+		}
+		// Push the derived mode to every layer. Pass the value explicitly rather
+		// than letting each layer re-read the CSS var: a plain var change wouldn't
+		// reach the resize-polling layers in the same frame, and a getComputedStyle
+		// read during this synchronous push can be stale for a deeply-nested layer
+		// (the var may not have propagated through an ancestor's pending re-render).
+		// When there is no derived mode (bare-page app) pass undefined so layers
+		// fall back to the inherited var.
+		this._scrollConsumers.forEach(consumer => consumer.readScrollMode(this._derivedMode ?? undefined));
+	}
+
 	override connectedCallback(): void {
 		super.connectedCallback();
 		_connectedStack.push(this);
 		this._writeBodyBackground();
-		document.documentElement.style.overscrollBehavior = 'none';
-		document.body.style.overscrollBehavior = 'none';
+		this._applyOverscroll();
+		// A split view fires this as it collapses to / expands out of one column.
+		this.addEventListener(SINGLE_COLUMN_CHANGE_EVENT, this._onSingleColumnChange);
+		// Best-effort initial derive (covers an already-upgraded split view, e.g.
+		// on re-connection); the split view's first event settles the rest.
+		this._evaluateScrollMode();
 	}
 
 	override disconnectedCallback(): void {
 		super.disconnectedCallback();
+		this.removeEventListener(SINGLE_COLUMN_CHANGE_EVENT, this._onSingleColumnChange);
 		const idx = _connectedStack.indexOf(this);
 		if (idx >= 0) _connectedStack.splice(idx, 1);
 		const owner = _currentOwner();
 		if (owner) {
-			// Re-apply whichever instance is now on top — fixes the case where
-			// a younger instance disconnects first and an older one is still
-			// in the DOM but had its background overwritten. Overscroll value
-			// is the same across instances, no re-apply needed.
+			// Re-apply whichever instance is now on top — fixes the case where a
+			// younger instance disconnects first and an older one is still in the
+			// DOM but had its background/overscroll overwritten.
 			owner._writeBodyBackground();
+			owner._applyOverscroll();
 		} else {
 			document.body.style.removeProperty('background-color');
 			document.documentElement.style.removeProperty('overscroll-behavior');
 			document.body.style.removeProperty('overscroll-behavior');
+		}
+	}
+
+	// Nested mode pins the viewport (no rubber-band on gestures outside an
+	// nldd-page); root mode lets the document rubber-band natively. Only the
+	// current owner writes this shared document-level style.
+	private _applyOverscroll(): void {
+		if (_currentOwner() !== this) return;
+		if (this._scrollMode.mode === 'root') {
+			document.documentElement.style.removeProperty('overscroll-behavior');
+			document.body.style.removeProperty('overscroll-behavior');
+		} else {
+			document.documentElement.style.overscrollBehavior = 'none';
+			document.body.style.overscrollBehavior = 'none';
 		}
 	}
 

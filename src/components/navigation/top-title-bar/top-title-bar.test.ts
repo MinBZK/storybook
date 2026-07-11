@@ -2,6 +2,7 @@ import { describe, it, expect, afterEach, vi } from 'vitest';
 import { fixture, cleanup, waitForUpdate } from '../../../test-utils.js';
 import type { NLDDTopTitleBar } from './top-title-bar.js';
 import './top-title-bar.js';
+import '../../layout/page/page.js';
 
 
 /* ============================================================
@@ -246,5 +247,65 @@ describe('nldd-top-title-bar – is-compact', () => {
 		expect(removeSpy).toHaveBeenCalled();
 		removeSpy.mockRestore();
 		cleanup(container);
+	});
+});
+
+
+/* ============================================================
+   collapse-anchor — measured against the bar (root-scroll safe)
+   ============================================================ */
+
+describe('nldd-top-title-bar – collapse against the bar', () => {
+	let page: HTMLElement;
+	let bar: NLDDTopTitleBar;
+
+	afterEach(() => { if (page) cleanup(page); vi.restoreAllMocks(); });
+
+	async function setup() {
+		page = await fixture<HTMLElement>(`
+			<nldd-page>
+				<nldd-top-title-bar slot="header" text="Titel" collapse-anchor="anchor"></nldd-top-title-bar>
+				<h1 id="anchor">Titel</h1>
+			</nldd-page>
+		`);
+		bar = page.querySelector('nldd-top-title-bar')!;
+		await waitForUpdate(bar);
+		return bar;
+	}
+
+	it('compacts by comparing the anchor to the bar top, not the page top', async () => {
+		bar = await setup();
+		const anchor = (bar as unknown as { _anchorElement: HTMLElement })._anchorElement;
+		const onScroll = () => (bar as unknown as { _onScroll(): void })._onScroll();
+
+		// The bar is the sticky header line at the viewport top; the page element
+		// itself sits lower (in root-scroll it scrolls away under the bar). Old
+		// code compared the anchor to the page top and would compact far too early.
+		vi.spyOn(bar, 'getBoundingClientRect').mockReturnValue({ top: 0 } as DOMRect);
+		vi.spyOn(page, 'getBoundingClientRect').mockReturnValue({ top: 100 } as DOMRect);
+
+		// Anchor still below the bar → expanded (would be compact against page top).
+		const anchorRect = vi.spyOn(anchor, 'getBoundingClientRect').mockReturnValue({ top: 40 } as DOMRect);
+		onScroll();
+		expect(bar.classList.contains('is-compact')).toBe(false);
+
+		// Anchor scrolled up to the bar top → compact.
+		anchorRect.mockReturnValue({ top: -10 } as DOMRect);
+		onScroll();
+		expect(bar.classList.contains('is-compact')).toBe(true);
+	});
+
+	it('re-points its scroll listener when the page flips scroll mode', async () => {
+		bar = await setup();
+		const barInternals = bar as unknown as { _activeScrollTarget: EventTarget | null };
+
+		// Page switches to root-scroll: its scroll event target becomes `window`
+		// (where viewport scroll actually fires), not document.scrollingElement.
+		vi.spyOn(page as unknown as { scrollEventTarget: EventTarget }, 'scrollEventTarget', 'get').mockReturnValue(window);
+		page.setAttribute('data-scroll', 'root');
+
+		// Let the bar's MutationObserver on [data-scroll] fire.
+		await new Promise((resolve) => setTimeout(resolve, 0));
+		expect(barInternals._activeScrollTarget).toBe(window);
 	});
 });

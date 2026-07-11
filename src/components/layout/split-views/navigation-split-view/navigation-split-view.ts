@@ -35,12 +35,18 @@
 import { LitElement } from 'lit';
 import { customElement, property, state } from 'lit/decorators.js';
 import { isPointerMode } from '../../../../utilities/input-modality.js';
+import { ScrollModeController, SINGLE_COLUMN_CHANGE_EVENT } from '../../../../utilities/scroll-mode-controller.js';
+import type { SingleColumnChangeDetail } from '../../../../utilities/scroll-mode-controller.js';
 import { navigationSplitViewStyles } from './navigation-split-view.styles.js';
 import { navigationSplitViewTemplate } from './navigation-split-view.template.js';
 
 @customElement('nldd-navigation-split-view')
 export class NLDDNavigationSplitView extends LitElement {
 	static override styles = navigationSplitViewStyles;
+
+	// Reflects --context-scroll-mode to [data-scroll] so the row wrapper and the
+	// visible full-stack pane flow (do not clip) in root-scroll mode.
+	private _scrollMode = new ScrollModeController(this);
 
 	@property({ type: Boolean, reflect: true, attribute: 'inspector-auto-hidden' })
 	inspectorAutoHidden = false;
@@ -128,6 +134,16 @@ export class NLDDNavigationSplitView extends LitElement {
 
 	private get _hasInspector(): boolean {
 		return this.querySelector(':scope > [slot="inspector"]') !== null;
+	}
+
+	/**
+	 * True when collapsed to a single visible pane (full-stack). nldd-app-view
+	 * reads this — and listens for the `single-column-change` event below — to
+	 * switch the whole app to document-level scroll.
+	 * @internal
+	 */
+	get isSingleColumn(): boolean {
+		return this._mode === 'full-stack';
 	}
 
 	_paneHasContent(slot: string): boolean {
@@ -265,8 +281,16 @@ export class NLDDNavigationSplitView extends LitElement {
 		this._showInspector = inspector && !this.inspectorAsSheet;
 
 		this.inspectorAutoHidden = this._hasInspector && !inspector;
+		const wasSingleColumn = this._mode === 'full-stack';
 		this._mode = mode;
 		this.classList.toggle('full-stack', mode === 'full-stack');
+		if (this.isSingleColumn !== wasSingleColumn) {
+			this.dispatchEvent(new CustomEvent<SingleColumnChangeDetail>(SINGLE_COLUMN_CHANGE_EVENT, {
+				bubbles: true,
+				composed: true,
+				detail: { singleColumn: this.isSingleColumn },
+			}));
+		}
 
 		this._updatePaneBackButtons();
 	}
