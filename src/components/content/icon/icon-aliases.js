@@ -469,4 +469,7 @@ export const aliases = {
 
 	// centralized-structure
 	'centralized-network': 'centralized-structure',
+
+	// person-circle-badge-plus
+	'new-account': 'person-circle-badge-plus',
 };
