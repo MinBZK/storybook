@@ -154,7 +154,7 @@ export const aliases = {
 	// file
 	'document': 'file',
 	// file-text
-	'file': 'file-text',
+	'text-document': 'file-text',
 
 	// file-text-stack
 	'documents': 'file-text-stack',
@@ -261,6 +261,9 @@ export const aliases = {
 	'attachment': 'paperclip',
 	'attach': 'paperclip',
 
+	// paragraph-sign
+	'paragraph': 'paragraph-sign',
+
 	// parking-sign-square
 	'parking': 'parking-sign-square',
 
@@ -357,8 +360,8 @@ export const aliases = {
 	'day': 'sun',
 	'light-mode': 'sun',
 
-	// table-cells-badge-arrow-down
-	'download-table': 'table-cells-badge-arrow-down',
+	// rectangle-split-2x3-badge-arrow-down
+	'download-table': 'rectangle-split-2x3-badge-arrow-down',
 
 	// tag
 	'label': 'tag',
@@ -428,8 +431,9 @@ export const aliases = {
 	// shopping-cart
 	'cart': 'shopping-cart',
 
-	// table-cells
-	'table': 'table-cells',
+	// rectangle-split-2x3
+	'table': 'rectangle-split-2x3',
+	'table-cells': 'rectangle-split-2x3',
 
 	// square-and-arrow-down
 	'save': 'square-and-arrow-down',
@@ -455,4 +459,5 @@ export const aliases = {
 
 	// tree-structure
 	'hierarchy': 'tree-structure',
+	'sitemap': 'tree-structure',
 };
