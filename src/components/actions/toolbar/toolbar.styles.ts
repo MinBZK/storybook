@@ -252,11 +252,11 @@ export const toolbarTitleStyles = css`
 
 	/* Sole toolbar element: let the text fill the row instead of capping at
 	   --_title-max-width, matching the pre-fit-content stretch behaviour. */
-	:host([solo-fluid]) .toolbar__title-text {
+	:host([solo-fluid]) .toolbar__title-group {
 		max-width: none;
 	}
 
-	:host([align="center"]) .toolbar__title-text {
+	:host([align="center"]) .toolbar__title-group {
 		align-items: center;
 	}
 
@@ -269,7 +269,7 @@ export const toolbarTitleStyles = css`
 
 	/* The title + subtitle column: the fit-content-capped, clipping part. The
 	   action slot sits outside this cap so the control is never truncated. */
-	.toolbar__title-text {
+	.toolbar__title-group {
 		display: flex;
 		min-width: 0;
 		max-width: var(--_title-max-width);
