@@ -41,6 +41,13 @@ export const splitViewPaneStyles = css`
 		--context-back-button-display: none;
 	}
 
+	/* Root-scroll mode — flow instead of clipping (see ScrollModeController /
+	   --context-scroll-mode) so a slotted nldd-page's sticky layers can stick
+	   against the document rather than this pane. */
+	:host([data-scroll="root"]) {
+		height: auto;
+	}
+
 
 	/* # Block */
 
@@ -62,6 +69,10 @@ export const splitViewPaneStyles = css`
 		flex-basis: auto;
 	}
 
+	:host([data-scroll="root"]) .split-view-pane {
+		overflow: visible;
+	}
+
 
 	/* # Elements */
 
@@ -70,18 +81,6 @@ export const splitViewPaneStyles = css`
 		flex-grow: 1;
 		flex-shrink: 1;
 		flex-basis: auto;
-	}
-
-
-	/* # Root-scroll mode — flow instead of clipping (see ScrollModeController /
-	   --context-scroll-mode) so a slotted nldd-page's sticky layers can stick
-	   against the document rather than this pane. */
-	:host([data-scroll="root"]) {
-		height: auto;
-	}
-
-	:host([data-scroll="root"]) .split-view-pane {
-		overflow: visible;
 	}
 
 	/* Slotted page is a COLUMN item here: keep its content height on tall pages
