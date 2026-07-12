@@ -191,6 +191,29 @@ describe('nldd-token-field', () => {
 		expect(el.values).toEqual([]);
 	});
 
+	// — Commit on blur ————————————————————————————————————————————————————————————
+
+	it('commits free-typed text on blur (allow-custom)', async () => {
+		el = await fixture<TokenFieldEl>('<nldd-token-field accessible-label="E-mail" allow-custom></nldd-token-field>');
+		await waitForUpdate(el);
+		const input = el.shadowRoot!.querySelector<HTMLInputElement>('.token-field__input')!;
+		await typeInto(input, 'a@x.com');
+		el._handleBlur(new FocusEvent('blur'));
+		await waitForUpdate(el);
+		expect(el.values).toEqual(['a@x.com']);
+		expect(input.value).toBe('');
+	});
+
+	it('does not commit on blur without allow-custom', async () => {
+		el = await withMenu(); // options only, no allow-custom
+		await waitForUpdate(el);
+		const input = el.shadowRoot!.querySelector<HTMLInputElement>('.token-field__input')!;
+		await typeInto(input, 'freeform');
+		el._handleBlur(new FocusEvent('blur'));
+		await waitForUpdate(el);
+		expect(el.values).toEqual([]);
+	});
+
 	// — Picker button ——————————————————————————————————————————————————————————
 
 	it('renders a picker button and toggles the menu with it', async () => {
