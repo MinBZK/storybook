@@ -474,5 +474,5 @@ export const aliases = {
 	'new-account': 'person-circle-badge-plus',
 
 	// wheat
-	'harvester': 'wheat',
+	'harvest': 'wheat',
 };
