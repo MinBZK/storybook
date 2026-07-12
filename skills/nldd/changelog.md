@@ -17,7 +17,8 @@ here; consult the commit history if you need that level of detail.
 
 ### Highlights
 
-- **`nldd-text-editor` and `nldd-token-field` refinements.** The editor's Markdown bullet continuation now fires only after a real `- ` (trailing space and all) and indent/outdent are symmetric; the token field no longer loses a value typed without a delimiter, committing it as a token on blur.
+- **`nldd-text-editor` Markdown refinements.** Bullet continuation now fires only after a real `- ` (trailing space and all), and indent/outdent are symmetric.
+- **`nldd-token-field` keeps undelimited input.** A value typed without pressing `Enter` or comma is no longer dropped — it commits as a token on blur (with `allow-custom`).
 - **`nldd-app-view` document scroll mode.** The layout can hand page scrolling to the document (root) instead of an inner pane (nested), so iOS rubber-band and the collapsing Safari toolbar behave natively.
 - **New icons.** `heading-1`…`heading-6`, `paragraph-sign`, `lifebuoy`, `network-structure`, `stack-text`, `wheat` (`harvest`) and `person-circle-badge-plus` (`new-account`).
 
