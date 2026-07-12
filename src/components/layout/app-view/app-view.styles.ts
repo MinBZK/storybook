@@ -27,6 +27,15 @@ export const appViewStyles = css`
 		--_background-color: var(--semantics-surfaces-tinted-background-color);
 	}
 
+	/* Root-scroll mode — the DOCUMENT scrolls (see ScrollModeController +
+	   --context-scroll-mode). The app-view is the outermost DS layer, so it grows
+	   with its content (min-height fills the viewport for short pages), letting a
+	   descendant nldd-page's sticky layers stick against the document. */
+	:host([data-scroll="root"]) {
+		height: auto;
+		min-height: 100dvh;
+	}
+
 
 	/* # Block */
 
@@ -41,6 +50,12 @@ export const appViewStyles = css`
 		flex-basis: 0;
 	}
 
+	/* Root-scroll mode — row axis untouched (this is a column block but a row item
+	   of the host); only stop clipping so descendant sticky layers can escape. */
+	:host([data-scroll="root"]) .app-view {
+		overflow: visible;
+	}
+
 
 	/* # Elements */
 
@@ -51,28 +66,10 @@ export const appViewStyles = css`
 		flex-basis: 0;
 	}
 
-
-	/* # Root-scroll mode
-
-	   The DOCUMENT scrolls (see ScrollModeController + --context-scroll-mode).
-	   The app-view is the outermost DS layer, so it grows with its content
-	   (min-height fills the viewport for short pages) and stops clipping, letting
-	   a descendant nldd-page's sticky layers stick against the document. */
-	:host([data-scroll="root"]) {
-		height: auto;
-		min-height: 100dvh;
-	}
-
-	/* Row axis untouched (this is a column block but a row item of the host);
-	   only stop clipping so descendant sticky layers can escape. */
-	:host([data-scroll="root"]) .app-view {
-		overflow: visible;
-	}
-
-	/* The slotted layer (bar/split-view or page) is a COLUMN item here, so
-	   flex-basis/flex-shrink govern its height: fill the viewport when short
-	   (flex-grow), keep its own height when taller (flex-shrink:0), so a
-	   definite ancestor height can't squeeze it and cap a descendant sticky
+	/* Root-scroll mode — the slotted layer (bar/split-view or page) is a COLUMN
+	   item here, so flex-basis/flex-shrink govern its height: fill the viewport
+	   when short (flex-grow), keep its own height when taller (flex-shrink:0), so
+	   a definite ancestor height can't squeeze it and cap a descendant sticky
 	   layer's range. */
 	:host([data-scroll="root"]) ::slotted(*) {
 		flex-basis: auto;
