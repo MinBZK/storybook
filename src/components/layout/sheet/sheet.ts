@@ -8,6 +8,10 @@
  * On small (sm) viewports the sheet always renders as a bottom sheet,
  * regardless of the configured placement.
  *
+ * Render the sheet at the document root (teleport/portal it to `document.body`),
+ * never inside a split view's content flow: as a slotted flex child it would steal
+ * pane height (see `nldd-split-view-pane`).
+ *
  * @element nldd-sheet
  *
  * @attr {string}  placement        - Sheet position: 'left' | 'right' | 'bottom' (default: 'right')

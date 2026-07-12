@@ -14,6 +14,15 @@
  * Set `background="tinted"` on a pane to give it a tinted background independently of sibling panes.
  * Descendants such as `nldd-page` read `--context-parent-background-color` automatically.
  *
+ * ## Slotted content
+ * A pane stretches its slotted content to fill it (`::slotted(*) { flex-grow: 1 }`),
+ * so slot only layout content here. Overlays (`nldd-sheet`, popovers, dialogs,
+ * menus) belong at the document root — teleport/portal them to `document.body`.
+ * Do not leave an overlay as a light-DOM sibling of a split view: it gets slotted
+ * into the main pane and becomes an extra flex-grow child that steals pane height,
+ * so in document-scroll (root) mode a short page's sticky footer floats mid-screen
+ * instead of docking.
+ *
  * @element nldd-split-view-pane
  *
  * @attr {boolean} has-content - The pane has content (default: false)
