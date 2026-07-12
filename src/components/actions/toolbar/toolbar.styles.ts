@@ -217,7 +217,7 @@ export const toolbarTitleStyles = css`
 	:host {
 		--_title-group-min-width: 0px;
 		--_title-width: auto;
-		--_title-max-width: 240px;
+		--_title-max-width: var(--primitives-area-240);
 		--_title-group-height: var(--semantics-controls-md-min-size);
 		--_title-font: var(--primitives-font-body-lg-medium-flat);
 		--_subtitle-font: var(--primitives-font-body-xs-regular-flat);
