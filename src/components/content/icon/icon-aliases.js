@@ -86,8 +86,8 @@ export const aliases = {
 	// circle-dashed
 	'icon-placeholder': 'circle-dashed',
 
-	// clipboard-rectangle
-	'paste': 'clipboard-rectangle',
+	// clipboard-square
+	'paste': 'clipboard-square',
 
 	// clock
 	'time': 'clock',
