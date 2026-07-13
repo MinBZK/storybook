@@ -48,6 +48,46 @@ describe('nldd-page', () => {
 		expect(scroll.style.paddingTop).not.toBe('');
 	});
 
+	describe('root scroll mode', () => {
+		it('reflects --context-scroll-mode: root to [data-scroll] and targets the document scroller', async () => {
+			el = await fixture('<nldd-page sticky-header style="--context-scroll-mode: root;"></nldd-page>');
+			await waitForUpdate(el);
+			expect(el.dataset.scroll).toBe('root');
+			const page = el as unknown as { scrollTarget: HTMLElement };
+			expect(page.scrollTarget).toBe(document.scrollingElement);
+		});
+
+		it('exposes window as the scrollEventTarget in root mode (viewport scroll fires there, not on document.scrollingElement)', async () => {
+			el = await fixture('<nldd-page sticky-header style="--context-scroll-mode: root;"></nldd-page>');
+			await waitForUpdate(el);
+			const page = el as unknown as { scrollEventTarget: EventTarget };
+			expect(page.scrollEventTarget).toBe(window);
+		});
+
+		it('exposes the inner scroll wrapper as the scrollEventTarget in nested mode', async () => {
+			el = await fixture('<nldd-page sticky-header></nldd-page>');
+			await waitForUpdate(el);
+			const page = el as unknown as { scrollEventTarget: EventTarget };
+			expect(page.scrollEventTarget).toBe(el.shadowRoot!.querySelector('.page__scroll'));
+		});
+
+		it('defaults to nested (no --context-scroll-mode): scrollTarget is the inner wrapper', async () => {
+			el = await fixture('<nldd-page sticky-header></nldd-page>');
+			await waitForUpdate(el);
+			expect(el.dataset.scroll).not.toBe('root');
+			const page = el as unknown as { scrollTarget: HTMLElement };
+			expect(page.scrollTarget).toBe(el.shadowRoot!.querySelector('.page__scroll'));
+		});
+
+		it('does not pad the scroll wrapper in root mode (the sticky header sits in flow)', async () => {
+			el = await fixture('<nldd-page sticky-header style="--context-scroll-mode: root;"><div slot="header" style="height:48px;">H</div></nldd-page>');
+			await waitForUpdate(el);
+			await new Promise(r => setTimeout(r, 100));
+			const scroll = el.shadowRoot!.querySelector('.page__scroll') as HTMLElement;
+			expect(scroll.style.paddingTop).toBe('');
+		});
+	});
+
 	describe('is-last main slot marker', () => {
 		it('marks the last visible main child with is-last', async () => {
 			el = await fixture(`

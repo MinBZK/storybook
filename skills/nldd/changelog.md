@@ -15,6 +15,32 @@ the type of conventional-commit determines the release. Conventional types
 `chore`, `docs`, `ci`, `style`, `test`, `build` are intentionally omitted
 here; consult the commit history if you need that level of detail.
 
+### Highlights
+
+- **`nldd-text-editor` Markdown refinements.** Indent and outdent are symmetric (one outdent exactly reverses one indent), and ordered lists inside a blockquote are renumbered in sequence like any list.
+- **`nldd-token-field` keeps undelimited input.** A value typed without pressing `Enter` or comma is no longer dropped — it commits as a token on blur (with `allow-custom`).
+- **`nldd-app-view` document scroll mode.** The layout can hand page scrolling to the document (root) instead of an inner pane (nested), so iOS rubber-band and the collapsing Safari toolbar behave natively.
+- **New icons.** `heading-1`…`heading-6`, `paragraph-sign`, `lifebuoy`, `network-structure`, `stack-text`, `wheat` (`harvest`) and `person-circle-badge-plus` (`new-account`).
+
+### Added
+
+- **Icons** — `heading-1`…`heading-6`, `paragraph-sign`, `lifebuoy`, `network-structure`, `stack-text`, `wheat` and `person-circle-badge-plus`, with `harvest` and `new-account` aliases.
+
+### Changed
+
+- **`nldd-token-field`** — free-typed text now commits as a token on blur (with `allow-custom`), so a value typed without pressing `Enter` or comma is no longer dropped when focus leaves the field.
+- **`nldd-toolbar`** — the title can size to `fit-content` with an action slot beside it.
+- **`nldd-app-view`** — derives a document-level scroll mode (root vs nested) so the document can own iOS rubber-band and Safari-toolbar scrolling instead of an inner pane.
+- **Icons renamed** (old names kept as aliases, so nothing breaks): `centralized-network` → `centralized-structure`, `table-cells` → `rectangle-split-2x3`.
+
+### Breaking
+
+- **`clipboard-rectangle` icon renamed to `clipboard-square`** — the `paste` icon is reshaped from a rectangle to a square, and the old name is *not* kept as an alias, so `icon="clipboard-rectangle"` no longer resolves. Switch to `clipboard-square`; the `paste` alias already points to it.
+
+### Fixed
+
+- **`nldd-text-editor`** — indent and outdent are symmetric (one outdent exactly reverses one indent), and ordered lists inside a blockquote are renumbered in sequence like any list (so a quoted `> 4.` isn't left as a misleading stray number that renders as 1).
+
 ## <small>0.8.65 (2026-07-08)</small>
 
 * feat: CodeMirror text/code editors + viewer, token-field, FOUC guard, flatter surfaces & fixes (#136 ([e490366](https://github.com/MinBZK/storybook/commit/e490366)), closes [#136](https://github.com/MinBZK/storybook/issues/136)

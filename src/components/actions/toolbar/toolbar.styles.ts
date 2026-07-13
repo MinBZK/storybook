@@ -215,24 +215,22 @@ export const toolbarTitleStyles = css`
 	/* # Host */
 
 	:host {
-		--_title-group-min-width: 200px;
+		--_title-group-min-width: 0px;
 		--_title-width: auto;
-		--_title-max-width: none;
+		--_title-max-width: var(--primitives-area-240);
 		--_title-group-height: var(--semantics-controls-md-min-size);
 		--_title-font: var(--primitives-font-body-lg-medium-flat);
 		--_subtitle-font: var(--primitives-font-body-xs-regular-flat);
+		--_action-gap: var(--primitives-space-8);
 
 		${inheritedTextReset}
 		display: inline-flex;
 		min-width: var(--_title-group-min-width);
-		max-width: var(--_title-max-width);
 		height: var(--_title-group-height);
-		overflow: hidden;
-		flex-direction: column;
+		flex-direction: row;
 		flex-shrink: 1;
 		flex-basis: var(--_title-width);
-		justify-content: center;
-		align-items: flex-start;
+		align-items: center;
 	}
 
 	:host([size="sm"]) {
@@ -252,7 +250,13 @@ export const toolbarTitleStyles = css`
 		flex-basis: 0;
 	}
 
-	:host([align="center"]) {
+	/* Sole toolbar element: let the text fill the row instead of capping at
+	   --_title-max-width, matching the pre-fit-content stretch behaviour. */
+	:host([solo-fluid]) .toolbar__title-group {
+		max-width: none;
+	}
+
+	:host([align="center"]) .toolbar__title-group {
 		align-items: center;
 	}
 
@@ -262,6 +266,26 @@ export const toolbarTitleStyles = css`
 
 
 	/* # Elements */
+
+	/* The title + subtitle column: the fit-content-capped, clipping part. The
+	   action slot sits outside this cap so the control is never truncated. */
+	.toolbar__title-group {
+		display: flex;
+		min-width: 0;
+		max-width: var(--_title-max-width);
+		flex-direction: column;
+		justify-content: center;
+		align-items: flex-start;
+		overflow: hidden;
+	}
+
+	/* Optional trailing action (e.g. an xs nldd-icon-button), tuned to sit
+	   against the title. A margin (not a host gap) means an empty slot adds no
+	   space; flex-shrink:0 keeps it full-size while the title text truncates. */
+	::slotted([slot="action"]) {
+		flex-shrink: 0;
+		margin-inline-start: var(--_action-gap);
+	}
 
 	/* text-align lives on the text elements, not :host: the inheritedTextReset on
 	   :host locks text-align to start, so a host-level override would need

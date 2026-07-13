@@ -36,6 +36,7 @@ import { customElement, property, state } from 'lit/decorators.js';
 import { barSplitViewStyles } from './bar-split-view.styles.js';
 import { barSplitViewTemplate } from './bar-split-view.template.js';
 import { breakpoints } from '../../../../assets/styles/breakpoints.js';
+import { ScrollModeController } from '../../../../utilities/scroll-mode-controller.js';
 
 const smMaxPx = parseInt(breakpoints.smMax);
 const mdMaxPx = parseInt(breakpoints.mdMax);
@@ -46,6 +47,10 @@ type BreakpointOrUnmeasured = Breakpoint | null;
 @customElement('nldd-bar-split-view')
 export class NLDDBarSplitView extends LitElement {
 	static override styles = barSplitViewStyles;
+
+	// Reflects --context-scroll-mode to [data-scroll]; on change, re-computes the
+	// sticky-bar offsets below.
+	private _scrollMode = new ScrollModeController(this, () => this._updateLayerOffsets());
 
 	@property({ type: String, reflect: true })
 	background: 'inherit' | 'base' | 'tinted' = 'inherit';
@@ -73,6 +78,9 @@ export class NLDDBarSplitView extends LitElement {
 				this._currentBreakpoint = bp;
 				this.requestUpdate();
 			}
+			// Bar heights (and thus the published layer offsets) can change on any
+			// resize; in root mode the flowing host resizes with them.
+			this._updateLayerOffsets();
 		});
 		this._resizeObserver.observe(this);
 	}
@@ -127,6 +135,52 @@ export class NLDDBarSplitView extends LitElement {
 			return aVal - bVal;
 		});
 	}
+
+	override updated(): void {
+		// Re-apply after every render — the bar wrappers are re-created, so their
+		// inline sticky insets would otherwise be lost.
+		this._updateLayerOffsets();
+	}
+
+	// In root-scroll mode, stack the bars as sticky layers: each top bar sticks
+	// below the ones above it, each bottom bar above the ones below it, and the
+	// cumulative heights are published as --context-layer-top/bottom on the main
+	// so a descendant nldd-page's sticky header/footer stack against them.
+	private _updateLayerOffsets = (): void => {
+		const block = this.shadowRoot?.querySelector<HTMLElement>('.bar-split-view') ?? null;
+		const main = block?.querySelector<HTMLElement>('.bar-split-view__main') ?? null;
+		if (!block || !main) return;
+		const children = Array.from(block.children) as HTMLElement[];
+		const mainIndex = children.indexOf(main);
+
+		if (this._scrollMode.mode !== 'root') {
+			children.forEach(el => { el.style.top = ''; el.style.bottom = ''; });
+			main.style.removeProperty('--context-layer-top');
+			main.style.removeProperty('--context-layer-bottom');
+			return;
+		}
+
+		// Everything above main sticks to the top and stacks; everything below
+		// sticks to the bottom. Dividers are included, so they ride with their bar
+		// and count toward the offset. Base offsets are inherited from any
+		// bars/app-view above this one (px values, so nested bars compose).
+		const cs = getComputedStyle(this);
+		let top = parseFloat(cs.getPropertyValue('--context-layer-top')) || 0;
+		for (let i = 0; i < mainIndex; i++) {
+			children[i].style.top = `${top}px`;
+			children[i].style.bottom = '';
+			top += children[i].offsetHeight;
+		}
+		main.style.setProperty('--context-layer-top', `${top}px`);
+
+		let bottom = parseFloat(cs.getPropertyValue('--context-layer-bottom')) || 0;
+		for (let i = children.length - 1; i > mainIndex; i--) {
+			children[i].style.bottom = `${bottom}px`;
+			children[i].style.top = '';
+			bottom += children[i].offsetHeight;
+		}
+		main.style.setProperty('--context-layer-bottom', `${bottom}px`);
+	};
 
 	override render() {
 		return barSplitViewTemplate(this);

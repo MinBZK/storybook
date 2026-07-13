@@ -38,6 +38,14 @@ export const navigationSplitViewStyles = css`
 		--_background-color: var(--context-parent-background-color);
 	}
 
+	/* Root-scroll mode: flow instead of clipping (see ScrollModeController /
+	   --context-scroll-mode). Reached in full-stack (one visible pane), so the row
+	   wrapper and the visible pane stop clipping and let a slotted nldd-page stick
+	   against the document. */
+	:host([data-scroll="root"]) {
+		height: auto;
+	}
+
 
 	/* # Keyframes */
 
@@ -85,6 +93,15 @@ export const navigationSplitViewStyles = css`
 		flex-basis: 0;
 	}
 
+	/* Root-scroll mode: row-axis wrappers — flex-basis/flex-shrink here are the
+	   WIDTH (row main axis), so leave them at their nested values; overriding them
+	   stops the panes shrinking to the viewport and the split-view never stacks.
+	   Only stop clipping so a descendant page's sticky layers escape. Their height
+	   comes from the cross-axis stretch of the content-sized main column above. */
+	:host([data-scroll="root"]) .navigation-split-view {
+		overflow: visible;
+	}
+
 
 	/* # Elements */
 
@@ -106,6 +123,11 @@ export const navigationSplitViewStyles = css`
 		flex-shrink: 0;
 	}
 
+	:host([data-scroll="root"]) .navigation-split-view__primary-sidebar-pane,
+	:host([data-scroll="root"]) .navigation-split-view__secondary-sidebar-pane {
+		overflow: visible;
+	}
+
 	.navigation-split-view__main-pane {
 		display: flex;
 		min-width: var(--_main-min-width);
@@ -115,6 +137,10 @@ export const navigationSplitViewStyles = css`
 		flex-grow: 1;
 		flex-shrink: 1;
 		flex-basis: 0;
+	}
+
+	:host([data-scroll="root"]) .navigation-split-view__main-pane {
+		overflow: visible;
 	}
 
 	/* Full-stack: the single visible pane fills the space, no minimum */
@@ -318,5 +344,13 @@ export const navigationSplitViewStyles = css`
 		flex-grow: 1;
 		flex-shrink: 1;
 		flex-basis: 0;
+	}
+
+	/* Root-scroll mode: slotted pane content is a COLUMN item of the pane: govern
+	   its height so it fills a short viewport (flex-grow) but keeps its own height
+	   when taller (flex-shrink:0), rather than collapsing to a 0 basis. */
+	:host([data-scroll="root"]) ::slotted(*) {
+		flex-basis: auto;
+		flex-shrink: 0;
 	}
 `;

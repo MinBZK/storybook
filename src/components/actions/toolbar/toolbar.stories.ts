@@ -164,6 +164,74 @@ export const WithTitleGroup = {
 	`,
 };
 
+export const TitleWithAction = {
+	args: { size: 'md', showItemLabels: false },
+	render: (args: Record<string, any>) => html`
+		<div style="display: flex; flex-direction: column; gap: 16px;">
+			<!-- Short name: the title shrink-wraps (fit-content) so the xs action
+			     button sits right against it. -->
+			<nldd-toolbar
+				size=${args.size}
+				?show-item-labels=${args.showItemLabels}
+			>
+				<nldd-toolbar-title
+					slot="start"
+					text="beleid-2026"
+				>
+					<nldd-icon-button
+						slot="action"
+						id="title-action-btn"
+						size="xs"
+						icon="chevron-down"
+						text="Documentacties"
+						tooltip-timing="never"
+						popovertarget="title-action-menu"
+					></nldd-icon-button>
+				</nldd-toolbar-title>
+				<nldd-toolbar-item slot="end" label="Opslaan">
+					<nldd-button variant="primary" text="Opslaan"></nldd-button>
+					<nldd-menu-item slot="overflow" text="Opslaan" icon="save"></nldd-menu-item>
+				</nldd-toolbar-item>
+			</nldd-toolbar>
+			<!-- Long name: the title text truncates at the 240px default max-width;
+			     the action button stays outside the cap and remains visible. -->
+			<nldd-toolbar
+				size=${args.size}
+				?show-item-labels=${args.showItemLabels}
+			>
+				<nldd-toolbar-title
+					slot="start"
+					text="een-heel-lange-documentnaam-die-netjes-wordt-afgekapt"
+				>
+					<nldd-icon-button
+						slot="action"
+						id="title-action-btn-2"
+						size="xs"
+						icon="chevron-down"
+						text="Documentacties"
+						tooltip-timing="never"
+						popovertarget="title-action-menu-2"
+					></nldd-icon-button>
+				</nldd-toolbar-title>
+				<nldd-toolbar-item slot="end" label="Opslaan">
+					<nldd-button variant="primary" text="Opslaan"></nldd-button>
+					<nldd-menu-item slot="overflow" text="Opslaan" icon="save"></nldd-menu-item>
+				</nldd-toolbar-item>
+			</nldd-toolbar>
+		</div>
+		<nldd-menu id="title-action-menu" anchor="title-action-btn">
+			<nldd-menu-item text="Naam wijzigen" icon="edit"></nldd-menu-item>
+			<nldd-menu-divider></nldd-menu-divider>
+			<nldd-menu-item text="Verwijderen" icon="delete" destructive></nldd-menu-item>
+		</nldd-menu>
+		<nldd-menu id="title-action-menu-2" anchor="title-action-btn-2">
+			<nldd-menu-item text="Naam wijzigen" icon="edit"></nldd-menu-item>
+			<nldd-menu-divider></nldd-menu-divider>
+			<nldd-menu-item text="Verwijderen" icon="delete" destructive></nldd-menu-item>
+		</nldd-menu>
+	`,
+};
+
 export const Sizes = {
 	render: () => html`
 		<div style="display: flex; flex-direction: column; gap: 16px;">

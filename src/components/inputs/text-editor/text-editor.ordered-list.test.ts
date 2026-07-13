@@ -63,6 +63,27 @@ describe('renumberOrderedLists', () => {
 		expect(result.split('\n')[0]).toBe('1. x');
 		expect(result.split('\n')[9]).toBe('10. x');
 	});
+
+	it('renumbers an ordered list inside a blockquote (> 4. → > 1.)', () => {
+		expect(apply('> 4. In afwijking van het eerste lid.')).toBe('> 1. In afwijking van het eerste lid.');
+		expect(apply('> 4. a\n> 6. b')).toBe('> 1. a\n> 2. b');
+	});
+
+	it('numbers a quoted list independently from lists outside the quote', () => {
+		expect(apply('4. x\n> 8. a\n> 3. b\n5. y')).toBe('1. x\n> 1. a\n> 2. b\n2. y');
+	});
+
+	it('renumbers a list in a nested blockquote', () => {
+		expect(apply('> > 4. a\n> > 9. b')).toBe('> > 1. a\n> > 2. b');
+	});
+
+	it('keeps a quoted loose list together across a bare `>` line', () => {
+		expect(apply('> 4. a\n>\n> 6. b')).toBe('> 1. a\n>\n> 2. b');
+	});
+
+	it('leaves an already-correct quoted list untouched', () => {
+		expect(renumberOrderedLists('> 1. a\n> 2. b')).toEqual([]);
+	});
 });
 
 describe('nldd-text-editor ordered-list renumbering (integration)', () => {

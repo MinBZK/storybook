@@ -9,7 +9,10 @@
  *   toolbar title are visible
  *
  * When `collapse-anchor` is set, the `is-compact` class is automatically applied
- * as soon as the top of the anchor element reaches the top of the scroll container.
+ * as soon as the top of the anchor element reaches this bar's own top edge (the
+ * sticky header line). Measuring the bar rather than the page keeps it correct in
+ * both nested and root scroll modes; it also re-points at the live scroll target
+ * when the page switches mode.
  *
  * Without `collapse-anchor` the bar takes a static state: compact when `text`
  * is set (so the title shows in the title-group), non-compact otherwise (so
@@ -57,6 +60,7 @@ export class NLDDTopTitleBar extends LitElement {
 	private _anchorElement: Element | null = null;
 	private _activeScrollTarget: EventTarget | null = null;
 	private _scrollTargetStyleObserver: MutationObserver | null = null;
+	private _pageModeObserver: MutationObserver | null = null;
 	private _boundOnScroll = this._onScroll.bind(this);
 
 	override connectedCallback(): void {
@@ -118,8 +122,37 @@ export class NLDDTopTitleBar extends LitElement {
 
 		if (!this._anchorElement) return;
 
+		this._wireScrollTarget();
+
+		// The page's scroll target flips when it switches scroll mode (nested
+		// inner scroller <-> the document, derived on resize by nldd-app-view).
+		// Re-wire onto the new target whenever the page reflects a new
+		// [data-scroll], so the collapse keeps tracking the live scroller.
+		if (this._pageElement) {
+			this._pageModeObserver = new MutationObserver(() => this._wireScrollTarget());
+			this._pageModeObserver.observe(this._pageElement, {
+				attributes: true,
+				attributeFilter: ['data-scroll'],
+			});
+		}
+
+		// Initial check after layout is complete
+		this.updateComplete.then(() => this._onScroll());
+	}
+
+	// (Re)attach the scroll + style listeners to the page's current scroll
+	// target — the host document in root-scroll mode, the page (or its inner
+	// scroller) in nested mode.
+	private _wireScrollTarget(): void {
+		this._activeScrollTarget?.removeEventListener('scroll', this._boundOnScroll);
+		this._scrollTargetStyleObserver?.disconnect();
+		this._scrollTargetStyleObserver = null;
+
 		const page = this._pageElement as NLDDPage | null;
-		this._activeScrollTarget = page ? page.scrollTarget : window;
+		// scrollEventTarget (not scrollTarget): in root-scroll mode the viewport's
+		// scroll event fires on `window`, not on document.scrollingElement, so a
+		// listener on the latter would never fire and the bar would never collapse.
+		this._activeScrollTarget = page ? page.scrollEventTarget : window;
 		this._activeScrollTarget.addEventListener('scroll', this._boundOnScroll, { passive: true });
 
 		// nldd-page sets padding-top on its scroll target asynchronously
@@ -136,8 +169,7 @@ export class NLDDTopTitleBar extends LitElement {
 			});
 		}
 
-		// Initial check after layout is complete
-		this.updateComplete.then(() => this._onScroll());
+		this._onScroll();
 	}
 
 	private _teardownAnchor(): void {
@@ -146,13 +178,21 @@ export class NLDDTopTitleBar extends LitElement {
 		this._anchorElement = null;
 		this._scrollTargetStyleObserver?.disconnect();
 		this._scrollTargetStyleObserver = null;
+		this._pageModeObserver?.disconnect();
+		this._pageModeObserver = null;
 	}
 
 	private _onScroll(): void {
 		if (!this._anchorElement || !this._pageElement) return;
-		const pageTop = this._pageElement.getBoundingClientRect().top;
+		// Collapse once the anchor reaches this bar's own top edge. Measuring the
+		// bar (not the page) keeps this correct in both scroll modes: in nested
+		// scroll the bar is pinned at the page top, so its top equals the page top
+		// (unchanged behaviour); in root-scroll mode the bar is position:sticky
+		// against the document while the page element itself scrolls away, so the
+		// page top is no longer the sticky line — the bar's own top still is.
+		const barTop = this.getBoundingClientRect().top;
 		const anchorTop = this._anchorElement.getBoundingClientRect().top;
-		this.classList.toggle('is-compact', anchorTop <= pageTop);
+		this.classList.toggle('is-compact', anchorTop <= barTop);
 	}
 
 	_onToolbarSlotChange = (e: Event) => {

@@ -102,9 +102,9 @@ export class NLDDTokenField extends LitElement {
 	@property({ type: String, attribute: 'accessible-label' })
 	accessibleLabel = '';
 
-	/** Allow committing free-typed values (not just menu options). Wiring lands in
-	 *  a later phase; here it already governs whether the input stays visible when
-	 *  no options remain. */
+	/** Allow committing free-typed values (not just menu options): a typed value
+	 *  becomes a token on Enter, a trailing comma, or blur. Also governs whether
+	 *  the input stays visible when no options remain. */
 	@property({ type: Boolean, reflect: true, attribute: 'allow-custom' })
 	allowCustom = false;
 
@@ -500,7 +500,13 @@ export class NLDDTokenField extends LitElement {
 	public _handleBlur(e: FocusEvent): void {
 		const related = e.relatedTarget as Node | null;
 		if (related && this._menu?.contains(related)) return;
-		this._closeMenu();
+		// Commit any free-typed text when focus leaves, so a value typed without
+		// pressing Enter/comma isn't silently dropped — it becomes a visible token
+		// and joins the form value. Only with custom values allowed; commit without
+		// re-focusing so the focus move isn't fought. `_commitValue` closes the
+		// menu, so only close it ourselves when nothing was committed.
+		if (this.allowCustom && this._text.trim()) this._commitValue(this._text.trim(), false);
+		else this._closeMenu();
 	}
 
 	public _handleKeydown(e: KeyboardEvent): void {
@@ -782,10 +788,13 @@ export class NLDDTokenField extends LitElement {
 	 * picker), so a focused empty field behaves the same whether it was just focused
 	 * or a value was just committed.
 	 */
-	private _commitValue(value: string): void {
+	private _commitValue(value: string, refocus = true): void {
 		this._addValue(value);
 		this._resetInputText();
 		this._closeMenu();
+		// On blur we commit but must NOT pull focus back — the user is leaving the
+		// field (e.g. onto a submit button); re-focusing would fight that move.
+		if (!refocus) return;
 		// After the last value the input disappears (no custom, no options left); put
 		// focus on the last token instead of dropping it to the body.
 		void this.updateComplete.then(() => {

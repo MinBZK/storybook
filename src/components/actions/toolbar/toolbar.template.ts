@@ -19,8 +19,11 @@ export function toolbarItemTemplate(component: NLDDToolbarItem) {
 
 export function toolbarTitleTemplate(component: NLDDToolbarTitle) {
 	return html`
-		${component.text ? html`<p class="toolbar__title">${component.text}</p>` : nothing}
-		${component.supportingText ? html`<p class="toolbar__subtitle">${component.supportingText}</p>` : nothing}
+		<div class="toolbar__title-group">
+			${component.text ? html`<p class="toolbar__title">${component.text}</p>` : nothing}
+			${component.supportingText ? html`<p class="toolbar__subtitle">${component.supportingText}</p>` : nothing}
+		</div>
+		<slot name="action"></slot>
 	`;
 }
 
