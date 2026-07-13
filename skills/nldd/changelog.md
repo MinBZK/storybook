@@ -33,9 +33,13 @@ here; consult the commit history if you need that level of detail.
 - **`nldd-app-view`** — derives a document-level scroll mode (root vs nested) so the document can own iOS rubber-band and Safari-toolbar scrolling instead of an inner pane.
 - **Icons renamed** (old names kept as aliases, so nothing breaks): `centralized-network` → `centralized-structure`, `table-cells` → `rectangle-split-2x3`.
 
+### Breaking
+
+- **`clipboard-rectangle` icon renamed to `clipboard-square`** — the `paste` icon is reshaped from a rectangle to a square, and the old name is *not* kept as an alias, so `icon="clipboard-rectangle"` no longer resolves. Switch to `clipboard-square`; the `paste` alias already points to it.
+
 ### Fixed
 
-- **`nldd-text-editor`** — Markdown bullet continuation triggers only after `- ` with its trailing space (not a bare `-`), indent and outdent are symmetric, and host focus is delegated to the internal input.
+- **`nldd-text-editor`** — Markdown bullet continuation triggers only after `- ` with its trailing space (not a bare `-`), indent and outdent are symmetric, host focus is delegated to the internal input, and ordered lists inside a blockquote are renumbered in sequence like any list (so a quoted `> 4.` isn't left as a misleading stray number that renders as 1).
 
 ## <small>0.8.65 (2026-07-08)</small>
 
