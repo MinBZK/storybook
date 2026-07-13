@@ -17,7 +17,7 @@ here; consult the commit history if you need that level of detail.
 
 ### Highlights
 
-- **`nldd-text-editor` Markdown refinements.** Bullet continuation now fires only after a real `- ` (trailing space and all), and indent/outdent are symmetric.
+- **`nldd-text-editor` Markdown refinements.** Indent and outdent are symmetric (one outdent exactly reverses one indent), and ordered lists inside a blockquote are renumbered in sequence like any list.
 - **`nldd-token-field` keeps undelimited input.** A value typed without pressing `Enter` or comma is no longer dropped — it commits as a token on blur (with `allow-custom`).
 - **`nldd-app-view` document scroll mode.** The layout can hand page scrolling to the document (root) instead of an inner pane (nested), so iOS rubber-band and the collapsing Safari toolbar behave natively.
 - **New icons.** `heading-1`…`heading-6`, `paragraph-sign`, `lifebuoy`, `network-structure`, `stack-text`, `wheat` (`harvest`) and `person-circle-badge-plus` (`new-account`).
@@ -29,7 +29,7 @@ here; consult the commit history if you need that level of detail.
 ### Changed
 
 - **`nldd-token-field`** — free-typed text now commits as a token on blur (with `allow-custom`), so a value typed without pressing `Enter` or comma is no longer dropped when focus leaves the field.
-- **`nldd-toolbar`** — items carry overflow priorities that decide what collapses first as space runs out, and the title can size to `fit-content` with an action slot beside it.
+- **`nldd-toolbar`** — the title can size to `fit-content` with an action slot beside it.
 - **`nldd-app-view`** — derives a document-level scroll mode (root vs nested) so the document can own iOS rubber-band and Safari-toolbar scrolling instead of an inner pane.
 - **Icons renamed** (old names kept as aliases, so nothing breaks): `centralized-network` → `centralized-structure`, `table-cells` → `rectangle-split-2x3`.
 
@@ -39,7 +39,7 @@ here; consult the commit history if you need that level of detail.
 
 ### Fixed
 
-- **`nldd-text-editor`** — Markdown bullet continuation triggers only after `- ` with its trailing space (not a bare `-`), indent and outdent are symmetric, host focus is delegated to the internal input, and ordered lists inside a blockquote are renumbered in sequence like any list (so a quoted `> 4.` isn't left as a misleading stray number that renders as 1).
+- **`nldd-text-editor`** — indent and outdent are symmetric (one outdent exactly reverses one indent), and ordered lists inside a blockquote are renumbered in sequence like any list (so a quoted `> 4.` isn't left as a misleading stray number that renders as 1).
 
 ## <small>0.8.65 (2026-07-08)</small>
 
