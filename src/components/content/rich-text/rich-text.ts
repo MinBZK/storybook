@@ -19,6 +19,12 @@
  *
  * @attr {string}  spacing  - Spacing between elements: 'flat' | 'tight' | 'snug' (default) | 'loose'
  * @attr {boolean} centered - Centers the main column inside the container; without it, content is left-aligned
+ * @attr {boolean} hyphens  - Opt-in automatische woordafbreking voor doorlopende
+ *   tekst (p, li, dd). Vereist een correcte `lang` op de pagina (bijv.
+ *   `lang="nl"` op `<html>`): zonder taalinfo breekt de browser niet af. Een
+ *   `overflow-wrap: break-word`-vangnet op p/li staat altijd aan, los van dit
+ *   attribuut, zodat lange URLs en samenstellingen ook zonder woordenboek
+ *   netjes breken in plaats van te overlopen.
  * @attr {string}  color    - 'inherit' laat alle tekst de kleur van de ondergrond
  *   volgen (voor gekleurde vlakken zoals de filled-categories). Links blijven
  *   onderstreept als affordance; secundaire tekst (figcaption) krijgt dezelfde
@@ -43,6 +49,9 @@ export class NLDDRichText extends LitElement {
 
 	@property({ type: Boolean, reflect: true })
 	centered = false;
+
+	@property({ type: Boolean, reflect: true })
+	hyphens = false;
 
 	@property({ reflect: true, converter: reflectNonDefault<'' | 'inherit'>('') })
 	color: '' | 'inherit' = '';

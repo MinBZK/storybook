@@ -47,6 +47,18 @@ describe('nldd-rich-text', () => {
 		el = await fixture('<nldd-rich-text color="inherit"></nldd-rich-text>');
 		expect(el.getAttribute('color')).toBe('inherit');
 	});
+
+	it('defaults to no hyphens', async () => {
+		el = await fixture('<nldd-rich-text></nldd-rich-text>');
+		expect((el as unknown as { hyphens: boolean }).hyphens).toBe(false);
+		expect(el.hasAttribute('hyphens')).toBe(false);
+	});
+
+	it('reflects the hyphens attribute', async () => {
+		el = await fixture('<nldd-rich-text hyphens></nldd-rich-text>');
+		expect((el as unknown as { hyphens: boolean }).hyphens).toBe(true);
+		expect(el.hasAttribute('hyphens')).toBe(true);
+	});
 });
 
 describe('nldd-rich-text width zones', () => {
