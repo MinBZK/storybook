@@ -2,6 +2,7 @@ import { describe, it, expect, afterEach, vi } from 'vitest';
 import { fixture, cleanup, waitForUpdate, deepActiveElement } from '../../../test-utils.js';
 import type { NLDDIconButton } from './icon-button.js';
 import './icon-button.js';
+import '../menu/menu.js';
 
 describe('nldd-icon-button', () => {
 	let el: HTMLElement;
@@ -603,5 +604,34 @@ describe('nldd-icon-button – loading', () => {
 		el = await fixture<NLDDIconButton>('<nldd-icon-button icon="dismiss-small" accessible-label="Ga" href="#x" no-tab></nldd-icon-button>');
 		await waitForUpdate(el);
 		expect(el.shadowRoot!.querySelector('a.icon-button')!.getAttribute('tabindex')).toBe('-1');
+	});
+});
+
+describe('nldd-icon-button slotted menu', () => {
+	let el: NLDDIconButton;
+
+	afterEach(() => {
+		if (el) cleanup(el);
+	});
+
+	const MARKUP = '<nldd-icon-button icon="ellipsis" text="Meer">'
+		+ '<nldd-menu slot="menu"><nldd-menu-item text="Bewerken"></nldd-menu-item></nldd-menu>'
+		+ '</nldd-icon-button>';
+
+	it('anchors a slotted nldd-menu to the host button', async () => {
+		el = await fixture<NLDDIconButton>(MARKUP);
+		await waitForUpdate(el);
+		const menu = el.querySelector('nldd-menu') as HTMLElement & { anchorElement: Element | null };
+		expect(menu.anchorElement).toBe(el);
+	});
+
+	it('opens the slotted menu on click', async () => {
+		el = await fixture<NLDDIconButton>(MARKUP);
+		await waitForUpdate(el);
+		const menu = el.querySelector('nldd-menu') as HTMLElement;
+		expect(menu.matches(':popover-open')).toBe(false);
+		el.shadowRoot!.querySelector<HTMLElement>('.icon-button')!.click();
+		await waitForUpdate(el);
+		expect(menu.matches(':popover-open')).toBe(true);
 	});
 });

@@ -2,6 +2,7 @@ import { describe, it, expect, afterEach, vi } from 'vitest';
 import { fixture, cleanup, waitForUpdate, deepActiveElement } from '../../../test-utils.js';
 import type { NLDDButton } from './button.js';
 import './button.js';
+import '../menu/menu.js';
 
 describe('nldd-button', () => {
 	let el: HTMLElement;
@@ -685,5 +686,34 @@ describe('nldd-button – loading', () => {
 		el = await fixture<NLDDButton>('<nldd-button text="Opslaan" supporting-text="Alle wijzigingen" accessible-label="Bewaar"></nldd-button>');
 		await waitForUpdate(el);
 		expect(el.shadowRoot!.querySelector('button')!.getAttribute('aria-label')).toBe('Bewaar');
+	});
+});
+
+describe('nldd-button slotted menu', () => {
+	let el: NLDDButton;
+
+	afterEach(() => {
+		if (el) cleanup(el);
+	});
+
+	const MARKUP = '<nldd-button expandable text="Acties">'
+		+ '<nldd-menu slot="menu"><nldd-menu-item text="Bewerken"></nldd-menu-item></nldd-menu>'
+		+ '</nldd-button>';
+
+	it('anchors a slotted nldd-menu to the host button', async () => {
+		el = await fixture<NLDDButton>(MARKUP);
+		await waitForUpdate(el);
+		const menu = el.querySelector('nldd-menu') as HTMLElement & { anchorElement: Element | null };
+		expect(menu.anchorElement).toBe(el);
+	});
+
+	it('opens the slotted menu on click', async () => {
+		el = await fixture<NLDDButton>(MARKUP);
+		await waitForUpdate(el);
+		const menu = el.querySelector('nldd-menu') as HTMLElement;
+		expect(menu.matches(':popover-open')).toBe(false);
+		el.shadowRoot!.querySelector<HTMLElement>('.button')!.click();
+		await waitForUpdate(el);
+		expect(menu.matches(':popover-open')).toBe(true);
 	});
 });

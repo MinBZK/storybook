@@ -1,5 +1,6 @@
 import { html, nothing } from 'lit';
 import './icon-button.js';
+import '../menu/menu.js';
 import { ICONS } from './../../content/icon/icon.js';
 
 /**
@@ -354,4 +355,33 @@ export const CustomIconSlot = {
 			},
 	},
 },
+};
+
+/**
+ * Het klassieke overflow-menu ("kebab"): slot een enkele `nldd-menu` in de
+ * `menu`-slot en de icon-button ankert en togglet het menu automatisch — geen
+ * `id`/`anchor`-koppeling. Het menu synct `expanded` en `aria-haspopup` terug
+ * op de knop. Gespiegeld aan `nldd-split-button`.
+ */
+export const WithMenu = {
+	render: () => html`
+		<div style="display: flex; flex-wrap: wrap; gap: 16px; align-items: center;">
+			<nldd-icon-button icon="ellipsis" text="Meer acties">
+				<nldd-menu slot="menu">
+					<nldd-menu-item text="Bewerken" icon="pencil"></nldd-menu-item>
+					<nldd-menu-item text="Dupliceren" icon="square-plus-on-square"></nldd-menu-item>
+					<nldd-menu-divider></nldd-menu-divider>
+					<nldd-menu-item text="Verwijderen" icon="trash" destructive></nldd-menu-item>
+				</nldd-menu>
+			</nldd-icon-button>
+		</div>
+	`,
+	parameters: {
+		controls: { disable: true },
+		docs: {
+			description: {
+				story: 'Overflow-menu via de <code>menu</code>-slot: de icon-button ankert en togglet het menu automatisch, zonder <code>id</code>/<code>anchor</code>-boilerplate.',
+			},
+		},
+	},
 };

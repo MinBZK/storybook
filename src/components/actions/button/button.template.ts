@@ -91,6 +91,11 @@ export function template(this: NLDDButton, helpers: TemplateHelpers) {
 		`
 		: nothing;
 
+	// A single slotted nldd-menu that this button invokes. Kept in a named slot
+	// so it never lands in the text/icon slots; it renders nothing in flow (a
+	// popover is display:none until shown in the top layer). See _handleClick.
+	const menuSlot = html`<slot name="menu" @slotchange=${this._handleMenuSlotChange}></slot>`;
+
 	if (this.href) {
 		const resolvedRel = this._resolvedRel();
 		return html`
@@ -103,12 +108,14 @@ export function template(this: NLDDButton, helpers: TemplateHelpers) {
 				aria-haspopup=${this.popupType || nothing}
 				aria-expanded=${ariaExpanded}
 				aria-busy=${ariaBusy}
+				@pointerdown=${this._handleAnchorPointerdown}
 				@click=${helpers.handleClick}
 			>
 				${content}
 				${renderOpensInNewTabHint ? html`<span class="button__opens-in-new-tab-hint">${opensInNewTabHint}</span>` : nothing}
 			</a>
 			${loadingIndicator}
+			${menuSlot}
 		`;
 	}
 
@@ -129,10 +136,12 @@ export function template(this: NLDDButton, helpers: TemplateHelpers) {
 			popovertarget=${this.popovertarget || nothing}
 			.popoverTargetElement=${this.popoverTargetElement}
 			.popoverTargetAction=${this.popoverTargetAction}
+			@pointerdown=${this._handleAnchorPointerdown}
 			@click=${helpers.handleClick}
 		>
 			${content}
 		</button>
 		${loadingIndicator}
+		${menuSlot}
 	`;
 }

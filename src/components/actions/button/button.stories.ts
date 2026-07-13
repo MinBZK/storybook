@@ -1,6 +1,7 @@
 import { html, nothing } from 'lit';
 import './button.js';
 import '../button-group/button-group.js';
+import '../menu/menu.js';
 import { ICONS } from './../../content/icon/icon.js';
 
 /**
@@ -365,6 +366,43 @@ export const WithDisclosureIcon = {
 		docs: {
 			description: {
 				story: 'Button die een menu of popover opent. Gebruik de <code>expandable</code> attribute om aan te geven dat deze button een menu of popover opent.',
+			},
+		},
+	},
+};
+
+/**
+ * Slot een enkele `nldd-menu` in de `menu`-slot en de button wordt zijn
+ * invoker: hij ankert het menu aan zichzelf en togglet het op klik — geen
+ * handmatige `id`/`anchor`-koppeling. Het menu synct `expanded` en
+ * `aria-haspopup` terug op de button; voeg `expandable` toe voor de chevron.
+ * Gespiegeld aan `nldd-split-button`. De bestaande `anchor`/`popovertarget`-
+ * route blijft werken wanneer je géén menu slot.
+ */
+export const WithMenu = {
+	render: () => html`
+		<div style="display: flex; flex-wrap: wrap; gap: 16px; align-items: center;">
+			<nldd-button expandable text="Acties">
+				<nldd-menu slot="menu">
+					<nldd-menu-item text="Bewerken" icon="pencil"></nldd-menu-item>
+					<nldd-menu-item text="Dupliceren" icon="square-plus-on-square"></nldd-menu-item>
+					<nldd-menu-divider></nldd-menu-divider>
+					<nldd-menu-item text="Verwijderen" icon="trash" destructive></nldd-menu-item>
+				</nldd-menu>
+			</nldd-button>
+			<nldd-button expandable variant="primary" start-icon="plus" text="Nieuw">
+				<nldd-menu slot="menu">
+					<nldd-menu-item text="Document" icon="file"></nldd-menu-item>
+					<nldd-menu-item text="Map" icon="folder"></nldd-menu-item>
+				</nldd-menu>
+			</nldd-button>
+		</div>
+	`,
+	parameters: {
+		controls: { disable: true },
+		docs: {
+			description: {
+				story: 'Genest menu via de <code>menu</code>-slot: de button ankert en togglet het menu automatisch, zonder <code>id</code>/<code>anchor</code>-boilerplate.',
 			},
 		},
 	},

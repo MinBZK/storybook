@@ -52,6 +52,7 @@ de `.d.ts` bestanden van het pakket.
 | `text` | Slot for custom button content (e.g. text with inline markup). Used when the text attribute is empty or not set (an empty string counts as "not set", since the attribute and the unset property are indistinguishable). Provide accessible-label when the slotted content isn't plain text. |
 | `start-icon` | Slot for a custom start icon (e.g. custom SVG). Only used when start-icon attribute is not set. |
 | `end-icon` | Slot for a custom end icon (e.g. custom SVG). Only used when end-icon attribute is not set. |
+| `menu` | A single `nldd-menu` this button invokes. Slotting it auto-anchors the menu to the button and toggles it on click (no id/anchor wiring). The menu syncs `expanded` and `aria-haspopup` back onto the button. Add `expandable` for the disclosure chevron. Mirrors nldd-split-button; the manual `anchor`/`popovertarget` wiring keeps working when you don't slot a menu. |
 
 **Events**
 
@@ -125,6 +126,7 @@ A container for grouping related buttons together, either horizontally or vertic
 | Slot | Beschrijving |
 | --- | --- |
 | `icon` | Slot for a custom icon (e.g. custom SVG). Only used when icon attribute is not set; falls back to a placeholder icon when the slot is empty. |
+| `menu` | A single `nldd-menu` this button invokes. Slotting it auto-anchors the menu to the button and toggles it on click (no id/anchor wiring). The menu syncs `expanded` and `aria-haspopup` back onto the button. Add `expandable` for the disclosure chevron. Mirrors nldd-split-button; manual `popovertarget` wiring keeps working without a slotted menu. |
 
 **Events**
 

@@ -26,6 +26,7 @@
  * @slot text - Slot for custom button content (e.g. text with inline markup). Used when the text attribute is empty or not set (an empty string counts as "not set", since the attribute and the unset property are indistinguishable). Provide accessible-label when the slotted content isn't plain text.
  * @slot start-icon - Slot for a custom start icon (e.g. custom SVG). Only used when start-icon attribute is not set.
  * @slot end-icon - Slot for a custom end icon (e.g. custom SVG). Only used when end-icon attribute is not set.
+ * @slot menu - A single `nldd-menu` this button invokes. Slotting it auto-anchors the menu to the button and toggles it on click (no id/anchor wiring). The menu syncs `expanded` and `aria-haspopup` back onto the button. Add `expandable` for the disclosure chevron. Mirrors nldd-split-button; the manual `anchor`/`popovertarget` wiring keeps working when you don't slot a menu.
  *
  * @fires click - When button is clicked (not fired when disabled)
  */
@@ -37,6 +38,7 @@ import { template } from './button.template.js';
 import { withTranslations } from '../../../utilities/with-translations.js';
 import { reflectNonDefault } from '../../../utilities/reflect-non-default.js';
 import { nlddButtonTranslations } from './button.i18n.js';
+import type { NLDDMenu } from '../menu/menu.js';
 import './../../content/icon/icon.js';
 import './../../status-and-feedback/activity-indicator/activity-indicator.js';
 
@@ -182,6 +184,16 @@ export class NLDDButton extends withTranslations(LitElement, nlddButtonTranslati
 
 	private _warnedA11y = false;
 
+	/** The slotted `nldd-menu` this button invokes, or null when none is
+	 * slotted. Set by `_handleMenuSlotChange`. */
+	private _menu: NLDDMenu | null = null;
+
+	/** Popover-open snapshot captured on pointerdown — before the browser's
+	 * light-dismiss can close the menu (pointerdown precedes the click). The
+	 * click handler reads it to avoid re-opening a menu the same gesture just
+	 * dismissed (the "flashes closed then reopens" bug). */
+	private _menuWasOpenOnPointerdown = false;
+
 	override updated(changedProperties: Map<string, unknown>): void {
 		if (changedProperties.has('width')) {
 			const w = this.width;
@@ -210,10 +222,43 @@ export class NLDDButton extends withTranslations(LitElement, nlddButtonTranslati
 		}
 	}
 
+	/**
+	 * Wire a slotted `nldd-menu` to this button: anchor it to the host so it
+	 * positions against the button and syncs `expanded` / `aria-haspopup` back
+	 * onto it (via the menu's own anchor-state sync). Opening happens in the
+	 * click handler. Re-runs whenever the slotted menu is added, removed or
+	 * replaced. Mirrors nldd-split-button's slot wiring.
+	 */
+	_handleMenuSlotChange(event: Event): void {
+		const slot = event.target as HTMLSlotElement;
+		const menu = (slot.assignedElements().find((el) => el.matches('nldd-menu')) as NLDDMenu | undefined) ?? null;
+		if (menu === this._menu) return;
+		this._menu = menu;
+		if (menu) menu.anchorElement = this;
+	}
+
+	/** Snapshot the menu's open state on pointerdown, before the browser's
+	 * light-dismiss runs, so the click handler can tell a genuine open from a
+	 * click that already dismissed the open menu. */
+	_handleAnchorPointerdown(): void {
+		this._menuWasOpenOnPointerdown = this._menu?.matches(':popover-open') ?? false;
+	}
+
 	private _handleClick(e: MouseEvent): void {
 		if (this.disabled || this.loading) {
 			e.preventDefault();
 			e.stopPropagation();
+			return;
+		}
+		// A slotted menu makes this button its invoker: toggle the menu and
+		// stop — a menu button neither submits a form nor navigates. The
+		// pointerdown snapshot distinguishes a fresh open from a click the
+		// browser already consumed to light-dismiss the open menu.
+		if (this._menu) {
+			e.preventDefault();
+			const wasOpen = this._menuWasOpenOnPointerdown;
+			this._menuWasOpenOnPointerdown = false;
+			if (!wasOpen) this._menu.showPopover();
 			return;
 		}
 		// A link button has no form behaviour. Otherwise drive the associated
