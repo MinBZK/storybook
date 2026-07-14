@@ -104,7 +104,7 @@ export const menuStyles = css`
 		align-items: center;
 		text-align: start;
 		appearance: none;
-		--context-cell-content-color: var(--semantics-content-secondary-color);
+		--context-content-color: var(--semantics-content-secondary-color);
 
 		@media (pointer: fine) {
 			border-radius: var(--semantics-controls-sm-corner-radius);
@@ -118,13 +118,13 @@ export const menuStyles = css`
 	@media (hover: hover) {
 		.menu__back-button:hover {
 			background-color: var(--_item-is-highlighted-background-color);
-			--context-cell-content-color: var(--_item-is-highlighted-content-color);
+			--context-content-color: var(--_item-is-highlighted-content-color);
 		}
 	}
 
 	.menu__back-button:active:hover {
 		background-color: var(--_item-is-highlighted-background-color);
-		--context-cell-content-color: var(--_item-is-highlighted-content-color);
+		--context-content-color: var(--_item-is-highlighted-content-color);
 	}
 
 	.menu__back-button:focus-visible {
@@ -184,8 +184,8 @@ export const menuItemStyles = css`
 
 	.menu__item[aria-expanded="true"] {
 		--_item-background-color: var(--components-menu-item-is-expanded-background-color);
-		--context-cell-content-color: var(--components-menu-item-is-expanded-content-color);
-		--context-cell-content-secondary-color: var(--components-menu-item-is-expanded-content-color);
+		--context-content-color: var(--components-menu-item-is-expanded-content-color);
+		--context-content-secondary-color: var(--components-menu-item-is-expanded-content-color);
 	}
 
 	/* ## Highlighted or pressed
@@ -199,8 +199,8 @@ export const menuItemStyles = css`
 	.menu__item[aria-expanded="true"]:hover,
 	.menu__item:active:hover {
 		--_item-background-color: var(--_item-is-highlighted-background-color);
-		--context-cell-content-color: var(--_item-is-highlighted-content-color);
-		--context-cell-content-secondary-color: var(--_item-is-highlighted-content-color);
+		--context-content-color: var(--_item-is-highlighted-content-color);
+		--context-content-secondary-color: var(--_item-is-highlighted-content-color);
 	}
 
 	/* ## Destructive */
@@ -208,8 +208,8 @@ export const menuItemStyles = css`
 	:host([destructive]) {
 		--_item-is-highlighted-background-color: var(--components-menu-item-is-destructive-is-highlighted-background-color);
 		--_item-is-highlighted-content-color: var(--components-menu-item-is-destructive-is-highlighted-content-color);
-		--context-cell-content-color: var(--components-menu-item-is-destructive-content-color);
-		--context-cell-content-secondary-color: var(--components-menu-item-is-destructive-content-color);
+		--context-content-color: var(--components-menu-item-is-destructive-content-color);
+		--context-content-secondary-color: var(--components-menu-item-is-destructive-content-color);
 	}
 
 

@@ -130,7 +130,8 @@ export const listItemStyles = css`
 
 	:host([selected]) {
 		--_background-color: var(--components-list-item-is-selected-background-color);
-		--context-cell-content-color: var(--components-list-item-is-selected-content-color);
+		--context-content-color: var(--components-list-item-is-selected-content-color);
+		--context-content-secondary-color: var(--components-list-item-is-selected-content-color);
 	}
 
 	/* hover only on hover-capable devices: avoids touch-scroll flashing the
@@ -138,17 +139,20 @@ export const listItemStyles = css`
 	@media (hover: hover) {
 		.list-item__action:hover {
 			--_background-color: var(--components-list-item-is-hovered-background-color);
-			--context-cell-content-color: var(--components-list-item-is-hovered-content-color);
+			--context-content-color: var(--components-list-item-is-hovered-content-color);
+			--context-content-secondary-color: var(--components-list-item-is-hovered-content-color);
 		}
 
 		:host([selected]) .list-item__action:hover {
 			--_background-color: var(--components-list-item-is-selected-background-color);
-			--context-cell-content-color: var(--components-list-item-is-selected-content-color);
+			--context-content-color: var(--components-list-item-is-selected-content-color);
+			--context-content-secondary-color: var(--components-list-item-is-selected-content-color);
 		}
 
 		:host([selected]) .list-item__action:focus:hover {
 			--_background-color: var(--components-list-item-is-highlighted-background-color);
-			--context-cell-content-color: var(--components-list-item-is-highlighted-content-color);
+			--context-content-color: var(--components-list-item-is-highlighted-content-color);
+			--context-content-secondary-color: var(--components-list-item-is-highlighted-content-color);
 		}
 	}
 
@@ -158,12 +162,14 @@ export const listItemStyles = css`
 	   into a scroll clears the press (pointercancel) instead of flashing it. */
 	.list-item__action.is-pressed {
 		--_background-color: var(--components-list-item-is-hovered-background-color);
-		--context-cell-content-color: var(--components-list-item-is-hovered-content-color);
+		--context-content-color: var(--components-list-item-is-hovered-content-color);
+		--context-content-secondary-color: var(--components-list-item-is-hovered-content-color);
 	}
 
 	:host([selected]) .list-item__action {
 		--_background-color: var(--components-list-item-is-selected-background-color);
-		--context-cell-content-color: var(--components-list-item-is-selected-content-color);
+		--context-content-color: var(--components-list-item-is-selected-content-color);
+		--context-content-secondary-color: var(--components-list-item-is-selected-content-color);
 	}
 
 	/* Highlight accent — the strongest fill. Shown for a selected item that is
@@ -176,7 +182,8 @@ export const listItemStyles = css`
 	.list-item.is-highlighted,
 	:host([selected]) .list-item.is-highlighted .list-item__action {
 		--_background-color: var(--components-list-item-is-highlighted-background-color);
-		--context-cell-content-color: var(--components-list-item-is-highlighted-content-color);
+		--context-content-color: var(--components-list-item-is-highlighted-content-color);
+		--context-content-secondary-color: var(--components-list-item-is-highlighted-content-color);
 	}
 
 

@@ -114,7 +114,8 @@ export const tableRowStyles = css`
 	   the table) plus the selected content color, from the shared table tokens. */
 	:host([selected]) {
 		background-color: var(--semantics-tables-row-is-selected-background-color);
-		--context-cell-content-color: var(--semantics-tables-row-is-selected-content-color);
+		--context-content-color: var(--semantics-tables-row-is-selected-content-color);
+		--context-content-secondary-color: var(--semantics-tables-row-is-selected-content-color);
 	}
 
 	/* The box's border ring is the table's outer frame, so the last row drops its

@@ -15,8 +15,8 @@ export const titleCellStyles = css`
 		--_max-width: none;
 		--_min-height: 0;
 		--_text-align: start;
-		--_secondary-color: var(--context-cell-content-color, var(--semantics-content-secondary-color));
-		--_title-color: var(--context-cell-content-color, var(--semantics-content-color));
+		--_secondary-color: var(--context-content-secondary-color, var(--semantics-content-secondary-color));
+		--_title-color: var(--context-content-color, var(--semantics-content-color));
 		--_title-font: var(--primitives-font-display-5-sm);
 
 		${inheritedTextReset}
@@ -123,27 +123,27 @@ export const titleCellStyles = css`
 	/* # Color */
 
 	:host([color="secondary"]) {
-		--_title-color: var(--context-cell-content-secondary-color, var(--semantics-content-secondary-color));
+		--_title-color: var(--context-content-secondary-color, var(--semantics-content-secondary-color));
 	}
 
 	:host([color="accent"]) {
-		--_secondary-color: var(--context-cell-content-accent-color, var(--semantics-content-accent-color));
-		--_title-color: var(--context-cell-content-accent-color, var(--semantics-content-accent-color));
+		--_secondary-color: var(--context-content-accent-color, var(--semantics-content-accent-color));
+		--_title-color: var(--context-content-accent-color, var(--semantics-content-accent-color));
 	}
 
 	:host([color="success"]) {
-		--_secondary-color: var(--context-cell-content-success-color, var(--semantics-content-success-color));
-		--_title-color: var(--context-cell-content-success-color, var(--semantics-content-success-color));
+		--_secondary-color: var(--context-content-success-color, var(--semantics-content-success-color));
+		--_title-color: var(--context-content-success-color, var(--semantics-content-success-color));
 	}
 
 	:host([color="warning"]) {
-		--_secondary-color: var(--context-cell-content-warning-color, var(--semantics-content-warning-color));
-		--_title-color: var(--context-cell-content-warning-color, var(--semantics-content-warning-color));
+		--_secondary-color: var(--context-content-warning-color, var(--semantics-content-warning-color));
+		--_title-color: var(--context-content-warning-color, var(--semantics-content-warning-color));
 	}
 
 	:host([color="critical"]) {
-		--_secondary-color: var(--context-cell-content-critical-color, var(--semantics-content-critical-color));
-		--_title-color: var(--context-cell-content-critical-color, var(--semantics-content-critical-color));
+		--_secondary-color: var(--context-content-critical-color, var(--semantics-content-critical-color));
+		--_title-color: var(--context-content-critical-color, var(--semantics-content-critical-color));
 	}
 
 
