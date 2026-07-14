@@ -34,7 +34,7 @@ export default {
 	argTypes: {
 		variant: {
 			control: 'select',
-			options: ['(geen)', 'alert', 'success'],
+			options: ['(geen)', 'alert', 'success', 'loading'],
 			mapping: { '(geen)': '' },
 			description: 'Semantische variant — dwingt een icoon en kleur af',
 			table: { defaultValue: { summary: '(geen)' } },
@@ -168,6 +168,24 @@ export const Success = {
 	>
 		<nldd-button slot="actions" variant="primary" text="Sluiten"></nldd-button>
 	</nldd-inline-dialog>
+`,
+	parameters: { controls: { disable: true } },
+};
+
+/**
+ * `variant="loading"` toont een `nldd-activity-indicator` in plaats van een
+ * icoon — voor een lege toestand die nog aan het laden is. De spinner is een
+ * `role="status"`-live-region die "Laden" aankondigt, en verschijnt direct
+ * (`timing="instant"`, geen anti-flash-vertraging). Overrulet een expliciet
+ * `icon`.
+ */
+export const Loading = {
+	render: () => html`
+	<nldd-inline-dialog
+		variant="loading"
+		text="Gegevens laden"
+		supporting-text="Even geduld, we halen de resultaten op."
+	></nldd-inline-dialog>
 `,
 	parameters: { controls: { disable: true } },
 };

@@ -30,6 +30,7 @@ here; consult the commit history if you need that level of detail.
 - **`nldd-rich-text`** — `hyphens` attribute for opt-in automatic hyphenation on running text (requires a correct `lang`); plus an always-on `overflow-wrap: break-word` safety net on paragraphs and list items.
 - **`nldd-button` / `nldd-icon-button`** — a `popup` slot that auto-wires a nested `nldd-menu` or `nldd-popover` (anchors it, toggles on click, syncs `expanded` / `aria-haspopup`), mirroring `nldd-split-button`, which now also accepts a slotted `nldd-popover`.
 - **`nldd-text-editor`** — a bare / autolinked URL (plain https, `www.`, or an email) now gets the open-in-new-tab badge and the link colour, matching Markdown links; scheme-less forms are normalised (`www.` → https, email → mailto). The Markdown link's own address stays the dimmed grey.
+- **`nldd-inline-dialog`** — a `variant="loading"` that shows an `nldd-activity-indicator` (a `role="status"` spinner announcing "Laden") in place of the icon, for an empty state that is still loading. Sized to the icon (md/lg), shown instantly, and it overrides an explicit `icon`.
 
 ### Changed
 

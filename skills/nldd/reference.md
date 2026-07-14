@@ -2036,7 +2036,7 @@ An inline status component for empty state, confirmations and feedback. Fills th
 
 | Attribuut | Type | Beschrijving |
 | --- | --- | --- |
-| `variant` | `'alert'\|'success'` | Semantic variant; 'alert' or 'success' forces a matching icon and color |
+| `variant` | `'alert'\|'success'\|'loading'` | Semantic variant. 'alert' / 'success' force a matching icon and color; 'loading' shows an nldd-activity-indicator (a role="status" spinner announcing "Laden") in place of the icon — for an empty state that is still loading. |
 | `size` | `'md'\|'lg'` | Typography size: 'md' (default) keeps body-md text + body-sm supporting; 'lg' bumps both up a step. |
 | `icon` | `string` | Name of the nldd-icon icon above the text; absent when not set. Ignored when variant is set. |
 | `icon-color` | `string` | 'secondary' \| 'accent' \| 'critical' \| 'warning' \| 'success'. Overrides the default and variant icon color. |
