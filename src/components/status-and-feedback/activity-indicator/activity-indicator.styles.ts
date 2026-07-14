@@ -11,6 +11,7 @@ export const activityIndicatorStyles = css`
 
 	:host {
 		--_circle-size: var(--primitives-space-32);
+		--_color: var(--context-content-color, currentColor);
 		--_track-opacity: 0.25;
 		--_stroke-width: 2;
 		--_rotation-duration: 0.8s;
@@ -180,7 +181,7 @@ export const activityIndicatorStyles = css`
 
 	.activity-indicator__track {
 		opacity: var(--_track-opacity);
-		stroke: currentColor;
+		stroke: var(--_color);
 		stroke-width: var(--_stroke-width);
 	}
 
@@ -189,7 +190,7 @@ export const activityIndicatorStyles = css`
 	   element visibly wobbles when it sits at a sub-pixel position (next to a
 	   label, or overlaid on a button). Mirrors nldd-progress-circle. */
 	.activity-indicator__indicator {
-		stroke: currentColor;
+		stroke: var(--_color);
 		stroke-width: var(--_stroke-width);
 		stroke-linecap: round;
 		stroke-dasharray: 25 100;

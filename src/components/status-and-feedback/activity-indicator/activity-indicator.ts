@@ -7,8 +7,13 @@
  * `timing="instant"` to skip the delay (the fade-in still plays) — this is
  * what embedding components such as `nldd-button` use for their loading state.
  *
- * The default indicator is a simple icon-sized circle drawn in `currentColor`,
- * with an optional label below (hidden unless `show-text` is set). Drop a
+ * The default indicator is a simple icon-sized circle that follows the shared
+ * `--context-content-color` channel (set by list-item / table / menu on their
+ * content), falling back to `currentColor` wherever that channel is unset
+ * (buttons, rich-text, standalone) — so a spinner inside a cell tracks the
+ * row's state-aware content colour, while embedders relying on currentColor are
+ * unaffected. An optional label sits below (hidden unless `show-text` is set).
+ * Drop a
  * `<nldd-progress-circle>`, `<nldd-progress-bar>` or any element in the
  * `indicator` slot to override it.
  *
