@@ -13,7 +13,8 @@
  *
  * Zonder `size` schaalt de avatar mee met zijn container (net als `nldd-icon`);
  * een vaste maat (dezelfde spacer-uitgelijnde schaal, 16 tot en met 96) is de
- * uitzondering. De initialen en het icoon schalen mee.
+ * uitzondering. De initialen en het icoon schalen mee. Brede initialen (WW, MMM)
+ * worden automatisch teruggeschaald zodat ze binnen de schijf blijven.
  *
  * Toegankelijkheid: het host-element draagt de betekenis. Met een `name`
  * (en zonder `decorative`) krijgt het `role="img"` met de naam als label.
@@ -53,6 +54,11 @@ import '../icon/icon.js';
 export type AvatarType = 'person' | 'organization';
 
 export type AvatarColor = 'default' | 'inherit';
+
+/** Fraction of the disc width the initials may occupy before they are scaled to
+ *  fit. Leaves margin inside the circle so wide glyphs stay clear of the edge
+ *  (the circle narrows above/below the centre, so caps need room). */
+const INITIALS_FIT_RATIO = 0.75;
 
 /** Empty = scale to the container (like nldd-icon); the rest pin a fixed px size. */
 export type AvatarSize =
@@ -118,11 +124,32 @@ export class NLDDAvatar extends LitElement {
 		this._imageFailed = true;
 	};
 
+	/** Re-measures the initials fit when the disc lays out or resizes; covers the
+	 *  case where the avatar is only sized after first render (e.g. filling a
+	 *  container that appears later). Content changes are handled in updated(). */
+	private _resizeObserver = new ResizeObserver(() => this._fitInitials());
+
 	override willUpdate(changed: PropertyValues<this>): void {
 		if (changed.has('src')) this._imageFailed = false;
 	}
 
-	override updated(): void {
+	override firstUpdated(): void {
+		const disc = this.shadowRoot?.querySelector('.avatar');
+		if (disc) this._resizeObserver.observe(disc);
+	}
+
+	override connectedCallback(): void {
+		super.connectedCallback();
+		const disc = this.shadowRoot?.querySelector('.avatar');
+		if (this.hasUpdated && disc) this._resizeObserver.observe(disc);
+	}
+
+	override disconnectedCallback(): void {
+		super.disconnectedCallback();
+		this._resizeObserver.disconnect();
+	}
+
+	override updated(changed: PropertyValues<this>): void {
 		const labelled = !this.decorative && this.name !== '';
 		if (labelled) {
 			this.setAttribute('role', 'img');
@@ -134,6 +161,29 @@ export class NLDDAvatar extends LitElement {
 			this.removeAttribute('role');
 			this.removeAttribute('aria-label');
 		}
+		// The disc size doesn't change when only the initials text changes, so the
+		// ResizeObserver won't fire — re-measure here on the relevant changes.
+		if (changed.has('name') || changed.has('initials')) {
+			this._fitInitials();
+		}
+	}
+
+	/** Shrink wide initials so they always fit the disc. The fit factor is the
+	 *  disc's usable width over the initials' natural width (scrollWidth ignores
+	 *  the applied transform, so the measurement stays stable); capped at 1 so
+	 *  narrow initials are never enlarged. Applied via --_initials-fit (a
+	 *  transform scale), so no reflow and it stays measurable. */
+	private _fitInitials(): void {
+		const initials = this.shadowRoot?.querySelector<HTMLElement>('.avatar__initials');
+		const disc = this.shadowRoot?.querySelector<HTMLElement>('.avatar');
+		if (!initials || !disc) {
+			this.style.removeProperty('--_initials-fit');
+			return;
+		}
+		const available = disc.clientWidth * INITIALS_FIT_RATIO;
+		const actual = initials.scrollWidth;
+		if (available <= 0 || actual <= 0) return; // not laid out yet — leave as is
+		this.style.setProperty('--_initials-fit', String(Math.min(1, available / actual)));
 	}
 
 	override render() {

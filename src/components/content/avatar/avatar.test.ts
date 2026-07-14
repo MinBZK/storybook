@@ -76,6 +76,31 @@ describe('nldd-avatar', () => {
 		expect(el.shadowRoot!.querySelector('.avatar__initials')!.textContent).toBe('ABC');
 	});
 
+	// The test fixture isn't laid out (zero-size shadow elements), so stub the
+	// measured widths to check the fit maths deterministically. The live scaling
+	// (initials always fit the disc) is verified in the browser.
+	const stubAndFit = (a: NLDDAvatar, discWidth: number, initialsWidth: number): number => {
+		const disc = a.shadowRoot!.querySelector('.avatar')!;
+		const initials = a.shadowRoot!.querySelector('.avatar__initials')!;
+		Object.defineProperty(disc, 'clientWidth', { value: discWidth, configurable: true });
+		Object.defineProperty(initials, 'scrollWidth', { value: initialsWidth, configurable: true });
+		(a as unknown as { _fitInitials(): void })._fitInitials();
+		return parseFloat(a.style.getPropertyValue('--_initials-fit'));
+	};
+
+	it('scales wide initials down to fit the disc width', async () => {
+		el = await fixture<NLDDAvatar>('<nldd-avatar initials="WWWW" decorative size="48"></nldd-avatar>');
+		await waitForUpdate(el);
+		// natural 60px wide inside a 48px disc → fit = 48 * 0.75 / 60
+		expect(stubAndFit(el, 48, 60)).toBeCloseTo((48 * 0.75) / 60, 3);
+	});
+
+	it('keeps narrow initials at full size (fit capped at 1)', async () => {
+		el = await fixture<NLDDAvatar>('<nldd-avatar initials="I" decorative size="48"></nldd-avatar>');
+		await waitForUpdate(el);
+		expect(stubAndFit(el, 48, 8)).toBe(1);
+	});
+
 	it('renders the image when src is set, with an empty alt (host owns the label)', async () => {
 		el = await fixture(`<nldd-avatar name="Jan Jansen" src="${IMAGE}"></nldd-avatar>`);
 		await waitForUpdate(el);

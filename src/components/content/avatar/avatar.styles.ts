@@ -16,7 +16,8 @@ export const avatarStyles = css`
 		--_content-color: var(--primitives-color-neutral-800);
 		--_border-width: var(--primitives-border-width-regular);
 		--_icon-scale: 0.6;
-		--_initials-scale: 0.45;
+		--_initials-scale: 0.55;
+		--_initials-fit: 1;
 		--_content-scale: 1;
 
 		${inheritedTextReset}
@@ -106,6 +107,9 @@ export const avatarStyles = css`
 		font-size: calc(var(--_initials-scale) * 100cqi);
 		line-height: 1;
 		color: var(--_content-color);
+		/* fit-initials shrinks wide initials via this factor (measured in JS);
+		   transform (not font-size) so scrollWidth stays the natural width. */
+		transform: scale(var(--_initials-fit));
 		user-select: none;
 	}
 

@@ -142,6 +142,24 @@ export const Initialen = {
 };
 
 /**
+ * De initialen vullen de schijf zo groot mogelijk; brede initialen (WW, MMM)
+ * worden automatisch teruggeschaald zodat ze binnen de schijf blijven, terwijl
+ * smalle initialen (II) op volle grootte blijven.
+ */
+export const BredeInitialen = {
+	render: () => html`
+		<div style="display: flex; gap: 16px; align-items: center;">
+			<nldd-avatar initials="II" decorative size="48"></nldd-avatar>
+			<nldd-avatar initials="AB" decorative size="48"></nldd-avatar>
+			<nldd-avatar initials="WW" decorative size="48"></nldd-avatar>
+			<nldd-avatar initials="MMM" decorative size="48"></nldd-avatar>
+			<nldd-avatar initials="WWW" decorative size="48"></nldd-avatar>
+		</div>
+	`,
+	parameters: { controls: { disable: true } },
+};
+
+/**
  * `type="organization"` geeft een afgeronde vierkant met een building-icoon
  * als terugval. Initialen (bijvoorbeeld een acroniem) werken ook.
  */
