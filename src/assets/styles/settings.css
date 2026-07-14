@@ -1375,7 +1375,7 @@
 	--semantics-buttons-neutral-tinted-background-color: light-dark(var(--primitives-color-neutral-75), var(--primitives-color-neutral-200));
 	--semantics-buttons-neutral-tinted-content-color: light-dark(var(--primitives-color-neutral-900), var(--primitives-color-neutral-900));
 	--semantics-buttons-neutral-tinted-content-secondary-color: light-dark(var(--primitives-color-neutral-750), var(--primitives-color-neutral-750));
-	--semantics-buttons-neutral-tinted-divider-color: light-dark(var(--primitives-color-neutral-250), var(--primitives-color-neutral-450));
+	--semantics-buttons-neutral-tinted-divider-color: light-dark(var(--primitives-color-neutral-250), var(--primitives-color-neutral-350));
 	--semantics-buttons-neutral-tinted-highlight-border-color: light-dark(var(--primitives-color-neutral-150), var(--primitives-color-neutral-250));
 	--semantics-buttons-neutral-tinted-is-hovered-background-color: light-dark(var(--primitives-color-neutral-100), var(--primitives-color-neutral-250));
 	--semantics-buttons-neutral-tinted-is-hovered-highlight-border-color: light-dark(var(--primitives-color-neutral-150), var(--primitives-color-neutral-300));
