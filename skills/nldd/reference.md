@@ -52,7 +52,7 @@ de `.d.ts` bestanden van het pakket.
 | `text` | Slot for custom button content (e.g. text with inline markup). Used when the text attribute is empty or not set (an empty string counts as "not set", since the attribute and the unset property are indistinguishable). Provide accessible-label when the slotted content isn't plain text. |
 | `start-icon` | Slot for a custom start icon (e.g. custom SVG). Only used when start-icon attribute is not set. |
 | `end-icon` | Slot for a custom end icon (e.g. custom SVG). Only used when end-icon attribute is not set. |
-| `menu` | A single `nldd-menu` this button invokes. Slotting it auto-anchors the menu to the button and toggles it on click (no id/anchor wiring). The menu syncs `expanded` and `aria-haspopup` back onto the button. Add `expandable` for the disclosure chevron. Mirrors nldd-split-button; the manual `anchor`/`popovertarget` wiring keeps working when you don't slot a menu. |
+| `popup` | A single `nldd-menu` or `nldd-popover` this button invokes. Slotting it auto-anchors the overlay to the button and toggles it on click (no id/anchor wiring). The overlay syncs `expanded` and `aria-haspopup` back onto the button. Add `expandable` for the disclosure chevron. Mirrors nldd-split-button; the manual `anchor`/`popovertarget` wiring keeps working when you don't slot an overlay. |
 
 **Events**
 
@@ -126,7 +126,7 @@ A container for grouping related buttons together, either horizontally or vertic
 | Slot | Beschrijving |
 | --- | --- |
 | `icon` | Slot for a custom icon (e.g. custom SVG). Only used when icon attribute is not set; falls back to a placeholder icon when the slot is empty. |
-| `menu` | A single `nldd-menu` this button invokes. Slotting it auto-anchors the menu to the button and toggles it on click (no id/anchor wiring). The menu syncs `expanded` and `aria-haspopup` back onto the button. Add `expandable` for the disclosure chevron. Mirrors nldd-split-button; manual `popovertarget` wiring keeps working without a slotted menu. |
+| `popup` | A single `nldd-menu` or `nldd-popover` this button invokes. Slotting it auto-anchors the overlay to the button and toggles it on click (no id/anchor wiring). The overlay syncs `expanded` and `aria-haspopup` back onto the button. Add `expandable` for the disclosure chevron. Mirrors nldd-split-button; manual `popovertarget` wiring keeps working without a slotted overlay. |
 
 **Events**
 
@@ -136,7 +136,7 @@ A container for grouping related buttons together, either horizontally or vertic
 
 ### `<nldd-split-button>`
 
-A split button combines a primary action button with a dropdown trigger. The main button performs the default action, while the icon button opens a menu. Provide the dropdown by slotting an `nldd-menu` (with its `nldd-menu-item` / `nldd-menu-divider` children) directly: ```html <nldd-split-button text="Opslaan"> <nldd-menu> <nldd-menu-item text="Opslaan als…"></nldd-menu-item> </nldd-menu> </nldd-split-button> ``` The slotted menu stays in the light DOM — no item-moving — so consumers keep their references and the full nldd-menu API (submenus, groups, config). The split-button anchors it to the chevron and opens it on click. When no `nldd-menu` is slotted, the chevron dispatches `menu-click` and the consumer manages their own popover.
+A split button combines a primary action button with a dropdown trigger. The main button performs the default action, while the icon button opens a menu or popover. Provide the dropdown by slotting an `nldd-menu` (with its `nldd-menu-item` / `nldd-menu-divider` children) or an `nldd-popover` directly: ```html <nldd-split-button text="Opslaan"> <nldd-menu> <nldd-menu-item text="Opslaan als…"></nldd-menu-item> </nldd-menu> </nldd-split-button> ``` The slotted overlay stays in the light DOM — no item-moving — so consumers keep their references and the full overlay API. The split-button anchors it to the chevron and opens it on click. When no overlay is slotted, the chevron dispatches `menu-click` and the consumer manages their own popover.
 
 **Attributes**
 
@@ -154,14 +154,14 @@ A split button combines a primary action button with a dropdown trigger. The mai
 
 | Slot | Beschrijving |
 | --- | --- |
-| _(default)_ | A single `nldd-menu` that the chevron opens. |
+| _(default)_ | A single `nldd-menu` or `nldd-popover` that the chevron opens. |
 
 **Events**
 
 | Event | Beschrijving |
 | --- | --- |
 | `action-click` | Fired when the main button is clicked |
-| `menu-click` | Fired when the dropdown trigger is clicked and no nldd-menu is slotted |
+| `menu-click` | Fired when the dropdown trigger is clicked and no overlay is slotted |
 
 ### `<nldd-toolbar>`
 
