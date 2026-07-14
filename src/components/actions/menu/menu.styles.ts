@@ -68,7 +68,6 @@ export const menuStyles = css`
 		width: var(--_width, max-content);
 		min-width: var(--_min-width);
 		max-width: var(--_max-width);
-		padding: var(--_padding);
 		flex-direction: column;
 		max-height: min(var(--_max-height), calc(var(--_max-items) * var(--_item-size) + var(--_padding) * 2));
 		outline: none;
@@ -79,6 +78,48 @@ export const menuStyles = css`
 		box-shadow: var(--semantics-focus-ring-box-shadow), var(--components-menu-box-shadow);
 		outline: var(--semantics-focus-ring-outline);
 		outline-offset: var(--semantics-focus-ring-outline-offset);
+	}
+
+
+	/* # Main — the item list (role="menu"), the drill-in back button and the
+	   empty-state. Holds the item padding (moved off .menu so the header/footer
+	   dividers below can be full-bleed). flex-column preserves the vertical item
+	   stacking the items had as direct flex children of .menu. */
+
+	.menu__main {
+		display: flex;
+		flex-direction: column;
+		padding: var(--_padding);
+	}
+
+	.menu__list {
+		display: flex;
+		flex-direction: column;
+	}
+
+
+	/* # Header / footer — free content outside role="menu", root-only. The
+	   regions are unopinionated (no padding): the consumer controls spacing of
+	   their own content (e.g. an nldd-container), so a full-bleed image or panel
+	   can sit flush if wanted. Only the full-bleed divider is drawn. */
+
+	.menu__header,
+	.menu__footer {
+		box-sizing: border-box;
+		flex-shrink: 0;
+	}
+
+	.menu__header {
+		border-bottom: var(--semantics-dividers-thickness) solid var(--semantics-dividers-color);
+	}
+
+	.menu__footer {
+		border-top: var(--semantics-dividers-thickness) solid var(--semantics-dividers-color);
+	}
+
+	.menu__header[hidden],
+	.menu__footer[hidden] {
+		display: none;
 	}
 
 

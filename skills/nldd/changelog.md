@@ -22,6 +22,7 @@ here; consult the commit history if you need that level of detail.
 - **`nldd-button`, `nldd-icon-button` and `nldd-split-button` open a slotted overlay.** Drop an `nldd-menu` or `nldd-popover` in the `popup` slot and the button anchors and toggles it automatically, with no `id`/`anchor` wiring.
 - **`nldd-rich-text` opt-in hyphenation.** The `hyphens` attribute enables automatic word breaking for running text (p, li, dd), tuned for long Dutch compounds in narrow columns.
 - **`nldd-text-editor` badges and colours bare URLs.** A plainly pasted URL (GFM autolink) now gets the same open-in-new-tab badge and link colour as a Markdown link, including `www.` (→ https) and email (→ mailto).
+- **`nldd-menu` header and footer slots.** Root-only `header` / `footer` slots hold free content (an account identity header, a short note, a link) outside `role="menu"` — reached with Tab, skipped by arrow navigation. `role="menu"` now lives statically on the item list.
 - **Content-colour token names standardised** (breaking). The buttons and categories content tokens now follow the global `content-color` / `content-secondary-color` word order, and the cross-component `--context-cell-content-*` channel is renamed to `--context-content-*`.
 
 ### Added
@@ -30,6 +31,7 @@ here; consult the commit history if you need that level of detail.
 - **`nldd-rich-text`** — `hyphens` attribute for opt-in automatic hyphenation on running text (requires a correct `lang`); plus an always-on `overflow-wrap: break-word` safety net on paragraphs and list items.
 - **`nldd-button` / `nldd-icon-button`** — a `popup` slot that auto-wires a nested `nldd-menu` or `nldd-popover` (anchors it, toggles on click, syncs `expanded` / `aria-haspopup`), mirroring `nldd-split-button`, which now also accepts a slotted `nldd-popover`.
 - **`nldd-text-editor`** — a bare / autolinked URL (plain https, `www.`, or an email) now gets the open-in-new-tab badge and the link colour, matching Markdown links; scheme-less forms are normalised (`www.` → https, email → mailto). The Markdown link's own address stays the dimmed grey.
+- **`nldd-menu`** — root-only `header` / `footer` slots for free content above/below the items, outside `role="menu"` (so they may hold non-menuitem content such as an `nldd-byline`, buttons or links; reached with Tab, skipped by arrow navigation). The regions are unpadded (control spacing with your own content, e.g. `nldd-container`); `role="menu"` is now static on the item list, with the empty-state and drill-in back button as siblings outside it.
 - **`nldd-inline-dialog`** — a `variant="loading"` that shows an `nldd-activity-indicator` (a `role="status"` spinner announcing "Laden") in place of the icon, for an empty state that is still loading. Sized to the icon (md/lg), shown instantly, and it overrides an explicit `icon`.
 
 ### Changed
