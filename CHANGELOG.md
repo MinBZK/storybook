@@ -12,10 +12,25 @@ here; consult the commit history if you need that level of detail.
 ### Highlights
 
 - **New icon.** `file-text-batch-check-plus` (`new-text-document`).
+- **`nldd-activity-indicator` follows its context's content colour.** The default spinner now tracks the shared `--context-content-color` channel (so a loader inside a selected list row matches the row's text), falling back to `currentColor` everywhere else.
+- **`nldd-button` and `nldd-icon-button` open a slotted menu.** Drop an `nldd-menu` in the new `menu` slot and the button anchors and toggles it automatically, with no `id`/`anchor` wiring.
+- **`nldd-rich-text` opt-in hyphenation.** The `hyphens` attribute enables automatic word breaking for running text (p, li, dd), tuned for long Dutch compounds in narrow columns.
+- **Content-colour token names standardised** (breaking). The buttons and categories content tokens now follow the global `content-color` / `content-secondary-color` word order, and the cross-component `--context-cell-content-*` channel is renamed to `--context-content-*`.
 
 ### Added
 
 - **Icon** — `file-text-batch-check-plus`, with the `new-text-document` alias.
+- **`nldd-rich-text`** — `hyphens` attribute for opt-in automatic hyphenation on running text (requires a correct `lang`); plus an always-on `overflow-wrap: break-word` safety net on paragraphs and list items.
+- **`nldd-button` / `nldd-icon-button`** — a `menu` slot that auto-wires a nested `nldd-menu` (anchors it, toggles on click, syncs `expanded` / `aria-haspopup`), mirroring `nldd-split-button`.
+
+### Changed
+
+- **`nldd-activity-indicator`** — the default circle and arc now colour from `var(--context-content-color, currentColor)` instead of `currentColor` alone. Behaviour is unchanged wherever the channel is unset.
+
+### Breaking
+
+- **Semantics content-colour tokens renamed** (no aliases): `--semantics-buttons-*-primary-content-color` and the `categories` equivalents become `--semantics-*-content-color` (drop `primary`); `--semantics-*-secondary-content-color` become `--semantics-*-content-secondary-color` (qualifier after `content`). Update any consumer CSS that references them.
+- **`--context-cell-content-*` renamed to `--context-content-*`** (whole family: `color`, `secondary-color`, `accent-color`, `success-color`, `warning-color`, `critical-color`). Update any consumer CSS that sets or reads these context custom properties.
 
 ## <small>0.8.66 (2026-07-13)</small>
 
