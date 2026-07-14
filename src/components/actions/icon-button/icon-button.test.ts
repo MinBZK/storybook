@@ -3,6 +3,7 @@ import { fixture, cleanup, waitForUpdate, deepActiveElement } from '../../../tes
 import type { NLDDIconButton } from './icon-button.js';
 import './icon-button.js';
 import '../menu/menu.js';
+import '../../layout/popover/popover.js';
 
 describe('nldd-icon-button', () => {
 	let el: HTMLElement;
@@ -615,7 +616,7 @@ describe('nldd-icon-button slotted menu', () => {
 	});
 
 	const MARKUP = '<nldd-icon-button icon="ellipsis" text="Meer">'
-		+ '<nldd-menu slot="menu"><nldd-menu-item text="Bewerken"></nldd-menu-item></nldd-menu>'
+		+ '<nldd-menu slot="popup"><nldd-menu-item text="Bewerken"></nldd-menu-item></nldd-menu>'
 		+ '</nldd-icon-button>';
 
 	it('anchors a slotted nldd-menu to the host button', async () => {
@@ -633,5 +634,48 @@ describe('nldd-icon-button slotted menu', () => {
 		el.shadowRoot!.querySelector<HTMLElement>('.icon-button')!.click();
 		await waitForUpdate(el);
 		expect(menu.matches(':popover-open')).toBe(true);
+	});
+});
+
+describe('nldd-icon-button slotted popover', () => {
+	let el: NLDDIconButton;
+
+	afterEach(() => {
+		if (el) cleanup(el);
+	});
+
+	const MARKUP = '<nldd-icon-button icon="ellipsis" text="Info">'
+		+ '<nldd-popover slot="popup" accessible-label="Info">'
+		+ '<button class="pop-btn">inside</button>'
+		+ '</nldd-popover>'
+		+ '</nldd-icon-button>';
+
+	it('anchors a slotted nldd-popover to the host button', async () => {
+		el = await fixture<NLDDIconButton>(MARKUP);
+		await waitForUpdate(el);
+		const pop = el.querySelector('nldd-popover') as HTMLElement & { anchorElement: Element | null };
+		expect(pop.anchorElement).toBe(el);
+	});
+
+	it('opens the slotted popover on click and syncs expanded', async () => {
+		el = await fixture<NLDDIconButton>(MARKUP);
+		await waitForUpdate(el);
+		const pop = el.querySelector('nldd-popover') as HTMLElement;
+		expect(pop.matches(':popover-open')).toBe(false);
+		el.shadowRoot!.querySelector<HTMLElement>('.icon-button')!.click();
+		await waitForUpdate(el);
+		expect(pop.matches(':popover-open')).toBe(true);
+		expect(el.expanded).toBe(true);
+	});
+
+	it('keeps the nested popover open when its own content is clicked', async () => {
+		el = await fixture<NLDDIconButton>(MARKUP);
+		await waitForUpdate(el);
+		const pop = el.querySelector('nldd-popover') as HTMLElement;
+		el.shadowRoot!.querySelector<HTMLElement>('.icon-button')!.click();
+		await waitForUpdate(el);
+		pop.querySelector<HTMLElement>('.pop-btn')!.click();
+		await waitForUpdate(el);
+		expect(pop.matches(':popover-open')).toBe(true);
 	});
 });

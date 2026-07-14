@@ -3,6 +3,7 @@ import { fixture, cleanup, waitForUpdate, deepActiveElement } from '../../../tes
 import type { NLDDButton } from './button.js';
 import './button.js';
 import '../menu/menu.js';
+import '../../layout/popover/popover.js';
 
 describe('nldd-button', () => {
 	let el: HTMLElement;
@@ -697,7 +698,7 @@ describe('nldd-button slotted menu', () => {
 	});
 
 	const MARKUP = '<nldd-button expandable text="Acties">'
-		+ '<nldd-menu slot="menu"><nldd-menu-item text="Bewerken"></nldd-menu-item></nldd-menu>'
+		+ '<nldd-menu slot="popup"><nldd-menu-item text="Bewerken"></nldd-menu-item></nldd-menu>'
 		+ '</nldd-button>';
 
 	it('anchors a slotted nldd-menu to the host button', async () => {
@@ -715,5 +716,60 @@ describe('nldd-button slotted menu', () => {
 		el.shadowRoot!.querySelector<HTMLElement>('.button')!.click();
 		await waitForUpdate(el);
 		expect(menu.matches(':popover-open')).toBe(true);
+	});
+});
+
+describe('nldd-button slotted popover', () => {
+	let el: NLDDButton;
+
+	afterEach(() => {
+		if (el) cleanup(el);
+	});
+
+	const MARKUP = '<nldd-button expandable text="Info">'
+		+ '<nldd-popover slot="popup" accessible-label="Info">'
+		+ '<button class="pop-btn">inside</button>'
+		+ '</nldd-popover>'
+		+ '</nldd-button>';
+
+	it('anchors a slotted nldd-popover to the host button', async () => {
+		el = await fixture<NLDDButton>(MARKUP);
+		await waitForUpdate(el);
+		const pop = el.querySelector('nldd-popover') as HTMLElement & { anchorElement: Element | null };
+		expect(pop.anchorElement).toBe(el);
+	});
+
+	it('opens the slotted popover on click', async () => {
+		el = await fixture<NLDDButton>(MARKUP);
+		await waitForUpdate(el);
+		const pop = el.querySelector('nldd-popover') as HTMLElement;
+		expect(pop.matches(':popover-open')).toBe(false);
+		el.shadowRoot!.querySelector<HTMLElement>('.button')!.click();
+		await waitForUpdate(el);
+		expect(pop.matches(':popover-open')).toBe(true);
+	});
+
+	it('keeps the nested popover open when its own content is clicked', async () => {
+		el = await fixture<NLDDButton>(MARKUP);
+		await waitForUpdate(el);
+		const pop = el.querySelector('nldd-popover') as HTMLElement;
+		el.shadowRoot!.querySelector<HTMLElement>('.button')!.click();
+		await waitForUpdate(el);
+		expect(pop.matches(':popover-open')).toBe(true);
+		// A click on the popover's own content must NOT dismiss it (the nesting
+		// bug: the anchor is an ancestor of the content, so a naive self-toggle
+		// would close it). The driven-mode bail prevents that.
+		pop.querySelector<HTMLElement>('.pop-btn')!.click();
+		await waitForUpdate(el);
+		expect(pop.matches(':popover-open')).toBe(true);
+	});
+
+	it('syncs expanded back onto the button while the popover is open', async () => {
+		el = await fixture<NLDDButton>(MARKUP);
+		await waitForUpdate(el);
+		const pop = el.querySelector('nldd-popover') as HTMLElement;
+		el.shadowRoot!.querySelector<HTMLElement>('.button')!.click();
+		await waitForUpdate(el);
+		expect(el.expanded).toBe(true);
 	});
 });

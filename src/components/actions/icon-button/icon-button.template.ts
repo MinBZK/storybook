@@ -131,10 +131,10 @@ export function template(this: NLDDIconButton) {
 		`
 		: renderButton();
 
-	// A single slotted nldd-menu that this button invokes. Named slot so it
-	// never lands in the icon slot; it renders nothing in flow (a popover is
-	// display:none until shown in the top layer). See _handleClick.
-	const menuSlot = html`<slot name="menu" @slotchange=${this._handleMenuSlotChange}></slot>`;
+	// A single slotted nldd-menu / nldd-popover that this button invokes. Named
+	// slot so it never lands in the icon slot; it renders nothing in flow (a
+	// popover is display:none until shown in the top layer). See _handleClick.
+	const menuSlot = html`<slot name="popup" @slotchange=${this._handlePopupSlotChange}></slot>`;
 
 	return html`${control}${loadingIndicator}${menuSlot}`;
 }

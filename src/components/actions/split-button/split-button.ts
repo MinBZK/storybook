@@ -2,10 +2,11 @@
  * Nederlandse Digitale Dienst Split Button Component (Lit + TypeScript)
  *
  * A split button combines a primary action button with a dropdown trigger.
- * The main button performs the default action, while the icon button opens a menu.
+ * The main button performs the default action, while the icon button opens a
+ * menu or popover.
  *
  * Provide the dropdown by slotting an `nldd-menu` (with its `nldd-menu-item` /
- * `nldd-menu-divider` children) directly:
+ * `nldd-menu-divider` children) or an `nldd-popover` directly:
  *
  * ```html
  * <nldd-split-button text="Opslaan">
@@ -15,11 +16,10 @@
  * </nldd-split-button>
  * ```
  *
- * The slotted menu stays in the light DOM — no item-moving — so consumers keep
- * their references and the full nldd-menu API (submenus, groups, config). The
- * split-button anchors it to the chevron and opens it on click. When no
- * `nldd-menu` is slotted, the chevron dispatches `menu-click` and the consumer
- * manages their own popover.
+ * The slotted overlay stays in the light DOM — no item-moving — so consumers
+ * keep their references and the full overlay API. The split-button anchors it
+ * to the chevron and opens it on click. When no overlay is slotted, the chevron
+ * dispatches `menu-click` and the consumer manages their own popover.
  *
  * @element nldd-split-button
  * @attr {string} size - Button size: 'xs' | 'sm' | 'md' | 'lg' (default: 'md')
@@ -30,10 +30,10 @@
  * @attr {string} icon - Icon name shown before the text on the primary action button
  * @attr {object} translations - Translations; unset keys fall back to Dutch
  *
- * @slot - A single `nldd-menu` that the chevron opens.
+ * @slot - A single `nldd-menu` or `nldd-popover` that the chevron opens.
  *
  * @fires action-click - Fired when the main button is clicked
- * @fires menu-click - Fired when the dropdown trigger is clicked and no nldd-menu is slotted
+ * @fires menu-click - Fired when the dropdown trigger is clicked and no overlay is slotted
  */
 import { LitElement } from 'lit';
 import { customElement, property, query, state } from 'lit/decorators.js';
@@ -46,6 +46,10 @@ import './../button/button.js';
 import './../icon-button/icon-button.js';
 import '../../actions/menu/menu.js';
 import type { NLDDMenu } from '../../actions/menu/menu.js';
+import type { NLDDPopover } from '../../layout/popover/popover.js';
+
+/** A floating overlay the split-button chevron anchors and toggles. */
+type PopupOverlay = (NLDDMenu | NLDDPopover) & { anchorElement: Element | null };
 
 export type Size = 'xs' | 'sm' | 'md' | 'lg';
 
@@ -85,9 +89,10 @@ export class NLDDSplitButton extends LitElement {
 	@state()
 	_menuIsOpen = false;
 
-	/** The consumer-slotted `nldd-menu`, or null when none is provided. */
-	private _menu: NLDDMenu | null = null;
-	private _menuWasOpenOnPointerdown = false;
+	/** The consumer-slotted overlay (`nldd-menu` / `nldd-popover`), or null when
+	 * none is provided. */
+	private _overlay: PopupOverlay | null = null;
+	private _overlayWasOpenOnPointerdown = false;
 
 	// — i18n —————————————————————————————————————————————————————————————————
 
@@ -105,38 +110,38 @@ export class NLDDSplitButton extends LitElement {
 		// touch and pen — `mousedown` alone would skip touch on mobile, where
 		// no mousedown precedes the synthetic click.
 		this._popupButtonWrapper?.addEventListener('pointerdown', () => {
-			this._menuWasOpenOnPointerdown = this._menu?.matches(':popover-open') ?? false;
+			this._overlayWasOpenOnPointerdown = this._overlay?.matches(':popover-open') ?? false;
 		});
 
-		// If the menu was slotted declaratively, _handleSlotChange may have run
+		// If the overlay was slotted declaratively, _handleSlotChange may have run
 		// before @query resolved _popupButtonWrapper and couldn't anchor it. The
-		// wrapper exists now — anchor a menu that's still waiting for it.
-		if (this._menu && this._popupButtonWrapper) {
-			this._menu.anchorElement = this._popupButtonWrapper;
+		// wrapper exists now — anchor an overlay that's still waiting for it.
+		if (this._overlay && this._popupButtonWrapper) {
+			this._overlay.anchorElement = this._popupButtonWrapper;
 		}
 	}
 
 	override disconnectedCallback(): void {
 		super.disconnectedCallback();
-		this._menu?.removeEventListener('toggle', this._handleMenuToggle);
+		this._overlay?.removeEventListener('toggle', this._handleMenuToggle);
 	}
 
 	/**
-	 * Wires the slotted `nldd-menu` to the chevron: anchors it to the popup
-	 * button and tracks its open state. Re-runs whenever the slotted content
-	 * changes (menu added, removed or replaced).
+	 * Wires the slotted `nldd-menu` / `nldd-popover` to the chevron: anchors it
+	 * to the popup button and tracks its open state. Re-runs whenever the slotted
+	 * content changes (overlay added, removed or replaced).
 	 */
 	_handleSlotChange(event: Event): void {
 		const slot = event.target as HTMLSlotElement;
-		const menu =
-			(slot.assignedElements().find((el) => el.matches('nldd-menu')) as NLDDMenu | undefined) ?? null;
-		if (menu === this._menu) return;
-		this._menu?.removeEventListener('toggle', this._handleMenuToggle);
-		this._menu = menu;
+		const overlay =
+			(slot.assignedElements().find((el) => el.matches('nldd-menu, nldd-popover')) as PopupOverlay | undefined) ?? null;
+		if (overlay === this._overlay) return;
+		this._overlay?.removeEventListener('toggle', this._handleMenuToggle);
+		this._overlay = overlay;
 		this._menuIsOpen = false;
-		if (menu) {
-			if (this._popupButtonWrapper) menu.anchorElement = this._popupButtonWrapper;
-			menu.addEventListener('toggle', this._handleMenuToggle);
+		if (overlay) {
+			if (this._popupButtonWrapper) overlay.anchorElement = this._popupButtonWrapper;
+			overlay.addEventListener('toggle', this._handleMenuToggle);
 		}
 	}
 
@@ -153,11 +158,11 @@ export class NLDDSplitButton extends LitElement {
 	_handleMenuClick(e: MouseEvent): void {
 		if (this.disabled) return;
 		e.stopPropagation();
-		if (this._menu) {
-			const wasOpen = this._menuWasOpenOnPointerdown;
-			this._menuWasOpenOnPointerdown = false;
+		if (this._overlay) {
+			const wasOpen = this._overlayWasOpenOnPointerdown;
+			this._overlayWasOpenOnPointerdown = false;
 			if (wasOpen) return; // light-dismiss already closed it
-			this._menu.showPopover();
+			this._overlay.showPopover();
 			return;
 		}
 		this.dispatchEvent(new CustomEvent('menu-click', { bubbles: true, composed: true }));

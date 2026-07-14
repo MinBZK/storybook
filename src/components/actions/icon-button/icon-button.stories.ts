@@ -1,6 +1,7 @@
 import { html, nothing } from 'lit';
 import './icon-button.js';
 import '../menu/menu.js';
+import '../../layout/popover/popover.js';
 import { ICONS } from './../../content/icon/icon.js';
 
 /**
@@ -358,16 +359,16 @@ export const CustomIconSlot = {
 };
 
 /**
- * Het klassieke overflow-menu ("kebab"): slot een enkele `nldd-menu` in de
- * `menu`-slot en de icon-button ankert en togglet het menu automatisch — geen
- * `id`/`anchor`-koppeling. Het menu synct `expanded` en `aria-haspopup` terug
- * op de knop. Gespiegeld aan `nldd-split-button`.
+ * Het klassieke overflow-menu ("kebab"): slot een enkele `nldd-menu` (of
+ * `nldd-popover`) in de `popup`-slot en de icon-button ankert en togglet 'm
+ * automatisch — geen `id`/`anchor`-koppeling. De overlay synct `expanded` en
+ * `aria-haspopup` terug op de knop. Gespiegeld aan `nldd-split-button`.
  */
 export const WithMenu = {
 	render: () => html`
 		<div style="display: flex; flex-wrap: wrap; gap: 16px; align-items: center;">
 			<nldd-icon-button icon="ellipsis" text="Meer acties">
-				<nldd-menu slot="menu">
+				<nldd-menu slot="popup">
 					<nldd-menu-item text="Bewerken" icon="pencil"></nldd-menu-item>
 					<nldd-menu-item text="Dupliceren" icon="square-plus-on-square"></nldd-menu-item>
 					<nldd-menu-divider></nldd-menu-divider>
@@ -380,7 +381,35 @@ export const WithMenu = {
 		controls: { disable: true },
 		docs: {
 			description: {
-				story: 'Overflow-menu via de <code>menu</code>-slot: de icon-button ankert en togglet het menu automatisch, zonder <code>id</code>/<code>anchor</code>-boilerplate.',
+				story: 'Overflow-menu via de <code>popup</code>-slot: de icon-button ankert en togglet het menu automatisch, zonder <code>id</code>/<code>anchor</code>-boilerplate.',
+			},
+		},
+	},
+};
+
+/**
+ * Dezelfde `popup`-slot slikt ook een `nldd-popover` voor vrije content. De
+ * icon-button ankert en togglet 'm identiek; content-klikken sluiten 'm niet.
+ * Geef de popover altijd een `accessible-label`.
+ */
+export const WithPopover = {
+	render: () => html`
+		<div style="display: flex; flex-wrap: wrap; gap: 16px; align-items: center;">
+			<nldd-icon-button icon="info-circle" text="Info">
+				<nldd-popover slot="popup" accessible-label="Toelichting" width="280px">
+					<div style="padding: 16px; display: flex; flex-direction: column; gap: 8px;">
+						<strong>Zorgtoeslag</strong>
+						<span>Een tegemoetkoming in de kosten van je zorgverzekering, afhankelijk van je inkomen.</span>
+					</div>
+				</nldd-popover>
+			</nldd-icon-button>
+		</div>
+	`,
+	parameters: {
+		controls: { disable: true },
+		docs: {
+			description: {
+				story: 'Genest popover via de <code>popup</code>-slot: zelfde auto-wiring als een menu, maar met vrije content die klikbaar blijft.',
 			},
 		},
 	},

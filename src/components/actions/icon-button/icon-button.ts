@@ -33,10 +33,10 @@
  *
  * @slot icon - Slot for a custom icon (e.g. custom SVG). Only used when icon attribute is not set;
  *              falls back to a placeholder icon when the slot is empty.
- * @slot menu - A single `nldd-menu` this button invokes. Slotting it auto-anchors the menu to the
- *              button and toggles it on click (no id/anchor wiring). The menu syncs `expanded` and
- *              `aria-haspopup` back onto the button. Add `expandable` for the disclosure chevron.
- *              Mirrors nldd-split-button; manual `popovertarget` wiring keeps working without a slotted menu.
+ * @slot popup - A single `nldd-menu` or `nldd-popover` this button invokes. Slotting it auto-anchors
+ *              the overlay to the button and toggles it on click (no id/anchor wiring). The overlay syncs
+ *              `expanded` and `aria-haspopup` back onto the button. Add `expandable` for the disclosure chevron.
+ *              Mirrors nldd-split-button; manual `popovertarget` wiring keeps working without a slotted overlay.
  *
  * @example
  * ```html
@@ -53,6 +53,12 @@ import { template } from './icon-button.template.js';
 import { withTranslations } from '../../../utilities/with-translations.js';
 import { nlddIconButtonTranslations } from './icon-button.i18n.js';
 import type { NLDDMenu } from '../menu/menu.js';
+import type { NLDDPopover } from '../../layout/popover/popover.js';
+
+/** A floating overlay an icon-button can anchor and toggle from its `popup`
+ *  slot. Both expose `anchorElement` and bail on their own anchor-click toggle
+ *  when it is set, so the button drives them uniformly via showPopover(). */
+type PopupOverlay = (NLDDMenu | NLDDPopover) & { anchorElement: Element | null };
 import './../../content/icon/icon.js';
 import './../../status-and-feedback/activity-indicator/activity-indicator.js';
 
@@ -207,15 +213,15 @@ export class NLDDIconButton extends withTranslations(LitElement, nlddIconButtonT
 
 	private _warnedA11y = false;
 
-	/** The slotted `nldd-menu` this button invokes, or null when none is
-	 * slotted. Set by `_handleMenuSlotChange`. */
-	private _menu: NLDDMenu | null = null;
+	/** The slotted `nldd-menu` / `nldd-popover` this button invokes, or null
+	 * when none is slotted. Set by `_handlePopupSlotChange`. */
+	private _overlay: PopupOverlay | null = null;
 
 	/** Popover-open snapshot captured on pointerdown — before the browser's
-	 * light-dismiss can close the menu (pointerdown precedes the click). The
-	 * click handler reads it to avoid re-opening a menu the same gesture just
-	 * dismissed (the "flashes closed then reopens" bug). */
-	private _menuWasOpenOnPointerdown = false;
+	 * light-dismiss can close the overlay (pointerdown precedes the click). The
+	 * click handler reads it to avoid re-opening an overlay the same gesture
+	 * just dismissed (the "flashes closed then reopens" bug). */
+	private _overlayWasOpenOnPointerdown = false;
 
 	override updated(changedProperties: Map<string, unknown>): void {
 		if (changedProperties.has('width')) {
@@ -251,25 +257,26 @@ export class NLDDIconButton extends withTranslations(LitElement, nlddIconButtonT
 	}
 
 	/**
-	 * Wire a slotted `nldd-menu` to this button: anchor it to the host so it
-	 * positions against the button and syncs `expanded` / `aria-haspopup` back
-	 * onto it (via the menu's own anchor-state sync). Opening happens in the
-	 * click handler. Re-runs whenever the slotted menu is added, removed or
-	 * replaced. Mirrors nldd-split-button's slot wiring.
+	 * Wire a slotted `nldd-menu` / `nldd-popover` to this button: anchor it to
+	 * the host so it positions against the button and syncs `expanded` /
+	 * `aria-haspopup` back onto it (via the overlay's own anchor-state sync).
+	 * Both overlays bail on their self-toggle when `anchorElement` is set, so the
+	 * button drives opening uniformly in the click handler. Re-runs whenever the
+	 * slotted overlay is added, removed or replaced. Mirrors nldd-split-button.
 	 */
-	_handleMenuSlotChange(event: Event): void {
+	_handlePopupSlotChange(event: Event): void {
 		const slot = event.target as HTMLSlotElement;
-		const menu = (slot.assignedElements().find((el) => el.matches('nldd-menu')) as NLDDMenu | undefined) ?? null;
-		if (menu === this._menu) return;
-		this._menu = menu;
-		if (menu) menu.anchorElement = this;
+		const overlay = (slot.assignedElements().find((el) => el.matches('nldd-menu, nldd-popover')) as PopupOverlay | undefined) ?? null;
+		if (overlay === this._overlay) return;
+		this._overlay = overlay;
+		if (overlay) overlay.anchorElement = this;
 	}
 
-	/** Snapshot the menu's open state on pointerdown, before the browser's
+	/** Snapshot the overlay's open state on pointerdown, before the browser's
 	 * light-dismiss runs, so the click handler can tell a genuine open from a
-	 * click that already dismissed the open menu. */
+	 * click that already dismissed the open overlay. */
 	_handleAnchorPointerdown(): void {
-		this._menuWasOpenOnPointerdown = this._menu?.matches(':popover-open') ?? false;
+		this._overlayWasOpenOnPointerdown = this._overlay?.matches(':popover-open') ?? false;
 	}
 
 	protected _handleClick(e: MouseEvent): void {
@@ -278,15 +285,15 @@ export class NLDDIconButton extends withTranslations(LitElement, nlddIconButtonT
 			e.stopPropagation();
 			return;
 		}
-		// A slotted menu makes this button its invoker: toggle the menu and
-		// stop — a menu button neither submits a form nor navigates. The
-		// pointerdown snapshot distinguishes a fresh open from a click the
-		// browser already consumed to light-dismiss the open menu.
-		if (this._menu) {
+		// A slotted overlay makes this button its invoker: toggle it and stop —
+		// a popup button neither submits a form nor navigates. The pointerdown
+		// snapshot distinguishes a fresh open from a click the browser already
+		// consumed to light-dismiss the open overlay.
+		if (this._overlay) {
 			e.preventDefault();
-			const wasOpen = this._menuWasOpenOnPointerdown;
-			this._menuWasOpenOnPointerdown = false;
-			if (!wasOpen) this._menu.showPopover();
+			const wasOpen = this._overlayWasOpenOnPointerdown;
+			this._overlayWasOpenOnPointerdown = false;
+			if (!wasOpen) this._overlay.showPopover();
 			return;
 		}
 		// A link icon-button has no form behaviour. Otherwise drive the

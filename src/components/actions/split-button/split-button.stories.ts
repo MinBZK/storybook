@@ -2,6 +2,7 @@ import { action } from 'storybook/actions';
 import { html, nothing } from 'lit';
 import './split-button.js';
 import '../../actions/menu/menu.js';
+import '../../layout/popover/popover.js';
 import { ICONS } from '../../content/icon/icon.js';
 
 /**
@@ -165,5 +166,37 @@ export const Disabled = {
 `,
 	parameters: {
 		controls: { disable: true },
+	},
+};
+
+/**
+ * De chevron slikt ook een `nldd-popover` in plaats van een menu: dezelfde
+ * auto-wiring (ankeren + togglen), maar met vrije content. Zonder overlay
+ * vuurt de chevron nog steeds `menu-click`.
+ */
+export const MetPopover = {
+	render: () => html`
+		<nldd-split-button
+			text="Delen"
+			icon="share"
+			@action-click=${action('action-click')}
+			@menu-click=${action('menu-click')}
+		>
+			<nldd-popover accessible-label="Deelopties" width="280px">
+				<div style="padding: 16px; display: flex; flex-direction: column; gap: 8px;">
+					<strong>Deel deze pagina</strong>
+					<span>Kies hoe je deze pagina wilt delen met anderen.</span>
+					<nldd-button variant="primary" text="Kopieer link"></nldd-button>
+				</div>
+			</nldd-popover>
+		</nldd-split-button>
+	`,
+	parameters: {
+		controls: { disable: true },
+		docs: {
+			description: {
+				story: 'Split-button met een genest <code>nldd-popover</code> in plaats van een menu; zelfde auto-wiring op de chevron.',
+			},
+		},
 	},
 };
