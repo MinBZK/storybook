@@ -172,7 +172,7 @@ export const segmentedControlItemStyles = css`
 		gap: var(--_gap);
 		align-items: center;
 		justify-content: center;
-		color: var(--semantics-buttons-neutral-tinted-primary-content-color);
+		color: var(--semantics-buttons-neutral-tinted-content-color);
 		font: var(--_font);
 	}
 
@@ -183,20 +183,20 @@ export const segmentedControlItemStyles = css`
 	@media (hover: hover) {
 		:host(:not([selected])) .segmented-control__item:hover {
 			background-color: var(--semantics-buttons-neutral-tinted-is-hovered-background-color);
-			color: var(--semantics-buttons-neutral-tinted-is-hovered-primary-content-color);
+			color: var(--semantics-buttons-neutral-tinted-is-hovered-content-color);
 		}
 	}
 
 	:host(:not([selected])) .segmented-control__item:active {
 		background-color: var(--semantics-buttons-neutral-tinted-is-active-background-color);
-		color: var(--semantics-buttons-neutral-tinted-is-active-primary-content-color);
+		color: var(--semantics-buttons-neutral-tinted-is-active-content-color);
 	}
 
 	:host([selected]) .segmented-control__item {
 		--_highlight-border-color: var(--semantics-buttons-neutral-tinted-is-selected-highlight-border-color);
 
 		background-color: var(--semantics-buttons-neutral-tinted-is-selected-background-color);
-		color: var(--semantics-buttons-neutral-tinted-is-selected-primary-content-color);
+		color: var(--semantics-buttons-neutral-tinted-is-selected-content-color);
 	}
 
 	@media (hover: hover) {
@@ -204,7 +204,7 @@ export const segmentedControlItemStyles = css`
 			--_highlight-border-color: var(--semantics-buttons-neutral-tinted-is-selected-is-hovered-highlight-border-color);
 
 			background-color: var(--semantics-buttons-neutral-tinted-is-selected-is-hovered-background-color);
-			color: var(--semantics-buttons-neutral-tinted-is-selected-is-hovered-primary-content-color);
+			color: var(--semantics-buttons-neutral-tinted-is-selected-is-hovered-content-color);
 		}
 	}
 
@@ -212,7 +212,7 @@ export const segmentedControlItemStyles = css`
 		--_highlight-border-color: var(--semantics-buttons-neutral-tinted-is-selected-is-active-highlight-border-color);
 
 		background-color: var(--semantics-buttons-neutral-tinted-is-selected-is-active-background-color);
-		color: var(--semantics-buttons-neutral-tinted-is-selected-is-active-primary-content-color);
+		color: var(--semantics-buttons-neutral-tinted-is-selected-is-active-content-color);
 	}
 
 	@media (forced-colors: active) {

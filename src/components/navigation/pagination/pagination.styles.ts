@@ -106,25 +106,25 @@ export const paginationStyles = css`
 		.pagination__page-button.is-current:hover {
 			--_highlight-border-color: var(--semantics-buttons-neutral-tinted-is-selected-is-hovered-highlight-border-color);
 			background-color: var(--semantics-buttons-neutral-tinted-is-selected-is-hovered-background-color);
-			color: var(--semantics-buttons-neutral-tinted-is-selected-is-hovered-primary-content-color);
+			color: var(--semantics-buttons-neutral-tinted-is-selected-is-hovered-content-color);
 		}
 	}
 
 	.pagination__page-button:active:not(.is-current) {
 		background-color: var(--semantics-buttons-neutral-tinted-is-active-background-color);
-		color: var(--semantics-buttons-neutral-tinted-is-active-primary-content-color);
+		color: var(--semantics-buttons-neutral-tinted-is-active-content-color);
 	}
 
 	.pagination__page-button.is-current {
 		--_highlight-border-color: var(--semantics-buttons-neutral-tinted-is-selected-highlight-border-color);
 		background-color: var(--semantics-buttons-neutral-tinted-is-selected-background-color);
-		color: var(--semantics-buttons-neutral-tinted-is-selected-primary-content-color);
+		color: var(--semantics-buttons-neutral-tinted-is-selected-content-color);
 	}
 
 	.pagination__page-button.is-current:active {
 		--_highlight-border-color: var(--semantics-buttons-neutral-tinted-is-selected-is-active-highlight-border-color);
 		background-color: var(--semantics-buttons-neutral-tinted-is-selected-is-active-background-color);
-		color: var(--semantics-buttons-neutral-tinted-is-selected-is-active-primary-content-color);
+		color: var(--semantics-buttons-neutral-tinted-is-selected-is-active-content-color);
 	}
 
 	@media (forced-colors: active) {
@@ -191,9 +191,9 @@ export const paginationStyles = css`
 		--_background-color: transparent;
 		--_content-color: inherit;
 		--_is-hovered-background-color: var(--semantics-buttons-neutral-tinted-is-hovered-background-color);
-		--_is-hovered-content-color: var(--semantics-buttons-neutral-tinted-is-hovered-primary-content-color);
+		--_is-hovered-content-color: var(--semantics-buttons-neutral-tinted-is-hovered-content-color);
 		--_is-active-background-color: var(--semantics-buttons-neutral-tinted-is-active-background-color);
-		--_is-active-content-color: var(--semantics-buttons-neutral-tinted-is-active-primary-content-color);
+		--_is-active-content-color: var(--semantics-buttons-neutral-tinted-is-active-content-color);
 
 		display: inline-flex;
 		position: relative;
@@ -221,11 +221,11 @@ export const paginationStyles = css`
 
 	:host([select-expanded]) .pagination__select-wrapper {
 		--_background-color: var(--semantics-buttons-neutral-tinted-is-expanded-background-color);
-		--_content-color: var(--semantics-buttons-neutral-tinted-is-expanded-primary-content-color);
+		--_content-color: var(--semantics-buttons-neutral-tinted-is-expanded-content-color);
 		--_is-hovered-background-color: var(--semantics-buttons-neutral-tinted-is-expanded-is-hovered-background-color);
-		--_is-hovered-content-color: var(--semantics-buttons-neutral-tinted-is-expanded-is-hovered-primary-content-color);
+		--_is-hovered-content-color: var(--semantics-buttons-neutral-tinted-is-expanded-is-hovered-content-color);
 		--_is-active-background-color: var(--semantics-buttons-neutral-tinted-is-expanded-is-active-background-color);
-		--_is-active-content-color: var(--semantics-buttons-neutral-tinted-is-expanded-is-active-primary-content-color);
+		--_is-active-content-color: var(--semantics-buttons-neutral-tinted-is-expanded-is-active-content-color);
 	}
 
 	@media (prefers-reduced-motion: reduce) {
