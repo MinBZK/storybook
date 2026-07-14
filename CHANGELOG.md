@@ -39,6 +39,10 @@ here; consult the commit history if you need that level of detail.
 - **`--context-cell-content-*` renamed to `--context-content-*`** (whole family: `color`, `secondary-color`, `accent-color`, `success-color`, `warning-color`, `critical-color`). Update any consumer CSS that sets or reads these context custom properties.
 - **`nldd-button` / `nldd-icon-button` overlay slot renamed `menu` → `popup`** — the slot now accepts an `nldd-menu` or an `nldd-popover`. Change `<nldd-menu slot="menu">` to `slot="popup"`. (`nldd-token` / `nldd-token-field` keep their own menu-only `slot="menu"`.)
 
+### Fixed
+
+- **`nldd-toolbar`** — an `align="center"` title now stays centred when it is the only visible element, including when a `slot="start"` / `slot="end"` item is `display:none` (e.g. a back button hidden on wide viewports). It previously jumped to the left. Centre-only routing is measured from real rendering, so a hidden item no longer strands the title.
+
 ## <small>0.8.66 (2026-07-13)</small>
 
 * Text-editor improvements, icon set, toolbar & token-field commit-on-blur (#138) ([ca77ddb](https://github.com/MinBZK/storybook/commit/ca77ddb)), closes [#138](https://github.com/MinBZK/storybook/issues/138)

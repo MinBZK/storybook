@@ -560,3 +560,66 @@ describe('nldd-toolbar', () => {
 		expect(ids(groupForOverflow([item(1, 1, true), item(2, 2, true), item(3, 1, true)]))).toEqual([[1, 3], [2]]);
 	});
 });
+
+describe('nldd-toolbar centered title layout', () => {
+	let el: HTMLElement;
+
+	afterEach(() => {
+		if (el) cleanup(el);
+	});
+
+	// Let the ResizeObserver-driven measurement pass (scheduled from updated() via
+	// updateComplete.then) run and its state re-render settle.
+	const settle = async (host: HTMLElement): Promise<void> => {
+		await (host as unknown as { updateComplete: Promise<unknown> }).updateComplete;
+		await new Promise((r) => requestAnimationFrame(() => requestAnimationFrame(() => r(null))));
+		await (host as unknown as { updateComplete: Promise<unknown> }).updateComplete;
+	};
+
+	const mount = async (inner: string): Promise<HTMLElement> => {
+		el = await fixture<HTMLElement>(`<nldd-toolbar size="md" style="width:360px">${inner}</nldd-toolbar>`);
+		await waitForUpdate(el);
+		await settle(el);
+		return el;
+	};
+
+	const centerOnly = (host: HTMLElement): boolean =>
+		(host as unknown as { _centerOnly: boolean })._centerOnly;
+
+	const titleCenterOffset = (host: HTMLElement): number => {
+		const box = host.getBoundingClientRect();
+		const p = host.querySelector('nldd-toolbar-title')!.shadowRoot!.querySelector('.toolbar__title')!;
+		const pr = p.getBoundingClientRect();
+		return pr.left + pr.width / 2 - box.left;
+	};
+
+	const TITLE = '<nldd-toolbar-title slot="center" align="center" text="boodschappen"></nldd-toolbar-title>';
+	const HIDDEN_START = '<nldd-toolbar-item slot="start" style="display:none"><nldd-icon-button icon="chevron-left" text="Terug"></nldd-icon-button></nldd-toolbar-item>';
+
+	it('treats a display:none-only start/end as center-only (routes to the centered layout)', async () => {
+		await mount(HIDDEN_START + TITLE);
+		expect(centerOnly(el)).toBe(true);
+		expect(el.shadowRoot!.querySelector('.toolbar__center-fill')).not.toBeNull();
+	});
+
+	it('is not center-only when a real start item is present', async () => {
+		await mount('<nldd-toolbar-item slot="start"><nldd-icon-button icon="chevron-left" text="Terug"></nldd-icon-button></nldd-toolbar-item>' + TITLE);
+		expect(centerOnly(el)).toBe(false); // a rendered start item still balances via the spacers
+	});
+
+	it('promotes a lone centered title to solo-fluid despite a hidden start item', async () => {
+		await mount(HIDDEN_START + TITLE);
+		const title = el.querySelector('nldd-toolbar-title')!;
+		expect(title.hasAttribute('solo-fluid')).toBe(true);
+	});
+
+	it('actually centers a lone title (hidden start) — the reported bug', async () => {
+		await mount(HIDDEN_START + TITLE);
+		expect(titleCenterOffset(el)).toBeCloseTo(180, -1); // ±5px of the 360px toolbar's centre
+	});
+
+	it('centers a lone title with no start/end at all', async () => {
+		await mount(TITLE);
+		expect(titleCenterOffset(el)).toBeCloseTo(180, -1);
+	});
+});

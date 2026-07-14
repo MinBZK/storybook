@@ -844,3 +844,42 @@ export const MobieleActiebalk = {
 	`),
 	parameters: { controls: { disable: true } },
 };
+
+/**
+ * Een `align="center"` titel centreert nu ook wanneer hij het enige zichtbare
+ * element is — zowel zonder start/end-items als wanneer een start-item
+ * (bijv. een back-knop) `display:none` is. Voorheen sprong de titel dan naar
+ * links. De gestreepte rand toont de toolbar-breedte.
+ */
+export const LoneCenteredTitle = {
+	name: 'Lone centered title',
+	render: () => html`
+		<div style="display: flex; flex-direction: column; gap: 16px; max-width: 420px;">
+			<div style="outline: 1px dashed var(--semantics-dividers-color);">
+				<nldd-toolbar size="md" label="Zonder start of end">
+					<nldd-toolbar-title slot="center" align="center" text="boodschappen">
+						<nldd-icon-button slot="action" size="xs" icon="chevron-down" text="Acties" tooltip-timing="never"></nldd-icon-button>
+					</nldd-toolbar-title>
+				</nldd-toolbar>
+			</div>
+			<div style="outline: 1px dashed var(--semantics-dividers-color);">
+				<nldd-toolbar size="md" label="Met verborgen back-knop">
+					<nldd-toolbar-item slot="start" style="display: none">
+						<nldd-icon-button icon="chevron-left" text="Terug" tooltip-timing="never"></nldd-icon-button>
+					</nldd-toolbar-item>
+					<nldd-toolbar-title slot="center" align="center" text="boodschappen">
+						<nldd-icon-button slot="action" size="xs" icon="chevron-down" text="Acties" tooltip-timing="never"></nldd-icon-button>
+					</nldd-toolbar-title>
+				</nldd-toolbar>
+			</div>
+		</div>
+	`,
+	parameters: {
+		controls: { disable: true },
+		docs: {
+			description: {
+				story: 'De titel blijft gecentreerd of er nu geen start/end-items zijn, of een start-item verborgen is (`display:none`).',
+			},
+		},
+	},
+};

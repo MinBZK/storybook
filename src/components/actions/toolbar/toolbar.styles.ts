@@ -260,6 +260,15 @@ export const toolbarTitleStyles = css`
 		align-items: center;
 	}
 
+	/* A solo-fluid title fills the whole row (flex-grow above), so text-align on
+	   the shrink-wrapped title-group can't centre it. Centre the group (with its
+	   trailing action, as one unit) along the row's main axis instead. Scoped to
+	   solo-fluid so a title balanced by real start/end items keeps using the
+	   toolbar spacers. */
+	:host([solo-fluid][align="center"]) {
+		justify-content: center;
+	}
+
 	:host([hidden]) {
 		display: none;
 	}
