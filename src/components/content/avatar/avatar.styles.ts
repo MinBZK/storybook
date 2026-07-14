@@ -16,7 +16,7 @@ export const avatarStyles = css`
 		--_content-color: var(--primitives-color-neutral-800);
 		--_border-width: var(--primitives-border-width-regular);
 		--_icon-scale: 0.6;
-		--_initials-scale: 0.55;
+		--_initials-scale: 0.56;
 		--_initials-fit: 1;
 		--_content-scale: 1;
 
