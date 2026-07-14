@@ -188,9 +188,23 @@ export class NLDDSheet extends LitElement {
 		});
 	}
 
+	/** Whether the press preceding a click started on the backdrop (the dialog
+	 *  itself) rather than inside the sheet content. Guards against a drag that
+	 *  begins inside (selecting text in an input, dragging a control) and ends on
+	 *  the backdrop being read as a backdrop click. */
+	private _pointerDownOnBackdrop = false;
+
+	_handleDialogPointerDown(e: PointerEvent): void {
+		this._pointerDownOnBackdrop = e.target === this._dialog;
+	}
+
 	_handleDialogClick(e: MouseEvent): void {
 		if (this.modeless) return;
-		if (e.target === this._dialog) {
+		// Close only on a genuine backdrop click: the press AND the release land
+		// on the dialog itself (its dismiss area), not on content. e.target is the
+		// dialog when the release is on the backdrop; the pointerdown flag confirms
+		// the press started there too, so a drag out of the sheet doesn't dismiss.
+		if (e.target === this._dialog && this._pointerDownOnBackdrop) {
 			this.hide();
 		}
 	}

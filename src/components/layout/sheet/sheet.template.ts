@@ -7,6 +7,7 @@ export function sheetTemplate(component: NLDDSheet) {
 		<dialog class="sheet"
 			aria-label=${component.accessibleLabel}
 			aria-modal=${component.modeless ? nothing : 'true'}
+			@pointerdown=${component._handleDialogPointerDown}
 			@click=${component._handleDialogClick}
 			@cancel=${component._handleCancel}
 		>
