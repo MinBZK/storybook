@@ -516,6 +516,30 @@ export const InputField = {
 	},
 };
 
+export const Links = {
+	render: () => html`
+		<nldd-text-editor
+			rows="10"
+			accessible-label="Tekst"
+			.value=${[
+				'Een markdown-link: [Regelrecht](https://regelrecht.rijks.app).',
+				'',
+				'En een plat geplakte URL: https://regelrecht.rijks.app — die krijgt dezelfde badge.',
+				'',
+				'Ook www.rijksoverheid.nl en info@rijksoverheid.nl worden herkend.',
+			].join('\n')}
+		></nldd-text-editor>
+	`,
+	parameters: {
+		controls: { disable: true },
+		docs: {
+			description: {
+				story: 'Elke link krijgt een "open in nieuw tabblad"-badge — niet alleen markdown-links (`[tekst](url)`), maar ook plat geplakte URL\'s (GFM-autolinks). Scheme-loze vormen krijgen er een: `www.…` → https, een e-mailadres → mailto. De badge is direct klikbaar zonder eerst de caret te plaatsen.',
+			},
+		},
+	},
+};
+
 export const Placeholder = {
 	render: () => html`
 		<nldd-text-editor rows="6" placeholder="Schrijf hier je toelichting in markdown…" accessible-label="Tekst"></nldd-text-editor>

@@ -5,6 +5,7 @@ import { GFM } from '@lezer/markdown';
 import { Prec, StateField, type EditorState, type Extension, type Range } from '@codemirror/state';
 import type { SyntaxNode } from '@lezer/common';
 import { MENTION_HREF_PREFIX, unescapeMentionLabel, decodeMentionId } from './text-editor.mentions.js';
+import { inLinkContext } from './text-editor.links.js';
 import '../../content/icon/icon.js';
 
 /* Hybrid markdown rendering: the document stays plain markdown text, but the
@@ -156,6 +157,16 @@ function buildMarkDecorations(view: EditorView): DecorationSet {
 				}
 				if (node.name === 'CodeBlock') {
 					addCodeblockLines(view.state, node.from, node.to, sel, ranges);
+					return;
+				}
+				// A bare / autolinked URL is the link itself (no separate [text]), so
+				// colour it like link text (blue) instead of the dimmed address grey of
+				// cm-md-url. Its own class (not cm-md-link) so the `span { color: inherit }`
+				// rule that overrides the highlight-style URL tint can target it without
+				// also recolouring the grey address inside a [text](url) link. The URL
+				// inside a link, a reference definition, or an image stays grey below.
+				if (node.name === 'URL' && !inLinkContext(node.node)) {
+					ranges.push(classDeco('cm-md-autolink').range(node.from, node.to));
 					return;
 				}
 				const cls = NODE_CLASS[node.name];

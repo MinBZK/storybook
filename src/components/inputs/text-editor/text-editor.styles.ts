@@ -338,6 +338,17 @@ export const textEditorStyles = css`
 		color: inherit;
 	}
 
+	/* A bare / autolinked URL reads as the link itself: colour it like link text,
+	   and override the highlight-style URL tint (teal) on its token span so the
+	   whole address is the link colour, not just the mark wrapper. */
+	.cm-md-autolink {
+		color: var(--semantics-links-color);
+	}
+
+	.cm-md-autolink span {
+		color: inherit;
+	}
+
 	.cm-md-quote {
 		color: var(--semantics-content-color);
 		font-style: italic;
