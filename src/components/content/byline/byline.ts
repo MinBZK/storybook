@@ -46,6 +46,7 @@ import { customElement, property, state } from 'lit/decorators.js';
 import { reflectNonDefault } from '../../../utilities/reflect-non-default.js';
 import { bylineStyles } from './byline.styles.js';
 import { bylineTemplate } from './byline.template.js';
+import '../avatar/avatar.js';
 
 @customElement('nldd-byline')
 export class NLDDByline extends LitElement {

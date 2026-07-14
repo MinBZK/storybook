@@ -1,26 +1,26 @@
 import { html, nothing } from 'lit';
 import './byline.js';
+import '../avatar/avatar.js';
 import '../../navigation/link/link.js';
 
-// Self-contained SVG avatars (data URIs) so the stories don't depend on
-// external images or the static assets folder.
-const avatar = (initials: string, color: string) =>
-	`data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 40'%3E%3Crect width='40' height='40' fill='%23${color}'/%3E%3Ctext x='20' y='25' font-family='sans-serif' font-size='14' fill='white' text-anchor='middle'%3E${initials}%3C/text%3E%3C/svg%3E`;
-const AVATAR_1 = avatar('JJ', '185FA5');
-const AVATAR_2 = avatar('PP', '38860A');
-const AVATAR_3 = avatar('AK', '993C1D');
+// A self-contained SVG avatar (data URI) for the avatar-src attribute demo, so
+// the stories don't depend on external images. Slotted avatars use nldd-avatar
+// with initials instead.
+const AVATAR_IMAGE =
+	`data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 40'%3E%3Crect width='40' height='40' fill='%23185FA5'/%3E%3Ctext x='20' y='25' font-family='sans-serif' font-size='14' fill='white' text-anchor='middle'%3EJJ%3C/text%3E%3C/svg%3E`;
 
 /**
  * Een byline toont auteurs of redacteuren van content: optionele avatar(s),
  * een naamregel en ondersteunende tekst (bijvoorbeeld rol of datum). Alle
  * onderdelen zijn optioneel.
  *
- * Avatars worden geslot als `<img slot="avatars">`. Bij meerdere
- * redacteuren overlappen ze elkaar subtiel, gescheiden door een ring in de
- * surface-kleur. Staat de byline op een gekleurde ondergrond, geef die
- * kleur dan door via `--context-parent-background-color` zodat de ring
- * meekleurt. Zet `alt=""` op de afbeeldingen wanneer de namen al in de
- * tekst staan.
+ * Avatars worden geslot als `<nldd-avatar slot="avatars">` (of een `<img>`).
+ * Zonder afbeelding valt een `nldd-avatar` terug op de initialen uit `name`.
+ * Bij meerdere redacteuren overlappen ze elkaar subtiel, gescheiden door een
+ * ring in de surface-kleur. Staat de byline op een gekleurde ondergrond, geef
+ * die kleur dan door via `--context-parent-background-color` zodat de ring
+ * meekleurt. Zet `decorative` op de avatars wanneer de namen al in de tekst
+ * staan.
  */
 export default {
 	title: 'Components/Content/Byline',
@@ -55,10 +55,10 @@ const Template = (args: Record<string, any>) => html`
 		text=${args.text || nothing}
 		supporting-text=${args.supportingText || nothing}
 	>
-		<img slot="avatars"
-			src=${AVATAR_1}
-			alt=""
-		>
+		<nldd-avatar slot="avatars"
+			name=${args.text || nothing}
+			decorative
+		></nldd-avatar>
 	</nldd-byline>
 `;
 
@@ -68,14 +68,14 @@ export const Standaard = {
 
 /**
  * Eén avatar kun je ook via het `avatar-src`-attribuut meegeven (met optioneel
- * `avatar-srcset`), zonder een `<img slot="avatars">` te slotten. Handig voor de
- * veelvoorkomende enkele-auteur-byline; `sizes` zet het component zelf omdat de
- * avatar vast 40px is. Meerdere avatars gaan altijd via de slot.
+ * `avatar-srcset`), zonder zelf te slotten. Byline rendert daarvoor intern een
+ * `nldd-avatar`. Handig voor de veelvoorkomende enkele-auteur-byline. Meerdere
+ * avatars gaan altijd via de slot.
  */
 export const EnkeleAvatarViaAttribuut = {
 	render: () => html`
 		<nldd-byline
-			avatar-src=${AVATAR_1}
+			avatar-src=${AVATAR_IMAGE}
 			text="Jan Jansen"
 			supporting-text="Redacteur · 12 juni 2026"
 		></nldd-byline>
@@ -83,24 +83,29 @@ export const EnkeleAvatarViaAttribuut = {
 	parameters: { controls: { disable: true } },
 };
 
+/**
+ * Bij meerdere redacteuren overlappen de avatars, gescheiden door een ring in
+ * de surface-kleur. Hier tonen ze de initialen uit `name`; geef een `src` mee
+ * voor foto's (foto's en initialen mogen door elkaar staan).
+ */
 export const MeerdereRedacteuren = {
 	render: () => html`
 		<nldd-byline
 			text="Jan Jansen, Petra Pietersen en Ahmed Karim"
 			supporting-text="Laatst bijgewerkt op 12 juni 2026"
 		>
-			<img slot="avatars"
-				src=${AVATAR_1}
-				alt=""
-			>
-			<img slot="avatars"
-				src=${AVATAR_2}
-				alt=""
-			>
-			<img slot="avatars"
-				src=${AVATAR_3}
-				alt=""
-			>
+			<nldd-avatar slot="avatars"
+				name="Jan Jansen"
+				decorative
+			></nldd-avatar>
+			<nldd-avatar slot="avatars"
+				name="Petra Pietersen"
+				decorative
+			></nldd-avatar>
+			<nldd-avatar slot="avatars"
+				name="Ahmed Karim"
+				decorative
+			></nldd-avatar>
 		</nldd-byline>
 	`,
 	parameters: { controls: { disable: true } },
@@ -121,9 +126,9 @@ export const SmalleContainer = {
 					text="Jan Jansen, Petra Pietersen en Ahmed Karim"
 					supporting-text="Laatst bijgewerkt op 12 juni 2026"
 				>
-					<img slot="avatars" src=${AVATAR_1} alt="">
-					<img slot="avatars" src=${AVATAR_2} alt="">
-					<img slot="avatars" src=${AVATAR_3} alt="">
+					<nldd-avatar slot="avatars" name="Jan Jansen" decorative></nldd-avatar>
+					<nldd-avatar slot="avatars" name="Petra Pietersen" decorative></nldd-avatar>
+					<nldd-avatar slot="avatars" name="Ahmed Karim" decorative></nldd-avatar>
 				</nldd-byline>
 			</div>
 			<div style="outline: 1px dashed #cbd5e1; padding: 16px;">
@@ -131,7 +136,7 @@ export const SmalleContainer = {
 					text="Jan Jansen"
 					supporting-text="Redacteur · 12 juni 2026"
 				>
-					<img slot="avatars" src=${AVATAR_1} alt="">
+					<nldd-avatar slot="avatars" name="Jan Jansen" decorative></nldd-avatar>
 				</nldd-byline>
 			</div>
 		</div>
@@ -147,10 +152,10 @@ export const SmalleContainer = {
 export const MetTimeEnLink = {
 	render: () => html`
 		<nldd-byline>
-			<img slot="avatars"
-				src=${AVATAR_1}
-				alt=""
-			>
+			<nldd-avatar slot="avatars"
+				name="Jan Jansen"
+				decorative
+			></nldd-avatar>
 			<span slot="text">Door <nldd-link href="#auteur" text="Jan Jansen"></nldd-link></span>
 			<time slot="supporting-text"
 				datetime="2026-06-12"
@@ -173,10 +178,10 @@ export const ZonderAvatar = {
 export const ZonderSupportingText = {
 	render: () => html`
 		<nldd-byline text="Jan Jansen">
-			<img slot="avatars"
-				src=${AVATAR_1}
-				alt=""
-			>
+			<nldd-avatar slot="avatars"
+				name="Jan Jansen"
+				decorative
+			></nldd-avatar>
 		</nldd-byline>
 	`,
 	parameters: { controls: { disable: true } },

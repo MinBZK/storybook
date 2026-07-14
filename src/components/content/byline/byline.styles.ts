@@ -73,19 +73,19 @@ export const bylineStyles = css`
 		object-fit: cover !important;
 	}
 
+	/* nldd-avatar defaults to filling its container, so pin it to the byline
+	   avatar size. --_size needs !important to beat the avatar's own :host rule
+	   (a ::slotted selector has lower specificity than :host). */
+	.byline__avatars ::slotted(nldd-avatar),
 	.byline__avatar {
-		display: block;
+		--_size: var(--_avatar-size) !important;
 		margin-inline-start: calc(-1 * var(--_avatar-overlap-size));
 		border-radius: var(--_avatar-corner-radius);
 		box-shadow: 0 0 0 var(--_avatar-border-width) var(--_avatar-border-color);
-		width: var(--_avatar-size);
-		height: var(--_avatar-size);
-		object-fit: cover;
 	}
 
 	@media (forced-colors: active) {
-		.byline__avatars ::slotted(img),
-		.byline__avatar {
+		.byline__avatars ::slotted(img) {
 			border: var(--_avatar-border-width) solid Canvas !important;
 		}
 	}
