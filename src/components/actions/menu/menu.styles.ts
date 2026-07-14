@@ -345,9 +345,11 @@ export const menuGroupStyles = css`
 	/* # Host
 	 *
 	 * Auto top/bottom dividers via border-top/-bottom; suppressed for the
-	 * first child (top) and when followed by another group or last child
-	 * (bottom — flag set by parent menu via data-no-bottom-divider since
-	 * :last-child can't see hidden siblings).
+	 * first item (top) and when followed by another group or last item
+	 * (bottom). Both flags are set by the parent menu (data-no-top-divider /
+	 * data-no-bottom-divider): CSS :first-child / :last-child can't see hidden
+	 * siblings, nor the header slot's div that becomes the first light-DOM
+	 * child (which would leave a first group no longer :first-child).
 	 *
 	 * padding-top > padding-bottom binds the title visually to its items
 	 * rather than to whatever sits above. */
@@ -363,7 +365,8 @@ export const menuGroupStyles = css`
 		padding-bottom: var(--primitives-space-4);
 	}
 
-	:host(:first-child) {
+	:host(:first-child),
+	:host([data-no-top-divider]) {
 		border-top: none;
 		padding-top: var(--primitives-space-2);
 	}

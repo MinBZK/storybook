@@ -1760,7 +1760,10 @@ export class NLDDMenu extends LitElement {
 		children.forEach(el => {
 			const tag = el.tagName.toLowerCase();
 			if (tag === 'nldd-menu-divider') el.removeAttribute('hidden');
-			if (tag === 'nldd-menu-group') el.removeAttribute('data-no-bottom-divider');
+			if (tag === 'nldd-menu-group') {
+				el.removeAttribute('data-no-bottom-divider');
+				el.removeAttribute('data-no-top-divider');
+			}
 		});
 
 		const visible = children.filter(el => !el.hasAttribute('hidden'));
@@ -1791,6 +1794,13 @@ export class NLDDMenu extends LitElement {
 		const remaining = visible.filter(el => !el.hasAttribute('hidden'));
 		remaining.forEach((el, index) => {
 			if (el.tagName.toLowerCase() !== 'nldd-menu-group') return;
+			// Top divider: suppress when the group is the first item. CSS
+			// :first-child can't do this once a `header` slot makes the header div
+			// the first light-DOM child (the group is then no longer :first-child),
+			// so drive it from the filtered item flow instead.
+			if (index === 0) {
+				el.setAttribute('data-no-top-divider', '');
+			}
 			const nextTag = remaining[index + 1]?.tagName.toLowerCase();
 			const isLast = index === remaining.length - 1;
 			if (isLast || nextTag === 'nldd-menu-group') {

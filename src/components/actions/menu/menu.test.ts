@@ -616,6 +616,40 @@ describe('nldd-menu header / footer slots', () => {
 		expect(el.shadowRoot!.querySelector('.menu__header')).toBeNull();
 		expect(el.shadowRoot!.querySelector('.menu__footer')).toBeNull();
 	});
+
+	it('suppresses a first group\'s top divider even though a header makes it not :first-child', async () => {
+		el = await fixture(`
+			<nldd-menu>
+				<div slot="header"><strong>Header</strong></div>
+				<nldd-menu-group text="Thema">
+					<nldd-menu-item text="Systeem"></nldd-menu-item>
+				</nldd-menu-group>
+				<nldd-menu-item text="Log uit"></nldd-menu-item>
+			</nldd-menu>
+		`);
+		await waitForUpdate(el);
+		(el as unknown as { filter(q: string): void }).filter(''); // runs _updateDividerVisibility
+		await waitForUpdate(el);
+		const group = el.querySelector('nldd-menu-group')!;
+		expect(el.firstElementChild).not.toBe(group); // the header div is the first light-DOM child
+		expect(group.hasAttribute('data-no-top-divider')).toBe(true); // still treated as the first item
+	});
+
+	it('keeps a group top divider when items precede it (with a header)', async () => {
+		el = await fixture(`
+			<nldd-menu>
+				<div slot="header"><strong>Header</strong></div>
+				<nldd-menu-item text="Profiel"></nldd-menu-item>
+				<nldd-menu-group text="Thema">
+					<nldd-menu-item text="Systeem"></nldd-menu-item>
+				</nldd-menu-group>
+			</nldd-menu>
+		`);
+		await waitForUpdate(el);
+		(el as unknown as { filter(q: string): void }).filter('');
+		await waitForUpdate(el);
+		expect(el.querySelector('nldd-menu-group')!.hasAttribute('data-no-top-divider')).toBe(false);
+	});
 });
 
 describe('nldd-menu-divider', () => {
