@@ -1,4 +1,5 @@
 import { html, nothing } from 'lit';
+import { action } from 'storybook/actions';
 import './text-editor.js';
 import '../../actions/toolbar/toolbar.js';
 import '../../inputs/segmented-control/segmented-control.js';
@@ -565,7 +566,7 @@ export const Mentions = {
 				accessible-label="Tekst"
 				.value=${sample}
 				.mentionSource=${source}
-				@nldd-text-editor-mention=${(event: CustomEvent) => console.info('mention:', event.detail)}
+				@nldd-text-editor-mention=${(event: CustomEvent) => action('nldd-text-editor-mention')(event.detail)}
 			></nldd-text-editor>
 		`;
 	},
@@ -732,7 +733,7 @@ export const Mixed = {
 				.value=${sample}
 				.mentionSource=${source}
 				.annotations=${annotations}
-				@nldd-text-editor-mention=${(event: CustomEvent) => console.info('mention:', event.detail)}
+				@nldd-text-editor-mention=${(event: CustomEvent) => action('nldd-text-editor-mention')(event.detail)}
 			></nldd-text-editor>
 		`);
 	},

@@ -92,6 +92,7 @@ export const Standaard = {
 	render: Template,
 };
 
+/* eslint-disable lit-a11y/no-autofocus -- de popover leest [autofocus] als gedocumenteerde focus-target-API bij openen */
 export const MetForm = {
 	render: () => html`
 		<nldd-button id="trigger-form" text="Open form"></nldd-button>
@@ -119,6 +120,7 @@ export const MetForm = {
 	`,
 	parameters: { controls: { disable: true } },
 };
+/* eslint-enable lit-a11y/no-autofocus */
 
 export const Placements = {
 	render: () => html`
