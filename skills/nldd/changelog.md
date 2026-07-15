@@ -15,6 +15,10 @@ the type of conventional-commit determines the release. Conventional types
 `chore`, `docs`, `ci`, `style`, `test`, `build` are intentionally omitted
 here; consult the commit history if you need that level of detail.
 
+## <small>0.8.67 (2026-07-15)</small>
+
+* ci(review): fetch full history so the review can compute the PR diff (#140) ([a076e03](https://github.com/MinBZK/storybook/commit/a076e03)), closes [#140](https://github.com/MinBZK/storybook/issues/140)
+
 ## <small>0.8.66 (2026-07-13)</small>
 
 * Text-editor improvements, icon set, toolbar & token-field commit-on-blur (#138) ([ca77ddb](https://github.com/MinBZK/storybook/commit/ca77ddb)), closes [#138](https://github.com/MinBZK/storybook/issues/138)
