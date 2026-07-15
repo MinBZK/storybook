@@ -159,22 +159,23 @@ describe('nldd-byline', () => {
 	   Avatar via attribuut (de slot heeft voorrang)
 	   ============================================================ */
 
-	it('renders an internal nldd-avatar from avatar-src when nothing is slotted', async () => {
+	it('renders an internal nldd-avatar (wrapped in a container) from avatar-src when nothing is slotted', async () => {
 		el = await fixture(`<nldd-byline text="Jan Jansen" avatar-src="${AVATAR}"></nldd-byline>`);
 		await waitForUpdate(el);
-		const avatar = el.shadowRoot!.querySelector('.byline__avatar');
+		const wrapper = el.shadowRoot!.querySelector('.byline__avatar');
+		expect(wrapper).not.toBeNull();
+		const avatar = wrapper!.querySelector('nldd-avatar')!;
 		expect(avatar).not.toBeNull();
-		expect(avatar!.tagName.toLowerCase()).toBe('nldd-avatar');
-		expect(avatar!.getAttribute('src')).toBe(AVATAR);
+		expect(avatar.getAttribute('src')).toBe(AVATAR);
 		// No avatar-alt: the name is in the byline text, so the avatar is decorative.
-		expect(avatar!.hasAttribute('decorative')).toBe(true);
+		expect(avatar.hasAttribute('decorative')).toBe(true);
 		expect(el.shadowRoot!.querySelector('.byline__avatars')!.hasAttribute('hidden')).toBe(false);
 	});
 
 	it('applies avatar-srcset to the internal avatar and labels it with avatar-alt', async () => {
 		el = await fixture(`<nldd-byline avatar-src="${AVATAR}" avatar-srcset="${AVATAR} 2x" avatar-alt="Jan Jansen"></nldd-byline>`);
 		await waitForUpdate(el);
-		const avatar = el.shadowRoot!.querySelector('.byline__avatar')!;
+		const avatar = el.shadowRoot!.querySelector('.byline__avatar nldd-avatar')!;
 		expect(avatar.getAttribute('srcset')).toBe(`${AVATAR} 2x`);
 		// A non-empty avatar-alt becomes the avatar's name and is not decorative.
 		expect(avatar.getAttribute('name')).toBe('Jan Jansen');

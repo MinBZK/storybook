@@ -9,12 +9,14 @@ export function bylineTemplate(component: NLDDByline) {
 	// when nothing is slotted (the slot always wins). A non-empty avatar-alt
 	// labels it; an empty one marks it decorative (the name is in the text).
 	const avatarImage = component.avatarSrc && !component._hasSlottedAvatars
-		? html`<nldd-avatar class="byline__avatar"
-				src=${component.avatarSrc}
-				srcset=${component.avatarSrcset || nothing}
-				name=${component.avatarAlt || nothing}
-				?decorative=${!component.avatarAlt}
-			></nldd-avatar>`
+		? html`<div class="byline__avatar">
+				<nldd-avatar
+					src=${component.avatarSrc}
+					srcset=${component.avatarSrcset || nothing}
+					name=${component.avatarAlt || nothing}
+					?decorative=${!component.avatarAlt}
+				></nldd-avatar>
+			</div>`
 		: nothing;
 	return html`
 		<div class="byline"
