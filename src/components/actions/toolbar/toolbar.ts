@@ -576,6 +576,15 @@ export class NLDDToolbar extends LitElement {
 		this.style.setProperty('--_center-width', `${centerWidth}px`);
 		this.style.setProperty('--_end-width', `${endWidth}px`);
 
+		// The spacer basis subtracts a gap to account for the flex gap between a
+		// side area and its spacer. That gap only exists when the area is
+		// non-empty; with an empty start (or end) the spacer is the first (or
+		// last) item and there is no such gap, so drop the subtraction to 0 —
+		// otherwise the centre is pulled off-centre by one gap once the opposite
+		// side gains items.
+		this.style.setProperty('--_left-spacer-gap', startWidth > 0 ? `${itemGap}px` : '0px');
+		this.style.setProperty('--_right-spacer-gap', endWidth > 0 ? `${itemGap}px` : '0px');
+
 		const { leftZero, rightZero } = this._computeSpacerZeros(
 			hostWidth, itemGap, overflowButtonWidth, startWidth, centerWidth, endWidth
 		);

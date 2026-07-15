@@ -17,6 +17,11 @@ export const toolbarStyles = css`
 		--_center-width: 0px;
 		--_end-width: 0px;
 		--_overflow-button-width: 0px;
+		/* The gap between a side area and its spacer only exists when that area is
+		   non-empty; toolbar.ts drops these to 0px when start/end is empty so the
+		   spacer basis doesn't over-subtract and pull the centre off-centre. */
+		--_left-spacer-gap: var(--_gap);
+		--_right-spacer-gap: var(--_gap);
 		--_label-margin-top: var(--primitives-space-4);
 
 		${inheritedTextReset}
@@ -89,7 +94,7 @@ export const toolbarStyles = css`
 			var(--_width) / 2
 			- var(--_start-width)
 			- var(--_center-width) / 2
-			- var(--_gap)
+			- var(--_left-spacer-gap)
 		);
 	}
 
@@ -102,7 +107,7 @@ export const toolbarStyles = css`
 			var(--_width) / 2
 			- var(--_end-width)
 			- var(--_center-width) / 2
-			- var(--_gap)
+			- var(--_right-spacer-gap)
 			- var(--_overflow-button-width)
 		);
 	}
