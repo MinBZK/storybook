@@ -570,7 +570,7 @@ Er is geen automatische formatter. Volg deze regels handmatig.
 - Elk attribuut op een **eigen regel**, met twee uitzonderingen:
   - `class` staat altijd op **dezelfde regel** als het element
   - Een element met **één enkel attribuut** mag op één regel
-- **Nooit een class op een child component** — gebruik een wrapper element
+- **Nooit een class op een child component** — wrap het in een container die positie en size bepaalt; het child vult die container (bijv. `--_size: 100%`)
 - Geen lege regels in templates
 - **Element-content op een eigen ingesprongen regel** — ook een enkele `${...}`-interpolatie; de open- en sluittag staan dan op hun eigen regel. Zo blijven regels kort en tonen diffs alleen de gewijzigde inhoud, niet de hele tag-regel. Geldt voor losstaande elementen in de template-body. Een kort inline `html`-fragment binnen een expressie of ternary mag op één regel blijven (zie het voorbeeld hieronder); dat opsplitsen levert juist lelijke fragmenten op.
 

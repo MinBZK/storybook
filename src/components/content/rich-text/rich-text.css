@@ -279,15 +279,9 @@ nldd-rich-text p {
 }
 
 
-/* # Hyphenation
-   Opt-in via [hyphens]. Alleen op doorlopende proza (p, li, dd), niet op
-   headings (display-maat), tabellen of blockquote. Afbreking hangt volledig
-   af van een correcte `lang` op de pagina; zonder taalinfo breekt de browser
-   niet af. hyphenate-limit-chars 6 3 3 is de kwaliteitsgrens: minimaal
-   6-letter woorden, minstens 3 tekens vóór en ná het afbreekpunt, zodat losse
-   letters en korte woorden niet breken. -webkit-hyphenate-limit-before/after
-   levert diezelfde grens op oudere Safari. */
+/* # Hyphenation */
 
+/* Opt-in via [hyphens]; werkt alleen met een correcte `lang` op de pagina. */
 nldd-rich-text[hyphens] :is(p, li, dd) {
 	-webkit-hyphens: auto;
 	hyphens: auto;
