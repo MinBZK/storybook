@@ -1,4 +1,4 @@
-import { html } from 'lit';
+import { html, nothing } from 'lit';
 import './page-footer.js';
 import '../../navigation/breadcrumbs/breadcrumbs.js';
 import '../container/container.js';
@@ -15,11 +15,20 @@ export default {
 		},
 		status: { type: 'stable' },
 	},
+	args: {
+		width: '',
+	},
+	argTypes: {
+		width: {
+			control: 'text',
+			description: "Body max-width (net als een page-section): 'full' verwijdert de constraint, of een CSS-lengte (bijv. '480px').",
+		},
+	},
 };
 
 export const Standaard = {
-	render: () => html`
-		<nldd-page-footer>
+	render: (args: Record<string, string>) => html`
+		<nldd-page-footer width=${args.width || nothing}>
 			<nldd-breadcrumbs slot="breadcrumbs">
 				<nldd-breadcrumbs-item text="Home" href="/"></nldd-breadcrumbs-item>
 				<nldd-breadcrumbs-item text="Documentatie" href="/docs/"></nldd-breadcrumbs-item>

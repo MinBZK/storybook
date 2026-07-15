@@ -34,6 +34,10 @@ export const pageFooterStyles = css`
 		background-color: transparent;
 	}
 
+	:host([width="full"]) {
+		--_max-width: none;
+	}
+
 	.page-footer {
 		--_lintje-height: calc(var(--_lintje-width) / 2);
 
@@ -60,8 +64,13 @@ export const pageFooterStyles = css`
 		}
 	}
 
+	/* Empty footer = only the lintje. Add top space equal to the lintje height
+	   (container-type on :host makes a BFC, so this margin stays inside the
+	   transparent host) so a preceding tinted page section doesn't butt right up
+	   against the lintje. */
 	:host([empty]) .page-footer {
 		min-height: var(--_lintje-height);
+		margin-top: var(--_lintje-height);
 	}
 
 	.page-footer::after {
