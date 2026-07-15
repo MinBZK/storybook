@@ -41,12 +41,12 @@ describe('nldd-avatar', () => {
 		await waitForUpdate(el);
 		expect(el.iconAligned).toBe(true);
 		expect(el.getAttribute('icon-aligned')).toBe('');
-		// --_content-scale drives the 5/6 disc; default avatars stay full-bleed (1).
-		expect(getComputedStyle(el).getPropertyValue('--_content-scale').trim()).toBe('calc(5 / 6)');
+		// --_shape-scale drives the 5/6 disc; default avatars stay full-bleed (1).
+		expect(getComputedStyle(el).getPropertyValue('--_shape-scale').trim()).toBe('calc(5 / 6)');
 		el.iconAligned = false;
 		await waitForUpdate(el);
 		expect(el.hasAttribute('icon-aligned')).toBe(false);
-		expect(getComputedStyle(el).getPropertyValue('--_content-scale').trim()).toBe('1');
+		expect(getComputedStyle(el).getPropertyValue('--_shape-scale').trim()).toBe('1');
 	});
 
 	it('derives initials from the first and last word of the name', async () => {

@@ -14,11 +14,10 @@ export const avatarStyles = css`
 		--_corner-radius: var(--primitives-corner-radius-full);
 		--_background-color: light-dark(var(--primitives-color-neutral-100), var(--primitives-color-neutral-300));
 		--_content-color: var(--primitives-color-neutral-800);
-		--_border-width: var(--primitives-border-width-regular);
 		--_icon-scale: 0.6;
 		--_initials-scale: 0.56;
 		--_initials-fit: 1;
-		--_content-scale: 1;
+		--_shape-scale: 1;
 
 		${inheritedTextReset}
 		display: inline-flex;
@@ -51,7 +50,7 @@ export const avatarStyles = css`
 	   up optically with an icon on the same grid (an icon glyph has built-in
 	   padding). The host keeps the grid cell size. */
 	:host([icon-aligned]) {
-		--_content-scale: calc(5 / 6);
+		--_shape-scale: calc(5 / 6);
 	}
 
 
@@ -82,8 +81,8 @@ export const avatarStyles = css`
 	.avatar {
 		container-type: inline-size;
 		display: flex;
-		width: calc(100% * var(--_content-scale));
-		height: calc(100% * var(--_content-scale));
+		width: calc(100% * var(--_shape-scale));
+		height: calc(100% * var(--_shape-scale));
 		align-items: center;
 		justify-content: center;
 		overflow: hidden;
@@ -120,7 +119,7 @@ export const avatarStyles = css`
 
 	@media (forced-colors: active) {
 		.avatar {
-			border: var(--_border-width) solid CanvasText;
+			border: var(--primitives-border-width-regular) solid CanvasText;
 		}
 	}
 `;
