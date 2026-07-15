@@ -17,6 +17,7 @@ here; consult the commit history if you need that level of detail.
 
 ### Highlights
 
+- **New `nldd-avatar`.** A person or organisation avatar: an image, auto-fitting initials (derived from `name` or given explicitly), or a type icon (`person` = circle with a person icon, `organization` = rounded with a building icon). Sizes on the `nldd-icon` scale and fills its container by default. `color="inherit"` fills with the surrounding content colour, and `icon-aligned` shrinks the disc to an icon's optical size so it lines up when it replaces an icon.
 - **New icon.** `file-text-batch-check-plus` (`new-text-document`).
 - **`nldd-activity-indicator` follows its context's content colour.** The default spinner now tracks the shared `--context-content-color` channel (so a loader inside a selected list row matches the row's text), falling back to `currentColor` everywhere else.
 - **`nldd-button`, `nldd-icon-button` and `nldd-split-button` open a slotted overlay.** Drop an `nldd-menu` or `nldd-popover` in the `popup` slot and the button anchors and toggles it automatically, with no `id`/`anchor` wiring.
@@ -33,11 +34,15 @@ here; consult the commit history if you need that level of detail.
 - **`nldd-text-editor`** — a bare / autolinked URL (plain https, `www.`, or an email) now gets the open-in-new-tab badge and the link colour, matching Markdown links; scheme-less forms are normalised (`www.` → https, email → mailto). The Markdown link's own address stays the dimmed grey.
 - **`nldd-menu`** — root-only `header` / `footer` slots for free content above/below the items, outside `role="menu"` (so they may hold non-menuitem content such as an `nldd-byline`, buttons or links; reached with Tab, skipped by arrow navigation). The regions are unpadded (control spacing with your own content, e.g. `nldd-container`); `role="menu"` is now static on the item list, with the empty-state and drill-in back button as siblings outside it.
 - **`nldd-inline-dialog`** — a `variant="loading"` that shows an `nldd-activity-indicator` (a `role="status"` spinner announcing "Laden") in place of the icon, for an empty state that is still loading. Sized to the icon (md/lg), shown instantly, and it overrides an explicit `icon`.
+- **`nldd-avatar`** (content) — new component for a person or organisation. Fallback chain image → initials → type icon; `type` (`person` / `organization`) drives shape and fallback icon; `size` on the `nldd-icon` scale (empty = fill the container, with initials and icon scaling to the box via container queries); `color` (`default` / `inherit`, where inherit fills with the `--context-content-color` channel or `currentColor` and uses the contrast colour for the text); `icon-aligned` shrinks the disc to 5/6 for optical alignment with an icon; wide initials always scale to fit; a dead `src` falls back automatically; `role="img"` with the name as label, or `decorative`.
+- **`nldd-page-footer`** — a `width` attribute mirroring a page section: `full` removes the body max-width, or a CSS length overrides it.
 
 ### Changed
 
 - **`nldd-activity-indicator`** — the default circle and arc now colour from `var(--context-content-color, currentColor)` instead of `currentColor` alone. Behaviour is unchanged wherever the channel is unset.
 - **`nldd-popover`** — now syncs its open state to a control trigger via the trigger's `expanded` / `popup-type` IDL props (so the trigger's inner button ARIA and disclosure chevron reflect the popover), falling back to `aria-*` attributes for plain element anchors. It also bails on its own anchor-click toggle when driven via `anchorElement`, so it can be nested and driven from a button.
+- **`nldd-byline`** — renders its avatars with `nldd-avatar` (both the `avatar-src` path and slotted `nldd-avatar`), so a byline without an image shows initials; a slotted `<img>` still works.
+- **`--semantics-buttons-neutral-tinted-divider-color`** — slightly lighter in dark mode (`neutral-450` → `neutral-350`).
 
 ### Breaking
 
@@ -48,6 +53,10 @@ here; consult the commit history if you need that level of detail.
 ### Fixed
 
 - **`nldd-toolbar`** — an `align="center"` title now stays centred when it is the only visible element, including when a `slot="start"` / `slot="end"` item is `display:none` (e.g. a back button hidden on wide viewports). It previously jumped to the left. Centre-only routing is measured from real rendering, so a hidden item no longer strands the title.
+- **`nldd-toolbar`** — an `align="center"` title also stays centred when only one side (start or end) has items; it previously shifted by one gap toward the empty side, because the balancing spacer subtracted a gap that only exists when that side is non-empty.
+- **`nldd-menu`** — a group that is the first item no longer draws a stray top divider when a `header` slot is present (the header's light-DOM element made the group lose `:first-child`).
+- **`nldd-sheet`** — a drag that begins inside the sheet (selecting text in an input, dragging a control) and ends on the backdrop no longer dismisses it; only a genuine backdrop click, where the press and the release are both on the backdrop, closes.
+- **`nldd-page-footer`** — when the footer is empty and only the Rijksoverheid lintje shows, it now keeps space above the lintje so a preceding tinted page section no longer butts right up against it.
 
 ## <small>0.8.66 (2026-07-13)</small>
 
