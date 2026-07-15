@@ -767,7 +767,6 @@ describe('nldd-button slotted popover', () => {
 	it('syncs expanded back onto the button while the popover is open', async () => {
 		el = await fixture<NLDDButton>(MARKUP);
 		await waitForUpdate(el);
-		const pop = el.querySelector('nldd-popover') as HTMLElement;
 		el.shadowRoot!.querySelector<HTMLElement>('.button')!.click();
 		await waitForUpdate(el);
 		expect(el.expanded).toBe(true);
