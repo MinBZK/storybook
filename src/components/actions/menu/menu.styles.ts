@@ -81,10 +81,7 @@ export const menuStyles = css`
 	}
 
 
-	/* # Main — the item list (role="menu"), the drill-in back button and the
-	   empty-state. Holds the item padding (moved off .menu so the header/footer
-	   dividers below can be full-bleed). flex-column preserves the vertical item
-	   stacking the items had as direct flex children of .menu. */
+	/* # Elements */
 
 	.menu__main {
 		display: flex;
@@ -97,40 +94,29 @@ export const menuStyles = css`
 		flex-direction: column;
 	}
 
-
-	/* # Header / footer — free content outside role="menu", root-only. The
-	   regions are unopinionated (no padding): the consumer controls spacing of
-	   their own content (e.g. an nldd-container), so a full-bleed image or panel
-	   can sit flush if wanted. Only the full-bleed divider is drawn. */
-
-	.menu__header,
-	.menu__footer {
+	.menu__header {
 		box-sizing: border-box;
+		border-bottom: var(--semantics-dividers-thickness) solid var(--semantics-dividers-color);
 		flex-shrink: 0;
 	}
 
-	.menu__header {
-		border-bottom: var(--semantics-dividers-thickness) solid var(--semantics-dividers-color);
+	.menu__header[hidden] {
+		display: none;
 	}
 
 	.menu__footer {
+		box-sizing: border-box;
 		border-top: var(--semantics-dividers-thickness) solid var(--semantics-dividers-color);
+		flex-shrink: 0;
 	}
 
-	.menu__header[hidden],
 	.menu__footer[hidden] {
 		display: none;
 	}
 
-
-	/* # Empty */
-
 	.menu__empty {
 		padding: var(--primitives-space-8);
 	}
-
-
-	/* # Back button — drill-in mode header */
 
 	.menu__back-button {
 		display: flex;
@@ -183,11 +169,8 @@ export const menuStyles = css`
 	}
 
 
-	/* # Live region — drill-in view-change announcements (WCAG 4.1.3)
-	 *
-	 * Sibling of .menu so the role="status" doesn't violate menu's
-	 * required-owned-children. Visually hidden, kept in the a11y tree. */
-
+	/* Sibling of .menu so role="status" stays outside menu's required-owned
+	   children (WCAG 4.1.3); visually hidden, kept in the a11y tree. */
 	.menu__live-region {
 		position: absolute;
 		margin: -1px;
