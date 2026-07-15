@@ -49,7 +49,7 @@ import type { NLDDMenu } from '../../actions/menu/menu.js';
 import type { NLDDPopover } from '../../layout/popover/popover.js';
 
 /** A floating overlay the split-button chevron anchors and toggles. */
-type PopupOverlay = (NLDDMenu | NLDDPopover) & { anchorElement: Element | null };
+type Overlay = (NLDDMenu | NLDDPopover) & { anchorElement: Element | null };
 
 export type Size = 'xs' | 'sm' | 'md' | 'lg';
 
@@ -91,7 +91,7 @@ export class NLDDSplitButton extends LitElement {
 
 	/** The consumer-slotted overlay (`nldd-menu` / `nldd-popover`), or null when
 	 * none is provided. */
-	private _overlay: PopupOverlay | null = null;
+	private _overlay: Overlay | null = null;
 	private _overlayWasOpenOnPointerdown = false;
 
 	// — i18n —————————————————————————————————————————————————————————————————
@@ -134,7 +134,7 @@ export class NLDDSplitButton extends LitElement {
 	_handleSlotChange(event: Event): void {
 		const slot = event.target as HTMLSlotElement;
 		const overlay =
-			(slot.assignedElements().find((el) => el.matches('nldd-menu, nldd-popover')) as PopupOverlay | undefined) ?? null;
+			(slot.assignedElements().find((el) => el.matches('nldd-menu, nldd-popover')) as Overlay | undefined) ?? null;
 		if (overlay === this._overlay) return;
 		this._overlay?.removeEventListener('toggle', this._handleMenuToggle);
 		this._overlay = overlay;

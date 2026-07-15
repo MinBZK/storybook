@@ -58,7 +58,7 @@ import type { NLDDPopover } from '../../layout/popover/popover.js';
 /** A floating overlay an icon-button can anchor and toggle from its `popup`
  *  slot. Both expose `anchorElement` and bail on their own anchor-click toggle
  *  when it is set, so the button drives them uniformly via showPopover(). */
-type PopupOverlay = (NLDDMenu | NLDDPopover) & { anchorElement: Element | null };
+type Overlay = (NLDDMenu | NLDDPopover) & { anchorElement: Element | null };
 import './../../content/icon/icon.js';
 import './../../status-and-feedback/activity-indicator/activity-indicator.js';
 
@@ -215,7 +215,7 @@ export class NLDDIconButton extends withTranslations(LitElement, nlddIconButtonT
 
 	/** The slotted `nldd-menu` / `nldd-popover` this button invokes, or null
 	 * when none is slotted. Set by `_handlePopupSlotChange`. */
-	private _overlay: PopupOverlay | null = null;
+	private _overlay: Overlay | null = null;
 
 	/** Popover-open snapshot captured on pointerdown — before the browser's
 	 * light-dismiss can close the overlay (pointerdown precedes the click). The
@@ -266,7 +266,7 @@ export class NLDDIconButton extends withTranslations(LitElement, nlddIconButtonT
 	 */
 	_handlePopupSlotChange(event: Event): void {
 		const slot = event.target as HTMLSlotElement;
-		const overlay = (slot.assignedElements().find((el) => el.matches('nldd-menu, nldd-popover')) as PopupOverlay | undefined) ?? null;
+		const overlay = (slot.assignedElements().find((el) => el.matches('nldd-menu, nldd-popover')) as Overlay | undefined) ?? null;
 		if (overlay === this._overlay) return;
 		this._overlay = overlay;
 		if (overlay) overlay.anchorElement = this;

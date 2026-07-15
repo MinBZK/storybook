@@ -95,7 +95,7 @@ export function template(this: NLDDButton, helpers: TemplateHelpers) {
 	// a named slot so it never lands in the text/icon slots; it renders nothing
 	// in flow (a popover is display:none until shown in the top layer). See
 	// _handleClick.
-	const menuSlot = html`<slot name="popup" @slotchange=${this._handlePopupSlotChange}></slot>`;
+	const popupSlot = html`<slot name="popup" @slotchange=${this._handlePopupSlotChange}></slot>`;
 
 	if (this.href) {
 		const resolvedRel = this._resolvedRel();
@@ -116,7 +116,7 @@ export function template(this: NLDDButton, helpers: TemplateHelpers) {
 				${renderOpensInNewTabHint ? html`<span class="button__opens-in-new-tab-hint">${opensInNewTabHint}</span>` : nothing}
 			</a>
 			${loadingIndicator}
-			${menuSlot}
+			${popupSlot}
 		`;
 	}
 
@@ -143,6 +143,6 @@ export function template(this: NLDDButton, helpers: TemplateHelpers) {
 			${content}
 		</button>
 		${loadingIndicator}
-		${menuSlot}
+		${popupSlot}
 	`;
 }
