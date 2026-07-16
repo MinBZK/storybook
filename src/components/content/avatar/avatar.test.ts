@@ -197,6 +197,16 @@ describe('nldd-avatar', () => {
 		expect(el.hasAttribute('aria-label')).toBe(false);
 	});
 
+	it('is hidden from assistive tech when the name is only whitespace', async () => {
+		el = await fixture<NLDDAvatar>('<nldd-avatar name="   "></nldd-avatar>');
+		await waitForUpdate(el);
+		// No initials come out of a blank name, so the icon shows; claiming
+		// role="img" here would announce an image with an empty name.
+		expect(el.resolvedInitials).toBe('');
+		expect(el.getAttribute('aria-hidden')).toBe('true');
+		expect(el.hasAttribute('role')).toBe(false);
+	});
+
 	it('is hidden from assistive tech when it has no name', async () => {
 		el = await fixture('<nldd-avatar></nldd-avatar>');
 		await waitForUpdate(el);

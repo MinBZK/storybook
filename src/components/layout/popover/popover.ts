@@ -427,7 +427,7 @@ export class NLDDPopover extends LitElement {
 		// niet pas na de eerste open. Geen overwrite als de host een eigen
 		// waarde heeft (bv. 'menu' i.p.v. 'dialog' voor combinaties).
 		if ('popupType' in control) {
-			if (open && !control.popupType) control.popupType = 'dialog';
+			if (!control.popupType) control.popupType = 'dialog';
 		} else if (!anchorEl.hasAttribute('aria-haspopup')) {
 			anchorEl.setAttribute('aria-haspopup', 'dialog');
 		}

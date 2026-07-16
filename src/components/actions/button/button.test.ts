@@ -780,6 +780,18 @@ describe('nldd-button – slotted popup overlay', () => {
 		if (el) cleanup(el);
 	});
 
+	// The popover initialises the trigger's aria on connect, before any open:
+	// a screen-reader user must hear "opens a dialog" on first tab, not only
+	// after opening it once.
+	it('sets aria-haspopup on the inner button before the popover is ever opened', async () => {
+		el = await fixture<NLDDButton>('<nldd-button text="Filters"><nldd-popover slot="popup" accessible-label="Filters"></nldd-popover></nldd-button>');
+		await waitForUpdate(el);
+		await Promise.resolve(); // the popover defers its anchor-aria init to a microtask
+		await waitForUpdate(el);
+		const inner = el.shadowRoot!.querySelector('button')!;
+		expect(inner.getAttribute('aria-haspopup')).toBe('dialog');
+	});
+
 	it('releases the previous overlay when the popup slot empties', async () => {
 		el = await fixture<NLDDButton>('<nldd-button text="Acties"><nldd-menu slot="popup"></nldd-menu></nldd-button>');
 		await waitForUpdate(el);

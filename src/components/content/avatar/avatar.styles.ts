@@ -11,9 +11,9 @@ export const avatarStyles = css`
 
 	:host {
 		--_size: 100%;
-		--_corner-radius: var(--primitives-corner-radius-full);
-		--_background-color: light-dark(var(--primitives-color-neutral-100), var(--primitives-color-neutral-300));
-		--_content-color: var(--primitives-color-neutral-800);
+		--_corner-radius: var(--components-avatar-corner-radius);
+		--_background-color: var(--components-avatar-background-color);
+		--_content-color: var(--components-avatar-content-color);
 		--_icon-scale: 0.6;
 		--_initials-scale: 0.56;
 		--_initials-fit: 1;
@@ -33,7 +33,7 @@ export const avatarStyles = css`
 	}
 
 	:host([type="organization"]) {
-		--_corner-radius: var(--primitives-corner-radius-md);
+		--_corner-radius: var(--components-avatar-organization-corner-radius);
 	}
 
 	/* Fill tracks the shared content-colour channel (set by list-item / table /

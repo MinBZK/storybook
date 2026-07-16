@@ -152,7 +152,10 @@ export class NLDDAvatar extends LitElement {
 	}
 
 	override updated(changed: PropertyValues<this>): void {
-		const labelled = !this.decorative && this.name !== '';
+		// Trim to match resolvedInitials: a whitespace-only name yields no
+		// initials (so the icon shows), and must not claim role="img" with a
+		// blank label either — that reads as an unnamed image.
+		const labelled = !this.decorative && this.name.trim() !== '';
 		if (labelled) {
 			this.setAttribute('role', 'img');
 			this.setAttribute('aria-label', this.name);
