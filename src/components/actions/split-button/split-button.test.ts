@@ -123,3 +123,40 @@ describe('nldd-split-button', () => {
 		expect(menu.anchorElement).toBe(wrapper);
 	});
 });
+
+describe('nldd-split-button – slotted popup overlay', () => {
+	let el: HTMLElement;
+
+	afterEach(() => {
+		if (el) cleanup(el);
+	});
+
+	it('releases the previous overlay when the slot empties', async () => {
+		el = await fixture('<nldd-split-button text="Opslaan"><nldd-menu></nldd-menu></nldd-split-button>');
+		await waitForUpdate(el);
+		const menu = el.querySelector('nldd-menu')!;
+		const wrapper = el.shadowRoot!.querySelector('.split-button__popup-button');
+		expect((menu as unknown as { anchorElement: Element | null }).anchorElement).toBe(wrapper);
+		menu.remove();
+		await waitForUpdate(el);
+		expect((menu as unknown as { anchorElement: Element | null }).anchorElement).toBeNull();
+	});
+
+	it('opens the menu on a keyboard click after a pointer gesture that never became a click', async () => {
+		el = await fixture('<nldd-split-button text="Opslaan"><nldd-menu></nldd-menu></nldd-split-button>');
+		await waitForUpdate(el);
+		const menu = el.querySelector('nldd-menu')!;
+		const wrapper = el.shadowRoot!.querySelector('.split-button__popup-button')!;
+		menu.showPopover();
+		await waitForUpdate(el);
+		wrapper.dispatchEvent(new PointerEvent('pointerdown', { bubbles: true, composed: true }));
+		menu.hidePopover();
+		await waitForUpdate(el);
+		// The chevron is an nldd-icon-button; split-button binds @click on that host.
+		wrapper.querySelector('nldd-icon-button')!.dispatchEvent(
+			new MouseEvent('click', { bubbles: true, composed: true, detail: 0 })
+		);
+		await waitForUpdate(el);
+		expect(menu.matches(':popover-open')).toBe(true);
+	});
+});

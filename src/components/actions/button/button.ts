@@ -38,13 +38,7 @@ import { template } from './button.template.js';
 import { withTranslations } from '../../../utilities/with-translations.js';
 import { reflectNonDefault } from '../../../utilities/reflect-non-default.js';
 import { nlddButtonTranslations } from './button.i18n.js';
-import type { NLDDMenu } from '../menu/menu.js';
-import type { NLDDPopover } from '../../layout/popover/popover.js';
-
-/** A floating overlay a button can anchor and toggle from its `popup` slot.
- *  Both expose `anchorElement` and bail on their own anchor-click toggle when
- *  it is set, so the button drives them uniformly via showPopover(). */
-type Overlay = (NLDDMenu | NLDDPopover) & { anchorElement: Element | null };
+import { PopupAnchorController } from '../../../utilities/popup-anchor-controller.js';
 import './../../content/icon/icon.js';
 import './../../status-and-feedback/activity-indicator/activity-indicator.js';
 
@@ -190,15 +184,10 @@ export class NLDDButton extends withTranslations(LitElement, nlddButtonTranslati
 
 	private _warnedA11y = false;
 
-	/** The slotted `nldd-menu` / `nldd-popover` this button invokes, or null
-	 * when none is slotted. Set by `_handlePopupSlotChange`. */
-	private _overlay: Overlay | null = null;
-
-	/** Popover-open snapshot captured on pointerdown — before the browser's
-	 * light-dismiss can close the overlay (pointerdown precedes the click). The
-	 * click handler reads it to avoid re-opening an overlay the same gesture
-	 * just dismissed (the "flashes closed then reopens" bug). */
-	private _overlayWasOpenOnPointerdown = false;
+	/** Shared wiring for an overlay slotted into `popup`: anchors it to this
+	 * button and turns clicks into open/close. Not private: the template module
+	 * binds its handlers. */
+	_popup = new PopupAnchorController(this);
 
 	override updated(changedProperties: Map<string, unknown>): void {
 		if (changedProperties.has('width')) {
@@ -228,33 +217,6 @@ export class NLDDButton extends withTranslations(LitElement, nlddButtonTranslati
 		}
 	}
 
-	/**
-	 * Wire a slotted `nldd-menu` / `nldd-popover` to this button: anchor it to
-	 * the host so it positions against the button and syncs `expanded` /
-	 * `aria-haspopup` back onto it (via the overlay's own anchor-state sync).
-	 * Both overlays bail on their self-toggle when `anchorElement` is set, so the
-	 * button drives opening uniformly in the click handler. Re-runs whenever the
-	 * slotted overlay is added, removed or replaced. Mirrors nldd-split-button.
-	 */
-	_handlePopupSlotChange(event: Event): void {
-		const slot = event.target as HTMLSlotElement;
-		const overlay = (slot.assignedElements().find((el) => el.matches('nldd-menu, nldd-popover')) as Overlay | undefined) ?? null;
-		if (overlay === this._overlay) return;
-		// Release the previous overlay first: left anchored, a removed overlay
-		// keeps positioning against this button and syncing `expanded` onto it,
-		// and the pair can never be collected.
-		if (this._overlay) this._overlay.anchorElement = null;
-		this._overlay = overlay;
-		if (overlay) overlay.anchorElement = this;
-	}
-
-	/** Snapshot the overlay's open state on pointerdown, before the browser's
-	 * light-dismiss runs, so the click handler can tell a genuine open from a
-	 * click that already dismissed the open overlay. */
-	_handleAnchorPointerdown(): void {
-		this._overlayWasOpenOnPointerdown = this._overlay?.matches(':popover-open') ?? false;
-	}
-
 	private _handleClick(e: MouseEvent): void {
 		if (this.disabled || this.loading) {
 			e.preventDefault();
@@ -262,18 +224,9 @@ export class NLDDButton extends withTranslations(LitElement, nlddButtonTranslati
 			return;
 		}
 		// A slotted overlay makes this button its invoker: toggle it and stop —
-		// a popup button neither submits a form nor navigates. The pointerdown
-		// snapshot distinguishes a fresh open from a click the browser already
-		// consumed to light-dismiss the open overlay.
-		if (this._overlay) {
+		// a popup button neither submits a form nor navigates.
+		if (this._popup.handleClick(e)) {
 			e.preventDefault();
-			// Only a pointer-driven click (detail > 0) has a preceding pointerdown;
-			// a keyboard click must ignore the snapshot, which would otherwise be
-			// left over from an earlier gesture that ended without a click (drag
-			// off the button, touch scroll) and swallow the activation.
-			const wasOpen = e.detail > 0 && this._overlayWasOpenOnPointerdown;
-			this._overlayWasOpenOnPointerdown = false;
-			if (!wasOpen && !this._overlay.matches(':popover-open')) this._overlay.showPopover();
 			return;
 		}
 		// A link button has no form behaviour. Otherwise drive the associated

@@ -95,7 +95,7 @@ export function template(this: NLDDButton, helpers: TemplateHelpers) {
 	// a named slot so it never lands in the text/icon slots; it renders nothing
 	// in flow (a popover is display:none until shown in the top layer). See
 	// _handleClick.
-	const popupSlot = html`<slot name="popup" @slotchange=${this._handlePopupSlotChange}></slot>`;
+	const popupSlot = html`<slot name="popup" @slotchange=${this._popup.handleSlotChange}></slot>`;
 
 	if (this.href) {
 		const resolvedRel = this._resolvedRel();
@@ -109,7 +109,7 @@ export function template(this: NLDDButton, helpers: TemplateHelpers) {
 				aria-haspopup=${this.popupType || nothing}
 				aria-expanded=${ariaExpanded}
 				aria-busy=${ariaBusy}
-				@pointerdown=${this._handleAnchorPointerdown}
+				@pointerdown=${this._popup.handlePointerdown}
 				@click=${helpers.handleClick}
 			>
 				${content}
@@ -137,7 +137,7 @@ export function template(this: NLDDButton, helpers: TemplateHelpers) {
 			popovertarget=${this.popovertarget || nothing}
 			.popoverTargetElement=${this.popoverTargetElement}
 			.popoverTargetAction=${this.popoverTargetAction}
-			@pointerdown=${this._handleAnchorPointerdown}
+			@pointerdown=${this._popup.handlePointerdown}
 			@click=${helpers.handleClick}
 		>
 			${content}

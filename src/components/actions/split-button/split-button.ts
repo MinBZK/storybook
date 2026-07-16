@@ -45,11 +45,10 @@ import type { NLDDSplitButtonTranslations } from './split-button.i18n.js';
 import './../button/button.js';
 import './../icon-button/icon-button.js';
 import '../../actions/menu/menu.js';
-import type { NLDDMenu } from '../../actions/menu/menu.js';
-import type { NLDDPopover } from '../../layout/popover/popover.js';
+import { PopupAnchorController } from '../../../utilities/popup-anchor-controller.js';
 
 /** A floating overlay the split-button chevron anchors and toggles. */
-type Overlay = (NLDDMenu | NLDDPopover) & { anchorElement: Element | null };
+
 
 export type Size = 'xs' | 'sm' | 'md' | 'lg';
 
@@ -89,10 +88,18 @@ export class NLDDSplitButton extends LitElement {
 	@state()
 	_menuIsOpen = false;
 
-	/** The consumer-slotted overlay (`nldd-menu` / `nldd-popover`), or null when
-	 * none is provided. */
-	private _overlay: Overlay | null = null;
-	private _overlayWasOpenOnPointerdown = false;
+	/** Shared wiring for the consumer-slotted overlay. Anchors to the chevron's
+	 * wrapper rather than the host, and keeps `_menuIsOpen` (the chevron's
+	 * expanded visual) in step via `toggle`. Not private: the template module
+	 * binds its slotchange handler. */
+	_popup = new PopupAnchorController(this, {
+		anchorFor: () => this._popupButtonWrapper ?? null,
+		onChange: (overlay, previous) => {
+			previous?.removeEventListener('toggle', this._handleMenuToggle);
+			this._menuIsOpen = false;
+			overlay?.addEventListener('toggle', this._handleMenuToggle);
+		},
+	});
 
 	// — i18n —————————————————————————————————————————————————————————————————
 
@@ -103,50 +110,15 @@ export class NLDDSplitButton extends LitElement {
 	// — Lifecycle ————————————————————————————————————————————————————————————
 
 	override firstUpdated(): void {
-		// Capture open-state BEFORE the browser's light-dismiss fires on
-		// pointerdown. The click handler uses this snapshot to decide: was the
-		// popover open? → user clicked to close (no-op, light-dismiss already
-		// closed it). Was it closed? → open it. Pointerdown fires for mouse,
-		// touch and pen — `mousedown` alone would skip touch on mobile, where
-		// no mousedown precedes the synthetic click.
-		this._popupButtonWrapper?.addEventListener('pointerdown', () => {
-			this._overlayWasOpenOnPointerdown = this._overlay?.matches(':popover-open') ?? false;
-		});
-
-		// If the overlay was slotted declaratively, _handleSlotChange may have run
-		// before @query resolved _popupButtonWrapper and couldn't anchor it. The
-		// wrapper exists now — anchor an overlay that's still waiting for it.
-		if (this._overlay && this._popupButtonWrapper) {
-			this._overlay.anchorElement = this._popupButtonWrapper;
-		}
+		this._popupButtonWrapper?.addEventListener('pointerdown', this._popup.handlePointerdown);
+		// A declaratively-slotted overlay is adopted before @query resolves the
+		// wrapper, so it couldn't be anchored yet. The wrapper exists now.
+		this._popup.anchor();
 	}
 
 	override disconnectedCallback(): void {
 		super.disconnectedCallback();
-		this._overlay?.removeEventListener('toggle', this._handleMenuToggle);
-	}
-
-	/**
-	 * Wires the slotted `nldd-menu` / `nldd-popover` to the chevron: anchors it
-	 * to the popup button and tracks its open state. Re-runs whenever the slotted
-	 * content changes (overlay added, removed or replaced).
-	 */
-	_handleSlotChange(event: Event): void {
-		const slot = event.target as HTMLSlotElement;
-		const overlay =
-			(slot.assignedElements().find((el) => el.matches('nldd-menu, nldd-popover')) as Overlay | undefined) ?? null;
-		if (overlay === this._overlay) return;
-		this._overlay?.removeEventListener('toggle', this._handleMenuToggle);
-		// Release the previous overlay: left anchored, a removed overlay keeps
-		// positioning against this button's chevron, and the pair can never be
-		// collected.
-		if (this._overlay) this._overlay.anchorElement = null;
-		this._overlay = overlay;
-		this._menuIsOpen = false;
-		if (overlay) {
-			if (this._popupButtonWrapper) overlay.anchorElement = this._popupButtonWrapper;
-			overlay.addEventListener('toggle', this._handleMenuToggle);
-		}
+		this._popup.overlay?.removeEventListener('toggle', this._handleMenuToggle);
 	}
 
 	private _handleMenuToggle = (event: Event): void => {
@@ -162,17 +134,7 @@ export class NLDDSplitButton extends LitElement {
 	_handleMenuClick(e: MouseEvent): void {
 		if (this.disabled) return;
 		e.stopPropagation();
-		if (this._overlay) {
-			// Only a pointer-driven click (detail > 0) has a preceding pointerdown;
-			// a keyboard click must ignore the snapshot, which would otherwise be
-			// left over from an earlier gesture that ended without a click (drag
-			// off the button, touch scroll) and swallow the activation.
-			const wasOpen = e.detail > 0 && this._overlayWasOpenOnPointerdown;
-			this._overlayWasOpenOnPointerdown = false;
-			if (wasOpen) return; // light-dismiss already closed it
-			if (!this._overlay.matches(':popover-open')) this._overlay.showPopover();
-			return;
-		}
+		if (this._popup.handleClick(e)) return;
 		this.dispatchEvent(new CustomEvent('menu-click', { bubbles: true, composed: true }));
 	}
 

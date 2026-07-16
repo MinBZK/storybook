@@ -679,3 +679,38 @@ describe('nldd-icon-button slotted popover', () => {
 		expect(pop.matches(':popover-open')).toBe(true);
 	});
 });
+
+describe('nldd-icon-button – slotted popup overlay', () => {
+	let el: HTMLElement;
+
+	afterEach(() => {
+		if (el) cleanup(el);
+	});
+
+	it('releases the previous overlay when the popup slot empties', async () => {
+		el = await fixture<NLDDIconButton>('<nldd-icon-button icon="ellipsis" accessible-label="Acties"><nldd-menu slot="popup"></nldd-menu></nldd-icon-button>');
+		await waitForUpdate(el);
+		const menu = el.querySelector('nldd-menu')!;
+		expect((menu as unknown as { anchorElement: Element | null }).anchorElement).toBe(el);
+		menu.remove();
+		await waitForUpdate(el);
+		expect((menu as unknown as { anchorElement: Element | null }).anchorElement).toBeNull();
+	});
+
+	it('opens the overlay on a keyboard click after a pointer gesture that never became a click', async () => {
+		el = await fixture<NLDDIconButton>('<nldd-icon-button icon="ellipsis" accessible-label="Acties"><nldd-menu slot="popup"></nldd-menu></nldd-icon-button>');
+		await waitForUpdate(el);
+		const menu = el.querySelector('nldd-menu')!;
+		menu.showPopover();
+		await waitForUpdate(el);
+		// Pointer goes down, the browser light-dismisses, the gesture ends elsewhere: no click.
+		el.shadowRoot!.querySelector('button')!.dispatchEvent(new PointerEvent('pointerdown', { bubbles: true, composed: true }));
+		menu.hidePopover();
+		await waitForUpdate(el);
+		el.shadowRoot!.querySelector('button')!.dispatchEvent(
+			new MouseEvent('click', { bubbles: true, composed: true, detail: 0 })
+		);
+		await waitForUpdate(el);
+		expect(menu.matches(':popover-open')).toBe(true);
+	});
+});

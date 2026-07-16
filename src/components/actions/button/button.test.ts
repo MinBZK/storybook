@@ -812,7 +812,7 @@ describe('nldd-button – slotted popup overlay', () => {
 		// elsewhere (drag off / touch scroll): no click, so the snapshot lingers.
 		menu.showPopover();
 		await waitForUpdate(el);
-		(el as unknown as { _handleAnchorPointerdown(): void })._handleAnchorPointerdown();
+		el.shadowRoot!.querySelector('button')!.dispatchEvent(new PointerEvent('pointerdown', { bubbles: true, composed: true }));
 		menu.hidePopover();
 		await waitForUpdate(el);
 		// Keyboard activation: a click with detail 0 and no preceding pointerdown.
