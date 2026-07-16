@@ -57,6 +57,13 @@ here; consult the commit history if you need that level of detail.
 - **`nldd-menu`** — a group that is the first item no longer draws a stray top divider when a `header` slot is present (the header's light-DOM element made the group lose `:first-child`).
 - **`nldd-sheet`** — a drag that begins inside the sheet (selecting text in an input, dragging a control) and ends on the backdrop no longer dismisses it; only a genuine backdrop click, where the press and the release are both on the backdrop, closes.
 - **`nldd-page-footer`** — when the footer is empty and only the Rijksoverheid lintje shows, it now keeps space above the lintje so a preceding tinted page section no longer butts right up against it.
+## <small>0.8.68 (2026-07-16)</small>
+
+* ci(review): let the review post inline comments and see the full diff (#141) ([819f241](https://github.com/MinBZK/storybook/commit/819f241)), closes [#141](https://github.com/MinBZK/storybook/issues/141)
+
+## <small>0.8.67 (2026-07-15)</small>
+
+* ci(review): fetch full history so the review can compute the PR diff (#140) ([a076e03](https://github.com/MinBZK/storybook/commit/a076e03)), closes [#140](https://github.com/MinBZK/storybook/issues/140)
 
 ## <small>0.8.66 (2026-07-13)</small>
 
