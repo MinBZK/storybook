@@ -97,6 +97,7 @@ release halen consumers de gewijzigde skill-docs nooit op (zie Plugin-versie).
 | `feat:` | Patch (0.5.0 → 0.5.1) |
 | `fix:`, `perf:` | Patch (0.5.0 → 0.5.1) |
 | `refactor:`, `style:`, `docs:`, `build:` | Patch (raken `dist/` of de skill-docs) |
+| `revert:` | Patch (een revert moet consumers ook bereiken) |
 | `feat!:` of `BREAKING CHANGE:` | Patch (0.5.0 → 0.5.1) |
 | `chore:`, `ci:`, `test:` | Geen |
 | Niet-herkend (geen conventionele prefix) | Patch (behandeld als feat) |
