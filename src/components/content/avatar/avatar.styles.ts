@@ -16,6 +16,7 @@ export const avatarStyles = css`
 		--_content-color: var(--components-avatar-content-color);
 		--_icon-scale: 0.6;
 		--_initials-scale: 0.56;
+		--_initials-font-weight: 600;
 		--_initials-fit: 1;
 		--_shape-scale: 1;
 
@@ -102,7 +103,7 @@ export const avatarStyles = css`
 
 	.avatar__initials {
 		font-family: var(--primitives-font-family-body);
-		font-weight: 600;
+		font-weight: var(--_initials-font-weight);
 		font-size: calc(var(--_initials-scale) * 100cqi);
 		line-height: 1;
 		color: var(--_content-color);
