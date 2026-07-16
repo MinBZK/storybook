@@ -1,4 +1,4 @@
-import { describe, it, expect, afterEach } from 'vitest';
+import { describe, it, expect, afterEach, vi } from 'vitest';
 import { fixture, cleanup, waitForUpdate } from '../../../test-utils.js';
 import type { NLDDAvatar } from './avatar.js';
 import './avatar.js';
@@ -119,6 +119,32 @@ describe('nldd-avatar', () => {
 		expect(el._imageFailed).toBe(true);
 		expect(el.shadowRoot!.querySelector('.avatar__image')).toBeNull();
 		expect(el.shadowRoot!.querySelector('.avatar__initials')!.textContent).toBe('BB');
+	});
+
+	// The disc doesn't resize when the image gives way to initials, so the
+	// ResizeObserver stays silent: the fallback must trigger the re-fit itself,
+	// or wide initials render unscaled and spill out of the circle.
+	it('re-fits the initials when a failed image falls back to them', async () => {
+		el = await fixture<NLDDAvatar>(`<nldd-avatar initials="WWWW" src="${IMAGE}" size="48" decorative></nldd-avatar>`);
+		await waitForUpdate(el);
+		const fit = vi.spyOn(el as unknown as { _fitInitials(): void }, '_fitInitials');
+		el.shadowRoot!.querySelector('.avatar__image')!.dispatchEvent(new Event('error'));
+		await waitForUpdate(el);
+		expect(el.shadowRoot!.querySelector('.avatar__initials')).not.toBeNull();
+		expect(fit).toHaveBeenCalled();
+	});
+
+	it('resets the image-failed state when srcset changes', async () => {
+		el = await fixture<NLDDAvatar>(`<nldd-avatar name="Bart van de Biezen" src="${IMAGE}"></nldd-avatar>`);
+		await waitForUpdate(el);
+		el.shadowRoot!.querySelector('.avatar__image')!.dispatchEvent(new Event('error'));
+		await waitForUpdate(el);
+		expect(el._imageFailed).toBe(true);
+		// A new srcset offers a fresh candidate, so the image gets another chance.
+		el.srcset = `${IMAGE} 2x`;
+		await waitForUpdate(el);
+		expect(el._imageFailed).toBe(false);
+		expect(el.shadowRoot!.querySelector('.avatar__image')).not.toBeNull();
 	});
 
 	it('resets the image-failed state when src changes', async () => {

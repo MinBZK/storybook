@@ -130,7 +130,9 @@ export class NLDDAvatar extends LitElement {
 	private _resizeObserver = new ResizeObserver(() => this._fitInitials());
 
 	override willUpdate(changed: PropertyValues<this>): void {
-		if (changed.has('src')) this._imageFailed = false;
+		// Either source changing offers a fresh candidate, so give the image
+		// another chance rather than staying on the fallback forever.
+		if (changed.has('src') || changed.has('srcset')) this._imageFailed = false;
 	}
 
 	override firstUpdated(): void {
@@ -161,9 +163,14 @@ export class NLDDAvatar extends LitElement {
 			this.removeAttribute('role');
 			this.removeAttribute('aria-label');
 		}
-		// The disc size doesn't change when only the initials text changes, so the
-		// ResizeObserver won't fire — re-measure here on the relevant changes.
-		if (changed.has('name') || changed.has('initials')) {
+		// The disc size doesn't change when only its content does, so the
+		// ResizeObserver won't fire — re-measure here on every change that can
+		// swap the initials in or alter their text. src/_imageFailed matter too:
+		// a dead image falls back to initials that were never measured.
+		if (
+			changed.has('name') || changed.has('initials')
+			|| changed.has('src') || changed.has('srcset') || changed.has('_imageFailed')
+		) {
 			this._fitInitials();
 		}
 	}

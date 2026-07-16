@@ -268,6 +268,10 @@ export class NLDDIconButton extends withTranslations(LitElement, nlddIconButtonT
 		const slot = event.target as HTMLSlotElement;
 		const overlay = (slot.assignedElements().find((el) => el.matches('nldd-menu, nldd-popover')) as Overlay | undefined) ?? null;
 		if (overlay === this._overlay) return;
+		// Release the previous overlay first: left anchored, a removed overlay
+		// keeps positioning against this button and syncing `expanded` onto it,
+		// and the pair can never be collected.
+		if (this._overlay) this._overlay.anchorElement = null;
 		this._overlay = overlay;
 		if (overlay) overlay.anchorElement = this;
 	}
@@ -291,9 +295,13 @@ export class NLDDIconButton extends withTranslations(LitElement, nlddIconButtonT
 		// consumed to light-dismiss the open overlay.
 		if (this._overlay) {
 			e.preventDefault();
-			const wasOpen = this._overlayWasOpenOnPointerdown;
+			// Only a pointer-driven click (detail > 0) has a preceding pointerdown;
+			// a keyboard click must ignore the snapshot, which would otherwise be
+			// left over from an earlier gesture that ended without a click (drag
+			// off the button, touch scroll) and swallow the activation.
+			const wasOpen = e.detail > 0 && this._overlayWasOpenOnPointerdown;
 			this._overlayWasOpenOnPointerdown = false;
-			if (!wasOpen) this._overlay.showPopover();
+			if (!wasOpen && !this._overlay.matches(':popover-open')) this._overlay.showPopover();
 			return;
 		}
 		// A link icon-button has no form behaviour. Otherwise drive the

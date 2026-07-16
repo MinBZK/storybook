@@ -137,6 +137,10 @@ export class NLDDSplitButton extends LitElement {
 			(slot.assignedElements().find((el) => el.matches('nldd-menu, nldd-popover')) as Overlay | undefined) ?? null;
 		if (overlay === this._overlay) return;
 		this._overlay?.removeEventListener('toggle', this._handleMenuToggle);
+		// Release the previous overlay: left anchored, a removed overlay keeps
+		// positioning against this button's chevron, and the pair can never be
+		// collected.
+		if (this._overlay) this._overlay.anchorElement = null;
 		this._overlay = overlay;
 		this._menuIsOpen = false;
 		if (overlay) {
@@ -159,10 +163,14 @@ export class NLDDSplitButton extends LitElement {
 		if (this.disabled) return;
 		e.stopPropagation();
 		if (this._overlay) {
-			const wasOpen = this._overlayWasOpenOnPointerdown;
+			// Only a pointer-driven click (detail > 0) has a preceding pointerdown;
+			// a keyboard click must ignore the snapshot, which would otherwise be
+			// left over from an earlier gesture that ended without a click (drag
+			// off the button, touch scroll) and swallow the activation.
+			const wasOpen = e.detail > 0 && this._overlayWasOpenOnPointerdown;
 			this._overlayWasOpenOnPointerdown = false;
 			if (wasOpen) return; // light-dismiss already closed it
-			this._overlay.showPopover();
+			if (!this._overlay.matches(':popover-open')) this._overlay.showPopover();
 			return;
 		}
 		this.dispatchEvent(new CustomEvent('menu-click', { bubbles: true, composed: true }));

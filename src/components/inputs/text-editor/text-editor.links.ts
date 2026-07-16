@@ -147,9 +147,12 @@ function bareHref(state: EditorState, node: SyntaxNode): string | null {
 	const raw = state.sliceDoc(node.from, node.to);
 	if (!raw || raw.startsWith(MENTION_HREF_PREFIX)) return null;
 	let href = raw;
-	if (/^[a-z][a-z0-9+.-]*:/i.test(raw)) href = raw;            // already schemed (https://, mailto:, …)
-	else if (/^www\./i.test(raw)) href = `https://${raw}`;       // GFM www autolink
-	else if (/^[^\s@]+@[^\s@]+$/.test(raw)) href = `mailto:${raw}`; // GFM email autolink
+	// An already-schemed URL (https://, mailto:, …) is taken as-is; only GFM's
+	// scheme-less autolink forms need one added.
+	if (!/^[a-z][a-z0-9+.-]*:/i.test(raw)) {
+		if (/^www\./i.test(raw)) href = `https://${raw}`;            // GFM www autolink
+		else if (/^[^\s@]+@[^\s@]+$/.test(raw)) href = `mailto:${raw}`; // GFM email autolink
+	}
 	return isSafeHref(href) ? href : null;
 }
 

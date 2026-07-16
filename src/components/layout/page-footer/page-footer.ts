@@ -161,7 +161,7 @@ export class NLDDPageFooter extends LitElement {
 
 	/** Body max-width: 'full' (removes the constraint) or any CSS length.
 	 *  Mirrors a page section's width. */
-	@property({ type: String, reflect: true })
+	@property({ reflect: true, converter: reflectNonDefault<string>('') })
 	width = '';
 
 	@state()

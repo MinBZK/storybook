@@ -772,3 +772,42 @@ describe('nldd-button slotted popover', () => {
 		expect(el.expanded).toBe(true);
 	});
 });
+
+describe('nldd-button – slotted popup overlay', () => {
+	let el: HTMLElement;
+
+	afterEach(() => {
+		if (el) cleanup(el);
+	});
+
+	it('releases the previous overlay when the popup slot empties', async () => {
+		el = await fixture<NLDDButton>('<nldd-button text="Acties"><nldd-menu slot="popup"></nldd-menu></nldd-button>');
+		await waitForUpdate(el);
+		const menu = el.querySelector('nldd-menu')!;
+		expect((menu as unknown as { anchorElement: Element | null }).anchorElement).toBe(el);
+		// Left anchored, a removed overlay keeps positioning against — and syncing
+		// expanded onto — a button that no longer owns it.
+		menu.remove();
+		await waitForUpdate(el);
+		expect((menu as unknown as { anchorElement: Element | null }).anchorElement).toBeNull();
+	});
+
+	it('opens the overlay on a keyboard click after a pointer gesture that never became a click', async () => {
+		el = await fixture<NLDDButton>('<nldd-button text="Acties"><nldd-menu slot="popup"></nldd-menu></nldd-button>');
+		await waitForUpdate(el);
+		const menu = el.querySelector('nldd-menu')!;
+		// Overlay open, pointer goes down on the button, then the gesture ends
+		// elsewhere (drag off / touch scroll): no click, so the snapshot lingers.
+		menu.showPopover();
+		await waitForUpdate(el);
+		(el as unknown as { _handleAnchorPointerdown(): void })._handleAnchorPointerdown();
+		menu.hidePopover();
+		await waitForUpdate(el);
+		// Keyboard activation: a click with detail 0 and no preceding pointerdown.
+		el.shadowRoot!.querySelector('button')!.dispatchEvent(
+			new MouseEvent('click', { bubbles: true, composed: true, detail: 0 })
+		);
+		await waitForUpdate(el);
+		expect(menu.matches(':popover-open')).toBe(true);
+	});
+});
