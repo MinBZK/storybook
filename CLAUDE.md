@@ -87,12 +87,18 @@ Elk component MOET minimaal een **smoke test** hebben. Run tests met `npm test`.
 
 Versies worden **automatisch** verhoogd door semantic-release bij merge naar main.
 
+Leidend criterium: verandert de commit wat consumers krijgen (`dist/` of de
+meegeleverde `skills/nldd/*`)? Zo ja, dan hoort er een release uit te komen.
+`docs:` telt daarin mee, want de plugin-versie volgt de pakketversie: zonder
+release halen consumers de gewijzigde skill-docs nooit op (zie Plugin-versie).
+
 | Commit type | Versieverhoging |
 |-------------|-----------------|
 | `feat:` | Patch (0.5.0 → 0.5.1) |
 | `fix:`, `perf:` | Patch (0.5.0 → 0.5.1) |
+| `refactor:`, `style:`, `docs:`, `build:` | Patch (raken `dist/` of de skill-docs) |
 | `feat!:` of `BREAKING CHANGE:` | Patch (0.5.0 → 0.5.1) |
-| `docs:`, `chore:`, `ci:`, etc. | Geen |
+| `chore:`, `ci:`, `test:` | Geen |
 | Niet-herkend (geen conventionele prefix) | Patch (behandeld als feat) |
 
 **Handmatig versie verhogen is niet nodig.** Gebruik conventionele commits en CI doet de rest.
