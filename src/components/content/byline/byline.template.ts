@@ -5,18 +5,18 @@ export function bylineTemplate(component: NLDDByline) {
 	const hasText = Boolean(component.text) || component._hasSlottedText;
 	const hasSupportingText = Boolean(component.supportingText) || component._hasSlottedSupportingText;
 	const hasAvatars = component._hasSlottedAvatars || Boolean(component.avatarSrc);
-	// Single-avatar convenience: an internal <img> rendered from avatar-src, only
-	// when nothing is slotted (the slot always wins). Fixed 40px, so sizes is set
-	// here rather than exposed.
+	// Single-avatar convenience: an internal nldd-avatar from avatar-src, only
+	// when nothing is slotted (the slot always wins). A non-empty avatar-alt
+	// labels it; an empty one marks it decorative (the name is in the text).
 	const avatarImage = component.avatarSrc && !component._hasSlottedAvatars
-		? html`<img class="byline__avatar"
-				src=${component.avatarSrc}
-				srcset=${component.avatarSrcset || nothing}
-				sizes="40px"
-				alt=${component.avatarAlt}
-				loading="lazy"
-				decoding="async"
-			>`
+		? html`<div class="byline__avatar">
+				<nldd-avatar
+					src=${component.avatarSrc}
+					srcset=${component.avatarSrcset || nothing}
+					name=${component.avatarAlt || nothing}
+					?decorative=${!component.avatarAlt}
+				></nldd-avatar>
+			</div>`
 		: nothing;
 	return html`
 		<div class="byline"

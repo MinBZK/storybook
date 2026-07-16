@@ -19,11 +19,11 @@ export const dropdownStyles = css`
 		--_validation-icon-size: var(--semantics-input-fields-md-validation-icon-size);
 		--_picker-icon-size: var(--primitives-space-24);
 		--_background-color: var(--semantics-buttons-neutral-tinted-background-color);
-		--_content-color: var(--semantics-buttons-neutral-tinted-primary-content-color);
+		--_content-color: var(--semantics-buttons-neutral-tinted-content-color);
 		--_is-hovered-background-color: var(--semantics-buttons-neutral-tinted-is-hovered-background-color);
-		--_is-hovered-content-color: var(--semantics-buttons-neutral-tinted-is-hovered-primary-content-color);
+		--_is-hovered-content-color: var(--semantics-buttons-neutral-tinted-is-hovered-content-color);
 		--_is-active-background-color: var(--semantics-buttons-neutral-tinted-is-active-background-color);
-		--_is-active-content-color: var(--semantics-buttons-neutral-tinted-is-active-primary-content-color);
+		--_is-active-content-color: var(--semantics-buttons-neutral-tinted-is-active-content-color);
 		--_highlight-border-color: var(--semantics-buttons-neutral-tinted-highlight-border-color);
 		--_is-hovered-highlight-border-color: var(--semantics-buttons-neutral-tinted-is-hovered-highlight-border-color);
 		--_is-active-highlight-border-color: var(--semantics-buttons-neutral-tinted-is-active-highlight-border-color);
@@ -63,11 +63,11 @@ export const dropdownStyles = css`
 
 	:host([expanded]) {
 		--_background-color: var(--semantics-buttons-neutral-tinted-is-expanded-background-color);
-		--_content-color: var(--semantics-buttons-neutral-tinted-is-expanded-primary-content-color);
+		--_content-color: var(--semantics-buttons-neutral-tinted-is-expanded-content-color);
 		--_is-hovered-background-color: var(--semantics-buttons-neutral-tinted-is-expanded-is-hovered-background-color);
-		--_is-hovered-content-color: var(--semantics-buttons-neutral-tinted-is-expanded-is-hovered-primary-content-color);
+		--_is-hovered-content-color: var(--semantics-buttons-neutral-tinted-is-expanded-is-hovered-content-color);
 		--_is-active-background-color: var(--semantics-buttons-neutral-tinted-is-expanded-is-active-background-color);
-		--_is-active-content-color: var(--semantics-buttons-neutral-tinted-is-expanded-is-active-primary-content-color);
+		--_is-active-content-color: var(--semantics-buttons-neutral-tinted-is-expanded-is-active-content-color);
 		--_highlight-border-color: var(--_is-expanded-highlight-border-color);
 	}
 

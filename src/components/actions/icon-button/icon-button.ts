@@ -33,6 +33,10 @@
  *
  * @slot icon - Slot for a custom icon (e.g. custom SVG). Only used when icon attribute is not set;
  *              falls back to a placeholder icon when the slot is empty.
+ * @slot popup - A single `nldd-menu` or `nldd-popover` this button invokes. Slotting it auto-anchors
+ *              the overlay to the button and toggles it on click (no id/anchor wiring). The overlay syncs
+ *              `expanded` and `aria-haspopup` back onto the button. Add `expandable` for the disclosure chevron.
+ *              Mirrors nldd-split-button; manual `popovertarget` wiring keeps working without a slotted overlay.
  *
  * @example
  * ```html
@@ -48,6 +52,7 @@ import { iconButtonStyles } from './icon-button.styles.js';
 import { template } from './icon-button.template.js';
 import { withTranslations } from '../../../utilities/with-translations.js';
 import { nlddIconButtonTranslations } from './icon-button.i18n.js';
+import { PopupAnchorController } from '../../../utilities/popup-anchor-controller.js';
 import './../../content/icon/icon.js';
 import './../../status-and-feedback/activity-indicator/activity-indicator.js';
 
@@ -202,6 +207,11 @@ export class NLDDIconButton extends withTranslations(LitElement, nlddIconButtonT
 
 	private _warnedA11y = false;
 
+	/** Shared wiring for an overlay slotted into `popup`: anchors it to this
+	 * button and turns clicks into open/close. Not private: the template module
+	 * binds its handlers. */
+	_popup = new PopupAnchorController(this);
+
 	override updated(changedProperties: Map<string, unknown>): void {
 		if (changedProperties.has('width')) {
 			const w = this.width;
@@ -239,6 +249,12 @@ export class NLDDIconButton extends withTranslations(LitElement, nlddIconButtonT
 		if (this.disabled || this.loading) {
 			e.preventDefault();
 			e.stopPropagation();
+			return;
+		}
+		// A slotted overlay makes this button its invoker: toggle it and stop —
+		// a popup button neither submits a form nor navigates.
+		if (this._popup.handleClick(e)) {
+			e.preventDefault();
 			return;
 		}
 		// A link icon-button has no form behaviour. Otherwise drive the

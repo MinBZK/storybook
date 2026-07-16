@@ -212,6 +212,14 @@ export class NLDDToolbar extends LitElement {
 	@state()
 	private _rightSpacerZero = false;
 
+	/** True when nothing is *rendered* in the start/end areas (they may hold
+	 * consumer-hidden `display:none` children), so the center content is the
+	 * only visible group. Drives the centered `.toolbar__center-fill` layout —
+	 * a hidden back button no longer strands a centered title at the left.
+	 * Computed from real rendering, not mere child presence. */
+	@state()
+	private _centerOnly = false;
+
 	@state()
 	private _pinnedOverflowItems: Element[] = [];
 
@@ -568,11 +576,38 @@ export class NLDDToolbar extends LitElement {
 		this.style.setProperty('--_center-width', `${centerWidth}px`);
 		this.style.setProperty('--_end-width', `${endWidth}px`);
 
+		// The spacer basis subtracts a gap to account for the flex gap between a
+		// side area and its spacer. That gap only exists when the area is
+		// non-empty; with an empty start (or end) the spacer is the first (or
+		// last) item and there is no such gap, so drop the subtraction to 0 —
+		// otherwise the centre is pulled off-centre by one gap once the opposite
+		// side gains items.
+		this.style.setProperty('--_left-spacer-gap', startWidth > 0 ? `${itemGap}px` : '0px');
+		this.style.setProperty('--_right-spacer-gap', endWidth > 0 ? `${itemGap}px` : '0px');
+
 		const { leftZero, rightZero } = this._computeSpacerZeros(
 			hostWidth, itemGap, overflowButtonWidth, startWidth, centerWidth, endWidth
 		);
 		if (leftZero !== this._leftSpacerZero) this._leftSpacerZero = leftZero;
 		if (rightZero !== this._rightSpacerZero) this._rightSpacerZero = rightZero;
+
+		// Route to the centered center-fill layout whenever nothing is actually
+		// rendered in start/end — measured by real rendering, not child presence,
+		// so a consumer-hidden (display:none) back button doesn't strand a centered
+		// title at the left (it would otherwise keep centerOnly false and fall into
+		// the spacer path, where startWidth===0 && endWidth===0 suppresses both
+		// balancing spacers).
+		const centerOnly = !this._hasRenderedChild(this._startChildren)
+			&& !this._hasRenderedChild(this._endChildren)
+			&& this._centerChildren.length > 0;
+		if (centerOnly !== this._centerOnly) this._centerOnly = centerOnly;
+	}
+
+	/** Whether any child in the list is actually rendered. getClientRects() is
+	 * empty for a `display:none` element (consumer-hidden or toolbar-hidden via
+	 * `[hidden]`), so this counts real on-screen presence, not mere DOM presence. */
+	private _hasRenderedChild(children: ToolbarChild[]): boolean {
+		return children.some(c => (c.element as HTMLElement).getClientRects().length > 0);
 	}
 
 	private _measureAndUpdate(): void {
@@ -701,7 +736,12 @@ export class NLDDToolbar extends LitElement {
 		titleChildren: Extract<ToolbarChild, { type: 'title' }>[],
 		centerOnly: boolean,
 	): void {
-		const remainingVisible = itemChildren.filter(c => !(c.element as HTMLElement).hidden);
+		// Real rendering, not the `hidden` property: a consumer-hidden
+		// (display:none) start/end item must not count as a "remaining visible"
+		// item, or it blocks promoting a lone title to solo-fluid (which is what
+		// lets align="center" actually centre it). Toolbar-hidden items are
+		// display:none too, so this stays equivalent for the overflow flow.
+		const remainingVisible = itemChildren.filter(c => (c.element as HTMLElement).getClientRects().length > 0);
 		if (!centerOnly && remainingVisible.length === 1 && (remainingVisible[0].element as HTMLElement).hasAttribute('fluid')) {
 			const host = remainingVisible[0].element as HTMLElement;
 			host.removeAttribute('fluid');
@@ -817,7 +857,7 @@ export class NLDDToolbar extends LitElement {
 			this._pinnedOverflowItems.length > 0 || this._overflowIds.size > 0,
 			this._menuOpen,
 			this.label,
-			this._startChildren.length === 0 && this._endChildren.length === 0 && this._centerChildren.length > 0,
+			this._centerOnly,
 			(key) => this._t(key),
 		);
 	}

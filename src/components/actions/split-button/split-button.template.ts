@@ -32,6 +32,6 @@ export function template(this: NLDDSplitButton) {
 				></nldd-icon-button>
 			</div>
 		</div>
-		<slot @slotchange=${this._handleSlotChange}></slot>
+		<slot @slotchange=${this._popup.handleSlotChange}></slot>
 	`;
 }

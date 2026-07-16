@@ -175,7 +175,7 @@ export const Varianten = {
 
 export const Inherit = {
 	render: () => html`
-		<div style="display: flex; gap: 16px; align-items: center; padding: 16px; border-radius: 8px; background: var(--semantics-categories-donkerblauw-reference-background-color); color: var(--semantics-categories-donkerblauw-reference-primary-content-color);">
+		<div style="display: flex; gap: 16px; align-items: center; padding: 16px; border-radius: 8px; background: var(--semantics-categories-donkerblauw-reference-background-color); color: var(--semantics-categories-donkerblauw-reference-content-color);">
 			<nldd-keyboard-shortcut color="inherit" keys="Cmd+K"></nldd-keyboard-shortcut>
 			<nldd-keyboard-shortcut color="inherit" keys="Ctrl+Shift+P"></nldd-keyboard-shortcut>
 		</div>

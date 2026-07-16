@@ -344,6 +344,13 @@ const defaultFilterFn = (query: string, item: NLDDMenuItem): boolean => {
  * @attr {Function} filterFn            - Custom filter function (query, item) => boolean.
  *
  * @slot - nldd-menu-item and nldd-menu-divider elements.
+ * @slot header - Free content shown above the items, outside `role="menu"` (so it may
+ *                hold non-menuitem content such as an avatar + name, buttons or links —
+ *                reached with Tab, skipped by arrow navigation). The region is unpadded;
+ *                control spacing with your own content (e.g. an `nldd-container`). Root-only:
+ *                never rendered in a submenu. Example: an account identity header (nldd-byline).
+ * @slot footer - Free content shown below the items, outside `role="menu"` (same rules as
+ *                `header`; also unpadded and root-only). Example: a short note or a link.
  * @slot empty - Shown when no items are visible. Defaults to `nldd-inline-dialog`
  *               driven by `empty-text` / `empty-supporting-text`. Slot content
  *               overrides the default dialog entirely.
@@ -418,6 +425,16 @@ export class NLDDMenu extends LitElement {
 
 	@state()
 	private _isEmpty = false;
+
+	/** Whether the `header` / `footer` slots have meaningful content, driving
+	 * whether their (root-only) region renders. Set from slotchange + an initial
+	 * sync in firstUpdated, mirroring nldd-inline-dialog. Not `private`: the
+	 * template (a separate module) reads them via `this`. */
+	@state()
+	_hasHeader = false;
+
+	@state()
+	_hasFooter = false;
 
 	/** Currently open child submenu (a direct descendant nldd-menu opened
 	 * by one of this menu's items). null when no submenu is open. */
@@ -1627,6 +1644,11 @@ export class NLDDMenu extends LitElement {
 
 	override firstUpdated(): void {
 		this._updateEmptyState();
+		// Initial header/footer detection: slotchange fires for later changes, but
+		// content assigned before this covers the first render (slot exists on the
+		// root only).
+		this._onHeaderSlotChange();
+		this._onFooterSlotChange();
 	}
 
 	override disconnectedCallback(): void {
@@ -1710,12 +1732,38 @@ export class NLDDMenu extends LitElement {
 		this._isEmpty = shown.length === 0;
 	}
 
+	/** True when the named slot has non-whitespace content. assignedNodes (not
+	 * assignedElements) so a bare text header counts; whitespace-only formatting
+	 * nodes don't. */
+	private _slotHasContent(name: string): boolean {
+		const slot = this.shadowRoot?.querySelector<HTMLSlotElement>(`slot[name="${name}"]`);
+		return (slot?.assignedNodes({ flatten: true }) ?? []).some(n =>
+			n.nodeType === Node.ELEMENT_NODE
+			|| (n.nodeType === Node.TEXT_NODE && (n.textContent?.trim() ?? '') !== ''),
+		);
+	}
+
+	_onHeaderSlotChange(): void {
+		this._hasHeader = this._slotHasContent('header');
+	}
+
+	_onFooterSlotChange(): void {
+		this._hasFooter = this._slotHasContent('footer');
+	}
+
 	private _updateDividerVisibility(): void {
-		const children = Array.from(this.children) as Element[];
+		// Only the default-slot children form the item flow. Named-slot children
+		// (header / footer / empty) sit in their own regions, so exclude them from
+		// divider adjacency, or a header would count as the "first child" and swallow
+		// a following divider.
+		const children = (Array.from(this.children) as Element[]).filter(el => !el.hasAttribute('slot'));
 		children.forEach(el => {
 			const tag = el.tagName.toLowerCase();
 			if (tag === 'nldd-menu-divider') el.removeAttribute('hidden');
-			if (tag === 'nldd-menu-group') el.removeAttribute('data-no-bottom-divider');
+			if (tag === 'nldd-menu-group') {
+				el.removeAttribute('data-no-bottom-divider');
+				el.removeAttribute('data-no-top-divider');
+			}
 		});
 
 		const visible = children.filter(el => !el.hasAttribute('hidden'));
@@ -1746,6 +1794,13 @@ export class NLDDMenu extends LitElement {
 		const remaining = visible.filter(el => !el.hasAttribute('hidden'));
 		remaining.forEach((el, index) => {
 			if (el.tagName.toLowerCase() !== 'nldd-menu-group') return;
+			// Top divider: suppress when the group is the first item. CSS
+			// :first-child can't do this once a `header` slot makes the header div
+			// the first light-DOM child (the group is then no longer :first-child),
+			// so drive it from the filtered item flow instead.
+			if (index === 0) {
+				el.setAttribute('data-no-top-divider', '');
+			}
 			const nextTag = remaining[index + 1]?.tagName.toLowerCase();
 			const isLast = index === remaining.length - 1;
 			if (isLast || nextTag === 'nldd-menu-group') {

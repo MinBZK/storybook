@@ -35,6 +35,10 @@
       "types": "./dist/components/actions/menu/menu.d.ts",
       "default": "./dist/components/actions/menu/menu.js"
     },
+    "./avatar": {
+      "types": "./dist/components/content/avatar/avatar.d.ts",
+      "default": "./dist/components/content/avatar/avatar.js"
+    },
     "./blockquote": {
       "types": "./dist/components/content/blockquote/blockquote.d.ts",
       "default": "./dist/components/content/blockquote/blockquote.js"

@@ -6,7 +6,7 @@
  *
  * @element nldd-inline-dialog
  *
- * @attr {'alert'|'success'} variant - Semantic variant; 'alert' or 'success' forces a matching icon and color
+ * @attr {'alert'|'success'|'loading'} variant - Semantic variant. 'alert' / 'success' force a matching icon and color; 'loading' shows an nldd-activity-indicator (a role="status" spinner announcing "Laden") in place of the icon — for an empty state that is still loading.
  * @attr {'md'|'lg'} size          - Typography size: 'md' (default) keeps body-md text + body-sm supporting; 'lg' bumps both up a step.
  * @attr {string}  icon            - Name of the nldd-icon icon above the text; absent when not set. Ignored when variant is set.
  * @attr {string}  icon-color      - 'secondary' | 'accent' | 'critical' | 'warning' | 'success'. Overrides the default and variant icon color.
@@ -24,8 +24,9 @@ import { inlineDialogStyles } from './inline-dialog.styles.js';
 import { inlineDialogTemplate } from './inline-dialog.template.js';
 import '../../content/icon/icon.js';
 import '../../actions/button-group/button-group.js';
+import '../activity-indicator/activity-indicator.js';
 
-export type InlineDialogVariant = 'alert' | 'success';
+export type InlineDialogVariant = 'alert' | 'success' | 'loading';
 export type InlineDialogSize = 'md' | 'lg';
 export type InlineDialogIconColor = 'secondary' | 'accent' | 'critical' | 'warning' | 'success';
 

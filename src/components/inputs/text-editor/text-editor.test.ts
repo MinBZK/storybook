@@ -602,6 +602,47 @@ describe('nldd-text-editor', () => {
 		cleanup(el2);
 	});
 
+	it('toont de open-link badge ook na een kale (plat geplakte) URL', async () => {
+		const el2 = await withValue('Zie https://regelrecht.rijks.app hier.');
+		const badges = el2.shadowRoot!.querySelectorAll('.cm-link-badge');
+		expect(badges.length).toBe(1);
+		expect(badges[0].getAttribute('href')).toBe('https://regelrecht.rijks.app');
+		expect(badges[0].getAttribute('target')).toBe('_blank');
+		cleanup(el2);
+	});
+
+	it('geeft scheme-loze autolinks een scheme (www → https, e-mail → mailto)', async () => {
+		const el2 = await withValue('Zie www.rijksoverheid.nl of info@rijksoverheid.nl.');
+		const hrefs = [...el2.shadowRoot!.querySelectorAll('.cm-link-badge')].map((b) => b.getAttribute('href'));
+		expect(hrefs).toEqual(['https://www.rijksoverheid.nl', 'mailto:info@rijksoverheid.nl']);
+		cleanup(el2);
+	});
+
+	it('badge de kale URL niet dubbel als hij ook de bestemming van een markdown-link is', async () => {
+		const el2 = await withValue('[Site](https://example.org) en kaal https://example.com');
+		const hrefs = [...el2.shadowRoot!.querySelectorAll('.cm-link-badge')].map((b) => b.getAttribute('href'));
+		expect(hrefs).toEqual(['https://example.org', 'https://example.com']); // link once, bare once — no double
+		cleanup(el2);
+	});
+
+	it('badge geen image-bron (![alt](url) is geen te-openen link)', async () => {
+		const el2 = await withValue('![vlinder](https://example.org/img.png) tekst');
+		expect(el2.shadowRoot!.querySelectorAll('.cm-link-badge').length).toBe(0);
+		cleanup(el2);
+	});
+
+	it('kleurt een kale URL als link (cm-md-autolink), niet als grijs adres (cm-md-url)', async () => {
+		const el2 = await withValue('kaal https://regelrecht.rijks.app en [md](https://example.com)');
+		const sr = el2.shadowRoot!;
+		// The bare URL reads as link text (its own autolink class, coloured like a link);
+		// only the markdown link's address stays the grey cm-md-url.
+		const autolinks = [...sr.querySelectorAll('.cm-md-autolink')].map((s) => s.textContent);
+		const greyUrls = [...sr.querySelectorAll('.cm-md-url')].map((s) => s.textContent);
+		expect(autolinks).toEqual(['https://regelrecht.rijks.app']);
+		expect(greyUrls).toEqual(['https://example.com']); // the markdown link's address only, not the bare URL
+		cleanup(el2);
+	});
+
 	it('rendert geen klikbare badge voor een javascript:- of data:-link (XSS-guard)', async () => {
 		const el2 = await withValue('[safe](https://example.org) [rel](/p) [js](javascript:x) [d](data:x)');
 		const hrefs = [...el2.shadowRoot!.querySelectorAll('.cm-link-badge')].map((b) => b.getAttribute('href'));

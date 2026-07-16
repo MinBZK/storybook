@@ -57,7 +57,7 @@ export const tokenStyles = css`
 		min-width: 0;
 		padding: 0 var(--primitives-space-6);
 		align-items: center;
-		color: var(--semantics-buttons-neutral-tinted-primary-content-color);
+		color: var(--semantics-buttons-neutral-tinted-content-color);
 		font: var(--semantics-buttons-sm-primary-text-font);
 		transition: background-color var(--primitives-transition-duration-fast) var(--primitives-transition-easing-default);
 		appearance: none;

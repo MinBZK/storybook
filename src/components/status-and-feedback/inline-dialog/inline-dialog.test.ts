@@ -83,6 +83,28 @@ describe('nldd-inline-dialog', () => {
 		expect(el.getAttribute('variant')).toBe('alert');
 	});
 
+	it('renders an activity indicator instead of an icon when variant="loading"', async () => {
+		el = await fixture('<nldd-inline-dialog variant="loading" text="Bezig met laden"></nldd-inline-dialog>');
+		await waitForUpdate(el);
+		const spinner = el.shadowRoot!.querySelector('nldd-activity-indicator');
+		expect(spinner).not.toBeNull();
+		expect(el.shadowRoot!.querySelector('nldd-icon')).toBeNull(); // the icon is replaced, not shown alongside
+		expect(spinner!.getAttribute('timing')).toBe('instant'); // no anti-flash delay: the dialog is already loading
+	});
+
+	it('sizes the loading spinner to the icon size (md=40, lg=48)', async () => {
+		el = await fixture('<nldd-inline-dialog variant="loading" size="lg"></nldd-inline-dialog>');
+		await waitForUpdate(el);
+		expect(el.shadowRoot!.querySelector('nldd-activity-indicator')!.getAttribute('size')).toBe('48');
+	});
+
+	it('variant="loading" overrides an explicit icon', async () => {
+		el = await fixture('<nldd-inline-dialog variant="loading" icon="info-circle"></nldd-inline-dialog>');
+		await waitForUpdate(el);
+		expect(el.shadowRoot!.querySelector('nldd-activity-indicator')).not.toBeNull();
+		expect(el.shadowRoot!.querySelector('nldd-icon')).toBeNull();
+	});
+
 	it('reflects size attribute', async () => {
 		el = await fixture('<nldd-inline-dialog size="lg"></nldd-inline-dialog>');
 		await waitForUpdate(el);

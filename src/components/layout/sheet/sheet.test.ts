@@ -133,18 +133,41 @@ describe('nldd-sheet – backdrop klik', () => {
 		}
 	});
 
-	it('calls hide() when click target is the dialog itself', async () => {
+	it('calls hide() when both the press and the release are on the dialog (backdrop)', async () => {
 		el = await fixture<NLDDSheet>('<nldd-sheet></nldd-sheet>');
 		await waitForUpdate(el);
 		el.show();
 
 		const hideSpy = vi.spyOn(el, 'hide');
 		const dialog = el.shadowRoot!.querySelector('dialog')!;
+		const down = new PointerEvent('pointerdown', { bubbles: true });
+		Object.defineProperty(down, 'target', { value: dialog });
+		el._handleDialogPointerDown(down);
 		const event = new MouseEvent('click', { bubbles: true });
 		Object.defineProperty(event, 'target', { value: dialog });
 		el._handleDialogClick(event);
 
 		expect(hideSpy).toHaveBeenCalledOnce();
+	});
+
+	it('does not hide() when the press started inside the sheet and the release lands on the backdrop', async () => {
+		el = await fixture<NLDDSheet>('<nldd-sheet><input></nldd-sheet>');
+		await waitForUpdate(el);
+		el.show();
+
+		const hideSpy = vi.spyOn(el, 'hide');
+		const dialog = el.shadowRoot!.querySelector('dialog')!;
+		const body = el.shadowRoot!.querySelector('.sheet__body')!;
+		// Press begins on the content (e.g. selecting text in the input)…
+		const down = new PointerEvent('pointerdown', { bubbles: true });
+		Object.defineProperty(down, 'target', { value: body });
+		el._handleDialogPointerDown(down);
+		// …and the drag ends on the backdrop, so the click resolves to the dialog.
+		const event = new MouseEvent('click', { bubbles: true });
+		Object.defineProperty(event, 'target', { value: dialog });
+		el._handleDialogClick(event);
+
+		expect(hideSpy).not.toHaveBeenCalled();
 	});
 });
 

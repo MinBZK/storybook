@@ -127,21 +127,61 @@ function hrefOf(state: EditorState, link: SyntaxNode, refs: Map<string, string>)
 	return null;
 }
 
+/** True when a URL node is the destination of a Markdown construct rather than a
+ *  bare autolink in prose: an inline/reference link (`[text](url)` / `[ref]: url`)
+ *  or an image (`![alt](url)`). Those URLs must not get a second badge — the link
+ *  is already badged via its `Link` node, and a definition or image source is not
+ *  a link to follow. Skipping them also keeps the badge ranges in document order
+ *  for the RangeSetBuilder (a child URL's end precedes its container's end). */
+export function inLinkContext(node: SyntaxNode): boolean {
+	for (let p = node.parent; p; p = p.parent) {
+		if (p.name === 'Link' || p.name === 'LinkReference' || p.name === 'Image') return true;
+	}
+	return false;
+}
+
+/** Href for a bare/autolinked URL node (GFM autolink): the sliced text, with a
+ *  scheme added for GFM's scheme-less forms (`www.…` → https, `a@b.c` → mailto).
+ *  Rejects mentions and unsafe schemes, mirroring the Markdown-link path. */
+function bareHref(state: EditorState, node: SyntaxNode): string | null {
+	const raw = state.sliceDoc(node.from, node.to);
+	if (!raw || raw.startsWith(MENTION_HREF_PREFIX)) return null;
+	let href = raw;
+	// An already-schemed URL (https://, mailto:, …) is taken as-is; only GFM's
+	// scheme-less autolink forms need one added.
+	if (!/^[a-z][a-z0-9+.-]*:/i.test(raw)) {
+		if (/^www\./i.test(raw)) href = `https://${raw}`;            // GFM www autolink
+		else if (/^[^\s@]+@[^\s@]+$/.test(raw)) href = `mailto:${raw}`; // GFM email autolink
+	}
+	return isSafeHref(href) ? href : null;
+}
+
 function buildBadges(view: EditorView, label: OpenInNewTabLabel): DecorationSet {
 	const builder = new RangeSetBuilder<Decoration>();
 	const tree = syntaxTree(view.state);
 	const refs = referenceDefs(view.state);
+	// side -1 draws the badge before the caret, so the caret at the link end sits
+	// to the RIGHT of the badge — text typed there lands after it, not wedged
+	// between the link and the badge.
+	const badge = (to: number, href: string): void =>
+		builder.add(to, to, Decoration.widget({ widget: new LinkOpenWidget(href, label), side: -1 }));
 	for (const { from, to } of view.visibleRanges) {
 		tree.iterate({
 			from,
 			to,
 			enter: (node) => {
-				if (node.name !== 'Link') return;
-				const href = hrefOf(view.state, node.node, refs);
-				// side -1 draws the badge before the caret, so the caret at the link end
-				// sits to the RIGHT of the badge — text typed there lands after it, not
-				// wedged between the link and the badge.
-				if (href) builder.add(node.to, node.to, Decoration.widget({ widget: new LinkOpenWidget(href, label), side: -1 }));
+				if (node.name === 'Link') {
+					const href = hrefOf(view.state, node.node, refs);
+					if (href) badge(node.to, href);
+					return;
+				}
+				// Bare/autolinked URL: a standalone URL node (GFM turns a plainly
+				// pasted https/www/email into one), i.e. not the destination inside a
+				// [text](url) link — that URL is already handled via its Link above.
+				if (node.name === 'URL' && !inLinkContext(node.node)) {
+					const href = bareHref(view.state, node.node);
+					if (href) badge(node.to, href);
+				}
 			},
 		});
 	}

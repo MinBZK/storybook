@@ -10,7 +10,7 @@ export const iconCellStyles = css`
 
 	:host {
 		--_size: var(--primitives-space-24);
-		--_content-color: var(--context-cell-content-color, var(--semantics-content-color));
+		--_content-color: var(--context-content-color, var(--semantics-content-color));
 
 		display: flex;
 		width: var(--_size);
@@ -38,23 +38,23 @@ export const iconCellStyles = css`
 	/* ## Color */
 
 	:host([color="secondary"]) {
-		--_content-color: var(--context-cell-content-secondary-color, var(--semantics-content-secondary-color));
+		--_content-color: var(--context-content-secondary-color, var(--semantics-content-secondary-color));
 	}
 
 	:host([color="accent"]) {
-		--_content-color: var(--context-cell-content-accent-color, var(--semantics-content-accent-color));
+		--_content-color: var(--context-content-accent-color, var(--semantics-content-accent-color));
 	}
 
 	:host([color="success"]) {
-		--_content-color: var(--context-cell-content-success-color, var(--semantics-content-success-color));
+		--_content-color: var(--context-content-success-color, var(--semantics-content-success-color));
 	}
 
 	:host([color="warning"]) {
-		--_content-color: var(--context-cell-content-warning-color, var(--semantics-content-warning-color));
+		--_content-color: var(--context-content-warning-color, var(--semantics-content-warning-color));
 	}
 
 	:host([color="critical"]) {
-		--_content-color: var(--context-cell-content-critical-color, var(--semantics-content-critical-color));
+		--_content-color: var(--context-content-critical-color, var(--semantics-content-critical-color));
 	}
 
 

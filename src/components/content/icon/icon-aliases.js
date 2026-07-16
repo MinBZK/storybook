@@ -156,6 +156,9 @@ export const aliases = {
 	// file-text
 	'text-document': 'file-text',
 
+	// file-text-batch-check-plus
+	'new-text-document': 'file-text-batch-check-plus',
+
 	// file-text-stack
 	'documents': 'file-text-stack',
 	'text-documents': 'file-text-stack',

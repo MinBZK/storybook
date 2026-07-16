@@ -68,7 +68,6 @@ export const menuStyles = css`
 		width: var(--_width, max-content);
 		min-width: var(--_min-width);
 		max-width: var(--_max-width);
-		padding: var(--_padding);
 		flex-direction: column;
 		max-height: min(var(--_max-height), calc(var(--_max-items) * var(--_item-size) + var(--_padding) * 2));
 		outline: none;
@@ -82,14 +81,42 @@ export const menuStyles = css`
 	}
 
 
-	/* # Empty */
+	/* # Elements */
+
+	.menu__main {
+		display: flex;
+		flex-direction: column;
+		padding: var(--_padding);
+	}
+
+	.menu__list {
+		display: flex;
+		flex-direction: column;
+	}
+
+	.menu__header {
+		box-sizing: border-box;
+		border-bottom: var(--semantics-dividers-thickness) solid var(--semantics-dividers-color);
+		flex-shrink: 0;
+	}
+
+	.menu__header[hidden] {
+		display: none;
+	}
+
+	.menu__footer {
+		box-sizing: border-box;
+		border-top: var(--semantics-dividers-thickness) solid var(--semantics-dividers-color);
+		flex-shrink: 0;
+	}
+
+	.menu__footer[hidden] {
+		display: none;
+	}
 
 	.menu__empty {
 		padding: var(--primitives-space-8);
 	}
-
-
-	/* # Back button — drill-in mode header */
 
 	.menu__back-button {
 		display: flex;
@@ -104,7 +131,7 @@ export const menuStyles = css`
 		align-items: center;
 		text-align: start;
 		appearance: none;
-		--context-cell-content-color: var(--semantics-content-secondary-color);
+		--context-content-color: var(--semantics-content-secondary-color);
 
 		@media (pointer: fine) {
 			border-radius: var(--semantics-controls-sm-corner-radius);
@@ -118,13 +145,13 @@ export const menuStyles = css`
 	@media (hover: hover) {
 		.menu__back-button:hover {
 			background-color: var(--_item-is-highlighted-background-color);
-			--context-cell-content-color: var(--_item-is-highlighted-content-color);
+			--context-content-color: var(--_item-is-highlighted-content-color);
 		}
 	}
 
 	.menu__back-button:active:hover {
 		background-color: var(--_item-is-highlighted-background-color);
-		--context-cell-content-color: var(--_item-is-highlighted-content-color);
+		--context-content-color: var(--_item-is-highlighted-content-color);
 	}
 
 	.menu__back-button:focus-visible {
@@ -142,11 +169,8 @@ export const menuStyles = css`
 	}
 
 
-	/* # Live region — drill-in view-change announcements (WCAG 4.1.3)
-	 *
-	 * Sibling of .menu so the role="status" doesn't violate menu's
-	 * required-owned-children. Visually hidden, kept in the a11y tree. */
-
+	/* Sibling of .menu so role="status" stays outside menu's required-owned
+	   children (WCAG 4.1.3); visually hidden, kept in the a11y tree. */
 	.menu__live-region {
 		position: absolute;
 		margin: -1px;
@@ -184,8 +208,8 @@ export const menuItemStyles = css`
 
 	.menu__item[aria-expanded="true"] {
 		--_item-background-color: var(--components-menu-item-is-expanded-background-color);
-		--context-cell-content-color: var(--components-menu-item-is-expanded-content-color);
-		--context-cell-content-secondary-color: var(--components-menu-item-is-expanded-content-color);
+		--context-content-color: var(--components-menu-item-is-expanded-content-color);
+		--context-content-secondary-color: var(--components-menu-item-is-expanded-content-color);
 	}
 
 	/* ## Highlighted or pressed
@@ -199,8 +223,8 @@ export const menuItemStyles = css`
 	.menu__item[aria-expanded="true"]:hover,
 	.menu__item:active:hover {
 		--_item-background-color: var(--_item-is-highlighted-background-color);
-		--context-cell-content-color: var(--_item-is-highlighted-content-color);
-		--context-cell-content-secondary-color: var(--_item-is-highlighted-content-color);
+		--context-content-color: var(--_item-is-highlighted-content-color);
+		--context-content-secondary-color: var(--_item-is-highlighted-content-color);
 	}
 
 	/* ## Destructive */
@@ -208,8 +232,8 @@ export const menuItemStyles = css`
 	:host([destructive]) {
 		--_item-is-highlighted-background-color: var(--components-menu-item-is-destructive-is-highlighted-background-color);
 		--_item-is-highlighted-content-color: var(--components-menu-item-is-destructive-is-highlighted-content-color);
-		--context-cell-content-color: var(--components-menu-item-is-destructive-content-color);
-		--context-cell-content-secondary-color: var(--components-menu-item-is-destructive-content-color);
+		--context-content-color: var(--components-menu-item-is-destructive-content-color);
+		--context-content-secondary-color: var(--components-menu-item-is-destructive-content-color);
 	}
 
 
@@ -304,9 +328,11 @@ export const menuGroupStyles = css`
 	/* # Host
 	 *
 	 * Auto top/bottom dividers via border-top/-bottom; suppressed for the
-	 * first child (top) and when followed by another group or last child
-	 * (bottom — flag set by parent menu via data-no-bottom-divider since
-	 * :last-child can't see hidden siblings).
+	 * first item (top) and when followed by another group or last item
+	 * (bottom). Both flags are set by the parent menu (data-no-top-divider /
+	 * data-no-bottom-divider): CSS :first-child / :last-child can't see hidden
+	 * siblings, nor the header slot's div that becomes the first light-DOM
+	 * child (which would leave a first group no longer :first-child).
 	 *
 	 * padding-top > padding-bottom binds the title visually to its items
 	 * rather than to whatever sits above. */
@@ -322,7 +348,8 @@ export const menuGroupStyles = css`
 		padding-bottom: var(--primitives-space-4);
 	}
 
-	:host(:first-child) {
+	:host(:first-child),
+	:host([data-no-top-divider]) {
 		border-top: none;
 		padding-top: var(--primitives-space-2);
 	}

@@ -22,6 +22,7 @@ export { NLDDMenu } from './actions/menu/menu.js';
 
 // # Content components
 
+export { NLDDAvatar } from './content/avatar/avatar.js';
 export { NLDDBlockquote } from './content/blockquote/blockquote.js';
 export { NLDDByline } from './content/byline/byline.js';
 export { NLDDCodeViewer } from './content/code-viewer/code-viewer.js';

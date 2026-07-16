@@ -15,6 +15,11 @@
  *
  * @element nldd-page-footer
  *
+ * @attr {string} [width] - Body max-width, mirroring a page section: 'full'
+ *                          removes the constraint so the content spans the full
+ *                          width; any CSS length (e.g. '480px') overrides the
+ *                          default max-width.
+ *
  * @slot breadcrumbs - `nldd-breadcrumbs` for the top row.
  * @slot             - Main footer content (typically a container with a grid
  *                     of link columns).
@@ -154,6 +159,11 @@ if (!customElements.get('nldd-page-footer-legal-bar')) {
 export class NLDDPageFooter extends LitElement {
 	static override styles = pageFooterStyles;
 
+	/** Body max-width: 'full' (removes the constraint) or any CSS length.
+	 *  Mirrors a page section's width. */
+	@property({ reflect: true, converter: reflectNonDefault<string>('') })
+	width = '';
+
 	@state()
 	_hasBreadcrumbs = false;
 
@@ -212,7 +222,7 @@ export class NLDDPageFooter extends LitElement {
 	// Reflect the visible-row count as host attributes for styling. Done here
 	// (not in the slotchange handler) so a fully empty footer — whose empty
 	// slots may never fire slotchange — still gets `empty` on first render.
-	override updated(): void {
+	override updated(changed: PropertyValues): void {
 		const visibleCount =
 			(this._hasBreadcrumbs ? 1 : 0) +
 			(this._hasMain ? 1 : 0) +
@@ -221,6 +231,17 @@ export class NLDDPageFooter extends LitElement {
 		// band drops and only the lintje shows (see :host([empty]) in the styles).
 		this.toggleAttribute('single-slot', visibleCount === 1);
 		this.toggleAttribute('empty', visibleCount === 0);
+
+		if (changed.has('width')) {
+			// A CSS length feeds the body max-width; 'full' is handled by CSS
+			// (:host([width="full"]) sets --_max-width: none); default clears it.
+			const w = this.width;
+			if (w && w !== 'full' && CSS.supports('max-width', w)) {
+				this.style.setProperty('--_max-width', w);
+			} else {
+				this.style.removeProperty('--_max-width');
+			}
+		}
 	}
 
 	override render() {

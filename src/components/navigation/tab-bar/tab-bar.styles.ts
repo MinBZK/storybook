@@ -173,7 +173,7 @@ export const tabBarItemStyles = css`
 		gap: var(--_gap);
 		align-items: center;
 		justify-content: center;
-		color: var(--semantics-buttons-neutral-tinted-primary-content-color);
+		color: var(--semantics-buttons-neutral-tinted-content-color);
 		font: var(--_font);
 		text-decoration: none;
 		appearance: none;
@@ -194,20 +194,20 @@ export const tabBarItemStyles = css`
 	@media (hover: hover) {
 		.tab-bar__item:hover {
 			background-color: var(--semantics-buttons-neutral-tinted-is-hovered-background-color);
-			color: var(--semantics-buttons-neutral-tinted-is-hovered-primary-content-color);
+			color: var(--semantics-buttons-neutral-tinted-is-hovered-content-color);
 		}
 	}
 
 	.tab-bar__item:active {
 		background-color: var(--semantics-buttons-neutral-tinted-is-active-background-color);
-		color: var(--semantics-buttons-neutral-tinted-is-active-primary-content-color);
+		color: var(--semantics-buttons-neutral-tinted-is-active-content-color);
 	}
 
 	:host([selected]) .tab-bar__item {
 		--_highlight-border-color: var(--semantics-buttons-neutral-tinted-is-selected-highlight-border-color);
 
 		background-color: var(--semantics-buttons-neutral-tinted-is-selected-background-color);
-		color: var(--semantics-buttons-neutral-tinted-is-selected-primary-content-color);
+		color: var(--semantics-buttons-neutral-tinted-is-selected-content-color);
 	}
 
 	@media (hover: hover) {
@@ -215,7 +215,7 @@ export const tabBarItemStyles = css`
 			--_highlight-border-color: var(--semantics-buttons-neutral-tinted-is-selected-is-hovered-highlight-border-color);
 
 			background-color: var(--semantics-buttons-neutral-tinted-is-selected-is-hovered-background-color);
-			color: var(--semantics-buttons-neutral-tinted-is-selected-is-hovered-primary-content-color);
+			color: var(--semantics-buttons-neutral-tinted-is-selected-is-hovered-content-color);
 		}
 	}
 
@@ -223,7 +223,7 @@ export const tabBarItemStyles = css`
 		--_highlight-border-color: var(--semantics-buttons-neutral-tinted-is-selected-is-active-highlight-border-color);
 
 		background-color: var(--semantics-buttons-neutral-tinted-is-selected-is-active-background-color);
-		color: var(--semantics-buttons-neutral-tinted-is-selected-is-active-primary-content-color);
+		color: var(--semantics-buttons-neutral-tinted-is-selected-is-active-content-color);
 	}
 
 	@media (forced-colors: active) {

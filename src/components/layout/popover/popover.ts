@@ -195,6 +195,10 @@ export class NLDDPopover extends LitElement {
 		// niet-bestaand element is een WCAG 4.1.2 fout (Name, Role, Value).
 		const anchorEl = this._getAnchorEl();
 		if (anchorEl) {
+			// Reset the IDL prop too (control anchors), else a popover removed
+			// while open leaves the trigger stuck in its is-expanded state.
+			const control = anchorEl as HTMLElement & { expanded?: boolean };
+			if ('expanded' in control) control.expanded = false;
 			anchorEl.removeAttribute('aria-expanded');
 			anchorEl.removeAttribute('aria-haspopup');
 			if (this.id && anchorEl.getAttribute('aria-controls') === this.id) {
@@ -407,11 +411,24 @@ export class NLDDPopover extends LitElement {
 			this._previousAnchorEl = null;
 			return;
 		}
-		anchorEl.setAttribute('aria-expanded', open ? 'true' : 'false');
+		// Prefer IDL props when the anchor is a control that exposes them (e.g.
+		// nldd-button / nldd-icon-button): the control renders aria-expanded /
+		// aria-haspopup on its real inner <button> from these props, and also
+		// flips its is-expanded visual (chevron). Raw setAttribute on the host
+		// would land on the custom element, not the inner control, and get reset
+		// on the next render. Fall back to attributes for plain element anchors.
+		const control = anchorEl as HTMLElement & { expanded?: boolean; popupType?: string };
+		if ('expanded' in control) {
+			control.expanded = open;
+		} else {
+			anchorEl.setAttribute('aria-expanded', open ? 'true' : 'false');
+		}
 		// aria-haspopup hoort bij de trigger te staan vanaf de eerste render,
 		// niet pas na de eerste open. Geen overwrite als de host een eigen
 		// waarde heeft (bv. 'menu' i.p.v. 'dialog' voor combinaties).
-		if (!anchorEl.hasAttribute('aria-haspopup')) {
+		if ('popupType' in control) {
+			if (!control.popupType) control.popupType = 'dialog';
+		} else if (!anchorEl.hasAttribute('aria-haspopup')) {
 			anchorEl.setAttribute('aria-haspopup', 'dialog');
 		}
 		// aria-controls verbindt de trigger expliciet met het popover-element.
@@ -450,6 +467,14 @@ export class NLDDPopover extends LitElement {
 	};
 
 	private _handleDocumentClick = (event: MouseEvent): void => {
+		// Driven mode: when a consumer supplies anchorElement (e.g. a button that
+		// slots this popover) it owns the open/close lifecycle — don't self-toggle.
+		// This also fixes nesting: with the popover slotted inside its anchor, the
+		// anchor is an ancestor of every content click, so self-toggling here would
+		// close the popover on its own interactive content. Native light-dismiss
+		// still handles outside clicks; the driver handles the reopen race. The
+		// recommended id-anchored / popovertarget usage keeps self-toggling.
+		if (this.anchorElement) return;
 		const anchorEl = this._getAnchorEl();
 		if (!anchorEl) return;
 		const path = event.composedPath();

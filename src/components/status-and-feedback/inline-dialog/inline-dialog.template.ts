@@ -5,7 +5,14 @@ export function inlineDialogTemplate(component: NLDDInlineDialog) {
 	return html`
 		<div class="inline-dialog__body">
 			<div class="inline-dialog__main">
-				${component._resolvedIconName ? html`
+				${component.variant === 'loading' ? html`
+					<div class="inline-dialog__icon">
+						<nldd-activity-indicator
+							size=${component.size === 'lg' ? '48' : '40'}
+							timing="instant"
+						></nldd-activity-indicator>
+					</div>
+				` : component._resolvedIconName ? html`
 					<div class="inline-dialog__icon">
 						<nldd-icon name=${component._resolvedIconName}></nldd-icon>
 					</div>

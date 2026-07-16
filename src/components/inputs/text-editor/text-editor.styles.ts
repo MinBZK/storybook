@@ -54,7 +54,7 @@ export const textEditorStyles = css`
 		--_annotation-badge-size: 1.5em;
 		--_annotation-badge-font-scale: 0.62;
 		--_link-badge-size: calc(1em + 2 * var(--_token-block-padding-fit));
-		--_link-badge-content-color: var(--semantics-categories-accent-tinted-primary-content-color);
+		--_link-badge-content-color: var(--semantics-categories-accent-tinted-content-color);
 		--_link-badge-background-color: var(--semantics-categories-accent-tinted-background-color);
 		--_link-badge-highlight-border-color: var(--semantics-categories-accent-tinted-highlight-border-color);
 		--_link-badge-is-hovered-background-color: light-dark(var(--primitives-color-accent-75), var(--primitives-color-accent-100));
@@ -63,9 +63,9 @@ export const textEditorStyles = css`
 		--_link-badge-is-active-highlight-border-color: light-dark(var(--primitives-color-accent-200), var(--primitives-color-accent-250));
 		--_mention-icon-size: 0.95em;
 		--_mention-token-background-color: var(--semantics-categories-accent-tinted-background-color);
-		--_mention-token-content-color: var(--semantics-categories-accent-tinted-primary-content-color);
+		--_mention-token-content-color: var(--semantics-categories-accent-tinted-content-color);
 		--_mention-token-is-selected-background-color: var(--semantics-categories-accent-filled-background-color);
-		--_mention-token-is-selected-content-color: var(--semantics-categories-accent-filled-primary-content-color);
+		--_mention-token-is-selected-content-color: var(--semantics-categories-accent-filled-content-color);
 		--_rows: 6;
 
 		${inheritedTextReset}
@@ -335,6 +335,17 @@ export const textEditorStyles = css`
 	/* The markdown highlight style tints the URL token (teal); make its span inherit
 	   the dimmed colour so the address reads as secondary, like the surrounding marks. */
 	.cm-md-url span {
+		color: inherit;
+	}
+
+	/* A bare / autolinked URL reads as the link itself: colour it like link text,
+	   and override the highlight-style URL tint (teal) on its token span so the
+	   whole address is the link colour, not just the mark wrapper. */
+	.cm-md-autolink {
+		color: var(--semantics-links-color);
+	}
+
+	.cm-md-autolink span {
 		color: inherit;
 	}
 

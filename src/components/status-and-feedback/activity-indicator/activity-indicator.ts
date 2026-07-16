@@ -7,10 +7,22 @@
  * `timing="instant"` to skip the delay (the fade-in still plays) — this is
  * what embedding components such as `nldd-button` use for their loading state.
  *
- * The default indicator is a simple icon-sized circle drawn in `currentColor`,
- * with an optional label below (hidden unless `show-text` is set). Drop a
+ * The default indicator is a simple icon-sized circle that follows the shared
+ * `--context-content-color` channel (set by list-item / table / menu on their
+ * content), falling back to `currentColor` wherever that channel is unset
+ * (buttons, rich-text, standalone) — so a spinner inside a cell tracks the
+ * row's state-aware content colour, while embedders relying on currentColor are
+ * unaffected. An optional label sits below (hidden unless `show-text` is set).
+ * Drop a
  * `<nldd-progress-circle>`, `<nldd-progress-bar>` or any element in the
  * `indicator` slot to override it.
+ *
+ * Icon alignment: the visible ring already sits at 5/6 of its box (the SVG's
+ * r=9 plus a 2-unit stroke in a 24 view-box, the same optical inset a filled
+ * icon glyph has), so a standalone spinner lines up with an icon or an
+ * `icon-aligned` `nldd-avatar` on the same grid — no extra option needed
+ * (unlike `nldd-avatar`, which fills edge-to-edge and opts in via
+ * `icon-aligned`).
  *
  * Overlay mode: put content in the default slot and the indicator wraps it — it
  * becomes a `position: relative` container, renders the spinner over a dimming

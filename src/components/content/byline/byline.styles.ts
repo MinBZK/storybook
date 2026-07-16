@@ -73,19 +73,29 @@ export const bylineStyles = css`
 		object-fit: cover !important;
 	}
 
-	.byline__avatar {
-		display: block;
+	/* A slotted avatar can't be wrapped, so size it here. width/height need
+	   !important to beat the avatar's own :host width. */
+	.byline__avatars ::slotted(nldd-avatar) {
+		width: var(--_avatar-size) !important;
+		height: var(--_avatar-size) !important;
 		margin-inline-start: calc(-1 * var(--_avatar-overlap-size));
 		border-radius: var(--_avatar-corner-radius);
 		box-shadow: 0 0 0 var(--_avatar-border-width) var(--_avatar-border-color);
+	}
+
+	.byline__avatar {
+		display: flex;
+		box-sizing: border-box;
 		width: var(--_avatar-size);
 		height: var(--_avatar-size);
-		object-fit: cover;
+		flex-shrink: 0;
+		margin-inline-start: calc(-1 * var(--_avatar-overlap-size));
+		border-radius: var(--_avatar-corner-radius);
+		box-shadow: 0 0 0 var(--_avatar-border-width) var(--_avatar-border-color);
 	}
 
 	@media (forced-colors: active) {
-		.byline__avatars ::slotted(img),
-		.byline__avatar {
+		.byline__avatars ::slotted(img) {
 			border: var(--_avatar-border-width) solid Canvas !important;
 		}
 	}

@@ -1,6 +1,8 @@
 import { html, nothing } from 'lit';
 import './button.js';
 import '../button-group/button-group.js';
+import '../menu/menu.js';
+import '../../layout/popover/popover.js';
 import { ICONS } from './../../content/icon/icon.js';
 
 /**
@@ -370,6 +372,73 @@ export const WithDisclosureIcon = {
 	},
 };
 
+/**
+ * Slot een enkele `nldd-menu` (of `nldd-popover`) in de `popup`-slot en de
+ * button wordt zijn invoker: hij ankert de overlay aan zichzelf en togglet 'm
+ * op klik — geen handmatige `id`/`anchor`-koppeling. De overlay synct
+ * `expanded` en `aria-haspopup` terug op de button; voeg `expandable` toe voor
+ * de chevron. Gespiegeld aan `nldd-split-button`. De bestaande
+ * `anchor`/`popovertarget`-route blijft werken wanneer je géén overlay slot.
+ */
+export const WithMenu = {
+	render: () => html`
+		<div style="display: flex; flex-wrap: wrap; gap: 16px; align-items: center;">
+			<nldd-button expandable text="Acties">
+				<nldd-menu slot="popup">
+					<nldd-menu-item text="Bewerken" icon="pencil"></nldd-menu-item>
+					<nldd-menu-item text="Dupliceren" icon="square-plus-on-square"></nldd-menu-item>
+					<nldd-menu-divider></nldd-menu-divider>
+					<nldd-menu-item text="Verwijderen" icon="trash" destructive></nldd-menu-item>
+				</nldd-menu>
+			</nldd-button>
+			<nldd-button expandable variant="primary" start-icon="plus" text="Nieuw">
+				<nldd-menu slot="popup">
+					<nldd-menu-item text="Document" icon="file"></nldd-menu-item>
+					<nldd-menu-item text="Map" icon="folder"></nldd-menu-item>
+				</nldd-menu>
+			</nldd-button>
+		</div>
+	`,
+	parameters: {
+		controls: { disable: true },
+		docs: {
+			description: {
+				story: 'Genest menu via de <code>popup</code>-slot: de button ankert en togglet het menu automatisch, zonder <code>id</code>/<code>anchor</code>-boilerplate.',
+			},
+		},
+	},
+};
+
+/**
+ * Dezelfde `popup`-slot slikt ook een `nldd-popover` voor vrije content
+ * (tekst, een form). De button ankert en togglet 'm identiek; klikken in de
+ * popover-content sluit 'm niet (in tegenstelling tot een menu-item). Geef de
+ * popover altijd een `accessible-label`.
+ */
+export const WithPopover = {
+	render: () => html`
+		<div style="display: flex; flex-wrap: wrap; gap: 16px; align-items: center;">
+			<nldd-button expandable text="Info">
+				<nldd-popover slot="popup" accessible-label="Toelichting" width="280px">
+					<div style="padding: 16px; display: flex; flex-direction: column; gap: 8px;">
+						<strong>Zorgtoeslag</strong>
+						<span>Een tegemoetkoming in de kosten van je zorgverzekering, afhankelijk van je inkomen.</span>
+						<nldd-button variant="primary" text="Meer lezen"></nldd-button>
+					</div>
+				</nldd-popover>
+			</nldd-button>
+		</div>
+	`,
+	parameters: {
+		controls: { disable: true },
+		docs: {
+			description: {
+				story: 'Genest popover via de <code>popup</code>-slot: zelfde auto-wiring als een menu, maar met vrije content die klikbaar blijft.',
+			},
+		},
+	},
+};
+
 export const Loading = {
 	render: () => html`
 	<div style="display: flex; flex-wrap: wrap; gap: 16px; align-items: center;">
@@ -448,7 +517,7 @@ export const TextSlot = {
 export const OpKleurvlak = {
 	render: () => html`
 		<div style="display: flex; flex-direction: column; gap: 16px;">
-			<div style="background: var(--semantics-categories-donkerblauw-filled-background-color); color: var(--semantics-categories-donkerblauw-filled-primary-content-color); --context-parent-background-color: var(--semantics-categories-donkerblauw-filled-background-color); padding: 24px; border-radius: var(--primitives-corner-radius-md);">
+			<div style="background: var(--semantics-categories-donkerblauw-filled-background-color); color: var(--semantics-categories-donkerblauw-filled-content-color); --context-parent-background-color: var(--semantics-categories-donkerblauw-filled-background-color); padding: 24px; border-radius: var(--primitives-corner-radius-md);">
 				<nldd-button-group orientation="horizontal">
 					<nldd-button variant="inherit-filled"
 						text="Inherit filled"
@@ -469,7 +538,7 @@ export const OpKleurvlak = {
 					></nldd-button>
 				</nldd-button-group>
 			</div>
-			<div style="background: var(--semantics-categories-oranje-filled-background-color); color: var(--semantics-categories-oranje-filled-primary-content-color); --context-parent-background-color: var(--semantics-categories-oranje-filled-background-color); padding: 24px; border-radius: var(--primitives-corner-radius-md);">
+			<div style="background: var(--semantics-categories-oranje-filled-background-color); color: var(--semantics-categories-oranje-filled-content-color); --context-parent-background-color: var(--semantics-categories-oranje-filled-background-color); padding: 24px; border-radius: var(--primitives-corner-radius-md);">
 				<nldd-button-group orientation="horizontal">
 					<nldd-button variant="inherit-filled"
 						text="Inherit filled"

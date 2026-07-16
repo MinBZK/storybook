@@ -2,6 +2,8 @@ import { describe, it, expect, afterEach, vi } from 'vitest';
 import { fixture, cleanup, waitForUpdate, deepActiveElement } from '../../../test-utils.js';
 import type { NLDDIconButton } from './icon-button.js';
 import './icon-button.js';
+import '../menu/menu.js';
+import '../../layout/popover/popover.js';
 
 describe('nldd-icon-button', () => {
 	let el: HTMLElement;
@@ -603,5 +605,112 @@ describe('nldd-icon-button – loading', () => {
 		el = await fixture<NLDDIconButton>('<nldd-icon-button icon="dismiss-small" accessible-label="Ga" href="#x" no-tab></nldd-icon-button>');
 		await waitForUpdate(el);
 		expect(el.shadowRoot!.querySelector('a.icon-button')!.getAttribute('tabindex')).toBe('-1');
+	});
+});
+
+describe('nldd-icon-button slotted menu', () => {
+	let el: NLDDIconButton;
+
+	afterEach(() => {
+		if (el) cleanup(el);
+	});
+
+	const MARKUP = '<nldd-icon-button icon="ellipsis" text="Meer">'
+		+ '<nldd-menu slot="popup"><nldd-menu-item text="Bewerken"></nldd-menu-item></nldd-menu>'
+		+ '</nldd-icon-button>';
+
+	it('anchors a slotted nldd-menu to the host button', async () => {
+		el = await fixture<NLDDIconButton>(MARKUP);
+		await waitForUpdate(el);
+		const menu = el.querySelector('nldd-menu') as HTMLElement & { anchorElement: Element | null };
+		expect(menu.anchorElement).toBe(el);
+	});
+
+	it('opens the slotted menu on click', async () => {
+		el = await fixture<NLDDIconButton>(MARKUP);
+		await waitForUpdate(el);
+		const menu = el.querySelector('nldd-menu') as HTMLElement;
+		expect(menu.matches(':popover-open')).toBe(false);
+		el.shadowRoot!.querySelector<HTMLElement>('.icon-button')!.click();
+		await waitForUpdate(el);
+		expect(menu.matches(':popover-open')).toBe(true);
+	});
+});
+
+describe('nldd-icon-button slotted popover', () => {
+	let el: NLDDIconButton;
+
+	afterEach(() => {
+		if (el) cleanup(el);
+	});
+
+	const MARKUP = '<nldd-icon-button icon="ellipsis" text="Info">'
+		+ '<nldd-popover slot="popup" accessible-label="Info">'
+		+ '<button class="pop-btn">inside</button>'
+		+ '</nldd-popover>'
+		+ '</nldd-icon-button>';
+
+	it('anchors a slotted nldd-popover to the host button', async () => {
+		el = await fixture<NLDDIconButton>(MARKUP);
+		await waitForUpdate(el);
+		const pop = el.querySelector('nldd-popover') as HTMLElement & { anchorElement: Element | null };
+		expect(pop.anchorElement).toBe(el);
+	});
+
+	it('opens the slotted popover on click and syncs expanded', async () => {
+		el = await fixture<NLDDIconButton>(MARKUP);
+		await waitForUpdate(el);
+		const pop = el.querySelector('nldd-popover') as HTMLElement;
+		expect(pop.matches(':popover-open')).toBe(false);
+		el.shadowRoot!.querySelector<HTMLElement>('.icon-button')!.click();
+		await waitForUpdate(el);
+		expect(pop.matches(':popover-open')).toBe(true);
+		expect(el.expanded).toBe(true);
+	});
+
+	it('keeps the nested popover open when its own content is clicked', async () => {
+		el = await fixture<NLDDIconButton>(MARKUP);
+		await waitForUpdate(el);
+		const pop = el.querySelector('nldd-popover') as HTMLElement;
+		el.shadowRoot!.querySelector<HTMLElement>('.icon-button')!.click();
+		await waitForUpdate(el);
+		pop.querySelector<HTMLElement>('.pop-btn')!.click();
+		await waitForUpdate(el);
+		expect(pop.matches(':popover-open')).toBe(true);
+	});
+});
+
+describe('nldd-icon-button – slotted popup overlay', () => {
+	let el: HTMLElement;
+
+	afterEach(() => {
+		if (el) cleanup(el);
+	});
+
+	it('releases the previous overlay when the popup slot empties', async () => {
+		el = await fixture<NLDDIconButton>('<nldd-icon-button icon="ellipsis" accessible-label="Acties"><nldd-menu slot="popup"></nldd-menu></nldd-icon-button>');
+		await waitForUpdate(el);
+		const menu = el.querySelector('nldd-menu')!;
+		expect((menu as unknown as { anchorElement: Element | null }).anchorElement).toBe(el);
+		menu.remove();
+		await waitForUpdate(el);
+		expect((menu as unknown as { anchorElement: Element | null }).anchorElement).toBeNull();
+	});
+
+	it('opens the overlay on a keyboard click after a pointer gesture that never became a click', async () => {
+		el = await fixture<NLDDIconButton>('<nldd-icon-button icon="ellipsis" accessible-label="Acties"><nldd-menu slot="popup"></nldd-menu></nldd-icon-button>');
+		await waitForUpdate(el);
+		const menu = el.querySelector('nldd-menu')!;
+		menu.showPopover();
+		await waitForUpdate(el);
+		// Pointer goes down, the browser light-dismisses, the gesture ends elsewhere: no click.
+		el.shadowRoot!.querySelector('button')!.dispatchEvent(new PointerEvent('pointerdown', { bubbles: true, composed: true }));
+		menu.hidePopover();
+		await waitForUpdate(el);
+		el.shadowRoot!.querySelector('button')!.dispatchEvent(
+			new MouseEvent('click', { bubbles: true, composed: true, detail: 0 })
+		);
+		await waitForUpdate(el);
+		expect(menu.matches(':popover-open')).toBe(true);
 	});
 });

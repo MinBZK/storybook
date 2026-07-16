@@ -25,14 +25,19 @@ export default {
 			description: 'Centreert de main column in de container; zonder dit attribuut is content links uitgelijnd',
 			table: { defaultValue: { summary: false } },
 		},
+		hyphens: {
+			control: 'boolean',
+			description: 'Opt-in automatische woordafbreking voor doorlopende tekst (p, li, dd). Vereist een correcte lang op de pagina',
+			table: { defaultValue: { summary: false } },
+		},
 	},
-	args: { color: '', spacing: 'snug', centered: false },
+	args: { color: '', spacing: 'snug', centered: false, hyphens: false },
 };
 
 export const Default = {
 	args: { spacing: 'snug' },
 	render: (args: Record<string, any>) => html`
-		<nldd-rich-text spacing=${args.spacing} ?centered=${args.centered} color=${args.color || nothing}>
+		<nldd-rich-text spacing=${args.spacing} ?centered=${args.centered} ?hyphens=${args.hyphens} color=${args.color || nothing}>
 				<h3>Artikel 1. Algemene begrippen</h3>
 				<p>In deze wet en de daarop berustende bepalingen wordt verstaan onder:</p>
 				<ul>
@@ -61,13 +66,52 @@ export const Headings = {
 export const Paragraph = {
 	args: { spacing: 'snug' },
 	render: (args: Record<string, any>) => html`
-		<nldd-rich-text spacing=${args.spacing} ?centered=${args.centered} color=${args.color || nothing}>
+		<nldd-rich-text spacing=${args.spacing} ?centered=${args.centered} ?hyphens=${args.hyphens} color=${args.color || nothing}>
 				<h3>Artikel 2. Zorgtoeslag</h3>
 				<p>De verzekerde die op de eerste dag van het berekeningsjaar de leeftijd van achttien jaar heeft bereikt, heeft aanspraak op een zorgtoeslag.</p>
 				<p>De zorgtoeslag wordt berekend op basis van het toetsingsinkomen van de verzekerde en, indien van toepassing, diens partner.</p>
 				<p>Bij algemene maatregel van bestuur worden regels gesteld omtrent de wijze waarop de zorgtoeslag wordt berekend.</p>
 			</nldd-rich-text>
 	`,
+};
+
+/**
+ * Opt-in via `hyphens`. Automatische woordafbreking voor doorlopende tekst
+ * (p, li, dd), handig in smalle kolommen met lange Nederlandse
+ * samenstellingen. Vereist een correcte `lang` op de pagina — hier staat
+ * `lang="nl"` op de wrapper, anders breekt de browser niet af. De grens
+ * `hyphenate-limit-chars: 6 3 3` voorkomt losse-letterafbrekingen. Links de
+ * standaard (uit), rechts aan; let op de rechterrand van de tekst.
+ */
+export const Hyphenation = {
+	render: (args: Record<string, any>) => {
+		const content = html`
+			<h3>Zorgtoeslagverantwoordelijkheid</h3>
+			<p>De gegevensverwerkingsovereenkomst beschrijft de verantwoordelijkheidsverdeling tussen de socialezekerheidsuitvoeringsinstantie en de belanghebbende. Zie ook https://www.rijksoverheid.nl/onderwerpen/zorgtoeslag voor meer informatie.</p>
+			<ul>
+				<li>Inkomensafhankelijkheidsberekening per huishouden</li>
+				<li>Arbeidsongeschiktheidsverzekeringspremie</li>
+			</ul>
+		`;
+		return html`
+			<div lang="nl" style="display: flex; gap: 24px; align-items: start;">
+				<div style="flex: 1;">
+					<p style="font: var(--primitives-font-body-sm-bold-tight); color: var(--semantics-content-color); margin: 0 0 8px;">Zonder afbreking (standaard)</p>
+					<div style="width: 280px; border: 1px dashed var(--semantics-dividers-color); padding: 16px;">
+						<nldd-rich-text spacing=${args.spacing}>${content}</nldd-rich-text>
+					</div>
+				</div>
+				<div style="flex: 1;">
+					<p style="font: var(--primitives-font-body-sm-bold-tight); color: var(--semantics-content-color); margin: 0 0 8px;">Met <code>hyphens</code></p>
+					<div style="width: 280px; border: 1px dashed var(--semantics-dividers-color); padding: 16px;">
+						<nldd-rich-text spacing=${args.spacing} hyphens>${content}</nldd-rich-text>
+					</div>
+				</div>
+			</div>
+		`;
+	},
+	parameters: { controls: { disable: true } },
+	storyName: 'Woordafbreking',
 };
 
 export const Lists = {
@@ -453,7 +497,7 @@ export const Breedtezones = {
 export const OpKleurvlak = {
 	render: () => html`
 		<div style="display: flex; flex-direction: column; gap: 16px;">
-			<div style="background: var(--semantics-categories-donkerblauw-filled-background-color); color: var(--semantics-categories-donkerblauw-filled-primary-content-color); padding: 24px; border-radius: var(--primitives-corner-radius-md);">
+			<div style="background: var(--semantics-categories-donkerblauw-filled-background-color); color: var(--semantics-categories-donkerblauw-filled-content-color); padding: 24px; border-radius: var(--primitives-corner-radius-md);">
 				<nldd-rich-text color="inherit">
 					<h3>Op een donker vlak</h3>
 					<p>Alle tekst erft de contentkleur van het vlak, inclusief <a href="#">links met hun onderstreping</a> en <strong>nadruk</strong>.</p>
@@ -465,7 +509,7 @@ export const OpKleurvlak = {
 					</figure>
 				</nldd-rich-text>
 			</div>
-			<div style="background: var(--semantics-categories-oranje-filled-background-color); color: var(--semantics-categories-oranje-filled-primary-content-color); padding: 24px; border-radius: var(--primitives-corner-radius-md);">
+			<div style="background: var(--semantics-categories-oranje-filled-background-color); color: var(--semantics-categories-oranje-filled-content-color); padding: 24px; border-radius: var(--primitives-corner-radius-md);">
 				<nldd-rich-text color="inherit">
 					<h3>Op een middenton</h3>
 					<p>De filled-categories leveren puur zwart of wit als contentkleur, zodat ook middentonen <a href="#">voldoende contrast</a> houden.</p>

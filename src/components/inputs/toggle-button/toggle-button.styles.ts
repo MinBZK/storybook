@@ -93,7 +93,7 @@ export const toggleButtonStyles = css`
 		gap: var(--_gap);
 		align-items: center;
 		justify-content: center;
-		color: var(--semantics-buttons-neutral-tinted-primary-content-color);
+		color: var(--semantics-buttons-neutral-tinted-content-color);
 		font: var(--_font);
 		white-space: nowrap;
 		text-decoration: none;
@@ -110,7 +110,7 @@ export const toggleButtonStyles = css`
 		.toggle-button:has(.toggle-button__input:hover) {
 			--_highlight-border-color: var(--_is-hovered-highlight-border-color);
 			background-color: var(--semantics-buttons-neutral-tinted-is-hovered-background-color);
-			color: var(--semantics-buttons-neutral-tinted-is-hovered-primary-content-color);
+			color: var(--semantics-buttons-neutral-tinted-is-hovered-content-color);
 		}
 	}
 
@@ -118,13 +118,13 @@ export const toggleButtonStyles = css`
 	.toggle-button:has(.toggle-button__input:active) {
 		--_highlight-border-color: var(--_is-active-highlight-border-color);
 		background-color: var(--semantics-buttons-neutral-tinted-is-active-background-color);
-		color: var(--semantics-buttons-neutral-tinted-is-active-primary-content-color);
+		color: var(--semantics-buttons-neutral-tinted-is-active-content-color);
 	}
 
 	:host([selected]) .toggle-button {
 		--_highlight-border-color: var(--_is-selected-highlight-border-color);
 		background-color: var(--semantics-buttons-neutral-tinted-is-selected-background-color);
-		color: var(--semantics-buttons-neutral-tinted-is-selected-primary-content-color);
+		color: var(--semantics-buttons-neutral-tinted-is-selected-content-color);
 	}
 
 	@media (hover: hover) {
@@ -132,7 +132,7 @@ export const toggleButtonStyles = css`
 		:host([selected]) .toggle-button:has(.toggle-button__input:hover) {
 			--_highlight-border-color: var(--_is-selected-is-hovered-highlight-border-color);
 			background-color: var(--semantics-buttons-neutral-tinted-is-selected-is-hovered-background-color);
-			color: var(--semantics-buttons-neutral-tinted-is-selected-is-hovered-primary-content-color);
+			color: var(--semantics-buttons-neutral-tinted-is-selected-is-hovered-content-color);
 		}
 	}
 
@@ -140,7 +140,7 @@ export const toggleButtonStyles = css`
 	:host([selected]) .toggle-button:has(.toggle-button__input:active) {
 		--_highlight-border-color: var(--_is-selected-is-active-highlight-border-color);
 		background-color: var(--semantics-buttons-neutral-tinted-is-selected-is-active-background-color);
-		color: var(--semantics-buttons-neutral-tinted-is-selected-is-active-primary-content-color);
+		color: var(--semantics-buttons-neutral-tinted-is-selected-is-active-content-color);
 	}
 
 	.toggle-button:focus-visible,

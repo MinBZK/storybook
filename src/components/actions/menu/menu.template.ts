@@ -14,53 +14,78 @@ const itemRoleMap = {
 } as const;
 
 export function menuTemplate(this: NLDDMenu, isEmpty: boolean, variant: 'menu' | 'listbox') {
-	// Drop role="menu"/"listbox" when empty. The empty-state slot renders an
-	// nldd-inline-dialog, which is neither a menuitem nor an option — keeping
-	// the role here would violate ARIA's required-children rules.
-	const menuRole = isEmpty ? nothing : menuRoleMap[variant];
+	// role="menu"/"listbox" is now STATIC on .menu__list, which only ever owns
+	// nldd-menu-item children. The empty-state and the drill-in back button live
+	// in .menu__main as siblings of the list (outside the role), so an empty or
+	// filtered menu never needs to drop the role to stay ARIA-valid.
+	const menuRole = menuRoleMap[variant];
 	// Back button shows when this menu is itself a submenu and we're rendering
 	// in drill-in mode (touch / narrow viewport). The label is the parent
 	// item's text — gives the user context about which level they're in.
 	const showBack = this._isSubmenu && this._drillInMode && this._parentItem !== null;
+	// Header/footer are ROOT-ONLY: never rendered in a submenu (identity and
+	// account-level actions belong to the root menu, not a nested level). The
+	// slot is only in the DOM on the root, so submenu-slotted header/footer
+	// content is simply not projected.
+	const isRoot = !this._isSubmenu;
 	return html`
 		<div class="menu"
-			role=${menuRole}
 			tabindex="-1"
 			@touchstart=${this._handleMenuTouchStart}
 			@touchmove=${this._handleMenuTouchMove}
 			@touchend=${this._handleMenuTouchEnd}
 			@touchcancel=${this._handleMenuTouchEnd}
 		>
-			${showBack ? html`
-				<button class="menu__back-button"
-					type="button"
-					aria-label=${this._resolvedBackLabel}
-					@click=${this._handleBack}
-					@mouseenter=${this._handleBackMouseenter}
+			${isRoot ? html`
+				<div class="menu__header"
+					?hidden=${!this._hasHeader}
 				>
-					<nldd-icon-cell
-						size="20"
-						icon="chevron-left"
-					></nldd-icon-cell>
-					<nldd-spacer-cell size="6"></nldd-spacer-cell>
-					<nldd-text-cell text=${this._parentItem!.text}></nldd-text-cell>
-				</button>
-				<!-- Pure visual divider; role="none" keeps strict ARIA validators
-				     quiet (a focusable role="separator" inside a menu would need
-				     aria-valuenow et al.; this one is decorative). -->
-				<div class="menu__back-button-divider"
-					role="none"
-				></div>
+					<slot name="header" @slotchange=${this._onHeaderSlotChange}></slot>
+				</div>
 			` : nothing}
-			<slot></slot>
-			${isEmpty ? html`
-				<div class="menu__empty">
-					<slot name="empty">
-						<nldd-inline-dialog
-							text=${this._resolvedEmptyText}
-							supporting-text=${this.emptySupportingText || nothing}
-						></nldd-inline-dialog>
-					</slot>
+			<div class="menu__main">
+				${showBack ? html`
+					<button class="menu__back-button"
+						type="button"
+						aria-label=${this._resolvedBackLabel}
+						@click=${this._handleBack}
+						@mouseenter=${this._handleBackMouseenter}
+					>
+						<nldd-icon-cell
+							size="20"
+							icon="chevron-left"
+						></nldd-icon-cell>
+						<nldd-spacer-cell size="6"></nldd-spacer-cell>
+						<nldd-text-cell text=${this._parentItem!.text}></nldd-text-cell>
+					</button>
+					<!-- Pure visual divider; role="none" keeps strict ARIA validators
+					     quiet (a focusable role="separator" inside a menu would need
+					     aria-valuenow et al.; this one is decorative). -->
+					<div class="menu__back-button-divider"
+						role="none"
+					></div>
+				` : nothing}
+				<div class="menu__list"
+					role=${menuRole}
+				>
+					<slot></slot>
+				</div>
+				${isEmpty ? html`
+					<div class="menu__empty">
+						<slot name="empty">
+							<nldd-inline-dialog
+								text=${this._resolvedEmptyText}
+								supporting-text=${this.emptySupportingText || nothing}
+							></nldd-inline-dialog>
+						</slot>
+					</div>
+				` : nothing}
+			</div>
+			${isRoot ? html`
+				<div class="menu__footer"
+					?hidden=${!this._hasFooter}
+				>
+					<slot name="footer" @slotchange=${this._onFooterSlotChange}></slot>
 				</div>
 			` : nothing}
 		</div>

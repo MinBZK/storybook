@@ -86,6 +86,7 @@ export function template(this: NLDDIconButton) {
 					aria-expanded=${ariaExpanded}
 					aria-busy=${ariaBusy}
 					tabindex=${this.noTab ? '-1' : nothing}
+					@pointerdown=${this._popup.handlePointerdown}
 					@click=${this._handleClick}
 				>
 					${content}
@@ -111,6 +112,7 @@ export function template(this: NLDDIconButton) {
 				popovertarget=${this.popovertarget || nothing}
 				.popoverTargetElement=${this.popoverTargetElement}
 				.popoverTargetAction=${this.popoverTargetAction}
+				@pointerdown=${this._popup.handlePointerdown}
 				@click=${this._handleClick}
 			>
 				${content}
@@ -129,5 +131,10 @@ export function template(this: NLDDIconButton) {
 		`
 		: renderButton();
 
-	return html`${control}${loadingIndicator}`;
+	// A single slotted nldd-menu / nldd-popover that this button invokes. Named
+	// slot so it never lands in the icon slot; it renders nothing in flow (a
+	// popover is display:none until shown in the top layer). See _handleClick.
+	const popupSlot = html`<slot name="popup" @slotchange=${this._popup.handleSlotChange}></slot>`;
+
+	return html`${control}${loadingIndicator}${popupSlot}`;
 }

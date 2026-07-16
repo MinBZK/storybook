@@ -519,13 +519,136 @@ describe('nldd-menu empty state', () => {
 		expect(el.shadowRoot!.querySelector('.menu__empty')).toBeNull();
 	});
 
-	it('drops role on .menu when empty', async () => {
-		// Empty-state slot renders non-menuitem content; keeping role="menu" or
-		// role="listbox" would violate ARIA's required-children rules.
+	it('keeps role="menu" static on the item list, with the empty-state outside it', async () => {
+		// role="menu" lives on .menu__list (which only owns menu-items) and stays
+		// present even when empty — the empty-state is a sibling in .menu__main,
+		// outside the role, so ARIA's required-children rule is never violated and
+		// the role no longer has to be dropped.
 		el = await fixture('<nldd-menu></nldd-menu>');
 		await waitForUpdate(el);
-		const menuEl = el.shadowRoot!.querySelector('.menu');
-		expect(menuEl?.hasAttribute('role')).toBe(false);
+		const sr = el.shadowRoot!;
+		expect(sr.querySelector('.menu')!.hasAttribute('role')).toBe(false); // the frame carries no role
+		expect(sr.querySelector('.menu__list')!.getAttribute('role')).toBe('menu'); // present even when empty
+		expect(sr.querySelector('.menu__empty')!.closest('[role="menu"]')).toBeNull(); // empty-state is outside the role
+	});
+});
+
+describe('nldd-menu header / footer slots', () => {
+	let el: HTMLElement;
+
+	afterEach(() => {
+		if (el) cleanup(el);
+	});
+
+	const withHeaderFooter = `
+		<nldd-menu>
+			<div slot="header"><span>Anouk</span></div>
+			<nldd-menu-item text="Profiel"></nldd-menu-item>
+			<nldd-menu-item text="Instellingen"></nldd-menu-item>
+			<button slot="footer" class="signout">Uitloggen</button>
+		</nldd-menu>
+	`;
+
+	it('renders header/footer content outside role="menu"', async () => {
+		el = await fixture(withHeaderFooter);
+		await waitForUpdate(el);
+		const sr = el.shadowRoot!;
+		const header = sr.querySelector('.menu__header')!;
+		const footer = sr.querySelector('.menu__footer')!;
+		expect(header.hasAttribute('hidden')).toBe(false);
+		expect(footer.hasAttribute('hidden')).toBe(false);
+		// Neither region sits inside the item list's role="menu".
+		expect(header.closest('[role="menu"]')).toBeNull();
+		expect(footer.closest('[role="menu"]')).toBeNull();
+		// The role="menu" list owns only the menu-items.
+		const listItems = sr.querySelector('.menu__list slot') as HTMLSlotElement;
+		expect(listItems.assignedElements().every((e) => e.tagName.toLowerCase() === 'nldd-menu-item')).toBe(true);
+	});
+
+	it('collapses the header/footer region when the slot is empty', async () => {
+		el = await fixture('<nldd-menu><nldd-menu-item text="X"></nldd-menu-item></nldd-menu>');
+		await waitForUpdate(el);
+		const sr = el.shadowRoot!;
+		expect(sr.querySelector('.menu__header')!.hasAttribute('hidden')).toBe(true);
+		expect(sr.querySelector('.menu__footer')!.hasAttribute('hidden')).toBe(true);
+	});
+
+	it('arrow navigation targets menu-items only, skipping the header/footer', async () => {
+		el = await fixture(withHeaderFooter);
+		await waitForUpdate(el);
+		const firstItemButton = getButton(el.querySelector('nldd-menu-item')!);
+		const spy = vi.spyOn(firstItemButton, 'focus');
+		el.dispatchEvent(new KeyboardEvent('keydown', { key: 'ArrowDown', bubbles: true }));
+		// The first ArrowDown lands on the first menu-item, never the header content.
+		expect(spy).toHaveBeenCalled();
+	});
+
+	it('keeps footer controls and items in the tab order (no roving tabindex)', async () => {
+		el = await fixture(withHeaderFooter);
+		await waitForUpdate(el);
+		const signout = el.querySelector('.signout') as HTMLButtonElement;
+		const itemButton = getButton(el.querySelector('nldd-menu-item')!);
+		// The menu uses ordinary focusables (not roving tabindex=-1), so a footer
+		// button and the menu-items are all Tab-reachable in DOM order.
+		expect(signout.tabIndex).toBe(0);
+		expect(itemButton.tabIndex).toBe(0);
+	});
+
+	it('does not render header/footer for a submenu (root-only)', async () => {
+		el = await fixture(`
+			<nldd-menu>
+				<div slot="header"><span>Header</span></div>
+				<nldd-menu-item text="X"></nldd-menu-item>
+				<button slot="footer">Footer</button>
+			</nldd-menu>
+		`);
+		await waitForUpdate(el);
+		// As the root it renders both regions.
+		expect(el.shadowRoot!.querySelector('.menu__header')).not.toBeNull();
+		expect(el.shadowRoot!.querySelector('.menu__footer')).not.toBeNull();
+		// Force it into the "is a submenu" state the open flow sets (_parentItem is
+		// reactive @state, so it re-renders), then the root-only regions drop out.
+		const menu = el as unknown as { _parentMenu: unknown; _parentItem: unknown; updateComplete: Promise<unknown> };
+		menu._parentMenu = document.createElement('nldd-menu');
+		menu._parentItem = document.createElement('nldd-menu-item');
+		await menu.updateComplete;
+		await waitForUpdate(el);
+		expect(el.shadowRoot!.querySelector('.menu__header')).toBeNull();
+		expect(el.shadowRoot!.querySelector('.menu__footer')).toBeNull();
+	});
+
+	it('suppresses a first group\'s top divider even though a header makes it not :first-child', async () => {
+		el = await fixture(`
+			<nldd-menu>
+				<div slot="header"><strong>Header</strong></div>
+				<nldd-menu-group text="Thema">
+					<nldd-menu-item text="Systeem"></nldd-menu-item>
+				</nldd-menu-group>
+				<nldd-menu-item text="Log uit"></nldd-menu-item>
+			</nldd-menu>
+		`);
+		await waitForUpdate(el);
+		(el as unknown as { filter(q: string): void }).filter(''); // runs _updateDividerVisibility
+		await waitForUpdate(el);
+		const group = el.querySelector('nldd-menu-group')!;
+		expect(el.firstElementChild).not.toBe(group); // the header div is the first light-DOM child
+		expect(group.hasAttribute('data-no-top-divider')).toBe(true); // still treated as the first item
+	});
+
+	it('keeps a group top divider when items precede it (with a header)', async () => {
+		el = await fixture(`
+			<nldd-menu>
+				<div slot="header"><strong>Header</strong></div>
+				<nldd-menu-item text="Profiel"></nldd-menu-item>
+				<nldd-menu-group text="Thema">
+					<nldd-menu-item text="Systeem"></nldd-menu-item>
+				</nldd-menu-group>
+			</nldd-menu>
+		`);
+		await waitForUpdate(el);
+		(el as unknown as { filter(q: string): void }).filter('');
+		await waitForUpdate(el);
+		expect(el.querySelector('nldd-menu-group')!.hasAttribute('data-no-top-divider')).toBe(false);
 	});
 });
 

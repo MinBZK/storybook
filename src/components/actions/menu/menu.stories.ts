@@ -1,6 +1,12 @@
 import { html, nothing } from 'lit';
 import './menu.js';
 import '../../actions/button/button.js';
+import '../../content/byline/byline.js';
+import '../../content/rich-text/rich-text.js';
+import '../../layout/container/container.js';
+
+// Self-contained SVG avatar (data URI) so the story needs no external image.
+const AVATAR = `data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 40'%3E%3Crect width='40' height='40' fill='%23185FA5'/%3E%3Ctext x='20' y='25' font-family='sans-serif' font-size='14' fill='white' text-anchor='middle'%3EAV%3C/text%3E%3C/svg%3E`;
 
 export default {
 	title: 'Components/Actions/Menu',
@@ -340,6 +346,50 @@ export const MixedFlatAndGroups = {
 		docs: {
 			description: {
 				story: 'Flat items en groups kunnen door elkaar gebruikt worden. Een expliciete `<nldd-menu-divider>` direct vóór een groep wordt automatisch verborgen — de groep heeft al z\'n eigen divider boven.',
+			},
+		},
+	},
+};
+
+/**
+ * De `header`- en `footer`-slots plaatsen vrije content buiten `role="menu"`:
+ * hier een account-header (een `nldd-byline` in een `nldd-container` voor de
+ * padding) en een kort `nldd-rich-text`-tekstje onderin. Een link in de footer
+ * is bereikbaar met Tab (niet met de pijltjes, die alleen de menu-items
+ * aflopen). Uitloggen is gewoon een menu-item. Header en footer verschijnen
+ * alleen op de root-menu, nooit in een submenu.
+ */
+export const MetHeaderEnFooter = {
+	name: 'Met header en footer (account)',
+	render: () => html`
+		<nldd-button id="button-account" expandable text="Account"></nldd-button>
+		<nldd-menu id="menu-account" anchor="button-account">
+			<nldd-container slot="header" padding="16">
+				<nldd-byline
+					text="Anouk de Vries"
+					supporting-text="anouk@rijksoverheid.nl"
+					avatar-src=${AVATAR}
+					avatar-alt=""
+				></nldd-byline>
+			</nldd-container>
+
+			<nldd-menu-item text="Profiel" icon="person"></nldd-menu-item>
+			<nldd-menu-item text="Instellingen" icon="gear"></nldd-menu-item>
+			<nldd-menu-item text="Facturen" icon="file-text"></nldd-menu-item>
+			<nldd-menu-divider></nldd-menu-divider>
+			<nldd-menu-item text="Uitloggen" icon="logout"></nldd-menu-item>
+
+			<nldd-container slot="footer" padding="16">
+				<nldd-rich-text spacing="flat">
+					<p style="font: var(--primitives-font-body-sm-regular-tight);">Je bent ingelogd als beheerder. <a href="#">Wissel van account</a>.</p>
+				</nldd-rich-text>
+			</nldd-container>
+		</nldd-menu>
+	`,
+	parameters: {
+		docs: {
+			description: {
+				story: 'Vrije content in `header` / `footer` (buiten `role="menu"`): een `nldd-container` levert de padding, een link is bereikbaar met Tab, en de pijltjes navigeren alleen de menu-items. Uitloggen is een gewoon menu-item; header en footer tonen alleen op de root.',
 			},
 		},
 	},

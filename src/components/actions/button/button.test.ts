@@ -2,6 +2,8 @@ import { describe, it, expect, afterEach, vi } from 'vitest';
 import { fixture, cleanup, waitForUpdate, deepActiveElement } from '../../../test-utils.js';
 import type { NLDDButton } from './button.js';
 import './button.js';
+import '../menu/menu.js';
+import '../../layout/popover/popover.js';
 
 describe('nldd-button', () => {
 	let el: HTMLElement;
@@ -685,5 +687,139 @@ describe('nldd-button – loading', () => {
 		el = await fixture<NLDDButton>('<nldd-button text="Opslaan" supporting-text="Alle wijzigingen" accessible-label="Bewaar"></nldd-button>');
 		await waitForUpdate(el);
 		expect(el.shadowRoot!.querySelector('button')!.getAttribute('aria-label')).toBe('Bewaar');
+	});
+});
+
+describe('nldd-button slotted menu', () => {
+	let el: NLDDButton;
+
+	afterEach(() => {
+		if (el) cleanup(el);
+	});
+
+	const MARKUP = '<nldd-button expandable text="Acties">'
+		+ '<nldd-menu slot="popup"><nldd-menu-item text="Bewerken"></nldd-menu-item></nldd-menu>'
+		+ '</nldd-button>';
+
+	it('anchors a slotted nldd-menu to the host button', async () => {
+		el = await fixture<NLDDButton>(MARKUP);
+		await waitForUpdate(el);
+		const menu = el.querySelector('nldd-menu') as HTMLElement & { anchorElement: Element | null };
+		expect(menu.anchorElement).toBe(el);
+	});
+
+	it('opens the slotted menu on click', async () => {
+		el = await fixture<NLDDButton>(MARKUP);
+		await waitForUpdate(el);
+		const menu = el.querySelector('nldd-menu') as HTMLElement;
+		expect(menu.matches(':popover-open')).toBe(false);
+		el.shadowRoot!.querySelector<HTMLElement>('.button')!.click();
+		await waitForUpdate(el);
+		expect(menu.matches(':popover-open')).toBe(true);
+	});
+});
+
+describe('nldd-button slotted popover', () => {
+	let el: NLDDButton;
+
+	afterEach(() => {
+		if (el) cleanup(el);
+	});
+
+	const MARKUP = '<nldd-button expandable text="Info">'
+		+ '<nldd-popover slot="popup" accessible-label="Info">'
+		+ '<button class="pop-btn">inside</button>'
+		+ '</nldd-popover>'
+		+ '</nldd-button>';
+
+	it('anchors a slotted nldd-popover to the host button', async () => {
+		el = await fixture<NLDDButton>(MARKUP);
+		await waitForUpdate(el);
+		const pop = el.querySelector('nldd-popover') as HTMLElement & { anchorElement: Element | null };
+		expect(pop.anchorElement).toBe(el);
+	});
+
+	it('opens the slotted popover on click', async () => {
+		el = await fixture<NLDDButton>(MARKUP);
+		await waitForUpdate(el);
+		const pop = el.querySelector('nldd-popover') as HTMLElement;
+		expect(pop.matches(':popover-open')).toBe(false);
+		el.shadowRoot!.querySelector<HTMLElement>('.button')!.click();
+		await waitForUpdate(el);
+		expect(pop.matches(':popover-open')).toBe(true);
+	});
+
+	it('keeps the nested popover open when its own content is clicked', async () => {
+		el = await fixture<NLDDButton>(MARKUP);
+		await waitForUpdate(el);
+		const pop = el.querySelector('nldd-popover') as HTMLElement;
+		el.shadowRoot!.querySelector<HTMLElement>('.button')!.click();
+		await waitForUpdate(el);
+		expect(pop.matches(':popover-open')).toBe(true);
+		// A click on the popover's own content must NOT dismiss it (the nesting
+		// bug: the anchor is an ancestor of the content, so a naive self-toggle
+		// would close it). The driven-mode bail prevents that.
+		pop.querySelector<HTMLElement>('.pop-btn')!.click();
+		await waitForUpdate(el);
+		expect(pop.matches(':popover-open')).toBe(true);
+	});
+
+	it('syncs expanded back onto the button while the popover is open', async () => {
+		el = await fixture<NLDDButton>(MARKUP);
+		await waitForUpdate(el);
+		el.shadowRoot!.querySelector<HTMLElement>('.button')!.click();
+		await waitForUpdate(el);
+		expect(el.expanded).toBe(true);
+	});
+});
+
+describe('nldd-button – slotted popup overlay', () => {
+	let el: HTMLElement;
+
+	afterEach(() => {
+		if (el) cleanup(el);
+	});
+
+	// The popover initialises the trigger's aria on connect, before any open:
+	// a screen-reader user must hear "opens a dialog" on first tab, not only
+	// after opening it once.
+	it('sets aria-haspopup on the inner button before the popover is ever opened', async () => {
+		el = await fixture<NLDDButton>('<nldd-button text="Filters"><nldd-popover slot="popup" accessible-label="Filters"></nldd-popover></nldd-button>');
+		await waitForUpdate(el);
+		await Promise.resolve(); // the popover defers its anchor-aria init to a microtask
+		await waitForUpdate(el);
+		const inner = el.shadowRoot!.querySelector('button')!;
+		expect(inner.getAttribute('aria-haspopup')).toBe('dialog');
+	});
+
+	it('releases the previous overlay when the popup slot empties', async () => {
+		el = await fixture<NLDDButton>('<nldd-button text="Acties"><nldd-menu slot="popup"></nldd-menu></nldd-button>');
+		await waitForUpdate(el);
+		const menu = el.querySelector('nldd-menu')!;
+		expect((menu as unknown as { anchorElement: Element | null }).anchorElement).toBe(el);
+		// Left anchored, a removed overlay keeps positioning against — and syncing
+		// expanded onto — a button that no longer owns it.
+		menu.remove();
+		await waitForUpdate(el);
+		expect((menu as unknown as { anchorElement: Element | null }).anchorElement).toBeNull();
+	});
+
+	it('opens the overlay on a keyboard click after a pointer gesture that never became a click', async () => {
+		el = await fixture<NLDDButton>('<nldd-button text="Acties"><nldd-menu slot="popup"></nldd-menu></nldd-button>');
+		await waitForUpdate(el);
+		const menu = el.querySelector('nldd-menu')!;
+		// Overlay open, pointer goes down on the button, then the gesture ends
+		// elsewhere (drag off / touch scroll): no click, so the snapshot lingers.
+		menu.showPopover();
+		await waitForUpdate(el);
+		el.shadowRoot!.querySelector('button')!.dispatchEvent(new PointerEvent('pointerdown', { bubbles: true, composed: true }));
+		menu.hidePopover();
+		await waitForUpdate(el);
+		// Keyboard activation: a click with detail 0 and no preceding pointerdown.
+		el.shadowRoot!.querySelector('button')!.dispatchEvent(
+			new MouseEvent('click', { bubbles: true, composed: true, detail: 0 })
+		);
+		await waitForUpdate(el);
+		expect(menu.matches(':popover-open')).toBe(true);
 	});
 });
