@@ -23,22 +23,7 @@
       ]
     }],
     ["@semantic-release/release-notes-generator", {
-      "preset": "conventionalcommits",
-      "presetConfig": {
-        "types": [
-          { "type": "feat", "section": "Added" },
-          { "type": "fix", "section": "Fixed" },
-          { "type": "perf", "section": "Changed" },
-          { "type": "revert", "section": "Reverted" },
-          { "type": "refactor", "hidden": true },
-          { "type": "chore", "hidden": true },
-          { "type": "docs", "hidden": true },
-          { "type": "ci", "hidden": true },
-          { "type": "style", "hidden": true },
-          { "type": "test", "hidden": true },
-          { "type": "build", "hidden": true }
-        ]
-      }
+      "preset": "conventionalcommits"
     }],
     ["@semantic-release/changelog", {
       "changelogFile": "CHANGELOG.md",
