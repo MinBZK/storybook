@@ -9,6 +9,13 @@ the type of conventional-commit determines the release. Conventional types
 `chore`, `docs`, `ci`, `style`, `test`, `build` are intentionally omitted
 here; consult the commit history if you need that level of detail.
 
+## <small>0.8.69 (2026-07-16)</small>
+
+* feat: nldd-avatar, content-color token cleanup (breaking), and component fixes (#139) ([482a04f](https://github.com/MinBZK/storybook/commit/482a04f)), closes [#139](https://github.com/MinBZK/storybook/issues/139)
+* ci(release): stop releasing on ci/chore/test, keep releasing what ships (#142) ([25b7645](https://github.com/MinBZK/storybook/commit/25b7645)), closes [#142](https://github.com/MinBZK/storybook/issues/142)
+* ci(review): always post the review as a sticky PR comment (#143) ([d5aa290](https://github.com/MinBZK/storybook/commit/d5aa290)), closes [#143](https://github.com/MinBZK/storybook/issues/143)
+* ci(review): enable track_progress so the review comment can actually be posted (#144) ([38b8483](https://github.com/MinBZK/storybook/commit/38b8483)), closes [#144](https://github.com/MinBZK/storybook/issues/144)
+
 ### Highlights
 
 - **New `nldd-avatar`.** A person or organisation avatar: an image, auto-fitting initials (derived from `name` or given explicitly), or a type icon (`person` = circle with a person icon, `organization` = rounded with a building icon). Sizes on the `nldd-icon` scale and fills its container by default. `color="inherit"` fills with the surrounding content colour, and `icon-aligned` shrinks the disc to an icon's optical size so it lines up when it replaces an icon.
