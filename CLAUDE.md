@@ -87,12 +87,19 @@ Elk component MOET minimaal een **smoke test** hebben. Run tests met `npm test`.
 
 Versies worden **automatisch** verhoogd door semantic-release bij merge naar main.
 
+Leidend criterium: verandert de commit wat consumers krijgen (`dist/` of de
+meegeleverde `skills/nldd/*`)? Zo ja, dan hoort er een release uit te komen.
+`docs:` telt daarin mee, want de plugin-versie volgt de pakketversie: zonder
+release halen consumers de gewijzigde skill-docs nooit op (zie Plugin-versie).
+
 | Commit type | Versieverhoging |
 |-------------|-----------------|
 | `feat:` | Patch (0.5.0 → 0.5.1) |
 | `fix:`, `perf:` | Patch (0.5.0 → 0.5.1) |
+| `refactor:`, `style:`, `docs:`, `build:` | Patch (raken `dist/` of de skill-docs) |
+| `revert:` | Patch (een revert moet consumers ook bereiken) |
 | `feat!:` of `BREAKING CHANGE:` | Patch (0.5.0 → 0.5.1) |
-| `docs:`, `chore:`, `ci:`, etc. | Geen |
+| `chore:`, `ci:`, `test:` | Geen |
 | Niet-herkend (geen conventionele prefix) | Patch (behandeld als feat) |
 
 **Handmatig versie verhogen is niet nodig.** Gebruik conventionele commits en CI doet de rest.
@@ -100,6 +107,10 @@ Versies worden **automatisch** verhoogd door semantic-release bij merge naar mai
 ## Changelog
 
 `CHANGELOG.md` wordt door semantic-release beheerd: bij elke merge naar main zet het een nieuw versieblok (`## <small>x.y.z (datum)</small>`) bovenaan, afgeleid van de conventionele commits.
+
+**De leesbare inhoud schrijf je met de hand.** Dat is bewust: `nldd-avatar - nieuw component voor een persoon of organisatie` zegt een consument veel meer dan `refactor(avatar): rename css var`. Commit-titels schrijf je voor reviewers, changelog-entries voor consumers. Het gegenereerde deel is daarom expres niet meer dan een kale bullet per release (de PR-titel); de `### Highlights` / `### Added`-secties eronder zijn handwerk.
+
+Laat daarom de regel `"preset": "conventionalcommits"` in `.releaserc.json` staan. Haal je die weg, dan valt de release-notes-generator terug op zijn eigen default en gaat hij de notes alsnog in `### Features` / `### Bug Fixes` opdelen, wat je juist niet wilt.
 
 Wil je toch handmatig iets toevoegen (bijv. iets dat semantic-release niet uit de commits haalt):
 
