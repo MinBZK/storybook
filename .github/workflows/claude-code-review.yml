@@ -26,7 +26,7 @@ jobs:
         with:
           claude_code_oauth_token: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
           use_sticky_comment: true
-          claude_args: "--allowedTools mcp__github_inline_comment__create_inline_comment,Bash,Read,Glob,Grep"
+          claude_args: "--allowedTools mcp__github_comment__update_claude_comment,mcp__github_inline_comment__create_inline_comment,Bash,Read,Glob,Grep"
           prompt: |
             Review PR #${{ github.event.pull_request.number }} in ${{ github.repository }}.
 
@@ -98,13 +98,21 @@ jobs:
 
             ## Output format
 
-            Structure your review as a single comment with sections for each dimension that has
+            You MUST publish your review as a PR comment by calling the
+            mcp__github_comment__update_claude_comment tool. Your final answer text is
+            discarded — a review that is not posted with that tool does not exist.
+            ALWAYS post the comment, on every run, including when you find no issues:
+            in that case post a brief comment stating what you reviewed and that you
+            found no issues.
+
+            Structure the comment with sections for each dimension that has
             findings. Use this severity scale:
 
             - 🔴 **Critical** — broken component, accessibility failure, security issue
             - 🟠 **Significant** — likely bug, missing token, broken pattern
             - 🟡 **Minor** — code quality, style, non-blocking improvement
 
-            Also leave inline comments on specific lines where possible.
+            Also leave inline comments on specific lines where possible, using
+            mcp__github_inline_comment__create_inline_comment.
 
-            If there are no issues, say so briefly. Do not pad the review with praise or filler.
+            Do not pad the review with praise or filler.
