@@ -134,5 +134,10 @@ buiten het hierboven beschreven kader.
 
 ## Licentie (License)
 
-De broncode van dit design system valt onder **EUPL-1.2**. De fontbestanden
-in `src/assets/fonts/` hebben hun eigen licenties — zie [`NOTICES.md`](./NOTICES.md).
+Copyright © 2026 Staat der Nederlanden.
+
+De broncode van dit design system valt onder de **EUPL-1.2**. De volledige
+licentietekst staat in [`LICENSE`](./LICENSE).
+
+De fontbestanden in `src/assets/fonts/` vallen daar niet onder; die hebben hun
+eigen licenties, zie [`NOTICES.md`](./NOTICES.md).

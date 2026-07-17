@@ -408,7 +408,8 @@
     }
   },
   "files": [
-    "dist"
+    "dist",
+    "NOTICES.md"
   ],
   "repository": {
     "type": "git",
