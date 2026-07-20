@@ -24,7 +24,7 @@
       "runtimeExecutable": "sh",
       "runtimeArgs": [
         "-c",
-        "cd /Users/bart/Sites/regelrecht/frontend && exec npm run dev -- --port 7300 --strictPort --host 0.0.0.0"
+        "cd /Users/bart/Sites/regelrecht/frontend && exec npm run dev -- --port 7300 --strictPort --host 0.0.0.0 --force"
       ],
       "port": 7300
     }

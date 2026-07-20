@@ -2,6 +2,7 @@ import { describe, it, expect, afterEach, vi } from 'vitest';
 import { fixture, cleanup, waitForUpdate } from '../../../test-utils.js';
 import type { NLDDSheet } from './sheet.js';
 import './sheet.js';
+import { sheetStyles } from './sheet.styles.js';
 
 
 /* ============================================================
@@ -443,5 +444,23 @@ describe('nldd-sheet – focus management', () => {
 		el.show();
 		const button = el.querySelector<HTMLElement>('button')!;
 		expect(document.activeElement === button).toBe(true);
+	});
+});
+
+describe('nldd-sheet neemt geen ruimte in de flow', () => {
+	let el: HTMLElement;
+
+	afterEach(() => {
+		if (el) cleanup(el);
+	});
+
+	// De sheet zelf is een position:fixed <dialog>, dus de host hoort geen doos te
+	// zijn. Als blok is hij een gewoon flex-item, en in een nldd-split-view-pane
+	// pikt hij via ::slotted de flex-grow op en eet hij de hoogte op die zijn
+	// broers nodig hadden.
+	it('zet de host op display: contents', async () => {
+		el = await fixture('<nldd-sheet></nldd-sheet>');
+		await waitForUpdate(el);
+		expect(sheetStyles.cssText).toMatch(/:host\s*\{[^}]*display:\s*contents/);
 	});
 });
