@@ -9,6 +9,25 @@ the type of conventional-commit determines the release. Conventional types
 `chore`, `docs`, `ci`, `style`, `test`, `build` are intentionally omitted
 here; consult the commit history if you need that level of detail.
 
+### Highlights
+
+- **New `nldd-date-picker`.** A calendar for a single date or a period. Usable on its own (inline in a page or a filter panel) and used inside `nldd-date-field`. Follows the W3C APG date picker grid: arrow keys move day by day, Page Up/Down a month, Home/End to the week's edges, and the month heading announces itself as you page. Optional ISO week numbers, a configurable first day of the week, and an `isDateUnavailable` callback to block dates. On a narrow screen or a touch device it switches to a compact layout with the month arrows and "Vandaag" along the bottom.
+- **`nldd-date-field` opens that calendar instead of the browser's.** The native `showPicker()` could not be dismissed in Safari, so the button now opens `nldd-date-picker` in an `nldd-popover` — a bottom sheet on small screens, with a title bar and "Annuleer". `no-picker` still hides the button entirely.
+- **`nldd-date-field` chooses a period.** With `range` the field shows two inputs with "t/m" between them and puts the calendar in range mode. The value is one ISO 8601 interval (`2026-07-06/2026-07-20`) under one `name`, so a form gets one field rather than two that can disagree. Picking a second date before the first completes the period backwards instead of starting over.
+- **Bring your own calendar.** Put an `nldd-date-picker` in the field's `picker` slot to control what only a calendar knows — week numbers, first day of the week, blocked dates, its own translations. The field keeps writing `value`, `min`, `max` and `range`, so the form value cannot drift from what the calendar shows.
+- **Relative bounds.** `min` and `max` accept `today` and `today±Nd/w/m/y` besides an ISO date, so "no earlier than today" or "at most three months out" needs no date arithmetic in the consumer.
+- **New icons.** Media controls: `play`, `pause`, `play-pause`, `stop`, `forward`, `backward`, `forward-end`, `backward-end`, `forward-frame`, `backward-frame` (each with a filled variant), plus `exclamation-2-circle`, `exclamation-3-circle`, `circle-grid-2x2-top-left-check-mark` and `square-corner-4`.
+
+### Added
+
+- **`nldd-date-picker`** (inputs) — new component. `value` for a single date, or `range` with `start` / `end`; `min` / `max` accept an ISO date, `today`, or `today±Nd/w/m/y`; `week-numbers` adds an ISO week column; `first-day-of-week` sets the leading column; `isDateUnavailable` (property) blocks individual dates while keeping them reachable with the keyboard; `accessible-label` names the grid; `translations` overrides the Dutch defaults. Fires `input` while a period is half-chosen and `change` once a value is complete.
+- **`nldd-date-field`** — `range` for a period as a single ISO 8601 interval value; a `picker` slot for your own `nldd-date-picker`; `min` / `max` now also take `today` and `today±Nd/w/m/y`.
+
+### Fixed
+
+- **`nldd-popover`** — Tab no longer gets stuck inside a popover that contains a roving-tabindex widget (a calendar grid, a toolbar). The focus scan counted every `tabindex="-1"` element as focusable, so with a calendar inside it saw 41 "focusable" day buttons and never let focus move on.
+- **Text selection on controls** — buttons, menu items, tabs and other controls no longer show a text selection highlight when dragged over on iOS and older Safari (`-webkit-user-select` alongside the standard property).
+
 ## <small>0.8.69 (2026-07-16)</small>
 
 * feat: nldd-avatar, content-color token cleanup (breaking), and component fixes (#139) ([482a04f](https://github.com/MinBZK/storybook/commit/482a04f)), closes [#139](https://github.com/MinBZK/storybook/issues/139)

@@ -47,14 +47,31 @@ Elk key eindigt met een type dat aangeeft hoe de tekst geschreven moet worden.
 
 ### `-lowercase`, `-capitalize`
 
-Voor exacte vertalingen van een enkel woord of vaste woordcombinatie.
+Voor exacte vertalingen van een enkel woord of vaste woordcombinatie: een woord
+uit het woordenboek, los van waar het gebruikt wordt. Hier is de kapitalisatie
+zelf het type en volgt er niets meer.
 
 ```
 general.amount-capitalize: Bedrag
 general.amount-lowercase: bedrag
+components.date-picker.january-lowercase: januari
+components.date-picker.january-capitalize: Januari
+```
+
+Is de tekst geen woordenboekwoord maar een voor deze interface geschreven
+beschrijving die tóch een vaste kapitalisatie nodig heeft, zet de kapitalisatie
+dan als modifier vóór het type. Dat gebeurt wanneer de tekst achter een langere
+string wordt geplakt en dus nooit met een hoofdletter kan beginnen.
+
+```
+components.date-picker.in-range-lowercase-label: in de periode
+components.date-picker.unavailable-lowercase-label: niet beschikbaar
 ```
 
 > Voor uppercase weergave: gebruik CSS `text-transform`. Maak geen `-uppercase` keys.
+> Voor kapitalisatie juist niet: die hoort in de vertaling, want per taal verschilt
+> waar een hoofdletter hoort en met CSS of `charAt(0).toUpperCase()` kan een
+> vertaler hem niet uitzetten.
 
 ### `-title`
 
@@ -108,6 +125,11 @@ my-website.my-form.email-help-text: U ontvangt een bevestiging per e-mail. Lees 
 ### `-action`
 
 Voor knoppen, links en andere acties.
+
+> Namen van acties beschrijven wat de actie doet, niet wat de gebruiker daarna
+> ziet. Navigeert een knop alleen naar een andere weergave, zet dat er dan in
+> (`view-today-action`, niet `today-action`), zodat een copywriter niet denkt dat
+> hij iets kiest.
 
 **Directe acties:** gebruik de gebiedende wijs (imperatief).
 ```
@@ -175,7 +197,7 @@ Gebruik in templates `component._t('key', { var: value })` voor lookups met opti
 
 - [ ] Keys volgen de `components.{naam}.*` conventie
 - [ ] Elk key eindigt met het juiste type suffix
-- [ ] Directe acties in gebiedende wijs
+- [ ] Directe acties in gebiedende wijs, indirecte acties in infinitief met `to-` prefix
 - [ ] Placeholders met `{naam}` syntax
 - [ ] Component gebruikt `withTranslations` mixin
 - [ ] Consumer kan overschrijven via `translations` property
