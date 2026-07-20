@@ -3848,38 +3848,6 @@
             "text": "object"
           },
           "default": "{ 'components.lqip-encoder.upload-label': 'Kies een afbeelding', 'components.lqip-encoder.file-prefix-text': 'Bestand:', 'components.lqip-encoder.copy-instruction-text': 'Kopieer deze waarde naar je lqip attribuut:', 'components.lqip-encoder.preview-heading-text': 'Visuele controle:', 'components.lqip-encoder.preview-lqip-label': 'LQIP placeholder', 'components.lqip-encoder.preview-image-label': 'Originele afbeelding', }"
-        },
-        {
-          "kind": "class",
-          "description": "",
-          "name": "NLDDLqipEncoder",
-          "members": [
-            {
-              "kind": "field",
-              "name": "translations",
-              "type": {
-                "text": "Partial<NLDDLqipEncoderTranslations>"
-              },
-              "default": "{}",
-              "attribute": "translations"
-            }
-          ],
-          "attributes": [
-            {
-              "name": "translations",
-              "type": {
-                "text": "Partial<NLDDLqipEncoderTranslations>"
-              },
-              "default": "{}",
-              "fieldName": "translations"
-            }
-          ],
-          "superclass": {
-            "name": "LitElement",
-            "package": "lit"
-          },
-          "tagName": "nldd-lqip-encoder",
-          "customElement": true
         }
       ],
       "exports": [
@@ -5544,6 +5512,22 @@
         },
         {
           "kind": "js",
+          "name": "NLDDDateField",
+          "declaration": {
+            "name": "NLDDDateField",
+            "module": "./inputs/date-field/date-field.js"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "NLDDDatePicker",
+          "declaration": {
+            "name": "NLDDDatePicker",
+            "module": "./inputs/date-picker/date-picker.js"
+          }
+        },
+        {
+          "kind": "js",
           "name": "NLDDDropdown",
           "declaration": {
             "name": "NLDDDropdown",
@@ -5716,6 +5700,14 @@
           "declaration": {
             "name": "NLDDStackedSplitView",
             "module": "./layout/split-views/stacked-split-view/stacked-split-view.js"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "NLDDSplitViewDivider",
+          "declaration": {
+            "name": "NLDDSplitViewDivider",
+            "module": "./layout/split-views/split-view-divider/split-view-divider.js"
           }
         },
         {

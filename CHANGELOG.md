@@ -25,6 +25,7 @@ here; consult the commit history if you need that level of detail.
 
 ### Added
 
+- **Vue template types.** `import '@nldd/design-system/vue'` declares every `nldd-*` tag for Vue's template type-checking, so a Vue consumer no longer maintains a hand-written declaration that falls behind. Generated from the manifest, so it cannot: props carry the component's own types (`size` is `'md' | 'sm'`, not `string`), attributes work both as written in markup (`week-numbers`) and in the form Vue normalises them to (`weekNumbers`), and events are the prop Vue derives from `@change`.
 - **Custom Elements Manifest.** The package now ships `custom-elements.json` and points at it with the `customElements` field, so VS Code and JetBrains give autocomplete and hover documentation for `nldd-*` tags in plain HTML, with no extra setup. It is generated from the source rather than from the documentation, so a union like `'md' | 'sm'` stays a union instead of flattening to `string`. It is also the input for generated framework type declarations.
 
 ### Breaking

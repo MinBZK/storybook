@@ -7,6 +7,9 @@
   "module": "dist/components/components.js",
   "exports": {
     ".": "./dist/components/components.js",
+    "./vue": {
+      "types": "./dist/types/vue.d.ts"
+    },
     "./button": {
       "types": "./dist/components/actions/button/button.d.ts",
       "default": "./dist/components/actions/button/button.js"
@@ -115,6 +118,14 @@
       "types": "./dist/components/inputs/combo-box/combo-box.d.ts",
       "default": "./dist/components/inputs/combo-box/combo-box.js"
     },
+    "./date-field": {
+      "types": "./dist/components/inputs/date-field/date-field.d.ts",
+      "default": "./dist/components/inputs/date-field/date-field.js"
+    },
+    "./date-picker": {
+      "types": "./dist/components/inputs/date-picker/date-picker.d.ts",
+      "default": "./dist/components/inputs/date-picker/date-picker.js"
+    },
     "./dropdown": {
       "types": "./dist/components/inputs/dropdown/dropdown.d.ts",
       "default": "./dist/components/inputs/dropdown/dropdown.js"
@@ -202,6 +213,10 @@
     "./stacked-split-view": {
       "types": "./dist/components/layout/split-views/stacked-split-view/stacked-split-view.d.ts",
       "default": "./dist/components/layout/split-views/stacked-split-view/stacked-split-view.js"
+    },
+    "./split-view-divider": {
+      "types": "./dist/components/layout/split-views/split-view-divider/split-view-divider.d.ts",
+      "default": "./dist/components/layout/split-views/split-view-divider/split-view-divider.js"
     },
     "./split-view-pane": {
       "types": "./dist/components/layout/split-views/split-view-pane/split-view-pane.d.ts",
@@ -424,14 +439,15 @@
     "build:styles": "mkdir -p dist/css dist/fonts && cp src/assets/styles/settings.css dist/css/settings.css && cp src/assets/styles/reset.css dist/css/reset.css && cp src/assets/styles/palettes.generated.css dist/css/palettes.generated.css && cp src/components/content/rich-text/rich-text.css dist/css/rich-text.css && cp src/components/forms/form/form.css dist/css/form.css && cp src/components/forms/form-section/form-section.css dist/css/form-section.css && cp src/assets/styles/fouc.css dist/css/fouc.css && printf '@import \"./settings.css\";\\n@import \"./reset.css\";\\n@import \"./rich-text.css\";\\n@import \"./form-section.css\";\\n@import \"./form.css\";\\n@import \"./fouc.css\";\\n' > dist/css/global.css && cp src/assets/fonts/*.woff2 dist/fonts/",
     "generate:palettes": "node scripts/generate-palettes.js",
     "generate:component-reference": "node scripts/generate-component-reference.js",
-    "generate:cem": "cem analyze",
+    "generate:cem": "cem analyze && npm run generate:vue-types",
+    "generate:vue-types": "node scripts/generate-vue-types.js",
     "generate:skill-changelog": "node scripts/generate-skill-changelog.js",
     "generate:skill-principles": "node scripts/generate-skill-principles.js",
     "generate:plugin-version": "node scripts/sync-plugin-version.js",
     "generate:skill-docs": "npm run generate:component-reference && npm run generate:skill-changelog && npm run generate:skill-principles && npm run generate:plugin-version",
     "validate:styles": "node scripts/validate-css-variables.js",
     "validate:component-api": "node scripts/validate-component-api.js",
-    "build:components": "npm run clean:components && npm run build:icons && npm run build:components:modules && npm run build:components:bundle && npm run build:exports",
+    "build:components": "npm run clean:components && npm run build:icons && npm run build:components:modules && npm run build:components:bundle && npm run build:exports && npm run generate:cem",
     "build:icons": "node scripts/generate-icon-registry.js && node scripts/generate-logo.js",
     "build:components:modules": "tsc -p tsconfig.build.json",
     "build:components:bundle": "vite build",
@@ -456,7 +472,8 @@
     "test": "vitest",
     "test:run": "vitest run",
     "test:scripts": "node --test scripts/*.test.mjs",
-    "typecheck": "tsc --noEmit"
+    "typecheck": "tsc --noEmit",
+    "test:vue-types": "vue-tsc --noEmit -p type-tests/vue/tsconfig.json"
   },
   "devDependencies": {
     "@commitlint/cli": "^19.6.1",
@@ -484,7 +501,9 @@
     "typescript": "^5.3.0",
     "typescript-eslint": "^8.58.0",
     "vite": "^7.3.1",
-    "vitest": "^4.0.16"
+    "vitest": "^4.0.16",
+    "vue": "^3.5.40",
+    "vue-tsc": "^3.3.7"
   },
   "engines": {
     "node": ">=18.0.0"

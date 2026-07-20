@@ -58,3 +58,16 @@ jobs:
           npm run generate:cem
           git diff --exit-code custom-elements.json \
             || (echo "::error::custom-elements.json is verouderd. Draai 'npm run generate:cem' en commit het resultaat." && exit 1)
+
+      # Compiling a real Vue template is the only thing that proves the generated
+      # declarations are usable. Generating them only proves a file was written:
+      # an earlier generator produced names Vue never looks up, and every check
+      # short of this one stayed green. The declarations reference the emitted
+      # .d.ts files, so those have to exist first.
+      - name: Type-check the generated Vue declarations
+        shell: bash
+        run: |
+          set -e
+          npm run build:components:modules
+          npm run generate:vue-types
+          npm run test:vue-types
