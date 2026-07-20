@@ -42,6 +42,7 @@ here; consult the commit history if you need that level of detail.
 
 ### Fixed
 
+- **`nldd-just-in-time-education`** — the callout no longer shows the browser's own focus ring around the whole box, text and arrow included. The container takes focus on open so Escape and the dismiss button are reachable, and it now carries the design system's ring instead, with an offset, and only when the coach-mark was opened from the keyboard.
 - **`nldd-popover`** — Tab no longer gets stuck inside a popover that contains a roving-tabindex widget (a calendar grid, a toolbar). The focus scan counted every `tabindex="-1"` element as focusable, so with a calendar inside it saw 41 "focusable" day buttons and never let focus move on.
 - **Text selection on controls** — buttons, menu items, tabs and other controls no longer show a text selection highlight when dragged over on iOS and older Safari (`-webkit-user-select` alongside the standard property).
 

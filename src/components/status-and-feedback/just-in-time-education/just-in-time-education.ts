@@ -52,6 +52,7 @@ import { customElement, property } from 'lit/decorators.js';
 import { computePosition, autoUpdate, offset, shift } from '@floating-ui/dom';
 import { withTranslations } from '../../../utilities/with-translations.js';
 import { reflectNonDefault } from '../../../utilities/reflect-non-default.js';
+import { isPointerMode } from '../../../utilities/input-modality.js';
 import { justInTimeEducationStyles } from './just-in-time-education.styles.js';
 import { justInTimeEducationTemplate } from './just-in-time-education.template.js';
 import { nlddJustInTimeEducationTranslations } from './just-in-time-education.i18n.js';
@@ -214,6 +215,7 @@ export class NLDDJustInTimeEducation extends withTranslations<NLDDJustInTimeEduc
 		// (Tab from here lands on it; Shift+Tab returns to the control) and
 		// role="dialog" is announced on focus-enter. Focus returns to the control on
 		// close (see _closePopover). The container has tabindex="-1" for this.
+		container.classList.toggle('is-pointer-focus', isPointerMode());
 		container.focus();
 		if (this._attachTimeout) clearTimeout(this._attachTimeout);
 		this._attachTimeout = setTimeout(() => {
