@@ -17,7 +17,7 @@ export const datePickerStyles = css`
 		--_title-chevron-size: var(--primitives-space-20);
 		--_weekday-font: var(--primitives-font-body-xs-regular-flat);
 		--_weekday-content-color: var(--semantics-content-secondary-color);
-		--_divider-color: light-dark(var(--primitives-color-neutral-75), var(--primitives-color-neutral-150));
+		--_divider-color: light-dark(var(--primitives-color-neutral-50), var(--primitives-color-neutral-150));
 		--_divider-thickness: var(--semantics-dividers-thickness);
 		--_week-number-column-width: var(--primitives-space-32);
 		--_week-number-font: var(--primitives-font-body-xs-regular-flat);
