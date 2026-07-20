@@ -9,6 +9,7 @@ export function windowTemplate(component: NLDDWindow): TemplateResult {
 			aria-modal=${component.modeless ? nothing : 'true'}
 			@click=${component._handleDialogClick}
 			@cancel=${component._handleCancel}
+			@close=${component._handleDialogClose}
 		>
 			<div class="window__body">
 				<slot></slot>

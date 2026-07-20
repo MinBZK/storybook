@@ -159,6 +159,7 @@ export class NLDDPopover extends LitElement {
 		this.addEventListener('toggle', this._handleToggle);
 		this.addEventListener('keydown', this._handleKeydown);
 		document.addEventListener('pointerdown', this._handleDocumentPointerdown, true);
+		document.addEventListener('click', this._handleDocumentClickCapture, true);
 		document.addEventListener('click', this._handleDocumentClick);
 		this._smQuery = window.matchMedia(`(max-width: ${breakpoints.smMax})`);
 		this._wasOnSm = this._smQuery.matches;
@@ -182,6 +183,7 @@ export class NLDDPopover extends LitElement {
 		this.removeEventListener('toggle', this._handleToggle);
 		this.removeEventListener('keydown', this._handleKeydown);
 		document.removeEventListener('pointerdown', this._handleDocumentPointerdown, true);
+		document.removeEventListener('click', this._handleDocumentClickCapture, true);
 		document.removeEventListener('click', this._handleDocumentClick);
 		this._smQuery?.removeEventListener('change', this._handleViewportChange);
 		this._smQuery = null;
@@ -458,12 +460,48 @@ export class NLDDPopover extends LitElement {
 		}
 	};
 
+	/**
+	 * On a small screen this popover is a bottom sheet with a dimmed backdrop, and
+	 * a backdrop that lets the tap through is a promise it does not keep: the page
+	 * underneath is not inert, so one tap both dismissed the sheet and activated
+	 * whatever sat under the dimming. Every native bottom sheet absorbs that tap.
+	 *
+	 * The anchor is left alone. Tapping the control that opened the sheet should
+	 * keep closing it, which is what the handler below already arranges.
+	 */
+	private _swallowNextClick = false;
+
+	private _shouldAbsorbTap(event: Event, anchorEl: Element | null): boolean {
+		if (!this._isOpen) return false;
+		if (!(this._smQuery?.matches ?? false)) return false;
+		const path = event.composedPath();
+		if (path.includes(this)) return false;
+		if (anchorEl && path.includes(anchorEl)) return false;
+		return true;
+	}
+
 	private _handleDocumentPointerdown = (event: PointerEvent): void => {
 		if (!this._isOpen) return;
 		const anchorEl = this._getAnchorEl();
+		if (this._shouldAbsorbTap(event, anchorEl)) {
+			event.preventDefault();
+			event.stopPropagation();
+			this._swallowNextClick = true;
+			(this as HTMLElement).hidePopover();
+			return;
+		}
 		if (!anchorEl) return;
 		if (!event.composedPath().includes(anchorEl)) return;
 		this._pointerdownOnAnchorWhileOpen = true;
+	};
+
+	/** Swallows the click that follows an absorbed tap, so it cannot activate
+	 *  what sat under the backdrop. */
+	private _handleDocumentClickCapture = (event: MouseEvent): void => {
+		if (!this._swallowNextClick) return;
+		this._swallowNextClick = false;
+		event.preventDefault();
+		event.stopPropagation();
 	};
 
 	private _handleDocumentClick = (event: MouseEvent): void => {

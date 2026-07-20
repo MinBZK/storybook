@@ -149,6 +149,9 @@ export class NLDDWindow extends LitElement {
 		const dialog = this._dialog;
 		if (!dialog) return;
 
+		// New open cycle: the next close may emit again.
+		this._closeEmitted = false;
+
 		if (import.meta.env?.DEV && !this.accessibleLabel && !this._hasWarnedLabel) {
 			this._hasWarnedLabel = true;
 			console.warn(`<nldd-window>: No accessible-label provided. Screen readers will announce this window as "${this._t('components.window.accessible-label')}". Set accessible-label to a unique, descriptive name.`);
@@ -171,8 +174,27 @@ export class NLDDWindow extends LitElement {
 		this._closing = true;
 		dialog.close();
 		this._closing = false;
+		this._emitClose();
+	}
+
+	/**
+	 * Emitted once per open cycle, from whichever route actually closed the
+	 * window. Same reasoning as nldd-sheet: Escape on a non-modal dialog closes
+	 * through the CloseWatcher, which @cancel cannot reliably stop, while jsdom
+	 * never fires the dialog's own close event.
+	 */
+	private _closeEmitted = false;
+
+	private _emitClose(): void {
+		if (this._closeEmitted) return;
+		this._closeEmitted = true;
 		this.dispatchEvent(new CustomEvent('close', { bubbles: true, composed: true }));
 	}
+
+	_handleDialogClose = (): void => {
+		this._closing = false;
+		this._emitClose();
+	};
 
 	private _manageFocus(): void {
 		if (this.querySelector('[autofocus]')) return;

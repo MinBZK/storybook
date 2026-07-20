@@ -137,6 +137,9 @@ export class NLDDSheet extends LitElement {
 		const dialog = this._dialog;
 		if (!dialog) return;
 
+		// New open cycle: the next close may emit again.
+		this._closeEmitted = false;
+
 		// Warn once per instance when the consumer has not provided a meaningful accessible label
 		if (import.meta.env?.DEV && this.accessibleLabel === 'Venster' && !this._hasWarnedLabel) {
 			this._hasWarnedLabel = true;
@@ -173,7 +176,7 @@ export class NLDDSheet extends LitElement {
 			dialog.classList.remove('is-closing');
 			this._closing = false;
 			dialog.close();
-			this.dispatchEvent(new CustomEvent('close', { bubbles: true, composed: true }));
+			this._emitClose();
 		}, { once: true });
 
 		// Fallback for prefers-reduced-motion (no animation fires)
@@ -183,7 +186,7 @@ export class NLDDSheet extends LitElement {
 				dialog.classList.remove('is-closing');
 				this._closing = false;
 				dialog.close();
-				this.dispatchEvent(new CustomEvent('close', { bubbles: true, composed: true }));
+				this._emitClose();
 			}
 		});
 	}
@@ -207,6 +210,29 @@ export class NLDDSheet extends LitElement {
 		if (e.target === this._dialog && this._pointerDownOnBackdrop) {
 			this.hide();
 		}
+	}
+
+	/**
+	 * Emitted once per open cycle, from whichever route actually closed the sheet.
+	 *
+	 * hide() cannot be the only source: Escape on a non-modal dialog closes
+	 * through the CloseWatcher, which the cancel handler below cannot reliably
+	 * stop, so a modeless sheet closed without emitting anything. The dialog's own
+	 * close event cannot be the only source either, because jsdom does not fire it
+	 * and the event would be untestable. Both call this, the flag keeps it to one.
+	 */
+	private _closeEmitted = false;
+
+	private _emitClose(): void {
+		if (this._closeEmitted) return;
+		this._closeEmitted = true;
+		this.dispatchEvent(new CustomEvent('close', { bubbles: true, composed: true }));
+	}
+
+	_handleDialogClose(): void {
+		this._closing = false;
+		this._dialog?.classList.remove('is-closing');
+		this._emitClose();
 	}
 
 	_handleCancel(e: Event): void {

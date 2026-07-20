@@ -464,3 +464,51 @@ describe('nldd-sheet neemt geen ruimte in de flow', () => {
 		expect(sheetStyles.cssText).toMatch(/:host\s*\{[^}]*display:\s*contents/);
 	});
 });
+
+describe('nldd-sheet meldt sluiten via elke route', () => {
+	let el: HTMLElement & { show(): void; hide(): void };
+
+	afterEach(() => {
+		if (el) cleanup(el);
+	});
+
+	function dialogVan(host: HTMLElement): HTMLDialogElement {
+		return host.shadowRoot!.querySelector('dialog') as HTMLDialogElement;
+	}
+
+	// Escape sluit een non-modale dialog via de CloseWatcher, en die is met
+	// @cancel + preventDefault niet betrouwbaar tegen te houden. hide() liep dan
+	// niet, dus een modeless sheet sloot zonder iets te melden.
+	it('stuurt close wanneer de dialog buiten hide() om sluit', async () => {
+		el = await fixture<HTMLElement & { show(): void; hide(): void }>(
+			'<nldd-sheet modeless accessible-label="Test"></nldd-sheet>',
+		);
+		await waitForUpdate(el);
+		let aantal = 0;
+		el.addEventListener('close', () => { aantal += 1; });
+		el.show();
+		await waitForUpdate(el);
+		// Wat de browser doet bij Escape op een non-modale dialog.
+		const dialog = dialogVan(el);
+		dialog.close();
+		dialog.dispatchEvent(new Event('close'));
+		await waitForUpdate(el);
+		expect(aantal).toBe(1);
+	});
+
+	it('stuurt close niet twee keer als beide routes samenvallen', async () => {
+		el = await fixture<HTMLElement & { show(): void; hide(): void }>(
+			'<nldd-sheet accessible-label="Test"></nldd-sheet>',
+		);
+		await waitForUpdate(el);
+		let aantal = 0;
+		el.addEventListener('close', () => { aantal += 1; });
+		el.show();
+		await waitForUpdate(el);
+		el.hide();
+		await new Promise((r) => setTimeout(r, 60));
+		dialogVan(el).dispatchEvent(new Event('close'));
+		await waitForUpdate(el);
+		expect(aantal).toBe(1);
+	});
+});
