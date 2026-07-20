@@ -591,3 +591,59 @@ describe('nldd-popover', () => {
 		});
 	});
 });
+
+describe('nldd-popover verplaatst focus zelf met Tab', () => {
+	let el: HTMLElement;
+
+	afterEach(() => {
+		if (el) cleanup(el);
+	});
+
+	async function metTweeKnoppen() {
+		const wrapper = await fixture(`
+			<div>
+				<button id="trigger-tab">Open</button>
+				<nldd-popover anchor="trigger-tab" accessible-label="Test">
+					<button id="een">Een</button>
+					<button id="twee">Twee</button>
+				</nldd-popover>
+			</div>
+		`);
+		const popover = wrapper.querySelector('nldd-popover') as HTMLElement & { show(): void };
+		await waitForUpdate(popover);
+		popover.show();
+		await waitForUpdate(popover);
+		return { wrapper, popover };
+	}
+
+	// Safari tabt niet de top layer in: met de container gefocust slaat hij de hele
+	// popover over en landt op wat erna in het document staat. Onze lijst klopte
+	// daar wel, dus het component verplaatst focus nu zelf.
+	it('stapt vanaf de container naar de eerste knop', async () => {
+		const { wrapper, popover } = await metTweeKnoppen();
+		el = wrapper;
+		popover.dispatchEvent(new KeyboardEvent('keydown', { key: 'Tab', bubbles: true, composed: true, cancelable: true }));
+		await waitForUpdate(popover);
+		expect(document.activeElement?.id).toBe('een');
+	});
+
+	it('stapt van de eerste naar de tweede knop', async () => {
+		const { wrapper, popover } = await metTweeKnoppen();
+		el = wrapper;
+		const een = wrapper.querySelector('#een') as HTMLElement;
+		een.focus();
+		een.dispatchEvent(new KeyboardEvent('keydown', { key: 'Tab', bubbles: true, composed: true, cancelable: true }));
+		await waitForUpdate(popover);
+		expect(document.activeElement?.id).toBe('twee');
+	});
+
+	it('sluit pas voorbij de laatste knop', async () => {
+		const { wrapper, popover } = await metTweeKnoppen();
+		el = wrapper;
+		const twee = wrapper.querySelector('#twee') as HTMLElement;
+		twee.focus();
+		twee.dispatchEvent(new KeyboardEvent('keydown', { key: 'Tab', bubbles: true, composed: true, cancelable: true }));
+		await waitForUpdate(popover);
+		expect(popover.matches(':popover-open')).toBe(false);
+	});
+});

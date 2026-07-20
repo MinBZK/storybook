@@ -590,12 +590,24 @@ export class NLDDPopover extends LitElement {
 		const focused = (event.composedPath()[0] as HTMLElement | null)
 			?? (document.activeElement as HTMLElement | null);
 		const idx = focused ? focusables.indexOf(focused) : -1;
-		const tabsOut = focusables.length === 0
-			|| (event.shiftKey ? idx === 0 : idx === focusables.length - 1);
-		if (tabsOut) {
+		// idx === -1 means the container itself holds focus, which is where it
+		// lands on open. Forward from there, and backward out of the popover.
+		const atStart = event.shiftKey && idx <= 0;
+		const atEnd = !event.shiftKey && idx === focusables.length - 1;
+		if (focusables.length === 0 || atStart || atEnd) {
 			event.preventDefault();
 			this.hide();
+			return;
 		}
+
+		// Moving focus ourselves instead of letting the browser do it. Safari does
+		// not tab into the contents of a top-layer element: with the container
+		// focused it skips the whole popover and lands on whatever follows it in
+		// the document, while the popover stays open. Verified there that our own
+		// list is right (2 focusables, both programmatically focusable, tabIndex 0),
+		// so the list is not the problem and the browser is.
+		event.preventDefault();
+		focusables[event.shiftKey ? idx - 1 : idx + 1]?.focus();
 	};
 
 	// — Focus ————————————————————————————————————————————————————————————————
