@@ -1,0 +1,472 @@
+import { describe, it, expect, afterEach } from 'vitest';
+import { fixture, cleanup, waitForUpdate } from '../../../test-utils.js';
+import './date-field.js';
+import type { NLDDDateField } from './date-field.js';
+
+/** The visible text input; the picker's native input is a separate element. */
+function textInput(el: HTMLElement): HTMLInputElement {
+	return el.shadowRoot!.querySelector('.date-field__input') as HTMLInputElement;
+}
+
+function pickerButton(el: HTMLElement): HTMLElement | null {
+	return el.shadowRoot!.querySelector('.date-field__picker nldd-icon-button');
+}
+
+function popover(el: HTMLElement): HTMLElement | null {
+	return el.shadowRoot!.querySelector('nldd-popover');
+}
+
+function picker(el: HTMLElement): HTMLElement | null {
+	return el.shadowRoot!.querySelector('nldd-date-picker');
+}
+
+/** Type into the visible field and commit, the way a user would. */
+async function type(el: NLDDDateField, text: string): Promise<void> {
+	const input = textInput(el);
+	input.value = text;
+	input.dispatchEvent(new Event('input', { bubbles: true }));
+	await waitForUpdate(el);
+	input.dispatchEvent(new Event('change', { bubbles: true }));
+	await waitForUpdate(el);
+}
+
+describe('nldd-date-field', () => {
+	let el: NLDDDateField;
+
+	afterEach(() => {
+		if (el) cleanup(el);
+	});
+
+	it('rendert zonder fouten', async () => {
+		el = await fixture<NLDDDateField>('<nldd-date-field></nldd-date-field>');
+		await waitForUpdate(el);
+		expect(el.shadowRoot).not.toBeNull();
+	});
+
+	it('toont een ISO-waarde in Nederlandse notatie', async () => {
+		el = await fixture<NLDDDateField>('<nldd-date-field value="2026-12-31"></nldd-date-field>');
+		await waitForUpdate(el);
+		expect(textInput(el).value).toBe('31-12-2026');
+	});
+
+	// Royaal accepteren, één keer normaliseren - geen masking tijdens het typen.
+	it.each([
+		['31-12-2026', '2026-12-31'],
+		['31/12/2026', '2026-12-31'],
+		['31.12.2026', '2026-12-31'],
+		['1-2-2026', '2026-02-01'],
+		['31122026', '2026-12-31'],
+		['2026-12-31', '2026-12-31'],
+	])('leest %s als %s', async (typed, iso) => {
+		el = await fixture<NLDDDateField>('<nldd-date-field></nldd-date-field>');
+		await type(el, typed);
+		expect(el.value).toBe(iso);
+	});
+
+	it('normaliseert de weergave pas bij het vastleggen', async () => {
+		el = await fixture<NLDDDateField>('<nldd-date-field></nldd-date-field>');
+		const input = textInput(el);
+
+		input.value = '1/2/2026';
+		input.dispatchEvent(new Event('input', { bubbles: true }));
+		await waitForUpdate(el);
+		// Tijdens het typen blijft de tekst staan zoals ingevoerd.
+		expect(input.value).toBe('1/2/2026');
+
+		input.dispatchEvent(new Event('change', { bubbles: true }));
+		await waitForUpdate(el);
+		expect(textInput(el).value).toBe('01-02-2026');
+	});
+
+	it('laat onleesbare invoer staan en houdt de waarde leeg', async () => {
+		el = await fixture<NLDDDateField>('<nldd-date-field></nldd-date-field>');
+		await type(el, 'morgen');
+		expect(el.value).toBe('');
+		// Niet stilletjes wissen: de gebruiker moet zien wat er staat om het te herstellen.
+		expect(textInput(el).value).toBe('morgen');
+	});
+
+	it('weigert een niet-bestaande datum', async () => {
+		el = await fixture<NLDDDateField>('<nldd-date-field></nldd-date-field>');
+		await type(el, '31-02-2026');
+		expect(el.value).toBe('');
+	});
+
+	it('maakt de waarde leeg bij een leeg veld', async () => {
+		el = await fixture<NLDDDateField>('<nldd-date-field value="2026-12-31"></nldd-date-field>');
+		await type(el, '');
+		expect(el.value).toBe('');
+	});
+
+	it('vuurt change met de ISO-waarde', async () => {
+		el = await fixture<NLDDDateField>('<nldd-date-field></nldd-date-field>');
+		let detail: unknown = null;
+		el.addEventListener('change', (e) => { detail = (e as CustomEvent).detail; });
+		await type(el, '31-12-2026');
+		expect(detail).toEqual({ value: '2026-12-31' });
+	});
+
+	it('geeft de interne input geen name - het component submit zelf één waarde', async () => {
+		el = await fixture<NLDDDateField>('<nldd-date-field name="datum"></nldd-date-field>');
+		await waitForUpdate(el);
+		expect(textInput(el).hasAttribute('name')).toBe(false);
+	});
+
+
+	// De kalenderknop en de popover zitten in dezelfde doos, dus met :focus-within
+	// tekende het veld een tweede ring om alles heen terwijl de knop er al een had.
+	it('toont de veldring alleen voor het tekstveld', async () => {
+		el = await fixture<NLDDDateField>('<nldd-date-field></nldd-date-field>');
+		await waitForUpdate(el);
+		const box = el.shadowRoot!.querySelector('.date-field')!;
+
+		textInput(el).focus();
+		expect(box.matches('.date-field:has(.date-field__input:focus)')).toBe(true);
+
+		textInput(el).blur();
+		expect(box.matches('.date-field:has(.date-field__input:focus)')).toBe(false);
+	});
+
+
+	// De ruimte ernaast wordt door de fade opengehouden, dus zonder validatiestaat
+	// hoort er geen leeg element in de DOM te staan.
+	it('rendert geen validatiecel zonder validatiestaat', async () => {
+		el = await fixture<NLDDDateField>('<nldd-date-field range></nldd-date-field>');
+		await waitForUpdate(el);
+		expect(el.shadowRoot!.querySelector('.date-field__validation-icon')).toBeNull();
+	});
+
+	// Twee bijna gelijke takken in de template liepen uit elkaar: de geldig-tak
+	// miste de wrapper die de maat zet, waardoor dat icoon de hele cel vulde.
+	it.each([['valid'], ['invalid']])('zet het %s-icoon in een wrapper met een vaste maat', async (state) => {
+		el = await fixture<NLDDDateField>(`<nldd-date-field ${state}></nldd-date-field>`);
+		await waitForUpdate(el);
+		const glyph = el.shadowRoot!.querySelector('.date-field__validation-icon-glyph');
+		expect(glyph).not.toBeNull();
+		expect(glyph!.querySelector('nldd-icon')!.getAttribute('name')).toBe(state);
+	});
+
+
+	// # Periode
+
+	function inputs(el: NLDDDateField): HTMLInputElement[] {
+		return Array.from(el.shadowRoot!.querySelectorAll('.date-field__input'));
+	}
+
+	it('toont één invoerveld zonder range', async () => {
+		el = await fixture<NLDDDateField>('<nldd-date-field></nldd-date-field>');
+		await waitForUpdate(el);
+		expect(inputs(el)).toHaveLength(1);
+		expect(el.shadowRoot!.querySelector('.date-field__separator')).toBeNull();
+	});
+
+	it('toont twee invoervelden met range', async () => {
+		el = await fixture<NLDDDateField>('<nldd-date-field range></nldd-date-field>');
+		await waitForUpdate(el);
+		expect(inputs(el)).toHaveLength(2);
+		expect(el.shadowRoot!.querySelector('.date-field__separator')).not.toBeNull();
+	});
+
+	it('leest beide velden los van elkaar', async () => {
+		el = await fixture<NLDDDateField>('<nldd-date-field range></nldd-date-field>');
+		await waitForUpdate(el);
+		const [start, end] = inputs(el);
+
+		start.value = '01-07-2026';
+		start.dispatchEvent(new Event('change', { bubbles: true }));
+		end.value = '14-07-2026';
+		end.dispatchEvent(new Event('change', { bubbles: true }));
+		await waitForUpdate(el);
+
+		expect(el.value).toBe('2026-07-01/2026-07-14');
+	});
+
+	// Eén naam en één waarde, net als elk ander formulierveld: de ISO 8601-notatie
+	// voor een interval maakt een verzonnen tweede naam overbodig.
+	it('dient de periode in als één waarde onder één naam', async () => {
+		const form = document.createElement('form');
+		document.body.appendChild(form);
+		el = document.createElement('nldd-date-field') as NLDDDateField;
+		el.range = true;
+		el.name = 'period';
+		form.appendChild(el);
+		await waitForUpdate(el);
+		el.value = '2026-07-06/2026-07-20';
+		await waitForUpdate(el);
+
+		const entries = [...new FormData(form).entries()];
+		expect(entries).toEqual([['period', '2026-07-06/2026-07-20']]);
+		form.remove();
+	});
+
+	it('splitst de waarde in twee velden', async () => {
+		el = await fixture<NLDDDateField>(
+			'<nldd-date-field range value="2026-07-06/2026-07-20"></nldd-date-field>',
+		);
+		await waitForUpdate(el);
+		expect(inputs(el).map((i) => i.value)).toEqual(['06-07-2026', '20-07-2026']);
+	});
+
+	// Een halfgevulde periode is ongeldige invoer; die hoort de ontvangende kant te
+	// zien in plaats van een leeg veld waaruit niets blijkt.
+	it('houdt een halfgevulde periode zichtbaar in de waarde', async () => {
+		el = await fixture<NLDDDateField>('<nldd-date-field range></nldd-date-field>');
+		await waitForUpdate(el);
+		const [start] = inputs(el);
+		start.value = '06-07-2026';
+		start.dispatchEvent(new Event('change', { bubbles: true }));
+		await waitForUpdate(el);
+		expect(el.value).toBe('2026-07-06/');
+	});
+
+	// nldd-form-field zet één label en één id; het veld verdeelt dat zelf over de
+	// twee invoervelden, zodat form-field niets van periodes hoeft te weten.
+	it('geeft de groep één naam en elk veld een eigen', async () => {
+		el = await fixture<NLDDDateField>(
+			'<nldd-date-field range accessible-label="Periode"></nldd-date-field>',
+		);
+		await waitForUpdate(el);
+		const box = el.shadowRoot!.querySelector('.date-field')!;
+		expect(box.getAttribute('role')).toBe('group');
+		expect(box.getAttribute('aria-label')).toBe('Periode');
+
+		const [start, end] = inputs(el);
+		expect(start.getAttribute('aria-label')).toBe('Periode, van');
+		expect(end.getAttribute('aria-label')).toBe('Periode, tot en met');
+	});
+
+	it('zet het id van form-field op het eerste veld', async () => {
+		el = await fixture<NLDDDateField>('<nldd-date-field range input-id="veld-1"></nldd-date-field>');
+		await waitForUpdate(el);
+		const [start, end] = inputs(el);
+		expect(start.id).toBe('veld-1');
+		expect(end.id).toBe('');
+	});
+
+	it('zet de kalender in bereikmodus en geeft beide uiteinden door', async () => {
+		el = await fixture<NLDDDateField>(
+			'<nldd-date-field range value="2026-07-01/2026-07-14"></nldd-date-field>',
+		);
+		await waitForUpdate(el);
+		expect(picker(el)!.hasAttribute('range')).toBe(true);
+		expect(picker(el)!.getAttribute('start')).toBe('2026-07-01');
+		expect(picker(el)!.getAttribute('end')).toBe('2026-07-14');
+	});
+
+	it('neemt een periode uit de kalender over', async () => {
+		el = await fixture<NLDDDateField>('<nldd-date-field range></nldd-date-field>');
+		await waitForUpdate(el);
+		picker(el)!.dispatchEvent(new CustomEvent('change', {
+			detail: { start: '2026-07-01', end: '2026-07-14' }, bubbles: true, composed: true,
+		}));
+		await waitForUpdate(el);
+		expect(el.value).toBe('2026-07-01/2026-07-14');
+		expect(inputs(el)[1].value).toBe('14-07-2026');
+	});
+
+	it('vuurt change met beide waarden in bereikmodus', async () => {
+		el = await fixture<NLDDDateField>('<nldd-date-field range></nldd-date-field>');
+		await waitForUpdate(el);
+		let detail: unknown = null;
+		el.addEventListener('change', (e) => { detail = (e as CustomEvent).detail; });
+		picker(el)!.dispatchEvent(new CustomEvent('change', {
+			detail: { start: '2026-07-01', end: '2026-07-14' }, bubbles: true, composed: true,
+		}));
+		await waitForUpdate(el);
+		expect(detail).toEqual({ value: '2026-07-01/2026-07-14' });
+	});
+
+
+	// # Kalender
+
+	it('toont de kalenderknop standaard', async () => {
+		el = await fixture<NLDDDateField>('<nldd-date-field></nldd-date-field>');
+		await waitForUpdate(el);
+		expect(pickerButton(el)).not.toBeNull();
+		expect(popover(el)).not.toBeNull();
+	});
+
+	it('verbergt de kalender met no-picker', async () => {
+		el = await fixture<NLDDDateField>('<nldd-date-field no-picker></nldd-date-field>');
+		await waitForUpdate(el);
+		expect(pickerButton(el)).toBeNull();
+		expect(popover(el)).toBeNull();
+	});
+
+	it('geeft min en max door aan de kalender', async () => {
+		el = await fixture<NLDDDateField>(
+			'<nldd-date-field min="2026-01-01" max="2026-12-31"></nldd-date-field>',
+		);
+		await waitForUpdate(el);
+		expect(picker(el)!.getAttribute('min')).toBe('2026-01-01');
+		expect(picker(el)!.getAttribute('max')).toBe('2026-12-31');
+	});
+
+	// nldd-popover leest dit om zijn focusdoel te kiezen; zonder blijft de focus op
+	// de popover zelf staan en moet je eerst het rooster in tabben.
+	it('wijst de kalender aan als focusdoel van de popover', async () => {
+		el = await fixture<NLDDDateField>('<nldd-date-field></nldd-date-field>');
+		await waitForUpdate(el);
+		expect(picker(el)!.hasAttribute('autofocus')).toBe(true);
+		expect(popover(el)!.querySelector('[autofocus]')).toBe(picker(el));
+	});
+
+	it('geeft de waarde door aan de kalender', async () => {
+		el = await fixture<NLDDDateField>('<nldd-date-field value="2026-12-31"></nldd-date-field>');
+		await waitForUpdate(el);
+		expect(picker(el)!.getAttribute('value')).toBe('2026-12-31');
+	});
+
+	// Waar de native kiezer op stukliep: die kende geen sluit-tegenhanger, en in
+	// Safari hing het sluiten aan de onzichtbare input zelf.
+	it('opent en sluit de kalender met dezelfde knop', async () => {
+		el = await fixture<NLDDDateField>('<nldd-date-field></nldd-date-field>');
+		await waitForUpdate(el);
+		const calls: string[] = [];
+		const pop = popover(el) as unknown as { show(): void; hide(): void };
+		pop.show = () => calls.push('show');
+		pop.hide = () => calls.push('hide');
+
+		el._handlePickerClick();
+		expect(calls).toEqual(['show']);
+
+		// De popover meldt zijn open-staat terug via toggle; die spiegelt het veld,
+		// zodat dezelfde knop de tweede keer sluit.
+		popover(el)!.dispatchEvent(Object.assign(new Event('toggle'), { newState: 'open' }));
+		await waitForUpdate(el);
+		expect(el._pickerOpen).toBe(true);
+
+		el._handlePickerClick();
+		expect(calls).toEqual(['show', 'hide']);
+	});
+
+	// De popover herstelt naar de host, en die delegeert focus naar het tekstveld -
+	// dus zonder ingrijpen springt de focus achteruit langs de knop die je net
+	// gebruikte, en moet je weer vooruit tabben om opnieuw te openen.
+	it('zet de focus na het kiezen terug op de kalenderknop', async () => {
+		el = await fixture<NLDDDateField>('<nldd-date-field></nldd-date-field>');
+		await waitForUpdate(el);
+		textInput(el).focus();
+
+		picker(el)!.dispatchEvent(new CustomEvent('change', {
+			detail: { value: '2026-12-31' }, bubbles: true, composed: true,
+		}));
+		// De popover geeft de focus terug aan het veld; dat moment wordt opgevangen.
+		el.dispatchEvent(new Event('focusin'));
+		await waitForUpdate(el);
+
+		expect(el.shadowRoot!.activeElement).toBe(pickerButton(el));
+	});
+
+	it('neemt een datum uit de kalender over in de weergave', async () => {
+		el = await fixture<NLDDDateField>('<nldd-date-field></nldd-date-field>');
+		await waitForUpdate(el);
+		picker(el)!.dispatchEvent(new CustomEvent('change', {
+			detail: { value: '2026-12-31' }, bubbles: true, composed: true,
+		}));
+		await waitForUpdate(el);
+		expect(el.value).toBe('2026-12-31');
+		expect(textInput(el).value).toBe('31-12-2026');
+	});
+
+	it('vuurt change met de datum uit de kalender', async () => {
+		el = await fixture<NLDDDateField>('<nldd-date-field></nldd-date-field>');
+		await waitForUpdate(el);
+		let detail: unknown = null;
+		el.addEventListener('change', (e) => { detail = (e as CustomEvent).detail; });
+		picker(el)!.dispatchEvent(new CustomEvent('change', {
+			detail: { value: '2026-12-31' }, bubbles: true, composed: true,
+		}));
+		await waitForUpdate(el);
+		expect(detail).toEqual({ value: '2026-12-31' });
+	});
+});
+
+describe('nldd-date-field met een eigen kalender in de slot', () => {
+	let el: NLDDDateField;
+
+	afterEach(() => {
+		if (el) cleanup(el);
+	});
+
+	function slottedPicker(host: NLDDDateField): HTMLElement | null {
+		return host.querySelector('nldd-date-picker');
+	}
+
+	// Zonder dit staan er twee kalenders in de popover, want de standaardkalender
+	// wordt alleen weggelaten als het veld doorheeft dat de slot gevuld is.
+	it('vervangt de standaardkalender in plaats van er een toe te voegen', async () => {
+		el = await fixture<NLDDDateField>(`
+			<nldd-date-field>
+				<nldd-date-picker slot="picker" week-numbers></nldd-date-picker>
+			</nldd-date-field>
+		`);
+		await waitForUpdate(el);
+		expect(el.shadowRoot!.querySelector('nldd-date-picker')).toBeNull();
+		expect(slottedPicker(el)).not.toBeNull();
+	});
+
+	it('laat de standaardkalender staan zolang de slot leeg is', async () => {
+		el = await fixture<NLDDDateField>('<nldd-date-field></nldd-date-field>');
+		await waitForUpdate(el);
+		expect(el.shadowRoot!.querySelector('nldd-date-picker')).not.toBeNull();
+	});
+
+	// Het veld is de eigenaar van de formulierwaarde; een consument die die op de
+	// kalender zelf zet, zou twee bronnen van waarheid maken.
+	it('schrijft waarde en grenzen op de gesloten kalender', async () => {
+		el = await fixture<NLDDDateField>(`
+			<nldd-date-field value="2026-07-14" min="2026-07-01" max="2026-07-31">
+				<nldd-date-picker slot="picker"></nldd-date-picker>
+			</nldd-date-field>
+		`);
+		await waitForUpdate(el);
+		const p = slottedPicker(el) as HTMLElement & { value: string; min: string; max: string; range: boolean };
+		expect(p.value).toBe('2026-07-14');
+		expect(p.min).toBe('2026-07-01');
+		expect(p.max).toBe('2026-07-31');
+		expect(p.range).toBe(false);
+	});
+
+	it('geeft een periode door als start en eind', async () => {
+		el = await fixture<NLDDDateField>(`
+			<nldd-date-field range value="2026-07-06/2026-07-20">
+				<nldd-date-picker slot="picker"></nldd-date-picker>
+			</nldd-date-field>
+		`);
+		await waitForUpdate(el);
+		const p = slottedPicker(el) as HTMLElement & { start: string; end: string; range: boolean };
+		expect(p.range).toBe(true);
+		expect(p.start).toBe('2026-07-06');
+		expect(p.end).toBe('2026-07-20');
+	});
+
+	// De keuze komt uit de light DOM en moet door de slot heen het veld bereiken.
+	it('neemt een keuze uit de gesloten kalender over', async () => {
+		el = await fixture<NLDDDateField>(`
+			<nldd-date-field>
+				<nldd-date-picker slot="picker"></nldd-date-picker>
+			</nldd-date-field>
+		`);
+		await waitForUpdate(el);
+		slottedPicker(el)!.dispatchEvent(new CustomEvent('change', {
+			detail: { value: '2026-07-14' },
+			bubbles: true,
+			composed: true,
+		}));
+		await waitForUpdate(el);
+		expect(el.value).toBe('2026-07-14');
+	});
+
+	it('laat eigenschappen die alleen de kalender kent met rust', async () => {
+		el = await fixture<NLDDDateField>(`
+			<nldd-date-field>
+				<nldd-date-picker slot="picker" week-numbers first-day-of-week="0"></nldd-date-picker>
+			</nldd-date-field>
+		`);
+		await waitForUpdate(el);
+		const p = slottedPicker(el) as HTMLElement & { weekNumbers: boolean; firstDayOfWeek: number };
+		expect(p.weekNumbers).toBe(true);
+		expect(p.firstDayOfWeek).toBe(0);
+	});
+});

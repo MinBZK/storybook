@@ -1,0 +1,432 @@
+/**
+ * NLDD Design System Datumveld Component (Lit + TypeScript)
+ *
+ * Een tekstveld voor een datum, met een optionele kalender in een popover.
+ * De waarde is altijd ISO (jjjj-mm-dd); op het scherm staat de Nederlandse
+ * notatie (dd-mm-jjjj). Er wordt niet gemaskerd tijdens het typen: invoer wordt
+ * royaal geaccepteerd en pas bij het verlaten van het veld genormaliseerd.
+ *
+ * Foutmeldingen horen bij nldd-form-field, niet hier. Dit veld reflecteert
+ * alleen `invalid` / `valid`, net als nldd-text-field.
+ *
+ * @element nldd-date-field
+ *
+ * @attr {string}  value           - De datum als ISO (jjjj-mm-dd). Met `range` een ISO 8601-interval: `jjjj-mm-dd/jjjj-mm-dd`. Leeg wanneer er geen geldige datum staat.
+ * @attr {boolean} range           - Kies een periode: twee invoervelden en een kalender in bereikmodus.
+ * @attr {string}  min             - Vroegst toegestane datum als ISO (jjjj-mm-dd).
+ * @attr {string}  max             - Laatst toegestane datum als ISO (jjjj-mm-dd).
+ * @attr {boolean} no-picker       - Verbergt de kalenderknop. Standaard staat die knop er wel.
+ * @attr {string}  placeholder     - Placeholdertekst. Zet hier geen formaat in; gebruik daarvoor de supporting-label van nldd-form-field.
+ * @attr {string}  input-id        - Zet het id op de interne input. Wordt automatisch gezet door nldd-form-field.
+ * @attr {string}  size            - 'md' (standaard) | 'sm'. Wordt automatisch gezet door nldd-form-field.
+ * @attr {boolean} invalid         - Markeert het veld als ongeldig.
+ * @attr {boolean} valid           - Markeert het veld als geldig.
+ * @attr {boolean} disabled        - Uitgeschakelde staat.
+ * @attr {boolean} readonly        - Alleen-lezen staat.
+ * @attr {boolean} required        - Verplichte staat.
+ * @attr {string}  name            - Naam voor formulierverzending.
+ * @attr {string}  autocomplete    - Autocomplete-hint, bijvoorbeeld 'bday'.
+ * @attr {string}  accessible-label - Toegankelijk label voor de interne input. Wordt automatisch gezet door nldd-form-field.
+ * @attr {string}  error-message-ids - Ids voor aria-describedby. Wordt automatisch gezet door nldd-form-field.
+ * @attr {string}  width           - Breedte. Standaard precies breed genoeg voor een datum plus de iconen; 'full' vult de container, of geef een eigen CSS-lengte.
+ * @attr {object}  translations    - Vertalingen; niet opgegeven sleutels vallen terug op het Nederlands.
+ *
+ * @slot picker - Een eigen nldd-date-picker, in plaats van de standaardkalender. Het veld blijft `value`, `min`, `max` en `range` zetten; gebruik de slot voor wat alleen een kalender weet: `week-numbers`, `first-day-of-week`, `is-date-unavailable` en eigen vertalingen.
+ *
+ * @fires input  - Bij elke wijziging. detail: { value } met de ISO-datum, of '' zolang er geen geldige datum staat.
+ * @fires change - Wanneer de waarde is vastgelegd. detail: { value } met de ISO-datum, of ''.
+ */
+
+import { LitElement, type PropertyValues } from 'lit';
+import { customElement, property, state } from 'lit/decorators.js';
+import { reflectNonDefault } from '../../../utilities/reflect-non-default.js';
+import { toIso } from '../../../utilities/resolve-date-bound.js';
+import { dateFieldStyles } from './date-field.styles.js';
+import { dateFieldTemplate } from './date-field.template.js';
+import { nlddDateFieldTranslations } from './date-field.i18n.js';
+import type { NLDDDateFieldTranslations } from './date-field.i18n.js';
+import type { NLDDDatePicker } from './../date-picker/date-picker.js';
+import './../../actions/icon-button/icon-button.js';
+import './../../content/icon/icon.js';
+
+/**
+ * Read a typed date generously. Deliberately not a mask: reformatting per
+ * keystroke moves the caret, breaks backspace mid-value and confuses screen
+ * readers, so we accept what people type and normalize once on commit.
+ * Accepts 12-3-2026, 12/03/2026, 12.03.2026, 12032026 and ISO jjjj-mm-dd.
+ */
+function parseDate(raw: string): string | null {
+	const trimmed = raw.trim();
+	if (trimmed === '') return null;
+	// A leading four-digit group can only be a year, so ISO is checked first.
+	const iso = /^(\d{4})\D(\d{1,2})\D(\d{1,2})$/.exec(trimmed);
+	if (iso) return toIso(Number(iso[1]), Number(iso[2]), Number(iso[3]));
+	const dutch = /^(\d{1,2})\D(\d{1,2})\D(\d{4})$/.exec(trimmed);
+	if (dutch) return toIso(Number(dutch[3]), Number(dutch[2]), Number(dutch[1]));
+	const bare = /^(\d{2})(\d{2})(\d{4})$/.exec(trimmed);
+	if (bare) return toIso(Number(bare[3]), Number(bare[2]), Number(bare[1]));
+	return null;
+}
+
+/** ISO 8601 writes an interval as start/end, so the value needs no invention. */
+const RANGE_SEPARATOR = '/';
+
+/** ISO to the Dutch notation shown on screen. */
+function formatDisplay(iso: string): string {
+	const match = /^(\d{4})-(\d{2})-(\d{2})$/.exec(iso);
+	if (!match) return '';
+	return `${match[3]}-${match[2]}-${match[1]}`;
+}
+
+@customElement('nldd-date-field')
+export class NLDDDateField extends LitElement {
+	static formAssociated = true;
+
+	static override shadowRootOptions = {
+		...LitElement.shadowRootOptions,
+		delegatesFocus: true,
+	};
+
+	static override styles = dateFieldStyles;
+
+	private _internals = this.attachInternals();
+
+	private _initialValue = '';
+
+	@property({ reflect: true, converter: reflectNonDefault<'md' | 'sm'>('md') })
+	size: 'md' | 'sm' = 'md';
+
+	@property({ type: String })
+	value = '';
+
+	@property({ type: Boolean, reflect: true })
+	range = false;
+
+	@property({ type: String })
+	min = '';
+
+	@property({ type: String })
+	max = '';
+
+	@property({ type: Boolean, reflect: true, attribute: 'no-picker' })
+	noPicker = false;
+
+	@property({ type: String, attribute: 'input-id' })
+	inputId = '';
+
+	@property({ reflect: true, converter: reflectNonDefault<string>('') })
+	placeholder = '';
+
+	@property({ type: Boolean, reflect: true })
+	invalid = false;
+
+	@property({ type: Boolean, reflect: true })
+	valid = false;
+
+	@property({ type: Boolean, reflect: true })
+	disabled = false;
+
+	@property({ type: Boolean, reflect: true })
+	readonly = false;
+
+	@property({ type: Boolean, reflect: true })
+	required = false;
+
+	@property({ type: String, reflect: true })
+	name = '';
+
+	@property({ type: String })
+	autocomplete = '';
+
+	/** Toegankelijk label voor de interne input. Wordt automatisch gezet door nldd-form-field. */
+	@property({ type: String, attribute: 'accessible-label' })
+	accessibleLabel = '';
+
+	@property({ type: String, attribute: 'error-message-ids' })
+	errorMessageIds = '';
+
+	/** Optionele vaste breedte. Zonder waarde vult het veld zijn container. */
+	@property({ type: String, reflect: true })
+	width = '';
+
+	/** Overschrijf een of meer vertaalsleutels. Niet opgegeven sleutels vallen terug op het Nederlands. */
+	@property({ type: Object })
+	translations: Partial<NLDDDateFieldTranslations> = {};
+
+	/** What the user sees and types. Kept apart from `value`, which stays ISO. */
+	@state()
+	private _display = '';
+
+	/** The same, for the end of a period. */
+	@state()
+	private _displayEnd = '';
+
+	/**
+	 * The two ends of `value` while range is on. `value` stays the single source
+	 * of truth - one shape in markup, as a property and in form data - and these
+	 * are only the halves it is composed from.
+	 */
+	public get _startValue(): string {
+		return this.range ? (this.value.split(RANGE_SEPARATOR)[0] ?? '') : this.value;
+	}
+
+	public get _endValue(): string {
+		return this.range ? (this.value.split(RANGE_SEPARATOR)[1] ?? '') : '';
+	}
+
+	private _setRange(start: string, end: string): void {
+		this.value = start === '' && end === '' ? '' : `${start}${RANGE_SEPARATOR}${end}`;
+	}
+
+	/**
+	 * Whether a consumer put their own calendar in the slot. Kept as state rather
+	 * than read during render: the built-in calendar has to disappear the moment
+	 * one is slotted, or both would be in the popover at once.
+	 */
+	@state()
+	_hasSlottedPicker = false;
+
+	private get _slottedPicker(): NLDDDatePicker | null {
+		const slot = this.shadowRoot?.querySelector('slot[name="picker"]') as HTMLSlotElement | null;
+		const found = slot?.assignedElements({ flatten: true })
+			.find((el): el is NLDDDatePicker => el.localName === 'nldd-date-picker');
+		return found ?? null;
+	}
+
+	public _handlePickerSlotChange(): void {
+		this._hasSlottedPicker = this._slottedPicker !== null;
+	}
+
+	/**
+	 * The field owns what a form owns - the value, the bounds, whether this is a
+	 * period - and writes those onto a slotted calendar every render, so a
+	 * consumer cannot set them to something the field would disagree with. What
+	 * only a calendar knows (week numbers, first day of the week, which dates are
+	 * unavailable, its own translations) is left untouched: that is the point of
+	 * slotting one.
+	 */
+	private _syncSlottedPicker(): void {
+		const picker = this._slottedPicker;
+		if (!picker) return;
+		picker.range = this.range;
+		picker.min = this.min;
+		picker.max = this.max;
+		if (this.range) {
+			picker.start = this._startValue;
+			picker.end = this._endValue;
+		} else {
+			picker.value = this.value;
+		}
+		// nldd-popover reads this to pick its focus target inside the overlay.
+		picker.toggleAttribute('autofocus', true);
+	}
+
+	override firstUpdated(): void {
+		this._initialValue = this.value;
+		this._handlePickerSlotChange();
+	}
+
+	override willUpdate(changed: PropertyValues): void {
+		// Reformat only when `value` moved on its own (set by a consumer, a form
+		// reset, the picker). While typing, the parse of `_display` already equals
+		// `value`, so the text is left exactly as entered.
+		if (!changed.has('value') && !changed.has('range')) return;
+		if ((parseDate(this._display) ?? '') !== this._startValue) {
+			this._display = this._startValue === '' ? '' : formatDisplay(this._startValue);
+		}
+		if ((parseDate(this._displayEnd) ?? '') !== this._endValue) {
+			this._displayEnd = this._endValue === '' ? '' : formatDisplay(this._endValue);
+		}
+	}
+
+	override updated(changed: PropertyValues): void {
+		if (changed.has('width')) {
+			const w = this.width;
+			// Unlike a text field, the default here is an intrinsic width that fits a
+			// date plus its icons - so 'full' has to say 100% explicitly instead of
+			// falling back to that default.
+			if (w === 'full') {
+				this.style.setProperty('--_width', '100%');
+			} else if (w && CSS.supports('width', w)) {
+				this.style.setProperty('--_width', w);
+			} else {
+				this.style.removeProperty('--_width');
+			}
+		}
+		if (changed.has('value')) {
+			this._internals.setFormValue(this.value);
+		}
+		// The popover resolves a string anchor with document.getElementById, which
+		// cannot see into a shadow root, so the trigger is handed over directly.
+		const popover = this._popover;
+		const trigger = this._pickerTrigger;
+		if (popover && trigger && popover.anchorElement !== trigger) {
+			popover.anchorElement = trigger;
+		}
+		this._syncSlottedPicker();
+	}
+
+	formResetCallback(): void {
+		this.value = this._initialValue;
+	}
+
+	formDisabledCallback(disabled: boolean): void {
+		this.disabled = disabled;
+	}
+
+	formStateRestoreCallback(state: File | string | FormData | null): void {
+		if (typeof state === 'string') this.value = state;
+	}
+
+	// — i18n —————————————————————————————————————————————————————————————————
+
+	public _t(key: keyof NLDDDateFieldTranslations): string {
+		return this.translations[key] ?? nlddDateFieldTranslations[key];
+	}
+
+	// — Picker ———————————————————————————————————————————————————————————————
+
+	/**
+	 * The calendar is nldd-date-picker in a popover, not the browser's own. The
+	 * native showPicker() has no closing counterpart and fires no open or close
+	 * events, and Safari ties dismissal to the input itself - which has to be
+	 * invisible for the button beside it to be the only control. There it could
+	 * not be closed at all.
+	 */
+	@state()
+	_pickerOpen = false;
+
+	private get _pickerTrigger(): HTMLElement | null {
+		return this.shadowRoot?.querySelector('.date-field__picker nldd-icon-button') ?? null;
+	}
+
+	private get _popover(): (HTMLElement & { show(): void; hide(): void; anchorElement: Element | null; width: string | undefined }) | null {
+		return this.shadowRoot?.querySelector('nldd-popover') ?? null;
+	}
+
+	/**
+	 * One name for the dialog, used both as its accessible name and as the sheet's
+	 * visible title. The field's own label says more than "Datum kiezen" ever
+	 * could - a sheet headed "Geboortedatum" tells you what you are answering.
+	 */
+	public get _pickerLabel(): string {
+		return this.accessibleLabel || this._t('components.date-field.to-pick-date-action');
+	}
+
+	public _handlePickerClick(): void {
+		if (this._pickerOpen) this._popover?.hide();
+		else this._popover?.show();
+	}
+
+	/**
+	 * Puts focus back on the calendar button after a date was chosen.
+	 *
+	 * The popover restores focus to whatever held it before opening, but from
+	 * outside a shadow root document.activeElement is always the host - so it
+	 * records nldd-date-field, and this field delegates focus, which lands on the
+	 * text input. Focus would jump backwards past the button you just used.
+	 *
+	 * Waiting for that hand-over rather than racing it with a timer: the restore
+	 * happens somewhere after hide() returns, and guessing how long is how this
+	 * went wrong twice already.
+	 */
+	private _takeFocusBackToTrigger(): void {
+		this.addEventListener('focusin', () => {
+			this._pickerTrigger?.focus();
+		}, { once: true });
+	}
+
+	public _handlePickerDismiss(e: Event): void {
+		e.stopPropagation();
+		this._popover?.hide();
+	}
+
+	public _handlePopoverToggle(e: Event): void {
+		this._pickerOpen = (e as ToggleEvent).newState === 'open';
+		if (this._pickerOpen) this._fitPopoverToSlottedPicker();
+	}
+
+	/**
+	 * The popover pins both its inline edges, so it cannot size to its own
+	 * content: `auto` and `max-content` both collapse it to zero width. The
+	 * built-in calendar has a known width, but a slotted one need not - week
+	 * numbers add a whole column - so that one is measured once it is on screen.
+	 */
+	private _fitPopoverToSlottedPicker(): void {
+		const picker = this._slottedPicker;
+		const popover = this._popover;
+		if (!picker || !popover) return;
+		const width = picker.getBoundingClientRect().width;
+		if (width > 0) popover.width = `calc(${Math.ceil(width)}px + var(--primitives-space-16) * 2)`;
+	}
+
+	/** The picker speaks ISO already, so there is nothing to convert. */
+	public _handlePickerChange(e: Event): void {
+		e.stopPropagation();
+		const detail = (e as CustomEvent).detail as { value?: string; start?: string; end?: string };
+		if (this.range) {
+			if (typeof detail?.start !== 'string' || typeof detail?.end !== 'string') return;
+			this._setRange(detail.start, detail.end);
+		} else {
+			if (typeof detail?.value !== 'string') return;
+			this.value = detail.value;
+		}
+		this._takeFocusBackToTrigger();
+		this._popover?.hide();
+		this._emit('change');
+	}
+
+	// — Actions ——————————————————————————————————————————————————————————————
+
+	public _handleInput(e: Event, end = false): void {
+		e.stopPropagation();
+		const text = (e.target as HTMLInputElement).value;
+		// `value` holds a real date or nothing at all, never a half-typed string.
+		const parsed = parseDate(text) ?? '';
+		if (end) this._displayEnd = text;
+		else this._display = text;
+		if (this.range) this._setRange(end ? this._startValue : parsed, end ? parsed : this._endValue);
+		else this.value = parsed;
+		this._emit('input');
+	}
+
+	public _handleChange(e: Event, end = false): void {
+		e.stopPropagation();
+		const text = (e.target as HTMLInputElement).value;
+		const parsed = parseDate(text);
+		// Normalize on commit: 12/3/2026 settles as 12-03-2026. Unparseable text is
+		// left standing so the user can see and fix what they wrote.
+		const shown = parsed ? formatDisplay(parsed) : text;
+		if (end) this._displayEnd = shown;
+		else this._display = shown;
+		if (this.range) this._setRange(end ? this._startValue : (parsed ?? ''), end ? (parsed ?? '') : this._endValue);
+		else this.value = parsed ?? '';
+		this._emit('change');
+	}
+
+	private _emit(type: 'input' | 'change'): void {
+		this.dispatchEvent(new CustomEvent(type, {
+			detail: { value: this.value },
+			bubbles: true,
+			composed: true,
+		}));
+	}
+
+	public get _displayValue(): string {
+		return this._display;
+	}
+
+	public get _displayEndValue(): string {
+		return this._displayEnd;
+	}
+
+	override render() {
+		return dateFieldTemplate(this);
+	}
+}
+
+declare global {
+	interface HTMLElementTagNameMap {
+		'nldd-date-field': NLDDDateField;
+	}
+}

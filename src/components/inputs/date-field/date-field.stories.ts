@@ -1,0 +1,312 @@
+import { action } from 'storybook/actions';
+import { html, nothing } from 'lit';
+import './date-field.js';
+import '../../forms/form-field/form-field.js';
+import '../date-picker/date-picker.js';
+
+/**
+ * `nldd-date-field` is een tekstveld voor een datum, met een optionele kalender
+ * in een popover.
+ *
+ * ### Waarde en weergave
+ * `value` is altijd ISO (`jjjj-mm-dd`); op het scherm staat de Nederlandse
+ * notatie (`dd-mm-jjjj`). Zo krijgt een formulier een stabiel machineformaat en
+ * de gebruiker een vertrouwde notatie.
+ *
+ * ```html
+ * <nldd-date-field value="2026-12-31"></nldd-date-field>
+ * ```
+ *
+ * ### Typen
+ * Er wordt niet gemaskeerd tijdens het typen. Invoer wordt royaal geaccepteerd
+ * (`31-12-2026`, `31/12/2026`, `31122026`, ook ISO) en pas bij het verlaten van
+ * het veld genormaliseerd naar `31-12-2026`. Maskeren per toetsaanslag laat de
+ * cursor springen, maakt backspace onvoorspelbaar en verwart schermlezers.
+ *
+ * ### Formaat-hint
+ * Zet het verwachte formaat **niet** in de placeholder: die verdwijnt zodra
+ * iemand typt, heeft te weinig contrast en wordt wisselend voorgelezen. Gebruik
+ * de `supporting-label` van `nldd-form-field` met een voorbeeld.
+ *
+ * ```html
+ * <nldd-form-field label="Geboortedatum" supporting-label="Bijvoorbeeld 31-12-2026">
+ *   <nldd-date-field></nldd-date-field>
+ * </nldd-form-field>
+ * ```
+ *
+ * ### Breedte
+ * Standaard is het veld precies breed genoeg voor een datum plus de kalenderknop
+ * en het validatie-icoon. Die ruimte is altijd gereserveerd, zodat het veld niet
+ * verspringt zodra een validatiestaat verschijnt. Gebruik `width="full"` om de
+ * container te vullen, of geef een eigen CSS-lengte.
+ *
+ * ### Kalender
+ * De knop opent `nldd-date-picker` in een `nldd-popover`; met `no-picker` laat je
+ * die knop weg en blijft alleen typen over. `min` en `max` gaan mee naar de
+ * kalender.
+ *
+ * Eerder was dit de kalender van de browser via `showPicker()`. Die is eruit
+ * gehaald omdat hij in Safari niet te sluiten was: Safari koppelt het sluiten aan
+ * de date-input zelf, en die moet onzichtbaar zijn om de knop ernaast het enige
+ * bedieningselement te laten zijn. Er was dus geen manier om hem weg te krijgen.
+ * Op smalle schermen wordt de popover vanzelf een sheet.
+ *
+ * ### Periode
+ * Met `range` staan er twee invoervelden met een scheiding ertussen, en gaat de
+ * kalender in bereikmodus. `value` bevat dan beide datums als ISO 8601-interval:
+ * begin, schuine streep, einde.
+ *
+ * ```html
+ * <nldd-date-field range name="period" value="2026-07-01/2026-07-14"></nldd-date-field>
+ * ```
+ *
+ * Eén waarde onder één naam dus, net als bij elk ander formulierveld. Het
+ * alternatief was een tweede attribuut plus een tweede, afgeleide veldnaam, en
+ * dan bestaat dezelfde periode in drie vormen: in de markup, als property en in
+ * de verzonden data. Nu is het overal hetzelfde.
+ *
+ * Een halfgevulde periode blijft zichtbaar als `2026-07-01/`. Dat is ongeldige
+ * invoer, en dat hoort de ontvangende kant te zien in plaats van een leeg veld
+ * waaruit niets blijkt.
+ *
+ * Voor schermlezers is het geheel een groep met de veldnaam, en krijgt elk
+ * invoerveld daarbinnen een eigen naam ("Periode, van" en "Periode, tot en met").
+ * `nldd-form-field` blijft dus gewoon één label en één id zetten; het veld
+ * verdeelt dat zelf.
+ *
+ * ### Validatie
+ * Zet `valid` of `invalid` voor het bijbehorende icoon en de randkleur. De
+ * foutmelding zelf hoort bij `nldd-form-field`, niet bij dit veld.
+ */
+export default {
+	title: 'Components/Inputs/Date Field',
+	component: 'nldd-date-field',
+	tags: ['autodocs'],
+	parameters: {
+		componentSource: {
+			file: 'src/components/inputs/date-field/date-field.ts',
+			repository: 'https://github.com/MinBZK/storybook',
+		},
+		status: {
+			type: 'stable',
+		},
+	},
+	args: {
+		range: false,
+		size: 'md',
+		width: '',
+		placeholder: '',
+		accessibleLabel: 'Datum',
+		noPicker: false,
+		valid: false,
+		invalid: false,
+		readonly: false,
+		disabled: false,
+		name: 'datum',
+		value: '',
+		min: '',
+		max: '',
+		required: false,
+		autocomplete: '',
+	},
+	argTypes: {
+		range: {
+			control: 'boolean',
+			description: 'Kies een periode: twee invoervelden en een kalender in bereikmodus',
+			table: { defaultValue: { summary: false } },
+		},
+		size: {
+			control: 'select',
+			options: ['sm', 'md'],
+			description: 'Veldmaat',
+			table: { defaultValue: { summary: 'md' } },
+		},
+		width: {
+			control: 'text',
+			description: 'Breedte: leeg past bij een datum plus iconen, "full" vult de container, of een eigen CSS-lengte.',
+			table: { defaultValue: { summary: '(geen)' } },
+		},
+		placeholder: {
+			control: 'text',
+			description: 'Placeholdertekst. Zet hier geen formaat in; gebruik de supporting-label van nldd-form-field.',
+			table: { defaultValue: { summary: '(geen)' } },
+		},
+		accessibleLabel: {
+			name: 'accessible-label',
+			control: 'text',
+			description: 'Toegankelijk label. Wordt automatisch gezet door nldd-form-field.',
+			table: { defaultValue: { summary: '(geen)' } },
+		},
+		noPicker: {
+			name: 'no-picker',
+			control: 'boolean',
+			description: 'Verbergt de kalenderknop. Standaard staat die knop er wel.',
+			table: { defaultValue: { summary: false } },
+		},
+		valid: {
+			control: 'boolean',
+			description: 'Markeert het veld als geldig',
+			table: { defaultValue: { summary: false } },
+		},
+		invalid: {
+			control: 'boolean',
+			description: 'Markeert het veld als ongeldig',
+			table: { defaultValue: { summary: false } },
+		},
+		readonly: {
+			control: 'boolean',
+			description: 'Alleen-lezen staat',
+			table: { defaultValue: { summary: false } },
+		},
+		disabled: {
+			control: 'boolean',
+			description: 'Uitgeschakelde staat',
+			table: { defaultValue: { summary: false } },
+		},
+		name: {
+			control: 'text',
+			description: 'Naam voor formulierverzending',
+			table: { defaultValue: { summary: '(geen)' } },
+		},
+		value: {
+			control: 'text',
+			description: 'De datum als ISO (jjjj-mm-dd)',
+			table: { defaultValue: { summary: '(geen)' } },
+		},
+		min: {
+			control: 'text',
+			description: 'Vroegst toegestane datum als ISO (jjjj-mm-dd)',
+			table: { defaultValue: { summary: '(geen)' } },
+		},
+		max: {
+			control: 'text',
+			description: 'Laatst toegestane datum als ISO (jjjj-mm-dd)',
+			table: { defaultValue: { summary: '(geen)' } },
+		},
+		required: {
+			control: 'boolean',
+			description: 'Verplichte staat',
+			table: { defaultValue: { summary: false } },
+		},
+		autocomplete: {
+			control: 'text',
+			description: 'Autocomplete-hint, bijvoorbeeld bday',
+			table: { defaultValue: { summary: '(geen)' } },
+		},
+	},
+};
+
+const Template = ({
+	range,
+	size,
+	width,
+	placeholder,
+	accessibleLabel,
+	noPicker,
+	valid,
+	invalid,
+	readonly,
+	disabled,
+	name,
+	value,
+	min,
+	max,
+	required,
+	autocomplete,
+}: Record<string, unknown>) => html`
+	<nldd-date-field
+		?range=${range}
+		size=${size || nothing}
+		width=${width || nothing}
+		placeholder=${placeholder || nothing}
+		accessible-label=${accessibleLabel || nothing}
+		?no-picker=${noPicker}
+		?valid=${valid}
+		?invalid=${invalid}
+		?readonly=${readonly}
+		?disabled=${disabled}
+		name=${name || nothing}
+		value=${value || nothing}
+		min=${min || nothing}
+		max=${max || nothing}
+		?required=${required}
+		autocomplete=${autocomplete || nothing}
+		@change=${action('change')}
+	></nldd-date-field>
+`;
+
+export const Default = Template.bind({});
+
+export const InEenFormulierveld = () => html`
+	<nldd-form-field
+		label="Geboortedatum"
+		supporting-label="Bijvoorbeeld 31-12-2026"
+	>
+		<nldd-date-field
+			name="geboortedatum"
+			autocomplete="bday"
+		></nldd-date-field>
+	</nldd-form-field>
+`;
+
+export const MetBereik = () => html`
+	<nldd-form-field
+		label="Datum in 2026"
+		supporting-label="Bijvoorbeeld 31-12-2026"
+	>
+		<nldd-date-field
+			value="2026-06-15"
+			min="2026-01-01"
+			max="2026-12-31"
+		></nldd-date-field>
+	</nldd-form-field>
+`;
+
+export const Periode = () => html`
+	<nldd-form-field
+		label="Periode"
+		supporting-label="Bijvoorbeeld 01-07-2026 t/m 14-07-2026"
+	>
+		<nldd-date-field
+			range
+			name="period"
+			value="2026-07-01/2026-07-14"
+		></nldd-date-field>
+	</nldd-form-field>
+`;
+
+export const ZonderKiezer = () => html`
+	<nldd-form-field
+		label="Datum"
+		supporting-label="Bijvoorbeeld 31-12-2026"
+	>
+		<nldd-date-field no-picker></nldd-date-field>
+	</nldd-form-field>
+`;
+
+/**
+ * Een eigen kalender in de slot, voor wat alleen een kalender weet: hier
+ * weeknummers en geen weekenden. Het veld blijft de waarde en de grenzen zetten.
+ */
+const geenWeekend = (iso: string) => {
+	const dag = new Date(`${iso}T00:00:00Z`).getUTCDay();
+	return dag === 0 || dag === 6;
+};
+
+export const EigenKalender = () => html`
+	<nldd-form-field
+		label="Afspraak"
+		supporting-label="Alleen op werkdagen"
+	>
+		<nldd-date-field
+			min="today"
+			max="today+3m"
+		>
+			<nldd-date-picker
+				slot="picker"
+				week-numbers
+				.isDateUnavailable=${geenWeekend}
+			></nldd-date-picker>
+		</nldd-date-field>
+	</nldd-form-field>
+`;
