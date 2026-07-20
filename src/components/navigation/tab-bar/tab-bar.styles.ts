@@ -20,6 +20,7 @@ export const tabBarStyles = css`
 		position: relative;
 		max-width: 100%;
 		isolation: isolate;
+		-webkit-user-select: none;
 		user-select: none;
 		-webkit-tap-highlight-color: transparent;
 	}

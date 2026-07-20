@@ -35,6 +35,7 @@ export const menuStyles = css`
 		background: transparent;
 		overflow: visible;
 		padding: 0;
+		-webkit-user-select: none;
 		user-select: none;
 		-webkit-tap-highlight-color: transparent;
 	}

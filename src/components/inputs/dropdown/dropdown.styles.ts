@@ -33,6 +33,7 @@ export const dropdownStyles = css`
 		display: block;
 		width: var(--_width);
 		max-width: 100%;
+		-webkit-user-select: none;
 		user-select: none;
 		-webkit-tap-highlight-color: transparent;
 	}
