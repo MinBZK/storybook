@@ -16,16 +16,24 @@ here; consult the commit history if you need that level of detail.
 - **`nldd-date-field` chooses a period.** With `range` the field shows two inputs with "t/m" between them and puts the calendar in range mode. The value is one ISO 8601 interval (`2026-07-06/2026-07-20`) under one `name`, so a form gets one field rather than two that can disagree. Picking a second date before the first completes the period backwards instead of starting over.
 - **Bring your own calendar.** Put an `nldd-date-picker` in the field's `picker` slot to control what only a calendar knows — week numbers, first day of the week, blocked dates, its own translations. The field keeps writing `value`, `min`, `max` and `range`, so the form value cannot drift from what the calendar shows.
 - **Relative bounds.** `min` and `max` accept `today` and `today±Nd/w/m/y` besides an ISO date, so "no earlier than today" or "at most three months out" needs no date arithmetic in the consumer.
-- **New icons.** Media controls: `play`, `pause`, `play-pause`, `stop`, `forward`, `backward`, `forward-end`, `backward-end`, `forward-frame`, `backward-frame` (each with a filled variant). Plus `person-badge-plus` (alias `add-account`), `antenna-radio-waves` (alias `broadcast`), `megaphone`, `exclamation-2-circle`, `exclamation-3-circle`, `circle-grid-2x2-top-left-check-mark` and `square-corner-4`.
+- **New icons.** Media controls: `play`, `pause`, `play-pause`, `stop`, `forward`, `backward`, `forward-end`, `backward-end`, `forward-frame`, `backward-frame` (each with a filled variant). Plus `person-badge-plus` (alias `add-user`), `antenna-radio-waves` (alias `broadcast`), `megaphone`, `exclamation-2-circle`, `exclamation-3-circle`, `circle-grid-2x2-top-left-check-mark` and `square-corner-4`.
 
 ### Added
 
 - **`nldd-date-picker`** (inputs) — new component. `value` for a single date, or `range` with `start` / `end`; `min` / `max` accept an ISO date, `today`, or `today±Nd/w/m/y`; `week-numbers` adds an ISO week column; `first-day-of-week` sets the leading column; `isDateUnavailable` (property) blocks individual dates while keeping them reachable with the keyboard; `accessible-label` names the grid; `translations` overrides the Dutch defaults. Fires `input` while a period is half-chosen and `change` once a value is complete.
 - **`nldd-date-field`** — `range` for a period as a single ISO 8601 interval value; a `picker` slot for your own `nldd-date-picker`; `min` / `max` now also take `today` and `today±Nd/w/m/y`.
 
-### Changed
+### Breaking
 
-- **Icons `batch` renamed to `badge`.** `book-batch-play`, `file-text-batch-check-mark` and `file-text-batch-check-plus` show a badge in the corner, like `person-badge-gear` and `cylinder-split-badge-lock`, not a stack. They are now `book-badge-play`, `file-text-badge-check-mark` and `file-text-badge-check-plus`. The old names keep working as aliases, so nothing breaks; the `new-text-document` alias follows the rename.
+- **Icons: `batch` in a name is now `badge`.** Three icons show a small badge in the bottom-right corner, sharing that sub-glyph with `person-badge-gear` and `cylinder-split-badge-lock`. None of them shows a stack, so the name was simply wrong. Rename in your markup:
+
+  | was | is |
+  | --- | --- |
+  | `book-batch-play` | `book-badge-play` |
+  | `file-text-batch-check-mark` | `file-text-badge-check-mark` |
+  | `file-text-batch-check-plus` | `file-text-badge-check-plus` |
+
+  The old names are gone, also as aliases: a misspelling kept alive as an alias is a misspelling you keep reading in code review. The `new-text-document` alias follows the rename and needs no change.
 
 ### Fixed
 
