@@ -18,6 +18,7 @@ import { readFileSync, readdirSync } from 'node:fs';
 import { resolve, dirname, join, sep } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { generatedHeader, writeGenerated } from './lib/skill-doc.js';
+import { extractLeadingBlock, parseComponent, parseTypedTag, parseNamedTag } from './lib/component-jsdoc.js';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const componentsDir = resolve(__dirname, '../src/components');
@@ -61,165 +62,6 @@ function collectEntryFiles(dir) {
 	return files;
 }
 
-/** Extract the JSDoc block that documents the component(s). Prefers the first
- * block containing @element or @customElement so a license/module header before
- * it does not get picked by mistake; falls back to the first block. */
-function extractLeadingBlock(source) {
-	const blocks = [...source.matchAll(/\/\*\*([\s\S]*?)\*\//g)];
-	if (blocks.length === 0) return null;
-	const chosen =
-		blocks.find((m) => /@element\b|@customElement\b/.test(m[1])) ?? blocks[0];
-	// Strip the leading " * " from each line. Use \s* (not \s?) after the star so
-	// JSDoc formatted with two or more spaces (" *  @attr …") still lands the tag
-	// at column 0, otherwise the @-tag regex would miss it and drop the entry.
-	return chosen[1]
-		.split('\n')
-		.map((line) => line.replace(/^\s*\*?\s*/, ''))
-		.join('\n')
-		.trim();
-}
-
-/**
- * Parse a single JSDoc tag line of the form
- *   @attr {type} name - description
- * The type is brace-balanced (so unions like {'a'|'b'} survive), the name is
- * the next whitespace-delimited token, and the description is the remainder
- * after an optional "-" separator.
- */
-function parseTypedTag(rest) {
-	let type = '';
-	let remainder = rest.trim();
-	if (remainder.startsWith('{')) {
-		let depth = 0;
-		let i = 0;
-		for (; i < remainder.length; i++) {
-			if (remainder[i] === '{') depth++;
-			else if (remainder[i] === '}') {
-				depth--;
-				if (depth === 0) {
-					i++;
-					break;
-				}
-			}
-		}
-		type = remainder.slice(0, i).replace(/^\{|\}$/g, '').trim();
-		remainder = remainder.slice(i).trim();
-	}
-	const nameMatch = remainder.match(/^(\S+)\s*(.*)$/s);
-	if (!nameMatch) return { type, name: '', description: '' };
-	// Strip the JSDoc `[optional]` bracket convention from the attribute name.
-	const name = nameMatch[1].replace(/^\[|\]$/g, '');
-	const description = nameMatch[2].replace(/^-\s*/, '').replace(/\s+/g, ' ').trim();
-	return { type, name, description };
-}
-
-/** Parse a @slot / @fires line: "name - description" (name optional for default slot). */
-function parseNamedTag(rest) {
-	const m = rest.trim().match(/^(\S+)?\s*-?\s*([\s\S]*)$/);
-	if (!m) return { name: '', description: '' };
-	let name = m[1] ?? '';
-	let description = m[2] ?? '';
-	// A leading "-" means the default (unnamed) slot.
-	if (name === '-') {
-		name = '';
-	} else {
-		description = description.replace(/^-\s*/, '');
-	}
-	return { name, description: description.replace(/\s+/g, ' ').trim() };
-}
-
-/** Parse one component file's JSDoc block into one or more records — a file may
- * document several custom elements (e.g. nldd-tab-bar + nldd-tab-bar-item), each
- * with its own @element. attrs/slots/events are assigned to the @element that
- * precedes them. The fallbackTag (from @customElement) is used only when the
- * JSDoc has no @element at all. Returns an array of components. */
-function parseComponent(block, filePath, fallbackTag) {
-	const lines = block.split('\n');
-	const category = filePath.slice(componentsDir.length + 1).split(sep)[0];
-	const summaryLines = [];
-	const components = [];
-
-	const newComponent = (tag) => ({
-		tag,
-		summary: '',
-		attrs: [],
-		slots: [],
-		events: [],
-		category,
-	});
-
-	let current = null;
-	// The most recent description-bearing entry (attr/slot/event), so a
-	// multi-line JSDoc tag's continuation lines append to it instead of dropping.
-	let lastEntry = null;
-
-	for (const line of lines) {
-		const tagMatch = line.match(/^@(\w+)\s*([\s\S]*)$/);
-		if (!tagMatch) {
-			if (line.trim() === '') {
-				lastEntry = null;
-				continue;
-			}
-			if (lastEntry) {
-				lastEntry.description = `${lastEntry.description} ${line.trim()}`.trim();
-				continue;
-			}
-			// Prose before the first @element is the shared summary.
-			if (!current && !line.startsWith('#')) {
-				summaryLines.push(line.trim());
-			}
-			continue;
-		}
-		lastEntry = null;
-		const [, tag, rest] = tagMatch;
-		switch (tag) {
-			case 'element':
-				current = newComponent(rest.trim());
-				components.push(current);
-				break;
-			case 'attr': {
-				if (!current) break;
-				const entry = parseTypedTag(rest);
-				current.attrs.push(entry);
-				lastEntry = entry;
-				break;
-			}
-			case 'slot': {
-				if (!current) break;
-				const entry = parseNamedTag(rest);
-				current.slots.push(entry);
-				lastEntry = entry;
-				break;
-			}
-			case 'fires': {
-				if (!current) break;
-				const entry = parseNamedTag(rest);
-				current.events.push(entry);
-				lastEntry = entry;
-				break;
-			}
-			default:
-				break;
-		}
-	}
-
-	// No @element at all: fall back to the @customElement decorator tag.
-	if (components.length === 0) {
-		if (!fallbackTag) return [];
-		components.push(newComponent(fallbackTag));
-	}
-
-	// The shared prose summary (minus the boilerplate title line) goes to the
-	// first element; sub-elements keep their own per-element prose if any.
-	const summary = summaryLines
-		.filter((l) => !/Components? \(Lit \+ TypeScript\)\s*$/.test(l))
-		.join(' ')
-		.replace(/\s+/g, ' ')
-		.trim();
-	if (components[0]) components[0].summary = summary;
-
-	return components;
-}
 
 function escapeCell(text) {
 	return (text || '').replace(/\|/g, '\\|');
@@ -370,9 +212,9 @@ snelreferentie; de levende documentatie met voorbeelden staat in
 [Storybook](https://minbzk.github.io/storybook/), en de exacte types staan in
 de \`.d.ts\` bestanden van het pakket.
 
-> Let op: deze referentie komt uit de JSDoc van de componenten. Een paar
-> componenten documenteren niet al hun \`@attr\`s; daar tonen de \`.d.ts\` types
-> of Storybook de volledige set. Raadpleeg die bij twijfel.
+> Deze referentie komt uit de JSDoc van de componenten. Dat elk attribuut er
+> in staat, wordt in CI afgedwongen: \`npm run validate:component-api\`
+> vergelijkt de \`@property\`-decorators met de \`@attr\`-regels.
 
 `;
 

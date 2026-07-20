@@ -187,3 +187,25 @@ test('integration: parses a real component file end to end', () => {
 	// Every attribute must have a non-empty name (no parse drift to empty rows).
 	assert.ok(c.attrs.every((a) => a.name.length > 0));
 });
+
+test('leest een attribuutnaam met [brackets] direct gevolgd door het streepje', () => {
+	// "[name]- beschrijving" zonder spatie leverde eerder de letterlijke naam
+	// "name]-" op, die zo in de gepubliceerde reference belandde.
+	const block = '@element nldd-thing\n@attr {string} [sticky-bottom]- Sticky bottom inset.';
+	const [c] = parseComponent(block, '/x/src/components/a/b/b.ts', null);
+	assert.equal(c.attrs[0].name, 'sticky-bottom');
+	assert.equal(c.attrs[0].description, 'Sticky bottom inset.');
+});
+
+test('behoudt tags in een blok zonder @element', () => {
+	// Zonder @element werden alle tags weggegooid omdat ze aan `current` hangen
+	// en de fallback pas na de lus werd aangemaakt. nldd-top-title-bar verloor zo
+	// zes attributen, een slot en twee events uit de gepubliceerde reference.
+	const block = 'Een titelbalk.\n@attr {string} text - De titel.\n@slot - Inhoud.\n@fires dismiss - Sluiten.';
+	const [c] = parseComponent(block, '/x/src/components/a/b/b.ts', 'nldd-fallback');
+	assert.equal(c.tag, 'nldd-fallback');
+	assert.equal(c.attrs.length, 1);
+	assert.equal(c.attrs[0].name, 'text');
+	assert.equal(c.slots.length, 1);
+	assert.equal(c.events.length, 1);
+});
