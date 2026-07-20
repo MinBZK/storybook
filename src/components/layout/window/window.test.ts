@@ -2,6 +2,7 @@ import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest';
 import { fixture, cleanup, waitForUpdate } from '../../../test-utils.js';
 import type { NLDDWindow } from './window.js';
 import './window.js';
+import { windowStyles } from './window.styles.js';
 
 describe('nldd-window', () => {
 	let el: NLDDWindow;
@@ -251,5 +252,18 @@ describe('nldd-window', () => {
 			const dialog = el.shadowRoot!.querySelector('dialog') as HTMLDialogElement;
 			expect(dialog.style.colorScheme).toBe('');
 		});
+	});
+});
+
+describe('nldd-window neemt geen ruimte in de flow', () => {
+	// Het venster is een position:fixed <dialog>, dus de host hoort geen doos te
+	// zijn. Als blok groeit hij mee met zijn broers en pikt hun hoogte in.
+	it('zet de host op display: contents', () => {
+		expect(windowStyles.cssText).toMatch(/:host\s*\{[^}]*display:\s*contents/);
+	});
+
+	// De hidden-regel komt later en is specifieker, dus die wint van contents.
+	it('blijft verbergbaar met hidden', () => {
+		expect(windowStyles.cssText).toMatch(/:host\(\[hidden\]\)\s*\{[^}]*display:\s*none/);
 	});
 });
