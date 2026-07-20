@@ -417,6 +417,9 @@
     "./tokens": {
       "types": "./dist/assets/styles/tokens.d.ts",
       "default": "./dist/assets/styles/tokens.js"
+    },
+    "./vue": {
+      "types": "./dist/types/vue.d.ts"
     }
   },
   "files": [
