@@ -22,6 +22,7 @@
  *
  * @element nldd-drag-handle-cell
  * @attr {string} size - Handle size: 'sm' | 'md' (default: 'md')
+ * @attr {object} translations - Override translation keys; unset keys fall back to Dutch. Sets the handle's accessible label.
  */
 import { LitElement } from 'lit';
 import { customElement, property } from 'lit/decorators.js';

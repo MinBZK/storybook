@@ -8,6 +8,8 @@
  * @attr {boolean} checked  - Checked state
  * @attr {boolean} disabled - Disabled state
  * @attr {string}  value    - Value for form submission
+ * @attr {string}  name     - Radio group name for form submission, forwarded to the inner nldd-radio-button. Set automatically by nldd-radio-button-group.
+ * @attr {boolean} required - Required state, forwarded to the inner nldd-radio-button. Set automatically by nldd-radio-button-group.
  * @attr {string}  label    - Label text for the radio button
  *
  * @fires change - When checked state changes; detail: { checked: boolean, value: string }

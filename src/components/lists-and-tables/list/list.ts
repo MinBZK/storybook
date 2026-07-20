@@ -69,6 +69,20 @@ export interface NLDDReorderEventDetail {
  * Vue, …) that update the DOM on a later tick will miss the focus restore and
  * should manage focus themselves after their render commits.
  *
+ * @element nldd-list
+ *
+ * @attr {'simple'|'box'} variant - Visual style (default 'simple'): `simple` is a plain vertical strip with no chrome, `box` a framed card with rounded corners, fill and inset border ring
+ * @attr {'tinted'|'base'} background - Surface fill for `variant="box"` (default 'tinted'). Use `base` on an already-tinted parent. No effect with `variant="simple"`.
+ * @attr {'list'|'navigation'|'listbox'} type - A11y role and behavior (default 'list'). See the docblock above.
+ * @attr {boolean} reorderable - Enables drag-to-reorder and pushes `reorderable` onto the items. Only valid with `type="list"`; wins over `arrow-navigation` when both are set.
+ * @attr {boolean} no-dividers - Hides the dividers between list items
+ * @attr {boolean} arrow-navigation - Roving-tabindex arrow-key navigation: ArrowUp/ArrowDown move focus between items, Home/End jump to first/last, and the list becomes a single tab stop. Ignored when `reorderable` is active on a `type="list"`, and in listbox mode.
+ * @attr {string} height - Listbox only: caps the options' scroll region at this CSS length (e.g. '320px'). Unset means no cap.
+ * @attr {string} empty-text - Text for the default empty-state dialog (falls back to the Dutch i18n default). Ignored when `[slot=empty]` is filled.
+ * @attr {string} empty-supporting-text - Supporting text for the default empty-state dialog. Ignored when `[slot=empty]` is filled.
+ * @attr {string} accessible-label - Accessible name, forwarded to the list in `type="list"` and to the search field in `type="listbox"`. For `type="navigation"` set `aria-label` / `aria-labelledby` on the element itself. Falls back to the i18n default.
+ * @attr {object} translations - Override translation keys; unset keys fall back to Dutch
+ *
  * @slot         - List items (`nldd-list-item`)
  * @slot toolbar - Controls below the search field (filters, sort, counts,
  *                 view toggles). Available for every type; collapses when empty.

@@ -9,6 +9,7 @@
  * @attr {string}  name     - Forwarded to all slotted nldd-radio-button-field elements
  * @attr {boolean} disabled - Disables all slotted fields
  * @attr {boolean} required - Marks the group as required
+ * @attr {string}  accessible-labelled-by - Id of an external label element, set as aria-labelledby on the group
  *
  * @slot - Slot for nldd-radio-button-field elements
  *

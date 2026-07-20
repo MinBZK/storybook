@@ -18,6 +18,7 @@
  * @attr {string} resize          - 'none' | 'vertical' | 'auto' (default).
  *                                  'auto' grows with content (native field-sizing), no manual handle.
  * @attr {string} accessible-label - Accessible label forwarded to the inner textarea. Set automatically by nldd-form-field.
+ * @attr {string} error-message-ids - Ids for aria-describedby on the inner textarea. Set automatically by nldd-form-field.
  * @attr {boolean} no-spellcheck  - Disables browser spellchecking on the inner textarea
  * @attr {string} width           - Optional fixed width (any CSS length, e.g. "240px"). Default: stretches to fill container.
  *

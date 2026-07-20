@@ -12,9 +12,9 @@ snelreferentie; de levende documentatie met voorbeelden staat in
 [Storybook](https://minbzk.github.io/storybook/), en de exacte types staan in
 de `.d.ts` bestanden van het pakket.
 
-> Let op: deze referentie komt uit de JSDoc van de componenten. Een paar
-> componenten documenteren niet al hun `@attr`s; daar tonen de `.d.ts` types
-> of Storybook de volledige set. Raadpleeg die bij twijfel.
+> Deze referentie komt uit de JSDoc van de componenten. Dat elk attribuut er
+> in staat, wordt in CI afgedwongen: `npm run validate:component-api`
+> vergelijkt de `@property`-decorators met de `@attr`-regels.
 
 ## Actions
 
@@ -27,8 +27,10 @@ de `.d.ts` bestanden van het pakket.
 | `variant` | `string` | Button variant: 'primary' \| 'secondary' \| 'destructive' \| 'accent-filled' \| 'accent-transparent' \| 'neutral-tinted' \| 'neutral-base' \| 'neutral-transparent' \| 'critical-tinted' \| 'critical-transparent' \| 'inherit-filled' \| 'inherit-tinted'. De inherit-varianten leiden hun kleuren af van currentColor, voor knoppen op gekleurde vlakken; inherit-filled gebruikt de vlakkleur (--context-parent-background-color) als labelkleur met een wit/zwart-contrastflip als fallback. |
 | `size` | `string` | Button size: 'xs' \| 'sm' \| 'md' \| 'lg' (default: 'md'). 'lg' uses larger text and 24px start/end icons. |
 | `horizontal-alignment` | `string` | Horizontal alignment of the button content: 'left' \| 'center' \| 'right' (default: unset, centered). Most visible with width="full" or a fixed width. |
+| `loading` | `boolean` | Loading state (default: false). Shows an activity indicator over the visually hidden content, sets aria-busy on the inner control and blocks activation, without dropping the button from the tab order (unlike disabled). The content stays laid out, so the button keeps its width. |
 | `disabled` | `boolean` | Disabled state |
 | `type` | `string` | Button type for form submission: 'button' \| 'submit' \| 'reset' (ignored when href is set) |
+| `popovertarget` | `string` | ID of a popover element this button invokes; forwarded to the inner button. Use the popoverTargetElement property instead when the popover lives in another tree. |
 | `expandable` | `boolean` | Whether the button has a icon to indicate it opens a menu or popover |
 | `expanded` | `boolean` | Whether the popover/menu controlled by this button is currently open. Forwarded as aria-expanded on the inner button; toggles the is-expanded visual state. |
 | `popup-type` | `string` | Type of popup container this button opens: 'menu' \| 'listbox' \| 'dialog' \| 'tree' \| 'grid'. Sets aria-haspopup on the inner button and forces aria-expanded to always be present (true/false) so screen readers know the popup state. |
@@ -105,7 +107,9 @@ A container for grouping related buttons together, either horizontally or vertic
 | `size` | `string` | Button size: 'xs' \| 'sm' \| 'md' \| 'lg' (default: 'md') |
 | `hide-lg-text` | `boolean` | In lg size, hides the text label and enlarges the icon by one step (28px) |
 | `no-highlight-border` | `boolean` | Removes the per-variant highlight border (e.g. when a control group draws a single border instead). |
+| `loading` | `boolean` | Loading state (default: false). Shows an activity indicator over the visually hidden icon, sets aria-busy on the inner control and blocks activation, without dropping the button from the tab order (unlike disabled). |
 | `disabled` | `boolean` | Disabled state |
+| `no-tab` | `boolean` | Takes the button out of the tab order (tabindex="-1"), for a control owned by a roving container (e.g. an nldd-token in nldd-token-field) that manages focus itself. Still mouse- and script-focusable. |
 | `type` | `string` | Button type for form submission: 'button' \| 'submit' \| 'reset' (ignored when href is set) |
 | `expandable` | `boolean` | Whether the button opens a menu or popover and shows chevron next to the icon |
 | `expanded` | `boolean` | Whether the popover/menu controlled by this button is currently open. Forwarded as aria-expanded on the inner button; toggles the is-expanded visual state. |
@@ -172,6 +176,7 @@ A split button combines a primary action button with a dropdown trigger. The mai
 | `size` | `string` | Toolbar size, propagated to all child controls: 'sm' \| 'md' \| 'lg' (default: 'md'). At 'lg' the overflow button (and lg-capable children like nldd-icon-button) stack their label below the icon. |
 | `show-item-labels` | `boolean` | When true, shows a text label below each toolbar item and the overflow button |
 | `label` | `string` | Accessible label for the toolbar. Only needed when multiple toolbars appear on the same page |
+| `translations` | `object` | Override translation keys (e.g. the overflow button label); unset keys fall back to Dutch. |
 
 **Slots**
 
@@ -193,6 +198,8 @@ A split button combines a primary action button with a dropdown trigger. The mai
 | `max-width` | `string` | Maximum (fluid) width as a CSS length (e.g. '480px'). Setting it also makes the item fluid. |
 | `label` | `string` | Text label shown below the item when the toolbar has show-item-labels. |
 | `priority` | `number` | Overflow order: items with a lower priority move into the overflow menu first (default 0). Items sharing a priority overflow together, regardless of position. |
+| `size` | `'sm'\|'md'\|'lg'` | Set by nldd-toolbar, not a consumer attribute: mirrors the toolbar's size (default: 'md') onto the item host, so size-dependent styling can key off it. |
+| `show-item-labels` | `boolean` | Set by nldd-toolbar, not a consumer attribute: mirrors the toolbar's show-item-labels, so the item renders its label below the control. |
 | `fluid` | `boolean` | Set by nldd-toolbar, not a consumer attribute: marks an item that grows or shrinks to fill space. Toggled synchronously during measurement, so it can appear or disappear between layout frames — do not style against it. It is not reflected as a JS property — read it with hasAttribute('fluid'). |
 | `solo-fluid` | `boolean` | Set by nldd-toolbar, not a consumer attribute: the sole fluid item, allowed to shrink below its content. Same synchronous-toggle and property-read caveats as fluid. |
 | `hidden` | `boolean` | Set by nldd-toolbar, not a consumer attribute, when the item moves into the overflow menu. Same synchronous-toggle caveat. |
@@ -216,6 +223,7 @@ A split button combines a primary action button with a dropdown trigger. The mai
 | `width` | `string` | Preferred (fluid) width as a CSS length or percentage; the title grows toward it and shrinks to min-width. |
 | `min-width` | `string` | Minimum width as a CSS length (default: '0', so the title shrink-wraps its content and the next element sits against it). |
 | `max-width` | `string` | Maximum width as a CSS length (default: '240px'); the title text truncates with an ellipsis beyond it. The cap is lifted while the title is the sole toolbar element (it then stretches to fill the row). |
+| `size` | `'sm'\|'md'\|'lg'` | Set by nldd-toolbar, not a consumer attribute: mirrors the toolbar's size (default: 'md'), which sets the title group height and, at 'sm', the title and supporting-text fonts. |
 
 **Slots**
 
@@ -296,6 +304,7 @@ A read-only block of code/text built on a non-editable CodeMirror 6 view. Visual
 | `language` | `string` | Grammar to highlight with. Empty disables highlighting. |
 | `no-copy` | `boolean` | Hide the copy-to-clipboard button (shown by default). |
 | `wrap` | `boolean` | Wrap long lines instead of horizontal scroll |
+| `translations` | `object` | Override translation keys (e.g. the copy button labels and the scroll-region label); unset keys fall back to Dutch. |
 
 **Slots**
 
@@ -340,6 +349,7 @@ Wraps a native `<img>` with design-system styling: corner radius variants, aspec
 | `credit` | `string` | Smaller credit/attribution text shown beside the caption |
 | `decorative` | `boolean` | Decorative image: alt is forced empty + aria-hidden |
 | `lqip` | `string` | Low-quality image placeholder as a CSV string `"base,c1,c2,c3,c4,c5,c6"` — seven 0-255 bytes, each packing an 8-bit Oklab triplet (2 bits L, 3 bits a, 3 bits b). The first is the base color shown outside the cell gradients; the other six are per-cell colors in row-major 3×2 order. Generate via the encoder in `lqip-encoder.ts` or via the "LQIP encoder tool" Storybook story. Extends Lean Rada's CSS-only LQIP (https://leanrada.com/notes/css-only-lqip/) with per-cell hue — Lean's original format encodes grayscale cells only; ours encodes a color per cell so multi-color subjects survive the placeholder. |
+| `translations` | `object` | Override translation keys (e.g. the message shown when the image fails to load); unset keys fall back to Dutch. |
 
 **Slots**
 
@@ -364,6 +374,7 @@ Toont een toetsencombinatie (zoals Cmd+K of Ctrl+Shift+P) in één gecombineerde
 | `variant` | `string` | 'box' (default) toont elke toets als keycap met vulling en highlight-rand; 'simple' toont de toetsen als platte tekst met scheidingstekens — lichter, voor inline gebruik zoals in een menu-item. |
 | `always-visible` | `boolean` | Toon ook op touch-only devices waar shortcuts niet aanroepbaar zijn. |
 | `color` | `string` | 'neutral' (default) gebruikt de eigen component-kleuren. 'inherit' laat de toetsen en scheidingstekens de omringende tekstkleur (currentColor) volgen, met een doorschijnende contrast-vulling en highlight-rand — handig op een gevulde vlakkleur of een gemarkeerde rij. |
+| `debug-os` | `'mac'\|'windows'\|'linux'\|'other'` | Ontwikkelhulp: overschrijft de OS-detectie voor deze instantie, zodat je in Storybook of documentatie meerdere platform-varianten naast elkaar kunt tonen. Niet bedoeld voor productiegebruik; laat het leeg (default) zodat de echte OS-detectie geldt. |
 
 **Slots**
 
@@ -800,6 +811,7 @@ A visual wrapper around a native `<select>` element. The consumer provides a nat
 | `rows` | `number` | Initial visible rows (minimum height). Default: 3. |
 | `resize` | `string` | 'none' \| 'vertical' \| 'auto' (default). 'auto' grows with content (native field-sizing), no manual handle. |
 | `accessible-label` | `string` | Accessible label forwarded to the inner textarea. Set automatically by nldd-form-field. |
+| `error-message-ids` | `string` | Ids for aria-describedby on the inner textarea. Set automatically by nldd-form-field. |
 | `no-spellcheck` | `boolean` | Disables browser spellchecking on the inner textarea |
 | `width` | `string` | Optional fixed width (any CSS length, e.g. "240px"). Default: stretches to fill container. |
 
@@ -862,6 +874,7 @@ A password input field with visibility toggle and validation states.
 | `name` | `string` | Input name for form submission |
 | `autocomplete` | `string` | Autocomplete hint |
 | `accessible-label` | `string` | Accessible label forwarded to the inner input. Set automatically by nldd-form-field. |
+| `error-message-ids` | `string` | Ids for aria-describedby on the inner input. Set automatically by nldd-form-field. |
 | `width` | `string` | Optional fixed width (any CSS length, e.g. "240px"). Default: stretches to fill container. |
 
 **Events**
@@ -881,6 +894,9 @@ WAI-ARIA: Wrap radio buttons in a <fieldset>/<legend> or a container with role="
 | --- | --- | --- |
 | `checked` | `boolean` | Checked state |
 | `disabled` | `boolean` | Disabled state |
+| `required` | `boolean` | Required state |
+| `name` | `string` | Radio group name for form submission; ties the buttons of one group together |
+| `value` | `string` | Value submitted with the form when this radio button is checked |
 | `accessible-label` | `string` | Accessible label forwarded as aria-label to the native input. Note: aria-labelledby is not supported as IDREF resolution cannot cross shadow DOM boundaries. |
 
 **Events**
@@ -900,6 +916,8 @@ A radio button with an inline label. Use inside nldd-radio-button-group for keyb
 | `checked` | `boolean` | Checked state |
 | `disabled` | `boolean` | Disabled state |
 | `value` | `string` | Value for form submission |
+| `name` | `string` | Radio group name for form submission, forwarded to the inner nldd-radio-button. Set automatically by nldd-radio-button-group. |
+| `required` | `boolean` | Required state, forwarded to the inner nldd-radio-button. Set automatically by nldd-radio-button-group. |
 | `label` | `string` | Label text for the radio button |
 
 **Events**
@@ -919,6 +937,7 @@ Groups nldd-radio-button-field elements, handles keyboard navigation, and forwar
 | `name` | `string` | Forwarded to all slotted nldd-radio-button-field elements |
 | `disabled` | `boolean` | Disables all slotted fields |
 | `required` | `boolean` | Marks the group as required |
+| `accessible-labelled-by` | `string` | Id of an external label element, set as aria-labelledby on the group |
 
 **Slots**
 
@@ -974,6 +993,8 @@ A horizontal group of mutually exclusive (radio) or multi-select (checkbox) opti
 | `disabled` | `boolean` | Disabled state for all items |
 | `width` | `string` | Width mode: 'full' (stretches to container), 'fit-content' (per-item content size), or any CSS length (e.g. '240px') |
 | `name` | `string` | Name for form submission, forwarded to native inputs |
+| `accessible-label` | `string` | Accessible name for the group, set as aria-label |
+| `accessible-labelled-by` | `string` | Id of an external label element, set as aria-labelledby on the group |
 
 **Slots**
 
@@ -998,6 +1019,10 @@ A horizontal group of mutually exclusive (radio) or multi-select (checkbox) opti
 | `disabled` | `boolean` | Disabled state |
 | `text` | `string` | Text label (shown for variant "text" and "icon-and-text"; used as aria-label and tooltip for variant "icon") |
 | `icon` | `string` | Icon name for nldd-icon |
+| `size` | `string` | Control size: 'sm' \| 'md' \| 'lg' (default: 'md'). Set by nldd-segmented-control. |
+| `variant` | `string` | Content type: 'text' \| 'icon' \| 'icon-and-text' (default: 'text'). Set by nldd-segmented-control. |
+| `input-type` | `string` | Type of the native input: 'radio' \| 'checkbox' (default: 'radio'). Set by nldd-segmented-control. |
+| `group-name` | `string` | Name of the group for form submission, put on the native input. Set by nldd-segmented-control. |
 
 **Slots**
 
@@ -1025,6 +1050,7 @@ A numeric control with increment and decrement buttons.
 | `step` | `number` | Step size (default: 1) |
 | `disabled` | `boolean` | Disabled state |
 | `size` | `string` | Size: 'xs' \| 'sm' \| 'md' (default: 'md') |
+| `name` | `string` | Name for form submission; the value is submitted under this name |
 | `translations` | `object` | Translations; unspecified keys fall back to Dutch |
 
 **Events**
@@ -1044,6 +1070,8 @@ A toggle control for on/off settings. Prefer nldd-switch-field for labeled usage
 | `checked` | `boolean` | Whether the switch is on/off |
 | `disabled` | `boolean` | Disabled state |
 | `size` | `string` | Switch size: 'xs' \| 'sm' (default: 'sm') |
+| `name` | `string` | Name for form submission; nothing is submitted when the switch is off |
+| `value` | `string` | Value submitted with the form when the switch is on (default: 'on') |
 | `accessible-label` | `string` | Accessible label forwarded as aria-label to the native input. Required when using nldd-switch without nldd-switch-field. |
 
 **Events**
@@ -1125,6 +1153,7 @@ A hybrid markdown editor built on CodeMirror 6 (via NLDDCodeMirrorElement): the 
 | `required` | `boolean` | Required state |
 | `autocomplete` | `string` | Autocomplete hint |
 | `accessible-label` | `string` | Accessible label forwarded to the inner input. Set automatically by nldd-form-field. |
+| `error-message-ids` | `string` | Ids for aria-describedby on the inner input. Set automatically by nldd-form-field. |
 | `no-spellcheck` | `boolean` | Disables browser spellchecking on the inner input |
 | `width` | `string` | Optional fixed width (any CSS length, e.g. "240px"). Default: stretches to fill container. |
 
@@ -1362,11 +1391,28 @@ A simple layout primitive: pick a layout mode, give it a gap, optionally align c
 | `padding-top` | `string` | Padding top |
 | `padding-right` | `string` | Padding right |
 | `padding-bottom` | `string` | Padding bottom |
-| `padding-left` | `string` | Padding left |
+| `padding-left` | `string` | Padding left Breakpoints for the sm/md/lg padding attributes below: sm is up to 640px, md is 641px to 1007px, lg is 1008px and up. Each is emitted as both an |
 | `sm-padding` | `string` | Padding for all sides at sm |
-| `sm-padding-inline` | `string` | (and equivalents for inline/block/top/right/bottom/left) |
-| `md-padding` | `string` | Padding at md (and per-side equivalents) |
-| `lg-padding` | `string` | Padding at lg (and per-side equivalents) |
+| `sm-padding-inline` | `string` | Padding left and right at sm |
+| `sm-padding-block` | `string` | Padding top and bottom at sm |
+| `sm-padding-top` | `string` | Padding top at sm |
+| `sm-padding-right` | `string` | Padding right at sm |
+| `sm-padding-bottom` | `string` | Padding bottom at sm |
+| `sm-padding-left` | `string` | Padding left at sm |
+| `md-padding` | `string` | Padding for all sides at md |
+| `md-padding-inline` | `string` | Padding left and right at md |
+| `md-padding-block` | `string` | Padding top and bottom at md |
+| `md-padding-top` | `string` | Padding top at md |
+| `md-padding-right` | `string` | Padding right at md |
+| `md-padding-bottom` | `string` | Padding bottom at md |
+| `md-padding-left` | `string` | Padding left at md |
+| `lg-padding` | `string` | Padding for all sides at lg |
+| `lg-padding-inline` | `string` | Padding left and right at lg |
+| `lg-padding-block` | `string` | Padding top and bottom at lg |
+| `lg-padding-top` | `string` | Padding top at lg |
+| `lg-padding-right` | `string` | Padding right at lg |
+| `lg-padding-bottom` | `string` | Padding bottom at lg |
+| `lg-padding-left` | `string` | Padding left at lg |
 
 **Slots**
 
@@ -1642,8 +1688,8 @@ A page section with a left sidebar alongside the main content. - **Wide (section
 | `no-collapse` | `boolean` | Opt out of the sheet: a narrow section stacks the sidebar above the main instead of collapsing. `collapsed` then stays false. |
 | `width` | `string` | Body max-width: 'full' removes the constraint; any CSS length overrides the default. |
 | `sticky-top` | `string` | Sticky top inset on lg (CSS length; default = 16px). |
-| `sticky-bottom]-` | `string` | Sticky bottom inset on lg (CSS length; default = 16px). |
-| `sidebar-label]-` | `string` | Accessible name for the sidebar (the aside landmark on lg and the sheet on sm/md). Default 'Zijbalk'. |
+| `sticky-bottom` | `string` | Sticky bottom inset on lg (CSS length; default = 16px). |
+| `sidebar-label` | `string` | Accessible name for the sidebar (the aside landmark on lg and the sheet on sm/md). Default 'Zijbalk'. |
 
 **Slots**
 
@@ -1943,6 +1989,7 @@ Interactief bouwblok voor gebruik in een menu bar. Rendert als <a> (met href) of
 | `accessible-label` | `string` | Overschrijf aria-label |
 | `haspopup` | `string` | aria-haspopup waarde (bijv. "menu", "dialog") |
 | `open` | `boolean` | Of het gekoppelde popover/menu open is |
+| `expanded` | `boolean` | Of de bijbehorende popover open is; zet aria-expanded op de knop wanneer expandable of haspopup is gezet. Wordt automatisch bijgehouden voor een geslotte `<nldd-menu>`. |
 
 **Slots**
 
@@ -1969,6 +2016,7 @@ A pagination control for navigating between pages of content.
 | `disabled` | `boolean` | Disabled state |
 | `centered` | `boolean` | Centreert de pagination in de container (host fills row, items grouped in the middle) |
 | `href-pattern` | `string` | URL patroon met {page} placeholder, rendert links in plaats van buttons |
+| `translations` | `object` | Vertalingen; niet opgegeven sleutels vallen terug op het Nederlands |
 
 **Events**
 
@@ -2029,6 +2077,8 @@ A horizontal navigation bar with mutually exclusive tabs. Exports both NLDDTabBa
 | `selected` | `boolean` | Selected state (managed by nldd-tab-bar) |
 | `text` | `string` | Tab text; also used as accessible name for icon-only items |
 | `href` | `string` | Optional link URL; renders an anchor instead of a button |
+| `icon` | `string` | Icon name for nldd-icon; an alternative to the icon slot. The icon and icon-and-text variants fall back to a placeholder icon when neither is provided. |
+| `size` | `'md'\|'lg'` | Size: 'md' (default) \| 'lg'. Set by nldd-tab-bar from its own size; 'lg' enlarges the touch target while keeping the variant layout. |
 
 **Slots**
 
@@ -2044,11 +2094,51 @@ A horizontal navigation bar with mutually exclusive tabs. Exports both NLDDTabBa
 
 ### `<nldd-top-navigation-bar>`
 
-Minimal typed interface for nldd-sheet API.
+De bovenste balk van een pagina: een logobalk met het Rijkslogo en een optioneel woordmerk, en daaronder de hoofdbalk met de websitetitel, een terugknop, de globale navigatie en de utility-navigatie. Op smalle breedtes verhuist de globale navigatie naar een menusheet achter de menuknop.
+
+**Attributes**
+
+| Attribuut | Type | Beschrijving |
+| --- | --- | --- |
+| `no-logo` | `boolean` | Verbergt de hele logobalk, inclusief woordmerk. |
+| `logo-title` | `string` | Titel van het woordmerk naast het logo. Zonder deze waarde staat het logo er alleen. |
+| `logo-subtitle` | `string` | Subtitel onder de woordmerktitel. Alleen zichtbaar als er een woordmerk is. |
+| `logo-supporting-text-1` | `string` | Eerste ondersteunende regel onder de woordmerktitel. Alleen zichtbaar als er een woordmerk is. |
+| `logo-supporting-text-2` | `string` | Tweede ondersteunende regel onder de woordmerktitel. Alleen zichtbaar als er een woordmerk is. |
+| `logo-href` | `string` | URL voor logo en woordmerk. Zonder deze waarde zijn ze geen link, maar een afbeelding met een toegankelijk label. |
+| `website-title` | `string` | Naam van de website of applicatie, boven de menubalk. Leeg laat de titelregel weg. |
+| `website-href` | `string` | URL voor de websitetitel. Zonder deze waarde blijft de titel gewone tekst. |
+| `back-href` | `string` | URL van de terugknop. Zonder deze waarde vuurt een klik het `back-click`-event, zodat de consument zelf navigeert. |
+| `back-text` | `string` | Tekst van de terugknop. De knop verschijnt zodra back-text of back-href is gezet; zonder tekst valt hij terug op de vertaling ("Terug"). |
+| `width` | `string` | Begrenst de bar-content tot een max-width zodat die uitlijnt met de page-sections. 'full' vult de volle breedte, of geef een eigen CSS-lengte. |
 
 ### `<nldd-top-title-bar>`
 
 A toolbar for page and container headings with optional navigation and action buttons. The component has two states: - Default: the back button shows the previous page title as a text button - Compact (class `is-compact`): the back button is an icon button, a divider and the toolbar title are visible When `collapse-anchor` is set, the `is-compact` class is automatically applied as soon as the top of the anchor element reaches this bar's own top edge (the sticky header line). Measuring the bar rather than the page keeps it correct in both nested and root scroll modes; it also re-points at the live scroll target when the page switches mode. Without `collapse-anchor` the bar takes a static state: compact when `text` is set (so the title shows in the title-group), non-compact otherwise (so the `back-text` button stays visible).
+
+**Attributes**
+
+| Attribuut | Type | Beschrijving |
+| --- | --- | --- |
+| `text` | `string` | Title of the bar, rendered as the h1 in the title group. |
+| `supporting-text` | `string` | Subtitle under the title. |
+| `collapse-anchor` | `string` | Id of the element whose top edge triggers the compact state on scroll. Without it the state is static (see above). |
+| `back-text` | `string` | Text of the back button and its accessible name. Empty hides the back button (and the divider). |
+| `back-href` | `string` | URL for the back button; renders a link and suppresses the `back` event. |
+| `dismiss-text` | `string` | Text of the dismiss button. Empty hides that button. |
+
+**Slots**
+
+| Slot | Beschrijving |
+| --- | --- |
+| `toolbar` | Optional buttons to the left of the dismiss button |
+
+**Events**
+
+| Event | Beschrijving |
+| --- | --- |
+| `back` | Fired when the back button is clicked (not fired when back-href is set) |
+| `dismiss` | Fired when the dismiss button is clicked |
 
 ## Status & feedback
 
@@ -2336,6 +2426,7 @@ A cell that displays a drag handle for reorderable list items. Always vertically
 | Attribuut | Type | Beschrijving |
 | --- | --- | --- |
 | `size` | `string` | Handle size: 'sm' \| 'md' (default: 'md') |
+| `translations` | `object` | Override translation keys; unset keys fall back to Dutch. Sets the handle's accessible label. |
 
 ### `<nldd-icon-cell>`
 
@@ -2358,11 +2449,63 @@ A cell component for displaying icons in lists with configurable alignment and s
 
 ### `<nldd-list>`
 
-A container for `nldd-list-item` elements. The `type` attribute switches the list's a11y role and behavior: - `list` (default) — `role="list"`, items `role="listitem"`. Reorderable allowed. Items may individually be buttons or links; the list itself has no special keyboard semantics. - `navigation` — host `role="navigation"`, items with `selected` get `aria-current="page"` on their inner `<a>` or `<button>`. - `listbox` — an accessible, filterable listbox (combobox pattern). The list renders its OWN search input (`role="combobox"`) pinned above the options; `.list__items` becomes `role="listbox"` and items become `role="option"`. Focus stays in the input, the active option moves via `aria-activedescendant`, and filtering is consumer-managed via the `input` event (toggle `[hidden]` on items). See "Listbox" below. Selection state is consumer-managed: the list never mutates `selected` itself. In `type="listbox"` the list owns a native `<input role="combobox">` (mirroring how `nldd-combo-box` wires an input to a slotted listbox). Keyboard, handled on the input so focus never leaves it: - ArrowDown / ArrowUp — move the active option among the VISIBLE (non-`[hidden]`) options (wrap around). - Home / End — first / last visible option. - Enter — activate the active option by triggering its inner action (a link navigates, a button fires the consumer's handler). Selection stays consumer-managed. - Escape — clear the search value (and refire `input`). On every active change the input's `aria-activedescendant` is set to the active option's id and the option is scrolled into view. The active option (`_highlighted` on the item, a highlight) is distinct from `selected`. Filtering is the consumer's job: listen to `input` (`{ detail: { value } }`) and toggle `[hidden]` on items; after the visible set changes the list resets the active option to the first visible one. `reorderable` and `arrow-navigation` are ignored in listbox mode (listbox has its own keyboard). On reorder (type="list" + reorderable), the list dispatches `nldd-reorder` with `fromIndex` / `toIndex` and expects the consumer to mutate the DOM (or their data model that renders the DOM). Focus is restored to the moved item's drag handle via a single `requestAnimationFrame` — this assumes the consumer reorders **synchronously** in the event handler. Async renderers (React, Vue, …) that update the DOM on a later tick will miss the focus restore and should manage focus themselves after their render commits. view toggles). Available for every type; collapses when empty. search field (e.g. a filter or options button). Listbox only; collapses when empty. to `nldd-inline-dialog` with `empty-text` / `empty-supporting-text` (falling back to Dutch i18n "Geen items"). Slot content overrides the default dialog entirely. In `type="listbox"` it is suppressed while the search field is empty (no query yet), so the consumer can show just the search field or its own hint outside the list. `[hidden]` on items to filter.
+A container for `nldd-list-item` elements. The `type` attribute switches the list's a11y role and behavior: - `list` (default) — `role="list"`, items `role="listitem"`. Reorderable allowed. Items may individually be buttons or links; the list itself has no special keyboard semantics. - `navigation` — host `role="navigation"`, items with `selected` get `aria-current="page"` on their inner `<a>` or `<button>`. - `listbox` — an accessible, filterable listbox (combobox pattern). The list renders its OWN search input (`role="combobox"`) pinned above the options; `.list__items` becomes `role="listbox"` and items become `role="option"`. Focus stays in the input, the active option moves via `aria-activedescendant`, and filtering is consumer-managed via the `input` event (toggle `[hidden]` on items). See "Listbox" below. Selection state is consumer-managed: the list never mutates `selected` itself. In `type="listbox"` the list owns a native `<input role="combobox">` (mirroring how `nldd-combo-box` wires an input to a slotted listbox). Keyboard, handled on the input so focus never leaves it: - ArrowDown / ArrowUp — move the active option among the VISIBLE (non-`[hidden]`) options (wrap around). - Home / End — first / last visible option. - Enter — activate the active option by triggering its inner action (a link navigates, a button fires the consumer's handler). Selection stays consumer-managed. - Escape — clear the search value (and refire `input`). On every active change the input's `aria-activedescendant` is set to the active option's id and the option is scrolled into view. The active option (`_highlighted` on the item, a highlight) is distinct from `selected`. Filtering is the consumer's job: listen to `input` (`{ detail: { value } }`) and toggle `[hidden]` on items; after the visible set changes the list resets the active option to the first visible one. `reorderable` and `arrow-navigation` are ignored in listbox mode (listbox has its own keyboard). On reorder (type="list" + reorderable), the list dispatches `nldd-reorder` with `fromIndex` / `toIndex` and expects the consumer to mutate the DOM (or their data model that renders the DOM). Focus is restored to the moved item's drag handle via a single `requestAnimationFrame` — this assumes the consumer reorders **synchronously** in the event handler. Async renderers (React, Vue, …) that update the DOM on a later tick will miss the focus restore and should manage focus themselves after their render commits.
+
+**Attributes**
+
+| Attribuut | Type | Beschrijving |
+| --- | --- | --- |
+| `variant` | `'simple'\|'box'` | Visual style (default 'simple'): `simple` is a plain vertical strip with no chrome, `box` a framed card with rounded corners, fill and inset border ring |
+| `background` | `'tinted'\|'base'` | Surface fill for `variant="box"` (default 'tinted'). Use `base` on an already-tinted parent. No effect with `variant="simple"`. |
+| `type` | `'list'\|'navigation'\|'listbox'` | A11y role and behavior (default 'list'). See the docblock above. |
+| `reorderable` | `boolean` | Enables drag-to-reorder and pushes `reorderable` onto the items. Only valid with `type="list"`; wins over `arrow-navigation` when both are set. |
+| `no-dividers` | `boolean` | Hides the dividers between list items |
+| `arrow-navigation` | `boolean` | Roving-tabindex arrow-key navigation: ArrowUp/ArrowDown move focus between items, Home/End jump to first/last, and the list becomes a single tab stop. Ignored when `reorderable` is active on a `type="list"`, and in listbox mode. |
+| `height` | `string` | Listbox only: caps the options' scroll region at this CSS length (e.g. '320px'). Unset means no cap. |
+| `empty-text` | `string` | Text for the default empty-state dialog (falls back to the Dutch i18n default). Ignored when `[slot=empty]` is filled. |
+| `empty-supporting-text` | `string` | Supporting text for the default empty-state dialog. Ignored when `[slot=empty]` is filled. |
+| `accessible-label` | `string` | Accessible name, forwarded to the list in `type="list"` and to the search field in `type="listbox"`. For `type="navigation"` set `aria-label` / `aria-labelledby` on the element itself. Falls back to the i18n default. |
+| `translations` | `object` | Override translation keys; unset keys fall back to Dutch |
+
+**Slots**
+
+| Slot | Beschrijving |
+| --- | --- |
+| _(default)_ | List items (`nldd-list-item`) |
+| `toolbar` | Controls below the search field (filters, sort, counts, view toggles). Available for every type; collapses when empty. |
+| `search-bar-end` | Controls inline at the end of the search bar, beside the search field (e.g. a filter or options button). Listbox only; collapses when empty. |
+| `empty` | Shown when no items are visible (all `[hidden]` or none). Defaults to `nldd-inline-dialog` with `empty-text` / `empty-supporting-text` (falling back to Dutch i18n "Geen items"). Slot content overrides the default dialog entirely. In `type="listbox"` it is suppressed while the search field is empty (no query yet), so the consumer can show just the search field or its own hint outside the list. |
+
+**Events**
+
+| Event | Beschrijving |
+| --- | --- |
+| `nldd-reorder` | Reorderable `type="list"`: `{ fromIndex, toIndex }` on drop |
+| `input` | `type="listbox"`: search value changed; `{ value }`. Toggle `[hidden]` on items to filter. |
 
 ### `<nldd-list-item>`
 
 A row within an `nldd-list`, providing layout for start, main and end areas. Renders as a link when `href` is set, as a button when `button` is set, or as a plain container otherwise. When it renders as a link, `target` and `rel` are forwarded to the inner `<a>` (e.g. `target="_blank" rel="noopener noreferrer"`). With `target="_blank"` the item also injects a visually hidden "opens in new tab" announcement for assistive technology (WCAG 2.1 SC 3.2.2). The item synchronises its ARIA with its parent `nldd-list`'s `type`: - `list` parent → `role="listitem"` - `navigation` parent → `role="listitem"` + `aria-current="page"` on the inner `<a>` / `<button>` when `selected` - `listbox` parent → `role="option"` + `aria-selected` reflecting `selected`. The list points its search input's `aria-activedescendant` at the active option via `_highlighted` (separate from `selected`).
+
+**Attributes**
+
+| Attribuut | Type | Beschrijving |
+| --- | --- | --- |
+| `size` | `'sm'\|'md'` | Row size (default: 'md') |
+| `selected` | `boolean` | Marks the item as selected. Selection is consumer-managed; the list never sets it. In a `navigation` parent it puts `aria-current="page"` on the inner action, in a `listbox` parent it drives `aria-selected`. |
+| `button` | `boolean` | Renders the item as a `<button>`; ignored when `href` is set (a link wins) |
+| `href` | `string` | Renders the item as an `<a>` with this URL. Takes precedence over `button`; without either the item is a plain container with no action. |
+| `target` | `string` | Link target forwarded to the `<a>` (e.g. '_blank'); only applies with `href`. With '_blank' a visually hidden "opens in new tab" announcement is added for assistive technology. |
+| `rel` | `string` | Link rel forwarded to the `<a>` (e.g. 'noopener noreferrer'); only applies with `href` |
+| `reorderable` | `boolean` | Set by the parent `nldd-list` when its own `reorderable` is on (with `type="list"`); consumers do not set this. Serves as a CSS hook for drag handle visibility. |
+
+**Slots**
+
+| Slot | Beschrijving |
+| --- | --- |
+| _(default)_ | Main content area |
+| `start` | Content at the start of the row |
+| `end` | Content at the end of the row |
 
 ### `<nldd-spacer-cell>`
 
@@ -2489,12 +2632,12 @@ A cell component for displaying a title with optional overline and subtitle in l
 
 ## Iconen
 
-Geldige `name`-waarden voor `<nldd-icon>` (261 iconen + 207 aliassen). Verzin geen naam; kies er een uit deze set.
+Geldige `name`-waarden voor `<nldd-icon>` (264 iconen + 209 aliassen). Verzin geen naam; kies er een uit deze set.
 
 **Iconen**
 
-`accessibility`, `apartment-building`, `app`, `arrow-2-counter-clockwise`, `arrow-down`, `arrow-down-in-bucket`, `arrow-left`, `arrow-left-right`, `arrow-left-to-line`, `arrow-right`, `arrow-right-in-bucket`, `arrow-right-out-bucket`, `arrow-right-to-line`, `arrow-u-turn-backward`, `arrow-u-turn-forward`, `arrow-up`, `arrow-up-arrow-down`, `arrow-up-out-bucket`, `at`, `backward`, `backward-end`, `backward-end-filled`, `backward-filled`, `backward-frame`, `backward-frame-filled`, `bell`, `binoculars`, `blocks-9`, `bold`, `book`, `book-batch-play`, `bookmark`, `bookmark-filled`, `books-vertical`, `brackets-ellipsis`, `brick-wall`, `bullet-list`, `business-suitcase`, `calendar-event`, `caret-down`, `caret-down-extra-small`, `caret-down-small`, `caret-left`, `caret-left-extra-small`, `caret-left-small`, `caret-right`, `caret-right-extra-small`, `caret-right-small`, `caret-up`, `caret-up-extra-small`, `caret-up-small`, `centralized-structure`, `certificate`, `chart-x-y-axis-line`, `check-circle-filled`, `check-list`, `check-mark`, `check-mark-circle`, `check-mark-extra-small`, `check-mark-small`, `chevron-double-left`, `chevron-double-left-extra-small`, `chevron-double-left-small`, `chevron-double-right`, `chevron-double-right-extra-small`, `chevron-double-right-small`, `chevron-down`, `chevron-down-extra-small`, `chevron-down-small`, `chevron-left`, `chevron-left-chevron-right`, `chevron-left-extra-small`, `chevron-left-forward-slash-chevron-right`, `chevron-left-small`, `chevron-left-to-line`, `chevron-left-to-line-extra-small`, `chevron-left-to-line-small`, `chevron-right`, `chevron-right-extra-small`, `chevron-right-small`, `chevron-right-to-line`, `chevron-right-to-line-extra-small`, `chevron-right-to-line-small`, `chevron-up`, `chevron-up-chevron-down`, `chevron-up-extra-small`, `chevron-up-small`, `circle-dashed`, `circle-filled`, `circle-filled-extra-small`, `circle-filled-small`, `circle-grid-2x2-top-left-check-mark`, `clipboard`, `clipboard-square`, `clock`, `clock-arrow-clockwise`, `clock-arrow-counter-clockwise`, `cloud`, `cloud-arrow-down`, `cloud-arrow-up`, `cylinder-2-big-small-split`, `cylinder-split`, `cylinder-split-badge-lock`, `cylinder-split-slash`, `desk-with-screen`, `diamond`, `dismiss`, `dismiss-circle`, `dismiss-circle-filled`, `dismiss-extra-small`, `dismiss-small`, `ellipsis`, `envelope`, `euro-sign`, `exclamation-2-circle`, `exclamation-2-circle-filled`, `exclamation-3-circle`, `exclamation-3-circle-filled`, `exclamation-circle`, `exclamation-circle-filled`, `exclamation-triangle`, `exclamation-triangle-filled`, `eye`, `eye-slash`, `eyeglasses`, `face-frowning`, `face-smiling`, `face-smiling-badge-plus`, `file`, `file-box`, `file-text`, `file-text-batch-check-mark`, `file-text-batch-check-plus`, `file-text-pencil`, `file-text-stack`, `flag`, `flag-filled`, `folder`, `folder-stack`, `forward`, `forward-end`, `forward-end-filled`, `forward-filled`, `forward-frame`, `forward-frame-filled`, `foundation`, `gear`, `globe`, `globe-rack-server`, `hand`, `handshake`, `heading-1`, `heading-2`, `heading-3`, `heading-4`, `heading-5`, `heading-6`, `heart`, `heart-filled`, `highlighter`, `house`, `house-and-appartment-building`, `inbox`, `indent-decrease`, `indent-increase`, `info-circle`, `info-circle-filled`, `italic`, `key`, `leaf`, `lifebuoy`, `lightbulb`, `link`, `list`, `list-arrow-down`, `list-arrow-up`, `list-decreasing-lines`, `lock-closed`, `lock-open`, `magnifier`, `markdown-rectangle`, `message-rectangle-text`, `minus`, `minus-extra-small`, `minus-small`, `moon`, `network-structure`, `numbered-list`, `paper-plane`, `paperclip`, `paragraph-sign`, `parking-sign-square`, `pause`, `pause-filled`, `pencil`, `pencil-on-square`, `pencil-ruler`, `person`, `person-2`, `person-badge-gear`, `person-circle`, `person-circle-badge-plus`, `photo`, `photo-slash`, `pipeline-corner-2`, `pipeline-machine-gear`, `pipeline-valve`, `play`, `play-filled`, `play-pause`, `play-pause-filled`, `plus`, `plus-small`, `point-bottom-left-to-point-top-right-s-curve-path`, `puzzle-piece`, `puzzle-piece-filled`, `question-mark-circle`, `radar`, `rectangle`, `rectangle-chevron-left-forward-slash-chevron-right`, `rectangle-split-2x1`, `rectangle-split-2x3`, `rectangle-split-2x3-badge-arrow-down`, `rectangle-split-3x1`, `rectangle-stack`, `scissor`, `score-meter`, `seal-check-mark`, `shield`, `shield-check-mark`, `shield-lock`, `ship-wheel`, `shopping-cart`, `sidebar-left`, `sidebar-right`, `slash-circle`, `sparkles`, `square-and-arrow-down`, `square-arrow-right-top`, `square-arrow-up`, `square-corner-4`, `square-grid-3x3`, `square-on-square`, `square-plus-on-square`, `stack-code`, `stack-text`, `star`, `star-filled`, `starburst-filled`, `stop`, `stop-filled`, `strikethrough`, `sun`, `tag`, `terminal`, `text-quote`, `timer`, `trash`, `tree-structure`, `underlined`, `wheat`
+`accessibility`, `antenna-radio-waves`, `apartment-building`, `app`, `arrow-2-counter-clockwise`, `arrow-down`, `arrow-down-in-bucket`, `arrow-left`, `arrow-left-right`, `arrow-left-to-line`, `arrow-right`, `arrow-right-in-bucket`, `arrow-right-out-bucket`, `arrow-right-to-line`, `arrow-u-turn-backward`, `arrow-u-turn-forward`, `arrow-up`, `arrow-up-arrow-down`, `arrow-up-out-bucket`, `at`, `backward`, `backward-end`, `backward-end-filled`, `backward-filled`, `backward-frame`, `backward-frame-filled`, `bell`, `binoculars`, `blocks-9`, `bold`, `book`, `book-batch-play`, `bookmark`, `bookmark-filled`, `books-vertical`, `brackets-ellipsis`, `brick-wall`, `bullet-list`, `business-suitcase`, `calendar-event`, `caret-down`, `caret-down-extra-small`, `caret-down-small`, `caret-left`, `caret-left-extra-small`, `caret-left-small`, `caret-right`, `caret-right-extra-small`, `caret-right-small`, `caret-up`, `caret-up-extra-small`, `caret-up-small`, `centralized-structure`, `certificate`, `chart-x-y-axis-line`, `check-circle-filled`, `check-list`, `check-mark`, `check-mark-circle`, `check-mark-extra-small`, `check-mark-small`, `chevron-double-left`, `chevron-double-left-extra-small`, `chevron-double-left-small`, `chevron-double-right`, `chevron-double-right-extra-small`, `chevron-double-right-small`, `chevron-down`, `chevron-down-extra-small`, `chevron-down-small`, `chevron-left`, `chevron-left-chevron-right`, `chevron-left-extra-small`, `chevron-left-forward-slash-chevron-right`, `chevron-left-small`, `chevron-left-to-line`, `chevron-left-to-line-extra-small`, `chevron-left-to-line-small`, `chevron-right`, `chevron-right-extra-small`, `chevron-right-small`, `chevron-right-to-line`, `chevron-right-to-line-extra-small`, `chevron-right-to-line-small`, `chevron-up`, `chevron-up-chevron-down`, `chevron-up-extra-small`, `chevron-up-small`, `circle-dashed`, `circle-filled`, `circle-filled-extra-small`, `circle-filled-small`, `circle-grid-2x2-top-left-check-mark`, `clipboard`, `clipboard-square`, `clock`, `clock-arrow-clockwise`, `clock-arrow-counter-clockwise`, `cloud`, `cloud-arrow-down`, `cloud-arrow-up`, `cylinder-2-big-small-split`, `cylinder-split`, `cylinder-split-badge-lock`, `cylinder-split-slash`, `desk-with-screen`, `diamond`, `dismiss`, `dismiss-circle`, `dismiss-circle-filled`, `dismiss-extra-small`, `dismiss-small`, `ellipsis`, `envelope`, `euro-sign`, `exclamation-2-circle`, `exclamation-2-circle-filled`, `exclamation-3-circle`, `exclamation-3-circle-filled`, `exclamation-circle`, `exclamation-circle-filled`, `exclamation-triangle`, `exclamation-triangle-filled`, `eye`, `eye-slash`, `eyeglasses`, `face-frowning`, `face-smiling`, `face-smiling-badge-plus`, `file`, `file-box`, `file-text`, `file-text-batch-check-mark`, `file-text-batch-check-plus`, `file-text-pencil`, `file-text-stack`, `flag`, `flag-filled`, `folder`, `folder-stack`, `forward`, `forward-end`, `forward-end-filled`, `forward-filled`, `forward-frame`, `forward-frame-filled`, `foundation`, `gear`, `globe`, `globe-rack-server`, `hand`, `handshake`, `heading-1`, `heading-2`, `heading-3`, `heading-4`, `heading-5`, `heading-6`, `heart`, `heart-filled`, `highlighter`, `house`, `house-and-appartment-building`, `inbox`, `indent-decrease`, `indent-increase`, `info-circle`, `info-circle-filled`, `italic`, `key`, `leaf`, `lifebuoy`, `lightbulb`, `link`, `list`, `list-arrow-down`, `list-arrow-up`, `list-decreasing-lines`, `lock-closed`, `lock-open`, `magnifier`, `markdown-rectangle`, `megaphone`, `message-rectangle-text`, `minus`, `minus-extra-small`, `minus-small`, `moon`, `network-structure`, `numbered-list`, `paper-plane`, `paperclip`, `paragraph-sign`, `parking-sign-square`, `pause`, `pause-filled`, `pencil`, `pencil-on-square`, `pencil-ruler`, `person`, `person-2`, `person-badge-gear`, `person-badge-plus`, `person-circle`, `person-circle-badge-plus`, `photo`, `photo-slash`, `pipeline-corner-2`, `pipeline-machine-gear`, `pipeline-valve`, `play`, `play-filled`, `play-pause`, `play-pause-filled`, `plus`, `plus-small`, `point-bottom-left-to-point-top-right-s-curve-path`, `puzzle-piece`, `puzzle-piece-filled`, `question-mark-circle`, `radar`, `rectangle`, `rectangle-chevron-left-forward-slash-chevron-right`, `rectangle-split-2x1`, `rectangle-split-2x3`, `rectangle-split-2x3-badge-arrow-down`, `rectangle-split-3x1`, `rectangle-stack`, `scissor`, `score-meter`, `seal-check-mark`, `shield`, `shield-check-mark`, `shield-lock`, `ship-wheel`, `shopping-cart`, `sidebar-left`, `sidebar-right`, `slash-circle`, `sparkles`, `square-and-arrow-down`, `square-arrow-right-top`, `square-arrow-up`, `square-corner-4`, `square-grid-3x3`, `square-on-square`, `square-plus-on-square`, `stack-code`, `stack-text`, `star`, `star-filled`, `starburst-filled`, `stop`, `stop-filled`, `strikethrough`, `sun`, `tag`, `terminal`, `text-quote`, `timer`, `trash`, `tree-structure`, `underlined`, `wheat`
 
 **Aliassen** (verwijzen naar een icoon hierboven)
 
-`a11y`, `account`, `add`, `add-emoji`, `add-small`, `ai`, `alarm`, `alert`, `analytics`, `annotation`, `apps`, `archive`, `attach`, `attachment`, `back`, `backlog`, `backup-in-cloud`, `blocked`, `blockquote`, `bookmarked`, `books`, `broken-image`, `building`, `building-blocks`, `calendar`, `cart`, `category`, `centralized-network`, `certified`, `chart-line`, `checked`, `checked-extra-small`, `checked-small`, `checklist`, `cli`, `code`, `code-block`, `coins`, `columns-2`, `columns-3`, `comment`, `console`, `copy`, `countdown`, `cut`, `dark-mode`, `database`, `database-disabled`, `database-unavailable`, `day`, `delete`, `deploy`, `design`, `diploma`, `directories`, `directory`, `discover`, `dns`, `document`, `documents`, `download`, `download-from-cloud`, `download-table`, `duplicate`, `edit`, `email`, `embed`, `error`, `event`, `exit`, `explore`, `export`, `extension`, `external-link`, `favorite`, `filter`, `fit-to-view`, `flagged`, `forbidden`, `forward`, `frowning`, `future`, `gem`, `global-settings`, `graph`, `group`, `guide`, `happy`, `harvest`, `help`, `hidden`, `hide`, `hierarchy`, `high-priority`, `high-priority-filled`, `history`, `home`, `hyperlink`, `icon-placeholder`, `idea`, `image`, `import`, `indent`, `info`, `information`, `invalid`, `k8s`, `kubernetes`, `label`, `languages`, `license`, `light-mode`, `lock`, `locked`, `login`, `logout`, `love`, `low-priority`, `low-priority-filled`, `magic`, `mail`, `markdown`, `medium-priority`, `medium-priority-filled`, `menu`, `module`, `monitoring`, `more`, `network`, `new`, `new-account`, `new-text-document`, `night`, `notification`, `notifications`, `now`, `office`, `open-new-page`, `outdent`, `paragraph`, `parking`, `paste`, `path`, `pipeline`, `pipeline-runner`, `plugin`, `privacy`, `profile`, `promotion`, `protection`, `quality`, `question`, `rated`, `rating`, `read`, `reading-list`, `redo`, `refresh`, `reload`, `remove`, `remove-extra-small`, `remove-small`, `sad`, `save`, `search`, `secure`, `security`, `send`, `settings`, `share`, `show`, `sitemap`, `smiling`, `sort`, `sort-ascending`, `sort-descending`, `stack`, `success`, `support`, `sustainability`, `sync`, `table`, `table-cells`, `tasks`, `team`, `text-document`, `text-documents`, `time`, `todos`, `traject`, `undo`, `unlocked`, `unsecure`, `upload`, `upload-to-cloud`, `url`, `user`, `user-admin`, `user-settings`, `users`, `valid`, `verified`, `visible`, `warning`, `work`, `workplace`, `write`
+`a11y`, `account`, `add`, `add-account`, `add-emoji`, `add-small`, `ai`, `alarm`, `alert`, `analytics`, `annotation`, `apps`, `archive`, `attach`, `attachment`, `back`, `backlog`, `backup-in-cloud`, `blocked`, `blockquote`, `bookmarked`, `books`, `broadcast`, `broken-image`, `building`, `building-blocks`, `calendar`, `cart`, `category`, `centralized-network`, `certified`, `chart-line`, `checked`, `checked-extra-small`, `checked-small`, `checklist`, `cli`, `code`, `code-block`, `coins`, `columns-2`, `columns-3`, `comment`, `console`, `copy`, `countdown`, `cut`, `dark-mode`, `database`, `database-disabled`, `database-unavailable`, `day`, `delete`, `deploy`, `design`, `diploma`, `directories`, `directory`, `discover`, `dns`, `document`, `documents`, `download`, `download-from-cloud`, `download-table`, `duplicate`, `edit`, `email`, `embed`, `error`, `event`, `exit`, `explore`, `export`, `extension`, `external-link`, `favorite`, `filter`, `fit-to-view`, `flagged`, `forbidden`, `forward`, `frowning`, `future`, `gem`, `global-settings`, `graph`, `group`, `guide`, `happy`, `harvest`, `help`, `hidden`, `hide`, `hierarchy`, `high-priority`, `high-priority-filled`, `history`, `home`, `hyperlink`, `icon-placeholder`, `idea`, `image`, `import`, `indent`, `info`, `information`, `invalid`, `k8s`, `kubernetes`, `label`, `languages`, `license`, `light-mode`, `lock`, `locked`, `login`, `logout`, `love`, `low-priority`, `low-priority-filled`, `magic`, `mail`, `markdown`, `medium-priority`, `medium-priority-filled`, `menu`, `module`, `monitoring`, `more`, `network`, `new`, `new-account`, `new-text-document`, `night`, `notification`, `notifications`, `now`, `office`, `open-new-page`, `outdent`, `paragraph`, `parking`, `paste`, `path`, `pipeline`, `pipeline-runner`, `plugin`, `privacy`, `profile`, `promotion`, `protection`, `quality`, `question`, `rated`, `rating`, `read`, `reading-list`, `redo`, `refresh`, `reload`, `remove`, `remove-extra-small`, `remove-small`, `sad`, `save`, `search`, `secure`, `security`, `send`, `settings`, `share`, `show`, `sitemap`, `smiling`, `sort`, `sort-ascending`, `sort-descending`, `stack`, `success`, `support`, `sustainability`, `sync`, `table`, `table-cells`, `tasks`, `team`, `text-document`, `text-documents`, `time`, `todos`, `traject`, `undo`, `unlocked`, `unsecure`, `upload`, `upload-to-cloud`, `url`, `user`, `user-admin`, `user-settings`, `users`, `valid`, `verified`, `visible`, `warning`, `work`, `workplace`, `write`

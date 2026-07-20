@@ -28,6 +28,8 @@
  * @attr {string} language - Grammar to highlight with. Empty disables highlighting.
  * @attr {boolean} no-copy - Hide the copy-to-clipboard button (shown by default).
  * @attr {boolean} wrap - Wrap long lines instead of horizontal scroll
+ * @attr {object} translations - Override translation keys (e.g. the copy button
+ *   labels and the scroll-region label); unset keys fall back to Dutch.
  *
  * @slot - Default slot for the code/text content (also the copy source)
  */

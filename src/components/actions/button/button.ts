@@ -5,8 +5,10 @@
  * @attr {string} variant - Button variant: 'primary' | 'secondary' | 'destructive' | 'accent-filled' | 'accent-transparent' | 'neutral-tinted' | 'neutral-base' | 'neutral-transparent' | 'critical-tinted' | 'critical-transparent' | 'inherit-filled' | 'inherit-tinted'. De inherit-varianten leiden hun kleuren af van currentColor, voor knoppen op gekleurde vlakken; inherit-filled gebruikt de vlakkleur (--context-parent-background-color) als labelkleur met een wit/zwart-contrastflip als fallback.
  * @attr {string} size - Button size: 'xs' | 'sm' | 'md' | 'lg' (default: 'md'). 'lg' uses larger text and 24px start/end icons.
  * @attr {string} horizontal-alignment - Horizontal alignment of the button content: 'left' | 'center' | 'right' (default: unset, centered). Most visible with width="full" or a fixed width.
+ * @attr {boolean} loading - Loading state (default: false). Shows an activity indicator over the visually hidden content, sets aria-busy on the inner control and blocks activation, without dropping the button from the tab order (unlike disabled). The content stays laid out, so the button keeps its width.
  * @attr {boolean} disabled - Disabled state
  * @attr {string} type - Button type for form submission: 'button' | 'submit' | 'reset' (ignored when href is set)
+ * @attr {string} popovertarget - ID of a popover element this button invokes; forwarded to the inner button. Use the popoverTargetElement property instead when the popover lives in another tree.
  * @attr {boolean} expandable - Whether the button has a icon to indicate it opens a menu or popover
  * @attr {boolean} expanded - Whether the popover/menu controlled by this button is currently open. Forwarded as aria-expanded on the inner button; toggles the is-expanded visual state.
  * @attr {string}  popup-type - Type of popup container this button opens: 'menu' | 'listbox' | 'dialog' | 'tree' | 'grid'. Sets aria-haspopup on the inner button and forces aria-expanded to always be present (true/false) so screen readers know the popup state.

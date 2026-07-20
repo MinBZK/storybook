@@ -20,6 +20,7 @@
  * @attr {string} accessible-label - Overschrijf aria-label
  * @attr {string} haspopup - aria-haspopup waarde (bijv. "menu", "dialog")
  * @attr {boolean} open - Of het gekoppelde popover/menu open is
+ * @attr {boolean} expanded - Of de bijbehorende popover open is; zet aria-expanded op de knop wanneer expandable of haspopup is gezet. Wordt automatisch bijgehouden voor een geslotte `<nldd-menu>`.
  *
  * @fires select - Bij klik op non-expandable button item (bubbles, composed)
  *

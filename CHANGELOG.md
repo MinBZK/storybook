@@ -16,7 +16,7 @@ here; consult the commit history if you need that level of detail.
 - **`nldd-date-field` chooses a period.** With `range` the field shows two inputs with "t/m" between them and puts the calendar in range mode. The value is one ISO 8601 interval (`2026-07-06/2026-07-20`) under one `name`, so a form gets one field rather than two that can disagree. Picking a second date before the first completes the period backwards instead of starting over.
 - **Bring your own calendar.** Put an `nldd-date-picker` in the field's `picker` slot to control what only a calendar knows — week numbers, first day of the week, blocked dates, its own translations. The field keeps writing `value`, `min`, `max` and `range`, so the form value cannot drift from what the calendar shows.
 - **Relative bounds.** `min` and `max` accept `today` and `today±Nd/w/m/y` besides an ISO date, so "no earlier than today" or "at most three months out" needs no date arithmetic in the consumer.
-- **New icons.** Media controls: `play`, `pause`, `play-pause`, `stop`, `forward`, `backward`, `forward-end`, `backward-end`, `forward-frame`, `backward-frame` (each with a filled variant), plus `exclamation-2-circle`, `exclamation-3-circle`, `circle-grid-2x2-top-left-check-mark` and `square-corner-4`.
+- **New icons.** Media controls: `play`, `pause`, `play-pause`, `stop`, `forward`, `backward`, `forward-end`, `backward-end`, `forward-frame`, `backward-frame` (each with a filled variant). Plus `person-badge-plus` (alias `add-account`), `antenna-radio-waves` (alias `broadcast`), `megaphone`, `exclamation-2-circle`, `exclamation-3-circle`, `circle-grid-2x2-top-left-check-mark` and `square-corner-4`.
 
 ### Added
 

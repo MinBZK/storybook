@@ -47,6 +47,8 @@
  *   with per-cell hue — Lean's original format encodes grayscale cells only;
  *   ours encodes a color per cell so multi-color subjects survive the
  *   placeholder.
+ * @attr {object} translations - Override translation keys (e.g. the message
+ *   shown when the image fails to load); unset keys fall back to Dutch.
  *
  * @slot - Custom `<img>` or `<picture>` (overrides the src-based default).
  *   The internal `error` listener is attached only to the built-in `<img>`, so

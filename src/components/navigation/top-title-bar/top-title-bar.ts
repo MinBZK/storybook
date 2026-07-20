@@ -18,6 +18,15 @@
  * is set (so the title shows in the title-group), non-compact otherwise (so
  * the `back-text` button stays visible).
  *
+ * @element nldd-top-title-bar
+ *
+ * @attr {string} text            - Title of the bar, rendered as the h1 in the title group.
+ * @attr {string} supporting-text - Subtitle under the title.
+ * @attr {string} collapse-anchor - Id of the element whose top edge triggers the compact state on scroll. Without it the state is static (see above).
+ * @attr {string} back-text       - Text of the back button and its accessible name. Empty hides the back button (and the divider).
+ * @attr {string} back-href       - URL for the back button; renders a link and suppresses the `back` event.
+ * @attr {string} dismiss-text    - Text of the dismiss button. Empty hides that button.
+ *
  * @slot toolbar - Optional buttons to the left of the dismiss button
  *
  * @fires back    - Fired when the back button is clicked (not fired when back-href is set)

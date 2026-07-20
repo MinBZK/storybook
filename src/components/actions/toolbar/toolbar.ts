@@ -5,6 +5,7 @@
  * @attr {string} size - Toolbar size, propagated to all child controls: 'sm' | 'md' | 'lg' (default: 'md'). At 'lg' the overflow button (and lg-capable children like nldd-icon-button) stack their label below the icon.
  * @attr {boolean} show-item-labels - When true, shows a text label below each toolbar item and the overflow button
  * @attr {string} label - Accessible label for the toolbar. Only needed when multiple toolbars appear on the same page
+ * @attr {object} translations - Override translation keys (e.g. the overflow button label); unset keys fall back to Dutch.
  *
  * @slot start    - nldd-toolbar-item and nldd-toolbar-title elements placed at the start
  * @slot center   - nldd-toolbar-item and nldd-toolbar-title elements placed at the center
@@ -19,6 +20,8 @@
  * @attr {string} max-width - Maximum (fluid) width as a CSS length (e.g. '480px'). Setting it also makes the item fluid.
  * @attr {string} label - Text label shown below the item when the toolbar has show-item-labels.
  * @attr {number} priority - Overflow order: items with a lower priority move into the overflow menu first (default 0). Items sharing a priority overflow together, regardless of position.
+ * @attr {'sm'|'md'|'lg'} size - Set by nldd-toolbar, not a consumer attribute: mirrors the toolbar's size (default: 'md') onto the item host, so size-dependent styling can key off it.
+ * @attr {boolean} show-item-labels - Set by nldd-toolbar, not a consumer attribute: mirrors the toolbar's show-item-labels, so the item renders its label below the control.
  * @attr {boolean} fluid - Set by nldd-toolbar, not a consumer attribute: marks an item that grows or shrinks to fill space. Toggled synchronously during measurement, so it can appear or disappear between layout frames — do not style against it. It is not reflected as a JS property — read it with hasAttribute('fluid').
  * @attr {boolean} solo-fluid - Set by nldd-toolbar, not a consumer attribute: the sole fluid item, allowed to shrink below its content. Same synchronous-toggle and property-read caveats as fluid.
  * @attr {boolean} hidden - Set by nldd-toolbar, not a consumer attribute, when the item moves into the overflow menu. Same synchronous-toggle caveat.
@@ -35,6 +38,7 @@
  * @attr {string} width - Preferred (fluid) width as a CSS length or percentage; the title grows toward it and shrinks to min-width.
  * @attr {string} min-width - Minimum width as a CSS length (default: '0', so the title shrink-wraps its content and the next element sits against it).
  * @attr {string} max-width - Maximum width as a CSS length (default: '240px'); the title text truncates with an ellipsis beyond it. The cap is lifted while the title is the sole toolbar element (it then stretches to fill the row).
+ * @attr {'sm'|'md'|'lg'} size - Set by nldd-toolbar, not a consumer attribute: mirrors the toolbar's size (default: 'md'), which sets the title group height and, at 'sm', the title and supporting-text fonts.
  *
  * @slot action - Optional trailing control (e.g. an xs nldd-icon-button), shown inline after the title and tuned to sit against it. Empty by default.
  */

@@ -16,6 +16,7 @@
  * @attr {boolean} required    - Required state
  * @attr {string} autocomplete - Autocomplete hint
  * @attr {string} accessible-label    - Accessible label forwarded to the inner input. Set automatically by nldd-form-field.
+ * @attr {string} error-message-ids   - Ids for aria-describedby on the inner input. Set automatically by nldd-form-field.
  * @attr {boolean} no-spellcheck - Disables browser spellchecking on the inner input
  * @attr {string} width        - Optional fixed width (any CSS length, e.g. "240px"). Default: stretches to fill container.
  *
