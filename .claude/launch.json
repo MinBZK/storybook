@@ -4,14 +4,29 @@
     {
       "name": "sb-worktree",
       "runtimeExecutable": "sh",
-      "runtimeArgs": ["-c", "cd /Users/bart/Sites/storybook/.worktrees/feat/tasks-fine-tuning && exec npx storybook dev -p 6006 --no-open"],
+      "runtimeArgs": [
+        "-c",
+        "cd /Users/bart/Sites/storybook/.worktrees/feat/tasks-fine-tuning && exec npx storybook dev -p 6006 --no-open"
+      ],
       "port": 6006
     },
     {
       "name": "ndd-website",
       "runtimeExecutable": "sh",
-      "runtimeArgs": ["-c", "cd /Users/bart/Sites/website && exec npx astro dev --port 4322"],
+      "runtimeArgs": [
+        "-c",
+        "cd /Users/bart/Sites/website && exec npx astro dev --port 4322"
+      ],
       "port": 4322
+    },
+    {
+      "name": "regelrecht",
+      "runtimeExecutable": "sh",
+      "runtimeArgs": [
+        "-c",
+        "cd /Users/bart/Sites/regelrecht/frontend && exec npm run dev -- --port 7300 --strictPort --host 0.0.0.0"
+      ],
+      "port": 7300
     }
   ]
 }
