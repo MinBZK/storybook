@@ -13,6 +13,8 @@
  * @attr {boolean} disabled      - Disabled state for all items
  * @attr {string}  width         - Width mode: 'full' (stretches to container), 'fit-content' (per-item content size), or any CSS length (e.g. '240px')
  * @attr {string}  name          - Name for form submission, forwarded to native inputs
+ * @attr {string}  accessible-label - Accessible name for the group, set as aria-label
+ * @attr {string}  accessible-labelled-by - Id of an external label element, set as aria-labelledby on the group
  *
  * @fires change - When selection changes; detail: { value: string } for radio,
  *                 detail: { values: string[] } for checkbox
@@ -28,6 +30,10 @@
  * @attr {string}  text         - Text label (shown for variant "text" and "icon-and-text";
  *                                used as aria-label and tooltip for variant "icon")
  * @attr {string}  icon         - Icon name for nldd-icon
+ * @attr {string}  size         - Control size: 'sm' | 'md' | 'lg' (default: 'md'). Set by nldd-segmented-control.
+ * @attr {string}  variant      - Content type: 'text' | 'icon' | 'icon-and-text' (default: 'text'). Set by nldd-segmented-control.
+ * @attr {string}  input-type   - Type of the native input: 'radio' | 'checkbox' (default: 'radio'). Set by nldd-segmented-control.
+ * @attr {string}  group-name   - Name of the group for form submission, put on the native input. Set by nldd-segmented-control.
  *
  * @slot icon    - Slot for a custom icon (e.g. custom SVG). Only used when icon attribute is not set.
  *
@@ -78,8 +84,11 @@ export class NLDDSegmentedControlItem extends LitElement {
 	@property({ reflect: true, attribute: 'input-type', converter: reflectNonDefault<SegmentedControlType>('radio') })
 	inputType: SegmentedControlType = 'radio';
 
-	/** Set by nldd-segmented-control. Not part of the public API. */
-	@property({ type: String })
+	/** Set by nldd-segmented-control. Not part of the public API.
+	 *
+	 * The attribute name is stated: without it Lit derives `groupname`, all
+	 * lowercase, while the documentation has always promised `group-name`. */
+	@property({ type: String, attribute: 'group-name' })
 	groupName = '';
 
 	/** Text label for the item. Used as visible text and as aria-label/tooltip for icon variant. */
