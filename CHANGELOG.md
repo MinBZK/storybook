@@ -11,34 +11,20 @@ here; consult the commit history if you need that level of detail.
 
 ### Highlights
 
-- **New `nldd-date-picker`.** A calendar for a single date or a period. Usable on its own (inline in a page or a filter panel) and used inside `nldd-date-field`. Follows the W3C APG date picker grid: arrow keys move day by day, Page Up/Down a month, Home/End to the week's edges, and the month heading announces itself as you page. Optional ISO week numbers, a configurable first day of the week, and an `isDateUnavailable` callback to block dates. On a narrow screen or a touch device it switches to a compact layout with the month arrows and "Vandaag" along the bottom.
-- **`nldd-date-field` opens that calendar instead of the browser's.** The native `showPicker()` could not be dismissed in Safari, so the button now opens `nldd-date-picker` in an `nldd-popover` — a bottom sheet on small screens, with a title bar and "Annuleer". `no-picker` still hides the button entirely.
-- **`nldd-date-field` chooses a period.** With `range` the field shows two inputs with "t/m" between them and puts the calendar in range mode. The value is one ISO 8601 interval (`2026-07-06/2026-07-20`) under one `name`, so a form gets one field rather than two that can disagree. Picking a second date before the first completes the period backwards instead of starting over.
-- **Bring your own calendar.** Put an `nldd-date-picker` in the field's `picker` slot to control what only a calendar knows — week numbers, first day of the week, blocked dates, its own translations. The field keeps writing `value`, `min`, `max` and `range`, so the form value cannot drift from what the calendar shows.
-- **Relative bounds.** `min` and `max` accept `today` and `today±Nd/w/m/y` besides an ISO date, so "no earlier than today" or "at most three months out" needs no date arithmetic in the consumer.
+- **New `nldd-date-picker`.** A calendar for a single date or a period, usable on its own (inline in a page or a filter panel) and inside `nldd-date-field`. Follows the W3C APG date picker grid: arrow keys move day by day, Page Up/Down a month, Home/End to the week's edges, and the month heading announces itself as you page. Optional ISO week numbers, a configurable first day of the week, and an `isDateUnavailable` callback to block dates. On a narrow screen or a touch device it switches to a compact layout with the month arrows and "Vandaag" along the bottom.
+- **`nldd-date-field` gained a calendar, periods and relative bounds.** The button opens `nldd-date-picker` in an `nldd-popover` (a bottom sheet on small screens) instead of the browser's own, which could not be dismissed in Safari. With `range` the field shows two inputs with "t/m" between them and stores one ISO 8601 interval (`2026-07-06/2026-07-20`) under one `name`, so a form gets one field rather than two that can disagree. Put your own `nldd-date-picker` in the `picker` slot to control what only a calendar knows, while the field keeps owning the value. And `min` / `max` accept `today` and `today±Nd/w/m/y`, so a relative bound needs no date arithmetic.
 - **New icons.** Media controls: `play`, `pause`, `play-pause`, `stop`, `forward`, `backward`, `forward-end`, `backward-end`, `forward-frame`, `backward-frame` (each with a filled variant). Plus `person-badge-plus` (alias `add-user`), `antenna-radio-waves` (alias `broadcast`), `megaphone`, `exclamation-2-circle`, `exclamation-3-circle`, `circle-grid-2x2-top-left-check-mark` and `square-corner-4`.
 
 ### Added
 
 - **`nldd-date-picker`** (inputs) — new component. `value` for a single date, or `range` with `start` / `end`; `min` / `max` accept an ISO date, `today`, or `today±Nd/w/m/y`; `week-numbers` adds an ISO week column; `first-day-of-week` sets the leading column; `isDateUnavailable` (property) blocks individual dates while keeping them reachable with the keyboard; `accessible-label` names the grid; `translations` overrides the Dutch defaults. Fires `input` while a period is half-chosen and `change` once a value is complete.
 - **`nldd-date-field`** — `range` for a period as a single ISO 8601 interval value; a `picker` slot for your own `nldd-date-picker`; `min` / `max` now also take `today` and `today±Nd/w/m/y`.
-
-### Added
-
 - **Vue template types.** `import '@nldd/design-system/vue'` declares every `nldd-*` tag for Vue's template type-checking, so a Vue consumer no longer maintains a hand-written declaration that falls behind. Generated from the manifest, so it cannot: props carry the component's own types (`size` is `'md' | 'sm'`, not `string`), attributes work both as written in markup (`week-numbers`) and in the form Vue normalises them to (`weekNumbers`), and events are the prop Vue derives from `@change`.
 - **Custom Elements Manifest.** The package now ships `custom-elements.json` and points at it with the `customElements` field, so VS Code and JetBrains give autocomplete and hover documentation for `nldd-*` tags in plain HTML, with no extra setup. It is generated from the source rather than from the documentation, so a union like `'md' | 'sm'` stays a union instead of flattening to `string`. It is also the input for generated framework type declarations.
 
 ### Breaking
 
-- **Icons: `batch` in a name is now `badge`.** Three icons show a small badge in the bottom-right corner, sharing that sub-glyph with `person-badge-gear` and `cylinder-split-badge-lock`. None of them shows a stack, so the name was simply wrong. Rename in your markup:
-
-  | was | is |
-  | --- | --- |
-  | `book-batch-play` | `book-badge-play` |
-  | `file-text-batch-check-mark` | `file-text-badge-check-mark` |
-  | `file-text-batch-check-plus` | `file-text-badge-check-plus` |
-
-  The old names are gone, also as aliases: a misspelling kept alive as an alias is a misspelling you keep reading in code review. The `new-text-document` alias follows the rename and needs no change.
+- **Icons: `batch` in a name is now `badge`.** Three icons show a small badge in the bottom-right corner, sharing that sub-glyph with `person-badge-gear` and `cylinder-split-badge-lock`. None of them shows a stack, so the name was simply wrong. Rename `book-batch-play` to `book-badge-play`, `file-text-batch-check-mark` to `file-text-badge-check-mark` and `file-text-batch-check-plus` to `file-text-badge-check-plus`. The old names are gone, also as aliases: a misspelling kept alive as an alias is a misspelling you keep reading in code review. The `new-text-document` alias follows the rename and needs no change.
 
 ### Fixed
 
