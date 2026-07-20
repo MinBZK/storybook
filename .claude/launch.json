@@ -1,0 +1,17 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "sb-worktree",
+      "runtimeExecutable": "sh",
+      "runtimeArgs": ["-c", "cd /Users/bart/Sites/storybook/.worktrees/feat/tasks-fine-tuning && exec npx storybook dev -p 6006 --no-open"],
+      "port": 6006
+    },
+    {
+      "name": "ndd-website",
+      "runtimeExecutable": "sh",
+      "runtimeArgs": ["-c", "cd /Users/bart/Sites/website && exec npx astro dev --port 4322"],
+      "port": 4322
+    }
+  ]
+}
