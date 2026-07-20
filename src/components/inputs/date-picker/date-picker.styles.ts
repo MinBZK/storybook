@@ -133,8 +133,8 @@ export const datePickerStyles = css`
 		user-select: none;
 	}
 
-	.date-picker__weekday,
-	.date-picker__week-number-header {
+	.date-picker__weekday-header-cell,
+	.date-picker__week-header-cell {
 		border-block-end: var(--_divider-thickness) solid var(--_divider-color);
 		padding: 0 0 var(--primitives-space-4);
 		width: var(--_day-size);
@@ -142,19 +142,19 @@ export const datePickerStyles = css`
 		font: var(--_weekday-font);
 	}
 
-	.date-picker__cell,
-	.date-picker__week-number {
+	.date-picker__day-cell,
+	.date-picker__week-cell {
 		border-block-end: var(--_divider-thickness) solid var(--_divider-color);
 		padding: 0;
 	}
 
-	tbody tr:last-child .date-picker__cell,
-	tbody tr:last-child .date-picker__week-number {
+	tbody tr:last-child .date-picker__day-cell,
+	tbody tr:last-child .date-picker__week-cell {
 		border-block-end: none;
 	}
 
-	.date-picker__week-number,
-	.date-picker__week-number-header {
+	.date-picker__week-cell,
+	.date-picker__week-header-cell {
 		/* Table cells do not inherit the host's border-box, so the padding and rule
 		   below would otherwise be added on top of the stated width. */
 		box-sizing: border-box;
@@ -189,7 +189,7 @@ export const datePickerStyles = css`
 		appearance: none;
 	}
 
-	.date-picker__range {
+	.date-picker__day-range-indicator {
 		position: absolute;
 		inset-inline: 0;
 		inset-block: var(--_day-indicator-inset);
@@ -197,15 +197,15 @@ export const datePickerStyles = css`
 		pointer-events: none;
 	}
 
-	.date-picker__range.is-start {
+	.date-picker__day-range-indicator.is-start {
 		inset-inline: 50% 0;
 	}
 
-	.date-picker__range.is-end {
+	.date-picker__day-range-indicator.is-end {
 		inset-inline: 0 50%;
 	}
 
-	.date-picker__indicator {
+	.date-picker__day-indicator {
 		box-sizing: border-box;
 		position: absolute;
 		top: 50%;
@@ -222,11 +222,11 @@ export const datePickerStyles = css`
 		position: relative;
 	}
 
-	.date-picker__day.is-today .date-picker__indicator {
+	.date-picker__day.is-today .date-picker__day-indicator {
 		background-color: var(--_day-is-today-background-color);
 	}
 
-	.date-picker__day:hover .date-picker__indicator {
+	.date-picker__day:hover .date-picker__day-indicator {
 		background-color: var(--_day-is-hovered-background-color);
 	}
 
@@ -242,7 +242,7 @@ export const datePickerStyles = css`
 		z-index: 1;
 	}
 
-	.date-picker__day:focus:not(.is-pointer-focus) .date-picker__indicator {
+	.date-picker__day:focus:not(.is-pointer-focus) .date-picker__day-indicator {
 		outline: var(--semantics-focus-ring-outline);
 		outline-offset: var(--semantics-focus-ring-outline-offset);
 		box-shadow: var(--semantics-focus-ring-box-shadow);
@@ -264,8 +264,8 @@ export const datePickerStyles = css`
 
 	/* Repeated for :hover, which carries a pseudo-class and would otherwise
 	   outweigh the plain selected rule. */
-	.date-picker__day.is-selected .date-picker__indicator,
-	.date-picker__day.is-selected:hover .date-picker__indicator {
+	.date-picker__day.is-selected .date-picker__day-indicator,
+	.date-picker__day.is-selected:hover .date-picker__day-indicator {
 		background-color: var(--_day-is-selected-background-color);
 	}
 
@@ -274,7 +274,7 @@ export const datePickerStyles = css`
 		text-decoration: line-through;
 	}
 
-	.date-picker__day.is-unavailable:hover .date-picker__indicator {
+	.date-picker__day.is-unavailable:hover .date-picker__day-indicator {
 		background-color: transparent;
 	}
 
@@ -311,11 +311,11 @@ export const datePickerStyles = css`
 	/* # Toegankelijkheid */
 
 	@media (forced-colors: active) {
-		.date-picker__day.is-selected .date-picker__indicator {
+		.date-picker__day.is-selected .date-picker__day-indicator {
 			outline: 2px solid CanvasText;
 		}
 
-		.date-picker__day:focus:not(.is-pointer-focus) .date-picker__indicator {
+		.date-picker__day:focus:not(.is-pointer-focus) .date-picker__day-indicator {
 			outline: 2px solid CanvasText;
 		}
 	}

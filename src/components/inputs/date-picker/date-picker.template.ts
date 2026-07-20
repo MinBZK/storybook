@@ -118,7 +118,7 @@ function renderColumnHeaders(component: NLDDDatePicker): TemplateResult {
 	return html`
 		<tr>
 			${component.weekNumbers ? html`
-				<th class="date-picker__week-number-header"
+				<th class="date-picker__week-header-cell"
 					scope="col"
 					abbr=${component._t('components.date-picker.week-number-column-label')}
 				>
@@ -126,7 +126,7 @@ function renderColumnHeaders(component: NLDDDatePicker): TemplateResult {
 				</th>
 			` : nothing}
 			${component._weekdays.map((day) => html`
-				<th class="date-picker__weekday"
+				<th class="date-picker__weekday-header-cell"
 					scope="col"
 					abbr=${component._t(`components.date-picker.${WEEKDAY_KEYS[day]}-lowercase` as keyof NLDDDatePickerTranslations)}
 				>
@@ -147,7 +147,7 @@ function renderDay(component: NLDDDatePicker, iso: string): TemplateResult {
 	const selected = component._isSelected(iso);
 	const band = component._bandFor(iso);
 	return html`
-		<td class="date-picker__cell"
+		<td class="date-picker__day-cell"
 			aria-selected=${selected ? 'true' : nothing}
 		>
 			<button class=${classMap({
@@ -171,11 +171,11 @@ function renderDay(component: NLDDDatePicker, iso: string): TemplateResult {
 				@mouseenter=${() => component._handleDayHover(iso)}
 			>
 				${band === 'none' ? nothing : html`<span class=${classMap({
-					'date-picker__range': true,
+					'date-picker__day-range-indicator': true,
 					'is-start': band === 'start',
 					'is-end': band === 'end',
 				})}></span>`}
-				<span class="date-picker__indicator"></span>
+				<span class="date-picker__day-indicator"></span>
 				<span class="date-picker__day-number">
 					${Number(iso.slice(8, 10))}
 				</span>
@@ -205,7 +205,7 @@ export function datePickerTemplate(component: NLDDDatePicker): TemplateResult {
 					${component._weeks.map((week) => html`
 						<tr>
 							${component.weekNumbers ? html`
-								<th class="date-picker__week-number"
+								<th class="date-picker__week-cell"
 									scope="row"
 									aria-label=${component._t('components.date-picker.week-number-label', { week: component._weekNumber(week) })}
 								>

@@ -115,7 +115,7 @@ describe('nldd-date-picker', () => {
 	it('toont geen weeknummers zonder het attribuut', async () => {
 		el = await fixture<NLDDDatePicker>('<nldd-date-picker value="2026-07-15"></nldd-date-picker>');
 		await waitForUpdate(el);
-		expect(el.shadowRoot!.querySelector('.date-picker__week-number')).toBeNull();
+		expect(el.shadowRoot!.querySelector('.date-picker__week-cell')).toBeNull();
 	});
 
 	it('toont ISO-weeknummers met week-numbers', async () => {
@@ -123,7 +123,7 @@ describe('nldd-date-picker', () => {
 			'<nldd-date-picker value="2026-07-15" week-numbers></nldd-date-picker>',
 		);
 		await waitForUpdate(el);
-		const numbers = Array.from(el.shadowRoot!.querySelectorAll('.date-picker__week-number'));
+		const numbers = Array.from(el.shadowRoot!.querySelectorAll('.date-picker__week-cell'));
 		expect(numbers).toHaveLength(6);
 		// De week met 1 juli 2026 (woensdag) is ISO-week 27.
 		expect(numbers[0].textContent!.trim()).toBe('27');
@@ -138,7 +138,7 @@ describe('nldd-date-picker', () => {
 			'<nldd-date-picker value="2026-07-15" week-numbers first-day-of-week="0"></nldd-date-picker>',
 		);
 		await waitForUpdate(el);
-		const numbers = Array.from(el.shadowRoot!.querySelectorAll('.date-picker__week-number'));
+		const numbers = Array.from(el.shadowRoot!.querySelectorAll('.date-picker__week-cell'));
 		expect(numbers[0].textContent!.trim()).toBe('27');
 	});
 
@@ -147,7 +147,7 @@ describe('nldd-date-picker', () => {
 			'<nldd-date-picker value="2026-07-15" first-day-of-week="0"></nldd-date-picker>',
 		);
 		await waitForUpdate(el);
-		const headers = Array.from(el.shadowRoot!.querySelectorAll('.date-picker__weekday'));
+		const headers = Array.from(el.shadowRoot!.querySelectorAll('.date-picker__weekday-header-cell'));
 		expect(headers[0].textContent!.trim()).toBe('zo');
 		// Met zondag vooraan schuift woensdag een plek op, dus drie lege cellen.
 		const cells = Array.from(el.shadowRoot!.querySelectorAll('tbody tr')[0].querySelectorAll('td'));
@@ -157,7 +157,7 @@ describe('nldd-date-picker', () => {
 	it('toont de volledige weekdag als abbr, want "ma" alleen zegt niets', async () => {
 		el = await fixture<NLDDDatePicker>('<nldd-date-picker></nldd-date-picker>');
 		await waitForUpdate(el);
-		const first = el.shadowRoot!.querySelector('.date-picker__weekday')!;
+		const first = el.shadowRoot!.querySelector('.date-picker__weekday-header-cell')!;
 		expect(first.getAttribute('abbr')).toBe('maandag');
 		expect(first.getAttribute('scope')).toBe('col');
 	});
@@ -875,7 +875,7 @@ describe('nldd-date-picker', () => {
 		el = await fixture<NLDDDatePicker>('<nldd-date-picker value="2026-07-15"></nldd-date-picker>');
 		await waitForUpdate(el);
 		const day = dayFor(el, '2026-07-15');
-		expect(day.querySelector('.date-picker__indicator')).not.toBeNull();
+		expect(day.querySelector('.date-picker__day-indicator')).not.toBeNull();
 		expect(getComputedStyle(day).borderRadius).toBe('0px');
 	});
 
@@ -886,7 +886,7 @@ describe('nldd-date-picker', () => {
 		el = await fixture<NLDDDatePicker>('<nldd-date-picker value="2026-07-15"></nldd-date-picker>');
 		await waitForUpdate(el);
 		const day = dayFor(el, '2026-07-15');
-		const indicator = day.querySelector('.date-picker__indicator')!;
+		const indicator = day.querySelector('.date-picker__day-indicator')!;
 		const selectedBackground = getComputedStyle(indicator).backgroundColor;
 
 		day.dispatchEvent(new MouseEvent('mouseover', { bubbles: true }));
