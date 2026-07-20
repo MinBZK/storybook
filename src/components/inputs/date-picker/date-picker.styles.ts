@@ -50,7 +50,7 @@ export const datePickerStyles = css`
 		width: calc(var(--_day-size) * 7 + var(--_week-number-column-width));
 	}
 
-	:host([compact]) {
+	:host([stacked]) {
 		--_title-font: var(--primitives-font-display-4-sm);
 
 		width: 100%;

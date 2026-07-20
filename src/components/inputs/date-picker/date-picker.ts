@@ -174,7 +174,8 @@ export class NLDDDatePicker extends withTranslations<NLDDDatePickerTranslations>
 	_yearMenuOpen = false;
 
 	/**
-	 * Compact layout: the paging controls move below the grid and grow to md.
+	 * Stacked layout: the paging controls move below the grid and grow to md. Not
+	 * compact: everything gets roomier, tuned for fingers and narrow viewports.
 	 * Driven from JS rather than a media query because the two layouts are not the
 	 * same buttons in another place - side by side they are one bar, below they
 	 * split into "Vandaag" on the left and the month arrows on the right, and CSS
@@ -184,12 +185,12 @@ export class NLDDDatePicker extends withTranslations<NLDDDatePickerTranslations>
 	 * for the wide layout but the same need for larger targets.
 	 */
 	@state()
-	_compact = false;
+	_stacked = false;
 
-	private _compactQuery?: MediaQueryList;
+	private _stackedQuery?: MediaQueryList;
 
-	private _handleCompactChange = (): void => {
-		this._compact = Boolean(this._compactQuery?.matches);
+	private _handleStackedChange = (): void => {
+		this._stacked = Boolean(this._stackedQuery?.matches);
 	};
 
 	public async _handleYearMenuToggle(e: Event): Promise<void> {
@@ -227,15 +228,15 @@ export class NLDDDatePicker extends withTranslations<NLDDDatePickerTranslations>
 		super.connectedCallback();
 		if (!this._focused) this._focused = this._initialFocus();
 		if (!this._view) this._view = firstOfMonth(this._focused);
-		this._compactQuery = window.matchMedia(`(max-width: ${breakpoints.smMax}), (pointer: coarse)`);
-		this._compact = this._compactQuery.matches;
-		this._compactQuery.addEventListener('change', this._handleCompactChange);
+		this._stackedQuery = window.matchMedia(`(max-width: ${breakpoints.smMax}), (pointer: coarse)`);
+		this._stacked = this._stackedQuery.matches;
+		this._stackedQuery.addEventListener('change', this._handleStackedChange);
 	}
 
 	override disconnectedCallback(): void {
 		super.disconnectedCallback();
 		document.removeEventListener('pointerup', this._onDocumentPointerUp);
-		this._compactQuery?.removeEventListener('change', this._handleCompactChange);
+		this._stackedQuery?.removeEventListener('change', this._handleStackedChange);
 	}
 
 	override willUpdate(changed: PropertyValues): void {
@@ -255,7 +256,7 @@ export class NLDDDatePicker extends withTranslations<NLDDDatePickerTranslations>
 	override updated(): void {
 		// Mirrored to an attribute so the host's own rules can key on it; consumers
 		// are not meant to set it.
-		this.toggleAttribute('compact', this._compact);
+		this.toggleAttribute('stacked', this._stacked);
 
 		// Two associations the menu cannot make itself here. It resolves a string
 		// anchor with document.getElementById, which cannot see into a shadow root,

@@ -50,7 +50,7 @@ function renderHeader(component: NLDDDatePicker): TemplateResult {
 					></nldd-menu-item>
 				`)}
 			</nldd-menu>
-			${component._compact ? nothing : html`
+			${component._stacked ? nothing : html`
 				<div class="date-picker__pagination">
 					${renderPagination(component, 'sm', 'neutral-base', true)}
 				</div>
@@ -61,7 +61,7 @@ function renderHeader(component: NLDDDatePicker): TemplateResult {
 
 /**
  * The month arrows, with "Vandaag" between them when the wide layout keeps all
- * three in one bar. Compact moves that button to the opposite corner, so whether
+ * three in one bar. Stacked moves that button to the opposite corner, so whether
  * it belongs here is passed in rather than assumed.
  */
 function renderPagination(component: NLDDDatePicker, size: string, variant: string, withToday: boolean): TemplateResult {
@@ -94,7 +94,7 @@ function renderPagination(component: NLDDDatePicker, size: string, variant: stri
 	`;
 }
 
-/** Compact only: "Vandaag" bottom-left, the month arrows bottom-right. */
+/** Stacked only: "Vandaag" bottom-left, the month arrows bottom-right. */
 function renderFooter(component: NLDDDatePicker): TemplateResult {
 	return html`
 		<div class="date-picker__footer">
@@ -217,7 +217,7 @@ export function datePickerTemplate(component: NLDDDatePicker): TemplateResult {
 					`)}
 				</tbody>
 			</table>
-			${component._compact ? renderFooter(component) : nothing}
+			${component._stacked ? renderFooter(component) : nothing}
 			<div class="date-picker__announcer"
 				role="status"
 				aria-live="polite"

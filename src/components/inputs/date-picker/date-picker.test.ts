@@ -803,11 +803,11 @@ describe('nldd-date-picker', () => {
 	});
 
 
-	// # Compacte indeling
+	// # Gestapelde indeling
 
 	it('houdt de paginering in de kop op een breed scherm', async () => {
 		el = await fixture<NLDDDatePicker>('<nldd-date-picker></nldd-date-picker>');
-		el._compact = false;
+		el._stacked = false;
 		await waitForUpdate(el);
 		expect(el.shadowRoot!.querySelector('.date-picker__pagination')).not.toBeNull();
 		expect(el.shadowRoot!.querySelector('.date-picker__footer')).toBeNull();
@@ -815,9 +815,9 @@ describe('nldd-date-picker', () => {
 
 	// Onder het rooster, en in twee hoeken: een duim die de ene groep raakt dekt
 	// de andere dan niet af.
-	it('zet de paginering onder de kalender wanneer het compact is', async () => {
+	it('zet de paginering onder de kalender wanneer hij gestapeld is', async () => {
 		el = await fixture<NLDDDatePicker>('<nldd-date-picker></nldd-date-picker>');
-		el._compact = true;
+		el._stacked = true;
 		await waitForUpdate(el);
 		expect(el.shadowRoot!.querySelector('.date-picker__pagination')).toBeNull();
 		const footer = el.shadowRoot!.querySelector('.date-picker__footer');
@@ -829,9 +829,9 @@ describe('nldd-date-picker', () => {
 
 	// Op de property, niet op het attribuut: md is de standaard en die wordt met
 	// reflectNonDefault juist uit het DOM gehouden.
-	it('vergroot de knoppen naar md wanneer het compact is', async () => {
+	it('vergroot de knoppen naar md wanneer hij gestapeld is', async () => {
 		el = await fixture<NLDDDatePicker>('<nldd-date-picker></nldd-date-picker>');
-		el._compact = true;
+		el._stacked = true;
 		await waitForUpdate(el);
 		const footer = el.shadowRoot!.querySelector('.date-picker__footer')!;
 		const bar = footer.querySelector('nldd-button-bar') as HTMLElement & { size?: string };
@@ -842,24 +842,24 @@ describe('nldd-date-picker', () => {
 
 	it('houdt de knoppen op sm in de brede indeling', async () => {
 		el = await fixture<NLDDDatePicker>('<nldd-date-picker></nldd-date-picker>');
-		el._compact = false;
+		el._stacked = false;
 		await waitForUpdate(el);
 		const bar = el.shadowRoot!.querySelector('.date-picker__pagination nldd-button-bar') as HTMLElement & { size?: string };
 		expect(bar.size).toBe('sm');
 	});
 
 	// Anders staat Vandaag twee keer: los linksonder én in de bar ernaast.
-	it('zet Vandaag niet ook in de paginering wanneer het compact is', async () => {
+	it('zet Vandaag niet ook in de paginering wanneer hij gestapeld is', async () => {
 		el = await fixture<NLDDDatePicker>('<nldd-date-picker></nldd-date-picker>');
-		el._compact = true;
+		el._stacked = true;
 		await waitForUpdate(el);
 		const bar = el.shadowRoot!.querySelector('.date-picker__footer nldd-button-bar')!;
 		expect(bar.querySelector('nldd-button')).toBeNull();
 	});
 
-	it('laat Vandaag ook compact weg wanneer vandaag buiten bereik valt', async () => {
+	it('laat Vandaag ook gestapeld weg wanneer vandaag buiten bereik valt', async () => {
 		el = await fixture<NLDDDatePicker>('<nldd-date-picker max="today-18y"></nldd-date-picker>');
-		el._compact = true;
+		el._stacked = true;
 		await waitForUpdate(el);
 		const footer = el.shadowRoot!.querySelector('.date-picker__footer')!;
 		expect(footer.querySelector('nldd-button')).toBeNull();
