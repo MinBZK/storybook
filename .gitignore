@@ -4,6 +4,9 @@ node_modules/
 # Build output
 dist/
 
+# Astro generated types and content collections
+.astro/
+
 # Environment variables (contains secrets)
 .env
 .env.local
