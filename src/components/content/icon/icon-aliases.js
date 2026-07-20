@@ -172,8 +172,8 @@ export const aliases = {
 	// file-text
 	'text-document': 'file-text',
 
-	// file-text-batch-check-plus
-	'new-text-document': 'file-text-batch-check-plus',
+	// file-text-badge-check-plus
+	'new-text-document': 'file-text-badge-check-plus',
 
 	// file-text-stack
 	'documents': 'file-text-stack',
@@ -503,4 +503,11 @@ export const aliases = {
 
 	// antenna-radio-waves
 	'broadcast': 'antenna-radio-waves',
+
+	// Deze drie heetten "batch" terwijl ze een badge tonen, zoals person-badge-gear
+	// en cylinder-split-badge-lock. Ze zijn uitgebracht onder de oude naam, dus die
+	// blijft als alias werken.
+	'book-batch-play': 'book-badge-play',
+	'file-text-batch-check-mark': 'file-text-badge-check-mark',
+	'file-text-batch-check-plus': 'file-text-badge-check-plus',
 };

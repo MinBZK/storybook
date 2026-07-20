@@ -29,6 +29,10 @@ here; consult the commit history if you need that level of detail.
 - **`nldd-date-picker`** (inputs) — new component. `value` for a single date, or `range` with `start` / `end`; `min` / `max` accept an ISO date, `today`, or `today±Nd/w/m/y`; `week-numbers` adds an ISO week column; `first-day-of-week` sets the leading column; `isDateUnavailable` (property) blocks individual dates while keeping them reachable with the keyboard; `accessible-label` names the grid; `translations` overrides the Dutch defaults. Fires `input` while a period is half-chosen and `change` once a value is complete.
 - **`nldd-date-field`** — `range` for a period as a single ISO 8601 interval value; a `picker` slot for your own `nldd-date-picker`; `min` / `max` now also take `today` and `today±Nd/w/m/y`.
 
+### Changed
+
+- **Icons `batch` renamed to `badge`.** `book-batch-play`, `file-text-batch-check-mark` and `file-text-batch-check-plus` show a badge in the corner, like `person-badge-gear` and `cylinder-split-badge-lock`, not a stack. They are now `book-badge-play`, `file-text-badge-check-mark` and `file-text-badge-check-plus`. The old names keep working as aliases, so nothing breaks; the `new-text-document` alias follows the rename.
+
 ### Fixed
 
 - **`nldd-popover`** — Tab no longer gets stuck inside a popover that contains a roving-tabindex widget (a calendar grid, a toolbar). The focus scan counted every `tabindex="-1"` element as focusable, so with a calendar inside it saw 41 "focusable" day buttons and never let focus move on.
