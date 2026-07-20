@@ -1,0 +1,34 @@
+/**
+ * Custom Elements Manifest: the machine-readable description of what this
+ * package ships.
+ *
+ * It is generated from the source, not from the JSDoc: the `@property`
+ * decorators carry the attribute name and the TypeScript type, so a union like
+ * 'md' | 'sm' survives instead of flattening to `string`. Editors read the
+ * manifest directly for autocomplete in plain HTML, and framework type
+ * declarations are generated from it.
+ *
+ * Run with `npm run generate:cem`. The result is committed, so a change to a
+ * component's public API shows up in the diff of a pull request.
+ */
+import { nlddFileLevelJsdoc } from './scripts/lib/cem-nldd-jsdoc.js';
+
+export default {
+	globs: ['src/components/**/*.ts', 'src/utilities/*.ts'],
+	// The sibling files hold styles, markup and translations. They declare no
+	// element, so analysing them only pads the manifest.
+	exclude: [
+		'**/*.styles.ts',
+		'**/*.template.ts',
+		'**/*.i18n.ts',
+		'**/*.stories.ts',
+		'**/*.test.ts',
+		// A generated lookup table of inlined SVG strings. It declares no element
+		// and is a hundred kilobytes of noise in the manifest.
+		'**/icon-registry.ts',
+	],
+	outdir: '.',
+	litelement: true,
+	dev: false,
+	plugins: [nlddFileLevelJsdoc()],
+};

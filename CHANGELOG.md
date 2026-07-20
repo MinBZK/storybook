@@ -23,6 +23,10 @@ here; consult the commit history if you need that level of detail.
 - **`nldd-date-picker`** (inputs) — new component. `value` for a single date, or `range` with `start` / `end`; `min` / `max` accept an ISO date, `today`, or `today±Nd/w/m/y`; `week-numbers` adds an ISO week column; `first-day-of-week` sets the leading column; `isDateUnavailable` (property) blocks individual dates while keeping them reachable with the keyboard; `accessible-label` names the grid; `translations` overrides the Dutch defaults. Fires `input` while a period is half-chosen and `change` once a value is complete.
 - **`nldd-date-field`** — `range` for a period as a single ISO 8601 interval value; a `picker` slot for your own `nldd-date-picker`; `min` / `max` now also take `today` and `today±Nd/w/m/y`.
 
+### Added
+
+- **Custom Elements Manifest.** The package now ships `custom-elements.json` and points at it with the `customElements` field, so VS Code and JetBrains give autocomplete and hover documentation for `nldd-*` tags in plain HTML, with no extra setup. It is generated from the source rather than from the documentation, so a union like `'md' | 'sm'` stays a union instead of flattening to `string`. It is also the input for generated framework type declarations.
+
 ### Breaking
 
 - **Icons: `batch` in a name is now `badge`.** Three icons show a small badge in the bottom-right corner, sharing that sub-glyph with `person-badge-gear` and `cylinder-split-badge-lock`. None of them shows a stack, so the name was simply wrong. Rename in your markup:

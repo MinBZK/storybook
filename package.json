@@ -408,7 +408,8 @@
     }
   },
   "files": [
-    "dist"
+    "dist",
+    "custom-elements.json"
   ],
   "repository": {
     "type": "git",
@@ -423,6 +424,7 @@
     "build:styles": "mkdir -p dist/css dist/fonts && cp src/assets/styles/settings.css dist/css/settings.css && cp src/assets/styles/reset.css dist/css/reset.css && cp src/assets/styles/palettes.generated.css dist/css/palettes.generated.css && cp src/components/content/rich-text/rich-text.css dist/css/rich-text.css && cp src/components/forms/form/form.css dist/css/form.css && cp src/components/forms/form-section/form-section.css dist/css/form-section.css && cp src/assets/styles/fouc.css dist/css/fouc.css && printf '@import \"./settings.css\";\\n@import \"./reset.css\";\\n@import \"./rich-text.css\";\\n@import \"./form-section.css\";\\n@import \"./form.css\";\\n@import \"./fouc.css\";\\n' > dist/css/global.css && cp src/assets/fonts/*.woff2 dist/fonts/",
     "generate:palettes": "node scripts/generate-palettes.js",
     "generate:component-reference": "node scripts/generate-component-reference.js",
+    "generate:cem": "cem analyze",
     "generate:skill-changelog": "node scripts/generate-skill-changelog.js",
     "generate:skill-principles": "node scripts/generate-skill-principles.js",
     "generate:plugin-version": "node scripts/sync-plugin-version.js",
@@ -459,6 +461,7 @@
   "devDependencies": {
     "@commitlint/cli": "^19.6.1",
     "@commitlint/config-conventional": "^19.6.0",
+    "@custom-elements-manifest/analyzer": "^0.11.0",
     "@eslint/js": "^9.17.0",
     "@semantic-release/changelog": "^6.0.3",
     "@semantic-release/exec": "^7.1.0",
@@ -514,5 +517,6 @@
     "@lezer/highlight": "^1.2.3",
     "@rijkshuisstijl-community/font": "^1.1.2",
     "lit": "^3.3.1"
-  }
+  },
+  "customElements": "custom-elements.json"
 }

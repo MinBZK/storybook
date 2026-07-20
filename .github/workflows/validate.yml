@@ -48,3 +48,13 @@ jobs:
           npm run generate:component-reference
           git diff --exit-code skills/nldd/reference.md \
             || (echo "::error::skills/nldd/reference.md is verouderd. Draai 'npm run generate:component-reference' en commit het resultaat." && exit 1)
+
+      # The manifest is committed rather than built on publish, so a change to a
+      # component's public API is visible in the diff of a pull request.
+      - name: Check custom elements manifest is in sync
+        shell: bash
+        run: |
+          set -e
+          npm run generate:cem
+          git diff --exit-code custom-elements.json \
+            || (echo "::error::custom-elements.json is verouderd. Draai 'npm run generate:cem' en commit het resultaat." && exit 1)
