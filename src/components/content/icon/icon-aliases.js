@@ -497,4 +497,10 @@ export const aliases = {
 
 	// wheat
 	'harvest': 'wheat',
+
+	// person-badge-plus
+	'add-account': 'person-badge-plus',
+
+	// antenna-radio-waves
+	'broadcast': 'antenna-radio-waves',
 };
