@@ -136,3 +136,41 @@ describe('nldd-page', () => {
 	});
 
 });
+
+describe('nldd-page neemt root-scroll alleen aan als het document bereikbaar is', () => {
+	let el: HTMLElement;
+
+	afterEach(() => {
+		if (el) cleanup(el);
+	});
+
+	// De modus wordt één keer bepaald op de buitenste split view en naar elke laag
+	// geduwd. Een pagina in een container die klemt zou dan zijn eigen scroller
+	// opgeven terwijl de ouder blijft afkappen: nergens meer scrollen.
+	it('valt terug op nested binnen een container die klemt', async () => {
+		el = await fixture(`
+			<div style="overflow: hidden; height: 200px">
+				<nldd-page sticky-header></nldd-page>
+			</div>
+		`);
+		const page = el.querySelector('nldd-page') as HTMLElement & { readScrollMode(m?: string): void };
+		await waitForUpdate(page);
+		page.readScrollMode('root');
+		await waitForUpdate(page);
+		// data-scroll blijft leeg zolang de modus niet verandert; nested is de stand.
+		expect(page.dataset.scroll).not.toBe('root');
+	});
+
+	it('houdt root wanneer niets ertussen klemt', async () => {
+		el = await fixture(`
+			<div style="overflow: visible">
+				<nldd-page sticky-header></nldd-page>
+			</div>
+		`);
+		const page = el.querySelector('nldd-page') as HTMLElement & { readScrollMode(m?: string): void };
+		await waitForUpdate(page);
+		page.readScrollMode('root');
+		await waitForUpdate(page);
+		expect(page.dataset.scroll).toBe('root');
+	});
+});

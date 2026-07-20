@@ -70,6 +70,7 @@ export class NLDDTopTitleBar extends LitElement {
 	private _activeScrollTarget: EventTarget | null = null;
 	private _scrollTargetStyleObserver: MutationObserver | null = null;
 	private _pageModeObserver: MutationObserver | null = null;
+	private _anchorLayoutObserver: ResizeObserver | null = null;
 	private _boundOnScroll = this._onScroll.bind(this);
 
 	override connectedCallback(): void {
@@ -145,6 +146,13 @@ export class NLDDTopTitleBar extends LitElement {
 			});
 		}
 
+		// updateComplete only awaits this bar's own render, not the pane below it.
+		// A pane pushed by the app can still be laying out, or mid-transition, so
+		// the first measurement can land on an anchor without a box. Re-measure the
+		// moment it gets one.
+		this._anchorLayoutObserver = new ResizeObserver(() => this._onScroll());
+		this._anchorLayoutObserver.observe(this._anchorElement);
+
 		// Initial check after layout is complete
 		this.updateComplete.then(() => this._onScroll());
 	}
@@ -189,6 +197,8 @@ export class NLDDTopTitleBar extends LitElement {
 		this._scrollTargetStyleObserver = null;
 		this._pageModeObserver?.disconnect();
 		this._pageModeObserver = null;
+		this._anchorLayoutObserver?.disconnect();
+		this._anchorLayoutObserver = null;
 	}
 
 	private _onScroll(): void {
@@ -199,9 +209,15 @@ export class NLDDTopTitleBar extends LitElement {
 		// (unchanged behaviour); in root-scroll mode the bar is position:sticky
 		// against the document while the page element itself scrolls away, so the
 		// page top is no longer the sticky line — the bar's own top still is.
+		const anchor = this._anchorElement.getBoundingClientRect();
+		// An anchor without a box measures 0, and 0 is above this bar, so a
+		// measurement taken before the pane laid out would always read as "scrolled
+		// past" and collapse the bar. The title then shows twice: once here and
+		// once in the pane, as soon as that does lay out. Leaving the class alone
+		// keeps the last known good state until the anchor is real.
+		if (anchor.width === 0 && anchor.height === 0) return;
 		const barTop = this.getBoundingClientRect().top;
-		const anchorTop = this._anchorElement.getBoundingClientRect().top;
-		this.classList.toggle('is-compact', anchorTop <= barTop);
+		this.classList.toggle('is-compact', anchor.top <= barTop);
 	}
 
 	_onToolbarSlotChange = (e: Event) => {

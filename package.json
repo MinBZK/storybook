@@ -7,9 +7,6 @@
   "module": "dist/components/components.js",
   "exports": {
     ".": "./dist/components/components.js",
-    "./vue": {
-      "types": "./dist/types/vue.d.ts"
-    },
     "./button": {
       "types": "./dist/components/actions/button/button.d.ts",
       "default": "./dist/components/actions/button/button.js"

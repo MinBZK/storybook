@@ -150,12 +150,35 @@ export class NLDDPage extends LitElement implements ScrollModeConsumer {
 	// — race-free, unlike a getComputedStyle read mid-propagation. Otherwise the
 	// inherited --context-scroll-mode is read (anything but 'root' means nested).
 	private _readScrollMode(mode?: ScrollMode): boolean {
-		const next: ScrollMode = mode
+		const asked: ScrollMode = mode
 			?? (getComputedStyle(this).getPropertyValue('--context-scroll-mode').trim() === 'root' ? 'root' : 'nested');
+		// Root mode is decided once, on the outermost split view, and pushed to
+		// every layer. That is right for the page in the document flow and wrong
+		// for one inside a container that bounds it: it would drop its own scroller
+		// while an ancestor keeps clipping, leaving nothing to scroll at all.
+		const next: ScrollMode = asked === 'root' && this._hasClippingAncestor() ? 'nested' : asked;
 		if (next === this._scrollMode) return false;
 		this._scrollMode = next;
 		this.dataset.scroll = next;
 		return true;
+	}
+
+	/**
+	 * Whether something between this page and the document clips or scrolls. Only
+	 * a page that reaches the document unclipped can hand its scrolling over to
+	 * it. Ancestors already in root mode are transparent by design, so their own
+	 * visible overflow answers for them.
+	 */
+	private _hasClippingAncestor(): boolean {
+		let el: Element | null = this.parentElement
+			?? (this.getRootNode() instanceof ShadowRoot ? (this.getRootNode() as ShadowRoot).host : null);
+		while (el && el !== document.body && el !== document.documentElement) {
+			const style = getComputedStyle(el);
+			if (style.overflowY !== 'visible' || style.overflowX !== 'visible') return true;
+			el = el.parentElement
+				?? (el.getRootNode() instanceof ShadowRoot ? (el.getRootNode() as ShadowRoot).host : null);
+		}
+		return false;
 	}
 
 	private _onResize = () => {
