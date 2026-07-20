@@ -559,6 +559,26 @@ describe('nldd-popover', () => {
 			expect(el.hasAttribute('sm-full-height')).toBe(true);
 		});
 
+		// Een roving-tabindex-widget (grid, toolbar, tree) zet al zijn items op -1
+		// behalve één. Telden die mee, dan zag tab-out nooit dat de focus aan het
+		// eind stond en tabde de gebruiker de popover uit terwijl die openbleef.
+		it('telt alleen echt tabbare elementen, geen tabindex="-1"', async () => {
+			el = await fixture(`
+				<nldd-popover accessible-label="Test">
+					<button id="een">Een</button>
+					<button id="rovend" tabindex="-1">Overgeslagen</button>
+					<button id="twee">Twee</button>
+				</nldd-popover>
+			`);
+			await waitForUpdate(el);
+			// Dicht is de popover display:none en filtert de zichtbaarheidscheck alles weg.
+			(el as HTMLElement).showPopover();
+			await waitForUpdate(el);
+			const focusables = (el as unknown as { _getFocusables(): HTMLElement[] })._getFocusables();
+			expect(focusables.map((e) => e.id)).toEqual(['een', 'twee']);
+			(el as HTMLElement).hidePopover();
+		});
+
 		it('top/left/right/bottom defaulten naar undefined — geen lege reflectie', async () => {
 			el = await fixture('<nldd-popover accessible-label="Test"></nldd-popover>');
 			await waitForUpdate(el);

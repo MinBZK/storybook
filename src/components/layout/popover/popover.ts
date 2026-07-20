@@ -607,7 +607,13 @@ export class NLDDPopover extends LitElement {
 		const visit = (root: ParentNode): void => {
 			for (const child of Array.from(root.children)) {
 				const el = child as HTMLElement;
-				if (el.matches?.(selector) && !el.hasAttribute('disabled')) {
+				// tabIndex < 0 sluit elementen uit die wel focusbaar zijn maar niet
+				// tabbaar: een roving-tabindex-widget (grid, toolbar, tree) zet al
+				// zijn items op -1 behalve één. Zonder deze check telt de lijst er
+				// tientallen mee die de browser overslaat, denkt tab-out nooit dat
+				// het aan het eind is, en tabt de gebruiker de popover uit terwijl
+				// die openblijft.
+				if (el.matches?.(selector) && !el.hasAttribute('disabled') && el.tabIndex >= 0) {
 					// getClientRects().length === 0 catches display:none en
 					// visibility:hidden van element of ancestor (inclusief
 					// shadow host) — robuuster dan offsetParent in shadow.
