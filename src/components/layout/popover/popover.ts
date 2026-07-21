@@ -481,6 +481,10 @@ export class NLDDPopover extends LitElement {
 	}
 
 	private _handleDocumentPointerdown = (event: PointerEvent): void => {
+		// A fresh gesture: clear a flag a previous tap set but never spent. A tap
+		// that turns into a scroll or drag ends without a click, so the flag would
+		// otherwise linger and swallow the next unrelated click anywhere on the page.
+		this._swallowNextClick = false;
 		if (!this._isOpen) return;
 		const anchorEl = this._getAnchorEl();
 		if (this._shouldAbsorbTap(event, anchorEl)) {
@@ -674,7 +678,16 @@ export class NLDDPopover extends LitElement {
 			}
 		};
 		visit(this);
-		return result;
+		// The DOM-order walk above is the tab order only when every focusable sits
+		// at tabindex 0. A positive tabindex jumps the queue: 1 comes before 2
+		// before any 0, and equal values keep document order. We move focus
+		// ourselves now (Safari never tabbed into the top layer), so we owe that
+		// ordering rather than leaving it to the browser. A stable sort keeps
+		// document order within each tabindex bucket.
+		return result
+			.map((el, i) => ({ el, i, order: el.tabIndex > 0 ? el.tabIndex : Infinity }))
+			.sort((a, b) => a.order - b.order || a.i - b.i)
+			.map((entry) => entry.el);
 	}
 
 	override render() {
