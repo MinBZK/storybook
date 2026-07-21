@@ -21,7 +21,7 @@ export const dateFieldStyles = css`
 		   eigen breedte, want het is vertaalbaar en zou in een vast vak afkappen; wat
 		   die reservering misgokt, vangt het einddatumveld op. */
 		--_separator-width: 3.5ch;
-		--_separator-gap: var(--primitives-space-6);
+		--_separator-padding-right: var(--primitives-space-6);
 		/* Linkerkant van het veld: het is een border-box, en padding-left trekt er al
 		   een rand vanaf, dus tellen beide randen samen voor één rand extra. */
 		--_edge-width: calc(var(--_inline-padding) + var(--semantics-input-fields-border-thickness));
@@ -182,7 +182,7 @@ export const dateFieldStyles = css`
 	   op het scherm juist scheef. */
 	.date-field__separator {
 		flex-shrink: 0;
-		padding-right: var(--_separator-gap);
+		padding-right: var(--_separator-padding-right);
 		color: var(--semantics-content-secondary-color);
 	}
 
