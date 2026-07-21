@@ -6,81 +6,26 @@ import './date-picker.js';
  * `nldd-date-picker` is de kalender waarin een datum of een periode wordt
  * gekozen. Het component staat op zichzelf: gebruik het inline op een pagina of
  * in een filterpaneel, of laat `nldd-date-field` het in een popover tonen.
- *
- * ### Waarden
- * Alles is ISO (`jjjj-mm-dd`). Zonder `range` staat de keuze in `value`; met
- * `range` in `start` en `end`.
+ * Alles is ISO (`jjjj-mm-dd`): zonder `range` in `value`, met `range` in `start`
+ * en `end`.
  *
  * ```html
  * <nldd-date-picker value="2026-07-15"></nldd-date-picker>
  * <nldd-date-picker range start="2026-07-01" end="2026-07-14"></nldd-date-picker>
  * ```
  *
- * ### Periode kiezen
- * Een periode kiest de gebruiker in twee stappen. Na de eerste datum meldt de
- * kalender dat er nog een einddatum volgt. Een tweede datum vóór de eerste maakt
- * de periode gewoon achterstevoren af; de kalender tekent die band tijdens het
- * aanwijzen al zo, dus opnieuw beginnen zou het enige zijn dat afwijkt van wat je
- * ziet. Opnieuw beginnen kan nog steeds: de eerste klik ná een afgeronde periode
- * start een nieuwe.
- *
- * Slepen kan ook, en werkt hetzelfde. Alleen met muis of pen: op touch is een
- * horizontale veeg over een kalender niet te onderscheiden van scrollen, en dan
- * zou je vast komen te zitten in een sheet die niet meer beweegt. Twee keer
- * tikken werkt overal.
- *
- * ### Breedte
- * Standaard is de kalender zo breed als zijn rooster. Geef de host een breedte en
- * alles rekt mee: de kolommen verdelen de ruimte gelijk en elke dag blijft
- * gecentreerd onder zijn kolomkop.
- *
  * ### Grenzen
  * `min` en `max` nemen een ISO-datum, of `today` met een optionele verschuiving
- * (`d`, `w`, `m`, `y`). Een absolute grens veroudert: `max="2026-07-19"` laat een
- * dag later de toekomst toe.
+ * (`d`, `w`, `m`, `y`), zodat een grens niet veroudert zoals een vaste datum.
  *
  * ```html
  * <nldd-date-picker max="today"></nldd-date-picker>
- * <nldd-date-picker max="today-18y"></nldd-date-picker>
  * <nldd-date-picker min="today" max="today+1y"></nldd-date-picker>
  * ```
  *
- * Bij het rekenen wordt naar het maandeinde geklemd: 31 maart min een maand is
- * 28 februari, niet 3 maart.
- *
- * ### Losse datums blokkeren
- * `isDateUnavailable` is een property (geen attribuut) waarmee losse datums
- * onkiesbaar worden, bijvoorbeeld weekenden of feestdagen. Zulke dagen blijven
- * met het toetsenbord bereikbaar; anders slaat een pijltjestoets een geblokkeerde
- * reeks stilzwijgend over en lijkt de kalender kapot.
- *
- * ### Dagen buiten de maand
- * De dagen van de vorige en volgende maand staan er gedempt bij en zijn gewoon
- * te kiezen; de kalender springt dan naar die maand. Elk cellabel noemt de
- * volledige datum, dus een 1e van de volgende maand is niet te verwarren met die
- * van deze. Er staan altijd zes weken, zodat de kalender niet verspringt bij het
- * bladeren.
- *
- * ### Weeknummers
- * `week-numbers` zet een kolom met ISO-weeknummers links. Die nummers worden van
- * de donderdag in de rij afgeleid, zoals de ISO-norm voorschrijft, dus ze
- * kloppen ook wanneer de week op zondag begint.
- *
- * ### Navigeren
- * De maandtitel staat links, de paginering rechts. Daartussen zit "Vandaag", dat
- * terugspringt naar de huidige maand zonder iets te kiezen: wie heeft rondgekeken
- * wil een weg terug, geen datum die hij niet heeft aangewezen.
- *
- * Die knop verdwijnt vanzelf zodra vandaag buiten `min` en `max` valt. Daar zou
- * hij namelijk liegen: bij `max="today-18y"` zou "Vandaag" je achttien jaar terug
- * zetten. Een aparte schakelaar is er daarom niet.
- *
- * De titel is zelf de knop naar een jaarmenu. Dat is bewust de hele titel en niet
- * alleen het jaartal: een klikbaar "2026" naast een dood "juli" nodigt uit tot
- * klikken waar niets gebeurt. Het menu opent op het jaar dat in beeld staat en
- * wordt begrensd door `min` en `max`. Per jaar bladeren met pijlknoppen is er
- * niet meer; voor een geboortedatum waren dat tientallen klikken. Met het
- * toetsenbord blijft `Shift+PageUp` en `Shift+PageDown` per jaar springen.
+ * Losse datums blokkeer je met `isDateUnavailable`, een property (geen attribuut),
+ * bijvoorbeeld voor weekenden of feestdagen. Geblokkeerde dagen blijven met het
+ * toetsenbord bereikbaar; anders slaat een pijltjestoets een reeks stil over.
  *
  * ### Toetsenbord
  * Pijltjes verplaatsen per dag en per week, `Home` en `End` naar de weekgrenzen,

@@ -27,7 +27,7 @@ function renderHeader(component: NLDDDatePicker): TemplateResult {
 					aria-expanded=${component._yearMenuOpen ? 'true' : 'false'}
 				>
 					${component._title}
-					<span class="date-picker__title-chevron">
+					<span class="date-picker__title-picker-icon">
 						<nldd-icon
 							name="chevron-down-small"
 							aria-hidden="true"
@@ -98,7 +98,7 @@ function renderPagination(component: NLDDDatePicker, size: string, variant: stri
 function renderFooter(component: NLDDDatePicker): TemplateResult {
 	return html`
 		<div class="date-picker__footer">
-			<div class="date-picker__footer-today">
+			<div class="date-picker__footer-start">
 				${component._todayReachable ? html`
 					<nldd-button
 						size="md"
@@ -108,7 +108,9 @@ function renderFooter(component: NLDDDatePicker): TemplateResult {
 					></nldd-button>
 				` : nothing}
 			</div>
-			${renderPagination(component, 'md', 'neutral-tinted', false)}
+			<div class="date-picker__footer-end">
+				${renderPagination(component, 'md', 'neutral-tinted', false)}
+			</div>
 		</div>
 	`;
 }

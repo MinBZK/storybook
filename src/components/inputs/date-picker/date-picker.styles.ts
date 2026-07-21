@@ -14,9 +14,9 @@ export const datePickerStyles = css`
 		--_footer-margin-top: var(--primitives-space-8);
 		--_title-font: var(--primitives-font-display-5-sm);
 		--_title-button-corner-radius: var(--semantics-controls-sm-corner-radius);
-		--_title-chevron-size: var(--primitives-space-20);
-		--_weekday-font: var(--primitives-font-body-xs-regular-flat);
-		--_weekday-content-color: var(--semantics-content-secondary-color);
+		--_title-picker-icon-size: var(--primitives-space-20);
+		--_weekday-header-font: var(--primitives-font-body-xs-regular-flat);
+		--_weekday-header-content-color: var(--semantics-content-secondary-color);
 		--_divider-color: light-dark(var(--primitives-color-neutral-50), var(--primitives-color-neutral-150));
 		--_divider-thickness: var(--semantics-dividers-thickness);
 		--_week-number-column-width: var(--primitives-space-32);
@@ -70,7 +70,10 @@ export const datePickerStyles = css`
 	}
 
 
-	/* # Header */
+	/* # Elements */
+
+
+	/* ## Header */
 
 	.date-picker__header {
 		display: flex;
@@ -100,10 +103,10 @@ export const datePickerStyles = css`
 		appearance: none;
 	}
 
-	.date-picker__title-chevron {
+	.date-picker__title-picker-icon {
 		display: flex;
-		width: var(--_title-chevron-size);
-		height: var(--_title-chevron-size);
+		width: var(--_title-picker-icon-size);
+		height: var(--_title-picker-icon-size);
 		flex-shrink: 0;
 		align-items: center;
 	}
@@ -122,7 +125,7 @@ export const datePickerStyles = css`
 	}
 
 
-	/* # Calendar */
+	/* ## Calendar */
 
 	.date-picker__calendar {
 		border-collapse: collapse;
@@ -138,8 +141,8 @@ export const datePickerStyles = css`
 		border-block-end: var(--_divider-thickness) solid var(--_divider-color);
 		padding: 0 0 var(--primitives-space-4);
 		width: var(--_day-size);
-		color: var(--_weekday-content-color);
-		font: var(--_weekday-font);
+		color: var(--_weekday-header-content-color);
+		font: var(--_weekday-header-font);
 	}
 
 	.date-picker__day-cell,
@@ -169,7 +172,7 @@ export const datePickerStyles = css`
 	}
 
 
-	/* # Day */
+	/* ## Day */
 
 	.date-picker__day {
 		box-sizing: border-box;
@@ -279,7 +282,7 @@ export const datePickerStyles = css`
 	}
 
 
-	/* # Footer */
+	/* ## Footer */
 
 	.date-picker__footer {
 		display: flex;
@@ -289,13 +292,15 @@ export const datePickerStyles = css`
 		gap: var(--primitives-space-8);
 	}
 
-	/* Holds its corner when today is out of reach and the button is gone. */
-	.date-picker__footer-today {
+	/* Both corners hold their place when a side is empty (today out of reach, or
+	   a boundary that hides an arrow), so the other side does not slide over. */
+	.date-picker__footer-start,
+	.date-picker__footer-end {
 		display: flex;
 	}
 
 
-	/* # Announcer */
+	/* ## Announcer */
 
 	.date-picker__announcer {
 		position: absolute;

@@ -833,7 +833,7 @@ describe('nldd-date-picker', () => {
 		const footer = el.shadowRoot!.querySelector('.date-picker__footer');
 		expect(footer).not.toBeNull();
 		// Vandaag links, de maandpijlen rechts in een eigen bar.
-		expect(footer!.querySelector('.date-picker__footer-today nldd-button')).not.toBeNull();
+		expect(footer!.querySelector('.date-picker__footer-start nldd-button')).not.toBeNull();
 		expect(footer!.querySelector('nldd-button-bar')).not.toBeNull();
 	});
 
@@ -874,7 +874,7 @@ describe('nldd-date-picker', () => {
 		const footer = el.shadowRoot!.querySelector('.date-picker__footer')!;
 		expect(footer.querySelector('nldd-button')).toBeNull();
 		// De hoek blijft staan, zodat de pijlen niet naar links schuiven.
-		expect(footer.querySelector('.date-picker__footer-today')).not.toBeNull();
+		expect(footer.querySelector('.date-picker__footer-start')).not.toBeNull();
 	});
 
 
