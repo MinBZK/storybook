@@ -159,6 +159,7 @@ export class NLDDPopover extends LitElement {
 		this.addEventListener('toggle', this._handleToggle);
 		this.addEventListener('keydown', this._handleKeydown);
 		document.addEventListener('pointerdown', this._handleDocumentPointerdown, true);
+		document.addEventListener('pointercancel', this._handlePointerCancel, true);
 		document.addEventListener('click', this._handleDocumentClickCapture, true);
 		document.addEventListener('click', this._handleDocumentClick);
 		this._smQuery = window.matchMedia(`(max-width: ${breakpoints.smMax})`);
@@ -183,6 +184,7 @@ export class NLDDPopover extends LitElement {
 		this.removeEventListener('toggle', this._handleToggle);
 		this.removeEventListener('keydown', this._handleKeydown);
 		document.removeEventListener('pointerdown', this._handleDocumentPointerdown, true);
+		document.removeEventListener('pointercancel', this._handlePointerCancel, true);
 		document.removeEventListener('click', this._handleDocumentClickCapture, true);
 		document.removeEventListener('click', this._handleDocumentClick);
 		this._smQuery?.removeEventListener('change', this._handleViewportChange);
@@ -497,6 +499,12 @@ export class NLDDPopover extends LitElement {
 		if (!anchorEl) return;
 		if (!event.composedPath().includes(anchorEl)) return;
 		this._pointerdownOnAnchorWhileOpen = true;
+	};
+
+	/** A gesture the browser cancelled (a tap that became a scroll or drag) never
+	 *  produces the click that would spend the flag, so clear it here too. */
+	private _handlePointerCancel = (): void => {
+		this._swallowNextClick = false;
 	};
 
 	/** Swallows the click that follows an absorbed tap, so it cannot activate
