@@ -221,6 +221,32 @@ export const datePickerStyles = css`
 		transform: translate(-50%, -50%);
 	}
 
+	/* A selected range endpoint is not a full circle but a capsule half: rounded on
+	   the outer edge, square towards the range so it meets the band with no seam.
+	   The full circle still marks a lone selected day and both ends before the range
+	   is closed, when there is no band to connect to. */
+	.date-picker__day.is-range-start .date-picker__day-indicator,
+	.date-picker__day.is-range-end .date-picker__day-indicator {
+		top: var(--_day-indicator-inset);
+		left: auto;
+		border-radius: 0;
+		width: auto;
+		height: var(--_day-indicator-size);
+		transform: none;
+	}
+
+	.date-picker__day.is-range-start .date-picker__day-indicator {
+		inset-inline: var(--_day-indicator-inset) 0;
+		border-start-start-radius: var(--_day-indicator-size);
+		border-end-start-radius: var(--_day-indicator-size);
+	}
+
+	.date-picker__day.is-range-end .date-picker__day-indicator {
+		inset-inline: 0 var(--_day-indicator-inset);
+		border-start-end-radius: var(--_day-indicator-size);
+		border-end-end-radius: var(--_day-indicator-size);
+	}
+
 	.date-picker__day-number {
 		position: relative;
 	}

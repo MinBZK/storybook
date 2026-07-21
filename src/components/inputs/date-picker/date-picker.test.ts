@@ -371,6 +371,18 @@ describe('nldd-date-picker', () => {
 		expect(el._bandFor('2026-07-15')).toBe('none');
 	});
 
+	// De begin- en einddag dragen een eigen klas, zodat de styling er een halve
+	// capsule van maakt (rond aan de buitenkant, recht naar de band toe).
+	it('markeert begin- en einddag als endpoint', async () => {
+		el = await fixture<NLDDDatePicker>('<nldd-date-picker range start="2026-07-10"></nldd-date-picker>');
+		el.end = '2026-07-14';
+		await waitForUpdate(el);
+		expect(dayFor(el, '2026-07-10').classList.contains('is-range-start')).toBe(true);
+		expect(dayFor(el, '2026-07-14').classList.contains('is-range-end')).toBe(true);
+		expect(dayFor(el, '2026-07-12').classList.contains('is-range-start')).toBe(false);
+		expect(dayFor(el, '2026-07-12').classList.contains('is-range-end')).toBe(false);
+	});
+
 	it('tekent geen band voor een periode van één dag', async () => {
 		el = await fixture<NLDDDatePicker>('<nldd-date-picker range start="2026-07-10"></nldd-date-picker>');
 		el.end = '2026-07-10';
