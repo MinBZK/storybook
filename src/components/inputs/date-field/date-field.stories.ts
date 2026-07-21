@@ -5,28 +5,18 @@ import '../../forms/form-field/form-field.js';
 import '../date-picker/date-picker.js';
 
 /**
- * `nldd-date-field` is een tekstveld voor een datum, met een optionele kalender
- * in een popover.
+ * `nldd-date-field` is een tekstveld voor een datum, met een optionele kalender in
+ * een popover. De waarde is altijd ISO (`jjjj-mm-dd`) terwijl op het scherm de
+ * Nederlandse notatie (`dd-mm-jjjj`) staat, zodat een formulier een stabiel
+ * machineformaat krijgt en de gebruiker een vertrouwde notatie.
  *
- * ### Waarde en weergave
- * `value` is altijd ISO (`jjjj-mm-dd`); op het scherm staat de Nederlandse
- * notatie (`dd-mm-jjjj`). Zo krijgt een formulier een stabiel machineformaat en
- * de gebruiker een vertrouwde notatie.
- *
- * ```html
- * <nldd-date-field value="2026-12-31"></nldd-date-field>
- * ```
- *
- * ### Typen
- * Er wordt niet gemaskeerd tijdens het typen. Invoer wordt royaal geaccepteerd
- * (`31-12-2026`, `31/12/2026`, `31122026`, ook ISO) en pas bij het verlaten van
- * het veld genormaliseerd naar `31-12-2026`. Maskeren per toetsaanslag laat de
- * cursor springen, maakt backspace onvoorspelbaar en verwart schermlezers.
- *
- * ### Formaat-hint
- * Zet het verwachte formaat **niet** in de placeholder: die verdwijnt zodra
- * iemand typt, heeft te weinig contrast en wordt wisselend voorgelezen. Gebruik
- * de `supporting-label` van `nldd-form-field` met een voorbeeld.
+ * Er wordt niet gemaskeerd tijdens het typen: invoer wordt royaal geaccepteerd
+ * (`31-12-2026`, `31/12/2026`, `31122026`, ook ISO) en pas bij het verlaten van het
+ * veld genormaliseerd, want maskeren per toetsaanslag laat de cursor springen, maakt
+ * backspace onvoorspelbaar en verwart schermlezers. Zet het verwachte formaat niet in
+ * de placeholder maar in de `supporting-label` van `nldd-form-field`, want een
+ * placeholder verdwijnt zodra iemand typt, heeft te weinig contrast en wordt
+ * wisselend voorgelezen.
  */
 export default {
 	title: 'Components/Inputs/Date Field',
