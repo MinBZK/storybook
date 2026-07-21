@@ -30,6 +30,10 @@
  *   laat de toetsen en scheidingstekens de omringende tekstkleur (currentColor) volgen, met
  *   een doorschijnende contrast-vulling en highlight-rand — handig op een gevulde vlakkleur
  *   of een gemarkeerde rij.
+ * @attr {'mac'|'windows'|'linux'|'other'} debug-os - Ontwikkelhulp: overschrijft de
+ *   OS-detectie voor deze instantie, zodat je in Storybook of documentatie meerdere
+ *   platform-varianten naast elkaar kunt tonen. Niet bedoeld voor productiegebruik;
+ *   laat het leeg (default) zodat de echte OS-detectie geldt.
  *
  * @slot - Optionele custom <kbd>-elementen. Wordt genegeerd als keys is opgegeven.
  */

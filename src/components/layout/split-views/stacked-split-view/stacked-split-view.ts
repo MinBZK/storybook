@@ -17,11 +17,15 @@
  */
 import { LitElement } from 'lit';
 import { customElement, property, state } from 'lit/decorators.js';
+import { ScrollModeController } from '../../../../utilities/scroll-mode-controller.js';
 import { stackedSplitViewStyles } from './stacked-split-view.styles.js';
 import { stackedSplitViewTemplate } from './stacked-split-view.template.js';
 
 @customElement('nldd-stacked-split-view')
 export class NLDDStackedSplitView extends LitElement {
+	/** Reflects --context-scroll-mode to [data-scroll], like the other split views. */
+	private _scrollMode = new ScrollModeController(this);
+
 	static override styles = stackedSplitViewStyles;
 
 	@property({ type: String, reflect: true })

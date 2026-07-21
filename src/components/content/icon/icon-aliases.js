@@ -121,9 +121,25 @@ export const aliases = {
 	'email': 'envelope',
 	'mail': 'envelope',
 
+	// exclamation-2-circle
+	'medium-priority': 'exclamation-2-circle',
+
+	// exclamation-2-circle-filled
+	'medium-priority-filled': 'exclamation-2-circle-filled',
+
+	// exclamation-3-circle
+	'high-priority': 'exclamation-3-circle',
+
+	// exclamation-3-circle-filled
+	'high-priority-filled': 'exclamation-3-circle-filled',
+
 	// exclamation-circle
 	'error': 'exclamation-circle',
 	'invalid': 'exclamation-circle',
+	'low-priority': 'exclamation-circle',
+
+	// exclamation-circle-filled
+	'low-priority-filled': 'exclamation-circle-filled',
 
 	// exclamation-triangle-filled
 	'alert': 'exclamation-triangle-filled',
@@ -156,8 +172,8 @@ export const aliases = {
 	// file-text
 	'text-document': 'file-text',
 
-	// file-text-batch-check-plus
-	'new-text-document': 'file-text-batch-check-plus',
+	// file-text-badge-check-plus
+	'new-text-document': 'file-text-badge-check-plus',
 
 	// file-text-stack
 	'documents': 'file-text-stack',
@@ -325,6 +341,9 @@ export const aliases = {
 	'ai': 'sparkles',
 	'magic': 'sparkles',
 
+	// square-corner-4
+	'fit-to-view': 'square-corner-4',
+
 	// star
 	'rating': 'star',
 
@@ -478,4 +497,11 @@ export const aliases = {
 
 	// wheat
 	'harvest': 'wheat',
+
+	// person-badge-plus
+	'add-user': 'person-badge-plus',
+
+	// antenna-radio-waves
+	'broadcast': 'antenna-radio-waves',
+
 };

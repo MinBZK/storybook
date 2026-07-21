@@ -9,6 +9,7 @@
  * @attr {boolean} disabled - Disabled state
  * @attr {boolean} centered - Centreert de pagination in de container (host fills row, items grouped in the middle)
  * @attr {string} href-pattern - URL patroon met {page} placeholder, rendert links in plaats van buttons
+ * @attr {object} translations - Vertalingen; niet opgegeven sleutels vallen terug op het Nederlands
  *
  * @fires page-change - Bij paginawisseling (detail: { page: number, href?: string }). Alleen cancelable in href-mode: preventDefault() voorkomt navigatie (SPA).
  */

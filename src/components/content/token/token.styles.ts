@@ -17,6 +17,7 @@ export const tokenStyles = css`
 		display: inline-block;
 		max-width: 100%;
 		min-width: 0;
+		-webkit-user-select: none;
 		user-select: none;
 		-webkit-tap-highlight-color: transparent;
 	}

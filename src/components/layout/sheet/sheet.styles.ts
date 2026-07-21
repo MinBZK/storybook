@@ -17,7 +17,12 @@ export const sheetStyles = css`
 		--_width: initial;
 		--_height: initial;
 
-		display: block;
+		/* contents, not block: the sheet itself is a position:fixed <dialog>, so the
+		   host would only add an empty box. Left as a block it is a flex item like
+		   any other, and inside a split-view pane it collects the pane's
+		   ::slotted flex-grow and eats the height its siblings needed.
+		   nldd-modal-dialog does the same for the same reason. */
+		display: contents;
 	}
 
 

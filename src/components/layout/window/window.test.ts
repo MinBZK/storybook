@@ -2,6 +2,7 @@ import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest';
 import { fixture, cleanup, waitForUpdate } from '../../../test-utils.js';
 import type { NLDDWindow } from './window.js';
 import './window.js';
+import { windowStyles } from './window.styles.js';
 
 describe('nldd-window', () => {
 	let el: NLDDWindow;
@@ -251,5 +252,64 @@ describe('nldd-window', () => {
 			const dialog = el.shadowRoot!.querySelector('dialog') as HTMLDialogElement;
 			expect(dialog.style.colorScheme).toBe('');
 		});
+	});
+});
+
+describe('nldd-window neemt geen ruimte in de flow', () => {
+	// Het venster is een position:fixed <dialog>, dus de host hoort geen doos te
+	// zijn. Als blok groeit hij mee met zijn broers en pikt hun hoogte in.
+	it('zet de host op display: contents', () => {
+		expect(windowStyles.cssText).toMatch(/:host\s*\{[^}]*display:\s*contents/);
+	});
+
+	// De hidden-regel komt later en is specifieker, dus die wint van contents.
+	it('blijft verbergbaar met hidden', () => {
+		expect(windowStyles.cssText).toMatch(/:host\(\[hidden\]\)\s*\{[^}]*display:\s*none/);
+	});
+});
+
+describe('nldd-window meldt sluiten via elke route', () => {
+	let el: NLDDWindow & { show(): void; hide(): void };
+
+	afterEach(() => {
+		if (el) cleanup(el);
+	});
+
+	function dialogVan(host: NLDDWindow): HTMLDialogElement {
+		return host.shadowRoot!.querySelector('dialog') as HTMLDialogElement;
+	}
+
+	// Escape sluit een modeless dialog via de CloseWatcher, buiten hide() om, en
+	// @cancel + preventDefault houdt dat niet betrouwbaar tegen. close kwam alleen
+	// uit hide(), dus een modeless venster sloot zonder iets te melden.
+	it('stuurt close wanneer de dialog buiten hide() om sluit', async () => {
+		el = await fixture<NLDDWindow & { show(): void; hide(): void }>(
+			'<nldd-window modeless accessible-label="Test"></nldd-window>',
+		);
+		await waitForUpdate(el);
+		let aantal = 0;
+		el.addEventListener('close', () => { aantal += 1; });
+		el.show();
+		await waitForUpdate(el);
+		const dialog = dialogVan(el);
+		dialog.close();
+		dialog.dispatchEvent(new Event('close'));
+		await waitForUpdate(el);
+		expect(aantal).toBe(1);
+	});
+
+	it('stuurt close niet twee keer als beide routes samenvallen', async () => {
+		el = await fixture<NLDDWindow & { show(): void; hide(): void }>(
+			'<nldd-window accessible-label="Test"></nldd-window>',
+		);
+		await waitForUpdate(el);
+		let aantal = 0;
+		el.addEventListener('close', () => { aantal += 1; });
+		el.show();
+		await waitForUpdate(el);
+		el.hide();
+		dialogVan(el).dispatchEvent(new Event('close'));
+		await waitForUpdate(el);
+		expect(aantal).toBe(1);
 	});
 });

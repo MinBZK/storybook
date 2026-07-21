@@ -6,7 +6,9 @@
  * @attr {string}  size              - Button size: 'xs' | 'sm' | 'md' | 'lg' (default: 'md')
  * @attr {boolean} hide-lg-text      - In lg size, hides the text label and enlarges the icon by one step (28px)
  * @attr {boolean} no-highlight-border - Removes the per-variant highlight border (e.g. when a control group draws a single border instead).
+ * @attr {boolean} loading           - Loading state (default: false). Shows an activity indicator over the visually hidden icon, sets aria-busy on the inner control and blocks activation, without dropping the button from the tab order (unlike disabled).
  * @attr {boolean} disabled          - Disabled state
+ * @attr {boolean} no-tab            - Takes the button out of the tab order (tabindex="-1"), for a control owned by a roving container (e.g. an nldd-token in nldd-token-field) that manages focus itself. Still mouse- and script-focusable.
  * @attr {string}  type              - Button type for form submission: 'button' | 'submit' | 'reset' (ignored when href is set)
  * @attr {boolean} expandable        - Whether the button opens a menu or popover and shows chevron next to the icon
  * @attr {boolean} expanded          - Whether the popover/menu controlled by this button is currently open. Forwarded as aria-expanded on the inner button; toggles the is-expanded visual state.

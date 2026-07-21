@@ -11,7 +11,11 @@ export const windowStyles = css`
 
 	:host {
 		${inheritedTextReset}
-		display: block;
+		/* contents, not block: the window is a position:fixed <dialog>, so the host
+		   would only add an empty box. As a block it is a flex item like any other
+		   and grows with its siblings, taking space from them. Same reason as
+		   nldd-sheet and nldd-modal-dialog. */
+		display: contents;
 	}
 
 	:host([hidden]) {

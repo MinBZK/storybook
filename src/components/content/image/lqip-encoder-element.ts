@@ -101,6 +101,7 @@ export class NLDDLqipEncoder extends LitElement {
 			border-radius: var(--primitives-corner-radius-sm);
 			background-color: var(--semantics-surfaces-tinted-background-color);
 			font: var(--primitives-font-monospace-sm-regular-snug);
+			-webkit-user-select: all;
 			user-select: all;
 			word-break: break-all;
 		}

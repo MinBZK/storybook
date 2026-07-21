@@ -10,6 +10,7 @@ export function sheetTemplate(component: NLDDSheet) {
 			@pointerdown=${component._handleDialogPointerDown}
 			@click=${component._handleDialogClick}
 			@cancel=${component._handleCancel}
+			@close=${component._handleDialogClose}
 		>
 			<div class="sheet__body">
 				<slot></slot>

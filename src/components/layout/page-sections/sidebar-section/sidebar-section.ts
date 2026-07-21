@@ -44,8 +44,8 @@
  * @attr {boolean} [no-collapse]  - Opt out of the sheet: a narrow section stacks the sidebar above the main instead of collapsing. `collapsed` then stays false.
  * @attr {string}  [width]        - Body max-width: 'full' removes the constraint; any CSS length overrides the default.
  * @attr {string}  [sticky-top]   - Sticky top inset on lg (CSS length; default = 16px).
- * @attr {string}  [sticky-bottom]- Sticky bottom inset on lg (CSS length; default = 16px).
- * @attr {string}  [sidebar-label]- Accessible name for the sidebar (the aside landmark on lg and the sheet on sm/md). Default 'Zijbalk'.
+ * @attr {string}  [sticky-bottom] - Sticky bottom inset on lg (CSS length; default = 16px).
+ * @attr {string}  [sidebar-label] - Accessible name for the sidebar (the aside landmark on lg and the sheet on sm/md). Default 'Zijbalk'.
  *
  * @fires open            - The sidebar sheet opened.
  * @fires close           - The sidebar sheet closed.

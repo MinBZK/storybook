@@ -89,3 +89,32 @@ describe('nldd-side-by-side-split-view – single column', () => {
 		expect(seen).toEqual([]);
 	});
 });
+
+describe('nldd-side-by-side-split-view neemt de scrollmodus over', () => {
+	let el: HTMLElement;
+
+	afterEach(() => {
+		if (el) cleanup(el);
+	});
+
+	// Deze view bepaalt de modus voor iedereen (hij vuurt single-column-change)
+	// maar paste hem niet op zichzelf toe. Hij bleef daardoor op kijkvensterhoogte
+	// afkappen terwijl de panes erbinnen al meestroomden, en dan scrolt niets.
+	it('reflecteert root naar data-scroll', async () => {
+		el = await fixture(`
+			<div style="--context-scroll-mode: root">
+				<nldd-side-by-side-split-view></nldd-side-by-side-split-view>
+			</div>
+		`);
+		const view = el.querySelector('nldd-side-by-side-split-view') as HTMLElement;
+		await waitForUpdate(view);
+		expect(view.dataset.scroll).toBe('root');
+	});
+
+	it('blijft nested zonder die variabele', async () => {
+		el = await fixture('<div><nldd-side-by-side-split-view></nldd-side-by-side-split-view></div>');
+		const view = el.querySelector('nldd-side-by-side-split-view') as HTMLElement;
+		await waitForUpdate(view);
+		expect(view.dataset.scroll).not.toBe('root');
+	});
+});

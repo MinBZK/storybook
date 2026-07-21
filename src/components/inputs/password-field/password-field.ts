@@ -22,6 +22,7 @@
  * @attr {string} name         - Input name for form submission
  * @attr {string} autocomplete        - Autocomplete hint
  * @attr {string} accessible-label    - Accessible label forwarded to the inner input. Set automatically by nldd-form-field.
+ * @attr {string} error-message-ids   - Ids for aria-describedby on the inner input. Set automatically by nldd-form-field.
  * @attr {string} width        - Optional fixed width (any CSS length, e.g. "240px"). Default: stretches to fill container.
  *
  * @fires input  - When the input value changes ({ detail: { value } })

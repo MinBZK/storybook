@@ -9,6 +9,8 @@
  * @attr {boolean} checked           - Whether the switch is on/off
  * @attr {boolean} disabled          - Disabled state
  * @attr {string}  size              - Switch size: 'xs' | 'sm' (default: 'sm')
+ * @attr {string}  name              - Name for form submission; nothing is submitted when the switch is off
+ * @attr {string}  value             - Value submitted with the form when the switch is on (default: 'on')
  * @attr {string}  accessible-label  - Accessible label forwarded as aria-label to the native input.
  *                                     Required when using nldd-switch without nldd-switch-field.
  *

@@ -89,6 +89,8 @@ export const avatarStyles = css`
 		overflow: hidden;
 		border-radius: var(--_corner-radius);
 		background-color: var(--_background-color);
+		-webkit-user-select: none;
+		user-select: none;
 	}
 
 
@@ -110,7 +112,6 @@ export const avatarStyles = css`
 		/* fit-initials shrinks wide initials via this factor (measured in JS);
 		   transform (not font-size) so scrollWidth stays the natural width. */
 		transform: scale(var(--_initials-fit));
-		user-select: none;
 	}
 
 	.avatar__icon {

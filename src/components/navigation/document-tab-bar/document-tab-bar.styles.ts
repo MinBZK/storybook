@@ -29,6 +29,7 @@ export const documentTabBarStyles = css`
 		position: relative;
 		width: 100%;
 		isolation: isolate;
+		-webkit-user-select: none;
 		user-select: none;
 		-webkit-tap-highlight-color: transparent;
 	}

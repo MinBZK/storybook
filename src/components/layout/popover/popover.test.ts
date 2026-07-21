@@ -559,6 +559,26 @@ describe('nldd-popover', () => {
 			expect(el.hasAttribute('sm-full-height')).toBe(true);
 		});
 
+		// Een roving-tabindex-widget (grid, toolbar, tree) zet al zijn items op -1
+		// behalve één. Telden die mee, dan zag tab-out nooit dat de focus aan het
+		// eind stond en tabde de gebruiker de popover uit terwijl die openbleef.
+		it('telt alleen echt tabbare elementen, geen tabindex="-1"', async () => {
+			el = await fixture(`
+				<nldd-popover accessible-label="Test">
+					<button id="een">Een</button>
+					<button id="rovend" tabindex="-1">Overgeslagen</button>
+					<button id="twee">Twee</button>
+				</nldd-popover>
+			`);
+			await waitForUpdate(el);
+			// Dicht is de popover display:none en filtert de zichtbaarheidscheck alles weg.
+			(el as HTMLElement).showPopover();
+			await waitForUpdate(el);
+			const focusables = (el as unknown as { _getFocusables(): HTMLElement[] })._getFocusables();
+			expect(focusables.map((e) => e.id)).toEqual(['een', 'twee']);
+			(el as HTMLElement).hidePopover();
+		});
+
 		it('top/left/right/bottom defaulten naar undefined — geen lege reflectie', async () => {
 			el = await fixture('<nldd-popover accessible-label="Test"></nldd-popover>');
 			await waitForUpdate(el);
@@ -569,5 +589,182 @@ describe('nldd-popover', () => {
 			expect(el.hasAttribute('right')).toBe(false);
 			expect(el.hasAttribute('bottom')).toBe(false);
 		});
+	});
+});
+
+describe('nldd-popover verplaatst focus zelf met Tab', () => {
+	let elTab: HTMLElement;
+
+	afterEach(() => {
+		if (elTab) cleanup(elTab);
+	});
+
+	// We verplaatsen focus nu zelf, dus we zijn ook de tab-volgorde verschuldigd:
+	// een positieve tabindex dringt voor. Zonder sorteren liep het op DOM-volgorde.
+	it('respecteert een positieve tabindex boven documentvolgorde', async () => {
+		const wrapper = await fixture(`
+			<div>
+				<button id="pos-trigger">Open</button>
+				<nldd-popover anchor="pos-trigger" accessible-label="Test">
+					<button id="eerst-in-dom" tabindex="2">A</button>
+					<button id="laatst-in-dom" tabindex="1">B</button>
+				</nldd-popover>
+			</div>
+		`);
+		elTab = wrapper;
+		const popover = wrapper.querySelector('nldd-popover') as NLDDPopover & { show(): void };
+		await waitForUpdate(popover);
+		popover.show();
+		await waitForUpdate(popover);
+		// tabindex 1 komt vóór tabindex 2, ook al staat B later in de DOM.
+		popover.dispatchEvent(new KeyboardEvent('keydown', { key: 'Tab', bubbles: true, composed: true, cancelable: true }));
+		await waitForUpdate(popover);
+		expect(document.activeElement?.id).toBe('laatst-in-dom');
+	});
+
+	let el: HTMLElement;
+
+	afterEach(() => {
+		if (el) cleanup(el);
+	});
+
+	async function metTweeKnoppen() {
+		const wrapper = await fixture(`
+			<div>
+				<button id="trigger-tab">Open</button>
+				<nldd-popover anchor="trigger-tab" accessible-label="Test">
+					<button id="een">Een</button>
+					<button id="twee">Twee</button>
+				</nldd-popover>
+			</div>
+		`);
+		const popover = wrapper.querySelector('nldd-popover') as HTMLElement & { show(): void };
+		await waitForUpdate(popover);
+		popover.show();
+		await waitForUpdate(popover);
+		return { wrapper, popover };
+	}
+
+	// Safari tabt niet de top layer in: met de container gefocust slaat hij de hele
+	// popover over en landt op wat erna in het document staat. Onze lijst klopte
+	// daar wel, dus het component verplaatst focus nu zelf.
+	it('stapt vanaf de container naar de eerste knop', async () => {
+		const { wrapper, popover } = await metTweeKnoppen();
+		el = wrapper;
+		popover.dispatchEvent(new KeyboardEvent('keydown', { key: 'Tab', bubbles: true, composed: true, cancelable: true }));
+		await waitForUpdate(popover);
+		expect(document.activeElement?.id).toBe('een');
+	});
+
+	it('stapt van de eerste naar de tweede knop', async () => {
+		const { wrapper, popover } = await metTweeKnoppen();
+		el = wrapper;
+		const een = wrapper.querySelector('#een') as HTMLElement;
+		een.focus();
+		een.dispatchEvent(new KeyboardEvent('keydown', { key: 'Tab', bubbles: true, composed: true, cancelable: true }));
+		await waitForUpdate(popover);
+		expect(document.activeElement?.id).toBe('twee');
+	});
+
+	it('sluit pas voorbij de laatste knop', async () => {
+		const { wrapper, popover } = await metTweeKnoppen();
+		el = wrapper;
+		const twee = wrapper.querySelector('#twee') as HTMLElement;
+		twee.focus();
+		twee.dispatchEvent(new KeyboardEvent('keydown', { key: 'Tab', bubbles: true, composed: true, cancelable: true }));
+		await waitForUpdate(popover);
+		expect(popover.matches(':popover-open')).toBe(false);
+	});
+});
+
+describe('nldd-popover slikt de eerste tik op klein scherm', () => {
+	let el: HTMLElement;
+
+	afterEach(() => {
+		if (el) cleanup(el);
+	});
+
+	function asSm(popover: NLDDPopover) {
+		(popover as unknown as { _smQuery: MediaQueryList })._smQuery = {
+			matches: true,
+			addEventListener: () => {},
+			removeEventListener: () => {},
+		} as unknown as MediaQueryList;
+	}
+
+	async function openOnSm() {
+		const wrapper = await fixture(`
+			<div>
+				<button id="sm-trigger">Open</button>
+				<button id="sm-target">Doel</button>
+				<nldd-popover anchor="sm-trigger" accessible-label="Test"></nldd-popover>
+			</div>
+		`);
+		const popover = wrapper.querySelector('nldd-popover') as NLDDPopover;
+		asSm(popover);
+		await waitForUpdate(popover);
+		popover.show();
+		await waitForUpdate(popover);
+		return { wrapper, popover, target: wrapper.querySelector('#sm-target') as HTMLElement };
+	}
+
+	// De verduistering op klein scherm laat de tik door naar de pagina eronder,
+	// dus één tik sloot de sheet én activeerde wat onder de dimming zat.
+	it('sluit de popover en houdt de klik eronder tegen', async () => {
+		const { wrapper, popover, target } = await openOnSm();
+		el = wrapper;
+		let raakt = 0;
+		target.addEventListener('click', () => { raakt += 1; });
+
+		document.dispatchEvent(new PointerEvent('pointerdown', { bubbles: true, composed: true }));
+		const click = new MouseEvent('click', { bubbles: true, composed: true, cancelable: true });
+		target.dispatchEvent(click);
+
+		expect(raakt).toBe(0);
+		expect(click.defaultPrevented).toBe(true);
+		expect(popover.matches(':popover-open')).toBe(false);
+	});
+
+	// Een tik die een scroll of drag wordt eindigt zonder klik; de opslik-vlag mag
+	// dan niet blijven staan en een latere, ongerelateerde klik afvangen. Na de
+	// opgeslikte tik is de popover dicht, dus een nieuw gebaar absorbeert niet meer
+	// en moet de vlag simpelweg wissen.
+	it('laat een latere ongerelateerde klik met rust na een tik zonder klik', async () => {
+		const { wrapper, popover, target } = await openOnSm();
+		el = wrapper;
+		// Alsof een eerdere tik opgeslikt is maar geen klik gaf en de popover sloot.
+		(popover as unknown as { _swallowNextClick: boolean })._swallowNextClick = true;
+		popover.hide();
+		await waitForUpdate(popover);
+		let raakt = 0;
+		target.addEventListener('click', () => { raakt += 1; });
+		// Een nieuw, los gebaar met een echte klik.
+		document.dispatchEvent(new PointerEvent('pointerdown', { bubbles: true, composed: true }));
+		const click = new MouseEvent('click', { bubbles: true, composed: true, cancelable: true });
+		target.dispatchEvent(click);
+
+		expect(raakt).toBe(1);
+		expect(click.defaultPrevented).toBe(false);
+	});
+
+	// De pointerdown-route wist de vlag bij het volgende gebaar; een geannuleerd
+	// gebaar (scroll of drag) geeft die pointerdown niet, dus pointercancel moet 'm
+	// ook wissen - anders vangt een latere klik de opslik-vlag alsnog af.
+	it('wist de opslik-vlag bij een geannuleerd gebaar', async () => {
+		const { wrapper, popover, target } = await openOnSm();
+		el = wrapper;
+		// Alsof een tik opgeslikt is (vlag gezet, sheet dicht) en het gebaar daarna
+		// een scroll wordt: de browser stuurt pointercancel in plaats van een klik.
+		(popover as unknown as { _swallowNextClick: boolean })._swallowNextClick = true;
+		popover.hide();
+		await waitForUpdate(popover);
+		document.dispatchEvent(new PointerEvent('pointercancel', { bubbles: true, composed: true }));
+		let raakt = 0;
+		target.addEventListener('click', () => { raakt += 1; });
+		const click = new MouseEvent('click', { bubbles: true, composed: true, cancelable: true });
+		target.dispatchEvent(click);
+
+		expect(raakt).toBe(1);
+		expect(click.defaultPrevented).toBe(false);
 	});
 });
