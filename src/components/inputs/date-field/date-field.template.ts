@@ -97,10 +97,10 @@ function renderPicker(component: NLDDDateField): TemplateResult | typeof nothing
  */
 function renderInput(component: NLDDDateField, end: boolean): TemplateResult {
 	const label = component.range
-		? [component.accessibleLabel, component._t(end
+		? [component._fieldLabel, component._t(end
 			? 'components.date-field.range-to-lowercase'
-			: 'components.date-field.range-from-lowercase')].filter(Boolean).join(', ')
-		: component.accessibleLabel;
+			: 'components.date-field.range-from-lowercase')].join(', ')
+		: component._fieldLabel;
 	return html`
 		<input class="date-field__input"
 			id=${!end ? (component.inputId || nothing) : nothing}
@@ -125,7 +125,7 @@ export function dateFieldTemplate(component: NLDDDateField): TemplateResult {
 	return html`
 		<div class="date-field"
 			role=${component.range ? 'group' : nothing}
-			aria-label=${component.range ? (component.accessibleLabel || nothing) : nothing}
+			aria-label=${component.range ? component._fieldLabel : nothing}
 		>
 			${renderInput(component, false)}
 			${component.range ? html`

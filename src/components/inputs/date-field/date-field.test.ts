@@ -359,6 +359,18 @@ describe('nldd-date-field', () => {
 		expect(el.shadowRoot!.activeElement).toBe(pickerButton(el));
 	});
 
+	// Dezelfde teruggave als na een keuze: annuleren, Escape en een klik ernaast
+	// hoorden de focus ook op de knop te zetten, niet op de invoer te laten staan.
+	it('zet de focus na dismiss terug op de kalenderknop', async () => {
+		el = await fixture<NLDDDateField>('<nldd-date-field></nldd-date-field>');
+		await waitForUpdate(el);
+		textInput(el).focus();
+		el._handlePickerDismiss(new Event('dismiss'));
+		el.dispatchEvent(new Event('focusin'));
+		await waitForUpdate(el);
+		expect(el.shadowRoot!.activeElement).toBe(pickerButton(el));
+	});
+
 	it('neemt een datum uit de kalender over in de weergave', async () => {
 		el = await fixture<NLDDDateField>('<nldd-date-field></nldd-date-field>');
 		await waitForUpdate(el);
@@ -569,5 +581,36 @@ describe('nldd-date-field popoverbreedte loopt niet vast', () => {
 		el._handlePopoverToggle(openEvent as ToggleEvent);
 		await waitForUpdate(el);
 		expect(el._pickerPopoverWidth).toBe(PICKER_POPOVER_WIDTH);
+	});
+});
+
+describe('nldd-date-field is nooit een naamloze control', () => {
+	let el: NLDDDateField;
+
+	afterEach(() => {
+		if (el) cleanup(el);
+	});
+
+	// Zonder accessible-label en zonder nldd-form-field kreeg de invoer geen naam:
+	// geen label, geen aria-label. Nu valt hij terug op een neutrale naam.
+	it('geeft de invoer een terugval-naam zonder accessible-label', async () => {
+		el = await fixture<NLDDDateField>('<nldd-date-field></nldd-date-field>');
+		await waitForUpdate(el);
+		expect(textInput(el).getAttribute('aria-label')).toBe('Datum');
+	});
+
+	it('laat accessible-label voorgaan op de terugval', async () => {
+		el = await fixture<NLDDDateField>('<nldd-date-field accessible-label="Geboortedatum"></nldd-date-field>');
+		await waitForUpdate(el);
+		expect(textInput(el).getAttribute('aria-label')).toBe('Geboortedatum');
+	});
+
+	it('benoemt in range-modus de groep en beide invoervelden', async () => {
+		el = await fixture<NLDDDateField>('<nldd-date-field range></nldd-date-field>');
+		await waitForUpdate(el);
+		const inputs = el.shadowRoot!.querySelectorAll('.date-field__input');
+		expect(el.shadowRoot!.querySelector('.date-field')!.getAttribute('aria-label')).toBe('Periode');
+		expect(inputs[0].getAttribute('aria-label')).toBe('Periode, van');
+		expect(inputs[1].getAttribute('aria-label')).toBe('Periode, tot en met');
 	});
 });

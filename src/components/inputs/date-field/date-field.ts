@@ -46,6 +46,7 @@ import { dateFieldTemplate, PICKER_POPOVER_WIDTH } from './date-field.template.j
 import { nlddDateFieldTranslations } from './date-field.i18n.js';
 import type { NLDDDateFieldTranslations } from './date-field.i18n.js';
 import type { NLDDDatePicker } from './../date-picker/date-picker.js';
+import type { NLDDPopover } from './../../layout/popover/popover.js';
 import './../../actions/icon-button/icon-button.js';
 import './../../content/icon/icon.js';
 
@@ -314,6 +315,16 @@ export class NLDDDateField extends LitElement {
 		return this.translations[key] ?? nlddDateFieldTranslations[key];
 	}
 
+	/**
+	 * The field's accessible name, with a fallback so the input is never nameless.
+	 * nldd-form-field sets accessible-label to the field's label, so this fallback
+	 * only fires standalone, where there is otherwise no name at all (WCAG 4.1.2).
+	 */
+	public get _fieldLabel(): string {
+		return this.accessibleLabel
+			|| this._t(this.range ? 'components.date-field.default-range-label' : 'components.date-field.default-label');
+	}
+
 	// — Picker ———————————————————————————————————————————————————————————————
 
 	/**
@@ -330,7 +341,7 @@ export class NLDDDateField extends LitElement {
 		return this.shadowRoot?.querySelector('.date-field__picker nldd-icon-button') ?? null;
 	}
 
-	private get _popover(): (HTMLElement & { show(): void; hide(): void; anchorElement: Element | null; width: string | undefined }) | null {
+	private get _popover(): NLDDPopover | null {
 		return this.shadowRoot?.querySelector('nldd-popover') ?? null;
 	}
 
@@ -368,6 +379,10 @@ export class NLDDDateField extends LitElement {
 
 	public _handlePickerDismiss(e: Event): void {
 		e.stopPropagation();
+		// Same as after a choice: put focus back on the calendar button. Without it
+		// Cancel, Escape and an outside click leave focus on the text input, which
+		// is inconsistent with the change path.
+		this._takeFocusBackToTrigger();
 		this._popover?.hide();
 	}
 
