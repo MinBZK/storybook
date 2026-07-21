@@ -9,6 +9,10 @@ the type of conventional-commit determines the release. Conventional types
 `chore`, `docs`, `ci`, `style`, `test`, `build` are intentionally omitted
 here; consult the commit history if you need that level of detail.
 
+## <small>0.8.70 (2026-07-21)</small>
+
+* feat!: nldd-date-picker en nldd-date-field, custom elements manifest en Vue-types (#155) ([e2ce97f](https://github.com/MinBZK/storybook/commit/e2ce97f)), closes [#155](https://github.com/MinBZK/storybook/issues/155)
+
 ### Highlights
 
 - **New `nldd-date-picker`.** A calendar for a single date or a period, usable on its own (inline in a page or a filter panel) and inside `nldd-date-field`. Follows the W3C APG date picker grid: arrow keys move day by day, Page Up/Down a month, Home/End to the week's edges, and the month heading announces itself as you page. Optional ISO week numbers, a configurable first day of the week, and an `isDateUnavailable` callback to block dates. On a narrow screen or a coarse pointer it lays itself out for fingers: it fills the available width, the month navigation moves below the grid with larger buttons, and the month heading grows a step.
