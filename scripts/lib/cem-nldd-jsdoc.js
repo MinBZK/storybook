@@ -19,14 +19,7 @@ import { extractLeadingBlock, parseComponent } from './component-jsdoc.js';
 /** Ships a custom element but is not consumer-facing; the reference skips it too. */
 const INTERNAL_TAGS = new Set(['nldd-lqip-encoder']);
 
-/**
- * @param {object} [options]
- * @param {Map<string, string>} [options.subpathByTag] Filled with the package
- *   subpath each element's type can be imported from. Several elements live in
- *   one module (nldd-menu-item in menu.ts), and only that module is exported,
- *   so a per-tag guess would point at a path that does not exist.
- */
-export function nlddFileLevelJsdoc({ subpathByTag } = {}) {
+export function nlddFileLevelJsdoc() {
 	return {
 		name: 'nldd-file-level-jsdoc',
 		packageLinkPhase({ customElementsManifest }) {
@@ -42,9 +35,6 @@ export function nlddFileLevelJsdoc({ subpathByTag } = {}) {
 				);
 				const elements = module.declarations.filter((d) => d.customElement && d.tagName);
 				if (elements.length === 0) continue;
-
-				const subpath = module.path.split('/').pop().replace(/\.ts$/, '');
-				for (const element of elements) subpathByTag?.set(element.tagName, subpath);
 
 				let source;
 				try {

@@ -13,9 +13,6 @@
  */
 import { nlddFileLevelJsdoc } from './scripts/lib/cem-nldd-jsdoc.js';
 
-/** Filled by the JSDoc plugin, read by the Vue plugin; it runs first. */
-const subpathByTag = new Map();
-
 export default {
 	globs: ['src/components/**/*.ts', 'src/utilities/*.ts'],
 	// The sibling files hold styles, markup and translations. They declare no
@@ -36,5 +33,5 @@ export default {
 	outdir: '.',
 	litelement: true,
 	dev: false,
-	plugins: [nlddFileLevelJsdoc({ subpathByTag })],
+	plugins: [nlddFileLevelJsdoc()],
 };
