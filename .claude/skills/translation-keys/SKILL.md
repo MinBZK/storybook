@@ -68,10 +68,10 @@ components.date-picker.in-range-lowercase-label: in de periode
 components.date-picker.unavailable-lowercase-label: niet beschikbaar
 ```
 
-> Voor uppercase weergave: gebruik CSS `text-transform`. Maak geen `-uppercase` keys.
-> Voor kapitalisatie juist niet: die hoort in de vertaling, want per taal verschilt
-> waar een hoofdletter hoort en met CSS of `charAt(0).toUpperCase()` kan een
-> vertaler hem niet uitzetten.
+Voor uppercase weergave: gebruik CSS `text-transform`. Maak geen `-uppercase` keys.
+Voor kapitalisatie juist niet: die hoort in de vertaling, want per taal verschilt
+waar een hoofdletter hoort, en met CSS of `charAt(0).toUpperCase()` kan een
+vertaler hem niet uitzetten.
 
 ### `-title`
 
@@ -124,12 +124,11 @@ my-website.my-form.email-help-text: U ontvangt een bevestiging per e-mail. Lees 
 
 ### `-action`
 
-Voor knoppen, links en andere acties.
-
-> Namen van acties beschrijven wat de actie doet, niet wat de gebruiker daarna
-> ziet. Navigeert een knop alleen naar een andere weergave, zet dat er dan in
-> (`view-today-action`, niet `today-action`), zodat een copywriter niet denkt dat
-> hij iets kiest.
+Voor knoppen, links en andere acties. De sleutelnaam bevat een werkwoord dat
+zegt wat de actie doet. Een kaal zelfstandig naamwoord leest als een keuze:
+`today-action` klinkt alsof je vandaag kiest, terwijl de knop alleen naar de
+weergave van vandaag navigeert. Zet dat werkwoord er dan in (`view-today-action`),
+zodat een copywriter de tekst schrijft die bij de handeling past.
 
 **Directe acties:** gebruik de gebiedende wijs (imperatief).
 ```
@@ -138,7 +137,8 @@ general.delete-action: Verwijder
 components.pagination.previous-action: Vorige pagina
 ```
 
-**Indirecte acties** (verwijzing naar een pagina/formulier): gebruik de infinitief in het Nederlands.
+**Indirecte acties** (verwijzing naar een pagina/formulier): gebruik de infinitief
+in het Nederlands, met de `to-` prefix vóór het werkwoord.
 ```
 general.to-save-action: Bewaren
 general.to-login-action: Inloggen
