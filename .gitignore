@@ -53,3 +53,5 @@ storybook-static
 .worktrees/
 .claude/settings.local.json
 .claude/projects/
+# Personal, machine-specific dev server config with absolute paths.
+.claude/launch.json
