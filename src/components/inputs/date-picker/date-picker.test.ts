@@ -173,6 +173,16 @@ describe('nldd-date-picker', () => {
 		expect(title(el)).toBe('Juli 2026');
 	});
 
+	// aria-labelledby wint van aria-label in de accessible-name-berekening, dus met
+	// beide erop bereikte de gedocumenteerde accessible-label de schermlezer nooit.
+	it('laat accessible-label de grid benoemen in plaats van de maandtitel', async () => {
+		el = await fixture<NLDDDatePicker>('<nldd-date-picker accessible-label="Geboortedatum"></nldd-date-picker>');
+		await waitForUpdate(el);
+		const grid = el.shadowRoot!.querySelector('.date-picker__calendar')!;
+		expect(grid.getAttribute('aria-label')).toBe('Geboortedatum');
+		expect(grid.getAttribute('aria-labelledby')).toBeNull();
+	});
+
 
 	// # Toetsenbord
 

@@ -190,8 +190,8 @@ export function datePickerTemplate(component: NLDDDatePicker): TemplateResult {
 			${renderHeader(component)}
 			<table class="date-picker__calendar"
 				role="grid"
-				aria-labelledby=${TITLE_ID}
 				aria-label=${component.accessibleLabel || nothing}
+				aria-labelledby=${component.accessibleLabel ? nothing : TITLE_ID}
 				@keydown=${component._handleKeydown}
 				@focusin=${component._handleDayFocusIn}
 				@focusout=${component._handleDayFocusOut}
