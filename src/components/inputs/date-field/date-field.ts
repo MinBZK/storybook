@@ -338,7 +338,7 @@ export class NLDDDateField extends LitElement {
 	_pickerOpen = false;
 
 	private get _pickerTrigger(): HTMLElement | null {
-		return this.shadowRoot?.querySelector('.date-field__picker nldd-icon-button') ?? null;
+		return this.shadowRoot?.querySelector('.date-field__picker-button nldd-icon-button') ?? null;
 	}
 
 	private get _popover(): NLDDPopover | null {

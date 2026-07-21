@@ -2,7 +2,7 @@ import { css, unsafeCSS } from 'lit';
 import { inheritedTextReset } from '../../../assets/styles/style-resets.js';
 import { breakpoints } from '../../../assets/styles/breakpoints.js';
 
-const smMax = unsafeCSS(breakpoints.smMax);
+const mdMin = unsafeCSS(breakpoints.mdMin);
 
 export const dateFieldStyles = css`
 	:host {
@@ -24,10 +24,10 @@ export const dateFieldStyles = css`
 		--_separator-gap: var(--primitives-space-6);
 		/* Linkerkant van het veld: het is een border-box, en padding-left trekt er al
 		   een rand vanaf, dus tellen beide randen samen voor één rand extra. */
-		--_edge: calc(var(--_inline-padding) + var(--semantics-input-fields-border-thickness));
+		--_edge-width: calc(var(--_inline-padding) + var(--semantics-input-fields-border-thickness));
 		/* Alles wat niet kan krimpen. Enkel het laatste datumveld rekt mee, dus dit is
 		   tevens de ondergrens: eronder zou de kalenderknop het veld uit lopen. */
-		--_fixed-width: calc(var(--_edge) + var(--_trailing-width));
+		--_fixed-width: calc(var(--_edge-width) + var(--_trailing-width));
 		--_width: calc(var(--_fixed-width) + var(--_date-width));
 		--_corner-radius: var(--semantics-controls-md-corner-radius);
 		--_background-color: var(--semantics-input-fields-background-color);
@@ -59,15 +59,15 @@ export const dateFieldStyles = css`
 	   validation icon, so the field never resizes when a validation state appears.
 	   Without the button one slot is enough. */
 	:host([no-picker]) {
-		--_fixed-width: calc(var(--_edge) + var(--_inline-padding) + var(--_validation-width));
+		--_fixed-width: calc(var(--_edge-width) + var(--_inline-padding) + var(--_validation-width));
 	}
 
 	:host([range]) {
-		--_fixed-width: calc(var(--_edge) + var(--_date-width) + var(--_separator-width) + var(--_trailing-width));
+		--_fixed-width: calc(var(--_edge-width) + var(--_date-width) + var(--_separator-width) + var(--_trailing-width));
 	}
 
 	:host([range][no-picker]) {
-		--_fixed-width: calc(var(--_edge) + var(--_inline-padding) + var(--_date-width) + var(--_separator-width) + var(--_validation-width));
+		--_fixed-width: calc(var(--_edge-width) + var(--_inline-padding) + var(--_date-width) + var(--_separator-width) + var(--_validation-width));
 	}
 
 	:host([size="sm"]) {
@@ -205,7 +205,7 @@ export const dateFieldStyles = css`
 		width: var(--primitives-space-8);
 	}
 
-	.date-field__validation-icon {
+	.date-field__validation-icon-area {
 		display: flex;
 		width: var(--_validation-width);
 		height: 100%;
@@ -214,21 +214,21 @@ export const dateFieldStyles = css`
 		justify-content: center;
 	}
 
-	:host([valid]) .date-field__validation-icon {
+	:host([valid]) .date-field__validation-icon-area {
 		color: var(--semantics-input-fields-is-valid-icon-color);
 	}
 
-	:host([invalid]) .date-field__validation-icon {
+	:host([invalid]) .date-field__validation-icon-area {
 		color: var(--semantics-input-fields-is-invalid-icon-color);
 	}
 
-	.date-field__validation-icon-glyph {
+	.date-field__validation-icon {
 		display: flex;
 		width: var(--_validation-icon-size);
 		height: var(--_validation-icon-size);
 	}
 
-	.date-field__picker {
+	.date-field__picker-button {
 		position: relative;
 		flex-shrink: 0;
 		padding-right: var(--_end-padding-right);
@@ -237,17 +237,11 @@ export const dateFieldStyles = css`
 	}
 
 
-	.date-field__picker-body {
-		padding: var(--primitives-space-16);
-	}
-
-	.date-field__picker-title-bar {
-		display: none;
-	}
-
-	@media (max-width: ${smMax}) {
-		.date-field__picker-title-bar {
-			display: block;
+	/* The sheet's title bar only makes sense on a small screen, where the popover
+	   becomes a bottom sheet. It shows by default and is hidden from md up. */
+	@media (min-width: ${mdMin}) {
+		.date-field__picker-button nldd-top-title-bar {
+			display: none;
 		}
 	}
 `;

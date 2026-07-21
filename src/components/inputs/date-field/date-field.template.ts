@@ -3,6 +3,7 @@ import type { NLDDDateField } from './date-field.js';
 import './../../actions/icon-button/icon-button.js';
 import './../../content/icon/icon.js';
 import './../../layout/popover/popover.js';
+import './../../layout/container/container.js';
 import './../../navigation/top-title-bar/top-title-bar.js';
 import './../date-picker/date-picker.js';
 
@@ -19,8 +20,8 @@ function renderValidationIcon(component: NLDDDateField): TemplateResult | typeof
 	const name = component.invalid ? 'invalid' : (component.valid ? 'valid' : '');
 	if (!name) return nothing;
 	return html`
-		<div class="date-field__validation-icon">
-			<span class="date-field__validation-icon-glyph">
+		<div class="date-field__validation-icon-area">
+			<span class="date-field__validation-icon">
 				<nldd-icon
 					name=${name}
 					aria-hidden="true"
@@ -45,7 +46,7 @@ function renderPicker(component: NLDDDateField): TemplateResult | typeof nothing
 	if (component.noPicker) return nothing;
 	const buttonSize = component.size === 'sm' ? 'xs' : 'sm';
 	return html`
-		<div class="date-field__picker">
+		<div class="date-field__picker-button">
 			<nldd-icon-button
 				variant="neutral-tinted"
 				size=${buttonSize}
@@ -60,14 +61,12 @@ function renderPicker(component: NLDDDateField): TemplateResult | typeof nothing
 				width=${component._pickerPopoverWidth}
 				@toggle=${component._handlePopoverToggle}
 			>
-				<div class="date-field__picker-title-bar">
-					<nldd-top-title-bar
-						text=${component._pickerLabel}
-						dismiss-text=${component._t('components.date-field.cancel-action')}
-						@dismiss=${component._handlePickerDismiss}
-					></nldd-top-title-bar>
-				</div>
-				<div class="date-field__picker-body"
+				<nldd-top-title-bar
+					text=${component._pickerLabel}
+					dismiss-text=${component._t('components.date-field.cancel-action')}
+					@dismiss=${component._handlePickerDismiss}
+				></nldd-top-title-bar>
+				<nldd-container padding="16"
 					@change=${component._handlePickerChange}
 				>
 					<slot name="picker"
@@ -84,7 +83,7 @@ function renderPicker(component: NLDDDateField): TemplateResult | typeof nothing
 							max=${component.max || nothing}
 						></nldd-date-picker>
 					`}
-				</div>
+				</nldd-container>
 			</nldd-popover>
 		</div>
 	`;
@@ -98,8 +97,8 @@ function renderPicker(component: NLDDDateField): TemplateResult | typeof nothing
 function renderInput(component: NLDDDateField, end: boolean): TemplateResult {
 	const label = component.range
 		? [component._fieldLabel, component._t(end
-			? 'components.date-field.range-to-lowercase'
-			: 'components.date-field.range-from-lowercase')].join(', ')
+			? 'components.date-field.range-to-lowercase-label'
+			: 'components.date-field.range-from-lowercase-label')].join(', ')
 		: component._fieldLabel;
 	return html`
 		<input class="date-field__input"
@@ -132,7 +131,7 @@ export function dateFieldTemplate(component: NLDDDateField): TemplateResult {
 				<span class="date-field__separator"
 					aria-hidden="true"
 				>
-					${component._t('components.date-field.range-to-short-lowercase')}
+					${component._t('components.date-field.range-to-short-lowercase-label')}
 				</span>
 				${renderInput(component, true)}
 			` : nothing}

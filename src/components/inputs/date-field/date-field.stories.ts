@@ -27,56 +27,6 @@ import '../date-picker/date-picker.js';
  * Zet het verwachte formaat **niet** in de placeholder: die verdwijnt zodra
  * iemand typt, heeft te weinig contrast en wordt wisselend voorgelezen. Gebruik
  * de `supporting-label` van `nldd-form-field` met een voorbeeld.
- *
- * ```html
- * <nldd-form-field label="Geboortedatum" supporting-label="Bijvoorbeeld 31-12-2026">
- *   <nldd-date-field></nldd-date-field>
- * </nldd-form-field>
- * ```
- *
- * ### Breedte
- * Standaard is het veld precies breed genoeg voor een datum plus de kalenderknop
- * en het validatie-icoon. Die ruimte is altijd gereserveerd, zodat het veld niet
- * verspringt zodra een validatiestaat verschijnt. Gebruik `width="full"` om de
- * container te vullen, of geef een eigen CSS-lengte.
- *
- * ### Kalender
- * De knop opent `nldd-date-picker` in een `nldd-popover`; met `no-picker` laat je
- * die knop weg en blijft alleen typen over. `min` en `max` gaan mee naar de
- * kalender.
- *
- * Eerder was dit de kalender van de browser via `showPicker()`. Die is eruit
- * gehaald omdat hij in Safari niet te sluiten was: Safari koppelt het sluiten aan
- * de date-input zelf, en die moet onzichtbaar zijn om de knop ernaast het enige
- * bedieningselement te laten zijn. Er was dus geen manier om hem weg te krijgen.
- * Op smalle schermen wordt de popover vanzelf een sheet.
- *
- * ### Periode
- * Met `range` staan er twee invoervelden met een scheiding ertussen, en gaat de
- * kalender in bereikmodus. `value` bevat dan beide datums als ISO 8601-interval:
- * begin, schuine streep, einde.
- *
- * ```html
- * <nldd-date-field range name="period" value="2026-07-01/2026-07-14"></nldd-date-field>
- * ```
- *
- * Eén waarde onder één naam dus, net als bij elk ander formulierveld. Het
- * alternatief was een tweede attribuut plus een tweede, afgeleide veldnaam, en
- * dan bestaat dezelfde periode in drie vormen: in de markup, als property en in
- * de verzonden data. Nu is het overal hetzelfde.
- *
- * Een halfgevulde periode blijft zichtbaar als `2026-07-01/`. Dat is ongeldige
- * invoer, en dat hoort de ontvangende kant te zien in plaats van een leeg veld
- * waaruit niets blijkt.
- *
- * Voor schermlezers is het geheel een groep met de veldnaam, en krijgt elk
- * invoerveld daarbinnen een eigen naam ("Periode, van" en "Periode, tot en met").
- * `nldd-form-field` blijft dus gewoon één label en één id zetten; het veld
- * verdeelt dat zelf.
- *
- * ### Validatie
- * Zet `valid` of `invalid` voor het bijbehorende icoon en de randkleur. De
- * foutmelding zelf hoort bij `nldd-form-field`, niet bij dit veld.
  */
 export default {
 	title: 'Components/Inputs/Date Field',
@@ -239,13 +189,10 @@ export const Default = Template.bind({});
 
 export const InEenFormulierveld = () => html`
 	<nldd-form-field
-		label="Geboortedatum"
-		supporting-label="Bijvoorbeeld 31-12-2026"
+		label="Ophaaldatum"
+		supporting-label="Bijvoorbeeld 15-07-2026"
 	>
-		<nldd-date-field
-			name="geboortedatum"
-			autocomplete="bday"
-		></nldd-date-field>
+		<nldd-date-field name="ophaaldatum"></nldd-date-field>
 	</nldd-form-field>
 `;
 

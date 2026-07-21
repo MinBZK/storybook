@@ -10,7 +10,7 @@ function textInput(el: HTMLElement): HTMLInputElement {
 }
 
 function pickerButton(el: HTMLElement): HTMLElement | null {
-	return el.shadowRoot!.querySelector('.date-field__picker nldd-icon-button');
+	return el.shadowRoot!.querySelector('.date-field__picker-button nldd-icon-button');
 }
 
 function popover(el: HTMLElement): HTMLElement | null {
@@ -134,7 +134,7 @@ describe('nldd-date-field', () => {
 	it('rendert geen validatiecel zonder validatiestaat', async () => {
 		el = await fixture<NLDDDateField>('<nldd-date-field range></nldd-date-field>');
 		await waitForUpdate(el);
-		expect(el.shadowRoot!.querySelector('.date-field__validation-icon')).toBeNull();
+		expect(el.shadowRoot!.querySelector('.date-field__validation-icon-area')).toBeNull();
 	});
 
 	// Twee bijna gelijke takken in de template liepen uit elkaar: de geldig-tak
@@ -142,7 +142,7 @@ describe('nldd-date-field', () => {
 	it.each([['valid'], ['invalid']])('zet het %s-icoon in een wrapper met een vaste maat', async (state) => {
 		el = await fixture<NLDDDateField>(`<nldd-date-field ${state}></nldd-date-field>`);
 		await waitForUpdate(el);
-		const glyph = el.shadowRoot!.querySelector('.date-field__validation-icon-glyph');
+		const glyph = el.shadowRoot!.querySelector('.date-field__validation-icon');
 		expect(glyph).not.toBeNull();
 		expect(glyph!.querySelector('nldd-icon')!.getAttribute('name')).toBe(state);
 	});
