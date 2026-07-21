@@ -27,6 +27,10 @@ here; consult the commit history if you need that level of detail.
 
 - **Icons: `batch` in a name is now `badge`.** Three icons show a small badge in the bottom-right corner, sharing that sub-glyph with `person-badge-gear` and `cylinder-split-badge-lock`. None of them shows a stack, so the name was simply wrong. Rename `book-batch-play` to `book-badge-play`, `file-text-batch-check-mark` to `file-text-badge-check-mark` and `file-text-batch-check-plus` to `file-text-badge-check-plus`. The old names are gone, also as aliases: a misspelling kept alive as an alias is a misspelling you keep reading in code review. The `new-text-document` alias follows the rename and needs no change.
 
+### Changed
+
+- **Icon: `lightbulb` redrawn.** The glyph was revised; the name is unchanged, so consumers pick up the new drawing without any code change.
+
 ### Fixed
 
 - **`nldd-sheet` and `nldd-window` report closing through every route.** The public `close` event came only from `hide()`, but Escape on a `modeless` overlay closes through the browser's CloseWatcher, which the `cancel` handler cannot reliably stop. A modeless sheet therefore closed silently. Both now emit from whichever route actually closed, once per open cycle.
