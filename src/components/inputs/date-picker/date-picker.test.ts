@@ -996,3 +996,41 @@ describe('nldd-date-picker aankondigingen bevatten alleen de datum', () => {
 		expect(announcement(el)).toContain('woensdag 15 juli 2026');
 	});
 });
+
+describe('nldd-date-picker weigert een periode over een geblokkeerde dag', () => {
+	let el: NLDDDatePicker;
+
+	afterEach(() => {
+		if (el) cleanup(el);
+	});
+
+	// Beide eindpunten kunnen beschikbaar zijn terwijl een geboekte dag ertussen
+	// zit. De eindpuntcheck miste dat, dus change vuurde met een periode die een
+	// zichtbaar geblokkeerde datum omsloot.
+	it('legt geen periode vast met een niet-beschikbare dag ertussen', async () => {
+		el = await fixture<NLDDDatePicker>('<nldd-date-picker range value=""></nldd-date-picker>');
+		el.isDateUnavailable = (iso) => iso === '2026-07-15';
+		await waitForUpdate(el);
+		let change = 0;
+		el.addEventListener('change', () => { change += 1; });
+		dayFor(el, '2026-07-10').click();
+		await waitForUpdate(el);
+		dayFor(el, '2026-07-20').click();
+		await waitForUpdate(el);
+		expect(el.end).toBe('');
+		expect(change).toBe(0);
+		expect(announcement(el)).toContain('niet beschikbaar');
+	});
+
+	it('legt een periode zonder geblokkeerde dagen wel vast', async () => {
+		el = await fixture<NLDDDatePicker>('<nldd-date-picker range value=""></nldd-date-picker>');
+		el.isDateUnavailable = (iso) => iso === '2026-07-25';
+		await waitForUpdate(el);
+		dayFor(el, '2026-07-10').click();
+		await waitForUpdate(el);
+		dayFor(el, '2026-07-20').click();
+		await waitForUpdate(el);
+		expect(el.start).toBe('2026-07-10');
+		expect(el.end).toBe('2026-07-20');
+	});
+});

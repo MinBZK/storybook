@@ -154,8 +154,6 @@ function renderDay(component: NLDDDatePicker, iso: string): TemplateResult {
 				'date-picker__day': true,
 				'is-selected': selected,
 				'is-in-range': component._isInRange(iso),
-				'is-range-start': component.range && iso === component.start,
-				'is-range-end': component.range && iso === component.end,
 				'is-today': component._isToday(iso),
 				'is-outside-month': component._isOutsideMonth(iso),
 				'is-unavailable': unavailable,

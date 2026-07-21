@@ -670,7 +670,25 @@ export class NLDDDatePicker extends withTranslations<NLDDDatePickerTranslations>
 		this._commitRange(this._anchor, iso);
 	}
 
+	/** Any blocked day between two ends, inclusive. The endpoints are checked
+	 *  before we get here; this is the interior the endpoint checks miss. */
+	private _rangeHasUnavailable(from: string, to: string): boolean {
+		const [start, end] = from < to ? [from, to] : [to, from];
+		for (let day = start; day <= end; day = addDays(day, 1)) {
+			if (this._isUnavailable(day)) return true;
+		}
+		return false;
+	}
+
 	private _commitRange(from: string, to: string): void {
+		// A range may not span a blocked day. Both ends can be available while a
+		// booked day sits between them, and committing that would fire change with
+		// a period that visibly contains an unavailable date. Keep the anchor so
+		// the user can pick a different end.
+		if (this._rangeHasUnavailable(from, to)) {
+			this._announce(this._t('components.date-picker.range-blocked-text'));
+			return;
+		}
 		this.start = from < to ? from : to;
 		this.end = from < to ? to : from;
 		this._anchor = '';

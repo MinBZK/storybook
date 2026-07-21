@@ -85,6 +85,7 @@ export const nlddDatePickerTranslations = {
 	// terugwaarts, waardoor dit juist de einddatum wordt.
 	'components.date-picker.range-anchor-text': 'Geselecteerd: {date}. Kies nu een tweede datum, eerder of later.',
 	'components.date-picker.range-selected-text': 'Geselecteerd: {start} tot en met {end}.',
+	'components.date-picker.range-blocked-text': 'Die periode bevat een datum die niet beschikbaar is. Kies een andere.',
 };
 
 export type NLDDDatePickerTranslations = typeof nlddDatePickerTranslations;
