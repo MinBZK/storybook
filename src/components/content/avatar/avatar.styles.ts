@@ -89,9 +89,6 @@ export const avatarStyles = css`
 		overflow: hidden;
 		border-radius: var(--_corner-radius);
 		background-color: var(--_background-color);
-		/* Initials/icon zijn decoratief - niet iets om te selecteren of te slepen.
-		   Op de container (erft naar de initials), en met -webkit- want de build
-		   prefixt niet en Safari <16.4 negeert de kale eigenschap anders. */
 		-webkit-user-select: none;
 		user-select: none;
 	}
