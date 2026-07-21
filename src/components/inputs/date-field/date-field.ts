@@ -180,26 +180,32 @@ export class NLDDDateField extends LitElement {
 	}
 
 	/**
-	 * On leaving the field, put the earlier date first. Typing a period backwards
-	 * ("van 2027 t/m 2026") otherwise stays backwards, while the calendar always
-	 * sorts a dragged range - so the two input methods disagreed. Done on blur of
-	 * the whole field, not per change: sorting mid-edit would move a value you just
-	 * typed in one input into the other.
+	 * Put the earlier date first when both ends are filled. Typing a period
+	 * backwards ("van 2027 t/m 2026") otherwise stays backwards, while the calendar
+	 * always sorts a dragged range - so the two input methods disagreed. Returns
+	 * whether it swapped, so the caller emits change only when something moved.
+	 */
+	private _sortRange(): boolean {
+		if (!this.range) return false;
+		const start = this._startValue;
+		const end = this._endValue;
+		if (!start || !end || start <= end) return false;
+		this._setRange(end, start);
+		return true;
+	}
+
+	/**
+	 * Sort on leaving the whole field, not per change: swapping mid-edit would move
+	 * a value you just typed in one input into the other.
 	 *
 	 * relatedTarget stays inside the shadow tree while focus moves between the two
 	 * inputs or to the calendar button, so only null or an element outside the
 	 * field means focus truly left.
 	 */
 	public _handleFieldBlur(e: FocusEvent): void {
-		if (!this.range) return;
 		const next = e.relatedTarget as Node | null;
 		if (next && this.shadowRoot?.contains(next)) return;
-		const start = this._startValue;
-		const end = this._endValue;
-		if (start && end && start > end) {
-			this._setRange(end, start);
-			this._emit('change');
-		}
+		if (this._sortRange()) this._emit('change');
 	}
 
 	/**
@@ -383,21 +389,37 @@ export class NLDDDateField extends LitElement {
 	}
 
 	/**
-	 * Puts focus back on the calendar button after a date was chosen.
-	 *
-	 * The popover restores focus to whatever held it before opening, but from
-	 * outside a shadow root document.activeElement is always the host - so it
-	 * records nldd-date-field, and this field delegates focus, which lands on the
-	 * text input. Focus would jump backwards past the button you just used.
-	 *
-	 * Waiting for that hand-over rather than racing it with a timer: the restore
-	 * happens somewhere after hide() returns, and guessing how long is how this
-	 * went wrong twice already.
+	 * Where focus should land once the popover has closed. Set by whatever closes
+	 * it, read on the close toggle. The popover restores focus to the pre-open
+	 * element itself - and Safari, which does not focus a button on click, restores
+	 * to the text input rather than the calendar button - so leaving it to the
+	 * popover lands focus in the wrong place. We take over, but only after its
+	 * restoration has run, or ours would be the one overwritten.
 	 */
-	private _takeFocusBackToTrigger(): void {
-		this.addEventListener('focusin', () => {
+	private _focusOnClose: 'trigger' | 'end' | null = null;
+
+	/**
+	 * Move focus to where the close intent asked for, with the caret at the end of
+	 * the end field for a period so an edit continues where the choice was made.
+	 * Run on a microtask after the close toggle: the popover (and Safari, which does
+	 * not focus a button on click) restores focus during that event, so only running
+	 * after its synchronous work wins. A microtask rather than a frame - it beats the
+	 * same restoration but is not throttled while the tab is unfocused.
+	 */
+	private _applyCloseFocus(): void {
+		const intent = this._focusOnClose;
+		this._focusOnClose = null;
+		if (intent === 'trigger') {
 			this._pickerTrigger?.focus();
-		}, { once: true });
+			return;
+		}
+		if (intent === 'end') {
+			const end = this.shadowRoot?.querySelectorAll('.date-field__input')[1] as HTMLInputElement | undefined;
+			if (!end) return;
+			end.focus();
+			const caret = end.value.length;
+			end.setSelectionRange(caret, caret);
+		}
 	}
 
 	public _handlePickerDismiss(e: Event): void {
@@ -405,7 +427,7 @@ export class NLDDDateField extends LitElement {
 		// Same as after a choice: put focus back on the calendar button. Without it
 		// Cancel, Escape and an outside click leave focus on the text input, which
 		// is inconsistent with the change path.
-		this._takeFocusBackToTrigger();
+		this._focusOnClose = 'trigger';
 		this._popover?.hide();
 	}
 
@@ -421,7 +443,18 @@ export class NLDDDateField extends LitElement {
 
 	public _handlePopoverToggle(e: Event): void {
 		this._pickerOpen = (e as ToggleEvent).newState === 'open';
-		if (this._pickerOpen) this._fitPopoverToSlottedPicker();
+		if (!this._pickerOpen) {
+			// The popover restores focus to the pre-open element during this same
+			// event; take it from there on the next microtask, after that restoration
+			// has run, so the caret ends where the intent asked.
+			queueMicrotask(() => this._applyCloseFocus());
+			return;
+		}
+		// Clicking the button blurs an input within the shadow tree, so the field
+		// blur never sorts a backwards period. Sort here too, so the calendar opens
+		// on the range the way it will be stored.
+		if (this._sortRange()) this._emit('change');
+		this._fitPopoverToSlottedPicker();
 	}
 
 	/**
@@ -442,23 +475,46 @@ export class NLDDDateField extends LitElement {
 		if (width > 0) this._pickerPopoverWidth = `calc(${Math.ceil(width)}px + var(--primitives-space-16) * 2)`;
 	}
 
-	/** The picker speaks ISO already, so there is nothing to convert. */
+	/**
+	 * The picker speaks ISO already, so there is nothing to convert. A finished
+	 * period lands the caret at the end of the end field - you just settled the
+	 * second date, so that is where an edit continues - while a single date is final
+	 * in one click and returns to the calendar button.
+	 */
 	public _handlePickerChange(e: Event): void {
 		e.stopPropagation();
 		const detail = (e as CustomEvent).detail as { value?: string; start?: string; end?: string };
 		if (this.range) {
 			if (typeof detail?.start !== 'string' || typeof detail?.end !== 'string') return;
 			this._setRange(detail.start, detail.end);
+			this._focusOnClose = 'end';
 		} else {
 			if (typeof detail?.value !== 'string') return;
 			this.value = detail.value;
+			this._focusOnClose = 'trigger';
 		}
-		this._takeFocusBackToTrigger();
 		this._popover?.hide();
 		this._emit('change');
 	}
 
 	// — Actions ——————————————————————————————————————————————————————————————
+
+	/**
+	 * Backspace on an empty end field steps back to the end of the start field, so
+	 * a whole period can be cleared in one run of backspaces instead of reaching for
+	 * the mouse to move between the two inputs.
+	 */
+	public _handleInputKeydown(e: KeyboardEvent, end: boolean): void {
+		if (!this.range || !end || e.key !== 'Backspace') return;
+		const input = e.target as HTMLInputElement;
+		if (input.value !== '') return;
+		const start = this.shadowRoot?.querySelector('.date-field__input') as HTMLInputElement | null;
+		if (!start) return;
+		e.preventDefault();
+		start.focus();
+		const caret = start.value.length;
+		start.setSelectionRange(caret, caret);
+	}
 
 	public _handleInput(e: Event, end = false): void {
 		e.stopPropagation();

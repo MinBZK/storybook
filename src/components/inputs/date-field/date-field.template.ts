@@ -114,6 +114,7 @@ function renderInput(component: NLDDDateField, end: boolean): TemplateResult {
 			aria-label=${label || nothing}
 			aria-describedby=${component.errorMessageIds || nothing}
 			aria-invalid=${component.invalid ? 'true' : nothing}
+			@keydown=${(e: KeyboardEvent) => component._handleInputKeydown(e, end)}
 			@input=${(e: Event) => component._handleInput(e, end)}
 			@change=${(e: Event) => component._handleChange(e, end)}
 		>

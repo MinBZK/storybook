@@ -21,6 +21,17 @@ function picker(el: HTMLElement): HTMLElement | null {
 	return el.shadowRoot!.querySelector('nldd-date-picker');
 }
 
+/**
+ * Simulate the popover closing. hide() is a no-op here (it never really opened),
+ * so the close toggle that carries the focus intent is fired by hand, then the
+ * microtask the field waits for before taking focus back is flushed.
+ */
+async function closePopover(el: NLDDDateField): Promise<void> {
+	el._handlePopoverToggle(Object.assign(new Event('toggle'), { newState: 'closed' }));
+	await Promise.resolve();
+	await waitForUpdate(el);
+}
+
 /** Type into the visible field and commit, the way a user would. */
 async function type(el: NLDDDateField, text: string): Promise<void> {
 	const input = textInput(el);
@@ -352,11 +363,26 @@ describe('nldd-date-field', () => {
 		picker(el)!.dispatchEvent(new CustomEvent('change', {
 			detail: { value: '2026-12-31' }, bubbles: true, composed: true,
 		}));
-		// De popover geeft de focus terug aan het veld; dat moment wordt opgevangen.
-		el.dispatchEvent(new Event('focusin'));
-		await waitForUpdate(el);
+		await closePopover(el);
 
 		expect(el.shadowRoot!.activeElement).toBe(pickerButton(el));
+	});
+
+	// Een periode is niet af in één klik: na de tweede datum wil je de cursor aan het
+	// eind van het einddatumveld, waar de keuze zojuist landde, niet terug op de knop.
+	it('zet de focus na een periode op het einde van het einddatumveld', async () => {
+		el = await fixture<NLDDDateField>('<nldd-date-field range></nldd-date-field>');
+		await waitForUpdate(el);
+		textInput(el).focus();
+
+		picker(el)!.dispatchEvent(new CustomEvent('change', {
+			detail: { start: '2026-07-08', end: '2026-07-15' }, bubbles: true, composed: true,
+		}));
+		await closePopover(el);
+
+		const end = el.shadowRoot!.querySelectorAll('.date-field__input')[1] as HTMLInputElement;
+		expect(el.shadowRoot!.activeElement).toBe(end);
+		expect(end.selectionStart).toBe(end.value.length);
 	});
 
 	// Dezelfde teruggave als na een keuze: annuleren, Escape en een klik ernaast
@@ -366,8 +392,7 @@ describe('nldd-date-field', () => {
 		await waitForUpdate(el);
 		textInput(el).focus();
 		el._handlePickerDismiss(new Event('dismiss'));
-		el.dispatchEvent(new Event('focusin'));
-		await waitForUpdate(el);
+		await closePopover(el);
 		expect(el.shadowRoot!.activeElement).toBe(pickerButton(el));
 	});
 
@@ -662,5 +687,70 @@ describe('nldd-date-field sorteert een omgekeerd getypte periode op blur', () =>
 		fieldBlur(el);
 		await waitForUpdate(el);
 		expect(el.value).toBe('2026-06-09');
+	});
+
+	// Op de kalenderknop klikken verlaat het veld niet (die knop zit in dezelfde
+	// shadow root), dus de blur-sortering slaat over. Bij het openen alsnog sorteren,
+	// zodat de kalender de periode toont zoals hij hem opslaat.
+	it('sorteert ook wanneer de kalender opengaat', async () => {
+		el = await fixture<NLDDDateField>('<nldd-date-field range value="2027-06-09/2026-06-26"></nldd-date-field>');
+		await waitForUpdate(el);
+		const openEvent = Object.assign(new Event('toggle'), { newState: 'open' });
+		el._handlePopoverToggle(openEvent as ToggleEvent);
+		await waitForUpdate(el);
+		expect(el.value).toBe('2026-06-26/2027-06-09');
+	});
+});
+
+describe('nldd-date-field springt met backspace van een leeg einddatumveld terug', () => {
+	let el: NLDDDateField;
+
+	afterEach(() => {
+		if (el) cleanup(el);
+	});
+
+	function inputs(host: NLDDDateField) {
+		return Array.from(host.shadowRoot!.querySelectorAll('.date-field__input')) as HTMLInputElement[];
+	}
+
+	function backspace(input: HTMLInputElement) {
+		const event = new KeyboardEvent('keydown', { key: 'Backspace', bubbles: true, cancelable: true });
+		input.dispatchEvent(event);
+		return event;
+	}
+
+	// Zo wist je een hele periode in één stroom backspaces leeg, zonder de muis te
+	// pakken om tussen de twee velden te wisselen.
+	it('zet de focus op het einde van het startdatumveld', async () => {
+		el = await fixture<NLDDDateField>('<nldd-date-field range value="2026-06-09/"></nldd-date-field>');
+		await waitForUpdate(el);
+		const [start, end] = inputs(el);
+		end.focus();
+		const event = backspace(end);
+		await waitForUpdate(el);
+		expect(event.defaultPrevented).toBe(true);
+		expect(el.shadowRoot!.activeElement).toBe(start);
+		expect(start.selectionStart).toBe(start.value.length);
+	});
+
+	it('laat een gevuld einddatumveld met rust', async () => {
+		el = await fixture<NLDDDateField>('<nldd-date-field range value="2026-06-09/2026-06-26"></nldd-date-field>');
+		await waitForUpdate(el);
+		const [, end] = inputs(el);
+		end.focus();
+		const event = backspace(end);
+		await waitForUpdate(el);
+		expect(event.defaultPrevented).toBe(false);
+		expect(el.shadowRoot!.activeElement).toBe(end);
+	});
+
+	it('doet niets vanuit het startdatumveld', async () => {
+		el = await fixture<NLDDDateField>('<nldd-date-field range value="/"></nldd-date-field>');
+		await waitForUpdate(el);
+		const [start] = inputs(el);
+		start.focus();
+		const event = backspace(start);
+		await waitForUpdate(el);
+		expect(event.defaultPrevented).toBe(false);
 	});
 });
