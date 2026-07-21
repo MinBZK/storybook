@@ -1045,4 +1045,33 @@ describe('nldd-date-picker weigert een periode over een geblokkeerde dag', () =>
 		expect(el.start).toBe('2026-07-10');
 		expect(el.end).toBe('2026-07-20');
 	});
+
+	// De sleep-route (_onDocumentPointerUp) deelt dezelfde guard als de klik-route,
+	// maar loopt er niet via _select doorheen: een sleep over een geblokkeerde
+	// binnendag mag evenmin vastleggen.
+	it('weigert ook een gesleepte periode over een niet-beschikbare dag', async () => {
+		el = await fixture<NLDDDatePicker>('<nldd-date-picker range value=""></nldd-date-picker>');
+		el.isDateUnavailable = (iso) => iso === '2026-07-15';
+		await waitForUpdate(el);
+		let change = 0;
+		el.addEventListener('change', () => { change += 1; });
+		const at = (iso: string) => {
+			const r = dayFor(el, iso).getBoundingClientRect();
+			return { clientX: r.left + r.width / 2, clientY: r.top + r.height / 2 };
+		};
+		dayFor(el, '2026-07-10').dispatchEvent(new PointerEvent('pointerdown', {
+			...at('2026-07-10'), pointerType: 'mouse', bubbles: true, composed: true,
+		}));
+		el.shadowRoot!.querySelector('.date-picker__calendar')!.dispatchEvent(new PointerEvent('pointermove', {
+			...at('2026-07-20'), pointerType: 'mouse', bubbles: true, composed: true,
+		}));
+		await waitForUpdate(el);
+		document.dispatchEvent(new PointerEvent('pointerup', {
+			...at('2026-07-20'), pointerType: 'mouse', bubbles: true, composed: true,
+		}));
+		await waitForUpdate(el);
+		expect(el.end).toBe('');
+		expect(change).toBe(0);
+		expect(announcement(el)).toContain('niet beschikbaar');
+	});
 });

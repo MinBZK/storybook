@@ -540,6 +540,27 @@ describe('nldd-date-field grenzen, separators en range-toggle', () => {
 		expect(el.value).toBe('2026-07-15');
 	});
 
+	// Beide range-invoeren lopen door hetzelfde _commit/_withinBounds als een los
+	// veld, dus een getypte grensoverschrijding mag ook in een periode niet landen -
+	// de ruwe tekst blijft wel staan zodat de gebruiker hem kan verbeteren.
+	it('legt een getypte range-datum buiten max niet vast', async () => {
+		el = await fixture<NLDDDateField>('<nldd-date-field range max="2026-07-31"></nldd-date-field>');
+		await waitForUpdate(el);
+		const [start, end] = [...el.shadowRoot!.querySelectorAll('.date-field__input')] as HTMLInputElement[];
+		const typeInto = async (input: HTMLInputElement, text: string) => {
+			input.value = text;
+			input.dispatchEvent(new Event('input', { bubbles: true }));
+			await waitForUpdate(el);
+			input.dispatchEvent(new Event('change', { bubbles: true }));
+			await waitForUpdate(el);
+		};
+		await typeInto(start, '10-07-2026');
+		await typeInto(end, '15-08-2026');
+		expect(el._startValue).toBe('2026-07-10');
+		expect(el._endValue).toBe('');
+		expect(end.value).toBe('15-08-2026');
+	});
+
 	// \D accepteerde elke niet-cijfer als scheidingsteken, ook een letter.
 	it('weigert een letter als scheidingsteken', async () => {
 		el = await fixture<NLDDDateField>('<nldd-date-field></nldd-date-field>');

@@ -23,6 +23,10 @@ export function declaredAttributes(body) {
 		// at the first inner "}" and skips the property.
 		const optionsStart = body.indexOf('{', match.index);
 		const parenEnd = body.indexOf(')', match.index);
+		// A bare @property() with no options object short-circuits here (the ) comes
+		// before the next brace). Such a property still declares an attribute (the
+		// lowercased name), so this would be a false negative - but no component in
+		// src/ writes @property() bare today. Add handling if one ever does.
 		if (optionsStart === -1 || (parenEnd !== -1 && parenEnd < optionsStart)) continue;
 		let depth = 0;
 		let i = optionsStart;
@@ -36,6 +40,8 @@ export function declaredAttributes(body) {
 		const after = body.slice(i + 1).match(
 			/^\s*\)\s*(?:override\s+)?(?:public\s+|readonly\s+)?(?:get\s+|set\s+)?([A-Za-z_][A-Za-z0-9_]*)/,
 		);
+		// A comment between the ) and the property name (") /* x */ name") lands here
+		// and is skipped: \s* does not span a comment. No component writes that today.
 		if (!after) continue;
 		const propertyName = after[1];
 		// attribute: false lives only as a DOM property, so no attribute to document.

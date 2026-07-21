@@ -746,4 +746,25 @@ describe('nldd-popover slikt de eerste tik op klein scherm', () => {
 		expect(raakt).toBe(1);
 		expect(click.defaultPrevented).toBe(false);
 	});
+
+	// De pointerdown-route wist de vlag bij het volgende gebaar; een geannuleerd
+	// gebaar (scroll of drag) geeft die pointerdown niet, dus pointercancel moet 'm
+	// ook wissen - anders vangt een latere klik de opslik-vlag alsnog af.
+	it('wist de opslik-vlag bij een geannuleerd gebaar', async () => {
+		const { wrapper, popover, target } = await openOnSm();
+		el = wrapper;
+		// Alsof een tik opgeslikt is (vlag gezet, sheet dicht) en het gebaar daarna
+		// een scroll wordt: de browser stuurt pointercancel in plaats van een klik.
+		(popover as unknown as { _swallowNextClick: boolean })._swallowNextClick = true;
+		popover.hide();
+		await waitForUpdate(popover);
+		document.dispatchEvent(new PointerEvent('pointercancel', { bubbles: true, composed: true }));
+		let raakt = 0;
+		target.addEventListener('click', () => { raakt += 1; });
+		const click = new MouseEvent('click', { bubbles: true, composed: true, cancelable: true });
+		target.dispatchEvent(click);
+
+		expect(raakt).toBe(1);
+		expect(click.defaultPrevented).toBe(false);
+	});
 });
