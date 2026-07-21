@@ -3,35 +3,20 @@ import { html, nothing } from 'lit';
 import './date-picker.js';
 
 /**
- * `nldd-date-picker` is de kalender waarin een datum of een periode wordt
- * gekozen. Het component staat op zichzelf: gebruik het inline op een pagina of
- * in een filterpaneel, of laat `nldd-date-field` het in een popover tonen.
- * Alles is ISO (`jjjj-mm-dd`): zonder `range` in `value`, met `range` in `start`
- * en `end`.
+ * `nldd-date-picker` is de kalender waarin een datum of een periode wordt gekozen.
+ * Het component staat op zichzelf (inline op een pagina of in een filterpaneel) of
+ * wordt door `nldd-date-field` in een popover getoond. Alles is ISO (`jjjj-mm-dd`):
+ * zonder `range` in `value`, met `range` in `start` en `end`. `min` en `max` nemen
+ * een ISO-datum of `today` met een optionele verschuiving (`d`, `w`, `m`, `y`), zodat
+ * een grens niet veroudert zoals een vaste datum, en losse dagen blokkeer je met de
+ * property `isDateUnavailable`, bijvoorbeeld voor weekenden of feestdagen; die
+ * blijven met het toetsenbord bereikbaar zodat een pijltjestoets geen reeks stil
+ * overslaat.
  *
- * ```html
- * <nldd-date-picker value="2026-07-15"></nldd-date-picker>
- * <nldd-date-picker range start="2026-07-01" end="2026-07-14"></nldd-date-picker>
- * ```
- *
- * ### Grenzen
- * `min` en `max` nemen een ISO-datum, of `today` met een optionele verschuiving
- * (`d`, `w`, `m`, `y`), zodat een grens niet veroudert zoals een vaste datum.
- *
- * ```html
- * <nldd-date-picker max="today"></nldd-date-picker>
- * <nldd-date-picker min="today" max="today+1y"></nldd-date-picker>
- * ```
- *
- * Losse datums blokkeer je met `isDateUnavailable`, een property (geen attribuut),
- * bijvoorbeeld voor weekenden of feestdagen. Geblokkeerde dagen blijven met het
- * toetsenbord bereikbaar; anders slaat een pijltjestoets een reeks stil over.
- *
- * ### Toetsenbord
  * Pijltjes verplaatsen per dag en per week, `Home` en `End` naar de weekgrenzen,
- * `PageUp` en `PageDown` per maand en met `Shift` per jaar. `Enter` en spatie
- * kiezen. De maandtitel is een live region, zodat een schermlezer bij het bladeren
- * hoort in welke maand de focus staat.
+ * `PageUp` en `PageDown` per maand en met `Shift` per jaar; `Enter` en spatie kiezen.
+ * De maandtitel is een live region, zodat een schermlezer bij het bladeren hoort in
+ * welke maand de focus staat.
  */
 export default {
 	title: 'Components/Inputs/Date Picker',
