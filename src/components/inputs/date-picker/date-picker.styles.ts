@@ -30,8 +30,8 @@ export const datePickerStyles = css`
 		--_day-indicator-corner-radius: 50%;
 		--_day-is-in-range-background-color: var(--semantics-categories-accent-tinted-background-color);
 		--_day-is-in-range-content-color: var(--semantics-content-color);
-		--_day-is-today-border-color: var(--primitives-color-neutral-450);
-		--_day-is-hovered-background-color: var(--primitives-color-neutral-150);
+		--_day-is-today-border-color: light-dark(var(--primitives-color-neutral-250), var(--primitives-color-neutral-400));
+		--_day-is-hovered-background-color: light-dark(var(--primitives-color-neutral-100), var(--primitives-color-neutral-150));
 		--_day-is-selected-background-color: var(--semantics-controls-is-highlighted-indicator-color);
 		--_day-is-selected-content-color: var(--semantics-controls-is-highlighted-contrast-color);
 		--_day-is-outside-month-content-color: var(--semantics-content-secondary-color);
