@@ -30,8 +30,8 @@ export const datePickerStyles = css`
 		--_day-indicator-corner-radius: 50%;
 		--_day-is-in-range-background-color: var(--semantics-categories-accent-tinted-background-color);
 		--_day-is-in-range-content-color: var(--semantics-content-color);
-		--_day-is-today-background-color: var(--semantics-buttons-neutral-tinted-background-color);
-		--_day-is-hovered-background-color: light-dark(var(--primitives-color-accent-100), var(--primitives-color-accent-150));
+		--_day-is-today-border-color: var(--primitives-color-neutral-450);
+		--_day-is-hovered-background-color: var(--primitives-color-neutral-150);
 		--_day-is-selected-background-color: var(--semantics-controls-is-highlighted-indicator-color);
 		--_day-is-selected-content-color: var(--semantics-controls-is-highlighted-contrast-color);
 		--_day-is-outside-month-content-color: var(--semantics-content-secondary-color);
@@ -226,7 +226,7 @@ export const datePickerStyles = css`
 	}
 
 	.date-picker__day.is-today .date-picker__day-indicator {
-		background-color: var(--_day-is-today-background-color);
+		border: var(--primitives-border-width-regular) solid var(--_day-is-today-border-color);
 	}
 
 	.date-picker__day:hover .date-picker__day-indicator {
