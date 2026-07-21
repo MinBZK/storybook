@@ -27,6 +27,7 @@ import { readFileSync, readdirSync } from 'node:fs';
 import { resolve, dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { extractLeadingBlock, parseComponent } from './lib/component-jsdoc.js';
+import { declaredAttributes } from './lib/declared-attributes.js';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const repoRoot = resolve(__dirname, '..');
@@ -52,59 +53,12 @@ function mixinAttributes() {
 	return names;
 }
 
-/**
- * The attribute name Lit derives when none is given: the property name
- * lowercased, NOT kebab-cased. `groupName` becomes `groupname`. Getting this
- * wrong means demanding documentation for an attribute that does not exist.
- */
-function toAttributeName(propertyName) {
-	return propertyName.toLowerCase();
-}
-
 function collectFiles(dir) {
 	const found = [];
 	for (const entry of readdirSync(dir, { withFileTypes: true })) {
 		const full = join(dir, entry.name);
 		if (entry.isDirectory()) found.push(...collectFiles(full));
 		else if (entry.name.endsWith('.ts') && !SKIP_SUFFIXES.some((s) => entry.name.endsWith(s))) found.push(full);
-	}
-	return found;
-}
-
-/**
- * Attributes declared in one class body. `attribute: false` means the value is
- * only reachable as a DOM property (a function or an object), so there is no
- * attribute to document.
- */
-function declaredAttributes(body) {
-	const found = new Set();
-	for (const match of body.matchAll(/@property\(/g)) {
-		// Brace-balanced rather than /\{([^}]*)\}/: an options object may contain
-		// a nested one (a converter with fromAttribute/toAttribute) and span
-		// several lines. A non-greedy regex stops at the first inner "}" and skips
-		// the property entirely, which is how nldd-toolbar-item's `priority` went
-		// unchecked - exactly the kind of gap this script exists to close.
-		const optionsStart = body.indexOf('{', match.index);
-		const parenEnd = body.indexOf(')', match.index);
-		if (optionsStart === -1 || (parenEnd !== -1 && parenEnd < optionsStart)) continue;
-		let depth = 0;
-		let i = optionsStart;
-		for (; i < body.length; i++) {
-			if (body[i] === '{') depth++;
-			else if (body[i] === '}' && --depth === 0) break;
-		}
-		const options = body.slice(optionsStart, i + 1);
-		// `get`/`set` because a property may be declared as an accessor
-		// (nldd-token-field exposes `values` that way).
-		const after = body.slice(i + 1).match(/^\s*\)\s*\n\s*(?:override\s+)?(?:public\s+|readonly\s+)?(?:get\s+|set\s+)?([A-Za-z_][A-Za-z0-9_]*)/);
-		if (!after) continue;
-		const propertyName = after[1];
-		if (/attribute:\s*false/.test(options)) continue;
-		// A leading underscore marks a property a parent sets on its children
-		// (nldd-tab-bar on its items), not something a consumer writes.
-		if (propertyName.startsWith('_')) continue;
-		const explicit = options.match(/attribute:\s*'([^']+)'/);
-		found.add(explicit ? explicit[1] : toAttributeName(propertyName));
 	}
 	return found;
 }
