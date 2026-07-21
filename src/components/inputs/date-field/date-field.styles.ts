@@ -39,8 +39,8 @@ export const dateFieldStyles = css`
 		   het hoogteverschil tussen veld en knop in plaats van een vaste waarde. */
 		--_end-padding-right: calc((var(--_min-size) - var(--_button-size)) / 2 - var(--semantics-input-fields-border-thickness));
 		--_button-size: var(--semantics-controls-sm-min-size);
-		--_validation-width: calc(var(--_min-size) - var(--semantics-input-fields-border-thickness) * 2);
-		--_trailing-width: calc(var(--_validation-width) + var(--_button-size) + var(--_end-padding-right));
+		--_validation-icon-area-width: calc(var(--_min-size) - var(--semantics-input-fields-border-thickness) * 2);
+		--_trailing-width: calc(var(--_validation-icon-area-width) + var(--_button-size) + var(--_end-padding-right));
 
 		${inheritedTextReset}
 		display: block;
@@ -59,7 +59,7 @@ export const dateFieldStyles = css`
 	   validation icon, so the field never resizes when a validation state appears.
 	   Without the button one slot is enough. */
 	:host([no-picker]) {
-		--_fixed-width: calc(var(--_edge-width) + var(--_inline-padding) + var(--_validation-width));
+		--_fixed-width: calc(var(--_edge-width) + var(--_inline-padding) + var(--_validation-icon-area-width));
 	}
 
 	:host([range]) {
@@ -67,7 +67,7 @@ export const dateFieldStyles = css`
 	}
 
 	:host([range][no-picker]) {
-		--_fixed-width: calc(var(--_edge-width) + var(--_inline-padding) + var(--_date-width) + var(--_separator-width) + var(--_validation-width));
+		--_fixed-width: calc(var(--_edge-width) + var(--_inline-padding) + var(--_date-width) + var(--_separator-width) + var(--_validation-icon-area-width));
 	}
 
 	:host([size="sm"]) {
@@ -207,7 +207,7 @@ export const dateFieldStyles = css`
 
 	.date-field__validation-icon-area {
 		display: flex;
-		width: var(--_validation-width);
+		width: var(--_validation-icon-area-width);
 		height: 100%;
 		flex-shrink: 0;
 		align-items: center;
