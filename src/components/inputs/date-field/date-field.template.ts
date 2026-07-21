@@ -12,7 +12,7 @@ import './../date-picker/date-picker.js';
  * the same token the calendar sizes its columns with, plus the container padding
  * on both sides - so the two stay in step if that token ever moves.
  */
-const PICKER_POPOVER_WIDTH = 'calc(var(--semantics-controls-md-min-size) * 7 + var(--primitives-space-16) * 2)';
+export const PICKER_POPOVER_WIDTH = 'calc(var(--semantics-controls-md-min-size) * 7 + var(--primitives-space-16) * 2)';
 
 /** One branch for both states: two near-identical copies drifted apart before. */
 function renderValidationIcon(component: NLDDDateField): TemplateResult | typeof nothing {
@@ -57,7 +57,7 @@ function renderPicker(component: NLDDDateField): TemplateResult | typeof nothing
 			></nldd-icon-button>
 			<nldd-popover
 				accessible-label=${component._pickerLabel}
-				width=${PICKER_POPOVER_WIDTH}
+				width=${component._pickerPopoverWidth}
 				@toggle=${component._handlePopoverToggle}
 			>
 				<div class="date-field__picker-title-bar">

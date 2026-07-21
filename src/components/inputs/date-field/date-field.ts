@@ -40,9 +40,9 @@
 import { LitElement, type PropertyValues } from 'lit';
 import { customElement, property, state } from 'lit/decorators.js';
 import { reflectNonDefault } from '../../../utilities/reflect-non-default.js';
-import { toIso } from '../../../utilities/resolve-date-bound.js';
+import { toIso, resolveDateBound } from '../../../utilities/resolve-date-bound.js';
 import { dateFieldStyles } from './date-field.styles.js';
-import { dateFieldTemplate } from './date-field.template.js';
+import { dateFieldTemplate, PICKER_POPOVER_WIDTH } from './date-field.template.js';
 import { nlddDateFieldTranslations } from './date-field.i18n.js';
 import type { NLDDDateFieldTranslations } from './date-field.i18n.js';
 import type { NLDDDatePicker } from './../date-picker/date-picker.js';
@@ -59,9 +59,9 @@ function parseDate(raw: string): string | null {
 	const trimmed = raw.trim();
 	if (trimmed === '') return null;
 	// A leading four-digit group can only be a year, so ISO is checked first.
-	const iso = /^(\d{4})\D(\d{1,2})\D(\d{1,2})$/.exec(trimmed);
+	const iso = /^(\d{4})[-/.](\d{1,2})[-/.](\d{1,2})$/.exec(trimmed);
 	if (iso) return toIso(Number(iso[1]), Number(iso[2]), Number(iso[3]));
-	const dutch = /^(\d{1,2})\D(\d{1,2})\D(\d{4})$/.exec(trimmed);
+	const dutch = /^(\d{1,2})[-/.](\d{1,2})[-/.](\d{4})$/.exec(trimmed);
 	if (dutch) return toIso(Number(dutch[3]), Number(dutch[2]), Number(dutch[1]));
 	const bare = /^(\d{2})(\d{2})(\d{4})$/.exec(trimmed);
 	if (bare) return toIso(Number(bare[3]), Number(bare[2]), Number(bare[1]));
@@ -179,6 +179,27 @@ export class NLDDDateField extends LitElement {
 	}
 
 	/**
+	 * A typed date the calendar would refuse must not commit either. min/max are
+	 * forwarded to the calendar, which blocks out-of-range days, but typed input
+	 * bypassed that check, so a value the picker cannot produce slipped through.
+	 * The bounds may be relative (today, today+3m), so they are resolved first.
+	 * ISO strings compare lexically, so `<` / `>` are the date order.
+	 */
+	private _withinBounds(iso: string): boolean {
+		const min = this.min ? resolveDateBound(this.min) : '';
+		const max = this.max ? resolveDateBound(this.max) : '';
+		if (min && iso < min) return false;
+		if (max && iso > max) return false;
+		return true;
+	}
+
+	/** The parsed date, or '' when it is unparseable or out of bounds. Both cases
+	 *  leave the raw text standing so the user can see and fix what they wrote. */
+	private _commit(parsed: string | null): string {
+		return parsed && this._withinBounds(parsed) ? parsed : '';
+	}
+
+	/**
 	 * Whether a consumer put their own calendar in the slot. Kept as state rather
 	 * than read during render: the built-in calendar has to disappear the moment
 	 * one is slotted, or both would be in the popover at once.
@@ -231,6 +252,15 @@ export class NLDDDateField extends LitElement {
 		// reset, the picker). While typing, the parse of `_display` already equals
 		// `value`, so the text is left exactly as entered.
 		if (!changed.has('value') && !changed.has('range')) return;
+		if (changed.has('range')) {
+			// value keeps one shape per mode. Entering range mode with a bare date
+			// makes it the interval's start; leaving it collapses to that start.
+			if (this.range && this.value && !this.value.includes(RANGE_SEPARATOR)) {
+				this.value = `${this.value}${RANGE_SEPARATOR}`;
+			} else if (!this.range && this.value.includes(RANGE_SEPARATOR)) {
+				this.value = this.value.split(RANGE_SEPARATOR)[0] ?? '';
+			}
+		}
 		if ((parseDate(this._display) ?? '') !== this._startValue) {
 			this._display = this._startValue === '' ? '' : formatDisplay(this._startValue);
 		}
@@ -341,6 +371,16 @@ export class NLDDDateField extends LitElement {
 		this._popover?.hide();
 	}
 
+	/**
+	 * The popover width, bound in the template. A reactive @state, not a direct
+	 * mutation of the popover: lit dirty-checks its own binding, so setting
+	 * popover.width from the outside was never undone on a later render, and a
+	 * popover once widened for a slotted picker stayed wide after that picker
+	 * was gone. Owning the value here lets lit reset it.
+	 */
+	@state()
+	_pickerPopoverWidth = PICKER_POPOVER_WIDTH;
+
 	public _handlePopoverToggle(e: Event): void {
 		this._pickerOpen = (e as ToggleEvent).newState === 'open';
 		if (this._pickerOpen) this._fitPopoverToSlottedPicker();
@@ -351,13 +391,17 @@ export class NLDDDateField extends LitElement {
 	 * content: `auto` and `max-content` both collapse it to zero width. The
 	 * built-in calendar has a known width, but a slotted one need not - week
 	 * numbers add a whole column - so that one is measured once it is on screen.
+	 * Falls back to the built-in width when there is no slotted picker, so it
+	 * never stays stuck at a stale measured value.
 	 */
 	private _fitPopoverToSlottedPicker(): void {
 		const picker = this._slottedPicker;
-		const popover = this._popover;
-		if (!picker || !popover) return;
+		if (!picker) {
+			this._pickerPopoverWidth = PICKER_POPOVER_WIDTH;
+			return;
+		}
 		const width = picker.getBoundingClientRect().width;
-		if (width > 0) popover.width = `calc(${Math.ceil(width)}px + var(--primitives-space-16) * 2)`;
+		if (width > 0) this._pickerPopoverWidth = `calc(${Math.ceil(width)}px + var(--primitives-space-16) * 2)`;
 	}
 
 	/** The picker speaks ISO already, so there is nothing to convert. */
@@ -381,8 +425,9 @@ export class NLDDDateField extends LitElement {
 	public _handleInput(e: Event, end = false): void {
 		e.stopPropagation();
 		const text = (e.target as HTMLInputElement).value;
-		// `value` holds a real date or nothing at all, never a half-typed string.
-		const parsed = parseDate(text) ?? '';
+		// `value` holds a real, in-range date or nothing at all, never a half-typed
+		// string and never a date the calendar would refuse.
+		const parsed = this._commit(parseDate(text));
 		if (end) this._displayEnd = text;
 		else this._display = text;
 		if (this.range) this._setRange(end ? this._startValue : parsed, end ? parsed : this._endValue);
@@ -393,14 +438,14 @@ export class NLDDDateField extends LitElement {
 	public _handleChange(e: Event, end = false): void {
 		e.stopPropagation();
 		const text = (e.target as HTMLInputElement).value;
-		const parsed = parseDate(text);
-		// Normalize on commit: 12/3/2026 settles as 12-03-2026. Unparseable text is
-		// left standing so the user can see and fix what they wrote.
-		const shown = parsed ? formatDisplay(parsed) : text;
+		const committed = this._commit(parseDate(text));
+		// Normalize on commit: 12/3/2026 settles as 12-03-2026. Text that is
+		// unparseable or out of bounds is left standing so the user can fix it.
+		const shown = committed ? formatDisplay(committed) : text;
 		if (end) this._displayEnd = shown;
 		else this._display = shown;
-		if (this.range) this._setRange(end ? this._startValue : (parsed ?? ''), end ? (parsed ?? '') : this._endValue);
-		else this.value = parsed ?? '';
+		if (this.range) this._setRange(end ? this._startValue : committed, end ? committed : this._endValue);
+		else this.value = committed;
 		this._emit('change');
 	}
 

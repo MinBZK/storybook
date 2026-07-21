@@ -2,6 +2,7 @@ import { describe, it, expect, afterEach } from 'vitest';
 import { fixture, cleanup, waitForUpdate } from '../../../test-utils.js';
 import './date-field.js';
 import type { NLDDDateField } from './date-field.js';
+import { PICKER_POPOVER_WIDTH } from './date-field.template.js';
 
 /** The visible text input; the picker's native input is a separate element. */
 function textInput(el: HTMLElement): HTMLInputElement {
@@ -468,5 +469,105 @@ describe('nldd-date-field met een eigen kalender in de slot', () => {
 		const p = slottedPicker(el) as HTMLElement & { weekNumbers: boolean; firstDayOfWeek: number };
 		expect(p.weekNumbers).toBe(true);
 		expect(p.firstDayOfWeek).toBe(0);
+	});
+});
+
+describe('nldd-date-field grenzen, separators en range-toggle', () => {
+	let el: NLDDDateField;
+
+	afterEach(() => {
+		if (el) cleanup(el);
+	});
+
+	// min/max gingen naar de kalender, die out-of-range dagen blokkeert, maar
+	// getypte invoer werd nooit tegen de grenzen gehouden.
+	it('legt een getypte datum buiten max niet vast', async () => {
+		el = await fixture<NLDDDateField>('<nldd-date-field max="2026-07-31"></nldd-date-field>');
+		await waitForUpdate(el);
+		await type(el, '15-08-2026');
+		expect(el.value).toBe('');
+		expect(textInput(el).value).toBe('15-08-2026');
+	});
+
+	it('legt een getypte datum vóór min niet vast', async () => {
+		el = await fixture<NLDDDateField>('<nldd-date-field min="2026-07-01"></nldd-date-field>');
+		await waitForUpdate(el);
+		await type(el, '20-06-2026');
+		expect(el.value).toBe('');
+	});
+
+	it('legt een datum binnen de grenzen wel vast', async () => {
+		el = await fixture<NLDDDateField>('<nldd-date-field min="2026-07-01" max="2026-07-31"></nldd-date-field>');
+		await waitForUpdate(el);
+		await type(el, '15-07-2026');
+		expect(el.value).toBe('2026-07-15');
+	});
+
+	// \D accepteerde elke niet-cijfer als scheidingsteken, ook een letter.
+	it('weigert een letter als scheidingsteken', async () => {
+		el = await fixture<NLDDDateField>('<nldd-date-field></nldd-date-field>');
+		await waitForUpdate(el);
+		await type(el, '2026x01x01');
+		expect(el.value).toBe('');
+	});
+
+	it('accepteert punt en schuine streep als scheidingsteken', async () => {
+		el = await fixture<NLDDDateField>('<nldd-date-field></nldd-date-field>');
+		await waitForUpdate(el);
+		await type(el, '01.02.2026');
+		expect(el.value).toBe('2026-02-01');
+		await type(el, '03/04/2026');
+		expect(el.value).toBe('2026-04-03');
+	});
+
+	// value houdt één vorm per modus: altijd een interval met range, altijd een
+	// kale datum zonder.
+	it('maakt een kale datum een interval bij inschakelen van range', async () => {
+		el = await fixture<NLDDDateField>('<nldd-date-field value="2026-07-06"></nldd-date-field>');
+		await waitForUpdate(el);
+		el.range = true;
+		await waitForUpdate(el);
+		expect(el.value).toBe('2026-07-06/');
+		expect(el._startValue).toBe('2026-07-06');
+		expect(el._endValue).toBe('');
+	});
+
+	it('collapseert een interval naar de startdatum bij uitschakelen van range', async () => {
+		el = await fixture<NLDDDateField>('<nldd-date-field range value="2026-07-06/2026-07-20"></nldd-date-field>');
+		await waitForUpdate(el);
+		el.range = false;
+		await waitForUpdate(el);
+		expect(el.value).toBe('2026-07-06');
+	});
+});
+
+describe('nldd-date-field popoverbreedte loopt niet vast', () => {
+	let el: NLDDDateField;
+
+	afterEach(() => {
+		if (el) cleanup(el);
+	});
+
+	// De breedte werd extern op de popover gezet; lit maakte dat op een latere
+	// render niet ongedaan, dus na het meten van een brede gesloten kalender bleef
+	// de popover te breed, ook nadat die kalender weg was.
+	it('valt terug op de standaardbreedte als de gesloten kalender verdwijnt', async () => {
+		el = await fixture<NLDDDateField>(`
+			<nldd-date-field>
+				<nldd-date-picker slot="picker" week-numbers></nldd-date-picker>
+			</nldd-date-field>
+		`);
+		await waitForUpdate(el);
+		// Alsof de gesloten kalender gemeten en breed bevonden is.
+		el._pickerPopoverWidth = 'calc(500px + var(--primitives-space-16) * 2)';
+		await waitForUpdate(el);
+		// Kalender weg, dan opent de popover opnieuw.
+		el.querySelector('nldd-date-picker')!.remove();
+		el._handlePickerSlotChange();
+		await waitForUpdate(el);
+		const openEvent = Object.assign(new Event('toggle'), { newState: 'open' });
+		el._handlePopoverToggle(openEvent as ToggleEvent);
+		await waitForUpdate(el);
+		expect(el._pickerPopoverWidth).toBe(PICKER_POPOVER_WIDTH);
 	});
 });
