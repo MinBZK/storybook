@@ -614,3 +614,53 @@ describe('nldd-date-field is nooit een naamloze control', () => {
 		expect(inputs[1].getAttribute('aria-label')).toBe('Periode, tot en met');
 	});
 });
+
+describe('nldd-date-field sorteert een omgekeerd getypte periode op blur', () => {
+	let el: NLDDDateField;
+
+	afterEach(() => {
+		if (el) cleanup(el);
+	});
+
+	function fieldBlur(host: NLDDDateField, relatedTarget: Node | null = null) {
+		host.shadowRoot!.querySelector('.date-field')!
+			.dispatchEvent(new FocusEvent('focusout', { relatedTarget, bubbles: true }));
+	}
+
+	// De kalender sorteert een gesleepte periode altijd; typen deed dat niet, dus
+	// "van 2027 t/m 2026" bleef achterstevoren staan.
+	it('zet de vroegste datum voorop als de focus het veld verlaat', async () => {
+		el = await fixture<NLDDDateField>('<nldd-date-field range value="2027-06-09/2026-06-26"></nldd-date-field>');
+		await waitForUpdate(el);
+		fieldBlur(el);
+		await waitForUpdate(el);
+		expect(el.value).toBe('2026-06-26/2027-06-09');
+	});
+
+	it('laat een periode die al goed staat met rust', async () => {
+		el = await fixture<NLDDDateField>('<nldd-date-field range value="2026-06-09/2026-06-26"></nldd-date-field>');
+		await waitForUpdate(el);
+		fieldBlur(el);
+		await waitForUpdate(el);
+		expect(el.value).toBe('2026-06-09/2026-06-26');
+	});
+
+	// Tussen de twee invoervelden wisselen mag niet sorteren, anders springt een
+	// net getypte waarde naar het andere veld terwijl je nog bezig bent.
+	it('sorteert niet als de focus binnen het veld blijft', async () => {
+		el = await fixture<NLDDDateField>('<nldd-date-field range value="2027-06-09/2026-06-26"></nldd-date-field>');
+		await waitForUpdate(el);
+		const tweede = el.shadowRoot!.querySelectorAll('.date-field__input')[1];
+		fieldBlur(el, tweede);
+		await waitForUpdate(el);
+		expect(el.value).toBe('2027-06-09/2026-06-26');
+	});
+
+	it('doet niets zonder range', async () => {
+		el = await fixture<NLDDDateField>('<nldd-date-field value="2026-06-09"></nldd-date-field>');
+		await waitForUpdate(el);
+		fieldBlur(el);
+		await waitForUpdate(el);
+		expect(el.value).toBe('2026-06-09');
+	});
+});

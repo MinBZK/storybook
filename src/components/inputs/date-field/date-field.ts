@@ -180,6 +180,29 @@ export class NLDDDateField extends LitElement {
 	}
 
 	/**
+	 * On leaving the field, put the earlier date first. Typing a period backwards
+	 * ("van 2027 t/m 2026") otherwise stays backwards, while the calendar always
+	 * sorts a dragged range - so the two input methods disagreed. Done on blur of
+	 * the whole field, not per change: sorting mid-edit would move a value you just
+	 * typed in one input into the other.
+	 *
+	 * relatedTarget stays inside the shadow tree while focus moves between the two
+	 * inputs or to the calendar button, so only null or an element outside the
+	 * field means focus truly left.
+	 */
+	public _handleFieldBlur(e: FocusEvent): void {
+		if (!this.range) return;
+		const next = e.relatedTarget as Node | null;
+		if (next && this.shadowRoot?.contains(next)) return;
+		const start = this._startValue;
+		const end = this._endValue;
+		if (start && end && start > end) {
+			this._setRange(end, start);
+			this._emit('change');
+		}
+	}
+
+	/**
 	 * A typed date the calendar would refuse must not commit either. min/max are
 	 * forwarded to the calendar, which blocks out-of-range days, but typed input
 	 * bypassed that check, so a value the picker cannot produce slipped through.

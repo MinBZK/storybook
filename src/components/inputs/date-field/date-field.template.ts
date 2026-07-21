@@ -125,6 +125,7 @@ export function dateFieldTemplate(component: NLDDDateField): TemplateResult {
 		<div class="date-field"
 			role=${component.range ? 'group' : nothing}
 			aria-label=${component.range ? component._fieldLabel : nothing}
+			@focusout=${component._handleFieldBlur}
 		>
 			${renderInput(component, false)}
 			${component.range ? html`
