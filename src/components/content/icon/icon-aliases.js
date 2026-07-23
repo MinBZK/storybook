@@ -256,6 +256,9 @@ export const aliases = {
 	// magnifier
 	'search': 'magnifier',
 
+	// megaphone
+	'announcement': 'megaphone',
+
 	// message-rectangle-text
 	'annotation': 'message-rectangle-text',
 	'comment': 'message-rectangle-text',
