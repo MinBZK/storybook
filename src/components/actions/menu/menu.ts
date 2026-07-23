@@ -1893,6 +1893,12 @@ export class NLDDMenu extends LitElement {
 
 		items.forEach(item => item.removeAttribute('highlighted'));
 		items[next].setAttribute('highlighted', '');
+		// Focus stays with the consumer here (the combo-box keeps it in the input),
+		// so the browser does not scroll along like it does on the focus path.
+		// `block: 'nearest'` does the minimum: nothing when the item is already
+		// visible, one row when stepping just past an edge, and all the way back
+		// to the other end on wrap-around.
+		items[next].scrollIntoView({ block: 'nearest', inline: 'nearest' });
 	}
 
 	/** Returns the currently highlighted item, or null if none. */

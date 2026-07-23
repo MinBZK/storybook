@@ -73,6 +73,7 @@ export const menuStyles = css`
 		max-height: min(var(--_max-height), calc(var(--_max-items) * var(--_item-size) + var(--_padding) * 2));
 		outline: none;
 		overflow-y: auto;
+		scroll-padding-block: var(--_padding);
 	}
 
 	.menu:focus-visible:not(.is-pointer-focus) {
