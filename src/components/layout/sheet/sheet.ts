@@ -229,7 +229,13 @@ export class NLDDSheet extends LitElement {
 		this.dispatchEvent(new CustomEvent('close', { bubbles: true, composed: true }));
 	}
 
-	_handleDialogClose(): void {
+	_handleDialogClose(e: Event): void {
+		// Only the dialog's own native close counts. That event does not bubble, so
+		// its target is the dialog. A nested component's `close` (an nldd-popover
+		// datepicker, say) is composed and bubbling, so it reaches this same @close
+		// listener retargeted to the slotted host — without this guard it would emit
+		// the sheet's close and make consumers tear the sheet down while it stays open.
+		if (e.target !== this._dialog) return;
 		this._closing = false;
 		this._dialog?.classList.remove('is-closing');
 		this._emitClose();
