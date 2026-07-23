@@ -192,6 +192,13 @@ export const pageFooterLegalBarStyles = css`
 	.page-footer__legal-bar-end[hidden] {
 		display: none;
 	}
+
+	/* Without start items the end area is the only flex child, and space-between
+	   puts a lone child at the start. The auto margin pushes it back to the end.
+	   Scoped to this case so the wrapping behaviour with both areas is untouched. */
+	.page-footer__legal-bar-start[hidden] + .page-footer__legal-bar-end {
+		margin-inline-start: auto;
+	}
 `;
 
 export const pageFooterLegalBarItemStyles = css`
