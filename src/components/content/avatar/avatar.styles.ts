@@ -15,8 +15,8 @@ export const avatarStyles = css`
 		--_background-color: var(--components-avatar-background-color);
 		--_content-color: var(--components-avatar-content-color);
 		--_icon-scale: 0.6;
-		--_initials-scale: 0.56;
-		--_initials-font-weight: 600;
+		--_initials-scale: 0.52;
+		--_initials-font-weight: 500;
 		--_initials-fit: 1;
 		--_shape-scale: 1;
 
