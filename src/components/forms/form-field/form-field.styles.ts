@@ -176,7 +176,7 @@ export const formFieldStyles = css`
 	}
 
 	:host(.has-errors) .form-field__errors {
-		margin-top: var(--primitives-space-2);
+		margin-top: var(--primitives-space-3);
 	}
 `;
 
@@ -194,7 +194,7 @@ export const formFieldHelpTextStyles = css`
 	/* # Help text */
 
 	.form-field__help-text {
-		margin: var(--primitives-space-2) 0 0;
+		margin: var(--primitives-space-3) 0 0;
 		color: var(--semantics-content-color);
 		font: var(--primitives-font-body-sm-regular-tight);
 	}
