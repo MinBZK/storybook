@@ -18,12 +18,18 @@
 import { LitElement } from 'lit';
 import { customElement, property, state } from 'lit/decorators.js';
 import { SINGLE_COLUMN_CHANGE_EVENT } from '../../../../utilities/scroll-mode-controller.js';
+import { ScrollModeController } from '../../../../utilities/scroll-mode-controller.js';
 import type { SingleColumnChangeDetail } from '../../../../utilities/scroll-mode-controller.js';
 import { sideBySideSplitViewStyles } from './side-by-side-split-view.styles.js';
 import { sideBySideSplitViewTemplate } from './side-by-side-split-view.template.js';
 
 @customElement('nldd-side-by-side-split-view')
 export class NLDDSideBySideSplitView extends LitElement {
+	// Reflects --context-scroll-mode to [data-scroll]. This view decides the mode
+	// for everyone (it fires single-column-change) but never applied it to itself,
+	// so it kept clipping at viewport height while its panes had already flowed.
+	private _scrollMode = new ScrollModeController(this);
+
 	static override styles = sideBySideSplitViewStyles;
 
 	@property({ type: String, reflect: true })

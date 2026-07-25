@@ -70,10 +70,33 @@
  * @attr {string}  padding-right          - Padding right
  * @attr {string}  padding-bottom         - Padding bottom
  * @attr {string}  padding-left           - Padding left
+ * Breakpoints for the sm/md/lg padding attributes below: sm is up to 640px,
+ * md is 641px to 1007px, lg is 1008px and up. Each is emitted as both an
+ * @media (viewport) and an @container layout-container query; inside a
+ * layout-container the container query wins, otherwise the viewport query
+ * applies. An unset variant falls back to the matching base padding value.
+ *
  * @attr {string}  sm-padding             - Padding for all sides at sm
- * @attr {string}  sm-padding-inline      - (and equivalents for inline/block/top/right/bottom/left)
- * @attr {string}  md-padding             - Padding at md (and per-side equivalents)
- * @attr {string}  lg-padding             - Padding at lg (and per-side equivalents)
+ * @attr {string}  sm-padding-inline      - Padding left and right at sm
+ * @attr {string}  sm-padding-block       - Padding top and bottom at sm
+ * @attr {string}  sm-padding-top         - Padding top at sm
+ * @attr {string}  sm-padding-right       - Padding right at sm
+ * @attr {string}  sm-padding-bottom      - Padding bottom at sm
+ * @attr {string}  sm-padding-left        - Padding left at sm
+ * @attr {string}  md-padding             - Padding for all sides at md
+ * @attr {string}  md-padding-inline      - Padding left and right at md
+ * @attr {string}  md-padding-block       - Padding top and bottom at md
+ * @attr {string}  md-padding-top         - Padding top at md
+ * @attr {string}  md-padding-right       - Padding right at md
+ * @attr {string}  md-padding-bottom      - Padding bottom at md
+ * @attr {string}  md-padding-left        - Padding left at md
+ * @attr {string}  lg-padding             - Padding for all sides at lg
+ * @attr {string}  lg-padding-inline      - Padding left and right at lg
+ * @attr {string}  lg-padding-block       - Padding top and bottom at lg
+ * @attr {string}  lg-padding-top         - Padding top at lg
+ * @attr {string}  lg-padding-right       - Padding right at lg
+ * @attr {string}  lg-padding-bottom      - Padding bottom at lg
+ * @attr {string}  lg-padding-left        - Padding left at lg
  *
  * @slot - Container content
  */

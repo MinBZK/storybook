@@ -10,6 +10,7 @@
  * @attr {number}  step         - Step size (default: 1)
  * @attr {boolean} disabled     - Disabled state
  * @attr {string}  size         - Size: 'xs' | 'sm' | 'md' (default: 'md')
+ * @attr {string}  name         - Name for form submission; the value is submitted under this name
  * @attr {object}  translations - Translations; unspecified keys fall back to Dutch
  *
  * @fires change - When the value changes; detail: { value: number }

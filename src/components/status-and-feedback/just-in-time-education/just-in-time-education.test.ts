@@ -2,6 +2,7 @@ import { describe, it, expect, afterEach } from 'vitest';
 import { fixture, cleanup, waitForUpdate } from '../../../test-utils.js';
 import type { NLDDJustInTimeEducation } from './just-in-time-education.js';
 import './just-in-time-education.js';
+import { justInTimeEducationStyles } from './just-in-time-education.styles.js';
 
 const MARKUP = '<nldd-just-in-time-education text="Begin hier" supporting-text="Typ een trefwoord"><button>Zoeken</button></nldd-just-in-time-education>';
 const MARKUP_DISMISSABLE = '<nldd-just-in-time-education dismissable text="Begin hier" supporting-text="Typ een trefwoord"><button>Zoeken</button></nldd-just-in-time-education>';
@@ -296,5 +297,50 @@ describe('nldd-just-in-time-education – sluit-routes', () => {
 		await waitForUpdate(el);
 		expect(reason).toBe('dismissed');
 		expect(el.active).toBe(false);
+	});
+});
+
+describe('nldd-just-in-time-education focusindicator op de callout', () => {
+	let el: NLDDJustInTimeEducation;
+
+	afterEach(() => {
+		if (el) cleanup(el);
+	});
+
+	function callout(host: NLDDJustInTimeEducation): HTMLElement {
+		return host.shadowRoot!.querySelector('.just-in-time-education') as HTMLElement;
+	}
+
+	// De container krijgt focus zodat Escape en de sluitknop bereikbaar zijn. Zonder
+	// eigen regel tekent de browser daar zijn eigen ring omheen, om de hele callout
+	// inclusief tekst en pijl. Die default hoort uit te staan.
+	it('laat de browser geen eigen ring om de callout tekenen', () => {
+		expect(justInTimeEducationStyles.cssText).toMatch(/\.just-in-time-education\s*\{[^}]*outline:\s*none/);
+	});
+
+	it('gebruikt de focusring van het systeem als er wel een ring hoort', () => {
+		expect(justInTimeEducationStyles.cssText).toMatch(
+			/\.just-in-time-education:focus:not\(\.is-pointer-focus\)\s*\{[^}]*--semantics-focus-ring-outline/,
+		);
+	});
+
+	// Bij openen met de muis markeert het component de container, zodat de regel
+	// hierboven de ring achterwege laat. Een toetsenbordgebruiker krijgt hem wel.
+	it('markeert de callout als met de muis geopend', async () => {
+		el = await fixture<NLDDJustInTimeEducation>(MARKUP_DISMISSABLE);
+		await waitForUpdate(el);
+		document.dispatchEvent(new PointerEvent('pointerdown', { pointerType: 'mouse', bubbles: true }));
+		el.active = true;
+		await waitForUpdate(el);
+		expect(callout(el).classList.contains('is-pointer-focus')).toBe(true);
+	});
+
+	it('markeert de callout niet als met het toetsenbord geopend', async () => {
+		el = await fixture<NLDDJustInTimeEducation>(MARKUP_DISMISSABLE);
+		await waitForUpdate(el);
+		document.dispatchEvent(new KeyboardEvent('keydown', { key: 'Tab', bubbles: true }));
+		el.active = true;
+		await waitForUpdate(el);
+		expect(callout(el).classList.contains('is-pointer-focus')).toBe(false);
 	});
 });

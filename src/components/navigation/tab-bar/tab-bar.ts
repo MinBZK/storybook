@@ -22,6 +22,8 @@
  * @attr {boolean} selected  - Selected state (managed by nldd-tab-bar)
  * @attr {string}  text      - Tab text; also used as accessible name for icon-only items
  * @attr {string}  href      - Optional link URL; renders an anchor instead of a button
+ * @attr {string}  icon      - Icon name for nldd-icon; an alternative to the icon slot. The icon and icon-and-text variants fall back to a placeholder icon when neither is provided.
+ * @attr {'md'|'lg'} size    - Size: 'md' (default) | 'lg'. Set by nldd-tab-bar from its own size; 'lg' enlarges the touch target while keeping the variant layout.
  *
  * @slot icon - Icon content
  *

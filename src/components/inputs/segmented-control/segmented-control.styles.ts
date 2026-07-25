@@ -27,6 +27,7 @@ export const segmentedControlStyles = css`
 		grid-auto-flow: column;
 		gap: var(--_gap);
 		isolation: isolate;
+		-webkit-user-select: none;
 		user-select: none;
 		-webkit-tap-highlight-color: transparent;
 	}

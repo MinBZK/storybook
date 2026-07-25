@@ -24,6 +24,12 @@ export const stackedSplitViewStyles = css`
 		display: none;
 	}
 
+	/* Root-scroll mode — flow with the content instead of capping at the viewport
+	   (see ScrollModeController / --context-scroll-mode). */
+	:host([data-scroll="root"]) {
+		height: auto;
+	}
+
 	:host([background="base"]) {
 		--context-parent-background-color: var(--semantics-surfaces-base-background-color);
 		--_background-color: var(--context-parent-background-color);
@@ -48,6 +54,13 @@ export const stackedSplitViewStyles = css`
 		flex-basis: 0;
 	}
 
+	/* Column block, so both the clipping and the column-axis sizing change. */
+	:host([data-scroll="root"]) .stacked-split-view {
+		overflow: visible;
+		flex-basis: auto;
+		flex-shrink: 0;
+	}
+
 
 	/* # Elements */
 
@@ -62,6 +75,12 @@ export const stackedSplitViewStyles = css`
 		flex-basis: 0;
 	}
 
+	:host([data-scroll="root"]) .stacked-split-view__pane {
+		overflow: visible;
+		flex-basis: auto;
+		flex-shrink: 0;
+	}
+
 	.stacked-split-view__pane[hidden] {
 		display: none;
 	}
@@ -71,5 +90,10 @@ export const stackedSplitViewStyles = css`
 		flex-grow: 1;
 		flex-shrink: 1;
 		flex-basis: 0;
+	}
+
+	:host([data-scroll="root"]) ::slotted(*) {
+		flex-basis: auto;
+		flex-shrink: 0;
 	}
 `;

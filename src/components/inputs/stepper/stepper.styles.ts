@@ -15,6 +15,7 @@ export const stepperStyles = css`
 
 		display: inline-flex;
 		isolation: isolate;
+		-webkit-user-select: none;
 		user-select: none;
 		-webkit-tap-highlight-color: transparent;
 	}

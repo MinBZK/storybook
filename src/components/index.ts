@@ -50,6 +50,8 @@ export { NLDDCheckbox } from './inputs/checkbox/checkbox.js';
 export { NLDDCheckboxField } from './inputs/checkbox-field/checkbox-field.js';
 export { NLDDCodeEditor } from './inputs/code-editor/code-editor.js';
 export { NLDDComboBox } from './inputs/combo-box/combo-box.js';
+export { NLDDDateField } from './inputs/date-field/date-field.js';
+export { NLDDDatePicker } from './inputs/date-picker/date-picker.js';
 export { NLDDDropdown } from './inputs/dropdown/dropdown.js';
 export { NLDDMultiLineTextField } from './inputs/multi-line-text-field/multi-line-text-field.js';
 export { NLDDNumberField } from './inputs/number-field/number-field.js';
@@ -78,6 +80,7 @@ export { NLDDNavigationSplitView } from './layout/split-views/navigation-split-v
 export { NLDDSideBySideSplitView } from './layout/split-views/side-by-side-split-view/side-by-side-split-view.js';
 export { NLDDStackedSplitView } from './layout/split-views/stacked-split-view/stacked-split-view.js';
 
+export { NLDDSplitViewDivider } from './layout/split-views/split-view-divider/split-view-divider.js';
 export { NLDDSplitViewPane } from './layout/split-views/split-view-pane/split-view-pane.js';
 
 export { NLDDPage } from './layout/page/page.js';

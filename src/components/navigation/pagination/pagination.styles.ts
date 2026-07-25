@@ -17,6 +17,7 @@ export const paginationStyles = css`
 		display: block;
 		container-type: inline-size;
 		isolation: isolate;
+		-webkit-user-select: none;
 		user-select: none;
 		-webkit-tap-highlight-color: transparent;
 	}

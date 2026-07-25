@@ -159,6 +159,8 @@ export class NLDDPopover extends LitElement {
 		this.addEventListener('toggle', this._handleToggle);
 		this.addEventListener('keydown', this._handleKeydown);
 		document.addEventListener('pointerdown', this._handleDocumentPointerdown, true);
+		document.addEventListener('pointercancel', this._handlePointerCancel, true);
+		document.addEventListener('click', this._handleDocumentClickCapture, true);
 		document.addEventListener('click', this._handleDocumentClick);
 		this._smQuery = window.matchMedia(`(max-width: ${breakpoints.smMax})`);
 		this._wasOnSm = this._smQuery.matches;
@@ -182,6 +184,8 @@ export class NLDDPopover extends LitElement {
 		this.removeEventListener('toggle', this._handleToggle);
 		this.removeEventListener('keydown', this._handleKeydown);
 		document.removeEventListener('pointerdown', this._handleDocumentPointerdown, true);
+		document.removeEventListener('pointercancel', this._handlePointerCancel, true);
+		document.removeEventListener('click', this._handleDocumentClickCapture, true);
 		document.removeEventListener('click', this._handleDocumentClick);
 		this._smQuery?.removeEventListener('change', this._handleViewportChange);
 		this._smQuery = null;
@@ -458,12 +462,58 @@ export class NLDDPopover extends LitElement {
 		}
 	};
 
+	/**
+	 * On a small screen this popover is a bottom sheet with a dimmed backdrop, and
+	 * a backdrop that lets the tap through is a promise it does not keep: the page
+	 * underneath is not inert, so one tap both dismissed the sheet and activated
+	 * whatever sat under the dimming. Every native bottom sheet absorbs that tap.
+	 *
+	 * The anchor is left alone. Tapping the control that opened the sheet should
+	 * keep closing it, which is what the handler below already arranges.
+	 */
+	private _swallowNextClick = false;
+
+	private _shouldAbsorbTap(event: Event, anchorEl: Element | null): boolean {
+		if (!this._isOpen) return false;
+		if (!(this._smQuery?.matches ?? false)) return false;
+		const path = event.composedPath();
+		if (path.includes(this)) return false;
+		if (anchorEl && path.includes(anchorEl)) return false;
+		return true;
+	}
+
 	private _handleDocumentPointerdown = (event: PointerEvent): void => {
+		// A fresh gesture: clear a flag a previous tap set but never spent. A tap
+		// that turns into a scroll or drag ends without a click, so the flag would
+		// otherwise linger and swallow the next unrelated click anywhere on the page.
+		this._swallowNextClick = false;
 		if (!this._isOpen) return;
 		const anchorEl = this._getAnchorEl();
+		if (this._shouldAbsorbTap(event, anchorEl)) {
+			event.preventDefault();
+			event.stopPropagation();
+			this._swallowNextClick = true;
+			(this as HTMLElement).hidePopover();
+			return;
+		}
 		if (!anchorEl) return;
 		if (!event.composedPath().includes(anchorEl)) return;
 		this._pointerdownOnAnchorWhileOpen = true;
+	};
+
+	/** A gesture the browser cancelled (a tap that became a scroll or drag) never
+	 *  produces the click that would spend the flag, so clear it here too. */
+	private _handlePointerCancel = (): void => {
+		this._swallowNextClick = false;
+	};
+
+	/** Swallows the click that follows an absorbed tap, so it cannot activate
+	 *  what sat under the backdrop. */
+	private _handleDocumentClickCapture = (event: MouseEvent): void => {
+		if (!this._swallowNextClick) return;
+		this._swallowNextClick = false;
+		event.preventDefault();
+		event.stopPropagation();
 	};
 
 	private _handleDocumentClick = (event: MouseEvent): void => {
@@ -552,12 +602,24 @@ export class NLDDPopover extends LitElement {
 		const focused = (event.composedPath()[0] as HTMLElement | null)
 			?? (document.activeElement as HTMLElement | null);
 		const idx = focused ? focusables.indexOf(focused) : -1;
-		const tabsOut = focusables.length === 0
-			|| (event.shiftKey ? idx === 0 : idx === focusables.length - 1);
-		if (tabsOut) {
+		// idx === -1 means the container itself holds focus, which is where it
+		// lands on open. Forward from there, and backward out of the popover.
+		const atStart = event.shiftKey && idx <= 0;
+		const atEnd = !event.shiftKey && idx === focusables.length - 1;
+		if (focusables.length === 0 || atStart || atEnd) {
 			event.preventDefault();
 			this.hide();
+			return;
 		}
+
+		// Moving focus ourselves instead of letting the browser do it. Safari does
+		// not tab into the contents of a top-layer element: with the container
+		// focused it skips the whole popover and lands on whatever follows it in
+		// the document, while the popover stays open. Verified there that our own
+		// list is right (2 focusables, both programmatically focusable, tabIndex 0),
+		// so the list is not the problem and the browser is.
+		event.preventDefault();
+		focusables[event.shiftKey ? idx - 1 : idx + 1]?.focus();
 	};
 
 	// — Focus ————————————————————————————————————————————————————————————————
@@ -607,7 +669,13 @@ export class NLDDPopover extends LitElement {
 		const visit = (root: ParentNode): void => {
 			for (const child of Array.from(root.children)) {
 				const el = child as HTMLElement;
-				if (el.matches?.(selector) && !el.hasAttribute('disabled')) {
+				// tabIndex < 0 sluit elementen uit die wel focusbaar zijn maar niet
+				// tabbaar: een roving-tabindex-widget (grid, toolbar, tree) zet al
+				// zijn items op -1 behalve één. Zonder deze check telt de lijst er
+				// tientallen mee die de browser overslaat, denkt tab-out nooit dat
+				// het aan het eind is, en tabt de gebruiker de popover uit terwijl
+				// die openblijft.
+				if (el.matches?.(selector) && !el.hasAttribute('disabled') && el.tabIndex >= 0) {
 					// getClientRects().length === 0 catches display:none en
 					// visibility:hidden van element of ancestor (inclusief
 					// shadow host) — robuuster dan offsetParent in shadow.
@@ -618,7 +686,16 @@ export class NLDDPopover extends LitElement {
 			}
 		};
 		visit(this);
-		return result;
+		// The DOM-order walk above is the tab order only when every focusable sits
+		// at tabindex 0. A positive tabindex jumps the queue: 1 comes before 2
+		// before any 0, and equal values keep document order. We move focus
+		// ourselves now (Safari never tabbed into the top layer), so we owe that
+		// ordering rather than leaving it to the browser. A stable sort keeps
+		// document order within each tabindex bucket.
+		return result
+			.map((el, i) => ({ el, i, order: el.tabIndex > 0 ? el.tabIndex : Infinity }))
+			.sort((a, b) => a.order - b.order || a.i - b.i)
+			.map((entry) => entry.el);
 	}
 
 	override render() {

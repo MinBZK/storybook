@@ -27,6 +27,16 @@ export type ListItemSize = 'sm' | 'md';
  *                         The list points its search input's `aria-activedescendant`
  *                         at the active option via `_highlighted` (separate from `selected`).
  *
+ * @element nldd-list-item
+ *
+ * @attr {'sm'|'md'} size - Row size (default: 'md')
+ * @attr {boolean} selected - Marks the item as selected. Selection is consumer-managed; the list never sets it. In a `navigation` parent it puts `aria-current="page"` on the inner action, in a `listbox` parent it drives `aria-selected`.
+ * @attr {boolean} button - Renders the item as a `<button>`; ignored when `href` is set (a link wins)
+ * @attr {string} href - Renders the item as an `<a>` with this URL. Takes precedence over `button`; without either the item is a plain container with no action.
+ * @attr {string} target - Link target forwarded to the `<a>` (e.g. '_blank'); only applies with `href`. With '_blank' a visually hidden "opens in new tab" announcement is added for assistive technology.
+ * @attr {string} rel - Link rel forwarded to the `<a>` (e.g. 'noopener noreferrer'); only applies with `href`
+ * @attr {boolean} reorderable - Set by the parent `nldd-list` when its own `reorderable` is on (with `type="list"`); consumers do not set this. Serves as a CSS hook for drag handle visibility.
+ *
  * @slot         - Main content area
  * @slot start   - Content at the start of the row
  * @slot end     - Content at the end of the row

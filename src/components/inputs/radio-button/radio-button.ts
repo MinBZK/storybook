@@ -14,6 +14,9 @@
  * @element nldd-radio-button
  * @attr {boolean} checked  - Checked state
  * @attr {boolean} disabled - Disabled state
+ * @attr {boolean} required - Required state
+ * @attr {string}  name     - Radio group name for form submission; ties the buttons of one group together
+ * @attr {string}  value    - Value submitted with the form when this radio button is checked
  * @attr {string}  accessible-label - Accessible label forwarded as aria-label to the native input.
  *   Note: aria-labelledby is not supported as IDREF resolution cannot cross shadow DOM boundaries.
  *

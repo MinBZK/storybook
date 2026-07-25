@@ -4,6 +4,9 @@ node_modules/
 # Build output
 dist/
 
+# Astro generated types and content collections
+.astro/
+
 # Environment variables (contains secrets)
 .env
 .env.local
@@ -50,3 +53,5 @@ storybook-static
 .worktrees/
 .claude/settings.local.json
 .claude/projects/
+# Personal, machine-specific dev server config with absolute paths.
+.claude/launch.json

@@ -27,6 +27,7 @@ export const toggleButtonStyles = css`
 
 		${inheritedTextReset}
 		display: inline-block;
+		-webkit-user-select: none;
 		user-select: none;
 		-webkit-tap-highlight-color: transparent;
 	}

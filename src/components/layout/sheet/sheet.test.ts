@@ -2,6 +2,7 @@ import { describe, it, expect, afterEach, vi } from 'vitest';
 import { fixture, cleanup, waitForUpdate } from '../../../test-utils.js';
 import type { NLDDSheet } from './sheet.js';
 import './sheet.js';
+import { sheetStyles } from './sheet.styles.js';
 
 
 /* ============================================================
@@ -443,5 +444,71 @@ describe('nldd-sheet – focus management', () => {
 		el.show();
 		const button = el.querySelector<HTMLElement>('button')!;
 		expect(document.activeElement === button).toBe(true);
+	});
+});
+
+describe('nldd-sheet neemt geen ruimte in de flow', () => {
+	let el: HTMLElement;
+
+	afterEach(() => {
+		if (el) cleanup(el);
+	});
+
+	// De sheet zelf is een position:fixed <dialog>, dus de host hoort geen doos te
+	// zijn. Als blok is hij een gewoon flex-item, en in een nldd-split-view-pane
+	// pikt hij via ::slotted de flex-grow op en eet hij de hoogte op die zijn
+	// broers nodig hadden.
+	it('zet de host op display: contents', async () => {
+		el = await fixture('<nldd-sheet></nldd-sheet>');
+		await waitForUpdate(el);
+		expect(sheetStyles.cssText).toMatch(/:host\s*\{[^}]*display:\s*contents/);
+	});
+});
+
+describe('nldd-sheet meldt sluiten via elke route', () => {
+	let el: HTMLElement & { show(): void; hide(): void };
+
+	afterEach(() => {
+		if (el) cleanup(el);
+	});
+
+	function dialogVan(host: HTMLElement): HTMLDialogElement {
+		return host.shadowRoot!.querySelector('dialog') as HTMLDialogElement;
+	}
+
+	// Escape sluit een non-modale dialog via de CloseWatcher, en die is met
+	// @cancel + preventDefault niet betrouwbaar tegen te houden. hide() liep dan
+	// niet, dus een modeless sheet sloot zonder iets te melden.
+	it('stuurt close wanneer de dialog buiten hide() om sluit', async () => {
+		el = await fixture<HTMLElement & { show(): void; hide(): void }>(
+			'<nldd-sheet modeless accessible-label="Test"></nldd-sheet>',
+		);
+		await waitForUpdate(el);
+		let aantal = 0;
+		el.addEventListener('close', () => { aantal += 1; });
+		el.show();
+		await waitForUpdate(el);
+		// Wat de browser doet bij Escape op een non-modale dialog.
+		const dialog = dialogVan(el);
+		dialog.close();
+		dialog.dispatchEvent(new Event('close'));
+		await waitForUpdate(el);
+		expect(aantal).toBe(1);
+	});
+
+	it('stuurt close niet twee keer als beide routes samenvallen', async () => {
+		el = await fixture<HTMLElement & { show(): void; hide(): void }>(
+			'<nldd-sheet accessible-label="Test"></nldd-sheet>',
+		);
+		await waitForUpdate(el);
+		let aantal = 0;
+		el.addEventListener('close', () => { aantal += 1; });
+		el.show();
+		await waitForUpdate(el);
+		el.hide();
+		await new Promise((r) => setTimeout(r, 60));
+		dialogVan(el).dispatchEvent(new Event('close'));
+		await waitForUpdate(el);
+		expect(aantal).toBe(1);
 	});
 });

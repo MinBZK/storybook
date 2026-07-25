@@ -1,3 +1,26 @@
+/**
+ * Nederlandse Digitale Dienst Top Navigation Bar Component (Lit + TypeScript)
+ *
+ * De bovenste balk van een pagina: een logobalk met het Rijkslogo en een
+ * optioneel woordmerk, en daaronder de hoofdbalk met de websitetitel, een
+ * terugknop, de globale navigatie en de utility-navigatie. Op smalle breedtes
+ * verhuist de globale navigatie naar een menusheet achter de menuknop.
+ *
+ * @element nldd-top-navigation-bar
+ *
+ * @attr {boolean} no-logo                 - Verbergt de hele logobalk, inclusief woordmerk.
+ * @attr {string}  logo-title              - Titel van het woordmerk naast het logo. Zonder deze waarde staat het logo er alleen.
+ * @attr {string}  logo-subtitle           - Subtitel onder de woordmerktitel. Alleen zichtbaar als er een woordmerk is.
+ * @attr {string}  logo-supporting-text-1  - Eerste ondersteunende regel onder de woordmerktitel. Alleen zichtbaar als er een woordmerk is.
+ * @attr {string}  logo-supporting-text-2  - Tweede ondersteunende regel onder de woordmerktitel. Alleen zichtbaar als er een woordmerk is.
+ * @attr {string}  logo-href               - URL voor logo en woordmerk. Zonder deze waarde zijn ze geen link, maar een afbeelding met een toegankelijk label.
+ * @attr {string}  website-title           - Naam van de website of applicatie, boven de menubalk. Leeg laat de titelregel weg.
+ * @attr {string}  website-href            - URL voor de websitetitel. Zonder deze waarde blijft de titel gewone tekst.
+ * @attr {string}  back-href               - URL van de terugknop. Zonder deze waarde vuurt een klik het `back-click`-event, zodat de consument zelf navigeert.
+ * @attr {string}  back-text               - Tekst van de terugknop. De knop verschijnt zodra back-text of back-href is gezet; zonder tekst valt hij terug op de vertaling ("Terug").
+ * @attr {string}  width                   - Begrenst de bar-content tot een max-width zodat die uitlijnt met de page-sections. 'full' vult de volle breedte, of geef een eigen CSS-lengte.
+ */
+
 import { LitElement, type PropertyValues } from 'lit';
 import { customElement, property, query } from 'lit/decorators.js';
 import { reflectNonDefault } from '../../../utilities/reflect-non-default.js';

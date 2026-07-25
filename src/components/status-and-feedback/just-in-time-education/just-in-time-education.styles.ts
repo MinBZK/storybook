@@ -88,6 +88,11 @@ export const justInTimeEducationStyles = css`
 		position: absolute;
 		opacity: 0;
 		margin: 0;
+		/* The container takes focus on open so Escape and the dismiss button are
+		   reachable. Without this the browser draws its own ring around the whole
+		   callout, text and arrow included, which reads as a drawing mistake rather
+		   than a focus indicator. */
+		outline: none;
 		border: none;
 		background: none;
 		width: max-content;
@@ -103,6 +108,17 @@ export const justInTimeEducationStyles = css`
 		 * (blurred background + SVG arrow) correctly instead of leaving it stale
 		 * until a manual resize. */
 		transform: translate3d(0, 0, 0);
+	}
+
+	/* :focus, not :focus-visible: this container is only ever focused from script,
+	   and the browser does not read that as keyboard-initiated, so the ring would
+	   never appear. Our own modality flag decides instead: no ring after a mouse
+	   click, because the container is a landing spot rather than something you
+	   operate, and a ring for a keyboard user, for whom it is the only sign that
+	   focus moved into the callout. */
+	.just-in-time-education:focus:not(.is-pointer-focus) {
+		outline: var(--semantics-focus-ring-outline);
+		outline-offset: var(--semantics-focus-ring-outline-offset);
 	}
 
 	/* Horizontal placement: never exceed the room to the viewport edge. Once the

@@ -37,6 +37,7 @@ export const buttonStyles = css`
 		display: inline-block;
 		position: relative;
 		max-width: 100%;
+		-webkit-user-select: none;
 		user-select: none;
 		-webkit-tap-highlight-color: transparent;
 	}
