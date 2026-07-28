@@ -30,6 +30,9 @@ export const aliases = {
 	'guide': 'book',
 	'read': 'book',
 
+	// book-badge-plus
+	'new-book': 'book-badge-plus',
+
 	// bookmark-filled
 	'bookmarked': 'bookmark-filled',
 
@@ -174,10 +177,17 @@ export const aliases = {
 
 	// file-text-badge-check-plus
 	'new-text-document': 'file-text-badge-check-plus',
+	'add-text-document': 'file-text-badge-check-plus',
 
 	// file-text-stack
 	'documents': 'file-text-stack',
 	'text-documents': 'file-text-stack',
+
+	// square-1
+	'primary': 'square-1',
+
+	// triangle-square-circle
+	'categories': 'triangle-square-circle',
 
 	// flag-filled
 	'flagged': 'flag-filled',

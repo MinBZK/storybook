@@ -8,9 +8,9 @@ export const iconStyles = css`
 
 	/* # Host
 	 *
-	 * Default size = fill parent (existing behaviour). Setting [size]
-	 * pins width/height to a fixed spacer value; setting [color] picks
-	 * either a functional semantic colour or a descriptive rijkskleur. */
+	 * Default size = fill the container. Setting [size] pins a fixed spacer
+	 * value; the keyword full names the default and inherit follows the
+	 * surrounding text. [color] picks a semantic color or a rijkskleur. */
 
 	:host {
 		--_size: 100%;
@@ -27,7 +27,10 @@ export const iconStyles = css`
 	}
 
 
-	/* # Size — spacer-aligned, 16+ */
+	/* # Size */
+
+	:host([size="full"]) { --_size: 100%; }
+	:host([size="inherit"]) { --_size: 1em; }
 
 	:host([size="16"]) { --_size: var(--primitives-space-16); }
 	:host([size="20"]) { --_size: var(--primitives-space-20); }

@@ -56,3 +56,40 @@ describe('nldd-icon', () => {
 		cleanup(wrapper);
 	});
 });
+
+describe('nldd-icon – relative sizes', () => {
+	let el: HTMLElement;
+
+	afterEach(() => {
+		if (el) cleanup(el);
+	});
+
+	const mount = async (attrs: string, wrapper = 'div style="width: 40px; font-size: 12px"'): Promise<HTMLElement> => {
+		el = await fixture<HTMLElement>(`<${wrapper}><nldd-icon name="check" ${attrs}></nldd-icon></${wrapper.split(' ')[0]}>`);
+		const icon = el.querySelector('nldd-icon') as HTMLElement;
+		await waitForUpdate(icon);
+		return icon;
+	};
+
+	it('fills the container by default', async () => {
+		const icon = await mount('');
+		expect(Math.round(icon.getBoundingClientRect().width)).toBe(40);
+	});
+
+	it('size="full" names that same default', async () => {
+		const icon = await mount('size="full"');
+		expect(Math.round(icon.getBoundingClientRect().width)).toBe(40);
+	});
+
+	it('size="inherit" follows the surrounding text', async () => {
+		const icon = await mount('size="inherit"');
+		expect(Math.round(icon.getBoundingClientRect().width)).toBe(12);
+	});
+
+	it('a fixed size still wins over both', async () => {
+		// The spacer tokens are not loaded in the test environment, so feed the
+		// one this size resolves to.
+		const icon = await mount('size="16"', 'div style="width: 40px; --primitives-space-16: 16px"');
+		expect(Math.round(icon.getBoundingClientRect().width)).toBe(16);
+	});
+});

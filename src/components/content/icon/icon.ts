@@ -13,7 +13,7 @@ export const ICONS: string[] = [
 	...Object.keys(aliases),
 ].sort();
 
-export type IconSize = '' | '16' | '20' | '24' | '28' | '32' | '40' | '44' | '48' | '56' | '64' | '80' | '96';
+export type IconSize = '' | 'full' | 'inherit' | '16' | '20' | '24' | '28' | '32' | '40' | '44' | '48' | '56' | '64' | '80' | '96';
 
 export type IconColor =
 	| ''
@@ -32,28 +32,26 @@ export type IconColor =
  * If you want the icon to be announced by assistive tech, set `aria-hidden="false"`
  * on the consumer side together with an `aria-label`.
  *
- * Sizing: by default the icon fills its parent (existing behaviour). Set `size`
- * to pin to a fixed spacer-aligned dimension (16–96px).
+ * Sizing: the icon fills whatever sizes it — an `nldd-icon-cell`, a button, a
+ * menu item. `size="full"` names that default explicitly. `size="inherit"` makes
+ * it follow the surrounding text (1em), for an icon set inline in a sentence.
+ * Any spacer-aligned number (16–96) pins a fixed dimension.
  *
- * Colour: by default the icon inherits its parent's `color`. Set `color` to one
+ * Reach for `inherit` rather than a global `nldd-icon { width: 1em }` rule in
+ * the consumer: such a rule wins over the component's own :host styling and so
+ * also shrinks the icons that a cell or button was already sizing correctly.
+ *
+ * Color: by default the icon inherits its parent's `color`. Set `color` to one
  * of the functional semantics (`primary-content`, `secondary-content`,
  * `accent`, `critical`, `warning`, `success`) or a rijkskleur (`lintblauw`,
- * `paars`, `groen`, …). For arbitrary one-off colours, set `style="color: …"`
+ * `paars`, `groen`, …). For arbitrary one-off colors, set `style="color: …"`
  * on the host — the inherited `color` still drives the SVG fill/stroke.
  *
  * @element nldd-icon
  *
- * @attr {string} name  - The name of the icon to display
- * @attr {string} size  - Fixed size in px (spacer-aligned: 16, 20, 24, 28, 32,
- *                        40, 44, 48, 56, 64, 80, 96). Empty = inherit from parent.
- * @attr {string} color - Functional (`primary-content`, `secondary-content`,
- *                        `accent`, `critical`, `warning`, `success`) or
- *                        rijkskleur (`lintblauw`, `donkerblauw`, `hemelblauw`,
- *                        `lichtblauw`, `paars`, `violet`, `robijnrood`,
- *                        `roze`, `rood`, `oranje`, `donkergeel`, `geel`,
- *                        `donkerbruin`, `bruin`, `donkergroen`, `groen`,
- *                        `mosgroen`, `mintgroen`). Empty = inherit `color`
- *                        from parent.
+ * @attr {string} name - The name of the icon to display
+ * @attr {string} size - `full` (default) fills the container; `inherit` follows the surrounding text (1em); or a fixed spacer-aligned size in px (16, 20, 24, 28, 32, 40, 44, 48, 56, 64, 80, 96). Empty behaves as `full`.
+ * @attr {string} color - Functional (`primary-content`, `secondary-content`, `accent`, `critical`, `warning`, `success`) or rijkskleur (`lintblauw`, `donkerblauw`, `hemelblauw`, `lichtblauw`, `paars`, `violet`, `robijnrood`, `roze`, `rood`, `oranje`, `donkergeel`, `geel`, `donkerbruin`, `bruin`, `donkergroen`, `groen`, `mosgroen`, `mintgroen`). Empty = inherit `color` from parent.
  *
  * @example
  * ```html
