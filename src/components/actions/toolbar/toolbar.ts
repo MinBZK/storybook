@@ -7,9 +7,9 @@
  * @attr {string} label - Accessible label for the toolbar. Only needed when multiple toolbars appear on the same page
  * @attr {object} translations - Override translation keys (e.g. the overflow button label); unset keys fall back to Dutch.
  *
- * @slot start    - nldd-toolbar-item and nldd-toolbar-title elements placed at the start
- * @slot center   - nldd-toolbar-item and nldd-toolbar-title elements placed at the center
- * @slot end      - nldd-toolbar-item and nldd-toolbar-title elements placed at the end
+ * @slot start - nldd-toolbar-item and nldd-toolbar-title elements placed at the start
+ * @slot center - nldd-toolbar-item and nldd-toolbar-title elements placed at the center
+ * @slot end - nldd-toolbar-item and nldd-toolbar-title elements placed at the end
  * @slot overflow - nldd-menu-item, nldd-menu-divider and nldd-menu-group elements always shown in the overflow menu
  *
  * ---
@@ -62,6 +62,11 @@ interface SizingElement {
 	maxWidth: string;
 	width: string;
 }
+
+// Module-level, not the instance's _idCounter: the overflow menu lives on
+// document.body, so two toolbars on one page would otherwise mint the same
+// element id.
+let menuIdCounter = 0;
 
 // # nldd-toolbar-item
 
@@ -224,6 +229,14 @@ export class NLDDToolbar extends LitElement {
 	@state()
 	private _centerOnly = false;
 
+	/** True when exactly one child is *rendered* and it is fluid (or a title),
+	 * so the flexible spacer must be dropped and let that child fill the row.
+	 * Computed from real rendering for the same reason as _centerOnly: a
+	 * consumer-hidden `display:none` sibling would otherwise keep the spacer,
+	 * which claims half the row and caps the fluid child at 50%. */
+	@state()
+	private _soloFluid = false;
+
 	@state()
 	private _pinnedOverflowItems: Element[] = [];
 
@@ -331,12 +344,16 @@ export class NLDDToolbar extends LitElement {
 		if (this._menu) return;
 		const menu = document.createElement('nldd-menu') as NLDDMenu;
 		menu.setAttribute('placement', 'bottom-end');
-		menu.id = `nldd-toolbar-overflow-menu-${this._idCounter++}`;
+		menu.id = `nldd-toolbar-overflow-menu-${menuIdCounter++}`;
 		menu.addEventListener('toggle', (event: Event) => {
 			this._menuOpen = (event as ToggleEvent).newState === 'open';
 		});
 		menu.addEventListener('select', this._onOverflowMenuSelect);
-		document.body.appendChild(menu);
+		// In the shadow root, NOT document.body: the menu is a popover, so it
+		// escapes clipping via the top layer anyway, and a body-level menu goes
+		// inert (visible but untouchable) when the toolbar sits inside a modal
+		// dialog — everything outside the dialog's subtree is inert then.
+		this.renderRoot.appendChild(menu);
 		this._menu = menu;
 	}
 
@@ -584,7 +601,7 @@ export class NLDDToolbar extends LitElement {
 		// side area and its spacer. That gap only exists when the area is
 		// non-empty; with an empty start (or end) the spacer is the first (or
 		// last) item and there is no such gap, so drop the subtraction to 0 —
-		// otherwise the centre is pulled off-centre by one gap once the opposite
+		// otherwise the center is pulled off-center by one gap once the opposite
 		// side gains items.
 		this.style.setProperty('--_left-spacer-gap', startWidth > 0 ? `${itemGap}px` : '0px');
 		this.style.setProperty('--_right-spacer-gap', endWidth > 0 ? `${itemGap}px` : '0px');
@@ -605,6 +622,14 @@ export class NLDDToolbar extends LitElement {
 			&& !this._hasRenderedChild(this._endChildren)
 			&& this._centerChildren.length > 0;
 		if (centerOnly !== this._centerOnly) this._centerOnly = centerOnly;
+
+		const rendered = this._allHostChildren().filter(c =>
+			!this._overflowIds.has(c.id) && (c.element as HTMLElement).getClientRects().length > 0
+		);
+		const soloFluid = rendered.length === 1 && (
+			rendered[0].type === 'title' || (rendered[0].type === 'item' && rendered[0].isFluid)
+		);
+		if (soloFluid !== this._soloFluid) this._soloFluid = soloFluid;
 	}
 
 	/** Whether any child in the list is actually rendered. getClientRects() is
@@ -732,7 +757,7 @@ export class NLDDToolbar extends LitElement {
 	 * Promotes a lone remaining fluid item — or a lone title when no items are
 	 * visible — to the solo-fluid state so it grows to fill the row. In
 	 * center-only mode the center-fill wrapper already grows the items, so item
-	 * promotion is skipped there (matching the previous template behaviour).
+	 * promotion is skipped there (matching the previous template behavior).
 	 */
 	private _promoteSoloFluid(
 		itemsEl: HTMLElement,
@@ -743,7 +768,7 @@ export class NLDDToolbar extends LitElement {
 		// Real rendering, not the `hidden` property: a consumer-hidden
 		// (display:none) start/end item must not count as a "remaining visible"
 		// item, or it blocks promoting a lone title to solo-fluid (which is what
-		// lets align="center" actually centre it). Toolbar-hidden items are
+		// lets align="center" actually center it). Toolbar-hidden items are
 		// display:none too, so this stays equivalent for the overflow flow.
 		const remainingVisible = itemChildren.filter(c => (c.element as HTMLElement).getClientRects().length > 0);
 		if (!centerOnly && remainingVisible.length === 1 && (remainingVisible[0].element as HTMLElement).hasAttribute('fluid')) {
@@ -843,14 +868,16 @@ export class NLDDToolbar extends LitElement {
 	}
 
 	override render() {
-		const allChildren = this._allHostChildren();
-		const visibleNonDivider = allChildren.filter(c =>
+		const visibleNonDivider = this._allHostChildren().filter(c =>
 			!this._overflowIds.has(c.id)
 		);
-		const isSoloFluid = visibleNonDivider.length === 1 && (
+		// Pre-measurement fallback: before the first _updateAreaVars there is no
+		// rendering to read, so fall back to mere DOM presence. _soloFluid takes
+		// over from the first measurement on.
+		const isSoloFluid = this._soloFluid || (visibleNonDivider.length === 1 && (
 			visibleNonDivider[0].type === 'title' ||
 			(visibleNonDivider[0].type === 'item' && visibleNonDivider[0].isFluid)
-		);
+		));
 
 		return template(
 			this,

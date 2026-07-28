@@ -223,6 +223,24 @@ describe('nldd-toolbar', () => {
 		expect(toolbar._pinnedOverflowItems.length).toBe(1);
 	});
 
+	it('gives each toolbar overflow menu a unique element id', async () => {
+		el = await fixture(`
+			<div>
+				<nldd-toolbar>
+					<nldd-menu-item slot="overflow" text="Een"></nldd-menu-item>
+				</nldd-toolbar>
+				<nldd-toolbar>
+					<nldd-menu-item slot="overflow" text="Twee"></nldd-menu-item>
+				</nldd-toolbar>
+			</div>
+		`);
+		await waitForUpdate(el);
+		const menus = [...el.querySelectorAll('nldd-toolbar')].map(
+			toolbar => (toolbar as unknown as { _menu: Element })._menu,
+		);
+		expect(menus[0].id).not.toBe(menus[1].id);
+	});
+
 	// ## Size propagation
 
 	it('propagates size to toolbar item children', async () => {
@@ -446,6 +464,15 @@ describe('nldd-toolbar', () => {
 		toolbar._menu?.remove();
 	});
 
+	it('keeps the overflow menu inside its own shadow root, not on body', async () => {
+		// A body-level menu goes inert when the toolbar sits inside a modal
+		// dialog (e.g. a sheet): visible in the top layer, but unclickable.
+		el = await fixture('<nldd-toolbar></nldd-toolbar>');
+		await waitForUpdate(el);
+		const toolbar = el as unknown as { _menu: Element | null };
+		expect(toolbar._menu?.getRootNode()).toBe(el.shadowRoot);
+	});
+
 	it('removes menu on disconnectedCallback', async () => {
 		el = await fixture('<nldd-toolbar></nldd-toolbar>');
 		await waitForUpdate(el);
@@ -615,11 +642,58 @@ describe('nldd-toolbar centered title layout', () => {
 
 	it('actually centers a lone title (hidden start) — the reported bug', async () => {
 		await mount(HIDDEN_START + TITLE);
-		expect(titleCenterOffset(el)).toBeCloseTo(180, -1); // ±5px of the 360px toolbar's centre
+		expect(titleCenterOffset(el)).toBeCloseTo(180, -1); // ±5px of the 360px toolbar's center
 	});
 
 	it('centers a lone title with no start/end at all', async () => {
 		await mount(TITLE);
 		expect(titleCenterOffset(el)).toBeCloseTo(180, -1);
+	});
+});
+
+describe('nldd-toolbar solo fluid item', () => {
+	let el: HTMLElement;
+
+	afterEach(() => {
+		if (el) cleanup(el);
+	});
+
+	const settle = async (host: HTMLElement): Promise<void> => {
+		await (host as unknown as { updateComplete: Promise<unknown> }).updateComplete;
+		await new Promise((r) => requestAnimationFrame(() => requestAnimationFrame(() => r(null))));
+		await (host as unknown as { updateComplete: Promise<unknown> }).updateComplete;
+	};
+
+	const mount = async (inner: string): Promise<HTMLElement> => {
+		el = await fixture<HTMLElement>(`<nldd-toolbar size="md" style="width:360px">${inner}</nldd-toolbar>`);
+		await waitForUpdate(el);
+		await settle(el);
+		return el;
+	};
+
+	const FLUID = '<nldd-toolbar-item slot="start" width="100%" min-width="80px"><nldd-search-field placeholder="Zoeken"></nldd-search-field></nldd-toolbar-item>';
+	const HIDDEN_END = '<nldd-toolbar-item slot="end" style="display:none"><nldd-button text="Filter"></nldd-button></nldd-toolbar-item>';
+
+	const itemWidth = (host: HTMLElement): number =>
+		host.querySelector('nldd-toolbar-item')!.getBoundingClientRect().width;
+
+	it('lets a lone fluid item fill the row', async () => {
+		await mount(FLUID);
+		expect(itemWidth(el)).toBeCloseTo(360, -1);
+	});
+
+	it('lets a fluid item fill the row despite a display:none sibling', async () => {
+		await mount(FLUID + HIDDEN_END);
+		// Without counting real rendering the flexible spacer stays in the row and
+		// caps the fluid item at half the toolbar (180px).
+		expect(itemWidth(el)).toBeCloseTo(360, -1);
+	});
+
+	it('does not treat two rendered items as solo fluid', async () => {
+		el = await fixture<HTMLElement>('<nldd-toolbar size="md" style="width:600px"><nldd-toolbar-item slot="start"><nldd-button text="Een"></nldd-button></nldd-toolbar-item><nldd-toolbar-item slot="end"><nldd-button text="Twee"></nldd-button></nldd-toolbar-item></nldd-toolbar>');
+		await waitForUpdate(el);
+		await settle(el);
+		expect((el as unknown as { _soloFluid: boolean })._soloFluid).toBe(false);
+		expect(el.shadowRoot!.querySelector('.toolbar__flexible-spacer')).not.toBeNull();
 	});
 });
