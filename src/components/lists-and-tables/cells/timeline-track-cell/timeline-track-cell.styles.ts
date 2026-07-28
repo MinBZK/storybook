@@ -5,18 +5,25 @@ export const timelineTrackCellStyles = css`
 		box-sizing: border-box;
 	}
 
-
-	/* # Host */
-
 	:host {
-		--_size: var(--primitives-space-16);
+		--_lane-size: var(--primitives-space-16);
+		--_marker-size: var(--primitives-space-16);
+		--_marker-corner-radius: var(--primitives-corner-radius-full);
 		--_line-width: var(--primitives-space-2);
-		--_z-index-dot: 1;
-		--_color: var(--components-timeline-track-cell-color);
-		--_future-background-color: var(--components-timeline-track-cell-future-background-color);
+		--_track-color: var(--components-timeline-track-cell-color);
+		--_future-fill-color: var(--components-timeline-track-cell-future-background-color);
+		--_marker-z-index: 1;
+		--_ring-thickness: var(--primitives-space-2);
+		--_ring-color: var(--context-parent-background-color, var(--semantics-surfaces-base-background-color));
+		--_marker-content-color: var(--semantics-content-contrast-color);
+		--_future-content-color: var(--semantics-content-secondary-color);
+		--_current-fill-color: light-dark(var(--primitives-color-accent-100), var(--primitives-color-accent-150));
+		--_icon-size: calc(var(--_marker-size) * 2 / 3);
 
+		isolation: isolate;
 		display: flex;
-		width: var(--_size);
+		padding-block: var(--context-cell-padding-block, 0px);
+		width: var(--_lane-size);
 		flex-direction: column;
 		align-self: stretch;
 		align-items: center;
@@ -26,71 +33,117 @@ export const timelineTrackCellStyles = css`
 		display: none;
 	}
 
-
-	/* # Block */
-
-	.timeline-track-cell {
-		position: relative;
-		width: var(--_size);
-		height: 100%;
-		min-height: var(--primitives-space-48);
+	:host([minor]) {
+		--_marker-size: var(--primitives-space-8);
 	}
 
+	:host([variant="step"]) {
+		--_lane-size: var(--primitives-space-24);
+		--_marker-size: var(--primitives-space-24);
+	}
 
-	/* # Elements */
+	:host([variant="step"][minor]) {
+		--_marker-size: var(--primitives-space-12);
+	}
 
-	.timeline-track-cell__line-top,
-	.timeline-track-cell__line-bottom,
-	.timeline-track-cell__line-full {
+	/* Bleeds back over the host's block padding, so consecutive rows connect. */
+	.timeline-track-cell {
+		position: relative;
+		width: var(--_lane-size);
+		height: calc(100% + 2 * var(--context-cell-padding-block, 0px));
+		min-height: var(--primitives-space-48);
+		margin-block: calc(var(--context-cell-padding-block, 0px) * -1);
+	}
+
+	.timeline-track-cell__full-line,
+	.timeline-track-cell__top-line,
+	.timeline-track-cell__bottom-line {
 		position: absolute;
 		left: 50%;
 		margin-left: calc(var(--_line-width) / -2);
-		background-color: var(--_color);
+		background-color: var(--_track-color);
 		width: var(--_line-width);
 	}
 
-	.timeline-track-cell__line-top {
+	.timeline-track-cell__full-line {
+		top: 0;
+		bottom: 0;
+	}
+
+	.timeline-track-cell__top-line {
 		bottom: 50%;
-		height: calc(50% + var(--context-list-item-padding-block, 0px));
+		height: 50%;
 	}
 
-	.timeline-track-cell__line-bottom {
+	.timeline-track-cell__bottom-line {
 		top: 50%;
-		height: calc(50% + var(--context-list-item-padding-block, 0px));
+		height: 50%;
 	}
 
-	.timeline-track-cell__line-full {
-		top: calc(-1 * var(--context-list-item-padding-block, 0px));
-		bottom: calc(-1 * var(--context-list-item-padding-block, 0px));
+	:host([status="future"]) .timeline-track-cell__top-line,
+	:host([status="future"]) .timeline-track-cell__bottom-line {
+		background-color: var(--_future-fill-color);
 	}
 
-	.timeline-track-cell__dot {
+	:host([status="current"]) .timeline-track-cell__bottom-line {
+		background-color: var(--_future-fill-color);
+	}
+
+	:host([status="current"][direction="up"]) .timeline-track-cell__bottom-line {
+		background-color: var(--_track-color);
+	}
+
+	:host([status="current"][direction="up"]) .timeline-track-cell__top-line {
+		background-color: var(--_future-fill-color);
+	}
+
+	.timeline-track-cell__marker {
 		box-sizing: border-box;
 		position: absolute;
 		top: 50%;
-		left: 0;
-		z-index: var(--_z-index-dot);
-		margin-top: calc(var(--_size) / -2);
-		border: var(--_line-width) solid var(--_color);
-		border-radius: var(--primitives-corner-radius-full);
-		width: var(--_size);
-		height: var(--_size);
+		left: 50%;
+		z-index: var(--_marker-z-index);
+		display: flex;
+		width: var(--_marker-size);
+		height: var(--_marker-size);
+		margin-top: calc(var(--_marker-size) / -2);
+		margin-left: calc(var(--_marker-size) / -2);
+		align-items: center;
+		justify-content: center;
+		border: var(--_line-width) solid var(--_track-color);
+		border-radius: var(--_marker-corner-radius);
+		/* Ring in the background color: masks the line running underneath. */
+		box-shadow: 0 0 0 var(--_ring-thickness) var(--_ring-color);
+		color: var(--_marker-content-color);
+		font: var(--primitives-font-body-sm-regular-flat);
 	}
 
-	:host([step="past"]) .timeline-track-cell__dot,
-	:host(:not([step])) .timeline-track-cell__dot {
-		background-color: var(--_color);
+	:host([status="past"]) .timeline-track-cell__marker,
+	:host(:not([status])) .timeline-track-cell__marker {
+		background-color: var(--_track-color);
 	}
 
-	:host([step="future"]) .timeline-track-cell__dot {
-		background-color: var(--_future-background-color);
+	:host([status="current"]) .timeline-track-cell__marker {
+		background-color: var(--_current-fill-color);
+		color: var(--_track-color);
+	}
+
+	:host([status="future"]) .timeline-track-cell__marker {
+		border-color: var(--_future-fill-color);
+		background-color: var(--_future-fill-color);
+		color: var(--_future-content-color);
+	}
+
+	.timeline-track-cell__icon {
+		width: var(--_icon-size);
+		height: var(--_icon-size);
 	}
 
 	@media (forced-colors: active) {
-		.timeline-track-cell__dot,
-		.timeline-track-cell__line-top,
-		.timeline-track-cell__line-bottom,
-		.timeline-track-cell__line-full {
+		.timeline-track-cell__marker,
+		.timeline-track-cell__top-line,
+		.timeline-track-cell__bottom-line,
+		.timeline-track-cell__full-line {
 			forced-color-adjust: none;
 		}
 	}

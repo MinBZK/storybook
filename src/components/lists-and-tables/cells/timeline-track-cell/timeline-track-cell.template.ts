@@ -2,22 +2,34 @@ import { html, nothing, type TemplateResult } from 'lit';
 import type { NLDDTimelineTrackCell } from './timeline-track-cell.js';
 
 export function timelineTrackCellTemplate(component: NLDDTimelineTrackCell): TemplateResult {
-	if (component.step === 'none') {
+	if (component.status === 'none') {
 		return html`
 			<div class="timeline-track-cell">
-				<div class="timeline-track-cell__line-full"></div>
+				<div class="timeline-track-cell__full-line"></div>
 			</div>
 		`;
 	}
 
-	const showTopLine = component.child === 'between' || component.child === 'last';
-	const showBottomLine = component.child === 'between' || component.child === 'first';
+	const showTopLine = component.position === 'between' || component.position === 'last';
+	const showBottomLine = component.position === 'between' || component.position === 'first';
+	const marker = !component.showsContent
+		? nothing
+		: component.icon
+			? html`<nldd-icon class="timeline-track-cell__icon" name=${component.icon}></nldd-icon>`
+			: component.text
+				? html`<span class="timeline-track-cell__text">${component.text}</span>`
+				: nothing;
+	// The attributes are the shorthand for the common cases; the slot is there for
+	// anything else.
+	const content = component.showsContent
+		? html`${marker}<slot></slot>`
+		: marker;
 
 	return html`
 		<div class="timeline-track-cell">
-			${showTopLine ? html`<div class="timeline-track-cell__line-top"></div>` : nothing}
-			<div class="timeline-track-cell__dot"></div>
-			${showBottomLine ? html`<div class="timeline-track-cell__line-bottom"></div>` : nothing}
+			${showTopLine ? html`<div class="timeline-track-cell__top-line"></div>` : nothing}
+			<div class="timeline-track-cell__marker">${content}</div>
+			${showBottomLine ? html`<div class="timeline-track-cell__bottom-line"></div>` : nothing}
 		</div>
 	`;
 }
