@@ -89,7 +89,10 @@ export const tableStyles = css`
 export const tableRowStyles = css`
 	:host {
 		--_min-height: var(--semantics-tables-row-min-height);
-		--_padding-block: var(--semantics-tables-row-padding-block);
+		/* Block padding goes to the cells (same hook the list uses) so it belongs
+		   to the cell's box; inline padding stays here because it insets the row
+		   content from the frame without moving the full-bleed divider. */
+		--context-cell-padding-block: var(--semantics-tables-row-padding-block);
 		--_padding-inline: var(--semantics-tables-row-padding-inline);
 		--_divider-color: var(--semantics-tables-border-color);
 		--_divider-thickness: var(--semantics-tables-border-width);
@@ -101,7 +104,6 @@ export const tableRowStyles = css`
 		grid-template-columns: subgrid;
 		min-height: var(--_min-height);
 		border-bottom: var(--_divider-thickness) solid var(--_divider-color);
-		padding-block: var(--_padding-block);
 		padding-inline: var(--_padding-inline);
 		align-items: center;
 	}

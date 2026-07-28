@@ -48,7 +48,7 @@ export const progressBarStyles = css`
 	}
 
 
-	/* ## Indeterminate fill + border colour follow the variant; default is accent (blue) */
+	/* ## Indeterminate fill + border color follow the variant; default is accent (blue) */
 
 	:host([color="neutral"]) { --_indeterminate-background-color: var(--semantics-categories-neutral-filled-background-color); --_indeterminate-border-color: var(--semantics-categories-neutral-filled-highlight-border-color); }
 	:host([color="success"]) { --_indeterminate-background-color: var(--semantics-categories-success-filled-background-color); --_indeterminate-border-color: var(--semantics-categories-success-filled-highlight-border-color); }

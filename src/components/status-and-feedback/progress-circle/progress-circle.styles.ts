@@ -138,9 +138,9 @@ export const progressCircleStyles = css`
 	   GitHub-style: a fixed-width arc (25 / 100 = quarter turn, 90°) that
 	   simply rotates around the circle. Calmer than Material's elastic
 	   grow + shrink, which at small sizes (default 28 px) reads as visually
-	   busy. pathLength="100" on the indicator normalises the dash pattern
+	   busy. pathLength="100" on the indicator normalizes the dash pattern
 	   to percentages of the circumference so the same numbers stay correct
-	   at every size. transform-origin centres the rotation. */
+	   at every size. transform-origin centers the rotation. */
 
 	.progress-circle__indeterminate-indicator {
 		stroke-width: var(--_stroke-width);
@@ -162,7 +162,7 @@ export const progressCircleStyles = css`
 	}
 
 
-	/* # Indeterminate fill + border colour follow the color variant; default accent (blue) */
+	/* # Indeterminate fill + border color follow the color variant; default accent (blue) */
 
 	:host {
 		--_indeterminate-background-color: var(--semantics-categories-accent-filled-background-color);

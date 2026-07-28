@@ -40,7 +40,7 @@ export const radioButtonStyles = css`
 	.radio-button__outer-shape {
 		box-sizing: border-box;
 		position: relative;
-		border: var(--components-radio-button-border-thickness) solid var(--components-radio-button-border-color);
+		border: var(--components-radio-button-border-width) solid var(--components-radio-button-border-color);
 		border-radius: 50%;
 		background-color: var(--components-radio-button-background-color);
 		width: var(--semantics-controls-xs-min-size);
@@ -52,7 +52,7 @@ export const radioButtonStyles = css`
 		position: absolute;
 		top: 50%;
 		left: 50%;
-		border: var(--components-radio-button-is-selected-inner-shape-border-thickness) solid var(--components-radio-button-is-selected-inner-shape-border-color);
+		border: var(--components-radio-button-is-selected-inner-shape-border-width) solid var(--components-radio-button-is-selected-inner-shape-border-color);
 		border-radius: 50%;
 		width: var(--primitives-space-20);
 		height: var(--primitives-space-20);

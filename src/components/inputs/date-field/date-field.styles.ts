@@ -24,7 +24,7 @@ export const dateFieldStyles = css`
 		--_separator-padding-right: var(--primitives-space-6);
 		/* Linkerkant van het veld: het is een border-box, en padding-left trekt er al
 		   een rand vanaf, dus tellen beide randen samen voor één rand extra. */
-		--_edge-width: calc(var(--_inline-padding) + var(--semantics-input-fields-border-thickness));
+		--_edge-width: calc(var(--_inline-padding) + var(--semantics-input-fields-border-width));
 		/* Alles wat niet kan krimpen. Enkel het laatste datumveld rekt mee, dus dit is
 		   tevens de ondergrens: eronder zou de kalenderknop het veld uit lopen. */
 		--_fixed-width: calc(var(--_edge-width) + var(--_trailing-width));
@@ -37,9 +37,9 @@ export const dateFieldStyles = css`
 		--_validation-icon-size: var(--semantics-input-fields-md-validation-icon-size);
 		/* Even veel lucht rechts van de knop als erboven en eronder, dus afgeleid van
 		   het hoogteverschil tussen veld en knop in plaats van een vaste waarde. */
-		--_end-padding-right: calc((var(--_min-size) - var(--_button-size)) / 2 - var(--semantics-input-fields-border-thickness));
+		--_end-padding-right: calc((var(--_min-size) - var(--_button-size)) / 2 - var(--semantics-input-fields-border-width));
 		--_button-size: var(--semantics-controls-sm-min-size);
-		--_validation-icon-area-width: calc(var(--_min-size) - var(--semantics-input-fields-border-thickness) * 2);
+		--_validation-icon-area-width: calc(var(--_min-size) - var(--semantics-input-fields-border-width) * 2);
 		--_trailing-width: calc(var(--_validation-icon-area-width) + var(--_button-size) + var(--_end-padding-right));
 
 		${inheritedTextReset}
@@ -90,7 +90,7 @@ export const dateFieldStyles = css`
 		background-color: var(--_background-color);
 		min-height: var(--_min-size);
 		overflow: hidden;
-		padding-left: calc(var(--_inline-padding) - var(--semantics-input-fields-border-thickness));
+		padding-left: calc(var(--_inline-padding) - var(--semantics-input-fields-border-width));
 		flex-direction: row;
 		align-items: center;
 	}
@@ -136,7 +136,7 @@ export const dateFieldStyles = css`
 		border: none;
 		background: transparent;
 		min-width: 0;
-		min-height: calc(var(--_min-size) - var(--semantics-input-fields-border-thickness) * 2);
+		min-height: calc(var(--_min-size) - var(--semantics-input-fields-border-width) * 2);
 		overflow: hidden;
 		padding: 0;
 		flex-grow: 1;

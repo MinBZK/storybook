@@ -40,7 +40,7 @@ export const checkboxStyles = css`
 	.checkbox__box {
 		box-sizing: border-box;
 		position: relative;
-		border: var(--components-checkbox-border-thickness) solid var(--components-checkbox-border-color);
+		border: var(--components-checkbox-border-width) solid var(--components-checkbox-border-color);
 		border-radius: var(--semantics-controls-xs-corner-radius);
 		background-color: var(--components-checkbox-background-color);
 		width: var(--semantics-controls-xs-min-size);

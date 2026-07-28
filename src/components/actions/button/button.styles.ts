@@ -494,7 +494,7 @@ export const buttonStyles = css`
 	/* Wrapper overlaid on the control, positioned against the host (which is
 	   position:relative). It lives outside the <button>/<a> so the indicator's
 	   role="status" live region announces loading without joining the button's
-	   accessible name. The activity-indicator inside fills it and centres its
+	   accessible name. The activity-indicator inside fills it and centers its
 	   circle, which inherits the content color via currentColor. */
 	.button__activity-indicator {
 		position: absolute;

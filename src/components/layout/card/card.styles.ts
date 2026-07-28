@@ -44,16 +44,31 @@ export const cardStyles = css`
 	}
 
 
-	/* # Link */
+	/* # Link / button overlay */
 
-	.card__link {
+	.card__action {
 		position: absolute;
 		inset: 0;
 		z-index: 0;
 		border-radius: inherit;
 	}
 
-	.card:has(.card__link:focus-visible) {
+	a.card__action {
+		cursor: var(--semantics-controls-link-cursor);
+	}
+
+	/* Strip the native button chrome so the overlay stays invisible; the focus
+	   ring is drawn on the card below, same as for the anchor. */
+	button.card__action {
+		margin: 0;
+		outline: none;
+		border: none;
+		background: none;
+		padding: 0;
+		appearance: none;
+	}
+
+	.card:has(.card__action:focus-visible) {
 		outline: var(--semantics-focus-ring-outline);
 		outline-offset: var(--semantics-focus-ring-outline-offset);
 		box-shadow: var(--components-card-box-shadow), var(--semantics-focus-ring-box-shadow);

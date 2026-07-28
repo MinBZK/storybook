@@ -13,7 +13,7 @@ export const switchStyles = css`
 		--_track-height: var(--semantics-controls-sm-min-size);
 		--_padding: var(--primitives-space-2);
 		--_transition-duration: var(--primitives-transition-duration-fast);
-		--_thumb-size: calc(var(--_track-height) - var(--_padding) * 2 - var(--components-switch-thumb-border-thickness) * 2);
+		--_thumb-size: calc(var(--_track-height) - var(--_padding) * 2 - var(--components-switch-thumb-border-width) * 2);
 
 		display: inline-block;
 		position: relative;
@@ -55,7 +55,7 @@ export const switchStyles = css`
 		box-sizing: border-box;
 		display: flex;
 		position: relative;
-		border: var(--components-switch-border-thickness) solid var(--components-switch-border-color);
+		border: var(--components-switch-border-width) solid var(--components-switch-border-color);
 		border-radius: calc(var(--_track-height) / 2);
 		background-color: var(--components-switch-background-color);
 		width: 100%;
@@ -80,7 +80,7 @@ export const switchStyles = css`
 		box-sizing: border-box;
 		position: absolute;
 		left: var(--_padding);
-		border: var(--components-switch-thumb-border-thickness) solid var(--components-switch-thumb-border-color);
+		border: var(--components-switch-thumb-border-width) solid var(--components-switch-thumb-border-color);
 		border-radius: 50%;
 		background-color: var(--components-switch-thumb-background-color);
 		width: var(--_thumb-size);
@@ -90,7 +90,7 @@ export const switchStyles = css`
 	}
 
 	.switch__input:checked ~ .switch__track .switch__thumb {
-		left: calc(var(--_track-width) - var(--components-switch-thumb-border-thickness) * 2 - var(--_thumb-size) - var(--_padding) * 2);
+		left: calc(var(--_track-width) - var(--components-switch-thumb-border-width) * 2 - var(--_thumb-size) - var(--_padding) * 2);
 		border-color: var(--components-switch-is-selected-thumb-background-color);
 		background-color: var(--components-switch-is-selected-thumb-background-color);
 		width: calc(var(--_thumb-size) + var(--_padding) * 2);
@@ -104,8 +104,8 @@ export const switchStyles = css`
 		left: 50%;
 		opacity: 0;
 		pointer-events: none;
-		width: calc(100% + var(--components-switch-thumb-border-thickness) * 2);
-		height: calc(100% + var(--components-switch-thumb-border-thickness) * 2);
+		width: calc(100% + var(--components-switch-thumb-border-width) * 2);
+		height: calc(100% + var(--components-switch-thumb-border-width) * 2);
 		align-items: center;
 		justify-content: center;
 		color: var(--components-switch-is-selected-background-color);

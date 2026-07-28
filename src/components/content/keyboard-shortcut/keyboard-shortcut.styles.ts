@@ -91,7 +91,7 @@ export const keyboardShortcutStyles = css`
 	.keyboard-shortcut__key {
 		box-sizing: border-box;
 		display: inline-flex;
-		box-shadow: inset 0 0 0 var(--components-keyboard-shortcut-border-thickness) var(--_highlight-border-color);
+		box-shadow: inset 0 0 0 var(--components-keyboard-shortcut-border-width) var(--_highlight-border-color);
 		border-radius: var(--components-keyboard-shortcut-corner-radius);
 		background-color: var(--_background-color);
 		min-width: var(--_size);
@@ -126,7 +126,7 @@ export const keyboardShortcutStyles = css`
 		}
 
 		:host(:not([variant="simple"])) .keyboard-shortcut__key {
-			border: var(--components-keyboard-shortcut-border-thickness) solid CanvasText;
+			border: var(--components-keyboard-shortcut-border-width) solid CanvasText;
 			background-color: Canvas;
 		}
 	}

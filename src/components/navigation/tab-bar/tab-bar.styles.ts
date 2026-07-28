@@ -12,8 +12,8 @@ export const tabBarStyles = css`
 	:host {
 		--_corner-radius: var(--semantics-controls-md-corner-radius);
 		--_gap: var(--primitives-space-1);
-		--_z-index-selected: 1;
-		--_z-index-focus: 2;
+		--_selected-z-index: 1;
+		--_focus-z-index: 2;
 
 		${inheritedTextReset}
 		display: inline-block;
@@ -82,12 +82,12 @@ export const tabBarStyles = css`
 
 	::slotted(nldd-tab-bar-item[selected]) {
 		position: relative;
-		z-index: var(--_z-index-selected);
+		z-index: var(--_selected-z-index);
 	}
 
 	::slotted(nldd-tab-bar-item:focus-within) {
 		position: relative;
-		z-index: var(--_z-index-focus);
+		z-index: var(--_focus-z-index);
 	}
 `;
 
@@ -105,7 +105,7 @@ export const tabBarItemStyles = css`
 		--_font: var(--semantics-buttons-md-primary-text-font);
 		--_icon-size: var(--semantics-buttons-md-icon-size);
 		--_highlight-border-color: transparent;
-		--_z-index-content: 1;
+		--_content-z-index: 1;
 
 		${inheritedTextReset}
 		display: inline-block;
@@ -249,7 +249,7 @@ export const tabBarItemStyles = css`
 	.tab-bar__item-icon {
 		display: flex;
 		position: relative;
-		z-index: var(--_z-index-content);
+		z-index: var(--_content-z-index);
 		width: var(--_icon-size);
 		height: var(--_icon-size);
 		flex-shrink: 0;
@@ -269,7 +269,7 @@ export const tabBarItemStyles = css`
 
 	.tab-bar__item-text {
 		position: relative;
-		z-index: var(--_z-index-content);
+		z-index: var(--_content-z-index);
 		min-width: 0;
 		max-width: 100%;
 		font: var(--_font);

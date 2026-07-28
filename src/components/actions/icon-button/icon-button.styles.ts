@@ -446,7 +446,7 @@ export const iconButtonStyles = css`
 	/* Wrapper overlaid on the control, positioned against the host (which is
 	   position:relative). It lives outside the <button>/<a> and the tooltip
 	   wrapper so the indicator's role="status" live region works reliably. The
-	   activity-indicator inside fills it and centres its circle, which inherits
+	   activity-indicator inside fills it and centers its circle, which inherits
 	   the content color via currentColor. */
 	.icon-button__activity-indicator {
 		position: absolute;

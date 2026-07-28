@@ -42,7 +42,7 @@ export const topNavigationBarStyles = css`
 		width: 100%;
 
 		/* The page-section inline margin lives on the wrapper; each bar caps to
-		   the content width and centres, so bar content lines up with page
+		   the content width and centers, so bar content lines up with page
 		   sections. width=full drops the cap (bars fill the margin box). */
 		@container (max-width: ${smMax}) {
 			padding-inline: var(--semantics-page-sections-sm-margin-inline);

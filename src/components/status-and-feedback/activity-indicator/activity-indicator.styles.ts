@@ -68,9 +68,9 @@ export const activityIndicatorStyles = css`
 
 
 	/* # Block
-	   Stacks the default circle + label as a centred column. width:100% +
+	   Stacks the default circle + label as a centered column. width:100% +
 	   max-width gives a slotted progress-bar a width to fill; the fixed-size
-	   circle and the label stay centred via align-items. */
+	   circle and the label stay centered via align-items. */
 
 	.activity-indicator {
 		/* position:relative so it paints above the absolutely-positioned backdrop
@@ -112,7 +112,7 @@ export const activityIndicatorStyles = css`
 
 	/* Overlay mode: the indicator + label sit on a small rounded base-surface
 	   panel that hugs them with padding (not the full component width) so they
-	   keep contrast over the dimmed content, and read in the content colour
+	   keep contrast over the dimmed content, and read in the content color
 	   instead of inheriting currentColor. */
 	:host([has-content]) .activity-indicator {
 		box-sizing: border-box;
@@ -129,7 +129,7 @@ export const activityIndicatorStyles = css`
 	}
 
 	/* Dimming layer (overlay mode, on by default; opt out with no-backdrop): the
-	   context parent background colour — fallback the base surface — at one minus
+	   context parent background color — fallback the base surface — at one minus
 	   the disabled opacity, so the content underneath reads as inactive while
 	   loading. Fades in and out with the indicator via the loading attribute. */
 	.activity-indicator__backdrop {
@@ -139,7 +139,7 @@ export const activityIndicatorStyles = css`
 		opacity: 0;
 		/* Frosted dim: the parent surface — fallback base surface — as a
 		   translucent fill at one minus the disabled opacity (a translucent
-		   colour, not element opacity, which would hide the blur), plus a blur so
+		   color, not element opacity, which would hide the blur), plus a blur so
 		   the content behind reads as inactive. backdrop-filter degrades
 		   gracefully where unsupported, leaving just the translucent fill. */
 		background-color: color-mix(in oklab, var(--context-parent-background-color, var(--semantics-surfaces-base-background-color)) calc((1 - var(--primitives-opacity-disabled)) * 100%), transparent);
@@ -185,7 +185,7 @@ export const activityIndicatorStyles = css`
 		stroke-width: var(--_stroke-width);
 	}
 
-	/* Rotate only the arc inside the SVG (around the view-box centre via
+	/* Rotate only the arc inside the SVG (around the view-box center via
 	   transform-origin) rather than the whole <svg> element — rotating the
 	   element visibly wobbles when it sits at a sub-pixel position (next to a
 	   label, or overlaid on a button). Mirrors nldd-progress-circle. */
