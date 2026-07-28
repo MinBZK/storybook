@@ -63,11 +63,6 @@ interface SizingElement {
 	width: string;
 }
 
-// Module-level, not the instance's _idCounter: the overflow menu lives on
-// document.body, so two toolbars on one page would otherwise mint the same
-// element id.
-let menuIdCounter = 0;
-
 // # nldd-toolbar-item
 
 @customElement('nldd-toolbar-item')
@@ -344,7 +339,7 @@ export class NLDDToolbar extends LitElement {
 		if (this._menu) return;
 		const menu = document.createElement('nldd-menu') as NLDDMenu;
 		menu.setAttribute('placement', 'bottom-end');
-		menu.id = `nldd-toolbar-overflow-menu-${menuIdCounter++}`;
+		menu.id = `nldd-toolbar-overflow-menu-${this._idCounter++}`;
 		menu.addEventListener('toggle', (event: Event) => {
 			this._menuOpen = (event as ToggleEvent).newState === 'open';
 		});

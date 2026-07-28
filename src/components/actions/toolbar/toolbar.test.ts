@@ -223,7 +223,7 @@ describe('nldd-toolbar', () => {
 		expect(toolbar._pinnedOverflowItems.length).toBe(1);
 	});
 
-	it('gives each toolbar overflow menu a unique element id', async () => {
+	it('resolves the overflow menu id within its own shadow root', async () => {
 		el = await fixture(`
 			<div>
 				<nldd-toolbar>
@@ -235,10 +235,14 @@ describe('nldd-toolbar', () => {
 			</div>
 		`);
 		await waitForUpdate(el);
-		const menus = [...el.querySelectorAll('nldd-toolbar')].map(
-			toolbar => (toolbar as unknown as { _menu: Element })._menu,
-		);
-		expect(menus[0].id).not.toBe(menus[1].id);
+		// The menu lives in the toolbar's own shadow root, so its id only has to
+		// be unique there — but it does have to resolve, because the trigger
+		// anchors the menu by id.
+		[...el.querySelectorAll('nldd-toolbar')].forEach((toolbar) => {
+			const menu = (toolbar as unknown as { _menu: Element })._menu;
+			const root = menu.getRootNode() as ShadowRoot;
+			expect(root.getElementById(menu.id)).toBe(menu);
+		});
 	});
 
 	// ## Size propagation
