@@ -188,7 +188,14 @@ export class NLDDWindow extends LitElement {
 		this.dispatchEvent(new CustomEvent('close', { bubbles: true, composed: true }));
 	}
 
-	_handleDialogClose = (): void => {
+	_handleDialogClose = (e: Event): void => {
+		// Only the dialog's own native close counts. That event does not bubble, so
+		// its target is the dialog. A nested component's `close` (an nldd-popover
+		// datepicker, say) is composed and bubbling, so it reaches this same @close
+		// listener retargeted to the slotted host — without this guard the window
+		// would emit its own close while staying open, and `_closeEmitted` would
+		// then swallow the real one for the rest of this open cycle.
+		if (e.target !== this._dialog) return;
 		this._closing = false;
 		this._emitClose();
 	};

@@ -358,6 +358,28 @@ describe('nldd-window meldt sluiten via elke route', () => {
 		expect(aantal).toBe(1);
 	});
 
+	// A nested overlay (the nldd-popover datepicker inside an nldd-date-field,
+	// say) fires its own `close` with composed + bubbles, which reaches the
+	// dialog and hits the same @close listener. Without a target check the
+	// window emitted its own close while staying open, and the guard against a
+	// double close then swallowed the real one.
+	it('emit geen close voor een gebubbelde close uit geneste inhoud', async () => {
+		el = await fixture<NLDDWindow & { show(): void; hide(): void }>(
+			'<nldd-window accessible-label="Test"><div class="inner"></div></nldd-window>',
+		);
+		await waitForUpdate(el);
+		let aantal = 0;
+		el.addEventListener('close', (e) => { if (e.target === el) aantal += 1; });
+		el.show();
+		await waitForUpdate(el);
+		el.querySelector('.inner')!.dispatchEvent(
+			new CustomEvent('close', { bubbles: true, composed: true }),
+		);
+		await waitForUpdate(el);
+		expect(aantal).toBe(0);
+		expect(dialogVan(el).open).toBe(true);
+	});
+
 	it('stuurt close niet twee keer als beide routes samenvallen', async () => {
 		el = await fixture<NLDDWindow & { show(): void; hide(): void }>(
 			'<nldd-window accessible-label="Test"></nldd-window>',
