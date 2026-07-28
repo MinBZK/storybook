@@ -24949,7 +24949,7 @@
           "slots": [
             {
               "name": "",
-              "description": "Cells and action segmented actions, in source order"
+              "description": "Cells and segmented actions, in source order"
             },
             {
               "name": "children",
@@ -25106,7 +25106,7 @@
           "events": [
             {
               "name": "change",
-              "description": "On a `checkbox` row after it toggles; detail: { checked: boolean } * @attr {string} href - Renders the item as an `<a>` with this URL. Takes precedence over `button`; without either the item is a plain container with no action."
+              "description": "On a `checkbox` row after it toggles; detail: { checked: boolean }"
             }
           ],
           "attributes": [
@@ -25167,6 +25167,14 @@
               "type": {
                 "text": "string | undefined"
               },
+              "description": "Renders the item as an `<a>` with this URL. Takes precedence over `button`; without either the item is a plain container with no action.",
+              "name": "href",
+              "fieldName": "href"
+            },
+            {
+              "type": {
+                "text": "string | undefined"
+              },
               "description": "Link target forwarded to the `<a>` (e.g. '_blank'); only applies with `href`. With '_blank' a visually hidden \"opens in new tab\" announcement is added for assistive technology.",
               "name": "target",
               "fieldName": "target"
@@ -25187,14 +25195,6 @@
               "name": "reorderable",
               "default": "false",
               "fieldName": "reorderable"
-            },
-            {
-              "name": "href",
-              "type": {
-                "text": "string | undefined"
-              },
-              "description": "When set, renders the item as a link.",
-              "fieldName": "href"
             },
             {
               "name": "translations",

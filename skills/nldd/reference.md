@@ -2676,6 +2676,7 @@ A row within an `nldd-list`. Renders as a link when `href` is set, as a checkbox
 | `checkbox` | `boolean` | Makes the whole row a `role="checkbox"` control; ignored when `href` is set |
 | `checked` | `boolean` | Checked state of a `checkbox` row; the item toggles it on activation |
 | `expanded` | `boolean` | Disclosure state. Drives the `children` group's visibility AND supplies `aria-expanded` — to the row's own control when the row is interactive, or to the segmented action marked `disclosure`. Written once either way; the item DEV-warns when there is nowhere for it to live. |
+| `href` | `string` | Renders the item as an `<a>` with this URL. Takes precedence over `button`; without either the item is a plain container with no action. |
 | `target` | `string` | Link target forwarded to the `<a>` (e.g. '_blank'); only applies with `href`. With '_blank' a visually hidden "opens in new tab" announcement is added for assistive technology. |
 | `rel` | `string` | Link rel forwarded to the `<a>` (e.g. 'noopener noreferrer'); only applies with `href` |
 | `reorderable` | `boolean` | Set by the parent `nldd-list` when its own `reorderable` is on (with `type="list"`); consumers do not set this. Serves as a CSS hook for drag handle visibility. |
@@ -2684,14 +2685,14 @@ A row within an `nldd-list`. Renders as a link when `href` is set, as a checkbox
 
 | Slot | Beschrijving |
 | --- | --- |
-| _(default)_ | Cells and action segmented actions, in source order |
+| _(default)_ | Cells and segmented actions, in source order |
 | `children` | Child rows of a branch in an `nldd-list type="tree"`. Rendered as a `role="group"` below the row, hidden while `expanded` is false. The nesting IS the hierarchy, so aria-level / -posinset / -setsize are derived, not authored. The group has no styling of its own: repeat a spacer-cell per level to indent, or show depth some other way. |
 
 **Events**
 
 | Event | Beschrijving |
 | --- | --- |
-| `change` | On a `checkbox` row after it toggles; detail: { checked: boolean } * @attr {string} href - Renders the item as an `<a>` with this URL. Takes precedence over `button`; without either the item is a plain container with no action. |
+| `change` | On a `checkbox` row after it toggles; detail: { checked: boolean } |
 
 ### `<nldd-list-item-action>`
 

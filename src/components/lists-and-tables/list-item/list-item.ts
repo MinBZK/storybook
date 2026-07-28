@@ -78,14 +78,15 @@ export type ListItemSize = 'sm' | 'md';
  * @attr {boolean} checkbox - Makes the whole row a `role="checkbox"` control; ignored when `href` is set
  * @attr {boolean} checked - Checked state of a `checkbox` row; the item toggles it on activation
  * @attr {boolean} expanded - Disclosure state. Drives the `children` group's visibility AND supplies `aria-expanded` — to the row's own control when the row is interactive, or to the segmented action marked `disclosure`. Written once either way; the item DEV-warns when there is nowhere for it to live.
- *
- * @fires change - On a `checkbox` row after it toggles; detail: { checked: boolean } * @attr {string} href - Renders the item as an `<a>` with this URL. Takes precedence over `button`; without either the item is a plain container with no action.
+ * @attr {string} href - Renders the item as an `<a>` with this URL. Takes precedence over `button`; without either the item is a plain container with no action.
  * @attr {string} target - Link target forwarded to the `<a>` (e.g. '_blank'); only applies with `href`. With '_blank' a visually hidden "opens in new tab" announcement is added for assistive technology.
  * @attr {string} rel - Link rel forwarded to the `<a>` (e.g. 'noopener noreferrer'); only applies with `href`
  * @attr {boolean} reorderable - Set by the parent `nldd-list` when its own `reorderable` is on (with `type="list"`); consumers do not set this. Serves as a CSS hook for drag handle visibility.
  *
- * @slot         - Cells and action segmented actions, in source order
+ * @slot - Cells and segmented actions, in source order
  * @slot children - Child rows of a branch in an `nldd-list type="tree"`. Rendered as a `role="group"` below the row, hidden while `expanded` is false. The nesting IS the hierarchy, so aria-level / -posinset / -setsize are derived, not authored. The group has no styling of its own: repeat a spacer-cell per level to indent, or show depth some other way.
+ *
+ * @fires change - On a `checkbox` row after it toggles; detail: { checked: boolean }
  */
 @customElement('nldd-list-item')
 export class NLDDListItem extends withTranslations(LitElement, nlddListItemTranslations) {
