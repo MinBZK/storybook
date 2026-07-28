@@ -27,14 +27,14 @@ describe('nldd-drag-handle-cell', () => {
 		await waitForUpdate(el);
 		const control = el.shadowRoot!.querySelector('.drag-handle-cell__control');
 		expect(control?.getAttribute('aria-label')).toBe(
-			nlddDragHandleCellTranslations['components.drag-handle-cell.label-text'],
+			nlddDragHandleCellTranslations['components.drag-handle-cell.accessible-label'],
 		);
 	});
 
 	it('applies a custom translation override', async () => {
 		el = await fixture('<nldd-drag-handle-cell></nldd-drag-handle-cell>');
 		(el as any).translations = {
-			'components.drag-handle-cell.label-text': 'Aangepaste sleepgreep',
+			'components.drag-handle-cell.accessible-label': 'Aangepaste sleepgreep',
 		};
 		await waitForUpdate(el);
 		const control = el.shadowRoot!.querySelector('.drag-handle-cell__control');

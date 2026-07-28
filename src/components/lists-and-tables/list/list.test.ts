@@ -420,6 +420,29 @@ describe('nldd-list', () => {
 		expect(items[1].classList.contains('is-first')).toBe(true);
 	});
 
+	it('tree: is-last follows the deepest child of an expanded branch', async () => {
+		el = await fixture(`
+			<nldd-list type="tree">
+				<nldd-list-item button>A</nldd-list-item>
+				<nldd-list-item button expanded>
+					B
+					<nldd-list-item slot="children" button>B1</nldd-list-item>
+					<nldd-list-item slot="children" button>B2</nldd-list-item>
+				</nldd-list-item>
+			</nldd-list>
+		`);
+		await waitForUpdate(el);
+		const branch = el.querySelectorAll('nldd-list-item')[1];
+		const children = [...branch.querySelectorAll('nldd-list-item')];
+		expect(branch.classList.contains('is-last')).toBe(false);
+		expect(children[1].classList.contains('is-last')).toBe(true);
+		// Collapsing hands is-last back to the branch: its children stop painting.
+		branch.removeAttribute('expanded');
+		await waitForUpdate(el);
+		expect(branch.classList.contains('is-last')).toBe(true);
+		expect(children[1].classList.contains('is-last')).toBe(false);
+	});
+
 	it('search-bar-end slot: hidden when empty (listbox)', async () => {
 		el = await fixture('<nldd-list type="listbox"></nldd-list>');
 		await waitForUpdate(el);

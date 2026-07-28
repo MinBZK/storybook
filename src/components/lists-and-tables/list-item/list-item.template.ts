@@ -1,58 +1,88 @@
 import { html, nothing } from 'lit';
 import { classMap } from 'lit/directives/class-map.js';
 
-const areas = (showStart: boolean, showEnd: boolean) => html`
-	<div class=${classMap({ 'list-item__start-area': true, 'is-visible': showStart })}>
-		<slot name="start">
-			<nldd-spacer-cell size="12"></nldd-spacer-cell>
-		</slot>
-	</div>
-	<div class="list-item__main-area">
-		<slot></slot>
-		<div class="list-item__divider"></div>
-	</div>
-	<div class=${classMap({ 'list-item__end-area': true, 'is-visible': showEnd })}>
-		<slot name="end">
-			<nldd-spacer-cell size="12"></nldd-spacer-cell>
-		</slot>
-	</div>
-`;
+// One flat slot: cells and action segments line up in source order, and the
+// first/last child IS the row edge (the edge rules in the styles key off
+// that). The divider is a sibling of the action so it anchors to the row
+// block, not to the widened action box.
+const content = html`<slot></slot>`;
+const divider = html`<div class="list-item__divider"></div>`;
 
 export const template = (
 	button: boolean,
 	href: string | undefined,
 	target: string | undefined,
 	rel: string | undefined,
-	showStart: boolean,
-	showEnd: boolean,
 	opensInNewTabLabel?: string,
 	actionTabindex?: string,
 	isHighlighted = false,
+	checkbox = false,
+	checked = false,
+	expanded?: boolean,
+	showChildren = false,
+	hasCheckedSegment = false,
 ) => {
+	const ariaExpanded = expanded === undefined ? nothing : String(expanded);
+	// The branch's child rows. `role="group"` is what makes the nesting the
+	// hierarchy: assistive technology derives level, position and set size from
+	// it, so none of those are authored. Hidden while collapsed — an
+	// aria-expanded="false" node with reachable children contradicts itself.
+	const children = showChildren
+		? html`<div class="list-item__children"
+			role="group"
+			?hidden=${expanded !== true}
+		><slot name="children"></slot></div>`
+		: html`<slot name="children" hidden></slot>`;
 	// `is-highlighted` paints the listbox active-option highlight (separate from
 	// selected). Only the list sets `_highlighted`, and only in listbox mode.
-	const blockClass = classMap({ 'list-item': true, 'is-highlighted': isHighlighted });
+	const blockClass = classMap({
+		'list-item': true,
+		'is-highlighted': isHighlighted,
+		'is-action-checked': hasCheckedSegment,
+	});
 	if (href) {
 		return html`<div class=${blockClass}>
 			<a class="list-item__action"
 				href=${href}
 				target=${target ?? nothing}
 				rel=${rel ?? nothing}
+				aria-expanded=${ariaExpanded}
 				tabindex=${actionTabindex ?? nothing}
-			>${areas(showStart, showEnd)}${
+			>${content}${
 				opensInNewTabLabel ? html`<span class="list-item__opens-in-new-tab-hint">${opensInNewTabLabel}</span>` : nothing
 			}</a>
-		</div>`;
+			${divider}
+		</div>${children}`;
+	}
+	if (checkbox) {
+		// The row itself carries the checkbox semantics. A real <input> nested in
+		// the action would be interactive content inside a <button> (invalid HTML,
+		// and AT would announce the button, not the checked state), and a <label>
+		// here could not reach a slotted input — label association walks the DOM
+		// tree, which a slot's assigned nodes are not part of.
+		return html`<div class=${blockClass}>
+			<button class="list-item__action"
+				type="button"
+				role="checkbox"
+				aria-checked=${String(checked)}
+				aria-expanded=${ariaExpanded}
+				tabindex=${actionTabindex ?? nothing}
+			>${content}</button>
+			${divider}
+		</div>${children}`;
 	}
 	if (button) {
 		return html`<div class=${blockClass}>
 			<button class="list-item__action"
 				type="button"
+				aria-expanded=${ariaExpanded}
 				tabindex=${actionTabindex ?? nothing}
-			>${areas(showStart, showEnd)}</button>
-		</div>`;
+			>${content}</button>
+			${divider}
+		</div>${children}`;
 	}
 	return html`<div class=${blockClass}>
-		${areas(showStart, showEnd)}
-	</div>`;
+		${content}
+		${divider}
+	</div>${children}`;
 };

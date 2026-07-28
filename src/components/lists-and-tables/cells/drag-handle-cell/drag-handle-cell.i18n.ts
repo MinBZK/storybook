@@ -1,5 +1,5 @@
 export const nlddDragHandleCellTranslations = {
-	'components.drag-handle-cell.label-text': 'Sleepgreep, druk spatie of enter om te verplaatsen',
+	'components.drag-handle-cell.accessible-label': 'Sleepgreep, druk spatie of enter om te verplaatsen',
 };
 
 export type NLDDDragHandleCellTranslations = typeof nlddDragHandleCellTranslations;

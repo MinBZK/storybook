@@ -299,6 +299,10 @@
       "types": "./dist/components/lists-and-tables/list-item/list-item.d.ts",
       "default": "./dist/components/lists-and-tables/list-item/list-item.js"
     },
+    "./list-item-action": {
+      "types": "./dist/components/lists-and-tables/list-item-action/list-item-action.d.ts",
+      "default": "./dist/components/lists-and-tables/list-item-action/list-item-action.js"
+    },
     "./table": {
       "types": "./dist/components/lists-and-tables/table/table.d.ts",
       "default": "./dist/components/lists-and-tables/table/table.js"
@@ -398,6 +402,10 @@
     "./progress-circle": {
       "types": "./dist/components/status-and-feedback/progress-circle/progress-circle.d.ts",
       "default": "./dist/components/status-and-feedback/progress-circle/progress-circle.js"
+    },
+    "./step-indicator": {
+      "types": "./dist/components/status-and-feedback/step-indicator/step-indicator.d.ts",
+      "default": "./dist/components/status-and-feedback/step-indicator/step-indicator.js"
     },
     "./activity-indicator": {
       "types": "./dist/components/status-and-feedback/activity-indicator/activity-indicator.d.ts",

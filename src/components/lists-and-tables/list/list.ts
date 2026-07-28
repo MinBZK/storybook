@@ -12,7 +12,7 @@ import '../../actions/icon-button/icon-button.js';
 
 export type ListVariant = 'simple' | 'box';
 export type ListBackground = 'tinted' | 'base';
-export type ListType = 'list' | 'navigation' | 'listbox';
+export type ListType = 'list' | 'navigation' | 'listbox' | 'tree';
 
 export interface NLDDReorderEventDetail {
 	fromIndex: number;
@@ -24,17 +24,24 @@ export interface NLDDReorderEventDetail {
  *
  * The `type` attribute switches the list's a11y role and behavior:
  * - `list` (default) — `role="list"`, items `role="listitem"`. Reorderable allowed.
- *                     Items may individually be buttons or links; the list itself
- *                     has no special keyboard semantics.
- * - `navigation`     — host `role="navigation"`, items with `selected` get
- *                     `aria-current="page"` on their inner `<a>` or `<button>`.
- * - `listbox`        — an accessible, filterable listbox (combobox pattern). The
- *                     list renders its OWN search input (`role="combobox"`) pinned
- *                     above the options; `.list__items` becomes `role="listbox"`
- *                     and items become `role="option"`. Focus stays in the input,
- *                     the active option moves via `aria-activedescendant`, and
- *                     filtering is consumer-managed via the `input` event (toggle
- *                     `[hidden]` on items). See "Listbox" below.
+ * - `tree` — `role="tree"`, items `role="treeitem"`. Branch rows put their child
+ *   rows in their own `slot="children"`, which the item renders as a
+ *   `role="group"`. Level, position and set size are NOT authored: the
+ *   nesting represents the hierarchy, so assistive technology derives
+ *   them. A branch row must carry `expanded`; the group is hidden while
+ *   it is false. Visual indentation is the consumer's — repeat a
+ *   spacer-cell per level.
+ *   Items may individually be buttons or links; the list itself
+ *   has no special keyboard semantics.
+ * - `navigation` — host `role="navigation"`, items with `selected` get
+ *   `aria-current="page"` on their inner `<a>` or `<button>`.
+ * - `listbox` — an accessible, filterable listbox (combobox pattern). The
+ *   list renders its OWN search input (`role="combobox"`) pinned
+ *   above the options; `.list__items` becomes `role="listbox"`
+ *   and items become `role="option"`. Focus stays in the input,
+ *   the active option moves via `aria-activedescendant`, and
+ *   filtering is consumer-managed via the `input` event (toggle
+ *   `[hidden]` on items). See "Listbox" below.
  *
  * Selection state is consumer-managed: the list never mutates `selected` itself.
  *
@@ -83,23 +90,13 @@ export interface NLDDReorderEventDetail {
  * @attr {string} accessible-label - Accessible name, forwarded to the list in `type="list"` and to the search field in `type="listbox"`. For `type="navigation"` set `aria-label` / `aria-labelledby` on the element itself. Falls back to the i18n default.
  * @attr {object} translations - Override translation keys; unset keys fall back to Dutch
  *
- * @slot         - List items (`nldd-list-item`)
- * @slot toolbar - Controls below the search field (filters, sort, counts,
- *                 view toggles). Available for every type; collapses when empty.
- * @slot search-bar-end - Controls inline at the end of the search bar, beside the
- *                 search field (e.g. a filter or options button). Listbox only;
- *                 collapses when empty.
- * @slot empty   - Shown when no items are visible (all `[hidden]` or none). Defaults
- *                 to `nldd-inline-dialog` with `empty-text` / `empty-supporting-text`
- *                 (falling back to Dutch i18n "Geen items"). Slot content
- *                 overrides the default dialog entirely. In `type="listbox"` it is
- *                 suppressed while the search field is empty (no query yet), so the
- *                 consumer can show just the search field or its own hint outside
- *                 the list.
+ * @slot        - List items (`nldd-list-item`)
+ * @slot toolbar - Controls below the search field (filters, sort, counts, view toggles). Available for every type; collapses when empty.
+ * @slot search-bar-end - Controls inline at the end of the search bar, beside the search field (e.g. a filter or options button). Listbox only; collapses when empty.
+ * @slot empty - Shown when no items are visible (all `[hidden]` or none). Defaults to `nldd-inline-dialog` with `empty-text` / `empty-supporting-text` (falling back to Dutch i18n "Geen items"). Slot content overrides the default dialog entirely. In `type="listbox"` it is suppressed while the search field is empty (no query yet), so the consumer can show just the search field or its own hint outside the list.
  *
  * @fires nldd-reorder - Reorderable `type="list"`: `{ fromIndex, toIndex }` on drop
- * @fires input        - `type="listbox"`: search value changed; `{ value }`. Toggle
- *                       `[hidden]` on items to filter.
+ * @fires input - `type="listbox"`: search value changed; `{ value }`. Toggle `[hidden]` on items to filter.
  */
 @customElement('nldd-list')
 export class NLDDList extends LitElement {
@@ -266,21 +263,24 @@ export class NLDDList extends LitElement {
 		const searchBarEndSlot = this.shadowRoot?.querySelector<HTMLSlotElement>('slot[name="search-bar-end"]');
 		if (searchBarEndSlot) this._hasSearchBarEnd = searchBarEndSlot.assignedElements().length > 0;
 
-		// Watch direct children for add/remove (nldd-list-item gains/lose) and
-		// for `hidden` toggles on those direct children (consumer-driven
-		// filtering). `subtree: true` is required because `attributes` on the
-		// host itself isn't relevant — we need `hidden` changes on the items.
-		// The callback filters mutations so we only work when a direct child
-		// is affected; nested `hidden` toggles on e.g. cells inside items
-		// (which can happen via container-query `[hidden]` in visibility-mixin)
-		// no longer trigger item/empty recalculation.
+		// Watch for rows being added or removed, for `hidden` toggles on them
+		// (consumer-driven filtering) and for branches opening and closing, since
+		// all three change which row paints first and last. `subtree: true` is
+		// required: a branch's rows sit inside the branch, not in the list. The
+		// callback filters on the target being a row, so `hidden` toggles on e.g.
+		// cells inside a row (container-query driven, via visibility-mixin) don't
+		// trigger a recalculation.
 		this._itemsObserver = new MutationObserver((mutations) => {
+			const isRow = (node: Node | null) =>
+				node instanceof Element && node.tagName.toLowerCase() === 'nldd-list-item';
 			const relevant = mutations.some(m => {
-				if (m.type === 'childList') return m.target === this;
-				if (m.type === 'attributes' && m.attributeName === 'hidden') {
-					return m.target instanceof Element && m.target.parentElement === this;
-				}
-				return false;
+				// A branch's rows are added to and removed from the branch, not the
+				// list, and opening a branch changes which row paints last.
+				if (m.type === 'childList') return m.target === this || isRow(m.target);
+				if (m.type !== 'attributes' || !isRow(m.target)) return false;
+				if (m.attributeName === 'expanded') return true;
+				return m.attributeName === 'hidden'
+					&& (m.target.parentElement === this || isRow(m.target.parentElement));
 			});
 			if (!relevant) return;
 			this._updateItems();
@@ -290,7 +290,7 @@ export class NLDDList extends LitElement {
 			childList: true,
 			subtree: true,
 			attributes: true,
-			attributeFilter: ['hidden'],
+			attributeFilter: ['hidden', 'expanded'],
 		});
 
 		this._applyHostType();
@@ -367,7 +367,7 @@ export class NLDDList extends LitElement {
 		if (this.type === 'navigation') {
 			this.setAttribute('role', 'navigation');
 			if (!this.hasAttribute('aria-label') && !this.hasAttribute('aria-labelledby')) {
-				this.setAttribute('aria-label', this._t('components.list.navigation-label-text'));
+				this.setAttribute('aria-label', this._t('components.list.navigation-accessible-label'));
 				this.setAttribute('data-nldd-auto-label', '');
 			}
 		} else {
@@ -378,7 +378,7 @@ export class NLDDList extends LitElement {
 				// Only strip the label we set ourselves. If the consumer overrode
 				// `aria-label` after our auto-set, the value no longer matches and
 				// we leave it intact. Either way, clear the sentinel.
-				const autoLabel = this._t('components.list.navigation-label-text');
+				const autoLabel = this._t('components.list.navigation-accessible-label');
 				if (this.getAttribute('aria-label') === autoLabel) {
 					this.removeAttribute('aria-label');
 				}
@@ -402,15 +402,32 @@ export class NLDDList extends LitElement {
 		return this._getItems().filter(item => !item.hasAttribute('hidden'));
 	}
 
+	/** Every row in the tree, top-level rows and nested ones alike, so a stale
+	 *  is-first / is-last never survives on a row deeper down. */
+	private _getAllRows(rows = this._getItems()): NLDDListItem[] {
+		return rows.flatMap(row => [row, ...this._getAllRows(row.childRows)]);
+	}
+
+	/** Rows in the order they paint: an expanded branch's children sit between
+	 *  the branch and the next top-level row, so the last row of the list is the
+	 *  deepest last child, not the last item in the list's own slot. */
+	private _getPaintedRows(rows = this._getItems()): NLDDListItem[] {
+		return rows
+			.filter(row => !row.hasAttribute('hidden'))
+			.flatMap(row => (row.expanded ? [row, ...this._getPaintedRows(row.childRows)] : [row]));
+	}
+
 	private _updateItems() {
 		const items = this._getItems();
-		const visibleItems = items.filter(item => !item.hasAttribute('hidden'));
-		const firstVisible = visibleItems[0];
-		const lastVisible = visibleItems[visibleItems.length - 1];
+		const paintedRows = this._getPaintedRows(items);
+		const firstVisible = paintedRows[0];
+		const lastVisible = paintedRows[paintedRows.length - 1];
 		const reorderActive = this.reorderable && this.type === 'list';
+		this._getAllRows(items).forEach((row) => {
+			row.classList.toggle('is-first', row === firstVisible);
+			row.classList.toggle('is-last', row === lastVisible);
+		});
 		items.forEach((item) => {
-			item.classList.toggle('is-first', item === firstVisible);
-			item.classList.toggle('is-last', item === lastVisible);
 			if (reorderActive) {
 				item.setAttribute('reorderable', '');
 			} else {
@@ -911,12 +928,15 @@ export class NLDDList extends LitElement {
 		const inner = item.shadowRoot?.querySelector<HTMLElement>('.list-item') ?? item;
 		const rect = inner.getBoundingClientRect();
 
-		// Insert placeholder at item's current position, sized to match the actual item
+		// Insert placeholder at item's current position, sized to match the space the
+		// row occupied: its own box plus the boundary margin that carries the divider,
+		// so nothing below it shifts while the row is lifted.
+		const boundary = parseFloat(getComputedStyle(inner).marginBlockEnd) || 0;
 		this._placeholder = document.createElement('div');
 		this._placeholder.className = 'nldd-list-drag-placeholder';
 		this._placeholder.setAttribute('aria-hidden', 'true');
 		this._placeholder.setAttribute('data-nldd-placeholder', '');
-		this._placeholder.style.height = `${rect.height}px`;
+		this._placeholder.style.height = `${rect.height + boundary}px`;
 		item.after(this._placeholder);
 
 		item.classList.add('is-dragging');
@@ -1005,7 +1025,7 @@ export class NLDDList extends LitElement {
 	private _cancelDrag() {
 		if (!this._draggingEl) return;
 		this._cleanupDrag();
-		this._announce(this._t('components.list.reorder-cancelled-text'));
+		this._announce(this._t('components.list.reorder-canceled-text'));
 	}
 
 	private _cleanupDrag() {
@@ -1059,7 +1079,7 @@ export class NLDDList extends LitElement {
 
 	override render() {
 		return template({
-			itemsLabel: this.accessibleLabel || this._t('components.list.items-label-text'),
+			itemsLabel: this.accessibleLabel || this._t('components.list.items-accessible-label'),
 			hasToolbar: this._hasToolbar,
 			type: this.type,
 			isEmpty: this._isEmpty,
@@ -1069,8 +1089,8 @@ export class NLDDList extends LitElement {
 				listboxId: this._listboxId,
 				searchValue: this._searchValue,
 				activeId: this._searchFocused ? this._activeId : '',
-				searchPlaceholder: this._t('components.list.search-placeholder-text'),
-				searchAccessibleLabel: this.accessibleLabel || this._t('components.list.search-placeholder-text'),
+				searchPlaceholder: this._t('components.list.search-placeholder-label'),
+				searchAccessibleLabel: this.accessibleLabel || this._t('components.list.search-placeholder-label'),
 				searchClearLabel: this._t('components.list.search-clear-action'),
 				hasSearchBarEnd: this._hasSearchBarEnd,
 				onSearchInput: this._onSearchInput,

@@ -126,42 +126,39 @@ export const BoxWithGutters = {
 	`,
 };
 
-export const WithStartAndEnd = {
+export const WithLeadingAndTrailingCells = {
 	render: () => html`
 		<nldd-list variant="box">
 			<nldd-list-item>
-				<nldd-spacer-cell slot="start" size="12"></nldd-spacer-cell>
-				<div slot="start" style="width: 32px; height: 32px; background: var(--primitives-color-neutral-150); border-radius: 8px;"></div>
-				<nldd-spacer-cell slot="start" size="8"></nldd-spacer-cell>
+				<div style="width: 32px; height: 32px; background: var(--primitives-color-neutral-150); border-radius: 8px;"></div>
+				<nldd-spacer-cell size="8"></nldd-spacer-cell>
 				<nldd-text-cell text="Item with start icon"></nldd-text-cell>
-				<nldd-spacer-cell slot="end" size="8"></nldd-spacer-cell>
-				<nldd-icon-cell slot="end" size="16">
+				<nldd-spacer-cell size="8"></nldd-spacer-cell>
+				<nldd-icon-cell size="16">
 					<nldd-icon name="chevron-right"></nldd-icon>
 				</nldd-icon-cell>
-				<nldd-spacer-cell slot="end" size="12"></nldd-spacer-cell>
 			</nldd-list-item>
 			<nldd-list-item>
-				<nldd-spacer-cell slot="start" size="12"></nldd-spacer-cell>
-				<div slot="start" style="width: 32px; height: 32px; background: var(--primitives-color-neutral-150); border-radius: 8px;"></div>
-				<nldd-spacer-cell slot="start" size="8"></nldd-spacer-cell>
+				<div style="width: 32px; height: 32px; background: var(--primitives-color-neutral-150); border-radius: 8px;"></div>
+				<nldd-spacer-cell size="8"></nldd-spacer-cell>
 				<nldd-text-cell text="Another item"></nldd-text-cell>
 			</nldd-list-item>
 		</nldd-list>
 	`,
 };
 
-export const SimpleWithEndOnly = {
+export const SimpleWithTrailingCells = {
 	render: () => html`
 		<nldd-list variant="simple">
 			<nldd-list-item>
-				<nldd-text-cell text="Only end slot filled"></nldd-text-cell>
-				<nldd-spacer-cell slot="end" size="8"></nldd-spacer-cell>
-				<nldd-icon-cell slot="end" size="16">
+				<nldd-text-cell text="Trailing cells"></nldd-text-cell>
+				<nldd-spacer-cell size="8"></nldd-spacer-cell>
+				<nldd-icon-cell size="16">
 					<nldd-icon name="chevron-right"></nldd-icon>
 				</nldd-icon-cell>
 			</nldd-list-item>
 			<nldd-list-item>
-				<nldd-text-cell text="No slots"></nldd-text-cell>
+				<nldd-text-cell text="Alleen tekst"></nldd-text-cell>
 			</nldd-list-item>
 		</nldd-list>
 	`,
@@ -194,15 +191,13 @@ export const WithDragHandle = {
 		render(html`
 			<nldd-list variant="box" reorderable @nldd-reorder=${onReorder}>
 				<nldd-list-item>
-					<nldd-spacer-cell slot="start" size="12"></nldd-spacer-cell>
-					<nldd-drag-handle-cell size="sm" slot="start" reorderable-only></nldd-drag-handle-cell>
-					<nldd-spacer-cell slot="start" reorderable-only size="8"></nldd-spacer-cell>
+					<nldd-drag-handle-cell size="sm" reorderable-only></nldd-drag-handle-cell>
+					<nldd-spacer-cell reorderable-only size="8"></nldd-spacer-cell>
 					<nldd-text-cell text="Versleepbaar item"></nldd-text-cell>
 				</nldd-list-item>
 				<nldd-list-item>
-					<nldd-spacer-cell slot="start" size="12"></nldd-spacer-cell>
-					<nldd-drag-handle-cell size="sm" slot="start" reorderable-only></nldd-drag-handle-cell>
-					<nldd-spacer-cell slot="start" reorderable-only size="8"></nldd-spacer-cell>
+					<nldd-drag-handle-cell size="sm" reorderable-only></nldd-drag-handle-cell>
+					<nldd-spacer-cell reorderable-only size="8"></nldd-spacer-cell>
 					<nldd-text-cell text="Nog een item"></nldd-text-cell>
 				</nldd-list-item>
 			</nldd-list>
@@ -222,9 +217,8 @@ export const ResponsiveCells = {
 	render: () => html`
 		<nldd-list variant="box">
 			<nldd-list-item>
-				<nldd-spacer-cell slot="start" size="8"></nldd-spacer-cell>
-				<nldd-icon-cell slot="start"><nldd-icon name="file-text"></nldd-icon></nldd-icon-cell>
-				<nldd-spacer-cell slot="start" size="12"></nldd-spacer-cell>
+				<nldd-icon-cell><nldd-icon name="file-text"></nldd-icon></nldd-icon-cell>
+				<nldd-spacer-cell size="12"></nldd-spacer-cell>
 				<nldd-text-cell text="Begroting 2026"></nldd-text-cell>
 				<nldd-spacer-cell size="12"></nldd-spacer-cell>
 				<nldd-text-cell width="fit-content" color="secondary" text="Gewijzigd 2 uur geleden" hide-below="480px"></nldd-text-cell>
@@ -232,9 +226,8 @@ export const ResponsiveCells = {
 				<nldd-icon-cell hide-below="280px"><nldd-icon name="chevron-right-small"></nldd-icon></nldd-icon-cell>
 			</nldd-list-item>
 			<nldd-list-item>
-				<nldd-spacer-cell slot="start" size="8"></nldd-spacer-cell>
-				<nldd-icon-cell slot="start"><nldd-icon name="folder"></nldd-icon></nldd-icon-cell>
-				<nldd-spacer-cell slot="start" size="12"></nldd-spacer-cell>
+				<nldd-icon-cell><nldd-icon name="folder"></nldd-icon></nldd-icon-cell>
+				<nldd-spacer-cell size="12"></nldd-spacer-cell>
 				<nldd-text-cell text="Projecten"></nldd-text-cell>
 				<nldd-spacer-cell size="12"></nldd-spacer-cell>
 				<nldd-text-cell width="fit-content" color="secondary" text="Gisteren" hide-below="480px"></nldd-text-cell>

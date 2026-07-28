@@ -14,6 +14,7 @@ export const dragHandleCellStyles = css`
 		--_height: var(--semantics-controls-md-min-size);
 
 		display: inline-flex;
+		padding-block: var(--context-cell-padding-block, 0px);
 		cursor: grab;
 		width: fit-content;
 		align-items: center;
