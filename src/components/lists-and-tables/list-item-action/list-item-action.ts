@@ -14,19 +14,20 @@ export type ListItemActionWidth = 'fit-content' | 'full';
  * action — a tree row whose chevron expands while the label toggles a checkbox,
  * or a row that navigates with a separate button beside it.
  *
- * Slot it wherever cells go (`start`, default, `end`). The default slot sits
- * above the row divider, `start` and `end` sit outside it — so putting every
- * action in the default slot gives you a divider that runs the full width.
+ * Put it in the row where its cells would go: the item has one flat slot, and a
+ * segmented action takes the place of the cells it covers. Where the divider
+ * starts or stops is marked on the cells themselves (`divider-start` /
+ * `divider-end`), not by the slot an action sits in.
  *
  * A row is EITHER row-level interactive (`href` / `button` / `checkbox` on the
  * `nldd-list-item`) OR segmented (one or more of these). Both at once nests
  * a control inside a control, which is invalid HTML; the item DEV-warns.
  *
  * Unlike the row-wide action this does not bleed outward: a segmented action sits
- * between siblings, so an outward inset would overlap them. Widen the hit area
- * with spacer cells INSIDE the segmented action — that space then belongs to the target.
- * A segmented action never drops below the row's control size, so an icon-only one
- * still meets the WCAG 2.5.8 target size.
+ * between siblings, so an outward inset would overlap them. It owns its inline
+ * padding and never drops below the row's control size, so an icon-only one still
+ * meets the WCAG 2.5.8 target size — do not add spacer cells inside it for room
+ * or hit area, that doubles the space.
  *
  * In a `type="listbox"` list the segmented action renders as a plain container (no
  * control, not focusable) and DEV-warns: an `option` may not contain
@@ -47,8 +48,9 @@ export type ListItemActionWidth = 'fit-content' | 'full';
  * @attr {'fit-content'|'full'} width - `full` lets the segmented action grow to fill the row (default: 'fit-content')
  * @attr {string} accessible-label - Accessible name for the control. Set it when the segmented action holds only an icon, or when the cell text does not describe the action.
  *
- * @fires change - On a `checkbox` action after it toggles; detail: { checked: boolean } *
  * @slot - The cells that belong to this action
+ *
+ * @fires change - On a `checkbox` action after it toggles; detail: { checked: boolean }
  */
 @customElement('nldd-list-item-action')
 export class NLDDListItemAction extends LitElement {

@@ -40,6 +40,7 @@
  * @attr {string} target - Link target voor href (bijv. '_blank'); vult rel aan en meldt "Opent in nieuw tabblad"
  * @attr {string} rel - Link rel voor href; standaard 'noopener noreferrer' bij target='_blank'
  * @attr {string} accessible-label - Naam van de link of knop; zonder deze wordt `name` gebruikt
+ * @attr {object} translations - Overschrijf translation keys; niet gezette keys vallen terug op het Nederlands
  *
  * @example
  * ```html

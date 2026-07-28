@@ -335,6 +335,7 @@ Toont één persoon of organisatie als een compacte, ronde (persoon) of afgerond
 | `target` | `string` | Link target voor href (bijv. '_blank'); vult rel aan en meldt "Opent in nieuw tabblad" |
 | `rel` | `string` | Link rel voor href; standaard 'noopener noreferrer' bij target='_blank' |
 | `accessible-label` | `string` | Naam van de link of knop; zonder deze wordt `name` gebruikt |
+| `translations` | `object` | Overschrijf translation keys; niet gezette keys vallen terug op het Nederlands |
 
 ### `<nldd-blockquote>`
 
@@ -2639,7 +2640,7 @@ A container for `nldd-list-item` elements. The `type` attribute switches the lis
 | `type` | `'list'\|'navigation'\|'listbox'` | A11y role and behavior (default 'list'). See the docblock above. |
 | `reorderable` | `boolean` | Enables drag-to-reorder and pushes `reorderable` onto the items. Only valid with `type="list"`; wins over `arrow-navigation` when both are set. |
 | `no-dividers` | `boolean` | Hides the dividers between list items |
-| `arrow-navigation` | `boolean` | Roving-tabindex arrow-key navigation: ArrowUp/ArrowDown move focus between items, Home/End jump to first/last, and the list becomes a single tab stop. Ignored when `reorderable` is active on a `type="list"`, and in listbox mode. |
+| `arrow-navigation` | `boolean` | Roving-tabindex arrow-key navigation: ArrowUp/ArrowDown move focus between the rows as they appear on screen (in a tree that includes the rows of an open branch), Home/End jump to first/last, and the list becomes a single tab stop. Ignored when `reorderable` is active on a `type="list"`, and in listbox mode. |
 | `height` | `string` | Listbox only: caps the options' scroll region at this CSS length (e.g. '320px'). Unset means no cap. |
 | `empty-text` | `string` | Text for the default empty-state dialog (falls back to the Dutch i18n default). Ignored when `[slot=empty]` is filled. |
 | `empty-supporting-text` | `string` | Supporting text for the default empty-state dialog. Ignored when `[slot=empty]` is filled. |
@@ -2696,7 +2697,7 @@ A row within an `nldd-list`. Renders as a link when `href` is set, as a checkbox
 
 ### `<nldd-list-item-action>`
 
-A segmented action inside an `nldd-list-item`: it groups a run of cells and makes just that run clickable. Use it when a row needs more than one action — a tree row whose chevron expands while the label toggles a checkbox, or a row that navigates with a separate button beside it. Slot it wherever cells go (`start`, default, `end`). The default slot sits above the row divider, `start` and `end` sit outside it — so putting every action in the default slot gives you a divider that runs the full width. A row is EITHER row-level interactive (`href` / `button` / `checkbox` on the `nldd-list-item`) OR segmented (one or more of these). Both at once nests a control inside a control, which is invalid HTML; the item DEV-warns. Unlike the row-wide action this does not bleed outward: a segmented action sits between siblings, so an outward inset would overlap them. Widen the hit area with spacer cells INSIDE the segmented action — that space then belongs to the target. A segmented action never drops below the row's control size, so an icon-only one still meets the WCAG 2.5.8 target size. In a `type="listbox"` list the segmented action renders as a plain container (no control, not focusable) and DEV-warns: an `option` may not contain interactive descendants. The cells render unchanged, so nothing shifts.
+A segmented action inside an `nldd-list-item`: it groups a run of cells and makes just that run clickable. Use it when a row needs more than one action — a tree row whose chevron expands while the label toggles a checkbox, or a row that navigates with a separate button beside it. Put it in the row where its cells would go: the item has one flat slot, and a segmented action takes the place of the cells it covers. Where the divider starts or stops is marked on the cells themselves (`divider-start` / `divider-end`), not by the slot an action sits in. A row is EITHER row-level interactive (`href` / `button` / `checkbox` on the `nldd-list-item`) OR segmented (one or more of these). Both at once nests a control inside a control, which is invalid HTML; the item DEV-warns. Unlike the row-wide action this does not bleed outward: a segmented action sits between siblings, so an outward inset would overlap them. It owns its inline padding and never drops below the row's control size, so an icon-only one still meets the WCAG 2.5.8 target size — do not add spacer cells inside it for room or hit area, that doubles the space. In a `type="listbox"` list the segmented action renders as a plain container (no control, not focusable) and DEV-warns: an `option` may not contain interactive descendants. The cells render unchanged, so nothing shifts.
 
 **Attributes**
 
@@ -2725,7 +2726,7 @@ A segmented action inside an `nldd-list-item`: it groups a run of cells and make
 
 | Event | Beschrijving |
 | --- | --- |
-| `change` | On a `checkbox` action after it toggles; detail: { checked: boolean } * |
+| `change` | On a `checkbox` action after it toggles; detail: { checked: boolean } |
 
 ### `<nldd-spacer-cell>`
 
