@@ -9,21 +9,30 @@ nldd-form > form {
 	display: block;
 }
 
-nldd-form > form > * + * {
-	margin-top: var(--semantics-forms-gap);
+/* # Vertical rhythm
+
+   The gap hangs on the BOTTOM of the preceding child, not on the top of the
+   following one. Hidden children (formset management inputs, framework
+   bookkeeping) generate no box, so a top margin would let them push the first
+   visible field down; a bottom margin on them renders nothing. The :has()
+   guard keeps the rhythm from adding a trailing gap when the remaining
+   children are all hidden. */
+
+nldd-form > form > *:has(~ *:not([hidden]):not([type='hidden'])) {
+	margin-bottom: var(--semantics-forms-gap);
 }
 
-nldd-form nldd-form-field + nldd-form-field {
+nldd-form nldd-form-field:has(+ nldd-form-field):has(~ *:not([hidden]):not([type='hidden'])) {
 	@container (max-width: 640px) {
-		margin-top: var(--semantics-forms-gap-tight);
+		margin-bottom: var(--semantics-forms-gap-tight);
 	}
 	@container (min-width: 641px) {
-		margin-top: var(--semantics-forms-gap);
+		margin-bottom: var(--semantics-forms-gap);
 	}
 }
 
-nldd-form nldd-form-field[form-label-alignment='top']:not([label-alignment='left']):not([label-alignment='right']) + nldd-form-field[form-label-alignment='top']:not([label-alignment='left']):not([label-alignment='right']) {
+nldd-form nldd-form-field[form-label-alignment='top']:not([label-alignment='left']):not([label-alignment='right']):has(+ nldd-form-field[form-label-alignment='top']:not([label-alignment='left']):not([label-alignment='right'])):has(~ *:not([hidden]):not([type='hidden'])) {
 	@container (min-width: 641px) {
-		margin-top: var(--semantics-forms-gap-tight);
+		margin-bottom: var(--semantics-forms-gap-tight);
 	}
 }
