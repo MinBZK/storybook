@@ -91,11 +91,17 @@ components.list.drag-grabbed-text: Item opgepakt. Gebruik de pijltjestoetsen om 
 
 ### `-label`
 
-Korte tekst die iets beschrijft of aanduidt, zoals een form label, aria label of andere aanduiding. Kort als een titel, sentence case, geen punt.
+Korte tekst die iets beschrijft of aanduidt, zoals een form label, aria label of
+andere aanduiding. Kort als een titel, sentence case, geen punt.
+
+Een aria label eindigt dus op `-label` en niet op `-label-text`: het type zegt al
+dat het een aanduiding is. Is het de toegankelijke naam van het component zelf
+(of van een benoemd onderdeel), gebruik dan `accessible-label` respectievelijk
+`{onderdeel}-accessible-label`.
 
 ```
 general.email-label: E-mailadres
-components.pagination.accessibility-label: Paginering
+components.pagination.accessible-label: Paginering
 ```
 
 ### `-supporting-label`
@@ -166,7 +172,7 @@ general.friday-short-capitalize: Vr.
 ```typescript
 // {naam}.i18n.ts
 export const nldd{PascalName}Translations = {
-	'components.{naam}.label-text': 'Label',
+	'components.{naam}.accessible-label': 'Label',
 	'components.{naam}.previous-action': 'Vorige',
 };
 
@@ -186,7 +192,7 @@ import { nldd{PascalName}Translations } from './{naam}.i18n.js';
 @customElement('nldd-{naam}')
 export class NLDD{PascalName} extends withTranslations(LitElement, nldd{PascalName}Translations) {
 	override render() {
-		return html`${this._t('components.{naam}.label-text')}`;
+		return html`${this._t('components.{naam}.accessible-label')}`;
 	}
 }
 ```
