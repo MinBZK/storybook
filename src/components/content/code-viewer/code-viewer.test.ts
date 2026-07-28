@@ -338,8 +338,8 @@ describe('nldd-code-viewer', () => {
 	   ============================================================ */
 
 	// A long unwrapped line overflows horizontally; the scroller becomes the
-	// focusable, labelled scroll region (WCAG 2.1.1).
-	it('marks the scroller focusable + labelled when content overflows', async () => {
+	// focusable, labeled scroll region (WCAG 2.1.1).
+	it('marks the scroller focusable + labeled when content overflows', async () => {
 		el = await fixture<NLDDCodeViewer>(
 			`<nldd-code-viewer style="width: 120px">${'x'.repeat(400)}</nldd-code-viewer>`,
 		);
@@ -425,7 +425,7 @@ describe('nldd-code-viewer', () => {
 	   Programmatic focus (fix 6)
 	   ============================================================ */
 
-	// A read-only viewer's focus() must land on the labelled scroll region
+	// A read-only viewer's focus() must land on the labeled scroll region
 	// (.cm-scroller), the same target a keyboard tab reaches — not the
 	// non-editable .cm-content the base focus() would target.
 	it('focus() targets the scroller when the content is scrollable', async () => {

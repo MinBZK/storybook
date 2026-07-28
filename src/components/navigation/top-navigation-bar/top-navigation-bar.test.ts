@@ -75,7 +75,7 @@ describe('nldd-top-navigation-bar', () => {
 		// the wrapper inline margin insets every bar from the host edge
 		expect(logoBar.left).toBeGreaterThan(host.left);
 		expect(logoBar.right).toBeLessThan(host.right);
-		// logo bar and main bar cap + centre to the same content box
+		// logo bar and main bar cap + center to the same content box
 		expect(Math.abs(logoBar.left - mainBar.left)).toBeLessThanOrEqual(1);
 		expect(Math.abs(logoBar.right - mainBar.right)).toBeLessThanOrEqual(1);
 		// the menu negative inline margin must not force a horizontal scrollbar
@@ -329,7 +329,7 @@ describe('nldd-top-navigation-bar – menu sheet drill-down', () => {
 		expect(titleBar.hasAttribute('back-text')).toBe(false);
 		const parentRow = list.querySelectorAll('nldd-list-item')[1] as HTMLElement;
 		expect(parentRow.hasAttribute('button')).toBe(true);
-		expect(parentRow.querySelector('nldd-icon-cell[slot="end"]')?.getAttribute('icon')).toBe('chevron-right-small');
+		expect(parentRow.querySelector('nldd-icon-cell')?.getAttribute('icon')).toBe('chevron-right-small');
 
 		// Drill in → submenu items, title becomes the parent, back points home.
 		parentRow.shadowRoot!.querySelector<HTMLButtonElement>('button.list-item__action')!.click();

@@ -5,20 +5,10 @@
  * Gebruikt `display: contents` zodat het de layout van het child niet beïnvloedt.
  *
  * @element nldd-tooltip
- * @attr {string}  text      - Tooltip tekst
- * @attr {boolean} open      - Forceer de tooltip zichtbaar, ongeacht hover/focus. Gebruik voor programmatische feedback (bv. "Gekopieerd"). Reset naar false om hover-gedrag te herstellen.
- * @attr {string}  placement - Positie: 'top' | 'bottom' | 'left' | 'right' (standaard: 'bottom'; op touch devices automatisch 'top')
- * @attr {string}  timing    - Wanneer de tooltip verschijnt op hover:
- *                              'instant'  — direct, zonder show-delay.
- *                              'default'  — na de standaard show-delay (700ms).
- *                              'never'    — tooltip wordt nooit getoond;
- *                                            hover/focus events worden
- *                                            genegeerd, aria-describedby
- *                                            wordt onderdrukt en een al
- *                                            zichtbare tooltip verdwijnt.
- *                              Hide-delay en touch suppression blijven onder
- *                              alle waarden van kracht. Focus-trigger is
- *                              altijd instant.
+ * @attr {string} text - Tooltip tekst
+ * @attr {boolean} open - Forceer de tooltip zichtbaar, ongeacht hover/focus. Gebruik voor programmatische feedback (bv. "Gekopieerd"). Reset naar false om hover-gedrag te herstellen.
+ * @attr {string} placement - Positie: 'top' | 'bottom' | 'left' | 'right' (standaard: 'bottom'; op touch devices automatisch 'top')
+ * @attr {string} timing - Wanneer de tooltip verschijnt op hover: 'instant'  — direct, zonder show-delay. 'default'  — na de standaard show-delay (700ms). 'never'    — tooltip wordt nooit getoond; hover/focus events worden genegeerd, aria-describedby wordt onderdrukt en een al zichtbare tooltip verdwijnt. Hide-delay en touch suppression blijven onder alle waarden van kracht. Focus-trigger is altijd instant.
  *
  * @slot - Het element waarop de tooltip wordt getoond
  *

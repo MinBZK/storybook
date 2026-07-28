@@ -4,7 +4,7 @@ import './bar-split-view.js';
 import type { NLDDBarSplitView } from './bar-split-view.js';
 
 // jsdom returns 0 for getBoundingClientRect().width, so the component always
-// initialises at the 'sm' breakpoint in tests. Breakpoint-specific rendering
+// initializes at the 'sm' breakpoint in tests. Breakpoint-specific rendering
 // (e.g. dividers on md/lg) is tested by setting _currentBreakpoint directly.
 // The ResizeObserver must be disconnected first to prevent it from resetting
 // the breakpoint back to 'sm' on the next observation cycle.

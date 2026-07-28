@@ -17,13 +17,13 @@
  * werkt altijd en sluit met close{completed} (bijv. pas bij een echte zoekopdracht).
  *
  * @element nldd-just-in-time-education
- * @attr {boolean} active          - Toon de coach-mark. App-gestuurd; standaard false.
- * @attr {string}  text            - Titel van de callout.
- * @attr {string}  supporting-text - Ondersteunende tekst onder de titel.
- * @attr {string}  placement       - 'auto' | 'top' | 'bottom' | 'left' | 'right' (standaard 'auto').
- * @attr {boolean} dismissable     - Toon de dismiss-knop en sta sluiten toe via 1 klik/toets buiten de coach-mark. Standaard false: dan beheert de consumer het sluiten zelf.
- * @attr {string}  arrow-length    - Pijllengte en dus de afstand tussen card en control, als CSS-lengte (bijv. \`333px\`, \`30vh\`). Leeg = DS-standaard; onder 40px wordt geklemd.
- * @attr {boolean} no-arrow        - Verberg de pijl; de card staat dan dicht tegen het control.
+ * @attr {boolean} active - Toon de coach-mark. App-gestuurd; standaard false.
+ * @attr {string} text - Titel van de callout.
+ * @attr {string} supporting-text - Ondersteunende tekst onder de titel.
+ * @attr {string} placement - 'auto' | 'top' | 'bottom' | 'left' | 'right' (standaard 'auto').
+ * @attr {boolean} dismissable - Toon de dismiss-knop en sta sluiten toe via 1 klik/toets buiten de coach-mark. Standaard false: dan beheert de consumer het sluiten zelf.
+ * @attr {string} arrow-length - Pijllengte en dus de afstand tussen card en control, als CSS-lengte (bijv. \`333px\`, \`30vh\`). Leeg = DS-standaard; onder 40px wordt geklemd.
+ * @attr {boolean} no-arrow - Verberg de pijl; de card staat dan dicht tegen het control.
  *
  * @slot - Het control waar de coach-mark naar wijst (blijft in de normale flow).
  *
@@ -320,7 +320,7 @@ export class NLDDJustInTimeEducation extends withTranslations<NLDDJustInTimeEduc
 
 		// Top/bottom: shift along the horizontal (main) axis so the card keeps its
 		// preferred width near a viewport edge, sliding toward the side with room
-		// while the arrow still points at the control's centre. Left/right: no shift
+		// while the arrow still points at the control's center. Left/right: no shift
 		// — it would push the card off the control vertically (sticking to the
 		// viewport) instead of letting it sit beside the control.
 		const isVertical = side === 'top' || side === 'bottom';

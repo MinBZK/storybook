@@ -130,7 +130,7 @@ describe('nldd-progress-circle', () => {
 		expect(el.shadowRoot!.querySelector('.progress-circle__supporting-text')!.textContent).toBe('Bijna klaar');
 	});
 
-	it('applies a per-colour highlight-border filter to the track and segments', async () => {
+	it('applies a per-color highlight-border filter to the track and segments', async () => {
 		el = await fixture('<nldd-progress-circle value="60" color="accent"></nldd-progress-circle>');
 		await waitForUpdate(el);
 		const track = el.shadowRoot!.querySelector('.progress-circle__track')!;
@@ -138,7 +138,7 @@ describe('nldd-progress-circle', () => {
 		// Filter ids carry a per-instance suffix, so match by prefix.
 		expect(track.getAttribute('filter')).toMatch(/^url\(#progress-circle-border-track-/);
 		expect(seg.getAttribute('filter')).toMatch(/^url\(#progress-circle-border-accent-/);
-		// matching filter defs (with a flood) exist for the track and the used colour
+		// matching filter defs (with a flood) exist for the track and the used color
 		expect(el.shadowRoot!.querySelector('[id^="progress-circle-border-track-"] feFlood')).not.toBeNull();
 		expect(el.shadowRoot!.querySelector('[id^="progress-circle-border-accent-"] feFlood')).not.toBeNull();
 	});

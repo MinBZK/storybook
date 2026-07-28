@@ -20,16 +20,16 @@
  *
  * @element nldd-top-title-bar
  *
- * @attr {string} text            - Title of the bar, rendered as the h1 in the title group.
+ * @attr {string} text - Title of the bar, rendered as the h1 in the title group.
  * @attr {string} supporting-text - Subtitle under the title.
  * @attr {string} collapse-anchor - Id of the element whose top edge triggers the compact state on scroll. Without it the state is static (see above).
- * @attr {string} back-text       - Text of the back button and its accessible name. Empty hides the back button (and the divider).
- * @attr {string} back-href       - URL for the back button; renders a link and suppresses the `back` event.
- * @attr {string} dismiss-text    - Text of the dismiss button. Empty hides that button.
+ * @attr {string} back-text - Text of the back button and its accessible name. Empty hides the back button (and the divider).
+ * @attr {string} back-href - URL for the back button; renders a link and suppresses the `back` event.
+ * @attr {string} dismiss-text - Text of the dismiss button. Empty hides that button.
  *
  * @slot toolbar - Optional buttons to the left of the dismiss button
  *
- * @fires back    - Fired when the back button is clicked (not fired when back-href is set)
+ * @fires back - Fired when the back button is clicked (not fired when back-href is set)
  * @fires dismiss - Fired when the dismiss button is clicked
  */
 
@@ -206,7 +206,7 @@ export class NLDDTopTitleBar extends LitElement {
 		// Collapse once the anchor reaches this bar's own top edge. Measuring the
 		// bar (not the page) keeps this correct in both scroll modes: in nested
 		// scroll the bar is pinned at the page top, so its top equals the page top
-		// (unchanged behaviour); in root-scroll mode the bar is position:sticky
+		// (unchanged behavior); in root-scroll mode the bar is position:sticky
 		// against the document while the page element itself scrolls away, so the
 		// page top is no longer the sticky line — the bar's own top still is.
 		const anchor = this._anchorElement.getBoundingClientRect();

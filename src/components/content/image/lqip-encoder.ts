@@ -40,7 +40,7 @@
  *  This encoder gives every cell its own 8-bit Oklab triplet (2 bits L,
  *  3 bits a, 3 bits b) — the same resolution Lean uses for his single
  *  global base — plus an 8-bit base color for pixels outside the cell
- *  gradients. Total payload: 7 × 8 = 56 bits, serialised as a
+ *  gradients. Total payload: 7 × 8 = 56 bits, serialized as a
  *  comma-separated string "base,c1,c2,c3,c4,c5,c6" (each int 0-255).
  *
  *  Trade-off: wire-incompatible with Lean's reference tool. In exchange

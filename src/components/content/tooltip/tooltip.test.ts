@@ -152,7 +152,7 @@ describe('nldd-tooltip – show/hide', () => {
 		el.timing = 'never';
 		await waitForUpdate(el);
 
-		// Wait past the original show-delay window — the cancelled timer must
+		// Wait past the original show-delay window — the canceled timer must
 		// not still open the tooltip.
 		await new Promise(resolve => setTimeout(resolve, 100));
 		expect(isTooltipVisible(el)).toBe(false);

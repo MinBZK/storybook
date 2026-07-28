@@ -42,7 +42,7 @@ const PADDING_KEYS = [
  * into the section's block element and slotted content):
  *
  * - **background**: `inherit` (the default — transparent, shows the ancestor's
- *   surface) | `base` (the base surface colour) | `tinted`. Setting
+ *   surface) | `base` (the base surface color) | `tinted`. Setting
  *   `base`/`tinted` also cascades `--context-parent-background-color` so
  *   descendants (cards, nested sections) read the same surface.
  * - **scheme**: `inherit` (default) | `light` | `dark` | `inverted`.
@@ -185,7 +185,7 @@ export function PageSectionMixin<TBase extends Constructor<LitElement>>(
 		 * boundaries, so a `color-scheme` declared on an outer custom
 		 * element's host won't be picked up by the walk; we then fall
 		 * through to `prefers-color-scheme`. For reliable `'inverted'`
-		 * behaviour inside nested shadow trees, set `data-scheme` on
+		 * behavior inside nested shadow trees, set `data-scheme` on
 		 * `:root` so the fast path resolves the painted scheme directly.
 		 */
 		private _resolveActiveScheme(): 'light' | 'dark' {

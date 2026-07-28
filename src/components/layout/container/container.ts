@@ -13,12 +13,12 @@
  *
  * Layout modes:
  *  - `stack` (default): block items, stacked vertically. The "what you
- *    expect from DOM flow" mode.
+ *   expect from DOM flow" mode.
  *  - `row`: flex row, no wrapping. Items shrink or overflow.
  *  - `wrap`: flex row, items wrap to new lines.
  *  - `grid`: CSS grid, auto-fit columns at min 280px wide.
  *  - `columns`: CSS multi-column flow, 280px minimum column width,
- *    items don't split across column breaks.
+ *   items don't split across column breaks.
  *
  * Alignment maps to the layout's natural axis:
  *  - `stack`: vertical = main-axis (justify-content), horizontal = cross-axis (align-items)
@@ -52,51 +52,51 @@
  *
  * @element nldd-container
  *
- * @attr {string}  layout                 - 'stack' | 'row' | 'wrap' | 'grid' | 'columns' | 'lanes' (default: 'stack')
- * @attr {number}  column-count           - Force N columns (1-8) for layout=grid/columns/lanes
- * @attr {number}  sm-column-count        - Column count when this container is sm-wide
- * @attr {number}  md-column-count        - Column count when this container is md-wide
- * @attr {number}  lg-column-count        - Column count when this container is lg-wide
- * @attr {string}  gap                    - Gap between children
- * @attr {string}  sm-gap                 - Gap at sm breakpoint
- * @attr {string}  md-gap                 - Gap at md breakpoint
- * @attr {string}  lg-gap                 - Gap at lg breakpoint
- * @attr {string}  horizontal-alignment   - 'left' | 'center' | 'right'
- * @attr {string}  vertical-alignment     - 'top' | 'center' | 'bottom'
- * @attr {string}  padding                - Padding for all sides
- * @attr {string}  padding-inline         - Padding for left and right
- * @attr {string}  padding-block          - Padding for top and bottom
- * @attr {string}  padding-top            - Padding top
- * @attr {string}  padding-right          - Padding right
- * @attr {string}  padding-bottom         - Padding bottom
- * @attr {string}  padding-left           - Padding left
+ * @attr {string} layout - 'stack' | 'row' | 'wrap' | 'grid' | 'columns' | 'lanes' (default: 'stack')
+ * @attr {number} column-count - Force N columns (1-8) for layout=grid/columns/lanes
+ * @attr {number} sm-column-count - Column count when this container is sm-wide
+ * @attr {number} md-column-count - Column count when this container is md-wide
+ * @attr {number} lg-column-count - Column count when this container is lg-wide
+ * @attr {string} gap - Gap between children
+ * @attr {string} sm-gap - Gap at sm breakpoint
+ * @attr {string} md-gap - Gap at md breakpoint
+ * @attr {string} lg-gap - Gap at lg breakpoint
+ * @attr {string} horizontal-alignment - 'left' | 'center' | 'right'
+ * @attr {string} vertical-alignment - 'top' | 'center' | 'bottom'
+ * @attr {string} padding - Padding for all sides
+ * @attr {string} padding-inline - Padding for left and right
+ * @attr {string} padding-block - Padding for top and bottom
+ * @attr {string} padding-top - Padding top
+ * @attr {string} padding-right - Padding right
+ * @attr {string} padding-bottom - Padding bottom
+ * @attr {string} padding-left - Padding left
  * Breakpoints for the sm/md/lg padding attributes below: sm is up to 640px,
  * md is 641px to 1007px, lg is 1008px and up. Each is emitted as both an
  * @media (viewport) and an @container layout-container query; inside a
  * layout-container the container query wins, otherwise the viewport query
  * applies. An unset variant falls back to the matching base padding value.
  *
- * @attr {string}  sm-padding             - Padding for all sides at sm
- * @attr {string}  sm-padding-inline      - Padding left and right at sm
- * @attr {string}  sm-padding-block       - Padding top and bottom at sm
- * @attr {string}  sm-padding-top         - Padding top at sm
- * @attr {string}  sm-padding-right       - Padding right at sm
- * @attr {string}  sm-padding-bottom      - Padding bottom at sm
- * @attr {string}  sm-padding-left        - Padding left at sm
- * @attr {string}  md-padding             - Padding for all sides at md
- * @attr {string}  md-padding-inline      - Padding left and right at md
- * @attr {string}  md-padding-block       - Padding top and bottom at md
- * @attr {string}  md-padding-top         - Padding top at md
- * @attr {string}  md-padding-right       - Padding right at md
- * @attr {string}  md-padding-bottom      - Padding bottom at md
- * @attr {string}  md-padding-left        - Padding left at md
- * @attr {string}  lg-padding             - Padding for all sides at lg
- * @attr {string}  lg-padding-inline      - Padding left and right at lg
- * @attr {string}  lg-padding-block       - Padding top and bottom at lg
- * @attr {string}  lg-padding-top         - Padding top at lg
- * @attr {string}  lg-padding-right       - Padding right at lg
- * @attr {string}  lg-padding-bottom      - Padding bottom at lg
- * @attr {string}  lg-padding-left        - Padding left at lg
+ * @attr {string} sm-padding - Padding for all sides at sm
+ * @attr {string} sm-padding-inline - Padding left and right at sm
+ * @attr {string} sm-padding-block - Padding top and bottom at sm
+ * @attr {string} sm-padding-top - Padding top at sm
+ * @attr {string} sm-padding-right - Padding right at sm
+ * @attr {string} sm-padding-bottom - Padding bottom at sm
+ * @attr {string} sm-padding-left - Padding left at sm
+ * @attr {string} md-padding - Padding for all sides at md
+ * @attr {string} md-padding-inline - Padding left and right at md
+ * @attr {string} md-padding-block - Padding top and bottom at md
+ * @attr {string} md-padding-top - Padding top at md
+ * @attr {string} md-padding-right - Padding right at md
+ * @attr {string} md-padding-bottom - Padding bottom at md
+ * @attr {string} md-padding-left - Padding left at md
+ * @attr {string} lg-padding - Padding for all sides at lg
+ * @attr {string} lg-padding-inline - Padding left and right at lg
+ * @attr {string} lg-padding-block - Padding top and bottom at lg
+ * @attr {string} lg-padding-top - Padding top at lg
+ * @attr {string} lg-padding-right - Padding right at lg
+ * @attr {string} lg-padding-bottom - Padding bottom at lg
+ * @attr {string} lg-padding-left - Padding left at lg
  *
  * @slot - Container content
  */

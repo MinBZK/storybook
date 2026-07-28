@@ -60,9 +60,8 @@
  *
  * @element nldd-form-section
  *
- * @attr {string} text             - Heading-tekst (gerenderd in `<legend>`).
- * @attr {string} supporting-text  - Korte beschrijving onder de heading.
- *                                   Houd ≤ ~80 tekens (zie a11y-note).
+ * @attr {string} text - Heading-tekst (gerenderd in `<legend>`).
+ * @attr {string} supporting-text - Korte beschrijving onder de heading. Houd ≤ ~80 tekens (zie a11y-note).
  *
  * Children van de form-section worden in `.form-section__main` geplaatst.
  */

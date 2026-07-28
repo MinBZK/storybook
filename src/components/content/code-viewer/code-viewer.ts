@@ -140,7 +140,7 @@ export class NLDDCodeViewer extends NLDDCodeMirrorElement {
 
 	/* The viewer's content is non-editable, so the base focus() (which targets
 	 * the .cm-content contenteditable) would land on an element that isn't the
-	 * keyboard-tab target or the labelled region. Focus the scroller instead —
+	 * keyboard-tab target or the labeled region. Focus the scroller instead —
 	 * the same .cm-scroller[role=region] a keyboard user tabs to and the SR
 	 * announces — but only when it's actually scrollable (focusable); otherwise
 	 * there's nothing to focus, so no-op. */
@@ -311,7 +311,7 @@ export class NLDDCodeViewer extends NLDDCodeMirrorElement {
 	}
 
 	/* The horizontally-scrollable region is CodeMirror's scroller. Mark it
-	 * focusable + labelled when content overflows so keyboard and screen-reader
+	 * focusable + labeled when content overflows so keyboard and screen-reader
 	 * users can reach and announce it (WCAG 2.1.1). */
 	private _updateScrollable(): void {
 		const scroller = this.view?.scrollDOM;

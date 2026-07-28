@@ -11,7 +11,7 @@
  * @attr {string} popovertarget - ID of a popover element this button invokes; forwarded to the inner button. Use the popoverTargetElement property instead when the popover lives in another tree.
  * @attr {boolean} expandable - Whether the button has a icon to indicate it opens a menu or popover
  * @attr {boolean} expanded - Whether the popover/menu controlled by this button is currently open. Forwarded as aria-expanded on the inner button; toggles the is-expanded visual state.
- * @attr {string}  popup-type - Type of popup container this button opens: 'menu' | 'listbox' | 'dialog' | 'tree' | 'grid'. Sets aria-haspopup on the inner button and forces aria-expanded to always be present (true/false) so screen readers know the popup state.
+ * @attr {string} popup-type - Type of popup container this button opens: 'menu' | 'listbox' | 'dialog' | 'tree' | 'grid'. Sets aria-haspopup on the inner button and forces aria-expanded to always be present (true/false) so screen readers know the popup state.
  * @attr {string} width - Width mode: 'full' (stretches to container) or any CSS length (e.g. '240px')
  * @attr {string} text - Button text
  * @attr {string} supporting-text - Supporting text shown below the text (md/lg) or after it (sm/xs), in a secondary color. Part of the accessible name (unless `accessible-label` is set, which replaces the whole accessible name).
@@ -109,7 +109,7 @@ export class NLDDButton extends withTranslations(LitElement, nlddButtonTranslati
 	 * Direct element reference to the popover this button invokes — IDL-only
 	 * counterpart to `popovertarget` that works across shadow boundaries.
 	 * Use this when the popover lives in a different tree (e.g. an
-	 * `nldd-menu` reparented to `<body>`) so the browser still recognises
+	 * `nldd-menu` reparented to `<body>`) so the browser still recognizes
 	 * this button as the popover's invoker and excludes it from the popover
 	 * light-dismiss algorithm. Set programmatically; not reflected to an
 	 * HTML attribute (the attribute form is `popovertarget`, ID-based).
@@ -128,7 +128,7 @@ export class NLDDButton extends withTranslations(LitElement, nlddButtonTranslati
 	popoverTargetAction: 'toggle' | 'show' | 'hide' = 'toggle';
 
 	/**
-	 * Loading state. Shows an activity indicator centred over the (visually
+	 * Loading state. Shows an activity indicator centered over the (visually
 	 * hidden) content, marks the inner control `aria-busy="true"` and blocks
 	 * activation — without dropping the control from the tab order (unlike
 	 * `disabled`). The content stays laid out so the button keeps its width.
@@ -231,7 +231,7 @@ export class NLDDButton extends withTranslations(LitElement, nlddButtonTranslati
 			e.preventDefault();
 			return;
 		}
-		// A link button has no form behaviour. Otherwise drive the associated
+		// A link button has no form behavior. Otherwise drive the associated
 		// form ourselves: the shadow <button type="submit"|"reset"> can't reach
 		// the light-DOM form across the shadow boundary. requestSubmit() runs
 		// constraint validation and fires a cancelable submit event, matching a

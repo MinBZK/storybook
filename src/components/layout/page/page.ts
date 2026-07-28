@@ -17,7 +17,7 @@
  *
  * @attr {boolean} sticky-header - Sticky header
  * @attr {boolean} sticky-footer - Sticky footer
- * @attr {'inherit'|'base'|'tinted'} background - Use a grey background instead of white
+ * @attr {'inherit'|'base'|'tinted'} background - Use a gray background instead of white
  *
  * @slot header - Header content
  * @slot - Main content (scrollable)
@@ -89,7 +89,7 @@ export class NLDDPage extends LitElement implements ScrollModeConsumer {
 		super.connectedCallback();
 		// Set container-type/name as inline style on the host element. Doing
 		// this from a `:host` rule inside the shadow DOM works in Chromium
-		// but Safari does not always recognise the host as a container for
+		// but Safari does not always recognize the host as a container for
 		// slotted descendants — a known engine inconsistency. Inline on the
 		// light-DOM host avoids it entirely.
 		this.style.containerType = 'inline-size';

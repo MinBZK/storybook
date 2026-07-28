@@ -98,7 +98,7 @@ describe('nldd-image', () => {
 		el = await fixture('<nldd-image src="/foo.jpg" alt="Foo" aspect-ratio="16:9"></nldd-image>');
 		await waitForUpdate(el);
 		const media = el.shadowRoot!.querySelector<HTMLElement>('.image__media')!;
-		// Browser normalises the parsed value with surrounding spaces.
+		// Browser normalizes the parsed value with surrounding spaces.
 		expect(media.style.aspectRatio.replace(/\s+/g, '')).toBe('16/9');
 	});
 

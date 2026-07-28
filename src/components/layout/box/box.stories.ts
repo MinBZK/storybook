@@ -74,7 +74,7 @@ export const Backgrounds = {
 			</nldd-box>
 			<div style="background: var(--semantics-surfaces-tinted-background-color); padding: 24px;">
 				<nldd-box background="base">
-					<nldd-rich-text><p>background="base" — base-coloured box op een al getinte parent. Highlight ring is +2 stappen voor extra contrast.</p></nldd-rich-text>
+					<nldd-rich-text><p>background="base" — base-colored box op een al getinte parent. Highlight ring is +2 stappen voor extra contrast.</p></nldd-rich-text>
 				</nldd-box>
 			</div>
 		</div>

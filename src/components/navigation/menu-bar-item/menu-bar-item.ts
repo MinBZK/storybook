@@ -97,7 +97,7 @@ export class NLDDMenuBarItem extends LitElement {
 	 * Direct element reference to the popover this item invokes — IDL-only
 	 * counterpart to `popovertarget` that works across shadow boundaries.
 	 * Set by `nldd-menu` when this item is wired up as the menu's anchor
-	 * so the browser recognises the inner button as the menu's invoker
+	 * so the browser recognizes the inner button as the menu's invoker
 	 * and excludes the click from popover light-dismiss.
 	 */
 	@property({ attribute: false })

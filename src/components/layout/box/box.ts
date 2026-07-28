@@ -9,7 +9,7 @@
  * @attr {'tinted'|'base'} background - Surface fill.
  *   - `tinted` (default): for a box on a plain page bg.
  *   - `base`: for a box sitting on an already-tinted parent (the border
- *     ring gets +2 palette steps so it still reads against a card-on-card).
+ *   ring gets +2 palette steps so it still reads against a card-on-card).
  * @slot - Place components inside the box
  */
 import { LitElement } from 'lit';
