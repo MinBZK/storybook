@@ -18,7 +18,7 @@ describe('nldd-avatar', () => {
 		expect(el.shadowRoot).not.toBeNull();
 	});
 
-	it('defaults to type person, default colour, and a container-scaled size', async () => {
+	it('defaults to type person, default color, and a container-scaled size', async () => {
 		el = await fixture('<nldd-avatar name="Bart van de Biezen"></nldd-avatar>');
 		await waitForUpdate(el);
 		expect(el.type).toBe('person');
@@ -26,7 +26,7 @@ describe('nldd-avatar', () => {
 		expect(el.size).toBe(''); // empty = scale to the container (like nldd-icon)
 	});
 
-	it('reflects color="inherit" and keeps default colour unreflected', async () => {
+	it('reflects color="inherit" and keeps default color unreflected', async () => {
 		el = await fixture('<nldd-avatar name="Bart van de Biezen" color="inherit"></nldd-avatar>');
 		await waitForUpdate(el);
 		expect(el.color).toBe('inherit');
@@ -213,4 +213,72 @@ describe('nldd-avatar', () => {
 		expect(el.getAttribute('aria-hidden')).toBe('true');
 		expect(el.hasAttribute('role')).toBe(false);
 	});
+});
+
+describe('nldd-avatar – full size', () => {
+	let el: HTMLElement;
+
+	afterEach(() => {
+		if (el) cleanup(el);
+	});
+
+	it('size="full" names the container-filling default', async () => {
+		el = await fixture<HTMLElement>('<div style="width: 56px"><nldd-avatar name="Anna Tester" size="full"></nldd-avatar></div>');
+		const avatar = el.querySelector('nldd-avatar') as HTMLElement;
+		await waitForUpdate(avatar);
+		expect(Math.round(avatar.getBoundingClientRect().width)).toBe(56);
+	});
+
+	describe('interactief', () => {
+		it('rendert een link met href en houdt de host zonder role=img', async () => {
+			el = await fixture<NLDDAvatar>('<nldd-avatar name="Bart van de Biezen" href="/profiel/"></nldd-avatar>');
+			await waitForUpdate(el);
+			const link = el.shadowRoot!.querySelector('a.avatar');
+			expect(link).toBeTruthy();
+			expect(link!.getAttribute('href')).toBe('/profiel/');
+			// De control draagt de naam, dus de host niet nog een keer.
+			expect(link!.getAttribute('aria-label')).toBe('Bart van de Biezen');
+			expect(el.getAttribute('role')).toBeNull();
+			expect(el.getAttribute('aria-hidden')).toBeNull();
+		});
+
+		it('rendert een knop met button', async () => {
+			el = await fixture<NLDDAvatar>('<nldd-avatar name="Bart" button></nldd-avatar>');
+			await waitForUpdate(el);
+			const button = el.shadowRoot!.querySelector('button.avatar');
+			expect(button).toBeTruthy();
+			expect(button!.getAttribute('type')).toBe('button');
+		});
+
+		it('laat href winnen van button', async () => {
+			el = await fixture<NLDDAvatar>('<nldd-avatar name="Bart" href="/profiel/" button></nldd-avatar>');
+			await waitForUpdate(el);
+			expect(el.shadowRoot!.querySelector('a.avatar')).toBeTruthy();
+			expect(el.shadowRoot!.querySelector('button.avatar')).toBeNull();
+		});
+
+		it('gebruikt accessible-label boven name', async () => {
+			el = await fixture<NLDDAvatar>('<nldd-avatar name="Bart" button accessible-label="Profielmenu openen"></nldd-avatar>');
+			await waitForUpdate(el);
+			const button = el.shadowRoot!.querySelector('button.avatar');
+			expect(button!.getAttribute('aria-label')).toBe('Profielmenu openen');
+		});
+
+		it('zet rel bij target=_blank en meldt het nieuwe tabblad', async () => {
+			el = await fixture<NLDDAvatar>('<nldd-avatar name="Bart" href="https://example.org" target="_blank"></nldd-avatar>');
+			await waitForUpdate(el);
+			const link = el.shadowRoot!.querySelector('a.avatar')!;
+			expect(link.getAttribute('rel')).toContain('noopener');
+			expect(link.getAttribute('rel')).toContain('noreferrer');
+			expect(link.getAttribute('aria-label')).toContain('Opent in nieuw tabblad');
+		});
+
+		it('blijft een gewone div zonder href of button', async () => {
+			el = await fixture<NLDDAvatar>('<nldd-avatar name="Bart"></nldd-avatar>');
+			await waitForUpdate(el);
+			expect(el.shadowRoot!.querySelector('div.avatar')).toBeTruthy();
+			expect(el.getAttribute('role')).toBe('img');
+		});
+	});
+
 });

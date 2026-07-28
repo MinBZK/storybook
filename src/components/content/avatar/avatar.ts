@@ -25,16 +25,21 @@
  *
  * @element nldd-avatar
  *
- * @attr {string} src         - Afbeeldingsbron; valt bij een laadfout terug op initialen/icoon
- * @attr {string} srcset      - Responsive source set voor de afbeelding (het component zet zelf `sizes`)
- * @attr {string} name        - Naam van de persoon/organisatie; levert de afgeleide initialen en het toegankelijke label
- * @attr {string} initials    - Expliciete initialen, max 3 tekens (overschrijft de afleiding uit `name`; ook voor organisatie-acroniemen)
- * @attr {string} type        - `person` (cirkel, person-icoon) of `organization` (afgerond, building-icoon); standaard `person`
- * @attr {string} icon        - Overschrijft het type-afhankelijke terugval-icoon
- * @attr {string} size        - Vaste maat in px (spacer-uitgelijnd: 16, 20, 24, 28, 32, 40, 44, 48, 56, 64, 80, 96). Leeg = schaal mee met de container (net als nldd-icon); de initialen en het icoon schalen mee
- * @attr {string} color         - `default` (neutrale vulling) of `inherit` (vulling in de content-kleur: de `--context-content-color`-channel, of `currentColor` als die niet gezet is; tekst in de contrastkleur, zodat de avatar een icoon in bijvoorbeeld een knop kan vervangen); standaard `default`
+ * @attr {string} src - Afbeeldingsbron; valt bij een laadfout terug op initialen/icoon
+ * @attr {string} srcset - Responsive source set voor de afbeelding (het component zet zelf `sizes`)
+ * @attr {string} name - Naam van de persoon/organisatie; levert de afgeleide initialen en het toegankelijke label
+ * @attr {string} initials - Expliciete initialen, max 3 tekens (overschrijft de afleiding uit `name`; ook voor organisatie-acroniemen)
+ * @attr {string} type - `person` (cirkel, person-icoon) of `organization` (afgerond, building-icoon); standaard `person`
+ * @attr {string} icon - Overschrijft het type-afhankelijke terugval-icoon
+ * @attr {string} size - `full` (standaard) schaalt mee met de container, net als nldd-icon; of een vaste maat in px (spacer-uitgelijnd: 16, 20, 24, 28, 32, 40, 44, 48, 56, 64, 80, 96). Leeg gedraagt zich als `full`. De initialen en het icoon schalen mee
+ * @attr {string} color - `default` (neutrale vulling) of `inherit` (vulling in de content-kleur: de `--context-content-color`-channel, of `currentColor` als die niet gezet is; tekst in de contrastkleur, zodat de avatar een icoon in bijvoorbeeld een knop kan vervangen); standaard `default`
  * @attr {boolean} icon-aligned - Krimpt de zichtbare schijf naar 5/6 van de host, gecentreerd, zodat de avatar optisch uitlijnt met een icoon op hetzelfde grid (een icoon-glyph heeft ingebouwde marge)
- * @attr {boolean} decorative   - Verbergt de avatar voor hulpsoftware (gebruik wanneer de naam er al als tekst naast staat)
+ * @attr {boolean} decorative - Verbergt de avatar voor hulpsoftware (gebruik wanneer de naam er al als tekst naast staat)
+ * @attr {string} href - Maakt de avatar een link naar deze URL; de schijf zelf wordt de link, dus klikgebied en focusring volgen de vorm
+ * @attr {boolean} button - Maakt de avatar een knop; genegeerd wanneer `href` is gezet
+ * @attr {string} target - Link target voor href (bijv. '_blank'); vult rel aan en meldt "Opent in nieuw tabblad"
+ * @attr {string} rel - Link rel voor href; standaard 'noopener noreferrer' bij target='_blank'
+ * @attr {string} accessible-label - Naam van de link of knop; zonder deze wordt `name` gebruikt
  *
  * @example
  * ```html
@@ -42,11 +47,15 @@
  * <nldd-avatar name="Jan Jansen" src="/avatars/jan.jpg" size="48"></nldd-avatar>
  * <nldd-avatar type="organization" name="Kamer van Koophandel" initials="KvK"></nldd-avatar>
  * <nldd-avatar name="Bart van de Biezen" color="inherit"></nldd-avatar>
+ * <nldd-avatar name="Bart van de Biezen" href="/profiel/"></nldd-avatar>
+ * <nldd-avatar name="Bart van de Biezen" button accessible-label="Profielmenu openen"></nldd-avatar>
  * ```
  */
 import { LitElement, type PropertyValues } from 'lit';
 import { customElement, property, state } from 'lit/decorators.js';
 import { reflectNonDefault } from '../../../utilities/reflect-non-default.js';
+import { withTranslations } from '../../../utilities/with-translations.js';
+import { nlddAvatarTranslations } from './avatar.i18n.js';
 import { avatarStyles } from './avatar.styles.js';
 import { avatarTemplate } from './avatar.template.js';
 import '../icon/icon.js';
@@ -57,15 +66,15 @@ export type AvatarColor = 'default' | 'inherit';
 
 /** Fraction of the disc width the initials may occupy before they are scaled to
  *  fit. Leaves margin inside the circle so wide glyphs stay clear of the edge
- *  (the circle narrows above/below the centre, so caps need room). */
+ *  (the circle narrows above/below the center, so caps need room). */
 const INITIALS_FIT_RATIO = 0.75;
 
 /** Empty = scale to the container (like nldd-icon); the rest pin a fixed px size. */
 export type AvatarSize =
-	'' | '16' | '20' | '24' | '28' | '32' | '40' | '44' | '48' | '56' | '64' | '80' | '96';
+	'' | 'full' | '16' | '20' | '24' | '28' | '32' | '40' | '44' | '48' | '56' | '64' | '80' | '96';
 
 @customElement('nldd-avatar')
-export class NLDDAvatar extends LitElement {
+export class NLDDAvatar extends withTranslations(LitElement, nlddAvatarTranslations) {
 	static override styles = avatarStyles;
 
 	@property({ type: String })
@@ -97,6 +106,45 @@ export class NLDDAvatar extends LitElement {
 
 	@property({ type: Boolean, reflect: true })
 	decorative = false;
+
+	/** Maakt de avatar één link: de schijf zelf wordt de <a>, zodat klikgebied en
+	 *  focusring de vorm volgen (een overlay zou vierkant zijn). */
+	@property({ type: String, reflect: true })
+	href = '';
+
+	/** Maakt de avatar een knop. Genegeerd zodra `href` staat: één avatar is één
+	 *  actie, en een link wint van een knop (zelfde regel als nldd-card). */
+	@property({ type: Boolean, reflect: true })
+	button = false;
+
+	@property({ type: String })
+	target = '';
+
+	@property({ type: String })
+	rel = '';
+
+	/** Toegankelijke naam van de link of knop; zonder deze valt hij terug op
+	 *  `name`. Alleen van belang wanneer de avatar interactief is. */
+	@property({ type: String, attribute: 'accessible-label' })
+	accessibleLabel = '';
+
+	/** True zodra de avatar zelf een control is. */
+	get isInteractive(): boolean {
+		return Boolean(this.href) || this.button;
+	}
+
+	/** Resolve rel voor de link: bij _blank noopener/noreferrer erbij (spiegelt
+	 *  nldd-link en nldd-card), samengevoegd met een eigen rel. */
+	_resolvedRel(): string {
+		const base = this.rel ?? '';
+		if (this.target !== '_blank') return base;
+		const parts = new Set(base.split(/\s+/).filter(Boolean));
+		parts.add('noopener');
+		parts.add('noreferrer');
+		return [...parts].join(' ');
+	}
+
+	private _warnedLabel = false;
 
 	/** Set when the image errors, so the template falls through to the next
 	 *  content step. Not private: the template module reads it. */
@@ -155,8 +203,16 @@ export class NLDDAvatar extends LitElement {
 		// Trim to match resolvedInitials: a whitespace-only name yields no
 		// initials (so the icon shows), and must not claim role="img" with a
 		// blank label either — that reads as an unnamed image.
-		const labelled = !this.decorative && this.name.trim() !== '';
-		if (labelled) {
+		const labeled = !this.decorative && this.name.trim() !== '';
+		if (this.isInteractive) {
+			// De link of knop in de shadow root draagt de naam; de host mag er dan
+			// geen tweede (role="img") naast zetten, en hem verbergen zou de
+			// control zelf mee verbergen.
+			this.removeAttribute('role');
+			this.removeAttribute('aria-label');
+			this.removeAttribute('aria-hidden');
+		}
+		else if (labeled) {
 			this.setAttribute('role', 'img');
 			this.setAttribute('aria-label', this.name);
 			this.removeAttribute('aria-hidden');
@@ -165,6 +221,20 @@ export class NLDDAvatar extends LitElement {
 			this.setAttribute('aria-hidden', 'true');
 			this.removeAttribute('role');
 			this.removeAttribute('aria-label');
+		}
+		// Een interactieve avatar zonder naam is een stille toegankelijkheidsfout:
+		// de control bevat alleen een afbeelding of initialen. Waarschuw in dev,
+		// net als nldd-card.
+		if (import.meta.env?.DEV) {
+			const missing = this.isInteractive
+				&& !(this.accessibleLabel || this.name).trim();
+			if (missing && !this._warnedLabel) {
+				this._warnedLabel = true;
+				console.warn('<nldd-avatar>: een avatar met `href` of `button` heeft `accessible-label` (of `name`) nodig, anders heeft de control geen toegankelijke naam.');
+			}
+			else if (!missing) {
+				this._warnedLabel = false;
+			}
 		}
 		// The disc size doesn't change when only its content does, so the
 		// ResizeObserver won't fire — re-measure here on every change that can
