@@ -138,7 +138,12 @@ export class NLDDToggleButtonGroup extends LitElement {
 
 		// Deselect all other buttons when a radio button is selected
 		this._getButtons().forEach(button => {
-			if (button !== changedButton) button.selected = false;
+			if (button === changedButton) return;
+			button.selected = false;
+			// Synchronously, not via the button's own update cycle: the change
+			// event is still propagating, and a consumer serializing the form in
+			// its listener would otherwise still see this button's old value.
+			button.commitFormValue?.();
 		});
 	};
 
@@ -163,8 +168,12 @@ export class NLDDToggleButtonGroup extends LitElement {
 
 		// Directly mutate selected rather than calling toggle() to avoid triggering
 		// _handleChange which would attempt to deselect other buttons a second time.
-		if (activeButton) activeButton.selected = false;
+		if (activeButton) {
+			activeButton.selected = false;
+			activeButton.commitFormValue?.();
+		}
 		nextButton.selected = true;
+		nextButton.commitFormValue?.();
 
 		const input = nextButton.shadowRoot?.querySelector<HTMLInputElement>('.toggle-button__input');
 		input?.focus();
