@@ -39,7 +39,7 @@ export const collectionStyles = css`
 		}
 
 		@container layout-container (min-width: ${lgMin}) {
-			--_gap: var(--components-collection-sm-gap);
+			--_gap: var(--components-collection-lg-gap);
 		}
 
 		display: flex;
