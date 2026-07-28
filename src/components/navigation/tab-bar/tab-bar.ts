@@ -5,12 +5,12 @@
  * Exports both NLDDTabBar and NLDDTabBarItem.
  *
  * @element nldd-tab-bar
- * @attr {string}  variant           - Visual mode: 'icon-and-text' | 'text' | 'icon'. When unset, the variant is inferred from each item's content. Drives the layout at every size.
- * @attr {string}  size              - Size: 'md' | 'lg' (default: 'md'). 'lg' enlarges the touch target; the per-variant layout is preserved (icon-and-text stacks the icon over the text, text renders large text, icon renders a larger icon-only control).
- * @attr {boolean} navigation        - Renders a nav landmark instead of tablist; use for href-based items that navigate between routes
- * @attr {boolean} disabled          - Disables the whole bar: dims it, blocks pointer interaction, and takes the tabs out of the tab order
- * @attr {boolean} centered          - Centers the tabs in the container (host fills the row, tabs group in the middle)
- * @attr {string}  accessible-label  - Accessible name for the navigation region; defaults to 'Tabs'
+ * @attr {string} variant - Visual mode: 'icon-and-text' | 'text' | 'icon'. When unset, the variant is inferred from each item's content. Drives the layout at every size.
+ * @attr {string} size - Size: 'md' | 'lg' (default: 'md'). 'lg' enlarges the touch target; the per-variant layout is preserved (icon-and-text stacks the icon over the text, text renders large text, icon renders a larger icon-only control).
+ * @attr {boolean} navigation - Renders a nav landmark instead of tablist; use for href-based items that navigate between routes
+ * @attr {boolean} disabled - Disables the whole bar: dims it, blocks pointer interaction, and takes the tabs out of the tab order
+ * @attr {boolean} centered - Centers the tabs in the container (host fills the row, tabs group in the middle)
+ * @attr {string} accessible-label - Accessible name for the navigation region; defaults to 'Tabs'
  *
  * @slot - nldd-tab-bar-item elements
  *
@@ -19,11 +19,11 @@
  * ---
  *
  * @element nldd-tab-bar-item
- * @attr {boolean} selected  - Selected state (managed by nldd-tab-bar)
- * @attr {string}  text      - Tab text; also used as accessible name for icon-only items
- * @attr {string}  href      - Optional link URL; renders an anchor instead of a button
- * @attr {string}  icon      - Icon name for nldd-icon; an alternative to the icon slot. The icon and icon-and-text variants fall back to a placeholder icon when neither is provided.
- * @attr {'md'|'lg'} size    - Size: 'md' (default) | 'lg'. Set by nldd-tab-bar from its own size; 'lg' enlarges the touch target while keeping the variant layout.
+ * @attr {boolean} selected - Selected state (managed by nldd-tab-bar)
+ * @attr {string} text - Tab text; also used as accessible name for icon-only items
+ * @attr {string} href - Optional link URL; renders an anchor instead of a button
+ * @attr {string} icon - Icon name for nldd-icon; an alternative to the icon slot. The icon and icon-and-text variants fall back to a placeholder icon when neither is provided.
+ * @attr {'md'|'lg'} size - Size: 'md' (default) | 'lg'. Set by nldd-tab-bar from its own size; 'lg' enlarges the touch target while keeping the variant layout.
  *
  * @slot icon - Icon content
  *

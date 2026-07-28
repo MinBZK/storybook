@@ -20,59 +20,30 @@
  *
  * @element nldd-popover
  *
- * @attr {string}  anchor          - ID van het trigger-element voor positionering
- * @attr {string}  placement       - Floating UI placement (default: 'bottom-start')
- * @attr {string}  width           - Expliciete width (default: 320px via --components-popover-default-width)
- * @attr {string}  top             - CSS top-positie. Wanneer gezet (alleen of
- *                                    samen met andere edge-attrs of `centered`)
- *                                    wordt Floating UI's anchor-positionering
- *                                    overgeslagen — de popover staat dan vrij
- *                                    op het scherm. De `anchor` blijft wel
- *                                    nodig voor ARIA-koppeling op de trigger.
- *                                    Geen effect op sm (bottom-sheet wint).
- * @attr {string}  left            - CSS left-positie. Zie `top` voor semantiek.
- * @attr {string}  right           - CSS right-positie. Zie `top` voor semantiek.
- * @attr {string}  bottom          - CSS bottom-positie. Zie `top` voor semantiek.
- * @attr {boolean} centered        - Centreert beide assen op de viewport. Per
- *                                    as overrideable: `centered top="0"` =
- *                                    horizontaal gecentreerd, top-aligned.
- *                                    Mirrort CSS `place-items: center` met
- *                                    `align-items`/`justify-items` overrides.
- * @attr {boolean} sm-full-height  - Op sm-viewport (waar de popover als
- *                                    bottom-sheet rendert) de volledige
- *                                    beschikbare hoogte vullen i.p.v. te
- *                                    krimpen naar content. Geen effect op
- *                                    md+ (anchored modus). Opt-in voor
- *                                    content-heavy use cases zoals zoek-
- *                                    resultaten of lange detail-views; volgt
- *                                    Apple/Material conventie van content-
- *                                    sized als default.
- * @attr {string} accessible-label - (verplicht) Toegankelijke naam (aria-label).
- *                                    Valt terug op de i18n default ('Popover')
- *                                    als niet gezet — geef altijd een unieke,
- *                                    beschrijvende naam.
- * @attr {string} role             - ARIA role (default: 'dialog'). Voor
- *                                    informationele content (tooltip-callout,
- *                                    rich-text help-panel) zonder dialog-
- *                                    interactie-pattern: zet `role="region"`.
- *                                    Voor menu-style triggers: `role="menu"` +
- *                                    `aria-haspopup="menu"` op de anchor.
- *                                    De popover overschrijft een expliciet
- *                                    gezette role nooit.
- * @attr {object} translations       - Override translation keys; unset keys
- *                                    vallen terug op de Nederlandse default.
+ * @attr {string} anchor - ID van het trigger-element voor positionering
+ * @attr {string} placement - Floating UI placement (default: 'bottom-start')
+ * @attr {string} width - Expliciete width (default: 320px via --components-popover-default-width)
+ * @attr {string} top - CSS top-positie. Wanneer gezet (alleen of samen met andere edge-attrs of `centered`) wordt Floating UI's anchor-positionering overgeslagen — de popover staat dan vrij op het scherm. De `anchor` blijft wel nodig voor ARIA-koppeling op de trigger. Geen effect op sm (bottom-sheet wint).
+ * @attr {string} left - CSS left-positie. Zie `top` voor semantiek.
+ * @attr {string} right - CSS right-positie. Zie `top` voor semantiek.
+ * @attr {string} bottom - CSS bottom-positie. Zie `top` voor semantiek.
+ * @attr {boolean} centered - Centreert beide assen op de viewport. Per as overrideable: `centered top="0"` = horizontaal gecentreerd, top-aligned. Mirrort CSS `place-items: center` met `align-items`/`justify-items` overrides.
+ * @attr {boolean} sm-full-height - Op sm-viewport (waar de popover als bottom-sheet rendert) de volledige beschikbare hoogte vullen i.p.v. te krimpen naar content. Geen effect op md+ (anchored modus). Opt-in voor content-heavy use cases zoals zoekresultaten of lange detail-views; volgt Apple/Material conventie van content-sized als default.
+ * @attr {string} accessible-label - (verplicht) Toegankelijke naam (aria-label). Valt terug op de i18n default ('Popover') als niet gezet — geef altijd een unieke, beschrijvende naam.
+ * @attr {string} role - ARIA role (default: 'dialog'). Voor informationele content (tooltip-callout, rich-text help-panel) zonder dialog-interactiepatroon: zet `role="region"`. Voor menu-style triggers: `role="menu"` + `aria-haspopup="menu"` op de anchor. De popover overschrijft een expliciet gezette role nooit.
+ * @attr {object} translations - Override translation keys; unset keys vallen terug op de Nederlandse default.
  *
  * @prop {Element|null} anchorElement - Programmatische anchor (heeft voorrang op anchor attribuut)
- * @prop {boolean} open               - (read-only) Of de popover momenteel open is
+ * @prop {boolean} open - (read-only) Of de popover momenteel open is
  *
  * @slot - Vrije content (bijv. nldd-container met form/info)
  *
- * @fires open  - Wanneer de popover wordt geopend
+ * @fires open - Wanneer de popover wordt geopend
  * @fires close - Wanneer de popover wordt gesloten
  *
- * @method show()     - Opent de popover
- * @method hide()     - Sluit de popover
- * @method toggle()   - Toggelt de popover
+ * @method show() - Opent de popover
+ * @method hide() - Sluit de popover
+ * @method toggle() - Toggelt de popover
  * @method reposition() - Herberekent de positie t.o.v. anchor
  */
 
@@ -501,7 +472,7 @@ export class NLDDPopover extends LitElement {
 		this._pointerdownOnAnchorWhileOpen = true;
 	};
 
-	/** A gesture the browser cancelled (a tap that became a scroll or drag) never
+	/** A gesture the browser canceled (a tap that became a scroll or drag) never
 	 *  produces the click that would spend the flag, so clear it here too. */
 	private _handlePointerCancel = (): void => {
 		this._swallowNextClick = false;

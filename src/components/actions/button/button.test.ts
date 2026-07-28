@@ -307,7 +307,7 @@ describe('nldd-button – href / link rendering', () => {
 
 	it('overrides the new-tab wording via the translations property', async () => {
 		el = await fixture<NLDDButton>('<nldd-button href="/overzicht" target="_blank" text="Terug"></nldd-button>');
-		el.translations = { 'components.button.opens-in-new-tab-text': 'Opens in a new tab' };
+		el.translations = { 'components.button.opens-in-new-tab-label': 'Opens in a new tab' };
 		await waitForUpdate(el);
 		expect(el.shadowRoot!.querySelector('.button__opens-in-new-tab-hint')?.textContent).toBe('Opens in a new tab');
 	});
@@ -780,7 +780,7 @@ describe('nldd-button – slotted popup overlay', () => {
 		if (el) cleanup(el);
 	});
 
-	// The popover initialises the trigger's aria on connect, before any open:
+	// The popover initializes the trigger's aria on connect, before any open:
 	// a screen-reader user must hear "opens a dialog" on first tab, not only
 	// after opening it once.
 	it('sets aria-haspopup on the inner button before the popover is ever opened', async () => {

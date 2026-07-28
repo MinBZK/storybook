@@ -52,7 +52,7 @@ export function template(this: NLDDButton, helpers: TemplateHelpers) {
 	// A new-tab link is a change of context, so announce it (WCAG 2.1 SC 3.2.2).
 	// Only the <a> path (href) can open a new tab.
 	const opensInNewTabHint = this.href && this.target === '_blank'
-		? this._t('components.button.opens-in-new-tab-text')
+		? this._t('components.button.opens-in-new-tab-label')
 		: '';
 
 	// `supporting-text` renders in a sibling span next to the text; the

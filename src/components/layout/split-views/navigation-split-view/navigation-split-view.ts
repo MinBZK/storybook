@@ -11,26 +11,26 @@
  * Use <code>nldd-split-view-pane</code> as direct children for automatic
  * back button handling.
  *
- * @attr {boolean} inspector-auto-hidden                - Inspector hidden to free up space for other panes (read-only, set by the split view)
- * @attr {boolean} inspector-as-sheet                   - Always show the inspector as a sheet regardless of available space
- * @attr {boolean} primary-sidebar-as-sheet             - Always show the primary sidebar as a sheet, keeping main visible at full width
- * @attr {string}  inspector-accessible-label           - Accessible name for the inspector sheet dialog (default: 'Details')
- * @attr {string}  primary-sidebar-accessible-label     - Accessible name for the primary sidebar sheet dialog (default: 'Navigatie')
- * @attr {boolean} sidebar-as-sheet                     - @deprecated alias for primary-sidebar-as-sheet (kept for backwards compatibility)
- * @attr {string}  sidebar-accessible-label             - @deprecated alias for primary-sidebar-accessible-label (kept for backwards compatibility)
+ * @attr {boolean} inspector-auto-hidden - Inspector hidden to free up space for other panes (read-only, set by the split view)
+ * @attr {boolean} inspector-as-sheet - Always show the inspector as a sheet regardless of available space
+ * @attr {boolean} primary-sidebar-as-sheet - Always show the primary sidebar as a sheet, keeping main visible at full width
+ * @attr {string} inspector-accessible-label - Accessible name for the inspector sheet dialog (default: 'Details')
+ * @attr {string} primary-sidebar-accessible-label - Accessible name for the primary sidebar sheet dialog (default: 'Navigatie')
+ * @attr {boolean} sidebar-as-sheet - @deprecated alias for primary-sidebar-as-sheet (kept for backwards compatibility)
+ * @attr {string} sidebar-accessible-label - @deprecated alias for primary-sidebar-accessible-label (kept for backwards compatibility)
  *
- * @slot primary-sidebar   - Left pane for primary navigation
+ * @slot primary-sidebar - Left pane for primary navigation
  * @slot secondary-sidebar - Second pane for secondary navigation (shown when slotted)
- * @slot main              - Center pane for primary content
- * @slot inspector         - Right pane for details or properties
- * @slot sidebar           - @deprecated alias for the primary-sidebar slot (kept for backwards compatibility)
+ * @slot main - Center pane for primary content
+ * @slot inspector - Right pane for details or properties
+ * @slot sidebar - @deprecated alias for the primary-sidebar slot (kept for backwards compatibility)
  *
- * @method showInspectorSheet()       - Opens the inspector as a sheet (async); only has effect when inspector-auto-hidden or inspector-as-sheet is active
- * @method hideInspectorSheet()       - Closes the inspector sheet
- * @method showPrimarySidebarSheet()  - Opens the primary sidebar as a sheet (async); only has effect when primary-sidebar-as-sheet is active
- * @method hidePrimarySidebarSheet()  - Closes the primary sidebar sheet
- * @method showSidebarSheet()         - @deprecated alias for showPrimarySidebarSheet() (kept for backwards compatibility)
- * @method hideSidebarSheet()         - @deprecated alias for hidePrimarySidebarSheet() (kept for backwards compatibility)
+ * @method showInspectorSheet() - Opens the inspector as a sheet (async); only has effect when inspector-auto-hidden or inspector-as-sheet is active
+ * @method hideInspectorSheet() - Closes the inspector sheet
+ * @method showPrimarySidebarSheet() - Opens the primary sidebar as a sheet (async); only has effect when primary-sidebar-as-sheet is active
+ * @method hidePrimarySidebarSheet() - Closes the primary sidebar sheet
+ * @method showSidebarSheet() - @deprecated alias for showPrimarySidebarSheet() (kept for backwards compatibility)
+ * @method hideSidebarSheet() - @deprecated alias for hidePrimarySidebarSheet() (kept for backwards compatibility)
  */
 import { LitElement } from 'lit';
 import { customElement, property, state } from 'lit/decorators.js';

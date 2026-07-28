@@ -183,3 +183,25 @@ KlikbareKaart.args = {
 	href: '#',
 	accessibleLabel: 'Dossier 2024-001',
 };
+
+/**
+ * Met `button` wordt de hele kaart een knop (overlay-button). De activatie komt
+ * als gewone, composed `click` op de kaart aan — een listener of htmx-attribuut
+ * op `nldd-card` zelf werkt dus direct, en Enter/Space doen het native.
+ */
+export const KaartAlsKnop = () => html`
+	<nldd-card button
+		accessible-label="Dossier 2024-001 openen"
+		style="max-width: 360px;"
+		@click=${() => window.alert('Kaart geactiveerd')}
+	>
+		<nldd-container slot="header" padding-top="16" padding-inline="16">
+			<nldd-title size="4"><h3>Dossier 2024-001</h3></nldd-title>
+		</nldd-container>
+		<nldd-container padding="16">
+			<nldd-rich-text>
+				<p>De hele kaart is een knop: klik, of Tab ernaartoe en druk Enter.</p>
+			</nldd-rich-text>
+		</nldd-container>
+	</nldd-card>
+`;

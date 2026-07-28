@@ -10,10 +10,8 @@
  *
  * @element nldd-breadcrumbs
  *
- * @attr {string}  accessible-label - Override the nav's aria-label.
- *                                    Defaults to the i18n value (NL: "Kruimelpad").
- * @attr {object}  translations     - Override translation keys; unset keys
- *                                    fall back to the Dutch default.
+ * @attr {string} accessible-label - Override the nav's aria-label. Defaults to the i18n value (NL: "Kruimelpad").
+ * @attr {object} translations - Override translation keys; unset keys fall back to the Dutch default.
  *
  * @slot - `nldd-breadcrumbs-item` children.
  */
@@ -33,10 +31,10 @@ import { nlddBreadcrumbsTranslations, type NLDDBreadcrumbsTranslations } from '.
  * is set, and as plain text otherwise. Each item renders its own trailing
  * `›` separator; the last item in the list hides it via `:host(:last-of-type)`.
  *
+ * @element nldd-breadcrumbs-item
+ *
  * @attr {string} href - Link target. Ignored when `current` is set.
- * @attr {boolean} current - Marks this item as the current page (renders as
- *                           plain text + `aria-current="page"`). Typical use
- *                           is on the last item.
+ * @attr {boolean} current - Marks this item as the current page (renders as plain text + `aria-current="page"`). Typical use is on the last item.
  * @attr {string} text - Item label. Falls back to the default slot.
  *
  * @slot - Item label (alternative to `text`).

@@ -10,7 +10,7 @@ export function template(this: NLDDLink, helpers: TemplateHelpers) {
 	// A new-tab link is a change of context, so announce it (WCAG 2.1 SC 3.2.2).
 	// Suppressed when disabled (the <a> carries no href, so it doesn't navigate).
 	const opensInNewTabHint = !this.disabled && this.href && this.target === '_blank'
-		? this._t('components.link.opens-in-new-tab-text')
+		? this._t('components.link.opens-in-new-tab-label')
 		: '';
 	// aria-label wins the accessible-name cascade, so when one is set the hint
 	// must live inside it; otherwise the name is content-derived (text or slot)

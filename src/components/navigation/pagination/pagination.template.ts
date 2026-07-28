@@ -45,7 +45,7 @@ export function paginationTemplate(component: NLDDPagination): TemplateResult {
 
 	return html`
 		<nav class="pagination"
-			aria-label=${t('components.pagination.accessibility-label')}
+			aria-label=${t('components.pagination.accessible-label')}
 		>
 			<div class="pagination__previous-button">
 				<nldd-icon-button

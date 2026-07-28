@@ -1,7 +1,7 @@
 /**
  * Nederlandse Digitale Dienst Activity Indicator Component (Lit + TypeScript)
  *
- * Layout placeholder that fills its parent and centres an indeterminate
+ * Layout placeholder that fills its parent and centers an indeterminate
  * activity indicator. By default the indicator is held back for 1000ms so
  * brief loading states don't flash; once the delay passes it fades in. Set
  * `timing="instant"` to skip the delay (the fade-in still plays) — this is
@@ -11,7 +11,7 @@
  * `--context-content-color` channel (set by list-item / table / menu on their
  * content), falling back to `currentColor` wherever that channel is unset
  * (buttons, rich-text, standalone) — so a spinner inside a cell tracks the
- * row's state-aware content colour, while embedders relying on currentColor are
+ * row's state-aware content color, while embedders relying on currentColor are
  * unaffected. An optional label sits below (hidden unless `show-text` is set).
  * Drop a
  * `<nldd-progress-circle>`, `<nldd-progress-bar>` or any element in the
@@ -31,7 +31,7 @@
  * (`?complete=${!isLoading}`). With no slotted content it stays the standalone
  * placeholder described above.
  *
- * Reconnect behaviour: every `connectedCallback` resets the timer and hides
+ * Reconnect behavior: every `connectedCallback` resets the timer and hides
  * the indicator again. If a consumer toggles the element via a conditional
  * render (remove + re-insert) the indicator disappears and re-fades after
  * another delay. Keep the element mounted and toggle visibility / `hidden`
@@ -140,7 +140,7 @@ export class NLDDActivityIndicator extends LitElement {
 
 	/** Accessible name announced while loading. */
 	public get _accessibleName(): string {
-		return this.text || this._t('components.activity-indicator.loading-text');
+		return this.text || this._t('components.activity-indicator.loading-label');
 	}
 
 	override connectedCallback(): void {

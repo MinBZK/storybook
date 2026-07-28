@@ -6,33 +6,32 @@
  * Exports both NLDDDocumentTabBar and NLDDDocumentTabBarItem.
  *
  * @element nldd-document-tab-bar
- * @attr {string}  accessible-label       - Accessible name for the navigation landmark
- * @attr {object}  translations           - Translation overrides; unset keys fall back to Dutch.
- *                                          Available keys: 'components.document-tab-bar.overflow-action' (default: 'Meer')
+ * @attr {string} accessible-label - Accessible name for the navigation landmark
+ * @attr {object} translations - Translation overrides; unset keys fall back to Dutch. Available keys: 'components.document-tab-bar.overflow-action' (default: 'Meer')
  *
  * @migration The `overflow-button-label` attribute has been removed.
  *            Use `translations` property instead: `.translations=${{ 'components.document-tab-bar.overflow-action': 'Tabs' }}`
- * @attr {boolean} navigation             - Renders a nav landmark instead of tablist; use when items have hrefs
+ * @attr {boolean} navigation - Renders a nav landmark instead of tablist; use when items have hrefs
  *
- * @slot     - nldd-document-tab-bar-item elements
+ * @slot - nldd-document-tab-bar-item elements
  * @slot end - Action buttons (e.g. new tab)
  *
- * @fires tabchange  - Fired when a tab is selected; detail: { item }
+ * @fires tabchange - Fired when a tab is selected; detail: { item }
  * @fires tabdismiss - Fired when a tab is dismissed; detail: { item, nextItem }
- * @fires tabempty   - Fired when the last tab is dismissed
+ * @fires tabempty - Fired when the last tab is dismissed
  * @fires nldd-reorder - Fired when tabs are reordered via drag; detail: { fromIndex, toIndex }
  *
  * ---
  *
  * @element nldd-document-tab-bar-item
- * @attr {boolean} selected              - Selected state (managed by nldd-document-tab-bar)
- * @attr {string}  text                  - Primary text
- * @attr {string}  supporting-text       - Supporting text
- * @attr {string}  short-text            - Short primary text (visible below 200px width)
- * @attr {string}  short-supporting-text - Short supporting text (visible below 200px width)
- * @attr {string}  href                  - Optional link URL; renders an anchor instead of a div
+ * @attr {boolean} selected - Selected state (managed by nldd-document-tab-bar)
+ * @attr {string} text - Primary text
+ * @attr {string} supporting-text - Supporting text
+ * @attr {string} short-text - Short primary text (visible below 200px width)
+ * @attr {string} short-supporting-text - Short supporting text (visible below 200px width)
+ * @attr {string} href - Optional link URL; renders an anchor instead of a div
  *
- * @fires select  - Fired when the item is activated; detail: { item }
+ * @fires select - Fired when the item is activated; detail: { item }
  * @fires dismiss - Fired when the dismiss button is clicked; detail: { item }
  */
 import { LitElement } from 'lit';
@@ -546,7 +545,7 @@ export class NLDDDocumentTabBar extends withTranslations(LitElement, nlddDocumen
 	private _cancelDrag(): void {
 		if (!this._draggingEl) return;
 		this._cleanupDrag();
-		this._announce(this._t('components.document-tab-bar.reorder-cancelled-text'));
+		this._announce(this._t('components.document-tab-bar.reorder-canceled-text'));
 	}
 
 	private _cleanupDrag(): void {

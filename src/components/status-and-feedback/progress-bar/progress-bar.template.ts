@@ -26,7 +26,7 @@ export function progressBarTemplate(component: NLDDProgressBar, onSlotChange: ()
 	// translated fallback. aria-labelledby would be cleaner but VoiceOver on
 	// Safari can't resolve IDREFs scoped to a shadow root, so we duplicate
 	// the string into aria-label for cross-browser screen-reader support.
-	const ariaLabel = component.text || component._t('components.progress-bar.label-text');
+	const ariaLabel = component.text || component._t('components.progress-bar.accessible-label');
 	return html`
 		${hasCaption ? html`
 			<div class="progress-bar__caption">

@@ -19,26 +19,26 @@
  * @element nldd-progress-bar
  *
  * @attr {'progress'|'distribution'} mode - Semantics for ARIA and visualization (default: 'progress')
- * @attr {number}  max               - Total value (default: 100)
- * @attr {number}  value             - Single-segment shorthand (ignored when segment children are present)
- * @attr {string}  color             - Color for the single-segment shorthand (default: 'accent')
- * @attr {'sm'|'md'|'lg'} size       - Height of the bar (default: 'md')
- * @attr {string}  text              - Label above the bar (left)
+ * @attr {number} max - Total value (default: 100)
+ * @attr {number} value - Single-segment shorthand (ignored when segment children are present)
+ * @attr {string} color - Color for the single-segment shorthand (default: 'accent')
+ * @attr {'sm'|'md'|'lg'} size - Height of the bar (default: 'md')
+ * @attr {string} text - Label above the bar (left)
  * @attr {'percentage'|'absolute'|'fraction'} value-format - Format for the displayed value (default: 'percentage')
  * @attr {'inline'|'tooltip'|'none'} value-display - Where the value shows: inline in the caption, in a tooltip on the bar, or hidden (default: 'inline')
- * @attr {string}  value-text        - Full override of the displayed value
- * @attr {string}  accessible-label  - Full override of aria-valuetext
- * @attr {boolean} indeterminate     - Shows a sliding indicator animation (only without segments)
- * @attr {object}  translations      - Override translation keys; unset keys fall back to Dutch
+ * @attr {string} value-text - Full override of the displayed value
+ * @attr {string} accessible-label - Full override of aria-valuetext
+ * @attr {boolean} indeterminate - Shows a sliding indicator animation (only without segments)
+ * @attr {object} translations - Override translation keys; unset keys fall back to Dutch
  *
  * @slot - Place for nldd-progress-bar-segment-indicator elements
  *
  * @element nldd-progress-bar-segment-indicator
  *
- * @attr {number}  value         - Share of the parent's total (default 0; <=0 hides segment)
- * @attr {string}  color         - Color. Semantic (neutral, accent, success, warning, critical) or a Rijkskleur. Default 'accent'.
- * @attr {string}  name          - Name for screenreader text (optional)
- * @attr {string}  tooltip-text  - Override of the auto-generated tooltip text
+ * @attr {number} value - Share of the parent's total (default 0; <=0 hides segment)
+ * @attr {string} color - Color. Semantic (neutral, accent, success, warning, critical) or a Rijkskleur. Default 'accent'.
+ * @attr {string} name - Name for screenreader text (optional)
+ * @attr {string} tooltip-text - Override of the auto-generated tooltip text
  */
 import { LitElement, html } from 'lit';
 import { customElement, property, state } from 'lit/decorators.js';
@@ -228,7 +228,7 @@ export class NLDDProgressBar extends LitElement {
 	/** Computed aria-valuetext, unless overridden. */
 	get _ariaValueText(): string {
 		if (this.accessibleLabel) return this.accessibleLabel;
-		if (this.indeterminate) return this._t('components.progress-bar.loading-text');
+		if (this.indeterminate) return this._t('components.progress-bar.loading-label');
 
 		const completedSuffix = this._t('components.progress-bar.completed-suffix-text');
 		const totalPrefix = this._t('components.progress-bar.total-prefix-text');

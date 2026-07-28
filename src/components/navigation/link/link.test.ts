@@ -89,7 +89,7 @@ describe('nldd-link', () => {
 
 	it('overrides the new-tab wording via the translations property', async () => {
 		el = await fixture('<nldd-link href="https://example.com" target="_blank" text="External"></nldd-link>');
-		(el as NLDDLink).translations = { 'components.link.opens-in-new-tab-text': 'Opens in a new tab' };
+		(el as NLDDLink).translations = { 'components.link.opens-in-new-tab-label': 'Opens in a new tab' };
 		await waitForUpdate(el);
 		expect(el.shadowRoot!.querySelector('.link__opens-in-new-tab-hint')?.textContent).toBe('Opens in a new tab');
 	});
