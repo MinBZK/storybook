@@ -3,7 +3,7 @@
  *
  * A hybrid markdown editor built on CodeMirror 6 (via NLDDCodeMirrorElement):
  * the document stays plain markdown text, but formatting is shown inline (bold
- * is bold, headings are larger, links are coloured) while the syntax markers
+ * is bold, headings are larger, links are colored) while the syntax markers
  * stay visible, only dimmed — the iA Writer / Kirby approach. No WYSIWYG tree,
  * so the data stays portable.
  *
@@ -25,18 +25,18 @@
  *
  * @element nldd-text-editor
  *
- * @attr {string} value            - Editor content (markdown)
- * @attr {string} placeholder      - Placeholder text shown while empty
- * @attr {string} input-id         - Sets the id on the editable element. Set automatically by nldd-form-field.
- * @attr {boolean} disabled        - Disabled state
- * @attr {string} name             - Field name for form submission
- * @attr {boolean} readonly        - Readonly state (focusable and selectable, not editable)
- * @attr {boolean} required        - Required state
- * @attr {boolean} wrap            - Wrap long lines (default true; prose wraps)
- * @attr {number} rows             - Minimum visible rows (the floor in every resize mode). Default: 6.
- * @attr {string} resize           - 'none' (fixed) | 'vertical' (drag) | 'auto' (grow, default)
- * @attr {string} variant          - 'simple' (default, bare) | 'input-field' (framed surface)
- * @attr {string} font             - 'sans' (default) | 'mono'
+ * @attr {string} value - Editor content (markdown)
+ * @attr {string} placeholder - Placeholder text shown while empty
+ * @attr {string} input-id - Sets the id on the editable element. Set automatically by nldd-form-field.
+ * @attr {boolean} disabled - Disabled state
+ * @attr {string} name - Field name for form submission
+ * @attr {boolean} readonly - Readonly state (focusable and selectable, not editable)
+ * @attr {boolean} required - Required state
+ * @attr {boolean} wrap - Wrap long lines (default true; prose wraps)
+ * @attr {number} rows - Minimum visible rows (the floor in every resize mode). Default: 6.
+ * @attr {string} resize - 'none' (fixed) | 'vertical' (drag) | 'auto' (grow, default)
+ * @attr {string} variant - 'simple' (default, bare) | 'input-field' (framed surface)
+ * @attr {string} font - 'sans' (default) | 'mono'
  * @attr {string} accessible-label - Accessible label forwarded to the editor. Set automatically by nldd-form-field.
  *
  * @prop {MentionSource} mentionSource - Consumer-supplied @-mention candidate source (property only). Without it, @-typeahead is inert.
@@ -44,14 +44,15 @@
  * @prop {Annotation[]} annotations - Consumer-supplied annotation overlay (property only). Anchored by offset and mapped through edits; the text stays clean. Requires `annotatable`. Assign a NEW array to apply changes (Lit dirty-checks by identity, so in-place mutation like `.push()` won't re-render): `editor.annotations = [...editor.annotations, next]`.
  * @attr {object} translations - Override the editor's assistive-tech strings (the open-in-new-tab link badge and the annotation count badge). Unset keys fall back to Dutch.
  *
- * @fires input                    - When the content changes (detail: { value })
- * @fires change                   - When the content is committed on blur (detail: { value })
- * @fires nldd-text-editor-state   - When the selection or content changes (detail: TextEditorState), for toolbar toggle state
+ * @fires input - When the content changes (detail: { value })
+ * @fires change - When the content is committed on blur (detail: { value })
+ * @fires nldd-text-editor-state - When the selection or content changes (detail: TextEditorState), for toolbar toggle state
  * @fires nldd-text-editor-mention - When an @-mention is inserted (detail: MentionInsertedDetail with id, label, from, to)
  * @fires nldd-text-editor-annotation-click - When an annotation's count badge is clicked (detail: { ids: string[], rect: DOMRect }); rect is the badge's viewport box so a consumer can anchor its own note UI to it
  */
 import { LitElement, type PropertyValues } from 'lit';
 import { customElement, property, query } from 'lit/decorators.js';
+import { FormAssociated, type FormValue } from '../../../utilities/form-associated-mixin.js';
 import { reflectNonDefault } from '../../../utilities/reflect-non-default.js';
 import {
 	EditorView,
@@ -102,8 +103,7 @@ export type { MentionCandidate, MentionSource, MentionInsertedDetail } from './t
 export type { Annotation } from './text-editor.annotations.js';
 
 @customElement('nldd-text-editor')
-export class NLDDTextEditor extends NLDDCodeMirrorElement {
-	static formAssociated = true;
+export class NLDDTextEditor extends FormAssociated(NLDDCodeMirrorElement) {
 
 	static override shadowRootOptions = {
 		...LitElement.shadowRootOptions,
@@ -112,7 +112,6 @@ export class NLDDTextEditor extends NLDDCodeMirrorElement {
 
 	static override styles = textEditorStyles;
 
-	private _internals = this.attachInternals();
 	private _initialValue = '';
 	private _valueAtFocus = '';
 	private _accessibleLabelWarned = false;
@@ -349,9 +348,9 @@ export class NLDDTextEditor extends NLDDCodeMirrorElement {
 		// the tinted text itself stays plain-clickable for caret placement.
 		this.view?.contentDOM.addEventListener('click', this._onAnnotationBadgeClick);
 		this._syncAnnotations();
-		this._internals.setFormValue(this.doc);
+		this.commitFormValue();
 		this._checkAccessibleLabel();
-		// Emit one state snapshot on mount so a consumer's toolbar initialises to the
+		// Emit one state snapshot on mount so a consumer's toolbar initializes to the
 		// real state (e.g. undo/redo disabled with no history yet) instead of its
 		// default, without waiting for the first edit or selection change.
 		this._emitState();
@@ -367,7 +366,7 @@ export class NLDDTextEditor extends NLDDCodeMirrorElement {
 				// mirrors the current (sentinel-stripped) doc must not trigger a rewrite,
 				// which would strip the sentinels the filter then re-adds (caret churn).
 				if (stripSentinels(this.doc) !== this.value) this.setDoc(this.value);
-				this._internals.setFormValue(this.value);
+				this.commitFormValue();
 			}
 			if (changed.has('disabled') || changed.has('readonly')) {
 				this.reconfigure(this._editableCompartment, this._editableExtension());
@@ -495,7 +494,7 @@ export class NLDDTextEditor extends NLDDCodeMirrorElement {
 	/** Drop the undo/redo history, leaving the document untouched. Use after a
 	 *  consumer-driven discard so a later undo can't step back into the
 	 *  thrown-away edits. Reconfiguring the history compartment off and back on
-	 *  re-initialises it with empty stacks. */
+	 *  re-initializes it with empty stacks. */
 	clearHistory(): void {
 		const view = this.view;
 		if (!view) return;
@@ -733,7 +732,7 @@ export class NLDDTextEditor extends NLDDCodeMirrorElement {
 		const text = stripSentinels(this.doc);
 		if (text === this.value) return;
 		this.value = text;
-		this._internals.setFormValue(text);
+		this.commitFormValue();
 		this.dispatchEvent(new CustomEvent('input', {
 			detail: { value: text },
 			bubbles: true,
@@ -742,6 +741,7 @@ export class NLDDTextEditor extends NLDDCodeMirrorElement {
 	}
 
 	private _emitChange(): void {
+		this.commitFormValue();
 		this.dispatchEvent(new CustomEvent('change', {
 			detail: { value: this.value },
 			bubbles: true,
@@ -756,13 +756,14 @@ export class NLDDTextEditor extends NLDDCodeMirrorElement {
 		console.warn('<nldd-text-editor>: No accessible-label or input-id provided. Use nldd-form-field for labeled usage, or set accessible-label for screen reader accessibility (WCAG SC 4.1.2).');
 	}
 
+	override formValue(): FormValue {
+		return this.value;
+	}
+
 	formResetCallback(): void {
 		this.value = this._initialValue;
 	}
 
-	formDisabledCallback(disabled: boolean): void {
-		this.disabled = disabled;
-	}
 
 	formStateRestoreCallback(state: File | string | FormData | null): void {
 		if (typeof state === 'string') this.value = state;

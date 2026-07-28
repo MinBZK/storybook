@@ -7,15 +7,15 @@
  * @element nldd-toggle-button
  *
  * @attr {'button' | 'checkbox' | 'radio'} type - Underlying element (default: 'button')
- * @attr {'xs' | 'sm' | 'md' | 'lg'}       size - Button size (default: 'md')
- * @attr {boolean}                         selected         - Selected state
- * @attr {boolean}                         disabled         - Disabled state
- * @attr {string}                          value            - Value for form submission (checkbox/radio)
- * @attr {string}                          name             - Name for form submission (checkbox/radio)
- * @attr {string}                          text             - Button text
- * @attr {string}                          icon             - Icon name for nldd-icon
- * @attr {'text' | 'icon' | 'icon-and-text'} variant        - What renders: text, icon, or both. Unset → auto-detect from text/icon attributes.
- * @attr {string}                          accessible-label - Accessible label; required for icon-only usage
+ * @attr {'xs' | 'sm' | 'md' | 'lg'} size - Button size (default: 'md')
+ * @attr {boolean} selected - Selected state
+ * @attr {boolean} disabled - Disabled state
+ * @attr {string} value - Value for form submission (checkbox/radio)
+ * @attr {string} name - Name for form submission (checkbox/radio)
+ * @attr {string} text - Button text
+ * @attr {string} icon - Icon name for nldd-icon
+ * @attr {'text' | 'icon' | 'icon-and-text'} variant - What renders: text, icon, or both. Unset → auto-detect from text/icon attributes.
+ * @attr {string} accessible-label - Accessible label; required for icon-only usage
  *
  * @slot icon - Slot for a custom icon (e.g. custom SVG). Only used when icon attribute is not set.
  *
@@ -24,6 +24,7 @@
 
 import { LitElement, type PropertyValues } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
+import { FormAssociated, type FormValue } from '../../../utilities/form-associated-mixin.js';
 import { reflectNonDefault } from '../../../utilities/reflect-non-default.js';
 import { toggleButtonStyles } from './toggle-button.styles.js';
 import { toggleButtonTemplate } from './toggle-button.template.js';
@@ -34,12 +35,10 @@ export type ToggleButtonSize = 'xs' | 'sm' | 'md' | 'lg';
 export type ToggleButtonVariant = 'text' | 'icon' | 'icon-and-text';
 
 @customElement('nldd-toggle-button')
-export class NLDDToggleButton extends LitElement {
-	static formAssociated = true;
+export class NLDDToggleButton extends FormAssociated(LitElement) {
 
 	static override styles = toggleButtonStyles;
 
-	private _internals = this.attachInternals();
 
 	private _initialSelected = false;
 
@@ -115,19 +114,20 @@ export class NLDDToggleButton extends LitElement {
 			this._warnedEmptyIcon = false;
 		}
 		if (changed.has('selected') || changed.has('value') || changed.has('type')) {
-			// Only checkbox/radio variants participate in form submission.
-			const submits = this.type === 'checkbox' || this.type === 'radio';
-			this._internals.setFormValue(submits && this.selected ? this.value : null);
+			this.commitFormValue();
 		}
+	}
+
+	override formValue(): FormValue {
+		// Only checkbox/radio variants participate in form submission.
+		const submits = this.type === 'checkbox' || this.type === 'radio';
+		return submits && this.selected ? this.value : null;
 	}
 
 	formResetCallback(): void {
 		this.selected = this._initialSelected;
 	}
 
-	formDisabledCallback(disabled: boolean): void {
-		this.disabled = disabled;
-	}
 
 	formStateRestoreCallback(state: File | string | FormData | null): void {
 		this.selected = state !== null;
@@ -150,6 +150,7 @@ export class NLDDToggleButton extends LitElement {
 	}
 
 	private _dispatchChange(): void {
+		this.commitFormValue();
 		this.dispatchEvent(new CustomEvent('change', {
 			detail: { selected: this.selected, value: this.value },
 			bubbles: true,

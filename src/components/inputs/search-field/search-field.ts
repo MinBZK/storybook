@@ -5,26 +5,24 @@
  * and an optional search button.
  *
  * @element nldd-search-field
- * @attr {string}  value               - The search value
- * @attr {string}  placeholder         - Placeholder text for the input
- * @attr {string}  accessible-label    - Accessible label (aria-label) for the native input.
- *                                       Falls back to placeholder when not set.
- *                                       Set explicitly when a value is already present
- *                                       and the placeholder is no longer visible.
- * @attr {string}  size                - Field size: 'sm' | 'md' (default: 'md')
- * @attr {boolean} disabled            - Disabled state
- * @attr {string}  name                - Input name for form submission
+ * @attr {string} value - The search value
+ * @attr {string} placeholder - Placeholder text for the input
+ * @attr {string} accessible-label - Accessible label (aria-label) for the native input. Falls back to placeholder when not set. Set explicitly when a value is already present and the placeholder is no longer visible.
+ * @attr {string} size - Field size: 'sm' | 'md' (default: 'md')
+ * @attr {boolean} disabled - Disabled state
+ * @attr {string} name - Input name for form submission
  * @attr {boolean} show-search-button - When set, shows a search button on the right
- * @attr {object}  translations        - Override translation keys; unset keys fall back to Dutch
- * @attr {boolean} no-spellcheck       - Disables browser spellchecking on the inner input
- * @attr {string}  width               - Optional fixed width (any CSS length, e.g. "240px"). Default: stretches to fill container.
+ * @attr {object} translations - Override translation keys; unset keys fall back to Dutch
+ * @attr {boolean} no-spellcheck - Disables browser spellchecking on the inner input
+ * @attr {string} width - Optional fixed width (any CSS length, e.g. "240px"). Default: stretches to fill container.
  *
- * @fires input  - When the input value changes; detail: { value: string }
+ * @fires input - When the input value changes; detail: { value: string }
  * @fires change - When the input value is committed; detail: { value: string }
  * @fires search - When search is submitted via Enter or the search button; detail: { value: string }
  */
 import { LitElement, type PropertyValues } from 'lit';
 import { customElement, property, query } from 'lit/decorators.js';
+import { FormAssociated, type FormValue } from '../../../utilities/form-associated-mixin.js';
 import { reflectNonDefault } from '../../../utilities/reflect-non-default.js';
 import { searchFieldStyles } from './search-field.styles.js';
 import { searchFieldTemplate } from './search-field.template.js';
@@ -37,12 +35,10 @@ import './../../content/icon/icon.js';
 export type SearchFieldSize = 'sm' | 'md';
 
 @customElement('nldd-search-field')
-export class NLDDSearchField extends LitElement {
-	static formAssociated = true;
+export class NLDDSearchField extends FormAssociated(LitElement) {
 
 	static override styles = searchFieldStyles;
 
-	private _internals = this.attachInternals();
 
 	private _initialValue = '';
 
@@ -99,18 +95,16 @@ export class NLDDSearchField extends LitElement {
 				this.style.removeProperty('--_width');
 			}
 		}
-		if (changed.has('value')) {
-			this._internals.setFormValue(this.value);
-		}
+	}
+
+	override formValue(): FormValue {
+		return this.value;
 	}
 
 	formResetCallback(): void {
 		this.value = this._initialValue;
 	}
 
-	formDisabledCallback(disabled: boolean): void {
-		this.disabled = disabled;
-	}
 
 	formStateRestoreCallback(state: File | string | FormData | null): void {
 		if (typeof state === 'string') this.value = state;
@@ -127,6 +121,7 @@ export class NLDDSearchField extends LitElement {
 	public _handleInput(e: Event): void {
 		const input = e.target as HTMLInputElement;
 		this.value = input.value;
+		this.commitFormValue();
 		this.dispatchEvent(new CustomEvent('input', {
 			detail: { value: this.value },
 			bubbles: true,
@@ -137,6 +132,7 @@ export class NLDDSearchField extends LitElement {
 	public _handleChange(e: Event): void {
 		const input = e.target as HTMLInputElement;
 		this.value = input.value;
+		this.commitFormValue();
 		this.dispatchEvent(new CustomEvent('change', {
 			detail: { value: this.value },
 			bubbles: true,
@@ -152,6 +148,7 @@ export class NLDDSearchField extends LitElement {
 
 	public _handleClear(): void {
 		this.value = '';
+		this.commitFormValue();
 		this.dispatchEvent(new CustomEvent('input', {
 			detail: { value: '' },
 			bubbles: true,
@@ -170,6 +167,7 @@ export class NLDDSearchField extends LitElement {
 	}
 
 	private _dispatchSearch(): void {
+		this.commitFormValue();
 		this.dispatchEvent(new CustomEvent('search', {
 			detail: { value: this.value },
 			bubbles: true,

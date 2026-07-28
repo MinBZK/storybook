@@ -3,7 +3,7 @@ import { EditorView } from '@codemirror/view';
 /** The caret rectangle CodeMirror renders for the plain text just before `dom` (an
  *  inline widget), taken from CodeMirror's own coordsAtPos. A widget's own box would
  *  otherwise make the caret beside it too tall or too short and flip its height with
- *  the cursor's arrival direction; measuring the neighbouring text gives the exact
+ *  the cursor's arrival direction; measuring the neighboring text gives the exact
  *  body caret for whatever font and line the widget sits on.
  *
  *  Widgets use this in their `coordsAt` to place a stable, text-height caret at their

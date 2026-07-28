@@ -4,25 +4,35 @@
  * A radio button with an inline label. Use inside nldd-radio-button-group
  * for keyboard navigation and group semantics. The group sets the name.
  *
+ * Form-associated: the checked field submits its `value` under `name` (the
+ * inner nldd-radio-button sits in the shadow root and never joins the
+ * consumer's form; the field submits on its behalf). Unchecking siblings is
+ * the group's job, so exactly one value per group reaches the form.
+ *
  * @element nldd-radio-button-field
- * @attr {boolean} checked  - Checked state
+ * @attr {boolean} checked - Checked state
  * @attr {boolean} disabled - Disabled state
- * @attr {string}  value    - Value for form submission
- * @attr {string}  name     - Radio group name for form submission, forwarded to the inner nldd-radio-button. Set automatically by nldd-radio-button-group.
+ * @attr {string} value - Value for form submission
+ * @attr {string} name - Radio group name for form submission, forwarded to the inner nldd-radio-button. Set automatically by nldd-radio-button-group.
  * @attr {boolean} required - Required state, forwarded to the inner nldd-radio-button. Set automatically by nldd-radio-button-group.
- * @attr {string}  label    - Label text for the radio button
+ * @attr {string} label - Label text for the radio button
  *
  * @fires change - When checked state changes; detail: { checked: boolean, value: string }
  */
 import { LitElement } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
+import { FormAssociated, type FormValue } from '../../../utilities/form-associated-mixin.js';
 import { radioButtonFieldStyles } from './radio-button-field.styles.js';
 import { radioButtonFieldTemplate } from './radio-button-field.template.js';
 import type { NLDDRadioButton } from '../radio-button/radio-button.js';
 
 @customElement('nldd-radio-button-field')
-export class NLDDRadioButtonField extends LitElement {
+export class NLDDRadioButtonField extends FormAssociated(LitElement) {
+
 	static override styles = radioButtonFieldStyles;
+
+
+	private _initialChecked = false;
 
 	@property({ type: Boolean, reflect: true })
 	checked = false;
@@ -33,8 +43,10 @@ export class NLDDRadioButtonField extends LitElement {
 	@property({ type: String })
 	value = '';
 
-	/** Set by nldd-radio-button-group. Not part of the public API. */
-	@property({ type: String })
+	/** Set by nldd-radio-button-group. Not part of the public API.
+	 *  Reflected: form association reads the host's name attribute, and the
+	 *  group assigns the property. */
+	@property({ type: String, reflect: true })
 	name = '';
 
 	@property({ type: Boolean, reflect: true })
@@ -42,6 +54,26 @@ export class NLDDRadioButtonField extends LitElement {
 
 	@property({ type: String })
 	label = '';
+
+	override firstUpdated(): void {
+		this._initialChecked = this.checked;
+	}
+
+	/** An unchecked radio contributes nothing to the form. The group calls
+	 *  `commitFormValue()` on the siblings it unchecks, so a listener that reads
+	 *  the form while `change` is still propagating never sees two values. */
+	override formValue(): FormValue {
+		return this.checked ? this.value : null;
+	}
+
+	formResetCallback(): void {
+		this.checked = this._initialChecked;
+	}
+
+
+	formStateRestoreCallback(state: File | string | FormData | null): void {
+		this.checked = state !== null;
+	}
 
 	public _handleLabelClick(e: Event): void {
 		if (this.disabled) return;
@@ -52,6 +84,7 @@ export class NLDDRadioButtonField extends LitElement {
 
 	public _handleChange(e: Event): void {
 		this.checked = (e as CustomEvent<{ checked: boolean }>).detail.checked;
+		this.commitFormValue();
 		this.dispatchEvent(new CustomEvent('change', {
 			detail: { checked: this.checked, value: this.value },
 			bubbles: true,

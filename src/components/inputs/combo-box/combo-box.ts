@@ -12,29 +12,21 @@
  * types are not supported in this context.
  *
  * @element nldd-combo-box
- * @attr {string}  value        - The selected form value
- * @attr {string}  text         - The text shown in the input. May differ from `value`
- *                                (e.g. value="nl" → text="Nederland"). Set this when
- *                                pre-populating an existing record. If left empty and
- *                                `value` matches a slotted menu item, the matching
- *                                item's `text` is used automatically.
- * @attr {string}  placeholder  - Placeholder text for the input
- * @attr {string}  size         - Size: 'sm' | 'md' (default: 'md')
- * @attr {boolean} valid        - Marks the field as valid
- * @attr {boolean} invalid      - Marks the field as invalid
- * @attr {boolean} disabled     - Disabled state
- * @attr {boolean} allow-custom - Allow committing free-typed values that match no option
- *                                (Enter/blur). Default false: only menu options are accepted.
- * @attr {string}  name         - Input name for form submission
- * @attr {string}  autocomplete - Browser autofill hint. Default 'off' to prevent the
- *                                native autofill panel from competing with the menu dropdown.
- *                                Set to a valid token (e.g. 'country', 'organization') when
- *                                browser autofill is desired.
- * @attr {string}  accessible-label - Accessible label forwarded as aria-label to the input. Required for screen reader accessibility.
- * @attr {number}  max-items    - Maximum visible items before scrolling (default: 8)
- * @attr {object}  translations - Override translation keys; unset keys fall back to Dutch
+ * @attr {string} value - The selected form value
+ * @attr {string} text - The text shown in the input. May differ from `value` (e.g. value="nl" → text="Nederland"). Set this when pre-populating an existing record. If left empty and `value` matches a slotted menu item, the matching item's `text` is used automatically.
+ * @attr {string} placeholder - Placeholder text for the input
+ * @attr {string} size - Size: 'sm' | 'md' (default: 'md')
+ * @attr {boolean} valid - Marks the field as valid
+ * @attr {boolean} invalid - Marks the field as invalid
+ * @attr {boolean} disabled - Disabled state
+ * @attr {boolean} allow-custom - Allow committing free-typed values that match no option (Enter/blur). Default false: only menu options are accepted.
+ * @attr {string} name - Input name for form submission
+ * @attr {string} autocomplete - Browser autofill hint. Default 'off' to prevent the native autofill panel from competing with the menu dropdown. Set to a valid token (e.g. 'country', 'organization') when browser autofill is desired.
+ * @attr {string} accessible-label - Accessible label forwarded as aria-label to the input. Required for screen reader accessibility.
+ * @attr {number} max-items - Maximum visible items before scrolling (default: 8)
+ * @attr {object} translations - Override translation keys; unset keys fall back to Dutch
  * @attr {boolean} no-spellcheck - Disables browser spellchecking on the inner input
- * @attr {string}  width        - Optional fixed width (any CSS length, e.g. "240px"). Default: stretches to fill container.
+ * @attr {string} width - Optional fixed width (any CSS length, e.g. "240px"). Default: stretches to fill container.
  *
  * @note Free-text values: only when `allow-custom` is set. Then a typed value that
  *       matches no menu option is emitted as-is via the `change` event on Enter or blur
@@ -43,9 +35,8 @@
  *
  * @slot - An nldd-menu element with nldd-menu-item and nldd-menu-divider children
  *
- * @fires input  - When the input value changes; detail: { value: string }
- * @fires change - When an option is selected or a custom value is committed;
- *                 detail: { value: string }
+ * @fires input - When the input value changes; detail: { value: string }
+ * @fires change - When an option is selected or a custom value is committed; detail: { value: string }
  *
  * @example
  * ```html
@@ -59,6 +50,7 @@
  */
 import { LitElement } from 'lit';
 import { customElement, property, state, query } from 'lit/decorators.js';
+import { FormAssociated, type FormValue } from '../../../utilities/form-associated-mixin.js';
 import { reflectNonDefault } from '../../../utilities/reflect-non-default.js';
 import { comboBoxStyles } from './combo-box.styles.js';
 import { comboBoxTemplate } from './combo-box.template.js';
@@ -72,12 +64,10 @@ import '../../content/icon/icon.js';
 export type ComboBoxSize = 'sm' | 'md';
 
 @customElement('nldd-combo-box')
-export class NLDDComboBox extends LitElement {
-	static formAssociated = true;
+export class NLDDComboBox extends FormAssociated(LitElement) {
 
 	static override styles = comboBoxStyles;
 
-	private _internals = this.attachInternals();
 
 	private _initialValue = '';
 	private _initialText = '';
@@ -200,14 +190,21 @@ export class NLDDComboBox extends LitElement {
 			}
 		}
 		if (changedProperties.has('value') || changedProperties.has('text')) {
-			// Submit only the form value, but persist the display label in the
-			// restore state so bfcache / state restore can rehydrate the input
-			// text (e.g. value "nl" → display "Nederland").
-			const state = new FormData();
-			state.append('value', this.value);
-			state.append('display', this.text);
-			this._internals.setFormValue(this.value, state);
+			this.commitFormValue();
 		}
+	}
+
+	override formValue(): FormValue {
+		return this.value;
+	}
+
+	/** The display label rides along in the restore state, so bfcache and state
+	 *  restore can rehydrate the input text (value "nl" → display "Nederland"). */
+	override formState(): FormValue {
+		const state = new FormData();
+		state.append('value', this.value);
+		state.append('display', this.text);
+		return state;
 	}
 
 	formResetCallback(): void {
@@ -215,9 +212,6 @@ export class NLDDComboBox extends LitElement {
 		this.text = this._initialText;
 	}
 
-	formDisabledCallback(disabled: boolean): void {
-		this.disabled = disabled;
-	}
 
 	formStateRestoreCallback(state: File | string | FormData | null): void {
 		if (state instanceof FormData) {
@@ -289,7 +283,13 @@ export class NLDDComboBox extends LitElement {
 	 * the menu isn't wired yet or no item matches.
 	 */
 	private _deriveTextFromMenu(): void {
-		if (!this._menu || !this.value) return;
+		if (!this._menu) return;
+		// A cleared value clears the display too: leaving the old label
+		// visible would show a choice the form no longer carries.
+		if (!this.value) {
+			this.text = '';
+			return;
+		}
 		// Scope to items that belong directly to the wired menu — without the
 		// closest() filter, a nested nldd-menu submenu's items would match
 		// before the intended top-level item when value keys overlap. Today's
@@ -343,6 +343,7 @@ export class NLDDComboBox extends LitElement {
 		this._highlightedId = '';
 		this._closeMenu();
 		this._menu?.filter('');
+		this.commitFormValue();
 		this.dispatchEvent(new CustomEvent('change', {
 			detail: { value: this.value },
 			bubbles: true,
@@ -361,12 +362,23 @@ export class NLDDComboBox extends LitElement {
 	 */
 	public _openMenu(): void {
 		if (!this._menu || this._isOpen) return;
+		// With allow-custom the typed text is itself a valid value, so a menu
+		// with nothing left to offer stays closed — the "nothing found" empty
+		// state would wrongly suggest the input is invalid.
+		if (this.allowCustom && !this._hasVisibleMenuItems()) return;
 		if (!('showPopover' in this._menu)) {
 			console.warn('<nldd-combo-box>: Popover API is not supported in this browser. The dropdown will not open.');
 			return;
 		}
 		this._updateMenuWidth();
 		(this._menu as HTMLElement).showPopover();
+	}
+
+	/** Top-level menu items that survived the current filter. */
+	private _hasVisibleMenuItems(): boolean {
+		if (!this._menu) return false;
+		return Array.from(this._menu.querySelectorAll<NLDDMenuItem>('nldd-menu-item:not([hidden])'))
+			.some(item => item.closest('nldd-menu') === this._menu);
 	}
 
 	public _closeMenu(): void {
@@ -416,7 +428,14 @@ export class NLDDComboBox extends LitElement {
 		this.text = input.value;
 		this._menu?.filter(this.text);
 		this._updateActiveDescendant();
+		// The reverse of the allow-custom guard in _openMenu: typing until
+		// nothing matches closes an already-open menu instead of leaving the
+		// empty state hanging under a perfectly valid custom value.
+		if (this.allowCustom && this._isOpen && !this._hasVisibleMenuItems()) {
+			this._closeMenu();
+		}
 		if (!this._isOpen) this._openMenu();
+		this.commitFormValue();
 		this.dispatchEvent(new CustomEvent('input', {
 			detail: { value: this.text },
 			bubbles: true,
@@ -429,11 +448,13 @@ export class NLDDComboBox extends LitElement {
 		this.value = '';
 		this._menu?.filter('');
 		this._closeMenu();
+		this.commitFormValue();
 		this.dispatchEvent(new CustomEvent('input', {
 			detail: { value: '' },
 			bubbles: true,
 			composed: true,
 		}));
+		this.commitFormValue();
 		this.dispatchEvent(new CustomEvent('change', {
 			detail: { value: '' },
 			bubbles: true,
@@ -459,6 +480,7 @@ export class NLDDComboBox extends LitElement {
 		}
 		if (this.text !== '' && this.text !== this.value) {
 			this.value = this.text;
+			this.commitFormValue();
 			this.dispatchEvent(new CustomEvent('change', {
 				detail: { value: this.value },
 				bubbles: true,
@@ -484,6 +506,18 @@ export class NLDDComboBox extends LitElement {
 			if (e.key === 'ArrowDown') {
 				e.preventDefault();
 				this._openMenu();
+			} else if (e.key === 'Enter' && this.allowCustom && this.text !== '' && this.text !== this.value) {
+				// With allow-custom the menu closes as soon as nothing matches
+				// (see _handleInput), so the Enter-commit must also work while
+				// the menu is closed.
+				e.preventDefault();
+				this.value = this.text;
+				this.commitFormValue();
+				this.dispatchEvent(new CustomEvent('change', {
+					detail: { value: this.value },
+					bubbles: true,
+					composed: true,
+				}));
 			}
 			return;
 		}
@@ -507,6 +541,7 @@ export class NLDDComboBox extends LitElement {
 				} else if (this.allowCustom) {
 					this.value = this.text;
 					this._closeMenu();
+					this.commitFormValue();
 					this.dispatchEvent(new CustomEvent('change', {
 						detail: { value: this.value },
 						bubbles: true,

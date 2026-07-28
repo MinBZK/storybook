@@ -2,7 +2,7 @@ import { EditorState } from '@codemirror/state';
 
 /* Keeps an ordered list's numbers running in sequence. Markdown renders `1. 3. 5.`
  * as 1, 2, 3 regardless, but the *source* reads better when the digits actually
- * follow each other — so as soon as a line is recognised as an ordered item, the
+ * follow each other — so as soon as a line is recognized as an ordered item, the
  * whole list is renumbered. Every ordered list starts at 1 and each item increments.
  * Nested lists (deeper indent) number independently; returning to the parent indent
  * resumes its count. A run stays one list across a single blank line (a loose list),

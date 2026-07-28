@@ -4,19 +4,20 @@
  * A numeric control with increment and decrement buttons.
  *
  * @element nldd-stepper
- * @attr {number}  value        - Current value
- * @attr {number}  min          - Minimum value (default: 0)
- * @attr {number}  max          - Maximum value (default: Infinity)
- * @attr {number}  step         - Step size (default: 1)
- * @attr {boolean} disabled     - Disabled state
- * @attr {string}  size         - Size: 'xs' | 'sm' | 'md' (default: 'md')
- * @attr {string}  name         - Name for form submission; the value is submitted under this name
- * @attr {object}  translations - Translations; unspecified keys fall back to Dutch
+ * @attr {number} value - Current value
+ * @attr {number} min - Minimum value (default: 0)
+ * @attr {number} max - Maximum value (default: Infinity)
+ * @attr {number} step - Step size (default: 1)
+ * @attr {boolean} disabled - Disabled state
+ * @attr {string} size - Size: 'xs' | 'sm' | 'md' (default: 'md')
+ * @attr {string} name - Name for form submission; the value is submitted under this name
+ * @attr {object} translations - Translations; unspecified keys fall back to Dutch
  *
  * @fires change - When the value changes; detail: { value: number }
  */
-import { LitElement, type PropertyValues } from 'lit';
+import { LitElement } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
+import { FormAssociated, type FormValue } from '../../../utilities/form-associated-mixin.js';
 import { reflectNonDefault } from '../../../utilities/reflect-non-default.js';
 import { stepperStyles } from './stepper.styles.js';
 import { stepperTemplate } from './stepper.template.js';
@@ -28,12 +29,10 @@ import './../../content/icon/icon.js';
 export type StepperSize = 'xs' | 'sm' | 'md';
 
 @customElement('nldd-stepper')
-export class NLDDStepper extends LitElement {
-	static formAssociated = true;
+export class NLDDStepper extends FormAssociated(LitElement) {
 
 	static override styles = stepperStyles;
 
-	private _internals = this.attachInternals();
 
 	private _initialValue = 0;
 
@@ -66,19 +65,15 @@ export class NLDDStepper extends LitElement {
 		this._initialValue = this.value;
 	}
 
-	override updated(changed: PropertyValues): void {
-		if (changed.has('value')) {
-			this._internals.setFormValue(String(this.value));
-		}
+
+	override formValue(): FormValue {
+		return String(this.value);
 	}
 
 	formResetCallback(): void {
 		this.value = this._initialValue;
 	}
 
-	formDisabledCallback(disabled: boolean): void {
-		this.disabled = disabled;
-	}
 
 	formStateRestoreCallback(state: File | string | FormData | null): void {
 		if (typeof state !== 'string') return;
@@ -142,6 +137,7 @@ export class NLDDStepper extends LitElement {
 	}
 
 	private _dispatchChange(): void {
+		this.commitFormValue();
 		this.dispatchEvent(new CustomEvent('change', {
 			detail: { value: this.value },
 			bubbles: true,

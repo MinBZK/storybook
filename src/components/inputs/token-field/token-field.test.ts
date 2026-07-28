@@ -574,7 +574,7 @@ describe('nldd-token-field', () => {
 		el.values = ['nl', 'be']; // both taken -> input (and its aria-label) gone
 		await waitForUpdate(el);
 		expect(el.shadowRoot!.querySelector('.token-field__input')).toBeNull();
-		const internals = (el as unknown as { _internals: ElementInternals })._internals;
+		const internals = (el as unknown as { internals: ElementInternals }).internals;
 		expect(internals.role).toBe('group');
 		expect(internals.ariaLabel).toBe('Landen');
 		expect(el.shadowRoot!.querySelector('[role="list"]')).not.toBeNull();

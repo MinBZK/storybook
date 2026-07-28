@@ -60,7 +60,7 @@ class LinkOpenWidget extends WidgetType {
 	}
 }
 
-/** Normalise a Markdown reference label for matching: drop the surrounding
+/** Normalize a Markdown reference label for matching: drop the surrounding
  *  brackets, collapse internal whitespace and lowercase (labels are
  *  case-insensitive per CommonMark). */
 function normaliseLabel(raw: string): string {
@@ -103,9 +103,9 @@ export function isSafeHref(href: string): boolean {
 	// the safety decision — the real href is untouched); a scheme that survives must
 	// be in the allowlist.
 	// eslint-disable-next-line no-control-regex -- matching control chars is the point: they are the bypass vectors the URL parser strips before resolving the scheme.
-	const normalised = href.replace(/[\u0000-\u0020\u007f-\u009f]/g, '');
-	if (!/^[a-z][a-z0-9+.-]*:/i.test(normalised)) return true; // no scheme → relative, safe
-	return /^(?:https?|mailto|tel):/i.test(normalised);
+	const normalized = href.replace(/[\u0000-\u0020\u007f-\u009f]/g, '');
+	if (!/^[a-z][a-z0-9+.-]*:/i.test(normalized)) return true; // no scheme → relative, safe
+	return /^(?:https?|mailto|tel):/i.test(normalized);
 }
 
 /** The link's destination, or null for a mention, an unsafe scheme, or a link

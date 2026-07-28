@@ -195,4 +195,45 @@ describe('nldd-checkbox-field – label click', () => {
 		await waitForUpdate(el);
 		expect(el.indeterminate).toBe(false);
 	});
+
+	it('submits its value to the surrounding form when checked', async () => {
+		const form = await fixture<HTMLFormElement>('<form><nldd-checkbox-field name="roles" value="admin" label="Beheerder" checked></nldd-checkbox-field></form>');
+		el = form as unknown as NLDDCheckboxField;
+		const field = form.querySelector('nldd-checkbox-field')!;
+		await waitForUpdate(field);
+		expect(new FormData(form).get('roles')).toBe('admin');
+	});
+
+	it('submits nothing when unchecked', async () => {
+		const form = await fixture<HTMLFormElement>('<form><nldd-checkbox-field name="roles" value="admin" label="Beheerder"></nldd-checkbox-field></form>');
+		el = form as unknown as NLDDCheckboxField;
+		const field = form.querySelector('nldd-checkbox-field')!;
+		await waitForUpdate(field);
+		expect(new FormData(form).has('roles')).toBe(false);
+	});
+
+	it('commits the form value synchronously on label toggle', async () => {
+		const form = await fixture<HTMLFormElement>('<form><nldd-checkbox-field name="roles" value="admin" label="Beheerder"></nldd-checkbox-field></form>');
+		el = form as unknown as NLDDCheckboxField;
+		const field = form.querySelector<NLDDCheckboxField>('nldd-checkbox-field')!;
+		await waitForUpdate(field);
+		let valueAtChange: FormDataEntryValue | null = null;
+		field.addEventListener('change', () => { valueAtChange = new FormData(form).get('roles'); });
+		field.shadowRoot!.querySelector<HTMLElement>('.checkbox-field__label')!.click();
+		await waitForUpdate(field);
+		expect(valueAtChange).toBe('admin');
+	});
+
+	it('restores its initial state on form reset', async () => {
+		const form = await fixture<HTMLFormElement>('<form><nldd-checkbox-field name="roles" value="admin" label="Beheerder" checked></nldd-checkbox-field></form>');
+		el = form as unknown as NLDDCheckboxField;
+		const field = form.querySelector<NLDDCheckboxField>('nldd-checkbox-field')!;
+		await waitForUpdate(field);
+		field.checked = false;
+		await waitForUpdate(field);
+		form.reset();
+		await waitForUpdate(field);
+		expect(field.checked).toBe(true);
+		expect(new FormData(form).get('roles')).toBe('admin');
+	});
 });

@@ -12,28 +12,27 @@
  * </fieldset>
  *
  * @element nldd-radio-button
- * @attr {boolean} checked  - Checked state
+ * @attr {boolean} checked - Checked state
  * @attr {boolean} disabled - Disabled state
  * @attr {boolean} required - Required state
- * @attr {string}  name     - Radio group name for form submission; ties the buttons of one group together
- * @attr {string}  value    - Value submitted with the form when this radio button is checked
- * @attr {string}  accessible-label - Accessible label forwarded as aria-label to the native input.
+ * @attr {string} name - Radio group name for form submission; ties the buttons of one group together
+ * @attr {string} value - Value submitted with the form when this radio button is checked
+ * @attr {string} accessible-label - Accessible label forwarded as aria-label to the native input.
  *   Note: aria-labelledby is not supported as IDREF resolution cannot cross shadow DOM boundaries.
  *
  * @fires change - When checked state changes; detail: { checked: boolean, value: string, name: string }
  */
-import { LitElement, type PropertyValues } from 'lit';
+import { LitElement } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
+import { FormAssociated, type FormValue } from '../../../utilities/form-associated-mixin.js';
 import { radioButtonStyles } from './radio-button.styles.js';
 import { radioButtonTemplate } from './radio-button.template.js';
 
 @customElement('nldd-radio-button')
-export class NLDDRadioButton extends LitElement {
-	static formAssociated = true;
+export class NLDDRadioButton extends FormAssociated(LitElement) {
 
 	static override styles = radioButtonStyles;
 
-	private _internals = this.attachInternals();
 
 	private _initialChecked = false;
 
@@ -59,19 +58,15 @@ export class NLDDRadioButton extends LitElement {
 		this._initialChecked = this.checked;
 	}
 
-	override updated(changed: PropertyValues): void {
-		if (changed.has('checked') || changed.has('value')) {
-			this._internals.setFormValue(this.checked ? this.value : null);
-		}
+
+	override formValue(): FormValue {
+		return this.checked ? this.value : null;
 	}
 
 	formResetCallback(): void {
 		this.checked = this._initialChecked;
 	}
 
-	formDisabledCallback(disabled: boolean): void {
-		this.disabled = disabled;
-	}
 
 	formStateRestoreCallback(state: File | string | FormData | null): void {
 		this.checked = state !== null;
@@ -88,6 +83,7 @@ export class NLDDRadioButton extends LitElement {
 	public _handleChange(e: Event): void {
 		const input = e.target as HTMLInputElement;
 		this.checked = input.checked;
+		this.commitFormValue();
 		this.dispatchEvent(new CustomEvent('change', {
 			detail: { checked: this.checked, value: this.value, name: this.name },
 			bubbles: true,

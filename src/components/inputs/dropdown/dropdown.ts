@@ -8,12 +8,12 @@
  * dynamic changes to options.
  *
  * @element nldd-dropdown
- * @attr {string}  size     - Size: 'xs' | 'sm' | 'md' (default: 'md')
- * @attr {boolean} valid    - Marks the field as valid
- * @attr {boolean} invalid  - Marks the field as invalid
+ * @attr {string} size - Size: 'xs' | 'sm' | 'md' (default: 'md')
+ * @attr {boolean} valid - Marks the field as valid
+ * @attr {boolean} invalid - Marks the field as invalid
  * @attr {boolean} disabled - Disabled state; also forwarded to the slotted select
  * @attr {boolean} expanded - Reflects whether the native picker popup is open (driven internally)
- * @attr {string}  width    - Optional fixed width (any CSS length, e.g. "240px"). Default: stretches to fill container.
+ * @attr {string} width - Optional fixed width (any CSS length, e.g. "240px"). Default: stretches to fill container.
  *
  * @slot - A native `<select>` element with `<option>` and/or `<optgroup>` children
  *

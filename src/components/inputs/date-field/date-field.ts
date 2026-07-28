@@ -11,34 +11,35 @@
  *
  * @element nldd-date-field
  *
- * @attr {string}  value           - De datum als ISO (jjjj-mm-dd). Met `range` een ISO 8601-interval: `jjjj-mm-dd/jjjj-mm-dd`. Leeg wanneer er geen geldige datum staat.
- * @attr {boolean} range           - Kies een periode: twee invoervelden en een kalender in bereikmodus.
- * @attr {string}  min             - Vroegst toegestane datum als ISO (jjjj-mm-dd).
- * @attr {string}  max             - Laatst toegestane datum als ISO (jjjj-mm-dd).
- * @attr {boolean} no-picker       - Verbergt de kalenderknop. Standaard staat die knop er wel.
- * @attr {string}  placeholder     - Placeholdertekst. Zet hier geen formaat in; gebruik daarvoor de supporting-label van nldd-form-field.
- * @attr {string}  input-id        - Zet het id op de interne input. Wordt automatisch gezet door nldd-form-field.
- * @attr {string}  size            - 'md' (standaard) | 'sm'. Wordt automatisch gezet door nldd-form-field.
- * @attr {boolean} invalid         - Markeert het veld als ongeldig.
- * @attr {boolean} valid           - Markeert het veld als geldig.
- * @attr {boolean} disabled        - Uitgeschakelde staat.
- * @attr {boolean} readonly        - Alleen-lezen staat.
- * @attr {boolean} required        - Verplichte staat.
- * @attr {string}  name            - Naam voor formulierverzending.
- * @attr {string}  autocomplete    - Autocomplete-hint, bijvoorbeeld 'bday'.
- * @attr {string}  accessible-label - Toegankelijk label voor de interne input. Wordt automatisch gezet door nldd-form-field.
- * @attr {string}  error-message-ids - Ids voor aria-describedby. Wordt automatisch gezet door nldd-form-field.
- * @attr {string}  width           - Breedte. Standaard precies breed genoeg voor een datum plus de iconen; 'full' vult de container, of geef een eigen CSS-lengte.
- * @attr {object}  translations    - Vertalingen; niet opgegeven sleutels vallen terug op het Nederlands.
+ * @attr {string} value - De datum als ISO (jjjj-mm-dd). Met `range` een ISO 8601-interval: `jjjj-mm-dd/jjjj-mm-dd`. Leeg wanneer er geen geldige datum staat.
+ * @attr {boolean} range - Kies een periode: twee invoervelden en een kalender in bereikmodus.
+ * @attr {string} min - Vroegst toegestane datum als ISO (jjjj-mm-dd).
+ * @attr {string} max - Laatst toegestane datum als ISO (jjjj-mm-dd).
+ * @attr {boolean} no-picker - Verbergt de kalenderknop. Standaard staat die knop er wel.
+ * @attr {string} placeholder - Placeholdertekst. Zet hier geen formaat in; gebruik daarvoor de supporting-label van nldd-form-field.
+ * @attr {string} input-id - Zet het id op de interne input. Wordt automatisch gezet door nldd-form-field.
+ * @attr {string} size - 'md' (standaard) | 'sm'. Wordt automatisch gezet door nldd-form-field.
+ * @attr {boolean} invalid - Markeert het veld als ongeldig.
+ * @attr {boolean} valid - Markeert het veld als geldig.
+ * @attr {boolean} disabled - Uitgeschakelde staat.
+ * @attr {boolean} readonly - Alleen-lezen staat.
+ * @attr {boolean} required - Verplichte staat.
+ * @attr {string} name - Naam voor formulierverzending.
+ * @attr {string} autocomplete - Autocomplete-hint, bijvoorbeeld 'bday'.
+ * @attr {string} accessible-label - Toegankelijk label voor de interne input. Wordt automatisch gezet door nldd-form-field.
+ * @attr {string} error-message-ids - Ids voor aria-describedby. Wordt automatisch gezet door nldd-form-field.
+ * @attr {string} width - Breedte. Standaard precies breed genoeg voor een datum plus de iconen; 'full' vult de container, of geef een eigen CSS-lengte.
+ * @attr {object} translations - Vertalingen; niet opgegeven sleutels vallen terug op het Nederlands.
  *
  * @slot picker - Een eigen nldd-date-picker, in plaats van de standaardkalender. Het veld blijft `value`, `min`, `max` en `range` zetten; gebruik de slot voor wat alleen een kalender weet: `week-numbers`, `first-day-of-week`, `is-date-unavailable` en eigen vertalingen.
  *
- * @fires input  - Bij elke wijziging. detail: { value } met de ISO-datum, of '' zolang er geen geldige datum staat.
+ * @fires input - Bij elke wijziging. detail: { value } met de ISO-datum, of '' zolang er geen geldige datum staat.
  * @fires change - Wanneer de waarde is vastgelegd. detail: { value } met de ISO-datum, of ''.
  */
 
 import { LitElement, type PropertyValues } from 'lit';
 import { customElement, property, state } from 'lit/decorators.js';
+import { FormAssociated, type FormValue } from '../../../utilities/form-associated-mixin.js';
 import { reflectNonDefault } from '../../../utilities/reflect-non-default.js';
 import { toIso, resolveDateBound } from '../../../utilities/resolve-date-bound.js';
 import { dateFieldStyles } from './date-field.styles.js';
@@ -80,8 +81,7 @@ function formatDisplay(iso: string): string {
 }
 
 @customElement('nldd-date-field')
-export class NLDDDateField extends LitElement {
-	static formAssociated = true;
+export class NLDDDateField extends FormAssociated(LitElement) {
 
 	static override shadowRootOptions = {
 		...LitElement.shadowRootOptions,
@@ -90,7 +90,6 @@ export class NLDDDateField extends LitElement {
 
 	static override styles = dateFieldStyles;
 
-	private _internals = this.attachInternals();
 
 	private _initialValue = '';
 
@@ -313,9 +312,6 @@ export class NLDDDateField extends LitElement {
 				this.style.removeProperty('--_width');
 			}
 		}
-		if (changed.has('value')) {
-			this._internals.setFormValue(this.value);
-		}
 		// The popover resolves a string anchor with document.getElementById, which
 		// cannot see into a shadow root, so the trigger is handed over directly.
 		const popover = this._popover;
@@ -330,9 +326,6 @@ export class NLDDDateField extends LitElement {
 		this.value = this._initialValue;
 	}
 
-	formDisabledCallback(disabled: boolean): void {
-		this.disabled = disabled;
-	}
 
 	formStateRestoreCallback(state: File | string | FormData | null): void {
 		if (typeof state === 'string') this.value = state;
@@ -543,7 +536,12 @@ export class NLDDDateField extends LitElement {
 		this._emit('change');
 	}
 
+	override formValue(): FormValue {
+		return this.value;
+	}
+
 	private _emit(type: 'input' | 'change'): void {
+		this.commitFormValue();
 		this.dispatchEvent(new CustomEvent(type, {
 			detail: { value: this.value },
 			bubbles: true,

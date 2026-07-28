@@ -10,7 +10,7 @@ import '../../content/icon/icon.js';
 
 /* Hybrid markdown rendering: the document stays plain markdown text, but the
  * formatting is shown inline (bold is bold, headings are larger, links are
- * coloured) while the syntax markers stay visible, only dimmed — the iA Writer
+ * colored) while the syntax markers stay visible, only dimmed — the iA Writer
  * / Kirby approach. Implemented as decorations over the Lezer syntax tree. */
 
 // Lezer node name → CSS class applied to that node's whole range (the content).
@@ -92,7 +92,7 @@ function addCodeblockLines(state: EditorState, from: number, to: number, sel: { 
 
 // Fenced block: tint the content lines only — the ``` fence lines (and the info
 // string) stay clean. Anchored on the whole FencedCode node, not its CodeText child,
-// so a trailing empty line inside the fence is grey right away; CodeText doesn't cover
+// so a trailing empty line inside the fence is gray right away; CodeText doesn't cover
 // that blank line, so it used to stay untinted until a keystroke grew the node.
 function addFencedCodeLines(state: EditorState, node: SyntaxNode, sel: { from: number; to: number; empty: boolean }, ranges: Range<Decoration>[]): void {
 	const fenceLines = new Set<number>();
@@ -118,7 +118,7 @@ function linkTextRange(link: SyntaxNode): { from: number; to: number } | null {
 }
 
 // A mention link (`[@Naam](user:id)`) gets a token on its @Naam text; a normal
-// link is coloured across its whole range. Either way the markers and URL are
+// link is colored across its whole range. Either way the markers and URL are
 // still visited as children and dimmed.
 function decorateLink(state: EditorState, link: SyntaxNode, ranges: Range<Decoration>[]): void {
 	let url: SyntaxNode | null = null;
@@ -160,11 +160,11 @@ function buildMarkDecorations(view: EditorView): DecorationSet {
 					return;
 				}
 				// A bare / autolinked URL is the link itself (no separate [text]), so
-				// colour it like link text (blue) instead of the dimmed address grey of
+				// color it like link text (blue) instead of the dimmed address gray of
 				// cm-md-url. Its own class (not cm-md-link) so the `span { color: inherit }`
 				// rule that overrides the highlight-style URL tint can target it without
-				// also recolouring the grey address inside a [text](url) link. The URL
-				// inside a link, a reference definition, or an image stays grey below.
+				// also recolouring the gray address inside a [text](url) link. The URL
+				// inside a link, a reference definition, or an image stays gray below.
 				if (node.name === 'URL' && !inLinkContext(node.node)) {
 					ranges.push(classDeco('cm-md-autolink').range(node.from, node.to));
 					return;
@@ -288,7 +288,7 @@ class MentionWidget extends WidgetType {
 		token.className = 'cm-md-mention-token';
 		token.setAttribute('data-user', this.id);
 		if (this.selected) token.setAttribute('data-selected', '');
-		// The @ is rendered as the DS 'at' icon — a separate, vertically-centred
+		// The @ is rendered as the DS 'at' icon — a separate, vertically-centered
 		// prefix that aligns cleanly with the name.
 		const at = document.createElement('nldd-icon');
 		at.className = 'cm-md-mention-token-icon';

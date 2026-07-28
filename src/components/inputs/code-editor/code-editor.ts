@@ -20,26 +20,27 @@
  *
  * @element nldd-code-editor
  *
- * @attr {string} value            - Editor content
- * @attr {string} placeholder      - Placeholder text shown while empty
- * @attr {string} input-id         - Sets the id on the editable element. Set automatically by nldd-form-field.
- * @attr {boolean} disabled        - Disabled state
- * @attr {string} name             - Field name for form submission
- * @attr {boolean} readonly        - Readonly state (focusable and selectable, not editable)
- * @attr {boolean} required        - Required state
- * @attr {boolean} wrap            - Wrap long lines instead of horizontal scroll
- * @attr {number} rows             - Minimum visible rows (the floor in every resize mode). Default: 6.
- * @attr {string} resize           - 'none' (fixed) | 'vertical' (drag) | 'auto' (grow, default)
- * @attr {string} variant          - 'simple' (default, bare) | 'input-field' (framed surface)
- * @attr {string} language         - Highlight grammar (yaml, json, javascript, typescript, css, html, xml, bash, markdown, rust, gherkin, toml, sql, python). Empty disables highlighting.
- * @attr {boolean} line-numbers    - Show a line-number gutter
+ * @attr {string} value - Editor content
+ * @attr {string} placeholder - Placeholder text shown while empty
+ * @attr {string} input-id - Sets the id on the editable element. Set automatically by nldd-form-field.
+ * @attr {boolean} disabled - Disabled state
+ * @attr {string} name - Field name for form submission
+ * @attr {boolean} readonly - Readonly state (focusable and selectable, not editable)
+ * @attr {boolean} required - Required state
+ * @attr {boolean} wrap - Wrap long lines instead of horizontal scroll
+ * @attr {number} rows - Minimum visible rows (the floor in every resize mode). Default: 6.
+ * @attr {string} resize - 'none' (fixed) | 'vertical' (drag) | 'auto' (grow, default)
+ * @attr {string} variant - 'simple' (default, bare) | 'input-field' (framed surface)
+ * @attr {string} language - Highlight grammar (yaml, json, javascript, typescript, css, html, xml, bash, markdown, rust, gherkin, toml, sql, python). Empty disables highlighting.
+ * @attr {boolean} line-numbers - Show a line-number gutter
  * @attr {string} accessible-label - Accessible label forwarded to the editor. Set automatically by nldd-form-field.
  *
- * @fires input  - When the content changes (detail: { value })
+ * @fires input - When the content changes (detail: { value })
  * @fires change - When the content is committed on blur (detail: { value })
  */
 import { LitElement, type PropertyValues } from 'lit';
 import { customElement, property, query } from 'lit/decorators.js';
+import { FormAssociated, type FormValue } from '../../../utilities/form-associated-mixin.js';
 import { reflectNonDefault } from '../../../utilities/reflect-non-default.js';
 import {
 	EditorView,
@@ -60,8 +61,7 @@ export type ResizeMode = 'none' | 'vertical' | 'auto';
 export type CodeEditorVariant = 'input-field' | 'simple';
 
 @customElement('nldd-code-editor')
-export class NLDDCodeEditor extends NLDDCodeMirrorElement {
-	static formAssociated = true;
+export class NLDDCodeEditor extends FormAssociated(NLDDCodeMirrorElement) {
 
 	static override shadowRootOptions = {
 		...LitElement.shadowRootOptions,
@@ -70,7 +70,6 @@ export class NLDDCodeEditor extends NLDDCodeMirrorElement {
 
 	static override styles = codeEditorStyles;
 
-	private _internals = this.attachInternals();
 	private _initialValue = '';
 	private _valueAtFocus = '';
 	private _accessibleLabelWarned = false;
@@ -217,7 +216,7 @@ export class NLDDCodeEditor extends NLDDCodeMirrorElement {
 		// clickable too. CM attaches its own handlers to the content, not the
 		// scroller, so this is a plain listener on the scroller element.
 		this.view?.scrollDOM.addEventListener('pointerdown', this._onScrollerPointerDown);
-		this._internals.setFormValue(this.doc);
+		this.commitFormValue();
 		if (this.language) void this._applyLanguage();
 		this._checkAccessibleLabel();
 	}
@@ -230,7 +229,7 @@ export class NLDDCodeEditor extends NLDDCodeMirrorElement {
 			if (changed.has('value')) {
 				const docWas = this.doc;
 				this.setDoc(this.value);
-				this._internals.setFormValue(this.value);
+				this.commitFormValue();
 				// A programmatic value change while focused must not look like a user edit
 				// on the next blur: if setDoc actually moved the doc (i.e. this wasn't the
 				// echo of the user's own typing, where the doc already equals value),
@@ -288,7 +287,7 @@ export class NLDDCodeEditor extends NLDDCodeMirrorElement {
 		const text = this.doc;
 		if (text === this.value) return;
 		this.value = text;
-		this._internals.setFormValue(text);
+		this.commitFormValue();
 		this.dispatchEvent(new CustomEvent('input', {
 			detail: { value: text },
 			bubbles: true,
@@ -297,6 +296,7 @@ export class NLDDCodeEditor extends NLDDCodeMirrorElement {
 	}
 
 	private _emitChange(): void {
+		this.commitFormValue();
 		this.dispatchEvent(new CustomEvent('change', {
 			detail: { value: this.value },
 			bubbles: true,
@@ -323,13 +323,14 @@ export class NLDDCodeEditor extends NLDDCodeMirrorElement {
 		console.warn('<nldd-code-editor>: No accessible-label or input-id provided. Use nldd-form-field for labeled usage, or set accessible-label for screen reader accessibility (WCAG SC 4.1.2).');
 	}
 
+	override formValue(): FormValue {
+		return this.value;
+	}
+
 	formResetCallback(): void {
 		this.value = this._initialValue;
 	}
 
-	formDisabledCallback(disabled: boolean): void {
-		this.disabled = disabled;
-	}
 
 	formStateRestoreCallback(state: File | string | FormData | null): void {
 		if (typeof state === 'string') this.value = state;

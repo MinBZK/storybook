@@ -10,12 +10,12 @@
  *
  * @element nldd-toggle-button-group
  *
- * @attr {'button' | 'checkbox' | 'radio'} type                  - Selection mode (default: 'checkbox')
- * @attr {string}               name                  - Forwarded to all buttons
- * @attr {'xs' | 'sm' | 'md'}  size                  - Forwarded to all buttons (default: 'md')
- * @attr {boolean}              disabled              - Disables all buttons
- * @attr {string}               accessible-label      - Accessible name for the group (aria-label)
- * @attr {string}               accessible-labelled-by - ID of an external label element (aria-labelledby)
+ * @attr {'button' | 'checkbox' | 'radio'} type - Selection mode (default: 'checkbox')
+ * @attr {string} name - Forwarded to all buttons
+ * @attr {'xs' | 'sm' | 'md'} size - Forwarded to all buttons (default: 'md')
+ * @attr {boolean} disabled - Disables all buttons
+ * @attr {string} accessible-label - Accessible name for the group (aria-label)
+ * @attr {string} accessible-labeled-by - ID of an external label element (aria-labelledby)
  *
  * @slot - nldd-toggle-button elements
  *
@@ -52,8 +52,8 @@ export class NLDDToggleButtonGroup extends LitElement {
 	accessibleLabel = '';
 
 	/** ID of an external label element forwarded as aria-labelledby to the group host. */
-	@property({ type: String, attribute: 'accessible-labelled-by' })
-	accessibleLabelledBy = '';
+	@property({ type: String, attribute: 'accessible-labeled-by' })
+	accessibleLabeledBy = '';
 
 	override connectedCallback(): void {
 		super.connectedCallback();
@@ -73,8 +73,8 @@ export class NLDDToggleButtonGroup extends LitElement {
 	}
 
 	override firstUpdated(): void {
-		import.meta.env?.DEV && !this.accessibleLabel && !this.accessibleLabelledBy &&
-			console.warn('<nldd-toggle-button-group>: No accessible name provided. Add an accessible-label or accessible-labelled-by attribute for screen reader accessibility.');
+		import.meta.env?.DEV && !this.accessibleLabel && !this.accessibleLabeledBy &&
+			console.warn('<nldd-toggle-button-group>: No accessible name provided. Add an accessible-label or accessible-labeled-by attribute for screen reader accessibility.');
 	}
 
 	override updated(changed: Map<PropertyKey, unknown>): void {
@@ -91,9 +91,9 @@ export class NLDDToggleButtonGroup extends LitElement {
 				this.removeAttribute('aria-label');
 			}
 		}
-		if (changed.has('accessibleLabelledBy')) {
-			if (this.accessibleLabelledBy) {
-				this.setAttribute('aria-labelledby', this.accessibleLabelledBy);
+		if (changed.has('accessibleLabeledBy')) {
+			if (this.accessibleLabeledBy) {
+				this.setAttribute('aria-labelledby', this.accessibleLabeledBy);
 			} else {
 				this.removeAttribute('aria-labelledby');
 			}

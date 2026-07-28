@@ -3,30 +3,30 @@
  *
  * @element nldd-multi-line-text-field
  *
- * @attr {string} value           - The textarea value
- * @attr {string} placeholder     - Placeholder text
- * @attr {string} input-id        - Sets the id on the native textarea. Set automatically by nldd-form-field.
- * @attr {string} size            - 'md' (default) | 'sm'. Set automatically by nldd-form-field.
- * @attr {boolean} invalid        - Marks the field as invalid
- * @attr {boolean} valid          - Marks the field as valid
- * @attr {boolean} disabled       - Disabled state
- * @attr {string} name            - Textarea name for form submission
- * @attr {boolean} readonly       - Readonly state
- * @attr {boolean} required       - Required state
- * @attr {string} autocomplete    - Autocomplete hint
- * @attr {number} rows            - Initial visible rows (minimum height). Default: 3.
- * @attr {string} resize          - 'none' | 'vertical' | 'auto' (default).
- *                                  'auto' grows with content (native field-sizing), no manual handle.
+ * @attr {string} value - The textarea value
+ * @attr {string} placeholder - Placeholder text
+ * @attr {string} input-id - Sets the id on the native textarea. Set automatically by nldd-form-field.
+ * @attr {string} size - 'md' (default) | 'sm'. Set automatically by nldd-form-field.
+ * @attr {boolean} invalid - Marks the field as invalid
+ * @attr {boolean} valid - Marks the field as valid
+ * @attr {boolean} disabled - Disabled state
+ * @attr {string} name - Textarea name for form submission
+ * @attr {boolean} readonly - Readonly state
+ * @attr {boolean} required - Required state
+ * @attr {string} autocomplete - Autocomplete hint
+ * @attr {number} rows - Initial visible rows (minimum height). Default: 3.
+ * @attr {string} resize - 'none' | 'vertical' | 'auto' (default). 'auto' grows with content (native field-sizing), no manual handle.
  * @attr {string} accessible-label - Accessible label forwarded to the inner textarea. Set automatically by nldd-form-field.
  * @attr {string} error-message-ids - Ids for aria-describedby on the inner textarea. Set automatically by nldd-form-field.
- * @attr {boolean} no-spellcheck  - Disables browser spellchecking on the inner textarea
- * @attr {string} width           - Optional fixed width (any CSS length, e.g. "240px"). Default: stretches to fill container.
+ * @attr {boolean} no-spellcheck - Disables browser spellchecking on the inner textarea
+ * @attr {string} width - Optional fixed width (any CSS length, e.g. "240px"). Default: stretches to fill container.
  *
- * @fires input  - When value changes
+ * @fires input - When value changes
  * @fires change - When value is committed (blur)
  */
 import { LitElement, type PropertyValues } from 'lit';
 import { customElement, property, query } from 'lit/decorators.js';
+import { FormAssociated, type FormValue } from '../../../utilities/form-associated-mixin.js';
 import { reflectNonDefault } from '../../../utilities/reflect-non-default.js';
 import { multiLineTextFieldStyles } from './multi-line-text-field.styles.js';
 import { multiLineTextFieldTemplate } from './multi-line-text-field.template.js';
@@ -34,8 +34,7 @@ import { multiLineTextFieldTemplate } from './multi-line-text-field.template.js'
 export type ResizeMode = 'none' | 'vertical' | 'auto';
 
 @customElement('nldd-multi-line-text-field')
-export class NLDDMultiLineTextField extends LitElement {
-	static formAssociated = true;
+export class NLDDMultiLineTextField extends FormAssociated(LitElement) {
 
 	static override shadowRootOptions = {
 		...LitElement.shadowRootOptions,
@@ -44,7 +43,6 @@ export class NLDDMultiLineTextField extends LitElement {
 
 	static override styles = multiLineTextFieldStyles;
 
-	private _internals = this.attachInternals();
 
 	private _initialValue = '';
 
@@ -133,18 +131,16 @@ export class NLDDMultiLineTextField extends LitElement {
 			this._textarea.style.width = '';
 			this._textarea.style.height = '';
 		}
-		if (changed.has('value')) {
-			this._internals.setFormValue(this.value);
-		}
+	}
+
+	override formValue(): FormValue {
+		return this.value;
 	}
 
 	formResetCallback(): void {
 		this.value = this._initialValue;
 	}
 
-	formDisabledCallback(disabled: boolean): void {
-		this.disabled = disabled;
-	}
 
 	formStateRestoreCallback(state: File | string | FormData | null): void {
 		if (typeof state === 'string') this.value = state;
@@ -154,6 +150,7 @@ export class NLDDMultiLineTextField extends LitElement {
 		e.stopPropagation();
 		const textarea = e.target as HTMLTextAreaElement;
 		this.value = textarea.value;
+		this.commitFormValue();
 		this.dispatchEvent(new CustomEvent('input', {
 			detail: { value: this.value },
 			bubbles: true,
@@ -165,6 +162,7 @@ export class NLDDMultiLineTextField extends LitElement {
 		e.stopPropagation();
 		const textarea = e.target as HTMLTextAreaElement;
 		this.value = textarea.value;
+		this.commitFormValue();
 		this.dispatchEvent(new CustomEvent('change', {
 			detail: { value: this.value },
 			bubbles: true,

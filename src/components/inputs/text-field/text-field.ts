@@ -3,28 +3,29 @@
  *
  * @element nldd-text-field
  *
- * @attr {string} value        - The input value
- * @attr {string} placeholder  - Placeholder text
- * @attr {string} input-id     - Sets the id on the native input. Set automatically by nldd-form-field.
- * @attr {string} size         - 'md' (default) | 'sm'. Set automatically by nldd-form-field.
- * @attr {boolean} invalid     - Marks the field as invalid
- * @attr {boolean} valid       - Marks the field as valid
- * @attr {boolean} disabled    - Disabled state
- * @attr {string} type         - Input type: 'text' | 'email' | 'tel' | 'url'
- * @attr {string} name         - Input name for form submission
- * @attr {boolean} readonly    - Readonly state
- * @attr {boolean} required    - Required state
+ * @attr {string} value - The input value
+ * @attr {string} placeholder - Placeholder text
+ * @attr {string} input-id - Sets the id on the native input. Set automatically by nldd-form-field.
+ * @attr {string} size - 'md' (default) | 'sm'. Set automatically by nldd-form-field.
+ * @attr {boolean} invalid - Marks the field as invalid
+ * @attr {boolean} valid - Marks the field as valid
+ * @attr {boolean} disabled - Disabled state
+ * @attr {string} type - Input type: 'text' | 'email' | 'tel' | 'url'
+ * @attr {string} name - Input name for form submission
+ * @attr {boolean} readonly - Readonly state
+ * @attr {boolean} required - Required state
  * @attr {string} autocomplete - Autocomplete hint
- * @attr {string} accessible-label    - Accessible label forwarded to the inner input. Set automatically by nldd-form-field.
- * @attr {string} error-message-ids   - Ids for aria-describedby on the inner input. Set automatically by nldd-form-field.
+ * @attr {string} accessible-label - Accessible label forwarded to the inner input. Set automatically by nldd-form-field.
+ * @attr {string} error-message-ids - Ids for aria-describedby on the inner input. Set automatically by nldd-form-field.
  * @attr {boolean} no-spellcheck - Disables browser spellchecking on the inner input
- * @attr {string} width        - Optional fixed width (any CSS length, e.g. "240px"). Default: stretches to fill container.
+ * @attr {string} width - Optional fixed width (any CSS length, e.g. "240px"). Default: stretches to fill container.
  *
- * @fires input  - When input value changes
+ * @fires input - When input value changes
  * @fires change - When input value is committed
  */
 import { LitElement, type PropertyValues } from 'lit';
 import { customElement, property, query } from 'lit/decorators.js';
+import { FormAssociated, type FormValue } from '../../../utilities/form-associated-mixin.js';
 import { reflectNonDefault } from '../../../utilities/reflect-non-default.js';
 import { textFieldStyles } from './text-field.styles.js';
 import { textFieldTemplate } from './text-field.template.js';
@@ -32,8 +33,7 @@ import { textFieldTemplate } from './text-field.template.js';
 export type InputType = 'text' | 'email' | 'tel' | 'url';
 
 @customElement('nldd-text-field')
-export class NLDDTextField extends LitElement {
-	static formAssociated = true;
+export class NLDDTextField extends FormAssociated(LitElement) {
 
 	static override shadowRootOptions = {
 		...LitElement.shadowRootOptions,
@@ -42,7 +42,6 @@ export class NLDDTextField extends LitElement {
 
 	static override styles = textFieldStyles;
 
-	private _internals = this.attachInternals();
 
 	private _initialValue = '';
 
@@ -113,18 +112,16 @@ export class NLDDTextField extends LitElement {
 				this.style.removeProperty('--_width');
 			}
 		}
-		if (changed.has('value')) {
-			this._internals.setFormValue(this.value);
-		}
+	}
+
+	override formValue(): FormValue {
+		return this.value;
 	}
 
 	formResetCallback(): void {
 		this.value = this._initialValue;
 	}
 
-	formDisabledCallback(disabled: boolean): void {
-		this.disabled = disabled;
-	}
 
 	formStateRestoreCallback(state: File | string | FormData | null): void {
 		if (typeof state === 'string') this.value = state;
@@ -134,6 +131,7 @@ export class NLDDTextField extends LitElement {
 		e.stopPropagation();
 		const input = e.target as HTMLInputElement;
 		this.value = input.value;
+		this.commitFormValue();
 		this.dispatchEvent(new CustomEvent('input', {
 			detail: { value: this.value },
 			bubbles: true,
@@ -145,6 +143,7 @@ export class NLDDTextField extends LitElement {
 		e.stopPropagation();
 		const input = e.target as HTMLInputElement;
 		this.value = input.value;
+		this.commitFormValue();
 		this.dispatchEvent(new CustomEvent('change', {
 			detail: { value: this.value },
 			bubbles: true,

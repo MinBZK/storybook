@@ -541,6 +541,23 @@ describe('nldd-combo-box – text', () => {
 		expect(el.text).toBe('België');
 	});
 
+	it('clears the text when value is cleared programmatically', async () => {
+		// Without this, clearing the value (e.g. a form reset behind a status
+		// toggle) leaves the old label visible while the form posts nothing.
+		el = await fixture<NLDDComboBox>(`
+			<nldd-combo-box value="nl" accessible-label="Land">
+				<nldd-menu>
+					<nldd-menu-item text="Nederland" value="nl"></nldd-menu-item>
+				</nldd-menu>
+			</nldd-combo-box>
+		`);
+		await waitForUpdate(el);
+		expect(el.text).toBe('Nederland');
+		el.value = '';
+		await waitForUpdate(el);
+		expect(el.text).toBe('');
+	});
+
 	it('does not overwrite an explicit text when value matches a menu item', async () => {
 		el = await fixture<NLDDComboBox>(`
 			<nldd-combo-box value="nl" text="Netherlands (custom)" accessible-label="Land">
@@ -681,6 +698,46 @@ describe('nldd-combo-box – allow-custom', () => {
 		input.dispatchEvent(new KeyboardEvent('keydown', { key: 'Enter', bubbles: true }));
 		await waitForUpdate(element);
 	};
+
+	it('closes the menu instead of showing the empty state when nothing matches (allow-custom)', async () => {
+		// The typed text is itself a valid value, so "nothing found" would
+		// wrongly suggest the input is invalid.
+		el = await withOption();
+		el.allowCustom = true;
+		await waitForUpdate(el);
+		const input = el.shadowRoot!.querySelector('input')!;
+		(input as HTMLInputElement).value = 'xyz';
+		input.dispatchEvent(new Event('input', { bubbles: true }));
+		await waitForUpdate(el);
+		const menu = el.querySelector('nldd-menu')!;
+		expect(menu.matches(':popover-open')).toBe(false);
+	});
+
+	it('keeps showing the empty state without allow-custom', async () => {
+		el = await withOption();
+		await waitForUpdate(el);
+		const input = el.shadowRoot!.querySelector('input')!;
+		(input as HTMLInputElement).value = 'xyz';
+		input.dispatchEvent(new Event('input', { bubbles: true }));
+		await waitForUpdate(el);
+		const menu = el.querySelector('nldd-menu')!;
+		expect(menu.matches(':popover-open')).toBe(true);
+	});
+
+	it('reopens the menu once the typed text matches again (allow-custom)', async () => {
+		el = await withOption();
+		el.allowCustom = true;
+		await waitForUpdate(el);
+		const input = el.shadowRoot!.querySelector('input')!;
+		(input as HTMLInputElement).value = 'xyz';
+		input.dispatchEvent(new Event('input', { bubbles: true }));
+		await waitForUpdate(el);
+		(input as HTMLInputElement).value = 'Neder';
+		input.dispatchEvent(new Event('input', { bubbles: true }));
+		await waitForUpdate(el);
+		const menu = el.querySelector('nldd-menu')!;
+		expect(menu.matches(':popover-open')).toBe(true);
+	});
 
 	it('discards a non-matching typed value on Enter by default', async () => {
 		el = await withOption();

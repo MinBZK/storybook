@@ -5,7 +5,7 @@ import './text-editor.js';
 import { ANNOTATION_SENTINEL as S, stripSentinels, docToClean } from './text-editor.annotation-sentinels.js';
 import { annotationMove, pasteAnnotations, currentAnnotations } from './text-editor.annotations.js';
 
-/* Caret behaviour around an annotation edge. Each edge has two stops — just inside
+/* Caret behavior around an annotation edge. Each edge has two stops — just inside
  * (grows on typing) and just outside (does not) — thanks to a sentinel character.
  * See text-editor.annotation-sentinels.ts. */
 
@@ -185,7 +185,7 @@ describe('nldd-text-editor annotation caret', () => {
 		});
 		await waitForUpdate(el);
 		expect(annotatedText(el)).toBe('WORD'); // survived the move, still marks WORD
-		expect(el.value.endsWith('WORD')).toBe(true); // and travelled to the drop point
+		expect(el.value.endsWith('WORD')).toBe(true); // and traveled to the drop point
 	});
 
 	// A cut→paste inside the editor moves the annotation with its text (same id),

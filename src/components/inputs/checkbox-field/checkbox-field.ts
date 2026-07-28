@@ -3,25 +3,34 @@
  *
  * A checkbox with an inline label for use in forms.
  *
+ * Form-associated: participates in native form submission under `name` with
+ * `value` when checked (the inner nldd-checkbox sits in the shadow root and
+ * never joins the consumer's form; the field submits on its behalf).
+ *
  * @element nldd-checkbox-field
- * @attr {boolean} checked       - Checked state
+ * @attr {boolean} checked - Checked state
  * @attr {boolean} indeterminate - Indeterminate state
- * @attr {boolean} disabled      - Disabled state
- * @attr {string}  value         - Value for form submission
- * @attr {string}  name          - Name for form submission
- * @attr {string}  label         - Label text for the checkbox
+ * @attr {boolean} disabled - Disabled state
+ * @attr {string} value - Value for form submission
+ * @attr {string} name - Name for form submission
+ * @attr {string} label - Label text for the checkbox
  *
  * @fires change - When checked state changes; detail: { checked: boolean, value: string }
  */
 import { LitElement } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
+import { FormAssociated, type FormValue } from '../../../utilities/form-associated-mixin.js';
 import { checkboxFieldStyles } from './checkbox-field.styles.js';
 import { checkboxFieldTemplate } from './checkbox-field.template.js';
 import type { NLDDCheckbox } from '../checkbox/checkbox.js';
 
 @customElement('nldd-checkbox-field')
-export class NLDDCheckboxField extends LitElement {
+export class NLDDCheckboxField extends FormAssociated(LitElement) {
+
 	static override styles = checkboxFieldStyles;
+
+
+	private _initialChecked = false;
 
 	@property({ type: Boolean, reflect: true })
 	checked = false;
@@ -35,11 +44,32 @@ export class NLDDCheckboxField extends LitElement {
 	@property({ type: String })
 	value = 'on';
 
-	@property({ type: String })
+	/** Reflected: form association reads the host's name attribute, so setting
+	 *  the property alone must still register the field with the form. */
+	@property({ type: String, reflect: true })
 	name = '';
 
 	@property({ type: String })
 	label = '';
+
+	override firstUpdated(): void {
+		this._initialChecked = this.checked;
+	}
+
+
+	override formValue(): FormValue {
+		return this.checked ? this.value : null;
+	}
+
+	formResetCallback(): void {
+		this.checked = this._initialChecked;
+		this.indeterminate = false;
+	}
+
+
+	formStateRestoreCallback(state: File | string | FormData | null): void {
+		this.checked = state !== null;
+	}
 
 	public _handleLabelClick(e: Event): void {
 		if (this.disabled) return;
@@ -52,6 +82,7 @@ export class NLDDCheckboxField extends LitElement {
 		const { checked } = (e as CustomEvent<{ checked: boolean }>).detail;
 		this.checked = checked;
 		this.indeterminate = false;
+		this.commitFormValue();
 		this.dispatchEvent(new CustomEvent('change', {
 			detail: { checked: this.checked, value: this.value },
 			bubbles: true,
