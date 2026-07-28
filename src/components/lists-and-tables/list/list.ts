@@ -83,7 +83,7 @@ export interface NLDDReorderEventDetail {
  * @attr {'list'|'navigation'|'listbox'} type - A11y role and behavior (default 'list'). See the docblock above.
  * @attr {boolean} reorderable - Enables drag-to-reorder and pushes `reorderable` onto the items. Only valid with `type="list"`; wins over `arrow-navigation` when both are set.
  * @attr {boolean} no-dividers - Hides the dividers between list items
- * @attr {boolean} arrow-navigation - Roving-tabindex arrow-key navigation: ArrowUp/ArrowDown move focus between items, Home/End jump to first/last, and the list becomes a single tab stop. Ignored when `reorderable` is active on a `type="list"`, and in listbox mode.
+ * @attr {boolean} arrow-navigation - Roving-tabindex arrow-key navigation: ArrowUp/ArrowDown move focus between the rows as they appear on screen (in a tree that includes the rows of an open branch), Home/End jump to first/last, and the list becomes a single tab stop. Ignored when `reorderable` is active on a `type="list"`, and in listbox mode.
  * @attr {string} height - Listbox only: caps the options' scroll region at this CSS length (e.g. '320px'). Unset means no cap.
  * @attr {string} empty-text - Text for the default empty-state dialog (falls back to the Dutch i18n default). Ignored when `[slot=empty]` is filled.
  * @attr {string} empty-supporting-text - Supporting text for the default empty-state dialog. Ignored when `[slot=empty]` is filled.
@@ -663,12 +663,12 @@ export class NLDDList extends LitElement {
 		return this.arrowNavigation && !(this.reorderable && this.type === 'list');
 	}
 
-	/** Interactive, visible items — the roving stops. Non-interactive items (no
-	 *  link/button) and hidden items are skipped. */
+	/** Interactive, painted rows — the roving stops, in the order they appear on
+	 *  screen. Non-interactive rows (no link/button) and hidden ones are skipped.
+	 *  Painted, not top-level: in a tree the rows of an open branch sit between
+	 *  the branch and the next top-level row, and arrows have to walk them too. */
 	private _getInteractiveItems(): NLDDListItem[] {
-		return this._getItems().filter(
-			(item) => !item.hasAttribute('hidden') && Boolean(item.href || item.button),
-		);
+		return this._getPaintedRows().filter((row) => Boolean(row.href || row.button));
 	}
 
 	private _rovingScheduled = false;
@@ -691,8 +691,8 @@ export class NLDDList extends LitElement {
 	 *  interactive item). */
 	private _applyRoving() {
 		const active = this._arrowNavActive;
-		const items = this._getItems();
-		items.forEach((item) => { item._arrowNavigation = active; });
+		const rows = this._getAllRows();
+		rows.forEach((row) => { row._arrowNavigation = active; });
 		// Best-effort AT discoverability: role="list"/"navigation" doesn't imply
 		// arrow-key navigation the way listbox/menu would, so advertise the keys via
 		// aria-keyshortcuts (queryable) and a plain-language aria-description (surfaced
@@ -705,20 +705,21 @@ export class NLDDList extends LitElement {
 			this.removeAttribute('aria-description');
 		}
 		if (!active) {
-			items.forEach((item) => { item._rovingActive = false; });
+			rows.forEach((row) => { row._rovingActive = false; });
 			return;
 		}
 		const interactive = this._getInteractiveItems();
 		if (interactive.length === 0) return;
-		const entry = interactive.find((item) => item._rovingActive)
-			?? interactive.find((item) => item.selected)
+		const entry = interactive.find((row) => row._rovingActive)
+			?? interactive.find((row) => row.selected)
 			?? interactive[0];
-		items.forEach((item) => { item._rovingActive = item === entry; });
+		rows.forEach((row) => { row._rovingActive = row === entry; });
 	}
 
-	// items defaults to all items; _onArrowNav passes the interactive set it already
-	// computed (non-interactive items are kept out of roving, so they stay false).
-	private _setRovingActive(activeItem: NLDDListItem, items: NLDDListItem[] = this._getItems()) {
+	// items defaults to every row, nested ones included; _onArrowNav passes the
+	// interactive set it already computed (non-interactive rows are kept out of
+	// roving, so they stay false).
+	private _setRovingActive(activeItem: NLDDListItem, items: NLDDListItem[] = this._getAllRows()) {
 		items.forEach((item) => { item._rovingActive = item === activeItem; });
 	}
 

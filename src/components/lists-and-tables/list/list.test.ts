@@ -443,6 +443,30 @@ describe('nldd-list', () => {
 		expect(children[1].classList.contains('is-last')).toBe(false);
 	});
 
+	it('tree: arrow navigation walks the rows of an open branch', async () => {
+		el = await fixture(`
+			<nldd-list type="tree" arrow-navigation>
+				<nldd-list-item button expanded>
+					A
+					<nldd-list-item slot="children" button>A1</nldd-list-item>
+				</nldd-list-item>
+				<nldd-list-item button>B</nldd-list-item>
+			</nldd-list>
+		`);
+		await waitForUpdate(el);
+		// querySelectorAll walks into the branch, so pick the rows apart by role.
+		const branch = el.querySelector('nldd-list-item')!;
+		const child = branch.querySelector('nldd-list-item')!;
+		const leaf = [...el.querySelectorAll('nldd-list-item')].find(
+			row => row !== branch && row !== child,
+		)!;
+		el.dispatchEvent(new KeyboardEvent('keydown', { key: 'ArrowDown', bubbles: true, composed: true }));
+		await waitForUpdate(el);
+		// Down from the branch lands on its child, not on the next top-level row.
+		expect(child._rovingActive).toBe(true);
+		expect(leaf._rovingActive).toBe(false);
+	});
+
 	it('search-bar-end slot: hidden when empty (listbox)', async () => {
 		el = await fixture('<nldd-list type="listbox"></nldd-list>');
 		await waitForUpdate(el);
