@@ -103,6 +103,20 @@ describe('nldd-form-field', () => {
 		expect(describedBy).toContain('help-static');
 	});
 
+	it('hides help text via the hidden attribute', async () => {
+		// The host is display: contents, which outranks the UA [hidden] rule;
+		// without the :host([hidden]) restatement this stays visible.
+		el = await fixture(`
+			<nldd-form-field label="Periode">
+				<nldd-form-field-help-text hidden>De periode van de opdracht is 1 jan t/m 1 feb</nldd-form-field-help-text>
+				<input>
+			</nldd-form-field>
+		`);
+		await waitForUpdate(el);
+		const help = el.querySelector('nldd-form-field-help-text')!;
+		expect(getComputedStyle(help).display).toBe('none');
+	});
+
 	it('lists help text id before error id in aria-describedby', async () => {
 		el = await fixture(`
 			<nldd-form-field label="Email">
