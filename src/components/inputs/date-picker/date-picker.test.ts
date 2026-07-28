@@ -8,7 +8,7 @@ function days(el: NLDDDatePicker): HTMLButtonElement[] {
 	return Array.from(el.shadowRoot!.querySelectorAll('.date-picker__day'));
 }
 
-/** Keyed on the full date: with neighbouring months shown, day numbers repeat. */
+/** Keyed on the full date: with neighboring months shown, day numbers repeat. */
 function dayFor(el: NLDDDatePicker, iso: string): HTMLButtonElement {
 	return el.shadowRoot!.querySelector(`.date-picker__day[data-date="${iso}"]`)!;
 }
@@ -1073,5 +1073,60 @@ describe('nldd-date-picker weigert een periode over een geblokkeerde dag', () =>
 		expect(el.end).toBe('');
 		expect(change).toBe(0);
 		expect(announcement(el)).toContain('niet beschikbaar');
+	});
+});
+
+describe('nldd-date-picker breedte en periode-indicatoren', () => {
+	let el: NLDDDatePicker;
+
+	afterEach(() => {
+		if (el) cleanup(el);
+	});
+
+	it('width="full" en een CSS-lengte sturen de hostbreedte; ongeldig valt terug', async () => {
+		el = await fixture<NLDDDatePicker>('<nldd-date-picker width="full"></nldd-date-picker>');
+		await waitForUpdate(el);
+		expect(el.style.getPropertyValue('--_width')).toBe('100%');
+
+		el.width = '560px';
+		await waitForUpdate(el);
+		expect(el.style.getPropertyValue('--_width')).toBe('560px');
+		expect(Math.round(el.getBoundingClientRect().width)).toBe(560);
+
+		el.width = 'kapot';
+		await waitForUpdate(el);
+		expect(el.style.getPropertyValue('--_width')).toBe('');
+	});
+
+	// De eindpunten zijn hetzelfde vierkant als een losse selectie (even breed
+	// als hoog, ook in bredere cellen), met rechte hoeken naar de periode toe
+	// zodat het vierkant zonder lichte inkeping tegen de band ligt.
+	it('eindpunten zijn vierkant en alleen aan de buitenkant afgerond', async () => {
+		el = await fixture<NLDDDatePicker>('<nldd-date-picker range start="2026-07-10" end="2026-07-20" width="700px" style="--semantics-controls-md-corner-radius: 8px"></nldd-date-picker>');
+		await waitForUpdate(el);
+		const indicator = (iso: string) =>
+			dayFor(el, iso).querySelector('.date-picker__day-indicator') as HTMLElement;
+		const start = indicator('2026-07-10');
+		const end = indicator('2026-07-20');
+
+		for (const dot of [start, end]) {
+			const r = dot.getBoundingClientRect();
+			expect(Math.round(r.width)).toBe(Math.round(r.height));
+		}
+		const startStyle = getComputedStyle(start);
+		expect(startStyle.borderStartStartRadius).not.toBe('0px');
+		expect(startStyle.borderStartEndRadius).toBe('0px');
+		const endStyle = getComputedStyle(end);
+		expect(endStyle.borderStartStartRadius).toBe('0px');
+		expect(endStyle.borderStartEndRadius).not.toBe('0px');
+	});
+
+	it('een periode van één dag houdt alle vier de hoeken', async () => {
+		el = await fixture<NLDDDatePicker>('<nldd-date-picker range start="2026-07-10" end="2026-07-10" style="--semantics-controls-md-corner-radius: 8px"></nldd-date-picker>');
+		await waitForUpdate(el);
+		const dot = dayFor(el, '2026-07-10').querySelector('.date-picker__day-indicator') as HTMLElement;
+		const style = getComputedStyle(dot);
+		expect(style.borderStartStartRadius).not.toBe('0px');
+		expect(style.borderStartEndRadius).not.toBe('0px');
 	});
 });

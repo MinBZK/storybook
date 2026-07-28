@@ -10,21 +10,22 @@
  *
  * @element nldd-date-picker
  *
- * @attr {string}  value             - De gekozen datum als ISO (jjjj-mm-dd). Alleen zonder `range`.
- * @attr {string}  start             - Begin van de periode als ISO. Alleen met `range`.
- * @attr {string}  end               - Einde van de periode als ISO. Alleen met `range`.
- * @attr {boolean} range             - Kies een periode in plaats van één datum.
- * @attr {string}  min               - Vroegst toegestane datum: ISO, of `today` met een verschuiving (`today-18y`).
- * @attr {string}  max               - Laatst toegestane datum: ISO, of `today` met een verschuiving (`today+1y`).
- * @attr {number}  first-day-of-week - Eerste dag van de week, 0 is zondag. Standaard 1 (maandag).
- * @attr {boolean} week-numbers     - Toont ISO-weeknummers in een kolom links.
- * @attr {string}  accessible-label  - Toegankelijke naam van de kalender.
- * @attr {object}  translations      - Vertalingen; niet opgegeven sleutels vallen terug op het Nederlands.
+ * @attr {string} value - De gekozen datum als ISO (jjjj-mm-dd). Alleen zonder `range`.
+ * @attr {string} start - Begin van de periode als ISO. Alleen met `range`.
+ * @attr {string} end - Einde van de periode als ISO. Alleen met `range`.
+ * @attr {boolean} range - Kies een periode in plaats van één datum.
+ * @attr {string} min - Vroegst toegestane datum: ISO, of `today` met een verschuiving (`today-18y`).
+ * @attr {string} max - Laatst toegestane datum: ISO, of `today` met een verschuiving (`today+1y`).
+ * @attr {number} first-day-of-week - Eerste dag van de week, 0 is zondag. Standaard 1 (maandag).
+ * @attr {boolean} week-numbers - Toont ISO-weeknummers in een kolom links.
+ * @attr {string} width - Breedte: `full` (vult de container) of een CSS-lengte (bv. `560px`). Leeg (standaard) is de intrinsieke breedte van zeven dagcellen; de cellen rekken mee met de opgegeven breedte.
+ * @attr {string} accessible-label - Toegankelijke naam van de kalender.
+ * @attr {object} translations - Vertalingen; niet opgegeven sleutels vallen terug op het Nederlands.
  *
  * @prop {(iso: string) => boolean} isDateUnavailable - Markeert losse datums als niet kiesbaar, bijvoorbeeld weekenden of feestdagen.
  *
  * @fires change - Wanneer een datum of een volledige periode is gekozen. detail: { value } of { start, end }.
- * @fires input  - Ook bij de tussenstap van een periode, wanneer alleen de begindatum staat.
+ * @fires input - Ook bij de tussenstap van een periode, wanneer alleen de begindatum staat.
  */
 
 import { LitElement, type PropertyValues } from 'lit';
@@ -128,6 +129,10 @@ export class NLDDDatePicker extends withTranslations<NLDDDatePickerTranslations>
 
 	@property({ type: String })
 	end = '';
+
+	/** Breedte: 'full' of een CSS-lengte; leeg is de intrinsieke zeven-cellen-breedte. */
+	@property({ type: String, reflect: true })
+	width = '';
 
 	@property({ type: Boolean, reflect: true })
 	range = false;
@@ -253,10 +258,23 @@ export class NLDDDatePicker extends withTranslations<NLDDDatePickerTranslations>
 		}
 	}
 
-	override updated(): void {
+	override updated(changed: PropertyValues): void {
 		// Mirrored to an attribute so the host's own rules can key on it; consumers
 		// are not meant to set it.
 		this.toggleAttribute('stacked', this._stacked);
+
+		if (changed.has('width')) {
+			const w = this.width;
+			// `full` says 100% explicitly; anything else flows through CSS.supports
+			// so a typo falls back to the intrinsic width instead of breaking layout.
+			if (w === 'full') {
+				this.style.setProperty('--_width', '100%');
+			} else if (w && CSS.supports('width', w)) {
+				this.style.setProperty('--_width', w);
+			} else {
+				this.style.removeProperty('--_width');
+			}
+		}
 
 		// Two associations the menu cannot make itself here. It resolves a string
 		// anchor with document.getElementById, which cannot see into a shadow root,
@@ -328,7 +346,7 @@ export class NLDDDatePicker extends withTranslations<NLDDDatePickerTranslations>
 
 	/**
 	 * Six weeks of real dates, including the days either side of the month. Those
-	 * neighbours are selectable and jump the calendar to their own month, which
+	 * neighbors are selectable and jump the calendar to their own month, which
 	 * beats paging for a date a few days over the boundary. Every cell announces
 	 * its full date, so a 1st from the next month can never be mistaken for this
 	 * one.
@@ -645,7 +663,7 @@ export class NLDDDatePicker extends withTranslations<NLDDDatePickerTranslations>
 	private _select(iso: string): void {
 		if (this._isUnavailable(iso)) return;
 		this._focused = iso;
-		// Choosing a neighbouring month's day brings that month into view, so the
+		// Choosing a neighboring month's day brings that month into view, so the
 		// selection stays visible instead of sitting on a day that scrolls away.
 		if (this._isOutsideMonth(iso)) this._view = firstOfMonth(iso);
 
@@ -665,7 +683,7 @@ export class NLDDDatePicker extends withTranslations<NLDDDatePickerTranslations>
 		// Picking before the anchor completes the period backwards rather than
 		// starting over. The hover preview already draws the band that way, and
 		// dragging backwards already reverses, so restarting here would be the one
-		// behaviour contradicting what the calendar just showed. Beginning again is
+		// behavior contradicting what the calendar just showed. Beginning again is
 		// still one click away, since a finished period restarts on the next click.
 		this._commitRange(this._anchor, iso);
 	}

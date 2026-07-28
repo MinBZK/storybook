@@ -35,6 +35,7 @@ export default {
 		range: false,
 		firstDayOfWeek: 1,
 		weekNumbers: false,
+		width: '',
 		accessibleLabel: '',
 		value: '',
 		start: '',
@@ -60,6 +61,11 @@ export default {
 			control: 'boolean',
 			description: 'Toont ISO-weeknummers in een kolom links',
 			table: { defaultValue: { summary: false } },
+		},
+		width: {
+			control: 'text',
+			description: 'Breedte: full (vult de container) of een CSS-lengte (bv. 560px); leeg is de intrinsieke zeven-cellen-breedte',
+			table: { defaultValue: { summary: '(intrinsiek)' } },
 		},
 		accessibleLabel: {
 			name: 'accessible-label',
@@ -99,6 +105,7 @@ const Template = ({
 	range,
 	firstDayOfWeek,
 	weekNumbers,
+	width,
 	accessibleLabel,
 	value,
 	start,
@@ -110,6 +117,7 @@ const Template = ({
 		?range=${range}
 		first-day-of-week=${firstDayOfWeek}
 		?week-numbers=${weekNumbers}
+		width=${width || nothing}
 		accessible-label=${accessibleLabel || nothing}
 		value=${value || nothing}
 		start=${start || nothing}
