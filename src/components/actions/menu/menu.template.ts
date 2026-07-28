@@ -106,7 +106,7 @@ export function menuItemTemplate(this: NLDDMenuItem, variant: 'menu' | 'listbox'
 	const hasSubmenu = this._hasSubmenu;
 	// A plain button item with an href renders as a real link. Submenu openers,
 	// checkbox/radio items, and disabled items keep the button — they need its
-	// richer behaviour (popover invoker, check state, inert disabling).
+	// richer behavior (popover invoker, check state, inert disabling).
 	// Sanitize the href so a caller-supplied javascript:/data:/vbscript:/blob:
 	// URL can't become an XSS vector; a blocked URL yields '' and falls back to
 	// the button branch. Mirrors the nav-bar sheet (top-navigation-bar.ts).

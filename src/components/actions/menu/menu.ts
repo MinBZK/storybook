@@ -19,6 +19,11 @@ import { breakpoints } from '../../../assets/styles/breakpoints.js';
 
 // # nldd-menu-divider
 
+/**
+ * A horizontal rule between groups of items in an `nldd-menu`.
+ *
+ * @element nldd-menu-divider
+ */
 export class NLDDMenuDivider extends LitElement {
 	static override styles = menuDividerStyles;
 
@@ -35,7 +40,7 @@ if (!customElements.get('nldd-menu-divider')) {
 // # nldd-menu-group
 
 /**
- * A labelled group of menu items inside an nldd-menu. Wraps its slotted
+ * A labeled group of menu items inside an nldd-menu. Wraps its slotted
  * items in `role="group"` with `aria-labelledby` pointing to the group's
  * `text`, providing native ARIA group semantics that a flat title element
  * can't deliver.
@@ -49,6 +54,8 @@ if (!customElements.get('nldd-menu-divider')) {
  * Use the wrapper for grouping with a title; for ungrouped flat menus or
  * a divider without a title, the existing `nldd-menu-item` +
  * `nldd-menu-divider` flat structure keeps working unchanged.
+ *
+ * @element nldd-menu-group
  *
  * @attr {string} text - Group title text shown above the items.
  *
@@ -83,32 +90,22 @@ if (!customElements.get('nldd-menu-group')) {
 /**
  * A single item within an nldd-menu.
  *
- * @attr {string}  text      - Display text. Supports **bold** markdown syntax.
- * @attr {string}  value     - Form value. Falls back to text when not set.
- * @attr {string}  href      - Optional link target. A plain button item with an
- *                             href renders as an `<a>` so it is a real link
- *                             (middle-click, open in new tab, copy link). Ignored
- *                             for submenu openers, checkbox/radio items, and while
- *                             disabled.
- * @attr {string}  aliases   - Space-separated alternative search terms.
- * @attr {string}  details   - Secondary label shown on the right side.
- * @attr {string}  shortcut  - Keyboard shortcut hint shown on the right, e.g. 'Cmd+E'.
- *                             Display only (rendered via nldd-keyboard-shortcut) — it does
- *                             not bind the key; wire up the handling in your app. Hidden on
- *                             touch-only devices, where it isn't invokable.
- * @attr {string}  shortcut-mac / shortcut-windows / shortcut-linux - Per-OS overrides for
- *                             `shortcut`, picked by detected OS (falls back to `shortcut`).
- * @attr {string}  icon      - Icon name rendered before the text (nldd-icon name).
- * @attr {string}  type      - Item type: 'button' | 'checkbox' | 'radio'. Default: 'button'.
- * @attr {boolean} selected        - Selected state for checkbox and radio types.
- * @attr {boolean} destructive     - Marks the item as destructive (red text; red highlight bg). Use for irreversible
- *                                   actions like "Delete". Colour is the only built-in signal, so per WCAG 1.4.1 the
- *                                   item's own label must convey the destructive nature (e.g. "Verwijder") — don't rely
- *                                   on the red alone. Confirming the action (e.g. a follow-up dialog) is the consumer's
- *                                   responsibility.
- * @attr {boolean} disabled        - Disabled state.
- * @attr {string}  query           - Query substring to bold-highlight in text. Set by menu's filter(); also settable by consumers.
- * @attr {string}  query-mark-mode - 'match' | 'predictive' (default: 'predictive'). See text-cell for details.
+ * @element nldd-menu-item
+ *
+ * @attr {string} text - Display text. Supports **bold** markdown syntax.
+ * @attr {string} value - Form value. Falls back to text when not set.
+ * @attr {string} href - Optional link target. A plain button item with an href renders as an `<a>` so it is a real link (middle-click, open in new tab, copy link). Ignored for submenu openers, checkbox/radio items, and while disabled.
+ * @attr {string} aliases - Space-separated alternative search terms.
+ * @attr {string} details - Secondary label shown on the right side.
+ * @attr {string} shortcut - Keyboard shortcut hint shown on the right, e.g. 'Cmd+E'. Display only (rendered via nldd-keyboard-shortcut) — it does not bind the key; wire up the handling in your app. Hidden on touch-only devices, where it isn't invokable.
+ * @attr {string} shortcut-mac / shortcut-windows / shortcut-linux - Per-OS overrides for `shortcut`, picked by detected OS (falls back to `shortcut`).
+ * @attr {string} icon - Icon name rendered before the text (nldd-icon name).
+ * @attr {string} type - Item type: 'button' | 'checkbox' | 'radio'. Default: 'button'.
+ * @attr {boolean} selected - Selected state for checkbox and radio types.
+ * @attr {boolean} destructive - Marks the item as destructive (red text; red highlight bg). Use for irreversible actions like "Delete". Color is the only built-in signal, so per WCAG 1.4.1 the item's own label must convey the destructive nature (e.g. "Verwijder") — don't rely on the red alone. Confirming the action (e.g. a follow-up dialog) is the consumer's responsibility.
+ * @attr {boolean} disabled - Disabled state.
+ * @attr {string} query - Query substring to bold-highlight in text. Set by menu's filter(); also settable by consumers.
+ * @attr {string} query-mark-mode - 'match' | 'predictive' (default: 'predictive'). See text-cell for details.
  *
  * @fires select - Fired when the item is clicked and not disabled.
  */
@@ -330,30 +327,21 @@ const defaultFilterFn = (query: string, item: NLDDMenuItem): boolean => {
  * Note: Only type="button" items are supported when used inside nldd-combo-box-field.
  * Radio and checkbox types may be used in standalone menus.
  *
- * @attr {string}  anchor               - ID of the anchor element.
- * @attr {string}  placement            - Floating UI placement. Default: 'bottom-start'.
- * @attr {string}  empty-text           - Text of the default empty-state dialog. Falls back
- *                                        to Dutch i18n "Geen opties beschikbaar".
- * @attr {string}  empty-supporting-text - Supporting text of the default empty-state dialog.
- * @attr {string}  width                - Explicit width, pinned exactly. Without it the
- *                                        menu sizes to its content between a minimum and a
- *                                        viewport-aware maximum (min(100vw - inset, 640px)).
- * @attr {number}  max-items            - Maximum number of visible items before scrolling.
- *                                        Sets --_max-items internally. Default: 0 (no limit).
- * @attr {object}  translations         - Override one or more translation keys.
- * @attr {Function} filterFn            - Custom filter function (query, item) => boolean.
+ * @element nldd-menu
+ *
+ * @attr {string} anchor - ID of the anchor element. Positions the menu against it AND makes it a toggle: the menu listens on document click and opens/closes itself when the click lands on the anchor. Use this for a menu hung off a button. For a menu you open yourself (a type-ahead under a text field, say), set the `anchorElement` property instead — same positioning, no toggle.
+ * @attr {string} placement - Floating UI placement. Default: 'bottom-start'.
+ * @attr {string} empty-text - Text of the default empty-state dialog. Falls back to Dutch i18n "Geen opties beschikbaar".
+ * @attr {string} empty-supporting-text - Supporting text of the default empty-state dialog.
+ * @attr {string} width - Explicit width, pinned exactly. Without it the menu sizes to its content between a minimum and a viewport-aware maximum (min(100vw - inset, 640px)).
+ * @attr {number} max-items - Maximum number of visible items before scrolling. Sets --_max-items internally. Default: 0 (no limit).
+ * @attr {object} translations - Override one or more translation keys.
+ * @attr {Function} filterFn - Custom filter function (query, item) => boolean.
  *
  * @slot - nldd-menu-item and nldd-menu-divider elements.
- * @slot header - Free content shown above the items, outside `role="menu"` (so it may
- *                hold non-menuitem content such as an avatar + name, buttons or links —
- *                reached with Tab, skipped by arrow navigation). The region is unpadded;
- *                control spacing with your own content (e.g. an `nldd-container`). Root-only:
- *                never rendered in a submenu. Example: an account identity header (nldd-byline).
- * @slot footer - Free content shown below the items, outside `role="menu"` (same rules as
- *                `header`; also unpadded and root-only). Example: a short note or a link.
- * @slot empty - Shown when no items are visible. Defaults to `nldd-inline-dialog`
- *               driven by `empty-text` / `empty-supporting-text`. Slot content
- *               overrides the default dialog entirely.
+ * @slot header - Free content shown above the items, outside `role="menu"` (so it may hold non-menuitem content such as an avatar + name, buttons or links — reached with Tab, skipped by arrow navigation). The region is unpadded; control spacing with your own content (e.g. an `nldd-container`). Root-only: never rendered in a submenu. Example: an account identity header (nldd-byline).
+ * @slot footer - Free content shown below the items, outside `role="menu"` (same rules as `header`; also unpadded and root-only). Example: a short note or a link.
+ * @slot empty - Shown when no items are visible. Defaults to `nldd-inline-dialog` driven by `empty-text` / `empty-supporting-text`. Slot content overrides the default dialog entirely.
  */
 export class NLDDMenu extends LitElement {
 	static override styles = menuStyles;
@@ -361,6 +349,13 @@ export class NLDDMenu extends LitElement {
 	@property({ type: String, reflect: true })
 	anchor = '';
 
+	/**
+	 * The anchor as an element reference. Positions the menu exactly like the
+	 * `anchor` attribute, but does NOT turn the anchor into a toggle — clicking
+	 * it does not open the menu. Use this whenever you drive open/close yourself
+	 * (`showPopover()` / `hidePopover()`), which is what nldd-combo-box and
+	 * nldd-token-field do: their input must stay an input, not a menu button.
+	 */
 	@property({ attribute: false })
 	anchorElement: Element | null = null;
 
@@ -1375,7 +1370,7 @@ export class NLDDMenu extends LitElement {
 	// On touch, pressing an item sets :active and the synthetic sticky
 	// :hover lands on it, so `.menu__item:active:hover` flashes. If the
 	// gesture becomes an internal scroll (cramped menu), :active lingers
-	// until the browser recognises the pan and the highlight stays for
+	// until the browser recognizes the pan and the highlight stays for
 	// the whole scroll. We detect a scroll from the touch delta and set
 	// `scroll-active` on the host; the styles neutralise the press flash
 	// while it's set. A pure tap never moves past the threshold, so its
@@ -1458,7 +1453,7 @@ export class NLDDMenu extends LitElement {
 	 * not navigating one step back. Detect the outside click here and route
 	 * to `_collapseChain`, which collapses every level at once.
 	 *
-	 * Cascade mode falls back to the native popover stack behaviour: a click
+	 * Cascade mode falls back to the native popover stack behavior: a click
 	 * outside light-dismisses every popover down to the click target's
 	 * closest ancestor popover, so no extra handling is needed there.
 	 *
@@ -1473,7 +1468,7 @@ export class NLDDMenu extends LitElement {
 	 * open while you scroll outside it) and annoying. So on touch we defer
 	 * the decision: track the pointer and only chain-close on a confirmed
 	 * tap (pointerup without crossing the scroll threshold); a scroll
-	 * leaves the chain untouched, matching root-menu behaviour.
+	 * leaves the chain untouched, matching root-menu behavior.
 	 */
 	private _dragStartItem: NLDDMenuItem | null = null;
 
@@ -1722,7 +1717,7 @@ export class NLDDMenu extends LitElement {
 
 	private _updateEmptyState(): void {
 		// "Empty" means nothing is shown, not nothing is navigable. Disabled items
-		// still render (greyed out), so a menu whose items are all disabled is not
+		// still render (grayed out), so a menu whose items are all disabled is not
 		// empty. Only filtering, which hides non-matching items, empties a menu.
 		// _getVisibleItems() drops [disabled] for keyboard nav, so it must not
 		// decide the empty state, or a fully-disabled menu wrongly shows it.
@@ -1835,7 +1830,7 @@ export class NLDDMenu extends LitElement {
 	}
 
 	/**
-	 * Hide each nldd-menu-group whose items are all filtered out — a labelled
+	 * Hide each nldd-menu-group whose items are all filtered out — a labeled
 	 * heading above an empty section reads as broken. Runs after filter() has
 	 * updated individual item visibility.
 	 */

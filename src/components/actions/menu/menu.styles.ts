@@ -27,6 +27,11 @@ export const menuStyles = css`
 			--_item-size: var(--semantics-controls-sm-min-size);
 		}
 
+		/* A menu is an overlay: context from where it happens to be ANCHORED must
+		   not style its items. Inside an nldd-list-item the row's cell padding
+		   would cascade into the text-cells of the items and stretch every row. */
+		--context-cell-padding-block: 0px;
+
 		${inheritedTextReset}
 		display: block;
 		position: absolute;
@@ -261,7 +266,7 @@ export const menuItemStyles = css`
 	}
 
 	/* A link item (href) renders as <a>; strip the UA link color/underline so
-	   it is visually identical to the button variant. The text colour is owned
+	   it is visually identical to the button variant. The text color is owned
 	   by the inner nldd-text-cell. The control cursor token (default, like the
 	   other controls) replaces the UA link pointer and stays overridable. */
 	a.menu__item {
