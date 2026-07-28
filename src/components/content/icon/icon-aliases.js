@@ -402,6 +402,10 @@ export const aliases = {
 	'label': 'tag',
 	'category': 'tag',
 
+	// tag-stack
+	'tags': 'tag-stack',
+	'labels': 'tag-stack',
+
 	// terminal
 	'cli': 'terminal',
 	'console': 'terminal',
