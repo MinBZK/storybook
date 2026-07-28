@@ -6,27 +6,33 @@
  *
  * @element nldd-modal-dialog
  *
- * @attr {'alert'} variant          - Forwarded to nldd-inline-dialog; 'alert' forces icon and color
- * @attr {string}  icon             - Forwarded to nldd-inline-dialog; absent when not set
- * @attr {string}  text             - Forwarded to nldd-inline-dialog; main text
- * @attr {string}  supporting-text  - Forwarded to nldd-inline-dialog; supporting text
- * @attr {string}  accessible-label - Accessible name for the dialog (aria-label); falls back to text
+ * @attr {'alert'} variant - Forwarded to nldd-inline-dialog; 'alert' forces icon and color
+ * @attr {string} icon - Forwarded to nldd-inline-dialog; absent when not set
+ * @attr {string} text - Forwarded to nldd-inline-dialog; main text
+ * @attr {string} supporting-text - Forwarded to nldd-inline-dialog; supporting text
+ * @attr {string} accessible-label - Accessible name for the dialog (aria-label); falls back to text
  *
- * @slot         - Optional custom content, forwarded to nldd-inline-dialog
+ * @slot - Optional custom content, forwarded to nldd-inline-dialog
  * @slot actions - nldd-button elements, forwarded to nldd-inline-dialog
  *
- * @fires open  - When the dialog is opened
+ * @fires open - When the dialog is opened
  * @fires close - When the dialog is fully closed
  *
  * @method show() - Opens the modal dialog
  * @method hide() - Closes the modal dialog with a closing animation
  */
 import { LitElement } from 'lit';
+
+/** Generous compared to the ~0.2s close animation: long enough that a normal
+ *  close always wins on animationend, short enough that a paused or dropped
+ *  animation does not leave the dialog stuck. */
+const MODAL_DIALOG_CLOSE_TIMEOUT_MS = 1000;
 import { customElement, property } from 'lit/decorators.js';
 import { reflectNonDefault } from '../../../utilities/reflect-non-default.js';
 import { modalDialogStyles } from './modal-dialog.styles.js';
 import { modalDialogTemplate } from './modal-dialog.template.js';
 import { isPointerMode } from '../../../utilities/input-modality.js';
+import { focusAutofocusTarget } from '../../../utilities/autofocus.js';
 import type { InlineDialogVariant } from '../inline-dialog/inline-dialog.js';
 import '../inline-dialog/inline-dialog.js';
 
@@ -65,8 +71,10 @@ export class NLDDModalDialog extends LitElement {
 	}
 
 	private _manageFocus(): void {
-		// 1. autofocus element present — let the browser handle it natively
-		if (this.querySelector('[autofocus]')) return;
+		// 1. autofocus element present — focus it ourselves: a design-system
+		// field keeps its input in shadow DOM, which the browser's own autofocus
+		// skips (see focusAutofocusTarget).
+		if (focusAutofocusTarget(this)) return;
 
 		// 2. Focus the dialog — show focus ring only when opened via keyboard
 		const dialog = this._dialog;
@@ -81,32 +89,65 @@ export class NLDDModalDialog extends LitElement {
 
 		this._closing = true;
 		dialog.classList.add('is-closing');
-		dialog.addEventListener('animationend', () => {
+
+		const finish = () => {
+			if (!this._closing) return;
+			window.clearTimeout(this._closeFallback);
 			dialog.classList.remove('is-closing');
 			this._closing = false;
 			dialog.close();
 			this.dispatchEvent(new CustomEvent('close', { bubbles: true, composed: true }));
-		}, { once: true });
+		};
 
+		dialog.addEventListener('animationend', finish, { once: true });
+
+		// Fallback for prefers-reduced-motion (no animation fires)
 		requestAnimationFrame(() => {
-			if (this._closing && getComputedStyle(dialog).animationName === 'none') {
-				dialog.classList.remove('is-closing');
-				this._closing = false;
-				dialog.close();
-				this.dispatchEvent(new CustomEvent('close', { bubbles: true, composed: true }));
-			}
+			if (this._closing && getComputedStyle(dialog).animationName === 'none') finish();
 		});
+
+		// Last resort: animationend is not guaranteed. A background tab pauses CSS
+		// animations, so the event may never arrive — and because `_closing` gates
+		// this method, the dialog would then be wedged open for the rest of its
+		// life, ignoring every later hide(). Close on a timer instead of trusting
+		// the animation to end. (Mirrors nldd-sheet.)
+		this._closeFallback = window.setTimeout(finish, MODAL_DIALOG_CLOSE_TIMEOUT_MS);
 	}
 
-	_handleBackdropClick(e: MouseEvent): void {
-		if (e.target !== this._dialog) return;
-		// e.target is the dialog for both backdrop clicks and clicks on the dialog's
-		// own padding — distinguish by checking the pointer position against the rect.
-		const rect = this._dialog!.getBoundingClientRect();
-		const insideDialog =
-			e.clientX >= rect.left && e.clientX <= rect.right &&
-			e.clientY >= rect.top && e.clientY <= rect.bottom;
-		if (!insideDialog) this.hide();
+	/** Timer id for the close fallback above. */
+	private _closeFallback = 0;
+
+	/** Whether the press preceding a click started on the backdrop rather than
+	 *  inside the dialog. Guards against a drag that begins inside (selecting
+	 *  text, dragging a control) and ends on the backdrop being read as a
+	 *  backdrop click — same fix as nldd-sheet and nldd-window. */
+	private _pointerDownOnBackdrop = false;
+
+	_handleDialogPointerDown = (e: PointerEvent): void => {
+		this._pointerDownOnBackdrop = this._isOnBackdrop(e);
+	};
+
+	/** True when the event landed on the backdrop: it targets the dialog
+	 *  itself (content clicks target the content) with coordinates outside the
+	 *  dialog box. The target check comes BEFORE the coordinates, because a
+	 *  programmatic `.click()` carries clientX/clientY 0,0 — outside any dialog
+	 *  rect — and would otherwise read as a backdrop press from inside. */
+	private _isOnBackdrop(e: MouseEvent): boolean {
+		const dialog = this._dialog;
+		if (!dialog) return false;
+		if (e.composedPath()[0] !== dialog) return false;
+		const rect = dialog.getBoundingClientRect();
+		return e.clientX < rect.left || e.clientX > rect.right
+			|| e.clientY < rect.top || e.clientY > rect.bottom;
+	}
+
+	_handleBackdropClick = (e: MouseEvent): void => {
+		// Close only on a genuine backdrop click: the press AND the release both
+		// land on the backdrop. Without the pointerdown check, a drag that starts
+		// inside the dialog and releases on the backdrop would dismiss it.
+		if (this._isOnBackdrop(e) && this._pointerDownOnBackdrop) {
+			this.hide();
+		}
 	}
 
 	_handleCancel(e: Event): void {

@@ -2,6 +2,7 @@ import { describe, it, expect, afterEach, vi } from 'vitest';
 import { fixture, cleanup, waitForUpdate } from '../../../test-utils.js';
 import type { NLDDSheet } from './sheet.js';
 import './sheet.js';
+import '../../inputs/text-field/text-field.js';
 import { sheetStyles } from './sheet.styles.js';
 
 
@@ -532,5 +533,68 @@ describe('nldd-sheet meldt sluiten via elke route', () => {
 		dialogVan(el).dispatchEvent(new Event('close'));
 		await waitForUpdate(el);
 		expect(aantal).toBe(1);
+	});
+});
+
+describe('nldd-sheet – close fallback', () => {
+	let el: HTMLElement;
+
+	afterEach(() => {
+		if (el) cleanup(el);
+	});
+
+	it('closes even when animationend never arrives', async () => {
+		// The animation tokens are not loaded in the test environment, which would
+		// make the `animation` shorthand invalid and animationName 'none' — and
+		// then the reduced-motion fallback closes the sheet and this test proves
+		// nothing. Supply them so a real animation runs.
+		el = await fixture<HTMLElement>('<nldd-sheet accessible-label="Test" style="--semantics-sheets-side-animation-duration: 200ms; --semantics-sheets-bottom-animation-duration: 200ms; --primitives-transition-easing-default: linear"><div>inhoud</div></nldd-sheet>');
+		await waitForUpdate(el);
+		const sheet = el as HTMLElement & { show: () => void; hide: () => void };
+		sheet.show();
+		await waitForUpdate(el);
+		const dialog = el.shadowRoot!.querySelector('dialog') as HTMLDialogElement;
+		expect(dialog.open).toBe(true);
+
+		// Swallow the animationend registration, so the close can only come from
+		// the fallback. That is the situation a background tab creates: the
+		// animation is paused, the event never arrives, and without the timer the
+		// sheet stays open AND stays `_closing` — wedged against every later
+		// hide().
+		const realAdd = dialog.addEventListener.bind(dialog);
+		dialog.addEventListener = ((type: string, ...rest: unknown[]) => {
+			if (type === 'animationend') return;
+			return (realAdd as (...a: unknown[]) => void)(type, ...rest);
+		}) as typeof dialog.addEventListener;
+
+		sheet.hide();
+		expect(dialog.open).toBe(true);
+		await new Promise(r => setTimeout(r, 1200));
+		expect(dialog.open).toBe(false);
+	}, 5000);
+});
+
+describe('nldd-sheet – autofocus', () => {
+	let el: HTMLElement;
+
+	afterEach(() => {
+		if (el) cleanup(el);
+	});
+
+	it('focuses a design-system field marked autofocus', async () => {
+		el = await fixture(`
+			<nldd-sheet accessible-label="Test">
+				<nldd-text-field autofocus accessible-label="Naam"></nldd-text-field>
+			</nldd-sheet>
+		`);
+		await waitForUpdate(el);
+		const field = el.querySelector('nldd-text-field')!;
+		await waitForUpdate(field as HTMLElement);
+		(el as unknown as { show(): void }).show();
+		await waitForUpdate(el);
+		// The input lives in the field's shadow root, so the browser's own
+		// autofocus never reaches it — the sheet has to focus the host.
+		expect(document.activeElement).toBe(field);
+		expect(field.shadowRoot!.activeElement?.tagName.toLowerCase()).toBe('input');
 	});
 });

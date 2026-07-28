@@ -10,29 +10,22 @@
  *
  * @element nldd-window
  *
- * @attr {boolean} modeless         - Niet-modaal (geen backdrop of focusvergrendeling); standaard is het venster modaal
- * @attr {string}  accessible-label - (verplicht) Toegankelijke naam (aria-label).
- *                                     Valt terug op de i18n default ('Venster')
- *                                     als niet gezet — geef altijd een unieke,
- *                                     beschrijvende naam per venster.
- * @attr {object}  translations      - Override translation keys; unset keys
- *                                     vallen terug op de Nederlandse default.
- * @attr {string}  top              - CSS top positie van de bovenrand (bijv. '0', '100px')
- * @attr {string}  left             - CSS left positie van de linkerrand
- * @attr {string}  right            - CSS right waarde
- * @attr {string}  bottom           - CSS bottom waarde
- * @attr {boolean} centered         - Centreert beide assen op de viewport. Per
- *                                     as overrideable: `centered top="0"` =
- *                                     horizontaal gecentreerd, top-aligned.
- *                                     Mirrort CSS `place-items: center` met
- *                                     `align-items`/`justify-items` overrides.
- * @attr {string}  width            - CSS width (standaard: var(--components-window-default-width))
- * @attr {string}  height           - CSS height (standaard: content height)
+ * @attr {boolean} modeless - Niet-modaal (geen backdrop of focusvergrendeling); standaard is het venster modaal
+ * @attr {boolean} no-light-dismiss - Een klik op de backdrop sluit het venster niet. Voor vensters waar per ongeluk wegklikken werk kost: een wizard, een formulier met ingevulde velden. Escape en de dismiss-knop blijven werken.
+ * @attr {string} accessible-label - (verplicht) Toegankelijke naam (aria-label). Valt terug op de i18n default ('Venster') als niet gezet — geef altijd een unieke, beschrijvende naam per venster.
+ * @attr {object} translations - Override translation keys; unset keys vallen terug op de Nederlandse default.
+ * @attr {string} top - CSS top positie van de bovenrand (bijv. '0', '100px')
+ * @attr {string} left - CSS left positie van de linkerrand
+ * @attr {string} right - CSS right waarde
+ * @attr {string} bottom - CSS bottom waarde
+ * @attr {boolean} centered - Centreert beide assen op de viewport. Per as overrideable: `centered top="0"` = horizontaal gecentreerd, top-aligned. Mirrort CSS `place-items: center` met `align-items`/`justify-items` overrides.
+ * @attr {string} width - CSS width (standaard: var(--components-window-default-width))
+ * @attr {string} height - CSS height (standaard: content height)
  * @attr {'inherit'|'light'|'dark'} scheme - Color scheme (default 'inherit').
  *
  * @slot - Volledige window content (bijv. nldd-page)
  *
- * @fires open  - Wanneer het venster wordt geopend
+ * @fires open - Wanneer het venster wordt geopend
  * @fires close - Wanneer het venster volledig is gesloten
  *
  * @method show() - Opent het venster
@@ -45,6 +38,7 @@ import { windowStyles } from './window.styles.js';
 import { windowTemplate } from './window.template.js';
 import { nlddWindowTranslations, type NLDDWindowTranslations } from './window.i18n.js';
 import { isPointerMode } from '../../../utilities/input-modality.js';
+import { focusAutofocusTarget } from '../../../utilities/autofocus.js';
 import { isDismissFromTitleBar } from '../../../utilities/dismiss-from-title-bar.js';
 
 export type NLDDWindowScheme = 'inherit' | 'light' | 'dark';
@@ -55,6 +49,9 @@ export class NLDDWindow extends LitElement {
 
 	@property({ type: Boolean, reflect: true })
 	modeless = false;
+
+	@property({ type: Boolean, reflect: true, attribute: 'no-light-dismiss' })
+	noLightDismiss = false;
 
 	@property({ type: String, attribute: 'accessible-label' })
 	accessibleLabel = '';
@@ -197,7 +194,10 @@ export class NLDDWindow extends LitElement {
 	};
 
 	private _manageFocus(): void {
-		if (this.querySelector('[autofocus]')) return;
+		// 1. autofocus element present — focus it ourselves: a design-system
+		// field keeps its input in shadow DOM, which the browser's own autofocus
+		// skips (see focusAutofocusTarget).
+		if (focusAutofocusTarget(this)) return;
 
 		const dialog = this._dialog;
 		if (!dialog) return;
@@ -239,16 +239,36 @@ export class NLDDWindow extends LitElement {
 		dialog.style.margin = hasOverride ? '0' : '';
 	}
 
-	_handleDialogClick = (e: MouseEvent): void => {
-		if (this.modeless) return;
+	/** Whether the press preceding a click started on the backdrop rather than
+	 *  inside the window. Guards against a drag that begins inside (selecting
+	 *  text in an input, dragging a control) and ends on the backdrop being
+	 *  read as a backdrop click — same fix as nldd-sheet. */
+	private _pointerDownOnBackdrop = false;
 
-		// Detect backdrop click: check if click landed outside the dialog rect
+	_handleDialogPointerDown = (e: PointerEvent): void => {
+		this._pointerDownOnBackdrop = this._isOnBackdrop(e);
+	};
+
+	/** True when the event landed on the backdrop: it targets the dialog
+	 *  itself (content clicks target the content) with coordinates outside the
+	 *  dialog box. The target check comes BEFORE the coordinates, because a
+	 *  programmatic `.click()` carries clientX/clientY 0,0 — outside any dialog
+	 *  rect — and would otherwise read as a backdrop press from inside. */
+	private _isOnBackdrop(e: MouseEvent): boolean {
 		const dialog = this._dialog;
-		if (!dialog) return;
+		if (!dialog) return false;
+		if (e.composedPath()[0] !== dialog) return false;
 		const rect = dialog.getBoundingClientRect();
-		const outside = e.clientX < rect.left || e.clientX > rect.right
+		return e.clientX < rect.left || e.clientX > rect.right
 			|| e.clientY < rect.top || e.clientY > rect.bottom;
-		if (outside) {
+	}
+
+	_handleDialogClick = (e: MouseEvent): void => {
+		if (this.modeless || this.noLightDismiss) return;
+		// Close only on a genuine backdrop click: the press AND the release both
+		// land on the backdrop. Without the pointerdown check, a drag that starts
+		// inside the window and releases on the backdrop would dismiss it.
+		if (this._isOnBackdrop(e) && this._pointerDownOnBackdrop) {
 			this.hide();
 		}
 	};

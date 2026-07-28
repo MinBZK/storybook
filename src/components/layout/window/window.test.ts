@@ -98,6 +98,13 @@ describe('nldd-window', () => {
 		// Note: in test runners where getBoundingClientRect returns {0,0,0,0},
 		// any negative coordinate is "outside" — the test passes but does not
 		// fully validate the coordinate logic. Verify in browser-based tests.
+		// Press AND release on the backdrop: the drag-guard only dismisses when
+		// the pointerdown started there too.
+		dialog.dispatchEvent(new PointerEvent('pointerdown', {
+			clientX: rect.left - 10,
+			clientY: rect.top - 10,
+			bubbles: true,
+		}));
 		const backdropClick = new MouseEvent('click', {
 			clientX: rect.left - 10,
 			clientY: rect.top - 10,
@@ -105,6 +112,59 @@ describe('nldd-window', () => {
 		});
 		dialog.dispatchEvent(backdropClick);
 		expect(dialog.open).toBe(false);
+	});
+
+	it('sluit niet bij backdrop click met no-light-dismiss', async () => {
+		el = await fixture<NLDDWindow>('<nldd-window no-light-dismiss width="200px" height="200px"></nldd-window>');
+		await waitForUpdate(el);
+		el.show();
+		const dialog = el.shadowRoot!.querySelector('dialog') as HTMLDialogElement;
+		const rect = dialog.getBoundingClientRect();
+
+		dialog.dispatchEvent(new PointerEvent('pointerdown', {
+			clientX: rect.left - 10,
+			clientY: rect.top - 10,
+			bubbles: true,
+		}));
+		dialog.dispatchEvent(new MouseEvent('click', {
+			clientX: rect.left - 10,
+			clientY: rect.top - 10,
+			bubbles: true,
+		}));
+		expect(dialog.open).toBe(true);
+	});
+
+	it('sluit met no-light-dismiss nog wel op Escape', async () => {
+		el = await fixture<NLDDWindow>('<nldd-window no-light-dismiss></nldd-window>');
+		await waitForUpdate(el);
+		el.show();
+		const dialog = el.shadowRoot!.querySelector('dialog') as HTMLDialogElement;
+		dialog.dispatchEvent(new Event('cancel'));
+		expect(dialog.open).toBe(false);
+	});
+
+	it('sluit niet wanneer een sleep binnen begint en buiten eindigt', async () => {
+		el = await fixture<NLDDWindow>('<nldd-window width="200px" height="200px"></nldd-window>');
+		await waitForUpdate(el);
+		el.show();
+		const dialog = el.shadowRoot!.querySelector('dialog') as HTMLDialogElement;
+		const rect = dialog.getBoundingClientRect();
+		if (rect.width === 0 && rect.height === 0) return;
+
+		// Press inside (e.g. selecting text) ...
+		dialog.dispatchEvent(new PointerEvent('pointerdown', {
+			clientX: rect.left + rect.width / 2,
+			clientY: rect.top + rect.height / 2,
+			bubbles: true,
+		}));
+		// ... release on the backdrop: the browser fires the click on the dialog
+		// with outside coordinates. Must NOT dismiss.
+		dialog.dispatchEvent(new MouseEvent('click', {
+			clientX: rect.left - 10,
+			clientY: rect.top - 10,
+			bubbles: true,
+		}));
+		expect(dialog.open).toBe(true);
 	});
 
 	it('sluit niet bij click binnen dialog rect', async () => {
@@ -311,5 +371,44 @@ describe('nldd-window meldt sluiten via elke route', () => {
 		dialogVan(el).dispatchEvent(new Event('close'));
 		await waitForUpdate(el);
 		expect(aantal).toBe(1);
+	});
+});
+
+describe('nldd-window – backdrop click', () => {
+	let el: HTMLElement;
+
+	afterEach(() => {
+		if (el) cleanup(el);
+	});
+
+	const mount = async (): Promise<HTMLElement> => {
+		el = await fixture<HTMLElement>('<nldd-window accessible-label="Test"><button id="inner">Klik</button></nldd-window>');
+		await waitForUpdate(el);
+		(el as HTMLElement & { show: () => void }).show();
+		await waitForUpdate(el);
+		return el;
+	};
+
+	const dialog = (host: HTMLElement): HTMLDialogElement =>
+		host.shadowRoot!.querySelector('dialog') as HTMLDialogElement;
+
+	it('stays open when content is activated programmatically', async () => {
+		await mount();
+		// A programmatic click carries clientX/clientY 0,0 — outside every dialog
+		// rect — so a coordinate-only backdrop check would close the window.
+		el.querySelector<HTMLButtonElement>('#inner')!.click();
+		await waitForUpdate(el);
+		expect(dialog(el).open).toBe(true);
+	});
+
+	it('still closes on a real backdrop click', async () => {
+		await mount();
+		const d = dialog(el);
+		// A real backdrop interaction is a press followed by a release, both on
+		// the backdrop.
+		d.dispatchEvent(new PointerEvent('pointerdown', { bubbles: true, composed: true, clientX: 0, clientY: 0 }));
+		d.dispatchEvent(new MouseEvent('click', { bubbles: true, composed: true, clientX: 0, clientY: 0 }));
+		await waitForUpdate(el);
+		expect(d.open).toBe(false);
 	});
 });

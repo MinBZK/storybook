@@ -14,25 +14,15 @@
  *
  * @element nldd-sheet
  *
- * @attr {string}  placement        - Sheet position: 'left' | 'right' | 'bottom' (default: 'right')
- * @attr {string}  height           - Custom height for bottom sheets (and for any sheet on sm
- *                                    viewports, where all placements collapse to bottom). Accepts:
- *                                    `'full'` (default — viewport minus top-inset, identical to
- *                                    omitting the attribute), `'fit-content'` (collapse to content
- *                                    size), or any CSS length/percentage (e.g. `'50dvh'`, `'480px'`,
- *                                    `'50%'`). Always clamped to `100dvh - top-inset` so the sheet
- *                                    can't extend past the dismiss-tap area. No effect on side
- *                                    sheets at md+.
- * @attr {boolean} modeless         - Non-modal (no backdrop or focus lock); the sheet is modal by default
- * @attr {string}  accessible-label - Accessible name for the dialog, forwarded as aria-label (default: 'Venster')
- * @attr {string}  width            - Custom width for side sheets (left/right) as a CSS length
- *                                    (e.g. '480px', '32rem'). Applied from the md breakpoint up;
- *                                    ignored on sm (bottom sheet) and for `placement="bottom"`.
- *                                    Clamped to `100vw - 2 * inset` so the sheet always fits.
+ * @attr {string} placement - Sheet position: 'left' | 'right' | 'bottom' (default: 'right')
+ * @attr {string} height - Custom height for bottom sheets (and for any sheet on sm viewports, where all placements collapse to bottom). Accepts: `'full'` (default — viewport minus top-inset, identical to omitting the attribute), `'fit-content'` (collapse to content size), or any CSS length/percentage (e.g. `'50dvh'`, `'480px'`, `'50%'`). Always clamped to `100dvh - top-inset` so the sheet can't extend past the dismiss-tap area. No effect on side sheets at md+.
+ * @attr {boolean} modeless - Non-modal (no backdrop or focus lock); the sheet is modal by default
+ * @attr {string} accessible-label - Accessible name for the dialog, forwarded as aria-label (default: 'Venster')
+ * @attr {string} width - Custom width for side sheets (left/right) as a CSS length (e.g. '480px', '32rem'). Applied from the md breakpoint up; ignored on sm (bottom sheet) and for `placement="bottom"`. Clamped to `100vw - 2 * inset` so the sheet always fits.
  *
  * @slot - Sheet content
  *
- * @fires open  - Fired when the sheet is opened
+ * @fires open - Fired when the sheet is opened
  * @fires close - Fired when the sheet is fully closed
  *
  * @method show() - Opens the sheet
@@ -45,9 +35,15 @@ import { reflectNonDefault } from '../../../utilities/reflect-non-default.js';
 import { sheetStyles } from './sheet.styles.js';
 import { sheetTemplate } from './sheet.template.js';
 import { isPointerMode } from '../../../utilities/input-modality.js';
+import { focusAutofocusTarget } from '../../../utilities/autofocus.js';
 import { isDismissFromTitleBar } from '../../../utilities/dismiss-from-title-bar.js';
 
 type Placement = 'left' | 'right' | 'bottom';
+
+/** Generous compared to the ~0.2s close animation: long enough that a normal
+ *  close always wins on animationend, short enough that a paused or dropped
+ *  animation does not leave the sheet stuck. */
+const SHEET_CLOSE_TIMEOUT_MS = 1000;
 
 @customElement('nldd-sheet')
 export class NLDDSheet extends LitElement {
@@ -156,8 +152,10 @@ export class NLDDSheet extends LitElement {
 	}
 
 	private _manageFocus(): void {
-		// 1. autofocus element present — let the browser handle it natively
-		if (this.querySelector('[autofocus]')) return;
+		// 1. autofocus element present — focus it ourselves: a design-system
+		// field keeps its input in shadow DOM, which the browser's own autofocus
+		// skips (see focusAutofocusTarget).
+		if (focusAutofocusTarget(this)) return;
 
 		// 2. Focus the dialog — show focus ring only when opened via keyboard
 		const dialog = this._dialog;
@@ -172,24 +170,34 @@ export class NLDDSheet extends LitElement {
 
 		this._closing = true;
 		dialog.classList.add('is-closing');
-		dialog.addEventListener('animationend', () => {
+
+		const finish = () => {
+			if (!this._closing) return;
+			window.clearTimeout(this._closeFallback);
 			dialog.classList.remove('is-closing');
 			this._closing = false;
 			dialog.close();
 			this._emitClose();
-		}, { once: true });
+		};
+
+		dialog.addEventListener('animationend', finish, { once: true });
 
 		// Fallback for prefers-reduced-motion (no animation fires)
 		// Use requestAnimationFrame to let CSS skip the animation first
 		requestAnimationFrame(() => {
-			if (this._closing && getComputedStyle(dialog).animationName === 'none') {
-				dialog.classList.remove('is-closing');
-				this._closing = false;
-				dialog.close();
-				this._emitClose();
-			}
+			if (this._closing && getComputedStyle(dialog).animationName === 'none') finish();
 		});
+
+		// Last resort: animationend is not guaranteed. A background tab pauses CSS
+		// animations, so the event may never arrive — and because `_closing` gates
+		// this method, the sheet would then be wedged open for the rest of its
+		// life, ignoring every later hide(). Close on a timer instead of trusting
+		// the animation to end.
+		this._closeFallback = window.setTimeout(finish, SHEET_CLOSE_TIMEOUT_MS);
 	}
+
+	/** Timer id for the close fallback above. */
+	private _closeFallback = 0;
 
 	/** Whether the press preceding a click started on the backdrop (the dialog
 	 *  itself) rather than inside the sheet content. Guards against a drag that

@@ -155,14 +155,14 @@ describe('nldd-modal-dialog', () => {
 		(el as NLDDModalDialog).show();
 		const dialog = el.shadowRoot!.querySelector('dialog')!;
 		const rect = dialog.getBoundingClientRect();
-		// Click coordinates inside the dialog rect, target = dialog (i.e., on padding)
-		const event = new MouseEvent('click', {
-			bubbles: true,
+		// Press and release inside the dialog rect (i.e., on padding)
+		const inside = {
+			bubbles: true, composed: true,
 			clientX: rect.left + rect.width / 2,
 			clientY: rect.top + rect.height / 2,
-		});
-		Object.defineProperty(event, 'target', { value: dialog });
-		(el as NLDDModalDialog)._handleBackdropClick(event);
+		};
+		dialog.dispatchEvent(new PointerEvent('pointerdown', inside));
+		dialog.dispatchEvent(new MouseEvent('click', inside));
 		expect(dialog.classList.contains('is-closing')).toBe(false);
 		expect(dialog.open).toBe(true);
 	});
@@ -173,15 +173,39 @@ describe('nldd-modal-dialog', () => {
 		(el as NLDDModalDialog).show();
 		const dialog = el.shadowRoot!.querySelector('dialog')!;
 		const rect = dialog.getBoundingClientRect();
-		// Click coordinates outside the dialog rect, target = dialog (i.e., on backdrop)
-		const event = new MouseEvent('click', {
-			bubbles: true,
+		// Press AND release outside the dialog rect: the drag-guard only
+		// dismisses when the pointerdown started on the backdrop too.
+		const outside = {
+			bubbles: true, composed: true,
 			clientX: rect.left - 10,
 			clientY: rect.top - 10,
-		});
-		Object.defineProperty(event, 'target', { value: dialog });
-		(el as NLDDModalDialog)._handleBackdropClick(event);
+		};
+		dialog.dispatchEvent(new PointerEvent('pointerdown', outside));
+		dialog.dispatchEvent(new MouseEvent('click', outside));
 		expect(dialog.classList.contains('is-closing')).toBe(true);
+	});
+
+	it('does not close on a drag that starts inside and releases on the backdrop', async () => {
+		el = await fixture('<nldd-modal-dialog text="Test"></nldd-modal-dialog>');
+		await waitForUpdate(el);
+		(el as NLDDModalDialog).show();
+		const dialog = el.shadowRoot!.querySelector('dialog')!;
+		const rect = dialog.getBoundingClientRect();
+		// Press inside the dialog (selecting text, dragging a control)...
+		dialog.dispatchEvent(new PointerEvent('pointerdown', {
+			bubbles: true, composed: true,
+			clientX: rect.left + rect.width / 2,
+			clientY: rect.top + rect.height / 2,
+		}));
+		// ...release on the backdrop: the browser fires the click on the dialog
+		// with coordinates outside its rect.
+		dialog.dispatchEvent(new MouseEvent('click', {
+			bubbles: true, composed: true,
+			clientX: rect.left - 10,
+			clientY: rect.top - 10,
+		}));
+		expect(dialog.classList.contains('is-closing')).toBe(false);
+		expect(dialog.open).toBe(true);
 	});
 
 	it('prevents default on cancel event and calls hide()', async () => {
@@ -195,4 +219,49 @@ describe('nldd-modal-dialog', () => {
 		expect(preventSpy).toHaveBeenCalled();
 		expect(hideSpy).toHaveBeenCalledOnce();
 	});
+});
+
+describe('nldd-modal-dialog – close fallback', () => {
+	let el: HTMLElement;
+
+	afterEach(() => {
+		if (el) cleanup(el);
+	});
+
+	// Zelfde val als nldd-sheet: een achtergrondtab pauzeert CSS-animaties, dus
+	// animationend komt nooit — zonder de timer bleef de dialoog open én
+	// `_closing`, en negeerde hij elke volgende hide().
+	it('sluit ook wanneer animationend nooit komt', async () => {
+		el = await fixture<HTMLElement>('<nldd-modal-dialog text="Test"></nldd-modal-dialog>');
+		await waitForUpdate(el);
+		const modal = el as HTMLElement & { show: () => void; hide: () => void };
+		modal.show();
+		await waitForUpdate(el);
+		const dialog = el.shadowRoot!.querySelector('dialog') as HTMLDialogElement;
+		expect(dialog.open).toBe(true);
+
+		const realAdd = dialog.addEventListener.bind(dialog);
+		dialog.addEventListener = ((type: string, ...rest: unknown[]) => {
+			if (type === 'animationend') return;
+			return (realAdd as (...a: unknown[]) => void)(type, ...rest);
+		}) as typeof dialog.addEventListener;
+		// De reduced-motion-tak sluit direct wanneer animationName 'none' is; laat
+		// hem een echte animatie zien zodat alleen de timer overblijft.
+		const realGetComputed = window.getComputedStyle.bind(window);
+		const spy = vi.spyOn(window, 'getComputedStyle').mockImplementation(((elt: Element, ...rest: unknown[]) => {
+			const style = (realGetComputed as (...a: unknown[]) => CSSStyleDeclaration)(elt, ...rest);
+			if (elt === dialog) {
+				return new Proxy(style, {
+					get: (target, prop) => (prop === 'animationName' ? 'modal-dialog-out' : Reflect.get(target, prop)),
+				});
+			}
+			return style;
+		}) as typeof window.getComputedStyle);
+
+		modal.hide();
+		expect(dialog.open).toBe(true);
+		await new Promise(r => setTimeout(r, 1200));
+		spy.mockRestore();
+		expect(dialog.open).toBe(false);
+	}, 5000);
 });
