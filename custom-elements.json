@@ -326,7 +326,7 @@
                 "text": "Element | null"
               },
               "default": "null",
-              "description": "Direct element reference to the popover this button invokes — IDL-only\ncounterpart to `popovertarget` that works across shadow boundaries.\nUse this when the popover lives in a different tree (e.g. an\n`nldd-menu` reparented to `<body>`) so the browser still recognises\nthis button as the popover's invoker and excludes it from the popover\nlight-dismiss algorithm. Set programmatically; not reflected to an\nHTML attribute (the attribute form is `popovertarget`, ID-based)."
+              "description": "Direct element reference to the popover this button invokes — IDL-only\ncounterpart to `popovertarget` that works across shadow boundaries.\nUse this when the popover lives in a different tree (e.g. an\n`nldd-menu` reparented to `<body>`) so the browser still recognizes\nthis button as the popover's invoker and excludes it from the popover\nlight-dismiss algorithm. Set programmatically; not reflected to an\nHTML attribute (the attribute form is `popovertarget`, ID-based)."
             },
             {
               "kind": "field",
@@ -344,7 +344,7 @@
                 "text": "boolean"
               },
               "default": "false",
-              "description": "Loading state. Shows an activity indicator centred over the (visually\nhidden) content, marks the inner control `aria-busy=\"true\"` and blocks\nactivation — without dropping the control from the tab order (unlike\n`disabled`). The content stays laid out so the button keeps its width.\n\nActivation is blocked by stopping the click (as `disabled` does), so a\n`click` listener delegated on an ancestor receives nothing while loading.",
+              "description": "Loading state. Shows an activity indicator centered over the (visually\nhidden) content, marks the inner control `aria-busy=\"true\"` and blocks\nactivation — without dropping the control from the tab order (unlike\n`disabled`). The content stays laid out so the button keeps its width.\n\nActivation is blocked by stopping the click (as `disabled` does), so a\n`click` listener delegated on an ancestor receives nothing while loading.",
               "attribute": "loading",
               "reflects": true
             },
@@ -811,7 +811,7 @@
                 "text": "boolean"
               },
               "default": "false",
-              "description": "Loading state. Shows an activity indicator centred over the (visually\nhidden) icon, marks the inner control `aria-busy=\"true\"` and blocks\nactivation — without dropping the control from the tab order (unlike\n`disabled`).\n\nActivation is blocked by stopping the click (as `disabled` does), so a\n`click` listener delegated on an ancestor receives nothing while loading.",
+              "description": "Loading state. Shows an activity indicator centered over the (visually\nhidden) icon, marks the inner control `aria-busy=\"true\"` and blocks\nactivation — without dropping the control from the tab order (unlike\n`disabled`).\n\nActivation is blocked by stopping the click (as `disabled` does), so a\n`click` listener delegated on an ancestor receives nothing while loading.",
               "attribute": "loading",
               "reflects": true
             },
@@ -914,7 +914,7 @@
                 "text": "Element | null"
               },
               "default": "null",
-              "description": "Direct element reference to the popover this button invokes — IDL-only\ncounterpart to `popovertarget` that works across shadow boundaries.\nUse this when the popover lives in a different tree (e.g. an\n`nldd-menu` reparented to `<body>`) so the browser still recognises\nthis button as the popover's invoker and excludes it from the popover\nlight-dismiss algorithm. Set programmatically; not reflected to an\nHTML attribute (the attribute form is `popovertarget`, ID-based)."
+              "description": "Direct element reference to the popover this button invokes — IDL-only\ncounterpart to `popovertarget` that works across shadow boundaries.\nUse this when the popover lives in a different tree (e.g. an\n`nldd-menu` reparented to `<body>`) so the browser still recognizes\nthis button as the popover's invoker and excludes it from the popover\nlight-dismiss algorithm. Set programmatically; not reflected to an\nHTML attribute (the attribute form is `popovertarget`, ID-based)."
             },
             {
               "kind": "field",
@@ -1280,7 +1280,7 @@
       "declarations": [
         {
           "kind": "class",
-          "description": "",
+          "description": "A horizontal rule between groups of items in an `nldd-menu`.",
           "name": "NLDDMenuDivider",
           "members": [],
           "superclass": {
@@ -1288,17 +1288,11 @@
             "package": "lit"
           },
           "tagName": "nldd-menu-divider",
-          "customElement": true,
-          "slots": [
-            {
-              "name": "",
-              "description": "nldd-menu-item children (the items belonging to this group)."
-            }
-          ]
+          "customElement": true
         },
         {
           "kind": "class",
-          "description": "A labelled group of menu items inside an nldd-menu. Wraps its slotted\nitems in `role=\"group\"` with `aria-labelledby` pointing to the group's\n`text`, providing native ARIA group semantics that a flat title element\ncan't deliver.\n\nThe group renders an automatic divider above itself, except when it's\nthe first child of the menu — so consumers don't need to manage\nseparator placement around groups themselves. Spacing above the title\nis intentionally larger than below, to bind the title visually to the\nitems it labels.\n\nUse the wrapper for grouping with a title; for ungrouped flat menus or\na divider without a title, the existing `nldd-menu-item` +\n`nldd-menu-divider` flat structure keeps working unchanged.",
+          "description": "A labeled group of menu items inside an nldd-menu. Wraps its slotted\nitems in `role=\"group\"` with `aria-labelledby` pointing to the group's\n`text`, providing native ARIA group semantics that a flat title element\ncan't deliver.\n\nThe group renders an automatic divider above itself, except when it's\nthe first child of the menu — so consumers don't need to manage\nseparator placement around groups themselves. Spacing above the title\nis intentionally larger than below, to bind the title visually to the\nitems it labels.\n\nUse the wrapper for grouping with a title; for ungrouped flat menus or\na divider without a title, the existing `nldd-menu-item` +\n`nldd-menu-divider` flat structure keeps working unchanged.",
           "name": "NLDDMenuGroup",
           "slots": [
             {
@@ -1655,7 +1649,7 @@
               "type": {
                 "text": "boolean"
               },
-              "description": "Marks the item as destructive (red text; red highlight bg). Use for irreversible actions like \"Delete\". Colour is the only built-in signal, so per WCAG 1.4.1 the item's own label must convey the destructive nature (e.g. \"Verwijder\") — don't rely on the red alone. Confirming the action (e.g. a follow-up dialog) is the consumer's responsibility.",
+              "description": "Marks the item as destructive (red text; red highlight bg). Use for irreversible actions like \"Delete\". Color is the only built-in signal, so per WCAG 1.4.1 the item's own label must convey the destructive nature (e.g. \"Verwijder\") — don't rely on the red alone. Confirming the action (e.g. a follow-up dialog) is the consumer's responsibility.",
               "name": "destructive",
               "default": "false",
               "fieldName": "destructive"
@@ -1750,7 +1744,8 @@
               "type": {
                 "text": "Element | null"
               },
-              "default": "null"
+              "default": "null",
+              "description": "The anchor as an element reference. Positions the menu exactly like the\n`anchor` attribute, but does NOT turn the anchor into a toggle — clicking\nit does not open the menu. Use this whenever you drive open/close yourself\n(`showPopover()` / `hidePopover()`), which is what nldd-combo-box and\nnldd-token-field do: their input must stay an input, not a menu button."
             },
             {
               "kind": "field",
@@ -1929,7 +1924,7 @@
               "type": {
                 "text": "string"
               },
-              "description": "ID of the anchor element.",
+              "description": "ID of the anchor element. Positions the menu against it AND makes it a toggle: the menu listens on document click and opens/closes itself when the click lands on the anchor. Use this for a menu hung off a button. For a menu you open yourself (a type-ahead under a text field, say), set the `anchorElement` property instead — same positioning, no toggle.",
               "name": "anchor",
               "default": "''",
               "fieldName": "anchor"
@@ -2793,6 +2788,65 @@
             },
             {
               "kind": "field",
+              "name": "href",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Maakt de avatar één link: de schijf zelf wordt de <a>, zodat klikgebied en\nfocusring de vorm volgen (een overlay zou vierkant zijn).",
+              "attribute": "href",
+              "reflects": true
+            },
+            {
+              "kind": "field",
+              "name": "button",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Maakt de avatar een knop. Genegeerd zodra `href` staat: één avatar is één\nactie, en een link wint van een knop (zelfde regel als nldd-card).",
+              "attribute": "button",
+              "reflects": true
+            },
+            {
+              "kind": "field",
+              "name": "target",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "attribute": "target"
+            },
+            {
+              "kind": "field",
+              "name": "rel",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "attribute": "rel"
+            },
+            {
+              "kind": "field",
+              "name": "accessibleLabel",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Toegankelijke naam van de link of knop; zonder deze valt hij terug op\n`name`. Alleen van belang wanneer de avatar interactief is.",
+              "attribute": "accessible-label"
+            },
+            {
+              "kind": "field",
+              "name": "isInteractive",
+              "type": {
+                "text": "boolean"
+              },
+              "description": "True zodra de avatar zelf een control is.",
+              "readonly": true
+            },
+            {
+              "kind": "field",
               "name": "resolvedInitials",
               "type": {
                 "text": "string"
@@ -2808,6 +2862,19 @@
               },
               "description": "Fallback icon when there is neither image nor initials.",
               "readonly": true
+            },
+            {
+              "kind": "field",
+              "name": "translations",
+              "type": {
+                "text": "Partial<T>"
+              },
+              "default": "{}",
+              "attribute": "translations",
+              "inheritedFrom": {
+                "name": "withTranslations",
+                "module": "src/utilities/with-translations.ts"
+              }
             }
           ],
           "attributes": [
@@ -2881,7 +2948,7 @@
               },
               "default": "''",
               "fieldName": "size",
-              "description": "Vaste maat in px (spacer-uitgelijnd: 16, 20, 24, 28, 32, 40, 44, 48, 56, 64, 80, 96). Leeg = schaal mee met de container (net als nldd-icon); de initialen en het icoon schalen mee"
+              "description": "`full` (standaard) schaalt mee met de container, net als nldd-icon; of een vaste maat in px (spacer-uitgelijnd: 16, 20, 24, 28, 32, 40, 44, 48, 56, 64, 80, 96). Leeg gedraagt zich als `full`. De initialen en het icoon schalen mee"
             },
             {
               "name": "icon-aligned",
@@ -2900,6 +2967,69 @@
               "default": "false",
               "fieldName": "decorative",
               "description": "Verbergt de avatar voor hulpsoftware (gebruik wanneer de naam er al als tekst naast staat)"
+            },
+            {
+              "name": "href",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Maakt de avatar een link naar deze URL; de schijf zelf wordt de link, dus klikgebied en focusring volgen de vorm",
+              "fieldName": "href"
+            },
+            {
+              "name": "button",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Maakt de avatar een knop; genegeerd wanneer `href` is gezet",
+              "fieldName": "button"
+            },
+            {
+              "name": "target",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "fieldName": "target",
+              "description": "Link target voor href (bijv. '_blank'); vult rel aan en meldt \"Opent in nieuw tabblad\""
+            },
+            {
+              "name": "rel",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "fieldName": "rel",
+              "description": "Link rel voor href; standaard 'noopener noreferrer' bij target='_blank'"
+            },
+            {
+              "name": "accessible-label",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Naam van de link of knop; zonder deze wordt `name` gebruikt",
+              "fieldName": "accessibleLabel"
+            },
+            {
+              "name": "translations",
+              "type": {
+                "text": "Partial<T>"
+              },
+              "default": "{}",
+              "fieldName": "translations",
+              "inheritedFrom": {
+                "name": "withTranslations",
+                "module": "src/utilities/with-translations.ts"
+              }
+            }
+          ],
+          "mixins": [
+            {
+              "name": "withTranslations",
+              "module": "/src/utilities/with-translations.js"
             }
           ],
           "superclass": {
@@ -3351,7 +3481,7 @@
         },
         {
           "kind": "class",
-          "description": "A customizable icon component that renders SVG icons from a predefined library. Icons are decorative by default: the host gets `aria-hidden=\"true\"` automatically. If you want the icon to be announced by assistive tech, set `aria-hidden=\"false\"` on the consumer side together with an `aria-label`. Sizing: by default the icon fills its parent (existing behaviour). Set `size` to pin to a fixed spacer-aligned dimension (16–96px). Colour: by default the icon inherits its parent's `color`. Set `color` to one of the functional semantics (`primary-content`, `secondary-content`, `accent`, `critical`, `warning`, `success`) or a rijkskleur (`lintblauw`, `paars`, `groen`, …). For arbitrary one-off colours, set `style=\"color: …\"` on the host — the inherited `color` still drives the SVG fill/stroke.",
+          "description": "A customizable icon component that renders SVG icons from a predefined library. Icons are decorative by default: the host gets `aria-hidden=\"true\"` automatically. If you want the icon to be announced by assistive tech, set `aria-hidden=\"false\"` on the consumer side together with an `aria-label`. Sizing: the icon fills whatever sizes it — an `nldd-icon-cell`, a button, a menu item. `size=\"full\"` names that default explicitly. `size=\"inherit\"` makes it follow the surrounding text (1em), for an icon set inline in a sentence. Any spacer-aligned number (16–96) pins a fixed dimension. Reach for `inherit` rather than a global `nldd-icon { width: 1em }` rule in the consumer: such a rule wins over the component's own :host styling and so also shrinks the icons that a cell or button was already sizing correctly. Color: by default the icon inherits its parent's `color`. Set `color` to one of the functional semantics (`primary-content`, `secondary-content`, `accent`, `critical`, `warning`, `success`) or a rijkskleur (`lintblauw`, `paars`, `groen`, …). For arbitrary one-off colors, set `style=\"color: …\"` on the host — the inherited `color` still drives the SVG fill/stroke.",
           "name": "NLDDIcon",
           "members": [
             {
@@ -3398,7 +3528,7 @@
               "type": {
                 "text": "IconSize"
               },
-              "description": "Fixed size in px (spacer-aligned: 16, 20, 24, 28, 32, 40, 44, 48, 56, 64, 80, 96). Empty = inherit from parent.",
+              "description": "`full` (default) fills the container; `inherit` follows the surrounding text (1em); or a fixed spacer-aligned size in px (16, 20, 24, 28, 32, 40, 44, 48, 56, 64, 80, 96). Empty behaves as `full`.",
               "name": "size",
               "default": "''",
               "fieldName": "size"
@@ -4829,7 +4959,7 @@
               },
               "default": "'default'",
               "fieldName": "timing",
-              "description": "Wanneer de tooltip verschijnt op hover: 'instant'  — direct, zonder show-delay. 'default'  — na de standaard show-delay (700ms). 'never'    — tooltip wordt nooit getoond; hover/focus events worden genegeerd, aria-describedby wordt onderdrukt en een al zichtbare tooltip verdwijnt. Hide-delay en touch suppression blijven onder alle waarden van kracht. Focus-trigger is altijd instant."
+              "description": "Wanneer de tooltip verschijnt op hover: 'instant' — direct, zonder show-delay. 'default' — na de standaard show-delay (700ms). 'never' — tooltip wordt nooit getoond; hover/focus events worden genegeerd, aria-describedby wordt onderdrukt en een al zichtbare tooltip verdwijnt. Hide-delay en touch suppression blijven onder alle waarden van kracht. Focus-trigger is altijd instant."
             }
           ],
           "superclass": {
@@ -5896,6 +6026,14 @@
         },
         {
           "kind": "js",
+          "name": "NLDDListItemAction",
+          "declaration": {
+            "name": "NLDDListItemAction",
+            "module": "./lists-and-tables/list-item-action/list-item-action.js"
+          }
+        },
+        {
+          "kind": "js",
           "name": "NLDDTable",
           "declaration": {
             "name": "NLDDTable",
@@ -6128,6 +6266,22 @@
         },
         {
           "kind": "js",
+          "name": "NLDDStepIndicator",
+          "declaration": {
+            "name": "NLDDStepIndicator",
+            "module": "./status-and-feedback/step-indicator/step-indicator.js"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "NLDDStepIndicatorItem",
+          "declaration": {
+            "name": "NLDDStepIndicatorItem",
+            "module": "./status-and-feedback/step-indicator/step-indicator.js"
+          }
+        },
+        {
+          "kind": "js",
           "name": "NLDDActivityIndicator",
           "declaration": {
             "name": "NLDDActivityIndicator",
@@ -6158,7 +6312,7 @@
       "declarations": [
         {
           "kind": "class",
-          "description": "A checkbox with an inline label for use in forms.",
+          "description": "A checkbox with an inline label for use in forms. Form-associated: participates in native form submission under `name` with `value` when checked (the inner nldd-checkbox sits in the shadow root and never joins the consumer's form; the field submits on its behalf).",
           "name": "NLDDCheckboxField",
           "members": [
             {
@@ -6207,7 +6361,9 @@
                 "text": "string"
               },
               "default": "''",
-              "attribute": "name"
+              "description": "Reflected: form association reads the host's name attribute, so setting\nthe property alone must still register the field with the form.",
+              "attribute": "name",
+              "reflects": true
             },
             {
               "kind": "field",
@@ -6217,6 +6373,117 @@
               },
               "default": "''",
               "attribute": "label"
+            },
+            {
+              "kind": "method",
+              "name": "formValue",
+              "return": {
+                "type": {
+                  "text": "FormValue"
+                }
+              },
+              "description": "The value submitted under `name`; `null` submits nothing. Override.",
+              "inheritedFrom": {
+                "name": "FormAssociated",
+                "module": "src/utilities/form-associated-mixin.ts"
+              }
+            },
+            {
+              "kind": "method",
+              "name": "formResetCallback",
+              "return": {
+                "type": {
+                  "text": "void"
+                }
+              }
+            },
+            {
+              "kind": "method",
+              "name": "formStateRestoreCallback",
+              "return": {
+                "type": {
+                  "text": "void"
+                }
+              },
+              "parameters": [
+                {
+                  "name": "state",
+                  "type": {
+                    "text": "File | string | FormData | null"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "field",
+              "name": "formAssociated",
+              "type": {
+                "text": "boolean"
+              },
+              "static": true,
+              "default": "true",
+              "inheritedFrom": {
+                "name": "FormAssociated",
+                "module": "src/utilities/form-associated-mixin.ts"
+              }
+            },
+            {
+              "kind": "field",
+              "name": "internals",
+              "readonly": true,
+              "inheritedFrom": {
+                "name": "FormAssociated",
+                "module": "src/utilities/form-associated-mixin.ts"
+              }
+            },
+            {
+              "kind": "method",
+              "name": "formState",
+              "return": {
+                "type": {
+                  "text": "FormValue | undefined"
+                }
+              },
+              "description": "Extra state kept for bfcache and state restore, when the submitted\nvalue alone cannot rebuild the control (a combo box submits a code but\nshows a label). Override alongside `formValue()`.",
+              "inheritedFrom": {
+                "name": "FormAssociated",
+                "module": "src/utilities/form-associated-mixin.ts"
+              }
+            },
+            {
+              "kind": "method",
+              "name": "commitFormValue",
+              "return": {
+                "type": {
+                  "text": "void"
+                }
+              },
+              "description": "Commit the value now, from the handler that changed it.",
+              "inheritedFrom": {
+                "name": "FormAssociated",
+                "module": "src/utilities/form-associated-mixin.ts"
+              }
+            },
+            {
+              "kind": "method",
+              "name": "formDisabledCallback",
+              "return": {
+                "type": {
+                  "text": "void"
+                }
+              },
+              "parameters": [
+                {
+                  "name": "disabled",
+                  "type": {
+                    "text": "boolean"
+                  }
+                }
+              ],
+              "inheritedFrom": {
+                "name": "FormAssociated",
+                "module": "src/utilities/form-associated-mixin.ts"
+              }
             }
           ],
           "events": [
@@ -6268,8 +6535,8 @@
                 "text": "string"
               },
               "default": "''",
-              "fieldName": "name",
-              "description": "Name for form submission"
+              "description": "Name for form submission",
+              "fieldName": "name"
             },
             {
               "name": "label",
@@ -6279,6 +6546,12 @@
               "default": "''",
               "fieldName": "label",
               "description": "Label text for the checkbox"
+            }
+          ],
+          "mixins": [
+            {
+              "name": "FormAssociated",
+              "module": "/src/utilities/form-associated-mixin.js"
             }
           ],
           "superclass": {
@@ -6317,15 +6590,6 @@
           "description": "",
           "name": "NLDDCheckbox",
           "members": [
-            {
-              "kind": "field",
-              "name": "formAssociated",
-              "type": {
-                "text": "boolean"
-              },
-              "static": true,
-              "default": "true"
-            },
             {
               "kind": "field",
               "name": "checked",
@@ -6386,29 +6650,26 @@
             },
             {
               "kind": "method",
+              "name": "formValue",
+              "return": {
+                "type": {
+                  "text": "FormValue"
+                }
+              },
+              "description": "The value submitted under `name`; `null` submits nothing. Override.",
+              "inheritedFrom": {
+                "name": "FormAssociated",
+                "module": "src/utilities/form-associated-mixin.ts"
+              }
+            },
+            {
+              "kind": "method",
               "name": "formResetCallback",
               "return": {
                 "type": {
                   "text": "void"
                 }
               }
-            },
-            {
-              "kind": "method",
-              "name": "formDisabledCallback",
-              "return": {
-                "type": {
-                  "text": "void"
-                }
-              },
-              "parameters": [
-                {
-                  "name": "disabled",
-                  "type": {
-                    "text": "boolean"
-                  }
-                }
-              ]
             },
             {
               "kind": "method",
@@ -6435,6 +6696,77 @@
                 "type": {
                   "text": "void"
                 }
+              }
+            },
+            {
+              "kind": "field",
+              "name": "formAssociated",
+              "type": {
+                "text": "boolean"
+              },
+              "static": true,
+              "default": "true",
+              "inheritedFrom": {
+                "name": "FormAssociated",
+                "module": "src/utilities/form-associated-mixin.ts"
+              }
+            },
+            {
+              "kind": "field",
+              "name": "internals",
+              "readonly": true,
+              "inheritedFrom": {
+                "name": "FormAssociated",
+                "module": "src/utilities/form-associated-mixin.ts"
+              }
+            },
+            {
+              "kind": "method",
+              "name": "formState",
+              "return": {
+                "type": {
+                  "text": "FormValue | undefined"
+                }
+              },
+              "description": "Extra state kept for bfcache and state restore, when the submitted\nvalue alone cannot rebuild the control (a combo box submits a code but\nshows a label). Override alongside `formValue()`.",
+              "inheritedFrom": {
+                "name": "FormAssociated",
+                "module": "src/utilities/form-associated-mixin.ts"
+              }
+            },
+            {
+              "kind": "method",
+              "name": "commitFormValue",
+              "return": {
+                "type": {
+                  "text": "void"
+                }
+              },
+              "description": "Commit the value now, from the handler that changed it.",
+              "inheritedFrom": {
+                "name": "FormAssociated",
+                "module": "src/utilities/form-associated-mixin.ts"
+              }
+            },
+            {
+              "kind": "method",
+              "name": "formDisabledCallback",
+              "return": {
+                "type": {
+                  "text": "void"
+                }
+              },
+              "parameters": [
+                {
+                  "name": "disabled",
+                  "type": {
+                    "text": "boolean"
+                  }
+                }
+              ],
+              "inheritedFrom": {
+                "name": "FormAssociated",
+                "module": "src/utilities/form-associated-mixin.ts"
               }
             }
           ],
@@ -6500,6 +6832,12 @@
               "description": "Accessible label forwarded as aria-label to the native input. Note: aria-labelledby is not supported as IDREF resolution cannot cross shadow DOM boundaries."
             }
           ],
+          "mixins": [
+            {
+              "name": "FormAssociated",
+              "module": "/src/utilities/form-associated-mixin.js"
+            }
+          ],
           "superclass": {
             "name": "LitElement",
             "package": "lit"
@@ -6536,15 +6874,6 @@
           "description": "A monospace editor for code, YAML, JSON and other technical content, built on CodeMirror 6 (via NLDDCodeMirrorElement). Visually pairs with nldd-code-viewer for a matching read-only surface. Default `variant=\"simple\"` is a bare, flush editor (no frame, no focus ring) for use inside an nldd-form-field or a consumer composition that owns its own chrome and focus treatment; the caret is rendered as a prominent accent as the focus cue. `variant=\"input-field\"` adds the framed surface (border ring, tinted fill, inner padding, radius) and a focus ring for standalone use. The simple variant has no surrounding space of its own: let a layout container own the spacing and forward clicks with `focusFromPoint()` so clicking the padding still starts editing. Optional `language` enables lazy syntax highlighting; `line-numbers` adds a gutter (click a number to move the caret to that line).",
           "name": "NLDDCodeEditor",
           "members": [
-            {
-              "kind": "field",
-              "name": "formAssociated",
-              "type": {
-                "text": "boolean"
-              },
-              "static": true,
-              "default": "true"
-            },
             {
               "kind": "field",
               "name": "shadowRootOptions",
@@ -6692,29 +7021,26 @@
             },
             {
               "kind": "method",
+              "name": "formValue",
+              "return": {
+                "type": {
+                  "text": "FormValue"
+                }
+              },
+              "description": "The value submitted under `name`; `null` submits nothing. Override.",
+              "inheritedFrom": {
+                "name": "FormAssociated",
+                "module": "src/utilities/form-associated-mixin.ts"
+              }
+            },
+            {
+              "kind": "method",
               "name": "formResetCallback",
               "return": {
                 "type": {
                   "text": "void"
                 }
               }
-            },
-            {
-              "kind": "method",
-              "name": "formDisabledCallback",
-              "return": {
-                "type": {
-                  "text": "void"
-                }
-              },
-              "parameters": [
-                {
-                  "name": "disabled",
-                  "type": {
-                    "text": "boolean"
-                  }
-                }
-              ]
             },
             {
               "kind": "method",
@@ -6732,6 +7058,77 @@
                   }
                 }
               ]
+            },
+            {
+              "kind": "field",
+              "name": "formAssociated",
+              "type": {
+                "text": "boolean"
+              },
+              "static": true,
+              "default": "true",
+              "inheritedFrom": {
+                "name": "FormAssociated",
+                "module": "src/utilities/form-associated-mixin.ts"
+              }
+            },
+            {
+              "kind": "field",
+              "name": "internals",
+              "readonly": true,
+              "inheritedFrom": {
+                "name": "FormAssociated",
+                "module": "src/utilities/form-associated-mixin.ts"
+              }
+            },
+            {
+              "kind": "method",
+              "name": "formState",
+              "return": {
+                "type": {
+                  "text": "FormValue | undefined"
+                }
+              },
+              "description": "Extra state kept for bfcache and state restore, when the submitted\nvalue alone cannot rebuild the control (a combo box submits a code but\nshows a label). Override alongside `formValue()`.",
+              "inheritedFrom": {
+                "name": "FormAssociated",
+                "module": "src/utilities/form-associated-mixin.ts"
+              }
+            },
+            {
+              "kind": "method",
+              "name": "commitFormValue",
+              "return": {
+                "type": {
+                  "text": "void"
+                }
+              },
+              "description": "Commit the value now, from the handler that changed it.",
+              "inheritedFrom": {
+                "name": "FormAssociated",
+                "module": "src/utilities/form-associated-mixin.ts"
+              }
+            },
+            {
+              "kind": "method",
+              "name": "formDisabledCallback",
+              "return": {
+                "type": {
+                  "text": "void"
+                }
+              },
+              "parameters": [
+                {
+                  "name": "disabled",
+                  "type": {
+                    "text": "boolean"
+                  }
+                }
+              ],
+              "inheritedFrom": {
+                "name": "FormAssociated",
+                "module": "src/utilities/form-associated-mixin.ts"
+              }
             }
           ],
           "events": [
@@ -6872,6 +7269,12 @@
               "description": "Accessible label forwarded to the editor. Set automatically by nldd-form-field."
             }
           ],
+          "mixins": [
+            {
+              "name": "FormAssociated",
+              "module": "/src/utilities/form-associated-mixin.js"
+            }
+          ],
           "superclass": {
             "name": "NLDDCodeMirrorElement",
             "module": "/src/utilities/codemirror/codemirror-element.js"
@@ -6908,15 +7311,6 @@
           "description": "A text input with autocomplete dropdown via nldd-menu. Add a slotted nldd-menu with nldd-menu-item children to provide options. The slotted nldd-menu keeps its default focus behavior (menu container receives focus) so that typing keeps focus on the input. The picker button moves focus to the menu explicitly on activation. Note: Only nldd-menu-item type=\"button\" is supported. Radio and checkbox types are not supported in this context.",
           "name": "NLDDComboBox",
           "members": [
-            {
-              "kind": "field",
-              "name": "formAssociated",
-              "type": {
-                "text": "boolean"
-              },
-              "static": true,
-              "default": "true"
-            },
             {
               "kind": "field",
               "name": "value",
@@ -7068,29 +7462,40 @@
             },
             {
               "kind": "method",
+              "name": "formValue",
+              "return": {
+                "type": {
+                  "text": "FormValue"
+                }
+              },
+              "description": "The value submitted under `name`; `null` submits nothing. Override.",
+              "inheritedFrom": {
+                "name": "FormAssociated",
+                "module": "src/utilities/form-associated-mixin.ts"
+              }
+            },
+            {
+              "kind": "method",
+              "name": "formState",
+              "return": {
+                "type": {
+                  "text": "FormValue"
+                }
+              },
+              "description": "The display label rides along in the restore state, so bfcache and state\nrestore can rehydrate the input text (value \"nl\" → display \"Nederland\").",
+              "inheritedFrom": {
+                "name": "FormAssociated",
+                "module": "src/utilities/form-associated-mixin.ts"
+              }
+            },
+            {
+              "kind": "method",
               "name": "formResetCallback",
               "return": {
                 "type": {
                   "text": "void"
                 }
               }
-            },
-            {
-              "kind": "method",
-              "name": "formDisabledCallback",
-              "return": {
-                "type": {
-                  "text": "void"
-                }
-              },
-              "parameters": [
-                {
-                  "name": "disabled",
-                  "type": {
-                    "text": "boolean"
-                  }
-                }
-              ]
             },
             {
               "kind": "method",
@@ -7127,6 +7532,63 @@
                 }
               ],
               "description": "Delegates focus to the inner native `<input>`, so consumers can call\n`comboBoxEl.focus()` without reaching into shadow DOM."
+            },
+            {
+              "kind": "field",
+              "name": "formAssociated",
+              "type": {
+                "text": "boolean"
+              },
+              "static": true,
+              "default": "true",
+              "inheritedFrom": {
+                "name": "FormAssociated",
+                "module": "src/utilities/form-associated-mixin.ts"
+              }
+            },
+            {
+              "kind": "field",
+              "name": "internals",
+              "readonly": true,
+              "inheritedFrom": {
+                "name": "FormAssociated",
+                "module": "src/utilities/form-associated-mixin.ts"
+              }
+            },
+            {
+              "kind": "method",
+              "name": "commitFormValue",
+              "return": {
+                "type": {
+                  "text": "void"
+                }
+              },
+              "description": "Commit the value now, from the handler that changed it.",
+              "inheritedFrom": {
+                "name": "FormAssociated",
+                "module": "src/utilities/form-associated-mixin.ts"
+              }
+            },
+            {
+              "kind": "method",
+              "name": "formDisabledCallback",
+              "return": {
+                "type": {
+                  "text": "void"
+                }
+              },
+              "parameters": [
+                {
+                  "name": "disabled",
+                  "type": {
+                    "text": "boolean"
+                  }
+                }
+              ],
+              "inheritedFrom": {
+                "name": "FormAssociated",
+                "module": "src/utilities/form-associated-mixin.ts"
+              }
             }
           ],
           "events": [
@@ -7276,6 +7738,12 @@
               "fieldName": "width"
             }
           ],
+          "mixins": [
+            {
+              "name": "FormAssociated",
+              "module": "/src/utilities/form-associated-mixin.js"
+            }
+          ],
           "superclass": {
             "name": "LitElement",
             "package": "lit"
@@ -7318,15 +7786,6 @@
           "description": "Een tekstveld voor een datum, met een optionele kalender in een popover. De waarde is altijd ISO (jjjj-mm-dd); op het scherm staat de Nederlandse notatie (dd-mm-jjjj). Er wordt niet gemaskerd tijdens het typen: invoer wordt royaal geaccepteerd en pas bij het verlaten van het veld genormaliseerd. Foutmeldingen horen bij nldd-form-field, niet hier. Dit veld reflecteert alleen `invalid` / `valid`, net als nldd-text-field.",
           "name": "NLDDDateField",
           "members": [
-            {
-              "kind": "field",
-              "name": "formAssociated",
-              "type": {
-                "text": "boolean"
-              },
-              "static": true,
-              "default": "true"
-            },
             {
               "kind": "field",
               "name": "shadowRootOptions",
@@ -7532,23 +7991,6 @@
             },
             {
               "kind": "method",
-              "name": "formDisabledCallback",
-              "return": {
-                "type": {
-                  "text": "void"
-                }
-              },
-              "parameters": [
-                {
-                  "name": "disabled",
-                  "type": {
-                    "text": "boolean"
-                  }
-                }
-              ]
-            },
-            {
-              "kind": "method",
               "name": "formStateRestoreCallback",
               "return": {
                 "type": {
@@ -7563,6 +8005,91 @@
                   }
                 }
               ]
+            },
+            {
+              "kind": "method",
+              "name": "formValue",
+              "return": {
+                "type": {
+                  "text": "FormValue"
+                }
+              },
+              "description": "The value submitted under `name`; `null` submits nothing. Override.",
+              "inheritedFrom": {
+                "name": "FormAssociated",
+                "module": "src/utilities/form-associated-mixin.ts"
+              }
+            },
+            {
+              "kind": "field",
+              "name": "formAssociated",
+              "type": {
+                "text": "boolean"
+              },
+              "static": true,
+              "default": "true",
+              "inheritedFrom": {
+                "name": "FormAssociated",
+                "module": "src/utilities/form-associated-mixin.ts"
+              }
+            },
+            {
+              "kind": "field",
+              "name": "internals",
+              "readonly": true,
+              "inheritedFrom": {
+                "name": "FormAssociated",
+                "module": "src/utilities/form-associated-mixin.ts"
+              }
+            },
+            {
+              "kind": "method",
+              "name": "formState",
+              "return": {
+                "type": {
+                  "text": "FormValue | undefined"
+                }
+              },
+              "description": "Extra state kept for bfcache and state restore, when the submitted\nvalue alone cannot rebuild the control (a combo box submits a code but\nshows a label). Override alongside `formValue()`.",
+              "inheritedFrom": {
+                "name": "FormAssociated",
+                "module": "src/utilities/form-associated-mixin.ts"
+              }
+            },
+            {
+              "kind": "method",
+              "name": "commitFormValue",
+              "return": {
+                "type": {
+                  "text": "void"
+                }
+              },
+              "description": "Commit the value now, from the handler that changed it.",
+              "inheritedFrom": {
+                "name": "FormAssociated",
+                "module": "src/utilities/form-associated-mixin.ts"
+              }
+            },
+            {
+              "kind": "method",
+              "name": "formDisabledCallback",
+              "return": {
+                "type": {
+                  "text": "void"
+                }
+              },
+              "parameters": [
+                {
+                  "name": "disabled",
+                  "type": {
+                    "text": "boolean"
+                  }
+                }
+              ],
+              "inheritedFrom": {
+                "name": "FormAssociated",
+                "module": "src/utilities/form-associated-mixin.ts"
+              }
             }
           ],
           "events": [
@@ -7748,6 +8275,12 @@
               "fieldName": "translations"
             }
           ],
+          "mixins": [
+            {
+              "name": "FormAssociated",
+              "module": "/src/utilities/form-associated-mixin.js"
+            }
+          ],
           "superclass": {
             "name": "LitElement",
             "package": "lit"
@@ -7816,6 +8349,17 @@
               },
               "default": "''",
               "attribute": "end"
+            },
+            {
+              "kind": "field",
+              "name": "width",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Breedte: 'full' of een CSS-lengte; leeg is de intrinsieke zeven-cellen-breedte.",
+              "attribute": "width",
+              "reflects": true
             },
             {
               "kind": "field",
@@ -7951,6 +8495,15 @@
               "default": "''",
               "fieldName": "end",
               "description": "Einde van de periode als ISO. Alleen met `range`."
+            },
+            {
+              "name": "width",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Breedte: `full` (vult de container) of een CSS-lengte (bv. `560px`). Leeg (standaard) is de intrinsieke breedte van zeven dagcellen; de cellen rekken mee met de opgegeven breedte.",
+              "fieldName": "width"
             },
             {
               "name": "range",
@@ -8230,15 +8783,6 @@
           "members": [
             {
               "kind": "field",
-              "name": "formAssociated",
-              "type": {
-                "text": "boolean"
-              },
-              "static": true,
-              "default": "true"
-            },
-            {
-              "kind": "field",
               "name": "shadowRootOptions",
               "type": {
                 "text": "object"
@@ -8414,29 +8958,26 @@
             },
             {
               "kind": "method",
+              "name": "formValue",
+              "return": {
+                "type": {
+                  "text": "FormValue"
+                }
+              },
+              "description": "The value submitted under `name`; `null` submits nothing. Override.",
+              "inheritedFrom": {
+                "name": "FormAssociated",
+                "module": "src/utilities/form-associated-mixin.ts"
+              }
+            },
+            {
+              "kind": "method",
               "name": "formResetCallback",
               "return": {
                 "type": {
                   "text": "void"
                 }
               }
-            },
-            {
-              "kind": "method",
-              "name": "formDisabledCallback",
-              "return": {
-                "type": {
-                  "text": "void"
-                }
-              },
-              "parameters": [
-                {
-                  "name": "disabled",
-                  "type": {
-                    "text": "boolean"
-                  }
-                }
-              ]
             },
             {
               "kind": "method",
@@ -8454,6 +8995,77 @@
                   }
                 }
               ]
+            },
+            {
+              "kind": "field",
+              "name": "formAssociated",
+              "type": {
+                "text": "boolean"
+              },
+              "static": true,
+              "default": "true",
+              "inheritedFrom": {
+                "name": "FormAssociated",
+                "module": "src/utilities/form-associated-mixin.ts"
+              }
+            },
+            {
+              "kind": "field",
+              "name": "internals",
+              "readonly": true,
+              "inheritedFrom": {
+                "name": "FormAssociated",
+                "module": "src/utilities/form-associated-mixin.ts"
+              }
+            },
+            {
+              "kind": "method",
+              "name": "formState",
+              "return": {
+                "type": {
+                  "text": "FormValue | undefined"
+                }
+              },
+              "description": "Extra state kept for bfcache and state restore, when the submitted\nvalue alone cannot rebuild the control (a combo box submits a code but\nshows a label). Override alongside `formValue()`.",
+              "inheritedFrom": {
+                "name": "FormAssociated",
+                "module": "src/utilities/form-associated-mixin.ts"
+              }
+            },
+            {
+              "kind": "method",
+              "name": "commitFormValue",
+              "return": {
+                "type": {
+                  "text": "void"
+                }
+              },
+              "description": "Commit the value now, from the handler that changed it.",
+              "inheritedFrom": {
+                "name": "FormAssociated",
+                "module": "src/utilities/form-associated-mixin.ts"
+              }
+            },
+            {
+              "kind": "method",
+              "name": "formDisabledCallback",
+              "return": {
+                "type": {
+                  "text": "void"
+                }
+              },
+              "parameters": [
+                {
+                  "name": "disabled",
+                  "type": {
+                    "text": "boolean"
+                  }
+                }
+              ],
+              "inheritedFrom": {
+                "name": "FormAssociated",
+                "module": "src/utilities/form-associated-mixin.ts"
+              }
             }
           ],
           "events": [
@@ -8621,6 +9233,12 @@
               "fieldName": "width"
             }
           ],
+          "mixins": [
+            {
+              "name": "FormAssociated",
+              "module": "/src/utilities/form-associated-mixin.js"
+            }
+          ],
           "superclass": {
             "name": "LitElement",
             "package": "lit"
@@ -8657,15 +9275,6 @@
           "description": "A numeric input field with decrement and increment buttons.",
           "name": "NLDDNumberField",
           "members": [
-            {
-              "kind": "field",
-              "name": "formAssociated",
-              "type": {
-                "text": "boolean"
-              },
-              "static": true,
-              "default": "true"
-            },
             {
               "kind": "field",
               "name": "value",
@@ -8772,29 +9381,26 @@
             },
             {
               "kind": "method",
+              "name": "formValue",
+              "return": {
+                "type": {
+                  "text": "FormValue"
+                }
+              },
+              "description": "The value submitted under `name`; `null` submits nothing. Override.",
+              "inheritedFrom": {
+                "name": "FormAssociated",
+                "module": "src/utilities/form-associated-mixin.ts"
+              }
+            },
+            {
+              "kind": "method",
               "name": "formResetCallback",
               "return": {
                 "type": {
                   "text": "void"
                 }
               }
-            },
-            {
-              "kind": "method",
-              "name": "formDisabledCallback",
-              "return": {
-                "type": {
-                  "text": "void"
-                }
-              },
-              "parameters": [
-                {
-                  "name": "disabled",
-                  "type": {
-                    "text": "boolean"
-                  }
-                }
-              ]
             },
             {
               "kind": "method",
@@ -8831,6 +9437,77 @@
                 }
               ],
               "description": "Delegates focus to the inner native `<input>`, so consumers can call\n`numberFieldEl.focus()` without reaching into shadow DOM."
+            },
+            {
+              "kind": "field",
+              "name": "formAssociated",
+              "type": {
+                "text": "boolean"
+              },
+              "static": true,
+              "default": "true",
+              "inheritedFrom": {
+                "name": "FormAssociated",
+                "module": "src/utilities/form-associated-mixin.ts"
+              }
+            },
+            {
+              "kind": "field",
+              "name": "internals",
+              "readonly": true,
+              "inheritedFrom": {
+                "name": "FormAssociated",
+                "module": "src/utilities/form-associated-mixin.ts"
+              }
+            },
+            {
+              "kind": "method",
+              "name": "formState",
+              "return": {
+                "type": {
+                  "text": "FormValue | undefined"
+                }
+              },
+              "description": "Extra state kept for bfcache and state restore, when the submitted\nvalue alone cannot rebuild the control (a combo box submits a code but\nshows a label). Override alongside `formValue()`.",
+              "inheritedFrom": {
+                "name": "FormAssociated",
+                "module": "src/utilities/form-associated-mixin.ts"
+              }
+            },
+            {
+              "kind": "method",
+              "name": "commitFormValue",
+              "return": {
+                "type": {
+                  "text": "void"
+                }
+              },
+              "description": "Commit the value now, from the handler that changed it.",
+              "inheritedFrom": {
+                "name": "FormAssociated",
+                "module": "src/utilities/form-associated-mixin.ts"
+              }
+            },
+            {
+              "kind": "method",
+              "name": "formDisabledCallback",
+              "return": {
+                "type": {
+                  "text": "void"
+                }
+              },
+              "parameters": [
+                {
+                  "name": "disabled",
+                  "type": {
+                    "text": "boolean"
+                  }
+                }
+              ],
+              "inheritedFrom": {
+                "name": "FormAssociated",
+                "module": "src/utilities/form-associated-mixin.ts"
+              }
             }
           ],
           "events": [
@@ -8941,6 +9618,12 @@
               "fieldName": "translations"
             }
           ],
+          "mixins": [
+            {
+              "name": "FormAssociated",
+              "module": "/src/utilities/form-associated-mixin.js"
+            }
+          ],
           "superclass": {
             "name": "LitElement",
             "package": "lit"
@@ -8977,15 +9660,6 @@
           "description": "A password input field with visibility toggle and validation states.",
           "name": "NLDDPasswordField",
           "members": [
-            {
-              "kind": "field",
-              "name": "formAssociated",
-              "type": {
-                "text": "boolean"
-              },
-              "static": true,
-              "default": "true"
-            },
             {
               "kind": "field",
               "name": "shadowRootOptions",
@@ -9184,29 +9858,26 @@
             },
             {
               "kind": "method",
+              "name": "formValue",
+              "return": {
+                "type": {
+                  "text": "FormValue"
+                }
+              },
+              "description": "The value submitted under `name`; `null` submits nothing. Override.",
+              "inheritedFrom": {
+                "name": "FormAssociated",
+                "module": "src/utilities/form-associated-mixin.ts"
+              }
+            },
+            {
+              "kind": "method",
               "name": "formResetCallback",
               "return": {
                 "type": {
                   "text": "void"
                 }
               }
-            },
-            {
-              "kind": "method",
-              "name": "formDisabledCallback",
-              "return": {
-                "type": {
-                  "text": "void"
-                }
-              },
-              "parameters": [
-                {
-                  "name": "disabled",
-                  "type": {
-                    "text": "boolean"
-                  }
-                }
-              ]
             },
             {
               "kind": "method",
@@ -9243,6 +9914,77 @@
                 "type": {
                   "text": "void"
                 }
+              }
+            },
+            {
+              "kind": "field",
+              "name": "formAssociated",
+              "type": {
+                "text": "boolean"
+              },
+              "static": true,
+              "default": "true",
+              "inheritedFrom": {
+                "name": "FormAssociated",
+                "module": "src/utilities/form-associated-mixin.ts"
+              }
+            },
+            {
+              "kind": "field",
+              "name": "internals",
+              "readonly": true,
+              "inheritedFrom": {
+                "name": "FormAssociated",
+                "module": "src/utilities/form-associated-mixin.ts"
+              }
+            },
+            {
+              "kind": "method",
+              "name": "formState",
+              "return": {
+                "type": {
+                  "text": "FormValue | undefined"
+                }
+              },
+              "description": "Extra state kept for bfcache and state restore, when the submitted\nvalue alone cannot rebuild the control (a combo box submits a code but\nshows a label). Override alongside `formValue()`.",
+              "inheritedFrom": {
+                "name": "FormAssociated",
+                "module": "src/utilities/form-associated-mixin.ts"
+              }
+            },
+            {
+              "kind": "method",
+              "name": "commitFormValue",
+              "return": {
+                "type": {
+                  "text": "void"
+                }
+              },
+              "description": "Commit the value now, from the handler that changed it.",
+              "inheritedFrom": {
+                "name": "FormAssociated",
+                "module": "src/utilities/form-associated-mixin.ts"
+              }
+            },
+            {
+              "kind": "method",
+              "name": "formDisabledCallback",
+              "return": {
+                "type": {
+                  "text": "void"
+                }
+              },
+              "parameters": [
+                {
+                  "name": "disabled",
+                  "type": {
+                    "text": "boolean"
+                  }
+                }
+              ],
+              "inheritedFrom": {
+                "name": "FormAssociated",
+                "module": "src/utilities/form-associated-mixin.ts"
               }
             }
           ],
@@ -9429,6 +10171,12 @@
               "fieldName": "width"
             }
           ],
+          "mixins": [
+            {
+              "name": "FormAssociated",
+              "module": "/src/utilities/form-associated-mixin.js"
+            }
+          ],
           "superclass": {
             "name": "LitElement",
             "package": "lit"
@@ -9462,7 +10210,7 @@
       "declarations": [
         {
           "kind": "class",
-          "description": "A radio button with an inline label. Use inside nldd-radio-button-group for keyboard navigation and group semantics. The group sets the name.",
+          "description": "A radio button with an inline label. Use inside nldd-radio-button-group for keyboard navigation and group semantics. The group sets the name. Form-associated: the checked field submits its `value` under `name` (the inner nldd-radio-button sits in the shadow root and never joins the consumer's form; the field submits on its behalf). Unchecking siblings is the group's job, so exactly one value per group reaches the form.",
           "name": "NLDDRadioButtonField",
           "members": [
             {
@@ -9501,8 +10249,9 @@
                 "text": "string"
               },
               "default": "''",
-              "description": "Set by nldd-radio-button-group. Not part of the public API.",
-              "attribute": "name"
+              "description": "Set by nldd-radio-button-group. Not part of the public API.\nReflected: form association reads the host's name attribute, and the\ngroup assigns the property.",
+              "attribute": "name",
+              "reflects": true
             },
             {
               "kind": "field",
@@ -9522,6 +10271,117 @@
               },
               "default": "''",
               "attribute": "label"
+            },
+            {
+              "kind": "method",
+              "name": "formValue",
+              "return": {
+                "type": {
+                  "text": "FormValue"
+                }
+              },
+              "description": "An unchecked radio contributes nothing to the form. The group calls\n`commitFormValue()` on the siblings it unchecks, so a listener that reads\nthe form while `change` is still propagating never sees two values.",
+              "inheritedFrom": {
+                "name": "FormAssociated",
+                "module": "src/utilities/form-associated-mixin.ts"
+              }
+            },
+            {
+              "kind": "method",
+              "name": "formResetCallback",
+              "return": {
+                "type": {
+                  "text": "void"
+                }
+              }
+            },
+            {
+              "kind": "method",
+              "name": "formStateRestoreCallback",
+              "return": {
+                "type": {
+                  "text": "void"
+                }
+              },
+              "parameters": [
+                {
+                  "name": "state",
+                  "type": {
+                    "text": "File | string | FormData | null"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "field",
+              "name": "formAssociated",
+              "type": {
+                "text": "boolean"
+              },
+              "static": true,
+              "default": "true",
+              "inheritedFrom": {
+                "name": "FormAssociated",
+                "module": "src/utilities/form-associated-mixin.ts"
+              }
+            },
+            {
+              "kind": "field",
+              "name": "internals",
+              "readonly": true,
+              "inheritedFrom": {
+                "name": "FormAssociated",
+                "module": "src/utilities/form-associated-mixin.ts"
+              }
+            },
+            {
+              "kind": "method",
+              "name": "formState",
+              "return": {
+                "type": {
+                  "text": "FormValue | undefined"
+                }
+              },
+              "description": "Extra state kept for bfcache and state restore, when the submitted\nvalue alone cannot rebuild the control (a combo box submits a code but\nshows a label). Override alongside `formValue()`.",
+              "inheritedFrom": {
+                "name": "FormAssociated",
+                "module": "src/utilities/form-associated-mixin.ts"
+              }
+            },
+            {
+              "kind": "method",
+              "name": "commitFormValue",
+              "return": {
+                "type": {
+                  "text": "void"
+                }
+              },
+              "description": "Commit the value now, from the handler that changed it.",
+              "inheritedFrom": {
+                "name": "FormAssociated",
+                "module": "src/utilities/form-associated-mixin.ts"
+              }
+            },
+            {
+              "kind": "method",
+              "name": "formDisabledCallback",
+              "return": {
+                "type": {
+                  "text": "void"
+                }
+              },
+              "parameters": [
+                {
+                  "name": "disabled",
+                  "type": {
+                    "text": "boolean"
+                  }
+                }
+              ],
+              "inheritedFrom": {
+                "name": "FormAssociated",
+                "module": "src/utilities/form-associated-mixin.ts"
+              }
             }
           ],
           "events": [
@@ -9584,6 +10444,12 @@
               "default": "''",
               "fieldName": "label",
               "description": "Label text for the radio button"
+            }
+          ],
+          "mixins": [
+            {
+              "name": "FormAssociated",
+              "module": "/src/utilities/form-associated-mixin.js"
             }
           ],
           "superclass": {
@@ -9653,12 +10519,12 @@
             },
             {
               "kind": "field",
-              "name": "accessibleLabelledBy",
+              "name": "accessibleLabeledBy",
               "type": {
                 "text": "string"
               },
               "default": "''",
-              "attribute": "accessible-labelled-by"
+              "attribute": "accessible-labeled-by"
             }
           ],
           "attributes": [
@@ -9690,12 +10556,12 @@
               "description": "Marks the group as required"
             },
             {
-              "name": "accessible-labelled-by",
+              "name": "accessible-labeled-by",
               "type": {
                 "text": "string"
               },
               "default": "''",
-              "fieldName": "accessibleLabelledBy",
+              "fieldName": "accessibleLabeledBy",
               "description": "Id of an external label element, set as aria-labelledby on the group"
             }
           ],
@@ -9747,15 +10613,6 @@
           "description": "WAI-ARIA: Wrap radio buttons in a <fieldset>/<legend> or a container with role=\"radiogroup\" and aria-labelledby for proper group semantics. <fieldset> <legend>Kies een optie</legend> <nldd-radio-button name=\"options\" value=\"1\">Optie 1</nldd-radio-button> <nldd-radio-button name=\"options\" value=\"2\">Optie 2</nldd-radio-button> </fieldset>",
           "name": "NLDDRadioButton",
           "members": [
-            {
-              "kind": "field",
-              "name": "formAssociated",
-              "type": {
-                "text": "boolean"
-              },
-              "static": true,
-              "default": "true"
-            },
             {
               "kind": "field",
               "name": "checked",
@@ -9816,29 +10673,26 @@
             },
             {
               "kind": "method",
+              "name": "formValue",
+              "return": {
+                "type": {
+                  "text": "FormValue"
+                }
+              },
+              "description": "The value submitted under `name`; `null` submits nothing. Override.",
+              "inheritedFrom": {
+                "name": "FormAssociated",
+                "module": "src/utilities/form-associated-mixin.ts"
+              }
+            },
+            {
+              "kind": "method",
               "name": "formResetCallback",
               "return": {
                 "type": {
                   "text": "void"
                 }
               }
-            },
-            {
-              "kind": "method",
-              "name": "formDisabledCallback",
-              "return": {
-                "type": {
-                  "text": "void"
-                }
-              },
-              "parameters": [
-                {
-                  "name": "disabled",
-                  "type": {
-                    "text": "boolean"
-                  }
-                }
-              ]
             },
             {
               "kind": "method",
@@ -9865,6 +10719,77 @@
                 "type": {
                   "text": "void"
                 }
+              }
+            },
+            {
+              "kind": "field",
+              "name": "formAssociated",
+              "type": {
+                "text": "boolean"
+              },
+              "static": true,
+              "default": "true",
+              "inheritedFrom": {
+                "name": "FormAssociated",
+                "module": "src/utilities/form-associated-mixin.ts"
+              }
+            },
+            {
+              "kind": "field",
+              "name": "internals",
+              "readonly": true,
+              "inheritedFrom": {
+                "name": "FormAssociated",
+                "module": "src/utilities/form-associated-mixin.ts"
+              }
+            },
+            {
+              "kind": "method",
+              "name": "formState",
+              "return": {
+                "type": {
+                  "text": "FormValue | undefined"
+                }
+              },
+              "description": "Extra state kept for bfcache and state restore, when the submitted\nvalue alone cannot rebuild the control (a combo box submits a code but\nshows a label). Override alongside `formValue()`.",
+              "inheritedFrom": {
+                "name": "FormAssociated",
+                "module": "src/utilities/form-associated-mixin.ts"
+              }
+            },
+            {
+              "kind": "method",
+              "name": "commitFormValue",
+              "return": {
+                "type": {
+                  "text": "void"
+                }
+              },
+              "description": "Commit the value now, from the handler that changed it.",
+              "inheritedFrom": {
+                "name": "FormAssociated",
+                "module": "src/utilities/form-associated-mixin.ts"
+              }
+            },
+            {
+              "kind": "method",
+              "name": "formDisabledCallback",
+              "return": {
+                "type": {
+                  "text": "void"
+                }
+              },
+              "parameters": [
+                {
+                  "name": "disabled",
+                  "type": {
+                    "text": "boolean"
+                  }
+                }
+              ],
+              "inheritedFrom": {
+                "name": "FormAssociated",
+                "module": "src/utilities/form-associated-mixin.ts"
               }
             }
           ],
@@ -9930,6 +10855,12 @@
               "description": "Accessible label forwarded as aria-label to the native input. Note: aria-labelledby is not supported as IDREF resolution cannot cross shadow DOM boundaries."
             }
           ],
+          "mixins": [
+            {
+              "name": "FormAssociated",
+              "module": "/src/utilities/form-associated-mixin.js"
+            }
+          ],
           "superclass": {
             "name": "LitElement",
             "package": "lit"
@@ -9966,15 +10897,6 @@
           "description": "A search input with a leading search icon, an optional dismiss button, and an optional search button.",
           "name": "NLDDSearchField",
           "members": [
-            {
-              "kind": "field",
-              "name": "formAssociated",
-              "type": {
-                "text": "boolean"
-              },
-              "static": true,
-              "default": "true"
-            },
             {
               "kind": "field",
               "name": "value",
@@ -10076,29 +10998,26 @@
             },
             {
               "kind": "method",
+              "name": "formValue",
+              "return": {
+                "type": {
+                  "text": "FormValue"
+                }
+              },
+              "description": "The value submitted under `name`; `null` submits nothing. Override.",
+              "inheritedFrom": {
+                "name": "FormAssociated",
+                "module": "src/utilities/form-associated-mixin.ts"
+              }
+            },
+            {
+              "kind": "method",
               "name": "formResetCallback",
               "return": {
                 "type": {
                   "text": "void"
                 }
               }
-            },
-            {
-              "kind": "method",
-              "name": "formDisabledCallback",
-              "return": {
-                "type": {
-                  "text": "void"
-                }
-              },
-              "parameters": [
-                {
-                  "name": "disabled",
-                  "type": {
-                    "text": "boolean"
-                  }
-                }
-              ]
             },
             {
               "kind": "method",
@@ -10135,6 +11054,77 @@
                 }
               ],
               "description": "Delegates focus to the inner native `<input>`, so consumers can call\n`searchFieldEl.focus()` without reaching into shadow DOM."
+            },
+            {
+              "kind": "field",
+              "name": "formAssociated",
+              "type": {
+                "text": "boolean"
+              },
+              "static": true,
+              "default": "true",
+              "inheritedFrom": {
+                "name": "FormAssociated",
+                "module": "src/utilities/form-associated-mixin.ts"
+              }
+            },
+            {
+              "kind": "field",
+              "name": "internals",
+              "readonly": true,
+              "inheritedFrom": {
+                "name": "FormAssociated",
+                "module": "src/utilities/form-associated-mixin.ts"
+              }
+            },
+            {
+              "kind": "method",
+              "name": "formState",
+              "return": {
+                "type": {
+                  "text": "FormValue | undefined"
+                }
+              },
+              "description": "Extra state kept for bfcache and state restore, when the submitted\nvalue alone cannot rebuild the control (a combo box submits a code but\nshows a label). Override alongside `formValue()`.",
+              "inheritedFrom": {
+                "name": "FormAssociated",
+                "module": "src/utilities/form-associated-mixin.ts"
+              }
+            },
+            {
+              "kind": "method",
+              "name": "commitFormValue",
+              "return": {
+                "type": {
+                  "text": "void"
+                }
+              },
+              "description": "Commit the value now, from the handler that changed it.",
+              "inheritedFrom": {
+                "name": "FormAssociated",
+                "module": "src/utilities/form-associated-mixin.ts"
+              }
+            },
+            {
+              "kind": "method",
+              "name": "formDisabledCallback",
+              "return": {
+                "type": {
+                  "text": "void"
+                }
+              },
+              "parameters": [
+                {
+                  "name": "disabled",
+                  "type": {
+                    "text": "boolean"
+                  }
+                }
+              ],
+              "inheritedFrom": {
+                "name": "FormAssociated",
+                "module": "src/utilities/form-associated-mixin.ts"
+              }
             }
           ],
           "events": [
@@ -10241,6 +11231,12 @@
               "default": "''",
               "description": "Optional fixed width (any CSS length, e.g. \"240px\"). Default: stretches to fill container.",
               "fieldName": "width"
+            }
+          ],
+          "mixins": [
+            {
+              "name": "FormAssociated",
+              "module": "/src/utilities/form-associated-mixin.js"
             }
           ],
           "superclass": {
@@ -10482,15 +11478,6 @@
           "members": [
             {
               "kind": "field",
-              "name": "formAssociated",
-              "type": {
-                "text": "boolean"
-              },
-              "static": true,
-              "default": "true"
-            },
-            {
-              "kind": "field",
               "name": "value",
               "type": {
                 "text": "string"
@@ -10583,13 +11570,27 @@
             },
             {
               "kind": "field",
-              "name": "accessibleLabelledBy",
+              "name": "accessibleLabeledBy",
               "type": {
                 "text": "string"
               },
               "default": "''",
               "description": "ID of an external label element (aria-labelledby).",
-              "attribute": "accessible-labelled-by"
+              "attribute": "accessible-labeled-by"
+            },
+            {
+              "kind": "method",
+              "name": "formValue",
+              "return": {
+                "type": {
+                  "text": "FormValue"
+                }
+              },
+              "description": "The value submitted under `name`; `null` submits nothing. Override.",
+              "inheritedFrom": {
+                "name": "FormAssociated",
+                "module": "src/utilities/form-associated-mixin.ts"
+              }
             },
             {
               "kind": "method",
@@ -10599,23 +11600,6 @@
                   "text": "void"
                 }
               }
-            },
-            {
-              "kind": "method",
-              "name": "formDisabledCallback",
-              "return": {
-                "type": {
-                  "text": "void"
-                }
-              },
-              "parameters": [
-                {
-                  "name": "disabled",
-                  "type": {
-                    "text": "boolean"
-                  }
-                }
-              ]
             },
             {
               "kind": "method",
@@ -10633,6 +11617,77 @@
                   }
                 }
               ]
+            },
+            {
+              "kind": "field",
+              "name": "formAssociated",
+              "type": {
+                "text": "boolean"
+              },
+              "static": true,
+              "default": "true",
+              "inheritedFrom": {
+                "name": "FormAssociated",
+                "module": "src/utilities/form-associated-mixin.ts"
+              }
+            },
+            {
+              "kind": "field",
+              "name": "internals",
+              "readonly": true,
+              "inheritedFrom": {
+                "name": "FormAssociated",
+                "module": "src/utilities/form-associated-mixin.ts"
+              }
+            },
+            {
+              "kind": "method",
+              "name": "formState",
+              "return": {
+                "type": {
+                  "text": "FormValue | undefined"
+                }
+              },
+              "description": "Extra state kept for bfcache and state restore, when the submitted\nvalue alone cannot rebuild the control (a combo box submits a code but\nshows a label). Override alongside `formValue()`.",
+              "inheritedFrom": {
+                "name": "FormAssociated",
+                "module": "src/utilities/form-associated-mixin.ts"
+              }
+            },
+            {
+              "kind": "method",
+              "name": "commitFormValue",
+              "return": {
+                "type": {
+                  "text": "void"
+                }
+              },
+              "description": "Commit the value now, from the handler that changed it.",
+              "inheritedFrom": {
+                "name": "FormAssociated",
+                "module": "src/utilities/form-associated-mixin.ts"
+              }
+            },
+            {
+              "kind": "method",
+              "name": "formDisabledCallback",
+              "return": {
+                "type": {
+                  "text": "void"
+                }
+              },
+              "parameters": [
+                {
+                  "name": "disabled",
+                  "type": {
+                    "text": "boolean"
+                  }
+                }
+              ],
+              "inheritedFrom": {
+                "name": "FormAssociated",
+                "module": "src/utilities/form-associated-mixin.ts"
+              }
             }
           ],
           "attributes": [
@@ -10709,13 +11764,19 @@
               "fieldName": "accessibleLabel"
             },
             {
-              "name": "accessible-labelled-by",
+              "name": "accessible-labeled-by",
               "type": {
                 "text": "string"
               },
               "default": "''",
               "description": "Id of an external label element, set as aria-labelledby on the group",
-              "fieldName": "accessibleLabelledBy"
+              "fieldName": "accessibleLabeledBy"
+            }
+          ],
+          "mixins": [
+            {
+              "name": "FormAssociated",
+              "module": "/src/utilities/form-associated-mixin.js"
             }
           ],
           "superclass": {
@@ -10782,15 +11843,6 @@
           "description": "A numeric control with increment and decrement buttons.",
           "name": "NLDDStepper",
           "members": [
-            {
-              "kind": "field",
-              "name": "formAssociated",
-              "type": {
-                "text": "boolean"
-              },
-              "static": true,
-              "default": "true"
-            },
             {
               "kind": "field",
               "name": "value",
@@ -10866,29 +11918,26 @@
             },
             {
               "kind": "method",
+              "name": "formValue",
+              "return": {
+                "type": {
+                  "text": "FormValue"
+                }
+              },
+              "description": "The value submitted under `name`; `null` submits nothing. Override.",
+              "inheritedFrom": {
+                "name": "FormAssociated",
+                "module": "src/utilities/form-associated-mixin.ts"
+              }
+            },
+            {
+              "kind": "method",
               "name": "formResetCallback",
               "return": {
                 "type": {
                   "text": "void"
                 }
               }
-            },
-            {
-              "kind": "method",
-              "name": "formDisabledCallback",
-              "return": {
-                "type": {
-                  "text": "void"
-                }
-              },
-              "parameters": [
-                {
-                  "name": "disabled",
-                  "type": {
-                    "text": "boolean"
-                  }
-                }
-              ]
             },
             {
               "kind": "method",
@@ -10906,6 +11955,77 @@
                   }
                 }
               ]
+            },
+            {
+              "kind": "field",
+              "name": "formAssociated",
+              "type": {
+                "text": "boolean"
+              },
+              "static": true,
+              "default": "true",
+              "inheritedFrom": {
+                "name": "FormAssociated",
+                "module": "src/utilities/form-associated-mixin.ts"
+              }
+            },
+            {
+              "kind": "field",
+              "name": "internals",
+              "readonly": true,
+              "inheritedFrom": {
+                "name": "FormAssociated",
+                "module": "src/utilities/form-associated-mixin.ts"
+              }
+            },
+            {
+              "kind": "method",
+              "name": "formState",
+              "return": {
+                "type": {
+                  "text": "FormValue | undefined"
+                }
+              },
+              "description": "Extra state kept for bfcache and state restore, when the submitted\nvalue alone cannot rebuild the control (a combo box submits a code but\nshows a label). Override alongside `formValue()`.",
+              "inheritedFrom": {
+                "name": "FormAssociated",
+                "module": "src/utilities/form-associated-mixin.ts"
+              }
+            },
+            {
+              "kind": "method",
+              "name": "commitFormValue",
+              "return": {
+                "type": {
+                  "text": "void"
+                }
+              },
+              "description": "Commit the value now, from the handler that changed it.",
+              "inheritedFrom": {
+                "name": "FormAssociated",
+                "module": "src/utilities/form-associated-mixin.ts"
+              }
+            },
+            {
+              "kind": "method",
+              "name": "formDisabledCallback",
+              "return": {
+                "type": {
+                  "text": "void"
+                }
+              },
+              "parameters": [
+                {
+                  "name": "disabled",
+                  "type": {
+                    "text": "boolean"
+                  }
+                }
+              ],
+              "inheritedFrom": {
+                "name": "FormAssociated",
+                "module": "src/utilities/form-associated-mixin.ts"
+              }
             }
           ],
           "events": [
@@ -10983,6 +12103,12 @@
               "default": "{}",
               "description": "Translations; unspecified keys fall back to Dutch",
               "fieldName": "translations"
+            }
+          ],
+          "mixins": [
+            {
+              "name": "FormAssociated",
+              "module": "/src/utilities/form-associated-mixin.js"
             }
           ],
           "superclass": {
@@ -11179,15 +12305,6 @@
           "members": [
             {
               "kind": "field",
-              "name": "formAssociated",
-              "type": {
-                "text": "boolean"
-              },
-              "static": true,
-              "default": "true"
-            },
-            {
-              "kind": "field",
               "name": "name",
               "type": {
                 "text": "string"
@@ -11246,29 +12363,26 @@
             },
             {
               "kind": "method",
+              "name": "formValue",
+              "return": {
+                "type": {
+                  "text": "FormValue"
+                }
+              },
+              "description": "The value submitted under `name`; `null` submits nothing. Override.",
+              "inheritedFrom": {
+                "name": "FormAssociated",
+                "module": "src/utilities/form-associated-mixin.ts"
+              }
+            },
+            {
+              "kind": "method",
               "name": "formResetCallback",
               "return": {
                 "type": {
                   "text": "void"
                 }
               }
-            },
-            {
-              "kind": "method",
-              "name": "formDisabledCallback",
-              "return": {
-                "type": {
-                  "text": "void"
-                }
-              },
-              "parameters": [
-                {
-                  "name": "disabled",
-                  "type": {
-                    "text": "boolean"
-                  }
-                }
-              ]
             },
             {
               "kind": "method",
@@ -11315,6 +12429,77 @@
                 }
               ],
               "description": "Delegates focus to the inner native checkbox `<input>`, so consumers can\ncall `switchEl.focus()` without reaching into shadow DOM."
+            },
+            {
+              "kind": "field",
+              "name": "formAssociated",
+              "type": {
+                "text": "boolean"
+              },
+              "static": true,
+              "default": "true",
+              "inheritedFrom": {
+                "name": "FormAssociated",
+                "module": "src/utilities/form-associated-mixin.ts"
+              }
+            },
+            {
+              "kind": "field",
+              "name": "internals",
+              "readonly": true,
+              "inheritedFrom": {
+                "name": "FormAssociated",
+                "module": "src/utilities/form-associated-mixin.ts"
+              }
+            },
+            {
+              "kind": "method",
+              "name": "formState",
+              "return": {
+                "type": {
+                  "text": "FormValue | undefined"
+                }
+              },
+              "description": "Extra state kept for bfcache and state restore, when the submitted\nvalue alone cannot rebuild the control (a combo box submits a code but\nshows a label). Override alongside `formValue()`.",
+              "inheritedFrom": {
+                "name": "FormAssociated",
+                "module": "src/utilities/form-associated-mixin.ts"
+              }
+            },
+            {
+              "kind": "method",
+              "name": "commitFormValue",
+              "return": {
+                "type": {
+                  "text": "void"
+                }
+              },
+              "description": "Commit the value now, from the handler that changed it.",
+              "inheritedFrom": {
+                "name": "FormAssociated",
+                "module": "src/utilities/form-associated-mixin.ts"
+              }
+            },
+            {
+              "kind": "method",
+              "name": "formDisabledCallback",
+              "return": {
+                "type": {
+                  "text": "void"
+                }
+              },
+              "parameters": [
+                {
+                  "name": "disabled",
+                  "type": {
+                    "text": "boolean"
+                  }
+                }
+              ],
+              "inheritedFrom": {
+                "name": "FormAssociated",
+                "module": "src/utilities/form-associated-mixin.ts"
+              }
             }
           ],
           "events": [
@@ -11377,6 +12562,12 @@
               "default": "'on'",
               "fieldName": "value",
               "description": "Value submitted with the form when the switch is on (default: 'on')"
+            }
+          ],
+          "mixins": [
+            {
+              "name": "FormAssociated",
+              "module": "/src/utilities/form-associated-mixin.js"
             }
           ],
           "superclass": {
@@ -11871,7 +13062,7 @@
               }
             }
           ],
-          "description": "The caret rectangle CodeMirror renders for the plain text just before `dom` (an\ninline widget), taken from CodeMirror's own coordsAtPos. A widget's own box would\notherwise make the caret beside it too tall or too short and flip its height with\nthe cursor's arrival direction; measuring the neighbouring text gives the exact\nbody caret for whatever font and line the widget sits on.\n\nWidgets use this in their `coordsAt` to place a stable, text-height caret at their\nedges."
+          "description": "The caret rectangle CodeMirror renders for the plain text just before `dom` (an\ninline widget), taken from CodeMirror's own coordsAtPos. A widget's own box would\notherwise make the caret beside it too tall or too short and flip its height with\nthe cursor's arrival direction; measuring the neighboring text gives the exact\nbody caret for whatever font and line the widget sits on.\n\nWidgets use this in their `coordsAt` to place a stable, text-height caret at their\nedges."
         }
       ],
       "exports": [
@@ -12734,18 +13925,9 @@
       "declarations": [
         {
           "kind": "class",
-          "description": "A hybrid markdown editor built on CodeMirror 6 (via NLDDCodeMirrorElement): the document stays plain markdown text, but formatting is shown inline (bold is bold, headings are larger, links are coloured) while the syntax markers stay visible, only dimmed — the iA Writer / Kirby approach. No WYSIWYG tree, so the data stays portable. Default `variant=\"simple\"` is bare (no frame, no focus ring) for use inside a composition (e.g. a message field) that owns its chrome and focus; the caret is a prominent accent. `variant=\"input-field\"` adds a framed surface + focus ring. `font` is `sans` (default, best for prose) or `mono`. Headless: there is no built-in toolbar. A consumer drives formatting via the command methods (toggleBold/toggleItalic/toggleInlineCode/toggleStrikethrough/ toggleHeading/toggleBulletList/toggleQuote/toggleLink/runCommand to toggle, and setHeading/setList for picker-style \"set\" semantics), reads the active formats with getState(), listens to the nldd-text-editor-state event to render toggle states, and forwards padding clicks with focusFromPoint(). Cmd/Ctrl+B/I/E/K are bound out of the box. Commands keep focus on the editor. An @-mention typeahead (mentionSource) collapses to an atomic token, and a W3C-style annotation overlay (annotations) marks ranges with a dashed underline, light tint and a count badge without touching the underlying text.",
+          "description": "A hybrid markdown editor built on CodeMirror 6 (via NLDDCodeMirrorElement): the document stays plain markdown text, but formatting is shown inline (bold is bold, headings are larger, links are colored) while the syntax markers stay visible, only dimmed — the iA Writer / Kirby approach. No WYSIWYG tree, so the data stays portable. Default `variant=\"simple\"` is bare (no frame, no focus ring) for use inside a composition (e.g. a message field) that owns its chrome and focus; the caret is a prominent accent. `variant=\"input-field\"` adds a framed surface + focus ring. `font` is `sans` (default, best for prose) or `mono`. Headless: there is no built-in toolbar. A consumer drives formatting via the command methods (toggleBold/toggleItalic/toggleInlineCode/toggleStrikethrough/ toggleHeading/toggleBulletList/toggleQuote/toggleLink/runCommand to toggle, and setHeading/setList for picker-style \"set\" semantics), reads the active formats with getState(), listens to the nldd-text-editor-state event to render toggle states, and forwards padding clicks with focusFromPoint(). Cmd/Ctrl+B/I/E/K are bound out of the box. Commands keep focus on the editor. An @-mention typeahead (mentionSource) collapses to an atomic token, and a W3C-style annotation overlay (annotations) marks ranges with a dashed underline, light tint and a count badge without touching the underlying text.",
           "name": "NLDDTextEditor",
           "members": [
-            {
-              "kind": "field",
-              "name": "formAssociated",
-              "type": {
-                "text": "boolean"
-              },
-              "static": true,
-              "default": "true"
-            },
             {
               "kind": "field",
               "name": "shadowRootOptions",
@@ -13098,7 +14280,7 @@
                   "text": "void"
                 }
               },
-              "description": "Drop the undo/redo history, leaving the document untouched. Use after a\nconsumer-driven discard so a later undo can't step back into the\nthrown-away edits. Reconfiguring the history compartment off and back on\nre-initialises it with empty stacks."
+              "description": "Drop the undo/redo history, leaving the document untouched. Use after a\nconsumer-driven discard so a later undo can't step back into the\nthrown-away edits. Reconfiguring the history compartment off and back on\nre-initializes it with empty stacks."
             },
             {
               "kind": "method",
@@ -13187,29 +14369,26 @@
             },
             {
               "kind": "method",
+              "name": "formValue",
+              "return": {
+                "type": {
+                  "text": "FormValue"
+                }
+              },
+              "description": "The value submitted under `name`; `null` submits nothing. Override.",
+              "inheritedFrom": {
+                "name": "FormAssociated",
+                "module": "src/utilities/form-associated-mixin.ts"
+              }
+            },
+            {
+              "kind": "method",
               "name": "formResetCallback",
               "return": {
                 "type": {
                   "text": "void"
                 }
               }
-            },
-            {
-              "kind": "method",
-              "name": "formDisabledCallback",
-              "return": {
-                "type": {
-                  "text": "void"
-                }
-              },
-              "parameters": [
-                {
-                  "name": "disabled",
-                  "type": {
-                    "text": "boolean"
-                  }
-                }
-              ]
             },
             {
               "kind": "method",
@@ -13227,6 +14406,77 @@
                   }
                 }
               ]
+            },
+            {
+              "kind": "field",
+              "name": "formAssociated",
+              "type": {
+                "text": "boolean"
+              },
+              "static": true,
+              "default": "true",
+              "inheritedFrom": {
+                "name": "FormAssociated",
+                "module": "src/utilities/form-associated-mixin.ts"
+              }
+            },
+            {
+              "kind": "field",
+              "name": "internals",
+              "readonly": true,
+              "inheritedFrom": {
+                "name": "FormAssociated",
+                "module": "src/utilities/form-associated-mixin.ts"
+              }
+            },
+            {
+              "kind": "method",
+              "name": "formState",
+              "return": {
+                "type": {
+                  "text": "FormValue | undefined"
+                }
+              },
+              "description": "Extra state kept for bfcache and state restore, when the submitted\nvalue alone cannot rebuild the control (a combo box submits a code but\nshows a label). Override alongside `formValue()`.",
+              "inheritedFrom": {
+                "name": "FormAssociated",
+                "module": "src/utilities/form-associated-mixin.ts"
+              }
+            },
+            {
+              "kind": "method",
+              "name": "commitFormValue",
+              "return": {
+                "type": {
+                  "text": "void"
+                }
+              },
+              "description": "Commit the value now, from the handler that changed it.",
+              "inheritedFrom": {
+                "name": "FormAssociated",
+                "module": "src/utilities/form-associated-mixin.ts"
+              }
+            },
+            {
+              "kind": "method",
+              "name": "formDisabledCallback",
+              "return": {
+                "type": {
+                  "text": "void"
+                }
+              },
+              "parameters": [
+                {
+                  "name": "disabled",
+                  "type": {
+                    "text": "boolean"
+                  }
+                }
+              ],
+              "inheritedFrom": {
+                "name": "FormAssociated",
+                "module": "src/utilities/form-associated-mixin.ts"
+              }
             }
           ],
           "events": [
@@ -13388,6 +14638,12 @@
               "fieldName": "translations"
             }
           ],
+          "mixins": [
+            {
+              "name": "FormAssociated",
+              "module": "/src/utilities/form-associated-mixin.js"
+            }
+          ],
           "superclass": {
             "name": "NLDDCodeMirrorElement",
             "module": "/src/utilities/codemirror/codemirror-element.js"
@@ -13480,15 +14736,6 @@
           "description": "",
           "name": "NLDDTextField",
           "members": [
-            {
-              "kind": "field",
-              "name": "formAssociated",
-              "type": {
-                "text": "boolean"
-              },
-              "static": true,
-              "default": "true"
-            },
             {
               "kind": "field",
               "name": "shadowRootOptions",
@@ -13656,29 +14903,26 @@
             },
             {
               "kind": "method",
+              "name": "formValue",
+              "return": {
+                "type": {
+                  "text": "FormValue"
+                }
+              },
+              "description": "The value submitted under `name`; `null` submits nothing. Override.",
+              "inheritedFrom": {
+                "name": "FormAssociated",
+                "module": "src/utilities/form-associated-mixin.ts"
+              }
+            },
+            {
+              "kind": "method",
               "name": "formResetCallback",
               "return": {
                 "type": {
                   "text": "void"
                 }
               }
-            },
-            {
-              "kind": "method",
-              "name": "formDisabledCallback",
-              "return": {
-                "type": {
-                  "text": "void"
-                }
-              },
-              "parameters": [
-                {
-                  "name": "disabled",
-                  "type": {
-                    "text": "boolean"
-                  }
-                }
-              ]
             },
             {
               "kind": "method",
@@ -13725,6 +14969,77 @@
                 }
               ],
               "description": "Delegates focus to the inner native `<input>`, so consumers can call\n`textFieldEl.focus()` without reaching into shadow DOM."
+            },
+            {
+              "kind": "field",
+              "name": "formAssociated",
+              "type": {
+                "text": "boolean"
+              },
+              "static": true,
+              "default": "true",
+              "inheritedFrom": {
+                "name": "FormAssociated",
+                "module": "src/utilities/form-associated-mixin.ts"
+              }
+            },
+            {
+              "kind": "field",
+              "name": "internals",
+              "readonly": true,
+              "inheritedFrom": {
+                "name": "FormAssociated",
+                "module": "src/utilities/form-associated-mixin.ts"
+              }
+            },
+            {
+              "kind": "method",
+              "name": "formState",
+              "return": {
+                "type": {
+                  "text": "FormValue | undefined"
+                }
+              },
+              "description": "Extra state kept for bfcache and state restore, when the submitted\nvalue alone cannot rebuild the control (a combo box submits a code but\nshows a label). Override alongside `formValue()`.",
+              "inheritedFrom": {
+                "name": "FormAssociated",
+                "module": "src/utilities/form-associated-mixin.ts"
+              }
+            },
+            {
+              "kind": "method",
+              "name": "commitFormValue",
+              "return": {
+                "type": {
+                  "text": "void"
+                }
+              },
+              "description": "Commit the value now, from the handler that changed it.",
+              "inheritedFrom": {
+                "name": "FormAssociated",
+                "module": "src/utilities/form-associated-mixin.ts"
+              }
+            },
+            {
+              "kind": "method",
+              "name": "formDisabledCallback",
+              "return": {
+                "type": {
+                  "text": "void"
+                }
+              },
+              "parameters": [
+                {
+                  "name": "disabled",
+                  "type": {
+                    "text": "boolean"
+                  }
+                }
+              ],
+              "inheritedFrom": {
+                "name": "FormAssociated",
+                "module": "src/utilities/form-associated-mixin.ts"
+              }
             }
           ],
           "events": [
@@ -13883,6 +15198,12 @@
               "fieldName": "width"
             }
           ],
+          "mixins": [
+            {
+              "name": "FormAssociated",
+              "module": "/src/utilities/form-associated-mixin.js"
+            }
+          ],
           "superclass": {
             "name": "LitElement",
             "package": "lit"
@@ -13970,13 +15291,13 @@
             },
             {
               "kind": "field",
-              "name": "accessibleLabelledBy",
+              "name": "accessibleLabeledBy",
               "type": {
                 "text": "string"
               },
               "default": "''",
               "description": "ID of an external label element forwarded as aria-labelledby to the group host.",
-              "attribute": "accessible-labelled-by"
+              "attribute": "accessible-labeled-by"
             }
           ],
           "attributes": [
@@ -14026,13 +15347,13 @@
               "fieldName": "accessibleLabel"
             },
             {
-              "name": "accessible-labelled-by",
+              "name": "accessible-labeled-by",
               "type": {
                 "text": "string"
               },
               "default": "''",
               "description": "ID of an external label element (aria-labelledby)",
-              "fieldName": "accessibleLabelledBy"
+              "fieldName": "accessibleLabeledBy"
             }
           ],
           "superclass": {
@@ -14083,15 +15404,6 @@
           "description": "A selectable button that toggles between selected and unselected. Available as a button (aria-pressed), checkbox, or radio input.",
           "name": "NLDDToggleButton",
           "members": [
-            {
-              "kind": "field",
-              "name": "formAssociated",
-              "type": {
-                "text": "boolean"
-              },
-              "static": true,
-              "default": "true"
-            },
             {
               "kind": "field",
               "name": "type",
@@ -14193,29 +15505,26 @@
             },
             {
               "kind": "method",
+              "name": "formValue",
+              "return": {
+                "type": {
+                  "text": "FormValue"
+                }
+              },
+              "description": "The value submitted under `name`; `null` submits nothing. Override.",
+              "inheritedFrom": {
+                "name": "FormAssociated",
+                "module": "src/utilities/form-associated-mixin.ts"
+              }
+            },
+            {
+              "kind": "method",
               "name": "formResetCallback",
               "return": {
                 "type": {
                   "text": "void"
                 }
               }
-            },
-            {
-              "kind": "method",
-              "name": "formDisabledCallback",
-              "return": {
-                "type": {
-                  "text": "void"
-                }
-              },
-              "parameters": [
-                {
-                  "name": "disabled",
-                  "type": {
-                    "text": "boolean"
-                  }
-                }
-              ]
             },
             {
               "kind": "method",
@@ -14243,6 +15552,77 @@
                 }
               },
               "description": "Toggle selected state programmatically.\nFor type=\"radio\", the button can only be selected, never deselected (native behavior)."
+            },
+            {
+              "kind": "field",
+              "name": "formAssociated",
+              "type": {
+                "text": "boolean"
+              },
+              "static": true,
+              "default": "true",
+              "inheritedFrom": {
+                "name": "FormAssociated",
+                "module": "src/utilities/form-associated-mixin.ts"
+              }
+            },
+            {
+              "kind": "field",
+              "name": "internals",
+              "readonly": true,
+              "inheritedFrom": {
+                "name": "FormAssociated",
+                "module": "src/utilities/form-associated-mixin.ts"
+              }
+            },
+            {
+              "kind": "method",
+              "name": "formState",
+              "return": {
+                "type": {
+                  "text": "FormValue | undefined"
+                }
+              },
+              "description": "Extra state kept for bfcache and state restore, when the submitted\nvalue alone cannot rebuild the control (a combo box submits a code but\nshows a label). Override alongside `formValue()`.",
+              "inheritedFrom": {
+                "name": "FormAssociated",
+                "module": "src/utilities/form-associated-mixin.ts"
+              }
+            },
+            {
+              "kind": "method",
+              "name": "commitFormValue",
+              "return": {
+                "type": {
+                  "text": "void"
+                }
+              },
+              "description": "Commit the value now, from the handler that changed it.",
+              "inheritedFrom": {
+                "name": "FormAssociated",
+                "module": "src/utilities/form-associated-mixin.ts"
+              }
+            },
+            {
+              "kind": "method",
+              "name": "formDisabledCallback",
+              "return": {
+                "type": {
+                  "text": "void"
+                }
+              },
+              "parameters": [
+                {
+                  "name": "disabled",
+                  "type": {
+                    "text": "boolean"
+                  }
+                }
+              ],
+              "inheritedFrom": {
+                "name": "FormAssociated",
+                "module": "src/utilities/form-associated-mixin.ts"
+              }
             }
           ],
           "events": [
@@ -14343,6 +15723,12 @@
               "description": "Accessible label; required for icon-only usage"
             }
           ],
+          "mixins": [
+            {
+              "name": "FormAssociated",
+              "module": "/src/utilities/form-associated-mixin.js"
+            }
+          ],
           "superclass": {
             "name": "LitElement",
             "package": "lit"
@@ -14385,15 +15771,6 @@
           "description": "A multi-select input that looks like a normal input field: chosen values show as dismissible tokens in a wrapping row, followed by an inline text input that stretches to fill the remaining space and wraps to a new line (growing the field) when it no longer fits. Options are supplied as a slotted nldd-menu, exactly like nldd-combo-box; the menu filters as you type, with a chevron picker button, arrow-key roving across the tokens and ElementInternals form participation.",
           "name": "NLDDTokenField",
           "members": [
-            {
-              "kind": "field",
-              "name": "formAssociated",
-              "type": {
-                "text": "boolean"
-              },
-              "static": true,
-              "default": "true"
-            },
             {
               "kind": "field",
               "name": "values",
@@ -14542,29 +15919,40 @@
             },
             {
               "kind": "method",
+              "name": "formValue",
+              "return": {
+                "type": {
+                  "text": "FormValue"
+                }
+              },
+              "description": "Submit one entry per value under `name` (like a multi-select), so a form\nreceives `name=value` repeated for each token.",
+              "inheritedFrom": {
+                "name": "FormAssociated",
+                "module": "src/utilities/form-associated-mixin.ts"
+              }
+            },
+            {
+              "kind": "method",
+              "name": "commitFormValue",
+              "return": {
+                "type": {
+                  "text": "void"
+                }
+              },
+              "description": "Commit the value now, from the handler that changed it.",
+              "inheritedFrom": {
+                "name": "FormAssociated",
+                "module": "src/utilities/form-associated-mixin.ts"
+              }
+            },
+            {
+              "kind": "method",
               "name": "formResetCallback",
               "return": {
                 "type": {
                   "text": "void"
                 }
               }
-            },
-            {
-              "kind": "method",
-              "name": "formDisabledCallback",
-              "return": {
-                "type": {
-                  "text": "void"
-                }
-              },
-              "parameters": [
-                {
-                  "name": "disabled",
-                  "type": {
-                    "text": "boolean"
-                  }
-                }
-              ]
             },
             {
               "kind": "method",
@@ -14584,6 +15972,63 @@
                 }
               ],
               "description": "Programmatic focus goes to the inner input, or — when it is hidden (all values\nin, no custom, no options left) — to the token holding the roving tabindex."
+            },
+            {
+              "kind": "field",
+              "name": "formAssociated",
+              "type": {
+                "text": "boolean"
+              },
+              "static": true,
+              "default": "true",
+              "inheritedFrom": {
+                "name": "FormAssociated",
+                "module": "src/utilities/form-associated-mixin.ts"
+              }
+            },
+            {
+              "kind": "field",
+              "name": "internals",
+              "readonly": true,
+              "inheritedFrom": {
+                "name": "FormAssociated",
+                "module": "src/utilities/form-associated-mixin.ts"
+              }
+            },
+            {
+              "kind": "method",
+              "name": "formState",
+              "return": {
+                "type": {
+                  "text": "FormValue | undefined"
+                }
+              },
+              "description": "Extra state kept for bfcache and state restore, when the submitted\nvalue alone cannot rebuild the control (a combo box submits a code but\nshows a label). Override alongside `formValue()`.",
+              "inheritedFrom": {
+                "name": "FormAssociated",
+                "module": "src/utilities/form-associated-mixin.ts"
+              }
+            },
+            {
+              "kind": "method",
+              "name": "formDisabledCallback",
+              "return": {
+                "type": {
+                  "text": "void"
+                }
+              },
+              "parameters": [
+                {
+                  "name": "disabled",
+                  "type": {
+                    "text": "boolean"
+                  }
+                }
+              ],
+              "inheritedFrom": {
+                "name": "FormAssociated",
+                "module": "src/utilities/form-associated-mixin.ts"
+              }
             }
           ],
           "events": [
@@ -14734,6 +16179,12 @@
               "default": "{}",
               "fieldName": "translations",
               "description": "Override translation keys; unset keys fall back to Dutch"
+            }
+          ],
+          "mixins": [
+            {
+              "name": "FormAssociated",
+              "module": "/src/utilities/form-associated-mixin.js"
             }
           ],
           "superclass": {
@@ -14907,7 +16358,7 @@
       "declarations": [
         {
           "kind": "class",
-          "description": "Een visueel afgebakende kaart met optionele header, body en footer secties. De kaart heeft een elevated look als standaard. Padding wordt overgelaten aan geneste containers. Met `href` wordt de hele kaart een link (een overlay-anchor over de kaart). Geneste interactieve content (bijv. footer-knoppen) moet je erboven tillen met `position: relative; z-index: 1` om klikbaar te blijven.",
+          "description": "Een visueel afgebakende kaart met optionele header, body en footer secties. De kaart heeft een elevated look als standaard. Padding wordt overgelaten aan geneste containers. Met `href` wordt de hele kaart een link (een overlay-anchor over de kaart); met `button` een knop (een overlay-button die een gewone, composed `click` geeft — een klik-listener of htmx-attribuut op de kaart zelf werkt dus direct, en Enter/Space doen het native). `href` wint als beide gezet zijn. Geneste interactieve content (bijv. footer-knoppen) moet je erboven tillen met `position: relative; z-index: 1` om klikbaar te blijven.",
           "name": "NLDDCard",
           "members": [
             {
@@ -14927,6 +16378,17 @@
               "default": "''",
               "description": "When set, the whole card becomes one link to this URL via an overlay anchor.\nNested interactive content must be raised above it (position: relative;\nz-index: 1) to stay clickable.",
               "attribute": "href",
+              "reflects": true
+            },
+            {
+              "kind": "field",
+              "name": "button",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Makes the whole card a button via an overlay `<button>`: activation (click,\nEnter, Space) surfaces as a composed `click` on the host, so a listener or\nhtmx attribute on the card just works. Ignored when `href` is set — a card\nis one action, and a link outranks a button.",
+              "attribute": "button",
               "reflects": true
             },
             {
@@ -14968,7 +16430,7 @@
                 "text": "string | undefined"
               },
               "fieldName": "accessibleLabel",
-              "description": "Toegankelijke naam van de kaart; bij `href` benoemt deze de link, anders de kaart-region"
+              "description": "Toegankelijke naam van de kaart; bij `href`/`button` benoemt deze de link of knop, anders de kaart-region"
             },
             {
               "name": "href",
@@ -14978,6 +16440,15 @@
               "default": "''",
               "description": "Maakt de hele kaart een link naar deze URL (leeg = geen link)",
               "fieldName": "href"
+            },
+            {
+              "name": "button",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Maakt de hele kaart een knop; genegeerd wanneer `href` is gezet",
+              "fieldName": "button"
             },
             {
               "name": "target",
@@ -18349,6 +19820,16 @@
             },
             {
               "kind": "field",
+              "name": "translations",
+              "type": {
+                "text": "Partial<typeof nlddSidebarSectionTranslations>"
+              },
+              "default": "{}",
+              "description": "Override translation keys (sheet title fallback and dismiss label); unset keys fall back to Dutch.",
+              "attribute": "translations"
+            },
+            {
+              "kind": "field",
               "name": "collapsed",
               "type": {
                 "text": "boolean"
@@ -18644,6 +20125,15 @@
               "default": "false",
               "fieldName": "noCollapse",
               "description": "Opt out of the sheet: a narrow section stacks the sidebar above the main instead of collapsing. `collapsed` then stays false."
+            },
+            {
+              "name": "translations",
+              "type": {
+                "text": "Partial<typeof nlddSidebarSectionTranslations>"
+              },
+              "default": "{}",
+              "description": "Override translation keys (sheet title fallback, dismiss label); unset keys fall back to Dutch.",
+              "fieldName": "translations"
             },
             {
               "name": "collapsed",
@@ -19859,7 +21349,7 @@
               },
               "default": "'inherit'",
               "fieldName": "background",
-              "description": "Use a grey background instead of white"
+              "description": "Use a gray background instead of white"
             }
           ],
           "superclass": {
@@ -20153,7 +21643,7 @@
               },
               "default": "false",
               "fieldName": "smFullHeight",
-              "description": "Op sm-viewport (waar de popover als bottom-sheet rendert) de volledige beschikbare hoogte vullen i.p.v. te krimpen naar content. Geen effect op md+ (anchored modus). Opt-in voor content-heavy use cases zoals zoek- resultaten of lange detail-views; volgt Apple/Material conventie van content- sized als default."
+              "description": "Op sm-viewport (waar de popover als bottom-sheet rendert) de volledige beschikbare hoogte vullen i.p.v. te krimpen naar content. Geen effect op md+ (anchored modus). Opt-in voor content-heavy use cases zoals zoekresultaten of lange detail-views; volgt Apple/Material conventie van content-sized als default."
             },
             {
               "name": "accessible-label",
@@ -21226,6 +22716,16 @@
             },
             {
               "kind": "field",
+              "name": "noLightDismiss",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "attribute": "no-light-dismiss",
+              "reflects": true
+            },
+            {
+              "kind": "field",
               "name": "accessibleLabel",
               "type": {
                 "text": "string"
@@ -21355,6 +22855,15 @@
               "default": "false",
               "fieldName": "modeless",
               "description": "Niet-modaal (geen backdrop of focusvergrendeling); standaard is het venster modaal"
+            },
+            {
+              "name": "no-light-dismiss",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "fieldName": "noLightDismiss",
+              "description": "Een klik op de backdrop sluit het venster niet. Voor vensters waar per ongeluk wegklikken werk kost: een wizard, een formulier met ingevulde velden. Escape en de dismiss-knop blijven werken."
             },
             {
               "name": "accessible-label",
@@ -21880,7 +23389,7 @@
       "declarations": [
         {
           "kind": "class",
-          "description": "A cell that displays a drag handle for reorderable list items. Always vertically centered and sized to fit the handle. To enable drag-to-reorder, add the `reorderable-only` attribute to this element. This attribute is required for `nldd-list` to detect the drag handle in the composed event path and activate pointer and keyboard drag mode: ```html <nldd-list reorderable> <nldd-list-item> <nldd-drag-handle-cell slot=\"start\" reorderable-only></nldd-drag-handle-cell> <nldd-text-cell text=\"Item\"></nldd-text-cell> </nldd-list-item> </nldd-list> ``` Without `reorderable-only`, pointer and keyboard drag will never trigger.",
+          "description": "A cell that displays a drag handle for reorderable list items. Always vertically centered and sized to fit the handle. To enable drag-to-reorder, add the `reorderable-only` attribute to this element. This attribute is required for `nldd-list` to detect the drag handle in the composed event path and activate pointer and keyboard drag mode: ```html <nldd-list reorderable> <nldd-list-item> <nldd-drag-handle-cell reorderable-only></nldd-drag-handle-cell> <nldd-text-cell text=\"Item\"></nldd-text-cell> </nldd-list-item> </nldd-list> ``` Without `reorderable-only`, pointer and keyboard drag will never trigger.",
           "name": "NLDDDragHandleCell",
           "members": [
             {
@@ -22591,48 +24100,152 @@
       "declarations": [
         {
           "kind": "class",
-          "description": "A cell component for displaying timeline track indicators in lists. Shows a vertical line with a dot indicating timeline position and state. The line extends into the surrounding list-item's block padding via the `--context-list-item-padding-block` cascade so consecutive steps connect without gaps.",
+          "description": "A cell component for displaying timeline track indicators in lists. Shows a vertical line with a dot indicating timeline position and state. The row's block padding belongs to the cell itself (via `--context-cell-padding-block`), so the line spans the cell's own box edge to edge and consecutive steps connect without gaps. Standaard is de cel een kaal spoor: een lijn met een stip per rij, voor een tijdlijn van gebeurtenissen. Met `variant=\"step\"` wordt de stip groot genoeg voor een cijfer of icoon en heb je een stappenlijst onder elkaar, de verticale tegenhanger van `nldd-step-indicator`. De maat hoort bij de variant en niet bij de inhoud: elke stip in een lijst is even groot, anders verspringt het spoor.",
           "name": "NLDDTimelineTrackCell",
           "members": [
             {
               "kind": "field",
-              "name": "step",
+              "name": "status",
               "type": {
-                "text": "Step"
+                "text": "Status"
               },
               "default": "'past'",
-              "attribute": "step",
+              "attribute": "status",
               "reflects": true
             },
             {
               "kind": "field",
-              "name": "child",
+              "name": "variant",
               "type": {
-                "text": "Child"
+                "text": "Variant"
+              },
+              "default": "'dot'",
+              "attribute": "variant",
+              "reflects": true
+            },
+            {
+              "kind": "field",
+              "name": "minor",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "A step below a main step. A meaning, not a measurement: the cell picks the\nsize, so the scale can change later without every consumer following. Its\ndot stays empty -- text, icon and slotted content are ignored.",
+              "attribute": "minor",
+              "reflects": true
+            },
+            {
+              "kind": "field",
+              "name": "direction",
+              "type": {
+                "text": "Direction"
+              },
+              "default": "'down'",
+              "description": "Which way the timeline moves forward. The cell only knows its own step, so\nit cannot tell which neighbor came first: with `up` (newest at the top)\nthe traveled half of the track is the one below the marker. Only the\ncurrent step has a half-and-half track, so this is the only row where it\nchanges anything.",
+              "attribute": "direction",
+              "reflects": true
+            },
+            {
+              "kind": "field",
+              "name": "position",
+              "type": {
+                "text": "Position"
               },
               "default": "'between'",
-              "attribute": "child",
+              "attribute": "position",
               "reflects": true
+            },
+            {
+              "kind": "field",
+              "name": "text",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "attribute": "text"
+            },
+            {
+              "kind": "field",
+              "name": "icon",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "attribute": "icon"
+            },
+            {
+              "kind": "field",
+              "name": "showsContent",
+              "type": {
+                "text": "boolean"
+              },
+              "description": "Only a step marker has room to read a number in, and a minor row is smaller\nstill -- besides, a number would claim it is a step of its own.",
+              "readonly": true
             }
           ],
           "attributes": [
             {
-              "name": "step",
+              "name": "status",
               "type": {
-                "text": "Step"
+                "text": "Status"
               },
               "default": "'past'",
-              "fieldName": "step",
-              "description": "Timeline step state (default: 'past')"
+              "fieldName": "status",
+              "description": "Status van deze stap (standaard 'past'); dezelfde waarden als `nldd-step-indicator-item`. `none` tekent alleen de lijn, zonder stip"
             },
             {
-              "name": "child",
+              "name": "variant",
               "type": {
-                "text": "Child"
+                "text": "Variant"
+              },
+              "default": "'dot'",
+              "fieldName": "variant",
+              "description": "Wat deze rij is: een `dot` (standaard) op een tijdlijn van gebeurtenissen, stip van 16px, of een `step` in een stappenlijst, stip van 24px waar een cijfer of icoon in past"
+            },
+            {
+              "name": "minor",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Deze rij hoort onder de vorige: een kleinere stip in dezelfde baan, dus het spoor loopt recht door en er springt niets in. De stip blijft leeg (een cijfer of icoon past er niet in en zou de rij tot een eigen stap maken); de hiërarchie zet je verder met de rij zelf, bijvoorbeeld een `nldd-text-cell` in plaats van een `nldd-title-cell`",
+              "fieldName": "minor"
+            },
+            {
+              "name": "direction",
+              "type": {
+                "text": "Direction"
+              },
+              "default": "'down'",
+              "description": "Richting waarin de tijdlijn vooruit loopt: `down` (standaard) zet het verleden boven, `up` eronder. Alleen de huidige stap heeft een half spoor, dus alleen daar heeft dit effect",
+              "fieldName": "direction"
+            },
+            {
+              "name": "position",
+              "type": {
+                "text": "Position"
               },
               "default": "'between'",
-              "fieldName": "child",
-              "description": "Position in timeline (default: 'between')"
+              "fieldName": "position",
+              "description": "Plek in de reeks (standaard 'between'): bepaalt of de lijn boven, onder of aan beide kanten van de stip doorloopt"
+            },
+            {
+              "name": "text",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "fieldName": "text",
+              "description": "Cijfer of korte tekst in de stip"
+            },
+            {
+              "name": "icon",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "fieldName": "icon",
+              "description": "Icoonnaam in de stip; wint van `text`"
             }
           ],
           "superclass": {
@@ -22640,7 +24253,13 @@
             "package": "lit"
           },
           "tagName": "nldd-timeline-track-cell",
-          "customElement": true
+          "customElement": true,
+          "slots": [
+            {
+              "name": "",
+              "description": "Eigen inhoud in de stip (alternatief voor `text` en `icon`)"
+            }
+          ]
         }
       ],
       "exports": [
@@ -23030,24 +24649,311 @@
     },
     {
       "kind": "javascript-module",
+      "path": "src/components/lists-and-tables/list-item-action/list-item-action.ts",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "A segmented action inside an `nldd-list-item`: it groups a run of cells and makes just that run clickable. Use it when a row needs more than one action — a tree row whose chevron expands while the label toggles a checkbox, or a row that navigates with a separate button beside it. Slot it wherever cells go (`start`, default, `end`). The default slot sits above the row divider, `start` and `end` sit outside it — so putting every action in the default slot gives you a divider that runs the full width. A row is EITHER row-level interactive (`href` / `button` / `checkbox` on the `nldd-list-item`) OR segmented (one or more of these). Both at once nests a control inside a control, which is invalid HTML; the item DEV-warns. Unlike the row-wide action this does not bleed outward: a segmented action sits between siblings, so an outward inset would overlap them. Widen the hit area with spacer cells INSIDE the segmented action — that space then belongs to the target. A segmented action never drops below the row's control size, so an icon-only one still meets the WCAG 2.5.8 target size. In a `type=\"listbox\"` list the segmented action renders as a plain container (no control, not focusable) and DEV-warns: an `option` may not contain interactive descendants. The cells render unchanged, so nothing shifts.",
+          "name": "NLDDListItemAction",
+          "slots": [
+            {
+              "name": "",
+              "description": "The cells that belong to this action"
+            }
+          ],
+          "members": [
+            {
+              "kind": "field",
+              "name": "button",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "attribute": "button",
+              "reflects": true
+            },
+            {
+              "kind": "field",
+              "name": "href",
+              "type": {
+                "text": "string | undefined"
+              },
+              "attribute": "href",
+              "reflects": true
+            },
+            {
+              "kind": "field",
+              "name": "target",
+              "type": {
+                "text": "string | undefined"
+              },
+              "attribute": "target",
+              "reflects": true
+            },
+            {
+              "kind": "field",
+              "name": "rel",
+              "type": {
+                "text": "string | undefined"
+              },
+              "attribute": "rel",
+              "reflects": true
+            },
+            {
+              "kind": "field",
+              "name": "checkbox",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "attribute": "checkbox",
+              "reflects": true
+            },
+            {
+              "kind": "field",
+              "name": "checked",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "attribute": "checked",
+              "reflects": true
+            },
+            {
+              "kind": "field",
+              "name": "expanded",
+              "type": {
+                "text": "boolean | undefined"
+              },
+              "description": "Undefined (attribute absent) means \"discloses nothing\" — no aria-expanded is emitted.",
+              "attribute": "expanded",
+              "reflects": true
+            },
+            {
+              "kind": "field",
+              "name": "disclosure",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Marks this action as the row's disclosure control: it takes `aria-expanded`\nfrom the parent item's `expanded` instead of its own. Use it on a tree row's\nchevron, so the open/closed state is written once — on the row, where it also\ndrives the children group — rather than kept in step in two places.\n\nA slotted `nldd-icon-cell` turns a quarter with that state, so a chevron\npoints down while the row is open without any consumer CSS.",
+              "attribute": "disclosure",
+              "reflects": true
+            },
+            {
+              "kind": "field",
+              "name": "current",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "attribute": "current",
+              "reflects": true
+            },
+            {
+              "kind": "field",
+              "name": "disabled",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "attribute": "disabled",
+              "reflects": true
+            },
+            {
+              "kind": "field",
+              "name": "width",
+              "type": {
+                "text": "ListItemActionWidth"
+              },
+              "default": "'fit-content'",
+              "attribute": "width",
+              "reflects": true
+            },
+            {
+              "kind": "field",
+              "name": "accessibleLabel",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "attribute": "accessible-label"
+            },
+            {
+              "kind": "method",
+              "name": "focus",
+              "return": {
+                "type": {
+                  "text": "void"
+                }
+              },
+              "parameters": [
+                {
+                  "name": "options",
+                  "optional": true,
+                  "type": {
+                    "text": "FocusOptions"
+                  }
+                }
+              ],
+              "description": "Delegates focus to the inner control so consumers needn't reach into shadow DOM."
+            }
+          ],
+          "events": [
+            {
+              "name": "change",
+              "description": "On a `checkbox` action after it toggles; detail: { checked: boolean } *"
+            }
+          ],
+          "attributes": [
+            {
+              "type": {
+                "text": "boolean"
+              },
+              "description": "Renders the segmented action as a `<button>`; ignored when `href` is set",
+              "name": "button",
+              "default": "false",
+              "fieldName": "button"
+            },
+            {
+              "type": {
+                "text": "string | undefined"
+              },
+              "description": "Renders the segmented action as an `<a>` with this URL; wins over `button` and `checkbox`",
+              "name": "href",
+              "fieldName": "href"
+            },
+            {
+              "type": {
+                "text": "string | undefined"
+              },
+              "description": "Link target forwarded to the `<a>`; only applies with `href`",
+              "name": "target",
+              "fieldName": "target"
+            },
+            {
+              "type": {
+                "text": "string | undefined"
+              },
+              "description": "Link rel forwarded to the `<a>`; only applies with `href`",
+              "name": "rel",
+              "fieldName": "rel"
+            },
+            {
+              "type": {
+                "text": "boolean"
+              },
+              "description": "Makes the segmented action a `role=\"checkbox\"` control; ignored when `href` is set",
+              "name": "checkbox",
+              "default": "false",
+              "fieldName": "checkbox"
+            },
+            {
+              "type": {
+                "text": "boolean"
+              },
+              "description": "Checked state of a `checkbox` action; it toggles on activation",
+              "name": "checked",
+              "default": "false",
+              "fieldName": "checked"
+            },
+            {
+              "type": {
+                "text": "boolean | undefined"
+              },
+              "description": "Disclosure state, reflected as `aria-expanded` on the control. Set it on the segmented action that opens something (e.g. a tree row's chevron). Leave it off entirely when the segmented action discloses nothing — an absent attribute emits no aria-expanded.",
+              "name": "expanded",
+              "fieldName": "expanded"
+            },
+            {
+              "type": {
+                "text": "boolean"
+              },
+              "description": "Marks the segmented action as the row's disclosure control: `aria-expanded` comes from the parent item's `expanded`, so the state lives in one place. A slotted `nldd-icon-cell` rotates a quarter turn while the row is open",
+              "name": "disclosure",
+              "default": "false",
+              "fieldName": "disclosure"
+            },
+            {
+              "type": {
+                "text": "boolean"
+              },
+              "description": "Marks the segmented action as the current page (`aria-current=\"page\"`)",
+              "name": "current",
+              "default": "false",
+              "fieldName": "current"
+            },
+            {
+              "type": {
+                "text": "boolean"
+              },
+              "description": "Disabled state; only applies to button and checkbox segmented actions",
+              "name": "disabled",
+              "default": "false",
+              "fieldName": "disabled"
+            },
+            {
+              "type": {
+                "text": "ListItemActionWidth"
+              },
+              "description": "`full` lets the segmented action grow to fill the row (default: 'fit-content')",
+              "name": "width",
+              "default": "'fit-content'",
+              "fieldName": "width"
+            },
+            {
+              "type": {
+                "text": "string"
+              },
+              "description": "Accessible name for the control. Set it when the segmented action holds only an icon, or when the cell text does not describe the action.",
+              "name": "accessible-label",
+              "default": "''",
+              "fieldName": "accessibleLabel"
+            }
+          ],
+          "superclass": {
+            "name": "LitElement",
+            "package": "lit"
+          },
+          "tagName": "nldd-list-item-action",
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "NLDDListItemAction",
+          "declaration": {
+            "name": "NLDDListItemAction",
+            "module": "src/components/lists-and-tables/list-item-action/list-item-action.ts"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "nldd-list-item-action",
+          "declaration": {
+            "name": "NLDDListItemAction",
+            "module": "src/components/lists-and-tables/list-item-action/list-item-action.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
       "path": "src/components/lists-and-tables/list-item/list-item.ts",
       "declarations": [
         {
           "kind": "class",
-          "description": "A row within an `nldd-list`, providing layout for start, main and end areas. Renders as a link when `href` is set, as a button when `button` is set, or as a plain container otherwise. When it renders as a link, `target` and `rel` are forwarded to the inner `<a>` (e.g. `target=\"_blank\" rel=\"noopener noreferrer\"`). With `target=\"_blank\"` the item also injects a visually hidden \"opens in new tab\" announcement for assistive technology (WCAG 2.1 SC 3.2.2). The item synchronises its ARIA with its parent `nldd-list`'s `type`: - `list` parent → `role=\"listitem\"` - `navigation` parent → `role=\"listitem\"` + `aria-current=\"page\"` on the inner `<a>` / `<button>` when `selected` - `listbox` parent → `role=\"option\"` + `aria-selected` reflecting `selected`. The list points its search input's `aria-activedescendant` at the active option via `_highlighted` (separate from `selected`).",
+          "description": "A row within an `nldd-list`. Renders as a link when `href` is set, as a checkbox when `checkbox` is set, as a button when `button` is set, or as a plain container otherwise. All cells and action segmented actions share one flat slot, in source order. Two rules govern every row: 1. State fills always paint the WIDENED row geometry — the row box extended by the indicator inline inset on both sides — whether or not the row is interactive. Paint never differs between a selected plain row and a selected interactive row. 2. The widened strip belongs to the ROW, never to a segment. A row with any action (its own `href`/`button`/`checkbox`, or a slotted segment) pulls itself outward (`is-interactive` host class → negative inline margin) and pads the row block back by the same amount, so content stays on the grid. A row-wide action owns that padding itself, making the whole widened box one hit area; slotted segmented actions stay in the grid, so their footprint is position-independent and tree columns line up at any depth. The divider spans the content width by default. Mark a cell with `divider-start` and/or `divider-end` to run it from that cell's start edge to that cell's end edge instead (e.g. starting after an avatar). Multiple markers resolve as the union: first `divider-start` through last `divider-end`. A start past the last end is an authoring error — the item DEV-warns and falls back to the full content width. A branch row can disclose its children in two ways: a dedicated `nldd-list-item-action[disclosure]` segment (only the chevron is clickable), or the row itself as the control (`button` + `expanded`, the whole row toggles). In the second case, mark the chevron's `nldd-icon-cell` with `disclosure` and the row turns it with `expanded` — the same affordance, without having to trade a clickable row for a turning chevron. `checkbox` makes the WHOLE row the control: the inner action becomes a `role=\"checkbox\"` button carrying `aria-checked`, it toggles `checked` on activation and fires `change`. Slot a visual `nldd-checkbox` (or any glyph) before the text and mark it `aria-hidden` + non-focusable — the row already conveys role and state, and a second focusable control would double the tab stops. Do NOT nest a real `<input type=\"checkbox\">` in the action: interactive content inside a `<button>` is invalid HTML and AT announces the button, not the checked state. A `<label>` variant is not offered for the same reason it cannot work — label-to-input association walks the DOM tree, and a slotted input is not a descendant of a label in the shadow root. When it renders as a link, `target` and `rel` are forwarded to the inner `<a>` (e.g. `target=\"_blank\" rel=\"noopener noreferrer\"`). With `target=\"_blank\"` the item also injects a visually hidden \"opens in new tab\" announcement for assistive technology (WCAG 2.1 SC 3.2.2). The item synchronises its ARIA with its parent `nldd-list`'s `type`: - `list` parent → `role=\"listitem\"` - `navigation` parent → `role=\"listitem\"` + `aria-current=\"page\"` on the inner `<a>` / `<button>` when `selected` - `listbox` parent → `role=\"option\"` + `aria-selected` reflecting `selected`. The list points its search input's `aria-activedescendant` at the active option via `_highlighted` (separate from `selected`).",
           "name": "NLDDListItem",
           "slots": [
             {
               "name": "",
-              "description": "Main content area"
+              "description": "Cells and action segmented actions, in source order"
             },
             {
-              "name": "start",
-              "description": "Content at the start of the row"
-            },
-            {
-              "name": "end",
-              "description": "Content at the end of the row"
+              "name": "children",
+              "description": "Child rows of a branch in an `nldd-list type=\"tree\"`. Rendered as a `role=\"group\"` below the row, hidden while `expanded` is false. The nesting IS the hierarchy, so aria-level / -posinset / -setsize are derived, not authored. The group has no styling of its own: repeat a spacer-cell per level to indent, or show depth some other way."
             }
           ],
           "members": [
@@ -23080,6 +24986,38 @@
               "default": "false",
               "description": "When set, renders the item as a button; ignored when href is set.",
               "attribute": "button",
+              "reflects": true
+            },
+            {
+              "kind": "field",
+              "name": "checkbox",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "When set, the whole row is the checkbox control. Ignored when href is set.",
+              "attribute": "checkbox",
+              "reflects": true
+            },
+            {
+              "kind": "field",
+              "name": "checked",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Checked state of a `checkbox` row. Toggled by the item on activation.",
+              "attribute": "checked",
+              "reflects": true
+            },
+            {
+              "kind": "field",
+              "name": "expanded",
+              "type": {
+                "text": "boolean | undefined"
+              },
+              "description": "Disclosure state of a row that opens something (a tree row's children, a\ndetails panel). Reflected as `aria-expanded` on the row's own control —\n`listitem` does not support the property, a `<button>` / `<a>` does. Leave\nthe attribute off entirely when the row discloses nothing.",
+              "attribute": "expanded",
               "reflects": true
             },
             {
@@ -23124,6 +25062,15 @@
               "reflects": true
             },
             {
+              "kind": "field",
+              "name": "childRows",
+              "type": {
+                "text": "NLDDListItem[]"
+              },
+              "description": "Nested rows sit in this item's `children` slot, not the list's, so a plain\n`querySelector` from the list walks past them.",
+              "readonly": true
+            },
+            {
               "kind": "method",
               "name": "focus",
               "return": {
@@ -23156,12 +25103,18 @@
               }
             }
           ],
+          "events": [
+            {
+              "name": "change",
+              "description": "On a `checkbox` row after it toggles; detail: { checked: boolean } * @attr {string} href - Renders the item as an `<a>` with this URL. Takes precedence over `button`; without either the item is a plain container with no action."
+            }
+          ],
           "attributes": [
             {
               "type": {
                 "text": "ListItemSize"
               },
-              "description": "Row size (default: 'md')",
+              "description": "Row size (default: 'md'). Pushed onto the cells whose `size` means the same scale (nldd-text-cell, nldd-drag-handle-cell), so it is written once per row instead of once per cell. A size set on the cell itself wins. Cells where `size` means something else — pixels on nldd-icon-cell / nldd-spacer-cell, a heading scale on nldd-title-cell — are left alone.",
               "name": "size",
               "default": "'md'",
               "fieldName": "size"
@@ -23186,11 +25139,29 @@
             },
             {
               "type": {
-                "text": "string | undefined"
+                "text": "boolean"
               },
-              "description": "Renders the item as an `<a>` with this URL. Takes precedence over `button`; without either the item is a plain container with no action.",
-              "name": "href",
-              "fieldName": "href"
+              "description": "Makes the whole row a `role=\"checkbox\"` control; ignored when `href` is set",
+              "name": "checkbox",
+              "default": "false",
+              "fieldName": "checkbox"
+            },
+            {
+              "type": {
+                "text": "boolean"
+              },
+              "description": "Checked state of a `checkbox` row; the item toggles it on activation",
+              "name": "checked",
+              "default": "false",
+              "fieldName": "checked"
+            },
+            {
+              "type": {
+                "text": "boolean | undefined"
+              },
+              "description": "Disclosure state. Drives the `children` group's visibility AND supplies `aria-expanded` — to the row's own control when the row is interactive, or to the segmented action marked `disclosure`. Written once either way; the item DEV-warns when there is nowhere for it to live.",
+              "name": "expanded",
+              "fieldName": "expanded"
             },
             {
               "type": {
@@ -23216,6 +25187,14 @@
               "name": "reorderable",
               "default": "false",
               "fieldName": "reorderable"
+            },
+            {
+              "name": "href",
+              "type": {
+                "text": "string | undefined"
+              },
+              "description": "When set, renders the item as a link.",
+              "fieldName": "href"
             },
             {
               "name": "translations",
@@ -23269,7 +25248,7 @@
       "declarations": [
         {
           "kind": "class",
-          "description": "A container for `nldd-list-item` elements. The `type` attribute switches the list's a11y role and behavior: - `list` (default) — `role=\"list\"`, items `role=\"listitem\"`. Reorderable allowed. Items may individually be buttons or links; the list itself has no special keyboard semantics. - `navigation` — host `role=\"navigation\"`, items with `selected` get `aria-current=\"page\"` on their inner `<a>` or `<button>`. - `listbox` — an accessible, filterable listbox (combobox pattern). The list renders its OWN search input (`role=\"combobox\"`) pinned above the options; `.list__items` becomes `role=\"listbox\"` and items become `role=\"option\"`. Focus stays in the input, the active option moves via `aria-activedescendant`, and filtering is consumer-managed via the `input` event (toggle `[hidden]` on items). See \"Listbox\" below. Selection state is consumer-managed: the list never mutates `selected` itself. In `type=\"listbox\"` the list owns a native `<input role=\"combobox\">` (mirroring how `nldd-combo-box` wires an input to a slotted listbox). Keyboard, handled on the input so focus never leaves it: - ArrowDown / ArrowUp — move the active option among the VISIBLE (non-`[hidden]`) options (wrap around). - Home / End — first / last visible option. - Enter — activate the active option by triggering its inner action (a link navigates, a button fires the consumer's handler). Selection stays consumer-managed. - Escape — clear the search value (and refire `input`). On every active change the input's `aria-activedescendant` is set to the active option's id and the option is scrolled into view. The active option (`_highlighted` on the item, a highlight) is distinct from `selected`. Filtering is the consumer's job: listen to `input` (`{ detail: { value } }`) and toggle `[hidden]` on items; after the visible set changes the list resets the active option to the first visible one. `reorderable` and `arrow-navigation` are ignored in listbox mode (listbox has its own keyboard). On reorder (type=\"list\" + reorderable), the list dispatches `nldd-reorder` with `fromIndex` / `toIndex` and expects the consumer to mutate the DOM (or their data model that renders the DOM). Focus is restored to the moved item's drag handle via a single `requestAnimationFrame` — this assumes the consumer reorders **synchronously** in the event handler. Async renderers (React, Vue, …) that update the DOM on a later tick will miss the focus restore and should manage focus themselves after their render commits.",
+          "description": "A container for `nldd-list-item` elements. The `type` attribute switches the list's a11y role and behavior: - `list` (default) — `role=\"list\"`, items `role=\"listitem\"`. Reorderable allowed. - `tree` — `role=\"tree\"`, items `role=\"treeitem\"`. Branch rows put their child rows in their own `slot=\"children\"`, which the item renders as a `role=\"group\"`. Level, position and set size are NOT authored: the nesting represents the hierarchy, so assistive technology derives them. A branch row must carry `expanded`; the group is hidden while it is false. Visual indentation is the consumer's — repeat a spacer-cell per level. Items may individually be buttons or links; the list itself has no special keyboard semantics. - `navigation` — host `role=\"navigation\"`, items with `selected` get `aria-current=\"page\"` on their inner `<a>` or `<button>`. - `listbox` — an accessible, filterable listbox (combobox pattern). The list renders its OWN search input (`role=\"combobox\"`) pinned above the options; `.list__items` becomes `role=\"listbox\"` and items become `role=\"option\"`. Focus stays in the input, the active option moves via `aria-activedescendant`, and filtering is consumer-managed via the `input` event (toggle `[hidden]` on items). See \"Listbox\" below. Selection state is consumer-managed: the list never mutates `selected` itself. In `type=\"listbox\"` the list owns a native `<input role=\"combobox\">` (mirroring how `nldd-combo-box` wires an input to a slotted listbox). Keyboard, handled on the input so focus never leaves it: - ArrowDown / ArrowUp — move the active option among the VISIBLE (non-`[hidden]`) options (wrap around). - Home / End — first / last visible option. - Enter — activate the active option by triggering its inner action (a link navigates, a button fires the consumer's handler). Selection stays consumer-managed. - Escape — clear the search value (and refire `input`). On every active change the input's `aria-activedescendant` is set to the active option's id and the option is scrolled into view. The active option (`_highlighted` on the item, a highlight) is distinct from `selected`. Filtering is the consumer's job: listen to `input` (`{ detail: { value } }`) and toggle `[hidden]` on items; after the visible set changes the list resets the active option to the first visible one. `reorderable` and `arrow-navigation` are ignored in listbox mode (listbox has its own keyboard). On reorder (type=\"list\" + reorderable), the list dispatches `nldd-reorder` with `fromIndex` / `toIndex` and expects the consumer to mutate the DOM (or their data model that renders the DOM). Focus is restored to the moved item's drag handle via a single `requestAnimationFrame` — this assumes the consumer reorders **synchronously** in the event handler. Async renderers (React, Vue, …) that update the DOM on a later tick will miss the focus restore and should manage focus themselves after their render commits.",
           "name": "NLDDList",
           "slots": [
             {
@@ -24725,7 +26704,7 @@
                 "text": "Element | null"
               },
               "default": "null",
-              "description": "Direct element reference to the popover this item invokes — IDL-only\ncounterpart to `popovertarget` that works across shadow boundaries.\nSet by `nldd-menu` when this item is wired up as the menu's anchor\nso the browser recognises the inner button as the menu's invoker\nand excludes the click from popover light-dismiss."
+              "description": "Direct element reference to the popover this item invokes — IDL-only\ncounterpart to `popovertarget` that works across shadow boundaries.\nSet by `nldd-menu` when this item is wired up as the menu's anchor\nso the browser recognizes the inner button as the menu's invoker\nand excludes the click from popover light-dismiss."
             },
             {
               "kind": "field",
@@ -26109,7 +28088,7 @@
       "declarations": [
         {
           "kind": "class",
-          "description": "Layout placeholder that fills its parent and centres an indeterminate activity indicator. By default the indicator is held back for 1000ms so brief loading states don't flash; once the delay passes it fades in. Set `timing=\"instant\"` to skip the delay (the fade-in still plays) — this is what embedding components such as `nldd-button` use for their loading state. The default indicator is a simple icon-sized circle that follows the shared `--context-content-color` channel (set by list-item / table / menu on their content), falling back to `currentColor` wherever that channel is unset (buttons, rich-text, standalone) — so a spinner inside a cell tracks the row's state-aware content colour, while embedders relying on currentColor are unaffected. An optional label sits below (hidden unless `show-text` is set). Drop a `<nldd-progress-circle>`, `<nldd-progress-bar>` or any element in the `indicator` slot to override it. Icon alignment: the visible ring already sits at 5/6 of its box (the SVG's r=9 plus a 2-unit stroke in a 24 view-box, the same optical inset a filled icon glyph has), so a standalone spinner lines up with an icon or an `icon-aligned` `nldd-avatar` on the same grid — no extra option needed (unlike `nldd-avatar`, which fills edge-to-edge and opts in via `icon-aligned`). Overlay mode: put content in the default slot and the indicator wraps it — it becomes a `position: relative` container, renders the spinner over a dimming backdrop (opt out with `no-backdrop`), and makes the content `inert` so its controls can't be focused or clicked. Toggle loading with `complete` (`?complete=${!isLoading}`). With no slotted content it stays the standalone placeholder described above. Reconnect behaviour: every `connectedCallback` resets the timer and hides the indicator again. If a consumer toggles the element via a conditional render (remove + re-insert) the indicator disappears and re-fades after another delay. Keep the element mounted and toggle visibility / `hidden` instead if you want the timer to run only once. Accessibility: while connected and not `complete` the host is a polite live region (`role=\"status\"`). The label (`text`, or the translated \"Laden\" fallback) always renders as the region's content — visually hidden when `show-text` is off (the default) — so assistive tech announces the loading state when the indicator appears. Set `complete` (or unmount) to clear it.",
+          "description": "Layout placeholder that fills its parent and centers an indeterminate activity indicator. By default the indicator is held back for 1000ms so brief loading states don't flash; once the delay passes it fades in. Set `timing=\"instant\"` to skip the delay (the fade-in still plays) — this is what embedding components such as `nldd-button` use for their loading state. The default indicator is a simple icon-sized circle that follows the shared `--context-content-color` channel (set by list-item / table / menu on their content), falling back to `currentColor` wherever that channel is unset (buttons, rich-text, standalone) — so a spinner inside a cell tracks the row's state-aware content color, while embedders relying on currentColor are unaffected. An optional label sits below (hidden unless `show-text` is set). Drop a `<nldd-progress-circle>`, `<nldd-progress-bar>` or any element in the `indicator` slot to override it. Icon alignment: the visible ring already sits at 5/6 of its box (the SVG's r=9 plus a 2-unit stroke in a 24 view-box, the same optical inset a filled icon glyph has), so a standalone spinner lines up with an icon or an `icon-aligned` `nldd-avatar` on the same grid — no extra option needed (unlike `nldd-avatar`, which fills edge-to-edge and opts in via `icon-aligned`). Overlay mode: put content in the default slot and the indicator wraps it — it becomes a `position: relative` container, renders the spinner over a dimming backdrop (opt out with `no-backdrop`), and makes the content `inert` so its controls can't be focused or clicked. Toggle loading with `complete` (`?complete=${!isLoading}`). With no slotted content it stays the standalone placeholder described above. Reconnect behavior: every `connectedCallback` resets the timer and hides the indicator again. If a consumer toggles the element via a conditional render (remove + re-insert) the indicator disappears and re-fades after another delay. Keep the element mounted and toggle visibility / `hidden` instead if you want the timer to run only once. Accessibility: while connected and not `complete` the host is a polite live region (`role=\"status\"`). The label (`text`, or the translated \"Laden\" fallback) always renders as the region's content — visually hidden when `show-text` is off (the default) — so assistive tech announces the loading state when the indicator appears. Set `complete` (or unmount) to clear it.",
           "name": "NLDDActivityIndicator",
           "members": [
             {
@@ -26495,7 +28474,7 @@
       "declarations": [
         {
           "kind": "class",
-          "description": "An inline notification with a tinted background per variant. Use for persistent, page-level feedback (e.g. an error summary at the top of a form). Banner is more visually present than nldd-inline-dialog — the tinted colour catches the eye. If you need a quieter component, pick a different one rather than overriding the banner's ARIA. Layout: icon left, text + supporting text + optional rich content + actions in the centre, optional dismiss button right. Buttons wrap to a second row on narrow viewports via nldd-button-group's flex wrapping. role and aria-live are set automatically from the variant: - critical → role=\"alert\" (interrupts screen reader) - others → role=\"status\" aria-live=\"polite\" Not overridable — if you need a less prominent component, use one. aria-atomic=\"true\" is also set so that updates to the structured region (icon + heading + supporting-text + actions) are announced as one unit rather than as a partial subtree. Trade-off: any programmatic content mutation re-reads the entire banner. Banners are designed for short, heading-scale copy — if you slot in a paragraph of rich body text and then toggle variant or supporting-text at runtime, AT will re-announce the whole thing. Keep banner content concise, or render long-form messages in a different surface.",
+          "description": "An inline notification with a tinted background per variant. Use for persistent, page-level feedback (e.g. an error summary at the top of a form). Banner is more visually present than nldd-inline-dialog — the tinted color catches the eye. If you need a quieter component, pick a different one rather than overriding the banner's ARIA. Layout: icon left, text + supporting text + optional rich content + actions in the center, optional dismiss button right. Buttons wrap to a second row on narrow viewports via nldd-button-group's flex wrapping. role and aria-live are set automatically from the variant: - critical → role=\"alert\" (interrupts screen reader) - others → role=\"status\" aria-live=\"polite\" Not overridable — if you need a less prominent component, use one. aria-atomic=\"true\" is also set so that updates to the structured region (icon + heading + supporting-text + actions) are announced as one unit rather than as a partial subtree. Trade-off: any programmatic content mutation re-reads the entire banner. Banners are designed for short, heading-scale copy — if you slot in a paragraph of rich body text and then toggle variant or supporting-text at runtime, AT will re-announce the whole thing. Keep banner content concise, or render long-form messages in a different surface.",
           "name": "NLDDBanner",
           "members": [
             {
@@ -26583,7 +28562,7 @@
               },
               "default": "'neutral'",
               "fieldName": "variant",
-              "description": "Colour and default icon (default: 'neutral')"
+              "description": "Color and default icon (default: 'neutral')"
             },
             {
               "name": "icon",
@@ -27741,7 +29720,7 @@
         },
         {
           "kind": "class",
-          "description": "Exports both NLDDProgressCircle and NLDDProgressCircleSegmentIndicator. A circular progress indicator that mirrors the API of nldd-progress-bar: single-value or multi-segment, progress or distribution mode, 24 colours, fade transitions between determinate/indeterminate, indeterminate indicator. Visual differences vs the bar: - SVG arcs instead of rectangular bars. - Label below the circle (not above). - No centre text; the consumer can wrap the circle if needed. - One combined tooltip on the whole circle showing all segment info (no per-segment tooltips). - Indeterminate uses a rotating elastic arc (Material-style) instead of the bar's Knight Rider scanner.",
+          "description": "Exports both NLDDProgressCircle and NLDDProgressCircleSegmentIndicator. A circular progress indicator that mirrors the API of nldd-progress-bar: single-value or multi-segment, progress or distribution mode, 24 colors, fade transitions between determinate/indeterminate, indeterminate indicator. Visual differences vs the bar: - SVG arcs instead of rectangular bars. - Label below the circle (not above). - No center text; the consumer can wrap the circle if needed. - One combined tooltip on the whole circle showing all segment info (no per-segment tooltips). - Indeterminate uses a rotating elastic arc (Material-style) instead of the bar's Knight Rider scanner.",
           "name": "NLDDProgressCircle",
           "members": [
             {
@@ -27872,7 +29851,7 @@
               },
               "default": "'progress'",
               "fieldName": "mode",
-              "description": "Semantics for ARIA and gap behaviour (default: 'progress')"
+              "description": "Semantics for ARIA and gap behavior (default: 'progress')"
             },
             {
               "name": "max",
@@ -28179,6 +30158,318 @@
     },
     {
       "kind": "javascript-module",
+      "path": "src/components/status-and-feedback/step-indicator/step-indicator.ts",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "Eén stap in een `nldd-step-indicator`. De ouder bepaalt de status en het\nvolgnummer; die staan hier als interne state en niet als publieke API, op\n`status` na — dat overschrijft de afleiding uit `current`.",
+          "name": "NLDDStepIndicatorItem",
+          "slots": [
+            {
+              "description": "Label (alternatief voor `text`)",
+              "name": ""
+            }
+          ],
+          "members": [
+            {
+              "kind": "field",
+              "name": "status",
+              "type": {
+                "text": "StepIndicatorStatus | undefined"
+              },
+              "attribute": "status",
+              "reflects": true
+            },
+            {
+              "kind": "field",
+              "name": "text",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "attribute": "text",
+              "reflects": true
+            },
+            {
+              "kind": "field",
+              "name": "icon",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "attribute": "icon"
+            },
+            {
+              "kind": "field",
+              "name": "href",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "attribute": "href",
+              "reflects": true
+            },
+            {
+              "kind": "field",
+              "name": "button",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "For flows without a URL per step (a wizard inside one window). Ignored\nonce `href` is set: one step is one action, and a link outranks a button\n-- the same rule as nldd-card and nldd-avatar.",
+              "attribute": "button",
+              "reflects": true
+            },
+            {
+              "kind": "field",
+              "name": "resolvedStatus",
+              "type": {
+                "text": "StepIndicatorStatus"
+              },
+              "description": "The status that counts: the item's own wins over the derived one.",
+              "readonly": true
+            }
+          ],
+          "attributes": [
+            {
+              "type": {
+                "text": "StepIndicatorStatus | undefined"
+              },
+              "description": "`past` | `current` | `future`; overschrijft wat de ouder afleidt",
+              "name": "status",
+              "fieldName": "status"
+            },
+            {
+              "type": {
+                "text": "string"
+              },
+              "description": "Label onder de bol",
+              "name": "text",
+              "default": "''",
+              "fieldName": "text"
+            },
+            {
+              "type": {
+                "text": "string"
+              },
+              "description": "Icoon in de bol in plaats van het cijfer of het vinkje",
+              "name": "icon",
+              "default": "''",
+              "fieldName": "icon"
+            },
+            {
+              "type": {
+                "text": "string"
+              },
+              "description": "Maakt de stap een link (bijvoorbeeld terug naar een afgeronde stap)",
+              "name": "href",
+              "default": "''",
+              "fieldName": "href"
+            },
+            {
+              "type": {
+                "text": "boolean"
+              },
+              "description": "For flows without a URL per step (a wizard inside one window). Ignored\nonce `href` is set: one step is one action, and a link outranks a button\n-- the same rule as nldd-card and nldd-avatar.",
+              "name": "button",
+              "default": "false",
+              "fieldName": "button"
+            }
+          ],
+          "superclass": {
+            "name": "LitElement",
+            "package": "lit"
+          },
+          "tagName": "nldd-step-indicator-item",
+          "customElement": true
+        },
+        {
+          "kind": "class",
+          "description": "Toont waar je staat in een proces van meerdere stappen: een rij bollen met een cijfer (of een vinkje op wat af is), een label eronder en een lijn die ze verbindt. De ouder houdt de waarheid vast: `current` (1-based) leidt de status van elk kind af — ervoor `past`, daarna `future`. Een kind kan dat overschrijven met een eigen `status`, voor flows die terugspringen of een stap overslaan. Alleen horizontaal. Wil je stappen onder elkaar, bouw dan een `nldd-list` met per rij een `nldd-timeline-track-cell` en een `nldd-title-cell`: verticale stappen dragen meestal meer dan een titel, en dat kan een lijstrij al. Onder de sm-breakpoint (container query, dus gemeten op het component zelf en niet op de viewport) klapt het om naar één regel tekst plus een segmentbalk. De volledige stappenlijst blijft dan in de DOM staan, alleen visueel verborgen, zodat hulpsoftware niet minder te horen krijgt dan een breed scherm laat zien. Toegankelijkheid: een `nav` met een label, daarin een `role=\"list\"` met per stap een `role=\"listitem\"`. De huidige stap krijgt `aria-current=\"step\"` — het enige begrip dat WAI-ARIA hiervoor kent. \"Afgerond\" en \"nog te doen\" bestaan niet als ARIA-token en reizen daarom als visueel verborgen tekst mee.",
+          "name": "NLDDStepIndicator",
+          "members": [
+            {
+              "kind": "field",
+              "name": "accessibleLabel",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "attribute": "accessible-label"
+            },
+            {
+              "kind": "field",
+              "name": "current",
+              "type": {
+                "text": "number"
+              },
+              "default": "1",
+              "attribute": "current",
+              "reflects": true
+            },
+            {
+              "kind": "field",
+              "name": "total",
+              "type": {
+                "text": "number"
+              },
+              "readonly": true
+            },
+            {
+              "kind": "field",
+              "name": "resolvedCurrent",
+              "type": {
+                "text": "number"
+              },
+              "description": "The current step, clamped to the number of steps: an out-of-range\n`current` would otherwise mark every step past (or none at all).",
+              "readonly": true
+            },
+            {
+              "kind": "field",
+              "name": "currentItem",
+              "type": {
+                "text": "NLDDStepIndicatorItem | undefined"
+              },
+              "readonly": true
+            },
+            {
+              "kind": "field",
+              "name": "translations",
+              "type": {
+                "text": "Partial<T>"
+              },
+              "default": "{}",
+              "attribute": "translations",
+              "inheritedFrom": {
+                "name": "withTranslations",
+                "module": "src/utilities/with-translations.ts"
+              }
+            }
+          ],
+          "attributes": [
+            {
+              "name": "accessible-label",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "fieldName": "accessibleLabel",
+              "description": "Naam van de nav; standaard de i18n-waarde (\"Voortgang\")"
+            },
+            {
+              "name": "current",
+              "type": {
+                "text": "number"
+              },
+              "default": "1",
+              "fieldName": "current",
+              "description": "1-based nummer van de huidige stap (standaard 1)"
+            },
+            {
+              "name": "translations",
+              "type": {
+                "text": "Partial<T>"
+              },
+              "default": "{}",
+              "fieldName": "translations",
+              "inheritedFrom": {
+                "name": "withTranslations",
+                "module": "src/utilities/with-translations.ts"
+              },
+              "description": "Overschrijf vertaalsleutels; niet gezette vallen terug op Nederlands"
+            }
+          ],
+          "mixins": [
+            {
+              "name": "withTranslations",
+              "module": "/src/utilities/with-translations.js"
+            }
+          ],
+          "superclass": {
+            "name": "LitElement",
+            "package": "lit"
+          },
+          "tagName": "nldd-step-indicator",
+          "customElement": true,
+          "slots": [
+            {
+              "name": "",
+              "description": "`nldd-step-indicator-item` kinderen"
+            }
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "NLDDStepIndicatorItem",
+          "declaration": {
+            "name": "NLDDStepIndicatorItem",
+            "module": "src/components/status-and-feedback/step-indicator/step-indicator.ts"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "nldd-step-indicator-item",
+          "declaration": {
+            "name": "NLDDStepIndicatorItem",
+            "module": "src/components/status-and-feedback/step-indicator/step-indicator.ts"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "NLDDStepIndicator",
+          "declaration": {
+            "name": "NLDDStepIndicator",
+            "module": "src/components/status-and-feedback/step-indicator/step-indicator.ts"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "nldd-step-indicator",
+          "declaration": {
+            "name": "NLDDStepIndicator",
+            "module": "src/components/status-and-feedback/step-indicator/step-indicator.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/utilities/autofocus.ts",
+      "declarations": [
+        {
+          "kind": "function",
+          "name": "focusAutofocusTarget",
+          "return": {
+            "type": {
+              "text": ""
+            }
+          },
+          "parameters": [
+            {
+              "name": "host",
+              "type": {
+                "text": "Element"
+              }
+            }
+          ],
+          "description": "Focus the `[autofocus]` element inside an overlay, if there is one.\n\nThe browser's own autofocus only reaches natively focusable elements. A\ndesign-system field is a custom element whose input sits in its shadow root,\nso `<nldd-text-field autofocus>` would be skipped entirely and the overlay\nwould open with focus on the dialog. Calling `focus()` on the host covers\nboth: our components forward it inward, and for a native element the browser\nhas already done it, which makes the second call a no-op.\n\nCustom elements may not have rendered yet when an overlay opens right after\nan htmx swap, so a component that exposes `updateComplete` gets a second\nattempt once it has."
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "focusAutofocusTarget",
+          "declaration": {
+            "name": "focusAutofocusTarget",
+            "module": "src/utilities/autofocus.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
       "path": "src/utilities/color-scheme-repaint.ts",
       "declarations": [
         {
@@ -28267,6 +30558,98 @@
           "declaration": {
             "name": "isDismissFromTitleBar",
             "module": "src/utilities/dismiss-from-title-bar.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/utilities/form-associated-mixin.ts",
+      "declarations": [
+        {
+          "kind": "mixin",
+          "description": "Turns a Lit element into a form-associated custom element: it submits under\n`name`, follows a disabled fieldset, and can be read back with `FormData`.\n\nA component supplies the one thing that is its own — what it submits — by\noverriding `formValue()`. Everything around it lives here, including the\ntiming: the value is committed on every render AND has to be committed again\nfrom the handler that changed it, with `commitFormValue()`. A render is a\ntask later than the event, so a listener that serializes the form on `change`\n(htmx, or a plain `new FormData(form)`) runs before the render and would\notherwise read the value from before the change. That contract is checked for\nevery input at once in `form-value-timing.test.ts`.\n\nReset and state restore stay with the component: what \"the initial value\" is\ndiffers per input (checked, text, a number to clamp, two fields at once), so\na component implements `formResetCallback` / `formStateRestoreCallback`\nitself.",
+          "name": "FormAssociated",
+          "members": [
+            {
+              "kind": "field",
+              "name": "formAssociated",
+              "type": {
+                "text": "boolean"
+              },
+              "static": true,
+              "default": "true"
+            },
+            {
+              "kind": "field",
+              "name": "internals",
+              "readonly": true
+            },
+            {
+              "kind": "method",
+              "name": "formValue",
+              "return": {
+                "type": {
+                  "text": "FormValue"
+                }
+              },
+              "description": "The value submitted under `name`; `null` submits nothing. Override."
+            },
+            {
+              "kind": "method",
+              "name": "formState",
+              "return": {
+                "type": {
+                  "text": "FormValue | undefined"
+                }
+              },
+              "description": "Extra state kept for bfcache and state restore, when the submitted\nvalue alone cannot rebuild the control (a combo box submits a code but\nshows a label). Override alongside `formValue()`."
+            },
+            {
+              "kind": "method",
+              "name": "commitFormValue",
+              "return": {
+                "type": {
+                  "text": "void"
+                }
+              },
+              "description": "Commit the value now, from the handler that changed it."
+            },
+            {
+              "kind": "method",
+              "name": "formDisabledCallback",
+              "return": {
+                "type": {
+                  "text": "void"
+                }
+              },
+              "parameters": [
+                {
+                  "name": "disabled",
+                  "type": {
+                    "text": "boolean"
+                  }
+                }
+              ]
+            }
+          ],
+          "parameters": [
+            {
+              "name": "Base",
+              "type": {
+                "text": "T"
+              }
+            }
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "FormAssociated",
+          "declaration": {
+            "name": "FormAssociated",
+            "module": "src/utilities/form-associated-mixin.ts"
           }
         }
       ]
@@ -28465,7 +30848,7 @@
       "declarations": [
         {
           "kind": "mixin",
-          "description": "Shared surface controls for the page-section components. Adds three\northogonal capabilities, all written as inline host styles / custom\nproperties (no per-component CSS needed for background or scheme — both\n`color-scheme` and custom properties inherit through the shadow boundary\ninto the section's block element and slotted content):\n\n- **background**: `inherit` (the default — transparent, shows the ancestor's\n  surface) | `base` (the base surface colour) | `tinted`. Setting\n  `base`/`tinted` also cascades `--context-parent-background-color` so\n  descendants (cards, nested sections) read the same surface.\n- **scheme**: `inherit` (default) | `light` | `dark` | `inverted`.\n  `inverted` resolves to the opposite of the surrounding page scheme and\n  re-resolves when `:root[data-scheme]` flips (via onColorSchemeChange).\n- **block padding**: `padding-block` (both edges) with `padding-top`\n  / `padding-bottom` per-edge overrides, each with responsive `sm-` /\n  `md-` / `lg-` variants (12 attrs total). Token scale `0`–`96`; `0` strips\n  the padding. Per breakpoint the section CSS resolves: scope override →\n  base override → responsive default. The inline (gutter) padding stays\n  design-controlled.\n- **height**: any CSS length (e.g. '400px', '100dvh') applied as the host's\n  min-height (so the section is at least that tall) — mirroring how `width`\n  maps to the body max-width.",
+          "description": "Shared surface controls for the page-section components. Adds three\northogonal capabilities, all written as inline host styles / custom\nproperties (no per-component CSS needed for background or scheme — both\n`color-scheme` and custom properties inherit through the shadow boundary\ninto the section's block element and slotted content):\n\n- **background**: `inherit` (the default — transparent, shows the ancestor's\n  surface) | `base` (the base surface color) | `tinted`. Setting\n  `base`/`tinted` also cascades `--context-parent-background-color` so\n  descendants (cards, nested sections) read the same surface.\n- **scheme**: `inherit` (default) | `light` | `dark` | `inverted`.\n  `inverted` resolves to the opposite of the surrounding page scheme and\n  re-resolves when `:root[data-scheme]` flips (via onColorSchemeChange).\n- **block padding**: `padding-block` (both edges) with `padding-top`\n  / `padding-bottom` per-edge overrides, each with responsive `sm-` /\n  `md-` / `lg-` variants (12 attrs total). Token scale `0`–`96`; `0` strips\n  the padding. Per breakpoint the section CSS resolves: scope override →\n  base override → responsive default. The inline (gutter) padding stays\n  design-controlled.\n- **height**: any CSS length (e.g. '400px', '100dvh') applied as the host's\n  min-height (so the section is at least that tall) — mirroring how `width`\n  maps to the body max-width.",
           "name": "PageSectionMixin",
           "members": [
             {
@@ -28659,7 +31042,7 @@
                   "text": "'light' | 'dark'"
                 }
               },
-              "description": "Best-effort detection of the *actively rendered* scheme around the\nsection, used to invert it.\n\n`getComputedStyle(parent).colorScheme` returns the *declared* value\n(`'light dark'` for \"supports both\"; `'normal'` for the initial\nvalue) — not the one the browser actually paints with. For\n`'inverted'` we want the painted scheme, so:\n  1. Prefer the app's explicit override on `:root[data-scheme]`\n     (the project's site-wide light/dark toggle).\n  2. Walk up to find an ancestor that pins a single scheme.\n  3. Otherwise fall back to `prefers-color-scheme` — that's what\n     `'light dark'` resolves to in practice.\n\nPerf: the per-call cost is `getComputedStyle()` for each ancestor\nup to one that pins a scheme. This only runs when the project\ndoes NOT set `:root[data-scheme]` (apps with a global theme\ntoggle, like regelrecht, hit the fast path and never enter the\nwalk). When the fallback is needed the walk is bounded by the\nDOM depth and only fires on `scheme` prop change or a\ncolor-scheme repaint event — not on every render.\n\nCross-shadow caveat: `parentElement` doesn't traverse shadow\nboundaries, so a `color-scheme` declared on an outer custom\nelement's host won't be picked up by the walk; we then fall\nthrough to `prefers-color-scheme`. For reliable `'inverted'`\nbehaviour inside nested shadow trees, set `data-scheme` on\n`:root` so the fast path resolves the painted scheme directly."
+              "description": "Best-effort detection of the *actively rendered* scheme around the\nsection, used to invert it.\n\n`getComputedStyle(parent).colorScheme` returns the *declared* value\n(`'light dark'` for \"supports both\"; `'normal'` for the initial\nvalue) — not the one the browser actually paints with. For\n`'inverted'` we want the painted scheme, so:\n  1. Prefer the app's explicit override on `:root[data-scheme]`\n     (the project's site-wide light/dark toggle).\n  2. Walk up to find an ancestor that pins a single scheme.\n  3. Otherwise fall back to `prefers-color-scheme` — that's what\n     `'light dark'` resolves to in practice.\n\nPerf: the per-call cost is `getComputedStyle()` for each ancestor\nup to one that pins a scheme. This only runs when the project\ndoes NOT set `:root[data-scheme]` (apps with a global theme\ntoggle, like regelrecht, hit the fast path and never enter the\nwalk). When the fallback is needed the walk is bounded by the\nDOM depth and only fires on `scheme` prop change or a\ncolor-scheme repaint event — not on every render.\n\nCross-shadow caveat: `parentElement` doesn't traverse shadow\nboundaries, so a `color-scheme` declared on an outer custom\nelement's host won't be picked up by the walk; we then fall\nthrough to `prefers-color-scheme`. For reliable `'inverted'`\nbehavior inside nested shadow trees, set `data-scheme` on\n`:root` so the fast path resolves the painted scheme directly."
             },
             {
               "kind": "method",
