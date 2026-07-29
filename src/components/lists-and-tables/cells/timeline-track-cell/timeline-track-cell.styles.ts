@@ -65,9 +65,13 @@ export const timelineTrackCellStyles = css`
 		width: var(--_line-width);
 	}
 
+	/* The lines that run on downward also bridge the row boundary: an
+	   nldd-list-item reserves a divider's worth of space below itself, and
+	   without this the track breaks at every row. The top line needs nothing —
+	   the row above already covers the band. */
 	.timeline-track-cell__full-line {
 		top: 0;
-		bottom: 0;
+		bottom: calc(-1 * var(--semantics-dividers-thickness));
 	}
 
 	.timeline-track-cell__top-line {
@@ -77,7 +81,7 @@ export const timelineTrackCellStyles = css`
 
 	.timeline-track-cell__bottom-line {
 		top: 50%;
-		height: 50%;
+		bottom: calc(-1 * var(--semantics-dividers-thickness));
 	}
 
 	:host([status="future"]) .timeline-track-cell__top-line,
