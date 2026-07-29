@@ -13,8 +13,8 @@ export const segmentedControlStyles = css`
 		--_corner-radius: var(--semantics-controls-md-corner-radius);
 		--_width: auto;
 		--_gap: var(--primitives-space-1);
-		--_z-index-selected: 1;
-		--_z-index-focus: 2;
+		--_selected-z-index: 1;
+		--_focus-z-index: 2;
 
 		${inheritedTextReset}
 		display: inline-grid;
@@ -73,12 +73,12 @@ export const segmentedControlStyles = css`
 
 	::slotted(nldd-segmented-control-item[selected]) {
 		position: relative;
-		z-index: var(--_z-index-selected);
+		z-index: var(--_selected-z-index);
 	}
 
 	::slotted(nldd-segmented-control-item:focus-within) {
 		position: relative;
-		z-index: var(--_z-index-focus);
+		z-index: var(--_focus-z-index);
 	}
 `;
 

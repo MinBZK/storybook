@@ -14,10 +14,10 @@ export const comboBoxStyles = css`
 		--_background-color: var(--semantics-input-fields-background-color);
 		--_corner-radius: var(--semantics-controls-md-corner-radius);
 		--_min-size: var(--semantics-controls-md-min-size);
-		--_inline-padding: calc(var(--semantics-controls-md-inline-padding) - var(--semantics-input-fields-border-thickness));
+		--_inline-padding: calc(var(--semantics-controls-md-inline-padding) - var(--semantics-input-fields-border-width));
 		--_text-font: var(--semantics-input-fields-md-text-font);
-		--_end-padding-right: calc((var(--_min-size) - var(--semantics-controls-sm-min-size)) / 2 - var(--semantics-input-fields-border-thickness));
-		--_z-index-button-focus: 1;
+		--_end-padding-right: calc((var(--_min-size) - var(--semantics-controls-sm-min-size)) / 2 - var(--semantics-input-fields-border-width));
+		--_button-focus-z-index: 1;
 		--_validation-icon-size: var(--semantics-input-fields-md-validation-icon-size);
 
 		${inheritedTextReset}
@@ -34,9 +34,9 @@ export const comboBoxStyles = css`
 	:host([size="sm"]) {
 		--_corner-radius: var(--semantics-controls-sm-corner-radius);
 		--_min-size: var(--semantics-controls-sm-min-size);
-		--_inline-padding: calc(var(--semantics-controls-sm-inline-padding) - var(--semantics-input-fields-border-thickness));
+		--_inline-padding: calc(var(--semantics-controls-sm-inline-padding) - var(--semantics-input-fields-border-width));
 		--_text-font: var(--semantics-input-fields-sm-text-font);
-		--_end-padding-right: calc((var(--_min-size) - var(--semantics-controls-xs-min-size)) / 2 - var(--semantics-input-fields-border-thickness));
+		--_end-padding-right: calc((var(--_min-size) - var(--semantics-controls-xs-min-size)) / 2 - var(--semantics-input-fields-border-width));
 		--_validation-icon-size: var(--semantics-input-fields-sm-validation-icon-size);
 	}
 
@@ -139,7 +139,7 @@ export const comboBoxStyles = css`
 
 	.combo-box__clear-button:focus-within {
 		position: relative;
-		z-index: var(--_z-index-button-focus);
+		z-index: var(--_button-focus-z-index);
 	}
 
 	.combo-box__validation-icon-area {
@@ -169,6 +169,6 @@ export const comboBoxStyles = css`
 
 	.combo-box__picker-button:focus-within {
 		position: relative;
-		z-index: var(--_z-index-button-focus);
+		z-index: var(--_button-focus-z-index);
 	}
 `;

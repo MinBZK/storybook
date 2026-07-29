@@ -48,7 +48,7 @@ export const textFieldStyles = css`
 		background-color: var(--_background-color);
 		min-height: var(--_min-size);
 		overflow: hidden;
-		padding-left: calc(var(--_inline-padding) - var(--semantics-input-fields-border-thickness));
+		padding-left: calc(var(--_inline-padding) - var(--semantics-input-fields-border-width));
 		flex-direction: row;
 		align-items: center;
 	}
@@ -91,7 +91,7 @@ export const textFieldStyles = css`
 		border: none;
 		background: transparent;
 		min-width: 0;
-		min-height: calc(var(--_min-size) - var(--semantics-input-fields-border-thickness) * 2);
+		min-height: calc(var(--_min-size) - var(--semantics-input-fields-border-width) * 2);
 		overflow: hidden;
 		padding: 0;
 		flex-grow: 1;
@@ -137,7 +137,7 @@ export const textFieldStyles = css`
 
 	.text-field__validation-icon-area {
 		display: flex;
-		width: calc(var(--_min-size) - var(--semantics-input-fields-border-thickness) * 2);
+		width: calc(var(--_min-size) - var(--semantics-input-fields-border-width) * 2);
 		height: 100%;
 		flex-shrink: 0;
 		align-items: center;

@@ -18,8 +18,8 @@ export const passwordFieldStyles = css`
 		--_text-font: var(--semantics-input-fields-md-text-font);
 		--_mask-font: var(--semantics-input-fields-md-mask-font);
 		--_validation-icon-size: var(--semantics-input-fields-md-validation-icon-size);
-		--_visibility-toggle-padding: calc((var(--_min-size) - var(--semantics-input-fields-border-thickness) * 2 - var(--semantics-controls-sm-min-size)) / 2);
-		--_z-index-button-focus: 1;
+		--_visibility-toggle-padding: calc((var(--_min-size) - var(--semantics-input-fields-border-width) * 2 - var(--semantics-controls-sm-min-size)) / 2);
+		--_button-focus-z-index: 1;
 
 		${inheritedTextReset}
 		display: block;
@@ -39,7 +39,7 @@ export const passwordFieldStyles = css`
 		--_text-font: var(--semantics-input-fields-sm-text-font);
 		--_mask-font: var(--semantics-input-fields-sm-mask-font);
 		--_validation-icon-size: var(--semantics-input-fields-sm-validation-icon-size);
-		--_visibility-toggle-padding: calc((var(--_min-size) - var(--semantics-input-fields-border-thickness) * 2 - var(--semantics-controls-xs-min-size)) / 2);
+		--_visibility-toggle-padding: calc((var(--_min-size) - var(--semantics-input-fields-border-width) * 2 - var(--semantics-controls-xs-min-size)) / 2);
 	}
 
 
@@ -53,7 +53,7 @@ export const passwordFieldStyles = css`
 		background-color: var(--_background-color);
 		min-height: var(--_min-size);
 		overflow: hidden;
-		padding-left: calc(var(--_inline-padding) - var(--semantics-input-fields-border-thickness));
+		padding-left: calc(var(--_inline-padding) - var(--semantics-input-fields-border-width));
 		flex-direction: row;
 		align-items: center;
 	}
@@ -100,7 +100,7 @@ export const passwordFieldStyles = css`
 		border: none;
 		background: transparent;
 		min-width: 0;
-		min-height: calc(var(--_min-size) - var(--semantics-input-fields-border-thickness) * 2);
+		min-height: calc(var(--_min-size) - var(--semantics-input-fields-border-width) * 2);
 		overflow: hidden;
 		padding: 0;
 		flex-grow: 1;
@@ -151,7 +151,7 @@ export const passwordFieldStyles = css`
 
 	.password-field__validation-icon-area {
 		display: flex;
-		width: calc(var(--_min-size) - var(--semantics-input-fields-border-thickness) * 2);
+		width: calc(var(--_min-size) - var(--semantics-input-fields-border-width) * 2);
 		height: 100%;
 		flex-shrink: 0;
 		align-items: center;
@@ -183,6 +183,6 @@ export const passwordFieldStyles = css`
 
 	.password-field__visibility-toggle-button:focus-within {
 		position: relative;
-		z-index: var(--_z-index-button-focus);
+		z-index: var(--_button-focus-z-index);
 	}
 `;

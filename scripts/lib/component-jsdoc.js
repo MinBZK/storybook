@@ -10,19 +10,39 @@
 /** Extract the JSDoc block that documents the component(s). Prefers the first
  * block containing @element or @customElement so a license/module header before
  * it does not get picked by mistake; falls back to the first block. */
+/** Every JSDoc block that documents an element, in source order.
+ *
+ * A file can register more than one element (nldd-menu also defines its item,
+ * divider and group), and those blocks sit above their own class rather than at
+ * the top of the file. Taking only the first block dropped them from the
+ * reference entirely, so the generator reads them all; a block belongs to this
+ * set when it names its element with @element. Falls back to the single leading
+ * block for the common one-element file. */
+function extractComponentBlocks(source) {
+	const blocks = [...source.matchAll(/\/\*\*([\s\S]*?)\*\//g)].map((m) => cleanBlock(m[1]));
+	const documented = blocks.filter((b) => /^@element\b/m.test(b));
+	if (documented.length > 0) return documented;
+	const leading = extractLeadingBlock(source);
+	return leading ? [leading] : [];
+}
+
+/** Strip the leading " * " from each line. Use \s* (not \s?) after the star so
+ *  JSDoc formatted with two or more spaces (" *  @attr …") still lands the tag
+ *  at column 0, otherwise the @-tag regex would miss it and drop the entry. */
+function cleanBlock(body) {
+	return body
+		.split('\n')
+		.map((line) => line.replace(/^\s*\*?\s*/, ''))
+		.join('\n')
+		.trim();
+}
+
 function extractLeadingBlock(source) {
 	const blocks = [...source.matchAll(/\/\*\*([\s\S]*?)\*\//g)];
 	if (blocks.length === 0) return null;
 	const chosen =
 		blocks.find((m) => /@element\b|@customElement\b/.test(m[1])) ?? blocks[0];
-	// Strip the leading " * " from each line. Use \s* (not \s?) after the star so
-	// JSDoc formatted with two or more spaces (" *  @attr …") still lands the tag
-	// at column 0, otherwise the @-tag regex would miss it and drop the entry.
-	return chosen[1]
-		.split('\n')
-		.map((line) => line.replace(/^\s*\*?\s*/, ''))
-		.join('\n')
-		.trim();
+	return cleanBlock(chosen[1]);
 }
 
 /**
@@ -179,4 +199,4 @@ function parseComponent(block, filePath, fallbackTag) {
 	return components;
 }
 
-export { extractLeadingBlock, parseTypedTag, parseNamedTag, parseComponent };
+export { extractComponentBlocks, extractLeadingBlock, parseTypedTag, parseNamedTag, parseComponent };

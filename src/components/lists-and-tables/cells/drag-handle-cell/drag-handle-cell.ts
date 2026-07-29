@@ -12,7 +12,7 @@
  * ```html
  * <nldd-list reorderable>
  *   <nldd-list-item>
- *     <nldd-drag-handle-cell slot="start" reorderable-only></nldd-drag-handle-cell>
+ *     <nldd-drag-handle-cell reorderable-only></nldd-drag-handle-cell>
  *     <nldd-text-cell text="Item"></nldd-text-cell>
  *   </nldd-list-item>
  * </nldd-list>
@@ -52,7 +52,7 @@ export class NLDDDragHandleCell extends LitElement {
 	}
 
 	override render() {
-		const label = this._t('components.drag-handle-cell.label-text');
+		const label = this._t('components.drag-handle-cell.accessible-label');
 		return template(this.size, label);
 	}
 }

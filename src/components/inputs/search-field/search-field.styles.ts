@@ -16,9 +16,9 @@ export const searchFieldStyles = css`
 		--_min-size: var(--semantics-controls-md-min-size);
 		--_search-icon-size: var(--primitives-space-24);
 		--_text-font: var(--semantics-input-fields-md-text-font);
-		--_end-padding-right: calc((var(--_min-size) - var(--semantics-controls-sm-min-size)) / 2 - var(--semantics-input-fields-border-thickness));
+		--_end-padding-right: calc((var(--_min-size) - var(--semantics-controls-sm-min-size)) / 2 - var(--semantics-input-fields-border-width));
 		--_end-gap: var(--primitives-space-6);
-		--_z-index-button-focus: 1;
+		--_button-focus-z-index: 1;
 
 		${inheritedTextReset}
 		display: block;
@@ -42,7 +42,7 @@ export const searchFieldStyles = css`
 		--_min-size: var(--semantics-controls-sm-min-size);
 		--_search-icon-size: var(--primitives-space-20);
 		--_text-font: var(--semantics-input-fields-sm-text-font);
-		--_end-padding-right: calc((var(--_min-size) - var(--semantics-controls-xs-min-size)) / 2 - var(--semantics-input-fields-border-thickness));
+		--_end-padding-right: calc((var(--_min-size) - var(--semantics-controls-xs-min-size)) / 2 - var(--semantics-input-fields-border-width));
 		--_end-gap: var(--primitives-space-4);
 	}
 
@@ -87,7 +87,7 @@ export const searchFieldStyles = css`
 
 	.search-field__search-icon {
 		display: flex;
-		margin-inline: calc((var(--_min-size) - var(--_search-icon-size)) / 2 - var(--semantics-input-fields-border-thickness));
+		margin-inline: calc((var(--_min-size) - var(--_search-icon-size)) / 2 - var(--semantics-input-fields-border-width));
 		width: var(--_search-icon-size);
 		height: var(--_search-icon-size);
 		flex-shrink: 0;
@@ -160,6 +160,6 @@ export const searchFieldStyles = css`
 	.search-field__clear-button:focus-within,
 	.search-field__search-button:focus-within {
 		position: relative;
-		z-index: var(--_z-index-button-focus);
+		z-index: var(--_button-focus-z-index);
 	}
 `;

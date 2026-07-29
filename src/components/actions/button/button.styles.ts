@@ -36,6 +36,12 @@ export const buttonStyles = css`
 		${inheritedTextReset}
 		display: inline-block;
 		position: relative;
+		/* A definite width, so a flex or grid parent doesn't stretch the host: an
+		   inline-block shrink-wraps in normal flow, but as a flex item it would be
+		   stretched to the full line while the button inside stays content-sized —
+		   leaving an invisible box around the button that swallows clicks that
+		   look like they land beside it. align-self would only cover flex. */
+		width: fit-content;
 		max-width: 100%;
 		-webkit-user-select: none;
 		user-select: none;
@@ -494,7 +500,7 @@ export const buttonStyles = css`
 	/* Wrapper overlaid on the control, positioned against the host (which is
 	   position:relative). It lives outside the <button>/<a> so the indicator's
 	   role="status" live region announces loading without joining the button's
-	   accessible name. The activity-indicator inside fills it and centres its
+	   accessible name. The activity-indicator inside fills it and centers its
 	   circle, which inherits the content color via currentColor. */
 	.button__activity-indicator {
 		position: absolute;
@@ -510,7 +516,10 @@ export const buttonStyles = css`
 		min-width: 0;
 	}
 
-	:host([single-line]) .button__text {
+	/* A capped button truncates by itself: max-width is there to keep the button
+	   within a bound, and a label that wrapped to three lines would defeat that. */
+	:host([single-line]) .button__text,
+	:host([max-width]) .button__text {
 		overflow: hidden;
 		text-overflow: ellipsis;
 		white-space: nowrap;
@@ -559,7 +568,8 @@ export const buttonStyles = css`
 		clip-path: inset(50%);
 	}
 
-	:host([single-line]) .button__supporting-text {
+	:host([single-line]) .button__supporting-text,
+	:host([max-width]) .button__supporting-text {
 		overflow: hidden;
 		text-overflow: ellipsis;
 		white-space: nowrap;

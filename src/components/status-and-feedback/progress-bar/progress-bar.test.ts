@@ -233,7 +233,7 @@ describe('nldd-progress-bar', () => {
 		expect(segments[1]!.hidden).toBe(true);
 	});
 
-	it('normalises segment widths when sum exceeds max', async () => {
+	it('normalizes segment widths when sum exceeds max', async () => {
 		const warnSpy = vi.spyOn(console, 'warn').mockImplementation(() => {});
 		el = await fixture(`
 			<nldd-progress-bar max="100">
@@ -434,7 +434,7 @@ describe('nldd-progress-bar', () => {
 		await waitForUpdate(el);
 		bar.indeterminate = true;
 		await waitForUpdate(el);
-		// Exit timer must be cancelled, no stale fading-out state
+		// Exit timer must be canceled, no stale fading-out state
 		expect((bar as unknown as { _indeterminateExiting: boolean })._indeterminateExiting).toBe(false);
 		expect((bar as unknown as { _indeterminateEntering: boolean })._indeterminateEntering).toBe(true);
 	});

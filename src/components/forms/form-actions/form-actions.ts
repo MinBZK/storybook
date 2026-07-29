@@ -26,12 +26,8 @@
  *
  * @element nldd-form-actions
  *
- * @attr {string} label-alignment      - 'top' (default) | 'right' | 'left'.
- *                                       Een eigen waarde wint altijd over de
- *                                       inherited form-label-alignment.
- * @attr {string} form-label-alignment - Door wrappende nldd-form gezet als
- *                                       fallback. Niet zelf zetten in
- *                                       consumer-code.
+ * @attr {string} label-alignment - 'top' (default) | 'right' | 'left'. Een eigen waarde wint altijd over de inherited form-label-alignment.
+ * @attr {string} form-label-alignment - Door wrappende nldd-form gezet als fallback. Niet zelf zetten in consumer-code.
  *
  * @slot - Actie-elementen (button, button-group, etc.)
  */

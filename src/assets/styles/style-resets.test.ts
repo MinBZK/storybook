@@ -85,7 +85,7 @@ describe('style-resets: host CSS cannot bleed into slotted content', () => {
 		);
 	});
 
-	it('form-field error text — slotted link keeps colour and underline', async () => {
+	it('form-field error text — slotted link keeps color and underline', async () => {
 		await assertUnaffected(
 			'<nldd-form-field-error-text invalid><a href="#">link</a></nldd-form-field-error-text>',
 			'a',

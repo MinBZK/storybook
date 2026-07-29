@@ -634,8 +634,8 @@ describe('nldd-text-editor', () => {
 	it('kleurt een kale URL als link (cm-md-autolink), niet als grijs adres (cm-md-url)', async () => {
 		const el2 = await withValue('kaal https://regelrecht.rijks.app en [md](https://example.com)');
 		const sr = el2.shadowRoot!;
-		// The bare URL reads as link text (its own autolink class, coloured like a link);
-		// only the markdown link's address stays the grey cm-md-url.
+		// The bare URL reads as link text (its own autolink class, colored like a link);
+		// only the markdown link's address stays the gray cm-md-url.
 		const autolinks = [...sr.querySelectorAll('.cm-md-autolink')].map((s) => s.textContent);
 		const greyUrls = [...sr.querySelectorAll('.cm-md-url')].map((s) => s.textContent);
 		expect(autolinks).toEqual(['https://regelrecht.rijks.app']);
@@ -805,7 +805,7 @@ describe('nldd-text-editor', () => {
 		data.setData('text/plain', 'regel1\r\nregel2');
 		api.view.contentDOM.dispatchEvent(new ClipboardEvent('paste', { clipboardData: data, bubbles: true, cancelable: true }));
 		await waitForUpdate(el2);
-		// CRLF normalized to LF matched the buffer, so the annotation travelled with it.
+		// CRLF normalized to LF matched the buffer, so the annotation traveled with it.
 		expect(sr.querySelector('.cm-annotation')).not.toBeNull();
 		cleanup(el2);
 	});

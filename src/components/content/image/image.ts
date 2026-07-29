@@ -12,13 +12,13 @@
  *
  * @element nldd-image
  *
- * @attr {string}  src - Image URL
- * @attr {string}  alt - Alt text. Required unless `decorative`.
- * @attr {string}  srcset - Responsive source set
- * @attr {string}  sizes - Source sizes hint
+ * @attr {string} src - Image URL
+ * @attr {string} alt - Alt text. Required unless `decorative`.
+ * @attr {string} srcset - Responsive source set
+ * @attr {string} sizes - Source sizes hint
  * @attr {number|'full'} width - Display width. `full` (default) fills the parent.
  *   A numeric value sets host `max-width` AND the `<img>` layout-hint width.
- * @attr {number}  height - Intrinsic height (for layout reservation)
+ * @attr {number} height - Intrinsic height (for layout reservation)
  * @attr {'lazy'|'eager'} loading - Loading strategy (default: 'lazy').
  *   Lazy defers fetch until the image is near the viewport — the right
  *   choice for below-the-fold content. Set to 'eager' on images that
@@ -29,15 +29,15 @@
  *   image for the strongest signal.
  * @attr {'async'|'sync'|'auto'} decoding - Decoding hint (default: 'async')
  * @attr {'high'|'low'|'auto'} fetchpriority - Fetch priority hint
- * @attr {string}  aspect-ratio - Aspect ratio in CSS form (e.g. "16/9", "1/1", "4/3").
+ * @attr {string} aspect-ratio - Aspect ratio in CSS form (e.g. "16/9", "1/1", "4/3").
  *   "16:9" colon notation is also accepted for convenience.
  * @attr {'cover'|'contain'|'fill'|'scale-down'|'none'} object-fit - default: 'cover'
  * @attr {'center'|'top'|'bottom'|'left'|'right'} object-position - default: 'center'
  * @attr {'square'|'rounded'|'circle'} shape - Corner shape (default: 'square')
- * @attr {string}  caption - Caption text shown below the image
- * @attr {string}  credit - Smaller credit/attribution text shown beside the caption
+ * @attr {string} caption - Caption text shown below the image
+ * @attr {string} credit - Smaller credit/attribution text shown beside the caption
  * @attr {boolean} decorative - Decorative image: alt is forced empty + aria-hidden
- * @attr {string}  lqip - Low-quality image placeholder as a CSV string
+ * @attr {string} lqip - Low-quality image placeholder as a CSV string
  *   `"base,c1,c2,c3,c4,c5,c6"` — seven 0-255 bytes, each packing an 8-bit
  *   Oklab triplet (2 bits L, 3 bits a, 3 bits b). The first is the base
  *   color shown outside the cell gradients; the other six are per-cell

@@ -18,9 +18,6 @@ export const collectionStyles = css`
 		--_item-width: var(--primitives-area-280);
 		--_focus-ring-z-index: 1;
 
-		/* The gap between items (and before the load-more button), set per breakpoint
-		   range so no two rules overlap. The gap attribute overrides it at every
-		   breakpoint with a single inline --_gap (inline wins over these media rules). */
 		@media (max-width: ${smMax}) {
 			--_gap: var(--components-collection-sm-gap);
 		}
@@ -30,6 +27,18 @@ export const collectionStyles = css`
 		}
 
 		@media (min-width: ${lgMin}) {
+			--_gap: var(--components-collection-lg-gap);
+		}
+
+		@container layout-container (max-width: ${smMax}) {
+			--_gap: var(--components-collection-sm-gap);
+		}
+
+		@container layout-container (min-width: ${mdMin}) and (max-width: ${mdMax}) {
+			--_gap: var(--components-collection-md-gap);
+		}
+
+		@container layout-container (min-width: ${lgMin}) {
 			--_gap: var(--components-collection-lg-gap);
 		}
 
@@ -61,6 +70,15 @@ export const collectionStyles = css`
 		   a single column never forces horizontal overflow on narrow screens. */
 		display: grid;
 		grid-template-columns: repeat(auto-fill, minmax(min(var(--_item-width), 100%), 1fr));
+	}
+
+	/* A grid item's automatic minimum is min-content, so one long unbreakable
+	   string inside a card would stretch its whole track past 1fr. Every
+	   consumer had to repeat min-width: 0 themselves; the track sizes the item,
+	   not the content. */
+	:host([layout="grid"]) .collection__items ::slotted(*),
+	:host(:not([layout])) .collection__items ::slotted(*) {
+		min-width: 0;
 	}
 
 	/* ## Stack */

@@ -13,10 +13,10 @@ export const multiLineTextFieldStyles = css`
 		--_width: 100%;
 		--_background-color: var(--semantics-input-fields-background-color);
 		--_corner-radius: var(--semantics-controls-md-corner-radius);
-		--_inline-padding: calc(var(--semantics-controls-md-inline-padding) - var(--semantics-input-fields-border-thickness));
+		--_inline-padding: calc(var(--semantics-controls-md-inline-padding) - var(--semantics-input-fields-border-width));
 		--_min-height: var(--semantics-controls-md-min-size);
 		--_text-font: var(--semantics-input-fields-md-text-font);
-		--_icon-area-size: calc(var(--_min-height) - var(--semantics-input-fields-border-thickness) * 2);
+		--_icon-area-size: calc(var(--_min-height) - var(--semantics-input-fields-border-width) * 2);
 		--_validation-icon-size: var(--semantics-input-fields-md-validation-icon-size);
 		--_rows: 3;
 
@@ -33,7 +33,7 @@ export const multiLineTextFieldStyles = css`
 
 	:host([size="sm"]) {
 		--_corner-radius: var(--semantics-controls-sm-corner-radius);
-		--_inline-padding: calc(var(--semantics-controls-sm-inline-padding) - var(--semantics-input-fields-border-thickness));
+		--_inline-padding: calc(var(--semantics-controls-sm-inline-padding) - var(--semantics-input-fields-border-width));
 		--_min-height: var(--semantics-controls-sm-min-size);
 		--_text-font: var(--semantics-input-fields-sm-text-font);
 		--_validation-icon-size: var(--semantics-input-fields-sm-validation-icon-size);
@@ -94,8 +94,8 @@ export const multiLineTextFieldStyles = css`
 		/* rows is the floor in every resize mode: one row already fits in
 		   --_min-height, each extra row adds one line height. (resize="auto"
 		   then grows past it via field-sizing.) */
-		min-height: calc(var(--_min-height) - var(--semantics-input-fields-border-thickness) * 2 + (var(--_rows) - 1) * 1lh);
-		padding-block: calc((var(--_min-height) - var(--semantics-input-fields-border-thickness) * 2 - 1lh) / 2);
+		min-height: calc(var(--_min-height) - var(--semantics-input-fields-border-width) * 2 + (var(--_rows) - 1) * 1lh);
+		padding-block: calc((var(--_min-height) - var(--semantics-input-fields-border-width) * 2 - 1lh) / 2);
 		padding-inline: var(--_inline-padding);
 		color: var(--semantics-content-color);
 		font: var(--_text-font);

@@ -1,6 +1,7 @@
 import { describe, it, expect, afterEach } from 'vitest';
 import { fixture, cleanup, waitForUpdate } from '../../../../test-utils.js';
 import './sidebar-section.js';
+import '../../../status-and-feedback/inline-dialog/inline-dialog.js';
 import type { NLDDSidebarSection } from './sidebar-section.js';
 
 describe('nldd-sidebar-section', () => {
@@ -37,6 +38,37 @@ describe('nldd-sidebar-section', () => {
 	it('renders without error', async () => {
 		await make();
 		expect(el.shadowRoot).not.toBeNull();
+	});
+
+	// Same growth contract as simple-section: only the last (visible) section in
+	// a page fills the leftover height, and the chain host -> main passes it on,
+	// so an inline-dialog empty state can fill and center.
+	it('grows as last section and passes the height down to the main column', async () => {
+		el = await fixture<NLDDSidebarSection>(`
+			<div style="display: flex; height: 600px; flex-direction: column;">
+				<nldd-sidebar-section class="is-last">
+					<nldd-inline-dialog text="Leeg"></nldd-inline-dialog>
+				</nldd-sidebar-section>
+			</div>
+		`);
+		const section = el.querySelector('nldd-sidebar-section') as NLDDSidebarSection;
+		await waitForUpdate(section);
+		expect(getComputedStyle(section).flexGrow).toBe('1');
+		expect(Math.round(section.getBoundingClientRect().height)).toBe(600);
+		const main = section.shadowRoot!.querySelector('.sidebar-section__main')!;
+		const mainStyle = getComputedStyle(main);
+		expect(mainStyle.display).toBe('flex');
+		expect(mainStyle.flexDirection).toBe('column');
+		// The empty-state dialog takes the leftover height inside the main.
+		const dialogEl = section.querySelector('nldd-inline-dialog')!;
+		expect(dialogEl.getBoundingClientRect().height).toBeGreaterThan(400);
+	});
+
+	it('does not grow when it is not the last section', async () => {
+		el = await fixture<NLDDSidebarSection>('<nldd-sidebar-section><p>Kort</p></nldd-sidebar-section><footer>na</footer>');
+		const section = (el.tagName.toLowerCase() === 'nldd-sidebar-section' ? el : el.querySelector('nldd-sidebar-section')) as NLDDSidebarSection;
+		await waitForUpdate(section);
+		expect(getComputedStyle(section).flexGrow).toBe('0');
 	});
 
 	it('renders the main slot content', async () => {

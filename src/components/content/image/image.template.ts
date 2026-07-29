@@ -10,7 +10,7 @@ export function imageTemplate(component: NLDDImage) {
 	// Slotted img/picture also fills this wrapper.
 	// --context-lqip-base / --context-lqip-c1..c6 carry the seven quantised
 	// Oklab bytes from the parsed lqip attribute across the shadow boundary
-	// into the stylesheet. Each byte decodes back into an oklab() colour at
+	// into the stylesheet. Each byte decodes back into an oklab() color at
 	// render time. Uses the --context-* prefix because the inline style and
 	// the consuming CSS live in different scopes.
 	const parsedLqip = component._parsedLqip;
@@ -49,7 +49,7 @@ export function imageTemplate(component: NLDDImage) {
 		>
 	`;
 
-	// Error overlay: shown when the fallback img fires an error. Sits centred
+	// Error overlay: shown when the fallback img fires an error. Sits centered
 	// over the media area on top of the LQIP gradient (or the neutral fallback
 	// background when no LQIP is provided).
 	// A11y: the visible .image__error-text already carries the alt as readable

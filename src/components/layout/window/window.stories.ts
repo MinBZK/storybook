@@ -83,6 +83,12 @@ export default {
 			description: 'Niet-modaal (geen backdrop of focusvergrendeling)',
 			table: { defaultValue: { summary: false } },
 		},
+		noLightDismiss: {
+			name: 'no-light-dismiss',
+			control: 'boolean',
+			description: 'Een klik naast het venster sluit het niet; Escape en de sluitknop blijven werken',
+			table: { defaultValue: { summary: false } },
+		},
 	},
 	args: {
 		scheme: 'inherit',
@@ -94,6 +100,7 @@ export default {
 		left: '',
 		accessibleLabel: 'Voorbeeldvenster',
 		modeless: false,
+		noLightDismiss: false,
 	},
 };
 
@@ -121,6 +128,7 @@ const Template = (args: Record<string, unknown>) => html`
 		left=${args.left || nothing}
 		accessible-label=${args.accessibleLabel || nothing}
 		?modeless=${args.modeless}
+		?no-light-dismiss=${args.noLightDismiss}
 	>
 		<nldd-page sticky-header>
 			<nldd-top-title-bar

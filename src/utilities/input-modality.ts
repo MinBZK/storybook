@@ -29,6 +29,13 @@ export function getInputModality(): InputModality {
 	return modality;
 }
 
+// At import, not on the first question: the listeners have to be in place
+// before the first key press. Initialising lazily meant that someone who tabs
+// straight into the page had already pressed Tab by the time a component asked,
+// so the modality still read 'mouse' and the first control swallowed its focus
+// ring.
+if (typeof document !== 'undefined') init();
+
 export function isKeyboardMode(): boolean {
 	return getInputModality() === 'keyboard';
 }
@@ -47,10 +54,13 @@ export function isTouchMode(): boolean {
 	return getInputModality() === 'touch';
 }
 
-/** @internal Reset state for testing only. */
+/** @internal Reset state for testing only. Re-registers straight away, the way
+ *  importing the module does, so a test sees the same starting position as a
+ *  freshly loaded page. */
 export function _resetInputModalityForTesting(): void {
 	controller?.abort();
 	controller = null;
 	modality = 'mouse';
 	initialized = false;
+	if (typeof document !== 'undefined') init();
 }

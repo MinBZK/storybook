@@ -7,6 +7,7 @@ export function windowTemplate(component: NLDDWindow): TemplateResult {
 		<dialog class="window"
 			aria-label=${component._resolvedAccessibleLabel}
 			aria-modal=${component.modeless ? nothing : 'true'}
+			@pointerdown=${component._handleDialogPointerDown}
 			@click=${component._handleDialogClick}
 			@cancel=${component._handleCancel}
 			@close=${component._handleDialogClose}

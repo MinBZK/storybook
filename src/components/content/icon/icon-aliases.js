@@ -3,6 +3,7 @@ export const aliases = {
 	// apartment-building
 	'office': 'apartment-building',
 	'building': 'apartment-building',
+	'company': 'apartment-building',
 
 	// arrow-2-counter-clockwise
 	'refresh': 'arrow-2-counter-clockwise',
@@ -29,6 +30,9 @@ export const aliases = {
 	// book
 	'guide': 'book',
 	'read': 'book',
+
+	// book-badge-plus
+	'new-book': 'book-badge-plus',
 
 	// bookmark-filled
 	'bookmarked': 'bookmark-filled',
@@ -174,10 +178,17 @@ export const aliases = {
 
 	// file-text-badge-check-plus
 	'new-text-document': 'file-text-badge-check-plus',
+	'add-text-document': 'file-text-badge-check-plus',
 
 	// file-text-stack
 	'documents': 'file-text-stack',
 	'text-documents': 'file-text-stack',
+
+	// square-1
+	'primary': 'square-1',
+
+	// triangle-square-circle
+	'categories': 'triangle-square-circle',
 
 	// flag-filled
 	'flagged': 'flag-filled',
@@ -243,8 +254,8 @@ export const aliases = {
 	// markdown-rectangle
 	'markdown': 'markdown-rectangle',
 
-	// rectangle-chevron-left-forward-slash-chevron-right
-	'code-block': 'rectangle-chevron-left-forward-slash-chevron-right',
+	// chevron-left-forward-slash-chevron-right-rectangle
+	'code-block': 'chevron-left-forward-slash-chevron-right-rectangle',
 
 	// scissor
 	'cut': 'scissor',
@@ -255,6 +266,9 @@ export const aliases = {
 
 	// magnifier
 	'search': 'magnifier',
+
+	// megaphone
+	'announcement': 'megaphone',
 
 	// message-rectangle-text
 	'annotation': 'message-rectangle-text',
@@ -314,6 +328,9 @@ export const aliases = {
 	'account': 'person-circle',
 	'profile': 'person-circle',
 
+	// person-text-rectangle
+	'contact-card': 'person-text-rectangle',
+
 	// plus
 	'add': 'plus',
 
@@ -341,8 +358,8 @@ export const aliases = {
 	'ai': 'sparkles',
 	'magic': 'sparkles',
 
-	// square-corner-4
-	'fit-to-view': 'square-corner-4',
+	// viewfinder
+	'fit-to-view': 'viewfinder',
 
 	// star
 	'rating': 'star',
@@ -387,7 +404,10 @@ export const aliases = {
 
 	// tag
 	'label': 'tag',
-	'category': 'tag',
+
+	// tag-stack
+	'tags': 'tag-stack',
+	'labels': 'tag-stack',
 
 	// terminal
 	'cli': 'terminal',

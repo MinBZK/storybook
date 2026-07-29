@@ -13,9 +13,9 @@ export const numberFieldStyles = css`
 		--_width: auto;
 		--_corner-radius: var(--semantics-controls-md-corner-radius);
 		--_min-size: var(--semantics-controls-md-min-size);
-		--_spin-button-padding: calc((var(--_min-size) - var(--semantics-controls-sm-min-size)) / 2 - var(--semantics-input-fields-border-thickness));
+		--_spin-button-padding: calc((var(--_min-size) - var(--semantics-controls-sm-min-size)) / 2 - var(--semantics-input-fields-border-width));
 		--_text-font: var(--semantics-input-fields-md-text-font);
-		--_inline-padding: calc(var(--semantics-controls-md-inline-padding) - var(--semantics-input-fields-border-thickness));
+		--_inline-padding: calc(var(--semantics-controls-md-inline-padding) - var(--semantics-input-fields-border-width));
 
 		${inheritedTextReset}
 		display: inline-block;
@@ -29,9 +29,9 @@ export const numberFieldStyles = css`
 	:host([size="sm"]) {
 		--_corner-radius: var(--semantics-controls-sm-corner-radius);
 		--_min-size: var(--semantics-controls-sm-min-size);
-		--_spin-button-padding: calc((var(--_min-size) - var(--semantics-controls-xs-min-size)) / 2 - var(--semantics-input-fields-border-thickness));
+		--_spin-button-padding: calc((var(--_min-size) - var(--semantics-controls-xs-min-size)) / 2 - var(--semantics-input-fields-border-width));
 		--_text-font: var(--semantics-input-fields-sm-text-font);
-		--_inline-padding: calc(var(--semantics-controls-sm-inline-padding) - var(--semantics-input-fields-border-thickness));
+		--_inline-padding: calc(var(--semantics-controls-sm-inline-padding) - var(--semantics-input-fields-border-width));
 	}
 
 	:host([disabled]) {

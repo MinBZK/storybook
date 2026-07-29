@@ -93,24 +93,31 @@ CSS variabelen zijn georganiseerd in vijf lagen:
 | **Local** | `--_*` | Interne variabelen binnen een component (niet bedoeld voor extern gebruik) |
 
 ```css
-/* Primitives — basis waarden */
---primitives-color-accent-100: #154273;
+/* Primitives — basis waarden. Een kleur draagt zijn licht- en donkerwaarde
+   samen in één light-dark()-paar; de rest is een kale waarde. */
+--primitives-color-lintblauw-100: light-dark(oklch(0.897 0.044 253.4), oklch(0.262 0.044 253.4));
+--primitives-color-accent-100: var(--primitives-color-lintblauw-100);
 --primitives-space-16: 16px;
 
-/* Semantics — verwijzen naar primitives */
+/* Semantics — verwijzen naar primitives. light-dark() staat hier om per schema
+   een ANDERE stap te kiezen, niet om een kleur te definiëren. */
 --semantics-buttons-accent-filled-background-color: light-dark(var(--primitives-color-accent-750), var(--primitives-color-accent-650));
 --semantics-controls-md-min-size: var(--primitives-space-44);
 
 /* Components — verwijzen naar semantics of primitives */
---components-list-corner-radius: var(--semantics-controls-md-corner-radius);
+--components-box-background-color: var(--semantics-surfaces-tinted-background-color);
 --components-button-group-sm-gap: var(--primitives-space-6);
 
 /* Context — communicatie tussen componenten */
---context-parent-background-color: var(--semantics-surfaces-background-color);
+--context-parent-background-color: var(--semantics-surfaces-base-background-color);
 
 /* Local — intern binnen een component */
 --_background-color: var(--context-parent-background-color);
 ```
+
+De kleurpaletten staan in `src/assets/styles/palettes.generated.css` en worden
+gegenereerd; de accent-laag wijst naar een van die paletten, zodat één regel de
+huisstijlkleur van het hele systeem bepaalt.
 
 ## Feedback en verzoeken
 

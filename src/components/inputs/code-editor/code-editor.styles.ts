@@ -51,7 +51,7 @@ export const codeEditorStyles = css`
 		   surface + border + control padding, not the tinted surface. */
 		--_background-color: var(--semantics-input-fields-background-color);
 		--_border-color: var(--semantics-input-fields-border-color);
-		--_border-shadow: inset 0 0 0 var(--semantics-input-fields-border-thickness) var(--_border-color);
+		--_border-shadow: inset 0 0 0 var(--semantics-input-fields-border-width) var(--_border-color);
 		--_padding-block: var(--semantics-controls-md-inline-padding);
 		--_padding-inline: var(--semantics-controls-md-inline-padding);
 	}
@@ -109,7 +109,7 @@ export const codeEditorStyles = css`
 	}
 
 	/* Accent caret. The doubled class is purely for specificity — it outweighs
-	   CodeMirror's theme cursor colour without depending on an attribute. */
+	   CodeMirror's theme cursor color without depending on an attribute. */
 	:host .cm-cursor.cm-cursor {
 		border-left-color: var(--primitives-color-accent-600);
 		border-left-width: var(--__caret-width);

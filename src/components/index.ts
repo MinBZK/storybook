@@ -111,6 +111,7 @@ export { NLDDPageFooter, NLDDPageFooterLegalBar, NLDDPageFooterLegalBarItem } fr
 
 export { NLDDList } from './lists-and-tables/list/list.js';
 export { NLDDListItem } from './lists-and-tables/list-item/list-item.js';
+export { NLDDListItemAction } from './lists-and-tables/list-item-action/list-item-action.js';
 export { NLDDTable, NLDDTableRow } from './lists-and-tables/table/table.js';
 
 export { NLDDCell } from './lists-and-tables/cells/cell/cell.js';
@@ -146,6 +147,7 @@ export { NLDDBanner } from './status-and-feedback/banner/banner.js';
 export { NLDDBadge } from './status-and-feedback/badge/badge.js';
 export { NLDDProgressBar, NLDDProgressBarSegmentIndicator } from './status-and-feedback/progress-bar/progress-bar.js';
 export { NLDDProgressCircle, NLDDProgressCircleSegmentIndicator } from './status-and-feedback/progress-circle/progress-circle.js';
+export { NLDDStepIndicator, NLDDStepIndicatorItem } from './status-and-feedback/step-indicator/step-indicator.js';
 export { NLDDActivityIndicator } from './status-and-feedback/activity-indicator/activity-indicator.js';
 export { NLDDStatusBar } from './status-and-feedback/status-bar/status-bar.js';
 export { NLDDJustInTimeEducation } from './status-and-feedback/just-in-time-education/just-in-time-education.js';

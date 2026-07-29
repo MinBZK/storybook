@@ -6,18 +6,18 @@
  * Direct use of nldd-switch requires an accessible-label attribute for screen reader accessibility.
  *
  * @element nldd-switch
- * @attr {boolean} checked           - Whether the switch is on/off
- * @attr {boolean} disabled          - Disabled state
- * @attr {string}  size              - Switch size: 'xs' | 'sm' (default: 'sm')
- * @attr {string}  name              - Name for form submission; nothing is submitted when the switch is off
- * @attr {string}  value             - Value submitted with the form when the switch is on (default: 'on')
- * @attr {string}  accessible-label  - Accessible label forwarded as aria-label to the native input.
- *                                     Required when using nldd-switch without nldd-switch-field.
+ * @attr {boolean} checked - Whether the switch is on/off
+ * @attr {boolean} disabled - Disabled state
+ * @attr {string} size - Switch size: 'xs' | 'sm' (default: 'sm')
+ * @attr {string} name - Name for form submission; nothing is submitted when the switch is off
+ * @attr {string} value - Value submitted with the form when the switch is on (default: 'on')
+ * @attr {string} accessible-label - Accessible label forwarded as aria-label to the native input. Required when using nldd-switch without nldd-switch-field.
  *
  * @fires change - When the switch state changes; detail: { checked: boolean, value: string }
  */
-import { LitElement, type PropertyValues } from 'lit';
+import { LitElement } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
+import { FormAssociated, type FormValue } from '../../../utilities/form-associated-mixin.js';
 import { reflectNonDefault } from '../../../utilities/reflect-non-default.js';
 import { switchStyles } from './switch.styles.js';
 import { switchTemplate } from './switch.template.js';
@@ -25,12 +25,10 @@ import { switchTemplate } from './switch.template.js';
 export type SwitchSize = 'xs' | 'sm';
 
 @customElement('nldd-switch')
-export class NLDDSwitch extends LitElement {
-	static formAssociated = true;
+export class NLDDSwitch extends FormAssociated(LitElement) {
 
 	static override styles = switchStyles;
 
-	private _internals = this.attachInternals();
 
 	@property({ type: String, reflect: true })
 	name = '';
@@ -59,19 +57,15 @@ export class NLDDSwitch extends LitElement {
 		this._initialChecked = this.checked;
 	}
 
-	override updated(changed: PropertyValues): void {
-		if (changed.has('checked') || changed.has('value')) {
-			this._internals.setFormValue(this.checked ? this.value : null);
-		}
+
+	override formValue(): FormValue {
+		return this.checked ? this.value : null;
 	}
 
 	formResetCallback(): void {
 		this.checked = this._initialChecked;
 	}
 
-	formDisabledCallback(disabled: boolean): void {
-		this.disabled = disabled;
-	}
 
 	formStateRestoreCallback(state: File | string | FormData | null): void {
 		this.checked = state !== null;
@@ -93,7 +87,7 @@ export class NLDDSwitch extends LitElement {
 		if (this._pointerStartX === null) return;
 		const dx = e.clientX - this._pointerStartX;
 		// Once the threshold is crossed, _swiped locks in — matching iOS switch
-		// behaviour where intent is set by crossing the threshold, and the final
+		// behavior where intent is set by crossing the threshold, and the final
 		// toggle direction is determined by the terminal dx in _handlePointerUp.
 		if (Math.abs(dx) >= NLDDSwitch.SWIPE_THRESHOLD) {
 			this._swiped = true;
@@ -135,6 +129,7 @@ export class NLDDSwitch extends LitElement {
 	public toggle(): void {
 		if (this.disabled) return;
 		this.checked = !this.checked;
+		this.commitFormValue();
 		this.dispatchEvent(new CustomEvent('change', {
 			detail: { checked: this.checked, value: this.value },
 			bubbles: true,
@@ -146,6 +141,7 @@ export class NLDDSwitch extends LitElement {
 		if (this.disabled) return;
 		const input = e.target as HTMLInputElement;
 		this.checked = input.checked;
+		this.commitFormValue();
 		this.dispatchEvent(new CustomEvent('change', {
 			detail: { checked: this.checked, value: this.value },
 			bubbles: true,

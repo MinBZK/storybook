@@ -4,11 +4,11 @@
  * A switch toggle with an inline label for use in forms.
  *
  * @element nldd-switch-field
- * @attr {boolean} checked  - Checked state
+ * @attr {boolean} checked - Checked state
  * @attr {boolean} disabled - Disabled state
- * @attr {string}  value    - Value for form submission
- * @attr {string}  name     - Name for form submission
- * @attr {string}  label    - Label text for the switch
+ * @attr {string} value - Value for form submission
+ * @attr {string} name - Name for form submission
+ * @attr {string} label - Label text for the switch
  *
  * @fires change - When checked state changes; detail: { checked: boolean, value: string }
  */

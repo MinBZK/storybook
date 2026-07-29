@@ -10,10 +10,11 @@ export const codeViewerStyles = css`
 	/* # Host */
 
 	:host {
-		--_corner-radius: var(--primitives-corner-radius-lg);
+		--_corner-radius: var(--semantics-surfaces-corner-radius);
 		--_background-color: var(--semantics-surfaces-tinted-background-color);
+		--_border-width: var(--semantics-surfaces-border-width);
 		--_border-color: var(--semantics-surfaces-tinted-border-color);
-		--_border-shadow: inset 0 0 0 1px var(--_border-color);
+		--_border-shadow: inset 0 0 0 var(--_border-width) var(--_border-color);
 		--_block-padding: var(--primitives-space-16);
 		--_inline-padding: var(--primitives-space-16);
 		--_content-color: var(--semantics-content-color);
@@ -59,7 +60,7 @@ export const codeViewerStyles = css`
 		box-sizing: border-box;
 		position: relative;
 		border-radius: var(--_corner-radius);
-		/* Inner box-shadow paints the 1px border ring inside the radius
+		/* Inner box-shadow paints the border ring inside the radius
 		   without taking layout space — matches nldd-box / nldd-banner.
 		   variant="simple" suppresses the ring via --_border-color. The
 		   forced-colors fallback at the bottom restores a real border. */
@@ -138,7 +139,7 @@ export const codeViewerStyles = css`
 
 	@media (forced-colors: active) {
 		:host .code-viewer {
-			border: 1px solid CanvasText;
+			border: var(--_border-width) solid CanvasText;
 		}
 
 		:host([variant="simple"]) .code-viewer {

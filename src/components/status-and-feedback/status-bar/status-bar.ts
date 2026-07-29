@@ -31,10 +31,10 @@
  * @element nldd-status-bar
  *
  * @attr {'neutral'|'accent'|'success'|'warning'|'critical'} variant - Kleur van de balk (standaard: 'neutral')
- * @attr {string}  text   - De statustekst (één regel; afgekapt met ellipsis)
- * @attr {string}  href   - Maakt de hele balk een link (rendert een <a>)
- * @attr {string}  target - Link target (bijv. '_blank'); alleen gebruikt bij href
- * @attr {string}  rel    - Link rel; standaard 'noopener noreferrer' bij target='_blank'
+ * @attr {string} text - De statustekst (één regel; afgekapt met ellipsis)
+ * @attr {string} href - Maakt de hele balk een link (rendert een <a>)
+ * @attr {string} target - Link target (bijv. '_blank'); alleen gebruikt bij href
+ * @attr {string} rel - Link rel; standaard 'noopener noreferrer' bij target='_blank'
  * @attr {boolean} button - Maakt de hele balk een button; genegeerd als href is gezet
  */
 import { LitElement } from 'lit';

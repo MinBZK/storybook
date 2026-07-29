@@ -163,7 +163,7 @@ export function setHeading(view: EditorView, level: HeadingLevel): void {
 
 export function toggleBulletList(view: EditorView): void {
 	// Accept every markdown bullet char (- * +), matching readActiveFormats and the
-	// render guard. If the toggle recognised fewer chars than the state reader, a
+	// render guard. If the toggle recognized fewer chars than the state reader, a
 	// "+ item" line would report active yet the toggle couldn't strip it (it'd add
 	// another "- " instead), so state and toggle would disagree.
 	const re = /^(\s*)[-*+]\s+/;

@@ -426,6 +426,39 @@ describe('nldd-toggle-button-group – toetsenbordnavigatie', () => {
 		expect(buttons[2].selected).toBe(true);
 	});
 
+	// A consumer that serialises the form in its own `change` listener (htmx, or
+	// a plain new FormData(form)) runs before the deselected buttons render, so
+	// the group has to commit their value from the handler itself. Without that
+	// two buttons of one radio group sit in the form at the same time.
+	it('houdt in een radiogroep één waarde in de form tijdens change', async () => {
+		el = await fixture<NLDDToggleButtonGroup>(`
+			<form>
+				<nldd-toggle-button-group type="radio" name="weergave">
+					<nldd-toggle-button value="lijst" text="Lijst" selected></nldd-toggle-button>
+					<nldd-toggle-button value="raster" text="Raster"></nldd-toggle-button>
+				</nldd-toggle-button-group>
+			</form>
+		`);
+		await waitForUpdate(el);
+		const form = el.querySelector('form') ?? (el as unknown as HTMLFormElement);
+		const buttons = el.querySelectorAll<NLDDToggleButton>('nldd-toggle-button');
+		let waardenBijChange: FormDataEntryValue[] = [];
+		form.addEventListener('change', () => {
+			waardenBijChange = new FormData(form as HTMLFormElement).getAll('weergave');
+		});
+
+		buttons[1].selected = true;
+		buttons[1].commitFormValue();
+		buttons[1].dispatchEvent(new CustomEvent('change', {
+			detail: { selected: true, value: 'raster' },
+			bubbles: true,
+			composed: true,
+		}));
+		await waitForUpdate(el);
+
+		expect(waardenBijChange).toEqual(['raster']);
+	});
+
 	it('does not handle arrow keys for type=checkbox', async () => {
 		el = await fixture<NLDDToggleButtonGroup>(`
 			<nldd-toggle-button-group type="checkbox" name="filter">

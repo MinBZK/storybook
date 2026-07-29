@@ -360,7 +360,7 @@ describe('nldd-document-tab-bar – dismiss', () => {
 		expect(detail.item).toBe(items[0]);
 	});
 
-	it('selects right neighbour when selected item is dismissed', async () => {
+	it('selects right neighbor when selected item is dismissed', async () => {
 		el = await fixture<NLDDDocumentTabBar>(threeTabBar());
 		await waitForUpdate(el);
 
@@ -377,7 +377,7 @@ describe('nldd-document-tab-bar – dismiss', () => {
 		expect(items[1].selected).toBe(true);
 	});
 
-	it('selects left neighbour when rightmost selected item is dismissed', async () => {
+	it('selects left neighbor when rightmost selected item is dismissed', async () => {
 		el = await fixture<NLDDDocumentTabBar>(`
 			<nldd-document-tab-bar accessible-label="Docs">
 				<nldd-document-tab-bar-item text="A"></nldd-document-tab-bar-item>

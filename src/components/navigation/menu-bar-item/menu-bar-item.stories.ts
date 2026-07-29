@@ -137,7 +137,7 @@ export const Expandable = {
 				<nldd-menu-item text="Mijn profiel"></nldd-menu-item>
 				<nldd-menu-item text="Instellingen"></nldd-menu-item>
 				<nldd-menu-divider></nldd-menu-divider>
-				<nldd-menu-item text="Uitloggen"></nldd-menu-item>
+				<nldd-menu-item text="Log uit"></nldd-menu-item>
 			</nldd-menu>
 		</nldd-menu-bar-item>
 	`,

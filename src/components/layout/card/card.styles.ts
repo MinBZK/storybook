@@ -12,6 +12,8 @@ export const cardStyles = css`
 		--_highlight-border: inset 0 0 0 var(--components-card-highlight-border-width) var(--components-card-highlight-border-color);
 
 		display: flex;
+		/* Anchor for the focus ring, which hangs outside the card box. */
+		position: relative;
 		flex-direction: column;
 	}
 
@@ -44,19 +46,54 @@ export const cardStyles = css`
 	}
 
 
-	/* # Link */
+	/* # Link / button overlay */
 
-	.card__link {
+	.card__action {
 		position: absolute;
 		inset: 0;
 		z-index: 0;
 		border-radius: inherit;
 	}
 
-	.card:has(.card__link:focus-visible) {
+	a.card__action {
+		cursor: var(--semantics-controls-link-cursor);
+	}
+
+	/* Strip the native button chrome so the overlay stays invisible; the focus
+	   ring is drawn on the card below, same as for the anchor. */
+	button.card__action {
+		margin: 0;
+		outline: none;
+		border: none;
+		background: none;
+		padding: 0;
+		appearance: none;
+	}
+
+	/* Shown from JS (a class on the host) instead of with
+	   :has(.card__action:focus-visible): Safari does not re-evaluate a dynamic
+	   pseudo-class inside :has(), so the ring stayed away there while Chromium
+	   drew it.
+
+	   The ring is a sibling of the card, not something drawn on it. Two reasons:
+	   the card clips its descendants (overflow: hidden keeps images and fills
+	   inside the rounded corners), so a ring drawn within would be cut off at the
+	   edge; and the card's own box-shadow is a token that may be "none", which
+	   cannot be combined with a second shadow in one declaration — the whole
+	   declaration would be dropped and the ring's halo with it. */
+	.card__focus-ring {
+		display: none;
+		position: absolute;
+		inset: 0;
+		border-radius: var(--components-card-corner-radius);
 		outline: var(--semantics-focus-ring-outline);
 		outline-offset: var(--semantics-focus-ring-outline-offset);
-		box-shadow: var(--components-card-box-shadow), var(--semantics-focus-ring-box-shadow);
+		box-shadow: var(--semantics-focus-ring-box-shadow);
+		pointer-events: none;
+	}
+
+	:host(.is-action-focused) .card__focus-ring {
+		display: block;
 	}
 
 

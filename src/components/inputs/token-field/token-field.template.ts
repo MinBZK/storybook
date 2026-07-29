@@ -78,7 +78,7 @@ function renderToken(component: NLDDTokenField, value: string, index: number): T
 	// holds the roving focus); the plain label alone gives a screen reader no hint.
 	const ariaLabel = component.readonly
 		? nothing
-		: `${label}, ${component._t('components.token-field.removable-hint')}`;
+		: `${label}, ${component._t('components.token-field.removable-lowercase-label')}`;
 
 	if (!component.readonly && component.tokenControl === 'menu') {
 		return html`

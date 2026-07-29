@@ -93,7 +93,7 @@ export const textEditorStyles = css`
 		--_corner-radius: var(--primitives-corner-radius-lg);
 		--_background-color: var(--semantics-input-fields-background-color);
 		--_highlight-border-color: var(--semantics-input-fields-border-color);
-		--_highlight-border-shadow: inset 0 0 0 var(--semantics-input-fields-border-thickness) var(--_highlight-border-color);
+		--_highlight-border-shadow: inset 0 0 0 var(--semantics-input-fields-border-width) var(--_highlight-border-color);
 		--_padding-block: var(--semantics-controls-md-inline-padding);
 		--_padding-inline: var(--semantics-controls-md-inline-padding);
 	}
@@ -148,14 +148,14 @@ export const textEditorStyles = css`
 
 	/* Prominent accent caret in both variants (the input-field variant additionally has the focus
 	   ring). The doubled class is purely for specificity — it outweighs
-	   CodeMirror's theme cursor colour without depending on an attribute. */
+	   CodeMirror's theme cursor color without depending on an attribute. */
 	:host .cm-cursor.cm-cursor {
 		/* accent-700: it keeps a >=525 lightness gap from both the base and tinted
 		   surfaces in light and dark (accent-600 fell just short on white), so the
 		   caret stays clearly visible without washing out. */
 		border-left-color: var(--primitives-color-accent-700);
 		border-left-width: var(--__caret-width);
-		/* A thin surface-coloured halo, like the drop cursor, so the caret stays legible
+		/* A thin surface-colored halo, like the drop cursor, so the caret stays legible
 		   even over a tinted token (annotation, inline code) where the accent alone can
 		   blend in. Blinks with the caret (opacity covers the shadow too). */
 		box-shadow: 0 0 0 var(--primitives-border-width-thin) var(--semantics-surfaces-base-background-color);
@@ -333,14 +333,14 @@ export const textEditorStyles = css`
 	}
 
 	/* The markdown highlight style tints the URL token (teal); make its span inherit
-	   the dimmed colour so the address reads as secondary, like the surrounding marks. */
+	   the dimmed color so the address reads as secondary, like the surrounding marks. */
 	.cm-md-url span {
 		color: inherit;
 	}
 
-	/* A bare / autolinked URL reads as the link itself: colour it like link text,
+	/* A bare / autolinked URL reads as the link itself: color it like link text,
 	   and override the highlight-style URL tint (teal) on its token span so the
-	   whole address is the link colour, not just the mark wrapper. */
+	   whole address is the link color, not just the mark wrapper. */
 	.cm-md-autolink {
 		color: var(--semantics-links-color);
 	}
@@ -359,7 +359,7 @@ export const textEditorStyles = css`
 		font-size: var(--primitives-font-size-90);
 	}
 
-	/* Markers: dimmed (secondary colour, not opacity, so contrast holds) and
+	/* Markers: dimmed (secondary color, not opacity, so contrast holds) and
 	   monospace at the 16px marker size — tidy, and a fixed-width leading prefix. */
 	.cm-md-mark {
 		color: var(--semantics-content-secondary-color);
@@ -404,13 +404,13 @@ export const textEditorStyles = css`
 	/* # Annotation overlay
 	   A light body tint + a dashed underline mark the annotated text; a solid
 	   badge (the nub) sits at the end carrying the count. One role for all
-	   annotations — the type is communicated by the consumer's pane, not colour.
-	   The dashed line is a non-colour cue (with the badge) for accessibility. */
+	   annotations — the type is communicated by the consumer's pane, not color.
+	   The dashed line is a non-color cue (with the badge) for accessibility. */
 
 	/* One cohesive yellow block: the light tint with rounded corners and a reserved
 	   space on the right for the solid nub (which lives inside this run, so it
 	   shares the tint and wraps with the text). The dashed underline stays as a
-	   non-colour cue. box-decoration-break keeps the tint + rounding on every
+	   non-color cue. box-decoration-break keeps the tint + rounding on every
 	   wrapped fragment; padding-block extends the tint without growing the line
 	   (vertical padding on an inline box is visual only). */
 	.cm-annotation {
@@ -437,7 +437,7 @@ export const textEditorStyles = css`
 	/* Selected annotation text in a darker yellow: the whole annotation
 	   (.cm-annotation.is-selected) or a slice of a partly-selected one (nested,
 	   .cm-annotation .is-selected). drawSelection's layer sits behind the tint, so this
-	   stands in for the hidden selection; the text takes the strongest content colour. */
+	   stands in for the hidden selection; the text takes the strongest content color. */
 	.cm-annotation.is-selected,
 	.cm-annotation .is-selected {
 		background-color: var(--_annotation-token-is-selected-background-color);
@@ -467,7 +467,7 @@ export const textEditorStyles = css`
 		background-color: var(--_annotation-token-badge-background-color);
 		box-shadow: inset 0 0 0 var(--primitives-border-width-thin) var(--_annotation-token-badge-highlight-border-color);
 		color: var(--_annotation-token-badge-content-color);
-		/* vertical-align: middle lands the nub ~1px below the text's em-box centre, and
+		/* vertical-align: middle lands the nub ~1px below the text's em-box center, and
 		   the optical middle of the ink sits higher again, so it reads low; nudge up onto
 		   it. The em is the badge's own (scaled-down) font size, so the value is larger
 		   than it looks and scales with the token in headings. */
@@ -527,7 +527,7 @@ export const textEditorStyles = css`
 
 	/* Drop cursor shown while dragging selected text to a new spot. An absolutely
 	   positioned overlay (not an inline widget), so it never splits an annotation it
-	   lands inside. A thin surface-coloured halo keeps the accent bar clearly visible
+	   lands inside. A thin surface-colored halo keeps the accent bar clearly visible
 	   over tinted tokens too. Left/top/height are set by the drop-cursor plugin. */
 	.cm-drag-and-drop-cursor {
 		position: absolute;
@@ -566,7 +566,7 @@ export const textEditorStyles = css`
 		background-color: var(--_link-badge-background-color);
 		box-shadow: inset 0 0 0 var(--primitives-border-width-thin) var(--_link-badge-highlight-border-color);
 		color: var(--_link-badge-content-color);
-		/* Match the annotation nub's optical centring next to the ink. */
+		/* Match the annotation nub's optical centering next to the ink. */
 		vertical-align: middle;
 		transform: translateY(-0.05em);
 		text-decoration: none;

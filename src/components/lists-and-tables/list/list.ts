@@ -12,7 +12,7 @@ import '../../actions/icon-button/icon-button.js';
 
 export type ListVariant = 'simple' | 'box';
 export type ListBackground = 'tinted' | 'base';
-export type ListType = 'list' | 'navigation' | 'listbox';
+export type ListType = 'list' | 'navigation' | 'listbox' | 'tree';
 
 export interface NLDDReorderEventDetail {
 	fromIndex: number;
@@ -24,17 +24,22 @@ export interface NLDDReorderEventDetail {
  *
  * The `type` attribute switches the list's a11y role and behavior:
  * - `list` (default) — `role="list"`, items `role="listitem"`. Reorderable allowed.
- *                     Items may individually be buttons or links; the list itself
- *                     has no special keyboard semantics.
- * - `navigation`     — host `role="navigation"`, items with `selected` get
- *                     `aria-current="page"` on their inner `<a>` or `<button>`.
- * - `listbox`        — an accessible, filterable listbox (combobox pattern). The
- *                     list renders its OWN search input (`role="combobox"`) pinned
- *                     above the options; `.list__items` becomes `role="listbox"`
- *                     and items become `role="option"`. Focus stays in the input,
- *                     the active option moves via `aria-activedescendant`, and
- *                     filtering is consumer-managed via the `input` event (toggle
- *                     `[hidden]` on items). See "Listbox" below.
+ * - `tree` — `role="tree"`, items `role="treeitem"`. Branch rows put their child
+ *   rows in their own `slot="children"`, which the item renders as a
+ *   `role="group"`. Level, position and set size are NOT authored: the
+ *   nesting represents the hierarchy, so assistive technology derives
+ *   them. A branch row must carry `expanded`; the group is hidden while
+ *   it is false. Visual indentation is the consumer's — repeat a
+ *   spacer-cell per level. Comes with its own keyboard, see "Tree" below.
+ * - `navigation` — host `role="navigation"`, items with `selected` get
+ *   `aria-current="page"` on their inner `<a>` or `<button>`.
+ * - `listbox` — an accessible, filterable listbox (combobox pattern). The
+ *   list renders its OWN search input (`role="combobox"`) pinned
+ *   above the options; `.list__items` becomes `role="listbox"`
+ *   and items become `role="option"`. Focus stays in the input,
+ *   the active option moves via `aria-activedescendant`, and
+ *   filtering is consumer-managed via the `input` event (toggle
+ *   `[hidden]` on items). See "Listbox" below.
  *
  * Selection state is consumer-managed: the list never mutates `selected` itself.
  *
@@ -59,6 +64,37 @@ export interface NLDDReorderEventDetail {
  * first visible one. `reorderable` and `arrow-navigation` are ignored in listbox
  * mode (listbox has its own keyboard).
  *
+ * ### Tree
+ *
+ * A tree is a composite widget, so it brings its own keyboard — `arrow-navigation`
+ * is implied and needn't be set:
+ * - ArrowDown / ArrowUp — move between the rows in the order they appear on
+ *   screen, the rows of an open branch included.
+ * - Home / End — first / last row.
+ * - ArrowRight — opens a closed branch; on an open one it steps to its first child.
+ * - ArrowLeft — closes an open branch; on a leaf it steps out to the parent row.
+ * - Enter / Space — open and close, the same as Right and Left. Only while focus
+ *   sits on the row itself: a row that is its own control, and a segmented
+ *   action you tabbed into, handle both keys themselves.
+ *
+ * Opening and closing runs through the row's own disclosure control — the
+ * segmented action marked `disclosure`, or the row itself when it is a button.
+ * The list activates that control rather than writing `expanded`, so the state
+ * keeps being set in one place: the consumer's handler. A row that is a link is
+ * never activated this way, since that would navigate away.
+ *
+ * The tree is one tab stop. Focus lands on the row itself when the row has no
+ * control of its own, because that is where `treeitem` sits and it makes
+ * assistive technology announce the row rather than a button inside it. Tab then
+ * walks the controls of THAT row (a chevron beside a checkbox, say) and leaves
+ * the list after the last one.
+ *
+ * A deliberate deviation: strictly speaking a row with several controls is a
+ * `treegrid`, not a `tree`. We keep the tree semantics — level and set size are
+ * what matters here, not rows and columns — and borrow the "Tab within the row"
+ * behaviour from the grid pattern. Should a tree with real columns come up, that
+ * is when `treegrid` earns its own type.
+ *
  * ### Reorder
  *
  * On reorder (type="list" + reorderable), the list dispatches `nldd-reorder` with
@@ -73,33 +109,23 @@ export interface NLDDReorderEventDetail {
  *
  * @attr {'simple'|'box'} variant - Visual style (default 'simple'): `simple` is a plain vertical strip with no chrome, `box` a framed card with rounded corners, fill and inset border ring
  * @attr {'tinted'|'base'} background - Surface fill for `variant="box"` (default 'tinted'). Use `base` on an already-tinted parent. No effect with `variant="simple"`.
- * @attr {'list'|'navigation'|'listbox'} type - A11y role and behavior (default 'list'). See the docblock above.
+ * @attr {'list'|'navigation'|'listbox'|'tree'} type - A11y role and behavior (default 'list'). See the docblock above.
  * @attr {boolean} reorderable - Enables drag-to-reorder and pushes `reorderable` onto the items. Only valid with `type="list"`; wins over `arrow-navigation` when both are set.
  * @attr {boolean} no-dividers - Hides the dividers between list items
- * @attr {boolean} arrow-navigation - Roving-tabindex arrow-key navigation: ArrowUp/ArrowDown move focus between items, Home/End jump to first/last, and the list becomes a single tab stop. Ignored when `reorderable` is active on a `type="list"`, and in listbox mode.
+ * @attr {boolean} arrow-navigation - Roving-tabindex arrow-key navigation: ArrowUp/ArrowDown move focus between the rows, Home/End jump to first/last, and the list becomes a single tab stop. Implied by `type="tree"` (which adds ArrowLeft/ArrowRight, see above). Ignored when `reorderable` is active on a `type="list"`, and in listbox mode.
  * @attr {string} height - Listbox only: caps the options' scroll region at this CSS length (e.g. '320px'). Unset means no cap.
  * @attr {string} empty-text - Text for the default empty-state dialog (falls back to the Dutch i18n default). Ignored when `[slot=empty]` is filled.
  * @attr {string} empty-supporting-text - Supporting text for the default empty-state dialog. Ignored when `[slot=empty]` is filled.
  * @attr {string} accessible-label - Accessible name, forwarded to the list in `type="list"` and to the search field in `type="listbox"`. For `type="navigation"` set `aria-label` / `aria-labelledby` on the element itself. Falls back to the i18n default.
  * @attr {object} translations - Override translation keys; unset keys fall back to Dutch
  *
- * @slot         - List items (`nldd-list-item`)
- * @slot toolbar - Controls below the search field (filters, sort, counts,
- *                 view toggles). Available for every type; collapses when empty.
- * @slot search-bar-end - Controls inline at the end of the search bar, beside the
- *                 search field (e.g. a filter or options button). Listbox only;
- *                 collapses when empty.
- * @slot empty   - Shown when no items are visible (all `[hidden]` or none). Defaults
- *                 to `nldd-inline-dialog` with `empty-text` / `empty-supporting-text`
- *                 (falling back to Dutch i18n "Geen items"). Slot content
- *                 overrides the default dialog entirely. In `type="listbox"` it is
- *                 suppressed while the search field is empty (no query yet), so the
- *                 consumer can show just the search field or its own hint outside
- *                 the list.
+ * @slot        - List items (`nldd-list-item`)
+ * @slot toolbar - Controls below the search field (filters, sort, counts, view toggles). Available for every type; collapses when empty.
+ * @slot search-bar-end - Controls inline at the end of the search bar, beside the search field (e.g. a filter or options button). Listbox only; collapses when empty.
+ * @slot empty - Shown when no items are visible (all `[hidden]` or none). Defaults to `nldd-inline-dialog` with `empty-text` / `empty-supporting-text` (falling back to Dutch i18n "Geen items"). Slot content overrides the default dialog entirely. In `type="listbox"` it is suppressed while the search field is empty (no query yet), so the consumer can show just the search field or its own hint outside the list.
  *
  * @fires nldd-reorder - Reorderable `type="list"`: `{ fromIndex, toIndex }` on drop
- * @fires input        - `type="listbox"`: search value changed; `{ value }`. Toggle
- *                       `[hidden]` on items to filter.
+ * @fires input - `type="listbox"`: search value changed; `{ value }`. Toggle `[hidden]` on items to filter.
  */
 @customElement('nldd-list')
 export class NLDDList extends LitElement {
@@ -266,21 +292,24 @@ export class NLDDList extends LitElement {
 		const searchBarEndSlot = this.shadowRoot?.querySelector<HTMLSlotElement>('slot[name="search-bar-end"]');
 		if (searchBarEndSlot) this._hasSearchBarEnd = searchBarEndSlot.assignedElements().length > 0;
 
-		// Watch direct children for add/remove (nldd-list-item gains/lose) and
-		// for `hidden` toggles on those direct children (consumer-driven
-		// filtering). `subtree: true` is required because `attributes` on the
-		// host itself isn't relevant — we need `hidden` changes on the items.
-		// The callback filters mutations so we only work when a direct child
-		// is affected; nested `hidden` toggles on e.g. cells inside items
-		// (which can happen via container-query `[hidden]` in visibility-mixin)
-		// no longer trigger item/empty recalculation.
+		// Watch for rows being added or removed, for `hidden` toggles on them
+		// (consumer-driven filtering) and for branches opening and closing, since
+		// all three change which row paints first and last. `subtree: true` is
+		// required: a branch's rows sit inside the branch, not in the list. The
+		// callback filters on the target being a row, so `hidden` toggles on e.g.
+		// cells inside a row (container-query driven, via visibility-mixin) don't
+		// trigger a recalculation.
 		this._itemsObserver = new MutationObserver((mutations) => {
+			const isRow = (node: Node | null) =>
+				node instanceof Element && node.tagName.toLowerCase() === 'nldd-list-item';
 			const relevant = mutations.some(m => {
-				if (m.type === 'childList') return m.target === this;
-				if (m.type === 'attributes' && m.attributeName === 'hidden') {
-					return m.target instanceof Element && m.target.parentElement === this;
-				}
-				return false;
+				// A branch's rows are added to and removed from the branch, not the
+				// list, and opening a branch changes which row paints last.
+				if (m.type === 'childList') return m.target === this || isRow(m.target);
+				if (m.type !== 'attributes' || !isRow(m.target)) return false;
+				if (m.attributeName === 'expanded') return true;
+				return m.attributeName === 'hidden'
+					&& (m.target.parentElement === this || isRow(m.target.parentElement));
 			});
 			if (!relevant) return;
 			this._updateItems();
@@ -290,7 +319,7 @@ export class NLDDList extends LitElement {
 			childList: true,
 			subtree: true,
 			attributes: true,
-			attributeFilter: ['hidden'],
+			attributeFilter: ['hidden', 'expanded'],
 		});
 
 		this._applyHostType();
@@ -367,7 +396,7 @@ export class NLDDList extends LitElement {
 		if (this.type === 'navigation') {
 			this.setAttribute('role', 'navigation');
 			if (!this.hasAttribute('aria-label') && !this.hasAttribute('aria-labelledby')) {
-				this.setAttribute('aria-label', this._t('components.list.navigation-label-text'));
+				this.setAttribute('aria-label', this._t('components.list.navigation-accessible-label'));
 				this.setAttribute('data-nldd-auto-label', '');
 			}
 		} else {
@@ -378,7 +407,7 @@ export class NLDDList extends LitElement {
 				// Only strip the label we set ourselves. If the consumer overrode
 				// `aria-label` after our auto-set, the value no longer matches and
 				// we leave it intact. Either way, clear the sentinel.
-				const autoLabel = this._t('components.list.navigation-label-text');
+				const autoLabel = this._t('components.list.navigation-accessible-label');
 				if (this.getAttribute('aria-label') === autoLabel) {
 					this.removeAttribute('aria-label');
 				}
@@ -402,15 +431,32 @@ export class NLDDList extends LitElement {
 		return this._getItems().filter(item => !item.hasAttribute('hidden'));
 	}
 
+	/** Every row in the tree, top-level rows and nested ones alike, so a stale
+	 *  is-first / is-last never survives on a row deeper down. */
+	private _getAllRows(rows = this._getItems()): NLDDListItem[] {
+		return rows.flatMap(row => [row, ...this._getAllRows(row.childRows)]);
+	}
+
+	/** Rows in the order they paint: an expanded branch's children sit between
+	 *  the branch and the next top-level row, so the last row of the list is the
+	 *  deepest last child, not the last item in the list's own slot. */
+	private _getPaintedRows(rows = this._getItems()): NLDDListItem[] {
+		return rows
+			.filter(row => !row.hasAttribute('hidden'))
+			.flatMap(row => (row.expanded ? [row, ...this._getPaintedRows(row.childRows)] : [row]));
+	}
+
 	private _updateItems() {
 		const items = this._getItems();
-		const visibleItems = items.filter(item => !item.hasAttribute('hidden'));
-		const firstVisible = visibleItems[0];
-		const lastVisible = visibleItems[visibleItems.length - 1];
+		const paintedRows = this._getPaintedRows(items);
+		const firstVisible = paintedRows[0];
+		const lastVisible = paintedRows[paintedRows.length - 1];
 		const reorderActive = this.reorderable && this.type === 'list';
+		this._getAllRows(items).forEach((row) => {
+			row.classList.toggle('is-first', row === firstVisible);
+			row.classList.toggle('is-last', row === lastVisible);
+		});
 		items.forEach((item) => {
-			item.classList.toggle('is-first', item === firstVisible);
-			item.classList.toggle('is-last', item === lastVisible);
 			if (reorderActive) {
 				item.setAttribute('reorderable', '');
 			} else {
@@ -643,15 +689,24 @@ export class NLDDList extends LitElement {
 		// Listbox has its own keyboard (on the search input) and supersedes the
 		// roving-tabindex arrow-nav — never run both.
 		if (this.type === 'listbox') return false;
+		// A tree is a composite widget: role="tree" promises arrow keys, so it
+		// gets them without the consumer asking. Everywhere else arrow-nav stays
+		// opt-in, because a plain list is not a widget and Tab per row is fine.
+		if (this.type === 'tree') return true;
 		return this.arrowNavigation && !(this.reorderable && this.type === 'list');
 	}
 
-	/** Interactive, visible items — the roving stops. Non-interactive items (no
-	 *  link/button) and hidden items are skipped. */
+	/** Interactive, painted rows — the roving stops, in the order they appear on
+	 *  screen. Non-interactive rows (no link/button) and hidden ones are skipped.
+	 *  Painted, not top-level: in a tree the rows of an open branch sit between
+	 *  the branch and the next top-level row, and arrows have to walk them too. */
 	private _getInteractiveItems(): NLDDListItem[] {
-		return this._getItems().filter(
-			(item) => !item.hasAttribute('hidden') && Boolean(item.href || item.button),
-		);
+		const painted = this._getPaintedRows();
+		// In a tree every row is a stop, including one that only holds segmented
+		// actions: the row itself takes focus (that is where role="treeitem"
+		// sits) and Tab reaches the controls inside it.
+		if (this.type === 'tree') return painted;
+		return painted.filter((row) => Boolean(row.href || row.button));
 	}
 
 	private _rovingScheduled = false;
@@ -674,8 +729,8 @@ export class NLDDList extends LitElement {
 	 *  interactive item). */
 	private _applyRoving() {
 		const active = this._arrowNavActive;
-		const items = this._getItems();
-		items.forEach((item) => { item._arrowNavigation = active; });
+		const rows = this._getAllRows();
+		rows.forEach((row) => { row._arrowNavigation = active; });
 		// Best-effort AT discoverability: role="list"/"navigation" doesn't imply
 		// arrow-key navigation the way listbox/menu would, so advertise the keys via
 		// aria-keyshortcuts (queryable) and a plain-language aria-description (surfaced
@@ -688,21 +743,30 @@ export class NLDDList extends LitElement {
 			this.removeAttribute('aria-description');
 		}
 		if (!active) {
-			items.forEach((item) => { item._rovingActive = false; });
+			rows.forEach((row) => { row._rovingActive = false; });
 			return;
 		}
 		const interactive = this._getInteractiveItems();
 		if (interactive.length === 0) return;
-		const entry = interactive.find((item) => item._rovingActive)
-			?? interactive.find((item) => item.selected)
+		const entry = interactive.find((row) => row._rovingActive)
+			?? interactive.find((row) => row.selected)
 			?? interactive[0];
-		items.forEach((item) => { item._rovingActive = item === entry; });
+		rows.forEach((row) => {
+			row._rovingActive = row === entry;
+			row._syncRovingTabStops();
+		});
 	}
 
-	// items defaults to all items; _onArrowNav passes the interactive set it already
-	// computed (non-interactive items are kept out of roving, so they stay false).
-	private _setRovingActive(activeItem: NLDDListItem, items: NLDDListItem[] = this._getItems()) {
-		items.forEach((item) => { item._rovingActive = item === activeItem; });
+	// items defaults to every row, nested ones included; _onArrowNav passes the
+	// interactive set it already computed (non-interactive rows are kept out of
+	// roving, so they stay false).
+	private _setRovingActive(activeItem: NLDDListItem, items: NLDDListItem[] = this._getAllRows()) {
+		items.forEach((item) => {
+			item._rovingActive = item === activeItem;
+			// Straight away, not on the next render: the caller hands focus to the
+			// row in the same tick, and a row without a tabindex cannot take it.
+			item._syncRovingTabStops();
+		});
 	}
 
 	private _onFocusIn = (event: FocusEvent) => {
@@ -712,13 +776,21 @@ export class NLDDList extends LitElement {
 		) as NLDDListItem | undefined;
 		// Keep the roving entry point wherever focus actually lands (Tab in, a
 		// click, or programmatic focus), so arrows continue from there.
-		if (item && (item.href || item.button) && !item._rovingActive) {
+		if (item && !item._rovingActive && this._getInteractiveItems().includes(item)) {
 			this._setRovingActive(item);
 		}
 	};
 
 	private _onArrowNav(event: KeyboardEvent) {
 		const { key } = event;
+		if (this.type === 'tree' && (key === 'ArrowRight' || key === 'ArrowLeft')) {
+			this._onTreeHorizontal(event, key);
+			return;
+		}
+		if (this.type === 'tree' && (key === 'Enter' || key === ' ')) {
+			this._onTreeActivate(event);
+			return;
+		}
 		if (key !== 'ArrowUp' && key !== 'ArrowDown' && key !== 'Home' && key !== 'End') return;
 		const items = this._getInteractiveItems();
 		if (items.length === 0) return;
@@ -739,12 +811,65 @@ export class NLDDList extends LitElement {
 		target.focus();
 	}
 
+	/** Tree only: Right opens a closed branch and steps into an open one, Left
+	 *  closes an open branch and steps out of a leaf. Opening and closing runs
+	 *  through the row's own disclosure control, so `expanded` keeps being
+	 *  written in one place — the consumer's handler. */
+	private _onTreeHorizontal(event: KeyboardEvent, key: 'ArrowRight' | 'ArrowLeft') {
+		const rows = this._getInteractiveItems();
+		const current = rows.find((row) => row._rovingActive);
+		if (!current) return;
+		const children = current.childRows.filter(row => !row.hasAttribute('hidden'));
+		const isOpen = children.length > 0 && current.expanded === true;
+
+		if (key === 'ArrowRight') {
+			if (children.length === 0) return;
+			event.preventDefault();
+			if (!isOpen) {
+				current._activateDisclosure();
+				return;
+			}
+			this._moveRovingTo(children[0]);
+			return;
+		}
+
+		if (isOpen) {
+			event.preventDefault();
+			current._activateDisclosure();
+			return;
+		}
+		const parent = current.parentRow;
+		if (!parent) return;
+		event.preventDefault();
+		this._moveRovingTo(parent);
+	}
+
+	/** Tree only: Enter and Space open and close the row, the same thing Right and
+	 *  Left do. Only when focus sits on the row ITSELF — a row that is its own
+	 *  control, and a segmented action you tabbed into, handle both keys
+	 *  natively, and acting here as well would toggle twice. */
+	private _onTreeActivate(event: KeyboardEvent) {
+		const target = event.target;
+		if (!(target instanceof Element) || target.tagName.toLowerCase() !== 'nldd-list-item') return;
+		const row = target as NLDDListItem;
+		if (row.shadowRoot?.activeElement) return;
+		if (row._activateDisclosure()) event.preventDefault();
+	}
+
+	private _moveRovingTo(row: NLDDListItem) {
+		this._setRovingActive(row);
+		row.focus();
+	}
+
 	private _warnArrowNav() {
 		if (!import.meta.env?.DEV) return;
 		if (this.arrowNavigation && this.reorderable && this.type === 'list') {
 			console.warn('nldd-list: `arrow-navigation` and `reorderable` both use the arrow keys; `reorderable` wins and arrow-navigation is ignored.');
 		}
-		if (this._arrowNavActive) {
+		// A tree row is meant to hold more than one control (a chevron beside a
+		// checkbox); there Tab walks the current row, so the warning below would
+		// be noise.
+		if (this._arrowNavActive && this.type !== 'tree') {
 			// Best-effort, light-DOM only: a slotted custom element (e.g. nldd-switch)
 			// keeps its focusable control in its own shadow root, so this query won't
 			// catch every extra control. Detecting custom elements generically would
@@ -911,12 +1036,15 @@ export class NLDDList extends LitElement {
 		const inner = item.shadowRoot?.querySelector<HTMLElement>('.list-item') ?? item;
 		const rect = inner.getBoundingClientRect();
 
-		// Insert placeholder at item's current position, sized to match the actual item
+		// Insert placeholder at item's current position, sized to match the space the
+		// row occupied: its own box plus the boundary margin that carries the divider,
+		// so nothing below it shifts while the row is lifted.
+		const boundary = parseFloat(getComputedStyle(inner).marginBlockEnd) || 0;
 		this._placeholder = document.createElement('div');
 		this._placeholder.className = 'nldd-list-drag-placeholder';
 		this._placeholder.setAttribute('aria-hidden', 'true');
 		this._placeholder.setAttribute('data-nldd-placeholder', '');
-		this._placeholder.style.height = `${rect.height}px`;
+		this._placeholder.style.height = `${rect.height + boundary}px`;
 		item.after(this._placeholder);
 
 		item.classList.add('is-dragging');
@@ -1005,7 +1133,7 @@ export class NLDDList extends LitElement {
 	private _cancelDrag() {
 		if (!this._draggingEl) return;
 		this._cleanupDrag();
-		this._announce(this._t('components.list.reorder-cancelled-text'));
+		this._announce(this._t('components.list.reorder-canceled-text'));
 	}
 
 	private _cleanupDrag() {
@@ -1059,7 +1187,7 @@ export class NLDDList extends LitElement {
 
 	override render() {
 		return template({
-			itemsLabel: this.accessibleLabel || this._t('components.list.items-label-text'),
+			itemsLabel: this.accessibleLabel || this._t('components.list.items-accessible-label'),
 			hasToolbar: this._hasToolbar,
 			type: this.type,
 			isEmpty: this._isEmpty,
@@ -1069,8 +1197,8 @@ export class NLDDList extends LitElement {
 				listboxId: this._listboxId,
 				searchValue: this._searchValue,
 				activeId: this._searchFocused ? this._activeId : '',
-				searchPlaceholder: this._t('components.list.search-placeholder-text'),
-				searchAccessibleLabel: this.accessibleLabel || this._t('components.list.search-placeholder-text'),
+				searchPlaceholder: this._t('components.list.search-placeholder-label'),
+				searchAccessibleLabel: this.accessibleLabel || this._t('components.list.search-placeholder-label'),
 				searchClearLabel: this._t('components.list.search-clear-action'),
 				hasSearchBarEnd: this._hasSearchBarEnd,
 				onSearchInput: this._onSearchInput,

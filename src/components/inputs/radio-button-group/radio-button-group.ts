@@ -6,10 +6,10 @@
  * Use inside nldd-form-field which provides the group label.
  *
  * @element nldd-radio-button-group
- * @attr {string}  name     - Forwarded to all slotted nldd-radio-button-field elements
+ * @attr {string} name - Forwarded to all slotted nldd-radio-button-field elements
  * @attr {boolean} disabled - Disables all slotted fields
  * @attr {boolean} required - Marks the group as required
- * @attr {string}  accessible-labelled-by - Id of an external label element, set as aria-labelledby on the group
+ * @attr {string} accessible-labeled-by - Id of an external label element, set as aria-labelledby on the group
  *
  * @slot - Slot for nldd-radio-button-field elements
  *
@@ -34,8 +34,8 @@ export class NLDDRadioButtonGroup extends LitElement {
 	@property({ type: Boolean, reflect: true })
 	required = false;
 
-	@property({ type: String, attribute: 'accessible-labelled-by' })
-	accessibleLabelledBy = '';
+	@property({ type: String, attribute: 'accessible-labeled-by' })
+	accessibleLabeledBy = '';
 
 	override connectedCallback(): void {
 		super.connectedCallback();
@@ -54,9 +54,9 @@ export class NLDDRadioButtonGroup extends LitElement {
 		if (changed.has('name') || changed.has('disabled') || changed.has('required')) {
 			this._syncFields();
 		}
-		if (changed.has('accessibleLabelledBy')) {
-			if (this.accessibleLabelledBy) {
-				this.setAttribute('aria-labelledby', this.accessibleLabelledBy);
+		if (changed.has('accessibleLabeledBy')) {
+			if (this.accessibleLabeledBy) {
+				this.setAttribute('aria-labelledby', this.accessibleLabeledBy);
 			} else {
 				this.removeAttribute('aria-labelledby');
 			}
@@ -98,7 +98,12 @@ export class NLDDRadioButtonGroup extends LitElement {
 		const changedField = e.target as NLDDRadioButtonField;
 		if (!changedField.checked) return;
 		this._getFields().forEach(field => {
-			if (field !== changedField) field.checked = false;
+			if (field === changedField) return;
+			field.checked = false;
+			// Synchronously, not via the field's own update cycle: the change
+			// event is still propagating, and a consumer serializing the form in
+			// its listener would otherwise still see this field's old value.
+			field.commitFormValue?.();
 		});
 	};
 
@@ -122,7 +127,9 @@ export class NLDDRadioButtonGroup extends LitElement {
 		e.preventDefault();
 
 		activeField.checked = false;
+		activeField.commitFormValue?.();
 		nextField.checked = true;
+		nextField.commitFormValue?.();
 
 		const input = nextField.shadowRoot
 			?.querySelector('nldd-radio-button')

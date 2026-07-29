@@ -2,9 +2,9 @@ import { describe, it, expect } from 'vitest';
 import { encodeLqip, encodePixelDataToLqip } from './lqip-encoder.js';
 
 /**
- * Renders a solid-colour ImageBitmap of the given RGB so the encoder gets
+ * Renders a solid-color ImageBitmap of the given RGB so the encoder gets
  * a deterministic input. Every cell and the dominant histogram bucket all
- * end up with the same colour, so all seven output bytes encode the same
+ * end up with the same color, so all seven output bytes encode the same
  * Oklab quantisation of (r, g, b).
  */
 async function makeSolidBitmap(r: number, g: number, b: number): Promise<ImageBitmap> {
@@ -68,16 +68,16 @@ describe('encodeLqip', () => {
 		expect(bits[0].ll).toBe(3);
 	});
 
-	it('encodes mid-grey near the centre of the L range', async () => {
+	it('encodes mid-gray near the center of the L range', async () => {
 		const bitmap = await makeSolidBitmap(128, 128, 128);
 		const lqip = await encodeLqip(bitmap);
 		const { bits } = parseLqip(lqip);
-		// Mid-grey Oklab L ≈ 0.6 → quantised L lands at bucket 1 or 2 in the
+		// Mid-gray Oklab L ≈ 0.6 → quantised L lands at bucket 1 or 2 in the
 		// 0..3 range that maps to [0.2, 0.8].
 		expect(bits[0].ll === 1 || bits[0].ll === 2).toBe(true);
 	});
 
-	it('produces different strings for visibly different colours', async () => {
+	it('produces different strings for visibly different colors', async () => {
 		const red = await encodeLqip(await makeSolidBitmap(220, 30, 30));
 		const blue = await encodeLqip(await makeSolidBitmap(30, 30, 220));
 		expect(red).not.toBe(blue);
@@ -85,7 +85,7 @@ describe('encodeLqip', () => {
 });
 
 describe('encodePixelDataToLqip — pure-function snapshot tests', () => {
-	/** Build a width×height RGBA buffer where every pixel has the given colour. */
+	/** Build a width×height RGBA buffer where every pixel has the given color. */
 	function solid(r: number, g: number, b: number, width: number, height: number): Uint8ClampedArray {
 		const buf = new Uint8ClampedArray(width * height * 4);
 		for (let i = 0; i < buf.length; i += 4) {
@@ -133,7 +133,7 @@ describe('encodePixelDataToLqip — pure-function snapshot tests', () => {
 		expect(c1.ll).toBeLessThan(c3.ll);
 	});
 
-	it('round-trips solid colours via the pure function and the browser wrapper to the same value', async () => {
+	it('round-trips solid colors via the pure function and the browser wrapper to the same value', async () => {
 		const wrapperResult = await encodeLqip(await (async () => {
 			const c = document.createElement('canvas');
 			c.width = 8; c.height = 6;

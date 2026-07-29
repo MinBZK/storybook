@@ -31,14 +31,14 @@
  *
  * @element nldd-byline
  *
- * @attr {string} text            - Naamregel (bijv. "Jan Jansen en Piet Pietersen"); fallback wanneer de text-slot leeg is
+ * @attr {string} text - Naamregel (bijv. "Jan Jansen en Piet Pietersen"); fallback wanneer de text-slot leeg is
  * @attr {string} supporting-text - Ondersteunende tekst onder de naamregel (bijv. rol of datum); fallback wanneer de supporting-text-slot leeg is
- * @attr {string} avatar-src      - Bron van één avatar (alternatief voor de avatars-slot); genegeerd zodra de avatars-slot gevuld is
- * @attr {string} avatar-srcset   - Responsive source set voor de avatar-src-afbeelding
- * @attr {string} avatar-alt      - Alt-tekst voor de avatar-src-afbeelding; leeg = decoratief
+ * @attr {string} avatar-src - Bron van één avatar (alternatief voor de avatars-slot); genegeerd zodra de avatars-slot gevuld is
+ * @attr {string} avatar-srcset - Responsive source set voor de avatar-src-afbeelding
+ * @attr {string} avatar-alt - Alt-tekst voor de avatar-src-afbeelding; leeg = decoratief
  *
- * @slot avatars         - Eén of meer img-elementen; gestyled als ronde, overlappende avatars
- * @slot text            - Naamregel als rijke inhoud (bijv. een link naar het auteursprofiel)
+ * @slot avatars - Eén of meer img-elementen; gestyled als ronde, overlappende avatars
+ * @slot text - Naamregel als rijke inhoud (bijv. een link naar het auteursprofiel)
  * @slot supporting-text - Ondersteunende tekst als rijke inhoud (bijv. een time-element)
  */
 import { LitElement } from 'lit';

@@ -2,11 +2,11 @@ import { html, svg, nothing } from 'lit';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import type { NLDDProgressCircle } from './progress-circle.js';
 
-// SVG geometry: viewBox 100×100, ring centred. The stroke would extend
+// SVG geometry: viewBox 100×100, ring centered. The stroke would extend
 // half-width past the path on each side; at small sizes that half-stroke is
 // large in user units (size 16, stroke 2px → 12.5u, half = 6.25u) and could
 // clip outside the viewBox. So radius shrinks with size so that the stroke's
-// outer edge aligns with the viewBox edge (50u from centre).
+// outer edge aligns with the viewBox edge (50u from center).
 //
 // Stroke width scales with circle size for visual harmony — thin strokes look
 // out of place on a huge ring and thick strokes overpower a tiny ring. Must
@@ -60,7 +60,7 @@ export function progressCircleTemplate(component: NLDDProgressCircle, onSlotChan
 	const radius = getRadius(sizeInPixels);
 	const circumference = getCircumference(sizeInPixels);
 	const borderErodeRadius = getBorderErodeRadius(sizeInPixels).toFixed(3);
-	// Unique segment colours in use — one border filter each (not all 24).
+	// Unique segment colors in use — one border filter each (not all 24).
 	const arcColors = [...new Set(arcs.map(arc => arc.color))];
 	// Per-instance suffix: keeps the SVG filter ids + their url(#…) references
 	// unique so two circles on one page never resolve to each other's filters.
@@ -69,7 +69,7 @@ export function progressCircleTemplate(component: NLDDProgressCircle, onSlotChan
 	// translated fallback. aria-labelledby would be cleaner but VoiceOver on
 	// Safari can't resolve IDREFs scoped to a shadow root, so we duplicate
 	// the string into aria-label for cross-browser screen-reader support.
-	const ariaLabel = component.text || component._t('components.progress-circle.label-text');
+	const ariaLabel = component.text || component._t('components.progress-circle.accessible-label');
 	const circle = html`
 		<div class="progress-circle__circle"
 			role="progressbar"

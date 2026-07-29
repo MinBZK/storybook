@@ -10,8 +10,8 @@ export const paginationStyles = css`
 	/* # Host */
 
 	:host {
-		--_z-index-selected: 1;
-		--_z-index-focus: 2;
+		--_selected-z-index: 1;
+		--_focus-z-index: 2;
 
 		${inheritedTextReset}
 		display: block;
@@ -65,7 +65,7 @@ export const paginationStyles = css`
 	.pagination__previous-button:focus-within,
 	.pagination__next-button:focus-within {
 		position: relative;
-		z-index: var(--_z-index-selected);
+		z-index: var(--_selected-z-index);
 	}
 
 
@@ -77,7 +77,7 @@ export const paginationStyles = css`
 		box-sizing: border-box;
 		display: inline-flex;
 		position: relative;
-		z-index: var(--_z-index-selected);
+		z-index: var(--_selected-z-index);
 		margin: 0;
 		border: none;
 		border-radius: var(--semantics-controls-md-corner-radius);
@@ -136,7 +136,7 @@ export const paginationStyles = css`
 	}
 
 	.pagination__page-button:focus-visible {
-		z-index: var(--_z-index-focus);
+		z-index: var(--_focus-z-index);
 		outline: var(--semantics-focus-ring-outline);
 		outline-offset: var(--semantics-focus-ring-outline-offset);
 		box-shadow: var(--semantics-focus-ring-box-shadow), inset 0 0 0 var(--primitives-border-width-thin) var(--_highlight-border-color);

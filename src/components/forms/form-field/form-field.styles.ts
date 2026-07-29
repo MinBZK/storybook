@@ -32,6 +32,7 @@ export const formFieldStyles = css`
 		display: flex;
 		flex-direction: column;
 		gap: var(--_gap);
+		isolation: isolate;
 	}
 
 	:host([label-alignment="left"]) .form-field,
@@ -176,7 +177,7 @@ export const formFieldStyles = css`
 	}
 
 	:host(.has-errors) .form-field__errors {
-		margin-top: var(--primitives-space-2);
+		margin-top: var(--primitives-space-3);
 	}
 `;
 
@@ -190,11 +191,17 @@ export const formFieldHelpTextStyles = css`
 		display: contents;
 	}
 
+	/* display: contents outranks the UA [hidden] rule, so restate it here or
+	   consumers cannot hide the help text (e.g. behind a period toggle). */
+	:host([hidden]) {
+		display: none;
+	}
+
 
 	/* # Help text */
 
 	.form-field__help-text {
-		margin: var(--primitives-space-2) 0 0;
+		margin: var(--primitives-space-3) 0 0;
 		color: var(--semantics-content-color);
 		font: var(--primitives-font-body-sm-regular-tight);
 	}
@@ -244,6 +251,12 @@ export const formFieldErrorTextStyles = css`
 
 	:host([invalid]) {
 		display: block;
+	}
+
+	/* After the invalid rule at equal specificity: hidden must also win on an
+	   error text that is currently shown. */
+	:host([hidden]) {
+		display: none;
 	}
 
 

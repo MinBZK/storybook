@@ -3,6 +3,8 @@ import { fixture, cleanup, waitForUpdate } from '../../../test-utils.js';
 import './list.js';
 import '../list-item/list-item.js';
 import '../cells/text-cell/text-cell.js';
+import '../cells/icon-cell/icon-cell.js';
+import '../list-item-action/list-item-action.js';
 
 describe('nldd-list', () => {
 	let el: HTMLElement;
@@ -418,6 +420,188 @@ describe('nldd-list', () => {
 		await waitForUpdate(el);
 		expect(items[0].classList.contains('is-first')).toBe(false);
 		expect(items[1].classList.contains('is-first')).toBe(true);
+	});
+
+	it('tree: is-last follows the deepest child of an expanded branch', async () => {
+		el = await fixture(`
+			<nldd-list type="tree">
+				<nldd-list-item button>A</nldd-list-item>
+				<nldd-list-item button expanded>
+					B
+					<nldd-list-item slot="children" button>B1</nldd-list-item>
+					<nldd-list-item slot="children" button>B2</nldd-list-item>
+				</nldd-list-item>
+			</nldd-list>
+		`);
+		await waitForUpdate(el);
+		const branch = el.querySelectorAll('nldd-list-item')[1];
+		const children = [...branch.querySelectorAll('nldd-list-item')];
+		expect(branch.classList.contains('is-last')).toBe(false);
+		expect(children[1].classList.contains('is-last')).toBe(true);
+		// Collapsing hands is-last back to the branch: its children stop painting.
+		branch.removeAttribute('expanded');
+		await waitForUpdate(el);
+		expect(branch.classList.contains('is-last')).toBe(true);
+		expect(children[1].classList.contains('is-last')).toBe(false);
+	});
+
+	it('tree: arrow navigation walks the rows of an open branch', async () => {
+		el = await fixture(`
+			<nldd-list type="tree" arrow-navigation>
+				<nldd-list-item button expanded>
+					A
+					<nldd-list-item slot="children" button>A1</nldd-list-item>
+				</nldd-list-item>
+				<nldd-list-item button>B</nldd-list-item>
+			</nldd-list>
+		`);
+		await waitForUpdate(el);
+		// querySelectorAll walks into the branch, so pick the rows apart by role.
+		const branch = el.querySelector('nldd-list-item')!;
+		const child = branch.querySelector('nldd-list-item')!;
+		const leaf = [...el.querySelectorAll('nldd-list-item')].find(
+			row => row !== branch && row !== child,
+		)!;
+		el.dispatchEvent(new KeyboardEvent('keydown', { key: 'ArrowDown', bubbles: true, composed: true }));
+		await waitForUpdate(el);
+		// Down from the branch lands on its child, not on the next top-level row.
+		expect(child._rovingActive).toBe(true);
+		expect(leaf._rovingActive).toBe(false);
+	});
+
+	it('tree: arrow navigation works without the attribute', async () => {
+		el = await fixture(`
+			<nldd-list type="tree">
+				<nldd-list-item button>A</nldd-list-item>
+				<nldd-list-item button>B</nldd-list-item>
+			</nldd-list>
+		`);
+		await waitForUpdate(el);
+		const rows = [...el.querySelectorAll('nldd-list-item')];
+		el.dispatchEvent(new KeyboardEvent('keydown', { key: 'ArrowDown', bubbles: true, composed: true }));
+		await waitForUpdate(el);
+		expect(rows[1]._rovingActive).toBe(true);
+	});
+
+	it('tree: a row without its own control is a roving stop on the host', async () => {
+		el = await fixture(`
+			<nldd-list type="tree">
+				<nldd-list-item>
+					<nldd-list-item-action button disclosure><nldd-icon-cell icon="chevron-right"></nldd-icon-cell></nldd-list-item-action>
+					<nldd-text-cell text="A"></nldd-text-cell>
+				</nldd-list-item>
+				<nldd-list-item>
+					<nldd-list-item-action button disclosure><nldd-icon-cell icon="chevron-right"></nldd-icon-cell></nldd-list-item-action>
+					<nldd-text-cell text="B"></nldd-text-cell>
+				</nldd-list-item>
+			</nldd-list>
+		`);
+		await waitForUpdate(el);
+		const rows = [...el.querySelectorAll('nldd-list-item')];
+		expect(rows[0].getAttribute('tabindex')).toBe('0');
+		// No tabindex at all on the others, not -1: a shadow host with a tabindex
+		// is a focus scope, and Chromium skips such a scope when tabbing back if
+		// the host isn't tabbable — which made every row inside a branch
+		// unreachable with Shift+Tab.
+		expect(rows[1].hasAttribute('tabindex')).toBe(false);
+		// Within the current row Tab reaches the segmented action; elsewhere not.
+		const controls = rows.map(row => row.querySelector('nldd-list-item-action')!
+			.shadowRoot!.querySelector('.list-item-action')!);
+		expect(controls[0].getAttribute('tabindex')).toBe('0');
+		expect(controls[1].getAttribute('tabindex')).toBe('-1');
+	});
+
+	it('tree: ArrowRight opens a closed branch through its own disclosure control', async () => {
+		el = await fixture(`
+			<nldd-list type="tree">
+				<nldd-list-item button>
+					A
+					<nldd-list-item slot="children" button>A1</nldd-list-item>
+				</nldd-list-item>
+			</nldd-list>
+		`);
+		await waitForUpdate(el);
+		const branch = el.querySelector('nldd-list-item')!;
+		let clicks = 0;
+		branch.addEventListener('click', () => { clicks += 1; });
+		el.dispatchEvent(new KeyboardEvent('keydown', { key: 'ArrowRight', bubbles: true, composed: true }));
+		await waitForUpdate(el);
+		// The list activates the control; writing `expanded` stays the consumer's.
+		expect(clicks).toBe(1);
+		expect(branch.expanded).toBe(undefined);
+	});
+
+	it('tree: Enter and Space open the row from the row itself', async () => {
+		el = await fixture(`
+			<nldd-list type="tree">
+				<nldd-list-item>
+					<nldd-list-item-action button disclosure><nldd-icon-cell icon="chevron-right"></nldd-icon-cell></nldd-list-item-action>
+					<nldd-text-cell text="A"></nldd-text-cell>
+					<nldd-list-item slot="children"><nldd-text-cell text="A1"></nldd-text-cell></nldd-list-item>
+				</nldd-list-item>
+			</nldd-list>
+		`);
+		await waitForUpdate(el);
+		const branch = el.querySelector('nldd-list-item')!;
+		const chevron = branch.querySelector('nldd-list-item-action')!;
+		let clicks = 0;
+		chevron.addEventListener('click', () => { clicks += 1; });
+		branch.focus();
+
+		for (const key of ['Enter', ' ']) {
+			const event = new KeyboardEvent('keydown', { key, bubbles: true, composed: true, cancelable: true });
+			branch.dispatchEvent(event);
+			await waitForUpdate(el);
+			expect(event.defaultPrevented).toBe(true);
+		}
+		expect(clicks).toBe(2);
+
+		// From the action itself the button handles both keys; acting here too
+		// would toggle twice.
+		const fromAction = new KeyboardEvent('keydown', { key: 'Enter', bubbles: true, composed: true, cancelable: true });
+		chevron.dispatchEvent(fromAction);
+		await waitForUpdate(el);
+		expect(clicks).toBe(2);
+	});
+
+	it('tree: opening a branch keeps focus on the row', async () => {
+		el = await fixture(`
+			<nldd-list type="tree">
+				<nldd-list-item>
+					<nldd-list-item-action button disclosure><nldd-icon-cell icon="chevron-right"></nldd-icon-cell></nldd-list-item-action>
+					<nldd-text-cell text="A"></nldd-text-cell>
+					<nldd-list-item slot="children"><nldd-text-cell text="A1"></nldd-text-cell></nldd-list-item>
+				</nldd-list-item>
+			</nldd-list>
+		`);
+		await waitForUpdate(el);
+		const branch = el.querySelector('nldd-list-item')!;
+		branch.focus();
+		el.dispatchEvent(new KeyboardEvent('keydown', { key: 'ArrowRight', bubbles: true, composed: true }));
+		await waitForUpdate(el);
+		// The click on the chevron pulls focus into that action; the row takes it
+		// back, because the row is the roving tab stop and carries the ring.
+		expect(document.activeElement).toBe(branch);
+	});
+
+	it('tree: ArrowRight steps into an open branch, ArrowLeft steps back out', async () => {
+		el = await fixture(`
+			<nldd-list type="tree">
+				<nldd-list-item button expanded>
+					A
+					<nldd-list-item slot="children" button>A1</nldd-list-item>
+				</nldd-list-item>
+			</nldd-list>
+		`);
+		await waitForUpdate(el);
+		const branch = el.querySelector('nldd-list-item')!;
+		const child = branch.querySelector('nldd-list-item')!;
+		el.dispatchEvent(new KeyboardEvent('keydown', { key: 'ArrowRight', bubbles: true, composed: true }));
+		await waitForUpdate(el);
+		expect(child._rovingActive).toBe(true);
+		el.dispatchEvent(new KeyboardEvent('keydown', { key: 'ArrowLeft', bubbles: true, composed: true }));
+		await waitForUpdate(el);
+		expect(branch._rovingActive).toBe(true);
 	});
 
 	it('search-bar-end slot: hidden when empty (listbox)', async () => {

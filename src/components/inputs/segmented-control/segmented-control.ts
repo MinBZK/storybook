@@ -5,42 +5,41 @@
  * Exports both NLDDSegmentedControl and NLDDSegmentedControlItem.
  *
  * @element nldd-segmented-control
- * @attr {string}  value         - Selected value for radio type
- * @prop {string[]} values        - Selected values for checkbox type (property binding only, not an attribute)
- * @attr {string}  size          - Control size: 'sm' | 'md' | 'lg' (default: 'md')
- * @attr {string}  type          - Input type: 'radio' | 'checkbox' (default: 'radio').
- * @attr {string}  variant       - Content type for all items: 'text' | 'icon' | 'icon-and-text' (default: 'text')
- * @attr {boolean} disabled      - Disabled state for all items
- * @attr {string}  width         - Width mode: 'full' (stretches to container), 'fit-content' (per-item content size), or any CSS length (e.g. '240px')
- * @attr {string}  name          - Name for form submission, forwarded to native inputs
- * @attr {string}  accessible-label - Accessible name for the group, set as aria-label
- * @attr {string}  accessible-labelled-by - Id of an external label element, set as aria-labelledby on the group
+ * @attr {string} value - Selected value for radio type
+ * @prop {string[]} values - Selected values for checkbox type (property binding only, not an attribute)
+ * @attr {string} size - Control size: 'sm' | 'md' | 'lg' (default: 'md')
+ * @attr {string} type - Input type: 'radio' | 'checkbox' (default: 'radio').
+ * @attr {string} variant - Content type for all items: 'text' | 'icon' | 'icon-and-text' (default: 'text')
+ * @attr {boolean} disabled - Disabled state for all items
+ * @attr {string} width - Width mode: 'full' (stretches to container), 'fit-content' (per-item content size), or any CSS length (e.g. '240px')
+ * @attr {string} name - Name for form submission, forwarded to native inputs
+ * @attr {string} accessible-label - Accessible name for the group, set as aria-label
+ * @attr {string} accessible-labeled-by - Id of an external label element, set as aria-labelledby on the group
  *
- * @fires change - When selection changes; detail: { value: string } for radio,
- *                 detail: { values: string[] } for checkbox
+ * @fires change - When selection changes; detail: { value: string } for radio, detail: { values: string[] } for checkbox
  *
  * @slot - nldd-segmented-control-item elements
  *
  * ---
  *
  * @element nldd-segmented-control-item
- * @attr {string}  value        - Value for this item
- * @attr {boolean} selected     - Whether this item is selected (set by parent)
- * @attr {boolean} disabled     - Disabled state
- * @attr {string}  text         - Text label (shown for variant "text" and "icon-and-text";
- *                                used as aria-label and tooltip for variant "icon")
- * @attr {string}  icon         - Icon name for nldd-icon
- * @attr {string}  size         - Control size: 'sm' | 'md' | 'lg' (default: 'md'). Set by nldd-segmented-control.
- * @attr {string}  variant      - Content type: 'text' | 'icon' | 'icon-and-text' (default: 'text'). Set by nldd-segmented-control.
- * @attr {string}  input-type   - Type of the native input: 'radio' | 'checkbox' (default: 'radio'). Set by nldd-segmented-control.
- * @attr {string}  group-name   - Name of the group for form submission, put on the native input. Set by nldd-segmented-control.
+ * @attr {string} value - Value for this item
+ * @attr {boolean} selected - Whether this item is selected (set by parent)
+ * @attr {boolean} disabled - Disabled state
+ * @attr {string} text - Text label (shown for variant "text" and "icon-and-text"; used as aria-label and tooltip for variant "icon")
+ * @attr {string} icon - Icon name for nldd-icon
+ * @attr {string} size - Control size: 'sm' | 'md' | 'lg' (default: 'md'). Set by nldd-segmented-control.
+ * @attr {string} variant - Content type: 'text' | 'icon' | 'icon-and-text' (default: 'text'). Set by nldd-segmented-control.
+ * @attr {string} input-type - Type of the native input: 'radio' | 'checkbox' (default: 'radio'). Set by nldd-segmented-control.
+ * @attr {string} group-name - Name of the group for form submission, put on the native input. Set by nldd-segmented-control.
  *
- * @slot icon    - Slot for a custom icon (e.g. custom SVG). Only used when icon attribute is not set.
+ * @slot icon - Slot for a custom icon (e.g. custom SVG). Only used when icon attribute is not set.
  *
  * @fires item-change - When item is activated; detail: { value: string, checked: boolean }
  */
 import { LitElement } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
+import { FormAssociated, type FormValue } from '../../../utilities/form-associated-mixin.js';
 import { reflectNonDefault } from '../../../utilities/reflect-non-default.js';
 import {
 	segmentedControlStyles,
@@ -118,12 +117,10 @@ export class NLDDSegmentedControlItem extends LitElement {
 // # nldd-segmented-control
 
 @customElement('nldd-segmented-control')
-export class NLDDSegmentedControl extends LitElement {
-	static formAssociated = true;
+export class NLDDSegmentedControl extends FormAssociated(LitElement) {
 
 	static override styles = segmentedControlStyles;
 
-	private _internals = this.attachInternals();
 
 	private _initialValue = '';
 	private _initialValues: string[] = [];
@@ -170,8 +167,8 @@ export class NLDDSegmentedControl extends LitElement {
 	accessibleLabel = '';
 
 	/** ID of an external label element (aria-labelledby). */
-	@property({ type: String, attribute: 'accessible-labelled-by' })
-	accessibleLabelledBy = '';
+	@property({ type: String, attribute: 'accessible-labeled-by' })
+	accessibleLabeledBy = '';
 
 	// — Lifecycle ——————————————————————————————————————————————————————————————
 
@@ -179,7 +176,7 @@ export class NLDDSegmentedControl extends LitElement {
 		super.connectedCallback();
 		this.setAttribute('role', this.type === 'checkbox' ? 'group' : 'radiogroup');
 		if (this.accessibleLabel) this.setAttribute('aria-label', this.accessibleLabel);
-		if (this.accessibleLabelledBy) this.setAttribute('aria-labelledby', this.accessibleLabelledBy);
+		if (this.accessibleLabeledBy) this.setAttribute('aria-labelledby', this.accessibleLabeledBy);
 		this.addEventListener('item-change', this._handleItemChange as EventListener);
 		this.addEventListener('keydown', this._handleKeydown);
 	}
@@ -194,26 +191,18 @@ export class NLDDSegmentedControl extends LitElement {
 		this._syncItems();
 		this._initialValue = this.value;
 		this._initialValues = [...this.values];
-		// _syncFormValue() runs in updated() with the same changedProperties
-		// on first render — no need to call it explicitly here.
-		if (import.meta.env?.DEV && !this.accessibleLabel && !this.accessibleLabelledBy) {
-			console.warn('<nldd-segmented-control>: No accessible name provided. Add an accessible-label or accessible-labelled-by attribute for screen reader accessibility.');
+		if (import.meta.env?.DEV && !this.accessibleLabel && !this.accessibleLabeledBy) {
+			console.warn('<nldd-segmented-control>: No accessible name provided. Add an accessible-label or accessible-labeled-by attribute for screen reader accessibility.');
 		}
 	}
 
-	private _syncFormValue(): void {
-		if (this.type === 'checkbox') {
-			if (this.values.length === 0 || !this.name) {
-				this._internals.setFormValue(null);
-				return;
-			}
-			// Submit each selected value under the same name (FormData.getAll)
-			const data = new FormData();
-			for (const v of this.values) data.append(this.name, v);
-			this._internals.setFormValue(data);
-		} else {
-			this._internals.setFormValue(this.value || null);
-		}
+	override formValue(): FormValue {
+		if (this.type !== 'checkbox') return this.value || null;
+		if (this.values.length === 0 || !this.name) return null;
+		// Submit each selected value under the same name (FormData.getAll)
+		const data = new FormData();
+		for (const v of this.values) data.append(this.name, v);
+		return data;
 	}
 
 	formResetCallback(): void {
@@ -221,9 +210,6 @@ export class NLDDSegmentedControl extends LitElement {
 		this.values = [...this._initialValues];
 	}
 
-	formDisabledCallback(disabled: boolean): void {
-		this.disabled = disabled;
-	}
 
 	formStateRestoreCallback(state: FormData | string | null): void {
 		if (state === null) return;
@@ -266,7 +252,7 @@ export class NLDDSegmentedControl extends LitElement {
 			changedProperties.has('type') ||
 			changedProperties.has('name')
 		) {
-			this._syncFormValue();
+			this.commitFormValue();
 		}
 		if (changedProperties.has('type')) {
 			this.setAttribute('role', this.type === 'checkbox' ? 'group' : 'radiogroup');
@@ -278,9 +264,9 @@ export class NLDDSegmentedControl extends LitElement {
 				this.removeAttribute('aria-label');
 			}
 		}
-		if (changedProperties.has('accessibleLabelledBy')) {
-			if (this.accessibleLabelledBy) {
-				this.setAttribute('aria-labelledby', this.accessibleLabelledBy);
+		if (changedProperties.has('accessibleLabeledBy')) {
+			if (this.accessibleLabeledBy) {
+				this.setAttribute('aria-labelledby', this.accessibleLabeledBy);
 			} else {
 				this.removeAttribute('aria-labelledby');
 			}
@@ -358,6 +344,7 @@ export class NLDDSegmentedControl extends LitElement {
 				: current.filter(v => v !== e.detail.value);
 			this.values = updated;
 			this._syncItems();
+			this.commitFormValue();
 			this.dispatchEvent(new CustomEvent('change', {
 				detail: { values: updated },
 				bubbles: true,
@@ -367,6 +354,7 @@ export class NLDDSegmentedControl extends LitElement {
 			if (e.detail.value === this.value) return;
 			this.value = e.detail.value;
 			this._syncItems();
+			this.commitFormValue();
 			this.dispatchEvent(new CustomEvent('change', {
 				detail: { value: this.value },
 				bubbles: true,
@@ -417,6 +405,7 @@ export class NLDDSegmentedControl extends LitElement {
 		if (nextIndex !== currentIndex && items[nextIndex]) {
 			this.value = items[nextIndex].value;
 			this._syncItems();
+			this.commitFormValue();
 			items[nextIndex].shadowRoot?.querySelector('input')?.focus();
 			this.dispatchEvent(new CustomEvent('change', {
 				detail: { value: this.value },

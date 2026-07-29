@@ -82,7 +82,7 @@ export class NLDDBadge extends withTranslations(LitElement, nlddBadgeTranslation
 	get _ariaLabel(): string {
 		if (this.accessibleLabel) return this.accessibleLabel;
 		if (this._hasText) return this._displayValue;
-		return this._t('components.badge.notification-text');
+		return this._t('components.badge.notification-label');
 	}
 
 	override render() {

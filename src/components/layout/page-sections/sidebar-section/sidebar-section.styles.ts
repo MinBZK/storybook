@@ -53,6 +53,17 @@ export const sidebarSectionStyles = css`
 		--_max-width: none;
 	}
 
+	/* # Growth — mirrors simple-section. The host only grows as the last
+	   (visible) section in an nldd-page; the chain below (block -> body ->
+	   columns -> main) is unconditional, so whatever height the host gets
+	   always reaches the main column. An nldd-inline-dialog there (itself
+	   flex-grow: 1) then fills and centers in the leftover space. */
+
+	:host(:last-child),
+	:host(.is-last) {
+		flex-grow: 1;
+	}
+
 
 	/* # Block */
 
@@ -61,6 +72,7 @@ export const sidebarSectionStyles = css`
 		display: flex;
 		width: 100%;
 		flex-direction: column;
+		flex-grow: 1;
 		align-items: center;
 
 		@container (max-width: ${smMax}) {
@@ -90,6 +102,7 @@ export const sidebarSectionStyles = css`
 		width: 100%;
 		max-width: var(--_max-width);
 		flex-direction: column;
+		flex-grow: 1;
 
 		@container (max-width: ${smMax}) { gap: var(--semantics-page-sections-sm-gap); }
 		@container (min-width: ${mdMin}) and (max-width: ${mdMax}) { gap: var(--semantics-page-sections-md-gap); }
@@ -110,6 +123,7 @@ export const sidebarSectionStyles = css`
 	.sidebar-section__columns {
 		display: flex;
 		flex-direction: column;
+		flex-grow: 1;
 
 		@container (max-width: ${smMax}) { gap: var(--semantics-page-sections-sm-gap); }
 		@container (min-width: ${mdMin}) and (max-width: ${mdMax}) { gap: var(--semantics-page-sections-md-gap); }
@@ -119,8 +133,12 @@ export const sidebarSectionStyles = css`
 		}
 	}
 
+	/* Flex column so a growing child (the inline-dialog of an empty state) can
+	   take the leftover height; flex-grow doubles as the row-mode width fill. */
 	.sidebar-section__main {
+		display: flex;
 		min-width: 0;
+		flex-direction: column;
 		flex-grow: 1;
 	}
 
@@ -143,9 +161,9 @@ export const sidebarSectionStyles = css`
 
 	.sidebar-section__sidebar-box {
 		box-sizing: border-box;
-		border-radius: var(--components-sidebar-section-sidebar-box-corner-radius);
+		border-radius: var(--semantics-surfaces-corner-radius);
 		background-color: var(--components-sidebar-section-sidebar-box-background-color);
-		box-shadow: inset 0 0 0 1px var(--components-sidebar-section-sidebar-box-highlight-border-color);
+		box-shadow: inset 0 0 0 var(--semantics-surfaces-border-width) var(--components-sidebar-section-sidebar-box-highlight-border-color);
 
 		@container (min-width: ${lgMin}) {
 			position: sticky;

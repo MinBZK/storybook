@@ -15,15 +15,11 @@
  *
  * @element nldd-page-footer
  *
- * @attr {string} [width] - Body max-width, mirroring a page section: 'full'
- *                          removes the constraint so the content spans the full
- *                          width; any CSS length (e.g. '480px') overrides the
- *                          default max-width.
+ * @attr {string} [width] - Body max-width, mirroring a page section: 'full' removes the constraint so the content spans the full width; any CSS length (e.g. '480px') overrides the default max-width.
  *
  * @slot breadcrumbs - `nldd-breadcrumbs` for the top row.
- * @slot             - Main footer content (typically a container with a grid
- *                     of link columns).
- * @slot legal-bar   - `nldd-page-footer-legal-bar` for the bottom row.
+ * @slot - Main footer content (typically a container with a grid of link columns).
+ * @slot legal-bar - `nldd-page-footer-legal-bar` for the bottom row.
  */
 import { LitElement, type PropertyValues } from 'lit';
 import { customElement, property, state } from 'lit/decorators.js';
@@ -47,6 +43,8 @@ import { nlddPageFooterTranslations, type NLDDPageFooterTranslations } from './p
  * A single entry in an `nldd-page-footer-legal-bar`. Renders as a link
  * when `href` is set, as plain text otherwise. Uses the content color
  * (not the link color) so the legal bar reads as a subdued utility row.
+ *
+ * @element nldd-page-footer-legal-bar-item
  *
  * @attr {string} href - Link target. When omitted, the item renders as plain text.
  * @attr {string} text - Item label. Falls back to the default slot.
@@ -85,13 +83,13 @@ if (!customElements.get('nldd-page-footer-legal-bar-item')) {
  * spacing only (no separators). On narrow containers the two groups wrap
  * to their own rows with `start` above `end`.
  *
- * @attr {string} accessible-label - Override the nav's aria-label.
- *                                   Defaults to the i18n value (NL: "Juridische links").
- * @attr {object} translations     - Override translation keys; unset keys
- *                                   fall back to the Dutch default.
+ * @element nldd-page-footer-legal-bar
+ *
+ * @attr {string} accessible-label - Override the nav's aria-label. Defaults to the i18n value (NL: "Juridische links").
+ * @attr {object} translations - Override translation keys; unset keys fall back to the Dutch default.
  *
  * @slot start - Items rendered flush-left (e.g. © notice, version).
- * @slot end   - Items rendered flush-right (e.g. privacy, accessibility).
+ * @slot end - Items rendered flush-right (e.g. privacy, accessibility).
  */
 export class NLDDPageFooterLegalBar extends LitElement {
 	static override styles = pageFooterLegalBarStyles;
@@ -227,7 +225,7 @@ export class NLDDPageFooter extends LitElement {
 			(this._hasBreadcrumbs ? 1 : 0) +
 			(this._hasMain ? 1 : 0) +
 			(this._hasLegalBar ? 1 : 0);
-		// One visible row → centered single-slot padding; zero rows → the grey
+		// One visible row → centered single-slot padding; zero rows → the gray
 		// band drops and only the lintje shows (see :host([empty]) in the styles).
 		this.toggleAttribute('single-slot', visibleCount === 1);
 		this.toggleAttribute('empty', visibleCount === 0);

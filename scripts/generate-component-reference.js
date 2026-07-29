@@ -18,7 +18,7 @@ import { readFileSync, readdirSync } from 'node:fs';
 import { resolve, dirname, join, sep } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { generatedHeader, writeGenerated } from './lib/skill-doc.js';
-import { extractLeadingBlock, parseComponent, parseTypedTag, parseNamedTag } from './lib/component-jsdoc.js';
+import { extractComponentBlocks, extractLeadingBlock, parseComponent, parseTypedTag, parseNamedTag } from './lib/component-jsdoc.js';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const componentsDir = resolve(__dirname, '../src/components');
@@ -176,12 +176,12 @@ function main() {
 	const components = [];
 	for (const file of entryFiles) {
 		const source = readFileSync(file, 'utf-8');
-		const block = extractLeadingBlock(source);
-		if (!block) continue;
 		const ceMatch = source.match(/@customElement\(['"]([^'"]+)['"]\)/);
 		const fallbackTag = ceMatch ? ceMatch[1] : null;
-		for (const parsed of parseComponent(block, file, fallbackTag)) {
-			if (parsed.tag && !INTERNAL_TAGS.has(parsed.tag)) components.push(parsed);
+		for (const block of extractComponentBlocks(source)) {
+			for (const parsed of parseComponent(block, file, fallbackTag)) {
+				if (parsed.tag && !INTERNAL_TAGS.has(parsed.tag)) components.push(parsed);
+			}
 		}
 	}
 

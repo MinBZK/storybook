@@ -230,7 +230,7 @@ export const justInTimeEducationStyles = css`
 	/* Background lives on a blurred pseudo-element so its edges fade softly (no
 	 * hard border, no drop shadow). The radius is a local, free value because
 	 * this surface has a different function than the standard surfaces. The
-	 * element is grown by the blur radius so the solid centre still covers the
+	 * element is grown by the blur radius so the solid center still covers the
 	 * content after blurring. */
 	.just-in-time-education__main::before {
 		content: '';

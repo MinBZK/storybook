@@ -9,37 +9,32 @@
  * button, arrow-key roving across the tokens and ElementInternals form participation.
  *
  * @element nldd-token-field
- * @attr {string}   values           - Initial token values as a comma-separated string
- *                                     (e.g. "nl, be, de"). Not reflected; the live value is
- *                                     the `.values` array property. Values can't contain commas.
- * @attr {string}   placeholder      - Placeholder shown in the input
- * @attr {string}   type             - Input type forwarded to the inner input (e.g. 'email')
- * @attr {string}   autocomplete     - Autocomplete hint forwarded to the inner input
- * @attr {string}   accessible-label - Accessible label forwarded as aria-label to the input
- * @attr {boolean}  allow-custom     - Allow free-typed values (not just menu options)
- * @attr {boolean}  valid            - Marks the field valid (shows the valid icon)
- * @attr {boolean}  invalid          - Marks the field invalid (shows the invalid icon)
- * @attr {boolean}  no-spellcheck    - Disables browser spellchecking on the inner input
- * @attr {boolean}  readonly         - Readonly: static tokens, no input/picker, read-only surface
- * @attr {boolean}  required         - Marks the field required (invalid when it has no tokens)
- * @attr {boolean}  disabled         - Disabled state
- * @attr {string}   token-control    - Trailing control per token: 'dismiss' (default, a ✕ that removes it) or 'menu' (a ⌄ opening a per-token action menu supplied by the template prototypes)
- * @attr {string}   name             - Name for form submission
- * @attr {object}   translations     - Override translation keys; unset keys fall back to Dutch
+ * @attr {string} values - Initial token values as a comma-separated string (e.g. "nl, be, de"). Not reflected; the live value is the `.values` array property. Values can't contain commas.
+ * @attr {string} placeholder - Placeholder shown in the input
+ * @attr {string} type - Input type forwarded to the inner input (e.g. 'email')
+ * @attr {string} autocomplete - Autocomplete hint forwarded to the inner input
+ * @attr {string} accessible-label - Accessible label forwarded as aria-label to the input
+ * @attr {boolean} allow-custom - Allow free-typed values (not just menu options)
+ * @attr {boolean} valid - Marks the field valid (shows the valid icon)
+ * @attr {boolean} invalid - Marks the field invalid (shows the invalid icon)
+ * @attr {boolean} no-spellcheck - Disables browser spellchecking on the inner input
+ * @attr {boolean} readonly - Readonly: static tokens, no input/picker, read-only surface
+ * @attr {boolean} required - Marks the field required (invalid when it has no tokens)
+ * @attr {boolean} disabled - Disabled state
+ * @attr {string} token-control - Trailing control per token: 'dismiss' (default, a ✕ that removes it) or 'menu' (a ⌄ opening a per-token action menu supplied by the template prototypes)
+ * @attr {string} name - Name for form submission
+ * @attr {object} translations - Override translation keys; unset keys fall back to Dutch
  *
- * @slot - An nldd-menu with nldd-menu-item options; each item's `value`/`text`
- *         supplies a token's value and its display label.
- * @slot template - `nldd-token` prototypes supplying each token's action menu when
- *                  token-control="menu": a keyless one is the shared default, a
- *                  `data-value="X"` one overrides value X. Only the prototype's nested
- *                  `nldd-menu` is used today; its other props are ignored.
+ * @slot - An nldd-menu with nldd-menu-item options; each item's `value`/`text` supplies a token's value and its display label.
+ * @slot template - `nldd-token` prototypes supplying each token's action menu when token-control="menu": a keyless one is the shared default, a `data-value="X"` one overrides value X. Only the prototype's nested `nldd-menu` is used today; its other props are ignored.
  *
  * @fires change - When the selected values change; detail: { values: string[] }
- * @fires input  - When the input text changes; detail: { value: string }
+ * @fires input - When the input text changes; detail: { value: string }
  * @fires token-action - When a token's menu action is chosen (token-control="menu"); detail: { value: string, action: string }
  */
 import { LitElement } from 'lit';
 import { customElement, property, state } from 'lit/decorators.js';
+import { FormAssociated, type FormValue } from '../../../utilities/form-associated-mixin.js';
 import { tokenFieldStyles } from './token-field.styles.js';
 import { tokenFieldTemplate } from './token-field.template.js';
 import { nlddTokenFieldTranslations, type NLDDTokenFieldTranslations } from './token-field.i18n.js';
@@ -50,12 +45,10 @@ import '../../actions/menu/menu.js';
 export type TokenFieldControl = 'dismiss' | 'menu';
 
 @customElement('nldd-token-field')
-export class NLDDTokenField extends LitElement {
-	static formAssociated = true;
+export class NLDDTokenField extends FormAssociated(LitElement) {
 
 	static override styles = tokenFieldStyles;
 
-	private _internals = this.attachInternals();
 	private _initialValues: string[] = [];
 
 	// Property order matches the story controls (values kept high, above
@@ -215,13 +208,13 @@ export class NLDDTokenField extends LitElement {
 
 	override firstUpdated(): void {
 		this._initialValues = [...this.values];
-		this._updateFormValue();
+		this.commitFormValue();
 		// Give the host a lasting accessible name and grouping via ElementInternals.
 		// The input carries aria-label, but it is removed when every value is chosen
 		// (no custom, no options left) — exactly the state roving token navigation
 		// makes a first-class tab stop — so without this the field would lose its name.
-		this._internals.role = 'group';
-		this._internals.ariaLabel = this.accessibleLabel || null;
+		this.internals.role = 'group';
+		this.internals.ariaLabel = this.accessibleLabel || null;
 	}
 
 	/** The index a token was just removed from through a field interaction (its ✕, a
@@ -246,7 +239,7 @@ export class NLDDTokenField extends LitElement {
 			for (const key of [...this._tokenMenuCache.keys()]) {
 				if (!this.values.includes(key)) this._tokenMenuCache.delete(key);
 			}
-			this._updateFormValue();
+			this.commitFormValue();
 			if (this._menu) {
 				this._syncMenuItems();
 				if (!this._showInput) this._closeMenu();
@@ -254,7 +247,7 @@ export class NLDDTokenField extends LitElement {
 		}
 		if (changed.has('required')) this._updateValidity();
 		if (changed.has('readonly') && this.readonly) this._closeMenu();
-		if (changed.has('accessibleLabel')) this._internals.ariaLabel = this.accessibleLabel || null;
+		if (changed.has('accessibleLabel')) this.internals.ariaLabel = this.accessibleLabel || null;
 	}
 
 	override updated(): void {
@@ -278,23 +271,28 @@ export class NLDDTokenField extends LitElement {
 
 	/** Submit one entry per value under `name` (like a multi-select), so a form
 	 *  receives `name=value` repeated for each token. */
-	private _updateFormValue(): void {
+	override formValue(): FormValue {
+		if (!this.name) return null;
 		const data = new FormData();
 		for (const value of this.values) data.append(this.name, value);
-		this._internals.setFormValue(this.name ? data : null);
+		return data;
+	}
+
+	override commitFormValue(): void {
+		super.commitFormValue();
 		this._updateValidity();
 	}
 
 	/** A required field with no tokens is invalid (valueMissing). */
 	private _updateValidity(): void {
 		if (this.required && this.values.length === 0) {
-			this._internals.setValidity(
+			this.internals.setValidity(
 				{ valueMissing: true },
 				this._t('components.token-field.required-error-text'),
 				this._input ?? this,
 			);
 		} else {
-			this._internals.setValidity({});
+			this.internals.setValidity({});
 		}
 	}
 
@@ -302,9 +300,6 @@ export class NLDDTokenField extends LitElement {
 		this.values = [...this._initialValues];
 	}
 
-	formDisabledCallback(disabled: boolean): void {
-		this.disabled = disabled;
-	}
 
 	private get _input(): HTMLInputElement | null {
 		return this.shadowRoot?.querySelector<HTMLInputElement>('.token-field__input') ?? null;
@@ -439,6 +434,7 @@ export class NLDDTokenField extends LitElement {
 	}
 
 	private _emitChange(): void {
+		this.commitFormValue();
 		this.dispatchEvent(
 			new CustomEvent('change', {
 				detail: { values: [...this.values] },

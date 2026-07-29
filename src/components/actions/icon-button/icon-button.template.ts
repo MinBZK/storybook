@@ -30,7 +30,7 @@ export function template(this: NLDDIconButton) {
 	// cascade, so fold the hint into it rather than into a hidden span (which it
 	// would override). Only the <a> path (href) can open a new tab.
 	const opensInNewTabHint = this.href && this.target === '_blank'
-		? this._t('components.icon-button.opens-in-new-tab-text')
+		? this._t('components.icon-button.opens-in-new-tab-label')
 		: '';
 	const baseLabel = this.accessibleLabel || this.text || '';
 	const label = [baseLabel, opensInNewTabHint].filter(Boolean).join(', ') || nothing;

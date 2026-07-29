@@ -504,7 +504,7 @@ describe('nldd-menu empty state', () => {
 	});
 
 	it('is not empty when every item is present but disabled', async () => {
-		// Regression: a menu whose items are all disabled still shows them (greyed),
+		// Regression: a menu whose items are all disabled still shows them (grayed),
 		// so it must not fall back to the "no options" empty state. Emptiness counts
 		// shown items, not navigable ones: disabled items are skipped for keyboard
 		// nav but are still on screen. (A toolbar overflow of disabled controls hit
@@ -686,7 +686,7 @@ describe('nldd-menu-group', () => {
 		expect(title?.textContent).toBe('Bestand');
 	});
 
-	it('wraps slotted items in a role="group" container labelled by the title', async () => {
+	it('wraps slotted items in a role="group" container labeled by the title', async () => {
 		el = await fixture(`
 			<nldd-menu-group text="Bestand">
 				<nldd-menu-item text="Open"></nldd-menu-item>
@@ -1650,7 +1650,7 @@ describe('nldd-menu drill-in chain', () => {
 		await waitForUpdate(root);
 		expect(l2Menu.matches(':popover-open')).toBe(true);
 
-		// move past the 8px threshold → recognised as a scroll, chain untouched
+		// move past the 8px threshold → recognized as a scroll, chain untouched
 		document.dispatchEvent(new PointerEvent('pointermove', { pointerType: 'touch', clientX: 10, clientY: 70 }));
 		document.dispatchEvent(new PointerEvent('pointerup', { pointerType: 'touch', clientX: 10, clientY: 70 }));
 		await waitForUpdate(root);
@@ -2229,7 +2229,7 @@ describe('nldd-menu touch-scroll press suppression', () => {
 
 	describe('drag selection', () => {
 		// Open a standalone menu and return its two items with their on-screen
-		// centre coordinates (needs real layout, which the browser test runner
+		// center coordinates (needs real layout, which the browser test runner
 		// provides — elementFromPoint resolves the release target).
 		async function openTwoItemMenu() {
 			const menu = await fixture<HTMLElement>(`
@@ -2242,11 +2242,11 @@ describe('nldd-menu touch-scroll press suppression', () => {
 			(menu as HTMLElement & { showPopover: () => void }).showPopover();
 			await waitForUpdate(menu);
 			const [itemA, itemB] = Array.from(menu.querySelectorAll('nldd-menu-item')) as HTMLElement[];
-			const centre = (el: HTMLElement) => {
+			const center = (el: HTMLElement) => {
 				const r = el.getBoundingClientRect();
 				return { x: r.left + r.width / 2, y: r.top + r.height / 2 };
 			};
-			return { menu, itemA, itemB, centre };
+			return { menu, itemA, itemB, center };
 		}
 
 		function press(item: HTMLElement, button = 0) {
@@ -2257,14 +2257,14 @@ describe('nldd-menu touch-scroll press suppression', () => {
 		}
 
 		it('selects the item under the release, not the one pressed', async () => {
-			const { menu, itemA, itemB, centre } = await openTwoItemMenu();
+			const { menu, itemA, itemB, center } = await openTwoItemMenu();
 			let aFired = false;
 			let bFired = false;
 			itemA.addEventListener('select', () => { aFired = true; });
 			itemB.addEventListener('select', () => { bFired = true; });
 
 			press(itemA);
-			const b = centre(itemB);
+			const b = center(itemB);
 			release(b.x, b.y);
 
 			expect(bFired).toBe(true);
@@ -2273,12 +2273,12 @@ describe('nldd-menu touch-scroll press suppression', () => {
 		});
 
 		it('does not fire when press and release land on the same item', async () => {
-			const { menu, itemA, centre } = await openTwoItemMenu();
+			const { menu, itemA, center } = await openTwoItemMenu();
 			let aFired = false;
 			itemA.addEventListener('select', () => { aFired = true; });
 
 			press(itemA);
-			const a = centre(itemA);
+			const a = center(itemA);
 			release(a.x, a.y);
 
 			// Same-item release is the no-drag path; the button's own click
@@ -2310,12 +2310,12 @@ describe('nldd-menu touch-scroll press suppression', () => {
 		});
 
 		it('ignores a non-left-button press', async () => {
-			const { menu, itemA, itemB, centre } = await openTwoItemMenu();
+			const { menu, itemA, itemB, center } = await openTwoItemMenu();
 			let bFired = false;
 			itemB.addEventListener('select', () => { bFired = true; });
 
 			press(itemA, 2); // right button — no drag tracking starts
-			const b = centre(itemB);
+			const b = center(itemB);
 			release(b.x, b.y);
 
 			expect(bFired).toBe(false);

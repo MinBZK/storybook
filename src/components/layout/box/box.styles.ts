@@ -9,8 +9,11 @@ export const boxStyles = css`
 	/* # Host */
 
 	:host {
+		--_corner-radius: var(--semantics-surfaces-corner-radius);
 		--_background-color: var(--components-box-background-color);
+		--_border-width: var(--components-box-border-width);
 		--_border-color: var(--components-box-border-color);
+		--_highlight-border: inset 0 0 0 var(--_border-width) var(--_border-color);
 
 		display: block;
 	}
@@ -20,10 +23,7 @@ export const boxStyles = css`
 	}
 
 
-	/* ## Background variants
-	   The default (tinted) lives on the :host base. base = card-on-tinted, the
-	   border ring picks the +2-step semantic so the frame still reads
-	   against an already-tinted parent. */
+	/* ## Background variants */
 
 	:host([background="base"]) {
 		--_background-color: var(--components-box-base-background-color);
@@ -35,28 +35,18 @@ export const boxStyles = css`
 
 	.box {
 		box-sizing: border-box;
-		border-radius: var(--components-box-corner-radius);
-		/* Inner box-shadow paints a 1px border ring inside the radius
-		   without taking layout space. The color is one to two palette
-		   steps above the surface bg depending on the variant, giving the
-		   box a defined edge that reads as "subtle dimensional lift"
-		   rather than a hard border. */
-		box-shadow: inset 0 0 0 1px var(--_border-color);
+		border-radius: var(--_corner-radius);
+		box-shadow: var(--_highlight-border);
 		background-color: var(--_background-color);
 		padding: var(--components-box-padding);
 	}
 
 
-	/* # Accessibility
-	   box-shadow is dropped by Windows High Contrast / forced-colors mode,
-	   so the border ring would disappear and the box would lose its
-	   defined edge against the system background. Restore the edge with a
-	   real border in that mode. CanvasText is the system foreground color
-	   so the border always meets contrast. */
+	/* # Accessibility */
 
 	@media (forced-colors: active) {
 		.box {
-			border: 1px solid CanvasText;
+			border: var(--_border-width) solid CanvasText;
 		}
 	}
 `;

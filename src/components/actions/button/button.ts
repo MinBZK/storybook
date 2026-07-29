@@ -11,8 +11,9 @@
  * @attr {string} popovertarget - ID of a popover element this button invokes; forwarded to the inner button. Use the popoverTargetElement property instead when the popover lives in another tree.
  * @attr {boolean} expandable - Whether the button has a icon to indicate it opens a menu or popover
  * @attr {boolean} expanded - Whether the popover/menu controlled by this button is currently open. Forwarded as aria-expanded on the inner button; toggles the is-expanded visual state.
- * @attr {string}  popup-type - Type of popup container this button opens: 'menu' | 'listbox' | 'dialog' | 'tree' | 'grid'. Sets aria-haspopup on the inner button and forces aria-expanded to always be present (true/false) so screen readers know the popup state.
+ * @attr {string} popup-type - Type of popup container this button opens: 'menu' | 'listbox' | 'dialog' | 'tree' | 'grid'. Sets aria-haspopup on the inner button and forces aria-expanded to always be present (true/false) so screen readers know the popup state.
  * @attr {string} width - Width mode: 'full' (stretches to container) or any CSS length (e.g. '240px')
+ * @attr {string} max-width - Caps the width at this CSS length (e.g. '320px'). Combines with `width="full"`: the button follows its container up to the cap. A label that doesn't fit is truncated with an ellipsis — a cap only means something if the content respects it.
  * @attr {string} text - Button text
  * @attr {string} supporting-text - Supporting text shown below the text (md/lg) or after it (sm/xs), in a secondary color. Part of the accessible name (unless `accessible-label` is set, which replaces the whole accessible name).
  * @attr {boolean} single-line - When true, truncates overflowing text with an ellipsis instead of letting it wrap. Requires the button (or an ancestor) to constrain the width.
@@ -85,6 +86,12 @@ export class NLDDButton extends withTranslations(LitElement, nlddButtonTranslati
 	@property({ reflect: true, converter: reflectNonDefault<string>('') })
 	width = '';
 
+	/** Caps the button's width. Combines with `width="full"`: the button follows
+	 *  its container until it hits this length. A label that doesn't fit is
+	 *  truncated with an ellipsis, as with `single-line`. */
+	@property({ reflect: true, attribute: 'max-width', converter: reflectNonDefault<string>('') })
+	maxWidth = '';
+
 	@property({ type: Boolean, reflect: true, attribute: 'expandable' })
 	expandable = false;
 
@@ -109,7 +116,7 @@ export class NLDDButton extends withTranslations(LitElement, nlddButtonTranslati
 	 * Direct element reference to the popover this button invokes — IDL-only
 	 * counterpart to `popovertarget` that works across shadow boundaries.
 	 * Use this when the popover lives in a different tree (e.g. an
-	 * `nldd-menu` reparented to `<body>`) so the browser still recognises
+	 * `nldd-menu` reparented to `<body>`) so the browser still recognizes
 	 * this button as the popover's invoker and excludes it from the popover
 	 * light-dismiss algorithm. Set programmatically; not reflected to an
 	 * HTML attribute (the attribute form is `popovertarget`, ID-based).
@@ -128,7 +135,7 @@ export class NLDDButton extends withTranslations(LitElement, nlddButtonTranslati
 	popoverTargetAction: 'toggle' | 'show' | 'hide' = 'toggle';
 
 	/**
-	 * Loading state. Shows an activity indicator centred over the (visually
+	 * Loading state. Shows an activity indicator centered over the (visually
 	 * hidden) content, marks the inner control `aria-busy="true"` and blocks
 	 * activation — without dropping the control from the tab order (unlike
 	 * `disabled`). The content stays laid out so the button keeps its width.
@@ -192,6 +199,13 @@ export class NLDDButton extends withTranslations(LitElement, nlddButtonTranslati
 	_popup = new PopupAnchorController(this);
 
 	override updated(changedProperties: Map<string, unknown>): void {
+		if (changedProperties.has('maxWidth')) {
+			// The cap lands on the host; the inner button is already max-width: 100%
+			// of it, so it follows without a variable of its own. Invalid values do
+			// nothing, as with width.
+			const isValidLength = !!this.maxWidth && CSS.supports('max-width', this.maxWidth);
+			this.style.maxWidth = isValidLength ? this.maxWidth : '';
+		}
 		if (changedProperties.has('width')) {
 			const w = this.width;
 			// 'full' switches host to block + 100% via CSS attribute selector.
@@ -231,7 +245,7 @@ export class NLDDButton extends withTranslations(LitElement, nlddButtonTranslati
 			e.preventDefault();
 			return;
 		}
-		// A link button has no form behaviour. Otherwise drive the associated
+		// A link button has no form behavior. Otherwise drive the associated
 		// form ourselves: the shadow <button type="submit"|"reset"> can't reach
 		// the light-DOM form across the shadow boundary. requestSubmit() runs
 		// constraint validation and fires a cancelable submit event, matching a

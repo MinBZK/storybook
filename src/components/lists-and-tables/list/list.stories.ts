@@ -186,11 +186,10 @@ export const WithMultipleColumns = {
 	render: () => html`
 		<nldd-list variant="box">
 			<nldd-list-item button>
-				<nldd-spacer-cell slot="start" size="12"></nldd-spacer-cell>
-				<nldd-icon-cell slot="start" size="24" vertical-alignment="top">
+				<nldd-icon-cell size="24" vertical-alignment="top">
 					<nldd-icon name="calendar-event"></nldd-icon>
 				</nldd-icon-cell>
-				<nldd-spacer-cell slot="start" size="8"></nldd-spacer-cell>
+				<nldd-spacer-cell size="8"></nldd-spacer-cell>
 				<nldd-text-cell text="Primaire titel" supporting-text="Ondersteunende tekst eronder"></nldd-text-cell>
 				<nldd-spacer-cell></nldd-spacer-cell>
 				<nldd-text-cell
@@ -205,11 +204,10 @@ export const WithMultipleColumns = {
 				</nldd-icon-cell>
 			</nldd-list-item>
 			<nldd-list-item button>
-				<nldd-spacer-cell slot="start" size="12"></nldd-spacer-cell>
-				<nldd-icon-cell slot="start" size="24" vertical-alignment="top">
+				<nldd-icon-cell size="24" vertical-alignment="top">
 					<nldd-icon name="certificate"></nldd-icon>
 				</nldd-icon-cell>
-				<nldd-spacer-cell slot="start" size="8"></nldd-spacer-cell>
+				<nldd-spacer-cell size="8"></nldd-spacer-cell>
 				<nldd-text-cell text="Andere titel" supporting-text="Meer beschrijving hier"></nldd-text-cell>
 				<nldd-spacer-cell size="8"></nldd-spacer-cell>
 				<nldd-text-cell
@@ -423,9 +421,8 @@ export const ReorderableList = {
 			<nldd-list variant="box" reorderable @nldd-reorder=${onReorder}>
 				${labels.map((label) => html`
 					<nldd-list-item>
-						<nldd-spacer-cell slot="start" size="8"></nldd-spacer-cell>
-						<nldd-drag-handle-cell size="sm" slot="start" reorderable-only></nldd-drag-handle-cell>
-						<nldd-spacer-cell slot="start" reorderable-only size="8"></nldd-spacer-cell>
+						<nldd-drag-handle-cell size="sm" reorderable-only></nldd-drag-handle-cell>
+						<nldd-spacer-cell reorderable-only size="8"></nldd-spacer-cell>
 						<nldd-text-cell text="${label}"></nldd-text-cell>
 					</nldd-list-item>
 				`)}

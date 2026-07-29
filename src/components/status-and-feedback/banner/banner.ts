@@ -4,11 +4,11 @@
  * An inline notification with a tinted background per variant. Use for
  * persistent, page-level feedback (e.g. an error summary at the top of
  * a form). Banner is more visually present than nldd-inline-dialog —
- * the tinted colour catches the eye. If you need a quieter component,
+ * the tinted color catches the eye. If you need a quieter component,
  * pick a different one rather than overriding the banner's ARIA.
  *
  * Layout: icon left, text + supporting text + optional rich content +
- * actions in the centre, optional dismiss button right. Buttons wrap
+ * actions in the center, optional dismiss button right. Buttons wrap
  * to a second row on narrow viewports via nldd-button-group's flex
  * wrapping.
  *
@@ -29,15 +29,15 @@
  *
  * @element nldd-banner
  *
- * @attr {'neutral'|'accent'|'success'|'warning'|'critical'} variant - Colour and default icon (default: 'neutral')
- * @attr {string}  icon            - Icon override. Default per variant: neutral → info-circle-filled, accent → info-circle-filled, success → check-circle-filled, warning → exclamation-triangle-filled, critical → exclamation-circle-filled
- * @attr {string}  text            - Main text (heading or paragraph, depending on heading-level)
- * @attr {string}  supporting-text - Supporting text below the heading
+ * @attr {'neutral'|'accent'|'success'|'warning'|'critical'} variant - Color and default icon (default: 'neutral')
+ * @attr {string} icon - Icon override. Default per variant: neutral → info-circle-filled, accent → info-circle-filled, success → check-circle-filled, warning → exclamation-triangle-filled, critical → exclamation-circle-filled
+ * @attr {string} text - Main text (heading or paragraph, depending on heading-level)
+ * @attr {string} supporting-text - Supporting text below the heading
  * @attr {1|2|3|4|5|6} heading-level - Renders text as h1–h6; absent renders a p
- * @attr {boolean} dismissible     - Show a close button in the top-right; emits `dismiss` when clicked
- * @attr {object}  translations    - Override translation keys; unset keys fall back to Dutch
+ * @attr {boolean} dismissible - Show a close button in the top-right; emits `dismiss` when clicked
+ * @attr {object} translations - Override translation keys; unset keys fall back to Dutch
  *
- * @slot         - Optional rich content between text and actions (e.g. nldd-rich-text)
+ * @slot - Optional rich content between text and actions (e.g. nldd-rich-text)
  * @slot actions - nldd-button elements, wrapped in a horizontal nldd-button-group
  *
  * @fires dismiss - Fired when the dismiss button is clicked. The consumer is responsible for removing/hiding the banner.

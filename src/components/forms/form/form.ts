@@ -44,25 +44,16 @@
  *
  * @element nldd-form
  *
- * @attr {string}  name             - Form name
- * @attr {string}  action           - URL endpoint for submission
- * @attr {string}  method           - HTTP method ('get' | 'post' | 'dialog')
- * @attr {boolean} novalidate       - Skip native browser validation
- * @attr {string}  enctype          - Encoding type for submission
- * @attr {string}  target           - Submit target ('_self' | '_blank' | ...)
- * @attr {string}  autocomplete     - 'on' | 'off' (form-level autofill toggle)
- * @attr {string}  label-alignment  - Default `label-alignment` voor descendant
- *                                    nldd-form-field en nldd-form-actions
- *                                    ('top' | 'right' | 'left'). Wordt naar
- *                                    descendants gepropageerd als
- *                                    `form-label-alignment`. Een eigen
- *                                    `label-alignment` op de descendant
- *                                    heeft voorrang via CSS-cascade.
+ * @attr {string} name - Form name
+ * @attr {string} action - URL endpoint for submission
+ * @attr {string} method - HTTP method ('get' | 'post' | 'dialog')
+ * @attr {boolean} novalidate - Skip native browser validation
+ * @attr {string} enctype - Encoding type for submission
+ * @attr {string} target - Submit target ('_self' | '_blank' | ...)
+ * @attr {string} autocomplete - 'on' | 'off' (form-level autofill toggle)
+ * @attr {string} label-alignment - Default `label-alignment` voor descendant nldd-form-field en nldd-form-actions ('top' | 'right' | 'left'). Wordt naar descendants gepropageerd als `form-label-alignment`. Een eigen `label-alignment` op de descendant heeft voorrang via CSS-cascade.
  *
- * @prop {HTMLFormElement | null} form - The inner <form> element (read-only).
- *                                       Use voor `form.checkValidity()`,
- *                                       directe DOM-manipulatie, of als doel
- *                                       voor framework-managed children.
+ * @prop {HTMLFormElement | null} form - The inner <form> element (read-only). Use voor `form.checkValidity()`, directe DOM-manipulatie, of als doel voor framework-managed children.
  *
  * Events bubble naturally from the inner <form>:
  * @fires submit

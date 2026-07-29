@@ -13,7 +13,7 @@ export const pageFooterStyles = css`
 	}
 	:host {
 		--_max-width: var(--semantics-page-sections-body-max-width);
-		/* Official Rijksoverheid lintje colour — identical across all
+		/* Official Rijksoverheid lintje color — identical across all
 		   .rijks.app / .overheid.nl sites by visual-identity policy, so it
 		   intentionally lives outside the semantic token system. Local
 		   --_ var keeps the value discoverable in one place. */
@@ -191,6 +191,13 @@ export const pageFooterLegalBarStyles = css`
 	.page-footer__legal-bar-start[hidden],
 	.page-footer__legal-bar-end[hidden] {
 		display: none;
+	}
+
+	/* Without start items the end area is the only flex child, and space-between
+	   puts a lone child at the start. The auto margin pushes it back to the end.
+	   Scoped to this case so the wrapping behavior with both areas is untouched. */
+	.page-footer__legal-bar-start[hidden] + .page-footer__legal-bar-end {
+		margin-inline-start: auto;
 	}
 `;
 

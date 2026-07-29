@@ -257,7 +257,7 @@ describe('nldd-pagination – translations', () => {
 
 	it('overrides translations via property', async () => {
 		el = await fixture<NLDDPagination>('<nldd-pagination current="1" total="5"></nldd-pagination>');
-		el.translations = { 'components.pagination.accessibility-label': 'Pagination' };
+		el.translations = { 'components.pagination.accessible-label': 'Pagination' };
 		await waitForUpdate(el);
 
 		const nav = el.shadowRoot!.querySelector('nav');

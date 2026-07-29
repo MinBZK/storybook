@@ -18,6 +18,7 @@ export const topNavigationBarStyles = css`
 	:host {
 		--_logo-width: var(--semantics-brand-ribbon-sm-width);
 		--_wordmark-content-color: light-dark(var(--primitives-color-reference-lintblauw), var(--primitives-color-neutral-1000));
+		--_wordmark-max-width: 280px;
 		--_max-width: var(--semantics-page-sections-body-max-width);
 
 		${inheritedTextReset}
@@ -41,7 +42,7 @@ export const topNavigationBarStyles = css`
 		width: 100%;
 
 		/* The page-section inline margin lives on the wrapper; each bar caps to
-		   the content width and centres, so bar content lines up with page
+		   the content width and centers, so bar content lines up with page
 		   sections. width=full drops the cap (bars fill the margin box). */
 		@container (max-width: ${smMax}) {
 			padding-inline: var(--semantics-page-sections-sm-margin-inline);
@@ -134,6 +135,10 @@ export const topNavigationBarStyles = css`
 	}
 
 	a.top-navigation-bar__logo-and-wordmark:focus-visible {
+		outline: none;
+	}
+
+	a.top-navigation-bar__logo-and-wordmark:focus-visible > .top-navigation-bar__logo {
 		outline: var(--semantics-focus-ring-outline);
 		outline-offset: var(--semantics-focus-ring-outline-offset);
 		box-shadow: var(--semantics-focus-ring-box-shadow);
@@ -161,6 +166,7 @@ export const topNavigationBarStyles = css`
 		flex-grow: 1;
 		flex-shrink: 1;
 		flex-basis: 50%;
+		max-width: var(--_wordmark-max-width);
 	}
 
 	.top-navigation-bar__wordmark-title {
@@ -210,16 +216,15 @@ export const topNavigationBarStyles = css`
 
 	.top-navigation-bar__website-title-bar {
 		display: flex;
-		padding-inline: calc(var(--primitives-space-8) + var(--components-menu-bar-item-inline-padding));
 		align-items: center;
-		justify-content: center;
 
 		@container (max-width: ${smMax}) {
 			padding-top: var(--primitives-space-4);
+			justify-content: center;
 		}
 
 		@container (min-width: ${mdMin}) {
-			padding: 0;
+			padding-inline-end: var(--components-menu-bar-item-inline-padding);
 			justify-content: flex-start;
 		}
 	}

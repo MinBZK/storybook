@@ -307,7 +307,7 @@ describe('nldd-button – href / link rendering', () => {
 
 	it('overrides the new-tab wording via the translations property', async () => {
 		el = await fixture<NLDDButton>('<nldd-button href="/overzicht" target="_blank" text="Terug"></nldd-button>');
-		el.translations = { 'components.button.opens-in-new-tab-text': 'Opens in a new tab' };
+		el.translations = { 'components.button.opens-in-new-tab-label': 'Opens in a new tab' };
 		await waitForUpdate(el);
 		expect(el.shadowRoot!.querySelector('.button__opens-in-new-tab-hint')?.textContent).toBe('Opens in a new tab');
 	});
@@ -460,6 +460,51 @@ describe('nldd-button – single-line / width', () => {
 		await waitForUpdate(el);
 		expect((el as HTMLElement).style.width).toBe('');
 		expect(el.style.getPropertyValue('--_width')).toBe('100%');
+	});
+
+	it('stretches in a flex column only with width="full"', async () => {
+		el = await fixture<NLDDButton>(`
+			<div style="display: flex; flex-direction: column; width: 600px;">
+				<nldd-button text="Kort"></nldd-button>
+				<nldd-button text="Kort" width="full"></nldd-button>
+			</div>
+		`);
+		await waitForUpdate(el);
+		const [gewoon, vol] = [...el.querySelectorAll('nldd-button')];
+		expect(gewoon.getBoundingClientRect().width).toBeLessThan(300);
+		expect(Math.round(vol.getBoundingClientRect().width)).toBe(600);
+	});
+
+	it('caps the button with max-width, also alongside width="full"', async () => {
+		el = await fixture<NLDDButton>('<nldd-button text="X" width="full" max-width="320px"></nldd-button>');
+		await waitForUpdate(el);
+		expect((el as HTMLElement).style.maxWidth).toBe('320px');
+		// The inner control follows the host's cap, so the button really is capped
+		// and not just its (invisible) host box.
+		const control = el.shadowRoot!.querySelector('.button')!;
+		expect(control.getBoundingClientRect().width).toBeLessThanOrEqual(320);
+	});
+
+	// Without reflectNonDefault, Lit reflects the empty default as max-width="",
+	// and [max-width] matches on presence — which would truncate every label in
+	// the system.
+	it('zet geen max-width-attribuut zonder waarde', async () => {
+		el = await fixture<NLDDButton>('<nldd-button text="X" max-width="320px"></nldd-button>');
+		await waitForUpdate(el);
+		// Clearing it has to REMOVE the attribute. Lit's default converter would
+		// write max-width="" instead, and [max-width] matches on presence — so
+		// every button would keep truncating after one framework re-render.
+		el.maxWidth = '';
+		await waitForUpdate(el);
+		expect(el.hasAttribute('max-width')).toBe(false);
+		const label = el.shadowRoot!.querySelector('.button__text')!;
+		expect(getComputedStyle(label).whiteSpace).not.toBe('nowrap');
+	});
+
+	it('ignores an invalid max-width', async () => {
+		el = await fixture<NLDDButton>('<nldd-button text="X" max-width="not-a-length"></nldd-button>');
+		await waitForUpdate(el);
+		expect((el as HTMLElement).style.maxWidth).toBe('');
 	});
 
 	it('clears inline width and --_width when width is cleared', async () => {
@@ -780,7 +825,7 @@ describe('nldd-button – slotted popup overlay', () => {
 		if (el) cleanup(el);
 	});
 
-	// The popover initialises the trigger's aria on connect, before any open:
+	// The popover initializes the trigger's aria on connect, before any open:
 	// a screen-reader user must hear "opens a dialog" on first tab, not only
 	// after opening it once.
 	it('sets aria-haspopup on the inner button before the popover is ever opened', async () => {

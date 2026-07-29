@@ -19,7 +19,7 @@ export const toolbarStyles = css`
 		--_overflow-button-width: 0px;
 		/* The gap between a side area and its spacer only exists when that area is
 		   non-empty; toolbar.ts drops these to 0px when start/end is empty so the
-		   spacer basis doesn't over-subtract and pull the centre off-centre. */
+		   spacer basis doesn't over-subtract and pull the center off-center. */
 		--_left-spacer-gap: var(--_gap);
 		--_right-spacer-gap: var(--_gap);
 		--_label-margin-top: var(--primitives-space-4);
@@ -256,7 +256,7 @@ export const toolbarTitleStyles = css`
 	}
 
 	/* Sole toolbar element: let the text fill the row instead of capping at
-	   --_title-max-width, matching the pre-fit-content stretch behaviour. */
+	   --_title-max-width, matching the pre-fit-content stretch behavior. */
 	:host([solo-fluid]) .toolbar__title-group {
 		max-width: none;
 	}
@@ -266,7 +266,7 @@ export const toolbarTitleStyles = css`
 	}
 
 	/* A solo-fluid title fills the whole row (flex-grow above), so text-align on
-	   the shrink-wrapped title-group can't centre it. Centre the group (with its
+	   the shrink-wrapped title-group can't center it. Center the group (with its
 	   trailing action, as one unit) along the row's main axis instead. Scoped to
 	   solo-fluid so a title balanced by real start/end items keeps using the
 	   toolbar spacers. */

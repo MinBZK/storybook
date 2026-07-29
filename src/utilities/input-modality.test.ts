@@ -19,6 +19,15 @@ describe('input-modality', () => {
 		expect(isKeyboardMode()).toBe(false);
 	});
 
+	// The listeners used to be registered on the first question, so someone who
+	// tabbed straight into a freshly loaded page had already pressed Tab by the
+	// time a component asked — and the first control swallowed its focus ring.
+	it('registreert een toets die vóór de eerste vraag valt', () => {
+		_resetInputModalityForTesting();
+		document.dispatchEvent(new KeyboardEvent('keydown', { key: 'Tab' }));
+		expect(isKeyboardMode()).toBe(true);
+	});
+
 	it('switches to keyboard after Tab keydown', () => {
 		document.dispatchEvent(new KeyboardEvent('keydown', { key: 'Tab' }));
 		expect(getInputModality()).toBe('keyboard');

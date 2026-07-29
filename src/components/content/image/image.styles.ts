@@ -78,7 +78,7 @@ export const imageStyles = css`
 	   The box that constrains the image. aspect-ratio is set as an inline style
 	   from the component when provided, so we don't need a CSS var. The media is
 	   transparent by default; an LQIP paints it while loading, and the error
-	   state paints it grey (see "Error state" below). */
+	   state paints it gray (see "Error state" below). */
 
 	.image__media {
 		display: block;
@@ -344,7 +344,7 @@ export const imageStyles = css`
 
 	/* # Error state
 	   Centred icon + alt-text shown when the image fails to load. The media is
-	   painted grey (--_background-color) via :host([errored]) so the icon and
+	   painted gray (--_background-color) via :host([errored]) so the icon and
 	   label stay legible — no separate card needed. */
 
 	:host([errored]) .image__media {

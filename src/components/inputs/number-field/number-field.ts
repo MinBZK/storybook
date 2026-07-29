@@ -4,27 +4,24 @@
  * A numeric input field with decrement and increment buttons.
  *
  * @element nldd-number-field
- * @attr {number}  value        - Current value
- * @attr {number}  min          - Minimum value (default: -Infinity)
- * @attr {number}  max          - Maximum value (default: Infinity)
- * @attr {number}  step         - Step size (default: 1)
- * @attr {string}  size         - Size: 'sm' | 'md' (default: 'md')
- * @attr {boolean} disabled     - Disabled state
- * @attr {string}  name         - Name for form submission
- * @attr {object}  translations - Translations; unspecified keys fall back to Dutch
- * @attr {string}  width            - Width mode: 'full' (stretches to container) or any CSS length (e.g. '240px')
+ * @attr {number} value - Current value
+ * @attr {number} min - Minimum value (default: -Infinity)
+ * @attr {number} max - Maximum value (default: Infinity)
+ * @attr {number} step - Step size (default: 1)
+ * @attr {string} size - Size: 'sm' | 'md' (default: 'md')
+ * @attr {boolean} disabled - Disabled state
+ * @attr {string} name - Name for form submission
+ * @attr {object} translations - Translations; unspecified keys fall back to Dutch
+ * @attr {string} width - Width mode: 'full' (stretches to container) or any CSS length (e.g. '240px')
  * @attr {boolean} hide-spin-buttons - When set, hides the decrement and increment buttons
- * @attr {string}  accessible-label  - Accessible label (aria-label) forwarded to the native input
+ * @attr {string} accessible-label - Accessible label (aria-label) forwarded to the native input
  *
- * @fires input  - When the value changes (typing, +/- button, or on-commit correction);
- *                 detail: { value: number }
- * @fires change - When the value is committed (blur/Enter or +/- button), clamped to
- *                 [min, max]; empty input falls back to the last valid value. When the
- *                 committed value differs from the typed value, a matching input event
- *                 is fired immediately before this one. detail: { value: number }
+ * @fires input - When the value changes (typing, +/- button, or on-commit correction); detail: { value: number }
+ * @fires change - When the value is committed (blur/Enter or +/- button), clamped to [min, max]; empty input falls back to the last valid value. When the committed value differs from the typed value, a matching input event is fired immediately before this one. detail: { value: number }
  */
 import { LitElement } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
+import { FormAssociated, type FormValue } from '../../../utilities/form-associated-mixin.js';
 import { reflectNonDefault } from '../../../utilities/reflect-non-default.js';
 import { numberFieldStyles } from './number-field.styles.js';
 import { numberFieldTemplate } from './number-field.template.js';
@@ -36,12 +33,10 @@ import './../../content/icon/icon.js';
 export type NumberFieldSize = 'sm' | 'md';
 
 @customElement('nldd-number-field')
-export class NLDDNumberField extends LitElement {
-	static formAssociated = true;
+export class NLDDNumberField extends FormAssociated(LitElement) {
 
 	static override styles = numberFieldStyles;
 
-	private _internals = this.attachInternals();
 
 	private _initialValue = 0;
 
@@ -106,17 +101,18 @@ export class NLDDNumberField extends LitElement {
 			}
 		}
 		if (changedProperties.has('value')) {
-			this._internals.setFormValue(String(this.value));
+			this.commitFormValue();
 		}
+	}
+
+	override formValue(): FormValue {
+		return String(this.value);
 	}
 
 	formResetCallback(): void {
 		this.value = this._initialValue;
 	}
 
-	formDisabledCallback(disabled: boolean): void {
-		this.disabled = disabled;
-	}
 
 	formStateRestoreCallback(state: File | string | FormData | null): void {
 		if (typeof state !== 'string') return;
@@ -149,6 +145,7 @@ export class NLDDNumberField extends LitElement {
 		const parsed = parseFloat(input.value);
 		if (isNaN(parsed)) return;
 		this.value = parsed;
+		this.commitFormValue();
 		this.dispatchEvent(new CustomEvent('input', {
 			detail: { value: this.value },
 			bubbles: true,
@@ -175,6 +172,7 @@ export class NLDDNumberField extends LitElement {
 		// the same number after clamping (e.g. empty → fallback).
 		if (input) input.value = String(clampedValue);
 		if (!changed) return;
+		this.commitFormValue();
 		this.dispatchEvent(new CustomEvent('input', {
 			detail: { value: this.value },
 			bubbles: true,

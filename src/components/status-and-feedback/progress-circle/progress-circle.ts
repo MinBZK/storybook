@@ -4,13 +4,13 @@
  * Exports both NLDDProgressCircle and NLDDProgressCircleSegmentIndicator.
  *
  * A circular progress indicator that mirrors the API of nldd-progress-bar:
- * single-value or multi-segment, progress or distribution mode, 24 colours,
+ * single-value or multi-segment, progress or distribution mode, 24 colors,
  * fade transitions between determinate/indeterminate, indeterminate indicator.
  *
  * Visual differences vs the bar:
  * - SVG arcs instead of rectangular bars.
  * - Label below the circle (not above).
- * - No centre text; the consumer can wrap the circle if needed.
+ * - No center text; the consumer can wrap the circle if needed.
  * - One combined tooltip on the whole circle showing all segment info
  *   (no per-segment tooltips).
  * - Indeterminate uses a rotating elastic arc (Material-style) instead of
@@ -18,24 +18,24 @@
  *
  * @element nldd-progress-circle
  *
- * @attr {'progress'|'distribution'} mode - Semantics for ARIA and gap behaviour (default: 'progress')
- * @attr {number}  max               - Total value (default: 100)
- * @attr {number}  value             - Single-segment shorthand (ignored when segment children exist)
- * @attr {string}  color             - Color. Semantic (neutral, accent, success, warning, critical) or a Rijkskleur. Default 'accent'.
- * @attr {string} size              - Circle diameter in px. Matches nldd-icon sizes: 16, 20, 24, 28, 32, 40, 44, 48, 56, 64, 80, 96 (default: '28')
- * @attr {string}  text              - Label below the circle
+ * @attr {'progress'|'distribution'} mode - Semantics for ARIA and gap behavior (default: 'progress')
+ * @attr {number} max - Total value (default: 100)
+ * @attr {number} value - Single-segment shorthand (ignored when segment children exist)
+ * @attr {string} color - Color. Semantic (neutral, accent, success, warning, critical) or a Rijkskleur. Default 'accent'.
+ * @attr {string} size - Circle diameter in px. Matches nldd-icon sizes: 16, 20, 24, 28, 32, 40, 44, 48, 56, 64, 80, 96 (default: '28')
+ * @attr {string} text - Label below the circle
  * @attr {'percentage'|'absolute'|'fraction'} value-format - Format of the displayed value (default: 'percentage')
  * @attr {'inline'|'tooltip'|'none'} value-display - Where the value shows: inline below the label, in a tooltip, or hidden (default: 'tooltip')
- * @attr {string}  value-text        - Full override of the displayed value (inline + tooltip)
- * @attr {string}  accessible-label  - Full override of aria-valuetext
- * @attr {boolean} indeterminate     - Renders the rotating elastic arc animation
- * @attr {object}  translations      - Override translation keys; unset keys fall back to Dutch
+ * @attr {string} value-text - Full override of the displayed value (inline + tooltip)
+ * @attr {string} accessible-label - Full override of aria-valuetext
+ * @attr {boolean} indeterminate - Renders the rotating elastic arc animation
+ * @attr {object} translations - Override translation keys; unset keys fall back to Dutch
  *
  * @element nldd-progress-circle-segment-indicator
  *
- * @attr {number}  value - Share of the parent's total (default 0; <=0 hides segment)
- * @attr {string}  color - Color (semantic or Rijkskleur). Default 'accent'.
- * @attr {string}  name  - Optional name used in the combined tooltip + screenreader text
+ * @attr {number} value - Share of the parent's total (default 0; <=0 hides segment)
+ * @attr {string} color - Color (semantic or Rijkskleur). Default 'accent'.
+ * @attr {string} name - Optional name used in the combined tooltip + screenreader text
  */
 import { LitElement, nothing } from 'lit';
 import { customElement, property, state } from 'lit/decorators.js';
@@ -201,7 +201,7 @@ export class NLDDProgressCircle extends LitElement {
 	 *  valueText overrides the whole thing; indeterminate shows the loading text. */
 	get _tooltipText(): string {
 		if (this.valueDisplay !== 'tooltip') return '';
-		if (this.indeterminate) return this._t('components.progress-circle.loading-text');
+		if (this.indeterminate) return this._t('components.progress-circle.loading-label');
 		if (this.valueText) return this.valueText;
 
 		if (!this._hasSegmentIndicators) {
@@ -237,7 +237,7 @@ export class NLDDProgressCircle extends LitElement {
 	 *  "voltooid" suffix and total-prefix for clearer announcements. */
 	get _ariaValueText(): string {
 		if (this.accessibleLabel) return this.accessibleLabel;
-		if (this.indeterminate) return this._t('components.progress-circle.loading-text');
+		if (this.indeterminate) return this._t('components.progress-circle.loading-label');
 
 		const completedSuffix = this._t('components.progress-circle.completed-suffix-text');
 		const totalPrefix = this._t('components.progress-circle.total-prefix-text');
@@ -392,7 +392,7 @@ export class NLDDProgressCircle extends LitElement {
 		// the path end on each side; we add the full stroke width (= two
 		// half-strokes) so the visible gap is 1px. Distribution mode uses butt
 		// caps so a 2px gap is enough. Single-segment progress (just `value`,
-		// no children) has no neighbours so no gap.
+		// no children) has no neighbors so no gap.
 		const sizeInPixels = Number(this.size) || 28;
 		const strokeWidthPx = getStrokeWidthPx(sizeInPixels);
 		const isMultiSegmentIndicator = sourceSegmentIndicators.length > 1 || this.mode === 'distribution';
@@ -407,8 +407,8 @@ export class NLDDProgressCircle extends LitElement {
 
 		const total = this._totalValue;
 		// Both modes measure against max so a partial total fills only part
-		// of the ring. If the sum exceeds max we normalise proportionally to
-		// avoid overflow (matches nldd-progress-bar behaviour).
+		// of the ring. If the sum exceeds max we normalize proportionally to
+		// avoid overflow (matches nldd-progress-bar behavior).
 		const denominator = total > this.max ? total : this.max;
 
 		let cumulative = 0;

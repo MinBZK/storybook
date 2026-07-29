@@ -1,11 +1,11 @@
 /**
  * Notifies subscribers when `:root[data-scheme]` flips, so they can force
- * a repaint of any scrollable region with `light-dark()` colours.
+ * a repaint of any scrollable region with `light-dark()` colors.
  *
  * Why this exists: browsers (Chromium especially) cache off-screen tiles
  * for composited scroll layers and don't always invalidate them when a
  * `color-scheme` flip re-resolves `light-dark()` values. Scroll back
- * after a theme switch and you see stale colours from the old scheme.
+ * after a theme switch and you see stale colors from the old scheme.
  * Components with overflowing scroll containers can subscribe here and
  * drop their compositor layer on each scheme change.
  *

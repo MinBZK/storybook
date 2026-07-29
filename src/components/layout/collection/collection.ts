@@ -15,16 +15,9 @@
  * @attr {boolean} show-load-more - Show load-more button in grid/stack (default: false)
  * @attr {number} max-items - Number of visible items per page (default: 24)
  * @attr {boolean} lazy-load - Automatically load more items when the button becomes visible
- * @attr {string}  item-width - Preferred width for each item (e.g. '280px', '20rem'). In grid
- *                              layout used as the minimum column width (columns will be at
- *                              least this wide; 1fr if container allows more). In horizontal
- *                              scroll used as flex-basis. Never forces horizontal overflow —
- *                              the value is clamped to container width.
- * @attr {string}  gap - Custom gap between items (any CSS length, e.g. '8px'). Overrides the
- *                       responsive default at every breakpoint; unset keeps the default.
- * @attr {object} translations - Translation overrides; unset keys fall back to Dutch.
- *                               Available keys: 'components.collection.previous-action',
- *                               'components.collection.next-action', 'components.collection.load-more-action'
+ * @attr {string} item-width - Preferred width for each item (e.g. '280px', '20rem'). In grid layout used as the minimum column width (columns will be at least this wide; 1fr if container allows more). In horizontal scroll used as flex-basis. Never forces horizontal overflow — the value is clamped to container width.
+ * @attr {string} gap - Custom gap between items (any CSS length, e.g. '8px'). Overrides the responsive default at every breakpoint; unset keeps the default.
+ * @attr {object} translations - Translation overrides; unset keys fall back to Dutch. Available keys: 'components.collection.previous-action', 'components.collection.next-action', 'components.collection.load-more-action'
  *
  * @migration The `load-more-label` attribute has been removed.
  *            Use `translations` property instead: `.translations=${{ 'components.collection.load-more-action': 'Show more' }}`

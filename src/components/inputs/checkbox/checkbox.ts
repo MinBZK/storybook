@@ -2,28 +2,25 @@
  * Nederlandse Digitale Dienst Checkbox Component (Lit + TypeScript)
  *
  * @element nldd-checkbox
- * @attr {boolean} checked       - Checked state
- * @attr {boolean} disabled      - Disabled state
+ * @attr {boolean} checked - Checked state
+ * @attr {boolean} disabled - Disabled state
  * @attr {boolean} indeterminate - Indeterminate state (takes precedence over checked visually)
- * @attr {string}  value         - Value for form submission
- * @attr {string}  name          - Name for form submission
- * @attr {string}  accessible-label - Accessible label forwarded as aria-label to the native input.
+ * @attr {string} value - Value for form submission
+ * @attr {string} name - Name for form submission
+ * @attr {string} accessible-label - Accessible label forwarded as aria-label to the native input.
  *   Note: aria-labelledby is not supported as IDREF resolution cannot cross shadow DOM boundaries.
  *
  * @fires change - Fired when the checkbox state changes; detail: { checked: boolean, value: string }
  */
-import { LitElement, type PropertyValues } from 'lit';
+import { LitElement } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
+import { FormAssociated, type FormValue } from '../../../utilities/form-associated-mixin.js';
 import { checkboxStyles } from './checkbox.styles.js';
 import { checkboxTemplate } from './checkbox.template.js';
 
 @customElement('nldd-checkbox')
-export class NLDDCheckbox extends LitElement {
-	static formAssociated = true;
-
+export class NLDDCheckbox extends FormAssociated(LitElement) {
 	static override styles = checkboxStyles;
-
-	private _internals = this.attachInternals();
 
 	private _initialChecked = false;
 
@@ -49,19 +46,13 @@ export class NLDDCheckbox extends LitElement {
 		this._initialChecked = this.checked;
 	}
 
-	override updated(changed: PropertyValues): void {
-		if (changed.has('checked') || changed.has('value')) {
-			this._internals.setFormValue(this.checked ? this.value : null);
-		}
+	override formValue(): FormValue {
+		return this.checked ? this.value : null;
 	}
 
 	formResetCallback(): void {
 		this.checked = this._initialChecked;
 		this.indeterminate = false;
-	}
-
-	formDisabledCallback(disabled: boolean): void {
-		this.disabled = disabled;
 	}
 
 	formStateRestoreCallback(state: File | string | FormData | null): void {
@@ -72,6 +63,7 @@ export class NLDDCheckbox extends LitElement {
 		if (this.disabled) return;
 		this.checked = !this.checked;
 		this.indeterminate = false;
+		this.commitFormValue();
 		this.dispatchEvent(new CustomEvent('change', {
 			detail: { checked: this.checked, value: this.value },
 			bubbles: true,
@@ -83,6 +75,7 @@ export class NLDDCheckbox extends LitElement {
 		const input = e.target as HTMLInputElement;
 		this.checked = input.checked;
 		this.indeterminate = input.indeterminate;
+		this.commitFormValue();
 		this.dispatchEvent(new CustomEvent('change', {
 			detail: { checked: this.checked, value: this.value },
 			bubbles: true,

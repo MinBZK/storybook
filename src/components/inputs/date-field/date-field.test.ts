@@ -124,6 +124,29 @@ describe('nldd-date-field', () => {
 		expect(textInput(el).hasAttribute('name')).toBe(false);
 	});
 
+	// Wie op change de form serialiseert (htmx, of gewoon new FormData(form)) doet
+	// dat synchroon; stond de formwaarde pas in updated(), dan las die listener de
+	// waarde van vóór de wijziging en verdween de zojuist gekozen datum weer.
+	it('heeft de nieuwe formwaarde al staan wanneer change afgaat', async () => {
+		const form = document.createElement('form');
+		document.body.appendChild(form);
+		el = await fixture<NLDDDateField>('<nldd-date-field name="datum"></nldd-date-field>');
+		form.appendChild(el);
+		await waitForUpdate(el);
+
+		let seen: FormDataEntryValue | null = null;
+		el.addEventListener('change', () => {
+			seen = new FormData(form).get('datum');
+		});
+
+		const input = textInput(el);
+		input.value = '31-12-2026';
+		input.dispatchEvent(new Event('change', { bubbles: true }));
+
+		expect(seen).toBe('2026-12-31');
+		form.remove();
+	});
+
 
 	// De kalenderknop en de popover zitten in dezelfde doos, dus met :focus-within
 	// tekende het veld een tweede ring om alles heen terwijl de knop er al een had.

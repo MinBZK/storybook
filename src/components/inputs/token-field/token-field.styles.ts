@@ -14,11 +14,11 @@ export const tokenFieldStyles = css`
 		--_background-color: var(--semantics-input-fields-background-color);
 		--_corner-radius: var(--semantics-controls-md-corner-radius);
 		--_min-size: var(--semantics-controls-md-min-size);
-		--_inline-padding: calc(var(--semantics-controls-md-inline-padding) - var(--semantics-input-fields-border-thickness));
+		--_inline-padding: calc(var(--semantics-controls-md-inline-padding) - var(--semantics-input-fields-border-width));
 		--_text-font: var(--semantics-input-fields-md-text-font);
 		--_validation-icon-size: var(--semantics-input-fields-md-validation-icon-size);
-		--_validation-icon-area-size: calc(var(--_min-size) - var(--semantics-input-fields-border-thickness) * 2);
-		--_gap: calc((var(--semantics-controls-md-min-size) - var(--semantics-controls-sm-min-size) - 2 * var(--semantics-input-fields-border-thickness)) / 2);
+		--_validation-icon-area-size: calc(var(--_min-size) - var(--semantics-input-fields-border-width) * 2);
+		--_gap: calc((var(--semantics-controls-md-min-size) - var(--semantics-controls-sm-min-size) - 2 * var(--semantics-input-fields-border-width)) / 2);
 		--_input-min-width: var(--primitives-area-200);
 
 		${inheritedTextReset}
@@ -140,7 +140,7 @@ export const tokenFieldStyles = css`
 		color: var(--semantics-input-fields-placeholder-color);
 	}
 
-	/* Mask the browser autofill background (box-shadow inset) and its text colour. */
+	/* Mask the browser autofill background (box-shadow inset) and its text color. */
 	.token-field__input:-webkit-autofill,
 	.token-field__input:autofill,
 	.token-field__input:-webkit-autofill:disabled,

@@ -8,6 +8,7 @@ export function modalDialogTemplate(component: NLDDModalDialog) {
 			role=${component.variant === 'alert' ? 'alertdialog' : nothing}
 			aria-label=${component.accessibleLabel || component.text || nothing}
 			aria-modal="true"
+			@pointerdown=${component._handleDialogPointerDown}
 			@click=${component._handleBackdropClick}
 			@cancel=${component._handleCancel}
 		>

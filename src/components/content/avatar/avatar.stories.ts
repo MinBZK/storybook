@@ -282,3 +282,20 @@ export const IcoonUitlijning = {
 	`,
 	parameters: { controls: { disable: true } },
 };
+
+/**
+ * Met `href` wordt de avatar één link, met `button` een knop. De schijf zelf is
+ * de control, dus het klikgebied en de focusring volgen de ronde (of afgeronde)
+ * vorm. De naam komt uit `accessible-label`, of anders uit `name` — een avatar
+ * bevat immers geen tekst die de control kan benoemen.
+ */
+export const LinkOfKnop = {
+	render: () => html`
+		<div style="display: flex; gap: 24px; align-items: center;">
+			<nldd-avatar name="Bart van de Biezen" size="48" href="#profiel"></nldd-avatar>
+			<nldd-avatar name="Anke Jacobs" size="48" button accessible-label="Profielmenu van Anke Jacobs openen"></nldd-avatar>
+			<nldd-avatar type="organization" name="Rijkswaterstaat" size="48" href="#organisatie"></nldd-avatar>
+		</div>
+	`,
+	parameters: { controls: { disable: true } },
+};

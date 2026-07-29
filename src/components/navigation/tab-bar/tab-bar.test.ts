@@ -154,7 +154,7 @@ describe('nldd-tab-bar-item – content variant detection', () => {
 	it('caps the bar at its container and truncates only the overflowing tab', async () => {
 		// Real layout assertion in a narrow container: the bar must not exceed it,
 		// the long tab truncates, and short tabs keep their own (content) width
-		// instead of all shrinking proportionally (the grid-track behaviour).
+		// instead of all shrinking proportionally (the grid-track behavior).
 		const host = document.createElement('div');
 		host.style.width = '320px';
 		document.body.appendChild(host);

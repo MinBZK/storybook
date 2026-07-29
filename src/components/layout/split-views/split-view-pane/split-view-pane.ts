@@ -26,8 +26,8 @@
  * @element nldd-split-view-pane
  *
  * @attr {boolean} has-content - The pane has content (default: false)
- * @attr {boolean} hide-back   - Hide the back button (set automatically by the split view)
- * @attr {'inherit'|'base'|'tinted'} background      - Use a tinted background color (cascades to descendants)
+ * @attr {boolean} hide-back - Hide the back button (set automatically by the split view)
+ * @attr {'inherit'|'base'|'tinted'} background - Use a tinted background color (cascades to descendants)
  *
  * @slot - Pane content
  */

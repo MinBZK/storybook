@@ -99,7 +99,7 @@ Bullet-lijst onder elk kopje; begin met de component/het token vetgedrukt:
 - **Tokens** — welke `--semantics-*`-range is toegevoegd en waarvoor.
 ```
 
-**Taal: US English.** De changelog is Engelstalig en gebruikt Amerikaanse spelling — `color` (niet `colour`), `behavior` (niet `behaviour`), `center` (niet `centre`), `gray` (niet `grey`), `-ize` (niet `-ise`). Dit sluit aan op de codebase, waar API's, tokens en attributen (`color`, `--semantics-*-color`) al Amerikaans zijn.
+**Taal: US English.** De changelog is Engelstalig en gebruikt Amerikaanse spelling — `color` (niet `color`), `behavior` (niet `behavior`), `center` (niet `center`), `gray` (niet `gray`), `-ize` (niet `-ise`). Dit sluit aan op de codebase, waar API's, tokens en attributen (`color`, `--semantics-*-color`) al Amerikaans zijn.
 
 ## Helpers
 

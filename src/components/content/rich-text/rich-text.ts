@@ -17,20 +17,20 @@
  *
  * @element nldd-rich-text
  *
- * @attr {string}  spacing  - Spacing between elements: 'flat' | 'tight' | 'snug' (default) | 'loose'
+ * @attr {string} spacing - Spacing between elements: 'flat' | 'tight' | 'snug' (default) | 'loose'
  * @attr {boolean} centered - Centers the main column inside the container; without it, content is left-aligned
- * @attr {boolean} hyphens  - Opt-in automatische woordafbreking voor doorlopende
+ * @attr {boolean} hyphens - Opt-in automatische woordafbreking voor doorlopende
  *   tekst (p, li, dd). Vereist een correcte `lang` op de pagina (bijv.
  *   `lang="nl"` op `<html>`): zonder taalinfo breekt de browser niet af. Een
  *   `overflow-wrap: break-word`-vangnet op p/li staat altijd aan, los van dit
  *   attribuut, zodat lange URLs en samenstellingen ook zonder woordenboek
  *   netjes breken in plaats van te overlopen.
- * @attr {string}  color    - 'inherit' laat alle tekst de kleur van de ondergrond
+ * @attr {string} color - 'inherit' laat alle tekst de kleur van de ondergrond
  *   volgen (voor gekleurde vlakken zoals de filled-categories). Links blijven
  *   onderstreept als affordance; secundaire tekst (figcaption) krijgt dezelfde
  *   kleur op verlaagde dekking. Bekende v1-gaten: inline code, mark, tabellen
  *   en hr behouden hun eigen surfaces. Leeg = standaard contentkleuren.
- * @attr {object}  translations - Override translation keys; unset keys fall back to Dutch
+ * @attr {object} translations - Override translation keys; unset keys fall back to Dutch
  */
 import { LitElement } from 'lit';
 import { customElement, property } from 'lit/decorators.js';

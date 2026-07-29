@@ -2,43 +2,30 @@
  * Nederlandse Digitale Dienst Icon Button Component (Lit + TypeScript)
  *
  * @element nldd-icon-button
- * @attr {string}  variant           - Button variant: 'accent-filled' | 'accent-transparent' | 'neutral-tinted' | 'neutral-transparent' | 'critical-tinted' | 'critical-transparent' | 'inherit-filled' | 'inherit-tinted' | 'primary' | 'secondary' | 'destructive'. De inherit-varianten leiden hun kleuren af van currentColor, voor knoppen op gekleurde vlakken.
- * @attr {string}  size              - Button size: 'xs' | 'sm' | 'md' | 'lg' (default: 'md')
- * @attr {boolean} hide-lg-text      - In lg size, hides the text label and enlarges the icon by one step (28px)
+ * @attr {string} variant - Button variant: 'accent-filled' | 'accent-transparent' | 'neutral-tinted' | 'neutral-transparent' | 'critical-tinted' | 'critical-transparent' | 'inherit-filled' | 'inherit-tinted' | 'primary' | 'secondary' | 'destructive'. De inherit-varianten leiden hun kleuren af van currentColor, voor knoppen op gekleurde vlakken.
+ * @attr {string} size - Button size: 'xs' | 'sm' | 'md' | 'lg' (default: 'md')
+ * @attr {boolean} hide-lg-text - In lg size, hides the text label and enlarges the icon by one step (28px)
  * @attr {boolean} no-highlight-border - Removes the per-variant highlight border (e.g. when a control group draws a single border instead).
- * @attr {boolean} loading           - Loading state (default: false). Shows an activity indicator over the visually hidden icon, sets aria-busy on the inner control and blocks activation, without dropping the button from the tab order (unlike disabled).
- * @attr {boolean} disabled          - Disabled state
- * @attr {boolean} no-tab            - Takes the button out of the tab order (tabindex="-1"), for a control owned by a roving container (e.g. an nldd-token in nldd-token-field) that manages focus itself. Still mouse- and script-focusable.
- * @attr {string}  type              - Button type for form submission: 'button' | 'submit' | 'reset' (ignored when href is set)
- * @attr {boolean} expandable        - Whether the button opens a menu or popover and shows chevron next to the icon
- * @attr {boolean} expanded          - Whether the popover/menu controlled by this button is currently open. Forwarded as aria-expanded on the inner button; toggles the is-expanded visual state.
- * @attr {string}  popup-type        - Type of popup container this button opens: 'menu' | 'listbox' | 'dialog' | 'tree' | 'grid'. Sets aria-haspopup on the inner button and forces aria-expanded to always be present (true/false) so screen readers know the popup state.
- * @attr {string}  width             - Width mode: 'full' (stretches to container) or any CSS length (e.g. '240px')
- * @attr {string}  text              - Button text, used as aria-label and shown below the icon in lg size
- * @attr {string}  icon              - Icon name for the nldd-icon element. Defaults to a placeholder icon
- *                                     when neither this attribute nor the icon slot is set.
- * @attr {string}  accessible-label  - Accessible label for screen readers. Overrides text as aria-label
- *                                     and title tooltip. Use when the visible text alone lacks context for screen
- *                                     readers (e.g. text "Toon", accessible-label "Toon wachtwoord").
- *                                     The text is still shown visually in lg size regardless.
- * @attr {string}  tooltip-timing    - Forwarded to the inner nldd-tooltip's `timing`:
- *                                     'default' (700 ms show-delay), 'instant', or 'never'
- *                                     (suppress the visual tooltip; screen readers still get the
- *                                     aria-label). Use 'never' when the surrounding context
- *                                     already explains the button (e.g. spin buttons in
- *                                     nldd-number-field, the chevron in nldd-split-button).
- * @attr {string}  href              - When set, renders an <a> element instead of <button>
- * @attr {string}  target            - Link target (e.g. '_blank'); only used when href is set. With '_blank' the "opens in new tab" announcement is folded into the aria-label for screen readers (WCAG 2.1 SC 3.2.2).
- * @attr {string}  rel               - Link rel attribute; defaults to 'noopener noreferrer' when target is '_blank'
- * @attr {object}  translations      - Override translation keys (e.g. the "opens in new tab" announcement); unset keys fall back to Dutch.
- * @attr {string}  popovertarget     - ID of a popover element to toggle; forwarded to the inner <button>
+ * @attr {boolean} loading - Loading state (default: false). Shows an activity indicator over the visually hidden icon, sets aria-busy on the inner control and blocks activation, without dropping the button from the tab order (unlike disabled).
+ * @attr {boolean} disabled - Disabled state
+ * @attr {boolean} no-tab - Takes the button out of the tab order (tabindex="-1"), for a control owned by a roving container (e.g. an nldd-token in nldd-token-field) that manages focus itself. Still mouse- and script-focusable.
+ * @attr {string} type - Button type for form submission: 'button' | 'submit' | 'reset' (ignored when href is set)
+ * @attr {boolean} expandable - Whether the button opens a menu or popover and shows chevron next to the icon
+ * @attr {boolean} expanded - Whether the popover/menu controlled by this button is currently open. Forwarded as aria-expanded on the inner button; toggles the is-expanded visual state.
+ * @attr {string} popup-type - Type of popup container this button opens: 'menu' | 'listbox' | 'dialog' | 'tree' | 'grid'. Sets aria-haspopup on the inner button and forces aria-expanded to always be present (true/false) so screen readers know the popup state.
+ * @attr {string} width - Width mode: 'full' (stretches to container) or any CSS length (e.g. '240px')
+ * @attr {string} text - Button text, used as aria-label and shown below the icon in lg size
+ * @attr {string} icon - Icon name for the nldd-icon element. Defaults to a placeholder icon when neither this attribute nor the icon slot is set.
+ * @attr {string} accessible-label - Accessible label for screen readers. Overrides text as aria-label and title tooltip. Use when the visible text alone lacks context for screen readers (e.g. text "Toon", accessible-label "Toon wachtwoord"). The text is still shown visually in lg size regardless.
+ * @attr {string} tooltip-timing - Forwarded to the inner nldd-tooltip's `timing`: 'default' (700 ms show-delay), 'instant', or 'never' (suppress the visual tooltip; screen readers still get the aria-label). Use 'never' when the surrounding context already explains the button (e.g. spin buttons in nldd-number-field, the chevron in nldd-split-button).
+ * @attr {string} href - When set, renders an <a> element instead of <button>
+ * @attr {string} target - Link target (e.g. '_blank'); only used when href is set. With '_blank' the "opens in new tab" announcement is folded into the aria-label for screen readers (WCAG 2.1 SC 3.2.2).
+ * @attr {string} rel - Link rel attribute; defaults to 'noopener noreferrer' when target is '_blank'
+ * @attr {object} translations - Override translation keys (e.g. the "opens in new tab" announcement); unset keys fall back to Dutch.
+ * @attr {string} popovertarget - ID of a popover element to toggle; forwarded to the inner <button>
  *
- * @slot icon - Slot for a custom icon (e.g. custom SVG). Only used when icon attribute is not set;
- *              falls back to a placeholder icon when the slot is empty.
- * @slot popup - A single `nldd-menu` or `nldd-popover` this button invokes. Slotting it auto-anchors
- *              the overlay to the button and toggles it on click (no id/anchor wiring). The overlay syncs
- *              `expanded` and `aria-haspopup` back onto the button. Add `expandable` for the disclosure chevron.
- *              Mirrors nldd-split-button; manual `popovertarget` wiring keeps working without a slotted overlay.
+ * @slot icon - Slot for a custom icon (e.g. custom SVG). Only used when icon attribute is not set; falls back to a placeholder icon when the slot is empty.
+ * @slot popup - A single `nldd-menu` or `nldd-popover` this button invokes. Slotting it auto-anchors the overlay to the button and toggles it on click (no id/anchor wiring). The overlay syncs `expanded` and `aria-haspopup` back onto the button. Add `expandable` for the disclosure chevron. Mirrors nldd-split-button; manual `popovertarget` wiring keeps working without a slotted overlay.
  *
  * @example
  * ```html
@@ -96,7 +83,7 @@ export class NLDDIconButton extends withTranslations(LitElement, nlddIconButtonT
 	hideLgText = false;
 
 	/**
-	 * Loading state. Shows an activity indicator centred over the (visually
+	 * Loading state. Shows an activity indicator centered over the (visually
 	 * hidden) icon, marks the inner control `aria-busy="true"` and blocks
 	 * activation — without dropping the control from the tab order (unlike
 	 * `disabled`).
@@ -148,7 +135,7 @@ export class NLDDIconButton extends withTranslations(LitElement, nlddIconButtonT
 	 * Direct element reference to the popover this button invokes — IDL-only
 	 * counterpart to `popovertarget` that works across shadow boundaries.
 	 * Use this when the popover lives in a different tree (e.g. an
-	 * `nldd-menu` reparented to `<body>`) so the browser still recognises
+	 * `nldd-menu` reparented to `<body>`) so the browser still recognizes
 	 * this button as the popover's invoker and excludes it from the popover
 	 * light-dismiss algorithm. Set programmatically; not reflected to an
 	 * HTML attribute (the attribute form is `popovertarget`, ID-based).
@@ -259,7 +246,7 @@ export class NLDDIconButton extends withTranslations(LitElement, nlddIconButtonT
 			e.preventDefault();
 			return;
 		}
-		// A link icon-button has no form behaviour. Otherwise drive the
+		// A link icon-button has no form behavior. Otherwise drive the
 		// associated form ourselves: the shadow <button type="submit"|"reset">
 		// can't reach the light-DOM form across the shadow boundary.
 		//

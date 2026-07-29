@@ -13,6 +13,7 @@ export const iconCellStyles = css`
 		--_content-color: var(--context-content-color, var(--semantics-content-color));
 
 		display: flex;
+		padding-block: var(--context-cell-padding-block, 0px);
 		width: var(--_size);
 		flex-direction: column;
 		align-items: center;

@@ -18,11 +18,12 @@ export const listStyles = css`
 		--_max-height: none;
 		--_background-color: transparent;
 		--_highlight-border-color: transparent;
+		--_box-padding: var(--primitives-space-4);
 		--_gap: var(--primitives-space-8);
 		--_search-field-min-size: var(--semantics-controls-md-min-size);
 		--_search-field-icon-size: var(--primitives-space-24);
-		--_search-field-end-padding-right: calc((var(--_search-field-min-size) - var(--semantics-controls-sm-min-size)) / 2 - var(--semantics-input-fields-border-thickness));
-		--_search-field-z-index-button-focus: 1;
+		--_search-field-end-padding-right: calc((var(--_search-field-min-size) - var(--semantics-controls-sm-min-size)) / 2 - var(--semantics-input-fields-border-width));
+		--_search-field-button-focus-z-index: 1;
 		--_search-bar-gap: var(--primitives-space-8);
 		--_toolbar-gap: var(--primitives-space-8);
 		--_empty-padding: var(--primitives-space-16);
@@ -47,22 +48,17 @@ export const listStyles = css`
 		--_highlight-border-color: var(--semantics-surfaces-base-border-color);
 	}
 
-	:host([variant="box"]) .list__main {
-		position: relative;
-		border-radius: var(--components-list-corner-radius);
-		background-color: var(--_background-color);
-		box-shadow: inset 0 0 0 1px var(--_highlight-border-color);
-		overflow: hidden;
-	}
 
-
-	/* # Elements */
+	/* # Block */
 
 	.list {
 		display: flex;
 		flex-direction: column;
 		gap: var(--_gap);
 	}
+
+
+	/* # Elements */
 
 	.list__header {
 		display: contents;
@@ -85,15 +81,27 @@ export const listStyles = css`
 		flex-direction: column;
 	}
 
-	.list__main[hidden] {
-		display: none;
+	/* No overflow clip: the rows sit 4px inside the frame, so their fills never
+	   reach its corners and have nothing to be clipped against. Without it a
+	   focus ring inside the box paints outward, like every other control in the
+	   system, instead of being cut off by the frame. */
+	:host([variant="box"]) .list__main {
+		position: relative;
+		border-radius: var(--semantics-surfaces-corner-radius);
+		background-color: var(--_background-color);
+		box-shadow: inset 0 0 0 1px var(--_highlight-border-color);
 	}
 
 	/* Listbox: give the options a bit more breathing room from the pinned
 	   search bar (and toolbar) above them than the default inter-row gap, so
 	   the search field reads as a zone distinct from the scrolling options. */
+
 	:host([type="listbox"]) .list__main {
 		margin-block-start: var(--primitives-space-8);
+	}
+
+	.list__main[hidden] {
+		display: none;
 	}
 
 	.list__items {
@@ -105,15 +113,16 @@ export const listStyles = css`
 		display: none;
 	}
 
+	:host([variant="box"]) .list__items {
+		padding-inline: calc(var(--components-list-item-indicator-inline-inset) + var(--_box-padding));
+		padding-block: var(--_box-padding);
+	}
+
 	:host([type="listbox"]) .list__items {
 		max-height: var(--_max-height);
 		overflow-x: hidden;
 		overflow-y: auto;
 		padding-inline: var(--components-list-item-indicator-inline-inset);
-	}
-
-	:host([type="listbox"][variant="box"]) .list__items {
-		padding-inline: 0;
 	}
 
 	.list__empty {
@@ -123,8 +132,6 @@ export const listStyles = css`
 	.list__empty[hidden] {
 		display: none;
 	}
-
-	/* ## Search */
 
 	.list__search-bar {
 		display: flex;
@@ -176,7 +183,7 @@ export const listStyles = css`
 
 	.list__search-field-icon {
 		display: flex;
-		margin-inline: calc((var(--_search-field-min-size) - var(--_search-field-icon-size)) / 2 - var(--semantics-input-fields-border-thickness));
+		margin-inline: calc((var(--_search-field-min-size) - var(--_search-field-icon-size)) / 2 - var(--semantics-input-fields-border-width));
 		width: var(--_search-field-icon-size);
 		height: var(--_search-field-icon-size);
 		flex-shrink: 0;
@@ -216,7 +223,7 @@ export const listStyles = css`
 
 	.list__search-field-clear:focus-within {
 		position: relative;
-		z-index: var(--_search-field-z-index-button-focus);
+		z-index: var(--_search-field-button-focus-z-index);
 	}
 
 	::slotted(.nldd-list-drag-placeholder) {
@@ -257,7 +264,7 @@ export const listStyles = css`
 	}
 
 
-	/* # Accessibility*/
+	/* # Accessibility */
 
 	@media (forced-colors: active) {
 		:host([variant="box"]) .list__main {

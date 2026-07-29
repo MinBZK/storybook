@@ -126,6 +126,22 @@ declare global {
 }
 ```
 
+**JSDoc-opmaak:**
+
+- Proza (de beschrijving bovenaan) wrapt op ~80 tekens.
+- Een tagregel (`@attr`, `@prop`, `@fires`, `@slot`, `@method`) blijft op één
+  regel, hoe lang die ook wordt. Dat leest slechter in de bron, maar wel goed in
+  de gegenereerde tabel — en geen enkele generator hoeft vervolgregels te
+  begrijpen.
+- Moet er toch gebroken worden, spring dan één niveau in. Niet uitlijnen op de
+  kolom van de beschrijving: dan houd je nog maar een handvol tekens per regel
+  over en lijkt de tekst afgekapt.
+- Eén spatie tussen `@attr`, het type, de naam en het streepje. Niet uitlijnen in
+  kolommen: dan dwingt één langere attribuutnaam je het hele blok opnieuw te
+  padden, wat een diff vol witruimte oplevert zonder dat de gegenereerde docs
+  veranderen.
+
+
 **`{naam}.styles.ts`:**
 
 ```typescript
@@ -293,7 +309,7 @@ Per component: pak alleen de keys die je gebruikt en zet ze in deze volgorde. De
 
 ```
 [1. Visueel dominant]
-variant, size, compact, color, background, layout, panes,
+variant, status, size, compact, minor, color, background, layout, panes,
 iconOnly, responsive, showItemLabels, inspectorAsSheet, sidebarAsSheet, noLogo
 
 [2. Sizing]
@@ -307,7 +323,7 @@ paddingBottom, paddingLeft
 
 [4. Alignment and position]
 horizontalAlignment, verticalAlignment, direction, orientation, placement,
-labelAlignment, top, right, bottom, left, child
+labelAlignment, top, right, bottom, left, position
 
 [5. Main content]
 text, supportingText, overline, label, supportingLabel, optional,
@@ -507,6 +523,7 @@ Er is geen automatische formatter. Volg deze regels handmatig.
   Pseudo-elementen: `content: ''` mag bovenaan (vóór 1). Responsive breakpoint-`@container`/`@media` blijven genest, ná de properties van die rule.
 - **CSS nesting** voor *responsive* breakpoint-overrides (`@container` en `@media` met sm/md/lg) — genest in de element/`:host` rule. **State/toegankelijkheid-`@media`** (`forced-colors`, `prefers-reduced-motion`, `hover`) **niet nesten** — als los blok direct ná de element-rule die het wijzigt; géén aparte sectie ervoor
 - Declareer **alle** lokale CSS variabelen (`--_*`) **bovenin `:host`**, gevolgd door een lege regel die ze scheidt van de overige properties. Inclusief responsive overrides via `@container` nesting. Elementen gebruiken alleen `var(--_foo)`, nooit fallbacks: niet `var(--_foo, 100)`
+- **Naam van een `--_*` var: `{element}-{property}`** — het element eerst, de CSS-property achteraan (`--_marker-size`, `--_control-hover-background-color`, `--_marker-z-index`). Niet andersom: `--_z-index-marker` leest als een familie z-indexen terwijl het een eigenschap van de marker is.
 - **Volgorde van de `--_*` vars: in volgorde van eerste gebruik** in de stylesheet (de rules staan zelf in Concentric volgorde, dus dit volgt daaruit). Niet concentric- of alfabetisch sorteren. Pas dezelfde canonieke volgorde toe in élk override-blok (`:host([size=…])`, `:host([variant=…])`, `:host([expanded]…)`): elk blok somt z'n subset in die volgorde op. Herordenen is risicoloos — declaratievolgorde heeft geen cascade-effect
 - Gebruik **nooit** flex shorthand (`flex: 1`), schrijf de losse properties
 - Level 1 headings (`/* # Section */`): 2 lege regels ervoor, 1 erna

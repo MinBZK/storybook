@@ -20,6 +20,12 @@ import { reflectNonDefault } from '../../../utilities/reflect-non-default.js';
 import { buttonBarStyles } from './button-bar.styles.js';
 import { template } from './button-bar.template.js';
 
+/**
+ * A vertical rule between groups of buttons in an `nldd-button-bar`. Purely
+ * presentational: no attributes, no slots — place it between buttons.
+ *
+ * @element nldd-button-bar-divider
+ */
 if (!customElements.get('nldd-button-bar-divider')) {
 	customElements.define('nldd-button-bar-divider', class extends HTMLElement {});
 }

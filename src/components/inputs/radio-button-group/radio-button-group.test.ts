@@ -162,15 +162,15 @@ describe('nldd-radio-button-group – accessibility', () => {
 		if (el) cleanup(el);
 	});
 
-	it('forwards accessible-labelled-by to aria-labelledby on the radiogroup element', async () => {
+	it('forwards accessible-labeled-by to aria-labelledby on the radiogroup element', async () => {
 		el = await fixture<NLDDRadioButtonGroup>(`
-			<nldd-radio-button-group accessible-labelled-by="my-label"></nldd-radio-button-group>
+			<nldd-radio-button-group accessible-labeled-by="my-label"></nldd-radio-button-group>
 		`);
 		await waitForUpdate(el);
 		expect(el.getAttribute('aria-labelledby')).toBe('my-label');
 	});
 
-	it('does not set aria-labelledby when accessible-labelled-by is not provided', async () => {
+	it('does not set aria-labelledby when accessible-labeled-by is not provided', async () => {
 		el = await fixture<NLDDRadioButtonGroup>(`
 			<nldd-radio-button-group></nldd-radio-button-group>
 		`);

@@ -6,13 +6,13 @@
  *
  * @element nldd-token
  *
- * @attr {string}                         text          - Token text; falls back to the default slot when unset.
- * @attr {'none' | 'dismiss' | 'menu'} control       - Control type (default: 'none')
- * @attr {boolean}                        expanded      - Reflects whether the token's menu is open (control="menu"); managed by the token.
- * @attr {boolean}                        disabled      - Disabled state
- * @attr {string}                         dismiss-text - Accessible label for the dismiss button (default: 'Verwijder')
- * @attr {string}                         menu-text    - Accessible label for the menu button (default: 'Toon opties')
- * @attr {boolean}                        roving        - Inside a roving-focus container (e.g. nldd-token-field): the host is the single tab stop, so the trailing control is not separately tabbable.
+ * @attr {string} text - Token text; falls back to the default slot when unset.
+ * @attr {'none' | 'dismiss' | 'menu'} control - Control type (default: 'none')
+ * @attr {boolean} expanded - Reflects whether the token's menu is open (control="menu"); managed by the token.
+ * @attr {boolean} disabled - Disabled state
+ * @attr {string} dismiss-text - Accessible label for the dismiss button (default: 'Verwijder')
+ * @attr {string} menu-text - Accessible label for the menu button (default: 'Toon opties')
+ * @attr {boolean} roving - Inside a roving-focus container (e.g. nldd-token-field): the host is the single tab stop, so the trailing control is not separately tabbable.
  *
  * @slot - Token text
  * @slot menu - An nldd-menu that the token opens from its menu button (control="menu").

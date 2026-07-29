@@ -30,7 +30,7 @@ export default {
 		status: { type: 'stable' },
 		docs: {
 			description: {
-				component: 'A flexible icon component. By default fills its parent and inherits color. Set `size` for a fixed spacer-aligned dimension; set `color` for a functional semantic or a rijkskleur. For one-off arbitrary colours, use `style="color: …"` on the host.',
+				component: 'A flexible icon component. By default fills its parent and inherits color. Set `size` for a fixed spacer-aligned dimension; set `color` for a functional semantic or a rijkskleur. For one-off arbitrary colors, use `style="color: …"` on the host.',
 			},
 		},
 	},

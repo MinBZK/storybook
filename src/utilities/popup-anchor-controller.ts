@@ -7,7 +7,7 @@
  * nldd-button, nldd-icon-button and nldd-split-button are configuration, not
  * subclassing: the anchor target (the host, or an inner wrapper) is a callback,
  * and the click handling is a method the control calls from its own handler,
- * which then falls through to its own form / link / event behaviour. Split-button
+ * which then falls through to its own form / link / event behavior. Split-button
  * layers `toggle` tracking on top via `onChange`, which composition allows and
  * inheritance would fight.
  *
@@ -32,7 +32,7 @@ export interface PopupAnchorOptions {
 	 *  so a target that only resolves after the first render (an inner element
 	 *  behind @query) still works — call `anchor()` once it exists. */
 	anchorFor?: () => Element | null;
-	/** Runs after the slotted overlay is swapped, for behaviour layered on top
+	/** Runs after the slotted overlay is swapped, for behavior layered on top
 	 *  (e.g. tracking `toggle` to drive a chevron's expanded state). */
 	onChange?: (overlay: Overlay | null, previous: Overlay | null) => void;
 }

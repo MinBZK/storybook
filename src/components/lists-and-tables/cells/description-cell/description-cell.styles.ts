@@ -16,6 +16,7 @@ export const descriptionCellStyles = css`
 		--_min-height: 0;
 
 		${inheritedTextReset}
+		padding-block: var(--context-cell-padding-block, 0px);
 		display: flex;
 		width: var(--_width);
 		min-width: var(--_min-width);

@@ -43,13 +43,14 @@ export const template = ({
 	// Navigation: the host carries role="navigation" with its own label; an
 	// extra aria-label on the inner role="list" would make the landmark name
 	// and the inner list name stack in screen-reader announcements. Listbox:
-	// the input is the labelled control, so the listbox itself stays unlabelled.
+	// the input is the labeled control, so the listbox itself stays unlabeled.
 	const skipItemsLabel = isNavigation || isListbox;
-	// Role on .list__items: role="listbox" in listbox mode, else role="list".
+	// Role on .list__items: role="listbox" in listbox mode, role="tree" for a
+	// tree, else role="list".
 	// The empty-state (a non-option) is now a SIBLING of .list__items inside
 	// .list__main, so .list__items only ever contains options/items — the role
 	// can be set unconditionally per type (it's hidden when empty anyway).
-	const itemsRole = isListbox ? 'listbox' : 'list';
+	const itemsRole = isListbox ? 'listbox' : type === 'tree' ? 'tree' : 'list';
 	// In listbox mode an empty search has no "no results" meaning yet, so the
 	// empty state is suppressed — the consumer shows just the search field (and
 	// may place its own hint outside the list). It appears only once a query is

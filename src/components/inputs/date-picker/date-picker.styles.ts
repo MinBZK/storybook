@@ -22,12 +22,15 @@ export const datePickerStyles = css`
 		--_week-number-column-width: var(--primitives-space-32);
 		--_week-number-font: var(--primitives-font-body-xs-regular-flat);
 		--_week-number-content-color: var(--semantics-content-secondary-color);
+		/* Set from JS by the width attribute; initial keeps it guaranteed-invalid
+		   so every var(--_width, ...) below falls back to its own default. */
+		--_width: initial;
 		--_day-size: var(--semantics-controls-md-min-size);
 		--_day-corner-radius: var(--semantics-controls-md-corner-radius);
 		--_day-font: var(--primitives-font-body-sm-regular-flat);
 		--_day-indicator-inset: var(--primitives-space-2);
 		--_day-indicator-size: calc(var(--_day-size) - var(--_day-indicator-inset) * 2);
-		--_day-indicator-corner-radius: 50%;
+		--_day-indicator-corner-radius: var(--_day-corner-radius);
 		--_day-is-in-range-background-color: var(--semantics-categories-accent-tinted-background-color);
 		--_day-is-in-range-content-color: var(--semantics-content-color);
 		--_day-is-today-border-color: light-dark(var(--primitives-color-neutral-250), var(--primitives-color-neutral-400));
@@ -40,20 +43,25 @@ export const datePickerStyles = css`
 		${inheritedTextReset}
 		display: block;
 		/* Stated, not fit-content: the calendar inside is sized in percentages, so
-		   measuring it from here is circular and resolves to the container. */
-		width: calc(var(--_day-size) * 7);
+		   measuring it from here is circular and resolves to the container. The
+		   width attribute (--_width) overrides the intrinsic seven-cell width;
+		   the percentage-based inside stretches along. */
+		width: var(--_width, calc(var(--_day-size) * 7));
 		color: var(--semantics-content-color);
 		-webkit-tap-highlight-color: transparent;
 	}
 
 	:host([week-numbers]) {
-		width: calc(var(--_day-size) * 7 + var(--_week-number-column-width));
+		width: var(--_width, calc(var(--_day-size) * 7 + var(--_week-number-column-width)));
 	}
 
+	/* An explicit width attribute outranks the derived stacked width: stacked
+	   only describes how narrow the picker happens to be, not what the consumer
+	   asked for. */
 	:host([stacked]) {
 		--_title-font: var(--primitives-font-display-4-sm);
 
-		width: 100%;
+		width: var(--_width, 100%);
 	}
 
 	:host([hidden]) {
@@ -221,30 +229,14 @@ export const datePickerStyles = css`
 		transform: translate(-50%, -50%);
 	}
 
-	/* A selected range endpoint is not a full circle but a capsule half: rounded on
-	   the outer edge, square towards the range so it meets the band with no seam.
-	   The full circle still marks a lone selected day and both ends before the range
-	   is closed, when there is no band to connect to. */
-	.date-picker__day.is-range-start .date-picker__day-indicator,
-	.date-picker__day.is-range-end .date-picker__day-indicator {
-		top: var(--_day-indicator-inset);
-		left: auto;
-		border-radius: 0;
-		width: auto;
-		height: var(--_day-indicator-size);
-		transform: none;
+	.date-picker__day.is-range-start:not(.is-range-end) .date-picker__day-indicator {
+		border-start-end-radius: 0;
+		border-end-end-radius: 0;
 	}
 
-	.date-picker__day.is-range-start .date-picker__day-indicator {
-		inset-inline: var(--_day-indicator-inset) 0;
-		border-start-start-radius: var(--_day-indicator-size);
-		border-end-start-radius: var(--_day-indicator-size);
-	}
-
-	.date-picker__day.is-range-end .date-picker__day-indicator {
-		inset-inline: 0 var(--_day-indicator-inset);
-		border-start-end-radius: var(--_day-indicator-size);
-		border-end-end-radius: var(--_day-indicator-size);
+	.date-picker__day.is-range-end:not(.is-range-start) .date-picker__day-indicator {
+		border-start-start-radius: 0;
+		border-end-start-radius: 0;
 	}
 
 	.date-picker__day-number {
@@ -265,7 +257,7 @@ export const datePickerStyles = css`
 	   decision instead - and while it is absent the ring shows, so a failure leaves
 	   focus visible rather than hidden.
 
-	   Raised above its neighbours: the ring sits outside the indicator, so an
+	   Raised above its neighbors: the ring sits outside the indicator, so an
 	   adjacent selected day would paint over part of it. */
 	.date-picker__day:focus:not(.is-pointer-focus) {
 		z-index: 1;
@@ -277,7 +269,7 @@ export const datePickerStyles = css`
 		box-shadow: var(--semantics-focus-ring-box-shadow);
 	}
 
-	/* These four all set the colour at equal specificity, so the order is what
+	/* These four all set the color at equal specificity, so the order is what
 	   decides: outside the month is the weakest, chosen the strongest. */
 	.date-picker__day.is-outside-month {
 		color: var(--_day-is-outside-month-content-color);
