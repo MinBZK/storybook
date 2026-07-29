@@ -14,8 +14,18 @@
  * blend with the app instead of revealing the user-agent's default white.
  * Cleared when the app-view disconnects.
  *
+ * ## Scroll mode
+ * The app scrolls the DOCUMENT (root mode) or lets each `nldd-page` scroll
+ * inside its pane (nested mode). The mode is derived from the outermost
+ * horizontal split view: one column means the document scrolls, several columns
+ * mean the panes do. An app without such a split view is a single column at
+ * every width and therefore scrolls the document too — nested scrolling would
+ * cost it the rubber-band and the collapsing browser toolbar on iOS for nothing.
+ * Set `--context-scroll-mode` on the `nldd-app-view` itself to override the
+ * derived mode; an inherited value loses from it.
+ *
  * ## Overscroll
- * In nested (default) scroll mode `overscroll-behavior: none` is set on
+ * In nested scroll mode `overscroll-behavior: none` is set on
  * `document.documentElement` and `document.body` while the app-view is
  * connected. Combined with `overscroll-behavior: contain` on `nldd-page`'s
  * scroll target, this prevents iOS rubber-band on the viewport when scroll
@@ -108,9 +118,11 @@ export class NLDDAppView extends LitElement implements ScrollModeProvider {
 
 	/**
 	 * Derive the document-vs-nested scroll mode from the outermost horizontal
-	 * split view and push it to every registered layer. When there is no such
-	 * split view the mode is left unset so it inherits (nested by default, or a
-	 * consumer/media-query override such as the docs' bare page).
+	 * split view and push it to every registered layer. Without such a split view
+	 * the app is a single column at any width, so it scrolls the document: nested
+	 * scrolling costs you the rubber-band and the collapsing browser toolbar on
+	 * iOS for nothing. Set `--context-scroll-mode: nested` on the `nldd-app-view`
+	 * itself to override (an inherited value loses from the derived one).
 	 */
 	private _evaluateScrollMode(): void {
 		const splitView = this._outermostSplitView();
@@ -118,24 +130,18 @@ export class NLDDAppView extends LitElement implements ScrollModeProvider {
 		// `single-column-change` event it fires once it has measured itself.
 		if (splitView && typeof splitView.isSingleColumn !== 'boolean') return;
 
-		const next: ScrollMode | null = splitView
+		const next: ScrollMode = splitView
 			? (splitView.isSingleColumn ? 'root' : 'nested')
-			: null;
+			: 'root';
 		if (next === this._derivedMode) return;
 		this._derivedMode = next;
 
-		if (next) {
-			this.style.setProperty('--context-scroll-mode', next);
-		} else {
-			this.style.removeProperty('--context-scroll-mode');
-		}
+		this.style.setProperty('--context-scroll-mode', next);
 		// Push the derived mode to every layer. Pass the value explicitly rather
 		// than letting each layer re-read the CSS var: a plain var change wouldn't
 		// reach the resize-polling layers in the same frame, and a getComputedStyle
 		// read during this synchronous push can be stale for a deeply-nested layer
 		// (the var may not have propagated through an ancestor's pending re-render).
-		// When there is no derived mode (bare-page app) pass undefined so layers
-		// fall back to the inherited var.
 		this._scrollConsumers.forEach(consumer => consumer.readScrollMode(this._derivedMode ?? undefined));
 	}
 

@@ -124,9 +124,30 @@ describe('nldd-app-view', () => {
 			document.body.style.removeProperty('overscroll-behavior');
 		});
 
+		// The lock belongs to nested mode: there an nldd-page scrolls and the
+		// document must not rubber-band along. A bare-page app scrolls the
+		// document itself, so it keeps the native bounce — hence the split view
+		// in these fixtures, sized to two columns.
+		const NESTED_APP = `
+			<nldd-app-view>
+				<nldd-navigation-split-view>
+					<nldd-split-view-pane slot="primary-sidebar" has-content></nldd-split-view-pane>
+					<nldd-split-view-pane slot="main" has-content></nldd-split-view-pane>
+				</nldd-navigation-split-view>
+			</nldd-app-view>
+		`;
+
+		async function trackNested(): Promise<NLDDAppView> {
+			const app = await track(NESTED_APP);
+			const nav = app.querySelector('nldd-navigation-split-view') as NLDDNavigationSplitView;
+			vi.spyOn(nav, 'getBoundingClientRect').mockReturnValue({ width: 1280 } as DOMRect);
+			nav._updateLayout();
+			await waitForUpdate(app);
+			return app;
+		}
+
 		it('locks overscroll on connect and clears on last disconnect', async () => {
-			el = await track('<nldd-app-view></nldd-app-view>');
-			await waitForUpdate(el);
+			el = await trackNested();
 			expect(document.documentElement.style.overscrollBehavior).toBe('none');
 			expect(document.body.style.overscrollBehavior).toBe('none');
 
@@ -137,10 +158,8 @@ describe('nldd-app-view', () => {
 		});
 
 		it('keeps the lock while another instance is still connected', async () => {
-			const first = await track('<nldd-app-view></nldd-app-view>');
-			await waitForUpdate(first);
-			const second = await track('<nldd-app-view></nldd-app-view>');
-			await waitForUpdate(second);
+			const first = await trackNested();
+			const second = await trackNested();
 
 			cleanup(first);
 			expect(document.body.style.overscrollBehavior).toBe('none');
@@ -261,13 +280,17 @@ describe('nldd-app-view – derived scroll mode', () => {
 		expect(received).toEqual(['root']);
 	});
 
-	it('leaves the mode unset for a bare-page app (no horizontal split view)', async () => {
+	// A bare-page app is a single column at every width, so the document scrolls:
+	// nested scrolling would cost the rubber-band and the collapsing browser
+	// toolbar on iOS for nothing.
+	it('scrolls the document for a bare-page app (no horizontal split view)', async () => {
 		el = await fixture<NLDDAppView>(`
 			<nldd-app-view>
 				<nldd-page></nldd-page>
 			</nldd-app-view>
 		`);
 		await waitForUpdate(el);
-		expect(el.style.getPropertyValue('--context-scroll-mode')).toBe('');
+		expect(el.style.getPropertyValue('--context-scroll-mode')).toBe('root');
+		expect(el.querySelector('nldd-page')!.dataset.scroll).toBe('root');
 	});
 });
