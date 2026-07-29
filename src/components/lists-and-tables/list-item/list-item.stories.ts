@@ -32,6 +32,20 @@ export default {
 			description: 'Maakt het hele item een button; genegeerd als href is gezet',
 			table: { defaultValue: { summary: false } },
 		},
+		checkbox: {
+			control: 'boolean',
+			description: 'Maakt de hele rij een checkbox-control; genegeerd als href is gezet',
+			table: { defaultValue: { summary: false } },
+		},
+		checked: {
+			control: 'boolean',
+			description: 'Aangevinkte staat van een checkbox-rij',
+			table: { defaultValue: { summary: false } },
+		},
+		expanded: {
+			control: 'boolean',
+			description: 'Uitklapstaat; hoort bij een rij die iets opent (de kindrijen van een tak)',
+		},
 	},
 };
 
@@ -41,10 +55,21 @@ export const Default = {
 		selected: false,
 		href: '',
 		button: false,
+		checkbox: false,
+		checked: false,
+		expanded: false,
 	},
 	render: (args: Record<string, any>) => html`
 		<nldd-list variant="simple">
-			<nldd-list-item size=${args.size} ?selected=${args.selected} href=${args.href || nothing} ?button=${args.button}>
+			<nldd-list-item
+				size=${args.size}
+				?selected=${args.selected}
+				href=${args.href || nothing}
+				?button=${args.button}
+				?checkbox=${args.checkbox}
+				?checked=${args.checked}
+				?expanded=${args.expanded}
+			>
 				<nldd-text-cell text="Text cell" supporting-text="Supporting text"></nldd-text-cell>
 			</nldd-list-item>
 		</nldd-list>
