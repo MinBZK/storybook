@@ -106,6 +106,12 @@ export class NLDDListItemAction extends LitElement {
 	@state()
 	_parentType = 'list';
 
+	/** Set by the parent row when the list runs roving-tabindex navigation:
+	 *  true makes this action a tab stop within the current row, false keeps it
+	 *  out of the tab order. Undefined leaves the native control alone. */
+	@state()
+	_tabbable?: boolean;
+
 	/** Set by the parent nldd-list-item on a `disclosure` action: the row's own
 	 *  expanded state, which this action announces. */
 	@state()
@@ -221,6 +227,7 @@ export class NLDDListItemAction extends LitElement {
 			this.current,
 			this.disabled,
 			this.accessibleLabel,
+			this._tabbable === undefined ? undefined : (this._tabbable ? '0' : '-1'),
 		);
 	}
 }

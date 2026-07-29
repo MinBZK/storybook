@@ -346,6 +346,9 @@ export class NLDDListItem extends withTranslations(LitElement, nlddListItemTrans
 			this._relayExpanded();
 			this._warnOnStrayExpanded();
 		}
+		if (changed.has('_arrowNavigation') || changed.has('_rovingActive')) {
+			this._applyRovingTabStops();
+		}
 		this._propagateSize();
 	}
 
@@ -615,7 +618,71 @@ export class NLDDListItem extends withTranslations(LitElement, nlddListItemTrans
 	 * so consumers can call `listItemEl.focus()` without reaching into shadow DOM.
 	 */
 	override focus(options?: FocusOptions): void {
-		this._action?.focus(options);
+		// A tree row without a control of its own (only segmented actions, or
+		// none at all) takes focus on the host: that is where role="treeitem"
+		// sits, so assistive technology announces the row rather than a button
+		// inside it. _applyRovingTabStops gives the host the tabindex for it.
+		if (this._action) {
+			this._action.focus(options);
+			return;
+		}
+		super.focus(options);
+	}
+
+	/** The roving tab stop, spread over the row and the controls inside it: the
+	 *  current row is reachable with Tab, everything else only with the arrow
+	 *  keys. Within the current row Tab then walks its segmented actions, so a
+	 *  row that holds a checkbox and a chevron stays fully operable. */
+	private _applyRovingTabStops(): void {
+		const ownActions = Array.from(this.children).filter(
+			(el): el is HTMLElement & { _tabbable?: boolean } =>
+				el.getAttribute('slot') !== 'children'
+				&& el.tagName.toLowerCase() === 'nldd-list-item-action',
+		);
+		if (!this._arrowNavigation) {
+			this.removeAttribute('tabindex');
+			ownActions.forEach((action) => { action._tabbable = undefined; });
+			return;
+		}
+		// Only a row without its own control needs the host as focus target; with
+		// a control the tabindex sits on that control (see render()).
+		if (this._action) {
+			this.removeAttribute('tabindex');
+		} else {
+			this.setAttribute('tabindex', this._rovingActive ? '0' : '-1');
+		}
+		ownActions.forEach((action) => { action._tabbable = this._rovingActive; });
+	}
+
+	/** The control that opens and closes this row: the segmented action marked
+	 *  `disclosure`, or the row itself when it is a button. Never a link — Left
+	 *  and Right may not navigate away. */
+	private get _disclosureControl(): HTMLElement | undefined {
+		const action = Array.from(this.children).find(
+			(el) => el.getAttribute('slot') !== 'children'
+				&& el.tagName.toLowerCase() === 'nldd-list-item-action'
+				&& el.hasAttribute('disclosure'),
+		) as HTMLElement | undefined;
+		if (action) return action;
+		if (this.button && !this.href) return this._action;
+		return undefined;
+	}
+
+	/** Activates whatever opens this row, so the consumer's own click handler runs
+	 *  and stays the only place `expanded` is written. Returns false when the row
+	 *  has nothing to activate. */
+	_activateDisclosure(): boolean {
+		const control = this._disclosureControl;
+		if (!control) return false;
+		(control as HTMLElement & { click(): void }).click();
+		return true;
+	}
+
+	/** The branch this row hangs under, or undefined for a top-level row. */
+	get parentRow(): NLDDListItem | undefined {
+		const parent = this.parentElement;
+		if (!parent || parent.tagName.toLowerCase() !== 'nldd-list-item') return undefined;
+		return parent as NLDDListItem;
 	}
 
 	override render() {

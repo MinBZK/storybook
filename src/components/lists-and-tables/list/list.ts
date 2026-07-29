@@ -30,9 +30,7 @@ export interface NLDDReorderEventDetail {
  *   nesting represents the hierarchy, so assistive technology derives
  *   them. A branch row must carry `expanded`; the group is hidden while
  *   it is false. Visual indentation is the consumer's — repeat a
- *   spacer-cell per level.
- *   Items may individually be buttons or links; the list itself
- *   has no special keyboard semantics.
+ *   spacer-cell per level. Comes with its own keyboard, see "Tree" below.
  * - `navigation` — host `role="navigation"`, items with `selected` get
  *   `aria-current="page"` on their inner `<a>` or `<button>`.
  * - `listbox` — an accessible, filterable listbox (combobox pattern). The
@@ -66,6 +64,34 @@ export interface NLDDReorderEventDetail {
  * first visible one. `reorderable` and `arrow-navigation` are ignored in listbox
  * mode (listbox has its own keyboard).
  *
+ * ### Tree
+ *
+ * A tree is a composite widget, so it brings its own keyboard — `arrow-navigation`
+ * is implied and needn't be set:
+ * - ArrowDown / ArrowUp — move between the rows in the order they appear on
+ *   screen, the rows of an open branch included.
+ * - Home / End — first / last row.
+ * - ArrowRight — opens a closed branch; on an open one it steps to its first child.
+ * - ArrowLeft — closes an open branch; on a leaf it steps out to the parent row.
+ *
+ * Opening and closing runs through the row's own disclosure control — the
+ * segmented action marked `disclosure`, or the row itself when it is a button.
+ * The list activates that control rather than writing `expanded`, so the state
+ * keeps being set in one place: the consumer's handler. A row that is a link is
+ * never activated this way, since that would navigate away.
+ *
+ * The tree is one tab stop. Focus lands on the row itself when the row has no
+ * control of its own, because that is where `treeitem` sits and it makes
+ * assistive technology announce the row rather than a button inside it. Tab then
+ * walks the controls of THAT row (a chevron beside a checkbox, say) and leaves
+ * the list after the last one.
+ *
+ * A deliberate deviation: strictly speaking a row with several controls is a
+ * `treegrid`, not a `tree`. We keep the tree semantics — level and set size are
+ * what matters here, not rows and columns — and borrow the "Tab within the row"
+ * behaviour from the grid pattern. Should a tree with real columns come up, that
+ * is when `treegrid` earns its own type.
+ *
  * ### Reorder
  *
  * On reorder (type="list" + reorderable), the list dispatches `nldd-reorder` with
@@ -80,10 +106,10 @@ export interface NLDDReorderEventDetail {
  *
  * @attr {'simple'|'box'} variant - Visual style (default 'simple'): `simple` is a plain vertical strip with no chrome, `box` a framed card with rounded corners, fill and inset border ring
  * @attr {'tinted'|'base'} background - Surface fill for `variant="box"` (default 'tinted'). Use `base` on an already-tinted parent. No effect with `variant="simple"`.
- * @attr {'list'|'navigation'|'listbox'} type - A11y role and behavior (default 'list'). See the docblock above.
+ * @attr {'list'|'navigation'|'listbox'|'tree'} type - A11y role and behavior (default 'list'). See the docblock above.
  * @attr {boolean} reorderable - Enables drag-to-reorder and pushes `reorderable` onto the items. Only valid with `type="list"`; wins over `arrow-navigation` when both are set.
  * @attr {boolean} no-dividers - Hides the dividers between list items
- * @attr {boolean} arrow-navigation - Roving-tabindex arrow-key navigation: ArrowUp/ArrowDown move focus between the rows as they appear on screen (in a tree that includes the rows of an open branch), Home/End jump to first/last, and the list becomes a single tab stop. Ignored when `reorderable` is active on a `type="list"`, and in listbox mode.
+ * @attr {boolean} arrow-navigation - Roving-tabindex arrow-key navigation: ArrowUp/ArrowDown move focus between the rows, Home/End jump to first/last, and the list becomes a single tab stop. Implied by `type="tree"` (which adds ArrowLeft/ArrowRight, see above). Ignored when `reorderable` is active on a `type="list"`, and in listbox mode.
  * @attr {string} height - Listbox only: caps the options' scroll region at this CSS length (e.g. '320px'). Unset means no cap.
  * @attr {string} empty-text - Text for the default empty-state dialog (falls back to the Dutch i18n default). Ignored when `[slot=empty]` is filled.
  * @attr {string} empty-supporting-text - Supporting text for the default empty-state dialog. Ignored when `[slot=empty]` is filled.
@@ -660,6 +686,10 @@ export class NLDDList extends LitElement {
 		// Listbox has its own keyboard (on the search input) and supersedes the
 		// roving-tabindex arrow-nav — never run both.
 		if (this.type === 'listbox') return false;
+		// A tree is a composite widget: role="tree" promises arrow keys, so it
+		// gets them without the consumer asking. Everywhere else arrow-nav stays
+		// opt-in, because a plain list is not a widget and Tab per row is fine.
+		if (this.type === 'tree') return true;
 		return this.arrowNavigation && !(this.reorderable && this.type === 'list');
 	}
 
@@ -668,7 +698,12 @@ export class NLDDList extends LitElement {
 	 *  Painted, not top-level: in a tree the rows of an open branch sit between
 	 *  the branch and the next top-level row, and arrows have to walk them too. */
 	private _getInteractiveItems(): NLDDListItem[] {
-		return this._getPaintedRows().filter((row) => Boolean(row.href || row.button));
+		const painted = this._getPaintedRows();
+		// In a tree every row is a stop, including one that only holds segmented
+		// actions: the row itself takes focus (that is where role="treeitem"
+		// sits) and Tab reaches the controls inside it.
+		if (this.type === 'tree') return painted;
+		return painted.filter((row) => Boolean(row.href || row.button));
 	}
 
 	private _rovingScheduled = false;
@@ -730,13 +765,17 @@ export class NLDDList extends LitElement {
 		) as NLDDListItem | undefined;
 		// Keep the roving entry point wherever focus actually lands (Tab in, a
 		// click, or programmatic focus), so arrows continue from there.
-		if (item && (item.href || item.button) && !item._rovingActive) {
+		if (item && !item._rovingActive && this._getInteractiveItems().includes(item)) {
 			this._setRovingActive(item);
 		}
 	};
 
 	private _onArrowNav(event: KeyboardEvent) {
 		const { key } = event;
+		if (this.type === 'tree' && (key === 'ArrowRight' || key === 'ArrowLeft')) {
+			this._onTreeHorizontal(event, key);
+			return;
+		}
 		if (key !== 'ArrowUp' && key !== 'ArrowDown' && key !== 'Home' && key !== 'End') return;
 		const items = this._getInteractiveItems();
 		if (items.length === 0) return;
@@ -757,12 +796,53 @@ export class NLDDList extends LitElement {
 		target.focus();
 	}
 
+	/** Tree only: Right opens a closed branch and steps into an open one, Left
+	 *  closes an open branch and steps out of a leaf. Opening and closing runs
+	 *  through the row's own disclosure control, so `expanded` keeps being
+	 *  written in one place — the consumer's handler. */
+	private _onTreeHorizontal(event: KeyboardEvent, key: 'ArrowRight' | 'ArrowLeft') {
+		const rows = this._getInteractiveItems();
+		const current = rows.find((row) => row._rovingActive);
+		if (!current) return;
+		const children = current.childRows.filter(row => !row.hasAttribute('hidden'));
+		const isOpen = children.length > 0 && current.expanded === true;
+
+		if (key === 'ArrowRight') {
+			if (children.length === 0) return;
+			event.preventDefault();
+			if (!isOpen) {
+				current._activateDisclosure();
+				return;
+			}
+			this._moveRovingTo(children[0]);
+			return;
+		}
+
+		if (isOpen) {
+			event.preventDefault();
+			current._activateDisclosure();
+			return;
+		}
+		const parent = current.parentRow;
+		if (!parent) return;
+		event.preventDefault();
+		this._moveRovingTo(parent);
+	}
+
+	private _moveRovingTo(row: NLDDListItem) {
+		this._setRovingActive(row);
+		row.focus();
+	}
+
 	private _warnArrowNav() {
 		if (!import.meta.env?.DEV) return;
 		if (this.arrowNavigation && this.reorderable && this.type === 'list') {
 			console.warn('nldd-list: `arrow-navigation` and `reorderable` both use the arrow keys; `reorderable` wins and arrow-navigation is ignored.');
 		}
-		if (this._arrowNavActive) {
+		// A tree row is meant to hold more than one control (a chevron beside a
+		// checkbox); there Tab walks the current row, so the warning below would
+		// be noise.
+		if (this._arrowNavActive && this.type !== 'tree') {
 			// Best-effort, light-DOM only: a slotted custom element (e.g. nldd-switch)
 			// keeps its focusable control in its own shadow root, so this query won't
 			// catch every extra control. Detecting custom elements generically would
