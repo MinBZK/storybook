@@ -462,6 +462,19 @@ describe('nldd-button – single-line / width', () => {
 		expect(el.style.getPropertyValue('--_width')).toBe('100%');
 	});
 
+	it('stretches in a flex column only with width="full"', async () => {
+		el = await fixture<NLDDButton>(`
+			<div style="display: flex; flex-direction: column; width: 600px;">
+				<nldd-button text="Kort"></nldd-button>
+				<nldd-button text="Kort" width="full"></nldd-button>
+			</div>
+		`);
+		await waitForUpdate(el);
+		const [gewoon, vol] = [...el.querySelectorAll('nldd-button')];
+		expect(gewoon.getBoundingClientRect().width).toBeLessThan(300);
+		expect(Math.round(vol.getBoundingClientRect().width)).toBe(600);
+	});
+
 	it('caps the button with max-width, also alongside width="full"', async () => {
 		el = await fixture<NLDDButton>('<nldd-button text="X" width="full" max-width="320px"></nldd-button>');
 		await waitForUpdate(el);

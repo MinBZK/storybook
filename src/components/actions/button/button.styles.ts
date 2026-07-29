@@ -36,6 +36,12 @@ export const buttonStyles = css`
 		${inheritedTextReset}
 		display: inline-block;
 		position: relative;
+		/* A definite width, so a flex or grid parent doesn't stretch the host: an
+		   inline-block shrink-wraps in normal flow, but as a flex item it would be
+		   stretched to the full line while the button inside stays content-sized —
+		   leaving an invisible box around the button that swallows clicks that
+		   look like they land beside it. align-self would only cover flex. */
+		width: fit-content;
 		max-width: 100%;
 		-webkit-user-select: none;
 		user-select: none;
