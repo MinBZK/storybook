@@ -47,5 +47,6 @@ export function cardTemplate(component: NLDDCard): TemplateResult {
 				></slot>
 			</footer>
 		</article>
+		<span class="card__focus-ring"></span>
 	`;
 }
