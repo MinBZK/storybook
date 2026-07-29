@@ -3,6 +3,9 @@ import './activity-indicator.js';
 import '../progress-circle/progress-circle.js';
 import '../progress-bar/progress-bar.js';
 import '../../actions/button/button.js';
+import '../../layout/card/card.js';
+import '../../layout/container/container.js';
+import '../../content/rich-text/rich-text.js';
 
 /**
  * Een layout placeholder die de beschikbare ruimte vult en een indeterminate
@@ -80,23 +83,33 @@ export default {
 	},
 };
 
+// De kaart staat om de indicator heen, niet andersom: de backdrop is een
+// rechthoek met inset 0 zonder eigen hoekradius, dus met de kaart erbinnen zou
+// hij over de ronde hoeken heen steken. Zo klipt de kaart hem netjes af, en
+// leest het als "de inhoud van deze kaart laadt".
 const Template = ({ size, text, showText, timing, noBackdrop, complete }: Record<string, unknown>) => html`
-	<nldd-activity-indicator size=${size as string}
-		text=${text as string}
-		?show-text=${showText as boolean}
-		timing=${timing as string}
-		?no-backdrop=${noBackdrop as boolean}
-		?complete=${complete as boolean}
-		style="width: 360px; border-radius: 12px; overflow: hidden; background: var(--semantics-surfaces-base-background-color); box-shadow: 0 1px 4px rgba(0, 0, 0, 0.12);"
-	>
-		<div style="padding: 20px; display: flex; flex-direction: column; gap: 12px; align-items: flex-start;">
-			<p style="margin: 0; font: var(--primitives-font-body-md-medium-tight); color: var(--semantics-content-color);">Voorbeeldcontent</p>
-			<p style="margin: 0; font: var(--primitives-font-body-sm-regular-tight); color: var(--semantics-content-secondary-color);">
-				De content zit nu IN de activity indicator, geen wrapper-div meer. Tijdens het laden is deze inert: de knop kan niet gefocust of geklikt worden.
-			</p>
-			<nldd-button text="Knop in de content"></nldd-button>
-		</div>
-	</nldd-activity-indicator>
+	<div style="width: 360px;">
+		<nldd-card accessible-label="Voorbeeldkaart">
+			<nldd-activity-indicator size=${size as string}
+				text=${text as string}
+				?show-text=${showText as boolean}
+				timing=${timing as string}
+				?no-backdrop=${noBackdrop as boolean}
+				?complete=${complete as boolean}
+			>
+				<nldd-container padding="20" gap="12">
+					<nldd-rich-text>
+						<p><strong>Voorbeeldcontent</strong></p>
+						<p>
+							De content zit IN de activity indicator. Tijdens het laden is die inert:
+							de knop kan niet gefocust of geklikt worden.
+						</p>
+					</nldd-rich-text>
+					<nldd-button text="Knop in de content"></nldd-button>
+				</nldd-container>
+			</nldd-activity-indicator>
+		</nldd-card>
+	</div>
 `;
 
 export const Default = {
@@ -189,16 +202,21 @@ export const CustomCircleViaSlot = {
 export const Backdrop = {
 	name: 'Backdrop over content',
 	render: ({ noBackdrop }: Record<string, unknown>) => html`
-		<nldd-activity-indicator ?no-backdrop=${noBackdrop as boolean} show-text text="Bezig met verwerken…" timing="instant"
-			style="width: 320px; border-radius: 12px; overflow: hidden; background: var(--semantics-surfaces-base-background-color); box-shadow: 0 1px 4px rgba(0, 0, 0, 0.12);"
-		>
-			<div style="padding: 20px; display: flex; flex-direction: column; gap: 8px;">
-				<p style="margin: 0; font: var(--primitives-font-body-md-medium-tight); color: var(--semantics-content-color);">Aanvraag indienen</p>
-				<p style="margin: 0; font: var(--primitives-font-body-sm-regular-tight); color: var(--semantics-content-secondary-color);">
-					Deze gegevens worden verwerkt. De content blijft zichtbaar maar dimt en blurt achter de indicator, zodat duidelijk is dat het proces nog loopt.
-				</p>
-			</div>
-		</nldd-activity-indicator>
+		<div style="width: 320px;">
+			<nldd-card accessible-label="Aanvraag indienen">
+				<nldd-activity-indicator ?no-backdrop=${noBackdrop as boolean} show-text text="Bezig met verwerken…" timing="instant">
+					<nldd-container padding="20" gap="8">
+						<nldd-rich-text>
+							<p><strong>Aanvraag indienen</strong></p>
+							<p>
+								Deze gegevens worden verwerkt. De content blijft zichtbaar maar dimt en
+								blurt achter de indicator, zodat duidelijk is dat het proces nog loopt.
+							</p>
+						</nldd-rich-text>
+					</nldd-container>
+				</nldd-activity-indicator>
+			</nldd-card>
+		</div>
 	`,
 	args: { noBackdrop: false },
 	parameters: {

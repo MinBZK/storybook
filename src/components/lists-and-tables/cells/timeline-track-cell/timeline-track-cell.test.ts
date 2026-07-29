@@ -102,6 +102,27 @@ describe('nldd-timeline-track-cell', () => {
 		expect(el.shadowRoot!.querySelector('slot')).toBeNull();
 	});
 
+	// The row reserves a divider's worth of space below itself, so a line that
+	// stops at the cell's edge breaks the track at every row boundary. Measured
+	// on the declaration, not on two stacked rows: the row's padding bleed only
+	// settles after a layout pass, which makes a pixel comparison flaky here.
+	it('laat de neergaande lijnen over de rijgrens doorlopen', async () => {
+		// The token itself comes from settings.css, which the test page doesn't
+		// load, so set it here: what's being checked is that the line reaches past
+		// the cell by exactly that thickness.
+		el = await fixture<NLDDTimelineTrackCell>('<nldd-timeline-track-cell position="first"></nldd-timeline-track-cell>');
+		el.style.setProperty('--semantics-dividers-thickness', '1px');
+		await waitForUpdate(el);
+		const onder = el.shadowRoot!.querySelector('.timeline-track-cell__bottom-line')!;
+		expect(getComputedStyle(onder).bottom).toBe('-1px');
+
+		el = await fixture<NLDDTimelineTrackCell>('<nldd-timeline-track-cell status="none"></nldd-timeline-track-cell>');
+		el.style.setProperty('--semantics-dividers-thickness', '1px');
+		await waitForUpdate(el);
+		const vol = el.shadowRoot!.querySelector('.timeline-track-cell__full-line')!;
+		expect(getComputedStyle(vol).bottom).toBe('-1px');
+	});
+
 	it('renders a full line for status=none', async () => {
 		el = await fixture<NLDDTimelineTrackCell>('<nldd-timeline-track-cell status="none"></nldd-timeline-track-cell>');
 		await waitForUpdate(el);

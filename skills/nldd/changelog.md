@@ -15,6 +15,10 @@ the type of conventional-commit determines the release. Conventional types
 `chore`, `docs`, `ci`, `style`, `test`, `build` are intentionally omitted
 here; consult the commit history if you need that level of detail.
 
+### Fixed
+
+- **The timeline track broke at every row.** An `nldd-list-item` reserves a divider's worth of space below itself, and the lines of `nldd-timeline-track-cell` stopped at the cell's edge — leaving a hairline gap between one row's track and the next. The lines that run on downward now bridge that band.
+
 ## <small>0.8.71 (2026-07-29)</small>
 
 * feat: step indicator, tree lists and a reworked list-item (#161) ([2c87577](https://github.com/MinBZK/storybook/commit/2c87577)), closes [#161](https://github.com/MinBZK/storybook/issues/161)
