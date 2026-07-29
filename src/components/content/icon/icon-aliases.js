@@ -327,6 +327,9 @@ export const aliases = {
 	'account': 'person-circle',
 	'profile': 'person-circle',
 
+	// person-text-rectangle
+	'contact-card': 'person-text-rectangle',
+
 	// plus
 	'add': 'plus',
 
