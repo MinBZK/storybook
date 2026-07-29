@@ -254,8 +254,8 @@ export const aliases = {
 	// markdown-rectangle
 	'markdown': 'markdown-rectangle',
 
-	// rectangle-chevron-left-forward-slash-chevron-right
-	'code-block': 'rectangle-chevron-left-forward-slash-chevron-right',
+	// chevron-left-forward-slash-chevron-right-rectangle
+	'code-block': 'chevron-left-forward-slash-chevron-right-rectangle',
 
 	// scissor
 	'cut': 'scissor',
@@ -360,6 +360,7 @@ export const aliases = {
 
 	// square-corner-4
 	'fit-to-view': 'square-corner-4',
+	'viewfinder': 'square-corner-4',
 
 	// star
 	'rating': 'star',
