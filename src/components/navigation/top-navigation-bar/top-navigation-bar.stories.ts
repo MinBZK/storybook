@@ -35,6 +35,9 @@ export default {
 		websiteHref: { name: 'website-href', control: 'text', description: 'URL voor de website-titel', table: { defaultValue: { summary: '' } } },
 		backText: { name: 'back-text', control: 'text', description: 'Tekst van de terugknop (standaard: "Terug")', table: { defaultValue: { summary: '' } } },
 		backHref: { name: 'back-href', control: 'text', description: 'URL van de terugknop', table: { defaultValue: { summary: '' } } },
+		// Story-only: geen attribuut van het component, maar een manier om het
+		// hoofdmenu uit een voorbeeld te laten.
+		noGlobalMenu: { table: { disable: true } },
 	},
 };
 
@@ -56,6 +59,7 @@ const Template = ({
 	websiteHref,
 	backText,
 	backHref,
+	noGlobalMenu,
 }: Record<string, unknown>) => html`
 	<div style=${layoutArea}>
 		<nldd-top-navigation-bar
@@ -71,13 +75,15 @@ const Template = ({
 			back-text=${backText || nothing}
 			back-href=${backHref || nothing}
 		>
-			<nldd-menu-bar slot="global">
-				<nldd-menu-bar-item text="Home" current></nldd-menu-bar-item>
-				<nldd-menu-bar-item text="Componenten"></nldd-menu-bar-item>
-				<nldd-menu-bar-item text="Ontwerprichtlijnen"></nldd-menu-bar-item>
-				<nldd-menu-bar-item text="Aan de slag"></nldd-menu-bar-item>
-				<nldd-menu-bar-item text="Over ons"></nldd-menu-bar-item>
-			</nldd-menu-bar>
+			${noGlobalMenu ? nothing : html`
+				<nldd-menu-bar slot="global">
+					<nldd-menu-bar-item text="Home" current></nldd-menu-bar-item>
+					<nldd-menu-bar-item text="Componenten"></nldd-menu-bar-item>
+					<nldd-menu-bar-item text="Ontwerprichtlijnen"></nldd-menu-bar-item>
+					<nldd-menu-bar-item text="Aan de slag"></nldd-menu-bar-item>
+					<nldd-menu-bar-item text="Over ons"></nldd-menu-bar-item>
+				</nldd-menu-bar>
+			`}
 			<nldd-menu-bar slot="utility">
 				<nldd-menu-bar-item text="NL" expandable content-priority="icon">
 					<nldd-menu>
@@ -114,11 +120,14 @@ export const WithLogoWordmark = {
 	},
 };
 
+// Een terugknop hoort bij een view die je binnenkomt vanaf een ander scherm, en
+// die heeft doorgaans geen hoofdnavigatie meer: de knop is de weg terug.
 export const WithBackButton = {
 	render: Template,
 	args: {
 		backHref: '/',
-		backText: 'Terug naar overzicht',
+		backText: 'Overzicht',
+		noGlobalMenu: true,
 	},
 };
 
