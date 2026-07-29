@@ -93,12 +93,12 @@ const Template = ({
 					</nldd-menu>
 				</nldd-menu-bar-item>
 				<nldd-menu-bar-item text="Zoeken" icon="magnifier" content-priority="icon"></nldd-menu-bar-item>
-				<nldd-menu-bar-item text="Mijn account" icon="person" expandable content-priority="text">
+				<nldd-menu-bar-item text="Mijn account" icon="profile" expandable content-priority="text">
 					<nldd-menu>
-						<nldd-menu-item text="Mijn gegevens"></nldd-menu-item>
-						<nldd-menu-item text="Instellingen"></nldd-menu-item>
+						<nldd-menu-item text="Mijn gegevens" icon="contact-card"></nldd-menu-item>
+						<nldd-menu-item text="Instellingen" icon="settings"></nldd-menu-item>
 						<nldd-menu-divider></nldd-menu-divider>
-						<nldd-menu-item text="Uitloggen"></nldd-menu-item>
+						<nldd-menu-item text="Log uit" icon="logout"></nldd-menu-item>
 					</nldd-menu>
 				</nldd-menu-bar-item>
 			</nldd-menu-bar>
@@ -144,12 +144,12 @@ export const MijnOverheidZakelijk = {
 				</nldd-menu-bar>
 				<nldd-menu-bar slot="utility">
 					<nldd-menu-bar-item text="Zoeken" icon="magnifier" content-priority="icon"></nldd-menu-bar-item>
-					<nldd-menu-bar-item text="Bloom B.V." icon="person" expandable>
+					<nldd-menu-bar-item text="Bloom B.V." icon="profile" expandable>
 						<nldd-menu>
-							<nldd-menu-item text="Bedrijfsprofiel"></nldd-menu-item>
-							<nldd-menu-item text="Instellingen"></nldd-menu-item>
+							<nldd-menu-item text="Bedrijfsprofiel" icon="contact-card"></nldd-menu-item>
+							<nldd-menu-item text="Instellingen" icon="settings"></nldd-menu-item>
 							<nldd-menu-divider></nldd-menu-divider>
-							<nldd-menu-item text="Uitloggen"></nldd-menu-item>
+							<nldd-menu-item text="Log uit" icon="logout"></nldd-menu-item>
 						</nldd-menu>
 					</nldd-menu-bar-item>
 				</nldd-menu-bar>
@@ -168,11 +168,11 @@ export const RegelRecht = {
 				back-text="Bibliotheek"
 			>
 				<nldd-menu-bar slot="utility">
-					<nldd-menu-bar-item text="J. Jansen" icon="person" expandable>
+					<nldd-menu-bar-item text="J. Jansen" icon="profile" expandable>
 						<nldd-menu>
-							<nldd-menu-item text="Mijn profiel"></nldd-menu-item>
+							<nldd-menu-item text="Mijn profiel" icon="contact-card"></nldd-menu-item>
 							<nldd-menu-divider></nldd-menu-divider>
-							<nldd-menu-item text="Uitloggen"></nldd-menu-item>
+							<nldd-menu-item text="Log uit" icon="logout"></nldd-menu-item>
 						</nldd-menu>
 					</nldd-menu-bar-item>
 				</nldd-menu-bar>
@@ -200,12 +200,12 @@ export const SmallViewport = {
 						</nldd-menu>
 					</nldd-menu-bar-item>
 					<nldd-menu-bar-item text="Zoeken" icon="magnifier" content-priority="icon"></nldd-menu-bar-item>
-					<nldd-menu-bar-item text="Mijn account" icon="person" expandable content-priority="text">
+					<nldd-menu-bar-item text="Mijn account" icon="profile" expandable content-priority="text">
 						<nldd-menu>
-							<nldd-menu-item text="Mijn gegevens"></nldd-menu-item>
-							<nldd-menu-item text="Instellingen"></nldd-menu-item>
+							<nldd-menu-item text="Mijn gegevens" icon="contact-card"></nldd-menu-item>
+							<nldd-menu-item text="Instellingen" icon="settings"></nldd-menu-item>
 							<nldd-menu-divider></nldd-menu-divider>
-							<nldd-menu-item text="Uitloggen"></nldd-menu-item>
+							<nldd-menu-item text="Log uit" icon="logout"></nldd-menu-item>
 						</nldd-menu>
 					</nldd-menu-bar-item>
 				</nldd-menu-bar>
@@ -274,12 +274,12 @@ export const ManyGlobalItems = {
 						</nldd-menu>
 					</nldd-menu-bar-item>
 					<nldd-menu-bar-item text="Zoeken" icon="magnifier" content-priority="icon"></nldd-menu-bar-item>
-					<nldd-menu-bar-item text="Mijn account" icon="person" expandable content-priority="text">
+					<nldd-menu-bar-item text="Mijn account" icon="profile" expandable content-priority="text">
 						<nldd-menu>
-							<nldd-menu-item text="Mijn gegevens"></nldd-menu-item>
-							<nldd-menu-item text="Instellingen"></nldd-menu-item>
+							<nldd-menu-item text="Mijn gegevens" icon="contact-card"></nldd-menu-item>
+							<nldd-menu-item text="Instellingen" icon="settings"></nldd-menu-item>
 							<nldd-menu-divider></nldd-menu-divider>
-							<nldd-menu-item text="Uitloggen"></nldd-menu-item>
+							<nldd-menu-item text="Log uit" icon="logout"></nldd-menu-item>
 						</nldd-menu>
 					</nldd-menu-bar-item>
 				</nldd-menu-bar>
@@ -318,10 +318,10 @@ export const AllStates = {
 							</nldd-menu>
 						</nldd-menu-bar-item>
 						<nldd-menu-bar-item text="Zoeken" icon="magnifier" content-priority="icon"></nldd-menu-bar-item>
-						<nldd-menu-bar-item text="Mijn account" icon="person" expandable content-priority="text">
+						<nldd-menu-bar-item text="Mijn account" icon="profile" expandable content-priority="text">
 							<nldd-menu>
-								<nldd-menu-item text="Mijn gegevens"></nldd-menu-item>
-								<nldd-menu-item text="Uitloggen"></nldd-menu-item>
+								<nldd-menu-item text="Mijn gegevens" icon="contact-card"></nldd-menu-item>
+								<nldd-menu-item text="Log uit" icon="logout"></nldd-menu-item>
 							</nldd-menu>
 						</nldd-menu-bar-item>
 					</nldd-menu-bar>
@@ -342,10 +342,10 @@ export const AllStates = {
 							</nldd-menu>
 						</nldd-menu-bar-item>
 						<nldd-menu-bar-item text="Zoeken" icon="magnifier" content-priority="icon"></nldd-menu-bar-item>
-						<nldd-menu-bar-item text="Mijn account" icon="person" expandable content-priority="text">
+						<nldd-menu-bar-item text="Mijn account" icon="profile" expandable content-priority="text">
 							<nldd-menu>
-								<nldd-menu-item text="Mijn gegevens"></nldd-menu-item>
-								<nldd-menu-item text="Uitloggen"></nldd-menu-item>
+								<nldd-menu-item text="Mijn gegevens" icon="contact-card"></nldd-menu-item>
+								<nldd-menu-item text="Log uit" icon="logout"></nldd-menu-item>
 							</nldd-menu>
 						</nldd-menu-bar-item>
 					</nldd-menu-bar>
@@ -362,10 +362,10 @@ export const AllStates = {
 					</nldd-menu-bar>
 					<nldd-menu-bar slot="utility">
 						<nldd-menu-bar-item text="Zoeken" icon="magnifier" content-priority="icon"></nldd-menu-bar-item>
-						<nldd-menu-bar-item text="Bloom B.V." icon="person" expandable>
+						<nldd-menu-bar-item text="Bloom B.V." icon="profile" expandable>
 							<nldd-menu>
-								<nldd-menu-item text="Bedrijfsprofiel"></nldd-menu-item>
-								<nldd-menu-item text="Uitloggen"></nldd-menu-item>
+								<nldd-menu-item text="Bedrijfsprofiel" icon="contact-card"></nldd-menu-item>
+								<nldd-menu-item text="Log uit" icon="logout"></nldd-menu-item>
 							</nldd-menu>
 						</nldd-menu-bar-item>
 					</nldd-menu-bar>
@@ -378,10 +378,10 @@ export const AllStates = {
 					back-text="Bibliotheek"
 				>
 					<nldd-menu-bar slot="utility">
-						<nldd-menu-bar-item text="J. Jansen" icon="person" expandable>
+						<nldd-menu-bar-item text="J. Jansen" icon="profile" expandable>
 							<nldd-menu>
-								<nldd-menu-item text="Mijn profiel"></nldd-menu-item>
-								<nldd-menu-item text="Uitloggen"></nldd-menu-item>
+								<nldd-menu-item text="Mijn profiel" icon="contact-card"></nldd-menu-item>
+								<nldd-menu-item text="Log uit" icon="logout"></nldd-menu-item>
 							</nldd-menu>
 						</nldd-menu-bar-item>
 					</nldd-menu-bar>
