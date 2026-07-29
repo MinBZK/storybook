@@ -297,6 +297,13 @@ export const listItemStyles = css`
 	/* Content-wide by default; the divider-start/divider-end cell markers
 	   override it through the measured --_divider-inset-* vars. */
 
+	/* A segmented action with focus paints its ring past its own box, and the
+	   divider is rendered after the slot — so without this the line ran straight
+	   through the ring. Lifting the focused action puts the ring on top. */
+	::slotted(nldd-list-item-action:focus-within) {
+		z-index: var(--_focus-z-index);
+	}
+
 	.list-item__divider {
 		display: var(--context-list-divider-display, block);
 		position: absolute;
