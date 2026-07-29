@@ -531,6 +531,39 @@ describe('nldd-list', () => {
 		expect(branch.expanded).toBe(undefined);
 	});
 
+	it('tree: Enter and Space open the row from the row itself', async () => {
+		el = await fixture(`
+			<nldd-list type="tree">
+				<nldd-list-item>
+					<nldd-list-item-action button disclosure><nldd-icon-cell icon="chevron-right"></nldd-icon-cell></nldd-list-item-action>
+					<nldd-text-cell text="A"></nldd-text-cell>
+					<nldd-list-item slot="children"><nldd-text-cell text="A1"></nldd-text-cell></nldd-list-item>
+				</nldd-list-item>
+			</nldd-list>
+		`);
+		await waitForUpdate(el);
+		const branch = el.querySelector('nldd-list-item')!;
+		const chevron = branch.querySelector('nldd-list-item-action')!;
+		let clicks = 0;
+		chevron.addEventListener('click', () => { clicks += 1; });
+		branch.focus();
+
+		for (const key of ['Enter', ' ']) {
+			const event = new KeyboardEvent('keydown', { key, bubbles: true, composed: true, cancelable: true });
+			branch.dispatchEvent(event);
+			await waitForUpdate(el);
+			expect(event.defaultPrevented).toBe(true);
+		}
+		expect(clicks).toBe(2);
+
+		// From the action itself the button handles both keys; acting here too
+		// would toggle twice.
+		const fromAction = new KeyboardEvent('keydown', { key: 'Enter', bubbles: true, composed: true, cancelable: true });
+		chevron.dispatchEvent(fromAction);
+		await waitForUpdate(el);
+		expect(clicks).toBe(2);
+	});
+
 	it('tree: opening a branch keeps focus on the row', async () => {
 		el = await fixture(`
 			<nldd-list type="tree">

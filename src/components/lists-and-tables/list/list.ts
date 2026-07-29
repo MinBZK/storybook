@@ -73,6 +73,9 @@ export interface NLDDReorderEventDetail {
  * - Home / End — first / last row.
  * - ArrowRight — opens a closed branch; on an open one it steps to its first child.
  * - ArrowLeft — closes an open branch; on a leaf it steps out to the parent row.
+ * - Enter / Space — open and close, the same as Right and Left. Only while focus
+ *   sits on the row itself: a row that is its own control, and a segmented
+ *   action you tabbed into, handle both keys themselves.
  *
  * Opening and closing runs through the row's own disclosure control — the
  * segmented action marked `disclosure`, or the row itself when it is a button.
@@ -784,6 +787,10 @@ export class NLDDList extends LitElement {
 			this._onTreeHorizontal(event, key);
 			return;
 		}
+		if (this.type === 'tree' && (key === 'Enter' || key === ' ')) {
+			this._onTreeActivate(event);
+			return;
+		}
 		if (key !== 'ArrowUp' && key !== 'ArrowDown' && key !== 'Home' && key !== 'End') return;
 		const items = this._getInteractiveItems();
 		if (items.length === 0) return;
@@ -835,6 +842,18 @@ export class NLDDList extends LitElement {
 		if (!parent) return;
 		event.preventDefault();
 		this._moveRovingTo(parent);
+	}
+
+	/** Tree only: Enter and Space open and close the row, the same thing Right and
+	 *  Left do. Only when focus sits on the row ITSELF — a row that is its own
+	 *  control, and a segmented action you tabbed into, handle both keys
+	 *  natively, and acting here as well would toggle twice. */
+	private _onTreeActivate(event: KeyboardEvent) {
+		const target = event.target;
+		if (!(target instanceof Element) || target.tagName.toLowerCase() !== 'nldd-list-item') return;
+		const row = target as NLDDListItem;
+		if (row.shadowRoot?.activeElement) return;
+		if (row._activateDisclosure()) event.preventDefault();
 	}
 
 	private _moveRovingTo(row: NLDDListItem) {
