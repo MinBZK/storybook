@@ -15,6 +15,10 @@ the type of conventional-commit determines the release. Conventional types
 `chore`, `docs`, `ci`, `style`, `test`, `build` are intentionally omitted
 here; consult the commit history if you need that level of detail.
 
+## <small>0.8.71 (2026-07-29)</small>
+
+* feat: step indicator, tree lists and a reworked list-item (#161) ([2c87577](https://github.com/MinBZK/storybook/commit/2c87577)), closes [#161](https://github.com/MinBZK/storybook/issues/161)
+
 ### Highlights
 
 - **New `nldd-step-indicator` for a process of several steps.** A row of markers carrying a number (or a check mark once a step is done), a label below each and a track in between. `current` on the parent derives every step's status (`past`, `current`, `future`); a step can override it. A finished step is filled with a check mark, the current one is an accent outline on a light accent field around its number, and what is still to come is a quiet grey field. With `href` or `button` a step becomes a control, so you can page back — also in a flow without a URL per step. Below the sm breakpoint (measured on the container) it collapses to one line of text plus a segmented bar, with the full list of steps still in the DOM for assistive technology. Horizontal only: steps below one another are a list of `nldd-timeline-track-cell`.
