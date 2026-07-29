@@ -400,7 +400,6 @@ export const aliases = {
 
 	// tag
 	'label': 'tag',
-	'category': 'tag',
 
 	// tag-stack
 	'tags': 'tag-stack',
