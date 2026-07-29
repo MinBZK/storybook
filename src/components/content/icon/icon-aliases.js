@@ -3,6 +3,7 @@ export const aliases = {
 	// apartment-building
 	'office': 'apartment-building',
 	'building': 'apartment-building',
+	'company': 'apartment-building',
 
 	// arrow-2-counter-clockwise
 	'refresh': 'arrow-2-counter-clockwise',

@@ -146,7 +146,7 @@ export const MijnOverheidZakelijk = {
 					<nldd-menu-bar-item text="Zoeken" icon="magnifier" content-priority="icon"></nldd-menu-bar-item>
 					<nldd-menu-bar-item text="Bloom B.V." icon="profile" expandable>
 						<nldd-menu>
-							<nldd-menu-item text="Bedrijfsprofiel" icon="contact-card"></nldd-menu-item>
+							<nldd-menu-item text="Bedrijfsprofiel" icon="company"></nldd-menu-item>
 							<nldd-menu-item text="Instellingen" icon="settings"></nldd-menu-item>
 							<nldd-menu-divider></nldd-menu-divider>
 							<nldd-menu-item text="Log uit" icon="logout"></nldd-menu-item>
@@ -366,7 +366,7 @@ export const AllStates = {
 						<nldd-menu-bar-item text="Zoeken" icon="magnifier" content-priority="icon"></nldd-menu-bar-item>
 						<nldd-menu-bar-item text="Bloom B.V." icon="profile" expandable>
 							<nldd-menu>
-								<nldd-menu-item text="Bedrijfsprofiel" icon="contact-card"></nldd-menu-item>
+								<nldd-menu-item text="Bedrijfsprofiel" icon="company"></nldd-menu-item>
 								<nldd-menu-divider></nldd-menu-divider>
 								<nldd-menu-item text="Log uit" icon="logout"></nldd-menu-item>
 							</nldd-menu>
