@@ -135,25 +135,31 @@ huisstijl. De variabelen zijn gelaagd:
 | **Lokaal** | `--_*` | **Intern aan een component. Raak deze niet aan.** |
 
 Voor je eigen CSS (de ruimte tussen en rond componenten) gebruik je
-`--primitives-*` voor spacing en kleur, en `light-dark()` voor themabewuste
-waarden:
+`--primitives-*` voor spacing en kleur:
 
 ```css
 .mijn-rij {
   display: flex;
   gap: var(--primitives-space-8);
-  color: light-dark(
-    var(--primitives-color-neutral-700),
-    var(--primitives-color-neutral-300)
-  );
+  color: var(--primitives-color-neutral-700);
 }
 ```
+
+**Zet geen `light-dark()` om een primitive heen.** Elke kleur-primitive is zelf
+al een `light-dark()`-paar, en de schaal kantelt mee: stap 700 is donkere tekst
+in lichte modus en lichte tekst in donkere modus. Wikkel je hem in nog een
+`light-dark()` met de gespiegelde stap (700 om 300), dan draai je twee keer om
+en houd je in beide schema's dezelfde kleur over: donkere tekst op een donkere
+achtergrond. Eén verwijzing volstaat.
+
+`light-dark()` heb je alleen nodig voor kleuren die niet uit het palet komen, of
+wanneer je per schema bewust een ándere stap wilt (bijvoorbeeld 100 in licht en
+150 in donker, voor iets meer contrast).
 
 **Licht en donker.** Het hele palet is gebouwd op `light-dark()`, dus het thema
 volgt de CSS `color-scheme`. Standaard is dat de OS- of browservoorkeur. Wil je
 licht of donker forceren, zet dan `color-scheme: light` (of `dark`) op een
-root-element; gebruik `light-dark()` zoals hierboven voor je eigen kleuren zodat
-ze meebewegen. Er is geen aparte thema-toggle-API op `nldd-app-view`.
+root-element. Er is geen aparte thema-toggle-API op `nldd-app-view`.
 
 ## Gebruikspatronen
 
