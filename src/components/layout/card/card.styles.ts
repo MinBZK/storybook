@@ -70,7 +70,12 @@ export const cardStyles = css`
 		appearance: none;
 	}
 
-	/* The ring is a sibling of the card, not something drawn on it. Two reasons:
+	/* Shown from JS (a class on the host) instead of with
+	   :has(.card__action:focus-visible): Safari does not re-evaluate a dynamic
+	   pseudo-class inside :has(), so the ring stayed away there while Chromium
+	   drew it.
+
+	   The ring is a sibling of the card, not something drawn on it. Two reasons:
 	   the card clips its descendants (overflow: hidden keeps images and fills
 	   inside the rounded corners), so a ring drawn within would be cut off at the
 	   edge; and the card's own box-shadow is a token that may be "none", which
@@ -87,7 +92,7 @@ export const cardStyles = css`
 		pointer-events: none;
 	}
 
-	.card:has(.card__action:focus-visible) ~ .card__focus-ring {
+	:host(.is-action-focused) .card__focus-ring {
 		display: block;
 	}
 

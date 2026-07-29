@@ -10,6 +10,24 @@ describe('nldd-card', () => {
 		if (el) cleanup(el);
 	});
 
+	// The ring is its own layer beside the card, driven by a class instead of
+	// :has(… :focus-visible): the card clips its descendants, and Safari does not
+	// re-evaluate a dynamic pseudo-class inside :has().
+	it('toont de focusring pas als de eigen control toetsenbordfocus heeft', async () => {
+		el = await fixture<NLDDCard>('<nldd-card button accessible-label="Open"><p>Inhoud</p></nldd-card>');
+		await waitForUpdate(el);
+		const ring = el.shadowRoot!.querySelector('.card__focus-ring')!;
+		expect(ring).not.toBeNull();
+		expect(el.classList.contains('is-action-focused')).toBe(false);
+
+		const control = el.shadowRoot!.querySelector<HTMLElement>('.card__action')!;
+		control.dispatchEvent(new FocusEvent('focusin', { bubbles: true, composed: true }));
+		await waitForUpdate(el);
+		// Programmatic focus is not focus-visible, so the ring stays away — that is
+		// the same rule the pointer follows.
+		expect(el.classList.contains('is-action-focused')).toBe(false);
+	});
+
 	it('rendert zonder fouten', async () => {
 		el = await fixture<NLDDCard>('<nldd-card></nldd-card>');
 		await waitForUpdate(el);

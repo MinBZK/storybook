@@ -27,7 +27,7 @@
  */
 
 import { LitElement } from 'lit';
-import { customElement, property } from 'lit/decorators.js';
+import { customElement, property, state } from 'lit/decorators.js';
 import { cardStyles } from './card.styles.js';
 import { cardTemplate } from './card.template.js';
 import { withTranslations } from '../../../utilities/with-translations.js';
@@ -72,6 +72,24 @@ export class NLDDCard extends withTranslations(LitElement, nlddCardTranslations)
 
 	private _warnedLabel = false;
 
+	/** True while the card's own overlay control holds keyboard focus. Drives the
+	 *  focus ring from JS rather than from `:has(… :focus-visible)` in CSS:
+	 *  Safari does not re-evaluate a dynamic pseudo-class inside `:has()`, so the
+	 *  ring stayed away there while it worked in Chromium. */
+	@state()
+	private _actionFocused = false;
+
+	private _onFocusIn = (e: FocusEvent): void => {
+		// composedPath()[0], not e.target: the control lives in the shadow root, so
+		// the event is retargeted to the host by the time it reaches this listener.
+		const focused = e.composedPath()[0] as Element | undefined;
+		this._actionFocused = !!focused?.matches?.('.card__action:focus-visible');
+	};
+
+	private _onFocusOut = (): void => {
+		this._actionFocused = false;
+	};
+
 	override connectedCallback() {
 		super.connectedCallback();
 		// Set container-type/name as inline style on the host. Doing this from
@@ -83,11 +101,14 @@ export class NLDDCard extends withTranslations(LitElement, nlddCardTranslations)
 		// reconnect) would just re-set them, and there's no scenario where the
 		// styles being absent is meaningful. They are effectively part of the
 		// element's identity, written once and kept.
+		this.addEventListener('focusin', this._onFocusIn);
+		this.addEventListener('focusout', this._onFocusOut);
 		this.style.containerType = 'inline-size';
 		this.style.containerName = 'layout-container';
 	}
 
 	override updated(): void {
+		this.classList.toggle('is-action-focused', this._actionFocused);
 		// An interactive card with no accessible name is a silent a11y failure —
 		// the overlay control has no text. Warn once in dev (like nldd-image does
 		// for alt); stay quiet in production.
@@ -107,6 +128,12 @@ export class NLDDCard extends withTranslations(LitElement, nlddCardTranslations)
 		const wrapper = slot.parentElement as HTMLElement;
 		wrapper.hidden = slot.assignedElements().length === 0;
 	};
+
+	override disconnectedCallback() {
+		this.removeEventListener('focusin', this._onFocusIn);
+		this.removeEventListener('focusout', this._onFocusOut);
+		super.disconnectedCallback();
+	}
 
 	override render() {
 		return cardTemplate(this);
