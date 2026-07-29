@@ -347,7 +347,7 @@ export class NLDDListItem extends withTranslations(LitElement, nlddListItemTrans
 			this._warnOnStrayExpanded();
 		}
 		if (changed.has('_arrowNavigation') || changed.has('_rovingActive')) {
-			this._applyRovingTabStops();
+			this._syncRovingTabStops();
 		}
 		this._propagateSize();
 	}
@@ -621,7 +621,7 @@ export class NLDDListItem extends withTranslations(LitElement, nlddListItemTrans
 		// A tree row without a control of its own (only segmented actions, or
 		// none at all) takes focus on the host: that is where role="treeitem"
 		// sits, so assistive technology announces the row rather than a button
-		// inside it. _applyRovingTabStops gives the host the tabindex for it.
+		// inside it. _syncRovingTabStops gives the host the tabindex for it.
 		if (this._action) {
 			this._action.focus(options);
 			return;
@@ -629,11 +629,22 @@ export class NLDDListItem extends withTranslations(LitElement, nlddListItemTrans
 		super.focus(options);
 	}
 
-	/** The roving tab stop, spread over the row and the controls inside it: the
-	 *  current row is reachable with Tab, everything else only with the arrow
-	 *  keys. Within the current row Tab then walks its segmented actions, so a
-	 *  row that holds a checkbox and a chevron stays fully operable. */
-	private _applyRovingTabStops(): void {
+	/**
+	 * The roving tab stop, spread over the row and the controls inside it: the
+	 * current row is reachable with Tab, everything else only with the arrow
+	 * keys. Within the current row Tab then walks its segmented actions, so a row
+	 * that holds a checkbox and a chevron stays fully operable.
+	 *
+	 * A row that is not the current one carries NO tabindex at all rather than
+	 * -1. A shadow host with a tabindex is a focus scope of its own, and Chromium
+	 * walks straight past such a scope when tabbing BACKWARDS if the host itself
+	 * isn't tabbable — so a `-1` on a branch made every row inside it
+	 * unreachable with Shift+Tab, while forward navigation still found them.
+	 *
+	 * @internal Also called by the list right after it moves the roving, so the
+	 * tab stop is in the DOM before focus is handed over.
+	 */
+	_syncRovingTabStops(): void {
 		const ownActions = Array.from(this.children).filter(
 			(el): el is HTMLElement & { _tabbable?: boolean } =>
 				el.getAttribute('slot') !== 'children'
@@ -646,10 +657,10 @@ export class NLDDListItem extends withTranslations(LitElement, nlddListItemTrans
 		}
 		// Only a row without its own control needs the host as focus target; with
 		// a control the tabindex sits on that control (see render()).
-		if (this._action) {
+		if (this._action || !this._rovingActive) {
 			this.removeAttribute('tabindex');
 		} else {
-			this.setAttribute('tabindex', this._rovingActive ? '0' : '-1');
+			this.setAttribute('tabindex', '0');
 		}
 		ownActions.forEach((action) => { action._tabbable = this._rovingActive; });
 	}

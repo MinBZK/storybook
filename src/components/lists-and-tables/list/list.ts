@@ -748,14 +748,22 @@ export class NLDDList extends LitElement {
 		const entry = interactive.find((row) => row._rovingActive)
 			?? interactive.find((row) => row.selected)
 			?? interactive[0];
-		rows.forEach((row) => { row._rovingActive = row === entry; });
+		rows.forEach((row) => {
+			row._rovingActive = row === entry;
+			row._syncRovingTabStops();
+		});
 	}
 
 	// items defaults to every row, nested ones included; _onArrowNav passes the
 	// interactive set it already computed (non-interactive rows are kept out of
 	// roving, so they stay false).
 	private _setRovingActive(activeItem: NLDDListItem, items: NLDDListItem[] = this._getAllRows()) {
-		items.forEach((item) => { item._rovingActive = item === activeItem; });
+		items.forEach((item) => {
+			item._rovingActive = item === activeItem;
+			// Straight away, not on the next render: the caller hands focus to the
+			// row in the same tick, and a row without a tabindex cannot take it.
+			item._syncRovingTabStops();
+		});
 	}
 
 	private _onFocusIn = (event: FocusEvent) => {

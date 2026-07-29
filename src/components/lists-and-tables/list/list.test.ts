@@ -499,7 +499,11 @@ describe('nldd-list', () => {
 		await waitForUpdate(el);
 		const rows = [...el.querySelectorAll('nldd-list-item')];
 		expect(rows[0].getAttribute('tabindex')).toBe('0');
-		expect(rows[1].getAttribute('tabindex')).toBe('-1');
+		// No tabindex at all on the others, not -1: a shadow host with a tabindex
+		// is a focus scope, and Chromium skips such a scope when tabbing back if
+		// the host isn't tabbable — which made every row inside a branch
+		// unreachable with Shift+Tab.
+		expect(rows[1].hasAttribute('tabindex')).toBe(false);
 		// Within the current row Tab reaches the segmented action; elsewhere not.
 		const controls = rows.map(row => row.querySelector('nldd-list-item-action')!
 			.shadowRoot!.querySelector('.list-item-action')!);
