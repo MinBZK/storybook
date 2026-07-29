@@ -527,6 +527,26 @@ describe('nldd-list', () => {
 		expect(branch.expanded).toBe(undefined);
 	});
 
+	it('tree: opening a branch keeps focus on the row', async () => {
+		el = await fixture(`
+			<nldd-list type="tree">
+				<nldd-list-item>
+					<nldd-list-item-action button disclosure><nldd-icon-cell icon="chevron-right"></nldd-icon-cell></nldd-list-item-action>
+					<nldd-text-cell text="A"></nldd-text-cell>
+					<nldd-list-item slot="children"><nldd-text-cell text="A1"></nldd-text-cell></nldd-list-item>
+				</nldd-list-item>
+			</nldd-list>
+		`);
+		await waitForUpdate(el);
+		const branch = el.querySelector('nldd-list-item')!;
+		branch.focus();
+		el.dispatchEvent(new KeyboardEvent('keydown', { key: 'ArrowRight', bubbles: true, composed: true }));
+		await waitForUpdate(el);
+		// The click on the chevron pulls focus into that action; the row takes it
+		// back, because the row is the roving tab stop and carries the ring.
+		expect(document.activeElement).toBe(branch);
+	});
+
 	it('tree: ArrowRight steps into an open branch, ArrowLeft steps back out', async () => {
 		el = await fixture(`
 			<nldd-list type="tree">

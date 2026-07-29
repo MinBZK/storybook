@@ -674,7 +674,13 @@ export class NLDDListItem extends withTranslations(LitElement, nlddListItemTrans
 	_activateDisclosure(): boolean {
 		const control = this._disclosureControl;
 		if (!control) return false;
+		// The click lands on a segmented action, and that action pulls focus into
+		// its own control — with the pointer-focus flag set, since a click is what
+		// it sees. Focus belongs to the row: that is the roving tab stop, and the
+		// keyboard user has to keep seeing where they are.
+		const hadFocus = this.matches(':focus-within');
 		(control as HTMLElement & { click(): void }).click();
+		if (hadFocus) this.focus();
 		return true;
 	}
 
