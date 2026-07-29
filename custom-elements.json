@@ -272,6 +272,17 @@
             },
             {
               "kind": "field",
+              "name": "maxWidth",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Caps the button's width. Combines with `width=\"full\"`: the button follows\nits container until it hits this length. A label that doesn't fit is\ntruncated with an ellipsis, as with `single-line`.",
+              "attribute": "max-width",
+              "reflects": true
+            },
+            {
+              "kind": "field",
               "name": "expandable",
               "type": {
                 "text": "boolean"
@@ -531,6 +542,15 @@
               "default": "''",
               "description": "Width mode: 'full' (stretches to container) or any CSS length (e.g. '240px')",
               "fieldName": "width"
+            },
+            {
+              "name": "max-width",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Caps the width at this CSS length (e.g. '320px'). Combines with `width=\"full\"`: the button follows its container up to the cap. A label that doesn't fit is truncated with an ellipsis — a cap only means something if the content respects it.",
+              "fieldName": "maxWidth"
             },
             {
               "name": "expandable",
