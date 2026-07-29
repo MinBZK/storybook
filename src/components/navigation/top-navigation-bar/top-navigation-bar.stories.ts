@@ -321,6 +321,7 @@ export const AllStates = {
 						<nldd-menu-bar-item text="Mijn account" icon="profile" expandable content-priority="text">
 							<nldd-menu>
 								<nldd-menu-item text="Mijn gegevens" icon="contact-card"></nldd-menu-item>
+								<nldd-menu-divider></nldd-menu-divider>
 								<nldd-menu-item text="Log uit" icon="logout"></nldd-menu-item>
 							</nldd-menu>
 						</nldd-menu-bar-item>
@@ -345,6 +346,7 @@ export const AllStates = {
 						<nldd-menu-bar-item text="Mijn account" icon="profile" expandable content-priority="text">
 							<nldd-menu>
 								<nldd-menu-item text="Mijn gegevens" icon="contact-card"></nldd-menu-item>
+								<nldd-menu-divider></nldd-menu-divider>
 								<nldd-menu-item text="Log uit" icon="logout"></nldd-menu-item>
 							</nldd-menu>
 						</nldd-menu-bar-item>
@@ -365,6 +367,7 @@ export const AllStates = {
 						<nldd-menu-bar-item text="Bloom B.V." icon="profile" expandable>
 							<nldd-menu>
 								<nldd-menu-item text="Bedrijfsprofiel" icon="contact-card"></nldd-menu-item>
+								<nldd-menu-divider></nldd-menu-divider>
 								<nldd-menu-item text="Log uit" icon="logout"></nldd-menu-item>
 							</nldd-menu>
 						</nldd-menu-bar-item>
@@ -381,6 +384,7 @@ export const AllStates = {
 						<nldd-menu-bar-item text="J. Jansen" icon="profile" expandable>
 							<nldd-menu>
 								<nldd-menu-item text="Mijn profiel" icon="contact-card"></nldd-menu-item>
+								<nldd-menu-divider></nldd-menu-divider>
 								<nldd-menu-item text="Log uit" icon="logout"></nldd-menu-item>
 							</nldd-menu>
 						</nldd-menu-bar-item>

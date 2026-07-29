@@ -85,7 +85,7 @@ export const Links = {
 			<nldd-menu-item text="Mijn profiel" href="#profiel" icon="user"></nldd-menu-item>
 			<nldd-menu-item text="Instellingen" href="#instellingen" icon="settings"></nldd-menu-item>
 			<nldd-menu-divider></nldd-menu-divider>
-			<nldd-menu-item text="Uitloggen" href="#uitloggen" icon="logout"></nldd-menu-item>
+			<nldd-menu-item text="Log uit" href="#uitloggen" icon="logout"></nldd-menu-item>
 		</nldd-menu>
 	`,
 };
@@ -356,7 +356,7 @@ export const MixedFlatAndGroups = {
  * hier een account-header (een `nldd-byline` in een `nldd-container` voor de
  * padding) en een kort `nldd-rich-text`-tekstje onderin. Een link in de footer
  * is bereikbaar met Tab (niet met de pijltjes, die alleen de menu-items
- * aflopen). Uitloggen is gewoon een menu-item. Header en footer verschijnen
+ * aflopen). "Log uit" is gewoon een menu-item. Header en footer verschijnen
  * alleen op de root-menu, nooit in een submenu.
  */
 export const MetHeaderEnFooter = {
@@ -377,7 +377,7 @@ export const MetHeaderEnFooter = {
 			<nldd-menu-item text="Instellingen" icon="gear"></nldd-menu-item>
 			<nldd-menu-item text="Facturen" icon="file-text"></nldd-menu-item>
 			<nldd-menu-divider></nldd-menu-divider>
-			<nldd-menu-item text="Uitloggen" icon="logout"></nldd-menu-item>
+			<nldd-menu-item text="Log uit" icon="logout"></nldd-menu-item>
 
 			<nldd-container slot="footer" padding="16">
 				<nldd-rich-text spacing="flat">
@@ -389,7 +389,7 @@ export const MetHeaderEnFooter = {
 	parameters: {
 		docs: {
 			description: {
-				story: 'Vrije content in `header` / `footer` (buiten `role="menu"`): een `nldd-container` levert de padding, een link is bereikbaar met Tab, en de pijltjes navigeren alleen de menu-items. Uitloggen is een gewoon menu-item; header en footer tonen alleen op de root.',
+				story: 'Vrije content in `header` / `footer` (buiten `role="menu"`): een `nldd-container` levert de padding, een link is bereikbaar met Tab, en de pijltjes navigeren alleen de menu-items. "Log uit" is een gewoon menu-item; header en footer tonen alleen op de root.',
 			},
 		},
 	},
