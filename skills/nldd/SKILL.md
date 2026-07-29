@@ -276,6 +276,30 @@ Bouw rijen op uit cellen binnen een `nldd-list-item`. Niet uit losse divs.
 Beschikbare cellen: `nldd-text-cell`, `nldd-icon-cell`, `nldd-title-cell`,
 `nldd-description-cell`, `nldd-spacer-cell`, en meer (zie `reference.md`).
 
+**Zet nooit kale tekst in een rij.** De cel bepaalt lettertype, grootte, kleur
+en uitlijning, en stemt die af op de rijhoogte. Tekst die je er los in hangt
+krijgt niets van dat alles mee: in een klikbare rij zit de slot in een `<button>`
+en erft je tekst de browserstijl van een knop, wat neerkomt op 13px Arial. Loopt
+je tekst over meerdere alinea's of bevat hij opmaak, gebruik dan
+`nldd-rich-text` in een `nldd-cell`.
+
+```html
+<!-- Fout: kale tekst in de rij -->
+<nldd-list-item button>Dossier 2024-001</nldd-list-item>
+
+<!-- Goed -->
+<nldd-list-item button>
+  <nldd-text-cell text="Dossier 2024-001"></nldd-text-cell>
+</nldd-list-item>
+
+<!-- Goed, met opmaak -->
+<nldd-list-item>
+  <nldd-cell>
+    <nldd-rich-text><p>Tekst met <strong>opmaak</strong>.</p></nldd-rich-text>
+  </nldd-cell>
+</nldd-list-item>
+```
+
 ### Formulieren en validatiefouten
 
 `nldd-form-field` koppelt label en input automatisch (geen `for`/`id`-gedoe).
