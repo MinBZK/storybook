@@ -12,7 +12,6 @@ export const buttonStyles = css`
 	:host {
 		--_corner-radius: var(--semantics-controls-md-corner-radius);
 		--_width: auto;
-		--_max-width: none;
 		--_min-size: var(--semantics-controls-md-min-size);
 		--_block-padding: var(--semantics-controls-md-block-padding);
 		--_inline-padding: var(--semantics-buttons-md-inline-padding);
@@ -408,7 +407,6 @@ export const buttonStyles = css`
 		background-color: var(--_background-color);
 		box-shadow: inset 0 0 0 var(--primitives-border-width-thin) var(--_highlight-border-color);
 		width: var(--_width);
-		max-width: var(--_max-width);
 		min-width: var(--_min-size);
 		max-width: 100%;
 		min-height: var(--_min-size);

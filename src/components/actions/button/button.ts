@@ -89,7 +89,7 @@ export class NLDDButton extends withTranslations(LitElement, nlddButtonTranslati
 	/** Caps the button's width. Combines with `width="full"`: the button follows
 	 *  its container until it hits this length. A label that doesn't fit is
 	 *  truncated with an ellipsis, as with `single-line`. */
-	@property({ reflect: true, attribute: 'max-width' })
+	@property({ reflect: true, attribute: 'max-width', converter: reflectNonDefault<string>('') })
 	maxWidth = '';
 
 	@property({ type: Boolean, reflect: true, attribute: 'expandable' })
@@ -200,16 +200,11 @@ export class NLDDButton extends withTranslations(LitElement, nlddButtonTranslati
 
 	override updated(changedProperties: Map<string, unknown>): void {
 		if (changedProperties.has('maxWidth')) {
-			// Same shape as width: a valid CSS length lands on the host, and the
-			// inner button inherits the cap through --_max-width so the label
-			// wraps or truncates inside it.
+			// The cap lands on the host; the inner button is already max-width: 100%
+			// of it, so it follows without a variable of its own. Invalid values do
+			// nothing, as with width.
 			const isValidLength = !!this.maxWidth && CSS.supports('max-width', this.maxWidth);
 			this.style.maxWidth = isValidLength ? this.maxWidth : '';
-			if (isValidLength) {
-				this.style.setProperty('--_max-width', '100%');
-			} else {
-				this.style.removeProperty('--_max-width');
-			}
 		}
 		if (changedProperties.has('width')) {
 			const w = this.width;

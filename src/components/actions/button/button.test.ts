@@ -466,17 +466,32 @@ describe('nldd-button – single-line / width', () => {
 		el = await fixture<NLDDButton>('<nldd-button text="X" width="full" max-width="320px"></nldd-button>');
 		await waitForUpdate(el);
 		expect((el as HTMLElement).style.maxWidth).toBe('320px');
-		expect(el.style.getPropertyValue('--_max-width')).toBe('100%');
-		// The cap has to reach the inner control, otherwise only the host shrinks.
+		// The inner control follows the host's cap, so the button really is capped
+		// and not just its (invisible) host box.
 		const control = el.shadowRoot!.querySelector('.button')!;
-		expect(getComputedStyle(control).maxWidth).toBe('100%');
+		expect(control.getBoundingClientRect().width).toBeLessThanOrEqual(320);
+	});
+
+	// Without reflectNonDefault, Lit reflects the empty default as max-width="",
+	// and [max-width] matches on presence — which would truncate every label in
+	// the system.
+	it('zet geen max-width-attribuut zonder waarde', async () => {
+		el = await fixture<NLDDButton>('<nldd-button text="X" max-width="320px"></nldd-button>');
+		await waitForUpdate(el);
+		// Clearing it has to REMOVE the attribute. Lit's default converter would
+		// write max-width="" instead, and [max-width] matches on presence — so
+		// every button would keep truncating after one framework re-render.
+		el.maxWidth = '';
+		await waitForUpdate(el);
+		expect(el.hasAttribute('max-width')).toBe(false);
+		const label = el.shadowRoot!.querySelector('.button__text')!;
+		expect(getComputedStyle(label).whiteSpace).not.toBe('nowrap');
 	});
 
 	it('ignores an invalid max-width', async () => {
 		el = await fixture<NLDDButton>('<nldd-button text="X" max-width="not-a-length"></nldd-button>');
 		await waitForUpdate(el);
 		expect((el as HTMLElement).style.maxWidth).toBe('');
-		expect(el.style.getPropertyValue('--_max-width')).toBe('');
 	});
 
 	it('clears inline width and --_width when width is cleared', async () => {
