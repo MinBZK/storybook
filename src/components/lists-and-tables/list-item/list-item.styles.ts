@@ -66,6 +66,15 @@ export const listItemStyles = css`
 		z-index: var(--_focus-z-index);
 	}
 
+	/* The focus ring reaches past the row's own box, and a branch paints its
+	   children group right after the row, in the same stacking context — so on a
+	   branch the ring's bottom edge disappeared under the first child. Raising
+	   the row settles it in both directions: with focus in a child, the rule
+	   matches this row too, and the group (later in the tree) still wins. */
+	:host(:focus-within) .list-item {
+		z-index: var(--_focus-z-index);
+	}
+
 	:host(.is-dragging) {
 		opacity: var(--semantics-controls-is-dragging-opacity);
 	}
