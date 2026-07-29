@@ -358,9 +358,8 @@ export const aliases = {
 	'ai': 'sparkles',
 	'magic': 'sparkles',
 
-	// square-corner-4
-	'fit-to-view': 'square-corner-4',
-	'viewfinder': 'square-corner-4',
+	// viewfinder
+	'fit-to-view': 'viewfinder',
 
 	// star
 	'rating': 'star',
