@@ -239,7 +239,8 @@ export const listItemStyles = css`
 
 	/* The ring follows the real (widened) box: inset 0 against the row block,
 	   painting outward like every other control. */
-	.list-item__action:focus-visible:not(.is-pointer-focus)::after {
+	.list-item__action:focus-visible:not(.is-pointer-focus)::after,
+	:host(:focus-visible) .list-item::after {
 		content: '';
 		display: block;
 		position: absolute;
@@ -249,6 +250,13 @@ export const listItemStyles = css`
 		outline-offset: var(--semantics-focus-ring-outline-offset);
 		box-shadow: var(--semantics-focus-ring-box-shadow);
 		pointer-events: none;
+	}
+
+	/* A tree row without a control of its own takes focus on the host, and the
+	   host wraps the children group as well — so the browser's own ring would be
+	   drawn around the whole open branch. Ours goes on the row. */
+	:host(:focus-visible) {
+		outline: none;
 	}
 
 	/* A row that is itself the disclosure control turns the chevron: mark its
