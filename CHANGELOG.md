@@ -9,6 +9,10 @@ the type of conventional-commit determines the release. Conventional types
 `chore`, `docs`, `ci`, `style`, `test`, `build` are intentionally omitted
 here; consult the commit history if you need that level of detail.
 
+## <small>0.8.72 (2026-07-29)</small>
+
+* fix(timeline-track-cell): laat het spoor over de rijgrens doorlopen (#162) ([950d6c1](https://github.com/MinBZK/storybook/commit/950d6c1)), closes [#162](https://github.com/MinBZK/storybook/issues/162)
+
 ### Fixed
 
 - **The timeline track broke at every row.** An `nldd-list-item` reserves a divider's worth of space below itself, and the lines of `nldd-timeline-track-cell` stopped at the cell's edge — leaving a hairline gap between one row's track and the next. The lines that run on downward now bridge that band.
