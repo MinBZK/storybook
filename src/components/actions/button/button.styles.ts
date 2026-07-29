@@ -12,6 +12,7 @@ export const buttonStyles = css`
 	:host {
 		--_corner-radius: var(--semantics-controls-md-corner-radius);
 		--_width: auto;
+		--_max-width: none;
 		--_min-size: var(--semantics-controls-md-min-size);
 		--_block-padding: var(--semantics-controls-md-block-padding);
 		--_inline-padding: var(--semantics-buttons-md-inline-padding);
@@ -407,6 +408,7 @@ export const buttonStyles = css`
 		background-color: var(--_background-color);
 		box-shadow: inset 0 0 0 var(--primitives-border-width-thin) var(--_highlight-border-color);
 		width: var(--_width);
+		max-width: var(--_max-width);
 		min-width: var(--_min-size);
 		max-width: 100%;
 		min-height: var(--_min-size);
@@ -510,7 +512,10 @@ export const buttonStyles = css`
 		min-width: 0;
 	}
 
-	:host([single-line]) .button__text {
+	/* A capped button truncates by itself: max-width is there to keep the button
+	   within a bound, and a label that wrapped to three lines would defeat that. */
+	:host([single-line]) .button__text,
+	:host([max-width]) .button__text {
 		overflow: hidden;
 		text-overflow: ellipsis;
 		white-space: nowrap;
@@ -559,7 +564,8 @@ export const buttonStyles = css`
 		clip-path: inset(50%);
 	}
 
-	:host([single-line]) .button__supporting-text {
+	:host([single-line]) .button__supporting-text,
+	:host([max-width]) .button__supporting-text {
 		overflow: hidden;
 		text-overflow: ellipsis;
 		white-space: nowrap;

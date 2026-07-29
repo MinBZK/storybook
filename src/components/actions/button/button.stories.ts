@@ -73,6 +73,14 @@ export default {
 				defaultValue: { summary: '' },
 			},
 		},
+		maxWidth: {
+			name: 'max-width',
+			control: 'text',
+			description: 'Maximale breedte (CSS-lengte, bijv. "320px"). Combineert met width="full": de knop volgt de container tot aan die grens. Tekst die niet past wordt afgekapt met een ellipsis.',
+			table: {
+				defaultValue: { summary: '' },
+			},
+		},
 		expandable: {
 			name: 'expandable',
 			control: 'boolean',
@@ -175,6 +183,7 @@ export default {
 		size: 'md',
 		horizontalAlignment: 'center',
 		width: '',
+		maxWidth: '',
 		expandable: false,
 		expanded: false,
 		popupType: '',
@@ -192,12 +201,13 @@ export default {
 	},
 };
 
-const Template = ({ variant, size, horizontalAlignment, width, expandable, expanded, popupType, text, supportingText, singleLine, startIcon, endIcon, type, href, target, accessibleLabel, loading, disabled }: Record<string, any>) => html`
+const Template = ({ variant, size, horizontalAlignment, width, maxWidth, expandable, expanded, popupType, text, supportingText, singleLine, startIcon, endIcon, type, href, target, accessibleLabel, loading, disabled }: Record<string, any>) => html`
 	<nldd-button
 		variant=${variant}
 		size=${size}
 		horizontal-alignment=${horizontalAlignment}
 		width=${width || nothing}
+		max-width=${maxWidth || nothing}
 		type=${type}
 		text=${text}
 		supporting-text=${supportingText || nothing}

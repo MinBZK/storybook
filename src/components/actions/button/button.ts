@@ -13,6 +13,7 @@
  * @attr {boolean} expanded - Whether the popover/menu controlled by this button is currently open. Forwarded as aria-expanded on the inner button; toggles the is-expanded visual state.
  * @attr {string} popup-type - Type of popup container this button opens: 'menu' | 'listbox' | 'dialog' | 'tree' | 'grid'. Sets aria-haspopup on the inner button and forces aria-expanded to always be present (true/false) so screen readers know the popup state.
  * @attr {string} width - Width mode: 'full' (stretches to container) or any CSS length (e.g. '240px')
+ * @attr {string} max-width - Caps the width at this CSS length (e.g. '320px'). Combines with `width="full"`: the button follows its container up to the cap. A label that doesn't fit is truncated with an ellipsis — a cap only means something if the content respects it.
  * @attr {string} text - Button text
  * @attr {string} supporting-text - Supporting text shown below the text (md/lg) or after it (sm/xs), in a secondary color. Part of the accessible name (unless `accessible-label` is set, which replaces the whole accessible name).
  * @attr {boolean} single-line - When true, truncates overflowing text with an ellipsis instead of letting it wrap. Requires the button (or an ancestor) to constrain the width.
@@ -84,6 +85,12 @@ export class NLDDButton extends withTranslations(LitElement, nlddButtonTranslati
 	/** Width mode: 'full' (stretch to container) or any CSS length. */
 	@property({ reflect: true, converter: reflectNonDefault<string>('') })
 	width = '';
+
+	/** Caps the button's width. Combines with `width="full"`: the button follows
+	 *  its container until it hits this length. A label that doesn't fit is
+	 *  truncated with an ellipsis, as with `single-line`. */
+	@property({ reflect: true, attribute: 'max-width' })
+	maxWidth = '';
 
 	@property({ type: Boolean, reflect: true, attribute: 'expandable' })
 	expandable = false;
@@ -192,6 +199,18 @@ export class NLDDButton extends withTranslations(LitElement, nlddButtonTranslati
 	_popup = new PopupAnchorController(this);
 
 	override updated(changedProperties: Map<string, unknown>): void {
+		if (changedProperties.has('maxWidth')) {
+			// Same shape as width: a valid CSS length lands on the host, and the
+			// inner button inherits the cap through --_max-width so the label
+			// wraps or truncates inside it.
+			const isValidLength = !!this.maxWidth && CSS.supports('max-width', this.maxWidth);
+			this.style.maxWidth = isValidLength ? this.maxWidth : '';
+			if (isValidLength) {
+				this.style.setProperty('--_max-width', '100%');
+			} else {
+				this.style.removeProperty('--_max-width');
+			}
+		}
 		if (changedProperties.has('width')) {
 			const w = this.width;
 			// 'full' switches host to block + 100% via CSS attribute selector.

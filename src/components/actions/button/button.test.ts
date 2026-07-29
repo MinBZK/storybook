@@ -462,6 +462,23 @@ describe('nldd-button – single-line / width', () => {
 		expect(el.style.getPropertyValue('--_width')).toBe('100%');
 	});
 
+	it('caps the button with max-width, also alongside width="full"', async () => {
+		el = await fixture<NLDDButton>('<nldd-button text="X" width="full" max-width="320px"></nldd-button>');
+		await waitForUpdate(el);
+		expect((el as HTMLElement).style.maxWidth).toBe('320px');
+		expect(el.style.getPropertyValue('--_max-width')).toBe('100%');
+		// The cap has to reach the inner control, otherwise only the host shrinks.
+		const control = el.shadowRoot!.querySelector('.button')!;
+		expect(getComputedStyle(control).maxWidth).toBe('100%');
+	});
+
+	it('ignores an invalid max-width', async () => {
+		el = await fixture<NLDDButton>('<nldd-button text="X" max-width="not-a-length"></nldd-button>');
+		await waitForUpdate(el);
+		expect((el as HTMLElement).style.maxWidth).toBe('');
+		expect(el.style.getPropertyValue('--_max-width')).toBe('');
+	});
+
 	it('clears inline width and --_width when width is cleared', async () => {
 		el = await fixture<NLDDButton>('<nldd-button text="X" width="240px"></nldd-button>');
 		await waitForUpdate(el);
