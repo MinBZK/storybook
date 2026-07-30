@@ -207,9 +207,9 @@ export const IconGallery = {
 						accessible-label="Filter op status"
 						@change=${handleStatusFilter}
 					>
-						<nldd-segmented-control-item value="all" text="All"></nldd-segmented-control-item>
-						<nldd-segmented-control-item value="new" text="New"></nldd-segmented-control-item>
-						<nldd-segmented-control-item value="updated" text="Updated"></nldd-segmented-control-item>
+						<nldd-segmented-control-item value="all" text="Alles"></nldd-segmented-control-item>
+						<nldd-segmented-control-item value="new" text="Nieuw"></nldd-segmented-control-item>
+						<nldd-segmented-control-item value="updated" text="Bijgewerkt"></nldd-segmented-control-item>
 					</nldd-segmented-control>
 				</nldd-container>
 				<nldd-collection item-width="180px" max-items="999" gap="16px">
@@ -220,9 +220,9 @@ export const IconGallery = {
 						const searchTokens = [iconName, ...iconAliases].join(' ').toLowerCase();
 						const status = NEW_ICONS.has(iconName) ? 'new' : UPDATED_ICONS.has(iconName) ? 'updated' : undefined;
 						const statusTag = status === 'new'
-							? html`<nldd-tag size="sm" color="accent" text="New" style="position: absolute; top: 8px; right: 8px;"></nldd-tag>`
+							? html`<nldd-tag size="sm" color="accent" text="Nieuw" style="position: absolute; top: 8px; right: 8px;"></nldd-tag>`
 							: status === 'updated'
-								? html`<nldd-tag size="sm" text="Updated" style="position: absolute; top: 8px; right: 8px;"></nldd-tag>`
+								? html`<nldd-tag size="sm" text="Bijgewerkt" style="position: absolute; top: 8px; right: 8px;"></nldd-tag>`
 								: '';
 						return html`
 							<nldd-card data-search-tokens=${searchTokens} data-status=${status ?? nothing} style="position: relative;">

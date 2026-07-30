@@ -27,7 +27,7 @@ here; consult the commit history if you need that level of detail.
 ### Changed
 
 - **Step indicator and timeline track cell, fine-tuned.** The current step's fill is one step lighter, the number in the marker is one weight heavier (medium), and a minor dot on the plain track grew from 8px to 10px (a minor step marker stays 12px).
-- **The icon gallery shows what changed.** The tiles of the latest icon batch carry a "New" or "Updated" tag, and a segmented control next to the search field filters on All, New and Updated.
+- **The icon gallery shows what changed.** The tiles of the latest icon batch carry a "Nieuw" or "Bijgewerkt" tag, and a segmented control next to the search field filters on "Alles", "Nieuw" and "Bijgewerkt".
 - **The `refresh` and `reload` aliases point at the new `arrow-clockwise`.** They sat on `arrow-2-counter-clockwise`, which keeps `sync` — two arrows chasing each other read as synchronization, one clockwise arrow as a refresh.
 - **`rectangle-stack` is redrawn and gains the `library` alias**, next to the existing `stack`.
 - **`stack-code` is now the alias of `rectangle-stack-chevron-left-forward-slash-chevron-right`.** The icon is renamed (and redrawn) after the shape-first pattern of `chevron-left-forward-slash-chevron-right`; the old name keeps working as its functional alias.
@@ -38,6 +38,7 @@ here; consult the commit history if you need that level of detail.
 - **Three icons renamed**, because `-stack` is reserved for 3 or more and these draw 2: `file-text-stack` is now `file-text-on-file-text` (with new artwork), `folder-stack` is now `folder-on-folder`, and `tag-stack` is now `tag-on-tag`. The old names are gone. The aliases `text-documents`, `directories`, `tags` and `labels` moved along and keep working.
 - **`stack-text` is now `rectangle-stack-text`** (with new artwork), naming the shape it draws the way `rectangle-stack` already does.
 - **`house-and-appartment-building` is now `house-apartment-building`** (with new artwork) — the spelling fixed to match `apartment-building`, and the "and" dropped from the compound.
+- **`square-and-arrow-down` is now `square-arrow-down`**, dropping the "and" the way `square-arrow-up` and `square-arrow-right-top` already read. The aliases `save` and `import` moved along and keep working.
 - **The media-transport icons carry a `media-` prefix**: `backward`, `forward` and their `-filled`, `-end`, `-end-filled`, `-frame` and `-frame-filled` variants are now `media-backward`, `media-forward` and so on (12 renames). The bare names were ambiguous — "forward" reads as navigation more often than as media transport — and the icon `forward` was unreachable outright, shadowed by the alias `forward` → `chevron-right` (aliases win on resolution). That alias stays, as the counterpart of `back` → `chevron-left`. `play`, `pause`, `stop` and `play-pause` keep their names: they collide with nothing and are clear as they are.
 
 ## <small>0.8.72 (2026-07-29)</small>
