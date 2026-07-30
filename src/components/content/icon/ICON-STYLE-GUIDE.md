@@ -196,6 +196,16 @@ Aliases koppelen een **functionele naam** aan een visuele icoonnaam. Ze staan in
 
 Aliases mogen meerdere synoniemen hebben voor hetzelfde icoon. Groottevarianten van aliases volgen hetzelfde suffix-patroon: `add` → `plus`, `add-small` → `plus-small`.
 
+## Gallery-status: New en Updated
+
+De IconGallery-story in Storybook toont een `nldd-tag` "New" of "Updated" op de tegels van de meest recente iconen-batch. Welke iconen dat zijn staat in `icon-gallery-status.ts` (`NEW_ICONS` en `UPDATED_ICONS`).
+
+Bij elke nieuwe iconen-batch **vervang** je de inhoud van beide sets (niet aanvullen), zodat de gallery altijd alleen de laatste batch markeert:
+
+- `NEW_ICONS` — iconen die nieuw zijn in deze batch
+- `UPDATED_ICONS` — bestaande iconen met nieuw artwork, renames (met of zonder nieuw artwork) en iconen waarvan de aliassen zijn gewijzigd
+- Valt een icoon in beide sets, dan wint "New"
+
 ## Checklist nieuw icoon
 
 - [ ] ViewBox is `0 0 24 24`
@@ -212,3 +222,4 @@ Aliases mogen meerdere synoniemen hebben voor hetzelfde icoon. Groottevarianten 
 - [ ] Coördinaten op hele pixels (behalve 45° diagonalen)
 - [ ] Bestandsnaam in kebab-case
 - [ ] Past visueel bij bestaande iconen in gewicht en stijl
+- [ ] Naam opgenomen in `NEW_ICONS` (of `UPDATED_ICONS`) in `icon-gallery-status.ts`; oude batch eruit

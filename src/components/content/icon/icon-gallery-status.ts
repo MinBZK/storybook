@@ -1,0 +1,71 @@
+// Icons added or redrawn in the most recent icon batch. The IconGallery story
+// renders a "New" or "Updated" tag on these tiles, so consumers browsing the
+// gallery spot what changed without reading the changelog.
+//
+// Refresh with every icon batch: replace (not extend) both sets with the names
+// of that batch, so the gallery always marks the latest batch only. Renames
+// and alias changes count as updated too, with or without new artwork; new
+// wins when both apply.
+export const NEW_ICONS = new Set([
+	'apartment-building-2',
+	'arrow-clockwise',
+	'arrow-down-left-arrow-up-right',
+	'arrow-up-right-arrow-down-left',
+	'clipboard-pencil',
+	'file-badge-arrow-down',
+	'file-badge-arrow-up',
+	'file-badge-minus',
+	'file-badge-plus',
+	'file-on-file',
+	'folder-badge-plus',
+	'folder-open',
+	'map',
+	'map-pin',
+	'map-pin-badge-minus',
+	'map-pin-badge-plus',
+	'map-pin-oval',
+	'microphone',
+	'microphone-slash',
+	'person-badge-minus',
+	'photo-camera',
+	'photo-on-photo-angled',
+	'photo-stack',
+	'signpost',
+	'speaker',
+	'speaker-slash',
+	'speaker-volume-high',
+	'speaker-volume-low',
+	'speaker-volume-medium',
+	'square-grid-2x2',
+	'square-grid-2x2-pencil',
+	'video-camera',
+]);
+
+export const UPDATED_ICONS = new Set([
+	'arrow-2-counter-clockwise',
+	'file',
+	'file-text',
+	'file-text-badge-check-mark',
+	'file-text-badge-check-plus',
+	'file-text-on-file-text',
+	'file-text-pencil',
+	'folder',
+	'folder-on-folder',
+	'house-and-apartment-building',
+	'media-backward',
+	'media-backward-end',
+	'media-backward-end-filled',
+	'media-backward-filled',
+	'media-backward-frame',
+	'media-backward-frame-filled',
+	'media-forward',
+	'media-forward-end',
+	'media-forward-end-filled',
+	'media-forward-filled',
+	'media-forward-frame',
+	'media-forward-frame-filled',
+	'rectangle-stack',
+	'rectangle-stack-chevron-left-forward-slash-chevron-right',
+	'rectangle-stack-text',
+	'tag-on-tag',
+]);
