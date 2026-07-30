@@ -17,7 +17,7 @@ here; consult the commit history if you need that level of detail.
 
 ### Highlights
 
-- **New icons, 32 of them.** Sound and image (`microphone`, `speaker` and its volume steps, `photo-camera`, `video-camera`, `photo-on-photo-angled` for a gallery, `photo-stack`), maps and wayfinding (`map`, `map-pin` and its badge variants, `map-pin-oval` for your current location, `signpost` for directions), a fuller file and folder family (`file-badge-*`, `file-on-file`, `folder-open`, `folder-badge-plus`), `arrow-clockwise` for refresh, a pair of expand and collapse arrows, `clipboard-pencil` for a form, `person-badge-minus`, and `square-grid-2x2` with a pencil variant. The full list is under Added.
+- **32 new icons.** Sound and image (`microphone`, `speaker` and its volume steps, `photo-camera`, `video-camera`, `photo-on-photo-angled` for a gallery, `photo-stack`), maps and wayfinding (`map`, `map-pin` and its badge variants, `map-pin-oval` for your current location, `signpost` for directions), a fuller file and folder family (`file-badge-*`, `file-on-file`, `folder-open`, `folder-badge-plus`), `arrow-clockwise` for refresh, a pair of expand and collapse arrows, `clipboard-pencil` for a form, `person-badge-minus`, and `square-grid-2x2` with a pencil variant. The full list is under Added.
 - **11 icons are redrawn.** The file and folder family (`file`, `file-text` and its badge and pencil variants, `file-text-on-file-text`, `folder`), the stack icons (`rectangle-stack`, `rectangle-stack-text`, `rectangle-stack-chevron-left-forward-slash-chevron-right`) and `house-and-apartment-building` got new artwork, so the set draws with one pen again now that it has grown.
 
 ### Added
