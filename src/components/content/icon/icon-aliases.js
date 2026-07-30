@@ -256,6 +256,12 @@ export const aliases = {
 	// globe
 	'languages': 'globe',
 
+	// hand-thumbs-up
+	'like': 'hand-thumbs-up',
+
+	// hand-thumbs-down
+	'dislike': 'hand-thumbs-down',
+
 	// heart-filled
 	'favorite': 'heart-filled',
 	'love': 'heart-filled',

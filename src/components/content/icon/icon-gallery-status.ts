@@ -19,6 +19,8 @@ export const NEW_ICONS = new Set([
 	'file-on-file',
 	'folder-badge-plus',
 	'folder-open',
+	'hand-thumbs-down',
+	'hand-thumbs-up',
 	'link-badge-lock',
 	'map',
 	'map-pin',
