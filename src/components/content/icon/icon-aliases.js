@@ -135,6 +135,21 @@ export const aliases = {
 	'database-disabled': 'cylinder-split-slash',
 	'database-unavailable': 'cylinder-split-slash',
 
+	// dismiss
+	'close': 'dismiss',
+
+	// dismiss-circle
+	'close-circle': 'dismiss-circle',
+
+	// dismiss-circle-filled
+	'close-circle-filled': 'dismiss-circle-filled',
+
+	// dismiss-small
+	'close-small': 'dismiss-small',
+
+	// dismiss-extra-small
+	'close-extra-small': 'dismiss-extra-small',
+
 	// ellipsis
 	'more': 'ellipsis',
 

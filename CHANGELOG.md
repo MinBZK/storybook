@@ -23,6 +23,7 @@ here; consult the commit history if you need that level of detail.
 - **Step indicator and timeline track cell, fine-tuned.** The current step's fill is one step lighter, the number in the marker is one weight heavier (medium), and a minor dot on the plain track grew from 8px to 10px (a minor step marker stays 12px).
 - **The icon gallery shows what changed.** The tiles of the latest icon batch carry a "Nieuw" or "Bijgewerkt" tag, and a segmented control next to the search field filters on "Alles", "Nieuw" and "Bijgewerkt".
 - **The `refresh` and `reload` aliases point at the new `arrow-clockwise`.** They sat on `arrow-2-counter-clockwise`, which keeps `sync` — two arrows chasing each other read as synchronization, one clockwise arrow as a refresh.
+- **The dismiss icons gain `close` aliases**: `close` for `dismiss`, and `close-circle`, `close-circle-filled`, `close-small` and `close-extra-small` for their variants.
 - **`rectangle-stack` is redrawn and gains the `library` alias**, next to the existing `stack`.
 - **`stack-code` is now the alias of `rectangle-stack-chevron-left-forward-slash-chevron-right`.** The icon is renamed (and redrawn) after the shape-first pattern of `chevron-left-forward-slash-chevron-right`; the old name keeps working as its functional alias.
 - **The `documents` alias points at `file-on-file`.** It sat on the icon now called `file-text-on-file-text`, which keeps `text-documents` — the plain pair is the generic plural, the way `document` already sat on plain `file`.

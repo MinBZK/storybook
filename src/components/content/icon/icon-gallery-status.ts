@@ -43,6 +43,11 @@ export const NEW_ICONS = new Set([
 
 export const UPDATED_ICONS = new Set([
 	'arrow-2-counter-clockwise',
+	'dismiss',
+	'dismiss-circle',
+	'dismiss-circle-filled',
+	'dismiss-extra-small',
+	'dismiss-small',
 	'file',
 	'file-text',
 	'file-text-badge-check-mark',
