@@ -157,8 +157,8 @@ export const Stappenlijst = {
 };
 
 /**
- * `minor` zet een rij onder de vorige: dezelfde baan, een halve stip (12px bij
- * een step, 8px bij een dot). Inspringen zou het spoor breken, en juist dat spoor
+ * `minor` zet een rij onder de vorige: dezelfde baan, een kleinere stip (12px bij
+ * een step, 10px bij een dot). Inspringen zou het spoor breken, en juist dat spoor
  * verbindt de rijen — de hiërarchie komt van de stipmaat en van gewone tekst in
  * plaats van een titel.
  */
@@ -197,7 +197,7 @@ export const Substappen = {
 
 /**
  * De standaard: een kaal spoor van gebeurtenissen, stippen van 16px. Een `minor`
- * is hier 8px, voor een gebeurtenis die bij de vorige hoort.
+ * is hier 10px, voor een gebeurtenis die bij de vorige hoort.
  */
 export const Tussenstappen = {
 	render: () => html`

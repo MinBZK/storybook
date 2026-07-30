@@ -28,7 +28,7 @@ export const stepIndicatorStyles = css`
 		--_ring-color: var(--context-parent-background-color, var(--semantics-surfaces-base-background-color));
 		--_marker-content-color: var(--semantics-content-secondary-color);
 		--_progress-content-color: var(--semantics-content-contrast-color);
-		--_current-fill-color: light-dark(var(--primitives-color-accent-100), var(--primitives-color-accent-150));
+		--_current-fill-color: light-dark(var(--primitives-color-accent-75), var(--primitives-color-accent-100));
 		--_icon-size: var(--primitives-space-16);
 		--_title-color: var(--semantics-content-secondary-color);
 		--_current-title-color: var(--semantics-content-color);
@@ -186,7 +186,7 @@ export const stepIndicatorItemStyles = css`
 		box-shadow: 0 0 0 var(--_ring-thickness) var(--_ring-color);
 		background-color: var(--_track-color);
 		color: var(--_marker-content-color);
-		font: var(--primitives-font-body-sm-regular-flat);
+		font: var(--primitives-font-body-sm-medium-flat);
 
 		@media (forced-colors: active) {
 			border: var(--primitives-border-width-regular) solid CanvasText;

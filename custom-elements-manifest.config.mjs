@@ -29,6 +29,9 @@ export default {
 		// Neither declares an element; both are inlined SVG.
 		'**/icon-registry.ts',
 		'**/logo.ts',
+		// Story support: which icons the gallery tags as New/Updated. Declares no
+		// element and is not part of the shipped API.
+		'**/icon-gallery-status.ts',
 	],
 	outdir: '.',
 	litelement: true,

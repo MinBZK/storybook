@@ -6,12 +6,22 @@ export const aliases = {
 	'company': 'apartment-building',
 
 	// arrow-2-counter-clockwise
-	'refresh': 'arrow-2-counter-clockwise',
-	'reload': 'arrow-2-counter-clockwise',
 	'sync': 'arrow-2-counter-clockwise',
+
+	// arrow-clockwise
+	'refresh': 'arrow-clockwise',
+	'reload': 'arrow-clockwise',
 
 	// arrow-down-in-bucket
 	'download': 'arrow-down-in-bucket',
+
+	// arrow-down-left-arrow-up-right
+	'expand': 'arrow-down-left-arrow-up-right',
+	'full-screen': 'arrow-down-left-arrow-up-right',
+
+	// arrow-up-right-arrow-down-left
+	'collapse': 'arrow-up-right-arrow-down-left',
+	'exit-full-screen': 'arrow-up-right-arrow-down-left',
 
 	// arrow-up-arrow-down
 	'sort': 'arrow-up-arrow-down',
@@ -26,6 +36,10 @@ export const aliases = {
 	'notification': 'bell',
 	'notifications': 'bell',
 	'alarm': 'bell',
+
+	// apartment-building-2
+	'buildings': 'apartment-building-2',
+	'offices': 'apartment-building-2',
 
 	// book
 	'guide': 'book',
@@ -90,6 +104,9 @@ export const aliases = {
 	// circle-dashed
 	'icon-placeholder': 'circle-dashed',
 
+	// clipboard-pencil
+	'form': 'clipboard-pencil',
+
 	// clipboard-square
 	'paste': 'clipboard-square',
 
@@ -117,6 +134,21 @@ export const aliases = {
 	// cylinder-split-slash
 	'database-disabled': 'cylinder-split-slash',
 	'database-unavailable': 'cylinder-split-slash',
+
+	// dismiss
+	'close': 'dismiss',
+
+	// dismiss-circle
+	'close-circle': 'dismiss-circle',
+
+	// dismiss-circle-filled
+	'close-circle-filled': 'dismiss-circle-filled',
+
+	// dismiss-small
+	'close-small': 'dismiss-small',
+
+	// dismiss-extra-small
+	'close-extra-small': 'dismiss-extra-small',
 
 	// ellipsis
 	'more': 'ellipsis',
@@ -173,6 +205,22 @@ export const aliases = {
 
 	// file
 	'document': 'file',
+
+	// file-badge-arrow-down
+	'download-document': 'file-badge-arrow-down',
+
+	// file-badge-arrow-up
+	'upload-document': 'file-badge-arrow-up',
+
+	// file-badge-minus
+	'remove-document': 'file-badge-minus',
+
+	// file-badge-plus
+	'new-document': 'file-badge-plus',
+
+	// file-on-file
+	'documents': 'file-on-file',
+
 	// file-text
 	'text-document': 'file-text',
 
@@ -180,9 +228,11 @@ export const aliases = {
 	'new-text-document': 'file-text-badge-check-plus',
 	'add-text-document': 'file-text-badge-check-plus',
 
-	// file-text-stack
-	'documents': 'file-text-stack',
-	'text-documents': 'file-text-stack',
+	// file-text-pencil
+	'edit-text-document': 'file-text-pencil',
+
+	// file-text-on-file-text
+	'text-documents': 'file-text-on-file-text',
 
 	// square-1
 	'primary': 'square-1',
@@ -196,8 +246,11 @@ export const aliases = {
 	// folder
 	'directory': 'folder',
 
-	// folder-stack
-	'directories': 'folder-stack',
+	// folder-badge-plus
+	'new-folder': 'folder-badge-plus',
+
+	// folder-on-folder
+	'directories': 'folder-on-folder',
 
 	// gear
 	'global-settings': 'gear',
@@ -205,6 +258,12 @@ export const aliases = {
 
 	// globe
 	'languages': 'globe',
+
+	// hand-thumbs-up
+	'like': 'hand-thumbs-up',
+
+	// hand-thumbs-down
+	'dislike': 'hand-thumbs-down',
 
 	// heart-filled
 	'favorite': 'heart-filled',
@@ -229,6 +288,10 @@ export const aliases = {
 	// link
 	'url': 'link',
 	'hyperlink': 'link',
+
+	// link-badge-lock
+	'secure-link': 'link-badge-lock',
+	'secure-url': 'link-badge-lock',
 
 	// list
 	'menu': 'list',
@@ -257,6 +320,9 @@ export const aliases = {
 	// chevron-left-forward-slash-chevron-right-rectangle
 	'code-block': 'chevron-left-forward-slash-chevron-right-rectangle',
 
+	// rectangle-stack-chevron-left-forward-slash-chevron-right
+	'stack-code': 'rectangle-stack-chevron-left-forward-slash-chevron-right',
+
 	// scissor
 	'cut': 'scissor',
 
@@ -266,6 +332,24 @@ export const aliases = {
 
 	// magnifier
 	'search': 'magnifier',
+
+	// map-pin
+	'location': 'map-pin',
+
+	// map-pin-badge-plus
+	'add-location': 'map-pin-badge-plus',
+
+	// map-pin-badge-minus
+	'remove-location': 'map-pin-badge-minus',
+
+	// map-pin-oval
+	'current-location': 'map-pin-oval',
+
+	// microphone
+	'microphone-on': 'microphone',
+
+	// microphone-slash
+	'microphone-off': 'microphone-slash',
 
 	// megaphone
 	'announcement': 'megaphone',
@@ -306,8 +390,18 @@ export const aliases = {
 	// photo
 	'image': 'photo',
 
+	// photo-on-photo-angled
+	'gallery': 'photo-on-photo-angled',
+
 	// photo-slash
 	'broken-image': 'photo-slash',
+
+	// photo-stack
+	'image-stack': 'photo-stack',
+	'images': 'photo-stack',
+
+	// photo-camera
+	'camera': 'photo-camera',
 
 	// pencil-on-square
 	'edit': 'pencil-on-square',
@@ -354,9 +448,24 @@ export const aliases = {
 	'blocked': 'slash-circle',
 	'forbidden': 'slash-circle',
 
+	// slider-horizontal-3
+	'local-settings': 'slider-horizontal-3',
+
 	// sparkles
 	'ai': 'sparkles',
 	'magic': 'sparkles',
+
+	// speaker-slash
+	'mute': 'speaker-slash',
+
+	// speaker-volume-high
+	'high-volume': 'speaker-volume-high',
+
+	// speaker-volume-low
+	'low-volume': 'speaker-volume-low',
+
+	// speaker-volume-medium
+	'medium-volume': 'speaker-volume-medium',
 
 	// viewfinder
 	'fit-to-view': 'viewfinder',
@@ -394,6 +503,7 @@ export const aliases = {
 
 	// rectangle-stack
 	'stack': 'rectangle-stack',
+	'library': 'rectangle-stack',
 
 	// sun
 	'day': 'sun',
@@ -405,9 +515,9 @@ export const aliases = {
 	// tag
 	'label': 'tag',
 
-	// tag-stack
-	'tags': 'tag-stack',
-	'labels': 'tag-stack',
+	// tag-on-tag
+	'tags': 'tag-on-tag',
+	'labels': 'tag-on-tag',
 
 	// terminal
 	'cli': 'terminal',
@@ -473,13 +583,16 @@ export const aliases = {
 	// shopping-cart
 	'cart': 'shopping-cart',
 
+	// signpost
+	'directions': 'signpost',
+
 	// rectangle-split-2x3
 	'table': 'rectangle-split-2x3',
 	'table-cells': 'rectangle-split-2x3',
 
-	// square-and-arrow-down
-	'save': 'square-and-arrow-down',
-	'import': 'square-and-arrow-down',
+	// square-arrow-down
+	'save': 'square-arrow-down',
+	'import': 'square-arrow-down',
 
 	// pipeline-machine-gear
 	'pipeline-runner': 'pipeline-machine-gear',
@@ -517,6 +630,9 @@ export const aliases = {
 
 	// wheat
 	'harvest': 'wheat',
+
+	// person-badge-minus
+	'remove-user': 'person-badge-minus',
 
 	// person-badge-plus
 	'add-user': 'person-badge-plus',
