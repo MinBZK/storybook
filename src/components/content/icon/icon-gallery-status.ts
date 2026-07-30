@@ -67,5 +67,6 @@ export const UPDATED_ICONS = new Set([
 	'rectangle-stack',
 	'rectangle-stack-chevron-left-forward-slash-chevron-right',
 	'rectangle-stack-text',
+	'square-arrow-down',
 	'tag-on-tag',
 ]);

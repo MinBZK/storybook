@@ -559,9 +559,9 @@ export const aliases = {
 	'table': 'rectangle-split-2x3',
 	'table-cells': 'rectangle-split-2x3',
 
-	// square-and-arrow-down
-	'save': 'square-and-arrow-down',
-	'import': 'square-and-arrow-down',
+	// square-arrow-down
+	'save': 'square-arrow-down',
+	'import': 'square-arrow-down',
 
 	// pipeline-machine-gear
 	'pipeline-runner': 'pipeline-machine-gear',
