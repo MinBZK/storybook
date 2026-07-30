@@ -15,6 +15,10 @@ the type of conventional-commit determines the release. Conventional types
 `chore`, `docs`, `ci`, `style`, `test`, `build` are intentionally omitted
 here; consult the commit history if you need that level of detail.
 
+## <small>0.8.73 (2026-07-30)</small>
+
+* feat: 32 nieuwe iconen, icon-gallery met statusfilter en fine-tuning (#163) ([0425e4d](https://github.com/MinBZK/storybook/commit/0425e4d)), closes [#163](https://github.com/MinBZK/storybook/issues/163)
+
 ### Highlights
 
 - **37 new icons.** Sound and image (`microphone`, `speaker` and its volume steps, `photo-camera`, `video-camera`, `photo-on-photo-angled` for a gallery, `photo-stack`), maps and wayfinding (`map`, `map-pin` and its badge variants, `map-pin-oval` for your current location, `signpost` for directions), a fuller file and folder family (`file-badge-*`, `file-on-file`, `folder-open`, `folder-badge-plus`), `arrow-clockwise` for refresh, a pair of expand and collapse arrows, `clipboard-pencil` for a form, `hand-thumbs-up` and `hand-thumbs-down` for a like and a dislike, `person-badge-minus`, `link-badge-lock` for a secure link, `slider-horizontal-3` for local settings, `text-format-size`, and `square-grid-2x2` with a pencil variant. The full list is under Added.
