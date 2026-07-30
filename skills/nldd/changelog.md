@@ -18,7 +18,7 @@ here; consult the commit history if you need that level of detail.
 ### Highlights
 
 - **32 new icons.** Sound and image (`microphone`, `speaker` and its volume steps, `photo-camera`, `video-camera`, `photo-on-photo-angled` for a gallery, `photo-stack`), maps and wayfinding (`map`, `map-pin` and its badge variants, `map-pin-oval` for your current location, `signpost` for directions), a fuller file and folder family (`file-badge-*`, `file-on-file`, `folder-open`, `folder-badge-plus`), `arrow-clockwise` for refresh, a pair of expand and collapse arrows, `clipboard-pencil` for a form, `person-badge-minus`, and `square-grid-2x2` with a pencil variant. The full list is under Added.
-- **11 icons are redrawn.** The file and folder family (`file`, `file-text` and its badge and pencil variants, `file-text-on-file-text`, `folder`), the stack icons (`rectangle-stack`, `rectangle-stack-text`, `rectangle-stack-chevron-left-forward-slash-chevron-right`) and `house-and-apartment-building` got new artwork, so the set draws with one pen again now that it has grown.
+- **11 icons are redrawn.** The file and folder family (`file`, `file-text` and its badge and pencil variants, `file-text-on-file-text`, `folder`), the stack icons (`rectangle-stack`, `rectangle-stack-text`, `rectangle-stack-chevron-left-forward-slash-chevron-right`) and `house-apartment-building` got new artwork, so the set draws with one pen again now that it has grown.
 
 ### Added
 
@@ -37,7 +37,7 @@ here; consult the commit history if you need that level of detail.
 
 - **Three icons renamed**, because `-stack` is reserved for 3 or more and these draw 2: `file-text-stack` is now `file-text-on-file-text` (with new artwork), `folder-stack` is now `folder-on-folder`, and `tag-stack` is now `tag-on-tag`. The old names are gone. The aliases `text-documents`, `directories`, `tags` and `labels` moved along and keep working.
 - **`stack-text` is now `rectangle-stack-text`** (with new artwork), naming the shape it draws the way `rectangle-stack` already does.
-- **`house-and-appartment-building` is now `house-and-apartment-building`** (with new artwork) — a plain spelling fix, matching `apartment-building`.
+- **`house-and-appartment-building` is now `house-apartment-building`** (with new artwork) — the spelling fixed to match `apartment-building`, and the "and" dropped from the compound.
 - **The media-transport icons carry a `media-` prefix**: `backward`, `forward` and their `-filled`, `-end`, `-end-filled`, `-frame` and `-frame-filled` variants are now `media-backward`, `media-forward` and so on (12 renames). The bare names were ambiguous — "forward" reads as navigation more often than as media transport — and the icon `forward` was unreachable outright, shadowed by the alias `forward` → `chevron-right` (aliases win on resolution). That alias stays, as the counterpart of `back` → `chevron-left`. `play`, `pause`, `stop` and `play-pause` keep their names: they collide with nothing and are clear as they are.
 
 ## <small>0.8.72 (2026-07-29)</small>

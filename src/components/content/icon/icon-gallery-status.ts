@@ -51,7 +51,7 @@ export const UPDATED_ICONS = new Set([
 	'file-text-pencil',
 	'folder',
 	'folder-on-folder',
-	'house-and-apartment-building',
+	'house-apartment-building',
 	'media-backward',
 	'media-backward-end',
 	'media-backward-end-filled',
