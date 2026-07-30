@@ -228,6 +228,9 @@ export const aliases = {
 	'new-text-document': 'file-text-badge-check-plus',
 	'add-text-document': 'file-text-badge-check-plus',
 
+	// file-text-pencil
+	'edit-text-document': 'file-text-pencil',
+
 	// file-text-on-file-text
 	'text-documents': 'file-text-on-file-text',
 
