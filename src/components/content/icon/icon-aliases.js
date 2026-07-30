@@ -280,6 +280,10 @@ export const aliases = {
 	'url': 'link',
 	'hyperlink': 'link',
 
+	// link-badge-lock
+	'secure-link': 'link-badge-lock',
+	'secure-url': 'link-badge-lock',
+
 	// list
 	'menu': 'list',
 
@@ -434,6 +438,9 @@ export const aliases = {
 	// slash-circle
 	'blocked': 'slash-circle',
 	'forbidden': 'slash-circle',
+
+	// slider-horizontal-3
+	'local-settings': 'slider-horizontal-3',
 
 	// sparkles
 	'ai': 'sparkles',

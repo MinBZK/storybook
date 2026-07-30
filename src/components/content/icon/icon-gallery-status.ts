@@ -19,6 +19,7 @@ export const NEW_ICONS = new Set([
 	'file-on-file',
 	'folder-badge-plus',
 	'folder-open',
+	'link-badge-lock',
 	'map',
 	'map-pin',
 	'map-pin-badge-minus',
@@ -31,6 +32,7 @@ export const NEW_ICONS = new Set([
 	'photo-on-photo-angled',
 	'photo-stack',
 	'signpost',
+	'slider-horizontal-3',
 	'speaker',
 	'speaker-slash',
 	'speaker-volume-high',
@@ -38,6 +40,7 @@ export const NEW_ICONS = new Set([
 	'speaker-volume-medium',
 	'square-grid-2x2',
 	'square-grid-2x2-pencil',
+	'text-format-size',
 	'video-camera',
 ]);
 
