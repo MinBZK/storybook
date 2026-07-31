@@ -60,6 +60,25 @@ export async function waitForUpdate(el: HTMLElement): Promise<void> {
 }
 
 /**
+ * Installs a consumer-style universal reset in the test document and returns
+ * a function that removes it again. Outer-context rules that match a shadow
+ * host beat the component's normal \`:host\` declarations (CSS Scoping), so
+ * tests use this to verify host layout survives a consuming app's reset.
+ *
+ * Variants:
+ * - 'plain': the classic \`* { margin: 0; padding: 0; border: 0 }\`
+ * - 'preflight': Tailwind-preflight-style zeroed borders + box-sizing
+ */
+export function installUniversalReset(variant: 'plain' | 'preflight' = 'plain'): () => void {
+	const style = document.createElement('style');
+	style.textContent = variant === 'plain'
+		? '* { margin: 0; padding: 0; border: 0; }'
+		: '*, ::before, ::after { box-sizing: border-box; border-width: 0; border-style: solid; margin: 0; padding: 0; }';
+	document.head.appendChild(style);
+	return () => style.remove();
+}
+
+/**
  * Waits two animation frames — long enough for a ResizeObserver callback to
  * fire and the component's reaction to it to render. Pair with waitForUpdate
  * when a test depends on a ResizeObserver-driven change (e.g. nldd-table's

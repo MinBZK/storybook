@@ -12,7 +12,8 @@ export const containerStyles = css`
 	}
 
 
-	/* # Host — outer chrome (padding + scheme + query container) */
+	/* # Host — external contract; padding and the query container live on
+	   .container in the shadow root, out of reach of consumer resets */
 
 	:host {
 		--_min-column-width: var(--primitives-area-280);
@@ -44,11 +45,23 @@ export const containerStyles = css`
 		--_slot-md-order: var(--_slot-order);
 		--_slot-lg-order: var(--_slot-order);
 
-		container-type: inline-size;
 		display: block;
-		box-sizing: border-box;
 		width: 100%;
 		height: auto;
+	}
+
+	:host([hidden]) {
+		display: none;
+	}
+
+
+	/* # Outer chrome — padding + query container. Size queries measure the
+	   content box, so .container reports the same padded interior width the
+	   host reported when it carried the padding itself. */
+
+	.container {
+		container-type: inline-size;
+		box-sizing: border-box;
 		padding-top: var(--_padding-top);
 		padding-right: var(--_padding-right);
 		padding-bottom: var(--_padding-bottom);
@@ -97,14 +110,10 @@ export const containerStyles = css`
 		}
 	}
 
-	:host([hidden]) {
-		display: none;
-	}
-
 
 	/* # Inner — actual layout */
 
-	.container {
+	.container__inner {
 		display: flex;
 		flex-direction: column;
 		flex-wrap: nowrap;
@@ -122,16 +131,16 @@ export const containerStyles = css`
 		@container layout-container (min-width: ${lgMin}) { gap: var(--_lg-gap); }
 	}
 
-	:host([layout="row"]) .container {
+	:host([layout="row"]) .container__inner {
 		flex-direction: row;
 	}
 
-	:host([layout="wrap"]) .container {
+	:host([layout="wrap"]) .container__inner {
 		flex-direction: row;
 		flex-wrap: wrap;
 	}
 
-	:host([layout="grid"]) .container {
+	:host([layout="grid"]) .container__inner {
 		display: grid;
 		grid-template-columns: repeat(
 			var(--_column-count, auto-fit),
@@ -139,7 +148,7 @@ export const containerStyles = css`
 		);
 	}
 
-	:host([layout="columns"]) .container {
+	:host([layout="columns"]) .container__inner {
 		display: block;
 		columns: var(--_min-column-width);
 		column-gap: var(--_gap);
@@ -152,7 +161,7 @@ export const containerStyles = css`
 	/* Lanes â native CSS grid-lanes where supported, CSS multicol fallback
 	   otherwise. CSS-only (no JS). Fallback flows column-order; native lanes
 	   packs shortest-column (row-order). */
-	:host([layout="lanes"]) .container {
+	:host([layout="lanes"]) .container__inner {
 		display: block;
 		columns: var(--_min-column-width);
 		column-gap: var(--_gap);
@@ -166,7 +175,7 @@ export const containerStyles = css`
 	}
 
 	@supports (display: grid-lanes) {
-		:host([layout="lanes"]) .container {
+		:host([layout="lanes"]) .container__inner {
 			display: grid-lanes;
 			grid-template-columns: repeat(
 				var(--_column-count, auto-fill),
@@ -179,14 +188,14 @@ export const containerStyles = css`
 		}
 	}
 
-	:host([layout="columns"][column-count]) .container,
-	:host([layout="columns"][sm-column-count]) .container,
-	:host([layout="columns"][md-column-count]) .container,
-	:host([layout="columns"][lg-column-count]) .container,
-	:host([layout="lanes"][column-count]) .container,
-	:host([layout="lanes"][sm-column-count]) .container,
-	:host([layout="lanes"][md-column-count]) .container,
-	:host([layout="lanes"][lg-column-count]) .container {
+	:host([layout="columns"][column-count]) .container__inner,
+	:host([layout="columns"][sm-column-count]) .container__inner,
+	:host([layout="columns"][md-column-count]) .container__inner,
+	:host([layout="columns"][lg-column-count]) .container__inner,
+	:host([layout="lanes"][column-count]) .container__inner,
+	:host([layout="lanes"][sm-column-count]) .container__inner,
+	:host([layout="lanes"][md-column-count]) .container__inner,
+	:host([layout="lanes"][lg-column-count]) .container__inner {
 		column-count: var(--_column-count);
 		column-width: auto;
 	}
@@ -194,59 +203,59 @@ export const containerStyles = css`
 
 	/* # Column count — base scope */
 
-	:host([column-count="1"]) .container { --_column-count: 1; }
-	:host([column-count="2"]) .container { --_column-count: 2; }
-	:host([column-count="3"]) .container { --_column-count: 3; }
-	:host([column-count="4"]) .container { --_column-count: 4; }
-	:host([column-count="5"]) .container { --_column-count: 5; }
-	:host([column-count="6"]) .container { --_column-count: 6; }
-	:host([column-count="7"]) .container { --_column-count: 7; }
-	:host([column-count="8"]) .container { --_column-count: 8; }
-	:host([column-count]) .container { --_track-min: 0; }
+	:host([column-count="1"]) .container__inner { --_column-count: 1; }
+	:host([column-count="2"]) .container__inner { --_column-count: 2; }
+	:host([column-count="3"]) .container__inner { --_column-count: 3; }
+	:host([column-count="4"]) .container__inner { --_column-count: 4; }
+	:host([column-count="5"]) .container__inner { --_column-count: 5; }
+	:host([column-count="6"]) .container__inner { --_column-count: 6; }
+	:host([column-count="7"]) .container__inner { --_column-count: 7; }
+	:host([column-count="8"]) .container__inner { --_column-count: 8; }
+	:host([column-count]) .container__inner { --_track-min: 0; }
 
 
 	/* # Column count — sm scope (queries :host own width) */
 
 	@container (max-width: ${smMax}) {
-		:host([sm-column-count="1"]) .container { --_column-count: 1; }
-		:host([sm-column-count="2"]) .container { --_column-count: 2; }
-		:host([sm-column-count="3"]) .container { --_column-count: 3; }
-		:host([sm-column-count="4"]) .container { --_column-count: 4; }
-		:host([sm-column-count="5"]) .container { --_column-count: 5; }
-		:host([sm-column-count="6"]) .container { --_column-count: 6; }
-		:host([sm-column-count="7"]) .container { --_column-count: 7; }
-		:host([sm-column-count="8"]) .container { --_column-count: 8; }
-		:host([sm-column-count]) .container { --_track-min: 0; }
+		:host([sm-column-count="1"]) .container__inner { --_column-count: 1; }
+		:host([sm-column-count="2"]) .container__inner { --_column-count: 2; }
+		:host([sm-column-count="3"]) .container__inner { --_column-count: 3; }
+		:host([sm-column-count="4"]) .container__inner { --_column-count: 4; }
+		:host([sm-column-count="5"]) .container__inner { --_column-count: 5; }
+		:host([sm-column-count="6"]) .container__inner { --_column-count: 6; }
+		:host([sm-column-count="7"]) .container__inner { --_column-count: 7; }
+		:host([sm-column-count="8"]) .container__inner { --_column-count: 8; }
+		:host([sm-column-count]) .container__inner { --_track-min: 0; }
 	}
 
 
 	/* # Column count — md scope */
 
 	@container (min-width: ${mdMin}) and (max-width: ${mdMax}) {
-		:host([md-column-count="1"]) .container { --_column-count: 1; }
-		:host([md-column-count="2"]) .container { --_column-count: 2; }
-		:host([md-column-count="3"]) .container { --_column-count: 3; }
-		:host([md-column-count="4"]) .container { --_column-count: 4; }
-		:host([md-column-count="5"]) .container { --_column-count: 5; }
-		:host([md-column-count="6"]) .container { --_column-count: 6; }
-		:host([md-column-count="7"]) .container { --_column-count: 7; }
-		:host([md-column-count="8"]) .container { --_column-count: 8; }
-		:host([md-column-count]) .container { --_track-min: 0; }
+		:host([md-column-count="1"]) .container__inner { --_column-count: 1; }
+		:host([md-column-count="2"]) .container__inner { --_column-count: 2; }
+		:host([md-column-count="3"]) .container__inner { --_column-count: 3; }
+		:host([md-column-count="4"]) .container__inner { --_column-count: 4; }
+		:host([md-column-count="5"]) .container__inner { --_column-count: 5; }
+		:host([md-column-count="6"]) .container__inner { --_column-count: 6; }
+		:host([md-column-count="7"]) .container__inner { --_column-count: 7; }
+		:host([md-column-count="8"]) .container__inner { --_column-count: 8; }
+		:host([md-column-count]) .container__inner { --_track-min: 0; }
 	}
 
 
 	/* # Column count — lg scope */
 
 	@container (min-width: ${lgMin}) {
-		:host([lg-column-count="1"]) .container { --_column-count: 1; }
-		:host([lg-column-count="2"]) .container { --_column-count: 2; }
-		:host([lg-column-count="3"]) .container { --_column-count: 3; }
-		:host([lg-column-count="4"]) .container { --_column-count: 4; }
-		:host([lg-column-count="5"]) .container { --_column-count: 5; }
-		:host([lg-column-count="6"]) .container { --_column-count: 6; }
-		:host([lg-column-count="7"]) .container { --_column-count: 7; }
-		:host([lg-column-count="8"]) .container { --_column-count: 8; }
-		:host([lg-column-count]) .container { --_track-min: 0; }
+		:host([lg-column-count="1"]) .container__inner { --_column-count: 1; }
+		:host([lg-column-count="2"]) .container__inner { --_column-count: 2; }
+		:host([lg-column-count="3"]) .container__inner { --_column-count: 3; }
+		:host([lg-column-count="4"]) .container__inner { --_column-count: 4; }
+		:host([lg-column-count="5"]) .container__inner { --_column-count: 5; }
+		:host([lg-column-count="6"]) .container__inner { --_column-count: 6; }
+		:host([lg-column-count="7"]) .container__inner { --_column-count: 7; }
+		:host([lg-column-count="8"]) .container__inner { --_column-count: 8; }
+		:host([lg-column-count]) .container__inner { --_track-min: 0; }
 	}
 
 

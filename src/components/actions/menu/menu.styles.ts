@@ -312,8 +312,7 @@ export const menuDividerStyles = css`
 	/* # Host */
 
 	:host {
-		display: block;
-		padding: var(--primitives-space-4) 0;
+		display: flow-root;
 	}
 
 	:host([hidden]) {
@@ -324,6 +323,7 @@ export const menuDividerStyles = css`
 	/* # Divider */
 
 	.menu__divider {
+		margin: var(--primitives-space-4) 0;
 		background-color: var(--semantics-dividers-color);
 		height: var(--semantics-dividers-thickness);
 	}
@@ -339,14 +339,21 @@ export const menuGroupStyles = css`
 	 * (bottom). Both flags are set by the parent menu (data-no-top-divider /
 	 * data-no-bottom-divider): CSS :first-child / :last-child can't see hidden
 	 * siblings, nor the header slot's div that becomes the first light-DOM
-	 * child (which would leave a first group no longer :first-child).
-	 *
-	 * padding-top > padding-bottom binds the title visually to its items
-	 * rather than to whatever sits above. */
+	 * child (which would leave a first group no longer :first-child). */
 
 	:host {
 		${inheritedTextReset}
-		display: block;
+		display: flow-root;
+	}
+
+	:host([hidden]) {
+		display: none;
+	}
+
+
+	/* # Block */
+
+	.menu__group {
 		margin-top: var(--primitives-space-4);
 		margin-bottom: var(--primitives-space-4);
 		border-top: var(--semantics-dividers-thickness) solid var(--semantics-dividers-color);
@@ -355,20 +362,16 @@ export const menuGroupStyles = css`
 		padding-bottom: var(--primitives-space-4);
 	}
 
-	:host(:first-child),
-	:host([data-no-top-divider]) {
+	:host(:first-child) .menu__group,
+	:host([data-no-top-divider]) .menu__group {
 		border-top: none;
 		padding-top: var(--primitives-space-2);
 	}
 
-	:host([data-no-bottom-divider]) {
+	:host([data-no-bottom-divider]) .menu__group {
 		margin-bottom: 0;
 		border-bottom: none;
 		padding-bottom: var(--primitives-space-2);
-	}
-
-	:host([hidden]) {
-		display: none;
 	}
 
 

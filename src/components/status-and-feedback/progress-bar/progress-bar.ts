@@ -40,11 +40,11 @@
  * @attr {string} name - Name for screenreader text (optional)
  * @attr {string} tooltip-text - Override of the auto-generated tooltip text
  */
-import { LitElement, html } from 'lit';
+import { LitElement } from 'lit';
 import { customElement, property, state } from 'lit/decorators.js';
 import { reflectNonDefault } from '../../../utilities/reflect-non-default.js';
 import { progressBarStyles, progressBarSegmentIndicatorStyles } from './progress-bar.styles.js';
-import { progressBarTemplate } from './progress-bar.template.js';
+import { progressBarTemplate, segmentIndicatorTemplate } from './progress-bar.template.js';
 import { nlddProgressBarTranslations } from './progress-bar.i18n.js';
 import type { NLDDProgressBarTranslations } from './progress-bar.i18n.js';
 import '../../content/tooltip/tooltip.js';
@@ -101,31 +101,7 @@ export class NLDDProgressBarSegmentIndicator extends LitElement {
 	}
 
 	override render() {
-		const text = this._effectiveTooltip;
-		// Only render the tooltip wrapper when there's actual text — avoids
-		// mounting an inert nldd-tooltip element with timing="never".
-		if (!text) {
-			return html`<span class="progress-bar-segment-indicator__tooltip-area"></span>`;
-		}
-		// tabindex=0 makes the hover area keyboard-reachable so SR users can
-		// land on it and have nldd-tooltip surface its text (WCAG 2.1.1).
-		// role="img" exposes the element to the AT tree with its aria-label as
-		// accessible name — a bare <span> + aria-label is silently ignored by
-		// most screen readers (a labeled generic element has no semantic
-		// role to anchor the name to). role="img" fits because the hover area
-		// is a focusable visual representation of a data value, not an
-		// activator (role="button" would promise an action that doesn't
-		// happen). nldd-tooltip listens to focus/blur on slotted content, so
-		// no extra handlers needed here.
-		return html`
-			<nldd-tooltip text=${text} timing="instant">
-				<span class="progress-bar-segment-indicator__tooltip-area"
-					tabindex="0"
-					role="img"
-					aria-label=${text}
-				></span>
-			</nldd-tooltip>
-		`;
+		return segmentIndicatorTemplate(this);
 	}
 }
 
@@ -405,7 +381,7 @@ export class NLDDProgressBar extends LitElement {
 		// when there are no slotted children — both share the same
 		// dynamic-attribute logic here.
 		const internalSegmentIndicator = this.shadowRoot?.querySelector<NLDDProgressBarSegmentIndicator>(
-			'.progress-bar__segment-indicator',
+			'nldd-progress-bar-segment-indicator',
 		) ?? null;
 		const allSegmentIndicators: NLDDProgressBarSegmentIndicator[] = internalSegmentIndicator
 			? [internalSegmentIndicator, ...this._segmentIndicators]

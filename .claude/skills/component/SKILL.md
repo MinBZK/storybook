@@ -653,6 +653,7 @@ Gebruik BEM (Block Element Modifier) + state classes:
 - Element: na dubbele underscore `__` (`.pagination__page-button`)
 - Modifier: na dubbele hyphen `--` (`.button--primary`)
 - Geen nesting: niet `.block__element__subelement`
+- **Subcomponent van een block** (`nldd-{block}-{sub}`, geleverd bij en gebruikt binnen `nldd-{block}`): de shadow root gebruikt het ouder-block — root-element `.{block}__{sub}`, diepere elementen geplat met een streepje: `.{block}__{sub}-{element}`. Voorbeelden: `.menu__group-title` in `nldd-menu-group`, `.progress-bar__segment-indicator-tooltip-area` in `nldd-progress-bar-segment-indicator`. Zelfstandige componenten blijven hun eigen block (`.menu-bar-item`, `.text-cell`).
 - Modifiers zijn aanvullend, nooit vervanging van base class
 
 **Varianten vs states:**
@@ -703,6 +704,12 @@ Andere regels die hetzelfde slotted element raken (`:hover`, `@media`, een speci
 
 `text-align` zit in `inheritedTextReset` (gelockt op `start`, RTL-veilig) — de host mag niet centreren of justifyen. Heeft een component alignment nodig, bied het expliciet aan: `:host([align="center"]) ::slotted(…) { text-align: center !important }`.
 
+**Host-layout (margin/padding/border op `:host`)** → dezelfde cascade-regel raakt ook de host zelf: een consumer-reset (`* { margin: 0; padding: 0; border: 0 }`, Tailwind Preflight's `border-width: 0`) matcht het host-element en verslaat elke normale `:host`-declaratie, ongeacht specificiteit. Doctrine:
+
+1. **Het visuele kader hoort op een wrapper-element** in de shadow root (bv. `.banner`), niet op `:host`. De host draagt alleen het externe contract: `display`, externe sizing (`width`), positie, custom properties en `inheritedTextReset`.
+2. **Kan een declaratie niet naar binnen** (negatieve margins, subgrid-deelnemers waar een wrapper de kolomrelatie breekt) → dan `!important` op de host-declaratie, met een comment die uitlegt waarom. Let op: elke andere host-rule die dezelfde property zet (varianten, `:last-child`-suppressies) moet dan óók `!important`. Gewone marges kunnen wél naar binnen met een `flow-root`-host (eigen formatting context, marge blijft interieur — zie menu-group), en een query-container kan mee naar binnen zolang de padding meeverhuist (zie container: host > `.container` > `.container__inner`).
+3. `npm run validate:host-styles` (onderdeel van de build) flagt margin/padding/border met een niet-nulwaarde zonder `!important` direct op `:host`.
+
 ---
 
 ## CHECKLIST
@@ -711,7 +718,8 @@ Andere regels die hetzelfde slotted element raken (`:hover`, `@media`, een speci
 - [ ] Components → semantics → primitives volgorde
 - [ ] Concentric property-volgorde binnen elke rule
 - [ ] Geen fallback waarden
-- [ ] Geen hardcoded waarden; geen `!important` — behalve in de slotted-reset (`::slotted()`) en de host-text-reset (`:host`) (zie SLOTTED CONTENT & HOST-CSS ISOLATIE)
+- [ ] Geen hardcoded waarden; geen `!important` — behalve in de slotted-reset (`::slotted()`), de host-text-reset (`:host`) en host-layout die niet naar een wrapper kan (zie SLOTTED CONTENT & HOST-CSS ISOLATIE)
+- [ ] Geen margin/padding/border op `:host` zonder wrapper of `!important` — `npm run validate:host-styles` bewaakt dit
 - [ ] Geen `cursor: pointer`
 - [ ] Disabled: `var(--primitives-opacity-disabled)`
 

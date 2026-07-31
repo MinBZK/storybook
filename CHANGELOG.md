@@ -9,6 +9,17 @@ the type of conventional-commit determines the release. Conventional types
 `chore`, `docs`, `ci`, `style`, `test`, `build` are intentionally omitted
 here; consult the commit history if you need that level of detail.
 
+### Highlights
+
+- **Host styling now survives a consuming app's CSS reset.** A universal rule like `* { margin: 0; padding: 0; border: 0 }` in a consuming app silently beat every normal `:host` declaration (CSS Scoping cascade order, [#160](https://github.com/MinBZK/storybook/issues/160)), stripping padding, dividers, and spacing from components that styled their shadow host. Banner, container, menu groups and dividers, table rows, cells, and interactive list rows now keep their layout under any reset, including Tailwind Preflight. Styling remains a CSS-variables affair — direct element styling such as `nldd-banner { padding: … }` was never a supported API and now consistently has no effect.
+
+### Fixed
+
+- **`nldd-banner`** — the visual frame (background, inset border, corner radius, padding, grid) moved from the host to a wrapper inside the shadow root, out of reach of document CSS. Use `--components-banner-*` to customize.
+- **`nldd-container`** — the padding and the query container moved to a wrapper inside the shadow root (host > `.container` > `.container__inner`), out of reach of document CSS; size queries still measure the same padded interior width.
+- **`nldd-menu-group` and `nldd-menu-divider`** — dividers, spacing, and padding moved to elements inside the shadow root, out of reach of document CSS; their `flow-root` hosts keep that spacing interior, so menus keep their grouping and rhythm under a reset.
+- **`nldd-table-row`, the cell family, and interactive `nldd-list-item` rows** — row dividers, row padding (`--context-cell-padding-block`), and the widened inset of interactive rows shield their host declarations, since subgrid participation and negative margins cannot move into the shadow tree.
+
 ## <small>0.8.73 (2026-07-30)</small>
 
 * feat: 32 nieuwe iconen, icon-gallery met statusfilter en fine-tuning (#163) ([0425e4d](https://github.com/MinBZK/storybook/commit/0425e4d)), closes [#163](https://github.com/MinBZK/storybook/issues/163)

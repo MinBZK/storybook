@@ -103,8 +103,12 @@ export const tableRowStyles = css`
 		grid-column: 1 / -1;
 		grid-template-columns: subgrid;
 		min-height: var(--_min-height);
-		border-bottom: var(--_divider-thickness) solid var(--_divider-color);
-		padding-inline: var(--_padding-inline);
+		/* !important: shields divider and inset from consumer universal resets,
+		   which beat normal :host declarations per CSS Scoping. They cannot move
+		   inward: the row is a subgrid participant, and a wrapper would break
+		   the parent-child column relation. */
+		border-bottom: var(--_divider-thickness) solid var(--_divider-color) !important;
+		padding-inline: var(--_padding-inline) !important;
 		align-items: center;
 	}
 
@@ -124,7 +128,9 @@ export const tableRowStyles = css`
 	   divider (no doubling on the ring). Inner dividers run full-bleed to the
 	   sides — the padding only insets the cell content, not the row's border. */
 	:host(:last-child) {
-		border-bottom: none;
+		/* !important: the base border-bottom above is important, so this
+		   suppression has to be too. */
+		border-bottom: none !important;
 	}
 
 	/* display:contents so the cells become grid items of this subgrid. */

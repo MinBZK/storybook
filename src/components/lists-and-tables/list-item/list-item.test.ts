@@ -1,5 +1,5 @@
 import { describe, it, expect, afterEach, beforeEach } from 'vitest';
-import { fixture, cleanup, waitForUpdate, deepActiveElement } from '../../../test-utils.js';
+import { fixture, cleanup, waitForUpdate, deepActiveElement, installUniversalReset } from '../../../test-utils.js';
 import { _resetInputModalityForTesting, getInputModality } from '../../../utilities/input-modality.js';
 import './list-item.js';
 import type { NLDDListItem } from './list-item.js';
@@ -771,5 +771,30 @@ describe('nldd-list-item – nested press', () => {
 		// may show the press.
 		expect(leaf!.shadowRoot!.querySelector('.list-item__action')!.classList.contains('is-pressed')).toBe(true);
 		expect(branch!.shadowRoot!.querySelector('.list-item__action')!.classList.contains('is-pressed')).toBe(false);
+	});
+});
+
+describe('nldd-list-item onder een universele reset', () => {
+	let el: HTMLElement;
+	let removeReset: () => void;
+
+	afterEach(() => {
+		removeReset();
+		if (el) cleanup(el);
+	});
+
+	it('behoudt de negatieve inline-marge van een interactieve rij', async () => {
+		removeReset = installUniversalReset();
+		el = await fixture(`
+			<div style="--components-list-item-indicator-inline-inset: 8px;">
+				<nldd-list-item button>
+					Rij
+				</nldd-list-item>
+			</div>
+		`);
+		const item = el.querySelector('nldd-list-item') as HTMLElement;
+		await waitForUpdate(item);
+		expect(item.classList.contains('is-interactive')).toBe(true);
+		expect(getComputedStyle(item).marginLeft).toBe('-8px');
 	});
 });

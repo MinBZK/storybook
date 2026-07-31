@@ -16,7 +16,8 @@ export const cellStyles = css`
 		--_min-height: 0;
 
 		${inheritedTextReset}
-		padding-block: var(--context-cell-padding-block, 0px);
+		/* !important: shields the row padding from consumer universal resets, which beat normal :host declarations per CSS Scoping. */
+		padding-block: var(--context-cell-padding-block, 0px) !important;
 		display: flex;
 		width: var(--_width);
 		min-width: var(--_min-width);

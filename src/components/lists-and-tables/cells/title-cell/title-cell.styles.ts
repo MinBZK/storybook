@@ -20,7 +20,8 @@ export const titleCellStyles = css`
 		--_title-font: var(--primitives-font-display-5-sm);
 
 		${inheritedTextReset}
-		padding-block: var(--context-cell-padding-block, 0px);
+		/* !important: shields the row padding from consumer universal resets, which beat normal :host declarations per CSS Scoping. */
+		padding-block: var(--context-cell-padding-block, 0px) !important;
 		display: flex;
 		width: var(--_width);
 		min-width: var(--_min-width);

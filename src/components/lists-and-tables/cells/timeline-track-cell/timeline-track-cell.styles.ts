@@ -22,7 +22,8 @@ export const timelineTrackCellStyles = css`
 
 		isolation: isolate;
 		display: flex;
-		padding-block: var(--context-cell-padding-block, 0px);
+		/* !important: shields the row padding from consumer universal resets, which beat normal :host declarations per CSS Scoping. */
+		padding-block: var(--context-cell-padding-block, 0px) !important;
 		width: var(--_lane-size);
 		flex-direction: column;
 		align-self: stretch;
