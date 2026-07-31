@@ -371,6 +371,9 @@ export const aliases = {
 	'dark-mode': 'moon',
 	'night': 'moon',
 
+	// paintbrush
+	'appearance': 'paintbrush',
+
 	// paper-plane
 	'send': 'paper-plane',
 
@@ -469,6 +472,9 @@ export const aliases = {
 
 	// viewfinder
 	'fit-to-view': 'viewfinder',
+
+	// viewfinder-line
+	'scan': 'viewfinder-line',
 
 	// star
 	'rating': 'star',

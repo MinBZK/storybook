@@ -121,4 +121,22 @@ describe('nldd-card', () => {
 		await waitForUpdate(el);
 		expect(el.shadowRoot!.querySelector('.card__action')!.tagName).toBe('A');
 	});
+
+	it('background is standaard base en reflecteert niet', async () => {
+		el = await fixture<NLDDCard>('<nldd-card></nldd-card>');
+		await waitForUpdate(el);
+		expect(el.background).toBe('base');
+		expect(el.hasAttribute('background')).toBe(false);
+	});
+
+	it('background="tinted" pakt de tinted vlakkleur', async () => {
+		el = await fixture<NLDDCard>(`
+			<nldd-card background="tinted"
+				style="--components-card-tinted-background-color: rgb(1, 2, 3);"
+			></nldd-card>
+		`);
+		await waitForUpdate(el);
+		const card = el.shadowRoot!.querySelector('.card')!;
+		expect(getComputedStyle(card).backgroundColor).toBe('rgb(1, 2, 3)');
+	});
 });

@@ -1674,10 +1674,12 @@
 	/* ## Card */
 
 	--components-card-background-color: var(--semantics-surfaces-base-background-color);
+	--components-card-tinted-background-color: var(--semantics-surfaces-tinted-background-color);
 	--components-card-corner-radius: var(--semantics-surfaces-corner-radius);
 	--components-card-box-shadow: none;
 	--components-card-highlight-border-width: var(--semantics-surfaces-border-width);
 	--components-card-highlight-border-color: var(--semantics-surfaces-base-border-color);
+	--components-card-tinted-highlight-border-color: var(--semantics-surfaces-tinted-border-color);
 
 	/* ## Checkbox */
 

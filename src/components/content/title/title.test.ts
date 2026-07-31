@@ -73,4 +73,21 @@ describe('nldd-title', () => {
 		expect(getComputedStyle(el.querySelector('#inherit-title')!).color).toBe('rgb(10, 20, 30)');
 		expect(getComputedStyle(el.querySelector('#default-title')!).color).toBe('rgb(99, 99, 99)');
 	});
+
+	// getComputedStyle resolves ch to px, so assert the measure is capped and
+	// scales with the font rather than checking for the literal '32ch'.
+	it('begrenst de regellengte van de kop', async () => {
+		el = await fixture('<nldd-title size="2"><h2>Een kop</h2></nldd-title>');
+		await waitForUpdate(el);
+		const heading = el.querySelector('h2')!;
+		const style = getComputedStyle(heading);
+		expect(style.maxWidth).not.toBe('none');
+		expect(parseFloat(style.maxWidth)).toBeGreaterThan(parseFloat(style.fontSize) * 10);
+	});
+
+	it('balanceert de regels van de kop', async () => {
+		el = await fixture('<nldd-title><h3>Een kop</h3></nldd-title>');
+		await waitForUpdate(el);
+		expect(getComputedStyle(el.querySelector('h3')!).textWrap).toBe('balance');
+	});
 });

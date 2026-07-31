@@ -287,6 +287,26 @@ export class NLDDTooltip extends LitElement {
 		if (!stillInside) this._handleTriggerLeave();
 	}
 
+	/* A tooltip is transient help for a control; once you activate that control
+	 * it has done its job. Without this it lingers on top of whatever the click
+	 * opened: a tooltip is popover="manual" and an nldd-popover is
+	 * popover="auto", so both sit in the top layer, where z-index does not
+	 * apply between them and the last one shown simply paints over the other.
+	 * `open` is the consumer's programmatic feedback state (e.g. "Gekopieerd"),
+	 * which activation must not cancel. */
+	_handleTriggerActivate(): void {
+		if (this.open) return;
+		if (this._showTimeout) {
+			clearTimeout(this._showTimeout);
+			this._showTimeout = null;
+		}
+		if (this._hideTimeout) {
+			clearTimeout(this._hideTimeout);
+			this._hideTimeout = null;
+		}
+		this._visible = false;
+	}
+
 	_handleTooltipEnter(): void {
 		if (this._hideTimeout) {
 			clearTimeout(this._hideTimeout);

@@ -9,6 +9,7 @@ export function tooltipTemplate(component: NLDDTooltip): TemplateResult {
 			@mouseleave=${component._handleTriggerLeave}
 			@focusin=${component._handleFocusIn}
 			@focusout=${component._handleFocusOut}
+			@click=${component._handleTriggerActivate}
 		></slot>
 		<div class="tooltip"
 			popover="manual"

@@ -17,10 +17,23 @@ here; consult the commit history if you need that level of detail.
 
 ### Highlights
 
+- **New icon.** `viewfinder-line` (alias `scan`) is the existing `viewfinder` with a scan line through it, for scanning a document or a code.
 - **Host styling now survives a consuming app's CSS reset.** A universal rule like `* { margin: 0; padding: 0; border: 0 }` in a consuming app silently beat every normal `:host` declaration (CSS Scoping cascade order, [#160](https://github.com/MinBZK/storybook/issues/160)), stripping padding, dividers, and spacing from components that styled their shadow host. Banner, container, menu groups and dividers, table rows, cells, and interactive list rows now keep their layout under any reset, including Tailwind Preflight. Styling remains a CSS-variables affair — direct element styling such as `nldd-banner { padding: … }` was never a supported API and now consistently has no effect.
+
+### Added
+
+- **Icons** — `viewfinder-line` (alias `scan`).
+- **`nldd-card`** — a `background` attribute: `base` (default) or `tinted`, for a card that has to lift off a base surface. Customize with `--components-card-tinted-*`.
+
+### Changed
+
+- **`nldd-list-item`** — a row that opens with an icon now starts its divider at the first text or title cell, so the line aligns with the words instead of the icon. Consumers no longer need a `divider-start` marker for this; an explicit marker still wins, and putting one on the icon cell restores the full-width line.
 
 ### Fixed
 
+- **`nldd-collection`** — the previous/next arrows in `layout="horizontal-scroll"` stepped by a fixed distance, so from the end of the strip (never a whole number of items) every item stayed clipped. The arrows now snap to the nearest item edge.
+- **`nldd-collection`** — reaching an end with the keyboard disabled the arrow you were standing on, and a disabled control cannot hold focus, so focus fell to the body and the next Tab restarted at the top of the page. Focus now moves to the sibling arrow.
+- **`nldd-container`** — `layout="lanes"` and `layout="columns"` ignored `sm-gap`, `md-gap` and `lg-gap` and always used the base `gap`. Every layout now reads one resolved gap, so the per-breakpoint values apply to multicol too.
 - **`nldd-banner`** — the visual frame (background, inset border, corner radius, padding, grid) moved from the host to a wrapper inside the shadow root, out of reach of document CSS. Use `--components-banner-*` to customize.
 - **`nldd-container`** — the padding and the query container moved to a wrapper inside the shadow root (host > `.container` > `.container__inner`), out of reach of document CSS; size queries still measure the same padded interior width.
 - **`nldd-menu-group` and `nldd-menu-divider`** — dividers, spacing, and padding moved to elements inside the shadow root, out of reach of document CSS; their `flow-root` hosts keep that spacing interior, so menus keep their grouping and rhythm under a reset.

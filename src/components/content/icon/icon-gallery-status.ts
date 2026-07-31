@@ -12,6 +12,7 @@ export const NEW_ICONS = new Set([
 	'arrow-down-left-arrow-up-right',
 	'arrow-up-right-arrow-down-left',
 	'clipboard-pencil',
+	'display',
 	'file-badge-arrow-down',
 	'file-badge-arrow-up',
 	'file-badge-minus',
@@ -29,6 +30,7 @@ export const NEW_ICONS = new Set([
 	'map-pin-oval',
 	'microphone',
 	'microphone-slash',
+	'paintbrush',
 	'person-badge-minus',
 	'photo-camera',
 	'photo-on-photo-angled',
@@ -44,6 +46,7 @@ export const NEW_ICONS = new Set([
 	'square-grid-2x2-pencil',
 	'text-format-size',
 	'video-camera',
+	'viewfinder-line',
 ]);
 
 export const UPDATED_ICONS = new Set([

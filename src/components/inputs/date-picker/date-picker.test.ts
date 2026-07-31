@@ -37,6 +37,10 @@ function todayIso(): string {
 	return `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}-${String(now.getDate()).padStart(2, '0')}`;
 }
 
+// Fixtures zonder gekozen datum openen op de huidige maand, terwijl de tests
+// dagen in juli 2026 aanklikken. `max="2026-07-31"` klemt die beginweergave op
+// juli (zie _initialFocus), zodat ze niet stukgaan zodra de kalender verder
+// loopt. Tests die bewust op vandaag klikken houden geen grens.
 describe('nldd-date-picker', () => {
 	let el: NLDDDatePicker;
 
@@ -306,6 +310,8 @@ describe('nldd-date-picker', () => {
 	// De tweede keuze mag ook vóór de eerste liggen; de aankondiging moet dat
 	// zeggen, anders stuurt hij een schermlezergebruiker maar één kant op.
 	it('kondigt de tussenstap aan zonder een richting voor te schrijven', async () => {
+		// Geen bovengrens: deze test klikt op vandaag en is daarmee zelf al
+		// datumonafhankelijk.
 		el = await fixture<NLDDDatePicker>('<nldd-date-picker range></nldd-date-picker>');
 		await waitForUpdate(el);
 		dayFor(el, todayIso()).click();
@@ -316,7 +322,7 @@ describe('nldd-date-picker', () => {
 	});
 
 	it('kondigt de volledige periode aan', async () => {
-		el = await fixture<NLDDDatePicker>('<nldd-date-picker range value=""></nldd-date-picker>');
+		el = await fixture<NLDDDatePicker>('<nldd-date-picker range value="" max="2026-07-31"></nldd-date-picker>');
 		el.start = '2026-07-01';
 		await waitForUpdate(el);
 		dayFor(el, '2026-07-10').click();
@@ -393,7 +399,7 @@ describe('nldd-date-picker', () => {
 	// Dezelfde afleiding als een vastgelegde periode, zodat het voorbeeld onder de
 	// muis niet anders loopt dan wat je krijgt.
 	it('tekent de band ook voor het voorbeeld onder de muis', async () => {
-		el = await fixture<NLDDDatePicker>('<nldd-date-picker range></nldd-date-picker>');
+		el = await fixture<NLDDDatePicker>('<nldd-date-picker range max="2026-07-31"></nldd-date-picker>');
 		await waitForUpdate(el);
 		dayFor(el, '2026-07-10').click();
 		await waitForUpdate(el);
@@ -427,7 +433,7 @@ describe('nldd-date-picker', () => {
 	}
 
 	it('kiest een periode door te slepen', async () => {
-		el = await fixture<NLDDDatePicker>('<nldd-date-picker range value=""></nldd-date-picker>');
+		el = await fixture<NLDDDatePicker>('<nldd-date-picker range value="" max="2026-07-31"></nldd-date-picker>');
 		el.start = '2026-07-01';
 		await waitForUpdate(el);
 		await drag(el, '2026-07-10', '2026-07-20');
@@ -438,7 +444,7 @@ describe('nldd-date-picker', () => {
 	// De richting is met het gebaar uitgesproken, dus hier hoort geen herstart maar
 	// een omgekeerde periode.
 	it('keert de periode om bij achteruit slepen', async () => {
-		el = await fixture<NLDDDatePicker>('<nldd-date-picker range value=""></nldd-date-picker>');
+		el = await fixture<NLDDDatePicker>('<nldd-date-picker range value="" max="2026-07-31"></nldd-date-picker>');
 		el.start = '2026-07-01';
 		await waitForUpdate(el);
 		await drag(el, '2026-07-20', '2026-07-10');
@@ -465,7 +471,7 @@ describe('nldd-date-picker', () => {
 	// onderdrukking moet bij de volgende pointerdown vervallen; anders eet hij de
 	// eerstvolgende echte klik op en moet je twee keer klikken.
 	it('begint direct een nieuwe periode na een sleep', async () => {
-		el = await fixture<NLDDDatePicker>('<nldd-date-picker range value=""></nldd-date-picker>');
+		el = await fixture<NLDDDatePicker>('<nldd-date-picker range value="" max="2026-07-31"></nldd-date-picker>');
 		await waitForUpdate(el);
 		await drag(el, '2026-07-10', '2026-07-20');
 		await clickDay(el, '2026-07-05');
@@ -475,7 +481,7 @@ describe('nldd-date-picker', () => {
 
 	// Zonder markering loopt de band naar een dag die zelf niets laat zien.
 	it('accentueert de einddatum al tijdens het slepen', async () => {
-		el = await fixture<NLDDDatePicker>('<nldd-date-picker range value=""></nldd-date-picker>');
+		el = await fixture<NLDDDatePicker>('<nldd-date-picker range value="" max="2026-07-31"></nldd-date-picker>');
 		await waitForUpdate(el);
 		const from = dayFor(el, '2026-07-10').getBoundingClientRect();
 		const to = dayFor(el, '2026-07-14').getBoundingClientRect();
@@ -494,7 +500,7 @@ describe('nldd-date-picker', () => {
 	});
 
 	it('toont de band al tijdens het slepen', async () => {
-		el = await fixture<NLDDDatePicker>('<nldd-date-picker range value=""></nldd-date-picker>');
+		el = await fixture<NLDDDatePicker>('<nldd-date-picker range value="" max="2026-07-31"></nldd-date-picker>');
 		await waitForUpdate(el);
 		const from = dayFor(el, '2026-07-10').getBoundingClientRect();
 		const to = dayFor(el, '2026-07-14').getBoundingClientRect();
@@ -512,7 +518,7 @@ describe('nldd-date-picker', () => {
 
 	// Zonder onderdrukking start de klik na het loslaten meteen een nieuwe periode.
 	it('start geen nieuwe periode met de klik na het slepen', async () => {
-		el = await fixture<NLDDDatePicker>('<nldd-date-picker range value=""></nldd-date-picker>');
+		el = await fixture<NLDDDatePicker>('<nldd-date-picker range value="" max="2026-07-31"></nldd-date-picker>');
 		await waitForUpdate(el);
 		await drag(el, '2026-07-10', '2026-07-20');
 		dayFor(el, '2026-07-20').click();
@@ -523,7 +529,7 @@ describe('nldd-date-picker', () => {
 
 	// Een gewone klik mag niet als sleep tellen, anders werkt twee keer klikken niet.
 	it('laat klikken zonder bewegen gewoon door de klik-route lopen', async () => {
-		el = await fixture<NLDDDatePicker>('<nldd-date-picker range value=""></nldd-date-picker>');
+		el = await fixture<NLDDDatePicker>('<nldd-date-picker range value="" max="2026-07-31"></nldd-date-picker>');
 		await waitForUpdate(el);
 		const day = dayFor(el, '2026-07-10');
 		const r = day.getBoundingClientRect();
@@ -543,7 +549,7 @@ describe('nldd-date-picker', () => {
 
 	// Op touch is een horizontale veeg niet te onderscheiden van scrollen.
 	it('sleept niet op touch', async () => {
-		el = await fixture<NLDDDatePicker>('<nldd-date-picker range value=""></nldd-date-picker>');
+		el = await fixture<NLDDDatePicker>('<nldd-date-picker range value="" max="2026-07-31"></nldd-date-picker>');
 		await waitForUpdate(el);
 		const day = dayFor(el, '2026-07-10');
 		const r = day.getBoundingClientRect();
@@ -928,7 +934,7 @@ describe('nldd-date-picker labels tijdens het kiezen van een periode', () => {
 	// ervoor maakt er juist het einde van. Zo lang dat nog kan, mag het label geen
 	// richting beweren.
 	it('noemt de eerste keuze geen begindatum zolang de periode niet af is', async () => {
-		el = await fixture<NLDDDatePicker>('<nldd-date-picker range></nldd-date-picker>');
+		el = await fixture<NLDDDatePicker>('<nldd-date-picker range max="2026-07-31"></nldd-date-picker>');
 		await waitForUpdate(el);
 		dayFor(el, '2026-07-15').click();
 		await waitForUpdate(el);
@@ -938,7 +944,7 @@ describe('nldd-date-picker labels tijdens het kiezen van een periode', () => {
 	});
 
 	it('noemt begin en einde wel zodra de periode af is', async () => {
-		el = await fixture<NLDDDatePicker>('<nldd-date-picker range></nldd-date-picker>');
+		el = await fixture<NLDDDatePicker>('<nldd-date-picker range max="2026-07-31"></nldd-date-picker>');
 		await waitForUpdate(el);
 		dayFor(el, '2026-07-15').click();
 		await waitForUpdate(el);
@@ -990,7 +996,7 @@ describe('nldd-date-picker aankondigingen bevatten alleen de datum', () => {
 	// die cel hangen belandden midden in de zin: "vrijdag 10 juli 2026, begin van
 	// de periode tot en met woensdag 15 juli 2026, einde van de periode".
 	it('laat de celaanduidingen uit de periode-aankondiging', async () => {
-		el = await fixture<NLDDDatePicker>('<nldd-date-picker range></nldd-date-picker>');
+		el = await fixture<NLDDDatePicker>('<nldd-date-picker range max="2026-07-31"></nldd-date-picker>');
 		await waitForUpdate(el);
 		dayFor(el, '2026-07-15').click();
 		await waitForUpdate(el);
@@ -1000,7 +1006,7 @@ describe('nldd-date-picker aankondigingen bevatten alleen de datum', () => {
 	});
 
 	it('laat de celaanduidingen ook uit de tussenstap', async () => {
-		el = await fixture<NLDDDatePicker>('<nldd-date-picker range></nldd-date-picker>');
+		el = await fixture<NLDDDatePicker>('<nldd-date-picker range max="2026-07-31"></nldd-date-picker>');
 		await waitForUpdate(el);
 		dayFor(el, '2026-07-15').click();
 		await waitForUpdate(el);
@@ -1020,7 +1026,7 @@ describe('nldd-date-picker weigert een periode over een geblokkeerde dag', () =>
 	// zit. De eindpuntcheck miste dat, dus change vuurde met een periode die een
 	// zichtbaar geblokkeerde datum omsloot.
 	it('legt geen periode vast met een niet-beschikbare dag ertussen', async () => {
-		el = await fixture<NLDDDatePicker>('<nldd-date-picker range value=""></nldd-date-picker>');
+		el = await fixture<NLDDDatePicker>('<nldd-date-picker range value="" max="2026-07-31"></nldd-date-picker>');
 		el.isDateUnavailable = (iso) => iso === '2026-07-15';
 		await waitForUpdate(el);
 		let change = 0;
@@ -1035,7 +1041,7 @@ describe('nldd-date-picker weigert een periode over een geblokkeerde dag', () =>
 	});
 
 	it('legt een periode zonder geblokkeerde dagen wel vast', async () => {
-		el = await fixture<NLDDDatePicker>('<nldd-date-picker range value=""></nldd-date-picker>');
+		el = await fixture<NLDDDatePicker>('<nldd-date-picker range value="" max="2026-07-31"></nldd-date-picker>');
 		el.isDateUnavailable = (iso) => iso === '2026-07-25';
 		await waitForUpdate(el);
 		dayFor(el, '2026-07-10').click();
@@ -1050,7 +1056,7 @@ describe('nldd-date-picker weigert een periode over een geblokkeerde dag', () =>
 	// maar loopt er niet via _select doorheen: een sleep over een geblokkeerde
 	// binnendag mag evenmin vastleggen.
 	it('weigert ook een gesleepte periode over een niet-beschikbare dag', async () => {
-		el = await fixture<NLDDDatePicker>('<nldd-date-picker range value=""></nldd-date-picker>');
+		el = await fixture<NLDDDatePicker>('<nldd-date-picker range value="" max="2026-07-31"></nldd-date-picker>');
 		el.isDateUnavailable = (iso) => iso === '2026-07-15';
 		await waitForUpdate(el);
 		let change = 0;

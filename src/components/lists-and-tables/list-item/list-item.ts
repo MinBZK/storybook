@@ -31,12 +31,16 @@ export type ListItemSize = 'sm' | 'md';
  *    footprint is position-independent and tree columns line up at any depth.
  *
  * ## Divider
- * The divider spans the content width by default. Mark a cell with
- * `divider-start` and/or `divider-end` to run it from that cell's start edge
- * to that cell's end edge instead (e.g. starting after an avatar). Multiple
- * markers resolve as the union: first `divider-start` through last
- * `divider-end`. A start past the last end is an authoring error — the item
- * DEV-warns and falls back to the full content width.
+ * The divider spans the content width by default, with one exception: a row
+ * that opens with an `nldd-icon-cell` followed by a text or title cell starts
+ * the divider at that text, so the line aligns with the words rather than the
+ * icon. Leading spacers are ignored when deciding this. Mark a cell with
+ * `divider-start` and/or `divider-end` to place it yourself instead — an
+ * explicit marker replaces the derived one entirely, so `divider-start` on the
+ * icon cell restores the full-width line. Multiple markers resolve as the
+ * union: first `divider-start` through last `divider-end`. A start past the
+ * last end is an authoring error — the item DEV-warns and falls back to the
+ * full content width.
  *
  * ## Disclosure
  * A branch row can disclose its children in two ways: a dedicated
@@ -467,9 +471,29 @@ export class NLDDListItem extends withTranslations(LitElement, nlddListItemTrans
 	 * keeps its default. Insets are measured against the row block (the widened
 	 * box on interactive rows), so the values compose with the edge geometry.
 	 */
+	/**
+	 * The cell the divider starts at when nobody said otherwise: a row that
+	 * opens with an icon reads better with the line aligned to its text, the
+	 * way a leading avatar or icon insets the divider in every list of this
+	 * kind. Only leading spacers may sit in front of the icon; anything else
+	 * means the row does not open with an icon after all. Put `divider-start`
+	 * on the icon cell itself to get the full-width line back.
+	 */
+	private _implicitDividerStart(): Element[] {
+		const cells = Array.from(this.children).filter(el =>
+			el.tagName.startsWith('NLDD-') && el.tagName.endsWith('-CELL'));
+		const meaningful = cells.filter(el => el.tagName !== 'NLDD-SPACER-CELL');
+		const [first, second] = meaningful;
+		if (first?.tagName !== 'NLDD-ICON-CELL' || !second) return [];
+		return second.tagName === 'NLDD-TEXT-CELL' || second.tagName === 'NLDD-TITLE-CELL'
+			? [second]
+			: [];
+	}
+
 	private _measureDividerMarkers(): void {
 		if (this.hasAttribute('data-nldd-clone')) return;
-		const starts = this._ownDescendants('[divider-start]');
+		const explicitStarts = this._ownDescendants('[divider-start]');
+		const starts = explicitStarts.length ? explicitStarts : this._implicitDividerStart();
 		const ends = this._ownDescendants('[divider-end]');
 
 		// Re-target the resize observer ONLY when the marker set changed: every

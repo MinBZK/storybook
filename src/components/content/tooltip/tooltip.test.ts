@@ -248,4 +248,29 @@ describe('nldd-tooltip – aria-describedby', () => {
 		expect(id).toBeTruthy();
 		expect(document.getElementById(id!)?.textContent).toBe('Test');
 	});
+
+	// Both a tooltip (popover="manual") and an nldd-popover (popover="auto")
+	// live in the top layer, where the last one shown paints on top. Clearing
+	// the tooltip on activation keeps it from covering whatever the click opened.
+	it('verdwijnt zodra de trigger wordt geactiveerd', async () => {
+		el = await fixture('<nldd-tooltip text="Bewaar"><button>Ster</button></nldd-tooltip>');
+		await waitForUpdate(el);
+		const trigger = el.querySelector('button')!;
+		trigger.dispatchEvent(new MouseEvent('mouseenter', { bubbles: true }));
+		(el as unknown as { _visible: boolean })._visible = true;
+		await waitForUpdate(el);
+		expect((el as unknown as { _visible: boolean })._visible).toBe(true);
+
+		trigger.click();
+		await waitForUpdate(el);
+		expect((el as unknown as { _visible: boolean })._visible).toBe(false);
+	});
+
+	it('laat een geforceerd geopende tooltip met rust bij activatie', async () => {
+		el = await fixture('<nldd-tooltip text="Gekopieerd" open><button>Kopieer</button></nldd-tooltip>');
+		await waitForUpdate(el);
+		el.querySelector('button')!.click();
+		await waitForUpdate(el);
+		expect((el as unknown as { _visible: boolean })._visible).toBe(true);
+	});
 });
