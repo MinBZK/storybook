@@ -102,7 +102,8 @@ export const datePickerStyles = css`
 		white-space: nowrap;
 	}
 
-	.date-picker__title-button {
+	.date-picker__title-month-button,
+	.date-picker__title-year-button {
 		box-sizing: border-box;
 		display: flex;
 		margin: 0;
@@ -125,7 +126,8 @@ export const datePickerStyles = css`
 		align-items: center;
 	}
 
-	.date-picker__title-button:focus-visible {
+	.date-picker__title-month-button:focus-visible,
+	.date-picker__title-year-button:focus-visible {
 		outline: var(--semantics-focus-ring-outline);
 		outline-offset: var(--semantics-focus-ring-outline-offset);
 		box-shadow: var(--semantics-focus-ring-box-shadow);

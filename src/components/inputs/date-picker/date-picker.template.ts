@@ -25,7 +25,7 @@ function renderTitlePart(
 ): TemplateResult {
 	if (choices < 2) return html`<span class="date-picker__title-label">${label}</span>`;
 	return html`
-		<button class="date-picker__title-button date-picker__title-button--${part}"
+		<button class="date-picker__title-${part}-button"
 			type="button"
 			aria-haspopup="menu"
 			aria-expanded=${expanded ? 'true' : 'false'}

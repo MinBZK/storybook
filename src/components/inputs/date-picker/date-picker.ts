@@ -305,7 +305,7 @@ export class NLDDDatePicker extends withTranslations<NLDDDatePickerTranslations>
 		// anything.
 		for (const part of ['month', 'year'] as const) {
 			const menu = this.shadowRoot?.querySelector(`.date-picker__${part}-menu`) as (HTMLElement & { anchorElement?: Element | null }) | null;
-			const title = this.shadowRoot?.querySelector(`.date-picker__title-button--${part}`) as HTMLButtonElement | null;
+			const title = this.shadowRoot?.querySelector(`.date-picker__title-${part}-button`) as HTMLButtonElement | null;
 			if (!menu || !title) continue;
 			if (menu.anchorElement !== title) menu.anchorElement = title;
 			if (title.popoverTargetElement !== menu) title.popoverTargetElement = menu;
@@ -425,8 +425,15 @@ export class NLDDDatePicker extends withTranslations<NLDDDatePickerTranslations>
 	 * truth: you are looking at a month this calendar will not accept.
 	 */
 	public get _months(): number[] {
-		const first = this._min && Number(this._min.slice(0, 4)) === this._viewYear ? Number(this._min.slice(5, 7)) : 1;
-		const last = this._max && Number(this._max.slice(0, 4)) === this._viewYear ? Number(this._max.slice(5, 7)) : 12;
+		const minYear = this._min ? Number(this._min.slice(0, 4)) : null;
+		const maxYear = this._max ? Number(this._max.slice(0, 4)) : null;
+		// Paged a whole year past a bound: no month of this view year is
+		// choosable, so there is nothing to offer. Comparing only the month
+		// numbers here would fall back to all twelve, one falsely selected.
+		if (minYear !== null && this._viewYear < minYear) return [];
+		if (maxYear !== null && this._viewYear > maxYear) return [];
+		const first = minYear === this._viewYear ? Number(this._min.slice(5, 7)) : 1;
+		const last = maxYear === this._viewYear ? Number(this._max.slice(5, 7)) : 12;
 		if (last < first) return [];
 		return Array.from({ length: last - first + 1 }, (_, i) => first + i);
 	}
@@ -470,10 +477,6 @@ export class NLDDDatePicker extends withTranslations<NLDDDatePickerTranslations>
 	 * sentence-initial one of a heading, not a proper noun. The translation itself
 	 * stays lower case because it is reused mid-sentence in the day labels.
 	 */
-	public get _title(): string {
-		return `${this._monthLabel} ${this._viewYear}`;
-	}
-
 	public get _monthLabel(): string {
 		return this._t(`components.date-picker.${MONTH_KEYS[this._viewMonth - 1]}-capitalize` as keyof NLDDDatePickerTranslations);
 	}
@@ -565,10 +568,12 @@ export class NLDDDatePicker extends withTranslations<NLDDDatePickerTranslations>
 		const next = addMonths(this._view, months);
 		this._view = next;
 		// Keep the roving tabindex on an equivalent day in the new month so the
-		// keyboard does not jump back to the 1st on every month change.
+		// keyboard does not jump back to the 1st on every month change. Only the
+		// tabindex: focus stays on the arrow that was activated, so paging twice
+		// is pressing the same control twice. Keyboard paging from inside the
+		// grid (PageUp/PageDown) runs through _moveFocus, which does re-focus.
 		const day = Math.min(Number(this._focused.slice(8, 10)), Number(lastOfMonth(next).slice(8, 10)));
 		this._focused = clampIso(`${next.slice(0, 7)}-${String(day).padStart(2, '0')}`, this._min, this._max);
-		this._restoreFocus = Boolean(this._focusedCell());
 	}
 
 	private _moveFocus(iso: string): void {
@@ -808,7 +813,6 @@ export class NLDDDatePicker extends withTranslations<NLDDDatePickerTranslations>
 		const today = todayIso();
 		this._view = firstOfMonth(today);
 		this._focused = today;
-		this._restoreFocus = Boolean(this._focusedCell());
 	}
 
 	override render() {
