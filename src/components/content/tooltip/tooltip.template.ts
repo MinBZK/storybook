@@ -3,6 +3,11 @@ import type { TemplateResult } from 'lit';
 import type { NLDDTooltip } from './tooltip.js';
 
 export function tooltipTemplate(component: NLDDTooltip): TemplateResult {
+	/* The slot is not the clickable thing: the trigger the consumer slots in is,
+	   and that is a real button or link. Enter and Space on those dispatch a
+	   click that bubbles to here, so a keyboard listener beside this @click
+	   would never fire. */
+	/* eslint-disable lit-a11y/click-events-have-key-events */
 	return html`
 		<slot
 			@mouseenter=${component._handleTriggerEnter}
@@ -21,3 +26,4 @@ export function tooltipTemplate(component: NLDDTooltip): TemplateResult {
 		</div>
 	`;
 }
+/* eslint-enable lit-a11y/click-events-have-key-events */
