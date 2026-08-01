@@ -40,6 +40,8 @@ here; consult the commit history if you need that level of detail.
 
 ### Fixed
 
+- **`nldd-rich-text`** — a markdown renderer emits a fenced code block as `<pre><code>`, and the tinted chip meant for inline code painted once per rendered line, so a three-line block showed three separate boxes ([#158](https://github.com/MinBZK/storybook/issues/158)). The frame now sits on the `pre`, where the block is, and the `code` inside hands the chip back. It carries the same inset ring as `nldd-box` and `nldd-code-viewer`, so the block stays readable on a tinted surface instead of dissolving into it.
+- **`nldd-rich-text`** — a `pre` had no `overflow-x`, so a single long code line escaped the element and stretched every ancestor with it. In a narrow card that read as rich-text ignoring the card width. Long lines now scroll inside the block, as a table already did.
 - **`nldd-collection`** — the previous/next arrows in `layout="horizontal-scroll"` stepped by a fixed distance, so from the end of the strip (never a whole number of items) every item stayed clipped. The arrows now snap to the nearest item edge.
 - **`nldd-collection`** — reaching an end with the keyboard disabled the arrow you were standing on, and a disabled control cannot hold focus, so focus fell to the body and the next Tab restarted at the top of the page. Focus now moves to the sibling arrow.
 - **`nldd-container`** — `layout="lanes"` and `layout="columns"` ignored `sm-gap`, `md-gap` and `lg-gap` and always used the base `gap`. Every layout now reads one resolved gap, so the per-breakpoint values apply to multicol too.
