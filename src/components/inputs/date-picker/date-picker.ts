@@ -410,11 +410,6 @@ export class NLDDDatePicker extends withTranslations<NLDDDatePickerTranslations>
 	}
 
 	/**
-	 * Years offered in the title menu. Bounded by min and max where they are set,
-	 * because those already say which years can be reached; without them a window
-	 * wide enough for a birthdate on one side and for planning on the other.
-	 */
-	/**
 	 * Months offered in the title menu, bounded by min and max the way the year
 	 * list is. Without this the menu lists twelve months while a bound quietly
 	 * clamps eleven of them back to the one you were already on.
@@ -438,6 +433,11 @@ export class NLDDDatePicker extends withTranslations<NLDDDatePickerTranslations>
 		return Array.from({ length: last - first + 1 }, (_, i) => first + i);
 	}
 
+	/**
+	 * Years offered in the title menu. Bounded by min and max where they are set,
+	 * because those already say which years can be reached; without them a window
+	 * wide enough for a birthdate on one side and for planning on the other.
+	 */
 	public get _years(): number[] {
 		const current = Number(todayIso().slice(0, 4));
 		// A bound is a hard edge and stays where it is. The default window is an
