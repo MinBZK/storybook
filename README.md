@@ -141,5 +141,12 @@ buiten het hierboven beschreven kader.
 
 ## Licentie (License)
 
-De broncode van dit design system valt onder **EUPL-1.2**. De fontbestanden
-in `src/assets/fonts/` hebben hun eigen licenties — zie [`NOTICES.md`](./NOTICES.md).
+De broncode van dit design system valt onder **EUPL-1.2**, zie
+[`LICENSE`](./LICENSE) voor de volledige tekst. De fontbestanden in
+`src/assets/fonts/` hebben hun eigen licenties, zie
+[`NOTICES.md`](./NOTICES.md).
+
+Verder horen bij dit project een [gedragscode](./CODE_OF_CONDUCT.md), een
+[beveiligingsbeleid](./SECURITY.md), een
+[bijdragegids](./CONTRIBUTING.md), een [ondersteuningspagina](./SUPPORT.md) en
+een beschrijving van [wie waarover beslist](./PROJECT_GOVERNANCE.md).

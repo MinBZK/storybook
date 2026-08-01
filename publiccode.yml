@@ -1,0 +1,65 @@
+# Machine-leesbare metadata volgens de publiccode.yml-standaard, voor de
+# open-sourcecatalogus op developer.overheid.nl.
+#
+# softwareVersion en releaseDate worden bij elke release gezet door
+# scripts/sync-publiccode.js. Pas ze niet met de hand aan.
+
+publiccodeYmlVersion: "0.7"
+
+name: NLDD Design System
+url: "https://github.com/MinBZK/storybook"
+landingURL: "https://minbzk.github.io/storybook/"
+
+softwareVersion: "0.8.73"
+releaseDate: "2026-07-30"
+
+softwareType: library
+developmentStatus: beta
+
+platforms:
+  - web
+
+description:
+  nl:
+    shortDescription: >-
+      Web components voor overheidsinterfaces, met de huisstijl,
+      toegankelijkheid en het interactiegedrag ingebouwd.
+    longDescription: >-
+      Het NLDD Design System levert de bouwstenen voor interfaces van de
+      Nederlandse Digitale Dienst als web components. Knoppen, formuliervelden,
+      lijsten, tabellen, navigatie, overlays en paginastructuren zitten erin,
+      met de Rijkshuisstijl, de toegankelijkheidseisen en het verwachte
+      toetsenbord- en schermlezergedrag al ingebakken. Een ontwikkelaar hoeft
+      die regels dus niet uit het hoofd te kennen: wie een component plaatst,
+      krijgt het juiste focusgedrag, de juiste kleurcontrasten en de juiste ARIA
+      mee zonder er iets voor te doen.
+
+      De componenten zijn gebouwd met Lit en werken in elk framework en in
+      platte HTML, omdat ze de standaard custom elements van de browser
+      gebruiken. Alle visuele waarden komen uit CSS-variabelen in vier lagen,
+      wat licht- en donkerthema's mogelijk maakt en de huisstijl op één plek
+      houdt. Het pakket wordt gepubliceerd op npm en de levende documentatie
+      staat in Storybook.
+    features:
+      - Web components
+      - Rijkshuisstijl
+      - Toegankelijkheid
+      - Formulieren
+      - Licht- en donkerthema
+
+legal:
+  license: EUPL-1.2
+
+maintenance:
+  type: internal
+  contacts:
+    - name: Bart van de Biezen
+
+localisation:
+  localisationReady: true
+  availableLanguages:
+    - nl
+
+intendedAudience:
+  countries:
+    - nl

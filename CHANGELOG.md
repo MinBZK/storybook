@@ -21,6 +21,7 @@ here; consult the commit history if you need that level of detail.
 - **`@nldd/design-system/styles/system-font`** — the same stylesheet as `/styles`, without the `@font-face` rules. Both family stacks end in a system font, so they fall through on their own; nothing needs overriding. For products that may not use the Rijksoverheid house fonts (see `NOTICES.md`).
 - **`@nldd/design-system/styles/variables`** — only the CSS custom properties, for a build that composes the stylesheets itself.
 - **`@nldd/design-system/breakpoints`** — the breakpoints for `matchMedia` and layout logic, previously behind `/tokens`.
+- **`LICENSE` and `NOTICES.md` now ship with the package.** The EUPL-1.2 text was nowhere in the repository while `package.json` claimed it, and the RijksSans licence terms never reached a consumer. Both are in the npm tarball now.
 
 ### Changed
 

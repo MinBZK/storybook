@@ -434,7 +434,9 @@
   },
   "files": [
     "dist",
-    "custom-elements.json"
+    "custom-elements.json",
+    "LICENSE",
+    "NOTICES.md"
   ],
   "repository": {
     "type": "git",
@@ -454,6 +456,7 @@
     "generate:skill-changelog": "node scripts/generate-skill-changelog.js",
     "generate:skill-principles": "node scripts/generate-skill-principles.js",
     "generate:plugin-version": "node scripts/sync-plugin-version.js",
+    "generate:publiccode": "node scripts/sync-publiccode.js",
     "generate:skill-docs": "npm run generate:component-reference && npm run generate:skill-changelog && npm run generate:skill-principles && npm run generate:plugin-version",
     "validate:styles": "node scripts/validate-css-variables.js",
     "validate:host-styles": "node scripts/validate-host-styles.js",
