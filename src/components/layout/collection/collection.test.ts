@@ -190,7 +190,7 @@ describe('nldd-collection', () => {
 		expect(items.scrollWidth).toBeGreaterThan(items.clientWidth);
 		const starts = itemStarts(collection);
 		let target: number | undefined;
-		items.scrollTo = (options: ScrollToOptions) => { target = options.left; };
+		items.scrollTo = ((options: ScrollToOptions) => { target = options.left; }) as typeof items.scrollTo;
 		(collection as unknown as { _scrollBy(d: 1 | -1): void })._scrollBy(1);
 		expect(target).toBe(starts[1]);
 	});
@@ -211,7 +211,7 @@ describe('nldd-collection', () => {
 		items.scrollLeft = starts[1] + 30;
 		expect(items.scrollLeft).toBeGreaterThan(starts[1]);
 		let target: number | undefined;
-		items.scrollTo = (options: ScrollToOptions) => { target = options.left; };
+		items.scrollTo = ((options: ScrollToOptions) => { target = options.left; }) as typeof items.scrollTo;
 		(collection as unknown as { _scrollBy(d: 1 | -1): void })._scrollBy(-1);
 		expect(target).toBe(starts[1]);
 	});
