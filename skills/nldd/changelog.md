@@ -18,7 +18,7 @@ here; consult the commit history if you need that level of detail.
 ### Highlights
 
 - **Month and year each have their own menu.** The heading showed both with one chevron and opened a list of years only. Changing the month went by arrow, one step at a time, so a month on the other side of the year took up to six clicks. Both menus offer only what `min` and `max` allow. "Vandaag" moved out of the heading to the bottom left, which is what makes room for a month written out in full. The calendar in `nldd-date-field` opens under the input as well, instead of running off to the right of it ([#156](https://github.com/MinBZK/storybook/issues/156)).
-- **Open-source documentation expanded.** A code of conduct, a route for reporting vulnerabilities, a description of who decides what, and a `publiccode.yml` for the catalogue on developer.overheid.nl ([#149](https://github.com/MinBZK/storybook/issues/149)). The EUPL-1.2 licence text and the font licence terms ship with the package now: the licence was nowhere in the repository while `package.json` claimed it, and the RijksSans terms never reached a consumer.
+- **Open-source documentation expanded.** A code of conduct, a route for reporting vulnerabilities, a support page, a description of who decides what, and a `publiccode.yml` for the catalogue on developer.overheid.nl. The contributing guide grew from a page of changelog conventions into an actual guide ([#149](https://github.com/MinBZK/storybook/issues/149)).
 - **Host styling now survives a consuming app's CSS reset.** A universal rule like `* { margin: 0; padding: 0; border: 0 }` in a consuming app silently beat every normal `:host` declaration (CSS Scoping cascade order, [#160](https://github.com/MinBZK/storybook/issues/160)), stripping padding, dividers, and spacing from components that styled their shadow host. Banner, container, menu groups and dividers, table rows, cells, and interactive list rows now keep their layout under any reset, including Tailwind Preflight. Styling remains a CSS-variables affair — direct element styling such as `nldd-banner { padding: … }` was never a supported API and now consistently has no effect.
 - **New icon.** `viewfinder-line` (alias `scan`) is the existing `viewfinder` with a scan line through it, for scanning a document or a code.
 
@@ -54,6 +54,10 @@ here; consult the commit history if you need that level of detail.
 - **`nldd-container`** — the padding and the query container moved to a wrapper inside the shadow root (host > `.container` > `.container__inner`), out of reach of document CSS; size queries still measure the same padded interior width.
 - **`nldd-menu-group` and `nldd-menu-divider`** — dividers, spacing, and padding moved to elements inside the shadow root, out of reach of document CSS; their `flow-root` hosts keep that spacing interior, so menus keep their grouping and rhythm under a reset.
 - **`nldd-table-row`, the cell family, and interactive `nldd-list-item` rows** — row dividers, row padding (`--context-cell-padding-block`), and the widened inset of interactive rows shield their host declarations, since subgrid participation and negative margins cannot move into the shadow tree.
+
+## <small>0.8.74 (2026-08-01)</small>
+
+* docs: add EUPL-1.2 LICENSE file and ship third-party notices (#148) ([e7791ea](https://github.com/MinBZK/storybook/commit/e7791ea)), closes [#148](https://github.com/MinBZK/storybook/issues/148) [#132](https://github.com/MinBZK/storybook/issues/132)
 
 ## <small>0.8.73 (2026-07-30)</small>
 
