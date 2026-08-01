@@ -583,14 +583,27 @@ export class NLDDPopover extends LitElement {
 			return;
 		}
 
-		// Moving focus ourselves instead of letting the browser do it. Safari does
-		// not tab into the contents of a top-layer element: with the container
-		// focused it skips the whole popover and lands on whatever follows it in
-		// the document, while the popover stays open. Verified there that our own
-		// list is right (2 focusables, both programmatically focusable, tabIndex 0),
-		// so the list is not the problem and the browser is.
-		event.preventDefault();
-		focusables[event.shiftKey ? idx - 1 : idx + 1]?.focus();
+		// The container itself holds focus: where it lands on open, and where a
+		// click on the popover's dead chrome puts it (tabindex="-1" makes the
+		// host mouse-focusable). This is the one hop we move ourselves, because
+		// Safari does not tab into the contents of a top-layer element — with the
+		// container focused it skips the whole popover and lands on whatever
+		// follows it in the document, while the popover stays open. Entering at
+		// the first focusable also serves the chrome-click case: after clicking
+		// somewhere in the popover you expect Tab to start at its top, not to
+		// resume from wherever focus happened to be.
+		if (idx === -1) {
+			event.preventDefault();
+			// focusVisible is advisory (ignored where unsupported), but where it
+			// works it gives this scripted hop the ring a keyboard hop deserves.
+			focusables[0]?.focus({ focusVisible: true } as FocusOptions);
+			return;
+		}
+		// Between elements the browser moves focus itself. A focus the browser
+		// moves on a key press matches :focus-visible unconditionally; a focus WE
+		// move only inherits the ring state of the element we left. Intercepting
+		// every Tab therefore meant one mouse click anywhere started a chain in
+		// which no Tab stop ever showed a focus ring again.
 	};
 
 	// — Focus ————————————————————————————————————————————————————————————————
