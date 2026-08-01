@@ -486,6 +486,7 @@
     "test": "vitest",
     "test:run": "vitest run",
     "test:scripts": "node --test scripts/*.test.mjs scripts/lib/*.test.mjs",
+    "pretypecheck": "npm run build:icons",
     "typecheck": "tsc --noEmit",
     "test:vue-types": "vue-tsc --noEmit -p type-tests/vue/tsconfig.json"
   },
