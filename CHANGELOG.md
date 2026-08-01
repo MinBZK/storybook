@@ -9,6 +9,10 @@ the type of conventional-commit determines the release. Conventional types
 `chore`, `docs`, `ci`, `style`, `test`, `build` are intentionally omitted
 here; consult the commit history if you need that level of detail.
 
+## <small>0.8.75 (2026-08-01)</small>
+
+* feat: font-free stylesheet entry, month picker, markdown code blocks and open-source docs (#164) ([263ffd6](https://github.com/MinBZK/storybook/commit/263ffd6)), closes [#164](https://github.com/MinBZK/storybook/issues/164)
+
 ### Highlights
 
 - **Month and year each have their own menu.** The heading showed both with one chevron and opened a list of years only. Changing the month went by arrow, one step at a time, so a month on the other side of the year took up to six clicks. Both menus offer only what `min` and `max` allow. "Vandaag" moved out of the heading to the bottom left, which is what makes room for a month written out in full. The calendar in `nldd-date-field` opens under the input as well, instead of running off to the right of it ([#156](https://github.com/MinBZK/storybook/issues/156)).

@@ -10,7 +10,7 @@ name: NLDD Design System
 url: "https://github.com/MinBZK/storybook"
 landingURL: "https://minbzk.github.io/storybook/"
 
-softwareVersion: "0.8.74"
+softwareVersion: "0.8.75"
 releaseDate: "2026-08-01"
 
 softwareType: library
