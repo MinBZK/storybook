@@ -167,7 +167,7 @@ describe('nldd-checkbox – keyboard interaction', () => {
 });
 
 describe('nldd-checkbox – accessibility', () => {
-	let el: NLDDCheckbox;
+	let el: NLDDCheckbox | HTMLFormElement;
 
 	afterEach(() => {
 		if (el) cleanup(el);

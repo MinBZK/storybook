@@ -447,7 +447,7 @@ describe('nldd-toggle-button – accessibility', () => {
    ============================================================ */
 
 describe('nldd-toggle-button – tooltip', () => {
-	let el: NLDDToggleButton;
+	let el: NLDDToggleButton | HTMLFormElement;
 
 	afterEach(() => {
 		if (el) cleanup(el);

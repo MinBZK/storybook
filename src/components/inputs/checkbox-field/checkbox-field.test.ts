@@ -20,13 +20,13 @@ describe('nldd-checkbox-field', () => {
 	it('renders a label span element', async () => {
 		el = await fixture('<nldd-checkbox-field label="Optie 1"></nldd-checkbox-field>');
 		await waitForUpdate(el);
-		expect(el.shadowRoot!.querySelector('.checkbox-field__label')).not.toBeNull();
+		expect(el.shadowRoot!.querySelector<HTMLElement>('.checkbox-field__label')).not.toBeNull();
 	});
 
 	it('renders label text from attribute', async () => {
 		el = await fixture('<nldd-checkbox-field label="Optie 1"></nldd-checkbox-field>');
 		await waitForUpdate(el);
-		const label = el.shadowRoot!.querySelector('.checkbox-field__label')!;
+		const label = el.shadowRoot!.querySelector<HTMLElement>('.checkbox-field__label')!;
 		expect(label.textContent).toBe('Optie 1');
 	});
 
@@ -172,7 +172,7 @@ describe('nldd-checkbox-field – label click', () => {
 	it('toggles checked when label is clicked', async () => {
 		el = await fixture<NLDDCheckboxField>('<nldd-checkbox-field label="Optie 1"></nldd-checkbox-field>');
 		await waitForUpdate(el);
-		const label = el.shadowRoot!.querySelector('.checkbox-field__label')!;
+		const label = el.shadowRoot!.querySelector<HTMLElement>('.checkbox-field__label')!;
 		label.click();
 		await waitForUpdate(el);
 		expect(el.checked).toBe(true);
@@ -181,7 +181,7 @@ describe('nldd-checkbox-field – label click', () => {
 	it('does not toggle when disabled and label is clicked', async () => {
 		el = await fixture<NLDDCheckboxField>('<nldd-checkbox-field label="Optie 1" disabled></nldd-checkbox-field>');
 		await waitForUpdate(el);
-		const label = el.shadowRoot!.querySelector('.checkbox-field__label')!;
+		const label = el.shadowRoot!.querySelector<HTMLElement>('.checkbox-field__label')!;
 		label.click();
 		await waitForUpdate(el);
 		expect(el.checked).toBe(false);
@@ -190,7 +190,7 @@ describe('nldd-checkbox-field – label click', () => {
 	it('clears indeterminate when label is clicked', async () => {
 		el = await fixture<NLDDCheckboxField>('<nldd-checkbox-field label="Optie 1" indeterminate></nldd-checkbox-field>');
 		await waitForUpdate(el);
-		const label = el.shadowRoot!.querySelector('.checkbox-field__label')!;
+		const label = el.shadowRoot!.querySelector<HTMLElement>('.checkbox-field__label')!;
 		label.click();
 		await waitForUpdate(el);
 		expect(el.indeterminate).toBe(false);

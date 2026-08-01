@@ -222,7 +222,7 @@ describe('nldd-search-field – dismiss', () => {
 
 	it('participates in FormData via form-associated API', async () => {
 		const form = await fixture<HTMLFormElement>('<form><nldd-search-field name="q" value="zoekterm"></nldd-search-field></form>');
-		el = form;
+		el = form as unknown as NLDDSearchField;
 		const sf = form.querySelector('nldd-search-field')!;
 		await waitForUpdate(sf);
 		expect(new FormData(form).get('q')).toBe('zoekterm');
@@ -230,7 +230,7 @@ describe('nldd-search-field – dismiss', () => {
 
 	it('resets to the HTML-declared initial value when the parent form is reset', async () => {
 		const form = await fixture<HTMLFormElement>('<form><nldd-search-field name="q" value="default"></nldd-search-field></form>');
-		el = form;
+		el = form as unknown as NLDDSearchField;
 		const sf = form.querySelector<NLDDSearchField>('nldd-search-field')!;
 		await waitForUpdate(sf);
 		sf.value = 'changed';
@@ -240,7 +240,7 @@ describe('nldd-search-field – dismiss', () => {
 	});
 
 	it('focus() delegates to the inner input', async () => {
-		el = await fixture<HTMLElement>('<nldd-search-field accessible-label="Zoek"></nldd-search-field>');
+		el = await fixture<NLDDSearchField>('<nldd-search-field accessible-label="Zoek"></nldd-search-field>');
 		await waitForUpdate(el);
 		el.focus();
 		const input = el.shadowRoot!.querySelector('input');

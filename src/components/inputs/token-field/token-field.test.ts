@@ -8,6 +8,7 @@ type TokenFieldEl = HTMLElement & {
 	_addValue(v: string): void;
 	_removeValue(v: string): void;
 	_togglePicker(): void;
+	_handleBlur(e: FocusEvent): void;
 };
 
 describe('nldd-token-field', () => {

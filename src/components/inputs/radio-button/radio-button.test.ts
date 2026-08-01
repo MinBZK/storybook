@@ -72,7 +72,7 @@ describe('nldd-radio-button – state', () => {
    ============================================================ */
 
 describe('nldd-radio-button – change event', () => {
-	let el: NLDDRadioButton;
+	let el: NLDDRadioButton | HTMLFormElement;
 
 	afterEach(() => {
 		if (el) cleanup(el);
