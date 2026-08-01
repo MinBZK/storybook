@@ -89,7 +89,6 @@ export const dateFieldStyles = css`
 		border-radius: var(--_corner-radius);
 		background-color: var(--_background-color);
 		min-height: var(--_min-size);
-		overflow: hidden;
 		padding-left: calc(var(--_inline-padding) - var(--semantics-input-fields-border-width));
 		flex-direction: row;
 		align-items: center;

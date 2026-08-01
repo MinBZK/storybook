@@ -14,6 +14,7 @@ export const datePickerStyles = css`
 		--_footer-margin-top: var(--primitives-space-8);
 		--_title-font: var(--primitives-font-display-5-sm);
 		--_title-button-corner-radius: var(--semantics-controls-sm-corner-radius);
+		--_title-button-min-size: var(--semantics-controls-sm-min-size);
 		--_title-picker-icon-size: var(--primitives-space-20);
 		--_weekday-header-font: var(--primitives-font-body-xs-regular-flat);
 		--_weekday-header-content-color: var(--semantics-content-secondary-color);
@@ -60,6 +61,7 @@ export const datePickerStyles = css`
 	   asked for. */
 	:host([stacked]) {
 		--_title-font: var(--primitives-font-display-4-sm);
+		--_title-button-min-size: var(--semantics-controls-md-min-size);
 
 		width: var(--_width, 100%);
 	}
@@ -111,6 +113,7 @@ export const datePickerStyles = css`
 		border: none;
 		border-radius: var(--_title-button-corner-radius);
 		background: none;
+		min-height: var(--_title-button-min-size);
 		padding: 0;
 		align-items: center;
 		color: inherit;
