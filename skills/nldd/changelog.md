@@ -15,6 +15,10 @@ the type of conventional-commit determines the release. Conventional types
 `chore`, `docs`, `ci`, `style`, `test`, `build` are intentionally omitted
 here; consult the commit history if you need that level of detail.
 
+## <small>0.8.74 (2026-08-01)</small>
+
+* docs: add EUPL-1.2 LICENSE file and ship third-party notices (#148) ([e7791ea](https://github.com/MinBZK/storybook/commit/e7791ea)), closes [#148](https://github.com/MinBZK/storybook/issues/148) [#132](https://github.com/MinBZK/storybook/issues/132)
+
 ## <small>0.8.73 (2026-07-30)</small>
 
 * feat: 32 nieuwe iconen, icon-gallery met statusfilter en fine-tuning (#163) ([0425e4d](https://github.com/MinBZK/storybook/commit/0425e4d)), closes [#163](https://github.com/MinBZK/storybook/issues/163)
