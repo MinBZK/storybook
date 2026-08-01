@@ -321,6 +321,15 @@ describe('nldd-date-field', () => {
 		expect(popover(el)).not.toBeNull();
 	});
 
+	// De popover hangt aan de kalenderknop, en die staat aan het einde van het
+	// veld. Met bottom-start liep de kalender naar rechts weg en raakte hij het
+	// veld nauwelijks; bottom-end legt hem onder de invoer.
+	it('klapt de kalender naar links open, onder het veld', async () => {
+		el = await fixture<NLDDDateField>('<nldd-date-field></nldd-date-field>');
+		await waitForUpdate(el);
+		expect(popover(el)!.getAttribute('placement')).toBe('bottom-end');
+	});
+
 	it('verbergt de kalender met no-picker', async () => {
 		el = await fixture<NLDDDateField>('<nldd-date-field no-picker></nldd-date-field>');
 		await waitForUpdate(el);

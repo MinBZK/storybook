@@ -9,6 +9,7 @@ export const nlddDatePickerTranslations = {
 	'components.date-picker.view-previous-month-action': 'Vorige maand',
 	'components.date-picker.view-next-month-action': 'Volgende maand',
 	'components.date-picker.view-today-action': 'Vandaag',
+	'components.date-picker.choose-month-action': 'Kies een maand',
 	'components.date-picker.choose-year-action': 'Kies een jaar',
 
 	// Twee vormen, want de maandnaam staat zowel midden in een datumlabel

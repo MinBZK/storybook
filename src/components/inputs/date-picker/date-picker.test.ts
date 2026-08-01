@@ -18,7 +18,7 @@ function focusedIso(el: NLDDDatePicker): string {
 }
 
 function title(el: NLDDDatePicker): string {
-	return el.shadowRoot!.querySelector('.date-picker__title')!.textContent!.trim();
+	return el.shadowRoot!.querySelector('.date-picker__title')!.textContent!.replace(/\s+/g, ' ').trim();
 }
 
 function announcement(el: NLDDDatePicker): string {
@@ -654,13 +654,115 @@ describe('nldd-date-picker', () => {
 
 	// # Jaarmenu
 
-	it('maakt de hele titel de knop, zodat er geen dood deel naast een levend staat', async () => {
+	// De titel beloofde maand en jaar en opende alleen jaartallen. Nu is elk deel
+	// z'n eigen knop met z'n eigen menu, en staat er geen dode tekst tussen.
+	it('maakt maand en jaar allebei een knop met een eigen menu', async () => {
 		el = await fixture<NLDDDatePicker>('<nldd-date-picker value="2026-07-15"></nldd-date-picker>');
 		await waitForUpdate(el);
-		const button = el.shadowRoot!.querySelector('.date-picker__title-button')!;
-		expect(button.textContent!.trim()).toBe('Juli 2026');
-		expect(button.getAttribute('aria-haspopup')).toBe('menu');
-		expect(button.getAttribute('aria-expanded')).toBe('false');
+		const buttons = el.shadowRoot!.querySelectorAll('.date-picker__title-button');
+		expect(buttons.length).toBe(2);
+		for (const button of buttons) {
+			expect(button.getAttribute('aria-haspopup')).toBe('menu');
+			expect(button.getAttribute('aria-expanded')).toBe('false');
+		}
+		// Alles in de kop zit in een van de twee knoppen.
+		const heading = el.shadowRoot!.querySelector('.date-picker__title')!;
+		const buiten = [...heading.childNodes].filter(
+			(node) => node.nodeType === Node.TEXT_NODE && node.textContent!.trim(),
+		);
+		expect(buiten).toEqual([]);
+	});
+
+	// Een menu dat opengaat om te bevestigen wat je al ziet is erger dan geen menu,
+	// en de chevron belooft dan een keuze die er niet is.
+	it('laat de chevron en het menu weg als er maar één maand bereikbaar is', async () => {
+		el = await fixture<NLDDDatePicker>(
+			'<nldd-date-picker value="2026-08-12" min="2026-08-01" max="2026-08-31"></nldd-date-picker>',
+		);
+		await waitForUpdate(el);
+		expect(el._months).toEqual([8]);
+		expect(el.shadowRoot!.querySelector('.date-picker__title-button--month')).toBeNull();
+		expect(el.shadowRoot!.querySelector('.date-picker__month-menu')).toBeNull();
+		expect(el.shadowRoot!.querySelector('.date-picker__title-button--year')).toBeNull();
+		expect(el.shadowRoot!.querySelector('.date-picker__year-menu')).toBeNull();
+		expect(title(el)).toBe('Augustus 2026');
+	});
+
+	// Twaalf maanden aanbieden terwijl een grens er elf stilletjes terugklemt naar
+	// de maand waar je al stond.
+	it('begrenst de maandlijst met min en max', async () => {
+		el = await fixture<NLDDDatePicker>(
+			'<nldd-date-picker value="2026-08-12" min="2026-05-01" max="2026-10-31"></nldd-date-picker>',
+		);
+		await waitForUpdate(el);
+		expect(el._months).toEqual([5, 6, 7, 8, 9, 10]);
+		expect(el.shadowRoot!.querySelectorAll('.date-picker__month-menu nldd-menu-item').length).toBe(6);
+	});
+
+	// Buiten het jaar van de grens telt die grens niet mee: met max in 2026 mag
+	// december 2025 gewoon.
+	it('begrenst de maandlijst alleen in het jaar waar de grens ligt', async () => {
+		el = await fixture<NLDDDatePicker>(
+			'<nldd-date-picker value="2025-12-01" min="2025-01-01" max="2026-03-31"></nldd-date-picker>',
+		);
+		await waitForUpdate(el);
+		expect(el._months.length).toBe(12);
+	});
+
+	// De pijltjes klemmen de view niet, alleen de focus, dus je kunt voorbij een
+	// grens bladeren. Die maand hoort dan niet alsnog in het menu te verschijnen.
+	it('biedt geen maanden aan buiten de grens, ook niet als je erheen bladert', async () => {
+		el = await fixture<NLDDDatePicker>(
+			'<nldd-date-picker value="2026-08-12" min="2026-08-01" max="2026-11-30"></nldd-date-picker>',
+		);
+		await waitForUpdate(el);
+		el._shiftView(-2);
+		await waitForUpdate(el);
+
+		expect(el._view.slice(0, 7)).toBe('2026-06');
+		expect(el._months).toEqual([8, 9, 10, 11]);
+		const items = el.shadowRoot!.querySelectorAll('.date-picker__month-menu nldd-menu-item');
+		expect([...items].map((item) => item.getAttribute('text'))).toEqual([
+			'Augustus', 'September', 'Oktober', 'November',
+		]);
+		// Niets staat aan: je kijkt naar een maand die deze kalender niet aanneemt.
+		expect(el.shadowRoot!.querySelector('.date-picker__month-menu nldd-menu-item[selected]')).toBeNull();
+	});
+
+	// Zonder grens is het venster willekeurig gekozen, dus dat rekt wel mee.
+	it('rekt het standaard jaarvenster op naar het jaar waar je heen bladert', async () => {
+		el = await fixture<NLDDDatePicker>('<nldd-date-picker value="2026-08-12"></nldd-date-picker>');
+		await waitForUpdate(el);
+		el._shiftView(-12 * 130);
+		await waitForUpdate(el);
+
+		expect(el._years).toContain(el._viewYear);
+	});
+
+	it('kiest een maand uit het maandmenu', async () => {
+		el = await fixture<NLDDDatePicker>('<nldd-date-picker value="2026-07-15"></nldd-date-picker>');
+		await waitForUpdate(el);
+		const items = el.shadowRoot!.querySelectorAll('.date-picker__month-menu nldd-menu-item');
+		expect(items.length).toBe(12);
+		expect(items[6].hasAttribute('selected')).toBe(true);
+
+		(items[10] as HTMLElement).click();
+		await waitForUpdate(el);
+		expect(title(el)).toBe('November 2026');
+		// Het jaar en de dag blijven staan; alleen de maand verschuift.
+		expect(focusedIso(el)).toBe('2026-11-15');
+	});
+
+	// 31 maart naar februari bestaat niet, dus de dag zakt naar de laatste die er
+	// wel is, net als bij een schrikkeljaar via het jaarmenu.
+	it('klemt de dag als de gekozen maand korter is', async () => {
+		el = await fixture<NLDDDatePicker>('<nldd-date-picker value="2026-03-31"></nldd-date-picker>');
+		await waitForUpdate(el);
+		const items = el.shadowRoot!.querySelectorAll('.date-picker__month-menu nldd-menu-item');
+
+		(items[1] as HTMLElement).click();
+		await waitForUpdate(el);
+		expect(focusedIso(el)).toBe('2026-02-28');
 	});
 
 	// Zonder dit begin je op het eerste jaar in de lijst en loop je met de pijltjes
@@ -668,7 +770,7 @@ describe('nldd-date-picker', () => {
 	it('opent het jaarmenu op het jaar dat in beeld staat', async () => {
 		el = await fixture<NLDDDatePicker>('<nldd-date-picker value="2026-07-15"></nldd-date-picker>');
 		await waitForUpdate(el);
-		(el.shadowRoot!.querySelector('.date-picker__title-button') as HTMLButtonElement).click();
+		(el.shadowRoot!.querySelector('.date-picker__title-button--year') as HTMLButtonElement).click();
 
 		// Het menu focust zichzelf pas na zijn eigen open-volgorde, dus even wachten
 		// tot het is uitgevochten in plaats van één vaste vertraging gokken.
@@ -833,12 +935,20 @@ describe('nldd-date-picker', () => {
 
 	// # Gestapelde indeling
 
-	it('houdt de paginering in de kop op een breed scherm', async () => {
+	// "Vandaag" staat in beide indelingen linksonder: het is een snelkoppeling en
+	// geen paginering, en zonder die knop past een voluit geschreven maand in de
+	// kop naast het jaar en twee menuknoppen.
+	it('houdt de paginering in de kop op een breed scherm, met Vandaag eronder', async () => {
 		el = await fixture<NLDDDatePicker>('<nldd-date-picker></nldd-date-picker>');
 		el._stacked = false;
 		await waitForUpdate(el);
-		expect(el.shadowRoot!.querySelector('.date-picker__pagination')).not.toBeNull();
-		expect(el.shadowRoot!.querySelector('.date-picker__footer')).toBeNull();
+		const header = el.shadowRoot!.querySelector('.date-picker__header')!;
+		expect(header.querySelector('.date-picker__pagination')).not.toBeNull();
+		expect(header.querySelector('nldd-button')).toBeNull();
+
+		const footer = el.shadowRoot!.querySelector('.date-picker__footer')!;
+		expect(footer.querySelector('.date-picker__footer-start nldd-button')).not.toBeNull();
+		expect(footer.querySelector('nldd-button-bar')).toBeNull();
 	});
 
 	// Onder het rooster, en in twee hoeken: een duim die de ene groep raakt dekt

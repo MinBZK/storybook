@@ -30,6 +30,8 @@ here; consult the commit history if you need that level of detail.
 
 ### Changed
 
+- **`nldd-date-picker`** — the heading read "September 2026" with a chevron, promising both, and opened a list of years only ([#156](https://github.com/MinBZK/storybook/issues/156)). Month and year are now each their own button with their own menu, so a date a year back is two clicks instead of twelve on an arrow. "Vandaag" moves out of the heading to the bottom left, where the stacked layout already had it; that is what makes room for a month written out in full. The heading no longer wraps between month and year. Both menus offer only what `min` and `max` allow, and a part with a single reachable value drops its chevron and its menu rather than opening to confirm what you already see.
+- **`nldd-date-picker`** — the day numbers carry medium weight. Weight was doing no work in the calendar (today is a ring, selected is a fill), so it was free to separate the dates from the chrome around them: the weekday headers and the week numbers now recede together ([#156](https://github.com/MinBZK/storybook/issues/156)).
 - **`nldd-list-item`** — a row that opens with an icon now starts its divider at the first text or title cell, so the line aligns with the words instead of the icon. Consumers no longer need a `divider-start` marker for this; an explicit marker still wins, and putting one on the icon cell restores the full-width line.
 - **Document typography** — the stylesheet now gives the `body` the document font and content color as soon as an `nldd-app-view` is on the page. Apps no longer need their own `body { font: … }`. The rule sits in `@layer reset`, so any consumer rule beats it without effort; a page without an app-view is untouched.
 
@@ -40,6 +42,7 @@ here; consult the commit history if you need that level of detail.
 
 ### Fixed
 
+- **`nldd-date-field`** — the calendar hangs off the trigger, which sits at the end of the field, and opened rightward from there: on a 192px field it ran 302px past the field's right edge and barely overlapped the input it belonged to. It now opens leftward, landing under the input; against the left edge of the screen Floating UI falls back to the old direction on its own ([#156](https://github.com/MinBZK/storybook/issues/156)).
 - **`nldd-rich-text`** — a markdown renderer emits a fenced code block as `<pre><code>`, and the tinted chip meant for inline code painted once per rendered line, so a three-line block showed three separate boxes ([#158](https://github.com/MinBZK/storybook/issues/158)). The frame now sits on the `pre`, where the block is, and the `code` inside hands the chip back. It carries the same inset ring as `nldd-box` and `nldd-code-viewer`, so the block stays readable on a tinted surface instead of dissolving into it.
 - **`nldd-rich-text`** — a `pre` had no `overflow-x`, so a single long code line escaped the element and stretched every ancestor with it. In a narrow card that read as rich-text ignoring the card width. Long lines now scroll inside the block, as a table already did.
 - **`nldd-collection`** — the previous/next arrows in `layout="horizontal-scroll"` stepped by a fixed distance, so from the end of the strip (never a whole number of items) every item stayed clipped. The arrows now snap to the nearest item edge.

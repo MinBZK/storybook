@@ -27,7 +27,7 @@ export const datePickerStyles = css`
 		--_width: initial;
 		--_day-size: var(--semantics-controls-md-min-size);
 		--_day-corner-radius: var(--semantics-controls-md-corner-radius);
-		--_day-font: var(--primitives-font-body-sm-regular-flat);
+		--_day-font: var(--primitives-font-body-sm-medium-flat);
 		--_day-indicator-inset: var(--primitives-space-2);
 		--_day-indicator-size: calc(var(--_day-size) - var(--_day-indicator-inset) * 2);
 		--_day-indicator-corner-radius: var(--_day-corner-radius);
@@ -92,8 +92,14 @@ export const datePickerStyles = css`
 	}
 
 	.date-picker__title {
+		display: flex;
 		margin: 0;
+		align-items: center;
+		gap: var(--primitives-space-4);
 		font: var(--_title-font);
+		/* A heading that breaks between month and year stops answering the one
+		   question it is there for. */
+		white-space: nowrap;
 	}
 
 	.date-picker__title-button {
