@@ -56,7 +56,7 @@ describe('nldd-title', () => {
 	});
 
 	it('color="inherit" follows the surrounding text color, the default does not', async () => {
-		// The vitest page does not load settings.css, so define the token the
+		// The vitest page does not load variables.css, so define the token the
 		// default path resolves against — otherwise both paths would inherit.
 		el = await fixture(`
 			<div>

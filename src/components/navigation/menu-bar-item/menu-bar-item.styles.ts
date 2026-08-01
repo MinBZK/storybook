@@ -1,5 +1,5 @@
 import { css } from 'lit';
-import { inheritedTextReset } from '../../../assets/styles/style-resets.js';
+import { inheritedTextReset } from '../../../assets/styles/shadow-resets.js';
 
 export const menuBarItemStyles = css`
 	:host {

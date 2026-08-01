@@ -4,10 +4,10 @@
  *
  * Reads scripts/reference-colors.json, calls scripts/generate-palette.py
  * for each entry, and writes the combined output to
- * src/assets/styles/palettes.generated.css.
+ * src/assets/styles/colors.generated.css.
  *
  * Run manually after changing the reference colors:
- *   npm run generate:palettes
+ *   npm run generate:colors
  */
 
 import { execFileSync } from 'node:child_process';
@@ -19,7 +19,7 @@ const __dirname = dirname(fileURLToPath(import.meta.url));
 const ROOT = join(__dirname, '..');
 const CONFIG = join(ROOT, 'scripts/reference-colors.json');
 const SCRIPT = join(ROOT, 'scripts/generate-palette.py');
-const OUTPUT = join(ROOT, 'src/assets/styles/palettes.generated.css');
+const OUTPUT = join(ROOT, 'src/assets/styles/colors.generated.css');
 
 const colors = JSON.parse(readFileSync(CONFIG, 'utf8'));
 
@@ -34,7 +34,7 @@ const header = `/**
  * Auto-generated descriptive color palettes.
  *
  * Generated from scripts/reference-colors.json using scripts/generate-palette.py.
- * DO NOT EDIT BY HAND — run \`npm run generate:palettes\` to regenerate.
+ * DO NOT EDIT BY HAND — run \`npm run generate:colors\` to regenerate.
  */
 
 :root {

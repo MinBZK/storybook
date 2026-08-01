@@ -1,5 +1,5 @@
 import { css, unsafeCSS } from 'lit';
-import { inheritedTextReset } from '../../../assets/styles/style-resets.js';
+import { inheritedTextReset } from '../../../assets/styles/shadow-resets.js';
 import { breakpoints } from '../../../assets/styles/breakpoints.js';
 
 const mdMin = unsafeCSS(breakpoints.mdMin);

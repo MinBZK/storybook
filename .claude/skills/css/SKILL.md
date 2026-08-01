@@ -182,7 +182,7 @@ selector — ook tussen twee opeenvolgende `@media` of twee opeenvolgende
 
 ## Wanneer welke breakpoint-bereiken
 
-Gebruik altijd de bestaande tokens uit `src/assets/styles/breakpoints.ts`:
+Gebruik altijd de bestaande waardes uit `src/assets/styles/breakpoints.ts`:
 
 - `smMax` (640px) — kleinste viewport
 - `mdMin` (641px) — vanaf medium
@@ -313,7 +313,7 @@ doet (bv. "padding per breakpoint" boven een blok met padding-rules).
 
 - [ ] Geen base-waarde voor een property die ook in een `@media`/`@container` voorkomt
 - [ ] Breakpoint-bereiken zijn MECE: elke viewport in precies één query (collectively exhaustive — geen viewport zonder waarde; mutually exclusive — geen overlap/override)
-- [ ] Breakpoints gebruiken de tokens uit `breakpoints.ts`
+- [ ] Breakpoints gebruiken de waardes uit `breakpoints.ts`
 - [ ] Bereiken sluiten op elkaar aan (640/641, 1007/1008) — geen gat of overlap
 - [ ] `@container` waar mogelijk, `@media` als fallback
 - [ ] At-rules genest binnen de selector — niet op top-level gehoist

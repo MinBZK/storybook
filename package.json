@@ -420,11 +420,13 @@
       "default": "./dist/components/status-and-feedback/just-in-time-education/just-in-time-education.js"
     },
     "./styles": "./dist/css/global.css",
-    "./styles/tokens": "./dist/css/settings.css",
+    "./styles/system-font": "./dist/css/global-system-font.css",
+    "./styles/variables": "./dist/css/variables.css",
+    "./styles/tokens": "./dist/css/tokens.css",
     "./styles/fouc": "./dist/css/fouc.css",
-    "./tokens": {
-      "types": "./dist/assets/styles/tokens.d.ts",
-      "default": "./dist/assets/styles/tokens.js"
+    "./breakpoints": {
+      "types": "./dist/assets/styles/breakpoints.d.ts",
+      "default": "./dist/assets/styles/breakpoints.js"
     },
     "./vue": {
       "types": "./dist/types/vue.d.ts"
@@ -444,8 +446,8 @@
   },
   "scripts": {
     "build": "npm run build:styles && npm run validate:styles && npm run validate:host-styles && npm run build:components",
-    "build:styles": "mkdir -p dist/css dist/fonts && cp src/assets/styles/settings.css dist/css/settings.css && cp src/assets/styles/reset.css dist/css/reset.css && cp src/assets/styles/palettes.generated.css dist/css/palettes.generated.css && cp src/components/content/rich-text/rich-text.css dist/css/rich-text.css && cp src/components/forms/form/form.css dist/css/form.css && cp src/components/forms/form-section/form-section.css dist/css/form-section.css && cp src/assets/styles/fouc.css dist/css/fouc.css && printf '@import \"./settings.css\";\\n@import \"./reset.css\";\\n@import \"./rich-text.css\";\\n@import \"./form-section.css\";\\n@import \"./form.css\";\\n@import \"./fouc.css\";\\n' > dist/css/global.css && cp src/assets/fonts/*.woff2 dist/fonts/",
-    "generate:palettes": "node scripts/generate-palettes.js",
+    "build:styles": "rm -rf dist/css dist/fonts && mkdir -p dist/css dist/fonts && cp src/assets/styles/variables.css src/assets/styles/colors.generated.css src/assets/styles/rijksoverheid-fonts.css src/assets/styles/document-reset.css src/assets/styles/fouc.css dist/css/ && cp src/components/content/rich-text/rich-text.css src/components/forms/form/form.css src/components/forms/form-section/form-section.css dist/css/ && printf '@import \"./rijksoverheid-fonts.css\";\\n@import \"./variables.css\";\\n@import \"./document-reset.css\";\\n@import \"./rich-text.css\";\\n@import \"./form-section.css\";\\n@import \"./form.css\";\\n@import \"./fouc.css\";\\n' > dist/css/global.css && printf '@import \"./variables.css\";\\n@import \"./document-reset.css\";\\n@import \"./rich-text.css\";\\n@import \"./form-section.css\";\\n@import \"./form.css\";\\n@import \"./fouc.css\";\\n' > dist/css/global-system-font.css && printf '@import \"./rijksoverheid-fonts.css\";\\n@import \"./variables.css\";\\n' > dist/css/tokens.css && cp src/assets/fonts/*.woff2 dist/fonts/",
+    "generate:colors": "node scripts/generate-colors.js",
     "generate:component-reference": "node scripts/generate-component-reference.js",
     "generate:cem": "cem analyze && npm run generate:vue-types",
     "generate:vue-types": "node scripts/generate-vue-types.js",

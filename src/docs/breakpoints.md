@@ -2,7 +2,7 @@
 
 Het design system definieert vijf vaste breakpoints die door alle responsive componenten worden gebruikt. Ze zijn beschikbaar in CSS én in JavaScript zodat media-queries en runtime-logica niet uit elkaar kunnen lopen.
 
-| Token   | Waarde   | Gebruik                                           |
+| Naam    | Waarde   | Gebruik                                           |
 | ------- | -------- | ------------------------------------------------- |
 | `smMin` | `320px`  | Kleinste ondersteunde viewport (kleine telefoons) |
 | `smMax` | `640px`  | Bovengrens van het sm-bereik                      |
@@ -19,12 +19,12 @@ In `@media` of `@container` query conditions moeten altijd **letterlijke waardes
 @container (min-width: 1008px) { … } /* lgMin */
 ```
 
-Daarom staan de breakpoints niet als CSS custom properties in `settings.css`: `var(--…)` zou hier toch niet werken en zou alleen drift uitlokken met de canonieke definitie in `breakpoints.ts`.
+Daarom staan de breakpoints niet als CSS custom properties in `variables.css`: `var(--…)` zou hier toch niet werken en zou alleen drift uitlokken met de canonieke definitie in `breakpoints.ts`.
 
 ## Gebruik in JavaScript / TypeScript
 
 ```ts
-import { breakpoints } from '@nldd/design-system/tokens';
+import { breakpoints } from '@nldd/design-system/breakpoints';
 
 const isDesktop = matchMedia(`(min-width: ${breakpoints.lgMin})`).matches;
 const isTablet = matchMedia(`(min-width: ${breakpoints.mdMin}) and (max-width: ${breakpoints.mdMax})`).matches;

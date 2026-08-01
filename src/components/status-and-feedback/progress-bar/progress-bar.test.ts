@@ -5,7 +5,7 @@ import { INDETERMINATE_TRANSITION_MS } from './progress-bar.js';
 // Raw CSS source for the token cross-check at the bottom of this file. Vite
 // transforms ?raw imports into string literals at build time, so no HTTP
 // request is needed at runtime.
-import settingsCss from '../../../assets/styles/settings.css?raw';
+import variablesCss from '../../../assets/styles/variables.css?raw';
 import './progress-bar.js';
 
 describe('nldd-progress-bar', () => {
@@ -493,8 +493,8 @@ describe('nldd-progress-bar-segment-indicator', () => {
 		// growing (or vice versa). Parse the token straight out of the raw
 		// CSS source so the test doesn't depend on the global stylesheet
 		// being loaded into the document.
-		const match = /--primitives-transition-duration-slow\s*:\s*(\d+)ms/.exec(settingsCss);
-		expect(match, 'token declaration not found in settings.css').not.toBeNull();
+		const match = /--primitives-transition-duration-slow\s*:\s*(\d+)ms/.exec(variablesCss);
+		expect(match, 'token declaration not found in variables.css').not.toBeNull();
 		const tokenMs = Number(match![1]);
 		expect(tokenMs).toBe(INDETERMINATE_TRANSITION_MS);
 	});

@@ -2,8 +2,8 @@ import { describe, it, expect, afterEach, beforeAll, afterAll } from 'vitest';
 import { fixture, cleanup } from '../../../test-utils.js';
 // Raw CSS injected for the width-zone grid-column tests below: rich-text is a
 // document-level stylesheet and needs the settings tokens to resolve its grid.
-import settingsCss from '../../../assets/styles/settings.css?raw';
-import palettesCss from '../../../assets/styles/palettes.generated.css?raw';
+import variablesCss from '../../../assets/styles/variables.css?raw';
+import colorsCss from '../../../assets/styles/colors.generated.css?raw';
 import richTextCss from './rich-text.css?raw';
 import './rich-text.js';
 
@@ -66,7 +66,7 @@ describe('nldd-rich-text width zones', () => {
 	let wrap: HTMLElement;
 
 	beforeAll(() => {
-		styles = [settingsCss, richTextCss].map((css) => {
+		styles = [variablesCss, richTextCss].map((css) => {
 			const style = document.createElement('style');
 			style.textContent = css;
 			document.head.appendChild(style);
@@ -119,13 +119,13 @@ describe('nldd-rich-text color="inherit"', () => {
 	const SURFACE_COLOR = 'rgb(255, 0, 255)';
 
 	beforeAll(() => {
-		// settings.css @imports the generated palette, and raw-injecting it as
+		// variables.css @imports the generated palette, and raw-injecting it as
 		// text neither resolves that import nor applies the rest of the sheet
 		// while the unresolvable @import sits at the top — so the light-dark()
 		// tokens never resolve. Inject the palette explicitly and drop the
 		// @import line so the semantic tokens (e.g. --semantics-content-color)
 		// are available for the without-attribute assertions below.
-		styles = [palettesCss, settingsCss.replace(/@import[^;]+;/g, ''), richTextCss].map((css) => {
+		styles = [colorsCss, variablesCss.replace(/@import[^;]+;/g, ''), richTextCss].map((css) => {
 			const style = document.createElement('style');
 			style.textContent = css;
 			document.head.appendChild(style);

@@ -1,6 +1,6 @@
 import { describe, it, expect, afterEach } from 'vitest';
 import { fixture, cleanup } from '../../test-utils.js';
-import { hostileHostCss } from './style-resets.fixtures.js';
+import { hostileHostCss } from './shadow-resets.fixtures.js';
 import '../../components/content/title/title.js';
 import '../../components/inputs/dropdown/dropdown.js';
 import '../../components/forms/form-field/form-field.js';
@@ -9,7 +9,7 @@ import '../../components/content/blockquote/blockquote.js';
 import '../../components/lists-and-tables/cells/description-cell/description-cell.js';
 
 /**
- * Regression coverage for the style-resets (./style-resets.ts).
+ * Regression coverage for the shadow-resets (./shadow-resets.ts).
  *
  * Per component: render it, snapshot the slotted element's computed style, then
  * inject a hostile host stylesheet (Tailwind Preflight + aggressive overrides) at
@@ -17,14 +17,14 @@ import '../../components/lists-and-tables/cells/description-cell/description-cel
  * snapshot must equal the before snapshot for every protected property.
  *
  * Token-independent by design: it asserts "host CSS cannot change the rendering",
- * not specific token values, so it holds without settings.css loaded in the test
+ * not specific token values, so it holds without variables.css loaded in the test
  * browser. If a slot loses its reset, the host bleeds in and before !== after.
  *
  * Runs in a real browser (vitest browser mode, Chromium via Playwright), so
  * getComputedStyle resolves the actual cascade — ::slotted and cross-tree
  * !important included. These assertions would NOT hold under jsdom.
  */
-describe('style-resets: host CSS cannot bleed into slotted content', () => {
+describe('shadow-resets: host CSS cannot bleed into slotted content', () => {
 	let el: HTMLElement | undefined;
 	let injected: HTMLStyleElement | undefined;
 

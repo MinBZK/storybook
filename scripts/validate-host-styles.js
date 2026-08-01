@@ -14,7 +14,7 @@
  * `!important`. The preferred fix is moving the visual framework to a wrapper
  * element inside the shadow root; `!important` on the host is the fallback
  * for declarations that cannot move inward (subgrid participants, negative
- * margins). See docs/plan-host-reset-hardening.md.
+ * margins).
  */
 
 import fs from 'fs';
@@ -166,7 +166,7 @@ function main() {
       `\n${total} host declaration(s) a consumer reset would override.\n` +
         'Move the visual framework to a wrapper element inside the shadow root,\n' +
         'or add `!important` when the declaration cannot move inward\n' +
-        '(subgrid participants, negative margins). See docs/plan-host-reset-hardening.md.'
+        '(subgrid participants, negative margins).'
     );
     process.exit(1);
   }

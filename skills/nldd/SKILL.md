@@ -1,6 +1,6 @@
 ---
 name: nldd
-description: "Bouw applicaties met de web components van het NLDD Design System (@nldd/design-system, Nederlandse Digitale Dienst, Rijksoverheid). Triggers: @nldd/design-system, 'nldd-' tags, vragen over layout, sheets, popovers, modals, formulieren, toegankelijkheid, CSS-tokens of upgraden van dit systeem. NIET voor het ontwikkelen van het design system zelf (daarvoor: /component, /css)."
+description: "Bouw applicaties met de web components van het NLDD Design System (@nldd/design-system, Nederlandse Digitale Dienst, Rijksoverheid). Triggers: @nldd/design-system, 'nldd-' tags, vragen over layout, sheets, popovers, modals, formulieren, toegankelijkheid, CSS-variabelen (tokens) of upgraden van dit systeem. NIET voor het ontwikkelen van het design system zelf (daarvoor: /component, /css)."
 metadata:
   type: reference
 ---
@@ -75,11 +75,11 @@ daarop in plaats van ertegen te werken.
 
 ### Componeer, herstijl niet
 
-Gebruik componenten zoals ze zijn en stuur ze via attributen en tokens. Reik
+Gebruik componenten zoals ze zijn en stuur ze via attributen en variabelen. Reik
 niet in de shadow DOM, override geen interne ARIA, plak geen klassen op
 childcomponenten.
 
-- **Stuur via attributen en CSS-tokens, niet via interne overrides.** Wil je een
+- **Stuur via attributen en CSS-variabelen, niet via interne overrides.** Wil je een
   rustiger of nadrukkelijker component? Kies een ander component in plaats van
   de ARIA of de stijl van het huidige te verbouwen. De `nldd-banner` zegt het
   zelf in zijn documentatie: "if you need a quieter component, pick a different
@@ -109,8 +109,30 @@ Importeer de componenten en de stijlen één keer, bij het opstarten van je app:
 
 ```js
 import '@nldd/design-system';          // registreert alle nldd-* componenten
-import '@nldd/design-system/styles';   // CSS-tokens + Rijksoverheid-fonts
+import '@nldd/design-system/styles';   // CSS-variabelen + Rijksoverheid-fonts
 ```
+
+RijksSans is uitsluitend bestemd voor publicaties van de Rijksoverheid en voor
+partijen die in haar opdracht werken. De voorwaarden staan in
+[`NOTICES.md`](https://github.com/MinBZK/storybook/blob/main/NOTICES.md). Bouw
+je iets daarbuiten, dan kun je 2 kanten op:
+
+1. **Importeer `@nldd/design-system/styles/system-font`** in plaats van
+   `/styles`. Dezelfde stylesheet zonder de `@font-face`-regels. Beide
+   familie-stacks eindigen op een systeemfont, dus de browser valt er vanzelf
+   doorheen en je hoeft niets te overschrijven.
+2. **Blijf bij `/styles` en overschrijf de 2 familievariabelen.** Een `@font-face`
+   waar niets naar verwijst wordt niet gedownload, dus het font komt de pagina
+   niet binnen.
+
+   ```css
+   :root {
+     --primitives-font-family-sans-serif: 'Jouw font', system-ui, sans-serif;
+     --primitives-font-family-monospace: ui-monospace, Menlo, Consolas, monospace;
+   }
+   ```
+
+De eerste weg is de schoonste: dan zit het font niet eens in je CSS.
 
 Voor tree-shaking kun je ook per component importeren via de subpath-export
 (bijv. `@nldd/design-system/button`). Frameworks die templates compileren,
@@ -126,24 +148,20 @@ Alle visuele waarden komen uit CSS-variabelen; niets is hardcoded. Dat maakt
 licht/donker-thema's mogelijk via `light-dark()` en houdt je app in de
 huisstijl. De variabelen zijn gelaagd:
 
-| Laag | Prefix | Voor jou als consument |
-|------|--------|------------------------|
-| **Primitives** | `--primitives-*` | Basiswaarden (kleur, spacing, typografie). Gebruik voor je eigen styling *rond* de componenten. |
-| **Semantics** | `--semantics-*` | Betekenisvolle rollen (knoppen, controls, oppervlakken). Bruikbaar, maar primitives volstaan meestal. |
+| Laag | Prefix | Wat het is |
+|------|--------|------------|
+| **Primitives** | `--primitives-*` | Basiswaarden: kleur, spacing, typografie. Alle andere lagen komen hierop uit. |
+| **Semantics** | `--semantics-*` | Betekenisvolle rollen: knoppen, controls, oppervlakken. |
 | **Components** | `--components-*` | Component-specifiek. Zelden nodig in app-code. |
 | **Context** | `--context-*` | Communicatie tussen componenten (bijv. achtergrondkleur die doorcascadeert). |
 | **Lokaal** | `--_*` | **Intern aan een component. Raak deze niet aan.** |
 
-Voor je eigen CSS (de ruimte tussen en rond componenten) gebruik je
-`--primitives-*` voor spacing en kleur:
-
-```css
-.mijn-rij {
-  display: flex;
-  gap: var(--primitives-space-8);
-  color: var(--primitives-color-neutral-700);
-}
-```
+Je hebt deze variabelen zelden nodig. Ruimte stuur je met `nldd-container` en
+`nldd-spacer`, tekst met `nldd-title` en `nldd-rich-text`, en de kleuren komen
+uit de componenten zelf. Pak eerst een component; dan zit de huisstijl er al in
+en blijft je app meebewegen als het systeem verandert. Houd je daarna nog eigen
+CSS over voor iets dat geen component is, gebruik dan `--primitives-*` in
+plaats van een hardcoded waarde.
 
 **Zet geen `light-dark()` om een primitive heen.** Elke kleur-primitive is zelf
 al een `light-dark()`-paar, en de schaal kantelt mee: stap 700 is donkere tekst
@@ -169,9 +187,11 @@ systeem het meest volwassen gebruikt.
 
 ### Layout componeren
 
-`nldd-app-view` is altijd de buitenste schil: die zet de kleurschema-context en
-de fonts. Wat erbinnen komt, hangt af van wat je bouwt. Er zijn twee
-compositievormen, kies bewust:
+`nldd-app-view` is altijd de buitenste schil: die zet de kleurschema-context.
+De documenttypografie komt uit de stylesheet, die de `body` het documentfont
+geeft zodra er een app-view in de pagina staat. Importeer je alleen componenten
+en geen `styles`, dan krijg je die dus niet. Wat binnen de app-view komt, hangt
+af van wat je bouwt. Er zijn twee compositievormen, kies bewust:
 
 | Vorm | Wanneer | Bouwstenen |
 |------|---------|------------|
@@ -413,11 +433,11 @@ Werkwijze bij het verhogen van je `@nldd/design-system` versie:
    over: een breaking change kan in een tussenliggende patch zitten.
 2. **Scan de `Breaking` / `Breaking Changes` secties eerst.** Die bevatten
    concrete migratie-instructies: een verwijderd attribuut met zijn vervanger,
-   hernoemde tokens, gewijzigd gedrag. Een echt voorbeeld uit de changelog:
+   hernoemde variabelen, gewijzigd gedrag. Een echt voorbeeld uit de changelog:
    `variant="box-on-tinted"` op `nldd-list` is verwijderd, met als vervanger
    `<nldd-list variant="box" background="base">`.
 3. **Pas de migraties toe in je code** voordat je de nieuwe versie in gebruik
-   neemt. Zoek je app door op de verwijderde attributen, tokennamen of
+   neemt. Zoek je app door op de verwijderde attributen, variabelenamen of
    componenten uit de breaking entries.
 4. **Lees `Highlights`, `Added` en `Changed`** voor nieuwe componenten of
    attributen die je oudere, omslachtigere code kunnen vervangen.
@@ -426,7 +446,7 @@ Werkwijze bij het verhogen van je `@nldd/design-system` versie:
    exact deze release.
 
 Vuistregel: ga niet meer dan een handvol patches in één sprong omhoog zonder de
-tussenliggende `Breaking` secties te lezen. Hernoemde CSS-tokens zijn de meest
+tussenliggende `Breaking` secties te lezen. Hernoemde CSS-variabelen zijn de meest
 gemiste val: je eigen thema-overrides verwijzen dan naar een naam die niet meer
 bestaat, zonder foutmelding, alleen een stille terugval op de default.
 

@@ -820,7 +820,7 @@ describe('nldd-date-picker', () => {
 		expect(dayFor(el, '2026-08-15').classList.contains('is-pointer-focus')).toBe(true);
 	});
 
-	// Op de stylesheet-tekst, bij uitzondering: settings.css wordt in de tests niet
+	// Op de stylesheet-tekst, bij uitzondering: variables.css wordt in de tests niet
 	// geladen, dus de echte ring is niet te meten (het token is leeg en de outline
 	// blijft none). Zonder deze controle zou een terugkeer naar :focus-visible - de
 	// bug die dit veroorzaakte - door alle tests heen glippen.

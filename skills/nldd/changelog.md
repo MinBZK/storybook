@@ -24,10 +24,19 @@ here; consult the commit history if you need that level of detail.
 
 - **Icons** — `viewfinder-line` (alias `scan`).
 - **`nldd-card`** — a `background` attribute: `base` (default) or `tinted`, for a card that has to lift off a base surface. Customize with `--components-card-tinted-*`.
+- **`@nldd/design-system/styles/system-font`** — the same stylesheet as `/styles`, without the `@font-face` rules. Both family stacks end in a system font, so they fall through on their own; nothing needs overriding. For products that may not use the Rijksoverheid house fonts (see `NOTICES.md`).
+- **`@nldd/design-system/styles/variables`** — only the CSS custom properties, for a build that composes the stylesheets itself.
+- **`@nldd/design-system/breakpoints`** — the breakpoints for `matchMedia` and layout logic, previously behind `/tokens`.
 
 ### Changed
 
 - **`nldd-list-item`** — a row that opens with an icon now starts its divider at the first text or title cell, so the line aligns with the words instead of the icon. Consumers no longer need a `divider-start` marker for this; an explicit marker still wins, and putting one on the icon cell restores the full-width line.
+- **Document typography** — the stylesheet now gives the `body` the document font and content color as soon as an `nldd-app-view` is on the page. Apps no longer need their own `body { font: … }`. The rule sits in `@layer reset`, so any consumer rule beats it without effort; a page without an app-view is untouched.
+
+### Breaking
+
+- **`@nldd/design-system/tokens` is gone.** It only ever re-exported `breakpoints`, so import from `@nldd/design-system/breakpoints` instead. Same values, same names.
+- **The four `--primitives-font-family-*-fallback` variables are gone.** Nothing read them, so overriding one to drop RijksSans changed nothing while looking like the switch you were after. To use a different font, override `--primitives-font-family-sans-serif` and `--primitives-font-family-monospace` — or import `/styles/system-font` and skip the `@font-face` rules entirely.
 
 ### Fixed
 

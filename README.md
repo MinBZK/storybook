@@ -115,7 +115,7 @@ CSS variabelen zijn georganiseerd in vijf lagen:
 --_background-color: var(--context-parent-background-color);
 ```
 
-De kleurpaletten staan in `src/assets/styles/palettes.generated.css` en worden
+De kleurpaletten staan in `src/assets/styles/colors.generated.css` en worden
 gegenereerd; de accent-laag wijst naar een van die paletten, zodat één regel de
 huisstijlkleur van het hele systeem bepaalt.
 

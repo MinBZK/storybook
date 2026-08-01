@@ -5,7 +5,7 @@ import type { Extension } from '@codemirror/state';
 
 /* CodeMirror's generated theme styles mount into the same root as the view
  * (the component's shadow root). CSS custom properties inherit across the
- * shadow boundary, so every var(--…) below resolves against settings.css and
+ * shadow boundary, so every var(--…) below resolves against variables.css and
  * adapts to light/dark mode automatically. Background and padding are left to
  * the host component (the box/simple variant owns the framing). */
 const baseTheme = EditorView.theme({

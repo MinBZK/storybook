@@ -61,8 +61,8 @@ describe('nldd-top-navigation-bar', () => {
 	it('caps each bar to the content width and never overflows (page-section layout)', async () => {
 		el = await fixture(navWithGlobalItems());
 		await waitForUpdate(el);
-		// settings.css tokens are not loaded in the unit-test page; inject the few
-		// this layout reads (values mirror settings.css) so the var() lengths resolve.
+		// variables.css tokens are not loaded in the unit-test page; inject the few
+		// this layout reads (values mirror variables.css) so the var() lengths resolve.
 		el.style.setProperty('--semantics-page-sections-sm-margin-inline', '16px');
 		el.style.setProperty('--semantics-page-sections-md-margin-inline', '40px');
 		el.style.setProperty('--semantics-page-sections-lg-margin-inline', '56px');

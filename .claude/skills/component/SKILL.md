@@ -50,7 +50,7 @@ Zoek in `src/components/` of het component al bestaat.
 - **Components:** `--components-{component}-{variant}-{state}-{element}-{element-variant}-{element-state}-{property}`
   bijv. `--components-checkbox-md-check-icon-size`
 - **Context:** `--context-{context}-{property}`
-  Gedeelde variabelen voor communicatie tussen componenten. Niet gedefinieerd in settings.css.
+  Gedeelde variabelen voor communicatie tussen componenten. Niet gedefinieerd in variables.css.
   bijv. `--context-parent-background-color`
 - **Lokaal:** `--_{variant}-{state}-{element}-{element-variant}-{element-state}-{property}`
   Interne variabelen binnen een component. Definieer defaults in `:host`.
@@ -59,11 +59,11 @@ Zoek in `src/components/` of het component al bestaat.
 
 Primitives zijn basiswaarden — gebruik ze niet direct in componenten. Semantics geven context voor een groep componenten. Component variabelen zijn specifiek voor één component.
 
-Zoek in `src/assets/styles/settings.css`:
+Zoek in `src/assets/styles/variables.css`:
 ```bash
-grep -i "{component-naam}" src/assets/styles/settings.css
-grep -i "controls.*min-size\|controls.*corner-radius" src/assets/styles/settings.css
-grep -i "focus-ring" src/assets/styles/settings.css
+grep -i "{component-naam}" src/assets/styles/variables.css
+grep -i "controls.*min-size\|controls.*corner-radius" src/assets/styles/variables.css
+grep -i "focus-ring" src/assets/styles/variables.css
 ```
 
 ### Stap 4: Bestanden aanmaken
