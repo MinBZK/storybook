@@ -222,7 +222,7 @@ describe('nldd-stepper – change event', () => {
    ============================================================ */
 
 describe('nldd-stepper – translations', () => {
-	let el: NLDDStepper;
+	let el: NLDDStepper | HTMLFormElement;
 
 	afterEach(() => {
 		if (el) cleanup(el);

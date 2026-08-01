@@ -430,6 +430,41 @@ nldd-rich-text :is(th, td) code {
 	overflow-wrap: anywhere;
 }
 
+/* A markdown renderer emits a fenced block as `<pre><code>`, so the frame goes
+   on the pre: it is the block-level element, and `code` stays inline. Without
+   overflow-x a long line escapes the element and stretches every ancestor,
+   which shows up as a card that ignores its own width. */
+nldd-rich-text pre {
+	box-sizing: border-box;
+	margin: 0;
+	padding: var(--primitives-space-16);
+	border-radius: var(--semantics-surfaces-corner-radius);
+	/* Inner box-shadow paints the ring inside the radius without taking layout
+	   space, same as nldd-box, nldd-banner and nldd-code-viewer. Without it the
+	   block is invisible on a tinted surface: identical background, no edge. */
+	box-shadow: inset 0 0 0 var(--semantics-surfaces-border-width) var(--semantics-surfaces-tinted-border-color);
+	background-color: var(--semantics-surfaces-tinted-background-color);
+	font: var(--primitives-font-monospace-sm-regular-snug);
+	overflow-x: auto;
+	-webkit-overflow-scrolling: touch;
+	scrollbar-width: thin;
+
+	/* forced-colors strips box-shadow, so restore the frame with a real border.
+	   Same fallback as nldd-box, nldd-banner and nldd-list. */
+	@media (forced-colors: active) {
+		border: var(--semantics-surfaces-border-width) solid CanvasText;
+	}
+}
+
+/* The tinted chip is for inline code. Inside a pre it paints once per rendered
+   line, so the block hands it back and lets the pre carry the frame. */
+nldd-rich-text pre > code {
+	padding: 0;
+	border-radius: 0;
+	background-color: transparent;
+	font: inherit;
+}
+
 
 /* # Mark */
 

@@ -1,11 +1,11 @@
-# Patronen: layout en CSS-tokens
+# Patronen: layout
 
 ## Layout van buiten naar binnen
 
 De compositie loopt van de app-shell naar de inhoud:
 
 ```
-nldd-app-view              (app-shell: kleurschema-context, fonts)
+nldd-app-view              (app-shell: kleurschema-context)
   └─ split view            (responsive auto-hide van panelen)
        └─ slot per paneel  (links = hoogste prioriteit)
             └─ nldd-page / nldd-container  (inhoud + padding)
@@ -48,38 +48,6 @@ breakpoint-gedrag.
   </nldd-bar-split-view>
 </nldd-app-view>
 ```
-
-## CSS-tokens in je eigen styling
-
-Alles komt uit variabelen; hardcode geen kleuren of spacing. Voor de ruimte
-*rond* en *tussen* componenten gebruik je `--primitives-*`, en `light-dark()`
-voor themabewuste kleuren.
-
-```css
-.zoekrij {
-  display: flex;
-  align-items: center;
-  gap: var(--primitives-space-8);
-}
-
-.leeg-titel {
-  font-size: var(--primitives-font-size-200);
-  font-weight: var(--primitives-font-weight-body-medium);
-  color: light-dark(
-    var(--primitives-color-neutral-400),
-    var(--primitives-color-neutral-500)
-  );
-  margin-bottom: var(--primitives-space-4);
-}
-```
-
-Wat je **niet** doet:
-
-- `--_*` variabelen gebruiken of zetten. Die zijn intern aan een component.
-- In de shadow DOM van een component stylen.
-- Een klasse op een nldd-childcomponent plakken om het te herstijlen. Wil je
-  ander gedrag of een andere toon, kies dan een ander component of stuur via
-  attributen.
 
 ## Verticale ruimte: spacer versus container
 

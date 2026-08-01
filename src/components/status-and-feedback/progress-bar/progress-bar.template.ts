@@ -1,7 +1,43 @@
 import { html, nothing } from 'lit';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { classMap } from 'lit/directives/class-map.js';
-import type { NLDDProgressBar } from './progress-bar.js';
+import type { NLDDProgressBar, NLDDProgressBarSegmentIndicator } from './progress-bar.js';
+
+export function segmentIndicatorTemplate(component: NLDDProgressBarSegmentIndicator) {
+	const text = component._effectiveTooltip;
+	// Only render the tooltip wrapper when there's actual text — avoids
+	// mounting an inert nldd-tooltip element with timing="never".
+	if (!text) {
+		return html`
+			<div class="progress-bar__segment-indicator">
+				<span class="progress-bar__segment-indicator-tooltip-area"></span>
+			</div>
+		`;
+	}
+	// tabindex=0 makes the hover area keyboard-reachable so SR users can
+	// land on it and have nldd-tooltip surface its text (WCAG 2.1.1).
+	// role="img" exposes the element to the AT tree with its aria-label as
+	// accessible name — a bare <span> + aria-label is silently ignored by
+	// most screen readers (a labeled generic element has no semantic
+	// role to anchor the name to). role="img" fits because the hover area
+	// is a focusable visual representation of a data value, not an
+	// activator (role="button" would promise an action that doesn't
+	// happen). nldd-tooltip listens to focus/blur on slotted content, so
+	// no extra handlers needed here.
+	return html`
+		<div class="progress-bar__segment-indicator">
+			<nldd-tooltip text=${text}
+				timing="instant"
+			>
+				<span class="progress-bar__segment-indicator-tooltip-area"
+					tabindex="0"
+					role="img"
+					aria-label=${text}
+				></span>
+			</nldd-tooltip>
+		</div>
+	`;
+}
 
 export function progressBarTemplate(component: NLDDProgressBar, onSlotChange: () => void) {
 	// Caption renders when there's a label or an inline value to show
@@ -43,7 +79,7 @@ export function progressBarTemplate(component: NLDDProgressBar, onSlotChange: ()
 			aria-valuetext=${component._ariaValueText}
 		>
 			${showInternalSegmentIndicator ? html`
-				<nldd-progress-bar-segment-indicator class="progress-bar__segment-indicator"
+				<nldd-progress-bar-segment-indicator
 					.value=${component.value!}
 					color=${component.color}
 				></nldd-progress-bar-segment-indicator>

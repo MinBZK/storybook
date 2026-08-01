@@ -1,5 +1,5 @@
 import { describe, it, expect, afterEach } from 'vitest';
-import { fixture, cleanup, waitForUpdate } from '../../../test-utils.js';
+import { fixture, cleanup, waitForUpdate, installUniversalReset } from '../../../test-utils.js';
 import './container.js';
 
 describe('nldd-container', () => {
@@ -18,11 +18,11 @@ describe('nldd-container', () => {
 	it('does not reflect a layout attribute by default (stack is the implicit default)', async () => {
 		el = await fixture('<nldd-container></nldd-container>');
 		await waitForUpdate(el);
-		// No default attribute pollution; stack comes from the .container default style.
+		// No default attribute pollution; stack comes from the .container__inner default style.
 		expect(el.hasAttribute('layout')).toBe(false);
-		// :host is just a padding wrapper now (block); layout lives on .container.
+		// :host is only the external contract; padding sits on .container, layout on .container__inner.
 		expect(getComputedStyle(el).display).toBe('block');
-		const inner = el.shadowRoot!.querySelector('.container') as HTMLElement;
+		const inner = el.shadowRoot!.querySelector('.container__inner') as HTMLElement;
 		expect(getComputedStyle(inner).display).toBe('flex');
 		expect(getComputedStyle(inner).flexDirection).toBe('column');
 	});
@@ -30,7 +30,7 @@ describe('nldd-container', () => {
 	it('layout=row sets flex-direction: row on the inner', async () => {
 		el = await fixture('<nldd-container layout="row"></nldd-container>');
 		await waitForUpdate(el);
-		const inner = el.shadowRoot!.querySelector('.container') as HTMLElement;
+		const inner = el.shadowRoot!.querySelector('.container__inner') as HTMLElement;
 		expect(getComputedStyle(inner).flexDirection).toBe('row');
 		expect(getComputedStyle(inner).flexWrap).toBe('nowrap');
 	});
@@ -38,7 +38,7 @@ describe('nldd-container', () => {
 	it('layout=wrap sets row-reverse-style + flex-wrap on the inner', async () => {
 		el = await fixture('<nldd-container layout="wrap"></nldd-container>');
 		await waitForUpdate(el);
-		const inner = el.shadowRoot!.querySelector('.container') as HTMLElement;
+		const inner = el.shadowRoot!.querySelector('.container__inner') as HTMLElement;
 		expect(getComputedStyle(inner).flexDirection).toBe('row');
 		expect(getComputedStyle(inner).flexWrap).toBe('wrap');
 	});
@@ -46,14 +46,14 @@ describe('nldd-container', () => {
 	it('layout=grid switches the inner to display: grid', async () => {
 		el = await fixture('<nldd-container layout="grid"></nldd-container>');
 		await waitForUpdate(el);
-		const inner = el.shadowRoot!.querySelector('.container') as HTMLElement;
+		const inner = el.shadowRoot!.querySelector('.container__inner') as HTMLElement;
 		expect(getComputedStyle(inner).display).toBe('grid');
 	});
 
 	it('layout=columns keeps the inner as block (multicol)', async () => {
 		el = await fixture('<nldd-container layout="columns"></nldd-container>');
 		await waitForUpdate(el);
-		const inner = el.shadowRoot!.querySelector('.container') as HTMLElement;
+		const inner = el.shadowRoot!.querySelector('.container__inner') as HTMLElement;
 		expect(getComputedStyle(inner).display).toBe('block');
 		expect(el.getAttribute('layout')).toBe('columns');
 	});
@@ -61,7 +61,7 @@ describe('nldd-container', () => {
 	it('layout=lanes uses native grid lanes where supported, multicol fallback otherwise', async () => {
 		el = await fixture('<nldd-container layout="lanes"><div>a</div></nldd-container>');
 		await waitForUpdate(el);
-		const inner = el.shadowRoot!.querySelector('.container') as HTMLElement;
+		const inner = el.shadowRoot!.querySelector('.container__inner') as HTMLElement;
 		// native CSS grid lanes where supported, CSS multicol (block) fallback otherwise.
 		expect(['block', 'grid-lanes']).toContain(getComputedStyle(inner).display);
 		expect(el.getAttribute('layout')).toBe('lanes');
@@ -73,7 +73,7 @@ describe('nldd-container', () => {
 	it('column-count="4" sets the --_column-count var on the inner', async () => {
 		el = await fixture('<nldd-container layout="grid" column-count="4"></nldd-container>');
 		await waitForUpdate(el);
-		const inner = el.shadowRoot!.querySelector('.container') as HTMLElement;
+		const inner = el.shadowRoot!.querySelector('.container__inner') as HTMLElement;
 		expect(getComputedStyle(inner).getPropertyValue('--_column-count').trim()).toBe('4');
 		expect(getComputedStyle(inner).getPropertyValue('--_track-min').trim()).toBe('0');
 	});
@@ -201,5 +201,31 @@ describe('nldd-container', () => {
 		el = await fixture('<nldd-container padding="0"></nldd-container>');
 		await waitForUpdate(el);
 		expect(el.style.getPropertyValue('--_padding-top')).toBe('0');
+	});
+});
+
+describe('nldd-container onder een universele reset', () => {
+	let el: HTMLElement;
+	let removeReset: () => void;
+
+	afterEach(() => {
+		removeReset();
+		if (el) cleanup(el);
+	});
+
+	it('behoudt de padding rond slotted content', async () => {
+		removeReset = installUniversalReset();
+		el = await fixture(`
+			<div style="--primitives-space-16: 16px;">
+				<nldd-container padding="16">
+					<p>Inhoud</p>
+				</nldd-container>
+			</div>
+		`);
+		const container = el.querySelector('nldd-container') as HTMLElement;
+		await waitForUpdate(container);
+		const content = container.querySelector('p')!;
+		const offset = content.getBoundingClientRect().left - container.getBoundingClientRect().left;
+		expect(offset).toBe(16);
 	});
 });

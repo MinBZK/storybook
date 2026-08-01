@@ -36,7 +36,10 @@ export const listItemStyles = css`
 		/* Not the host's 100%: a width plus negative margins is over-constrained
 		   in block layout, so the row would shift instead of widen. */
 		width: auto;
-		margin-inline: calc(-1 * var(--components-list-item-indicator-inline-inset));
+		/* !important: shields the widening from consumer universal resets, which
+		   beat normal :host declarations per CSS Scoping. A negative margin
+		   cannot move inward — an inner element cannot reach outside the host. */
+		margin-inline: calc(-1 * var(--components-list-item-indicator-inline-inset)) !important;
 	}
 
 	:host(.is-interactive) .list-item {

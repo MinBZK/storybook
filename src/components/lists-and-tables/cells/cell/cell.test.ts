@@ -1,5 +1,5 @@
 import { describe, it, expect, afterEach } from 'vitest';
-import { fixture, cleanup, waitForUpdate } from '../../../../test-utils.js';
+import { fixture, cleanup, waitForUpdate, installUniversalReset } from '../../../../test-utils.js';
 import './cell.js';
 
 describe('nldd-cell', () => {
@@ -70,5 +70,31 @@ describe('nldd-cell', () => {
 		el = await fixture('<nldd-cell vertical-alignment="bottom"></nldd-cell>');
 		await waitForUpdate(el);
 		expect(el.getAttribute('vertical-alignment')).toBe('bottom');
+	});
+});
+
+describe('nldd-cell onder een universele reset', () => {
+	let el: HTMLElement;
+	let removeReset: () => void;
+
+	afterEach(() => {
+		removeReset();
+		if (el) cleanup(el);
+	});
+
+	it('behoudt de padding-block uit de rij-context', async () => {
+		removeReset = installUniversalReset();
+		el = await fixture(`
+			<div style="--context-cell-padding-block: 12px;">
+				<nldd-cell>
+					<span>Inhoud</span>
+				</nldd-cell>
+			</div>
+		`);
+		const cell = el.querySelector('nldd-cell') as HTMLElement;
+		await waitForUpdate(cell);
+		const content = cell.querySelector('span')!;
+		const offset = content.getBoundingClientRect().top - cell.getBoundingClientRect().top;
+		expect(offset).toBe(12);
 	});
 });

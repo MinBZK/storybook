@@ -5,7 +5,7 @@ import { INDETERMINATE_TRANSITION_MS } from './progress-bar.js';
 // Raw CSS source for the token cross-check at the bottom of this file. Vite
 // transforms ?raw imports into string literals at build time, so no HTTP
 // request is needed at runtime.
-import settingsCss from '../../../assets/styles/settings.css?raw';
+import variablesCss from '../../../assets/styles/variables.css?raw';
 import './progress-bar.js';
 
 describe('nldd-progress-bar', () => {
@@ -293,7 +293,7 @@ describe('nldd-progress-bar', () => {
 	it('renders an internal segment when value is set and no children', async () => {
 		el = await fixture('<nldd-progress-bar value="60" color="success"></nldd-progress-bar>');
 		await waitForUpdate(el);
-		const internal = el.shadowRoot!.querySelector<HTMLElement>('.progress-bar__segment-indicator');
+		const internal = el.shadowRoot!.querySelector<HTMLElement>('nldd-progress-bar-segment-indicator');
 		expect(internal).not.toBeNull();
 		expect(internal!.getAttribute('color')).toBe('success');
 		expect(internal!.style.getPropertyValue('--context-progress-bar-segment-indicator-width')).toBe('60%');
@@ -306,7 +306,7 @@ describe('nldd-progress-bar', () => {
 			</nldd-progress-bar>
 		`);
 		await waitForUpdate(el);
-		expect(el.shadowRoot!.querySelector('.progress-bar__segment-indicator')).toBeNull();
+		expect(el.shadowRoot!.querySelector('nldd-progress-bar-segment-indicator')).toBeNull();
 	});
 
 
@@ -403,20 +403,20 @@ describe('nldd-progress-bar', () => {
 		const tooltip = el.shadowRoot!.querySelector('nldd-tooltip');
 		expect(tooltip).not.toBeNull();
 		expect(tooltip!.getAttribute('text')).toBe('Hover me');
-		expect(tooltip!.querySelector('.progress-bar-segment-indicator__tooltip-area')).not.toBeNull();
+		expect(tooltip!.querySelector('.progress-bar__segment-indicator-tooltip-area')).not.toBeNull();
 	});
 
 	it('internal segment tooltip is suppressed when caption is shown', async () => {
 		el = await fixture('<nldd-progress-bar value="60" text="Uploaden"></nldd-progress-bar>');
 		await waitForUpdate(el);
-		const internal = el.shadowRoot!.querySelector<NLDDProgressBarSegmentIndicator>('.progress-bar__segment-indicator')!;
+		const internal = el.shadowRoot!.querySelector<NLDDProgressBarSegmentIndicator>('nldd-progress-bar-segment-indicator')!;
 		expect(internal._autoTooltipText).toBe('');
 	});
 
 	it('internal segment gets a tooltip in tooltip mode', async () => {
 		el = await fixture('<nldd-progress-bar value="60" value-display="tooltip"></nldd-progress-bar>');
 		await waitForUpdate(el);
-		const internal = el.shadowRoot!.querySelector<NLDDProgressBarSegmentIndicator>('.progress-bar__segment-indicator')!;
+		const internal = el.shadowRoot!.querySelector<NLDDProgressBarSegmentIndicator>('nldd-progress-bar-segment-indicator')!;
 		expect(internal._autoTooltipText).toBe('60%');
 	});
 
@@ -493,8 +493,8 @@ describe('nldd-progress-bar-segment-indicator', () => {
 		// growing (or vice versa). Parse the token straight out of the raw
 		// CSS source so the test doesn't depend on the global stylesheet
 		// being loaded into the document.
-		const match = /--primitives-transition-duration-slow\s*:\s*(\d+)ms/.exec(settingsCss);
-		expect(match, 'token declaration not found in settings.css').not.toBeNull();
+		const match = /--primitives-transition-duration-slow\s*:\s*(\d+)ms/.exec(variablesCss);
+		expect(match, 'token declaration not found in variables.css').not.toBeNull();
 		const tokenMs = Number(match![1]);
 		expect(tokenMs).toBe(INDETERMINATE_TRANSITION_MS);
 	});

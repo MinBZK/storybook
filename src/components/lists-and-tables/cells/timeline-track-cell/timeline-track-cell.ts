@@ -24,9 +24,10 @@
  *
  * @slot - Eigen inhoud in de stip (alternatief voor `text` en `icon`)
  */
-import { LitElement } from 'lit';
+import { LitElement, type PropertyValues } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
 import { reflectNonDefault } from '../../../../utilities/reflect-non-default.js';
+import { VisibilityMixin } from '../../../../utilities/visibility-mixin.js';
 import { timelineTrackCellStyles } from './timeline-track-cell.styles.js';
 import { timelineTrackCellTemplate } from './timeline-track-cell.template.js';
 import '../../../content/icon/icon.js';
@@ -37,7 +38,7 @@ type Direction = 'down' | 'up';
 type Position = 'first' | 'between' | 'last';
 
 @customElement('nldd-timeline-track-cell')
-export class NLDDTimelineTrackCell extends LitElement {
+export class NLDDTimelineTrackCell extends VisibilityMixin(LitElement, 'cells-container') {
 	static override styles = timelineTrackCellStyles;
 
 	@property({ reflect: true, converter: reflectNonDefault<Status>('past') })
@@ -77,7 +78,8 @@ export class NLDDTimelineTrackCell extends LitElement {
 
 	private _warnedContent = false;
 
-	override updated(): void {
+	override updated(changed: PropertyValues): void {
+		super.updated(changed);
 		if (!import.meta.env?.DEV) return;
 		const ignored = !this.showsContent && Boolean(this.text || this.icon);
 		if (ignored && !this._warnedContent) {

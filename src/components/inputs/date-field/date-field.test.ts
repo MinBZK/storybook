@@ -314,11 +314,31 @@ describe('nldd-date-field', () => {
 
 	// # Kalender
 
+	// De focusring van de knop draagt een halo van 6px die precies op de border
+	// van het veld hoort te landen. Een overflow-clip op het veld kapte die halo
+	// af op de padding box en liet de border er dwars doorheen lopen; er valt
+	// zonder clip niets te ontsnappen, dus het veld knipt niet.
+	it('knipt de focusring van de kalenderknop niet af', async () => {
+		el = await fixture<NLDDDateField>('<nldd-date-field></nldd-date-field>');
+		await waitForUpdate(el);
+		const wrap = el.shadowRoot!.querySelector('.date-field') as HTMLElement;
+		expect(getComputedStyle(wrap).overflow).toBe('visible');
+	});
+
 	it('toont de kalenderknop standaard', async () => {
 		el = await fixture<NLDDDateField>('<nldd-date-field></nldd-date-field>');
 		await waitForUpdate(el);
 		expect(pickerButton(el)).not.toBeNull();
 		expect(popover(el)).not.toBeNull();
+	});
+
+	// De popover hangt aan de kalenderknop, en die staat aan het einde van het
+	// veld. Met bottom-start liep de kalender naar rechts weg en raakte hij het
+	// veld nauwelijks; bottom-end legt hem onder de invoer.
+	it('klapt de kalender naar links open, onder het veld', async () => {
+		el = await fixture<NLDDDateField>('<nldd-date-field></nldd-date-field>');
+		await waitForUpdate(el);
+		expect(popover(el)!.getAttribute('placement')).toBe('bottom-end');
 	});
 
 	it('verbergt de kalender met no-picker', async () => {

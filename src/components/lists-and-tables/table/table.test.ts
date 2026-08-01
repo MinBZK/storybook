@@ -1,5 +1,5 @@
 import { describe, it, expect, afterEach, vi } from 'vitest';
-import { fixture, cleanup, waitForUpdate, nextFrames } from '../../../test-utils.js';
+import { fixture, cleanup, waitForUpdate, nextFrames, installUniversalReset } from '../../../test-utils.js';
 import type { NLDDTable, NLDDTableRow } from './table.js';
 import './table.js';
 import '../cells/cell/cell.js';
@@ -324,5 +324,30 @@ describe('nldd-table-row', () => {
 		await waitForUpdate(el);
 		expect((el as unknown as NLDDTableRow).selected).toBe(true);
 		expect(el.hasAttribute('selected')).toBe(true);
+	});
+});
+
+describe('nldd-table-row onder een universele reset', () => {
+	let el: HTMLElement;
+	let removeReset: () => void;
+
+	afterEach(() => {
+		removeReset();
+		if (el) cleanup(el);
+	});
+
+	it('behoudt de rijdivider en de inline padding', async () => {
+		removeReset = installUniversalReset('preflight');
+		el = await fixture(`
+			<div style="--semantics-tables-border-width: 2px; --semantics-tables-border-color: black; --semantics-tables-row-padding-inline: 16px;">
+				<nldd-table-row></nldd-table-row>
+				<span></span>
+			</div>
+		`);
+		const row = el.querySelector('nldd-table-row') as HTMLElement;
+		await waitForUpdate(row);
+		const style = getComputedStyle(row);
+		expect(style.borderBottomWidth).toBe('2px');
+		expect(style.paddingLeft).toBe('16px');
 	});
 });

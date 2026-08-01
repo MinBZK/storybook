@@ -285,6 +285,42 @@ export const Table = {
 	`,
 };
 
+export const Codeblok = {
+	args: { spacing: 'snug' },
+	render: (args: Record<string, any>) => html`
+		<div style="max-width: 560px;">
+		<nldd-rich-text spacing=${args.spacing} ?centered=${args.centered} color=${args.color || nothing}>
+				<h3>Codeblok</h3>
+				<p>Een markdown-renderer levert een fenced block als <code>&lt;pre&gt;&lt;code&gt;</code> aan. Het kader zit op de <code>pre</code>, de chip blijft voor inline code.</p>
+				<pre><code>const toeslag = berekenZorgtoeslag(inkomen);
+if (toeslag > 0) {
+  console.log(toeslag);
+}</code></pre>
+				<p>Een regel die niet past scrollt binnen het blok in plaats van de kaart eromheen op te rekken.</p>
+				<pre><code>const uitkomst = await client.evalueer('zorgtoeslag', { toetsingsinkomen: 24000, vermogen: 0, partner: false });</code></pre>
+				<p>Zonder <code>&lt;code&gt;</code> is <code>pre</code> preformatted tekst die geen code is:</p>
+				<pre>zorgtoeslag
+├── toetsingsinkomen
+└── vermogen</pre>
+			</nldd-rich-text>
+		</div>
+	`,
+};
+
+export const CodeblokOpTinted = {
+	name: 'Codeblok op tinted vlak',
+	args: { spacing: 'snug' },
+	render: (args: Record<string, any>) => html`
+		<div style="max-width: 420px; padding: 16px; border-radius: 12px; background: var(--semantics-surfaces-tinted-background-color);">
+			<nldd-rich-text spacing=${args.spacing} ?centered=${args.centered} color=${args.color || nothing}>
+				<p>Het blok heeft dezelfde achtergrond als dit vlak, dus alleen de ring scheidt de twee.</p>
+				<pre><code>const a = 1;
+const b = 2;</code></pre>
+			</nldd-rich-text>
+		</div>
+	`,
+};
+
 export const Divider = {
 	args: { spacing: 'snug' },
 	render: (args: Record<string, any>) => html`

@@ -103,13 +103,38 @@ export class NLDDCollection extends LitElement {
 	private _scrollListener = (): void => {
 		const el = this._itemsEl;
 		if (!el) return;
+		const wasAtStart = this._atStart;
+		const wasAtEnd = this._atEnd;
 		this._atStart = el.scrollLeft < 1;
 		this._atEnd = el.scrollLeft + el.clientWidth >= el.scrollWidth - 1;
 		/* Track overflow so the template can make the scroll container
 		 * keyboard-focusable. Without focus, arrow-key users can't scroll
 		 * a non-focusable region (WCAG 2.1.1). */
 		this._isScrollable = el.scrollWidth > el.clientWidth;
+
+		if (!wasAtStart && this._atStart) this._handOffControlFocus('previous');
+		if (!wasAtEnd && this._atEnd) this._handOffControlFocus('next');
 	};
+
+	/* A keyboard user who scrolls to an end disables the control they are
+	 * standing on, and a disabled control cannot hold focus: the browser drops
+	 * focus to the body and the next Tab restarts at the top of the page. Hand
+	 * focus to the sibling control instead — it sits right next to the one
+	 * being disabled and is by definition usable at that end. */
+	private _handOffControlFocus(disabling: 'previous' | 'next'): void {
+		const controls = this.shadowRoot?.querySelectorAll<HTMLElement>('nldd-icon-button');
+		if (!controls || controls.length < 2) return;
+		const [previous, next] = controls;
+		const losing = disabling === 'previous' ? previous : next;
+		if (this.shadowRoot?.activeElement !== losing) return;
+
+		const target = disabling === 'previous' ? next : previous;
+		// Focus only lands once the disabled attribute has been rendered, and
+		// only if the sibling did not become disabled in the same update.
+		void this.updateComplete.then(() => {
+			if (!(target as HTMLElement & { disabled?: boolean }).disabled) target.focus();
+		});
+	}
 
 	@query('nldd-button.load-more')
 	private _loadMoreBtn!: HTMLElement | null;
@@ -225,11 +250,36 @@ export class NLDDCollection extends LitElement {
 		return this._visibleCount < this._totalCount;
 	}
 
+	/* Scroll to an item edge, not by a fixed distance. The last scroll position
+	 * is wherever the content ends, which is rarely a whole number of items, so
+	 * stepping by item + gap from there keeps that remainder forever and every
+	 * item lands clipped. Snapping to the next edge in the given direction puts
+	 * an item flush against the padded start again. */
 	_scrollBy(direction: 1 | -1): void {
-		const slot = this._itemsEl?.querySelector('slot') as HTMLSlotElement | null;
-		const firstItem = slot?.assignedElements()[0] as HTMLElement | undefined;
-		const itemWidth = firstItem?.offsetWidth ?? 280;
-		this._itemsEl?.scrollBy({ left: direction * (itemWidth + 16), behavior: 'smooth' });
+		const el = this._itemsEl;
+		if (!el) return;
+		const slot = el.querySelector('slot') as HTMLSlotElement | null;
+		const items = (slot?.assignedElements() ?? []) as HTMLElement[];
+		if (items.length === 0) return;
+
+		// Item starts in scroll coordinates, offset by the scroll padding so a
+		// target matches where scroll-snap parks the item.
+		const scrollerLeft = el.getBoundingClientRect().left;
+		const inset = parseFloat(getComputedStyle(el).scrollPaddingInlineStart) || 0;
+		const starts = items.map(item =>
+			Math.round(item.getBoundingClientRect().left - scrollerLeft + el.scrollLeft - inset),
+		);
+
+		// Sub-pixel layout means the current position is never exactly an item
+		// start, so ignore edges within a pixel of where we already are.
+		const epsilon = 2;
+		const current = el.scrollLeft;
+		const target = direction === 1
+			? starts.find(start => start > current + epsilon)
+			: starts.filter(start => start < current - epsilon).pop();
+		if (target === undefined) return;
+
+		el.scrollTo({ left: target, behavior: 'smooth' });
 	}
 
 	override render() {

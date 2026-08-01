@@ -9,8 +9,15 @@ laad hem als module.
 ```js
 // main.js, één keer bij het opstarten
 import '@nldd/design-system';        // registreert alle nldd-* componenten
-import '@nldd/design-system/styles'; // tokens + Rijksoverheid-fonts
+import '@nldd/design-system/styles'; // CSS-variabelen + Rijksoverheid-fonts
 ```
+
+RijksSans is uitsluitend bestemd voor publicaties van de Rijksoverheid en voor
+partijen die in haar opdracht werken, zie
+[`NOTICES.md`](https://github.com/MinBZK/storybook/blob/main/NOTICES.md). Bouw
+je iets daarbuiten, importeer dan `@nldd/design-system/styles/system-font`:
+dezelfde stylesheet zonder de `@font-face`-regels, waarna de familie-stacks
+vanzelf op een systeemfont uitkomen.
 
 ```html
 <script type="module" src="/main.js"></script>
@@ -18,8 +25,9 @@ import '@nldd/design-system/styles'; // tokens + Rijksoverheid-fonts
 
 ## Minimale pagina
 
-`nldd-app-view` is de app-shell: hij zet de kleurschema-context en de fonts.
-Plaats je inhoud erin.
+`nldd-app-view` is de app-shell: hij zet de kleurschema-context. De
+documenttypografie komt uit de stylesheet, die de `body` het documentfont geeft
+zodra er een app-view op de pagina staat. Plaats je inhoud erin.
 
 ```html
 <nldd-app-view>
@@ -65,7 +73,7 @@ Let op:
   omliggende `<form>` aan, ook over de shadow-grens heen.
 - **Geen inline styles.** Wil je ruimte rond de inhoud sturen, gebruik dan
   `nldd-container` (padding) en `nldd-spacer` (verticale ruimte), of je eigen
-  CSS met `--primitives-*` tokens.
+  CSS met `--primitives-*` variabelen.
 
 ## Een native select in een dropdown
 

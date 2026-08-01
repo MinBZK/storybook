@@ -56,9 +56,9 @@ Voorkeursvolgorde: components → semantics → primitives.
 
 CSS variabelen worden gevalideerd tijdens de build (`npm run validate:styles`):
 
-- `--context-*` — Niet gevalideerd, niet in settings.css
+- `--context-*` — Niet gevalideerd, niet in variables.css
 - `--_*` — Gevalideerd binnen hetzelfde bestand
-- `--primitives-*`, `--semantics-*`, `--components-*` — Gevalideerd tegen settings.css
+- `--primitives-*`, `--semantics-*`, `--components-*` — Gevalideerd tegen variables.css
 
 Geen fallbacks. CI faalt als variabelen ontbreken.
 

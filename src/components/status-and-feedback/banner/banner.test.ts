@@ -1,5 +1,5 @@
 import { describe, it, expect, afterEach } from 'vitest';
-import { fixture, cleanup, waitForUpdate } from '../../../test-utils.js';
+import { fixture, cleanup, waitForUpdate, installUniversalReset } from '../../../test-utils.js';
 import type { NLDDBanner } from './banner.js';
 import './banner.js';
 
@@ -192,5 +192,29 @@ describe('nldd-banner', () => {
 		await waitForUpdate(el);
 		const content = el.shadowRoot!.querySelector<HTMLElement>('.banner__content')!;
 		expect(content.hasAttribute('hidden')).toBe(false);
+	});
+});
+
+describe('nldd-banner onder een universele reset', () => {
+	let el: HTMLElement;
+	let removeReset: () => void;
+
+	afterEach(() => {
+		removeReset();
+		if (el) cleanup(el);
+	});
+
+	it('behoudt de padding rond de inhoud', async () => {
+		removeReset = installUniversalReset();
+		el = await fixture(`
+			<div style="--components-banner-padding: 12px;">
+				<nldd-banner text="Let op"></nldd-banner>
+			</div>
+		`);
+		const banner = el.querySelector('nldd-banner') as HTMLElement;
+		await waitForUpdate(banner);
+		const icon = banner.shadowRoot!.querySelector('.banner__icon')!;
+		const offset = icon.getBoundingClientRect().left - banner.getBoundingClientRect().left;
+		expect(offset).toBe(12);
 	});
 });

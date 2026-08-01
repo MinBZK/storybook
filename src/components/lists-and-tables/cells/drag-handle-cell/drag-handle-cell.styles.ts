@@ -14,7 +14,8 @@ export const dragHandleCellStyles = css`
 		--_height: var(--semantics-controls-md-min-size);
 
 		display: inline-flex;
-		padding-block: var(--context-cell-padding-block, 0px);
+		/* !important: shields the row padding from consumer universal resets, which beat normal :host declarations per CSS Scoping. */
+		padding-block: var(--context-cell-padding-block, 0px) !important;
 		cursor: grab;
 		width: fit-content;
 		align-items: center;

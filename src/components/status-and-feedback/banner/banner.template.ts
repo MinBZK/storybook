@@ -14,43 +14,45 @@ export function bannerTemplate(component: NLDDBanner) {
 		}
 	};
 	return html`
-		<div class="banner__icon"
-			aria-hidden="true"
-		>
-			<nldd-icon name=${component._resolvedIcon}></nldd-icon>
-		</div>
-		<div class="banner__main">
-			${component.text || component.supportingText ? html`
-				<div class="banner__heading">
-					${component.text ? heading(component.text) : nothing}
-					${component.supportingText ? html`
-						<p class="banner__supporting-text">${component.supportingText}</p>
-					` : nothing}
+		<div class="banner">
+			<div class="banner__icon"
+				aria-hidden="true"
+			>
+				<nldd-icon name=${component._resolvedIcon}></nldd-icon>
+			</div>
+			<div class="banner__main">
+				${component.text || component.supportingText ? html`
+					<div class="banner__heading">
+						${component.text ? heading(component.text) : nothing}
+						${component.supportingText ? html`
+							<p class="banner__supporting-text">${component.supportingText}</p>
+						` : nothing}
+					</div>
+				` : nothing}
+				<div class="banner__content"
+					?hidden=${!component._hasContent}
+				>
+					<slot></slot>
+				</div>
+				<div class="banner__actions"
+					?hidden=${!component._hasActions}
+				>
+					<nldd-button-group orientation="horizontal">
+						<slot name="actions"></slot>
+					</nldd-button-group>
+				</div>
+			</div>
+			${component.dismissible ? html`
+				<div class="banner__dismiss-button">
+					<nldd-icon-button
+						icon="dismiss-small"
+						variant="neutral-transparent"
+						size="md"
+						accessible-label=${component._t('components.banner.dismiss-action')}
+						@click=${component._onDismissClick}
+					></nldd-icon-button>
 				</div>
 			` : nothing}
-			<div class="banner__content"
-				?hidden=${!component._hasContent}
-			>
-				<slot></slot>
-			</div>
-			<div class="banner__actions"
-				?hidden=${!component._hasActions}
-			>
-				<nldd-button-group orientation="horizontal">
-					<slot name="actions"></slot>
-				</nldd-button-group>
-			</div>
 		</div>
-		${component.dismissible ? html`
-			<div class="banner__dismiss-button">
-				<nldd-icon-button
-					icon="dismiss-small"
-					variant="neutral-transparent"
-					size="md"
-					accessible-label=${component._t('components.banner.dismiss-action')}
-					@click=${component._onDismissClick}
-				></nldd-icon-button>
-			</div>
-		` : nothing}
 	`;
 }

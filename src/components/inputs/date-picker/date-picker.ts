@@ -108,6 +108,15 @@ function withYear(iso: string, year: number): string {
 	return toIso(year, month, Math.min(day, lastDay)) ?? iso;
 }
 
+function withMonth(iso: string, month: number): string {
+	const year = Number(iso.slice(0, 4));
+	const day = Number(iso.slice(8, 10));
+	// 31 January to February keeps the day it can reach, the same way withYear
+	// handles 29 February in a common year.
+	const lastDay = new Date(Date.UTC(year, month, 0)).getUTCDate();
+	return toIso(year, month, Math.min(day, lastDay)) ?? iso;
+}
+
 function clampIso(iso: string, min: string, max: string): string {
 	if (min && iso < min) return min;
 	if (max && iso > max) return max;
@@ -176,6 +185,9 @@ export class NLDDDatePicker extends withTranslations<NLDDDatePickerTranslations>
 	_announcement = '';
 
 	@state()
+	_monthMenuOpen = false;
+
+	@state()
 	_yearMenuOpen = false;
 
 	/**
@@ -198,18 +210,27 @@ export class NLDDDatePicker extends withTranslations<NLDDDatePickerTranslations>
 		this._stacked = Boolean(this._stackedQuery?.matches);
 	};
 
+	public async _handleMonthMenuToggle(e: Event): Promise<void> {
+		this._monthMenuOpen = (e as ToggleEvent).newState === 'open';
+		if (this._monthMenuOpen) await this._openMenuOnSelection('.date-picker__month-menu');
+	}
+
 	public async _handleYearMenuToggle(e: Event): Promise<void> {
 		this._yearMenuOpen = (e as ToggleEvent).newState === 'open';
-		if (!this._yearMenuOpen) return;
+		if (this._yearMenuOpen) await this._openMenuOnSelection('.date-picker__year-menu');
+	}
+
+	private async _openMenuOnSelection(selector: string): Promise<void> {
 		// The menu sets its own focus after its update resolves, so waiting for that
 		// first is what keeps it from overwriting the line below.
-		const menu = this.shadowRoot?.querySelector('nldd-menu') as (HTMLElement & { updateComplete?: Promise<unknown> }) | null;
+		const menu = this.shadowRoot?.querySelector(selector) as (HTMLElement & { updateComplete?: Promise<unknown> }) | null;
 		await menu?.updateComplete;
-		// The list runs to a hundred years or more, and the menu starts on its first
-		// item - so an arrow key walks a century back from the year you are actually
-		// looking at. Move to the year in view instead, and scroll it into sight.
+		// The year list runs to a hundred years or more, and the menu starts on its
+		// first item - so an arrow key walks a century back from the year you are
+		// actually looking at. Move to the entry in view instead, and scroll it into
+		// sight. The month list is shorter but wants the same behaviour.
 		const focusSelected = (): void => {
-			const selected = this.shadowRoot?.querySelector<HTMLElement>('nldd-menu-item[selected]');
+			const selected = menu?.querySelector<HTMLElement>('nldd-menu-item[selected]');
 			if (!selected || this.shadowRoot?.activeElement === selected) return;
 			// Both of these scroll every scrollable ancestor by default, and the page
 			// is one of them - opening the menu would shift what is behind it.
@@ -282,9 +303,10 @@ export class NLDDDatePicker extends withTranslations<NLDDDatePickerTranslations>
 		// link to the anchor component - nldd-button sets that up via `expandable` -
 		// which a plain button does not do, so without this the title never opens
 		// anything.
-		const menu = this.shadowRoot?.querySelector('nldd-menu') as (HTMLElement & { anchorElement?: Element | null }) | null;
-		const title = this.shadowRoot?.querySelector('.date-picker__title-button') as HTMLButtonElement | null;
-		if (menu && title) {
+		for (const part of ['month', 'year'] as const) {
+			const menu = this.shadowRoot?.querySelector(`.date-picker__${part}-menu`) as (HTMLElement & { anchorElement?: Element | null }) | null;
+			const title = this.shadowRoot?.querySelector(`.date-picker__title-${part}-button`) as HTMLButtonElement | null;
+			if (!menu || !title) continue;
 			if (menu.anchorElement !== title) menu.anchorElement = title;
 			if (title.popoverTargetElement !== menu) title.popoverTargetElement = menu;
 		}
@@ -388,28 +410,65 @@ export class NLDDDatePicker extends withTranslations<NLDDDatePickerTranslations>
 	}
 
 	/**
+	 * Months offered in the title menu, bounded by min and max the way the year
+	 * list is. Without this the menu lists twelve months while a bound quietly
+	 * clamps eleven of them back to the one you were already on.
+	 *
+	 * The arrows page the view past a bound (only the focused day is clamped), so
+	 * the month on screen is not necessarily one you can choose. It is left out
+	 * when it falls outside, and the menu then shows no selection - which is the
+	 * truth: you are looking at a month this calendar will not accept.
+	 */
+	public get _months(): number[] {
+		const minYear = this._min ? Number(this._min.slice(0, 4)) : null;
+		const maxYear = this._max ? Number(this._max.slice(0, 4)) : null;
+		// Paged a whole year past a bound: no month of this view year is
+		// choosable, so there is nothing to offer. Comparing only the month
+		// numbers here would fall back to all twelve, one falsely selected.
+		if (minYear !== null && this._viewYear < minYear) return [];
+		if (maxYear !== null && this._viewYear > maxYear) return [];
+		const first = minYear === this._viewYear ? Number(this._min.slice(5, 7)) : 1;
+		const last = maxYear === this._viewYear ? Number(this._max.slice(5, 7)) : 12;
+		if (last < first) return [];
+		return Array.from({ length: last - first + 1 }, (_, i) => first + i);
+	}
+
+	/**
 	 * Years offered in the title menu. Bounded by min and max where they are set,
 	 * because those already say which years can be reached; without them a window
 	 * wide enough for a birthdate on one side and for planning on the other.
 	 */
 	public get _years(): number[] {
 		const current = Number(todayIso().slice(0, 4));
-		let first = this._min ? Number(this._min.slice(0, 4)) : current - 120;
-		let last = this._max ? Number(this._max.slice(0, 4)) : current + 20;
-		// The year on screen must always be in the list, or the menu would show no
-		// selection at all after paging past the edge of the window.
-		first = Math.min(first, this._viewYear);
-		last = Math.max(last, this._viewYear);
+		// A bound is a hard edge and stays where it is. The default window is an
+		// arbitrary one, so it stretches to whatever year the arrows reached rather
+		// than leaving the menu without a selection.
+		const first = this._min ? Number(this._min.slice(0, 4)) : Math.min(current - 120, this._viewYear);
+		const last = this._max ? Number(this._max.slice(0, 4)) : Math.max(current + 20, this._viewYear);
+		if (last < first) return [];
 		return Array.from({ length: last - first + 1 }, (_, i) => first + i);
+	}
+
+	public _handleMonthSelect(month: number): void {
+		this._view = firstOfMonth(clampIso(withMonth(this._view, month), this._min, this._max));
+		this._focused = clampIso(withMonth(this._focused, month), this._min, this._max);
+		this._restoreFocus = Boolean(this._focusedCell());
+		this._closeMenu('.date-picker__month-menu');
 	}
 
 	public _handleYearSelect(year: number): void {
 		this._view = firstOfMonth(clampIso(withYear(this._view, year), this._min, this._max));
 		this._focused = clampIso(withYear(this._focused, year), this._min, this._max);
 		this._restoreFocus = Boolean(this._focusedCell());
-		// Radio items keep their menu open, which is right when you are ticking
-		// several - but here one year is the whole answer.
-		const menu = this.shadowRoot?.querySelector('nldd-menu') as (HTMLElement & { hidePopover?: () => void }) | null;
+		this._closeMenu('.date-picker__year-menu');
+	}
+
+	/**
+	 * Radio items keep their menu open, which is right when you are ticking
+	 * several - but here one month or one year is the whole answer.
+	 */
+	private _closeMenu(selector: string): void {
+		const menu = this.shadowRoot?.querySelector(selector) as (HTMLElement & { hidePopover?: () => void }) | null;
 		if (menu?.matches(':popover-open')) menu.hidePopover?.();
 	}
 
@@ -418,9 +477,8 @@ export class NLDDDatePicker extends withTranslations<NLDDDatePickerTranslations>
 	 * sentence-initial one of a heading, not a proper noun. The translation itself
 	 * stays lower case because it is reused mid-sentence in the day labels.
 	 */
-	public get _title(): string {
-		const month = this._t(`components.date-picker.${MONTH_KEYS[this._viewMonth - 1]}-capitalize` as keyof NLDDDatePickerTranslations);
-		return `${month} ${this._viewYear}`;
+	public get _monthLabel(): string {
+		return this._t(`components.date-picker.${MONTH_KEYS[this._viewMonth - 1]}-capitalize` as keyof NLDDDatePickerTranslations);
 	}
 
 	// — Cell state ———————————————————————————————————————————————————————————
@@ -510,10 +568,12 @@ export class NLDDDatePicker extends withTranslations<NLDDDatePickerTranslations>
 		const next = addMonths(this._view, months);
 		this._view = next;
 		// Keep the roving tabindex on an equivalent day in the new month so the
-		// keyboard does not jump back to the 1st on every month change.
+		// keyboard does not jump back to the 1st on every month change. Only the
+		// tabindex: focus stays on the arrow that was activated, so paging twice
+		// is pressing the same control twice. Keyboard paging from inside the
+		// grid (PageUp/PageDown) runs through _moveFocus, which does re-focus.
 		const day = Math.min(Number(this._focused.slice(8, 10)), Number(lastOfMonth(next).slice(8, 10)));
 		this._focused = clampIso(`${next.slice(0, 7)}-${String(day).padStart(2, '0')}`, this._min, this._max);
-		this._restoreFocus = Boolean(this._focusedCell());
 	}
 
 	private _moveFocus(iso: string): void {
@@ -753,7 +813,6 @@ export class NLDDDatePicker extends withTranslations<NLDDDatePickerTranslations>
 		const today = todayIso();
 		this._view = firstOfMonth(today);
 		this._focused = today;
-		this._restoreFocus = Boolean(this._focusedCell());
 	}
 
 	override render() {

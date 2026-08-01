@@ -7,7 +7,7 @@
  * Token categories:
  * - --context-* : Context variables shared between components (SKIPPED)
  * - --_* : Internal variables (validated within same file)
- * - --components-*, --semantics-*, --primitives-* : CSS variables (validated against settings.css)
+ * - --components-*, --semantics-*, --primitives-* : CSS variables (validated against variables.css)
  */
 
 import fs from 'fs';
@@ -20,8 +20,8 @@ const ROOT_DIR = path.resolve(__dirname, '..');
 
 // Configuration
 const STYLES_FILES = [
-  path.join(ROOT_DIR, 'src/assets/styles/settings.css'),
-  path.join(ROOT_DIR, 'src/assets/styles/palettes.generated.css'),
+  path.join(ROOT_DIR, 'src/assets/styles/variables.css'),
+  path.join(ROOT_DIR, 'src/assets/styles/colors.generated.css'),
 ];
 const COMPONENTS_DIR = path.join(ROOT_DIR, 'src/components');
 
@@ -30,7 +30,7 @@ const VAR_USAGE_PATTERN = /var\(\s*(--[\w-]+)/g;
 const VAR_DEFINITION_PATTERN = /(--[\w-]+)\s*:/g;
 
 /**
- * Parse settings.css to extract all defined CSS variables
+ * Parse variables.css to extract all defined CSS variables
  */
 function parseStylesFile(filePath) {
   if (!fs.existsSync(filePath)) {
@@ -197,13 +197,13 @@ function validate() {
           break;
 
         case 'style':
-          // CSS variables must exist in settings.css
+          // CSS variables must exist in variables.css
           stats.styleVars++;
           if (!variables.has(varName)) {
             errors.push({
               file: relativePath,
               variable: varName,
-              message: `Variable "${varName}" is not defined in settings.css`,
+              message: `Variable "${varName}" is not defined in variables.css`,
             });
           }
           break;

@@ -41,6 +41,11 @@ function renderValidationIcon(component: NLDDDateField): TemplateResult | typeof
  * The native one could not be closed in Safari: it ties dismissal to the input,
  * and that input has to be invisible for the button beside it to be the only
  * control.
+ *
+ * It hangs off the trigger, which sits at the end of the field, so bottom-start
+ * would run the calendar out to the right and leave it barely touching the field
+ * it belongs to. bottom-end lands it under the input instead; against the left
+ * edge of the screen Floating UI falls back to opening rightward on its own.
  */
 function renderPicker(component: NLDDDateField): TemplateResult | typeof nothing {
 	if (component.noPicker) return nothing;
@@ -58,6 +63,7 @@ function renderPicker(component: NLDDDateField): TemplateResult | typeof nothing
 			></nldd-icon-button>
 			<nldd-popover
 				accessible-label=${component._pickerLabel}
+				placement="bottom-end"
 				width=${component._pickerPopoverWidth}
 				@toggle=${component._handlePopoverToggle}
 			>

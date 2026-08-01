@@ -1,5 +1,5 @@
 import { css } from 'lit';
-import { inheritedTextReset } from '../../../assets/styles/style-resets.js';
+import { inheritedTextReset } from '../../../assets/styles/shadow-resets.js';
 
 export const progressBarStyles = css`
 	:host {
@@ -370,10 +370,21 @@ export const progressBarSegmentIndicatorStyles = css`
 	}
 
 
+	/* # Block
+	   Full-bleed inner box; carries what must not sit on :host, like the
+	   forced-colors outline below. */
+
+	.progress-bar__segment-indicator {
+		position: absolute;
+		inset: 0;
+		border-radius: inherit;
+	}
+
+
 	/* # Hover area (tooltip trigger)
 	   Fills the segment; captures hover/focus for the wrapping nldd-tooltip. */
 
-	.progress-bar-segment-indicator__tooltip-area {
+	.progress-bar__segment-indicator-tooltip-area {
 		display: block;
 		position: absolute;
 		inset: 0;
@@ -391,6 +402,12 @@ export const progressBarSegmentIndicatorStyles = css`
 	@media (forced-colors: active) {
 		:host {
 			background-color: CanvasText;
+		}
+
+		/* box-shadow is stripped in forced-colors, so a real border draws the
+		   segment outline. It sits on the block element instead of :host, out
+		   of reach of consumer universal resets. */
+		.progress-bar__segment-indicator {
 			border: 1px solid CanvasText;
 		}
 	}

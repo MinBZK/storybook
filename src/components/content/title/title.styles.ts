@@ -1,6 +1,6 @@
 import { css, unsafeCSS } from 'lit';
 import { breakpoints } from '../../../assets/styles/breakpoints.js';
-import { slottedReset, inheritedTextReset } from '../../../assets/styles/style-resets.js';
+import { slottedReset, inheritedTextReset } from '../../../assets/styles/shadow-resets.js';
 
 const smMax = unsafeCSS(breakpoints.smMax);
 const mdMin = unsafeCSS(breakpoints.mdMin);
@@ -210,14 +210,22 @@ export const titleStyles = css`
 		overflow-wrap: anywhere !important;
 	}
 
+	/* balance, not pretty: a heading is a handful of words, so evening out the
+	   line lengths reads better than only protecting the last line.
+	 *
+	 * The measure is in ch, so one value covers every size: ch scales with the
+	 * font, and 40 characters stays 40 characters whether the title is 18px or
+	 * 52px. It only bites in a wide container — inside a card or a column the
+	 * box is already narrower than the cap. */
 	::slotted(:not([slot])) {
 		${slottedReset}
 		${inheritedTextReset}
 		margin: 0 !important;
+		max-width: 40ch !important;
 		color: var(--semantics-content-color) !important;
 		font: var(--_font) !important;
 		overflow-wrap: anywhere !important;
-		text-wrap: pretty !important;
+		text-wrap: balance !important;
 	}
 
 	::slotted([slot="subtitle"]) {

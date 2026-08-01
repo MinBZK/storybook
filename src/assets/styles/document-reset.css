@@ -1,0 +1,16 @@
+@layer reset {
+	html:has(nldd-app-view),
+	html:has(nldd-app-view) body {
+		margin: 0;
+		height: 100%;
+	}
+
+	/* Components set their own typography inside their shadow root, but text the
+	   consumer writes in the light DOM fell back to the browser default, so every
+	   app solved it with its own `body { font: … }`, each one slightly different.
+	   Inside @layer reset, so any consumer rule beats it without effort. */
+	html:has(nldd-app-view) body {
+		font: var(--primitives-font-body-md-regular-snug);
+		color: var(--semantics-content-color);
+	}
+}

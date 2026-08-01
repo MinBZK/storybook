@@ -13,7 +13,8 @@ export const iconCellStyles = css`
 		--_content-color: var(--context-content-color, var(--semantics-content-color));
 
 		display: flex;
-		padding-block: var(--context-cell-padding-block, 0px);
+		/* !important: shields the row padding from consumer universal resets, which beat normal :host declarations per CSS Scoping. */
+		padding-block: var(--context-cell-padding-block, 0px) !important;
 		width: var(--_size);
 		flex-direction: column;
 		align-items: center;

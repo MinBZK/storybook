@@ -182,7 +182,7 @@ selector — ook tussen twee opeenvolgende `@media` of twee opeenvolgende
 
 ## Wanneer welke breakpoint-bereiken
 
-Gebruik altijd de bestaande tokens uit `src/assets/styles/breakpoints.ts`:
+Gebruik altijd de bestaande waardes uit `src/assets/styles/breakpoints.ts`:
 
 - `smMax` (640px) — kleinste viewport
 - `mdMin` (641px) — vanaf medium
@@ -283,6 +283,25 @@ De convention is **niet** van toepassing hier — de base (`column`) is een
 universele default die overal geldt tenzij de state-selector matcht. Dit
 mag zo blijven.
 
+## Host-layout is niet van jou: wrapper of `!important`
+
+Outer-document-regels die het host-element matchen (een consumer-reset als
+`* { margin: 0; padding: 0; border: 0 }`) verslaan elke normale
+`:host`-declaratie, ongeacht specificiteit (CSS Scoping: bij normale
+declaraties wint de buitenste context). Zet margin, padding en border met
+een niet-nulwaarde daarom niet kaal op `:host`:
+
+1. **Voorkeur**: het visuele kader op een wrapper-element in de shadow root.
+   Marges kunnen mee zodra de host `flow-root` is (eigen formatting context),
+   en een query-container kan mee zolang de padding meeverhuist.
+2. **Kan het niet naar binnen** (negatieve margins, subgrid-deelnemers) →
+   `!important` op de host-declaratie, met een comment. Elke andere
+   host-rule op dezelfde property moet dan mee in `!important`.
+
+`npm run validate:host-styles` (onderdeel van de build) bewaakt dit.
+Zie de component-skill (SLOTTED CONTENT & HOST-CSS ISOLATIE) voor het
+volledige verhaal.
+
 ## Geen overbodige comments
 
 CSS-properties spreken voor zichzelf. Comments alleen voor het uitleggen
@@ -294,7 +313,7 @@ doet (bv. "padding per breakpoint" boven een blok met padding-rules).
 
 - [ ] Geen base-waarde voor een property die ook in een `@media`/`@container` voorkomt
 - [ ] Breakpoint-bereiken zijn MECE: elke viewport in precies één query (collectively exhaustive — geen viewport zonder waarde; mutually exclusive — geen overlap/override)
-- [ ] Breakpoints gebruiken de tokens uit `breakpoints.ts`
+- [ ] Breakpoints gebruiken de waardes uit `breakpoints.ts`
 - [ ] Bereiken sluiten op elkaar aan (640/641, 1007/1008) — geen gat of overlap
 - [ ] `@container` waar mogelijk, `@media` als fallback
 - [ ] At-rules genest binnen de selector — niet op top-level gehoist
@@ -303,4 +322,5 @@ doet (bv. "padding per breakpoint" boven een blok met padding-rules).
 - [ ] Lokale CSS-variabelen bovenaan `:host`, witregel tussen vars en properties
 - [ ] Non-responsieve properties blijven in de base regel — niet onnodig in queries herhaald
 - [ ] State-conditional overrides (state + breakpoint combo) blijven met base default
+- [ ] Geen margin/padding/border met niet-nulwaarde kaal op `:host` — wrapper of `!important` (validate:host-styles bewaakt dit)
 - [ ] Geen overbodige uitleg-comments

@@ -1,7 +1,7 @@
 import { html, nothing, TemplateResult } from 'lit';
 import { classMap } from 'lit/directives/class-map.js';
 import type { NLDDDatePicker } from './date-picker.js';
-import { WEEKDAY_KEYS } from './date-picker.i18n.js';
+import { WEEKDAY_KEYS, MONTH_KEYS } from './date-picker.i18n.js';
 import type { NLDDDatePickerTranslations } from './date-picker.i18n.js';
 import './../../actions/icon-button/icon-button.js';
 import './../../actions/button/button.js';
@@ -11,60 +11,96 @@ import './../../actions/menu/menu.js';
 const TITLE_ID = 'date-picker-title';
 
 /**
+ * One part of the heading. With a single reachable month or year the chevron and
+ * its menu are dropped: a menu that opens to confirm the only thing you already
+ * know is worse than no menu, and the affordance promises a choice that is not
+ * there.
+ */
+function renderTitlePart(
+	component: NLDDDatePicker,
+	part: 'month' | 'year',
+	label: string,
+	choices: number,
+	expanded: boolean,
+): TemplateResult {
+	if (choices < 2) return html`<span class="date-picker__title-label">${label}</span>`;
+	return html`
+		<button class="date-picker__title-${part}-button"
+			type="button"
+			aria-haspopup="menu"
+			aria-expanded=${expanded ? 'true' : 'false'}
+		>
+			${label}
+			<span class="date-picker__title-picker-icon">
+				<nldd-icon
+					name="chevron-down-small"
+					aria-hidden="true"
+				></nldd-icon>
+			</span>
+		</button>
+	`;
+}
+
+/**
  * The month heading is a live region: without it a keyboard user paging through
  * months hears only day numbers change and never learns which month they are in.
  */
 function renderHeader(component: NLDDDatePicker): TemplateResult {
+	const months = component._months;
+	const years = component._years;
 	return html`
 		<div class="date-picker__header">
 			<h2 class="date-picker__title"
 				id=${TITLE_ID}
 				aria-live="polite"
 			>
-				<button class="date-picker__title-button"
-					type="button"
-					aria-haspopup="menu"
-					aria-expanded=${component._yearMenuOpen ? 'true' : 'false'}
-				>
-					${component._title}
-					<span class="date-picker__title-picker-icon">
-						<nldd-icon
-							name="chevron-down-small"
-							aria-hidden="true"
-						></nldd-icon>
-					</span>
-				</button>
+				${renderTitlePart(component, 'month', component._monthLabel, months.length, component._monthMenuOpen)}
+				${renderTitlePart(component, 'year', String(component._viewYear), years.length, component._yearMenuOpen)}
 			</h2>
-			<nldd-menu
-				accessible-label=${component._t('components.date-picker.choose-year-action')}
-				max-items="8"
-				width="136px"
-				@toggle=${component._handleYearMenuToggle}
-			>
-				${component._years.map((year) => html`
-					<nldd-menu-item
-						type="radio"
-						text=${String(year)}
-						?selected=${year === component._viewYear}
-						@click=${() => component._handleYearSelect(year)}
-					></nldd-menu-item>
-				`)}
-			</nldd-menu>
+			${months.length < 2 ? nothing : html`
+				<nldd-menu class="date-picker__month-menu"
+					accessible-label=${component._t('components.date-picker.choose-month-action')}
+					width="176px"
+					@toggle=${component._handleMonthMenuToggle}
+				>
+					${months.map((month) => html`
+						<nldd-menu-item
+							type="radio"
+							text=${component._t(`components.date-picker.${MONTH_KEYS[month - 1]}-capitalize` as keyof NLDDDatePickerTranslations)}
+							?selected=${month === component._viewMonth}
+							@click=${() => component._handleMonthSelect(month)}
+						></nldd-menu-item>
+					`)}
+				</nldd-menu>
+			`}
+			${years.length < 2 ? nothing : html`
+				<nldd-menu class="date-picker__year-menu"
+					accessible-label=${component._t('components.date-picker.choose-year-action')}
+					max-items="8"
+					width="136px"
+					@toggle=${component._handleYearMenuToggle}
+				>
+					${years.map((year) => html`
+						<nldd-menu-item
+							type="radio"
+							text=${String(year)}
+							?selected=${year === component._viewYear}
+							@click=${() => component._handleYearSelect(year)}
+						></nldd-menu-item>
+					`)}
+				</nldd-menu>
+			`}
 			${component._stacked ? nothing : html`
 				<div class="date-picker__pagination">
-					${renderPagination(component, 'sm', 'neutral-base', true)}
+					${renderPagination(component, 'sm', 'neutral-base')}
 				</div>
 			`}
 		</div>
 	`;
 }
 
-/**
- * The month arrows, with "Vandaag" between them when the wide layout keeps all
- * three in one bar. Stacked moves that button to the opposite corner, so whether
- * it belongs here is passed in rather than assumed.
- */
-function renderPagination(component: NLDDDatePicker, size: string, variant: string, withToday: boolean): TemplateResult {
+/** The month arrows. "Vandaag" is a shortcut, not paging, and sits in the footer. */
+function renderPagination(component: NLDDDatePicker, size: string, variant: string): TemplateResult {
 	return html`
 		<nldd-button-bar
 			size=${size}
@@ -76,13 +112,6 @@ function renderPagination(component: NLDDDatePicker, size: string, variant: stri
 				tooltip-timing="never"
 				@click=${() => component._shiftView(-1)}
 			></nldd-icon-button>
-			${withToday && component._todayReachable ? html`
-				<nldd-button-bar-divider></nldd-button-bar-divider>
-				<nldd-button
-					text=${component._t('components.date-picker.view-today-action')}
-					@click=${component._handleToday}
-				></nldd-button>
-			` : nothing}
 			<nldd-button-bar-divider></nldd-button-bar-divider>
 			<nldd-icon-button
 				icon="chevron-right"
@@ -94,14 +123,18 @@ function renderPagination(component: NLDDDatePicker, size: string, variant: stri
 	`;
 }
 
-/** Stacked only: "Vandaag" bottom-left, the month arrows bottom-right. */
-function renderFooter(component: NLDDDatePicker): TemplateResult {
+/**
+ * "Vandaag" sits bottom-left in both layouts. The header has room for a title
+ * that spells out its month only once that button is out of it, and a shortcut
+ * to today is not paging anyway. Stacked adds the month arrows bottom-right.
+ */
+function renderFooter(component: NLDDDatePicker, withPagination: boolean): TemplateResult {
 	return html`
 		<div class="date-picker__footer">
 			<div class="date-picker__footer-start">
 				${component._todayReachable ? html`
 					<nldd-button
-						size="md"
+						size=${withPagination ? 'md' : 'sm'}
 						variant="neutral-tinted"
 						text=${component._t('components.date-picker.view-today-action')}
 						@click=${component._handleToday}
@@ -109,7 +142,7 @@ function renderFooter(component: NLDDDatePicker): TemplateResult {
 				` : nothing}
 			</div>
 			<div class="date-picker__footer-end">
-				${renderPagination(component, 'md', 'neutral-tinted', false)}
+				${withPagination ? renderPagination(component, 'md', 'neutral-tinted') : nothing}
 			</div>
 		</div>
 	`;
@@ -219,7 +252,9 @@ export function datePickerTemplate(component: NLDDDatePicker): TemplateResult {
 					`)}
 				</tbody>
 			</table>
-			${component._stacked ? renderFooter(component) : nothing}
+			${component._stacked || component._todayReachable
+				? renderFooter(component, component._stacked)
+				: nothing}
 			<div class="date-picker__announcer"
 				role="status"
 				aria-live="polite"

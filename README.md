@@ -115,7 +115,7 @@ CSS variabelen zijn georganiseerd in vijf lagen:
 --_background-color: var(--context-parent-background-color);
 ```
 
-De kleurpaletten staan in `src/assets/styles/palettes.generated.css` en worden
+De kleurpaletten staan in `src/assets/styles/colors.generated.css` en worden
 gegenereerd; de accent-laag wijst naar een van die paletten, zodat één regel de
 huisstijlkleur van het hele systeem bepaalt.
 
@@ -148,3 +148,8 @@ licentietekst staat in [`LICENSE`](./LICENSE).
 
 De fontbestanden in `src/assets/fonts/` vallen daar niet onder; die hebben hun
 eigen licenties, zie [`NOTICES.md`](./NOTICES.md).
+
+Verder horen bij dit project een [gedragscode](./CODE_OF_CONDUCT.md), een
+[beveiligingsbeleid](./SECURITY.md), een [bijdragegids](./CONTRIBUTING.md), een
+[ondersteuningspagina](./SUPPORT.md) en een beschrijving van
+[wie waarover beslist](./PROJECT_GOVERNANCE.md).

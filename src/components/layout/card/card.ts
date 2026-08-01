@@ -14,6 +14,7 @@
  *
  * @element nldd-card
  *
+ * @attr {'base'|'tinted'} background - Vlakkleur van de kaart: `base` (standaard) op een gewone pagina-achtergrond, `tinted` wanneer de kaart juist mag opvallen tegen een base-surface
  * @attr {string} accessible-label - Toegankelijke naam van de kaart; bij `href`/`button` benoemt deze de link of knop, anders de kaart-region
  * @attr {string} href - Maakt de hele kaart een link naar deze URL (leeg = geen link)
  * @attr {boolean} button - Maakt de hele kaart een knop; genegeerd wanneer `href` is gezet
@@ -28,14 +29,20 @@
 
 import { LitElement } from 'lit';
 import { customElement, property, state } from 'lit/decorators.js';
+import { reflectNonDefault } from '../../../utilities/reflect-non-default.js';
 import { cardStyles } from './card.styles.js';
 import { cardTemplate } from './card.template.js';
 import { withTranslations } from '../../../utilities/with-translations.js';
 import { nlddCardTranslations } from './card.i18n.js';
 
+export type CardBackground = 'base' | 'tinted';
+
 @customElement('nldd-card')
 export class NLDDCard extends withTranslations(LitElement, nlddCardTranslations) {
 	static override styles = cardStyles;
+
+	@property({ reflect: true, converter: reflectNonDefault<CardBackground>('base') })
+	background: CardBackground = 'base';
 
 	@property({ type: String, attribute: 'accessible-label' })
 	accessibleLabel: string | undefined;

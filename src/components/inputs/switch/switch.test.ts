@@ -277,7 +277,7 @@ describe('nldd-switch – disabled keyboard guard', () => {
    ============================================================ */
 
 describe('nldd-switch – accessibility', () => {
-	let el: NLDDSwitch;
+	let el: NLDDSwitch | HTMLFormElement;
 
 	afterEach(() => {
 		if (el) cleanup(el);

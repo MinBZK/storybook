@@ -1,5 +1,5 @@
 import { css } from 'lit';
-import { inheritedTextReset } from '../../../assets/styles/style-resets.js';
+import { inheritedTextReset } from '../../../assets/styles/shadow-resets.js';
 
 export const datePickerStyles = css`
 	:host {
@@ -14,6 +14,7 @@ export const datePickerStyles = css`
 		--_footer-margin-top: var(--primitives-space-8);
 		--_title-font: var(--primitives-font-display-5-sm);
 		--_title-button-corner-radius: var(--semantics-controls-sm-corner-radius);
+		--_title-button-min-size: var(--semantics-controls-sm-min-size);
 		--_title-picker-icon-size: var(--primitives-space-20);
 		--_weekday-header-font: var(--primitives-font-body-xs-regular-flat);
 		--_weekday-header-content-color: var(--semantics-content-secondary-color);
@@ -27,7 +28,7 @@ export const datePickerStyles = css`
 		--_width: initial;
 		--_day-size: var(--semantics-controls-md-min-size);
 		--_day-corner-radius: var(--semantics-controls-md-corner-radius);
-		--_day-font: var(--primitives-font-body-sm-regular-flat);
+		--_day-font: var(--primitives-font-body-sm-medium-flat);
 		--_day-indicator-inset: var(--primitives-space-2);
 		--_day-indicator-size: calc(var(--_day-size) - var(--_day-indicator-inset) * 2);
 		--_day-indicator-corner-radius: var(--_day-corner-radius);
@@ -60,6 +61,7 @@ export const datePickerStyles = css`
 	   asked for. */
 	:host([stacked]) {
 		--_title-font: var(--primitives-font-display-4-sm);
+		--_title-button-min-size: var(--semantics-controls-md-min-size);
 
 		width: var(--_width, 100%);
 	}
@@ -92,11 +94,18 @@ export const datePickerStyles = css`
 	}
 
 	.date-picker__title {
+		display: flex;
 		margin: 0;
+		align-items: center;
+		gap: var(--primitives-space-4);
 		font: var(--_title-font);
+		/* A heading that breaks between month and year stops answering the one
+		   question it is there for. */
+		white-space: nowrap;
 	}
 
-	.date-picker__title-button {
+	.date-picker__title-month-button,
+	.date-picker__title-year-button {
 		box-sizing: border-box;
 		display: flex;
 		margin: 0;
@@ -104,6 +113,7 @@ export const datePickerStyles = css`
 		border: none;
 		border-radius: var(--_title-button-corner-radius);
 		background: none;
+		min-height: var(--_title-button-min-size);
 		padding: 0;
 		align-items: center;
 		color: inherit;
@@ -119,7 +129,8 @@ export const datePickerStyles = css`
 		align-items: center;
 	}
 
-	.date-picker__title-button:focus-visible {
+	.date-picker__title-month-button:focus-visible,
+	.date-picker__title-year-button:focus-visible {
 		outline: var(--semantics-focus-ring-outline);
 		outline-offset: var(--semantics-focus-ring-outline-offset);
 		box-shadow: var(--semantics-focus-ring-box-shadow);

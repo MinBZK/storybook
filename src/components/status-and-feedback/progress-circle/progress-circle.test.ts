@@ -4,7 +4,7 @@ import type { NLDDProgressCircle } from './progress-circle.js';
 import { INDETERMINATE_TRANSITION_MS } from './progress-circle.js';
 import { getStrokeWidthPx, getBorderErodeRadius } from './progress-circle.template.js';
 import { progressCircleStyles } from './progress-circle.styles.js';
-import settingsCss from '../../../assets/styles/settings.css?raw';
+import variablesCss from '../../../assets/styles/variables.css?raw';
 import './progress-circle.js';
 
 describe('nldd-progress-circle', () => {
@@ -234,8 +234,8 @@ describe('nldd-progress-circle-segment-indicator', () => {
 		// Mirror of the progress-bar cross-check; same approach (parse the
 		// token from the raw CSS source so we don't depend on the global
 		// stylesheet being loaded).
-		const match = /--primitives-transition-duration-slow\s*:\s*(\d+)ms/.exec(settingsCss);
-		expect(match, 'token declaration not found in settings.css').not.toBeNull();
+		const match = /--primitives-transition-duration-slow\s*:\s*(\d+)ms/.exec(variablesCss);
+		expect(match, 'token declaration not found in variables.css').not.toBeNull();
 		const tokenMs = Number(match![1]);
 		expect(tokenMs).toBe(INDETERMINATE_TRANSITION_MS);
 	});

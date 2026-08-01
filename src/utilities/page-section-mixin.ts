@@ -2,7 +2,6 @@ import { property } from 'lit/decorators.js';
 import { LitElement, type PropertyValues } from 'lit';
 import { onColorSchemeChange } from './color-scheme-repaint.js';
 
-/* eslint-disable @typescript-eslint/no-explicit-any -- mixin plumbing */
 type Constructor<T = LitElement> = new (...args: any[]) => T;
 
 export type PageSectionBackground = 'inherit' | 'base' | 'tinted';
@@ -257,4 +256,3 @@ export function PageSectionMixin<TBase extends Constructor<LitElement>>(
 			}
 		>;
 }
-/* eslint-enable @typescript-eslint/no-explicit-any */

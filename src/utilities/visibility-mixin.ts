@@ -2,7 +2,6 @@ import { property } from 'lit/decorators.js';
 import { LitElement, type PropertyValues } from 'lit';
 import { breakpoints } from '../assets/styles/breakpoints.js';
 
-/* eslint-disable @typescript-eslint/no-explicit-any -- mixin plumbing */
 type Constructor<T = LitElement> = new (...args: any[]) => T;
 
 // Resolve a hide-below/hide-above value to a container-query threshold. A named
@@ -102,4 +101,3 @@ export function VisibilityMixin<TBase extends Constructor<LitElement>>(
 	return WithVisibility as unknown as TBase &
 		Constructor<LitElement & { hideBelow?: string; hideAbove?: string }>;
 }
-/* eslint-enable @typescript-eslint/no-explicit-any */

@@ -1,5 +1,5 @@
 import { css } from 'lit';
-import { inheritedTextReset } from '../../../assets/styles/style-resets.js';
+import { inheritedTextReset } from '../../../assets/styles/shadow-resets.js';
 
 export const passwordFieldStyles = css`
 	:host {
@@ -52,7 +52,6 @@ export const passwordFieldStyles = css`
 		border-radius: var(--_corner-radius);
 		background-color: var(--_background-color);
 		min-height: var(--_min-size);
-		overflow: hidden;
 		padding-left: calc(var(--_inline-padding) - var(--semantics-input-fields-border-width));
 		flex-direction: row;
 		align-items: center;
@@ -84,10 +83,6 @@ export const passwordFieldStyles = css`
 		outline: var(--semantics-focus-ring-outline);
 		outline-offset: var(--semantics-focus-ring-outline-offset);
 		box-shadow: var(--semantics-focus-ring-box-shadow);
-	}
-
-	.password-field:has(.password-field__visibility-toggle-button:focus-within) {
-		overflow: visible;
 	}
 
 

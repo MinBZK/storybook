@@ -2,7 +2,7 @@ import { describe, it, expect } from 'vitest';
 import { reflectNonDefault } from './reflect-non-default.ts';
 
 describe('reflectNonDefault', () => {
-	const conv = reflectNonDefault('md');
+	const conv = reflectNonDefault<string>('md');
 
 	it('reflects a non-default value to the attribute', () => {
 		expect(conv.toAttribute!('lg')).toBe('lg');

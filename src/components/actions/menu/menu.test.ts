@@ -1,5 +1,5 @@
 import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest';
-import { fixture, cleanup, waitForUpdate } from '../../../test-utils.js';
+import { fixture, cleanup, waitForUpdate, installUniversalReset } from '../../../test-utils.js';
 import './menu.js';
 
 function getButton(el: Element): HTMLElement {
@@ -2354,5 +2354,49 @@ describe('nldd-menu _menuItemFromPoint', () => {
 		await waitForUpdate(el);
 		vi.spyOn(document, 'elementFromPoint').mockReturnValue(document.createElement('div'));
 		expect(fromPoint(el, 0, 0)).toBeNull();
+	});
+});
+
+describe('nldd-menu-group en nldd-menu-divider onder een universele reset', () => {
+	let el: HTMLElement;
+	let removeReset: () => void;
+
+	afterEach(() => {
+		removeReset();
+		if (el) cleanup(el);
+	});
+
+	it('behoudt de groepsdivider, marge en padding', async () => {
+		removeReset = installUniversalReset();
+		// Flex column mimics .menu__list: the host is a flex item, so the
+		// wrapper's margin becomes interior space instead of collapsing out.
+		el = await fixture(`
+			<div style="display: flex; flex-direction: column; --primitives-space-4: 4px; --primitives-space-6: 6px; --semantics-dividers-thickness: 1px; --semantics-dividers-color: black;">
+				<span></span>
+				<nldd-menu-group text="Thema"></nldd-menu-group>
+			</div>
+		`);
+		const group = el.querySelector('nldd-menu-group') as HTMLElement;
+		await waitForUpdate(group);
+		const title = group.shadowRoot!.querySelector('.menu__group-title')!;
+		// margin (4) + divider (1) + padding-top (6) all survive the reset.
+		const offset = title.getBoundingClientRect().top - group.getBoundingClientRect().top;
+		expect(offset).toBe(11);
+	});
+
+	it('behoudt de ruimte rond de divider', async () => {
+		removeReset = installUniversalReset();
+		el = await fixture(`
+			<div style="--primitives-space-4: 4px;">
+				<nldd-menu-divider></nldd-menu-divider>
+			</div>
+		`);
+		const divider = el.querySelector('nldd-menu-divider') as HTMLElement;
+		await waitForUpdate(divider);
+		// The line's margin stays interior thanks to the flow-root host, even
+		// in plain block flow.
+		const line = divider.shadowRoot!.querySelector('.menu__divider')!;
+		const offset = line.getBoundingClientRect().top - divider.getBoundingClientRect().top;
+		expect(offset).toBe(4);
 	});
 });

@@ -1,5 +1,5 @@
 import { describe, it, expect, afterEach, beforeEach } from 'vitest';
-import { fixture, cleanup, waitForUpdate, deepActiveElement } from '../../../test-utils.js';
+import { fixture, cleanup, waitForUpdate, deepActiveElement, installUniversalReset } from '../../../test-utils.js';
 import { _resetInputModalityForTesting, getInputModality } from '../../../utilities/input-modality.js';
 import './list-item.js';
 import type { NLDDListItem } from './list-item.js';
@@ -636,6 +636,65 @@ describe('nldd-list-item – divider markers', () => {
 		expect(item.style.getPropertyValue('--_divider-inset-end')).toBe('');
 	});
 
+	// Een rij die met een icoon opent lijnt de lijn zelf al uit met de tekst,
+	// zodat elke lijst dat consequent doet zonder markers te hoeven zetten.
+	it('laat de divider vanzelf bij de tekst beginnen na een leidend icoon', async () => {
+		el = await fixture(`
+			<div style="width: 400px; --components-list-item-indicator-inline-inset: 8px; --semantics-controls-md-min-size: 44px; --semantics-controls-sm-min-size: 32px; --primitives-space-40: 40px; --semantics-dividers-thickness: 1px;">
+				<nldd-list accessible-label="X">
+					<nldd-list-item>
+						<nldd-icon-cell size="20"><nldd-icon name="star"></nldd-icon></nldd-icon-cell>
+						<nldd-spacer-cell size="40"></nldd-spacer-cell>
+						<nldd-text-cell text="Met icoon"></nldd-text-cell>
+					</nldd-list-item>
+				</nldd-list>
+			</div>
+		`);
+		await waitForUpdate(el);
+		await settle();
+		const item = el.querySelector('nldd-list-item') as HTMLElement;
+		const inset = parseFloat(item.style.getPropertyValue('--_divider-inset-start'));
+		expect(inset).toBeGreaterThanOrEqual(40);
+	});
+
+	// De marker overrulet de afleiding: op de icoon-cel krijg je de volle lijn terug.
+	it('geeft de volle lijn terug met divider-start op de icoon-cel', async () => {
+		el = await fixture(`
+			<div style="width: 400px; --components-list-item-indicator-inline-inset: 8px; --semantics-controls-md-min-size: 44px; --semantics-controls-sm-min-size: 32px; --primitives-space-40: 40px; --semantics-dividers-thickness: 1px;">
+				<nldd-list accessible-label="X">
+					<nldd-list-item>
+						<nldd-icon-cell divider-start size="20"><nldd-icon name="star"></nldd-icon></nldd-icon-cell>
+						<nldd-spacer-cell size="40"></nldd-spacer-cell>
+						<nldd-text-cell text="Met icoon"></nldd-text-cell>
+					</nldd-list-item>
+				</nldd-list>
+			</div>
+		`);
+		await waitForUpdate(el);
+		await settle();
+		const item = el.querySelector('nldd-list-item') as HTMLElement;
+		const inset = parseFloat(item.style.getPropertyValue('--_divider-inset-start'));
+		expect(inset).toBeLessThan(40);
+	});
+
+	// Zonder leidend icoon blijft de lijn de volle contentbreedte houden.
+	it('laat een rij zonder leidend icoon met rust', async () => {
+		el = await fixture(`
+			<div style="width: 400px; --components-list-item-indicator-inline-inset: 8px; --semantics-controls-md-min-size: 44px; --semantics-controls-sm-min-size: 32px; --semantics-dividers-thickness: 1px;">
+				<nldd-list accessible-label="X">
+					<nldd-list-item>
+						<nldd-text-cell text="Geen icoon"></nldd-text-cell>
+						<nldd-icon-cell size="20"><nldd-icon name="chevron-right"></nldd-icon></nldd-icon-cell>
+					</nldd-list-item>
+				</nldd-list>
+			</div>
+		`);
+		await waitForUpdate(el);
+		await settle();
+		const item = el.querySelector('nldd-list-item') as HTMLElement;
+		expect(item.style.getPropertyValue('--_divider-inset-start')).toBe('');
+	});
+
 	it('clears the vars again when the marker is removed', async () => {
 		el = await fixture(`
 			<div style="width: 400px; --components-list-item-indicator-inline-inset: 8px; --semantics-controls-md-min-size: 44px; --semantics-controls-sm-min-size: 32px; --primitives-space-40: 40px; --semantics-dividers-thickness: 1px;">
@@ -771,5 +830,30 @@ describe('nldd-list-item – nested press', () => {
 		// may show the press.
 		expect(leaf!.shadowRoot!.querySelector('.list-item__action')!.classList.contains('is-pressed')).toBe(true);
 		expect(branch!.shadowRoot!.querySelector('.list-item__action')!.classList.contains('is-pressed')).toBe(false);
+	});
+});
+
+describe('nldd-list-item onder een universele reset', () => {
+	let el: HTMLElement;
+	let removeReset: () => void;
+
+	afterEach(() => {
+		removeReset();
+		if (el) cleanup(el);
+	});
+
+	it('behoudt de negatieve inline-marge van een interactieve rij', async () => {
+		removeReset = installUniversalReset();
+		el = await fixture(`
+			<div style="--components-list-item-indicator-inline-inset: 8px;">
+				<nldd-list-item button>
+					Rij
+				</nldd-list-item>
+			</div>
+		`);
+		const item = el.querySelector('nldd-list-item') as HTMLElement;
+		await waitForUpdate(item);
+		expect(item.classList.contains('is-interactive')).toBe(true);
+		expect(getComputedStyle(item).marginLeft).toBe('-8px');
 	});
 });

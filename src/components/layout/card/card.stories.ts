@@ -40,6 +40,12 @@ export default {
 		status: { type: 'experimental' },
 	},
 	argTypes: {
+		background: {
+			control: 'select',
+			options: ['base', 'tinted'],
+			description: 'Vlakkleur van de kaart',
+			table: { defaultValue: { summary: 'base' } },
+		},
 		accessibleLabel: {
 			name: 'accessible-label',
 			control: 'text',
@@ -61,6 +67,7 @@ export default {
 		},
 	},
 	args: {
+		background: 'base',
 		accessibleLabel: '',
 		href: '',
 		target: '',
@@ -69,7 +76,10 @@ export default {
 };
 
 export const Standaard = (args: Record<string, any>) => html`
-	<nldd-card accessible-label=${args.accessibleLabel || nothing}>
+	<nldd-card
+		background=${args.background || nothing}
+		accessible-label=${args.accessibleLabel || nothing}
+	>
 		<nldd-container slot="header" padding-top="16" padding-inline="16">
 			<nldd-title size="4"><h3>Kaarttitel</h3></nldd-title>
 		</nldd-container>

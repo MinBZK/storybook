@@ -6,7 +6,7 @@ binnen een `nldd-page`, met `nldd-collection` en `nldd-card` voor de grids en
 `nldd-page-footer` onderaan.
 
 ```
-nldd-app-view                    (app-shell: kleurschema-context, fonts)
+nldd-app-view                    (app-shell: kleurschema-context)
   └─ nldd-page
        ├─ nldd-simple-section            (hero)
        ├─ nldd-simple-section            ("wat is het", kaart-grid)
@@ -15,8 +15,8 @@ nldd-app-view                    (app-shell: kleurschema-context, fonts)
        └─ nldd-page-footer
 ```
 
-`nldd-app-view` blijft de buitenste schil; die zet de kleurschema-context en de
-fonts. Daarbinnen stapel je secties.
+`nldd-app-view` blijft de buitenste schil; die zet de kleurschema-context.
+Daarbinnen stapel je secties.
 
 ## Hero
 

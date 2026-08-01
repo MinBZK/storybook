@@ -656,14 +656,21 @@ describe('nldd-popover verplaatst focus zelf met Tab', () => {
 		expect(document.activeElement?.id).toBe('een');
 	});
 
-	it('stapt van de eerste naar de tweede knop', async () => {
+	// Tussen elementen verplaatst de browser de focus zelf. Een focus die de
+	// browser op een toetsaanslag verplaatst krijgt onvoorwaardelijk een ring;
+	// een focus die wíj verplaatsen erft alleen de ringstaat van het element dat
+	// je verlaat. Elke Tab onderscheppen betekende dus dat één muisklik ergens
+	// een keten startte waarin geen enkele Tab-stop nog een focusring toonde.
+	it('laat een Tab tussen twee knoppen aan de browser', async () => {
 		const { wrapper, popover } = await metTweeKnoppen();
 		el = wrapper;
 		const een = wrapper.querySelector('#een') as HTMLElement;
 		een.focus();
-		een.dispatchEvent(new KeyboardEvent('keydown', { key: 'Tab', bubbles: true, composed: true, cancelable: true }));
+		const event = new KeyboardEvent('keydown', { key: 'Tab', bubbles: true, composed: true, cancelable: true });
+		een.dispatchEvent(event);
 		await waitForUpdate(popover);
-		expect(document.activeElement?.id).toBe('twee');
+		expect(event.defaultPrevented).toBe(false);
+		expect(popover.matches(':popover-open')).toBe(true);
 	});
 
 	it('sluit pas voorbij de laatste knop', async () => {

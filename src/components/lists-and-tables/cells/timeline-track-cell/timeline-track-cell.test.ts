@@ -107,7 +107,7 @@ describe('nldd-timeline-track-cell', () => {
 	// on the declaration, not on two stacked rows: the row's padding bleed only
 	// settles after a layout pass, which makes a pixel comparison flaky here.
 	it('laat de neergaande lijnen over de rijgrens doorlopen', async () => {
-		// The token itself comes from settings.css, which the test page doesn't
+		// The token itself comes from variables.css, which the test page doesn't
 		// load, so set it here: what's being checked is that the line reaches past
 		// the cell by exactly that thickness.
 		el = await fixture<NLDDTimelineTrackCell>('<nldd-timeline-track-cell position="first"></nldd-timeline-track-cell>');
@@ -129,5 +129,24 @@ describe('nldd-timeline-track-cell', () => {
 
 		expect(el.shadowRoot!.querySelector('.timeline-track-cell__full-line')).not.toBeNull();
 		expect(marker()).toBeNull();
+	});
+
+	it('injects a @container rule for hide-below (md → max-width 640px)', async () => {
+		el = await fixture<NLDDTimelineTrackCell>('<nldd-timeline-track-cell hide-below="md"></nldd-timeline-track-cell>');
+		await waitForUpdate(el);
+		const injected = Array.from(el.shadowRoot!.querySelectorAll('style')).find((s) =>
+			s.textContent?.includes('@container'),
+		);
+		expect(injected?.textContent).toContain('max-width: 640px');
+		expect(injected?.textContent).toContain('display: none');
+	});
+
+	it('injects a @container rule for hide-above (md → min-width 1008px)', async () => {
+		el = await fixture<NLDDTimelineTrackCell>('<nldd-timeline-track-cell hide-above="md"></nldd-timeline-track-cell>');
+		await waitForUpdate(el);
+		const injected = Array.from(el.shadowRoot!.querySelectorAll('style')).find((s) =>
+			s.textContent?.includes('@container'),
+		);
+		expect(injected?.textContent).toContain('min-width: 1008px');
 	});
 });

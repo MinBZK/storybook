@@ -1,5 +1,5 @@
 import { css } from 'lit';
-import { inheritedTextReset } from '../../../assets/styles/style-resets.js';
+import { inheritedTextReset } from '../../../assets/styles/shadow-resets.js';
 
 export const bannerStyles = css`
 	:host {
@@ -7,7 +7,11 @@ export const bannerStyles = css`
 	}
 
 
-	/* # Host */
+	/* # Host
+	 *
+	 * The visual framework lives on .banner, not :host: outer-document rules
+	 * (a consumer's universal reset) beat normal :host declarations per CSS
+	 * Scoping. The host only keeps the external contract. */
 
 	:host {
 		--_corner-radius: var(--components-banner-corner-radius);
@@ -25,21 +29,9 @@ export const bannerStyles = css`
 		--_actions-gap: var(--primitives-space-4);
 
 		${inheritedTextReset}
-		box-sizing: border-box;
-		display: grid;
-		position: relative;
-		border-radius: var(--_corner-radius);
-		box-shadow: inset 0 0 0 var(--_border-width) var(--_border-color);
-		background-color: var(--_background-color);
+		display: block;
 		width: 100%;
-		padding: var(--_padding);
-		grid-template-columns: auto 1fr;
-		gap: var(--_column-gap);
 		color: var(--_content-color);
-	}
-
-	:host([dismissible]) {
-		padding-right: var(--_dismissible-padding-right);
 	}
 
 	:host([hidden]) {
@@ -70,8 +62,26 @@ export const bannerStyles = css`
 		--_icon-color: var(--semantics-categories-critical-reference-background-color);
 	}
 
+	/* # Block */
+
+	.banner {
+		box-sizing: border-box;
+		display: grid;
+		position: relative;
+		border-radius: var(--_corner-radius);
+		box-shadow: inset 0 0 0 var(--_border-width) var(--_border-color);
+		background-color: var(--_background-color);
+		padding: var(--_padding);
+		grid-template-columns: auto 1fr;
+		gap: var(--_column-gap);
+	}
+
+	:host([dismissible]) .banner {
+		padding-right: var(--_dismissible-padding-right);
+	}
+
 	@media (forced-colors: active) {
-		:host {
+		.banner {
 			border: var(--_border-width) solid CanvasText;
 		}
 	}

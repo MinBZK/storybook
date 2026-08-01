@@ -22,6 +22,10 @@ jobs:
         run: npx playwright install --with-deps chromium
       - name: Run ESLint (including lit-a11y rules)
         run: npm run lint
+      # The build excludes test files (tsconfig.build.json), so type errors in
+      # tests only surface here. Kept at zero since 252b828 — keep it there.
+      - name: Type-check, including test files
+        run: npm run typecheck
       - name: Run unit tests
         run: npm run test:run
       - name: Build styles

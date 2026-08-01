@@ -407,7 +407,7 @@ describe('nldd-segmented-control – accessibility', () => {
    ============================================================ */
 
 describe('nldd-segmented-control-item – tooltip', () => {
-	let el: NLDDSegmentedControlItem;
+	let el: NLDDSegmentedControlItem | HTMLFormElement;
 
 	afterEach(() => {
 		if (el) cleanup(el);

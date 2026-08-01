@@ -9,7 +9,9 @@ export const cardStyles = css`
 	/* # Host */
 
 	:host {
-		--_highlight-border: inset 0 0 0 var(--components-card-highlight-border-width) var(--components-card-highlight-border-color);
+		--_background-color: var(--components-card-background-color);
+		--_border-color: var(--components-card-highlight-border-color);
+		--_highlight-border: inset 0 0 0 var(--components-card-highlight-border-width) var(--_border-color);
 
 		display: flex;
 		/* Anchor for the focus ring, which hangs outside the card box. */
@@ -22,6 +24,14 @@ export const cardStyles = css`
 	}
 
 
+	/* ## Background variants */
+
+	:host([background="tinted"]) {
+		--_background-color: var(--components-card-tinted-background-color);
+		--_border-color: var(--components-card-tinted-highlight-border-color);
+	}
+
+
 	/* # Block */
 
 	.card {
@@ -29,7 +39,7 @@ export const cardStyles = css`
 		position: relative;
 		border-radius: var(--components-card-corner-radius);
 		box-shadow: var(--components-card-box-shadow);
-		background-color: var(--components-card-background-color);
+		background-color: var(--_background-color);
 		overflow: hidden;
 		flex-direction: column;
 		flex-grow: 1;

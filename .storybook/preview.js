@@ -1,4 +1,5 @@
-import '../src/assets/styles/settings.css';
+import '../src/assets/styles/rijksoverheid-fonts.css';
+import '../src/assets/styles/variables.css';
 import '../src/components/content/rich-text/rich-text.css';
 import '../src/components/forms/form-section/form-section.css';
 import '../src/components/forms/form/form.css';

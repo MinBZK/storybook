@@ -1,40 +1,8 @@
 /**
- * NLDD Design System — CSS variables & fonts
+ * NLDD Design System — CSS custom properties
  */
 
-@import "./palettes.generated.css";
-
-@font-face {
-	font-family: 'RijksSans';
-	src: url('../fonts/RijksSansWeb-Regular.woff2') format('woff2-variations');
-	font-weight: 100 900;
-	font-style: normal;
-	font-display: swap;
-}
-
-@font-face {
-	font-family: 'RijksSans';
-	src: url('../fonts/RijksSansWeb-Italic.woff2') format('woff2-variations');
-	font-weight: 100 900;
-	font-style: italic;
-	font-display: swap;
-}
-
-@font-face {
-	font-family: 'JetBrains Mono';
-	src: url('../fonts/JetBrainsMono[wght].woff2') format('woff2-variations');
-	font-weight: 100 900;
-	font-style: normal;
-	font-display: swap;
-}
-
-@font-face {
-	font-family: 'JetBrains Mono';
-	src: url('../fonts/JetBrainsMono-Italic[wght].woff2') format('woff2-variations');
-	font-weight: 100 900;
-	font-style: italic;
-	font-display: swap;
-}
+@import "./colors.generated.css";
 
 @media (prefers-color-scheme: dark) {
 	:root:not([data-scheme="light"]) {
@@ -55,7 +23,7 @@
 
 	/* ## Functional Colors */
 
-	/* Descriptive palettes live in palettes.generated.css.
+	/* Descriptive palettes live in colors.generated.css.
 	 * Each functional role points at a descriptive palette; override these
 	 * aliases at :root level to theme the whole system. */
 
@@ -311,13 +279,13 @@
 
 	/* ## Typography */
 
-	--primitives-font-family-sans-serif-fallback: system-ui, sans-serif;
+	/* Each stack ends in a system font, so the browser falls through on its own
+	   when the @font-face rules are absent (see rijksoverheid-fonts.css).
+	   Override these two to swap the bundled fonts out entirely: an @font-face
+	   nothing refers to is never downloaded. */
 	--primitives-font-family-sans-serif: RijksSans, system-ui, sans-serif;
-	--primitives-font-family-monospace-fallback: ui-monospace, Menlo, Consolas, 'DejaVu Sans Mono', monospace;
 	--primitives-font-family-monospace: 'JetBrains Mono', ui-monospace, Menlo, Consolas, 'DejaVu Sans Mono', monospace;
-	--primitives-font-family-body-fallback: var(--primitives-font-family-sans-serif-fallback);
 	--primitives-font-family-body: var(--primitives-font-family-sans-serif);
-	--primitives-font-family-display-fallback: var(--primitives-font-family-sans-serif-fallback);
 	--primitives-font-family-display: var(--primitives-font-family-sans-serif);
 
 	--primitives-font-size-70: 0.79rem;    /* ~13px */
@@ -1674,10 +1642,12 @@
 	/* ## Card */
 
 	--components-card-background-color: var(--semantics-surfaces-base-background-color);
+	--components-card-tinted-background-color: var(--semantics-surfaces-tinted-background-color);
 	--components-card-corner-radius: var(--semantics-surfaces-corner-radius);
 	--components-card-box-shadow: none;
 	--components-card-highlight-border-width: var(--semantics-surfaces-border-width);
 	--components-card-highlight-border-color: var(--semantics-surfaces-base-border-color);
+	--components-card-tinted-highlight-border-color: var(--semantics-surfaces-tinted-border-color);
 
 	/* ## Checkbox */
 
