@@ -1,7 +1,7 @@
 ## Third-party notices
 
-Het NLDD Design System (de broncode) is gelicentieerd onder **EUPL-1.2** —
-zie het `license` veld in `package.json`. De fontbestanden in
+Het NLDD Design System (de broncode) is gelicentieerd onder **EUPL-1.2**,
+zie [`LICENSE`](./LICENSE) voor de volledige tekst. De fontbestanden in
 `src/assets/fonts/` vallen daar niet onder; die hebben hun eigen licenties:
 
 ---

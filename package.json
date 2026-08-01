@@ -432,7 +432,8 @@
   },
   "files": [
     "dist",
-    "custom-elements.json"
+    "custom-elements.json",
+    "NOTICES.md"
   ],
   "repository": {
     "type": "git",
