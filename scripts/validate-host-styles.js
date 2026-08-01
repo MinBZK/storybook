@@ -58,10 +58,30 @@ function findStyleFiles(dir) {
  * selectors whose declarations an outer-document rule can override.
  */
 function isHostSelector(selector) {
-  return selector
-    .split(',')
-    .map((part) => part.trim())
+  return splitSelectorList(selector)
     .every((part) => /^:host(\((?:[^()]|\([^()]*\))*\))?$/.test(part));
+}
+
+/**
+ * Splits a selector list on top-level commas only. A plain split(',') would
+ * cut `:host(:is(a, b))` in half, fail the host test on both halves, and
+ * silently skip that rule's violations.
+ */
+function splitSelectorList(selector) {
+  const parts = [];
+  let depth = 0;
+  let start = 0;
+  for (let i = 0; i < selector.length; i++) {
+    const ch = selector[i];
+    if (ch === '(') depth += 1;
+    else if (ch === ')') depth -= 1;
+    else if (ch === ',' && depth === 0) {
+      parts.push(selector.slice(start, i).trim());
+      start = i + 1;
+    }
+  }
+  parts.push(selector.slice(start).trim());
+  return parts;
 }
 
 /**
