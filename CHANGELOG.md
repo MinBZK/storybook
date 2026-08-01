@@ -11,8 +11,10 @@ here; consult the commit history if you need that level of detail.
 
 ### Highlights
 
-- **New icon.** `viewfinder-line` (alias `scan`) is the existing `viewfinder` with a scan line through it, for scanning a document or a code.
+- **Picking a date is two clicks instead of twelve.** The calendar heading showed a month and a year with a chevron, promising both, and opened a list of years only. Getting back a year meant clicking an arrow twelve times. Month and year are each their own button with their own menu now, and both offer only what `min` and `max` allow. "Vandaag" moved out of the heading to the bottom left, which is what makes room for a month written out in full. The calendar in `nldd-date-field` opens under the input as well, instead of running off to the right of it ([#156](https://github.com/MinBZK/storybook/issues/156)).
+- **Open-source documentation expanded.** A code of conduct, a route for reporting vulnerabilities, a description of who decides what, and a `publiccode.yml` for the catalogue on developer.overheid.nl ([#149](https://github.com/MinBZK/storybook/issues/149)). The EUPL-1.2 licence text and the font licence terms ship with the package now: the licence was nowhere in the repository while `package.json` claimed it, and the RijksSans terms never reached a consumer.
 - **Host styling now survives a consuming app's CSS reset.** A universal rule like `* { margin: 0; padding: 0; border: 0 }` in a consuming app silently beat every normal `:host` declaration (CSS Scoping cascade order, [#160](https://github.com/MinBZK/storybook/issues/160)), stripping padding, dividers, and spacing from components that styled their shadow host. Banner, container, menu groups and dividers, table rows, cells, and interactive list rows now keep their layout under any reset, including Tailwind Preflight. Styling remains a CSS-variables affair — direct element styling such as `nldd-banner { padding: … }` was never a supported API and now consistently has no effect.
+- **New icon.** `viewfinder-line` (alias `scan`) is the existing `viewfinder` with a scan line through it, for scanning a document or a code.
 
 ### Added
 
@@ -21,7 +23,6 @@ here; consult the commit history if you need that level of detail.
 - **`@nldd/design-system/styles/system-font`** — the same stylesheet as `/styles`, without the `@font-face` rules. Both family stacks end in a system font, so they fall through on their own; nothing needs overriding. For products that may not use the Rijksoverheid house fonts (see `NOTICES.md`).
 - **`@nldd/design-system/styles/variables`** — only the CSS custom properties, for a build that composes the stylesheets itself.
 - **`@nldd/design-system/breakpoints`** — the breakpoints for `matchMedia` and layout logic, previously behind `/tokens`.
-- **`LICENSE` and `NOTICES.md` now ship with the package.** The EUPL-1.2 text was nowhere in the repository while `package.json` claimed it, and the RijksSans licence terms never reached a consumer. Both are in the npm tarball now.
 
 ### Changed
 
