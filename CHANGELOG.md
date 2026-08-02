@@ -9,6 +9,10 @@ the type of conventional-commit determines the release. Conventional types
 `chore`, `docs`, `ci`, `style`, `test`, `build` are intentionally omitted
 here; consult the commit history if you need that level of detail.
 
+### Fixed
+
+- **`nldd-menu`** — a button that opens a menu now carries `aria-haspopup` from the first render instead of from its first open. `aria-haspopup` describes the trigger ("this button opens a menu"), not a state, and deferring it left a screen reader tabbing a row of identical "more" buttons hearing plain "button" — precisely when the type matters, since nothing has been opened yet. Because `popup-type` also decides whether `aria-expanded` is rendered at all, a button without `expandable` had neither attribute until first use. `nldd-popover` already worked this way; the two now agree. Setting `popup-type` yourself still wins, so no markup has to change.
+
 ## <small>0.8.75 (2026-08-01)</small>
 
 * feat: font-free stylesheet entry, month picker, markdown code blocks and open-source docs (#164) ([263ffd6](https://github.com/MinBZK/storybook/commit/263ffd6)), closes [#164](https://github.com/MinBZK/storybook/issues/164)
