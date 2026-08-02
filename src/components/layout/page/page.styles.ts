@@ -102,6 +102,12 @@ export const pageStyles = css`
 	:host([sticky-header]) .page__header::after {
 		content: '';
 		position: absolute;
+		/* Behind the header's own content, not over it: the header has z-index 1
+		   and so its own stacking context, which keeps this inside it — above the
+		   header's background, below whatever is slotted in. Without it the fade
+		   paints last and covers anything that reaches past the header's bottom
+		   edge, such as the focus ring of a field sitting flush against it. */
+		z-index: -1;
 		top: 100%;
 		left: 0;
 		right: 0;

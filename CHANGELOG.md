@@ -9,6 +9,10 @@ the type of conventional-commit determines the release. Conventional types
 `chore`, `docs`, `ci`, `style`, `test`, `build` are intentionally omitted
 here; consult the commit history if you need that level of detail.
 
+### Fixed
+
+- **A focus ring at the bottom of a sticky header no longer disappears under the fade.** The gradient that `nldd-page` draws below a `sticky-header` painted after the header's own content, so anything reaching past the header's bottom edge went under it. It now sits behind that content: same fade over the scrolling page, ring intact.
+
 ## <small>0.8.77 (2026-08-02)</small>
 
 * fix(popover): clear a stale centering transform when the override goes (#166) ([81ee9e8](https://github.com/MinBZK/storybook/commit/81ee9e8)), closes [#166](https://github.com/MinBZK/storybook/issues/166)
