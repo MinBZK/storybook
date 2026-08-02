@@ -585,6 +585,13 @@ export class NLDDMenu extends LitElement {
 				(item as NLDDMenuItem).menuVariant = this.variant;
 			});
 		}
+		// A new anchor arrives closed and unlabelled — seed it right away rather
+		// than at its first open. Covers the popup slot (where the invoking
+		// control assigns `anchorElement` on slotchange, which may land after
+		// our firstUpdated) and a runtime `anchor` swap.
+		if (changedProperties.has('anchor') || changedProperties.has('anchorElement')) {
+			this._syncAnchorPopupState(this._isOpen);
+		}
 	}
 
 	// — Anchor ————————————————————————————————————————————————————————————————
@@ -651,7 +658,14 @@ export class NLDDMenu extends LitElement {
 		// an empty string is not a valid aria-haspopup token, so it must
 		// still be seeded rather than left invalid. An intentional opt-out
 		// is `popup-type="false"`, which is truthy and preserved here.
-		if (isOpen && 'popupType' in anchor && !anchor.popupType) {
+		//
+		// Deliberately not gated on `isOpen`: aria-haspopup is a static
+		// property of the trigger ("this button opens a menu"), not state.
+		// Seeding it on first open would leave a screen reader tabbing a row
+		// of identical "more" buttons hearing plain "button" — exactly the
+		// moment the type matters most, since nothing has been opened yet.
+		// nldd-popover already works this way.
+		if ('popupType' in anchor && !anchor.popupType) {
 			anchor.popupType = this.variant === 'listbox' ? 'listbox' : 'menu';
 		}
 		if ('popoverTargetAction' in anchor) {
@@ -1644,6 +1658,10 @@ export class NLDDMenu extends LitElement {
 		// root only).
 		this._onHeaderSlotChange();
 		this._onFooterSlotChange();
+		// Give the anchor its aria-haspopup before any interaction. Deferred a
+		// microtask because an `anchor="id"` target may render after us; a later
+		// anchor still gets seeded from `updated()`. Mirrors nldd-popover.
+		Promise.resolve().then(() => this._syncAnchorPopupState(this._isOpen));
 	}
 
 	override disconnectedCallback(): void {

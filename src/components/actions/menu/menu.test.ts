@@ -1,6 +1,7 @@
 import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest';
 import { fixture, cleanup, waitForUpdate, installUniversalReset } from '../../../test-utils.js';
 import './menu.js';
+import '../button/button.js';
 
 function getButton(el: Element): HTMLElement {
 	return el.shadowRoot?.querySelector('button') as HTMLElement;
@@ -2398,5 +2399,112 @@ describe('nldd-menu-group en nldd-menu-divider onder een universele reset', () =
 		const line = divider.shadowRoot!.querySelector('.menu__divider')!;
 		const offset = line.getBoundingClientRect().top - divider.getBoundingClientRect().top;
 		expect(offset).toBe(4);
+	});
+});
+
+describe('nldd-menu anchor popup semantics', () => {
+	let el: HTMLElement;
+
+	afterEach(() => {
+		if (el) cleanup(el);
+	});
+
+	/** Settle the menu's deferred seed and the anchor's re-render after it. */
+	async function settle(button: HTMLElement & { updateComplete?: Promise<boolean> }) {
+		await waitForUpdate(button);
+		await Promise.resolve();
+		await button.updateComplete;
+	}
+
+	it('seeds aria-haspopup on a slotted-in anchor before any interaction', async () => {
+		el = await fixture(`
+			<nldd-button text="Acties">
+				<nldd-menu slot="popup">
+					<nldd-menu-item text="Bewerken"></nldd-menu-item>
+				</nldd-menu>
+			</nldd-button>
+		`);
+		const button = el as HTMLElement & { popupType?: string };
+		await settle(button);
+		expect(button.popupType).toBe('menu');
+		expect(getButton(button).getAttribute('aria-haspopup')).toBe('menu');
+		// popupType also drives whether aria-expanded is rendered at all, so a
+		// button without `expandable` used to have neither before its first open.
+		expect(getButton(button).getAttribute('aria-expanded')).toBe('false');
+	});
+
+	it('seeds listbox rather than menu for a listbox variant', async () => {
+		el = await fixture(`
+			<nldd-button text="Kies">
+				<nldd-menu slot="popup" variant="listbox">
+					<nldd-menu-item text="Een"></nldd-menu-item>
+				</nldd-menu>
+			</nldd-button>
+		`);
+		const button = el as HTMLElement & { popupType?: string };
+		await settle(button);
+		expect(button.popupType).toBe('listbox');
+	});
+
+	it('leaves a popup type the consumer chose alone', async () => {
+		el = await fixture(`
+			<nldd-button text="Acties" popup-type="dialog">
+				<nldd-menu slot="popup">
+					<nldd-menu-item text="Bewerken"></nldd-menu-item>
+				</nldd-menu>
+			</nldd-button>
+		`);
+		const button = el as HTMLElement & { popupType?: string };
+		await settle(button);
+		expect(button.popupType).toBe('dialog');
+	});
+
+	it('seeds a button reached through the anchor attribute too', async () => {
+		// The reason this lives in nldd-menu and not in the button: with
+		// `anchor="id"` the button knows nothing about the menu, so only the
+		// menu can tell it what kind of popup it opens.
+		el = await fixture(`
+			<div>
+				<nldd-button id="acties-knop" text="Acties"></nldd-button>
+				<nldd-menu anchor="acties-knop">
+					<nldd-menu-item text="Bewerken"></nldd-menu-item>
+				</nldd-menu>
+			</div>
+		`);
+		const button = el.querySelector('nldd-button') as HTMLElement & {
+			popupType?: string;
+			updateComplete: Promise<boolean>;
+		};
+		await waitForUpdate(el.querySelector('nldd-menu') as HTMLElement);
+		await Promise.resolve();
+		await button.updateComplete;
+		expect(button.popupType).toBe('menu');
+		expect(getButton(button).getAttribute('aria-haspopup')).toBe('menu');
+	});
+
+	it('seeds an anchor assigned after the menu first rendered', async () => {
+		el = await fixture(`
+			<div>
+				<nldd-button id="later" text="Acties"></nldd-button>
+				<nldd-menu>
+					<nldd-menu-item text="Bewerken"></nldd-menu-item>
+				</nldd-menu>
+			</div>
+		`);
+		const menu = el.querySelector('nldd-menu') as HTMLElement & {
+			anchorElement: Element | null;
+			updateComplete: Promise<boolean>;
+		};
+		const button = el.querySelector('nldd-button') as HTMLElement & {
+			popupType?: string;
+			updateComplete: Promise<boolean>;
+		};
+		await waitForUpdate(menu);
+		await Promise.resolve();
+		expect(button.popupType).toBeFalsy();
+		menu.anchorElement = button;
+		await menu.updateComplete;
+		await button.updateComplete;
+		expect(button.popupType).toBe('menu');
 	});
 });
