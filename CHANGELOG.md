@@ -9,6 +9,10 @@ the type of conventional-commit determines the release. Conventional types
 `chore`, `docs`, `ci`, `style`, `test`, `build` are intentionally omitted
 here; consult the commit history if you need that level of detail.
 
+### Fixed
+
+- **`nldd-popover`** — a popover that loses its `centered` (or edge) override at runtime no longer keeps the centering transform. The override branch cleared `transform` only while it was still being taken, so a responsive popover switching from centered to anchored on a breakpoint change kept `translate(-50%, …)` on top of Floating UI's coordinates and landed half its width off its anchor, partly off screen. Floating UI positions purely through `left`/`top`, so the transform is now cleared whenever no override applies.
+
 ## <small>0.8.76 (2026-08-02)</small>
 
 * fix(menu): set aria-haspopup on the anchor from first render (#165) ([2486d28](https://github.com/MinBZK/storybook/commit/2486d28)), closes [#165](https://github.com/MinBZK/storybook/issues/165)

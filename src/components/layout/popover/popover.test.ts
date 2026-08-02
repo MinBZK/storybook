@@ -511,6 +511,33 @@ describe('nldd-popover', () => {
 			expect(popover.style.transform).toContain(', -50%');
 		});
 
+		it('laat geen centreer-transform achter wanneer centered wegvalt', async () => {
+			// Een responsieve popover die op een breakpoint van gecentreerd naar
+			// geankerd wisselt: zonder opruimen houdt hij translate(-50%, …) en
+			// landt hij een halve breedte naast zijn anker, deels buiten beeld.
+			const wrapper = await fixture(`
+				<div>
+					<button id="trigger-uncenter">Trigger</button>
+					<nldd-popover anchor="trigger-uncenter" accessible-label="Test" centered top="0"></nldd-popover>
+				</div>
+			`);
+			el = wrapper;
+			const popover = wrapper.querySelector('nldd-popover') as NLDDPopover;
+			asMd(popover);
+			await waitForUpdate(popover);
+
+			popover.show();
+			await waitForUpdate(popover);
+			expect(popover.style.transform).toContain('-50%');
+
+			popover.centered = false;
+			popover.top = '';
+			await waitForUpdate(popover);
+			await new Promise(r => setTimeout(r, 0));
+
+			expect(popover.style.transform).toBe('');
+		});
+
 		it('centered + top="0" → horizontaal gecentreerd, top-aligned', async () => {
 			const wrapper = await fixture(`
 				<div>

@@ -331,6 +331,15 @@ export class NLDDPopover extends LitElement {
 			return;
 		}
 
+		// Drop a centering transform left over from an override that has since
+		// been removed. The branch above only clears it while it is still being
+		// taken, so a popover that loses `centered` at runtime — a responsive one
+		// switching from centered to anchored on a breakpoint change — would keep
+		// its `translate(-50%, …)` and land half its width off the anchor, partly
+		// off screen. Floating UI positions purely via left/top, so there is never
+		// a transform to preserve here.
+		this.style.removeProperty('transform');
+
 		const anchorEl = this._getAnchorEl();
 		if (!anchorEl) return;
 
