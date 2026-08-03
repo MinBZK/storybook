@@ -28592,6 +28592,16 @@
             },
             {
               "kind": "field",
+              "name": "size",
+              "type": {
+                "text": "BannerSize"
+              },
+              "default": "'md'",
+              "attribute": "size",
+              "reflects": true
+            },
+            {
+              "kind": "field",
               "name": "icon",
               "type": {
                 "text": "string"
@@ -28666,6 +28676,15 @@
               "default": "'neutral'",
               "fieldName": "variant",
               "description": "Color and default icon (default: 'neutral')"
+            },
+            {
+              "name": "size",
+              "type": {
+                "text": "BannerSize"
+              },
+              "default": "'md'",
+              "fieldName": "size",
+              "description": "Banner size (default: 'md'). 'sm' tightens the padding to 8px, drops the icon to 24px and uses a smaller dismiss button — for a bar that sits between chrome and content rather than a standalone page-level notice. The typography is unchanged."
             },
             {
               "name": "icon",

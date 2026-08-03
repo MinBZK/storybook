@@ -19,12 +19,13 @@ export const bannerStyles = css`
 		--_background-color: var(--semantics-categories-neutral-tinted-background-color);
 		--_border-color: var(--semantics-categories-neutral-tinted-highlight-border-color);
 		--_border-width: var(--primitives-border-width-thin);
-		--_icon-color: var(--semantics-categories-neutral-filled-background-color);
-		--_icon-size: var(--primitives-space-32);
+		--_icon-color: var(--semantics-categories-neutral-tinted-content-color);
+		--_icon-size: var(--components-banner-icon-size);
 		--_content-color: var(--components-banner-content-color);
 		--_text-icon-offset: calc((var(--_icon-size) - var(--primitives-font-size-100) * var(--primitives-line-height-tight)) / 2);
 		--_column-gap: var(--primitives-space-8);
-		--_dismissible-padding-right: var(--primitives-space-44);
+		--_dismiss-inset: 0px;
+		--_dismissible-padding-right: calc(var(--_dismiss-inset) + var(--semantics-controls-md-min-size));
 		--_main-gap: var(--primitives-space-8);
 		--_actions-gap: var(--primitives-space-4);
 
@@ -38,28 +39,44 @@ export const bannerStyles = css`
 		display: none;
 	}
 
+	/* The dismiss slot narrows with the icon-button the template swaps in, so
+	   the reserved right padding tracks the control size rather than a fixed
+	   value. --_text-icon-offset follows --_icon-size on its own.
+
+	   --_dismiss-inset pulls the 32px button up until its centre sits on the
+	   24px icon's centre (8 - (32 - 24) / 2 = 4), and the same value on the
+	   right gives the button equal air on both sides of its corner. */
+
+	:host([size="sm"]) {
+		--_padding: var(--components-banner-sm-padding);
+		--_icon-size: var(--components-banner-sm-icon-size);
+		--_column-gap: var(--primitives-space-4);
+		--_dismiss-inset: calc(var(--_padding) - (var(--semantics-controls-sm-min-size) - var(--_icon-size)) / 2);
+		--_dismissible-padding-right: calc(var(--_dismiss-inset) + var(--semantics-controls-sm-min-size));
+	}
+
 	:host([variant="accent"]) {
 		--_background-color: var(--semantics-categories-accent-tinted-background-color);
 		--_border-color: var(--semantics-categories-accent-tinted-highlight-border-color);
-		--_icon-color: var(--semantics-categories-accent-reference-background-color);
+		--_icon-color: var(--semantics-categories-accent-tinted-content-color);
 	}
 
 	:host([variant="success"]) {
 		--_background-color: var(--semantics-categories-success-tinted-background-color);
 		--_border-color: var(--semantics-categories-success-tinted-highlight-border-color);
-		--_icon-color: var(--semantics-categories-success-reference-background-color);
+		--_icon-color: var(--semantics-categories-success-tinted-content-color);
 	}
 
 	:host([variant="warning"]) {
 		--_background-color: var(--semantics-categories-warning-tinted-background-color);
 		--_border-color: var(--semantics-categories-warning-tinted-highlight-border-color);
-		--_icon-color: var(--semantics-categories-warning-reference-background-color);
+		--_icon-color: var(--semantics-categories-warning-tinted-content-color);
 	}
 
 	:host([variant="critical"]) {
 		--_background-color: var(--semantics-categories-critical-tinted-background-color);
 		--_border-color: var(--semantics-categories-critical-tinted-highlight-border-color);
-		--_icon-color: var(--semantics-categories-critical-reference-background-color);
+		--_icon-color: var(--semantics-categories-critical-tinted-content-color);
 	}
 
 	/* # Block */
@@ -155,7 +172,7 @@ export const bannerStyles = css`
 	.banner__dismiss-button {
 		display: flex;
 		position: absolute;
-		top: 0;
-		right: 0;
+		top: var(--_dismiss-inset);
+		right: var(--_dismiss-inset);
 	}
 `;

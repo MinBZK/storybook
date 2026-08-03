@@ -2334,6 +2334,7 @@ An inline notification with a tinted background per variant. Use for persistent,
 | Attribuut | Type | Beschrijving |
 | --- | --- | --- |
 | `variant` | `'neutral'\|'accent'\|'success'\|'warning'\|'critical'` | Color and default icon (default: 'neutral') |
+| `size` | `'sm'\|'md'` | Banner size (default: 'md'). 'sm' tightens the padding to 8px, drops the icon to 24px and uses a smaller dismiss button — for a bar that sits between chrome and content rather than a standalone page-level notice. The typography is unchanged. |
 | `icon` | `string` | Icon override. Default per variant: neutral → info-circle-filled, accent → info-circle-filled, success → check-circle-filled, warning → exclamation-triangle-filled, critical → exclamation-circle-filled |
 | `text` | `string` | Main text (heading or paragraph, depending on heading-level) |
 | `supporting-text` | `string` | Supporting text below the heading |

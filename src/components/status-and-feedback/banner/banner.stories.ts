@@ -39,6 +39,12 @@ export default {
 			description: 'Kleur en standaard-icoon',
 			table: { defaultValue: { summary: 'neutral' } },
 		},
+		size: {
+			control: 'select',
+			options: ['sm', 'md'],
+			description: 'Bannermaat; sm gebruikt 8px padding en een icoon van 24px',
+			table: { defaultValue: { summary: 'md' } },
+		},
 		icon: {
 			control: 'select',
 			options: ['(default)', ...ICONS],
@@ -71,6 +77,7 @@ export default {
 	},
 	args: {
 		variant: 'neutral',
+		size: 'md',
 		icon: '',
 		text: 'Banner-tekst',
 		supportingText: '',
@@ -82,6 +89,7 @@ export default {
 const Template = (args: Record<string, any>) => html`
 	<nldd-banner
 		variant=${args.variant}
+		size=${args.size}
 		icon=${args.icon || nothing}
 		text=${args.text}
 		supporting-text=${args.supportingText || nothing}
