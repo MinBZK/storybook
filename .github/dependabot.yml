@@ -1,0 +1,73 @@
+version: 2
+
+# Cooldown: a release has to be five days old before Dependabot opens a version
+# update for it. Dependabot's own default has been three days since 2026-07-14;
+# raising it here also records the choice, so a later change to that default
+# cannot silently shrink the window.
+#
+# Five days is measured against how fast the registry compromises of the past
+# year surfaced - chalk/debug, shai-hulud, and the keyv/cacheable maintainer
+# hijack of 2026-08-04 were all detected within hours to days. Cooldown filters
+# a too-young release out of a run entirely rather than holding a pending PR,
+# so with `interval: weekly` the real delay is "at least five days, and at most
+# until the first weekly run that lands five or more days after the release" -
+# up to about twelve days for a release that misses a run by a hair.
+#
+# This applies to version updates only. Dependabot *security* updates are
+# exempt from cooldown and keep opening immediately, so advisory fixes are not
+# delayed by this.
+#
+# Note what cooldown does not cover: it keys off the age of a *new release*. An
+# attacker who repoints an existing tag or version at malicious content - the
+# tj-actions/changed-files pattern (CVE-2025-30066) - never triggers a version
+# update at all. SHA-pinning the workflow actions is what closes that; this
+# repo does not pin them yet (all 17 `uses:` refs are floating tags), so that
+# is still open and worth a separate PR.
+#
+# No `labels:` here on purpose. Dependabot only applies labels that already
+# exist in the repository, and setting the key opts out of the defaults it
+# would otherwise create itself. This repo has neither `dependencies` nor an
+# ecosystem label, so an explicit list would land these PRs unlabelled. Letting
+# Dependabot use its defaults gets them created and applied.
+updates:
+  - package-ecosystem: npm
+    directory: /
+    schedule:
+      interval: weekly
+    open-pull-requests-limit: 10
+    cooldown:
+      default-days: 5
+    # Without a prefix Dependabot writes "Bump x from 1 to 2", which
+    # .releaserc.json treats as an unrecognised type and releases as a patch.
+    # This repo squash-merges, so that title lands on main verbatim. The split
+    # follows CLAUDE.md's criterion - does the bump change what consumers get?
+    # `dependencies` reach consumers either way (bundled into dist/, or
+    # installed alongside it - lit and @floating-ui/dom are marked external in
+    # vite.config.ts), so `build` (patch); devDependencies are build tooling
+    # only, so `chore` (no release).
+    commit-message:
+      prefix: build
+      prefix-development: chore
+      include: scope
+    groups:
+      npm-minor-patch:
+        update-types:
+          - minor
+          - patch
+
+  - package-ecosystem: github-actions
+    directory: /
+    schedule:
+      interval: weekly
+    open-pull-requests-limit: 10
+    cooldown:
+      default-days: 5
+    # `ci` releases nothing: a workflow bump never reaches consumers.
+    commit-message:
+      prefix: ci
+      include: scope
+    groups:
+      actions-minor-patch:
+        update-types:
+          - minor
+          - patch
