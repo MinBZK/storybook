@@ -126,7 +126,11 @@ export const timePickerStyles = css`
 
 	:host([variant="wheel"]) .time-picker__column {
 		padding-block: calc((var(--_column-height) - var(--_option-min-size)) / 2);
-		scroll-snap-type: y mandatory;
+		/* proximity, niet mandatory: bij mandatory moet de browser altijd op een
+		   snappunt uitkomen, en een korte kolom (vier minuten bij stap 15) kan
+		   daardoor helemaal weigeren te scrollen. Proximity snapt als je in de
+		   buurt komt en laat de kolom verder met rust. */
+		scroll-snap-type: y proximity;
 		/* De randen vervagen, zodat de band in het midden het brandpunt is en de
 		   lijst niet abrupt afkapt. */
 		mask-image: linear-gradient(to bottom, transparent 0%, black 25%, black 75%, transparent 100%);

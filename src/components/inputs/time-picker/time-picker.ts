@@ -301,9 +301,15 @@ export class NLDDTimePicker extends LitElement {
 	 */
 	public scrollSelectedIntoView(): void {
 		this._scrollingSelf = true;
-		for (const column of ['hours', 'minutes'] as const) {
-			const option = this.shadowRoot?.querySelector(`[data-column="${column}"] [data-selected]`);
-			option?.scrollIntoView({ block: 'center' });
+		for (const name of ['hours', 'minutes'] as const) {
+			const column = this.shadowRoot?.querySelector<HTMLElement>(`[data-column="${name}"]`);
+			const option = column?.querySelector<HTMLElement>('[data-selected]');
+			if (!column || !option) continue;
+			// Zelf rekenen in plaats van scrollIntoView: die onderhandelt met de
+			// snappunten en met elke scrollbare voorouder, en doet dat per browser
+			// anders. Dit is exact de omkering van _centredOption, dus wat we
+			// neerzetten is ook wat we straks teruglezen.
+			column.scrollTop = option.offsetTop + option.offsetHeight / 2 - column.clientHeight / 2;
 		}
 		// Iets langer dan de debounce hierboven, zodat de scroll-events van deze
 		// beweging allemaal genegeerd zijn voordat we weer luisteren.
