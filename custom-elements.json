@@ -5791,6 +5791,14 @@
         },
         {
           "kind": "js",
+          "name": "NLDDTimeField",
+          "declaration": {
+            "name": "NLDDTimeField",
+            "module": "./inputs/time-field/time-field.js"
+          }
+        },
+        {
+          "kind": "js",
           "name": "NLDDToggleButton",
           "declaration": {
             "name": "NLDDToggleButton",
@@ -15248,6 +15256,579 @@
           "declaration": {
             "name": "NLDDTextField",
             "module": "src/components/inputs/text-field/text-field.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/inputs/time-field/time-field.ts",
+      "declarations": [
+        {
+          "kind": "function",
+          "name": "parseTime",
+          "return": {
+            "type": {
+              "text": "string | null"
+            }
+          },
+          "parameters": [
+            {
+              "name": "raw",
+              "type": {
+                "text": "string"
+              }
+            }
+          ],
+          "description": "Lees een getypte tijd royaal. Bewust geen masker: per toetsaanslag\nherformatteren verplaatst de caret, breekt backspace midden in de waarde en\nverwart screenreaders, dus we accepteren wat mensen typen en normaliseren één\nkeer bij commit.\n\nAccepteert 9, 09, 9:30, 9.30, 9,30, 9u30, 930 en 0930. Na een letter mogen de\nminuten ontbreken (\"9u\" is een afgeronde gedachte), na een leesteken niet:\n\"9:\" is halverwege het typen en hoort nog geen waarde op te leveren."
+        },
+        {
+          "kind": "function",
+          "name": "roundToStep",
+          "return": {
+            "type": {
+              "text": "string"
+            }
+          },
+          "parameters": [
+            {
+              "name": "time",
+              "type": {
+                "text": "string"
+              }
+            },
+            {
+              "name": "step",
+              "type": {
+                "text": "number"
+              }
+            },
+            {
+              "name": "base",
+              "default": "'00:00'"
+            }
+          ],
+          "description": "De dichtstbijzijnde tijd die op de stap valt, geteld vanaf `base`. Ligt de\ninvoer er precies tussenin, dan naar boven.\n\nNooit doorrollen over de dagrand: zou naar boven voorbij 23:59 gaan, dan een\nstap terug. Doorrollen naar 00:00 verschuift stilzwijgend de dag, en een\nconsument die dit veld naast een datumveld zet heeft dan een fout die niemand\nziet aankomen."
+        },
+        {
+          "kind": "class",
+          "description": "Een tekstveld voor een tijd. De waarde is altijd 24-uurs `HH:mm`; dat is in het Nederlands ook de weergave, dus anders dan bij nldd-date-field valt er niets om te rekenen. Er wordt niet gemaskeerd tijdens het typen: invoer wordt royaal geaccepteerd en pas bij het verlaten van het veld genormaliseerd. Foutmeldingen horen bij nldd-form-field, niet hier. Dit veld reflecteert alleen `invalid` / `valid`, net als nldd-text-field.",
+          "name": "NLDDTimeField",
+          "members": [
+            {
+              "kind": "field",
+              "name": "shadowRootOptions",
+              "type": {
+                "text": "object"
+              },
+              "static": true,
+              "default": "{ ...LitElement.shadowRootOptions, delegatesFocus: true, }"
+            },
+            {
+              "kind": "field",
+              "name": "size",
+              "type": {
+                "text": "'md' | 'sm'"
+              },
+              "default": "'md'",
+              "attribute": "size",
+              "reflects": true
+            },
+            {
+              "kind": "field",
+              "name": "value",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "attribute": "value"
+            },
+            {
+              "kind": "field",
+              "name": "min",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "attribute": "min"
+            },
+            {
+              "kind": "field",
+              "name": "max",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "attribute": "max"
+            },
+            {
+              "kind": "field",
+              "name": "step",
+              "type": {
+                "text": "number"
+              },
+              "default": "1",
+              "attribute": "step"
+            },
+            {
+              "kind": "field",
+              "name": "inputId",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "attribute": "input-id"
+            },
+            {
+              "kind": "field",
+              "name": "placeholder",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "attribute": "placeholder",
+              "reflects": true
+            },
+            {
+              "kind": "field",
+              "name": "invalid",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "attribute": "invalid",
+              "reflects": true
+            },
+            {
+              "kind": "field",
+              "name": "valid",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "attribute": "valid",
+              "reflects": true
+            },
+            {
+              "kind": "field",
+              "name": "disabled",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "attribute": "disabled",
+              "reflects": true
+            },
+            {
+              "kind": "field",
+              "name": "readonly",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "attribute": "readonly",
+              "reflects": true
+            },
+            {
+              "kind": "field",
+              "name": "required",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "attribute": "required",
+              "reflects": true
+            },
+            {
+              "kind": "field",
+              "name": "name",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "attribute": "name",
+              "reflects": true
+            },
+            {
+              "kind": "field",
+              "name": "autocomplete",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "attribute": "autocomplete"
+            },
+            {
+              "kind": "field",
+              "name": "accessibleLabel",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Toegankelijk label voor de interne input. Wordt automatisch gezet door nldd-form-field.",
+              "attribute": "accessible-label"
+            },
+            {
+              "kind": "field",
+              "name": "errorMessageIds",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "attribute": "error-message-ids"
+            },
+            {
+              "kind": "field",
+              "name": "width",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Optionele vaste breedte. Zonder waarde is het veld precies breed genoeg.",
+              "attribute": "width",
+              "reflects": true
+            },
+            {
+              "kind": "field",
+              "name": "translations",
+              "type": {
+                "text": "Partial<NLDDTimeFieldTranslations>"
+              },
+              "default": "{}",
+              "description": "Overschrijf een of meer vertaalsleutels. Niet opgegeven sleutels vallen terug op het Nederlands.",
+              "attribute": "translations"
+            },
+            {
+              "kind": "method",
+              "name": "formValue",
+              "return": {
+                "type": {
+                  "text": "FormValue"
+                }
+              },
+              "description": "The value submitted under `name`; `null` submits nothing. Override.",
+              "inheritedFrom": {
+                "name": "FormAssociated",
+                "module": "src/utilities/form-associated-mixin.ts"
+              }
+            },
+            {
+              "kind": "method",
+              "name": "formResetCallback",
+              "return": {
+                "type": {
+                  "text": "void"
+                }
+              }
+            },
+            {
+              "kind": "method",
+              "name": "formStateRestoreCallback",
+              "return": {
+                "type": {
+                  "text": "void"
+                }
+              },
+              "parameters": [
+                {
+                  "name": "state",
+                  "type": {
+                    "text": "File | string | FormData | null"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "field",
+              "name": "formAssociated",
+              "type": {
+                "text": "boolean"
+              },
+              "static": true,
+              "default": "true",
+              "inheritedFrom": {
+                "name": "FormAssociated",
+                "module": "src/utilities/form-associated-mixin.ts"
+              }
+            },
+            {
+              "kind": "field",
+              "name": "internals",
+              "readonly": true,
+              "inheritedFrom": {
+                "name": "FormAssociated",
+                "module": "src/utilities/form-associated-mixin.ts"
+              }
+            },
+            {
+              "kind": "method",
+              "name": "formState",
+              "return": {
+                "type": {
+                  "text": "FormValue | undefined"
+                }
+              },
+              "description": "Extra state kept for bfcache and state restore, when the submitted\nvalue alone cannot rebuild the control (a combo box submits a code but\nshows a label). Override alongside `formValue()`.",
+              "inheritedFrom": {
+                "name": "FormAssociated",
+                "module": "src/utilities/form-associated-mixin.ts"
+              }
+            },
+            {
+              "kind": "method",
+              "name": "commitFormValue",
+              "return": {
+                "type": {
+                  "text": "void"
+                }
+              },
+              "description": "Commit the value now, from the handler that changed it.",
+              "inheritedFrom": {
+                "name": "FormAssociated",
+                "module": "src/utilities/form-associated-mixin.ts"
+              }
+            },
+            {
+              "kind": "method",
+              "name": "formDisabledCallback",
+              "return": {
+                "type": {
+                  "text": "void"
+                }
+              },
+              "parameters": [
+                {
+                  "name": "disabled",
+                  "type": {
+                    "text": "boolean"
+                  }
+                }
+              ],
+              "inheritedFrom": {
+                "name": "FormAssociated",
+                "module": "src/utilities/form-associated-mixin.ts"
+              }
+            }
+          ],
+          "events": [
+            {
+              "name": "input",
+              "description": "Bij elke wijziging. detail: { value } met `HH:mm`, of '' zolang er geen geldige tijd staat."
+            },
+            {
+              "name": "change",
+              "description": "Wanneer de waarde is vastgelegd. detail: { value } met `HH:mm`, of ''."
+            }
+          ],
+          "attributes": [
+            {
+              "name": "size",
+              "type": {
+                "text": "'md' | 'sm'"
+              },
+              "default": "'md'",
+              "fieldName": "size",
+              "description": "'md' (standaard) | 'sm'. Wordt automatisch gezet door nldd-form-field."
+            },
+            {
+              "name": "value",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "fieldName": "value",
+              "description": "De tijd als `HH:mm` (24-uurs). Leeg wanneer er geen geldige tijd staat."
+            },
+            {
+              "name": "min",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "fieldName": "min",
+              "description": "Vroegst toegestane tijd als `HH:mm`. Is tevens de basis waarvandaan `step` telt."
+            },
+            {
+              "name": "max",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "fieldName": "max",
+              "description": "Laatst toegestane tijd als `HH:mm`."
+            },
+            {
+              "name": "step",
+              "type": {
+                "text": "number"
+              },
+              "default": "1",
+              "fieldName": "step",
+              "description": "Minutenstap (standaard 1). Bepaalt welke tijden geldig zijn, waarop wordt afgerond en hoe ver de pijltjestoetsen verspringen."
+            },
+            {
+              "name": "input-id",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "fieldName": "inputId",
+              "description": "Zet het id op de interne input. Wordt automatisch gezet door nldd-form-field."
+            },
+            {
+              "name": "placeholder",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "fieldName": "placeholder",
+              "description": "Placeholdertekst. Zet hier geen formaat in; gebruik daarvoor de supporting-label van nldd-form-field."
+            },
+            {
+              "name": "invalid",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "fieldName": "invalid",
+              "description": "Markeert het veld als ongeldig."
+            },
+            {
+              "name": "valid",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "fieldName": "valid",
+              "description": "Markeert het veld als geldig."
+            },
+            {
+              "name": "disabled",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "fieldName": "disabled",
+              "description": "Uitgeschakelde staat."
+            },
+            {
+              "name": "readonly",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "fieldName": "readonly",
+              "description": "Alleen-lezen staat."
+            },
+            {
+              "name": "required",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "fieldName": "required",
+              "description": "Verplichte staat."
+            },
+            {
+              "name": "name",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "fieldName": "name",
+              "description": "Naam voor formulierverzending."
+            },
+            {
+              "name": "autocomplete",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "fieldName": "autocomplete",
+              "description": "Autocomplete-hint."
+            },
+            {
+              "name": "accessible-label",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Toegankelijk label voor de interne input. Wordt automatisch gezet door nldd-form-field.",
+              "fieldName": "accessibleLabel"
+            },
+            {
+              "name": "error-message-ids",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "fieldName": "errorMessageIds",
+              "description": "Ids voor aria-describedby. Wordt automatisch gezet door nldd-form-field."
+            },
+            {
+              "name": "width",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Breedte. Standaard precies breed genoeg voor een tijd plus het validatie-icoon; 'full' vult de container, of geef een eigen CSS-lengte.",
+              "fieldName": "width"
+            },
+            {
+              "name": "translations",
+              "type": {
+                "text": "Partial<NLDDTimeFieldTranslations>"
+              },
+              "default": "{}",
+              "description": "Vertalingen; niet opgegeven sleutels vallen terug op het Nederlands.",
+              "fieldName": "translations"
+            }
+          ],
+          "mixins": [
+            {
+              "name": "FormAssociated",
+              "module": "/src/utilities/form-associated-mixin.js"
+            }
+          ],
+          "superclass": {
+            "name": "LitElement",
+            "package": "lit"
+          },
+          "tagName": "nldd-time-field",
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "parseTime",
+          "declaration": {
+            "name": "parseTime",
+            "module": "src/components/inputs/time-field/time-field.ts"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "roundToStep",
+          "declaration": {
+            "name": "roundToStep",
+            "module": "src/components/inputs/time-field/time-field.ts"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "NLDDTimeField",
+          "declaration": {
+            "name": "NLDDTimeField",
+            "module": "src/components/inputs/time-field/time-field.ts"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "nldd-time-field",
+          "declaration": {
+            "name": "NLDDTimeField",
+            "module": "src/components/inputs/time-field/time-field.ts"
           }
         }
       ]

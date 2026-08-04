@@ -1251,6 +1251,40 @@ A hybrid markdown editor built on CodeMirror 6 (via NLDDCodeMirrorElement): the 
 | `input` | When input value changes |
 | `change` | When input value is committed |
 
+### `<nldd-time-field>`
+
+Een tekstveld voor een tijd. De waarde is altijd 24-uurs `HH:mm`; dat is in het Nederlands ook de weergave, dus anders dan bij nldd-date-field valt er niets om te rekenen. Er wordt niet gemaskeerd tijdens het typen: invoer wordt royaal geaccepteerd en pas bij het verlaten van het veld genormaliseerd. Foutmeldingen horen bij nldd-form-field, niet hier. Dit veld reflecteert alleen `invalid` / `valid`, net als nldd-text-field.
+
+**Attributes**
+
+| Attribuut | Type | Beschrijving |
+| --- | --- | --- |
+| `value` | `string` | De tijd als `HH:mm` (24-uurs). Leeg wanneer er geen geldige tijd staat. |
+| `min` | `string` | Vroegst toegestane tijd als `HH:mm`. Is tevens de basis waarvandaan `step` telt. |
+| `max` | `string` | Laatst toegestane tijd als `HH:mm`. |
+| `step` | `number` | Minutenstap (standaard 1). Bepaalt welke tijden geldig zijn, waarop wordt afgerond en hoe ver de pijltjestoetsen verspringen. |
+| `placeholder` | `string` | Placeholdertekst. Zet hier geen formaat in; gebruik daarvoor de supporting-label van nldd-form-field. |
+| `input-id` | `string` | Zet het id op de interne input. Wordt automatisch gezet door nldd-form-field. |
+| `size` | `string` | 'md' (standaard) \| 'sm'. Wordt automatisch gezet door nldd-form-field. |
+| `invalid` | `boolean` | Markeert het veld als ongeldig. |
+| `valid` | `boolean` | Markeert het veld als geldig. |
+| `disabled` | `boolean` | Uitgeschakelde staat. |
+| `readonly` | `boolean` | Alleen-lezen staat. |
+| `required` | `boolean` | Verplichte staat. |
+| `name` | `string` | Naam voor formulierverzending. |
+| `autocomplete` | `string` | Autocomplete-hint. |
+| `accessible-label` | `string` | Toegankelijk label voor de interne input. Wordt automatisch gezet door nldd-form-field. |
+| `error-message-ids` | `string` | Ids voor aria-describedby. Wordt automatisch gezet door nldd-form-field. |
+| `width` | `string` | Breedte. Standaard precies breed genoeg voor een tijd plus het validatie-icoon; 'full' vult de container, of geef een eigen CSS-lengte. |
+| `translations` | `object` | Vertalingen; niet opgegeven sleutels vallen terug op het Nederlands. |
+
+**Events**
+
+| Event | Beschrijving |
+| --- | --- |
+| `input` | Bij elke wijziging. detail: { value } met `HH:mm`, of '' zolang er geen geldige tijd staat. |
+| `change` | Wanneer de waarde is vastgelegd. detail: { value } met `HH:mm`, of ''. |
+
 ### `<nldd-toggle-button>`
 
 A selectable button that toggles between selected and unselected. Available as a button (aria-pressed), checkbox, or radio input.
