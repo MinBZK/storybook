@@ -329,9 +329,10 @@ describe('nldd-time-picker – wiel', () => {
 		expect(el.value).toBe('14:30');
 	});
 
-	// De markering moet elke beweging volgen, niet de vastgelegde waarde: anders
-	// staat het cijfer op de band in de gewone kleur en is het onleesbaar.
-	it('markeert tijdens het scrollen wat er in het midden ligt, voordat het vastligt', async () => {
+	// De band moet elke beweging volgen, niet de vastgelegde waarde: anders blijft
+	// het getal staan terwijl de kolom eronder schuift, en liegt hij over waar je
+	// bent.
+	it('toont tijdens het scrollen wat er in het midden ligt, voordat het vastligt', async () => {
 		el = await fixture<NLDDTimePicker>(
 			'<nldd-time-picker variant="wheel" value="09:30" style="--semantics-controls-md-min-size: 44px"></nldd-time-picker>',
 		);
@@ -342,9 +343,9 @@ describe('nldd-time-picker – wiel', () => {
 		kolom.scrollTop = optie.offsetTop + optie.offsetHeight / 2 - kolom.clientHeight / 2;
 		kolom.dispatchEvent(new Event('scroll'));
 		await waitForUpdate(el);
-		const gecentreerd = () => [...el.shadowRoot!.querySelectorAll('[data-centred]')]
-			.map((e) => e.textContent!.trim());
-		expect(gecentreerd()).toEqual(['14', '30']);
+		const inBand = () => el.shadowRoot!.querySelector('.time-picker__band')!
+			.textContent!.replace(/\s+/g, '');
+		expect(inBand()).toBe('14:30');
 		expect(el.value).toBe('09:30');
 		await new Promise((r) => setTimeout(r, 250));
 		expect(el.value).toBe('14:30');

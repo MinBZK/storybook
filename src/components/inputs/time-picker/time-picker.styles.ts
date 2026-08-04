@@ -141,32 +141,14 @@ export const timePickerStyles = css`
 		scroll-snap-align: center;
 	}
 
-	/* De band is de markering, dus de optie krijgt geen eigen vlak: twee
-	   markeringen over elkaar leest als twee keuzes. Het cijfer dat op de band
-	   ligt krijgt wel de contrastkleur, en dat volgt het midden en niet de
-	   vastgelegde waarde, zodat het tijdens het scrollen klopt. */
-	:host([variant="wheel"]) .time-picker__option[data-selected] {
-		background-color: transparent;
-	}
-
-	:host([variant="wheel"]) .time-picker__option[data-centred] {
-		color: var(--_option-is-selected-content-color);
-	}
-
-	/* Boven de band uit, anders schildert die eroverheen, en in de contrastkleur
-	   want hij ligt er middenin. */
-	:host([variant="wheel"]) .time-picker__separator {
-		position: relative;
-		z-index: 1;
-		color: var(--_option-is-selected-content-color);
-	}
-
-	/* Het vlak waarop de waarde in het midden komt te staan. Het getal zelf komt
-	   uit de kolom eronder: de lijst scrolt, en wat in het midden belandt krijgt
-	   de contrastkleur. Zo staat er nooit een tweede kopie van hetzelfde cijfer,
-	   en verdwijnt er ook niets uit de lijst. */
+	/* Dekkend en bovenop, met de waarde erin. Wat eronder in de kolommen staat
+	   hoeft daardoor niet aangepast te worden: het valt toch weg achter de band.
+	   De kolommen hebben een mask-image en dus een eigen stapelcontext, en ze
+	   staan hierna in de DOM, dus zonder z-index schilderen hun cijfers eroverheen
+	   en zie je het getal dubbel. */
 	.time-picker__band {
 		display: flex;
+		z-index: 1;
 		position: absolute;
 		top: 50%;
 		right: 0;
@@ -182,12 +164,8 @@ export const timePickerStyles = css`
 		transform: translateY(-50%);
 	}
 
-	/* Een doorzichtig vak over de helft van de band: het draagt de focus en de
-	   spinbutton-betekenis, en laat het cijfer eronder gewoon staan. Boven de
-	   kolommen, anders vangen die de klik. */
 	.time-picker__band-value {
 		display: flex;
-		z-index: 1;
 		outline: none;
 		border-radius: var(--_option-corner-radius);
 		width: var(--_column-width);
@@ -204,11 +182,8 @@ export const timePickerStyles = css`
 		box-shadow: var(--semantics-focus-ring-box-shadow);
 	}
 
-	/* Houdt de twee helften uit elkaar op de plek waar de dubbele punt van de
-	   kolommen doorheen komt. */
-	.time-picker__band-gap {
+	.time-picker__band-separator {
 		flex-shrink: 0;
-		width: 1ch;
 	}
 
 	@media (forced-colors: active) {
