@@ -20,6 +20,14 @@ jobs:
         with:
           fetch-depth: 0
           token: ${{ secrets.VERSION_BUMP_TOKEN }}
+          # Zonder dit schrijft actions/checkout het token naar de git-config
+          # van deze checkout, waar het blijft staan zolang de job draait. Alles
+          # wat daarna in deze job draait kan het van schijf lezen — inclusief
+          # de dependency-code die `npx semantic-release` hieronder inlaadt.
+          # `npm ci --ignore-scripts` sluit alleen het install-moment af, niet
+          # dit. semantic-release pusht zelf met GITHUB_TOKEN uit de env van de
+          # laatste stap en heeft de gepersisteerde credential niet nodig.
+          persist-credentials: false
 
       - name: Setup Node.js
         uses: actions/setup-node@v6
