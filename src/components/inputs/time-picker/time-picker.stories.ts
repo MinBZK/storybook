@@ -114,7 +114,7 @@ export const StapVanafMin = () => html`
 `;
 
 export const Wiel = () => html`
-	<p>Scrollen ís kiezen: wat in de band in het midden tot stilstand komt, is de waarde. De kolommen zijn dezelfde listboxen als in de lijst-variant, dus toetsenbord en screenreader werken ongewijzigd.</p>
+	<p>Scrollen ís kiezen: wat in de band in het midden tot stilstand komt, is de waarde. Met het toetsenbord bedien je de band: uur en minuut zijn elk een spinbutton, pijl omhoog en omlaag verzetten de waarde, links en rechts wisselen ertussen.</p>
 	<nldd-time-picker
 		variant="wheel"
 		value="09:30"

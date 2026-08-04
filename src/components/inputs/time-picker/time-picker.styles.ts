@@ -87,7 +87,7 @@ export const timePickerStyles = css`
 		background-color: var(--_option-is-hovered-background-color);
 	}
 
-	.time-picker__option[aria-selected="true"] {
+	.time-picker__option[data-selected] {
 		background-color: var(--_option-is-selected-background-color);
 		color: var(--_option-is-selected-content-color);
 	}
@@ -109,7 +109,7 @@ export const timePickerStyles = css`
 	/* # Toegankelijkheid */
 
 	@media (forced-colors: active) {
-		.time-picker__option[aria-selected="true"] {
+		.time-picker__option[data-selected] {
 			outline: 2px solid CanvasText;
 		}
 	}
@@ -141,35 +141,39 @@ export const timePickerStyles = css`
 		scroll-snap-align: center;
 	}
 
-	/* De band toont welke waarde geldt, dus de optie zelf krijgt geen eigen vlak;
-	   twee markeringen over elkaar leest als twee keuzes. */
-	:host([variant="wheel"]) .time-picker__option[aria-selected="true"] {
+	/* De band is de markering, dus de optie krijgt geen eigen vlak: twee
+	   markeringen over elkaar leest als twee keuzes. Het cijfer dat op de band
+	   ligt krijgt wel de contrastkleur, en dat volgt het midden en niet de
+	   vastgelegde waarde, zodat het tijdens het scrollen klopt. */
+	:host([variant="wheel"]) .time-picker__option[data-selected] {
 		background-color: transparent;
 	}
 
-	/* De band draagt zijn eigen dubbele punt, dus die van de kolommen zou er
-	   dubbel onder staan. */
-	:host([variant="wheel"]) .time-picker__separator {
-		visibility: hidden;
+	:host([variant="wheel"]) .time-picker__option[data-centred] {
+		color: var(--_option-is-selected-content-color);
 	}
 
-	/* Dekkend, en met de waarde erin. Een doorzichtige band laat de cijfers er
-	   achterlangs schuiven, en dan staat er tijdens elke veeg iets onleesbaars in
-	   het brandpunt. Deze band toont wat er op dit moment in het midden ligt en
-	   dekt de kolommen eronder af. */
+	/* Boven de band uit, anders schildert die eroverheen, en in de contrastkleur
+	   want hij ligt er middenin. */
+	:host([variant="wheel"]) .time-picker__separator {
+		position: relative;
+		z-index: 1;
+		color: var(--_option-is-selected-content-color);
+	}
+
+	/* Het vlak waarop de waarde in het midden komt te staan. Het getal zelf komt
+	   uit de kolom eronder: de lijst scrolt, en wat in het midden belandt krijgt
+	   de contrastkleur. Zo staat er nooit een tweede kopie van hetzelfde cijfer,
+	   en verdwijnt er ook niets uit de lijst. */
 	.time-picker__band {
 		display: flex;
 		position: absolute;
 		top: 50%;
 		right: 0;
 		left: 0;
-		/* De kolommen hebben een mask-image en daarmee een eigen stapelcontext, en
-		   ze staan hierna in de DOM. Zonder z-index schilderen hun cijfers dus over
-		   de band heen en zie je het getal dubbel. */
-		z-index: 1;
+
 		border-radius: var(--_option-corner-radius);
 		background-color: var(--_option-is-selected-background-color);
-		pointer-events: none;
 		height: var(--_option-min-size);
 		gap: var(--_column-gap);
 		align-items: center;
@@ -178,16 +182,33 @@ export const timePickerStyles = css`
 		transform: translateY(-50%);
 	}
 
+	/* Een doorzichtig vak over de helft van de band: het draagt de focus en de
+	   spinbutton-betekenis, en laat het cijfer eronder gewoon staan. Boven de
+	   kolommen, anders vangen die de klik. */
 	.time-picker__band-value {
 		display: flex;
+		z-index: 1;
+		outline: none;
+		border-radius: var(--_option-corner-radius);
 		width: var(--_column-width);
+		height: 100%;
 		flex-grow: 1;
 		flex-shrink: 1;
+		align-items: center;
 		justify-content: center;
 	}
 
-	.time-picker__band-separator {
+	.time-picker__band-value:focus-visible {
+		outline: var(--semantics-focus-ring-outline);
+		outline-offset: var(--semantics-focus-ring-outline-offset);
+		box-shadow: var(--semantics-focus-ring-box-shadow);
+	}
+
+	/* Houdt de twee helften uit elkaar op de plek waar de dubbele punt van de
+	   kolommen doorheen komt. */
+	.time-picker__band-gap {
 		flex-shrink: 0;
+		width: 1ch;
 	}
 
 	@media (forced-colors: active) {

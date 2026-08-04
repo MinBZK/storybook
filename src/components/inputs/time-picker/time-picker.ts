@@ -202,14 +202,20 @@ export class NLDDTimePicker extends LitElement {
 		if (numbers.length === 0) return;
 		const current = column === 'hours' ? this._selectedHour : this._selectedMinute;
 		const index = current === null ? -1 : numbers.indexOf(current);
+		// Horizontaal wisselt van kolom, verticaal verzet de waarde: de pijltjes
+		// bewegen zo in de richting waarin je ze ziet staan. Zelfde verdeling als
+		// de segmenten van een native <input type="time">.
+		if (e.key === 'ArrowLeft' || e.key === 'ArrowRight') {
+			e.preventDefault();
+			this._focusColumn(e.key === 'ArrowLeft' ? 'hours' : 'minutes');
+			return;
+		}
 		let next: number | null = null;
 		switch (e.key) {
 			case 'ArrowDown':
-			case 'ArrowRight':
 				next = numbers[Math.min(index + 1, numbers.length - 1)];
 				break;
 			case 'ArrowUp':
-			case 'ArrowLeft':
 				next = numbers[index <= 0 ? 0 : index - 1];
 				break;
 			case 'Home':
@@ -223,6 +229,16 @@ export class NLDDTimePicker extends LitElement {
 		}
 		e.preventDefault();
 		if (next !== null) this._select(column, next);
+	}
+
+	/** Verplaats focus naar de andere kolom: in het wiel naar zijn spinbutton, in
+	 *  de lijst naar de optie die daar de tab-stop is. */
+	private _focusColumn(column: 'hours' | 'minutes'): void {
+		const target = this.variant === 'wheel'
+			? this.shadowRoot?.querySelectorAll<HTMLElement>('.time-picker__band-value')[column === 'hours' ? 0 : 1]
+			: this.shadowRoot?.querySelector<HTMLElement>(`[data-column="${column}"] [tabindex="0"]`);
+		target?.focus();
+		this._activeColumn = column;
 	}
 
 	public _handleFocus(column: 'hours' | 'minutes'): void {
@@ -258,7 +274,7 @@ export class NLDDTimePicker extends LitElement {
 		const centre = el.scrollTop + el.clientHeight / 2;
 		let best: HTMLElement | null = null;
 		let bestDistance = Infinity;
-		for (const option of el.querySelectorAll<HTMLElement>('[role="option"]')) {
+		for (const option of el.querySelectorAll<HTMLElement>('.time-picker__option')) {
 			const distance = Math.abs(option.offsetTop + option.offsetHeight / 2 - centre);
 			if (distance < bestDistance) {
 				bestDistance = distance;
@@ -286,7 +302,7 @@ export class NLDDTimePicker extends LitElement {
 	public scrollSelectedIntoView(): void {
 		this._scrollingSelf = true;
 		for (const column of ['hours', 'minutes'] as const) {
-			const option = this.shadowRoot?.querySelector(`[data-column="${column}"] [aria-selected="true"]`);
+			const option = this.shadowRoot?.querySelector(`[data-column="${column}"] [data-selected]`);
 			option?.scrollIntoView({ block: 'center' });
 		}
 		// Iets langer dan de debounce hierboven, zodat de scroll-events van deze

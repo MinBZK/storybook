@@ -8,11 +8,16 @@ function column(el: NLDDTimePicker, name: 'hours' | 'minutes'): HTMLElement {
 }
 
 function options(el: NLDDTimePicker, name: 'hours' | 'minutes'): string[] {
-	return [...column(el, name).querySelectorAll('[role="option"]')].map((o) => o.textContent!.trim());
+	return [...column(el, name).querySelectorAll('.time-picker__option')].map((o) => o.textContent!.trim());
 }
 
 function selected(el: NLDDTimePicker, name: 'hours' | 'minutes'): string | null {
-	return column(el, name).querySelector('[aria-selected="true"]')?.textContent?.trim() ?? null;
+	return column(el, name).querySelector('[data-selected]')?.textContent?.trim() ?? null;
+}
+
+function band(el: NLDDTimePicker, name: 'hours' | 'minutes'): HTMLElement {
+	const index = name === 'hours' ? 0 : 1;
+	return [...el.shadowRoot!.querySelectorAll<HTMLElement>('.time-picker__band-value')][index];
 }
 
 async function press(el: NLDDTimePicker, name: 'hours' | 'minutes', key: string) {
@@ -92,7 +97,7 @@ describe('nldd-time-picker – kiezen', () => {
 		await waitForUpdate(el);
 		const seen: string[] = [];
 		el.addEventListener('change', ((e: CustomEvent) => { seen.push(e.detail.value); }) as EventListener);
-		const tien = [...column(el, 'hours').querySelectorAll('[role="option"]')][10] as HTMLElement;
+		const tien = [...column(el, 'hours').querySelectorAll('.time-picker__option')][10] as HTMLElement;
 		tien.click();
 		await waitForUpdate(el);
 		expect(seen).toEqual(['10:30']);
@@ -103,7 +108,7 @@ describe('nldd-time-picker – kiezen', () => {
 	it('houdt de minuut vast bij het wisselen van uur', async () => {
 		el = await fixture<NLDDTimePicker>('<nldd-time-picker value="09:45" step="15"></nldd-time-picker>');
 		await waitForUpdate(el);
-		const veertien = [...column(el, 'hours').querySelectorAll('[role="option"]')][14] as HTMLElement;
+		const veertien = [...column(el, 'hours').querySelectorAll('.time-picker__option')][14] as HTMLElement;
 		veertien.click();
 		await waitForUpdate(el);
 		expect(el.value).toBe('14:45');
@@ -112,7 +117,7 @@ describe('nldd-time-picker – kiezen', () => {
 	it('valt terug op de eerste mogelijke minuut als de huidige niet past', async () => {
 		el = await fixture<NLDDTimePicker>('<nldd-time-picker value="09:45" min="09:00" max="10:15" step="15"></nldd-time-picker>');
 		await waitForUpdate(el);
-		const tien = [...column(el, 'hours').querySelectorAll('[role="option"]')][1] as HTMLElement;
+		const tien = [...column(el, 'hours').querySelectorAll('.time-picker__option')][1] as HTMLElement;
 		tien.click();
 		await waitForUpdate(el);
 		expect(el.value).toBe('10:00');
@@ -164,6 +169,27 @@ describe('nldd-time-picker – toetsenbord', () => {
 		expect(el.value).toBe('00:00');
 	});
 
+	it('wisselt met links en rechts van kolom in plaats van de waarde te verzetten', async () => {
+		el = await fixture<NLDDTimePicker>('<nldd-time-picker value="09:30"></nldd-time-picker>');
+		await waitForUpdate(el);
+		await press(el, 'hours', 'ArrowRight');
+		expect(el.value).toBe('09:30');
+		expect(el.shadowRoot!.activeElement?.textContent?.trim()).toBe('30');
+		await press(el, 'minutes', 'ArrowLeft');
+		expect(el.shadowRoot!.activeElement?.textContent?.trim()).toBe('09');
+	});
+
+	it('wisselt in het wiel tussen de twee spinbuttons', async () => {
+		el = await fixture<NLDDTimePicker>('<nldd-time-picker variant="wheel" value="09:30"></nldd-time-picker>');
+		await waitForUpdate(el);
+		const uur = [...el.shadowRoot!.querySelectorAll<HTMLElement>('.time-picker__band-value')][0];
+		uur.dispatchEvent(new KeyboardEvent('keydown', {
+			key: 'ArrowRight', bubbles: true, composed: true, cancelable: true,
+		}));
+		await waitForUpdate(el);
+		expect(el.shadowRoot!.activeElement?.getAttribute('aria-label')).toBe('Minuut');
+	});
+
 	it('verspringt in de minutenkolom met de stap', async () => {
 		el = await fixture<NLDDTimePicker>('<nldd-time-picker value="09:00" step="15"></nldd-time-picker>');
 		await waitForUpdate(el);
@@ -201,7 +227,7 @@ describe('nldd-time-picker – toegankelijkheid', () => {
 	it('houdt per kolom één optie bereikbaar met Tab', async () => {
 		el = await fixture<NLDDTimePicker>('<nldd-time-picker value="09:30"></nldd-time-picker>');
 		await waitForUpdate(el);
-		const bereikbaar = [...column(el, 'hours').querySelectorAll('[role="option"]')]
+		const bereikbaar = [...column(el, 'hours').querySelectorAll('.time-picker__option')]
 			.filter((o) => o.getAttribute('tabindex') === '0');
 		expect(bereikbaar).toHaveLength(1);
 		expect(bereikbaar[0].textContent!.trim()).toBe('09');
@@ -210,7 +236,7 @@ describe('nldd-time-picker – toegankelijkheid', () => {
 	it('maakt zonder waarde de eerste optie bereikbaar', async () => {
 		el = await fixture<NLDDTimePicker>('<nldd-time-picker></nldd-time-picker>');
 		await waitForUpdate(el);
-		const bereikbaar = [...column(el, 'hours').querySelectorAll('[role="option"]')]
+		const bereikbaar = [...column(el, 'hours').querySelectorAll('.time-picker__option')]
 			.filter((o) => o.getAttribute('tabindex') === '0');
 		expect(bereikbaar).toHaveLength(1);
 		expect(bereikbaar[0].textContent!.trim()).toBe('00');
@@ -236,8 +262,45 @@ describe('nldd-time-picker – wiel', () => {
 		expect(el.shadowRoot!.querySelector('.time-picker__band')).not.toBeNull();
 	});
 
-	it('houdt dezelfde listbox-semantiek als de lijst', async () => {
+	// Wat je in het wiel bedient is de band, niet de lijst erachter, en een wiel
+	// ís een spinbutton. De kolommen zijn dan decor: aria-hidden, niet focusbaar,
+	// zodat de waarden niet dubbel worden voorgelezen en focus de scrollpositie
+	// niet meer verstoort.
+	it('legt de betekenis in de band en verbergt de kolommen', async () => {
 		el = await fixture<NLDDTimePicker>('<nldd-time-picker variant="wheel" value="09:30"></nldd-time-picker>');
+		await waitForUpdate(el);
+		expect(column(el, 'hours').getAttribute('aria-hidden')).toBe('true');
+		expect(column(el, 'hours').getAttribute('role')).toBe('presentation');
+		const focusbaar = [...column(el, 'hours').querySelectorAll('[tabindex="0"]')];
+		expect(focusbaar).toHaveLength(0);
+	});
+
+	it('geeft uur en minuut elk een eigen spinbutton', async () => {
+		el = await fixture<NLDDTimePicker>('<nldd-time-picker variant="wheel" value="09:30" step="15"></nldd-time-picker>');
+		await waitForUpdate(el);
+		const uur = band(el, 'hours');
+		expect(uur.getAttribute('role')).toBe('spinbutton');
+		expect(uur.getAttribute('aria-label')).toBe('Uur');
+		expect(uur.getAttribute('tabindex')).toBe('0');
+		expect(uur.getAttribute('aria-valuenow')).toBe('9');
+		expect(uur.getAttribute('aria-valuetext')).toBe('09');
+		const minuut = band(el, 'minutes');
+		expect(minuut.getAttribute('aria-valuemin')).toBe('0');
+		expect(minuut.getAttribute('aria-valuemax')).toBe('45');
+	});
+
+	it('verzet de waarde met de pijltjes op de band', async () => {
+		el = await fixture<NLDDTimePicker>('<nldd-time-picker variant="wheel" value="09:30" step="15"></nldd-time-picker>');
+		await waitForUpdate(el);
+		band(el, 'minutes').dispatchEvent(new KeyboardEvent('keydown', {
+			key: 'ArrowDown', bubbles: true, composed: true, cancelable: true,
+		}));
+		await waitForUpdate(el);
+		expect(el.value).toBe('09:45');
+	});
+
+	it('houdt in de lijst-variant de listbox-semantiek', async () => {
+		el = await fixture<NLDDTimePicker>('<nldd-time-picker value="09:30"></nldd-time-picker>');
 		await waitForUpdate(el);
 		expect(column(el, 'hours').getAttribute('role')).toBe('listbox');
 		expect(column(el, 'hours').getAttribute('aria-label')).toBe('Uur');
@@ -256,7 +319,7 @@ describe('nldd-time-picker – wiel', () => {
 		// is, anders wordt deze scroll voor de zijne aangezien.
 		await new Promise((r) => setTimeout(r, 250));
 		const kolom = column(el, 'hours');
-		const optie = [...kolom.querySelectorAll<HTMLElement>('[role="option"]')][14];
+		const optie = [...kolom.querySelectorAll<HTMLElement>('.time-picker__option')][14];
 		// Uit de gemeten posities, niet uit een aangenomen formule: dit is precies
 		// de rekensom die de component omkeert om te bepalen wat er in het midden
 		// staat.
@@ -266,21 +329,22 @@ describe('nldd-time-picker – wiel', () => {
 		expect(el.value).toBe('14:30');
 	});
 
-	// De band moet elke beweging volgen, niet de vastgelegde waarde: anders
-	// schuiven er cijfers achterlangs terwijl het getal in de band blijft staan.
-	it('toont tijdens het scrollen wat er in het midden ligt, voordat het vastligt', async () => {
+	// De markering moet elke beweging volgen, niet de vastgelegde waarde: anders
+	// staat het cijfer op de band in de gewone kleur en is het onleesbaar.
+	it('markeert tijdens het scrollen wat er in het midden ligt, voordat het vastligt', async () => {
 		el = await fixture<NLDDTimePicker>(
 			'<nldd-time-picker variant="wheel" value="09:30" style="--semantics-controls-md-min-size: 44px"></nldd-time-picker>',
 		);
 		await waitForUpdate(el);
 		await new Promise((r) => setTimeout(r, 250));
 		const kolom = column(el, 'hours');
-		const optie = [...kolom.querySelectorAll<HTMLElement>('[role="option"]')][14];
+		const optie = [...kolom.querySelectorAll<HTMLElement>('.time-picker__option')][14];
 		kolom.scrollTop = optie.offsetTop + optie.offsetHeight / 2 - kolom.clientHeight / 2;
 		kolom.dispatchEvent(new Event('scroll'));
 		await waitForUpdate(el);
-		const band = () => el.shadowRoot!.querySelector('.time-picker__band')!.textContent!.replace(/\s+/g, '');
-		expect(band()).toBe('14:30');
+		const gecentreerd = () => [...el.shadowRoot!.querySelectorAll('[data-centred]')]
+			.map((e) => e.textContent!.trim());
+		expect(gecentreerd()).toEqual(['14', '30']);
 		expect(el.value).toBe('09:30');
 		await new Promise((r) => setTimeout(r, 250));
 		expect(el.value).toBe('14:30');
