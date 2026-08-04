@@ -12,7 +12,7 @@ export const timePickerStyles = css`
 	:host {
 		--_control-min-size: var(--semantics-controls-md-min-size);
 		--_control-corner-radius: var(--semantics-controls-md-corner-radius);
-		--_list-item-font: var(--primitives-font-body-sm-medium-flat);
+		--_list-item-font: var(--primitives-font-body-md-medium-flat);
 		--_list-item-is-hovered-background-color: light-dark(var(--primitives-color-neutral-100), var(--primitives-color-neutral-150));
 		--_selection-background-color: var(--semantics-controls-is-highlighted-indicator-color);
 		--_selection-content-color: var(--semantics-controls-is-highlighted-contrast-color);
