@@ -1305,6 +1305,7 @@ Twee kolommen, uren en minuten, waarin een tijd wordt gekozen. Het component is 
 | `max` | `string` | Laatst toegestane tijd als `HH:mm`. |
 | `step` | `number` | Minutenstap (standaard 1). Bepaalt welke minuten in de kolom staan. |
 | `variant` | `string` | Weergave: 'list' (standaard) of 'wheel', een wiel dat de gekozen waarde in het midden houdt. |
+| `rows` | `number` | Aantal waarden in beeld per kolom (standaard 7). Wordt naar boven op een oneven getal afgerond en op minimaal 3 gehouden, want alleen bij een oneven aantal is er een middelste rij. |
 | `width` | `string` | Breedte: `full` vult de container, of geef een eigen CSS-lengte. |
 | `accessible-label` | `string` | Toegankelijke naam van de picker. |
 | `translations` | `object` | Vertalingen; niet opgegeven sleutels vallen terug op het Nederlands. |

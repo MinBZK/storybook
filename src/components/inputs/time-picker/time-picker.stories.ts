@@ -14,6 +14,7 @@ export default {
 	},
 	args: {
 		variant: 'list',
+		rows: 7,
 		width: '',
 		value: '09:30',
 		min: '',
@@ -27,6 +28,11 @@ export default {
 			options: ['list', 'wheel'],
 			description: 'Weergave: een lijst, of een wiel dat de gekozen waarde in het midden houdt',
 			table: { defaultValue: { summary: 'list' } },
+		},
+		rows: {
+			control: 'number',
+			description: 'Aantal waarden in beeld per kolom; wordt op een oneven getal afgerond',
+			table: { defaultValue: { summary: '7' } },
 		},
 		width: {
 			control: 'text',
@@ -64,6 +70,7 @@ export default {
 
 const Template = ({
 	variant,
+	rows,
 	width,
 	value,
 	min,
@@ -73,6 +80,7 @@ const Template = ({
 }: Record<string, any>) => html`
 	<nldd-time-picker
 		variant=${variant || nothing}
+		rows=${rows || nothing}
 		width=${width || nothing}
 		value=${value || nothing}
 		min=${min || nothing}
@@ -132,6 +140,24 @@ export const LijstNaastWiel = () => html`
 		<div>
 			<p><code>variant="wheel"</code></p>
 			<nldd-time-picker variant="wheel" value="09:30" step="15" accessible-label="Wiel"></nldd-time-picker>
+		</div>
+	</div>
+`;
+
+export const MinderRijen = () => html`
+	<p>Met <code>rows</code> bepaalt de consument hoeveel waarden er in beeld staan. Altijd oneven, want alleen dan is er een middelste rij waarin de band valt.</p>
+	<div style="display: flex; gap: 48px; align-items: flex-start;">
+		<div>
+			<p><code>rows="3"</code></p>
+			<nldd-time-picker variant="wheel" rows="3" value="09:30" step="15" accessible-label="Drie rijen"></nldd-time-picker>
+		</div>
+		<div>
+			<p><code>rows="5"</code></p>
+			<nldd-time-picker variant="wheel" rows="5" value="09:30" step="15" accessible-label="Vijf rijen"></nldd-time-picker>
+		</div>
+		<div>
+			<p><code>rows="7"</code> (standaard)</p>
+			<nldd-time-picker variant="wheel" value="09:30" step="15" accessible-label="Zeven rijen"></nldd-time-picker>
 		</div>
 	</div>
 `;

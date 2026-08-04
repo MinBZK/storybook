@@ -17,9 +17,10 @@ export const timePickerStyles = css`
 		--_option-is-selected-content-color: var(--semantics-controls-is-highlighted-contrast-color);
 		--_option-is-hovered-background-color: light-dark(var(--primitives-color-neutral-100), var(--primitives-color-neutral-150));
 		--_column-width: calc(var(--_option-min-size) * 1.5);
-		/* Zeven waarden in beeld, dus een oneven aantal: dan staat de gekozen
-		   waarde in het midden als de kolom hem in beeld scrolt. */
-		--_column-height: calc(var(--_option-min-size) * 7);
+		/* Aantal waarden in beeld; vanuit JS gezet door het rows-attribuut. Altijd
+		   oneven, want alleen dan is er een middelste rij waarin de band valt. */
+		--_rows: 7;
+		--_column-height: calc(var(--_option-min-size) * var(--_rows));
 		--_column-gap: var(--primitives-space-4);
 		--_separator-content-color: var(--semantics-content-secondary-color);
 		/* Vanuit JS gezet door het width-attribuut; initial houdt hem

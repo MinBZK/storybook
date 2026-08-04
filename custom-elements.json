@@ -15957,6 +15957,16 @@
             },
             {
               "kind": "field",
+              "name": "rows",
+              "type": {
+                "text": "number"
+              },
+              "default": "7",
+              "attribute": "rows",
+              "reflects": true
+            },
+            {
+              "kind": "field",
               "name": "width",
               "type": {
                 "text": "string"
@@ -16046,6 +16056,15 @@
               "default": "'list'",
               "fieldName": "variant",
               "description": "Weergave: 'list' (standaard) of 'wheel', een wiel dat de gekozen waarde in het midden houdt."
+            },
+            {
+              "name": "rows",
+              "type": {
+                "text": "number"
+              },
+              "default": "7",
+              "fieldName": "rows",
+              "description": "Aantal waarden in beeld per kolom (standaard 7). Wordt naar boven op een oneven getal afgerond en op minimaal 3 gehouden, want alleen bij een oneven aantal is er een middelste rij."
             },
             {
               "name": "width",

@@ -299,6 +299,32 @@ describe('nldd-time-picker – wiel', () => {
 		expect(el.value).toBe('09:45');
 	});
 
+	it('past het aantal zichtbare rijen aan', async () => {
+		el = await fixture<NLDDTimePicker>(
+			'<nldd-time-picker variant="wheel" value="09:30" rows="5" style="--semantics-controls-md-min-size: 44px"></nldd-time-picker>',
+		);
+		await waitForUpdate(el);
+		expect(column(el, 'hours').clientHeight).toBe(5 * 44);
+	});
+
+	// Bij een even aantal valt het midden tussen twee rijen en staat de band niet
+	// op een waarde.
+	it('rondt een even aantal rijen naar boven af op oneven', async () => {
+		el = await fixture<NLDDTimePicker>(
+			'<nldd-time-picker variant="wheel" value="09:30" rows="6" style="--semantics-controls-md-min-size: 44px"></nldd-time-picker>',
+		);
+		await waitForUpdate(el);
+		expect(column(el, 'hours').clientHeight).toBe(7 * 44);
+	});
+
+	it('houdt minimaal drie rijen aan', async () => {
+		el = await fixture<NLDDTimePicker>(
+			'<nldd-time-picker variant="wheel" value="09:30" rows="1" style="--semantics-controls-md-min-size: 44px"></nldd-time-picker>',
+		);
+		await waitForUpdate(el);
+		expect(column(el, 'hours').clientHeight).toBe(3 * 44);
+	});
+
 	// Safari telt de onderste padding van een scrollcontainer niet mee in de
 	// scrollbare overflow. Met padding-block viel bij een korte kolom precies de
 	// hele overflow weg (132px boven plus 176px waarden is exact de kolomhoogte)
