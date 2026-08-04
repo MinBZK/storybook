@@ -345,6 +345,40 @@ describe('nldd-time-field – toegankelijkheid', () => {
 
 
 /* ============================================================
+   Picker
+   ============================================================ */
+
+describe('nldd-time-field – picker', () => {
+	let el: NLDDTimeField;
+
+	afterEach(() => { if (el) cleanup(el); });
+
+	it('toont standaard een knop om de picker te openen', async () => {
+		el = await fixture<NLDDTimeField>('<nldd-time-field></nldd-time-field>');
+		await waitForUpdate(el);
+		const knop = el.shadowRoot!.querySelector('.time-field__picker-button nldd-icon-button');
+		expect(knop).not.toBeNull();
+		expect(knop!.getAttribute('text')).toBe('Tijd kiezen');
+	});
+
+	it('verbergt de knop met no-picker', async () => {
+		el = await fixture<NLDDTimeField>('<nldd-time-field no-picker></nldd-time-field>');
+		await waitForUpdate(el);
+		expect(el.shadowRoot!.querySelector('.time-field__picker-button')).toBeNull();
+	});
+
+	// De maat van een knop is een attribuut en dus niet met een media query te
+	// kiezen; het veld stelt dezelfde vraag daarom in JS.
+	it('kiest de knopmaat op het aanwijzertype', async () => {
+		el = await fixture<NLDDTimeField>('<nldd-time-field></nldd-time-field>');
+		await waitForUpdate(el);
+		const verwacht = matchMedia('(pointer: fine)').matches ? 'sm' : 'md';
+		expect(el._pickerButtonSize).toBe(verwacht);
+	});
+});
+
+
+/* ============================================================
    Formulier
    ============================================================ */
 

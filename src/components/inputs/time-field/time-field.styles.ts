@@ -13,14 +13,16 @@ export const timeFieldStyles = css`
 	/* # Host */
 
 	:host {
-		/* Ruimer dan de tekst meet. Niet om afkappen te voorkomen (de cijfers zijn
-		   tabulair, dus elke tijd meet hetzelfde), maar als lucht rond de tijd en als
-		   greep om te selecteren en te slepen. */
-		--_time-width: 6.5ch;
+		/* Vijf tekens plus een halve als lucht. Niet om afkappen te voorkomen (de
+		   cijfers zijn tabulair, dus elke tijd meet hetzelfde), maar als greep om te
+		   selecteren en te slepen. */
+		--_time-width: 5.5ch;
 		/* Linkerkant van het veld: het is een border-box, en padding-left trekt er al
 		   een rand vanaf, dus tellen beide randen samen voor één rand extra. */
 		--_edge-width: calc(var(--_inline-padding) + var(--semantics-input-fields-border-width));
-		--_validation-icon-area-width: calc(var(--_min-size) - var(--semantics-input-fields-border-width) * 2);
+		/* Om het icoon heen, niet een heel control-vierkant: bij een datum valt die
+		   ruimte weg tegen de langere tekst, bij een tijd van vijf tekens niet. */
+		--_validation-icon-area-width: calc(var(--_validation-icon-size) + var(--primitives-space-8));
 		--_button-size: var(--semantics-controls-sm-min-size);
 		/* Even veel lucht rechts van de knop als erboven en eronder, dus afgeleid van
 		   het hoogteverschil tussen veld en knop in plaats van een vaste waarde. */

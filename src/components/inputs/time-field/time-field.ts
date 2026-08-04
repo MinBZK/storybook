@@ -183,6 +183,46 @@ export class NLDDTimeField extends FormAssociated(LitElement) {
 	@property({ type: Object })
 	translations: Partial<NLDDTimeFieldTranslations> = {};
 
+	/**
+	 * Of er met een fijne aanwijzer wordt gewerkt. De picker zet zijn rijhoogte al
+	 * met een media query, maar de maat van een knop is een attribuut en dus niet
+	 * met CSS te kiezen; vandaar dezelfde vraag hier nog een keer, in JS.
+	 *
+	 * Lui aangemaakt en gedeeld tussen alle velden: matchMedia bij het laden van
+	 * de module aanroepen breekt in een omgeving zonder window.
+	 */
+	private static _finePointerQuery: MediaQueryList | null = null;
+
+	private static _getFinePointerQuery(): MediaQueryList {
+		NLDDTimeField._finePointerQuery ??= matchMedia('(pointer: fine)');
+		return NLDDTimeField._finePointerQuery;
+	}
+
+	@state()
+	private _finePointer = false;
+
+	private _handlePointerChange = (): void => {
+		this._finePointer = NLDDTimeField._getFinePointerQuery().matches;
+	};
+
+	/** Maat van de knoppen in de popover: een vinger heeft de volle controlmaat
+	 *  nodig, een muis niet. Zelfde verdeling als de rijen van de picker. */
+	public get _pickerButtonSize(): 'sm' | 'md' {
+		return this._finePointer ? 'sm' : 'md';
+	}
+
+	override connectedCallback(): void {
+		super.connectedCallback();
+		const query = NLDDTimeField._getFinePointerQuery();
+		this._finePointer = query.matches;
+		query.addEventListener('change', this._handlePointerChange);
+	}
+
+	override disconnectedCallback(): void {
+		NLDDTimeField._getFinePointerQuery().removeEventListener('change', this._handlePointerChange);
+		super.disconnectedCallback();
+	}
+
 	/** Wat de gebruiker ziet en typt. Losgehouden van `value`, dat alleen een
 	 *  geldige tijd draagt of niets. */
 	@state()
