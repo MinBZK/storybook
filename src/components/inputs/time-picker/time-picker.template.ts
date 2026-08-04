@@ -6,9 +6,9 @@ function pad(number: number): string {
 }
 
 /**
- * Eén kolom als listbox. De roving tabindex zit op de opties: alleen de gekozen
- * optie is bereikbaar met Tab (of de eerste zolang er niets gekozen is), zodat
- * Tab naar de volgende kolom springt in plaats van door 24 uren te lopen.
+ * Eén kolom met waarden. Decor voor de screenreader: de betekenis en de
+ * bediening zitten in de band, dus hier geen rollen en geen tab-stops, anders
+ * staan dezelfde waarden er twee keer in.
  */
 function renderColumn(
 	component: NLDDTimePicker,
@@ -17,28 +17,23 @@ function renderColumn(
 	selected: number | null,
 	label: string,
 ): TemplateResult {
-	const wheel = component.variant === 'wheel';
 	return html`
 		<div class="time-picker__column"
-			role=${wheel ? 'presentation' : 'listbox'}
-			aria-label=${wheel ? nothing : label}
-			aria-hidden=${wheel ? 'true' : nothing}
+			role="presentation"
+			aria-hidden="true"
 			data-column=${column}
 			@keydown=${(e: KeyboardEvent) => component._handleKeydown(e, column)}
-			@focusin=${() => component._handleFocus(column)}
 			@scroll=${(e: Event) => component._handleScroll(e, column)}
 		>
 			${numbers.map((number) => {
 				const isSelected = number === selected;
-				const isTabStop = selected === null ? number === numbers[0] : isSelected;
 				return html`
 					<button class="time-picker__option"
 						type="button"
-						role=${wheel ? 'presentation' : 'option'}
-						aria-selected=${wheel ? nothing : (isSelected ? 'true' : 'false')}
+						role="presentation"
 						data-selected=${isSelected ? 'true' : nothing}
-						tabindex=${wheel || !isTabStop ? -1 : 0}
-						@click=${() => component._select(column, number)}
+						tabindex="-1"
+						@click=${() => component._select(column, number, true)}
 					>
 						${pad(number)}
 					</button>
@@ -84,17 +79,15 @@ export function timePickerTemplate(component: NLDDTimePicker): TemplateResult {
 			role="group"
 			aria-label=${component._label}
 		>
-			${component.variant === 'wheel' ? html`
-				<div class="time-picker__band">
-					${renderBandValue(component, 'hours', component._bandHour, component._t('components.time-picker.hours-label'))}
-					<span class="time-picker__band-separator"
-						aria-hidden="true"
-					>
-						:
-					</span>
-					${renderBandValue(component, 'minutes', component._bandMinute, component._t('components.time-picker.minutes-label'))}
-				</div>
-			` : nothing}
+			<div class="time-picker__band">
+				${renderBandValue(component, 'hours', component._bandHour, component._t('components.time-picker.hours-label'))}
+				<span class="time-picker__band-separator"
+					aria-hidden="true"
+				>
+					:
+				</span>
+				${renderBandValue(component, 'minutes', component._bandMinute, component._t('components.time-picker.minutes-label'))}
+			</div>
 			${renderColumn(
 				component,
 				'hours',
@@ -102,11 +95,9 @@ export function timePickerTemplate(component: NLDDTimePicker): TemplateResult {
 				component._selectedHour,
 				component._t('components.time-picker.hours-label'),
 			)}
-			<span class="time-picker__separator"
+			<span class="time-picker__gap"
 				aria-hidden="true"
-			>
-				:
-			</span>
+			></span>
 			${renderColumn(
 				component,
 				'minutes',

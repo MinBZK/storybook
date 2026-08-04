@@ -1,14 +1,15 @@
 /**
  * NLDD Design System Time Picker Component (Lit + TypeScript)
  *
- * Twee kolommen, uren en minuten, waarin een tijd wordt gekozen. Het component
- * is zelfstandig bruikbaar (inline op een pagina, in een filterpaneel) en zit
- * ook in de popover van nldd-time-field. Waarden zijn altijd 24-uurs `HH:mm`.
+ * Twee kolommen, uren en minuten, die als een wiel langs een band in het midden
+ * schuiven. Het component is zelfstandig bruikbaar (inline op een pagina, in een
+ * filterpaneel) en zit ook in de popover van nldd-time-field. Waarden zijn altijd
+ * 24-uurs `HH:mm`.
  *
- * Elke kolom is een eigen listbox met een eigen naam, want twee naamloze
- * lijsten naast elkaar zijn niet uit elkaar te houden. Selectie volgt de focus:
- * met een pijltoets ergens landen ís kiezen, zoals in een native select. Dat
- * scheelt een bevestigingsstap in een control waar elke waarde even geldig is.
+ * Scrollen ís kiezen: wat in het midden tot stilstand komt, is de waarde. Met het
+ * toetsenbord bedien je de band, want dat is wat een wiel is: uur en minuut zijn
+ * er elk een spinbutton. De kolommen eronder staan op aria-hidden, zodat dezelfde
+ * waarden niet twee keer worden voorgelezen.
  *
  * @element nldd-time-picker
  *
@@ -16,18 +17,17 @@
  * @attr {string} min - Vroegst toegestane tijd als `HH:mm`. Is tevens de basis waarvandaan `step` telt.
  * @attr {string} max - Laatst toegestane tijd als `HH:mm`.
  * @attr {number} step - Minutenstap (standaard 1). Bepaalt welke minuten in de kolom staan.
- * @attr {string} variant - Weergave: 'list' (standaard) of 'wheel', een wiel dat de gekozen waarde in het midden houdt.
  * @attr {number} rows - Hoogte van de kolommen in rijen (standaard 7, minimaal 3). De gekozen waarde staat altijd in het midden, dus een oneven aantal toont hele rijen en een even aantal kapt boven en onder een halve rij af.
  * @attr {string} width - Breedte: `full` vult de container, of geef een eigen CSS-lengte.
  * @attr {string} accessible-label - Toegankelijke naam van de picker.
  * @attr {object} translations - Vertalingen; niet opgegeven sleutels vallen terug op het Nederlands.
  *
- * @fires change - Wanneer een tijd is gekozen. detail: { value } met `HH:mm`.
+ * @fires input - Bij elke wijziging: scrollen, de pijltjestoetsen. detail: { value } met `HH:mm`.
+ * @fires change - Wanneer de keuze is bevestigd: een klik op een waarde of op de band, of Enter. detail: { value } met `HH:mm`. Een veld dat de picker in een popover toont, sluit hierop; op `input` niet, anders klapt hij dicht zodra je stopt met scrollen en heb je de tweede kolom nooit gezien.
  */
 
 import { LitElement, type PropertyValues } from 'lit';
 import { customElement, property, state } from 'lit/decorators.js';
-import { reflectNonDefault } from '../../../utilities/reflect-non-default.js';
 import { timePickerStyles } from './time-picker.styles.js';
 import { timePickerTemplate } from './time-picker.template.js';
 import { nlddTimePickerTranslations, type NLDDTimePickerTranslations } from './time-picker.i18n.js';
@@ -64,9 +64,6 @@ export class NLDDTimePicker extends LitElement {
 	@property({ type: Number })
 	step = 1;
 
-	@property({ reflect: true, converter: reflectNonDefault<'list' | 'wheel'>('list') })
-	variant: 'list' | 'wheel' = 'list';
-
 	@property({ type: Number, reflect: true })
 	rows = 7;
 
@@ -78,11 +75,6 @@ export class NLDDTimePicker extends LitElement {
 
 	@property({ type: Object })
 	translations: Partial<NLDDTimePickerTranslations> = {};
-
-	/** Waar de focus staat, per kolom. Losgehouden van `value`: je kunt met de
-	 *  pijltoetsen door een kolom lopen zonder dat de andere kolom meebeweegt. */
-	@state()
-	private _activeColumn: 'hours' | 'minutes' = 'hours';
 
 	/**
 	 * Wat er op dit moment in de band staat, per kolom. Losgehouden van `value`,
@@ -159,10 +151,6 @@ export class NLDDTimePicker extends LitElement {
 		return this._centred.minutes ?? this._selectedMinute;
 	}
 
-	public _isActiveColumn(column: 'hours' | 'minutes'): boolean {
-		return this._activeColumn === column;
-	}
-
 	/**
 	 * Kies een uur of een minuut. Het uur houdt de gekozen minuut vast wanneer
 	 * die er binnen past; zo blijf je bij het verschuiven van het uur op dezelfde
@@ -170,8 +158,7 @@ export class NLDDTimePicker extends LitElement {
 	 * niet (door `min`, `max` of een stap die niet uitkomt), dan de eerst
 	 * mogelijke minuut in dat uur.
 	 */
-	public _select(column: 'hours' | 'minutes', number: number): void {
-		this._activeColumn = column;
+	public _select(column: 'hours' | 'minutes', number: number, commit = false): void {
 		const slots = this._slots;
 		if (slots.length === 0) return;
 		let next: number;
@@ -187,9 +174,17 @@ export class NLDDTimePicker extends LitElement {
 			next = hour * 60 + number;
 			if (!slots.includes(next)) return;
 		}
-		if (fromMinutes(next) === this.value) return;
+		const changed = fromMinutes(next) !== this.value;
 		this.value = fromMinutes(next);
-		this.dispatchEvent(new CustomEvent('change', {
+		if (changed) this._emit('input');
+		// change is de bevestiging, niet de wijziging: een veld dat de picker in
+		// een popover toont sluit hierop, en dat mag niet gebeuren zodra je stopt
+		// met scrollen.
+		if (commit) this._emit('change');
+	}
+
+	private _emit(type: 'input' | 'change'): void {
+		this.dispatchEvent(new CustomEvent(type, {
 			detail: { value: this.value },
 			bubbles: true,
 			composed: true,
@@ -206,6 +201,13 @@ export class NLDDTimePicker extends LitElement {
 		if (numbers.length === 0) return;
 		const current = column === 'hours' ? this._selectedHour : this._selectedMinute;
 		const index = current === null ? -1 : numbers.indexOf(current);
+		// Enter en spatie bevestigen wat er in de band staat, zoals een klik dat
+		// doet; met de pijltjes ben je nog aan het bijstellen.
+		if (e.key === 'Enter' || e.key === ' ') {
+			e.preventDefault();
+			this._emit('change');
+			return;
+		}
 		// Horizontaal wisselt van kolom, verticaal verzet de waarde: de pijltjes
 		// bewegen zo in de richting waarin je ze ziet staan. Zelfde verdeling als
 		// de segmenten van een native <input type="time">.
@@ -235,18 +237,11 @@ export class NLDDTimePicker extends LitElement {
 		if (next !== null) this._select(column, next);
 	}
 
-	/** Verplaats focus naar de andere kolom: in het wiel naar zijn spinbutton, in
-	 *  de lijst naar de optie die daar de tab-stop is. */
+	/** Verplaats focus naar de spinbutton van de andere kolom. */
 	private _focusColumn(column: 'hours' | 'minutes'): void {
-		const target = this.variant === 'wheel'
-			? this.shadowRoot?.querySelectorAll<HTMLElement>('.time-picker__band-value')[column === 'hours' ? 0 : 1]
-			: this.shadowRoot?.querySelector<HTMLElement>(`[data-column="${column}"] [tabindex="0"]`);
-		target?.focus();
-		this._activeColumn = column;
-	}
-
-	public _handleFocus(column: 'hours' | 'minutes'): void {
-		this._activeColumn = column;
+		this.shadowRoot
+			?.querySelectorAll<HTMLElement>('.time-picker__band-value')[column === 'hours' ? 0 : 1]
+			?.focus();
 	}
 
 	/**
@@ -264,7 +259,7 @@ export class NLDDTimePicker extends LitElement {
 	 * niet halverwege een veeg al te kiezen.
 	 */
 	public _handleScroll(e: Event, column: 'hours' | 'minutes'): void {
-		if (this.variant !== 'wheel' || this._scrollingSelf) return;
+		if (this._scrollingSelf) return;
 		const el = e.currentTarget as HTMLElement;
 		// De band volgt elke beweging, de waarde legt pas vast bij stilstand.
 		const centred = this._centredOption(el);

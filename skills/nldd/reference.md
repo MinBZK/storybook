@@ -1294,7 +1294,7 @@ Een tekstveld voor een tijd. De waarde is altijd 24-uurs `HH:mm`; dat is in het 
 
 ### `<nldd-time-picker>`
 
-Twee kolommen, uren en minuten, waarin een tijd wordt gekozen. Het component is zelfstandig bruikbaar (inline op een pagina, in een filterpaneel) en zit ook in de popover van nldd-time-field. Waarden zijn altijd 24-uurs `HH:mm`. Elke kolom is een eigen listbox met een eigen naam, want twee naamloze lijsten naast elkaar zijn niet uit elkaar te houden. Selectie volgt de focus: met een pijltoets ergens landen ís kiezen, zoals in een native select. Dat scheelt een bevestigingsstap in een control waar elke waarde even geldig is.
+Twee kolommen, uren en minuten, die als een wiel langs een band in het midden schuiven. Het component is zelfstandig bruikbaar (inline op een pagina, in een filterpaneel) en zit ook in de popover van nldd-time-field. Waarden zijn altijd 24-uurs `HH:mm`. Scrollen ís kiezen: wat in het midden tot stilstand komt, is de waarde. Met het toetsenbord bedien je de band, want dat is wat een wiel is: uur en minuut zijn er elk een spinbutton. De kolommen eronder staan op aria-hidden, zodat dezelfde waarden niet twee keer worden voorgelezen.
 
 **Attributes**
 
@@ -1304,7 +1304,6 @@ Twee kolommen, uren en minuten, waarin een tijd wordt gekozen. Het component is 
 | `min` | `string` | Vroegst toegestane tijd als `HH:mm`. Is tevens de basis waarvandaan `step` telt. |
 | `max` | `string` | Laatst toegestane tijd als `HH:mm`. |
 | `step` | `number` | Minutenstap (standaard 1). Bepaalt welke minuten in de kolom staan. |
-| `variant` | `string` | Weergave: 'list' (standaard) of 'wheel', een wiel dat de gekozen waarde in het midden houdt. |
 | `rows` | `number` | Hoogte van de kolommen in rijen (standaard 7, minimaal 3). De gekozen waarde staat altijd in het midden, dus een oneven aantal toont hele rijen en een even aantal kapt boven en onder een halve rij af. |
 | `width` | `string` | Breedte: `full` vult de container, of geef een eigen CSS-lengte. |
 | `accessible-label` | `string` | Toegankelijke naam van de picker. |
@@ -1314,7 +1313,8 @@ Twee kolommen, uren en minuten, waarin een tijd wordt gekozen. Het component is 
 
 | Event | Beschrijving |
 | --- | --- |
-| `change` | Wanneer een tijd is gekozen. detail: { value } met `HH:mm`. |
+| `input` | Bij elke wijziging: scrollen, de pijltjestoetsen. detail: { value } met `HH:mm`. |
+| `change` | Wanneer de keuze is bevestigd: een klik op een waarde of op de band, of Enter. detail: { value } met `HH:mm`. Een veld dat de picker in een popover toont, sluit hierop; op `input` niet, anders klapt hij dicht zodra je stopt met scrollen en heb je de tweede kolom nooit gezien. |
 
 ### `<nldd-toggle-button>`
 

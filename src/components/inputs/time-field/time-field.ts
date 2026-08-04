@@ -361,12 +361,40 @@ export class NLDDTimeField extends FormAssociated(LitElement) {
 		queueMicrotask(() => this._pickerTrigger?.focus());
 	}
 
-	public _handlePickerChange(e: Event): void {
+	/**
+	 * De picker meldt elke wijziging als `input` en pas een bevestiging als
+	 * `change`. Scrollen geeft dus wel de nieuwe tijd, maar sluit de popover niet:
+	 * anders klapt hij dicht zodra je stopt met scrollen en heb je de tweede kolom
+	 * nooit gezien.
+	 */
+	public _handlePickerInput(e: Event): void {
 		e.stopPropagation();
 		const detail = (e as CustomEvent).detail as { value?: string };
 		if (typeof detail?.value !== 'string') return;
 		this.value = detail.value;
 		this._display = detail.value;
+		this._emit('input');
+	}
+
+	public _handlePickerChange(e: Event): void {
+		e.stopPropagation();
+		const detail = (e as CustomEvent).detail as { value?: string };
+		if (typeof detail?.value === 'string') {
+			this.value = detail.value;
+			this._display = detail.value;
+		}
+		this._closePicker();
+	}
+
+	/** De knop onder de picker: de waarde staat er al door `input`, dit sluit
+	 *  alleen af. Voor een wiel is dit de duidelijkste afsluiter, want klikken op
+	 *  een waarde is een zwak gebaar in iets dat "scroll mij" uitstraalt. */
+	public _handlePickerConfirm(e: Event): void {
+		e.stopPropagation();
+		this._closePicker();
+	}
+
+	private _closePicker(): void {
 		this._focusTriggerOnClose = true;
 		this._popover?.hide();
 		this._emit('change');

@@ -6,6 +6,11 @@ export const nlddTimeFieldTranslations = {
 	'components.time-field.to-pick-time-action': 'Tijd kiezen',
 	// Sluit de sheet zonder te kiezen, dus gebiedende wijs zoals andere directe acties.
 	'components.time-field.cancel-action': 'Annuleer',
+	// Sluit de popover met de tijd die in de band staat. Bewust niet "Opslaan":
+	// het veld heeft de waarde al zodra je scrolt, hier bevestig je alleen dat je
+	// klaar bent. Een consument die dit in een opslaan-flow zet, kan het
+	// overschrijven.
+	'components.time-field.confirm-action': 'Klaar',
 };
 
 export type NLDDTimeFieldTranslations = typeof nlddTimeFieldTranslations;

@@ -13,7 +13,6 @@ export default {
 		status: { type: 'stable' },
 	},
 	args: {
-		variant: 'list',
 		rows: 7,
 		width: '',
 		value: '09:30',
@@ -23,12 +22,6 @@ export default {
 		accessibleLabel: '',
 	},
 	argTypes: {
-		variant: {
-			control: 'select',
-			options: ['list', 'wheel'],
-			description: 'Weergave: een lijst, of een wiel dat de gekozen waarde in het midden houdt',
-			table: { defaultValue: { summary: 'list' } },
-		},
 		rows: {
 			control: 'number',
 			description: 'Hoogte van de kolommen in rijen; oneven toont hele rijen, even kapt de randen af',
@@ -69,7 +62,6 @@ export default {
 };
 
 const Template = ({
-	variant,
 	rows,
 	width,
 	value,
@@ -79,7 +71,6 @@ const Template = ({
 	accessibleLabel,
 }: Record<string, any>) => html`
 	<nldd-time-picker
-		variant=${variant || nothing}
 		rows=${rows || nothing}
 		width=${width || nothing}
 		value=${value || nothing}
@@ -121,43 +112,20 @@ export const StapVanafMin = () => html`
 	></nldd-time-picker>
 `;
 
-export const Wiel = () => html`
-	<p>Scrollen ís kiezen: wat in de band in het midden tot stilstand komt, is de waarde. Met het toetsenbord bedien je de band: uur en minuut zijn elk een spinbutton, pijl omhoog en omlaag verzetten de waarde, links en rechts wisselen ertussen.</p>
-	<nldd-time-picker
-		variant="wheel"
-		value="09:30"
-		step="15"
-		accessible-label="Starttijd"
-	></nldd-time-picker>
-`;
-
-export const LijstNaastWiel = () => html`
-	<div style="display: flex; gap: 48px; align-items: flex-start;">
-		<div>
-			<p><code>variant="list"</code></p>
-			<nldd-time-picker value="09:30" step="15" accessible-label="Lijst"></nldd-time-picker>
-		</div>
-		<div>
-			<p><code>variant="wheel"</code></p>
-			<nldd-time-picker variant="wheel" value="09:30" step="15" accessible-label="Wiel"></nldd-time-picker>
-		</div>
-	</div>
-`;
-
 export const MinderRijen = () => html`
 	<p>Met <code>rows</code> bepaalt de consument hoe hoog de kolommen zijn, in rijen. De gekozen waarde staat altijd in het midden, dus een oneven aantal toont hele rijen en een even aantal kapt boven en onder een halve rij af.</p>
 	<div style="display: flex; gap: 48px; align-items: flex-start;">
 		<div>
 			<p><code>rows="5"</code>, hele rijen</p>
-			<nldd-time-picker variant="wheel" rows="5" value="09:30" step="15" accessible-label="Vijf rijen"></nldd-time-picker>
+			<nldd-time-picker rows="5" value="09:30" step="15" accessible-label="Vijf rijen"></nldd-time-picker>
 		</div>
 		<div>
 			<p><code>rows="6"</code>, halve rij aan de randen</p>
-			<nldd-time-picker variant="wheel" rows="6" value="09:30" step="15" accessible-label="Zes rijen"></nldd-time-picker>
+			<nldd-time-picker rows="6" value="09:30" step="15" accessible-label="Zes rijen"></nldd-time-picker>
 		</div>
 		<div>
 			<p><code>rows="7"</code> (standaard)</p>
-			<nldd-time-picker variant="wheel" value="09:30" step="15" accessible-label="Zeven rijen"></nldd-time-picker>
+			<nldd-time-picker value="09:30" step="15" accessible-label="Zeven rijen"></nldd-time-picker>
 		</div>
 	</div>
 `;

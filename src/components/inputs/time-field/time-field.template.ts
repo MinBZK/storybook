@@ -4,6 +4,8 @@ import './../../actions/icon-button/icon-button.js';
 import './../../content/icon/icon.js';
 import './../../layout/popover/popover.js';
 import './../../layout/container/container.js';
+import './../../layout/spacer/spacer.js';
+import './../../actions/button/button.js';
 import './../../navigation/top-title-bar/top-title-bar.js';
 import './../time-picker/time-picker.js';
 
@@ -62,6 +64,7 @@ function renderPicker(component: NLDDTimeField): TemplateResult | typeof nothing
 					@dismiss=${component._handlePickerDismiss}
 				></nldd-top-title-bar>
 				<nldd-container padding="16"
+					@input=${component._handlePickerInput}
 					@change=${component._handlePickerChange}
 				>
 					<slot name="picker"
@@ -76,6 +79,13 @@ function renderPicker(component: NLDDTimeField): TemplateResult | typeof nothing
 							step=${component.step}
 						></nldd-time-picker>
 					`}
+					<nldd-spacer size="16"></nldd-spacer>
+					<nldd-button
+						variant="neutral-base"
+						width="full"
+						text=${component._t('components.time-field.confirm-action')}
+						@click=${component._handlePickerConfirm}
+					></nldd-button>
 				</nldd-container>
 			</nldd-popover>
 		</div>
