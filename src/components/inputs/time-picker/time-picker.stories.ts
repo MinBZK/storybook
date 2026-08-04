@@ -145,15 +145,15 @@ export const LijstNaastWiel = () => html`
 `;
 
 export const MinderRijen = () => html`
-	<p>Met <code>rows</code> bepaalt de consument hoeveel waarden er in beeld staan. Altijd oneven, want alleen dan is er een middelste rij waarin de band valt.</p>
+	<p>Met <code>rows</code> bepaalt de consument hoe hoog de kolommen zijn, in rijen. De gekozen waarde staat altijd in het midden, dus een oneven aantal toont hele rijen en een even aantal kapt boven en onder een halve rij af.</p>
 	<div style="display: flex; gap: 48px; align-items: flex-start;">
 		<div>
-			<p><code>rows="3"</code></p>
-			<nldd-time-picker variant="wheel" rows="3" value="09:30" step="15" accessible-label="Drie rijen"></nldd-time-picker>
+			<p><code>rows="5"</code>, hele rijen</p>
+			<nldd-time-picker variant="wheel" rows="5" value="09:30" step="15" accessible-label="Vijf rijen"></nldd-time-picker>
 		</div>
 		<div>
-			<p><code>rows="5"</code></p>
-			<nldd-time-picker variant="wheel" rows="5" value="09:30" step="15" accessible-label="Vijf rijen"></nldd-time-picker>
+			<p><code>rows="6"</code>, halve rij aan de randen</p>
+			<nldd-time-picker variant="wheel" rows="6" value="09:30" step="15" accessible-label="Zes rijen"></nldd-time-picker>
 		</div>
 		<div>
 			<p><code>rows="7"</code> (standaard)</p>

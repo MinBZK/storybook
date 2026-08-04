@@ -299,7 +299,7 @@ describe('nldd-time-picker – wiel', () => {
 		expect(el.value).toBe('09:45');
 	});
 
-	it('past het aantal zichtbare rijen aan', async () => {
+	it('past de hoogte aan op het aantal rijen', async () => {
 		el = await fixture<NLDDTimePicker>(
 			'<nldd-time-picker variant="wheel" value="09:30" rows="5" style="--semantics-controls-md-min-size: 44px"></nldd-time-picker>',
 		);
@@ -307,14 +307,19 @@ describe('nldd-time-picker – wiel', () => {
 		expect(column(el, 'hours').clientHeight).toBe(5 * 44);
 	});
 
-	// Bij een even aantal valt het midden tussen twee rijen en staat de band niet
-	// op een waarde.
-	it('rondt een even aantal rijen naar boven af op oneven', async () => {
+	// Even mag: de gekozen waarde staat op het midden, dus dan loopt er boven en
+	// onder een halve rij uit beeld in plaats van dat er hele rijen staan.
+	it('accepteert ook een even aantal rijen', async () => {
 		el = await fixture<NLDDTimePicker>(
 			'<nldd-time-picker variant="wheel" value="09:30" rows="6" style="--semantics-controls-md-min-size: 44px"></nldd-time-picker>',
 		);
 		await waitForUpdate(el);
-		expect(column(el, 'hours').clientHeight).toBe(7 * 44);
+		expect(column(el, 'hours').clientHeight).toBe(6 * 44);
+		const kolom = column(el, 'hours');
+		const gekozen = kolom.querySelector<HTMLElement>('[data-selected]')!;
+		// De gekozen waarde staat nog steeds precies in het midden.
+		expect(gekozen.offsetTop + gekozen.offsetHeight / 2 - kolom.scrollTop)
+			.toBe(kolom.clientHeight / 2);
 	});
 
 	it('houdt minimaal drie rijen aan', async () => {

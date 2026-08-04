@@ -17,8 +17,11 @@ export const timePickerStyles = css`
 		--_option-is-selected-content-color: var(--semantics-controls-is-highlighted-contrast-color);
 		--_option-is-hovered-background-color: light-dark(var(--primitives-color-neutral-100), var(--primitives-color-neutral-150));
 		--_column-width: calc(var(--_option-min-size) * 1.5);
-		/* Aantal waarden in beeld; vanuit JS gezet door het rows-attribuut. Altijd
-		   oneven, want alleen dan is er een middelste rij waarin de band valt. */
+		/* Hoogte in rijen; vanuit JS gezet door het rows-attribuut. De gekozen
+		   waarde staat altijd in het midden, dus een oneven aantal levert hele
+		   rijen op en een even aantal een halve rij aan beide randen. Dat laatste
+		   is wat een wiel z'n vorm geeft: een doorlopend oppervlak in plaats van
+		   een lijst met een vervaging eroverheen. */
 		--_rows: 7;
 		--_column-height: calc(var(--_option-min-size) * var(--_rows));
 		--_column-gap: var(--primitives-space-4);
@@ -117,10 +120,6 @@ export const timePickerStyles = css`
 
 	/* # Wiel */
 
-	/* De kolom is even hoog als in de lijst, maar de waarden schuiven langs een
-	   vaste band in het midden. De padding boven en onder is precies de halve
-	   kolom min een halve rij, zodat ook de eerste en de laatste waarde het
-	   midden kunnen bereiken. */
 	:host([variant="wheel"]) .time-picker {
 		position: relative;
 	}
@@ -131,9 +130,9 @@ export const timePickerStyles = css`
 		   daardoor helemaal weigeren te scrollen. Proximity snapt als je in de
 		   buurt komt en laat de kolom verder met rust. */
 		scroll-snap-type: y proximity;
-		/* De randen vervagen, zodat de band in het midden het brandpunt is en de
-		   lijst niet abrupt afkapt. */
-		mask-image: linear-gradient(to bottom, transparent 0%, black 25%, black 75%, transparent 100%);
+		/* De vervaging loopt over de afgekapte rand: die halve waarde hoort te
+		   vervagen, niet gelezen te worden. */
+		mask-image: linear-gradient(to bottom, transparent 0%, black 12%, black 88%, transparent 100%);
 		scrollbar-width: none;
 	}
 

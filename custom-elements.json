@@ -16064,7 +16064,7 @@
               },
               "default": "7",
               "fieldName": "rows",
-              "description": "Aantal waarden in beeld per kolom (standaard 7). Wordt naar boven op een oneven getal afgerond en op minimaal 3 gehouden, want alleen bij een oneven aantal is er een middelste rij."
+              "description": "Hoogte van de kolommen in rijen (standaard 7, minimaal 3). De gekozen waarde staat altijd in het midden, dus een oneven aantal toont hele rijen en een even aantal kapt boven en onder een halve rij af."
             },
             {
               "name": "width",

@@ -17,7 +17,7 @@
  * @attr {string} max - Laatst toegestane tijd als `HH:mm`.
  * @attr {number} step - Minutenstap (standaard 1). Bepaalt welke minuten in de kolom staan.
  * @attr {string} variant - Weergave: 'list' (standaard) of 'wheel', een wiel dat de gekozen waarde in het midden houdt.
- * @attr {number} rows - Aantal waarden in beeld per kolom (standaard 7). Wordt naar boven op een oneven getal afgerond en op minimaal 3 gehouden, want alleen bij een oneven aantal is er een middelste rij.
+ * @attr {number} rows - Hoogte van de kolommen in rijen (standaard 7, minimaal 3). De gekozen waarde staat altijd in het midden, dus een oneven aantal toont hele rijen en een even aantal kapt boven en onder een halve rij af.
  * @attr {string} width - Breedte: `full` vult de container, of geef een eigen CSS-lengte.
  * @attr {string} accessible-label - Toegankelijke naam van de picker.
  * @attr {object} translations - Vertalingen; niet opgegeven sleutels vallen terug op het Nederlands.
@@ -322,11 +322,11 @@ export class NLDDTimePicker extends LitElement {
 
 	override updated(changed: PropertyValues): void {
 		if (changed.has('rows')) {
-			// Oneven, anders valt het midden tussen twee rijen en staat de band niet
-			// op een waarde. Minimaal 3: bij 1 zie je alleen de gekozen waarde en is
-			// er niets om naartoe te scrollen.
-			const rows = Math.max(3, Math.round(this.rows));
-			this.style.setProperty('--_rows', String(rows % 2 === 0 ? rows + 1 : rows));
+			// Even of oneven maakt niet uit: de gekozen waarde wordt op het midden
+			// gezet, dus bij oneven zie je hele rijen en bij even loopt er boven en
+			// onder een halve rij uit beeld. Minimaal 3, want bij 1 zie je alleen de
+			// gekozen waarde en valt er niets te scrollen.
+			this.style.setProperty('--_rows', String(Math.max(3, Math.round(this.rows))));
 		}
 		if (changed.has('width')) {
 			const w = this.width;
