@@ -1263,6 +1263,7 @@ Een tekstveld voor een tijd. De waarde is altijd 24-uurs `HH:mm`; dat is in het 
 | `min` | `string` | Vroegst toegestane tijd als `HH:mm`. Is tevens de basis waarvandaan `step` telt. |
 | `max` | `string` | Laatst toegestane tijd als `HH:mm`. |
 | `step` | `number` | Minutenstap (standaard 1). Bepaalt welke tijden geldig zijn, waarop wordt afgerond en hoe ver de pijltjestoetsen verspringen. |
+| `no-picker` | `boolean` | Verbergt de picker-knop. Standaard staat die knop er wel. |
 | `placeholder` | `string` | Placeholdertekst. Zet hier geen formaat in; gebruik daarvoor de supporting-label van nldd-form-field. |
 | `input-id` | `string` | Zet het id op de interne input. Wordt automatisch gezet door nldd-form-field. |
 | `size` | `string` | 'md' (standaard) \| 'sm'. Wordt automatisch gezet door nldd-form-field. |
@@ -1278,12 +1279,40 @@ Een tekstveld voor een tijd. De waarde is altijd 24-uurs `HH:mm`; dat is in het 
 | `width` | `string` | Breedte. Standaard precies breed genoeg voor een tijd plus het validatie-icoon; 'full' vult de container, of geef een eigen CSS-lengte. |
 | `translations` | `object` | Vertalingen; niet opgegeven sleutels vallen terug op het Nederlands. |
 
+**Slots**
+
+| Slot | Beschrijving |
+| --- | --- |
+| `picker` | Een eigen nldd-time-picker, in plaats van de standaardpicker. Het veld blijft `value`, `min`, `max` en `step` zetten; gebruik de slot voor wat alleen een picker weet, zoals eigen vertalingen. |
+
 **Events**
 
 | Event | Beschrijving |
 | --- | --- |
 | `input` | Bij elke wijziging. detail: { value } met `HH:mm`, of '' zolang er geen geldige tijd staat. |
 | `change` | Wanneer de waarde is vastgelegd. detail: { value } met `HH:mm`, of ''. |
+
+### `<nldd-time-picker>`
+
+Twee kolommen, uren en minuten, waarin een tijd wordt gekozen. Het component is zelfstandig bruikbaar (inline op een pagina, in een filterpaneel) en zit ook in de popover van nldd-time-field. Waarden zijn altijd 24-uurs `HH:mm`. Elke kolom is een eigen listbox met een eigen naam, want twee naamloze lijsten naast elkaar zijn niet uit elkaar te houden. Selectie volgt de focus: met een pijltoets ergens landen ís kiezen, zoals in een native select. Dat scheelt een bevestigingsstap in een control waar elke waarde even geldig is.
+
+**Attributes**
+
+| Attribuut | Type | Beschrijving |
+| --- | --- | --- |
+| `value` | `string` | De gekozen tijd als `HH:mm` (24-uurs). |
+| `min` | `string` | Vroegst toegestane tijd als `HH:mm`. Is tevens de basis waarvandaan `step` telt. |
+| `max` | `string` | Laatst toegestane tijd als `HH:mm`. |
+| `step` | `number` | Minutenstap (standaard 1). Bepaalt welke minuten in de kolom staan. |
+| `width` | `string` | Breedte: `full` vult de container, of geef een eigen CSS-lengte. |
+| `accessible-label` | `string` | Toegankelijke naam van de picker. |
+| `translations` | `object` | Vertalingen; niet opgegeven sleutels vallen terug op het Nederlands. |
+
+**Events**
+
+| Event | Beschrijving |
+| --- | --- |
+| `change` | Wanneer een tijd is gekozen. detail: { value } met `HH:mm`. |
 
 ### `<nldd-toggle-button>`
 

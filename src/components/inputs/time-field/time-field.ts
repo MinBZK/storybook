@@ -14,6 +14,7 @@
  * @attr {string} min - Vroegst toegestane tijd als `HH:mm`. Is tevens de basis waarvandaan `step` telt.
  * @attr {string} max - Laatst toegestane tijd als `HH:mm`.
  * @attr {number} step - Minutenstap (standaard 1). Bepaalt welke tijden geldig zijn, waarop wordt afgerond en hoe ver de pijltjestoetsen verspringen.
+ * @attr {boolean} no-picker - Verbergt de picker-knop. Standaard staat die knop er wel.
  * @attr {string} placeholder - Placeholdertekst. Zet hier geen formaat in; gebruik daarvoor de supporting-label van nldd-form-field.
  * @attr {string} input-id - Zet het id op de interne input. Wordt automatisch gezet door nldd-form-field.
  * @attr {string} size - 'md' (standaard) | 'sm'. Wordt automatisch gezet door nldd-form-field.
@@ -29,12 +30,16 @@
  * @attr {string} width - Breedte. Standaard precies breed genoeg voor een tijd plus het validatie-icoon; 'full' vult de container, of geef een eigen CSS-lengte.
  * @attr {object} translations - Vertalingen; niet opgegeven sleutels vallen terug op het Nederlands.
  *
+ * @slot picker - Een eigen nldd-time-picker, in plaats van de standaardpicker. Het veld blijft `value`, `min`, `max` en `step` zetten; gebruik de slot voor wat alleen een picker weet, zoals eigen vertalingen.
+ *
  * @fires input - Bij elke wijziging. detail: { value } met `HH:mm`, of '' zolang er geen geldige tijd staat.
  * @fires change - Wanneer de waarde is vastgelegd. detail: { value } met `HH:mm`, of ''.
  */
 
 import { LitElement, type PropertyValues } from 'lit';
 import { customElement, property, state } from 'lit/decorators.js';
+import type { NLDDPopover } from '../../layout/popover/popover.js';
+import type { NLDDTimePicker } from '../time-picker/time-picker.js';
 import { FormAssociated, type FormValue } from '../../../utilities/form-associated-mixin.js';
 import { reflectNonDefault } from '../../../utilities/reflect-non-default.js';
 import { timeFieldStyles } from './time-field.styles.js';
@@ -133,6 +138,9 @@ export class NLDDTimeField extends FormAssociated(LitElement) {
 	@property({ type: Number })
 	step = 1;
 
+	@property({ type: Boolean, reflect: true, attribute: 'no-picker' })
+	noPicker = false;
+
 	@property({ type: String, attribute: 'input-id' })
 	inputId = '';
 
@@ -178,7 +186,7 @@ export class NLDDTimeField extends FormAssociated(LitElement) {
 	/** Wat de gebruiker ziet en typt. Losgehouden van `value`, dat alleen een
 	 *  geldige tijd draagt of niets. */
 	@state()
-	private _display = '';
+	_display = '';
 
 	public _t(key: keyof NLDDTimeFieldTranslations): string {
 		return this.translations[key] ?? nlddTimeFieldTranslations[key];
@@ -289,6 +297,89 @@ export class NLDDTimeField extends FormAssociated(LitElement) {
 		return fromMinutes(Math.min(Math.max(clamped, minMinutes), maxMinutes));
 	}
 
+	/**
+	 * Of een consument een eigen picker in de slot heeft gezet. Als state, niet
+	 * tijdens render gelezen: de ingebouwde picker moet verdwijnen op het moment
+	 * dat er een geslot wordt, anders staan ze allebei in de popover.
+	 */
+	@state()
+	_hasSlottedPicker = false;
+
+	private get _slottedPicker(): NLDDTimePicker | null {
+		const slot = this.shadowRoot?.querySelector('slot[name="picker"]') as HTMLSlotElement | null;
+		const found = slot?.assignedElements({ flatten: true })
+			.find((el): el is NLDDTimePicker => el.localName === 'nldd-time-picker');
+		return found ?? null;
+	}
+
+	public _handlePickerSlotChange(): void {
+		this._hasSlottedPicker = this._slottedPicker !== null;
+	}
+
+	@state()
+	_pickerOpen = false;
+
+	private get _pickerTrigger(): HTMLElement | null {
+		return this.shadowRoot?.querySelector('.time-field__picker-button nldd-icon-button') ?? null;
+	}
+
+	private get _popover(): NLDDPopover | null {
+		return this.shadowRoot?.querySelector('nldd-popover') ?? null;
+	}
+
+	/** Eén naam voor de dialoog, zowel als toegankelijke naam als zichtbare titel
+	 *  van de sheet. Het label van het veld zegt meer dan "Tijd kiezen" ooit kan:
+	 *  een sheet met de kop "Starttijd" vertelt je wat je invult. */
+	public get _pickerLabel(): string {
+		return this.accessibleLabel || this._t('components.time-field.to-pick-time-action');
+	}
+
+	public _handlePickerClick(): void {
+		if (this._pickerOpen) this._popover?.hide();
+		else this._popover?.show();
+	}
+
+	/** Waar focus heen moet als de popover dicht is. De popover zet focus terug op
+	 *  het element van voor het openen, en Safari focust een knop niet bij een
+	 *  klik, dus daar landt het op de input in plaats van op de knop. We nemen het
+	 *  over, maar pas ná die herstelactie, anders wordt de onze overschreven. */
+	private _focusTriggerOnClose = false;
+
+	public _handlePopoverToggle(e: Event): void {
+		this._pickerOpen = (e as ToggleEvent).newState === 'open';
+		if (this._pickerOpen) {
+			// Pas nu heeft de picker afmetingen: zolang de popover dicht was kon hij
+			// de gekozen waarde niet in beeld scrollen en stond de kolom bovenaan.
+			const picker = this._slottedPicker ?? this.shadowRoot?.querySelector('nldd-time-picker');
+			picker?.scrollSelectedIntoView();
+			return;
+		}
+		if (!this._focusTriggerOnClose) return;
+		this._focusTriggerOnClose = false;
+		// Microtask, niet rAF: dit verslaat dezelfde herstelactie maar wordt niet
+		// afgeknepen zolang het tabblad geen focus heeft.
+		queueMicrotask(() => this._pickerTrigger?.focus());
+	}
+
+	public _handlePickerChange(e: Event): void {
+		e.stopPropagation();
+		const detail = (e as CustomEvent).detail as { value?: string };
+		if (typeof detail?.value !== 'string') return;
+		this.value = detail.value;
+		this._display = detail.value;
+		this._focusTriggerOnClose = true;
+		this._popover?.hide();
+		this._emit('change');
+	}
+
+	public _handlePickerDismiss(e: Event): void {
+		e.stopPropagation();
+		// Net als na een keuze: focus terug op de knop. Zonder dit laten Annuleer,
+		// Escape en een klik ernaast de focus op de input staan.
+		this._focusTriggerOnClose = true;
+		this._popover?.hide();
+	}
+
 	override formValue(): FormValue {
 		return this.value;
 	}
@@ -331,6 +422,11 @@ export class NLDDTimeField extends FormAssociated(LitElement) {
 	}
 
 	override updated(changed: PropertyValues): void {
+		const popover = this._popover;
+		const trigger = this._pickerTrigger;
+		if (popover && trigger && popover.anchorElement !== trigger) {
+			popover.anchorElement = trigger;
+		}
 		if (changed.has('width')) {
 			const w = this.width;
 			// Anders dan een tekstveld is de standaard hier een eigen breedte die een

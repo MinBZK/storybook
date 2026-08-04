@@ -183,6 +183,10 @@
       "types": "./dist/components/inputs/time-field/time-field.d.ts",
       "default": "./dist/components/inputs/time-field/time-field.js"
     },
+    "./time-picker": {
+      "types": "./dist/components/inputs/time-picker/time-picker.d.ts",
+      "default": "./dist/components/inputs/time-picker/time-picker.js"
+    },
     "./toggle-button": {
       "types": "./dist/components/inputs/toggle-button/toggle-button.d.ts",
       "default": "./dist/components/inputs/toggle-button/toggle-button.js"

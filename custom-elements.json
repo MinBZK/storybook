@@ -5799,6 +5799,14 @@
         },
         {
           "kind": "js",
+          "name": "NLDDTimePicker",
+          "declaration": {
+            "name": "NLDDTimePicker",
+            "module": "./inputs/time-picker/time-picker.js"
+          }
+        },
+        {
+          "kind": "js",
           "name": "NLDDToggleButton",
           "declaration": {
             "name": "NLDDToggleButton",
@@ -15372,6 +15380,16 @@
             },
             {
               "kind": "field",
+              "name": "noPicker",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "attribute": "no-picker",
+              "reflects": true
+            },
+            {
+              "kind": "field",
               "name": "inputId",
               "type": {
                 "text": "string"
@@ -15667,6 +15685,15 @@
               "description": "Minutenstap (standaard 1). Bepaalt welke tijden geldig zijn, waarop wordt afgerond en hoe ver de pijltjestoetsen verspringen."
             },
             {
+              "name": "no-picker",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "fieldName": "noPicker",
+              "description": "Verbergt de picker-knop. Standaard staat die knop er wel."
+            },
+            {
               "name": "input-id",
               "type": {
                 "text": "string"
@@ -15795,7 +15822,13 @@
             "package": "lit"
           },
           "tagName": "nldd-time-field",
-          "customElement": true
+          "customElement": true,
+          "slots": [
+            {
+              "name": "picker",
+              "description": "Een eigen nldd-time-picker, in plaats van de standaardpicker. Het veld blijft `value`, `min`, `max` en `step` zetten; gebruik de slot voor wat alleen een picker weet, zoals eigen vertalingen."
+            }
+          ]
         }
       ],
       "exports": [
@@ -15829,6 +15862,239 @@
           "declaration": {
             "name": "NLDDTimeField",
             "module": "src/components/inputs/time-field/time-field.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/inputs/time-picker/time-picker.ts",
+      "declarations": [
+        {
+          "kind": "function",
+          "name": "toMinutes",
+          "return": {
+            "type": {
+              "text": "number"
+            }
+          },
+          "parameters": [
+            {
+              "name": "time",
+              "type": {
+                "text": "string"
+              }
+            }
+          ]
+        },
+        {
+          "kind": "function",
+          "name": "fromMinutes",
+          "return": {
+            "type": {
+              "text": "string"
+            }
+          },
+          "parameters": [
+            {
+              "name": "total",
+              "type": {
+                "text": "number"
+              }
+            }
+          ]
+        },
+        {
+          "kind": "class",
+          "description": "Twee kolommen, uren en minuten, waarin een tijd wordt gekozen. Het component is zelfstandig bruikbaar (inline op een pagina, in een filterpaneel) en zit ook in de popover van nldd-time-field. Waarden zijn altijd 24-uurs `HH:mm`. Elke kolom is een eigen listbox met een eigen naam, want twee naamloze lijsten naast elkaar zijn niet uit elkaar te houden. Selectie volgt de focus: met een pijltoets ergens landen ís kiezen, zoals in een native select. Dat scheelt een bevestigingsstap in een control waar elke waarde even geldig is.",
+          "name": "NLDDTimePicker",
+          "members": [
+            {
+              "kind": "field",
+              "name": "value",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "attribute": "value"
+            },
+            {
+              "kind": "field",
+              "name": "min",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "attribute": "min"
+            },
+            {
+              "kind": "field",
+              "name": "max",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "attribute": "max"
+            },
+            {
+              "kind": "field",
+              "name": "step",
+              "type": {
+                "text": "number"
+              },
+              "default": "1",
+              "attribute": "step"
+            },
+            {
+              "kind": "field",
+              "name": "width",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "attribute": "width",
+              "reflects": true
+            },
+            {
+              "kind": "field",
+              "name": "accessibleLabel",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "attribute": "accessible-label"
+            },
+            {
+              "kind": "field",
+              "name": "translations",
+              "type": {
+                "text": "Partial<NLDDTimePickerTranslations>"
+              },
+              "default": "{}",
+              "attribute": "translations"
+            },
+            {
+              "kind": "method",
+              "name": "scrollSelectedIntoView",
+              "privacy": "public",
+              "return": {
+                "type": {
+                  "text": "void"
+                }
+              },
+              "description": "Zet de gekozen waarde midden in beeld. De kolom is zeven waarden hoog, dus\n`center` zet hem op de vierde rij met drie erboven en drie eronder.\n\nPubliek omdat een verborgen element niet te scrollen is: staat de picker in\neen popover, dan heeft hij bij het zetten van de waarde nog geen afmetingen\nen doet scrollIntoView niets. Het veld roept dit daarom aan zodra de popover\nopengaat."
+            }
+          ],
+          "events": [
+            {
+              "name": "change",
+              "description": "Wanneer een tijd is gekozen. detail: { value } met `HH:mm`."
+            }
+          ],
+          "attributes": [
+            {
+              "name": "value",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "fieldName": "value",
+              "description": "De gekozen tijd als `HH:mm` (24-uurs)."
+            },
+            {
+              "name": "min",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "fieldName": "min",
+              "description": "Vroegst toegestane tijd als `HH:mm`. Is tevens de basis waarvandaan `step` telt."
+            },
+            {
+              "name": "max",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "fieldName": "max",
+              "description": "Laatst toegestane tijd als `HH:mm`."
+            },
+            {
+              "name": "step",
+              "type": {
+                "text": "number"
+              },
+              "default": "1",
+              "fieldName": "step",
+              "description": "Minutenstap (standaard 1). Bepaalt welke minuten in de kolom staan."
+            },
+            {
+              "name": "width",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "fieldName": "width",
+              "description": "Breedte: `full` vult de container, of geef een eigen CSS-lengte."
+            },
+            {
+              "name": "accessible-label",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "fieldName": "accessibleLabel",
+              "description": "Toegankelijke naam van de picker."
+            },
+            {
+              "name": "translations",
+              "type": {
+                "text": "Partial<NLDDTimePickerTranslations>"
+              },
+              "default": "{}",
+              "fieldName": "translations",
+              "description": "Vertalingen; niet opgegeven sleutels vallen terug op het Nederlands."
+            }
+          ],
+          "superclass": {
+            "name": "LitElement",
+            "package": "lit"
+          },
+          "tagName": "nldd-time-picker",
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "toMinutes",
+          "declaration": {
+            "name": "toMinutes",
+            "module": "src/components/inputs/time-picker/time-picker.ts"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "fromMinutes",
+          "declaration": {
+            "name": "fromMinutes",
+            "module": "src/components/inputs/time-picker/time-picker.ts"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "NLDDTimePicker",
+          "declaration": {
+            "name": "NLDDTimePicker",
+            "module": "src/components/inputs/time-picker/time-picker.ts"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "nldd-time-picker",
+          "declaration": {
+            "name": "NLDDTimePicker",
+            "module": "src/components/inputs/time-picker/time-picker.ts"
           }
         }
       ]

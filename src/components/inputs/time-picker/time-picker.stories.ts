@@ -1,0 +1,105 @@
+import { html, nothing } from 'lit';
+import './time-picker.ts';
+
+export default {
+	title: 'Components/Inputs/Time Picker',
+	component: 'nldd-time-picker',
+	tags: ['autodocs'],
+	parameters: {
+		componentSource: {
+			file: 'src/components/inputs/time-picker/time-picker.ts',
+			repository: 'https://github.com/MinBZK/storybook',
+		},
+		status: { type: 'stable' },
+	},
+	args: {
+		width: '',
+		value: '09:30',
+		min: '',
+		max: '',
+		step: 1,
+		accessibleLabel: '',
+	},
+	argTypes: {
+		width: {
+			control: 'text',
+			description: "Breedte: 'full' of een eigen CSS-lengte. Leeg is de intrinsieke breedte van twee kolommen.",
+			table: { defaultValue: { summary: '(geen)' } },
+		},
+		value: {
+			control: 'text',
+			description: 'De gekozen tijd als HH:mm (24-uurs)',
+			table: { defaultValue: { summary: '(geen)' } },
+		},
+		min: {
+			control: 'text',
+			description: 'Vroegst toegestane tijd; tevens de basis waarvandaan step telt',
+			table: { defaultValue: { summary: '(geen)' } },
+		},
+		max: {
+			control: 'text',
+			description: 'Laatst toegestane tijd',
+			table: { defaultValue: { summary: '(geen)' } },
+		},
+		step: {
+			control: 'number',
+			description: 'Minutenstap: bepaalt welke minuten in de kolom staan',
+			table: { defaultValue: { summary: '1' } },
+		},
+		accessibleLabel: {
+			name: 'accessible-label',
+			control: 'text',
+			description: 'Toegankelijke naam van de picker',
+			table: { defaultValue: { summary: '(geen)' } },
+		},
+	},
+};
+
+const Template = ({
+	width,
+	value,
+	min,
+	max,
+	step,
+	accessibleLabel,
+}: Record<string, any>) => html`
+	<nldd-time-picker
+		width=${width || nothing}
+		value=${value || nothing}
+		min=${min || nothing}
+		max=${max || nothing}
+		step=${step || nothing}
+		accessible-label=${accessibleLabel || nothing}
+	></nldd-time-picker>
+`;
+
+export const Standaard = Template.bind({});
+
+export const Kwartieren = () => html`
+	<nldd-time-picker
+		value="09:30"
+		step="15"
+		accessible-label="Starttijd"
+	></nldd-time-picker>
+`;
+
+export const Kantooruren = () => html`
+	<p>Buiten <code>min</code> en <code>max</code> staat geen enkele waarde in de kolommen, dus een ongeldige tijd is niet te kiezen.</p>
+	<nldd-time-picker
+		value="09:00"
+		min="09:00"
+		max="17:00"
+		step="30"
+		accessible-label="Afspraak"
+	></nldd-time-picker>
+`;
+
+export const StapVanafMin = () => html`
+	<p>De stap telt vanaf <code>min</code>, dus de minuten lopen 07, 22, 37, 52.</p>
+	<nldd-time-picker
+		value="09:07"
+		min="09:07"
+		step="15"
+		accessible-label="Vertrektijd"
+	></nldd-time-picker>
+`;

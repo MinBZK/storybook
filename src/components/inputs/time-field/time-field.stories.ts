@@ -21,6 +21,7 @@ export default {
 		min: '',
 		max: '',
 		step: 1,
+		noPicker: false,
 		accessibleLabel: '',
 		valid: false,
 		invalid: false,
@@ -65,6 +66,12 @@ export default {
 			control: 'number',
 			description: 'Minutenstap: bepaalt het afronden en hoe ver de pijltjestoetsen verspringen',
 			table: { defaultValue: { summary: '1' } },
+		},
+		noPicker: {
+			name: 'no-picker',
+			control: 'boolean',
+			description: 'Verbergt de picker-knop',
+			table: { defaultValue: { summary: false } },
 		},
 		accessibleLabel: {
 			name: 'accessible-label',
@@ -113,6 +120,7 @@ const Template = ({
 	min,
 	max,
 	step,
+	noPicker,
 	accessibleLabel,
 	valid,
 	invalid,
@@ -129,6 +137,7 @@ const Template = ({
 		min=${min || nothing}
 		max=${max || nothing}
 		step=${step || nothing}
+		?no-picker=${noPicker}
 		accessible-label=${accessibleLabel || nothing}
 		?valid=${valid}
 		?invalid=${invalid}
@@ -165,6 +174,24 @@ export const Kantooruren = () => html`
 		max="17:00"
 		step="30"
 		accessible-label="Afspraak"
+	></nldd-time-field>
+`;
+
+export const MetPicker = () => html`
+	<p>De knop opent een popover met twee kolommen. Op een klein scherm wordt dat een bottom sheet met een titelbalk.</p>
+	<nldd-time-field
+		value="09:30"
+		step="15"
+		accessible-label="Starttijd"
+	></nldd-time-field>
+`;
+
+export const ZonderPicker = () => html`
+	<p>Met <code>no-picker</code> vervalt de knop; het veld blijft precies breed genoeg voor een tijd en het validatie-icoon.</p>
+	<nldd-time-field
+		value="09:30"
+		no-picker
+		accessible-label="Starttijd"
 	></nldd-time-field>
 `;
 
