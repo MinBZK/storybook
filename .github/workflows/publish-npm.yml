@@ -4,12 +4,15 @@ name: Publish to npmjs
 # read+write access to the @nldd scope and 2FA bypass enabled.
 # Without it, the publish step fails with E401/EAUTH at runtime.
 #
-# The work is split over two jobs on purpose. `npm ci` and `npm run build`
-# execute third-party code by design - vite, tsc, the custom-elements analyzer
-# and every plugin they load. NPM_TOKEN must therefore not be reachable from
-# the job that does that. `build` holds no secrets and hands over a plain
-# artifact; `publish` holds the token and runs no dependency code at all.
-# --ignore-scripts closes the install moment; this closes the build moment.
+# The work is split over two jobs on purpose. `npm run build` executes
+# third-party code by design - vite, tsc, the custom-elements analyzer and
+# every plugin they load. NPM_TOKEN must therefore not be reachable from
+# the job that does that. `build` holds no publish credentials and hands over
+# a finished tarball; `publish` holds the token and runs no dependency code.
+# --ignore-scripts closes the install moment; this closes the token exposure of
+# the build moment. It does not make the build output trustworthy - a hijacked
+# build dependency can still poison dist/, and that dist/ goes into the tarball
+# the provenance vouches for.
 
 on:
   push:
@@ -56,38 +59,40 @@ jobs:
         run: npm run build
 
       # De input gaat via de env in plaats van via ${{ }} in de run-regel:
-      # workflow_dispatch-input is vrije tekst en zou daar als shell worden
-      # geïnterpreteerd.
+      # workflow_dispatch-input is vrije tekst en zou daar als shellcode worden
+      # geïnterpreteerd. De `--` scheidt hem daarnaast van de vlaggen: zonder
+      # die scheiding leest npm een waarde die met `-` begint als optie.
       - name: Update version (if specified)
         if: ${{ inputs.version != '' }}
         env:
           INPUT_VERSION: ${{ inputs.version }}
-        run: npm version "$INPUT_VERSION" --no-git-tag-version
+        run: npm version --no-git-tag-version -- "$INPUT_VERSION"
 
-      # Precies wat `files` in package.json publiceert, plus de twee bestanden
-      # die npm er altijd bij pakt (package.json en README). package.json en
-      # custom-elements.json staan erbij omdat de build ze herschrijft.
+      # npm bepaalt zelf wat er in het pakket hoort: `files` in package.json,
+      # plus de bestanden die npm sowieso insluit. Een handgeschreven padlijst
+      # hier zou daar stilzwijgend naast gaan lopen zodra `files` verandert, en
+      # dat levert een incompleet pakket op mét geldige provenance.
+      - name: Pack publish payload
+        run: npm pack --ignore-scripts
+
       - name: Upload publish payload
         uses: actions/upload-artifact@v4
         with:
           name: npm-package
-          retention-days: 1
+          # Ruim genoeg om een mislukte publish-job later opnieuw te draaien
+          # zonder de build over te moeten doen.
+          retention-days: 7
           if-no-files-found: error
-          path: |
-            package.json
-            README.md
-            LICENSE
-            NOTICES.md
-            custom-elements.json
-            dist/
+          path: '*.tgz'
 
   publish:
     needs: build
     runs-on: ubuntu-latest
     permissions:
       contents: read
-      # Nodig voor `npm publish --provenance`: npm ruilt dit OIDC-token in bij
-      # Sigstore. Staat bewust alleen op deze job.
+      # Nodig voor `npm publish --provenance`: alleen met deze permissie kan npm
+      # een OIDC-token opvragen en dat bij Sigstore inruilen voor een
+      # signing-certificaat. Staat bewust alleen op deze job.
       id-token: write
     steps:
       - name: Setup Node.js
@@ -102,10 +107,13 @@ jobs:
         with:
           name: npm-package
 
-      # --ignore-scripts ook hier: npm draait bij publish standaard `prepare`
-      # en `prepack`. Er valt niets te prepareren - dist/ komt kant en klaar uit
-      # de build-job - dus die hoeven niet te draaien.
+      # Publiceren vanuit de tarball: npm leest het manifest uit het archief en
+      # draait geen enkel lifecycle-script, want die draaien alleen bij een
+      # directory-publish. --ignore-scripts blijft staan als tweede slot, al
+      # houdt die vlag in npm 10 wél de pack- en publish-scripts tegen, maar
+      # `prepare` niet. Een tarball-publish zet geen `gitHead` in de metadata;
+      # de provenance legt de commit-sha al vast.
       - name: Publish to npmjs
-        run: npm publish --provenance --ignore-scripts
+        run: npm publish ./*.tgz --provenance --ignore-scripts
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
