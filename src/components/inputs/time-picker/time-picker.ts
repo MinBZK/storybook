@@ -240,7 +240,7 @@ export class NLDDTimePicker extends LitElement {
 	/** Verplaats focus naar de spinbutton van de andere kolom. */
 	private _focusColumn(column: 'hours' | 'minutes'): void {
 		this.shadowRoot
-			?.querySelectorAll<HTMLElement>('.time-picker__band-value')[column === 'hours' ? 0 : 1]
+			?.querySelectorAll<HTMLElement>('.time-picker__value')[column === 'hours' ? 0 : 1]
 			?.focus();
 	}
 
@@ -273,7 +273,7 @@ export class NLDDTimePicker extends LitElement {
 		const centre = el.scrollTop + el.clientHeight / 2;
 		let best: HTMLElement | null = null;
 		let bestDistance = Infinity;
-		for (const option of el.querySelectorAll<HTMLElement>('.time-picker__option')) {
+		for (const option of el.querySelectorAll<HTMLElement>('.time-picker__list-item')) {
 			const distance = Math.abs(option.offsetTop + option.offsetHeight / 2 - centre);
 			if (distance < bestDistance) {
 				bestDistance = distance;

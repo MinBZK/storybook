@@ -13,22 +13,12 @@ export const timeFieldStyles = css`
 	/* # Host */
 
 	:host {
-		/* Vijf tekens plus een halve als lucht. Niet om afkappen te voorkomen (de
-		   cijfers zijn tabulair, dus elke tijd meet hetzelfde), maar als greep om te
-		   selecteren en te slepen. */
 		--_time-width: 5.5ch;
-		/* Linkerkant van het veld: het is een border-box, en padding-left trekt er al
-		   een rand vanaf, dus tellen beide randen samen voor één rand extra. */
 		--_edge-width: calc(var(--_inline-padding) + var(--semantics-input-fields-border-width));
-		/* Om het icoon heen, niet een heel control-vierkant: bij een datum valt die
-		   ruimte weg tegen de langere tekst, bij een tijd van vijf tekens niet. */
 		--_validation-icon-area-width: calc(var(--_validation-icon-size) + var(--primitives-space-8));
 		--_button-size: var(--semantics-controls-sm-min-size);
-		/* Even veel lucht rechts van de knop als erboven en eronder, dus afgeleid van
-		   het hoogteverschil tussen veld en knop in plaats van een vaste waarde. */
 		--_end-padding-right: calc((var(--_min-size) - var(--_button-size)) / 2 - var(--semantics-input-fields-border-width));
 		--_trailing-width: calc(var(--_validation-icon-area-width) + var(--_button-size) + var(--_end-padding-right));
-		/* Alles wat niet kan krimpen; tevens de ondergrens van het veld. */
 		--_fixed-width: calc(var(--_edge-width) + var(--_trailing-width));
 		--_width: calc(var(--_fixed-width) + var(--_time-width));
 		--_corner-radius: var(--semantics-controls-md-corner-radius);
@@ -51,9 +41,6 @@ export const timeFieldStyles = css`
 		display: none;
 	}
 
-	/* Zonder de knop is één plek aan het eind genoeg. De standaardbreedte houdt
-	   ruimte voor zowel de knop als het validatie-icoon, zodat het veld niet
-	   verspringt zodra een validatiestaat verschijnt. */
 	:host([no-picker]) {
 		--_fixed-width: calc(var(--_edge-width) + var(--_inline-padding) + var(--_validation-icon-area-width));
 	}
@@ -105,8 +92,7 @@ export const timeFieldStyles = css`
 	}
 
 	/* Op de tekstinput, niet :focus-within: de knop en de popover zitten ook in
-	   deze doos, en dan zou er een tweede ring om het hele veld komen terwijl de
-	   knop zijn eigen ring al heeft. */
+	   deze doos en zouden een tweede ring om het hele veld trekken. */
 	.time-field:has(.time-field__input:focus) {
 		outline: var(--semantics-focus-ring-outline);
 		outline-offset: var(--semantics-focus-ring-outline-offset);
@@ -199,8 +185,6 @@ export const timeFieldStyles = css`
 	}
 
 
-	/* De titelbalk van de sheet slaat alleen ergens op een klein scherm, waar de
-	   popover een bottom sheet wordt. Standaard zichtbaar, vanaf md verborgen. */
 	@media (min-width: ${mdMin}) {
 		.time-field__picker-button nldd-top-title-bar {
 			display: none;

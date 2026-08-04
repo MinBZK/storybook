@@ -8,7 +8,7 @@ function column(el: NLDDTimePicker, name: 'hours' | 'minutes'): HTMLElement {
 }
 
 function options(el: NLDDTimePicker, name: 'hours' | 'minutes'): string[] {
-	return [...column(el, name).querySelectorAll('.time-picker__option')].map((o) => o.textContent!.trim());
+	return [...column(el, name).querySelectorAll('.time-picker__list-item')].map((o) => o.textContent!.trim());
 }
 
 function selected(el: NLDDTimePicker, name: 'hours' | 'minutes'): string | null {
@@ -17,7 +17,7 @@ function selected(el: NLDDTimePicker, name: 'hours' | 'minutes'): string | null 
 
 function band(el: NLDDTimePicker, name: 'hours' | 'minutes'): HTMLElement {
 	const index = name === 'hours' ? 0 : 1;
-	return [...el.shadowRoot!.querySelectorAll<HTMLElement>('.time-picker__band-value')][index];
+	return [...el.shadowRoot!.querySelectorAll<HTMLElement>('.time-picker__value')][index];
 }
 
 async function press(el: NLDDTimePicker, name: 'hours' | 'minutes', key: string) {
@@ -105,7 +105,7 @@ describe('nldd-time-picker – kiezen', () => {
 		el.addEventListener('input', (() => gezien.push('input')) as EventListener);
 		el.addEventListener('change', (() => gezien.push('change')) as EventListener);
 		const kolom = column(el, 'hours');
-		const optie = [...kolom.querySelectorAll<HTMLElement>('.time-picker__option')][14];
+		const optie = [...kolom.querySelectorAll<HTMLElement>('.time-picker__list-item')][14];
 		kolom.scrollTop = optie.offsetTop + optie.offsetHeight / 2 - kolom.clientHeight / 2;
 		kolom.dispatchEvent(new Event('scroll'));
 		await new Promise((r) => setTimeout(r, 250));
@@ -130,7 +130,7 @@ describe('nldd-time-picker – kiezen', () => {
 		await waitForUpdate(el);
 		const seen: string[] = [];
 		el.addEventListener('change', ((e: CustomEvent) => { seen.push(e.detail.value); }) as EventListener);
-		const tien = [...column(el, 'hours').querySelectorAll('.time-picker__option')][10] as HTMLElement;
+		const tien = [...column(el, 'hours').querySelectorAll('.time-picker__list-item')][10] as HTMLElement;
 		tien.click();
 		await waitForUpdate(el);
 		expect(seen).toEqual(['10:30']);
@@ -141,7 +141,7 @@ describe('nldd-time-picker – kiezen', () => {
 	it('houdt de minuut vast bij het wisselen van uur', async () => {
 		el = await fixture<NLDDTimePicker>('<nldd-time-picker value="09:45" step="15"></nldd-time-picker>');
 		await waitForUpdate(el);
-		const veertien = [...column(el, 'hours').querySelectorAll('.time-picker__option')][14] as HTMLElement;
+		const veertien = [...column(el, 'hours').querySelectorAll('.time-picker__list-item')][14] as HTMLElement;
 		veertien.click();
 		await waitForUpdate(el);
 		expect(el.value).toBe('14:45');
@@ -150,7 +150,7 @@ describe('nldd-time-picker – kiezen', () => {
 	it('valt terug op de eerste mogelijke minuut als de huidige niet past', async () => {
 		el = await fixture<NLDDTimePicker>('<nldd-time-picker value="09:45" min="09:00" max="10:15" step="15"></nldd-time-picker>');
 		await waitForUpdate(el);
-		const tien = [...column(el, 'hours').querySelectorAll('.time-picker__option')][1] as HTMLElement;
+		const tien = [...column(el, 'hours').querySelectorAll('.time-picker__list-item')][1] as HTMLElement;
 		tien.click();
 		await waitForUpdate(el);
 		expect(el.value).toBe('10:00');
@@ -211,7 +211,7 @@ describe('nldd-time-picker – toetsenbord', () => {
 	it('wisselt in het wiel tussen de twee spinbuttons', async () => {
 		el = await fixture<NLDDTimePicker>('<nldd-time-picker value="09:30"></nldd-time-picker>');
 		await waitForUpdate(el);
-		const uur = [...el.shadowRoot!.querySelectorAll<HTMLElement>('.time-picker__band-value')][0];
+		const uur = [...el.shadowRoot!.querySelectorAll<HTMLElement>('.time-picker__value')][0];
 		uur.dispatchEvent(new KeyboardEvent('keydown', {
 			key: 'ArrowRight', bubbles: true, composed: true, cancelable: true,
 		}));
@@ -345,7 +345,7 @@ describe('nldd-time-picker – wiel', () => {
 		);
 		await waitForUpdate(el);
 		const minuten = column(el, 'minutes');
-		expect(minuten.querySelectorAll('.time-picker__option')).toHaveLength(4);
+		expect(minuten.querySelectorAll('.time-picker__list-item')).toHaveLength(4);
 		expect(minuten.scrollHeight).toBeGreaterThan(minuten.clientHeight);
 	});
 
@@ -355,9 +355,9 @@ describe('nldd-time-picker – wiel', () => {
 	it('laat de muis door de band heen naar de kolom eronder', async () => {
 		el = await fixture<NLDDTimePicker>('<nldd-time-picker value="09:30"></nldd-time-picker>');
 		await waitForUpdate(el);
-		const band = el.shadowRoot!.querySelector('.time-picker__band')!;
+		const band = el.shadowRoot!.querySelector('.time-picker__selection')!;
 		expect(getComputedStyle(band).pointerEvents).toBe('none');
-		for (const waarde of el.shadowRoot!.querySelectorAll('.time-picker__band-value')) {
+		for (const waarde of el.shadowRoot!.querySelectorAll('.time-picker__value')) {
 			expect(getComputedStyle(waarde).pointerEvents).toBe('none');
 		}
 	});
@@ -369,7 +369,7 @@ describe('nldd-time-picker – wiel', () => {
 		el = await fixture<NLDDTimePicker>('<nldd-time-picker value="09:30"></nldd-time-picker>');
 		await waitForUpdate(el);
 		const gekozen = column(el, 'hours').querySelector('[data-selected]')!;
-		const gewoon = column(el, 'hours').querySelectorAll('.time-picker__option')[3];
+		const gewoon = column(el, 'hours').querySelectorAll('.time-picker__list-item')[3];
 		const stijl = (el: Element) => {
 			const s = getComputedStyle(el);
 			return { kleur: s.color, vlak: s.backgroundColor };
@@ -389,7 +389,7 @@ describe('nldd-time-picker – wiel', () => {
 		// is, anders wordt deze scroll voor de zijne aangezien.
 		await new Promise((r) => setTimeout(r, 250));
 		const kolom = column(el, 'hours');
-		const optie = [...kolom.querySelectorAll<HTMLElement>('.time-picker__option')][14];
+		const optie = [...kolom.querySelectorAll<HTMLElement>('.time-picker__list-item')][14];
 		// Uit de gemeten posities, niet uit een aangenomen formule: dit is precies
 		// de rekensom die de component omkeert om te bepalen wat er in het midden
 		// staat.
@@ -409,11 +409,11 @@ describe('nldd-time-picker – wiel', () => {
 		await waitForUpdate(el);
 		await new Promise((r) => setTimeout(r, 250));
 		const kolom = column(el, 'hours');
-		const optie = [...kolom.querySelectorAll<HTMLElement>('.time-picker__option')][14];
+		const optie = [...kolom.querySelectorAll<HTMLElement>('.time-picker__list-item')][14];
 		kolom.scrollTop = optie.offsetTop + optie.offsetHeight / 2 - kolom.clientHeight / 2;
 		kolom.dispatchEvent(new Event('scroll'));
 		await waitForUpdate(el);
-		const inBand = () => el.shadowRoot!.querySelector('.time-picker__band')!
+		const inBand = () => el.shadowRoot!.querySelector('.time-picker__selection')!
 			.textContent!.replace(/\s+/g, '');
 		expect(inBand()).toBe('14:30');
 		expect(el.value).toBe('09:30');

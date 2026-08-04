@@ -18,7 +18,7 @@ function renderColumn(
 	label: string,
 ): TemplateResult {
 	return html`
-		<div class="time-picker__column"
+		<div class="time-picker__list"
 			role="presentation"
 			aria-hidden="true"
 			data-column=${column}
@@ -28,7 +28,7 @@ function renderColumn(
 			${numbers.map((number) => {
 				const isSelected = number === selected;
 				return html`
-					<button class="time-picker__option"
+					<button class="time-picker__list-item"
 						type="button"
 						role="presentation"
 						data-selected=${isSelected ? 'true' : nothing}
@@ -58,7 +58,7 @@ function renderBandValue(
 ): TemplateResult {
 	const numbers = column === 'hours' ? component._hours : component._minutes;
 	return html`
-		<span class="time-picker__band-value"
+		<span class="time-picker__value"
 			role="spinbutton"
 			tabindex="0"
 			aria-label=${label}
@@ -79,9 +79,9 @@ export function timePickerTemplate(component: NLDDTimePicker): TemplateResult {
 			role="group"
 			aria-label=${component._label}
 		>
-			<div class="time-picker__band">
+			<div class="time-picker__selection">
 				${renderBandValue(component, 'hours', component._bandHour, component._t('components.time-picker.hours-label'))}
-				<span class="time-picker__band-separator"
+				<span class="time-picker__value-separator"
 					aria-hidden="true"
 				>
 					:
