@@ -147,10 +147,6 @@ export const timePickerStyles = css`
 		background-color: transparent;
 	}
 
-	:host([variant="wheel"]) .time-picker__option:hover {
-		background-color: transparent;
-	}
-
 	/* De band draagt zijn eigen dubbele punt, dus die van de kolommen zou er
 	   dubbel onder staan. */
 	:host([variant="wheel"]) .time-picker__separator {
@@ -167,6 +163,10 @@ export const timePickerStyles = css`
 		top: 50%;
 		right: 0;
 		left: 0;
+		/* De kolommen hebben een mask-image en daarmee een eigen stapelcontext, en
+		   ze staan hierna in de DOM. Zonder z-index schilderen hun cijfers dus over
+		   de band heen en zie je het getal dubbel. */
+		z-index: 1;
 		border-radius: var(--_option-corner-radius);
 		background-color: var(--_option-is-selected-background-color);
 		pointer-events: none;
