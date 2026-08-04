@@ -156,6 +156,11 @@ export const timePickerStyles = css`
 
 		border-radius: var(--_option-corner-radius);
 		background-color: var(--_option-is-selected-background-color);
+		/* De band ligt over het midden van beide kolommen. Zou hij de muis vangen,
+		   dan scrolt een veeg precies dáár niet de kolom eronder, en dat is nou net
+		   de plek waar je hem neerzet. Tab-focus werkt hier gewoon doorheen, en een
+		   klik komt bij de optie eronder terecht, wat die waarde kiest. */
+		pointer-events: none;
 		height: var(--_option-min-size);
 		gap: var(--_column-gap);
 		align-items: center;

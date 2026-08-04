@@ -299,6 +299,19 @@ describe('nldd-time-picker – wiel', () => {
 		expect(el.value).toBe('09:45');
 	});
 
+	// De band ligt over het midden van beide kolommen. Vangt hij de muis, dan
+	// scrolt een veeg precies daar niet de kolom eronder, en dat is nou net de
+	// plek waar je hem neerzet.
+	it('laat de muis door de band heen naar de kolom eronder', async () => {
+		el = await fixture<NLDDTimePicker>('<nldd-time-picker variant="wheel" value="09:30"></nldd-time-picker>');
+		await waitForUpdate(el);
+		const band = el.shadowRoot!.querySelector('.time-picker__band')!;
+		expect(getComputedStyle(band).pointerEvents).toBe('none');
+		for (const waarde of el.shadowRoot!.querySelectorAll('.time-picker__band-value')) {
+			expect(getComputedStyle(waarde).pointerEvents).toBe('none');
+		}
+	});
+
 	// De band zegt al welke waarde geldt, en het veld eromheen ook. Een tweede
 	// markering in de kolom voegt niets toe en concurreert ermee zodra je
 	// ervandaan scrolt.
