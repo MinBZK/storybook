@@ -112,6 +112,20 @@ export const timePickerStyles = css`
 		background-color: var(--_list-item-is-hovered-background-color);
 	}
 
+	/* Tijdens het scrollen schuiven de waarden onder een stilstaande cursor door
+	   en zou er telkens een andere oplichten. Ook een tik halverwege een veeg
+	   hoort de scroll te stoppen, niet een waarde te kiezen.
+	   De achtergrond apart uitzetten: pointer-events houdt alleen nieuwe hover
+	   tegen, en een al staande :hover blijft tot de browser de hit-test opnieuw
+	   doet. */
+	:host([data-scrolling]) .time-picker__list-item {
+		pointer-events: none;
+	}
+
+	:host([data-scrolling]) .time-picker__list-item:hover {
+		background-color: transparent;
+	}
+
 	.time-picker__gap {
 		flex-shrink: 0;
 		width: 1ch;

@@ -264,8 +264,14 @@ export class NLDDTimePicker extends LitElement {
 		// De band volgt elke beweging, de waarde legt pas vast bij stilstand.
 		const centred = this._centredOption(el);
 		if (centred !== null) this._centred = { ...this._centred, [column]: centred };
+		// Als attribuut en niet als reactieve state: dit gebeurt elke scroll-frame,
+		// en een re-render van tachtig waarden per frame is verspilling.
+		this.toggleAttribute('data-scrolling', true);
 		clearTimeout(this._scrollTimers[column]);
-		this._scrollTimers[column] = window.setTimeout(() => this._selectCentred(column, el), 120);
+		this._scrollTimers[column] = window.setTimeout(() => {
+			this._selectCentred(column, el);
+			this.toggleAttribute('data-scrolling', false);
+		}, 120);
 	}
 
 	/** Het getal van de optie die het dichtst bij het midden van de kolom staat. */

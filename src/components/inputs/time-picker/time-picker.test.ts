@@ -113,6 +113,34 @@ describe('nldd-time-picker – kiezen', () => {
 		expect(el.value).toBe('14:30');
 	});
 
+	// Tijdens het scrollen schuiven de waarden onder een stilstaande cursor door;
+	// zonder dit licht er telkens een andere op en kan een tik halverwege een veeg
+	// per ongeluk kiezen.
+	it('zet de muis uit op de waarden tijdens het scrollen', async () => {
+		el = await fixture<NLDDTimePicker>(
+			'<nldd-time-picker value="09:30" style="--semantics-controls-md-min-size: 44px; --semantics-controls-sm-min-size: 44px"></nldd-time-picker>',
+		);
+		await waitForUpdate(el);
+		await new Promise((r) => setTimeout(r, 250));
+		const kolom = column(el, 'hours');
+		const item = kolom.querySelector('.time-picker__list-item')!;
+		expect(getComputedStyle(item).pointerEvents).not.toBe('none');
+		kolom.dispatchEvent(new Event('scroll'));
+		await waitForUpdate(el);
+		expect(getComputedStyle(item).pointerEvents).toBe('none');
+		// Ook de opmaak zelf, want een al staande :hover blijft matchen tot de
+		// browser de hit-test opnieuw doet.
+		const hoverRegels = [...el.shadowRoot!.adoptedStyleSheets]
+			.flatMap((sheet) => [...sheet.cssRules])
+			.filter((r): r is CSSStyleRule => 'selectorText' in r)
+			.filter((r) => r.selectorText.includes('data-scrolling') && r.selectorText.includes(':hover'));
+		expect(hoverRegels).toHaveLength(1);
+		expect(hoverRegels[0].style.backgroundColor).toBe('transparent');
+		// En weer aan zodra het scrollen stil ligt.
+		await new Promise((r) => setTimeout(r, 250));
+		expect(getComputedStyle(item).pointerEvents).not.toBe('none');
+	});
+
 	it('bevestigt met Enter op de band', async () => {
 		el = await fixture<NLDDTimePicker>('<nldd-time-picker value="09:30"></nldd-time-picker>');
 		await waitForUpdate(el);
