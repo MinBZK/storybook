@@ -15,8 +15,27 @@ the type of conventional-commit determines the release. Conventional types
 `chore`, `docs`, `ci`, `style`, `test`, `build` are intentionally omitted
 here; consult the commit history if you need that level of detail.
 
+### Highlights
+
+- **A sidebar or inspector sheet opens at its real height on a phone.** Below 641px both sheets are content-sized, and the zero flex basis every slotted pane carries fixed that content height at 0. The sheet opened as a backdrop with nothing on it, while its content stayed in the DOM and kept taking focus: a modal you cannot see and cannot leave. Above 640px the sheet has a definite height, which is why this only ever showed on the narrowest viewports. Reported by a consumer with a minimal reproduction, which is the reason it is fixed here rather than worked around in one app.
+- **Banner icons meet contrast on every variant.** The icon took the variant's reference color, which is tuned to sit against a filled surface, not against the tinted one a banner actually draws. In dark mode the accent icon landed at 1.72:1 against its own background, well under the 3:1 that WCAG 1.4.11 asks of a graphical object; neutral and warning failed too. All five now take the tinted content color, which is the pair that was measured for this surface.
+
+### Added
+
+- **Design guideline: in a modal dialog for a destructive action, "keep" gets the primary variant and goes on top.** Give the non-destructive way out (for example "Behoud document") `variant="primary"` and put the destructive action below it with `variant="destructive"`. The primary button is where a user goes on autopilot, and that should be the safe way out, not the irreversible action. It also means the way out is the first thing you meet, instead of having to pass the button you are trying to avoid. In `Docs/Ontwerprichtlijnen`, and in the `design-guidelines.md` that ships with the plugin.
+- **`nldd-banner`** — a `size` attribute: `md` (default) or `sm`. The small banner takes 8px of padding and a 24px icon, for a notice that has to sit inside a pane or above a toolbar without taking a block of the layout. The dismiss button follows the size and aligns with the first line.
+
+### Changed
+
+- **`nldd-top-navigation-bar`** — the wordmark title, subtitle and supporting text balance their lines instead of filling each one in turn. A long organisation name breaks in the middle rather than leaving a single word on the second line.
+- **Icons** — `viewfinder` has shorter corner brackets. The arms ran to a third of each side, which closed the shape up at small sizes and read more as a frame than as a finder.
+- **`nldd-banner`, `nldd-just-in-time-education`** — the dismiss button is labelled "Verberg" instead of "Sluit". Both put the notice out of sight without resolving anything, and "Sluit" claims more than that. `nldd-document-tab-bar` and `nldd-top-navigation-bar` keep "Sluit", where it really does close something.
+
 ### Fixed
 
+- **`nldd-navigation-split-view`** — the sidebar and inspector sheets no longer collapse to zero height below 641px. The `flex-basis: 0` on slotted panes now applies only where the sheet has a definite height; a content-sized sheet gets a content-sized pane. The dialog's `max-height` still caps a long sheet, and the pane's own scroll container takes it from there. A consumer restoring the basis from application CSS can drop that rule.
+- **`nldd-search-field`** — one `input` event per keystroke, and one `change` per commit. The native events are composed, so without stopping them they escaped the shadow root and arrived at the host right behind ours. On the native one `detail` is the UIEvent number `0`, so a handler reading `event.detail.value` got `undefined` from it; a controlled input writing that back emptied the field as you typed. `nldd-text-field` and `nldd-password-field` already worked this way.
+- **`nldd-menu`** — a menu with long items wraps at its maximum width instead of scrolling sideways. `overflow-y: auto` computes `overflow-x` to `auto` unless you say otherwise, so the menu scrolled horizontally on content that was meant to wrap.
 - **A focus ring at the bottom of a sticky header no longer disappears under the fade.** The gradient that `nldd-page` draws below a `sticky-header` painted after the header's own content, so anything reaching past the header's bottom edge went under it. It now sits behind that content: same fade over the scrolling page, ring intact.
 
 ## <small>0.8.77 (2026-08-02)</small>
