@@ -4,6 +4,16 @@ on:
   push:
     branches:
       - main
+
+# Zonder dit blok erft deze workflow de repo-default, en die staat op dit
+# moment op read-write. Lint, tests, de componentbuild en `playwright install`
+# voeren code van dependencies uit (vite, rollup, esbuild, de playwright-CLI,
+# eslint- en vitest-plugins); --ignore-scripts sluit het install-moment af,
+# niet dit. Zo'n job hoort geen token te hebben waarmee naar main gepusht kan
+# worden.
+permissions:
+  contents: read
+
 jobs:
   build-and-check:
     name: Build & Validate
@@ -11,6 +21,14 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v6
+        with:
+          # Zonder dit laat actions/checkout het token achter als een credential
+          # dat de git-config van deze checkout oplost, de hele job. Alles wat
+          # daarna draait kan erbij, inclusief de dependency-code hieronder.
+          # Geen enkele stap heeft dit credential nodig: de
+          # `git diff --exit-code`-checks zijn lokaal, en de npm-cache van
+          # setup-node en `playwright install` gebruiken het niet.
+          persist-credentials: false
       - name: Setup Node.js
         uses: actions/setup-node@v6
         with:

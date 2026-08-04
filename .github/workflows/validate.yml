@@ -6,6 +6,12 @@ on:
     branches:
       - main
 
+# Zie de toelichting in ci.yml: zonder dit blok draait deze workflow met de
+# read-write repo-default, terwijl `cem analyze` en de vue-types-keten
+# (tsc/vue-tsc) dependency-code uitvoeren.
+permissions:
+  contents: read
+
 jobs:
   validate:
     name: Validate CSS Variables
@@ -14,6 +20,12 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v6
+        with:
+          # Zie ci.yml: anders blijft het token de hele job bereikbaar via de
+          # git-config van deze checkout, terwijl de stappen hieronder
+          # dependency-code uitvoeren. De `git diff --exit-code`-checks zijn
+          # lokaal en hebben het credential niet nodig.
+          persist-credentials: false
 
       - name: Setup Node.js
         uses: actions/setup-node@v6
