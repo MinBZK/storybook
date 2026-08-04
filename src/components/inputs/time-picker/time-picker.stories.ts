@@ -13,6 +13,7 @@ export default {
 		status: { type: 'stable' },
 	},
 	args: {
+		variant: 'list',
 		width: '',
 		value: '09:30',
 		min: '',
@@ -21,6 +22,12 @@ export default {
 		accessibleLabel: '',
 	},
 	argTypes: {
+		variant: {
+			control: 'select',
+			options: ['list', 'wheel'],
+			description: 'Weergave: een lijst, of een wiel dat de gekozen waarde in het midden houdt',
+			table: { defaultValue: { summary: 'list' } },
+		},
 		width: {
 			control: 'text',
 			description: "Breedte: 'full' of een eigen CSS-lengte. Leeg is de intrinsieke breedte van twee kolommen.",
@@ -56,6 +63,7 @@ export default {
 };
 
 const Template = ({
+	variant,
 	width,
 	value,
 	min,
@@ -64,6 +72,7 @@ const Template = ({
 	accessibleLabel,
 }: Record<string, any>) => html`
 	<nldd-time-picker
+		variant=${variant || nothing}
 		width=${width || nothing}
 		value=${value || nothing}
 		min=${min || nothing}
@@ -102,4 +111,27 @@ export const StapVanafMin = () => html`
 		step="15"
 		accessible-label="Vertrektijd"
 	></nldd-time-picker>
+`;
+
+export const Wiel = () => html`
+	<p>Scrollen ís kiezen: wat in de band in het midden tot stilstand komt, is de waarde. De kolommen zijn dezelfde listboxen als in de lijst-variant, dus toetsenbord en screenreader werken ongewijzigd.</p>
+	<nldd-time-picker
+		variant="wheel"
+		value="09:30"
+		step="15"
+		accessible-label="Starttijd"
+	></nldd-time-picker>
+`;
+
+export const LijstNaastWiel = () => html`
+	<div style="display: flex; gap: 48px; align-items: flex-start;">
+		<div>
+			<p><code>variant="list"</code></p>
+			<nldd-time-picker value="09:30" step="15" accessible-label="Lijst"></nldd-time-picker>
+		</div>
+		<div>
+			<p><code>variant="wheel"</code></p>
+			<nldd-time-picker variant="wheel" value="09:30" step="15" accessible-label="Wiel"></nldd-time-picker>
+		</div>
+	</div>
 `;

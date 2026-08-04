@@ -15947,6 +15947,16 @@
             },
             {
               "kind": "field",
+              "name": "variant",
+              "type": {
+                "text": "'list' | 'wheel'"
+              },
+              "default": "'list'",
+              "attribute": "variant",
+              "reflects": true
+            },
+            {
+              "kind": "field",
               "name": "width",
               "type": {
                 "text": "string"
@@ -16027,6 +16037,15 @@
               "default": "1",
               "fieldName": "step",
               "description": "Minutenstap (standaard 1). Bepaalt welke minuten in de kolom staan."
+            },
+            {
+              "name": "variant",
+              "type": {
+                "text": "'list' | 'wheel'"
+              },
+              "default": "'list'",
+              "fieldName": "variant",
+              "description": "Weergave: 'list' (standaard) of 'wheel', een wiel dat de gekozen waarde in het midden houdt."
             },
             {
               "name": "width",

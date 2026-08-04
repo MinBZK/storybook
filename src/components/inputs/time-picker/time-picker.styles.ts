@@ -22,6 +22,7 @@ export const timePickerStyles = css`
 		--_column-height: calc(var(--_option-min-size) * 7);
 		--_column-gap: var(--primitives-space-4);
 		--_separator-content-color: var(--semantics-content-secondary-color);
+		--_band-background-color: light-dark(var(--primitives-color-neutral-100), var(--primitives-color-neutral-150));
 		/* Vanuit JS gezet door het width-attribuut; initial houdt hem
 		   gegarandeerd-ongeldig, zodat de breedte anders op auto uitkomt. */
 		--_width: initial;
@@ -85,7 +86,6 @@ export const timePickerStyles = css`
 
 	.time-picker__option:hover {
 		background-color: var(--_option-is-hovered-background-color);
-		cursor: pointer;
 	}
 
 	.time-picker__option[aria-selected="true"] {
@@ -111,6 +111,70 @@ export const timePickerStyles = css`
 
 	@media (forced-colors: active) {
 		.time-picker__option[aria-selected="true"] {
+			outline: 2px solid CanvasText;
+		}
+	}
+
+	/* # Wiel */
+
+	/* De kolom is even hoog als in de lijst, maar de waarden schuiven langs een
+	   vaste band in het midden. De padding boven en onder is precies de halve
+	   kolom min een halve rij, zodat ook de eerste en de laatste waarde het
+	   midden kunnen bereiken. */
+	:host([variant="wheel"]) .time-picker {
+		position: relative;
+	}
+
+	:host([variant="wheel"]) .time-picker__column {
+		padding-block: calc((var(--_column-height) - var(--_option-min-size)) / 2);
+		scroll-snap-type: y mandatory;
+		/* De randen vervagen, zodat de band in het midden het brandpunt is en de
+		   lijst niet abrupt afkapt. */
+		mask-image: linear-gradient(to bottom, transparent 0%, black 25%, black 75%, transparent 100%);
+		scrollbar-width: none;
+	}
+
+	:host([variant="wheel"]) .time-picker__column::-webkit-scrollbar {
+		display: none;
+	}
+
+	:host([variant="wheel"]) .time-picker__option {
+		scroll-snap-align: center;
+	}
+
+	/* De band toont welke waarde geldt, dus de optie zelf krijgt geen eigen vlak;
+	   twee markeringen over elkaar leest als twee keuzes. */
+	:host([variant="wheel"]) .time-picker__option[aria-selected="true"] {
+		background-color: transparent;
+	}
+
+	:host([variant="wheel"]) .time-picker__option:hover {
+		background-color: transparent;
+	}
+
+	/* De band is absoluut gepositioneerd en zou het scheidingsteken anders
+	   overschilderen; positioned wint van static in dezelfde stapelcontext. */
+	:host([variant="wheel"]) .time-picker__separator {
+		position: relative;
+	}
+
+	/* Een ingetogen vlak, geen gevulde markering met contrasttekst. Tijdens het
+	   scrollen schuift elke waarde door de band heen, en die moet leesbaar
+	   blijven zolang hij nog niet gekozen is. */
+	.time-picker__band {
+		position: absolute;
+		top: 50%;
+		right: 0;
+		left: 0;
+		border-radius: var(--_option-corner-radius);
+		background-color: var(--_band-background-color);
+		pointer-events: none;
+		height: var(--_option-min-size);
+		transform: translateY(-50%);
+	}
+
+	@media (forced-colors: active) {
+		.time-picker__band {
 			outline: 2px solid CanvasText;
 		}
 	}

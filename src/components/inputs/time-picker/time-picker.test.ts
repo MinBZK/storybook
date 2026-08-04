@@ -216,3 +216,76 @@ describe('nldd-time-picker – toegankelijkheid', () => {
 		expect(bereikbaar[0].textContent!.trim()).toBe('00');
 	});
 });
+
+
+/* ============================================================
+   Wiel
+   ============================================================ */
+
+describe('nldd-time-picker – wiel', () => {
+	let el: NLDDTimePicker;
+
+	afterEach(() => { if (el) cleanup(el); });
+
+	it('toont een band in het midden, alleen in wiel-modus', async () => {
+		el = await fixture<NLDDTimePicker>('<nldd-time-picker value="09:30"></nldd-time-picker>');
+		await waitForUpdate(el);
+		expect(el.shadowRoot!.querySelector('.time-picker__band')).toBeNull();
+		el.variant = 'wheel';
+		await waitForUpdate(el);
+		expect(el.shadowRoot!.querySelector('.time-picker__band')).not.toBeNull();
+	});
+
+	it('houdt dezelfde listbox-semantiek als de lijst', async () => {
+		el = await fixture<NLDDTimePicker>('<nldd-time-picker variant="wheel" value="09:30"></nldd-time-picker>');
+		await waitForUpdate(el);
+		expect(column(el, 'hours').getAttribute('role')).toBe('listbox');
+		expect(column(el, 'hours').getAttribute('aria-label')).toBe('Uur');
+		expect(selected(el, 'hours')).toBe('09');
+	});
+
+	it('kiest de waarde die in het midden tot stilstand komt', async () => {
+		// variables.css wordt hier niet geladen, dus de kolom zou zonder deze token
+		// geen vaste hoogte hebben en helemaal niet scrollen.
+		el = await fixture<NLDDTimePicker>(
+			'<nldd-time-picker variant="wheel" value="09:30" style="--semantics-controls-md-min-size: 44px"></nldd-time-picker>',
+		);
+		await waitForUpdate(el);
+		// De picker scrolt bij het renderen zelf naar de gekozen waarde en negeert
+		// scroll-events zolang die beweging loopt. Wachten tot die afscherming weg
+		// is, anders wordt deze scroll voor de zijne aangezien.
+		await new Promise((r) => setTimeout(r, 250));
+		const kolom = column(el, 'hours');
+		const optie = [...kolom.querySelectorAll<HTMLElement>('[role="option"]')][14];
+		// Uit de gemeten posities, niet uit een aangenomen formule: dit is precies
+		// de rekensom die de component omkeert om te bepalen wat er in het midden
+		// staat.
+		kolom.scrollTop = optie.offsetTop + optie.offsetHeight / 2 - kolom.clientHeight / 2;
+		kolom.dispatchEvent(new Event('scroll'));
+		await new Promise((r) => setTimeout(r, 250));
+		expect(el.value).toBe('14:30');
+	});
+
+	it('kiest niets bij scrollen in de lijst-variant', async () => {
+		el = await fixture<NLDDTimePicker>('<nldd-time-picker value="09:30"></nldd-time-picker>');
+		await waitForUpdate(el);
+		const kolom = column(el, 'hours');
+		kolom.scrollTop = 0;
+		kolom.dispatchEvent(new Event('scroll'));
+		await new Promise((r) => setTimeout(r, 250));
+		expect(el.value).toBe('09:30');
+	});
+
+	// Zonder deze afscherming zou het in beeld scrollen van de gekozen waarde
+	// onderweg iets anders kiezen.
+	it('kiest niets tijdens het eigen scrollen naar de gekozen waarde', async () => {
+		el = await fixture<NLDDTimePicker>('<nldd-time-picker variant="wheel" value="09:30"></nldd-time-picker>');
+		await waitForUpdate(el);
+		el.scrollSelectedIntoView();
+		const kolom = column(el, 'hours');
+		kolom.scrollTop = 0;
+		kolom.dispatchEvent(new Event('scroll'));
+		await new Promise((r) => setTimeout(r, 250));
+		expect(el.value).toBe('09:30');
+	});
+});

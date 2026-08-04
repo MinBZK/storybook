@@ -16,6 +16,7 @@
  * @attr {string} min - Vroegst toegestane tijd als `HH:mm`. Is tevens de basis waarvandaan `step` telt.
  * @attr {string} max - Laatst toegestane tijd als `HH:mm`.
  * @attr {number} step - Minutenstap (standaard 1). Bepaalt welke minuten in de kolom staan.
+ * @attr {string} variant - Weergave: 'list' (standaard) of 'wheel', een wiel dat de gekozen waarde in het midden houdt.
  * @attr {string} width - Breedte: `full` vult de container, of geef een eigen CSS-lengte.
  * @attr {string} accessible-label - Toegankelijke naam van de picker.
  * @attr {object} translations - Vertalingen; niet opgegeven sleutels vallen terug op het Nederlands.
@@ -25,6 +26,7 @@
 
 import { LitElement, type PropertyValues } from 'lit';
 import { customElement, property, state } from 'lit/decorators.js';
+import { reflectNonDefault } from '../../../utilities/reflect-non-default.js';
 import { timePickerStyles } from './time-picker.styles.js';
 import { timePickerTemplate } from './time-picker.template.js';
 import { nlddTimePickerTranslations, type NLDDTimePickerTranslations } from './time-picker.i18n.js';
@@ -60,6 +62,9 @@ export class NLDDTimePicker extends LitElement {
 
 	@property({ type: Number })
 	step = 1;
+
+	@property({ reflect: true, converter: reflectNonDefault<'list' | 'wheel'>('list') })
+	variant: 'list' | 'wheel' = 'list';
 
 	@property({ type: String, reflect: true })
 	width = '';
@@ -206,6 +211,42 @@ export class NLDDTimePicker extends LitElement {
 	}
 
 	/**
+	 * Terwijl wij zelf scrollen (bij openen, of na een keuze) mag het scrollen
+	 * niet opnieuw iets kiezen: dat zou de keuze die net gemaakt is overschrijven
+	 * met wat er toevallig langskomt.
+	 */
+	private _scrollingSelf = false;
+	private _scrollTimers: Record<'hours' | 'minutes', number> = { hours: 0, minutes: 0 };
+
+	/**
+	 * In wiel-modus ís scrollen kiezen: wat in het midden tot stilstand komt, is de
+	 * waarde. Er bestaat een `scrollend`-event, maar niet overal, dus dit wacht tot
+	 * het scrollen 120ms stil is. Kort genoeg om direct te voelen, lang genoeg om
+	 * niet halverwege een veeg al te kiezen.
+	 */
+	public _handleScroll(e: Event, column: 'hours' | 'minutes'): void {
+		if (this.variant !== 'wheel' || this._scrollingSelf) return;
+		const el = e.currentTarget as HTMLElement;
+		clearTimeout(this._scrollTimers[column]);
+		this._scrollTimers[column] = window.setTimeout(() => this._selectCentred(column, el), 120);
+	}
+
+	/** De waarde die het dichtst bij het midden van de kolom staat. */
+	private _selectCentred(column: 'hours' | 'minutes', el: HTMLElement): void {
+		const centre = el.scrollTop + el.clientHeight / 2;
+		let best: HTMLElement | null = null;
+		let bestDistance = Infinity;
+		for (const option of el.querySelectorAll<HTMLElement>('[role="option"]')) {
+			const distance = Math.abs(option.offsetTop + option.offsetHeight / 2 - centre);
+			if (distance < bestDistance) {
+				bestDistance = distance;
+				best = option;
+			}
+		}
+		if (best) this._select(column, Number(best.textContent));
+	}
+
+	/**
 	 * Zet de gekozen waarde midden in beeld. De kolom is zeven waarden hoog, dus
 	 * `center` zet hem op de vierde rij met drie erboven en drie eronder.
 	 *
@@ -215,10 +256,14 @@ export class NLDDTimePicker extends LitElement {
 	 * opengaat.
 	 */
 	public scrollSelectedIntoView(): void {
+		this._scrollingSelf = true;
 		for (const column of ['hours', 'minutes'] as const) {
 			const option = this.shadowRoot?.querySelector(`[data-column="${column}"] [aria-selected="true"]`);
 			option?.scrollIntoView({ block: 'center' });
 		}
+		// Iets langer dan de debounce hierboven, zodat de scroll-events van deze
+		// beweging allemaal genegeerd zijn voordat we weer luisteren.
+		window.setTimeout(() => { this._scrollingSelf = false; }, 200);
 	}
 
 	override updated(changed: PropertyValues): void {

@@ -1,4 +1,4 @@
-import { html, TemplateResult } from 'lit';
+import { html, nothing, TemplateResult } from 'lit';
 import type { NLDDTimePicker } from './time-picker.js';
 
 function pad(number: number): string {
@@ -24,6 +24,7 @@ function renderColumn(
 			data-column=${column}
 			@keydown=${(e: KeyboardEvent) => component._handleKeydown(e, column)}
 			@focusin=${() => component._handleFocus(column)}
+			@scroll=${(e: Event) => component._handleScroll(e, column)}
 		>
 			${numbers.map((number) => {
 				const isSelected = number === selected;
@@ -50,6 +51,11 @@ export function timePickerTemplate(component: NLDDTimePicker): TemplateResult {
 			role="group"
 			aria-label=${component._label}
 		>
+			${component.variant === 'wheel' ? html`
+				<div class="time-picker__band"
+					aria-hidden="true"
+				></div>
+			` : nothing}
 			${renderColumn(
 				component,
 				'hours',
