@@ -125,7 +125,6 @@ export const timePickerStyles = css`
 	}
 
 	:host([variant="wheel"]) .time-picker__column {
-		padding-block: calc((var(--_column-height) - var(--_option-min-size)) / 2);
 		/* proximity, niet mandatory: bij mandatory moet de browser altijd op een
 		   snappunt uitkomen, en een korte kolom (vier minuten bij stap 15) kan
 		   daardoor helemaal weigeren te scrollen. Proximity snapt als je in de
@@ -143,6 +142,19 @@ export const timePickerStyles = css`
 
 	:host([variant="wheel"]) .time-picker__option {
 		scroll-snap-align: center;
+	}
+
+	/* De ruimte waarin de eerste en de laatste waarde het midden kunnen bereiken:
+	   precies de halve kolom min een halve rij. Als lege flex-items en niet als
+	   padding-block, want Safari telt de onderste padding van een scrollcontainer
+	   niet mee in de scrollbare overflow. Bij een korte kolom (vier minuten bij
+	   stap 15) valt daarmee de hele overflow weg en is er niets meer te scrollen. */
+	:host([variant="wheel"]) .time-picker__column::before,
+	:host([variant="wheel"]) .time-picker__column::after {
+		content: '';
+		display: block;
+		flex-shrink: 0;
+		height: calc((var(--_column-height) - var(--_option-min-size)) / 2);
 	}
 
 	/* Dekkend en bovenop, met de waarde erin. Wat eronder in de kolommen staat

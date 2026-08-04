@@ -299,6 +299,20 @@ describe('nldd-time-picker – wiel', () => {
 		expect(el.value).toBe('09:45');
 	});
 
+	// Safari telt de onderste padding van een scrollcontainer niet mee in de
+	// scrollbare overflow. Met padding-block viel bij een korte kolom precies de
+	// hele overflow weg (132px boven plus 176px waarden is exact de kolomhoogte)
+	// en was er niets meer te scrollen.
+	it('houdt ook een korte kolom scrollbaar', async () => {
+		el = await fixture<NLDDTimePicker>(
+			'<nldd-time-picker variant="wheel" value="09:30" step="15" style="--semantics-controls-md-min-size: 44px"></nldd-time-picker>',
+		);
+		await waitForUpdate(el);
+		const minuten = column(el, 'minutes');
+		expect(minuten.querySelectorAll('.time-picker__option')).toHaveLength(4);
+		expect(minuten.scrollHeight).toBeGreaterThan(minuten.clientHeight);
+	});
+
 	// De band ligt over het midden van beide kolommen. Vangt hij de muis, dan
 	// scrolt een veeg precies daar niet de kolom eronder, en dat is nou net de
 	// plek waar je hem neerzet.
