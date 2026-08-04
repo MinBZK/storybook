@@ -21,6 +21,14 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v6
+        with:
+          # Hygiëne: deze workflow declareerde `contents: read` al vóór deze PR,
+          # dus hier stond geen read-write token op het spel zoals in ci.yml en
+          # validate.yml. Het token draagt wel `pages: write`, en het blijft de
+          # hele job bereikbaar via de git-config van deze checkout terwijl
+          # `build-storybook` dependency-code draait. Geen enkele stap heeft het
+          # nodig: configure-pages en upload-pages-artifact gaan niet via git.
+          persist-credentials: false
 
       - name: Setup Node.js
         uses: actions/setup-node@v6
