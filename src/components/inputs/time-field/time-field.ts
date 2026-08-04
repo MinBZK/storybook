@@ -416,19 +416,23 @@ export class NLDDTimeField extends FormAssociated(LitElement) {
 		this._emit('input');
 	}
 
+	/**
+	 * Een waarde vastleggen sluit de popover niet. Een tijd bestaat uit twee
+	 * delen, dus het uur zetten is de helft van een antwoord; sloten we daarop,
+	 * dan kwam je nooit bij de minuten. Bij de kalender ligt dat anders, want daar
+	 * is één dag het hele antwoord.
+	 */
 	public _handlePickerChange(e: Event): void {
 		e.stopPropagation();
 		const detail = (e as CustomEvent).detail as { value?: string };
-		if (typeof detail?.value === 'string') {
-			this.value = detail.value;
-			this._display = detail.value;
-		}
-		this._closePicker();
+		if (typeof detail?.value !== 'string') return;
+		this.value = detail.value;
+		this._display = detail.value;
+		this._emit('change');
 	}
 
-	/** De knop onder de picker: de waarde staat er al door `input`, dit sluit
-	 *  alleen af. Voor een wiel is dit de duidelijkste afsluiter, want klikken op
-	 *  een waarde is een zwak gebaar in iets dat "scroll mij" uitstraalt. */
+	/** De knop onder de picker: de enige weg naar buiten die de waarde houdt.
+	 *  Annuleer, Escape en een klik ernaast sluiten ook, maar dat zijn afbreken. */
 	public _handlePickerConfirm(e: Event): void {
 		e.stopPropagation();
 		this._closePicker();

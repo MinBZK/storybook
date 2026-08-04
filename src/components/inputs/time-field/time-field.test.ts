@@ -367,6 +367,35 @@ describe('nldd-time-field – picker', () => {
 		expect(el.shadowRoot!.querySelector('.time-field__picker-button')).toBeNull();
 	});
 
+	// Een tijd bestaat uit twee delen, dus het uur kiezen is de helft van een
+	// antwoord. Sloot de popover daarop, dan kwam je nooit bij de minuten.
+	it('sluit de popover niet als er een waarde wordt gekozen', async () => {
+		el = await fixture<NLDDTimeField>('<nldd-time-field value="09:30"></nldd-time-field>');
+		await waitForUpdate(el);
+		await el.shadowRoot!.querySelector<HTMLElement>('.time-field__picker-button nldd-icon-button')!.click();
+		await new Promise((r) => setTimeout(r, 200));
+		const popover = el.shadowRoot!.querySelector<HTMLElement>('nldd-popover')!;
+		const picker = el.shadowRoot!.querySelector('nldd-time-picker')!;
+		picker.dispatchEvent(new CustomEvent('change', {
+			detail: { value: '14:30' }, bubbles: true, composed: true,
+		}));
+		await waitForUpdate(el);
+		expect(el.value).toBe('14:30');
+		expect(popover.matches(':popover-open')).toBe(true);
+	});
+
+	it('sluit de popover met de knop eronder', async () => {
+		el = await fixture<NLDDTimeField>('<nldd-time-field value="09:30"></nldd-time-field>');
+		await waitForUpdate(el);
+		await el.shadowRoot!.querySelector<HTMLElement>('.time-field__picker-button nldd-icon-button')!.click();
+		await new Promise((r) => setTimeout(r, 200));
+		const popover = el.shadowRoot!.querySelector<HTMLElement>('nldd-popover')!;
+		expect(popover.matches(':popover-open')).toBe(true);
+		el.shadowRoot!.querySelector<HTMLElement>('nldd-popover nldd-button')!.click();
+		await new Promise((r) => setTimeout(r, 200));
+		expect(popover.matches(':popover-open')).toBe(false);
+	});
+
 	// De maat van een knop is een attribuut en dus niet met een media query te
 	// kiezen; het veld stelt dezelfde vraag daarom in JS.
 	it('kiest de knopmaat op het aanwijzertype', async () => {
