@@ -53,6 +53,10 @@ for (const match of indexContent.matchAll(exportRegex)) {
 // Build complete exports map
 const exports = {
 	'.': './dist/components/components.js',
+	// De zelfstandige browserbundel: alles in één geminified bestand, voor een
+	// pagina met een gewone <script src> en geen buildstap. Wie zelf bundelt
+	// gebruikt '.', die externaliseert lit en de rest.
+	'./bundle': './dist/nldd.min.js',
 	...componentExports,
 	'./styles': './dist/css/global.css',
 	// Same stylesheet without the @font-face rules, for consumers that may not
