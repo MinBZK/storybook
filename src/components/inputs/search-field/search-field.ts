@@ -118,7 +118,15 @@ export class NLDDSearchField extends FormAssociated(LitElement) {
 
 	// — Handlers ————————————————————————————————————————————————————————————
 
+	// The native input/change events are composed, so without stopPropagation
+	// they escape the shadow root and a consumer listening for `input` on the
+	// host gets two events per keystroke: ours, carrying detail.value, and the
+	// native one right behind it, where `detail` is the UIEvent number 0. A
+	// handler that reads `e.detail?.value` then ends on undefined and, if it
+	// writes that back to `value`, wipes the field as you type. Same guard as
+	// text-field and password-field.
 	public _handleInput(e: Event): void {
+		e.stopPropagation();
 		const input = e.target as HTMLInputElement;
 		this.value = input.value;
 		this.commitFormValue();
@@ -130,6 +138,7 @@ export class NLDDSearchField extends FormAssociated(LitElement) {
 	}
 
 	public _handleChange(e: Event): void {
+		e.stopPropagation();
 		const input = e.target as HTMLInputElement;
 		this.value = input.value;
 		this.commitFormValue();

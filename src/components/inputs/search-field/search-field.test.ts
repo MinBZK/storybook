@@ -122,6 +122,32 @@ describe('nldd-search-field – input & change events', () => {
 		input.dispatchEvent(new Event('input', { bubbles: true }));
 		expect(detail?.value).toBe('hello');
 	});
+
+	// The native input event is composed and would otherwise reach the host as
+	// a second `input` right behind ours, with `detail` as the UIEvent number 0
+	// instead of an object. A consumer reading e.detail.value gets undefined
+	// from that one, and one that writes it back empties the field as you type.
+	it('emits one input event per keystroke, never the native one as well', async () => {
+		el = await fixture<NLDDSearchField>('<nldd-search-field></nldd-search-field>');
+		await waitForUpdate(el);
+		const details: unknown[] = [];
+		el.addEventListener('input', ((e: CustomEvent) => { details.push(e.detail); }) as EventListener);
+		const input = el.shadowRoot!.querySelector('input')!;
+		(input as any).value = 'a';
+		input.dispatchEvent(new Event('input', { bubbles: true, composed: true }));
+		expect(details).toEqual([{ value: 'a' }]);
+	});
+
+	it('emits one change event per commit, never the native one as well', async () => {
+		el = await fixture<NLDDSearchField>('<nldd-search-field></nldd-search-field>');
+		await waitForUpdate(el);
+		const details: unknown[] = [];
+		el.addEventListener('change', ((e: CustomEvent) => { details.push(e.detail); }) as EventListener);
+		const input = el.shadowRoot!.querySelector('input')!;
+		(input as any).value = 'a';
+		input.dispatchEvent(new Event('change', { bubbles: true, composed: true }));
+		expect(details).toEqual([{ value: 'a' }]);
+	});
 });
 
 
