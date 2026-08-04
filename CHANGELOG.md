@@ -16,6 +16,7 @@ here; consult the commit history if you need that level of detail.
 
 ### Added
 
+- **Design guideline: viewing and editing are different tasks, so design separate screens for them.** Reading wants density and calm; editing wants labels, help text, validation, and sometimes fields that have no place in the read-only view. Pressing both into one screen, usually through inline editing, gives up something on either side. The counter-argument that the view supplies context while editing is a requirement to design for, not a reason to keep the reading layout. In `Docs/Ontwerprichtlijnen`, and in the `design-guidelines.md` that ships with the plugin.
 - **Design guideline: in a modal dialog for a destructive action, "keep" gets the primary variant and goes on top.** Give the non-destructive way out (for example "Behoud document") `variant="primary"` and put the destructive action below it with `variant="destructive"`. The primary button is where a user goes on autopilot, and that should be the safe way out, not the irreversible action. It also means the way out is the first thing you meet, instead of having to pass the button you are trying to avoid. In `Docs/Ontwerprichtlijnen`, and in the `design-guidelines.md` that ships with the plugin.
 - **`nldd-banner`** — a `size` attribute: `md` (default) or `sm`. The small banner takes 8px of padding and a 24px icon, for a notice that has to sit inside a pane or above a toolbar without taking a block of the layout. The dismiss button follows the size and aligns with the first line.
 
