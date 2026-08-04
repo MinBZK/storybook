@@ -3,6 +3,13 @@ name: Publish to npmjs
 # Requires repository secret NPM_TOKEN: a granular npmjs token with
 # read+write access to the @nldd scope and 2FA bypass enabled.
 # Without it, the publish step fails with E401/EAUTH at runtime.
+#
+# The work is split over two jobs on purpose. `npm ci` and `npm run build`
+# execute third-party code by design - vite, tsc, the custom-elements analyzer
+# and every plugin they load. NPM_TOKEN must therefore not be reachable from
+# the job that does that. `build` holds no secrets and hands over a plain
+# artifact; `publish` holds the token and runs no dependency code at all.
+# --ignore-scripts closes the install moment; this closes the build moment.
 
 on:
   push:
@@ -20,7 +27,7 @@ on:
         type: string
 
 jobs:
-  publish:
+  build:
     runs-on: ubuntu-latest
     # Only publish when triggered by version-bump commit, release, or manual dispatch
     if: >-
@@ -29,7 +36,6 @@ jobs:
       startsWith(github.event.head_commit.message, 'chore(release):')
     permissions:
       contents: read
-      id-token: write
     steps:
       - name: Checkout
         uses: actions/checkout@v6
@@ -39,24 +45,67 @@ jobs:
         with:
           node-version: '20'
           cache: 'npm'
-          registry-url: 'https://registry.npmjs.org'
-          scope: '@nldd'
 
       # --ignore-scripts: a hijacked dependency release must not get to run its
-      # preinstall/postinstall hook in the one job that holds NPM_TOKEN. Nothing
-      # in this tree needs lifecycle scripts at install time - the build below
-      # runs the generators explicitly.
+      # preinstall/postinstall hook. Nothing in this tree needs lifecycle
+      # scripts at install time; the build runs its generators explicitly.
       - name: Install dependencies
         run: npm ci --ignore-scripts
 
       - name: Build package
         run: npm run build
 
+      # De input gaat via de env in plaats van via ${{ }} in de run-regel:
+      # workflow_dispatch-input is vrije tekst en zou daar als shell worden
+      # geïnterpreteerd.
       - name: Update version (if specified)
         if: ${{ inputs.version != '' }}
-        run: npm version ${{ inputs.version }} --no-git-tag-version
+        env:
+          INPUT_VERSION: ${{ inputs.version }}
+        run: npm version "$INPUT_VERSION" --no-git-tag-version
 
+      # Precies wat `files` in package.json publiceert, plus de twee bestanden
+      # die npm er altijd bij pakt (package.json en README). package.json en
+      # custom-elements.json staan erbij omdat de build ze herschrijft.
+      - name: Upload publish payload
+        uses: actions/upload-artifact@v4
+        with:
+          name: npm-package
+          retention-days: 1
+          if-no-files-found: error
+          path: |
+            package.json
+            README.md
+            LICENSE
+            NOTICES.md
+            custom-elements.json
+            dist/
+
+  publish:
+    needs: build
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      # Nodig voor `npm publish --provenance`: npm ruilt dit OIDC-token in bij
+      # Sigstore. Staat bewust alleen op deze job.
+      id-token: write
+    steps:
+      - name: Setup Node.js
+        uses: actions/setup-node@v6
+        with:
+          node-version: '20'
+          registry-url: 'https://registry.npmjs.org'
+          scope: '@nldd'
+
+      - name: Download publish payload
+        uses: actions/download-artifact@v4
+        with:
+          name: npm-package
+
+      # --ignore-scripts ook hier: npm draait bij publish standaard `prepare`
+      # en `prepack`. Er valt niets te prepareren - dist/ komt kant en klaar uit
+      # de build-job - dus die hoeven niet te draaien.
       - name: Publish to npmjs
-        run: npm publish --provenance
+        run: npm publish --provenance --ignore-scripts
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
