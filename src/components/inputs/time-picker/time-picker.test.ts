@@ -266,6 +266,26 @@ describe('nldd-time-picker – wiel', () => {
 		expect(el.value).toBe('14:30');
 	});
 
+	// De band moet elke beweging volgen, niet de vastgelegde waarde: anders
+	// schuiven er cijfers achterlangs terwijl het getal in de band blijft staan.
+	it('toont tijdens het scrollen wat er in het midden ligt, voordat het vastligt', async () => {
+		el = await fixture<NLDDTimePicker>(
+			'<nldd-time-picker variant="wheel" value="09:30" style="--semantics-controls-md-min-size: 44px"></nldd-time-picker>',
+		);
+		await waitForUpdate(el);
+		await new Promise((r) => setTimeout(r, 250));
+		const kolom = column(el, 'hours');
+		const optie = [...kolom.querySelectorAll<HTMLElement>('[role="option"]')][14];
+		kolom.scrollTop = optie.offsetTop + optie.offsetHeight / 2 - kolom.clientHeight / 2;
+		kolom.dispatchEvent(new Event('scroll'));
+		await waitForUpdate(el);
+		const band = () => el.shadowRoot!.querySelector('.time-picker__band')!.textContent!.replace(/\s+/g, '');
+		expect(band()).toBe('14:30');
+		expect(el.value).toBe('09:30');
+		await new Promise((r) => setTimeout(r, 250));
+		expect(el.value).toBe('14:30');
+	});
+
 	it('kiest niets bij scrollen in de lijst-variant', async () => {
 		el = await fixture<NLDDTimePicker>('<nldd-time-picker value="09:30"></nldd-time-picker>');
 		await waitForUpdate(el);

@@ -80,6 +80,15 @@ export class NLDDTimePicker extends LitElement {
 	@state()
 	private _activeColumn: 'hours' | 'minutes' = 'hours';
 
+	/**
+	 * Wat er op dit moment in de band staat, per kolom. Losgehouden van `value`,
+	 * want die legt pas vast als het scrollen stil ligt. Zou de band de vastgelegde
+	 * waarde tonen, dan schuiven er cijfers achterlangs terwijl het getal in de
+	 * band blijft staan, en dan liegt hij over waar je bent.
+	 */
+	@state()
+	private _centred: { hours: number | null; minutes: number | null } = { hours: null, minutes: null };
+
 	public _t(key: keyof NLDDTimePickerTranslations): string {
 		return this.translations[key] ?? nlddTimePickerTranslations[key];
 	}
@@ -134,6 +143,16 @@ export class NLDDTimePicker extends LitElement {
 
 	public get _selectedMinute(): number | null {
 		return this._selected === null ? null : this._selected % 60;
+	}
+
+	/** Het getal dat nu in de band staat: wat er tijdens het scrollen in het midden
+	 *  ligt, en anders gewoon de gekozen waarde. */
+	public get _bandHour(): number | null {
+		return this._centred.hours ?? this._selectedHour;
+	}
+
+	public get _bandMinute(): number | null {
+		return this._centred.minutes ?? this._selectedMinute;
 	}
 
 	public _isActiveColumn(column: 'hours' | 'minutes'): boolean {
@@ -227,12 +246,15 @@ export class NLDDTimePicker extends LitElement {
 	public _handleScroll(e: Event, column: 'hours' | 'minutes'): void {
 		if (this.variant !== 'wheel' || this._scrollingSelf) return;
 		const el = e.currentTarget as HTMLElement;
+		// De band volgt elke beweging, de waarde legt pas vast bij stilstand.
+		const centred = this._centredOption(el);
+		if (centred !== null) this._centred = { ...this._centred, [column]: centred };
 		clearTimeout(this._scrollTimers[column]);
 		this._scrollTimers[column] = window.setTimeout(() => this._selectCentred(column, el), 120);
 	}
 
-	/** De waarde die het dichtst bij het midden van de kolom staat. */
-	private _selectCentred(column: 'hours' | 'minutes', el: HTMLElement): void {
+	/** Het getal van de optie die het dichtst bij het midden van de kolom staat. */
+	private _centredOption(el: HTMLElement): number | null {
 		const centre = el.scrollTop + el.clientHeight / 2;
 		let best: HTMLElement | null = null;
 		let bestDistance = Infinity;
@@ -243,7 +265,13 @@ export class NLDDTimePicker extends LitElement {
 				best = option;
 			}
 		}
-		if (best) this._select(column, Number(best.textContent));
+		return best === null ? null : Number(best.textContent);
+	}
+
+	/** Legt vast wat er in het midden tot stilstand kwam. */
+	private _selectCentred(column: 'hours' | 'minutes', el: HTMLElement): void {
+		const centred = this._centredOption(el);
+		if (centred !== null) this._select(column, centred);
 	}
 
 	/**
@@ -274,6 +302,9 @@ export class NLDDTimePicker extends LitElement {
 			else this.style.removeProperty('--_width');
 		}
 		if (changed.has('value') || changed.has('min') || changed.has('max') || changed.has('step')) {
+			// De band volgt weer de waarde: die is net van buiten gezet of vastgelegd,
+			// en staat in beide gevallen gelijk met het midden.
+			this._centred = { hours: null, minutes: null };
 			this.scrollSelectedIntoView();
 		}
 	}

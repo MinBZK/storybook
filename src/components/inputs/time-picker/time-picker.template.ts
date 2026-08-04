@@ -54,7 +54,17 @@ export function timePickerTemplate(component: NLDDTimePicker): TemplateResult {
 			${component.variant === 'wheel' ? html`
 				<div class="time-picker__band"
 					aria-hidden="true"
-				></div>
+				>
+					<span class="time-picker__band-value">
+						${component._bandHour === null ? '' : pad(component._bandHour)}
+					</span>
+					<span class="time-picker__band-separator">
+						:
+					</span>
+					<span class="time-picker__band-value">
+						${component._bandMinute === null ? '' : pad(component._bandMinute)}
+					</span>
+				</div>
 			` : nothing}
 			${renderColumn(
 				component,

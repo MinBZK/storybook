@@ -22,7 +22,6 @@ export const timePickerStyles = css`
 		--_column-height: calc(var(--_option-min-size) * 7);
 		--_column-gap: var(--primitives-space-4);
 		--_separator-content-color: var(--semantics-content-secondary-color);
-		--_band-background-color: light-dark(var(--primitives-color-neutral-100), var(--primitives-color-neutral-150));
 		/* Vanuit JS gezet door het width-attribuut; initial houdt hem
 		   gegarandeerd-ongeldig, zodat de breedte anders op auto uitkomt. */
 		--_width: initial;
@@ -152,25 +151,43 @@ export const timePickerStyles = css`
 		background-color: transparent;
 	}
 
-	/* De band is absoluut gepositioneerd en zou het scheidingsteken anders
-	   overschilderen; positioned wint van static in dezelfde stapelcontext. */
+	/* De band draagt zijn eigen dubbele punt, dus die van de kolommen zou er
+	   dubbel onder staan. */
 	:host([variant="wheel"]) .time-picker__separator {
-		position: relative;
+		visibility: hidden;
 	}
 
-	/* Een ingetogen vlak, geen gevulde markering met contrasttekst. Tijdens het
-	   scrollen schuift elke waarde door de band heen, en die moet leesbaar
-	   blijven zolang hij nog niet gekozen is. */
+	/* Dekkend, en met de waarde erin. Een doorzichtige band laat de cijfers er
+	   achterlangs schuiven, en dan staat er tijdens elke veeg iets onleesbaars in
+	   het brandpunt. Deze band toont wat er op dit moment in het midden ligt en
+	   dekt de kolommen eronder af. */
 	.time-picker__band {
+		display: flex;
 		position: absolute;
 		top: 50%;
 		right: 0;
 		left: 0;
 		border-radius: var(--_option-corner-radius);
-		background-color: var(--_band-background-color);
+		background-color: var(--_option-is-selected-background-color);
 		pointer-events: none;
 		height: var(--_option-min-size);
+		gap: var(--_column-gap);
+		align-items: center;
+		color: var(--_option-is-selected-content-color);
+		font-variant-numeric: tabular-nums;
 		transform: translateY(-50%);
+	}
+
+	.time-picker__band-value {
+		display: flex;
+		width: var(--_column-width);
+		flex-grow: 1;
+		flex-shrink: 1;
+		justify-content: center;
+	}
+
+	.time-picker__band-separator {
+		flex-shrink: 0;
 	}
 
 	@media (forced-colors: active) {
