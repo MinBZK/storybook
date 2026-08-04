@@ -12,6 +12,16 @@ export const timePickerStyles = css`
 	:host {
 		--_option-min-size: var(--semantics-controls-md-min-size);
 		--_option-corner-radius: var(--semantics-controls-md-corner-radius);
+
+		/* Een vinger heeft de volle 44px nodig, een muis niet. Compacter met een
+		   fijne aanwijzer scheelt hoogte en zet meer waarden in beeld bij hetzelfde
+		   aantal rijen. Alles hieronder rekent vanaf deze maat, dus de kolombreedte,
+		   de hoogte, de ruimte aan de randen en de band schalen mee. Zelfde
+		   verdeling als nldd-menu. */
+		@media (pointer: fine) {
+			--_option-min-size: var(--semantics-controls-sm-min-size);
+			--_option-corner-radius: var(--semantics-controls-sm-corner-radius);
+		}
 		--_option-font: var(--primitives-font-body-sm-medium-flat);
 		--_option-is-selected-background-color: var(--semantics-controls-is-highlighted-indicator-color);
 		--_option-is-selected-content-color: var(--semantics-controls-is-highlighted-contrast-color);

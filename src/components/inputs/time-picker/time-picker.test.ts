@@ -299,9 +299,12 @@ describe('nldd-time-picker – wiel', () => {
 		expect(el.value).toBe('09:45');
 	});
 
+	// Beide controlmaten op dezelfde waarde: het component pakt de kleine onder
+	// (pointer: fine) en de grote daarbuiten, en welke van de twee de testrunner
+	// rapporteert doet er voor deze meting niet toe.
 	it('past de hoogte aan op het aantal rijen', async () => {
 		el = await fixture<NLDDTimePicker>(
-			'<nldd-time-picker variant="wheel" value="09:30" rows="5" style="--semantics-controls-md-min-size: 44px"></nldd-time-picker>',
+			'<nldd-time-picker variant="wheel" value="09:30" rows="5" style="--semantics-controls-md-min-size: 44px; --semantics-controls-sm-min-size: 44px"></nldd-time-picker>',
 		);
 		await waitForUpdate(el);
 		expect(column(el, 'hours').clientHeight).toBe(5 * 44);
@@ -311,7 +314,7 @@ describe('nldd-time-picker – wiel', () => {
 	// onder een halve rij uit beeld in plaats van dat er hele rijen staan.
 	it('accepteert ook een even aantal rijen', async () => {
 		el = await fixture<NLDDTimePicker>(
-			'<nldd-time-picker variant="wheel" value="09:30" rows="6" style="--semantics-controls-md-min-size: 44px"></nldd-time-picker>',
+			'<nldd-time-picker variant="wheel" value="09:30" rows="6" style="--semantics-controls-md-min-size: 44px; --semantics-controls-sm-min-size: 44px"></nldd-time-picker>',
 		);
 		await waitForUpdate(el);
 		expect(column(el, 'hours').clientHeight).toBe(6 * 44);
@@ -324,7 +327,7 @@ describe('nldd-time-picker – wiel', () => {
 
 	it('houdt minimaal drie rijen aan', async () => {
 		el = await fixture<NLDDTimePicker>(
-			'<nldd-time-picker variant="wheel" value="09:30" rows="1" style="--semantics-controls-md-min-size: 44px"></nldd-time-picker>',
+			'<nldd-time-picker variant="wheel" value="09:30" rows="1" style="--semantics-controls-md-min-size: 44px; --semantics-controls-sm-min-size: 44px"></nldd-time-picker>',
 		);
 		await waitForUpdate(el);
 		expect(column(el, 'hours').clientHeight).toBe(3 * 44);
@@ -336,7 +339,7 @@ describe('nldd-time-picker – wiel', () => {
 	// en was er niets meer te scrollen.
 	it('houdt ook een korte kolom scrollbaar', async () => {
 		el = await fixture<NLDDTimePicker>(
-			'<nldd-time-picker variant="wheel" value="09:30" step="15" style="--semantics-controls-md-min-size: 44px"></nldd-time-picker>',
+			'<nldd-time-picker variant="wheel" value="09:30" step="15" style="--semantics-controls-md-min-size: 44px; --semantics-controls-sm-min-size: 44px"></nldd-time-picker>',
 		);
 		await waitForUpdate(el);
 		const minuten = column(el, 'minutes');
@@ -384,7 +387,7 @@ describe('nldd-time-picker – wiel', () => {
 		// variables.css wordt hier niet geladen, dus de kolom zou zonder deze token
 		// geen vaste hoogte hebben en helemaal niet scrollen.
 		el = await fixture<NLDDTimePicker>(
-			'<nldd-time-picker variant="wheel" value="09:30" style="--semantics-controls-md-min-size: 44px"></nldd-time-picker>',
+			'<nldd-time-picker variant="wheel" value="09:30" style="--semantics-controls-md-min-size: 44px; --semantics-controls-sm-min-size: 44px"></nldd-time-picker>',
 		);
 		await waitForUpdate(el);
 		// De picker scrolt bij het renderen zelf naar de gekozen waarde en negeert
@@ -407,7 +410,7 @@ describe('nldd-time-picker – wiel', () => {
 	// bent.
 	it('toont tijdens het scrollen wat er in het midden ligt, voordat het vastligt', async () => {
 		el = await fixture<NLDDTimePicker>(
-			'<nldd-time-picker variant="wheel" value="09:30" style="--semantics-controls-md-min-size: 44px"></nldd-time-picker>',
+			'<nldd-time-picker variant="wheel" value="09:30" style="--semantics-controls-md-min-size: 44px; --semantics-controls-sm-min-size: 44px"></nldd-time-picker>',
 		);
 		await waitForUpdate(el);
 		await new Promise((r) => setTimeout(r, 250));
