@@ -31,7 +31,7 @@ export default {
 		},
 		rows: {
 			control: 'number',
-			description: 'Aantal waarden in beeld per kolom; wordt op een oneven getal afgerond',
+			description: 'Hoogte van de kolommen in rijen; oneven toont hele rijen, even kapt de randen af',
 			table: { defaultValue: { summary: '7' } },
 		},
 		width: {
