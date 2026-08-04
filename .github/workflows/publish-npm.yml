@@ -42,8 +42,12 @@ jobs:
           registry-url: 'https://registry.npmjs.org'
           scope: '@nldd'
 
+      # --ignore-scripts: a hijacked dependency release must not get to run its
+      # preinstall/postinstall hook in the one job that holds NPM_TOKEN. Nothing
+      # in this tree needs lifecycle scripts at install time - the build below
+      # runs the generators explicitly.
       - name: Install dependencies
-        run: npm ci
+        run: npm ci --ignore-scripts
 
       - name: Build package
         run: npm run build

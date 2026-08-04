@@ -28,8 +28,10 @@ jobs:
           node-version: '20'
           cache: 'npm'
 
+      # --ignore-scripts: a hijacked dependency release must not get to run its
+      # preinstall/postinstall hook in the job that publishes to Pages.
       - name: Install dependencies
-        run: npm ci
+        run: npm ci --ignore-scripts
 
       - name: Build styles
         run: npm run build:styles

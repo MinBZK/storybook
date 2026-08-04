@@ -16,8 +16,12 @@ jobs:
         with:
           node-version: '20'
           cache: 'npm'
+      # --ignore-scripts: a hijacked dependency release must not get to run its
+      # preinstall/postinstall hook in CI. Nothing in this tree needs lifecycle
+      # scripts at install time; the browsers come from the explicit
+      # `playwright install` in the next step, which has always been required.
       - name: Install dependencies
-        run: npm ci
+        run: npm ci --ignore-scripts
       - name: Install Playwright browsers
         run: npx playwright install --with-deps chromium
       - name: Run ESLint (including lit-a11y rules)

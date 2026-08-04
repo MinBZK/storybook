@@ -21,8 +21,10 @@ jobs:
           node-version: '20'
           cache: 'npm'
 
+      # --ignore-scripts: a hijacked dependency release must not get to run its
+      # preinstall/postinstall hook in CI. Nothing below needs them.
       - name: Install dependencies
-        run: npm ci
+        run: npm ci --ignore-scripts
 
       - name: Validate CSS variables
         run: npm run validate:styles
