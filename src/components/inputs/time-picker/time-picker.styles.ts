@@ -87,7 +87,7 @@ export const timePickerStyles = css`
 		background-color: var(--_option-is-hovered-background-color);
 	}
 
-	.time-picker__option[data-selected] {
+:host(:not([variant="wheel"])) .time-picker__option[data-selected] {
 		background-color: var(--_option-is-selected-background-color);
 		color: var(--_option-is-selected-content-color);
 	}
@@ -109,7 +109,7 @@ export const timePickerStyles = css`
 	/* # Toegankelijkheid */
 
 	@media (forced-colors: active) {
-		.time-picker__option[data-selected] {
+		:host(:not([variant="wheel"])) .time-picker__option[data-selected] {
 			outline: 2px solid CanvasText;
 		}
 	}

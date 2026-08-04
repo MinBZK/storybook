@@ -299,6 +299,21 @@ describe('nldd-time-picker – wiel', () => {
 		expect(el.value).toBe('09:45');
 	});
 
+	// De band zegt al welke waarde geldt, en het veld eromheen ook. Een tweede
+	// markering in de kolom voegt niets toe en concurreert ermee zodra je
+	// ervandaan scrolt.
+	it('markeert de gekozen waarde niet in de kolom', async () => {
+		el = await fixture<NLDDTimePicker>('<nldd-time-picker variant="wheel" value="09:30"></nldd-time-picker>');
+		await waitForUpdate(el);
+		const gekozen = column(el, 'hours').querySelector('[data-selected]')!;
+		const gewoon = column(el, 'hours').querySelectorAll('.time-picker__option')[3];
+		const stijl = (el: Element) => {
+			const s = getComputedStyle(el);
+			return { kleur: s.color, vlak: s.backgroundColor };
+		};
+		expect(stijl(gekozen)).toEqual(stijl(gewoon));
+	});
+
 	it('houdt in de lijst-variant de listbox-semantiek', async () => {
 		el = await fixture<NLDDTimePicker>('<nldd-time-picker value="09:30"></nldd-time-picker>');
 		await waitForUpdate(el);
