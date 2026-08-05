@@ -405,3 +405,38 @@ describe('nldd-text-cell', () => {
 		cleanup(el);
 	});
 });
+
+describe('nldd-text-cell fit-content in een krappe rij', () => {
+	// fit-content betekent min(max-content, max(min-content, beschikbaar)). Met
+	// flex-shrink: 0 hield de cel zijn volle inhoudsbreedte vast, hoe smal de rij
+	// ook werd, en duwde hij alles erachter het beeld uit.
+	it('krimpt mee en duwt de cel erachter niet weg', async () => {
+		const el = await fixture(`
+			<div style="display: flex; width: 200px;">
+				<nldd-text-cell width="fit-content" text="Cloud en platform technologie"></nldd-text-cell>
+				<nldd-cell id="achteraan" style="width: 40px; flex-shrink: 0;"></nldd-cell>
+			</div>
+		`);
+		await waitForUpdate(el);
+		const cel = el.querySelector('nldd-text-cell')!;
+		const achteraan = el.querySelector('#achteraan')!;
+		expect(cel.getBoundingClientRect().width).toBeLessThanOrEqual(160);
+		expect(Math.round(achteraan.getBoundingClientRect().right))
+			.toBeLessThanOrEqual(Math.round(el.getBoundingClientRect().right) + 1);
+		cleanup(el);
+	});
+
+	// Zelfs een woord dat langer is dan de rij loopt er niet uit: de tekst heeft
+	// overflow-wrap: anywhere, dus hij breekt desnoods midden in het woord.
+	it('loopt ook met een lang woord niet buiten de rij', async () => {
+		const el = await fixture(`
+			<div style="display: flex; width: 60px;">
+				<nldd-text-cell width="fit-content" text="Informatiebeveiliging"></nldd-text-cell>
+			</div>
+		`);
+		await waitForUpdate(el);
+		const cel = el.querySelector('nldd-text-cell')!;
+		expect(Math.round(cel.getBoundingClientRect().width)).toBeLessThanOrEqual(60);
+		cleanup(el);
+	});
+});
