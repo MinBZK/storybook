@@ -472,6 +472,8 @@ export class NLDDMenu extends LitElement {
 	_parentItem: NLDDMenuItem | null = null;
 
 	private _isOpen = false;
+	/** Tracked so the pointerdown re-sync moves along when the anchor changes. */
+	private _previousAnchorForResync: Element | null = null;
 	/** Set on the root when a pointer gesture (outside/anchor pointerdown
 	 * or confirmed tap) collapsed the chain, or when a pointerdown landed
 	 * on the anchor while the menu was open (covers native light-dismiss).
@@ -590,6 +592,10 @@ export class NLDDMenu extends LitElement {
 		// control assigns `anchorElement` on slotchange, which may land after
 		// our firstUpdated) and a runtime `anchor` swap.
 		if (changedProperties.has('anchor') || changedProperties.has('anchorElement')) {
+			this._previousAnchorForResync?.removeEventListener('pointerdown', this._resyncAnchorFromPopoverState, true);
+			const anchor = this._getAnchorEl();
+			anchor?.addEventListener('pointerdown', this._resyncAnchorFromPopoverState, true);
+			this._previousAnchorForResync = anchor;
 			this._syncAnchorPopupState(this._isOpen);
 		}
 	}
@@ -645,6 +651,28 @@ export class NLDDMenu extends LitElement {
 	 * browser's light-dismiss exclusion is in place from the very first
 	 * click instead of only after the menu has already opened once.
 	 */
+	/**
+	 * Re-read the real popover state and push it to the anchor.
+	 *
+	 * Everything about the anchor (`expanded`, `aria-expanded`, and which way
+	 * `popoverTargetAction` points) hangs off our own `toggle` event. That is
+	 * enough while the menu opens and closes on its own, but not when something
+	 * else closes it: opening a modal dialog empties the top layer, and Safari
+	 * does not fire `toggle` for the popovers it drops. The anchor then keeps
+	 * saying "open" while the menu is gone, and its next click asks the browser
+	 * to hide an already-hidden popover — a no-op, so the button looks dead.
+	 *
+	 * Called on the anchor's own pointerdown, before the click resolves the
+	 * invoker, so the action is decided on the truth rather than on a state
+	 * update that never arrived.
+	 */
+	private _resyncAnchorFromPopoverState = (): void => {
+		const reallyOpen = this.matches(':popover-open');
+		if (reallyOpen === this._isOpen) return;
+		this._isOpen = reallyOpen;
+		this._syncAnchorPopupState(reallyOpen);
+	};
+
 	private _syncAnchorPopupState(isOpen: boolean): void {
 		const anchor = this._getAnchorEl() as HTMLElement & {
 			expanded?: boolean;
@@ -1676,6 +1704,8 @@ export class NLDDMenu extends LitElement {
 		}
 		this.removeEventListener('beforetoggle', this._handleBeforeToggle);
 		this.removeEventListener('toggle', this._handleToggle);
+		this._previousAnchorForResync?.removeEventListener('pointerdown', this._resyncAnchorFromPopoverState, true);
+		this._previousAnchorForResync = null;
 		this.removeEventListener('keydown', this._handleKeydown);
 		this.removeEventListener('mouseenter', this._handleMenuItemMouseenter, true);
 		this.removeEventListener('mouseleave', this._handleMouseleave);
