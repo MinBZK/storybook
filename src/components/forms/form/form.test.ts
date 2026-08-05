@@ -243,7 +243,7 @@ describe('nldd-form', () => {
 			expect(inherits.hasAttribute('label-alignment')).toBe(false);
 
 			// Own: label-alignment kept, form-label-alignment present as well but
-			// CSS-cascade laat eigen waarde winnen via :host(:not([label-alignment])[form-label-alignment=…])
+			// the CSS cascade lets its own value win through :host(:not([label-alignment])[form-label-alignment=...])
 			expect(own.getAttribute('label-alignment')).toBe('top');
 			expect(own.getAttribute('form-label-alignment')).toBe('right');
 		});

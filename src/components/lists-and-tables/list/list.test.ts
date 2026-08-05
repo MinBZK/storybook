@@ -685,13 +685,13 @@ describe('nldd-list – arrow navigation (roving tabindex)', () => {
 		items = await settle(el);
 		expect(tabindexOf(items[1])).toBe('0');
 		expect(tabindexOf(items[0])).toBe('-1');
-		// Wrap forward: Drie -> Een.
+		// Wrap forward: Drie -> Een (three -> one).
 		arrow('ArrowDown');
 		await settle(el);
 		arrow('ArrowDown');
 		items = await settle(el);
 		expect(tabindexOf(items[0])).toBe('0');
-		// Wrap backward: Een -> Drie.
+		// Wrap backward: Een -> Drie (one -> three).
 		arrow('ArrowUp');
 		items = await settle(el);
 		expect(tabindexOf(items[2])).toBe('0');

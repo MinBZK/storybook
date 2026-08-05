@@ -236,7 +236,7 @@ describe('nldd-avatar – full size', () => {
 			const link = el.shadowRoot!.querySelector('a.avatar');
 			expect(link).toBeTruthy();
 			expect(link!.getAttribute('href')).toBe('/profiel/');
-			// De control draagt de naam, dus de host niet nog een keer.
+			// The control carries the name, so the host must not carry it again.
 			expect(link!.getAttribute('aria-label')).toBe('Bart van de Biezen');
 			expect(el.getAttribute('role')).toBeNull();
 			expect(el.getAttribute('aria-hidden')).toBeNull();

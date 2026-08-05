@@ -230,7 +230,7 @@ describe('nldd-modal-dialog – close fallback', () => {
 
 	// The same trap as nldd-sheet: a background tab pauses CSS animations, so
 	// animationend never arrives. Without the timer the dialog stayed open and
-	// `_closing`, en negeerde hij elke volgende hide().
+	// `_closing`, and ignored every hide() after that.
 	it('sluit ook wanneer animationend nooit komt', async () => {
 		el = await fixture<HTMLElement>('<nldd-modal-dialog text="Test"></nldd-modal-dialog>');
 		await waitForUpdate(el);

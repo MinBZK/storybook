@@ -166,7 +166,7 @@ export class NLDDForm extends HTMLElement {
 				this._propagateLabelAlignment(this.getAttribute('label-alignment'));
 			});
 			// subtree:true so dynamically added form-fields inside a
-			// nested form-section ook getrokken worden door de propagation.
+			// nested form-section are pulled in by the propagation as well.
 			this._observer.observe(this, { childList: true, subtree: true });
 		}
 

@@ -139,7 +139,7 @@ export class NLDDDatePicker extends withTranslations<NLDDDatePickerTranslations>
 	@property({ type: String })
 	end = '';
 
-	/** Breedte: 'full' of een CSS-lengte; leeg is de intrinsieke zeven-cellen-breedte. */
+	/** Width: 'full' or a CSS length. Empty is the intrinsic seven-cell width. */
 	@property({ type: String, reflect: true })
 	width = '';
 

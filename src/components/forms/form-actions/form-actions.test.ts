@@ -36,7 +36,7 @@ describe('nldd-form-actions', () => {
 		const root = el.shadowRoot!.querySelector('.form-actions')!;
 		const main = el.shadowRoot!.querySelector('.form-actions__main');
 		expect(main).not.toBeNull();
-		// Geen spacer-div meer in DOM — alignment komt van .form-actions::before
+		// No spacer div in the DOM any more, the alignment comes from .form-actions::before
 		expect(el.shadowRoot!.querySelector('.form-actions__spacer')).toBeNull();
 		expect(root.children.length).toBe(1);
 		expect(root.firstElementChild).toBe(main);

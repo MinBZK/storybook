@@ -1217,9 +1217,9 @@ describe('nldd-date-picker weigert een periode over een geblokkeerde dag', () =>
 		expect(el.end).toBe('2026-07-20');
 	});
 
-	// De sleep-route (_onDocumentPointerUp) deelt dezelfde guard als de klik-route,
-	// maar loopt er niet via _select doorheen: een sleep over een geblokkeerde
-	// binnendag mag evenmin vastleggen.
+	// The drag route (_onDocumentPointerUp) shares the same guard as the click
+	// route but does not pass through _select: a drag across a blocked day in
+	// between must not record either.
 	it('weigert ook een gesleepte periode over een niet-beschikbare dag', async () => {
 		el = await fixture<NLDDDatePicker>('<nldd-date-picker range value="" max="2026-07-31"></nldd-date-picker>');
 		el.isDateUnavailable = (iso) => iso === '2026-07-15';
@@ -1269,9 +1269,9 @@ describe('nldd-date-picker breedte en periode-indicatoren', () => {
 		expect(el.style.getPropertyValue('--_width')).toBe('');
 	});
 
-	// De eindpunten zijn hetzelfde vierkant als een losse selectie (even breed
-	// als hoog, ook in bredere cellen), met rechte hoeken naar de periode toe
-	// zodat het vierkant zonder lichte inkeping tegen de band ligt.
+	// The endpoints are the same square as a single selection (as wide as it is
+	// tall, in wider cells too), with square corners facing the range so the square
+	// meets the band without a slight notch.
 	it('eindpunten zijn vierkant en alleen aan de buitenkant afgerond', async () => {
 		el = await fixture<NLDDDatePicker>('<nldd-date-picker range start="2026-07-10" end="2026-07-20" width="700px" style="--semantics-controls-md-corner-radius: 8px"></nldd-date-picker>');
 		await waitForUpdate(el);
