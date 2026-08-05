@@ -1,4 +1,4 @@
-import { describe, it, expect, afterEach } from 'vitest';
+import { describe, it, expect, afterEach, vi } from 'vitest';
 import { fixture, cleanup, waitForUpdate } from '../../../../test-utils.js';
 import './text-cell.js';
 
@@ -384,4 +384,24 @@ describe('nldd-text-cell', () => {
 		expect(span!.textContent).toBe('Aardappelen');
 	});
 
+	// De open randen lossen naar niets op: het attribuut staat er wel maar er
+	// wordt nooit iets verborgen. Dat ziet eruit als een werkende waarde, dus
+	// het zegt het één keer hardop.
+	it('waarschuwt bij een hide-below die nooit iets verbergt', async () => {
+		const warn = vi.spyOn(console, 'warn').mockImplementation(() => {});
+		const el = await fixture('<nldd-text-cell hide-below="sm" text="Test"></nldd-text-cell>');
+		await waitForUpdate(el);
+		expect(warn).toHaveBeenCalledWith(expect.stringContaining('never hides anything'));
+		warn.mockRestore();
+		cleanup(el);
+	});
+
+	it('waarschuwt niet bij een hide-below die wel werkt', async () => {
+		const warn = vi.spyOn(console, 'warn').mockImplementation(() => {});
+		const el = await fixture('<nldd-text-cell hide-below="md" text="Test"></nldd-text-cell>');
+		await waitForUpdate(el);
+		expect(warn).not.toHaveBeenCalled();
+		warn.mockRestore();
+		cleanup(el);
+	});
 });

@@ -110,6 +110,29 @@ function renderComponent(c) {
 // The pure parsing helpers (and componentsDir, for path-derived assertions) are
 // exported so they can be unit-tested without triggering the file-walking and
 // file-writing side effects of the main routine.
+/**
+ * Attributes a mixin adds, keyed by mixin name. Read from the `@mixin` /
+ * `@attr` tags in the mixin's own JSDoc, so they are written once next to the
+ * code that implements them instead of copied into every component.
+ */
+function collectMixinAttrs() {
+	const dir = join(componentsDir, '..', 'utilities');
+	const found = new Map();
+	for (const entry of readdirSync(dir)) {
+		if (!entry.endsWith('-mixin.ts')) continue;
+		const source = readFileSync(join(dir, entry), 'utf-8');
+		const name = source.match(/@mixin\s+(\w+)/)?.[1];
+		if (!name) continue;
+		const attrs = [];
+		for (const line of source.split('\n')) {
+			const rest = line.match(/^\s*\*\s*@attr\s+(.*)$/)?.[1];
+			if (rest) attrs.push(parseTypedTag(rest));
+		}
+		if (attrs.length) found.set(name, attrs);
+	}
+	return found;
+}
+
 export { parseTypedTag, parseNamedTag, parseComponent, extractLeadingBlock, escapeCell, componentsDir };
 
 // --- Main ---
@@ -173,6 +196,7 @@ function renderIcons({ names, aliases }) {
 
 function main() {
 	const entryFiles = collectEntryFiles(componentsDir);
+	const mixinAttrs = collectMixinAttrs();
 	const components = [];
 	for (const file of entryFiles) {
 		const source = readFileSync(file, 'utf-8');
@@ -180,7 +204,19 @@ function main() {
 		const fallbackTag = ceMatch ? ceMatch[1] : null;
 		for (const block of extractComponentBlocks(source)) {
 			for (const parsed of parseComponent(block, file, fallbackTag)) {
-				if (parsed.tag && !INTERNAL_TAGS.has(parsed.tag)) components.push(parsed);
+				if (parsed.tag && !INTERNAL_TAGS.has(parsed.tag)) {
+					// A mixin's attributes are as real to a consumer as the
+					// component's own, but they live in another file, so the
+					// component's JSDoc never mentions them and the table left
+					// them out entirely.
+					for (const [name, attrs] of mixinAttrs) {
+						if (!source.includes(`${name}(`)) continue;
+						for (const attr of attrs) {
+							if (!parsed.attrs.some((a) => a.name === attr.name)) parsed.attrs.push(attr);
+						}
+					}
+					components.push(parsed);
+				}
 			}
 		}
 	}
