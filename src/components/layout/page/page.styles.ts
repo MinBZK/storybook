@@ -76,10 +76,17 @@ export const pageStyles = css`
 
 	/* Root-scroll mode: no inner scroller; content-sized (flex-shrink:0) so the
 	   sticky header/footer's containing block spans the whole document rather
-	   than being squeezed to a definite ancestor height. */
+	   than being squeezed to a definite ancestor height.
+
+	   Content-sized costs the page its floor, though: nested mode inherits one
+	   from the pane it stretches inside, and here there is nothing to stretch in.
+	   A short page would end where its content ends and leave anything after it
+	   (an nldd-page-footer, say) stranded mid-viewport. The minimum restores that
+	   floor without pinning: longer content still pushes past it. */
 	:host([data-scroll="root"]) .page {
 		overflow: visible;
 		flex-shrink: 0;
+		min-height: calc(100dvh - var(--context-layer-top, 0px) - var(--context-layer-bottom, 0px));
 	}
 
 
