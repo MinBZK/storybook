@@ -528,13 +528,22 @@ export class NLDDListItem extends withTranslations(LitElement, nlddListItemTrans
 		const endInsetOf = (rect: DOMRect) =>
 			rtl ? rect.left - blockRect.left : blockRect.right - rect.right;
 
+		// A marker that is not rendered (a cell hidden per breakpoint with
+		// hide-below, say) has an empty rect, and an empty rect measures as inset
+		// 0: the divider would start at the row's edge and bleed out of it. Skip
+		// them here rather than in `targets` — the observer keeps watching them,
+		// so the divider re-measures the moment such a cell comes back.
+		const rendered = (el: Element) => el.getClientRects().length > 0;
+		const visibleStarts = starts.filter(rendered);
+		const visibleEnds = ends.filter(rendered);
+
 		// Union: smallest start inset (= first marker) and smallest end inset
 		// (= last marker) win.
-		const insetStart = starts.length
-			? Math.min(...starts.map(el => startInsetOf(el.getBoundingClientRect())))
+		const insetStart = visibleStarts.length
+			? Math.min(...visibleStarts.map(el => startInsetOf(el.getBoundingClientRect())))
 			: null;
-		const insetEnd = ends.length
-			? Math.min(...ends.map(el => endInsetOf(el.getBoundingClientRect())))
+		const insetEnd = visibleEnds.length
+			? Math.min(...visibleEnds.map(el => endInsetOf(el.getBoundingClientRect())))
 			: null;
 
 		if (insetStart !== null && insetEnd !== null

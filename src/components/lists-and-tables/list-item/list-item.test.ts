@@ -857,3 +857,32 @@ describe('nldd-list-item onder een universele reset', () => {
 		expect(getComputedStyle(item).marginLeft).toBe('-8px');
 	});
 });
+
+describe('nldd-list-item divider met verborgen cellen', () => {
+	// Een rij die per breedte andere cellen toont zet divider-start op allebei de
+	// varianten. De verborgene heeft een lege rect, en die meet als inset 0: dan
+	// begint de streep aan de rand van de rij in plaats van bij de tekst.
+	it('negeert een divider-start op een cel die niet gerenderd wordt', async () => {
+		const el = await fixture(`
+			<nldd-list>
+				<nldd-list-item>
+					<nldd-cell><nldd-icon name="info"></nldd-icon></nldd-cell>
+					<nldd-spacer-cell size="12"></nldd-spacer-cell>
+					<nldd-text-cell divider-start style="display: none" text="Verborgen"></nldd-text-cell>
+					<nldd-text-cell divider-start text="Zichtbaar"></nldd-text-cell>
+				</nldd-list-item>
+			</nldd-list>
+		`);
+		await waitForUpdate(el);
+		const item = el.querySelector('nldd-list-item') as HTMLElement;
+		const zichtbaar = el.querySelectorAll('nldd-text-cell')[1] as HTMLElement;
+		const block = item.shadowRoot!.querySelector('.list-item') as HTMLElement;
+		await new Promise((r) => requestAnimationFrame(() => r(null)));
+
+		const inset = parseFloat(item.style.getPropertyValue('--_divider-inset-start'));
+		const verwacht = zichtbaar.getBoundingClientRect().left - block.getBoundingClientRect().left;
+		expect(inset).toBeGreaterThan(0);
+		expect(Math.abs(inset - verwacht)).toBeLessThan(1);
+		cleanup(el);
+	});
+});
