@@ -20,7 +20,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v6
+        uses: actions/checkout@v7
         with:
           # Hygiëne: deze workflow declareerde `contents: read` al vóór deze PR,
           # dus hier stond geen read-write token op het spel zoals in ci.yml en
