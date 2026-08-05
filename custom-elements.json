@@ -8394,7 +8394,7 @@
                 "text": "string"
               },
               "default": "''",
-              "description": "Breedte: 'full' of een CSS-lengte; leeg is de intrinsieke zeven-cellen-breedte.",
+              "description": "Width: 'full' or a CSS length. Empty is the intrinsic seven-cell width.",
               "attribute": "width",
               "reflects": true
             },
