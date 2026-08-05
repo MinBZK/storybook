@@ -75,6 +75,35 @@ describe('nldd-sheet – tonen en verbergen', () => {
 		expect(dialog.open).toBe(true);
 	});
 
+	/** Like `fixture`, but returns before the first render: these tests are about
+	 *  what happens when a consumer calls show() in that very window. */
+	const mountUnrendered = (): NLDDSheet => {
+		const wrapper = document.createElement('div');
+		wrapper.innerHTML = '<nldd-sheet></nldd-sheet>';
+		document.body.appendChild(wrapper);
+		return wrapper.firstElementChild as NLDDSheet;
+	};
+
+	it('still opens when show() is called before the first render', async () => {
+		el = mountUnrendered();
+		expect(el.shadowRoot?.querySelector('dialog')).toBeFalsy();
+		el.show();
+
+		await waitForUpdate(el);
+		await el.updateComplete;
+		expect(el.shadowRoot!.querySelector('dialog')!.open).toBe(true);
+	});
+
+	it('lets a hide() before the first render cancel that pending open', async () => {
+		el = mountUnrendered();
+		el.show();
+		el.hide();
+
+		await waitForUpdate(el);
+		await el.updateComplete;
+		expect(el.shadowRoot!.querySelector('dialog')!.open).toBe(false);
+	});
+
 	it('fires open event when show() is called', async () => {
 		el = await fixture<NLDDSheet>('<nldd-sheet></nldd-sheet>');
 		await waitForUpdate(el);

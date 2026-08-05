@@ -20,6 +20,37 @@ describe('nldd-modal-dialog', () => {
 		expect(el.shadowRoot).not.toBeNull();
 	});
 
+	/** Like `fixture`, but returns before the first render: these tests are about
+	 *  what happens when a consumer calls show() in that very window. */
+	const mountUnrendered = (): NLDDModalDialog => {
+		const wrapper = document.createElement('div');
+		wrapper.innerHTML = '<nldd-modal-dialog></nldd-modal-dialog>';
+		document.body.appendChild(wrapper);
+		return wrapper.firstElementChild as NLDDModalDialog;
+	};
+
+	it('still opens when show() is called before the first render', async () => {
+		const dialogEl = mountUnrendered();
+		el = dialogEl;
+		expect(dialogEl.shadowRoot?.querySelector('dialog')).toBeFalsy();
+		dialogEl.show();
+
+		await waitForUpdate(dialogEl);
+		await dialogEl.updateComplete;
+		expect(dialogEl.shadowRoot!.querySelector('dialog')!.open).toBe(true);
+	});
+
+	it('lets a hide() before the first render cancel that pending open', async () => {
+		const dialogEl = mountUnrendered();
+		el = dialogEl;
+		dialogEl.show();
+		dialogEl.hide();
+
+		await waitForUpdate(dialogEl);
+		await dialogEl.updateComplete;
+		expect(dialogEl.shadowRoot!.querySelector('dialog')!.open).toBe(false);
+	});
+
 	it('sets role="alertdialog" when variant is alert', async () => {
 		el = await fixture('<nldd-modal-dialog variant="alert"></nldd-modal-dialog>');
 		await waitForUpdate(el);
