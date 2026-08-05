@@ -524,6 +524,26 @@ describe('nldd-time-field – picker', () => {
 		expect(el.shadowRoot!.querySelector<HTMLInputElement>('.time-field__input')!.value).toBe('');
 	});
 
+	// With the picker open there is no toggle event left when the field leaves the
+	// DOM, so the listener on document would stay behind.
+	it('haalt de Escape-listener weg als het veld verdwijnt met de picker open', async () => {
+		el = await fixture<NLDDTimeField>('<nldd-time-field value="09:30"></nldd-time-field>');
+		await waitForUpdate(el);
+		await openPicker(el);
+		const verwijderd: EventListenerOrEventListenerObject[] = [];
+		const origineel = document.removeEventListener.bind(document);
+		document.removeEventListener = ((type: string, handler: EventListenerOrEventListenerObject, options?: boolean | EventListenerOptions) => {
+			if (type === 'keydown') verwijderd.push(handler);
+			origineel(type, handler, options);
+		}) as typeof document.removeEventListener;
+		try {
+			el.remove();
+		} finally {
+			document.removeEventListener = origineel;
+		}
+		expect(verwijderd.length).toBeGreaterThan(0);
+	});
+
 	// A button's size is an attribute and so cannot be chosen with a media query.
 	// The field therefore asks the same question in JS.
 	it('kiest de knopmaat op het aanwijzertype', async () => {

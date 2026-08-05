@@ -225,6 +225,11 @@ export class NLDDTimeField extends FormAssociated(LitElement) {
 
 	override disconnectedCallback(): void {
 		NLDDTimeField._getFinePointerQuery().removeEventListener('change', this._handlePointerChange);
+		// Normally _settlePicker takes this one off, but that runs on the popover's
+		// toggle event. Disappear from the DOM with the picker open and no toggle
+		// arrives, leaving a listener on document that holds on to a detached field
+		// and keeps swallowing Escape for the rest of the session.
+		document.removeEventListener('keydown', this._handlePickerEscape, true);
 		super.disconnectedCallback();
 	}
 
