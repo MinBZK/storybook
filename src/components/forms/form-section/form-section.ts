@@ -201,16 +201,17 @@ export class NLDDFormSection extends HTMLElement {
 			legend.appendChild(subtitleSpan);
 		}
 
-		// Hide legend completely (incl. its space) if empty so .form-section__main
-		// becomes :first-child and z'n margin-top collapseert via CSS.
+		// Hide the legend completely (including its space) when empty, so
+		// .form-section__main becomes :first-child and its margin-top collapses
+		// through CSS.
 		//
-		// A11y-implicatie: zonder legend heeft de <fieldset> geen accessible
-		// name. SR-gedrag varieert (Chrome: "group", Firefox: niets). Dat is
-		// a deliberate choice: a form section can also be used purely as visual
-		// grouping (divider + padding) without a heading. Want a screen reader name
-		// without a visible title? Wrap the form in an nldd-form-section WITH text,
-		// or use aria-labelledby on the
-		// individuele velden.
+		// Accessibility implication: without a legend the <fieldset> has no
+		// accessible name. Screen reader behavior varies (Chrome: "group", Firefox:
+		// nothing). That is a deliberate choice: a form section can also be used
+		// purely as visual grouping (divider + padding) without a heading. Want a
+		// screen reader name without a visible title? Wrap the form in an
+		// nldd-form-section WITH text, or use aria-labelledby on the individual
+		// fields.
 		legend.hidden = !hasContent;
 	}
 }
