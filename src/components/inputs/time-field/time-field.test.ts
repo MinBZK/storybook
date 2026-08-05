@@ -454,6 +454,22 @@ describe('nldd-time-field – picker', () => {
 		expect(changes).toEqual(['14:30']);
 	});
 
+	// Enter is in een dialoog de standaardactie, en dat is hier "Klaar".
+	it('sluit de picker met Enter op een waarde in de band', async () => {
+		el = await fixture<NLDDTimeField>('<nldd-time-field value="09:30"></nldd-time-field>');
+		await waitForUpdate(el);
+		await openPicker(el);
+		const popover = el.shadowRoot!.querySelector<NLDDPopover>('nldd-popover')!;
+		scrollPickerTo(el, '14:30');
+		await waitForUpdate(el);
+		el.shadowRoot!.querySelector('nldd-time-picker')!.dispatchEvent(
+			new KeyboardEvent('keydown', { key: 'Enter', bubbles: true, composed: true }),
+		);
+		await new Promise((r) => setTimeout(r, 200));
+		expect(popover.matches(':popover-open')).toBe(false);
+		expect(el.value).toBe('14:30');
+	});
+
 	it('houdt een gekozen tijd bij een klik ernaast', async () => {
 		el = await fixture<NLDDTimeField>('<nldd-time-field value="09:30"></nldd-time-field>');
 		await waitForUpdate(el);

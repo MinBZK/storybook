@@ -64,6 +64,7 @@ function renderPicker(component: NLDDTimeField): TemplateResult | typeof nothing
 					@dismiss=${component._handlePickerDismiss}
 				></nldd-top-title-bar>
 				<nldd-container padding="16"
+					@keydown=${component._handlePickerKeydown}
 					@input=${component._handlePickerInput}
 					@change=${component._handlePickerChange}
 				>

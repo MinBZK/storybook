@@ -9,9 +9,9 @@
  * alleen `invalid` / `valid`, net als nldd-text-field.
  *
  * Wat je in de picker doet is een voorbeeld tot je hem verlaat: het veld toont
- * de tijd meteen, maar legt hem pas vast bij het sluiten. "Klaar" houdt de
- * keuze, een klik ernaast ook zodra je iets gekozen hebt, en Annuleer en Escape
- * zetten de oude tijd terug. Op een leeg veld openen de wielen op `min`, of
+ * de tijd meteen, maar legt hem pas vast bij het sluiten. "Klaar" en Enter
+ * houden de keuze, een klik ernaast ook zodra je iets gekozen hebt, en Annuleer
+ * en Escape zetten de oude tijd terug. Op een leeg veld openen de wielen op `min`, of
  * anders op de huidige tijd afgerond op `step`; dat vult het veld nog niet in.
  *
  * @element nldd-time-field
@@ -515,6 +515,22 @@ export class NLDDTimeField extends FormAssociated(LitElement) {
 
 	public _handlePickerConfirm(e: Event): void {
 		e.stopPropagation();
+		this._pickerConfirmed = true;
+		this._closePicker();
+	}
+
+	/**
+	 * Enter op een waarde in de band doet wat Enter in een dialoog altijd doet:
+	 * de standaardactie, en dat is hier "Klaar". Met de pijltjes ben je nog aan
+	 * het bijstellen, dus dit is de toets die zegt dat je klaar bent.
+	 *
+	 * De knop eronder slaan we over, want die krijgt van de browser al een klik
+	 * op Enter.
+	 */
+	public _handlePickerKeydown(e: KeyboardEvent): void {
+		if (e.key !== 'Enter') return;
+		if ((e.target as HTMLElement | null)?.closest('nldd-button')) return;
+		e.preventDefault();
 		this._pickerConfirmed = true;
 		this._closePicker();
 	}
