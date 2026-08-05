@@ -15,7 +15,6 @@ function renderColumn(
 	column: 'hours' | 'minutes',
 	numbers: number[],
 	selected: number | null,
-	label: string,
 ): TemplateResult {
 	return html`
 		<div class="time-picker__list"
@@ -93,7 +92,6 @@ export function timePickerTemplate(component: NLDDTimePicker): TemplateResult {
 				'hours',
 				component._hours,
 				component._selectedHour,
-				component._t('components.time-picker.hours-label'),
 			)}
 			<span class="time-picker__gap"
 				aria-hidden="true"
@@ -103,7 +101,6 @@ export function timePickerTemplate(component: NLDDTimePicker): TemplateResult {
 				'minutes',
 				component._minutes,
 				component._selectedMinute,
-				component._t('components.time-picker.minutes-label'),
 			)}
 		</div>
 	`;
