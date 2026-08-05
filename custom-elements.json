@@ -17216,6 +17216,16 @@
               "default": "'tinted'",
               "attribute": "background",
               "reflects": true
+            },
+            {
+              "kind": "field",
+              "name": "variant",
+              "type": {
+                "text": "BoxVariant"
+              },
+              "default": "'default'",
+              "attribute": "variant",
+              "reflects": true
             }
           ],
           "attributes": [
@@ -17227,6 +17237,15 @@
               "default": "'tinted'",
               "fieldName": "background",
               "description": "Surface fill. - `tinted` (default): for a box on a plain page bg. - `base`: for a box sitting on an already-tinted parent (the border ring gets +2 palette steps so it still reads against a card-on-card)."
+            },
+            {
+              "name": "variant",
+              "type": {
+                "text": "BoxVariant"
+              },
+              "default": "'default'",
+              "fieldName": "variant",
+              "description": "What the grouping means. - `default`: a neutral grouping; `background` decides the fill. - `critical`: a region whose actions are destructive or irreversible (a \"danger zone\"), tinted and outlined in critical. It carries no ARIA of its own: unlike nldd-banner this is not an announcement but a permanent part of the page, so the heading and the button labels have to name the danger — colour is a reinforcement, never the only signal (WCAG 1.4.1). Overrides `background`."
             }
           ],
           "superclass": {
@@ -31755,6 +31774,55 @@
           "declaration": {
             "name": "isTouchMode",
             "module": "src/utilities/input-modality.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/utilities/open-when-rendered.ts",
+      "declarations": [
+        {
+          "kind": "function",
+          "name": "openWhenRendered",
+          "return": {
+            "type": {
+              "text": ""
+            }
+          },
+          "parameters": [
+            {
+              "name": "host",
+              "type": {
+                "text": "LitElement"
+              },
+              "description": "The overlay element."
+            },
+            {
+              "name": "getDialog",
+              "type": {
+                "text": "() => HTMLDialogElement | null"
+              },
+              "description": "Resolves the dialog from the shadow root."
+            },
+            {
+              "name": "open",
+              "type": {
+                "text": "() => void"
+              },
+              "description": "Opens the overlay: the caller's own `show()`."
+            }
+          ],
+          "description": "Defers an overlay's `show()` until the element has rendered its `<dialog>`.\n\n`show()` needs a dialog in the shadow root to call `showModal()` on. A consumer\nthat opens an overlay in the same tick it is created — an overlay bound to\n`show=true` on a routed component, say — gets there first, and without this the\ncall would silently do nothing with nothing to retry it: the overlay stays shut\nfor good, which reads as a broken component rather than a race.\n\nRetried exactly once. If the dialog still is not there after the update, the\nelement was never rendered at all, and opening again would only queue another\nretry against the same missing dialog."
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "openWhenRendered",
+          "declaration": {
+            "name": "openWhenRendered",
+            "module": "src/utilities/open-when-rendered.ts"
           }
         }
       ]

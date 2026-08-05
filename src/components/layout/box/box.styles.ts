@@ -31,6 +31,14 @@ export const boxStyles = css`
 	}
 
 
+	/* ## Variants */
+
+	:host([variant="critical"]) {
+		--_background-color: var(--components-box-critical-background-color);
+		--_border-color: var(--components-box-critical-border-color);
+	}
+
+
 	/* # Block */
 
 	.box {

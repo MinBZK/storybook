@@ -1635,6 +1635,8 @@
 	--components-box-border-width: var(--semantics-surfaces-border-width);
 	--components-box-border-color: var(--semantics-surfaces-tinted-border-color);
 	--components-box-base-border-color: var(--semantics-surfaces-base-border-color);
+	--components-box-critical-background-color: var(--semantics-categories-critical-tinted-background-color);
+	--components-box-critical-border-color: var(--semantics-categories-critical-tinted-highlight-border-color);
 	--components-box-padding: var(--primitives-space-16);
 
 	/* ## Button group */

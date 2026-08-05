@@ -1,6 +1,8 @@
 import { html } from 'lit';
 import './box.js';
 import '../../content/rich-text/rich-text.js';
+import '../spacer/spacer.js';
+import '../../actions/button/button.js';
 
 /**
  * Gebruik een box om gerelateerde componenten visueel te groeperen in een afgebakend gebied.
@@ -31,6 +33,7 @@ export default {
 	},
 	args: {
 		background: 'tinted',
+		variant: 'default',
 	},
 	argTypes: {
 		background: {
@@ -39,11 +42,17 @@ export default {
 			description: 'Surface fill. `tinted` voor box op een plain page, `base` voor box op een al getinte parent (border ring krijgt +2 stappen voor extra contrast).',
 			table: { defaultValue: { summary: 'tinted' } },
 		},
+		variant: {
+			control: 'select',
+			options: ['default', 'critical'],
+			description: 'Wat de groepering betekent. `critical` markeert een gebied met onomkeerbare acties en overschrijft `background`.',
+			table: { defaultValue: { summary: 'default' } },
+		},
 	},
 };
 
-export const Standaard = ({ background }: Record<string, unknown>) => html`
-	<nldd-box background=${background as string}>
+export const Standaard = ({ background, variant }: Record<string, unknown>) => html`
+	<nldd-box background=${background as string} variant=${variant as string}>
 		<nldd-rich-text>
 			<h3>Wanneer gebruik je een box?</h3>
 			<p>
@@ -64,6 +73,27 @@ export const Standaard = ({ background }: Record<string, unknown>) => html`
 		</nldd-rich-text>
 	</nldd-box>
 `;
+
+/**
+ * `variant="critical"` markeert een gebied waarvan de acties onomkeerbaar zijn,
+ * een "danger zone". Anders dan `nldd-banner` is dit geen melding maar een vast
+ * onderdeel van de pagina: de box krijgt daarom geen eigen ARIA-rol. De kop en
+ * het knoplabel moeten het gevaar benoemen, de kleur bevestigt het alleen.
+ */
+export const Critical = {
+	name: 'Critical variant',
+	render: () => html`
+		<nldd-box variant="critical">
+			<nldd-rich-text>
+				<h3>Cluster verwijderen</h3>
+				<p>Een cluster verwijderen is definitief en kan niet ongedaan worden gemaakt.</p>
+			</nldd-rich-text>
+			<nldd-spacer size="16"></nldd-spacer>
+			<nldd-button variant="destructive" text="Verwijder dit cluster"></nldd-button>
+		</nldd-box>
+	`,
+	parameters: { controls: { disable: true } },
+};
 
 export const Backgrounds = {
 	name: 'Background variants',
