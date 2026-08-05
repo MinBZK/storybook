@@ -5038,7 +5038,7 @@
                 "text": "LabelAlignment | undefined"
               },
               "default": "undefined",
-              "description": "Default is `undefined` (and not `'top'`) so Lit doesn't reflect the\ndefault value to the attribute on first update. Zie `nldd-form-field`\nvoor uitleg — dezelfde reden: form-label-alignment fallback CSS\nwerkt op `:not([label-alignment])`.",
+              "description": "Default is `undefined` (and not `'top'`) so Lit doesn't reflect the\ndefault value to the attribute on first update. See `nldd-form-field` for\nthe explanation, for the same reason: the form-label-alignment fallback CSS\nworks on `:not([label-alignment])`.",
               "attribute": "label-alignment",
               "reflects": true
             }

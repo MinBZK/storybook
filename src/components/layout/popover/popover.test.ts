@@ -280,9 +280,9 @@ describe('nldd-popover', () => {
 			const last = wrapper.querySelector<HTMLButtonElement>('#popover-btn-2')!;
 			last.focus();
 
-			// Tab vooruit op laatste focusable → popover sluit. Dispatch op
-			// the focused element, so composedPath()[0] is the button (matching how a
-			// real browser delivers the event).
+			// Tab forward on the last focusable closes the popover. Dispatched on the
+			// focused element, so composedPath()[0] is the button (matching how a real
+			// browser delivers the event).
 			const tabEvent = new KeyboardEvent('keydown', {
 				key: 'Tab',
 				bubbles: true,

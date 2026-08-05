@@ -458,8 +458,7 @@ describe('nldd-sheet neemt geen ruimte in de flow', () => {
 	// The sheet itself is a position:fixed <dialog>, so the host should not be a
 	// box. As a block it is an ordinary flex item, and inside an
 	// nldd-split-view-pane it picks up flex-grow through ::slotted and eats the
-	// height its
-	// broers nodig hadden.
+	// height its siblings needed.
 	it('zet de host op display: contents', async () => {
 		el = await fixture('<nldd-sheet></nldd-sheet>');
 		await waitForUpdate(el);

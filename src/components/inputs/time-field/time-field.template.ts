@@ -18,7 +18,7 @@ import './../time-picker/time-picker.js';
  */
 export const PICKER_POPOVER_WIDTH = 'calc(var(--semantics-controls-md-min-size) * 3 + var(--primitives-space-48) + var(--primitives-space-16) * 2)';
 
-/** Eén tak voor beide staten: twee bijna gelijke kopieën liepen elders uiteen. */
+/** One branch for both states: two nearly identical copies drifted apart elsewhere. */
 function renderValidationIcon(component: NLDDTimeField): TemplateResult | typeof nothing {
 	const name = component.invalid ? 'invalid' : (component.valid ? 'valid' : '');
 	if (!name) return nothing;

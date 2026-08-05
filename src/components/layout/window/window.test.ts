@@ -280,7 +280,7 @@ describe('nldd-window', () => {
 
 			const dialog = dialogOf(el);
 			expect(dialog.style.transform).toBe('');
-			// margin: '' (empty) — UA-default centering blijft actief
+			// margin: '' (empty), so the UA default centering stays active
 			expect(dialog.style.margin).toBe('');
 		});
 	});

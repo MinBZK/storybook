@@ -119,7 +119,7 @@ describe('nldd-tag', () => {
 			// No text block to begin with
 			expect(el.shadowRoot!.querySelector('.tag__text')).toBeNull();
 
-			// Voeg dynamisch text toe
+			// Add text dynamically
 			el.appendChild(document.createTextNode('Live'));
 			await new Promise(resolve => setTimeout(resolve, 0));
 			await waitForUpdate(el);
