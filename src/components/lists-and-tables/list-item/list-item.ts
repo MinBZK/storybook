@@ -66,7 +66,7 @@ export type ListItemSize = 'sm' | 'md';
  * `target="_blank"` the item also injects a visually hidden "opens in new tab"
  * announcement for assistive technology (WCAG 2.1 SC 3.2.2).
  *
- * The item synchronises its ARIA with its parent `nldd-list`'s `type`:
+ * The item synchronizes its ARIA with its parent `nldd-list`'s `type`:
  * - `list` parent       → `role="listitem"`
  * - `navigation` parent → `role="listitem"` + `aria-current="page"` on the
  *   inner `<a>` / `<button>` when `selected`

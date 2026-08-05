@@ -5,16 +5,16 @@ export const WEEKDAY_KEYS = ['sunday', 'monday', 'tuesday', 'wednesday', 'thursd
 export const MONTH_KEYS = ['january', 'february', 'march', 'april', 'may', 'june', 'july', 'august', 'september', 'october', 'november', 'december'] as const;
 
 export const nlddDatePickerTranslations = {
-	// Verplaatsen de weergave; ze kiezen geen datum.
+	// These move the view. They do not pick a date.
 	'components.date-picker.view-previous-month-action': 'Vorige maand',
 	'components.date-picker.view-next-month-action': 'Volgende maand',
 	'components.date-picker.view-today-action': 'Vandaag',
 	'components.date-picker.choose-month-action': 'Kies een maand',
 	'components.date-picker.choose-year-action': 'Kies een jaar',
 
-	// Twee vormen, want de maandnaam staat zowel midden in een datumlabel
-	// ("maandag 29 juni 2026") als los in de kop erboven. Welke vorm waar hoort is
-	// per taal anders, dus dat hoort de vertaler te bepalen en niet de opmaak.
+	// Two forms, because the month name appears both inside a date label ("maandag
+	// 29 juni 2026") and on its own in the heading above it. Which form belongs
+	// where differs per language, so the translator decides that, not the styling.
 	'components.date-picker.january-lowercase': 'januari',
 	'components.date-picker.january-capitalize': 'Januari',
 	'components.date-picker.february-lowercase': 'februari',
@@ -56,34 +56,34 @@ export const nlddDatePickerTranslations = {
 	'components.date-picker.friday-short-lowercase': 'vr',
 	'components.date-picker.saturday-short-lowercase': 'za',
 
-	// De korte vorm staat in de kolomkop, de volledige gaat als abbr mee voor
-	// schermlezers.
+	// The short form goes in the column heading, the full one rides along as an
+	// abbr for screen readers.
 	'components.date-picker.week-number-column-label': 'Weeknummer',
 	'components.date-picker.week-number-column-short-label': 'wk',
 	'components.date-picker.week-number-label': 'Week {week}',
 
-	// De volledige toegankelijke naam van een cel; '31' alleen zegt een
-	// schermlezergebruiker niets over maand of weekdag. De weekdag komt als
-	// placeholder binnen, dus deze regel kan de hoofdletter niet zelf dragen.
+	// The full accessible name of a cell. '31' on its own tells a screen reader
+	// user nothing about the month or the weekday. The weekday arrives as a
+	// placeholder, so this line cannot carry the capital itself.
 	'components.date-picker.date-label': '{weekday} {day} {month} {year}',
 
-	// Aanvullingen die achter een komma aan dat label worden geplakt ("... 2026,
-	// vandaag, in de periode"). Ze staan nooit op zichzelf, dus altijd klein.
+	// Additions appended to that label after a comma ("... 2026, vandaag, in de
+	// periode"). They never stand alone, so always lowercase.
 	'components.date-picker.today-lowercase': 'vandaag',
 	'components.date-picker.unavailable-lowercase-label': 'niet beschikbaar',
-	// Zolang alleen de eerste datum vaststaat is nog niet te zeggen of het het
-	// begin of het einde wordt, dus zegt het label alleen dat er een keuze ligt.
+	// While only the first date is fixed there is no telling whether it will be
+	// the start or the end, so the label says only that a choice has been made.
 	'components.date-picker.range-anchor-lowercase-label': 'gekozen, periode nog niet compleet',
 	'components.date-picker.range-start-lowercase-label': 'begin van de periode',
 	'components.date-picker.range-end-lowercase-label': 'einde van de periode',
 	'components.date-picker.in-range-lowercase-label': 'in de periode',
 
-	// Zinnen in de live region, zoals components.list.drag-grabbed-text. Ze
-	// beginnen met een woord in plaats van met {date}, want die placeholder lost op
-	// naar een kleine letter ("maandag 20 juli 2026") en dan is het geen zin.
+	// Sentences in the live region, like components.list.drag-grabbed-text. They
+	// start with a word rather than with {date}, because that placeholder resolves
+	// to a lowercase letter ("maandag 20 juli 2026") and then it is not a sentence.
 	'components.date-picker.date-selected-text': 'Geselecteerd: {date}.',
-	// Niet "begindatum": een tweede keuze vóór deze datum maakt de periode
-	// terugwaarts, waardoor dit juist de einddatum wordt.
+	// Not "begindatum": a second pick before this date runs the range backwards,
+	// which makes this the end date instead.
 	'components.date-picker.range-anchor-text': 'Geselecteerd: {date}. Kies nu een tweede datum, eerder of later.',
 	'components.date-picker.range-selected-text': 'Geselecteerd: {start} tot en met {end}.',
 	'components.date-picker.range-blocked-text': 'Die periode bevat een datum die niet beschikbaar is. Kies een andere.',

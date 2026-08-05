@@ -21,8 +21,8 @@ describe('nldd-popover', () => {
 		await waitForUpdate(el);
 		expect(el.getAttribute('popover')).toBe('');
 		expect(el.getAttribute('role')).toBe('dialog');
-		// aria-modal: niet expliciet gezet — default voor role="dialog" is
-		// false en explicit duplication voegt geen waarde toe.
+		// aria-modal is not set explicitly: the default for role="dialog" is false
+		// and spelling it out adds nothing.
 		expect(el.hasAttribute('aria-modal')).toBe(false);
 		expect(el.getAttribute('tabindex')).toBe('-1');
 	});
@@ -99,8 +99,8 @@ describe('nldd-popover', () => {
 	});
 
 	it('initialiseert aria-expanded en aria-haspopup op de anchor bij connect', async () => {
-		// SR moet de trigger als toggle-control aankondigen vanaf de eerste
-		// render — niet pas na de eerste open.
+		// A screen reader should announce the trigger as a toggle control from the
+		// first render, not only after the first open.
 		const wrapper = await fixture(`
 			<div>
 				<button id="trigger-init-aria">Trigger</button>
@@ -109,7 +109,7 @@ describe('nldd-popover', () => {
 		`);
 		el = wrapper;
 		const trigger = wrapper.querySelector('#trigger-init-aria')!;
-		// Wacht tot de gedeferred microtask in connectedCallback heeft gelopen
+		// Wait until the deferred microtask in connectedCallback has run
 		await new Promise(resolve => setTimeout(resolve, 0));
 		expect(trigger.getAttribute('aria-expanded')).toBe('false');
 		expect(trigger.getAttribute('aria-haspopup')).toBe('dialog');
@@ -172,9 +172,9 @@ describe('nldd-popover', () => {
 	});
 
 	it('disconnect strip alle aria-* van anchor (geen stale state in SPA flows)', async () => {
-		// Regression: in SPA-patterns (v-if, React conditional render) kan
-		// de popover verdwijnen terwijl de anchor blijft. Een achtergebleven
-		// aria-controls naar een niet-bestaand element is een WCAG 4.1.2 fout.
+		// Regression: in SPA patterns (v-if, React conditional render) the popover
+		// can disappear while the anchor stays. A leftover aria-controls pointing at
+		// an element that does not exist is a WCAG 4.1.2 failure.
 		const wrapper = await fixture(`
 			<div>
 				<button id="trigger-disconnect">Trigger</button>
@@ -184,7 +184,7 @@ describe('nldd-popover', () => {
 		el = wrapper;
 		const trigger = wrapper.querySelector('#trigger-disconnect')!;
 		const popover = wrapper.querySelector('nldd-popover')!;
-		// Wacht tot de gedeferred init-aria call gelopen is
+		// Wait until the deferred init-aria call has run
 		await new Promise(resolve => setTimeout(resolve, 0));
 		expect(trigger.getAttribute('aria-expanded')).toBe('false');
 		expect(trigger.getAttribute('aria-haspopup')).toBe('dialog');
@@ -193,16 +193,16 @@ describe('nldd-popover', () => {
 		// Verwijder popover uit DOM (bv. v-if false)
 		popover.remove();
 
-		// Anchor mag geen achtergebleven aria-* hebben
+		// The anchor must have no leftover aria-*
 		expect(trigger.hasAttribute('aria-expanded')).toBe(false);
 		expect(trigger.hasAttribute('aria-haspopup')).toBe(false);
 		expect(trigger.hasAttribute('aria-controls')).toBe(false);
 	});
 
 	it('updated() reageert op anchor-wissel zelfs als popover gesloten is', async () => {
-		// Regression: voorheen werd _updateAnchorAria niet aangeroepen
-		// wanneer anchor of anchorElement runtime veranderde terwijl de
-		// popover gesloten was — de oude trigger hield stale aria-expanded
+		// Regression: _updateAnchorAria used not to be called when anchor or
+		// anchorElement changed at runtime while the popover was closed, so the old
+		// trigger kept a stale aria-expanded
 		// en aria-controls.
 		const wrapper = await fixture(`
 			<div>
@@ -215,12 +215,12 @@ describe('nldd-popover', () => {
 		const popover = wrapper.querySelector('nldd-popover') as NLDDPopover;
 		const initial = wrapper.querySelector('#initial-anchor')!;
 		const newAnchor = wrapper.querySelector('#new-anchor')!;
-		// Wacht tot de gedeferred init-aria call is gelopen
+		// Wait until the deferred init-aria call has run
 		await new Promise(resolve => setTimeout(resolve, 0));
 		expect(initial.getAttribute('aria-expanded')).toBe('false');
 		expect(initial.getAttribute('aria-controls')).toBe('my-popover');
 
-		// Wijzig de anchor terwijl popover gesloten is
+		// Change the anchor while the popover is closed
 		popover.setAttribute('anchor', 'new-anchor');
 		await waitForUpdate(popover);
 
@@ -246,7 +246,7 @@ describe('nldd-popover', () => {
 			const trigger = wrapper.querySelector<HTMLButtonElement>('#trigger-return-focus')!;
 			await waitForUpdate(popover);
 
-			// Focus de trigger zodat _previousFocus 'm onthoudt bij open
+			// Focus the trigger so _previousFocus remembers it on open
 			trigger.focus();
 			expect(document.activeElement).toBe(trigger);
 
@@ -280,9 +280,9 @@ describe('nldd-popover', () => {
 			const last = wrapper.querySelector<HTMLButtonElement>('#popover-btn-2')!;
 			last.focus();
 
-			// Tab vooruit op laatste focusable → popover sluit. Dispatch op
-			// het gefocuste element zodat composedPath()[0] de button is
-			// (matcht hoe een echte browser het event aflevert).
+			// Tab forward on the last focusable closes the popover. Dispatched on the
+			// focused element, so composedPath()[0] is the button (matching how a real
+			// browser delivers the event).
 			const tabEvent = new KeyboardEvent('keydown', {
 				key: 'Tab',
 				bubbles: true,
@@ -329,11 +329,11 @@ describe('nldd-popover', () => {
 		});
 
 		it('Shift+Tab vanuit shadow-DOM custom element sluit niet wanneer er een focusable vóór staat', async () => {
-			// Regression: voorheen gaf document.activeElement de host (custom
-			// element) terug i.p.v. het interne <button>. indexOf gaf -1, en
-			// (-1 <= 0) === true, wat Shift-Tab altijd liet sluiten — ook
-			// midden in de popover. Test simuleert een nldd-button-achtige
-			// custom element met een interne button.
+			// Regression: document.activeElement used to return the host (custom
+			// element) instead of the inner <button>. indexOf gave -1, and
+			// (-1 <= 0) === true, which made Shift-Tab always close, even in the
+			// middle of the popover. This test simulates an nldd-button-like custom
+			// element with an inner button.
 			class TestCustomBtn extends HTMLElement {
 				static observedAttributes = [];
 				constructor() {
@@ -362,13 +362,13 @@ describe('nldd-popover', () => {
 			popover.show();
 			await waitForUpdate(popover);
 
-			// Focus het interne button van de custom element (positie 2)
+			// Focus the custom element's inner button (position 2)
 			const customBtn = wrapper.querySelector('#second-shadow') as HTMLElement;
 			const innerBtn = customBtn.shadowRoot!.querySelector('.inner') as HTMLButtonElement;
 			innerBtn.focus();
 
-			// Shift-Tab vanaf positie 2 moet NIET sluiten — er staat nog een
-			// focusable vóór (de light-DOM button op positie 1).
+			// Shift-Tab from position 2 must NOT close: there is still a focusable
+			// before it (the light-DOM button at position 1).
 			const tabEvent = new KeyboardEvent('keydown', {
 				key: 'Tab',
 				shiftKey: true,
@@ -400,7 +400,7 @@ describe('nldd-popover', () => {
 			popover.show();
 			await waitForUpdate(popover);
 
-			// Focus op middelste — Tab moet niet sluiten
+			// Focus on the middle one, Tab must not close
 			const middle = wrapper.querySelector<HTMLButtonElement>('#middle-btn-2')!;
 			middle.focus();
 			const tabEvent = new KeyboardEvent('keydown', {
@@ -426,8 +426,8 @@ describe('nldd-popover', () => {
 			const popover = wrapper.querySelector('nldd-popover') as NLDDPopover;
 			await waitForUpdate(popover);
 
-			// Markeer de input-modality als 'mouse' — listener zit op document
-			// (vorige Tab-tests zetten modality op 'keyboard', dus een expliciete
+			// Mark the input modality as 'mouse'. The listener sits on document
+			// (earlier Tab tests set modality to 'keyboard', so an explicit
 			// pointerdown is nodig om 'm te resetten).
 			document.dispatchEvent(new PointerEvent('pointerdown', { pointerType: 'mouse', bubbles: true }));
 
@@ -512,9 +512,9 @@ describe('nldd-popover', () => {
 		});
 
 		it('laat geen centreer-transform achter wanneer centered wegvalt', async () => {
-			// Een responsieve popover die op een breakpoint van gecentreerd naar
-			// geankerd wisselt: zonder opruimen houdt hij translate(-50%, …) en
-			// landt hij een halve breedte naast zijn anker, deels buiten beeld.
+			// A responsive popover that switches from centered to anchored on a
+			// breakpoint change: without cleanup it keeps translate(-50%, ...) and
+			// lands half its width off its anchor, partly off screen.
 			const wrapper = await fixture(`
 				<div>
 					<button id="trigger-uncenter">Trigger</button>
@@ -555,7 +555,7 @@ describe('nldd-popover', () => {
 
 			expect(popover.style.top).toBe('0px');
 			expect(popover.style.left).toBe('50%');
-			// Y-as gebruikt geen translate; X-as wel. (jsdom normaliseert "0" naar "0px".)
+			// The Y axis uses no translate, the X axis does. (jsdom normalizes "0" to "0px".)
 			expect(popover.style.transform).toMatch(/translate\(-50%,\s*0(px)?\)/);
 		});
 
@@ -576,7 +576,7 @@ describe('nldd-popover', () => {
 
 			expect(popover.style.top).toBe('10px');
 			expect(popover.style.right).toBe('20px');
-			// Geen transform — geen as werd gecenterd.
+			// No transform: neither axis was centered.
 			expect(popover.style.transform).toBe('');
 		});
 
@@ -586,9 +586,9 @@ describe('nldd-popover', () => {
 			expect(el.hasAttribute('sm-full-height')).toBe(true);
 		});
 
-		// Een roving-tabindex-widget (grid, toolbar, tree) zet al zijn items op -1
-		// behalve één. Telden die mee, dan zag tab-out nooit dat de focus aan het
-		// eind stond en tabde de gebruiker de popover uit terwijl die openbleef.
+		// A roving-tabindex widget (grid, toolbar, tree) puts all of its items on -1
+		// except one. Counting those, tab-out never saw that focus was at the end
+		// and the user tabbed out of the popover while it stayed open.
 		it('telt alleen echt tabbare elementen, geen tabindex="-1"', async () => {
 			el = await fixture(`
 				<nldd-popover accessible-label="Test">
@@ -598,7 +598,7 @@ describe('nldd-popover', () => {
 				</nldd-popover>
 			`);
 			await waitForUpdate(el);
-			// Dicht is de popover display:none en filtert de zichtbaarheidscheck alles weg.
+			// Closed, the popover is display:none and the visibility check filters everything out.
 			(el as HTMLElement).showPopover();
 			await waitForUpdate(el);
 			const focusables = (el as unknown as { _getFocusables(): HTMLElement[] })._getFocusables();
@@ -609,8 +609,8 @@ describe('nldd-popover', () => {
 		it('top/left/right/bottom defaulten naar undefined — geen lege reflectie', async () => {
 			el = await fixture('<nldd-popover accessible-label="Test"></nldd-popover>');
 			await waitForUpdate(el);
-			// Voorheen reflecteerde Lit een lege string als top="" enzovoort op
-			// elke popover. Met undefined-default mag het attribuut afwezig zijn.
+			// Lit used to reflect an empty string as top="" and so on onto every
+			// popover. With an undefined default the attribute may be absent.
 			expect(el.hasAttribute('top')).toBe(false);
 			expect(el.hasAttribute('left')).toBe(false);
 			expect(el.hasAttribute('right')).toBe(false);
@@ -626,8 +626,8 @@ describe('nldd-popover verplaatst focus zelf met Tab', () => {
 		if (elTab) cleanup(elTab);
 	});
 
-	// We verplaatsen focus nu zelf, dus we zijn ook de tab-volgorde verschuldigd:
-	// een positieve tabindex dringt voor. Zonder sorteren liep het op DOM-volgorde.
+	// We move focus ourselves now, so we owe the tab order too: a positive
+	// tabindex jumps the queue. Without sorting it ran on DOM order.
 	it('respecteert een positieve tabindex boven documentvolgorde', async () => {
 		const wrapper = await fixture(`
 			<div>
@@ -643,7 +643,7 @@ describe('nldd-popover verplaatst focus zelf met Tab', () => {
 		await waitForUpdate(popover);
 		popover.show();
 		await waitForUpdate(popover);
-		// tabindex 1 komt vóór tabindex 2, ook al staat B later in de DOM.
+		// tabindex 1 comes before tabindex 2, even though B is later in the DOM.
 		popover.dispatchEvent(new KeyboardEvent('keydown', { key: 'Tab', bubbles: true, composed: true, cancelable: true }));
 		await waitForUpdate(popover);
 		expect(document.activeElement?.id).toBe('laatst-in-dom');
@@ -672,9 +672,9 @@ describe('nldd-popover verplaatst focus zelf met Tab', () => {
 		return { wrapper, popover };
 	}
 
-	// Safari tabt niet de top layer in: met de container gefocust slaat hij de hele
-	// popover over en landt op wat erna in het document staat. Onze lijst klopte
-	// daar wel, dus het component verplaatst focus nu zelf.
+	// Safari does not tab into the top layer: with the container focused it skips
+	// the whole popover and lands on whatever follows it in the document. Our list
+	// was right, so the component moves focus itself now.
 	it('stapt vanaf de container naar de eerste knop', async () => {
 		const { wrapper, popover } = await metTweeKnoppen();
 		el = wrapper;
@@ -683,11 +683,11 @@ describe('nldd-popover verplaatst focus zelf met Tab', () => {
 		expect(document.activeElement?.id).toBe('een');
 	});
 
-	// Tussen elementen verplaatst de browser de focus zelf. Een focus die de
-	// browser op een toetsaanslag verplaatst krijgt onvoorwaardelijk een ring;
-	// een focus die wíj verplaatsen erft alleen de ringstaat van het element dat
-	// je verlaat. Elke Tab onderscheppen betekende dus dat één muisklik ergens
-	// een keten startte waarin geen enkele Tab-stop nog een focusring toonde.
+	// Between elements the browser moves focus itself. A focus the browser moves
+	// on a key press gets a ring unconditionally; a focus WE move only inherits the
+	// ring state of the element being left. Intercepting every Tab therefore meant
+	// one mouse click anywhere started a chain in which no Tab stop showed a focus
+	// ring again.
 	it('laat een Tab tussen twee knoppen aan de browser', async () => {
 		const { wrapper, popover } = await metTweeKnoppen();
 		el = wrapper;
@@ -742,8 +742,8 @@ describe('nldd-popover slikt de eerste tik op klein scherm', () => {
 		return { wrapper, popover, target: wrapper.querySelector('#sm-target') as HTMLElement };
 	}
 
-	// De verduistering op klein scherm laat de tik door naar de pagina eronder,
-	// dus één tik sloot de sheet én activeerde wat onder de dimming zat.
+	// The dimming on a small screen let the tap through to the page underneath, so
+	// one tap both closed the sheet and activated whatever sat under it.
 	it('sluit de popover en houdt de klik eronder tegen', async () => {
 		const { wrapper, popover, target } = await openOnSm();
 		el = wrapper;
@@ -759,20 +759,20 @@ describe('nldd-popover slikt de eerste tik op klein scherm', () => {
 		expect(popover.matches(':popover-open')).toBe(false);
 	});
 
-	// Een tik die een scroll of drag wordt eindigt zonder klik; de opslik-vlag mag
-	// dan niet blijven staan en een latere, ongerelateerde klik afvangen. Na de
-	// opgeslikte tik is de popover dicht, dus een nieuw gebaar absorbeert niet meer
-	// en moet de vlag simpelweg wissen.
+	// A tap that turns into a scroll or drag ends without a click, so the
+	// swallow flag must not linger and catch a later, unrelated click. After the
+	// swallowed tap the popover is closed, so a new gesture no longer absorbs and
+	// should simply clear the flag.
 	it('laat een latere ongerelateerde klik met rust na een tik zonder klik', async () => {
 		const { wrapper, popover, target } = await openOnSm();
 		el = wrapper;
-		// Alsof een eerdere tik opgeslikt is maar geen klik gaf en de popover sloot.
+		// As if an earlier tap was swallowed but gave no click and the popover closed.
 		(popover as unknown as { _swallowNextClick: boolean })._swallowNextClick = true;
 		popover.hide();
 		await waitForUpdate(popover);
 		let raakt = 0;
 		target.addEventListener('click', () => { raakt += 1; });
-		// Een nieuw, los gebaar met een echte klik.
+		// A new, separate gesture with a real click.
 		document.dispatchEvent(new PointerEvent('pointerdown', { bubbles: true, composed: true }));
 		const click = new MouseEvent('click', { bubbles: true, composed: true, cancelable: true });
 		target.dispatchEvent(click);
@@ -781,14 +781,14 @@ describe('nldd-popover slikt de eerste tik op klein scherm', () => {
 		expect(click.defaultPrevented).toBe(false);
 	});
 
-	// De pointerdown-route wist de vlag bij het volgende gebaar; een geannuleerd
-	// gebaar (scroll of drag) geeft die pointerdown niet, dus pointercancel moet 'm
-	// ook wissen - anders vangt een latere klik de opslik-vlag alsnog af.
+	// The pointerdown route clears the flag on the next gesture. A canceled gesture
+	// (scroll or drag) never delivers that pointerdown, so pointercancel has to
+	// clear it too, or a later click still runs into the swallow flag.
 	it('wist de opslik-vlag bij een geannuleerd gebaar', async () => {
 		const { wrapper, popover, target } = await openOnSm();
 		el = wrapper;
-		// Alsof een tik opgeslikt is (vlag gezet, sheet dicht) en het gebaar daarna
-		// een scroll wordt: de browser stuurt pointercancel in plaats van een klik.
+		// As if a tap was swallowed (flag set, sheet closed) and the gesture then
+		// becomes a scroll: the browser sends pointercancel instead of a click.
 		(popover as unknown as { _swallowNextClick: boolean })._swallowNextClick = true;
 		popover.hide();
 		await waitForUpdate(popover);

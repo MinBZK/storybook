@@ -1,15 +1,15 @@
 export const nlddDateFieldTranslations = {
-	// Opent de kalender, dus infinitief zoals andere indirecte acties.
+	// Opens the calendar, so an infinitive like other indirect actions.
 	'components.date-field.to-pick-date-action': 'Datum kiezen',
-	// Terugval-naam als een consument geen accessible-label geeft en het veld niet
-	// in een nldd-form-field staat: zonder dit is de invoer een naamloze control.
+	// Fallback name when a consumer gives no accessible-label and the field does
+	// not sit in an nldd-form-field: without it the input is an unnamed control.
 	'components.date-field.default-label': 'Datum',
 	'components.date-field.default-range-label': 'Periode',
-	// Sluit de sheet zonder te kiezen, dus gebiedende wijs zoals andere directe acties.
+	// Closes the sheet without choosing, so imperative like other direct actions.
 	'components.date-field.cancel-action': 'Annuleer',
-	// Voorzetsels die de twee invoervelden van een periode introduceren, niet de
-	// eindpunten zelf; het veldlabel staat ervoor ("Periode, van"). De korte vorm
-	// staat zichtbaar tussen de twee datums.
+	// Prepositions introducing the two inputs of a range, not the endpoints
+	// themselves. The field label comes before them ("Periode, van"). The short
+	// form is the one visible between the two dates.
 	'components.date-field.range-from-lowercase-label': 'van',
 	'components.date-field.range-to-lowercase-label': 'tot en met',
 	'components.date-field.range-to-short-lowercase-label': 't/m',

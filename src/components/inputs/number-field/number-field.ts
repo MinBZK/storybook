@@ -77,7 +77,7 @@ export class NLDDNumberField extends FormAssociated(LitElement) {
 	translations: Partial<NLDDNumberFieldTranslations> = {};
 
 	/** Last value inside [min, max]; used as fallback when the input is cleared.
-	 *  Initialised to the clamped `value` in firstUpdated — the 0 default is only
+	 *  Initialized to the clamped `value` in firstUpdated — the 0 default is only
 	 *  relevant before the first render, which no user-facing handler can reach. */
 	private _lastValidValue = 0;
 

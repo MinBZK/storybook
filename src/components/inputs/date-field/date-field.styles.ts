@@ -13,34 +13,36 @@ export const dateFieldStyles = css`
 	/* # Host */
 
 	:host {
-		/* Ruimer dan de tekst meet. Niet om afkappen te voorkomen (de cijfers zijn
-		   tabulair, dus elke datum meet hetzelfde), maar als lucht rond de datum en
-		   als greep om te selecteren en te slepen. */
-		--_date-width: 10.5ch;
-		/* Ruimte gereserveerd voor het scheidingsteken. Het teken zelf krijgt zijn
-		   eigen breedte, want het is vertaalbaar en zou in een vast vak afkappen; wat
-		   die reservering misgokt, vangt het einddatumveld op. */
+		/* Roomier than the text measures. Not to prevent clipping (the digits are
+		   tabular, so every date measures the same), but as air around the date and
+		   as a grip to select and drag by. */
+		--_text-width: 10.5ch;
+		/* Room reserved for the separator. The character itself gets its own width,
+		   because it is translatable and would clip in a fixed box. Whatever that
+		   reservation gets wrong is absorbed by the end date field. */
 		--_separator-width: 3.5ch;
 		--_separator-padding-right: var(--primitives-space-6);
-		/* Linkerkant van het veld: het is een border-box, en padding-left trekt er al
-		   een rand vanaf, dus tellen beide randen samen voor één rand extra. */
+		/* Left side of the field: it is a border-box, and padding-left already
+		   subtracts one border, so both borders together add up to one extra. */
 		--_edge-width: calc(var(--_inline-padding) + var(--semantics-input-fields-border-width));
-		/* Alles wat niet kan krimpen. Enkel het laatste datumveld rekt mee, dus dit is
-		   tevens de ondergrens: eronder zou de kalenderknop het veld uit lopen. */
+		/* Everything that cannot shrink. Only the last date field stretches, so this
+		   doubles as the lower bound: below it the calendar button would run out of
+		   the field. */
 		--_fixed-width: calc(var(--_edge-width) + var(--_trailing-width));
-		--_width: calc(var(--_fixed-width) + var(--_date-width));
+		--_width: calc(var(--_fixed-width) + var(--_text-width));
 		--_corner-radius: var(--semantics-controls-md-corner-radius);
 		--_background-color: var(--semantics-input-fields-background-color);
 		--_min-size: var(--semantics-controls-md-min-size);
 		--_inline-padding: var(--semantics-controls-md-inline-padding);
 		--_text-font: var(--semantics-input-fields-md-text-font);
 		--_validation-icon-size: var(--semantics-input-fields-md-validation-icon-size);
-		/* Even veel lucht rechts van de knop als erboven en eronder, dus afgeleid van
-		   het hoogteverschil tussen veld en knop in plaats van een vaste waarde. */
-		--_end-padding-right: calc((var(--_min-size) - var(--_button-size)) / 2 - var(--semantics-input-fields-border-width));
-		--_button-size: var(--semantics-controls-sm-min-size);
+		/* As much air to the right of the button as above and below it, so derived
+		   from the height difference between field and button instead of a fixed
+		   value. */
+		--_end-padding-right: calc((var(--_min-size) - var(--_picker-button-size)) / 2 - var(--semantics-input-fields-border-width));
+		--_picker-button-size: var(--semantics-controls-sm-min-size);
 		--_validation-icon-area-width: calc(var(--_min-size) - var(--semantics-input-fields-border-width) * 2);
-		--_trailing-width: calc(var(--_validation-icon-area-width) + var(--_button-size) + var(--_end-padding-right));
+		--_trailing-width: calc(var(--_validation-icon-area-width) + var(--_picker-button-size) + var(--_end-padding-right));
 
 		${inheritedTextReset}
 		display: block;
@@ -63,11 +65,11 @@ export const dateFieldStyles = css`
 	}
 
 	:host([range]) {
-		--_fixed-width: calc(var(--_edge-width) + var(--_date-width) + var(--_separator-width) + var(--_trailing-width));
+		--_fixed-width: calc(var(--_edge-width) + var(--_text-width) + var(--_separator-width) + var(--_trailing-width));
 	}
 
 	:host([range][no-picker]) {
-		--_fixed-width: calc(var(--_edge-width) + var(--_inline-padding) + var(--_date-width) + var(--_separator-width) + var(--_validation-icon-area-width));
+		--_fixed-width: calc(var(--_edge-width) + var(--_inline-padding) + var(--_text-width) + var(--_separator-width) + var(--_validation-icon-area-width));
 	}
 
 	:host([size="sm"]) {
@@ -76,7 +78,7 @@ export const dateFieldStyles = css`
 		--_inline-padding: var(--semantics-controls-sm-inline-padding);
 		--_text-font: var(--semantics-input-fields-sm-text-font);
 		--_validation-icon-size: var(--semantics-input-fields-sm-validation-icon-size);
-		--_button-size: var(--semantics-controls-xs-min-size);
+		--_picker-button-size: var(--semantics-controls-xs-min-size);
 	}
 
 
@@ -160,25 +162,25 @@ export const dateFieldStyles = css`
 		-webkit-text-fill-color: var(--semantics-input-fields-is-autofill-content-color);
 	}
 
-	/* Vaste maat: groeit of krimpt het startveld mee, dan verspringen het
-	   scheidingsteken en de einddatum zodra het validatie-icoon zijn ruimte opeist
-	   of het veld smaller wordt gezet. */
+	/* Fixed size: if the start field grew and shrank along, the separator and the
+	   end date would jump the moment the validation icon claims its room or the
+	   field is set narrower. */
 	:host([range]) .date-field__input {
-		width: var(--_date-width);
+		width: var(--_text-width);
 		flex-grow: 0;
 		flex-shrink: 0;
 	}
 
-	/* De einddatum rekt en krimpt wel mee, net als in een gewoon datumveld: hij
-	   staat na de scheiding, dus daarvoor verschuift er niets. */
+	/* The end date does stretch and shrink, just as in a plain date field: it
+	   comes after the separator, so nothing before it shifts. */
 	:host([range]) .date-field__input:last-of-type {
 		flex-grow: 1;
 		flex-shrink: 1;
 	}
 
-	/* Alleen ruimte erná: het startveld is iets ruimer dan zijn tekst, en die
-	   speling levert de ruimte ervóór al. Aan beide kanten padding zetten maakt het
-	   op het scherm juist scheef. */
+	/* Room after it only: the start field is a little roomier than its text, and
+	   that slack already supplies the room before it. Padding on both sides makes
+	   it look lopsided on screen. */
 	.date-field__separator {
 		flex-shrink: 0;
 		padding-right: var(--_separator-padding-right);

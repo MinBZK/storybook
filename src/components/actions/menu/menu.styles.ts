@@ -77,6 +77,7 @@ export const menuStyles = css`
 		flex-direction: column;
 		max-height: min(var(--_max-height), calc(var(--_max-items) * var(--_item-size) + var(--_padding) * 2));
 		outline: none;
+		overflow-x: hidden;
 		overflow-y: auto;
 		scroll-padding-block: var(--_padding);
 	}

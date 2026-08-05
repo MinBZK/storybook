@@ -52,7 +52,7 @@ function classDeco(cls: string): Decoration {
 const codeblockLine = Decoration.line({ class: 'cm-md-codeblock' });
 const codeblockFirstLine = Decoration.line({ class: 'cm-md-codeblock-first' });
 const codeblockLastLine = Decoration.line({ class: 'cm-md-codeblock-last' });
-// Whole-block selection: recolours the full-width line background (padding and
+// Whole-block selection: recolors the full-width line background (padding and
 // rounded corners included), so a fully selected block lights up as one surface
 // — the block analogue of a fully selected inline-code / annotation token.
 const codeblockSelectedLine = Decoration.line({ class: 'cm-md-codeblock-line-selected' });
@@ -163,7 +163,7 @@ function buildMarkDecorations(view: EditorView): DecorationSet {
 				// color it like link text (blue) instead of the dimmed address gray of
 				// cm-md-url. Its own class (not cm-md-link) so the `span { color: inherit }`
 				// rule that overrides the highlight-style URL tint can target it without
-				// also recolouring the gray address inside a [text](url) link. The URL
+				// also recoloring the gray address inside a [text](url) link. The URL
 				// inside a link, a reference definition, or an image stays gray below.
 				if (node.name === 'URL' && !inLinkContext(node.node)) {
 					ranges.push(classDeco('cm-md-autolink').range(node.from, node.to));
@@ -172,7 +172,7 @@ function buildMarkDecorations(view: EditorView): DecorationSet {
 				const cls = NODE_CLASS[node.name];
 				if (cls) {
 					// Inline code darkens on selection (drawSelection hides the native
-					// ::selection). A *fully* selected chip recolours the base element
+					// ::selection). A *fully* selected chip recolors the base element
 					// itself — one mark with both classes — so it keeps its padding and
 					// rounded corners, like a selected mention/annotation token. The
 					// padless overlay slice (used only for a partial selection below)

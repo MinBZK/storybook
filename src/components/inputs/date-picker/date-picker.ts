@@ -139,7 +139,7 @@ export class NLDDDatePicker extends withTranslations<NLDDDatePickerTranslations>
 	@property({ type: String })
 	end = '';
 
-	/** Breedte: 'full' of een CSS-lengte; leeg is de intrinsieke zeven-cellen-breedte. */
+	/** Width: 'full' or a CSS length. Empty is the intrinsic seven-cell width. */
 	@property({ type: String, reflect: true })
 	width = '';
 
@@ -228,7 +228,7 @@ export class NLDDDatePicker extends withTranslations<NLDDDatePickerTranslations>
 		// The year list runs to a hundred years or more, and the menu starts on its
 		// first item - so an arrow key walks a century back from the year you are
 		// actually looking at. Move to the entry in view instead, and scroll it into
-		// sight. The month list is shorter but wants the same behaviour.
+		// sight. The month list is shorter but wants the same behavior.
 		const focusSelected = (): void => {
 			const selected = menu?.querySelector<HTMLElement>('nldd-menu-item[selected]');
 			if (!selected || this.shadowRoot?.activeElement === selected) return;
@@ -527,10 +527,10 @@ export class NLDDDatePicker extends withTranslations<NLDDDatePickerTranslations>
 	}
 
 	/**
-	 * Alleen de datum, zonder de aanduidingen die aan een cel hangen. De
-	 * aankondigingen gebruiken deze: die van het hele cellabel maakte er
-	 * "vrijdag 10 juli 2026, begin van de periode tot en met ..." van, waarin de
-	 * celstatus midden in de zin belandt.
+	 * The date on its own, without the markers a cell carries. The announcements
+	 * use this: taking the whole cell label turned them into "vrijdag 10 juli 2026,
+	 * begin van de periode tot en met ...", which drops the cell's status halfway
+	 * through the sentence.
 	 */
 	public _dateText(iso: string): string {
 		const date = parseIso(iso);

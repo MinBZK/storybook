@@ -311,9 +311,10 @@ describe('nldd-just-in-time-education focusindicator op de callout', () => {
 		return host.shadowRoot!.querySelector('.just-in-time-education') as HTMLElement;
 	}
 
-	// De container krijgt focus zodat Escape en de sluitknop bereikbaar zijn. Zonder
-	// eigen regel tekent de browser daar zijn eigen ring omheen, om de hele callout
-	// inclusief tekst en pijl. Die default hoort uit te staan.
+	// The container takes focus so Escape and the close button are reachable.
+	// Without a rule of our own the browser draws its own ring around it, around
+	// the whole callout including the text and the arrow. That default belongs
+	// off.
 	it('laat de browser geen eigen ring om de callout tekenen', () => {
 		expect(justInTimeEducationStyles.cssText).toMatch(/\.just-in-time-education\s*\{[^}]*outline:\s*none/);
 	});
@@ -324,8 +325,8 @@ describe('nldd-just-in-time-education focusindicator op de callout', () => {
 		);
 	});
 
-	// Bij openen met de muis markeert het component de container, zodat de regel
-	// hierboven de ring achterwege laat. Een toetsenbordgebruiker krijgt hem wel.
+	// Opened with the mouse, the component marks the container so the rule above
+	// leaves the ring off. A keyboard user still gets it.
 	it('markeert de callout als met de muis geopend', async () => {
 		el = await fixture<NLDDJustInTimeEducation>(MARKUP_DISMISSABLE);
 		await waitForUpdate(el);

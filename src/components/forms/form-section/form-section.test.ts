@@ -4,10 +4,10 @@ import './form-section.js';
 import type { NLDDFormSection } from './form-section.js';
 
 /**
- * NLDDFormSection extends HTMLElement (geen Lit), dus waitForUpdate dekt
- * z'n connectedCallback DOM-mutation niet — die runs synchronously bij
- * connect, en de MutationObserver-callback (voor late children) is een
- * microtask. Use awaitMicrotask voor "wacht op de observer".
+ * NLDDFormSection extends HTMLElement (not Lit), so waitForUpdate does not cover
+ * its connectedCallback DOM mutation: that runs synchronously on connect, and the
+ * MutationObserver callback (for late children) is a microtask. Use awaitMicrotask
+ * for "wait for the observer".
  */
 const awaitMicrotask = () => new Promise(resolve => setTimeout(resolve, 0));
 
@@ -20,7 +20,7 @@ describe('nldd-form-section', () => {
 
 	it('rendert zonder fouten', async () => {
 		el = await fixture('<nldd-form-section></nldd-form-section>');
-		// Light-DOM: geen shadowRoot, wel een gerenderde <fieldset>.
+		// Light DOM: no shadowRoot, but a rendered <fieldset>.
 		expect(el.shadowRoot).toBeNull();
 		expect(el.querySelector('fieldset.form-section')).not.toBeNull();
 	});
@@ -38,7 +38,7 @@ describe('nldd-form-section', () => {
 		el = await fixture('<nldd-form-section></nldd-form-section>');
 		const legend = el.querySelector<HTMLLegendElement>('legend.form-section__header')!;
 		expect(legend).not.toBeNull();
-		// Geen content → hidden zodat .form-section__main als first-child telt
+		// No content, so hidden and .form-section__main counts as first-child
 		// en z'n margin-top collapseert.
 		expect(legend.hidden).toBe(true);
 		expect(legend.textContent).toBe('');
@@ -48,14 +48,14 @@ describe('nldd-form-section', () => {
 		el = await fixture('<nldd-form-section text="Persoonsgegevens" supporting-text="Vul je gegevens in."></nldd-form-section>');
 		const legend = el.querySelector('legend.form-section__header')!;
 		const subtitle = legend.querySelector('.form-section__subtitle');
-		// Subtitle moet binnen legend staan zodat SR 'm meeleest als group label
+		// The subtitle has to sit inside the legend so a screen reader reads it as part of the group label
 		expect(subtitle).not.toBeNull();
 		expect(subtitle?.textContent).toContain('Vul je gegevens in.');
 	});
 
 	it('rendert legend met enkel supporting-text als text leeg is', async () => {
-		// Edge case: alleen supporting-text. Render toch een legend zodat SR
-		// een group label krijgt.
+		// Edge case: supporting text only. Render a legend anyway so a screen reader
+		// gets a group label.
 		el = await fixture('<nldd-form-section supporting-text="Beschrijving"></nldd-form-section>');
 		const legend = el.querySelector<HTMLLegendElement>('legend.form-section__header')!;
 		expect(legend).not.toBeNull();
@@ -76,7 +76,7 @@ describe('nldd-form-section', () => {
 		el = await fixture('<nldd-form-section text="Persoonsgegevens"></nldd-form-section>');
 		const fieldset = el.querySelector('fieldset.form-section')!;
 		const legend = fieldset.querySelector('legend.form-section__header')!;
-		// HTML spec + screen-reader requirement: <legend> moet directe child van <fieldset> zijn
+		// HTML spec plus screen reader requirement: <legend> has to be a direct child of <fieldset>
 		expect(legend.parentElement).toBe(fieldset);
 		expect(fieldset.firstElementChild).toBe(legend);
 	});
@@ -86,7 +86,7 @@ describe('nldd-form-section', () => {
 		const legend = el.querySelector('legend.form-section__header')!;
 		const title = legend.querySelector('.form-section__title');
 		const subtitle = legend.querySelector('.form-section__subtitle');
-		// Beide moeten binnen één legend staan zodat SR ze samen als group label leest
+		// Both have to sit inside one legend so a screen reader reads them together as the group label
 		expect(title?.textContent).toContain('Persoonsgegevens');
 		expect(subtitle?.textContent).toContain('Vul je gegevens in.');
 	});

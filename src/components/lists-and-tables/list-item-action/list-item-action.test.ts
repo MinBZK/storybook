@@ -207,9 +207,9 @@ describe('nldd-list-item – expanded', () => {
 		expect(warn).not.toHaveBeenCalledWith(expect.stringContaining('`expanded` needs somewhere to live'));
 	});
 
-	// In een boom zijn kindrijen DOM-kinderen van de rij, dus een ongescopete
-	// relay duwde de expanded-staat van de ouder ook in de chevron van elke
-	// ingeklapte kindrij — die stond dan omlaag terwijl de tak dicht was.
+	// In a tree, child rows are DOM children of the row, so an unscoped relay
+	// pushed the parent's expanded state into the chevron of every collapsed child
+	// row as well, which then pointed down while the branch was closed.
 	it('laat de expanded-staat niet in geneste rijen lekken', async () => {
 		el = await fixture<HTMLElement>(
 			`<nldd-list type="tree" accessible-label="X">
@@ -239,8 +239,8 @@ describe('nldd-list-item – expanded', () => {
 		expect(innerSeg.shadowRoot!.querySelector('.list-item-action')!.getAttribute('aria-expanded')).not.toBe('true');
 	});
 
-	// Zonder dit moest elke consument de chevron zelf laten meedraaien, en dat
-	// lukt niet vanuit het component: ::slotted reikt maar één niveau diep.
+	// Without this, every consumer had to turn the chevron themselves, which
+	// cannot be done from the component: ::slotted only reaches one level deep.
 	it('draait de chevron mee met de rij', async () => {
 		el = await fixture<HTMLElement>(
 			`<nldd-list type="tree" accessible-label="X">

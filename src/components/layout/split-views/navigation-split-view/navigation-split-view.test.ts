@@ -1,4 +1,5 @@
 import { describe, it, expect, afterEach, vi } from 'vitest';
+import { page } from 'vitest/browser';
 import { fixture, cleanup, waitForUpdate } from '../../../../test-utils.js';
 import type { NLDDNavigationSplitView } from './navigation-split-view.js';
 import './navigation-split-view.js';
@@ -164,5 +165,74 @@ describe('nldd-navigation-split-view – single column', () => {
 		`);
 		await setWidth(el, 1280);
 		expect(el.shadowRoot!.querySelectorAll('nldd-split-view-divider').length).toBe(1);
+	});
+});
+
+
+/* ============================================================
+   Sheet height at sm
+   ============================================================ */
+
+// A bottom sheet is content-sized, and the slotted pane's `flex-basis: 0` used
+// to fix that content height at 0: the dialog opened as a bare backdrop while
+// its content stayed focusable. Only below 641px, because md/lg give the sheet
+// a definite height. Needs a real viewport, since the breakpoint is a media
+// query and setWidth() only mocks the element's own box.
+describe('nldd-navigation-split-view – sheet height at sm', () => {
+	let el: NLDDNavigationSplitView;
+
+	afterEach(async () => {
+		cleanup(el);
+		vi.restoreAllMocks();
+		await page.viewport(1280, 800);
+	});
+
+	// variables.css is not loaded in the test environment, so the sheet's
+	// max-height calc() would be invalid and resolve to none. Supply just the
+	// one token it needs, so the cap is real here too.
+	const INSET = 'style="--semantics-sheets-bottom-top-inset: 48px"';
+
+	async function fixtureSheet(attr: string, slot: string) {
+		await page.viewport(390, 800);
+		const el = await fixture<NLDDNavigationSplitView>(`
+			<nldd-navigation-split-view ${attr} ${INSET}>
+				<nldd-split-view-pane slot="${slot}" has-content>
+					<div style="height: 200px"></div>
+				</nldd-split-view-pane>
+				<nldd-split-view-pane slot="main" has-content></nldd-split-view-pane>
+			</nldd-navigation-split-view>
+		`);
+		await waitForUpdate(el);
+		return el;
+	}
+
+	it('opens the sidebar sheet at its content height, not zero', async () => {
+		el = await fixtureSheet('primary-sidebar-as-sheet', 'primary-sidebar');
+		await el.showSidebarSheet();
+		const sheet = el.shadowRoot!.querySelector('.navigation-split-view__primary-sidebar-sheet')!;
+		expect(sheet.getBoundingClientRect().height).toBeGreaterThanOrEqual(200);
+	});
+
+	it('opens the inspector sheet at its content height, not zero', async () => {
+		el = await fixtureSheet('inspector-as-sheet', 'inspector');
+		await el.showInspectorSheet();
+		const sheet = el.shadowRoot!.querySelector('.navigation-split-view__inspector-sheet')!;
+		expect(sheet.getBoundingClientRect().height).toBeGreaterThanOrEqual(200);
+	});
+
+	it('caps a sheet taller than the viewport at its max-height', async () => {
+		await page.viewport(390, 800);
+		el = await fixture<NLDDNavigationSplitView>(`
+			<nldd-navigation-split-view primary-sidebar-as-sheet ${INSET}>
+				<nldd-split-view-pane slot="primary-sidebar" has-content>
+					<div style="height: 4000px"></div>
+				</nldd-split-view-pane>
+				<nldd-split-view-pane slot="main" has-content></nldd-split-view-pane>
+			</nldd-navigation-split-view>
+		`);
+		await waitForUpdate(el);
+		await el.showSidebarSheet();
+		const sheet = el.shadowRoot!.querySelector('.navigation-split-view__primary-sidebar-sheet')!;
+		expect(sheet.getBoundingClientRect().height).toBeLessThan(800);
 	});
 });

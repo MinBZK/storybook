@@ -132,8 +132,8 @@ export const codeViewerStyles = css`
 	}
 
 
-	/* # Accessibility
-	   forced-colors / Windows High Contrast strips box-shadow, so the inset
+	/* # High Contrast
+	   forced-colors strips box-shadow, so the inset
 	   border ring would disappear. Restore the frame with a real border —
 	   same fallback nldd-box, nldd-banner, and nldd-list use. */
 

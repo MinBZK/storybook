@@ -92,7 +92,7 @@ export interface NLDDReorderEventDetail {
  * A deliberate deviation: strictly speaking a row with several controls is a
  * `treegrid`, not a `tree`. We keep the tree semantics — level and set size are
  * what matters here, not rows and columns — and borrow the "Tab within the row"
- * behaviour from the grid pattern. Should a tree with real columns come up, that
+ * behavior from the grid pattern. Should a tree with real columns come up, that
  * is when `treegrid` earns its own type.
  *
  * ### Reorder

@@ -1622,7 +1622,10 @@
 	/* ## Banner */
 
 	--components-banner-corner-radius: var(--semantics-surfaces-corner-radius);
-	--components-banner-padding: var(--primitives-space-12);
+	--components-banner-md-padding: var(--primitives-space-12);
+	--components-banner-md-icon-size: var(--primitives-space-32);
+	--components-banner-sm-padding: var(--primitives-space-8);
+	--components-banner-sm-icon-size: var(--primitives-space-24);
 	--components-banner-content-color: var(--semantics-content-color);
 
 	/* ## Box */

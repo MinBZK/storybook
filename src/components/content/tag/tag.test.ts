@@ -67,7 +67,7 @@ describe('nldd-tag', () => {
 		it('detecteert slotted text wanneer text property leeg is', async () => {
 			el = await fixture('<nldd-tag>Concept</nldd-tag>');
 			await waitForUpdate(el);
-			// .tag__text wordt gerenderd wanneer er slotted text is
+			// .tag__text renders when there is slotted text
 			expect(el.shadowRoot!.querySelector('.tag__text')).not.toBeNull();
 		});
 
@@ -78,7 +78,7 @@ describe('nldd-tag', () => {
 				</nldd-tag>
 			`);
 			await waitForUpdate(el);
-			// .tag__icon wordt gerenderd, met een slot[name=icon] erin (geen <nldd-icon>)
+			// .tag__icon renders, with a slot[name=icon] inside it (no <nldd-icon>)
 			const iconWrapper = el.shadowRoot!.querySelector('.tag__icon');
 			expect(iconWrapper).not.toBeNull();
 			const slot = iconWrapper!.querySelector('slot[name="icon"]') as HTMLSlotElement;
@@ -87,7 +87,7 @@ describe('nldd-tag', () => {
 		});
 
 		it('rendert alleen het icon-blok bij slotted icon zonder text', async () => {
-			// Slot-only icon (geen text-property, geen default slot content)
+			// Slot-only icon (no text property, no default slot content)
 			el = await fixture(`
 				<nldd-tag accessible-label="Status">
 					<svg slot="icon" width="12" height="12"><circle cx="6" cy="6" r="6"/></svg>
@@ -99,9 +99,9 @@ describe('nldd-tag', () => {
 		});
 
 		it('zet role="img" en aria-label op slotted-icon-only tag', async () => {
-			// Regression: voorheen checkte iconOnly alleen op component.icon
-			// (de property), niet op _hasIcon. Slotted-icon-only tags kregen
-			// dus geen role/aria-label en hadden geen accessible name.
+			// Regression: iconOnly used to check component.icon (the property) only,
+			// not _hasIcon. Slotted-icon-only tags therefore got no role/aria-label
+			// and had no accessible name.
 			el = await fixture(`
 				<nldd-tag accessible-label="Status">
 					<svg slot="icon" width="12" height="12"><circle cx="6" cy="6" r="6"/></svg>
@@ -116,10 +116,10 @@ describe('nldd-tag', () => {
 		it('reageert op dynamisch toegevoegde slotted content via MutationObserver', async () => {
 			el = await fixture('<nldd-tag></nldd-tag>');
 			await waitForUpdate(el);
-			// In eerste instantie geen text-blok
+			// No text block to begin with
 			expect(el.shadowRoot!.querySelector('.tag__text')).toBeNull();
 
-			// Voeg dynamisch text toe
+			// Add text dynamically
 			el.appendChild(document.createTextNode('Live'));
 			await new Promise(resolve => setTimeout(resolve, 0));
 			await waitForUpdate(el);
@@ -144,7 +144,7 @@ describe('nldd-tag', () => {
 		it('whitespace-only text-nodes activeren _hasSlotText niet', async () => {
 			el = await fixture('<nldd-tag>   \n   </nldd-tag>');
 			await waitForUpdate(el);
-			// Alleen whitespace mag geen tekstblok renderen
+			// Whitespace alone must not render a text block
 			expect(el.shadowRoot!.querySelector('.tag__text')).toBeNull();
 		});
 	});

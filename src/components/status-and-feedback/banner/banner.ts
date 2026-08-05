@@ -30,6 +30,7 @@
  * @element nldd-banner
  *
  * @attr {'neutral'|'accent'|'success'|'warning'|'critical'} variant - Color and default icon (default: 'neutral')
+ * @attr {'sm'|'md'} size - Banner size (default: 'md'). 'sm' tightens the padding to 8px, drops the icon to 24px and uses a smaller dismiss button — for a bar that sits between chrome and content rather than a standalone page-level notice. The typography is unchanged.
  * @attr {string} icon - Icon override. Default per variant: neutral → info-circle-filled, accent → info-circle-filled, success → check-circle-filled, warning → exclamation-triangle-filled, critical → exclamation-circle-filled
  * @attr {string} text - Main text (heading or paragraph, depending on heading-level)
  * @attr {string} supporting-text - Supporting text below the heading
@@ -54,6 +55,7 @@ import '../../actions/button-group/button-group.js';
 import '../../actions/icon-button/icon-button.js';
 
 export type BannerVariant = 'neutral' | 'accent' | 'success' | 'warning' | 'critical';
+export type BannerSize = 'sm' | 'md';
 
 const DEFAULT_ICONS: Record<BannerVariant, string> = {
 	neutral: 'info-circle-filled',
@@ -69,6 +71,9 @@ export class NLDDBanner extends LitElement {
 
 	@property({ reflect: true, converter: reflectNonDefault<BannerVariant>('neutral') })
 	variant: BannerVariant = 'neutral';
+
+	@property({ reflect: true, converter: reflectNonDefault<BannerSize>('md') })
+	size: BannerSize = 'md';
 
 	@property({ type: String, reflect: true })
 	icon = '';

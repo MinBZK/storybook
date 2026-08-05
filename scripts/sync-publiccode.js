@@ -2,7 +2,7 @@
  * Sync the release metadata in publiccode.yml to the package.
  *
  * `softwareVersion` and `releaseDate` are the only fields in that file that
- * change on every release, and they are the ones a catalogue shows first. Left
+ * change on every release, and they are the ones a catalog shows first. Left
  * to a human they rot within a month, so they are derived: the version from
  * package.json, the date from the newest block in CHANGELOG.md.
  *

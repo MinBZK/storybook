@@ -45,9 +45,9 @@ export class NLDDFormActions extends LitElement {
 
 	/**
 	 * Default is `undefined` (and not `'top'`) so Lit doesn't reflect the
-	 * default value to the attribute on first update. Zie `nldd-form-field`
-	 * voor uitleg — dezelfde reden: form-label-alignment fallback CSS
-	 * werkt op `:not([label-alignment])`.
+	 * default value to the attribute on first update. See `nldd-form-field` for
+	 * the explanation, for the same reason: the form-label-alignment fallback CSS
+	 * works on `:not([label-alignment])`.
 	 */
 	@property({ type: String, reflect: true, attribute: 'label-alignment' })
 	labelAlignment: LabelAlignment | undefined = undefined;

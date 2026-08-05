@@ -388,13 +388,16 @@ export const imageStyles = css`
 	}
 
 
-	/* # Accessibility */
+	/* # Reduced Motion */
 
 	@media (prefers-reduced-motion: reduce) {
 		.image__media--lqip .image__img {
 			transition: none;
 		}
 	}
+
+
+	/* # High Contrast */
 
 	@media (forced-colors: active) {
 		.image__media {

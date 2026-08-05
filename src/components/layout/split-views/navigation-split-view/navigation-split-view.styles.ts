@@ -346,6 +346,20 @@ export const navigationSplitViewStyles = css`
 		flex-basis: 0;
 	}
 
+	/* A bottom sheet sizes itself from its content (height: auto), so the pane's
+	   hypothetical main size IS the sheet's height — and a zero basis fixes that
+	   at 0. The sheet then opens as a backdrop with nothing on it, while its
+	   content stays in the DOM and keeps taking focus. At md/lg the sheet has a
+	   definite height and the zero basis never surfaces, which is why this only
+	   shows below 641px. The dialog's max-height still caps a long sheet;
+	   flex-shrink then hands the overflow to the pane's own scroll container. */
+	@media (max-width: ${smMax}) {
+		.navigation-split-view__primary-sidebar-sheet-body slot::slotted(*),
+		.navigation-split-view__inspector-sheet-body slot::slotted(*) {
+			flex-basis: auto;
+		}
+	}
+
 	/* Root-scroll mode: slotted pane content is a COLUMN item of the pane: govern
 	   its height so it fills a short viewport (flex-grow) but keeps its own height
 	   when taller (flex-shrink:0), rather than collapsing to a 0 basis. */

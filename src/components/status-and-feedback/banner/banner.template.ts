@@ -47,7 +47,7 @@ export function bannerTemplate(component: NLDDBanner) {
 					<nldd-icon-button
 						icon="dismiss-small"
 						variant="neutral-transparent"
-						size="md"
+						size=${component.size}
 						accessible-label=${component._t('components.banner.dismiss-action')}
 						@click=${component._onDismissClick}
 					></nldd-icon-button>

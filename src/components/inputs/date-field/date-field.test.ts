@@ -61,7 +61,7 @@ describe('nldd-date-field', () => {
 		expect(textInput(el).value).toBe('31-12-2026');
 	});
 
-	// Royaal accepteren, één keer normaliseren - geen masking tijdens het typen.
+	// Accept generously, normalize once, no masking while typing.
 	it.each([
 		['31-12-2026', '2026-12-31'],
 		['31/12/2026', '2026-12-31'],
@@ -82,7 +82,7 @@ describe('nldd-date-field', () => {
 		input.value = '1/2/2026';
 		input.dispatchEvent(new Event('input', { bubbles: true }));
 		await waitForUpdate(el);
-		// Tijdens het typen blijft de tekst staan zoals ingevoerd.
+		// While typing, the text stays exactly as entered.
 		expect(input.value).toBe('1/2/2026');
 
 		input.dispatchEvent(new Event('change', { bubbles: true }));
@@ -94,7 +94,7 @@ describe('nldd-date-field', () => {
 		el = await fixture<NLDDDateField>('<nldd-date-field></nldd-date-field>');
 		await type(el, 'morgen');
 		expect(el.value).toBe('');
-		// Niet stilletjes wissen: de gebruiker moet zien wat er staat om het te herstellen.
+		// Never wipe it silently: the user has to see what is there to repair it.
 		expect(textInput(el).value).toBe('morgen');
 	});
 
@@ -124,9 +124,10 @@ describe('nldd-date-field', () => {
 		expect(textInput(el).hasAttribute('name')).toBe(false);
 	});
 
-	// Wie op change de form serialiseert (htmx, of gewoon new FormData(form)) doet
-	// dat synchroon; stond de formwaarde pas in updated(), dan las die listener de
-	// waarde van vóór de wijziging en verdween de zojuist gekozen datum weer.
+	// Anyone serializing the form on change (htmx, or plain new FormData(form))
+	// does so synchronously. With the form value only set in updated(), that
+	// listener read the value from before the change and the date just picked
+	// disappeared again.
 	it('heeft de nieuwe formwaarde al staan wanneer change afgaat', async () => {
 		const form = document.createElement('form');
 		document.body.appendChild(form);
@@ -148,8 +149,9 @@ describe('nldd-date-field', () => {
 	});
 
 
-	// De kalenderknop en de popover zitten in dezelfde doos, dus met :focus-within
-	// tekende het veld een tweede ring om alles heen terwijl de knop er al een had.
+	// The calendar button and the popover live in the same box, so with
+	// :focus-within the field drew a second ring around everything while the button
+	// already had one.
 	it('toont de veldring alleen voor het tekstveld', async () => {
 		el = await fixture<NLDDDateField>('<nldd-date-field></nldd-date-field>');
 		await waitForUpdate(el);
@@ -163,16 +165,16 @@ describe('nldd-date-field', () => {
 	});
 
 
-	// De ruimte ernaast wordt door de fade opengehouden, dus zonder validatiestaat
-	// hoort er geen leeg element in de DOM te staan.
+	// The fade keeps the room beside it open, so without a validation state there
+	// should be no empty element in the DOM.
 	it('rendert geen validatiecel zonder validatiestaat', async () => {
 		el = await fixture<NLDDDateField>('<nldd-date-field range></nldd-date-field>');
 		await waitForUpdate(el);
 		expect(el.shadowRoot!.querySelector('.date-field__validation-icon-area')).toBeNull();
 	});
 
-	// Twee bijna gelijke takken in de template liepen uit elkaar: de geldig-tak
-	// miste de wrapper die de maat zet, waardoor dat icoon de hele cel vulde.
+	// Two nearly identical branches in the template drifted apart: the valid branch
+	// was missing the wrapper that sets the size, so that icon filled the cell.
 	it.each([['valid'], ['invalid']])('zet het %s-icoon in een wrapper met een vaste maat', async (state) => {
 		el = await fixture<NLDDDateField>(`<nldd-date-field ${state}></nldd-date-field>`);
 		await waitForUpdate(el);
@@ -182,7 +184,7 @@ describe('nldd-date-field', () => {
 	});
 
 
-	// # Periode
+	// # Range
 
 	function inputs(el: NLDDDateField): HTMLInputElement[] {
 		return Array.from(el.shadowRoot!.querySelectorAll('.date-field__input'));
@@ -216,8 +218,8 @@ describe('nldd-date-field', () => {
 		expect(el.value).toBe('2026-07-01/2026-07-14');
 	});
 
-	// Eén naam en één waarde, net als elk ander formulierveld: de ISO 8601-notatie
-	// voor een interval maakt een verzonnen tweede naam overbodig.
+	// One name and one value, like every other form field: the ISO 8601 notation
+	// for an interval makes an invented second name unnecessary.
 	it('dient de periode in als één waarde onder één naam', async () => {
 		const form = document.createElement('form');
 		document.body.appendChild(form);
@@ -242,8 +244,8 @@ describe('nldd-date-field', () => {
 		expect(inputs(el).map((i) => i.value)).toEqual(['06-07-2026', '20-07-2026']);
 	});
 
-	// Een halfgevulde periode is ongeldige invoer; die hoort de ontvangende kant te
-	// zien in plaats van een leeg veld waaruit niets blijkt.
+	// A half-filled range is invalid input, and the receiving end should see that
+	// rather than an empty field that says nothing.
 	it('houdt een halfgevulde periode zichtbaar in de waarde', async () => {
 		el = await fixture<NLDDDateField>('<nldd-date-field range></nldd-date-field>');
 		await waitForUpdate(el);
@@ -254,8 +256,8 @@ describe('nldd-date-field', () => {
 		expect(el.value).toBe('2026-07-06/');
 	});
 
-	// nldd-form-field zet één label en één id; het veld verdeelt dat zelf over de
-	// twee invoervelden, zodat form-field niets van periodes hoeft te weten.
+	// nldd-form-field sets one label and one id. The field divides that over its
+	// two inputs itself, so form-field needs to know nothing about ranges.
 	it('geeft de groep één naam en elk veld een eigen', async () => {
 		el = await fixture<NLDDDateField>(
 			'<nldd-date-field range accessible-label="Periode"></nldd-date-field>',
@@ -312,12 +314,12 @@ describe('nldd-date-field', () => {
 	});
 
 
-	// # Kalender
+	// # Calendar
 
-	// De focusring van de knop draagt een halo van 6px die precies op de border
-	// van het veld hoort te landen. Een overflow-clip op het veld kapte die halo
-	// af op de padding box en liet de border er dwars doorheen lopen; er valt
-	// zonder clip niets te ontsnappen, dus het veld knipt niet.
+	// The button's focus ring carries a 6px halo that should land exactly on the
+	// field's border. An overflow clip on the field cut that halo off at the
+	// padding box and let the border run straight through it. Nothing can escape
+	// without a clip, so the field does not clip.
 	it('knipt de focusring van de kalenderknop niet af', async () => {
 		el = await fixture<NLDDDateField>('<nldd-date-field></nldd-date-field>');
 		await waitForUpdate(el);
@@ -332,9 +334,9 @@ describe('nldd-date-field', () => {
 		expect(popover(el)).not.toBeNull();
 	});
 
-	// De popover hangt aan de kalenderknop, en die staat aan het einde van het
-	// veld. Met bottom-start liep de kalender naar rechts weg en raakte hij het
-	// veld nauwelijks; bottom-end legt hem onder de invoer.
+	// The popover hangs off the calendar button, which sits at the end of the
+	// field. With bottom-start the calendar ran off to the right and barely touched
+	// the field. bottom-end puts it under the input.
 	it('klapt de kalender naar links open, onder het veld', async () => {
 		el = await fixture<NLDDDateField>('<nldd-date-field></nldd-date-field>');
 		await waitForUpdate(el);
@@ -357,8 +359,8 @@ describe('nldd-date-field', () => {
 		expect(picker(el)!.getAttribute('max')).toBe('2026-12-31');
 	});
 
-	// nldd-popover leest dit om zijn focusdoel te kiezen; zonder blijft de focus op
-	// de popover zelf staan en moet je eerst het rooster in tabben.
+	// nldd-popover reads this to pick its focus target. Without it, focus stays on
+	// the popover itself and you have to tab into the grid first.
 	it('wijst de kalender aan als focusdoel van de popover', async () => {
 		el = await fixture<NLDDDateField>('<nldd-date-field></nldd-date-field>');
 		await waitForUpdate(el);
@@ -372,8 +374,8 @@ describe('nldd-date-field', () => {
 		expect(picker(el)!.getAttribute('value')).toBe('2026-12-31');
 	});
 
-	// Waar de native kiezer op stukliep: die kende geen sluit-tegenhanger, en in
-	// Safari hing het sluiten aan de onzichtbare input zelf.
+	// Where the native picker fell down: it had no close counterpart, and in Safari
+	// closing hung off the invisible input itself.
 	it('opent en sluit de kalender met dezelfde knop', async () => {
 		el = await fixture<NLDDDateField>('<nldd-date-field></nldd-date-field>');
 		await waitForUpdate(el);
@@ -385,8 +387,8 @@ describe('nldd-date-field', () => {
 		el._handlePickerClick();
 		expect(calls).toEqual(['show']);
 
-		// De popover meldt zijn open-staat terug via toggle; die spiegelt het veld,
-		// zodat dezelfde knop de tweede keer sluit.
+		// The popover reports its open state back through toggle, which the field
+		// mirrors, so the same button closes it the second time.
 		popover(el)!.dispatchEvent(Object.assign(new Event('toggle'), { newState: 'open' }));
 		await waitForUpdate(el);
 		expect(el._pickerOpen).toBe(true);
@@ -395,9 +397,9 @@ describe('nldd-date-field', () => {
 		expect(calls).toEqual(['show', 'hide']);
 	});
 
-	// De popover herstelt naar de host, en die delegeert focus naar het tekstveld -
-	// dus zonder ingrijpen springt de focus achteruit langs de knop die je net
-	// gebruikte, en moet je weer vooruit tabben om opnieuw te openen.
+	// The popover restores focus to the host, which delegates it to the text input,
+	// so without intervention focus jumps back past the button you just used and
+	// you have to tab forward again to reopen.
 	it('zet de focus na het kiezen terug op de kalenderknop', async () => {
 		el = await fixture<NLDDDateField>('<nldd-date-field></nldd-date-field>');
 		await waitForUpdate(el);
@@ -411,8 +413,9 @@ describe('nldd-date-field', () => {
 		expect(el.shadowRoot!.activeElement).toBe(pickerButton(el));
 	});
 
-	// Een periode is niet af in één klik: na de tweede datum wil je de cursor aan het
-	// eind van het einddatumveld, waar de keuze zojuist landde, niet terug op de knop.
+	// A range is not done in one click: after the second date you want the cursor
+	// at the end of the end-date input, where the choice just landed, not back on
+	// the button.
 	it('zet de focus na een periode op het einde van het einddatumveld', async () => {
 		el = await fixture<NLDDDateField>('<nldd-date-field range></nldd-date-field>');
 		await waitForUpdate(el);
@@ -428,8 +431,8 @@ describe('nldd-date-field', () => {
 		expect(end.selectionStart).toBe(end.value.length);
 	});
 
-	// Dezelfde teruggave als na een keuze: annuleren, Escape en een klik ernaast
-	// hoorden de focus ook op de knop te zetten, niet op de invoer te laten staan.
+	// The same restore as after a choice: cancel, Escape and a click beside it
+	// should also put focus on the button, not leave it on the input.
 	it('zet de focus na dismiss terug op de kalenderknop', async () => {
 		el = await fixture<NLDDDateField>('<nldd-date-field></nldd-date-field>');
 		await waitForUpdate(el);
@@ -474,8 +477,8 @@ describe('nldd-date-field met een eigen kalender in de slot', () => {
 		return host.querySelector('nldd-date-picker');
 	}
 
-	// Zonder dit staan er twee kalenders in de popover, want de standaardkalender
-	// wordt alleen weggelaten als het veld doorheeft dat de slot gevuld is.
+	// Without this there are two calendars in the popover, because the default one
+	// is only left out once the field notices the slot is filled.
 	it('vervangt de standaardkalender in plaats van er een toe te voegen', async () => {
 		el = await fixture<NLDDDateField>(`
 			<nldd-date-field>
@@ -493,8 +496,8 @@ describe('nldd-date-field met een eigen kalender in de slot', () => {
 		expect(el.shadowRoot!.querySelector('nldd-date-picker')).not.toBeNull();
 	});
 
-	// Het veld is de eigenaar van de formulierwaarde; een consument die die op de
-	// kalender zelf zet, zou twee bronnen van waarheid maken.
+	// The field owns the form value. A consumer setting it on the calendar itself
+	// would create two sources of truth.
 	it('schrijft waarde en grenzen op de gesloten kalender', async () => {
 		el = await fixture<NLDDDateField>(`
 			<nldd-date-field value="2026-07-14" min="2026-07-01" max="2026-07-31">
@@ -522,7 +525,7 @@ describe('nldd-date-field met een eigen kalender in de slot', () => {
 		expect(p.end).toBe('2026-07-20');
 	});
 
-	// De keuze komt uit de light DOM en moet door de slot heen het veld bereiken.
+	// The choice comes from the light DOM and has to reach the field through the slot.
 	it('neemt een keuze uit de gesloten kalender over', async () => {
 		el = await fixture<NLDDDateField>(`
 			<nldd-date-field>
@@ -559,8 +562,8 @@ describe('nldd-date-field grenzen, separators en range-toggle', () => {
 		if (el) cleanup(el);
 	});
 
-	// min/max gingen naar de kalender, die out-of-range dagen blokkeert, maar
-	// getypte invoer werd nooit tegen de grenzen gehouden.
+	// min/max went to the calendar, which blocks out-of-range days, but typed input
+	// was never held against the bounds.
 	it('legt een getypte datum buiten max niet vast', async () => {
 		el = await fixture<NLDDDateField>('<nldd-date-field max="2026-07-31"></nldd-date-field>');
 		await waitForUpdate(el);
@@ -583,9 +586,9 @@ describe('nldd-date-field grenzen, separators en range-toggle', () => {
 		expect(el.value).toBe('2026-07-15');
 	});
 
-	// Beide range-invoeren lopen door hetzelfde _commit/_withinBounds als een los
-	// veld, dus een getypte grensoverschrijding mag ook in een periode niet landen -
-	// de ruwe tekst blijft wel staan zodat de gebruiker hem kan verbeteren.
+	// Both range inputs run through the same _commit/_withinBounds as a single
+	// field, so a typed value outside the bounds must not land in a range either.
+	// The raw text does stay put so the user can correct it.
 	it('legt een getypte range-datum buiten max niet vast', async () => {
 		el = await fixture<NLDDDateField>('<nldd-date-field range max="2026-07-31"></nldd-date-field>');
 		await waitForUpdate(el);
@@ -604,7 +607,7 @@ describe('nldd-date-field grenzen, separators en range-toggle', () => {
 		expect(end.value).toBe('15-08-2026');
 	});
 
-	// \D accepteerde elke niet-cijfer als scheidingsteken, ook een letter.
+	// \D accepted any non-digit as a separator, a letter included.
 	it('weigert een letter als scheidingsteken', async () => {
 		el = await fixture<NLDDDateField>('<nldd-date-field></nldd-date-field>');
 		await waitForUpdate(el);
@@ -621,8 +624,8 @@ describe('nldd-date-field grenzen, separators en range-toggle', () => {
 		expect(el.value).toBe('2026-04-03');
 	});
 
-	// value houdt één vorm per modus: altijd een interval met range, altijd een
-	// kale datum zonder.
+	// value keeps one shape per mode: always an interval with range, always a bare
+	// date without it.
 	it('maakt een kale datum een interval bij inschakelen van range', async () => {
 		el = await fixture<NLDDDateField>('<nldd-date-field value="2026-07-06"></nldd-date-field>');
 		await waitForUpdate(el);
@@ -649,9 +652,9 @@ describe('nldd-date-field popoverbreedte loopt niet vast', () => {
 		if (el) cleanup(el);
 	});
 
-	// De breedte werd extern op de popover gezet; lit maakte dat op een latere
-	// render niet ongedaan, dus na het meten van een brede gesloten kalender bleef
-	// de popover te breed, ook nadat die kalender weg was.
+	// The width was set on the popover from outside, and Lit does not undo that on
+	// a later render, so after measuring a wide closed calendar the popover stayed
+	// too wide, even once that calendar was gone.
 	it('valt terug op de standaardbreedte als de gesloten kalender verdwijnt', async () => {
 		el = await fixture<NLDDDateField>(`
 			<nldd-date-field>
@@ -659,10 +662,10 @@ describe('nldd-date-field popoverbreedte loopt niet vast', () => {
 			</nldd-date-field>
 		`);
 		await waitForUpdate(el);
-		// Alsof de gesloten kalender gemeten en breed bevonden is.
+		// As if the closed calendar had been measured and found wide.
 		el._pickerPopoverWidth = 'calc(500px + var(--primitives-space-16) * 2)';
 		await waitForUpdate(el);
-		// Kalender weg, dan opent de popover opnieuw.
+		// Calendar gone, then the popover opens again.
 		el.querySelector('nldd-date-picker')!.remove();
 		el._handlePickerSlotChange();
 		await waitForUpdate(el);
@@ -680,8 +683,8 @@ describe('nldd-date-field is nooit een naamloze control', () => {
 		if (el) cleanup(el);
 	});
 
-	// Zonder accessible-label en zonder nldd-form-field kreeg de invoer geen naam:
-	// geen label, geen aria-label. Nu valt hij terug op een neutrale naam.
+	// Without accessible-label and without nldd-form-field the input got no name at
+	// all: no label, no aria-label. It now falls back to a neutral one.
 	it('geeft de invoer een terugval-naam zonder accessible-label', async () => {
 		el = await fixture<NLDDDateField>('<nldd-date-field></nldd-date-field>');
 		await waitForUpdate(el);
@@ -716,8 +719,8 @@ describe('nldd-date-field sorteert een omgekeerd getypte periode op blur', () =>
 			.dispatchEvent(new FocusEvent('focusout', { relatedTarget, bubbles: true }));
 	}
 
-	// De kalender sorteert een gesleepte periode altijd; typen deed dat niet, dus
-	// "van 2027 t/m 2026" bleef achterstevoren staan.
+	// The calendar always sorts a dragged range; typing did not, so "van 2027 t/m
+	// 2026" stayed backwards.
 	it('zet de vroegste datum voorop als de focus het veld verlaat', async () => {
 		el = await fixture<NLDDDateField>('<nldd-date-field range value="2027-06-09/2026-06-26"></nldd-date-field>');
 		await waitForUpdate(el);
@@ -734,8 +737,8 @@ describe('nldd-date-field sorteert een omgekeerd getypte periode op blur', () =>
 		expect(el.value).toBe('2026-06-09/2026-06-26');
 	});
 
-	// Tussen de twee invoervelden wisselen mag niet sorteren, anders springt een
-	// net getypte waarde naar het andere veld terwijl je nog bezig bent.
+	// Moving between the two inputs must not sort, or a value you just typed jumps
+	// to the other field while you are still working.
 	it('sorteert niet als de focus binnen het veld blijft', async () => {
 		el = await fixture<NLDDDateField>('<nldd-date-field range value="2027-06-09/2026-06-26"></nldd-date-field>');
 		await waitForUpdate(el);
@@ -753,9 +756,9 @@ describe('nldd-date-field sorteert een omgekeerd getypte periode op blur', () =>
 		expect(el.value).toBe('2026-06-09');
 	});
 
-	// Op de kalenderknop klikken verlaat het veld niet (die knop zit in dezelfde
-	// shadow root), dus de blur-sortering slaat over. Bij het openen alsnog sorteren,
-	// zodat de kalender de periode toont zoals hij hem opslaat.
+	// Clicking the calendar button does not leave the field (the button sits in the
+	// same shadow root), so the sort on blur is skipped. Sorting on open instead,
+	// so the calendar shows the range the way it stores it.
 	it('sorteert ook wanneer de kalender opengaat', async () => {
 		el = await fixture<NLDDDateField>('<nldd-date-field range value="2027-06-09/2026-06-26"></nldd-date-field>');
 		await waitForUpdate(el);
@@ -783,8 +786,8 @@ describe('nldd-date-field springt met backspace van een leeg einddatumveld terug
 		return event;
 	}
 
-	// Zo wist je een hele periode in één stroom backspaces leeg, zonder de muis te
-	// pakken om tussen de twee velden te wisselen.
+	// That way you clear a whole range in one run of backspaces, without reaching
+	// for the mouse to move between the two fields.
 	it('zet de focus op het einde van het startdatumveld', async () => {
 		el = await fixture<NLDDDateField>('<nldd-date-field range value="2026-06-09/"></nldd-date-field>');
 		await waitForUpdate(el);
