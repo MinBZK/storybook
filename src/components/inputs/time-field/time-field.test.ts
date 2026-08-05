@@ -27,7 +27,7 @@ function scrollPickerTo(el: NLDDTimeField, value: string) {
 
 
 /* ============================================================
-   Parsen
+   Parsing
    ============================================================ */
 
 describe('parseTime', () => {
@@ -74,7 +74,7 @@ describe('parseTime', () => {
 
 
 /* ============================================================
-   Afronden
+   Rounding
    ============================================================ */
 
 describe('roundToStep', () => {
@@ -127,7 +127,7 @@ describe('nldd-time-field', () => {
 
 
 /* ============================================================
-   Waarde en normaliseren
+   Value and normalizing
    ============================================================ */
 
 describe('nldd-time-field – waarde', () => {
@@ -182,7 +182,7 @@ describe('nldd-time-field – waarde', () => {
 
 
 /* ============================================================
-   Grenzen
+   Bounds
    ============================================================ */
 
 describe('nldd-time-field – grenzen', () => {
@@ -259,7 +259,7 @@ describe('nldd-time-field – events', () => {
 
 
 /* ============================================================
-   Pijltjestoetsen
+   Arrow keys
    ============================================================ */
 
 describe('nldd-time-field – pijltjestoetsen', () => {
@@ -323,7 +323,7 @@ describe('nldd-time-field – pijltjestoetsen', () => {
 
 
 /* ============================================================
-   Toegankelijkheid
+   Accessibility
    ============================================================ */
 
 describe('nldd-time-field – toegankelijkheid', () => {
@@ -556,7 +556,7 @@ describe('nldd-time-field – picker', () => {
 
 
 /* ============================================================
-   Formulier
+   Form
    ============================================================ */
 
 describe('nldd-time-field – formulier', () => {

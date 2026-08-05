@@ -29,7 +29,7 @@ async function press(el: NLDDTimePicker, name: 'hours' | 'minutes', key: string)
 
 
 /* ============================================================
-   Smoke en kolommen
+   Smoke and columns
    ============================================================ */
 
 describe('nldd-time-picker', () => {
@@ -77,7 +77,7 @@ describe('nldd-time-picker', () => {
 
 
 /* ============================================================
-   Kiezen
+   Picking
    ============================================================ */
 
 describe('nldd-time-picker – kiezen', () => {
@@ -200,7 +200,7 @@ describe('nldd-time-picker – kiezen', () => {
 
 
 /* ============================================================
-   Toetsenbord
+   Keyboard
    ============================================================ */
 
 describe('nldd-time-picker – toetsenbord', () => {
@@ -257,7 +257,7 @@ describe('nldd-time-picker – toetsenbord', () => {
 
 
 /* ============================================================
-   Toegankelijkheid
+   Accessibility
    ============================================================ */
 
 describe('nldd-time-picker – toegankelijkheid', () => {
@@ -284,7 +284,7 @@ describe('nldd-time-picker – toegankelijkheid', () => {
 
 
 /* ============================================================
-   Wiel
+   Wheel
    ============================================================ */
 
 describe('nldd-time-picker – wiel', () => {
