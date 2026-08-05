@@ -6,10 +6,10 @@ import '../form-actions/form-actions.js';
 import type { NLDDForm } from './form.js';
 
 /**
- * NLDDForm extends HTMLElement (geen Lit), dus waitForUpdate dekt z'n
- * MutationObserver-callback niet — die vuurt buiten de Lit update-cycle.
- * Use deze helper voor "wacht op pending microtasks" zodat de observer
- * heeft kunnen lopen. Niet vervangen door waitForUpdate; dat zou de
+ * NLDDForm extends HTMLElement (not Lit), so waitForUpdate does not cover its
+ * MutationObserver callback: that fires outside the Lit update cycle. Use this
+ * helper for "wait for pending microtasks" so the observer has had its turn. Do
+ * not replace it with waitForUpdate, which would
  * timing breken.
  */
 const awaitMicrotask = () => new Promise(resolve => setTimeout(resolve, 0));
@@ -90,7 +90,7 @@ describe('nldd-form', () => {
 		el.removeAttribute('enctype');
 		await waitForUpdate(el);
 		expect(form.hasAttribute('enctype')).toBe(false);
-		// target blijft staan (geen impact)
+		// target stays put (no impact)
 		expect(form.getAttribute('target')).toBe('_blank');
 	});
 
@@ -117,8 +117,9 @@ describe('nldd-form', () => {
 	});
 
 	it('user-provided form mode: gebruikt bestaande <form> child i.p.v. nieuwe te creëren', async () => {
-		// Framework-friendly mode: user wraps content in eigen <form>. Component
-		// detecteert 't en neemt 't over voor attribute-mirroring zonder DOM-shuffle.
+		// Framework-friendly mode: the user wraps content in their own <form>. The
+		// component detects it and takes it over for attribute mirroring, without
+		// shuffling the DOM.
 		el = await fixture(`
 			<nldd-form name="user-form" novalidate>
 				<form>
@@ -129,26 +130,26 @@ describe('nldd-form', () => {
 		`);
 		await waitForUpdate(el);
 
-		// Er moet maar één <form> zijn (de user's), niet een tweede die wij creëerden
+		// There should be one <form> only (the user's), not a second one we created
 		const forms = el.querySelectorAll('form');
 		expect(forms.length).toBe(1);
 
-		// .form getter wijst naar de user's form
+		// The .form getter points at the user's form
 		const innerForm = (el as NLDDForm).form;
 		expect(innerForm).toBe(forms[0]);
 
-		// Attributes zijn gespiegeld
+		// Attributes are mirrored
 		expect(innerForm!.getAttribute('name')).toBe('user-form');
 		expect(innerForm!.hasAttribute('novalidate')).toBe(true);
 
-		// Children blijven waar ze zijn (niet verplaatst)
+		// Children stay where they are (not moved)
 		expect(innerForm!.querySelector('input[name="email"]')).not.toBeNull();
 		expect(innerForm!.querySelector('button[type="submit"]')).not.toBeNull();
 	});
 
 	it('user-provided form mode: skipt migration voor nieuw toegevoegde direct children', async () => {
-		// In user-provided mode mag een framework children OUT-of-form positioneren
-		// zonder dat wij ze automatisch verhuizen.
+		// In user-provided mode a framework may position children outside the form
+		// without us moving them there automatically.
 		const wrapper = await fixture(`
 			<nldd-form name="user-form">
 				<form>
@@ -159,15 +160,15 @@ describe('nldd-form', () => {
 		el = wrapper;
 		await waitForUpdate(el);
 
-		// Voeg een direct child toe aan het host (dus NAAST de form, niet erin)
+		// Add a direct child to the host (BESIDE the form, not inside it)
 		const stray = document.createElement('div');
 		stray.dataset.testid = 'stray';
 		el.appendChild(stray);
 		await awaitMicrotask();
 
-		// Stray blijft een direct child van host (niet in form gemigreerd)
+		// The stray stays a direct child of the host (not migrated into the form)
 		expect(el.querySelector(':scope > [data-testid="stray"]')).not.toBeNull();
-		// Form's eigen children zijn ongewijzigd
+		// The form's own children are unchanged
 		const innerForm = (el as NLDDForm).form!;
 		expect(innerForm.children.length).toBe(1);
 	});
@@ -213,14 +214,14 @@ describe('nldd-form', () => {
 			const fields = el.querySelectorAll('nldd-form-field');
 			const actions = el.querySelector('nldd-form-actions')!;
 			fields.forEach(f => {
-				// form-label-alignment is gepropageerd; eigen label-alignment is NIET gezet
+				// form-label-alignment propagated, the element's own label-alignment is NOT set
 				expect(f.getAttribute('form-label-alignment')).toBe('right');
 				expect(f.hasAttribute('label-alignment')).toBe(false);
 			});
 			expect(actions.getAttribute('form-label-alignment')).toBe('right');
-			// form-actions' labelAlignment default is `undefined`, dus Lit reflectt
-			// niets — eigen `label-alignment` blijft afwezig en de cascaded
-			// `form-label-alignment="right"` wint zonder dat de form 'm hoeft te
+			// form-actions' labelAlignment defaults to `undefined`, so Lit reflects
+			// nothing: its own `label-alignment` stays absent and the cascaded
+			// `form-label-alignment="right"` wins without the form having to
 			// overschrijven.
 			expect(actions.hasAttribute('label-alignment')).toBe(false);
 		});
@@ -237,11 +238,11 @@ describe('nldd-form', () => {
 			const inherits = el.querySelector('nldd-form-field[label="Inherits"]') as HTMLElement;
 			const own = el.querySelector('nldd-form-field[label="Own"]') as HTMLElement;
 
-			// Inherited: form-label-alignment gezet, eigen label-alignment niet
+			// Inherited: form-label-alignment set, its own label-alignment not
 			expect(inherits.getAttribute('form-label-alignment')).toBe('right');
 			expect(inherits.hasAttribute('label-alignment')).toBe(false);
 
-			// Eigen: label-alignment behouden; form-label-alignment óók aanwezig maar
+			// Own: label-alignment kept, form-label-alignment present as well but
 			// CSS-cascade laat eigen waarde winnen via :host(:not([label-alignment])[form-label-alignment=…])
 			expect(own.getAttribute('label-alignment')).toBe('top');
 			expect(own.getAttribute('form-label-alignment')).toBe('right');
@@ -280,13 +281,13 @@ describe('nldd-form', () => {
 			el.removeAttribute('label-alignment');
 			await waitForUpdate(el);
 
-			// form-label-alignment valt terug op de default 'top' (always-set)
+			// form-label-alignment falls back to the default 'top' (always set)
 			expect(inherits.getAttribute('form-label-alignment')).toBe('top');
 			expect(own.getAttribute('form-label-alignment')).toBe('top');
 
-			// Eigen label-alignment blijft staan op de descendant die 't zelf had
+			// The descendant that had its own label-alignment keeps it
 			expect(own.getAttribute('label-alignment')).toBe('top');
-			// Inherits had geen eigen label-alignment, dus die heeft 'm nog steeds niet
+			// Inherits had no label-alignment of its own, so it still does not
 			expect(inherits.hasAttribute('label-alignment')).toBe(false);
 		});
 
@@ -306,9 +307,9 @@ describe('nldd-form', () => {
 		});
 
 		it('propageert ook naar later toegevoegde form-actions children', async () => {
-			// Form-actions reflect z'n Lit-default ='top' op label-alignment bij
-			// eerste update — maar omdat we nooit aan label-alignment komen, is
-			// er geen race meer. We zetten alleen form-label-alignment.
+			// form-actions reflects its Lit default of 'top' onto label-alignment on
+			// the first update, but since we never touch label-alignment there is no
+			// race left. We only set form-label-alignment.
 			el = await fixture('<nldd-form label-alignment="right"></nldd-form>');
 			await waitForUpdate(el);
 
@@ -330,15 +331,15 @@ describe('nldd-form', () => {
 			await waitForUpdate(el);
 
 			const field = el.querySelector('nldd-form-field') as HTMLElement;
-			// Always-set: descendants binnen nldd-form hebben altijd
-			// form-label-alignment, zodat downstream CSS-selectors mogen
-			// aannemen dat het attribuut aanwezig is.
+			// Always set: descendants inside nldd-form always carry
+			// form-label-alignment, so downstream CSS selectors may assume the
+			// attribute is there.
 			expect(field.getAttribute('form-label-alignment')).toBe('top');
 		});
 
 		it('CSS cascade: expliciete eigen label-alignment wint over geërfde via container query', async () => {
-			// Container ≥ mdMin zodat de @container (min-width: 640px) regel
-			// matcht en row-layout wordt toegepast bij left/right alignment.
+			// Container >= mdMin so the @container (min-width: 640px) rule matches
+			// and row layout applies for left/right alignment.
 			const wrapper = await fixture(`
 				<div style="width: 800px;">
 					<nldd-form label-alignment="right">
@@ -358,8 +359,8 @@ describe('nldd-form', () => {
 
 			// Inherits → label-alignment=right → row layout
 			expect(getComputedStyle(inheritsRoot).flexDirection).toBe('row');
-			// Own (label-alignment=top) → kolom-layout, niet overschreven door
-			// container query op de parent's right-alignment
+			// Own (label-alignment=top) means column layout, not overridden by the
+			// container query on the parent's right alignment
 			expect(getComputedStyle(ownRoot).flexDirection).toBe('column');
 		});
 	});
