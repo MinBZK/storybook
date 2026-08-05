@@ -53,7 +53,7 @@ export const timePickerStyles = css`
 	}
 
 
-	/* # Lijsten */
+	/* # Lists */
 
 	.time-picker__list {
 		display: flex;
@@ -131,7 +131,7 @@ export const timePickerStyles = css`
 	}
 
 
-	/* # Selectie */
+	/* # Selection */
 
 	/* The lists have a mask-image and therefore their own stacking context, and
 	   they come after this in the DOM: without z-index their digits paint over
@@ -179,7 +179,7 @@ export const timePickerStyles = css`
 	}
 
 
-	/* # Toegankelijkheid */
+	/* # Accessibility */
 
 	@media (forced-colors: active) {
 		.time-picker__selection {

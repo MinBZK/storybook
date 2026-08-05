@@ -228,7 +228,7 @@ export class NLDDDatePicker extends withTranslations<NLDDDatePickerTranslations>
 		// The year list runs to a hundred years or more, and the menu starts on its
 		// first item - so an arrow key walks a century back from the year you are
 		// actually looking at. Move to the entry in view instead, and scroll it into
-		// sight. The month list is shorter but wants the same behaviour.
+		// sight. The month list is shorter but wants the same behavior.
 		const focusSelected = (): void => {
 			const selected = menu?.querySelector<HTMLElement>('nldd-menu-item[selected]');
 			if (!selected || this.shadowRoot?.activeElement === selected) return;

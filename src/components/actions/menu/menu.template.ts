@@ -226,7 +226,7 @@ export function menuGroupTemplate(component: NLDDMenuGroup) {
 	// aria-hidden on the title prevents AT from announcing it twice — once as
 	// standalone text and again as the group label via aria-labelledby. The
 	// label reference still reads the hidden node's text content, which is
-	// the standard pattern for this kind of labelling.
+	// the standard pattern for this kind of labeling.
 	return html`
 		<div class="menu__group">
 			<div class="menu__group-title"

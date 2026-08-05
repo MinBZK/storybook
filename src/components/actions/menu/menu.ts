@@ -585,7 +585,7 @@ export class NLDDMenu extends LitElement {
 				(item as NLDDMenuItem).menuVariant = this.variant;
 			});
 		}
-		// A new anchor arrives closed and unlabelled — seed it right away rather
+		// A new anchor arrives closed and unlabeled — seed it right away rather
 		// than at its first open. Covers the popup slot (where the invoking
 		// control assigns `anchorElement` on slotchange, which may land after
 		// our firstUpdated) and a runtime `anchor` swap.

@@ -83,7 +83,7 @@ export class NLDDTimePicker extends LitElement {
 	 * band stayed put, and then it lies about where you are.
 	 */
 	@state()
-	private _centred: { hours: number | null; minutes: number | null } = { hours: null, minutes: null };
+	private _centered: { hours: number | null; minutes: number | null } = { hours: null, minutes: null };
 
 	public _t(key: keyof NLDDTimePickerTranslations): string {
 		return this.translations[key] ?? nlddTimePickerTranslations[key];
@@ -145,11 +145,11 @@ export class NLDDTimePicker extends LitElement {
 	/** The number now standing in the band: whatever lies in the middle while
 	 *  scrolling, and otherwise simply the chosen value. */
 	public get _bandHour(): number | null {
-		return this._centred.hours ?? this._selectedHour;
+		return this._centered.hours ?? this._selectedHour;
 	}
 
 	public get _bandMinute(): number | null {
-		return this._centred.minutes ?? this._selectedMinute;
+		return this._centered.minutes ?? this._selectedMinute;
 	}
 
 	/**
@@ -179,7 +179,7 @@ export class NLDDTimePicker extends LitElement {
 		this.value = fromMinutes(next);
 		if (changed) this._emit('input');
 		// change is the confirmation, not the change: a field showing the picker in
-		// a popover closes on it, and that must not happen the moment you stop
+		// a popover records on it, and that must not happen the moment you stop
 		// scrolling.
 		if (commit) this._emit('change');
 	}
@@ -263,8 +263,8 @@ export class NLDDTimePicker extends LitElement {
 		if (this._scrollingSelf) return;
 		const el = e.currentTarget as HTMLElement;
 		// The band follows every movement, the value only records once at rest.
-		const centred = this._centredOption(el);
-		if (centred !== null) this._centred = { ...this._centred, [column]: centred };
+		const centered = this._centeredOption(el);
+		if (centered !== null) this._centered = { ...this._centered, [column]: centered };
 		// As an attribute and not as reactive state: this happens every scroll
 		// frame, and re-rendering eighty values per frame is a waste.
 		this.toggleAttribute('data-scrolling', true);
@@ -276,7 +276,7 @@ export class NLDDTimePicker extends LitElement {
 	}
 
 	/** The number of the option closest to the middle of the column. */
-	private _centredOption(el: HTMLElement): number | null {
+	private _centeredOption(el: HTMLElement): number | null {
 		const centre = el.scrollTop + el.clientHeight / 2;
 		let best: HTMLElement | null = null;
 		let bestDistance = Infinity;
@@ -292,8 +292,8 @@ export class NLDDTimePicker extends LitElement {
 
 	/** Records whatever came to rest in the middle. */
 	private _selectCentred(column: 'hours' | 'minutes', el: HTMLElement): void {
-		const centred = this._centredOption(el);
-		if (centred !== null) this._select(column, centred);
+		const centered = this._centeredOption(el);
+		if (centered !== null) this._select(column, centered);
 	}
 
 	/**
@@ -314,7 +314,7 @@ export class NLDDTimePicker extends LitElement {
 			if (!column || !option) continue;
 			// Doing the math ourselves instead of scrollIntoView: that negotiates with
 			// the snap points and with every scrollable ancestor, and does so
-			// differently per browser. This is the exact inverse of _centredOption, so
+			// differently per browser. This is the exact inverse of _centeredOption, so
 			// what we put down is also what we read back later.
 			column.scrollTop = option.offsetTop + option.offsetHeight / 2 - column.clientHeight / 2;
 		}
@@ -340,7 +340,7 @@ export class NLDDTimePicker extends LitElement {
 		if (changed.has('value') || changed.has('min') || changed.has('max') || changed.has('step')) {
 			// The band follows the value again: it was just set from outside or
 			// recorded, and in both cases it lines up with the middle.
-			this._centred = { hours: null, minutes: null };
+			this._centered = { hours: null, minutes: null };
 			this.scrollSelectedIntoView();
 		}
 	}
