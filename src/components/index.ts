@@ -53,6 +53,7 @@ export { NLDDComboBox } from './inputs/combo-box/combo-box.js';
 export { NLDDDateField } from './inputs/date-field/date-field.js';
 export { NLDDDatePicker } from './inputs/date-picker/date-picker.js';
 export { NLDDDropdown } from './inputs/dropdown/dropdown.js';
+export { NLDDFileField } from './inputs/file-field/file-field.js';
 export { NLDDMultiLineTextField } from './inputs/multi-line-text-field/multi-line-text-field.js';
 export { NLDDNumberField } from './inputs/number-field/number-field.js';
 export { NLDDPasswordField } from './inputs/password-field/password-field.js';

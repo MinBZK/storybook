@@ -1681,6 +1681,14 @@
 
 	--components-document-tab-bar-tab-title-font: var(--primitives-font-body-sm-medium-flat);
 
+	/* ## File field */
+
+	--components-file-field-background-color: var(--semantics-surfaces-tinted-background-color);
+	--components-file-field-highlight-border-width: var(--semantics-surfaces-border-width);
+	--components-file-field-highlight-border-color: var(--semantics-surfaces-tinted-border-color);
+	--components-file-field-value-color: var(--semantics-content-color);
+	--components-file-field-is-empty-value-color: var(--semantics-content-secondary-color);
+
 	/* ## Icon — rijkskleuren
 
 	   Shade per rijkskleur picked to keep ≥400 shade distance from the

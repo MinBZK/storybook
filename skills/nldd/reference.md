@@ -878,6 +878,33 @@ A visual wrapper around a native `<select>` element. The consumer provides a nat
 | --- | --- |
 | `change` | Bubbles up from the slotted select; detail: { value: string } |
 
+### `<nldd-file-field>`
+
+A file picker that reads as one control: an nldd-button flush in the corner of a tinted surface, the chosen file next to it, and a dismiss button to clear it again. It wraps a hidden native `<input type="file">`, which is what makes the picker open at all — a file dialog only opens from a user gesture on a real input. The surface deliberately does not look like an input field. A border with field semantics promises you can type into it; here you can only press a button, so it uses button and surface colors instead of `--semantics-input-fields-*`. The button keeps its own tinted background and therefore sits a shade darker in the surface, which is what marks it as the thing to press. Several files are summarized, not listed: "3 bestanden" with a single cross that clears all of them. Every pick replaces the whole FileList, and rebuilding it to add or drop one file means going through DataTransfer, which does not deduplicate (even the same File object twice yields two entries) — and a File has no id, so deduplicating would come down to guessing from name, size and last-modified. A list with a cross per file would promise an edit the platform does not support. A page that does want to show the files renders its own list from the `File[]` in the change event.
+
+**Attributes**
+
+| Attribuut | Type | Beschrijving |
+| --- | --- | --- |
+| `size` | `string` | Field size: 'md' (default) \| 'sm'. Set automatically by nldd-form-field. |
+| `accept` | `string` | Comma-separated list of accepted file types, forwarded to the input (e.g. ".pdf,image/*") |
+| `multiple` | `boolean` | Allows choosing more than one file |
+| `accessible-label` | `string` | Accessible label forwarded to the inner input. Set automatically by nldd-form-field. |
+| `input-id` | `string` | Sets the id on the native input. Set automatically by nldd-form-field. |
+| `error-message-ids` | `string` | Ids for aria-describedby on the inner input. Set automatically by nldd-form-field. |
+| `valid` | `boolean` | Marks the field as valid; shows a check icon on the right, like nldd-dropdown |
+| `invalid` | `boolean` | Marks the field as invalid; shows an alert icon on the right, like nldd-dropdown |
+| `disabled` | `boolean` | Disabled state |
+| `required` | `boolean` | Marks the field required (invalid while no file is chosen) |
+| `name` | `string` | Name for form submission |
+| `translations` | `object` | Override translation keys; unset keys fall back to Dutch |
+
+**Events**
+
+| Event | Beschrijving |
+| --- | --- |
+| `change` | When the chosen files change, including a clear; detail: { files: File[] } |
+
 ### `<nldd-multi-line-text-field>`
 
 **Attributes**

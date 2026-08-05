@@ -130,6 +130,10 @@
       "types": "./dist/components/inputs/dropdown/dropdown.d.ts",
       "default": "./dist/components/inputs/dropdown/dropdown.js"
     },
+    "./file-field": {
+      "types": "./dist/components/inputs/file-field/file-field.d.ts",
+      "default": "./dist/components/inputs/file-field/file-field.js"
+    },
     "./multi-line-text-field": {
       "types": "./dist/components/inputs/multi-line-text-field/multi-line-text-field.d.ts",
       "default": "./dist/components/inputs/multi-line-text-field/multi-line-text-field.js"
