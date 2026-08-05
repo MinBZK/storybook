@@ -228,8 +228,8 @@ describe('nldd-modal-dialog – close fallback', () => {
 		if (el) cleanup(el);
 	});
 
-	// Zelfde val als nldd-sheet: een achtergrondtab pauzeert CSS-animaties, dus
-	// animationend komt nooit — zonder de timer bleef de dialoog open én
+	// The same trap as nldd-sheet: a background tab pauses CSS animations, so
+	// animationend never arrives. Without the timer the dialog stayed open and
 	// `_closing`, en negeerde hij elke volgende hide().
 	it('sluit ook wanneer animationend nooit komt', async () => {
 		el = await fixture<HTMLElement>('<nldd-modal-dialog text="Test"></nldd-modal-dialog>');
@@ -245,8 +245,8 @@ describe('nldd-modal-dialog – close fallback', () => {
 			if (type === 'animationend') return;
 			return (realAdd as (...a: unknown[]) => void)(type, ...rest);
 		}) as typeof dialog.addEventListener;
-		// De reduced-motion-tak sluit direct wanneer animationName 'none' is; laat
-		// hem een echte animatie zien zodat alleen de timer overblijft.
+		// The reduced-motion branch closes right away when animationName is 'none',
+		// so show it a real animation and only the timer is left.
 		const realGetComputed = window.getComputedStyle.bind(window);
 		const spy = vi.spyOn(window, 'getComputedStyle').mockImplementation(((elt: Element, ...rest: unknown[]) => {
 			const style = (realGetComputed as (...a: unknown[]) => CSSStyleDeclaration)(elt, ...rest);

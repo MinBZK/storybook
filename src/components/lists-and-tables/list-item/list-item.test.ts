@@ -636,8 +636,8 @@ describe('nldd-list-item – divider markers', () => {
 		expect(item.style.getPropertyValue('--_divider-inset-end')).toBe('');
 	});
 
-	// Een rij die met een icoon opent lijnt de lijn zelf al uit met de tekst,
-	// zodat elke lijst dat consequent doet zonder markers te hoeven zetten.
+	// A row that opens with an icon already lines the divider up with the text, so
+	// every list does that consistently without having to set markers.
 	it('laat de divider vanzelf bij de tekst beginnen na een leidend icoon', async () => {
 		el = await fixture(`
 			<div style="width: 400px; --components-list-item-indicator-inline-inset: 8px; --semantics-controls-md-min-size: 44px; --semantics-controls-sm-min-size: 32px; --primitives-space-40: 40px; --semantics-dividers-thickness: 1px;">
@@ -657,7 +657,7 @@ describe('nldd-list-item – divider markers', () => {
 		expect(inset).toBeGreaterThanOrEqual(40);
 	});
 
-	// De marker overrulet de afleiding: op de icoon-cel krijg je de volle lijn terug.
+	// The marker overrides the derivation: on the icon cell you get the full line back.
 	it('geeft de volle lijn terug met divider-start op de icoon-cel', async () => {
 		el = await fixture(`
 			<div style="width: 400px; --components-list-item-indicator-inline-inset: 8px; --semantics-controls-md-min-size: 44px; --semantics-controls-sm-min-size: 32px; --primitives-space-40: 40px; --semantics-dividers-thickness: 1px;">
@@ -677,7 +677,7 @@ describe('nldd-list-item – divider markers', () => {
 		expect(inset).toBeLessThan(40);
 	});
 
-	// Zonder leidend icoon blijft de lijn de volle contentbreedte houden.
+	// Without a leading icon the line keeps the full content width.
 	it('laat een rij zonder leidend icoon met rust', async () => {
 		el = await fixture(`
 			<div style="width: 400px; --components-list-item-indicator-inline-inset: 8px; --semantics-controls-md-min-size: 44px; --semantics-controls-sm-min-size: 32px; --semantics-dividers-thickness: 1px;">
