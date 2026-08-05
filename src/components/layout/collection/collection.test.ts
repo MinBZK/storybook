@@ -201,11 +201,11 @@ describe('nldd-collection', () => {
 		await waitForUpdate(collection);
 		const items = collection.shadowRoot!.querySelector('.collection__items') as HTMLElement;
 		const starts = itemStarts(collection);
-		// Halverwege het tweede item, zoals na een scroll die op het einde stopte.
-		// Smooth scrolling zou de toewijzing animeren en mandatory snapping zou
-		// hem meteen terugtrekken naar een grens, dus allebei even uit: dit is
-		// juist de stand waar de browser (Safari) na een programmatische scroll
-		// in de praktijk wel in belandt.
+		// Halfway through the second item, as after a scroll that stopped at the
+		// end. Smooth scrolling would animate the assignment and mandatory snapping
+		// would pull it straight back to a boundary, so both are off here: this is
+		// exactly the position a browser (Safari) does end up in after a
+		// programmatic scroll.
 		items.style.scrollBehavior = 'auto';
 		items.style.scrollSnapType = 'none';
 		items.scrollLeft = starts[1] + 30;
@@ -216,8 +216,8 @@ describe('nldd-collection', () => {
 		expect(target).toBe(starts[1]);
 	});
 
-	// Een disabled knop kan geen focus houden: de browser laat hem naar de body
-	// vallen en de volgende Tab begint weer bovenaan de pagina.
+	// A disabled button cannot hold focus: the browser drops it to the body and
+	// the next Tab starts back at the top of the page.
 	it('verlegt de focus naar de andere pijl als de gefocuste pijl uitvalt', async () => {
 		el = await fixture(scrollFixture);
 		const collection = el.querySelector('nldd-collection') as HTMLElement;
@@ -228,7 +228,7 @@ describe('nldd-collection', () => {
 		next.focus();
 		expect(collection.shadowRoot!.activeElement).toBe(next);
 
-		// Naar het einde scrollen zet de next-knop uit.
+		// Scrolling to the end disables the next button.
 		items.style.scrollBehavior = 'auto';
 		items.scrollLeft = items.scrollWidth;
 		items.dispatchEvent(new Event('scroll'));

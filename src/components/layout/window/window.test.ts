@@ -206,7 +206,7 @@ describe('nldd-window', () => {
 
 	it('negeert een dismiss van een genest component (bijv. nldd-token verwijderen)', async () => {
 		// Regressie: nldd-token (en nldd-banner, nldd-document-tab-bar) vuren `dismiss`
-		// voor hun eigen element; binnen een window mag dat het venster niet sluiten.
+		// for their own element. Inside a window that must not close the window.
 		el = await fixture<NLDDWindow>(`
 			<nldd-window>
 				<nldd-token control="dismiss">Label</nldd-token>
@@ -268,7 +268,7 @@ describe('nldd-window', () => {
 			const dialog = dialogOf(el);
 			expect(dialog.style.bottom).toBe('0px');
 			expect(dialog.style.left).toBe('50%');
-			// Y-as is niet meer gecenterd (bottom heeft voorrang); X-as wel.
+			// The Y axis is no longer centered (bottom wins), the X axis still is.
 			expect(dialog.style.transform).toMatch(/translate\(-50%,\s*0(px)?\)/);
 		});
 
@@ -316,13 +316,14 @@ describe('nldd-window', () => {
 });
 
 describe('nldd-window neemt geen ruimte in de flow', () => {
-	// Het venster is een position:fixed <dialog>, dus de host hoort geen doos te
-	// zijn. Als blok groeit hij mee met zijn broers en pikt hun hoogte in.
+	// The window is a position:fixed <dialog>, so the host should not be a box of
+	// its own. As a block it grows along with its siblings and steals their
+	// height.
 	it('zet de host op display: contents', () => {
 		expect(windowStyles.cssText).toMatch(/:host\s*\{[^}]*display:\s*contents/);
 	});
 
-	// De hidden-regel komt later en is specifieker, dus die wint van contents.
+	// The hidden rule comes later and is more specific, so it beats contents.
 	it('blijft verbergbaar met hidden', () => {
 		expect(windowStyles.cssText).toMatch(/:host\(\[hidden\]\)\s*\{[^}]*display:\s*none/);
 	});
@@ -339,9 +340,9 @@ describe('nldd-window meldt sluiten via elke route', () => {
 		return host.shadowRoot!.querySelector('dialog') as HTMLDialogElement;
 	}
 
-	// Escape sluit een modeless dialog via de CloseWatcher, buiten hide() om, en
-	// @cancel + preventDefault houdt dat niet betrouwbaar tegen. close kwam alleen
-	// uit hide(), dus een modeless venster sloot zonder iets te melden.
+	// Escape closes a modeless dialog through the CloseWatcher, going around
+	// hide(), and @cancel plus preventDefault does not reliably stop that. close
+	// only came out of hide(), so a modeless window closed without reporting it.
 	it('stuurt close wanneer de dialog buiten hide() om sluit', async () => {
 		el = await fixture<NLDDWindow & { show(): void; hide(): void }>(
 			'<nldd-window modeless accessible-label="Test"></nldd-window>',
