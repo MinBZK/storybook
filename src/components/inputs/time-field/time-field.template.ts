@@ -73,7 +73,7 @@ function renderPicker(component: NLDDTimeField): TemplateResult | typeof nothing
 					${component._hasSlottedPicker ? nothing : html`
 						<nldd-time-picker
 							width="full"
-							value=${component.value || nothing}
+							value=${component._pickerValue || nothing}
 							min=${component.min || nothing}
 							max=${component.max || nothing}
 							step=${component.step}

@@ -1,6 +1,7 @@
 import { describe, it, expect, afterEach, vi } from 'vitest';
 import { fixture, cleanup, waitForUpdate } from '../../../test-utils.js';
 import { parseTime, roundToStep, type NLDDTimeField } from './time-field.js';
+import type { NLDDPopover } from '../../layout/popover/popover.js';
 import './time-field.js';
 
 async function typeInto(el: NLDDTimeField, text: string, commit = false) {
@@ -10,6 +11,18 @@ async function typeInto(el: NLDDTimeField, text: string, commit = false) {
 	if (commit) input.dispatchEvent(new Event('change', { bubbles: true, composed: true }));
 	await waitForUpdate(el);
 	return input;
+}
+
+async function openPicker(el: NLDDTimeField) {
+	el.shadowRoot!.querySelector<HTMLElement>('.time-field__picker-button nldd-icon-button')!.click();
+	await new Promise((r) => setTimeout(r, 200));
+}
+
+/** Wat de picker meldt zodra het scrollen stil ligt. */
+function scrollPickerTo(el: NLDDTimeField, value: string) {
+	el.shadowRoot!.querySelector('nldd-time-picker')!.dispatchEvent(new CustomEvent('input', {
+		detail: { value }, bubbles: true, composed: true,
+	}));
 }
 
 
@@ -394,6 +407,104 @@ describe('nldd-time-field – picker', () => {
 		el.shadowRoot!.querySelector<HTMLElement>('nldd-popover nldd-button')!.click();
 		await new Promise((r) => setTimeout(r, 200));
 		expect(popover.matches(':popover-open')).toBe(false);
+	});
+
+	// Een lege picker zou twee kolommen op 00 tonen; het beginpunt zet de wielen op
+	// een tijd zonder dat het veld al iets invult.
+	it('opent de picker op een beginpunt als het veld leeg is', async () => {
+		el = await fixture<NLDDTimeField>('<nldd-time-field min="08:00"></nldd-time-field>');
+		await waitForUpdate(el);
+		await openPicker(el);
+		expect(el.value).toBe('');
+		expect(el.shadowRoot!.querySelector('nldd-time-picker')!.value).toBe('08:00');
+	});
+
+	it('bevestigt het beginpunt met de knop eronder', async () => {
+		el = await fixture<NLDDTimeField>('<nldd-time-field min="08:00"></nldd-time-field>');
+		await waitForUpdate(el);
+		await openPicker(el);
+		el.shadowRoot!.querySelector<HTMLElement>('nldd-popover nldd-button')!.click();
+		await new Promise((r) => setTimeout(r, 200));
+		expect(el.value).toBe('08:00');
+	});
+
+	it('laat een leeg veld leeg als de picker onaangeroerd sluit', async () => {
+		el = await fixture<NLDDTimeField>('<nldd-time-field min="08:00"></nldd-time-field>');
+		await waitForUpdate(el);
+		await openPicker(el);
+		el.shadowRoot!.querySelector<NLDDPopover>('nldd-popover')!.hide();
+		await new Promise((r) => setTimeout(r, 200));
+		expect(el.value).toBe('');
+	});
+
+	// Scrollen is een voorbeeld: het veld toont het al, maar legt pas vast bij het
+	// sluiten.
+	it('meldt change pas bij het sluiten', async () => {
+		el = await fixture<NLDDTimeField>('<nldd-time-field value="09:30"></nldd-time-field>');
+		await waitForUpdate(el);
+		await openPicker(el);
+		const changes: string[] = [];
+		el.addEventListener('change', () => changes.push(el.value));
+		scrollPickerTo(el, '14:30');
+		await waitForUpdate(el);
+		expect(el.value).toBe('14:30');
+		expect(changes).toEqual([]);
+		el.shadowRoot!.querySelector<HTMLElement>('nldd-popover nldd-button')!.click();
+		await new Promise((r) => setTimeout(r, 200));
+		expect(changes).toEqual(['14:30']);
+	});
+
+	it('houdt een gekozen tijd bij een klik ernaast', async () => {
+		el = await fixture<NLDDTimeField>('<nldd-time-field value="09:30"></nldd-time-field>');
+		await waitForUpdate(el);
+		await openPicker(el);
+		scrollPickerTo(el, '14:30');
+		await waitForUpdate(el);
+		el.shadowRoot!.querySelector<NLDDPopover>('nldd-popover')!.hide();
+		await new Promise((r) => setTimeout(r, 200));
+		expect(el.value).toBe('14:30');
+	});
+
+	it('zet de oude waarde terug bij annuleren', async () => {
+		el = await fixture<NLDDTimeField>('<nldd-time-field value="09:30"></nldd-time-field>');
+		await waitForUpdate(el);
+		await openPicker(el);
+		scrollPickerTo(el, '14:30');
+		await waitForUpdate(el);
+		el.shadowRoot!.querySelector('nldd-top-title-bar')!.dispatchEvent(
+			new CustomEvent('dismiss', { bubbles: true, composed: true }),
+		);
+		await new Promise((r) => setTimeout(r, 200));
+		expect(el.value).toBe('09:30');
+		expect(el.shadowRoot!.querySelector<HTMLInputElement>('.time-field__input')!.value).toBe('09:30');
+	});
+
+	// De browser sluit zelf op Escape en dat valt met een losse toets niet na te
+	// spelen; wat hier telt is dat de toets als afbreken geldt en niet als keuze.
+	it('zet de oude waarde terug bij Escape', async () => {
+		el = await fixture<NLDDTimeField>('<nldd-time-field value="09:30"></nldd-time-field>');
+		await waitForUpdate(el);
+		await openPicker(el);
+		scrollPickerTo(el, '14:30');
+		await waitForUpdate(el);
+		document.dispatchEvent(new KeyboardEvent('keydown', { key: 'Escape', bubbles: true }));
+		el.shadowRoot!.querySelector<NLDDPopover>('nldd-popover')!.hide();
+		await new Promise((r) => setTimeout(r, 200));
+		expect(el.value).toBe('09:30');
+	});
+
+	it('laat een leeg veld leeg na annuleren', async () => {
+		el = await fixture<NLDDTimeField>('<nldd-time-field min="08:00"></nldd-time-field>');
+		await waitForUpdate(el);
+		await openPicker(el);
+		scrollPickerTo(el, '14:30');
+		await waitForUpdate(el);
+		el.shadowRoot!.querySelector('nldd-top-title-bar')!.dispatchEvent(
+			new CustomEvent('dismiss', { bubbles: true, composed: true }),
+		);
+		await new Promise((r) => setTimeout(r, 200));
+		expect(el.value).toBe('');
+		expect(el.shadowRoot!.querySelector<HTMLInputElement>('.time-field__input')!.value).toBe('');
 	});
 
 	// De maat van een knop is een attribuut en dus niet met een media query te

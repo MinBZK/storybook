@@ -1253,7 +1253,7 @@ A hybrid markdown editor built on CodeMirror 6 (via NLDDCodeMirrorElement): the 
 
 ### `<nldd-time-field>`
 
-Een tekstveld voor een tijd. De waarde is altijd 24-uurs `HH:mm`; dat is in het Nederlands ook de weergave, dus anders dan bij nldd-date-field valt er niets om te rekenen. Er wordt niet gemaskeerd tijdens het typen: invoer wordt royaal geaccepteerd en pas bij het verlaten van het veld genormaliseerd. Foutmeldingen horen bij nldd-form-field, niet hier. Dit veld reflecteert alleen `invalid` / `valid`, net als nldd-text-field.
+Een tekstveld voor een tijd. De waarde is altijd 24-uurs `HH:mm`; dat is in het Nederlands ook de weergave, dus anders dan bij nldd-date-field valt er niets om te rekenen. Er wordt niet gemaskeerd tijdens het typen: invoer wordt royaal geaccepteerd en pas bij het verlaten van het veld genormaliseerd. Foutmeldingen horen bij nldd-form-field, niet hier. Dit veld reflecteert alleen `invalid` / `valid`, net als nldd-text-field. Wat je in de picker doet is een voorbeeld tot je hem verlaat: het veld toont de tijd meteen, maar legt hem pas vast bij het sluiten. "Klaar" houdt de keuze, een klik ernaast ook zodra je iets gekozen hebt, en Annuleer en Escape zetten de oude tijd terug. Op een leeg veld openen de wielen op `min`, of anders op de huidige tijd afgerond op `step`; dat vult het veld nog niet in.
 
 **Attributes**
 
@@ -1290,7 +1290,7 @@ Een tekstveld voor een tijd. De waarde is altijd 24-uurs `HH:mm`; dat is in het 
 | Event | Beschrijving |
 | --- | --- |
 | `input` | Bij elke wijziging. detail: { value } met `HH:mm`, of '' zolang er geen geldige tijd staat. |
-| `change` | Wanneer de waarde is vastgelegd. detail: { value } met `HH:mm`, of ''. |
+| `change` | Wanneer de waarde is vastgelegd: bij het verlaten van het veld, en bij het sluiten van de picker op een manier die de keuze houdt. detail: { value } met `HH:mm`, of ''. |
 
 ### `<nldd-time-picker>`
 

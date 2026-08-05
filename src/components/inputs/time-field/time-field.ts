@@ -8,6 +8,12 @@
  * Foutmeldingen horen bij nldd-form-field, niet hier. Dit veld reflecteert
  * alleen `invalid` / `valid`, net als nldd-text-field.
  *
+ * Wat je in de picker doet is een voorbeeld tot je hem verlaat: het veld toont
+ * de tijd meteen, maar legt hem pas vast bij het sluiten. "Klaar" houdt de
+ * keuze, een klik ernaast ook zodra je iets gekozen hebt, en Annuleer en Escape
+ * zetten de oude tijd terug. Op een leeg veld openen de wielen op `min`, of
+ * anders op de huidige tijd afgerond op `step`; dat vult het veld nog niet in.
+ *
  * @element nldd-time-field
  *
  * @attr {string} value - De tijd als `HH:mm` (24-uurs). Leeg wanneer er geen geldige tijd staat.
@@ -33,7 +39,7 @@
  * @slot picker - Een eigen nldd-time-picker, in plaats van de standaardpicker. Het veld blijft `value`, `min`, `max` en `step` zetten; gebruik de slot voor wat alleen een picker weet, zoals eigen vertalingen.
  *
  * @fires input - Bij elke wijziging. detail: { value } met `HH:mm`, of '' zolang er geen geldige tijd staat.
- * @fires change - Wanneer de waarde is vastgelegd. detail: { value } met `HH:mm`, of ''.
+ * @fires change - Wanneer de waarde is vastgelegd: bij het verlaten van het veld, en bij het sluiten van de picker op een manier die de keuze houdt. detail: { value } met `HH:mm`, of ''.
  */
 
 import { LitElement, type PropertyValues } from 'lit';
@@ -385,20 +391,92 @@ export class NLDDTimeField extends FormAssociated(LitElement) {
 	 *  over, maar pas ná die herstelactie, anders wordt de onze overschreven. */
 	private _focusTriggerOnClose = false;
 
+	/** De waarde van voor het openen, plus hoe de picker verlaten is. Samen
+	 *  bepalen ze bij het sluiten of wat er in de band staat blijft of terugvalt. */
+	private _valueBeforePicker = '';
+	private _pickerTouched = false;
+	private _pickerConfirmed = false;
+	private _pickerCancelled = false;
+
+	/**
+	 * Waar de wielen op openen zolang het veld leeg is: `min` als die er is, en
+	 * anders de huidige tijd afgerond op de stap. Hetzelfde beginpunt als de
+	 * pijltoetsen. Een lege picker zou twee kolommen op 00 tonen met een streepje
+	 * ertussen, en dan moet je vanaf middernacht omhoog scrollen naar een tijd die
+	 * je allang weet.
+	 *
+	 * Dit zet `value` niet: het veld blijft leeg tot je scrolt of "Klaar" kiest.
+	 */
+	@state()
+	private _pickerSeed = '';
+
+	public get _pickerValue(): string {
+		return this.value || this._pickerSeed;
+	}
+
+	/** Escape is afbreken, een klik ernaast niet. De popover meldt alleen dát hij
+	 *  dichtging, dus we vangen de toets zelf af, voordat de browser hem sluit. */
+	private _handlePickerEscape = (e: KeyboardEvent): void => {
+		if (e.key === 'Escape') this._pickerCancelled = true;
+	};
+
 	public _handlePopoverToggle(e: Event): void {
 		this._pickerOpen = (e as ToggleEvent).newState === 'open';
-		if (this._pickerOpen) {
-			// Pas nu heeft de picker afmetingen: zolang de popover dicht was kon hij
-			// de gekozen waarde niet in beeld scrollen en stond de kolom bovenaan.
-			const picker = this._slottedPicker ?? this.shadowRoot?.querySelector('nldd-time-picker');
-			picker?.scrollSelectedIntoView();
-			return;
-		}
-		if (!this._focusTriggerOnClose) return;
+		if (this._pickerOpen) this._openPicker();
+		else this._settlePicker();
+		if (this._pickerOpen || !this._focusTriggerOnClose) return;
 		this._focusTriggerOnClose = false;
 		// Microtask, niet rAF: dit verslaat dezelfde herstelactie maar wordt niet
 		// afgeknepen zolang het tabblad geen focus heeft.
 		queueMicrotask(() => this._pickerTrigger?.focus());
+	}
+
+	private _openPicker(): void {
+		this._valueBeforePicker = this.value;
+		this._pickerTouched = false;
+		this._pickerConfirmed = false;
+		this._pickerCancelled = false;
+		this._pickerSeed = this.value || this._startingPoint();
+		document.addEventListener('keydown', this._handlePickerEscape, true);
+		// Pas nu heeft de picker afmetingen: zolang de popover dicht was kon hij de
+		// gekozen waarde niet in beeld scrollen en stond de kolom bovenaan. Wachten
+		// op beide renders, want de picker krijgt zijn beginpunt hierboven pas mee.
+		void this.updateComplete.then(async () => {
+			const picker = this._slottedPicker ?? this.shadowRoot?.querySelector('nldd-time-picker');
+			if (!picker) return;
+			await picker.updateComplete;
+			picker.scrollSelectedIntoView();
+		});
+	}
+
+	/**
+	 * Wat er tijdens het scrollen gebeurde is een voorbeeld, geen antwoord: het
+	 * veld toont het al, maar het legt pas vast als je de picker verlaat op een
+	 * manier die de keuze houdt. "Klaar" doet dat altijd, een klik ernaast alleen
+	 * als er iets gekozen is. Annuleer en Escape zetten de oude waarde terug.
+	 *
+	 * Zo kost een per ongeluk geopende picker je niets, en is "Annuleer" geen knop
+	 * die alleen maar sluit.
+	 */
+	private _settlePicker(): void {
+		document.removeEventListener('keydown', this._handlePickerEscape, true);
+		// Bevestigen wint van een eerdere Escape: die hoeft de popover niet gesloten
+		// te hebben, en dan is de laatste handeling wat telt.
+		if (!this._pickerConfirmed && (this._pickerCancelled || !this._pickerTouched)) {
+			if (this.value === this._valueBeforePicker) return;
+			this.value = this._valueBeforePicker;
+			this._display = this._valueBeforePicker;
+			this._emit('input');
+			return;
+		}
+		// "Klaar" zonder iets aan te raken: dan is het beginpunt wat er in de band
+		// staat, en dat is precies wat je bevestigt.
+		if (!this.value && this._pickerSeed) {
+			this.value = this._pickerSeed;
+			this._display = this._pickerSeed;
+			this._emit('input');
+		}
+		if (this.value !== this._valueBeforePicker) this._emit('change');
 	}
 
 	/**
@@ -411,6 +489,9 @@ export class NLDDTimeField extends FormAssociated(LitElement) {
 		e.stopPropagation();
 		const detail = (e as CustomEvent).detail as { value?: string };
 		if (typeof detail?.value !== 'string') return;
+		this._pickerTouched = true;
+		// Een Escape die de popover niet sloot telt niet meer: je bent weer bezig.
+		this._pickerCancelled = false;
 		this.value = detail.value;
 		this._display = detail.value;
 		this._emit('input');
@@ -420,32 +501,32 @@ export class NLDDTimeField extends FormAssociated(LitElement) {
 	 * Een waarde vastleggen sluit de popover niet. Een tijd bestaat uit twee
 	 * delen, dus het uur zetten is de helft van een antwoord; sloten we daarop,
 	 * dan kwam je nooit bij de minuten. Bij de kalender ligt dat anders, want daar
-	 * is één dag het hele antwoord.
+	 * is één dag het hele antwoord. Het veld meldt zijn eigen `change` daarom pas
+	 * bij het sluiten.
 	 */
 	public _handlePickerChange(e: Event): void {
 		e.stopPropagation();
 		const detail = (e as CustomEvent).detail as { value?: string };
 		if (typeof detail?.value !== 'string') return;
+		this._pickerTouched = true;
 		this.value = detail.value;
 		this._display = detail.value;
-		this._emit('change');
 	}
 
-	/** De knop onder de picker: de enige weg naar buiten die de waarde houdt.
-	 *  Annuleer, Escape en een klik ernaast sluiten ook, maar dat zijn afbreken. */
 	public _handlePickerConfirm(e: Event): void {
 		e.stopPropagation();
+		this._pickerConfirmed = true;
 		this._closePicker();
 	}
 
 	private _closePicker(): void {
 		this._focusTriggerOnClose = true;
 		this._popover?.hide();
-		this._emit('change');
 	}
 
 	public _handlePickerDismiss(e: Event): void {
 		e.stopPropagation();
+		this._pickerCancelled = true;
 		// Net als na een keuze: focus terug op de knop. Zonder dit laten Annuleer,
 		// Escape en een klik ernaast de focus op de input staan.
 		this._focusTriggerOnClose = true;
