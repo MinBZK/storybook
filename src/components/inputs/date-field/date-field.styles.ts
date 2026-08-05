@@ -16,7 +16,7 @@ export const dateFieldStyles = css`
 		/* Ruimer dan de tekst meet. Niet om afkappen te voorkomen (de cijfers zijn
 		   tabulair, dus elke datum meet hetzelfde), maar als lucht rond de datum en
 		   als greep om te selecteren en te slepen. */
-		--_date-width: 10.5ch;
+		--_text-width: 10.5ch;
 		/* Ruimte gereserveerd voor het scheidingsteken. Het teken zelf krijgt zijn
 		   eigen breedte, want het is vertaalbaar en zou in een vast vak afkappen; wat
 		   die reservering misgokt, vangt het einddatumveld op. */
@@ -28,7 +28,7 @@ export const dateFieldStyles = css`
 		/* Alles wat niet kan krimpen. Enkel het laatste datumveld rekt mee, dus dit is
 		   tevens de ondergrens: eronder zou de kalenderknop het veld uit lopen. */
 		--_fixed-width: calc(var(--_edge-width) + var(--_trailing-width));
-		--_width: calc(var(--_fixed-width) + var(--_date-width));
+		--_width: calc(var(--_fixed-width) + var(--_text-width));
 		--_corner-radius: var(--semantics-controls-md-corner-radius);
 		--_background-color: var(--semantics-input-fields-background-color);
 		--_min-size: var(--semantics-controls-md-min-size);
@@ -63,11 +63,11 @@ export const dateFieldStyles = css`
 	}
 
 	:host([range]) {
-		--_fixed-width: calc(var(--_edge-width) + var(--_date-width) + var(--_separator-width) + var(--_trailing-width));
+		--_fixed-width: calc(var(--_edge-width) + var(--_text-width) + var(--_separator-width) + var(--_trailing-width));
 	}
 
 	:host([range][no-picker]) {
-		--_fixed-width: calc(var(--_edge-width) + var(--_inline-padding) + var(--_date-width) + var(--_separator-width) + var(--_validation-icon-area-width));
+		--_fixed-width: calc(var(--_edge-width) + var(--_inline-padding) + var(--_text-width) + var(--_separator-width) + var(--_validation-icon-area-width));
 	}
 
 	:host([size="sm"]) {
@@ -164,7 +164,7 @@ export const dateFieldStyles = css`
 	   scheidingsteken en de einddatum zodra het validatie-icoon zijn ruimte opeist
 	   of het veld smaller wordt gezet. */
 	:host([range]) .date-field__input {
-		width: var(--_date-width);
+		width: var(--_text-width);
 		flex-grow: 0;
 		flex-shrink: 0;
 	}

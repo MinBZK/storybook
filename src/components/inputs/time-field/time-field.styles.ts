@@ -13,14 +13,14 @@ export const timeFieldStyles = css`
 	/* # Host */
 
 	:host {
-		--_time-width: 5.5ch;
+		--_text-width: 5.5ch;
 		--_edge-width: calc(var(--_inline-padding) + var(--semantics-input-fields-border-width));
 		--_validation-icon-area-width: calc(var(--_validation-icon-size) + var(--primitives-space-8));
-		--_button-size: var(--semantics-controls-sm-min-size);
-		--_end-padding-right: calc((var(--_min-size) - var(--_button-size)) / 2 - var(--semantics-input-fields-border-width));
-		--_trailing-width: calc(var(--_validation-icon-area-width) + var(--_button-size) + var(--_end-padding-right));
+		--_picker-button-size: var(--semantics-controls-sm-min-size);
+		--_end-padding-right: calc((var(--_min-size) - var(--_picker-button-size)) / 2 - var(--semantics-input-fields-border-width));
+		--_trailing-width: calc(var(--_validation-icon-area-width) + var(--_picker-button-size) + var(--_end-padding-right));
 		--_fixed-width: calc(var(--_edge-width) + var(--_trailing-width));
-		--_width: calc(var(--_fixed-width) + var(--_time-width));
+		--_width: calc(var(--_fixed-width) + var(--_text-width));
 		--_corner-radius: var(--semantics-controls-md-corner-radius);
 		--_background-color: var(--semantics-input-fields-background-color);
 		--_min-size: var(--semantics-controls-md-min-size);
@@ -51,7 +51,7 @@ export const timeFieldStyles = css`
 		--_inline-padding: var(--semantics-controls-sm-inline-padding);
 		--_text-font: var(--semantics-input-fields-sm-text-font);
 		--_validation-icon-size: var(--semantics-input-fields-sm-validation-icon-size);
-		--_button-size: var(--semantics-controls-xs-min-size);
+		--_picker-button-size: var(--semantics-controls-xs-min-size);
 	}
 
 
