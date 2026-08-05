@@ -37,8 +37,7 @@ function renderValidationIcon(component: NLDDTimeField): TemplateResult | typeof
 /**
  * The picker hangs off the button, which sits at the end of the field, so
  * bottom-end lands it under the input. Against the left edge of the screen
- * Floating UI
- * vanzelf terug op rechtsom openen.
+ * Floating UI falls back to opening rightward on its own.
  */
 function renderPicker(component: NLDDTimeField): TemplateResult | typeof nothing {
 	if (component.noPicker) return nothing;

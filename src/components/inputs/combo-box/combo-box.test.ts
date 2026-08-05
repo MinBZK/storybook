@@ -410,16 +410,16 @@ describe('nldd-combo-box – picker pointerdown (touch close)', () => {
 		await waitForUpdate(el);
 		expect(el._isOpen).toBe(true);
 
-		// Simuleer browser flow: pointerdown → light-dismiss closes popover →
-		// pointerdown handler markeert flag → click → _toggleMenu skipt.
+		// Simulate the browser flow: pointerdown, light-dismiss closes the popover,
+		// the pointerdown handler sets the flag, click, and _toggleMenu skips.
 		el._handlePickerPointerdown();
 		// Light-dismiss would set _isOpen to false through the toggle event.
-		// simuleer dat handmatig
+		// Simulate that by hand.
 		el._closeMenu();
 		await waitForUpdate(el);
 
-		// Now the click arrives. _toggleMenu would normally reopen, but the
-		// flag voorkomt dat
+		// Now the click arrives. _toggleMenu would normally reopen, but the flag
+		// prevents it.
 		el._toggleMenu();
 		await waitForUpdate(el);
 		expect(el._isOpen).toBe(false);

@@ -184,7 +184,7 @@ describe('nldd-date-field', () => {
 	});
 
 
-	// # Periode
+	// # Range
 
 	function inputs(el: NLDDDateField): HTMLInputElement[] {
 		return Array.from(el.shadowRoot!.querySelectorAll('.date-field__input'));
@@ -314,7 +314,7 @@ describe('nldd-date-field', () => {
 	});
 
 
-	// # Kalender
+	// # Calendar
 
 	// The button's focus ring carries a 6px halo that should land exactly on the
 	// field's border. An overflow clip on the field cut that halo off at the

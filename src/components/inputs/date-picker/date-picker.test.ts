@@ -1188,8 +1188,8 @@ describe('nldd-date-picker weigert een periode over een geblokkeerde dag', () =>
 	});
 
 	// Both endpoints can be available with a booked day sitting between them. The
-	// endpoint check missed that, so change fired with a range that
-	// zichtbaar geblokkeerde datum omsloot.
+	// endpoint check missed that, so change fired with a range enclosing a visibly
+	// blocked date.
 	it('legt geen periode vast met een niet-beschikbare dag ertussen', async () => {
 		el = await fixture<NLDDDatePicker>('<nldd-date-picker range value="" max="2026-07-31"></nldd-date-picker>');
 		el.isDateUnavailable = (iso) => iso === '2026-07-15';
