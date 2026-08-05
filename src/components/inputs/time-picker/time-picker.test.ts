@@ -460,4 +460,44 @@ describe('nldd-time-picker – wiel', () => {
 		await new Promise((r) => setTimeout(r, 250));
 		expect(el.value).toBe('09:30');
 	});
+	// The host forwards nowhere, so an overlay focusing the picker would leave the
+	// arrow keys dead until the user tabbed into the selection themselves.
+	it('focust het uur wanneer de picker zelf focus krijgt', async () => {
+		el = await fixture<NLDDTimePicker>('<nldd-time-picker value="09:30"></nldd-time-picker>');
+		await waitForUpdate(el);
+		el.focus();
+		expect(el.shadowRoot!.activeElement).toBe(selection(el, 'hours'));
+	});
+
+	// A focusable element inside an aria-hidden subtree is not allowed: clicking
+	// one moves focus into a part the screen reader cannot see.
+	it('heeft geen focusbare elementen in de verborgen kolommen', async () => {
+		el = await fixture<NLDDTimePicker>('<nldd-time-picker value="09:30"></nldd-time-picker>');
+		await waitForUpdate(el);
+		const kolom = column(el, 'hours');
+		expect(kolom.querySelectorAll('button, [tabindex], a, input').length).toBe(0);
+		kolom.querySelector<HTMLElement>('.time-picker__list-item')!.click();
+		expect(el.shadowRoot!.activeElement).toBeNull();
+	});
+
+	// A settle timer that outlives the element still runs _select on it, which
+	// dispatches input and change from something no longer in the document.
+	it('legt niets meer vast als de picker tijdens het scrollen verdwijnt', async () => {
+		el = await fixture<NLDDTimePicker>(
+			'<nldd-time-picker value="09:30" style="--semantics-controls-md-min-size: 44px; --semantics-controls-sm-min-size: 44px"></nldd-time-picker>',
+		);
+		await waitForUpdate(el);
+		await new Promise((r) => setTimeout(r, 250));
+		const events: string[] = [];
+		el.addEventListener('input', () => events.push('input'));
+		el.addEventListener('change', () => events.push('change'));
+		const kolom = column(el, 'hours');
+		const optie = [...kolom.querySelectorAll<HTMLElement>('.time-picker__list-item')][14];
+		kolom.scrollTop = optie.offsetTop + optie.offsetHeight / 2 - kolom.clientHeight / 2;
+		kolom.dispatchEvent(new Event('scroll'));
+		el.remove();
+		await new Promise((r) => setTimeout(r, 250));
+		expect(events).toEqual([]);
+		expect(el.value).toBe('09:30');
+	});
 });

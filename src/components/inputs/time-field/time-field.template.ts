@@ -9,6 +9,11 @@ import './../../actions/button/button.js';
 import './../../navigation/top-title-bar/top-title-bar.js';
 import './../time-picker/time-picker.js';
 
+/* eslint-disable lit-a11y/no-autofocus -- Not autofocus on page load: nldd-popover
+   reads this attribute to pick its focus target inside an overlay the user just
+   opened. Without it focus stops on the popover itself and the arrow keys do
+   nothing until you have tabbed into the selection yourself. */
+
 /**
  * The popover pins both its left and its right edge, so an `auto` width
  * collapses and the picker hangs outside a zero-width box. Hence spelled out,
@@ -74,6 +79,7 @@ function renderPicker(component: NLDDTimeField): TemplateResult | typeof nothing
 					></slot>
 					${component._hasSlottedPicker ? nothing : html`
 						<nldd-time-picker
+							autofocus
 							width="full"
 							value=${component._pickerValue || nothing}
 							min=${component.min || nothing}

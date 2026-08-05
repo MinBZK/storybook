@@ -329,7 +329,15 @@ export class NLDDTimeField extends FormAssociated(LitElement) {
 		const min = parseTime(this.min);
 		if (min) return min;
 		const now = new Date();
-		return roundToStep(fromMinutes(now.getHours() * 60 + now.getMinutes()), this.step, '00:00');
+		const rounded = roundToStep(fromMinutes(now.getHours() * 60 + now.getMinutes()), this.step, this._stepBase);
+		const max = parseTime(this.max);
+		if (!max || toMinutes(rounded) <= toMinutes(max)) return rounded;
+		// Past `max` we land on the last step at or before it, not on `max` itself:
+		// a max that does not fall on the step is not in the wheel, and a value the
+		// wheel does not hold shows up as an empty selection.
+		const step = Math.max(1, Math.round(this.step));
+		const base = toMinutes(this._stepBase);
+		return fromMinutes(base + Math.max(0, Math.floor((toMinutes(max) - base) / step)) * step);
 	}
 
 	private _shift(from: string, direction: 1 | -1): string {

@@ -15985,6 +15985,25 @@
             },
             {
               "kind": "method",
+              "name": "focus",
+              "return": {
+                "type": {
+                  "text": "void"
+                }
+              },
+              "parameters": [
+                {
+                  "name": "options",
+                  "optional": true,
+                  "type": {
+                    "text": "FocusOptions"
+                  }
+                }
+              ],
+              "description": "Focus lands on the hour, the way nldd-date-picker focuses a day. The host\nitself forwards nowhere, so an overlay that focuses this picker would leave\nthe arrow keys dead until the user tabbed into the selection themselves."
+            },
+            {
+              "kind": "method",
               "name": "scrollSelectedIntoView",
               "privacy": "public",
               "return": {

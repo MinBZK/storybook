@@ -253,6 +253,27 @@ export class NLDDTimePicker extends LitElement {
 	 */
 	private _scrollingSelf = false;
 	private _scrollTimers: Record<'hours' | 'minutes', number> = { hours: 0, minutes: 0 };
+	private _selfScrollTimer = 0;
+
+	/**
+	 * Focus lands on the hour, the way nldd-date-picker focuses a day. The host
+	 * itself forwards nowhere, so an overlay that focuses this picker would leave
+	 * the arrow keys dead until the user tabbed into the selection themselves.
+	 */
+	override focus(options?: FocusOptions): void {
+		const hour = this.shadowRoot?.querySelector<HTMLElement>('.time-picker__value');
+		if (hour) hour.focus(options);
+		else super.focus(options);
+	}
+
+	override disconnectedCallback(): void {
+		// A settle timer that outlives the element still runs _select on it, which
+		// dispatches input and change from something no longer in the document.
+		clearTimeout(this._scrollTimers.hours);
+		clearTimeout(this._scrollTimers.minutes);
+		clearTimeout(this._selfScrollTimer);
+		super.disconnectedCallback();
+	}
 
 	/**
 	 * Scrolling is choosing: whatever comes to rest in the middle is the value.
@@ -262,6 +283,10 @@ export class NLDDTimePicker extends LitElement {
 	 */
 	public _handleScroll(e: Event, column: 'hours' | 'minutes'): void {
 		if (this._scrollingSelf) return;
+		// Clearing the timers on disconnect is not enough on its own: a scroll event
+		// the browser had already queued still arrives afterwards and would set a
+		// fresh one on an element that is no longer in the document.
+		if (!this.isConnected) return;
 		const el = e.currentTarget as HTMLElement;
 		// The selection follows every movement, the value only records once at rest.
 		const centered = this._centeredOption(el);
@@ -321,7 +346,7 @@ export class NLDDTimePicker extends LitElement {
 		}
 		// A little longer than the debounce above, so the scroll events from this
 		// movement have all been ignored before we listen again.
-		window.setTimeout(() => { this._scrollingSelf = false; }, 200);
+		this._selfScrollTimer = window.setTimeout(() => { this._scrollingSelf = false; }, 200);
 	}
 
 	override updated(changed: PropertyValues): void {

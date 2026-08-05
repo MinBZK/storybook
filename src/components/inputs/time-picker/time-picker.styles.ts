@@ -90,13 +90,8 @@ export const timePickerStyles = css`
 	.time-picker__list-item {
 		box-sizing: border-box;
 		display: flex;
-		margin: 0;
-		outline: none;
-		border: none;
 		border-radius: var(--_control-corner-radius);
-		background: none;
 		min-height: var(--_control-min-size);
-		padding: 0;
 		flex-shrink: 0;
 		align-items: center;
 		justify-content: center;
@@ -104,7 +99,6 @@ export const timePickerStyles = css`
 		font: var(--_list-item-font);
 		font-variant-numeric: tabular-nums;
 		scroll-snap-align: center;
-		appearance: none;
 	}
 
 	.time-picker__list-item:hover {

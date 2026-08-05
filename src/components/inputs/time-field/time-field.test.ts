@@ -544,6 +544,25 @@ describe('nldd-time-field – picker', () => {
 		expect(verwijderd.length).toBeGreaterThan(0);
 	});
 
+	// nldd-popover reads autofocus to pick its focus target. Without it, focus
+	// stops on the popover and the arrow keys do nothing until you tab in.
+	it('geeft de ingebouwde picker autofocus', async () => {
+		el = await fixture<NLDDTimeField>('<nldd-time-field value="09:30"></nldd-time-field>');
+		await waitForUpdate(el);
+		expect(el.shadowRoot!.querySelector('nldd-time-picker')!.hasAttribute('autofocus')).toBe(true);
+	});
+
+	// Only max, no min: the current time can lie past it, and a starting point
+	// outside the bounds leaves the wheels without a selection.
+	it('houdt het beginpunt binnen max', async () => {
+		el = await fixture<NLDDTimeField>('<nldd-time-field max="00:30" step="15"></nldd-time-field>');
+		await waitForUpdate(el);
+		await openPicker(el);
+		const picker = el.shadowRoot!.querySelector('nldd-time-picker')!;
+		expect(picker.value).toBe('00:30');
+		expect(picker.shadowRoot!.querySelectorAll('[data-selected]').length).toBe(2);
+	});
+
 	// A button's size is an attribute and so cannot be chosen with a media query.
 	// The field therefore asks the same question in JS.
 	it('kiest de knopmaat op het aanwijzertype', async () => {

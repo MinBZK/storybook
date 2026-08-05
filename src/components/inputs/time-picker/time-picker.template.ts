@@ -1,14 +1,22 @@
 import { html, nothing, TemplateResult } from 'lit';
 import type { NLDDTimePicker } from './time-picker.js';
 
+/* eslint-disable lit-a11y/click-events-have-key-events -- The values in a column
+   are clickable but carry no keyboard path of their own: the column is
+   aria-hidden scenery and the spinbuttons in the selection are the control. A
+   listener here would put the same values in the tab order twice. */
+
 function pad(number: number): string {
 	return String(number).padStart(2, '0');
 }
 
 /**
  * One column of values. Scenery as far as the screen reader is concerned: the
- * meaning and the controls live in the selection, so no roles and no tab stops here,
- * otherwise the same values appear in it twice.
+ * meaning and the controls live in the selection, so no roles and no tab stops
+ * here, otherwise the same values appear in it twice. Plain elements and not
+ * buttons, because a focusable element inside an aria-hidden subtree is not
+ * allowed: clicking one would move focus into a part the screen reader cannot
+ * see.
  */
 function renderColumn(
 	component: NLDDTimePicker,
@@ -27,15 +35,12 @@ function renderColumn(
 			${numbers.map((number) => {
 				const isSelected = number === selected;
 				return html`
-					<button class="time-picker__list-item"
-						type="button"
-						role="presentation"
+					<div class="time-picker__list-item"
 						data-selected=${isSelected ? 'true' : nothing}
-						tabindex="-1"
 						@click=${() => component._select(column, number, true)}
 					>
 						${pad(number)}
-					</button>
+					</div>
 				`;
 			})}
 		</div>
