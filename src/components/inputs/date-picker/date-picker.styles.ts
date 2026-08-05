@@ -342,7 +342,7 @@ export const datePickerStyles = css`
 	}
 
 
-	/* # Toegankelijkheid */
+	/* # High Contrast */
 
 	@media (forced-colors: active) {
 		.date-picker__day.is-selected .date-picker__day-indicator {

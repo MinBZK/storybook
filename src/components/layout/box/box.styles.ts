@@ -42,7 +42,7 @@ export const boxStyles = css`
 	}
 
 
-	/* # Accessibility */
+	/* # High Contrast */
 
 	@media (forced-colors: active) {
 		.box {

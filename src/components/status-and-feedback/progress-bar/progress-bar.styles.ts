@@ -183,7 +183,7 @@ export const progressBarStyles = css`
 	}
 
 
-	/* # Accessibility */
+	/* # Reduced Motion */
 
 	@media (prefers-reduced-motion: reduce) {
 		.progress-bar__indeterminate-indicator::before {
@@ -199,6 +199,9 @@ export const progressBarStyles = css`
 			50% { background-color: color-mix(in srgb, var(--_indeterminate-background-color) 50%, transparent); }
 		}
 	}
+
+
+	/* # High Contrast */
 
 	@media (forced-colors: active) {
 		.progress-bar__track {
@@ -391,13 +394,16 @@ export const progressBarSegmentIndicatorStyles = css`
 	}
 
 
-	/* # Accessibility */
+	/* # Reduced Motion */
 
 	@media (prefers-reduced-motion: reduce) {
 		:host {
 			transition: none;
 		}
 	}
+
+
+	/* # High Contrast */
 
 	@media (forced-colors: active) {
 		:host {

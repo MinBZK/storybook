@@ -223,7 +223,7 @@ export const progressCircleStyles = css`
 	}
 
 
-	/* # Accessibility */
+	/* # Reduced Motion */
 
 	@media (prefers-reduced-motion: reduce) {
 		.progress-circle__indeterminate-indicator {
@@ -245,6 +245,9 @@ export const progressCircleStyles = css`
 			animation: none;
 		}
 	}
+
+
+	/* # High Contrast */
 
 	@media (forced-colors: active) {
 		.progress-circle__track,

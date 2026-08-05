@@ -221,7 +221,7 @@ export const activityIndicatorStyles = css`
 	}
 
 
-	/* # Accessibility */
+	/* # Reduced Motion */
 
 	@media (prefers-reduced-motion: reduce) {
 		.activity-indicator,

@@ -264,7 +264,7 @@ export const listStyles = css`
 	}
 
 
-	/* # Accessibility */
+	/* # High Contrast */
 
 	@media (forced-colors: active) {
 		:host([variant="box"]) .list__main {
