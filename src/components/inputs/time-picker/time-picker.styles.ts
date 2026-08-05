@@ -179,7 +179,7 @@ export const timePickerStyles = css`
 	}
 
 
-	/* # Accessibility */
+	/* # High Contrast */
 
 	@media (forced-colors: active) {
 		.time-picker__selection {
