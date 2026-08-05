@@ -77,9 +77,6 @@ export const menuStyles = css`
 		flex-direction: column;
 		max-height: min(var(--_max-height), calc(var(--_max-items) * var(--_item-size) + var(--_padding) * 2));
 		outline: none;
-		/* Explicit, because overflow-y alone would compute overflow-x to auto and
-		   make the menu scroll sideways instead of wrapping. Not clip: with a
-		   scrolling value on the other axis the browser downgrades clip to hidden. */
 		overflow-x: hidden;
 		overflow-y: auto;
 		scroll-padding-block: var(--_padding);
