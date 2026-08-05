@@ -7,7 +7,7 @@ function pad(number: number): string {
 
 /**
  * One column of values. Scenery as far as the screen reader is concerned: the
- * meaning and the controls live in the band, so no roles and no tab stops here,
+ * meaning and the controls live in the selection, so no roles and no tab stops here,
  * otherwise the same values appear in it twice.
  */
 function renderColumn(
@@ -43,13 +43,13 @@ function renderColumn(
 }
 
 /**
- * A value in the band, as a spinbutton. The band covers the columns opaquely,
+ * A value in the selection, as a spinbutton. The selection covers the columns opaquely,
  * so this is the digit you read. What lies underneath needs no styling of its
  * own, it is hidden anyway. The columns are aria-hidden, and a spinbutton is
  * exactly what a wheel is. Separate tab stops for hour and minute, so Tab
  * switches between the two and the arrows move the value.
  */
-function renderBandValue(
+function renderSelectionValue(
 	component: NLDDTimePicker,
 	column: 'hours' | 'minutes',
 	value: number | null,
@@ -79,13 +79,13 @@ export function timePickerTemplate(component: NLDDTimePicker): TemplateResult {
 			aria-label=${component._label}
 		>
 			<div class="time-picker__selection">
-				${renderBandValue(component, 'hours', component._bandHour, component._t('components.time-picker.hours-label'))}
+				${renderSelectionValue(component, 'hours', component._centeredHour, component._t('components.time-picker.hours-label'))}
 				<span class="time-picker__value-separator"
 					aria-hidden="true"
 				>
 					:
 				</span>
-				${renderBandValue(component, 'minutes', component._bandMinute, component._t('components.time-picker.minutes-label'))}
+				${renderSelectionValue(component, 'minutes', component._centeredMinute, component._t('components.time-picker.minutes-label'))}
 			</div>
 			${renderColumn(
 				component,

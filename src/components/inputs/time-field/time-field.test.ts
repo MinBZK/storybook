@@ -455,7 +455,7 @@ describe('nldd-time-field – picker', () => {
 	});
 
 	// Enter is the default action in a dialog, and here that is "Klaar".
-	it('sluit de picker met Enter op een waarde in de band', async () => {
+	it('sluit de picker met Enter op een waarde in de selectie', async () => {
 		el = await fixture<NLDDTimeField>('<nldd-time-field value="09:30"></nldd-time-field>');
 		await waitForUpdate(el);
 		await openPicker(el);

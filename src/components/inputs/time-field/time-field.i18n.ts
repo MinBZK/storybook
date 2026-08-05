@@ -6,7 +6,7 @@ export const nlddTimeFieldTranslations = {
 	'components.time-field.to-pick-time-action': 'Tijd kiezen',
 	// Closes the sheet without choosing, so imperative like other direct actions.
 	'components.time-field.cancel-action': 'Annuleer',
-	// Closes the popover and keeps the time standing in the band. Deliberately
+	// Closes the popover and keeps the time standing in the selection. Deliberately
 	// not "Opslaan": this confirms a choice, it does not save a form. A consumer
 	// who puts this in a save flow can override it.
 	'components.time-field.confirm-action': 'Klaar',

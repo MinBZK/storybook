@@ -15,7 +15,7 @@ function selected(el: NLDDTimePicker, name: 'hours' | 'minutes'): string | null 
 	return column(el, name).querySelector('[data-selected]')?.textContent?.trim() ?? null;
 }
 
-function band(el: NLDDTimePicker, name: 'hours' | 'minutes'): HTMLElement {
+function selection(el: NLDDTimePicker, name: 'hours' | 'minutes'): HTMLElement {
 	const index = name === 'hours' ? 0 : 1;
 	return [...el.shadowRoot!.querySelectorAll<HTMLElement>('.time-picker__value')][index];
 }
@@ -141,12 +141,12 @@ describe('nldd-time-picker – kiezen', () => {
 		expect(getComputedStyle(item).pointerEvents).not.toBe('none');
 	});
 
-	it('bevestigt met Enter op de band', async () => {
+	it('bevestigt met Enter op de selectie', async () => {
 		el = await fixture<NLDDTimePicker>('<nldd-time-picker value="09:30"></nldd-time-picker>');
 		await waitForUpdate(el);
 		const gezien: string[] = [];
 		el.addEventListener('change', (() => gezien.push('change')) as EventListener);
-		band(el, 'hours').dispatchEvent(new KeyboardEvent('keydown', {
+		selection(el, 'hours').dispatchEvent(new KeyboardEvent('keydown', {
 			key: 'Enter', bubbles: true, composed: true, cancelable: true,
 		}));
 		await waitForUpdate(el);
@@ -268,8 +268,8 @@ describe('nldd-time-picker – toegankelijkheid', () => {
 	it('geeft de twee spinbuttons elk een eigen naam', async () => {
 		el = await fixture<NLDDTimePicker>('<nldd-time-picker></nldd-time-picker>');
 		await waitForUpdate(el);
-		expect(band(el, 'hours').getAttribute('aria-label')).toBe('Uur');
-		expect(band(el, 'minutes').getAttribute('aria-label')).toBe('Minuut');
+		expect(selection(el, 'hours').getAttribute('aria-label')).toBe('Uur');
+		expect(selection(el, 'minutes').getAttribute('aria-label')).toBe('Minuut');
 	});
 
 	it('valt terug op een Nederlandse naam voor het geheel', async () => {
@@ -292,11 +292,11 @@ describe('nldd-time-picker – wiel', () => {
 
 	afterEach(() => { if (el) cleanup(el); });
 
-	// What you operate in the wheel is the band, not the list behind it, and a
+	// What you operate in the wheel is the selection, not the list behind it, and a
 	// wheel is a spinbutton. The columns are scenery then: aria-hidden and not
 	// focusable, so the values are not read out twice and focus no longer
 	// disturbs the scroll position.
-	it('legt de betekenis in de band en verbergt de kolommen', async () => {
+	it('legt de betekenis in de selectie en verbergt de kolommen', async () => {
 		el = await fixture<NLDDTimePicker>('<nldd-time-picker value="09:30"></nldd-time-picker>');
 		await waitForUpdate(el);
 		expect(column(el, 'hours').getAttribute('aria-hidden')).toBe('true');
@@ -308,21 +308,21 @@ describe('nldd-time-picker – wiel', () => {
 	it('geeft uur en minuut elk een eigen spinbutton', async () => {
 		el = await fixture<NLDDTimePicker>('<nldd-time-picker value="09:30" step="15"></nldd-time-picker>');
 		await waitForUpdate(el);
-		const uur = band(el, 'hours');
+		const uur = selection(el, 'hours');
 		expect(uur.getAttribute('role')).toBe('spinbutton');
 		expect(uur.getAttribute('aria-label')).toBe('Uur');
 		expect(uur.getAttribute('tabindex')).toBe('0');
 		expect(uur.getAttribute('aria-valuenow')).toBe('9');
 		expect(uur.getAttribute('aria-valuetext')).toBe('09');
-		const minuut = band(el, 'minutes');
+		const minuut = selection(el, 'minutes');
 		expect(minuut.getAttribute('aria-valuemin')).toBe('0');
 		expect(minuut.getAttribute('aria-valuemax')).toBe('45');
 	});
 
-	it('verzet de waarde met de pijltjes op de band', async () => {
+	it('verzet de waarde met de pijltjes op de selectie', async () => {
 		el = await fixture<NLDDTimePicker>('<nldd-time-picker value="09:30" step="15"></nldd-time-picker>');
 		await waitForUpdate(el);
-		band(el, 'minutes').dispatchEvent(new KeyboardEvent('keydown', {
+		selection(el, 'minutes').dispatchEvent(new KeyboardEvent('keydown', {
 			key: 'ArrowDown', bubbles: true, composed: true, cancelable: true,
 		}));
 		await waitForUpdate(el);
@@ -377,20 +377,20 @@ describe('nldd-time-picker – wiel', () => {
 		expect(minuten.scrollHeight).toBeGreaterThan(minuten.clientHeight);
 	});
 
-	// The band lies over the middle of both columns. If it catches the mouse, a
+	// The selection lies over the middle of both columns. If it catches the mouse, a
 	// swipe right there does not scroll the column beneath it, and that is exactly
 	// where you put the mouse down.
-	it('laat de muis door de band heen naar de kolom eronder', async () => {
+	it('laat de muis door de selectie heen naar de kolom eronder', async () => {
 		el = await fixture<NLDDTimePicker>('<nldd-time-picker value="09:30"></nldd-time-picker>');
 		await waitForUpdate(el);
-		const band = el.shadowRoot!.querySelector('.time-picker__selection')!;
-		expect(getComputedStyle(band).pointerEvents).toBe('none');
+		const selectionEl = el.shadowRoot!.querySelector('.time-picker__selection')!;
+		expect(getComputedStyle(selectionEl).pointerEvents).toBe('none');
 		for (const waarde of el.shadowRoot!.querySelectorAll('.time-picker__value')) {
 			expect(getComputedStyle(waarde).pointerEvents).toBe('none');
 		}
 	});
 
-	// The band already says which value applies, and so does the field around it.
+	// The selection already says which value applies, and so does the field around it.
 	// A second marker in the column adds nothing and competes with it as soon as
 	// you scroll away.
 	it('markeert de gekozen waarde niet in de kolom', async () => {
@@ -426,7 +426,7 @@ describe('nldd-time-picker – wiel', () => {
 		expect(el.value).toBe('14:30');
 	});
 
-	// The band has to follow every movement, not the recorded value: otherwise the
+	// The selection has to follow every movement, not the recorded value: otherwise the
 	// number stays put while the column slides beneath it, and it lies about where
 	// you are.
 	it('toont tijdens het scrollen wat er in het midden ligt, voordat het vastligt', async () => {
@@ -440,9 +440,9 @@ describe('nldd-time-picker – wiel', () => {
 		kolom.scrollTop = optie.offsetTop + optie.offsetHeight / 2 - kolom.clientHeight / 2;
 		kolom.dispatchEvent(new Event('scroll'));
 		await waitForUpdate(el);
-		const inBand = () => el.shadowRoot!.querySelector('.time-picker__selection')!
+		const inSelection = () => el.shadowRoot!.querySelector('.time-picker__selection')!
 			.textContent!.replace(/\s+/g, '');
-		expect(inBand()).toBe('14:30');
+		expect(inSelection()).toBe('14:30');
 		expect(el.value).toBe('09:30');
 		await new Promise((r) => setTimeout(r, 250));
 		expect(el.value).toBe('14:30');

@@ -1294,7 +1294,7 @@ Een tekstveld voor een tijd. De waarde is altijd 24-uurs `HH:mm`; dat is in het 
 
 ### `<nldd-time-picker>`
 
-Twee kolommen, uren en minuten, die als een wiel langs een band in het midden schuiven. Het component is zelfstandig bruikbaar (inline op een pagina, in een filterpaneel) en zit ook in de popover van nldd-time-field. Waarden zijn altijd 24-uurs `HH:mm`. Scrollen ís kiezen: wat in het midden tot stilstand komt, is de waarde. Met het toetsenbord bedien je de band, want dat is wat een wiel is: uur en minuut zijn er elk een spinbutton. De kolommen eronder staan op aria-hidden, zodat dezelfde waarden niet twee keer worden voorgelezen.
+Twee kolommen, uren en minuten, die als een wiel langs de selectie in het midden schuiven. Het component is zelfstandig bruikbaar (inline op een pagina, in een filterpaneel) en zit ook in de popover van nldd-time-field. Waarden zijn altijd 24-uurs `HH:mm`. Scrollen ís kiezen: wat in het midden tot stilstand komt, is de waarde. Met het toetsenbord bedien je de selectie, want dat is wat een wiel is: uur en minuut zijn er elk een spinbutton. De kolommen eronder staan op aria-hidden, zodat dezelfde waarden niet twee keer worden voorgelezen.
 
 **Attributes**
 
@@ -1314,7 +1314,7 @@ Twee kolommen, uren en minuten, die als een wiel langs een band in het midden sc
 | Event | Beschrijving |
 | --- | --- |
 | `input` | Bij elke wijziging: scrollen, de pijltjestoetsen. detail: { value } met `HH:mm`. |
-| `change` | Wanneer de keuze is bevestigd: een klik op een waarde of op de band, of Enter. detail: { value } met `HH:mm`. Scrollen geeft alleen `input`, want anders zou een veld dat de picker in een popover toont al vastleggen zodra je stopt met scrollen. |
+| `change` | Wanneer de keuze is bevestigd: een klik op een waarde of op de selectie, of Enter. detail: { value } met `HH:mm`. Scrollen geeft alleen `input`, want anders zou een veld dat de picker in een popover toont al vastleggen zodra je stopt met scrollen. |
 
 ### `<nldd-toggle-button>`
 

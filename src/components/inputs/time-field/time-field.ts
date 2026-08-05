@@ -391,7 +391,7 @@ export class NLDDTimeField extends FormAssociated(LitElement) {
 	private _focusTriggerOnClose = false;
 
 	/** The value from before opening, plus how the picker was left. Together they
-	 *  decide on close whether what stands in the band stays or falls back. */
+	 *  decide on close whether what stands in the selection stays or falls back. */
 	private _valueBeforePicker = '';
 	private _pickerTouched = false;
 	private _pickerConfirmed = false;
@@ -471,7 +471,7 @@ export class NLDDTimeField extends FormAssociated(LitElement) {
 			return;
 		}
 		// "Klaar" without touching anything: the starting point is what stands in
-		// the band, and that is exactly what you are confirming.
+		// the selection, and that is exactly what you are confirming.
 		if (!this.value && this._pickerSeed) {
 			this.value = this._pickerSeed;
 			this._display = this._pickerSeed;
@@ -521,7 +521,7 @@ export class NLDDTimeField extends FormAssociated(LitElement) {
 	}
 
 	/**
-	 * Enter on a value in the band does what Enter in a dialog always does: the
+	 * Enter on a value in the selection does what Enter in a dialog always does: the
 	 * default action, and here that is "Klaar". With the arrow keys you are still
 	 * adjusting, so this is the key that says you are done.
 	 *
