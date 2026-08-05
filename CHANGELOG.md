@@ -9,6 +9,15 @@ the type of conventional-commit determines the release. Conventional types
 `chore`, `docs`, `ci`, `style`, `test`, `build` are intentionally omitted
 here; consult the commit history if you need that level of detail.
 
+## <small>0.8.78 (2026-08-05)</small>
+
+* feat: a time field and a time picker, plus a standalone browser bundle (#187) ([e2a94fd](https://github.com/MinBZK/storybook/commit/e2a94fd)), closes [#187](https://github.com/MinBZK/storybook/issues/187)
+* ci: geef CI en Validate een read-only token en persist het niet op schijf (#170) ([65bf797](https://github.com/MinBZK/storybook/commit/65bf797)), closes [#170](https://github.com/MinBZK/storybook/issues/170) [#167](https://github.com/MinBZK/storybook/issues/167)
+* ci: install dependencies with --ignore-scripts (#167) ([9f46021](https://github.com/MinBZK/storybook/commit/9f46021)), closes [#167](https://github.com/MinBZK/storybook/issues/167)
+* ci: laat actions/checkout het VERSION_BUMP_TOKEN niet op schijf achter (#168) ([ecd6dc0](https://github.com/MinBZK/storybook/commit/ecd6dc0)), closes [#168](https://github.com/MinBZK/storybook/issues/168) [#167](https://github.com/MinBZK/storybook/issues/167)
+* ci: publiceer vanuit een aparte job zonder dependency-code (#169) ([68964fb](https://github.com/MinBZK/storybook/commit/68964fb)), closes [#169](https://github.com/MinBZK/storybook/issues/169) [#167](https://github.com/MinBZK/storybook/issues/167)
+* ci: voeg Dependabot toe met een cooldown van vijf dagen (#171) ([1c852e4](https://github.com/MinBZK/storybook/commit/1c852e4)), closes [#171](https://github.com/MinBZK/storybook/issues/171)
+
 ### Highlights
 
 - **A time field and a time picker.** `nldd-time-field` is the counterpart of `nldd-date-field`, with the same API, so a date-and-time form no longer needs a hand-styled native input beside it. Its picker is a wheel: two columns sliding past the selection in the middle, where scrolling is choosing and CSS snapping does the work. `step` decides which minutes exist at all, `rows` how tall the wheel stands, and a row is 44px under a finger and 32px under a mouse. Nothing lands until you leave: the field previews the time as you scroll, "Klaar" keeps it, and Annuleer or Escape puts the old one back. An empty field opens on the current time rather than on midnight. On the keyboard the selection is the control: opening the picker puts focus on the hour, hour and minute are each a spinbutton, up and down set the value, left and right move between them. `nldd-time-picker` also stands on its own, inline on a page.
