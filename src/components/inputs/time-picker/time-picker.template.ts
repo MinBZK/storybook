@@ -6,9 +6,9 @@ function pad(number: number): string {
 }
 
 /**
- * Eén kolom met waarden. Decor voor de screenreader: de betekenis en de
- * bediening zitten in de band, dus hier geen rollen en geen tab-stops, anders
- * staan dezelfde waarden er twee keer in.
+ * One column of values. Scenery as far as the screen reader is concerned: the
+ * meaning and the controls live in the band, so no roles and no tab stops here,
+ * otherwise the same values appear in it twice.
  */
 function renderColumn(
 	component: NLDDTimePicker,
@@ -43,11 +43,11 @@ function renderColumn(
 }
 
 /**
- * Een waarde in de band, als spinbutton. De band ligt dekkend over de kolommen,
- * dus dit is het cijfer dat je leest; wat eronder ligt hoeft niet aangepast te
- * worden, dat valt toch weg. In wiel-modus staan de kolommen op aria-hidden en
- * is een spinbutton precies wat een wiel is. Losse tab-stops voor uur en minuut,
- * zodat je met Tab tussen de twee wisselt en met de pijltjes de waarde verzet.
+ * A value in the band, as a spinbutton. The band covers the columns opaquely,
+ * so this is the digit you read. What lies underneath needs no styling of its
+ * own, it is hidden anyway. The columns are aria-hidden, and a spinbutton is
+ * exactly what a wheel is. Separate tab stops for hour and minute, so Tab
+ * switches between the two and the arrows move the value.
  */
 function renderBandValue(
 	component: NLDDTimePicker,

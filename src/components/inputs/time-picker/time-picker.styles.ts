@@ -20,8 +20,8 @@ export const timePickerStyles = css`
 		--_rows: 7;
 		--_list-height: calc(var(--_control-min-size) * var(--_rows));
 		--_list-gap: var(--primitives-space-4);
-		/* initial houdt hem gegarandeerd-ongeldig, zodat width op auto uitkomt
-		   zolang het attribuut niets zet. */
+		/* initial keeps it guaranteed-invalid, so width lands on auto as long as
+		   the attribute sets nothing. */
 		--_width: initial;
 
 		@media (pointer: fine) {
@@ -62,12 +62,11 @@ export const timePickerStyles = css`
 		flex-direction: column;
 		flex-grow: 1;
 		flex-shrink: 1;
-		/* Zonder dit rekken de waarden van een korte lijst uit tot de volle
-		   hoogte. */
+		/* Without this the values of a short list stretch to the full height. */
 		justify-content: flex-start;
 		scrollbar-width: none;
-		/* Niet mandatory: dan moet de browser altijd op een snappunt uitkomen en
-		   kan een korte lijst weigeren te scrollen. */
+		/* Not mandatory: then the browser always has to land on a snap point, and a
+		   short list can refuse to scroll. */
 		scroll-snap-type: y proximity;
 		mask-image: linear-gradient(to bottom, transparent 0%, black 12%, black 88%, transparent 100%);
 	}
@@ -76,10 +75,10 @@ export const timePickerStyles = css`
 		display: none;
 	}
 
-	/* Ruimte zodat de eerste en de laatste waarde het midden kunnen bereiken. Als
-	   lege vakken en niet als padding-block: Safari telt de onderste padding van
-	   een scrollcontainer niet mee in de scrollbare overflow, en bij een korte
-	   lijst valt daarmee alle overflow weg. */
+	/* Room for the first and last value to reach the middle. As empty boxes and
+	   not as padding-block: Safari does not count the bottom padding of a scroll
+	   container towards the scrollable overflow, and on a short list that wipes
+	   out all overflow. */
 	.time-picker__list::before,
 	.time-picker__list::after {
 		content: '';
@@ -112,12 +111,12 @@ export const timePickerStyles = css`
 		background-color: var(--_list-item-is-hovered-background-color);
 	}
 
-	/* Tijdens het scrollen schuiven de waarden onder een stilstaande cursor door
-	   en zou er telkens een andere oplichten. Ook een tik halverwege een veeg
-	   hoort de scroll te stoppen, niet een waarde te kiezen.
-	   De achtergrond apart uitzetten: pointer-events houdt alleen nieuwe hover
-	   tegen, en een al staande :hover blijft tot de browser de hit-test opnieuw
-	   doet. */
+	/* While scrolling, the values slide past under a stationary cursor and a
+	   different one would light up every time. A tap halfway through a swipe
+	   should also stop the scroll, not pick a value.
+	   Turning the background off separately: pointer-events only holds off new
+	   hover, and a :hover already in place stays until the browser redoes the
+	   hit test. */
 	:host([data-scrolling]) .time-picker__list-item {
 		pointer-events: none;
 	}
@@ -134,8 +133,9 @@ export const timePickerStyles = css`
 
 	/* # Selectie */
 
-	/* De lijsten hebben een mask-image en dus een eigen stapelcontext, en ze staan
-	   hierna in de DOM: zonder z-index schilderen hun cijfers hieroverheen. */
+	/* The lists have a mask-image and therefore their own stacking context, and
+	   they come after this in the DOM: without z-index their digits paint over
+	   it. */
 	.time-picker__selection {
 		display: flex;
 		z-index: 1;
@@ -145,8 +145,8 @@ export const timePickerStyles = css`
 		left: 0;
 		border-radius: var(--_control-corner-radius);
 		background-color: var(--_selection-background-color);
-		/* Anders vangt dit vlak de veeg die de lijst eronder hoort te scrollen,
-		   precies op de plek waar je de muis neerzet. */
+		/* Otherwise this surface catches the swipe meant to scroll the list beneath
+		   it, exactly where you put the mouse down. */
 		pointer-events: none;
 		height: var(--_control-min-size);
 		gap: var(--_list-gap);

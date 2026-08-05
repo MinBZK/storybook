@@ -23,7 +23,7 @@
  * @attr {object} translations - Vertalingen; niet opgegeven sleutels vallen terug op het Nederlands.
  *
  * @fires input - Bij elke wijziging: scrollen, de pijltjestoetsen. detail: { value } met `HH:mm`.
- * @fires change - Wanneer de keuze is bevestigd: een klik op een waarde of op de band, of Enter. detail: { value } met `HH:mm`. Een veld dat de picker in een popover toont, sluit hierop; op `input` niet, anders klapt hij dicht zodra je stopt met scrollen en heb je de tweede kolom nooit gezien.
+ * @fires change - Wanneer de keuze is bevestigd: een klik op een waarde of op de band, of Enter. detail: { value } met `HH:mm`. Scrollen geeft alleen `input`, want anders zou een veld dat de picker in een popover toont al vastleggen zodra je stopt met scrollen.
  */
 
 import { LitElement, type PropertyValues } from 'lit';
@@ -77,10 +77,10 @@ export class NLDDTimePicker extends LitElement {
 	translations: Partial<NLDDTimePickerTranslations> = {};
 
 	/**
-	 * Wat er op dit moment in de band staat, per kolom. Losgehouden van `value`,
-	 * want die legt pas vast als het scrollen stil ligt. Zou de band de vastgelegde
-	 * waarde tonen, dan schuiven er cijfers achterlangs terwijl het getal in de
-	 * band blijft staan, en dan liegt hij over waar je bent.
+	 * What currently stands in the band, per column. Kept apart from `value`,
+	 * which only records once scrolling comes to rest. Were the band to show the
+	 * recorded value, digits would slide past behind it while the number in the
+	 * band stayed put, and then it lies about where you are.
 	 */
 	@state()
 	private _centred: { hours: number | null; minutes: number | null } = { hours: null, minutes: null };
@@ -105,28 +105,29 @@ export class NLDDTimePicker extends LitElement {
 		return Math.max(1, Math.round(this.step));
 	}
 
-	/** Alle geldige tijden: vanaf `min` (of middernacht) met stappen van `step`,
-	 *  tot en met `max`. Eén lijst, want de twee kolommen zijn er projecties van;
-	 *  zo kan een uur nooit in de kolom staan zonder een geldige minuut erbij. */
+	/** Every valid time: from `min` (or midnight) in increments of `step`, up to
+	 *  and including `max`. One list, because the two columns are projections of
+	 *  it. That way an hour can never appear in its column without a valid minute
+	 *  to go with it. */
 	private get _slots(): number[] {
 		const out: number[] = [];
 		for (let m = this._minMinutes; m <= this._maxMinutes; m += this._stepMinutes) out.push(m);
 		return out;
 	}
 
-	/** De uren waarvoor minstens één geldige minuut bestaat. */
+	/** The hours for which at least one valid minute exists. */
 	public get _hours(): number[] {
 		return [...new Set(this._slots.map((m) => Math.floor(m / 60)))];
 	}
 
-	/** De minuten binnen het gekozen uur. Zonder gekozen uur die van het eerste
-	 *  uur, zodat de kolom nooit leeg oogt voordat er iets gekozen is. */
+	/** The minutes within the chosen hour. Without a chosen hour, those of the
+	 *  first hour, so the column never looks empty before anything is picked. */
 	public get _minutes(): number[] {
 		const hour = this._selected === null ? this._hours[0] : Math.floor(this._selected / 60);
 		return this._slots.filter((m) => Math.floor(m / 60) === hour).map((m) => m % 60);
 	}
 
-	/** De gekozen tijd in minuten, of null zolang er geen geldige waarde staat. */
+	/** The chosen time in minutes, or null while there is no valid value. */
 	private get _selected(): number | null {
 		if (!isTime(this.value)) return null;
 		const minutes = toMinutes(this.value);
@@ -141,8 +142,8 @@ export class NLDDTimePicker extends LitElement {
 		return this._selected === null ? null : this._selected % 60;
 	}
 
-	/** Het getal dat nu in de band staat: wat er tijdens het scrollen in het midden
-	 *  ligt, en anders gewoon de gekozen waarde. */
+	/** The number now standing in the band: whatever lies in the middle while
+	 *  scrolling, and otherwise simply the chosen value. */
 	public get _bandHour(): number | null {
 		return this._centred.hours ?? this._selectedHour;
 	}
@@ -152,11 +153,11 @@ export class NLDDTimePicker extends LitElement {
 	}
 
 	/**
-	 * Kies een uur of een minuut. Het uur houdt de gekozen minuut vast wanneer
-	 * die er binnen past; zo blijf je bij het verschuiven van het uur op dezelfde
-	 * minuut staan in plaats van telkens naar het begin te springen. Past hij
-	 * niet (door `min`, `max` of een stap die niet uitkomt), dan de eerst
-	 * mogelijke minuut in dat uur.
+	 * Pick an hour or a minute. The hour holds on to the chosen minute when it
+	 * fits inside it, so moving the hour keeps you on the same minute instead of
+	 * jumping back to the start every time. When it does not fit (because of
+	 * `min`, `max` or a step that does not work out), the first possible minute
+	 * in that hour.
 	 */
 	public _select(column: 'hours' | 'minutes', number: number, commit = false): void {
 		const slots = this._slots;
@@ -177,9 +178,9 @@ export class NLDDTimePicker extends LitElement {
 		const changed = fromMinutes(next) !== this.value;
 		this.value = fromMinutes(next);
 		if (changed) this._emit('input');
-		// change is de bevestiging, niet de wijziging: een veld dat de picker in
-		// een popover toont sluit hierop, en dat mag niet gebeuren zodra je stopt
-		// met scrollen.
+		// change is the confirmation, not the change: a field showing the picker in
+		// a popover closes on it, and that must not happen the moment you stop
+		// scrolling.
 		if (commit) this._emit('change');
 	}
 
@@ -192,25 +193,25 @@ export class NLDDTimePicker extends LitElement {
 	}
 
 	/**
-	 * Pijltoetsen binnen een kolom, plus Home en End. De kolom is één tab-stop
-	 * (roving tabindex), dus Tab brengt je naar de volgende kolom in plaats van
-	 * naar de volgende waarde.
+	 * Arrow keys within a column, plus Home and End. The column is a single tab
+	 * stop (roving tabindex), so Tab takes you to the next column instead of to
+	 * the next value.
 	 */
 	public _handleKeydown(e: KeyboardEvent, column: 'hours' | 'minutes'): void {
 		const numbers = column === 'hours' ? this._hours : this._minutes;
 		if (numbers.length === 0) return;
 		const current = column === 'hours' ? this._selectedHour : this._selectedMinute;
 		const index = current === null ? -1 : numbers.indexOf(current);
-		// Enter en spatie bevestigen wat er in de band staat, zoals een klik dat
-		// doet; met de pijltjes ben je nog aan het bijstellen.
+		// Enter and space confirm what stands in the band, the way a click does.
+		// With the arrow keys you are still adjusting.
 		if (e.key === 'Enter' || e.key === ' ') {
 			e.preventDefault();
 			this._emit('change');
 			return;
 		}
-		// Horizontaal wisselt van kolom, verticaal verzet de waarde: de pijltjes
-		// bewegen zo in de richting waarin je ze ziet staan. Zelfde verdeling als
-		// de segmenten van een native <input type="time">.
+		// Horizontal switches column, vertical moves the value: that way the arrows
+		// move in the direction you see them point. Same split as the segments of a
+		// native <input type="time">.
 		if (e.key === 'ArrowLeft' || e.key === 'ArrowRight') {
 			e.preventDefault();
 			this._focusColumn(e.key === 'ArrowLeft' ? 'hours' : 'minutes');
@@ -237,7 +238,7 @@ export class NLDDTimePicker extends LitElement {
 		if (next !== null) this._select(column, next);
 	}
 
-	/** Verplaats focus naar de spinbutton van de andere kolom. */
+	/** Move focus to the spinbutton of the other column. */
 	private _focusColumn(column: 'hours' | 'minutes'): void {
 		this.shadowRoot
 			?.querySelectorAll<HTMLElement>('.time-picker__value')[column === 'hours' ? 0 : 1]
@@ -245,27 +246,27 @@ export class NLDDTimePicker extends LitElement {
 	}
 
 	/**
-	 * Terwijl wij zelf scrollen (bij openen, of na een keuze) mag het scrollen
-	 * niet opnieuw iets kiezen: dat zou de keuze die net gemaakt is overschrijven
-	 * met wat er toevallig langskomt.
+	 * While we scroll ourselves (on opening, or after a choice) the scrolling must
+	 * not pick something again: that would overwrite the choice just made with
+	 * whatever happens to pass by.
 	 */
 	private _scrollingSelf = false;
 	private _scrollTimers: Record<'hours' | 'minutes', number> = { hours: 0, minutes: 0 };
 
 	/**
-	 * In wiel-modus ís scrollen kiezen: wat in het midden tot stilstand komt, is de
-	 * waarde. Er bestaat een `scrollend`-event, maar niet overal, dus dit wacht tot
-	 * het scrollen 120ms stil is. Kort genoeg om direct te voelen, lang genoeg om
-	 * niet halverwege een veeg al te kiezen.
+	 * Scrolling is choosing: whatever comes to rest in the middle is the value.
+	 * There is a `scrollend` event, but not everywhere, so this waits until
+	 * scrolling has been still for 120ms. Short enough to feel immediate, long
+	 * enough not to pick halfway through a swipe.
 	 */
 	public _handleScroll(e: Event, column: 'hours' | 'minutes'): void {
 		if (this._scrollingSelf) return;
 		const el = e.currentTarget as HTMLElement;
-		// De band volgt elke beweging, de waarde legt pas vast bij stilstand.
+		// The band follows every movement, the value only records once at rest.
 		const centred = this._centredOption(el);
 		if (centred !== null) this._centred = { ...this._centred, [column]: centred };
-		// Als attribuut en niet als reactieve state: dit gebeurt elke scroll-frame,
-		// en een re-render van tachtig waarden per frame is verspilling.
+		// As an attribute and not as reactive state: this happens every scroll
+		// frame, and re-rendering eighty values per frame is a waste.
 		this.toggleAttribute('data-scrolling', true);
 		clearTimeout(this._scrollTimers[column]);
 		this._scrollTimers[column] = window.setTimeout(() => {
@@ -274,7 +275,7 @@ export class NLDDTimePicker extends LitElement {
 		}, 120);
 	}
 
-	/** Het getal van de optie die het dichtst bij het midden van de kolom staat. */
+	/** The number of the option closest to the middle of the column. */
 	private _centredOption(el: HTMLElement): number | null {
 		const centre = el.scrollTop + el.clientHeight / 2;
 		let best: HTMLElement | null = null;
@@ -289,20 +290,21 @@ export class NLDDTimePicker extends LitElement {
 		return best === null ? null : Number(best.textContent);
 	}
 
-	/** Legt vast wat er in het midden tot stilstand kwam. */
+	/** Records whatever came to rest in the middle. */
 	private _selectCentred(column: 'hours' | 'minutes', el: HTMLElement): void {
 		const centred = this._centredOption(el);
 		if (centred !== null) this._select(column, centred);
 	}
 
 	/**
-	 * Zet de gekozen waarde midden in beeld. De kolom is zeven waarden hoog, dus
-	 * `center` zet hem op de vierde rij met drie erboven en drie eronder.
+	 * Put the chosen value in the middle of the view. The column is seven values
+	 * tall, so `center` lands it on the fourth row with three above and three
+	 * below.
 	 *
-	 * Publiek omdat een verborgen element niet te scrollen is: staat de picker in
-	 * een popover, dan heeft hij bij het zetten van de waarde nog geen afmetingen
-	 * en doet scrollIntoView niets. Het veld roept dit daarom aan zodra de popover
-	 * opengaat.
+	 * Public because a hidden element cannot be scrolled: with the picker in a
+	 * popover it has no dimensions yet when the value is set, and scrollIntoView
+	 * does nothing. The field therefore calls this as soon as the popover
+	 * opens.
 	 */
 	public scrollSelectedIntoView(): void {
 		this._scrollingSelf = true;
@@ -310,23 +312,23 @@ export class NLDDTimePicker extends LitElement {
 			const column = this.shadowRoot?.querySelector<HTMLElement>(`[data-column="${name}"]`);
 			const option = column?.querySelector<HTMLElement>('[data-selected]');
 			if (!column || !option) continue;
-			// Zelf rekenen in plaats van scrollIntoView: die onderhandelt met de
-			// snappunten en met elke scrollbare voorouder, en doet dat per browser
-			// anders. Dit is exact de omkering van _centredOption, dus wat we
-			// neerzetten is ook wat we straks teruglezen.
+			// Doing the math ourselves instead of scrollIntoView: that negotiates with
+			// the snap points and with every scrollable ancestor, and does so
+			// differently per browser. This is the exact inverse of _centredOption, so
+			// what we put down is also what we read back later.
 			column.scrollTop = option.offsetTop + option.offsetHeight / 2 - column.clientHeight / 2;
 		}
-		// Iets langer dan de debounce hierboven, zodat de scroll-events van deze
-		// beweging allemaal genegeerd zijn voordat we weer luisteren.
+		// A little longer than the debounce above, so the scroll events from this
+		// movement have all been ignored before we listen again.
 		window.setTimeout(() => { this._scrollingSelf = false; }, 200);
 	}
 
 	override updated(changed: PropertyValues): void {
 		if (changed.has('rows')) {
-			// Even of oneven maakt niet uit: de gekozen waarde wordt op het midden
-			// gezet, dus bij oneven zie je hele rijen en bij even loopt er boven en
-			// onder een halve rij uit beeld. Minimaal 3, want bij 1 zie je alleen de
-			// gekozen waarde en valt er niets te scrollen.
+			// Odd or even makes no difference: the chosen value is centered, so with
+			// an odd count you see whole rows and with an even one half a row runs off
+			// the top and bottom. At least 3, because with 1 you only see the chosen
+			// value and there is nothing to scroll.
 			this.style.setProperty('--_rows', String(Math.max(3, Math.round(this.rows))));
 		}
 		if (changed.has('width')) {
@@ -336,8 +338,8 @@ export class NLDDTimePicker extends LitElement {
 			else this.style.removeProperty('--_width');
 		}
 		if (changed.has('value') || changed.has('min') || changed.has('max') || changed.has('step')) {
-			// De band volgt weer de waarde: die is net van buiten gezet of vastgelegd,
-			// en staat in beide gevallen gelijk met het midden.
+			// The band follows the value again: it was just set from outside or
+			// recorded, and in both cases it lines up with the middle.
 			this._centred = { hours: null, minutes: null };
 			this.scrollSelectedIntoView();
 		}

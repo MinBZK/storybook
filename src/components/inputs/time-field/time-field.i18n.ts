@@ -1,15 +1,14 @@
 export const nlddTimeFieldTranslations = {
-	// Terugval-naam als een consument geen accessible-label geeft en het veld niet
-	// in een nldd-form-field staat: zonder dit is de invoer een naamloze control.
+	// Fallback name when a consumer gives no accessible-label and the field does
+	// not sit in an nldd-form-field: without it the input is an unnamed control.
 	'components.time-field.default-label': 'Tijd',
-	// Opent de picker, dus infinitief zoals andere indirecte acties.
+	// Opens the picker, so an infinitive like other indirect actions.
 	'components.time-field.to-pick-time-action': 'Tijd kiezen',
-	// Sluit de sheet zonder te kiezen, dus gebiedende wijs zoals andere directe acties.
+	// Closes the sheet without choosing, so imperative like other direct actions.
 	'components.time-field.cancel-action': 'Annuleer',
-	// Sluit de popover met de tijd die in de band staat. Bewust niet "Opslaan":
-	// het veld heeft de waarde al zodra je scrolt, hier bevestig je alleen dat je
-	// klaar bent. Een consument die dit in een opslaan-flow zet, kan het
-	// overschrijven.
+	// Closes the popover and keeps the time standing in the band. Deliberately
+	// not "Opslaan": this confirms a choice, it does not save a form. A consumer
+	// who puts this in a save flow can override it.
 	'components.time-field.confirm-action': 'Klaar',
 };
 

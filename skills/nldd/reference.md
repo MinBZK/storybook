@@ -1314,7 +1314,7 @@ Twee kolommen, uren en minuten, die als een wiel langs een band in het midden sc
 | Event | Beschrijving |
 | --- | --- |
 | `input` | Bij elke wijziging: scrollen, de pijltjestoetsen. detail: { value } met `HH:mm`. |
-| `change` | Wanneer de keuze is bevestigd: een klik op een waarde of op de band, of Enter. detail: { value } met `HH:mm`. Een veld dat de picker in een popover toont, sluit hierop; op `input` niet, anders klapt hij dicht zodra je stopt met scrollen en heb je de tweede kolom nooit gezien. |
+| `change` | Wanneer de keuze is bevestigd: een klik op een waarde of op de band, of Enter. detail: { value } met `HH:mm`. Scrollen geeft alleen `input`, want anders zou een veld dat de picker in een popover toont al vastleggen zodra je stopt met scrollen. |
 
 ### `<nldd-toggle-button>`
 

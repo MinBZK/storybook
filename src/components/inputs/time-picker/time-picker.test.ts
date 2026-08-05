@@ -92,9 +92,9 @@ describe('nldd-time-picker – kiezen', () => {
 		expect(selected(el, 'minutes')).toBe('30');
 	});
 
-	// Scrollen wijzigt de waarde maar bevestigt niets: een veld dat de picker in
-	// een popover toont zou anders dichtklappen zodra je stopt met scrollen, en
-	// dan heb je de tweede kolom nooit gezien.
+	// Scrolling changes the value but confirms nothing: a field showing the picker
+	// in a popover would otherwise snap shut the moment you stop scrolling, and
+	// then you never saw the second column.
 	it('vuurt input bij scrollen en geen change', async () => {
 		el = await fixture<NLDDTimePicker>(
 			'<nldd-time-picker value="09:30" style="--semantics-controls-md-min-size: 44px; --semantics-controls-sm-min-size: 44px"></nldd-time-picker>',
@@ -113,9 +113,9 @@ describe('nldd-time-picker – kiezen', () => {
 		expect(el.value).toBe('14:30');
 	});
 
-	// Tijdens het scrollen schuiven de waarden onder een stilstaande cursor door;
-	// zonder dit licht er telkens een andere op en kan een tik halverwege een veeg
-	// per ongeluk kiezen.
+	// While scrolling, the values slide past under a stationary cursor. Without
+	// this a different one lights up every time, and a tap halfway through a swipe
+	// can pick something by accident.
 	it('zet de muis uit op de waarden tijdens het scrollen', async () => {
 		el = await fixture<NLDDTimePicker>(
 			'<nldd-time-picker value="09:30" style="--semantics-controls-md-min-size: 44px; --semantics-controls-sm-min-size: 44px"></nldd-time-picker>',
@@ -128,15 +128,15 @@ describe('nldd-time-picker – kiezen', () => {
 		kolom.dispatchEvent(new Event('scroll'));
 		await waitForUpdate(el);
 		expect(getComputedStyle(item).pointerEvents).toBe('none');
-		// Ook de opmaak zelf, want een al staande :hover blijft matchen tot de
-		// browser de hit-test opnieuw doet.
+		// The styling itself as well, because a :hover already in place keeps
+		// matching until the browser redoes the hit test.
 		const hoverRegels = [...el.shadowRoot!.adoptedStyleSheets]
 			.flatMap((sheet) => [...sheet.cssRules])
 			.filter((r): r is CSSStyleRule => 'selectorText' in r)
 			.filter((r) => r.selectorText.includes('data-scrolling') && r.selectorText.includes(':hover'));
 		expect(hoverRegels).toHaveLength(1);
 		expect(hoverRegels[0].style.backgroundColor).toBe('transparent');
-		// En weer aan zodra het scrollen stil ligt.
+		// And back on once scrolling comes to rest.
 		await new Promise((r) => setTimeout(r, 250));
 		expect(getComputedStyle(item).pointerEvents).not.toBe('none');
 	});
@@ -164,8 +164,8 @@ describe('nldd-time-picker – kiezen', () => {
 		expect(seen).toEqual(['10:30']);
 	});
 
-	// Anders spring je bij elk uur terug naar :00 en moet je de minuut opnieuw
-	// zoeken, terwijl je alleen het uur wilde verschuiven.
+	// Otherwise every hour drops you back to :00 and you have to find the minute
+	// again, while all you wanted was to move the hour.
 	it('houdt de minuut vast bij het wisselen van uur', async () => {
 		el = await fixture<NLDDTimePicker>('<nldd-time-picker value="09:45" step="15"></nldd-time-picker>');
 		await waitForUpdate(el);
@@ -184,8 +184,8 @@ describe('nldd-time-picker – kiezen', () => {
 		expect(el.value).toBe('10:00');
 	});
 
-	// Nog eens op dezelfde waarde klikken is een bevestiging ("ja, deze") en dus
-	// wél een change, maar er is niets gewijzigd en dus geen input.
+	// Clicking the same value again is a confirmation ("yes, this one") and so
+	// does give a change, but nothing changed and so there is no input.
 	it('bevestigt zonder input als dezelfde waarde opnieuw wordt gekozen', async () => {
 		el = await fixture<NLDDTimePicker>('<nldd-time-picker value="09:30"></nldd-time-picker>');
 		await waitForUpdate(el);
@@ -278,8 +278,8 @@ describe('nldd-time-picker – toegankelijkheid', () => {
 		expect(el.shadowRoot!.querySelector('[role="group"]')!.getAttribute('aria-label')).toBe('Tijd kiezen');
 	});
 
-	// Eén tab-stop per kolom: anders loop je met Tab door 24 uren voordat je bij
-	// de minuten bent.
+	// One tab stop per column: otherwise Tab walks you through 24 hours before you
+	// reach the minutes.
 });
 
 
@@ -292,10 +292,10 @@ describe('nldd-time-picker – wiel', () => {
 
 	afterEach(() => { if (el) cleanup(el); });
 
-	// Wat je in het wiel bedient is de band, niet de lijst erachter, en een wiel
-	// ís een spinbutton. De kolommen zijn dan decor: aria-hidden, niet focusbaar,
-	// zodat de waarden niet dubbel worden voorgelezen en focus de scrollpositie
-	// niet meer verstoort.
+	// What you operate in the wheel is the band, not the list behind it, and a
+	// wheel is a spinbutton. The columns are scenery then: aria-hidden and not
+	// focusable, so the values are not read out twice and focus no longer
+	// disturbs the scroll position.
 	it('legt de betekenis in de band en verbergt de kolommen', async () => {
 		el = await fixture<NLDDTimePicker>('<nldd-time-picker value="09:30"></nldd-time-picker>');
 		await waitForUpdate(el);
@@ -329,9 +329,9 @@ describe('nldd-time-picker – wiel', () => {
 		expect(el.value).toBe('09:45');
 	});
 
-	// Beide controlmaten op dezelfde waarde: het component pakt de kleine onder
-	// (pointer: fine) en de grote daarbuiten, en welke van de twee de testrunner
-	// rapporteert doet er voor deze meting niet toe.
+	// Both control sizes on the same value: the component takes the small one
+	// under (pointer: fine) and the large one outside it, and which of the two the
+	// test runner reports does not matter for this measurement.
 	it('past de hoogte aan op het aantal rijen', async () => {
 		el = await fixture<NLDDTimePicker>(
 			'<nldd-time-picker value="09:30" rows="5" style="--semantics-controls-md-min-size: 44px; --semantics-controls-sm-min-size: 44px"></nldd-time-picker>',
@@ -340,8 +340,8 @@ describe('nldd-time-picker – wiel', () => {
 		expect(column(el, 'hours').clientHeight).toBe(5 * 44);
 	});
 
-	// Even mag: de gekozen waarde staat op het midden, dus dan loopt er boven en
-	// onder een halve rij uit beeld in plaats van dat er hele rijen staan.
+	// Even is allowed: the chosen value sits in the middle, so half a row then
+	// runs off the top and bottom instead of showing whole rows.
 	it('accepteert ook een even aantal rijen', async () => {
 		el = await fixture<NLDDTimePicker>(
 			'<nldd-time-picker value="09:30" rows="6" style="--semantics-controls-md-min-size: 44px; --semantics-controls-sm-min-size: 44px"></nldd-time-picker>',
@@ -350,7 +350,7 @@ describe('nldd-time-picker – wiel', () => {
 		expect(column(el, 'hours').clientHeight).toBe(6 * 44);
 		const kolom = column(el, 'hours');
 		const gekozen = kolom.querySelector<HTMLElement>('[data-selected]')!;
-		// De gekozen waarde staat nog steeds precies in het midden.
+		// The chosen value still sits exactly in the middle.
 		expect(gekozen.offsetTop + gekozen.offsetHeight / 2 - kolom.scrollTop)
 			.toBe(kolom.clientHeight / 2);
 	});
@@ -363,10 +363,10 @@ describe('nldd-time-picker – wiel', () => {
 		expect(column(el, 'hours').clientHeight).toBe(3 * 44);
 	});
 
-	// Safari telt de onderste padding van een scrollcontainer niet mee in de
-	// scrollbare overflow. Met padding-block viel bij een korte kolom precies de
-	// hele overflow weg (132px boven plus 176px waarden is exact de kolomhoogte)
-	// en was er niets meer te scrollen.
+	// Safari does not count the bottom padding of a scroll container towards the
+	// scrollable overflow. With padding-block, a short column lost exactly all of
+	// its overflow (132px above plus 176px of values is exactly the column height)
+	// and there was nothing left to scroll.
 	it('houdt ook een korte kolom scrollbaar', async () => {
 		el = await fixture<NLDDTimePicker>(
 			'<nldd-time-picker value="09:30" step="15" style="--semantics-controls-md-min-size: 44px; --semantics-controls-sm-min-size: 44px"></nldd-time-picker>',
@@ -377,9 +377,9 @@ describe('nldd-time-picker – wiel', () => {
 		expect(minuten.scrollHeight).toBeGreaterThan(minuten.clientHeight);
 	});
 
-	// De band ligt over het midden van beide kolommen. Vangt hij de muis, dan
-	// scrolt een veeg precies daar niet de kolom eronder, en dat is nou net de
-	// plek waar je hem neerzet.
+	// The band lies over the middle of both columns. If it catches the mouse, a
+	// swipe right there does not scroll the column beneath it, and that is exactly
+	// where you put the mouse down.
 	it('laat de muis door de band heen naar de kolom eronder', async () => {
 		el = await fixture<NLDDTimePicker>('<nldd-time-picker value="09:30"></nldd-time-picker>');
 		await waitForUpdate(el);
@@ -390,9 +390,9 @@ describe('nldd-time-picker – wiel', () => {
 		}
 	});
 
-	// De band zegt al welke waarde geldt, en het veld eromheen ook. Een tweede
-	// markering in de kolom voegt niets toe en concurreert ermee zodra je
-	// ervandaan scrolt.
+	// The band already says which value applies, and so does the field around it.
+	// A second marker in the column adds nothing and competes with it as soon as
+	// you scroll away.
 	it('markeert de gekozen waarde niet in de kolom', async () => {
 		el = await fixture<NLDDTimePicker>('<nldd-time-picker value="09:30"></nldd-time-picker>');
 		await waitForUpdate(el);
@@ -406,30 +406,29 @@ describe('nldd-time-picker – wiel', () => {
 	});
 
 	it('kiest de waarde die in het midden tot stilstand komt', async () => {
-		// variables.css wordt hier niet geladen, dus de kolom zou zonder deze token
-		// geen vaste hoogte hebben en helemaal niet scrollen.
+		// variables.css is not loaded here, so without this token the column would
+		// have no fixed height and would not scroll at all.
 		el = await fixture<NLDDTimePicker>(
 			'<nldd-time-picker value="09:30" style="--semantics-controls-md-min-size: 44px; --semantics-controls-sm-min-size: 44px"></nldd-time-picker>',
 		);
 		await waitForUpdate(el);
-		// De picker scrolt bij het renderen zelf naar de gekozen waarde en negeert
-		// scroll-events zolang die beweging loopt. Wachten tot die afscherming weg
-		// is, anders wordt deze scroll voor de zijne aangezien.
+		// On render the picker scrolls to the chosen value itself and ignores scroll
+		// events while that movement runs. Wait until that guard is gone, otherwise
+		// this scroll is taken for its own.
 		await new Promise((r) => setTimeout(r, 250));
 		const kolom = column(el, 'hours');
 		const optie = [...kolom.querySelectorAll<HTMLElement>('.time-picker__list-item')][14];
-		// Uit de gemeten posities, niet uit een aangenomen formule: dit is precies
-		// de rekensom die de component omkeert om te bepalen wat er in het midden
-		// staat.
+		// From the measured positions, not from an assumed formula: this is exactly
+		// the sum the component inverts to work out what sits in the middle.
 		kolom.scrollTop = optie.offsetTop + optie.offsetHeight / 2 - kolom.clientHeight / 2;
 		kolom.dispatchEvent(new Event('scroll'));
 		await new Promise((r) => setTimeout(r, 250));
 		expect(el.value).toBe('14:30');
 	});
 
-	// De band moet elke beweging volgen, niet de vastgelegde waarde: anders blijft
-	// het getal staan terwijl de kolom eronder schuift, en liegt hij over waar je
-	// bent.
+	// The band has to follow every movement, not the recorded value: otherwise the
+	// number stays put while the column slides beneath it, and it lies about where
+	// you are.
 	it('toont tijdens het scrollen wat er in het midden ligt, voordat het vastligt', async () => {
 		el = await fixture<NLDDTimePicker>(
 			'<nldd-time-picker value="09:30" style="--semantics-controls-md-min-size: 44px; --semantics-controls-sm-min-size: 44px"></nldd-time-picker>',
@@ -449,8 +448,8 @@ describe('nldd-time-picker – wiel', () => {
 		expect(el.value).toBe('14:30');
 	});
 
-	// Zonder deze afscherming zou het in beeld scrollen van de gekozen waarde
-	// onderweg iets anders kiezen.
+	// Without this guard, scrolling the chosen value into view would pick
+	// something else along the way.
 	it('kiest niets tijdens het eigen scrollen naar de gekozen waarde', async () => {
 		el = await fixture<NLDDTimePicker>('<nldd-time-picker value="09:30"></nldd-time-picker>');
 		await waitForUpdate(el);

@@ -52,7 +52,7 @@ import { timeFieldStyles } from './time-field.styles.js';
 import { timeFieldTemplate } from './time-field.template.js';
 import { nlddTimeFieldTranslations, type NLDDTimeFieldTranslations } from './time-field.i18n.js';
 
-/** Minuten sinds middernacht van de laatste tijd op een dag. */
+/** Minutes since midnight of the last time on a day. */
 const LAST_MINUTE_OF_DAY = 23 * 60 + 59;
 
 function toMinutes(time: string): number {
@@ -72,14 +72,13 @@ function toTime(hours: number, minutes: number): string | null {
 }
 
 /**
- * Lees een getypte tijd royaal. Bewust geen masker: per toetsaanslag
- * herformatteren verplaatst de caret, breekt backspace midden in de waarde en
- * verwart screenreaders, dus we accepteren wat mensen typen en normaliseren één
- * keer bij commit.
+ * Read a typed time generously. Deliberately not a mask: reformatting per
+ * keystroke moves the caret, breaks backspace mid-value and confuses screen
+ * readers, so we accept what people type and normalize once on commit.
  *
- * Accepteert 9, 09, 9:30, 9.30, 9,30, 9u30, 930 en 0930. Na een letter mogen de
- * minuten ontbreken ("9u" is een afgeronde gedachte), na een leesteken niet:
- * "9:" is halverwege het typen en hoort nog geen waarde op te leveren.
+ * Accepts 9, 09, 9:30, 9.30, 9,30, 9u30, 930 and 0930. After a letter the
+ * minutes may be left off ("9u" is a finished thought), after punctuation they
+ * may not: "9:" is halfway through typing and should not produce a value yet.
  */
 export function parseTime(raw: string): string | null {
 	const trimmed = raw.trim();
@@ -99,13 +98,13 @@ export function parseTime(raw: string): string | null {
 }
 
 /**
- * De dichtstbijzijnde tijd die op de stap valt, geteld vanaf `base`. Ligt de
- * invoer er precies tussenin, dan naar boven.
+ * The nearest time that falls on the step, counted from `base`. Input exactly
+ * in between rounds up.
  *
- * Nooit doorrollen over de dagrand: zou naar boven voorbij 23:59 gaan, dan een
- * stap terug. Doorrollen naar 00:00 verschuift stilzwijgend de dag, en een
- * consument die dit veld naast een datumveld zet heeft dan een fout die niemand
- * ziet aankomen.
+ * Never rolls over the edge of the day: if rounding up would pass 23:59, step
+ * back instead. Rolling over to 00:00 silently shifts the day, and a consumer
+ * who puts this field next to a date field then has a bug nobody sees
+ * coming.
  */
 export function roundToStep(time: string, step: number, base = '00:00'): string {
 	if (step <= 1) return time;
@@ -174,28 +173,28 @@ export class NLDDTimeField extends FormAssociated(LitElement) {
 	@property({ type: String })
 	autocomplete = '';
 
-	/** Toegankelijk label voor de interne input. Wordt automatisch gezet door nldd-form-field. */
+	/** Accessible label for the inner input. Set automatically by nldd-form-field. */
 	@property({ type: String, attribute: 'accessible-label' })
 	accessibleLabel = '';
 
 	@property({ type: String, attribute: 'error-message-ids' })
 	errorMessageIds = '';
 
-	/** Optionele vaste breedte. Zonder waarde is het veld precies breed genoeg. */
+	/** Optional fixed width. Without a value the field is exactly wide enough. */
 	@property({ type: String, reflect: true })
 	width = '';
 
-	/** Overschrijf een of meer vertaalsleutels. Niet opgegeven sleutels vallen terug op het Nederlands. */
+	/** Override one or more translation keys. Keys left out fall back to Dutch. */
 	@property({ type: Object })
 	translations: Partial<NLDDTimeFieldTranslations> = {};
 
 	/**
-	 * Of er met een fijne aanwijzer wordt gewerkt. De picker zet zijn rijhoogte al
-	 * met een media query, maar de maat van een knop is een attribuut en dus niet
-	 * met CSS te kiezen; vandaar dezelfde vraag hier nog een keer, in JS.
+	 * Whether a fine pointer is in use. The picker already sets its row height
+	 * with a media query, but a button's size is an attribute and so cannot be
+	 * chosen in CSS. Hence the same question once more here, in JS.
 	 *
-	 * Lui aangemaakt en gedeeld tussen alle velden: matchMedia bij het laden van
-	 * de module aanroepen breekt in een omgeving zonder window.
+	 * Created lazily and shared between all fields: calling matchMedia while the
+	 * module loads breaks in an environment without window.
 	 */
 	private static _finePointerQuery: MediaQueryList | null = null;
 
@@ -211,8 +210,8 @@ export class NLDDTimeField extends FormAssociated(LitElement) {
 		this._finePointer = NLDDTimeField._getFinePointerQuery().matches;
 	};
 
-	/** Maat van de knoppen in de popover: een vinger heeft de volle controlmaat
-	 *  nodig, een muis niet. Zelfde verdeling als de rijen van de picker. */
+	/** Size of the buttons in the popover: a finger needs the full control size,
+	 *  a mouse does not. Same split as the rows of the picker. */
 	public get _pickerButtonSize(): 'sm' | 'md' {
 		return this._finePointer ? 'sm' : 'md';
 	}
@@ -229,8 +228,8 @@ export class NLDDTimeField extends FormAssociated(LitElement) {
 		super.disconnectedCallback();
 	}
 
-	/** Wat de gebruiker ziet en typt. Losgehouden van `value`, dat alleen een
-	 *  geldige tijd draagt of niets. */
+	/** What the user sees and types. Kept apart from `value`, which only ever
+	 *  carries a valid time or nothing. */
 	@state()
 	_display = '';
 
@@ -246,9 +245,9 @@ export class NLDDTimeField extends FormAssociated(LitElement) {
 		return this._display;
 	}
 
-	/** De basis waarvandaan de stap telt. `min` wanneer die er is, zodat een reeks
-	 *  die op :07 begint ook met stap 15 kan; anders middernacht. Ontleend aan
-	 *  `<input type="time">`, dat `min` op dezelfde manier gebruikt. */
+	/** The base the step counts from. `min` when there is one, so a series that
+	 *  starts at :07 also works with a step of 15, otherwise midnight. Taken from
+	 *  `<input type="time">`, which uses `min` the same way. */
 	private get _stepBase(): string {
 		return parseTime(this.min) ?? '00:00';
 	}
@@ -256,21 +255,21 @@ export class NLDDTimeField extends FormAssociated(LitElement) {
 	private _withinBounds(time: string): boolean {
 		const min = parseTime(this.min);
 		const max = parseTime(this.max);
-		// `HH:mm` vergelijkt lexicaal in dezelfde volgorde als op de klok.
+		// `HH:mm` compares lexically in the same order as it reads on the clock.
 		if (min && time < min) return false;
 		if (max && time > max) return false;
 		return true;
 	}
 
-	/** De geparste tijd, of '' wanneer die onleesbaar is of buiten de grenzen valt.
-	 *  In beide gevallen blijft de ruwe tekst staan, zodat de gebruiker ziet en kan
-	 *  herstellen wat hij schreef. */
+	/** The parsed time, or '' when it is unreadable or out of bounds. In both
+	 *  cases the raw text stays put, so the user sees and can repair what they
+	 *  wrote. */
 	private _commit(parsed: string | null): string {
 		return parsed && this._withinBounds(parsed) ? parsed : '';
 	}
 
-	/** Afronden gebeurt bij commit, niet bij input: anders springt "09:1" naar
-	 *  09:00 voordat iemand de 5 heeft kunnen intikken. */
+	/** Rounding happens on commit, not on input: otherwise "09:1" jumps to 09:00
+	 *  before anyone can type the 5. */
 	private _rounded(parsed: string | null): string | null {
 		return parsed === null ? null : roundToStep(parsed, this.step, this._stepBase);
 	}
@@ -287,25 +286,25 @@ export class NLDDTimeField extends FormAssociated(LitElement) {
 		e.stopPropagation();
 		const input = e.target as HTMLInputElement;
 		const committed = this._commit(this._rounded(parseTime(input.value)));
-		// Normaliseren bij commit: 9u30 komt te staan als 09:30. Tekst die niet
-		// leesbaar is of buiten de grenzen valt blijft staan om te herstellen.
+		// Normalize on commit: 9u30 ends up as 09:30. Text that is unreadable or
+		// out of bounds stays put so it can be repaired.
 		const shown = committed || input.value;
 		this._display = shown;
-		// De input schrijven we zelf. Lit slaat een DOM-write over zodra de nieuwe
-		// tekst gelijk is aan wat het laatst gerenderd stond, en dat is precies het
-		// geval wanneer iemand een al genormaliseerde waarde anders overtypt: 09:30
-		// wordt 930, en dat rondt terug naar 09:30. Zonder deze regel bleef 930
-		// staan terwijl `value` allang 09:30 was.
+		// We write the input ourselves. Lit skips a DOM write as soon as the new
+		// text equals what it last rendered, and that is exactly the case when
+		// someone retypes an already normalized value differently: 09:30 becomes
+		// 930, which rounds back to 09:30. Without this line 930 stayed on screen
+		// while `value` had long been 09:30.
 		input.value = shown;
 		this.value = committed;
 		this._emit('change');
 	}
 
 	/**
-	 * Pijl omhoog en omlaag verspringen met `step`. Staat er nog niets, dan is de
-	 * eerste druk de huidige tijd afgerond op de stap, of `min` wanneer die er is.
-	 * Beginnen op middernacht zou vanuit elk realistisch doel een lange klim zijn,
-	 * en de kalender doet hetzelfde: die opent op vandaag zolang er geen datum is.
+	 * Arrow up and down move by `step`. With nothing there yet, the first press is
+	 * the current time rounded to the step, or `min` when there is one. Starting
+	 * at midnight would be a long climb from any realistic goal, and the calendar
+	 * does the same: it opens on today as long as there is no date.
 	 */
 	public _handleInputKeydown(e: KeyboardEvent): void {
 		if (e.key !== 'ArrowUp' && e.key !== 'ArrowDown') return;
@@ -331,8 +330,8 @@ export class NLDDTimeField extends FormAssociated(LitElement) {
 	private _shift(from: string, direction: 1 | -1): string {
 		const step = Math.max(1, Math.round(this.step));
 		const base = toMinutes(this._stepBase);
-		// Vanaf een tijd die niet op de stap valt eerst naar het raster, zodat een
-		// tweede druk niet weer tussen twee geldige waarden landt.
+		// From a time that does not fall on the step, move onto the grid first, so
+		// a second press does not land between two valid values again.
 		const aligned = toMinutes(roundToStep(from, step, this._stepBase));
 		const moved = aligned === toMinutes(from) || step === 1
 			? aligned + direction * step
@@ -344,9 +343,9 @@ export class NLDDTimeField extends FormAssociated(LitElement) {
 	}
 
 	/**
-	 * Of een consument een eigen picker in de slot heeft gezet. Als state, niet
-	 * tijdens render gelezen: de ingebouwde picker moet verdwijnen op het moment
-	 * dat er een geslot wordt, anders staan ze allebei in de popover.
+	 * Whether a consumer put their own picker in the slot. As state, not read
+	 * during render: the built-in picker has to disappear the moment something is
+	 * slotted, otherwise both sit in the popover.
 	 */
 	@state()
 	_hasSlottedPicker = false;
@@ -373,9 +372,9 @@ export class NLDDTimeField extends FormAssociated(LitElement) {
 		return this.shadowRoot?.querySelector('nldd-popover') ?? null;
 	}
 
-	/** Eén naam voor de dialoog, zowel als toegankelijke naam als zichtbare titel
-	 *  van de sheet. Het label van het veld zegt meer dan "Tijd kiezen" ooit kan:
-	 *  een sheet met de kop "Starttijd" vertelt je wat je invult. */
+	/** One name for the dialog, both as the accessible name and as the visible
+	 *  title of the sheet. The field's own label says more than "Tijd kiezen" ever
+	 *  can: a sheet headed "Starttijd" tells you what you are filling in. */
 	public get _pickerLabel(): string {
 		return this.accessibleLabel || this._t('components.time-field.to-pick-time-action');
 	}
@@ -385,27 +384,28 @@ export class NLDDTimeField extends FormAssociated(LitElement) {
 		else this._popover?.show();
 	}
 
-	/** Waar focus heen moet als de popover dicht is. De popover zet focus terug op
-	 *  het element van voor het openen, en Safari focust een knop niet bij een
-	 *  klik, dus daar landt het op de input in plaats van op de knop. We nemen het
-	 *  over, maar pas ná die herstelactie, anders wordt de onze overschreven. */
+	/** Where focus goes once the popover is closed. The popover restores focus to
+	 *  the element from before it opened, and Safari does not focus a button on
+	 *  click, so there it lands on the input instead of the button. We take over,
+	 *  but only after that restore, otherwise ours gets overwritten. */
 	private _focusTriggerOnClose = false;
 
-	/** De waarde van voor het openen, plus hoe de picker verlaten is. Samen
-	 *  bepalen ze bij het sluiten of wat er in de band staat blijft of terugvalt. */
+	/** The value from before opening, plus how the picker was left. Together they
+	 *  decide on close whether what stands in the band stays or falls back. */
 	private _valueBeforePicker = '';
 	private _pickerTouched = false;
 	private _pickerConfirmed = false;
 	private _pickerCancelled = false;
 
 	/**
-	 * Waar de wielen op openen zolang het veld leeg is: `min` als die er is, en
-	 * anders de huidige tijd afgerond op de stap. Hetzelfde beginpunt als de
-	 * pijltoetsen. Een lege picker zou twee kolommen op 00 tonen met een streepje
-	 * ertussen, en dan moet je vanaf middernacht omhoog scrollen naar een tijd die
-	 * je allang weet.
+	 * Where the wheels open while the field is empty: `min` if there is one, and
+	 * otherwise the current time rounded to the step. The same starting point the
+	 * arrow keys use. An empty picker would show two columns on 00 with a colon
+	 * between them, and then you scroll up from midnight to a time you already
+	 * know.
 	 *
-	 * Dit zet `value` niet: het veld blijft leeg tot je scrolt of "Klaar" kiest.
+	 * This does not set `value`: the field stays empty until you scroll or pick
+	 * "Klaar".
 	 */
 	@state()
 	private _pickerSeed = '';
@@ -414,8 +414,8 @@ export class NLDDTimeField extends FormAssociated(LitElement) {
 		return this.value || this._pickerSeed;
 	}
 
-	/** Escape is afbreken, een klik ernaast niet. De popover meldt alleen dát hij
-	 *  dichtging, dus we vangen de toets zelf af, voordat de browser hem sluit. */
+	/** Escape is canceling, a click beside it is not. The popover only reports
+	 *  that it closed, so we catch the key ourselves, before the browser acts. */
 	private _handlePickerEscape = (e: KeyboardEvent): void => {
 		if (e.key === 'Escape') this._pickerCancelled = true;
 	};
@@ -426,8 +426,8 @@ export class NLDDTimeField extends FormAssociated(LitElement) {
 		else this._settlePicker();
 		if (this._pickerOpen || !this._focusTriggerOnClose) return;
 		this._focusTriggerOnClose = false;
-		// Microtask, niet rAF: dit verslaat dezelfde herstelactie maar wordt niet
-		// afgeknepen zolang het tabblad geen focus heeft.
+		// Microtask, not rAF: this beats that same restore but does not get
+		// throttled while the tab has no focus.
 		queueMicrotask(() => this._pickerTrigger?.focus());
 	}
 
@@ -438,9 +438,10 @@ export class NLDDTimeField extends FormAssociated(LitElement) {
 		this._pickerCancelled = false;
 		this._pickerSeed = this.value || this._startingPoint();
 		document.addEventListener('keydown', this._handlePickerEscape, true);
-		// Pas nu heeft de picker afmetingen: zolang de popover dicht was kon hij de
-		// gekozen waarde niet in beeld scrollen en stond de kolom bovenaan. Wachten
-		// op beide renders, want de picker krijgt zijn beginpunt hierboven pas mee.
+		// Only now does the picker have dimensions: while the popover was closed it
+		// could not scroll the chosen value into view and the column sat at the top.
+		// Wait for both renders, because the picker is only handed its starting
+		// point above.
 		void this.updateComplete.then(async () => {
 			const picker = this._slottedPicker ?? this.shadowRoot?.querySelector('nldd-time-picker');
 			if (!picker) return;
@@ -450,18 +451,18 @@ export class NLDDTimeField extends FormAssociated(LitElement) {
 	}
 
 	/**
-	 * Wat er tijdens het scrollen gebeurde is een voorbeeld, geen antwoord: het
-	 * veld toont het al, maar het legt pas vast als je de picker verlaat op een
-	 * manier die de keuze houdt. "Klaar" doet dat altijd, een klik ernaast alleen
-	 * als er iets gekozen is. Annuleer en Escape zetten de oude waarde terug.
+	 * What happened while scrolling is a proposal, not an answer: the field shows
+	 * it already, but only records it once you leave the picker in a way that
+	 * keeps the choice. "Klaar" always does, a click beside it only when something
+	 * has been chosen. Annuleer and Escape put the old value back.
 	 *
-	 * Zo kost een per ongeluk geopende picker je niets, en is "Annuleer" geen knop
-	 * die alleen maar sluit.
+	 * That way a picker opened by accident costs you nothing, and "Annuleer" is
+	 * not a button that merely closes.
 	 */
 	private _settlePicker(): void {
 		document.removeEventListener('keydown', this._handlePickerEscape, true);
-		// Bevestigen wint van een eerdere Escape: die hoeft de popover niet gesloten
-		// te hebben, en dan is de laatste handeling wat telt.
+		// Confirming beats an earlier Escape: that Escape need not have closed the
+		// popover, and then the last action is what counts.
 		if (!this._pickerConfirmed && (this._pickerCancelled || !this._pickerTouched)) {
 			if (this.value === this._valueBeforePicker) return;
 			this.value = this._valueBeforePicker;
@@ -469,8 +470,8 @@ export class NLDDTimeField extends FormAssociated(LitElement) {
 			this._emit('input');
 			return;
 		}
-		// "Klaar" zonder iets aan te raken: dan is het beginpunt wat er in de band
-		// staat, en dat is precies wat je bevestigt.
+		// "Klaar" without touching anything: the starting point is what stands in
+		// the band, and that is exactly what you are confirming.
 		if (!this.value && this._pickerSeed) {
 			this.value = this._pickerSeed;
 			this._display = this._pickerSeed;
@@ -480,17 +481,18 @@ export class NLDDTimeField extends FormAssociated(LitElement) {
 	}
 
 	/**
-	 * De picker meldt elke wijziging als `input` en pas een bevestiging als
-	 * `change`. Scrollen geeft dus wel de nieuwe tijd, maar sluit de popover niet:
-	 * anders klapt hij dicht zodra je stopt met scrollen en heb je de tweede kolom
-	 * nooit gezien.
+	 * The picker reports every change as `input` and only a confirmation as
+	 * `change`. Scrolling therefore hands over the new time but does not close the
+	 * popover: otherwise it snaps shut the moment you stop scrolling and you never
+	 * saw the second column.
 	 */
 	public _handlePickerInput(e: Event): void {
 		e.stopPropagation();
 		const detail = (e as CustomEvent).detail as { value?: string };
 		if (typeof detail?.value !== 'string') return;
 		this._pickerTouched = true;
-		// Een Escape die de popover niet sloot telt niet meer: je bent weer bezig.
+		// An Escape that did not close the popover no longer counts: you are busy
+		// again.
 		this._pickerCancelled = false;
 		this.value = detail.value;
 		this._display = detail.value;
@@ -498,11 +500,10 @@ export class NLDDTimeField extends FormAssociated(LitElement) {
 	}
 
 	/**
-	 * Een waarde vastleggen sluit de popover niet. Een tijd bestaat uit twee
-	 * delen, dus het uur zetten is de helft van een antwoord; sloten we daarop,
-	 * dan kwam je nooit bij de minuten. Bij de kalender ligt dat anders, want daar
-	 * is één dag het hele antwoord. Het veld meldt zijn eigen `change` daarom pas
-	 * bij het sluiten.
+	 * Recording a value does not close the popover. A time has two parts, so
+	 * setting the hour is half an answer. Closing on that and you would never
+	 * reach the minutes. The calendar is different, because there one day is the
+	 * whole answer. The field therefore reports its own `change` only on close.
 	 */
 	public _handlePickerChange(e: Event): void {
 		e.stopPropagation();
@@ -520,12 +521,12 @@ export class NLDDTimeField extends FormAssociated(LitElement) {
 	}
 
 	/**
-	 * Enter op een waarde in de band doet wat Enter in een dialoog altijd doet:
-	 * de standaardactie, en dat is hier "Klaar". Met de pijltjes ben je nog aan
-	 * het bijstellen, dus dit is de toets die zegt dat je klaar bent.
+	 * Enter on a value in the band does what Enter in a dialog always does: the
+	 * default action, and here that is "Klaar". With the arrow keys you are still
+	 * adjusting, so this is the key that says you are done.
 	 *
-	 * De knop eronder slaan we over, want die krijgt van de browser al een klik
-	 * op Enter.
+	 * We skip the button underneath, because the browser already gives it a click
+	 * on Enter.
 	 */
 	public _handlePickerKeydown(e: KeyboardEvent): void {
 		if (e.key !== 'Enter') return;
@@ -543,8 +544,8 @@ export class NLDDTimeField extends FormAssociated(LitElement) {
 	public _handlePickerDismiss(e: Event): void {
 		e.stopPropagation();
 		this._pickerCancelled = true;
-		// Net als na een keuze: focus terug op de knop. Zonder dit laten Annuleer,
-		// Escape en een klik ernaast de focus op de input staan.
+		// Same as after a choice: focus back on the button. Without this, Annuleer,
+		// Escape and a click beside it leave focus on the input.
 		this._focusTriggerOnClose = true;
 		this._popover?.hide();
 	}
@@ -582,9 +583,9 @@ export class NLDDTimeField extends FormAssociated(LitElement) {
 	}
 
 	override willUpdate(changed: PropertyValues): void {
-		// Een waarde die van buiten wordt gezet (property, reset, formulier) moet in
-		// het veld verschijnen. Tijdens typen niet: dan is `_display` de bron en zou
-		// dit de half getypte tekst overschrijven.
+		// A value set from outside (property, reset, form) has to show up in the
+		// field. Not while typing: there `_display` is the source and this would
+		// overwrite the half-typed text.
 		if (changed.has('value') && (parseTime(this._display) ?? '') !== this.value) {
 			this._display = this.value;
 		}
@@ -598,9 +599,9 @@ export class NLDDTimeField extends FormAssociated(LitElement) {
 		}
 		if (changed.has('width')) {
 			const w = this.width;
-			// Anders dan een tekstveld is de standaard hier een eigen breedte die een
-			// tijd plus het icoon past, dus 'full' moet 100% expliciet zeggen in
-			// plaats van op die standaard terug te vallen.
+			// Unlike a text field the default here is an intrinsic width that fits a
+			// time plus the icon, so 'full' has to say 100% explicitly instead of
+			// falling back on that default.
 			if (w === 'full') {
 				this.style.setProperty('--_width', '100%');
 			} else if (w && CSS.supports('width', w)) {

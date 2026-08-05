@@ -53,9 +53,9 @@ for (const match of indexContent.matchAll(exportRegex)) {
 // Build complete exports map
 const exports = {
 	'.': './dist/components/components.js',
-	// De zelfstandige browserbundel: alles in één geminified bestand, voor een
-	// pagina met een gewone <script src> en geen buildstap. Wie zelf bundelt
-	// gebruikt '.', die externaliseert lit en de rest.
+	// The standalone browser bundle: everything in one minified file, for a page
+	// with a plain <script src> and no build step. Anyone bundling themselves uses
+	// '.', which externalizes lit and the rest.
 	'./bundle': './dist/nldd.min.js',
 	...componentExports,
 	'./styles': './dist/css/global.css',

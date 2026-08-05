@@ -2,13 +2,13 @@ import { defineConfig } from 'vite';
 import { resolve } from 'node:path';
 
 /**
- * De zelfstandige browserbundel: één geminified bestand dat je met een gewone
- * <script src> op een pagina zet, zonder buildstap aan de andere kant.
+ * The standalone browser bundle: one minified file you drop on a page with a
+ * plain <script src>, with no build step at the other end.
  *
- * Anders dan vite.config.ts, die de ESM-build voor bundelende consumenten maakt:
- * daar blijven lit, Floating UI en de rest extern en staat de code in chunks.
- * Hier gaat alles mee en wordt er niet gesplitst, zodat er precies één URL is om
- * naar te wijzen.
+ * Unlike vite.config.ts, which makes the ESM build for bundling consumers: there
+ * lit, Floating UI and the rest stay external and the code sits in chunks. Here
+ * everything comes along and nothing is split, so there is exactly one URL to
+ * point at.
  */
 export default defineConfig({
 	build: {
@@ -24,8 +24,8 @@ export default defineConfig({
 		minify: true,
 		rollupOptions: {
 			output: {
-				// Eén bestand: een IIFE kan niet splitsen, maar dit maakt expliciet
-				// dat er ook geen losse assets naast mogen verschijnen.
+				// One file: an IIFE cannot split, but this makes it explicit that no
+				// separate assets may appear beside it either.
 				inlineDynamicImports: true,
 			},
 		},

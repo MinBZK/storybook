@@ -91,8 +91,8 @@ export const timeFieldStyles = css`
 		--_background-color: var(--semantics-input-fields-is-autofill-background-color);
 	}
 
-	/* Op de tekstinput, niet :focus-within: de knop en de popover zitten ook in
-	   deze doos en zouden een tweede ring om het hele veld trekken. */
+	/* Keyed on the text input, not :focus-within: the button and the popover live
+	   in this box too and would draw a second ring around the whole field. */
 	.time-field:has(.time-field__input:focus) {
 		outline: var(--semantics-focus-ring-outline);
 		outline-offset: var(--semantics-focus-ring-outline-offset);

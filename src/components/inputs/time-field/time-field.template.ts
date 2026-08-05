@@ -10,10 +10,11 @@ import './../../navigation/top-title-bar/top-title-bar.js';
 import './../time-picker/time-picker.js';
 
 /**
- * De popover zet zowel zijn linker- als rechterrand vast, dus een `auto`-breedte
- * klapt dicht en de picker hangt buiten een nul-brede doos. Daarom uitgeschreven,
- * uit dezelfde token waarmee de picker zijn kolommen meet: twee kolommen van
- * anderhalve controlmaat, plus de dubbele punt ertussen en de containerpadding.
+ * The popover pins both its left and its right edge, so an `auto` width
+ * collapses and the picker hangs outside a zero-width box. Hence spelled out,
+ * from the same token the picker measures its columns with: two columns of one
+ * and a half control sizes, plus the colon between them and the container
+ * padding.
  */
 export const PICKER_POPOVER_WIDTH = 'calc(var(--semantics-controls-md-min-size) * 3 + var(--primitives-space-48) + var(--primitives-space-16) * 2)';
 
@@ -34,8 +35,9 @@ function renderValidationIcon(component: NLDDTimeField): TemplateResult | typeof
 }
 
 /**
- * De picker hangt aan de knop, die aan het eind van het veld staat, dus
- * bottom-end landt hem onder de input. Tegen de linkerschermrand valt Floating UI
+ * The picker hangs off the button, which sits at the end of the field, so
+ * bottom-end lands it under the input. Against the left edge of the screen
+ * Floating UI
  * vanzelf terug op rechtsom openen.
  */
 function renderPicker(component: NLDDTimeField): TemplateResult | typeof nothing {

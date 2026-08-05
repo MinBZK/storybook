@@ -18,7 +18,7 @@ async function openPicker(el: NLDDTimeField) {
 	await new Promise((r) => setTimeout(r, 200));
 }
 
-/** Wat de picker meldt zodra het scrollen stil ligt. */
+/** What the picker reports once scrolling comes to rest. */
 function scrollPickerTo(el: NLDDTimeField, value: string) {
 	el.shadowRoot!.querySelector('nldd-time-picker')!.dispatchEvent(new CustomEvent('input', {
 		detail: { value }, bubbles: true, composed: true,
@@ -62,7 +62,7 @@ describe('parseTime', () => {
 		['9:60'],
 		['24:00'],
 		['12345'],
-		// Halverwege het typen: een leesteken zonder minuten is nog geen waarde.
+		// Halfway through typing: punctuation without minutes is not a value yet.
 		['9:'],
 		['9.'],
 		[':30'],
@@ -162,9 +162,9 @@ describe('nldd-time-field – waarde', () => {
 		expect(input.value).toBe('09:15');
 	});
 
-	// Lit slaat een DOM-write over zodra de nieuwe tekst gelijk is aan wat het
-	// laatst gerenderd stond. Precies wat er gebeurt als je een genormaliseerde
-	// waarde anders overtypt: 09:30 wordt 930 en rondt terug naar 09:30.
+	// Lit skips a DOM write as soon as the new text equals what it last rendered.
+	// Exactly what happens when you retype a normalized value differently: 09:30
+	// becomes 930 and rounds back to 09:30.
 	it('normaliseert ook wanneer de nieuwe tekst gelijk is aan de vorige waarde', async () => {
 		el = await fixture<NLDDTimeField>('<nldd-time-field value="09:30"></nldd-time-field>');
 		await waitForUpdate(el);
@@ -291,9 +291,9 @@ describe('nldd-time-field – pijltjestoetsen', () => {
 	});
 
 	it('begint zonder min op de huidige tijd, afgerond op de stap', async () => {
-		// Geen fake timers: die bevriezen ook de klok waar Lit zijn update-cyclus
-		// op plant, en dan komt waitForUpdate nooit terug. De echte klok kan
-		// tijdens de test een minuut verspringen, dus beide uitkomsten mogen.
+		// No fake timers: those also freeze the clock Lit schedules its update cycle
+		// on, and then waitForUpdate never returns. The real clock can tick over a
+		// minute during the test, so both outcomes are allowed.
 		const asTime = (d: Date) => roundToStep(
 			`${String(d.getHours()).padStart(2, '0')}:${String(d.getMinutes()).padStart(2, '0')}`,
 			15,
@@ -380,8 +380,8 @@ describe('nldd-time-field – picker', () => {
 		expect(el.shadowRoot!.querySelector('.time-field__picker-button')).toBeNull();
 	});
 
-	// Een tijd bestaat uit twee delen, dus het uur kiezen is de helft van een
-	// antwoord. Sloot de popover daarop, dan kwam je nooit bij de minuten.
+	// A time has two parts, so picking the hour is half an answer. Were the
+	// popover to close on that, you would never reach the minutes.
 	it('sluit de popover niet als er een waarde wordt gekozen', async () => {
 		el = await fixture<NLDDTimeField>('<nldd-time-field value="09:30"></nldd-time-field>');
 		await waitForUpdate(el);
@@ -409,8 +409,8 @@ describe('nldd-time-field – picker', () => {
 		expect(popover.matches(':popover-open')).toBe(false);
 	});
 
-	// Een lege picker zou twee kolommen op 00 tonen; het beginpunt zet de wielen op
-	// een tijd zonder dat het veld al iets invult.
+	// An empty picker would show two columns on 00. The starting point puts the
+	// wheels on a time without filling in the field yet.
 	it('opent de picker op een beginpunt als het veld leeg is', async () => {
 		el = await fixture<NLDDTimeField>('<nldd-time-field min="08:00"></nldd-time-field>');
 		await waitForUpdate(el);
@@ -437,8 +437,8 @@ describe('nldd-time-field – picker', () => {
 		expect(el.value).toBe('');
 	});
 
-	// Scrollen is een voorbeeld: het veld toont het al, maar legt pas vast bij het
-	// sluiten.
+	// Scrolling is a proposal: the field shows it already, but only records on
+	// close.
 	it('meldt change pas bij het sluiten', async () => {
 		el = await fixture<NLDDTimeField>('<nldd-time-field value="09:30"></nldd-time-field>');
 		await waitForUpdate(el);
@@ -454,7 +454,7 @@ describe('nldd-time-field – picker', () => {
 		expect(changes).toEqual(['14:30']);
 	});
 
-	// Enter is in een dialoog de standaardactie, en dat is hier "Klaar".
+	// Enter is the default action in a dialog, and here that is "Klaar".
 	it('sluit de picker met Enter op een waarde in de band', async () => {
 		el = await fixture<NLDDTimeField>('<nldd-time-field value="09:30"></nldd-time-field>');
 		await waitForUpdate(el);
@@ -495,8 +495,9 @@ describe('nldd-time-field – picker', () => {
 		expect(el.shadowRoot!.querySelector<HTMLInputElement>('.time-field__input')!.value).toBe('09:30');
 	});
 
-	// De browser sluit zelf op Escape en dat valt met een losse toets niet na te
-	// spelen; wat hier telt is dat de toets als afbreken geldt en niet als keuze.
+	// The browser closes on Escape by itself and a lone synthetic key cannot
+	// replay that. What counts here is that the key reads as canceling and not as
+	// choosing.
 	it('zet de oude waarde terug bij Escape', async () => {
 		el = await fixture<NLDDTimeField>('<nldd-time-field value="09:30"></nldd-time-field>');
 		await waitForUpdate(el);
@@ -523,8 +524,8 @@ describe('nldd-time-field – picker', () => {
 		expect(el.shadowRoot!.querySelector<HTMLInputElement>('.time-field__input')!.value).toBe('');
 	});
 
-	// De maat van een knop is een attribuut en dus niet met een media query te
-	// kiezen; het veld stelt dezelfde vraag daarom in JS.
+	// A button's size is an attribute and so cannot be chosen with a media query.
+	// The field therefore asks the same question in JS.
 	it('kiest de knopmaat op het aanwijzertype', async () => {
 		el = await fixture<NLDDTimeField>('<nldd-time-field></nldd-time-field>');
 		await waitForUpdate(el);
