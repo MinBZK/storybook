@@ -101,12 +101,12 @@ export class NLDDTag extends LitElement {
 		super.connectedCallback();
 		this._updateSlotState();
 		this._childObserver = new MutationObserver(() => this._updateSlotState());
-		// Alleen direct children volgen — _updateSlotState itereert over
-		// this.childNodes, dus subtree-mutaties zijn nutteloos en kosten
-		// onnodig werk bij rich slotted content. characterData zou enkel
-		// zin hebben mét subtree (om text-edits in bestaande nodes te
-		// catchen); zeldzaam genoeg om over te skippen, en add/remove van
-		// children blijft via childList werken.
+		// Watch direct children only: _updateSlotState iterates over
+		// this.childNodes, so subtree mutations are useless and cost needless work
+		// on rich slotted content. characterData would only make sense together
+		// with subtree (to catch text edits in existing nodes), which is rare
+		// enough to skip, and adding or removing children keeps working through
+		// childList.
 		this._childObserver.observe(this, { childList: true });
 	}
 

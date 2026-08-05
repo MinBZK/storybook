@@ -527,10 +527,10 @@ export class NLDDDatePicker extends withTranslations<NLDDDatePickerTranslations>
 	}
 
 	/**
-	 * Alleen de datum, zonder de aanduidingen die aan een cel hangen. De
-	 * aankondigingen gebruiken deze: die van het hele cellabel maakte er
-	 * "vrijdag 10 juli 2026, begin van de periode tot en met ..." van, waarin de
-	 * celstatus midden in de zin belandt.
+	 * The date on its own, without the markers a cell carries. The announcements
+	 * use this: taking the whole cell label turned them into "vrijdag 10 juli 2026,
+	 * begin van de periode tot en met ...", which drops the cell's status halfway
+	 * through the sentence.
 	 */
 	public _dateText(iso: string): string {
 		const date = parseIso(iso);

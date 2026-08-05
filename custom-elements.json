@@ -2813,7 +2813,7 @@
                 "text": "string"
               },
               "default": "''",
-              "description": "Maakt de avatar één link: de schijf zelf wordt de <a>, zodat klikgebied en\nfocusring de vorm volgen (een overlay zou vierkant zijn).",
+              "description": "Makes the avatar one link: the disc itself becomes the <a>, so the click\narea and the focus ring follow its shape (an overlay would be square).",
               "attribute": "href",
               "reflects": true
             },
@@ -2824,7 +2824,7 @@
                 "text": "boolean"
               },
               "default": "false",
-              "description": "Maakt de avatar een knop. Genegeerd zodra `href` staat: één avatar is één\nactie, en een link wint van een knop (zelfde regel als nldd-card).",
+              "description": "Makes the avatar a button. Ignored once `href` is set: one avatar is one\naction, and a link outranks a button (the same rule as nldd-card).",
               "attribute": "button",
               "reflects": true
             },
@@ -2853,7 +2853,7 @@
                 "text": "string"
               },
               "default": "''",
-              "description": "Toegankelijke naam van de link of knop; zonder deze valt hij terug op\n`name`. Alleen van belang wanneer de avatar interactief is.",
+              "description": "Accessible name of the link or button. Without it, it falls back to\n`name`. Only matters when the avatar is interactive.",
               "attribute": "accessible-label"
             },
             {
@@ -2862,7 +2862,7 @@
               "type": {
                 "text": "boolean"
               },
-              "description": "True zodra de avatar zelf een control is.",
+              "description": "True once the avatar is a control itself.",
               "readonly": true
             },
             {
@@ -7984,7 +7984,7 @@
                 "text": "string"
               },
               "default": "''",
-              "description": "Toegankelijk label voor de interne input. Wordt automatisch gezet door nldd-form-field.",
+              "description": "Accessible label for the inner input. Set automatically by nldd-form-field.",
               "attribute": "accessible-label"
             },
             {
@@ -8003,7 +8003,7 @@
                 "text": "string"
               },
               "default": "''",
-              "description": "Optionele vaste breedte. Zonder waarde vult het veld zijn container.",
+              "description": "Optional fixed width. Without a value the field fills its container.",
               "attribute": "width",
               "reflects": true
             },
@@ -8014,7 +8014,7 @@
                 "text": "Partial<NLDDDateFieldTranslations>"
               },
               "default": "{}",
-              "description": "Overschrijf een of meer vertaalsleutels. Niet opgegeven sleutels vallen terug op het Nederlands.",
+              "description": "Override one or more translation keys. Keys left out fall back to Dutch.",
               "attribute": "translations"
             },
             {
@@ -22471,7 +22471,7 @@
                   "text": "Promise<void>"
                 }
               },
-              "description": "Herberekent positie t.o.v. anchor. Wordt automatisch aangeroepen bij openen."
+              "description": "Recomputes the position relative to the anchor. Called automatically on open."
             }
           ],
           "attributes": [
