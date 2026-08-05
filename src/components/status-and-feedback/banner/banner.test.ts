@@ -220,7 +220,7 @@ describe('nldd-banner', () => {
 
 	it('houdt md als standaard, zonder size-attribuut op de host', async () => {
 		el = await fixture(`
-			<div style="--components-banner-padding: 12px; --components-banner-icon-size: 32px;">
+			<div style="--components-banner-md-padding: 12px; --components-banner-md-icon-size: 32px;">
 				<nldd-banner text="Let op"></nldd-banner>
 			</div>
 		`);
@@ -244,7 +244,7 @@ describe('nldd-banner onder een universele reset', () => {
 	it('behoudt de padding rond de inhoud', async () => {
 		removeReset = installUniversalReset();
 		el = await fixture(`
-			<div style="--components-banner-padding: 12px;">
+			<div style="--components-banner-md-padding: 12px;">
 				<nldd-banner text="Let op"></nldd-banner>
 			</div>
 		`);

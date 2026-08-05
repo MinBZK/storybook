@@ -33,6 +33,10 @@ here; consult the commit history if you need that level of detail.
 - **Icons** — `viewfinder` has shorter corner brackets. The arms ran to a third of each side, which closed the shape up at small sizes and read more as a frame than as a finder.
 - **`nldd-banner`, `nldd-just-in-time-education`** — the dismiss button is labelled "Verberg" instead of "Sluit". Both put the notice out of sight without resolving anything, and "Sluit" claims more than that. `nldd-document-tab-bar` and `nldd-top-navigation-bar` keep "Sluit", where it really does close something.
 
+### Breaking
+
+- **`nldd-banner`** — the two size-dependent custom properties carry their size in the name: `--components-banner-padding` becomes `--components-banner-md-padding` and `--components-banner-icon-size` becomes `--components-banner-md-icon-size`. Without the size segment they read as "the padding of every banner" while `sm` has its own value, and every other component names them this way. `--components-banner-corner-radius` and `--components-banner-content-color` are unchanged, because they do not differ per size. Override one of the two renamed properties and the override stops applying, silently.
+
 ### Fixed
 
 - **`nldd-banner`** — the icon meets contrast on every variant. The icon took the variant's reference color, which is tuned to sit against a filled surface, not against the tinted one a banner actually draws. In dark mode the accent icon landed at 1.72:1 against its own background, well under the 3:1 that WCAG 1.4.11 asks of a graphical object; neutral and warning failed too. All five now take the tinted content color, which is the pair that was measured for this surface.

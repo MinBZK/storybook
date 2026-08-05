@@ -15,12 +15,12 @@ export const bannerStyles = css`
 
 	:host {
 		--_corner-radius: var(--components-banner-corner-radius);
-		--_padding: var(--components-banner-padding);
+		--_padding: var(--components-banner-md-padding);
 		--_background-color: var(--semantics-categories-neutral-tinted-background-color);
 		--_border-color: var(--semantics-categories-neutral-tinted-highlight-border-color);
 		--_border-width: var(--primitives-border-width-thin);
 		--_icon-color: var(--semantics-categories-neutral-tinted-content-color);
-		--_icon-size: var(--components-banner-icon-size);
+		--_icon-size: var(--components-banner-md-icon-size);
 		--_content-color: var(--components-banner-content-color);
 		--_text-icon-offset: calc((var(--_icon-size) - var(--primitives-font-size-100) * var(--primitives-line-height-tight)) / 2);
 		--_column-gap: var(--primitives-space-8);
