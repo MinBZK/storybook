@@ -219,11 +219,11 @@ export class NLDDWindow extends LitElement {
 		const hasEdge = this.top !== undefined || this.left !== undefined || this.right !== undefined || this.bottom !== undefined;
 		const hasOverride = hasEdge || this.centered;
 
-		// `centered` centreert beide assen tenzij een edge-attr op die as gezet
-		// is. Edges hebben dus voorrang. transform: translate(-50%) per
-		// gecentreerde as zorgt dat de width-clamping (max-width) niet de
-		// centering breekt — percentage in transform is relatief aan de eigen
-		// breedte, niet de viewport.
+		// `centered` centers both axes unless an edge attribute is set on that
+		// axis, so edges take precedence. transform: translate(-50%) per centered
+		// axis keeps the width clamping (max-width) from breaking the centering: a
+		// percentage in a transform is relative to the element's own width, not to
+		// the viewport.
 		const yCenter = this.centered && this.top === undefined && this.bottom === undefined;
 		const xCenter = this.centered && this.left === undefined && this.right === undefined;
 
@@ -236,7 +236,7 @@ export class NLDDWindow extends LitElement {
 		dialog.style.width = this.width ?? '';
 		dialog.style.height = this.height ?? '';
 
-		// Translate per gecentreerde as om center-from-edge te corrigeren.
+		// A translate per centered axis, to correct center-from-edge.
 		dialog.style.transform = (xCenter || yCenter)
 			? `translate(${xCenter ? '-50%' : '0'}, ${yCenter ? '-50%' : '0'})`
 			: '';

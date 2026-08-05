@@ -140,7 +140,7 @@ export class NLDDFormSection extends HTMLElement {
 	}
 
 	private _warnIfNoLabel(): void {
-		// Dev-only — productieconsoles van end-users blijven schoon.
+		// Dev only, so an end user's production console stays clean.
 		if (!import.meta.env?.DEV) return;
 		if (this._hasWarnedNoLabel) return;
 		if (this.text || this.supportingText) return;
@@ -206,10 +206,10 @@ export class NLDDFormSection extends HTMLElement {
 		//
 		// A11y-implicatie: zonder legend heeft de <fieldset> geen accessible
 		// name. SR-gedrag varieert (Chrome: "group", Firefox: niets). Dat is
-		// een bewuste keuze — een form-section kan ook puur als visueel-
-		// grouping (divider + padding) gebruikt worden zonder heading. Wil je
-		// een SR-naam zonder zichtbare title? Wrap dan het form in een
-		// nldd-form-section MET text, of gebruik aria-labelledby op de
+		// a deliberate choice: a form section can also be used purely as visual
+		// grouping (divider + padding) without a heading. Want a screen reader name
+		// without a visible title? Wrap the form in an nldd-form-section WITH text,
+		// or use aria-labelledby on the
 		// individuele velden.
 		legend.hidden = !hasContent;
 	}

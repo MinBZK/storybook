@@ -108,13 +108,13 @@ export class NLDDAvatar extends withTranslations(LitElement, nlddAvatarTranslati
 	@property({ type: Boolean, reflect: true })
 	decorative = false;
 
-	/** Maakt de avatar één link: de schijf zelf wordt de <a>, zodat klikgebied en
-	 *  focusring de vorm volgen (een overlay zou vierkant zijn). */
+	/** Makes the avatar one link: the disc itself becomes the <a>, so the click
+	 *  area and the focus ring follow its shape (an overlay would be square). */
 	@property({ type: String, reflect: true })
 	href = '';
 
-	/** Maakt de avatar een knop. Genegeerd zodra `href` staat: één avatar is één
-	 *  actie, en een link wint van een knop (zelfde regel als nldd-card). */
+	/** Makes the avatar a button. Ignored once `href` is set: one avatar is one
+	 *  action, and a link outranks a button (the same rule as nldd-card). */
 	@property({ type: Boolean, reflect: true })
 	button = false;
 
@@ -124,18 +124,18 @@ export class NLDDAvatar extends withTranslations(LitElement, nlddAvatarTranslati
 	@property({ type: String })
 	rel = '';
 
-	/** Toegankelijke naam van de link of knop; zonder deze valt hij terug op
-	 *  `name`. Alleen van belang wanneer de avatar interactief is. */
+	/** Accessible name of the link or button. Without it, it falls back to
+	 *  `name`. Only matters when the avatar is interactive. */
 	@property({ type: String, attribute: 'accessible-label' })
 	accessibleLabel = '';
 
-	/** True zodra de avatar zelf een control is. */
+	/** True once the avatar is a control itself. */
 	get isInteractive(): boolean {
 		return Boolean(this.href) || this.button;
 	}
 
-	/** Resolve rel voor de link: bij _blank noopener/noreferrer erbij (spiegelt
-	 *  nldd-link en nldd-card), samengevoegd met een eigen rel. */
+	/** Resolves rel for the link: _blank adds noopener/noreferrer (mirroring
+	 *  nldd-link and nldd-card), merged with a rel of your own. */
 	_resolvedRel(): string {
 		const base = this.rel ?? '';
 		if (this.target !== '_blank') return base;
@@ -206,9 +206,9 @@ export class NLDDAvatar extends withTranslations(LitElement, nlddAvatarTranslati
 		// blank label either — that reads as an unnamed image.
 		const labeled = !this.decorative && this.name.trim() !== '';
 		if (this.isInteractive) {
-			// De link of knop in de shadow root draagt de naam; de host mag er dan
-			// geen tweede (role="img") naast zetten, en hem verbergen zou de
-			// control zelf mee verbergen.
+			// The link or button in the shadow root carries the name, so the host must
+			// not put a second one (role="img") beside it, and hiding the host would
+			// hide the control along with it.
 			this.removeAttribute('role');
 			this.removeAttribute('aria-label');
 			this.removeAttribute('aria-hidden');
@@ -223,9 +223,9 @@ export class NLDDAvatar extends withTranslations(LitElement, nlddAvatarTranslati
 			this.removeAttribute('role');
 			this.removeAttribute('aria-label');
 		}
-		// Een interactieve avatar zonder naam is een stille toegankelijkheidsfout:
-		// de control bevat alleen een afbeelding of initialen. Waarschuw in dev,
-		// net als nldd-card.
+		// An interactive avatar without a name is a silent accessibility failure:
+		// the control holds nothing but an image or initials. Warn in dev, the same
+		// as nldd-card.
 		if (import.meta.env?.DEV) {
 			const missing = this.isInteractive
 				&& !(this.accessibleLabel || this.name).trim();
