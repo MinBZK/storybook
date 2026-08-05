@@ -179,6 +179,9 @@ export class NLDDAvatar extends withTranslations(LitElement, nlddAvatarTranslati
 	private _resizeObserver = new ResizeObserver(() => this._fitInitials());
 
 	override willUpdate(changed: PropertyValues<this>): void {
+		// withTranslations merges a consumer's `translations` override in its own
+		// willUpdate; without this call the override is silently ignored.
+		super.willUpdate(changed);
 		// Either source changing offers a fresh candidate, so give the image
 		// another chance rather than staying on the fallback forever.
 		if (changed.has('src') || changed.has('srcset')) this._imageFailed = false;

@@ -182,6 +182,9 @@ export class NLDDStepIndicator extends withTranslations<NLDDStepIndicatorTransla
 	 *  of the children, so their statuses have to be fresh by the time this
 	 *  element renders. */
 	override willUpdate(changed: PropertyValues): void {
+		// withTranslations merges a consumer's `translations` override in its own
+		// willUpdate; without this call the override is silently ignored.
+		super.willUpdate(changed);
 		if (changed.has('current') || changed.has('_items')) this._syncItems();
 	}
 
