@@ -484,10 +484,24 @@ export class NLDDListItem extends withTranslations(LitElement, nlddListItemTrans
 			el.tagName.startsWith('NLDD-') && el.tagName.endsWith('-CELL'));
 		const meaningful = cells.filter(el => el.tagName !== 'NLDD-SPACER-CELL');
 		const [first, second] = meaningful;
-		if (first?.tagName !== 'NLDD-ICON-CELL' || !second) return [];
+		if (!NLDDListItem._opensWithGlyph(first) || !second) return [];
 		return second.tagName === 'NLDD-TEXT-CELL' || second.tagName === 'NLDD-TITLE-CELL'
 			? [second]
 			: [];
+	}
+
+	/**
+	 * Whether the row opens with something icon-shaped. An avatar counts: there
+	 * is no avatar cell, so consumers put it in a plain cell, and a row that
+	 * opens with a face insets its divider the same way an icon does.
+	 */
+	private static _opensWithGlyph(cell: Element | undefined): boolean {
+		if (!cell) return false;
+		if (cell.tagName === 'NLDD-ICON-CELL') return true;
+		if (cell.tagName !== 'NLDD-CELL') return false;
+		const content = Array.from(cell.children);
+		return content.length === 1
+			&& (content[0].tagName === 'NLDD-AVATAR' || content[0].tagName === 'NLDD-ICON');
 	}
 
 	private _measureDividerMarkers(): void {

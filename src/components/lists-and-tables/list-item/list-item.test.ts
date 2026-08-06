@@ -8,6 +8,9 @@ import '../cells/text-cell/text-cell.js';
 import '../cells/spacer-cell/spacer-cell.js';
 import '../list-item-action/list-item-action.js';
 import '../cells/icon-cell/icon-cell.js';
+import '../cells/cell/cell.js';
+import '../../content/avatar/avatar.js';
+import '../../content/tag/tag.js';
 
 describe('nldd-list-item', () => {
 	let el: HTMLElement;
@@ -675,6 +678,47 @@ describe('nldd-list-item – divider markers', () => {
 		const item = el.querySelector('nldd-list-item') as HTMLElement;
 		const inset = parseFloat(item.style.getPropertyValue('--_divider-inset-start'));
 		expect(inset).toBeLessThan(40);
+	});
+
+	// An avatar has no cell of its own, so it arrives in a plain nldd-cell; it
+	// should inset the divider the way a leading icon does.
+	it('laat de divider inspringen bij een leidende avatar in een gewone cel', async () => {
+		el = await fixture(`
+			<div style="width: 400px; --components-list-item-indicator-inline-inset: 8px; --semantics-controls-md-min-size: 44px; --semantics-controls-sm-min-size: 32px; --primitives-space-40: 40px; --semantics-dividers-thickness: 1px;">
+				<nldd-list accessible-label="X">
+					<nldd-list-item>
+						<nldd-cell width="fit-content"><nldd-avatar name="Bart" style="width: 32px; height: 32px"></nldd-avatar></nldd-cell>
+						<nldd-spacer-cell size="40"></nldd-spacer-cell>
+						<nldd-text-cell text="Met avatar"></nldd-text-cell>
+					</nldd-list-item>
+				</nldd-list>
+			</div>
+		`);
+		await waitForUpdate(el);
+		await settle();
+		const item = el.querySelector('nldd-list-item') as HTMLElement;
+		expect(parseFloat(item.style.getPropertyValue('--_divider-inset-start'))).toBeGreaterThan(0);
+	});
+
+	// A cell holding more than one thing is not a glyph cell.
+	it('springt niet in bij een leidende cel met meer dan een avatar', async () => {
+		el = await fixture(`
+			<div style="width: 400px; --components-list-item-indicator-inline-inset: 8px; --semantics-controls-md-min-size: 44px; --semantics-controls-sm-min-size: 32px; --semantics-dividers-thickness: 1px;">
+				<nldd-list accessible-label="X">
+					<nldd-list-item>
+						<nldd-cell width="fit-content">
+							<nldd-avatar name="Bart" size="32"></nldd-avatar>
+							<nldd-tag size="sm" text="Nieuw"></nldd-tag>
+						</nldd-cell>
+						<nldd-text-cell text="Twee dingen"></nldd-text-cell>
+					</nldd-list-item>
+				</nldd-list>
+			</div>
+		`);
+		await waitForUpdate(el);
+		await settle();
+		const item = el.querySelector('nldd-list-item') as HTMLElement;
+		expect(item.style.getPropertyValue('--_divider-inset-start')).toBe('');
 	});
 
 	// Without a leading icon the line keeps the full content width.
