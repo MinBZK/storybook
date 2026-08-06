@@ -684,6 +684,7 @@ Nederlandse Digitale Dienst Form Section Component Plain custom element (extends
 | --- | --- | --- |
 | `checked` | `boolean` | Checked state |
 | `disabled` | `boolean` | Disabled state |
+| `decorative` | `boolean` | Renders the box without the input: no focus, no name/value, nothing announced. For a control that owns the state elsewhere, such as a list row that is itself the checkbox; putting a real input in there would nest a control inside a control. |
 | `indeterminate` | `boolean` | Indeterminate state (takes precedence over checked visually) |
 | `value` | `string` | Value for form submission |
 | `name` | `string` | Name for form submission |
@@ -1008,6 +1009,7 @@ WAI-ARIA: Wrap radio buttons in a <fieldset>/<legend> or a container with role="
 | --- | --- | --- |
 | `checked` | `boolean` | Checked state |
 | `disabled` | `boolean` | Disabled state |
+| `decorative` | `boolean` | Renders the shape without the input: no focus, no name/value, nothing announced. For a control that owns the state elsewhere, such as a list row that is itself the radio; putting a real input in there would nest a control inside a control. |
 | `required` | `boolean` | Required state |
 | `name` | `string` | Radio group name for form submission; ties the buttons of one group together |
 | `value` | `string` | Value submitted with the form when this radio button is checked |

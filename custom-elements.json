@@ -6647,6 +6647,16 @@
             },
             {
               "kind": "field",
+              "name": "decorative",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "attribute": "decorative",
+              "reflects": true
+            },
+            {
+              "kind": "field",
               "name": "disabled",
               "type": {
                 "text": "boolean"
@@ -6830,6 +6840,15 @@
               "default": "false",
               "fieldName": "checked",
               "description": "Checked state"
+            },
+            {
+              "name": "decorative",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "fieldName": "decorative",
+              "description": "Renders the box without the input: no focus, no name/value, nothing announced. For a control that owns the state elsewhere, such as a list row that is itself the checkbox; putting a real input in there would nest a control inside a control."
             },
             {
               "name": "disabled",
@@ -11067,6 +11086,16 @@
             },
             {
               "kind": "field",
+              "name": "decorative",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "attribute": "decorative",
+              "reflects": true
+            },
+            {
+              "kind": "field",
               "name": "disabled",
               "type": {
                 "text": "boolean"
@@ -11250,6 +11279,15 @@
               "default": "false",
               "fieldName": "checked",
               "description": "Checked state"
+            },
+            {
+              "name": "decorative",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "fieldName": "decorative",
+              "description": "Renders the shape without the input: no focus, no name/value, nothing announced. For a control that owns the state elsewhere, such as a list row that is itself the radio; putting a real input in there would nest a control inside a control."
             },
             {
               "name": "disabled",
@@ -18121,6 +18159,16 @@
             },
             {
               "kind": "field",
+              "name": "centered",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "attribute": "centered",
+              "reflects": true
+            },
+            {
+              "kind": "field",
               "name": "horizontalAlignment",
               "type": {
                 "text": "HorizontalAlignment | undefined"
@@ -18500,6 +18548,14 @@
               },
               "fieldName": "lgColumnCount",
               "description": "Column count when this container is lg-wide"
+            },
+            {
+              "name": "centered",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "fieldName": "centered"
             },
             {
               "name": "horizontal-alignment",
