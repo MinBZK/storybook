@@ -480,28 +480,38 @@ export class NLDDListItem extends withTranslations(LitElement, nlddListItemTrans
 	 * on the icon cell itself to get the full-width line back.
 	 */
 	private _implicitDividerStart(): Element[] {
-		const cells = Array.from(this.children).filter(el =>
-			el.tagName.startsWith('NLDD-') && el.tagName.endsWith('-CELL'));
-		const meaningful = cells.filter(el => el.tagName !== 'NLDD-SPACER-CELL');
+		const parts = Array.from(this.children).filter(el =>
+			(el.tagName.startsWith('NLDD-') && el.tagName.endsWith('-CELL'))
+			|| el.tagName === 'NLDD-LIST-ITEM-ACTION');
+		const meaningful = parts.filter(el => el.tagName !== 'NLDD-SPACER-CELL');
 		const [first, second] = meaningful;
 		if (!NLDDListItem._opensWithGlyph(first) || !second) return [];
-		return second.tagName === 'NLDD-TEXT-CELL' || second.tagName === 'NLDD-TITLE-CELL'
-			? [second]
-			: [];
+		// Text inside a segmented action still marks the start, but the marker is
+		// the cell, not the action: the action carries its own inline padding, so
+		// its edge sits before the text. An action can open with an icon or a
+		// control of its own, so look for the first text there too.
+		const marker = second.tagName === 'NLDD-LIST-ITEM-ACTION'
+			? Array.from(second.children).find(NLDDListItem._isTextCell)
+			: second;
+		return marker && NLDDListItem._isTextCell(marker) ? [marker] : [];
+	}
+
+	private static _isTextCell(el: Element): boolean {
+		return el.tagName === 'NLDD-TEXT-CELL' || el.tagName === 'NLDD-TITLE-CELL';
 	}
 
 	/**
-	 * Whether the row opens with something icon-shaped. An avatar counts: there
-	 * is no avatar cell, so consumers put it in a plain cell, and a row that
-	 * opens with a face insets its divider the same way an icon does.
+	 * Whether the row opens with a single glyph-sized thing: an icon cell, or a
+	 * plain cell holding exactly one element — an avatar, a radio, a checkbox, a
+	 * badge. There is no cell type for most of those, so they arrive in an
+	 * nldd-cell, and a row that opens with one insets its divider the same way an
+	 * icon does. Two or more things in that cell is a group, not a glyph.
 	 */
 	private static _opensWithGlyph(cell: Element | undefined): boolean {
 		if (!cell) return false;
 		if (cell.tagName === 'NLDD-ICON-CELL') return true;
 		if (cell.tagName !== 'NLDD-CELL') return false;
-		const content = Array.from(cell.children);
-		return content.length === 1
-			&& (content[0].tagName === 'NLDD-AVATAR' || content[0].tagName === 'NLDD-ICON');
+		return cell.children.length === 1;
 	}
 
 	private _measureDividerMarkers(): void {

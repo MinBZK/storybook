@@ -11,6 +11,7 @@ import '../cells/icon-cell/icon-cell.js';
 import '../cells/cell/cell.js';
 import '../../content/avatar/avatar.js';
 import '../../content/tag/tag.js';
+import '../../inputs/radio-button/radio-button.js';
 
 describe('nldd-list-item', () => {
 	let el: HTMLElement;
@@ -698,6 +699,78 @@ describe('nldd-list-item – divider markers', () => {
 		await settle();
 		const item = el.querySelector('nldd-list-item') as HTMLElement;
 		expect(parseFloat(item.style.getPropertyValue('--_divider-inset-start'))).toBeGreaterThan(0);
+	});
+
+	// Any single glyph-sized thing counts, not just an avatar.
+	it('laat de divider inspringen bij een leidende radio in een gewone cel', async () => {
+		el = await fixture(`
+			<div style="width: 400px; --components-list-item-indicator-inline-inset: 8px; --semantics-controls-md-min-size: 44px; --semantics-controls-sm-min-size: 32px; --primitives-space-40: 40px; --semantics-dividers-thickness: 1px;">
+				<nldd-list accessible-label="X">
+					<nldd-list-item>
+						<nldd-cell width="fit-content"><nldd-radio-button name="x" value="a" style="width: 24px; height: 24px"></nldd-radio-button></nldd-cell>
+						<nldd-spacer-cell size="40"></nldd-spacer-cell>
+						<nldd-text-cell text="Met radio"></nldd-text-cell>
+					</nldd-list-item>
+				</nldd-list>
+			</div>
+		`);
+		await waitForUpdate(el);
+		await settle();
+		const item = el.querySelector('nldd-list-item') as HTMLElement;
+		expect(parseFloat(item.style.getPropertyValue('--_divider-inset-start'))).toBeGreaterThan(0);
+	});
+
+	// The text can sit inside a segmented action; the divider still starts there.
+	it('laat de divider inspringen wanneer de tekst in een segmented action zit', async () => {
+		el = await fixture(`
+			<div style="width: 400px; --components-list-item-indicator-inline-inset: 8px; --semantics-controls-md-min-size: 44px; --semantics-controls-sm-min-size: 32px; --primitives-space-40: 40px; --semantics-dividers-thickness: 1px;">
+				<nldd-list accessible-label="X">
+					<nldd-list-item>
+						<nldd-cell width="fit-content"><nldd-avatar name="Bart" style="width: 32px; height: 32px"></nldd-avatar></nldd-cell>
+						<nldd-spacer-cell size="40"></nldd-spacer-cell>
+						<nldd-list-item-action button width="full">
+							<nldd-text-cell text="In een action"></nldd-text-cell>
+						</nldd-list-item-action>
+					</nldd-list-item>
+				</nldd-list>
+			</div>
+		`);
+		await waitForUpdate(el);
+		await settle();
+		const item = el.querySelector('nldd-list-item') as HTMLElement;
+		// At the text, not at the action's padding edge.
+		const block = item.shadowRoot!.querySelector('.list-item')!.getBoundingClientRect();
+		const text = item.querySelector('nldd-text-cell')!.getBoundingClientRect();
+		const inset = parseFloat(item.style.getPropertyValue('--_divider-inset-start'));
+		expect(inset).toBeCloseTo(text.left - block.left, 0);
+	});
+
+	// The action can open with an icon of its own; the text after it is the mark.
+	it('slaat een icoon aan het begin van een segmented action over', async () => {
+		el = await fixture(`
+			<div style="width: 400px; --components-list-item-indicator-inline-inset: 8px; --semantics-controls-md-min-size: 44px; --semantics-controls-sm-min-size: 32px; --primitives-space-40: 40px; --semantics-dividers-thickness: 1px;">
+				<nldd-list accessible-label="X">
+					<nldd-list-item>
+						<nldd-cell width="fit-content"><nldd-avatar name="Bart" style="width: 32px; height: 32px"></nldd-avatar></nldd-cell>
+						<nldd-spacer-cell size="40"></nldd-spacer-cell>
+						<nldd-list-item-action button width="full">
+							<nldd-icon-cell size="20"><nldd-icon name="star"></nldd-icon></nldd-icon-cell>
+							<nldd-spacer-cell size="40"></nldd-spacer-cell>
+							<nldd-text-cell text="Na het icoon"></nldd-text-cell>
+						</nldd-list-item-action>
+					</nldd-list-item>
+				</nldd-list>
+			</div>
+		`);
+		await waitForUpdate(el);
+		await settle();
+		const item = el.querySelector('nldd-list-item') as HTMLElement;
+		const block = item.shadowRoot!.querySelector('.list-item')!.getBoundingClientRect();
+		const text = item.querySelector('nldd-text-cell')!.getBoundingClientRect();
+		expect(parseFloat(item.style.getPropertyValue('--_divider-inset-start'))).toBeCloseTo(
+			text.left - block.left,
+			0,
+		);
 	});
 
 	// A cell holding more than one thing is not a glyph cell.
