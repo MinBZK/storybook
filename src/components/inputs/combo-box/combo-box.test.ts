@@ -804,4 +804,36 @@ describe('nldd-combo-box – allow-custom', () => {
 		expect(el.value).toBe('xx'); // value untouched
 		expect(el.shadowRoot!.querySelector('input')!.value).toBe(''); // typed text discarded
 	});
+	// A combo box in a form: the Enter that picks an option is not also a submit.
+	it('laat een verwerkte Enter niet doorborrelen naar het formulier', async () => {
+		el = await fixture(`
+			<form>
+				<nldd-combo-box accessible-label="Land">
+					<nldd-menu>
+						<nldd-menu-item value="nl" text="Nederland"></nldd-menu-item>
+						<nldd-menu-item value="be" text="Belgie"></nldd-menu-item>
+					</nldd-menu>
+				</nldd-combo-box>
+			</form>
+		`);
+		await waitForUpdate(el);
+		const combo = el.querySelector('nldd-combo-box') as NLDDComboBox;
+		const input = combo.shadowRoot!.querySelector('input')!;
+		let reachedForm = 0;
+		// `el` is the form: fixture returns the root of the given markup. Only
+		// Enter is counted — the arrow keys are free to bubble, they submit
+		// nothing.
+		el.addEventListener('keydown', (e) => {
+			if ((e as KeyboardEvent).key === 'Enter') reachedForm += 1;
+		});
+
+		input.dispatchEvent(new KeyboardEvent('keydown', { key: 'ArrowDown', bubbles: true, composed: true }));
+		await waitForUpdate(el);
+		input.dispatchEvent(new KeyboardEvent('keydown', { key: 'Enter', bubbles: true, composed: true }));
+		await waitForUpdate(el);
+
+		expect(combo.value).toBe('nl');
+		expect(reachedForm).toBe(0);
+	});
+
 });
