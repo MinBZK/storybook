@@ -182,8 +182,13 @@ export class NLDDTooltip extends LitElement {
 			if (!this._descriptionEl) {
 				this._descriptionEl = document.createElement('span');
 				this._descriptionEl.id = this._tooltipId;
+				// Pinned to the top-left corner. Absolute without offsets leaves the
+				// element at its static position — the end of the body — where its
+				// one pixel extends the document and the page grows a scrollbar.
 				Object.assign(this._descriptionEl.style, {
 					position: 'absolute',
+					top: '0',
+					left: '0',
 					width: '1px',
 					height: '1px',
 					overflow: 'hidden',

@@ -273,4 +273,23 @@ describe('nldd-tooltip – aria-describedby', () => {
 		await waitForUpdate(el);
 		expect((el as unknown as { _visible: boolean })._visible).toBe(true);
 	});
+	// The hidden description must not extend the document: absolute without
+	// offsets sits at the end of the body and its pixel adds a scrollbar.
+	it('legt de verborgen beschrijving linksboven vast', async () => {
+		el = await fixture(`
+			<nldd-tooltip text="Uitleg"><button>Trigger</button></nldd-tooltip>
+		`);
+		await waitForUpdate(el);
+		const trigger = el.querySelector('button')!;
+		trigger.dispatchEvent(new FocusEvent('focusin', { bubbles: true }));
+		await waitForUpdate(el);
+
+		const description = document.getElementById(
+			trigger.getAttribute('aria-describedby')!,
+		) as HTMLElement;
+		expect(description.style.top).toBe('0px');
+		expect(description.style.left).toBe('0px');
+		expect(description.getBoundingClientRect().bottom).toBeLessThanOrEqual(2);
+	});
+
 });
