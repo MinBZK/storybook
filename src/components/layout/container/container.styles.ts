@@ -136,6 +136,27 @@ export const containerStyles = css`
 		gap: var(--_resolved-gap);
 	}
 
+	/* Fills the space it is given and puts its content in the middle of it: for a
+	   state that should own the area rather than sit at the top of it (an empty
+	   list, a spinner). An explicit horizontal-alignment or vertical-alignment
+	   still wins — those land as inline custom properties on the host. */
+	:host([centered]) {
+		flex-grow: 1;
+		align-self: stretch;
+		--_justify-content: center;
+		--_align-items: center;
+	}
+
+	:host([centered]) .container {
+		display: flex;
+		flex-direction: column;
+		min-height: 100%;
+	}
+
+	:host([centered]) .container__inner {
+		flex: 1;
+	}
+
 	:host([layout="row"]) .container__inner {
 		flex-direction: row;
 	}
