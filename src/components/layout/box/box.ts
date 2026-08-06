@@ -18,7 +18,12 @@
  *   the page, so the heading and the button labels have to name the danger —
  *   colour is a reinforcement, never the only signal (WCAG 1.4.1). Overrides
  *   `background`.
- * @slot - Place components inside the box
+ * The box draws the surface and nothing else: it has no padding of its own, the
+ * same way nldd-card has none. Put an nldd-container inside it and let that set
+ * the inset, so one component owns spacing wherever it is used.
+ *
+ * @slot - Place components inside the box, usually wrapped in an nldd-container
+ * that carries the padding
  */
 import { LitElement } from 'lit';
 import { customElement, property } from 'lit/decorators.js';

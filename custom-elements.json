@@ -17688,7 +17688,7 @@
               },
               "default": "'default'",
               "fieldName": "variant",
-              "description": "What the grouping means. - `default`: a neutral grouping; `background` decides the fill. - `critical`: a region whose actions are destructive or irreversible (a \"danger zone\"), tinted and outlined in critical. It carries no ARIA of its own: unlike nldd-banner this is not an announcement but a permanent part of the page, so the heading and the button labels have to name the danger — colour is a reinforcement, never the only signal (WCAG 1.4.1). Overrides `background`."
+              "description": "What the grouping means. - `default`: a neutral grouping; `background` decides the fill. - `critical`: a region whose actions are destructive or irreversible (a \"danger zone\"), tinted and outlined in critical. It carries no ARIA of its own: unlike nldd-banner this is not an announcement but a permanent part of the page, so the heading and the button labels have to name the danger — colour is a reinforcement, never the only signal (WCAG 1.4.1). Overrides `background`. The box draws the surface and nothing else: it has no padding of its own, the same way nldd-card has none. Put an nldd-container inside it and let that set the inset, so one component owns spacing wherever it is used."
             }
           ],
           "superclass": {
@@ -17700,7 +17700,7 @@
           "slots": [
             {
               "name": "",
-              "description": "Place components inside the box"
+              "description": "Place components inside the box, usually wrapped in an nldd-container that carries the padding"
             }
           ]
         }

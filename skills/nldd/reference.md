@@ -1489,13 +1489,13 @@ Use a box to visually group related components in a distinct, contained region. 
 | Attribuut | Type | Beschrijving |
 | --- | --- | --- |
 | `background` | `'tinted'\|'base'` | Surface fill. - `tinted` (default): for a box on a plain page bg. - `base`: for a box sitting on an already-tinted parent (the border ring gets +2 palette steps so it still reads against a card-on-card). |
-| `variant` | `'default'\|'critical'` | What the grouping means. - `default`: a neutral grouping; `background` decides the fill. - `critical`: a region whose actions are destructive or irreversible (a "danger zone"), tinted and outlined in critical. It carries no ARIA of its own: unlike nldd-banner this is not an announcement but a permanent part of the page, so the heading and the button labels have to name the danger — colour is a reinforcement, never the only signal (WCAG 1.4.1). Overrides `background`. |
+| `variant` | `'default'\|'critical'` | What the grouping means. - `default`: a neutral grouping; `background` decides the fill. - `critical`: a region whose actions are destructive or irreversible (a "danger zone"), tinted and outlined in critical. It carries no ARIA of its own: unlike nldd-banner this is not an announcement but a permanent part of the page, so the heading and the button labels have to name the danger — colour is a reinforcement, never the only signal (WCAG 1.4.1). Overrides `background`. The box draws the surface and nothing else: it has no padding of its own, the same way nldd-card has none. Put an nldd-container inside it and let that set the inset, so one component owns spacing wherever it is used. |
 
 **Slots**
 
 | Slot | Beschrijving |
 | --- | --- |
-| _(default)_ | Place components inside the box |
+| _(default)_ | Place components inside the box, usually wrapped in an nldd-container that carries the padding |
 
 ### `<nldd-card>`
 
