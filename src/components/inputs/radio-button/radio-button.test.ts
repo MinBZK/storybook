@@ -133,4 +133,20 @@ describe('nldd-radio-button – change event', () => {
 		form.reset();
 		expect(rb.checked).toBe(true);
 	});
+	// Decorative: the shape without a control, for a row that is the control.
+	describe('decorative', () => {
+		it('rendert geen input', async () => {
+			el = await fixture(`<nldd-radio-button decorative checked></nldd-radio-button>`);
+			await waitForUpdate(el);
+			expect(el.shadowRoot!.querySelector('.radio-button__input')).toBeNull();
+			expect(el.shadowRoot!.querySelector('input')).toBeNull();
+		});
+
+		it('is niet focusbaar', async () => {
+			el = await fixture(`<nldd-radio-button decorative></nldd-radio-button>`);
+			await waitForUpdate(el);
+			expect(el.shadowRoot!.querySelector('[tabindex]')).toBeNull();
+		});
+	});
+
 });

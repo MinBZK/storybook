@@ -68,6 +68,17 @@ export const radioButtonStyles = css`
 		transform: translate(-50%, -50%) scale(1);
 	}
 
+	/* Decorative has no input to hang :checked on, so the state comes from the
+	   host attribute instead. */
+	:host([decorative][checked]) .radio-button__outer-shape {
+		border-color: var(--components-radio-button-is-selected-border-color);
+		background-color: var(--components-radio-button-is-selected-background-color);
+	}
+
+	:host([decorative][checked]) .radio-button__inner-shape {
+		transform: translate(-50%, -50%) scale(1);
+	}
+
 	@media (hover: hover) {
 		.radio-button__input:hover:not(:disabled) ~ .radio-button__outer-shape {
 			border-color: var(--components-radio-button-is-hovered-border-color);

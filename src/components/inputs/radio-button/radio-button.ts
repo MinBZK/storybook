@@ -14,6 +14,10 @@
  * @element nldd-radio-button
  * @attr {boolean} checked - Checked state
  * @attr {boolean} disabled - Disabled state
+ * @attr {boolean} decorative - Renders the shape without the input: no focus, no
+ *   name/value, nothing announced. For a control that owns the state elsewhere,
+ *   such as a list row that is itself the radio; putting a real input in there
+ *   would nest a control inside a control.
  * @attr {boolean} required - Required state
  * @attr {string} name - Radio group name for form submission; ties the buttons of one group together
  * @attr {string} value - Value submitted with the form when this radio button is checked
@@ -38,6 +42,9 @@ export class NLDDRadioButton extends FormAssociated(LitElement) {
 
 	@property({ type: Boolean, reflect: true })
 	checked = false;
+
+	@property({ type: Boolean, reflect: true })
+	decorative = false;
 
 	@property({ type: Boolean, reflect: true })
 	disabled = false;
