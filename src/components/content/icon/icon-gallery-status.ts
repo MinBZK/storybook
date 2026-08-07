@@ -2,69 +2,55 @@
 // renders a "New" or "Updated" tag on these tiles, so consumers browsing the
 // gallery spot what changed without reading the changelog.
 //
-// Refresh with every icon batch: replace (not extend) both sets with the names
-// of that batch, so the gallery always marks the latest batch only. Renames
-// and alias changes count as updated too, with or without new artwork; new
-// wins when both apply.
+// Both sets are derived from git history rather than kept by hand, and they are
+// replaced (not extended) with every batch, so the gallery marks the latest
+// batch only. A batch is everything that happened to the icons since the last
+// one shipped:
+//
+//   git log --since=<date> --reverse --find-renames --name-status --format= \
+//     -- src/components/content/icon/icons
+//
+// Read those events oldest first and chain renames forward to today's filename.
+// An icon born inside the window is new, under whatever name it ended up with;
+// an icon that was only changed or renamed inside the window is updated; a name
+// that no longer exists drops out of both sets. New wins when both apply.
+//
+// Do not use `git log --follow` for this: on files this small its rename
+// detection links unrelated icons (it reads pause-filled as a descendant of
+// caret-down), which quietly moves new icons into the updated set.
+
 export const NEW_ICONS = new Set([
+	'antenna-radio-waves',
 	'apartment-building-2',
 	'arrow-clockwise',
 	'arrow-down-left-arrow-up-right',
 	'arrow-up-right-arrow-down-left',
+	'book-badge-plus',
+	'bug',
+	'circle-grid-2x2-top-left-check-mark',
 	'clipboard-pencil',
 	'display',
+	'exclamation-2-circle',
+	'exclamation-2-circle-filled',
+	'exclamation-3-circle',
+	'exclamation-3-circle-filled',
 	'file-badge-arrow-down',
 	'file-badge-arrow-up',
 	'file-badge-minus',
 	'file-badge-plus',
 	'file-on-file',
+	'file-text-on-file-text',
 	'folder-badge-plus',
 	'folder-open',
 	'hand-thumbs-down',
 	'hand-thumbs-up',
+	'house-apartment-building',
 	'link-badge-lock',
 	'map',
 	'map-pin',
 	'map-pin-badge-minus',
 	'map-pin-badge-plus',
 	'map-pin-oval',
-	'microphone',
-	'microphone-slash',
-	'paintbrush',
-	'person-badge-minus',
-	'photo-camera',
-	'photo-on-photo-angled',
-	'photo-stack',
-	'signpost',
-	'slider-horizontal-3',
-	'speaker',
-	'speaker-slash',
-	'speaker-volume-high',
-	'speaker-volume-low',
-	'speaker-volume-medium',
-	'square-grid-2x2',
-	'square-grid-2x2-pencil',
-	'text-format-size',
-	'video-camera',
-	'viewfinder-line',
-]);
-
-export const UPDATED_ICONS = new Set([
-	'arrow-2-counter-clockwise',
-	'dismiss',
-	'dismiss-circle',
-	'dismiss-circle-filled',
-	'dismiss-extra-small',
-	'dismiss-small',
-	'file',
-	'file-text',
-	'file-text-badge-check-mark',
-	'file-text-badge-check-plus',
-	'file-text-on-file-text',
-	'file-text-pencil',
-	'folder',
-	'folder-on-folder',
-	'house-apartment-building',
 	'media-backward',
 	'media-backward-end',
 	'media-backward-end-filled',
@@ -77,9 +63,59 @@ export const UPDATED_ICONS = new Set([
 	'media-forward-filled',
 	'media-forward-frame',
 	'media-forward-frame-filled',
-	'rectangle-stack',
+	'megaphone',
+	'microphone',
+	'microphone-slash',
+	'paintbrush',
+	'pause',
+	'pause-filled',
+	'person-badge-minus',
+	'person-badge-plus',
+	'person-text-rectangle',
+	'photo-camera',
+	'photo-on-photo-angled',
+	'photo-stack',
+	'play',
+	'play-filled',
+	'play-pause',
+	'play-pause-filled',
 	'rectangle-stack-chevron-left-forward-slash-chevron-right',
 	'rectangle-stack-text',
-	'square-arrow-down',
+	'seal-star',
+	'signpost',
+	'slider-horizontal-3',
+	'speaker',
+	'speaker-slash',
+	'speaker-volume-high',
+	'speaker-volume-low',
+	'speaker-volume-medium',
+	'square',
+	'square-1',
+	'square-grid-2x2',
+	'square-grid-2x2-pencil',
+	'stop',
+	'stop-filled',
 	'tag-on-tag',
+	'text-format-size',
+	'triangle-square-circle',
+	'video-camera',
+	'viewfinder',
+	'viewfinder-line',
+]);
+
+export const UPDATED_ICONS = new Set([
+	'book-badge-play',
+	'chevron-left-forward-slash-chevron-right-rectangle',
+	'exclamation-circle-filled',
+	'file',
+	'file-text',
+	'file-text-badge-check-mark',
+	'file-text-badge-check-plus',
+	'file-text-pencil',
+	'folder',
+	'folder-on-folder',
+	'lightbulb',
+	'rectangle-stack',
+	'seal-check-mark',
+	'square-arrow-down',
 ]);

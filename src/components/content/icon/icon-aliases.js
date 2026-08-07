@@ -646,4 +646,7 @@ export const aliases = {
 	// antenna-radio-waves
 	'broadcast': 'antenna-radio-waves',
 
+	// seal-star
+	'brand': 'seal-star',
+
 };

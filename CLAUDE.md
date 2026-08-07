@@ -118,6 +118,25 @@ Wil je toch handmatig iets toevoegen (bijv. iets dat semantic-release niet uit d
 - Gebruik de Keep-a-Changelog-secties (`### Added`, `### Fixed`, `### Breaking`, …), zoals de bestaande versieblokken.
 - Regenereer daarna de skill-kopie: `npm run generate:skill-changelog` (of `npm run generate:skill-docs`). `skills/nldd/changelog.md` is een gegenereerde kopie van de root-CHANGELOG en moet in sync blijven.
 
+## Iconen
+
+Een icoon is een bestand in `src/components/content/icon/icons/`; de bestandsnaam
+is de icoonnaam. Staat er iets **tussen haakjes** in de naam, dan is dat een
+alias: haal het uit de bestandsnaam en zet het in `icon-aliases.js`
+(`'brand': 'seal-star'`). Optimaliseer nieuwe bestanden naar de huisstijl:
+geen `width`/`height`, `fill="currentColor"` in plaats van een vaste kleur,
+pad afgerond op twee decimalen, tabs, elk pad op een eigen regel.
+
+Nieuwe en hertekende iconen krijgen een "Nieuw"- of "Bijgewerkt"-label in de
+icon-gallery. Die twee lijsten staan in `icon-gallery-status.ts` en worden bij
+elke batch **vervangen**, afgeleid uit de git-historie; dat bestand legt in zijn
+kop precies vast hoe je ze afleidt en welke valkuil er zit (`--follow` niet
+gebruiken).
+
+Draai daarna `npm run build:icons` (registry) en `npm run generate:skill-docs`
+(de icoon- en aliaslijst in `skills/nldd/reference.md`), en zet een nieuw icoon
+in de changelog onder `### Highlights`.
+
 ## Ontwerprichtlijnen
 
 De ontwerprichtlijnen staan in `src/docs/design-guidelines.mdx` (Storybook "Docs/Ontwerprichtlijnen"): dat is de enige bron. Wijzig je ze, draai dan `npm run generate:skill-principles` (of `npm run generate:skill-docs`) en commit het resultaat. `skills/nldd/design-guidelines.md` is een gegenereerde kopie die met de plugin meereist en in sync moet blijven; er is geen aparte ontwerprichtlijnen-skill meer. Houd de tekst em-dash-vrij (komma's, punten of haakjes). Heb je de directory `.claude/skills/ontwerprichtlijnen/` lokaal nog staan (van de oude generator), verwijder die dan handmatig; hij is nu een ongetrackte overblijver.
