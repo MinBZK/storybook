@@ -13,6 +13,10 @@ here; consult the commit history if you need that level of detail.
 
 - **`nldd-box` no longer has padding of its own.** It draws the surface and nothing else, exactly as `nldd-card` already did, so one component owns the inset wherever it is used. Wrap what is inside in an `nldd-container` and let that set it: `<nldd-box><nldd-container padding="16">…</nldd-container></nldd-box>` reproduces the old look. Without it, content now sits against the border. The token that held the old value, `--components-box-padding`, is still there as the reference for what "16" means here.
 
+### Highlights
+
+- **`seal-star`, a new icon.** The same seal as `seal-check-mark`, with a star in it: where the check mark says something was verified, the star says something is the organisation's own. Also reachable as `brand`.
+
 ### Fixed
 
 - **`nldd-top-title-bar` now waits for a `collapse-anchor` that renders late.** A page that only draws its title once its data has arrived had no anchor when the bar connected, and the bar gave up looking: it never collapsed, so a `text` meant to appear on scroll never did. It now watches for the id and connects the moment it shows up.
