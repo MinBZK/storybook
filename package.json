@@ -521,7 +521,7 @@
     "eslint": "^9.17.0",
     "eslint-plugin-lit-a11y": "^5.1.1",
     "eslint-plugin-storybook": "^10.4.6",
-    "globals": "^15.14.0",
+    "globals": "^17.8.0",
     "playwright": "^1.57.0",
     "semantic-release": "^25.0.2",
     "storybook": "^10.4.6",
