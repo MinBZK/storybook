@@ -31,16 +31,20 @@ export type ListItemSize = 'sm' | 'md';
  *    footprint is position-independent and tree columns line up at any depth.
  *
  * ## Divider
- * The divider spans the content width by default, with one exception: a row
- * that opens with an `nldd-icon-cell` followed by a text or title cell starts
- * the divider at that text, so the line aligns with the words rather than the
- * icon. Leading spacers are ignored when deciding this. Mark a cell with
- * `divider-start` and/or `divider-end` to place it yourself instead — an
- * explicit marker replaces the derived one entirely, so `divider-start` on the
- * icon cell restores the full-width line. Multiple markers resolve as the
- * union: first `divider-start` through last `divider-end`. A start past the
- * last end is an authoring error — the item DEV-warns and falls back to the
- * full content width.
+ * By default the divider starts at the row's first text or title cell, so the
+ * line lands on the words rather than on whatever leads up to them — an icon,
+ * an avatar, a checkbox, or the spacers a tree indents with. Rows of different
+ * shapes then still line their dividers up with each other, and a tree's
+ * dividers step inward with its indentation. Text inside an
+ * `nldd-list-item-action` counts as the row's content, and the marker is that
+ * text cell rather than the action: the action carries its own inline padding,
+ * so its edge sits before the words. A row with no text or title cell keeps the
+ * full content width. Mark a cell with `divider-start` and/or `divider-end` to
+ * place it yourself instead — an explicit marker replaces the derived one
+ * entirely, so `divider-start` on the leading cell restores the full-width
+ * line. Multiple markers resolve as the union: first `divider-start` through
+ * last `divider-end`. A start past the last end is an authoring error — the
+ * item DEV-warns and falls back to the full content width.
  *
  * ## Disclosure
  * A branch row can disclose its children in two ways: a dedicated
@@ -472,46 +476,20 @@ export class NLDDListItem extends withTranslations(LitElement, nlddListItemTrans
 	 * box on interactive rows), so the values compose with the edge geometry.
 	 */
 	/**
-	 * The cell the divider starts at when nobody said otherwise: a row that
-	 * opens with an icon reads better with the line aligned to its text, the
-	 * way a leading avatar or icon insets the divider in every list of this
-	 * kind. Only leading spacers may sit in front of the icon; anything else
-	 * means the row does not open with an icon after all. Put `divider-start`
-	 * on the icon cell itself to get the full-width line back.
+	 * The cell the divider starts at when nobody said otherwise: the row's first
+	 * text or title cell. The line lands on the words rather than on whatever
+	 * leads up to them — an icon, an avatar, a checkbox, or the spacers a tree
+	 * indents with — so rows of different shapes still line their dividers up
+	 * with each other. Put `divider-start` on an earlier cell to get the
+	 * full-width line back.
 	 */
 	private _implicitDividerStart(): Element[] {
-		const parts = Array.from(this.children).filter(el =>
-			(el.tagName.startsWith('NLDD-') && el.tagName.endsWith('-CELL'))
-			|| el.tagName === 'NLDD-LIST-ITEM-ACTION');
-		const meaningful = parts.filter(el => el.tagName !== 'NLDD-SPACER-CELL');
-		const [first, second] = meaningful;
-		if (!NLDDListItem._opensWithGlyph(first) || !second) return [];
-		// Text inside a segmented action still marks the start, but the marker is
-		// the cell, not the action: the action carries its own inline padding, so
-		// its edge sits before the text. An action can open with an icon or a
-		// control of its own, so look for the first text there too.
-		const marker = second.tagName === 'NLDD-LIST-ITEM-ACTION'
-			? Array.from(second.children).find(NLDDListItem._isTextCell)
-			: second;
-		return marker && NLDDListItem._isTextCell(marker) ? [marker] : [];
-	}
-
-	private static _isTextCell(el: Element): boolean {
-		return el.tagName === 'NLDD-TEXT-CELL' || el.tagName === 'NLDD-TITLE-CELL';
-	}
-
-	/**
-	 * Whether the row opens with a single glyph-sized thing: an icon cell, or a
-	 * plain cell holding exactly one element — an avatar, a radio, a checkbox, a
-	 * badge. There is no cell type for most of those, so they arrive in an
-	 * nldd-cell, and a row that opens with one insets its divider the same way an
-	 * icon does. Two or more things in that cell is a group, not a glyph.
-	 */
-	private static _opensWithGlyph(cell: Element | undefined): boolean {
-		if (!cell) return false;
-		if (cell.tagName === 'NLDD-ICON-CELL') return true;
-		if (cell.tagName !== 'NLDD-CELL') return false;
-		return cell.children.length === 1;
+		// The marker is the CELL, never a segmented action around it: the action
+		// carries its own inline padding, so its edge sits before the text. Own
+		// descendants, so a text inside a segment counts as this row's content
+		// while a nested row's text does not.
+		const marker = this._ownDescendants('nldd-text-cell, nldd-title-cell')[0];
+		return marker ? [marker] : [];
 	}
 
 	private _measureDividerMarkers(): void {

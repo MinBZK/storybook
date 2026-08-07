@@ -774,7 +774,7 @@ describe('nldd-list-item – divider markers', () => {
 	});
 
 	// A cell holding more than one thing is not a glyph cell.
-	it('springt niet in bij een leidende cel met meer dan een avatar', async () => {
+	it('springt ook in bij een leidende cel met meer dan een ding erin', async () => {
 		el = await fixture(`
 			<div style="width: 400px; --components-list-item-indicator-inline-inset: 8px; --semantics-controls-md-min-size: 44px; --semantics-controls-sm-min-size: 32px; --semantics-dividers-thickness: 1px;">
 				<nldd-list accessible-label="X">
@@ -791,11 +791,13 @@ describe('nldd-list-item – divider markers', () => {
 		await waitForUpdate(el);
 		await settle();
 		const item = el.querySelector('nldd-list-item') as HTMLElement;
-		expect(item.style.getPropertyValue('--_divider-inset-start')).toBe('');
+		// Wat ervoor staat doet er niet toe: de lijn begint bij de tekst.
+		expect(parseFloat(item.style.getPropertyValue('--_divider-inset-start'))).toBeGreaterThan(0);
 	});
 
-	// Without a leading icon the line keeps the full content width.
-	it('laat een rij zonder leidend icoon met rust', async () => {
+	// De tekst opent de rij, dus de afgeleide start valt samen met de contentrand:
+	// dezelfde volle lijn, uitgedrukt als inspringing nul.
+	it('houdt de volle lijn als de rij met zijn tekst opent', async () => {
 		el = await fixture(`
 			<div style="width: 400px; --components-list-item-indicator-inline-inset: 8px; --semantics-controls-md-min-size: 44px; --semantics-controls-sm-min-size: 32px; --semantics-dividers-thickness: 1px;">
 				<nldd-list accessible-label="X">
@@ -809,16 +811,57 @@ describe('nldd-list-item – divider markers', () => {
 		await waitForUpdate(el);
 		await settle();
 		const item = el.querySelector('nldd-list-item') as HTMLElement;
-		expect(item.style.getPropertyValue('--_divider-inset-start')).toBe('');
+		expect(parseFloat(item.style.getPropertyValue('--_divider-inset-start'))).toBe(0);
 	});
 
-	it('clears the vars again when the marker is removed', async () => {
+	// Een boom springt in met spacers, dus de dividers springen mee naar binnen.
+	it('begint bij de tekst voorbij de inspring-spacers', async () => {
+		el = await fixture(`
+			<div style="width: 400px; --components-list-item-indicator-inline-inset: 8px; --semantics-controls-md-min-size: 44px; --semantics-controls-sm-min-size: 32px; --primitives-space-16: 16px; --primitives-space-32: 32px; --semantics-dividers-thickness: 1px;">
+				<nldd-list accessible-label="X">
+					<nldd-list-item>
+						<nldd-spacer-cell size="16"></nldd-spacer-cell>
+						<nldd-spacer-cell size="32"></nldd-spacer-cell>
+						<nldd-text-cell text="Blad zonder chevron"></nldd-text-cell>
+					</nldd-list-item>
+				</nldd-list>
+			</div>
+		`);
+		await waitForUpdate(el);
+		await settle();
+		const item = el.querySelector('nldd-list-item') as HTMLElement;
+		expect(parseFloat(item.style.getPropertyValue('--_divider-inset-start'))).toBeGreaterThanOrEqual(48);
+	});
+
+	// De marker weghalen leidt opnieuw af in plaats van te wissen: dezelfde cel,
+	// nu vanzelf in plaats van met de hand.
+	it('valt terug op de afgeleide start als de marker weg is', async () => {
 		el = await fixture(`
 			<div style="width: 400px; --components-list-item-indicator-inline-inset: 8px; --semantics-controls-md-min-size: 44px; --semantics-controls-sm-min-size: 32px; --primitives-space-40: 40px; --semantics-dividers-thickness: 1px;">
 				<nldd-list accessible-label="X">
 					<nldd-list-item>
 						<nldd-spacer-cell size="40"></nldd-spacer-cell>
 						<nldd-text-cell divider-start text="Vanaf hier"></nldd-text-cell>
+					</nldd-list-item>
+				</nldd-list>
+			</div>
+		`);
+		await waitForUpdate(el);
+		await settle();
+		const item = el.querySelector('nldd-list-item') as HTMLElement;
+		el.querySelector('[divider-start]')!.removeAttribute('divider-start');
+		await settle();
+		expect(parseFloat(item.style.getPropertyValue('--_divider-inset-start'))).toBeGreaterThanOrEqual(40);
+	});
+
+	// Niets om uit af te leiden, dus de vars verdwijnen.
+	it('wist de vars als de rij geen tekst- of titel-cel heeft', async () => {
+		el = await fixture(`
+			<div style="width: 400px; --components-list-item-indicator-inline-inset: 8px; --semantics-controls-md-min-size: 44px; --semantics-controls-sm-min-size: 32px; --primitives-space-40: 40px; --semantics-dividers-thickness: 1px;">
+				<nldd-list accessible-label="X">
+					<nldd-list-item>
+						<nldd-spacer-cell size="40"></nldd-spacer-cell>
+						<nldd-icon-cell divider-start size="20"><nldd-icon name="star"></nldd-icon></nldd-icon-cell>
 					</nldd-list-item>
 				</nldd-list>
 			</div>
