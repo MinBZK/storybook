@@ -136,13 +136,14 @@ export const Pulse = {
 			<nldd-badge color="critical" pulse></nldd-badge>
 			<nldd-badge color="success" pulse></nldd-badge>
 			<nldd-badge color="accent" pulse number="3"></nldd-badge>
+			<nldd-badge color="success" pulse text="Online"></nldd-badge>
 		</div>
 	`,
 	parameters: {
 		controls: { disable: true },
 		docs: {
 			description: {
-				story: 'Een ring groeit uit de badge en vervaagt. Voor iets dat nu gebeurt: een live-verbinding, een storing die loopt. Zet hem niet op elke badge, want dan trekt niets meer de aandacht. Wie beweging heeft uitgezet (`prefers-reduced-motion`) ziet gewoon de badge.',
+				story: 'Een ring groeit uit de badge en vervaagt. Voor iets dat nu gebeurt: een live-verbinding, een storing die loopt. Zet hem niet op elke badge, want dan trekt niets meer de aandacht. De ring groeit als spread, niet als schaal, dus hij houdt overal dezelfde afstand: ook een brede badge krijgt geen halo die breder is dan hoog. Wie beweging heeft uitgezet (`prefers-reduced-motion`) ziet gewoon de badge.',
 			},
 		},
 	},

@@ -21,10 +21,8 @@ export const badgeStyles = css`
 		--_dot-size: var(--primitives-space-12);
 		--_icon-size: var(--primitives-space-14);
 		--_icon-offset-correction: var(--primitives-space-1);
-		--_pulse-scale: 2.2;
-		--_pulse-opacity: 0.45;
-		--_pulse-duration: 2s;
-		--_pulse-easing: ease-out;
+		--_pulse-spread: var(--primitives-space-8);
+		--_pulse-duration: 1.5s;
 
 		${inheritedTextReset}
 		display: inline-flex;
@@ -32,6 +30,7 @@ export const badgeStyles = css`
 	}
 
 	:host([size="sm"]) {
+		--_pulse-spread: var(--primitives-space-6);
 		--_height: var(--primitives-space-16);
 		--_inline-padding: var(--primitives-space-4);
 		--_gap: var(--primitives-space-2);
@@ -214,25 +213,38 @@ export const badgeStyles = css`
 
 	/* Grows out of the badge and fades: it borrows the badge's own shape and
 	   colour, so it works on a dot as well as on a counter. Behind the content
-	   and inert, so it never affects layout or hit area. */
+	   and inert, so it never affects layout or hit area.
+
+	   A growing box-shadow rather than a scale: scaling multiplies, so a wide
+	   badge would throw a halo that is far wider than it is tall. A spread adds
+	   the same distance on every side, whatever the badge measures.
+
+	   Painted after the badge, so the ring passes over the contrast border the
+	   badge draws in the surface colour instead of starting behind it. The
+	   element itself is transparent (the ring is the shadow, which paints
+	   outside the box), so nothing covers the badge's own fill or text. */
 	.badge__pulse {
 		position: absolute;
 		inset: 0;
-		z-index: -1;
 		border-radius: inherit;
-		background-color: var(--_background-color);
+		box-shadow: 0 0 0 0 var(--_background-color);
 		pointer-events: none;
-		animation: badge-pulse var(--_pulse-duration) var(--_pulse-easing) infinite;
+		animation: badge-pulse var(--_pulse-duration) infinite;
 	}
 
+	/* The ring rides on the shadow's own colour rather than on the element's
+	   opacity: at spread zero the shadow has no area, so it can start at full
+	   strength without a flash, and it is already transparent when the spread
+	   snaps back for the next cycle. Same shape as Shoelace's badge pulse. */
 	@keyframes badge-pulse {
-		from {
-			opacity: var(--_pulse-opacity);
-			transform: scale(1);
+		0% {
+			box-shadow: 0 0 0 0 var(--_background-color);
 		}
-		to {
-			opacity: 0;
-			transform: scale(var(--_pulse-scale));
+		70% {
+			box-shadow: 0 0 0 var(--_pulse-spread) transparent;
+		}
+		100% {
+			box-shadow: 0 0 0 0 transparent;
 		}
 	}
 
