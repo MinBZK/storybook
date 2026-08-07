@@ -1,6 +1,6 @@
 import { css, unsafeCSS } from 'lit';
 import { breakpoints } from '../../../assets/styles/breakpoints.js';
-import { inheritedTextReset } from '../../../assets/styles/shadow-resets.js';
+import { slottedReset, inheritedTextReset } from '../../../assets/styles/shadow-resets.js';
 
 const smMax = unsafeCSS(breakpoints.smMax);
 
@@ -14,6 +14,8 @@ export const identityStyles = css`
 
 	:host {
 		--_gap: var(--primitives-space-8);
+		--_avatar-size: var(--primitives-space-40);
+		--_avatar-corner-radius: var(--primitives-corner-radius-full);
 		--_text-color: var(--semantics-content-color);
 		--_text-font: var(--primitives-font-body-md-medium-tight);
 		--_supporting-text-color: var(--semantics-content-secondary-color);
@@ -56,6 +58,23 @@ export const identityStyles = css`
 
 	.identity__avatars {
 		display: flex;
+	}
+
+	/* One avatar may be slotted bare, and then identity gives it its size: a
+	   group of one would be a wrapper that says nothing. From two on, the group
+	   does the work, and these rules do not reach into it. */
+	.identity__avatars ::slotted(nldd-avatar) {
+		width: var(--_avatar-size) !important;
+		height: var(--_avatar-size) !important;
+	}
+
+	.identity__avatars ::slotted(img) {
+		${slottedReset}
+		display: block !important;
+		border-radius: var(--_avatar-corner-radius) !important;
+		width: var(--_avatar-size) !important;
+		height: var(--_avatar-size) !important;
+		object-fit: cover !important;
 	}
 
 	.identity__avatars[hidden] {

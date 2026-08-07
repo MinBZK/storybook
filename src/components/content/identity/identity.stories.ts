@@ -15,9 +15,10 @@ const AVATAR_IMAGE =
  * een naamregel en ondersteunende tekst (bijvoorbeeld rol of datum). Alle
  * onderdelen zijn optioneel.
  *
- * Eén avatar slot je als `<nldd-avatar slot="avatars">` (of een `<img>`); bij
- * meerdere slot je een `<nldd-avatar-group slot="avatars">` eromheen, die het
- * overlappen en de ring verzorgt. Zonder afbeelding valt een `nldd-avatar`
+ * Eén avatar slot je als `<nldd-avatar slot="avatars">` (of een `<img>`) en
+ * krijgt zijn maat van identity; bij meerdere slot je een
+ * `<nldd-avatar-group slot="avatars">` eromheen, die het overlappen en de ring
+ * verzorgt. Zonder afbeelding valt een `nldd-avatar`
  * terug op de initialen uit `name`. Staat de identity op een gekleurde
  * ondergrond, geef die kleur dan door via `--context-parent-background-color`
  * zodat de ring
@@ -57,9 +58,10 @@ const Template = (args: Record<string, any>) => html`
 		text=${args.text || nothing}
 		supporting-text=${args.supportingText || nothing}
 	>
-		<nldd-avatar-group slot="avatars">
-			<nldd-avatar name=${args.text || nothing} decorative></nldd-avatar>
-		</nldd-avatar-group>
+		<nldd-avatar slot="avatars"
+			name=${args.text || nothing}
+			decorative
+		></nldd-avatar>
 	</nldd-identity>
 `;
 

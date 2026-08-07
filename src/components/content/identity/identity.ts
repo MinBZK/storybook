@@ -11,12 +11,12 @@
  * auteursprofiel. Geslotte inhoud vervangt het bijbehorende attribuut
  * (het attribuut is de fallback van de slot).
  *
- * Avatars slot je in een `nldd-avatar-group`, ook als het er één is: die
- * groep geeft ze hun maat, laat ze overlappen en tekent de ring in de
- * vlakkleur. Identity maakt die groep niet zelf, want de avatars zijn light
- * DOM van de consument en een groep kan alleen opmaken wat als eigen kind
- * bij hem binnenkomt. Zet de avatars op decoratief (of een `img` op
- * `alt=""`) wanneer de namen al in de tekst staan.
+ * Eén avatar slot je zoals hij is; identity geeft hem zijn maat. Zijn het er
+ * meer, slot dan een `nldd-avatar-group`: die laat ze overlappen en tekent
+ * de ring in de vlakkleur. Identity maakt die groep niet zelf, want de
+ * avatars zijn light DOM van de consument en een groep kan alleen opmaken
+ * wat als eigen kind bij hem binnenkomt. Zet de avatars op decoratief (of
+ * een `img` op `alt=""`) wanneer de namen al in de tekst staan.
  *
  * Op smalle breedtes (een sm-container, ≤ 640px) met meerdere avatars komt
  * de avatarrij boven de namen te staan, zodat de tekst de volle breedte
@@ -34,7 +34,7 @@
  * @attr {string} avatar-srcset - Responsive source set voor de avatar-src-afbeelding
  * @attr {string} avatar-alt - Alt-tekst voor de avatar-src-afbeelding; leeg = decoratief
  *
- * @slot avatars - Een `nldd-avatar-group` met één of meer avatars
+ * @slot avatars - Eén avatar (`nldd-avatar` of `img`), of een `nldd-avatar-group` bij meer
  * @slot text - Naamregel als rijke inhoud (bijv. een link naar het auteursprofiel)
  * @slot supporting-text - Ondersteunende tekst als rijke inhoud (bijv. een time-element)
  */
