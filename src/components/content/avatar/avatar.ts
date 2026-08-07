@@ -40,6 +40,7 @@
  * @attr {string} target - Link target voor href (bijv. '_blank'); vult rel aan en meldt "Opent in nieuw tabblad"
  * @attr {string} rel - Link rel voor href; standaard 'noopener noreferrer' bij target='_blank'
  * @attr {string} accessible-label - Naam van de link of knop; zonder deze wordt `name` gebruikt
+ * @attr {string} tooltip-timing - Wanneer de naam als tooltip verschijnt bij hover of focus: `default` (na 700ms; standaard), `instant`, of `never`. Een avatar toont geen tekst, dus zonder tooltip is de naam alleen voor hulpsoftware leesbaar. Een `decorative` avatar toont er sowieso geen: daar staat de naam al als tekst naast
  * @attr {object} translations - Overschrijf translation keys; niet gezette keys vallen terug op het Nederlands
  *
  * @example
@@ -128,6 +129,12 @@ export class NLDDAvatar extends withTranslations(LitElement, nlddAvatarTranslati
 	 *  `name`. Only matters when the avatar is interactive. */
 	@property({ type: String, attribute: 'accessible-label' })
 	accessibleLabel = '';
+
+	/** Forwarded to the inner nldd-tooltip's `timing`, like nldd-icon-button.
+	 *  On by default: a disc with initials is a riddle without its name. An
+	 *  avatar that sits beside that name is `decorative` and shows none. */
+	@property({ reflect: true, attribute: 'tooltip-timing', converter: reflectNonDefault<'default' | 'instant' | 'never'>('default') })
+	tooltipTiming: 'default' | 'instant' | 'never' = 'default';
 
 	/** True once the avatar is a control itself. */
 	get isInteractive(): boolean {

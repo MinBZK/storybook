@@ -41,6 +41,7 @@ export default {
 		iconAligned: false,
 		src: '',
 		icon: '',
+		tooltipTiming: 'default',
 		decorative: false,
 	},
 	argTypes: {
@@ -85,6 +86,15 @@ export default {
 			options: ICONS,
 			description: 'Overschrijft het type-afhankelijke terugval-icoon',
 		},
+		tooltipTiming: {
+			name: 'tooltip-timing',
+			control: 'select',
+			options: ['default', 'instant', 'never'],
+			description: 'Wanneer de naam als tooltip verschijnt bij hover of focus',
+			table: {
+				defaultValue: { summary: 'default' },
+			},
+		},
 		decorative: {
 			control: 'boolean',
 			description: 'Verbergt de avatar voor hulpsoftware',
@@ -103,6 +113,7 @@ const Template = (args: Record<string, any>) => html`
 		?icon-aligned=${args.iconAligned}
 		src=${args.src || nothing}
 		icon=${args.icon || nothing}
+		tooltip-timing=${args.tooltipTiming || nothing}
 		?decorative=${args.decorative}
 	></nldd-avatar>
 `;
