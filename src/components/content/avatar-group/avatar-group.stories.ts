@@ -31,7 +31,7 @@ export default {
 	},
 	args: {
 		size: '40',
-		overlap: 'md',
+		max: undefined,
 		accessibleLabel: '',
 	},
 	argTypes: {
@@ -43,12 +43,11 @@ export default {
 				defaultValue: { summary: '40' },
 			},
 		},
-		overlap: {
-			control: 'select',
-			options: ['none', 'sm', 'md'],
-			description: 'Hoeveel elke avatar over zijn voorganger valt',
+		max: {
+			control: { type: 'number', min: 1 },
+			description: 'Toont hoogstens zoveel avatars; de rest gaat achter een +N-knop',
 			table: {
-				defaultValue: { summary: 'md' },
+				type: { summary: 'number' },
 			},
 		},
 		accessibleLabel: {
@@ -59,50 +58,20 @@ export default {
 	},
 };
 
-const Template = ({ size, overlap, accessibleLabel }: Record<string, any>) => html`
+const Template = ({ size, max, accessibleLabel }: Record<string, any>) => html`
 	<nldd-avatar-group
 		size=${size}
-		overlap=${overlap}
+		max=${max ?? nothing}
 		accessible-label=${accessibleLabel || nothing}
 	>
-		<nldd-avatar name="Jan Jansen" decorative></nldd-avatar>
-		<nldd-avatar name="Fatima El Amrani" decorative></nldd-avatar>
-		<nldd-avatar name="Pieter de Vries" decorative></nldd-avatar>
+		<nldd-avatar name="Jan Jansen"></nldd-avatar>
+		<nldd-avatar name="Fatima El Amrani"></nldd-avatar>
+		<nldd-avatar name="Pieter de Vries"></nldd-avatar>
 	</nldd-avatar-group>
 `;
 
 export const Default = {
 	render: Template,
-};
-
-export const Overlap = {
-	render: () => html`
-		<div style="display: flex; gap: 32px; align-items: center;">
-			<nldd-avatar-group overlap="none">
-				<nldd-avatar name="Jan Jansen" decorative></nldd-avatar>
-				<nldd-avatar name="Fatima El Amrani" decorative></nldd-avatar>
-				<nldd-avatar name="Pieter de Vries" decorative></nldd-avatar>
-			</nldd-avatar-group>
-			<nldd-avatar-group overlap="sm">
-				<nldd-avatar name="Jan Jansen" decorative></nldd-avatar>
-				<nldd-avatar name="Fatima El Amrani" decorative></nldd-avatar>
-				<nldd-avatar name="Pieter de Vries" decorative></nldd-avatar>
-			</nldd-avatar-group>
-			<nldd-avatar-group>
-				<nldd-avatar name="Jan Jansen" decorative></nldd-avatar>
-				<nldd-avatar name="Fatima El Amrani" decorative></nldd-avatar>
-				<nldd-avatar name="Pieter de Vries" decorative></nldd-avatar>
-			</nldd-avatar-group>
-		</div>
-	`,
-	parameters: {
-		controls: { disable: true },
-		docs: {
-			description: {
-				story: '`none` zet de avatars op een rij met ruimte ertussen, `sm` laat ze licht overlappen en `md` (standaard) het meest. Hoe meer overlap, hoe sterker het als één groep leest en hoe minder elk gezicht op zichzelf staat.',
-			},
-		},
-	},
 };
 
 export const Sizes = {
@@ -126,19 +95,39 @@ export const Sizes = {
 	},
 };
 
-export const WithImages = {
+export const Max = {
 	render: () => html`
-		<nldd-avatar-group accessible-label="Redactie">
-			<img src="https://i.pravatar.cc/80?img=12" alt="">
-			<img src="https://i.pravatar.cc/80?img=32" alt="">
-			<img src="https://i.pravatar.cc/80?img=45" alt="">
+		<nldd-avatar-group max="3" accessible-label="Redactie">
+			<nldd-avatar name="Jan Jansen"></nldd-avatar>
+			<nldd-avatar name="Fatima El Amrani"></nldd-avatar>
+			<nldd-avatar name="Pieter de Vries"></nldd-avatar>
+			<nldd-avatar name="Sanne Bakker"></nldd-avatar>
+			<nldd-avatar name="Omar El Amrani"></nldd-avatar>
 		</nldd-avatar-group>
 	`,
 	parameters: {
 		controls: { disable: true },
 		docs: {
 			description: {
-				story: 'Een geslotte `img` krijgt dezelfde maat, ronding en ring als een `nldd-avatar`. Met een `accessible-label` wordt de rij één benoemde groep; de afbeeldingen zelf staan dan op `alt=""`, want de groep vertelt het verhaal.',
+				story: 'Met `max` staan er hoogstens zoveel avatars in de rij en gaat de rest achter een knop met "+N". Die knop opent een lijst met precies die overige namen, niet met de hele groep: het getal op de knop belooft er twee, dus je krijgt er twee. De schijf is lichter dan een avatar, want hij houdt geen gezicht vast. Zet `tooltip-timing` op de avatars zodat je de namen in de rij ook kunt lezen.',
+			},
+		},
+	},
+};
+
+export const WithImages = {
+	render: () => html`
+		<nldd-avatar-group accessible-label="Redactie">
+			<nldd-avatar src="https://i.pravatar.cc/80?img=12" name="Jan Jansen"></nldd-avatar>
+			<nldd-avatar src="https://i.pravatar.cc/80?img=32" name="Fatima El Amrani"></nldd-avatar>
+			<nldd-avatar src="https://i.pravatar.cc/80?img=45" name="Pieter de Vries"></nldd-avatar>
+		</nldd-avatar-group>
+	`,
+	parameters: {
+		controls: { disable: true },
+		docs: {
+			description: {
+				story: 'Een avatar met een `src` gedraagt zich in de groep als elke andere: dezelfde maat, ronding en ring, en bij een dode afbeelding valt hij terug op de initialen uit `name`. Slot geen kale `img` — die weet niets van dat alles en kan zijn naam niet als tooltip tonen.',
 			},
 		},
 	},
