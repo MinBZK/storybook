@@ -11,6 +11,7 @@ here; consult the commit history if you need that level of detail.
 
 ### Breaking
 
+- **The transport icons carry a `media-` prefix.** `play`, `play-filled`, `pause`, `pause-filled`, `stop`, `stop-filled`, `play-pause` and `play-pause-filled` are now `media-play` and so on, joining `media-backward` and `media-forward` which already had it. The old names keep working as aliases, so nothing breaks; they are simply not where the family lives any more.
 - **`nldd-byline` is now `nldd-identity`.** Same component, a name that says what it shows: a person or a group of people with their name and a supporting line, wherever that is useful, rather than only under an article. Rename the tag, the class (`NLDDByline` becomes `NLDDIdentity`) and the import path (`content/byline/byline.js` becomes `content/identity/identity.js`).
 - **`nldd-identity` hands more than one avatar to `nldd-avatar-group`.** One avatar can still be slotted bare and gets its size from identity; from two on, wrap them: `<nldd-avatar-group slot="avatars">…</nldd-avatar-group>`. The group owns the overlap and the ring, which identity used to draw itself, so both components say one thing each.
 

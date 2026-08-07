@@ -649,4 +649,14 @@ export const aliases = {
 	// seal-star
 	'brand': 'seal-star',
 
+	// media-play / media-pause / media-stop
+	'play': 'media-play',
+	'play-filled': 'media-play-filled',
+	'pause': 'media-pause',
+	'pause-filled': 'media-pause-filled',
+	'stop': 'media-stop',
+	'stop-filled': 'media-stop-filled',
+	'play-pause': 'media-play-pause',
+	'play-pause-filled': 'media-play-pause-filled',
+
 };

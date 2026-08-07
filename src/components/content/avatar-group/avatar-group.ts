@@ -84,8 +84,21 @@ export class NLDDAvatarGroup extends withTranslations(LitElement, nlddAvatarGrou
 		return el.getAttribute('name') || '';
 	}
 
+	/** The avatars as slotted, kept so a change to `max` can recompute without
+	 *  waiting for a slotchange that will not come. */
+	private _assigned: Element[] = [];
+
+	override willUpdate(changed: Map<string, unknown>): void {
+		if (changed.has('max')) this._recompute();
+	}
+
 	_onSlotChange = (e: Event): void => {
-		const assigned = (e.target as HTMLSlotElement).assignedElements();
+		this._assigned = (e.target as HTMLSlotElement).assignedElements();
+		this._recompute();
+	};
+
+	private _recompute(): void {
+		const assigned = this._assigned;
 		if (import.meta.env?.DEV) {
 			const strays = assigned.filter(el => el.localName !== 'nldd-avatar');
 			if (strays.length > 0) {
@@ -116,7 +129,7 @@ export class NLDDAvatarGroup extends withTranslations(LitElement, nlddAvatarGrou
 			return { avatar, name: this._nameOf(node) };
 		});
 		this._total = assigned.length;
-	};
+	}
 
 	/** Two things ::slotted() cannot express without knowing the count: hiding
 	 *  everything past `max`, and stacking the row so the first avatar lies on

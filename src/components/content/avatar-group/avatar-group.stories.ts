@@ -31,7 +31,7 @@ export default {
 	},
 	args: {
 		size: '40',
-		max: undefined,
+		max: 3,
 		accessibleLabel: '',
 	},
 	argTypes: {
