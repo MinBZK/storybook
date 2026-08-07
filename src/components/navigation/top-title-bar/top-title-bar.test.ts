@@ -233,6 +233,25 @@ describe('nldd-top-title-bar – is-compact', () => {
 		expect((el as any)._anchorElement).toBeNull();
 	});
 
+	it('picks up an anchor that only renders once the page has its data', async () => {
+		const container = await fixture<HTMLElement>(`
+			<div>
+				<nldd-top-title-bar text="Titel" collapse-anchor="late-heading"></nldd-top-title-bar>
+			</div>
+		`);
+		el = container.querySelector('nldd-top-title-bar')!;
+		await waitForUpdate(el);
+		expect((el as any)._anchorElement).toBeNull();
+
+		const heading = document.createElement('h1');
+		heading.id = 'late-heading';
+		container.append(heading);
+		await waitForUpdate(el);
+
+		expect((el as any)._anchorElement).toBe(heading);
+		cleanup(container);
+	});
+
 	it('removes scroll listener on disconnect', async () => {
 		const container = await fixture<HTMLElement>(`
 			<div>

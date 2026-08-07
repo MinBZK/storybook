@@ -71,6 +71,7 @@ export class NLDDTopTitleBar extends LitElement {
 	private _scrollTargetStyleObserver: MutationObserver | null = null;
 	private _pageModeObserver: MutationObserver | null = null;
 	private _anchorLayoutObserver: ResizeObserver | null = null;
+	private _anchorAppearObserver: MutationObserver | null = null;
 	private _boundOnScroll = this._onScroll.bind(this);
 
 	override connectedCallback(): void {
@@ -130,7 +131,10 @@ export class NLDDTopTitleBar extends LitElement {
 		this._anchorElement = (root as Document).getElementById?.(this.collapseAnchor)
 			?? root.querySelector(`#${this.collapseAnchor}`);
 
-		if (!this._anchorElement) return;
+		if (!this._anchorElement) {
+			this._waitForAnchor(root);
+			return;
+		}
 
 		this._wireScrollTarget();
 
@@ -155,6 +159,22 @@ export class NLDDTopTitleBar extends LitElement {
 
 		// Initial check after layout is complete
 		this.updateComplete.then(() => this._onScroll());
+	}
+
+	// A page that renders its title only once its data has loaded has no anchor
+	// when this bar connects. Without this the bar gives up for good: it never
+	// collapses, so a `text` that was meant to appear on scroll never does.
+	// Watch for the id showing up, then connect as usual.
+	private _waitForAnchor(root: Document | ShadowRoot): void {
+		this._anchorAppearObserver = new MutationObserver(() => {
+			const found = (root as Document).getElementById?.(this.collapseAnchor)
+				?? root.querySelector(`#${this.collapseAnchor}`);
+			if (!found) return;
+			this._anchorAppearObserver?.disconnect();
+			this._anchorAppearObserver = null;
+			this._connectAnchor();
+		});
+		this._anchorAppearObserver.observe(root, { childList: true, subtree: true });
 	}
 
 	// (Re)attach the scroll + style listeners to the page's current scroll
@@ -199,6 +219,8 @@ export class NLDDTopTitleBar extends LitElement {
 		this._pageModeObserver = null;
 		this._anchorLayoutObserver?.disconnect();
 		this._anchorLayoutObserver = null;
+		this._anchorAppearObserver?.disconnect();
+		this._anchorAppearObserver = null;
 	}
 
 	private _onScroll(): void {
