@@ -87,6 +87,13 @@ export default {
 			control: 'text',
 			description: 'Toegankelijk label voor screenreaders (fallback naar text/number; anders naar i18n default)',
 		},
+		pulse: {
+			control: 'boolean',
+			description: 'Laat een ring uit de badge groeien en vervagen',
+			table: {
+				defaultValue: { summary: false },
+			},
+		},
 	},
 	args: {
 		color: 'critical',
@@ -96,10 +103,11 @@ export default {
 		number: '',
 		max: 99,
 		accessibleLabel: '',
+		pulse: false,
 	},
 };
 
-const Template = ({ color, size, text, icon, number, max, accessibleLabel }: Record<string, any>) => {
+const Template = ({ color, size, text, icon, number, max, accessibleLabel, pulse }: Record<string, any>) => {
 	const parsed = number === '' || number === null || number === undefined ? undefined : Number(number);
 	return html`
 		<nldd-badge
@@ -110,6 +118,7 @@ const Template = ({ color, size, text, icon, number, max, accessibleLabel }: Rec
 			max=${max}
 			text=${text || nothing}
 			accessible-label=${accessibleLabel || nothing}
+			?pulse=${pulse}
 		></nldd-badge>
 	`;
 };
@@ -118,6 +127,24 @@ export const Default = {
 	render: Template,
 	args: {
 		number: '3',
+	},
+};
+
+export const Pulse = {
+	render: () => html`
+		<div style="display: flex; gap: 32px; align-items: center;">
+			<nldd-badge color="critical" pulse></nldd-badge>
+			<nldd-badge color="success" pulse></nldd-badge>
+			<nldd-badge color="accent" pulse number="3"></nldd-badge>
+		</div>
+	`,
+	parameters: {
+		controls: { disable: true },
+		docs: {
+			description: {
+				story: 'Een ring groeit uit de badge en vervaagt. Voor iets dat nu gebeurt: een live-verbinding, een storing die loopt. Zet hem niet op elke badge, want dan trekt niets meer de aandacht. Wie beweging heeft uitgezet (`prefers-reduced-motion`) ziet gewoon de badge.',
+			},
+		},
 	},
 };
 

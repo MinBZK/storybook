@@ -108,4 +108,26 @@ describe('nldd-badge', () => {
 		const badge = el.shadowRoot!.querySelector('.badge')!;
 		expect(badge.getAttribute('aria-label')).toBe('Geverifieerd');
 	});
+
+	it('rendert geen pulse-ring zonder het pulse-attribuut', async () => {
+		el = await fixture('<nldd-badge></nldd-badge>');
+		await waitForUpdate(el);
+		expect(el.shadowRoot!.querySelector('.badge__pulse')).toBeNull();
+	});
+
+	it('rendert een pulse-ring met het pulse-attribuut', async () => {
+		el = await fixture('<nldd-badge pulse></nldd-badge>');
+		await waitForUpdate(el);
+		expect(el.shadowRoot!.querySelector('.badge__pulse')).not.toBeNull();
+	});
+
+	it('houdt de ring buiten de toegankelijkheidsboom en het klikgebied', async () => {
+		el = await fixture('<nldd-badge pulse></nldd-badge>');
+		await waitForUpdate(el);
+		const ring = el.shadowRoot!.querySelector('.badge__pulse')!;
+		const styles = getComputedStyle(ring);
+		expect(ring.textContent).toBe('');
+		expect(styles.position).toBe('absolute');
+		expect(styles.pointerEvents).toBe('none');
+	});
 });

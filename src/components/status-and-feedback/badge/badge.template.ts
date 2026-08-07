@@ -13,6 +13,7 @@ export function template(component: NLDDBadge) {
 			role=${needsAriaImg ? 'img' : nothing}
 			aria-label=${needsAriaImg ? component._ariaLabel : nothing}
 		>
+			${component.pulse ? html`<span class="badge__pulse"></span>` : ''}
 			${component.icon ? html`
 				<span class="badge__icon">
 					<nldd-icon name=${component.icon}></nldd-icon>

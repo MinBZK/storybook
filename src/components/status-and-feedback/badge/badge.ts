@@ -13,6 +13,7 @@
  * @attr {number} max - Maximum waarde boven welke number wordt getoond als "{max}+" (default: 99)
  * @attr {string} icon - Icoon naam. Icon-only wordt als vierkant gerenderd; met text/number komt het icoon links.
  * @attr {string} accessible-label - Toegankelijk label voor screenreaders. Fallback naar text/number; anders naar i18n default ("Notificatie").
+ * @attr {boolean} pulse - Laat een ring uit de badge groeien en vervagen, voor iets dat nu gebeurt (een live-verbinding, een storing). Respecteert `prefers-reduced-motion`.
  */
 
 import { LitElement } from 'lit';
@@ -58,6 +59,9 @@ export class NLDDBadge extends withTranslations(LitElement, nlddBadgeTranslation
 
 	@property({ type: String, attribute: 'accessible-label' })
 	accessibleLabel = '';
+
+	@property({ type: Boolean, reflect: true })
+	pulse = false;
 
 	get _hasText(): boolean {
 		return !!this.text || typeof this.number === 'number';

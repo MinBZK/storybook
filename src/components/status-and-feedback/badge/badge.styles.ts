@@ -21,6 +21,10 @@ export const badgeStyles = css`
 		--_dot-size: var(--primitives-space-12);
 		--_icon-size: var(--primitives-space-14);
 		--_icon-offset-correction: var(--primitives-space-1);
+		--_pulse-scale: 2.2;
+		--_pulse-opacity: 0.45;
+		--_pulse-duration: 2s;
+		--_pulse-easing: ease-out;
 
 		${inheritedTextReset}
 		display: inline-flex;
@@ -183,6 +187,7 @@ export const badgeStyles = css`
 	.badge {
 		box-sizing: border-box;
 		display: inline-flex;
+		position: relative;
 		border-radius: var(--components-badge-corner-radius);
 		box-shadow:
 			0 0 0 1px var(--context-parent-background-color, var(--semantics-surfaces-base-background-color)),
@@ -204,6 +209,46 @@ export const badgeStyles = css`
 			border: 1px solid CanvasText;
 			background-color: Canvas;
 			color: CanvasText;
+		}
+	}
+
+	/* Grows out of the badge and fades: it borrows the badge's own shape and
+	   colour, so it works on a dot as well as on a counter. Behind the content
+	   and inert, so it never affects layout or hit area. */
+	.badge__pulse {
+		position: absolute;
+		inset: 0;
+		z-index: -1;
+		border-radius: inherit;
+		background-color: var(--_background-color);
+		pointer-events: none;
+		animation: badge-pulse var(--_pulse-duration) var(--_pulse-easing) infinite;
+	}
+
+	@keyframes badge-pulse {
+		from {
+			opacity: var(--_pulse-opacity);
+			transform: scale(1);
+		}
+		to {
+			opacity: 0;
+			transform: scale(var(--_pulse-scale));
+		}
+	}
+
+	/* The ring is decoration on top of a badge that is visible anyway, so it
+	   simply goes away rather than pulsing its opacity in place. */
+	@media (prefers-reduced-motion: reduce) {
+		.badge__pulse {
+			display: none;
+		}
+	}
+
+	/* Forced colors paints the badge in system colours; a ring in the same
+	   Canvas would read as a second, half-drawn badge. */
+	@media (forced-colors: active) {
+		.badge__pulse {
+			display: none;
 		}
 	}
 
