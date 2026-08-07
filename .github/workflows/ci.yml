@@ -20,7 +20,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v6
+        uses: actions/checkout@v7
         with:
           # Zonder dit laat actions/checkout het token achter als een credential
           # dat de git-config van deze checkout oplost, de hele job. Alles wat
