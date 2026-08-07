@@ -24,6 +24,7 @@ export { NLDDMenu } from './actions/menu/menu.js';
 
 export { NLDDAvatar } from './content/avatar/avatar.js';
 export { NLDDBlockquote } from './content/blockquote/blockquote.js';
+export { NLDDAvatarGroup } from './content/avatar-group/avatar-group.js';
 export { NLDDByline } from './content/byline/byline.js';
 export { NLDDCodeViewer } from './content/code-viewer/code-viewer.js';
 export { NLDDIcon } from './content/icon/icon.js';

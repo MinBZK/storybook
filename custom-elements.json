@@ -2704,6 +2704,107 @@
     },
     {
       "kind": "javascript-module",
+      "path": "src/components/content/avatar-group/avatar-group.ts",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "Toont meerdere avatars als één groep: ze overlappen elkaar en elke avatar krijgt een ring in de vlakkleur, zodat ze bij overlap gescheiden blijven. De ring gebruikt dezelfde mechaniek als de badge, dus op een gekleurde ondergrond geef je de kleur mee via `--context-parent-background-color`. Avatars slot je als `nldd-avatar` of als `img`. Zet `decorative` (of bij een `img` een lege `alt`) wanneer de namen al als tekst naast de groep staan; geef anders elke avatar een naam, want de groep zelf beschrijft niemand. De maat geldt voor de hele groep: de avatars krijgen hem opgelegd, ook een geslotte `img`. Zo blijft de rij op één lijn, ongeacht wat een consument meegeeft.",
+          "name": "NLDDAvatarGroup",
+          "members": [
+            {
+              "kind": "field",
+              "name": "size",
+              "type": {
+                "text": "string"
+              },
+              "default": "'40'",
+              "attribute": "size",
+              "reflects": true
+            },
+            {
+              "kind": "field",
+              "name": "overlap",
+              "type": {
+                "text": "Overlap"
+              },
+              "default": "'md'",
+              "attribute": "overlap",
+              "reflects": true
+            },
+            {
+              "kind": "field",
+              "name": "accessibleLabel",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "attribute": "accessible-label"
+            }
+          ],
+          "attributes": [
+            {
+              "name": "size",
+              "type": {
+                "text": "string"
+              },
+              "default": "'40'",
+              "fieldName": "size",
+              "description": "Diameter van elke avatar in px (spacer-uitgelijnd: 16, 20, 24, 28, 32, 40, 44, 48, 56, 64, 80, 96); standaard 40"
+            },
+            {
+              "name": "overlap",
+              "type": {
+                "text": "Overlap"
+              },
+              "default": "'md'",
+              "fieldName": "overlap",
+              "description": "Hoeveel elke avatar over zijn voorganger valt: `sm` (subtiel), `md` (standaard) of `none` (op een rij, met ruimte ertussen)"
+            },
+            {
+              "name": "accessible-label",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "fieldName": "accessibleLabel",
+              "description": "Beschrijft de groep als geheel (bijv. \"Redactie\"); zonder label is de groep zelf geen landmark en spreken de avatars voor zich"
+            }
+          ],
+          "superclass": {
+            "name": "LitElement",
+            "package": "lit"
+          },
+          "tagName": "nldd-avatar-group",
+          "customElement": true,
+          "slots": [
+            {
+              "name": "",
+              "description": "Eén of meer avatars (`nldd-avatar` of `img`)"
+            }
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "NLDDAvatarGroup",
+          "declaration": {
+            "name": "NLDDAvatarGroup",
+            "module": "src/components/content/avatar-group/avatar-group.ts"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "nldd-avatar-group",
+          "declaration": {
+            "name": "NLDDAvatarGroup",
+            "module": "src/components/content/avatar-group/avatar-group.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
       "path": "src/components/content/avatar/avatar.ts",
       "declarations": [
         {
@@ -5515,6 +5616,14 @@
           "declaration": {
             "name": "NLDDBlockquote",
             "module": "./content/blockquote/blockquote.js"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "NLDDAvatarGroup",
+          "declaration": {
+            "name": "NLDDAvatarGroup",
+            "module": "./content/avatar-group/avatar-group.js"
           }
         },
         {
@@ -29818,6 +29927,16 @@
             },
             {
               "kind": "field",
+              "name": "pulse",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "attribute": "pulse",
+              "reflects": true
+            },
+            {
+              "kind": "field",
               "name": "translations",
               "type": {
                 "text": "Partial<T>"
@@ -29893,6 +30012,15 @@
               "default": "''",
               "fieldName": "accessibleLabel",
               "description": "Toegankelijk label voor screenreaders. Fallback naar text/number; anders naar i18n default (\"Notificatie\")."
+            },
+            {
+              "name": "pulse",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "fieldName": "pulse",
+              "description": "Laat een ring uit de badge groeien en vervagen, voor iets dat nu gebeurt (een live-verbinding, een storing). Respecteert `prefers-reduced-motion`."
             },
             {
               "name": "translations",
