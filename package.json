@@ -518,7 +518,7 @@
     "@vitest/browser-playwright": "^4.0.16",
     "@vitest/coverage-v8": "^4.0.16",
     "conventional-changelog": "^7.2.0",
-    "eslint": "^9.17.0",
+    "eslint": "^10.8.0",
     "eslint-plugin-lit-a11y": "^5.1.1",
     "eslint-plugin-storybook": "^10.4.6",
     "globals": "^15.14.0",
