@@ -138,18 +138,18 @@ export class NLDDDateField extends FormAssociated(LitElement) {
 	@property({ type: String })
 	autocomplete = '';
 
-	/** Toegankelijk label voor de interne input. Wordt automatisch gezet door nldd-form-field. */
+	/** Accessible label for the inner input. Set automatically by nldd-form-field. */
 	@property({ type: String, attribute: 'accessible-label' })
 	accessibleLabel = '';
 
 	@property({ type: String, attribute: 'error-message-ids' })
 	errorMessageIds = '';
 
-	/** Optionele vaste breedte. Zonder waarde vult het veld zijn container. */
+	/** Optional fixed width. Without a value the field fills its container. */
 	@property({ type: String, reflect: true })
 	width = '';
 
-	/** Overschrijf een of meer vertaalsleutels. Niet opgegeven sleutels vallen terug op het Nederlands. */
+	/** Override one or more translation keys. Keys left out fall back to Dutch. */
 	@property({ type: Object })
 	translations: Partial<NLDDDateFieldTranslations> = {};
 

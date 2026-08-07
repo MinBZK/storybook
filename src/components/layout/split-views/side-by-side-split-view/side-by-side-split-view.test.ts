@@ -97,9 +97,9 @@ describe('nldd-side-by-side-split-view neemt de scrollmodus over', () => {
 		if (el) cleanup(el);
 	});
 
-	// Deze view bepaalt de modus voor iedereen (hij vuurt single-column-change)
-	// maar paste hem niet op zichzelf toe. Hij bleef daardoor op kijkvensterhoogte
-	// afkappen terwijl de panes erbinnen al meestroomden, en dan scrolt niets.
+	// This view decides the mode for everyone (it fires single-column-change) but
+	// did not apply it to itself. It therefore kept clipping at viewport height
+	// while the panes inside it already flowed along, and then nothing scrolls.
 	it('reflecteert root naar data-scroll', async () => {
 		el = await fixture(`
 			<div style="--context-scroll-mode: root">

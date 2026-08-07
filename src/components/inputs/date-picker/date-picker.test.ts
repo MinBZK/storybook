@@ -37,10 +37,10 @@ function todayIso(): string {
 	return `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}-${String(now.getDate()).padStart(2, '0')}`;
 }
 
-// Fixtures zonder gekozen datum openen op de huidige maand, terwijl de tests
-// dagen in juli 2026 aanklikken. `max="2026-07-31"` klemt die beginweergave op
-// juli (zie _initialFocus), zodat ze niet stukgaan zodra de kalender verder
-// loopt. Tests die bewust op vandaag klikken houden geen grens.
+// Fixtures without a chosen date open on the current month, while the tests click
+// days in July 2026. `max="2026-07-31"` clamps that opening view to July (see
+// _initialFocus) so they do not break once the calendar moves on. Tests that click
+// today on purpose keep no bound.
 describe('nldd-date-picker', () => {
 	let el: NLDDDatePicker;
 
@@ -55,11 +55,11 @@ describe('nldd-date-picker', () => {
 	});
 
 
-	// # Rooster
+	// # Grid
 
 	it('zet de eerste dag van de maand op de juiste weekdag', async () => {
-		// 1 juli 2026 is een woensdag, dus met maandag vooraan vult juni de twee
-		// cellen ervoor.
+		// 1 July 2026 is a Wednesday, so with Monday first, June fills the two cells
+		// before it.
 		el = await fixture<NLDDDatePicker>('<nldd-date-picker value="2026-07-15"></nldd-date-picker>');
 		await waitForUpdate(el);
 		const cells = Array.from(el.shadowRoot!.querySelectorAll('tbody tr')[0].querySelectorAll('td'));
@@ -77,8 +77,8 @@ describe('nldd-date-picker', () => {
 		expect(new Set(july.map((d) => d.getAttribute('data-date'))).size).toBe(31);
 	});
 
-	// Vaste hoogte: anders verspringt de kalender bij het bladeren, en in een
-	// popover schuift daarmee alles eronder mee.
+	// Fixed height: otherwise the calendar jumps while paging, and in a popover
+	// that shifts everything below it along.
 	it('toont altijd zes weken', async () => {
 		el = await fixture<NLDDDatePicker>('<nldd-date-picker value="2026-02-15"></nldd-date-picker>');
 		await waitForUpdate(el);
@@ -87,7 +87,7 @@ describe('nldd-date-picker', () => {
 	});
 
 
-	// # Dagen buiten de maand
+	// # Days outside the month
 
 	it('markeert dagen buiten de getoonde maand', async () => {
 		el = await fixture<NLDDDatePicker>('<nldd-date-picker value="2026-07-15"></nldd-date-picker>');
@@ -96,8 +96,8 @@ describe('nldd-date-picker', () => {
 		expect(dayFor(el, '2026-07-01').classList.contains('is-outside-month')).toBe(false);
 	});
 
-	// Het label noemt altijd de maand, dus een 1e van de volgende maand is niet te
-	// verwarren met die van deze.
+	// The label always names the month, so the 1st of the next month cannot be
+	// confused with this month's.
 	it('noemt de maand in het label van een dag buiten de maand', async () => {
 		el = await fixture<NLDDDatePicker>('<nldd-date-picker value="2026-07-15"></nldd-date-picker>');
 		await waitForUpdate(el);
@@ -114,7 +114,7 @@ describe('nldd-date-picker', () => {
 	});
 
 
-	// # Weeknummers
+	// # Week numbers
 
 	it('toont geen weeknummers zonder het attribuut', async () => {
 		el = await fixture<NLDDDatePicker>('<nldd-date-picker value="2026-07-15"></nldd-date-picker>');
@@ -129,14 +129,14 @@ describe('nldd-date-picker', () => {
 		await waitForUpdate(el);
 		const numbers = Array.from(el.shadowRoot!.querySelectorAll('.date-picker__week-cell'));
 		expect(numbers).toHaveLength(6);
-		// De week met 1 juli 2026 (woensdag) is ISO-week 27.
+		// The week holding 1 July 2026 (a Wednesday) is ISO week 27.
 		expect(numbers[0].textContent!.trim()).toBe('27');
 		expect(numbers[0].getAttribute('aria-label')).toBe('Week 27');
 		expect(numbers[0].getAttribute('scope')).toBe('row');
 	});
 
-	// ISO-weken hangen aan de donderdag, dus het nummer mag niet verschuiven als
-	// de rij op zondag begint.
+	// ISO weeks hang off the Thursday, so the number must not shift when the row
+	// starts on Sunday.
 	it('houdt het weeknummer gelijk bij een andere eerste weekdag', async () => {
 		el = await fixture<NLDDDatePicker>(
 			'<nldd-date-picker value="2026-07-15" week-numbers first-day-of-week="0"></nldd-date-picker>',
@@ -153,7 +153,7 @@ describe('nldd-date-picker', () => {
 		await waitForUpdate(el);
 		const headers = Array.from(el.shadowRoot!.querySelectorAll('.date-picker__weekday-header-cell'));
 		expect(headers[0].textContent!.trim()).toBe('zo');
-		// Met zondag vooraan schuift woensdag een plek op, dus drie lege cellen.
+		// With Sunday first, Wednesday moves along one place, so three empty cells.
 		const cells = Array.from(el.shadowRoot!.querySelectorAll('tbody tr')[0].querySelectorAll('td'));
 		expect(cells[3].querySelector('button')!.textContent!.trim()).toBe('1');
 	});
@@ -177,8 +177,8 @@ describe('nldd-date-picker', () => {
 		expect(title(el)).toBe('Juli 2026');
 	});
 
-	// aria-labelledby wint van aria-label in de accessible-name-berekening, dus met
-	// beide erop bereikte de gedocumenteerde accessible-label de schermlezer nooit.
+	// aria-labelledby beats aria-label in the accessible name computation, so with
+	// both set the documented accessible-label never reached the screen reader.
 	it('laat accessible-label de grid benoemen in plaats van de maandtitel', async () => {
 		el = await fixture<NLDDDatePicker>('<nldd-date-picker accessible-label="Geboortedatum"></nldd-date-picker>');
 		await waitForUpdate(el);
@@ -188,7 +188,7 @@ describe('nldd-date-picker', () => {
 	});
 
 
-	// # Toetsenbord
+	// # Keyboard
 
 	it('houdt precies één dag in de tab-volgorde', async () => {
 		el = await fixture<NLDDDatePicker>('<nldd-date-picker value="2026-07-15"></nldd-date-picker>');
@@ -231,7 +231,7 @@ describe('nldd-date-picker', () => {
 	});
 
 
-	// # Grenzen
+	// # Bounds
 
 	it('markeert datums buiten min en max als niet beschikbaar', async () => {
 		el = await fixture<NLDDDatePicker>(
@@ -269,7 +269,7 @@ describe('nldd-date-picker', () => {
 		expect(el.value).toBe('2026-07-15');
 	});
 
-	// Blijft focusbaar, anders slaat het pijltje een geblokkeerde dag stilzwijgend over.
+	// Stays focusable, or the arrow key silently skips a blocked day.
 	it('houdt een niet-beschikbare dag bereikbaar met het toetsenbord', async () => {
 		el = await fixture<NLDDDatePicker>('<nldd-date-picker value="2026-07-15"></nldd-date-picker>');
 		el.isDateUnavailable = (iso) => iso === '2026-07-16';
@@ -280,7 +280,7 @@ describe('nldd-date-picker', () => {
 	});
 
 
-	// # Vandaag
+	// # Today
 
 	it('markeert vandaag met aria-current', async () => {
 		el = await fixture<NLDDDatePicker>('<nldd-date-picker></nldd-date-picker>');
@@ -291,7 +291,7 @@ describe('nldd-date-picker', () => {
 	});
 
 
-	// # Periode
+	// # Range
 
 	it('kiest een periode in twee stappen', async () => {
 		el = await fixture<NLDDDatePicker>('<nldd-date-picker range start="2026-07-01"></nldd-date-picker>');
@@ -307,11 +307,11 @@ describe('nldd-date-picker', () => {
 		expect(el.end).toBe('2026-07-20');
 	});
 
-	// De tweede keuze mag ook vóór de eerste liggen; de aankondiging moet dat
-	// zeggen, anders stuurt hij een schermlezergebruiker maar één kant op.
+	// The second pick may also come before the first, and the announcement has to
+	// say so, or it sends a screen reader user in one direction only.
 	it('kondigt de tussenstap aan zonder een richting voor te schrijven', async () => {
-		// Geen bovengrens: deze test klikt op vandaag en is daarmee zelf al
-		// datumonafhankelijk.
+		// No upper bound: this test clicks today and is date-independent by
+		// itself.
 		el = await fixture<NLDDDatePicker>('<nldd-date-picker range></nldd-date-picker>');
 		await waitForUpdate(el);
 		dayFor(el, todayIso()).click();
@@ -332,8 +332,8 @@ describe('nldd-date-picker', () => {
 		expect(announcement(el)).toContain('tot en met');
 	});
 
-	// Het voorbeeld onder de muis tekent de band al achteruit, dus hier opnieuw
-	// beginnen zou het enige gedrag zijn dat de kalender tegenspreekt.
+	// The preview under the mouse already draws the range backwards, so starting
+	// over here would be the one behavior that contradicts the calendar.
 	it('maakt de periode af wanneer de tweede datum vóór de eerste ligt', async () => {
 		el = await fixture<NLDDDatePicker>('<nldd-date-picker range start="2026-07-15"></nldd-date-picker>');
 		await waitForUpdate(el);
@@ -345,7 +345,7 @@ describe('nldd-date-picker', () => {
 		expect(el.end).toBe('2026-07-20');
 	});
 
-	// Opnieuw beginnen blijft mogelijk: de klik ná een afgeronde periode start er een.
+	// Starting over stays possible: the click after a finished range starts one.
 	it('begint een nieuwe periode na een afgeronde periode', async () => {
 		el = await fixture<NLDDDatePicker>('<nldd-date-picker range start="2026-07-10"></nldd-date-picker>');
 		el.end = '2026-07-20';
@@ -365,8 +365,8 @@ describe('nldd-date-picker', () => {
 		expect(dayFor(el, '2026-07-15').classList.contains('is-in-range')).toBe(false);
 	});
 
-	// De vulling markeert het uiteinde; de band verbindt alleen de dagen ertussen,
-	// dus links van de begindatum hoort geen blauw te staan.
+	// The fill marks the end point. The band only connects the days in between, so
+	// there should be no blue to the left of the start date.
 	it('laat de band bij begin en eind halverwege de dag beginnen', async () => {
 		el = await fixture<NLDDDatePicker>('<nldd-date-picker range start="2026-07-10"></nldd-date-picker>');
 		el.end = '2026-07-14';
@@ -377,8 +377,8 @@ describe('nldd-date-picker', () => {
 		expect(el._bandFor('2026-07-15')).toBe('none');
 	});
 
-	// De begin- en einddag dragen een eigen klas, zodat de styling er een halve
-	// capsule van maakt (rond aan de buitenkant, recht naar de band toe).
+	// The start and end day carry a class of their own, so the styling makes half a
+	// capsule of them (round on the outside, square towards the band).
 	it('markeert begin- en einddag als endpoint', async () => {
 		el = await fixture<NLDDDatePicker>('<nldd-date-picker range start="2026-07-10"></nldd-date-picker>');
 		el.end = '2026-07-14';
@@ -396,8 +396,8 @@ describe('nldd-date-picker', () => {
 		expect(el._bandFor('2026-07-10')).toBe('none');
 	});
 
-	// Dezelfde afleiding als een vastgelegde periode, zodat het voorbeeld onder de
-	// muis niet anders loopt dan wat je krijgt.
+	// The same derivation as a recorded range, so the preview under the mouse does
+	// not run differently from what you get.
 	it('tekent de band ook voor het voorbeeld onder de muis', async () => {
 		el = await fixture<NLDDDatePicker>('<nldd-date-picker range max="2026-07-31"></nldd-date-picker>');
 		await waitForUpdate(el);
@@ -410,9 +410,9 @@ describe('nldd-date-picker', () => {
 		expect(el._bandFor('2026-07-14')).toBe('end');
 	});
 
-	// # Slepen
+	// # Dragging
 
-	/** Sleep van de ene dag naar de andere; het component leest de dag onder de muis. */
+	/** Drag from one day to another. The component reads the day under the mouse. */
 	async function drag(picker: NLDDDatePicker, from: string, to: string): Promise<void> {
 		const rect = (iso: string) => dayFor(picker, iso).getBoundingClientRect();
 		const at = (iso: string) => {
@@ -441,8 +441,8 @@ describe('nldd-date-picker', () => {
 		expect(el.end).toBe('2026-07-20');
 	});
 
-	// De richting is met het gebaar uitgesproken, dus hier hoort geen herstart maar
-	// een omgekeerde periode.
+	// The gesture states the direction, so this calls for a reversed range and not
+	// a restart.
 	it('keert de periode om bij achteruit slepen', async () => {
 		el = await fixture<NLDDDatePicker>('<nldd-date-picker range value="" max="2026-07-31"></nldd-date-picker>');
 		el.start = '2026-07-01';
@@ -452,7 +452,7 @@ describe('nldd-date-picker', () => {
 		expect(el.end).toBe('2026-07-20');
 	});
 
-	/** Klikken zoals de browser het doet: een pointerdown gaat er altijd aan vooraf. */
+	/** Clicking the way the browser does it: a pointerdown always comes first. */
 	async function clickDay(picker: NLDDDatePicker, iso: string): Promise<void> {
 		const day = dayFor(picker, iso);
 		const r = day.getBoundingClientRect();
@@ -467,9 +467,9 @@ describe('nldd-date-picker', () => {
 		await waitForUpdate(picker);
 	}
 
-	// De klik na een sleep landt op het rooster en niet op een dag, dus de
-	// onderdrukking moet bij de volgende pointerdown vervallen; anders eet hij de
-	// eerstvolgende echte klik op en moet je twee keer klikken.
+	// The click after a drag lands on the grid and not on a day, so the suppression
+	// has to lapse on the next pointerdown. Otherwise it eats the next real click
+	// and you have to click twice.
 	it('begint direct een nieuwe periode na een sleep', async () => {
 		el = await fixture<NLDDDatePicker>('<nldd-date-picker range value="" max="2026-07-31"></nldd-date-picker>');
 		await waitForUpdate(el);
@@ -479,7 +479,7 @@ describe('nldd-date-picker', () => {
 		expect(el.end).toBe('');
 	});
 
-	// Zonder markering loopt de band naar een dag die zelf niets laat zien.
+	// Without the marker the band runs to a day that shows nothing itself.
 	it('accentueert de einddatum al tijdens het slepen', async () => {
 		el = await fixture<NLDDDatePicker>('<nldd-date-picker range value="" max="2026-07-31"></nldd-date-picker>');
 		await waitForUpdate(el);
@@ -516,7 +516,7 @@ describe('nldd-date-picker', () => {
 		expect(el._bandFor('2026-07-12')).toBe('full');
 	});
 
-	// Zonder onderdrukking start de klik na het loslaten meteen een nieuwe periode.
+	// Without suppression the click on release starts a new range right away.
 	it('start geen nieuwe periode met de klik na het slepen', async () => {
 		el = await fixture<NLDDDatePicker>('<nldd-date-picker range value="" max="2026-07-31"></nldd-date-picker>');
 		await waitForUpdate(el);
@@ -527,7 +527,7 @@ describe('nldd-date-picker', () => {
 		expect(el.end).toBe('2026-07-20');
 	});
 
-	// Een gewone klik mag niet als sleep tellen, anders werkt twee keer klikken niet.
+	// A plain click must not count as a drag, or clicking twice stops working.
 	it('laat klikken zonder bewegen gewoon door de klik-route lopen', async () => {
 		el = await fixture<NLDDDatePicker>('<nldd-date-picker range value="" max="2026-07-31"></nldd-date-picker>');
 		await waitForUpdate(el);
@@ -547,7 +547,7 @@ describe('nldd-date-picker', () => {
 		expect(el.end).toBe('');
 	});
 
-	// Op touch is een horizontale veeg niet te onderscheiden van scrollen.
+	// On touch a horizontal swipe cannot be told apart from scrolling.
 	it('sleept niet op touch', async () => {
 		el = await fixture<NLDDDatePicker>('<nldd-date-picker range value="" max="2026-07-31"></nldd-date-picker>');
 		await waitForUpdate(el);
@@ -583,7 +583,7 @@ describe('nldd-date-picker', () => {
 	});
 
 
-	// # Celbeschrijvingen
+	// # Cell descriptions
 
 	it('geeft elke dag een volledige datum als label', async () => {
 		el = await fixture<NLDDDatePicker>('<nldd-date-picker value="2026-07-15"></nldd-date-picker>');
@@ -608,7 +608,7 @@ describe('nldd-date-picker', () => {
 	});
 
 
-	// # Vandaag-knop
+	// # Today button
 
 	it('navigeert met Vandaag terug naar de huidige maand', async () => {
 		el = await fixture<NLDDDatePicker>('<nldd-date-picker value="2020-01-15"></nldd-date-picker>');
@@ -619,7 +619,7 @@ describe('nldd-date-picker', () => {
 		expect(el._focused).toBe(todayIso());
 	});
 
-	// Navigeren is geen kiezen: wie rondkijkt wil terug kunnen, geen datum erbij.
+	// Navigating is not choosing: someone looking around wants to get back, not to gain a date.
 	it('kiest niets met Vandaag', async () => {
 		el = await fixture<NLDDDatePicker>('<nldd-date-picker value="2020-01-15"></nldd-date-picker>');
 		await waitForUpdate(el);
@@ -631,8 +631,8 @@ describe('nldd-date-picker', () => {
 		expect(changes).toHaveLength(0);
 	});
 
-	// Buiten de grenzen zou de knop liegen: klemmen naar de dichtstbijzijnde
-	// toegestane datum laat "Vandaag" achttien jaar terugspringen.
+	// Outside the bounds the button would lie: clamping to the nearest allowed date
+	// makes "Vandaag" jump back eighteen years.
 	it('verbergt Vandaag wanneer vandaag buiten de grenzen valt', async () => {
 		el = await fixture<NLDDDatePicker>('<nldd-date-picker max="today-18y"></nldd-date-picker>');
 		await waitForUpdate(el);
@@ -652,12 +652,12 @@ describe('nldd-date-picker', () => {
 	});
 
 
-	// # Paginering en focus
+	// # Paging and focus
 
-	// Twee keer bladeren is twee keer dezelfde knop indrukken: de focus hoort op
-	// de pijl te blijven staan. Alleen de roving tabindex schuift mee, zodat het
-	// grid in tabben op de gelijkwaardige dag landt. PageUp/PageDown vanuit het
-	// grid loopt via _moveFocus en focust wel opnieuw.
+	// Paging twice is pressing the same button twice, so focus belongs on the
+	// arrow. Only the roving tabindex moves along, so tabbing into the grid lands
+	// on the equivalent day. PageUp/PageDown from the grid runs through _moveFocus
+	// and does move focus.
 	it('houdt de focus op de pijl bij het bladeren', async () => {
 		el = await fixture<NLDDDatePicker>('<nldd-date-picker value="2026-07-15"></nldd-date-picker>');
 		await waitForUpdate(el);
@@ -669,7 +669,7 @@ describe('nldd-date-picker', () => {
 
 		expect(arrow.shadowRoot!.activeElement).toBe(inner);
 		expect(title(el)).toBe('Augustus 2026');
-		// De roving tabindex is meegeschoven naar de gelijkwaardige dag.
+		// The roving tabindex moved along to the equivalent day.
 		expect(el.shadowRoot!.querySelector('[data-date="2026-08-15"]')!.getAttribute('tabindex')).toBe('0');
 	});
 
@@ -688,10 +688,10 @@ describe('nldd-date-picker', () => {
 		expect(el._view).toBe(todayIso().slice(0, 8) + '01');
 	});
 
-	// # Jaarmenu
+	// # Year menu
 
-	// De titel beloofde maand en jaar en opende alleen jaartallen. Nu is elk deel
-	// z'n eigen knop met z'n eigen menu, en staat er geen dode tekst tussen.
+	// The title promised month and year and opened years only. Each part is its own
+	// button with its own menu now, and there is no dead text between them.
 	it('maakt maand en jaar allebei een knop met een eigen menu', async () => {
 		el = await fixture<NLDDDatePicker>('<nldd-date-picker value="2026-07-15"></nldd-date-picker>');
 		await waitForUpdate(el);
@@ -701,7 +701,7 @@ describe('nldd-date-picker', () => {
 			expect(button.getAttribute('aria-haspopup')).toBe('menu');
 			expect(button.getAttribute('aria-expanded')).toBe('false');
 		}
-		// Alles in de kop zit in een van de twee knoppen.
+		// Everything in the heading sits in one of the two buttons.
 		const heading = el.shadowRoot!.querySelector('.date-picker__title')!;
 		const buiten = [...heading.childNodes].filter(
 			(node) => node.nodeType === Node.TEXT_NODE && node.textContent!.trim(),
@@ -709,8 +709,8 @@ describe('nldd-date-picker', () => {
 		expect(buiten).toEqual([]);
 	});
 
-	// Een menu dat opengaat om te bevestigen wat je al ziet is erger dan geen menu,
-	// en de chevron belooft dan een keuze die er niet is.
+	// A menu that opens to confirm what you already see is worse than no menu, and
+	// the chevron then promises a choice that is not there.
 	it('laat de chevron en het menu weg als er maar één maand bereikbaar is', async () => {
 		el = await fixture<NLDDDatePicker>(
 			'<nldd-date-picker value="2026-08-12" min="2026-08-01" max="2026-08-31"></nldd-date-picker>',
@@ -724,8 +724,8 @@ describe('nldd-date-picker', () => {
 		expect(title(el)).toBe('Augustus 2026');
 	});
 
-	// Twaalf maanden aanbieden terwijl een grens er elf stilletjes terugklemt naar
-	// de maand waar je al stond.
+	// Offering twelve months while a bound quietly clamps eleven of them back to
+	// the month you were already on.
 	it('begrenst de maandlijst met min en max', async () => {
 		el = await fixture<NLDDDatePicker>(
 			'<nldd-date-picker value="2026-08-12" min="2026-05-01" max="2026-10-31"></nldd-date-picker>',
@@ -735,8 +735,8 @@ describe('nldd-date-picker', () => {
 		expect(el.shadowRoot!.querySelectorAll('.date-picker__month-menu nldd-menu-item').length).toBe(6);
 	});
 
-	// Buiten het jaar van de grens telt die grens niet mee: met max in 2026 mag
-	// december 2025 gewoon.
+	// Outside the bound's own year that bound does not count: with max in 2026,
+	// December 2025 is simply allowed.
 	it('begrenst de maandlijst alleen in het jaar waar de grens ligt', async () => {
 		el = await fixture<NLDDDatePicker>(
 			'<nldd-date-picker value="2025-12-01" min="2025-01-01" max="2026-03-31"></nldd-date-picker>',
@@ -745,8 +745,8 @@ describe('nldd-date-picker', () => {
 		expect(el._months.length).toBe(12);
 	});
 
-	// De pijltjes klemmen de view niet, alleen de focus, dus je kunt voorbij een
-	// grens bladeren. Die maand hoort dan niet alsnog in het menu te verschijnen.
+	// The arrows do not clamp the view, only the focus, so you can page past a
+	// bound. That month should not turn up in the menu anyway.
 	it('biedt geen maanden aan buiten de grens, ook niet als je erheen bladert', async () => {
 		el = await fixture<NLDDDatePicker>(
 			'<nldd-date-picker value="2026-08-12" min="2026-08-01" max="2026-11-30"></nldd-date-picker>',
@@ -761,13 +761,13 @@ describe('nldd-date-picker', () => {
 		expect([...items].map((item) => item.getAttribute('text'))).toEqual([
 			'Augustus', 'September', 'Oktober', 'November',
 		]);
-		// Niets staat aan: je kijkt naar een maand die deze kalender niet aanneemt.
+		// Nothing is on: you are looking at a month this calendar does not accept.
 		expect(el.shadowRoot!.querySelector('.date-picker__month-menu nldd-menu-item[selected]')).toBeNull();
 	});
 
-	// Een heel jaar voorbij de grens is geen enkele maand van het getoonde jaar
-	// kiesbaar. De maandvergelijking alleen viel dan terug op alle twaalf, met
-	// een vinkje bij een maand die de kalender stilzwijgend zou terugklemmen.
+	// A whole year past the bound, not one month of the year on screen is
+	// selectable. Comparing months alone then fell back to all twelve, with a check
+	// mark on a month the calendar would quietly clamp back.
 	it('biedt geen maandmenu buiten het jaar van de grens', async () => {
 		el = await fixture<NLDDDatePicker>(
 			'<nldd-date-picker value="2026-08-12" min="2026-08-01" max="2026-11-30"></nldd-date-picker>',
@@ -780,11 +780,11 @@ describe('nldd-date-picker', () => {
 		expect(el._months).toEqual([]);
 		expect(el.shadowRoot!.querySelector('.date-picker__month-menu')).toBeNull();
 		expect(el.shadowRoot!.querySelector('.date-picker__title-month-button')).toBeNull();
-		// De kop blijft gewoon leesbaar als tekst.
+		// The heading stays readable as plain text.
 		expect(title(el)).toBe('Juni 2025');
 	});
 
-	// Zonder grens is het venster willekeurig gekozen, dus dat rekt wel mee.
+	// Without a bound the window is chosen arbitrarily, so that one does stretch.
 	it('rekt het standaard jaarvenster op naar het jaar waar je heen bladert', async () => {
 		el = await fixture<NLDDDatePicker>('<nldd-date-picker value="2026-08-12"></nldd-date-picker>');
 		await waitForUpdate(el);
@@ -804,12 +804,12 @@ describe('nldd-date-picker', () => {
 		(items[10] as HTMLElement).click();
 		await waitForUpdate(el);
 		expect(title(el)).toBe('November 2026');
-		// Het jaar en de dag blijven staan; alleen de maand verschuift.
+		// The year and the day stay put, only the month moves.
 		expect(focusedIso(el)).toBe('2026-11-15');
 	});
 
-	// 31 maart naar februari bestaat niet, dus de dag zakt naar de laatste die er
-	// wel is, net als bij een schrikkeljaar via het jaarmenu.
+	// 31 March into February does not exist, so the day drops to the last one that
+	// does, the same as a leap year through the year menu.
 	it('klemt de dag als de gekozen maand korter is', async () => {
 		el = await fixture<NLDDDatePicker>('<nldd-date-picker value="2026-03-31"></nldd-date-picker>');
 		await waitForUpdate(el);
@@ -820,15 +820,15 @@ describe('nldd-date-picker', () => {
 		expect(focusedIso(el)).toBe('2026-02-28');
 	});
 
-	// Zonder dit begin je op het eerste jaar in de lijst en loop je met de pijltjes
-	// een eeuw terug naar het jaar dat je al bekeek.
+	// Without this you start on the first year in the list and walk a century back
+	// with the arrow keys to the year you were already looking at.
 	it('opent het jaarmenu op het jaar dat in beeld staat', async () => {
 		el = await fixture<NLDDDatePicker>('<nldd-date-picker value="2026-07-15"></nldd-date-picker>');
 		await waitForUpdate(el);
 		(el.shadowRoot!.querySelector('.date-picker__title-year-button') as HTMLButtonElement).click();
 
-		// Het menu focust zichzelf pas na zijn eigen open-volgorde, dus even wachten
-		// tot het is uitgevochten in plaats van één vaste vertraging gokken.
+		// The menu only focuses itself after its own opening sequence, so wait for
+		// that to settle instead of guessing one fixed delay.
 		let active: Element | null = null;
 		for (let i = 0; i < 40; i += 1) {
 			await new Promise((resolve) => setTimeout(resolve, 25));
@@ -848,7 +848,7 @@ describe('nldd-date-picker', () => {
 		expect(el._years[el._years.length - 1]).toBe(2010);
 	});
 
-	// Anders toont het menu geen enkele selectie zodra je voorbij de rand bladert.
+	// Otherwise the menu shows no selection at all once you page past the edge.
 	it('houdt het getoonde jaar altijd in de lijst', async () => {
 		el = await fixture<NLDDDatePicker>('<nldd-date-picker value="1850-07-15"></nldd-date-picker>');
 		await waitForUpdate(el);
@@ -865,7 +865,7 @@ describe('nldd-date-picker', () => {
 		expect(el.value).toBe('2026-07-15');
 	});
 
-	// 29 februari bestaat niet elk jaar.
+	// 29 February does not exist every year.
 	it('klemt een schrikkeldag bij het wisselen van jaar', async () => {
 		el = await fixture<NLDDDatePicker>('<nldd-date-picker value="2024-02-29"></nldd-date-picker>');
 		await waitForUpdate(el);
@@ -877,8 +877,8 @@ describe('nldd-date-picker', () => {
 
 	// # Focus
 
-	// Een overlay die de kalender focust landt anders op de host, die nergens naar
-	// doorstuurt - en dan doen de pijltjes niets tot je zelf naar binnen tabt.
+	// An overlay focusing the calendar otherwise lands on the host, which forwards
+	// nowhere, and then the arrow keys do nothing until you tab in yourself.
 	it('zet focus op de dag met de roving tabindex', async () => {
 		el = await fixture<NLDDDatePicker>('<nldd-date-picker value="2026-07-15"></nldd-date-picker>');
 		await waitForUpdate(el);
@@ -896,11 +896,11 @@ describe('nldd-date-picker', () => {
 	});
 
 
-	// # Focusring en invoermodus
+	// # Focus ring and input modality
 
-	// Browsers behandelen programmatische focus als focus-visible, en de kalender
-	// met de muis openen focust een dag - dan zou er een ring staan zonder dat er
-	// een toets is aangeraakt.
+	// Browsers treat programmatic focus as focus-visible, and opening the calendar
+	// with the mouse focuses a day, so there would be a ring without a key ever
+	// being touched.
 	it('onderdrukt de focusring wanneer de focus van een aanwijzer komt', async () => {
 		el = await fixture<NLDDDatePicker>('<nldd-date-picker value="2026-07-15"></nldd-date-picker>');
 		await waitForUpdate(el);
@@ -910,8 +910,8 @@ describe('nldd-date-picker', () => {
 		expect(dayFor(el, '2026-07-15').classList.contains('is-pointer-focus')).toBe(true);
 	});
 
-	// De overgang is wat telt: zonder de klasse zou "afwezig" ook zonder fix
-	// kloppen, dus beide kanten staan in één test.
+	// The transition is what counts: without the class, "absent" would hold even
+	// without the fix, so both sides live in one test.
 	it('toont de focusring weer zodra het toetsenbord wordt gebruikt', async () => {
 		el = await fixture<NLDDDatePicker>('<nldd-date-picker value="2026-07-15"></nldd-date-picker>');
 		await waitForUpdate(el);
@@ -928,10 +928,10 @@ describe('nldd-date-picker', () => {
 	});
 
 
-	// Pijltjes verplaatsen de focus programmatisch, en de browser blijft de sessie
-	// beoordelen op de klik waarmee de kalender openging - :focus-visible matcht
-	// dan nooit tijdens het navigeren. De ring hangt daarom aan :focus plus de
-	// modaliteitsklasse.
+	// Arrow keys move focus programmatically, and the browser keeps judging the
+	// session by the click that opened the calendar, so :focus-visible never
+	// matches while navigating. The ring therefore hangs off :focus plus the
+	// modality class.
 	it('toont de ring tijdens pijltjesnavigatie na openen met de muis', async () => {
 		el = await fixture<NLDDDatePicker>('<nldd-date-picker value="2026-07-15"></nldd-date-picker>');
 		await waitForUpdate(el);
@@ -945,11 +945,11 @@ describe('nldd-date-picker', () => {
 		expect(dayFor(el, '2026-07-16').matches(ringSelector)).toBe(true);
 	});
 
-	// Het gemelde geval: de eerste pijltjestoets verplaatste de focus wel maar toonde
-	// geen ring, pas de tweede. Hier nagebootst met een keydown die de document-
-	// listener niet bereikt (composed: false), zodat de modaliteit op muis blijft
-	// staan - net als wanneer die listener nog niet had bijgewerkt. De kalender moet
-	// de ring dan uit zichzelf tonen, want hij verplaatst de focus zelf.
+	// The reported case: the first arrow key did move focus but showed no ring,
+	// only the second did. Reproduced here with a keydown that never reaches the
+	// document listener (composed: false), so the modality stays on mouse, just as
+	// when that listener had not caught up yet. The calendar has to show the ring
+	// on its own then, because it moves the focus itself.
 	it('toont de ring al bij de eerste pijltjestoets, ook als de modaliteit nog op muis staat', async () => {
 		el = await fixture<NLDDDatePicker>('<nldd-date-picker value="2026-07-15"></nldd-date-picker>');
 		await waitForUpdate(el);
@@ -964,7 +964,7 @@ describe('nldd-date-picker', () => {
 		expect(dayFor(el, '2026-07-16').classList.contains('is-pointer-focus')).toBe(false);
 	});
 
-	// Bladeren met de muis mag de ring juist niet aanzetten.
+	// Paging with the mouse must not turn the ring on.
 	it('houdt de ring weg wanneer een muisklik de maand verzet', async () => {
 		el = await fixture<NLDDDatePicker>('<nldd-date-picker value="2026-07-15"></nldd-date-picker>');
 		await waitForUpdate(el);
@@ -977,10 +977,10 @@ describe('nldd-date-picker', () => {
 		expect(dayFor(el, '2026-08-15').classList.contains('is-pointer-focus')).toBe(true);
 	});
 
-	// Op de stylesheet-tekst, bij uitzondering: variables.css wordt in de tests niet
-	// geladen, dus de echte ring is niet te meten (het token is leeg en de outline
-	// blijft none). Zonder deze controle zou een terugkeer naar :focus-visible - de
-	// bug die dit veroorzaakte - door alle tests heen glippen.
+	// Against the stylesheet text, by way of exception: variables.css is not loaded
+	// in the tests, so the real ring cannot be measured (the token is empty and the
+	// outline stays none). Without this check, a return to :focus-visible, the bug
+	// that caused this, would slip through every test.
 	it('hangt de dagring aan :focus en niet aan :focus-visible', () => {
 		const css = datePickerStyles.cssText;
 		expect(css).toContain('.date-picker__day:focus:not(.is-pointer-focus)');
@@ -988,11 +988,11 @@ describe('nldd-date-picker', () => {
 	});
 
 
-	// # Gestapelde indeling
+	// # Stacked layout
 
-	// "Vandaag" staat in beide indelingen linksonder: het is een snelkoppeling en
-	// geen paginering, en zonder die knop past een voluit geschreven maand in de
-	// kop naast het jaar en twee menuknoppen.
+	// "Vandaag" sits bottom left in both layouts: it is a shortcut and not paging,
+	// and without that button a fully spelled-out month fits in the heading beside
+	// the year and two menu buttons.
 	it('houdt de paginering in de kop op een breed scherm, met Vandaag eronder', async () => {
 		el = await fixture<NLDDDatePicker>('<nldd-date-picker></nldd-date-picker>');
 		el._stacked = false;
@@ -1006,8 +1006,8 @@ describe('nldd-date-picker', () => {
 		expect(footer.querySelector('nldd-button-bar')).toBeNull();
 	});
 
-	// Onder het rooster, en in twee hoeken: een duim die de ene groep raakt dekt
-	// de andere dan niet af.
+	// Below the grid and in two corners, so a thumb touching one group does not
+	// cover the other.
 	it('zet de paginering onder de kalender wanneer hij gestapeld is', async () => {
 		el = await fixture<NLDDDatePicker>('<nldd-date-picker></nldd-date-picker>');
 		el._stacked = true;
@@ -1015,13 +1015,13 @@ describe('nldd-date-picker', () => {
 		expect(el.shadowRoot!.querySelector('.date-picker__pagination')).toBeNull();
 		const footer = el.shadowRoot!.querySelector('.date-picker__footer');
 		expect(footer).not.toBeNull();
-		// Vandaag links, de maandpijlen rechts in een eigen bar.
+		// Today on the left, the month arrows on the right in a bar of their own.
 		expect(footer!.querySelector('.date-picker__footer-start nldd-button')).not.toBeNull();
 		expect(footer!.querySelector('nldd-button-bar')).not.toBeNull();
 	});
 
-	// Op de property, niet op het attribuut: md is de standaard en die wordt met
-	// reflectNonDefault juist uit het DOM gehouden.
+	// On the property, not the attribute: md is the default and reflectNonDefault
+	// deliberately keeps that out of the DOM.
 	it('vergroot de knoppen naar md wanneer hij gestapeld is', async () => {
 		el = await fixture<NLDDDatePicker>('<nldd-date-picker></nldd-date-picker>');
 		el._stacked = true;
@@ -1041,7 +1041,7 @@ describe('nldd-date-picker', () => {
 		expect(bar.size).toBe('sm');
 	});
 
-	// Anders staat Vandaag twee keer: los linksonder én in de bar ernaast.
+	// Otherwise Vandaag appears twice: on its own bottom left and in the bar beside it.
 	it('zet Vandaag niet ook in de paginering wanneer hij gestapeld is', async () => {
 		el = await fixture<NLDDDatePicker>('<nldd-date-picker></nldd-date-picker>');
 		el._stacked = true;
@@ -1056,14 +1056,14 @@ describe('nldd-date-picker', () => {
 		await waitForUpdate(el);
 		const footer = el.shadowRoot!.querySelector('.date-picker__footer')!;
 		expect(footer.querySelector('nldd-button')).toBeNull();
-		// De hoek blijft staan, zodat de pijlen niet naar links schuiven.
+		// The corner stays, so the arrows do not slide to the left.
 		expect(footer.querySelector('.date-picker__footer-start')).not.toBeNull();
 	});
 
 
-	// # Dag-knop
+	// # Day button
 
-	// De hele cel is het raakvlak; de vorm zit op de indicator erbinnen.
+	// The whole cell is the touch target, the shape sits on the indicator inside it.
 	it('geeft elke dag een indicator als apart element', async () => {
 		el = await fixture<NLDDDatePicker>('<nldd-date-picker value="2026-07-15"></nldd-date-picker>');
 		await waitForUpdate(el);
@@ -1072,9 +1072,8 @@ describe('nldd-date-picker', () => {
 		expect(getComputedStyle(day).borderRadius).toBe('0px');
 	});
 
-	// De hover-regel draagt een pseudo-class en weegt daarmee zwaarder dan een
-	// kale selected-regel; zonder herhaling ziet een gekozen dag er onder de
-	// muis uit alsof hij niet gekozen is.
+	// The hover rule carries a pseudo-class and so outweighs a bare selected rule.
+	// Without repeating it, a chosen day looks unchosen under the mouse.
 	it('blijft een gekozen dag als gekozen tonen onder de muis', async () => {
 		el = await fixture<NLDDDatePicker>('<nldd-date-picker value="2026-07-15"></nldd-date-picker>');
 		await waitForUpdate(el);
@@ -1095,9 +1094,9 @@ describe('nldd-date-picker labels tijdens het kiezen van een periode', () => {
 		if (el) cleanup(el);
 	});
 
-	// De eerste keuze werd "begin van de periode" genoemd, maar een tweede keuze
-	// ervoor maakt er juist het einde van. Zo lang dat nog kan, mag het label geen
-	// richting beweren.
+	// The first pick was called "begin van de periode", but a second pick before it
+	// makes it the end instead. As long as that is still possible, the label must
+	// not claim a direction.
 	it('noemt de eerste keuze geen begindatum zolang de periode niet af is', async () => {
 		el = await fixture<NLDDDatePicker>('<nldd-date-picker range max="2026-07-31"></nldd-date-picker>');
 		await waitForUpdate(el);
@@ -1127,10 +1126,11 @@ describe('nldd-date-picker maandnaam en hoofdletter', () => {
 		if (el) cleanup(el);
 	});
 
-	// De maandnaam bestaat in twee vormen omdat hij op twee plekken anders hoort:
-	// met hoofdletter in de kop, klein midden in een datumlabel. Deed de code dat
-	// zelf (met CSS of met charAt(0).toUpperCase()), dan kon een vertaler het niet
-	// uitzetten - en in welke taal welke vorm hoort, weet de vertaler.
+	// The month name exists in two forms because it belongs differently in two
+	// places: capitalized in the heading, lowercase inside a date label. Were the
+	// code to do that itself (with CSS or charAt(0).toUpperCase()), a translator
+	// could not turn it off, and which form belongs in which language is the
+	// translator's call.
 	it('haalt beide vormen uit de vertaling, zodat een consument ze los kan zetten', async () => {
 		el = await fixture<NLDDDatePicker>('<nldd-date-picker value="2026-07-15"></nldd-date-picker>');
 		el.translations = {
@@ -1157,8 +1157,8 @@ describe('nldd-date-picker aankondigingen bevatten alleen de datum', () => {
 		if (el) cleanup(el);
 	});
 
-	// De aankondiging gebruikte het volledige cellabel, dus de aanduidingen die aan
-	// die cel hangen belandden midden in de zin: "vrijdag 10 juli 2026, begin van
+	// The announcement used the full cell label, so the markers hanging off that
+	// cell ended up halfway through the sentence: "vrijdag 10 juli 2026, begin van
 	// de periode tot en met woensdag 15 juli 2026, einde van de periode".
 	it('laat de celaanduidingen uit de periode-aankondiging', async () => {
 		el = await fixture<NLDDDatePicker>('<nldd-date-picker range max="2026-07-31"></nldd-date-picker>');
@@ -1187,9 +1187,9 @@ describe('nldd-date-picker weigert een periode over een geblokkeerde dag', () =>
 		if (el) cleanup(el);
 	});
 
-	// Beide eindpunten kunnen beschikbaar zijn terwijl een geboekte dag ertussen
-	// zit. De eindpuntcheck miste dat, dus change vuurde met een periode die een
-	// zichtbaar geblokkeerde datum omsloot.
+	// Both endpoints can be available with a booked day sitting between them. The
+	// endpoint check missed that, so change fired with a range enclosing a visibly
+	// blocked date.
 	it('legt geen periode vast met een niet-beschikbare dag ertussen', async () => {
 		el = await fixture<NLDDDatePicker>('<nldd-date-picker range value="" max="2026-07-31"></nldd-date-picker>');
 		el.isDateUnavailable = (iso) => iso === '2026-07-15';
@@ -1217,9 +1217,9 @@ describe('nldd-date-picker weigert een periode over een geblokkeerde dag', () =>
 		expect(el.end).toBe('2026-07-20');
 	});
 
-	// De sleep-route (_onDocumentPointerUp) deelt dezelfde guard als de klik-route,
-	// maar loopt er niet via _select doorheen: een sleep over een geblokkeerde
-	// binnendag mag evenmin vastleggen.
+	// The drag route (_onDocumentPointerUp) shares the same guard as the click
+	// route but does not pass through _select: a drag across a blocked day in
+	// between must not record either.
 	it('weigert ook een gesleepte periode over een niet-beschikbare dag', async () => {
 		el = await fixture<NLDDDatePicker>('<nldd-date-picker range value="" max="2026-07-31"></nldd-date-picker>');
 		el.isDateUnavailable = (iso) => iso === '2026-07-15';
@@ -1269,9 +1269,9 @@ describe('nldd-date-picker breedte en periode-indicatoren', () => {
 		expect(el.style.getPropertyValue('--_width')).toBe('');
 	});
 
-	// De eindpunten zijn hetzelfde vierkant als een losse selectie (even breed
-	// als hoog, ook in bredere cellen), met rechte hoeken naar de periode toe
-	// zodat het vierkant zonder lichte inkeping tegen de band ligt.
+	// The endpoints are the same square as a single selection (as wide as it is
+	// tall, in wider cells too), with square corners facing the range so the square
+	// meets the band without a slight notch.
 	it('eindpunten zijn vierkant en alleen aan de buitenkant afgerond', async () => {
 		el = await fixture<NLDDDatePicker>('<nldd-date-picker range start="2026-07-10" end="2026-07-20" width="700px" style="--semantics-controls-md-corner-radius: 8px"></nldd-date-picker>');
 		await waitForUpdate(el);

@@ -189,8 +189,8 @@ test('integration: parses a real component file end to end', () => {
 });
 
 test('leest een attribuutnaam met [brackets] direct gevolgd door het streepje', () => {
-	// "[name]- beschrijving" zonder spatie leverde eerder de letterlijke naam
-	// "name]-" op, die zo in de gepubliceerde reference belandde.
+	// "[name]- beschrijving" without a space used to yield the literal name
+	// "name]-", which then ended up in the published reference.
 	const block = '@element nldd-thing\n@attr {string} [sticky-bottom]- Sticky bottom inset.';
 	const [c] = parseComponent(block, '/x/src/components/a/b/b.ts', null);
 	assert.equal(c.attrs[0].name, 'sticky-bottom');
@@ -198,9 +198,9 @@ test('leest een attribuutnaam met [brackets] direct gevolgd door het streepje', 
 });
 
 test('behoudt tags in een blok zonder @element', () => {
-	// Zonder @element werden alle tags weggegooid omdat ze aan `current` hangen
-	// en de fallback pas na de lus werd aangemaakt. nldd-top-title-bar verloor zo
-	// zes attributen, een slot en twee events uit de gepubliceerde reference.
+	// Without @element every tag was thrown away, because they hang off `current`
+	// and the fallback was only created after the loop. nldd-top-title-bar lost
+	// six attributes, a slot and two events from the published reference that way.
 	const block = 'Een titelbalk.\n@attr {string} text - De titel.\n@slot - Inhoud.\n@fires dismiss - Sluiten.';
 	const [c] = parseComponent(block, '/x/src/components/a/b/b.ts', 'nldd-fallback');
 	assert.equal(c.tag, 'nldd-fallback');

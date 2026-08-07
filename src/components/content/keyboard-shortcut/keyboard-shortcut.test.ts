@@ -92,9 +92,9 @@ describe('nldd-keyboard-shortcut', () => {
 		});
 
 		it('verbergt zich op touch-only devices via @media (any-hover: none)', async () => {
-			// Smoke check: het CSS-blok dat de host verbergt staat in de styles.
-			// Echte media-query gedrag is browser-state, niet eenvoudig in
-			// vitest te simuleren — we verifiëren de aanwezigheid van de regel.
+			// Smoke check: the CSS block that hides the host is in the styles. Real
+			// media query behavior is browser state and not easy to simulate in
+			// vitest, so we verify that the rule is there.
 			el = await fixture('<nldd-keyboard-shortcut keys="Cmd+K"></nldd-keyboard-shortcut>');
 			await waitForUpdate(el);
 			const sheets = (el.shadowRoot as ShadowRoot).adoptedStyleSheets;

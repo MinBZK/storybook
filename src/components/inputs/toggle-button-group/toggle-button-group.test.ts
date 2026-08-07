@@ -426,7 +426,7 @@ describe('nldd-toggle-button-group – toetsenbordnavigatie', () => {
 		expect(buttons[2].selected).toBe(true);
 	});
 
-	// A consumer that serialises the form in its own `change` listener (htmx, or
+	// A consumer that serializes the form in its own `change` listener (htmx, or
 	// a plain new FormData(form)) runs before the deselected buttons render, so
 	// the group has to commit their value from the handler itself. Without that
 	// two buttons of one radio group sit in the form at the same time.

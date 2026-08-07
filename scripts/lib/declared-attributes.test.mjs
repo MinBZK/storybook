@@ -7,8 +7,8 @@ test('leest een meerregelige declaratie', () => {
 	assert.deepEqual([...declaredAttributes(body)], ['disabled']);
 });
 
-// De literal \n in de regex sloeg dit stil over, precies het gat dat dit script
-// moet dichten.
+// The literal \n in the regex skipped this silently, exactly the gap this script
+// is meant to close.
 test('leest een enkelregelige declaratie', () => {
 	const body = '@property({ type: Boolean }) disabled = false;';
 	assert.deepEqual([...declaredAttributes(body)], ['disabled']);

@@ -66,6 +66,8 @@ export { NLDDSwitch } from './inputs/switch/switch.js';
 export { NLDDSwitchField } from './inputs/switch-field/switch-field.js';
 export { NLDDTextEditor } from './inputs/text-editor/text-editor.js';
 export { NLDDTextField } from './inputs/text-field/text-field.js';
+export { NLDDTimeField } from './inputs/time-field/time-field.js';
+export { NLDDTimePicker } from './inputs/time-picker/time-picker.js';
 export { NLDDToggleButton } from './inputs/toggle-button/toggle-button.js';
 export { NLDDToggleButtonGroup } from './inputs/toggle-button-group/toggle-button-group.js';
 export { NLDDTokenField } from './inputs/token-field/token-field.js';

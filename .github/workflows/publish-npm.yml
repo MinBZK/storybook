@@ -3,6 +3,16 @@ name: Publish to npmjs
 # Requires repository secret NPM_TOKEN: a granular npmjs token with
 # read+write access to the @nldd scope and 2FA bypass enabled.
 # Without it, the publish step fails with E401/EAUTH at runtime.
+#
+# The work is split over two jobs on purpose. `npm run build` executes
+# third-party code by design - vite, tsc, the custom-elements analyzer and
+# every plugin they load. NPM_TOKEN must therefore not be reachable from
+# the job that does that. `build` holds no publish credentials and hands over
+# a finished tarball; `publish` holds the token and runs no dependency code.
+# --ignore-scripts closes the install moment; this closes the token exposure of
+# the build moment. It does not make the build output trustworthy - a hijacked
+# build dependency can still poison dist/, and that dist/ goes into the tarball
+# the provenance vouches for.
 
 on:
   push:
@@ -20,7 +30,7 @@ on:
         type: string
 
 jobs:
-  publish:
+  build:
     runs-on: ubuntu-latest
     # Only publish when triggered by version-bump commit, release, or manual dispatch
     if: >-
@@ -29,34 +39,81 @@ jobs:
       startsWith(github.event.head_commit.message, 'chore(release):')
     permissions:
       contents: read
-      id-token: write
     steps:
       - name: Checkout
-        uses: actions/checkout@v6
+        uses: actions/checkout@v7
 
       - name: Setup Node.js
-        uses: actions/setup-node@v6
+        uses: actions/setup-node@v7
         with:
           node-version: '20'
           cache: 'npm'
-          registry-url: 'https://registry.npmjs.org'
-          scope: '@nldd'
 
       # --ignore-scripts: a hijacked dependency release must not get to run its
-      # preinstall/postinstall hook in the one job that holds NPM_TOKEN. Nothing
-      # in this tree needs lifecycle scripts at install time - the build below
-      # runs the generators explicitly.
+      # preinstall/postinstall hook. Nothing in this tree needs lifecycle
+      # scripts at install time; the build runs its generators explicitly.
       - name: Install dependencies
         run: npm ci --ignore-scripts
 
       - name: Build package
         run: npm run build
 
+      # De input gaat via de env in plaats van via ${{ }} in de run-regel:
+      # workflow_dispatch-input is vrije tekst en zou daar als shellcode worden
+      # geïnterpreteerd. De `--` scheidt hem daarnaast van de vlaggen: zonder
+      # die scheiding leest npm een waarde die met `-` begint als optie.
       - name: Update version (if specified)
         if: ${{ inputs.version != '' }}
-        run: npm version ${{ inputs.version }} --no-git-tag-version
+        env:
+          INPUT_VERSION: ${{ inputs.version }}
+        run: npm version --no-git-tag-version -- "$INPUT_VERSION"
 
+      # npm bepaalt zelf wat er in het pakket hoort: `files` in package.json,
+      # plus de bestanden die npm sowieso insluit. Een handgeschreven padlijst
+      # hier zou daar stilzwijgend naast gaan lopen zodra `files` verandert, en
+      # dat levert een incompleet pakket op mét geldige provenance.
+      - name: Pack publish payload
+        run: npm pack --ignore-scripts
+
+      - name: Upload publish payload
+        uses: actions/upload-artifact@v4
+        with:
+          name: npm-package
+          # Ruim genoeg om een mislukte publish-job later opnieuw te draaien
+          # zonder de build over te moeten doen.
+          retention-days: 7
+          if-no-files-found: error
+          path: '*.tgz'
+
+  publish:
+    needs: build
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      # Nodig voor `npm publish --provenance`: alleen met deze permissie kan npm
+      # een OIDC-token opvragen en dat bij Sigstore inruilen voor een
+      # signing-certificaat. Staat bewust alleen op deze job.
+      id-token: write
+    steps:
+      - name: Setup Node.js
+        uses: actions/setup-node@v7
+        with:
+          node-version: '20'
+          registry-url: 'https://registry.npmjs.org'
+          scope: '@nldd'
+
+      - name: Download publish payload
+        uses: actions/download-artifact@v4
+        with:
+          name: npm-package
+
+      # Publiceren vanuit de tarball: npm leest het manifest uit het archief en
+      # draait geen enkel lifecycle-script, want die draaien alleen bij een
+      # directory-publish. --ignore-scripts blijft staan als tweede slot, al
+      # houdt die vlag in npm 10 wél de pack- en publish-scripts tegen, maar
+      # `prepare` niet. Een tarball-publish zet geen `gitHead` in de metadata;
+      # de provenance legt de commit-sha al vast.
       - name: Publish to npmjs
-        run: npm publish --provenance
+        run: npm publish ./*.tgz --provenance --ignore-scripts
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}

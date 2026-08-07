@@ -455,10 +455,10 @@ describe('nldd-sheet neemt geen ruimte in de flow', () => {
 		if (el) cleanup(el);
 	});
 
-	// De sheet zelf is een position:fixed <dialog>, dus de host hoort geen doos te
-	// zijn. Als blok is hij een gewoon flex-item, en in een nldd-split-view-pane
-	// pikt hij via ::slotted de flex-grow op en eet hij de hoogte op die zijn
-	// broers nodig hadden.
+	// The sheet itself is a position:fixed <dialog>, so the host should not be a
+	// box. As a block it is an ordinary flex item, and inside an
+	// nldd-split-view-pane it picks up flex-grow through ::slotted and eats the
+	// height its siblings needed.
 	it('zet de host op display: contents', async () => {
 		el = await fixture('<nldd-sheet></nldd-sheet>');
 		await waitForUpdate(el);
@@ -477,9 +477,9 @@ describe('nldd-sheet meldt sluiten via elke route', () => {
 		return host.shadowRoot!.querySelector('dialog') as HTMLDialogElement;
 	}
 
-	// Escape sluit een non-modale dialog via de CloseWatcher, en die is met
-	// @cancel + preventDefault niet betrouwbaar tegen te houden. hide() liep dan
-	// niet, dus een modeless sheet sloot zonder iets te melden.
+	// Escape closes a non-modal dialog through the CloseWatcher, and @cancel plus
+	// preventDefault does not reliably stop that. hide() then never ran, so a
+	// modeless sheet closed without reporting it.
 	it('stuurt close wanneer de dialog buiten hide() om sluit', async () => {
 		el = await fixture<HTMLElement & { show(): void; hide(): void }>(
 			'<nldd-sheet modeless accessible-label="Test"></nldd-sheet>',
@@ -489,7 +489,7 @@ describe('nldd-sheet meldt sluiten via elke route', () => {
 		el.addEventListener('close', () => { aantal += 1; });
 		el.show();
 		await waitForUpdate(el);
-		// Wat de browser doet bij Escape op een non-modale dialog.
+		// What the browser does on Escape for a non-modal dialog.
 		const dialog = dialogVan(el);
 		dialog.close();
 		dialog.dispatchEvent(new Event('close'));

@@ -109,7 +109,7 @@ export class NLDDPopover extends LitElement {
 	private _hasWarnedLabel = false;
 	private _previousFocus: HTMLElement | null = null;
 	private _pointerdownOnAnchorWhileOpen = false;
-	/** Cleanup-functie van Floating UI's autoUpdate, alleen actief tijdens open. */
+	/** Cleanup function from Floating UI's autoUpdate, only active while open. */
 	private _cleanupAutoUpdate: (() => void) | null = null;
 	private _smQuery: MediaQueryList | null = null;
 	private _wasOnSm = false;
@@ -136,13 +136,12 @@ export class NLDDPopover extends LitElement {
 		this._smQuery = window.matchMedia(`(max-width: ${breakpoints.smMax})`);
 		this._wasOnSm = this._smQuery.matches;
 		this._smQuery.addEventListener('change', this._handleViewportChange);
-		// Initialiseer aria-expanded/aria-haspopup op de anchor zodat SR de
-		// trigger-knop direct als toggle-control aankondigt — niet pas na de
-		// eerste open. Defer naar microtask: anchor (by id) is mogelijk nog
-		// niet in de DOM op connectedCallback-tijd. Daarnaast: warn over
-		// ontbrekende accessible-label vanuit dezelfde gedeferde tick zodat
-		// 'm ook vliegt bij popovertarget-gebruik (waar show() niet wordt
-		// aangeroepen door ons component).
+		// Seed aria-expanded/aria-haspopup on the anchor so a screen reader
+		// announces the trigger as a toggle control right away, not only after the
+		// first open. Deferred to a microtask: an anchor referenced by id may not
+		// be in the DOM yet at connectedCallback time. The warning about a missing
+		// accessible-label rides along in the same deferred tick, so it also fires
+		// for popovertarget usage, where our component never calls show().
 		Promise.resolve().then(() => {
 			this._updateAnchorAria(false);
 			this._warnIfMissingLabel();
@@ -160,14 +159,14 @@ export class NLDDPopover extends LitElement {
 		document.removeEventListener('click', this._handleDocumentClick);
 		this._smQuery?.removeEventListener('change', this._handleViewportChange);
 		this._smQuery = null;
-		// Stop autoUpdate-listeners als popover verwijderd wordt terwijl 'ie
-		// nog open is — voorkomt memory-leak en dangling listeners.
+		// Stop the autoUpdate listeners when the popover is removed while still
+		// open, which would otherwise leak memory and leave dangling listeners.
 		this._cleanupAutoUpdate?.();
 		this._cleanupAutoUpdate = null;
-		// Strip ALL aria-* van de anchor — niet alleen aria-expanded. In SPA
-		// flows (v-if, conditional render) kan de popover verdwijnen terwijl
-		// de anchor blijft bestaan. Een achtergebleven aria-controls naar een
-		// niet-bestaand element is een WCAG 4.1.2 fout (Name, Role, Value).
+		// Strip ALL aria-* from the anchor, not just aria-expanded. In SPA flows
+		// (v-if, conditional render) the popover can disappear while the anchor
+		// stays. A leftover aria-controls pointing at an element that no longer
+		// exists is a WCAG 4.1.2 failure (Name, Role, Value).
 		const anchorEl = this._getAnchorEl();
 		if (anchorEl) {
 			// Reset the IDL prop too (control anchors), else a popover removed
@@ -196,14 +195,14 @@ export class NLDDPopover extends LitElement {
 		if (changed.has('accessibleLabel') || changed.has('translations')) {
 			this.setAttribute('aria-label', this._resolvedAccessibleLabel);
 		}
-		// Anchor change at runtime: strip aria-* van de oude trigger en zet
-		// 'm op de nieuwe. Zonder dit blijft de oude trigger met stale
-		// aria-expanded / aria-controls hangen voor SR.
+		// Anchor change at runtime: strip aria-* from the old trigger and put it on
+		// the new one. Without this the old trigger keeps stale aria-expanded and
+		// aria-controls for a screen reader.
 		if (changed.has('anchor') || changed.has('anchorElement')) {
 			this._updateAnchorAria(this._isOpen);
 		}
 		// Position-override changes at runtime: re-apply or clear inline edges
-		// + transform zodat de popover meebewegt met dynamische waardes.
+		// + transform, so the popover follows dynamic values.
 		if (
 			changed.has('top') || changed.has('left')
 			|| changed.has('right') || changed.has('bottom')
@@ -240,7 +239,7 @@ export class NLDDPopover extends LitElement {
 	}
 
 	private _warnIfMissingLabel(): void {
-		// Dev-only — productieconsoles van end-users blijven schoon.
+		// Dev only, so an end user's production console stays clean.
 		if (!import.meta.env?.DEV) return;
 		if (this.accessibleLabel || this._hasWarnedLabel) return;
 		this._hasWarnedLabel = true;
@@ -269,7 +268,7 @@ export class NLDDPopover extends LitElement {
 		this.style.transition = '';
 	}
 
-	/** Herberekent positie t.o.v. anchor. Wordt automatisch aangeroepen bij openen. */
+	/** Recomputes the position relative to the anchor. Called automatically on open. */
 	async reposition(): Promise<void> {
 		if (!this._isOpen) return;
 
@@ -300,14 +299,14 @@ export class NLDDPopover extends LitElement {
 		}
 
 		// Position-override: skip Floating UI and place the popover at the
-		// consumer-specified coordinates. Anchor blijft nodig voor ARIA maar
-		// niet voor positionering — denk aan een vrij geplaatste search-popover
-		// die bovenaan-gecentreerd hoort, niet onder z'n trigger.
+		// consumer-specified coordinates. The anchor stays necessary for ARIA but
+		// not for positioning, as with a freely placed search popover that belongs
+		// centered at the top rather than under its trigger.
 		//
-		// `centered` centreert beide assen (left/top: 50%; transform: translate
-		// -50% per as). Een expliciete edge-attr (top/left/right/bottom)
-		// overschrijft die as, dus `centered top="0"` = horizontaal gecentreerd
-		// + top-aligned. Mirrort CSS `place-items: center` met overrides.
+		// `centered` centers both axes (left/top: 50%, transform: translate -50%
+		// per axis). An explicit edge attribute (top/left/right/bottom) overrides
+		// that axis, so `centered top="0"` is centered horizontally and aligned to
+		// the top. Mirrors CSS `place-items: center` with overrides.
 		const hasOverride = this.top || this.left || this.right || this.bottom || this.centered;
 		if (hasOverride) {
 			const yCenter = this.centered && !this.top && !this.bottom;
@@ -343,11 +342,10 @@ export class NLDDPopover extends LitElement {
 		const anchorEl = this._getAnchorEl();
 		if (!anchorEl) return;
 
-		// No fallback: --semantics-overlays-inset moet bestaan (gevalideerd
-		// door CI). parseFloat handelt leading whitespace (die
-		// getPropertyValue soms levert) correct af; bij ontbrekende token
-		// propagateert NaN zodat de fout zichtbaar is i.p.v. stilletjes
-		// een fallback gebruikt te worden.
+		// No fallback: --semantics-overlays-inset has to exist, which CI validates.
+		// parseFloat handles the leading whitespace getPropertyValue sometimes
+		// returns. With the token missing, NaN propagates so the mistake is
+		// visible instead of quietly resolving to a fallback.
 		const inset = parseFloat(getComputedStyle(this).getPropertyValue('--semantics-overlays-inset'));
 
 		const { x, y } = await computePosition(anchorEl, this, {
@@ -383,8 +381,8 @@ export class NLDDPopover extends LitElement {
 	private _updateAnchorAria(open: boolean): void {
 		const anchorEl = this._getAnchorEl();
 		// Anchor changed (e.g. anchorElement property switched, or anchor
-		// attribute updated) — strip aria-expanded en eventuele aria-controls
-		// van de vorige zodat 'ie niet als toggle blijft hangen voor SR.
+		// attribute updated): strip aria-expanded and any aria-controls from the
+		// previous one, so it does not linger as a toggle for a screen reader.
 		if (this._previousAnchorEl && this._previousAnchorEl !== anchorEl) {
 			this._previousAnchorEl.removeAttribute('aria-expanded');
 			if (this._previousAnchorEl.getAttribute('aria-controls') === this.id) {
@@ -407,18 +405,18 @@ export class NLDDPopover extends LitElement {
 		} else {
 			anchorEl.setAttribute('aria-expanded', open ? 'true' : 'false');
 		}
-		// aria-haspopup hoort bij de trigger te staan vanaf de eerste render,
-		// niet pas na de eerste open. Geen overwrite als de host een eigen
-		// waarde heeft (bv. 'menu' i.p.v. 'dialog' voor combinaties).
+		// aria-haspopup belongs on the trigger from the first render, not only
+		// after the first open. Never overwritten when the host carries its own
+		// value (for example 'menu' instead of 'dialog' for combinations).
 		if ('popupType' in control) {
 			if (!control.popupType) control.popupType = 'dialog';
 		} else if (!anchorEl.hasAttribute('aria-haspopup')) {
 			anchorEl.setAttribute('aria-haspopup', 'dialog');
 		}
-		// aria-controls verbindt de trigger expliciet met het popover-element.
-		// ARIA Authoring Practices voor dialog-triggers; verbetert SR-context.
-		// Alleen zetten als deze popover een id heeft én de anchor 'm nog niet
-		// naar iets anders wijst.
+		// aria-controls ties the trigger explicitly to the popover element. The
+		// ARIA Authoring Practices ask for it on dialog triggers and it improves
+		// screen reader context. Only set when this popover has an id and the
+		// anchor does not already point somewhere else.
 		if (this.id && !anchorEl.hasAttribute('aria-controls')) {
 			anchorEl.setAttribute('aria-controls', this.id);
 		}
@@ -545,7 +543,7 @@ export class NLDDPopover extends LitElement {
 		this._updateAnchorAria(this._isOpen);
 
 		if (toggleEvent.newState !== 'open') {
-			// Stop scroll/resize tracking — niet meer nodig wanneer dicht.
+			// Stop scroll/resize tracking, no longer needed once closed.
 			this._cleanupAutoUpdate?.();
 			this._cleanupAutoUpdate = null;
 			this._returnFocus();
@@ -557,11 +555,11 @@ export class NLDDPopover extends LitElement {
 		await this.reposition();
 		this.setAttribute('positioned', ''); // placed — reveal it (see _handleBeforeToggle)
 		// Start scroll/resize/layout-change tracking. Floating UI's autoUpdate
-		// luistert naar ancestor scroll, window resize, en ResizeObserver op
-		// de anchor — dekt window-resize binnen viewport-breakpoint, dynamic
-		// content shifts, en popovers in scrollable containers (niet alleen
-		// document scroll). Op sm-viewport (bottom sheet, position: fixed)
-		// is reposition() een no-op dus geen werk.
+		// listens for ancestor scroll, window resize and a ResizeObserver on the
+		// anchor, which covers a window resize within a viewport breakpoint,
+		// dynamic content shifts and popovers in scrollable containers, not just
+		// document scroll. On an sm viewport (bottom sheet, position: fixed)
+		// reposition() is a no-op, so there is no work.
 		const anchorEl = this._getAnchorEl();
 		if (anchorEl) {
 			this._cleanupAutoUpdate = autoUpdate(anchorEl, this, () => this.reposition());
@@ -574,11 +572,10 @@ export class NLDDPopover extends LitElement {
 	private _handleKeydown = (event: KeyboardEvent): void => {
 		if (event.key !== 'Tab') return;
 		const focusables = this._getFocusables();
-		// document.activeElement geeft alleen de shadow host terug (bv.
-		// nldd-button), niet het interne <button>. Onze focusables-lijst
-		// bevat juist het interne element via shadow-walk. Gebruik
-		// composedPath()[0] om het daadwerkelijk gefocuste element te
-		// krijgen — dat matcht wat _getFocusables retourneert.
+		// document.activeElement only returns the shadow host (nldd-button, say),
+		// not the inner <button>. Our focusables list holds that inner element,
+		// found by walking shadow roots. composedPath()[0] gives the element that
+		// actually has focus, which matches what _getFocusables returns.
 		const focused = (event.composedPath()[0] as HTMLElement | null)
 			?? (document.activeElement as HTMLElement | null);
 		const idx = focused ? focusables.indexOf(focused) : -1;
@@ -647,31 +644,30 @@ export class NLDDPopover extends LitElement {
 		].join(',');
 
 		// Walk in document order, descending into shadow roots inline so a
-		// custom element's internal <button> verschijnt op de juiste plek
-		// tussen omringende light-DOM focusables (eerst shadow content, dan
-		// light children — matcht de tab-order voor de meeste use cases).
-		// Edge case: een shadow tree met markup vóór een <slot> volgorde
-		// raakt niet 100% gespiegeld, maar dat is zeldzaam in popover content.
+		// custom element's internal <button> appears in the right place among the
+		// surrounding light-DOM focusables (shadow content first, then light
+		// children, which matches the tab order for most use cases).
+		// Edge case: a shadow tree with markup before a <slot> is not mirrored
+		// perfectly, but that is rare in popover content.
 		//
-		// Performance: getClientRects() forceert layout per element. Voor
-		// rich popover content met veel focusables is dit O(n) layout-flush.
-		// Alleen aangeroepen op Tab-keydown (zeldzaam, niet hot path), en
-		// caching zou de visibility-snapshot kunnen verouderen — bewuste
-		// trade-off voor correctheid boven micro-perf.
+		// Performance: getClientRects() forces layout per element. For rich popover
+		// content with many focusables that is an O(n) layout flush. It only runs
+		// on a Tab keydown (rare, not a hot path), and caching could let the
+		// visibility snapshot go stale. A deliberate trade of micro-performance
+		// for correctness.
 		const result: HTMLElement[] = [];
 		const visit = (root: ParentNode): void => {
 			for (const child of Array.from(root.children)) {
 				const el = child as HTMLElement;
-				// tabIndex < 0 sluit elementen uit die wel focusbaar zijn maar niet
-				// tabbaar: een roving-tabindex-widget (grid, toolbar, tree) zet al
-				// zijn items op -1 behalve één. Zonder deze check telt de lijst er
-				// tientallen mee die de browser overslaat, denkt tab-out nooit dat
-				// het aan het eind is, en tabt de gebruiker de popover uit terwijl
-				// die openblijft.
+				// tabIndex < 0 excludes elements that are focusable but not tabbable: a
+				// roving-tabindex widget (grid, toolbar, tree) puts all of its items on
+				// -1 except one. Without this check the list counts dozens the browser
+				// skips, tab-out never believes it is at the end, and the user tabs out
+				// of the popover while it stays open.
 				if (el.matches?.(selector) && !el.hasAttribute('disabled') && el.tabIndex >= 0) {
-					// getClientRects().length === 0 catches display:none en
-					// visibility:hidden van element of ancestor (inclusief
-					// shadow host) — robuuster dan offsetParent in shadow.
+					// getClientRects().length === 0 catches display:none and
+					// visibility:hidden on the element or an ancestor (including the
+					// shadow host), which is sturdier than offsetParent inside shadow.
 					if (el.getClientRects().length > 0) result.push(el);
 				}
 				if (el.shadowRoot) visit(el.shadowRoot);

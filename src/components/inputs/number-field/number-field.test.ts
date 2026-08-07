@@ -391,16 +391,16 @@ describe('nldd-number-field – hide-spin-buttons', () => {
 		el = await fixture('<nldd-number-field hide-spin-buttons accessible-label="Aantal"></nldd-number-field>');
 		await waitForUpdate(el);
 		const input = el.shadowRoot!.querySelector('.number-field__input') as HTMLElement;
-		// Met verborgen spinners is left-align gewenst (zonder spinners is een
-		// number-field functioneel een tekstinvoer voor cijfers).
+		// With the spinners hidden, left alignment is what you want: without them a
+		// number field is functionally a text input for digits.
 		expect(getComputedStyle(input).textAlign).toBe('left');
 	});
 
 	it('declareert padding-inline regel voor hide-spin-buttons in styles', async () => {
-		// CSS-variabelen worden niet geladen in test-env, dus computed style
-		// numerieke waardes zijn niet betrouwbaar. Verifieer via cssRules dat
-		// de padding-regel bestaat zodat de input dezelfde inset krijgt als
-		// andere input-velden i.p.v. de flex-default 0.
+		// CSS variables are not loaded in the test environment, so numeric computed
+		// style values are unreliable. Check through cssRules that the padding rule
+		// exists, so the input gets the same inset as other input fields instead of
+		// the flex default of 0.
 		el = await fixture('<nldd-number-field hide-spin-buttons></nldd-number-field>');
 		await waitForUpdate(el);
 		const sheets = (el.shadowRoot as ShadowRoot).adoptedStyleSheets;

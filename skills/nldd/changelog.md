@@ -15,6 +15,45 @@ the type of conventional-commit determines the release. Conventional types
 `chore`, `docs`, `ci`, `style`, `test`, `build` are intentionally omitted
 here; consult the commit history if you need that level of detail.
 
+## <small>0.8.78 (2026-08-05)</small>
+
+* feat: a time field and a time picker, plus a standalone browser bundle (#187) ([e2a94fd](https://github.com/MinBZK/storybook/commit/e2a94fd)), closes [#187](https://github.com/MinBZK/storybook/issues/187)
+* ci: geef CI en Validate een read-only token en persist het niet op schijf (#170) ([65bf797](https://github.com/MinBZK/storybook/commit/65bf797)), closes [#170](https://github.com/MinBZK/storybook/issues/170) [#167](https://github.com/MinBZK/storybook/issues/167)
+* ci: install dependencies with --ignore-scripts (#167) ([9f46021](https://github.com/MinBZK/storybook/commit/9f46021)), closes [#167](https://github.com/MinBZK/storybook/issues/167)
+* ci: laat actions/checkout het VERSION_BUMP_TOKEN niet op schijf achter (#168) ([ecd6dc0](https://github.com/MinBZK/storybook/commit/ecd6dc0)), closes [#168](https://github.com/MinBZK/storybook/issues/168) [#167](https://github.com/MinBZK/storybook/issues/167)
+* ci: publiceer vanuit een aparte job zonder dependency-code (#169) ([68964fb](https://github.com/MinBZK/storybook/commit/68964fb)), closes [#169](https://github.com/MinBZK/storybook/issues/169) [#167](https://github.com/MinBZK/storybook/issues/167)
+* ci: voeg Dependabot toe met een cooldown van vijf dagen (#171) ([1c852e4](https://github.com/MinBZK/storybook/commit/1c852e4)), closes [#171](https://github.com/MinBZK/storybook/issues/171)
+
+### Highlights
+
+- **A time field and a time picker.** `nldd-time-field` is the counterpart of `nldd-date-field`, with the same API, so a date-and-time form no longer needs a hand-styled native input beside it. Its picker is a wheel: two columns sliding past the selection in the middle, where scrolling is choosing and CSS snapping does the work. `step` decides which minutes exist at all, `rows` how tall the wheel stands, and a row is 44px under a finger and 32px under a mouse. Nothing lands until you leave: the field previews the time as you scroll, "Klaar" keeps it, and Annuleer or Escape puts the old one back. An empty field opens on the current time rather than on midnight. On the keyboard the selection is the control: opening the picker puts focus on the hour, hour and minute are each a spinbutton, up and down set the value, left and right move between them. `nldd-time-picker` also stands on its own, inline on a page.
+
+### Added
+
+- **A standalone browser bundle.** `dist/nldd.min.js` is every component in one minified file, with lit, Floating UI and CodeMirror inlined: drop it on a page with a plain `<script src>` and the elements upgrade, no build step at the other end. Reachable as `@nldd/design-system/bundle` and through the `unpkg` / `jsdelivr` fields, so a CDN URL resolves to it without a path. Building it yourself? Keep using the package root; that entry leaves the dependencies external and splits into chunks, which is what a bundler wants. The file is 2 MB, 540 KB over the wire, and the npm tarball grows by that much for everyone.
+- **Design guideline: viewing and editing are different tasks, so design separate screens for them.** Reading wants density and calm; editing wants labels, help text, validation, and sometimes fields that have no place in the read-only view. Pressing both into one screen, usually through inline editing, gives up something on either side. The counter-argument that the view supplies context while editing is a requirement to design for, not a reason to keep the reading layout. In `Docs/Ontwerprichtlijnen`, and in the `design-guidelines.md` that ships with the plugin.
+- **Design guideline: in a modal dialog for a destructive action, "keep" gets the primary variant and goes on top.** Give the non-destructive way out (for example "Behoud document") `variant="primary"` and put the destructive action below it with `variant="destructive"`. The primary button is where a user goes on autopilot, and that should be the safe way out, not the irreversible action. It also means the way out is the first thing you meet, instead of having to pass the button you are trying to avoid. In `Docs/Ontwerprichtlijnen`, and in the `design-guidelines.md` that ships with the plugin.
+- **`nldd-time-field` and `nldd-time-picker`** — a text field for a time, with an optional picker in a popover. The value is 24-hour `HH:mm`; typing is read generously (`9`, `930`, `9u30`) and normalised when you leave the field. `min`, `max`, form participation and the rest of the API mirror `nldd-date-field`. `step` sets the minute step, counted from `min`, and typed input rounds to it. The picker is a wheel where scrolling is choosing; picking a value does not close the popover, because an hour is half an answer. What you scroll past is a preview: the value is recorded when the picker closes on a route that keeps it ("Klaar", Enter on a value in the selection, or a click beside it once you have chosen), and Annuleer and Escape restore the time that was there. `no-picker` drops the button, a `picker` slot takes your own.
+- **`nldd-banner`** — a `size` attribute: `md` (default) or `sm`. The small banner takes 8px of padding and a 24px icon, for a notice that has to sit inside a pane or above a toolbar without taking a block of the layout. The dismiss button follows the size and aligns with the first line.
+
+### Changed
+
+- **`nldd-top-navigation-bar`** — the wordmark title, subtitle and supporting text balance their lines instead of filling each one in turn. A long organisation name breaks in the middle rather than leaving a single word on the second line.
+- **Icons** — `viewfinder` has shorter corner brackets. The arms ran to a third of each side, which closed the shape up at small sizes and read more as a frame than as a finder.
+- **`nldd-banner`, `nldd-just-in-time-education`** — the dismiss button is labelled "Verberg" instead of "Sluit". Both put the notice out of sight without resolving anything, and "Sluit" claims more than that. `nldd-document-tab-bar` and `nldd-top-navigation-bar` keep "Sluit", where it really does close something.
+
+### Breaking
+
+- **`nldd-banner`** — the two size-dependent custom properties carry their size in the name: `--components-banner-padding` becomes `--components-banner-md-padding` and `--components-banner-icon-size` becomes `--components-banner-md-icon-size`. Without the size segment they read as "the padding of every banner" while `sm` has its own value, and every other component names them this way. `--components-banner-corner-radius` and `--components-banner-content-color` are unchanged, because they do not differ per size. Override one of the two renamed properties and the override stops applying, silently.
+
+### Fixed
+
+- **`nldd-banner`** — the icon meets contrast on every variant. The icon took the variant's reference color, which is tuned to sit against a filled surface, not against the tinted one a banner actually draws. In dark mode the accent icon landed at 1.72:1 against its own background, well under the 3:1 that WCAG 1.4.11 asks of a graphical object; neutral and warning failed too. All five now take the tinted content color, which is the pair that was measured for this surface.
+- **`nldd-navigation-split-view`** — the sidebar and inspector sheets no longer collapse to zero height below 641px. The `flex-basis: 0` on slotted panes now applies only where the sheet has a definite height; a content-sized sheet gets a content-sized pane. The dialog's `max-height` still caps a long sheet, and the pane's own scroll container takes it from there. A consumer restoring the basis from application CSS can drop that rule.
+- **`nldd-search-field`** — one `input` event per keystroke, and one `change` per commit. The native events are composed, so without stopping them they escaped the shadow root and arrived at the host right behind ours. On the native one `detail` is the UIEvent number `0`, so a handler reading `event.detail.value` got `undefined` from it; a controlled input writing that back emptied the field as you typed. `nldd-text-field` and `nldd-password-field` already worked this way.
+- **`nldd-menu`** — a menu with long items wraps at its maximum width instead of scrolling sideways. `overflow-y: auto` computes `overflow-x` to `auto` unless you say otherwise, so the menu scrolled horizontally on content that was meant to wrap.
+- **A focus ring at the bottom of a sticky header no longer disappears under the fade.** The gradient that `nldd-page` draws below a `sticky-header` painted after the header's own content, so anything reaching past the header's bottom edge went under it. It now sits behind that content: same fade over the scrolling page, ring intact.
+
 ## <small>0.8.77 (2026-08-02)</small>
 
 * fix(popover): clear a stale centering transform when the override goes (#166) ([81ee9e8](https://github.com/MinBZK/storybook/commit/81ee9e8)), closes [#166](https://github.com/MinBZK/storybook/issues/166)

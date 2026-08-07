@@ -75,7 +75,7 @@ describe('nldd-card', () => {
 		expect(link).not.toBeNull();
 		expect(link.getAttribute('href')).toBe('/dossier');
 		expect(link.getAttribute('aria-label')).toBe('Open dossier');
-		// Naam op de link, niet ook redundant op de article.
+		// The name goes on the link, not redundantly on the article as well.
 		expect(el.shadowRoot!.querySelector('.card')!.getAttribute('aria-label')).toBeNull();
 	});
 
@@ -105,8 +105,8 @@ describe('nldd-card', () => {
 		expect(el.shadowRoot!.querySelector('.card')!.getAttribute('aria-label')).toBeNull();
 	});
 
-	// De klik moet de shadow-grens over: een listener of hx-attribuut op de
-	// kaart zelf is precies hoe consumenten dit gebruiken.
+	// The click has to cross the shadow boundary: a listener or hx attribute on the
+	// card itself is exactly how consumers use this.
 	it('een klik op de knop komt als composed click op de host aan', async () => {
 		el = await fixture<NLDDCard>('<nldd-card button accessible-label="Open"></nldd-card>');
 		await waitForUpdate(el);

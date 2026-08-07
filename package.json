@@ -1,12 +1,15 @@
 {
   "name": "@nldd/design-system",
-  "version": "0.8.77",
+  "version": "0.8.78",
   "description": "Design System voor Nederlandse Digitale Dienst",
   "type": "module",
   "main": "dist/components/components.js",
   "module": "dist/components/components.js",
+  "unpkg": "dist/nldd.min.js",
+  "jsdelivr": "dist/nldd.min.js",
   "exports": {
     ".": "./dist/components/components.js",
+    "./bundle": "./dist/nldd.min.js",
     "./button": {
       "types": "./dist/components/actions/button/button.d.ts",
       "default": "./dist/components/actions/button/button.js"
@@ -178,6 +181,14 @@
     "./text-field": {
       "types": "./dist/components/inputs/text-field/text-field.d.ts",
       "default": "./dist/components/inputs/text-field/text-field.js"
+    },
+    "./time-field": {
+      "types": "./dist/components/inputs/time-field/time-field.d.ts",
+      "default": "./dist/components/inputs/time-field/time-field.js"
+    },
+    "./time-picker": {
+      "types": "./dist/components/inputs/time-picker/time-picker.d.ts",
+      "default": "./dist/components/inputs/time-picker/time-picker.js"
     },
     "./toggle-button": {
       "types": "./dist/components/inputs/toggle-button/toggle-button.d.ts",
@@ -461,13 +472,13 @@
     "validate:styles": "node scripts/validate-css-variables.js",
     "validate:host-styles": "node scripts/validate-host-styles.js",
     "validate:component-api": "node scripts/validate-component-api.js",
-    "build:components": "npm run clean:components && npm run build:icons && npm run build:components:modules && npm run build:components:bundle && npm run build:exports && npm run generate:cem",
+    "build:components": "npm run clean:components && npm run build:icons && npm run build:components:modules && npm run build:components:bundle && npm run build:components:standalone && npm run build:exports && npm run generate:cem",
     "build:icons": "node scripts/generate-icon-registry.js && node scripts/generate-logo.js",
     "build:components:modules": "tsc -p tsconfig.build.json",
     "build:components:bundle": "vite build",
     "build:exports": "node scripts/generate-exports.js",
     "clean": "rm -rf dist",
-    "clean:components": "rm -rf dist/components",
+    "clean:components": "rm -rf dist/components dist/nldd.min.js",
     "prestorybook": "npm run build:icons",
     "storybook": "storybook dev -p 6006",
     "sb:start": "node scripts/storybook-manager.js start",
@@ -488,7 +499,8 @@
     "test:scripts": "node --test scripts/*.test.mjs scripts/lib/*.test.mjs",
     "pretypecheck": "npm run build:icons",
     "typecheck": "tsc --noEmit",
-    "test:vue-types": "vue-tsc --noEmit -p type-tests/vue/tsconfig.json"
+    "test:vue-types": "vue-tsc --noEmit -p type-tests/vue/tsconfig.json",
+    "build:components:standalone": "vite build --config vite.bundle.config.ts"
   },
   "devDependencies": {
     "@commitlint/cli": "^19.6.1",
