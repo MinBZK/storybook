@@ -13,6 +13,14 @@ here; consult the commit history if you need that level of detail.
 
 - **`nldd-box` no longer has padding of its own.** It draws the surface and nothing else, exactly as `nldd-card` already did, so one component owns the inset wherever it is used. Wrap what is inside in an `nldd-container` and let that set it: `<nldd-box><nldd-container padding="16">…</nldd-container></nldd-box>` reproduces the old look. Without it, content now sits against the border. The token that held the old value, `--components-box-padding`, is still there as the reference for what "16" means here.
 
+### Fixed
+
+- **`nldd-top-title-bar` now waits for a `collapse-anchor` that renders late.** A page that only draws its title once its data has arrived had no anchor when the bar connected, and the bar gave up looking: it never collapsed, so a `text` meant to appear on scroll never did. It now watches for the id and connects the moment it shows up.
+
+### Changed
+
+- **De divider van `nldd-list-item` begint standaard bij de eerste tekst- of titel-cel.** Eerst gebeurde dat alleen als de rij met een icoon (of een ander glyph-formaat ding) opende; een rij die met spacers opende, zoals een blad in een boom, kreeg een lijn over de volle breedte. De lijn landt nu op de woorden en niet op wat eraan voorafgaat, dus rijen van verschillende vorm lijnen hun dividers met elkaar uit en de dividers van een boom springen mee naar binnen. Tekst binnen een `nldd-list-item-action` telt mee. Een rij zonder tekst- of titel-cel houdt de volle contentbreedte, en `divider-start` op een eerdere cel geeft die ook terug.
+
 ## <small>0.8.78 (2026-08-05)</small>
 
 * feat: a time field and a time picker, plus a standalone browser bundle (#187) ([e2a94fd](https://github.com/MinBZK/storybook/commit/e2a94fd)), closes [#187](https://github.com/MinBZK/storybook/issues/187)
