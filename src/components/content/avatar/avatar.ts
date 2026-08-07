@@ -18,7 +18,7 @@
  *
  * Toegankelijkheid: het host-element draagt de betekenis. Met een `name`
  * (en zonder `decorative`) krijgt het `role="img"` met de naam als label.
- * Staat de naam al als tekst ernaast (bijvoorbeeld in een byline), zet dan
+ * Staat de naam al als tekst ernaast (bijvoorbeeld in een identity), zet dan
  * `decorative` zodat de avatar voor hulpsoftware verborgen blijft. Een dode
  * `src` valt automatisch terug op de initialen of het icoon, nooit op een
  * gebroken-afbeelding-icoon.

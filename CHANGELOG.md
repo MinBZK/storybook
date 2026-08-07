@@ -11,10 +11,15 @@ here; consult the commit history if you need that level of detail.
 
 ### Breaking
 
+- **`nldd-byline` is now `nldd-identity`.** Same component, a name that says what it shows: a person or a group of people with their name and a supporting line, wherever that is useful, rather than only under an article. Rename the tag, the class (`NLDDByline` becomes `NLDDIdentity`) and the import path (`content/byline/byline.js` becomes `content/identity/identity.js`).
+- **`nldd-identity` no longer styles the avatars in its `avatars` slot.** Wrap them in an `nldd-avatar-group`, also when there is only one: `<nldd-avatar-group slot="avatars">…</nldd-avatar-group>`. The group owns the size, the overlap and the ring, so both components say one thing each. Avatars slotted bare keep their natural size and shape. The `avatar-src` shortcut is unchanged and goes through the group itself.
+
 - **`nldd-box` no longer has padding of its own.** It draws the surface and nothing else, exactly as `nldd-card` already did, so one component owns the inset wherever it is used. Wrap what is inside in an `nldd-container` and let that set it: `<nldd-box><nldd-container padding="16">…</nldd-container></nldd-box>` reproduces the old look. Without it, content now sits against the border. The token that held the old value, `--components-box-padding`, is still there as the reference for what "16" means here.
 
 ### Highlights
 
+- **`nldd-avatar-group`, a new component.** Several avatars as one group: overlapping, each with a ring in the surface colour so they stay apart where they meet. The size applies to the whole group and is imposed on the avatars, a slotted `img` included, so the row stays on one line whatever a consumer hands it. `overlap` decides how strongly it reads as a group: `none` puts them in a row, `sm` overlaps lightly, `md` (the default) most.
+- **`nldd-badge` can pulse.** A ring grows out of the badge and fades, for something happening right now: a live connection, an outage in progress. It borrows the badge's own shape and colour, so it works on a dot as well as on a counter, and it sits behind the content without touching layout or hit area. Motion turned off means no ring.
 - **`seal-star`, a new icon.** The same seal as `seal-check-mark`, with a star in it: where the check mark says something was verified, the star says something is the organisation's own. Also reachable as `brand`.
 
 ### Fixed

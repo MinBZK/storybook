@@ -1,5 +1,5 @@
 /**
- * NLDD Design System Byline Component (Lit + TypeScript)
+ * NLDD Design System Identity Component (Lit + TypeScript)
  *
  * Een redactionele regel die auteurs of redacteuren toont: optionele
  * avatar(s), een naamregel en ondersteunende tekst (bijvoorbeeld functie
@@ -11,25 +11,22 @@
  * auteursprofiel. Geslotte inhoud vervangt het bijbehorende attribuut
  * (het attribuut is de fallback van de slot).
  *
- * Bij meerdere redacteuren overlappen de avatars elkaar subtiel; elke
- * avatar krijgt een ring in de surface-kleur (zelfde mechaniek als badge)
- * zodat ze visueel gescheiden blijven. Op een gekleurde ondergrond kan de
- * ringkleur meegegeven worden via `--context-parent-background-color`.
+ * Avatars slot je in een `nldd-avatar-group`, ook als het er één is: die
+ * groep geeft ze hun maat, laat ze overlappen en tekent de ring in de
+ * vlakkleur. Identity maakt die groep niet zelf, want de avatars zijn light
+ * DOM van de consument en een groep kan alleen opmaken wat als eigen kind
+ * bij hem binnenkomt. Zet de avatars op decoratief (of een `img` op
+ * `alt=""`) wanneer de namen al in de tekst staan.
  *
  * Op smalle breedtes (een sm-container, ≤ 640px) met meerdere avatars komt
  * de avatarrij boven de namen te staan, zodat de tekst de volle breedte
- * houdt; met één avatar blijft de byline op één regel.
- *
- * Avatars worden geslot als `<img slot="avatars">`. Zet `alt=""` wanneer
- * de namen al in de tekst staan (decoratief); geef anders een
- * beschrijvende alt-tekst op.
+ * houdt; met één avatar blijft de identity op één regel.
  *
  * Voor één avatar kun je in plaats van slotten ook `avatar-src` (met
  * optioneel `avatar-srcset`) als attribuut meegeven; de afmetingen liggen
- * vast (40px), dus `sizes` zet het component zelf. Meerdere avatars gaan
- * altijd via de slot, en geslotte avatars hebben voorrang op `avatar-src`.
+ * vast (40px). Geslotte avatars hebben voorrang op `avatar-src`.
  *
- * @element nldd-byline
+ * @element nldd-identity
  *
  * @attr {string} text - Naamregel (bijv. "Jan Jansen en Piet Pietersen"); fallback wanneer de text-slot leeg is
  * @attr {string} supporting-text - Ondersteunende tekst onder de naamregel (bijv. rol of datum); fallback wanneer de supporting-text-slot leeg is
@@ -37,20 +34,21 @@
  * @attr {string} avatar-srcset - Responsive source set voor de avatar-src-afbeelding
  * @attr {string} avatar-alt - Alt-tekst voor de avatar-src-afbeelding; leeg = decoratief
  *
- * @slot avatars - Eén of meer img-elementen; gestyled als ronde, overlappende avatars
+ * @slot avatars - Een `nldd-avatar-group` met één of meer avatars
  * @slot text - Naamregel als rijke inhoud (bijv. een link naar het auteursprofiel)
  * @slot supporting-text - Ondersteunende tekst als rijke inhoud (bijv. een time-element)
  */
 import { LitElement } from 'lit';
 import { customElement, property, state } from 'lit/decorators.js';
 import { reflectNonDefault } from '../../../utilities/reflect-non-default.js';
-import { bylineStyles } from './byline.styles.js';
-import { bylineTemplate } from './byline.template.js';
+import { identityStyles } from './identity.styles.js';
+import { identityTemplate } from './identity.template.js';
 import '../avatar/avatar.js';
+import '../avatar-group/avatar-group.js';
 
-@customElement('nldd-byline')
-export class NLDDByline extends LitElement {
-	static override styles = bylineStyles;
+@customElement('nldd-identity')
+export class NLDDIdentity extends LitElement {
+	static override styles = identityStyles;
 
 	@property({ reflect: true, converter: reflectNonDefault<string>('') })
 	text = '';
@@ -71,8 +69,9 @@ export class NLDDByline extends LitElement {
 	_hasSlottedAvatars = false;
 
 	/** Number of slotted avatars. Drives the responsive layout: with two or
-	 *  more avatars, a small-container byline stacks the avatars above the
-	 *  names (see the `data-multiple-avatars` hook in the template/styles). */
+	 *  more avatars, a small-container identity stacks the avatars above the
+	 *  names (see the `data-multiple-avatars` hook in the template/styles).
+	 *  A slotted group counts as the avatars it holds, not as one element. */
 	@state()
 	_avatarCount = 0;
 
@@ -91,7 +90,8 @@ export class NLDDByline extends LitElement {
 		const slot = e.target as HTMLSlotElement;
 		const count = slot.assignedElements().length;
 		if (slot.name === 'avatars') {
-			this._avatarCount = count;
+			this._avatarCount = slot.assignedElements()
+				.reduce((total, el) => total + (el.localName === 'nldd-avatar-group' ? el.children.length : 1), 0);
 			this._hasSlottedAvatars = count > 0;
 		}
 		else if (slot.name === 'text') this._hasSlottedText = count > 0;
@@ -99,12 +99,12 @@ export class NLDDByline extends LitElement {
 	};
 
 	override render() {
-		return bylineTemplate(this);
+		return identityTemplate(this);
 	}
 }
 
 declare global {
 	interface HTMLElementTagNameMap {
-		'nldd-byline': NLDDByline;
+		'nldd-identity': NLDDIdentity;
 	}
 }

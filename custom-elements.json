@@ -1735,7 +1735,7 @@
               "name": ""
             },
             {
-              "description": "Free content shown above the items, outside `role=\"menu\"` (so it may hold non-menuitem content such as an avatar + name, buttons or links — reached with Tab, skipped by arrow navigation). The region is unpadded; control spacing with your own content (e.g. an `nldd-container`). Root-only: never rendered in a submenu. Example: an account identity header (nldd-byline).",
+              "description": "Free content shown above the items, outside `role=\"menu\"` (so it may hold non-menuitem content such as an avatar + name, buttons or links — reached with Tab, skipped by arrow navigation). The region is unpadded; control spacing with your own content (e.g. an `nldd-container`). Root-only: never rendered in a submenu. Example: an account identity header (nldd-identity).",
               "name": "header"
             },
             {
@@ -2809,7 +2809,7 @@
       "declarations": [
         {
           "kind": "class",
-          "description": "Toont één persoon of organisatie als een compacte, ronde (persoon) of afgeronde (organisatie) representatie. De inhoud volgt een vaste terugvalketen: een afbeelding wanneer `src` laadt, anders de initialen (uit `initials` of afgeleid uit `name`), en anders een terugval-icoon. `type` bepaalt zowel de vorm als het terugval-icoon: `person` geeft een cirkel met een person-icoon, `organization` een afgeronde vierkant met een building-icoon. De vorm hoort dus bij de betekenis en is niet los instelbaar. Overschrijf het terugval-icoon desgewenst met `icon`. Zonder `size` schaalt de avatar mee met zijn container (net als `nldd-icon`); een vaste maat (dezelfde spacer-uitgelijnde schaal, 16 tot en met 96) is de uitzondering. De initialen en het icoon schalen mee. Brede initialen (WW, MMM) worden automatisch teruggeschaald zodat ze binnen de schijf blijven. Toegankelijkheid: het host-element draagt de betekenis. Met een `name` (en zonder `decorative`) krijgt het `role=\"img\"` met de naam als label. Staat de naam al als tekst ernaast (bijvoorbeeld in een byline), zet dan `decorative` zodat de avatar voor hulpsoftware verborgen blijft. Een dode `src` valt automatisch terug op de initialen of het icoon, nooit op een gebroken-afbeelding-icoon.",
+          "description": "Toont één persoon of organisatie als een compacte, ronde (persoon) of afgeronde (organisatie) representatie. De inhoud volgt een vaste terugvalketen: een afbeelding wanneer `src` laadt, anders de initialen (uit `initials` of afgeleid uit `name`), en anders een terugval-icoon. `type` bepaalt zowel de vorm als het terugval-icoon: `person` geeft een cirkel met een person-icoon, `organization` een afgeronde vierkant met een building-icoon. De vorm hoort dus bij de betekenis en is niet los instelbaar. Overschrijf het terugval-icoon desgewenst met `icon`. Zonder `size` schaalt de avatar mee met zijn container (net als `nldd-icon`); een vaste maat (dezelfde spacer-uitgelijnde schaal, 16 tot en met 96) is de uitzondering. De initialen en het icoon schalen mee. Brede initialen (WW, MMM) worden automatisch teruggeschaald zodat ze binnen de schijf blijven. Toegankelijkheid: het host-element draagt de betekenis. Met een `name` (en zonder `decorative`) krijgt het `role=\"img\"` met de naam als label. Staat de naam al als tekst ernaast (bijvoorbeeld in een identity), zet dan `decorative` zodat de avatar voor hulpsoftware verborgen blijft. Een dode `src` valt automatisch terug op de initialen of het icoon, nooit op een gebroken-afbeelding-icoon.",
           "name": "NLDDAvatar",
           "members": [
             {
@@ -3224,7 +3224,7 @@
             },
             {
               "name": "attribution",
-              "description": "Optionele bronvermelding (auteur, titel, etc.). Ook een nldd-byline mag hier; het kastlijntje (\"— \") wordt dan weggelaten."
+              "description": "Optionele bronvermelding (auteur, titel, etc.). Ook een nldd-identity mag hier; het kastlijntje (\"— \") wordt dan weggelaten."
             }
           ]
         }
@@ -3244,151 +3244,6 @@
           "declaration": {
             "name": "NLDDBlockquote",
             "module": "src/components/content/blockquote/blockquote.ts"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
-      "path": "src/components/content/byline/byline.ts",
-      "declarations": [
-        {
-          "kind": "class",
-          "description": "Een redactionele regel die auteurs of redacteuren toont: optionele avatar(s), een naamregel en ondersteunende tekst (bijvoorbeeld functie of datum). Alle onderdelen zijn optioneel. De naamregel en ondersteunende tekst kunnen als attribuut of als slot worden aangeleverd. Gebruik de slots voor rijkere inhoud, zoals een `<time datetime=\"…\">` voor machine-leesbare datums of een link naar het auteursprofiel. Geslotte inhoud vervangt het bijbehorende attribuut (het attribuut is de fallback van de slot). Bij meerdere redacteuren overlappen de avatars elkaar subtiel; elke avatar krijgt een ring in de surface-kleur (zelfde mechaniek als badge) zodat ze visueel gescheiden blijven. Op een gekleurde ondergrond kan de ringkleur meegegeven worden via `--context-parent-background-color`. Op smalle breedtes (een sm-container, ≤ 640px) met meerdere avatars komt de avatarrij boven de namen te staan, zodat de tekst de volle breedte houdt; met één avatar blijft de byline op één regel. Avatars worden geslot als `<img slot=\"avatars\">`. Zet `alt=\"\"` wanneer de namen al in de tekst staan (decoratief); geef anders een beschrijvende alt-tekst op. Voor één avatar kun je in plaats van slotten ook `avatar-src` (met optioneel `avatar-srcset`) als attribuut meegeven; de afmetingen liggen vast (40px), dus `sizes` zet het component zelf. Meerdere avatars gaan altijd via de slot, en geslotte avatars hebben voorrang op `avatar-src`.",
-          "name": "NLDDByline",
-          "members": [
-            {
-              "kind": "field",
-              "name": "text",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "attribute": "text",
-              "reflects": true
-            },
-            {
-              "kind": "field",
-              "name": "supportingText",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "attribute": "supporting-text",
-              "reflects": true
-            },
-            {
-              "kind": "field",
-              "name": "avatarSrc",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "attribute": "avatar-src"
-            },
-            {
-              "kind": "field",
-              "name": "avatarSrcset",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "attribute": "avatar-srcset"
-            },
-            {
-              "kind": "field",
-              "name": "avatarAlt",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "attribute": "avatar-alt"
-            }
-          ],
-          "attributes": [
-            {
-              "name": "text",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "fieldName": "text",
-              "description": "Naamregel (bijv. \"Jan Jansen en Piet Pietersen\"); fallback wanneer de text-slot leeg is"
-            },
-            {
-              "name": "supporting-text",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "fieldName": "supportingText",
-              "description": "Ondersteunende tekst onder de naamregel (bijv. rol of datum); fallback wanneer de supporting-text-slot leeg is"
-            },
-            {
-              "name": "avatar-src",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "fieldName": "avatarSrc",
-              "description": "Bron van één avatar (alternatief voor de avatars-slot); genegeerd zodra de avatars-slot gevuld is"
-            },
-            {
-              "name": "avatar-srcset",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "fieldName": "avatarSrcset",
-              "description": "Responsive source set voor de avatar-src-afbeelding"
-            },
-            {
-              "name": "avatar-alt",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "fieldName": "avatarAlt",
-              "description": "Alt-tekst voor de avatar-src-afbeelding; leeg = decoratief"
-            }
-          ],
-          "superclass": {
-            "name": "LitElement",
-            "package": "lit"
-          },
-          "tagName": "nldd-byline",
-          "customElement": true,
-          "slots": [
-            {
-              "name": "avatars",
-              "description": "Eén of meer img-elementen; gestyled als ronde, overlappende avatars"
-            },
-            {
-              "name": "text",
-              "description": "Naamregel als rijke inhoud (bijv. een link naar het auteursprofiel)"
-            },
-            {
-              "name": "supporting-text",
-              "description": "Ondersteunende tekst als rijke inhoud (bijv. een time-element)"
-            }
-          ]
-        }
-      ],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "NLDDByline",
-          "declaration": {
-            "name": "NLDDByline",
-            "module": "src/components/content/byline/byline.ts"
-          }
-        },
-        {
-          "kind": "custom-element-definition",
-          "name": "nldd-byline",
-          "declaration": {
-            "name": "NLDDByline",
-            "module": "src/components/content/byline/byline.ts"
           }
         }
       ]
@@ -3704,6 +3559,151 @@
           "declaration": {
             "name": "NLDDIcon",
             "module": "src/components/content/icon/icon.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/content/identity/identity.ts",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "Een redactionele regel die auteurs of redacteuren toont: optionele avatar(s), een naamregel en ondersteunende tekst (bijvoorbeeld functie of datum). Alle onderdelen zijn optioneel. De naamregel en ondersteunende tekst kunnen als attribuut of als slot worden aangeleverd. Gebruik de slots voor rijkere inhoud, zoals een `<time datetime=\"…\">` voor machine-leesbare datums of een link naar het auteursprofiel. Geslotte inhoud vervangt het bijbehorende attribuut (het attribuut is de fallback van de slot). Avatars slot je in een `nldd-avatar-group`, ook als het er één is: die groep geeft ze hun maat, laat ze overlappen en tekent de ring in de vlakkleur. Identity maakt die groep niet zelf, want de avatars zijn light DOM van de consument en een groep kan alleen opmaken wat als eigen kind bij hem binnenkomt. Zet de avatars op decoratief (of een `img` op `alt=\"\"`) wanneer de namen al in de tekst staan. Op smalle breedtes (een sm-container, ≤ 640px) met meerdere avatars komt de avatarrij boven de namen te staan, zodat de tekst de volle breedte houdt; met één avatar blijft de identity op één regel. Voor één avatar kun je in plaats van slotten ook `avatar-src` (met optioneel `avatar-srcset`) als attribuut meegeven; de afmetingen liggen vast (40px). Geslotte avatars hebben voorrang op `avatar-src`.",
+          "name": "NLDDIdentity",
+          "members": [
+            {
+              "kind": "field",
+              "name": "text",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "attribute": "text",
+              "reflects": true
+            },
+            {
+              "kind": "field",
+              "name": "supportingText",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "attribute": "supporting-text",
+              "reflects": true
+            },
+            {
+              "kind": "field",
+              "name": "avatarSrc",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "attribute": "avatar-src"
+            },
+            {
+              "kind": "field",
+              "name": "avatarSrcset",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "attribute": "avatar-srcset"
+            },
+            {
+              "kind": "field",
+              "name": "avatarAlt",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "attribute": "avatar-alt"
+            }
+          ],
+          "attributes": [
+            {
+              "name": "text",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "fieldName": "text",
+              "description": "Naamregel (bijv. \"Jan Jansen en Piet Pietersen\"); fallback wanneer de text-slot leeg is"
+            },
+            {
+              "name": "supporting-text",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "fieldName": "supportingText",
+              "description": "Ondersteunende tekst onder de naamregel (bijv. rol of datum); fallback wanneer de supporting-text-slot leeg is"
+            },
+            {
+              "name": "avatar-src",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "fieldName": "avatarSrc",
+              "description": "Bron van één avatar (alternatief voor de avatars-slot); genegeerd zodra de avatars-slot gevuld is"
+            },
+            {
+              "name": "avatar-srcset",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "fieldName": "avatarSrcset",
+              "description": "Responsive source set voor de avatar-src-afbeelding"
+            },
+            {
+              "name": "avatar-alt",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "fieldName": "avatarAlt",
+              "description": "Alt-tekst voor de avatar-src-afbeelding; leeg = decoratief"
+            }
+          ],
+          "superclass": {
+            "name": "LitElement",
+            "package": "lit"
+          },
+          "tagName": "nldd-identity",
+          "customElement": true,
+          "slots": [
+            {
+              "name": "avatars",
+              "description": "Een `nldd-avatar-group` met één of meer avatars"
+            },
+            {
+              "name": "text",
+              "description": "Naamregel als rijke inhoud (bijv. een link naar het auteursprofiel)"
+            },
+            {
+              "name": "supporting-text",
+              "description": "Ondersteunende tekst als rijke inhoud (bijv. een time-element)"
+            }
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "NLDDIdentity",
+          "declaration": {
+            "name": "NLDDIdentity",
+            "module": "src/components/content/identity/identity.ts"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "nldd-identity",
+          "declaration": {
+            "name": "NLDDIdentity",
+            "module": "src/components/content/identity/identity.ts"
           }
         }
       ]
@@ -5628,10 +5628,10 @@
         },
         {
           "kind": "js",
-          "name": "NLDDByline",
+          "name": "NLDDIdentity",
           "declaration": {
-            "name": "NLDDByline",
-            "module": "./content/byline/byline.js"
+            "name": "NLDDIdentity",
+            "module": "./content/identity/identity.js"
           }
         },
         {
@@ -19783,7 +19783,7 @@
                 "text": "string"
               },
               "default": "''",
-              "description": "Hybrid media source: media-src renders an internal <img>, but a slotted\nmedia element wins (mirrors nldd-image / nldd-byline). srcset/sizes/alt\nfeed that internal img.",
+              "description": "Hybrid media source: media-src renders an internal <img>, but a slotted\nmedia element wins (mirrors nldd-image / nldd-identity). srcset/sizes/alt\nfeed that internal img.",
               "attribute": "media-src"
             },
             {

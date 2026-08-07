@@ -18,7 +18,7 @@ const SIZES: AvatarSize[] = ['24', '32', '40', '48', '64', '96'];
  * `type` bepaalt de vorm en het terugval-icoon: `person` geeft een cirkel met
  * een person-icoon, `organization` een afgeronde vierkant met een
  * building-icoon. Zet `decorative` wanneer de naam er al als tekst naast
- * staat (bijvoorbeeld in een byline), zodat de avatar voor hulpsoftware
+ * staat (bijvoorbeeld in een identity), zodat de avatar voor hulpsoftware
  * verborgen blijft.
  */
 export default {

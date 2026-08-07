@@ -50,9 +50,9 @@
       "types": "./dist/components/content/avatar-group/avatar-group.d.ts",
       "default": "./dist/components/content/avatar-group/avatar-group.js"
     },
-    "./byline": {
-      "types": "./dist/components/content/byline/byline.d.ts",
-      "default": "./dist/components/content/byline/byline.js"
+    "./identity": {
+      "types": "./dist/components/content/identity/identity.d.ts",
+      "default": "./dist/components/content/identity/identity.js"
     },
     "./code-viewer": {
       "types": "./dist/components/content/code-viewer/code-viewer.d.ts",

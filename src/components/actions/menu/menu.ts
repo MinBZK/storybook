@@ -339,7 +339,7 @@ const defaultFilterFn = (query: string, item: NLDDMenuItem): boolean => {
  * @attr {Function} filterFn - Custom filter function (query, item) => boolean.
  *
  * @slot - nldd-menu-item and nldd-menu-divider elements.
- * @slot header - Free content shown above the items, outside `role="menu"` (so it may hold non-menuitem content such as an avatar + name, buttons or links — reached with Tab, skipped by arrow navigation). The region is unpadded; control spacing with your own content (e.g. an `nldd-container`). Root-only: never rendered in a submenu. Example: an account identity header (nldd-byline).
+ * @slot header - Free content shown above the items, outside `role="menu"` (so it may hold non-menuitem content such as an avatar + name, buttons or links — reached with Tab, skipped by arrow navigation). The region is unpadded; control spacing with your own content (e.g. an `nldd-container`). Root-only: never rendered in a submenu. Example: an account identity header (nldd-identity).
  * @slot footer - Free content shown below the items, outside `role="menu"` (same rules as `header`; also unpadded and root-only). Example: a short note or a link.
  * @slot empty - Shown when no items are visible. Defaults to `nldd-inline-dialog` driven by `empty-text` / `empty-supporting-text`. Slot content overrides the default dialog entirely.
  */

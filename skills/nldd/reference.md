@@ -165,7 +165,7 @@ A floating menu component using the Popover API. Positioned relative to an ancho
 | Slot | Beschrijving |
 | --- | --- |
 | _(default)_ | nldd-menu-item and nldd-menu-divider elements. |
-| `header` | Free content shown above the items, outside `role="menu"` (so it may hold non-menuitem content such as an avatar + name, buttons or links — reached with Tab, skipped by arrow navigation). The region is unpadded; control spacing with your own content (e.g. an `nldd-container`). Root-only: never rendered in a submenu. Example: an account identity header (nldd-byline). |
+| `header` | Free content shown above the items, outside `role="menu"` (so it may hold non-menuitem content such as an avatar + name, buttons or links — reached with Tab, skipped by arrow navigation). The region is unpadded; control spacing with your own content (e.g. an `nldd-container`). Root-only: never rendered in a submenu. Example: an account identity header (nldd-identity). |
 | `footer` | Free content shown below the items, outside `role="menu"` (same rules as `header`; also unpadded and root-only). Example: a short note or a link. |
 | `empty` | Shown when no items are visible. Defaults to `nldd-inline-dialog` driven by `empty-text` / `empty-supporting-text`. Slot content overrides the default dialog entirely. |
 
@@ -315,7 +315,7 @@ A split button combines a primary action button with a dropdown trigger. The mai
 
 ### `<nldd-avatar>`
 
-Toont één persoon of organisatie als een compacte, ronde (persoon) of afgeronde (organisatie) representatie. De inhoud volgt een vaste terugvalketen: een afbeelding wanneer `src` laadt, anders de initialen (uit `initials` of afgeleid uit `name`), en anders een terugval-icoon. `type` bepaalt zowel de vorm als het terugval-icoon: `person` geeft een cirkel met een person-icoon, `organization` een afgeronde vierkant met een building-icoon. De vorm hoort dus bij de betekenis en is niet los instelbaar. Overschrijf het terugval-icoon desgewenst met `icon`. Zonder `size` schaalt de avatar mee met zijn container (net als `nldd-icon`); een vaste maat (dezelfde spacer-uitgelijnde schaal, 16 tot en met 96) is de uitzondering. De initialen en het icoon schalen mee. Brede initialen (WW, MMM) worden automatisch teruggeschaald zodat ze binnen de schijf blijven. Toegankelijkheid: het host-element draagt de betekenis. Met een `name` (en zonder `decorative`) krijgt het `role="img"` met de naam als label. Staat de naam al als tekst ernaast (bijvoorbeeld in een byline), zet dan `decorative` zodat de avatar voor hulpsoftware verborgen blijft. Een dode `src` valt automatisch terug op de initialen of het icoon, nooit op een gebroken-afbeelding-icoon.
+Toont één persoon of organisatie als een compacte, ronde (persoon) of afgeronde (organisatie) representatie. De inhoud volgt een vaste terugvalketen: een afbeelding wanneer `src` laadt, anders de initialen (uit `initials` of afgeleid uit `name`), en anders een terugval-icoon. `type` bepaalt zowel de vorm als het terugval-icoon: `person` geeft een cirkel met een person-icoon, `organization` een afgeronde vierkant met een building-icoon. De vorm hoort dus bij de betekenis en is niet los instelbaar. Overschrijf het terugval-icoon desgewenst met `icon`. Zonder `size` schaalt de avatar mee met zijn container (net als `nldd-icon`); een vaste maat (dezelfde spacer-uitgelijnde schaal, 16 tot en met 96) is de uitzondering. De initialen en het icoon schalen mee. Brede initialen (WW, MMM) worden automatisch teruggeschaald zodat ze binnen de schijf blijven. Toegankelijkheid: het host-element draagt de betekenis. Met een `name` (en zonder `decorative`) krijgt het `role="img"` met de naam als label. Staat de naam al als tekst ernaast (bijvoorbeeld in een identity), zet dan `decorative` zodat de avatar voor hulpsoftware verborgen blijft. Een dode `src` valt automatisch terug op de initialen of het icoon, nooit op een gebroken-afbeelding-icoon.
 
 **Attributes**
 
@@ -338,6 +338,24 @@ Toont één persoon of organisatie als een compacte, ronde (persoon) of afgerond
 | `accessible-label` | `string` | Naam van de link of knop; zonder deze wordt `name` gebruikt |
 | `translations` | `object` | Overschrijf translation keys; niet gezette keys vallen terug op het Nederlands |
 
+### `<nldd-avatar-group>`
+
+Toont meerdere avatars als één groep: ze overlappen elkaar en elke avatar krijgt een ring in de vlakkleur, zodat ze bij overlap gescheiden blijven. De ring gebruikt dezelfde mechaniek als de badge, dus op een gekleurde ondergrond geef je de kleur mee via `--context-parent-background-color`. Avatars slot je als `nldd-avatar` of als `img`. Zet `decorative` (of bij een `img` een lege `alt`) wanneer de namen al als tekst naast de groep staan; geef anders elke avatar een naam, want de groep zelf beschrijft niemand. De maat geldt voor de hele groep: de avatars krijgen hem opgelegd, ook een geslotte `img`. Zo blijft de rij op één lijn, ongeacht wat een consument meegeeft.
+
+**Attributes**
+
+| Attribuut | Type | Beschrijving |
+| --- | --- | --- |
+| `size` | `string` | Diameter van elke avatar in px (spacer-uitgelijnd: 16, 20, 24, 28, 32, 40, 44, 48, 56, 64, 80, 96); standaard 40 |
+| `overlap` | `string` | Hoeveel elke avatar over zijn voorganger valt: `sm` (subtiel), `md` (standaard) of `none` (op een rij, met ruimte ertussen) |
+| `accessible-label` | `string` | Beschrijft de groep als geheel (bijv. "Redactie"); zonder label is de groep zelf geen landmark en spreken de avatars voor zich |
+
+**Slots**
+
+| Slot | Beschrijving |
+| --- | --- |
+| _(default)_ | Eén of meer avatars (`nldd-avatar` of `img`) |
+
 ### `<nldd-blockquote>`
 
 Toont een citaat met optionele bron-attributie.
@@ -353,29 +371,7 @@ Toont een citaat met optionele bron-attributie.
 | Slot | Beschrijving |
 | --- | --- |
 | _(default)_ | De citaat-paragra(a)f(en) — gebruik bij voorkeur <p>-elementen |
-| `attribution` | Optionele bronvermelding (auteur, titel, etc.). Ook een nldd-byline mag hier; het kastlijntje ("— ") wordt dan weggelaten. |
-
-### `<nldd-byline>`
-
-Een redactionele regel die auteurs of redacteuren toont: optionele avatar(s), een naamregel en ondersteunende tekst (bijvoorbeeld functie of datum). Alle onderdelen zijn optioneel. De naamregel en ondersteunende tekst kunnen als attribuut of als slot worden aangeleverd. Gebruik de slots voor rijkere inhoud, zoals een `<time datetime="…">` voor machine-leesbare datums of een link naar het auteursprofiel. Geslotte inhoud vervangt het bijbehorende attribuut (het attribuut is de fallback van de slot). Bij meerdere redacteuren overlappen de avatars elkaar subtiel; elke avatar krijgt een ring in de surface-kleur (zelfde mechaniek als badge) zodat ze visueel gescheiden blijven. Op een gekleurde ondergrond kan de ringkleur meegegeven worden via `--context-parent-background-color`. Op smalle breedtes (een sm-container, ≤ 640px) met meerdere avatars komt de avatarrij boven de namen te staan, zodat de tekst de volle breedte houdt; met één avatar blijft de byline op één regel. Avatars worden geslot als `<img slot="avatars">`. Zet `alt=""` wanneer de namen al in de tekst staan (decoratief); geef anders een beschrijvende alt-tekst op. Voor één avatar kun je in plaats van slotten ook `avatar-src` (met optioneel `avatar-srcset`) als attribuut meegeven; de afmetingen liggen vast (40px), dus `sizes` zet het component zelf. Meerdere avatars gaan altijd via de slot, en geslotte avatars hebben voorrang op `avatar-src`.
-
-**Attributes**
-
-| Attribuut | Type | Beschrijving |
-| --- | --- | --- |
-| `text` | `string` | Naamregel (bijv. "Jan Jansen en Piet Pietersen"); fallback wanneer de text-slot leeg is |
-| `supporting-text` | `string` | Ondersteunende tekst onder de naamregel (bijv. rol of datum); fallback wanneer de supporting-text-slot leeg is |
-| `avatar-src` | `string` | Bron van één avatar (alternatief voor de avatars-slot); genegeerd zodra de avatars-slot gevuld is |
-| `avatar-srcset` | `string` | Responsive source set voor de avatar-src-afbeelding |
-| `avatar-alt` | `string` | Alt-tekst voor de avatar-src-afbeelding; leeg = decoratief |
-
-**Slots**
-
-| Slot | Beschrijving |
-| --- | --- |
-| `avatars` | Eén of meer img-elementen; gestyled als ronde, overlappende avatars |
-| `text` | Naamregel als rijke inhoud (bijv. een link naar het auteursprofiel) |
-| `supporting-text` | Ondersteunende tekst als rijke inhoud (bijv. een time-element) |
+| `attribution` | Optionele bronvermelding (auteur, titel, etc.). Ook een nldd-identity mag hier; het kastlijntje ("— ") wordt dan weggelaten. |
 
 ### `<nldd-code-viewer>`
 
@@ -409,6 +405,28 @@ A customizable icon component that renders SVG icons from a predefined library. 
 | `name` | `string` | The name of the icon to display |
 | `size` | `string` | `full` (default) fills the container; `inherit` follows the surrounding text (1em); or a fixed spacer-aligned size in px (16, 20, 24, 28, 32, 40, 44, 48, 56, 64, 80, 96). Empty behaves as `full`. |
 | `color` | `string` | Functional (`primary-content`, `secondary-content`, `accent`, `critical`, `warning`, `success`) or rijkskleur (`lintblauw`, `donkerblauw`, `hemelblauw`, `lichtblauw`, `paars`, `violet`, `robijnrood`, `roze`, `rood`, `oranje`, `donkergeel`, `geel`, `donkerbruin`, `bruin`, `donkergroen`, `groen`, `mosgroen`, `mintgroen`). Empty = inherit `color` from parent. |
+
+### `<nldd-identity>`
+
+Een redactionele regel die auteurs of redacteuren toont: optionele avatar(s), een naamregel en ondersteunende tekst (bijvoorbeeld functie of datum). Alle onderdelen zijn optioneel. De naamregel en ondersteunende tekst kunnen als attribuut of als slot worden aangeleverd. Gebruik de slots voor rijkere inhoud, zoals een `<time datetime="…">` voor machine-leesbare datums of een link naar het auteursprofiel. Geslotte inhoud vervangt het bijbehorende attribuut (het attribuut is de fallback van de slot). Avatars slot je in een `nldd-avatar-group`, ook als het er één is: die groep geeft ze hun maat, laat ze overlappen en tekent de ring in de vlakkleur. Identity maakt die groep niet zelf, want de avatars zijn light DOM van de consument en een groep kan alleen opmaken wat als eigen kind bij hem binnenkomt. Zet de avatars op decoratief (of een `img` op `alt=""`) wanneer de namen al in de tekst staan. Op smalle breedtes (een sm-container, ≤ 640px) met meerdere avatars komt de avatarrij boven de namen te staan, zodat de tekst de volle breedte houdt; met één avatar blijft de identity op één regel. Voor één avatar kun je in plaats van slotten ook `avatar-src` (met optioneel `avatar-srcset`) als attribuut meegeven; de afmetingen liggen vast (40px). Geslotte avatars hebben voorrang op `avatar-src`.
+
+**Attributes**
+
+| Attribuut | Type | Beschrijving |
+| --- | --- | --- |
+| `text` | `string` | Naamregel (bijv. "Jan Jansen en Piet Pietersen"); fallback wanneer de text-slot leeg is |
+| `supporting-text` | `string` | Ondersteunende tekst onder de naamregel (bijv. rol of datum); fallback wanneer de supporting-text-slot leeg is |
+| `avatar-src` | `string` | Bron van één avatar (alternatief voor de avatars-slot); genegeerd zodra de avatars-slot gevuld is |
+| `avatar-srcset` | `string` | Responsive source set voor de avatar-src-afbeelding |
+| `avatar-alt` | `string` | Alt-tekst voor de avatar-src-afbeelding; leeg = decoratief |
+
+**Slots**
+
+| Slot | Beschrijving |
+| --- | --- |
+| `avatars` | Een `nldd-avatar-group` met één of meer avatars |
+| `text` | Naamregel als rijke inhoud (bijv. een link naar het auteursprofiel) |
+| `supporting-text` | Ondersteunende tekst als rijke inhoud (bijv. een time-element) |
 
 ### `<nldd-image>`
 
@@ -2419,6 +2437,7 @@ Een notificatie-indicator, vaak voor ongelezen aantallen of statusdots. Kan teks
 | `max` | `number` | Maximum waarde boven welke number wordt getoond als "{max}+" (default: 99) |
 | `icon` | `string` | Icoon naam. Icon-only wordt als vierkant gerenderd; met text/number komt het icoon links. |
 | `accessible-label` | `string` | Toegankelijk label voor screenreaders. Fallback naar text/number; anders naar i18n default ("Notificatie"). |
+| `pulse` | `boolean` | Laat een ring uit de badge groeien en vervagen, voor iets dat nu gebeurt (een live-verbinding, een storing). Respecteert `prefers-reduced-motion`. |
 
 ### `<nldd-banner>`
 

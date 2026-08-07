@@ -83,7 +83,7 @@ export class NLDDHero extends PageSectionMixin(LitElement) {
 	width = '';
 
 	/** Hybrid media source: media-src renders an internal <img>, but a slotted
-	 *  media element wins (mirrors nldd-image / nldd-byline). srcset/sizes/alt
+	 *  media element wins (mirrors nldd-image / nldd-identity). srcset/sizes/alt
 	 *  feed that internal img. */
 	@property({ type: String, attribute: 'media-src' })
 	mediaSrc = '';

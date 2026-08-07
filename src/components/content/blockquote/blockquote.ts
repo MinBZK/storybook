@@ -8,7 +8,7 @@
  *
  * @slot - De citaat-paragra(a)f(en) — gebruik bij voorkeur <p>-elementen
  * @slot attribution - Optionele bronvermelding (auteur, titel, etc.). Ook een
- *   nldd-byline mag hier; het kastlijntje ("— ") wordt dan weggelaten.
+ *   nldd-identity mag hier; het kastlijntje ("— ") wordt dan weggelaten.
  */
 
 import { LitElement } from 'lit';
@@ -27,7 +27,7 @@ export class NLDDBlockquote extends LitElement {
 	_hasAttribution = false;
 
 	@state()
-	_hasBylineAttribution = false;
+	_hasIdentityAttribution = false;
 
 	/** @internal */
 	_handleAttributionSlotChange = (e: Event): void => {
@@ -36,12 +36,12 @@ export class NLDDBlockquote extends LitElement {
 			if (n.nodeType === Node.ELEMENT_NODE) return true;
 			return (n.textContent ?? '').trim().length > 0;
 		});
-		// A byline brings its own layout (avatars + stacked text); the leading
+		// A identity brings its own layout (avatars + stacked text); the leading
 		// em-dash assumes inline text and would wrap onto its own line above
-		// the block, so it is suppressed for byline attributions. Matched by
+		// the block, so it is suppressed for identity attributions. Matched by
 		// tag name rather than instanceof to avoid statically importing (and so
-		// bundling) nldd-byline into every blockquote consumer.
-		this._hasBylineAttribution = slot.assignedElements({ flatten: true }).some(el => el.tagName === 'NLDD-BYLINE');
+		// bundling) nldd-identity into every blockquote consumer.
+		this._hasIdentityAttribution = slot.assignedElements({ flatten: true }).some(el => el.tagName === 'NLDD-IDENTITY');
 	};
 
 	override render() {
