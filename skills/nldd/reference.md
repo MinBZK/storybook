@@ -336,25 +336,26 @@ Toont één persoon of organisatie als een compacte, ronde (persoon) of afgerond
 | `target` | `string` | Link target voor href (bijv. '_blank'); vult rel aan en meldt "Opent in nieuw tabblad" |
 | `rel` | `string` | Link rel voor href; standaard 'noopener noreferrer' bij target='_blank' |
 | `accessible-label` | `string` | Naam van de link of knop; zonder deze wordt `name` gebruikt |
+| `tooltip-timing` | `string` | Wanneer de naam als tooltip verschijnt bij hover of focus: `default` (na 700ms; standaard), `instant`, of `never`. Een avatar toont geen tekst, dus zonder tooltip is de naam alleen voor hulpsoftware leesbaar. Een `decorative` avatar toont er sowieso geen: daar staat de naam al als tekst naast |
 | `translations` | `object` | Overschrijf translation keys; niet gezette keys vallen terug op het Nederlands |
 
 ### `<nldd-avatar-group>`
 
-Toont meerdere avatars als één groep: ze overlappen elkaar en elke avatar krijgt een ring in de vlakkleur, zodat ze bij overlap gescheiden blijven. De ring gebruikt dezelfde mechaniek als de badge, dus op een gekleurde ondergrond geef je de kleur mee via `--context-parent-background-color`. Avatars slot je als `nldd-avatar` of als `img`. Zet `decorative` (of bij een `img` een lege `alt`) wanneer de namen al als tekst naast de groep staan; geef anders elke avatar een naam, want de groep zelf beschrijft niemand. De maat geldt voor de hele groep: de avatars krijgen hem opgelegd, ook een geslotte `img`. Zo blijft de rij op één lijn, ongeacht wat een consument meegeeft.
+Toont meerdere avatars als één groep: ze overlappen elkaar en elke avatar krijgt een ring in de vlakkleur, zodat ze bij overlap gescheiden blijven. De ring gebruikt dezelfde mechaniek als de badge, dus op een gekleurde ondergrond geef je de kleur mee via `--context-parent-background-color`. Slot `nldd-avatar`-elementen, geen kale `img`. Een avatar weet al hoe hij met een dode afbeelding omgaat, wanneer hij op initialen terugvalt en hoe hij zijn naam als tooltip toont; een losse afbeelding zou dat allemaal moeten namaken en kan het laatste niet. Zet `decorative` wanneer de namen al als tekst naast de groep staan; geef anders elke avatar een naam, want de groep zelf beschrijft niemand. De maat geldt voor de hele groep: de avatars krijgen hem opgelegd, ook een geslotte `img`. Zo blijft de rij op één lijn, ongeacht wat een consument meegeeft.
 
 **Attributes**
 
 | Attribuut | Type | Beschrijving |
 | --- | --- | --- |
 | `size` | `string` | Diameter van elke avatar in px (spacer-uitgelijnd: 16, 20, 24, 28, 32, 40, 44, 48, 56, 64, 80, 96); standaard 40 |
-| `overlap` | `string` | Hoeveel elke avatar over zijn voorganger valt: `sm` (subtiel), `md` (standaard) of `none` (op een rij, met ruimte ertussen) |
+| `max` | `number` | Toont hoogstens zoveel avatars; de rest gaat achter een knop met "+N" die ze bij een klik als lijst met namen toont |
 | `accessible-label` | `string` | Beschrijft de groep als geheel (bijv. "Redactie"); zonder label is de groep zelf geen landmark en spreken de avatars voor zich |
 
 **Slots**
 
 | Slot | Beschrijving |
 | --- | --- |
-| _(default)_ | Eén of meer avatars (`nldd-avatar` of `img`) |
+| _(default)_ | Eén of meer `nldd-avatar`-elementen |
 
 ### `<nldd-blockquote>`
 
@@ -408,7 +409,7 @@ A customizable icon component that renders SVG icons from a predefined library. 
 
 ### `<nldd-identity>`
 
-Een redactionele regel die auteurs of redacteuren toont: optionele avatar(s), een naamregel en ondersteunende tekst (bijvoorbeeld functie of datum). Alle onderdelen zijn optioneel. De naamregel en ondersteunende tekst kunnen als attribuut of als slot worden aangeleverd. Gebruik de slots voor rijkere inhoud, zoals een `<time datetime="…">` voor machine-leesbare datums of een link naar het auteursprofiel. Geslotte inhoud vervangt het bijbehorende attribuut (het attribuut is de fallback van de slot). Avatars slot je in een `nldd-avatar-group`, ook als het er één is: die groep geeft ze hun maat, laat ze overlappen en tekent de ring in de vlakkleur. Identity maakt die groep niet zelf, want de avatars zijn light DOM van de consument en een groep kan alleen opmaken wat als eigen kind bij hem binnenkomt. Zet de avatars op decoratief (of een `img` op `alt=""`) wanneer de namen al in de tekst staan. Op smalle breedtes (een sm-container, ≤ 640px) met meerdere avatars komt de avatarrij boven de namen te staan, zodat de tekst de volle breedte houdt; met één avatar blijft de identity op één regel. Voor één avatar kun je in plaats van slotten ook `avatar-src` (met optioneel `avatar-srcset`) als attribuut meegeven; de afmetingen liggen vast (40px). Geslotte avatars hebben voorrang op `avatar-src`.
+Een redactionele regel die auteurs of redacteuren toont: optionele avatar(s), een naamregel en ondersteunende tekst (bijvoorbeeld functie of datum). Alle onderdelen zijn optioneel. De naamregel en ondersteunende tekst kunnen als attribuut of als slot worden aangeleverd. Gebruik de slots voor rijkere inhoud, zoals een `<time datetime="…">` voor machine-leesbare datums of een link naar het auteursprofiel. Geslotte inhoud vervangt het bijbehorende attribuut (het attribuut is de fallback van de slot). Eén avatar slot je zoals hij is; identity geeft hem zijn maat. Zijn het er meer, slot dan een `nldd-avatar-group`: die laat ze overlappen en tekent de ring in de vlakkleur. Identity maakt die groep niet zelf, want de avatars zijn light DOM van de consument en een groep kan alleen opmaken wat als eigen kind bij hem binnenkomt. Zet de avatars op decoratief (of een `img` op `alt=""`) wanneer de namen al in de tekst staan. Op smalle breedtes (een sm-container, ≤ 640px) met meerdere avatars komt de avatarrij boven de namen te staan, zodat de tekst de volle breedte houdt; met één avatar blijft de identity op één regel. Voor één avatar kun je in plaats van slotten ook `avatar-src` (met optioneel `avatar-srcset`) als attribuut meegeven; de afmetingen liggen vast (40px). Geslotte avatars hebben voorrang op `avatar-src`.
 
 **Attributes**
 
@@ -424,7 +425,7 @@ Een redactionele regel die auteurs of redacteuren toont: optionele avatar(s), ee
 
 | Slot | Beschrijving |
 | --- | --- |
-| `avatars` | Een `nldd-avatar-group` met één of meer avatars |
+| `avatars` | Eén avatar (`nldd-avatar` of `img`), of een `nldd-avatar-group` bij meer |
 | `text` | Naamregel als rijke inhoud (bijv. een link naar het auteursprofiel) |
 | `supporting-text` | Ondersteunende tekst als rijke inhoud (bijv. een time-element) |
 

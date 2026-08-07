@@ -2708,7 +2708,7 @@
       "declarations": [
         {
           "kind": "class",
-          "description": "Toont meerdere avatars als één groep: ze overlappen elkaar en elke avatar krijgt een ring in de vlakkleur, zodat ze bij overlap gescheiden blijven. De ring gebruikt dezelfde mechaniek als de badge, dus op een gekleurde ondergrond geef je de kleur mee via `--context-parent-background-color`. Avatars slot je als `nldd-avatar` of als `img`. Zet `decorative` (of bij een `img` een lege `alt`) wanneer de namen al als tekst naast de groep staan; geef anders elke avatar een naam, want de groep zelf beschrijft niemand. De maat geldt voor de hele groep: de avatars krijgen hem opgelegd, ook een geslotte `img`. Zo blijft de rij op één lijn, ongeacht wat een consument meegeeft.",
+          "description": "Toont meerdere avatars als één groep: ze overlappen elkaar en elke avatar krijgt een ring in de vlakkleur, zodat ze bij overlap gescheiden blijven. De ring gebruikt dezelfde mechaniek als de badge, dus op een gekleurde ondergrond geef je de kleur mee via `--context-parent-background-color`. Slot `nldd-avatar`-elementen, geen kale `img`. Een avatar weet al hoe hij met een dode afbeelding omgaat, wanneer hij op initialen terugvalt en hoe hij zijn naam als tooltip toont; een losse afbeelding zou dat allemaal moeten namaken en kan het laatste niet. Zet `decorative` wanneer de namen al als tekst naast de groep staan; geef anders elke avatar een naam, want de groep zelf beschrijft niemand. De maat geldt voor de hele groep: de avatars krijgen hem opgelegd, ook een geslotte `img`. Zo blijft de rij op één lijn, ongeacht wat een consument meegeeft.",
           "name": "NLDDAvatarGroup",
           "members": [
             {
@@ -2723,12 +2723,12 @@
             },
             {
               "kind": "field",
-              "name": "overlap",
+              "name": "max",
               "type": {
-                "text": "Overlap"
+                "text": "number | undefined"
               },
-              "default": "'md'",
-              "attribute": "overlap",
+              "default": "undefined",
+              "attribute": "max",
               "reflects": true
             },
             {
@@ -2739,6 +2739,19 @@
               },
               "default": "''",
               "attribute": "accessible-label"
+            },
+            {
+              "kind": "field",
+              "name": "translations",
+              "type": {
+                "text": "Partial<T>"
+              },
+              "default": "{}",
+              "attribute": "translations",
+              "inheritedFrom": {
+                "name": "withTranslations",
+                "module": "src/utilities/with-translations.ts"
+              }
             }
           ],
           "attributes": [
@@ -2752,13 +2765,13 @@
               "description": "Diameter van elke avatar in px (spacer-uitgelijnd: 16, 20, 24, 28, 32, 40, 44, 48, 56, 64, 80, 96); standaard 40"
             },
             {
-              "name": "overlap",
+              "name": "max",
               "type": {
-                "text": "Overlap"
+                "text": "number | undefined"
               },
-              "default": "'md'",
-              "fieldName": "overlap",
-              "description": "Hoeveel elke avatar over zijn voorganger valt: `sm` (subtiel), `md` (standaard) of `none` (op een rij, met ruimte ertussen)"
+              "default": "undefined",
+              "fieldName": "max",
+              "description": "Toont hoogstens zoveel avatars; de rest gaat achter een knop met \"+N\" die ze bij een klik als lijst met namen toont"
             },
             {
               "name": "accessible-label",
@@ -2768,6 +2781,24 @@
               "default": "''",
               "fieldName": "accessibleLabel",
               "description": "Beschrijft de groep als geheel (bijv. \"Redactie\"); zonder label is de groep zelf geen landmark en spreken de avatars voor zich"
+            },
+            {
+              "name": "translations",
+              "type": {
+                "text": "Partial<T>"
+              },
+              "default": "{}",
+              "fieldName": "translations",
+              "inheritedFrom": {
+                "name": "withTranslations",
+                "module": "src/utilities/with-translations.ts"
+              }
+            }
+          ],
+          "mixins": [
+            {
+              "name": "withTranslations",
+              "module": "/src/utilities/with-translations.js"
             }
           ],
           "superclass": {
@@ -2779,7 +2810,7 @@
           "slots": [
             {
               "name": "",
-              "description": "Eén of meer avatars (`nldd-avatar` of `img`)"
+              "description": "Eén of meer `nldd-avatar`-elementen"
             }
           ]
         }
@@ -2959,6 +2990,17 @@
             },
             {
               "kind": "field",
+              "name": "tooltipTiming",
+              "type": {
+                "text": "'default' | 'instant' | 'never'"
+              },
+              "default": "'default'",
+              "description": "Forwarded to the inner nldd-tooltip's `timing`, like nldd-icon-button.\nOn by default: a disc with initials is a riddle without its name. An\navatar that sits beside that name is `decorative` and shows none.",
+              "attribute": "tooltip-timing",
+              "reflects": true
+            },
+            {
+              "kind": "field",
               "name": "isInteractive",
               "type": {
                 "text": "boolean"
@@ -3133,6 +3175,15 @@
               "default": "''",
               "description": "Naam van de link of knop; zonder deze wordt `name` gebruikt",
               "fieldName": "accessibleLabel"
+            },
+            {
+              "name": "tooltip-timing",
+              "type": {
+                "text": "'default' | 'instant' | 'never'"
+              },
+              "default": "'default'",
+              "description": "Wanneer de naam als tooltip verschijnt bij hover of focus: `default` (na 700ms; standaard), `instant`, of `never`. Een avatar toont geen tekst, dus zonder tooltip is de naam alleen voor hulpsoftware leesbaar. Een `decorative` avatar toont er sowieso geen: daar staat de naam al als tekst naast",
+              "fieldName": "tooltipTiming"
             },
             {
               "name": "translations",
@@ -3569,7 +3620,7 @@
       "declarations": [
         {
           "kind": "class",
-          "description": "Een redactionele regel die auteurs of redacteuren toont: optionele avatar(s), een naamregel en ondersteunende tekst (bijvoorbeeld functie of datum). Alle onderdelen zijn optioneel. De naamregel en ondersteunende tekst kunnen als attribuut of als slot worden aangeleverd. Gebruik de slots voor rijkere inhoud, zoals een `<time datetime=\"…\">` voor machine-leesbare datums of een link naar het auteursprofiel. Geslotte inhoud vervangt het bijbehorende attribuut (het attribuut is de fallback van de slot). Avatars slot je in een `nldd-avatar-group`, ook als het er één is: die groep geeft ze hun maat, laat ze overlappen en tekent de ring in de vlakkleur. Identity maakt die groep niet zelf, want de avatars zijn light DOM van de consument en een groep kan alleen opmaken wat als eigen kind bij hem binnenkomt. Zet de avatars op decoratief (of een `img` op `alt=\"\"`) wanneer de namen al in de tekst staan. Op smalle breedtes (een sm-container, ≤ 640px) met meerdere avatars komt de avatarrij boven de namen te staan, zodat de tekst de volle breedte houdt; met één avatar blijft de identity op één regel. Voor één avatar kun je in plaats van slotten ook `avatar-src` (met optioneel `avatar-srcset`) als attribuut meegeven; de afmetingen liggen vast (40px). Geslotte avatars hebben voorrang op `avatar-src`.",
+          "description": "Een redactionele regel die auteurs of redacteuren toont: optionele avatar(s), een naamregel en ondersteunende tekst (bijvoorbeeld functie of datum). Alle onderdelen zijn optioneel. De naamregel en ondersteunende tekst kunnen als attribuut of als slot worden aangeleverd. Gebruik de slots voor rijkere inhoud, zoals een `<time datetime=\"…\">` voor machine-leesbare datums of een link naar het auteursprofiel. Geslotte inhoud vervangt het bijbehorende attribuut (het attribuut is de fallback van de slot). Eén avatar slot je zoals hij is; identity geeft hem zijn maat. Zijn het er meer, slot dan een `nldd-avatar-group`: die laat ze overlappen en tekent de ring in de vlakkleur. Identity maakt die groep niet zelf, want de avatars zijn light DOM van de consument en een groep kan alleen opmaken wat als eigen kind bij hem binnenkomt. Zet de avatars op decoratief (of een `img` op `alt=\"\"`) wanneer de namen al in de tekst staan. Op smalle breedtes (een sm-container, ≤ 640px) met meerdere avatars komt de avatarrij boven de namen te staan, zodat de tekst de volle breedte houdt; met één avatar blijft de identity op één regel. Voor één avatar kun je in plaats van slotten ook `avatar-src` (met optioneel `avatar-srcset`) als attribuut meegeven; de afmetingen liggen vast (40px). Geslotte avatars hebben voorrang op `avatar-src`.",
           "name": "NLDDIdentity",
           "members": [
             {
@@ -3676,7 +3727,7 @@
           "slots": [
             {
               "name": "avatars",
-              "description": "Een `nldd-avatar-group` met één of meer avatars"
+              "description": "Eén avatar (`nldd-avatar` of `img`), of een `nldd-avatar-group` bij meer"
             },
             {
               "name": "text",
