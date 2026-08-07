@@ -31,6 +31,16 @@ here; consult the commit history if you need that level of detail.
 
 - **De divider van `nldd-list-item` begint standaard bij de eerste tekst- of titel-cel.** Eerst gebeurde dat alleen als de rij met een icoon (of een ander glyph-formaat ding) opende; een rij die met spacers opende, zoals een blad in een boom, kreeg een lijn over de volle breedte. De lijn landt nu op de woorden en niet op wat eraan voorafgaat, dus rijen van verschillende vorm lijnen hun dividers met elkaar uit en de dividers van een boom springen mee naar binnen. Tekst binnen een `nldd-list-item-action` telt mee. Een rij zonder tekst- of titel-cel houdt de volle contentbreedte, en `divider-start` op een eerdere cel geeft die ook terug.
 
+## <small>0.8.79 (2026-08-07)</small>
+
+* chore(deps-dev): bump @semantic-release/changelog from 6.0.3 to 7.0.0 (#178) ([b4f7bec](https://github.com/MinBZK/storybook/commit/b4f7bec)), closes [#178](https://github.com/MinBZK/storybook/issues/178)
+* build(deps): bump the npm-minor-patch group across 1 directory with 20 updates (#177) ([5808fb9](https://github.com/MinBZK/storybook/commit/5808fb9)), closes [#177](https://github.com/MinBZK/storybook/issues/177)
+* ci(deps): bump actions/checkout from 6 to 7 (#176) ([2ff8f89](https://github.com/MinBZK/storybook/commit/2ff8f89)), closes [#176](https://github.com/MinBZK/storybook/issues/176)
+* ci(deps): bump actions/configure-pages from 5 to 6 (#175) ([c8528b6](https://github.com/MinBZK/storybook/commit/c8528b6)), closes [#175](https://github.com/MinBZK/storybook/issues/175)
+* ci(deps): bump actions/deploy-pages from 4 to 5 (#172) ([b4f6465](https://github.com/MinBZK/storybook/commit/b4f6465)), closes [#172](https://github.com/MinBZK/storybook/issues/172)
+* ci(deps): bump actions/setup-node from 6 to 7 (#174) ([8600ae4](https://github.com/MinBZK/storybook/commit/8600ae4)), closes [#174](https://github.com/MinBZK/storybook/issues/174)
+* ci(deps): bump actions/upload-pages-artifact from 3 to 5 (#173) ([acfa518](https://github.com/MinBZK/storybook/commit/acfa518)), closes [#173](https://github.com/MinBZK/storybook/issues/173)
+
 ## <small>0.8.78 (2026-08-05)</small>
 
 * feat: a time field and a time picker, plus a standalone browser bundle (#187) ([e2a94fd](https://github.com/MinBZK/storybook/commit/e2a94fd)), closes [#187](https://github.com/MinBZK/storybook/issues/187)
