@@ -565,7 +565,6 @@
     "@codemirror/view": "^6.43.4",
     "@floating-ui/dom": "^1.7.6",
     "@lezer/highlight": "^1.2.3",
-    "@rijkshuisstijl-community/font": "^1.1.2",
     "lit": "^3.3.1"
   },
   "customElements": "custom-elements.json"
