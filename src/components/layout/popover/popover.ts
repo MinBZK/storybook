@@ -22,7 +22,7 @@
  *
  * @attr {string} anchor - ID van het trigger-element voor positionering
  * @attr {string} placement - Floating UI placement (default: 'bottom-start')
- * @attr {string} width - Expliciete width (default: 320px via --components-popover-default-width)
+ * @attr {string} width - Breedte als CSS-lengte (default: 320px via --components-popover-default-width). Een inhoudsmaat (`fit-content`, `min-content`, `max-content`, `auto`) kan niet: de popover is een inline-size container zodat geslotte componenten zich naar hem kunnen voegen, en dan mag zijn breedte niet uit diezelfde inhoud komen. Zo'n waarde wordt genegeerd, met een waarschuwing in DEV.
  * @attr {string} top - CSS top-positie. Wanneer gezet (alleen of samen met andere edge-attrs of `centered`) wordt Floating UI's anchor-positionering overgeslagen — de popover staat dan vrij op het scherm. De `anchor` blijft wel nodig voor ARIA-koppeling op de trigger. Geen effect op sm (bottom-sheet wint).
  * @attr {string} left - CSS left-positie. Zie `top` voor semantiek.
  * @attr {string} right - CSS right-positie. Zie `top` voor semantiek.
@@ -119,6 +119,13 @@ export class NLDDPopover extends LitElement {
 		return this._isOpen;
 	}
 
+	/** Widths that come from the content instead of from a length. The popover is
+	 *  an inline-size query container so slotted components can adapt to it, and
+	 *  containment exists precisely to forbid a box from depending on its own
+	 *  contents in that axis. CSS resolves the cycle by making the box zero wide,
+	 *  which is invisible on screen and hard to trace back; better to say no. */
+	private static readonly CONTENT_WIDTHS = /^(auto|fit-content|min-content|max-content)\b/;
+
 	override connectedCallback(): void {
 		super.connectedCallback();
 		this.style.containerType = 'inline-size';
@@ -186,7 +193,15 @@ export class NLDDPopover extends LitElement {
 		// Set width via the CSS variable so media-query overrides (bottom
 		// sheet on sm) keep working. Inline `style.width` would beat them.
 		if (changed.has('width')) {
-			if (this.width) {
+			const contentSized = NLDDPopover.CONTENT_WIDTHS.test((this.width ?? '').trim());
+			if (contentSized && import.meta.env?.DEV) {
+				console.warn(
+					`[nldd-popover] width="${this.width}" is not supported and is ignored: `
+					+ 'the popover is an inline-size query container, so its width cannot come '
+					+ 'from its own content. Give it a CSS length instead.',
+				);
+			}
+			if (this.width && !contentSized) {
 				this.style.setProperty('--components-popover-default-width', this.width);
 			} else {
 				this.style.removeProperty('--components-popover-default-width');

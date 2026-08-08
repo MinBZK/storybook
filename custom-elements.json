@@ -23158,7 +23158,7 @@
                 "text": "string | undefined"
               },
               "fieldName": "width",
-              "description": "Expliciete width (default: 320px via --components-popover-default-width)"
+              "description": "Breedte als CSS-lengte (default: 320px via --components-popover-default-width). Een inhoudsmaat (`fit-content`, `min-content`, `max-content`, `auto`) kan niet: de popover is een inline-size container zodat geslotte componenten zich naar hem kunnen voegen, en dan mag zijn breedte niet uit diezelfde inhoud komen. Zo'n waarde wordt genegeerd, met een waarschuwing in DEV."
             },
             {
               "name": "top",

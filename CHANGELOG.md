@@ -32,6 +32,7 @@ here; consult the commit history if you need that level of detail.
 
 ### Fixed
 
+- **`nldd-popover` says no to a content-based width instead of collapsing.** `width="fit-content"` (and `auto`, `min-content`, `max-content`) produced a popover of exactly zero pixels: the popover is an inline-size query container so slotted components can adapt to it, and containment is precisely the rule that forbids a box from taking its width from its own content. Such a value is now ignored, the popover keeps its default width, and in DEV it says so.
 - **The time and date pickers no longer show a hover state on touch.** Touch reports a hover after a tap and holds it until you touch something else, so a time or a day stayed lit long after you picked it, and a finger dragging the time list lit whatever it passed. The hover now applies only to pointers that can really hover.
 - **`nldd-badge` no longer writes `max="99"` on every instance.** The default was reflected to the attribute, so every badge in the DOM carried a number nobody had set. Only a `max` you set yourself shows up now.
 - **The confirm button in `nldd-time-field` uses the default button style.** It stood on `neutral-base`, which made the one button in the time picker look unlike the same button everywhere else.

@@ -1844,7 +1844,7 @@ Een non-modal floating panel dat is verankerd aan een trigger-element. Gebouwd o
 | --- | --- | --- |
 | `anchor` | `string` | ID van het trigger-element voor positionering |
 | `placement` | `string` | Floating UI placement (default: 'bottom-start') |
-| `width` | `string` | Expliciete width (default: 320px via --components-popover-default-width) |
+| `width` | `string` | Breedte als CSS-lengte (default: 320px via --components-popover-default-width). Een inhoudsmaat (`fit-content`, `min-content`, `max-content`, `auto`) kan niet: de popover is een inline-size container zodat geslotte componenten zich naar hem kunnen voegen, en dan mag zijn breedte niet uit diezelfde inhoud komen. Zo'n waarde wordt genegeerd, met een waarschuwing in DEV. |
 | `top` | `string` | CSS top-positie. Wanneer gezet (alleen of samen met andere edge-attrs of `centered`) wordt Floating UI's anchor-positionering overgeslagen — de popover staat dan vrij op het scherm. De `anchor` blijft wel nodig voor ARIA-koppeling op de trigger. Geen effect op sm (bottom-sheet wint). |
 | `left` | `string` | CSS left-positie. Zie `top` voor semantiek. |
 | `right` | `string` | CSS right-positie. Zie `top` voor semantiek. |
