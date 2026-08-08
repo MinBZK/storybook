@@ -29910,6 +29910,16 @@
           "members": [
             {
               "kind": "field",
+              "name": "size",
+              "type": {
+                "text": "Size"
+              },
+              "default": "'md'",
+              "attribute": "size",
+              "reflects": true
+            },
+            {
+              "kind": "field",
               "name": "color",
               "type": {
                 "text": "Color"
@@ -29920,12 +29930,12 @@
             },
             {
               "kind": "field",
-              "name": "size",
+              "name": "pulse",
               "type": {
-                "text": "Size"
+                "text": "boolean"
               },
-              "default": "'md'",
-              "attribute": "size",
+              "default": "false",
+              "attribute": "pulse",
               "reflects": true
             },
             {
@@ -29978,16 +29988,6 @@
             },
             {
               "kind": "field",
-              "name": "pulse",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "attribute": "pulse",
-              "reflects": true
-            },
-            {
-              "kind": "field",
               "name": "translations",
               "type": {
                 "text": "Partial<T>"
@@ -30002,6 +30002,15 @@
           ],
           "attributes": [
             {
+              "name": "size",
+              "type": {
+                "text": "Size"
+              },
+              "default": "'md'",
+              "fieldName": "size",
+              "description": "Grootte: 'sm' | 'md' (default: 'md')"
+            },
+            {
               "name": "color",
               "type": {
                 "text": "Color"
@@ -30011,13 +30020,13 @@
               "description": "Semantisch ('critical' | 'accent' | 'neutral' | 'warning' | 'success') of een Rijkskleur ('lintblauw' | 'hemelblauw' | 'oranje' | …). Default: 'critical'"
             },
             {
-              "name": "size",
+              "name": "pulse",
               "type": {
-                "text": "Size"
+                "text": "boolean"
               },
-              "default": "'md'",
-              "fieldName": "size",
-              "description": "Grootte: 'sm' | 'md' (default: 'md')"
+              "default": "false",
+              "fieldName": "pulse",
+              "description": "Laat een ring uit de badge groeien en vervagen, voor iets dat nu gebeurt (een live-verbinding, een storing). Respecteert `prefers-reduced-motion`."
             },
             {
               "name": "text",
@@ -30063,15 +30072,6 @@
               "default": "''",
               "fieldName": "accessibleLabel",
               "description": "Toegankelijk label voor screenreaders. Fallback naar text/number; anders naar i18n default (\"Notificatie\")."
-            },
-            {
-              "name": "pulse",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "fieldName": "pulse",
-              "description": "Laat een ring uit de badge groeien en vervagen, voor iets dat nu gebeurt (een live-verbinding, een storing). Respecteert `prefers-reduced-motion`."
             },
             {
               "name": "translations",

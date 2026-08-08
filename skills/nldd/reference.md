@@ -2431,14 +2431,14 @@ Een notificatie-indicator, vaak voor ongelezen aantallen of statusdots. Kan teks
 
 | Attribuut | Type | Beschrijving |
 | --- | --- | --- |
-| `color` | `string` | Semantisch ('critical' \| 'accent' \| 'neutral' \| 'warning' \| 'success') of een Rijkskleur ('lintblauw' \| 'hemelblauw' \| 'oranje' \| …). Default: 'critical' |
 | `size` | `string` | Grootte: 'sm' \| 'md' (default: 'md') |
+| `color` | `string` | Semantisch ('critical' \| 'accent' \| 'neutral' \| 'warning' \| 'success') of een Rijkskleur ('lintblauw' \| 'hemelblauw' \| 'oranje' \| …). Default: 'critical' |
+| `pulse` | `boolean` | Laat een ring uit de badge groeien en vervagen, voor iets dat nu gebeurt (een live-verbinding, een storing). Respecteert `prefers-reduced-motion`. |
 | `text` | `string` | Tekst (heeft voorrang op number) |
 | `number` | `number` | Numerieke waarde. Wordt beknopt als meer dan max |
 | `max` | `number` | Maximum waarde boven welke number wordt getoond als "{max}+" (default: 99) |
 | `icon` | `string` | Icoon naam. Icon-only wordt als vierkant gerenderd; met text/number komt het icoon links. |
 | `accessible-label` | `string` | Toegankelijk label voor screenreaders. Fallback naar text/number; anders naar i18n default ("Notificatie"). |
-| `pulse` | `boolean` | Laat een ring uit de badge groeien en vervagen, voor iets dat nu gebeurt (een live-verbinding, een storing). Respecteert `prefers-reduced-motion`. |
 
 ### `<nldd-banner>`
 
