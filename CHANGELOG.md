@@ -26,6 +26,7 @@ here; consult the commit history if you need that level of detail.
 
 ### Fixed
 
+- **An annotation that opens the document no longer keeps a CPU core busy.** `nldd-text-editor` marks each annotation edge with an invisible widget and asks CodeMirror for the caret rectangle of the text right before it, so the caret beside a widget keeps the height of the line it sits on. At the very start of the document there is no such text, and the editor ended up asking that widget for its own position: the measure loop never settled and spun a core for as long as the editor lived. The annotation itself rendered fine, which is why this stayed invisible. It now falls back to the widget's own rectangle, the same fallback the caret already used at guarded edges.
 - **`nldd-top-title-bar` now waits for a `collapse-anchor` that renders late.** A page that only draws its title once its data has arrived had no anchor when the bar connected, and the bar gave up looking: it never collapsed, so a `text` meant to appear on scroll never did. It now watches for the id and connects the moment it shows up.
 
 ### Changed

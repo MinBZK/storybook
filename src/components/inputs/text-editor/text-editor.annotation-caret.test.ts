@@ -39,6 +39,17 @@ describe('nldd-text-editor annotation caret', () => {
 		expect(el.view.state.doc.toString()).toBe(`abc ${S}def${S} ghi`);
 	});
 
+	// An annotation that opens the document puts its start sentinel at position 0,
+	// where the caret also sits on mount — so CodeMirror asks that widget for the
+	// caret coords on every measure. The widget measures the text before it, which
+	// at position 0 is the widget itself: that used to loop forever and spin a core
+	// (the test still passed, the run just never finished). See text-editor.caret.ts.
+	it('renders an annotation that opens the document without spinning', async () => {
+		el = await make('alpha beta gamma', [{ id: 'a1', start: 0, end: 10, quote: 'alpha beta' }]);
+		expect(el.value).toBe('alpha beta gamma');
+		expect(annotatedText(el)).toBe('alpha beta');
+	});
+
 	it('typing just outside the END does not grow the annotation', async () => {
 		el = await make('abc def ghi', [{ id: 'a1', start: 4, end: 7, quote: 'def' }]);
 		const doc: string = el.view.state.doc.toString();
