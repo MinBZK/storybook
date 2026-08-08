@@ -40,6 +40,7 @@
  * @attr {string} max-width - Maximum width as a CSS length (default: '240px'); the title text truncates with an ellipsis beyond it. The cap is lifted while the title is the sole toolbar element (it then stretches to fill the row).
  * @attr {'sm'|'md'|'lg'} size - Set by nldd-toolbar, not a consumer attribute: mirrors the toolbar's size (default: 'md'), which sets the title group height and, at 'sm', the title and supporting-text fonts.
  *
+ * @slot media - Optional leading image before the title: a logo, a product mark, a file-type icon. Its height is capped to the title group so it cannot stretch the row; pick the size within that yourself. With no `text` the media stands alone and carries the name, so give it one (an `alt`, or an accessible label).
  * @slot action - Optional trailing control (e.g. an xs nldd-icon-button), shown inline after the title and tuned to sit against it. Empty by default.
  */
 import { LitElement } from 'lit';

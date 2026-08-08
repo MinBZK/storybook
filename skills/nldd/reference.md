@@ -309,6 +309,7 @@ A split button combines a primary action button with a dropdown trigger. The mai
 
 | Slot | Beschrijving |
 | --- | --- |
+| `media` | Optional leading image before the title: a logo, a product mark, a file-type icon. Its height is capped to the title group so it cannot stretch the row; pick the size within that yourself. With no `text` the media stands alone and carries the name, so give it one (an `alt`, or an accessible label). |
 | `action` | Optional trailing control (e.g. an xs nldd-icon-button), shown inline after the title and tuned to sit against it. Empty by default. |
 
 ## Content

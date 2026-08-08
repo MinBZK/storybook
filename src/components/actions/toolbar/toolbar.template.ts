@@ -19,6 +19,7 @@ export function toolbarItemTemplate(component: NLDDToolbarItem) {
 
 export function toolbarTitleTemplate(component: NLDDToolbarTitle) {
 	return html`
+		<slot name="media"></slot>
 		<div class="toolbar__title-group">
 			${component.text ? html`<p class="toolbar__title">${component.text}</p>` : nothing}
 			${component.supportingText ? html`<p class="toolbar__subtitle">${component.supportingText}</p>` : nothing}

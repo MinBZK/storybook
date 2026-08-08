@@ -224,6 +224,7 @@ export const toolbarTitleStyles = css`
 		--_title-width: auto;
 		--_title-max-width: var(--primitives-area-240);
 		--_title-group-height: var(--semantics-controls-md-min-size);
+		--_media-gap: var(--primitives-space-8);
 		--_title-font: var(--primitives-font-body-lg-medium-flat);
 		--_subtitle-font: var(--primitives-font-body-xs-regular-flat);
 		--_action-gap: var(--primitives-space-8);
@@ -291,6 +292,20 @@ export const toolbarTitleStyles = css`
 		justify-content: center;
 		align-items: flex-start;
 		overflow: hidden;
+	}
+
+	/* Optional leading media (a logo, a product mark, a file-type icon), the
+	   mirror of the trailing action: same margin-not-gap trick so an empty slot
+	   adds no space, same flex-shrink:0 so it stays whole while the title
+	   truncates. Only the height is capped, to the title group, so nothing can
+	   stretch the row; which size to draw within that is the consumer's to pick,
+	   since a file icon and a logo do not want the same one. No width here on
+	   purpose: an outer tree's ::slotted beats the slotted element's own :host,
+	   so setting one would overrule the size that element was given. */
+	::slotted([slot="media"]) {
+		flex-shrink: 0;
+		max-height: 100%;
+		margin-inline-end: var(--_media-gap);
 	}
 
 	/* Optional trailing action (e.g. an xs nldd-icon-button), tuned to sit

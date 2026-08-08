@@ -29,6 +29,20 @@ describe('nldd-toolbar-item', () => {
 });
 
 describe('nldd-toolbar-title', () => {
+
+	it('toont een media-slot voor de titel', async () => {
+		el = await fixture('<nldd-toolbar-title text="Titel"><img slot="media" alt="Merk"></nldd-toolbar-title>');
+		const slot = el.shadowRoot!.querySelector('slot[name="media"]') as HTMLSlotElement;
+		expect(slot).not.toBeNull();
+		expect(slot.assignedElements().length).toBe(1);
+	});
+
+	it('staat een media-slot zonder titeltekst toe', async () => {
+		el = await fixture('<nldd-toolbar-title><img slot="media" alt="Merk"></nldd-toolbar-title>');
+		expect(el.shadowRoot!.querySelector('.toolbar__title')).toBeNull();
+		const slot = el.shadowRoot!.querySelector('slot[name="media"]') as HTMLSlotElement;
+		expect(slot.assignedElements().length).toBe(1);
+	});
 	let el: HTMLElement;
 
 	afterEach(() => {
