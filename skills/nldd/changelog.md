@@ -31,13 +31,21 @@ here; consult the commit history if you need that level of detail.
 - **`nldd-badge` can pulse.** A ring grows out of the badge and fades, for something happening right now: a live connection, an outage in progress. It borrows the badge's own shape and colour, so it works on a dot as well as on a counter, and it sits behind the content without touching layout or hit area. Motion turned off means no ring.
 - **`seal-star`, a new icon.** The same seal as `seal-check-mark`, with a star in it: where the check mark says something was verified, the star says something is the organisation's own. Also reachable as `brand`.
 
+### Added
+
+- **`nldd-badge` can be decorative.** A dot beside the word it stands for used to announce itself as "Notificatie", because a badge without text falls back to that label. With `decorative` it leaves the accessibility tree, the way `nldd-avatar` already could, so the colour speaks with one voice instead of two. Use it whenever the text next to the badge already says what the colour says.
+
 ### Fixed
 
+- **The time and date pickers no longer show a hover state on touch.** Touch reports a hover after a tap and holds it until you touch something else, so a time or a day stayed lit long after you picked it, and a finger dragging the time list lit whatever it passed. The hover now applies only to pointers that can really hover.
+- **`nldd-badge` no longer writes `max="99"` on every instance.** The default was reflected to the attribute, so every badge in the DOM carried a number nobody had set. Only a `max` you set yourself shows up now.
+- **The confirm button in `nldd-time-field` uses the default button style.** It stood on `neutral-base`, which made the one button in the time picker look unlike the same button everywhere else.
 - **An annotation that opens the document no longer keeps a CPU core busy.** `nldd-text-editor` marks each annotation edge with an invisible widget and asks CodeMirror for the caret rectangle of the text right before it, so the caret beside a widget keeps the height of the line it sits on. At the very start of the document there is no such text, and the editor ended up asking that widget for its own position: the measure loop never settled and spun a core for as long as the editor lived. The annotation itself rendered fine, which is why this stayed invisible. It now falls back to the widget's own rectangle, the same fallback the caret already used at guarded edges.
 - **`nldd-top-title-bar` now waits for a `collapse-anchor` that renders late.** A page that only draws its title once its data has arrived had no anchor when the bar connected, and the bar gave up looking: it never collapsed, so a `text` meant to appear on scroll never did. It now watches for the id and connects the moment it shows up.
 
 ### Changed
 
+- **`nldd-badge`, `nldd-tag` and `nldd-token` now each say what they are for and point at the other two.** The tag documentation used to offer itself for "categories, statuses or metadata", which is how statuses ended up as tags. The line between them is who decides what it says: a badge is a state or a count the system keeps, a tag is a trait someone assigned, and a token is self-contained data the user handles, the only one of the three you can operate. Worth holding your tags against it.
 - **De divider van `nldd-list-item` begint standaard bij de eerste tekst- of titel-cel.** Eerst gebeurde dat alleen als de rij met een icoon (of een ander glyph-formaat ding) opende; een rij die met spacers opende, zoals een blad in een boom, kreeg een lijn over de volle breedte. De lijn landt nu op de woorden en niet op wat eraan voorafgaat, dus rijen van verschillende vorm lijnen hun dividers met elkaar uit en de dividers van een boom springen mee naar binnen. Tekst binnen een `nldd-list-item-action` telt mee. Een rij zonder tekst- of titel-cel houdt de volle contentbreedte, en `divider-start` op een eerdere cel geeft die ook terug.
 
 ## <small>0.8.79 (2026-08-07)</small>
