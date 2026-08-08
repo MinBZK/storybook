@@ -44,7 +44,7 @@ export default {
 		},
 		position: {
 			control: 'select',
-			options: ['first', 'between', 'last'],
+			options: ['first', 'between', 'last', 'only'],
 			description: 'Plek in de reeks; bepaalt waar de lijn doorloopt',
 			table: { defaultValue: { summary: 'between' } },
 		},
@@ -118,6 +118,24 @@ export const Tijdlijn = {
 			<nldd-timeline-track-cell status="future" position="last"></nldd-timeline-track-cell>
 			<nldd-spacer-cell size="12"></nldd-spacer-cell>
 			<nldd-title-cell text="Besluit" supporting-text="Verwacht 20 maart"></nldd-title-cell>
+			</nldd-list-item>
+		</nldd-list>
+	`,
+	parameters: { controls: { disable: true } },
+};
+
+/**
+ * Eén gebeurtenis is geen reeks. `position="only"` laat de lijn aan beide
+ * kanten weg, want een spoor van één stip loopt nergens heen: met `first` of
+ * `last` steekt er een stuk lijn uit dat niets verbindt.
+ */
+export const EnkeleRij = {
+	render: () => html`
+		<nldd-list no-dividers accessible-label="Tijdlijn">
+			<nldd-list-item>
+			<nldd-timeline-track-cell status="past" position="only"></nldd-timeline-track-cell>
+			<nldd-spacer-cell size="12"></nldd-spacer-cell>
+			<nldd-title-cell text="Aanvraag ontvangen" supporting-text="1 maart"></nldd-title-cell>
 			</nldd-list-item>
 		</nldd-list>
 	`,

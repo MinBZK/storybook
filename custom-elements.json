@@ -25826,7 +25826,7 @@
               },
               "default": "'between'",
               "fieldName": "position",
-              "description": "Plek in de reeks (standaard 'between'): bepaalt of de lijn boven, onder of aan beide kanten van de stip doorloopt"
+              "description": "Plek in de reeks (standaard 'between'): bepaalt of de lijn boven, onder of aan beide kanten van de stip doorloopt. `only` is de enige rij in de reeks en krijgt aan geen van beide kanten een lijn: een spoor van één stip loopt nergens heen"
             },
             {
               "name": "text",

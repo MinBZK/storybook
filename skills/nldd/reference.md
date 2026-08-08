@@ -2951,7 +2951,7 @@ A cell component for displaying timeline track indicators in lists. Shows a vert
 | `variant` | `'dot' \| 'step'` | Wat deze rij is: een `dot` (standaard) op een tijdlijn van gebeurtenissen, stip van 16px, of een `step` in een stappenlijst, stip van 24px waar een cijfer of icoon in past |
 | `minor` | `boolean` | Deze rij hoort onder de vorige: een kleinere stip in dezelfde baan, dus het spoor loopt recht door en er springt niets in. De stip blijft leeg (een cijfer of icoon past er niet in en zou de rij tot een eigen stap maken); de hiërarchie zet je verder met de rij zelf, bijvoorbeeld een `nldd-text-cell` in plaats van een `nldd-title-cell` |
 | `direction` | `'down' \| 'up'` | Richting waarin de tijdlijn vooruit loopt: `down` (standaard) zet het verleden boven, `up` eronder. Alleen de huidige stap heeft een half spoor, dus alleen daar heeft dit effect |
-| `position` | `'first' \| 'between' \| 'last'` | Plek in de reeks (standaard 'between'): bepaalt of de lijn boven, onder of aan beide kanten van de stip doorloopt |
+| `position` | `'first' \| 'between' \| 'last' \| 'only'` | Plek in de reeks (standaard 'between'): bepaalt of de lijn boven, onder of aan beide kanten van de stip doorloopt. `only` is de enige rij in de reeks en krijgt aan geen van beide kanten een lijn: een spoor van één stip loopt nergens heen |
 | `text` | `string` | Cijfer of korte tekst in de stip |
 | `icon` | `string` | Icoonnaam in de stip; wint van `text` |
 | `hide-below` | `string` | Hides the element below this breakpoint: `sm` \| `md` \| `lg`, or a CSS length. The value names the breakpoint you hide BELOW, so `hide-below="md"` is hidden in sm and visible from md up. `sm` is the open edge and never hides (DEV-warns). |
