@@ -33,8 +33,8 @@
  * @attr {boolean} valid - Marks the field as valid; shows a check icon on the right, like nldd-dropdown
  * @attr {boolean} invalid - Marks the field as invalid; shows an alert icon on the right, like nldd-dropdown
  * @attr {boolean} disabled - Disabled state
- * @attr {boolean} required - Marks the field required (invalid while no file is chosen)
  * @attr {string} name - Name for form submission
+ * @attr {boolean} required - Marks the field required (invalid while no file is chosen)
  * @attr {object} translations - Override translation keys; unset keys fall back to Dutch
  *
  * @prop {File[]} files - The chosen files. Read-only: browsers forbid setting a file input's value, so there is no `value` attribute and no way to preselect a file.
@@ -83,11 +83,11 @@ export class NLDDFileField extends FormAssociated(LitElement) {
 	@property({ type: Boolean, reflect: true })
 	disabled = false;
 
-	@property({ type: Boolean, reflect: true })
-	required = false;
-
 	@property({ type: String, reflect: true })
 	name = '';
+
+	@property({ type: Boolean, reflect: true })
+	required = false;
 
 	@property({ type: Object })
 	translations: Partial<NLDDFileFieldTranslations> = {};

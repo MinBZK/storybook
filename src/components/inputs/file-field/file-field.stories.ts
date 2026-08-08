@@ -41,8 +41,8 @@ export default {
 		valid: false,
 		invalid: false,
 		disabled: false,
-		required: false,
 		name: '',
+		required: false,
 	},
 	argTypes: {
 		size: {
@@ -82,15 +82,15 @@ export default {
 			description: 'Uitgeschakelde staat',
 			table: { defaultValue: { summary: false } },
 		},
-		required: {
-			control: 'boolean',
-			description: 'Verplicht; ongeldig zolang er geen bestand is gekozen',
-			table: { defaultValue: { summary: false } },
-		},
 		name: {
 			control: 'text',
 			description: 'Naam waaronder het bestand wordt ingediend',
 			table: { defaultValue: { summary: '(geen)' } },
+		},
+		required: {
+			control: 'boolean',
+			description: 'Verplicht; ongeldig zolang er geen bestand is gekozen',
+			table: { defaultValue: { summary: false } },
 		},
 	},
 };
@@ -103,8 +103,8 @@ export const Standaard = ({
 	valid,
 	invalid,
 	disabled,
-	required,
 	name,
+	required,
 }: Record<string, unknown>) => html`
 	<nldd-file-field
 		size=${size || nothing}
@@ -114,8 +114,8 @@ export const Standaard = ({
 		?valid=${valid}
 		?invalid=${invalid}
 		?disabled=${disabled}
-		?required=${required}
 		name=${name || nothing}
+		?required=${required}
 	></nldd-file-field>
 `;
 

@@ -123,16 +123,103 @@ export const Standaard = {
 };
 
 /**
- * Met een `src` toont de avatar de afbeelding, bijgesneden op een vierkant en
- * geklipt op de vorm van het `type`.
+ * Het type bepaalt de vorm en het terugval-icoon: een persoon krijgt een cirkel
+ * met een person-icoon, een organisatie een afgeronde vierkant met een
+ * building-icoon. De vorm is het verschil dat je in een rij ziet, ook zonder de
+ * namen te lezen. Initialen werken bij allebei, bij een organisatie vaak als
+ * acroniem.
  */
-export const MetAfbeelding = {
+export const Types = {
 	render: () => html`
-		<nldd-avatar
-			name="Meisje met de parel"
-			src=${PORTRAIT}
-			size="64"
-		></nldd-avatar>
+		<div style="display: flex; gap: 32px; align-items: center;">
+			${[
+				{ type: 'person', name: 'Bart van de Biezen', initials: '' },
+				{ type: 'organization', name: 'Kamer van Koophandel', initials: 'KvK' },
+			].map(({ type, name, initials }) => html`
+				<div style="display: flex; gap: 12px; align-items: center;">
+					<nldd-avatar type=${type} name=${name} initials=${initials || nothing} size="48"></nldd-avatar>
+					<nldd-avatar type=${type} size="48"></nldd-avatar>
+				</div>
+			`)}
+		</div>
+	`,
+	parameters: { controls: { disable: true } },
+};
+
+/**
+ * De maat gebruikt dezelfde spacer-uitgelijnde schaal als `nldd-icon`. De
+ * initialen en het terugval-icoon schalen mee.
+ */
+export const Maten = {
+	render: () => html`
+		<div style="display: flex; gap: 16px; align-items: center;">
+			${SIZES.map(size => html`
+				<nldd-avatar name="Bart van de Biezen" size=${size}></nldd-avatar>
+			`)}
+		</div>
+	`,
+	parameters: { controls: { disable: true } },
+};
+
+/**
+ * Zonder `size` schaalt de avatar mee met zijn container (net als `nldd-icon`);
+ * de initialen en het icoon schalen mee. Geef de container een maat.
+ */
+export const SchaaltMee = {
+	render: () => html`
+		<div style="display: flex; gap: 16px; align-items: flex-end;">
+			<div style="width: 32px;"><nldd-avatar name="Bart van de Biezen"></nldd-avatar></div>
+			<div style="width: 56px;"><nldd-avatar name="Bart van de Biezen"></nldd-avatar></div>
+			<div style="width: 96px;"><nldd-avatar name="Bart van de Biezen"></nldd-avatar></div>
+		</div>
+	`,
+	parameters: { controls: { disable: true } },
+};
+
+/**
+ * `color="inherit"` vult de avatar met `currentColor` en zet de tekst in de
+ * contrastkleur, zodat de avatar de omringende kleur overneemt (bijvoorbeeld
+ * als vervanging van een account-icoon in een knop of naast tekst).
+ */
+export const KleurInherit = {
+	render: () => html`
+		<div style="display: flex; gap: 20px; align-items: center;">
+			<span style="display: inline-flex; align-items: center; gap: 8px; color: var(--semantics-content-color);">
+				<nldd-avatar name="Bart van de Biezen" color="inherit" size="24"></nldd-avatar>
+				Bart van de Biezen
+			</span>
+			<span style="display: inline-flex; align-items: center; gap: 8px; color: var(--semantics-content-accent-color);">
+				<nldd-avatar name="Anna Ismaili" color="inherit" size="24"></nldd-avatar>
+				Anna Ismaili
+			</span>
+		</div>
+	`,
+	parameters: { controls: { disable: true } },
+};
+
+/**
+ * Een icoon-glyph heeft ingebouwde marge (op een 24px-grid is de glyph 20px,
+ * dus 5/6), terwijl een avatar standaard edge-to-edge vult. `icon-aligned`
+ * krimpt de zichtbare schijf naar 5/6, gecentreerd in dezelfde gridcel, zodat
+ * de avatar optisch uitlijnt met een icoon wanneer je ze verwisselt. De stippel
+ * toont de 24px-cel.
+ */
+export const IcoonUitlijning = {
+	render: () => html`
+		<div style="display: flex; gap: 24px; align-items: center;">
+			<span style="display: inline-flex; flex-direction: column; gap: 6px; align-items: center; font: var(--primitives-font-body-xs-regular-flat); color: var(--semantics-content-secondary-color);">
+				icoon
+				<nldd-icon name="person" size="24" style="outline: 1px dashed var(--semantics-dividers-color);"></nldd-icon>
+			</span>
+			<span style="display: inline-flex; flex-direction: column; gap: 6px; align-items: center; font: var(--primitives-font-body-xs-regular-flat); color: var(--semantics-content-secondary-color);">
+				avatar (edge-to-edge)
+				<nldd-avatar name="Bart van de Biezen" size="24" style="outline: 1px dashed var(--semantics-dividers-color);"></nldd-avatar>
+			</span>
+			<span style="display: inline-flex; flex-direction: column; gap: 6px; align-items: center; font: var(--primitives-font-body-xs-regular-flat); color: var(--semantics-content-secondary-color);">
+				avatar (icon-aligned)
+				<nldd-avatar name="Bart van de Biezen" size="24" icon-aligned style="outline: 1px dashed var(--semantics-dividers-color);"></nldd-avatar>
+			</span>
+		</div>
 	`,
 	parameters: { controls: { disable: true } },
 };
@@ -171,47 +258,16 @@ export const BredeInitialen = {
 };
 
 /**
- * `type="organization"` geeft een afgeronde vierkant met een building-icoon
- * als terugval. Initialen (bijvoorbeeld een acroniem) werken ook.
+ * Met een `src` toont de avatar de afbeelding, bijgesneden op een vierkant en
+ * geklipt op de vorm van het `type`.
  */
-export const Organisatie = {
+export const MetAfbeelding = {
 	render: () => html`
-		<div style="display: flex; gap: 16px; align-items: center;">
-			<nldd-avatar type="organization" name="Kamer van Koophandel" initials="KvK" size="48"></nldd-avatar>
-			<nldd-avatar type="organization" name="Belastingdienst" size="48"></nldd-avatar>
-		</div>
-	`,
-	parameters: { controls: { disable: true } },
-};
-
-/**
- * Zonder afbeelding én zonder naam/initialen valt het terugval-icoon in: een
- * person-icoon (of building-icoon bij een organisatie). Zo'n naamloze avatar
- * is decoratief en blijft voor hulpsoftware verborgen. Overschrijf het icoon
- * met `icon`.
- */
-export const TerugvalIcoon = {
-	render: () => html`
-		<div style="display: flex; gap: 16px; align-items: center;">
-			<nldd-avatar size="48"></nldd-avatar>
-			<nldd-avatar type="organization" size="48"></nldd-avatar>
-			<nldd-avatar icon="star" size="48"></nldd-avatar>
-		</div>
-	`,
-	parameters: { controls: { disable: true } },
-};
-
-/**
- * De maat gebruikt dezelfde spacer-uitgelijnde schaal als `nldd-icon`. De
- * initialen en het terugval-icoon schalen mee.
- */
-export const Maten = {
-	render: () => html`
-		<div style="display: flex; gap: 16px; align-items: center;">
-			${SIZES.map(size => html`
-				<nldd-avatar name="Bart van de Biezen" size=${size}></nldd-avatar>
-			`)}
-		</div>
+		<nldd-avatar
+			name="Meisje met de parel"
+			src=${PORTRAIT}
+			size="64"
+		></nldd-avatar>
 	`,
 	parameters: { controls: { disable: true } },
 };
@@ -232,63 +288,17 @@ export const DodeAfbeelding = {
 };
 
 /**
- * `color="inherit"` vult de avatar met `currentColor` en zet de tekst in de
- * contrastkleur, zodat de avatar de omringende kleur overneemt (bijvoorbeeld
- * als vervanging van een account-icoon in een knop of naast tekst).
+ * Zonder afbeelding én zonder naam/initialen valt het terugval-icoon in: een
+ * person-icoon (of building-icoon bij een organisatie). Zo'n naamloze avatar
+ * is decoratief en blijft voor hulpsoftware verborgen. Overschrijf het icoon
+ * met `icon`.
  */
-export const KleurInherit = {
+export const TerugvalIcoon = {
 	render: () => html`
-		<div style="display: flex; gap: 20px; align-items: center;">
-			<span style="display: inline-flex; align-items: center; gap: 8px; color: var(--semantics-content-color);">
-				<nldd-avatar name="Bart van de Biezen" color="inherit" size="24"></nldd-avatar>
-				Bart van de Biezen
-			</span>
-			<span style="display: inline-flex; align-items: center; gap: 8px; color: var(--semantics-content-accent-color);">
-				<nldd-avatar name="Anna Ismaili" color="inherit" size="24"></nldd-avatar>
-				Anna Ismaili
-			</span>
-		</div>
-	`,
-	parameters: { controls: { disable: true } },
-};
-
-/**
- * Zonder `size` schaalt de avatar mee met zijn container (net als `nldd-icon`);
- * de initialen en het icoon schalen mee. Geef de container een maat.
- */
-export const SchaaltMee = {
-	render: () => html`
-		<div style="display: flex; gap: 16px; align-items: flex-end;">
-			<div style="width: 32px;"><nldd-avatar name="Bart van de Biezen"></nldd-avatar></div>
-			<div style="width: 56px;"><nldd-avatar name="Bart van de Biezen"></nldd-avatar></div>
-			<div style="width: 96px;"><nldd-avatar name="Bart van de Biezen"></nldd-avatar></div>
-		</div>
-	`,
-	parameters: { controls: { disable: true } },
-};
-
-/**
- * Een icoon-glyph heeft ingebouwde marge (op een 24px-grid is de glyph 20px,
- * dus 5/6), terwijl een avatar standaard edge-to-edge vult. `icon-aligned`
- * krimpt de zichtbare schijf naar 5/6, gecentreerd in dezelfde gridcel, zodat
- * de avatar optisch uitlijnt met een icoon wanneer je ze verwisselt. De stippel
- * toont de 24px-cel.
- */
-export const IcoonUitlijning = {
-	render: () => html`
-		<div style="display: flex; gap: 24px; align-items: center;">
-			<span style="display: inline-flex; flex-direction: column; gap: 6px; align-items: center; font: var(--primitives-font-body-xs-regular-flat); color: var(--semantics-content-secondary-color);">
-				icoon
-				<nldd-icon name="person" size="24" style="outline: 1px dashed var(--semantics-dividers-color);"></nldd-icon>
-			</span>
-			<span style="display: inline-flex; flex-direction: column; gap: 6px; align-items: center; font: var(--primitives-font-body-xs-regular-flat); color: var(--semantics-content-secondary-color);">
-				avatar (edge-to-edge)
-				<nldd-avatar name="Bart van de Biezen" size="24" style="outline: 1px dashed var(--semantics-dividers-color);"></nldd-avatar>
-			</span>
-			<span style="display: inline-flex; flex-direction: column; gap: 6px; align-items: center; font: var(--primitives-font-body-xs-regular-flat); color: var(--semantics-content-secondary-color);">
-				avatar (icon-aligned)
-				<nldd-avatar name="Bart van de Biezen" size="24" icon-aligned style="outline: 1px dashed var(--semantics-dividers-color);"></nldd-avatar>
-			</span>
+		<div style="display: flex; gap: 16px; align-items: center;">
+			<nldd-avatar size="48"></nldd-avatar>
+			<nldd-avatar type="organization" size="48"></nldd-avatar>
+			<nldd-avatar icon="star" size="48"></nldd-avatar>
 		</div>
 	`,
 	parameters: { controls: { disable: true } },

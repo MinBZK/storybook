@@ -25,22 +25,22 @@
  *
  * @element nldd-avatar
  *
- * @attr {string} src - Afbeeldingsbron; valt bij een laadfout terug op initialen/icoon
- * @attr {string} srcset - Responsive source set voor de afbeelding (het component zet zelf `sizes`)
- * @attr {string} name - Naam van de persoon/organisatie; levert de afgeleide initialen en het toegankelijke label
- * @attr {string} initials - Expliciete initialen, max 3 tekens (overschrijft de afleiding uit `name`; ook voor organisatie-acroniemen)
  * @attr {string} type - `person` (cirkel, person-icoon) of `organization` (afgerond, building-icoon); standaard `person`
- * @attr {string} icon - Overschrijft het type-afhankelijke terugval-icoon
  * @attr {string} size - `full` (standaard) schaalt mee met de container, net als nldd-icon; of een vaste maat in px (spacer-uitgelijnd: 16, 20, 24, 28, 32, 40, 44, 48, 56, 64, 80, 96). Leeg gedraagt zich als `full`. De initialen en het icoon schalen mee
  * @attr {string} color - `default` (neutrale vulling) of `inherit` (vulling in de content-kleur: de `--context-content-color`-channel, of `currentColor` als die niet gezet is; tekst in de contrastkleur, zodat de avatar een icoon in bijvoorbeeld een knop kan vervangen); standaard `default`
  * @attr {boolean} icon-aligned - Krimpt de zichtbare schijf naar 5/6 van de host, gecentreerd, zodat de avatar optisch uitlijnt met een icoon op hetzelfde grid (een icoon-glyph heeft ingebouwde marge)
+ * @attr {string} name - Naam van de persoon/organisatie; levert de afgeleide initialen en het toegankelijke label
+ * @attr {string} initials - Expliciete initialen, max 3 tekens (overschrijft de afleiding uit `name`; ook voor organisatie-acroniemen)
+ * @attr {string} src - Afbeeldingsbron; valt bij een laadfout terug op initialen/icoon
+ * @attr {string} srcset - Responsive source set voor de afbeelding (het component zet zelf `sizes`)
+ * @attr {string} icon - Overschrijft het type-afhankelijke terugval-icoon
+ * @attr {string} accessible-label - Naam van de link of knop; zonder deze wordt `name` gebruikt
  * @attr {boolean} decorative - Verbergt de avatar voor hulpsoftware (gebruik wanneer de naam er al als tekst naast staat)
+ * @attr {string} tooltip-timing - Wanneer de naam als tooltip verschijnt bij hover of focus: `default` (na 700ms; standaard), `instant`, of `never`. Een avatar toont geen tekst, dus zonder tooltip is de naam alleen voor hulpsoftware leesbaar. Een `decorative` avatar toont er sowieso geen: daar staat de naam al als tekst naast
  * @attr {string} href - Maakt de avatar een link naar deze URL; de schijf zelf wordt de link, dus klikgebied en focusring volgen de vorm
  * @attr {boolean} button - Maakt de avatar een knop; genegeerd wanneer `href` is gezet
  * @attr {string} target - Link target voor href (bijv. '_blank'); vult rel aan en meldt "Opent in nieuw tabblad"
  * @attr {string} rel - Link rel voor href; standaard 'noopener noreferrer' bij target='_blank'
- * @attr {string} accessible-label - Naam van de link of knop; zonder deze wordt `name` gebruikt
- * @attr {string} tooltip-timing - Wanneer de naam als tooltip verschijnt bij hover of focus: `default` (na 700ms; standaard), `instant`, of `never`. Een avatar toont geen tekst, dus zonder tooltip is de naam alleen voor hulpsoftware leesbaar. Een `decorative` avatar toont er sowieso geen: daar staat de naam al als tekst naast
  * @attr {object} translations - Overschrijf translation keys; niet gezette keys vallen terug op het Nederlands
  *
  * @example
@@ -79,11 +79,17 @@ export type AvatarSize =
 export class NLDDAvatar extends withTranslations(LitElement, nlddAvatarTranslations) {
 	static override styles = avatarStyles;
 
-	@property({ type: String })
-	src = '';
+	@property({ reflect: true, converter: reflectNonDefault<AvatarType>('person') })
+	type: AvatarType = 'person';
 
-	@property({ type: String })
-	srcset = '';
+	@property({ reflect: true, converter: reflectNonDefault<AvatarSize>('') })
+	size: AvatarSize = '';
+
+	@property({ reflect: true, converter: reflectNonDefault<AvatarColor>('default') })
+	color: AvatarColor = 'default';
+
+	@property({ type: Boolean, reflect: true, attribute: 'icon-aligned' })
+	iconAligned = false;
 
 	@property({ type: String })
 	name = '';
@@ -92,22 +98,27 @@ export class NLDDAvatar extends withTranslations(LitElement, nlddAvatarTranslati
 	initials = '';
 
 	@property({ type: String })
+	src = '';
+
+	@property({ type: String })
+	srcset = '';
+
+	@property({ type: String })
 	icon = '';
 
-	@property({ reflect: true, converter: reflectNonDefault<AvatarType>('person') })
-	type: AvatarType = 'person';
-
-	@property({ reflect: true, converter: reflectNonDefault<AvatarColor>('default') })
-	color: AvatarColor = 'default';
-
-	@property({ reflect: true, converter: reflectNonDefault<AvatarSize>('') })
-	size: AvatarSize = '';
-
-	@property({ type: Boolean, reflect: true, attribute: 'icon-aligned' })
-	iconAligned = false;
+	/** Accessible name of the link or button. Without it, it falls back to
+	 *  `name`. Only matters when the avatar is interactive. */
+	@property({ type: String, attribute: 'accessible-label' })
+	accessibleLabel = '';
 
 	@property({ type: Boolean, reflect: true })
 	decorative = false;
+
+	/** Forwarded to the inner nldd-tooltip's `timing`, like nldd-icon-button.
+	 *  On by default: a disc with initials is a riddle without its name. An
+	 *  avatar that sits beside that name is `decorative` and shows none. */
+	@property({ reflect: true, attribute: 'tooltip-timing', converter: reflectNonDefault<'default' | 'instant' | 'never'>('default') })
+	tooltipTiming: 'default' | 'instant' | 'never' = 'default';
 
 	/** Makes the avatar one link: the disc itself becomes the <a>, so the click
 	 *  area and the focus ring follow its shape (an overlay would be square). */
@@ -124,17 +135,6 @@ export class NLDDAvatar extends withTranslations(LitElement, nlddAvatarTranslati
 
 	@property({ type: String })
 	rel = '';
-
-	/** Accessible name of the link or button. Without it, it falls back to
-	 *  `name`. Only matters when the avatar is interactive. */
-	@property({ type: String, attribute: 'accessible-label' })
-	accessibleLabel = '';
-
-	/** Forwarded to the inner nldd-tooltip's `timing`, like nldd-icon-button.
-	 *  On by default: a disc with initials is a riddle without its name. An
-	 *  avatar that sits beside that name is `decorative` and shows none. */
-	@property({ reflect: true, attribute: 'tooltip-timing', converter: reflectNonDefault<'default' | 'instant' | 'never'>('default') })
-	tooltipTiming: 'default' | 'instant' | 'never' = 'default';
 
 	/** True once the avatar is a control itself. */
 	get isInteractive(): boolean {

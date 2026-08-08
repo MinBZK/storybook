@@ -324,7 +324,11 @@ Dezelfde canon geldt buiten de stories, zodat je een component in elk bestand in
 
 Per component: pak alleen de keys die je gebruikt en zet ze in deze volgorde. De groepering is een mentaal model — de daadwerkelijke `args`/`argTypes` is een platte lijst.
 
-**Sorteer op wat een key doet, niet op hoe hij heet.** De groepen zijn het model, de namenlijsten eronder zijn voorbeelden. Twee componenten kunnen dezelfde naam voor iets anders gebruiken, en dan wint de betekenis. `max` staat bij Form omdat het daar een invoergrens is, naast `min` en `step`. De `max` van `nldd-badge` is dat niet: die begrenst alleen hoe `number` getoond wordt (daarboven "max+") en betekent niets zonder `number`. Zo'n grens staat direct achter de prop die hij begrenst.
+**Sorteer op wat een key doet, niet op hoe hij heet.** De groepen zijn het model, de namenlijsten eronder zijn voorbeelden. Twee componenten kunnen dezelfde naam voor iets anders gebruiken, en dan wint de betekenis. `max` is daar het schoolvoorbeeld van, en staat op drie plekken:
+
+1. **Bij Form** als het een invoergrens is, naast `min` en `step` (`nldd-time-field`).
+2. **Direct achter de prop die hij begrenst** als hij alleen de weergave daarvan aftopt. De `max` van `nldd-badge` maakt van een te hoog `number` een "max+" en betekent niets zonder `number`.
+3. **Vooraan, bij groep 1**, als hij bepaalt hóéveel er verschijnt. De `max` van `nldd-avatar-group` laat avatars weg en zet er een `+N`-knop voor in de plaats: je ziet iets anders staan, en dat is een visueel dominante keuze, geen detail.
 
 ```
 [1. Visueel dominant]

@@ -69,6 +69,18 @@ export const Standaard = {
 	render: Template,
 };
 
+export const ZonderSupportingText = {
+	render: () => html`
+		<nldd-identity text="Jan Jansen">
+			<nldd-avatar slot="avatars"
+				name="Jan Jansen"
+				decorative
+			></nldd-avatar>
+		</nldd-identity>
+	`,
+	parameters: { controls: { disable: true } },
+};
+
 /**
  * Eén avatar kun je ook via het `avatar-src`-attribuut meegeven (met optioneel
  * `avatar-srcset`), zonder zelf te slotten. Identity rendert daarvoor intern een
@@ -107,6 +119,37 @@ export const MeerdereRedacteuren = {
 	parameters: { controls: { disable: true } },
 };
 
+export const ZonderAvatar = {
+	render: () => html`
+		<nldd-identity
+			text="Jan Jansen"
+			supporting-text="Redacteur · 12 juni 2026"
+		></nldd-identity>
+	`,
+	parameters: { controls: { disable: true } },
+};
+
+/**
+ * Gebruik de `text`- en `supporting-text`-slots voor rijke inhoud: een
+ * `<time datetime="…">` voor machine-leesbare datums of een link naar het
+ * auteursprofiel. Geslotte inhoud vervangt het bijbehorende attribuut.
+ */
+export const MetTimeEnLink = {
+	render: () => html`
+		<nldd-identity>
+			<nldd-avatar slot="avatars"
+				name="Jan Jansen"
+				decorative
+			></nldd-avatar>
+			<span slot="text">Door <nldd-link href="#auteur" text="Jan Jansen"></nldd-link></span>
+			<time slot="supporting-text"
+				datetime="2026-06-12"
+			>12 juni 2026</time>
+		</nldd-identity>
+	`,
+	parameters: { controls: { disable: true } },
+};
+
 /**
  * Op een smalle container (≤ 640px) met meerdere avatars komt de avatarrij
  * boven de namen te staan, zodat de tekst de volle breedte houdt. Met één
@@ -138,49 +181,6 @@ export const SmalleContainer = {
 				</nldd-identity>
 			</div>
 		</div>
-	`,
-	parameters: { controls: { disable: true } },
-};
-
-/**
- * Gebruik de `text`- en `supporting-text`-slots voor rijke inhoud: een
- * `<time datetime="…">` voor machine-leesbare datums of een link naar het
- * auteursprofiel. Geslotte inhoud vervangt het bijbehorende attribuut.
- */
-export const MetTimeEnLink = {
-	render: () => html`
-		<nldd-identity>
-			<nldd-avatar slot="avatars"
-				name="Jan Jansen"
-				decorative
-			></nldd-avatar>
-			<span slot="text">Door <nldd-link href="#auteur" text="Jan Jansen"></nldd-link></span>
-			<time slot="supporting-text"
-				datetime="2026-06-12"
-			>12 juni 2026</time>
-		</nldd-identity>
-	`,
-	parameters: { controls: { disable: true } },
-};
-
-export const ZonderAvatar = {
-	render: () => html`
-		<nldd-identity
-			text="Jan Jansen"
-			supporting-text="Redacteur · 12 juni 2026"
-		></nldd-identity>
-	`,
-	parameters: { controls: { disable: true } },
-};
-
-export const ZonderSupportingText = {
-	render: () => html`
-		<nldd-identity text="Jan Jansen">
-			<nldd-avatar slot="avatars"
-				name="Jan Jansen"
-				decorative
-			></nldd-avatar>
-		</nldd-identity>
 	`,
 	parameters: { controls: { disable: true } },
 };

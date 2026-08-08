@@ -102,7 +102,6 @@ export class NLDDAvatarGroup extends withTranslations(LitElement, nlddAvatarGrou
 		if (import.meta.env?.DEV) {
 			const strays = assigned.filter(el => el.localName !== 'nldd-avatar');
 			if (strays.length > 0) {
-				// eslint-disable-next-line no-console
 				console.warn(
 					`[nldd-avatar-group] slot an nldd-avatar rather than <${strays[0].localName}>: `
 					+ 'the group sizes, stacks and rings its avatars, and only an nldd-avatar '
