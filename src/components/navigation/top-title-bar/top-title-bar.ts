@@ -18,6 +18,13 @@
  * is set (so the title shows in the title-group), non-compact otherwise (so
  * the `back-text` button stays visible).
  *
+ * An anchored bar hides its own title from assistive technology. The anchor is
+ * the heading the title swaps in for, so both carry the same words: once you
+ * scroll past the heading, a screen reader would otherwise find the same title
+ * twice. Sighted readers see one at a time, and this makes that true for
+ * everyone. Anchor at the heading, then, and not at some other element that
+ * happens to sit at the right height: the bar hands its title over to it.
+ *
  * @element nldd-top-title-bar
  *
  * @attr {string} text - Title of the bar, rendered as the h1 in the title group.

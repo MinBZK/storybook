@@ -34,7 +34,9 @@ export function topTitleBarTemplate(component: NLDDTopTitleBar) {
 						<div class="top-title-bar__divider"></div>
 					</div>
 				` : nothing}
-				<div class="top-title-bar__title-group">
+				<div class="top-title-bar__title-group"
+					aria-hidden=${component.collapseAnchor ? 'true' : nothing}
+				>
 					<h1 class="top-title-bar__title">${component.text}</h1>
 					${component.supportingText ? html`
 						<p class="top-title-bar__subtitle">${component.supportingText}</p>
