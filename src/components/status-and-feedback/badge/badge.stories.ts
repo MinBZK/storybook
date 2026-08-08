@@ -3,8 +3,13 @@ import './badge.js';
 import { ICONS } from './../../content/icon/icon.js';
 
 /**
- * De Badge component toont een notificatie of statusindicator. Met `number` of `text`
- * toont de badge een waarde; zonder waarde verschijnt automatisch een stip.
+ * De Badge toont de toestand van iets, of hoeveel er van iets is. Wat er staat
+ * bepaalt het systeem, niet de gebruiker, en het verandert zonder dat iemand het
+ * aanraakt. Een badge is nooit interactief.
+ *
+ * Met `number` of `text` toont hij een waarde; zonder waarde verschijnt een stip.
+ * Gaat het om een kenmerk dat iemand heeft toegekend, dan is het een
+ * `nldd-tag`; om zelfstandige data die de gebruiker hanteert, een `nldd-token`.
  *
  * ## Gebruik
  * ```html
@@ -46,6 +51,7 @@ export default {
 		max: 99,
 		icon: '',
 		accessibleLabel: '',
+		decorative: false,
 	},
 	argTypes: {
 		size: {
@@ -103,10 +109,17 @@ export default {
 			control: 'text',
 			description: 'Toegankelijk label voor screenreaders (fallback naar text/number; anders naar i18n default)',
 		},
+		decorative: {
+			control: 'boolean',
+			description: 'Verbergt de badge voor hulpsoftware (wanneer de tekst ernaast hetzelfde zegt)',
+			table: {
+				defaultValue: { summary: false },
+			},
+		},
 	},
 };
 
-const Template = ({ size, color, pulse, text, number, max, icon, accessibleLabel }: Record<string, any>) => {
+const Template = ({ size, color, pulse, text, number, max, icon, accessibleLabel, decorative }: Record<string, any>) => {
 	const parsed = number === '' || number === null || number === undefined ? undefined : Number(number);
 	return html`
 		<nldd-badge
@@ -118,6 +131,7 @@ const Template = ({ size, color, pulse, text, number, max, icon, accessibleLabel
 			max=${max}
 			icon=${icon || nothing}
 			accessible-label=${accessibleLabel || nothing}
+			?decorative=${decorative}
 		></nldd-badge>
 	`;
 };

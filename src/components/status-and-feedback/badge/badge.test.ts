@@ -130,4 +130,22 @@ describe('nldd-badge', () => {
 		expect(styles.position).toBe('absolute');
 		expect(styles.pointerEvents).toBe('none');
 	});
+
+	it('zegt niets meer wanneer hij decoratief is', async () => {
+		el = await fixture('<nldd-badge color="success" decorative></nldd-badge>');
+		await waitForUpdate(el);
+		const badge = el.shadowRoot!.querySelector('.badge')!;
+		expect(badge.getAttribute('aria-hidden')).toBe('true');
+		expect(badge.getAttribute('role')).toBeNull();
+		expect(badge.getAttribute('aria-label')).toBeNull();
+	});
+
+	it('laat het standaard-maximum niet in de DOM achter', async () => {
+		el = await fixture('<nldd-badge number="5"></nldd-badge>');
+		await waitForUpdate(el);
+		expect(el.getAttribute('max')).toBeNull();
+		(el as HTMLElement & { max: number }).max = 9;
+		await waitForUpdate(el);
+		expect(el.getAttribute('max')).toBe('9');
+	});
 });

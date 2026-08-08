@@ -1,9 +1,17 @@
 /**
  * Nederlandse Digitale Dienst Badge Component (Lit + TypeScript)
  *
- * Een notificatie-indicator, vaak voor ongelezen aantallen of statusdots. Kan tekst,
- * een getal en/of een icoon tonen. Zonder inhoud verschijnt automatisch een stip.
- * Gebruik in een hoek van een ander element (bijv. een icon) of standalone.
+ * Toont de toestand van iets, of hoeveel er van iets is: een status, een aantal
+ * ongelezen berichten, een stip die zegt dat er iets nieuws is. Wat er staat
+ * bepaalt het systeem, en het verandert zonder dat iemand het aanraakt. Een badge
+ * is nooit interactief.
+ *
+ * Hij toont tekst, een getal en/of een icoon; zonder inhoud verschijnt een stip.
+ * Zet hem in een hoek van een ander element (bijvoorbeeld een icoon) of los.
+ *
+ * Voor een kenmerk dat iemand ergens aan toekent, zoals een categorie, een rol of
+ * een keurmerk, gebruik je `nldd-tag`. Voor zelfstandige data waar de gebruiker
+ * mee werkt, zoals een gekozen persoon of een actief filter, `nldd-token`.
  *
  * @element nldd-badge
  * @attr {string} size - Grootte: 'sm' | 'md' (default: 'md')
@@ -14,6 +22,7 @@
  * @attr {number} max - Maximum waarde boven welke number wordt getoond als "{max}+" (default: 99)
  * @attr {string} icon - Icoon naam. Icon-only wordt als vierkant gerenderd; met text/number komt het icoon links.
  * @attr {string} accessible-label - Toegankelijk label voor screenreaders. Fallback naar text/number; anders naar i18n default ("Notificatie").
+ * @attr {boolean} decorative - Verbergt de badge voor hulpsoftware (gebruik wanneer de tekst ernaast hetzelfde zegt, zoals een stip voor een statuswoord)
  */
 
 import { LitElement } from 'lit';
@@ -54,7 +63,7 @@ export class NLDDBadge extends withTranslations(LitElement, nlddBadgeTranslation
 	@property({ type: Number, reflect: true })
 	number: number | undefined = undefined;
 
-	@property({ type: Number, reflect: true })
+	@property({ reflect: true, converter: reflectNonDefault<number>(99) })
 	max = 99;
 
 	@property({ type: String })
@@ -62,6 +71,9 @@ export class NLDDBadge extends withTranslations(LitElement, nlddBadgeTranslation
 
 	@property({ type: String, attribute: 'accessible-label' })
 	accessibleLabel = '';
+
+	@property({ type: Boolean, reflect: true })
+	decorative = false;
 
 	get _hasText(): boolean {
 		return !!this.text || typeof this.number === 'number';
