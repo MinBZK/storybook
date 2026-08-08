@@ -224,10 +224,9 @@ export const toolbarTitleStyles = css`
 		--_title-width: auto;
 		--_title-max-width: var(--primitives-area-240);
 		--_title-group-height: var(--semantics-controls-md-min-size);
-		--_media-gap: var(--primitives-space-8);
+		--_content-gap: var(--primitives-space-8);
 		--_title-font: var(--primitives-font-body-lg-medium-flat);
 		--_subtitle-font: var(--primitives-font-body-xs-regular-flat);
-		--_action-gap: var(--primitives-space-8);
 
 		${inheritedTextReset}
 		display: inline-flex;
@@ -236,6 +235,7 @@ export const toolbarTitleStyles = css`
 		flex-direction: row;
 		flex-shrink: 1;
 		flex-basis: var(--_title-width);
+		gap: var(--_content-gap);
 		align-items: center;
 	}
 
@@ -294,26 +294,26 @@ export const toolbarTitleStyles = css`
 		overflow: hidden;
 	}
 
-	/* Optional leading media (a logo, a product mark, a file-type icon), the
-	   mirror of the trailing action: same margin-not-gap trick so an empty slot
-	   adds no space, same flex-shrink:0 so it stays whole while the title
-	   truncates. Only the height is capped, to the title group, so nothing can
-	   stretch the row; which size to draw within that is the consumer's to pick,
-	   since a file icon and a logo do not want the same one. No width here on
-	   purpose: an outer tree's ::slotted beats the slotted element's own :host,
-	   so setting one would overrule the size that element was given. */
-	::slotted([slot="media"]) {
-		flex-shrink: 0;
-		max-height: 100%;
-		margin-inline-end: var(--_media-gap);
-	}
+	/* Leading media (a logo, a product mark, a file-type icon) and a trailing
+	   action are kept whole while the title text truncates. The space between
+	   them is a gap on the host, not a margin here: a margin on a slotted
+	   element is a declaration in this shadow tree, and the tree the element
+	   actually lives in outranks it, so a consumer's own margin reset on
+	   the element itself would quietly win. A slot is display:contents, so an empty one puts no
+	   flex item in the row and the gap has nothing to space.
 
-	/* Optional trailing action (e.g. an xs nldd-icon-button), tuned to sit
-	   against the title. A margin (not a host gap) means an empty slot adds no
-	   space; flex-shrink:0 keeps it full-size while the title text truncates. */
+	   Only the media's height is capped, to the title group, so nothing can
+	   stretch the row; which size to draw within that is the consumer's to
+	   pick, since a file icon and a logo do not want the same one. No width on
+	   purpose: here ::slotted does outrank the slotted element's own :host, so
+	   setting one would overrule the size that element was given. */
+	::slotted([slot="media"]),
 	::slotted([slot="action"]) {
 		flex-shrink: 0;
-		margin-inline-start: var(--_action-gap);
+	}
+
+	::slotted([slot="media"]) {
+		max-height: 100%;
 	}
 
 	/* text-align lives on the text elements, not :host: the inheritedTextReset on
