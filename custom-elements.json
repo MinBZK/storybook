@@ -2845,21 +2845,43 @@
           "members": [
             {
               "kind": "field",
-              "name": "src",
+              "name": "type",
               "type": {
-                "text": "string"
+                "text": "AvatarType"
               },
-              "default": "''",
-              "attribute": "src"
+              "default": "'person'",
+              "attribute": "type",
+              "reflects": true
             },
             {
               "kind": "field",
-              "name": "srcset",
+              "name": "size",
               "type": {
-                "text": "string"
+                "text": "AvatarSize"
               },
               "default": "''",
-              "attribute": "srcset"
+              "attribute": "size",
+              "reflects": true
+            },
+            {
+              "kind": "field",
+              "name": "color",
+              "type": {
+                "text": "AvatarColor"
+              },
+              "default": "'default'",
+              "attribute": "color",
+              "reflects": true
+            },
+            {
+              "kind": "field",
+              "name": "iconAligned",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "attribute": "icon-aligned",
+              "reflects": true
             },
             {
               "kind": "field",
@@ -2881,6 +2903,24 @@
             },
             {
               "kind": "field",
+              "name": "src",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "attribute": "src"
+            },
+            {
+              "kind": "field",
+              "name": "srcset",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "attribute": "srcset"
+            },
+            {
+              "kind": "field",
               "name": "icon",
               "type": {
                 "text": "string"
@@ -2890,43 +2930,13 @@
             },
             {
               "kind": "field",
-              "name": "type",
+              "name": "accessibleLabel",
               "type": {
-                "text": "AvatarType"
-              },
-              "default": "'person'",
-              "attribute": "type",
-              "reflects": true
-            },
-            {
-              "kind": "field",
-              "name": "color",
-              "type": {
-                "text": "AvatarColor"
-              },
-              "default": "'default'",
-              "attribute": "color",
-              "reflects": true
-            },
-            {
-              "kind": "field",
-              "name": "size",
-              "type": {
-                "text": "AvatarSize"
+                "text": "string"
               },
               "default": "''",
-              "attribute": "size",
-              "reflects": true
-            },
-            {
-              "kind": "field",
-              "name": "iconAligned",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "attribute": "icon-aligned",
-              "reflects": true
+              "description": "Accessible name of the link or button. Without it, it falls back to\n`name`. Only matters when the avatar is interactive.",
+              "attribute": "accessible-label"
             },
             {
               "kind": "field",
@@ -2936,6 +2946,17 @@
               },
               "default": "false",
               "attribute": "decorative",
+              "reflects": true
+            },
+            {
+              "kind": "field",
+              "name": "tooltipTiming",
+              "type": {
+                "text": "'default' | 'instant' | 'never'"
+              },
+              "default": "'default'",
+              "description": "Forwarded to the inner nldd-tooltip's `timing`, like nldd-icon-button.\nOn by default: a disc with initials is a riddle without its name. An\navatar that sits beside that name is `decorative` and shows none.",
+              "attribute": "tooltip-timing",
               "reflects": true
             },
             {
@@ -2980,27 +3001,6 @@
             },
             {
               "kind": "field",
-              "name": "accessibleLabel",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Accessible name of the link or button. Without it, it falls back to\n`name`. Only matters when the avatar is interactive.",
-              "attribute": "accessible-label"
-            },
-            {
-              "kind": "field",
-              "name": "tooltipTiming",
-              "type": {
-                "text": "'default' | 'instant' | 'never'"
-              },
-              "default": "'default'",
-              "description": "Forwarded to the inner nldd-tooltip's `timing`, like nldd-icon-button.\nOn by default: a disc with initials is a riddle without its name. An\navatar that sits beside that name is `decorative` and shows none.",
-              "attribute": "tooltip-timing",
-              "reflects": true
-            },
-            {
-              "kind": "field",
               "name": "isInteractive",
               "type": {
                 "text": "boolean"
@@ -3042,22 +3042,40 @@
           ],
           "attributes": [
             {
-              "name": "src",
+              "name": "type",
               "type": {
-                "text": "string"
+                "text": "AvatarType"
               },
-              "default": "''",
-              "fieldName": "src",
-              "description": "Afbeeldingsbron; valt bij een laadfout terug op initialen/icoon"
+              "default": "'person'",
+              "fieldName": "type",
+              "description": "`person` (cirkel, person-icoon) of `organization` (afgerond, building-icoon); standaard `person`"
             },
             {
-              "name": "srcset",
+              "name": "size",
               "type": {
-                "text": "string"
+                "text": "AvatarSize"
               },
               "default": "''",
-              "fieldName": "srcset",
-              "description": "Responsive source set voor de afbeelding (het component zet zelf `sizes`)"
+              "fieldName": "size",
+              "description": "`full` (standaard) schaalt mee met de container, net als nldd-icon; of een vaste maat in px (spacer-uitgelijnd: 16, 20, 24, 28, 32, 40, 44, 48, 56, 64, 80, 96). Leeg gedraagt zich als `full`. De initialen en het icoon schalen mee"
+            },
+            {
+              "name": "color",
+              "type": {
+                "text": "AvatarColor"
+              },
+              "default": "'default'",
+              "fieldName": "color",
+              "description": "`default` (neutrale vulling) of `inherit` (vulling in de content-kleur: de `--context-content-color`-channel, of `currentColor` als die niet gezet is; tekst in de contrastkleur, zodat de avatar een icoon in bijvoorbeeld een knop kan vervangen); standaard `default`"
+            },
+            {
+              "name": "icon-aligned",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "fieldName": "iconAligned",
+              "description": "Krimpt de zichtbare schijf naar 5/6 van de host, gecentreerd, zodat de avatar optisch uitlijnt met een icoon op hetzelfde grid (een icoon-glyph heeft ingebouwde marge)"
             },
             {
               "name": "name",
@@ -3078,6 +3096,24 @@
               "description": "Expliciete initialen, max 3 tekens (overschrijft de afleiding uit `name`; ook voor organisatie-acroniemen)"
             },
             {
+              "name": "src",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "fieldName": "src",
+              "description": "Afbeeldingsbron; valt bij een laadfout terug op initialen/icoon"
+            },
+            {
+              "name": "srcset",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "fieldName": "srcset",
+              "description": "Responsive source set voor de afbeelding (het component zet zelf `sizes`)"
+            },
+            {
               "name": "icon",
               "type": {
                 "text": "string"
@@ -3087,40 +3123,13 @@
               "description": "Overschrijft het type-afhankelijke terugval-icoon"
             },
             {
-              "name": "type",
+              "name": "accessible-label",
               "type": {
-                "text": "AvatarType"
-              },
-              "default": "'person'",
-              "fieldName": "type",
-              "description": "`person` (cirkel, person-icoon) of `organization` (afgerond, building-icoon); standaard `person`"
-            },
-            {
-              "name": "color",
-              "type": {
-                "text": "AvatarColor"
-              },
-              "default": "'default'",
-              "fieldName": "color",
-              "description": "`default` (neutrale vulling) of `inherit` (vulling in de content-kleur: de `--context-content-color`-channel, of `currentColor` als die niet gezet is; tekst in de contrastkleur, zodat de avatar een icoon in bijvoorbeeld een knop kan vervangen); standaard `default`"
-            },
-            {
-              "name": "size",
-              "type": {
-                "text": "AvatarSize"
+                "text": "string"
               },
               "default": "''",
-              "fieldName": "size",
-              "description": "`full` (standaard) schaalt mee met de container, net als nldd-icon; of een vaste maat in px (spacer-uitgelijnd: 16, 20, 24, 28, 32, 40, 44, 48, 56, 64, 80, 96). Leeg gedraagt zich als `full`. De initialen en het icoon schalen mee"
-            },
-            {
-              "name": "icon-aligned",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "fieldName": "iconAligned",
-              "description": "Krimpt de zichtbare schijf naar 5/6 van de host, gecentreerd, zodat de avatar optisch uitlijnt met een icoon op hetzelfde grid (een icoon-glyph heeft ingebouwde marge)"
+              "description": "Naam van de link of knop; zonder deze wordt `name` gebruikt",
+              "fieldName": "accessibleLabel"
             },
             {
               "name": "decorative",
@@ -3130,6 +3139,15 @@
               "default": "false",
               "fieldName": "decorative",
               "description": "Verbergt de avatar voor hulpsoftware (gebruik wanneer de naam er al als tekst naast staat)"
+            },
+            {
+              "name": "tooltip-timing",
+              "type": {
+                "text": "'default' | 'instant' | 'never'"
+              },
+              "default": "'default'",
+              "description": "Wanneer de naam als tooltip verschijnt bij hover of focus: `default` (na 700ms; standaard), `instant`, of `never`. Een avatar toont geen tekst, dus zonder tooltip is de naam alleen voor hulpsoftware leesbaar. Een `decorative` avatar toont er sowieso geen: daar staat de naam al als tekst naast",
+              "fieldName": "tooltipTiming"
             },
             {
               "name": "href",
@@ -3166,24 +3184,6 @@
               "default": "''",
               "fieldName": "rel",
               "description": "Link rel voor href; standaard 'noopener noreferrer' bij target='_blank'"
-            },
-            {
-              "name": "accessible-label",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Naam van de link of knop; zonder deze wordt `name` gebruikt",
-              "fieldName": "accessibleLabel"
-            },
-            {
-              "name": "tooltip-timing",
-              "type": {
-                "text": "'default' | 'instant' | 'never'"
-              },
-              "default": "'default'",
-              "description": "Wanneer de naam als tooltip verschijnt bij hover of focus: `default` (na 700ms; standaard), `instant`, of `never`. Een avatar toont geen tekst, dus zonder tooltip is de naam alleen voor hulpsoftware leesbaar. Een `decorative` avatar toont er sowieso geen: daar staat de naam al als tekst naast",
-              "fieldName": "tooltipTiming"
             },
             {
               "name": "translations",
@@ -4590,7 +4590,7 @@
       "declarations": [
         {
           "kind": "class",
-          "description": "Een compacte label voor categorieën, statussen of metadata. Niet interactief. Voor interactieve chips (filter, dismiss) gebruik je <nldd-token>.",
+          "description": "Een compact kenmerk dat aan iets is toegekend: een categorie, een type, een rol, een keurmerk. Wat er staat verandert pas als iemand de inhoud wijzigt. Een tag is niet interactief. Gebruik hem niet voor een toestand die het systeem zelf bijhoudt, zoals \"Actief\" of \"Verlopen\", want dat is `nldd-badge`. Kan de gebruiker het ding weghalen of erop klikken, dan is het `nldd-token`.",
           "name": "NLDDTag",
           "members": [
             {
@@ -4751,7 +4751,7 @@
       "declarations": [
         {
           "kind": "class",
-          "description": "A title bar with an optional overline, title, and subtitle on the left, and a slot for actions on the right.",
+          "description": "A title bar with an optional overline, title, and subtitle on the left, and a slot at the end of the title line on the right.",
           "name": "NLDDTitle",
           "members": [
             {
@@ -4815,8 +4815,8 @@
               "description": "Optional subtitle below the title"
             },
             {
-              "name": "actions",
-              "description": "Actions to the right of the title (buttons, menus, etc.)"
+              "name": "end",
+              "description": "Whatever belongs at the end of the title line: a button, a menu, a status badge, a version. Named for the position, not for a kind of content, because anything can sit there."
             }
           ]
         }
@@ -4846,7 +4846,7 @@
       "declarations": [
         {
           "kind": "class",
-          "description": "A token component representing a piece of data — such as a person in an address field or an active filter value. Optionally dismissable or interactive via a contextual menu.",
+          "description": "A self-contained piece of data the user is handling: a person in an address field, an active filter value. Alone among the three it can be operated, so it is optionally dismissable or interactive through a contextual menu. For something you only read, reach for `nldd-tag` (a trait someone assigned) or `nldd-badge` (a state or a count the system keeps).",
           "name": "NLDDToken",
           "members": [
             {
@@ -9095,22 +9095,22 @@
             },
             {
               "kind": "field",
-              "name": "required",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "attribute": "required",
-              "reflects": true
-            },
-            {
-              "kind": "field",
               "name": "name",
               "type": {
                 "text": "string"
               },
               "default": "''",
               "attribute": "name",
+              "reflects": true
+            },
+            {
+              "kind": "field",
+              "name": "required",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "attribute": "required",
               "reflects": true
             },
             {
@@ -9333,15 +9333,6 @@
               "description": "Disabled state"
             },
             {
-              "name": "required",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "fieldName": "required",
-              "description": "Marks the field required (invalid while no file is chosen)"
-            },
-            {
               "name": "name",
               "type": {
                 "text": "string"
@@ -9349,6 +9340,15 @@
               "default": "''",
               "fieldName": "name",
               "description": "Name for form submission"
+            },
+            {
+              "name": "required",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "fieldName": "required",
+              "description": "Marks the field required (invalid while no file is chosen)"
             },
             {
               "name": "translations",
@@ -29905,7 +29905,7 @@
       "declarations": [
         {
           "kind": "class",
-          "description": "Een notificatie-indicator, vaak voor ongelezen aantallen of statusdots. Kan tekst, een getal en/of een icoon tonen. Zonder inhoud verschijnt automatisch een stip. Gebruik in een hoek van een ander element (bijv. een icon) of standalone.",
+          "description": "Toont de toestand van iets, of hoeveel er van iets is: een status, een aantal ongelezen berichten, een stip die zegt dat er iets nieuws is. Wat er staat bepaalt het systeem, en het verandert zonder dat iemand het aanraakt. Een badge is nooit interactief. Hij toont tekst, een getal en/of een icoon; zonder inhoud verschijnt een stip. Zet hem in een hoek van een ander element (bijvoorbeeld een icoon) of los. Voor een kenmerk dat iemand ergens aan toekent, zoals een categorie, een rol of een keurmerk, gebruik je `nldd-tag`. Voor zelfstandige data waar de gebruiker mee werkt, zoals een gekozen persoon of een actief filter, `nldd-token`.",
           "name": "NLDDBadge",
           "members": [
             {
@@ -29985,6 +29985,16 @@
               },
               "default": "''",
               "attribute": "accessible-label"
+            },
+            {
+              "kind": "field",
+              "name": "decorative",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "attribute": "decorative",
+              "reflects": true
             },
             {
               "kind": "field",
@@ -30072,6 +30082,15 @@
               "default": "''",
               "fieldName": "accessibleLabel",
               "description": "Toegankelijk label voor screenreaders. Fallback naar text/number; anders naar i18n default (\"Notificatie\")."
+            },
+            {
+              "name": "decorative",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "fieldName": "decorative",
+              "description": "Verbergt de badge voor hulpsoftware (gebruik wanneer de tekst ernaast hetzelfde zegt, zoals een stip voor een statuswoord)"
             },
             {
               "name": "translations",
@@ -33080,7 +33099,7 @@
               }
             }
           ],
-          "description": "A Lit attribute converter for a reflected enum property whose DEFAULT value\nshould not appear in the DOM.\n\nIt reflects any non-default value to the attribute (so `:host([prop=\"x\"])`\nstyling and framework property binding keep working), but maps the default to\n*no* attribute (`toAttribute` returns null), so the DOM isn't polluted with a\nredundant `prop=\"<default>\"` on every instance.\n\nPair it with `reflect: true`. The component's default styling must then live\non the bare `:host` (not `:host([prop=\"<default>\"])`), since a default-valued\nelement carries no attribute to select on.\n\nKnown edge: if markup writes the default *explicitly* (e.g. `<nldd-button\nsize=\"md\">`), `fromAttribute` resolves the property to the value it already\nholds, so Lit's default `hasChanged` sees no change, schedules no update, and\n`toAttribute` never runs to strip the attribute — so that one authored default\nattribute stays in the DOM. Visual behavior is unaffected (styling keys off the\nbare `:host`); it only matters to code matching `[prop=\"<default>\"]`, which\nshould read the property instead. Not worth a fragile `hasChanged` workaround."
+          "description": "A Lit attribute converter for a reflected property whose DEFAULT value should\nnot appear in the DOM. Works for an enum (a string union) and for a number.\n\nIt reflects any non-default value to the attribute (so `:host([prop=\"x\"])`\nstyling and framework property binding keep working), but maps the default to\n*no* attribute (`toAttribute` returns null), so the DOM isn't polluted with a\nredundant `prop=\"<default>\"` on every instance.\n\nPair it with `reflect: true`. The component's default styling must then live\non the bare `:host` (not `:host([prop=\"<default>\"])`), since a default-valued\nelement carries no attribute to select on.\n\nKnown edge: if markup writes the default *explicitly* (e.g. `<nldd-button\nsize=\"md\">`), `fromAttribute` resolves the property to the value it already\nholds, so Lit's default `hasChanged` sees no change, schedules no update, and\n`toAttribute` never runs to strip the attribute — so that one authored default\nattribute stays in the DOM. Visual behavior is unaffected (styling keys off the\nbare `:host`); it only matters to code matching `[prop=\"<default>\"]`, which\nshould read the property instead. Not worth a fragile `hasChanged` workaround."
         }
       ],
       "exports": [

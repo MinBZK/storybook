@@ -14,7 +14,7 @@ import '../../layout/spacer/spacer.js';
  *   <p slot="overline">Overline</p>
  *   <h1>Paginatitel</h1>
  *   <p slot="subtitle">Ondertitel</p>
- *   <nldd-button slot="actions" text="Actie"></nldd-button>
+ *   <nldd-button slot="end" text="Actie"></nldd-button>
  * </nldd-title>
  * ```
  */
@@ -58,7 +58,7 @@ export const Standaard = ({ size, color }: Record<string, any>) => html`
 			color=${color || nothing}
 		>
 			<h1>Paginatitel</h1>
-			<nldd-button slot="actions" variant="secondary" size="sm" text="Actie"></nldd-button>
+			<nldd-button slot="end" variant="secondary" size="sm" text="Actie"></nldd-button>
 		</nldd-title>
 	</div>
 `;
@@ -105,9 +105,9 @@ export const MetActies = {
 	<div style="display: block; padding: 24px; container-type: inline-size; container-name: layout-container;">
 		<nldd-title>
 			<h1>Wet op de zorgtoeslag</h1>
-			<nldd-button slot="actions" variant="secondary" size="sm" text="Bewerken"></nldd-button>
-			<nldd-spacer slot="actions" size="8"></nldd-spacer>
-			<nldd-button slot="actions" size="sm" text="Opslaan"></nldd-button>
+			<nldd-button slot="end" variant="secondary" size="sm" text="Bewerken"></nldd-button>
+			<nldd-spacer slot="end" size="8"></nldd-spacer>
+			<nldd-button slot="end" size="sm" text="Opslaan"></nldd-button>
 		</nldd-title>
 	</div>
 `,

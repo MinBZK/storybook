@@ -321,22 +321,22 @@ Toont één persoon of organisatie als een compacte, ronde (persoon) of afgerond
 
 | Attribuut | Type | Beschrijving |
 | --- | --- | --- |
-| `src` | `string` | Afbeeldingsbron; valt bij een laadfout terug op initialen/icoon |
-| `srcset` | `string` | Responsive source set voor de afbeelding (het component zet zelf `sizes`) |
-| `name` | `string` | Naam van de persoon/organisatie; levert de afgeleide initialen en het toegankelijke label |
-| `initials` | `string` | Expliciete initialen, max 3 tekens (overschrijft de afleiding uit `name`; ook voor organisatie-acroniemen) |
 | `type` | `string` | `person` (cirkel, person-icoon) of `organization` (afgerond, building-icoon); standaard `person` |
-| `icon` | `string` | Overschrijft het type-afhankelijke terugval-icoon |
 | `size` | `string` | `full` (standaard) schaalt mee met de container, net als nldd-icon; of een vaste maat in px (spacer-uitgelijnd: 16, 20, 24, 28, 32, 40, 44, 48, 56, 64, 80, 96). Leeg gedraagt zich als `full`. De initialen en het icoon schalen mee |
 | `color` | `string` | `default` (neutrale vulling) of `inherit` (vulling in de content-kleur: de `--context-content-color`-channel, of `currentColor` als die niet gezet is; tekst in de contrastkleur, zodat de avatar een icoon in bijvoorbeeld een knop kan vervangen); standaard `default` |
 | `icon-aligned` | `boolean` | Krimpt de zichtbare schijf naar 5/6 van de host, gecentreerd, zodat de avatar optisch uitlijnt met een icoon op hetzelfde grid (een icoon-glyph heeft ingebouwde marge) |
+| `name` | `string` | Naam van de persoon/organisatie; levert de afgeleide initialen en het toegankelijke label |
+| `initials` | `string` | Expliciete initialen, max 3 tekens (overschrijft de afleiding uit `name`; ook voor organisatie-acroniemen) |
+| `src` | `string` | Afbeeldingsbron; valt bij een laadfout terug op initialen/icoon |
+| `srcset` | `string` | Responsive source set voor de afbeelding (het component zet zelf `sizes`) |
+| `icon` | `string` | Overschrijft het type-afhankelijke terugval-icoon |
+| `accessible-label` | `string` | Naam van de link of knop; zonder deze wordt `name` gebruikt |
 | `decorative` | `boolean` | Verbergt de avatar voor hulpsoftware (gebruik wanneer de naam er al als tekst naast staat) |
+| `tooltip-timing` | `string` | Wanneer de naam als tooltip verschijnt bij hover of focus: `default` (na 700ms; standaard), `instant`, of `never`. Een avatar toont geen tekst, dus zonder tooltip is de naam alleen voor hulpsoftware leesbaar. Een `decorative` avatar toont er sowieso geen: daar staat de naam al als tekst naast |
 | `href` | `string` | Maakt de avatar een link naar deze URL; de schijf zelf wordt de link, dus klikgebied en focusring volgen de vorm |
 | `button` | `boolean` | Maakt de avatar een knop; genegeerd wanneer `href` is gezet |
 | `target` | `string` | Link target voor href (bijv. '_blank'); vult rel aan en meldt "Opent in nieuw tabblad" |
 | `rel` | `string` | Link rel voor href; standaard 'noopener noreferrer' bij target='_blank' |
-| `accessible-label` | `string` | Naam van de link of knop; zonder deze wordt `name` gebruikt |
-| `tooltip-timing` | `string` | Wanneer de naam als tooltip verschijnt bij hover of focus: `default` (na 700ms; standaard), `instant`, of `never`. Een avatar toont geen tekst, dus zonder tooltip is de naam alleen voor hulpsoftware leesbaar. Een `decorative` avatar toont er sowieso geen: daar staat de naam al als tekst naast |
 | `translations` | `object` | Overschrijf translation keys; niet gezette keys vallen terug op het Nederlands |
 
 ### `<nldd-avatar-group>`
@@ -503,7 +503,7 @@ A container for rich text content that automatically applies responsive typograp
 
 ### `<nldd-tag>`
 
-Een compacte label voor categorieën, statussen of metadata. Niet interactief. Voor interactieve chips (filter, dismiss) gebruik je <nldd-token>.
+Een compact kenmerk dat aan iets is toegekend: een categorie, een type, een rol, een keurmerk. Wat er staat verandert pas als iemand de inhoud wijzigt. Een tag is niet interactief. Gebruik hem niet voor een toestand die het systeem zelf bijhoudt, zoals "Actief" of "Verlopen", want dat is `nldd-badge`. Kan de gebruiker het ding weghalen of erop klikken, dan is het `nldd-token`.
 
 **Attributes**
 
@@ -525,7 +525,7 @@ Een compacte label voor categorieën, statussen of metadata. Niet interactief. V
 
 ### `<nldd-title>`
 
-A title bar with an optional overline, title, and subtitle on the left, and a slot for actions on the right.
+A title bar with an optional overline, title, and subtitle on the left, and a slot at the end of the title line on the right.
 
 **Attributes**
 
@@ -541,11 +541,11 @@ A title bar with an optional overline, title, and subtitle on the left, and a sl
 | `overline` | Optional overline above the title |
 | _(default)_ | Title text (use h1–h6 for semantics) |
 | `subtitle` | Optional subtitle below the title |
-| `actions` | Actions to the right of the title (buttons, menus, etc.) |
+| `end` | Whatever belongs at the end of the title line: a button, a menu, a status badge, a version. Named for the position, not for a kind of content, because anything can sit there. |
 
 ### `<nldd-token>`
 
-A token component representing a piece of data — such as a person in an address field or an active filter value. Optionally dismissable or interactive via a contextual menu.
+A self-contained piece of data the user is handling: a person in an address field, an active filter value. Alone among the three it can be operated, so it is optionally dismissable or interactive through a contextual menu. For something you only read, reach for `nldd-tag` (a trait someone assigned) or `nldd-badge` (a state or a count the system keeps).
 
 **Attributes**
 
@@ -915,8 +915,8 @@ A file picker that reads as one control: an nldd-button flush in the corner of a
 | `valid` | `boolean` | Marks the field as valid; shows a check icon on the right, like nldd-dropdown |
 | `invalid` | `boolean` | Marks the field as invalid; shows an alert icon on the right, like nldd-dropdown |
 | `disabled` | `boolean` | Disabled state |
-| `required` | `boolean` | Marks the field required (invalid while no file is chosen) |
 | `name` | `string` | Name for form submission |
+| `required` | `boolean` | Marks the field required (invalid while no file is chosen) |
 | `translations` | `object` | Override translation keys; unset keys fall back to Dutch |
 
 **Events**
@@ -2425,7 +2425,7 @@ Layout placeholder that fills its parent and centers an indeterminate activity i
 
 ### `<nldd-badge>`
 
-Een notificatie-indicator, vaak voor ongelezen aantallen of statusdots. Kan tekst, een getal en/of een icoon tonen. Zonder inhoud verschijnt automatisch een stip. Gebruik in een hoek van een ander element (bijv. een icon) of standalone.
+Toont de toestand van iets, of hoeveel er van iets is: een status, een aantal ongelezen berichten, een stip die zegt dat er iets nieuws is. Wat er staat bepaalt het systeem, en het verandert zonder dat iemand het aanraakt. Een badge is nooit interactief. Hij toont tekst, een getal en/of een icoon; zonder inhoud verschijnt een stip. Zet hem in een hoek van een ander element (bijvoorbeeld een icoon) of los. Voor een kenmerk dat iemand ergens aan toekent, zoals een categorie, een rol of een keurmerk, gebruik je `nldd-tag`. Voor zelfstandige data waar de gebruiker mee werkt, zoals een gekozen persoon of een actief filter, `nldd-token`.
 
 **Attributes**
 
@@ -2439,6 +2439,7 @@ Een notificatie-indicator, vaak voor ongelezen aantallen of statusdots. Kan teks
 | `max` | `number` | Maximum waarde boven welke number wordt getoond als "{max}+" (default: 99) |
 | `icon` | `string` | Icoon naam. Icon-only wordt als vierkant gerenderd; met text/number komt het icoon links. |
 | `accessible-label` | `string` | Toegankelijk label voor screenreaders. Fallback naar text/number; anders naar i18n default ("Notificatie"). |
+| `decorative` | `boolean` | Verbergt de badge voor hulpsoftware (gebruik wanneer de tekst ernaast hetzelfde zegt, zoals een stip voor een statuswoord) |
 
 ### `<nldd-banner>`
 
