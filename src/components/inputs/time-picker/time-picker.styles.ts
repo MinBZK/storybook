@@ -101,8 +101,13 @@ export const timePickerStyles = css`
 		scroll-snap-align: center;
 	}
 
-	.time-picker__list-item:hover {
-		background-color: var(--_list-item-is-hovered-background-color);
+	/* Touch reports a hover after a tap and keeps it until you touch something
+	   else, so a value stays lit long after you picked it, and a finger dragging
+	   the list lights whatever it passes. Only pointers that can really hover. */
+	@media (hover: hover) {
+		.time-picker__list-item:hover {
+			background-color: var(--_list-item-is-hovered-background-color);
+		}
 	}
 
 	/* While scrolling, the values slide past under a stationary cursor and a
