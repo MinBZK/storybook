@@ -1,8 +1,13 @@
 /**
  * Nederlandse Digitale Dienst Tag Component (Lit + TypeScript)
  *
- * Een compacte label voor categorieën, statussen of metadata. Niet interactief.
- * Voor interactieve chips (filter, dismiss) gebruik je <nldd-token>.
+ * Een compact kenmerk dat aan iets is toegekend: een categorie, een type, een rol,
+ * een keurmerk. Wat er staat verandert pas als iemand de inhoud wijzigt. Een tag
+ * is niet interactief.
+ *
+ * Gebruik hem niet voor een toestand die het systeem zelf bijhoudt, zoals "Actief"
+ * of "Verlopen", want dat is `nldd-badge`. Kan de gebruiker het ding weghalen of
+ * erop klikken, dan is het `nldd-token`.
  *
  * @element nldd-tag
  * @attr {string} color - Kleurvariant. Semantisch: 'neutral' | 'accent' | 'success' | 'warning' | 'critical'. Rijkskleuren: 'lintblauw' | 'donkerblauw' | 'hemelblauw' | 'lichtblauw' | 'paars' | 'violet' | 'robijnrood' | 'roze' | 'rood' | 'oranje' | 'donkergeel' | 'geel' | 'donkerbruin' | 'bruin' | 'donkergroen' | 'groen' | 'mosgroen' | 'mintgroen'. (default: 'neutral')

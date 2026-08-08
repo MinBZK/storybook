@@ -4,9 +4,12 @@ import './token.js';
 import '../../actions/menu/menu.js';
 
 /**
- * De Token component is een visuele representatie van data —
- * zoals een persoon in een adresveld of een actieve filterwaarde.
- * Optioneel verwijderbaar of interactief via een contextueel menu.
+ * De Token is zelfstandige data waar de gebruiker mee werkt: een persoon in een
+ * adresveld, een actieve filterwaarde. Als enige van de drie kun je hem bedienen,
+ * dus hij is optioneel verwijderbaar of interactief via een contextueel menu.
+ *
+ * Lees je het alleen maar, kijk dan naar `nldd-tag` voor een toegekend kenmerk of
+ * `nldd-badge` voor een toestand of aantal dat het systeem bijhoudt.
  *
  * ## Gebruik
  * ```html
