@@ -2553,6 +2553,33 @@ A modal window with overlay backdrop, based on the native <dialog> element. Inte
 | `open` | When the dialog is opened |
 | `close` | When the dialog is fully closed |
 
+### `<nldd-notification>`
+
+A short message that arrives over the interface and leaves on its own: a save that worked, a request that failed. Not a banner, which stands in the page and stays there — this one floats, stacks, and goes away. It places itself. Write it wherever it belongs in your code and it moves to one shared region: top right from md, full width across the top below that. Nothing about the position is settable, so notifications from anywhere in an application land in the same place and stack in the same order. More than one is a deck, not a list: the front one is readable and the older ones peek out below it, so a burst of messages takes the room of roughly one. The newest is in front. Behind it a notification is a bare surface, cut to the height of the one in front; dismiss the front and it slides up into the place that came free while its message fades in, because it was standing there all along. Under the front notification sits a strip as wide as the deck and as tall as the deck is when it fans out. Pointing at it fans the deck out to fill it, which is the only hint that there is more here than the message you can read; clicking it, or moving focus into the region, lays the whole deck out as a list. Clicking or tabbing away puts it back. The notification itself is not a button: a click on the message you are reading does nothing. Only the front of the deck counts down, and only while the deck is closed: open means someone is reading. The rest wait, so nothing disappears from under the one you are reading. `critical` never leaves on its own: a failure is worth reading, and the count-down would take it away while you were. That also keeps this within WCAG 2.2.1, which allows a time limit when what disappears is not essential. The clock pauses while a pointer is over the notification and while focus is inside it, and resumes where it left off rather than starting over. role follows the variant: `critical` becomes role="alert", the rest role="status". Focus never moves on its own. Escape dismisses the notification that focus is in.
+
+**Attributes**
+
+| Attribuut | Type | Beschrijving |
+| --- | --- | --- |
+| `variant` | `'success'\|'info'\|'warning'\|'critical'` | What kind of message this is; sets the icon color and the ARIA role (default: 'info') |
+| `icon` | `string` | Icon override. Default per variant: success → check-circle-filled, info → info-circle-filled, warning → exclamation-triangle-filled, critical → exclamation-circle-filled |
+| `text` | `string` | The message |
+| `supporting-text` | `string` | A second line under the message |
+| `duration` | `number` | Milliseconds before it leaves once it is front of the deck (default: 10000). `0` keeps it until dismissed, which is what `critical` does regardless. |
+| `translations` | `object` | Override translation keys; unset keys fall back to Dutch |
+
+**Slots**
+
+| Slot | Beschrijving |
+| --- | --- |
+| `actions` | At most 2 nldd-button elements, under the text. More than 2 is refused with a DEV warning: a message that needs three choices is a dialog. |
+
+**Events**
+
+| Event | Beschrijving |
+| --- | --- |
+| `dismiss` | Fired when the notification is dismissed, by the button, by Escape, or by its own clock. The consumer removes it. |
+
 ### `<nldd-progress-bar>`
 
 Exports both NLDDProgressBar and NLDDProgressBarSegmentIndicator. A progress bar that supports a single value (loading-style) or multiple segments (multi-stage progress, or distribution like storage usage). The consumer provides raw values; the component computes percentages from `max`. Two modes: - `progress` (default): segments sum toward `max`; remaining space is empty track. ARIA reads "X% voltooid". - `distribution`: segments fill the bar; ARIA enumerates segments. If the sum of segment values exceeds `max`, segments are normalized proportionally to fit and a warning is logged.

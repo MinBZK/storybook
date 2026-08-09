@@ -148,6 +148,7 @@ export { NLDDPagination } from './navigation/pagination/pagination.js';
 export { NLDDModalDialog } from './status-and-feedback/modal-dialog/modal-dialog.js';
 export { NLDDInlineDialog } from './status-and-feedback/inline-dialog/inline-dialog.js';
 export { NLDDBanner } from './status-and-feedback/banner/banner.js';
+export { NLDDNotification } from './status-and-feedback/notification/notification.js';
 export { NLDDBadge } from './status-and-feedback/badge/badge.js';
 export { NLDDProgressBar, NLDDProgressBarSegmentIndicator } from './status-and-feedback/progress-bar/progress-bar.js';
 export { NLDDProgressCircle, NLDDProgressCircleSegmentIndicator } from './status-and-feedback/progress-circle/progress-circle.js';

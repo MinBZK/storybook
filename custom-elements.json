@@ -6473,6 +6473,14 @@
         },
         {
           "kind": "js",
+          "name": "NLDDNotification",
+          "declaration": {
+            "name": "NLDDNotification",
+            "module": "./status-and-feedback/notification/notification.js"
+          }
+        },
+        {
+          "kind": "js",
           "name": "NLDDBadge",
           "declaration": {
             "name": "NLDDBadge",
@@ -30962,6 +30970,246 @@
           "declaration": {
             "name": "NLDDModalDialog",
             "module": "src/components/status-and-feedback/modal-dialog/modal-dialog.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/status-and-feedback/notification/notification-region.ts",
+      "declarations": [
+        {
+          "kind": "function",
+          "name": "joinRegion",
+          "return": {
+            "type": {
+              "text": "void"
+            }
+          },
+          "parameters": [
+            {
+              "name": "notification",
+              "type": {
+                "text": "NLDDNotification"
+              }
+            },
+            {
+              "name": "label",
+              "type": {
+                "text": "string"
+              }
+            }
+          ],
+          "description": "Newest in front: what just happened is what you want to read, and the older\nones slide back and downwards behind it."
+        },
+        {
+          "kind": "function",
+          "name": "leaveRegion",
+          "return": {
+            "type": {
+              "text": "void"
+            }
+          },
+          "parameters": [
+            {
+              "name": "notification",
+              "type": {
+                "text": "NLDDNotification"
+              }
+            }
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "joinRegion",
+          "declaration": {
+            "name": "joinRegion",
+            "module": "src/components/status-and-feedback/notification/notification-region.ts"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "leaveRegion",
+          "declaration": {
+            "name": "leaveRegion",
+            "module": "src/components/status-and-feedback/notification/notification-region.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/status-and-feedback/notification/notification.ts",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "A short message that arrives over the interface and leaves on its own: a save that worked, a request that failed. Not a banner, which stands in the page and stays there — this one floats, stacks, and goes away. It places itself. Write it wherever it belongs in your code and it moves to one shared region: top right from md, full width across the top below that. Nothing about the position is settable, so notifications from anywhere in an application land in the same place and stack in the same order. More than one is a deck, not a list: the front one is readable and the older ones peek out below it, so a burst of messages takes the room of roughly one. The newest is in front. Behind it a notification is a bare surface, cut to the height of the one in front; dismiss the front and it slides up into the place that came free while its message fades in, because it was standing there all along. Under the front notification sits a strip as wide as the deck and as tall as the deck is when it fans out. Pointing at it fans the deck out to fill it, which is the only hint that there is more here than the message you can read; clicking it, or moving focus into the region, lays the whole deck out as a list. Clicking or tabbing away puts it back. The notification itself is not a button: a click on the message you are reading does nothing. Only the front of the deck counts down, and only while the deck is closed: open means someone is reading. The rest wait, so nothing disappears from under the one you are reading. `critical` never leaves on its own: a failure is worth reading, and the count-down would take it away while you were. That also keeps this within WCAG 2.2.1, which allows a time limit when what disappears is not essential. The clock pauses while a pointer is over the notification and while focus is inside it, and resumes where it left off rather than starting over. role follows the variant: `critical` becomes role=\"alert\", the rest role=\"status\". Focus never moves on its own. Escape dismisses the notification that focus is in.",
+          "name": "NLDDNotification",
+          "members": [
+            {
+              "kind": "field",
+              "name": "variant",
+              "type": {
+                "text": "NotificationVariant"
+              },
+              "default": "'info'",
+              "attribute": "variant",
+              "reflects": true
+            },
+            {
+              "kind": "field",
+              "name": "icon",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "attribute": "icon",
+              "reflects": true
+            },
+            {
+              "kind": "field",
+              "name": "text",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "attribute": "text",
+              "reflects": true
+            },
+            {
+              "kind": "field",
+              "name": "supportingText",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "attribute": "supporting-text",
+              "reflects": true
+            },
+            {
+              "kind": "field",
+              "name": "duration",
+              "default": "10000",
+              "attribute": "duration",
+              "reflects": true,
+              "type": {
+                "text": "number"
+              }
+            },
+            {
+              "kind": "field",
+              "name": "translations",
+              "type": {
+                "text": "Partial<T>"
+              },
+              "default": "{}",
+              "attribute": "translations",
+              "inheritedFrom": {
+                "name": "withTranslations",
+                "module": "src/utilities/with-translations.ts"
+              }
+            }
+          ],
+          "events": [
+            {
+              "name": "dismiss",
+              "description": "Fired when the notification is dismissed, by the button, by Escape, or by its own clock. The consumer removes it."
+            }
+          ],
+          "attributes": [
+            {
+              "name": "variant",
+              "type": {
+                "text": "NotificationVariant"
+              },
+              "default": "'info'",
+              "fieldName": "variant",
+              "description": "What kind of message this is; sets the icon color and the ARIA role (default: 'info')"
+            },
+            {
+              "name": "icon",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "fieldName": "icon",
+              "description": "Icon override. Default per variant: success → check-circle-filled, info → info-circle-filled, warning → exclamation-triangle-filled, critical → exclamation-circle-filled"
+            },
+            {
+              "name": "text",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "fieldName": "text",
+              "description": "The message"
+            },
+            {
+              "name": "supporting-text",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "fieldName": "supportingText",
+              "description": "A second line under the message"
+            },
+            {
+              "name": "duration",
+              "default": "DEFAULT_DURATION",
+              "fieldName": "duration",
+              "description": "Milliseconds before it leaves once it is front of the deck (default: 10000). `0` keeps it until dismissed, which is what `critical` does regardless."
+            },
+            {
+              "name": "translations",
+              "type": {
+                "text": "Partial<T>"
+              },
+              "default": "{}",
+              "fieldName": "translations",
+              "inheritedFrom": {
+                "name": "withTranslations",
+                "module": "src/utilities/with-translations.ts"
+              },
+              "description": "Override translation keys; unset keys fall back to Dutch"
+            }
+          ],
+          "mixins": [
+            {
+              "name": "withTranslations",
+              "module": "/src/utilities/with-translations.js"
+            }
+          ],
+          "superclass": {
+            "name": "LitElement",
+            "package": "lit"
+          },
+          "tagName": "nldd-notification",
+          "customElement": true,
+          "slots": [
+            {
+              "name": "actions",
+              "description": "At most 2 nldd-button elements, under the text. More than 2 is refused with a DEV warning: a message that needs three choices is a dialog."
+            }
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "NLDDNotification",
+          "declaration": {
+            "name": "NLDDNotification",
+            "module": "src/components/status-and-feedback/notification/notification.ts"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "nldd-notification",
+          "declaration": {
+            "name": "NLDDNotification",
+            "module": "src/components/status-and-feedback/notification/notification.ts"
           }
         }
       ]

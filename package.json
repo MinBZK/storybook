@@ -410,6 +410,10 @@
       "types": "./dist/components/status-and-feedback/banner/banner.d.ts",
       "default": "./dist/components/status-and-feedback/banner/banner.js"
     },
+    "./notification": {
+      "types": "./dist/components/status-and-feedback/notification/notification.d.ts",
+      "default": "./dist/components/status-and-feedback/notification/notification.js"
+    },
     "./badge": {
       "types": "./dist/components/status-and-feedback/badge/badge.d.ts",
       "default": "./dist/components/status-and-feedback/badge/badge.js"
