@@ -2414,6 +2414,26 @@
           "members": [
             {
               "kind": "field",
+              "name": "href",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "attribute": "href",
+              "reflects": true
+            },
+            {
+              "kind": "field",
+              "name": "target",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "attribute": "target",
+              "reflects": true
+            },
+            {
+              "kind": "field",
               "name": "text",
               "type": {
                 "text": "string"
@@ -2474,6 +2494,24 @@
             }
           ],
           "attributes": [
+            {
+              "name": "href",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "fieldName": "href",
+              "description": "Makes the mark and the name one link, for the place this window belongs to (usually the app's own start). The `action` slot stays outside it: a control inside a link is a control you cannot reach without following the link."
+            },
+            {
+              "name": "target",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "fieldName": "target",
+              "description": "Where the link opens; only meaningful with `href`. `_blank` adds rel=\"noopener noreferrer\"."
+            },
             {
               "name": "text",
               "type": {

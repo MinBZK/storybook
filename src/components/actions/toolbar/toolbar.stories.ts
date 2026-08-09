@@ -179,7 +179,9 @@ export const TitleWithMedia = {
 	render: (args: Record<string, any>) => html`
 		<div style="display: flex; flex-direction: column; gap: 16px;">
 			<!-- Icon before the name: says what kind of document this is before you
-			     read which one. -->
+			     read which one. With href the mark and the name are one link back
+			     to where this window belongs; the action beside it stays its own
+			     control. -->
 			<nldd-toolbar
 				size=${args.size}
 				?show-item-labels=${args.showItemLabels}
@@ -187,6 +189,7 @@ export const TitleWithMedia = {
 				<nldd-toolbar-title
 					slot="start"
 					text="beleid-2026"
+					href="#"
 				>
 					<nldd-icon
 						slot="media"

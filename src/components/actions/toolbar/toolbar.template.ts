@@ -18,12 +18,29 @@ export function toolbarItemTemplate(component: NLDDToolbarItem) {
 // # Title template
 
 export function toolbarTitleTemplate(component: NLDDToolbarTitle) {
-	return html`
-		<slot name="media"></slot>
+	const titleGroup = html`
 		<div class="toolbar__title-group">
 			${component.text ? html`<p class="toolbar__title">${component.text}</p>` : nothing}
 			${component.supportingText ? html`<p class="toolbar__subtitle">${component.supportingText}</p>` : nothing}
 		</div>
+	`;
+
+	// The link takes the mark and the name, never the action slot: a control
+	// inside a link is a control you cannot reach without following the link.
+	return html`
+		${component.href ? html`
+			<a class="toolbar__title-link"
+				href=${component.href}
+				target=${component.target || nothing}
+				rel=${component.target === '_blank' ? 'noopener noreferrer' : nothing}
+			>
+				<slot name="media"></slot>
+				${titleGroup}
+			</a>
+		` : html`
+			<slot name="media"></slot>
+			${titleGroup}
+		`}
 		<slot name="action"></slot>
 	`;
 }

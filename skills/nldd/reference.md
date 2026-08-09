@@ -304,6 +304,8 @@ A split button combines a primary action button with a dropdown trigger. The mai
 | `min-width` | `string` | Minimum width as a CSS length (default: '0', so the title shrink-wraps its content and the next element sits against it). |
 | `max-width` | `string` | Maximum width as a CSS length (default: '240px'); the title text truncates with an ellipsis beyond it. The cap is lifted while the title is the sole toolbar element (it then stretches to fill the row). |
 | `size` | `'sm'\|'md'\|'lg'` | Set by nldd-toolbar, not a consumer attribute: mirrors the toolbar's size (default: 'md'), which sets the title group height and, at 'sm', the title and supporting-text fonts. |
+| `href` | `string` | Makes the mark and the name one link, for the place this window belongs to (usually the app's own start). The `action` slot stays outside it: a control inside a link is a control you cannot reach without following the link. |
+| `target` | `string` | Where the link opens; only meaningful with `href`. `_blank` adds rel="noopener noreferrer". |
 
 **Slots**
 

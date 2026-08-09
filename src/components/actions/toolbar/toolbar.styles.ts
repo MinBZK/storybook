@@ -224,7 +224,7 @@ export const toolbarTitleStyles = css`
 		--_title-width: auto;
 		--_title-max-width: var(--primitives-area-240);
 		--_title-group-height: var(--semantics-controls-md-min-size);
-		--_content-gap: var(--primitives-space-8);
+		--_content-gap: var(--primitives-space-6);
 		--_title-font: var(--primitives-font-body-lg-medium-flat);
 		--_subtitle-font: var(--primitives-font-body-xs-regular-flat);
 
@@ -293,6 +293,30 @@ export const toolbarTitleStyles = css`
 		align-items: flex-start;
 		overflow: hidden;
 	}
+
+	/* The link wraps mark and name so the whole thing is one target, and it
+	   inherits its color: a window's own name is not a place you send people
+	   away to, so it does not read as a link until you point at it. */
+	.toolbar__title-link {
+		display: inline-flex;
+		border-radius: var(--semantics-controls-sm-corner-radius);
+		color: inherit;
+		min-width: 0;
+		gap: var(--_content-gap);
+		align-items: center;
+		text-decoration: none;
+	}
+
+	.toolbar__title-link:hover .toolbar__title {
+		text-decoration: underline;
+	}
+
+	.toolbar__title-link:focus-visible {
+		outline: var(--semantics-focus-ring-outline);
+		outline-offset: var(--semantics-focus-ring-outline-offset);
+		box-shadow: var(--semantics-focus-ring-box-shadow);
+	}
+
 
 	/* Leading media (a logo, a product mark, a file-type icon) and a trailing
 	   action are kept whole while the title text truncates. The space between
