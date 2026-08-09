@@ -43,6 +43,8 @@ here; consult the commit history if you need that level of detail.
 
 ### Fixed
 
+- **`nldd-banner` breaks a word that does not fit.** A banner carries text it did not write: a server message, an identifier, a URL. One token longer than the banner is wide ran past the edge and was clipped, taking the rest of the sentence with it. A word that cannot fit on a line of its own is now broken instead of lost.
+
 - **`nldd-title-cell` balances its title over the lines.** It held `text-wrap: pretty`, which only keeps a single word off the last line. A title is a handful of words, and there `balance` is the rule that matters: a two-line title becomes two halves instead of a full line plus one word. `nldd-text-cell` keeps `pretty`, because a cell of running text is exactly what that rule is for.
 
 - **An anchored `nldd-top-title-bar` hides its own title from assistive technology.** `collapse-anchor` points at the heading the bar's title swaps in for, so the two carry the same words on purpose: sighted readers see one at a time, but once you scrolled past the heading a screen reader found the title twice. The title group is now `aria-hidden` whenever the bar is anchored. Without an anchor nothing changes, because there the bar's title is the only one there is. So anchor at the heading itself, not at some other element that happens to sit at the right height.
