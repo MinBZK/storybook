@@ -295,8 +295,9 @@ export const toolbarTitleStyles = css`
 	}
 
 	/* The link wraps mark and name so the whole thing is one target, and it
-	   inherits its color: a window's own name is not a place you send people
-	   away to, so it does not read as a link until you point at it. */
+	   inherits its color and draws no underline: a window's own name is not a
+	   place you send people away to. The focus ring is the only state it
+	   carries, the same as everywhere else in this system. */
 	.toolbar__title-link {
 		display: inline-flex;
 		border-radius: var(--semantics-controls-sm-corner-radius);
@@ -305,10 +306,6 @@ export const toolbarTitleStyles = css`
 		gap: var(--_content-gap);
 		align-items: center;
 		text-decoration: none;
-	}
-
-	.toolbar__title-link:hover .toolbar__title {
-		text-decoration: underline;
 	}
 
 	.toolbar__title-link:focus-visible {
