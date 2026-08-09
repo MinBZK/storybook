@@ -172,6 +172,9 @@ export const titleCellStyles = css`
 		overflow-wrap: anywhere;
 	}
 
+	/* Balanced, not pretty: a title is a handful of words, and evening out the
+	   lines keeps a two-line one from being a full line plus one word. Running
+	   text is nldd-text-cell's job, and there pretty is the right rule. */
 	.title-cell__title {
 		margin: 0;
 		min-width: 0;
@@ -180,7 +183,7 @@ export const titleCellStyles = css`
 		color: var(--_title-color);
 		font: var(--_title-font);
 		overflow-wrap: break-word;
-		text-wrap: pretty;
+		text-wrap: balance;
 	}
 
 	@media (forced-colors: active) {
