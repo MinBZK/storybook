@@ -32,9 +32,8 @@ export const notificationStyles = css`
 		width: var(--_width);
 		max-width: 100%;
 		overflow: hidden;
-		/* Open, the region is a column that can run past the bottom of the screen.
-		   Without this the messages would squeeze themselves to fit instead of
-		   letting the list scroll. */
+		/* The region is a column with a max height, so without this the messages
+		   squeeze to fit instead of letting the list scroll. */
 		flex-shrink: 0;
 		translate: 0 calc(var(--_stack-offset) * var(--_depth));
 		scale: calc(1 - var(--_stack-scale-step) * var(--_depth)) 1;
@@ -43,8 +42,6 @@ export const notificationStyles = css`
 		animation: notification-arrive var(--primitives-transition-duration-medium) var(--primitives-transition-easing-default) both;
 	}
 
-	/* The surface stays neutral whatever happened: four colored panes floating
-	   over the interface shout, and the icon already says which kind this is. */
 	:host([variant="accent"]) {
 		--_icon-color: var(--components-notification-icon-accent-color);
 	}
@@ -75,11 +72,9 @@ export const notificationStyles = css`
 
 	/* # Element */
 
-	/* Behind the front of the deck a notification is a bare surface. Its edge is
-	   cut to the height of the one in front, so a taller one behind would show
-	   half a row of buttons along the bottom, and half a button reads as a
-	   mistake rather than as a card further back. Coming forward, the message
-	   fades in on the card that was already standing there. */
+	/* Hidden behind the front of the deck: the region cuts those to the height of
+	   the one in front, and half a row of buttons along that edge reads as a
+	   mistake rather than as a card further back. */
 	.notification {
 		display: flex;
 		position: relative;
@@ -91,9 +86,7 @@ export const notificationStyles = css`
 		align-items: center;
 	}
 
-	/* No border of its own: it floats on a shadow the way the other overlays do,
-	   and a line around it would only fight that. Forced colors take the shadow
-	   away, so there the edge has to be drawn after all. */
+	/* Forced colors drop the shadow this floats on, so there it needs an edge. */
 	@media (forced-colors: active) {
 		.notification {
 			border: var(--primitives-border-width-regular) solid CanvasText;
@@ -103,8 +96,6 @@ export const notificationStyles = css`
 
 	/* ## Icon */
 
-	/* Pinned to the top while the text beside it is centred: however far the
-	   message runs, the icon stays where the message starts. */
 	.notification__icon {
 		display: flex;
 		align-self: flex-start;
@@ -140,8 +131,6 @@ export const notificationStyles = css`
 		text-wrap: pretty;
 	}
 
-	/* Under the text, not beside it: a button in the row would fight the dismiss
-	   button for the same corner, and both would lose room for a real label. */
 	.notification__actions {
 		display: flex;
 		margin-top: var(--_actions-margin-top);
@@ -156,10 +145,8 @@ export const notificationStyles = css`
 
 	/* ## Dismiss */
 
-	/* Out of the flow and over the padding, so the button cannot make the
-	   notification taller than the message in it. Always there, not on hover: a
-	   control that appears when you point at it cannot be found with a finger or
-	   with a keyboard. */
+	/* Out of the flow, so the button cannot make the notification taller than the
+	   message in it. */
 	.notification__dismiss {
 		display: flex;
 		position: absolute;
@@ -170,8 +157,7 @@ export const notificationStyles = css`
 
 	/* # Animation */
 
-	/* In from the edge it came from, past the inset so it starts off the screen
-	   rather than at the margin. */
+	/* Past the inset, so it starts off the screen rather than at the margin. */
 	@keyframes notification-arrive {
 		from {
 			opacity: 0;

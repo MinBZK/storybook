@@ -294,10 +294,6 @@ export const toolbarTitleStyles = css`
 		overflow: hidden;
 	}
 
-	/* The link wraps mark and name so the whole thing is one target, and it
-	   inherits its color and draws no underline: a window's own name is not a
-	   place you send people away to. The focus ring is the only state it
-	   carries, the same as everywhere else in this system. */
 	.toolbar__title-link {
 		display: inline-flex;
 		border-radius: var(--semantics-controls-sm-corner-radius);
@@ -315,19 +311,9 @@ export const toolbarTitleStyles = css`
 	}
 
 
-	/* Leading media (a logo, a product mark, a file-type icon) and a trailing
-	   action are kept whole while the title text truncates. The space between
-	   them is a gap on the host, not a margin here: a margin on a slotted
-	   element is a declaration in this shadow tree, and the tree the element
-	   actually lives in outranks it, so a consumer's own margin reset on
-	   the element itself would quietly win. A slot is display:contents, so an empty one puts no
-	   flex item in the row and the gap has nothing to space.
-
-	   Only the media's height is capped, to the title group, so nothing can
-	   stretch the row; which size to draw within that is the consumer's to
-	   pick, since a file icon and a logo do not want the same one. No width on
-	   purpose: here ::slotted does outrank the slotted element's own :host, so
-	   setting one would overrule the size that element was given. */
+	/* The space around these is a gap on the host: a margin here loses to the
+	   consumer's own margin reset, which lives in the tree the element is in.
+	   And no width, because ::slotted does beat the element's own :host. */
 	::slotted([slot="media"]),
 	::slotted([slot="action"]) {
 		flex-shrink: 0;
