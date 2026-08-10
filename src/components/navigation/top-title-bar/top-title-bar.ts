@@ -73,6 +73,12 @@ export class NLDDTopTitleBar extends LitElement {
 	_hasToolbarItems = false;
 
 	private _pageElement: Element | null = null;
+
+	/** Reactive: the title group hides from assistive software once the anchor is
+	 *  really there, not the moment someone types an id. A typo would otherwise
+	 *  leave the page without an accessible title at all, and nothing on screen
+	 *  would say so. */
+	@state()
 	private _anchorElement: Element | null = null;
 	private _activeScrollTarget: EventTarget | null = null;
 	private _scrollTargetStyleObserver: MutationObserver | null = null;
@@ -131,6 +137,11 @@ export class NLDDTopTitleBar extends LitElement {
 		}
 	}
 
+	/** @internal */
+	get _hasAnchor(): boolean {
+		return this._anchorElement !== null;
+	}
+
 	private _connectAnchor(): void {
 		if (!this.collapseAnchor) return;
 
@@ -139,6 +150,12 @@ export class NLDDTopTitleBar extends LitElement {
 			?? root.querySelector(`#${this.collapseAnchor}`);
 
 		if (!this._anchorElement) {
+			if (import.meta.env?.DEV) {
+				console.warn(
+					`[nldd-top-title-bar] collapse-anchor="${this.collapseAnchor}" matches nothing yet. `
+					+ 'If it never renders, the bar keeps its own title and reads it out twice.',
+				);
+			}
 			this._waitForAnchor(root);
 			return;
 		}

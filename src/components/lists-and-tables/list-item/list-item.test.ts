@@ -1048,3 +1048,33 @@ describe('nldd-list-item divider met verborgen cellen', () => {
 		cleanup(el);
 	});
 });
+
+describe('nldd-list-item divider zonder eigen marker', () => {
+	// Without an explicit divider-start the row derives one. If it only ever
+	// offered the first text cell and that one is hidden per breakpoint, the
+	// measurement would come up empty and the line would fall back to the full
+	// width, even though a later cell in the same row is on screen.
+	it('leidt de start af uit de eerste cel die wel gerenderd wordt', async () => {
+		const el = await fixture(`
+			<nldd-list>
+				<nldd-list-item>
+					<nldd-cell><nldd-icon name="info"></nldd-icon></nldd-cell>
+					<nldd-spacer-cell size="12"></nldd-spacer-cell>
+					<nldd-text-cell style="display: none" text="Verborgen"></nldd-text-cell>
+					<nldd-text-cell text="Zichtbaar"></nldd-text-cell>
+				</nldd-list-item>
+			</nldd-list>
+		`);
+		await waitForUpdate(el);
+		const item = el.querySelector('nldd-list-item') as HTMLElement;
+		const zichtbaar = el.querySelectorAll('nldd-text-cell')[1] as HTMLElement;
+		const block = item.shadowRoot!.querySelector('.list-item') as HTMLElement;
+		await nextFrames();
+
+		const inset = parseFloat(item.style.getPropertyValue('--_divider-inset-start'));
+		const verwacht = zichtbaar.getBoundingClientRect().left - block.getBoundingClientRect().left;
+		expect(inset).toBeGreaterThan(0);
+		expect(Math.abs(inset - verwacht)).toBeLessThan(1);
+		cleanup(el);
+	});
+});

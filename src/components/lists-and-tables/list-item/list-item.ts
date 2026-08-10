@@ -488,8 +488,12 @@ export class NLDDListItem extends withTranslations(LitElement, nlddListItemTrans
 		// carries its own inline padding, so its edge sits before the text. Own
 		// descendants, so a text inside a segment counts as this row's content
 		// while a nested row's text does not.
-		const marker = this._ownDescendants('nldd-text-cell, nldd-title-cell')[0];
-		return marker ? [marker] : [];
+		// All of them, not just the first: a row that swaps cells per breakpoint
+		// hides one and shows another, and handing over only the hidden one would
+		// leave the measurement with nothing and drop the divider back to the full
+		// width. The visibility filter downstream picks the first one that renders,
+		// the same way it does for explicit markers.
+		return this._ownDescendants('nldd-text-cell, nldd-title-cell');
 	}
 
 	private _measureDividerMarkers(): void {
