@@ -33,8 +33,10 @@
  * were. That also keeps this within WCAG 2.2.1, which allows a time limit when
  * what disappears is not essential.
  *
- * The clock pauses while a pointer is over the notification and while focus is
- * inside it, and resumes where it left off rather than starting over.
+ * The clock pauses while a pointer moves over the notification and while focus
+ * is inside it, and resumes where it left off rather than starting over. A
+ * pointer that merely happens to rest where the notification appears does not
+ * count: it never moved, so nobody is reading.
  *
  * ## ARIA
  * role follows the variant: `critical` becomes role="alert", the rest
@@ -112,10 +114,8 @@ export class NLDDNotification extends withTranslations(LitElement, nlddNotificat
 	private _timerStartedAt = 0;
 
 	/** Remembered from the events rather than read back from the browser with
-	 *  `:hover` and `document.activeElement`. A notification reaches the front of
-	 *  the deck through a z-index swap, and what an engine reports about a
-	 *  stationary pointer over that spot differs per engine and per platform.
-	 *  What we act on are the events, so what we remember are the events. */
+	 *  `:hover`: what an engine reports about a stationary pointer over a fixed
+	 *  spot differs per engine and per platform. */
 	private _pointerInside = false;
 
 	private _focusInside = false;
@@ -140,7 +140,7 @@ export class NLDDNotification extends withTranslations(LitElement, nlddNotificat
 		super.connectedCallback();
 		this.setAttribute('role', this.variant === 'critical' ? 'alert' : 'status');
 		this._remainingDuration = this.duration;
-		this.addEventListener('pointerenter', this._onPointerEnter);
+		this.addEventListener('pointermove', this._onPointerMove);
 		this.addEventListener('pointerleave', this._onPointerLeave);
 		this.addEventListener('focusin', this._onFocusIn);
 		this.addEventListener('focusout', this._onFocusOut);
@@ -162,7 +162,7 @@ export class NLDDNotification extends withTranslations(LitElement, nlddNotificat
 		super.disconnectedCallback();
 		if (this._moving) return;
 		this._clearTimer();
-		this.removeEventListener('pointerenter', this._onPointerEnter);
+		this.removeEventListener('pointermove', this._onPointerMove);
 		this.removeEventListener('pointerleave', this._onPointerLeave);
 		this.removeEventListener('focusin', this._onFocusIn);
 		this.removeEventListener('focusout', this._onFocusOut);
@@ -198,7 +198,14 @@ export class NLDDNotification extends withTranslations(LitElement, nlddNotificat
 		}
 	};
 
-	private _onPointerEnter = (): void => {
+	/** A move rather than an enter. A notification arrives at a fixed spot on the
+	 *  screen, so the browser hit-tests whatever happens to be under the pointer
+	 *  and fires a genuine pointerenter without the pointer having moved. Taking
+	 *  that as hover parks the clock forever for anyone whose cursor happens to
+	 *  rest in that corner, because the pointerleave that would release it never
+	 *  comes. A move is someone pointing at it; sitting still is not. */
+	private _onPointerMove = (): void => {
+		if (this._pointerInside) return;
 		this._pointerInside = true;
 		this._clearTimer();
 	};

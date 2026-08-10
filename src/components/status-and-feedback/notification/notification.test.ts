@@ -75,6 +75,41 @@ describe('nldd-notification', () => {
 		host.remove();
 	});
 
+	it('telt gewoon af als de aanwijzer er stil boven blijkt te liggen', async () => {
+		const host = document.createElement('div');
+		document.body.appendChild(host);
+		host.innerHTML = '<nldd-notification text="Opgeslagen" duration="60"></nldd-notification>';
+		const item = host.querySelector('nldd-notification')!;
+		const gezien = vi.fn();
+		item.addEventListener('dismiss', gezien);
+
+		// Wat de browser doet zodra de melding op zijn vaste plek verschijnt en daar
+		// toevallig een stilstaande aanwijzer ligt: een echte pointerenter zonder
+		// dat er iets bewogen heeft. Dat is geen hover.
+		item.dispatchEvent(new PointerEvent('pointerenter', { bubbles: false }));
+		await wacht(400);
+		expect(gezien).toHaveBeenCalled();
+
+		host.remove();
+	});
+
+	it('pauzeert wel zodra de aanwijzer er echt overheen beweegt', async () => {
+		const host = document.createElement('div');
+		document.body.appendChild(host);
+		host.innerHTML = '<nldd-notification text="Opgeslagen" duration="60"></nldd-notification>';
+		const item = host.querySelector('nldd-notification')!;
+		const gezien = vi.fn();
+		item.addEventListener('dismiss', gezien);
+
+		await Promise.resolve();
+		await Promise.resolve();
+		item.dispatchEvent(new PointerEvent('pointermove', { bubbles: false }));
+		await wacht(400);
+		expect(gezien).not.toHaveBeenCalled();
+
+		host.remove();
+	});
+
 	it('laat een fout staan, hoe lang je ook wacht', async () => {
 		const host = document.createElement('div');
 		document.body.appendChild(host);
