@@ -63,18 +63,36 @@ export default {
  *  notification announces that it is done and whoever put it there removes it. */
 const weg = (e: Event) => (e.currentTarget as HTMLElement).remove();
 
-const Template = ({ variant, icon, text, supportingText, duration }: Record<string, unknown>) => html`
-	<nldd-notification
-		variant=${variant}
-		icon=${icon || ''}
-		text=${text}
-		supporting-text=${supportingText || ''}
-		duration=${duration}
-		@dismiss=${weg}
-	></nldd-notification>
-`;
+/**
+ * A notification moves itself out of the story and into the shared region, so a
+ * re-render can no longer reach it: lit would keep the element it already has,
+ * update it where it now lives, and the controls would look dead. The story
+ * therefore does what a consumer does — clear what is there and make a new one.
+ */
+const Template = ({ variant, icon, text, supportingText, duration }: Record<string, unknown>) => {
+	document.getElementById('nldd-notification-region')?.remove();
+	const melding = document.createElement('nldd-notification');
+	melding.setAttribute('variant', String(variant));
+	if (icon) melding.setAttribute('icon', String(icon));
+	melding.setAttribute('text', String(text));
+	if (supportingText) melding.setAttribute('supporting-text', String(supportingText));
+	melding.setAttribute('duration', String(duration));
+	melding.addEventListener('dismiss', weg);
+	return html`${melding}`;
+};
 
-export const Default = Template.bind({});
+/**
+ * De melding staat niet in het vlak hieronder maar rechtsboven op de pagina:
+ * hij verhuist zichzelf naar de gedeelde regio, net als in een applicatie.
+ * Verander een control en er komt een nieuwe.
+ */
+export const Default = {
+	render: Template,
+	// A story in a frame of its own never hears about a changed arg, so this one
+	// renders in the docs page itself. It leaves nothing behind in its own block,
+	// hence no reserved height.
+	parameters: { docs: { story: { inline: true, height: 'auto' } } },
+};
 
 /**
  * Het vlak blijft neutraal en alleen het icoon draagt de kleur: vijf gekleurde
