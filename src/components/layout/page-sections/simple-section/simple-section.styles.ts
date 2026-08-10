@@ -48,6 +48,25 @@ export const simpleSectionStyles = css`
 		--_max-width: none;
 	}
 
+	/* On the main rather than the body: the body also holds the header and the
+	   footer, and the children land in the main. It is a flex column, so down the
+	   section is the main axis and across it is the cross axis. */
+	:host([vertical-alignment="center"]) .simple-section__main {
+		justify-content: center;
+	}
+
+	:host([vertical-alignment="bottom"]) .simple-section__main {
+		justify-content: flex-end;
+	}
+
+	:host([horizontal-alignment="center"]) .simple-section__main {
+		align-items: center;
+	}
+
+	:host([horizontal-alignment="right"]) .simple-section__main {
+		align-items: flex-end;
+	}
+
 
 	/* # Block */
 

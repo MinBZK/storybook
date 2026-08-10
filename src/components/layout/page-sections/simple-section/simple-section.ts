@@ -14,6 +14,8 @@
  * @attr {'inherit'|'base'|'tinted'} [background] - Surface background ('inherit' default; 'base'/'tinted' paint and cascade a surface).
  * @attr {'inherit'|'light'|'dark'|'inverted'} [scheme] - Color scheme ('inherit' default; 'inverted' = opposite of the surrounding page scheme).
  * @attr {string} [width] - Body max-width: 'full' removes the constraint so the section spans the full available width. Any CSS length (e.g. '480px') overrides the default max-width.
+ * @attr {'left'|'center'|'right'} [horizontal-alignment] - Where the body's children sit across the body ('left' default). Use it to place something narrower than the body, such as a container with a max-width.
+ * @attr {'top'|'center'|'bottom'} [vertical-alignment] - Where the body's children sit down the section ('top' default). Only visible when the section is taller than its content.
  * @attr {string} [height] - Minimum section height (any CSS length, e.g. '400px', '100dvh') (mirrors width, which sets the body max-width).
  * @attr {string} [padding-block] - Block (top and bottom) padding override (token 0-96; '0' strips it).
  * @attr {string} [padding-top] - Top padding override.
@@ -23,8 +25,12 @@
 import { LitElement } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
 import { PageSectionMixin } from '../../../../utilities/page-section-mixin.js';
+import { reflectNonDefault } from '../../../../utilities/reflect-non-default.js';
 import { simpleSectionStyles } from './simple-section.styles.js';
 import { simpleSectionTemplate } from './simple-section.template.js';
+
+type HorizontalAlignment = 'left' | 'center' | 'right';
+type VerticalAlignment = 'top' | 'center' | 'bottom';
 
 @customElement('nldd-simple-section')
 export class NLDDSimpleSection extends PageSectionMixin(LitElement) {
@@ -33,6 +39,13 @@ export class NLDDSimpleSection extends PageSectionMixin(LitElement) {
 	/** Width mode: 'full' (removes body max-width) or any CSS length. */
 	@property({ type: String, reflect: true })
 	width = '';
+
+	/** Where the body's children sit; the body itself keeps its own max-width. */
+	@property({ reflect: true, attribute: 'horizontal-alignment', converter: reflectNonDefault<HorizontalAlignment>('left') })
+	horizontalAlignment: HorizontalAlignment = 'left';
+
+	@property({ reflect: true, attribute: 'vertical-alignment', converter: reflectNonDefault<VerticalAlignment>('top') })
+	verticalAlignment: VerticalAlignment = 'top';
 
 	override updated(changedProperties: Map<string, unknown>): void {
 		super.updated(changedProperties);

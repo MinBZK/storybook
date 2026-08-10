@@ -17,6 +17,9 @@ export const containerStyles = css`
 
 	:host {
 		--_min-column-width: var(--primitives-area-280);
+		--_width: 100%;
+		--_min-width: auto;
+		--_max-width: none;
 		--_justify-content: initial;
 		--_justify-items: initial;
 		--_align-items: initial;
@@ -59,8 +62,14 @@ export const containerStyles = css`
 		@container layout-container (min-width: ${lgMin}) { --_resolved-gap: var(--_lg-gap); }
 
 		display: block;
-		width: 100%;
+		width: var(--_width);
+		min-width: var(--_min-width);
+		max-width: var(--_max-width);
 		height: auto;
+	}
+
+	:host([width="fit-content"]) {
+		--_width: fit-content;
 	}
 
 	:host([hidden]) {
