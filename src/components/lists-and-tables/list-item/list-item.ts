@@ -415,7 +415,7 @@ export class NLDDListItem extends withTranslations(LitElement, nlddListItemTrans
 	}
 
 	_applyVariant(variant: string) {
-		this._isBoxed = variant === 'box';
+		this._isBoxed = variant.startsWith('box');
 		this._relayToChildren(item => item._applyVariant(variant));
 		this.classList.toggle('is-boxed', this._isBoxed);
 	}
@@ -587,7 +587,7 @@ export class NLDDListItem extends withTranslations(LitElement, nlddListItemTrans
 			// reach them. Relay what we were given, and they relay it downwards.
 			rows.forEach(row => {
 				const item = row as NLDDListItem;
-				item._applyVariant?.(this._isBoxed ? 'box' : 'simple');
+				item._applyVariant?.(this._isBoxed ? 'box-tinted' : 'simple');
 				item._applyParentType?.(this._parentType);
 			});
 		}

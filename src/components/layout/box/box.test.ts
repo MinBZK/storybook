@@ -25,8 +25,14 @@ describe('nldd-box', () => {
 	it('drops the variant attribute again when set back to the default', async () => {
 		el = await fixture('<nldd-box variant="critical"></nldd-box>');
 		await waitForUpdate(el);
-		(el as HTMLElement & { variant: string }).variant = 'default';
+		(el as HTMLElement & { variant: string }).variant = 'tinted';
 		await waitForUpdate(el);
 		expect(el.hasAttribute('variant')).toBe(false);
+	});
+
+	it('keeps base on the attribute, since the styles select on it', async () => {
+		el = await fixture('<nldd-box variant="base"></nldd-box>');
+		await waitForUpdate(el);
+		expect(el.getAttribute('variant')).toBe('base');
 	});
 });

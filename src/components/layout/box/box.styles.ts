@@ -25,7 +25,7 @@ export const boxStyles = css`
 
 	/* ## Background variants */
 
-	:host([background="base"]) {
+	:host([variant="base"]) {
 		--_background-color: var(--components-box-base-background-color);
 		--_border-color: var(--components-box-base-border-color);
 	}

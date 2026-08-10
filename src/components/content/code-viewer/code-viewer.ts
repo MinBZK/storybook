@@ -21,10 +21,7 @@
  *
  * @element nldd-code-viewer
  *
- * @attr {'simple'|'box'} variant - Visual style. `box` (default) is a framed
- *   card with rounded corners, padding, fill, and a 1px border ring. `simple`
- *   drops the entire frame — use when embedding inside a parent surface.
- * @attr {'tinted'|'base'} background - Surface fill when `variant="box"`.
+ * @attr {'box-tinted'|'box-base'|'simple'} variant - Visual style. The two `box` values are a framed card with rounded corners, padding, fill, and a 1px border ring, and differ in which surface they fill with; `box-tinted` is the default. `simple` drops the entire frame — use when embedding inside a parent surface.
  * @attr {string} language - Grammar to highlight with. Empty disables highlighting.
  * @attr {boolean} no-copy - Hide the copy-to-clipboard button (shown by default).
  * @attr {boolean} wrap - Wrap long lines instead of horizontal scroll
@@ -62,17 +59,16 @@ function isClipboardAvailable(): boolean {
 		&& typeof navigator.clipboard?.writeText === 'function';
 }
 
+export type CodeViewerVariant = 'box-tinted' | 'box-base' | 'simple';
+
 @customElement('nldd-code-viewer')
 export class NLDDCodeViewer extends NLDDCodeMirrorElement {
 	static override styles = codeViewerStyles;
 
-	/** Visual style. `box` (default) is a framed card; `simple` drops the frame. */
-	@property({ reflect: true, converter: reflectNonDefault<'simple' | 'box'>('box') })
-	variant: 'simple' | 'box' = 'box';
-
-	/** Surface fill when `variant="box"`. */
-	@property({ reflect: true, converter: reflectNonDefault<'tinted' | 'base'>('tinted') })
-	background: 'tinted' | 'base' = 'tinted';
+	/** Visual style. The `box` values are a framed card and name the surface they
+	 *  fill with; `simple` drops the frame. */
+	@property({ reflect: true, converter: reflectNonDefault<CodeViewerVariant>('box-tinted') })
+	variant: CodeViewerVariant = 'box-tinted';
 
 	@property({ reflect: true, converter: reflectNonDefault<string>('') })
 	language = '';
@@ -246,7 +242,6 @@ export class NLDDCodeViewer extends NLDDCodeMirrorElement {
 		// on padding, so treat it the same.)
 		if (
 			changed.has('variant')
-			|| changed.has('background')
 			|| changed.has('noCopy')
 			|| changed.has('_copyUnavailable')
 		) {

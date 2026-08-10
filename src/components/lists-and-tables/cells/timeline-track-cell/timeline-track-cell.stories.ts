@@ -73,7 +73,7 @@ export const Default = {
 		icon: '',
 	},
 	render: (args: Record<string, any>) => html`
-		<nldd-list no-dividers accessible-label="Tijdlijn" style="max-width: 420px;">
+		<nldd-list dividers="never" accessible-label="Tijdlijn" style="max-width: 420px;">
 			<nldd-list-item>
 			<nldd-timeline-track-cell
 				status=${args.status}
@@ -98,7 +98,7 @@ export const Default = {
  */
 export const Tijdlijn = {
 	render: () => html`
-		<nldd-list no-dividers accessible-label="Verloop aanvraag" style="max-width: 420px;">
+		<nldd-list dividers="never" accessible-label="Verloop aanvraag" style="max-width: 420px;">
 			<nldd-list-item>
 			<nldd-timeline-track-cell status="past" position="first"></nldd-timeline-track-cell>
 			<nldd-spacer-cell size="12"></nldd-spacer-cell>
@@ -131,7 +131,7 @@ export const Tijdlijn = {
  */
 export const EnkeleRij = {
 	render: () => html`
-		<nldd-list no-dividers accessible-label="Tijdlijn">
+		<nldd-list dividers="never" accessible-label="Tijdlijn">
 			<nldd-list-item>
 			<nldd-timeline-track-cell status="past" position="only"></nldd-timeline-track-cell>
 			<nldd-spacer-cell size="12"></nldd-spacer-cell>
@@ -153,7 +153,7 @@ export const EnkeleRij = {
  */
 export const Stappenlijst = {
 	render: () => html`
-		<nldd-list no-dividers accessible-label="Voortgang aanvraag" style="max-width: 420px;">
+		<nldd-list dividers="never" accessible-label="Voortgang aanvraag" style="max-width: 420px;">
 			<nldd-list-item>
 			<nldd-timeline-track-cell status="past" variant="step" position="first" icon="check-mark"></nldd-timeline-track-cell>
 			<nldd-spacer-cell size="12"></nldd-spacer-cell>
@@ -182,7 +182,7 @@ export const Stappenlijst = {
  */
 export const Substappen = {
 	render: () => html`
-		<nldd-list no-dividers accessible-label="Voortgang aanvraag" style="max-width: 420px;">
+		<nldd-list dividers="never" accessible-label="Voortgang aanvraag" style="max-width: 420px;">
 			<nldd-list-item>
 			<nldd-timeline-track-cell status="past" variant="step" position="first" icon="check-mark"></nldd-timeline-track-cell>
 			<nldd-spacer-cell size="12"></nldd-spacer-cell>
@@ -219,7 +219,7 @@ export const Substappen = {
  */
 export const Tussenstappen = {
 	render: () => html`
-		<nldd-list no-dividers accessible-label="Verloop aanvraag" style="max-width: 420px;">
+		<nldd-list dividers="never" accessible-label="Verloop aanvraag" style="max-width: 420px;">
 			<nldd-list-item>
 			<nldd-timeline-track-cell status="past" position="first"></nldd-timeline-track-cell>
 			<nldd-spacer-cell size="12"></nldd-spacer-cell>
@@ -252,7 +252,7 @@ export const Tussenstappen = {
  */
 export const ZonderStip = {
 	render: () => html`
-		<nldd-list no-dividers accessible-label="Tijdlijn met tussenkop" style="max-width: 420px;">
+		<nldd-list dividers="never" accessible-label="Tijdlijn met tussenkop" style="max-width: 420px;">
 			<nldd-list-item>
 			<nldd-timeline-track-cell status="past" position="first"></nldd-timeline-track-cell>
 			<nldd-spacer-cell size="12"></nldd-spacer-cell>
@@ -276,7 +276,7 @@ export const ZonderStip = {
 /**
  * Met scheidingslijnen: die kruisen het spoor, want de rijen sluiten op elkaar
  * aan. Dat kan kloppen wanneer elke rij op zichzelf staat (een logboek dat je
- * per regel leest), maar voor een doorlopende tijdlijn leest `no-dividers`
+ * per regel leest), maar voor een doorlopende tijdlijn leest `dividers="never"`
  * rustiger — daar hoort de lijn zelf het verband te leggen.
  */
 export const MetDividers = {
@@ -313,7 +313,7 @@ export const MetDividers = {
  */
 export const NieuwsteBovenaan = {
 	render: () => html`
-		<nldd-list no-dividers accessible-label="Verloop aanvraag" style="max-width: 420px;">
+		<nldd-list dividers="never" accessible-label="Verloop aanvraag" style="max-width: 420px;">
 			<nldd-list-item>
 			<nldd-timeline-track-cell status="future" position="first"></nldd-timeline-track-cell>
 			<nldd-spacer-cell size="12"></nldd-spacer-cell>

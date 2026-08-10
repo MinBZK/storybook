@@ -39,27 +39,20 @@ export default {
 		},
 	},
 	args: {
-		background: 'tinted',
-		variant: 'default',
+		variant: 'tinted',
 	},
 	argTypes: {
-		background: {
-			control: 'select',
-			options: ['tinted', 'base'],
-			description: 'Surface fill. `tinted` voor box op een plain page, `base` voor box op een al getinte parent (border ring krijgt +2 stappen voor extra contrast).',
-			table: { defaultValue: { summary: 'tinted' } },
-		},
 		variant: {
 			control: 'select',
-			options: ['default', 'critical'],
-			description: 'Wat de groepering betekent. `critical` markeert een gebied met onomkeerbare acties en overschrijft `background`.',
-			table: { defaultValue: { summary: 'default' } },
+			options: ['tinted', 'base', 'critical'],
+			description: 'Welk vlak de box tekent. `tinted` voor een box op een plain page, `base` voor een box op een al getinte parent (border ring krijgt +2 stappen voor extra contrast), `critical` voor een gebied met onomkeerbare acties.',
+			table: { defaultValue: { summary: 'tinted' } },
 		},
 	},
 };
 
-export const Standaard = ({ background, variant }: Record<string, unknown>) => html`
-	<nldd-box background=${background as string} variant=${variant as string}>
+export const Standaard = ({ variant }: Record<string, unknown>) => html`
+	<nldd-box variant=${variant as string}>
 		<nldd-container padding="16">
 			<nldd-rich-text>
 				<h3>Wanneer gebruik je een box?</h3>
@@ -79,7 +72,7 @@ export const Standaard = ({ background, variant }: Record<string, unknown>) => h
 					<li>Gebruik geen geneste boxes.</li>
 				</ul>
 			</nldd-rich-text>
-	
+
 		</nldd-container>
 	</nldd-box>
 `;
@@ -101,28 +94,27 @@ export const Critical = {
 				</nldd-rich-text>
 				<nldd-spacer size="16"></nldd-spacer>
 				<nldd-button variant="destructive" text="Verwijder dit cluster"></nldd-button>
-		
+
 		</nldd-container>
 	</nldd-box>
 	`,
 	parameters: { controls: { disable: true } },
 };
 
-export const Backgrounds = {
-	name: 'Background variants',
+export const Vlakken = {
 	render: () => html`
 		<div style="display: flex; flex-direction: column; gap: 24px;">
-			<nldd-box background="tinted">
+			<nldd-box variant="tinted">
 		<nldd-container padding="16">
-					<nldd-rich-text><p>background="tinted" (default) — getint vlak op een plain pagina</p></nldd-rich-text>
-			
+					<nldd-rich-text><p>variant="tinted" (default) — getint vlak op een plain pagina</p></nldd-rich-text>
+
 		</nldd-container>
 	</nldd-box>
 			<div style="background: var(--semantics-surfaces-tinted-background-color); padding: 24px;">
-				<nldd-box background="base">
+				<nldd-box variant="base">
 		<nldd-container padding="16">
-						<nldd-rich-text><p>background="base" — base-colored box op een al getinte parent. Highlight ring is +2 stappen voor extra contrast.</p></nldd-rich-text>
-				
+						<nldd-rich-text><p>variant="base" — base-colored box op een al getinte parent. Highlight ring is +2 stappen voor extra contrast.</p></nldd-rich-text>
+
 		</nldd-container>
 	</nldd-box>
 			</div>

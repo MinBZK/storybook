@@ -386,8 +386,7 @@ A read-only block of code/text built on a non-editable CodeMirror 6 view. Visual
 
 | Attribuut | Type | Beschrijving |
 | --- | --- | --- |
-| `variant` | `'simple'\|'box'` | Visual style. `box` (default) is a framed card with rounded corners, padding, fill, and a 1px border ring. `simple` drops the entire frame — use when embedding inside a parent surface. |
-| `background` | `'tinted'\|'base'` | Surface fill when `variant="box"`. |
+| `variant` | `'box-tinted'\|'box-base'\|'simple'` | Visual style. The two `box` values are a framed card with rounded corners, padding, fill, and a 1px border ring, and differ in which surface they fill with; `box-tinted` is the default. `simple` drops the entire frame — use when embedding inside a parent surface. |
 | `language` | `string` | Grammar to highlight with. Empty disables highlighting. |
 | `no-copy` | `boolean` | Hide the copy-to-clipboard button (shown by default). |
 | `wrap` | `boolean` | Wrap long lines instead of horizontal scroll |
@@ -1510,8 +1509,7 @@ Use a box to visually group related components in a distinct, contained region. 
 
 | Attribuut | Type | Beschrijving |
 | --- | --- | --- |
-| `background` | `'tinted'\|'base'` | Surface fill. - `tinted` (default): for a box on a plain page bg. - `base`: for a box sitting on an already-tinted parent (the border ring gets +2 palette steps so it still reads against a card-on-card). |
-| `variant` | `'default'\|'critical'` | What the grouping means. - `default`: a neutral grouping; `background` decides the fill. - `critical`: a region whose actions are destructive or irreversible (a "danger zone"), tinted and outlined in critical. It carries no ARIA of its own: unlike nldd-banner this is not an announcement but a permanent part of the page, so the heading and the button labels have to name the danger — colour is a reinforcement, never the only signal (WCAG 1.4.1). Overrides `background`. The box draws the surface and nothing else: it has no padding of its own, the same way nldd-card has none. Put an nldd-container inside it and let that set the inset, so one component owns spacing wherever it is used. |
+| `variant` | `'tinted'\|'base'\|'critical'` | Which surface this box draws. - `tinted` (default): a box on a plain page background. - `base`: a box on an already-tinted parent (the border ring gets +2 palette steps so it still reads against a card-on-card). - `critical`: a region whose actions are destructive or irreversible (a "danger zone"), tinted and outlined in critical. It carries no ARIA of its own: unlike nldd-banner this is not an announcement but a permanent part of the page, so the heading and the button labels have to name the danger — colour is a reinforcement, never the only signal (WCAG 1.4.1). The box draws the surface and nothing else: it has no padding of its own, the same way nldd-card has none. Put an nldd-container inside it and let that set the inset, so one component owns spacing wherever it is used. |
 
 **Slots**
 
@@ -2795,11 +2793,10 @@ A container for `nldd-list-item` elements. The `type` attribute switches the lis
 
 | Attribuut | Type | Beschrijving |
 | --- | --- | --- |
-| `variant` | `'simple'\|'box'` | Visual style (default 'simple'): `simple` is a plain vertical strip with no chrome, `box` a framed card with rounded corners, fill and inset border ring |
-| `background` | `'tinted'\|'base'` | Surface fill for `variant="box"` (default 'tinted'). Use `base` on an already-tinted parent. No effect with `variant="simple"`. |
+| `variant` | `'simple'\|'box-tinted'\|'box-base'` | Visual style (default 'simple'): `simple` is a plain vertical strip with no chrome, the two `box` values a framed card with rounded corners, fill and inset border ring. `box-tinted` for a list on a plain page, `box-base` for one on an already-tinted parent (the border ring gets +2 palette steps so it still reads against a card-on-card) |
 | `type` | `'list'\|'navigation'\|'listbox'\|'tree'` | A11y role and behavior (default 'list'). See the docblock above. |
 | `reorderable` | `boolean` | Enables drag-to-reorder and pushes `reorderable` onto the items. Only valid with `type="list"`; wins over `arrow-navigation` when both are set. |
-| `no-dividers` | `boolean` | Hides the dividers between list items |
+| `dividers` | `'always'\|'on-touch'\|'never'` | When to draw the lines between the items (default 'always'). `on-touch` draws them only where the primary input is touch, under `(pointer: coarse)`: a pointer has the hover highlight to tell one row from the next and a finger has nothing, so the line earns its place in the one case and is clutter in the other. `never` hides them everywhere |
 | `arrow-navigation` | `boolean` | Roving-tabindex arrow-key navigation: ArrowUp/ArrowDown move focus between the rows, Home/End jump to first/last, and the list becomes a single tab stop. Implied by `type="tree"` (which adds ArrowLeft/ArrowRight, see above). Ignored when `reorderable` is active on a `type="list"`, and in listbox mode. |
 | `height` | `string` | Listbox only: caps the options' scroll region at this CSS length (e.g. '320px'). Unset means no cap. |
 | `empty-text` | `string` | Text for the default empty-state dialog (falls back to the Dutch i18n default). Ignored when `[slot=empty]` is filled. |
