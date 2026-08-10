@@ -228,34 +228,4 @@ describe('nldd-container onder een universele reset', () => {
 		const offset = content.getBoundingClientRect().left - container.getBoundingClientRect().left;
 		expect(offset).toBe(16);
 	});
-	// Fills what it is given and centers inside it, without needing alignment
-	// attributes; an explicit alignment still wins.
-	describe('centered', () => {
-		it('vult de ruimte en centreert de inhoud', async () => {
-			el = await fixture(`
-				<div style="display: flex; flex-direction: column; height: 300px; width: 200px;">
-					<nldd-container centered><span>Leeg</span></nldd-container>
-				</div>
-			`);
-			await waitForUpdate(el);
-			const container = el.querySelector('nldd-container') as HTMLElement;
-			expect(Math.round(container.getBoundingClientRect().height)).toBe(300);
-			const inner = container.shadowRoot!.querySelector('.container__inner') as HTMLElement;
-			expect(getComputedStyle(inner).justifyContent).toBe('center');
-			expect(getComputedStyle(inner).alignItems).toBe('center');
-		});
-
-		it('laat een expliciete uitlijning voorgaan', async () => {
-			el = await fixture(`
-				<div style="display: flex; flex-direction: column; height: 300px; width: 200px;">
-					<nldd-container centered horizontal-alignment="left"><span>Leeg</span></nldd-container>
-				</div>
-			`);
-			await waitForUpdate(el);
-			const container = el.querySelector('nldd-container') as HTMLElement;
-			const inner = container.shadowRoot!.querySelector('.container__inner') as HTMLElement;
-			expect(getComputedStyle(inner).alignItems).toBe('flex-start');
-		});
-	});
-
 });

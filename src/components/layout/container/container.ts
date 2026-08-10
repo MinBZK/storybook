@@ -164,9 +164,6 @@ export class NLDDContainer extends LitElement {
 	@property({ type: Number, reflect: true, attribute: 'lg-column-count' })
 	lgColumnCount?: ColumnCount;
 
-	@property({ type: Boolean, reflect: true })
-	centered = false;
-
 	@property({ type: String, reflect: true, attribute: 'horizontal-alignment' })
 	horizontalAlignment: HorizontalAlignment | undefined = undefined;
 
