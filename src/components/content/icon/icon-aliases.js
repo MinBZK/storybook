@@ -57,6 +57,9 @@ export const aliases = {
 	// brackets-ellipsis
 	'embed': 'brackets-ellipsis',
 
+	// brackets-ellipsis-badge-plus
+	'add-namespace': 'brackets-ellipsis-badge-plus',
+
 	// business-suitcase
 	'work': 'business-suitcase',
 

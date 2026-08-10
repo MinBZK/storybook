@@ -26,6 +26,7 @@ export const NEW_ICONS = new Set([
 	'arrow-down-left-arrow-up-right',
 	'arrow-up-right-arrow-down-left',
 	'book-badge-plus',
+	'brackets-ellipsis-badge-plus',
 	'bug',
 	'circle-grid-2x2-top-left-check-mark',
 	'clipboard-pencil',

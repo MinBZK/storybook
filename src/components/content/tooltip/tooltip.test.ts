@@ -18,6 +18,16 @@ function instantShow(el: NLDDTooltip): void {
 }
 
 /**
+ * The hide side of the same trick. The tooltip waits 50ms before it goes, and
+ * a test that budgets wall-clock time for that is really measuring how busy
+ * the machine is: on a loaded runner the timer lands late and the assertion
+ * reads a tooltip that was on its way out as one that stayed.
+ */
+function instantHide(el: NLDDTooltip): void {
+	el.style.setProperty('--_hide-delay', '0');
+}
+
+/**
  * Common open-the-tooltip flow: zero out the show delay, fire mouseenter,
  * yield once for the (now-immediate) timer, then await Lit's update so
  * the tooltip's `_visible` state has flushed to the popover element.
@@ -99,8 +109,10 @@ describe('nldd-tooltip – show/hide', () => {
 		await waitForUpdate(el);
 		const trigger = el.querySelector('button')!;
 		await triggerShow(el, trigger);
+		instantHide(el);
 		trigger.dispatchEvent(new MouseEvent('mouseleave', { bubbles: true }));
-		await new Promise(resolve => setTimeout(resolve, 250));
+		await new Promise(resolve => setTimeout(resolve, 0));
+		await waitForUpdate(el);
 
 		expect(isTooltipVisible(el)).toBe(false);
 	});
@@ -111,10 +123,12 @@ describe('nldd-tooltip – show/hide', () => {
 		const trigger = el.querySelector('button')!;
 		await triggerShow(el, trigger);
 
+		instantHide(el);
 		trigger.dispatchEvent(new MouseEvent('mouseleave', { bubbles: true }));
 		const tooltipEl = el.shadowRoot!.querySelector('.tooltip')!;
 		tooltipEl.dispatchEvent(new MouseEvent('mouseenter', { bubbles: true }));
-		await new Promise(resolve => setTimeout(resolve, 250));
+		await new Promise(resolve => setTimeout(resolve, 0));
+		await waitForUpdate(el);
 
 		expect(isTooltipVisible(el)).toBe(true);
 	});
