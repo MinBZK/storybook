@@ -1,5 +1,5 @@
 import { describe, it, expect, afterEach, vi } from 'vitest';
-import { fixture, cleanup, waitForUpdate, deepActiveElement } from '../../../test-utils.js';
+import { fixture, cleanup, waitForUpdate, deepActiveElement, nextFrames } from '../../../test-utils.js';
 import type { NLDDComboBox } from './combo-box.js';
 import './combo-box.js';
 import '../../actions/menu/menu.js';
@@ -828,7 +828,10 @@ describe('nldd-combo-box – allow-custom', () => {
 		});
 
 		input.dispatchEvent(new KeyboardEvent('keydown', { key: 'ArrowDown', bubbles: true, composed: true }));
-		await waitForUpdate(el);
+		// The first item is highlighted from a requestAnimationFrame, so wait for a
+		// real frame: waitForUpdate only gets us updateComplete plus a macrotask,
+		// and Enter would arrive at a menu with nothing highlighted yet.
+		await nextFrames();
 		input.dispatchEvent(new KeyboardEvent('keydown', { key: 'Enter', bubbles: true, composed: true }));
 		await waitForUpdate(el);
 

@@ -1,5 +1,5 @@
 import { describe, it, expect, afterEach, beforeEach } from 'vitest';
-import { fixture, cleanup, waitForUpdate, deepActiveElement, installUniversalReset } from '../../../test-utils.js';
+import { fixture, cleanup, waitForUpdate, deepActiveElement, installUniversalReset, nextFrames } from '../../../test-utils.js';
 import { _resetInputModalityForTesting, getInputModality } from '../../../utilities/input-modality.js';
 import './list-item.js';
 import type { NLDDListItem } from './list-item.js';
@@ -1037,7 +1037,9 @@ describe('nldd-list-item divider met verborgen cellen', () => {
 		const item = el.querySelector('nldd-list-item') as HTMLElement;
 		const zichtbaar = el.querySelectorAll('nldd-text-cell')[1] as HTMLElement;
 		const block = item.shadowRoot!.querySelector('.list-item') as HTMLElement;
-		await new Promise((r) => requestAnimationFrame(() => r(null)));
+		// Two frames, not one: the inset is measured in a frame of its own, so a
+		// single one only gets us to the measurement rather than past it.
+		await nextFrames();
 
 		const inset = parseFloat(item.style.getPropertyValue('--_divider-inset-start'));
 		const verwacht = zichtbaar.getBoundingClientRect().left - block.getBoundingClientRect().left;

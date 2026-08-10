@@ -111,6 +111,15 @@ export class NLDDNotification extends withTranslations(LitElement, nlddNotificat
 	 *  left of it. */
 	private _timerStartedAt = 0;
 
+	/** Remembered from the events rather than read back from the browser with
+	 *  `:hover` and `document.activeElement`. A notification reaches the front of
+	 *  the deck through a z-index swap, and what an engine reports about a
+	 *  stationary pointer over that spot differs per engine and per platform.
+	 *  What we act on are the events, so what we remember are the events. */
+	private _pointerInside = false;
+
+	private _focusInside = false;
+
 	/** Moving into the region disconnects and reconnects this element. Without
 	 *  this the leave-handler would tear down the very region we are joining. */
 	private _moving = false;
@@ -131,9 +140,9 @@ export class NLDDNotification extends withTranslations(LitElement, nlddNotificat
 		super.connectedCallback();
 		this.setAttribute('role', this.variant === 'critical' ? 'alert' : 'status');
 		this._remainingDuration = this.duration;
-		this.addEventListener('pointerenter', this._pauseTimer);
-		this.addEventListener('pointerleave', this._resumeTimer);
-		this.addEventListener('focusin', this._pauseTimer);
+		this.addEventListener('pointerenter', this._onPointerEnter);
+		this.addEventListener('pointerleave', this._onPointerLeave);
+		this.addEventListener('focusin', this._onFocusIn);
 		this.addEventListener('focusout', this._onFocusOut);
 		this.addEventListener('keydown', this._onKeyDown);
 		// Moving itself has to wait a tick: a framework that just created this
@@ -153,9 +162,9 @@ export class NLDDNotification extends withTranslations(LitElement, nlddNotificat
 		super.disconnectedCallback();
 		if (this._moving) return;
 		this._clearTimer();
-		this.removeEventListener('pointerenter', this._pauseTimer);
-		this.removeEventListener('pointerleave', this._resumeTimer);
-		this.removeEventListener('focusin', this._pauseTimer);
+		this.removeEventListener('pointerenter', this._onPointerEnter);
+		this.removeEventListener('pointerleave', this._onPointerLeave);
+		this.removeEventListener('focusin', this._onFocusIn);
 		this.removeEventListener('focusout', this._onFocusOut);
 		this.removeEventListener('keydown', this._onKeyDown);
 		leaveRegion(this);
@@ -189,9 +198,18 @@ export class NLDDNotification extends withTranslations(LitElement, nlddNotificat
 		}
 	};
 
-	/** A wrapper rather than the method itself, because a listener needs to keep
-	 *  its `this`. */
-	private _pauseTimer = (): void => {
+	private _onPointerEnter = (): void => {
+		this._pointerInside = true;
+		this._clearTimer();
+	};
+
+	private _onPointerLeave = (): void => {
+		this._pointerInside = false;
+		this._resumeTimer();
+	};
+
+	private _onFocusIn = (): void => {
+		this._focusInside = true;
 		this._clearTimer();
 	};
 
@@ -199,12 +217,13 @@ export class NLDDNotification extends withTranslations(LitElement, nlddNotificat
 		// Only when focus really left: moving between the action and the dismiss
 		// button is still inside.
 		if (this.contains(e.relatedTarget as Node)) return;
+		this._focusInside = false;
 		this._resumeTimer();
 	};
 
 	private _resumeTimer = (): void => {
 		if (!this._isFront || !this._leavesOnItsOwn || this._timer !== null) return;
-		if (this.matches(':hover') || this.contains(document.activeElement)) return;
+		if (this._pointerInside || this._focusInside) return;
 		this._timerStartedAt = Date.now();
 		this._timer = window.setTimeout(() => {
 			this._timer = null;
