@@ -69,7 +69,7 @@ export const avatarGroupStyles = css`
 	   it is one step up from the surface instead — a darker disc would sink
 	   into the page. */
 
-	.avatar-group__overflow {
+	.avatar-group__overflow-button {
 		appearance: none;
 		box-sizing: border-box;
 		display: inline-flex;
@@ -94,11 +94,11 @@ export const avatarGroupStyles = css`
 	   No semantic hover token fits: the button-hover colours are meant for a
 	   control that already looks like a button, and here they read as a jump.
 	   It only has to confirm that this disc is clickable. */
-	.avatar-group__overflow:hover {
+	.avatar-group__overflow-button:hover {
 		background-color: var(--_overflow-hover-background-color);
 	}
 
-	.avatar-group__overflow:focus-visible {
+	.avatar-group__overflow-button:focus-visible {
 		outline: var(--semantics-focus-ring-outline);
 		outline-offset: var(--semantics-focus-ring-outline-offset);
 	}
@@ -110,6 +110,8 @@ export const avatarGroupStyles = css`
 	   is a box-shadow rather than a border: it sits outside the shape without
 	   changing the diameter, so overlap stays exact. */
 
+	/* !important: nldd-avatar sizes itself from :host([size]) in its own shadow
+	   tree, and a tree's own rules beat an outer ::slotted() of equal weight. */
 	.avatar-group ::slotted(nldd-avatar) {
 		position: relative;
 		flex-shrink: 0;

@@ -1,28 +1,28 @@
 /**
  * Nederlandse Digitale Dienst Badge Component (Lit + TypeScript)
  *
- * Toont de toestand van iets, of hoeveel er van iets is: een status, een aantal
- * ongelezen berichten, een stip die zegt dat er iets nieuws is. Wat er staat
- * bepaalt het systeem, en het verandert zonder dat iemand het aanraakt. Een badge
- * is nooit interactief.
+ * Shows the state of something, or how much of it there is: a status, a number
+ * of unread messages, a dot saying something is new. What it says is decided by
+ * the system, and it changes without anyone touching it. A badge is never
+ * interactive.
  *
- * Hij toont tekst, een getal en/of een icoon; zonder inhoud verschijnt een stip.
- * Zet hem in een hoek van een ander element (bijvoorbeeld een icoon) of los.
+ * It shows text, a number and/or an icon; with no content it becomes a dot. Put
+ * it in a corner of another element (an icon, for instance) or on its own.
  *
- * Voor een kenmerk dat iemand ergens aan toekent, zoals een categorie, een rol of
- * een keurmerk, gebruik je `nldd-tag`. Voor zelfstandige data waar de gebruiker
- * mee werkt, zoals een gekozen persoon of een actief filter, `nldd-token`.
+ * For a property someone assigns to something, such as a category, a role or a
+ * certification, use `nldd-tag`. For standalone data the user works with, such
+ * as a chosen person or an active filter, use `nldd-token`.
  *
  * @element nldd-badge
- * @attr {string} size - Grootte: 'sm' | 'md' (default: 'md')
- * @attr {string} color - Semantisch ('critical' | 'accent' | 'neutral' | 'warning' | 'success') of een Rijkskleur ('lintblauw' | 'hemelblauw' | 'oranje' | …). Default: 'critical'
- * @attr {boolean} pulse - Laat een ring uit de badge groeien en vervagen, voor iets dat nu gebeurt (een live-verbinding, een storing). Respecteert `prefers-reduced-motion`.
- * @attr {string} text - Tekst (heeft voorrang op number)
- * @attr {number} number - Numerieke waarde. Wordt beknopt als meer dan max
- * @attr {number} max - Maximum waarde boven welke number wordt getoond als "{max}+" (default: 99)
- * @attr {string} icon - Icoon naam. Icon-only wordt als vierkant gerenderd; met text/number komt het icoon links.
- * @attr {string} accessible-label - Toegankelijk label voor screenreaders. Fallback naar text/number; anders naar i18n default ("Notificatie").
- * @attr {boolean} decorative - Verbergt de badge voor hulpsoftware (gebruik wanneer de tekst ernaast hetzelfde zegt, zoals een stip voor een statuswoord)
+ * @attr {string} size - Size: 'sm' | 'md' (default: 'md')
+ * @attr {string} color - Semantic ('critical' | 'accent' | 'neutral' | 'warning' | 'success') or a Rijkshuisstijl color ('lintblauw' | 'hemelblauw' | 'oranje' | …). Default: 'critical'
+ * @attr {boolean} pulse - Grows a ring out of the badge and fades it, for something happening right now (a live connection, an outage). Respects `prefers-reduced-motion`.
+ * @attr {string} text - Text (takes precedence over number)
+ * @attr {number} number - Numeric value. Shortened when it is over max
+ * @attr {number} max - Value above which number is shown as "{max}+" (default: 99)
+ * @attr {string} icon - Icon name. Icon-only renders as a square; with text or number the icon goes on the left.
+ * @attr {string} accessible-label - Accessible label for screen readers. Falls back to text/number; otherwise to the i18n default ("Notificatie").
+ * @attr {boolean} decorative - Hides the badge from assistive software (use when the text beside it says the same, such as a dot next to a status word)
  */
 
 import { LitElement } from 'lit';

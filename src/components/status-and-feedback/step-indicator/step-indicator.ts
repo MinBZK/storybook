@@ -1,35 +1,35 @@
 /**
  * Nederlandse Digitale Dienst Step Indicator Component (Lit + TypeScript)
  *
- * Toont waar je staat in een proces van meerdere stappen: een rij bollen met
- * een cijfer (of een vinkje op wat af is), een label eronder en een lijn die
- * ze verbindt.
+ * Shows where you are in a process of several steps: a row of discs with a
+ * number (or a check mark on what is done), a label under each and a line
+ * connecting them.
  *
- * De ouder houdt de waarheid vast: `current` (1-based) leidt de status van elk
- * kind af — ervoor `past`, daarna `future`. Een kind kan dat overschrijven met
- * een eigen `status`, voor flows die terugspringen of een stap overslaan.
+ * The parent holds the truth: `current` (1-based) derives the status of every
+ * child — `past` before it, `future` after. A child can override that with a
+ * `status` of its own, for flows that jump back or skip a step.
  *
- * Alleen horizontaal. Wil je stappen onder elkaar, bouw dan een `nldd-list` met
- * per rij een `nldd-timeline-track-cell` en een `nldd-title-cell`: verticale
- * stappen dragen meestal meer dan een titel, en dat kan een lijstrij al.
+ * Horizontal only. For steps under each other, build an `nldd-list` with an
+ * `nldd-timeline-track-cell` and an `nldd-title-cell` per row: vertical steps
+ * usually carry more than a title, and a list row already does that.
  *
- * Onder de sm-breakpoint (container query, dus gemeten op het component zelf en
- * niet op de viewport) klapt het om naar één regel tekst plus een segmentbalk. De volledige stappenlijst blijft
- * dan in de DOM staan, alleen visueel verborgen, zodat hulpsoftware niet minder
- * te horen krijgt dan een breed scherm laat zien.
+ * Below the sm breakpoint (a container query, so measured on the component
+ * itself rather than on the viewport) it folds into one line of text plus a
+ * segmented bar. The full list of steps stays in the DOM, only visually hidden,
+ * so assistive software hears no less than a wide screen shows.
  *
- * Toegankelijkheid: een `nav` met een label, daarin een `role="list"` met per
- * stap een `role="listitem"`. De huidige stap krijgt `aria-current="step"` —
- * het enige begrip dat WAI-ARIA hiervoor kent. "Afgerond" en "nog te doen"
- * bestaan niet als ARIA-token en reizen daarom als visueel verborgen tekst mee.
+ * Accessibility: a `nav` with a label, holding a `role="list"` with a
+ * `role="listitem"` per step. The current step gets `aria-current="step"`, the
+ * only notion WAI-ARIA has for this. "Done" and "still to do" do not exist as
+ * ARIA tokens and travel along as visually hidden text instead.
  *
  * @element nldd-step-indicator
  *
- * @attr {string} accessible-label - Naam van de nav; standaard de i18n-waarde ("Voortgang")
- * @attr {object} translations - Overschrijf vertaalsleutels; niet gezette vallen terug op Nederlands
- * @attr {number} current - 1-based nummer van de huidige stap (standaard 1)
+ * @attr {string} accessible-label - Name of the nav; defaults to the i18n value ("Voortgang")
+ * @attr {object} translations - Override translation keys; unset keys fall back to Dutch
+ * @attr {number} current - 1-based number of the current step (default 1)
  *
- * @slot - `nldd-step-indicator-item` kinderen
+ * @slot - `nldd-step-indicator-item` children
  *
  * @example
  * ```html
@@ -57,19 +57,19 @@ export type StepIndicatorStatus = 'past' | 'current' | 'future';
 // # nldd-step-indicator-item
 
 /**
- * Eén stap in een `nldd-step-indicator`. De ouder bepaalt de status en het
- * volgnummer; die staan hier als interne state en niet als publieke API, op
- * `status` na — dat overschrijft de afleiding uit `current`.
+ * One step in an `nldd-step-indicator`. The parent decides the status and the
+ * number; those live here as internal state rather than as public API, except
+ * for `status`, which overrides what `current` derives.
  *
  * @element nldd-step-indicator-item
  *
- * @attr {string} status - `past` | `current` | `future`; overschrijft wat de ouder afleidt
- * @attr {string} text   - Label onder de bol
- * @attr {string} icon   - Icoon in de bol in plaats van het cijfer of het vinkje
- * @attr {string} href   - Maakt de stap een link (bijvoorbeeld terug naar een afgeronde stap)
- * @attr {boolean} button - Maakt de stap een knop, voor flows zonder eigen URL per stap; genegeerd wanneer `href` is gezet
+ * @attr {string} status - `past` | `current` | `future`; overrides what the parent derives
+ * @attr {string} text   - Label under the disc
+ * @attr {string} icon   - Icon in the disc instead of the number or the check mark
+ * @attr {string} href   - Makes the step a link (back to a completed step, for instance)
+ * @attr {boolean} button - Makes the step a button, for flows without a URL per step; ignored when `href` is set
  *
- * @slot - Label (alternatief voor `text`)
+ * @slot - Label (an alternative to `text`)
  */
 export class NLDDStepIndicatorItem extends LitElement {
 	static override styles = stepIndicatorItemStyles;

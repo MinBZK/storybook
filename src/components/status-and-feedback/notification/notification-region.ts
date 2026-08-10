@@ -104,8 +104,8 @@ function makeExpander(region: HTMLElement): HTMLElement {
 		'height: var(--primitives-space-24)',
 		'pointer-events: auto',
 	].join(';');
-	strip.addEventListener('pointerenter', () => setHint(region, true));
-	strip.addEventListener('pointerleave', () => setHint(region, false));
+	strip.addEventListener('pointerenter', () => setFanned(region, true));
+	strip.addEventListener('pointerleave', () => setFanned(region, false));
 	strip.addEventListener('click', () => setExpanded(region, true));
 	return strip;
 }
@@ -155,7 +155,7 @@ function syncStack(region: HTMLElement): void {
 
 	items.forEach((item, index) => {
 		item.style.gridArea = expanded ? '' : '1 / 1';
-		item.style.setProperty('--_depth', expanded ? '0' : String(Math.min(index, MAX_DEPTH)));
+		item.style.setProperty('--_stack-depth', expanded ? '0' : String(Math.min(index, MAX_DEPTH)));
 		// Closed, the front has to paint over the deck. Open, it is the other way
 		// round: each notification covers the shadow of the one above it, so no
 		// shadow lands on a notification instead of on the page.
@@ -207,7 +207,7 @@ function setExpanded(region: HTMLElement, next: boolean): void {
 	if (next && notifications(region).length < 2) return;
 	expanded = next;
 	if (next) {
-		setHint(region, false);
+		setFanned(region, false);
 		document.addEventListener('pointerdown', onDocumentPointerDown, true);
 	} else {
 		document.removeEventListener('pointerdown', onDocumentPointerDown, true);
@@ -224,9 +224,9 @@ function onDocumentPointerDown(e: Event): void {
 
 /** Pointing at the strip fans the deck out until it fills it. It is the only
  *  thing saying there is more here than the one message you can read. */
-function setHint(region: HTMLElement, on: boolean): void {
+function setFanned(region: HTMLElement, on: boolean): void {
 	notifications(region).forEach((item) => {
-		item.style.setProperty('--_hint', on ? '1' : '0');
+		item.style.setProperty('--_stack-fanned', on ? '1' : '0');
 	});
 }
 

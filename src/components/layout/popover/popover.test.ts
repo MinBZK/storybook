@@ -805,8 +805,8 @@ describe('nldd-popover slikt de eerste tik op klein scherm', () => {
 	it('negeert een inhoudsmaat als breedte en houdt de standaardbreedte', async () => {
 		el = await fixture('<nldd-popover width="fit-content" accessible-label="t"></nldd-popover>');
 		await waitForUpdate(el);
-		// Zou de waarde wel doorgezet zijn, dan rekent de browser de popover op 0px
-		// uit: een inline-size container mag zijn breedte niet uit zijn inhoud halen.
+		// Had the value been let through, the browser would compute the popover at
+		// 0px: an inline-size container cannot take its width from its own content.
 		expect(el.style.getPropertyValue('--components-popover-default-width')).toBe('');
 	});
 

@@ -67,7 +67,6 @@ export const NEW_ICONS = new Set([
 	'microphone',
 	'microphone-slash',
 	'paintbrush',
-	'paper-roll-horizontal',
 	'media-pause',
 	'media-pause-filled',
 	'person-badge-minus',

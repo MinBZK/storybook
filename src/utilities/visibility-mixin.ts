@@ -39,7 +39,7 @@ function warnNoOp(
 	console.warn(
 		`[${host.localName}] ${attribute}="${openEdge}" never hides anything: there is no `
 		+ `breakpoint ${edgeLabel}. The value names the breakpoint you hide below, so the `
-		+ `smallest one that hides is "${attribute === 'hide-below' ? 'md' : 'md'}". `
+		+ `smallest one that hides is "${attribute === 'hide-below' ? 'md' : 'sm'}". `
 		+ 'Leave the attribute off if you meant "always visible".',
 	);
 }

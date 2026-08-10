@@ -26,7 +26,7 @@ export function notificationTemplate(component: NLDDNotification): TemplateResul
 					<slot name="actions" @slotchange=${component._onActionsSlotChange}></slot>
 				</div>
 			</div>
-			<div class="notification__dismiss">
+			<div class="notification__dismiss-button">
 				<nldd-icon-button
 					icon="dismiss-small"
 					size="sm"

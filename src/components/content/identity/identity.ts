@@ -1,42 +1,41 @@
 /**
  * NLDD Design System Identity Component (Lit + TypeScript)
  *
- * Een redactionele regel die auteurs of redacteuren toont: optionele
- * avatar(s), een naamregel en ondersteunende tekst (bijvoorbeeld functie
- * of datum). Alle onderdelen zijn optioneel.
+ * An editorial line that shows authors or editors: optional avatar or avatars,
+ * a name line and supporting text (a role or a date, for instance). Every part
+ * is optional.
  *
- * De naamregel en ondersteunende tekst kunnen als attribuut of als slot
- * worden aangeleverd. Gebruik de slots voor rijkere inhoud, zoals een
- * `<time datetime="…">` voor machine-leesbare datums of een link naar het
- * auteursprofiel. Geslotte inhoud vervangt het bijbehorende attribuut
- * (het attribuut is de fallback van de slot).
+ * The name line and the supporting text come in as an attribute or as a slot.
+ * Use the slots for richer content, such as a `<time datetime="…">` for a
+ * machine-readable date or a link to the author's profile. Slotted content
+ * replaces the matching attribute: the attribute is the slot's fallback.
  *
- * Eén avatar slot je zoals hij is; identity geeft hem zijn maat. Zijn het er
- * meer, slot dan een `nldd-avatar-group`: die laat ze overlappen en tekent
- * de ring in de vlakkleur. Identity maakt die groep niet zelf, want de
- * avatars zijn light DOM van de consument en een groep kan alleen opmaken
- * wat als eigen kind bij hem binnenkomt. Zet de avatars op decoratief (of
- * een `img` op `alt=""`) wanneer de namen al in de tekst staan.
+ * One avatar you slot as it is, and identity gives it its size. For more than
+ * one, slot an `nldd-avatar-group`: that overlaps them and draws the ring in the
+ * surface color. Identity does not build that group itself, because the avatars
+ * are the consumer's light DOM and a group can only style what arrives as its
+ * own child. Set the avatars to decorative (or an `img` to `alt=""`) when the
+ * names already stand in the text.
  *
- * Op smalle breedtes (een sm-container, ≤ 640px) met meerdere avatars komt
- * de avatarrij boven de namen te staan, zodat de tekst de volle breedte
- * houdt; met één avatar blijft de identity op één regel.
+ * On narrow widths (an sm container, 640px and under) with more than one avatar
+ * the row of avatars moves above the names, so the text keeps the full width.
+ * With one avatar the identity stays on a single line.
  *
- * Voor één avatar kun je in plaats van slotten ook `avatar-src` (met
- * optioneel `avatar-srcset`) als attribuut meegeven; de afmetingen liggen
- * vast (40px). Geslotte avatars hebben voorrang op `avatar-src`.
+ * For a single avatar you can also hand over `avatar-src` (with an optional
+ * `avatar-srcset`) as an attribute instead of slotting; its size is fixed at
+ * 40px. Slotted avatars take precedence over `avatar-src`.
  *
  * @element nldd-identity
  *
- * @attr {string} text - Naamregel (bijv. "Jan Jansen en Piet Pietersen"); fallback wanneer de text-slot leeg is
- * @attr {string} supporting-text - Ondersteunende tekst onder de naamregel (bijv. rol of datum); fallback wanneer de supporting-text-slot leeg is
- * @attr {string} avatar-src - Bron van één avatar (alternatief voor de avatars-slot); genegeerd zodra de avatars-slot gevuld is
- * @attr {string} avatar-srcset - Responsive source set voor de avatar-src-afbeelding
- * @attr {string} avatar-alt - Alt-tekst voor de avatar-src-afbeelding; leeg = decoratief
+ * @attr {string} text - Name line (e.g. "Jan Jansen and Piet Pietersen"); the fallback when the text slot is empty
+ * @attr {string} supporting-text - Supporting text under the name line (a role or a date, for instance); the fallback when the supporting-text slot is empty
+ * @attr {string} avatar-src - Source of a single avatar (an alternative to the avatars slot); ignored as soon as the avatars slot is filled
+ * @attr {string} avatar-srcset - Responsive source set for the avatar-src image
+ * @attr {string} avatar-alt - Alt text for the avatar-src image; empty means decorative
  *
- * @slot avatars - Eén avatar (`nldd-avatar` of `img`), of een `nldd-avatar-group` bij meer
- * @slot text - Naamregel als rijke inhoud (bijv. een link naar het auteursprofiel)
- * @slot supporting-text - Ondersteunende tekst als rijke inhoud (bijv. een time-element)
+ * @slot avatars - One avatar (`nldd-avatar` or `img`), or an `nldd-avatar-group` for more
+ * @slot text - Name line as rich content (a link to the author's profile, for instance)
+ * @slot supporting-text - Supporting text as rich content (a time element, for instance)
  */
 import { LitElement } from 'lit';
 import { customElement, property, state } from 'lit/decorators.js';

@@ -47,12 +47,9 @@ export const titleCellStyles = css`
 	}
 
 	:host([width="fit-content"]) {
-		/* min-content en niet 0 als ondergrens: de cel wijkt zodra de rij te smal
-		   wordt, maar houdt de breedte van zijn smalste breekpunt. De tekst breekt
-		   met overflow-wrap: anywhere desnoods midden in een woord, dus dat is
-		   krap; het houdt de cel wel binnen de rij in plaats van erbuiten. Een
-		   eigen min-width van een consument wint hiervan, want die landt inline
-		   op de host. */
+		/* min-content rather than 0 as the floor: the cell gives way as soon as
+		   the row is too narrow, but never past the width of its longest word,
+		   so the text stays readable instead of breaking mid-word. */
 		--_min-width: min-content;
 
 		width: fit-content;

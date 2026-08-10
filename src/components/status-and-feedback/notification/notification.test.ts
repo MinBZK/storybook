@@ -121,8 +121,8 @@ describe('nldd-notification', () => {
 		const region = document.getElementById('nldd-notification-region')!;
 		const stapel = Array.from(region.querySelectorAll('nldd-notification'));
 		expect(stapel.map((item) => item.getAttribute('text'))).toEqual(['Tweede', 'Eerste']);
-		expect((stapel[0] as HTMLElement).style.getPropertyValue('--_depth')).toBe('0');
-		expect((stapel[1] as HTMLElement).style.getPropertyValue('--_depth')).toBe('1');
+		expect((stapel[0] as HTMLElement).style.getPropertyValue('--_stack-depth')).toBe('0');
+		expect((stapel[1] as HTMLElement).style.getPropertyValue('--_stack-depth')).toBe('1');
 
 		host.remove();
 	});
@@ -145,7 +145,7 @@ describe('nldd-notification', () => {
 		expect(region.style.display).toBe('flex');
 		expect(strook.style.display).toBe('none');
 		Array.from(region.querySelectorAll('nldd-notification')).forEach((item) => {
-			expect((item as HTMLElement).style.getPropertyValue('--_depth')).toBe('0');
+			expect((item as HTMLElement).style.getPropertyValue('--_stack-depth')).toBe('0');
 		});
 
 		document.body.dispatchEvent(new PointerEvent('pointerdown', { bubbles: true, composed: true }));

@@ -155,6 +155,13 @@ export class NLDDToolbarTitle extends LitElement {
 	@property({ reflect: true, converter: reflectNonDefault<Size>('md') })
 	size: Size = 'md';
 
+	@property({ type: Object })
+	translations: Partial<NLDDToolbarTranslations> = {};
+
+	public _t(key: keyof NLDDToolbarTranslations): string {
+		return this.translations[key] ?? nlddToolbarTranslations[key];
+	}
+
 	// Layout state — `solo-fluid` and `hidden` — is owned by nldd-toolbar and
 	// toggled directly as attributes during measurement (synchronous). Not a
 	// reactive property for the same reflection-timing reason as the item.

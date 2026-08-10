@@ -1,29 +1,28 @@
 /**
  * NLDD Design System Avatar Group Component (Lit + TypeScript)
  *
- * Toont meerdere avatars als één groep: ze overlappen elkaar en elke avatar
- * krijgt een ring in de vlakkleur, zodat ze bij overlap gescheiden blijven.
- * De ring gebruikt dezelfde mechaniek als de badge, dus op een gekleurde
- * ondergrond geef je de kleur mee via `--context-parent-background-color`.
+ * Shows several avatars as one group: they overlap, and each one gets a ring in
+ * the surface color so they stay apart where they meet. The ring uses the same
+ * mechanism as the badge, so on a colored surface you hand the color over
+ * through `--context-parent-background-color`.
  *
- * Slot `nldd-avatar`-elementen, geen kale `img`. Een avatar weet al hoe hij
- * met een dode afbeelding omgaat, wanneer hij op initialen terugvalt en hoe
- * hij zijn naam als tooltip toont; een losse afbeelding zou dat allemaal
- * moeten namaken en kan het laatste niet. Zet `decorative` wanneer de namen
- * al als tekst naast de groep staan; geef anders elke avatar een naam, want
- * de groep zelf beschrijft niemand.
+ * Slot `nldd-avatar` elements, not bare `img`. An avatar already knows what to
+ * do with a dead image, when to fall back to initials, and how to show its name
+ * as a tooltip; a loose image would have to reproduce all of that and cannot do
+ * the last one. Set `decorative` when the names already stand beside the group
+ * as text; otherwise give every avatar a name, because the group itself
+ * describes nobody.
  *
- * De maat geldt voor de hele groep: de avatars krijgen hem opgelegd, ook een
- * geslotte `img`. Zo blijft de rij op één lijn, ongeacht wat een consument
- * meegeeft.
+ * The size applies to the whole group: it is imposed on the avatars, a slotted
+ * `img` included. That keeps the row on one line whatever a consumer hands over.
  *
  * @element nldd-avatar-group
  *
- * @attr {string} size - Diameter van elke avatar in px (spacer-uitgelijnd: 16, 20, 24, 28, 32, 40, 44, 48, 56, 64, 80, 96); standaard 40
- * @attr {number} max - Toont hoogstens zoveel avatars; de rest gaat achter een knop met "+N" die ze bij een klik als lijst met namen toont
- * @attr {string} accessible-label - Beschrijft de groep als geheel (bijv. "Redactie"); zonder label is de groep zelf geen landmark en spreken de avatars voor zich
+ * @attr {string} size - Diameter of each avatar in px (spacer-aligned: 16, 20, 24, 28, 32, 40, 44, 48, 56, 64, 80, 96); default 40
+ * @attr {number} max - Shows at most this many avatars; the rest go behind a "+N" button that opens them as a list of names
+ * @attr {string} accessible-label - Describes the group as a whole (e.g. "Editors"); without a label the group is not a landmark of its own and the avatars speak for themselves
  *
- * @slot - Eén of meer `nldd-avatar`-elementen
+ * @slot - One or more `nldd-avatar` elements
  */
 
 import { LitElement } from 'lit';
@@ -157,7 +156,7 @@ export class NLDDAvatarGroup extends withTranslations(LitElement, nlddAvatarGrou
 
 		const popover = this.shadowRoot?.querySelector('nldd-popover') as
 			(HTMLElement & { anchorElement: Element | null }) | null;
-		const trigger = this.shadowRoot?.querySelector('.avatar-group__overflow') ?? null;
+		const trigger = this.shadowRoot?.querySelector('.avatar-group__overflow-button') ?? null;
 		if (popover && popover.anchorElement !== trigger) popover.anchorElement = trigger;
 	}
 

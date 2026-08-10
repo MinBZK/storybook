@@ -36,12 +36,12 @@ describe('nldd-avatar', () => {
 		expect(el.hasAttribute('color')).toBe(false);
 	});
 
-	it('reflects icon-aligned and scales the disc to 5/6', async () => {
+	it('reflects icon-aligned and scales the shape to 5/6', async () => {
 		el = await fixture('<nldd-avatar name="Bart van de Biezen" size="48" icon-aligned></nldd-avatar>');
 		await waitForUpdate(el);
 		expect(el.iconAligned).toBe(true);
 		expect(el.getAttribute('icon-aligned')).toBe('');
-		// --_shape-scale drives the 5/6 disc; default avatars stay full-bleed (1).
+		// --_shape-scale drives the 5/6 shape; default avatars stay full-bleed (1).
 		expect(getComputedStyle(el).getPropertyValue('--_shape-scale').trim()).toBe('calc(5 / 6)');
 		el.iconAligned = false;
 		await waitForUpdate(el);
@@ -78,20 +78,20 @@ describe('nldd-avatar', () => {
 
 	// The test fixture isn't laid out (zero-size shadow elements), so stub the
 	// measured widths to check the fit maths deterministically. The live scaling
-	// (initials always fit the disc) is verified in the browser.
-	const stubAndFit = (a: NLDDAvatar, discWidth: number, initialsWidth: number): number => {
-		const disc = a.shadowRoot!.querySelector('.avatar')!;
+	// (initials always fit) is verified in the browser.
+	const stubAndFit = (a: NLDDAvatar, shapeWidth: number, initialsWidth: number): number => {
+		const shape = a.shadowRoot!.querySelector('.avatar')!;
 		const initials = a.shadowRoot!.querySelector('.avatar__initials')!;
-		Object.defineProperty(disc, 'clientWidth', { value: discWidth, configurable: true });
+		Object.defineProperty(shape, 'clientWidth', { value: shapeWidth, configurable: true });
 		Object.defineProperty(initials, 'scrollWidth', { value: initialsWidth, configurable: true });
 		(a as unknown as { _fitInitials(): void })._fitInitials();
 		return parseFloat(a.style.getPropertyValue('--_initials-fit'));
 	};
 
-	it('scales wide initials down to fit the disc width', async () => {
+	it('scales wide initials down to fit the shape width', async () => {
 		el = await fixture<NLDDAvatar>('<nldd-avatar initials="WWWW" decorative size="48"></nldd-avatar>');
 		await waitForUpdate(el);
-		// natural 60px wide inside a 48px disc → fit = 48 * 0.75 / 60
+		// natural 60px wide inside a 48px shape → fit = 48 * 0.75 / 60
 		expect(stubAndFit(el, 48, 60)).toBeCloseTo((48 * 0.75) / 60, 3);
 	});
 
@@ -121,7 +121,7 @@ describe('nldd-avatar', () => {
 		expect(el.shadowRoot!.querySelector('.avatar__initials')!.textContent).toBe('BB');
 	});
 
-	// The disc doesn't resize when the image gives way to initials, so the
+	// The shape does not resize when the image gives way to initials, so the
 	// ResizeObserver stays silent: the fallback must trigger the re-fit itself,
 	// or wide initials render unscaled and spill out of the circle.
 	it('re-fits the initials when a failed image falls back to them', async () => {

@@ -9,11 +9,11 @@ const smMax = unsafeCSS(breakpoints.smMax);
 export const notificationStyles = css`
 	:host {
 		--_width: var(--primitives-area-400);
-		--_depth: 0;
-		--_hint: 0;
+		--_stack-fanned: 0;
+		--_stack-depth: 0;
 		--_stack-base-offset: var(--primitives-space-6);
-		--_stack-hint-offset: var(--primitives-space-6);
-		--_stack-offset: calc(var(--_stack-base-offset) + var(--_stack-hint-offset) * var(--_hint));
+		--_stack-fan-offset: var(--primitives-space-6);
+		--_stack-offset: calc(var(--_stack-base-offset) + var(--_stack-fan-offset) * var(--_stack-fanned));
 		--_stack-scale-step: 0.03;
 		--_padding: var(--primitives-space-12);
 		--_gap: var(--primitives-space-6);
@@ -35,8 +35,8 @@ export const notificationStyles = css`
 		/* The region is a column with a max height, so without this the messages
 		   squeeze to fit instead of letting the list scroll. */
 		flex-shrink: 0;
-		translate: 0 calc(var(--_stack-offset) * var(--_depth));
-		scale: calc(1 - var(--_stack-scale-step) * var(--_depth)) 1;
+		translate: 0 calc(var(--_stack-offset) * var(--_stack-depth));
+		scale: calc(1 - var(--_stack-scale-step) * var(--_stack-depth)) 1;
 		transform-origin: top center;
 		transition: translate var(--primitives-transition-duration-medium) var(--primitives-transition-easing-default), scale var(--primitives-transition-duration-medium) var(--primitives-transition-easing-default);
 		animation: notification-arrive var(--primitives-transition-duration-medium) var(--primitives-transition-easing-default) both;
@@ -78,7 +78,7 @@ export const notificationStyles = css`
 	.notification {
 		display: flex;
 		position: relative;
-		opacity: calc(1 - var(--_depth));
+		opacity: calc(1 - var(--_stack-depth));
 		transition: opacity var(--primitives-transition-duration-medium) var(--primitives-transition-easing-default);
 		padding: var(--_padding);
 		padding-inline-end: var(--_dismiss-space);
@@ -147,7 +147,7 @@ export const notificationStyles = css`
 
 	/* Out of the flow, so the button cannot make the notification taller than the
 	   message in it. */
-	.notification__dismiss {
+	.notification__dismiss-button {
 		display: flex;
 		position: absolute;
 		top: var(--_dismiss-inset);

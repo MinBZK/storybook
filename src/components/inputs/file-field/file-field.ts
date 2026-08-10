@@ -122,6 +122,18 @@ export class NLDDFileField extends FormAssociated(LitElement) {
 			: this._t('components.file-field.to-choose-file-action');
 	}
 
+	/**
+	 * The native input carries the field's label but is hidden, so it is not in
+	 * the accessibility tree. The button is what you tab to, and on its own it
+	 * only says "choose a file" — for which field is the part that matters.
+	 *
+	 * @internal
+	 */
+	public _chooseAccessibleLabel(): string {
+		if (!this.accessibleLabel) return '';
+		return `${this._chooseLabel()}, ${this.accessibleLabel}`;
+	}
+
 	/** @internal */
 	public _valueLabel(): string {
 		if (this._files.length === 0) return this._t('components.file-field.no-file-chosen-text');

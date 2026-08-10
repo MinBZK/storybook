@@ -791,11 +791,11 @@ describe('nldd-list-item – divider markers', () => {
 		await waitForUpdate(el);
 		await settle();
 		const item = el.querySelector('nldd-list-item') as HTMLElement;
-		// Wat ervoor staat doet er niet toe: de lijn begint bij de tekst.
+		// What comes before it does not matter: the line starts at the text.
 		expect(parseFloat(item.style.getPropertyValue('--_divider-inset-start'))).toBeGreaterThan(0);
 	});
 
-	// De tekst opent de rij, dus de afgeleide start valt samen met de contentrand:
+	// The text opens the row, so the derived start coincides with the content edge:
 	// dezelfde volle lijn, uitgedrukt als inspringing nul.
 	it('houdt de volle lijn als de rij met zijn tekst opent', async () => {
 		el = await fixture(`
@@ -814,7 +814,7 @@ describe('nldd-list-item – divider markers', () => {
 		expect(parseFloat(item.style.getPropertyValue('--_divider-inset-start'))).toBe(0);
 	});
 
-	// Een boom springt in met spacers, dus de dividers springen mee naar binnen.
+	// A tree indents with spacers, so the dividers indent along with it.
 	it('begint bij de tekst voorbij de inspring-spacers', async () => {
 		el = await fixture(`
 			<div style="width: 400px; --components-list-item-indicator-inline-inset: 8px; --semantics-controls-md-min-size: 44px; --semantics-controls-sm-min-size: 32px; --primitives-space-16: 16px; --primitives-space-32: 32px; --semantics-dividers-thickness: 1px;">
@@ -834,7 +834,7 @@ describe('nldd-list-item – divider markers', () => {
 	});
 
 	// De marker weghalen leidt opnieuw af in plaats van te wissen: dezelfde cel,
-	// nu vanzelf in plaats van met de hand.
+	// on its own now, rather than by hand.
 	it('valt terug op de afgeleide start als de marker weg is', async () => {
 		el = await fixture(`
 			<div style="width: 400px; --components-list-item-indicator-inline-inset: 8px; --semantics-controls-md-min-size: 44px; --semantics-controls-sm-min-size: 32px; --primitives-space-40: 40px; --semantics-dividers-thickness: 1px;">
@@ -854,7 +854,7 @@ describe('nldd-list-item – divider markers', () => {
 		expect(parseFloat(item.style.getPropertyValue('--_divider-inset-start'))).toBeGreaterThanOrEqual(40);
 	});
 
-	// Niets om uit af te leiden, dus de vars verdwijnen.
+	// Nothing to derive it from, so the vars disappear.
 	it('wist de vars als de rij geen tekst- of titel-cel heeft', async () => {
 		el = await fixture(`
 			<div style="width: 400px; --components-list-item-indicator-inline-inset: 8px; --semantics-controls-md-min-size: 44px; --semantics-controls-sm-min-size: 32px; --primitives-space-40: 40px; --semantics-dividers-thickness: 1px;">
@@ -1019,9 +1019,9 @@ describe('nldd-list-item onder een universele reset', () => {
 });
 
 describe('nldd-list-item divider met verborgen cellen', () => {
-	// Een rij die per breedte andere cellen toont zet divider-start op allebei de
-	// varianten. De verborgene heeft een lege rect, en die meet als inset 0: dan
-	// begint de streep aan de rand van de rij in plaats van bij de tekst.
+	// A row that shows different cells per width sets divider-start on both
+	// variants. The hidden one has an empty rect, which measures as inset 0: the
+	// line would then start at the edge of the row rather than at the text.
 	it('negeert een divider-start op een cel die niet gerenderd wordt', async () => {
 		const el = await fixture(`
 			<nldd-list>

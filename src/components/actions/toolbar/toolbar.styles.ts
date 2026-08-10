@@ -304,6 +304,18 @@ export const toolbarTitleStyles = css`
 		text-decoration: none;
 	}
 
+	.toolbar__opens-in-new-tab-hint {
+		position: absolute;
+		margin: -1px;
+		border: 0;
+		width: 1px;
+		height: 1px;
+		overflow: hidden;
+		padding: 0;
+		white-space: nowrap;
+		clip-path: inset(50%);
+	}
+
 	.toolbar__title-link:focus-visible {
 		outline: var(--semantics-focus-ring-outline);
 		outline-offset: var(--semantics-focus-ring-outline-offset);

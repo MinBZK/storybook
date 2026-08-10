@@ -1,50 +1,50 @@
 /**
  * Nederlandse Digitale Dienst Popover Component (Lit + TypeScript)
  *
- * Een non-modal floating panel dat is verankerd aan een trigger-element.
- * Gebouwd op de native Popover API (popover="auto") met Floating UI voor
- * positionering. De browser regelt open/toggle/light-dismiss; deze
- * component regelt alleen positionering en focus.
+ * A non-modal floating panel anchored to a trigger element. Built on the native
+ * Popover API (popover="auto") with Floating UI for positioning. The browser
+ * handles opening, toggling and light dismiss; this component only handles
+ * positioning and focus.
  *
- * Aanbevolen gebruik via popovertarget zodat de browser de toggle regelt:
+ * The recommended use is through popovertarget, so the browser owns the toggle:
  *
  *     <nldd-button id="info-trigger" popovertarget="info-popover">Info</nldd-button>
  *     <nldd-popover id="info-popover" anchor="info-trigger" accessible-label="Info">
  *         <nldd-container>
- *             <p>Inhoud van de popover.</p>
+ *             <p>Content of the popover.</p>
  *         </nldd-container>
  *     </nldd-popover>
  *
- * Voor een custom focus-target binnen de popover: zet `autofocus` op het
- * gewenste child-element. Anders krijgt de popover-host zelf focus.
+ * For a custom focus target inside the popover, put `autofocus` on the child you
+ * want. Without it the popover host itself takes focus.
  *
  * @element nldd-popover
  *
- * @attr {string} anchor - ID van het trigger-element voor positionering
+ * @attr {string} anchor - ID of the trigger element, used for positioning
  * @attr {string} placement - Floating UI placement (default: 'bottom-start')
- * @attr {string} width - Breedte als CSS-lengte (default: 320px via --components-popover-default-width). Een inhoudsmaat (`fit-content`, `min-content`, `max-content`, `auto`) kan niet: de popover is een inline-size container zodat geslotte componenten zich naar hem kunnen voegen, en dan mag zijn breedte niet uit diezelfde inhoud komen. Zo'n waarde wordt genegeerd, met een waarschuwing in DEV.
- * @attr {string} top - CSS top-positie. Wanneer gezet (alleen of samen met andere edge-attrs of `centered`) wordt Floating UI's anchor-positionering overgeslagen — de popover staat dan vrij op het scherm. De `anchor` blijft wel nodig voor ARIA-koppeling op de trigger. Geen effect op sm (bottom-sheet wint).
- * @attr {string} left - CSS left-positie. Zie `top` voor semantiek.
- * @attr {string} right - CSS right-positie. Zie `top` voor semantiek.
- * @attr {string} bottom - CSS bottom-positie. Zie `top` voor semantiek.
- * @attr {boolean} centered - Centreert beide assen op de viewport. Per as overrideable: `centered top="0"` = horizontaal gecentreerd, top-aligned. Mirrort CSS `place-items: center` met `align-items`/`justify-items` overrides.
- * @attr {boolean} sm-full-height - Op sm-viewport (waar de popover als bottom-sheet rendert) de volledige beschikbare hoogte vullen i.p.v. te krimpen naar content. Geen effect op md+ (anchored modus). Opt-in voor content-heavy use cases zoals zoekresultaten of lange detail-views; volgt Apple/Material conventie van content-sized als default.
- * @attr {string} accessible-label - (verplicht) Toegankelijke naam (aria-label). Valt terug op de i18n default ('Popover') als niet gezet — geef altijd een unieke, beschrijvende naam.
- * @attr {string} role - ARIA role (default: 'dialog'). Voor informationele content (tooltip-callout, rich-text help-panel) zonder dialog-interactiepatroon: zet `role="region"`. Voor menu-style triggers: `role="menu"` + `aria-haspopup="menu"` op de anchor. De popover overschrijft een expliciet gezette role nooit.
- * @attr {object} translations - Override translation keys; unset keys vallen terug op de Nederlandse default.
+ * @attr {string} width - Width as a CSS length (default: 320px through --components-popover-default-width). A content-based size (`fit-content`, `min-content`, `max-content`, `auto`) is refused: the popover is an inline-size container so slotted components can adapt to it, and its width cannot then come from that same content. Such a value is ignored, with a warning in DEV.
+ * @attr {string} top - CSS top position. When set (on its own, or together with other edge attributes or `centered`) Floating UI's anchor positioning is skipped and the popover stands free on the screen. The `anchor` is still needed for the ARIA link on the trigger. No effect on sm, where the bottom sheet wins.
+ * @attr {string} left - CSS left position. See `top` for the semantics.
+ * @attr {string} right - CSS right position. See `top` for the semantics.
+ * @attr {string} bottom - CSS bottom position. See `top` for the semantics.
+ * @attr {boolean} centered - Centers both axes on the viewport. Overridable per axis: `centered top="0"` is centered horizontally, aligned to the top. Mirrors CSS `place-items: center` with `align-items`/`justify-items` overrides.
+ * @attr {boolean} sm-full-height - On an sm viewport (where the popover renders as a bottom sheet) fills the whole available height instead of shrinking to its content. No effect on md and up (anchored mode). Opt-in for content-heavy cases such as search results or long detail views; content-sized is the default, following the Apple and Material convention.
+ * @attr {string} accessible-label - (required) Accessible name (aria-label). Falls back to the i18n default ('Popover') when unset — always give a unique, describing name.
+ * @attr {string} role - ARIA role (default: 'dialog'). For informational content (a tooltip callout, a rich-text help panel) without a dialog interaction pattern, set `role="region"`. For menu-style triggers, `role="menu"` plus `aria-haspopup="menu"` on the anchor. The popover never overwrites a role that was set explicitly.
+ * @attr {object} translations - Override translation keys; unset keys fall back to the Dutch default.
  *
- * @prop {Element|null} anchorElement - Programmatische anchor (heeft voorrang op anchor attribuut)
- * @prop {boolean} open - (read-only) Of de popover momenteel open is
+ * @prop {Element|null} anchorElement - Programmatic anchor (takes precedence over the anchor attribute)
+ * @prop {boolean} open - (read-only) Whether the popover is open right now
  *
- * @slot - Vrije content (bijv. nldd-container met form/info)
+ * @slot - Free content (an nldd-container with a form or info, for instance)
  *
- * @fires open - Wanneer de popover wordt geopend
- * @fires close - Wanneer de popover wordt gesloten
+ * @fires open - When the popover opens
+ * @fires close - When the popover closes
  *
- * @method show() - Opent de popover
- * @method hide() - Sluit de popover
- * @method toggle() - Toggelt de popover
- * @method reposition() - Herberekent de positie t.o.v. anchor
+ * @method show() - Opens the popover
+ * @method hide() - Closes the popover
+ * @method toggle() - Toggles the popover
+ * @method reposition() - Recalculates the position relative to the anchor
  */
 
 import { LitElement, PropertyValues } from 'lit';

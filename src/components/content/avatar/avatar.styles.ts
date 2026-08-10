@@ -48,7 +48,7 @@ export const avatarStyles = css`
 		--_content-color: var(--semantics-content-contrast-color);
 	}
 
-	/* Shrink the visible disc to 5/6 of the host (centered), so the avatar lines
+	/* Shrink the visible shape to 5/6 of the host (centered), so the avatar lines
 	   up optically with an icon on the same grid (an icon glyph has built-in
 	   padding). The host keeps the grid cell size. */
 	:host([icon-aligned]) {
@@ -95,7 +95,7 @@ export const avatarStyles = css`
 		user-select: none;
 	}
 
-	/* # Interactive — the disc itself is the link or button */
+	/* # Interactive — the shape itself is the link or button */
 
 	.avatar--interactive {
 		padding: 0;

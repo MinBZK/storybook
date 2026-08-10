@@ -384,8 +384,8 @@ describe('nldd-text-cell', () => {
 		expect(span!.textContent).toBe('Aardappelen');
 	});
 
-	// De open randen lossen naar niets op: het attribuut staat er wel maar er
-	// wordt nooit iets verborgen. Dat ziet eruit als een werkende waarde, dus
+	// The open edges resolve to nothing: the attribute is there but nothing is
+	// ever hidden. That looks like a working value, so
 	// het zegt het één keer hardop.
 	it('waarschuwt bij een hide-below die nooit iets verbergt', async () => {
 		const warn = vi.spyOn(console, 'warn').mockImplementation(() => {});
@@ -408,7 +408,7 @@ describe('nldd-text-cell', () => {
 
 describe('nldd-text-cell fit-content in een krappe rij', () => {
 	// fit-content betekent min(max-content, max(min-content, beschikbaar)). Met
-	// flex-shrink: 0 hield de cel zijn volle inhoudsbreedte vast, hoe smal de rij
+	// flex-shrink: 0 held the cell at its full content width, however narrow the row
 	// ook werd, en duwde hij alles erachter het beeld uit.
 	it('krimpt mee en duwt de cel erachter niet weg', async () => {
 		const el = await fixture(`
@@ -426,7 +426,7 @@ describe('nldd-text-cell fit-content in een krappe rij', () => {
 		cleanup(el);
 	});
 
-	// Zelfs een woord dat langer is dan de rij loopt er niet uit: de tekst heeft
+	// Even a word longer than the row does not run out of it: the text has
 	// overflow-wrap: anywhere, dus hij breekt desnoods midden in het woord.
 	it('loopt ook met een lang woord niet buiten de rij', async () => {
 		const el = await fixture(`

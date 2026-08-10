@@ -40,6 +40,7 @@ export function fileFieldTemplate(component: NLDDFileField): TemplateResult {
 					variant="neutral-tinted"
 					size=${component.size}
 					text=${component._chooseLabel()}
+					accessible-label=${component._chooseAccessibleLabel() || nothing}
 					?disabled=${component.disabled}
 					@click=${component._handleChoose}
 				></nldd-button>

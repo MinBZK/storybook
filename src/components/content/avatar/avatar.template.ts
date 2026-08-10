@@ -42,10 +42,10 @@ export function avatarTemplate(component: NLDDAvatar): TemplateResult {
 		` : nothing}
 	`;
 
-	// The disc itself becomes the control, rather than an overlay: an avatar is
-	// small and round, so a rectangular overlay would take clicks (and paint a
-	// focus ring) outside the shape.
-	const disc = component.href
+	// The shape itself becomes the control, rather than an overlay: an avatar is
+	// small and rounded, so a rectangular overlay would take clicks (and paint a
+	// focus ring) outside it.
+	const shape = component.href
 		? html`
 			<a class="avatar avatar--interactive"
 				href=${component.href}
@@ -63,7 +63,7 @@ export function avatarTemplate(component: NLDDAvatar): TemplateResult {
 			`
 			: html`<div class="avatar">${content}</div>`;
 
-	// The name as a tooltip, like nldd-icon-button does for its label: a disc
+	// The name as a tooltip, like nldd-icon-button does for its label: an avatar
 	// shows no text, so without this the name is readable by assistive software
 	// and by nobody else. Decorative avatars have nothing to say here.
 	const tooltipText = component.decorative ? '' : (component.accessibleLabel || component.name);
@@ -71,8 +71,8 @@ export function avatarTemplate(component: NLDDAvatar): TemplateResult {
 	return tooltipText && component.tooltipTiming !== 'never'
 		? html`
 			<nldd-tooltip text=${tooltipText} timing=${component.tooltipTiming}>
-				${disc}
+				${shape}
 			</nldd-tooltip>
 		`
-		: disc;
+		: shape;
 }

@@ -2507,16 +2507,16 @@ describe('nldd-menu anchor popup semantics', () => {
 		await button.updateComplete;
 		expect(button.popupType).toBe('menu');
 	});
-	// Iets anders dan het menu kan de popover sluiten: een modale dialog leegt de
-	// top layer. Safari vuurt daar geen toggle voor, dus het menu blijft denken
-	// dat hij openstaat, het anker houdt popoverTargetAction op 'hide' en de
-	// volgende klik vraagt om een al gesloten popover te sluiten. Dat is een
+	// Something other than the menu can close the popover: a modal dialog empties
+	// the top layer. Safari fires no toggle for that, so the menu keeps thinking
+	// it is open, the anchor keeps popoverTargetAction on 'hide', and the next
+	// click asks to close a popover that is already closed. That is a
 	// no-op: een dode knop.
 	//
-	// Het toggle-event van een popover komt als losse taak, niet synchroon. Deze
+	// A popover's toggle event arrives as its own task, not synchronously. This
 	// test grijpt precies dat venster: direct na hidePopover() is de popover
-	// dicht terwijl het menu zijn toggle nog niet heeft gehad. Geen await tussen
-	// de stappen, anders repareert die taak de staat alsnog.
+	// closed while the menu has not had its toggle yet. No await between the
+	// steps, or that task would repair the state after all.
 	it('leidt de ankerstaat af uit de popover zelf, niet uit een toggle die uitbleef', async () => {
 		const el = await fixture<HTMLElement>(`
 			<div>
@@ -2540,7 +2540,7 @@ describe('nldd-menu anchor popup semantics', () => {
 
 		menu.hidePopover();
 		expect(menu.matches(':popover-open')).toBe(false);
-		// Het menu heeft zijn toggle nog niet gehad: het anker staat nog op open.
+		// The menu has not had its toggle yet: the anchor still says open.
 		expect(anchor.popoverTargetAction).toBe('hide');
 
 		anchor.dispatchEvent(new PointerEvent('pointerdown', { bubbles: true, composed: true }));

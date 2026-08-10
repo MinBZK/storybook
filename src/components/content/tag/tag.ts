@@ -1,24 +1,24 @@
 /**
  * Nederlandse Digitale Dienst Tag Component (Lit + TypeScript)
  *
- * Een compact kenmerk dat aan iets is toegekend: een categorie, een type, een rol,
- * een keurmerk. Wat er staat verandert pas als iemand de inhoud wijzigt. Een tag
- * is niet interactief.
+ * A compact property that has been assigned to something: a category, a type, a
+ * role, a certification. What it says changes only when someone edits the
+ * content. A tag is not interactive.
  *
- * Gebruik hem niet voor een toestand die het systeem zelf bijhoudt, zoals "Actief"
- * of "Verlopen", want dat is `nldd-badge`. Kan de gebruiker het ding weghalen of
- * erop klikken, dan is het `nldd-token`.
+ * Do not use it for a state the system keeps itself, such as "Active" or
+ * "Expired", because that is `nldd-badge`. If the user can remove the thing or
+ * click it, it is `nldd-token`.
  *
  * @element nldd-tag
- * @attr {string} color - Kleurvariant. Semantisch: 'neutral' | 'accent' | 'success' | 'warning' | 'critical'. Rijkskleuren: 'lintblauw' | 'donkerblauw' | 'hemelblauw' | 'lichtblauw' | 'paars' | 'violet' | 'robijnrood' | 'roze' | 'rood' | 'oranje' | 'donkergeel' | 'geel' | 'donkerbruin' | 'bruin' | 'donkergroen' | 'groen' | 'mosgroen' | 'mintgroen'. (default: 'neutral')
- * @attr {string} size - Tag grootte: 'sm' | 'md' (default: 'md')
- * @attr {string} text - Tag tekst (alternatief voor default slot)
- * @attr {string} icon - Icoon voor de tekst
- * @attr {string} variant - Wat zichtbaar is: 'text' | 'icon' | 'icon-and-text'. Onbepaald → auto-detect op basis van welke van text/icon aanwezig is.
- * @attr {string} accessible-label - Toegankelijk label voor screenreaders. Gebruik dit bij icon-only tags zonder zichtbare tekst.
+ * @attr {string} color - Color variant. Semantic: 'neutral' | 'accent' | 'success' | 'warning' | 'critical'. Rijkshuisstijl colors: 'lintblauw' | 'donkerblauw' | 'hemelblauw' | 'lichtblauw' | 'paars' | 'violet' | 'robijnrood' | 'roze' | 'rood' | 'oranje' | 'donkergeel' | 'geel' | 'donkerbruin' | 'bruin' | 'donkergroen' | 'groen' | 'mosgroen' | 'mintgroen'. (default: 'neutral')
+ * @attr {string} size - Tag size: 'sm' | 'md' (default: 'md')
+ * @attr {string} text - Tag text (alternative to the default slot)
+ * @attr {string} icon - Icon before the text
+ * @attr {string} variant - What is visible: 'text' | 'icon' | 'icon-and-text'. Unset → detected from which of text/icon is present.
+ * @attr {string} accessible-label - Accessible label for screen readers. Use this on icon-only tags without visible text.
  *
- * @slot - Tag tekst
- * @slot icon - Custom icoon voor de tekst
+ * @slot - Tag text
+ * @slot icon - Custom icon before the text
  */
 
 import { LitElement } from 'lit';

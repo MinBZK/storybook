@@ -4,11 +4,11 @@
  * Toont een citaat met optionele bron-attributie.
  *
  * @element nldd-blockquote
- * @attr {string} cite - URL van de bron (wordt doorgegeven aan het <blockquote> element)
+ * @attr {string} cite - URL of the source (forwarded to the <blockquote> element)
  *
  * @slot - De citaat-paragra(a)f(en) — gebruik bij voorkeur <p>-elementen
  * @slot attribution - Optionele bronvermelding (auteur, titel, etc.). Ook een
- *   nldd-identity mag hier; het kastlijntje ("— ") wordt dan weggelaten.
+ *   An nldd-identity is allowed here; the em dash ("— ") is then left out.
  */
 
 import { LitElement } from 'lit';

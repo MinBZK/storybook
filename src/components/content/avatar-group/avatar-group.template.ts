@@ -14,7 +14,7 @@ export function avatarGroupTemplate(component: NLDDAvatarGroup) {
 		>
 			<slot @slotchange=${component._onSlotChange}></slot>
 			${overflow.length > 0 ? html`
-				<button class="avatar-group__overflow"
+				<button class="avatar-group__overflow-button"
 					id=${component._triggerId}
 					type="button"
 					aria-label=${label}

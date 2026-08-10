@@ -85,7 +85,7 @@ export class NLDDNotification extends withTranslations(LitElement, nlddNotificat
 	@property({ reflect: true, converter: reflectNonDefault<NotificationVariant>('neutral') })
 	variant: NotificationVariant = 'neutral';
 
-	@property({ type: String, reflect: true })
+	@property({ reflect: true, converter: reflectNonDefault<string>('') })
 	icon = '';
 
 	@property({ type: String, reflect: true })
@@ -94,7 +94,7 @@ export class NLDDNotification extends withTranslations(LitElement, nlddNotificat
 	@property({ type: String, reflect: true, attribute: 'supporting-text' })
 	supportingText = '';
 
-	@property({ type: Number, reflect: true })
+	@property({ reflect: true, converter: reflectNonDefault<number>(DEFAULT_DURATION) })
 	duration = DEFAULT_DURATION;
 
 	@state()
@@ -107,12 +107,16 @@ export class NLDDNotification extends withTranslations(LitElement, nlddNotificat
 
 	private _timer: number | null = null;
 
+	/** When the running timeout was scheduled, so a pause can work out what is
+	 *  left of it. */
+	private _timerStartedAt = 0;
+
 	/** Moving into the region disconnects and reconnects this element. Without
 	 *  this the leave-handler would tear down the very region we are joining. */
 	private _moving = false;
 
-	/** What is left of the duration, so a pause resumes rather than restarts. */
-	private _remaining = DEFAULT_DURATION;
+	/** What is left of `duration`, so a pause resumes rather than restarts. */
+	private _remainingDuration = DEFAULT_DURATION;
 
 	get _resolvedIcon(): string {
 		return this.icon || DEFAULT_ICONS[this.variant];
@@ -126,10 +130,10 @@ export class NLDDNotification extends withTranslations(LitElement, nlddNotificat
 	override connectedCallback(): void {
 		super.connectedCallback();
 		this.setAttribute('role', this.variant === 'critical' ? 'alert' : 'status');
-		this._remaining = this.duration;
-		this.addEventListener('pointerenter', this._pause);
-		this.addEventListener('pointerleave', this._resume);
-		this.addEventListener('focusin', this._pause);
+		this._remainingDuration = this.duration;
+		this.addEventListener('pointerenter', this._pauseTimer);
+		this.addEventListener('pointerleave', this._resumeTimer);
+		this.addEventListener('focusin', this._pauseTimer);
 		this.addEventListener('focusout', this._onFocusOut);
 		this.addEventListener('keydown', this._onKeyDown);
 		// Moving itself has to wait a tick: a framework that just created this
@@ -148,10 +152,10 @@ export class NLDDNotification extends withTranslations(LitElement, nlddNotificat
 	override disconnectedCallback(): void {
 		super.disconnectedCallback();
 		if (this._moving) return;
-		this._stopTimer();
-		this.removeEventListener('pointerenter', this._pause);
-		this.removeEventListener('pointerleave', this._resume);
-		this.removeEventListener('focusin', this._pause);
+		this._clearTimer();
+		this.removeEventListener('pointerenter', this._pauseTimer);
+		this.removeEventListener('pointerleave', this._resumeTimer);
+		this.removeEventListener('focusin', this._pauseTimer);
 		this.removeEventListener('focusout', this._onFocusOut);
 		this.removeEventListener('keydown', this._onKeyDown);
 		leaveRegion(this);
@@ -162,7 +166,7 @@ export class NLDDNotification extends withTranslations(LitElement, nlddNotificat
 		if (changed.has('variant')) {
 			this.setAttribute('role', this.variant === 'critical' ? 'alert' : 'status');
 		}
-		if (changed.has('duration')) this._remaining = this.duration;
+		if (changed.has('duration')) this._remainingDuration = this.duration;
 	}
 
 	/** Called by the region. Starting the clock here rather than on connect is
@@ -170,8 +174,8 @@ export class NLDDNotification extends withTranslations(LitElement, nlddNotificat
 	_setFront(isFront: boolean): void {
 		if (this._isFront === isFront) return;
 		this._isFront = isFront;
-		if (isFront) this._resume();
-		else this._stopTimer();
+		if (isFront) this._resumeTimer();
+		else this._clearTimer();
 	}
 
 	_onActionsSlotChange = (e: Event): void => {
@@ -185,35 +189,35 @@ export class NLDDNotification extends withTranslations(LitElement, nlddNotificat
 		}
 	};
 
-	private _pause = (): void => {
-		this._stopTimer();
+	/** A wrapper rather than the method itself, because a listener needs to keep
+	 *  its `this`. */
+	private _pauseTimer = (): void => {
+		this._clearTimer();
 	};
 
 	private _onFocusOut = (e: FocusEvent): void => {
 		// Only when focus really left: moving between the action and the dismiss
 		// button is still inside.
 		if (this.contains(e.relatedTarget as Node)) return;
-		this._resume();
+		this._resumeTimer();
 	};
 
-	private _resume = (): void => {
+	private _resumeTimer = (): void => {
 		if (!this._isFront || !this._leavesOnItsOwn || this._timer !== null) return;
 		if (this.matches(':hover') || this.contains(document.activeElement)) return;
-		const startedAt = Date.now();
+		this._timerStartedAt = Date.now();
 		this._timer = window.setTimeout(() => {
 			this._timer = null;
 			this._dismiss();
-		}, this._remaining);
-		this._startedAt = startedAt;
+		}, this._remainingDuration);
 	};
 
-	private _startedAt = 0;
-
-	private _stopTimer(): void {
+	/** Clears the running timeout and banks what is left of the duration. */
+	private _clearTimer(): void {
 		if (this._timer === null) return;
 		window.clearTimeout(this._timer);
 		this._timer = null;
-		this._remaining = Math.max(0, this._remaining - (Date.now() - this._startedAt));
+		this._remainingDuration = Math.max(0, this._remainingDuration - (Date.now() - this._timerStartedAt));
 	}
 
 	private _onKeyDown = (e: KeyboardEvent): void => {
@@ -227,7 +231,7 @@ export class NLDDNotification extends withTranslations(LitElement, nlddNotificat
 	};
 
 	private _dismiss(): void {
-		this._stopTimer();
+		this._clearTimer();
 		this.dispatchEvent(new CustomEvent('dismiss', { bubbles: true, composed: true }));
 	}
 
