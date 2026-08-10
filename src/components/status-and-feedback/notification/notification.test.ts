@@ -9,6 +9,13 @@ function clearRegion(): void {
 	document.getElementById('nldd-notification-region')?.remove();
 }
 
+/** Real timers with a short duration rather than fake ones: the notification
+ *  starts its clock from a microtask after it has joined the region, and how a
+ *  fake clock interleaves with that differs per platform. */
+function wacht(ms: number): Promise<void> {
+	return new Promise((resolve) => { setTimeout(resolve, ms); });
+}
+
 async function maak(html: string): Promise<NLDDNotification> {
 	const el = await fixture<NLDDNotification>(html);
 	await waitForUpdate(el);
@@ -55,44 +62,39 @@ describe('nldd-notification', () => {
 	});
 
 	it('verdwijnt vanzelf als hij bovenaan staat', async () => {
-		vi.useFakeTimers();
 		const host = document.createElement('div');
 		document.body.appendChild(host);
-		host.innerHTML = '<nldd-notification text="Opgeslagen" duration="1000"></nldd-notification>';
+		host.innerHTML = '<nldd-notification text="Opgeslagen" duration="60"></nldd-notification>';
 		const item = host.querySelector('nldd-notification')!;
 		const gezien = vi.fn();
 		item.addEventListener('dismiss', gezien);
 
-		await vi.advanceTimersByTimeAsync(0);
-		await vi.advanceTimersByTimeAsync(1200);
+		await wacht(400);
 		expect(gezien).toHaveBeenCalled();
 
 		host.remove();
 	});
 
 	it('laat een fout staan, hoe lang je ook wacht', async () => {
-		vi.useFakeTimers();
 		const host = document.createElement('div');
 		document.body.appendChild(host);
-		host.innerHTML = '<nldd-notification text="Mislukt" variant="critical" duration="1000"></nldd-notification>';
+		host.innerHTML = '<nldd-notification text="Mislukt" variant="critical" duration="60"></nldd-notification>';
 		const item = host.querySelector('nldd-notification')!;
 		const gezien = vi.fn();
 		item.addEventListener('dismiss', gezien);
 
-		await vi.advanceTimersByTimeAsync(0);
-		await vi.advanceTimersByTimeAsync(5000);
+		await wacht(400);
 		expect(gezien).not.toHaveBeenCalled();
 
 		host.remove();
 	});
 
 	it('telt alleen af voor de voorste van de stapel, de nieuwste', async () => {
-		vi.useFakeTimers();
 		const host = document.createElement('div');
 		document.body.appendChild(host);
 		host.innerHTML = `
-			<nldd-notification text="Eerste" duration="1000"></nldd-notification>
-			<nldd-notification text="Tweede" duration="1000"></nldd-notification>
+			<nldd-notification text="Eerste" duration="60"></nldd-notification>
+			<nldd-notification text="Tweede" duration="60"></nldd-notification>
 		`;
 		const [eerste, tweede] = Array.from(host.querySelectorAll('nldd-notification'));
 		const eersteWeg = vi.fn();
@@ -100,8 +102,7 @@ describe('nldd-notification', () => {
 		eerste.addEventListener('dismiss', eersteWeg);
 		tweede.addEventListener('dismiss', tweedeWeg);
 
-		await vi.advanceTimersByTimeAsync(0);
-		await vi.advanceTimersByTimeAsync(1200);
+		await wacht(400);
 		expect(tweedeWeg).toHaveBeenCalled();
 		expect(eersteWeg).not.toHaveBeenCalled();
 

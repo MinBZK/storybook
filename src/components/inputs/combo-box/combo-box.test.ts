@@ -4,6 +4,15 @@ import type { NLDDComboBox } from './combo-box.js';
 import './combo-box.js';
 import '../../actions/menu/menu.js';
 
+/** Waits until the combo-box reports an active descendant, so a test can press
+ *  Enter knowing there is something to pick. */
+async function totHighlight(combo: NLDDComboBox): Promise<void> {
+	const heeft = () => !!(combo as unknown as { _highlightedId: string })._highlightedId;
+	for (let poging = 0; poging < 60 && !heeft(); poging += 1) {
+		await nextFrames();
+	}
+}
+
 describe('nldd-combo-box', () => {
 	let el: HTMLElement;
 
@@ -828,10 +837,10 @@ describe('nldd-combo-box – allow-custom', () => {
 		});
 
 		input.dispatchEvent(new KeyboardEvent('keydown', { key: 'ArrowDown', bubbles: true, composed: true }));
-		// The first item is highlighted from a requestAnimationFrame, so wait for a
-		// real frame: waitForUpdate only gets us updateComplete plus a macrotask,
-		// and Enter would arrive at a menu with nothing highlighted yet.
-		await nextFrames();
+		// The first item is highlighted from a requestAnimationFrame that hangs off
+		// the popover's toggle event, and that event is a task of its own. Waiting a
+		// fixed number of frames is a race, so wait for the highlight itself.
+		await totHighlight(combo);
 		input.dispatchEvent(new KeyboardEvent('keydown', { key: 'Enter', bubbles: true, composed: true }));
 		await waitForUpdate(el);
 
