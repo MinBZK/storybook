@@ -15,6 +15,8 @@ the type of conventional-commit determines the release. Conventional types
 `chore`, `docs`, `ci`, `style`, `test`, `build` are intentionally omitted
 here; consult the commit history if you need that level of detail.
 
+## [0.8.80](https://github.com/MinBZK/storybook/compare/v0.8.79...v0.8.80) (2026-08-10)
+
 ### Highlights
 
 - **`nldd-notification`, a new component.** A short message that arrives over the interface and leaves on its own, where `nldd-banner` stands in the page and stays. It places itself: write it where it belongs in your code and it moves to one shared region, top right from md and full width across the top below that. Nothing about the position is settable, so notifications from anywhere in an application land in the same place and stack in the same order. The surface stays neutral and only the icon carries the color, because four colored panes floating over an interface shout. More than one is a deck rather than a list: the newest is in front and readable, the older ones peek out below it, and a burst of messages takes the room of roughly one. Pointing at the deck spreads it a little, the only hint that there is more there; clicking it or tabbing into it lays the whole deck out, and clicking or tabbing away puts it back. Only the front counts down, and only while the deck is closed, so nothing disappears from under the message you are reading, and each one that leaves brings the one behind it forward. A `critical` one never leaves on its own, which is also what keeps this inside WCAG 2.2.1. The clock pauses while you point at it or while focus is inside, and resumes where it left off. At most 2 actions, under the text rather than beside it, so they do not fight the dismiss button for the same corner.
