@@ -43,8 +43,8 @@
  *
  * @element nldd-notification
  *
- * @attr {'success'|'info'|'warning'|'critical'} variant - What kind of message this is; sets the icon color and the ARIA role (default: 'info')
- * @attr {string} icon - Icon override. Default per variant: success → check-circle-filled, info → info-circle-filled, warning → exclamation-triangle-filled, critical → exclamation-circle-filled
+ * @attr {'neutral'|'accent'|'success'|'warning'|'critical'} variant - What kind of message this is; sets the icon color and the ARIA role (default: 'neutral')
+ * @attr {string} icon - Icon override. Default per variant: neutral → info-circle-filled, accent → info-circle-filled, success → check-circle-filled, warning → exclamation-triangle-filled, critical → exclamation-circle-filled
  * @attr {string} text - The message
  * @attr {string} supporting-text - A second line under the message
  * @attr {number} duration - Milliseconds before it leaves once it is front of the deck (default: 10000). `0` keeps it until dismissed, which is what `critical` does regardless.
@@ -66,11 +66,12 @@ import { nlddNotificationTranslations } from './notification.i18n.js';
 import '../../content/icon/icon.js';
 import '../../actions/icon-button/icon-button.js';
 
-export type NotificationVariant = 'success' | 'info' | 'warning' | 'critical';
+export type NotificationVariant = 'neutral' | 'accent' | 'success' | 'warning' | 'critical';
 
 const DEFAULT_ICONS: Record<NotificationVariant, string> = {
+	neutral: 'info-circle-filled',
+	accent: 'info-circle-filled',
 	success: 'check-circle-filled',
-	info: 'info-circle-filled',
 	warning: 'exclamation-triangle-filled',
 	critical: 'exclamation-circle-filled',
 };
@@ -81,8 +82,8 @@ const DEFAULT_DURATION = 10000;
 export class NLDDNotification extends withTranslations(LitElement, nlddNotificationTranslations) {
 	static override styles = notificationStyles;
 
-	@property({ reflect: true, converter: reflectNonDefault<NotificationVariant>('info') })
-	variant: NotificationVariant = 'info';
+	@property({ reflect: true, converter: reflectNonDefault<NotificationVariant>('neutral') })
+	variant: NotificationVariant = 'neutral';
 
 	@property({ type: String, reflect: true })
 	icon = '';

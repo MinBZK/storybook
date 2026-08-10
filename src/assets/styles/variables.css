@@ -1748,7 +1748,8 @@
 	--components-notification-width: var(--primitives-area-400);
 	--components-notification-icon-size: var(--primitives-space-32);
 	--components-notification-icon-success-color: var(--primitives-color-success-500);
-	--components-notification-icon-info-color: light-dark(var(--primitives-color-accent-750), var(--primitives-color-accent-350));
+	--components-notification-icon-neutral-color: var(--semantics-content-secondary-color);
+	--components-notification-icon-accent-color: light-dark(var(--primitives-color-accent-750), var(--primitives-color-accent-350));
 	--components-notification-icon-warning-color: light-dark(var(--primitives-color-warning-350), var(--primitives-color-warning-250));
 	--components-notification-icon-critical-color: var(--primitives-color-critical-500);
 	--components-notification-text-font: var(--primitives-font-body-md-bold-tight);

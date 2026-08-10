@@ -2561,8 +2561,8 @@ A short message that arrives over the interface and leaves on its own: a save th
 
 | Attribuut | Type | Beschrijving |
 | --- | --- | --- |
-| `variant` | `'success'\|'info'\|'warning'\|'critical'` | What kind of message this is; sets the icon color and the ARIA role (default: 'info') |
-| `icon` | `string` | Icon override. Default per variant: success → check-circle-filled, info → info-circle-filled, warning → exclamation-triangle-filled, critical → exclamation-circle-filled |
+| `variant` | `'neutral'\|'accent'\|'success'\|'warning'\|'critical'` | What kind of message this is; sets the icon color and the ARIA role (default: 'neutral') |
+| `icon` | `string` | Icon override. Default per variant: neutral → info-circle-filled, accent → info-circle-filled, success → check-circle-filled, warning → exclamation-triangle-filled, critical → exclamation-circle-filled |
 | `text` | `string` | The message |
 | `supporting-text` | `string` | A second line under the message |
 | `duration` | `number` | Milliseconds before it leaves once it is front of the deck (default: 10000). `0` keeps it until dismissed, which is what `critical` does regardless. |

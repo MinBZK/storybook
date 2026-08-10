@@ -8,7 +8,7 @@ const smMax = unsafeCSS(breakpoints.smMax);
 
 export const notificationStyles = css`
 	:host {
-		--_icon-color: var(--components-notification-icon-info-color);
+		--_icon-color: var(--components-notification-icon-neutral-color);
 		--_icon-size: var(--components-notification-icon-size);
 		--_padding: var(--components-notification-padding);
 		--_dismiss-inset: calc(var(--_padding) - (var(--semantics-controls-sm-min-size) - var(--_icon-size)) / 2);
@@ -38,6 +38,10 @@ export const notificationStyles = css`
 
 	/* The surface stays neutral whatever happened: four colored panes floating
 	   over the interface shout, and the icon already says which kind this is. */
+	:host([variant="accent"]) {
+		--_icon-color: var(--components-notification-icon-accent-color);
+	}
+
 	:host([variant="success"]) {
 		--_icon-color: var(--components-notification-icon-success-color);
 	}
@@ -52,15 +56,6 @@ export const notificationStyles = css`
 
 	:host([hidden]) {
 		display: none;
-	}
-
-	/* No border of its own: it floats on a shadow the way the other overlays do,
-	   and a line around it would only fight that. Forced colors take the shadow
-	   away, so there the edge has to be drawn after all. */
-	@media (forced-colors: active) {
-		:host {
-			border: var(--primitives-border-width-regular) solid CanvasText;
-		}
 	}
 
 	@media (prefers-reduced-motion: reduce) {
@@ -87,6 +82,15 @@ export const notificationStyles = css`
 		padding-inline-end: var(--_dismiss-space);
 		gap: var(--components-notification-gap);
 		align-items: center;
+	}
+
+	/* No border of its own: it floats on a shadow the way the other overlays do,
+	   and a line around it would only fight that. Forced colors take the shadow
+	   away, so there the edge has to be drawn after all. */
+	@media (forced-colors: active) {
+		.notification {
+			border: var(--primitives-border-width-regular) solid CanvasText;
+		}
 	}
 
 

@@ -20,7 +20,7 @@ export default {
 		docs: { story: { inline: false, height: '160px' } },
 	},
 	args: {
-		variant: 'info',
+		variant: 'neutral',
 		icon: '',
 		text: 'Namespace burgerzaken-prod created',
 		supportingText: '',
@@ -29,9 +29,9 @@ export default {
 	argTypes: {
 		variant: {
 			control: 'select',
-			options: ['success', 'info', 'warning', 'critical'],
+			options: ['neutral', 'accent', 'success', 'warning', 'critical'],
 			description: 'Soort melding; bepaalt het icoon en de ARIA-rol',
-			table: { defaultValue: { summary: 'info' } },
+			table: { defaultValue: { summary: 'neutral' } },
 		},
 		icon: {
 			control: 'select',
@@ -77,20 +77,27 @@ const Template = ({ variant, icon, text, supportingText, duration }: Record<stri
 export const Default = Template.bind({});
 
 /**
- * Het vlak blijft neutraal en alleen het icoon draagt de kleur: vier gekleurde
+ * Het vlak blijft neutraal en alleen het icoon draagt de kleur: vijf gekleurde
  * vlakken die over de interface zweven schreeuwen, en het icoon zegt al welke
  * soort dit is.
  */
-export const Succes = {
+export const Neutraal = {
 	render: () => html`
-		<nldd-notification variant="success" text="Namespace created" duration="0" @dismiss=${weg}></nldd-notification>
+		<nldd-notification text="Sync requested" duration="0" @dismiss=${weg}></nldd-notification>
 	`,
 	parameters: { controls: { disable: true } },
 };
 
-export const Info = {
+export const Accent = {
 	render: () => html`
-		<nldd-notification variant="info" text="Sync requested" duration="0" @dismiss=${weg}></nldd-notification>
+		<nldd-notification variant="accent" text="Sync requested" duration="0" @dismiss=${weg}></nldd-notification>
+	`,
+	parameters: { controls: { disable: true } },
+};
+
+export const Succes = {
+	render: () => html`
+		<nldd-notification variant="success" text="Namespace created" duration="0" @dismiss=${weg}></nldd-notification>
 	`,
 	parameters: { controls: { disable: true } },
 };
@@ -149,7 +156,7 @@ export const MetActies = {
  */
 export const Stapel = {
 	render: () => html`
-		<nldd-notification variant="info" text="Sync requested" @dismiss=${weg}></nldd-notification>
+		<nldd-notification text="Sync requested" @dismiss=${weg}></nldd-notification>
 		<nldd-notification variant="success" text="Namespace created" @dismiss=${weg}></nldd-notification>
 		<nldd-notification variant="critical" text="Cluster could not be created" @dismiss=${weg}></nldd-notification>
 	`,
