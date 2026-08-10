@@ -330,6 +330,10 @@ export const aliases = {
 	'k8s': 'ship-wheel',
 	'kubernetes': 'ship-wheel',
 
+	// ship-wheel-badge-plus
+	'add-k8s': 'ship-wheel-badge-plus',
+	'add-kubernetes': 'ship-wheel-badge-plus',
+
 	// magnifier
 	'search': 'magnifier',
 
@@ -438,6 +442,9 @@ export const aliases = {
 	'extension': 'puzzle-piece',
 	'module': 'puzzle-piece',
 	'plugin': 'puzzle-piece',
+
+	// puzzle-piece-badge-plus
+	'add-plugin': 'puzzle-piece-badge-plus',
 
 	// question-mark-circle
 	'help': 'question-mark-circle',
