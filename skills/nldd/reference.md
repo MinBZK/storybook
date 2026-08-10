@@ -305,7 +305,8 @@ A split button combines a primary action button with a dropdown trigger. The mai
 | `max-width` | `string` | Maximum width as a CSS length (default: '240px'); the title text truncates with an ellipsis beyond it. The cap is lifted while the title is the sole toolbar element (it then stretches to fill the row). |
 | `size` | `'sm'\|'md'\|'lg'` | Set by nldd-toolbar, not a consumer attribute: mirrors the toolbar's size (default: 'md'), which sets the title group height and, at 'sm', the title and supporting-text fonts. |
 | `href` | `string` | Makes the mark and the name one link, for the place this window belongs to (usually the app's own start). The `action` slot stays outside it: a control inside a link is a control you cannot reach without following the link. |
-| `target` | `string` | Where the link opens; only meaningful with `href`. `_blank` adds rel="noopener noreferrer". |
+| `target` | `string` | Where the link opens; only meaningful with `href`. `_blank` adds rel="noopener noreferrer" and a visually hidden "opens in a new tab" announcement. |
+| `translations` | `object` | Override translation keys (the new-tab announcement); unset keys fall back to Dutch. |
 
 **Slots**
 
@@ -1240,7 +1241,7 @@ A switch toggle with an inline label for use in forms.
 
 ### `<nldd-text-editor>`
 
-A hybrid markdown editor built on CodeMirror 6 (via NLDDCodeMirrorElement): the document stays plain markdown text, but formatting is shown inline (bold is bold, headings are larger, links are colored) while the syntax markers stay visible, only dimmed — the iA Writer / Kirby approach. No WYSIWYG tree, so the data stays portable. Default `variant="simple"` is bare (no frame, no focus ring) for use inside a composition (e.g. a message field) that owns its chrome and focus; the caret is a prominent accent. `variant="input-field"` adds a framed surface + focus ring. `font` is `sans` (default, best for prose) or `mono`. Headless: there is no built-in toolbar. A consumer drives formatting via the command methods (toggleBold/toggleItalic/toggleInlineCode/toggleStrikethrough/ toggleHeading/toggleBulletList/toggleQuote/toggleLink/runCommand to toggle, and setHeading/setList for picker-style "set" semantics), reads the active formats with getState(), listens to the nldd-text-editor-state event to render toggle states, and forwards padding clicks with focusFromPoint(). Cmd/Ctrl+B/I/E/K are bound out of the box. Commands keep focus on the editor. An @-mention typeahead (mentionSource) collapses to an atomic token, and a W3C-style annotation overlay (annotations) marks ranges with a dashed underline, light tint and a count badge without touching the underlying text.
+A hybrid markdown editor built on CodeMirror 6 (via NLDDCodeMirrorElement): the document stays plain markdown text, but formatting is shown inline (bold is bold, headings are larger, links are colored) while the syntax markers stay visible, only dimmed — the iA Writer / Kirby approach. No WYSIWYG tree, so the data stays portable. Default `variant="simple"` is bare (no frame, no focus ring) for use inside a composition (e.g. a message field) that owns its chrome and focus; the caret is a prominent accent. `variant="input-field"` adds a framed surface + focus Headless: there is no built-in toolbar. A consumer drives formatting via the command methods (toggleBold/toggleItalic/toggleInlineCode/toggleStrikethrough/ toggleHeading/toggleBulletList/toggleQuote/toggleLink/runCommand to toggle, and setHeading/setList for picker-style "set" semantics), reads the active formats with getState(), listens to the nldd-text-editor-state event to render toggle states, and forwards padding clicks with focusFromPoint(). Cmd/Ctrl+B/I/E/K are bound out of the box. Commands keep focus on the editor. An @-mention typeahead (mentionSource) collapses to an atomic token, and a W3C-style annotation overlay (annotations) marks ranges with a dashed underline, light tint and a count badge without touching the underlying text.
 
 **Attributes**
 
@@ -1257,7 +1258,6 @@ A hybrid markdown editor built on CodeMirror 6 (via NLDDCodeMirrorElement): the 
 | `rows` | `number` | Minimum visible rows (the floor in every resize mode). Default: 6. |
 | `resize` | `string` | 'none' (fixed) \| 'vertical' (drag) \| 'auto' (grow, default) |
 | `variant` | `string` | 'simple' (default, bare) \| 'input-field' (framed surface) |
-| `font` | `string` | 'sans' (default) \| 'mono' |
 | `accessible-label` | `string` | Accessible label forwarded to the editor. Set automatically by nldd-form-field. |
 | `annotatable` | `boolean` | Enable the annotation overlay (off by default). Annotations only render when this is set. |
 | `translations` | `object` | Override the editor's assistive-tech strings (the open-in-new-tab link badge and the annotation count badge). Unset keys fall back to Dutch. |
@@ -1589,6 +1589,9 @@ A simple layout primitive: pick a layout mode, give it a gap, optionally align c
 | `sm-gap` | `string` | Gap at sm breakpoint |
 | `md-gap` | `string` | Gap at md breakpoint |
 | `lg-gap` | `string` | Gap at lg breakpoint |
+| `width` | `string` | 'full' (default, fills the parent) \| 'fit-content' \| a CSS length (e.g. '480px'). A container narrower than its parent stays where its parent puts it; use the parent's horizontal-alignment to move it. |
+| `min-width` | `string` | Minimum width as a CSS length (e.g. '280px') |
+| `max-width` | `string` | Maximum width as a CSS length (e.g. '480px') |
 | `horizontal-alignment` | `string` | 'left' \| 'center' \| 'right' |
 | `vertical-alignment` | `string` | 'top' \| 'center' \| 'bottom' |
 | `padding` | `string` | Padding for all sides |
@@ -1962,6 +1965,8 @@ A basic section with responsive padding and gap based on container size. Contain
 | `background` | `'inherit'\|'base'\|'tinted'` | Surface background ('inherit' default; 'base'/'tinted' paint and cascade a surface). |
 | `scheme` | `'inherit'\|'light'\|'dark'\|'inverted'` | Color scheme ('inherit' default; 'inverted' = opposite of the surrounding page scheme). |
 | `width` | `string` | Body max-width: 'full' removes the constraint so the section spans the full available width. Any CSS length (e.g. '480px') overrides the default max-width. |
+| `horizontal-alignment` | `'left'\|'center'\|'right'` | Where the body's children sit across the body ('left' default). Use it to place something narrower than the body, such as a container with a max-width. |
+| `vertical-alignment` | `'top'\|'center'\|'bottom'` | Where the body's children sit down the section ('top' default). Only visible when the section is taller than its content. |
 | `height` | `string` | Minimum section height (any CSS length, e.g. '400px', '100dvh') (mirrors width, which sets the body max-width). |
 | `padding-block` | `string` | Block (top and bottom) padding override (token 0-96; '0' strips it). |
 | `padding-top` | `string` | Top padding override. |

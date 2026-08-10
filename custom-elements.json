@@ -2519,7 +2519,7 @@
               },
               "default": "''",
               "fieldName": "target",
-              "description": "Where the link opens; only meaningful with `href`. `_blank` adds rel=\"noopener noreferrer\"."
+              "description": "Where the link opens; only meaningful with `href`. `_blank` adds rel=\"noopener noreferrer\" and a visually hidden \"opens in a new tab\" announcement."
             },
             {
               "name": "text",
@@ -2581,7 +2581,8 @@
                 "text": "Partial<NLDDToolbarTranslations>"
               },
               "default": "{}",
-              "fieldName": "translations"
+              "fieldName": "translations",
+              "description": "Override translation keys (the new-tab announcement); unset keys fall back to Dutch."
             }
           ],
           "superclass": {
@@ -14632,7 +14633,7 @@
       "declarations": [
         {
           "kind": "class",
-          "description": "A hybrid markdown editor built on CodeMirror 6 (via NLDDCodeMirrorElement): the document stays plain markdown text, but formatting is shown inline (bold is bold, headings are larger, links are colored) while the syntax markers stay visible, only dimmed — the iA Writer / Kirby approach. No WYSIWYG tree, so the data stays portable. Default `variant=\"simple\"` is bare (no frame, no focus ring) for use inside a composition (e.g. a message field) that owns its chrome and focus; the caret is a prominent accent. `variant=\"input-field\"` adds a framed surface + focus ring. `font` is `sans` (default, best for prose) or `mono`. Headless: there is no built-in toolbar. A consumer drives formatting via the command methods (toggleBold/toggleItalic/toggleInlineCode/toggleStrikethrough/ toggleHeading/toggleBulletList/toggleQuote/toggleLink/runCommand to toggle, and setHeading/setList for picker-style \"set\" semantics), reads the active formats with getState(), listens to the nldd-text-editor-state event to render toggle states, and forwards padding clicks with focusFromPoint(). Cmd/Ctrl+B/I/E/K are bound out of the box. Commands keep focus on the editor. An @-mention typeahead (mentionSource) collapses to an atomic token, and a W3C-style annotation overlay (annotations) marks ranges with a dashed underline, light tint and a count badge without touching the underlying text.",
+          "description": "A hybrid markdown editor built on CodeMirror 6 (via NLDDCodeMirrorElement): the document stays plain markdown text, but formatting is shown inline (bold is bold, headings are larger, links are colored) while the syntax markers stay visible, only dimmed — the iA Writer / Kirby approach. No WYSIWYG tree, so the data stays portable. Default `variant=\"simple\"` is bare (no frame, no focus ring) for use inside a composition (e.g. a message field) that owns its chrome and focus; the caret is a prominent accent. `variant=\"input-field\"` adds a framed surface + focus Headless: there is no built-in toolbar. A consumer drives formatting via the command methods (toggleBold/toggleItalic/toggleInlineCode/toggleStrikethrough/ toggleHeading/toggleBulletList/toggleQuote/toggleLink/runCommand to toggle, and setHeading/setList for picker-style \"set\" semantics), reads the active formats with getState(), listens to the nldd-text-editor-state event to render toggle states, and forwards padding clicks with focusFromPoint(). Cmd/Ctrl+B/I/E/K are bound out of the box. Commands keep focus on the editor. An @-mention typeahead (mentionSource) collapses to an atomic token, and a W3C-style annotation overlay (annotations) marks ranges with a dashed underline, light tint and a count badge without touching the underlying text.",
           "name": "NLDDTextEditor",
           "members": [
             {
@@ -14749,16 +14750,6 @@
               },
               "default": "'simple'",
               "attribute": "variant",
-              "reflects": true
-            },
-            {
-              "kind": "field",
-              "name": "font",
-              "type": {
-                "text": "TextEditorFont"
-              },
-              "default": "'sans'",
-              "attribute": "font",
               "reflects": true
             },
             {
@@ -15307,15 +15298,6 @@
               "default": "'simple'",
               "fieldName": "variant",
               "description": "'simple' (default, bare) | 'input-field' (framed surface)"
-            },
-            {
-              "name": "font",
-              "type": {
-                "text": "TextEditorFont"
-              },
-              "default": "'sans'",
-              "fieldName": "font",
-              "description": "'sans' (default) | 'mono'"
             },
             {
               "name": "accessible-label",
@@ -18386,6 +18368,36 @@
             },
             {
               "kind": "field",
+              "name": "width",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "attribute": "width",
+              "reflects": true
+            },
+            {
+              "kind": "field",
+              "name": "minWidth",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "attribute": "min-width",
+              "reflects": true
+            },
+            {
+              "kind": "field",
+              "name": "maxWidth",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "attribute": "max-width",
+              "reflects": true
+            },
+            {
+              "kind": "field",
               "name": "horizontalAlignment",
               "type": {
                 "text": "HorizontalAlignment | undefined"
@@ -18765,6 +18777,33 @@
               },
               "fieldName": "lgColumnCount",
               "description": "Column count when this container is lg-wide"
+            },
+            {
+              "name": "width",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "fieldName": "width",
+              "description": "'full' (default, fills the parent) | 'fit-content' | a CSS length (e.g. '480px'). A container narrower than its parent stays where its parent puts it; use the parent's horizontal-alignment to move it."
+            },
+            {
+              "name": "min-width",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "fieldName": "minWidth",
+              "description": "Minimum width as a CSS length (e.g. '280px')"
+            },
+            {
+              "name": "max-width",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "fieldName": "maxWidth",
+              "description": "Maximum width as a CSS length (e.g. '480px')"
             },
             {
               "name": "horizontal-alignment",
@@ -22007,6 +22046,27 @@
             },
             {
               "kind": "field",
+              "name": "horizontalAlignment",
+              "type": {
+                "text": "HorizontalAlignment"
+              },
+              "default": "'left'",
+              "description": "Where the body's children sit; the body itself keeps its own max-width.",
+              "attribute": "horizontal-alignment",
+              "reflects": true
+            },
+            {
+              "kind": "field",
+              "name": "verticalAlignment",
+              "type": {
+                "text": "VerticalAlignment"
+              },
+              "default": "'top'",
+              "attribute": "vertical-alignment",
+              "reflects": true
+            },
+            {
+              "kind": "field",
               "name": "background",
               "type": {
                 "text": "PageSectionBackground"
@@ -22212,6 +22272,24 @@
               "default": "''",
               "description": "Body max-width: 'full' removes the constraint so the section spans the full available width. Any CSS length (e.g. '480px') overrides the default max-width.",
               "fieldName": "width"
+            },
+            {
+              "name": "horizontal-alignment",
+              "type": {
+                "text": "HorizontalAlignment"
+              },
+              "default": "'left'",
+              "description": "Where the body's children sit across the body ('left' default). Use it to place something narrower than the body, such as a container with a max-width.",
+              "fieldName": "horizontalAlignment"
+            },
+            {
+              "name": "vertical-alignment",
+              "type": {
+                "text": "VerticalAlignment"
+              },
+              "default": "'top'",
+              "fieldName": "verticalAlignment",
+              "description": "Where the body's children sit down the section ('top' default). Only visible when the section is taller than its content."
             },
             {
               "name": "background",
