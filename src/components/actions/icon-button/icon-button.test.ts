@@ -714,3 +714,29 @@ describe('nldd-icon-button – slotted popup overlay', () => {
 		expect(menu.matches(':popover-open')).toBe(true);
 	});
 });
+
+
+/* ============================================================
+   Host box
+   ============================================================ */
+
+describe('nldd-icon-button – host box', () => {
+	let el: HTMLElement;
+
+	afterEach(() => {
+		if (el) cleanup(el);
+	});
+
+	// The host used to be an inline-block, so the control sat on a line and the
+	// strut's descender grew the host with whatever line-height it inherited: the
+	// same button came out taller in body text than in a form.
+	it('is as tall as its button, whatever line-height it inherits', async () => {
+		el = await fixture('<div style="font-size: 18px; line-height: 27px;"><nldd-icon-button icon="ellipsis" text="More"></nldd-icon-button></div>');
+		await waitForUpdate(el);
+
+		const host = el.querySelector('nldd-icon-button') as NLDDIconButton;
+		const button = host.shadowRoot!.querySelector('button')!;
+
+		expect(host.getBoundingClientRect().height).toBe(button.getBoundingClientRect().height);
+	});
+});

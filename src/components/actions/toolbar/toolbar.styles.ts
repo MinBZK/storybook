@@ -224,9 +224,9 @@ export const toolbarTitleStyles = css`
 		--_title-width: auto;
 		--_title-max-width: var(--primitives-area-240);
 		--_title-group-height: var(--semantics-controls-md-min-size);
+		--_content-gap: var(--primitives-space-6);
 		--_title-font: var(--primitives-font-body-lg-medium-flat);
 		--_subtitle-font: var(--primitives-font-body-xs-regular-flat);
-		--_action-gap: var(--primitives-space-8);
 
 		${inheritedTextReset}
 		display: inline-flex;
@@ -235,6 +235,7 @@ export const toolbarTitleStyles = css`
 		flex-direction: row;
 		flex-shrink: 1;
 		flex-basis: var(--_title-width);
+		gap: var(--_content-gap);
 		align-items: center;
 	}
 
@@ -293,12 +294,45 @@ export const toolbarTitleStyles = css`
 		overflow: hidden;
 	}
 
-	/* Optional trailing action (e.g. an xs nldd-icon-button), tuned to sit
-	   against the title. A margin (not a host gap) means an empty slot adds no
-	   space; flex-shrink:0 keeps it full-size while the title text truncates. */
+	.toolbar__title-link {
+		display: inline-flex;
+		border-radius: var(--semantics-controls-sm-corner-radius);
+		color: inherit;
+		min-width: 0;
+		gap: var(--_content-gap);
+		align-items: center;
+		text-decoration: none;
+	}
+
+	.toolbar__opens-in-new-tab-hint {
+		position: absolute;
+		margin: -1px;
+		border: 0;
+		width: 1px;
+		height: 1px;
+		overflow: hidden;
+		padding: 0;
+		white-space: nowrap;
+		clip-path: inset(50%);
+	}
+
+	.toolbar__title-link:focus-visible {
+		outline: var(--semantics-focus-ring-outline);
+		outline-offset: var(--semantics-focus-ring-outline-offset);
+		box-shadow: var(--semantics-focus-ring-box-shadow);
+	}
+
+
+	/* The space around these is a gap on the host: a margin here loses to the
+	   consumer's own margin reset, which lives in the tree the element is in.
+	   And no width, because ::slotted does beat the element's own :host. */
+	::slotted([slot="media"]),
 	::slotted([slot="action"]) {
 		flex-shrink: 0;
-		margin-inline-start: var(--_action-gap);
+	}
+
+	::slotted([slot="media"]) {
+		max-height: 100%;
 	}
 
 	/* text-align lives on the text elements, not :host: the inheritedTextReset on

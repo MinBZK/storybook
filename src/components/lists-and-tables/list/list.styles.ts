@@ -34,16 +34,23 @@ export const listStyles = css`
 		isolation: isolate;
 	}
 
-	:host([no-dividers]) {
+	:host([dividers="never"]),
+	:host([dividers="on-touch"]) {
 		--context-list-divider-display: none;
 	}
 
-	:host([variant="box"]) {
+	@media (pointer: coarse) {
+		:host([dividers="on-touch"]) {
+			--context-list-divider-display: block;
+		}
+	}
+
+	:host([variant^="box"]) {
 		--_background-color: var(--semantics-surfaces-tinted-background-color);
 		--_highlight-border-color: var(--semantics-surfaces-tinted-border-color);
 	}
 
-	:host([variant="box"][background="base"]) {
+	:host([variant="box-base"]) {
 		--_background-color: var(--semantics-surfaces-base-background-color);
 		--_highlight-border-color: var(--semantics-surfaces-base-border-color);
 	}
@@ -85,7 +92,7 @@ export const listStyles = css`
 	   reach its corners and have nothing to be clipped against. Without it a
 	   focus ring inside the box paints outward, like every other control in the
 	   system, instead of being cut off by the frame. */
-	:host([variant="box"]) .list__main {
+	:host([variant^="box"]) .list__main {
 		position: relative;
 		border-radius: var(--semantics-surfaces-corner-radius);
 		background-color: var(--_background-color);
@@ -113,7 +120,7 @@ export const listStyles = css`
 		display: none;
 	}
 
-	:host([variant="box"]) .list__items {
+	:host([variant^="box"]) .list__items {
 		padding-inline: calc(var(--components-list-item-indicator-inline-inset) + var(--_box-padding));
 		padding-block: var(--_box-padding);
 	}
@@ -267,7 +274,7 @@ export const listStyles = css`
 	/* # High Contrast */
 
 	@media (forced-colors: active) {
-		:host([variant="box"]) .list__main {
+		:host([variant^="box"]) .list__main {
 			border: 1px solid CanvasText;
 		}
 	}

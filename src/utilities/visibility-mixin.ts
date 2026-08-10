@@ -21,6 +21,30 @@ function resolveHideAbove(value: string): string | null {
 }
 
 /**
+ * The open edges resolve to null, so the attribute is written but nothing ever
+ * hides. That reads like a working value, and the name invites it: `hide-below`
+ * names the breakpoint you hide BELOW, so "hide it at sm" comes out as
+ * `hide-below="md"` and `hide-below="sm"` does nothing at all. Say so once,
+ * rather than let it look applied.
+ */
+function warnNoOp(
+	host: LitElement,
+	attribute: string,
+	value: string | undefined,
+	resolved: string | null,
+	openEdge: string,
+	edgeLabel: string,
+): void {
+	if (value !== openEdge || resolved !== null) return;
+	console.warn(
+		`[${host.localName}] ${attribute}="${openEdge}" never hides anything: there is no `
+		+ `breakpoint ${edgeLabel}. The value names the breakpoint you hide below, so the `
+		+ `smallest one that hides is "${attribute === 'hide-below' ? 'md' : 'sm'}". `
+		+ 'Leave the attribute off if you meant "always visible".',
+	);
+}
+
+/**
  * Adds `hide-below` and `hide-above` attributes that toggle visibility based
  * on the inline-size of an ancestor CSS container.
  *
@@ -40,6 +64,11 @@ function resolveHideAbove(value: string): string | null {
  * wrapped in `:host { @container <name>? (…) { display: none !important; } }`
  * (nested form — the flattened `@container { :host { … } }` is unreliable in
  * Safari).
+ *
+ * @mixin VisibilityMixin
+ *
+ * @attr {string} hide-below - Hides the element below this breakpoint: `sm` | `md` | `lg`, or a CSS length. The value names the breakpoint you hide BELOW, so `hide-below="md"` is hidden in sm and visible from md up. `sm` is the open edge and never hides (DEV-warns).
+ * @attr {string} hide-above - Hides the element above this breakpoint: `sm` | `md` | `lg`, or a CSS length. `hide-above="sm"` is hidden in md and lg. `lg` is the open edge and never hides (DEV-warns).
  *
  * @example
  * ```ts
@@ -75,12 +104,14 @@ export function VisibilityMixin<TBase extends Constructor<LitElement>>(
 			const containerPrefix = containerName ? `${containerName} ` : '';
 			const rules: string[] = [];
 			const below = this.hideBelow ? resolveHideBelow(this.hideBelow) : null;
+			warnNoOp(this, 'hide-below', this.hideBelow, below, 'sm', 'below sm');
 			if (below) {
 				rules.push(
 					`:host { @container ${containerPrefix}(max-width: ${below}) { display: none !important; } }`,
 				);
 			}
 			const above = this.hideAbove ? resolveHideAbove(this.hideAbove) : null;
+			warnNoOp(this, 'hide-above', this.hideAbove, above, 'lg', 'above lg');
 			if (above) {
 				rules.push(
 					`:host { @container ${containerPrefix}(min-width: ${above}) { display: none !important; } }`,

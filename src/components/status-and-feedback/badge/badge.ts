@@ -1,18 +1,28 @@
 /**
  * Nederlandse Digitale Dienst Badge Component (Lit + TypeScript)
  *
- * Een notificatie-indicator, vaak voor ongelezen aantallen of statusdots. Kan tekst,
- * een getal en/of een icoon tonen. Zonder inhoud verschijnt automatisch een stip.
- * Gebruik in een hoek van een ander element (bijv. een icon) of standalone.
+ * Shows the state of something, or how much of it there is: a status, a number
+ * of unread messages, a dot saying something is new. What it says is decided by
+ * the system, and it changes without anyone touching it. A badge is never
+ * interactive.
+ *
+ * It shows text, a number and/or an icon; with no content it becomes a dot. Put
+ * it in a corner of another element (an icon, for instance) or on its own.
+ *
+ * For a property someone assigns to something, such as a category, a role or a
+ * certification, use `nldd-tag`. For standalone data the user works with, such
+ * as a chosen person or an active filter, use `nldd-token`.
  *
  * @element nldd-badge
- * @attr {string} color - Semantisch ('critical' | 'accent' | 'neutral' | 'warning' | 'success') of een Rijkskleur ('lintblauw' | 'hemelblauw' | 'oranje' | …). Default: 'critical'
- * @attr {string} size - Grootte: 'sm' | 'md' (default: 'md')
- * @attr {string} text - Tekst (heeft voorrang op number)
- * @attr {number} number - Numerieke waarde. Wordt beknopt als meer dan max
- * @attr {number} max - Maximum waarde boven welke number wordt getoond als "{max}+" (default: 99)
- * @attr {string} icon - Icoon naam. Icon-only wordt als vierkant gerenderd; met text/number komt het icoon links.
- * @attr {string} accessible-label - Toegankelijk label voor screenreaders. Fallback naar text/number; anders naar i18n default ("Notificatie").
+ * @attr {string} size - Size: 'sm' | 'md' (default: 'md')
+ * @attr {string} color - Semantic ('critical' | 'accent' | 'neutral' | 'warning' | 'success') or a Rijkshuisstijl color ('lintblauw' | 'hemelblauw' | 'oranje' | …). Default: 'critical'
+ * @attr {boolean} pulse - Grows a ring out of the badge and fades it, for something happening right now (a live connection, an outage). Respects `prefers-reduced-motion`.
+ * @attr {string} text - Text (takes precedence over number)
+ * @attr {number} number - Numeric value. Shortened when it is over max
+ * @attr {number} max - Value above which number is shown as "{max}+" (default: 99)
+ * @attr {string} icon - Icon name. Icon-only renders as a square; with text or number the icon goes on the left.
+ * @attr {string} accessible-label - Accessible label for screen readers. Falls back to text/number; otherwise to the i18n default ("Notificatie").
+ * @attr {boolean} decorative - Hides the badge from assistive software (use when the text beside it says the same, such as a dot next to a status word)
  */
 
 import { LitElement } from 'lit';
@@ -38,11 +48,14 @@ type Size = 'sm' | 'md';
 export class NLDDBadge extends withTranslations(LitElement, nlddBadgeTranslations) {
 	static override styles = badgeStyles;
 
+	@property({ reflect: true, converter: reflectNonDefault<Size>('md') })
+	size: Size = 'md';
+
 	@property({ reflect: true, converter: reflectNonDefault<Color>('critical') })
 	color: Color = 'critical';
 
-	@property({ reflect: true, converter: reflectNonDefault<Size>('md') })
-	size: Size = 'md';
+	@property({ type: Boolean, reflect: true })
+	pulse = false;
 
 	@property({ reflect: true, converter: reflectNonDefault<string>('') })
 	text = '';
@@ -50,7 +63,7 @@ export class NLDDBadge extends withTranslations(LitElement, nlddBadgeTranslation
 	@property({ type: Number, reflect: true })
 	number: number | undefined = undefined;
 
-	@property({ type: Number, reflect: true })
+	@property({ reflect: true, converter: reflectNonDefault<number>(99) })
 	max = 99;
 
 	@property({ type: String })
@@ -58,6 +71,9 @@ export class NLDDBadge extends withTranslations(LitElement, nlddBadgeTranslation
 
 	@property({ type: String, attribute: 'accessible-label' })
 	accessibleLabel = '';
+
+	@property({ type: Boolean, reflect: true })
+	decorative = false;
 
 	get _hasText(): boolean {
 		return !!this.text || typeof this.number === 'number';

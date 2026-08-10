@@ -23,16 +23,9 @@ export default {
 	argTypes: {
 		variant: {
 			control: 'select',
-			options: ['simple', 'box'],
-			description: 'Visuele stijl: `simple` = platte strip, `box` = framed card met afgeronde hoeken en border ring',
+			options: ['simple', 'box-tinted', 'box-base'],
+			description: 'Visuele stijl: `simple` = platte strip, `box-tinted` = framed card met afgeronde hoeken en border ring, `box-base` dezelfde kaart maar op een al getinte parent',
 			table: { defaultValue: { summary: 'simple' } },
-		},
-		background: {
-			control: 'select',
-			options: ['tinted', 'base'],
-			description: 'Surface fill voor `variant="box"`. `tinted` (default) voor een list op een plain page, `base` voor een list op een al getinte parent. Geen effect bij `variant="simple"`.',
-			table: { defaultValue: { summary: 'tinted' } },
-			if: { arg: 'variant', eq: 'box' },
 		},
 		type: {
 			control: 'select',
@@ -40,10 +33,11 @@ export default {
 			description: 'A11y-semantiek: `list` (role="list"), `navigation` (landmark met `aria-current` op het actieve item) of `listbox` (filterbare listbox met eigen zoekveld, combobox-patroon)',
 			table: { defaultValue: { summary: 'list' } },
 		},
-		'no-dividers': {
-			control: 'boolean',
-			description: 'Verbergt scheidingslijnen tussen lijstitems',
-			table: { type: { summary: 'boolean' }, defaultValue: { summary: 'false' } },
+		dividers: {
+			control: 'select',
+			options: ['always', 'on-touch', 'never'],
+			description: 'Wanneer de scheidingslijnen tussen de items getekend worden. `on-touch` alleen waar met een vinger wordt bediend, onder `(pointer: coarse)`: een aanwijzer heeft de hover-highlight om het ene item van het andere te scheiden en een vinger heeft niets. `never` verbergt ze overal.',
+			table: { defaultValue: { summary: 'always' } },
 		},
 		'arrow-navigation': {
 			control: 'boolean',
@@ -87,9 +81,8 @@ Selectie-state wordt **altijd door de consumer beheerd**: de lijst muteert nooit
 export const Default = {
 	args: {
 		variant: 'simple',
-		background: 'tinted',
 		type: 'list',
-		'no-dividers': false,
+		dividers: 'always',
 		'arrow-navigation': false,
 		'empty-text': '',
 		'empty-supporting-text': '',
@@ -98,9 +91,8 @@ export const Default = {
 	render: (args: Record<string, any>) => html`
 		<nldd-list
 			variant=${args.variant}
-			background=${args.variant === 'box' ? args.background : nothing}
 			type=${args.type}
-			?no-dividers=${args['no-dividers']}
+			dividers=${args.dividers}
 			?arrow-navigation=${args['arrow-navigation']}
 			empty-text=${args['empty-text']}
 			empty-supporting-text=${args['empty-supporting-text']}
@@ -157,15 +149,15 @@ export const Variants = {
 				<nldd-list-item><nldd-text-cell text="Simple — item 3"></nldd-text-cell></nldd-list-item>
 			</nldd-list>
 
-			<nldd-list variant="box">
+			<nldd-list variant="box-tinted">
 				<nldd-list-item><nldd-text-cell text="Box (default: tinted bg + border) — item 1"></nldd-text-cell></nldd-list-item>
 				<nldd-list-item><nldd-text-cell text="Box — item 2"></nldd-text-cell></nldd-list-item>
 				<nldd-list-item><nldd-text-cell text="Box — item 3"></nldd-text-cell></nldd-list-item>
 			</nldd-list>
 
 			<div style="background: var(--semantics-surfaces-tinted-background-color); padding: 24px;">
-				<nldd-list variant="box" background="base">
-					<nldd-list-item><nldd-text-cell text='variant="box" background="base" — item 1'></nldd-text-cell></nldd-list-item>
+				<nldd-list variant="box-base">
+					<nldd-list-item><nldd-text-cell text='variant="box-base" — item 1'></nldd-text-cell></nldd-list-item>
 					<nldd-list-item><nldd-text-cell text="op een al getinte pagina — item 2"></nldd-text-cell></nldd-list-item>
 					<nldd-list-item><nldd-text-cell text="item 3"></nldd-text-cell></nldd-list-item>
 				</nldd-list>
@@ -176,7 +168,7 @@ export const Variants = {
 		controls: { disable: true },
 		docs: {
 			description: {
-				story: 'Twee varianten: `simple` (platte strip, geen chrome) en `box` (framed card met afgeronde hoeken + border ring). De `background` attribute regelt de fill van de box-variant — `tinted` (default) of `base`. `background` heeft geen effect bij `variant="simple"`. Voor "box op een getinte pagina": `variant="box" background="base"`.',
+				story: 'Drie varianten: `simple` (platte strip, geen chrome), `box-tinted` (framed card met afgeronde hoeken en border ring) en `box-base`, voor een lijst op een al getinte parent. Eén attribuut, omdat de drie elkaar uitsluiten.',
 			},
 		},
 	},
@@ -184,7 +176,7 @@ export const Variants = {
 
 export const WithMultipleColumns = {
 	render: () => html`
-		<nldd-list variant="box">
+		<nldd-list variant="box-tinted">
 			<nldd-list-item button>
 				<nldd-icon-cell size="24" vertical-alignment="top">
 					<nldd-icon name="calendar-event"></nldd-icon>
@@ -227,7 +219,7 @@ export const WithMultipleColumns = {
 
 export const WithInteractiveItems = {
 	render: () => html`
-		<nldd-list variant="box">
+		<nldd-list variant="box-tinted">
 			<nldd-list-item button>
 				<nldd-text-cell text="Knop-item"></nldd-text-cell>
 			</nldd-list-item>
@@ -254,7 +246,7 @@ export const TypeNavigation = {
 			item.setAttribute('selected', '');
 		};
 		return html`
-			<nldd-list type="navigation" variant="box" aria-label="Hoofdmenu" @click=${onClick}>
+			<nldd-list type="navigation" variant="box-tinted" aria-label="Hoofdmenu" @click=${onClick}>
 				<nldd-list-item href="#dashboard"><nldd-text-cell text="Dashboard"></nldd-text-cell></nldd-list-item>
 				<nldd-list-item href="#aanvragen" selected><nldd-text-cell text="Aanvragen"></nldd-text-cell></nldd-list-item>
 				<nldd-list-item href="#meldingen"><nldd-text-cell text="Meldingen"></nldd-text-cell></nldd-list-item>
@@ -418,7 +410,7 @@ export const ReorderableList = {
 
 		const el = document.createElement('div');
 		render(html`
-			<nldd-list variant="box" reorderable @nldd-reorder=${onReorder}>
+			<nldd-list variant="box-tinted" reorderable @nldd-reorder=${onReorder}>
 				${labels.map((label) => html`
 					<nldd-list-item>
 						<nldd-drag-handle-cell size="sm" reorderable-only></nldd-drag-handle-cell>
@@ -447,7 +439,7 @@ export const ReorderableList = {
 
 export const EmptyDefault = {
 	render: () => html`
-		<nldd-list variant="box"></nldd-list>
+		<nldd-list variant="box-tinted"></nldd-list>
 	`,
 	parameters: {
 		controls: { disable: true },
@@ -462,7 +454,7 @@ export const EmptyDefault = {
 export const EmptyWithAttributes = {
 	render: () => html`
 		<nldd-list
-			variant="box"
+			variant="box-tinted"
 			empty-text="Niets gevonden"
 			empty-supporting-text="Probeer een andere zoekterm."
 		></nldd-list>
@@ -479,7 +471,7 @@ export const EmptyWithAttributes = {
 
 export const EmptySlotOverride = {
 	render: () => html`
-		<nldd-list variant="box">
+		<nldd-list variant="box-tinted">
 			<nldd-inline-dialog
 				slot="empty"
 				icon="search"

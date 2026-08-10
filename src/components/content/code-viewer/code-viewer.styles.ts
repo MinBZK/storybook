@@ -40,7 +40,7 @@ export const codeViewerStyles = css`
 		display: none;
 	}
 
-	:host([background="base"]) {
+	:host([variant="box-base"]) {
 		--_background-color: var(--semantics-surfaces-base-background-color);
 		--_border-color: var(--semantics-surfaces-base-border-color);
 	}

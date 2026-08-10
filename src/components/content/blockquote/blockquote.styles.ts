@@ -71,7 +71,7 @@ export const blockquoteStyles = css`
 		content: '— ' / '';
 	}
 
-	.blockquote__attribution.is-byline::before {
+	.blockquote__attribution.is-identity::before {
 		content: none;
 	}
 

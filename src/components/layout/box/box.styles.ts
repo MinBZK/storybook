@@ -25,9 +25,17 @@ export const boxStyles = css`
 
 	/* ## Background variants */
 
-	:host([background="base"]) {
+	:host([variant="base"]) {
 		--_background-color: var(--components-box-base-background-color);
 		--_border-color: var(--components-box-base-border-color);
+	}
+
+
+	/* ## Variants */
+
+	:host([variant="critical"]) {
+		--_background-color: var(--components-box-critical-background-color);
+		--_border-color: var(--components-box-critical-border-color);
 	}
 
 
@@ -38,7 +46,6 @@ export const boxStyles = css`
 		border-radius: var(--_corner-radius);
 		box-shadow: var(--_highlight-border);
 		background-color: var(--_background-color);
-		padding: var(--components-box-padding);
 	}
 
 

@@ -27,13 +27,13 @@ describe('nldd-list', () => {
 	});
 
 	it('reflects variant attribute', async () => {
-		el = await fixture('<nldd-list variant="box"></nldd-list>');
+		el = await fixture('<nldd-list variant="box-tinted"></nldd-list>');
 		await waitForUpdate(el);
-		expect(el.getAttribute('variant')).toBe('box');
+		expect(el.getAttribute('variant')).toBe('box-tinted');
 	});
 
 	it('drops is-boxed on items when the list variant switches box -> simple', async () => {
-		el = await fixture('<nldd-list variant="box"><nldd-list-item>A</nldd-list-item></nldd-list>');
+		el = await fixture('<nldd-list variant="box-tinted"><nldd-list-item>A</nldd-list-item></nldd-list>');
 		const item = el.querySelector('nldd-list-item')!;
 		await waitForUpdate(el);
 		await (item as { updateComplete: Promise<unknown> }).updateComplete;
@@ -44,15 +44,25 @@ describe('nldd-list', () => {
 		expect(item.classList.contains('is-boxed')).toBe(false);
 	});
 
-	it('reflects no-dividers attribute', async () => {
-		el = await fixture('<nldd-list no-dividers></nldd-list>');
+	it('reflects a non-default dividers value', async () => {
+		el = await fixture('<nldd-list dividers="never"></nldd-list>');
 		await waitForUpdate(el);
-		expect(el.hasAttribute('no-dividers')).toBe(true);
+		expect(el.getAttribute('dividers')).toBe('never');
 	});
 
-	it('sets --context-list-divider-display when no-dividers is set', async () => {
-		el = await fixture('<nldd-list no-dividers></nldd-list>');
+	it('sets --context-list-divider-display when dividers="never"', async () => {
+		el = await fixture('<nldd-list dividers="never"></nldd-list>');
 		await waitForUpdate(el);
+		expect(getComputedStyle(el).getPropertyValue('--context-list-divider-display').trim()).toBe('none');
+	});
+
+	it('hides the dividers with dividers="on-touch" where the pointer is fine', async () => {
+		// The runner is a desktop browser, so this is the half of the behavior it
+		// can observe: no touch, no lines. The other half needs a coarse pointer.
+		expect(matchMedia('(pointer: coarse)').matches).toBe(false);
+		el = await fixture('<nldd-list dividers="on-touch"></nldd-list>');
+		await waitForUpdate(el);
+		expect(el.getAttribute('dividers')).toBe('on-touch');
 		expect(getComputedStyle(el).getPropertyValue('--context-list-divider-display').trim()).toBe('none');
 	});
 

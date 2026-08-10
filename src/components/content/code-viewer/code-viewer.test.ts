@@ -93,17 +93,15 @@ describe('nldd-code-viewer', () => {
 
 
 	/* ============================================================
-	   Container (box + background)
+	   Container (variant)
 	   ============================================================ */
 
-	it('defaults to variant="box" + background="tinted"', async () => {
+	it('defaults to variant="box-tinted"', async () => {
 		el = await fixture('<nldd-code-viewer>x</nldd-code-viewer>');
 		await waitForUpdate(el);
 		// Both defaults are kept out of the DOM; the properties are the source of truth.
-		expect((el as unknown as { variant: string; background: string }).variant).toBe('box');
+		expect((el as unknown as { variant: string }).variant).toBe('box-tinted');
 		expect(el.hasAttribute('variant')).toBe(false);
-		expect((el as unknown as { background: string }).background).toBe('tinted');
-		expect(el.hasAttribute('background')).toBe(false);
 	});
 
 	it('reflects variant attribute', async () => {
@@ -124,12 +122,12 @@ describe('nldd-code-viewer', () => {
 		expect(cs.backgroundColor).toBe('rgba(0, 0, 0, 0)');
 	});
 
-	it('reflects a non-default background value', async () => {
-		// 'tinted' is the default and is kept out of the DOM (covered above);
-		// 'base' is the only non-default and must reflect.
-		el = await fixture('<nldd-code-viewer background="base">x</nldd-code-viewer>');
+	it('reflects a non-default variant value', async () => {
+		// 'box-tinted' is the default and is kept out of the DOM (covered above);
+		// the other two must reflect, since the styles select on them.
+		el = await fixture('<nldd-code-viewer variant="box-base">x</nldd-code-viewer>');
 		await waitForUpdate(el);
-		expect(el.getAttribute('background')).toBe('base');
+		expect(el.getAttribute('variant')).toBe('box-base');
 	});
 
 

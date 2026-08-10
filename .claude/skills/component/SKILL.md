@@ -302,15 +302,39 @@ export function template(component: NLDD{PascalName}): TemplateResult {
   },
   ```
 - **Volgorde consistent**: `args`, `argTypes`, template-destructuring en HTML-attributen in de template gebruiken dezelfde volgorde, volgens de canon hieronder.
+- **Twee dingen laten een control naar het eind van de tabel springen.** De docs-tabel volgt de volgorde van `argTypes`, en Storybook bouwt een key opnieuw op (en zet hem dus achteraan) zodra je hem naderhand aanraakt:
+  1. Een key die je in `Default.args` opnieuw zet. Zet een default die je in `Default` wilt tonen daarom in de bovenste `args`, en laat `Default` alleen `render` houden.
+  2. Een `type`-override in een argType, zoals `type: { name: 'string' }`. Wil je een tekstveld voor een numerieke prop (leeg mogen laten), dan is `control: { type: 'text' }` genoeg; documenteer het echte type met `table: { type: { summary: 'number' } }`.
+
+### Canonieke volgorde in de rest van het component
+
+Dezelfde canon geldt buiten de stories, zodat je een component in elk bestand in dezelfde volgorde leest:
+
+- het `@attr`-blok in de JSDoc van `{naam}.ts`;
+- de `@property`-declaraties in de class, in dezelfde volgorde als dat blok;
+- de attributen op het element in `{naam}.template.ts`.
+
+`@element`, `@slot`, `@fires` en `@method` staan buiten de canon: die houden hun eigen blok, ná de attributen.
+
+### Volgorde van de stories
+
+`Default` staat bovenaan. Daarna één story per as, in de volgorde van de canon, en helemaal onderaan de voorbeelden die het component in een situatie laten zien (een badge op een icoon, een veld in een formulier). Zo loopt de zijbalk gelijk met de controltabel: eerst wat het ding is, dan wat het toont, dan waar het staat.
 
 ### Canonieke control volgorde
 
 Per component: pak alleen de keys die je gebruikt en zet ze in deze volgorde. De groepering is een mentaal model — de daadwerkelijke `args`/`argTypes` is een platte lijst.
 
+**Sorteer op wat een key doet, niet op hoe hij heet.** De groepen zijn het model, de namenlijsten eronder zijn voorbeelden. Twee componenten kunnen dezelfde naam voor iets anders gebruiken, en dan wint de betekenis. `max` is daar het schoolvoorbeeld van, en staat op drie plekken:
+
+1. **Bij Form** als het een invoergrens is, naast `min` en `step` (`nldd-time-field`).
+2. **Direct achter de prop die hij begrenst** als hij alleen de weergave daarvan aftopt. De `max` van `nldd-badge` maakt van een te hoog `number` een "max+" en betekent niets zonder `number`.
+3. **Vooraan, bij groep 1**, als hij bepaalt hóéveel er verschijnt. De `max` van `nldd-avatar-group` laat avatars weg en zet er een `+N`-knop voor in de plaats: je ziet iets anders staan, en dat is een visueel dominante keuze, geen detail.
+
 ```
 [1. Visueel dominant]
-variant, status, size, compact, minor, color, background, layout, panes,
-iconOnly, responsive, showItemLabels, inspectorAsSheet, sidebarAsSheet, noLogo
+variant, status, size, compact, minor, color, background, pulse, layout,
+panes, iconOnly, responsive, showItemLabels, inspectorAsSheet,
+sidebarAsSheet, noLogo
 
 [2. Sizing]
 resize, rows, width, minWidth, maxWidth, height, minHeight, fullWidth,

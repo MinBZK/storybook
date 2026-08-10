@@ -1,5 +1,6 @@
 import { html, nothing, TemplateResult } from 'lit';
 import type { NLDDAvatar } from './avatar.js';
+import '../tooltip/tooltip.js';
 
 export function avatarTemplate(component: NLDDAvatar): TemplateResult {
 	const showImage = Boolean(component.src) && !component._imageFailed;
@@ -41,28 +42,37 @@ export function avatarTemplate(component: NLDDAvatar): TemplateResult {
 		` : nothing}
 	`;
 
-	// The disc itself becomes the control, rather than an overlay: an avatar is
-	// small and round, so a rectangular overlay would take clicks (and paint a
-	// focus ring) outside the shape.
-	if (component.href) {
-		return html`
+	// The shape itself becomes the control, rather than an overlay: an avatar is
+	// small and rounded, so a rectangular overlay would take clicks (and paint a
+	// focus ring) outside it.
+	const shape = component.href
+		? html`
 			<a class="avatar avatar--interactive"
 				href=${component.href}
 				target=${component.target || nothing}
 				rel=${component._resolvedRel() || nothing}
 				aria-label=${controlLabel}
 			>${content}</a>
-		`;
-	}
-	if (component.button) {
-		return html`
-			<button class="avatar avatar--interactive"
-				type="button"
-				aria-label=${controlLabel}
-			>${content}</button>
-		`;
-	}
-	return html`
-		<div class="avatar">${content}</div>
-	`;
+		`
+		: component.button
+			? html`
+				<button class="avatar avatar--interactive"
+					type="button"
+					aria-label=${controlLabel}
+				>${content}</button>
+			`
+			: html`<div class="avatar">${content}</div>`;
+
+	// The name as a tooltip, like nldd-icon-button does for its label: an avatar
+	// shows no text, so without this the name is readable by assistive software
+	// and by nobody else. Decorative avatars have nothing to say here.
+	const tooltipText = component.decorative ? '' : (component.accessibleLabel || component.name);
+
+	return tooltipText && component.tooltipTiming !== 'never'
+		? html`
+			<nldd-tooltip text=${tooltipText} timing=${component.tooltipTiming}>
+				${shape}
+			</nldd-tooltip>
+		`
+		: shape;
 }

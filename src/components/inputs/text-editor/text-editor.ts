@@ -10,7 +10,6 @@
  * Default `variant="simple"` is bare (no frame, no focus ring) for use inside
  * a composition (e.g. a message field) that owns its chrome and focus; the
  * caret is a prominent accent. `variant="input-field"` adds a framed surface + focus
- * ring. `font` is `sans` (default, best for prose) or `mono`.
  *
  * Headless: there is no built-in toolbar. A consumer drives formatting via the
  * command methods (toggleBold/toggleItalic/toggleInlineCode/toggleStrikethrough/
@@ -36,7 +35,6 @@
  * @attr {number} rows - Minimum visible rows (the floor in every resize mode). Default: 6.
  * @attr {string} resize - 'none' (fixed) | 'vertical' (drag) | 'auto' (grow, default)
  * @attr {string} variant - 'simple' (default, bare) | 'input-field' (framed surface)
- * @attr {string} font - 'sans' (default) | 'mono'
  * @attr {string} accessible-label - Accessible label forwarded to the editor. Set automatically by nldd-form-field.
  *
  * @prop {MentionSource} mentionSource - Consumer-supplied @-mention candidate source (property only). Without it, @-typeahead is inert.
@@ -97,7 +95,6 @@ import { nlddTextEditorTranslations, type NLDDTextEditorTranslations } from './t
 
 export type ResizeMode = 'none' | 'vertical' | 'auto';
 export type TextEditorVariant = 'input-field' | 'simple';
-export type TextEditorFont = 'sans' | 'mono';
 export type { HeadingLevel, TextEditorState, TextEditorActiveFormats } from './text-editor.commands.js';
 export type { MentionCandidate, MentionSource, MentionInsertedDetail } from './text-editor.mentions.js';
 export type { Annotation } from './text-editor.annotations.js';
@@ -148,9 +145,6 @@ export class NLDDTextEditor extends FormAssociated(NLDDCodeMirrorElement) {
 
 	@property({ reflect: true, converter: reflectNonDefault<TextEditorVariant>('simple') })
 	variant: TextEditorVariant = 'simple';
-
-	@property({ reflect: true, converter: reflectNonDefault<TextEditorFont>('sans') })
-	font: TextEditorFont = 'sans';
 
 	@property({ type: String, attribute: 'accessible-label' })
 	accessibleLabel = '';

@@ -1,8 +1,12 @@
 /**
  * Nederlandse Digitale Dienst Token Component (Lit + TypeScript)
  *
- * A token component representing a piece of data — such as a person in an address field
- * or an active filter value. Optionally dismissable or interactive via a contextual menu.
+ * A self-contained piece of data the user is handling: a person in an address field,
+ * an active filter value. Alone among the three it can be operated, so it is
+ * optionally dismissable or interactive through a contextual menu.
+ *
+ * For something you only read, reach for `nldd-tag` (a trait someone assigned) or
+ * `nldd-badge` (a state or a count the system keeps).
  *
  * @element nldd-token
  *

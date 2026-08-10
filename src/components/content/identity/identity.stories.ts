@@ -1,5 +1,6 @@
 import { html, nothing } from 'lit';
-import './byline.js';
+import './identity.js';
+import '../avatar-group/avatar-group.js';
 import '../avatar/avatar.js';
 import '../../navigation/link/link.js';
 
@@ -10,25 +11,27 @@ const AVATAR_IMAGE =
 	`data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 40'%3E%3Crect width='40' height='40' fill='%23185FA5'/%3E%3Ctext x='20' y='25' font-family='sans-serif' font-size='14' fill='white' text-anchor='middle'%3EJJ%3C/text%3E%3C/svg%3E`;
 
 /**
- * Een byline toont auteurs of redacteuren van content: optionele avatar(s),
+ * Een identity toont auteurs of redacteuren van content: optionele avatar(s),
  * een naamregel en ondersteunende tekst (bijvoorbeeld rol of datum). Alle
  * onderdelen zijn optioneel.
  *
- * Avatars worden geslot als `<nldd-avatar slot="avatars">` (of een `<img>`).
- * Zonder afbeelding valt een `nldd-avatar` terug op de initialen uit `name`.
- * Bij meerdere redacteuren overlappen ze elkaar subtiel, gescheiden door een
- * ring in de surface-kleur. Staat de byline op een gekleurde ondergrond, geef
- * die kleur dan door via `--context-parent-background-color` zodat de ring
+ * Eén avatar slot je als `<nldd-avatar slot="avatars">` (of een `<img>`) en
+ * krijgt zijn maat van identity; bij meerdere slot je een
+ * `<nldd-avatar-group slot="avatars">` eromheen, die het overlappen en de ring
+ * verzorgt. Zonder afbeelding valt een `nldd-avatar`
+ * terug op de initialen uit `name`. Staat de identity op een gekleurde
+ * ondergrond, geef die kleur dan door via `--context-parent-background-color`
+ * zodat de ring
  * meekleurt. Zet `decorative` op de avatars wanneer de namen al in de tekst
  * staan.
  */
 export default {
-	title: 'Components/Content/Byline',
-	component: 'nldd-byline',
+	title: 'Components/Content/Identity',
+	component: 'nldd-identity',
 	tags: ['autodocs'],
 	parameters: {
 		componentSource: {
-			file: 'src/components/content/byline/byline.ts',
+			file: 'src/components/content/identity/identity.ts',
 			repository: 'https://github.com/MinBZK/storybook',
 		},
 		status: { type: 'beta' },
@@ -51,7 +54,7 @@ export default {
 };
 
 const Template = (args: Record<string, any>) => html`
-	<nldd-byline
+	<nldd-identity
 		text=${args.text || nothing}
 		supporting-text=${args.supportingText || nothing}
 	>
@@ -59,26 +62,38 @@ const Template = (args: Record<string, any>) => html`
 			name=${args.text || nothing}
 			decorative
 		></nldd-avatar>
-	</nldd-byline>
+	</nldd-identity>
 `;
 
 export const Standaard = {
 	render: Template,
 };
 
+export const ZonderSupportingText = {
+	render: () => html`
+		<nldd-identity text="Jan Jansen">
+			<nldd-avatar slot="avatars"
+				name="Jan Jansen"
+				decorative
+			></nldd-avatar>
+		</nldd-identity>
+	`,
+	parameters: { controls: { disable: true } },
+};
+
 /**
  * Eén avatar kun je ook via het `avatar-src`-attribuut meegeven (met optioneel
- * `avatar-srcset`), zonder zelf te slotten. Byline rendert daarvoor intern een
- * `nldd-avatar`. Handig voor de veelvoorkomende enkele-auteur-byline. Meerdere
+ * `avatar-srcset`), zonder zelf te slotten. Identity rendert daarvoor intern een
+ * `nldd-avatar`. Handig voor de veelvoorkomende enkele-auteur-identity. Meerdere
  * avatars gaan altijd via de slot.
  */
 export const EnkeleAvatarViaAttribuut = {
 	render: () => html`
-		<nldd-byline
+		<nldd-identity
 			avatar-src=${AVATAR_IMAGE}
 			text="Jan Jansen"
 			supporting-text="Redacteur · 12 juni 2026"
-		></nldd-byline>
+		></nldd-identity>
 	`,
 	parameters: { controls: { disable: true } },
 };
@@ -90,56 +105,26 @@ export const EnkeleAvatarViaAttribuut = {
  */
 export const MeerdereRedacteuren = {
 	render: () => html`
-		<nldd-byline
+		<nldd-identity
 			text="Jan Jansen, Petra Pietersen en Ahmed Karim"
 			supporting-text="Laatst bijgewerkt op 12 juni 2026"
 		>
-			<nldd-avatar slot="avatars"
-				name="Jan Jansen"
-				decorative
-			></nldd-avatar>
-			<nldd-avatar slot="avatars"
-				name="Petra Pietersen"
-				decorative
-			></nldd-avatar>
-			<nldd-avatar slot="avatars"
-				name="Ahmed Karim"
-				decorative
-			></nldd-avatar>
-		</nldd-byline>
+			<nldd-avatar-group slot="avatars">
+				<nldd-avatar name="Jan Jansen" decorative></nldd-avatar>
+				<nldd-avatar name="Petra Pietersen" decorative></nldd-avatar>
+				<nldd-avatar name="Ahmed Karim" decorative></nldd-avatar>
+			</nldd-avatar-group>
+		</nldd-identity>
 	`,
 	parameters: { controls: { disable: true } },
 };
 
-/**
- * Op een smalle container (≤ 640px) met meerdere avatars komt de avatarrij
- * boven de namen te staan, zodat de tekst de volle breedte houdt. Met één
- * avatar blijft de byline op één regel — zie het verschil tussen de twee
- * kaders hieronder. Het schakelpunt is de breedte van de byline zelf
- * (container query), niet die van het scherm.
- */
-export const SmalleContainer = {
+export const ZonderAvatar = {
 	render: () => html`
-		<div style="display: flex; flex-direction: column; gap: 24px; max-width: 360px;">
-			<div style="outline: 1px dashed #cbd5e1; padding: 16px;">
-				<nldd-byline
-					text="Jan Jansen, Petra Pietersen en Ahmed Karim"
-					supporting-text="Laatst bijgewerkt op 12 juni 2026"
-				>
-					<nldd-avatar slot="avatars" name="Jan Jansen" decorative></nldd-avatar>
-					<nldd-avatar slot="avatars" name="Petra Pietersen" decorative></nldd-avatar>
-					<nldd-avatar slot="avatars" name="Ahmed Karim" decorative></nldd-avatar>
-				</nldd-byline>
-			</div>
-			<div style="outline: 1px dashed #cbd5e1; padding: 16px;">
-				<nldd-byline
-					text="Jan Jansen"
-					supporting-text="Redacteur · 12 juni 2026"
-				>
-					<nldd-avatar slot="avatars" name="Jan Jansen" decorative></nldd-avatar>
-				</nldd-byline>
-			</div>
-		</div>
+		<nldd-identity
+			text="Jan Jansen"
+			supporting-text="Redacteur · 12 juni 2026"
+		></nldd-identity>
 	`,
 	parameters: { controls: { disable: true } },
 };
@@ -151,7 +136,7 @@ export const SmalleContainer = {
  */
 export const MetTimeEnLink = {
 	render: () => html`
-		<nldd-byline>
+		<nldd-identity>
 			<nldd-avatar slot="avatars"
 				name="Jan Jansen"
 				decorative
@@ -160,29 +145,42 @@ export const MetTimeEnLink = {
 			<time slot="supporting-text"
 				datetime="2026-06-12"
 			>12 juni 2026</time>
-		</nldd-byline>
+		</nldd-identity>
 	`,
 	parameters: { controls: { disable: true } },
 };
 
-export const ZonderAvatar = {
+/**
+ * Op een smalle container (≤ 640px) met meerdere avatars komt de avatarrij
+ * boven de namen te staan, zodat de tekst de volle breedte houdt. Met één
+ * avatar blijft de identity op één regel — zie het verschil tussen de twee
+ * kaders hieronder. Het schakelpunt is de breedte van de identity zelf
+ * (container query), niet die van het scherm.
+ */
+export const SmalleContainer = {
 	render: () => html`
-		<nldd-byline
-			text="Jan Jansen"
-			supporting-text="Redacteur · 12 juni 2026"
-		></nldd-byline>
-	`,
-	parameters: { controls: { disable: true } },
-};
-
-export const ZonderSupportingText = {
-	render: () => html`
-		<nldd-byline text="Jan Jansen">
-			<nldd-avatar slot="avatars"
-				name="Jan Jansen"
-				decorative
-			></nldd-avatar>
-		</nldd-byline>
+		<div style="display: flex; flex-direction: column; gap: 24px; max-width: 360px;">
+			<div style="outline: 1px dashed #cbd5e1; padding: 16px;">
+				<nldd-identity
+					text="Jan Jansen, Petra Pietersen en Ahmed Karim"
+					supporting-text="Laatst bijgewerkt op 12 juni 2026"
+				>
+					<nldd-avatar-group slot="avatars">
+						<nldd-avatar name="Jan Jansen" decorative></nldd-avatar>
+						<nldd-avatar name="Petra Pietersen" decorative></nldd-avatar>
+						<nldd-avatar name="Ahmed Karim" decorative></nldd-avatar>
+					</nldd-avatar-group>
+				</nldd-identity>
+			</div>
+			<div style="outline: 1px dashed #cbd5e1; padding: 16px;">
+				<nldd-identity
+					text="Jan Jansen"
+					supporting-text="Redacteur · 12 juni 2026"
+				>
+					<nldd-avatar slot="avatars" name="Jan Jansen" decorative></nldd-avatar>
+				</nldd-identity>
+			</div>
+		</div>
 	`,
 	parameters: { controls: { disable: true } },
 };

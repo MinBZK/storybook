@@ -92,6 +92,7 @@ export const progressBarStyles = css`
 		color: var(--_supporting-text-color);
 		font: var(--_supporting-text-font);
 		font-variant-numeric: tabular-nums;
+		text-align: right;
 	}
 
 

@@ -31,16 +31,20 @@ export type ListItemSize = 'sm' | 'md';
  *    footprint is position-independent and tree columns line up at any depth.
  *
  * ## Divider
- * The divider spans the content width by default, with one exception: a row
- * that opens with an `nldd-icon-cell` followed by a text or title cell starts
- * the divider at that text, so the line aligns with the words rather than the
- * icon. Leading spacers are ignored when deciding this. Mark a cell with
- * `divider-start` and/or `divider-end` to place it yourself instead — an
- * explicit marker replaces the derived one entirely, so `divider-start` on the
- * icon cell restores the full-width line. Multiple markers resolve as the
- * union: first `divider-start` through last `divider-end`. A start past the
- * last end is an authoring error — the item DEV-warns and falls back to the
- * full content width.
+ * By default the divider starts at the row's first text or title cell, so the
+ * line lands on the words rather than on whatever leads up to them — an icon,
+ * an avatar, a checkbox, or the spacers a tree indents with. Rows of different
+ * shapes then still line their dividers up with each other, and a tree's
+ * dividers step inward with its indentation. Text inside an
+ * `nldd-list-item-action` counts as the row's content, and the marker is that
+ * text cell rather than the action: the action carries its own inline padding,
+ * so its edge sits before the words. A row with no text or title cell keeps the
+ * full content width. Mark a cell with `divider-start` and/or `divider-end` to
+ * place it yourself instead — an explicit marker replaces the derived one
+ * entirely, so `divider-start` on the leading cell restores the full-width
+ * line. Multiple markers resolve as the union: first `divider-start` through
+ * last `divider-end`. A start past the last end is an authoring error — the
+ * item DEV-warns and falls back to the full content width.
  *
  * ## Disclosure
  * A branch row can disclose its children in two ways: a dedicated
@@ -411,7 +415,7 @@ export class NLDDListItem extends withTranslations(LitElement, nlddListItemTrans
 	}
 
 	_applyVariant(variant: string) {
-		this._isBoxed = variant === 'box';
+		this._isBoxed = variant.startsWith('box');
 		this._relayToChildren(item => item._applyVariant(variant));
 		this.classList.toggle('is-boxed', this._isBoxed);
 	}
@@ -472,22 +476,24 @@ export class NLDDListItem extends withTranslations(LitElement, nlddListItemTrans
 	 * box on interactive rows), so the values compose with the edge geometry.
 	 */
 	/**
-	 * The cell the divider starts at when nobody said otherwise: a row that
-	 * opens with an icon reads better with the line aligned to its text, the
-	 * way a leading avatar or icon insets the divider in every list of this
-	 * kind. Only leading spacers may sit in front of the icon; anything else
-	 * means the row does not open with an icon after all. Put `divider-start`
-	 * on the icon cell itself to get the full-width line back.
+	 * The cell the divider starts at when nobody said otherwise: the row's first
+	 * text or title cell. The line lands on the words rather than on whatever
+	 * leads up to them — an icon, an avatar, a checkbox, or the spacers a tree
+	 * indents with — so rows of different shapes still line their dividers up
+	 * with each other. Put `divider-start` on an earlier cell to get the
+	 * full-width line back.
 	 */
 	private _implicitDividerStart(): Element[] {
-		const cells = Array.from(this.children).filter(el =>
-			el.tagName.startsWith('NLDD-') && el.tagName.endsWith('-CELL'));
-		const meaningful = cells.filter(el => el.tagName !== 'NLDD-SPACER-CELL');
-		const [first, second] = meaningful;
-		if (first?.tagName !== 'NLDD-ICON-CELL' || !second) return [];
-		return second.tagName === 'NLDD-TEXT-CELL' || second.tagName === 'NLDD-TITLE-CELL'
-			? [second]
-			: [];
+		// The marker is the CELL, never a segmented action around it: the action
+		// carries its own inline padding, so its edge sits before the text. Own
+		// descendants, so a text inside a segment counts as this row's content
+		// while a nested row's text does not.
+		// All of them, not just the first: a row that swaps cells per breakpoint
+		// hides one and shows another, and handing over only the hidden one would
+		// leave the measurement with nothing and drop the divider back to the full
+		// width. The visibility filter downstream picks the first one that renders,
+		// the same way it does for explicit markers.
+		return this._ownDescendants('nldd-text-cell, nldd-title-cell');
 	}
 
 	private _measureDividerMarkers(): void {
@@ -528,13 +534,22 @@ export class NLDDListItem extends withTranslations(LitElement, nlddListItemTrans
 		const endInsetOf = (rect: DOMRect) =>
 			rtl ? rect.left - blockRect.left : blockRect.right - rect.right;
 
+		// A marker that is not rendered (a cell hidden per breakpoint with
+		// hide-below, say) has an empty rect, and an empty rect measures as inset
+		// 0: the divider would start at the row's edge and bleed out of it. Skip
+		// them here rather than in `targets` — the observer keeps watching them,
+		// so the divider re-measures the moment such a cell comes back.
+		const rendered = (el: Element) => el.getClientRects().length > 0;
+		const visibleStarts = starts.filter(rendered);
+		const visibleEnds = ends.filter(rendered);
+
 		// Union: smallest start inset (= first marker) and smallest end inset
 		// (= last marker) win.
-		const insetStart = starts.length
-			? Math.min(...starts.map(el => startInsetOf(el.getBoundingClientRect())))
+		const insetStart = visibleStarts.length
+			? Math.min(...visibleStarts.map(el => startInsetOf(el.getBoundingClientRect())))
 			: null;
-		const insetEnd = ends.length
-			? Math.min(...ends.map(el => endInsetOf(el.getBoundingClientRect())))
+		const insetEnd = visibleEnds.length
+			? Math.min(...visibleEnds.map(el => endInsetOf(el.getBoundingClientRect())))
 			: null;
 
 		if (insetStart !== null && insetEnd !== null
@@ -572,7 +587,7 @@ export class NLDDListItem extends withTranslations(LitElement, nlddListItemTrans
 			// reach them. Relay what we were given, and they relay it downwards.
 			rows.forEach(row => {
 				const item = row as NLDDListItem;
-				item._applyVariant?.(this._isBoxed ? 'box' : 'simple');
+				item._applyVariant?.(this._isBoxed ? 'box-tinted' : 'simple');
 				item._applyParentType?.(this._parentType);
 			});
 		}

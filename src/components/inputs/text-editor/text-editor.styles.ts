@@ -82,10 +82,6 @@ export const textEditorStyles = css`
 		display: none;
 	}
 
-	:host([font="mono"]) {
-		--_text-font: var(--primitives-font-monospace-md-regular-snug);
-	}
-
 
 	/* ## Variant — input-field adds the framed surface + a default content padding */
 
@@ -355,11 +351,7 @@ export const textEditorStyles = css`
 		font-size: var(--primitives-font-size-200);
 	}
 
-	:host([font="mono"]) .cm-md-quote {
-		font-size: var(--primitives-font-size-90);
-	}
-
-	/* Markers: dimmed (secondary color, not opacity, so contrast holds) and
+		/* Markers: dimmed (secondary color, not opacity, so contrast holds) and
 	   monospace at the 16px marker size — tidy, and a fixed-width leading prefix. */
 	.cm-md-mark {
 		color: var(--semantics-content-secondary-color);

@@ -9,7 +9,7 @@ export function template(component: NLDDBlockquote) {
 			<div class="blockquote__quote">
 				<slot></slot>
 			</div>
-			<slot class="blockquote__attribution${component._hasBylineAttribution ? ' is-byline' : ''}"
+			<slot class="blockquote__attribution${component._hasIdentityAttribution ? ' is-identity' : ''}"
 				name="attribution"
 				?hidden=${!component._hasAttribution}
 				@slotchange=${component._handleAttributionSlotChange}

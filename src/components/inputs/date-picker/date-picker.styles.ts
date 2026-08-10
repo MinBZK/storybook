@@ -258,8 +258,13 @@ export const datePickerStyles = css`
 		border: var(--primitives-border-width-regular) solid var(--_day-is-today-border-color);
 	}
 
-	.date-picker__day:hover .date-picker__day-indicator {
-		background-color: var(--_day-is-hovered-background-color);
+	/* Touch reports a hover after a tap and keeps it until you touch something
+	   else, so a day stays lit long after you picked it. Only pointers that can
+	   really hover. */
+	@media (hover: hover) {
+		.date-picker__day:hover .date-picker__day-indicator {
+			background-color: var(--_day-is-hovered-background-color);
+		}
 	}
 
 	/* :focus, not :focus-visible. Arrow keys move focus programmatically, and the

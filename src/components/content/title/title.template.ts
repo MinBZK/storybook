@@ -8,8 +8,8 @@ export function titleTemplate(): TemplateResult {
 				<slot></slot>
 				<slot name="subtitle"></slot>
 			</div>
-			<div class="title__actions">
-				<slot name="actions"></slot>
+			<div class="title__end">
+				<slot name="end"></slot>
 			</div>
 		</div>
 	`;

@@ -1,46 +1,46 @@
 /**
  * NLDD Design System Avatar Component (Lit + TypeScript)
  *
- * Toont één persoon of organisatie als een compacte, ronde (persoon) of
- * afgeronde (organisatie) representatie. De inhoud volgt een vaste
- * terugvalketen: een afbeelding wanneer `src` laadt, anders de initialen
- * (uit `initials` of afgeleid uit `name`), en anders een terugval-icoon.
+ * Shows one person or organization as a compact, round (person) or rounded
+ * (organization) representation. The content follows a fixed fallback chain: an
+ * image when `src` loads, otherwise the initials (from `initials` or derived
+ * from `name`), and otherwise a fallback icon.
  *
- * `type` bepaalt zowel de vorm als het terugval-icoon: `person` geeft een
- * cirkel met een person-icoon, `organization` een afgeronde vierkant met een
- * building-icoon. De vorm hoort dus bij de betekenis en is niet los
- * instelbaar. Overschrijf het terugval-icoon desgewenst met `icon`.
+ * `type` sets both the shape and the fallback icon: `person` gives a circle
+ * with a person icon, `organization` a rounded square with a building icon. The
+ * shape belongs to the meaning and cannot be set on its own. Override the
+ * fallback icon with `icon` where that helps.
  *
- * Zonder `size` schaalt de avatar mee met zijn container (net als `nldd-icon`);
- * een vaste maat (dezelfde spacer-uitgelijnde schaal, 16 tot en met 96) is de
- * uitzondering. De initialen en het icoon schalen mee. Brede initialen (WW, MMM)
- * worden automatisch teruggeschaald zodat ze binnen de schijf blijven.
+ * Without `size` the avatar scales with its container, like `nldd-icon`; a
+ * fixed size (the same spacer-aligned scale, 16 through 96) is the exception.
+ * The initials and the icon scale along. Wide initials (WW, MMM) are scaled
+ * down automatically so they stay inside the shape.
  *
- * Toegankelijkheid: het host-element draagt de betekenis. Met een `name`
- * (en zonder `decorative`) krijgt het `role="img"` met de naam als label.
- * Staat de naam al als tekst ernaast (bijvoorbeeld in een byline), zet dan
- * `decorative` zodat de avatar voor hulpsoftware verborgen blijft. Een dode
- * `src` valt automatisch terug op de initialen of het icoon, nooit op een
- * gebroken-afbeelding-icoon.
+ * Accessibility: the host element carries the meaning. With a `name` (and
+ * without `decorative`) it gets `role="img"` with the name as its label. When
+ * the name already stands beside it as text, in an identity for instance, set
+ * `decorative` so the avatar stays hidden from assistive software. A dead `src`
+ * falls back to the initials or the icon, never to a broken-image icon.
  *
  * @element nldd-avatar
  *
- * @attr {string} src - Afbeeldingsbron; valt bij een laadfout terug op initialen/icoon
- * @attr {string} srcset - Responsive source set voor de afbeelding (het component zet zelf `sizes`)
- * @attr {string} name - Naam van de persoon/organisatie; levert de afgeleide initialen en het toegankelijke label
- * @attr {string} initials - Expliciete initialen, max 3 tekens (overschrijft de afleiding uit `name`; ook voor organisatie-acroniemen)
- * @attr {string} type - `person` (cirkel, person-icoon) of `organization` (afgerond, building-icoon); standaard `person`
- * @attr {string} icon - Overschrijft het type-afhankelijke terugval-icoon
- * @attr {string} size - `full` (standaard) schaalt mee met de container, net als nldd-icon; of een vaste maat in px (spacer-uitgelijnd: 16, 20, 24, 28, 32, 40, 44, 48, 56, 64, 80, 96). Leeg gedraagt zich als `full`. De initialen en het icoon schalen mee
- * @attr {string} color - `default` (neutrale vulling) of `inherit` (vulling in de content-kleur: de `--context-content-color`-channel, of `currentColor` als die niet gezet is; tekst in de contrastkleur, zodat de avatar een icoon in bijvoorbeeld een knop kan vervangen); standaard `default`
- * @attr {boolean} icon-aligned - Krimpt de zichtbare schijf naar 5/6 van de host, gecentreerd, zodat de avatar optisch uitlijnt met een icoon op hetzelfde grid (een icoon-glyph heeft ingebouwde marge)
- * @attr {boolean} decorative - Verbergt de avatar voor hulpsoftware (gebruik wanneer de naam er al als tekst naast staat)
- * @attr {string} href - Maakt de avatar een link naar deze URL; de schijf zelf wordt de link, dus klikgebied en focusring volgen de vorm
- * @attr {boolean} button - Maakt de avatar een knop; genegeerd wanneer `href` is gezet
- * @attr {string} target - Link target voor href (bijv. '_blank'); vult rel aan en meldt "Opent in nieuw tabblad"
- * @attr {string} rel - Link rel voor href; standaard 'noopener noreferrer' bij target='_blank'
- * @attr {string} accessible-label - Naam van de link of knop; zonder deze wordt `name` gebruikt
- * @attr {object} translations - Overschrijf translation keys; niet gezette keys vallen terug op het Nederlands
+ * @attr {string} type - `person` (circle, person icon) or `organization` (rounded, building icon); default `person`
+ * @attr {string} size - `full` (default) scales with the container, like nldd-icon; or a fixed size in px (spacer-aligned: 16, 20, 24, 28, 32, 40, 44, 48, 56, 64, 80, 96). Empty behaves as `full`. The initials and the icon scale along
+ * @attr {string} color - `default` (neutral fill) or `inherit` (fill in the content color: the `--context-content-color` channel, or `currentColor` when that is unset; text in the contrast color, so the avatar can replace an icon in a button for instance); default `default`
+ * @attr {boolean} icon-aligned - Shrinks the visible shape to 5/6 of the host, centered, so the avatar aligns optically with an icon on the same grid (an icon glyph has built-in margin)
+ * @attr {string} name - Name of the person or organization; supplies the derived initials and the accessible label
+ * @attr {string} initials - Explicit initials, at most 3 characters (overrides what is derived from `name`; also for organization acronyms)
+ * @attr {string} src - Image source; falls back to initials or icon when it fails to load
+ * @attr {string} srcset - Responsive source set for the image (the component sets `sizes` itself)
+ * @attr {string} icon - Overrides the type-dependent fallback icon
+ * @attr {string} accessible-label - Name of the link or button; without it `name` is used
+ * @attr {boolean} decorative - Hides the avatar from assistive software (use when the name already stands beside it as text)
+ * @attr {string} tooltip-timing - When the name appears as a tooltip on hover or focus: `default` (after 700ms; the default), `instant`, or `never`. An avatar shows no text, so without a tooltip the name is readable by assistive software only. A `decorative` avatar shows none regardless: there the name already stands beside it as text
+ * @attr {string} href - Makes the avatar a link to this URL; the shape itself becomes the link, so the hit area and the focus ring follow it
+ * @attr {boolean} button - Makes the avatar a button; ignored when `href` is set
+ * @attr {string} target - Link target for href (e.g. '_blank'); completes rel and announces "Opens in a new tab"
+ * @attr {string} rel - Link rel for href; defaults to 'noopener noreferrer' when target='_blank'
+ * @attr {object} translations - Override translation keys; unset keys fall back to Dutch
  *
  * @example
  * ```html
@@ -65,7 +65,7 @@ export type AvatarType = 'person' | 'organization';
 
 export type AvatarColor = 'default' | 'inherit';
 
-/** Fraction of the disc width the initials may occupy before they are scaled to
+/** Fraction of the shape width the initials may occupy before they are scaled to
  *  fit. Leaves margin inside the circle so wide glyphs stay clear of the edge
  *  (the circle narrows above/below the center, so caps need room). */
 const INITIALS_FIT_RATIO = 0.75;
@@ -78,11 +78,17 @@ export type AvatarSize =
 export class NLDDAvatar extends withTranslations(LitElement, nlddAvatarTranslations) {
 	static override styles = avatarStyles;
 
-	@property({ type: String })
-	src = '';
+	@property({ reflect: true, converter: reflectNonDefault<AvatarType>('person') })
+	type: AvatarType = 'person';
 
-	@property({ type: String })
-	srcset = '';
+	@property({ reflect: true, converter: reflectNonDefault<AvatarSize>('') })
+	size: AvatarSize = '';
+
+	@property({ reflect: true, converter: reflectNonDefault<AvatarColor>('default') })
+	color: AvatarColor = 'default';
+
+	@property({ type: Boolean, reflect: true, attribute: 'icon-aligned' })
+	iconAligned = false;
 
 	@property({ type: String })
 	name = '';
@@ -91,24 +97,29 @@ export class NLDDAvatar extends withTranslations(LitElement, nlddAvatarTranslati
 	initials = '';
 
 	@property({ type: String })
+	src = '';
+
+	@property({ type: String })
+	srcset = '';
+
+	@property({ type: String })
 	icon = '';
 
-	@property({ reflect: true, converter: reflectNonDefault<AvatarType>('person') })
-	type: AvatarType = 'person';
-
-	@property({ reflect: true, converter: reflectNonDefault<AvatarColor>('default') })
-	color: AvatarColor = 'default';
-
-	@property({ reflect: true, converter: reflectNonDefault<AvatarSize>('') })
-	size: AvatarSize = '';
-
-	@property({ type: Boolean, reflect: true, attribute: 'icon-aligned' })
-	iconAligned = false;
+	/** Accessible name of the link or button. Without it, it falls back to
+	 *  `name`. Only matters when the avatar is interactive. */
+	@property({ type: String, attribute: 'accessible-label' })
+	accessibleLabel = '';
 
 	@property({ type: Boolean, reflect: true })
 	decorative = false;
 
-	/** Makes the avatar one link: the disc itself becomes the <a>, so the click
+	/** Forwarded to the inner nldd-tooltip's `timing`, like nldd-icon-button.
+	 *  On by default: initials without a name are a riddle. An
+	 *  avatar that sits beside that name is `decorative` and shows none. */
+	@property({ reflect: true, attribute: 'tooltip-timing', converter: reflectNonDefault<'default' | 'instant' | 'never'>('default') })
+	tooltipTiming: 'default' | 'instant' | 'never' = 'default';
+
+	/** Makes the avatar one link: the shape itself becomes the <a>, so the click
 	 *  area and the focus ring follow its shape (an overlay would be square). */
 	@property({ type: String, reflect: true })
 	href = '';
@@ -123,11 +134,6 @@ export class NLDDAvatar extends withTranslations(LitElement, nlddAvatarTranslati
 
 	@property({ type: String })
 	rel = '';
-
-	/** Accessible name of the link or button. Without it, it falls back to
-	 *  `name`. Only matters when the avatar is interactive. */
-	@property({ type: String, attribute: 'accessible-label' })
-	accessibleLabel = '';
 
 	/** True once the avatar is a control itself. */
 	get isInteractive(): boolean {
@@ -173,26 +179,29 @@ export class NLDDAvatar extends withTranslations(LitElement, nlddAvatarTranslati
 		this._imageFailed = true;
 	};
 
-	/** Re-measures the initials fit when the disc lays out or resizes; covers the
+	/** Re-measures the initials fit when the shape lays out or resizes; covers the
 	 *  case where the avatar is only sized after first render (e.g. filling a
 	 *  container that appears later). Content changes are handled in updated(). */
 	private _resizeObserver = new ResizeObserver(() => this._fitInitials());
 
 	override willUpdate(changed: PropertyValues<this>): void {
+		// withTranslations merges a consumer's `translations` override in its own
+		// willUpdate; without this call the override is silently ignored.
+		super.willUpdate(changed);
 		// Either source changing offers a fresh candidate, so give the image
 		// another chance rather than staying on the fallback forever.
 		if (changed.has('src') || changed.has('srcset')) this._imageFailed = false;
 	}
 
 	override firstUpdated(): void {
-		const disc = this.shadowRoot?.querySelector('.avatar');
-		if (disc) this._resizeObserver.observe(disc);
+		const shape = this.shadowRoot?.querySelector('.avatar');
+		if (shape) this._resizeObserver.observe(shape);
 	}
 
 	override connectedCallback(): void {
 		super.connectedCallback();
-		const disc = this.shadowRoot?.querySelector('.avatar');
-		if (this.hasUpdated && disc) this._resizeObserver.observe(disc);
+		const shape = this.shadowRoot?.querySelector('.avatar');
+		if (this.hasUpdated && shape) this._resizeObserver.observe(shape);
 	}
 
 	override disconnectedCallback(): void {
@@ -237,7 +246,7 @@ export class NLDDAvatar extends withTranslations(LitElement, nlddAvatarTranslati
 				this._warnedLabel = false;
 			}
 		}
-		// The disc size doesn't change when only its content does, so the
+		// The shape does not resize when only its content does, so the
 		// ResizeObserver won't fire — re-measure here on every change that can
 		// swap the initials in or alter their text. src/_imageFailed matter too:
 		// a dead image falls back to initials that were never measured.
@@ -249,19 +258,19 @@ export class NLDDAvatar extends withTranslations(LitElement, nlddAvatarTranslati
 		}
 	}
 
-	/** Shrink wide initials so they always fit the disc. The fit factor is the
-	 *  disc's usable width over the initials' natural width (scrollWidth ignores
+	/** Shrink wide initials so they always fit. The fit factor is the shape's
+	 *  usable width over the initials' natural width (scrollWidth ignores
 	 *  the applied transform, so the measurement stays stable); capped at 1 so
 	 *  narrow initials are never enlarged. Applied via --_initials-fit (a
 	 *  transform scale), so no reflow and it stays measurable. */
 	private _fitInitials(): void {
 		const initials = this.shadowRoot?.querySelector<HTMLElement>('.avatar__initials');
-		const disc = this.shadowRoot?.querySelector<HTMLElement>('.avatar');
-		if (!initials || !disc) {
+		const shape = this.shadowRoot?.querySelector<HTMLElement>('.avatar');
+		if (!initials || !shape) {
 			this.style.removeProperty('--_initials-fit');
 			return;
 		}
-		const available = disc.clientWidth * INITIALS_FIT_RATIO;
+		const available = shape.clientWidth * INITIALS_FIT_RATIO;
 		const actual = initials.scrollWidth;
 		if (available <= 0 || actual <= 0) return; // not laid out yet — leave as is
 		this.style.setProperty('--_initials-fit', String(Math.min(1, available / actual)));

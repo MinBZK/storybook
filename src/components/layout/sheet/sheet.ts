@@ -37,6 +37,7 @@ import { sheetTemplate } from './sheet.template.js';
 import { isPointerMode } from '../../../utilities/input-modality.js';
 import { focusAutofocusTarget } from '../../../utilities/autofocus.js';
 import { isDismissFromTitleBar } from '../../../utilities/dismiss-from-title-bar.js';
+import { openWhenRendered } from '../../../utilities/open-when-rendered.js';
 
 type Placement = 'left' | 'right' | 'bottom';
 
@@ -129,9 +130,23 @@ export class NLDDSheet extends LitElement {
 		this.removeEventListener('dismiss', this._handleDismiss);
 	}
 
+	/** Cancels a `show()` that is waiting for the first render; null when none is. */
+	private _cancelPendingOpen: (() => void) | null = null;
+
 	show(): void {
 		const dialog = this._dialog;
-		if (!dialog) return;
+		if (!dialog) {
+			this._cancelPendingOpen?.();
+			this._cancelPendingOpen = openWhenRendered(
+				this,
+				() => this._dialog,
+				() => this.show(),
+			);
+			return;
+		}
+
+		this._cancelPendingOpen?.();
+		this._cancelPendingOpen = null;
 
 		// New open cycle: the next close may emit again.
 		this._closeEmitted = false;
@@ -165,6 +180,10 @@ export class NLDDSheet extends LitElement {
 	}
 
 	hide(): void {
+		// A hide() beats a show() that is still waiting for the first render.
+		this._cancelPendingOpen?.();
+		this._cancelPendingOpen = null;
+
 		const dialog = this._dialog;
 		if (!dialog || !dialog.open || this._closing) return;
 

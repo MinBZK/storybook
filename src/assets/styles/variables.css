@@ -1635,6 +1635,8 @@
 	--components-box-border-width: var(--semantics-surfaces-border-width);
 	--components-box-border-color: var(--semantics-surfaces-tinted-border-color);
 	--components-box-base-border-color: var(--semantics-surfaces-base-border-color);
+	--components-box-critical-background-color: var(--semantics-categories-critical-tinted-background-color);
+	--components-box-critical-border-color: var(--semantics-categories-critical-tinted-highlight-border-color);
 	--components-box-padding: var(--primitives-space-16);
 
 	/* ## Button group */
@@ -1678,6 +1680,14 @@
 	/* ## Document tab bar */
 
 	--components-document-tab-bar-tab-title-font: var(--primitives-font-body-sm-medium-flat);
+
+	/* ## File field */
+
+	--components-file-field-background-color: var(--semantics-surfaces-tinted-background-color);
+	--components-file-field-highlight-border-width: var(--semantics-surfaces-border-width);
+	--components-file-field-highlight-border-color: var(--semantics-surfaces-tinted-border-color);
+	--components-file-field-value-color: var(--semantics-content-color);
+	--components-file-field-is-empty-value-color: var(--semantics-content-secondary-color);
 
 	/* ## Icon — rijkskleuren
 
@@ -1727,6 +1737,20 @@
 	--components-inline-dialog-icon-critical-color: var(--primitives-color-critical-500);
 	--components-inline-dialog-icon-warning-color: light-dark(var(--primitives-color-warning-350), var(--primitives-color-warning-650));
 	--components-inline-dialog-icon-success-color: var(--primitives-color-success-500);
+
+	/* ## Notification */
+
+	--components-notification-background-color: var(--semantics-surfaces-base-background-color);
+	--components-notification-corner-radius: var(--semantics-overlays-corner-radius);
+	--components-notification-box-shadow: var(--semantics-overlays-box-shadow);
+	--components-notification-icon-success-color: var(--primitives-color-success-500);
+	--components-notification-icon-neutral-color: var(--semantics-content-secondary-color);
+	--components-notification-icon-accent-color: light-dark(var(--primitives-color-accent-750), var(--primitives-color-accent-350));
+	--components-notification-icon-warning-color: light-dark(var(--primitives-color-warning-350), var(--primitives-color-warning-250));
+	--components-notification-icon-critical-color: var(--primitives-color-critical-500);
+	--components-notification-text-font: var(--primitives-font-body-md-bold-tight);
+	--components-notification-supporting-text-font: var(--primitives-font-body-sm-regular-tight);
+	--components-notification-supporting-text-color: var(--semantics-content-secondary-color);
 
 	/* ## Keyboard shortcut */
 

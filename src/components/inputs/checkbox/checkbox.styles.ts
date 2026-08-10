@@ -111,4 +111,21 @@ export const checkboxStyles = css`
 	.checkbox__input:indeterminate ~ .checkbox__box .checkbox__indeterminate-icon {
 		display: block;
 	}
+
+	/* Decorative has no input to hang :checked on, so the state comes from the
+	   host attributes instead. */
+	:host([decorative][checked]) .checkbox__box,
+	:host([decorative][indeterminate]) .checkbox__box {
+		border-color: var(--components-checkbox-is-selected-border-color);
+		background-color: var(--components-checkbox-is-selected-background-color);
+		color: var(--components-checkbox-is-selected-icon-color);
+	}
+
+	:host([decorative][checked]:not([indeterminate])) .checkbox__check-icon {
+		display: block;
+	}
+
+	:host([decorative][indeterminate]) .checkbox__indeterminate-icon {
+		display: block;
+	}
 `;

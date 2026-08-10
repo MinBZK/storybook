@@ -164,6 +164,69 @@ export const WithTitleGroup = {
 	`,
 };
 
+/** A stand-in wordmark for the media slot: the design system ships no consumer
+ *  logo, and a story that reaches for a file on disk breaks wherever it runs. */
+const logoDataUri = 'data:image/svg+xml,'
+	+ encodeURIComponent(
+		'<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 96 28">'
+		+ '<rect width="28" height="28" rx="6" fill="#154273"/>'
+		+ '<text x="36" y="20" font-family="sans-serif" font-size="16" fill="#154273">Beleid</text>'
+		+ '</svg>',
+	);
+
+export const TitleWithMedia = {
+	args: { size: 'md', showItemLabels: false },
+	render: (args: Record<string, any>) => html`
+		<div style="display: flex; flex-direction: column; gap: 16px;">
+			<!-- Icon before the name: says what kind of document this is before you
+			     read which one. With href the mark and the name are one link back
+			     to where this window belongs; the action beside it stays its own
+			     control. -->
+			<nldd-toolbar
+				size=${args.size}
+				?show-item-labels=${args.showItemLabels}
+			>
+				<nldd-toolbar-title
+					slot="start"
+					text="beleid-2026"
+					href="#"
+				>
+					<nldd-icon
+						slot="media"
+						name="file-text"
+						size="24"
+						color="secondary-content"
+					></nldd-icon>
+				</nldd-toolbar-title>
+				<nldd-toolbar-item slot="end" label="Opslaan">
+					<nldd-button variant="primary" text="Opslaan"></nldd-button>
+					<nldd-menu-item slot="overflow" text="Opslaan" icon="save"></nldd-menu-item>
+				</nldd-toolbar-item>
+			</nldd-toolbar>
+			<!-- No text: the mark stands alone and is the only thing naming this
+			     window, so it carries the name in its alt. An nldd-icon would not
+			     do here — an icon is decoration and says nothing. -->
+			<nldd-toolbar
+				size=${args.size}
+				?show-item-labels=${args.showItemLabels}
+			>
+				<nldd-toolbar-title slot="start">
+					<img
+						slot="media"
+						src=${logoDataUri}
+						alt="Rijksbeleid"
+						height="28"
+					>
+				</nldd-toolbar-title>
+				<nldd-toolbar-item slot="end" label="Opslaan">
+					<nldd-button variant="primary" text="Opslaan"></nldd-button>
+					<nldd-menu-item slot="overflow" text="Opslaan" icon="save"></nldd-menu-item>
+				</nldd-toolbar-item>
+			</nldd-toolbar>
+		</div>
+	`,
+};
+
 export const TitleWithAction = {
 	args: { size: 'md', showItemLabels: false },
 	render: (args: Record<string, any>) => html`

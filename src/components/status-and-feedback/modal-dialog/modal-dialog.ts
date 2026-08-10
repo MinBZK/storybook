@@ -33,6 +33,7 @@ import { modalDialogStyles } from './modal-dialog.styles.js';
 import { modalDialogTemplate } from './modal-dialog.template.js';
 import { isPointerMode } from '../../../utilities/input-modality.js';
 import { focusAutofocusTarget } from '../../../utilities/autofocus.js';
+import { openWhenRendered } from '../../../utilities/open-when-rendered.js';
 import type { InlineDialogVariant } from '../inline-dialog/inline-dialog.js';
 import '../inline-dialog/inline-dialog.js';
 
@@ -62,9 +63,25 @@ export class NLDDModalDialog extends LitElement {
 		return this.shadowRoot?.querySelector('dialog') ?? null;
 	}
 
+	/** Cancels a `show()` that is waiting for the first render; null when none is. */
+	private _cancelPendingOpen: (() => void) | null = null;
+
 	show(): void {
 		const dialog = this._dialog;
-		if (!dialog || dialog.open) return;
+		if (!dialog) {
+			this._cancelPendingOpen?.();
+			this._cancelPendingOpen = openWhenRendered(
+				this,
+				() => this._dialog,
+				() => this.show(),
+			);
+			return;
+		}
+
+		this._cancelPendingOpen?.();
+		this._cancelPendingOpen = null;
+
+		if (dialog.open) return;
 		dialog.showModal();
 		this._manageFocus();
 		this.dispatchEvent(new CustomEvent('open', { bubbles: true, composed: true }));
@@ -84,6 +101,10 @@ export class NLDDModalDialog extends LitElement {
 	}
 
 	hide(): void {
+		// A hide() beats a show() that is still waiting for the first render.
+		this._cancelPendingOpen?.();
+		this._cancelPendingOpen = null;
+
 		const dialog = this._dialog;
 		if (!dialog || !dialog.open || this._closing) return;
 

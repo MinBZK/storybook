@@ -7,22 +7,22 @@
  * `--context-cell-padding-block`), so the line spans the cell's own box edge to
  * edge and consecutive steps connect without gaps.
  *
- * Standaard is de cel een kaal spoor: een lijn met een stip per rij, voor een
- * tijdlijn van gebeurtenissen. Met `variant="step"` wordt de stip groot genoeg
- * voor een cijfer of icoon en heb je een stappenlijst onder elkaar, de verticale
- * tegenhanger van `nldd-step-indicator`. De maat hoort bij de variant en niet bij
- * de inhoud: elke stip in een lijst is even groot, anders verspringt het spoor.
+ * By default the cell is a bare track: a line with a dot per row, for a timeline
+ * of events. With `variant="step"` the dot grows big enough for a number or an
+ * icon and you have a list of steps under each other, the vertical counterpart
+ * of `nldd-step-indicator`. The size belongs to the variant rather than to the
+ * content: every dot in a list is the same size, or the track would jump.
  *
  * @element nldd-timeline-track-cell
- * @attr {'past' | 'current' | 'future' | 'none'} status - Status van deze stap (standaard 'past'); dezelfde waarden als `nldd-step-indicator-item`. `none` tekent alleen de lijn, zonder stip
- * @attr {'dot' | 'step'} variant - Wat deze rij is: een `dot` (standaard) op een tijdlijn van gebeurtenissen, stip van 16px, of een `step` in een stappenlijst, stip van 24px waar een cijfer of icoon in past
- * @attr {boolean} minor - Deze rij hoort onder de vorige: een kleinere stip in dezelfde baan, dus het spoor loopt recht door en er springt niets in. De stip blijft leeg (een cijfer of icoon past er niet in en zou de rij tot een eigen stap maken); de hiërarchie zet je verder met de rij zelf, bijvoorbeeld een `nldd-text-cell` in plaats van een `nldd-title-cell`
- * @attr {'down' | 'up'} direction - Richting waarin de tijdlijn vooruit loopt: `down` (standaard) zet het verleden boven, `up` eronder. Alleen de huidige stap heeft een half spoor, dus alleen daar heeft dit effect
- * @attr {'first' | 'between' | 'last'} position - Plek in de reeks (standaard 'between'): bepaalt of de lijn boven, onder of aan beide kanten van de stip doorloopt
- * @attr {string} text - Cijfer of korte tekst in de stip
- * @attr {string} icon - Icoonnaam in de stip; wint van `text`
+ * @attr {'past' | 'current' | 'future' | 'none'} status - Status of this step (default 'past'); the same values as `nldd-step-indicator-item`. `none` draws the line only, without a dot
+ * @attr {'dot' | 'step'} variant - What this row is: a `dot` (default) on a timeline of events, a 16px dot, or a `step` in a list of steps, a 24px dot with room for a number or an icon
+ * @attr {boolean} minor - This row belongs under the previous one: a smaller dot in the same lane, so the track runs straight on and nothing indents. The dot stays empty (a number or an icon would not fit, and would make the row a step of its own); carry the hierarchy in the row itself instead, with an `nldd-text-cell` rather than an `nldd-title-cell` for example
+ * @attr {'down' | 'up'} direction - The direction the timeline moves forward in: `down` (default) puts the past above, `up` below. Only the current step has half a track, so this only has an effect there
+ * @attr {'first' | 'between' | 'last' | 'only'} position - Place in the series (default 'between'): decides whether the line continues above the dot, below it, or on both sides. `only` is the single row in the series and gets a line on neither side: a track of one dot leads nowhere
+ * @attr {string} text - Number or short text in the dot
+ * @attr {string} icon - Icon name in the dot; wins over `text`
  *
- * @slot - Eigen inhoud in de stip (alternatief voor `text` en `icon`)
+ * @slot - Custom content in the dot (an alternative to `text` and `icon`)
  */
 import { LitElement, type PropertyValues } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
@@ -35,7 +35,7 @@ import '../../../content/icon/icon.js';
 type Status = 'past' | 'current' | 'future' | 'none';
 type Variant = 'dot' | 'step';
 type Direction = 'down' | 'up';
-type Position = 'first' | 'between' | 'last';
+type Position = 'first' | 'between' | 'last' | 'only';
 
 @customElement('nldd-timeline-track-cell')
 export class NLDDTimelineTrackCell extends VisibilityMixin(LitElement, 'cells-container') {

@@ -214,4 +214,20 @@ describe('nldd-checkbox – accessibility', () => {
 		form.reset();
 		expect(cb.checked).toBe(true);
 	});
+	// Decorative: the shape without a control, for a row that is the control.
+	describe('decorative', () => {
+		it('rendert geen input', async () => {
+			el = await fixture(`<nldd-checkbox decorative checked></nldd-checkbox>`);
+			await waitForUpdate(el);
+			expect(el.shadowRoot!.querySelector('.checkbox__input')).toBeNull();
+			expect(el.shadowRoot!.querySelector('input')).toBeNull();
+		});
+
+		it('is niet focusbaar', async () => {
+			el = await fixture(`<nldd-checkbox decorative></nldd-checkbox>`);
+			await waitForUpdate(el);
+			expect(el.shadowRoot!.querySelector('[tabindex]')).toBeNull();
+		});
+	});
+
 });

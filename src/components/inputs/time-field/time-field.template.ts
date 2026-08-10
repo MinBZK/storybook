@@ -89,7 +89,7 @@ function renderPicker(component: NLDDTimeField): TemplateResult | typeof nothing
 					`}
 					<nldd-spacer size="16"></nldd-spacer>
 					<nldd-button
-						variant="neutral-base"
+						variant="neutral-tinted"
 						size=${component._pickerButtonSize}
 						width="full"
 						text=${component._t('components.time-field.confirm-action')}

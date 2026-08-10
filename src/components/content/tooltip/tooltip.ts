@@ -1,38 +1,39 @@
 /**
  * Nederlandse Digitale Dienst Tooltip Component (Lit + TypeScript)
  *
- * Wrapper component dat een tooltip toont bij hover of focus op het child element.
- * Gebruikt `display: contents` zodat het de layout van het child niet beïnvloedt.
+ * A wrapper that shows a tooltip on hover or focus of its child element. It
+ * uses `display: contents`, so it does not affect the child's layout.
  *
  * @element nldd-tooltip
- * @attr {string} text - Tooltip tekst
- * @attr {boolean} open - Forceer de tooltip zichtbaar, ongeacht hover/focus. Gebruik voor programmatische feedback (bv. "Gekopieerd"). Reset naar false om hover-gedrag te herstellen.
- * @attr {string} placement - Positie: 'top' | 'bottom' | 'left' | 'right' (standaard: 'bottom'; op touch devices automatisch 'top')
- * @attr {string} timing - Wanneer de tooltip verschijnt op hover: 'instant'  — direct, zonder show-delay. 'default'  — na de standaard show-delay (700ms). 'never'    — tooltip wordt nooit getoond; hover/focus events worden genegeerd, aria-describedby wordt onderdrukt en een al zichtbare tooltip verdwijnt. Hide-delay en touch suppression blijven onder alle waarden van kracht. Focus-trigger is altijd instant.
+ * @attr {string} text - Tooltip text
+ * @attr {boolean} open - Forces the tooltip visible, whatever hover or focus does. Use it for programmatic feedback ("Copied", for instance). Reset it to false to restore the hover behaviour.
+ * @attr {string} placement - Position: 'top' | 'bottom' | 'left' | 'right' (default: 'bottom'; automatically 'top' on touch devices)
+ * @attr {string} timing - When the tooltip appears on hover: 'instant' — right away, without a show delay. 'default' — after the standard show delay (700ms). 'never' — the tooltip is never shown; hover and focus events are ignored, aria-describedby is suppressed, and a tooltip that is already visible disappears. The hide delay and the touch suppression stay in force under every value. A focus trigger is always instant.
  *
- * @slot - Het element waarop de tooltip wordt getoond
+ * @slot - The element the tooltip is shown for
  *
- * @fires nldd-tooltip-dismiss - Wanneer een gebruiker Escape drukt terwijl
- *   `open=true` is. De consumer beheert dan de open-lifecycle (wij kunnen
- *   `open` niet eenzijdig wissen), dus dit event geeft de consumer de kans
- *   om `open` terug naar `false` te zetten. WCAG 1.4.13: persistent hover-/
- *   focus-overlays moeten dismissible zijn zonder focus te verplaatsen.
+ * @fires nldd-tooltip-dismiss - When a user presses Escape while `open=true`.
+ *   The consumer owns the open lifecycle from there (we cannot clear `open`
+ *   on our own), so this event is the consumer's chance to set `open` back to
+ *   `false`. WCAG 1.4.13: a persistent hover or focus overlay has to be
+ *   dismissible without moving focus.
  *
- * @note Rendert via de native Popover API (`popover="manual"`) in de top
- * layer. Daardoor escape de tooltip alle ancestor stacking contexts en
- * `overflow: hidden` clipping — geen z-index gevechten meer met overlay-
- * containers, panes of transform-containers. Positionering blijft via
- * Floating UI met `strategy: 'fixed'`.
+ * @note It renders through the native Popover API (`popover="manual"`) in the
+ * top layer. That escapes every ancestor stacking context and `overflow:
+ * hidden` clipping, so no more z-index fights with overlay containers, panes
+ * or transform containers. Positioning still goes through Floating UI with
+ * `strategy: 'fixed'`.
  *
- * @note aria-describedby werkt alleen wanneer het trigger element in de light DOM staat.
- * Bij web components als trigger (met eigen shadow DOM) is de koppeling een bekende
- * limitatie van shadow DOM + ARIA. Voor nldd-icon-button is dit niet relevant omdat
- * aria-label al op de interne button staat. Tooltip tekst op icon-button mag daarom
- * geen informatie bevatten die niet al in aria-label zit.
+ * @note aria-describedby only works when the trigger element is in the light
+ * DOM. With a web component as the trigger (with a shadow DOM of its own) the
+ * link is a known shadow DOM plus ARIA limitation. For nldd-icon-button that
+ * does not matter, because aria-label already sits on the inner button. Tooltip
+ * text on an icon-button must therefore hold nothing that aria-label does not
+ * already say.
  *
- * @note Bij disabled triggers (bijv. disabled nldd-icon-button) wordt de tooltip niet
- * getoond omdat disabled buttons geen mouseenter/focusin events afvuren en display:
- * contents geen eigen layout box heeft om events op te vangen.
+ * @note With a disabled trigger (a disabled nldd-icon-button, for instance) the
+ * tooltip is not shown, because disabled buttons fire no mouseenter or focusin
+ * and `display: contents` has no layout box of its own to catch events on.
  */
 
 import { LitElement } from 'lit';
@@ -182,8 +183,13 @@ export class NLDDTooltip extends LitElement {
 			if (!this._descriptionEl) {
 				this._descriptionEl = document.createElement('span');
 				this._descriptionEl.id = this._tooltipId;
+				// Pinned to the top-left corner. Absolute without offsets leaves the
+				// element at its static position — the end of the body — where its
+				// one pixel extends the document and the page grows a scrollbar.
 				Object.assign(this._descriptionEl.style, {
 					position: 'absolute',
+					top: '0',
+					left: '0',
 					width: '1px',
 					height: '1px',
 					overflow: 'hidden',

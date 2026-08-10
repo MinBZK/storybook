@@ -40,6 +40,11 @@
  * @attr {string} max-width - Maximum width as a CSS length (default: '240px'); the title text truncates with an ellipsis beyond it. The cap is lifted while the title is the sole toolbar element (it then stretches to fill the row).
  * @attr {'sm'|'md'|'lg'} size - Set by nldd-toolbar, not a consumer attribute: mirrors the toolbar's size (default: 'md'), which sets the title group height and, at 'sm', the title and supporting-text fonts.
  *
+ * @attr {string} href - Makes the mark and the name one link, for the place this window belongs to (usually the app's own start). The `action` slot stays outside it: a control inside a link is a control you cannot reach without following the link.
+ * @attr {string} target - Where the link opens; only meaningful with `href`. `_blank` adds rel="noopener noreferrer" and a visually hidden "opens in a new tab" announcement.
+ * @attr {object} translations - Override translation keys (the new-tab announcement); unset keys fall back to Dutch.
+ *
+ * @slot media - Optional leading image before the title: a logo, a product mark, a file-type icon. Its height is capped to the title group so it cannot stretch the row; pick the size within that yourself. With no `text` the media stands alone and carries the name, so give it one (an `alt`, or an accessible label).
  * @slot action - Optional trailing control (e.g. an xs nldd-icon-button), shown inline after the title and tuned to sit against it. Empty by default.
  */
 import { LitElement } from 'lit';
@@ -123,6 +128,12 @@ export class NLDDToolbarItem extends LitElement {
 export class NLDDToolbarTitle extends LitElement {
 	static override styles = toolbarTitleStyles;
 
+	@property({ type: String, reflect: true })
+	href = '';
+
+	@property({ type: String, reflect: true })
+	target = '';
+
 	@property({ reflect: true, converter: reflectNonDefault<string>('') })
 	text = '';
 
@@ -144,6 +155,13 @@ export class NLDDToolbarTitle extends LitElement {
 	/** Set by nldd-toolbar; not part of the public API. @internal */
 	@property({ reflect: true, converter: reflectNonDefault<Size>('md') })
 	size: Size = 'md';
+
+	@property({ type: Object })
+	translations: Partial<NLDDToolbarTranslations> = {};
+
+	public _t(key: keyof NLDDToolbarTranslations): string {
+		return this.translations[key] ?? nlddToolbarTranslations[key];
+	}
 
 	// Layout state — `solo-fluid` and `hidden` — is owned by nldd-toolbar and
 	// toggled directly as attributes during measurement (synchronous). Not a

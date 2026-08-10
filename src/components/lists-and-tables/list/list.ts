@@ -10,8 +10,9 @@ import '../../status-and-feedback/inline-dialog/inline-dialog.js';
 import '../../content/icon/icon.js';
 import '../../actions/icon-button/icon-button.js';
 
-export type ListVariant = 'simple' | 'box';
-export type ListBackground = 'tinted' | 'base';
+export type ListDividers = 'always' | 'on-touch' | 'never';
+
+export type ListVariant = 'simple' | 'box-tinted' | 'box-base';
 export type ListType = 'list' | 'navigation' | 'listbox' | 'tree';
 
 export interface NLDDReorderEventDetail {
@@ -107,11 +108,10 @@ export interface NLDDReorderEventDetail {
  *
  * @element nldd-list
  *
- * @attr {'simple'|'box'} variant - Visual style (default 'simple'): `simple` is a plain vertical strip with no chrome, `box` a framed card with rounded corners, fill and inset border ring
- * @attr {'tinted'|'base'} background - Surface fill for `variant="box"` (default 'tinted'). Use `base` on an already-tinted parent. No effect with `variant="simple"`.
+ * @attr {'simple'|'box-tinted'|'box-base'} variant - Visual style (default 'simple'): `simple` is a plain vertical strip with no chrome, the two `box` values a framed card with rounded corners, fill and inset border ring. `box-tinted` for a list on a plain page, `box-base` for one on an already-tinted parent (the border ring gets +2 palette steps so it still reads against a card-on-card)
  * @attr {'list'|'navigation'|'listbox'|'tree'} type - A11y role and behavior (default 'list'). See the docblock above.
  * @attr {boolean} reorderable - Enables drag-to-reorder and pushes `reorderable` onto the items. Only valid with `type="list"`; wins over `arrow-navigation` when both are set.
- * @attr {boolean} no-dividers - Hides the dividers between list items
+ * @attr {'always'|'on-touch'|'never'} dividers - When to draw the lines between the items (default 'always'). `on-touch` draws them only where the primary input is touch, under `(pointer: coarse)`: a pointer has the hover highlight to tell one row from the next and a finger has nothing, so the line earns its place in the one case and is clutter in the other. `never` hides them everywhere
  * @attr {boolean} arrow-navigation - Roving-tabindex arrow-key navigation: ArrowUp/ArrowDown move focus between the rows, Home/End jump to first/last, and the list becomes a single tab stop. Implied by `type="tree"` (which adds ArrowLeft/ArrowRight, see above). Ignored when `reorderable` is active on a `type="list"`, and in listbox mode.
  * @attr {string} height - Listbox only: caps the options' scroll region at this CSS length (e.g. '320px'). Unset means no cap.
  * @attr {string} empty-text - Text for the default empty-state dialog (falls back to the Dutch i18n default). Ignored when `[slot=empty]` is filled.
@@ -137,12 +137,6 @@ export class NLDDList extends LitElement {
 	@property({ reflect: true, converter: reflectNonDefault<ListVariant>('simple') })
 	variant: ListVariant = 'simple';
 
-	/** Surface fill for `variant="box"`. `tinted` (default) for a list on
-	 *  a plain page; `base` for a list on an already-tinted parent. No
-	 *  effect when `variant="simple"`. */
-	@property({ reflect: true })
-	background?: ListBackground;
-
 	/** A11y semantics. See class docblock. */
 	@property({ reflect: true, converter: reflectNonDefault<ListType>('list') })
 	type: ListType = 'list';
@@ -151,9 +145,11 @@ export class NLDDList extends LitElement {
 	@property({ type: Boolean, reflect: true })
 	reorderable = false;
 
-	/** Hides dividers between list items. */
-	@property({ type: Boolean, reflect: true, attribute: 'no-dividers' })
-	noDividers = false;
+	/** When to draw the lines between the items. `on-touch` draws them where the
+	 *  primary input is touch: a pointer has the hover highlight to tell one row
+	 *  from the next, and a finger has nothing. */
+	@property({ reflect: true, converter: reflectNonDefault<ListDividers>('always') })
+	dividers: ListDividers = 'always';
 
 	/**
 	 * Roving-tabindex arrow-key navigation. When set, ArrowUp/ArrowDown move focus

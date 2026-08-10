@@ -1,13 +1,13 @@
 /**
  * Nederlandse Digitale Dienst Title Bar Component (Lit + TypeScript)
  *
- * A title bar with an optional overline, title, and subtitle on the left,
- * and a slot for actions on the right.
+ * A title bar with an optional overline, title, and subtitle on the left, and a
+ * slot at the end of the title line on the right.
  *
  * @element nldd-title
  *
  * @attr {number} size - Visual size of the title: 1–6 (default: 3)
- * @attr {string} color - 'inherit' laat de titel de tekstkleur van de
+ * @attr {string} color - 'inherit' lets the title take the text color of the
  *   ondergrond volgen (voor gekleurde vlakken zoals de filled-categories);
  *   overline en subtitle krijgen dezelfde kleur op verlaagde dekking.
  *   Leeg = standaard contentkleuren.
@@ -15,7 +15,7 @@
  * @slot overline - Optional overline above the title
  * @slot - Title text (use h1–h6 for semantics)
  * @slot subtitle - Optional subtitle below the title
- * @slot actions - Actions to the right of the title (buttons, menus, etc.)
+ * @slot end - Whatever belongs at the end of the title line: a button, a menu, a status badge, a version. Named for the position, not for a kind of content, because anything can sit there.
  */
 import { LitElement } from 'lit';
 import { customElement, property } from 'lit/decorators.js';

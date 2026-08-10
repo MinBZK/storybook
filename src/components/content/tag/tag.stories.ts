@@ -3,8 +3,12 @@ import './tag.js';
 import { ICONS } from './../icon/icon.js';
 
 /**
- * De Tag component is een compacte label voor categorieën, statussen of metadata.
- * Tags zijn niet interactief — gebruik <nldd-token> voor filter- of dismissible chips.
+ * De Tag is een compact kenmerk dat aan iets is toegekend: een categorie, een type,
+ * een rol, een keurmerk. Wat er staat verandert pas als iemand de inhoud wijzigt,
+ * en een tag is niet interactief.
+ *
+ * Een toestand die het systeem bijhoudt ("Actief", "Verlopen") is een `nldd-badge`.
+ * Kan de gebruiker het weghalen of erop klikken, dan is het een `nldd-token`.
  *
  * ## Gebruik
  * ```html

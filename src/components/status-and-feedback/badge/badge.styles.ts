@@ -18,9 +18,11 @@ export const badgeStyles = css`
 		--_gap: var(--primitives-space-3);
 		--_content-color: var(--semantics-categories-critical-filled-content-color);
 		--_font: var(--primitives-font-body-xs-medium-flat);
-		--_dot-size: var(--primitives-space-10);
+		--_dot-size: var(--primitives-space-12);
 		--_icon-size: var(--primitives-space-14);
 		--_icon-offset-correction: var(--primitives-space-1);
+		--_pulse-spread: var(--primitives-space-8);
+		--_pulse-duration: 1.5s;
 
 		${inheritedTextReset}
 		display: inline-flex;
@@ -28,11 +30,12 @@ export const badgeStyles = css`
 	}
 
 	:host([size="sm"]) {
+		--_pulse-spread: var(--primitives-space-6);
 		--_height: var(--primitives-space-16);
 		--_inline-padding: var(--primitives-space-4);
 		--_gap: var(--primitives-space-2);
 		--_font: var(--primitives-font-body-xxs-medium-flat);
-		--_dot-size: var(--primitives-space-6);
+		--_dot-size: var(--primitives-space-8);
 		--_icon-size: var(--primitives-space-12);
 	}
 
@@ -183,6 +186,7 @@ export const badgeStyles = css`
 	.badge {
 		box-sizing: border-box;
 		display: inline-flex;
+		position: relative;
 		border-radius: var(--components-badge-corner-radius);
 		box-shadow:
 			0 0 0 1px var(--context-parent-background-color, var(--semantics-surfaces-base-background-color)),
@@ -204,6 +208,59 @@ export const badgeStyles = css`
 			border: 1px solid CanvasText;
 			background-color: Canvas;
 			color: CanvasText;
+		}
+	}
+
+	/* Grows out of the badge and fades: it borrows the badge's own shape and
+	   colour, so it works on a dot as well as on a counter. Behind the content
+	   and inert, so it never affects layout or hit area.
+
+	   A growing box-shadow rather than a scale: scaling multiplies, so a wide
+	   badge would throw a halo that is far wider than it is tall. A spread adds
+	   the same distance on every side, whatever the badge measures.
+
+	   Painted after the badge, so the ring passes over the contrast border the
+	   badge draws in the surface colour instead of starting behind it. The
+	   element itself is transparent (the ring is the shadow, which paints
+	   outside the box), so nothing covers the badge's own fill or text. */
+	.badge__pulse {
+		position: absolute;
+		inset: 0;
+		border-radius: inherit;
+		box-shadow: 0 0 0 0 var(--_background-color);
+		pointer-events: none;
+		animation: badge-pulse var(--_pulse-duration) infinite;
+	}
+
+	/* The ring rides on the shadow's own colour rather than on the element's
+	   opacity: at spread zero the shadow has no area, so it can start at full
+	   strength without a flash, and it is already transparent when the spread
+	   snaps back for the next cycle. Same shape as Shoelace's badge pulse. */
+	@keyframes badge-pulse {
+		0% {
+			box-shadow: 0 0 0 0 var(--_background-color);
+		}
+		70% {
+			box-shadow: 0 0 0 var(--_pulse-spread) transparent;
+		}
+		100% {
+			box-shadow: 0 0 0 0 transparent;
+		}
+	}
+
+	/* The ring is decoration on top of a badge that is visible anyway, so it
+	   simply goes away rather than pulsing its opacity in place. */
+	@media (prefers-reduced-motion: reduce) {
+		.badge__pulse {
+			display: none;
+		}
+	}
+
+	/* Forced colors paints the badge in system colours; a ring in the same
+	   Canvas would read as a second, half-drawn badge. */
+	@media (forced-colors: active) {
+		.badge__pulse {
+			display: none;
 		}
 	}
 

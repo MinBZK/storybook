@@ -227,10 +227,50 @@ describe('nldd-top-title-bar – is-compact', () => {
 		cleanup(container);
 	});
 
+	it('hides its title from assistive technology when anchored', async () => {
+		const container = await fixture<HTMLElement>(`
+			<div>
+				<nldd-top-title-bar text="Titel" collapse-anchor="heading"></nldd-top-title-bar>
+				<h1 id="heading">Titel</h1>
+			</div>
+		`);
+		el = container.querySelector('nldd-top-title-bar')!;
+		await waitForUpdate(el);
+		const group = el.shadowRoot!.querySelector('.top-title-bar__title-group');
+		expect(group!.getAttribute('aria-hidden')).toBe('true');
+		cleanup(container);
+	});
+
+	it('keeps its title exposed without an anchor, because nothing else carries it', async () => {
+		el = await fixture<NLDDTopTitleBar>('<nldd-top-title-bar text="Titel"></nldd-top-title-bar>');
+		await waitForUpdate(el);
+		const group = el.shadowRoot!.querySelector('.top-title-bar__title-group');
+		expect(group!.hasAttribute('aria-hidden')).toBe(false);
+	});
+
 	it('does not set _anchorElement when id does not match', async () => {
 		el = await fixture<NLDDTopTitleBar>('<nldd-top-title-bar text="Titel" collapse-anchor="does-not-exist"></nldd-top-title-bar>');
 		await waitForUpdate(el);
 		expect((el as any)._anchorElement).toBeNull();
+	});
+
+	it('picks up an anchor that only renders once the page has its data', async () => {
+		const container = await fixture<HTMLElement>(`
+			<div>
+				<nldd-top-title-bar text="Titel" collapse-anchor="late-heading"></nldd-top-title-bar>
+			</div>
+		`);
+		el = container.querySelector('nldd-top-title-bar')!;
+		await waitForUpdate(el);
+		expect((el as any)._anchorElement).toBeNull();
+
+		const heading = document.createElement('h1');
+		heading.id = 'late-heading';
+		container.append(heading);
+		await waitForUpdate(el);
+
+		expect((el as any)._anchorElement).toBe(heading);
+		cleanup(container);
 	});
 
 	it('removes scroll listener on disconnect', async () => {

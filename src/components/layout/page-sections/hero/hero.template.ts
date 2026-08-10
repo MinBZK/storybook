@@ -3,7 +3,7 @@ import type { NLDDHero } from './hero.js';
 
 export function heroTemplate(component: NLDDHero): TemplateResult {
 	// Internal media image from media-src, only when nothing is slotted (the
-	// slot wins, mirroring nldd-image / nldd-byline).
+	// slot wins, mirroring nldd-image / nldd-identity).
 	const mediaImage = component.mediaSrc && !component._slotHasMedia
 		? html`<img src=${component.mediaSrc}
 				srcset=${component.mediaSrcset || nothing}

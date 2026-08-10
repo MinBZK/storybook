@@ -6,13 +6,18 @@ export function template(component: NLDDBadge) {
 	if (component._isDot) modifiers.push('badge--dot');
 	if (component._isIconOnly) modifiers.push('badge--icon-only');
 	const classes = ['badge', ...modifiers].join(' ');
-	const needsAriaImg = component._isDot || component._isIconOnly;
+	// A badge without text or an icon-only badge has nothing to read, so it carries
+	// its own label. Unless it is decorative: then the words beside it already say
+	// what the colour says, and announcing it again is noise.
+	const needsAriaImg = !component.decorative && (component._isDot || component._isIconOnly);
 
 	return html`
 		<span class=${classes}
 			role=${needsAriaImg ? 'img' : nothing}
 			aria-label=${needsAriaImg ? component._ariaLabel : nothing}
+			aria-hidden=${component.decorative ? 'true' : nothing}
 		>
+			${component.pulse ? html`<span class="badge__pulse"></span>` : ''}
 			${component.icon ? html`
 				<span class="badge__icon">
 					<nldd-icon name=${component.icon}></nldd-icon>

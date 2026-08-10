@@ -192,7 +192,7 @@ export const InsideListbox = {
 };
 
 /**
- * Dezelfde actions in een `variant="box"` lijst. Twee soorten ruimte die je uit
+ * Dezelfde actions in een `variant="box-tinted"` lijst. Twee soorten ruimte die je uit
  * elkaar moet houden: de boxed variant toont altijd zijn start- en end-area met
  * een spacer van 12, en dat is de afstand van het action tot het KADER. De
  * spacers binnen het action zijn de afstand van de inhoud tot de rand van de
@@ -201,7 +201,7 @@ export const InsideListbox = {
 export const InsideBoxedList = {
 	name: 'In een boxed list',
 	render: () => html`
-		<nldd-list variant="box" type="tree" accessible-label="Opdrachtgevers">
+		<nldd-list variant="box-tinted" type="tree" accessible-label="Opdrachtgevers">
 			<nldd-list-item @click=${demoToggle}>
 				<nldd-list-item-action button disclosure accessible-label="Agentschappen in- of uitklappen">
 					<nldd-icon-cell size="20"><nldd-icon name="chevron-right"></nldd-icon></nldd-icon-cell>
@@ -274,7 +274,7 @@ export const NestedTree = {
 					<nldd-cell><nldd-checkbox aria-hidden="true" tabindex="-1"></nldd-checkbox></nldd-cell>
 					<nldd-spacer-cell size="8"></nldd-spacer-cell>
 					<nldd-text-cell text=${label}></nldd-text-cell>
-					
+
 				</nldd-list-item-action>
 				${children}
 			</nldd-list-item>
@@ -287,7 +287,7 @@ export const NestedTree = {
 					<nldd-cell><nldd-checkbox aria-hidden="true" tabindex="-1"></nldd-checkbox></nldd-cell>
 					<nldd-spacer-cell size="8"></nldd-spacer-cell>
 					<nldd-text-cell text=${label}></nldd-text-cell>
-					
+
 				</nldd-list-item-action>
 			</nldd-list-item>
 		`;

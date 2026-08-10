@@ -4,6 +4,10 @@
  * @element nldd-checkbox
  * @attr {boolean} checked - Checked state
  * @attr {boolean} disabled - Disabled state
+ * @attr {boolean} decorative - Renders the box without the input: no focus, no
+ *   name/value, nothing announced. For a control that owns the state elsewhere,
+ *   such as a list row that is itself the checkbox; putting a real input in
+ *   there would nest a control inside a control.
  * @attr {boolean} indeterminate - Indeterminate state (takes precedence over checked visually)
  * @attr {string} value - Value for form submission
  * @attr {string} name - Name for form submission
@@ -26,6 +30,9 @@ export class NLDDCheckbox extends FormAssociated(LitElement) {
 
 	@property({ type: Boolean, reflect: true })
 	checked = false;
+
+	@property({ type: Boolean, reflect: true })
+	decorative = false;
 
 	@property({ type: Boolean, reflect: true })
 	disabled = false;

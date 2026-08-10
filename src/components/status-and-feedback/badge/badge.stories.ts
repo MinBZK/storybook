@@ -3,8 +3,13 @@ import './badge.js';
 import { ICONS } from './../../content/icon/icon.js';
 
 /**
- * De Badge component toont een notificatie of statusindicator. Met `number` of `text`
- * toont de badge een waarde; zonder waarde verschijnt automatisch een stip.
+ * De Badge toont de toestand van iets, of hoeveel er van iets is. Wat er staat
+ * bepaalt het systeem, niet de gebruiker, en het verandert zonder dat iemand het
+ * aanraakt. Een badge is nooit interactief.
+ *
+ * Met `number` of `text` toont hij een waarde; zonder waarde verschijnt een stip.
+ * Gaat het om een kenmerk dat iemand heeft toegekend, dan is het een
+ * `nldd-tag`; om zelfstandige data die de gebruiker hanteert, een `nldd-token`.
  *
  * ## Gebruik
  * ```html
@@ -37,15 +42,18 @@ export default {
 			type: 'stable',
 		},
 	},
+	args: {
+		size: 'md',
+		color: 'critical',
+		pulse: false,
+		text: '',
+		number: '3',
+		max: 99,
+		icon: '',
+		accessibleLabel: '',
+		decorative: false,
+	},
 	argTypes: {
-		color: {
-			control: 'select',
-			options: COLORS,
-			description: 'Kleurvariant',
-			table: {
-				defaultValue: { summary: 'critical' },
-			},
-		},
 		size: {
 			control: 'select',
 			options: ['sm', 'md'],
@@ -54,22 +62,27 @@ export default {
 				defaultValue: { summary: 'md' },
 			},
 		},
+		color: {
+			control: 'select',
+			options: COLORS,
+			description: 'Kleurvariant',
+			table: {
+				defaultValue: { summary: 'critical' },
+			},
+		},
+		pulse: {
+			control: 'boolean',
+			description: 'Laat een ring uit de badge groeien en vervagen',
+			table: {
+				defaultValue: { summary: false },
+			},
+		},
 		text: {
 			control: 'text',
 			description: 'Tekst (heeft voorrang op number)',
 		},
-		icon: {
-			control: 'select',
-			options: ['(geen)', ...ICONS],
-			mapping: { '(geen)': '' },
-			description: 'Icoon naam',
-			table: {
-				defaultValue: { summary: '(geen)' },
-			},
-		},
 		number: {
 			control: { type: 'text' },
-			type: { name: 'string' },
 			description: 'Numerieke waarde (leeg laten voor stip)',
 			table: {
 				type: { summary: 'number' },
@@ -82,42 +95,92 @@ export default {
 				defaultValue: { summary: '99' },
 			},
 		},
+		icon: {
+			control: 'select',
+			options: ['(geen)', ...ICONS],
+			mapping: { '(geen)': '' },
+			description: 'Icoon naam',
+			table: {
+				defaultValue: { summary: '(geen)' },
+			},
+		},
 		accessibleLabel: {
 			name: 'accessible-label',
 			control: 'text',
 			description: 'Toegankelijk label voor screenreaders (fallback naar text/number; anders naar i18n default)',
 		},
-	},
-	args: {
-		color: 'critical',
-		size: 'md',
-		text: '',
-		icon: '',
-		number: '',
-		max: 99,
-		accessibleLabel: '',
+		decorative: {
+			control: 'boolean',
+			description: 'Verbergt de badge voor hulpsoftware (wanneer de tekst ernaast hetzelfde zegt)',
+			table: {
+				defaultValue: { summary: false },
+			},
+		},
 	},
 };
 
-const Template = ({ color, size, text, icon, number, max, accessibleLabel }: Record<string, any>) => {
+const Template = ({ size, color, pulse, text, number, max, icon, accessibleLabel, decorative }: Record<string, any>) => {
 	const parsed = number === '' || number === null || number === undefined ? undefined : Number(number);
 	return html`
 		<nldd-badge
-			color=${color}
 			size=${size}
-			icon=${icon || nothing}
+			color=${color}
+			?pulse=${pulse}
+			text=${text || nothing}
 			number=${Number.isFinite(parsed) ? parsed! : nothing}
 			max=${max}
-			text=${text || nothing}
+			icon=${icon || nothing}
 			accessible-label=${accessibleLabel || nothing}
+			?decorative=${decorative}
 		></nldd-badge>
 	`;
 };
 
 export const Default = {
 	render: Template,
-	args: {
-		number: '3',
+};
+
+export const Sizes = {
+	render: () => html`
+		<div style="display: flex; gap: 16px; align-items: center;">
+			<nldd-badge size="md" number="3"></nldd-badge>
+			<nldd-badge size="sm" number="3"></nldd-badge>
+			<nldd-badge size="md"></nldd-badge>
+			<nldd-badge size="sm"></nldd-badge>
+		</div>
+	`,
+	parameters: {
+		controls: { disable: true },
+	},
+};
+
+export const Colors = {
+	render: () => html`
+		<div style="display: flex; gap: 12px; align-items: center; flex-wrap: wrap;">
+			${COLORS.map(c => html`<nldd-badge color=${c} number="3"></nldd-badge>`)}
+		</div>
+	`,
+	parameters: {
+		controls: { disable: true },
+	},
+};
+
+export const Pulse = {
+	render: () => html`
+		<div style="display: flex; gap: 32px; align-items: center;">
+			<nldd-badge color="critical" pulse></nldd-badge>
+			<nldd-badge color="success" pulse></nldd-badge>
+			<nldd-badge color="accent" pulse number="3"></nldd-badge>
+			<nldd-badge color="success" pulse text="Online"></nldd-badge>
+		</div>
+	`,
+	parameters: {
+		controls: { disable: true },
+		docs: {
+			description: {
+				story: 'Een ring groeit uit de badge en vervaagt. Voor iets dat nu gebeurt: een live-verbinding, een storing die loopt. Zet hem niet op elke badge, want dan trekt niets meer de aandacht. De ring groeit als spread, niet als schaal, dus hij houdt overal dezelfde afstand: ook een brede badge krijgt geen halo die breder is dan hoog. Wie beweging heeft uitgezet (`prefers-reduced-motion`) ziet gewoon de badge.',
+			},
+		},
 	},
 };
 
@@ -141,6 +204,19 @@ export const Dot = {
 	},
 };
 
+export const WithText = {
+	render: () => html`
+		<div style="display: flex; gap: 16px; align-items: center;">
+			<nldd-badge color="accent" text="Nieuw"></nldd-badge>
+			<nldd-badge color="success" text="Live"></nldd-badge>
+			<nldd-badge color="warning" text="Bèta"></nldd-badge>
+		</div>
+	`,
+	parameters: {
+		controls: { disable: true },
+	},
+};
+
 export const WithNumber = {
 	render: () => html`
 		<div style="display: flex; gap: 16px; align-items: center;">
@@ -157,19 +233,6 @@ export const WithNumber = {
 				story: 'Met een numerieke waarde. Boven de max wordt "{max}+" getoond.',
 			},
 		},
-	},
-};
-
-export const WithText = {
-	render: () => html`
-		<div style="display: flex; gap: 16px; align-items: center;">
-			<nldd-badge color="accent" text="Nieuw"></nldd-badge>
-			<nldd-badge color="success" text="Live"></nldd-badge>
-			<nldd-badge color="warning" text="Bèta"></nldd-badge>
-		</div>
-	`,
-	parameters: {
-		controls: { disable: true },
 	},
 };
 
@@ -207,31 +270,6 @@ export const WithIconAndText = {
 				story: 'Icon + text/number: icoon links, content rechts.',
 			},
 		},
-	},
-};
-
-export const Colors = {
-	render: () => html`
-		<div style="display: flex; gap: 12px; align-items: center; flex-wrap: wrap;">
-			${COLORS.map(c => html`<nldd-badge color=${c} number="3"></nldd-badge>`)}
-		</div>
-	`,
-	parameters: {
-		controls: { disable: true },
-	},
-};
-
-export const Sizes = {
-	render: () => html`
-		<div style="display: flex; gap: 16px; align-items: center;">
-			<nldd-badge size="md" number="3"></nldd-badge>
-			<nldd-badge size="sm" number="3"></nldd-badge>
-			<nldd-badge size="md"></nldd-badge>
-			<nldd-badge size="sm"></nldd-badge>
-		</div>
-	`,
-	parameters: {
-		controls: { disable: true },
 	},
 };
 

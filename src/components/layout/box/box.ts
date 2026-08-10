@@ -6,11 +6,21 @@
  * helping users understand their relationship at a glance.
  *
  * @element nldd-box
- * @attr {'tinted'|'base'} background - Surface fill.
- *   - `tinted` (default): for a box on a plain page bg.
- *   - `base`: for a box sitting on an already-tinted parent (the border
- *   ring gets +2 palette steps so it still reads against a card-on-card).
- * @slot - Place components inside the box
+ * @attr {'tinted'|'base'|'critical'} variant - Which surface this box draws.
+ *   - `tinted` (default): a box on a plain page background.
+ *   - `base`: a box on an already-tinted parent (the border ring gets +2
+ *   palette steps so it still reads against a card-on-card).
+ *   - `critical`: a region whose actions are destructive or irreversible (a
+ *   "danger zone"), tinted and outlined in critical. It carries no ARIA of its
+ *   own: unlike nldd-banner this is not an announcement but a permanent part of
+ *   the page, so the heading and the button labels have to name the danger —
+ *   colour is a reinforcement, never the only signal (WCAG 1.4.1).
+ * The box draws the surface and nothing else: it has no padding of its own, the
+ * same way nldd-card has none. Put an nldd-container inside it and let that set
+ * the inset, so one component owns spacing wherever it is used.
+ *
+ * @slot - Place components inside the box, usually wrapped in an nldd-container
+ * that carries the padding
  */
 import { LitElement } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
@@ -18,14 +28,14 @@ import { reflectNonDefault } from '../../../utilities/reflect-non-default.js';
 import { boxStyles } from './box.styles.js';
 import { boxTemplate } from './box.template.js';
 
-export type BoxBackground = 'tinted' | 'base';
+export type BoxVariant = 'tinted' | 'base' | 'critical';
 
 @customElement('nldd-box')
 export class NLDDBox extends LitElement {
 	static override styles = boxStyles;
 
-	@property({ reflect: true, converter: reflectNonDefault<BoxBackground>('tinted') })
-	background: BoxBackground = 'tinted';
+	@property({ reflect: true, converter: reflectNonDefault<BoxVariant>('tinted') })
+	variant: BoxVariant = 'tinted';
 
 	override render() {
 		return boxTemplate(this);

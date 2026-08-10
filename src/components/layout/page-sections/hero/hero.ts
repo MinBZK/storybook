@@ -1,46 +1,45 @@
 /**
  * NLDD Design System Hero Component (Lit + TypeScript)
  *
- * Een paginakop met een mediavlak en een tekstpaneel (de main) dat op zes
- * posities kan staan. Alle vlakken zijn rechthoekig.
+ * A page header with a media area and a text panel (the main) that can stand in
+ * six positions. Every area is rectangular.
  *
- * Bij `main-width="full"` staat het mediavlak als losse strook boven of onder
- * het paneel, niet erachter. Op mobiel stapelt de media altijd boven het
- * volle-breedte paneel. Zonder media vult de main het volledige vlak; met
- * `main-background="base"` krijgt dat vlak een rand zodat het zichtbaar blijft
- * op de base-surface.
+ * With `main-width="full"` the media area sits as its own strip above or below
+ * the panel rather than behind it. On mobile the media always stacks above the
+ * full-width panel. Without media the main fills the whole area; with
+ * `main-background="base"` that area gets a border so it stays visible on the
+ * base surface.
  *
- * Met `main-background` krijgt het paneel een vlakkleur uit de
- * filled-categories; die leveren een pure witte of zwarte contentkleur mee,
- * zodat componenten met `color="inherit"` (title, rich-text) gegarandeerd
- * contrast houden.
+ * `main-background` gives the panel a surface color from the filled categories.
+ * Those carry a pure white or black content color along, so components with
+ * `color="inherit"` (title, rich-text) are guaranteed to keep their contrast.
  *
  * @element nldd-hero
  *
  * @attr {'top-left'|'top-right'|'bottom-left'|'bottom-right'|'left'|'right'} main-position -
- *   Positie van het tekstpaneel (default: 'bottom-left'); 'left'/'right' beslaan de volle hoogte
- * @attr {'1/2'|'2/3'|'3/4'|'full'} main-width - Breedte van het paneel (default: '1/2');
- *   'full' maakt een volle boven- of onderstrook en wordt bij 'left'/'right' genegeerd
- * @attr {string} main-background - Vlakkleur van het paneel: 'base' (de base surface)
- *   of een categoriekleur — 'accent' (default) of een rijkskleur zoals
+ *   Position of the text panel (default: 'bottom-left'); 'left'/'right' span the full height
+ * @attr {'1/2'|'2/3'|'3/4'|'full'} main-width - Width of the panel (default: '1/2');
+ *   'full' makes a full top or bottom strip and is ignored with 'left'/'right'
+ * @attr {string} main-background - Surface color of the panel: 'base' (the base surface)
+ *   or a category color — 'accent' (default) or a Rijkshuisstijl color such as
  *   'lintblauw'|'donkerblauw'|'oranje'
- * @attr {string} media-aspect-ratio - Aspect ratio van het mediavlak (CSS-vorm, '16/9' of '16:9');
- *   default '21/9'. Bepaalt op md/lg de hoogte van de hero, op sm de hoogte van het mediavlak
- * @attr {string} media-src - Bron van het mediavlak (alternatief voor de media-slot);
- *   genegeerd zodra de media-slot gevuld is
- * @attr {string} media-srcset - Responsive source set voor media-src
- * @attr {string} media-sizes - Source sizes-hint voor media-src
- * @attr {string} media-alt - Alt-tekst voor media-src; leeg = decoratief
- * @attr {'inherit'|'base'|'tinted'} background - Surface achter de hero (sectie-API)
- * @attr {'inherit'|'light'|'dark'|'inverted'} scheme - Kleurschema (sectie-API)
- * @attr {string} width - Body max-width; 'full' verwijdert de begrenzing (sectie-API)
- * @attr {string} height - Minimale hoogte van de sectie (sectie-API)
- * @attr {string} padding-block - Blokpadding-override, ook per rand en responsief (sectie-API)
+ * @attr {string} media-aspect-ratio - Aspect ratio of the media area (CSS form, '16/9' or '16:9');
+ *   default '21/9'. On md/lg it sets the height of the hero, on sm the height of the media area
+ * @attr {string} media-src - Source of the media area (an alternative to the media slot);
+ *   ignored as soon as the media slot is filled
+ * @attr {string} media-srcset - Responsive source set for media-src
+ * @attr {string} media-sizes - Source sizes hint for media-src
+ * @attr {string} media-alt - Alt text for media-src; empty means decorative
+ * @attr {'inherit'|'base'|'tinted'} background - Surface behind the hero (section API)
+ * @attr {'inherit'|'light'|'dark'|'inverted'} scheme - Color scheme (section API)
+ * @attr {string} width - Body max-width; 'full' removes the bound (section API)
+ * @attr {string} height - Minimum height of the section (section API)
+ * @attr {string} padding-block - Block padding override, also per edge and responsive (section API)
  *
- * @slot media - Afbeelding of illustratie (img of nldd-image); vult het vlak en wordt geclipt.
- *   Heeft voorrang op de media-src-attributen. Zet `alt=""` wanneer de afbeelding decoratief is;
- *   geef anders een beschrijvende alt-tekst op.
- * @slot - Inhoud van het tekstpaneel (bijv. nldd-title en nldd-rich-text met color="inherit")
+ * @slot media - Image or illustration (img or nldd-image); fills the area and is clipped.
+ *   Takes precedence over the media-src attributes. Set `alt=""` when the image is decorative;
+ *   otherwise give a describing alt text.
+ * @slot - Content of the text panel (nldd-title and nldd-rich-text with color="inherit", for instance)
  */
 import { LitElement, type PropertyValues } from 'lit';
 import { customElement, property, state } from 'lit/decorators.js';
@@ -83,7 +82,7 @@ export class NLDDHero extends PageSectionMixin(LitElement) {
 	width = '';
 
 	/** Hybrid media source: media-src renders an internal <img>, but a slotted
-	 *  media element wins (mirrors nldd-image / nldd-byline). srcset/sizes/alt
+	 *  media element wins (mirrors nldd-image / nldd-identity). srcset/sizes/alt
 	 *  feed that internal img. */
 	@property({ type: String, attribute: 'media-src' })
 	mediaSrc = '';

@@ -165,7 +165,7 @@ A floating menu component using the Popover API. Positioned relative to an ancho
 | Slot | Beschrijving |
 | --- | --- |
 | _(default)_ | nldd-menu-item and nldd-menu-divider elements. |
-| `header` | Free content shown above the items, outside `role="menu"` (so it may hold non-menuitem content such as an avatar + name, buttons or links — reached with Tab, skipped by arrow navigation). The region is unpadded; control spacing with your own content (e.g. an `nldd-container`). Root-only: never rendered in a submenu. Example: an account identity header (nldd-byline). |
+| `header` | Free content shown above the items, outside `role="menu"` (so it may hold non-menuitem content such as an avatar + name, buttons or links — reached with Tab, skipped by arrow navigation). The region is unpadded; control spacing with your own content (e.g. an `nldd-container`). Root-only: never rendered in a submenu. Example: an account identity header (nldd-identity). |
 | `footer` | Free content shown below the items, outside `role="menu"` (same rules as `header`; also unpadded and root-only). Example: a short note or a link. |
 | `empty` | Shown when no items are visible. Defaults to `nldd-inline-dialog` driven by `empty-text` / `empty-supporting-text`. Slot content overrides the default dialog entirely. |
 
@@ -304,39 +304,62 @@ A split button combines a primary action button with a dropdown trigger. The mai
 | `min-width` | `string` | Minimum width as a CSS length (default: '0', so the title shrink-wraps its content and the next element sits against it). |
 | `max-width` | `string` | Maximum width as a CSS length (default: '240px'); the title text truncates with an ellipsis beyond it. The cap is lifted while the title is the sole toolbar element (it then stretches to fill the row). |
 | `size` | `'sm'\|'md'\|'lg'` | Set by nldd-toolbar, not a consumer attribute: mirrors the toolbar's size (default: 'md'), which sets the title group height and, at 'sm', the title and supporting-text fonts. |
+| `href` | `string` | Makes the mark and the name one link, for the place this window belongs to (usually the app's own start). The `action` slot stays outside it: a control inside a link is a control you cannot reach without following the link. |
+| `target` | `string` | Where the link opens; only meaningful with `href`. `_blank` adds rel="noopener noreferrer" and a visually hidden "opens in a new tab" announcement. |
+| `translations` | `object` | Override translation keys (the new-tab announcement); unset keys fall back to Dutch. |
 
 **Slots**
 
 | Slot | Beschrijving |
 | --- | --- |
+| `media` | Optional leading image before the title: a logo, a product mark, a file-type icon. Its height is capped to the title group so it cannot stretch the row; pick the size within that yourself. With no `text` the media stands alone and carries the name, so give it one (an `alt`, or an accessible label). |
 | `action` | Optional trailing control (e.g. an xs nldd-icon-button), shown inline after the title and tuned to sit against it. Empty by default. |
 
 ## Content
 
 ### `<nldd-avatar>`
 
-Toont één persoon of organisatie als een compacte, ronde (persoon) of afgeronde (organisatie) representatie. De inhoud volgt een vaste terugvalketen: een afbeelding wanneer `src` laadt, anders de initialen (uit `initials` of afgeleid uit `name`), en anders een terugval-icoon. `type` bepaalt zowel de vorm als het terugval-icoon: `person` geeft een cirkel met een person-icoon, `organization` een afgeronde vierkant met een building-icoon. De vorm hoort dus bij de betekenis en is niet los instelbaar. Overschrijf het terugval-icoon desgewenst met `icon`. Zonder `size` schaalt de avatar mee met zijn container (net als `nldd-icon`); een vaste maat (dezelfde spacer-uitgelijnde schaal, 16 tot en met 96) is de uitzondering. De initialen en het icoon schalen mee. Brede initialen (WW, MMM) worden automatisch teruggeschaald zodat ze binnen de schijf blijven. Toegankelijkheid: het host-element draagt de betekenis. Met een `name` (en zonder `decorative`) krijgt het `role="img"` met de naam als label. Staat de naam al als tekst ernaast (bijvoorbeeld in een byline), zet dan `decorative` zodat de avatar voor hulpsoftware verborgen blijft. Een dode `src` valt automatisch terug op de initialen of het icoon, nooit op een gebroken-afbeelding-icoon.
+Shows one person or organization as a compact, round (person) or rounded (organization) representation. The content follows a fixed fallback chain: an image when `src` loads, otherwise the initials (from `initials` or derived from `name`), and otherwise a fallback icon. `type` sets both the shape and the fallback icon: `person` gives a circle with a person icon, `organization` a rounded square with a building icon. The shape belongs to the meaning and cannot be set on its own. Override the fallback icon with `icon` where that helps. Without `size` the avatar scales with its container, like `nldd-icon`; a fixed size (the same spacer-aligned scale, 16 through 96) is the exception. The initials and the icon scale along. Wide initials (WW, MMM) are scaled down automatically so they stay inside the shape. Accessibility: the host element carries the meaning. With a `name` (and without `decorative`) it gets `role="img"` with the name as its label. When the name already stands beside it as text, in an identity for instance, set `decorative` so the avatar stays hidden from assistive software. A dead `src` falls back to the initials or the icon, never to a broken-image icon.
 
 **Attributes**
 
 | Attribuut | Type | Beschrijving |
 | --- | --- | --- |
-| `src` | `string` | Afbeeldingsbron; valt bij een laadfout terug op initialen/icoon |
-| `srcset` | `string` | Responsive source set voor de afbeelding (het component zet zelf `sizes`) |
-| `name` | `string` | Naam van de persoon/organisatie; levert de afgeleide initialen en het toegankelijke label |
-| `initials` | `string` | Expliciete initialen, max 3 tekens (overschrijft de afleiding uit `name`; ook voor organisatie-acroniemen) |
-| `type` | `string` | `person` (cirkel, person-icoon) of `organization` (afgerond, building-icoon); standaard `person` |
-| `icon` | `string` | Overschrijft het type-afhankelijke terugval-icoon |
-| `size` | `string` | `full` (standaard) schaalt mee met de container, net als nldd-icon; of een vaste maat in px (spacer-uitgelijnd: 16, 20, 24, 28, 32, 40, 44, 48, 56, 64, 80, 96). Leeg gedraagt zich als `full`. De initialen en het icoon schalen mee |
-| `color` | `string` | `default` (neutrale vulling) of `inherit` (vulling in de content-kleur: de `--context-content-color`-channel, of `currentColor` als die niet gezet is; tekst in de contrastkleur, zodat de avatar een icoon in bijvoorbeeld een knop kan vervangen); standaard `default` |
-| `icon-aligned` | `boolean` | Krimpt de zichtbare schijf naar 5/6 van de host, gecentreerd, zodat de avatar optisch uitlijnt met een icoon op hetzelfde grid (een icoon-glyph heeft ingebouwde marge) |
-| `decorative` | `boolean` | Verbergt de avatar voor hulpsoftware (gebruik wanneer de naam er al als tekst naast staat) |
-| `href` | `string` | Maakt de avatar een link naar deze URL; de schijf zelf wordt de link, dus klikgebied en focusring volgen de vorm |
-| `button` | `boolean` | Maakt de avatar een knop; genegeerd wanneer `href` is gezet |
-| `target` | `string` | Link target voor href (bijv. '_blank'); vult rel aan en meldt "Opent in nieuw tabblad" |
-| `rel` | `string` | Link rel voor href; standaard 'noopener noreferrer' bij target='_blank' |
-| `accessible-label` | `string` | Naam van de link of knop; zonder deze wordt `name` gebruikt |
-| `translations` | `object` | Overschrijf translation keys; niet gezette keys vallen terug op het Nederlands |
+| `type` | `string` | `person` (circle, person icon) or `organization` (rounded, building icon); default `person` |
+| `size` | `string` | `full` (default) scales with the container, like nldd-icon; or a fixed size in px (spacer-aligned: 16, 20, 24, 28, 32, 40, 44, 48, 56, 64, 80, 96). Empty behaves as `full`. The initials and the icon scale along |
+| `color` | `string` | `default` (neutral fill) or `inherit` (fill in the content color: the `--context-content-color` channel, or `currentColor` when that is unset; text in the contrast color, so the avatar can replace an icon in a button for instance); default `default` |
+| `icon-aligned` | `boolean` | Shrinks the visible shape to 5/6 of the host, centered, so the avatar aligns optically with an icon on the same grid (an icon glyph has built-in margin) |
+| `name` | `string` | Name of the person or organization; supplies the derived initials and the accessible label |
+| `initials` | `string` | Explicit initials, at most 3 characters (overrides what is derived from `name`; also for organization acronyms) |
+| `src` | `string` | Image source; falls back to initials or icon when it fails to load |
+| `srcset` | `string` | Responsive source set for the image (the component sets `sizes` itself) |
+| `icon` | `string` | Overrides the type-dependent fallback icon |
+| `accessible-label` | `string` | Name of the link or button; without it `name` is used |
+| `decorative` | `boolean` | Hides the avatar from assistive software (use when the name already stands beside it as text) |
+| `tooltip-timing` | `string` | When the name appears as a tooltip on hover or focus: `default` (after 700ms; the default), `instant`, or `never`. An avatar shows no text, so without a tooltip the name is readable by assistive software only. A `decorative` avatar shows none regardless: there the name already stands beside it as text |
+| `href` | `string` | Makes the avatar a link to this URL; the shape itself becomes the link, so the hit area and the focus ring follow it |
+| `button` | `boolean` | Makes the avatar a button; ignored when `href` is set |
+| `target` | `string` | Link target for href (e.g. '_blank'); completes rel and announces "Opens in a new tab" |
+| `rel` | `string` | Link rel for href; defaults to 'noopener noreferrer' when target='_blank' |
+| `translations` | `object` | Override translation keys; unset keys fall back to Dutch |
+
+### `<nldd-avatar-group>`
+
+Shows several avatars as one group: they overlap, and each one gets a ring in the surface color so they stay apart where they meet. The ring uses the same mechanism as the badge, so on a colored surface you hand the color over through `--context-parent-background-color`. Slot `nldd-avatar` elements, not bare `img`. An avatar already knows what to do with a dead image, when to fall back to initials, and how to show its name as a tooltip; a loose image would have to reproduce all of that and cannot do the last one. Set `decorative` when the names already stand beside the group as text; otherwise give every avatar a name, because the group itself describes nobody. The size applies to the whole group: it is imposed on the avatars, a slotted `img` included. That keeps the row on one line whatever a consumer hands over.
+
+**Attributes**
+
+| Attribuut | Type | Beschrijving |
+| --- | --- | --- |
+| `size` | `string` | Diameter of each avatar in px (spacer-aligned: 16, 20, 24, 28, 32, 40, 44, 48, 56, 64, 80, 96); default 40 |
+| `max` | `number` | Shows at most this many avatars; the rest go behind a "+N" button that opens them as a list of names |
+| `accessible-label` | `string` | Describes the group as a whole (e.g. "Editors"); without a label the group is not a landmark of its own and the avatars speak for themselves |
+
+**Slots**
+
+| Slot | Beschrijving |
+| --- | --- |
+| _(default)_ | One or more `nldd-avatar` elements |
 
 ### `<nldd-blockquote>`
 
@@ -346,36 +369,14 @@ Toont een citaat met optionele bron-attributie.
 
 | Attribuut | Type | Beschrijving |
 | --- | --- | --- |
-| `cite` | `string` | URL van de bron (wordt doorgegeven aan het <blockquote> element) |
+| `cite` | `string` | URL of the source (forwarded to the <blockquote> element) |
 
 **Slots**
 
 | Slot | Beschrijving |
 | --- | --- |
 | _(default)_ | De citaat-paragra(a)f(en) — gebruik bij voorkeur <p>-elementen |
-| `attribution` | Optionele bronvermelding (auteur, titel, etc.). Ook een nldd-byline mag hier; het kastlijntje ("— ") wordt dan weggelaten. |
-
-### `<nldd-byline>`
-
-Een redactionele regel die auteurs of redacteuren toont: optionele avatar(s), een naamregel en ondersteunende tekst (bijvoorbeeld functie of datum). Alle onderdelen zijn optioneel. De naamregel en ondersteunende tekst kunnen als attribuut of als slot worden aangeleverd. Gebruik de slots voor rijkere inhoud, zoals een `<time datetime="…">` voor machine-leesbare datums of een link naar het auteursprofiel. Geslotte inhoud vervangt het bijbehorende attribuut (het attribuut is de fallback van de slot). Bij meerdere redacteuren overlappen de avatars elkaar subtiel; elke avatar krijgt een ring in de surface-kleur (zelfde mechaniek als badge) zodat ze visueel gescheiden blijven. Op een gekleurde ondergrond kan de ringkleur meegegeven worden via `--context-parent-background-color`. Op smalle breedtes (een sm-container, ≤ 640px) met meerdere avatars komt de avatarrij boven de namen te staan, zodat de tekst de volle breedte houdt; met één avatar blijft de byline op één regel. Avatars worden geslot als `<img slot="avatars">`. Zet `alt=""` wanneer de namen al in de tekst staan (decoratief); geef anders een beschrijvende alt-tekst op. Voor één avatar kun je in plaats van slotten ook `avatar-src` (met optioneel `avatar-srcset`) als attribuut meegeven; de afmetingen liggen vast (40px), dus `sizes` zet het component zelf. Meerdere avatars gaan altijd via de slot, en geslotte avatars hebben voorrang op `avatar-src`.
-
-**Attributes**
-
-| Attribuut | Type | Beschrijving |
-| --- | --- | --- |
-| `text` | `string` | Naamregel (bijv. "Jan Jansen en Piet Pietersen"); fallback wanneer de text-slot leeg is |
-| `supporting-text` | `string` | Ondersteunende tekst onder de naamregel (bijv. rol of datum); fallback wanneer de supporting-text-slot leeg is |
-| `avatar-src` | `string` | Bron van één avatar (alternatief voor de avatars-slot); genegeerd zodra de avatars-slot gevuld is |
-| `avatar-srcset` | `string` | Responsive source set voor de avatar-src-afbeelding |
-| `avatar-alt` | `string` | Alt-tekst voor de avatar-src-afbeelding; leeg = decoratief |
-
-**Slots**
-
-| Slot | Beschrijving |
-| --- | --- |
-| `avatars` | Eén of meer img-elementen; gestyled als ronde, overlappende avatars |
-| `text` | Naamregel als rijke inhoud (bijv. een link naar het auteursprofiel) |
-| `supporting-text` | Ondersteunende tekst als rijke inhoud (bijv. een time-element) |
+| `attribution` | Optionele bronvermelding (auteur, titel, etc.). Ook een An nldd-identity is allowed here; the em dash ("— ") is then left out. |
 
 ### `<nldd-code-viewer>`
 
@@ -385,8 +386,7 @@ A read-only block of code/text built on a non-editable CodeMirror 6 view. Visual
 
 | Attribuut | Type | Beschrijving |
 | --- | --- | --- |
-| `variant` | `'simple'\|'box'` | Visual style. `box` (default) is a framed card with rounded corners, padding, fill, and a 1px border ring. `simple` drops the entire frame — use when embedding inside a parent surface. |
-| `background` | `'tinted'\|'base'` | Surface fill when `variant="box"`. |
+| `variant` | `'box-tinted'\|'box-base'\|'simple'` | Visual style. The two `box` values are a framed card with rounded corners, padding, fill, and a 1px border ring, and differ in which surface they fill with; `box-tinted` is the default. `simple` drops the entire frame — use when embedding inside a parent surface. |
 | `language` | `string` | Grammar to highlight with. Empty disables highlighting. |
 | `no-copy` | `boolean` | Hide the copy-to-clipboard button (shown by default). |
 | `wrap` | `boolean` | Wrap long lines instead of horizontal scroll |
@@ -409,6 +409,28 @@ A customizable icon component that renders SVG icons from a predefined library. 
 | `name` | `string` | The name of the icon to display |
 | `size` | `string` | `full` (default) fills the container; `inherit` follows the surrounding text (1em); or a fixed spacer-aligned size in px (16, 20, 24, 28, 32, 40, 44, 48, 56, 64, 80, 96). Empty behaves as `full`. |
 | `color` | `string` | Functional (`primary-content`, `secondary-content`, `accent`, `critical`, `warning`, `success`) or rijkskleur (`lintblauw`, `donkerblauw`, `hemelblauw`, `lichtblauw`, `paars`, `violet`, `robijnrood`, `roze`, `rood`, `oranje`, `donkergeel`, `geel`, `donkerbruin`, `bruin`, `donkergroen`, `groen`, `mosgroen`, `mintgroen`). Empty = inherit `color` from parent. |
+
+### `<nldd-identity>`
+
+An editorial line that shows authors or editors: optional avatar or avatars, a name line and supporting text (a role or a date, for instance). Every part is optional. The name line and the supporting text come in as an attribute or as a slot. Use the slots for richer content, such as a `<time datetime="…">` for a machine-readable date or a link to the author's profile. Slotted content replaces the matching attribute: the attribute is the slot's fallback. One avatar you slot as it is, and identity gives it its size. For more than one, slot an `nldd-avatar-group`: that overlaps them and draws the ring in the surface color. Identity does not build that group itself, because the avatars are the consumer's light DOM and a group can only style what arrives as its own child. Set the avatars to decorative (or an `img` to `alt=""`) when the names already stand in the text. On narrow widths (an sm container, 640px and under) with more than one avatar the row of avatars moves above the names, so the text keeps the full width. With one avatar the identity stays on a single line. For a single avatar you can also hand over `avatar-src` (with an optional `avatar-srcset`) as an attribute instead of slotting; its size is fixed at 40px. Slotted avatars take precedence over `avatar-src`.
+
+**Attributes**
+
+| Attribuut | Type | Beschrijving |
+| --- | --- | --- |
+| `text` | `string` | Name line (e.g. "Jan Jansen and Piet Pietersen"); the fallback when the text slot is empty |
+| `supporting-text` | `string` | Supporting text under the name line (a role or a date, for instance); the fallback when the supporting-text slot is empty |
+| `avatar-src` | `string` | Source of a single avatar (an alternative to the avatars slot); ignored as soon as the avatars slot is filled |
+| `avatar-srcset` | `string` | Responsive source set for the avatar-src image |
+| `avatar-alt` | `string` | Alt text for the avatar-src image; empty means decorative |
+
+**Slots**
+
+| Slot | Beschrijving |
+| --- | --- |
+| `avatars` | One avatar (`nldd-avatar` or `img`), or an `nldd-avatar-group` for more |
+| `text` | Name line as rich content (a link to the author's profile, for instance) |
+| `supporting-text` | Supporting text as rich content (a time element, for instance) |
 
 ### `<nldd-image>`
 
@@ -484,36 +506,36 @@ A container for rich text content that automatically applies responsive typograp
 
 ### `<nldd-tag>`
 
-Een compacte label voor categorieën, statussen of metadata. Niet interactief. Voor interactieve chips (filter, dismiss) gebruik je <nldd-token>.
+A compact property that has been assigned to something: a category, a type, a role, a certification. What it says changes only when someone edits the content. A tag is not interactive. Do not use it for a state the system keeps itself, such as "Active" or "Expired", because that is `nldd-badge`. If the user can remove the thing or click it, it is `nldd-token`.
 
 **Attributes**
 
 | Attribuut | Type | Beschrijving |
 | --- | --- | --- |
-| `color` | `string` | Kleurvariant. Semantisch: 'neutral' \| 'accent' \| 'success' \| 'warning' \| 'critical'. Rijkskleuren: 'lintblauw' \| 'donkerblauw' \| 'hemelblauw' \| 'lichtblauw' \| 'paars' \| 'violet' \| 'robijnrood' \| 'roze' \| 'rood' \| 'oranje' \| 'donkergeel' \| 'geel' \| 'donkerbruin' \| 'bruin' \| 'donkergroen' \| 'groen' \| 'mosgroen' \| 'mintgroen'. (default: 'neutral') |
-| `size` | `string` | Tag grootte: 'sm' \| 'md' (default: 'md') |
-| `text` | `string` | Tag tekst (alternatief voor default slot) |
-| `icon` | `string` | Icoon voor de tekst |
-| `variant` | `string` | Wat zichtbaar is: 'text' \| 'icon' \| 'icon-and-text'. Onbepaald → auto-detect op basis van welke van text/icon aanwezig is. |
-| `accessible-label` | `string` | Toegankelijk label voor screenreaders. Gebruik dit bij icon-only tags zonder zichtbare tekst. |
+| `color` | `string` | Color variant. Semantic: 'neutral' \| 'accent' \| 'success' \| 'warning' \| 'critical'. Rijkshuisstijl colors: 'lintblauw' \| 'donkerblauw' \| 'hemelblauw' \| 'lichtblauw' \| 'paars' \| 'violet' \| 'robijnrood' \| 'roze' \| 'rood' \| 'oranje' \| 'donkergeel' \| 'geel' \| 'donkerbruin' \| 'bruin' \| 'donkergroen' \| 'groen' \| 'mosgroen' \| 'mintgroen'. (default: 'neutral') |
+| `size` | `string` | Tag size: 'sm' \| 'md' (default: 'md') |
+| `text` | `string` | Tag text (alternative to the default slot) |
+| `icon` | `string` | Icon before the text |
+| `variant` | `string` | What is visible: 'text' \| 'icon' \| 'icon-and-text'. Unset → detected from which of text/icon is present. |
+| `accessible-label` | `string` | Accessible label for screen readers. Use this on icon-only tags without visible text. |
 
 **Slots**
 
 | Slot | Beschrijving |
 | --- | --- |
-| _(default)_ | Tag tekst |
-| `icon` | Custom icoon voor de tekst |
+| _(default)_ | Tag text |
+| `icon` | Custom icon before the text |
 
 ### `<nldd-title>`
 
-A title bar with an optional overline, title, and subtitle on the left, and a slot for actions on the right.
+A title bar with an optional overline, title, and subtitle on the left, and a slot at the end of the title line on the right.
 
 **Attributes**
 
 | Attribuut | Type | Beschrijving |
 | --- | --- | --- |
 | `size` | `number` | Visual size of the title: 1–6 (default: 3) |
-| `color` | `string` | 'inherit' laat de titel de tekstkleur van de ondergrond volgen (voor gekleurde vlakken zoals de filled-categories); overline en subtitle krijgen dezelfde kleur op verlaagde dekking. Leeg = standaard contentkleuren. |
+| `color` | `string` | 'inherit' lets the title take the text color of the ondergrond volgen (voor gekleurde vlakken zoals de filled-categories); overline en subtitle krijgen dezelfde kleur op verlaagde dekking. Leeg = standaard contentkleuren. |
 
 **Slots**
 
@@ -522,11 +544,11 @@ A title bar with an optional overline, title, and subtitle on the left, and a sl
 | `overline` | Optional overline above the title |
 | _(default)_ | Title text (use h1–h6 for semantics) |
 | `subtitle` | Optional subtitle below the title |
-| `actions` | Actions to the right of the title (buttons, menus, etc.) |
+| `end` | Whatever belongs at the end of the title line: a button, a menu, a status badge, a version. Named for the position, not for a kind of content, because anything can sit there. |
 
 ### `<nldd-token>`
 
-A token component representing a piece of data — such as a person in an address field or an active filter value. Optionally dismissable or interactive via a contextual menu.
+A self-contained piece of data the user is handling: a person in an address field, an active filter value. Alone among the three it can be operated, so it is optionally dismissable or interactive through a contextual menu. For something you only read, reach for `nldd-tag` (a trait someone assigned) or `nldd-badge` (a state or a count the system keeps).
 
 **Attributes**
 
@@ -555,28 +577,28 @@ A token component representing a piece of data — such as a person in an addres
 
 ### `<nldd-tooltip>`
 
-Wrapper component dat een tooltip toont bij hover of focus op het child element. Gebruikt `display: contents` zodat het de layout van het child niet beïnvloedt.
+A wrapper that shows a tooltip on hover or focus of its child element. It uses `display: contents`, so it does not affect the child's layout.
 
 **Attributes**
 
 | Attribuut | Type | Beschrijving |
 | --- | --- | --- |
-| `text` | `string` | Tooltip tekst |
-| `open` | `boolean` | Forceer de tooltip zichtbaar, ongeacht hover/focus. Gebruik voor programmatische feedback (bv. "Gekopieerd"). Reset naar false om hover-gedrag te herstellen. |
-| `placement` | `string` | Positie: 'top' \| 'bottom' \| 'left' \| 'right' (standaard: 'bottom'; op touch devices automatisch 'top') |
-| `timing` | `string` | Wanneer de tooltip verschijnt op hover: 'instant' — direct, zonder show-delay. 'default' — na de standaard show-delay (700ms). 'never' — tooltip wordt nooit getoond; hover/focus events worden genegeerd, aria-describedby wordt onderdrukt en een al zichtbare tooltip verdwijnt. Hide-delay en touch suppression blijven onder alle waarden van kracht. Focus-trigger is altijd instant. |
+| `text` | `string` | Tooltip text |
+| `open` | `boolean` | Forces the tooltip visible, whatever hover or focus does. Use it for programmatic feedback ("Copied", for instance). Reset it to false to restore the hover behaviour. |
+| `placement` | `string` | Position: 'top' \| 'bottom' \| 'left' \| 'right' (default: 'bottom'; automatically 'top' on touch devices) |
+| `timing` | `string` | When the tooltip appears on hover: 'instant' — right away, without a show delay. 'default' — after the standard show delay (700ms). 'never' — the tooltip is never shown; hover and focus events are ignored, aria-describedby is suppressed, and a tooltip that is already visible disappears. The hide delay and the touch suppression stay in force under every value. A focus trigger is always instant. |
 
 **Slots**
 
 | Slot | Beschrijving |
 | --- | --- |
-| _(default)_ | Het element waarop de tooltip wordt getoond |
+| _(default)_ | The element the tooltip is shown for |
 
 **Events**
 
 | Event | Beschrijving |
 | --- | --- |
-| `nldd-tooltip-dismiss` | Wanneer een gebruiker Escape drukt terwijl `open=true` is. De consumer beheert dan de open-lifecycle (wij kunnen `open` niet eenzijdig wissen), dus dit event geeft de consumer de kans om `open` terug naar `false` te zetten. WCAG 1.4.13: persistent hover-/ focus-overlays moeten dismissible zijn zonder focus te verplaatsen. |
+| `nldd-tooltip-dismiss` | When a user presses Escape while `open=true`. The consumer owns the open lifecycle from there (we cannot clear `open` on our own), so this event is the consumer's chance to set `open` back to `false`. WCAG 1.4.13: a persistent hover or focus overlay has to be dismissible without moving focus. |
 
 ## Forms
 
@@ -684,6 +706,7 @@ Nederlandse Digitale Dienst Form Section Component Plain custom element (extends
 | --- | --- | --- |
 | `checked` | `boolean` | Checked state |
 | `disabled` | `boolean` | Disabled state |
+| `decorative` | `boolean` | Renders the box without the input: no focus, no name/value, nothing announced. For a control that owns the state elsewhere, such as a list row that is itself the checkbox; putting a real input in there would nest a control inside a control. |
 | `indeterminate` | `boolean` | Indeterminate state (takes precedence over checked visually) |
 | `value` | `string` | Value for form submission |
 | `name` | `string` | Name for form submission |
@@ -878,6 +901,33 @@ A visual wrapper around a native `<select>` element. The consumer provides a nat
 | --- | --- |
 | `change` | Bubbles up from the slotted select; detail: { value: string } |
 
+### `<nldd-file-field>`
+
+A file picker that reads as one control: an nldd-button flush in the corner of a tinted surface, the chosen file next to it, and a dismiss button to clear it again. It wraps a hidden native `<input type="file">`, which is what makes the picker open at all — a file dialog only opens from a user gesture on a real input. The surface deliberately does not look like an input field. A border with field semantics promises you can type into it; here you can only press a button, so it uses button and surface colors instead of `--semantics-input-fields-*`. The button keeps its own tinted background and therefore sits a shade darker in the surface, which is what marks it as the thing to press. Several files are summarized, not listed: "3 bestanden" with a single cross that clears all of them. Every pick replaces the whole FileList, and rebuilding it to add or drop one file means going through DataTransfer, which does not deduplicate (even the same File object twice yields two entries) — and a File has no id, so deduplicating would come down to guessing from name, size and last-modified. A list with a cross per file would promise an edit the platform does not support. A page that does want to show the files renders its own list from the `File[]` in the change event.
+
+**Attributes**
+
+| Attribuut | Type | Beschrijving |
+| --- | --- | --- |
+| `size` | `string` | Field size: 'md' (default) \| 'sm'. Set automatically by nldd-form-field. |
+| `accept` | `string` | Comma-separated list of accepted file types, forwarded to the input (e.g. ".pdf,image/*") |
+| `multiple` | `boolean` | Allows choosing more than one file |
+| `accessible-label` | `string` | Accessible label forwarded to the inner input. Set automatically by nldd-form-field. |
+| `input-id` | `string` | Sets the id on the native input. Set automatically by nldd-form-field. |
+| `error-message-ids` | `string` | Ids for aria-describedby on the inner input. Set automatically by nldd-form-field. |
+| `valid` | `boolean` | Marks the field as valid; shows a check icon on the right, like nldd-dropdown |
+| `invalid` | `boolean` | Marks the field as invalid; shows an alert icon on the right, like nldd-dropdown |
+| `disabled` | `boolean` | Disabled state |
+| `name` | `string` | Name for form submission |
+| `required` | `boolean` | Marks the field required (invalid while no file is chosen) |
+| `translations` | `object` | Override translation keys; unset keys fall back to Dutch |
+
+**Events**
+
+| Event | Beschrijving |
+| --- | --- |
+| `change` | When the chosen files change, including a clear; detail: { files: File[] } |
+
 ### `<nldd-multi-line-text-field>`
 
 **Attributes**
@@ -981,6 +1031,7 @@ WAI-ARIA: Wrap radio buttons in a <fieldset>/<legend> or a container with role="
 | --- | --- | --- |
 | `checked` | `boolean` | Checked state |
 | `disabled` | `boolean` | Disabled state |
+| `decorative` | `boolean` | Renders the shape without the input: no focus, no name/value, nothing announced. For a control that owns the state elsewhere, such as a list row that is itself the radio; putting a real input in there would nest a control inside a control. |
 | `required` | `boolean` | Required state |
 | `name` | `string` | Radio group name for form submission; ties the buttons of one group together |
 | `value` | `string` | Value submitted with the form when this radio button is checked |
@@ -1189,7 +1240,7 @@ A switch toggle with an inline label for use in forms.
 
 ### `<nldd-text-editor>`
 
-A hybrid markdown editor built on CodeMirror 6 (via NLDDCodeMirrorElement): the document stays plain markdown text, but formatting is shown inline (bold is bold, headings are larger, links are colored) while the syntax markers stay visible, only dimmed — the iA Writer / Kirby approach. No WYSIWYG tree, so the data stays portable. Default `variant="simple"` is bare (no frame, no focus ring) for use inside a composition (e.g. a message field) that owns its chrome and focus; the caret is a prominent accent. `variant="input-field"` adds a framed surface + focus ring. `font` is `sans` (default, best for prose) or `mono`. Headless: there is no built-in toolbar. A consumer drives formatting via the command methods (toggleBold/toggleItalic/toggleInlineCode/toggleStrikethrough/ toggleHeading/toggleBulletList/toggleQuote/toggleLink/runCommand to toggle, and setHeading/setList for picker-style "set" semantics), reads the active formats with getState(), listens to the nldd-text-editor-state event to render toggle states, and forwards padding clicks with focusFromPoint(). Cmd/Ctrl+B/I/E/K are bound out of the box. Commands keep focus on the editor. An @-mention typeahead (mentionSource) collapses to an atomic token, and a W3C-style annotation overlay (annotations) marks ranges with a dashed underline, light tint and a count badge without touching the underlying text.
+A hybrid markdown editor built on CodeMirror 6 (via NLDDCodeMirrorElement): the document stays plain markdown text, but formatting is shown inline (bold is bold, headings are larger, links are colored) while the syntax markers stay visible, only dimmed — the iA Writer / Kirby approach. No WYSIWYG tree, so the data stays portable. Default `variant="simple"` is bare (no frame, no focus ring) for use inside a composition (e.g. a message field) that owns its chrome and focus; the caret is a prominent accent. `variant="input-field"` adds a framed surface + focus Headless: there is no built-in toolbar. A consumer drives formatting via the command methods (toggleBold/toggleItalic/toggleInlineCode/toggleStrikethrough/ toggleHeading/toggleBulletList/toggleQuote/toggleLink/runCommand to toggle, and setHeading/setList for picker-style "set" semantics), reads the active formats with getState(), listens to the nldd-text-editor-state event to render toggle states, and forwards padding clicks with focusFromPoint(). Cmd/Ctrl+B/I/E/K are bound out of the box. Commands keep focus on the editor. An @-mention typeahead (mentionSource) collapses to an atomic token, and a W3C-style annotation overlay (annotations) marks ranges with a dashed underline, light tint and a count badge without touching the underlying text.
 
 **Attributes**
 
@@ -1206,7 +1257,6 @@ A hybrid markdown editor built on CodeMirror 6 (via NLDDCodeMirrorElement): the 
 | `rows` | `number` | Minimum visible rows (the floor in every resize mode). Default: 6. |
 | `resize` | `string` | 'none' (fixed) \| 'vertical' (drag) \| 'auto' (grow, default) |
 | `variant` | `string` | 'simple' (default, bare) \| 'input-field' (framed surface) |
-| `font` | `string` | 'sans' (default) \| 'mono' |
 | `accessible-label` | `string` | Accessible label forwarded to the editor. Set automatically by nldd-form-field. |
 | `annotatable` | `boolean` | Enable the annotation overlay (off by default). Annotations only render when this is set. |
 | `translations` | `object` | Override the editor's assistive-tech strings (the open-in-new-tab link badge and the annotation count badge). Unset keys fall back to Dutch. |
@@ -1459,13 +1509,13 @@ Use a box to visually group related components in a distinct, contained region. 
 
 | Attribuut | Type | Beschrijving |
 | --- | --- | --- |
-| `background` | `'tinted'\|'base'` | Surface fill. - `tinted` (default): for a box on a plain page bg. - `base`: for a box sitting on an already-tinted parent (the border ring gets +2 palette steps so it still reads against a card-on-card). |
+| `variant` | `'tinted'\|'base'\|'critical'` | Which surface this box draws. - `tinted` (default): a box on a plain page background. - `base`: a box on an already-tinted parent (the border ring gets +2 palette steps so it still reads against a card-on-card). - `critical`: a region whose actions are destructive or irreversible (a "danger zone"), tinted and outlined in critical. It carries no ARIA of its own: unlike nldd-banner this is not an announcement but a permanent part of the page, so the heading and the button labels have to name the danger — colour is a reinforcement, never the only signal (WCAG 1.4.1). The box draws the surface and nothing else: it has no padding of its own, the same way nldd-card has none. Put an nldd-container inside it and let that set the inset, so one component owns spacing wherever it is used. |
 
 **Slots**
 
 | Slot | Beschrijving |
 | --- | --- |
-| _(default)_ | Place components inside the box |
+| _(default)_ | Place components inside the box, usually wrapped in an nldd-container that carries the padding |
 
 ### `<nldd-card>`
 
@@ -1537,6 +1587,9 @@ A simple layout primitive: pick a layout mode, give it a gap, optionally align c
 | `sm-gap` | `string` | Gap at sm breakpoint |
 | `md-gap` | `string` | Gap at md breakpoint |
 | `lg-gap` | `string` | Gap at lg breakpoint |
+| `width` | `string` | 'full' (default, fills the parent) \| 'fit-content' \| a CSS length (e.g. '480px'). A container narrower than its parent stays where its parent puts it; use the parent's horizontal-alignment to move it. |
+| `min-width` | `string` | Minimum width as a CSS length (e.g. '280px') |
+| `max-width` | `string` | Maximum width as a CSS length (e.g. '480px') |
 | `horizontal-alignment` | `string` | 'left' \| 'center' \| 'right' |
 | `vertical-alignment` | `string` | 'top' \| 'center' \| 'bottom' |
 | `padding` | `string` | Padding for all sides |
@@ -1605,32 +1658,32 @@ A section that spans the full width without horizontal padding. Useful for backg
 
 ### `<nldd-hero>`
 
-Een paginakop met een mediavlak en een tekstpaneel (de main) dat op zes posities kan staan. Alle vlakken zijn rechthoekig. Bij `main-width="full"` staat het mediavlak als losse strook boven of onder het paneel, niet erachter. Op mobiel stapelt de media altijd boven het volle-breedte paneel. Zonder media vult de main het volledige vlak; met `main-background="base"` krijgt dat vlak een rand zodat het zichtbaar blijft op de base-surface. Met `main-background` krijgt het paneel een vlakkleur uit de filled-categories; die leveren een pure witte of zwarte contentkleur mee, zodat componenten met `color="inherit"` (title, rich-text) gegarandeerd contrast houden.
+A page header with a media area and a text panel (the main) that can stand in six positions. Every area is rectangular. With `main-width="full"` the media area sits as its own strip above or below the panel rather than behind it. On mobile the media always stacks above the full-width panel. Without media the main fills the whole area; with `main-background="base"` that area gets a border so it stays visible on the base surface. `main-background` gives the panel a surface color from the filled categories. Those carry a pure white or black content color along, so components with `color="inherit"` (title, rich-text) are guaranteed to keep their contrast.
 
 **Attributes**
 
 | Attribuut | Type | Beschrijving |
 | --- | --- | --- |
-| `main-position` | `'top-left'\|'top-right'\|'bottom-left'\|'bottom-right'\|'left'\|'right'` | Positie van het tekstpaneel (default: 'bottom-left'); 'left'/'right' beslaan de volle hoogte |
-| `main-width` | `'1/2'\|'2/3'\|'3/4'\|'full'` | Breedte van het paneel (default: '1/2'); 'full' maakt een volle boven- of onderstrook en wordt bij 'left'/'right' genegeerd |
-| `main-background` | `string` | Vlakkleur van het paneel: 'base' (de base surface) of een categoriekleur — 'accent' (default) of een rijkskleur zoals 'lintblauw'\|'donkerblauw'\|'oranje' |
-| `media-aspect-ratio` | `string` | Aspect ratio van het mediavlak (CSS-vorm, '16/9' of '16:9'); default '21/9'. Bepaalt op md/lg de hoogte van de hero, op sm de hoogte van het mediavlak |
-| `media-src` | `string` | Bron van het mediavlak (alternatief voor de media-slot); genegeerd zodra de media-slot gevuld is |
-| `media-srcset` | `string` | Responsive source set voor media-src |
-| `media-sizes` | `string` | Source sizes-hint voor media-src |
-| `media-alt` | `string` | Alt-tekst voor media-src; leeg = decoratief |
-| `background` | `'inherit'\|'base'\|'tinted'` | Surface achter de hero (sectie-API) |
-| `scheme` | `'inherit'\|'light'\|'dark'\|'inverted'` | Kleurschema (sectie-API) |
-| `width` | `string` | Body max-width; 'full' verwijdert de begrenzing (sectie-API) |
-| `height` | `string` | Minimale hoogte van de sectie (sectie-API) |
-| `padding-block` | `string` | Blokpadding-override, ook per rand en responsief (sectie-API) |
+| `main-position` | `'top-left'\|'top-right'\|'bottom-left'\|'bottom-right'\|'left'\|'right'` | Position of the text panel (default: 'bottom-left'); 'left'/'right' span the full height |
+| `main-width` | `'1/2'\|'2/3'\|'3/4'\|'full'` | Width of the panel (default: '1/2'); 'full' makes a full top or bottom strip and is ignored with 'left'/'right' |
+| `main-background` | `string` | Surface color of the panel: 'base' (the base surface) or a category color — 'accent' (default) or a Rijkshuisstijl color such as 'lintblauw'\|'donkerblauw'\|'oranje' |
+| `media-aspect-ratio` | `string` | Aspect ratio of the media area (CSS form, '16/9' or '16:9'); default '21/9'. On md/lg it sets the height of the hero, on sm the height of the media area |
+| `media-src` | `string` | Source of the media area (an alternative to the media slot); ignored as soon as the media slot is filled |
+| `media-srcset` | `string` | Responsive source set for media-src |
+| `media-sizes` | `string` | Source sizes hint for media-src |
+| `media-alt` | `string` | Alt text for media-src; empty means decorative |
+| `background` | `'inherit'\|'base'\|'tinted'` | Surface behind the hero (section API) |
+| `scheme` | `'inherit'\|'light'\|'dark'\|'inverted'` | Color scheme (section API) |
+| `width` | `string` | Body max-width; 'full' removes the bound (section API) |
+| `height` | `string` | Minimum height of the section (section API) |
+| `padding-block` | `string` | Block padding override, also per edge and responsive (section API) |
 
 **Slots**
 
 | Slot | Beschrijving |
 | --- | --- |
-| `media` | Afbeelding of illustratie (img of nldd-image); vult het vlak en wordt geclipt. Heeft voorrang op de media-src-attributen. Zet `alt=""` wanneer de afbeelding decoratief is; geef anders een beschrijvende alt-tekst op. |
-| _(default)_ | Inhoud van het tekstpaneel (bijv. nldd-title en nldd-rich-text met color="inherit") |
+| `media` | Image or illustration (img or nldd-image); fills the area and is clipped. Takes precedence over the media-src attributes. Set `alt=""` when the image is decorative; otherwise give a describing alt text. |
+| _(default)_ | Content of the text panel (nldd-title and nldd-rich-text with color="inherit", for instance) |
 
 ### `<nldd-navigation-split-view>`
 
@@ -1787,37 +1840,37 @@ A single entry in an `nldd-page-footer-legal-bar`. Renders as a link when `href`
 
 ### `<nldd-popover>`
 
-Een non-modal floating panel dat is verankerd aan een trigger-element. Gebouwd op de native Popover API (popover="auto") met Floating UI voor positionering. De browser regelt open/toggle/light-dismiss; deze component regelt alleen positionering en focus. Aanbevolen gebruik via popovertarget zodat de browser de toggle regelt: <nldd-button id="info-trigger" popovertarget="info-popover">Info</nldd-button> <nldd-popover id="info-popover" anchor="info-trigger" accessible-label="Info"> <nldd-container> <p>Inhoud van de popover.</p> </nldd-container> </nldd-popover> Voor een custom focus-target binnen de popover: zet `autofocus` op het gewenste child-element. Anders krijgt de popover-host zelf focus.
+A non-modal floating panel anchored to a trigger element. Built on the native Popover API (popover="auto") with Floating UI for positioning. The browser handles opening, toggling and light dismiss; this component only handles positioning and focus. The recommended use is through popovertarget, so the browser owns the toggle: <nldd-button id="info-trigger" popovertarget="info-popover">Info</nldd-button> <nldd-popover id="info-popover" anchor="info-trigger" accessible-label="Info"> <nldd-container> <p>Content of the popover.</p> </nldd-container> </nldd-popover> For a custom focus target inside the popover, put `autofocus` on the child you want. Without it the popover host itself takes focus.
 
 **Attributes**
 
 | Attribuut | Type | Beschrijving |
 | --- | --- | --- |
-| `anchor` | `string` | ID van het trigger-element voor positionering |
+| `anchor` | `string` | ID of the trigger element, used for positioning |
 | `placement` | `string` | Floating UI placement (default: 'bottom-start') |
-| `width` | `string` | Expliciete width (default: 320px via --components-popover-default-width) |
-| `top` | `string` | CSS top-positie. Wanneer gezet (alleen of samen met andere edge-attrs of `centered`) wordt Floating UI's anchor-positionering overgeslagen — de popover staat dan vrij op het scherm. De `anchor` blijft wel nodig voor ARIA-koppeling op de trigger. Geen effect op sm (bottom-sheet wint). |
-| `left` | `string` | CSS left-positie. Zie `top` voor semantiek. |
-| `right` | `string` | CSS right-positie. Zie `top` voor semantiek. |
-| `bottom` | `string` | CSS bottom-positie. Zie `top` voor semantiek. |
-| `centered` | `boolean` | Centreert beide assen op de viewport. Per as overrideable: `centered top="0"` = horizontaal gecentreerd, top-aligned. Mirrort CSS `place-items: center` met `align-items`/`justify-items` overrides. |
-| `sm-full-height` | `boolean` | Op sm-viewport (waar de popover als bottom-sheet rendert) de volledige beschikbare hoogte vullen i.p.v. te krimpen naar content. Geen effect op md+ (anchored modus). Opt-in voor content-heavy use cases zoals zoekresultaten of lange detail-views; volgt Apple/Material conventie van content-sized als default. |
-| `accessible-label` | `string` | (verplicht) Toegankelijke naam (aria-label). Valt terug op de i18n default ('Popover') als niet gezet — geef altijd een unieke, beschrijvende naam. |
-| `role` | `string` | ARIA role (default: 'dialog'). Voor informationele content (tooltip-callout, rich-text help-panel) zonder dialog-interactiepatroon: zet `role="region"`. Voor menu-style triggers: `role="menu"` + `aria-haspopup="menu"` op de anchor. De popover overschrijft een expliciet gezette role nooit. |
-| `translations` | `object` | Override translation keys; unset keys vallen terug op de Nederlandse default. |
+| `width` | `string` | Width as a CSS length (default: 320px through --components-popover-default-width). A content-based size (`fit-content`, `min-content`, `max-content`, `auto`) is refused: the popover is an inline-size container so slotted components can adapt to it, and its width cannot then come from that same content. Such a value is ignored, with a warning in DEV. |
+| `top` | `string` | CSS top position. When set (on its own, or together with other edge attributes or `centered`) Floating UI's anchor positioning is skipped and the popover stands free on the screen. The `anchor` is still needed for the ARIA link on the trigger. No effect on sm, where the bottom sheet wins. |
+| `left` | `string` | CSS left position. See `top` for the semantics. |
+| `right` | `string` | CSS right position. See `top` for the semantics. |
+| `bottom` | `string` | CSS bottom position. See `top` for the semantics. |
+| `centered` | `boolean` | Centers both axes on the viewport. Overridable per axis: `centered top="0"` is centered horizontally, aligned to the top. Mirrors CSS `place-items: center` with `align-items`/`justify-items` overrides. |
+| `sm-full-height` | `boolean` | On an sm viewport (where the popover renders as a bottom sheet) fills the whole available height instead of shrinking to its content. No effect on md and up (anchored mode). Opt-in for content-heavy cases such as search results or long detail views; content-sized is the default, following the Apple and Material convention. |
+| `accessible-label` | `string` | (required) Accessible name (aria-label). Falls back to the i18n default ('Popover') when unset — always give a unique, describing name. |
+| `role` | `string` | ARIA role (default: 'dialog'). For informational content (a tooltip callout, a rich-text help panel) without a dialog interaction pattern, set `role="region"`. For menu-style triggers, `role="menu"` plus `aria-haspopup="menu"` on the anchor. The popover never overwrites a role that was set explicitly. |
+| `translations` | `object` | Override translation keys; unset keys fall back to the Dutch default. |
 
 **Slots**
 
 | Slot | Beschrijving |
 | --- | --- |
-| _(default)_ | Vrije content (bijv. nldd-container met form/info) |
+| _(default)_ | Free content (an nldd-container with a form or info, for instance) |
 
 **Events**
 
 | Event | Beschrijving |
 | --- | --- |
-| `open` | Wanneer de popover wordt geopend |
-| `close` | Wanneer de popover wordt gesloten |
+| `open` | When the popover opens |
+| `close` | When the popover closes |
 
 ### `<nldd-sheet>`
 
@@ -1910,6 +1963,8 @@ A basic section with responsive padding and gap based on container size. Contain
 | `background` | `'inherit'\|'base'\|'tinted'` | Surface background ('inherit' default; 'base'/'tinted' paint and cascade a surface). |
 | `scheme` | `'inherit'\|'light'\|'dark'\|'inverted'` | Color scheme ('inherit' default; 'inverted' = opposite of the surrounding page scheme). |
 | `width` | `string` | Body max-width: 'full' removes the constraint so the section spans the full available width. Any CSS length (e.g. '480px') overrides the default max-width. |
+| `horizontal-alignment` | `'left'\|'center'\|'right'` | Where the body's children sit across the body ('left' default). Use it to place something narrower than the body, such as a container with a max-width. |
+| `vertical-alignment` | `'top'\|'center'\|'bottom'` | Where the body's children sit down the section ('top' default). Only visible when the section is taller than its content. |
 | `height` | `string` | Minimum section height (any CSS length, e.g. '400px', '100dvh') (mirrors width, which sets the body max-width). |
 | `padding-block` | `string` | Block (top and bottom) padding override (token 0-96; '0' strips it). |
 | `padding-top` | `string` | Top padding override. |
@@ -2323,7 +2378,7 @@ De bovenste balk van een pagina: een logobalk met het Rijkslogo en een optioneel
 
 ### `<nldd-top-title-bar>`
 
-A toolbar for page and container headings with optional navigation and action buttons. The component has two states: - Default: the back button shows the previous page title as a text button - Compact (class `is-compact`): the back button is an icon button, a divider and the toolbar title are visible When `collapse-anchor` is set, the `is-compact` class is automatically applied as soon as the top of the anchor element reaches this bar's own top edge (the sticky header line). Measuring the bar rather than the page keeps it correct in both nested and root scroll modes; it also re-points at the live scroll target when the page switches mode. Without `collapse-anchor` the bar takes a static state: compact when `text` is set (so the title shows in the title-group), non-compact otherwise (so the `back-text` button stays visible).
+A toolbar for page and container headings with optional navigation and action buttons. The component has two states: - Default: the back button shows the previous page title as a text button - Compact (class `is-compact`): the back button is an icon button, a divider and the toolbar title are visible When `collapse-anchor` is set, the `is-compact` class is automatically applied as soon as the top of the anchor element reaches this bar's own top edge (the sticky header line). Measuring the bar rather than the page keeps it correct in both nested and root scroll modes; it also re-points at the live scroll target when the page switches mode. Without `collapse-anchor` the bar takes a static state: compact when `text` is set (so the title shows in the title-group), non-compact otherwise (so the `back-text` button stays visible). An anchored bar hides its own title from assistive technology. The anchor is the heading the title swaps in for, so both carry the same words: once you scroll past the heading, a screen reader would otherwise find the same title twice. Sighted readers see one at a time, and this makes that true for everyone. Anchor at the heading, then, and not at some other element that happens to sit at the right height: the bar hands its title over to it.
 
 **Attributes**
 
@@ -2376,19 +2431,21 @@ Layout placeholder that fills its parent and centers an indeterminate activity i
 
 ### `<nldd-badge>`
 
-Een notificatie-indicator, vaak voor ongelezen aantallen of statusdots. Kan tekst, een getal en/of een icoon tonen. Zonder inhoud verschijnt automatisch een stip. Gebruik in een hoek van een ander element (bijv. een icon) of standalone.
+Shows the state of something, or how much of it there is: a status, a number of unread messages, a dot saying something is new. What it says is decided by the system, and it changes without anyone touching it. A badge is never interactive. It shows text, a number and/or an icon; with no content it becomes a dot. Put it in a corner of another element (an icon, for instance) or on its own. For a property someone assigns to something, such as a category, a role or a certification, use `nldd-tag`. For standalone data the user works with, such as a chosen person or an active filter, use `nldd-token`.
 
 **Attributes**
 
 | Attribuut | Type | Beschrijving |
 | --- | --- | --- |
-| `color` | `string` | Semantisch ('critical' \| 'accent' \| 'neutral' \| 'warning' \| 'success') of een Rijkskleur ('lintblauw' \| 'hemelblauw' \| 'oranje' \| …). Default: 'critical' |
-| `size` | `string` | Grootte: 'sm' \| 'md' (default: 'md') |
-| `text` | `string` | Tekst (heeft voorrang op number) |
-| `number` | `number` | Numerieke waarde. Wordt beknopt als meer dan max |
-| `max` | `number` | Maximum waarde boven welke number wordt getoond als "{max}+" (default: 99) |
-| `icon` | `string` | Icoon naam. Icon-only wordt als vierkant gerenderd; met text/number komt het icoon links. |
-| `accessible-label` | `string` | Toegankelijk label voor screenreaders. Fallback naar text/number; anders naar i18n default ("Notificatie"). |
+| `size` | `string` | Size: 'sm' \| 'md' (default: 'md') |
+| `color` | `string` | Semantic ('critical' \| 'accent' \| 'neutral' \| 'warning' \| 'success') or a Rijkshuisstijl color ('lintblauw' \| 'hemelblauw' \| 'oranje' \| …). Default: 'critical' |
+| `pulse` | `boolean` | Grows a ring out of the badge and fades it, for something happening right now (a live connection, an outage). Respects `prefers-reduced-motion`. |
+| `text` | `string` | Text (takes precedence over number) |
+| `number` | `number` | Numeric value. Shortened when it is over max |
+| `max` | `number` | Value above which number is shown as "{max}+" (default: 99) |
+| `icon` | `string` | Icon name. Icon-only renders as a square; with text or number the icon goes on the left. |
+| `accessible-label` | `string` | Accessible label for screen readers. Falls back to text/number; otherwise to the i18n default ("Notificatie"). |
+| `decorative` | `boolean` | Hides the badge from assistive software (use when the text beside it says the same, such as a dot next to a status word) |
 
 ### `<nldd-banner>`
 
@@ -2499,6 +2556,33 @@ A modal window with overlay backdrop, based on the native <dialog> element. Inte
 | `open` | When the dialog is opened |
 | `close` | When the dialog is fully closed |
 
+### `<nldd-notification>`
+
+A short message that arrives over the interface and leaves on its own: a save that worked, a request that failed. Not a banner, which stands in the page and stays there — this one floats, stacks, and goes away. It places itself. Write it wherever it belongs in your code and it moves to one shared region: top right from md, full width across the top below that. Nothing about the position is settable, so notifications from anywhere in an application land in the same place and stack in the same order. More than one is a deck, not a list: the front one is readable and the older ones peek out below it, so a burst of messages takes the room of roughly one. The newest is in front. Behind it a notification is a bare surface, cut to the height of the one in front; dismiss the front and it slides up into the place that came free while its message fades in, because it was standing there all along. Under the front notification sits a strip as wide as the deck and as tall as the deck is when it fans out. Pointing at it fans the deck out to fill it, which is the only hint that there is more here than the message you can read; clicking it, or moving focus into the region, lays the whole deck out as a list. Clicking or tabbing away puts it back. The notification itself is not a button: a click on the message you are reading does nothing. Only the front of the deck counts down, and only while the deck is closed: open means someone is reading. The rest wait, so nothing disappears from under the one you are reading. `critical` never leaves on its own: a failure is worth reading, and the count-down would take it away while you were. That also keeps this within WCAG 2.2.1, which allows a time limit when what disappears is not essential. The clock pauses while a pointer moves over the notification and while focus is inside it, and resumes where it left off rather than starting over. A pointer that merely happens to rest where the notification appears does not count: it never moved, so nobody is reading. role follows the variant: `critical` becomes role="alert", the rest role="status". Focus never moves on its own. Escape dismisses the notification that focus is in.
+
+**Attributes**
+
+| Attribuut | Type | Beschrijving |
+| --- | --- | --- |
+| `variant` | `'neutral'\|'accent'\|'success'\|'warning'\|'critical'` | What kind of message this is; sets the icon color and the ARIA role (default: 'neutral') |
+| `icon` | `string` | Icon override. Default per variant: neutral → info-circle-filled, accent → info-circle-filled, success → check-circle-filled, warning → exclamation-triangle-filled, critical → exclamation-circle-filled |
+| `text` | `string` | The message |
+| `supporting-text` | `string` | A second line under the message |
+| `duration` | `number` | Milliseconds before it leaves once it is front of the deck (default: 10000). `0` keeps it until dismissed, which is what `critical` does regardless. |
+| `translations` | `object` | Override translation keys; unset keys fall back to Dutch |
+
+**Slots**
+
+| Slot | Beschrijving |
+| --- | --- |
+| `actions` | At most 2 nldd-button elements, under the text. More than 2 is refused with a DEV warning: a message that needs three choices is a dialog. |
+
+**Events**
+
+| Event | Beschrijving |
+| --- | --- |
+| `dismiss` | Fired when the notification is dismissed, by the button, by Escape, or by its own clock. The consumer removes it. |
+
 ### `<nldd-progress-bar>`
 
 Exports both NLDDProgressBar and NLDDProgressBarSegmentIndicator. A progress bar that supports a single value (loading-style) or multiple segments (multi-stage progress, or distribution like storage usage). The consumer provides raw values; the component computes percentages from `max`. Two modes: - `progress` (default): segments sum toward `max`; remaining space is empty track. ARIA reads "X% voltooid". - `distribution`: segments fill the bar; ARIA enumerates segments. If the sum of segment values exceeds `max`, segments are normalized proportionally to fit and a warning is logged.
@@ -2585,41 +2669,41 @@ Een smalle, paginabrede statusbalk (24px) met een diepe achtergrondkleur per var
 
 ### `<nldd-step-indicator>`
 
-Toont waar je staat in een proces van meerdere stappen: een rij bollen met een cijfer (of een vinkje op wat af is), een label eronder en een lijn die ze verbindt. De ouder houdt de waarheid vast: `current` (1-based) leidt de status van elk kind af — ervoor `past`, daarna `future`. Een kind kan dat overschrijven met een eigen `status`, voor flows die terugspringen of een stap overslaan. Alleen horizontaal. Wil je stappen onder elkaar, bouw dan een `nldd-list` met per rij een `nldd-timeline-track-cell` en een `nldd-title-cell`: verticale stappen dragen meestal meer dan een titel, en dat kan een lijstrij al. Onder de sm-breakpoint (container query, dus gemeten op het component zelf en niet op de viewport) klapt het om naar één regel tekst plus een segmentbalk. De volledige stappenlijst blijft dan in de DOM staan, alleen visueel verborgen, zodat hulpsoftware niet minder te horen krijgt dan een breed scherm laat zien. Toegankelijkheid: een `nav` met een label, daarin een `role="list"` met per stap een `role="listitem"`. De huidige stap krijgt `aria-current="step"` — het enige begrip dat WAI-ARIA hiervoor kent. "Afgerond" en "nog te doen" bestaan niet als ARIA-token en reizen daarom als visueel verborgen tekst mee.
+Shows where you are in a process of several steps: a row of discs with a number (or a check mark on what is done), a label under each and a line connecting them. The parent holds the truth: `current` (1-based) derives the status of every child — `past` before it, `future` after. A child can override that with a `status` of its own, for flows that jump back or skip a step. Horizontal only. For steps under each other, build an `nldd-list` with an `nldd-timeline-track-cell` and an `nldd-title-cell` per row: vertical steps usually carry more than a title, and a list row already does that. Below the sm breakpoint (a container query, so measured on the component itself rather than on the viewport) it folds into one line of text plus a segmented bar. The full list of steps stays in the DOM, only visually hidden, so assistive software hears no less than a wide screen shows. Accessibility: a `nav` with a label, holding a `role="list"` with a `role="listitem"` per step. The current step gets `aria-current="step"`, the only notion WAI-ARIA has for this. "Done" and "still to do" do not exist as ARIA tokens and travel along as visually hidden text instead.
 
 **Attributes**
 
 | Attribuut | Type | Beschrijving |
 | --- | --- | --- |
-| `accessible-label` | `string` | Naam van de nav; standaard de i18n-waarde ("Voortgang") |
-| `translations` | `object` | Overschrijf vertaalsleutels; niet gezette vallen terug op Nederlands |
-| `current` | `number` | 1-based nummer van de huidige stap (standaard 1) |
+| `accessible-label` | `string` | Name of the nav; defaults to the i18n value ("Voortgang") |
+| `translations` | `object` | Override translation keys; unset keys fall back to Dutch |
+| `current` | `number` | 1-based number of the current step (default 1) |
 
 **Slots**
 
 | Slot | Beschrijving |
 | --- | --- |
-| _(default)_ | `nldd-step-indicator-item` kinderen |
+| _(default)_ | `nldd-step-indicator-item` children |
 
 ### `<nldd-step-indicator-item>`
 
-Eén stap in een `nldd-step-indicator`. De ouder bepaalt de status en het volgnummer; die staan hier als interne state en niet als publieke API, op `status` na — dat overschrijft de afleiding uit `current`.
+One step in an `nldd-step-indicator`. The parent decides the status and the number; those live here as internal state rather than as public API, except for `status`, which overrides what `current` derives.
 
 **Attributes**
 
 | Attribuut | Type | Beschrijving |
 | --- | --- | --- |
-| `status` | `string` | `past` \| `current` \| `future`; overschrijft wat de ouder afleidt |
-| `text` | `string` | Label onder de bol |
-| `icon` | `string` | Icoon in de bol in plaats van het cijfer of het vinkje |
-| `href` | `string` | Maakt de stap een link (bijvoorbeeld terug naar een afgeronde stap) |
-| `button` | `boolean` | Maakt de stap een knop, voor flows zonder eigen URL per stap; genegeerd wanneer `href` is gezet |
+| `status` | `string` | `past` \| `current` \| `future`; overrides what the parent derives |
+| `text` | `string` | Label under the disc |
+| `icon` | `string` | Icon in the disc instead of the number or the check mark |
+| `href` | `string` | Makes the step a link (back to a completed step, for instance) |
+| `button` | `boolean` | Makes the step a button, for flows without a URL per step; ignored when `href` is set |
 
 **Slots**
 
 | Slot | Beschrijving |
 | --- | --- |
-| _(default)_ | Label (alternatief voor `text`) |
+| _(default)_ | Label (an alternative to `text`) |
 
 ## lists-and-tables
 
@@ -2637,6 +2721,8 @@ A generic cell for wrapping arbitrary content in a list item. Controls vertical 
 | `min-height` | `string` | Minimum height as CSS length (e.g. '44px', '3rem') |
 | `vertical-alignment` | `'top' \| 'center' \| 'bottom'` | Vertical alignment of slotted content (default: 'center') |
 | `horizontal-alignment` | `'left' \| 'center' \| 'right'` | Horizontal alignment of slotted content (default: 'left') |
+| `hide-below` | `string` | Hides the element below this breakpoint: `sm` \| `md` \| `lg`, or a CSS length. The value names the breakpoint you hide BELOW, so `hide-below="md"` is hidden in sm and visible from md up. `sm` is the open edge and never hides (DEV-warns). |
+| `hide-above` | `string` | Hides the element above this breakpoint: `sm` \| `md` \| `lg`, or a CSS length. `hide-above="sm"` is hidden in md and lg. `lg` is the open edge and never hides (DEV-warns). |
 
 **Slots**
 
@@ -2657,6 +2743,8 @@ A cell component for displaying a title-description pair in lists. `vertical-ali
 | `max-width` | `string` | Maximum width as CSS length (e.g. '300px', '20rem') |
 | `min-height` | `string` | Minimum height as CSS length (e.g. '44px', '3rem') |
 | `vertical-alignment` | `'top' \| 'center' \| 'bottom'` | Vertical alignment (default: 'center') |
+| `hide-below` | `string` | Hides the element below this breakpoint: `sm` \| `md` \| `lg`, or a CSS length. The value names the breakpoint you hide BELOW, so `hide-below="md"` is hidden in sm and visible from md up. `sm` is the open edge and never hides (DEV-warns). |
+| `hide-above` | `string` | Hides the element above this breakpoint: `sm` \| `md` \| `lg`, or a CSS length. `hide-above="sm"` is hidden in md and lg. `lg` is the open edge and never hides (DEV-warns). |
 
 **Slots**
 
@@ -2688,6 +2776,8 @@ A cell component for displaying icons in lists with configurable alignment and s
 | `size` | `string` | Size: '16' \| '20' \| '24' \| '32' (default: '24') |
 | `color` | `'default' \| 'secondary' \| 'accent' \| 'success' \| 'warning' \| 'critical'` | Color variant of the icon (default: 'default') |
 | `icon` | `string` | Icon name (renders `<nldd-icon>`). Takes precedence over the default slot. |
+| `hide-below` | `string` | Hides the element below this breakpoint: `sm` \| `md` \| `lg`, or a CSS length. The value names the breakpoint you hide BELOW, so `hide-below="md"` is hidden in sm and visible from md up. `sm` is the open edge and never hides (DEV-warns). |
+| `hide-above` | `string` | Hides the element above this breakpoint: `sm` \| `md` \| `lg`, or a CSS length. `hide-above="sm"` is hidden in md and lg. `lg` is the open edge and never hides (DEV-warns). |
 
 **Slots**
 
@@ -2703,11 +2793,10 @@ A container for `nldd-list-item` elements. The `type` attribute switches the lis
 
 | Attribuut | Type | Beschrijving |
 | --- | --- | --- |
-| `variant` | `'simple'\|'box'` | Visual style (default 'simple'): `simple` is a plain vertical strip with no chrome, `box` a framed card with rounded corners, fill and inset border ring |
-| `background` | `'tinted'\|'base'` | Surface fill for `variant="box"` (default 'tinted'). Use `base` on an already-tinted parent. No effect with `variant="simple"`. |
+| `variant` | `'simple'\|'box-tinted'\|'box-base'` | Visual style (default 'simple'): `simple` is a plain vertical strip with no chrome, the two `box` values a framed card with rounded corners, fill and inset border ring. `box-tinted` for a list on a plain page, `box-base` for one on an already-tinted parent (the border ring gets +2 palette steps so it still reads against a card-on-card) |
 | `type` | `'list'\|'navigation'\|'listbox'\|'tree'` | A11y role and behavior (default 'list'). See the docblock above. |
 | `reorderable` | `boolean` | Enables drag-to-reorder and pushes `reorderable` onto the items. Only valid with `type="list"`; wins over `arrow-navigation` when both are set. |
-| `no-dividers` | `boolean` | Hides the dividers between list items |
+| `dividers` | `'always'\|'on-touch'\|'never'` | When to draw the lines between the items (default 'always'). `on-touch` draws them only where the primary input is touch, under `(pointer: coarse)`: a pointer has the hover highlight to tell one row from the next and a finger has nothing, so the line earns its place in the one case and is clutter in the other. `never` hides them everywhere |
 | `arrow-navigation` | `boolean` | Roving-tabindex arrow-key navigation: ArrowUp/ArrowDown move focus between the rows, Home/End jump to first/last, and the list becomes a single tab stop. Implied by `type="tree"` (which adds ArrowLeft/ArrowRight, see above). Ignored when `reorderable` is active on a `type="list"`, and in listbox mode. |
 | `height` | `string` | Listbox only: caps the options' scroll region at this CSS length (e.g. '320px'). Unset means no cap. |
 | `empty-text` | `string` | Text for the default empty-state dialog (falls back to the Dutch i18n default). Ignored when `[slot=empty]` is filled. |
@@ -2733,7 +2822,7 @@ A container for `nldd-list-item` elements. The `type` attribute switches the lis
 
 ### `<nldd-list-item>`
 
-A row within an `nldd-list`. Renders as a link when `href` is set, as a checkbox when `checkbox` is set, as a button when `button` is set, or as a plain container otherwise. All cells and action segmented actions share one flat slot, in source order. Two rules govern every row: 1. State fills always paint the WIDENED row geometry — the row box extended by the indicator inline inset on both sides — whether or not the row is interactive. Paint never differs between a selected plain row and a selected interactive row. 2. The widened strip belongs to the ROW, never to a segment. A row with any action (its own `href`/`button`/`checkbox`, or a slotted segment) pulls itself outward (`is-interactive` host class → negative inline margin) and pads the row block back by the same amount, so content stays on the grid. A row-wide action owns that padding itself, making the whole widened box one hit area; slotted segmented actions stay in the grid, so their footprint is position-independent and tree columns line up at any depth. The divider spans the content width by default, with one exception: a row that opens with an `nldd-icon-cell` followed by a text or title cell starts the divider at that text, so the line aligns with the words rather than the icon. Leading spacers are ignored when deciding this. Mark a cell with `divider-start` and/or `divider-end` to place it yourself instead — an explicit marker replaces the derived one entirely, so `divider-start` on the icon cell restores the full-width line. Multiple markers resolve as the union: first `divider-start` through last `divider-end`. A start past the last end is an authoring error — the item DEV-warns and falls back to the full content width. A branch row can disclose its children in two ways: a dedicated `nldd-list-item-action[disclosure]` segment (only the chevron is clickable), or the row itself as the control (`button` + `expanded`, the whole row toggles). In the second case, mark the chevron's `nldd-icon-cell` with `disclosure` and the row turns it with `expanded` — the same affordance, without having to trade a clickable row for a turning chevron. `checkbox` makes the WHOLE row the control: the inner action becomes a `role="checkbox"` button carrying `aria-checked`, it toggles `checked` on activation and fires `change`. Slot a visual `nldd-checkbox` (or any glyph) before the text and mark it `aria-hidden` + non-focusable — the row already conveys role and state, and a second focusable control would double the tab stops. Do NOT nest a real `<input type="checkbox">` in the action: interactive content inside a `<button>` is invalid HTML and AT announces the button, not the checked state. A `<label>` variant is not offered for the same reason it cannot work — label-to-input association walks the DOM tree, and a slotted input is not a descendant of a label in the shadow root. When it renders as a link, `target` and `rel` are forwarded to the inner `<a>` (e.g. `target="_blank" rel="noopener noreferrer"`). With `target="_blank"` the item also injects a visually hidden "opens in new tab" announcement for assistive technology (WCAG 2.1 SC 3.2.2). The item synchronizes its ARIA with its parent `nldd-list`'s `type`: - `list` parent → `role="listitem"` - `navigation` parent → `role="listitem"` + `aria-current="page"` on the inner `<a>` / `<button>` when `selected` - `listbox` parent → `role="option"` + `aria-selected` reflecting `selected`. The list points its search input's `aria-activedescendant` at the active option via `_highlighted` (separate from `selected`).
+A row within an `nldd-list`. Renders as a link when `href` is set, as a checkbox when `checkbox` is set, as a button when `button` is set, or as a plain container otherwise. All cells and action segmented actions share one flat slot, in source order. Two rules govern every row: 1. State fills always paint the WIDENED row geometry — the row box extended by the indicator inline inset on both sides — whether or not the row is interactive. Paint never differs between a selected plain row and a selected interactive row. 2. The widened strip belongs to the ROW, never to a segment. A row with any action (its own `href`/`button`/`checkbox`, or a slotted segment) pulls itself outward (`is-interactive` host class → negative inline margin) and pads the row block back by the same amount, so content stays on the grid. A row-wide action owns that padding itself, making the whole widened box one hit area; slotted segmented actions stay in the grid, so their footprint is position-independent and tree columns line up at any depth. By default the divider starts at the row's first text or title cell, so the line lands on the words rather than on whatever leads up to them — an icon, an avatar, a checkbox, or the spacers a tree indents with. Rows of different shapes then still line their dividers up with each other, and a tree's dividers step inward with its indentation. Text inside an `nldd-list-item-action` counts as the row's content, and the marker is that text cell rather than the action: the action carries its own inline padding, so its edge sits before the words. A row with no text or title cell keeps the full content width. Mark a cell with `divider-start` and/or `divider-end` to place it yourself instead — an explicit marker replaces the derived one entirely, so `divider-start` on the leading cell restores the full-width line. Multiple markers resolve as the union: first `divider-start` through last `divider-end`. A start past the last end is an authoring error — the item DEV-warns and falls back to the full content width. A branch row can disclose its children in two ways: a dedicated `nldd-list-item-action[disclosure]` segment (only the chevron is clickable), or the row itself as the control (`button` + `expanded`, the whole row toggles). In the second case, mark the chevron's `nldd-icon-cell` with `disclosure` and the row turns it with `expanded` — the same affordance, without having to trade a clickable row for a turning chevron. `checkbox` makes the WHOLE row the control: the inner action becomes a `role="checkbox"` button carrying `aria-checked`, it toggles `checked` on activation and fires `change`. Slot a visual `nldd-checkbox` (or any glyph) before the text and mark it `aria-hidden` + non-focusable — the row already conveys role and state, and a second focusable control would double the tab stops. Do NOT nest a real `<input type="checkbox">` in the action: interactive content inside a `<button>` is invalid HTML and AT announces the button, not the checked state. A `<label>` variant is not offered for the same reason it cannot work — label-to-input association walks the DOM tree, and a slotted input is not a descendant of a label in the shadow root. When it renders as a link, `target` and `rel` are forwarded to the inner `<a>` (e.g. `target="_blank" rel="noopener noreferrer"`). With `target="_blank"` the item also injects a visually hidden "opens in new tab" announcement for assistive technology (WCAG 2.1 SC 3.2.2). The item synchronizes its ARIA with its parent `nldd-list`'s `type`: - `list` parent → `role="listitem"` - `navigation` parent → `role="listitem"` + `aria-current="page"` on the inner `<a>` / `<button>` when `selected` - `listbox` parent → `role="option"` + `aria-selected` reflecting `selected`. The list points its search input's `aria-activedescendant` at the active option via `_highlighted` (separate from `selected`).
 
 **Attributes**
 
@@ -2805,6 +2894,8 @@ A cell component that provides fixed horizontal spacing within list items.
 | Attribuut | Type | Beschrijving |
 | --- | --- | --- |
 | `size` | `string` | Spacer size in pixels: '2' \| '4' \| '6' \| '8' \| '10' \| '12' \| '16' \| '20' \| '24' \| '28' \| '32' \| '40' \| '44' \| '48' \| '56' \| '64' \| '80' \| '96' (default: '16') |
+| `hide-below` | `string` | Hides the element below this breakpoint: `sm` \| `md` \| `lg`, or a CSS length. The value names the breakpoint you hide BELOW, so `hide-below="md"` is hidden in sm and visible from md up. `sm` is the open edge and never hides (DEV-warns). |
+| `hide-above` | `string` | Hides the element above this breakpoint: `sm` \| `md` \| `lg`, or a CSS length. `hide-above="sm"` is hidden in md and lg. `lg` is the open edge and never hides (DEV-warns). |
 
 ### `<nldd-table>`
 
@@ -2868,6 +2959,8 @@ A cell component for displaying text content in lists with configurable alignmen
 | `supporting-text` | `string` | Optional supporting text displayed below the main content. Supports **bold**. Falls back to `supporting-text` slot. |
 | `query` | `string` | Query substring to bold-highlight across text fields. Empty = no marking. |
 | `query-mark-mode` | `string` | 'match' \| 'predictive' (default: 'predictive') |
+| `hide-below` | `string` | Hides the element below this breakpoint: `sm` \| `md` \| `lg`, or a CSS length. The value names the breakpoint you hide BELOW, so `hide-below="md"` is hidden in sm and visible from md up. `sm` is the open edge and never hides (DEV-warns). |
+| `hide-above` | `string` | Hides the element above this breakpoint: `sm` \| `md` \| `lg`, or a CSS length. `hide-above="sm"` is hidden in md and lg. `lg` is the open edge and never hides (DEV-warns). |
 
 **Slots**
 
@@ -2879,25 +2972,27 @@ A cell component for displaying text content in lists with configurable alignmen
 
 ### `<nldd-timeline-track-cell>`
 
-A cell component for displaying timeline track indicators in lists. Shows a vertical line with a dot indicating timeline position and state. The row's block padding belongs to the cell itself (via `--context-cell-padding-block`), so the line spans the cell's own box edge to edge and consecutive steps connect without gaps. Standaard is de cel een kaal spoor: een lijn met een stip per rij, voor een tijdlijn van gebeurtenissen. Met `variant="step"` wordt de stip groot genoeg voor een cijfer of icoon en heb je een stappenlijst onder elkaar, de verticale tegenhanger van `nldd-step-indicator`. De maat hoort bij de variant en niet bij de inhoud: elke stip in een lijst is even groot, anders verspringt het spoor.
+A cell component for displaying timeline track indicators in lists. Shows a vertical line with a dot indicating timeline position and state. The row's block padding belongs to the cell itself (via `--context-cell-padding-block`), so the line spans the cell's own box edge to edge and consecutive steps connect without gaps. By default the cell is a bare track: a line with a dot per row, for a timeline of events. With `variant="step"` the dot grows big enough for a number or an icon and you have a list of steps under each other, the vertical counterpart of `nldd-step-indicator`. The size belongs to the variant rather than to the content: every dot in a list is the same size, or the track would jump.
 
 **Attributes**
 
 | Attribuut | Type | Beschrijving |
 | --- | --- | --- |
-| `status` | `'past' \| 'current' \| 'future' \| 'none'` | Status van deze stap (standaard 'past'); dezelfde waarden als `nldd-step-indicator-item`. `none` tekent alleen de lijn, zonder stip |
-| `variant` | `'dot' \| 'step'` | Wat deze rij is: een `dot` (standaard) op een tijdlijn van gebeurtenissen, stip van 16px, of een `step` in een stappenlijst, stip van 24px waar een cijfer of icoon in past |
-| `minor` | `boolean` | Deze rij hoort onder de vorige: een kleinere stip in dezelfde baan, dus het spoor loopt recht door en er springt niets in. De stip blijft leeg (een cijfer of icoon past er niet in en zou de rij tot een eigen stap maken); de hiërarchie zet je verder met de rij zelf, bijvoorbeeld een `nldd-text-cell` in plaats van een `nldd-title-cell` |
-| `direction` | `'down' \| 'up'` | Richting waarin de tijdlijn vooruit loopt: `down` (standaard) zet het verleden boven, `up` eronder. Alleen de huidige stap heeft een half spoor, dus alleen daar heeft dit effect |
-| `position` | `'first' \| 'between' \| 'last'` | Plek in de reeks (standaard 'between'): bepaalt of de lijn boven, onder of aan beide kanten van de stip doorloopt |
-| `text` | `string` | Cijfer of korte tekst in de stip |
-| `icon` | `string` | Icoonnaam in de stip; wint van `text` |
+| `status` | `'past' \| 'current' \| 'future' \| 'none'` | Status of this step (default 'past'); the same values as `nldd-step-indicator-item`. `none` draws the line only, without a dot |
+| `variant` | `'dot' \| 'step'` | What this row is: a `dot` (default) on a timeline of events, a 16px dot, or a `step` in a list of steps, a 24px dot with room for a number or an icon |
+| `minor` | `boolean` | This row belongs under the previous one: a smaller dot in the same lane, so the track runs straight on and nothing indents. The dot stays empty (a number or an icon would not fit, and would make the row a step of its own); carry the hierarchy in the row itself instead, with an `nldd-text-cell` rather than an `nldd-title-cell` for example |
+| `direction` | `'down' \| 'up'` | The direction the timeline moves forward in: `down` (default) puts the past above, `up` below. Only the current step has half a track, so this only has an effect there |
+| `position` | `'first' \| 'between' \| 'last' \| 'only'` | Place in the series (default 'between'): decides whether the line continues above the dot, below it, or on both sides. `only` is the single row in the series and gets a line on neither side: a track of one dot leads nowhere |
+| `text` | `string` | Number or short text in the dot |
+| `icon` | `string` | Icon name in the dot; wins over `text` |
+| `hide-below` | `string` | Hides the element below this breakpoint: `sm` \| `md` \| `lg`, or a CSS length. The value names the breakpoint you hide BELOW, so `hide-below="md"` is hidden in sm and visible from md up. `sm` is the open edge and never hides (DEV-warns). |
+| `hide-above` | `string` | Hides the element above this breakpoint: `sm` \| `md` \| `lg`, or a CSS length. `hide-above="sm"` is hidden in md and lg. `lg` is the open edge and never hides (DEV-warns). |
 
 **Slots**
 
 | Slot | Beschrijving |
 | --- | --- |
-| _(default)_ | Eigen inhoud in de stip (alternatief voor `text` en `icon`) |
+| _(default)_ | Custom content in the dot (an alternative to `text` and `icon`) |
 
 ### `<nldd-title-cell>`
 
@@ -2921,6 +3016,8 @@ A cell component for displaying a title with optional overline and subtitle in l
 | `heading-level` | `number` | Heading level for the title element: 1–6 (default: none, renders a <p>) |
 | `query` | `string` | Query substring to bold-highlight across text fields. Empty = no marking. |
 | `query-mark-mode` | `string` | 'match' \| 'predictive' (default: 'predictive') |
+| `hide-below` | `string` | Hides the element below this breakpoint: `sm` \| `md` \| `lg`, or a CSS length. The value names the breakpoint you hide BELOW, so `hide-below="md"` is hidden in sm and visible from md up. `sm` is the open edge and never hides (DEV-warns). |
+| `hide-above` | `string` | Hides the element above this breakpoint: `sm` \| `md` \| `lg`, or a CSS length. `hide-above="sm"` is hidden in md and lg. `lg` is the open edge and never hides (DEV-warns). |
 
 **Slots**
 
@@ -2932,12 +3029,12 @@ A cell component for displaying a title with optional overline and subtitle in l
 
 ## Iconen
 
-Geldige `name`-waarden voor `<nldd-icon>` (311 iconen + 260 aliassen). Verzin geen naam; kies er een uit deze set.
+Geldige `name`-waarden voor `<nldd-icon>` (315 iconen + 273 aliassen). Verzin geen naam; kies er een uit deze set.
 
 **Iconen**
 
-`accessibility`, `antenna-radio-waves`, `apartment-building`, `apartment-building-2`, `app`, `arrow-2-counter-clockwise`, `arrow-clockwise`, `arrow-down`, `arrow-down-in-bucket`, `arrow-down-left-arrow-up-right`, `arrow-left`, `arrow-left-right`, `arrow-left-to-line`, `arrow-right`, `arrow-right-in-bucket`, `arrow-right-out-bucket`, `arrow-right-to-line`, `arrow-u-turn-backward`, `arrow-u-turn-forward`, `arrow-up`, `arrow-up-arrow-down`, `arrow-up-out-bucket`, `arrow-up-right-arrow-down-left`, `at`, `bell`, `binoculars`, `blocks-9`, `bold`, `book`, `book-badge-play`, `book-badge-plus`, `bookmark`, `bookmark-filled`, `books-vertical`, `brackets-ellipsis`, `brick-wall`, `bug`, `bullet-list`, `business-suitcase`, `calendar-event`, `caret-down`, `caret-down-extra-small`, `caret-down-small`, `caret-left`, `caret-left-extra-small`, `caret-left-small`, `caret-right`, `caret-right-extra-small`, `caret-right-small`, `caret-up`, `caret-up-extra-small`, `caret-up-small`, `centralized-structure`, `certificate`, `chart-x-y-axis-line`, `check-circle-filled`, `check-list`, `check-mark`, `check-mark-circle`, `check-mark-extra-small`, `check-mark-small`, `chevron-double-left`, `chevron-double-left-extra-small`, `chevron-double-left-small`, `chevron-double-right`, `chevron-double-right-extra-small`, `chevron-double-right-small`, `chevron-down`, `chevron-down-extra-small`, `chevron-down-small`, `chevron-left`, `chevron-left-chevron-right`, `chevron-left-extra-small`, `chevron-left-forward-slash-chevron-right`, `chevron-left-forward-slash-chevron-right-rectangle`, `chevron-left-small`, `chevron-left-to-line`, `chevron-left-to-line-extra-small`, `chevron-left-to-line-small`, `chevron-right`, `chevron-right-extra-small`, `chevron-right-small`, `chevron-right-to-line`, `chevron-right-to-line-extra-small`, `chevron-right-to-line-small`, `chevron-up`, `chevron-up-chevron-down`, `chevron-up-extra-small`, `chevron-up-small`, `circle-dashed`, `circle-filled`, `circle-filled-extra-small`, `circle-filled-small`, `circle-grid-2x2-top-left-check-mark`, `clipboard`, `clipboard-pencil`, `clipboard-square`, `clock`, `clock-arrow-clockwise`, `clock-arrow-counter-clockwise`, `cloud`, `cloud-arrow-down`, `cloud-arrow-up`, `cylinder-2-big-small-split`, `cylinder-split`, `cylinder-split-badge-lock`, `cylinder-split-slash`, `desk-with-screen`, `diamond`, `dismiss`, `dismiss-circle`, `dismiss-circle-filled`, `dismiss-extra-small`, `dismiss-small`, `display`, `ellipsis`, `envelope`, `euro-sign`, `exclamation-2-circle`, `exclamation-2-circle-filled`, `exclamation-3-circle`, `exclamation-3-circle-filled`, `exclamation-circle`, `exclamation-circle-filled`, `exclamation-triangle`, `exclamation-triangle-filled`, `eye`, `eye-slash`, `eyeglasses`, `face-frowning`, `face-smiling`, `face-smiling-badge-plus`, `file`, `file-badge-arrow-down`, `file-badge-arrow-up`, `file-badge-minus`, `file-badge-plus`, `file-box`, `file-on-file`, `file-text`, `file-text-badge-check-mark`, `file-text-badge-check-plus`, `file-text-on-file-text`, `file-text-pencil`, `flag`, `flag-filled`, `folder`, `folder-badge-plus`, `folder-on-folder`, `folder-open`, `foundation`, `gear`, `globe`, `globe-rack-server`, `hand`, `hand-thumbs-down`, `hand-thumbs-up`, `handshake`, `heading-1`, `heading-2`, `heading-3`, `heading-4`, `heading-5`, `heading-6`, `heart`, `heart-filled`, `highlighter`, `house`, `house-apartment-building`, `inbox`, `indent-decrease`, `indent-increase`, `info-circle`, `info-circle-filled`, `italic`, `key`, `leaf`, `lifebuoy`, `lightbulb`, `link`, `link-badge-lock`, `list`, `list-arrow-down`, `list-arrow-up`, `list-decreasing-lines`, `lock-closed`, `lock-open`, `magnifier`, `map`, `map-pin`, `map-pin-badge-minus`, `map-pin-badge-plus`, `map-pin-oval`, `markdown-rectangle`, `media-backward`, `media-backward-end`, `media-backward-end-filled`, `media-backward-filled`, `media-backward-frame`, `media-backward-frame-filled`, `media-forward`, `media-forward-end`, `media-forward-end-filled`, `media-forward-filled`, `media-forward-frame`, `media-forward-frame-filled`, `megaphone`, `message-rectangle-text`, `microphone`, `microphone-slash`, `minus`, `minus-extra-small`, `minus-small`, `moon`, `network-structure`, `numbered-list`, `paintbrush`, `paper-plane`, `paperclip`, `paragraph-sign`, `parking-sign-square`, `pause`, `pause-filled`, `pencil`, `pencil-on-square`, `pencil-ruler`, `person`, `person-2`, `person-badge-gear`, `person-badge-minus`, `person-badge-plus`, `person-circle`, `person-circle-badge-plus`, `person-text-rectangle`, `photo`, `photo-camera`, `photo-on-photo-angled`, `photo-slash`, `photo-stack`, `pipeline-corner-2`, `pipeline-machine-gear`, `pipeline-valve`, `play`, `play-filled`, `play-pause`, `play-pause-filled`, `plus`, `plus-small`, `point-bottom-left-to-point-top-right-s-curve-path`, `puzzle-piece`, `puzzle-piece-filled`, `question-mark-circle`, `radar`, `rectangle`, `rectangle-split-2x1`, `rectangle-split-2x3`, `rectangle-split-2x3-badge-arrow-down`, `rectangle-split-3x1`, `rectangle-stack`, `rectangle-stack-chevron-left-forward-slash-chevron-right`, `rectangle-stack-text`, `scissor`, `score-meter`, `seal-check-mark`, `shield`, `shield-check-mark`, `shield-lock`, `ship-wheel`, `shopping-cart`, `sidebar-left`, `sidebar-right`, `signpost`, `slash-circle`, `slider-horizontal-3`, `sparkles`, `speaker`, `speaker-slash`, `speaker-volume-high`, `speaker-volume-low`, `speaker-volume-medium`, `square`, `square-1`, `square-arrow-down`, `square-arrow-right-top`, `square-arrow-up`, `square-grid-2x2`, `square-grid-2x2-pencil`, `square-grid-3x3`, `square-on-square`, `square-plus-on-square`, `star`, `star-filled`, `starburst-filled`, `stop`, `stop-filled`, `strikethrough`, `sun`, `tag`, `tag-on-tag`, `terminal`, `text-format-size`, `text-quote`, `timer`, `trash`, `tree-structure`, `triangle-square-circle`, `underlined`, `video-camera`, `viewfinder`, `viewfinder-line`, `wheat`
+`accessibility`, `antenna-radio-waves`, `apartment-building`, `apartment-building-2`, `app`, `arrow-2-counter-clockwise`, `arrow-clockwise`, `arrow-down`, `arrow-down-in-bucket`, `arrow-down-left-arrow-up-right`, `arrow-left`, `arrow-left-right`, `arrow-left-to-line`, `arrow-right`, `arrow-right-in-bucket`, `arrow-right-out-bucket`, `arrow-right-to-line`, `arrow-u-turn-backward`, `arrow-u-turn-forward`, `arrow-up`, `arrow-up-arrow-down`, `arrow-up-out-bucket`, `arrow-up-right-arrow-down-left`, `at`, `bell`, `binoculars`, `blocks-9`, `bold`, `book`, `book-badge-play`, `book-badge-plus`, `bookmark`, `bookmark-filled`, `books-vertical`, `brackets-ellipsis`, `brackets-ellipsis-badge-plus`, `brick-wall`, `bug`, `bullet-list`, `business-suitcase`, `calendar-event`, `caret-down`, `caret-down-extra-small`, `caret-down-small`, `caret-left`, `caret-left-extra-small`, `caret-left-small`, `caret-right`, `caret-right-extra-small`, `caret-right-small`, `caret-up`, `caret-up-extra-small`, `caret-up-small`, `centralized-structure`, `certificate`, `chart-x-y-axis-line`, `check-circle-filled`, `check-list`, `check-mark`, `check-mark-circle`, `check-mark-extra-small`, `check-mark-small`, `chevron-double-left`, `chevron-double-left-extra-small`, `chevron-double-left-small`, `chevron-double-right`, `chevron-double-right-extra-small`, `chevron-double-right-small`, `chevron-down`, `chevron-down-extra-small`, `chevron-down-small`, `chevron-left`, `chevron-left-chevron-right`, `chevron-left-extra-small`, `chevron-left-forward-slash-chevron-right`, `chevron-left-forward-slash-chevron-right-rectangle`, `chevron-left-small`, `chevron-left-to-line`, `chevron-left-to-line-extra-small`, `chevron-left-to-line-small`, `chevron-right`, `chevron-right-extra-small`, `chevron-right-small`, `chevron-right-to-line`, `chevron-right-to-line-extra-small`, `chevron-right-to-line-small`, `chevron-up`, `chevron-up-chevron-down`, `chevron-up-extra-small`, `chevron-up-small`, `circle-dashed`, `circle-filled`, `circle-filled-extra-small`, `circle-filled-small`, `circle-grid-2x2-top-left-check-mark`, `clipboard`, `clipboard-pencil`, `clipboard-square`, `clock`, `clock-arrow-clockwise`, `clock-arrow-counter-clockwise`, `cloud`, `cloud-arrow-down`, `cloud-arrow-up`, `cylinder-2-big-small-split`, `cylinder-split`, `cylinder-split-badge-lock`, `cylinder-split-slash`, `desk-with-screen`, `diamond`, `dismiss`, `dismiss-circle`, `dismiss-circle-filled`, `dismiss-extra-small`, `dismiss-small`, `display`, `ellipsis`, `envelope`, `euro-sign`, `exclamation-2-circle`, `exclamation-2-circle-filled`, `exclamation-3-circle`, `exclamation-3-circle-filled`, `exclamation-circle`, `exclamation-circle-filled`, `exclamation-triangle`, `exclamation-triangle-filled`, `eye`, `eye-slash`, `eyeglasses`, `face-frowning`, `face-smiling`, `face-smiling-badge-plus`, `file`, `file-badge-arrow-down`, `file-badge-arrow-up`, `file-badge-minus`, `file-badge-plus`, `file-box`, `file-on-file`, `file-text`, `file-text-badge-check-mark`, `file-text-badge-check-plus`, `file-text-on-file-text`, `file-text-pencil`, `flag`, `flag-filled`, `folder`, `folder-badge-plus`, `folder-on-folder`, `folder-open`, `foundation`, `gear`, `globe`, `globe-rack-server`, `hand`, `hand-thumbs-down`, `hand-thumbs-up`, `handshake`, `heading-1`, `heading-2`, `heading-3`, `heading-4`, `heading-5`, `heading-6`, `heart`, `heart-filled`, `highlighter`, `house`, `house-apartment-building`, `inbox`, `indent-decrease`, `indent-increase`, `info-circle`, `info-circle-filled`, `italic`, `key`, `leaf`, `lifebuoy`, `lightbulb`, `link`, `link-badge-lock`, `list`, `list-arrow-down`, `list-arrow-up`, `list-decreasing-lines`, `lock-closed`, `lock-open`, `magnifier`, `map`, `map-pin`, `map-pin-badge-minus`, `map-pin-badge-plus`, `map-pin-oval`, `markdown-rectangle`, `media-backward`, `media-backward-end`, `media-backward-end-filled`, `media-backward-filled`, `media-backward-frame`, `media-backward-frame-filled`, `media-forward`, `media-forward-end`, `media-forward-end-filled`, `media-forward-filled`, `media-forward-frame`, `media-forward-frame-filled`, `media-pause`, `media-pause-filled`, `media-play`, `media-play-filled`, `media-play-pause`, `media-play-pause-filled`, `media-stop`, `media-stop-filled`, `megaphone`, `message-rectangle-text`, `microphone`, `microphone-slash`, `minus`, `minus-extra-small`, `minus-small`, `moon`, `network-structure`, `numbered-list`, `paintbrush`, `paper-plane`, `paperclip`, `paragraph-sign`, `parking-sign-square`, `pencil`, `pencil-on-square`, `pencil-ruler`, `person`, `person-2`, `person-badge-gear`, `person-badge-minus`, `person-badge-plus`, `person-circle`, `person-circle-badge-plus`, `person-text-rectangle`, `photo`, `photo-camera`, `photo-on-photo-angled`, `photo-slash`, `photo-stack`, `pipeline-corner-2`, `pipeline-machine-gear`, `pipeline-valve`, `plus`, `plus-small`, `point-bottom-left-to-point-top-right-s-curve-path`, `puzzle-piece`, `puzzle-piece-badge-plus`, `puzzle-piece-filled`, `question-mark-circle`, `radar`, `rectangle`, `rectangle-split-2x1`, `rectangle-split-2x3`, `rectangle-split-2x3-badge-arrow-down`, `rectangle-split-3x1`, `rectangle-stack`, `rectangle-stack-chevron-left-forward-slash-chevron-right`, `rectangle-stack-text`, `scissor`, `score-meter`, `seal-check-mark`, `seal-star`, `shield`, `shield-check-mark`, `shield-lock`, `ship-wheel`, `ship-wheel-badge-plus`, `shopping-cart`, `sidebar-left`, `sidebar-right`, `signpost`, `slash-circle`, `slider-horizontal-3`, `sparkles`, `speaker`, `speaker-slash`, `speaker-volume-high`, `speaker-volume-low`, `speaker-volume-medium`, `square`, `square-1`, `square-arrow-down`, `square-arrow-right-top`, `square-arrow-up`, `square-grid-2x2`, `square-grid-2x2-pencil`, `square-grid-3x3`, `square-on-square`, `square-plus-on-square`, `star`, `star-filled`, `starburst-filled`, `strikethrough`, `sun`, `tag`, `tag-on-tag`, `terminal`, `text-format-size`, `text-quote`, `timer`, `trash`, `tree-structure`, `triangle-square-circle`, `underlined`, `video-camera`, `viewfinder`, `viewfinder-line`, `wheat`
 
 **Aliassen** (verwijzen naar een icoon hierboven)
 
-`a11y`, `account`, `add`, `add-emoji`, `add-location`, `add-small`, `add-text-document`, `add-user`, `ai`, `alarm`, `alert`, `analytics`, `annotation`, `announcement`, `appearance`, `apps`, `archive`, `attach`, `attachment`, `back`, `backlog`, `backup-in-cloud`, `blocked`, `blockquote`, `bookmarked`, `books`, `broadcast`, `broken-image`, `building`, `building-blocks`, `buildings`, `calendar`, `camera`, `cart`, `categories`, `centralized-network`, `certified`, `chart-line`, `checked`, `checked-extra-small`, `checked-small`, `checklist`, `cli`, `close`, `close-circle`, `close-circle-filled`, `close-extra-small`, `close-small`, `code`, `code-block`, `coins`, `collapse`, `columns-2`, `columns-3`, `comment`, `company`, `console`, `contact-card`, `copy`, `countdown`, `current-location`, `cut`, `dark-mode`, `database`, `database-disabled`, `database-unavailable`, `day`, `delete`, `deploy`, `design`, `diploma`, `directions`, `directories`, `directory`, `discover`, `dislike`, `dns`, `document`, `documents`, `download`, `download-document`, `download-from-cloud`, `download-table`, `duplicate`, `edit`, `edit-text-document`, `email`, `embed`, `error`, `event`, `exit`, `exit-full-screen`, `expand`, `explore`, `export`, `extension`, `external-link`, `favorite`, `filter`, `fit-to-view`, `flagged`, `forbidden`, `form`, `forward`, `frowning`, `full-screen`, `future`, `gallery`, `gem`, `global-settings`, `graph`, `group`, `guide`, `happy`, `harvest`, `help`, `hidden`, `hide`, `hierarchy`, `high-priority`, `high-priority-filled`, `high-volume`, `history`, `home`, `hyperlink`, `icon-placeholder`, `idea`, `image`, `image-stack`, `images`, `import`, `indent`, `info`, `information`, `invalid`, `k8s`, `kubernetes`, `label`, `labels`, `languages`, `library`, `license`, `light-mode`, `like`, `local-settings`, `location`, `lock`, `locked`, `login`, `logout`, `love`, `low-priority`, `low-priority-filled`, `low-volume`, `magic`, `mail`, `markdown`, `medium-priority`, `medium-priority-filled`, `medium-volume`, `menu`, `microphone-off`, `microphone-on`, `module`, `monitoring`, `more`, `mute`, `network`, `new`, `new-account`, `new-book`, `new-document`, `new-folder`, `new-text-document`, `night`, `notification`, `notifications`, `now`, `office`, `offices`, `open-new-page`, `outdent`, `paragraph`, `parking`, `paste`, `path`, `pipeline`, `pipeline-runner`, `plugin`, `primary`, `privacy`, `profile`, `promotion`, `protection`, `quality`, `question`, `rated`, `rating`, `read`, `reading-list`, `redo`, `refresh`, `reload`, `remove`, `remove-document`, `remove-extra-small`, `remove-location`, `remove-small`, `remove-user`, `sad`, `save`, `scan`, `search`, `secure`, `secure-link`, `secure-url`, `security`, `send`, `settings`, `share`, `show`, `sitemap`, `smiling`, `sort`, `sort-ascending`, `sort-descending`, `stack`, `stack-code`, `success`, `support`, `sustainability`, `sync`, `table`, `table-cells`, `tags`, `tasks`, `team`, `text-document`, `text-documents`, `time`, `todos`, `traject`, `undo`, `unlocked`, `unsecure`, `upload`, `upload-document`, `upload-to-cloud`, `url`, `user`, `user-admin`, `user-settings`, `users`, `valid`, `verified`, `visible`, `warning`, `work`, `workplace`, `write`
+`a11y`, `account`, `add`, `add-emoji`, `add-k8s`, `add-kubernetes`, `add-location`, `add-namespace`, `add-plugin`, `add-small`, `add-text-document`, `add-user`, `ai`, `alarm`, `alert`, `analytics`, `annotation`, `announcement`, `appearance`, `apps`, `archive`, `attach`, `attachment`, `back`, `backlog`, `backup-in-cloud`, `blocked`, `blockquote`, `bookmarked`, `books`, `brand`, `broadcast`, `broken-image`, `building`, `building-blocks`, `buildings`, `calendar`, `camera`, `cart`, `categories`, `centralized-network`, `certified`, `chart-line`, `checked`, `checked-extra-small`, `checked-small`, `checklist`, `cli`, `close`, `close-circle`, `close-circle-filled`, `close-extra-small`, `close-small`, `code`, `code-block`, `coins`, `collapse`, `columns-2`, `columns-3`, `comment`, `company`, `console`, `contact-card`, `copy`, `countdown`, `current-location`, `cut`, `dark-mode`, `database`, `database-disabled`, `database-unavailable`, `day`, `delete`, `deploy`, `design`, `diploma`, `directions`, `directories`, `directory`, `discover`, `dislike`, `dns`, `document`, `documents`, `download`, `download-document`, `download-from-cloud`, `download-table`, `duplicate`, `edit`, `edit-text-document`, `email`, `embed`, `error`, `event`, `exit`, `exit-full-screen`, `expand`, `explore`, `export`, `extension`, `external-link`, `favorite`, `filter`, `fit-to-view`, `flagged`, `forbidden`, `form`, `forward`, `frowning`, `full-screen`, `future`, `gallery`, `gem`, `global-settings`, `graph`, `group`, `guide`, `happy`, `harvest`, `help`, `hidden`, `hide`, `hierarchy`, `high-priority`, `high-priority-filled`, `high-volume`, `history`, `home`, `hyperlink`, `icon-placeholder`, `idea`, `image`, `image-stack`, `images`, `import`, `indent`, `info`, `information`, `invalid`, `k8s`, `kubernetes`, `label`, `labels`, `languages`, `library`, `license`, `light-mode`, `like`, `local-settings`, `location`, `lock`, `locked`, `login`, `logout`, `love`, `low-priority`, `low-priority-filled`, `low-volume`, `magic`, `mail`, `markdown`, `medium-priority`, `medium-priority-filled`, `medium-volume`, `menu`, `microphone-off`, `microphone-on`, `module`, `monitoring`, `more`, `mute`, `network`, `new`, `new-account`, `new-book`, `new-document`, `new-folder`, `new-text-document`, `night`, `notification`, `notifications`, `now`, `office`, `offices`, `open-new-page`, `outdent`, `paragraph`, `parking`, `paste`, `path`, `pause`, `pause-filled`, `pipeline`, `pipeline-runner`, `play`, `play-filled`, `play-pause`, `play-pause-filled`, `plugin`, `primary`, `privacy`, `profile`, `promotion`, `protection`, `quality`, `question`, `rated`, `rating`, `read`, `reading-list`, `redo`, `refresh`, `reload`, `remove`, `remove-document`, `remove-extra-small`, `remove-location`, `remove-small`, `remove-user`, `sad`, `save`, `scan`, `search`, `secure`, `secure-link`, `secure-url`, `security`, `send`, `settings`, `share`, `show`, `sitemap`, `smiling`, `sort`, `sort-ascending`, `sort-descending`, `stack`, `stack-code`, `stop`, `stop-filled`, `success`, `support`, `sustainability`, `sync`, `table`, `table-cells`, `tags`, `tasks`, `team`, `text-document`, `text-documents`, `time`, `todos`, `traject`, `undo`, `unlocked`, `unsecure`, `upload`, `upload-document`, `upload-to-cloud`, `url`, `user`, `user-admin`, `user-settings`, `users`, `valid`, `verified`, `visible`, `warning`, `work`, `workplace`, `write`

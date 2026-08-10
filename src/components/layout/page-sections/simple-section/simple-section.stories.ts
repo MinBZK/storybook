@@ -1,6 +1,8 @@
 import { html } from 'lit';
 import './simple-section.js';
 import '../../../content/rich-text/rich-text.js';
+import '../../container/container.js';
+import '../../box/box.js';
 import { pageSectionArgTypes, pageSectionArgs, pageSectionAttrs } from '../page-section-controls.js';
 
 /**
@@ -79,6 +81,35 @@ export const MinimaleHoogte = {
 			<nldd-rich-text>
 				<p>Deze sectie is minimaal 320px hoog, ook met weinig inhoud.</p>
 			</nldd-rich-text>
+		</nldd-simple-section>
+	`,
+	parameters: { controls: { disable: true } },
+};
+
+/**
+ * `horizontal-alignment` en `vertical-alignment` plaatsen de inhoud in de body.
+ * Ze lijnen de kinderen van de sectie uit, niet de sectie zelf, dus zo zet je
+ * iets dat smaller is dan de body in het midden: een paneel dat zijn eigen
+ * breedte draagt (hier een container met `max-width`) en een sectie die zegt
+ * waar het staat.
+ */
+export const Uitlijning = {
+	render: () => html`
+		<nldd-simple-section
+			background="tinted"
+			height="320px"
+			horizontal-alignment="center"
+			vertical-alignment="center"
+		>
+			<nldd-container max-width="320px">
+				<nldd-box>
+					<nldd-container padding="16">
+						<nldd-rich-text spacing="flat">
+							<p>Een paneel midden in de sectie.</p>
+						</nldd-rich-text>
+					</nldd-container>
+				</nldd-box>
+			</nldd-container>
 		</nldd-simple-section>
 	`,
 	parameters: { controls: { disable: true } },

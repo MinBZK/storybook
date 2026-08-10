@@ -1,8 +1,8 @@
 import type { ComplexAttributeConverter } from 'lit';
 
 /**
- * A Lit attribute converter for a reflected enum property whose DEFAULT value
- * should not appear in the DOM.
+ * A Lit attribute converter for a reflected property whose DEFAULT value should
+ * not appear in the DOM. Works for an enum (a string union) and for a number.
  *
  * It reflects any non-default value to the attribute (so `:host([prop="x"])`
  * styling and framework property binding keep working), but maps the default to
@@ -27,9 +27,12 @@ import type { ComplexAttributeConverter } from 'lit';
  * size: Size = 'md';
  * ```
  */
-export function reflectNonDefault<T extends string>(defaultValue: T): ComplexAttributeConverter<T> {
+export function reflectNonDefault<T extends string | number>(defaultValue: T): ComplexAttributeConverter<T> {
+	const parse = typeof defaultValue === 'number'
+		? (value: string): T => Number(value) as T
+		: (value: string): T => value as T;
 	return {
-		fromAttribute: (value: string | null): T => (value === null ? defaultValue : (value as T)),
-		toAttribute: (value: T): string | null => (value === defaultValue ? null : value),
+		fromAttribute: (value: string | null): T => (value === null ? defaultValue : parse(value)),
+		toAttribute: (value: T): string | null => (value === defaultValue ? null : String(value)),
 	};
 }

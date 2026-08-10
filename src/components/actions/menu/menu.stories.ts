@@ -1,7 +1,7 @@
 import { html, nothing } from 'lit';
 import './menu.js';
 import '../../actions/button/button.js';
-import '../../content/byline/byline.js';
+import '../../content/identity/identity.js';
 import '../../content/rich-text/rich-text.js';
 import '../../layout/container/container.js';
 
@@ -353,7 +353,7 @@ export const MixedFlatAndGroups = {
 
 /**
  * De `header`- en `footer`-slots plaatsen vrije content buiten `role="menu"`:
- * hier een account-header (een `nldd-byline` in een `nldd-container` voor de
+ * hier een account-header (een `nldd-identity` in een `nldd-container` voor de
  * padding) en een kort `nldd-rich-text`-tekstje onderin. Een link in de footer
  * is bereikbaar met Tab (niet met de pijltjes, die alleen de menu-items
  * aflopen). "Log uit" is gewoon een menu-item. Header en footer verschijnen
@@ -365,12 +365,12 @@ export const MetHeaderEnFooter = {
 		<nldd-button id="button-account" expandable text="Account"></nldd-button>
 		<nldd-menu id="menu-account" anchor="button-account">
 			<nldd-container slot="header" padding="16">
-				<nldd-byline
+				<nldd-identity
 					text="Anouk de Vries"
 					supporting-text="anouk@rijksoverheid.nl"
 					avatar-src=${AVATAR}
 					avatar-alt=""
-				></nldd-byline>
+				></nldd-identity>
 			</nldd-container>
 
 			<nldd-menu-item text="Profiel" icon="person"></nldd-menu-item>

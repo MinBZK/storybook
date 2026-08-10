@@ -18,6 +18,13 @@
  * is set (so the title shows in the title-group), non-compact otherwise (so
  * the `back-text` button stays visible).
  *
+ * An anchored bar hides its own title from assistive technology. The anchor is
+ * the heading the title swaps in for, so both carry the same words: once you
+ * scroll past the heading, a screen reader would otherwise find the same title
+ * twice. Sighted readers see one at a time, and this makes that true for
+ * everyone. Anchor at the heading, then, and not at some other element that
+ * happens to sit at the right height: the bar hands its title over to it.
+ *
  * @element nldd-top-title-bar
  *
  * @attr {string} text - Title of the bar, rendered as the h1 in the title group.
@@ -66,11 +73,18 @@ export class NLDDTopTitleBar extends LitElement {
 	_hasToolbarItems = false;
 
 	private _pageElement: Element | null = null;
+
+	/** Reactive: the title group hides from assistive software once the anchor is
+	 *  really there, not the moment someone types an id. A typo would otherwise
+	 *  leave the page without an accessible title at all, and nothing on screen
+	 *  would say so. */
+	@state()
 	private _anchorElement: Element | null = null;
 	private _activeScrollTarget: EventTarget | null = null;
 	private _scrollTargetStyleObserver: MutationObserver | null = null;
 	private _pageModeObserver: MutationObserver | null = null;
 	private _anchorLayoutObserver: ResizeObserver | null = null;
+	private _anchorAppearObserver: MutationObserver | null = null;
 	private _boundOnScroll = this._onScroll.bind(this);
 
 	override connectedCallback(): void {
@@ -123,6 +137,11 @@ export class NLDDTopTitleBar extends LitElement {
 		}
 	}
 
+	/** @internal */
+	get _hasAnchor(): boolean {
+		return this._anchorElement !== null;
+	}
+
 	private _connectAnchor(): void {
 		if (!this.collapseAnchor) return;
 
@@ -130,7 +149,16 @@ export class NLDDTopTitleBar extends LitElement {
 		this._anchorElement = (root as Document).getElementById?.(this.collapseAnchor)
 			?? root.querySelector(`#${this.collapseAnchor}`);
 
-		if (!this._anchorElement) return;
+		if (!this._anchorElement) {
+			if (import.meta.env?.DEV) {
+				console.warn(
+					`[nldd-top-title-bar] collapse-anchor="${this.collapseAnchor}" matches nothing yet. `
+					+ 'If it never renders, the bar keeps its own title and reads it out twice.',
+				);
+			}
+			this._waitForAnchor(root);
+			return;
+		}
 
 		this._wireScrollTarget();
 
@@ -155,6 +183,22 @@ export class NLDDTopTitleBar extends LitElement {
 
 		// Initial check after layout is complete
 		this.updateComplete.then(() => this._onScroll());
+	}
+
+	// A page that renders its title only once its data has loaded has no anchor
+	// when this bar connects. Without this the bar gives up for good: it never
+	// collapses, so a `text` that was meant to appear on scroll never does.
+	// Watch for the id showing up, then connect as usual.
+	private _waitForAnchor(root: Document | ShadowRoot): void {
+		this._anchorAppearObserver = new MutationObserver(() => {
+			const found = (root as Document).getElementById?.(this.collapseAnchor)
+				?? root.querySelector(`#${this.collapseAnchor}`);
+			if (!found) return;
+			this._anchorAppearObserver?.disconnect();
+			this._anchorAppearObserver = null;
+			this._connectAnchor();
+		});
+		this._anchorAppearObserver.observe(root, { childList: true, subtree: true });
 	}
 
 	// (Re)attach the scroll + style listeners to the page's current scroll
@@ -199,6 +243,8 @@ export class NLDDTopTitleBar extends LitElement {
 		this._pageModeObserver = null;
 		this._anchorLayoutObserver?.disconnect();
 		this._anchorLayoutObserver = null;
+		this._anchorAppearObserver?.disconnect();
+		this._anchorAppearObserver = null;
 	}
 
 	private _onScroll(): void {

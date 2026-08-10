@@ -1735,7 +1735,7 @@
               "name": ""
             },
             {
-              "description": "Free content shown above the items, outside `role=\"menu\"` (so it may hold non-menuitem content such as an avatar + name, buttons or links — reached with Tab, skipped by arrow navigation). The region is unpadded; control spacing with your own content (e.g. an `nldd-container`). Root-only: never rendered in a submenu. Example: an account identity header (nldd-byline).",
+              "description": "Free content shown above the items, outside `role=\"menu\"` (so it may hold non-menuitem content such as an avatar + name, buttons or links — reached with Tab, skipped by arrow navigation). The region is unpadded; control spacing with your own content (e.g. an `nldd-container`). Root-only: never rendered in a submenu. Example: an account identity header (nldd-identity).",
               "name": "header"
             },
             {
@@ -2414,6 +2414,26 @@
           "members": [
             {
               "kind": "field",
+              "name": "href",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "attribute": "href",
+              "reflects": true
+            },
+            {
+              "kind": "field",
+              "name": "target",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "attribute": "target",
+              "reflects": true
+            },
+            {
+              "kind": "field",
               "name": "text",
               "type": {
                 "text": "string"
@@ -2471,9 +2491,36 @@
               "default": "''",
               "attribute": "max-width",
               "reflects": true
+            },
+            {
+              "kind": "field",
+              "name": "translations",
+              "type": {
+                "text": "Partial<NLDDToolbarTranslations>"
+              },
+              "default": "{}",
+              "attribute": "translations"
             }
           ],
           "attributes": [
+            {
+              "name": "href",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "fieldName": "href",
+              "description": "Makes the mark and the name one link, for the place this window belongs to (usually the app's own start). The `action` slot stays outside it: a control inside a link is a control you cannot reach without following the link."
+            },
+            {
+              "name": "target",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "fieldName": "target",
+              "description": "Where the link opens; only meaningful with `href`. `_blank` adds rel=\"noopener noreferrer\" and a visually hidden \"opens in a new tab\" announcement."
+            },
             {
               "name": "text",
               "type": {
@@ -2527,6 +2574,15 @@
               "default": "''",
               "fieldName": "maxWidth",
               "description": "Maximum width as a CSS length (default: '240px'); the title text truncates with an ellipsis beyond it. The cap is lifted while the title is the sole toolbar element (it then stretches to fill the row)."
+            },
+            {
+              "name": "translations",
+              "type": {
+                "text": "Partial<NLDDToolbarTranslations>"
+              },
+              "default": "{}",
+              "fieldName": "translations",
+              "description": "Override translation keys (the new-tab announcement); unset keys fall back to Dutch."
             }
           ],
           "superclass": {
@@ -2536,6 +2592,10 @@
           "tagName": "nldd-toolbar-title",
           "customElement": true,
           "slots": [
+            {
+              "name": "media",
+              "description": "Optional leading image before the title: a logo, a product mark, a file-type icon. Its height is capped to the title group so it cannot stretch the row; pick the size within that yourself. With no `text` the media stands alone and carries the name, so give it one (an `alt`, or an accessible label)."
+            },
             {
               "name": "action",
               "description": "Optional trailing control (e.g. an xs nldd-icon-button), shown inline after the title and tuned to sit against it. Empty by default."
@@ -2704,30 +2764,184 @@
     },
     {
       "kind": "javascript-module",
+      "path": "src/components/content/avatar-group/avatar-group.ts",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "Shows several avatars as one group: they overlap, and each one gets a ring in the surface color so they stay apart where they meet. The ring uses the same mechanism as the badge, so on a colored surface you hand the color over through `--context-parent-background-color`. Slot `nldd-avatar` elements, not bare `img`. An avatar already knows what to do with a dead image, when to fall back to initials, and how to show its name as a tooltip; a loose image would have to reproduce all of that and cannot do the last one. Set `decorative` when the names already stand beside the group as text; otherwise give every avatar a name, because the group itself describes nobody. The size applies to the whole group: it is imposed on the avatars, a slotted `img` included. That keeps the row on one line whatever a consumer hands over.",
+          "name": "NLDDAvatarGroup",
+          "members": [
+            {
+              "kind": "field",
+              "name": "size",
+              "type": {
+                "text": "string"
+              },
+              "default": "'40'",
+              "attribute": "size",
+              "reflects": true
+            },
+            {
+              "kind": "field",
+              "name": "max",
+              "type": {
+                "text": "number | undefined"
+              },
+              "default": "undefined",
+              "attribute": "max",
+              "reflects": true
+            },
+            {
+              "kind": "field",
+              "name": "accessibleLabel",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "attribute": "accessible-label"
+            },
+            {
+              "kind": "field",
+              "name": "translations",
+              "type": {
+                "text": "Partial<T>"
+              },
+              "default": "{}",
+              "attribute": "translations",
+              "inheritedFrom": {
+                "name": "withTranslations",
+                "module": "src/utilities/with-translations.ts"
+              }
+            }
+          ],
+          "attributes": [
+            {
+              "name": "size",
+              "type": {
+                "text": "string"
+              },
+              "default": "'40'",
+              "fieldName": "size",
+              "description": "Diameter of each avatar in px (spacer-aligned: 16, 20, 24, 28, 32, 40, 44, 48, 56, 64, 80, 96); default 40"
+            },
+            {
+              "name": "max",
+              "type": {
+                "text": "number | undefined"
+              },
+              "default": "undefined",
+              "fieldName": "max",
+              "description": "Shows at most this many avatars; the rest go behind a \"+N\" button that opens them as a list of names"
+            },
+            {
+              "name": "accessible-label",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "fieldName": "accessibleLabel",
+              "description": "Describes the group as a whole (e.g. \"Editors\"); without a label the group is not a landmark of its own and the avatars speak for themselves"
+            },
+            {
+              "name": "translations",
+              "type": {
+                "text": "Partial<T>"
+              },
+              "default": "{}",
+              "fieldName": "translations",
+              "inheritedFrom": {
+                "name": "withTranslations",
+                "module": "src/utilities/with-translations.ts"
+              }
+            }
+          ],
+          "mixins": [
+            {
+              "name": "withTranslations",
+              "module": "/src/utilities/with-translations.js"
+            }
+          ],
+          "superclass": {
+            "name": "LitElement",
+            "package": "lit"
+          },
+          "tagName": "nldd-avatar-group",
+          "customElement": true,
+          "slots": [
+            {
+              "name": "",
+              "description": "One or more `nldd-avatar` elements"
+            }
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "NLDDAvatarGroup",
+          "declaration": {
+            "name": "NLDDAvatarGroup",
+            "module": "src/components/content/avatar-group/avatar-group.ts"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "nldd-avatar-group",
+          "declaration": {
+            "name": "NLDDAvatarGroup",
+            "module": "src/components/content/avatar-group/avatar-group.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
       "path": "src/components/content/avatar/avatar.ts",
       "declarations": [
         {
           "kind": "class",
-          "description": "Toont één persoon of organisatie als een compacte, ronde (persoon) of afgeronde (organisatie) representatie. De inhoud volgt een vaste terugvalketen: een afbeelding wanneer `src` laadt, anders de initialen (uit `initials` of afgeleid uit `name`), en anders een terugval-icoon. `type` bepaalt zowel de vorm als het terugval-icoon: `person` geeft een cirkel met een person-icoon, `organization` een afgeronde vierkant met een building-icoon. De vorm hoort dus bij de betekenis en is niet los instelbaar. Overschrijf het terugval-icoon desgewenst met `icon`. Zonder `size` schaalt de avatar mee met zijn container (net als `nldd-icon`); een vaste maat (dezelfde spacer-uitgelijnde schaal, 16 tot en met 96) is de uitzondering. De initialen en het icoon schalen mee. Brede initialen (WW, MMM) worden automatisch teruggeschaald zodat ze binnen de schijf blijven. Toegankelijkheid: het host-element draagt de betekenis. Met een `name` (en zonder `decorative`) krijgt het `role=\"img\"` met de naam als label. Staat de naam al als tekst ernaast (bijvoorbeeld in een byline), zet dan `decorative` zodat de avatar voor hulpsoftware verborgen blijft. Een dode `src` valt automatisch terug op de initialen of het icoon, nooit op een gebroken-afbeelding-icoon.",
+          "description": "Shows one person or organization as a compact, round (person) or rounded (organization) representation. The content follows a fixed fallback chain: an image when `src` loads, otherwise the initials (from `initials` or derived from `name`), and otherwise a fallback icon. `type` sets both the shape and the fallback icon: `person` gives a circle with a person icon, `organization` a rounded square with a building icon. The shape belongs to the meaning and cannot be set on its own. Override the fallback icon with `icon` where that helps. Without `size` the avatar scales with its container, like `nldd-icon`; a fixed size (the same spacer-aligned scale, 16 through 96) is the exception. The initials and the icon scale along. Wide initials (WW, MMM) are scaled down automatically so they stay inside the shape. Accessibility: the host element carries the meaning. With a `name` (and without `decorative`) it gets `role=\"img\"` with the name as its label. When the name already stands beside it as text, in an identity for instance, set `decorative` so the avatar stays hidden from assistive software. A dead `src` falls back to the initials or the icon, never to a broken-image icon.",
           "name": "NLDDAvatar",
           "members": [
             {
               "kind": "field",
-              "name": "src",
+              "name": "type",
               "type": {
-                "text": "string"
+                "text": "AvatarType"
               },
-              "default": "''",
-              "attribute": "src"
+              "default": "'person'",
+              "attribute": "type",
+              "reflects": true
             },
             {
               "kind": "field",
-              "name": "srcset",
+              "name": "size",
               "type": {
-                "text": "string"
+                "text": "AvatarSize"
               },
               "default": "''",
-              "attribute": "srcset"
+              "attribute": "size",
+              "reflects": true
+            },
+            {
+              "kind": "field",
+              "name": "color",
+              "type": {
+                "text": "AvatarColor"
+              },
+              "default": "'default'",
+              "attribute": "color",
+              "reflects": true
+            },
+            {
+              "kind": "field",
+              "name": "iconAligned",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "attribute": "icon-aligned",
+              "reflects": true
             },
             {
               "kind": "field",
@@ -2749,6 +2963,24 @@
             },
             {
               "kind": "field",
+              "name": "src",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "attribute": "src"
+            },
+            {
+              "kind": "field",
+              "name": "srcset",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "attribute": "srcset"
+            },
+            {
+              "kind": "field",
               "name": "icon",
               "type": {
                 "text": "string"
@@ -2758,43 +2990,13 @@
             },
             {
               "kind": "field",
-              "name": "type",
+              "name": "accessibleLabel",
               "type": {
-                "text": "AvatarType"
-              },
-              "default": "'person'",
-              "attribute": "type",
-              "reflects": true
-            },
-            {
-              "kind": "field",
-              "name": "color",
-              "type": {
-                "text": "AvatarColor"
-              },
-              "default": "'default'",
-              "attribute": "color",
-              "reflects": true
-            },
-            {
-              "kind": "field",
-              "name": "size",
-              "type": {
-                "text": "AvatarSize"
+                "text": "string"
               },
               "default": "''",
-              "attribute": "size",
-              "reflects": true
-            },
-            {
-              "kind": "field",
-              "name": "iconAligned",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "attribute": "icon-aligned",
-              "reflects": true
+              "description": "Accessible name of the link or button. Without it, it falls back to\n`name`. Only matters when the avatar is interactive.",
+              "attribute": "accessible-label"
             },
             {
               "kind": "field",
@@ -2808,12 +3010,23 @@
             },
             {
               "kind": "field",
+              "name": "tooltipTiming",
+              "type": {
+                "text": "'default' | 'instant' | 'never'"
+              },
+              "default": "'default'",
+              "description": "Forwarded to the inner nldd-tooltip's `timing`, like nldd-icon-button.\nOn by default: initials without a name are a riddle. An\navatar that sits beside that name is `decorative` and shows none.",
+              "attribute": "tooltip-timing",
+              "reflects": true
+            },
+            {
+              "kind": "field",
               "name": "href",
               "type": {
                 "text": "string"
               },
               "default": "''",
-              "description": "Makes the avatar one link: the disc itself becomes the <a>, so the click\narea and the focus ring follow its shape (an overlay would be square).",
+              "description": "Makes the avatar one link: the shape itself becomes the <a>, so the click\narea and the focus ring follow its shape (an overlay would be square).",
               "attribute": "href",
               "reflects": true
             },
@@ -2845,16 +3058,6 @@
               },
               "default": "''",
               "attribute": "rel"
-            },
-            {
-              "kind": "field",
-              "name": "accessibleLabel",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Accessible name of the link or button. Without it, it falls back to\n`name`. Only matters when the avatar is interactive.",
-              "attribute": "accessible-label"
             },
             {
               "kind": "field",
@@ -2899,67 +3102,13 @@
           ],
           "attributes": [
             {
-              "name": "src",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "fieldName": "src",
-              "description": "Afbeeldingsbron; valt bij een laadfout terug op initialen/icoon"
-            },
-            {
-              "name": "srcset",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "fieldName": "srcset",
-              "description": "Responsive source set voor de afbeelding (het component zet zelf `sizes`)"
-            },
-            {
-              "name": "name",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "fieldName": "name",
-              "description": "Naam van de persoon/organisatie; levert de afgeleide initialen en het toegankelijke label"
-            },
-            {
-              "name": "initials",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "fieldName": "initials",
-              "description": "Expliciete initialen, max 3 tekens (overschrijft de afleiding uit `name`; ook voor organisatie-acroniemen)"
-            },
-            {
-              "name": "icon",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "fieldName": "icon",
-              "description": "Overschrijft het type-afhankelijke terugval-icoon"
-            },
-            {
               "name": "type",
               "type": {
                 "text": "AvatarType"
               },
               "default": "'person'",
               "fieldName": "type",
-              "description": "`person` (cirkel, person-icoon) of `organization` (afgerond, building-icoon); standaard `person`"
-            },
-            {
-              "name": "color",
-              "type": {
-                "text": "AvatarColor"
-              },
-              "default": "'default'",
-              "fieldName": "color",
-              "description": "`default` (neutrale vulling) of `inherit` (vulling in de content-kleur: de `--context-content-color`-channel, of `currentColor` als die niet gezet is; tekst in de contrastkleur, zodat de avatar een icoon in bijvoorbeeld een knop kan vervangen); standaard `default`"
+              "description": "`person` (circle, person icon) or `organization` (rounded, building icon); default `person`"
             },
             {
               "name": "size",
@@ -2968,7 +3117,16 @@
               },
               "default": "''",
               "fieldName": "size",
-              "description": "`full` (standaard) schaalt mee met de container, net als nldd-icon; of een vaste maat in px (spacer-uitgelijnd: 16, 20, 24, 28, 32, 40, 44, 48, 56, 64, 80, 96). Leeg gedraagt zich als `full`. De initialen en het icoon schalen mee"
+              "description": "`full` (default) scales with the container, like nldd-icon; or a fixed size in px (spacer-aligned: 16, 20, 24, 28, 32, 40, 44, 48, 56, 64, 80, 96). Empty behaves as `full`. The initials and the icon scale along"
+            },
+            {
+              "name": "color",
+              "type": {
+                "text": "AvatarColor"
+              },
+              "default": "'default'",
+              "fieldName": "color",
+              "description": "`default` (neutral fill) or `inherit` (fill in the content color: the `--context-content-color` channel, or `currentColor` when that is unset; text in the contrast color, so the avatar can replace an icon in a button for instance); default `default`"
             },
             {
               "name": "icon-aligned",
@@ -2977,7 +3135,61 @@
               },
               "default": "false",
               "fieldName": "iconAligned",
-              "description": "Krimpt de zichtbare schijf naar 5/6 van de host, gecentreerd, zodat de avatar optisch uitlijnt met een icoon op hetzelfde grid (een icoon-glyph heeft ingebouwde marge)"
+              "description": "Shrinks the visible shape to 5/6 of the host, centered, so the avatar aligns optically with an icon on the same grid (an icon glyph has built-in margin)"
+            },
+            {
+              "name": "name",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "fieldName": "name",
+              "description": "Name of the person or organization; supplies the derived initials and the accessible label"
+            },
+            {
+              "name": "initials",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "fieldName": "initials",
+              "description": "Explicit initials, at most 3 characters (overrides what is derived from `name`; also for organization acronyms)"
+            },
+            {
+              "name": "src",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "fieldName": "src",
+              "description": "Image source; falls back to initials or icon when it fails to load"
+            },
+            {
+              "name": "srcset",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "fieldName": "srcset",
+              "description": "Responsive source set for the image (the component sets `sizes` itself)"
+            },
+            {
+              "name": "icon",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "fieldName": "icon",
+              "description": "Overrides the type-dependent fallback icon"
+            },
+            {
+              "name": "accessible-label",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Name of the link or button; without it `name` is used",
+              "fieldName": "accessibleLabel"
             },
             {
               "name": "decorative",
@@ -2986,7 +3198,16 @@
               },
               "default": "false",
               "fieldName": "decorative",
-              "description": "Verbergt de avatar voor hulpsoftware (gebruik wanneer de naam er al als tekst naast staat)"
+              "description": "Hides the avatar from assistive software (use when the name already stands beside it as text)"
+            },
+            {
+              "name": "tooltip-timing",
+              "type": {
+                "text": "'default' | 'instant' | 'never'"
+              },
+              "default": "'default'",
+              "description": "When the name appears as a tooltip on hover or focus: `default` (after 700ms; the default), `instant`, or `never`. An avatar shows no text, so without a tooltip the name is readable by assistive software only. A `decorative` avatar shows none regardless: there the name already stands beside it as text",
+              "fieldName": "tooltipTiming"
             },
             {
               "name": "href",
@@ -2994,7 +3215,7 @@
                 "text": "string"
               },
               "default": "''",
-              "description": "Maakt de avatar een link naar deze URL; de schijf zelf wordt de link, dus klikgebied en focusring volgen de vorm",
+              "description": "Makes the avatar a link to this URL; the shape itself becomes the link, so the hit area and the focus ring follow it",
               "fieldName": "href"
             },
             {
@@ -3003,7 +3224,7 @@
                 "text": "boolean"
               },
               "default": "false",
-              "description": "Maakt de avatar een knop; genegeerd wanneer `href` is gezet",
+              "description": "Makes the avatar a button; ignored when `href` is set",
               "fieldName": "button"
             },
             {
@@ -3013,7 +3234,7 @@
               },
               "default": "''",
               "fieldName": "target",
-              "description": "Link target voor href (bijv. '_blank'); vult rel aan en meldt \"Opent in nieuw tabblad\""
+              "description": "Link target for href (e.g. '_blank'); completes rel and announces \"Opens in a new tab\""
             },
             {
               "name": "rel",
@@ -3022,16 +3243,7 @@
               },
               "default": "''",
               "fieldName": "rel",
-              "description": "Link rel voor href; standaard 'noopener noreferrer' bij target='_blank'"
-            },
-            {
-              "name": "accessible-label",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Naam van de link of knop; zonder deze wordt `name` gebruikt",
-              "fieldName": "accessibleLabel"
+              "description": "Link rel for href; defaults to 'noopener noreferrer' when target='_blank'"
             },
             {
               "name": "translations",
@@ -3044,7 +3256,7 @@
                 "name": "withTranslations",
                 "module": "src/utilities/with-translations.ts"
               },
-              "description": "Overschrijf translation keys; niet gezette keys vallen terug op het Nederlands"
+              "description": "Override translation keys; unset keys fall back to Dutch"
             }
           ],
           "mixins": [
@@ -3107,7 +3319,7 @@
               },
               "default": "undefined",
               "fieldName": "cite",
-              "description": "URL van de bron (wordt doorgegeven aan het <blockquote> element)"
+              "description": "URL of the source (forwarded to the <blockquote> element)"
             }
           ],
           "superclass": {
@@ -3123,7 +3335,7 @@
             },
             {
               "name": "attribution",
-              "description": "Optionele bronvermelding (auteur, titel, etc.). Ook een nldd-byline mag hier; het kastlijntje (\"— \") wordt dan weggelaten."
+              "description": "Optionele bronvermelding (auteur, titel, etc.). Ook een An nldd-identity is allowed here; the em dash (\"— \") is then left out."
             }
           ]
         }
@@ -3149,151 +3361,6 @@
     },
     {
       "kind": "javascript-module",
-      "path": "src/components/content/byline/byline.ts",
-      "declarations": [
-        {
-          "kind": "class",
-          "description": "Een redactionele regel die auteurs of redacteuren toont: optionele avatar(s), een naamregel en ondersteunende tekst (bijvoorbeeld functie of datum). Alle onderdelen zijn optioneel. De naamregel en ondersteunende tekst kunnen als attribuut of als slot worden aangeleverd. Gebruik de slots voor rijkere inhoud, zoals een `<time datetime=\"…\">` voor machine-leesbare datums of een link naar het auteursprofiel. Geslotte inhoud vervangt het bijbehorende attribuut (het attribuut is de fallback van de slot). Bij meerdere redacteuren overlappen de avatars elkaar subtiel; elke avatar krijgt een ring in de surface-kleur (zelfde mechaniek als badge) zodat ze visueel gescheiden blijven. Op een gekleurde ondergrond kan de ringkleur meegegeven worden via `--context-parent-background-color`. Op smalle breedtes (een sm-container, ≤ 640px) met meerdere avatars komt de avatarrij boven de namen te staan, zodat de tekst de volle breedte houdt; met één avatar blijft de byline op één regel. Avatars worden geslot als `<img slot=\"avatars\">`. Zet `alt=\"\"` wanneer de namen al in de tekst staan (decoratief); geef anders een beschrijvende alt-tekst op. Voor één avatar kun je in plaats van slotten ook `avatar-src` (met optioneel `avatar-srcset`) als attribuut meegeven; de afmetingen liggen vast (40px), dus `sizes` zet het component zelf. Meerdere avatars gaan altijd via de slot, en geslotte avatars hebben voorrang op `avatar-src`.",
-          "name": "NLDDByline",
-          "members": [
-            {
-              "kind": "field",
-              "name": "text",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "attribute": "text",
-              "reflects": true
-            },
-            {
-              "kind": "field",
-              "name": "supportingText",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "attribute": "supporting-text",
-              "reflects": true
-            },
-            {
-              "kind": "field",
-              "name": "avatarSrc",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "attribute": "avatar-src"
-            },
-            {
-              "kind": "field",
-              "name": "avatarSrcset",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "attribute": "avatar-srcset"
-            },
-            {
-              "kind": "field",
-              "name": "avatarAlt",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "attribute": "avatar-alt"
-            }
-          ],
-          "attributes": [
-            {
-              "name": "text",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "fieldName": "text",
-              "description": "Naamregel (bijv. \"Jan Jansen en Piet Pietersen\"); fallback wanneer de text-slot leeg is"
-            },
-            {
-              "name": "supporting-text",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "fieldName": "supportingText",
-              "description": "Ondersteunende tekst onder de naamregel (bijv. rol of datum); fallback wanneer de supporting-text-slot leeg is"
-            },
-            {
-              "name": "avatar-src",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "fieldName": "avatarSrc",
-              "description": "Bron van één avatar (alternatief voor de avatars-slot); genegeerd zodra de avatars-slot gevuld is"
-            },
-            {
-              "name": "avatar-srcset",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "fieldName": "avatarSrcset",
-              "description": "Responsive source set voor de avatar-src-afbeelding"
-            },
-            {
-              "name": "avatar-alt",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "fieldName": "avatarAlt",
-              "description": "Alt-tekst voor de avatar-src-afbeelding; leeg = decoratief"
-            }
-          ],
-          "superclass": {
-            "name": "LitElement",
-            "package": "lit"
-          },
-          "tagName": "nldd-byline",
-          "customElement": true,
-          "slots": [
-            {
-              "name": "avatars",
-              "description": "Eén of meer img-elementen; gestyled als ronde, overlappende avatars"
-            },
-            {
-              "name": "text",
-              "description": "Naamregel als rijke inhoud (bijv. een link naar het auteursprofiel)"
-            },
-            {
-              "name": "supporting-text",
-              "description": "Ondersteunende tekst als rijke inhoud (bijv. een time-element)"
-            }
-          ]
-        }
-      ],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "NLDDByline",
-          "declaration": {
-            "name": "NLDDByline",
-            "module": "src/components/content/byline/byline.ts"
-          }
-        },
-        {
-          "kind": "custom-element-definition",
-          "name": "nldd-byline",
-          "declaration": {
-            "name": "NLDDByline",
-            "module": "src/components/content/byline/byline.ts"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
       "path": "src/components/content/code-viewer/code-viewer.ts",
       "declarations": [
         {
@@ -3305,22 +3372,11 @@
               "kind": "field",
               "name": "variant",
               "type": {
-                "text": "'simple' | 'box'"
+                "text": "CodeViewerVariant"
               },
-              "default": "'box'",
-              "description": "Visual style. `box` (default) is a framed card; `simple` drops the frame.",
+              "default": "'box-tinted'",
+              "description": "Visual style. The `box` values are a framed card and name the surface they\nfill with; `simple` drops the frame.",
               "attribute": "variant",
-              "reflects": true
-            },
-            {
-              "kind": "field",
-              "name": "background",
-              "type": {
-                "text": "'tinted' | 'base'"
-              },
-              "default": "'tinted'",
-              "description": "Surface fill when `variant=\"box\"`.",
-              "attribute": "background",
               "reflects": true
             },
             {
@@ -3396,20 +3452,11 @@
             {
               "name": "variant",
               "type": {
-                "text": "'simple' | 'box'"
+                "text": "CodeViewerVariant"
               },
-              "default": "'box'",
-              "description": "Visual style. `box` (default) is a framed card with rounded corners, padding, fill, and a 1px border ring. `simple` drops the entire frame — use when embedding inside a parent surface.",
+              "default": "'box-tinted'",
+              "description": "Visual style. The two `box` values are a framed card with rounded corners, padding, fill, and a 1px border ring, and differ in which surface they fill with; `box-tinted` is the default. `simple` drops the entire frame — use when embedding inside a parent surface.",
               "fieldName": "variant"
-            },
-            {
-              "name": "background",
-              "type": {
-                "text": "'tinted' | 'base'"
-              },
-              "default": "'tinted'",
-              "description": "Surface fill when `variant=\"box\"`.",
-              "fieldName": "background"
             },
             {
               "name": "language",
@@ -3603,6 +3650,151 @@
           "declaration": {
             "name": "NLDDIcon",
             "module": "src/components/content/icon/icon.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/content/identity/identity.ts",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "An editorial line that shows authors or editors: optional avatar or avatars, a name line and supporting text (a role or a date, for instance). Every part is optional. The name line and the supporting text come in as an attribute or as a slot. Use the slots for richer content, such as a `<time datetime=\"…\">` for a machine-readable date or a link to the author's profile. Slotted content replaces the matching attribute: the attribute is the slot's fallback. One avatar you slot as it is, and identity gives it its size. For more than one, slot an `nldd-avatar-group`: that overlaps them and draws the ring in the surface color. Identity does not build that group itself, because the avatars are the consumer's light DOM and a group can only style what arrives as its own child. Set the avatars to decorative (or an `img` to `alt=\"\"`) when the names already stand in the text. On narrow widths (an sm container, 640px and under) with more than one avatar the row of avatars moves above the names, so the text keeps the full width. With one avatar the identity stays on a single line. For a single avatar you can also hand over `avatar-src` (with an optional `avatar-srcset`) as an attribute instead of slotting; its size is fixed at 40px. Slotted avatars take precedence over `avatar-src`.",
+          "name": "NLDDIdentity",
+          "members": [
+            {
+              "kind": "field",
+              "name": "text",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "attribute": "text",
+              "reflects": true
+            },
+            {
+              "kind": "field",
+              "name": "supportingText",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "attribute": "supporting-text",
+              "reflects": true
+            },
+            {
+              "kind": "field",
+              "name": "avatarSrc",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "attribute": "avatar-src"
+            },
+            {
+              "kind": "field",
+              "name": "avatarSrcset",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "attribute": "avatar-srcset"
+            },
+            {
+              "kind": "field",
+              "name": "avatarAlt",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "attribute": "avatar-alt"
+            }
+          ],
+          "attributes": [
+            {
+              "name": "text",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "fieldName": "text",
+              "description": "Name line (e.g. \"Jan Jansen and Piet Pietersen\"); the fallback when the text slot is empty"
+            },
+            {
+              "name": "supporting-text",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "fieldName": "supportingText",
+              "description": "Supporting text under the name line (a role or a date, for instance); the fallback when the supporting-text slot is empty"
+            },
+            {
+              "name": "avatar-src",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "fieldName": "avatarSrc",
+              "description": "Source of a single avatar (an alternative to the avatars slot); ignored as soon as the avatars slot is filled"
+            },
+            {
+              "name": "avatar-srcset",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "fieldName": "avatarSrcset",
+              "description": "Responsive source set for the avatar-src image"
+            },
+            {
+              "name": "avatar-alt",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "fieldName": "avatarAlt",
+              "description": "Alt text for the avatar-src image; empty means decorative"
+            }
+          ],
+          "superclass": {
+            "name": "LitElement",
+            "package": "lit"
+          },
+          "tagName": "nldd-identity",
+          "customElement": true,
+          "slots": [
+            {
+              "name": "avatars",
+              "description": "One avatar (`nldd-avatar` or `img`), or an `nldd-avatar-group` for more"
+            },
+            {
+              "name": "text",
+              "description": "Name line as rich content (a link to the author's profile, for instance)"
+            },
+            {
+              "name": "supporting-text",
+              "description": "Supporting text as rich content (a time element, for instance)"
+            }
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "NLDDIdentity",
+          "declaration": {
+            "name": "NLDDIdentity",
+            "module": "src/components/content/identity/identity.ts"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "nldd-identity",
+          "declaration": {
+            "name": "NLDDIdentity",
+            "module": "src/components/content/identity/identity.ts"
           }
         }
       ]
@@ -4438,7 +4630,7 @@
       "declarations": [
         {
           "kind": "class",
-          "description": "Een compacte label voor categorieën, statussen of metadata. Niet interactief. Voor interactieve chips (filter, dismiss) gebruik je <nldd-token>.",
+          "description": "A compact property that has been assigned to something: a category, a type, a role, a certification. What it says changes only when someone edits the content. A tag is not interactive. Do not use it for a state the system keeps itself, such as \"Active\" or \"Expired\", because that is `nldd-badge`. If the user can remove the thing or click it, it is `nldd-token`.",
           "name": "NLDDTag",
           "members": [
             {
@@ -4508,7 +4700,7 @@
               },
               "default": "'neutral'",
               "fieldName": "color",
-              "description": "Kleurvariant. Semantisch: 'neutral' | 'accent' | 'success' | 'warning' | 'critical'. Rijkskleuren: 'lintblauw' | 'donkerblauw' | 'hemelblauw' | 'lichtblauw' | 'paars' | 'violet' | 'robijnrood' | 'roze' | 'rood' | 'oranje' | 'donkergeel' | 'geel' | 'donkerbruin' | 'bruin' | 'donkergroen' | 'groen' | 'mosgroen' | 'mintgroen'. (default: 'neutral')"
+              "description": "Color variant. Semantic: 'neutral' | 'accent' | 'success' | 'warning' | 'critical'. Rijkshuisstijl colors: 'lintblauw' | 'donkerblauw' | 'hemelblauw' | 'lichtblauw' | 'paars' | 'violet' | 'robijnrood' | 'roze' | 'rood' | 'oranje' | 'donkergeel' | 'geel' | 'donkerbruin' | 'bruin' | 'donkergroen' | 'groen' | 'mosgroen' | 'mintgroen'. (default: 'neutral')"
             },
             {
               "name": "size",
@@ -4517,7 +4709,7 @@
               },
               "default": "'md'",
               "fieldName": "size",
-              "description": "Tag grootte: 'sm' | 'md' (default: 'md')"
+              "description": "Tag size: 'sm' | 'md' (default: 'md')"
             },
             {
               "name": "text",
@@ -4526,7 +4718,7 @@
               },
               "default": "''",
               "fieldName": "text",
-              "description": "Tag tekst (alternatief voor default slot)"
+              "description": "Tag text (alternative to the default slot)"
             },
             {
               "name": "icon",
@@ -4535,7 +4727,7 @@
               },
               "default": "''",
               "fieldName": "icon",
-              "description": "Icoon voor de tekst"
+              "description": "Icon before the text"
             },
             {
               "name": "variant",
@@ -4544,7 +4736,7 @@
               },
               "default": "''",
               "fieldName": "variant",
-              "description": "Wat zichtbaar is: 'text' | 'icon' | 'icon-and-text'. Onbepaald → auto-detect op basis van welke van text/icon aanwezig is."
+              "description": "What is visible: 'text' | 'icon' | 'icon-and-text'. Unset → detected from which of text/icon is present."
             },
             {
               "name": "accessible-label",
@@ -4553,7 +4745,7 @@
               },
               "default": "''",
               "fieldName": "accessibleLabel",
-              "description": "Toegankelijk label voor screenreaders. Gebruik dit bij icon-only tags zonder zichtbare tekst."
+              "description": "Accessible label for screen readers. Use this on icon-only tags without visible text."
             }
           ],
           "superclass": {
@@ -4565,11 +4757,11 @@
           "slots": [
             {
               "name": "",
-              "description": "Tag tekst"
+              "description": "Tag text"
             },
             {
               "name": "icon",
-              "description": "Custom icoon voor de tekst"
+              "description": "Custom icon before the text"
             }
           ]
         }
@@ -4599,7 +4791,7 @@
       "declarations": [
         {
           "kind": "class",
-          "description": "A title bar with an optional overline, title, and subtitle on the left, and a slot for actions on the right.",
+          "description": "A title bar with an optional overline, title, and subtitle on the left, and a slot at the end of the title line on the right.",
           "name": "NLDDTitle",
           "members": [
             {
@@ -4640,7 +4832,7 @@
               },
               "default": "''",
               "fieldName": "color",
-              "description": "'inherit' laat de titel de tekstkleur van de ondergrond volgen (voor gekleurde vlakken zoals de filled-categories); overline en subtitle krijgen dezelfde kleur op verlaagde dekking. Leeg = standaard contentkleuren."
+              "description": "'inherit' lets the title take the text color of the ondergrond volgen (voor gekleurde vlakken zoals de filled-categories); overline en subtitle krijgen dezelfde kleur op verlaagde dekking. Leeg = standaard contentkleuren."
             }
           ],
           "superclass": {
@@ -4663,8 +4855,8 @@
               "description": "Optional subtitle below the title"
             },
             {
-              "name": "actions",
-              "description": "Actions to the right of the title (buttons, menus, etc.)"
+              "name": "end",
+              "description": "Whatever belongs at the end of the title line: a button, a menu, a status badge, a version. Named for the position, not for a kind of content, because anything can sit there."
             }
           ]
         }
@@ -4694,7 +4886,7 @@
       "declarations": [
         {
           "kind": "class",
-          "description": "A token component representing a piece of data — such as a person in an address field or an active filter value. Optionally dismissable or interactive via a contextual menu.",
+          "description": "A self-contained piece of data the user is handling: a person in an address field, an active filter value. Alone among the three it can be operated, so it is optionally dismissable or interactive through a contextual menu. For something you only read, reach for `nldd-tag` (a trait someone assigned) or `nldd-badge` (a state or a count the system keeps).",
           "name": "NLDDToken",
           "members": [
             {
@@ -4900,7 +5092,7 @@
       "declarations": [
         {
           "kind": "class",
-          "description": "Wrapper component dat een tooltip toont bij hover of focus op het child element. Gebruikt `display: contents` zodat het de layout van het child niet beïnvloedt.",
+          "description": "A wrapper that shows a tooltip on hover or focus of its child element. It uses `display: contents`, so it does not affect the child's layout.",
           "name": "NLDDTooltip",
           "members": [
             {
@@ -4953,7 +5145,7 @@
               },
               "default": "''",
               "fieldName": "text",
-              "description": "Tooltip tekst"
+              "description": "Tooltip text"
             },
             {
               "name": "open",
@@ -4961,7 +5153,7 @@
                 "text": "boolean"
               },
               "default": "false",
-              "description": "Forceer de tooltip zichtbaar, ongeacht hover/focus. Gebruik voor programmatische feedback (bv. \"Gekopieerd\"). Reset naar false om hover-gedrag te herstellen.",
+              "description": "Forces the tooltip visible, whatever hover or focus does. Use it for programmatic feedback (\"Copied\", for instance). Reset it to false to restore the hover behaviour.",
               "fieldName": "open"
             },
             {
@@ -4971,7 +5163,7 @@
               },
               "default": "'bottom'",
               "fieldName": "placement",
-              "description": "Positie: 'top' | 'bottom' | 'left' | 'right' (standaard: 'bottom'; op touch devices automatisch 'top')"
+              "description": "Position: 'top' | 'bottom' | 'left' | 'right' (default: 'bottom'; automatically 'top' on touch devices)"
             },
             {
               "name": "timing",
@@ -4980,7 +5172,7 @@
               },
               "default": "'default'",
               "fieldName": "timing",
-              "description": "Wanneer de tooltip verschijnt op hover: 'instant' — direct, zonder show-delay. 'default' — na de standaard show-delay (700ms). 'never' — tooltip wordt nooit getoond; hover/focus events worden genegeerd, aria-describedby wordt onderdrukt en een al zichtbare tooltip verdwijnt. Hide-delay en touch suppression blijven onder alle waarden van kracht. Focus-trigger is altijd instant."
+              "description": "When the tooltip appears on hover: 'instant' — right away, without a show delay. 'default' — after the standard show delay (700ms). 'never' — the tooltip is never shown; hover and focus events are ignored, aria-describedby is suppressed, and a tooltip that is already visible disappears. The hide delay and the touch suppression stay in force under every value. A focus trigger is always instant."
             }
           ],
           "superclass": {
@@ -4992,13 +5184,13 @@
           "events": [
             {
               "name": "nldd-tooltip-dismiss",
-              "description": "Wanneer een gebruiker Escape drukt terwijl `open=true` is. De consumer beheert dan de open-lifecycle (wij kunnen `open` niet eenzijdig wissen), dus dit event geeft de consumer de kans om `open` terug naar `false` te zetten. WCAG 1.4.13: persistent hover-/ focus-overlays moeten dismissible zijn zonder focus te verplaatsen."
+              "description": "When a user presses Escape while `open=true`. The consumer owns the open lifecycle from there (we cannot clear `open` on our own), so this event is the consumer's chance to set `open` back to `false`. WCAG 1.4.13: a persistent hover or focus overlay has to be dismissible without moving focus."
             }
           ],
           "slots": [
             {
               "name": "",
-              "description": "Het element waarop de tooltip wordt getoond"
+              "description": "The element the tooltip is shown for"
             }
           ]
         }
@@ -5519,10 +5711,18 @@
         },
         {
           "kind": "js",
-          "name": "NLDDByline",
+          "name": "NLDDAvatarGroup",
           "declaration": {
-            "name": "NLDDByline",
-            "module": "./content/byline/byline.js"
+            "name": "NLDDAvatarGroup",
+            "module": "./content/avatar-group/avatar-group.js"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "NLDDIdentity",
+          "declaration": {
+            "name": "NLDDIdentity",
+            "module": "./content/identity/identity.js"
           }
         },
         {
@@ -5683,6 +5883,14 @@
           "declaration": {
             "name": "NLDDDropdown",
             "module": "./inputs/dropdown/dropdown.js"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "NLDDFileField",
+          "declaration": {
+            "name": "NLDDFileField",
+            "module": "./inputs/file-field/file-field.js"
           }
         },
         {
@@ -6263,6 +6471,14 @@
         },
         {
           "kind": "js",
+          "name": "NLDDNotification",
+          "declaration": {
+            "name": "NLDDNotification",
+            "module": "./status-and-feedback/notification/notification.js"
+          }
+        },
+        {
+          "kind": "js",
           "name": "NLDDBadge",
           "declaration": {
             "name": "NLDDBadge",
@@ -6639,6 +6855,16 @@
             },
             {
               "kind": "field",
+              "name": "decorative",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "attribute": "decorative",
+              "reflects": true
+            },
+            {
+              "kind": "field",
               "name": "disabled",
               "type": {
                 "text": "boolean"
@@ -6822,6 +7048,15 @@
               "default": "false",
               "fieldName": "checked",
               "description": "Checked state"
+            },
+            {
+              "name": "decorative",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "fieldName": "decorative",
+              "description": "Renders the box without the input: no focus, no name/value, nothing announced. For a control that owns the state elsewhere, such as a list row that is itself the checkbox; putting a real input in there would nest a control inside a control."
             },
             {
               "name": "disabled",
@@ -8811,6 +9046,403 @@
     },
     {
       "kind": "javascript-module",
+      "path": "src/components/inputs/file-field/file-field.ts",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "A file picker that reads as one control: an nldd-button flush in the corner of a tinted surface, the chosen file next to it, and a dismiss button to clear it again. It wraps a hidden native `<input type=\"file\">`, which is what makes the picker open at all — a file dialog only opens from a user gesture on a real input. The surface deliberately does not look like an input field. A border with field semantics promises you can type into it; here you can only press a button, so it uses button and surface colors instead of `--semantics-input-fields-*`. The button keeps its own tinted background and therefore sits a shade darker in the surface, which is what marks it as the thing to press. Several files are summarized, not listed: \"3 bestanden\" with a single cross that clears all of them. Every pick replaces the whole FileList, and rebuilding it to add or drop one file means going through DataTransfer, which does not deduplicate (even the same File object twice yields two entries) — and a File has no id, so deduplicating would come down to guessing from name, size and last-modified. A list with a cross per file would promise an edit the platform does not support. A page that does want to show the files renders its own list from the `File[]` in the change event.",
+          "name": "NLDDFileField",
+          "members": [
+            {
+              "kind": "field",
+              "name": "size",
+              "type": {
+                "text": "'md' | 'sm'"
+              },
+              "default": "'md'",
+              "attribute": "size",
+              "reflects": true
+            },
+            {
+              "kind": "field",
+              "name": "accept",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "attribute": "accept",
+              "reflects": true
+            },
+            {
+              "kind": "field",
+              "name": "multiple",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "attribute": "multiple",
+              "reflects": true
+            },
+            {
+              "kind": "field",
+              "name": "accessibleLabel",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Accessible label forwarded to the inner <input>. Set automatically by nldd-form-field.",
+              "attribute": "accessible-label"
+            },
+            {
+              "kind": "field",
+              "name": "inputId",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "attribute": "input-id"
+            },
+            {
+              "kind": "field",
+              "name": "errorMessageIds",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "attribute": "error-message-ids"
+            },
+            {
+              "kind": "field",
+              "name": "valid",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "attribute": "valid",
+              "reflects": true
+            },
+            {
+              "kind": "field",
+              "name": "invalid",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "attribute": "invalid",
+              "reflects": true
+            },
+            {
+              "kind": "field",
+              "name": "disabled",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "attribute": "disabled",
+              "reflects": true
+            },
+            {
+              "kind": "field",
+              "name": "name",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "attribute": "name",
+              "reflects": true
+            },
+            {
+              "kind": "field",
+              "name": "required",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "attribute": "required",
+              "reflects": true
+            },
+            {
+              "kind": "field",
+              "name": "translations",
+              "type": {
+                "text": "Partial<NLDDFileFieldTranslations>"
+              },
+              "default": "{}",
+              "attribute": "translations"
+            },
+            {
+              "kind": "field",
+              "name": "files",
+              "type": {
+                "text": "File[]"
+              },
+              "readonly": true
+            },
+            {
+              "kind": "method",
+              "name": "formValue",
+              "return": {
+                "type": {
+                  "text": "FormValue"
+                }
+              },
+              "description": "Submit one entry per file under `name`, the way a native multiple file\ninput does. A single file is submitted as itself, so a form with one file\nreads back as a File rather than as FormData wrapping one.",
+              "inheritedFrom": {
+                "name": "FormAssociated",
+                "module": "src/utilities/form-associated-mixin.ts"
+              }
+            },
+            {
+              "kind": "method",
+              "name": "commitFormValue",
+              "return": {
+                "type": {
+                  "text": "void"
+                }
+              },
+              "description": "Commit the value now, from the handler that changed it.",
+              "inheritedFrom": {
+                "name": "FormAssociated",
+                "module": "src/utilities/form-associated-mixin.ts"
+              }
+            },
+            {
+              "kind": "method",
+              "name": "formResetCallback",
+              "return": {
+                "type": {
+                  "text": "void"
+                }
+              }
+            },
+            {
+              "kind": "method",
+              "name": "focus",
+              "return": {
+                "type": {
+                  "text": "void"
+                }
+              },
+              "parameters": [
+                {
+                  "name": "options",
+                  "optional": true,
+                  "type": {
+                    "text": "FocusOptions"
+                  }
+                }
+              ],
+              "description": "Delegates focus to the choose button rather than the hidden input: an input\nthat is `display: none` cannot take focus, and the button is what a user\nsees as the control."
+            },
+            {
+              "kind": "field",
+              "name": "formAssociated",
+              "type": {
+                "text": "boolean"
+              },
+              "static": true,
+              "default": "true",
+              "inheritedFrom": {
+                "name": "FormAssociated",
+                "module": "src/utilities/form-associated-mixin.ts"
+              }
+            },
+            {
+              "kind": "field",
+              "name": "internals",
+              "readonly": true,
+              "inheritedFrom": {
+                "name": "FormAssociated",
+                "module": "src/utilities/form-associated-mixin.ts"
+              }
+            },
+            {
+              "kind": "method",
+              "name": "formState",
+              "return": {
+                "type": {
+                  "text": "FormValue | undefined"
+                }
+              },
+              "description": "Extra state kept for bfcache and state restore, when the submitted\nvalue alone cannot rebuild the control (a combo box submits a code but\nshows a label). Override alongside `formValue()`.",
+              "inheritedFrom": {
+                "name": "FormAssociated",
+                "module": "src/utilities/form-associated-mixin.ts"
+              }
+            },
+            {
+              "kind": "method",
+              "name": "formDisabledCallback",
+              "return": {
+                "type": {
+                  "text": "void"
+                }
+              },
+              "parameters": [
+                {
+                  "name": "disabled",
+                  "type": {
+                    "text": "boolean"
+                  }
+                }
+              ],
+              "inheritedFrom": {
+                "name": "FormAssociated",
+                "module": "src/utilities/form-associated-mixin.ts"
+              }
+            }
+          ],
+          "events": [
+            {
+              "name": "change",
+              "description": "When the chosen files change, including a clear; detail: { files: File[] }"
+            }
+          ],
+          "attributes": [
+            {
+              "name": "size",
+              "type": {
+                "text": "'md' | 'sm'"
+              },
+              "default": "'md'",
+              "fieldName": "size",
+              "description": "Field size: 'md' (default) | 'sm'. Set automatically by nldd-form-field."
+            },
+            {
+              "name": "accept",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "fieldName": "accept",
+              "description": "Comma-separated list of accepted file types, forwarded to the input (e.g. \".pdf,image/*\")"
+            },
+            {
+              "name": "multiple",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "fieldName": "multiple",
+              "description": "Allows choosing more than one file"
+            },
+            {
+              "name": "accessible-label",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Accessible label forwarded to the inner input. Set automatically by nldd-form-field.",
+              "fieldName": "accessibleLabel"
+            },
+            {
+              "name": "input-id",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "fieldName": "inputId",
+              "description": "Sets the id on the native input. Set automatically by nldd-form-field."
+            },
+            {
+              "name": "error-message-ids",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "fieldName": "errorMessageIds",
+              "description": "Ids for aria-describedby on the inner input. Set automatically by nldd-form-field."
+            },
+            {
+              "name": "valid",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "fieldName": "valid",
+              "description": "Marks the field as valid; shows a check icon on the right, like nldd-dropdown"
+            },
+            {
+              "name": "invalid",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "fieldName": "invalid",
+              "description": "Marks the field as invalid; shows an alert icon on the right, like nldd-dropdown"
+            },
+            {
+              "name": "disabled",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "fieldName": "disabled",
+              "description": "Disabled state"
+            },
+            {
+              "name": "name",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "fieldName": "name",
+              "description": "Name for form submission"
+            },
+            {
+              "name": "required",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "fieldName": "required",
+              "description": "Marks the field required (invalid while no file is chosen)"
+            },
+            {
+              "name": "translations",
+              "type": {
+                "text": "Partial<NLDDFileFieldTranslations>"
+              },
+              "default": "{}",
+              "fieldName": "translations",
+              "description": "Override translation keys; unset keys fall back to Dutch"
+            }
+          ],
+          "mixins": [
+            {
+              "name": "FormAssociated",
+              "module": "/src/utilities/form-associated-mixin.js"
+            }
+          ],
+          "superclass": {
+            "name": "LitElement",
+            "package": "lit"
+          },
+          "tagName": "nldd-file-field",
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "NLDDFileField",
+          "declaration": {
+            "name": "NLDDFileField",
+            "module": "src/components/inputs/file-field/file-field.ts"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "nldd-file-field",
+          "declaration": {
+            "name": "NLDDFileField",
+            "module": "src/components/inputs/file-field/file-field.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
       "path": "src/components/inputs/multi-line-text-field/multi-line-text-field.ts",
       "declarations": [
         {
@@ -10662,6 +11294,16 @@
             },
             {
               "kind": "field",
+              "name": "decorative",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "attribute": "decorative",
+              "reflects": true
+            },
+            {
+              "kind": "field",
               "name": "disabled",
               "type": {
                 "text": "boolean"
@@ -10845,6 +11487,15 @@
               "default": "false",
               "fieldName": "checked",
               "description": "Checked state"
+            },
+            {
+              "name": "decorative",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "fieldName": "decorative",
+              "description": "Renders the shape without the input: no focus, no name/value, nothing announced. For a control that owns the state elsewhere, such as a list row that is itself the radio; putting a real input in there would nest a control inside a control."
             },
             {
               "name": "disabled",
@@ -13962,7 +14613,7 @@
       "declarations": [
         {
           "kind": "class",
-          "description": "A hybrid markdown editor built on CodeMirror 6 (via NLDDCodeMirrorElement): the document stays plain markdown text, but formatting is shown inline (bold is bold, headings are larger, links are colored) while the syntax markers stay visible, only dimmed — the iA Writer / Kirby approach. No WYSIWYG tree, so the data stays portable. Default `variant=\"simple\"` is bare (no frame, no focus ring) for use inside a composition (e.g. a message field) that owns its chrome and focus; the caret is a prominent accent. `variant=\"input-field\"` adds a framed surface + focus ring. `font` is `sans` (default, best for prose) or `mono`. Headless: there is no built-in toolbar. A consumer drives formatting via the command methods (toggleBold/toggleItalic/toggleInlineCode/toggleStrikethrough/ toggleHeading/toggleBulletList/toggleQuote/toggleLink/runCommand to toggle, and setHeading/setList for picker-style \"set\" semantics), reads the active formats with getState(), listens to the nldd-text-editor-state event to render toggle states, and forwards padding clicks with focusFromPoint(). Cmd/Ctrl+B/I/E/K are bound out of the box. Commands keep focus on the editor. An @-mention typeahead (mentionSource) collapses to an atomic token, and a W3C-style annotation overlay (annotations) marks ranges with a dashed underline, light tint and a count badge without touching the underlying text.",
+          "description": "A hybrid markdown editor built on CodeMirror 6 (via NLDDCodeMirrorElement): the document stays plain markdown text, but formatting is shown inline (bold is bold, headings are larger, links are colored) while the syntax markers stay visible, only dimmed — the iA Writer / Kirby approach. No WYSIWYG tree, so the data stays portable. Default `variant=\"simple\"` is bare (no frame, no focus ring) for use inside a composition (e.g. a message field) that owns its chrome and focus; the caret is a prominent accent. `variant=\"input-field\"` adds a framed surface + focus Headless: there is no built-in toolbar. A consumer drives formatting via the command methods (toggleBold/toggleItalic/toggleInlineCode/toggleStrikethrough/ toggleHeading/toggleBulletList/toggleQuote/toggleLink/runCommand to toggle, and setHeading/setList for picker-style \"set\" semantics), reads the active formats with getState(), listens to the nldd-text-editor-state event to render toggle states, and forwards padding clicks with focusFromPoint(). Cmd/Ctrl+B/I/E/K are bound out of the box. Commands keep focus on the editor. An @-mention typeahead (mentionSource) collapses to an atomic token, and a W3C-style annotation overlay (annotations) marks ranges with a dashed underline, light tint and a count badge without touching the underlying text.",
           "name": "NLDDTextEditor",
           "members": [
             {
@@ -14079,16 +14730,6 @@
               },
               "default": "'simple'",
               "attribute": "variant",
-              "reflects": true
-            },
-            {
-              "kind": "field",
-              "name": "font",
-              "type": {
-                "text": "TextEditorFont"
-              },
-              "default": "'sans'",
-              "attribute": "font",
               "reflects": true
             },
             {
@@ -14637,15 +15278,6 @@
               "default": "'simple'",
               "fieldName": "variant",
               "description": "'simple' (default, bare) | 'input-field' (framed surface)"
-            },
-            {
-              "name": "font",
-              "type": {
-                "text": "TextEditorFont"
-              },
-              "default": "'sans'",
-              "fieldName": "font",
-              "description": "'sans' (default) | 'mono'"
             },
             {
               "name": "accessible-label",
@@ -17209,24 +17841,24 @@
           "members": [
             {
               "kind": "field",
-              "name": "background",
+              "name": "variant",
               "type": {
-                "text": "BoxBackground"
+                "text": "BoxVariant"
               },
               "default": "'tinted'",
-              "attribute": "background",
+              "attribute": "variant",
               "reflects": true
             }
           ],
           "attributes": [
             {
-              "name": "background",
+              "name": "variant",
               "type": {
-                "text": "BoxBackground"
+                "text": "BoxVariant"
               },
               "default": "'tinted'",
-              "fieldName": "background",
-              "description": "Surface fill. - `tinted` (default): for a box on a plain page bg. - `base`: for a box sitting on an already-tinted parent (the border ring gets +2 palette steps so it still reads against a card-on-card)."
+              "fieldName": "variant",
+              "description": "Which surface this box draws. - `tinted` (default): a box on a plain page background. - `base`: a box on an already-tinted parent (the border ring gets +2 palette steps so it still reads against a card-on-card). - `critical`: a region whose actions are destructive or irreversible (a \"danger zone\"), tinted and outlined in critical. It carries no ARIA of its own: unlike nldd-banner this is not an announcement but a permanent part of the page, so the heading and the button labels have to name the danger — colour is a reinforcement, never the only signal (WCAG 1.4.1). The box draws the surface and nothing else: it has no padding of its own, the same way nldd-card has none. Put an nldd-container inside it and let that set the inset, so one component owns spacing wherever it is used."
             }
           ],
           "superclass": {
@@ -17238,7 +17870,7 @@
           "slots": [
             {
               "name": "",
-              "description": "Place components inside the box"
+              "description": "Place components inside the box, usually wrapped in an nldd-container that carries the padding"
             }
           ]
         }
@@ -17697,6 +18329,36 @@
             },
             {
               "kind": "field",
+              "name": "width",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "attribute": "width",
+              "reflects": true
+            },
+            {
+              "kind": "field",
+              "name": "minWidth",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "attribute": "min-width",
+              "reflects": true
+            },
+            {
+              "kind": "field",
+              "name": "maxWidth",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "attribute": "max-width",
+              "reflects": true
+            },
+            {
+              "kind": "field",
               "name": "horizontalAlignment",
               "type": {
                 "text": "HorizontalAlignment | undefined"
@@ -18076,6 +18738,33 @@
               },
               "fieldName": "lgColumnCount",
               "description": "Column count when this container is lg-wide"
+            },
+            {
+              "name": "width",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "fieldName": "width",
+              "description": "'full' (default, fills the parent) | 'fit-content' | a CSS length (e.g. '480px'). A container narrower than its parent stays where its parent puts it; use the parent's horizontal-alignment to move it."
+            },
+            {
+              "name": "min-width",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "fieldName": "minWidth",
+              "description": "Minimum width as a CSS length (e.g. '280px')"
+            },
+            {
+              "name": "max-width",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "fieldName": "maxWidth",
+              "description": "Maximum width as a CSS length (e.g. '480px')"
             },
             {
               "name": "horizontal-alignment",
@@ -19132,7 +19821,7 @@
       "declarations": [
         {
           "kind": "class",
-          "description": "Een paginakop met een mediavlak en een tekstpaneel (de main) dat op zes posities kan staan. Alle vlakken zijn rechthoekig. Bij `main-width=\"full\"` staat het mediavlak als losse strook boven of onder het paneel, niet erachter. Op mobiel stapelt de media altijd boven het volle-breedte paneel. Zonder media vult de main het volledige vlak; met `main-background=\"base\"` krijgt dat vlak een rand zodat het zichtbaar blijft op de base-surface. Met `main-background` krijgt het paneel een vlakkleur uit de filled-categories; die leveren een pure witte of zwarte contentkleur mee, zodat componenten met `color=\"inherit\"` (title, rich-text) gegarandeerd contrast houden.",
+          "description": "A page header with a media area and a text panel (the main) that can stand in six positions. Every area is rectangular. With `main-width=\"full\"` the media area sits as its own strip above or below the panel rather than behind it. On mobile the media always stacks above the full-width panel. Without media the main fills the whole area; with `main-background=\"base\"` that area gets a border so it stays visible on the base surface. `main-background` gives the panel a surface color from the filled categories. Those carry a pure white or black content color along, so components with `color=\"inherit\"` (title, rich-text) are guaranteed to keep their contrast.",
           "name": "NLDDHero",
           "members": [
             {
@@ -19194,7 +19883,7 @@
                 "text": "string"
               },
               "default": "''",
-              "description": "Hybrid media source: media-src renders an internal <img>, but a slotted\nmedia element wins (mirrors nldd-image / nldd-byline). srcset/sizes/alt\nfeed that internal img.",
+              "description": "Hybrid media source: media-src renders an internal <img>, but a slotted\nmedia element wins (mirrors nldd-image / nldd-identity). srcset/sizes/alt\nfeed that internal img.",
               "attribute": "media-src"
             },
             {
@@ -19430,7 +20119,7 @@
               },
               "default": "'bottom-left'",
               "fieldName": "mainPosition",
-              "description": "Positie van het tekstpaneel (default: 'bottom-left'); 'left'/'right' beslaan de volle hoogte"
+              "description": "Position of the text panel (default: 'bottom-left'); 'left'/'right' span the full height"
             },
             {
               "name": "main-width",
@@ -19439,7 +20128,7 @@
               },
               "default": "'1/2'",
               "fieldName": "mainWidth",
-              "description": "Breedte van het paneel (default: '1/2'); 'full' maakt een volle boven- of onderstrook en wordt bij 'left'/'right' genegeerd"
+              "description": "Width of the panel (default: '1/2'); 'full' makes a full top or bottom strip and is ignored with 'left'/'right'"
             },
             {
               "name": "main-background",
@@ -19448,7 +20137,7 @@
               },
               "default": "'accent'",
               "fieldName": "mainBackground",
-              "description": "Vlakkleur van het paneel: 'base' (de base surface) of een categoriekleur — 'accent' (default) of een rijkskleur zoals 'lintblauw'|'donkerblauw'|'oranje'"
+              "description": "Surface color of the panel: 'base' (the base surface) or a category color — 'accent' (default) or a Rijkshuisstijl color such as 'lintblauw'|'donkerblauw'|'oranje'"
             },
             {
               "name": "media-aspect-ratio",
@@ -19456,7 +20145,7 @@
                 "text": "string"
               },
               "default": "''",
-              "description": "Aspect ratio van het mediavlak (CSS-vorm, '16/9' of '16:9'); default '21/9'. Bepaalt op md/lg de hoogte van de hero, op sm de hoogte van het mediavlak",
+              "description": "Aspect ratio of the media area (CSS form, '16/9' or '16:9'); default '21/9'. On md/lg it sets the height of the hero, on sm the height of the media area",
               "fieldName": "mediaAspectRatio"
             },
             {
@@ -19465,7 +20154,7 @@
                 "text": "string"
               },
               "default": "''",
-              "description": "Body max-width; 'full' verwijdert de begrenzing (sectie-API)",
+              "description": "Body max-width; 'full' removes the bound (section API)",
               "fieldName": "width"
             },
             {
@@ -19474,7 +20163,7 @@
                 "text": "string"
               },
               "default": "''",
-              "description": "Bron van het mediavlak (alternatief voor de media-slot); genegeerd zodra de media-slot gevuld is",
+              "description": "Source of the media area (an alternative to the media slot); ignored as soon as the media slot is filled",
               "fieldName": "mediaSrc"
             },
             {
@@ -19484,7 +20173,7 @@
               },
               "default": "''",
               "fieldName": "mediaSrcset",
-              "description": "Responsive source set voor media-src"
+              "description": "Responsive source set for media-src"
             },
             {
               "name": "media-sizes",
@@ -19493,7 +20182,7 @@
               },
               "default": "''",
               "fieldName": "mediaSizes",
-              "description": "Source sizes-hint voor media-src"
+              "description": "Source sizes hint for media-src"
             },
             {
               "name": "media-alt",
@@ -19502,7 +20191,7 @@
               },
               "default": "''",
               "fieldName": "mediaAlt",
-              "description": "Alt-tekst voor media-src; leeg = decoratief"
+              "description": "Alt text for media-src; empty means decorative"
             },
             {
               "name": "background",
@@ -19515,7 +20204,7 @@
                 "name": "PageSectionMixin",
                 "module": "src/utilities/page-section-mixin.ts"
               },
-              "description": "Surface achter de hero (sectie-API)"
+              "description": "Surface behind the hero (section API)"
             },
             {
               "name": "scheme",
@@ -19528,7 +20217,7 @@
                 "name": "PageSectionMixin",
                 "module": "src/utilities/page-section-mixin.ts"
               },
-              "description": "Kleurschema (sectie-API)"
+              "description": "Color scheme (section API)"
             },
             {
               "name": "padding-block",
@@ -19540,7 +20229,7 @@
                 "name": "PageSectionMixin",
                 "module": "src/utilities/page-section-mixin.ts"
               },
-              "description": "Blokpadding-override, ook per rand en responsief (sectie-API)"
+              "description": "Block padding override, also per edge and responsive (section API)"
             },
             {
               "name": "padding-top",
@@ -19673,7 +20362,7 @@
                 "name": "PageSectionMixin",
                 "module": "src/utilities/page-section-mixin.ts"
               },
-              "description": "Minimale hoogte van de sectie (sectie-API)"
+              "description": "Minimum height of the section (section API)"
             }
           ],
           "mixins": [
@@ -19691,11 +20380,11 @@
           "slots": [
             {
               "name": "media",
-              "description": "Afbeelding of illustratie (img of nldd-image); vult het vlak en wordt geclipt. Heeft voorrang op de media-src-attributen. Zet `alt=\"\"` wanneer de afbeelding decoratief is; geef anders een beschrijvende alt-tekst op."
+              "description": "Image or illustration (img or nldd-image); fills the area and is clipped. Takes precedence over the media-src attributes. Set `alt=\"\"` when the image is decorative; otherwise give a describing alt text."
             },
             {
               "name": "",
-              "description": "Inhoud van het tekstpaneel (bijv. nldd-title en nldd-rich-text met color=\"inherit\")"
+              "description": "Content of the text panel (nldd-title and nldd-rich-text with color=\"inherit\", for instance)"
             }
           ]
         }
@@ -21318,6 +22007,27 @@
             },
             {
               "kind": "field",
+              "name": "horizontalAlignment",
+              "type": {
+                "text": "HorizontalAlignment"
+              },
+              "default": "'left'",
+              "description": "Where the body's children sit; the body itself keeps its own max-width.",
+              "attribute": "horizontal-alignment",
+              "reflects": true
+            },
+            {
+              "kind": "field",
+              "name": "verticalAlignment",
+              "type": {
+                "text": "VerticalAlignment"
+              },
+              "default": "'top'",
+              "attribute": "vertical-alignment",
+              "reflects": true
+            },
+            {
+              "kind": "field",
               "name": "background",
               "type": {
                 "text": "PageSectionBackground"
@@ -21523,6 +22233,24 @@
               "default": "''",
               "description": "Body max-width: 'full' removes the constraint so the section spans the full available width. Any CSS length (e.g. '480px') overrides the default max-width.",
               "fieldName": "width"
+            },
+            {
+              "name": "horizontal-alignment",
+              "type": {
+                "text": "HorizontalAlignment"
+              },
+              "default": "'left'",
+              "description": "Where the body's children sit across the body ('left' default). Use it to place something narrower than the body, such as a container with a max-width.",
+              "fieldName": "horizontalAlignment"
+            },
+            {
+              "name": "vertical-alignment",
+              "type": {
+                "text": "VerticalAlignment"
+              },
+              "default": "'top'",
+              "fieldName": "verticalAlignment",
+              "description": "Where the body's children sit down the section ('top' default). Only visible when the section is taller than its content."
             },
             {
               "name": "background",
@@ -22328,7 +23056,7 @@
       "declarations": [
         {
           "kind": "class",
-          "description": "Een non-modal floating panel dat is verankerd aan een trigger-element. Gebouwd op de native Popover API (popover=\"auto\") met Floating UI voor positionering. De browser regelt open/toggle/light-dismiss; deze component regelt alleen positionering en focus. Aanbevolen gebruik via popovertarget zodat de browser de toggle regelt: <nldd-button id=\"info-trigger\" popovertarget=\"info-popover\">Info</nldd-button> <nldd-popover id=\"info-popover\" anchor=\"info-trigger\" accessible-label=\"Info\"> <nldd-container> <p>Inhoud van de popover.</p> </nldd-container> </nldd-popover> Voor een custom focus-target binnen de popover: zet `autofocus` op het gewenste child-element. Anders krijgt de popover-host zelf focus.",
+          "description": "A non-modal floating panel anchored to a trigger element. Built on the native Popover API (popover=\"auto\") with Floating UI for positioning. The browser handles opening, toggling and light dismiss; this component only handles positioning and focus. The recommended use is through popovertarget, so the browser owns the toggle: <nldd-button id=\"info-trigger\" popovertarget=\"info-popover\">Info</nldd-button> <nldd-popover id=\"info-popover\" anchor=\"info-trigger\" accessible-label=\"Info\"> <nldd-container> <p>Content of the popover.</p> </nldd-container> </nldd-popover> For a custom focus target inside the popover, put `autofocus` on the child you want. Without it the popover host itself takes focus.",
           "name": "NLDDPopover",
           "members": [
             {
@@ -22501,7 +23229,7 @@
               },
               "default": "''",
               "fieldName": "anchor",
-              "description": "ID van het trigger-element voor positionering"
+              "description": "ID of the trigger element, used for positioning"
             },
             {
               "name": "placement",
@@ -22518,7 +23246,7 @@
                 "text": "string | undefined"
               },
               "fieldName": "width",
-              "description": "Expliciete width (default: 320px via --components-popover-default-width)"
+              "description": "Width as a CSS length (default: 320px through --components-popover-default-width). A content-based size (`fit-content`, `min-content`, `max-content`, `auto`) is refused: the popover is an inline-size container so slotted components can adapt to it, and its width cannot then come from that same content. Such a value is ignored, with a warning in DEV."
             },
             {
               "name": "top",
@@ -22527,7 +23255,7 @@
               },
               "default": "undefined",
               "fieldName": "top",
-              "description": "CSS top-positie. Wanneer gezet (alleen of samen met andere edge-attrs of `centered`) wordt Floating UI's anchor-positionering overgeslagen — de popover staat dan vrij op het scherm. De `anchor` blijft wel nodig voor ARIA-koppeling op de trigger. Geen effect op sm (bottom-sheet wint)."
+              "description": "CSS top position. When set (on its own, or together with other edge attributes or `centered`) Floating UI's anchor positioning is skipped and the popover stands free on the screen. The `anchor` is still needed for the ARIA link on the trigger. No effect on sm, where the bottom sheet wins."
             },
             {
               "name": "left",
@@ -22536,7 +23264,7 @@
               },
               "default": "undefined",
               "fieldName": "left",
-              "description": "CSS left-positie. Zie `top` voor semantiek."
+              "description": "CSS left position. See `top` for the semantics."
             },
             {
               "name": "right",
@@ -22545,7 +23273,7 @@
               },
               "default": "undefined",
               "fieldName": "right",
-              "description": "CSS right-positie. Zie `top` voor semantiek."
+              "description": "CSS right position. See `top` for the semantics."
             },
             {
               "name": "bottom",
@@ -22554,7 +23282,7 @@
               },
               "default": "undefined",
               "fieldName": "bottom",
-              "description": "CSS bottom-positie. Zie `top` voor semantiek."
+              "description": "CSS bottom position. See `top` for the semantics."
             },
             {
               "name": "centered",
@@ -22563,7 +23291,7 @@
               },
               "default": "false",
               "fieldName": "centered",
-              "description": "Centreert beide assen op de viewport. Per as overrideable: `centered top=\"0\"` = horizontaal gecentreerd, top-aligned. Mirrort CSS `place-items: center` met `align-items`/`justify-items` overrides."
+              "description": "Centers both axes on the viewport. Overridable per axis: `centered top=\"0\"` is centered horizontally, aligned to the top. Mirrors CSS `place-items: center` with `align-items`/`justify-items` overrides."
             },
             {
               "name": "sm-full-height",
@@ -22572,7 +23300,7 @@
               },
               "default": "false",
               "fieldName": "smFullHeight",
-              "description": "Op sm-viewport (waar de popover als bottom-sheet rendert) de volledige beschikbare hoogte vullen i.p.v. te krimpen naar content. Geen effect op md+ (anchored modus). Opt-in voor content-heavy use cases zoals zoekresultaten of lange detail-views; volgt Apple/Material conventie van content-sized als default."
+              "description": "On an sm viewport (where the popover renders as a bottom sheet) fills the whole available height instead of shrinking to its content. No effect on md and up (anchored mode). Opt-in for content-heavy cases such as search results or long detail views; content-sized is the default, following the Apple and Material convention."
             },
             {
               "name": "accessible-label",
@@ -22581,7 +23309,7 @@
               },
               "default": "''",
               "fieldName": "accessibleLabel",
-              "description": "(verplicht) Toegankelijke naam (aria-label). Valt terug op de i18n default ('Popover') als niet gezet — geef altijd een unieke, beschrijvende naam."
+              "description": "(required) Accessible name (aria-label). Falls back to the i18n default ('Popover') when unset — always give a unique, describing name."
             },
             {
               "name": "translations",
@@ -22589,7 +23317,7 @@
                 "text": "Partial<NLDDPopoverTranslations>"
               },
               "default": "{}",
-              "description": "Override translation keys; unset keys vallen terug op de Nederlandse default.",
+              "description": "Override translation keys; unset keys fall back to the Dutch default.",
               "fieldName": "translations"
             }
           ],
@@ -22602,17 +23330,17 @@
           "events": [
             {
               "name": "open",
-              "description": "Wanneer de popover wordt geopend"
+              "description": "When the popover opens"
             },
             {
               "name": "close",
-              "description": "Wanneer de popover wordt gesloten"
+              "description": "When the popover closes"
             }
           ],
           "slots": [
             {
               "name": "",
-              "description": "Vrije content (bijv. nldd-container met form/info)"
+              "description": "Free content (an nldd-container with a form or info, for instance)"
             }
           ]
         }
@@ -25029,7 +25757,7 @@
       "declarations": [
         {
           "kind": "class",
-          "description": "A cell component for displaying timeline track indicators in lists. Shows a vertical line with a dot indicating timeline position and state. The row's block padding belongs to the cell itself (via `--context-cell-padding-block`), so the line spans the cell's own box edge to edge and consecutive steps connect without gaps. Standaard is de cel een kaal spoor: een lijn met een stip per rij, voor een tijdlijn van gebeurtenissen. Met `variant=\"step\"` wordt de stip groot genoeg voor een cijfer of icoon en heb je een stappenlijst onder elkaar, de verticale tegenhanger van `nldd-step-indicator`. De maat hoort bij de variant en niet bij de inhoud: elke stip in een lijst is even groot, anders verspringt het spoor.",
+          "description": "A cell component for displaying timeline track indicators in lists. Shows a vertical line with a dot indicating timeline position and state. The row's block padding belongs to the cell itself (via `--context-cell-padding-block`), so the line spans the cell's own box edge to edge and consecutive steps connect without gaps. By default the cell is a bare track: a line with a dot per row, for a timeline of events. With `variant=\"step\"` the dot grows big enough for a number or an icon and you have a list of steps under each other, the vertical counterpart of `nldd-step-indicator`. The size belongs to the variant rather than to the content: every dot in a list is the same size, or the track would jump.",
           "name": "NLDDTimelineTrackCell",
           "members": [
             {
@@ -25146,7 +25874,7 @@
               },
               "default": "'past'",
               "fieldName": "status",
-              "description": "Status van deze stap (standaard 'past'); dezelfde waarden als `nldd-step-indicator-item`. `none` tekent alleen de lijn, zonder stip"
+              "description": "Status of this step (default 'past'); the same values as `nldd-step-indicator-item`. `none` draws the line only, without a dot"
             },
             {
               "name": "variant",
@@ -25155,7 +25883,7 @@
               },
               "default": "'dot'",
               "fieldName": "variant",
-              "description": "Wat deze rij is: een `dot` (standaard) op een tijdlijn van gebeurtenissen, stip van 16px, of een `step` in een stappenlijst, stip van 24px waar een cijfer of icoon in past"
+              "description": "What this row is: a `dot` (default) on a timeline of events, a 16px dot, or a `step` in a list of steps, a 24px dot with room for a number or an icon"
             },
             {
               "name": "minor",
@@ -25163,7 +25891,7 @@
                 "text": "boolean"
               },
               "default": "false",
-              "description": "Deze rij hoort onder de vorige: een kleinere stip in dezelfde baan, dus het spoor loopt recht door en er springt niets in. De stip blijft leeg (een cijfer of icoon past er niet in en zou de rij tot een eigen stap maken); de hiërarchie zet je verder met de rij zelf, bijvoorbeeld een `nldd-text-cell` in plaats van een `nldd-title-cell`",
+              "description": "This row belongs under the previous one: a smaller dot in the same lane, so the track runs straight on and nothing indents. The dot stays empty (a number or an icon would not fit, and would make the row a step of its own); carry the hierarchy in the row itself instead, with an `nldd-text-cell` rather than an `nldd-title-cell` for example",
               "fieldName": "minor"
             },
             {
@@ -25172,7 +25900,7 @@
                 "text": "Direction"
               },
               "default": "'down'",
-              "description": "Richting waarin de tijdlijn vooruit loopt: `down` (standaard) zet het verleden boven, `up` eronder. Alleen de huidige stap heeft een half spoor, dus alleen daar heeft dit effect",
+              "description": "The direction the timeline moves forward in: `down` (default) puts the past above, `up` below. Only the current step has half a track, so this only has an effect there",
               "fieldName": "direction"
             },
             {
@@ -25182,7 +25910,7 @@
               },
               "default": "'between'",
               "fieldName": "position",
-              "description": "Plek in de reeks (standaard 'between'): bepaalt of de lijn boven, onder of aan beide kanten van de stip doorloopt"
+              "description": "Place in the series (default 'between'): decides whether the line continues above the dot, below it, or on both sides. `only` is the single row in the series and gets a line on neither side: a track of one dot leads nowhere"
             },
             {
               "name": "text",
@@ -25191,7 +25919,7 @@
               },
               "default": "''",
               "fieldName": "text",
-              "description": "Cijfer of korte tekst in de stip"
+              "description": "Number or short text in the dot"
             },
             {
               "name": "icon",
@@ -25200,7 +25928,7 @@
               },
               "default": "''",
               "fieldName": "icon",
-              "description": "Icoonnaam in de stip; wint van `text`"
+              "description": "Icon name in the dot; wins over `text`"
             },
             {
               "name": "hide-below",
@@ -25240,7 +25968,7 @@
           "slots": [
             {
               "name": "",
-              "description": "Eigen inhoud in de stip (alternatief voor `text` en `icon`)"
+              "description": "Custom content in the dot (an alternative to `text` and `icon`)"
             }
           ]
         }
@@ -25927,7 +26655,7 @@
       "declarations": [
         {
           "kind": "class",
-          "description": "A row within an `nldd-list`. Renders as a link when `href` is set, as a checkbox when `checkbox` is set, as a button when `button` is set, or as a plain container otherwise. All cells and action segmented actions share one flat slot, in source order. Two rules govern every row: 1. State fills always paint the WIDENED row geometry — the row box extended by the indicator inline inset on both sides — whether or not the row is interactive. Paint never differs between a selected plain row and a selected interactive row. 2. The widened strip belongs to the ROW, never to a segment. A row with any action (its own `href`/`button`/`checkbox`, or a slotted segment) pulls itself outward (`is-interactive` host class → negative inline margin) and pads the row block back by the same amount, so content stays on the grid. A row-wide action owns that padding itself, making the whole widened box one hit area; slotted segmented actions stay in the grid, so their footprint is position-independent and tree columns line up at any depth. The divider spans the content width by default, with one exception: a row that opens with an `nldd-icon-cell` followed by a text or title cell starts the divider at that text, so the line aligns with the words rather than the icon. Leading spacers are ignored when deciding this. Mark a cell with `divider-start` and/or `divider-end` to place it yourself instead — an explicit marker replaces the derived one entirely, so `divider-start` on the icon cell restores the full-width line. Multiple markers resolve as the union: first `divider-start` through last `divider-end`. A start past the last end is an authoring error — the item DEV-warns and falls back to the full content width. A branch row can disclose its children in two ways: a dedicated `nldd-list-item-action[disclosure]` segment (only the chevron is clickable), or the row itself as the control (`button` + `expanded`, the whole row toggles). In the second case, mark the chevron's `nldd-icon-cell` with `disclosure` and the row turns it with `expanded` — the same affordance, without having to trade a clickable row for a turning chevron. `checkbox` makes the WHOLE row the control: the inner action becomes a `role=\"checkbox\"` button carrying `aria-checked`, it toggles `checked` on activation and fires `change`. Slot a visual `nldd-checkbox` (or any glyph) before the text and mark it `aria-hidden` + non-focusable — the row already conveys role and state, and a second focusable control would double the tab stops. Do NOT nest a real `<input type=\"checkbox\">` in the action: interactive content inside a `<button>` is invalid HTML and AT announces the button, not the checked state. A `<label>` variant is not offered for the same reason it cannot work — label-to-input association walks the DOM tree, and a slotted input is not a descendant of a label in the shadow root. When it renders as a link, `target` and `rel` are forwarded to the inner `<a>` (e.g. `target=\"_blank\" rel=\"noopener noreferrer\"`). With `target=\"_blank\"` the item also injects a visually hidden \"opens in new tab\" announcement for assistive technology (WCAG 2.1 SC 3.2.2). The item synchronizes its ARIA with its parent `nldd-list`'s `type`: - `list` parent → `role=\"listitem\"` - `navigation` parent → `role=\"listitem\"` + `aria-current=\"page\"` on the inner `<a>` / `<button>` when `selected` - `listbox` parent → `role=\"option\"` + `aria-selected` reflecting `selected`. The list points its search input's `aria-activedescendant` at the active option via `_highlighted` (separate from `selected`).",
+          "description": "A row within an `nldd-list`. Renders as a link when `href` is set, as a checkbox when `checkbox` is set, as a button when `button` is set, or as a plain container otherwise. All cells and action segmented actions share one flat slot, in source order. Two rules govern every row: 1. State fills always paint the WIDENED row geometry — the row box extended by the indicator inline inset on both sides — whether or not the row is interactive. Paint never differs between a selected plain row and a selected interactive row. 2. The widened strip belongs to the ROW, never to a segment. A row with any action (its own `href`/`button`/`checkbox`, or a slotted segment) pulls itself outward (`is-interactive` host class → negative inline margin) and pads the row block back by the same amount, so content stays on the grid. A row-wide action owns that padding itself, making the whole widened box one hit area; slotted segmented actions stay in the grid, so their footprint is position-independent and tree columns line up at any depth. By default the divider starts at the row's first text or title cell, so the line lands on the words rather than on whatever leads up to them — an icon, an avatar, a checkbox, or the spacers a tree indents with. Rows of different shapes then still line their dividers up with each other, and a tree's dividers step inward with its indentation. Text inside an `nldd-list-item-action` counts as the row's content, and the marker is that text cell rather than the action: the action carries its own inline padding, so its edge sits before the words. A row with no text or title cell keeps the full content width. Mark a cell with `divider-start` and/or `divider-end` to place it yourself instead — an explicit marker replaces the derived one entirely, so `divider-start` on the leading cell restores the full-width line. Multiple markers resolve as the union: first `divider-start` through last `divider-end`. A start past the last end is an authoring error — the item DEV-warns and falls back to the full content width. A branch row can disclose its children in two ways: a dedicated `nldd-list-item-action[disclosure]` segment (only the chevron is clickable), or the row itself as the control (`button` + `expanded`, the whole row toggles). In the second case, mark the chevron's `nldd-icon-cell` with `disclosure` and the row turns it with `expanded` — the same affordance, without having to trade a clickable row for a turning chevron. `checkbox` makes the WHOLE row the control: the inner action becomes a `role=\"checkbox\"` button carrying `aria-checked`, it toggles `checked` on activation and fires `change`. Slot a visual `nldd-checkbox` (or any glyph) before the text and mark it `aria-hidden` + non-focusable — the row already conveys role and state, and a second focusable control would double the tab stops. Do NOT nest a real `<input type=\"checkbox\">` in the action: interactive content inside a `<button>` is invalid HTML and AT announces the button, not the checked state. A `<label>` variant is not offered for the same reason it cannot work — label-to-input association walks the DOM tree, and a slotted input is not a descendant of a label in the shadow root. When it renders as a link, `target` and `rel` are forwarded to the inner `<a>` (e.g. `target=\"_blank\" rel=\"noopener noreferrer\"`). With `target=\"_blank\"` the item also injects a visually hidden \"opens in new tab\" announcement for assistive technology (WCAG 2.1 SC 3.2.2). The item synchronizes its ARIA with its parent `nldd-list`'s `type`: - `list` parent → `role=\"listitem\"` - `navigation` parent → `role=\"listitem\"` + `aria-current=\"page\"` on the inner `<a>` / `<button>` when `selected` - `listbox` parent → `role=\"option\"` + `aria-selected` reflecting `selected`. The list points its search input's `aria-activedescendant` at the active option via `_highlighted` (separate from `selected`).",
           "name": "NLDDListItem",
           "slots": [
             {
@@ -26274,16 +27002,6 @@
             },
             {
               "kind": "field",
-              "name": "background",
-              "type": {
-                "text": "ListBackground | undefined"
-              },
-              "description": "Surface fill for `variant=\"box\"`. `tinted` (default) for a list on\na plain page; `base` for a list on an already-tinted parent. No\neffect when `variant=\"simple\"`.",
-              "attribute": "background",
-              "reflects": true
-            },
-            {
-              "kind": "field",
               "name": "type",
               "type": {
                 "text": "ListType"
@@ -26306,13 +27024,13 @@
             },
             {
               "kind": "field",
-              "name": "noDividers",
+              "name": "dividers",
               "type": {
-                "text": "boolean"
+                "text": "ListDividers"
               },
-              "default": "false",
-              "description": "Hides dividers between list items.",
-              "attribute": "no-dividers",
+              "default": "'always'",
+              "description": "When to draw the lines between the items. `on-touch` draws them where the\nprimary input is touch: a pointer has the hover highlight to tell one row\nfrom the next, and a finger has nothing.",
+              "attribute": "dividers",
               "reflects": true
             },
             {
@@ -26395,18 +27113,10 @@
               "type": {
                 "text": "ListVariant"
               },
-              "description": "Visual style (default 'simple'): `simple` is a plain vertical strip with no chrome, `box` a framed card with rounded corners, fill and inset border ring",
+              "description": "Visual style (default 'simple'): `simple` is a plain vertical strip with no chrome, the two `box` values a framed card with rounded corners, fill and inset border ring. `box-tinted` for a list on a plain page, `box-base` for one on an already-tinted parent (the border ring gets +2 palette steps so it still reads against a card-on-card)",
               "name": "variant",
               "default": "'simple'",
               "fieldName": "variant"
-            },
-            {
-              "type": {
-                "text": "ListBackground | undefined"
-              },
-              "description": "Surface fill for `variant=\"box\"` (default 'tinted'). Use `base` on an already-tinted parent. No effect with `variant=\"simple\"`.",
-              "name": "background",
-              "fieldName": "background"
             },
             {
               "type": {
@@ -26428,12 +27138,12 @@
             },
             {
               "type": {
-                "text": "boolean"
+                "text": "ListDividers"
               },
-              "description": "Hides the dividers between list items",
-              "name": "no-dividers",
-              "default": "false",
-              "fieldName": "noDividers"
+              "description": "When to draw the lines between the items (default 'always'). `on-touch` draws them only where the primary input is touch, under `(pointer: coarse)`: a pointer has the hover highlight to tell one row from the next and a finger has nothing, so the line earns its place in the one case and is clutter in the other. `never` hides them everywhere",
+              "name": "dividers",
+              "default": "'always'",
+              "fieldName": "dividers"
             },
             {
               "type": {
@@ -28913,7 +29623,7 @@
       "declarations": [
         {
           "kind": "class",
-          "description": "A toolbar for page and container headings with optional navigation and action buttons. The component has two states: - Default: the back button shows the previous page title as a text button - Compact (class `is-compact`): the back button is an icon button, a divider and the toolbar title are visible When `collapse-anchor` is set, the `is-compact` class is automatically applied as soon as the top of the anchor element reaches this bar's own top edge (the sticky header line). Measuring the bar rather than the page keeps it correct in both nested and root scroll modes; it also re-points at the live scroll target when the page switches mode. Without `collapse-anchor` the bar takes a static state: compact when `text` is set (so the title shows in the title-group), non-compact otherwise (so the `back-text` button stays visible).",
+          "description": "A toolbar for page and container headings with optional navigation and action buttons. The component has two states: - Default: the back button shows the previous page title as a text button - Compact (class `is-compact`): the back button is an icon button, a divider and the toolbar title are visible When `collapse-anchor` is set, the `is-compact` class is automatically applied as soon as the top of the anchor element reaches this bar's own top edge (the sticky header line). Measuring the bar rather than the page keeps it correct in both nested and root scroll modes; it also re-points at the live scroll target when the page switches mode. Without `collapse-anchor` the bar takes a static state: compact when `text` is set (so the title shows in the title-group), non-compact otherwise (so the `back-text` button stays visible). An anchored bar hides its own title from assistive technology. The anchor is the heading the title swaps in for, so both carry the same words: once you scroll past the heading, a screen reader would otherwise find the same title twice. Sighted readers see one at a time, and this makes that true for everyone. Anchor at the heading, then, and not at some other element that happens to sit at the right height: the bar hands its title over to it.",
           "name": "NLDDTopTitleBar",
           "members": [
             {
@@ -29265,9 +29975,19 @@
       "declarations": [
         {
           "kind": "class",
-          "description": "Een notificatie-indicator, vaak voor ongelezen aantallen of statusdots. Kan tekst, een getal en/of een icoon tonen. Zonder inhoud verschijnt automatisch een stip. Gebruik in een hoek van een ander element (bijv. een icon) of standalone.",
+          "description": "Shows the state of something, or how much of it there is: a status, a number of unread messages, a dot saying something is new. What it says is decided by the system, and it changes without anyone touching it. A badge is never interactive. It shows text, a number and/or an icon; with no content it becomes a dot. Put it in a corner of another element (an icon, for instance) or on its own. For a property someone assigns to something, such as a category, a role or a certification, use `nldd-tag`. For standalone data the user works with, such as a chosen person or an active filter, use `nldd-token`.",
           "name": "NLDDBadge",
           "members": [
+            {
+              "kind": "field",
+              "name": "size",
+              "type": {
+                "text": "Size"
+              },
+              "default": "'md'",
+              "attribute": "size",
+              "reflects": true
+            },
             {
               "kind": "field",
               "name": "color",
@@ -29280,12 +30000,12 @@
             },
             {
               "kind": "field",
-              "name": "size",
+              "name": "pulse",
               "type": {
-                "text": "Size"
+                "text": "boolean"
               },
-              "default": "'md'",
-              "attribute": "size",
+              "default": "false",
+              "attribute": "pulse",
               "reflects": true
             },
             {
@@ -29338,6 +30058,16 @@
             },
             {
               "kind": "field",
+              "name": "decorative",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "attribute": "decorative",
+              "reflects": true
+            },
+            {
+              "kind": "field",
               "name": "translations",
               "type": {
                 "text": "Partial<T>"
@@ -29352,22 +30082,31 @@
           ],
           "attributes": [
             {
-              "name": "color",
-              "type": {
-                "text": "Color"
-              },
-              "default": "'critical'",
-              "fieldName": "color",
-              "description": "Semantisch ('critical' | 'accent' | 'neutral' | 'warning' | 'success') of een Rijkskleur ('lintblauw' | 'hemelblauw' | 'oranje' | …). Default: 'critical'"
-            },
-            {
               "name": "size",
               "type": {
                 "text": "Size"
               },
               "default": "'md'",
               "fieldName": "size",
-              "description": "Grootte: 'sm' | 'md' (default: 'md')"
+              "description": "Size: 'sm' | 'md' (default: 'md')"
+            },
+            {
+              "name": "color",
+              "type": {
+                "text": "Color"
+              },
+              "default": "'critical'",
+              "fieldName": "color",
+              "description": "Semantic ('critical' | 'accent' | 'neutral' | 'warning' | 'success') or a Rijkshuisstijl color ('lintblauw' | 'hemelblauw' | 'oranje' | …). Default: 'critical'"
+            },
+            {
+              "name": "pulse",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "fieldName": "pulse",
+              "description": "Grows a ring out of the badge and fades it, for something happening right now (a live connection, an outage). Respects `prefers-reduced-motion`."
             },
             {
               "name": "text",
@@ -29376,7 +30115,7 @@
               },
               "default": "''",
               "fieldName": "text",
-              "description": "Tekst (heeft voorrang op number)"
+              "description": "Text (takes precedence over number)"
             },
             {
               "name": "number",
@@ -29385,7 +30124,7 @@
               },
               "default": "undefined",
               "fieldName": "number",
-              "description": "Numerieke waarde. Wordt beknopt als meer dan max"
+              "description": "Numeric value. Shortened when it is over max"
             },
             {
               "name": "max",
@@ -29394,7 +30133,7 @@
               },
               "default": "99",
               "fieldName": "max",
-              "description": "Maximum waarde boven welke number wordt getoond als \"{max}+\" (default: 99)"
+              "description": "Value above which number is shown as \"{max}+\" (default: 99)"
             },
             {
               "name": "icon",
@@ -29403,7 +30142,7 @@
               },
               "default": "''",
               "fieldName": "icon",
-              "description": "Icoon naam. Icon-only wordt als vierkant gerenderd; met text/number komt het icoon links."
+              "description": "Icon name. Icon-only renders as a square; with text or number the icon goes on the left."
             },
             {
               "name": "accessible-label",
@@ -29412,7 +30151,16 @@
               },
               "default": "''",
               "fieldName": "accessibleLabel",
-              "description": "Toegankelijk label voor screenreaders. Fallback naar text/number; anders naar i18n default (\"Notificatie\")."
+              "description": "Accessible label for screen readers. Falls back to text/number; otherwise to the i18n default (\"Notificatie\")."
+            },
+            {
+              "name": "decorative",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "fieldName": "decorative",
+              "description": "Hides the badge from assistive software (use when the text beside it says the same, such as a dot next to a status word)"
             },
             {
               "name": "translations",
@@ -30242,6 +30990,246 @@
           "declaration": {
             "name": "NLDDModalDialog",
             "module": "src/components/status-and-feedback/modal-dialog/modal-dialog.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/status-and-feedback/notification/notification-region.ts",
+      "declarations": [
+        {
+          "kind": "function",
+          "name": "joinRegion",
+          "return": {
+            "type": {
+              "text": "void"
+            }
+          },
+          "parameters": [
+            {
+              "name": "notification",
+              "type": {
+                "text": "NLDDNotification"
+              }
+            },
+            {
+              "name": "label",
+              "type": {
+                "text": "string"
+              }
+            }
+          ],
+          "description": "Newest in front: what just happened is what you want to read, and the older\nones slide back and downwards behind it."
+        },
+        {
+          "kind": "function",
+          "name": "leaveRegion",
+          "return": {
+            "type": {
+              "text": "void"
+            }
+          },
+          "parameters": [
+            {
+              "name": "notification",
+              "type": {
+                "text": "NLDDNotification"
+              }
+            }
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "joinRegion",
+          "declaration": {
+            "name": "joinRegion",
+            "module": "src/components/status-and-feedback/notification/notification-region.ts"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "leaveRegion",
+          "declaration": {
+            "name": "leaveRegion",
+            "module": "src/components/status-and-feedback/notification/notification-region.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/status-and-feedback/notification/notification.ts",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "A short message that arrives over the interface and leaves on its own: a save that worked, a request that failed. Not a banner, which stands in the page and stays there — this one floats, stacks, and goes away. It places itself. Write it wherever it belongs in your code and it moves to one shared region: top right from md, full width across the top below that. Nothing about the position is settable, so notifications from anywhere in an application land in the same place and stack in the same order. More than one is a deck, not a list: the front one is readable and the older ones peek out below it, so a burst of messages takes the room of roughly one. The newest is in front. Behind it a notification is a bare surface, cut to the height of the one in front; dismiss the front and it slides up into the place that came free while its message fades in, because it was standing there all along. Under the front notification sits a strip as wide as the deck and as tall as the deck is when it fans out. Pointing at it fans the deck out to fill it, which is the only hint that there is more here than the message you can read; clicking it, or moving focus into the region, lays the whole deck out as a list. Clicking or tabbing away puts it back. The notification itself is not a button: a click on the message you are reading does nothing. Only the front of the deck counts down, and only while the deck is closed: open means someone is reading. The rest wait, so nothing disappears from under the one you are reading. `critical` never leaves on its own: a failure is worth reading, and the count-down would take it away while you were. That also keeps this within WCAG 2.2.1, which allows a time limit when what disappears is not essential. The clock pauses while a pointer moves over the notification and while focus is inside it, and resumes where it left off rather than starting over. A pointer that merely happens to rest where the notification appears does not count: it never moved, so nobody is reading. role follows the variant: `critical` becomes role=\"alert\", the rest role=\"status\". Focus never moves on its own. Escape dismisses the notification that focus is in.",
+          "name": "NLDDNotification",
+          "members": [
+            {
+              "kind": "field",
+              "name": "variant",
+              "type": {
+                "text": "NotificationVariant"
+              },
+              "default": "'neutral'",
+              "attribute": "variant",
+              "reflects": true
+            },
+            {
+              "kind": "field",
+              "name": "icon",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "attribute": "icon",
+              "reflects": true
+            },
+            {
+              "kind": "field",
+              "name": "text",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "attribute": "text",
+              "reflects": true
+            },
+            {
+              "kind": "field",
+              "name": "supportingText",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "attribute": "supporting-text",
+              "reflects": true
+            },
+            {
+              "kind": "field",
+              "name": "duration",
+              "default": "10000",
+              "attribute": "duration",
+              "reflects": true,
+              "type": {
+                "text": "number"
+              }
+            },
+            {
+              "kind": "field",
+              "name": "translations",
+              "type": {
+                "text": "Partial<T>"
+              },
+              "default": "{}",
+              "attribute": "translations",
+              "inheritedFrom": {
+                "name": "withTranslations",
+                "module": "src/utilities/with-translations.ts"
+              }
+            }
+          ],
+          "events": [
+            {
+              "name": "dismiss",
+              "description": "Fired when the notification is dismissed, by the button, by Escape, or by its own clock. The consumer removes it."
+            }
+          ],
+          "attributes": [
+            {
+              "name": "variant",
+              "type": {
+                "text": "NotificationVariant"
+              },
+              "default": "'neutral'",
+              "fieldName": "variant",
+              "description": "What kind of message this is; sets the icon color and the ARIA role (default: 'neutral')"
+            },
+            {
+              "name": "icon",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "fieldName": "icon",
+              "description": "Icon override. Default per variant: neutral → info-circle-filled, accent → info-circle-filled, success → check-circle-filled, warning → exclamation-triangle-filled, critical → exclamation-circle-filled"
+            },
+            {
+              "name": "text",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "fieldName": "text",
+              "description": "The message"
+            },
+            {
+              "name": "supporting-text",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "fieldName": "supportingText",
+              "description": "A second line under the message"
+            },
+            {
+              "name": "duration",
+              "default": "DEFAULT_DURATION",
+              "fieldName": "duration",
+              "description": "Milliseconds before it leaves once it is front of the deck (default: 10000). `0` keeps it until dismissed, which is what `critical` does regardless."
+            },
+            {
+              "name": "translations",
+              "type": {
+                "text": "Partial<T>"
+              },
+              "default": "{}",
+              "fieldName": "translations",
+              "inheritedFrom": {
+                "name": "withTranslations",
+                "module": "src/utilities/with-translations.ts"
+              },
+              "description": "Override translation keys; unset keys fall back to Dutch"
+            }
+          ],
+          "mixins": [
+            {
+              "name": "withTranslations",
+              "module": "/src/utilities/with-translations.js"
+            }
+          ],
+          "superclass": {
+            "name": "LitElement",
+            "package": "lit"
+          },
+          "tagName": "nldd-notification",
+          "customElement": true,
+          "slots": [
+            {
+              "name": "actions",
+              "description": "At most 2 nldd-button elements, under the text. More than 2 is refused with a DEV warning: a message that needs three choices is a dialog."
+            }
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "NLDDNotification",
+          "declaration": {
+            "name": "NLDDNotification",
+            "module": "src/components/status-and-feedback/notification/notification.ts"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "nldd-notification",
+          "declaration": {
+            "name": "NLDDNotification",
+            "module": "src/components/status-and-feedback/notification/notification.ts"
           }
         }
       ]
@@ -31173,11 +32161,11 @@
       "declarations": [
         {
           "kind": "class",
-          "description": "Eén stap in een `nldd-step-indicator`. De ouder bepaalt de status en het\nvolgnummer; die staan hier als interne state en niet als publieke API, op\n`status` na — dat overschrijft de afleiding uit `current`.",
+          "description": "One step in an `nldd-step-indicator`. The parent decides the status and the\nnumber; those live here as internal state rather than as public API, except\nfor `status`, which overrides what `current` derives.",
           "name": "NLDDStepIndicatorItem",
           "slots": [
             {
-              "description": "Label (alternatief voor `text`)",
+              "description": "Label (an alternative to `text`)",
               "name": ""
             }
           ],
@@ -31246,7 +32234,7 @@
               "type": {
                 "text": "StepIndicatorStatus | undefined"
               },
-              "description": "`past` | `current` | `future`; overschrijft wat de ouder afleidt",
+              "description": "`past` | `current` | `future`; overrides what the parent derives",
               "name": "status",
               "fieldName": "status"
             },
@@ -31254,7 +32242,7 @@
               "type": {
                 "text": "string"
               },
-              "description": "Label onder de bol",
+              "description": "Label under the disc",
               "name": "text",
               "default": "''",
               "fieldName": "text"
@@ -31263,7 +32251,7 @@
               "type": {
                 "text": "string"
               },
-              "description": "Icoon in de bol in plaats van het cijfer of het vinkje",
+              "description": "Icon in the disc instead of the number or the check mark",
               "name": "icon",
               "default": "''",
               "fieldName": "icon"
@@ -31272,7 +32260,7 @@
               "type": {
                 "text": "string"
               },
-              "description": "Maakt de stap een link (bijvoorbeeld terug naar een afgeronde stap)",
+              "description": "Makes the step a link (back to a completed step, for instance)",
               "name": "href",
               "default": "''",
               "fieldName": "href"
@@ -31296,7 +32284,7 @@
         },
         {
           "kind": "class",
-          "description": "Toont waar je staat in een proces van meerdere stappen: een rij bollen met een cijfer (of een vinkje op wat af is), een label eronder en een lijn die ze verbindt. De ouder houdt de waarheid vast: `current` (1-based) leidt de status van elk kind af — ervoor `past`, daarna `future`. Een kind kan dat overschrijven met een eigen `status`, voor flows die terugspringen of een stap overslaan. Alleen horizontaal. Wil je stappen onder elkaar, bouw dan een `nldd-list` met per rij een `nldd-timeline-track-cell` en een `nldd-title-cell`: verticale stappen dragen meestal meer dan een titel, en dat kan een lijstrij al. Onder de sm-breakpoint (container query, dus gemeten op het component zelf en niet op de viewport) klapt het om naar één regel tekst plus een segmentbalk. De volledige stappenlijst blijft dan in de DOM staan, alleen visueel verborgen, zodat hulpsoftware niet minder te horen krijgt dan een breed scherm laat zien. Toegankelijkheid: een `nav` met een label, daarin een `role=\"list\"` met per stap een `role=\"listitem\"`. De huidige stap krijgt `aria-current=\"step\"` — het enige begrip dat WAI-ARIA hiervoor kent. \"Afgerond\" en \"nog te doen\" bestaan niet als ARIA-token en reizen daarom als visueel verborgen tekst mee.",
+          "description": "Shows where you are in a process of several steps: a row of discs with a number (or a check mark on what is done), a label under each and a line connecting them. The parent holds the truth: `current` (1-based) derives the status of every child — `past` before it, `future` after. A child can override that with a `status` of its own, for flows that jump back or skip a step. Horizontal only. For steps under each other, build an `nldd-list` with an `nldd-timeline-track-cell` and an `nldd-title-cell` per row: vertical steps usually carry more than a title, and a list row already does that. Below the sm breakpoint (a container query, so measured on the component itself rather than on the viewport) it folds into one line of text plus a segmented bar. The full list of steps stays in the DOM, only visually hidden, so assistive software hears no less than a wide screen shows. Accessibility: a `nav` with a label, holding a `role=\"list\"` with a `role=\"listitem\"` per step. The current step gets `aria-current=\"step\"`, the only notion WAI-ARIA has for this. \"Done\" and \"still to do\" do not exist as ARIA tokens and travel along as visually hidden text instead.",
           "name": "NLDDStepIndicator",
           "members": [
             {
@@ -31365,7 +32353,7 @@
               },
               "default": "''",
               "fieldName": "accessibleLabel",
-              "description": "Naam van de nav; standaard de i18n-waarde (\"Voortgang\")"
+              "description": "Name of the nav; defaults to the i18n value (\"Voortgang\")"
             },
             {
               "name": "current",
@@ -31374,7 +32362,7 @@
               },
               "default": "1",
               "fieldName": "current",
-              "description": "1-based nummer van de huidige stap (standaard 1)"
+              "description": "1-based number of the current step (default 1)"
             },
             {
               "name": "translations",
@@ -31387,7 +32375,7 @@
                 "name": "withTranslations",
                 "module": "src/utilities/with-translations.ts"
               },
-              "description": "Overschrijf vertaalsleutels; niet gezette vallen terug op Nederlands"
+              "description": "Override translation keys; unset keys fall back to Dutch"
             }
           ],
           "mixins": [
@@ -31405,7 +32393,7 @@
           "slots": [
             {
               "name": "",
-              "description": "`nldd-step-indicator-item` kinderen"
+              "description": "`nldd-step-indicator-item` children"
             }
           ]
         }
@@ -31755,6 +32743,55 @@
           "declaration": {
             "name": "isTouchMode",
             "module": "src/utilities/input-modality.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/utilities/open-when-rendered.ts",
+      "declarations": [
+        {
+          "kind": "function",
+          "name": "openWhenRendered",
+          "return": {
+            "type": {
+              "text": ""
+            }
+          },
+          "parameters": [
+            {
+              "name": "host",
+              "type": {
+                "text": "LitElement"
+              },
+              "description": "The overlay element."
+            },
+            {
+              "name": "getDialog",
+              "type": {
+                "text": "() => HTMLDialogElement | null"
+              },
+              "description": "Resolves the dialog from the shadow root."
+            },
+            {
+              "name": "open",
+              "type": {
+                "text": "() => void"
+              },
+              "description": "Opens the overlay: the caller's own `show()`."
+            }
+          ],
+          "description": "Defers an overlay's `show()` until the element has rendered its `<dialog>`.\n\n`show()` needs a dialog in the shadow root to call `showModal()` on. A consumer\nthat opens an overlay in the same tick it is created — an overlay bound to\n`show=true` on a routed component, say — gets there first, and without this the\ncall would silently do nothing with nothing to retry it: the overlay stays shut\nfor good, which reads as a broken component rather than a race.\n\nRetried exactly once. If the dialog still is not there after the update, the\nelement was never rendered at all, and opening again would only queue another\nretry against the same missing dialog."
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "openWhenRendered",
+          "declaration": {
+            "name": "openWhenRendered",
+            "module": "src/utilities/open-when-rendered.ts"
           }
         }
       ]
@@ -32372,7 +33409,7 @@
               }
             }
           ],
-          "description": "A Lit attribute converter for a reflected enum property whose DEFAULT value\nshould not appear in the DOM.\n\nIt reflects any non-default value to the attribute (so `:host([prop=\"x\"])`\nstyling and framework property binding keep working), but maps the default to\n*no* attribute (`toAttribute` returns null), so the DOM isn't polluted with a\nredundant `prop=\"<default>\"` on every instance.\n\nPair it with `reflect: true`. The component's default styling must then live\non the bare `:host` (not `:host([prop=\"<default>\"])`), since a default-valued\nelement carries no attribute to select on.\n\nKnown edge: if markup writes the default *explicitly* (e.g. `<nldd-button\nsize=\"md\">`), `fromAttribute` resolves the property to the value it already\nholds, so Lit's default `hasChanged` sees no change, schedules no update, and\n`toAttribute` never runs to strip the attribute — so that one authored default\nattribute stays in the DOM. Visual behavior is unaffected (styling keys off the\nbare `:host`); it only matters to code matching `[prop=\"<default>\"]`, which\nshould read the property instead. Not worth a fragile `hasChanged` workaround."
+          "description": "A Lit attribute converter for a reflected property whose DEFAULT value should\nnot appear in the DOM. Works for an enum (a string union) and for a number.\n\nIt reflects any non-default value to the attribute (so `:host([prop=\"x\"])`\nstyling and framework property binding keep working), but maps the default to\n*no* attribute (`toAttribute` returns null), so the DOM isn't polluted with a\nredundant `prop=\"<default>\"` on every instance.\n\nPair it with `reflect: true`. The component's default styling must then live\non the bare `:host` (not `:host([prop=\"<default>\"])`), since a default-valued\nelement carries no attribute to select on.\n\nKnown edge: if markup writes the default *explicitly* (e.g. `<nldd-button\nsize=\"md\">`), `fromAttribute` resolves the property to the value it already\nholds, so Lit's default `hasChanged` sees no change, schedules no update, and\n`toAttribute` never runs to strip the attribute — so that one authored default\nattribute stays in the DOM. Visual behavior is unaffected (styling keys off the\nbare `:host`); it only matters to code matching `[prop=\"<default>\"]`, which\nshould read the property instead. Not worth a fragile `hasChanged` workaround."
         }
       ],
       "exports": [

@@ -48,11 +48,11 @@ describe('nldd-title', () => {
 		expect(el.shadowRoot!.querySelector<HTMLSlotElement>('slot[name="subtitle"]')!.assignedElements().length).toBeGreaterThan(0);
 	});
 
-	it('renders slotted actions', async () => {
-		el = await fixture('<nldd-title><button slot="actions">Actie</button></nldd-title>');
+	it('renders what is slotted at the end of the title line', async () => {
+		el = await fixture('<nldd-title><button slot="end">Actie</button></nldd-title>');
 		await waitForUpdate(el);
-		expect(el.querySelector('[slot="actions"]')?.textContent?.trim()).toBe('Actie');
-		expect(el.shadowRoot!.querySelector<HTMLSlotElement>('slot[name="actions"]')!.assignedElements().length).toBeGreaterThan(0);
+		expect(el.querySelector('[slot="end"]')?.textContent?.trim()).toBe('Actie');
+		expect(el.shadowRoot!.querySelector<HTMLSlotElement>('slot[name="end"]')!.assignedElements().length).toBeGreaterThan(0);
 	});
 
 	it('color="inherit" follows the surrounding text color, the default does not', async () => {

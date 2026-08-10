@@ -34,7 +34,10 @@ export const buttonStyles = css`
 		--_is-active-highlight-border-color: var(--semantics-buttons-neutral-tinted-is-active-highlight-border-color);
 
 		${inheritedTextReset}
-		display: inline-block;
+		/* inline-flex, not inline-block: a block container puts the control on a
+		   line, and the strut's descender then grows the host with the inherited
+		   line-height, so the same button is taller in body text than in a form. */
+		display: inline-flex;
 		position: relative;
 		/* A definite width, so a flex or grid parent doesn't stretch the host: an
 		   inline-block shrink-wraps in normal flow, but as a flex item it would be

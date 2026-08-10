@@ -252,7 +252,7 @@ export const titleStyles = css`
 		color: color-mix(in oklab, currentColor var(--semantics-content-secondary-opacity), transparent) !important;
 	}
 
-	.title__actions {
+	.title__end {
 		display: flex;
 		flex-direction: row;
 		flex-shrink: 0;

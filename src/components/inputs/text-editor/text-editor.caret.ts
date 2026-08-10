@@ -13,11 +13,16 @@ export function textCaretBox(dom: HTMLElement): { top: number; bottom: number } 
 	if (!view) return null;
 	const pos = view.posAtDOM(dom);
 	const line = view.state.doc.lineAt(pos);
+	// A widget that opens its line has no text before it to measure. Clamping to
+	// line.from would ask for the coords of the widget's own position, which sends
+	// CodeMirror right back into this coordsAt: the measure loop then never settles
+	// and spins a core for as long as the editor lives.
+	if (pos <= line.from) return null;
 	// coordsAtPos reads layout; when a widget's coordsAt is itself invoked during an
 	// update/measure pass, CM forbids that reentrant read and throws. Fall back to the
 	// caller's own rect in that case rather than letting the exception escape.
 	try {
-		const coords = view.coordsAtPos(Math.max(line.from, pos - 1), 1);
+		const coords = view.coordsAtPos(pos - 1, 1);
 		return coords ? { top: coords.top, bottom: coords.bottom } : null;
 	} catch {
 		return null;

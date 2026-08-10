@@ -12,6 +12,14 @@ describe('nldd-timeline-track-cell', () => {
 
 	const marker = () => el.shadowRoot!.querySelector('.timeline-track-cell__marker');
 
+	it('tekent bij position="only" geen lijn boven en geen lijn eronder', async () => {
+		el = await fixture('<nldd-timeline-track-cell position="only"></nldd-timeline-track-cell>');
+		await waitForUpdate(el);
+		expect(el.shadowRoot!.querySelector('.timeline-track-cell__top-line')).toBeNull();
+		expect(el.shadowRoot!.querySelector('.timeline-track-cell__bottom-line')).toBeNull();
+		expect(el.shadowRoot!.querySelector('.timeline-track-cell__marker')).not.toBeNull();
+	});
+
 	it('renders without error', async () => {
 		el = await fixture<NLDDTimelineTrackCell>('<nldd-timeline-track-cell></nldd-timeline-track-cell>');
 		await waitForUpdate(el);

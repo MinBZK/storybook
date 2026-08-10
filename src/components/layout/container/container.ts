@@ -61,6 +61,9 @@
  * @attr {string} sm-gap - Gap at sm breakpoint
  * @attr {string} md-gap - Gap at md breakpoint
  * @attr {string} lg-gap - Gap at lg breakpoint
+ * @attr {string} width - 'full' (default, fills the parent) | 'fit-content' | a CSS length (e.g. '480px'). A container narrower than its parent stays where its parent puts it; use the parent's horizontal-alignment to move it.
+ * @attr {string} min-width - Minimum width as a CSS length (e.g. '280px')
+ * @attr {string} max-width - Maximum width as a CSS length (e.g. '480px')
  * @attr {string} horizontal-alignment - 'left' | 'center' | 'right'
  * @attr {string} vertical-alignment - 'top' | 'center' | 'bottom'
  * @attr {string} padding - Padding for all sides
@@ -163,6 +166,15 @@ export class NLDDContainer extends LitElement {
 
 	@property({ type: Number, reflect: true, attribute: 'lg-column-count' })
 	lgColumnCount?: ColumnCount;
+
+	@property({ type: String, reflect: true })
+	width = '';
+
+	@property({ type: String, reflect: true, attribute: 'min-width' })
+	minWidth = '';
+
+	@property({ type: String, reflect: true, attribute: 'max-width' })
+	maxWidth = '';
 
 	@property({ type: String, reflect: true, attribute: 'horizontal-alignment' })
 	horizontalAlignment: HorizontalAlignment | undefined = undefined;
@@ -268,6 +280,25 @@ export class NLDDContainer extends LitElement {
 
 	override updated(_changed: PropertyValues): void {
 		this.writeCustomProperties();
+		this.writeDimensionProperties();
+	}
+
+	/** A length goes into a custom property; the keywords are selectors in the
+	 *  stylesheet. An unusable length is cleared, so the host falls back to the
+	 *  default rule instead of getting stuck on a selector that matches nothing. */
+	private writeDimensionProperties(): void {
+		const width = this.width;
+		const isKeyword = width === 'full' || width === 'fit-content';
+		const isLength = !!width && !isKeyword && CSS.supports('width', width);
+		if (isLength) this.style.setProperty('--_width', width);
+		else this.style.removeProperty('--_width');
+		if (width && !isKeyword && !isLength) this.width = '';
+
+		if (this.minWidth) this.style.setProperty('--_min-width', this.minWidth);
+		else this.style.removeProperty('--_min-width');
+
+		if (this.maxWidth) this.style.setProperty('--_max-width', this.maxWidth);
+		else this.style.removeProperty('--_max-width');
 	}
 
 	private writeCustomProperties(): void {

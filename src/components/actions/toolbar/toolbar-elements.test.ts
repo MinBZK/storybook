@@ -29,6 +29,36 @@ describe('nldd-toolbar-item', () => {
 });
 
 describe('nldd-toolbar-title', () => {
+
+	it('maakt merk en naam één link met href, en laat de action erbuiten', async () => {
+		el = await fixture('<nldd-toolbar-title text="Titel" href="/"><span slot="action">A</span></nldd-toolbar-title>');
+		const link = el.shadowRoot!.querySelector('.toolbar__title-link') as HTMLAnchorElement;
+		expect(link).not.toBeNull();
+		expect(link.getAttribute('href')).toBe('/');
+		expect(link.querySelector('slot[name="media"]')).not.toBeNull();
+		expect(link.querySelector('slot[name="action"]')).toBeNull();
+		expect(el.shadowRoot!.querySelector('slot[name="action"]')).not.toBeNull();
+	});
+
+	it('is zonder href geen link', async () => {
+		el = await fixture('<nldd-toolbar-title text="Titel"></nldd-toolbar-title>');
+		expect(el.shadowRoot!.querySelector('.toolbar__title-link')).toBeNull();
+		expect(el.shadowRoot!.querySelector('slot[name="media"]')).not.toBeNull();
+	});
+
+	it('toont een media-slot voor de titel', async () => {
+		el = await fixture('<nldd-toolbar-title text="Titel"><img slot="media" alt="Merk"></nldd-toolbar-title>');
+		const slot = el.shadowRoot!.querySelector('slot[name="media"]') as HTMLSlotElement;
+		expect(slot).not.toBeNull();
+		expect(slot.assignedElements().length).toBe(1);
+	});
+
+	it('staat een media-slot zonder titeltekst toe', async () => {
+		el = await fixture('<nldd-toolbar-title><img slot="media" alt="Merk"></nldd-toolbar-title>');
+		expect(el.shadowRoot!.querySelector('.toolbar__title')).toBeNull();
+		const slot = el.shadowRoot!.querySelector('slot[name="media"]') as HTMLSlotElement;
+		expect(slot.assignedElements().length).toBe(1);
+	});
 	let el: HTMLElement;
 
 	afterEach(() => {

@@ -36,16 +36,9 @@ export default {
 	argTypes: {
 		variant: {
 			control: 'select',
-			options: ['simple', 'box'],
-			description: '`box` (default) = framed card met afgeronde hoeken + border ring. `simple` = geen chrome (geen kader, padding of border) — voor inbedding in een eigen wrapper.',
-			table: { defaultValue: { summary: 'box' } },
-		},
-		background: {
-			control: 'select',
-			options: ['tinted', 'base'],
-			description: 'Achtergrondkleur van de container. `base` op een al getinte parent (border ring krijgt +2 stappen voor extra contrast). Alleen van toepassing bij `variant="box"`.',
-			table: { defaultValue: { summary: 'tinted' } },
-			if: { arg: 'variant', eq: 'box' },
+			options: ['box-tinted', 'box-base', 'simple'],
+			description: 'De twee `box`-waarden zijn een framed card met afgeronde hoeken + border ring en verschillen in de surface die ze vullen; `box-base` staat op een al getinte parent (border ring krijgt +2 stappen voor extra contrast). `simple` = geen chrome (geen kader, padding of border), voor inbedding in een eigen wrapper.',
+			table: { defaultValue: { summary: 'box-tinted' } },
 		},
 		content: {
 			control: 'text',
@@ -70,8 +63,7 @@ export default {
 		},
 	},
 	args: {
-		variant: 'box',
-		background: 'tinted',
+		variant: 'box-tinted',
 		content: DEFAULT_CONTENT,
 		language: '',
 		copy: true,
@@ -82,7 +74,6 @@ export default {
 const Template = (args: Record<string, any>) => html`
 	<nldd-code-viewer
 		variant=${args.variant}
-		background=${args.background}
 		language=${args.language || nothing}
 		?no-copy=${!args.copy}
 		?wrap=${args.wrap}
@@ -183,7 +174,7 @@ export const Simple = {
 	},
 };
 
-export const BackgroundBase = {
+export const BoxBase = {
 	render: (args: Record<string, any>) => html`
 		<div style="padding: 24px; background-color: var(--semantics-surfaces-tinted-background-color); border-radius: var(--primitives-corner-radius-lg);">
 			${Template(args)}
@@ -191,7 +182,7 @@ export const BackgroundBase = {
 	`,
 	args: {
 		language: 'json',
-		background: 'base',
+		variant: 'box-base',
 		content: `{
   "lawId": "zorgtoeslagwet",
   "active": true
@@ -200,7 +191,7 @@ export const BackgroundBase = {
 	parameters: {
 		docs: {
 			description: {
-				story: '`background="base"` voor een code-viewer op een getinte parent. De code-viewer tekent zich af met de basis-surface in plaats van te versmelten met de getinte achtergrond; de border ring krijgt automatisch +2 stappen voor extra contrast.',
+				story: '`variant="box-base"` voor een code-viewer op een getinte parent. De code-viewer tekent zich af met de basis-surface in plaats van te versmelten met de getinte achtergrond; de border ring krijgt automatisch +2 stappen voor extra contrast.',
 			},
 		},
 	},

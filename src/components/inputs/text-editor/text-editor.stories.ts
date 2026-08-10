@@ -392,7 +392,6 @@ export default {
 	},
 	args: {
 		variant: 'simple',
-		font: 'sans',
 		value: SAMPLE,
 		placeholder: '',
 		rows: 8,
@@ -408,12 +407,6 @@ export default {
 			options: ['simple', 'input-field'],
 			description: 'Visuele variant. "simple" is kaal zonder focusring; "input-field" voegt rand, vulling, padding, hoeken en focusring toe.',
 			table: { defaultValue: { summary: 'simple' } },
-		},
-		font: {
-			control: 'select',
-			options: ['sans', 'mono'],
-			description: 'Lettertype. "sans" (default) is het beste voor proza; "mono" voor een schrijf/code-gevoel.',
-			table: { defaultValue: { summary: 'sans' } },
 		},
 		value: {
 			control: 'text',
@@ -462,7 +455,6 @@ export default {
 
 const Template = ({
 	variant,
-	font,
 	value,
 	placeholder,
 	rows,
@@ -474,7 +466,6 @@ const Template = ({
 }: Record<string, any>) => html`
 	<nldd-text-editor
 		variant=${variant as string}
-		font=${font as string}
 		.value=${value || ''}
 		placeholder=${placeholder || nothing}
 		rows=${rows as number}
@@ -488,20 +479,6 @@ const Template = ({
 
 export const Default = {
 	render: Template,
-};
-
-export const Sans = {
-	render: () => html`
-		<nldd-text-editor font="sans" rows="10" .value=${SAMPLE} accessible-label="Tekst"></nldd-text-editor>
-	`,
-	parameters: { controls: { disable: true } },
-};
-
-export const Mono = {
-	render: () => html`
-		<nldd-text-editor font="mono" rows="10" .value=${SAMPLE} accessible-label="Tekst"></nldd-text-editor>
-	`,
-	parameters: { controls: { disable: true } },
 };
 
 export const InputField = {

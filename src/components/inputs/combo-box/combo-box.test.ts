@@ -1,8 +1,17 @@
 import { describe, it, expect, afterEach, vi } from 'vitest';
-import { fixture, cleanup, waitForUpdate, deepActiveElement } from '../../../test-utils.js';
+import { fixture, cleanup, waitForUpdate, deepActiveElement, nextFrames } from '../../../test-utils.js';
 import type { NLDDComboBox } from './combo-box.js';
 import './combo-box.js';
 import '../../actions/menu/menu.js';
+
+/** Waits until the combo-box reports an active descendant, so a test can press
+ *  Enter knowing there is something to pick. */
+async function totHighlight(combo: NLDDComboBox): Promise<void> {
+	const heeft = () => !!(combo as unknown as { _highlightedId: string })._highlightedId;
+	for (let poging = 0; poging < 60 && !heeft(); poging += 1) {
+		await nextFrames();
+	}
+}
 
 describe('nldd-combo-box', () => {
 	let el: HTMLElement;
@@ -804,4 +813,39 @@ describe('nldd-combo-box – allow-custom', () => {
 		expect(el.value).toBe('xx'); // value untouched
 		expect(el.shadowRoot!.querySelector('input')!.value).toBe(''); // typed text discarded
 	});
+	// A combo box in a form: the Enter that picks an option is not also a submit.
+	it('laat een verwerkte Enter niet doorborrelen naar het formulier', async () => {
+		el = await fixture(`
+			<form>
+				<nldd-combo-box accessible-label="Land">
+					<nldd-menu>
+						<nldd-menu-item value="nl" text="Nederland"></nldd-menu-item>
+						<nldd-menu-item value="be" text="Belgie"></nldd-menu-item>
+					</nldd-menu>
+				</nldd-combo-box>
+			</form>
+		`);
+		await waitForUpdate(el);
+		const combo = el.querySelector('nldd-combo-box') as NLDDComboBox;
+		const input = combo.shadowRoot!.querySelector('input')!;
+		let reachedForm = 0;
+		// `el` is the form: fixture returns the root of the given markup. Only
+		// Enter is counted — the arrow keys are free to bubble, they submit
+		// nothing.
+		el.addEventListener('keydown', (e) => {
+			if ((e as KeyboardEvent).key === 'Enter') reachedForm += 1;
+		});
+
+		input.dispatchEvent(new KeyboardEvent('keydown', { key: 'ArrowDown', bubbles: true, composed: true }));
+		// The first item is highlighted from a requestAnimationFrame that hangs off
+		// the popover's toggle event, and that event is a task of its own. Waiting a
+		// fixed number of frames is a race, so wait for the highlight itself.
+		await totHighlight(combo);
+		input.dispatchEvent(new KeyboardEvent('keydown', { key: 'Enter', bubbles: true, composed: true }));
+		await waitForUpdate(el);
+
+		expect(combo.value).toBe('nl');
+		expect(reachedForm).toBe(0);
+	});
+
 });

@@ -801,4 +801,19 @@ describe('nldd-popover slikt de eerste tik op klein scherm', () => {
 		expect(raakt).toBe(1);
 		expect(click.defaultPrevented).toBe(false);
 	});
+
+	it('negeert een inhoudsmaat als breedte en houdt de standaardbreedte', async () => {
+		el = await fixture('<nldd-popover width="fit-content" accessible-label="t"></nldd-popover>');
+		await waitForUpdate(el);
+		// Had the value been let through, the browser would compute the popover at
+		// 0px: an inline-size container cannot take its width from its own content.
+		expect(el.style.getPropertyValue('--components-popover-default-width')).toBe('');
+	});
+
+	it('zet een echte lengte wel door', async () => {
+		el = await fixture('<nldd-popover width="480px" accessible-label="t"></nldd-popover>');
+		await waitForUpdate(el);
+		expect(el.style.getPropertyValue('--components-popover-default-width')).toBe('480px');
+	});
+
 });

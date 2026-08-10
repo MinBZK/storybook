@@ -140,7 +140,7 @@ export const AlsLink = {
 
 export const BoxWithGutters = {
 	render: () => html`
-		<nldd-list variant="box">
+		<nldd-list variant="box-tinted">
 			<nldd-list-item>
 				<nldd-text-cell text="Gutters visible (spacer)"></nldd-text-cell>
 			</nldd-list-item>
@@ -153,7 +153,7 @@ export const BoxWithGutters = {
 
 export const WithLeadingAndTrailingCells = {
 	render: () => html`
-		<nldd-list variant="box">
+		<nldd-list variant="box-tinted">
 			<nldd-list-item>
 				<div style="width: 32px; height: 32px; background: var(--primitives-color-neutral-150); border-radius: 8px;"></div>
 				<nldd-spacer-cell size="8"></nldd-spacer-cell>
@@ -214,7 +214,7 @@ export const WithDragHandle = {
 
 		const el = document.createElement('div');
 		render(html`
-			<nldd-list variant="box" reorderable @nldd-reorder=${onReorder}>
+			<nldd-list variant="box-tinted" reorderable @nldd-reorder=${onReorder}>
 				<nldd-list-item>
 					<nldd-drag-handle-cell size="sm" reorderable-only></nldd-drag-handle-cell>
 					<nldd-spacer-cell reorderable-only size="8"></nldd-spacer-cell>
@@ -240,7 +240,7 @@ export const WithDragHandle = {
  */
 export const ResponsiveCells = {
 	render: () => html`
-		<nldd-list variant="box">
+		<nldd-list variant="box-tinted">
 			<nldd-list-item>
 				<nldd-icon-cell><nldd-icon name="file-text"></nldd-icon></nldd-icon-cell>
 				<nldd-spacer-cell size="12"></nldd-spacer-cell>

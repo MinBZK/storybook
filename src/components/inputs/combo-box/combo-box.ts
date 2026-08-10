@@ -511,6 +511,10 @@ export class NLDDComboBox extends FormAssociated(LitElement) {
 				// (see _handleInput), so the Enter-commit must also work while
 				// the menu is closed.
 				e.preventDefault();
+				// The Enter committed a value; it is not also a submit. Without
+				// this a combo box in a form submits the form on the same press
+				// that picks the option.
+				e.stopPropagation();
 				this.value = this.text;
 				this.commitFormValue();
 				this.dispatchEvent(new CustomEvent('change', {
@@ -535,6 +539,9 @@ export class NLDDComboBox extends FormAssociated(LitElement) {
 				break;
 			case 'Enter': {
 				e.preventDefault();
+				// Consumed by the open menu, so it must not travel on to a
+				// surrounding form as a submit.
+				e.stopPropagation();
 				const highlighted = this._menu?.getHighlighted();
 				if (highlighted) {
 					highlighted.select();

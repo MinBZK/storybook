@@ -47,9 +47,17 @@ export const titleCellStyles = css`
 	}
 
 	:host([width="fit-content"]) {
+		/* min-content rather than 0 as the floor: the cell gives way as soon as
+		   the row is too narrow, but never past the width of its longest word,
+		   so the text stays readable instead of breaking mid-word. */
+		--_min-width: min-content;
+
 		width: fit-content;
 		flex-grow: 0;
-		flex-shrink: 0;
+		/* Krimpen mag: fit-content betekent min(max-content, max(min-content,
+		   beschikbaar)), en met flex-shrink: 0 hield de cel zijn inhoudsbreedte
+		   vast en duwde hij alles erachter de rij uit. */
+		flex-shrink: 1;
 		flex-basis: auto;
 	}
 
@@ -161,6 +169,9 @@ export const titleCellStyles = css`
 		overflow-wrap: anywhere;
 	}
 
+	/* Balanced, not pretty: a title is a handful of words, and evening out the
+	   lines keeps a two-line one from being a full line plus one word. Running
+	   text is nldd-text-cell's job, and there pretty is the right rule. */
 	.title-cell__title {
 		margin: 0;
 		min-width: 0;
@@ -169,7 +180,7 @@ export const titleCellStyles = css`
 		color: var(--_title-color);
 		font: var(--_title-font);
 		overflow-wrap: break-word;
-		text-wrap: pretty;
+		text-wrap: balance;
 	}
 
 	@media (forced-colors: active) {

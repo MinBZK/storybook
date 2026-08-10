@@ -18,11 +18,30 @@ export function toolbarItemTemplate(component: NLDDToolbarItem) {
 // # Title template
 
 export function toolbarTitleTemplate(component: NLDDToolbarTitle) {
-	return html`
+	const titleGroup = html`
 		<div class="toolbar__title-group">
 			${component.text ? html`<p class="toolbar__title">${component.text}</p>` : nothing}
 			${component.supportingText ? html`<p class="toolbar__subtitle">${component.supportingText}</p>` : nothing}
 		</div>
+	`;
+
+	// The link takes the mark and the name, never the action slot: a control
+	// inside a link is a control you cannot reach without following the link.
+	// A new-tab link is a change of context, so it announces that (WCAG 2.1 SC 3.2.2).
+	return html`
+		${component.href ? html`
+			<a class="toolbar__title-link"
+				href=${component.href}
+				target=${component.target || nothing}
+				rel=${component.target === '_blank' ? 'noopener noreferrer' : nothing}
+			>
+				<slot name="media"></slot>
+				${titleGroup}${component.target === '_blank' ? html`<span class="toolbar__opens-in-new-tab-hint">${component._t('components.toolbar.opens-in-new-tab-label')}</span>` : nothing}
+			</a>
+		` : html`
+			<slot name="media"></slot>
+			${titleGroup}
+		`}
 		<slot name="action"></slot>
 	`;
 }

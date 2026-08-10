@@ -172,4 +172,20 @@ describe('nldd-step-indicator', () => {
 		expect(compact.textContent).toContain('Je profiel');
 	});
 
+	it('past een translations-override toe op de compacte tekst', async () => {
+		const el = await fixture<NLDDStepIndicator>(`
+			<nldd-step-indicator current="1">
+				<nldd-step-indicator-item text="Een"></nldd-step-indicator-item>
+				<nldd-step-indicator-item text="Twee"></nldd-step-indicator-item>
+			</nldd-step-indicator>
+		`);
+		await waitForUpdate(el);
+
+		el.translations = { 'components.step-indicator.compact-text': 'Step {current} of {total}' };
+		await waitForUpdate(el);
+
+		const compact = el.shadowRoot!.querySelector('.step-indicator__compact-text')!;
+		expect(compact.textContent).toContain('Step 1 of 2');
+	});
+
 });
