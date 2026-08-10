@@ -188,6 +188,37 @@ describe('nldd-container', () => {
 		expect(child.style.getPropertyValue('--_slot-order')).toBe('-1');
 	});
 
+	it('puts a width length in a custom property and leaves the keywords to CSS', async () => {
+		el = await fixture('<nldd-container width="480px" min-width="280px" max-width="640px"></nldd-container>');
+		await waitForUpdate(el);
+		expect(el.style.getPropertyValue('--_width')).toBe('480px');
+		expect(el.style.getPropertyValue('--_min-width')).toBe('280px');
+		expect(el.style.getPropertyValue('--_max-width')).toBe('640px');
+
+		el.setAttribute('width', 'fit-content');
+		await waitForUpdate(el);
+		// A keyword is a selector, not a value: nothing lands inline.
+		expect(el.style.getPropertyValue('--_width')).toBe('');
+		expect(el.getAttribute('width')).toBe('fit-content');
+	});
+
+	it('clears a width that is not a length, so the default rule applies again', async () => {
+		el = await fixture('<nldd-container width="480px"></nldd-container>');
+		await waitForUpdate(el);
+		el.setAttribute('width', 'nogal breed');
+		await waitForUpdate(el);
+		expect(el.style.getPropertyValue('--_width')).toBe('');
+		expect(el.getAttribute('width')).toBe('');
+	});
+
+	it('removes the inline custom prop when a width attribute is cleared', async () => {
+		el = await fixture('<nldd-container max-width="640px"></nldd-container>');
+		await waitForUpdate(el);
+		el.removeAttribute('max-width');
+		await waitForUpdate(el);
+		expect(el.style.getPropertyValue('--_max-width')).toBe('');
+	});
+
 	it('removes the inline custom prop when the order attribute is cleared', async () => {
 		el = await fixture('<nldd-container layout="row"><div order="3"></div></nldd-container>');
 		await waitForUpdate(el);

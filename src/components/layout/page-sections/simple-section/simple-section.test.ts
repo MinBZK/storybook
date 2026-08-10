@@ -28,6 +28,28 @@ describe('nldd-simple-section', () => {
 		await waitForUpdate(el);
 		expect(el.getAttribute('width')).toBe('full');
 	});
+
+	it('reflects the alignment attributes and leaves the defaults out of the DOM', async () => {
+		el = await fixture('<nldd-simple-section></nldd-simple-section>');
+		await waitForUpdate(el);
+		expect(el.hasAttribute('horizontal-alignment')).toBe(false);
+		expect(el.hasAttribute('vertical-alignment')).toBe(false);
+
+		(el as unknown as { horizontalAlignment: string }).horizontalAlignment = 'center';
+		(el as unknown as { verticalAlignment: string }).verticalAlignment = 'bottom';
+		await waitForUpdate(el);
+		expect(el.getAttribute('horizontal-alignment')).toBe('center');
+		expect(el.getAttribute('vertical-alignment')).toBe('bottom');
+	});
+
+	it('lines the children up in the main, where they land', async () => {
+		el = await fixture('<nldd-simple-section horizontal-alignment="center" vertical-alignment="center"></nldd-simple-section>');
+		await waitForUpdate(el);
+		const main = el.shadowRoot!.querySelector('.simple-section__main') as HTMLElement;
+		const stijl = getComputedStyle(main);
+		expect(stijl.justifyContent).toBe('center');
+		expect(stijl.alignItems).toBe('center');
+	});
 });
 
 // PageSectionMixin is shared by every page section; simple-section is the
