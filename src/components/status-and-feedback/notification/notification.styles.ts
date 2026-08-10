@@ -8,21 +8,28 @@ const smMax = unsafeCSS(breakpoints.smMax);
 
 export const notificationStyles = css`
 	:host {
-		--_icon-color: var(--components-notification-icon-neutral-color);
-		--_icon-size: var(--components-notification-icon-size);
-		--_padding: var(--components-notification-padding);
-		--_dismiss-inset: calc(var(--_padding) - (var(--semantics-controls-sm-min-size) - var(--_icon-size)) / 2);
-		--_dismiss-space: calc(var(--_dismiss-inset) + var(--semantics-controls-sm-min-size));
+		--_width: var(--primitives-area-400);
 		--_depth: 0;
 		--_hint: 0;
-		--_stack-offset: calc(var(--components-notification-stack-offset) + var(--components-notification-stack-hint-offset) * var(--_hint));
+		--_stack-base-offset: var(--primitives-space-6);
+		--_stack-hint-offset: var(--primitives-space-6);
+		--_stack-offset: calc(var(--_stack-base-offset) + var(--_stack-hint-offset) * var(--_hint));
+		--_stack-scale-step: 0.03;
+		--_padding: var(--primitives-space-12);
+		--_gap: var(--primitives-space-6);
+		--_icon-color: var(--components-notification-icon-neutral-color);
+		--_icon-size: var(--primitives-space-32);
+		--_actions-margin-top: var(--primitives-space-4);
+		--_actions-gap: var(--primitives-space-6);
+		--_dismiss-inset: calc(var(--_padding) - (var(--semantics-controls-sm-min-size) - var(--_icon-size)) / 2);
+		--_dismiss-space: calc(var(--_dismiss-inset) + var(--semantics-controls-sm-min-size));
 
 		box-sizing: border-box;
 		display: block;
 		border-radius: var(--components-notification-corner-radius);
 		box-shadow: var(--components-notification-box-shadow);
 		background-color: var(--components-notification-background-color);
-		width: var(--components-notification-width);
+		width: var(--_width);
 		max-width: 100%;
 		overflow: hidden;
 		/* Open, the region is a column that can run past the bottom of the screen.
@@ -30,7 +37,7 @@ export const notificationStyles = css`
 		   letting the list scroll. */
 		flex-shrink: 0;
 		translate: 0 calc(var(--_stack-offset) * var(--_depth));
-		scale: calc(1 - var(--components-notification-stack-scale-step) * var(--_depth)) 1;
+		scale: calc(1 - var(--_stack-scale-step) * var(--_depth)) 1;
 		transform-origin: top center;
 		transition: translate var(--primitives-transition-duration-medium) var(--primitives-transition-easing-default), scale var(--primitives-transition-duration-medium) var(--primitives-transition-easing-default);
 		animation: notification-arrive var(--primitives-transition-duration-medium) var(--primitives-transition-easing-default) both;
@@ -80,7 +87,7 @@ export const notificationStyles = css`
 		transition: opacity var(--primitives-transition-duration-medium) var(--primitives-transition-easing-default);
 		padding: var(--_padding);
 		padding-inline-end: var(--_dismiss-space);
-		gap: var(--components-notification-gap);
+		gap: var(--_gap);
 		align-items: center;
 	}
 
@@ -137,9 +144,9 @@ export const notificationStyles = css`
 	   button for the same corner, and both would lose room for a real label. */
 	.notification__actions {
 		display: flex;
-		margin-top: var(--components-notification-actions-margin-top);
+		margin-top: var(--_actions-margin-top);
 		flex-wrap: wrap;
-		gap: var(--components-notification-actions-gap);
+		gap: var(--_actions-gap);
 	}
 
 	.notification__actions[hidden] {

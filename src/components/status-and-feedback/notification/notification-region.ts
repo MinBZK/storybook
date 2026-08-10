@@ -101,7 +101,7 @@ function makeExpander(region: HTMLElement): HTMLElement {
 		'right: 0',
 		'left: 0',
 		'display: none',
-		'height: var(--components-notification-stack-expander-height)',
+		'height: var(--primitives-space-24)',
 		'pointer-events: auto',
 	].join(';');
 	strip.addEventListener('pointerenter', () => setHint(region, true));
