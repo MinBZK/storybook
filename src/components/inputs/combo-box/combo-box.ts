@@ -60,6 +60,7 @@ import type { NLDDMenu, NLDDMenuItem } from '../../actions/menu/menu.js';
 import '../../actions/menu/menu.js';
 import '../../actions/icon-button/icon-button.js';
 import '../../content/icon/icon.js';
+import { submitOnEnter } from '../../../utilities/implicit-submission.js';
 
 export type ComboBoxSize = 'sm' | 'md';
 
@@ -530,6 +531,12 @@ export class NLDDComboBox extends FormAssociated(LitElement) {
 					bubbles: true,
 					composed: true,
 				}));
+			} else if (e.key === 'Enter') {
+				// Nothing to commit: no menu open, and either free text is not allowed
+				// or there is none that differs from the value. This Enter is not ours,
+				// so it goes to the form the way the browser would have sent it if the
+				// input were not in a shadow root.
+				submitOnEnter(this, e);
 			}
 			return;
 		}

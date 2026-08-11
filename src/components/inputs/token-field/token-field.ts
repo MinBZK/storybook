@@ -40,6 +40,7 @@ import { tokenFieldTemplate } from './token-field.template.js';
 import { nlddTokenFieldTranslations, type NLDDTokenFieldTranslations } from './token-field.i18n.js';
 import type { NLDDMenu, NLDDMenuItem } from '../../actions/menu/menu.js';
 import '../../actions/menu/menu.js';
+import { submitOnEnter } from '../../../utilities/implicit-submission.js';
 
 /** Trailing control rendered on each token. */
 export type TokenFieldControl = 'dismiss' | 'menu';
@@ -544,6 +545,11 @@ export class NLDDTokenField extends FormAssociated(LitElement) {
 				} else if (this.allowCustom && this._text.trim()) {
 					e.preventDefault();
 					this._commitValue(this._text.trim());
+				} else {
+					// Nothing here to act on, so this Enter is not ours. Hand it to the
+					// form, which is what the sentence above promises and what the
+					// browser would have done if the input were not in a shadow root.
+					submitOnEnter(this, e);
 				}
 				break;
 			}

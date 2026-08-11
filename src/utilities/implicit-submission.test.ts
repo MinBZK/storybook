@@ -6,6 +6,8 @@ import '../components/inputs/number-field/number-field.js';
 import '../components/inputs/multi-line-text-field/multi-line-text-field.js';
 import '../components/inputs/search-field/search-field.js';
 import '../components/actions/button/button.js';
+import '../components/inputs/token-field/token-field.js';
+import '../components/inputs/combo-box/combo-box.js';
 
 /** Presses Enter on the inner control of a field, the way a user would. */
 function pressEnter(field: Element): void {
@@ -112,5 +114,41 @@ describe('Enter submits the form a field belongs to', () => {
 		el = await fixture('<div><nldd-text-field></nldd-text-field></div>');
 		await waitForUpdate(el);
 		expect(() => pressEnter(el.querySelector('nldd-text-field')!)).not.toThrow();
+	});
+
+	// These two use Enter for something of their own, and only when they act on
+	// it. An Enter they do nothing with is not theirs, and belongs to the form.
+	it('submits from a token field when there is nothing to commit', async () => {
+		// allow-custom keeps the inner input alive; without options or custom input
+		// a token field renders none, and there is nothing to press Enter in.
+		el = await fixture('<form><nldd-token-field allow-custom accessible-label="Tags"></nldd-token-field></form>');
+		await waitForUpdate(el);
+		const submit = onSubmit(el as HTMLFormElement);
+		pressEnter(el.querySelector('nldd-token-field')!);
+		expect(submit).toHaveBeenCalledOnce();
+	});
+
+	it('makes a token instead of submitting when there is text to commit', async () => {
+		el = await fixture('<form><nldd-token-field allow-custom accessible-label="Tags"></nldd-token-field></form>');
+		await waitForUpdate(el);
+		const field = el.querySelector('nldd-token-field') as HTMLElement & { values: string[] };
+		const inner = field.shadowRoot!.querySelector('input') as HTMLInputElement;
+		inner.value = 'blauw';
+		inner.dispatchEvent(new Event('input', { bubbles: true, composed: true }));
+		await waitForUpdate(field);
+
+		const submit = onSubmit(el as HTMLFormElement);
+		pressEnter(field);
+		await waitForUpdate(field);
+		expect(field.values).toContain('blauw');
+		expect(submit).not.toHaveBeenCalled();
+	});
+
+	it('submits from a combo box with a closed menu and nothing to commit', async () => {
+		el = await fixture('<form><nldd-combo-box accessible-label="Land"></nldd-combo-box></form>');
+		await waitForUpdate(el);
+		const submit = onSubmit(el as HTMLFormElement);
+		pressEnter(el.querySelector('nldd-combo-box')!);
+		expect(submit).toHaveBeenCalledOnce();
 	});
 });
