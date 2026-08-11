@@ -198,11 +198,11 @@ Aliases mogen meerdere synoniemen hebben voor hetzelfde icoon. Groottevarianten 
 
 ## Gallery-status: Nieuw en Bijgewerkt
 
-De IconGallery-story in Storybook toont een `nldd-tag` "Nieuw" of "Bijgewerkt" op de tegels van de meest recente iconen-batch. Welke iconen dat zijn staat in `icon-gallery-status.ts` (`NEW_ICONS` en `UPDATED_ICONS`).
+De IconGallery-story in Storybook toont een `nldd-tag` "Nieuw" of "Bijgewerkt" op de tegels van de recentste iconen. Welke iconen dat zijn staat in `icon-gallery-status.ts` (`NEW_ICONS` en `UPDATED_ICONS`).
 
-Bij elke nieuwe iconen-batch **vervang** je de inhoud van beide sets (niet aanvullen), zodat de gallery altijd alleen de laatste batch markeert:
+Bij elke nieuwe iconen-batch **herbereken** je de inhoud van beide sets (niet aanvullen) over de laatste drie weken git-historie, zodat de gallery een meelopend venster markeert. Drie weken en niet alleen de batch die je nu toevoegt: een release neemt meestal één batch mee, dus wie bij elke batch schoonveegt haalt het label van de vorige weg op de dag dat die bij consumenten aankomt. De kop van `icon-gallery-status.ts` bevat het `git log`-commando en de valkuil (geen `--follow`).
 
-- `NEW_ICONS` — iconen die nieuw zijn in deze batch
+- `NEW_ICONS` — iconen die nieuw zijn in dat venster
 - `UPDATED_ICONS` — bestaande iconen met nieuw artwork, renames (met of zonder nieuw artwork) en iconen waarvan de aliassen zijn gewijzigd
 - Valt een icoon in beide sets, dan wint "Nieuw"
 

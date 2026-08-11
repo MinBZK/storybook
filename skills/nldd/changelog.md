@@ -15,6 +15,18 @@ the type of conventional-commit determines the release. Conventional types
 `chore`, `docs`, `ci`, `style`, `test`, `build` are intentionally omitted
 here; consult the commit history if you need that level of detail.
 
+### Highlights
+
+- **Eight new icons for version control.** `git-branch`, `git-commit`, `git-compare`, `git-fork`, `git-merge`, `git-pull-request`, `git-pull-request-closed` and `git-pull-request-draft` draw the commit graph the way a code forge already draws it: dots on a line, a line that splits off, a line that joins back. The closed request carries a cross and the draft one a dashed stem, so three states of the same request stay one family. Their names say what the icon means rather than what it shows, which is the exception in this set. A dot on a line says nothing outside a repository. The prefix is not decoration either: it keeps `branch`, `fork` and `merge` free for the branch, the cutlery and the junction that may still turn up.
+
+### Added
+
+- **Icons** — `git-branch`, `git-commit`, `git-compare`, `git-fork`, `git-merge`, `git-pull-request`, `git-pull-request-closed` and `git-pull-request-draft`. No aliases: these names are the functional ones.
+
+### Changed
+
+- **`point-bottom-left-to-point-top-right-s-curve-path` is redrawn.** Its two end points are a size smaller: the disc goes from 8 to 7 pixels across and the dot inside it from 4 to 3, with the ring around it still 2. That is the node the new `git-*` icons draw, so a route and a commit graph now sit at the same weight.
+
 ## [0.8.80](https://github.com/MinBZK/storybook/compare/v0.8.79...v0.8.80) (2026-08-10)
 
 ### Highlights

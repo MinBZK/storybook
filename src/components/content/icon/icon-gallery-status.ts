@@ -3,11 +3,12 @@
 // gallery spot what changed without reading the changelog.
 //
 // Both sets are derived from git history rather than kept by hand, and they are
-// replaced (not extended) with every batch, so the gallery marks the latest
-// batch only. A batch is everything that happened to the icons since the last
-// one shipped:
+// recomputed (not extended) with every batch, so the gallery marks a moving
+// window of the last three weeks. Three weeks rather than the batch you are
+// adding right now, because a release usually carries one batch: wipe the sets
+// on every batch and the previous one loses its tag the day it reaches anyone.
 //
-//   git log --since=<date> --reverse --find-renames --name-status --format= \
+//   git log --since=3.weeks --reverse --find-renames --name-status --format= \
 //     -- src/components/content/icon/icons
 //
 // Read those events oldest first and chain renames forward to today's filename.
@@ -43,6 +44,14 @@ export const NEW_ICONS = new Set([
 	'file-text-on-file-text',
 	'folder-badge-plus',
 	'folder-open',
+	'git-branch',
+	'git-commit',
+	'git-compare',
+	'git-fork',
+	'git-merge',
+	'git-pull-request',
+	'git-pull-request-closed',
+	'git-pull-request-draft',
 	'hand-thumbs-down',
 	'hand-thumbs-up',
 	'house-apartment-building',
@@ -118,6 +127,7 @@ export const UPDATED_ICONS = new Set([
 	'folder',
 	'folder-on-folder',
 	'lightbulb',
+	'point-bottom-left-to-point-top-right-s-curve-path',
 	'rectangle-stack',
 	'seal-check-mark',
 	'square-arrow-down',
