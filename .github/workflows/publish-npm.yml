@@ -95,10 +95,15 @@ jobs:
       # signing-certificaat. Staat bewust alleen op deze job.
       id-token: write
     steps:
+      # The one place the version is written by hand, and it cannot be otherwise
+      # here: this job deliberately does not check out the repository (it only
+      # publishes the tarball `build` packed), so there is no .nvmrc to read.
+      # Keep it equal to .nvmrc. Adding a checkout to read a single file would
+      # pull more into this job than it needs, which is what the setup avoids.
       - name: Setup Node.js
         uses: actions/setup-node@v7
         with:
-          node-version-file: '.nvmrc'
+          node-version: '24'
           registry-url: 'https://registry.npmjs.org'
           scope: '@nldd'
 
