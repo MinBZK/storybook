@@ -15,6 +15,8 @@ the type of conventional-commit determines the release. Conventional types
 `chore`, `docs`, `ci`, `style`, `test`, `build` are intentionally omitted
 here; consult the commit history if you need that level of detail.
 
+## [0.8.81](https://github.com/MinBZK/storybook/compare/v0.8.80...v0.8.81) (2026-08-11)
+
 ### Highlights
 
 - **Three things a form did by itself, given back.** Enter in a single-line field submits the form again, a click on a field's label moves focus into the control, and the field's label arrives there as its accessible name. Plain HTML gives you all three for nothing, and all three stop at a shadow boundary: `<label for>` does not cross it, an IDREF does not resolve across it, and neither does form ownership. So the control has to be handed what the platform can no longer reach it with, which is what `nldd-button type="submit"` already did from the other side. What made it worse was the compensating: `nldd-form-field` recognized an input by an implementation detail that 8 of the 24 happened to have, so for the rest the name reached nobody and a screen reader announced an unnamed field. It now asks instead, and an input says `static isFormInput = true`.
