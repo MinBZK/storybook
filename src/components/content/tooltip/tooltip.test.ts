@@ -1,5 +1,5 @@
 import { describe, it, expect, afterEach } from 'vitest';
-import { fixture, cleanup, waitForUpdate } from '../../../test-utils.js';
+import { fixture, cleanup, waitForUpdate, until } from '../../../test-utils.js';
 import type { NLDDTooltip } from './tooltip.js';
 import './tooltip.js';
 
@@ -28,15 +28,15 @@ function instantHide(el: NLDDTooltip): void {
 }
 
 /**
- * Common open-the-tooltip flow: zero out the show delay, fire mouseenter,
- * yield once for the (now-immediate) timer, then await Lit's update so
- * the tooltip's `_visible` state has flushed to the popover element.
+ * Common open-the-tooltip flow: zero out the show delay, fire mouseenter, and
+ * wait until the popover is actually open. The show runs on a timer and then a
+ * render, so waiting for the state beats counting ticks, which passes on a
+ * quick machine and fails on a loaded one.
  */
 async function triggerShow(el: NLDDTooltip, trigger: Element): Promise<void> {
 	instantShow(el);
 	trigger.dispatchEvent(new MouseEvent('mouseenter', { bubbles: true }));
-	await new Promise(resolve => setTimeout(resolve, 0));
-	await waitForUpdate(el);
+	await until(() => isTooltipVisible(el));
 }
 
 describe('nldd-tooltip', () => {
@@ -111,8 +111,9 @@ describe('nldd-tooltip – show/hide', () => {
 		await triggerShow(el, trigger);
 		instantHide(el);
 		trigger.dispatchEvent(new MouseEvent('mouseleave', { bubbles: true }));
-		await new Promise(resolve => setTimeout(resolve, 0));
-		await waitForUpdate(el);
+		// The hide runs on a timer and then a render, so wait for the state and not
+		// for a set number of ticks: that passes here and fails on a loaded CI.
+		await until(() => !isTooltipVisible(el));
 
 		expect(isTooltipVisible(el)).toBe(false);
 	});
