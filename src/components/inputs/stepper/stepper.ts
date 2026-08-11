@@ -145,6 +145,16 @@ export class NLDDStepper extends FormAssociated(LitElement) {
 		}));
 	}
 
+	/**
+	 * Delegates focus to the spinbutton, the element that carries the tabindex
+	 * and the keyboard handling. The two icon buttons are `tabindex="-1"` on
+	 * purpose, so the stepper is one stop rather than three. Does nothing while
+	 * disabled, because the spinbutton drops its tabindex then.
+	 */
+	override focus(options?: FocusOptions): void {
+		this.shadowRoot?.querySelector<HTMLElement>('.stepper')?.focus(options);
+	}
+
 	override render() {
 		return stepperTemplate(this);
 	}

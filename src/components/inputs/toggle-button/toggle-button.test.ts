@@ -1,5 +1,5 @@
 import { describe, it, expect, afterEach, vi } from 'vitest';
-import { fixture, cleanup, waitForUpdate } from '../../../test-utils.js';
+import { fixture, cleanup, waitForUpdate, deepActiveElement } from '../../../test-utils.js';
 import type { NLDDToggleButton } from './toggle-button.js';
 import './toggle-button.js';
 
@@ -492,5 +492,19 @@ describe('nldd-toggle-button – tooltip', () => {
 		await waitForUpdate(tb);
 		form.reset();
 		expect(tb.selected).toBe(true);
+	});
+
+	it('focus() lands on the inner input for a checkbox toggle', async () => {
+		el = await fixture<NLDDToggleButton>('<nldd-toggle-button type="checkbox" text="Bold"></nldd-toggle-button>');
+		await waitForUpdate(el);
+		el.focus();
+		expect(deepActiveElement()).toBe(el.shadowRoot!.querySelector('.toggle-button__input'));
+	});
+
+	it('focus() lands on the inner button for a button toggle', async () => {
+		el = await fixture<NLDDToggleButton>('<nldd-toggle-button type="button" text="Bold"></nldd-toggle-button>');
+		await waitForUpdate(el);
+		el.focus();
+		expect(deepActiveElement()).toBe(el.shadowRoot!.querySelector('button.toggle-button'));
 	});
 });

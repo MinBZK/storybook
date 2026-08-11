@@ -147,6 +147,17 @@ export class NLDDRadioButtonGroup extends LitElement {
 		this._syncFields();
 	};
 
+	/**
+	 * Delegates focus to the checked option, or to the first enabled one when
+	 * nothing is checked. That is where the keyboard puts focus when tabbing
+	 * into a radio group, so a label pointing at the group lands in the same
+	 * place.
+	 */
+	override focus(options?: FocusOptions): void {
+		const fields = this._getEnabledFields();
+		(fields.find(field => field.checked) ?? fields[0])?.focus(options);
+	}
+
 	override render() {
 		return radioButtonGroupTemplate(this);
 	}

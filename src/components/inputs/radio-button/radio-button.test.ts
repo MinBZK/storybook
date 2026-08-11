@@ -1,5 +1,5 @@
 import { describe, it, expect, afterEach } from 'vitest';
-import { fixture, cleanup, waitForUpdate } from '../../../test-utils.js';
+import { fixture, cleanup, waitForUpdate, deepActiveElement } from '../../../test-utils.js';
 import type { NLDDRadioButton } from './radio-button.js';
 import './radio-button.js';
 
@@ -149,4 +149,11 @@ describe('nldd-radio-button – change event', () => {
 		});
 	});
 
+
+	it('focus() lands on the inner native input', async () => {
+		el = await fixture<NLDDRadioButton>('<nldd-radio-button label="Optie"></nldd-radio-button>');
+		await waitForUpdate(el);
+		el.focus();
+		expect(deepActiveElement()).toBe(el.shadowRoot!.querySelector('.radio-button__input'));
+	});
 });

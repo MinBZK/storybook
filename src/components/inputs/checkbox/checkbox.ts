@@ -90,6 +90,14 @@ export class NLDDCheckbox extends FormAssociated(LitElement) {
 		}));
 	}
 
+	/**
+	 * Delegates focus to the inner native checkbox `<input>`, so consumers can
+	 * call `checkboxEl.focus()` without reaching into shadow DOM.
+	 */
+	override focus(options?: FocusOptions): void {
+		this.shadowRoot?.querySelector<HTMLInputElement>('.checkbox__input')?.focus(options);
+	}
+
 	override render() {
 		return checkboxTemplate(this);
 	}

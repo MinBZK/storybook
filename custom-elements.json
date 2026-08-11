@@ -6668,6 +6668,25 @@
               ]
             },
             {
+              "kind": "method",
+              "name": "focus",
+              "return": {
+                "type": {
+                  "text": "void"
+                }
+              },
+              "parameters": [
+                {
+                  "name": "options",
+                  "optional": true,
+                  "type": {
+                    "text": "FocusOptions"
+                  }
+                }
+              ],
+              "description": "Delegates focus to the inner `<nldd-checkbox>`, which in turn focuses its\nnative input. Lets consumers call `checkboxFieldEl.focus()` without\nreaching into shadow DOM."
+            },
+            {
               "kind": "field",
               "name": "formAssociated",
               "type": {
@@ -6960,6 +6979,25 @@
                   "text": "void"
                 }
               }
+            },
+            {
+              "kind": "method",
+              "name": "focus",
+              "return": {
+                "type": {
+                  "text": "void"
+                }
+              },
+              "parameters": [
+                {
+                  "name": "options",
+                  "optional": true,
+                  "type": {
+                    "text": "FocusOptions"
+                  }
+                }
+              ],
+              "description": "Delegates focus to the inner native checkbox `<input>`, so consumers can\ncall `checkboxEl.focus()` without reaching into shadow DOM."
             },
             {
               "kind": "field",
@@ -8947,6 +8985,25 @@
               "description": "Optional fixed width (any CSS length). When unset, the field stretches to fill its container.",
               "attribute": "width",
               "reflects": true
+            },
+            {
+              "kind": "method",
+              "name": "focus",
+              "return": {
+                "type": {
+                  "text": "void"
+                }
+              },
+              "parameters": [
+                {
+                  "name": "options",
+                  "optional": true,
+                  "type": {
+                    "text": "FocusOptions"
+                  }
+                }
+              ],
+              "description": "Delegates focus to the slotted `<select>`. The wrapper itself is not\nfocusable, so without this a label pointing at the dropdown has nowhere\nto send focus."
             }
           ],
           "attributes": [
@@ -9003,6 +9060,15 @@
               "default": "''",
               "description": "Optional fixed width (any CSS length, e.g. \"240px\"). Default: stretches to fill container.",
               "fieldName": "width"
+            },
+            {
+              "name": "accessible-label",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Accessible name, forwarded as aria-label to the slotted select",
+              "fieldName": "accessibleLabel"
             }
           ],
           "superclass": {
@@ -10982,6 +11048,25 @@
               ]
             },
             {
+              "kind": "method",
+              "name": "focus",
+              "return": {
+                "type": {
+                  "text": "void"
+                }
+              },
+              "parameters": [
+                {
+                  "name": "options",
+                  "optional": true,
+                  "type": {
+                    "text": "FocusOptions"
+                  }
+                }
+              ],
+              "description": "Delegates focus to the inner `<nldd-radio-button>`, which in turn focuses\nits native input. Lets consumers call `radioFieldEl.focus()` without\nreaching into shadow DOM."
+            },
+            {
               "kind": "field",
               "name": "formAssociated",
               "type": {
@@ -11188,12 +11273,40 @@
             },
             {
               "kind": "field",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Accessible name forwarded as aria-label to the group host.",
+              "attribute": "accessible-label"
+            },
+            {
+              "kind": "field",
               "name": "accessibleLabeledBy",
               "type": {
                 "text": "string"
               },
               "default": "''",
               "attribute": "accessible-labeled-by"
+            },
+            {
+              "kind": "method",
+              "name": "focus",
+              "return": {
+                "type": {
+                  "text": "void"
+                }
+              },
+              "parameters": [
+                {
+                  "name": "options",
+                  "optional": true,
+                  "type": {
+                    "text": "FocusOptions"
+                  }
+                }
+              ],
+              "description": "Delegates focus to the checked option, or to the first enabled one when\nnothing is checked. That is where the keyboard puts focus when tabbing\ninto a radio group, so a label pointing at the group lands in the same\nplace."
             }
           ],
           "attributes": [
@@ -11223,6 +11336,15 @@
               "default": "false",
               "fieldName": "required",
               "description": "Marks the group as required"
+            },
+            {
+              "name": "accessible-label",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Accessible name for the group, set as aria-label on the group",
+              "fieldName": "accessibleLabel"
             },
             {
               "name": "accessible-labeled-by",
@@ -11399,6 +11521,25 @@
                   "text": "void"
                 }
               }
+            },
+            {
+              "kind": "method",
+              "name": "focus",
+              "return": {
+                "type": {
+                  "text": "void"
+                }
+              },
+              "parameters": [
+                {
+                  "name": "options",
+                  "optional": true,
+                  "type": {
+                    "text": "FocusOptions"
+                  }
+                }
+              ],
+              "description": "Delegates focus to the inner native radio `<input>`, so consumers can\ncall `radioEl.focus()` without reaching into shadow DOM."
             },
             {
               "kind": "field",
@@ -12055,6 +12196,25 @@
               "default": "''",
               "description": "Icon name for nldd-icon. When not set, the icon slot is used; the icon and\nicon-and-text variants show a placeholder icon when neither is provided.",
               "attribute": "icon"
+            },
+            {
+              "kind": "method",
+              "name": "focus",
+              "return": {
+                "type": {
+                  "text": "void"
+                }
+              },
+              "parameters": [
+                {
+                  "name": "options",
+                  "optional": true,
+                  "type": {
+                    "text": "FocusOptions"
+                  }
+                }
+              ],
+              "description": "Delegates focus to the inner native `<input>`, so consumers can call\n`itemEl.focus()` without reaching into shadow DOM."
             }
           ],
           "events": [
@@ -12305,6 +12465,25 @@
                   }
                 }
               ]
+            },
+            {
+              "kind": "method",
+              "name": "focus",
+              "return": {
+                "type": {
+                  "text": "void"
+                }
+              },
+              "parameters": [
+                {
+                  "name": "options",
+                  "optional": true,
+                  "type": {
+                    "text": "FocusOptions"
+                  }
+                }
+              ],
+              "description": "Delegates focus to the selected item, or to the first enabled one when\nnothing is selected. Mirrors where the keyboard lands when tabbing into\nthe control."
             },
             {
               "kind": "field",
@@ -12596,6 +12775,15 @@
             },
             {
               "kind": "field",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Accessible name for the spinbutton. Without one it falls back to a generic\n\"adjust the value\", which says what the control does but not which value,\nso give it the name of the field whenever there is one.",
+              "attribute": "accessible-label"
+            },
+            {
+              "kind": "field",
               "name": "translations",
               "type": {
                 "text": "Partial<NLDDStepperTranslations>"
@@ -12643,6 +12831,25 @@
                   }
                 }
               ]
+            },
+            {
+              "kind": "method",
+              "name": "focus",
+              "return": {
+                "type": {
+                  "text": "void"
+                }
+              },
+              "parameters": [
+                {
+                  "name": "options",
+                  "optional": true,
+                  "type": {
+                    "text": "FocusOptions"
+                  }
+                }
+              ],
+              "description": "Delegates focus to the spinbutton, the element that carries the tabindex\nand the keyboard handling. The two icon buttons are `tabindex=\"-1\"` on\npurpose, so the stepper is one stop rather than three. Does nothing while\ndisabled, because the spinbutton drops its tabindex then."
             },
             {
               "kind": "field",
@@ -12782,6 +12989,15 @@
               "default": "''",
               "fieldName": "name",
               "description": "Name for form submission; the value is submitted under this name"
+            },
+            {
+              "name": "accessible-label",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Accessible name for the spinbutton; falls back to a generic label",
+              "fieldName": "accessibleLabel"
             },
             {
               "name": "translations",
@@ -16840,6 +17056,25 @@
               "default": "''",
               "description": "ID of an external label element forwarded as aria-labelledby to the group host.",
               "attribute": "accessible-labeled-by"
+            },
+            {
+              "kind": "method",
+              "name": "focus",
+              "return": {
+                "type": {
+                  "text": "void"
+                }
+              },
+              "parameters": [
+                {
+                  "name": "options",
+                  "optional": true,
+                  "type": {
+                    "text": "FocusOptions"
+                  }
+                }
+              ],
+              "description": "Delegates focus to the first selected button, or to the first enabled one\nwhen nothing is selected. With `type=\"checkbox\"` more than one can be\nselected; focus goes to the first of them, in DOM order."
             }
           ],
           "attributes": [
@@ -17094,6 +17329,25 @@
                 }
               },
               "description": "Toggle selected state programmatically.\nFor type=\"radio\", the button can only be selected, never deselected (native behavior)."
+            },
+            {
+              "kind": "method",
+              "name": "focus",
+              "return": {
+                "type": {
+                  "text": "void"
+                }
+              },
+              "parameters": [
+                {
+                  "name": "options",
+                  "optional": true,
+                  "type": {
+                    "text": "FocusOptions"
+                  }
+                }
+              ],
+              "description": "Delegates focus to whichever control this type renders: the `<input>` for\n`checkbox` and `radio`, the `<button>` for `button`. Only one of the two\nexists at a time. Lets consumers call `toggleButtonEl.focus()` without\nreaching into shadow DOM."
             },
             {
               "kind": "field",

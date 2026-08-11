@@ -1,5 +1,5 @@
 import { describe, it, expect, afterEach, vi } from 'vitest';
-import { fixture, cleanup, waitForUpdate } from '../../../test-utils.js';
+import { fixture, cleanup, waitForUpdate, deepActiveElement } from '../../../test-utils.js';
 import type { NLDDDropdown } from './dropdown.js';
 import './dropdown.js';
 
@@ -305,4 +305,16 @@ describe('nldd-dropdown – change event', () => {
 		expect(el.getAttribute('width')).toBe('240px');
 		expect(el.style.getPropertyValue('--_width')).toBe('240px');
 	});
+
+	it('focus() lands on the slotted select', async () => {
+		el = await fixture<NLDDDropdown>(`
+			<nldd-dropdown>
+				<select aria-label="Land"><option value="nl">Nederland</option></select>
+			</nldd-dropdown>
+		`);
+		await waitForUpdate(el);
+		el.focus();
+		expect(deepActiveElement()).toBe(el.querySelector('select'));
+	});
+
 });

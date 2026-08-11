@@ -1,5 +1,5 @@
 import { describe, it, expect, afterEach } from 'vitest';
-import { fixture, cleanup, waitForUpdate } from '../../../test-utils.js';
+import { fixture, cleanup, waitForUpdate, deepActiveElement } from '../../../test-utils.js';
 import type { NLDDStepper } from './stepper.js';
 import './stepper.js';
 
@@ -268,4 +268,20 @@ describe('nldd-stepper – translations', () => {
 		form.reset();
 		expect(sp.value).toBe(3);
 	});
+
+	it('focus() lands on the spinbutton, not on the icon buttons', async () => {
+		el = await fixture<NLDDStepper>('<nldd-stepper></nldd-stepper>');
+		await waitForUpdate(el);
+		el.focus();
+		expect(deepActiveElement()).toBe(el.shadowRoot!.querySelector('.stepper'));
+	});
+
+	it('focus() does nothing while disabled', async () => {
+		el = await fixture<NLDDStepper>('<nldd-stepper disabled></nldd-stepper>');
+		await waitForUpdate(el);
+		const before = deepActiveElement();
+		el.focus();
+		expect(deepActiveElement()).toBe(before);
+	});
+
 });

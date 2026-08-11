@@ -1,5 +1,5 @@
 import { describe, it, expect, afterEach, vi } from 'vitest';
-import { fixture, cleanup, waitForUpdate } from '../../../test-utils.js';
+import { fixture, cleanup, waitForUpdate, deepActiveElement } from '../../../test-utils.js';
 import type { NLDDToggleButtonGroup } from './toggle-button-group.js';
 import type { NLDDToggleButton } from '../toggle-button/toggle-button.js';
 import './toggle-button-group.js';
@@ -474,5 +474,33 @@ describe('nldd-toggle-button-group – toetsenbordnavigatie', () => {
 		const buttons = el.querySelectorAll<NLDDToggleButton>('nldd-toggle-button');
 		expect(buttons[0].selected).toBe(true);
 		expect(buttons[1].selected).toBe(false);
+	});
+
+	it('focus() lands on the selected button', async () => {
+		el = await fixture<NLDDToggleButtonGroup>(`
+			<nldd-toggle-button-group type="button" name="toolbar">
+				<nldd-toggle-button value="bold" text="Bold"></nldd-toggle-button>
+				<nldd-toggle-button value="italic" text="Italic" selected></nldd-toggle-button>
+			</nldd-toggle-button-group>
+		`);
+		await waitForUpdate(el);
+		const buttons = el.querySelectorAll<NLDDToggleButton>('nldd-toggle-button');
+		await waitForUpdate(buttons[1]);
+		el.focus();
+		expect(deepActiveElement()).toBe(buttons[1].shadowRoot!.querySelector('button.toggle-button'));
+	});
+
+	it('focus() falls back to the first enabled button when nothing is selected', async () => {
+		el = await fixture<NLDDToggleButtonGroup>(`
+			<nldd-toggle-button-group type="button" name="toolbar">
+				<nldd-toggle-button value="bold" text="Bold" disabled></nldd-toggle-button>
+				<nldd-toggle-button value="italic" text="Italic"></nldd-toggle-button>
+			</nldd-toggle-button-group>
+		`);
+		await waitForUpdate(el);
+		const buttons = el.querySelectorAll<NLDDToggleButton>('nldd-toggle-button');
+		await waitForUpdate(buttons[1]);
+		el.focus();
+		expect(deepActiveElement()).toBe(buttons[1].shadowRoot!.querySelector('button.toggle-button'));
 	});
 });

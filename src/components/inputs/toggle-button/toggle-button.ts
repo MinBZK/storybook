@@ -168,6 +168,18 @@ export class NLDDToggleButton extends FormAssociated(LitElement) {
 		this._toggle();
 	}
 
+	/**
+	 * Delegates focus to whichever control this type renders: the `<input>` for
+	 * `checkbox` and `radio`, the `<button>` for `button`. Only one of the two
+	 * exists at a time. Lets consumers call `toggleButtonEl.focus()` without
+	 * reaching into shadow DOM.
+	 */
+	override focus(options?: FocusOptions): void {
+		this.shadowRoot
+			?.querySelector<HTMLElement>('.toggle-button__input, button.toggle-button')
+			?.focus(options);
+	}
+
 	override render() {
 		return toggleButtonTemplate(this);
 	}

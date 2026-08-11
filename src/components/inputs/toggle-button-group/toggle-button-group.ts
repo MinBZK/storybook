@@ -189,6 +189,16 @@ export class NLDDToggleButtonGroup extends LitElement {
 		this._syncButtons();
 	};
 
+	/**
+	 * Delegates focus to the first selected button, or to the first enabled one
+	 * when nothing is selected. With `type="checkbox"` more than one can be
+	 * selected; focus goes to the first of them, in DOM order.
+	 */
+	override focus(options?: FocusOptions): void {
+		const buttons = this._getEnabledButtons();
+		(buttons.find(button => button.selected) ?? buttons[0])?.focus(options);
+	}
+
 	override render() {
 		return toggleButtonGroupTemplate(this);
 	}

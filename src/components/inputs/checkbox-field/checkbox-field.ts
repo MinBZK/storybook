@@ -90,6 +90,15 @@ export class NLDDCheckboxField extends FormAssociated(LitElement) {
 		}));
 	}
 
+	/**
+	 * Delegates focus to the inner `<nldd-checkbox>`, which in turn focuses its
+	 * native input. Lets consumers call `checkboxFieldEl.focus()` without
+	 * reaching into shadow DOM.
+	 */
+	override focus(options?: FocusOptions): void {
+		this.shadowRoot?.querySelector<NLDDCheckbox>('nldd-checkbox')?.focus(options);
+	}
+
 	override render() {
 		return checkboxFieldTemplate(this);
 	}

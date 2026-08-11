@@ -1,8 +1,26 @@
 import { describe, it, expect, afterEach } from 'vitest';
-import { fixture, cleanup, waitForUpdate } from '../../../test-utils.js';
+import { fixture, cleanup, waitForUpdate, deepActiveElement } from '../../../test-utils.js';
 import './form-field.js';
 import '../../inputs/text-field/text-field.js';
 import '../../inputs/password-field/password-field.js';
+import '../../inputs/multi-line-text-field/multi-line-text-field.js';
+import '../../inputs/number-field/number-field.js';
+import '../../inputs/search-field/search-field.js';
+import '../../inputs/date-field/date-field.js';
+import '../../inputs/time-field/time-field.js';
+import '../../inputs/combo-box/combo-box.js';
+import '../../inputs/token-field/token-field.js';
+import '../../inputs/switch-field/switch-field.js';
+import '../../inputs/dropdown/dropdown.js';
+import '../../inputs/checkbox/checkbox.js';
+import '../../inputs/checkbox-field/checkbox-field.js';
+import '../../inputs/radio-button/radio-button.js';
+import '../../inputs/radio-button-field/radio-button-field.js';
+import '../../inputs/radio-button-group/radio-button-group.js';
+import '../../inputs/segmented-control/segmented-control.js';
+import '../../inputs/stepper/stepper.js';
+import '../../inputs/toggle-button/toggle-button.js';
+import '../../inputs/toggle-button-group/toggle-button-group.js';
 
 
 /* ============================================================
@@ -368,4 +386,102 @@ describe('nldd-form-field-error-text', () => {
 		await waitForUpdate(el);
 		expect(el.textContent).toContain('Must be at least 8 characters.');
 	});
+});
+
+/* ============================================================
+   Label click focuses the slotted control
+
+   Every input the package ships must be reachable this way. Half of them
+   silently were not (issue #189): the label calls .focus() on the slotted
+   element, which does nothing unless that element is a native control or
+   carries its own focus(). Walking the whole set here is what keeps the
+   next component from slipping out again.
+   ============================================================ */
+
+const SLOTTED_CONTROLS: Array<{ name: string; markup: string }> = [
+	{ name: 'text-field', markup: '<nldd-text-field></nldd-text-field>' },
+	{ name: 'password-field', markup: '<nldd-password-field></nldd-password-field>' },
+	{ name: 'multi-line-text-field', markup: '<nldd-multi-line-text-field></nldd-multi-line-text-field>' },
+	{ name: 'number-field', markup: '<nldd-number-field></nldd-number-field>' },
+	{ name: 'search-field', markup: '<nldd-search-field></nldd-search-field>' },
+	{ name: 'date-field', markup: '<nldd-date-field></nldd-date-field>' },
+	{ name: 'time-field', markup: '<nldd-time-field></nldd-time-field>' },
+	{ name: 'combo-box', markup: '<nldd-combo-box></nldd-combo-box>' },
+	// allow-custom keeps the inner input alive; without options or custom input a
+	// token field has nothing to type into, and so nothing to focus.
+	{ name: 'token-field', markup: '<nldd-token-field allow-custom accessible-label="Tags"></nldd-token-field>' },
+	{ name: 'switch-field', markup: '<nldd-switch-field label="Aan"></nldd-switch-field>' },
+	{ name: 'checkbox', markup: '<nldd-checkbox label="Optie"></nldd-checkbox>' },
+	{ name: 'checkbox-field', markup: '<nldd-checkbox-field label="Optie"></nldd-checkbox-field>' },
+	{ name: 'radio-button', markup: '<nldd-radio-button label="Optie"></nldd-radio-button>' },
+	{ name: 'radio-button-field', markup: '<nldd-radio-button-field label="Optie"></nldd-radio-button-field>' },
+	{ name: 'stepper', markup: '<nldd-stepper></nldd-stepper>' },
+	{ name: 'toggle-button', markup: '<nldd-toggle-button type="button" text="Vet"></nldd-toggle-button>' },
+	{ name: 'native input', markup: '<input type="text">' },
+	{ name: 'native checkbox', markup: '<input type="checkbox">' },
+	{
+		name: 'dropdown',
+		markup: '<nldd-dropdown><select aria-label="Land"><option value="nl">Nederland</option></select></nldd-dropdown>',
+	},
+	{
+		name: 'radio-button-group',
+		markup: `
+			<nldd-radio-button-group name="g">
+				<nldd-radio-button-field value="1" label="Optie 1"></nldd-radio-button-field>
+				<nldd-radio-button-field value="2" label="Optie 2"></nldd-radio-button-field>
+			</nldd-radio-button-group>
+		`,
+	},
+	{
+		name: 'toggle-button-group',
+		markup: `
+			<nldd-toggle-button-group type="button" name="t">
+				<nldd-toggle-button value="a" text="A"></nldd-toggle-button>
+				<nldd-toggle-button value="b" text="B"></nldd-toggle-button>
+			</nldd-toggle-button-group>
+		`,
+	},
+	{
+		name: 'segmented-control',
+		markup: `
+			<nldd-segmented-control>
+				<nldd-segmented-control-item value="a" text="A"></nldd-segmented-control-item>
+				<nldd-segmented-control-item value="b" text="B"></nldd-segmented-control-item>
+			</nldd-segmented-control>
+		`,
+	},
+];
+
+/** Walks up from the deepest active element, hopping shadow hosts, to see
+ *  whether focus ended up anywhere inside `control`. */
+function focusIsInside(control: Element): boolean {
+	let node: Node | null = deepActiveElement();
+	while (node) {
+		if (node === control) return true;
+		node = node instanceof ShadowRoot ? node.host : node.parentNode;
+	}
+	return false;
+}
+
+describe('nldd-form-field – label click focuses the slotted control', () => {
+	let el: HTMLElement;
+
+	afterEach(() => {
+		if (el) cleanup(el);
+	});
+
+	for (const { name, markup } of SLOTTED_CONTROLS) {
+		it(`moves focus into ${name}`, async () => {
+			el = await fixture(`<nldd-form-field label="Veld">${markup}</nldd-form-field>`);
+			await waitForUpdate(el);
+
+			const control = el.firstElementChild as HTMLElement;
+			await waitForUpdate(control);
+
+			const label = el.shadowRoot!.querySelector<HTMLElement>('.form-field__label')!;
+			label.click();
+
+			expect(focusIsInside(control)).toBe(true);
+		});
+	}
 });

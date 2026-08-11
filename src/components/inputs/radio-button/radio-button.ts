@@ -98,6 +98,14 @@ export class NLDDRadioButton extends FormAssociated(LitElement) {
 		}));
 	}
 
+	/**
+	 * Delegates focus to the inner native radio `<input>`, so consumers can
+	 * call `radioEl.focus()` without reaching into shadow DOM.
+	 */
+	override focus(options?: FocusOptions): void {
+		this.shadowRoot?.querySelector<HTMLInputElement>('.radio-button__input')?.focus(options);
+	}
+
 	override render() {
 		return radioButtonTemplate(this);
 	}

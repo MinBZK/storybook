@@ -108,6 +108,16 @@ export class NLDDSegmentedControlItem extends LitElement {
 		}));
 	}
 
+	/**
+	 * Delegates focus to the inner native `<input>`, so consumers can call
+	 * `itemEl.focus()` without reaching into shadow DOM.
+	 */
+	override focus(options?: FocusOptions): void {
+		this.shadowRoot
+			?.querySelector<HTMLInputElement>('.segmented-control__item-input')
+			?.focus(options);
+	}
+
 	override render() {
 		return segmentedControlItemTemplate(this);
 	}
@@ -417,6 +427,16 @@ export class NLDDSegmentedControl extends FormAssociated(LitElement) {
 
 	public _onSlotChange(): void {
 		this._syncItems();
+	}
+
+	/**
+	 * Delegates focus to the selected item, or to the first enabled one when
+	 * nothing is selected. Mirrors where the keyboard lands when tabbing into
+	 * the control.
+	 */
+	override focus(options?: FocusOptions): void {
+		const items = this._getItems().filter(item => !item.disabled);
+		(items.find(item => item.selected) ?? items[0])?.focus(options);
 	}
 
 	override render() {

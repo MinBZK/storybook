@@ -23,6 +23,11 @@ here; consult the commit history if you need that level of detail.
 
 - **Icons** — `git-branch`, `git-commit`, `git-compare`, `git-fork`, `git-merge`, `git-pull-request`, `git-pull-request-closed` and `git-pull-request-draft`. No aliases: these names are the functional ones.
 
+### Fixed
+
+- **A click on the label of `nldd-form-field` now reaches every input.** It reached about half of them. The label focuses the slotted element by hand, because a `<label for>` cannot cross a shadow boundary, and that only lands somewhere when the element is a native control or carries a `focus()` of its own. Ten did not: `nldd-dropdown`, `nldd-checkbox`, `nldd-checkbox-field`, `nldd-radio-button`, `nldd-radio-button-field`, `nldd-radio-button-group`, `nldd-segmented-control`, `nldd-stepper`, `nldd-toggle-button` and `nldd-toggle-button-group`. Each of them now delegates focus to the control it wraps, so `el.focus()` also works on its own, without reaching into shadow DOM. A group sends focus to the chosen option and falls back to the first one that is enabled, which is where the keyboard puts you when you tab in. Nothing gained a `tabindex`, so no component became an extra tab stop. Reported by robbertbos in [#188](https://github.com/MinBZK/storybook/issues/188), with the measurements that made it one afternoon of work instead of a week.
+- **The label of `nldd-form-field` no longer pretends to be a control label.** `_focusInput` carried an exception that skipped `preventDefault` for checkboxes and radios, to protect a native toggle. There is no such toggle to protect: the label has no `for` and does not wrap the control, so the platform sees it as labeling nothing. The exception did nothing and the comment described a relationship this component deliberately does not have. A field caption moves focus, and never ticks a box, because every checkbox carries its own label and a caption over a group could not say which one it meant.
+
 ### Changed
 
 - **`point-bottom-left-to-point-top-right-s-curve-path` is redrawn.** Its two end points are a size smaller: the disc goes from 8 to 7 pixels across and the dot inside it from 4 to 3, with the ring around it still 2. That is the node the new `git-*` icons draw, so a route and a commit graph now sit at the same weight.

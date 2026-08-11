@@ -186,6 +186,15 @@ export class NLDDDropdown extends LitElement {
 		this.expanded = (e as ToggleEvent).newState === 'open';
 	};
 
+	/**
+	 * Delegates focus to the slotted `<select>`. The wrapper itself is not
+	 * focusable, so without this a label pointing at the dropdown has nowhere
+	 * to send focus.
+	 */
+	override focus(options?: FocusOptions): void {
+		this._select?.focus(options);
+	}
+
 	override render() {
 		return dropdownTemplate(this);
 	}

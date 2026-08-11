@@ -150,20 +150,26 @@ export class NLDDFormField extends LitElement {
 		this._observer?.disconnect();
 	}
 
-	/** Called when the label header is clicked — focuses the slotted input. */
+	/**
+	 * Called when the label is clicked — focuses the slotted input.
+	 *
+	 * The label carries no `for` and does not wrap the control, which sits in
+	 * the slot beside it, so it labels nothing as far as the platform is
+	 * concerned and has no activation behavior to suppress. Focus is moved by
+	 * hand instead. This is a field caption, not a control label: it never
+	 * toggles a checkbox or picks a radio, because every one of those carries
+	 * its own label, and a caption over a group could not say which one it
+	 * meant anyway.
+	 *
+	 * Reaching the control relies on it being focusable: a native input, or a
+	 * component with its own `focus()` or `delegatesFocus`. Components that
+	 * wrap a control owe consumers that `focus()`.
+	 */
 	public _focusInput(e: Event) {
-		// <label for> cannot cross shadow boundaries so we focus manually.
 		const input = this._findInput();
 		if (!input) return;
 
-		// Only preventDefault for text-like inputs to avoid double-firing focus.
-		// For checkbox/radio, preventDefault cancels the native toggle — don't call it.
-		const tag = input.tagName.toLowerCase();
-		const type = (input as HTMLInputElement).type?.toLowerCase();
-		if (tag !== 'input' || (type !== 'checkbox' && type !== 'radio')) {
-			e.preventDefault();
-		}
-
+		e.preventDefault();
 		(input as HTMLElement).focus();
 	}
 
