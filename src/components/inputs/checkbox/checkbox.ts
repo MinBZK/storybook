@@ -26,6 +26,10 @@ import { checkboxTemplate } from './checkbox.template.js';
 export class NLDDCheckbox extends FormAssociated(LitElement) {
 	static override styles = checkboxStyles;
 
+	/** Says this is the control an nldd-form-field is about, so the field can
+	 *  find it, name it and move focus into it. See nldd-form-field. */
+	static isFormInput = true;
+
 	private _initialChecked = false;
 
 	@property({ type: Boolean, reflect: true })
@@ -88,6 +92,14 @@ export class NLDDCheckbox extends FormAssociated(LitElement) {
 			bubbles: true,
 			composed: true,
 		}));
+	}
+
+	/**
+	 * Delegates focus to the inner native checkbox `<input>`, so consumers can
+	 * call `checkboxEl.focus()` without reaching into shadow DOM.
+	 */
+	override focus(options?: FocusOptions): void {
+		this.shadowRoot?.querySelector<HTMLInputElement>('.checkbox__input')?.focus(options);
 	}
 
 	override render() {

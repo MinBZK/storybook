@@ -1,6 +1,7 @@
 import { describe, it, expect, afterEach } from 'vitest';
 import { fixture, cleanup, waitForUpdate } from '../../../test-utils.js';
 import './toolbar.js';
+import '../menu/menu.js';
 
 describe('nldd-toolbar-item', () => {
 	let el: HTMLElement;
@@ -105,5 +106,58 @@ describe('nldd-toolbar-title', () => {
 		const assigned = slot!.assignedElements();
 		expect(assigned).toHaveLength(1);
 		expect(assigned[0].id).toBe('act');
+	});
+});
+
+/* ============================================================
+   The overflow declaration is not a menu item yet
+
+   What sits in the overflow slot declares what belongs in the overflow menu.
+   The toolbar clones it into the real menu when it collapses; the declaration
+   itself stays in the light DOM, hidden, and never becomes a menu item. It
+   used to render role="menuitem" there anyway, with no menu around it, which
+   axe-core reports as aria-required-parent.
+   ============================================================ */
+
+describe('nldd-toolbar-item – overflow declaration', () => {
+	let el: HTMLElement;
+
+	afterEach(() => {
+		if (el) cleanup(el);
+	});
+
+	it('leaves the declared overflow item without a menu role', async () => {
+		el = await fixture(`
+			<nldd-toolbar label="Labels">
+				<nldd-toolbar-item slot="start">
+					<button type="button">Nieuw label</button>
+					<nldd-menu-item slot="overflow" text="Nieuw label"></nldd-menu-item>
+				</nldd-toolbar-item>
+			</nldd-toolbar>
+		`);
+		await waitForUpdate(el);
+		const source = el.querySelector('nldd-menu-item') as HTMLElement;
+		await waitForUpdate(source);
+		const button = source.shadowRoot!.querySelector('.menu__item')!;
+		expect(button.hasAttribute('role')).toBe(false);
+	});
+
+	it('leaves a declared radio item without a menu role, group or not', async () => {
+		el = await fixture(`
+			<nldd-toolbar label="Weergave">
+				<nldd-toolbar-item slot="start">
+					<button type="button">Sorteren</button>
+					<nldd-menu-group slot="overflow" text="Sorteren">
+						<nldd-menu-item type="radio" text="Naam" value="naam"></nldd-menu-item>
+					</nldd-menu-group>
+				</nldd-toolbar-item>
+			</nldd-toolbar>
+		`);
+		await waitForUpdate(el);
+		const source = el.querySelector('nldd-menu-item') as HTMLElement;
+		await waitForUpdate(source);
+		const button = source.shadowRoot!.querySelector('.menu__item')!;
+		expect(button.hasAttribute('role')).toBe(false);
+		expect(button.hasAttribute('aria-checked')).toBe(false);
 	});
 });

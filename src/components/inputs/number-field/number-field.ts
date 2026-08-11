@@ -22,6 +22,7 @@
 import { LitElement } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
 import { FormAssociated, type FormValue } from '../../../utilities/form-associated-mixin.js';
+import { submitOnEnter } from '../../../utilities/implicit-submission.js';
 import { reflectNonDefault } from '../../../utilities/reflect-non-default.js';
 import { numberFieldStyles } from './number-field.styles.js';
 import { numberFieldTemplate } from './number-field.template.js';
@@ -36,6 +37,14 @@ export type NumberFieldSize = 'sm' | 'md';
 export class NLDDNumberField extends FormAssociated(LitElement) {
 
 	static override styles = numberFieldStyles;
+
+	/** Says this is the control an nldd-form-field is about, so the field can
+	 *  find it, name it and move focus into it. See nldd-form-field. */
+	static isFormInput = true;
+
+	/** Counts for the implicit-submission rule: a single-line field where Enter
+	 *  would submit the form. See utilities/implicit-submission.ts. */
+	static blocksImplicitSubmission = true;
 
 
 	private _initialValue = 0;
@@ -139,6 +148,12 @@ export class NLDDNumberField extends FormAssociated(LitElement) {
 	}
 
 	/** Fires while the user types. The value may be outside [min, max]; clamping happens on change. */
+	/** Enter submits the form this field belongs to, the way the browser would
+	 *  if the input were not in a shadow root. */
+	public _handleKeydown(e: KeyboardEvent): void {
+		submitOnEnter(this, e);
+	}
+
 	public _handleInput(e: Event): void {
 		if (this.disabled) return;
 		const input = e.target as HTMLInputElement;

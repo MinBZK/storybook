@@ -1,5 +1,5 @@
 import { describe, it, expect, afterEach } from 'vitest';
-import { fixture, cleanup, waitForUpdate } from '../../../test-utils.js';
+import { fixture, cleanup, waitForUpdate, deepActiveElement } from '../../../test-utils.js';
 import type { NLDDRadioButtonField } from './radio-button-field.js';
 import './radio-button-field.js';
 import '../radio-button/radio-button.js';
@@ -141,5 +141,14 @@ describe('nldd-radio-button-field – state', () => {
 		await waitForUpdate(field);
 		expect(field.checked).toBe(true);
 		expect(new FormData(form).get('status')).toBe('active');
+	});
+
+	it('focus() delegates through to the inner radio input', async () => {
+		el = await fixture<NLDDRadioButtonField>('<nldd-radio-button-field label="Optie"></nldd-radio-button-field>');
+		await waitForUpdate(el);
+		const inner = el.shadowRoot!.querySelector('nldd-radio-button')!;
+		await waitForUpdate(inner as HTMLElement);
+		el.focus();
+		expect(deepActiveElement()).toBe(inner.shadowRoot!.querySelector('.radio-button__input'));
 	});
 });

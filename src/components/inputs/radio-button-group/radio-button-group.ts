@@ -9,6 +9,7 @@
  * @attr {string} name - Forwarded to all slotted nldd-radio-button-field elements
  * @attr {boolean} disabled - Disables all slotted fields
  * @attr {boolean} required - Marks the group as required
+ * @attr {string} accessible-label - Accessible name for the group, set as aria-label on the group
  * @attr {string} accessible-labeled-by - Id of an external label element, set as aria-labelledby on the group
  *
  * @slot - Slot for nldd-radio-button-field elements
@@ -20,10 +21,15 @@ import { customElement, property } from 'lit/decorators.js';
 import { radioButtonGroupStyles } from './radio-button-group.styles.js';
 import { radioButtonGroupTemplate } from './radio-button-group.template.js';
 import type { NLDDRadioButtonField } from '../radio-button-field/radio-button-field.js';
+import { setOwnedAttribute } from '../../../utilities/owned-attribute.js';
 
 @customElement('nldd-radio-button-group')
 export class NLDDRadioButtonGroup extends LitElement {
 	static override styles = radioButtonGroupStyles;
+
+	/** Says this is the control an nldd-form-field is about, so the field can
+	 *  find it, name it and move focus into it. See nldd-form-field. */
+	static isFormInput = true;
 
 	@property({ type: String })
 	name = '';
@@ -34,8 +40,15 @@ export class NLDDRadioButtonGroup extends LitElement {
 	@property({ type: Boolean, reflect: true })
 	required = false;
 
+	/** Accessible name forwarded as aria-label to the group host. */
+	@property({ type: String, attribute: 'accessible-label' })
+	accessibleLabel = '';
+
 	@property({ type: String, attribute: 'accessible-labeled-by' })
 	accessibleLabeledBy = '';
+
+	/** The name this group wrote onto its host, so it only takes back its own. */
+	private _appliedLabel: string | null = null;
 
 	override connectedCallback(): void {
 		super.connectedCallback();
@@ -50,9 +63,21 @@ export class NLDDRadioButtonGroup extends LitElement {
 		this.removeEventListener('change', this._handleChange);
 	}
 
+	override firstUpdated(): void {
+		if (import.meta.env?.DEV && !this.accessibleLabel && !this.accessibleLabeledBy) {
+			console.warn('<nldd-radio-button-group>: No accessible name provided. Add an accessible-label or accessible-labeled-by attribute for screen reader accessibility.');
+		}
+	}
+
 	override updated(changed: Map<PropertyKey, unknown>): void {
 		if (changed.has('name') || changed.has('disabled') || changed.has('required')) {
 			this._syncFields();
+		}
+		// Only ever take back a name this group wrote itself. Without the guard the
+		// first update would strip an aria-label the consumer put on the host,
+		// because "no accessible-label here" would be read as "remove the name".
+		if (changed.has('accessibleLabel')) {
+			this._appliedLabel = setOwnedAttribute(this, 'aria-label', this.accessibleLabel, this._appliedLabel);
 		}
 		if (changed.has('accessibleLabeledBy')) {
 			if (this.accessibleLabeledBy) {
@@ -146,6 +171,17 @@ export class NLDDRadioButtonGroup extends LitElement {
 	_onSlotChange = (): void => {
 		this._syncFields();
 	};
+
+	/**
+	 * Delegates focus to the checked option, or to the first enabled one when
+	 * nothing is checked. That is where the keyboard puts focus when tabbing
+	 * into a radio group, so a label pointing at the group lands in the same
+	 * place.
+	 */
+	override focus(options?: FocusOptions): void {
+		const fields = this._getEnabledFields();
+		(fields.find(field => field.checked) ?? fields[0])?.focus(options);
+	}
 
 	override render() {
 		return radioButtonGroupTemplate(this);

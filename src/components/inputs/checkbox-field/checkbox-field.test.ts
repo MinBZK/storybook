@@ -1,5 +1,5 @@
 import { describe, it, expect, afterEach } from 'vitest';
-import { fixture, cleanup, waitForUpdate } from '../../../test-utils.js';
+import { fixture, cleanup, waitForUpdate, deepActiveElement } from '../../../test-utils.js';
 import type { NLDDCheckboxField } from './checkbox-field.js';
 import './checkbox-field.js';
 import '../checkbox/checkbox.js';
@@ -235,5 +235,14 @@ describe('nldd-checkbox-field – label click', () => {
 		await waitForUpdate(field);
 		expect(field.checked).toBe(true);
 		expect(new FormData(form).get('roles')).toBe('admin');
+	});
+
+	it('focus() delegates through to the inner checkbox input', async () => {
+		el = await fixture<NLDDCheckboxField>('<nldd-checkbox-field label="Optie"></nldd-checkbox-field>');
+		await waitForUpdate(el);
+		const inner = el.shadowRoot!.querySelector('nldd-checkbox')!;
+		await waitForUpdate(inner as HTMLElement);
+		el.focus();
+		expect(deepActiveElement()).toBe(inner.shadowRoot!.querySelector('.checkbox__input'));
 	});
 });

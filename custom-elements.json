@@ -1519,10 +1519,10 @@
               "kind": "field",
               "name": "menuVariant",
               "type": {
-                "text": "'menu' | 'listbox'"
+                "text": "'menu' | 'listbox' | null"
               },
-              "default": "'menu'",
-              "description": "Set by nldd-menu. Not part of the public API."
+              "default": "null",
+              "description": "Which menu owns this item, set by that nldd-menu. Not part of the public API.\n\n`null` until one claims it, and an unclaimed item carries no menu role.\nA menu role is a promise about what is around you, so an item cannot make\nit on its own. `nldd-toolbar-item` holds exactly such an item: the\ndeclaration of what belongs in the overflow menu, which the toolbar clones\ninto the real menu when it collapses. The clone is claimed there and the\ndeclaration stays what it is."
             },
             {
               "kind": "method",
@@ -6570,6 +6570,16 @@
           "members": [
             {
               "kind": "field",
+              "name": "isFormInput",
+              "type": {
+                "text": "boolean"
+              },
+              "static": true,
+              "default": "true",
+              "description": "Says this is the control an nldd-form-field is about, so the field can\nfind it, name it and move focus into it. See nldd-form-field."
+            },
+            {
+              "kind": "field",
               "name": "checked",
               "type": {
                 "text": "boolean"
@@ -6666,6 +6676,25 @@
                   }
                 }
               ]
+            },
+            {
+              "kind": "method",
+              "name": "focus",
+              "return": {
+                "type": {
+                  "text": "void"
+                }
+              },
+              "parameters": [
+                {
+                  "name": "options",
+                  "optional": true,
+                  "type": {
+                    "text": "FocusOptions"
+                  }
+                }
+              ],
+              "description": "Delegates focus to the inner `<nldd-checkbox>`, which in turn focuses its\nnative input. Lets consumers call `checkboxFieldEl.focus()` without\nreaching into shadow DOM."
             },
             {
               "kind": "field",
@@ -6845,6 +6874,16 @@
           "members": [
             {
               "kind": "field",
+              "name": "isFormInput",
+              "type": {
+                "text": "boolean"
+              },
+              "static": true,
+              "default": "true",
+              "description": "Says this is the control an nldd-form-field is about, so the field can\nfind it, name it and move focus into it. See nldd-form-field."
+            },
+            {
+              "kind": "field",
               "name": "checked",
               "type": {
                 "text": "boolean"
@@ -6960,6 +6999,25 @@
                   "text": "void"
                 }
               }
+            },
+            {
+              "kind": "method",
+              "name": "focus",
+              "return": {
+                "type": {
+                  "text": "void"
+                }
+              },
+              "parameters": [
+                {
+                  "name": "options",
+                  "optional": true,
+                  "type": {
+                    "text": "FocusOptions"
+                  }
+                }
+              ],
+              "description": "Delegates focus to the inner native checkbox `<input>`, so consumers can\ncall `checkboxEl.focus()` without reaching into shadow DOM."
             },
             {
               "kind": "field",
@@ -7154,6 +7212,16 @@
               },
               "static": true,
               "default": "{ ...LitElement.shadowRootOptions, delegatesFocus: true, }"
+            },
+            {
+              "kind": "field",
+              "name": "isFormInput",
+              "type": {
+                "text": "boolean"
+              },
+              "static": true,
+              "default": "true",
+              "description": "Says this is the control an nldd-form-field is about, so the field can\nfind it, name it and move focus into it. See nldd-form-field."
             },
             {
               "kind": "field",
@@ -7583,6 +7651,26 @@
           "description": "A text input with autocomplete dropdown via nldd-menu. Add a slotted nldd-menu with nldd-menu-item children to provide options. The slotted nldd-menu keeps its default focus behavior (menu container receives focus) so that typing keeps focus on the input. The picker button moves focus to the menu explicitly on activation. Note: Only nldd-menu-item type=\"button\" is supported. Radio and checkbox types are not supported in this context.",
           "name": "NLDDComboBox",
           "members": [
+            {
+              "kind": "field",
+              "name": "isFormInput",
+              "type": {
+                "text": "boolean"
+              },
+              "static": true,
+              "default": "true",
+              "description": "Says this is the control an nldd-form-field is about, so the field can\nfind it, name it and move focus into it. See nldd-form-field."
+            },
+            {
+              "kind": "field",
+              "name": "blocksImplicitSubmission",
+              "type": {
+                "text": "boolean"
+              },
+              "static": true,
+              "default": "true",
+              "description": "Counts for the implicit-submission rule: a single-line field where Enter\nwould submit the form. See utilities/implicit-submission.ts."
+            },
             {
               "kind": "field",
               "name": "value",
@@ -8066,6 +8154,26 @@
               },
               "static": true,
               "default": "{ ...LitElement.shadowRootOptions, delegatesFocus: true, }"
+            },
+            {
+              "kind": "field",
+              "name": "isFormInput",
+              "type": {
+                "text": "boolean"
+              },
+              "static": true,
+              "default": "true",
+              "description": "Says this is the control an nldd-form-field is about, so the field can\nfind it, name it and move focus into it. See nldd-form-field."
+            },
+            {
+              "kind": "field",
+              "name": "blocksImplicitSubmission",
+              "type": {
+                "text": "boolean"
+              },
+              "static": true,
+              "default": "true",
+              "description": "Counts for the implicit-submission rule: a single-line field where Enter\nwould submit the form. See utilities/implicit-submission.ts."
             },
             {
               "kind": "field",
@@ -8597,6 +8705,16 @@
           "members": [
             {
               "kind": "field",
+              "name": "isFormInput",
+              "type": {
+                "text": "boolean"
+              },
+              "static": true,
+              "default": "true",
+              "description": "Says this is the control an nldd-form-field is about, so the field can\nfind it, name it and move focus into it. See nldd-form-field."
+            },
+            {
+              "kind": "field",
               "name": "value",
               "type": {
                 "text": "string"
@@ -8889,6 +9007,16 @@
           "members": [
             {
               "kind": "field",
+              "name": "isFormInput",
+              "type": {
+                "text": "boolean"
+              },
+              "static": true,
+              "default": "true",
+              "description": "Says this is the control an nldd-form-field is about, so the field can\nfind it, name it and move focus into it. See nldd-form-field."
+            },
+            {
+              "kind": "field",
               "name": "size",
               "type": {
                 "text": "DropdownSize"
@@ -8947,6 +9075,35 @@
               "description": "Optional fixed width (any CSS length). When unset, the field stretches to fill its container.",
               "attribute": "width",
               "reflects": true
+            },
+            {
+              "kind": "field",
+              "name": "accessibleLabel",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Accessible name, forwarded as aria-label to the slotted `<select>`. The\nwrapper is not the control, so a name on the wrapper reaches nobody. Leave\nit empty and name the `<select>` yourself if you prefer.",
+              "attribute": "accessible-label"
+            },
+            {
+              "kind": "method",
+              "name": "focus",
+              "return": {
+                "type": {
+                  "text": "void"
+                }
+              },
+              "parameters": [
+                {
+                  "name": "options",
+                  "optional": true,
+                  "type": {
+                    "text": "FocusOptions"
+                  }
+                }
+              ],
+              "description": "Delegates focus to the slotted `<select>`. The wrapper itself is not\nfocusable, so without this a label pointing at the dropdown has nowhere\nto send focus."
             }
           ],
           "attributes": [
@@ -9003,6 +9160,15 @@
               "default": "''",
               "description": "Optional fixed width (any CSS length, e.g. \"240px\"). Default: stretches to fill container.",
               "fieldName": "width"
+            },
+            {
+              "name": "accessible-label",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Accessible name, forwarded as aria-label to the slotted select",
+              "fieldName": "accessibleLabel"
             }
           ],
           "superclass": {
@@ -9053,6 +9219,16 @@
           "description": "A file picker that reads as one control: an nldd-button flush in the corner of a tinted surface, the chosen file next to it, and a dismiss button to clear it again. It wraps a hidden native `<input type=\"file\">`, which is what makes the picker open at all — a file dialog only opens from a user gesture on a real input. The surface deliberately does not look like an input field. A border with field semantics promises you can type into it; here you can only press a button, so it uses button and surface colors instead of `--semantics-input-fields-*`. The button keeps its own tinted background and therefore sits a shade darker in the surface, which is what marks it as the thing to press. Several files are summarized, not listed: \"3 bestanden\" with a single cross that clears all of them. Every pick replaces the whole FileList, and rebuilding it to add or drop one file means going through DataTransfer, which does not deduplicate (even the same File object twice yields two entries) — and a File has no id, so deduplicating would come down to guessing from name, size and last-modified. A list with a cross per file would promise an edit the platform does not support. A page that does want to show the files renders its own list from the `File[]` in the change event.",
           "name": "NLDDFileField",
           "members": [
+            {
+              "kind": "field",
+              "name": "isFormInput",
+              "type": {
+                "text": "boolean"
+              },
+              "static": true,
+              "default": "true",
+              "description": "Says this is the control an nldd-form-field is about, so the field can\nfind it, name it and move focus into it. See nldd-form-field."
+            },
             {
               "kind": "field",
               "name": "size",
@@ -9458,6 +9634,16 @@
               },
               "static": true,
               "default": "{ ...LitElement.shadowRootOptions, delegatesFocus: true, }"
+            },
+            {
+              "kind": "field",
+              "name": "isFormInput",
+              "type": {
+                "text": "boolean"
+              },
+              "static": true,
+              "default": "true",
+              "description": "Says this is the control an nldd-form-field is about, so the field can\nfind it, name it and move focus into it. See nldd-form-field."
             },
             {
               "kind": "field",
@@ -9946,6 +10132,26 @@
           "members": [
             {
               "kind": "field",
+              "name": "isFormInput",
+              "type": {
+                "text": "boolean"
+              },
+              "static": true,
+              "default": "true",
+              "description": "Says this is the control an nldd-form-field is about, so the field can\nfind it, name it and move focus into it. See nldd-form-field."
+            },
+            {
+              "kind": "field",
+              "name": "blocksImplicitSubmission",
+              "type": {
+                "text": "boolean"
+              },
+              "static": true,
+              "default": "true",
+              "description": "Counts for the implicit-submission rule: a single-line field where Enter\nwould submit the form. See utilities/implicit-submission.ts."
+            },
+            {
+              "kind": "field",
               "name": "value",
               "type": {
                 "text": "number"
@@ -10337,6 +10543,26 @@
               },
               "static": true,
               "default": "{ ...LitElement.shadowRootOptions, delegatesFocus: true, }"
+            },
+            {
+              "kind": "field",
+              "name": "isFormInput",
+              "type": {
+                "text": "boolean"
+              },
+              "static": true,
+              "default": "true",
+              "description": "Says this is the control an nldd-form-field is about, so the field can\nfind it, name it and move focus into it. See nldd-form-field."
+            },
+            {
+              "kind": "field",
+              "name": "blocksImplicitSubmission",
+              "type": {
+                "text": "boolean"
+              },
+              "static": true,
+              "default": "true",
+              "description": "Counts for the implicit-submission rule: a single-line field where Enter\nwould submit the form. See utilities/implicit-submission.ts."
             },
             {
               "kind": "field",
@@ -10884,6 +11110,16 @@
           "members": [
             {
               "kind": "field",
+              "name": "isFormInput",
+              "type": {
+                "text": "boolean"
+              },
+              "static": true,
+              "default": "true",
+              "description": "Says this is the control an nldd-form-field is about, so the field can\nfind it, name it and move focus into it. See nldd-form-field."
+            },
+            {
+              "kind": "field",
               "name": "checked",
               "type": {
                 "text": "boolean"
@@ -10980,6 +11216,25 @@
                   }
                 }
               ]
+            },
+            {
+              "kind": "method",
+              "name": "focus",
+              "return": {
+                "type": {
+                  "text": "void"
+                }
+              },
+              "parameters": [
+                {
+                  "name": "options",
+                  "optional": true,
+                  "type": {
+                    "text": "FocusOptions"
+                  }
+                }
+              ],
+              "description": "Delegates focus to the inner `<nldd-radio-button>`, which in turn focuses\nits native input. Lets consumers call `radioFieldEl.focus()` without\nreaching into shadow DOM."
             },
             {
               "kind": "field",
@@ -11159,6 +11414,16 @@
           "members": [
             {
               "kind": "field",
+              "name": "isFormInput",
+              "type": {
+                "text": "boolean"
+              },
+              "static": true,
+              "default": "true",
+              "description": "Says this is the control an nldd-form-field is about, so the field can\nfind it, name it and move focus into it. See nldd-form-field."
+            },
+            {
+              "kind": "field",
               "name": "name",
               "type": {
                 "text": "string"
@@ -11188,12 +11453,41 @@
             },
             {
               "kind": "field",
+              "name": "accessibleLabel",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Accessible name forwarded as aria-label to the group host.",
+              "attribute": "accessible-label"
+            },
+            {
+              "kind": "field",
               "name": "accessibleLabeledBy",
               "type": {
                 "text": "string"
               },
               "default": "''",
               "attribute": "accessible-labeled-by"
+            },
+            {
+              "kind": "method",
+              "name": "focus",
+              "return": {
+                "type": {
+                  "text": "void"
+                }
+              },
+              "parameters": [
+                {
+                  "name": "options",
+                  "optional": true,
+                  "type": {
+                    "text": "FocusOptions"
+                  }
+                }
+              ],
+              "description": "Delegates focus to the checked option, or to the first enabled one when\nnothing is checked. That is where the keyboard puts focus when tabbing\ninto a radio group, so a label pointing at the group lands in the same\nplace."
             }
           ],
           "attributes": [
@@ -11223,6 +11517,15 @@
               "default": "false",
               "fieldName": "required",
               "description": "Marks the group as required"
+            },
+            {
+              "name": "accessible-label",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Accessible name for the group, set as aria-label on the group",
+              "fieldName": "accessibleLabel"
             },
             {
               "name": "accessible-labeled-by",
@@ -11282,6 +11585,16 @@
           "description": "WAI-ARIA: Wrap radio buttons in a <fieldset>/<legend> or a container with role=\"radiogroup\" and aria-labelledby for proper group semantics. <fieldset> <legend>Kies een optie</legend> <nldd-radio-button name=\"options\" value=\"1\">Optie 1</nldd-radio-button> <nldd-radio-button name=\"options\" value=\"2\">Optie 2</nldd-radio-button> </fieldset>",
           "name": "NLDDRadioButton",
           "members": [
+            {
+              "kind": "field",
+              "name": "isFormInput",
+              "type": {
+                "text": "boolean"
+              },
+              "static": true,
+              "default": "true",
+              "description": "Says this is the control an nldd-form-field is about, so the field can\nfind it, name it and move focus into it. See nldd-form-field."
+            },
             {
               "kind": "field",
               "name": "checked",
@@ -11399,6 +11712,25 @@
                   "text": "void"
                 }
               }
+            },
+            {
+              "kind": "method",
+              "name": "focus",
+              "return": {
+                "type": {
+                  "text": "void"
+                }
+              },
+              "parameters": [
+                {
+                  "name": "options",
+                  "optional": true,
+                  "type": {
+                    "text": "FocusOptions"
+                  }
+                }
+              ],
+              "description": "Delegates focus to the inner native radio `<input>`, so consumers can\ncall `radioEl.focus()` without reaching into shadow DOM."
             },
             {
               "kind": "field",
@@ -11585,6 +11917,26 @@
           "description": "A search input with a leading search icon, an optional dismiss button, and an optional search button.",
           "name": "NLDDSearchField",
           "members": [
+            {
+              "kind": "field",
+              "name": "isFormInput",
+              "type": {
+                "text": "boolean"
+              },
+              "static": true,
+              "default": "true",
+              "description": "Says this is the control an nldd-form-field is about, so the field can\nfind it, name it and move focus into it. See nldd-form-field."
+            },
+            {
+              "kind": "field",
+              "name": "blocksImplicitSubmission",
+              "type": {
+                "text": "boolean"
+              },
+              "static": true,
+              "default": "true",
+              "description": "Counts for the implicit-submission rule: a single-line field where Enter\nwould submit the form. See utilities/implicit-submission.ts."
+            },
             {
               "kind": "field",
               "name": "value",
@@ -12055,6 +12407,25 @@
               "default": "''",
               "description": "Icon name for nldd-icon. When not set, the icon slot is used; the icon and\nicon-and-text variants show a placeholder icon when neither is provided.",
               "attribute": "icon"
+            },
+            {
+              "kind": "method",
+              "name": "focus",
+              "return": {
+                "type": {
+                  "text": "void"
+                }
+              },
+              "parameters": [
+                {
+                  "name": "options",
+                  "optional": true,
+                  "type": {
+                    "text": "FocusOptions"
+                  }
+                }
+              ],
+              "description": "Delegates focus to the inner native `<input>`, so consumers can call\n`itemEl.focus()` without reaching into shadow DOM."
             }
           ],
           "events": [
@@ -12164,6 +12535,16 @@
           "description": "A horizontal group of mutually exclusive (radio) or multi-select (checkbox) options. Exports both NLDDSegmentedControl and NLDDSegmentedControlItem.",
           "name": "NLDDSegmentedControl",
           "members": [
+            {
+              "kind": "field",
+              "name": "isFormInput",
+              "type": {
+                "text": "boolean"
+              },
+              "static": true,
+              "default": "true",
+              "description": "Says this is the control an nldd-form-field is about, so the field can\nfind it, name it and move focus into it. See nldd-form-field."
+            },
             {
               "kind": "field",
               "name": "value",
@@ -12305,6 +12686,25 @@
                   }
                 }
               ]
+            },
+            {
+              "kind": "method",
+              "name": "focus",
+              "return": {
+                "type": {
+                  "text": "void"
+                }
+              },
+              "parameters": [
+                {
+                  "name": "options",
+                  "optional": true,
+                  "type": {
+                    "text": "FocusOptions"
+                  }
+                }
+              ],
+              "description": "Delegates focus to the selected item, or to the first enabled one when\nnothing is selected. Mirrors where the keyboard lands when tabbing into\nthe control."
             },
             {
               "kind": "field",
@@ -12533,6 +12933,16 @@
           "members": [
             {
               "kind": "field",
+              "name": "isFormInput",
+              "type": {
+                "text": "boolean"
+              },
+              "static": true,
+              "default": "true",
+              "description": "Says this is the control an nldd-form-field is about, so the field can\nfind it, name it and move focus into it. See nldd-form-field."
+            },
+            {
+              "kind": "field",
               "name": "value",
               "type": {
                 "text": "number"
@@ -12596,6 +13006,16 @@
             },
             {
               "kind": "field",
+              "name": "accessibleLabel",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Accessible name for the spinbutton. Without one it falls back to a generic\n\"adjust the value\", which says what the control does but not which value,\nso give it the name of the field whenever there is one.",
+              "attribute": "accessible-label"
+            },
+            {
+              "kind": "field",
               "name": "translations",
               "type": {
                 "text": "Partial<NLDDStepperTranslations>"
@@ -12643,6 +13063,25 @@
                   }
                 }
               ]
+            },
+            {
+              "kind": "method",
+              "name": "focus",
+              "return": {
+                "type": {
+                  "text": "void"
+                }
+              },
+              "parameters": [
+                {
+                  "name": "options",
+                  "optional": true,
+                  "type": {
+                    "text": "FocusOptions"
+                  }
+                }
+              ],
+              "description": "Delegates focus to the spinbutton, the element that carries the tabindex\nand the keyboard handling. The two icon buttons are `tabindex=\"-1\"` on\npurpose, so the stepper is one stop rather than three. Does nothing while\ndisabled, because the spinbutton drops its tabindex then."
             },
             {
               "kind": "field",
@@ -12784,6 +13223,15 @@
               "description": "Name for form submission; the value is submitted under this name"
             },
             {
+              "name": "accessible-label",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Accessible name for the spinbutton; falls back to a generic label",
+              "fieldName": "accessibleLabel"
+            },
+            {
               "name": "translations",
               "type": {
                 "text": "Partial<NLDDStepperTranslations>"
@@ -12835,6 +13283,16 @@
           "description": "A switch toggle with an inline label for use in forms.",
           "name": "NLDDSwitchField",
           "members": [
+            {
+              "kind": "field",
+              "name": "isFormInput",
+              "type": {
+                "text": "boolean"
+              },
+              "static": true,
+              "default": "true",
+              "description": "Says this is the control an nldd-form-field is about, so the field can\nfind it, name it and move focus into it. See nldd-form-field."
+            },
             {
               "kind": "field",
               "name": "checked",
@@ -12991,6 +13449,16 @@
           "description": "A toggle control for on/off settings. Prefer nldd-switch-field for labeled usage — it combines the switch with a visible label. Direct use of nldd-switch requires an accessible-label attribute for screen reader accessibility.",
           "name": "NLDDSwitch",
           "members": [
+            {
+              "kind": "field",
+              "name": "isFormInput",
+              "type": {
+                "text": "boolean"
+              },
+              "static": true,
+              "default": "true",
+              "description": "Says this is the control an nldd-form-field is about, so the field can\nfind it, name it and move focus into it. See nldd-form-field."
+            },
             {
               "kind": "field",
               "name": "name",
@@ -14627,6 +15095,16 @@
             },
             {
               "kind": "field",
+              "name": "isFormInput",
+              "type": {
+                "text": "boolean"
+              },
+              "static": true,
+              "default": "true",
+              "description": "Says this is the control an nldd-form-field is about, so the field can\nfind it, name it and move focus into it. See nldd-form-field."
+            },
+            {
+              "kind": "field",
               "name": "value",
               "type": {
                 "text": "string"
@@ -15416,6 +15894,26 @@
             },
             {
               "kind": "field",
+              "name": "isFormInput",
+              "type": {
+                "text": "boolean"
+              },
+              "static": true,
+              "default": "true",
+              "description": "Says this is the control an nldd-form-field is about, so the field can\nfind it, name it and move focus into it. See nldd-form-field."
+            },
+            {
+              "kind": "field",
+              "name": "blocksImplicitSubmission",
+              "type": {
+                "text": "boolean"
+              },
+              "static": true,
+              "default": "true",
+              "description": "Counts for the implicit-submission rule: a single-line field where Enter\nwould submit the form. See utilities/implicit-submission.ts."
+            },
+            {
+              "kind": "field",
               "name": "size",
               "type": {
                 "text": "'md' | 'sm'"
@@ -15963,6 +16461,26 @@
               },
               "static": true,
               "default": "{ ...LitElement.shadowRootOptions, delegatesFocus: true, }"
+            },
+            {
+              "kind": "field",
+              "name": "isFormInput",
+              "type": {
+                "text": "boolean"
+              },
+              "static": true,
+              "default": "true",
+              "description": "Says this is the control an nldd-form-field is about, so the field can\nfind it, name it and move focus into it. See nldd-form-field."
+            },
+            {
+              "kind": "field",
+              "name": "blocksImplicitSubmission",
+              "type": {
+                "text": "boolean"
+              },
+              "static": true,
+              "default": "true",
+              "description": "Counts for the implicit-submission rule: a single-line field where Enter\nwould submit the form. See utilities/implicit-submission.ts."
             },
             {
               "kind": "field",
@@ -16543,6 +17061,16 @@
           "members": [
             {
               "kind": "field",
+              "name": "isFormInput",
+              "type": {
+                "text": "boolean"
+              },
+              "static": true,
+              "default": "true",
+              "description": "Says this is the control an nldd-form-field is about, so the field can\nfind it, name it and move focus into it. See nldd-form-field."
+            },
+            {
+              "kind": "field",
               "name": "value",
               "type": {
                 "text": "string"
@@ -16784,6 +17312,16 @@
           "members": [
             {
               "kind": "field",
+              "name": "isFormInput",
+              "type": {
+                "text": "boolean"
+              },
+              "static": true,
+              "default": "true",
+              "description": "Says this is the control an nldd-form-field is about, so the field can\nfind it, name it and move focus into it. See nldd-form-field."
+            },
+            {
+              "kind": "field",
               "name": "type",
               "type": {
                 "text": "GroupType"
@@ -16840,6 +17378,25 @@
               "default": "''",
               "description": "ID of an external label element forwarded as aria-labelledby to the group host.",
               "attribute": "accessible-labeled-by"
+            },
+            {
+              "kind": "method",
+              "name": "focus",
+              "return": {
+                "type": {
+                  "text": "void"
+                }
+              },
+              "parameters": [
+                {
+                  "name": "options",
+                  "optional": true,
+                  "type": {
+                    "text": "FocusOptions"
+                  }
+                }
+              ],
+              "description": "Delegates focus to the first selected button, or to the first enabled one\nwhen nothing is selected. With `type=\"checkbox\"` more than one can be\nselected; focus goes to the first of them, in DOM order."
             }
           ],
           "attributes": [
@@ -16946,6 +17503,16 @@
           "description": "A selectable button that toggles between selected and unselected. Available as a button (aria-pressed), checkbox, or radio input.",
           "name": "NLDDToggleButton",
           "members": [
+            {
+              "kind": "field",
+              "name": "isFormInput",
+              "type": {
+                "text": "boolean"
+              },
+              "static": true,
+              "default": "true",
+              "description": "Says this is the control an nldd-form-field is about, so the field can\nfind it, name it and move focus into it. See nldd-form-field."
+            },
             {
               "kind": "field",
               "name": "type",
@@ -17094,6 +17661,25 @@
                 }
               },
               "description": "Toggle selected state programmatically.\nFor type=\"radio\", the button can only be selected, never deselected (native behavior)."
+            },
+            {
+              "kind": "method",
+              "name": "focus",
+              "return": {
+                "type": {
+                  "text": "void"
+                }
+              },
+              "parameters": [
+                {
+                  "name": "options",
+                  "optional": true,
+                  "type": {
+                    "text": "FocusOptions"
+                  }
+                }
+              ],
+              "description": "Delegates focus to whichever control this type renders: the `<input>` for\n`checkbox` and `radio`, the `<button>` for `button`. Only one of the two\nexists at a time. Lets consumers call `toggleButtonEl.focus()` without\nreaching into shadow DOM."
             },
             {
               "kind": "field",
@@ -17313,6 +17899,26 @@
           "description": "A multi-select input that looks like a normal input field: chosen values show as dismissible tokens in a wrapping row, followed by an inline text input that stretches to fill the remaining space and wraps to a new line (growing the field) when it no longer fits. Options are supplied as a slotted nldd-menu, exactly like nldd-combo-box; the menu filters as you type, with a chevron picker button, arrow-key roving across the tokens and ElementInternals form participation.",
           "name": "NLDDTokenField",
           "members": [
+            {
+              "kind": "field",
+              "name": "isFormInput",
+              "type": {
+                "text": "boolean"
+              },
+              "static": true,
+              "default": "true",
+              "description": "Says this is the control an nldd-form-field is about, so the field can\nfind it, name it and move focus into it. See nldd-form-field."
+            },
+            {
+              "kind": "field",
+              "name": "blocksImplicitSubmission",
+              "type": {
+                "text": "boolean"
+              },
+              "static": true,
+              "default": "true",
+              "description": "Counts for the implicit-submission rule: a single-line field where Enter\nwould submit the form. See utilities/implicit-submission.ts."
+            },
             {
               "kind": "field",
               "name": "values",
@@ -32655,6 +33261,46 @@
     },
     {
       "kind": "javascript-module",
+      "path": "src/utilities/implicit-submission.ts",
+      "declarations": [
+        {
+          "kind": "function",
+          "name": "submitOnEnter",
+          "return": {
+            "type": {
+              "text": ""
+            }
+          },
+          "parameters": [
+            {
+              "name": "host",
+              "type": {
+                "text": "HTMLElement & { internals: ElementInternals }"
+              }
+            },
+            {
+              "name": "event",
+              "type": {
+                "text": "KeyboardEvent"
+              }
+            }
+          ],
+          "description": "Submits the form this field belongs to, under the same conditions the browser\nuses.\n\nDoes nothing when something already handled the Enter. A component that owns\nthe key calls `preventDefault` when it acts on it and leaves it alone when it\ndoes not, so an open date picker keeps its Enter and a token field that\ncommits nothing lets the form through.\n\nWithout a submit button the specification submits only when the form holds a\nsingle field that blocks implicit submission. Reproducing that rule matters\nmore than it looks: an Enter that behaves differently inside this design\nsystem than outside it is worse than one that does nothing."
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "submitOnEnter",
+          "declaration": {
+            "name": "submitOnEnter",
+            "module": "src/utilities/implicit-submission.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
       "path": "src/utilities/input-modality.ts",
       "declarations": [
         {
@@ -32886,6 +33532,59 @@
           "declaration": {
             "name": "isLinux",
             "module": "src/utilities/os.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/utilities/owned-attribute.ts",
+      "declarations": [
+        {
+          "kind": "function",
+          "name": "setOwnedAttribute",
+          "return": {
+            "type": {
+              "text": ""
+            }
+          },
+          "parameters": [
+            {
+              "name": "el",
+              "type": {
+                "text": "Element"
+              }
+            },
+            {
+              "name": "name",
+              "type": {
+                "text": "string"
+              }
+            },
+            {
+              "name": "value",
+              "type": {
+                "text": "string"
+              }
+            },
+            {
+              "name": "applied",
+              "type": {
+                "text": "string | null"
+              },
+              "description": "what this component wrote here last time, or null"
+            }
+          ],
+          "description": "An attribute one component hands to another without overruling what is\nalready there.\n\nThe closer to the control, the more specific, so the heavier it weighs. An\n`aria-label` on a slotted `<select>` beats the `accessible-label` on the\nwrapper around it, which beats the caption of the `nldd-form-field` above\nthat. Every layer does two things and no more: it fills a gap, and it takes\nback only what it wrote itself.\n\nWithout that second half a component reads \"I have no name to give\" as\n\"remove the name that is there\", which is how a documented way of naming a\ncontrol quietly stopped working."
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "setOwnedAttribute",
+          "declaration": {
+            "name": "setOwnedAttribute",
+            "module": "src/utilities/owned-attribute.ts"
           }
         }
       ]

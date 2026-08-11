@@ -1,5 +1,5 @@
 import { describe, it, expect, afterEach } from 'vitest';
-import { fixture, cleanup, waitForUpdate } from '../../../test-utils.js';
+import { fixture, cleanup, waitForUpdate, deepActiveElement } from '../../../test-utils.js';
 import type { NLDDCheckbox } from './checkbox.js';
 import './checkbox.js';
 
@@ -230,4 +230,11 @@ describe('nldd-checkbox – accessibility', () => {
 		});
 	});
 
+
+	it('focus() lands on the inner native input', async () => {
+		el = await fixture<NLDDCheckbox>('<nldd-checkbox label="Optie"></nldd-checkbox>');
+		await waitForUpdate(el);
+		el.focus();
+		expect(deepActiveElement()).toBe(el.shadowRoot!.querySelector('.checkbox__input'));
+	});
 });

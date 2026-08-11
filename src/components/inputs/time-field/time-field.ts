@@ -47,6 +47,7 @@ import { customElement, property, state } from 'lit/decorators.js';
 import type { NLDDPopover } from '../../layout/popover/popover.js';
 import type { NLDDTimePicker } from '../time-picker/time-picker.js';
 import { FormAssociated, type FormValue } from '../../../utilities/form-associated-mixin.js';
+import { submitOnEnter } from '../../../utilities/implicit-submission.js';
 import { reflectNonDefault } from '../../../utilities/reflect-non-default.js';
 import { timeFieldStyles } from './time-field.styles.js';
 import { timeFieldTemplate } from './time-field.template.js';
@@ -125,6 +126,14 @@ export class NLDDTimeField extends FormAssociated(LitElement) {
 	};
 
 	static override styles = timeFieldStyles;
+
+	/** Says this is the control an nldd-form-field is about, so the field can
+	 *  find it, name it and move focus into it. See nldd-form-field. */
+	static isFormInput = true;
+
+	/** Counts for the implicit-submission rule: a single-line field where Enter
+	 *  would submit the form. See utilities/implicit-submission.ts. */
+	static blocksImplicitSubmission = true;
 
 	private _initialValue = '';
 
@@ -312,6 +321,9 @@ export class NLDDTimeField extends FormAssociated(LitElement) {
 	 * does the same: it opens on today as long as there is no date.
 	 */
 	public _handleInputKeydown(e: KeyboardEvent): void {
+		// Enter first: the browser would have submitted the form from here if
+		// this input were not in a shadow root.
+		if (submitOnEnter(this, e)) return;
 		if (e.key !== 'ArrowUp' && e.key !== 'ArrowDown') return;
 		if (this.disabled || this.readonly) return;
 		e.preventDefault();

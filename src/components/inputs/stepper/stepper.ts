@@ -11,6 +11,7 @@
  * @attr {boolean} disabled - Disabled state
  * @attr {string} size - Size: 'xs' | 'sm' | 'md' (default: 'md')
  * @attr {string} name - Name for form submission; the value is submitted under this name
+ * @attr {string} accessible-label - Accessible name for the spinbutton; falls back to a generic label
  * @attr {object} translations - Translations; unspecified keys fall back to Dutch
  *
  * @fires change - When the value changes; detail: { value: number }
@@ -32,6 +33,10 @@ export type StepperSize = 'xs' | 'sm' | 'md';
 export class NLDDStepper extends FormAssociated(LitElement) {
 
 	static override styles = stepperStyles;
+
+	/** Says this is the control an nldd-form-field is about, so the field can
+	 *  find it, name it and move focus into it. See nldd-form-field. */
+	static isFormInput = true;
 
 
 	private _initialValue = 0;
@@ -56,6 +61,14 @@ export class NLDDStepper extends FormAssociated(LitElement) {
 
 	@property({ type: String, reflect: true })
 	name = '';
+
+	/**
+	 * Accessible name for the spinbutton. Without one it falls back to a generic
+	 * "adjust the value", which says what the control does but not which value,
+	 * so give it the name of the field whenever there is one.
+	 */
+	@property({ type: String, attribute: 'accessible-label' })
+	accessibleLabel = '';
 
 	/** Override one or more translation keys. Unspecified keys fall back to Dutch. */
 	@property({ type: Object })
@@ -143,6 +156,16 @@ export class NLDDStepper extends FormAssociated(LitElement) {
 			bubbles: true,
 			composed: true,
 		}));
+	}
+
+	/**
+	 * Delegates focus to the spinbutton, the element that carries the tabindex
+	 * and the keyboard handling. The two icon buttons are `tabindex="-1"` on
+	 * purpose, so the stepper is one stop rather than three. Does nothing while
+	 * disabled, because the spinbutton drops its tabindex then.
+	 */
+	override focus(options?: FocusOptions): void {
+		this.shadowRoot?.querySelector<HTMLElement>('.stepper')?.focus(options);
 	}
 
 	override render() {

@@ -37,6 +37,10 @@ export class NLDDRadioButton extends FormAssociated(LitElement) {
 
 	static override styles = radioButtonStyles;
 
+	/** Says this is the control an nldd-form-field is about, so the field can
+	 *  find it, name it and move focus into it. See nldd-form-field. */
+	static isFormInput = true;
+
 
 	private _initialChecked = false;
 
@@ -96,6 +100,14 @@ export class NLDDRadioButton extends FormAssociated(LitElement) {
 			bubbles: true,
 			composed: true,
 		}));
+	}
+
+	/**
+	 * Delegates focus to the inner native radio `<input>`, so consumers can
+	 * call `radioEl.focus()` without reaching into shadow DOM.
+	 */
+	override focus(options?: FocusOptions): void {
+		this.shadowRoot?.querySelector<HTMLInputElement>('.radio-button__input')?.focus(options);
 	}
 
 	override render() {

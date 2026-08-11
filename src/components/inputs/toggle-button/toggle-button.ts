@@ -39,6 +39,10 @@ export class NLDDToggleButton extends FormAssociated(LitElement) {
 
 	static override styles = toggleButtonStyles;
 
+	/** Says this is the control an nldd-form-field is about, so the field can
+	 *  find it, name it and move focus into it. See nldd-form-field. */
+	static isFormInput = true;
+
 
 	private _initialSelected = false;
 
@@ -166,6 +170,18 @@ export class NLDDToggleButton extends FormAssociated(LitElement) {
 		if (this.disabled) return;
 		if (this.type === 'radio' && this.selected) return;
 		this._toggle();
+	}
+
+	/**
+	 * Delegates focus to whichever control this type renders: the `<input>` for
+	 * `checkbox` and `radio`, the `<button>` for `button`. Only one of the two
+	 * exists at a time. Lets consumers call `toggleButtonEl.focus()` without
+	 * reaching into shadow DOM.
+	 */
+	override focus(options?: FocusOptions): void {
+		this.shadowRoot
+			?.querySelector<HTMLElement>('.toggle-button__input, button.toggle-button')
+			?.focus(options);
 	}
 
 	override render() {

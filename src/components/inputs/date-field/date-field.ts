@@ -40,6 +40,7 @@
 import { LitElement, type PropertyValues } from 'lit';
 import { customElement, property, state } from 'lit/decorators.js';
 import { FormAssociated, type FormValue } from '../../../utilities/form-associated-mixin.js';
+import { submitOnEnter } from '../../../utilities/implicit-submission.js';
 import { reflectNonDefault } from '../../../utilities/reflect-non-default.js';
 import { toIso, resolveDateBound } from '../../../utilities/resolve-date-bound.js';
 import { dateFieldStyles } from './date-field.styles.js';
@@ -89,6 +90,14 @@ export class NLDDDateField extends FormAssociated(LitElement) {
 	};
 
 	static override styles = dateFieldStyles;
+
+	/** Says this is the control an nldd-form-field is about, so the field can
+	 *  find it, name it and move focus into it. See nldd-form-field. */
+	static isFormInput = true;
+
+	/** Counts for the implicit-submission rule: a single-line field where Enter
+	 *  would submit the form. See utilities/implicit-submission.ts. */
+	static blocksImplicitSubmission = true;
 
 
 	private _initialValue = '';
@@ -498,6 +507,9 @@ export class NLDDDateField extends FormAssociated(LitElement) {
 	 * the mouse to move between the two inputs.
 	 */
 	public _handleInputKeydown(e: KeyboardEvent, end: boolean): void {
+		// Enter first: the browser would have submitted the form from here if
+		// this input were not in a shadow root.
+		if (submitOnEnter(this, e)) return;
 		if (!this.range || !end || e.key !== 'Backspace') return;
 		const input = e.target as HTMLInputElement;
 		if (input.value !== '') return;

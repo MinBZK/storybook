@@ -88,3 +88,19 @@ export function installUniversalReset(variant: 'plain' | 'preflight' = 'plain'):
 export function nextFrames(): Promise<void> {
 	return new Promise(r => requestAnimationFrame(() => requestAnimationFrame(() => r())));
 }
+
+/**
+ * Waits until `condition` holds, or gives up after `timeout`.
+ *
+ * For state that arrives through a timer plus a render rather than on a tick
+ * you can count. Waiting a fixed number of ticks passes on a quick machine and
+ * fails on a loaded one, which reads as a flaky test rather than as the timing
+ * assumption it is. Giving up after a timeout keeps a real regression failing.
+ */
+export async function until(condition: () => boolean, timeout = 1000): Promise<void> {
+	const deadline = performance.now() + timeout;
+	while (!condition()) {
+		if (performance.now() > deadline) return;
+		await new Promise(resolve => setTimeout(resolve, 10));
+	}
+}

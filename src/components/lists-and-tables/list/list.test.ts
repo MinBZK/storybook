@@ -690,9 +690,9 @@ describe('nldd-list – arrow navigation (roving tabindex)', () => {
 
 	it('ArrowDown/ArrowUp move the roving tab stop and wrap around', async () => {
 		el = await fixture(MARKUP);
-		let items = await settle(el);
+		await settle(el);
 		arrow('ArrowDown');
-		items = await settle(el);
+		let items = await settle(el);
 		expect(tabindexOf(items[1])).toBe('0');
 		expect(tabindexOf(items[0])).toBe('-1');
 		// Wrap forward: Drie -> Een (three -> one).
@@ -709,9 +709,9 @@ describe('nldd-list – arrow navigation (roving tabindex)', () => {
 
 	it('Home and End jump to the first and last item', async () => {
 		el = await fixture(MARKUP);
-		let items = await settle(el);
+		await settle(el);
 		arrow('End');
-		items = await settle(el);
+		let items = await settle(el);
 		expect(tabindexOf(items[2])).toBe('0');
 		arrow('Home');
 		items = await settle(el);

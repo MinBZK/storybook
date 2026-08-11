@@ -109,6 +109,10 @@ export class NLDDTextEditor extends FormAssociated(NLDDCodeMirrorElement) {
 
 	static override styles = textEditorStyles;
 
+	/** Says this is the control an nldd-form-field is about, so the field can
+	 *  find it, name it and move focus into it. See nldd-form-field. */
+	static isFormInput = true;
+
 	private _initialValue = '';
 	private _valueAtFocus = '';
 	private _accessibleLabelWarned = false;
@@ -551,7 +555,7 @@ export class NLDDTextEditor extends FormAssociated(NLDDCodeMirrorElement) {
 	 *  text. No-op when the clipboard is empty or unreadable. */
 	async paste(): Promise<void> {
 		if (!this.view) return;
-		let raw = '';
+		let raw: string;
 		try { raw = await navigator.clipboard.readText(); } catch { return; /* clipboard blocked */ }
 		this._pasteText(stripSentinels(raw));
 		this.view?.focus();

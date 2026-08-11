@@ -28,12 +28,17 @@ import { reflectNonDefault } from '../../../utilities/reflect-non-default.js';
 import { toggleButtonGroupStyles } from './toggle-button-group.styles.js';
 import { toggleButtonGroupTemplate } from './toggle-button-group.template.js';
 import type { NLDDToggleButton, ToggleButtonSize } from '../toggle-button/toggle-button.js';
+import { setOwnedAttribute } from '../../../utilities/owned-attribute.js';
 
 type GroupType = 'button' | 'checkbox' | 'radio';
 
 @customElement('nldd-toggle-button-group')
 export class NLDDToggleButtonGroup extends LitElement {
 	static override styles = toggleButtonGroupStyles;
+
+	/** Says this is the control an nldd-form-field is about, so the field can
+	 *  find it, name it and move focus into it. See nldd-form-field. */
+	static isFormInput = true;
 
 	@property({ type: String, reflect: true })
 	type: GroupType = 'checkbox';
@@ -54,6 +59,9 @@ export class NLDDToggleButtonGroup extends LitElement {
 	/** ID of an external label element forwarded as aria-labelledby to the group host. */
 	@property({ type: String, attribute: 'accessible-labeled-by' })
 	accessibleLabeledBy = '';
+
+	/** The name this group wrote onto its host, so it only takes back its own. */
+	private _appliedLabel: string | null = null;
 
 	override connectedCallback(): void {
 		super.connectedCallback();
@@ -85,11 +93,7 @@ export class NLDDToggleButtonGroup extends LitElement {
 			this._syncRole();
 		}
 		if (changed.has('accessibleLabel')) {
-			if (this.accessibleLabel) {
-				this.setAttribute('aria-label', this.accessibleLabel);
-			} else {
-				this.removeAttribute('aria-label');
-			}
+			this._appliedLabel = setOwnedAttribute(this, 'aria-label', this.accessibleLabel, this._appliedLabel);
 		}
 		if (changed.has('accessibleLabeledBy')) {
 			if (this.accessibleLabeledBy) {
@@ -188,6 +192,16 @@ export class NLDDToggleButtonGroup extends LitElement {
 	public _onSlotChange = (): void => {
 		this._syncButtons();
 	};
+
+	/**
+	 * Delegates focus to the first selected button, or to the first enabled one
+	 * when nothing is selected. With `type="checkbox"` more than one can be
+	 * selected; focus goes to the first of them, in DOM order.
+	 */
+	override focus(options?: FocusOptions): void {
+		const buttons = this._getEnabledButtons();
+		(buttons.find(button => button.selected) ?? buttons[0])?.focus(options);
+	}
 
 	override render() {
 		return toggleButtonGroupTemplate(this);

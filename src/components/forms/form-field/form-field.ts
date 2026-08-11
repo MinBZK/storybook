@@ -41,6 +41,7 @@
  */
 import { LitElement } from 'lit';
 import { customElement, property, state } from 'lit/decorators.js';
+import { setOwnedAttribute } from '../../../utilities/owned-attribute.js';
 import {
 	formFieldStyles,
 	formFieldHelpTextStyles,
@@ -56,6 +57,26 @@ export type LabelAlignment = 'top' | 'left' | 'right';
 
 // Exclude helper elements so _findInput() never returns them instead of the actual input
 const HELPER_TAGS = ['nldd-form-field-help-text', 'nldd-form-field-error-text'];
+
+/**
+ * Whether this element is the input a field is about.
+ *
+ * Asked, not inferred. Every input in this system carries
+ * `static isFormInput = true`, and a native `<input>`, `<select>` or
+ * `<textarea>` is one by the platform's own definition. Nothing else counts,
+ * deliberately: half the components in the package accept `accessible-label`
+ * and taking that as the signal would let a tag or a button beside your field
+ * be mistaken for the field.
+ *
+ * A consumer with an input of their own says so the same way, or names the
+ * control themselves and leaves this field out of it.
+ */
+function isFormInput(el: Element): boolean {
+	return el instanceof HTMLInputElement
+		|| el instanceof HTMLSelectElement
+		|| el instanceof HTMLTextAreaElement
+		|| (el.constructor as { isFormInput?: boolean }).isFormInput === true;
+}
 
 // crypto.randomUUID() requires a secure context (HTTPS or localhost).
 // The fallback uses Math.random() which is sufficient for non-security-sensitive DOM IDs.
@@ -120,6 +141,12 @@ export class NLDDFormField extends LitElement {
 	private _childObserver: MutationObserver | null = null;
 	private _observer: MutationObserver | null = null;
 
+	/** The last label this field wrote onto the control, so it only takes back its own. */
+	private _appliedLabel: string | null = null;
+
+	/** Keeps the "no input found" warning to one per field rather than one per mutation. */
+	private _warnedNoInput = false;
+
 	@state()
 	private _hasErrors = false;
 
@@ -150,20 +177,26 @@ export class NLDDFormField extends LitElement {
 		this._observer?.disconnect();
 	}
 
-	/** Called when the label header is clicked — focuses the slotted input. */
+	/**
+	 * Called when the label is clicked — focuses the slotted input.
+	 *
+	 * The label carries no `for` and does not wrap the control, which sits in
+	 * the slot beside it, so it labels nothing as far as the platform is
+	 * concerned and has no activation behavior to suppress. Focus is moved by
+	 * hand instead. This is a field caption, not a control label: it never
+	 * toggles a checkbox or picks a radio, because every one of those carries
+	 * its own label, and a caption over a group could not say which one it
+	 * meant anyway.
+	 *
+	 * Reaching the control relies on it being focusable: a native input, or a
+	 * component with its own `focus()` or `delegatesFocus`. Components that
+	 * wrap a control owe consumers that `focus()`.
+	 */
 	public _focusInput(e: Event) {
-		// <label for> cannot cross shadow boundaries so we focus manually.
 		const input = this._findInput();
 		if (!input) return;
 
-		// Only preventDefault for text-like inputs to avoid double-firing focus.
-		// For checkbox/radio, preventDefault cancels the native toggle — don't call it.
-		const tag = input.tagName.toLowerCase();
-		const type = (input as HTMLInputElement).type?.toLowerCase();
-		if (tag !== 'input' || (type !== 'checkbox' && type !== 'radio')) {
-			e.preventDefault();
-		}
-
+		e.preventDefault();
 		(input as HTMLElement).focus();
 	}
 
@@ -172,14 +205,27 @@ export class NLDDFormField extends LitElement {
 		this._observer?.disconnect();
 
 		const input = this._findInput();
-		if (!input) return;
+		if (!input) {
+			// Only once there is something to look at. An empty field is usually one
+			// still being filled, and a component that forgot `static isFormInput`
+			// should be the one that stands out.
+			const hasContent = Array.from(this.children)
+				.some(el => !HELPER_TAGS.includes(el.tagName.toLowerCase()));
+			if (import.meta.env?.DEV && hasContent && !this._warnedNoInput) {
+				this._warnedNoInput = true;
+				const which = this.label ? ` (label="${this.label}")` : '';
+				console.warn(`<nldd-form-field>${which}: No form input found among its children. The label cannot name anything or move focus into it. Every nldd input carries \`static isFormInput = true\`; a component of your own says the same, or names its control itself.`);
+			}
+			return;
+		}
+		this._warnedNoInput = false;
 
 		// Ensure the inner native input has an id so aria-describedby can reference it.
-		// For custom elements (nldd-text-field, nldd-password-field) inputId is a property
-		// that gets forwarded to the inner <input id>. For plain <input> elements we set
-		// the id directly. We never set the host element's id to avoid duplicate IDs.
-		const isCustomInput = 'inputId' in input;
-		if (isCustomInput) {
+		// `inputId` is a component that hands out the id of the control it renders, which
+		// is a different question from how it wants to be named, so it is asked separately
+		// (see _applyAccessibleLabel). For plain <input> elements we set the id directly.
+		// We never set the host element's id to avoid duplicate IDs.
+		if ('inputId' in input) {
 			const existingId = (input as HTMLElement & { inputId: string }).inputId;
 			const generatedId = existingId || generateId();
 			(input as HTMLElement & { inputId: string }).inputId = generatedId;
@@ -187,21 +233,7 @@ export class NLDDFormField extends LitElement {
 			if (!input.id) input.id = generateId();
 		}
 
-		// Custom elements (nldd-text-field, nldd-password-field) expose an `accessible-label`
-		// attribute that they forward to their inner <input aria-label>. Native <input>
-		// elements have no such property — set aria-label directly on them instead.
-		if (this.label) {
-			if (isCustomInput) {
-				input.setAttribute('accessible-label', this.label);
-				input.removeAttribute('aria-label');
-			} else {
-				input.setAttribute('aria-label', this.label);
-				input.removeAttribute('accessible-label');
-			}
-		} else {
-			input.removeAttribute('accessible-label');
-			input.removeAttribute('aria-label');
-		}
+		this._applyAccessibleLabel(input);
 
 		// Ensure each help text element has an id so it can be referenced in aria-describedby
 		Array.from(this.children)
@@ -217,10 +249,67 @@ export class NLDDFormField extends LitElement {
 		this._syncErrorText();
 	}
 
-	/** First child element that is not a form field helper component. */
+	/**
+	 * Hands the label to the control as its accessible name, through whichever
+	 * channel the control offers.
+	 *
+	 * It has to be handed over rather than referenced. `for` and
+	 * `aria-labelledby` are IDREFs and an IDREF only resolves inside its own
+	 * tree, so a label in this shadow root cannot point at a control in the
+	 * consumer's light DOM.
+	 *
+	 * Which channel is a question about the control, not about its element
+	 * kind, and those two came apart. `accessible-label` is the naming channel
+	 * of this system: a component that has it forwards the name to whatever it
+	 * renders inside. A native `<input>` takes `aria-label`. A component with
+	 * neither carries a visible label of its own (`nldd-checkbox-field` and its
+	 * siblings), and that label already names the control. Overwriting it would
+	 * replace "Nieuwsbrief" with the caption above it, so those are left alone.
+	 *
+	 * The caption fills a gap, it does not overrule. A name set on the control
+	 * itself is the more specific one, so this field leaves it alone and never
+	 * takes back what it did not write.
+	 */
+	private _applyAccessibleLabel(input: Element): void {
+		const attribute = 'accessibleLabel' in input
+			? 'accessible-label'
+			: input instanceof HTMLInputElement
+				|| input instanceof HTMLSelectElement
+				|| input instanceof HTMLTextAreaElement
+				? 'aria-label'
+				: null;
+		if (!attribute) return;
+
+		this._appliedLabel = setOwnedAttribute(input, attribute, this.label, this._appliedLabel);
+	}
+
+	/**
+	 * The input this field is about: the first one in the light DOM, wrapped or
+	 * not.
+	 *
+	 * A field may hold more than one. A radio group whose last option is
+	 * "Anders" and the text field that appears with it are one question and
+	 * belong in one field. The first input carries the caption, and the ones
+	 * after it name themselves.
+	 *
+	 * Looking inside matters because a `div` or an `nldd-container` around your
+	 * input is a normal thing to write. Stopping at that wrapper sent the id,
+	 * the name and the error wiring to the wrapper and left the field unnamed,
+	 * with nothing about it visible on screen.
+	 *
+	 * Finding nothing is a real answer: the field then wires up nothing at all
+	 * and says so in DEV, rather than picking whatever came first and quietly
+	 * treating a tag or a button as your input.
+	 */
 	private _findInput(): Element | undefined {
-		return Array.from(this.children)
-			.find(el => !HELPER_TAGS.includes(el.tagName.toLowerCase()));
+		const children = Array.from(this.children)
+			.filter(el => !HELPER_TAGS.includes(el.tagName.toLowerCase()));
+		for (const child of children) {
+			if (isFormInput(child)) return child;
+			const nested = Array.from(child.querySelectorAll('*')).find(isFormInput);
+			if (nested) return nested;
+		}
+		return undefined;
 	}
 
 	/**

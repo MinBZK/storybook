@@ -60,6 +60,7 @@ import type { NLDDMenu, NLDDMenuItem } from '../../actions/menu/menu.js';
 import '../../actions/menu/menu.js';
 import '../../actions/icon-button/icon-button.js';
 import '../../content/icon/icon.js';
+import { submitOnEnter } from '../../../utilities/implicit-submission.js';
 
 export type ComboBoxSize = 'sm' | 'md';
 
@@ -67,6 +68,14 @@ export type ComboBoxSize = 'sm' | 'md';
 export class NLDDComboBox extends FormAssociated(LitElement) {
 
 	static override styles = comboBoxStyles;
+
+	/** Says this is the control an nldd-form-field is about, so the field can
+	 *  find it, name it and move focus into it. See nldd-form-field. */
+	static isFormInput = true;
+
+	/** Counts for the implicit-submission rule: a single-line field where Enter
+	 *  would submit the form. See utilities/implicit-submission.ts. */
+	static blocksImplicitSubmission = true;
 
 
 	private _initialValue = '';
@@ -522,6 +531,12 @@ export class NLDDComboBox extends FormAssociated(LitElement) {
 					bubbles: true,
 					composed: true,
 				}));
+			} else if (e.key === 'Enter') {
+				// Nothing to commit: no menu open, and either free text is not allowed
+				// or there is none that differs from the value. This Enter is not ours,
+				// so it goes to the form the way the browser would have sent it if the
+				// input were not in a shadow root.
+				submitOnEnter(this, e);
 			}
 			return;
 		}

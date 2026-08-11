@@ -52,6 +52,10 @@ export class NLDDTimePicker extends LitElement {
 
 	static override styles = timePickerStyles;
 
+	/** Says this is the control an nldd-form-field is about, so the field can
+	 *  find it, name it and move focus into it. See nldd-form-field. */
+	static isFormInput = true;
+
 	@property({ type: String })
 	value = '';
 
@@ -218,7 +222,7 @@ export class NLDDTimePicker extends LitElement {
 			this._focusColumn(e.key === 'ArrowLeft' ? 'hours' : 'minutes');
 			return;
 		}
-		let next: number | null = null;
+		let next: number | null;
 		switch (e.key) {
 			case 'ArrowDown':
 				next = numbers[Math.min(index + 1, numbers.length - 1)];

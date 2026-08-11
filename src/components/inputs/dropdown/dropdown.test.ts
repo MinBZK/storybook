@@ -1,5 +1,5 @@
 import { describe, it, expect, afterEach, vi } from 'vitest';
-import { fixture, cleanup, waitForUpdate } from '../../../test-utils.js';
+import { fixture, cleanup, waitForUpdate, deepActiveElement } from '../../../test-utils.js';
 import type { NLDDDropdown } from './dropdown.js';
 import './dropdown.js';
 
@@ -304,5 +304,48 @@ describe('nldd-dropdown – change event', () => {
 		await waitForUpdate(el);
 		expect(el.getAttribute('width')).toBe('240px');
 		expect(el.style.getPropertyValue('--_width')).toBe('240px');
+	});
+
+	it('focus() lands on the slotted select', async () => {
+		el = await fixture<NLDDDropdown>(`
+			<nldd-dropdown>
+				<select aria-label="Land"><option value="nl">Nederland</option></select>
+			</nldd-dropdown>
+		`);
+		await waitForUpdate(el);
+		el.focus();
+		expect(deepActiveElement()).toBe(el.querySelector('select'));
+	});
+
+	it('forwards accessible-label to the slotted select', async () => {
+		el = await fixture<NLDDDropdown>(`
+			<nldd-dropdown accessible-label="Land">
+				<select><option value="nl">Nederland</option></select>
+			</nldd-dropdown>
+		`);
+		await waitForUpdate(el);
+		expect(el.querySelector('select')!.getAttribute('aria-label')).toBe('Land');
+	});
+
+	it('clears the name from the select when accessible-label is emptied', async () => {
+		el = await fixture<NLDDDropdown>(`
+			<nldd-dropdown accessible-label="Land">
+				<select><option value="nl">Nederland</option></select>
+			</nldd-dropdown>
+		`);
+		await waitForUpdate(el);
+		(el as NLDDDropdown).accessibleLabel = '';
+		await waitForUpdate(el);
+		expect(el.querySelector('select')!.hasAttribute('aria-label')).toBe(false);
+	});
+
+	it('leaves an aria-label the consumer put on the select', async () => {
+		el = await fixture<NLDDDropdown>(`
+			<nldd-dropdown>
+				<select aria-label="Land"><option value="nl">Nederland</option></select>
+			</nldd-dropdown>
+		`);
+		await waitForUpdate(el);
+		expect(el.querySelector('select')!.getAttribute('aria-label')).toBe('Land');
 	});
 });

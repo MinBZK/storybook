@@ -1,8 +1,29 @@
-import { describe, it, expect, afterEach } from 'vitest';
-import { fixture, cleanup, waitForUpdate } from '../../../test-utils.js';
+import { describe, it, expect, afterEach, vi } from 'vitest';
+import { fixture, cleanup, waitForUpdate, deepActiveElement } from '../../../test-utils.js';
 import './form-field.js';
 import '../../inputs/text-field/text-field.js';
 import '../../inputs/password-field/password-field.js';
+import '../../inputs/multi-line-text-field/multi-line-text-field.js';
+import '../../inputs/number-field/number-field.js';
+import '../../inputs/search-field/search-field.js';
+import '../../inputs/date-field/date-field.js';
+import '../../inputs/time-field/time-field.js';
+import '../../inputs/combo-box/combo-box.js';
+import '../../inputs/token-field/token-field.js';
+import '../../inputs/switch-field/switch-field.js';
+import '../../inputs/dropdown/dropdown.js';
+import '../../inputs/checkbox/checkbox.js';
+import '../../inputs/checkbox-field/checkbox-field.js';
+import '../../inputs/radio-button/radio-button.js';
+import '../../inputs/radio-button-field/radio-button-field.js';
+import '../../inputs/radio-button-group/radio-button-group.js';
+import '../../inputs/segmented-control/segmented-control.js';
+import '../../inputs/stepper/stepper.js';
+import '../../inputs/toggle-button/toggle-button.js';
+import '../../inputs/toggle-button-group/toggle-button-group.js';
+import '../../inputs/switch/switch.js';
+import '../../content/tag/tag.js';
+import '../../actions/button/button.js';
 
 
 /* ============================================================
@@ -367,5 +388,312 @@ describe('nldd-form-field-error-text', () => {
 		el = await fixture('<nldd-form-field-error-text invalid>Must be at least 8 characters.</nldd-form-field-error-text>');
 		await waitForUpdate(el);
 		expect(el.textContent).toContain('Must be at least 8 characters.');
+	});
+});
+
+/* ============================================================
+   Label click focuses the slotted control
+
+   Every input the package ships must be reachable this way. Half of them
+   silently were not (issue #189): the label calls .focus() on the slotted
+   element, which does nothing unless that element is a native control or
+   carries its own focus(). Walking the whole set here is what keeps the
+   next component from slipping out again.
+   ============================================================ */
+
+const SLOTTED_CONTROLS: Array<{ name: string; markup: string }> = [
+	{ name: 'text-field', markup: '<nldd-text-field></nldd-text-field>' },
+	{ name: 'password-field', markup: '<nldd-password-field></nldd-password-field>' },
+	{ name: 'multi-line-text-field', markup: '<nldd-multi-line-text-field></nldd-multi-line-text-field>' },
+	{ name: 'number-field', markup: '<nldd-number-field></nldd-number-field>' },
+	{ name: 'search-field', markup: '<nldd-search-field></nldd-search-field>' },
+	{ name: 'date-field', markup: '<nldd-date-field></nldd-date-field>' },
+	{ name: 'time-field', markup: '<nldd-time-field></nldd-time-field>' },
+	{ name: 'combo-box', markup: '<nldd-combo-box></nldd-combo-box>' },
+	// allow-custom keeps the inner input alive; without options or custom input a
+	// token field has nothing to type into, and so nothing to focus.
+	{ name: 'token-field', markup: '<nldd-token-field allow-custom accessible-label="Tags"></nldd-token-field>' },
+	{ name: 'switch-field', markup: '<nldd-switch-field label="Aan"></nldd-switch-field>' },
+	{ name: 'checkbox', markup: '<nldd-checkbox label="Optie"></nldd-checkbox>' },
+	{ name: 'checkbox-field', markup: '<nldd-checkbox-field label="Optie"></nldd-checkbox-field>' },
+	{ name: 'radio-button', markup: '<nldd-radio-button label="Optie"></nldd-radio-button>' },
+	{ name: 'radio-button-field', markup: '<nldd-radio-button-field label="Optie"></nldd-radio-button-field>' },
+	{ name: 'stepper', markup: '<nldd-stepper></nldd-stepper>' },
+	{ name: 'toggle-button', markup: '<nldd-toggle-button type="button" text="Vet"></nldd-toggle-button>' },
+	{ name: 'native input', markup: '<input type="text">' },
+	{ name: 'native checkbox', markup: '<input type="checkbox">' },
+	{
+		name: 'dropdown',
+		markup: '<nldd-dropdown><select aria-label="Land"><option value="nl">Nederland</option></select></nldd-dropdown>',
+	},
+	{
+		name: 'radio-button-group',
+		markup: `
+			<nldd-radio-button-group name="g">
+				<nldd-radio-button-field value="1" label="Optie 1"></nldd-radio-button-field>
+				<nldd-radio-button-field value="2" label="Optie 2"></nldd-radio-button-field>
+			</nldd-radio-button-group>
+		`,
+	},
+	{
+		name: 'toggle-button-group',
+		markup: `
+			<nldd-toggle-button-group type="button" name="t">
+				<nldd-toggle-button value="a" text="A"></nldd-toggle-button>
+				<nldd-toggle-button value="b" text="B"></nldd-toggle-button>
+			</nldd-toggle-button-group>
+		`,
+	},
+	{
+		name: 'segmented-control',
+		markup: `
+			<nldd-segmented-control>
+				<nldd-segmented-control-item value="a" text="A"></nldd-segmented-control-item>
+				<nldd-segmented-control-item value="b" text="B"></nldd-segmented-control-item>
+			</nldd-segmented-control>
+		`,
+	},
+];
+
+/** Walks up from the deepest active element, hopping shadow hosts, to see
+ *  whether focus ended up anywhere inside `control`. */
+function focusIsInside(control: Element): boolean {
+	let node: Node | null = deepActiveElement();
+	while (node) {
+		if (node === control) return true;
+		node = node instanceof ShadowRoot ? node.host : node.parentNode;
+	}
+	return false;
+}
+
+describe('nldd-form-field – label click focuses the slotted control', () => {
+	let el: HTMLElement;
+
+	afterEach(() => {
+		if (el) cleanup(el);
+	});
+
+	for (const { name, markup } of SLOTTED_CONTROLS) {
+		it(`moves focus into ${name}`, async () => {
+			el = await fixture(`<nldd-form-field label="Veld">${markup}</nldd-form-field>`);
+			await waitForUpdate(el);
+
+			const control = el.firstElementChild as HTMLElement;
+			await waitForUpdate(control);
+
+			const label = el.shadowRoot!.querySelector<HTMLElement>('.form-field__label')!;
+			label.click();
+
+			expect(focusIsInside(control)).toBe(true);
+		});
+	}
+});
+
+
+/* ============================================================
+   The label is handed to the control as its accessible name
+
+   `for` and `aria-labelledby` are IDREFs and an IDREF only resolves inside its
+   own tree, so a label in this shadow root cannot point at a control in the
+   consumer's light DOM. The name has to be handed over, and these cases pin
+   down through which channel.
+   ============================================================ */
+
+// Controls that take the name through the design system's own naming channel.
+const NAMED_VIA_ACCESSIBLE_LABEL = [
+	'<nldd-text-field></nldd-text-field>',
+	'<nldd-number-field></nldd-number-field>',
+	'<nldd-search-field></nldd-search-field>',
+	'<nldd-combo-box></nldd-combo-box>',
+	'<nldd-token-field allow-custom></nldd-token-field>',
+	'<nldd-checkbox></nldd-checkbox>',
+	'<nldd-radio-button></nldd-radio-button>',
+	'<nldd-switch></nldd-switch>',
+	'<nldd-toggle-button text="A"></nldd-toggle-button>',
+	'<nldd-stepper></nldd-stepper>',
+	'<nldd-dropdown><select><option>a</option></select></nldd-dropdown>',
+	'<nldd-radio-button-group name="g"><nldd-radio-button-field value="1" label="Een"></nldd-radio-button-field></nldd-radio-button-group>',
+	'<nldd-toggle-button-group name="t"><nldd-toggle-button value="a" text="A"></nldd-toggle-button></nldd-toggle-button-group>',
+	'<nldd-segmented-control><nldd-segmented-control-item value="a" text="A"></nldd-segmented-control-item></nldd-segmented-control>',
+];
+
+// These carry a visible label that already names their control. The caption
+// above them is not their name, so it must not overwrite one.
+const NAMES_ITSELF = [
+	'<nldd-checkbox-field label="Nieuwsbrief"></nldd-checkbox-field>',
+	'<nldd-radio-button-field label="Per post"></nldd-radio-button-field>',
+	'<nldd-switch-field label="Meldingen"></nldd-switch-field>',
+];
+
+describe('nldd-form-field – hands the label to the control', () => {
+	let el: HTMLElement;
+
+	afterEach(() => {
+		if (el) cleanup(el);
+	});
+
+	for (const markup of NAMED_VIA_ACCESSIBLE_LABEL) {
+		const tag = markup.slice(1, markup.indexOf(' ') > 0 ? Math.min(markup.indexOf(' '), markup.indexOf('>')) : markup.indexOf('>'));
+		it(`names ${tag} through accessible-label`, async () => {
+			el = await fixture(`<nldd-form-field label="Veldnaam">${markup}</nldd-form-field>`);
+			await waitForUpdate(el);
+			expect(el.firstElementChild!.getAttribute('accessible-label')).toBe('Veldnaam');
+		});
+	}
+
+	for (const markup of NAMES_ITSELF) {
+		const tag = markup.slice(1, markup.indexOf(' '));
+		it(`leaves ${tag} to name itself`, async () => {
+			el = await fixture(`<nldd-form-field label="Veldnaam">${markup}</nldd-form-field>`);
+			await waitForUpdate(el);
+			const control = el.firstElementChild!;
+			expect(control.hasAttribute('accessible-label')).toBe(false);
+			expect(control.getAttribute('label')).not.toBe('Veldnaam');
+		});
+	}
+
+	it('names a native input through aria-label', async () => {
+		el = await fixture('<nldd-form-field label="Veldnaam"><input type="text"></nldd-form-field>');
+		await waitForUpdate(el);
+		expect(el.querySelector('input')!.getAttribute('aria-label')).toBe('Veldnaam');
+	});
+
+	it('keeps a name the consumer set when it has no label of its own', async () => {
+		el = await fixture('<nldd-form-field><nldd-text-field accessible-label="Zelf gezet"></nldd-text-field></nldd-form-field>');
+		await waitForUpdate(el);
+		expect(el.firstElementChild!.getAttribute('accessible-label')).toBe('Zelf gezet');
+	});
+
+	it('takes back only the name it wrote itself', async () => {
+		el = await fixture('<nldd-form-field label="Veldnaam"><nldd-text-field></nldd-text-field></nldd-form-field>');
+		await waitForUpdate(el);
+		const field = el as HTMLElement & { label: string };
+		expect(el.firstElementChild!.getAttribute('accessible-label')).toBe('Veldnaam');
+
+		field.label = '';
+		await waitForUpdate(el);
+		expect(el.firstElementChild!.hasAttribute('accessible-label')).toBe(false);
+	});
+});
+
+/* ============================================================
+   Finding the control it is about
+
+   The first child is normally the control, but it can be a wrapper put there
+   for layout, and it can be the first of several. These pin down which element
+   the field ends up wiring itself to.
+   ============================================================ */
+
+describe('nldd-form-field – finds the control', () => {
+	let el: HTMLElement;
+
+	afterEach(() => {
+		if (el) cleanup(el);
+	});
+
+	it('looks inside a wrapper for the control', async () => {
+		el = await fixture('<nldd-form-field label="Veldnaam"><div><nldd-text-field></nldd-text-field></div></nldd-form-field>');
+		await waitForUpdate(el);
+		const field = el.querySelector('nldd-text-field')!;
+		expect(field.getAttribute('accessible-label')).toBe('Veldnaam');
+		expect(el.querySelector('div')!.hasAttribute('accessible-label')).toBe(false);
+	});
+
+	it('moves focus into a wrapped control', async () => {
+		el = await fixture('<nldd-form-field label="Veldnaam"><div><nldd-text-field></nldd-text-field></div></nldd-form-field>');
+		await waitForUpdate(el);
+		const field = el.querySelector('nldd-text-field')! as HTMLElement;
+		await waitForUpdate(field);
+		el.shadowRoot!.querySelector<HTMLElement>('.form-field__label')!.click();
+		expect(focusIsInside(field)).toBe(true);
+	});
+
+	it('digs through more than one layer of wrapping', async () => {
+		el = await fixture('<nldd-form-field label="Veldnaam"><div><div><nldd-number-field></nldd-number-field></div></div></nldd-form-field>');
+		await waitForUpdate(el);
+		expect(el.querySelector('nldd-number-field')!.getAttribute('accessible-label')).toBe('Veldnaam');
+	});
+
+	it('names the first control when a field holds more than one', async () => {
+		// A radio group whose last option is "Anders", with the text field that
+		// appears alongside it. One question, one caption, two controls.
+		el = await fixture(`
+			<nldd-form-field label="Bezorgwijze">
+				<nldd-radio-button-group name="b">
+					<nldd-radio-button-field value="post" label="Per post"></nldd-radio-button-field>
+					<nldd-radio-button-field value="anders" label="Anders"></nldd-radio-button-field>
+				</nldd-radio-button-group>
+				<nldd-text-field accessible-label="Andere bezorgwijze"></nldd-text-field>
+			</nldd-form-field>
+		`);
+		await waitForUpdate(el);
+		expect(el.querySelector('nldd-radio-button-group')!.getAttribute('accessible-label')).toBe('Bezorgwijze');
+		expect(el.querySelector('nldd-text-field')!.getAttribute('accessible-label')).toBe('Andere bezorgwijze');
+	});
+
+	it('walks past a component that is not an input', async () => {
+		// nldd-tag accepts accessible-label too. Taking that as the signal would
+		// name the tag and leave the field it sits next to unnamed.
+		el = await fixture(`
+			<nldd-form-field label="Veldnaam">
+				<div>
+					<nldd-tag>PDF</nldd-tag>
+					<nldd-text-field></nldd-text-field>
+				</div>
+			</nldd-form-field>
+		`);
+		await waitForUpdate(el);
+		expect(el.querySelector('nldd-tag')!.hasAttribute('accessible-label')).toBe(false);
+		expect(el.querySelector('nldd-text-field')!.getAttribute('accessible-label')).toBe('Veldnaam');
+	});
+
+	it('skips a leading component that is not an input', async () => {
+		el = await fixture(`
+			<nldd-form-field label="Veldnaam">
+				<nldd-button text="Help"></nldd-button>
+				<nldd-text-field></nldd-text-field>
+			</nldd-form-field>
+		`);
+		await waitForUpdate(el);
+		expect(el.querySelector('nldd-button')!.hasAttribute('accessible-label')).toBe(false);
+		expect(el.querySelector('nldd-text-field')!.getAttribute('accessible-label')).toBe('Veldnaam');
+	});
+
+	it('wires up nothing and warns when there is no input at all', async () => {
+		const warn = vi.spyOn(console, 'warn').mockImplementation(() => {});
+		el = await fixture('<nldd-form-field label="Veldnaam"><div>Geen veld</div></nldd-form-field>');
+		await waitForUpdate(el);
+		expect(el.querySelector('div')!.hasAttribute('accessible-label')).toBe(false);
+		expect(el.querySelector('div')!.hasAttribute('aria-label')).toBe(false);
+		expect(warn).toHaveBeenCalledWith(expect.stringContaining('No form input found'));
+		expect(warn).toHaveBeenCalledWith(expect.stringContaining('label="Veldnaam"'));
+		warn.mockRestore();
+	});
+
+	it('stays quiet while the field is still empty', async () => {
+		const warn = vi.spyOn(console, 'warn').mockImplementation(() => {});
+		el = await fixture('<nldd-form-field label="Veldnaam"></nldd-form-field>');
+		await waitForUpdate(el);
+		expect(warn).not.toHaveBeenCalledWith(expect.stringContaining('No form input found'));
+		warn.mockRestore();
+	});
+
+	it('leaves a helper element alone as the first child', async () => {
+		el = await fixture(`
+			<nldd-form-field label="Veldnaam">
+				<nldd-form-field-help-text>Uitleg</nldd-form-field-help-text>
+				<nldd-text-field></nldd-text-field>
+			</nldd-form-field>
+		`);
+		await waitForUpdate(el);
+		expect(el.querySelector('nldd-text-field')!.getAttribute('accessible-label')).toBe('Veldnaam');
+	});
+
+	it('leaves a name the consumer gave the control alone', async () => {
+		// The caption fills a gap, it does not overrule. A name set on the control
+		// itself is more specific than the caption above it.
+		el = await fixture('<nldd-form-field label="Land"><nldd-text-field accessible-label="Kies een land"></nldd-text-field></nldd-form-field>');
+		await waitForUpdate(el);
+		expect(el.firstElementChild!.getAttribute('accessible-label')).toBe('Kies een land');
 	});
 });

@@ -39,6 +39,14 @@ export class NLDDSearchField extends FormAssociated(LitElement) {
 
 	static override styles = searchFieldStyles;
 
+	/** Says this is the control an nldd-form-field is about, so the field can
+	 *  find it, name it and move focus into it. See nldd-form-field. */
+	static isFormInput = true;
+
+	/** Counts for the implicit-submission rule: a single-line field where Enter
+	 *  would submit the form. See utilities/implicit-submission.ts. */
+	static blocksImplicitSubmission = true;
+
 
 	private _initialValue = '';
 

@@ -178,9 +178,12 @@ describe('nldd-menu-bar', () => {
 		// reads an empty slot and no clone is built.
 		const item = el.querySelector('nldd-menu-bar-item') as HTMLElement;
 		for (let i = 0; i < 10 && !item.assignedSlot; i++) await waitForUpdate(el);
-		// Simulate the overflowed (hidden) state the real layout produces.
+		// Simulate the overflowed (hidden) state the real layout produces. Marking
+		// happens in the same synchronous block as the toggle: _updateOverflow runs
+		// in a frame and clears data-overflow first, and the waiting above gives it
+		// room to do exactly that.
 		item.style.display = 'none';
-
+		item.setAttribute('data-overflow', 'true');
 		(el as unknown as { _toggleOverflowMenu(): void })._toggleOverflowMenu();
 		await waitForUpdate(el);
 

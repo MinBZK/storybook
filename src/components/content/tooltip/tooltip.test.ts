@@ -1,5 +1,5 @@
 import { describe, it, expect, afterEach } from 'vitest';
-import { fixture, cleanup, waitForUpdate } from '../../../test-utils.js';
+import { fixture, cleanup, waitForUpdate, until } from '../../../test-utils.js';
 import type { NLDDTooltip } from './tooltip.js';
 import './tooltip.js';
 
@@ -28,15 +28,33 @@ function instantHide(el: NLDDTooltip): void {
 }
 
 /**
- * Common open-the-tooltip flow: zero out the show delay, fire mouseenter,
- * yield once for the (now-immediate) timer, then await Lit's update so
- * the tooltip's `_visible` state has flushed to the popover element.
+ * Common open-the-tooltip flow: zero out the show delay, fire mouseenter, and
+ * wait until the popover is actually open. The show runs on a timer and then a
+ * render, so waiting for the state beats counting ticks, which passes on a
+ * quick machine and fails on a loaded one.
  */
 async function triggerShow(el: NLDDTooltip, trigger: Element): Promise<void> {
 	instantShow(el);
 	trigger.dispatchEvent(new MouseEvent('mouseenter', { bubbles: true }));
-	await new Promise(resolve => setTimeout(resolve, 0));
+	await until(() => isTooltipVisible(el));
+	// The popover being open is not the same as the show having settled. Hiding
+	// it while it is still opening leaves it open, so let the render finish
+	// before a test does anything with it.
 	await waitForUpdate(el);
+}
+
+/**
+ * What the tooltip thinks it is doing, for a failure message that says more than
+ * "expected true to be false". These two hide tests fail on CI and on no machine
+ * here, so the next failure should arrive with its reasons attached.
+ */
+function tooltipState(el: NLDDTooltip) {
+	return {
+		popoverOpen: isTooltipVisible(el),
+		visible: (el as unknown as { _visible: boolean })._visible,
+		hideDelay: getComputedStyle(el).getPropertyValue('--_hide-delay').trim(),
+		pendingHide: (el as unknown as { _hideTimeout: unknown })._hideTimeout !== null,
+	};
 }
 
 describe('nldd-tooltip', () => {
@@ -111,10 +129,13 @@ describe('nldd-tooltip – show/hide', () => {
 		await triggerShow(el, trigger);
 		instantHide(el);
 		trigger.dispatchEvent(new MouseEvent('mouseleave', { bubbles: true }));
-		await new Promise(resolve => setTimeout(resolve, 0));
-		await waitForUpdate(el);
+		// The hide runs on a timer and then a render, so wait for the state and not
+		// for a set number of ticks: that passes here and fails on a loaded CI.
+		await until(() => !isTooltipVisible(el));
 
-		expect(isTooltipVisible(el)).toBe(false);
+		expect(tooltipState(el)).toEqual({
+			popoverOpen: false, visible: false, hideDelay: '0', pendingHide: false,
+		});
 	});
 
 	it('blijft zichtbaar bij tooltip hover', async () => {
@@ -140,8 +161,8 @@ describe('nldd-tooltip – show/hide', () => {
 		expect(isTooltipVisible(el)).toBe(true);
 
 		el.dispatchEvent(new KeyboardEvent('keydown', { key: 'Escape', bubbles: true }));
-		await waitForUpdate(el);
-		expect(isTooltipVisible(el)).toBe(false);
+		await until(() => !isTooltipVisible(el));
+		expect(tooltipState(el)).toMatchObject({ popoverOpen: false, visible: false });
 	});
 
 	it('toont niet bij lege text', async () => {

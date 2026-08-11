@@ -1,5 +1,5 @@
 import { describe, it, expect, afterEach, vi } from 'vitest';
-import { fixture, cleanup, waitForUpdate } from '../../../test-utils.js';
+import { fixture, cleanup, waitForUpdate, deepActiveElement } from '../../../test-utils.js';
 import type { NLDDSegmentedControl, NLDDSegmentedControlItem } from './segmented-control.js';
 import './segmented-control.js';
 
@@ -511,5 +511,52 @@ describe('nldd-segmented-control-item – tooltip', () => {
 		await waitForUpdate(sc);
 		form.reset();
 		expect(sc.value).toBe('a');
+	});
+
+});
+
+describe('nldd-segmented-control – focus()', () => {
+	let el: NLDDSegmentedControl;
+
+	afterEach(() => {
+		if (el) cleanup(el);
+	});
+
+	it('focus() lands on the selected item', async () => {
+		el = await fixture<NLDDSegmentedControl>(`
+			<nldd-segmented-control value="b">
+				<nldd-segmented-control-item value="a" text="A"></nldd-segmented-control-item>
+				<nldd-segmented-control-item value="b" text="B"></nldd-segmented-control-item>
+			</nldd-segmented-control>
+		`);
+		await waitForUpdate(el);
+		const items = getItems(el);
+		await waitForUpdate(items[1]);
+		el.focus();
+		expect(deepActiveElement()).toBe(items[1].shadowRoot!.querySelector('.segmented-control__item-input'));
+	});
+
+	it('focus() falls back to the first enabled item when nothing is selected', async () => {
+		el = await fixture<NLDDSegmentedControl>(`
+			<nldd-segmented-control>
+				<nldd-segmented-control-item value="a" text="A" disabled></nldd-segmented-control-item>
+				<nldd-segmented-control-item value="b" text="B"></nldd-segmented-control-item>
+			</nldd-segmented-control>
+		`);
+		await waitForUpdate(el);
+		const items = getItems(el);
+		await waitForUpdate(items[1]);
+		el.focus();
+		expect(deepActiveElement()).toBe(items[1].shadowRoot!.querySelector('.segmented-control__item-input'));
+	});
+
+	it('leaves an aria-label the consumer put on the group', async () => {
+		el = await fixture<NLDDSegmentedControl>(`
+			<nldd-segmented-control aria-label="Weergave">
+				<nldd-segmented-control-item value="a" text="A"></nldd-segmented-control-item>
+			</nldd-segmented-control>
+		`);
+		await waitForUpdate(el);
+		expect(el.getAttribute('aria-label')).toBe('Weergave');
 	});
 });

@@ -130,6 +130,10 @@ export class NLDDDatePicker extends withTranslations<NLDDDatePickerTranslations>
 ) {
 	static override styles = datePickerStyles;
 
+	/** Says this is the control an nldd-form-field is about, so the field can
+	 *  find it, name it and move focus into it. See nldd-form-field. */
+	static isFormInput = true;
+
 	@property({ type: String })
 	value = '';
 
@@ -590,7 +594,7 @@ export class NLDDDatePicker extends withTranslations<NLDDDatePickerTranslations>
 
 	public _handleKeydown(e: KeyboardEvent): void {
 		const iso = this._focused;
-		let next = '';
+		let next: string;
 		switch (e.key) {
 			case 'ArrowLeft': next = addDays(iso, -1); break;
 			case 'ArrowRight': next = addDays(iso, 1); break;

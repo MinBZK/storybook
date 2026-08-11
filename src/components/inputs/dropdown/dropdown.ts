@@ -14,6 +14,7 @@
  * @attr {boolean} disabled - Disabled state; also forwarded to the slotted select
  * @attr {boolean} expanded - Reflects whether the native picker popup is open (driven internally)
  * @attr {string} width - Optional fixed width (any CSS length, e.g. "240px"). Default: stretches to fill container.
+ * @attr {string} accessible-label - Accessible name, forwarded as aria-label to the slotted select
  *
  * @slot - A native `<select>` element with `<option>` and/or `<optgroup>` children
  *
@@ -37,12 +38,17 @@ import { dropdownStyles } from './dropdown.styles.js';
 import { dropdownTemplate } from './dropdown.template.js';
 import { isPointerMode } from '../../../utilities/input-modality.js';
 import './../../content/icon/icon.js';
+import { setOwnedAttribute } from '../../../utilities/owned-attribute.js';
 
 export type DropdownSize = 'xs' | 'sm' | 'md';
 
 @customElement('nldd-dropdown')
 export class NLDDDropdown extends LitElement {
 	static override styles = dropdownStyles;
+
+	/** Says this is the control an nldd-form-field is about, so the field can
+	 *  find it, name it and move focus into it. See nldd-form-field. */
+	static isFormInput = true;
 
 	@property({ reflect: true, converter: reflectNonDefault<DropdownSize>('md') })
 	size: DropdownSize = 'md';
@@ -63,10 +69,21 @@ export class NLDDDropdown extends LitElement {
 	@property({ type: String, reflect: true })
 	width = '';
 
+	/**
+	 * Accessible name, forwarded as aria-label to the slotted `<select>`. The
+	 * wrapper is not the control, so a name on the wrapper reaches nobody. Leave
+	 * it empty and name the `<select>` yourself if you prefer.
+	 */
+	@property({ type: String, attribute: 'accessible-label' })
+	accessibleLabel = '';
+
 	@state()
 	_displayValue = '';
 
 	private _select: HTMLSelectElement | null = null;
+
+	/** The name this wrapper wrote onto the select, so it only takes back its own. */
+	private _appliedLabel: string | null = null;
 
 	// — Lifecycle ——————————————————————————————————————————————————————————————
 
@@ -76,6 +93,9 @@ export class NLDDDropdown extends LitElement {
 		}
 		if (changedProperties.has('invalid')) {
 			this._syncAriaInvalid();
+		}
+		if (changedProperties.has('accessibleLabel')) {
+			this._syncAccessibleLabel();
 		}
 		if (changedProperties.has('width')) {
 			const w = this.width;
@@ -110,7 +130,7 @@ export class NLDDDropdown extends LitElement {
 			return;
 		}
 
-		if (import.meta.env?.DEV && !select.hasAttribute("aria-label") && !select.hasAttribute("aria-labelledby") && !select.labels?.length) {
+		if (import.meta.env?.DEV && !this.accessibleLabel && !select.hasAttribute("aria-label") && !select.hasAttribute("aria-labelledby") && !select.labels?.length) {
 			console.warn('<nldd-dropdown>: The slotted <select> has no accessible name. Add an aria-label or aria-labelledby attribute to the <select> element.');
 		}
 
@@ -121,6 +141,7 @@ export class NLDDDropdown extends LitElement {
 		select.addEventListener('toggle', this._handleSelectToggle);
 		this._syncDisabled();
 		this._syncAriaInvalid();
+		this._syncAccessibleLabel();
 		this._syncDisplayValue();
 	}
 
@@ -129,6 +150,21 @@ export class NLDDDropdown extends LitElement {
 	private _syncDisabled(): void {
 		if (!this._select) return;
 		this._select.disabled = this.disabled;
+	}
+
+	/**
+	 * Puts the name on the `<select>`, which is the element assistive software
+	 * lands on.
+	 *
+	 * Only ever takes back a name it wrote itself. Naming the `<select>` directly
+	 * is the documented way to do this (see the example at the top of this file),
+	 * and without this guard the first slotchange would strip it: the wrapper has
+	 * no `accessible-label` of its own then, and "no name here" would be read as
+	 * "remove the name there".
+	 */
+	private _syncAccessibleLabel(): void {
+		if (!this._select) return;
+		this._appliedLabel = setOwnedAttribute(this._select, 'aria-label', this.accessibleLabel, this._appliedLabel);
 	}
 
 	private _syncAriaInvalid(): void {
@@ -185,6 +221,15 @@ export class NLDDDropdown extends LitElement {
 	private _handleSelectToggle = (e: Event): void => {
 		this.expanded = (e as ToggleEvent).newState === 'open';
 	};
+
+	/**
+	 * Delegates focus to the slotted `<select>`. The wrapper itself is not
+	 * focusable, so without this a label pointing at the dropdown has nowhere
+	 * to send focus.
+	 */
+	override focus(options?: FocusOptions): void {
+		this._select?.focus(options);
+	}
 
 	override render() {
 		return dropdownTemplate(this);

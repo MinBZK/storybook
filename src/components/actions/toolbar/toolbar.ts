@@ -264,6 +264,8 @@ export class NLDDToolbar extends LitElement {
 	private _resizeObserver: ResizeObserver | null = null;
 	private _menu: NLDDMenu | null = null;
 	private _isMeasuring = false;
+	private _childResizeObserver: ResizeObserver | null = null;
+	private _lastChildWidths = new WeakMap<HTMLElement, number>();
 	private _isBuilding = false;
 	private _hasMeasured = false;
 	private _prioritizedItemsCache: Extract<ToolbarChild, { type: 'item' }>[] | null = null;
@@ -314,6 +316,8 @@ export class NLDDToolbar extends LitElement {
 		this._observer = null;
 		this._resizeObserver?.disconnect();
 		this._resizeObserver = null;
+		this._childResizeObserver?.disconnect();
+		this._childResizeObserver = null;
 		this._menu?.remove();
 		this._menu = null;
 	}
@@ -876,8 +880,56 @@ export class NLDDToolbar extends LitElement {
 
 		const itemAttributeFilter = ['label', 'priority', 'min-width', 'max-width', 'width', 'text', 'disabled', 'selected', 'type'];
 		this._observer?.observe(this, { childList: true, attributes: true, subtree: true, attributeFilter: itemAttributeFilter });
+		this._watchChildSizes();
 
 		this._isBuilding = false;
+	}
+
+	/**
+	 * Watches how wide the children actually are, rather than guessing which
+	 * attribute means "wider".
+	 *
+	 * What decides the layout is the width a control needs, and that changes for
+	 * reasons no attribute filter catches: a `text` that gets shorter, a font
+	 * that finishes loading, a consumer's own CSS. The mutation observer sees
+	 * some of those and has no way to tell which of them moved a pixel, so it
+	 * asked the wrong question. This one reads the answer.
+	 *
+	 * Measuring changes these very sizes, since an item that moves into the
+	 * overflow menu collapses. `_isMeasuring` covers the synchronous pass, and
+	 * the render that follows lands after it, so the callback compares against
+	 * the widths it last acted on and stays quiet when nothing really moved.
+	 */
+	private _watchChildSizes(): void {
+		this._childResizeObserver?.disconnect();
+		this._childResizeObserver ??= new ResizeObserver(entries => {
+			if (this._isMeasuring || this._isBuilding) return;
+			let moved = false;
+			for (const entry of entries) {
+				const el = entry.target as HTMLElement;
+				// An item in the overflow menu has no width to speak of. It is the
+				// hiding that took it away, not the content, so it says nothing about
+				// whether the layout should change.
+				if (el.hasAttribute('hidden')) continue;
+				const width = entry.contentRect.width;
+				if (Math.abs((this._lastChildWidths.get(el) ?? -1) - width) < 0.5) continue;
+				this._lastChildWidths.set(el, width);
+				moved = true;
+			}
+			if (moved) this._measureAndUpdate();
+		});
+		this._lastChildWidths = new WeakMap();
+		for (const el of this._hostChildElements()) {
+			this._childResizeObserver.observe(el);
+		}
+	}
+
+	/** The elements this toolbar lays out: its items and its title. */
+	private _hostChildElements(): HTMLElement[] {
+		return Array.from(this.children).filter((el): el is HTMLElement => {
+			const tag = el.tagName.toLowerCase();
+			return tag === 'nldd-toolbar-item' || tag === 'nldd-toolbar-title';
+		});
 	}
 
 	override render() {

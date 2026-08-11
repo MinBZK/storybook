@@ -1,5 +1,5 @@
 import { describe, it, expect, afterEach } from 'vitest';
-import { fixture, cleanup, waitForUpdate } from '../../../test-utils.js';
+import { fixture, cleanup, waitForUpdate, deepActiveElement } from '../../../test-utils.js';
 import type { NLDDStepper } from './stepper.js';
 import './stepper.js';
 
@@ -267,5 +267,35 @@ describe('nldd-stepper – translations', () => {
 		await waitForUpdate(sp);
 		form.reset();
 		expect(sp.value).toBe(3);
+	});
+
+	it('focus() lands on the spinbutton, not on the icon buttons', async () => {
+		el = await fixture<NLDDStepper>('<nldd-stepper></nldd-stepper>');
+		await waitForUpdate(el);
+		el.focus();
+		expect(deepActiveElement()).toBe(el.shadowRoot!.querySelector('.stepper'));
+	});
+
+	it('focus() does nothing while disabled', async () => {
+		el = await fixture<NLDDStepper>('<nldd-stepper disabled></nldd-stepper>');
+		await waitForUpdate(el);
+		const before = deepActiveElement();
+		el.focus();
+		expect(deepActiveElement()).toBe(before);
+	});
+
+	it('accessible-label names the spinbutton', async () => {
+		el = await fixture<NLDDStepper>('<nldd-stepper accessible-label="Aantal personen"></nldd-stepper>');
+		await waitForUpdate(el);
+		const spin = el.shadowRoot!.querySelector('.stepper')!;
+		expect(spin.getAttribute('aria-label')).toBe('Aantal personen');
+	});
+
+	it('falls back to the generic label without an accessible-label', async () => {
+		el = await fixture<NLDDStepper>('<nldd-stepper></nldd-stepper>');
+		await waitForUpdate(el);
+		const spin = el.shadowRoot!.querySelector('.stepper')!;
+		expect(spin.getAttribute('aria-label')).toBeTruthy();
+		expect(spin.getAttribute('aria-label')).not.toBe('Aantal personen');
 	});
 });

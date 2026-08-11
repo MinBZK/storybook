@@ -50,6 +50,7 @@ import {
 	segmentedControlItemTemplate,
 } from './segmented-control.template.js';
 import './../../content/icon/icon.js';
+import { setOwnedAttribute } from '../../../utilities/owned-attribute.js';
 
 export type SegmentedControlSize = 'sm' | 'md' | 'lg';
 export type SegmentedControlType = 'radio' | 'checkbox';
@@ -108,6 +109,16 @@ export class NLDDSegmentedControlItem extends LitElement {
 		}));
 	}
 
+	/**
+	 * Delegates focus to the inner native `<input>`, so consumers can call
+	 * `itemEl.focus()` without reaching into shadow DOM.
+	 */
+	override focus(options?: FocusOptions): void {
+		this.shadowRoot
+			?.querySelector<HTMLInputElement>('.segmented-control__item-input')
+			?.focus(options);
+	}
+
 	override render() {
 		return segmentedControlItemTemplate(this);
 	}
@@ -120,6 +131,10 @@ export class NLDDSegmentedControlItem extends LitElement {
 export class NLDDSegmentedControl extends FormAssociated(LitElement) {
 
 	static override styles = segmentedControlStyles;
+
+	/** Says this is the control an nldd-form-field is about, so the field can
+	 *  find it, name it and move focus into it. See nldd-form-field. */
+	static isFormInput = true;
 
 
 	private _initialValue = '';
@@ -169,6 +184,9 @@ export class NLDDSegmentedControl extends FormAssociated(LitElement) {
 	/** ID of an external label element (aria-labelledby). */
 	@property({ type: String, attribute: 'accessible-labeled-by' })
 	accessibleLabeledBy = '';
+
+	/** The name this group wrote onto its host, so it only takes back its own. */
+	private _appliedLabel: string | null = null;
 
 	// — Lifecycle ——————————————————————————————————————————————————————————————
 
@@ -258,11 +276,7 @@ export class NLDDSegmentedControl extends FormAssociated(LitElement) {
 			this.setAttribute('role', this.type === 'checkbox' ? 'group' : 'radiogroup');
 		}
 		if (changedProperties.has('accessibleLabel')) {
-			if (this.accessibleLabel) {
-				this.setAttribute('aria-label', this.accessibleLabel);
-			} else {
-				this.removeAttribute('aria-label');
-			}
+			this._appliedLabel = setOwnedAttribute(this, 'aria-label', this.accessibleLabel, this._appliedLabel);
 		}
 		if (changedProperties.has('accessibleLabeledBy')) {
 			if (this.accessibleLabeledBy) {
@@ -377,7 +391,7 @@ export class NLDDSegmentedControl extends FormAssociated(LitElement) {
 
 		const currentIndex = items.findIndex(item => item.selected);
 
-		let nextIndex = currentIndex;
+		let nextIndex: number;
 
 		switch (e.key) {
 			case 'ArrowLeft':
@@ -417,6 +431,16 @@ export class NLDDSegmentedControl extends FormAssociated(LitElement) {
 
 	public _onSlotChange(): void {
 		this._syncItems();
+	}
+
+	/**
+	 * Delegates focus to the selected item, or to the first enabled one when
+	 * nothing is selected. Mirrors where the keyboard lands when tabbing into
+	 * the control.
+	 */
+	override focus(options?: FocusOptions): void {
+		const items = this._getItems().filter(item => !item.disabled);
+		(items.find(item => item.selected) ?? items[0])?.focus(options);
 	}
 
 	override render() {
