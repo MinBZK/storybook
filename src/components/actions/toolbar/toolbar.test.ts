@@ -1,6 +1,7 @@
 import { describe, it, expect, afterEach, vi } from 'vitest';
 import { fixture, cleanup, waitForUpdate } from '../../../test-utils.js';
 import { groupForOverflow } from './toolbar.js';
+import '../button/button.js';
 
 describe('nldd-toolbar', () => {
 	let el: HTMLElement;
@@ -699,5 +700,77 @@ describe('nldd-toolbar solo fluid item', () => {
 		await settle(el);
 		expect((el as unknown as { _soloFluid: boolean })._soloFluid).toBe(false);
 		expect(el.shadowRoot!.querySelector('.toolbar__flexible-spacer')).not.toBeNull();
+	});
+});
+
+/* ============================================================
+   Re-measuring when a control changes width
+
+   What decides the layout is the width a control needs, and that changes for
+   reasons no attribute filter catches. A `text` that gets shorter is the one
+   that bit: the mutation observer saw it and filed it under "a visible control
+   changed, no toolbar work needed", so the freed space stayed reserved and an
+   item that had been pushed into the overflow menu stayed there.
+   ============================================================ */
+
+function frames(n = 10): Promise<void> {
+	return new Promise(resolve => {
+		let left = n;
+		const tick = () => (--left <= 0 ? resolve() : requestAnimationFrame(tick));
+		requestAnimationFrame(tick);
+	});
+}
+
+describe('nldd-toolbar – re-measures on a width change', () => {
+	let el: HTMLElement;
+
+	afterEach(() => {
+		if (el) cleanup(el);
+		vi.restoreAllMocks();
+	});
+
+	it('measures again when a control inside an item gets narrower', async () => {
+		el = await fixture(`
+			<nldd-toolbar label="Balk" style="width: 340px">
+				<nldd-toolbar-item slot="start">
+					<nldd-button id="naam" text="Een behoorlijk lange naam"></nldd-button>
+				</nldd-toolbar-item>
+				<nldd-toolbar-item slot="start"><nldd-button text="Tweede knop"></nldd-button></nldd-toolbar-item>
+			</nldd-toolbar>
+		`);
+		await waitForUpdate(el);
+		await frames(10);
+
+		const toolbar = el as unknown as { _measureAndUpdate: () => void };
+		const measure = vi.spyOn(toolbar, '_measureAndUpdate');
+
+		el.querySelector('#naam')!.setAttribute('text', 'Kort');
+		await frames(14);
+
+		expect(measure).toHaveBeenCalled();
+	});
+
+	it('settles instead of measuring on and on', async () => {
+		el = await fixture(`
+			<nldd-toolbar label="Balk" style="width: 340px">
+				<nldd-toolbar-item slot="start">
+					<nldd-button id="naam2" text="Een behoorlijk lange naam"></nldd-button>
+				</nldd-toolbar-item>
+				<nldd-toolbar-item slot="start"><nldd-button text="Tweede knop"></nldd-button></nldd-toolbar-item>
+			</nldd-toolbar>
+		`);
+		await waitForUpdate(el);
+		await frames(10);
+
+		const toolbar = el as unknown as { _measureAndUpdate: () => void };
+		const measure = vi.spyOn(toolbar, '_measureAndUpdate');
+
+		el.querySelector('#naam2')!.setAttribute('text', 'Kort');
+		await frames(20);
+		const afterChange = measure.mock.calls.length;
+
+		await frames(20);
+		expect(measure.mock.calls.length).toBe(afterChange);
+		expect(afterChange).toBeLessThanOrEqual(3);
 	});
 });
