@@ -21,6 +21,7 @@ import '../../inputs/segmented-control/segmented-control.js';
 import '../../inputs/stepper/stepper.js';
 import '../../inputs/toggle-button/toggle-button.js';
 import '../../inputs/toggle-button-group/toggle-button-group.js';
+import '../../inputs/switch/switch.js';
 
 
 /* ============================================================
@@ -484,4 +485,91 @@ describe('nldd-form-field – label click focuses the slotted control', () => {
 			expect(focusIsInside(control)).toBe(true);
 		});
 	}
+});
+
+
+/* ============================================================
+   The label is handed to the control as its accessible name
+
+   `for` and `aria-labelledby` are IDREFs and an IDREF only resolves inside its
+   own tree, so a label in this shadow root cannot point at a control in the
+   consumer's light DOM. The name has to be handed over, and these cases pin
+   down through which channel.
+   ============================================================ */
+
+// Controls that take the name through the design system's own naming channel.
+const NAMED_VIA_ACCESSIBLE_LABEL = [
+	'<nldd-text-field></nldd-text-field>',
+	'<nldd-number-field></nldd-number-field>',
+	'<nldd-search-field></nldd-search-field>',
+	'<nldd-combo-box></nldd-combo-box>',
+	'<nldd-token-field allow-custom></nldd-token-field>',
+	'<nldd-checkbox></nldd-checkbox>',
+	'<nldd-radio-button></nldd-radio-button>',
+	'<nldd-switch></nldd-switch>',
+	'<nldd-toggle-button text="A"></nldd-toggle-button>',
+	'<nldd-stepper></nldd-stepper>',
+	'<nldd-dropdown><select><option>a</option></select></nldd-dropdown>',
+	'<nldd-radio-button-group name="g"><nldd-radio-button-field value="1" label="Een"></nldd-radio-button-field></nldd-radio-button-group>',
+	'<nldd-toggle-button-group name="t"><nldd-toggle-button value="a" text="A"></nldd-toggle-button></nldd-toggle-button-group>',
+	'<nldd-segmented-control><nldd-segmented-control-item value="a" text="A"></nldd-segmented-control-item></nldd-segmented-control>',
+];
+
+// These carry a visible label that already names their control. The caption
+// above them is not their name, so it must not overwrite one.
+const NAMES_ITSELF = [
+	'<nldd-checkbox-field label="Nieuwsbrief"></nldd-checkbox-field>',
+	'<nldd-radio-button-field label="Per post"></nldd-radio-button-field>',
+	'<nldd-switch-field label="Meldingen"></nldd-switch-field>',
+];
+
+describe('nldd-form-field – hands the label to the control', () => {
+	let el: HTMLElement;
+
+	afterEach(() => {
+		if (el) cleanup(el);
+	});
+
+	for (const markup of NAMED_VIA_ACCESSIBLE_LABEL) {
+		const tag = markup.slice(1, markup.indexOf(' ') > 0 ? Math.min(markup.indexOf(' '), markup.indexOf('>')) : markup.indexOf('>'));
+		it(`names ${tag} through accessible-label`, async () => {
+			el = await fixture(`<nldd-form-field label="Veldnaam">${markup}</nldd-form-field>`);
+			await waitForUpdate(el);
+			expect(el.firstElementChild!.getAttribute('accessible-label')).toBe('Veldnaam');
+		});
+	}
+
+	for (const markup of NAMES_ITSELF) {
+		const tag = markup.slice(1, markup.indexOf(' '));
+		it(`leaves ${tag} to name itself`, async () => {
+			el = await fixture(`<nldd-form-field label="Veldnaam">${markup}</nldd-form-field>`);
+			await waitForUpdate(el);
+			const control = el.firstElementChild!;
+			expect(control.hasAttribute('accessible-label')).toBe(false);
+			expect(control.getAttribute('label')).not.toBe('Veldnaam');
+		});
+	}
+
+	it('names a native input through aria-label', async () => {
+		el = await fixture('<nldd-form-field label="Veldnaam"><input type="text"></nldd-form-field>');
+		await waitForUpdate(el);
+		expect(el.querySelector('input')!.getAttribute('aria-label')).toBe('Veldnaam');
+	});
+
+	it('keeps a name the consumer set when it has no label of its own', async () => {
+		el = await fixture('<nldd-form-field><nldd-text-field accessible-label="Zelf gezet"></nldd-text-field></nldd-form-field>');
+		await waitForUpdate(el);
+		expect(el.firstElementChild!.getAttribute('accessible-label')).toBe('Zelf gezet');
+	});
+
+	it('takes back only the name it wrote itself', async () => {
+		el = await fixture('<nldd-form-field label="Veldnaam"><nldd-text-field></nldd-text-field></nldd-form-field>');
+		await waitForUpdate(el);
+		const field = el as HTMLElement & { label: string };
+		expect(el.firstElementChild!.getAttribute('accessible-label')).toBe('Veldnaam');
+
+		field.label = '';
+		await waitForUpdate(el);
+		expect(el.firstElementChild!.hasAttribute('accessible-label')).toBe(false);
+	});
 });

@@ -9,6 +9,7 @@
  * @attr {string} name - Forwarded to all slotted nldd-radio-button-field elements
  * @attr {boolean} disabled - Disables all slotted fields
  * @attr {boolean} required - Marks the group as required
+ * @attr {string} accessible-label - Accessible name for the group, set as aria-label on the group
  * @attr {string} accessible-labeled-by - Id of an external label element, set as aria-labelledby on the group
  *
  * @slot - Slot for nldd-radio-button-field elements
@@ -34,6 +35,10 @@ export class NLDDRadioButtonGroup extends LitElement {
 	@property({ type: Boolean, reflect: true })
 	required = false;
 
+	/** Accessible name forwarded as aria-label to the group host. */
+	@property({ type: String, attribute: 'accessible-label' })
+	accessibleLabel = '';
+
 	@property({ type: String, attribute: 'accessible-labeled-by' })
 	accessibleLabeledBy = '';
 
@@ -50,9 +55,22 @@ export class NLDDRadioButtonGroup extends LitElement {
 		this.removeEventListener('change', this._handleChange);
 	}
 
+	override firstUpdated(): void {
+		if (import.meta.env?.DEV && !this.accessibleLabel && !this.accessibleLabeledBy) {
+			console.warn('<nldd-radio-button-group>: No accessible name provided. Add an accessible-label or accessible-labeled-by attribute for screen reader accessibility.');
+		}
+	}
+
 	override updated(changed: Map<PropertyKey, unknown>): void {
 		if (changed.has('name') || changed.has('disabled') || changed.has('required')) {
 			this._syncFields();
+		}
+		if (changed.has('accessibleLabel')) {
+			if (this.accessibleLabel) {
+				this.setAttribute('aria-label', this.accessibleLabel);
+			} else {
+				this.removeAttribute('aria-label');
+			}
 		}
 		if (changed.has('accessibleLabeledBy')) {
 			if (this.accessibleLabeledBy) {

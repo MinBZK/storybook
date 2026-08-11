@@ -317,4 +317,25 @@ describe('nldd-dropdown – change event', () => {
 		expect(deepActiveElement()).toBe(el.querySelector('select'));
 	});
 
+	it('forwards accessible-label to the slotted select', async () => {
+		el = await fixture<NLDDDropdown>(`
+			<nldd-dropdown accessible-label="Land">
+				<select><option value="nl">Nederland</option></select>
+			</nldd-dropdown>
+		`);
+		await waitForUpdate(el);
+		expect(el.querySelector('select')!.getAttribute('aria-label')).toBe('Land');
+	});
+
+	it('clears the name from the select when accessible-label is emptied', async () => {
+		el = await fixture<NLDDDropdown>(`
+			<nldd-dropdown accessible-label="Land">
+				<select><option value="nl">Nederland</option></select>
+			</nldd-dropdown>
+		`);
+		await waitForUpdate(el);
+		(el as NLDDDropdown).accessibleLabel = '';
+		await waitForUpdate(el);
+		expect(el.querySelector('select')!.hasAttribute('aria-label')).toBe(false);
+	});
 });

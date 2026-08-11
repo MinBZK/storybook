@@ -284,4 +284,18 @@ describe('nldd-stepper – translations', () => {
 		expect(deepActiveElement()).toBe(before);
 	});
 
+	it('accessible-label names the spinbutton', async () => {
+		el = await fixture<NLDDStepper>('<nldd-stepper accessible-label="Aantal personen"></nldd-stepper>');
+		await waitForUpdate(el);
+		const spin = el.shadowRoot!.querySelector('.stepper')!;
+		expect(spin.getAttribute('aria-label')).toBe('Aantal personen');
+	});
+
+	it('falls back to the generic label without an accessible-label', async () => {
+		el = await fixture<NLDDStepper>('<nldd-stepper></nldd-stepper>');
+		await waitForUpdate(el);
+		const spin = el.shadowRoot!.querySelector('.stepper')!;
+		expect(spin.getAttribute('aria-label')).toBeTruthy();
+		expect(spin.getAttribute('aria-label')).not.toBe('Aantal personen');
+	});
 });

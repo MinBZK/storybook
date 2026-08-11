@@ -13,7 +13,7 @@ export function stepperTemplate(component: NLDDStepper): TemplateResult {
 			aria-valuenow=${component.value}
 			aria-valuemin=${isFinite(component.min) ? component.min : nothing}
 			aria-valuemax=${isFinite(component.max) ? component.max : nothing}
-			aria-label=${component._t('components.stepper.to-adjust-value-action')}
+			aria-label=${component.accessibleLabel || component._t('components.stepper.to-adjust-value-action')}
 			aria-disabled=${component.disabled ? 'true' : nothing}
 			@keydown=${component._handleKeydown}
 		>

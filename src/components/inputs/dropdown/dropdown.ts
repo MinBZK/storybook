@@ -14,6 +14,7 @@
  * @attr {boolean} disabled - Disabled state; also forwarded to the slotted select
  * @attr {boolean} expanded - Reflects whether the native picker popup is open (driven internally)
  * @attr {string} width - Optional fixed width (any CSS length, e.g. "240px"). Default: stretches to fill container.
+ * @attr {string} accessible-label - Accessible name, forwarded as aria-label to the slotted select
  *
  * @slot - A native `<select>` element with `<option>` and/or `<optgroup>` children
  *
@@ -63,6 +64,14 @@ export class NLDDDropdown extends LitElement {
 	@property({ type: String, reflect: true })
 	width = '';
 
+	/**
+	 * Accessible name, forwarded as aria-label to the slotted `<select>`. The
+	 * wrapper is not the control, so a name on the wrapper reaches nobody. Leave
+	 * it empty and name the `<select>` yourself if you prefer.
+	 */
+	@property({ type: String, attribute: 'accessible-label' })
+	accessibleLabel = '';
+
 	@state()
 	_displayValue = '';
 
@@ -76,6 +85,9 @@ export class NLDDDropdown extends LitElement {
 		}
 		if (changedProperties.has('invalid')) {
 			this._syncAriaInvalid();
+		}
+		if (changedProperties.has('accessibleLabel')) {
+			this._syncAccessibleLabel();
 		}
 		if (changedProperties.has('width')) {
 			const w = this.width;
@@ -110,7 +122,7 @@ export class NLDDDropdown extends LitElement {
 			return;
 		}
 
-		if (import.meta.env?.DEV && !select.hasAttribute("aria-label") && !select.hasAttribute("aria-labelledby") && !select.labels?.length) {
+		if (import.meta.env?.DEV && !this.accessibleLabel && !select.hasAttribute("aria-label") && !select.hasAttribute("aria-labelledby") && !select.labels?.length) {
 			console.warn('<nldd-dropdown>: The slotted <select> has no accessible name. Add an aria-label or aria-labelledby attribute to the <select> element.');
 		}
 
@@ -121,6 +133,7 @@ export class NLDDDropdown extends LitElement {
 		select.addEventListener('toggle', this._handleSelectToggle);
 		this._syncDisabled();
 		this._syncAriaInvalid();
+		this._syncAccessibleLabel();
 		this._syncDisplayValue();
 	}
 
@@ -129,6 +142,16 @@ export class NLDDDropdown extends LitElement {
 	private _syncDisabled(): void {
 		if (!this._select) return;
 		this._select.disabled = this.disabled;
+	}
+
+	/** Puts the name on the `<select>`, which is the element assistive software lands on. */
+	private _syncAccessibleLabel(): void {
+		if (!this._select) return;
+		if (this.accessibleLabel) {
+			this._select.setAttribute('aria-label', this.accessibleLabel);
+		} else {
+			this._select.removeAttribute('aria-label');
+		}
 	}
 
 	private _syncAriaInvalid(): void {

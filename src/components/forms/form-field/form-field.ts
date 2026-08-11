@@ -120,6 +120,9 @@ export class NLDDFormField extends LitElement {
 	private _childObserver: MutationObserver | null = null;
 	private _observer: MutationObserver | null = null;
 
+	/** The last label this field wrote onto the control, so it only takes back its own. */
+	private _appliedLabel: string | null = null;
+
 	@state()
 	private _hasErrors = false;
 
@@ -181,11 +184,11 @@ export class NLDDFormField extends LitElement {
 		if (!input) return;
 
 		// Ensure the inner native input has an id so aria-describedby can reference it.
-		// For custom elements (nldd-text-field, nldd-password-field) inputId is a property
-		// that gets forwarded to the inner <input id>. For plain <input> elements we set
-		// the id directly. We never set the host element's id to avoid duplicate IDs.
-		const isCustomInput = 'inputId' in input;
-		if (isCustomInput) {
+		// `inputId` is a component that hands out the id of the control it renders, which
+		// is a different question from how it wants to be named, so it is asked separately
+		// (see _applyAccessibleLabel). For plain <input> elements we set the id directly.
+		// We never set the host element's id to avoid duplicate IDs.
+		if ('inputId' in input) {
 			const existingId = (input as HTMLElement & { inputId: string }).inputId;
 			const generatedId = existingId || generateId();
 			(input as HTMLElement & { inputId: string }).inputId = generatedId;
@@ -193,21 +196,7 @@ export class NLDDFormField extends LitElement {
 			if (!input.id) input.id = generateId();
 		}
 
-		// Custom elements (nldd-text-field, nldd-password-field) expose an `accessible-label`
-		// attribute that they forward to their inner <input aria-label>. Native <input>
-		// elements have no such property — set aria-label directly on them instead.
-		if (this.label) {
-			if (isCustomInput) {
-				input.setAttribute('accessible-label', this.label);
-				input.removeAttribute('aria-label');
-			} else {
-				input.setAttribute('aria-label', this.label);
-				input.removeAttribute('accessible-label');
-			}
-		} else {
-			input.removeAttribute('accessible-label');
-			input.removeAttribute('aria-label');
-		}
+		this._applyAccessibleLabel(input);
 
 		// Ensure each help text element has an id so it can be referenced in aria-describedby
 		Array.from(this.children)
@@ -221,6 +210,48 @@ export class NLDDFormField extends LitElement {
 		});
 
 		this._syncErrorText();
+	}
+
+	/**
+	 * Hands the label to the control as its accessible name, through whichever
+	 * channel the control offers.
+	 *
+	 * It has to be handed over rather than referenced. `for` and
+	 * `aria-labelledby` are IDREFs and an IDREF only resolves inside its own
+	 * tree, so a label in this shadow root cannot point at a control in the
+	 * consumer's light DOM.
+	 *
+	 * Which channel is a question about the control, not about its element
+	 * kind, and those two came apart. `accessible-label` is the naming channel
+	 * of this system: a component that has it forwards the name to whatever it
+	 * renders inside. A native `<input>` takes `aria-label`. A component with
+	 * neither carries a visible label of its own (`nldd-checkbox-field` and its
+	 * siblings), and that label already names the control. Overwriting it would
+	 * replace "Nieuwsbrief" with the caption above it, so those are left alone.
+	 *
+	 * Only a name this field wrote is taken back. A consumer who names the
+	 * control itself and leaves the caption empty keeps that name.
+	 */
+	private _applyAccessibleLabel(input: Element): void {
+		const attribute = 'accessibleLabel' in input
+			? 'accessible-label'
+			: input instanceof HTMLInputElement
+				|| input instanceof HTMLSelectElement
+				|| input instanceof HTMLTextAreaElement
+				? 'aria-label'
+				: null;
+		if (!attribute) return;
+
+		if (this.label) {
+			input.setAttribute(attribute, this.label);
+			this._appliedLabel = this.label;
+			return;
+		}
+
+		if (this._appliedLabel !== null && input.getAttribute(attribute) === this._appliedLabel) {
+			input.removeAttribute(attribute);
+		}
+		this._appliedLabel = null;
 	}
 
 	/** First child element that is not a form field helper component. */

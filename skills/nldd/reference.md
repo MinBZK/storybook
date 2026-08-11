@@ -888,6 +888,7 @@ A visual wrapper around a native `<select>` element. The consumer provides a nat
 | `disabled` | `boolean` | Disabled state; also forwarded to the slotted select |
 | `expanded` | `boolean` | Reflects whether the native picker popup is open (driven internally) |
 | `width` | `string` | Optional fixed width (any CSS length, e.g. "240px"). Default: stretches to fill container. |
+| `accessible-label` | `string` | Accessible name, forwarded as aria-label to the slotted select |
 
 **Slots**
 
@@ -1075,6 +1076,7 @@ Groups nldd-radio-button-field elements, handles keyboard navigation, and forwar
 | `name` | `string` | Forwarded to all slotted nldd-radio-button-field elements |
 | `disabled` | `boolean` | Disables all slotted fields |
 | `required` | `boolean` | Marks the group as required |
+| `accessible-label` | `string` | Accessible name for the group, set as aria-label on the group |
 | `accessible-labeled-by` | `string` | Id of an external label element, set as aria-labelledby on the group |
 
 **Slots**
@@ -1189,6 +1191,7 @@ A numeric control with increment and decrement buttons.
 | `disabled` | `boolean` | Disabled state |
 | `size` | `string` | Size: 'xs' \| 'sm' \| 'md' (default: 'md') |
 | `name` | `string` | Name for form submission; the value is submitted under this name |
+| `accessible-label` | `string` | Accessible name for the spinbutton; falls back to a generic label |
 | `translations` | `object` | Translations; unspecified keys fall back to Dutch |
 
 **Events**

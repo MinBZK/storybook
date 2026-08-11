@@ -8987,6 +8987,16 @@
               "reflects": true
             },
             {
+              "kind": "field",
+              "name": "accessibleLabel",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Accessible name, forwarded as aria-label to the slotted `<select>`. The\nwrapper is not the control, so a name on the wrapper reaches nobody. Leave\nit empty and name the `<select>` yourself if you prefer.",
+              "attribute": "accessible-label"
+            },
+            {
               "kind": "method",
               "name": "focus",
               "return": {
@@ -11273,6 +11283,7 @@
             },
             {
               "kind": "field",
+              "name": "accessibleLabel",
               "type": {
                 "text": "string"
               },
@@ -12775,6 +12786,7 @@
             },
             {
               "kind": "field",
+              "name": "accessibleLabel",
               "type": {
                 "text": "string"
               },

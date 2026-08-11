@@ -11,6 +11,7 @@
  * @attr {boolean} disabled - Disabled state
  * @attr {string} size - Size: 'xs' | 'sm' | 'md' (default: 'md')
  * @attr {string} name - Name for form submission; the value is submitted under this name
+ * @attr {string} accessible-label - Accessible name for the spinbutton; falls back to a generic label
  * @attr {object} translations - Translations; unspecified keys fall back to Dutch
  *
  * @fires change - When the value changes; detail: { value: number }
@@ -56,6 +57,14 @@ export class NLDDStepper extends FormAssociated(LitElement) {
 
 	@property({ type: String, reflect: true })
 	name = '';
+
+	/**
+	 * Accessible name for the spinbutton. Without one it falls back to a generic
+	 * "adjust the value", which says what the control does but not which value,
+	 * so give it the name of the field whenever there is one.
+	 */
+	@property({ type: String, attribute: 'accessible-label' })
+	accessibleLabel = '';
 
 	/** Override one or more translation keys. Unspecified keys fall back to Dutch. */
 	@property({ type: Object })
