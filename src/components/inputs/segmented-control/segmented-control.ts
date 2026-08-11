@@ -391,7 +391,7 @@ export class NLDDSegmentedControl extends FormAssociated(LitElement) {
 
 		const currentIndex = items.findIndex(item => item.selected);
 
-		let nextIndex = currentIndex;
+		let nextIndex: number;
 
 		switch (e.key) {
 			case 'ArrowLeft':

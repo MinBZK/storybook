@@ -555,7 +555,7 @@ export class NLDDTextEditor extends FormAssociated(NLDDCodeMirrorElement) {
 	 *  text. No-op when the clipboard is empty or unreadable. */
 	async paste(): Promise<void> {
 		if (!this.view) return;
-		let raw = '';
+		let raw: string;
 		try { raw = await navigator.clipboard.readText(); } catch { return; /* clipboard blocked */ }
 		this._pasteText(stripSentinels(raw));
 		this.view?.focus();

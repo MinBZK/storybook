@@ -594,7 +594,7 @@ export class NLDDDatePicker extends withTranslations<NLDDDatePickerTranslations>
 
 	public _handleKeydown(e: KeyboardEvent): void {
 		const iso = this._focused;
-		let next = '';
+		let next: string;
 		switch (e.key) {
 			case 'ArrowLeft': next = addDays(iso, -1); break;
 			case 'ArrowRight': next = addDays(iso, 1); break;

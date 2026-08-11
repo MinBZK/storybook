@@ -222,7 +222,7 @@ export class NLDDTimePicker extends LitElement {
 			this._focusColumn(e.key === 'ArrowLeft' ? 'hours' : 'minutes');
 			return;
 		}
-		let next: number | null = null;
+		let next: number | null;
 		switch (e.key) {
 			case 'ArrowDown':
 				next = numbers[Math.min(index + 1, numbers.length - 1)];
