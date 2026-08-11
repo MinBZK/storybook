@@ -41,6 +41,7 @@
  */
 import { LitElement } from 'lit';
 import { customElement, property, state } from 'lit/decorators.js';
+import { setOwnedAttribute } from '../../../utilities/owned-attribute.js';
 import {
 	formFieldStyles,
 	formFieldHelpTextStyles,
@@ -279,17 +280,7 @@ export class NLDDFormField extends LitElement {
 				: null;
 		if (!attribute) return;
 
-		const current = input.getAttribute(attribute);
-		if (current !== null && current !== this._appliedLabel) return;
-
-		if (this.label) {
-			input.setAttribute(attribute, this.label);
-			this._appliedLabel = this.label;
-			return;
-		}
-
-		if (current !== null) input.removeAttribute(attribute);
-		this._appliedLabel = null;
+		this._appliedLabel = setOwnedAttribute(input, attribute, this.label, this._appliedLabel);
 	}
 
 	/**
