@@ -248,28 +248,51 @@ describe('nldd-menu-item', () => {
 		expect(fired).toBe(false);
 	});
 
-	it('renders role menuitem for default type', async () => {
+	// A menu role promises there is a menu around you. An item on its own cannot
+	// make that true, so it stays a plain button until a menu claims it. The
+	// overflow declaration inside an nldd-toolbar-item is exactly such an item.
+	it('carries no menu role until a menu claims it', async () => {
 		el = await fixture('<nldd-menu-item text="Item"></nldd-menu-item>');
 		await waitForUpdate(el);
-		expect(getButton(el).getAttribute('role')).toBe('menuitem');
+		expect(getButton(el).hasAttribute('role')).toBe(false);
 	});
 
-	it('renders role menuitemcheckbox for type checkbox', async () => {
-		el = await fixture('<nldd-menu-item type="checkbox" text="Item"></nldd-menu-item>');
+	it('renders role menuitem for default type inside a menu', async () => {
+		el = await fixture('<nldd-menu open><nldd-menu-item text="Item"></nldd-menu-item></nldd-menu>');
 		await waitForUpdate(el);
-		expect(getButton(el).getAttribute('role')).toBe('menuitemcheckbox');
+		const item = el.querySelector('nldd-menu-item') as HTMLElement;
+		await waitForUpdate(item);
+		expect(getButton(item).getAttribute('role')).toBe('menuitem');
 	});
 
-	it('renders role menuitemradio for type radio', async () => {
-		el = await fixture('<nldd-menu-item type="radio" text="Item"></nldd-menu-item>');
+	it('renders role menuitemcheckbox for type checkbox inside a menu', async () => {
+		el = await fixture('<nldd-menu open><nldd-menu-item type="checkbox" text="Item"></nldd-menu-item></nldd-menu>');
 		await waitForUpdate(el);
-		expect(getButton(el).getAttribute('role')).toBe('menuitemradio');
+		const item = el.querySelector('nldd-menu-item') as HTMLElement;
+		await waitForUpdate(item);
+		expect(getButton(item).getAttribute('role')).toBe('menuitemcheckbox');
 	});
 
-	it('sets aria-checked for checkbox type', async () => {
+	it('renders role menuitemradio for type radio inside a menu', async () => {
+		el = await fixture('<nldd-menu open><nldd-menu-item type="radio" text="Item"></nldd-menu-item></nldd-menu>');
+		await waitForUpdate(el);
+		const item = el.querySelector('nldd-menu-item') as HTMLElement;
+		await waitForUpdate(item);
+		expect(getButton(item).getAttribute('role')).toBe('menuitemradio');
+	});
+
+	it('sets aria-checked for checkbox type inside a menu', async () => {
+		el = await fixture('<nldd-menu open><nldd-menu-item type="checkbox" selected text="Item"></nldd-menu-item></nldd-menu>');
+		await waitForUpdate(el);
+		const item = el.querySelector('nldd-menu-item') as HTMLElement;
+		await waitForUpdate(item);
+		expect(getButton(item).getAttribute('aria-checked')).toBe('true');
+	});
+
+	it('leaves aria-checked off an unclaimed checkbox item', async () => {
 		el = await fixture('<nldd-menu-item type="checkbox" selected text="Item"></nldd-menu-item>');
 		await waitForUpdate(el);
-		expect(getButton(el).getAttribute('aria-checked')).toBe('true');
+		expect(getButton(el).hasAttribute('aria-checked')).toBe(false);
 	});
 
 	it('does not set aria-checked for default type', async () => {

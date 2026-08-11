@@ -68,7 +68,7 @@ export function menuTemplate(this: NLDDMenu, isEmpty: boolean, variant: 'menu' |
 				<div class="menu__list"
 					role=${menuRole}
 				>
-					<slot></slot>
+					<slot @slotchange=${this._claimItems}></slot>
 				</div>
 				${isEmpty ? html`
 					<div class="menu__empty">
@@ -100,9 +100,13 @@ export function menuTemplate(this: NLDDMenu, isEmpty: boolean, variant: 'menu' |
 	`;
 }
 
-export function menuItemTemplate(this: NLDDMenuItem, variant: 'menu' | 'listbox' = 'menu') {
+export function menuItemTemplate(this: NLDDMenuItem, variant: 'menu' | 'listbox' | null = null) {
 	const hasCheckState = this.type !== 'button' && variant === 'menu';
-	const role = itemRoleMap[this.type][variant];
+	// No role until a menu claims this item. `menuitem` says there is a menu
+	// around you, and an item sitting on its own cannot make that true: it is
+	// then a button, and says so. aria-checked and aria-selected fall away with
+	// it, both being part of the same promise.
+	const role = variant ? itemRoleMap[this.type][variant] : nothing;
 	const hasSubmenu = this._hasSubmenu;
 	// A plain button item with an href renders as a real link. Submenu openers,
 	// checkbox/radio items, and disabled items keep the button — they need its

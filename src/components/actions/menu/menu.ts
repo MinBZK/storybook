@@ -160,9 +160,18 @@ export class NLDDMenuItem extends LitElement {
 	@property({ reflect: true, attribute: 'query-mark-mode', converter: reflectNonDefault<QueryMarkMode>('predictive') })
 	queryMarkMode: QueryMarkMode = 'predictive';
 
-	/** Set by nldd-menu. Not part of the public API. */
+	/**
+	 * Which menu owns this item, set by that nldd-menu. Not part of the public API.
+	 *
+	 * `null` until one claims it, and an unclaimed item carries no menu role.
+	 * A menu role is a promise about what is around you, so an item cannot make
+	 * it on its own. `nldd-toolbar-item` holds exactly such an item: the
+	 * declaration of what belongs in the overflow menu, which the toolbar clones
+	 * into the real menu when it collapses. The clone is claimed there and the
+	 * declaration stays what it is.
+	 */
 	@state()
-	menuVariant: 'menu' | 'listbox' = 'menu';
+	menuVariant: 'menu' | 'listbox' | null = null;
 
 	/** Tracks whether this item's submenu (if any) is currently open. Set by
 	 * the parent nldd-menu via the `submenu-open`/`submenu-close` lifecycle. */
@@ -583,9 +592,7 @@ export class NLDDMenu extends LitElement {
 			}
 		}
 		if (changedProperties.has('variant')) {
-			Array.from(this.querySelectorAll('nldd-menu-item')).forEach(item => {
-				(item as NLDDMenuItem).menuVariant = this.variant;
-			});
+			this._claimItems();
 		}
 		// A new anchor arrives closed and unlabeled — seed it right away rather
 		// than at its first open. Covers the popup slot (where the invoking
@@ -2156,6 +2163,25 @@ export class NLDDMenu extends LitElement {
 	// Floating UI reposition runs — a visible flash in the wrong place. Clearing
 	// `positioned` here (beforetoggle fires *before* the popover is shown) keeps it
 	// hidden via CSS until `_handleToggle` re-sets it once placed.
+	/**
+	 * Tells every item below this menu which menu owns it.
+	 *
+	 * An item carries no menu role until this has run, so it has to run wherever
+	 * the set of items can change: when the variant changes, when the menu
+	 * opens, and on slotchange for items that arrive while it is already open.
+	 * That last one is not hypothetical: `nldd-toolbar` appends its overflow
+	 * clones on a resize, which can happen with the menu open.
+	 *
+	 * Items nested in an `nldd-menu-group` are reached by the query but not by
+	 * that slotchange, since they are assigned to the group's slot. They are
+	 * claimed on the next open.
+	 */
+	public _claimItems = (): void => {
+		Array.from(this.querySelectorAll('nldd-menu-item')).forEach(item => {
+			(item as NLDDMenuItem).menuVariant = this.variant;
+		});
+	};
+
 	private _handleBeforeToggle = (event: Event): void => {
 		if ((event as ToggleEvent).newState === 'open') this.removeAttribute('positioned');
 	};
@@ -2186,9 +2212,7 @@ export class NLDDMenu extends LitElement {
 		this._updateDividerVisibility();
 		this._clearHighlight();
 		this._updateEmptyState();
-		Array.from(this.querySelectorAll('nldd-menu-item')).forEach(item => {
-			(item as NLDDMenuItem).menuVariant = this.variant;
-		});
+		this._claimItems();
 
 		await this.reposition();
 		this.setAttribute('positioned', ''); // placed — reveal it (see _handleBeforeToggle)
