@@ -35,6 +35,7 @@ export function numberFieldTemplate(component: NLDDNumberField): TemplateResult 
 				step=${component.step}
 				?disabled=${component.disabled}
 				name=${component.name || nothing}
+				@keydown=${component._handleKeydown}
 				@input=${component._handleInput}
 				@change=${component._handleChange}
 			>

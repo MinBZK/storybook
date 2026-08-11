@@ -53,6 +53,10 @@ export class NLDDTokenField extends FormAssociated(LitElement) {
 	 *  find it, name it and move focus into it. See nldd-form-field. */
 	static isFormInput = true;
 
+	/** Counts for the implicit-submission rule: a single-line field where Enter
+	 *  would submit the form. See utilities/implicit-submission.ts. */
+	static blocksImplicitSubmission = true;
+
 	private _initialValues: string[] = [];
 
 	// Property order matches the story controls (values kept high, above

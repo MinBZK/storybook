@@ -7663,6 +7663,16 @@
             },
             {
               "kind": "field",
+              "name": "blocksImplicitSubmission",
+              "type": {
+                "text": "boolean"
+              },
+              "static": true,
+              "default": "true",
+              "description": "Counts for the implicit-submission rule: a single-line field where Enter\nwould submit the form. See utilities/implicit-submission.ts."
+            },
+            {
+              "kind": "field",
               "name": "value",
               "type": {
                 "text": "string"
@@ -8154,6 +8164,16 @@
               "static": true,
               "default": "true",
               "description": "Says this is the control an nldd-form-field is about, so the field can\nfind it, name it and move focus into it. See nldd-form-field."
+            },
+            {
+              "kind": "field",
+              "name": "blocksImplicitSubmission",
+              "type": {
+                "text": "boolean"
+              },
+              "static": true,
+              "default": "true",
+              "description": "Counts for the implicit-submission rule: a single-line field where Enter\nwould submit the form. See utilities/implicit-submission.ts."
             },
             {
               "kind": "field",
@@ -10122,6 +10142,16 @@
             },
             {
               "kind": "field",
+              "name": "blocksImplicitSubmission",
+              "type": {
+                "text": "boolean"
+              },
+              "static": true,
+              "default": "true",
+              "description": "Counts for the implicit-submission rule: a single-line field where Enter\nwould submit the form. See utilities/implicit-submission.ts."
+            },
+            {
+              "kind": "field",
               "name": "value",
               "type": {
                 "text": "number"
@@ -10523,6 +10553,16 @@
               "static": true,
               "default": "true",
               "description": "Says this is the control an nldd-form-field is about, so the field can\nfind it, name it and move focus into it. See nldd-form-field."
+            },
+            {
+              "kind": "field",
+              "name": "blocksImplicitSubmission",
+              "type": {
+                "text": "boolean"
+              },
+              "static": true,
+              "default": "true",
+              "description": "Counts for the implicit-submission rule: a single-line field where Enter\nwould submit the form. See utilities/implicit-submission.ts."
             },
             {
               "kind": "field",
@@ -11886,6 +11926,16 @@
               "static": true,
               "default": "true",
               "description": "Says this is the control an nldd-form-field is about, so the field can\nfind it, name it and move focus into it. See nldd-form-field."
+            },
+            {
+              "kind": "field",
+              "name": "blocksImplicitSubmission",
+              "type": {
+                "text": "boolean"
+              },
+              "static": true,
+              "default": "true",
+              "description": "Counts for the implicit-submission rule: a single-line field where Enter\nwould submit the form. See utilities/implicit-submission.ts."
             },
             {
               "kind": "field",
@@ -15854,6 +15904,16 @@
             },
             {
               "kind": "field",
+              "name": "blocksImplicitSubmission",
+              "type": {
+                "text": "boolean"
+              },
+              "static": true,
+              "default": "true",
+              "description": "Counts for the implicit-submission rule: a single-line field where Enter\nwould submit the form. See utilities/implicit-submission.ts."
+            },
+            {
+              "kind": "field",
               "name": "size",
               "type": {
                 "text": "'md' | 'sm'"
@@ -16411,6 +16471,16 @@
               "static": true,
               "default": "true",
               "description": "Says this is the control an nldd-form-field is about, so the field can\nfind it, name it and move focus into it. See nldd-form-field."
+            },
+            {
+              "kind": "field",
+              "name": "blocksImplicitSubmission",
+              "type": {
+                "text": "boolean"
+              },
+              "static": true,
+              "default": "true",
+              "description": "Counts for the implicit-submission rule: a single-line field where Enter\nwould submit the form. See utilities/implicit-submission.ts."
             },
             {
               "kind": "field",
@@ -17838,6 +17908,16 @@
               "static": true,
               "default": "true",
               "description": "Says this is the control an nldd-form-field is about, so the field can\nfind it, name it and move focus into it. See nldd-form-field."
+            },
+            {
+              "kind": "field",
+              "name": "blocksImplicitSubmission",
+              "type": {
+                "text": "boolean"
+              },
+              "static": true,
+              "default": "true",
+              "description": "Counts for the implicit-submission rule: a single-line field where Enter\nwould submit the form. See utilities/implicit-submission.ts."
             },
             {
               "kind": "field",
@@ -33175,6 +33255,46 @@
           "declaration": {
             "name": "FormAssociated",
             "module": "src/utilities/form-associated-mixin.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/utilities/implicit-submission.ts",
+      "declarations": [
+        {
+          "kind": "function",
+          "name": "submitOnEnter",
+          "return": {
+            "type": {
+              "text": ""
+            }
+          },
+          "parameters": [
+            {
+              "name": "host",
+              "type": {
+                "text": "HTMLElement & { internals: ElementInternals }"
+              }
+            },
+            {
+              "name": "event",
+              "type": {
+                "text": "KeyboardEvent"
+              }
+            }
+          ],
+          "description": "Submits the form this field belongs to, under the same conditions the browser\nuses.\n\nDoes nothing when something already handled the Enter. A component that owns\nthe key calls `preventDefault` when it acts on it and leaves it alone when it\ndoes not, so an open date picker keeps its Enter and a token field that\ncommits nothing lets the form through.\n\nWithout a submit button the specification submits only when the form holds a\nsingle field that blocks implicit submission. Reproducing that rule matters\nmore than it looks: an Enter that behaves differently inside this design\nsystem than outside it is worse than one that does nothing."
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "submitOnEnter",
+          "declaration": {
+            "name": "submitOnEnter",
+            "module": "src/utilities/implicit-submission.ts"
           }
         }
       ]

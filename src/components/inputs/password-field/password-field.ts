@@ -31,6 +31,7 @@
 import { LitElement, type PropertyValues } from 'lit';
 import { customElement, property, query } from 'lit/decorators.js';
 import { FormAssociated, type FormValue } from '../../../utilities/form-associated-mixin.js';
+import { submitOnEnter } from '../../../utilities/implicit-submission.js';
 import { reflectNonDefault } from '../../../utilities/reflect-non-default.js';
 import { passwordFieldStyles } from './password-field.styles.js';
 import { passwordFieldTemplate } from './password-field.template.js';
@@ -48,6 +49,10 @@ export class NLDDPasswordField extends FormAssociated(LitElement) {
 	/** Says this is the control an nldd-form-field is about, so the field can
 	 *  find it, name it and move focus into it. See nldd-form-field. */
 	static isFormInput = true;
+
+	/** Counts for the implicit-submission rule: a single-line field where Enter
+	 *  would submit the form. See utilities/implicit-submission.ts. */
+	static blocksImplicitSubmission = true;
 
 
 	private _initialValue = '';
@@ -144,6 +149,12 @@ export class NLDDPasswordField extends FormAssociated(LitElement) {
 
 	formStateRestoreCallback(state: File | string | FormData | null): void {
 		if (typeof state === 'string') this.value = state;
+	}
+
+	/** Enter submits the form this field belongs to, the way the browser would
+	 *  if the input were not in a shadow root. */
+	public _handleKeydown(e: KeyboardEvent): void {
+		submitOnEnter(this, e);
 	}
 
 	public _handleInput(e: Event): void {

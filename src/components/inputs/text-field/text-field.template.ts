@@ -43,6 +43,7 @@ export function textFieldTemplate(component: NLDDTextField): TemplateResult {
 				aria-label=${component.accessibleLabel || nothing}
 				aria-describedby=${component.errorMessageIds || nothing}
 				aria-invalid=${component.invalid ? 'true' : nothing}
+				@keydown=${component._handleKeydown}
 				@input=${component._handleInput}
 				@change=${component._handleChange}
 			/>
