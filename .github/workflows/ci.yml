@@ -29,10 +29,17 @@ jobs:
           # `git diff --exit-code`-checks zijn lokaal, en de npm-cache van
           # setup-node en `playwright install` gebruiken het niet.
           persist-credentials: false
+      # From .nvmrc, so CI runs the Node this project is developed on. It used to
+      # be pinned here, drifted to 20 while .nvmrc said 24, and that gap showed
+      # up as three dependabot PRs failing on both jobs at once: dependabot
+      # regenerates package-lock.json with npm 11, which drops an optional
+      # transitive entry that the npm 10 shipping with Node 20 then reports as
+      # missing, so `npm ci` stopped before anything was built. A second place to
+      # state the version is a second place for it to go stale.
       - name: Setup Node.js
         uses: actions/setup-node@v7
         with:
-          node-version: '20'
+          node-version-file: '.nvmrc'
           cache: 'npm'
       # --ignore-scripts: a hijacked dependency release must not get to run its
       # preinstall/postinstall hook in CI. Nothing in this tree needs lifecycle
