@@ -35,6 +35,10 @@ type GroupType = 'button' | 'checkbox' | 'radio';
 export class NLDDToggleButtonGroup extends LitElement {
 	static override styles = toggleButtonGroupStyles;
 
+	/** Says this is the control an nldd-form-field is about, so the field can
+	 *  find it, name it and move focus into it. See nldd-form-field. */
+	static isFormInput = true;
+
 	@property({ type: String, reflect: true })
 	type: GroupType = 'checkbox';
 

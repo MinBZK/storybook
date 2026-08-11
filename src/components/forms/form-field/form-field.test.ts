@@ -1,4 +1,4 @@
-import { describe, it, expect, afterEach } from 'vitest';
+import { describe, it, expect, afterEach, vi } from 'vitest';
 import { fixture, cleanup, waitForUpdate, deepActiveElement } from '../../../test-utils.js';
 import './form-field.js';
 import '../../inputs/text-field/text-field.js';
@@ -22,6 +22,8 @@ import '../../inputs/stepper/stepper.js';
 import '../../inputs/toggle-button/toggle-button.js';
 import '../../inputs/toggle-button-group/toggle-button-group.js';
 import '../../inputs/switch/switch.js';
+import '../../content/tag/tag.js';
+import '../../actions/button/button.js';
 
 
 /* ============================================================
@@ -571,5 +573,119 @@ describe('nldd-form-field – hands the label to the control', () => {
 		field.label = '';
 		await waitForUpdate(el);
 		expect(el.firstElementChild!.hasAttribute('accessible-label')).toBe(false);
+	});
+});
+
+/* ============================================================
+   Finding the control it is about
+
+   The first child is normally the control, but it can be a wrapper put there
+   for layout, and it can be the first of several. These pin down which element
+   the field ends up wiring itself to.
+   ============================================================ */
+
+describe('nldd-form-field – finds the control', () => {
+	let el: HTMLElement;
+
+	afterEach(() => {
+		if (el) cleanup(el);
+	});
+
+	it('looks inside a wrapper for the control', async () => {
+		el = await fixture('<nldd-form-field label="Veldnaam"><div><nldd-text-field></nldd-text-field></div></nldd-form-field>');
+		await waitForUpdate(el);
+		const field = el.querySelector('nldd-text-field')!;
+		expect(field.getAttribute('accessible-label')).toBe('Veldnaam');
+		expect(el.querySelector('div')!.hasAttribute('accessible-label')).toBe(false);
+	});
+
+	it('moves focus into a wrapped control', async () => {
+		el = await fixture('<nldd-form-field label="Veldnaam"><div><nldd-text-field></nldd-text-field></div></nldd-form-field>');
+		await waitForUpdate(el);
+		const field = el.querySelector('nldd-text-field')! as HTMLElement;
+		await waitForUpdate(field);
+		el.shadowRoot!.querySelector<HTMLElement>('.form-field__label')!.click();
+		expect(focusIsInside(field)).toBe(true);
+	});
+
+	it('digs through more than one layer of wrapping', async () => {
+		el = await fixture('<nldd-form-field label="Veldnaam"><div><div><nldd-number-field></nldd-number-field></div></div></nldd-form-field>');
+		await waitForUpdate(el);
+		expect(el.querySelector('nldd-number-field')!.getAttribute('accessible-label')).toBe('Veldnaam');
+	});
+
+	it('names the first control when a field holds more than one', async () => {
+		// A radio group whose last option is "Anders", with the text field that
+		// appears alongside it. One question, one caption, two controls.
+		el = await fixture(`
+			<nldd-form-field label="Bezorgwijze">
+				<nldd-radio-button-group name="b">
+					<nldd-radio-button-field value="post" label="Per post"></nldd-radio-button-field>
+					<nldd-radio-button-field value="anders" label="Anders"></nldd-radio-button-field>
+				</nldd-radio-button-group>
+				<nldd-text-field accessible-label="Andere bezorgwijze"></nldd-text-field>
+			</nldd-form-field>
+		`);
+		await waitForUpdate(el);
+		expect(el.querySelector('nldd-radio-button-group')!.getAttribute('accessible-label')).toBe('Bezorgwijze');
+		expect(el.querySelector('nldd-text-field')!.getAttribute('accessible-label')).toBe('Andere bezorgwijze');
+	});
+
+	it('walks past a component that is not an input', async () => {
+		// nldd-tag accepts accessible-label too. Taking that as the signal would
+		// name the tag and leave the field it sits next to unnamed.
+		el = await fixture(`
+			<nldd-form-field label="Veldnaam">
+				<div>
+					<nldd-tag>PDF</nldd-tag>
+					<nldd-text-field></nldd-text-field>
+				</div>
+			</nldd-form-field>
+		`);
+		await waitForUpdate(el);
+		expect(el.querySelector('nldd-tag')!.hasAttribute('accessible-label')).toBe(false);
+		expect(el.querySelector('nldd-text-field')!.getAttribute('accessible-label')).toBe('Veldnaam');
+	});
+
+	it('skips a leading component that is not an input', async () => {
+		el = await fixture(`
+			<nldd-form-field label="Veldnaam">
+				<nldd-button text="Help"></nldd-button>
+				<nldd-text-field></nldd-text-field>
+			</nldd-form-field>
+		`);
+		await waitForUpdate(el);
+		expect(el.querySelector('nldd-button')!.hasAttribute('accessible-label')).toBe(false);
+		expect(el.querySelector('nldd-text-field')!.getAttribute('accessible-label')).toBe('Veldnaam');
+	});
+
+	it('wires up nothing and warns when there is no input at all', async () => {
+		const warn = vi.spyOn(console, 'warn').mockImplementation(() => {});
+		el = await fixture('<nldd-form-field label="Veldnaam"><div>Geen veld</div></nldd-form-field>');
+		await waitForUpdate(el);
+		expect(el.querySelector('div')!.hasAttribute('accessible-label')).toBe(false);
+		expect(el.querySelector('div')!.hasAttribute('aria-label')).toBe(false);
+		expect(warn).toHaveBeenCalledWith(expect.stringContaining('No form input found'));
+		expect(warn).toHaveBeenCalledWith(expect.stringContaining('label="Veldnaam"'));
+		warn.mockRestore();
+	});
+
+	it('stays quiet while the field is still empty', async () => {
+		const warn = vi.spyOn(console, 'warn').mockImplementation(() => {});
+		el = await fixture('<nldd-form-field label="Veldnaam"></nldd-form-field>');
+		await waitForUpdate(el);
+		expect(warn).not.toHaveBeenCalledWith(expect.stringContaining('No form input found'));
+		warn.mockRestore();
+	});
+
+	it('leaves a helper element alone as the first child', async () => {
+		el = await fixture(`
+			<nldd-form-field label="Veldnaam">
+				<nldd-form-field-help-text>Uitleg</nldd-form-field-help-text>
+				<nldd-text-field></nldd-text-field>
+			</nldd-form-field>
+		`);
+		await waitForUpdate(el);
+		expect(el.querySelector('nldd-text-field')!.getAttribute('accessible-label')).toBe('Veldnaam');
 	});
 });

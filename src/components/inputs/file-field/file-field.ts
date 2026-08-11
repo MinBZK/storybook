@@ -54,6 +54,10 @@ export class NLDDFileField extends FormAssociated(LitElement) {
 
 	static override styles = fileFieldStyles;
 
+	/** Says this is the control an nldd-form-field is about, so the field can
+	 *  find it, name it and move focus into it. See nldd-form-field. */
+	static isFormInput = true;
+
 	// Property order matches the story controls.
 	@property({ reflect: true, converter: reflectNonDefault<'md' | 'sm'>('md') })
 	size: 'md' | 'sm' = 'md';

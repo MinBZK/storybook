@@ -26,6 +26,10 @@ import type { NLDDRadioButtonField } from '../radio-button-field/radio-button-fi
 export class NLDDRadioButtonGroup extends LitElement {
 	static override styles = radioButtonGroupStyles;
 
+	/** Says this is the control an nldd-form-field is about, so the field can
+	 *  find it, name it and move focus into it. See nldd-form-field. */
+	static isFormInput = true;
+
 	@property({ type: String })
 	name = '';
 

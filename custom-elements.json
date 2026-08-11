@@ -6570,6 +6570,16 @@
           "members": [
             {
               "kind": "field",
+              "name": "isFormInput",
+              "type": {
+                "text": "boolean"
+              },
+              "static": true,
+              "default": "true",
+              "description": "Says this is the control an nldd-form-field is about, so the field can\nfind it, name it and move focus into it. See nldd-form-field."
+            },
+            {
+              "kind": "field",
               "name": "checked",
               "type": {
                 "text": "boolean"
@@ -6862,6 +6872,16 @@
           "description": "",
           "name": "NLDDCheckbox",
           "members": [
+            {
+              "kind": "field",
+              "name": "isFormInput",
+              "type": {
+                "text": "boolean"
+              },
+              "static": true,
+              "default": "true",
+              "description": "Says this is the control an nldd-form-field is about, so the field can\nfind it, name it and move focus into it. See nldd-form-field."
+            },
             {
               "kind": "field",
               "name": "checked",
@@ -7192,6 +7212,16 @@
               },
               "static": true,
               "default": "{ ...LitElement.shadowRootOptions, delegatesFocus: true, }"
+            },
+            {
+              "kind": "field",
+              "name": "isFormInput",
+              "type": {
+                "text": "boolean"
+              },
+              "static": true,
+              "default": "true",
+              "description": "Says this is the control an nldd-form-field is about, so the field can\nfind it, name it and move focus into it. See nldd-form-field."
             },
             {
               "kind": "field",
@@ -7621,6 +7651,16 @@
           "description": "A text input with autocomplete dropdown via nldd-menu. Add a slotted nldd-menu with nldd-menu-item children to provide options. The slotted nldd-menu keeps its default focus behavior (menu container receives focus) so that typing keeps focus on the input. The picker button moves focus to the menu explicitly on activation. Note: Only nldd-menu-item type=\"button\" is supported. Radio and checkbox types are not supported in this context.",
           "name": "NLDDComboBox",
           "members": [
+            {
+              "kind": "field",
+              "name": "isFormInput",
+              "type": {
+                "text": "boolean"
+              },
+              "static": true,
+              "default": "true",
+              "description": "Says this is the control an nldd-form-field is about, so the field can\nfind it, name it and move focus into it. See nldd-form-field."
+            },
             {
               "kind": "field",
               "name": "value",
@@ -8104,6 +8144,16 @@
               },
               "static": true,
               "default": "{ ...LitElement.shadowRootOptions, delegatesFocus: true, }"
+            },
+            {
+              "kind": "field",
+              "name": "isFormInput",
+              "type": {
+                "text": "boolean"
+              },
+              "static": true,
+              "default": "true",
+              "description": "Says this is the control an nldd-form-field is about, so the field can\nfind it, name it and move focus into it. See nldd-form-field."
             },
             {
               "kind": "field",
@@ -8635,6 +8685,16 @@
           "members": [
             {
               "kind": "field",
+              "name": "isFormInput",
+              "type": {
+                "text": "boolean"
+              },
+              "static": true,
+              "default": "true",
+              "description": "Says this is the control an nldd-form-field is about, so the field can\nfind it, name it and move focus into it. See nldd-form-field."
+            },
+            {
+              "kind": "field",
               "name": "value",
               "type": {
                 "text": "string"
@@ -8927,6 +8987,16 @@
           "members": [
             {
               "kind": "field",
+              "name": "isFormInput",
+              "type": {
+                "text": "boolean"
+              },
+              "static": true,
+              "default": "true",
+              "description": "Says this is the control an nldd-form-field is about, so the field can\nfind it, name it and move focus into it. See nldd-form-field."
+            },
+            {
+              "kind": "field",
               "name": "size",
               "type": {
                 "text": "DropdownSize"
@@ -9129,6 +9199,16 @@
           "description": "A file picker that reads as one control: an nldd-button flush in the corner of a tinted surface, the chosen file next to it, and a dismiss button to clear it again. It wraps a hidden native `<input type=\"file\">`, which is what makes the picker open at all — a file dialog only opens from a user gesture on a real input. The surface deliberately does not look like an input field. A border with field semantics promises you can type into it; here you can only press a button, so it uses button and surface colors instead of `--semantics-input-fields-*`. The button keeps its own tinted background and therefore sits a shade darker in the surface, which is what marks it as the thing to press. Several files are summarized, not listed: \"3 bestanden\" with a single cross that clears all of them. Every pick replaces the whole FileList, and rebuilding it to add or drop one file means going through DataTransfer, which does not deduplicate (even the same File object twice yields two entries) — and a File has no id, so deduplicating would come down to guessing from name, size and last-modified. A list with a cross per file would promise an edit the platform does not support. A page that does want to show the files renders its own list from the `File[]` in the change event.",
           "name": "NLDDFileField",
           "members": [
+            {
+              "kind": "field",
+              "name": "isFormInput",
+              "type": {
+                "text": "boolean"
+              },
+              "static": true,
+              "default": "true",
+              "description": "Says this is the control an nldd-form-field is about, so the field can\nfind it, name it and move focus into it. See nldd-form-field."
+            },
             {
               "kind": "field",
               "name": "size",
@@ -9534,6 +9614,16 @@
               },
               "static": true,
               "default": "{ ...LitElement.shadowRootOptions, delegatesFocus: true, }"
+            },
+            {
+              "kind": "field",
+              "name": "isFormInput",
+              "type": {
+                "text": "boolean"
+              },
+              "static": true,
+              "default": "true",
+              "description": "Says this is the control an nldd-form-field is about, so the field can\nfind it, name it and move focus into it. See nldd-form-field."
             },
             {
               "kind": "field",
@@ -10022,6 +10112,16 @@
           "members": [
             {
               "kind": "field",
+              "name": "isFormInput",
+              "type": {
+                "text": "boolean"
+              },
+              "static": true,
+              "default": "true",
+              "description": "Says this is the control an nldd-form-field is about, so the field can\nfind it, name it and move focus into it. See nldd-form-field."
+            },
+            {
+              "kind": "field",
               "name": "value",
               "type": {
                 "text": "number"
@@ -10413,6 +10513,16 @@
               },
               "static": true,
               "default": "{ ...LitElement.shadowRootOptions, delegatesFocus: true, }"
+            },
+            {
+              "kind": "field",
+              "name": "isFormInput",
+              "type": {
+                "text": "boolean"
+              },
+              "static": true,
+              "default": "true",
+              "description": "Says this is the control an nldd-form-field is about, so the field can\nfind it, name it and move focus into it. See nldd-form-field."
             },
             {
               "kind": "field",
@@ -10960,6 +11070,16 @@
           "members": [
             {
               "kind": "field",
+              "name": "isFormInput",
+              "type": {
+                "text": "boolean"
+              },
+              "static": true,
+              "default": "true",
+              "description": "Says this is the control an nldd-form-field is about, so the field can\nfind it, name it and move focus into it. See nldd-form-field."
+            },
+            {
+              "kind": "field",
               "name": "checked",
               "type": {
                 "text": "boolean"
@@ -11254,6 +11374,16 @@
           "members": [
             {
               "kind": "field",
+              "name": "isFormInput",
+              "type": {
+                "text": "boolean"
+              },
+              "static": true,
+              "default": "true",
+              "description": "Says this is the control an nldd-form-field is about, so the field can\nfind it, name it and move focus into it. See nldd-form-field."
+            },
+            {
+              "kind": "field",
               "name": "name",
               "type": {
                 "text": "string"
@@ -11415,6 +11545,16 @@
           "description": "WAI-ARIA: Wrap radio buttons in a <fieldset>/<legend> or a container with role=\"radiogroup\" and aria-labelledby for proper group semantics. <fieldset> <legend>Kies een optie</legend> <nldd-radio-button name=\"options\" value=\"1\">Optie 1</nldd-radio-button> <nldd-radio-button name=\"options\" value=\"2\">Optie 2</nldd-radio-button> </fieldset>",
           "name": "NLDDRadioButton",
           "members": [
+            {
+              "kind": "field",
+              "name": "isFormInput",
+              "type": {
+                "text": "boolean"
+              },
+              "static": true,
+              "default": "true",
+              "description": "Says this is the control an nldd-form-field is about, so the field can\nfind it, name it and move focus into it. See nldd-form-field."
+            },
             {
               "kind": "field",
               "name": "checked",
@@ -11737,6 +11877,16 @@
           "description": "A search input with a leading search icon, an optional dismiss button, and an optional search button.",
           "name": "NLDDSearchField",
           "members": [
+            {
+              "kind": "field",
+              "name": "isFormInput",
+              "type": {
+                "text": "boolean"
+              },
+              "static": true,
+              "default": "true",
+              "description": "Says this is the control an nldd-form-field is about, so the field can\nfind it, name it and move focus into it. See nldd-form-field."
+            },
             {
               "kind": "field",
               "name": "value",
@@ -12337,6 +12487,16 @@
           "members": [
             {
               "kind": "field",
+              "name": "isFormInput",
+              "type": {
+                "text": "boolean"
+              },
+              "static": true,
+              "default": "true",
+              "description": "Says this is the control an nldd-form-field is about, so the field can\nfind it, name it and move focus into it. See nldd-form-field."
+            },
+            {
+              "kind": "field",
               "name": "value",
               "type": {
                 "text": "string"
@@ -12723,6 +12883,16 @@
           "members": [
             {
               "kind": "field",
+              "name": "isFormInput",
+              "type": {
+                "text": "boolean"
+              },
+              "static": true,
+              "default": "true",
+              "description": "Says this is the control an nldd-form-field is about, so the field can\nfind it, name it and move focus into it. See nldd-form-field."
+            },
+            {
+              "kind": "field",
               "name": "value",
               "type": {
                 "text": "number"
@@ -13065,6 +13235,16 @@
           "members": [
             {
               "kind": "field",
+              "name": "isFormInput",
+              "type": {
+                "text": "boolean"
+              },
+              "static": true,
+              "default": "true",
+              "description": "Says this is the control an nldd-form-field is about, so the field can\nfind it, name it and move focus into it. See nldd-form-field."
+            },
+            {
+              "kind": "field",
               "name": "checked",
               "type": {
                 "text": "boolean"
@@ -13219,6 +13399,16 @@
           "description": "A toggle control for on/off settings. Prefer nldd-switch-field for labeled usage — it combines the switch with a visible label. Direct use of nldd-switch requires an accessible-label attribute for screen reader accessibility.",
           "name": "NLDDSwitch",
           "members": [
+            {
+              "kind": "field",
+              "name": "isFormInput",
+              "type": {
+                "text": "boolean"
+              },
+              "static": true,
+              "default": "true",
+              "description": "Says this is the control an nldd-form-field is about, so the field can\nfind it, name it and move focus into it. See nldd-form-field."
+            },
             {
               "kind": "field",
               "name": "name",
@@ -14855,6 +15045,16 @@
             },
             {
               "kind": "field",
+              "name": "isFormInput",
+              "type": {
+                "text": "boolean"
+              },
+              "static": true,
+              "default": "true",
+              "description": "Says this is the control an nldd-form-field is about, so the field can\nfind it, name it and move focus into it. See nldd-form-field."
+            },
+            {
+              "kind": "field",
               "name": "value",
               "type": {
                 "text": "string"
@@ -15644,6 +15844,16 @@
             },
             {
               "kind": "field",
+              "name": "isFormInput",
+              "type": {
+                "text": "boolean"
+              },
+              "static": true,
+              "default": "true",
+              "description": "Says this is the control an nldd-form-field is about, so the field can\nfind it, name it and move focus into it. See nldd-form-field."
+            },
+            {
+              "kind": "field",
               "name": "size",
               "type": {
                 "text": "'md' | 'sm'"
@@ -16191,6 +16401,16 @@
               },
               "static": true,
               "default": "{ ...LitElement.shadowRootOptions, delegatesFocus: true, }"
+            },
+            {
+              "kind": "field",
+              "name": "isFormInput",
+              "type": {
+                "text": "boolean"
+              },
+              "static": true,
+              "default": "true",
+              "description": "Says this is the control an nldd-form-field is about, so the field can\nfind it, name it and move focus into it. See nldd-form-field."
             },
             {
               "kind": "field",
@@ -16771,6 +16991,16 @@
           "members": [
             {
               "kind": "field",
+              "name": "isFormInput",
+              "type": {
+                "text": "boolean"
+              },
+              "static": true,
+              "default": "true",
+              "description": "Says this is the control an nldd-form-field is about, so the field can\nfind it, name it and move focus into it. See nldd-form-field."
+            },
+            {
+              "kind": "field",
               "name": "value",
               "type": {
                 "text": "string"
@@ -17012,6 +17242,16 @@
           "members": [
             {
               "kind": "field",
+              "name": "isFormInput",
+              "type": {
+                "text": "boolean"
+              },
+              "static": true,
+              "default": "true",
+              "description": "Says this is the control an nldd-form-field is about, so the field can\nfind it, name it and move focus into it. See nldd-form-field."
+            },
+            {
+              "kind": "field",
               "name": "type",
               "type": {
                 "text": "GroupType"
@@ -17193,6 +17433,16 @@
           "description": "A selectable button that toggles between selected and unselected. Available as a button (aria-pressed), checkbox, or radio input.",
           "name": "NLDDToggleButton",
           "members": [
+            {
+              "kind": "field",
+              "name": "isFormInput",
+              "type": {
+                "text": "boolean"
+              },
+              "static": true,
+              "default": "true",
+              "description": "Says this is the control an nldd-form-field is about, so the field can\nfind it, name it and move focus into it. See nldd-form-field."
+            },
             {
               "kind": "field",
               "name": "type",
@@ -17579,6 +17829,16 @@
           "description": "A multi-select input that looks like a normal input field: chosen values show as dismissible tokens in a wrapping row, followed by an inline text input that stretches to fill the remaining space and wraps to a new line (growing the field) when it no longer fits. Options are supplied as a slotted nldd-menu, exactly like nldd-combo-box; the menu filters as you type, with a chevron picker button, arrow-key roving across the tokens and ElementInternals form participation.",
           "name": "NLDDTokenField",
           "members": [
+            {
+              "kind": "field",
+              "name": "isFormInput",
+              "type": {
+                "text": "boolean"
+              },
+              "static": true,
+              "default": "true",
+              "description": "Says this is the control an nldd-form-field is about, so the field can\nfind it, name it and move focus into it. See nldd-form-field."
+            },
             {
               "kind": "field",
               "name": "values",

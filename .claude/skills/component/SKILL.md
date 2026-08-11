@@ -264,6 +264,27 @@ export function template(component: NLDD{PascalName}): TemplateResult {
 
 ---
 
+## INVOERCOMPONENTEN: `isFormInput`
+
+Bouw je iets dat in een `nldd-form-field` gaat staan, zet dan op de klasse:
+
+```typescript
+/** Says this is the control an nldd-form-field is about, so the field can
+ *  find it, name it and move focus into it. See nldd-form-field. */
+static isFormInput = true;
+```
+
+Daarmee weet `nldd-form-field` welk element het veld is. Het zoekt in de light DOM naar het eerste kind dat dit zegt, ook door een `div` of een `nldd-container` heen, en koppelt daar de id, de toegankelijke naam en de foutmelding aan. Zonder de markering vindt het niets, gebeurt er niets, en waarschuwt het in DEV.
+
+Het staat er expliciet en wordt niet afgeleid. De helft van het pakket kent `accessible-label`, dus daarop afgaan zou een `nldd-tag` naast je veld voor het veld aanzien.
+
+Twee dingen die erbij horen:
+
+- **Een eigen `focus()`**, die de focus doorgeeft aan de control eronder. Een klik op het label roept dat aan, en zonder gebeurt er niets. Geef een groep de gekozen optie, en anders de eerste die aan staat.
+- **Een `accessible-label`**, die je doorgeeft aan het element dat de naam nodig heeft. Form-field overhandigt het bijschrift daar. Draagt je component al een eigen zichtbaar label dat de control benoemt, zoals `nldd-checkbox-field`, sla dit dan over: het bijschrift is dan niet zijn naam.
+
+Zet het component ook in de tabellen in `form-field.test.ts`, die alle invoercomponenten langslopen van labelklik tot focus en van bijschrift tot toegankelijke naam.
+
 ## STORY TEMPLATE
 
 **`{naam}.stories.ts`:**
@@ -746,6 +767,12 @@ Andere regels die hetzelfde slotted element raken (`:hover`, `@media`, een speci
 - [ ] Geen margin/padding/border op `:host` zonder wrapper of `!important` — `npm run validate:host-styles` bewaakt dit
 - [ ] Geen `cursor: pointer`
 - [ ] Disabled: `var(--primitives-opacity-disabled)`
+
+**Invoercomponent (staat in een nldd-form-field):**
+- [ ] `static isFormInput = true`
+- [ ] Eigen `focus()` naar de control eronder
+- [ ] `accessible-label`, tenzij het component zijn control al zelf benoemt
+- [ ] Opgenomen in de tabellen in `form-field.test.ts`
 
 **Accessibility:**
 - [ ] ARIA attributes

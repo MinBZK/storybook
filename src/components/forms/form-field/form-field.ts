@@ -57,6 +57,26 @@ export type LabelAlignment = 'top' | 'left' | 'right';
 // Exclude helper elements so _findInput() never returns them instead of the actual input
 const HELPER_TAGS = ['nldd-form-field-help-text', 'nldd-form-field-error-text'];
 
+/**
+ * Whether this element is the input a field is about.
+ *
+ * Asked, not inferred. Every input in this system carries
+ * `static isFormInput = true`, and a native `<input>`, `<select>` or
+ * `<textarea>` is one by the platform's own definition. Nothing else counts,
+ * deliberately: half the components in the package accept `accessible-label`
+ * and taking that as the signal would let a tag or a button beside your field
+ * be mistaken for the field.
+ *
+ * A consumer with an input of their own says so the same way, or names the
+ * control themselves and leaves this field out of it.
+ */
+function isFormInput(el: Element): boolean {
+	return el instanceof HTMLInputElement
+		|| el instanceof HTMLSelectElement
+		|| el instanceof HTMLTextAreaElement
+		|| (el.constructor as { isFormInput?: boolean }).isFormInput === true;
+}
+
 // crypto.randomUUID() requires a secure context (HTTPS or localhost).
 // The fallback uses Math.random() which is sufficient for non-security-sensitive DOM IDs.
 function generateId(): string {
@@ -123,6 +143,9 @@ export class NLDDFormField extends LitElement {
 	/** The last label this field wrote onto the control, so it only takes back its own. */
 	private _appliedLabel: string | null = null;
 
+	/** Keeps the "no input found" warning to one per field rather than one per mutation. */
+	private _warnedNoInput = false;
+
 	@state()
 	private _hasErrors = false;
 
@@ -181,7 +204,20 @@ export class NLDDFormField extends LitElement {
 		this._observer?.disconnect();
 
 		const input = this._findInput();
-		if (!input) return;
+		if (!input) {
+			// Only once there is something to look at. An empty field is usually one
+			// still being filled, and a component that forgot `static isFormInput`
+			// should be the one that stands out.
+			const hasContent = Array.from(this.children)
+				.some(el => !HELPER_TAGS.includes(el.tagName.toLowerCase()));
+			if (import.meta.env?.DEV && hasContent && !this._warnedNoInput) {
+				this._warnedNoInput = true;
+				const which = this.label ? ` (label="${this.label}")` : '';
+				console.warn(`<nldd-form-field>${which}: No form input found among its children. The label cannot name anything or move focus into it. Every nldd input carries \`static isFormInput = true\`; a component of your own says the same, or names its control itself.`);
+			}
+			return;
+		}
+		this._warnedNoInput = false;
 
 		// Ensure the inner native input has an id so aria-describedby can reference it.
 		// `inputId` is a component that hands out the id of the control it renders, which
@@ -254,10 +290,33 @@ export class NLDDFormField extends LitElement {
 		this._appliedLabel = null;
 	}
 
-	/** First child element that is not a form field helper component. */
+	/**
+	 * The input this field is about: the first one in the light DOM, wrapped or
+	 * not.
+	 *
+	 * A field may hold more than one. A radio group whose last option is
+	 * "Anders" and the text field that appears with it are one question and
+	 * belong in one field. The first input carries the caption, and the ones
+	 * after it name themselves.
+	 *
+	 * Looking inside matters because a `div` or an `nldd-container` around your
+	 * input is a normal thing to write. Stopping at that wrapper sent the id,
+	 * the name and the error wiring to the wrapper and left the field unnamed,
+	 * with nothing about it visible on screen.
+	 *
+	 * Finding nothing is a real answer: the field then wires up nothing at all
+	 * and says so in DEV, rather than picking whatever came first and quietly
+	 * treating a tag or a button as your input.
+	 */
 	private _findInput(): Element | undefined {
-		return Array.from(this.children)
-			.find(el => !HELPER_TAGS.includes(el.tagName.toLowerCase()));
+		const children = Array.from(this.children)
+			.filter(el => !HELPER_TAGS.includes(el.tagName.toLowerCase()));
+		for (const child of children) {
+			if (isFormInput(child)) return child;
+			const nested = Array.from(child.querySelectorAll('*')).find(isFormInput);
+			if (nested) return nested;
+		}
+		return undefined;
 	}
 
 	/**

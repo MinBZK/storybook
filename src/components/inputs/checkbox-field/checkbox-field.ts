@@ -29,6 +29,10 @@ export class NLDDCheckboxField extends FormAssociated(LitElement) {
 
 	static override styles = checkboxFieldStyles;
 
+	/** Says this is the control an nldd-form-field is about, so the field can
+	 *  find it, name it and move focus into it. See nldd-form-field. */
+	static isFormInput = true;
+
 
 	private _initialChecked = false;
 
