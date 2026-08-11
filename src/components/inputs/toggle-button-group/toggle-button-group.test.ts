@@ -503,4 +503,14 @@ describe('nldd-toggle-button-group – toetsenbordnavigatie', () => {
 		el.focus();
 		expect(deepActiveElement()).toBe(buttons[1].shadowRoot!.querySelector('button.toggle-button'));
 	});
+
+	it('leaves an aria-label the consumer put on the group', async () => {
+		el = await fixture<NLDDToggleButtonGroup>(`
+			<nldd-toggle-button-group name="t" aria-label="Opmaak">
+				<nldd-toggle-button value="a" text="A"></nldd-toggle-button>
+			</nldd-toggle-button-group>
+		`);
+		await waitForUpdate(el);
+		expect(el.getAttribute('aria-label')).toBe('Opmaak');
+	});
 });

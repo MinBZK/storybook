@@ -244,4 +244,14 @@ describe('nldd-radio-button-group – accessibility', () => {
 		expect(warn).not.toHaveBeenCalledWith(expect.stringContaining('No accessible name'));
 		warn.mockRestore();
 	});
+
+	it('leaves an aria-label the consumer put on the group', async () => {
+		el = await fixture<NLDDRadioButtonGroup>(`
+			<nldd-radio-button-group name="g" aria-label="Bezorgwijze">
+				<nldd-radio-button-field value="1" label="Optie 1"></nldd-radio-button-field>
+			</nldd-radio-button-group>
+		`);
+		await waitForUpdate(el);
+		expect(el.getAttribute('aria-label')).toBe('Bezorgwijze');
+	});
 });

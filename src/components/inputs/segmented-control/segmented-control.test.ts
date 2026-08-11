@@ -549,4 +549,14 @@ describe('nldd-segmented-control – focus()', () => {
 		el.focus();
 		expect(deepActiveElement()).toBe(items[1].shadowRoot!.querySelector('.segmented-control__item-input'));
 	});
+
+	it('leaves an aria-label the consumer put on the group', async () => {
+		el = await fixture<NLDDSegmentedControl>(`
+			<nldd-segmented-control aria-label="Weergave">
+				<nldd-segmented-control-item value="a" text="A"></nldd-segmented-control-item>
+			</nldd-segmented-control>
+		`);
+		await waitForUpdate(el);
+		expect(el.getAttribute('aria-label')).toBe('Weergave');
+	});
 });

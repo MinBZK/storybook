@@ -338,4 +338,14 @@ describe('nldd-dropdown – change event', () => {
 		await waitForUpdate(el);
 		expect(el.querySelector('select')!.hasAttribute('aria-label')).toBe(false);
 	});
+
+	it('leaves an aria-label the consumer put on the select', async () => {
+		el = await fixture<NLDDDropdown>(`
+			<nldd-dropdown>
+				<select aria-label="Land"><option value="nl">Nederland</option></select>
+			</nldd-dropdown>
+		`);
+		await waitForUpdate(el);
+		expect(el.querySelector('select')!.getAttribute('aria-label')).toBe('Land');
+	});
 });

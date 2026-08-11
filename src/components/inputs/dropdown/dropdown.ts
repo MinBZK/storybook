@@ -38,6 +38,7 @@ import { dropdownStyles } from './dropdown.styles.js';
 import { dropdownTemplate } from './dropdown.template.js';
 import { isPointerMode } from '../../../utilities/input-modality.js';
 import './../../content/icon/icon.js';
+import { setOwnedAttribute } from '../../../utilities/owned-attribute.js';
 
 export type DropdownSize = 'xs' | 'sm' | 'md';
 
@@ -80,6 +81,9 @@ export class NLDDDropdown extends LitElement {
 	_displayValue = '';
 
 	private _select: HTMLSelectElement | null = null;
+
+	/** The name this wrapper wrote onto the select, so it only takes back its own. */
+	private _appliedLabel: string | null = null;
 
 	// — Lifecycle ——————————————————————————————————————————————————————————————
 
@@ -148,14 +152,19 @@ export class NLDDDropdown extends LitElement {
 		this._select.disabled = this.disabled;
 	}
 
-	/** Puts the name on the `<select>`, which is the element assistive software lands on. */
+	/**
+	 * Puts the name on the `<select>`, which is the element assistive software
+	 * lands on.
+	 *
+	 * Only ever takes back a name it wrote itself. Naming the `<select>` directly
+	 * is the documented way to do this (see the example at the top of this file),
+	 * and without this guard the first slotchange would strip it: the wrapper has
+	 * no `accessible-label` of its own then, and "no name here" would be read as
+	 * "remove the name there".
+	 */
 	private _syncAccessibleLabel(): void {
 		if (!this._select) return;
-		if (this.accessibleLabel) {
-			this._select.setAttribute('aria-label', this.accessibleLabel);
-		} else {
-			this._select.removeAttribute('aria-label');
-		}
+		this._appliedLabel = setOwnedAttribute(this._select, 'aria-label', this.accessibleLabel, this._appliedLabel);
 	}
 
 	private _syncAriaInvalid(): void {

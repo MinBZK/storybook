@@ -265,8 +265,9 @@ export class NLDDFormField extends LitElement {
 	 * siblings), and that label already names the control. Overwriting it would
 	 * replace "Nieuwsbrief" with the caption above it, so those are left alone.
 	 *
-	 * Only a name this field wrote is taken back. A consumer who names the
-	 * control itself and leaves the caption empty keeps that name.
+	 * The caption fills a gap, it does not overrule. A name set on the control
+	 * itself is the more specific one, so this field leaves it alone and never
+	 * takes back what it did not write.
 	 */
 	private _applyAccessibleLabel(input: Element): void {
 		const attribute = 'accessibleLabel' in input
@@ -278,15 +279,16 @@ export class NLDDFormField extends LitElement {
 				: null;
 		if (!attribute) return;
 
+		const current = input.getAttribute(attribute);
+		if (current !== null && current !== this._appliedLabel) return;
+
 		if (this.label) {
 			input.setAttribute(attribute, this.label);
 			this._appliedLabel = this.label;
 			return;
 		}
 
-		if (this._appliedLabel !== null && input.getAttribute(attribute) === this._appliedLabel) {
-			input.removeAttribute(attribute);
-		}
+		if (current !== null) input.removeAttribute(attribute);
 		this._appliedLabel = null;
 	}
 

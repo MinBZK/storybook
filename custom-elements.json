@@ -33538,6 +33538,59 @@
     },
     {
       "kind": "javascript-module",
+      "path": "src/utilities/owned-attribute.ts",
+      "declarations": [
+        {
+          "kind": "function",
+          "name": "setOwnedAttribute",
+          "return": {
+            "type": {
+              "text": ""
+            }
+          },
+          "parameters": [
+            {
+              "name": "el",
+              "type": {
+                "text": "Element"
+              }
+            },
+            {
+              "name": "name",
+              "type": {
+                "text": "string"
+              }
+            },
+            {
+              "name": "value",
+              "type": {
+                "text": "string"
+              }
+            },
+            {
+              "name": "applied",
+              "type": {
+                "text": "string | null"
+              },
+              "description": "what this component wrote here last time, or null"
+            }
+          ],
+          "description": "An attribute one component hands to another without overruling what is\nalready there.\n\nThe closer to the control, the more specific, so the heavier it weighs. An\n`aria-label` on a slotted `<select>` beats the `accessible-label` on the\nwrapper around it, which beats the caption of the `nldd-form-field` above\nthat. Every layer does two things and no more: it fills a gap, and it takes\nback only what it wrote itself.\n\nWithout that second half a component reads \"I have no name to give\" as\n\"remove the name that is there\", which is how a documented way of naming a\ncontrol quietly stopped working."
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "setOwnedAttribute",
+          "declaration": {
+            "name": "setOwnedAttribute",
+            "module": "src/utilities/owned-attribute.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
       "path": "src/utilities/page-section-mixin.ts",
       "declarations": [
         {

@@ -50,6 +50,7 @@ import {
 	segmentedControlItemTemplate,
 } from './segmented-control.template.js';
 import './../../content/icon/icon.js';
+import { setOwnedAttribute } from '../../../utilities/owned-attribute.js';
 
 export type SegmentedControlSize = 'sm' | 'md' | 'lg';
 export type SegmentedControlType = 'radio' | 'checkbox';
@@ -184,6 +185,9 @@ export class NLDDSegmentedControl extends FormAssociated(LitElement) {
 	@property({ type: String, attribute: 'accessible-labeled-by' })
 	accessibleLabeledBy = '';
 
+	/** The name this group wrote onto its host, so it only takes back its own. */
+	private _appliedLabel: string | null = null;
+
 	// — Lifecycle ——————————————————————————————————————————————————————————————
 
 	override connectedCallback(): void {
@@ -272,11 +276,7 @@ export class NLDDSegmentedControl extends FormAssociated(LitElement) {
 			this.setAttribute('role', this.type === 'checkbox' ? 'group' : 'radiogroup');
 		}
 		if (changedProperties.has('accessibleLabel')) {
-			if (this.accessibleLabel) {
-				this.setAttribute('aria-label', this.accessibleLabel);
-			} else {
-				this.removeAttribute('aria-label');
-			}
+			this._appliedLabel = setOwnedAttribute(this, 'aria-label', this.accessibleLabel, this._appliedLabel);
 		}
 		if (changedProperties.has('accessibleLabeledBy')) {
 			if (this.accessibleLabeledBy) {

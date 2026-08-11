@@ -688,4 +688,12 @@ describe('nldd-form-field – finds the control', () => {
 		await waitForUpdate(el);
 		expect(el.querySelector('nldd-text-field')!.getAttribute('accessible-label')).toBe('Veldnaam');
 	});
+
+	it('leaves a name the consumer gave the control alone', async () => {
+		// The caption fills a gap, it does not overrule. A name set on the control
+		// itself is more specific than the caption above it.
+		el = await fixture('<nldd-form-field label="Land"><nldd-text-field accessible-label="Kies een land"></nldd-text-field></nldd-form-field>');
+		await waitForUpdate(el);
+		expect(el.firstElementChild!.getAttribute('accessible-label')).toBe('Kies een land');
+	});
 });

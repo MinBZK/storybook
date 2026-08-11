@@ -21,6 +21,7 @@ import { customElement, property } from 'lit/decorators.js';
 import { radioButtonGroupStyles } from './radio-button-group.styles.js';
 import { radioButtonGroupTemplate } from './radio-button-group.template.js';
 import type { NLDDRadioButtonField } from '../radio-button-field/radio-button-field.js';
+import { setOwnedAttribute } from '../../../utilities/owned-attribute.js';
 
 @customElement('nldd-radio-button-group')
 export class NLDDRadioButtonGroup extends LitElement {
@@ -46,6 +47,9 @@ export class NLDDRadioButtonGroup extends LitElement {
 	@property({ type: String, attribute: 'accessible-labeled-by' })
 	accessibleLabeledBy = '';
 
+	/** The name this group wrote onto its host, so it only takes back its own. */
+	private _appliedLabel: string | null = null;
+
 	override connectedCallback(): void {
 		super.connectedCallback();
 		this.setAttribute('role', 'radiogroup');
@@ -69,12 +73,11 @@ export class NLDDRadioButtonGroup extends LitElement {
 		if (changed.has('name') || changed.has('disabled') || changed.has('required')) {
 			this._syncFields();
 		}
+		// Only ever take back a name this group wrote itself. Without the guard the
+		// first update would strip an aria-label the consumer put on the host,
+		// because "no accessible-label here" would be read as "remove the name".
 		if (changed.has('accessibleLabel')) {
-			if (this.accessibleLabel) {
-				this.setAttribute('aria-label', this.accessibleLabel);
-			} else {
-				this.removeAttribute('aria-label');
-			}
+			this._appliedLabel = setOwnedAttribute(this, 'aria-label', this.accessibleLabel, this._appliedLabel);
 		}
 		if (changed.has('accessibleLabeledBy')) {
 			if (this.accessibleLabeledBy) {

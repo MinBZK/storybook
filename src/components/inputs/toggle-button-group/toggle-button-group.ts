@@ -28,6 +28,7 @@ import { reflectNonDefault } from '../../../utilities/reflect-non-default.js';
 import { toggleButtonGroupStyles } from './toggle-button-group.styles.js';
 import { toggleButtonGroupTemplate } from './toggle-button-group.template.js';
 import type { NLDDToggleButton, ToggleButtonSize } from '../toggle-button/toggle-button.js';
+import { setOwnedAttribute } from '../../../utilities/owned-attribute.js';
 
 type GroupType = 'button' | 'checkbox' | 'radio';
 
@@ -59,6 +60,9 @@ export class NLDDToggleButtonGroup extends LitElement {
 	@property({ type: String, attribute: 'accessible-labeled-by' })
 	accessibleLabeledBy = '';
 
+	/** The name this group wrote onto its host, so it only takes back its own. */
+	private _appliedLabel: string | null = null;
+
 	override connectedCallback(): void {
 		super.connectedCallback();
 		this._syncRole();
@@ -89,11 +93,7 @@ export class NLDDToggleButtonGroup extends LitElement {
 			this._syncRole();
 		}
 		if (changed.has('accessibleLabel')) {
-			if (this.accessibleLabel) {
-				this.setAttribute('aria-label', this.accessibleLabel);
-			} else {
-				this.removeAttribute('aria-label');
-			}
+			this._appliedLabel = setOwnedAttribute(this, 'aria-label', this.accessibleLabel, this._appliedLabel);
 		}
 		if (changed.has('accessibleLabeledBy')) {
 			if (this.accessibleLabeledBy) {
