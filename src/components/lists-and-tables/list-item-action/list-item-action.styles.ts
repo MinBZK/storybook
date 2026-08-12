@@ -125,6 +125,16 @@ export const listItemActionStyles = css`
 		--context-content-secondary-color: var(--components-list-item-is-hovered-content-color);
 	}
 
+	/* While what this segment opened is on screen it stays lit, a step above
+	   hover, so the menu reads as hanging off this row rather than floating over
+	   the list. After the hover rule on purpose: the pointer usually sits on the
+	   menu by then, but hovering back over the segment must not dim it. */
+	:host([expanded]) .list-item-action {
+		--_background-color: var(--components-list-item-is-expanded-background-color);
+		--context-content-color: var(--components-list-item-is-expanded-content-color);
+		--context-content-secondary-color: var(--components-list-item-is-expanded-content-color);
+	}
+
 	:host([checked]) .list-item-action {
 		--_background-color: var(--components-list-item-is-selected-background-color);
 		--context-content-color: var(--components-list-item-is-selected-content-color);

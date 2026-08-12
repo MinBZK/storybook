@@ -41,7 +41,7 @@ export type ListItemActionWidth = 'fit-content' | 'full';
  * @attr {string} rel - Link rel forwarded to the `<a>`; only applies with `href`
  * @attr {boolean} checkbox - Makes the segmented action a `role="checkbox"` control; ignored when `href` is set
  * @attr {boolean} checked - Checked state of a `checkbox` action; it toggles on activation
- * @attr {boolean} expanded - Disclosure state, reflected as `aria-expanded` on the control. Set it on the segmented action that opens something (e.g. a tree row's chevron). Leave it off entirely when the segmented action discloses nothing — an absent attribute emits no aria-expanded.
+ * @attr {boolean} expanded - Disclosure state, reflected as `aria-expanded` on the control, and painted: the segment stays lit a step above hover for as long as what it opened is on screen, so a menu reads as hanging off this row rather than floating over the list. Set it on the segmented action that opens something (a tree row's chevron, a menu). Leave it off entirely when the segmented action discloses nothing — an absent attribute emits no aria-expanded.
  * @attr {boolean} disclosure - Marks the segmented action as the row's disclosure control: `aria-expanded` comes from the parent item's `expanded`, so the state lives in one place. A slotted `nldd-icon-cell` rotates a quarter turn while the row is open
  * @attr {boolean} current - Marks the segmented action as the current page (`aria-current="page"`)
  * @attr {boolean} disabled - Disabled state; only applies to button and checkbox segmented actions
