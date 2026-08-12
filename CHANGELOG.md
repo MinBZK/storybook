@@ -9,6 +9,10 @@ the type of conventional-commit determines the release. Conventional types
 `chore`, `docs`, `ci`, `style`, `test`, `build` are intentionally omitted
 here; consult the commit history if you need that level of detail.
 
+### Added
+
+- **`namespace` as an alias for `brackets-ellipsis`.** The brackets with the ellipsis between them stand for a Kubernetes namespace everywhere the console uses them, and the only name on offer was `embed`, which means something else entirely. The icon keeps its own name and its `embed` alias; this adds the one that says what it is being used for.
+
 ## [0.8.82](https://github.com/MinBZK/storybook/compare/v0.8.81...v0.8.82) (2026-08-11)
 
 ## [0.8.81](https://github.com/MinBZK/storybook/compare/v0.8.80...v0.8.81) (2026-08-11)
