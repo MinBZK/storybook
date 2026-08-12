@@ -78,6 +78,10 @@
       "types": "./dist/components/content/tag/tag.d.ts",
       "default": "./dist/components/content/tag/tag.js"
     },
+    "./text": {
+      "types": "./dist/components/content/text/text.d.ts",
+      "default": "./dist/components/content/text/text.js"
+    },
     "./title": {
       "types": "./dist/components/content/title/title.d.ts",
       "default": "./dist/components/content/title/title.js"

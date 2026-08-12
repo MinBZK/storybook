@@ -32,6 +32,7 @@ export { NLDDImage } from './content/image/image.js';
 export { NLDDKeyboardShortcut } from './content/keyboard-shortcut/keyboard-shortcut.js';
 export { NLDDRichText } from './content/rich-text/rich-text.js';
 export { NLDDTag } from './content/tag/tag.js';
+export { NLDDText } from './content/text/text.js';
 export { NLDDTitle } from './content/title/title.js';
 export { NLDDToken } from './content/token/token.js';
 export { NLDDTooltip } from './content/tooltip/tooltip.js';
