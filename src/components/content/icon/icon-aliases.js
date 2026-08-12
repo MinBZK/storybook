@@ -89,6 +89,10 @@ export const aliases = {
 	// check-mark-circle
 	'success': 'check-mark-circle',
 	'valid': 'check-mark-circle',
+	'done': 'check-mark-circle',
+
+	// check-mark-circle-light
+	'done-light': 'check-mark-circle-light',
 
 	// check-mark-extra-small
 	'checked-extra-small': 'check-mark-extra-small',
@@ -105,8 +109,24 @@ export const aliases = {
 	// chevron-right
 	'forward': 'chevron-right',
 
+	// circle
+	'no-priority': 'circle',
+	'to-do': 'circle',
+
+	// circle-circle
+	'doing': 'circle-circle',
+
+	// circle-circle-light
+	'doing-light': 'circle-circle-light',
+
 	// circle-dashed
 	'icon-placeholder': 'circle-dashed',
+
+	// circle-grid-2x2-top-left-check-mark
+	'all-tasks': 'circle-grid-2x2-top-left-check-mark',
+
+	// circle-light
+	'to-do-light': 'circle-light',
 
 	// clipboard-pencil
 	'form': 'clipboard-pencil',
@@ -460,6 +480,9 @@ export const aliases = {
 	// slash-circle
 	'blocked': 'slash-circle',
 	'forbidden': 'slash-circle',
+
+	// slash-circle-light
+	'blocked-light': 'slash-circle-light',
 
 	// slider-horizontal-3
 	'local-settings': 'slider-horizontal-3',
