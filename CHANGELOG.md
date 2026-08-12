@@ -9,6 +9,10 @@ the type of conventional-commit determines the release. Conventional types
 `chore`, `docs`, `ci`, `style`, `test`, `build` are intentionally omitted
 here; consult the commit history if you need that level of detail.
 
+### Breaking
+
+- **The plus badges are named after what they make.** `add-namespace` is now `new-namespace`, `add-k8s` and `add-kubernetes` are `new-k8s` and `new-kubernetes`, and `add-text-document` is gone. A namespace, a cluster and a document are made, not added, so the plus badge on those icons says "new". `add` is kept for putting something that already exists into something else, the way you add a member to a project, which is why `add-plugin`, `add-user`, `add-location` and `add-emoji` stay as they are. `file-text-badge-check-plus` already had `new-text-document` and now has only that. Consumers on an old name change one string.
+
 ### Added
 
 - **`namespace` as an alias for `brackets-ellipsis`.** The brackets with the ellipsis between them stand for a Kubernetes namespace everywhere the console uses them, and the only name on offer was `embed`, which means something else entirely. The icon keeps its own name and its `embed` alias; this adds the one that says what it is being used for.
