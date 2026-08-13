@@ -228,13 +228,23 @@ export const titleStyles = css`
 		text-wrap: balance !important;
 	}
 
+	/* One step up from the overline: a subtitle is a sentence you read, where an
+	   overline is a label you glance at. At body-sm it disappeared under a
+	   display-sized title. */
 	::slotted([slot="subtitle"]) {
 		${slottedReset}
 		${inheritedTextReset}
 		margin: 0 !important;
 		color: var(--semantics-content-secondary-color) !important;
-		font: var(--primitives-font-body-sm-regular-tight) !important;
+		font: var(--primitives-font-body-md-regular-tight) !important;
 		overflow-wrap: anywhere !important;
+	}
+
+	/* The two smallest titles keep the smaller subtitle: size 6 is body-md
+	   itself, so a subtitle at that size would be as big as the title above it. */
+	:host([size="5"]) ::slotted([slot="subtitle"]),
+	:host([size="6"]) ::slotted([slot="subtitle"]) {
+		font: var(--primitives-font-body-sm-regular-tight) !important;
 	}
 
 	/* color="inherit": follow the surface's text color (e.g. a
