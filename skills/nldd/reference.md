@@ -966,6 +966,8 @@ A file picker that reads as one control: an nldd-button flush in the corner of a
 | `readonly` | `boolean` | Readonly state |
 | `required` | `boolean` | Required state |
 | `autocomplete` | `string` | Autocomplete hint |
+| `keyboard` | `string` | Which on-screen keyboard a phone or tablet raises, forwarded as `inputmode`: 'none' \| 'text' \| 'decimal' \| 'numeric' \| 'tel' \| 'search' \| 'email' \| 'url'. It changes nothing about what the field accepts, and nothing at all on a desktop. |
+| `enter-key` | `string` | What the Enter key on that keyboard says, forwarded as `enterkeyhint`: 'enter' \| 'done' \| 'go' \| 'next' \| 'previous' \| 'search' \| 'send'. In a field where Enter starts a new line, leave it alone. |
 | `rows` | `number` | Initial visible rows (minimum height). Default: 3. |
 | `resize` | `string` | 'none' \| 'vertical' \| 'auto' (default). 'auto' grows with content (native field-sizing), no manual handle. |
 | `accessible-label` | `string` | Accessible label forwarded to the inner textarea. Set automatically by nldd-form-field. |
@@ -1308,6 +1310,8 @@ A hybrid markdown editor built on CodeMirror 6 (via NLDDCodeMirrorElement): the 
 | `valid` | `boolean` | Marks the field as valid |
 | `disabled` | `boolean` | Disabled state |
 | `type` | `string` | Input type: 'text' \| 'email' \| 'tel' \| 'url' |
+| `keyboard` | `string` | Which on-screen keyboard a phone or tablet raises, forwarded as `inputmode`: 'none' \| 'text' \| 'decimal' \| 'numeric' \| 'tel' \| 'search' \| 'email' \| 'url'. It changes nothing about what the field accepts, and nothing at all on a desktop. Reach for it where the value is digits but not a quantity you would step (a house number, a postcode, a rack unit): 'numeric'. The keyboard for 'tel', 'email' and 'url' already follows from `type`. |
+| `enter-key` | `string` | What the Enter key on that keyboard says, forwarded as `enterkeyhint`: 'enter' \| 'done' \| 'go' \| 'next' \| 'previous' \| 'search' \| 'send'. It only labels the key; what Enter does is still up to the form. |
 | `name` | `string` | Input name for form submission |
 | `readonly` | `boolean` | Readonly state |
 | `required` | `boolean` | Required state |

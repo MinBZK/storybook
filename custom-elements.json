@@ -9902,6 +9902,26 @@
             },
             {
               "kind": "field",
+              "name": "keyboard",
+              "type": {
+                "text": "Keyboard | undefined"
+              },
+              "description": "Which on-screen keyboard to raise, forwarded as `inputmode`.",
+              "attribute": "keyboard",
+              "reflects": true
+            },
+            {
+              "kind": "field",
+              "name": "enterKey",
+              "type": {
+                "text": "EnterKey | undefined"
+              },
+              "description": "What the Enter key says, forwarded as `enterkeyhint`.",
+              "attribute": "enter-key",
+              "reflects": true
+            },
+            {
+              "kind": "field",
               "name": "rows",
               "type": {
                 "text": "number"
@@ -10182,6 +10202,22 @@
               "description": "Autocomplete hint"
             },
             {
+              "name": "keyboard",
+              "type": {
+                "text": "Keyboard | undefined"
+              },
+              "description": "Which on-screen keyboard a phone or tablet raises, forwarded as `inputmode`: 'none' | 'text' | 'decimal' | 'numeric' | 'tel' | 'search' | 'email' | 'url'. It changes nothing about what the field accepts, and nothing at all on a desktop.",
+              "fieldName": "keyboard"
+            },
+            {
+              "name": "enter-key",
+              "type": {
+                "text": "EnterKey | undefined"
+              },
+              "description": "What the Enter key on that keyboard says, forwarded as `enterkeyhint`: 'enter' | 'done' | 'go' | 'next' | 'previous' | 'search' | 'send'. In a field where Enter starts a new line, leave it alone.",
+              "fieldName": "enterKey"
+            },
+            {
               "name": "rows",
               "type": {
                 "text": "number"
@@ -10251,6 +10287,22 @@
         }
       ],
       "exports": [
+        {
+          "kind": "js",
+          "name": "Keyboard",
+          "declaration": {
+            "name": "Keyboard",
+            "module": "../text-field/text-field.js"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "EnterKey",
+          "declaration": {
+            "name": "EnterKey",
+            "module": "../text-field/text-field.js"
+          }
+        },
         {
           "kind": "js",
           "name": "NLDDMultiLineTextField",
@@ -16139,6 +16191,26 @@
             },
             {
               "kind": "field",
+              "name": "keyboard",
+              "type": {
+                "text": "Keyboard | undefined"
+              },
+              "description": "Which on-screen keyboard to raise, forwarded as `inputmode`.",
+              "attribute": "keyboard",
+              "reflects": true
+            },
+            {
+              "kind": "field",
+              "name": "enterKey",
+              "type": {
+                "text": "EnterKey | undefined"
+              },
+              "description": "What the Enter key says, forwarded as `enterkeyhint`.",
+              "attribute": "enter-key",
+              "reflects": true
+            },
+            {
+              "kind": "field",
               "name": "name",
               "type": {
                 "text": "string"
@@ -16439,6 +16511,22 @@
               "default": "'text'",
               "fieldName": "type",
               "description": "Input type: 'text' | 'email' | 'tel' | 'url'"
+            },
+            {
+              "name": "keyboard",
+              "type": {
+                "text": "Keyboard | undefined"
+              },
+              "description": "Which on-screen keyboard a phone or tablet raises, forwarded as `inputmode`: 'none' | 'text' | 'decimal' | 'numeric' | 'tel' | 'search' | 'email' | 'url'. It changes nothing about what the field accepts, and nothing at all on a desktop. Reach for it where the value is digits but not a quantity you would step (a house number, a postcode, a rack unit): 'numeric'. The keyboard for 'tel', 'email' and 'url' already follows from `type`.",
+              "fieldName": "keyboard"
+            },
+            {
+              "name": "enter-key",
+              "type": {
+                "text": "EnterKey | undefined"
+              },
+              "description": "What the Enter key on that keyboard says, forwarded as `enterkeyhint`: 'enter' | 'done' | 'go' | 'next' | 'previous' | 'search' | 'send'. It only labels the key; what Enter does is still up to the form.",
+              "fieldName": "enterKey"
             },
             {
               "name": "name",
@@ -34521,7 +34609,7 @@
               }
             }
           ],
-          "description": "Nearest ancestor app-view (light-DOM `closest`; slotted layers stay in the\nconsumer's light tree so this reaches across the slot boundaries), or null\nwhen a layer is used stand-alone (e.g. a bare page in the docs)."
+          "description": "Nearest ancestor app-view (light-DOM `closest`; slotted layers stay in the\nconsumer's light tree so this reaches across the slot boundaries), or null\nwhen a layer is used stand-alone (e.g. a bare page in the docs).\n\nAn overlay ends the search: a sheet or a modal dialog is its own scroll\ncontainer and its own top edge, so a page inside one owns its scroller\nwhatever the app around it does. Without this the app-view would push its\nroot mode straight through the overlay and the page's sticky header would\nstick against the document, over the content of the overlay. The overlays\nreset --context-scroll-mode as well, which is what the stand-alone read\nbelow then finds."
         },
         {
           "kind": "class",

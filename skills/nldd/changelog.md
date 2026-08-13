@@ -34,6 +34,18 @@ here; consult the commit history if you need that level of detail.
 - **`namespace` as an alias for `brackets-ellipsis`.** The brackets with the ellipsis between them stand for a Kubernetes namespace everywhere the console uses them, and the only name on offer was `embed`, which means something else entirely. The icon keeps its own name and its `embed` alias; this adds the one that says what it is being used for.
 - **`all-tasks` and `done` as aliases.** A task list needs a row for everything it holds and a row for what is finished, and both icons were already there under names that describe the drawing: `circle-grid-2x2-top-left-check-mark` and `check-mark-circle`. These add the names the menu is written in.
 
+### Added
+
+- **`keyboard` and `enter-key` on the text fields.** A rack unit, a house number and a postcode are digits without being a quantity you would step, so they belong in a text field. On a phone that field opened the letter keyboard, and the only way around it was `type="tel"`, which asks for a phone number and formats like one. `keyboard` forwards `inputmode` (`none`, `text`, `decimal`, `numeric`, `tel`, `search`, `email`, `url`) and `enter-key` forwards `enterkeyhint` (`enter`, `done`, `go`, `next`, `previous`, `search`, `send`), on `nldd-text-field` and `nldd-multi-line-text-field`. They are hints to the on-screen keyboard and nothing else: what the field accepts does not change, and on a desktop neither does anything. Named after what they do rather than after the HTML attribute, the way `accessible-label` is. `type` already asks for the right keyboard for an email address, a phone number and a URL, so setting both to different things now warns in dev.
+
+### Fixed
+
+- **An overlay is where the app's layout context ends.** A `nldd-page` inside a `nldd-sheet` or a `nldd-modal-dialog` followed the app around it: collapse the app to one column and `nldd-app-view` switches to document scroll, which reached straight through the overlay. The page in the sheet then gave up its own scroller and stuck its header against the document, offset by the height of an app bar that stands outside the sheet, so the title bar was painted over the first form field. A sheet and a modal dialog now stop that context at their edge. They reset `--context-scroll-mode` and the `--context-layer-top` / `--context-layer-bottom` offsets, and the app-view no longer reaches a page through them, so a page inside an overlay keeps its own scroller and starts at the overlay's own top edge. Consumers that worked around this by moving their sheets out of the app-view can leave them where the data is.
+
+### Changed
+
+- **A subtitle in `nldd-title` is one step larger.** It shared the overline's `body-sm`, which held up under a small heading and disappeared under a display-sized one: a whole sentence set two steps below a 52-pixel title reads as a footnote to it rather than as part of it. It is `body-md` from size 4 up, and stays `body-sm` at sizes 5 and 6, where the title is body-sized itself and a bigger subtitle would match or outgrow it. The overline keeps `body-sm` in every size: that one is a label you glance at, not a line you read.
+
 ## [0.8.82](https://github.com/MinBZK/storybook/compare/v0.8.81...v0.8.82) (2026-08-11)
 
 ## [0.8.81](https://github.com/MinBZK/storybook/compare/v0.8.80...v0.8.81) (2026-08-11)
