@@ -848,4 +848,42 @@ describe('nldd-combo-box – allow-custom', () => {
 		expect(reachedForm).toBe(0);
 	});
 
+
+	describe('readonly', () => {
+		it('marks the inner input readonly and keeps it focusable', async () => {
+			el = await fixture('<nldd-combo-box readonly value="nl"><nldd-menu><nldd-menu-item text="Nederland" value="nl"></nldd-menu-item></nldd-menu></nldd-combo-box>');
+			await waitForUpdate(el);
+			const input = el.shadowRoot!.querySelector('input')!;
+			expect(input.readOnly).toBe(true);
+			expect(input.disabled).toBe(false);
+		});
+
+		it('does not open the menu', async () => {
+			el = await fixture('<nldd-combo-box readonly value="nl"><nldd-menu><nldd-menu-item text="Nederland" value="nl"></nldd-menu-item></nldd-menu></nldd-combo-box>');
+			await waitForUpdate(el);
+			(el as unknown as { _openMenu(): void })._openMenu();
+			await waitForUpdate(el);
+			expect((el as unknown as { _isOpen: boolean })._isOpen).toBe(false);
+		});
+
+		// Clicking the value and then the picker button next to it moves focus out
+		// of the input. That blur used to run the revert meant for typed text,
+		// which reads the label back from the value and finds nothing to read.
+		it('keeps its text when focus leaves, with a label that matches no option', async () => {
+			el = await fixture('<nldd-combo-box readonly text="Patchpaneel 24-poorts"><nldd-menu></nldd-menu></nldd-combo-box>');
+			await waitForUpdate(el);
+			const input = el.shadowRoot!.querySelector('input')!;
+			input.focus();
+			input.dispatchEvent(new FocusEvent('blur', { relatedTarget: null }));
+			await waitForUpdate(el);
+			expect((el as unknown as { text: string }).text).toBe('Patchpaneel 24-poorts');
+			expect(input.value).toBe('Patchpaneel 24-poorts');
+		});
+
+		it('offers nothing to clear', async () => {
+			el = await fixture('<nldd-combo-box readonly value="nl"><nldd-menu><nldd-menu-item text="Nederland" value="nl"></nldd-menu-item></nldd-menu></nldd-combo-box>');
+			await waitForUpdate(el);
+			expect(el.shadowRoot!.querySelector('.combo-box__clear-button')).toBeNull();
+		});
+	});
 });

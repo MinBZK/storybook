@@ -50,6 +50,11 @@ export default {
 			description: 'Markeert het veld als ongeldig',
 			table: { defaultValue: { summary: false } },
 		},
+		readonly: {
+			control: 'boolean',
+			description: 'Alleen-lezen toestand: de waarde blijft leesbaar en selecteerbaar, het menu opent niet',
+			table: { defaultValue: { summary: false } },
+		},
 		disabled: {
 			control: 'boolean',
 			description: 'Uitgeschakelde toestand',
@@ -94,6 +99,7 @@ export default {
 		placeholder: 'Zoek een land',
 		valid: false,
 		invalid: false,
+		readonly: false,
 		disabled: false,
 		allowCustom: false,
 		name: '',
@@ -112,6 +118,7 @@ const Template = (args: Record<string, any>) => html`
 		placeholder=${args.placeholder}
 		?valid=${args.valid}
 		?invalid=${args.invalid}
+		?readonly=${args.readonly}
 		?disabled=${args.disabled}
 		?allow-custom=${args.allowCustom}
 		name=${args.name}
@@ -280,6 +287,12 @@ export const AlleToestanden = {
 			</nldd-menu>
 		</nldd-combo-box>
 		<nldd-combo-box placeholder="Zoek een land" invalid>
+			<nldd-menu empty-text="Geen resultaten">
+				<nldd-menu-item text="Nederland" value="nl"></nldd-menu-item>
+				<nldd-menu-item text="België" value="be"></nldd-menu-item>
+			</nldd-menu>
+		</nldd-combo-box>
+		<nldd-combo-box placeholder="Zoek een land" value="nl" readonly>
 			<nldd-menu empty-text="Geen resultaten">
 				<nldd-menu-item text="Nederland" value="nl"></nldd-menu-item>
 				<nldd-menu-item text="België" value="be"></nldd-menu-item>

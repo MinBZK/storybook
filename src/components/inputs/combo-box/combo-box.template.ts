@@ -45,6 +45,7 @@ export function comboBoxTemplate(component: NLDDComboBox): TemplateResult {
 				.value=${component.text}
 				placeholder=${component.placeholder || nothing}
 				?disabled=${component.disabled}
+				?readonly=${component.readonly}
 				name=${component.name || nothing}
 				autocomplete=${component.autocomplete || nothing}
 				spellcheck=${component.noSpellcheck ? 'false' : 'true'}
@@ -54,7 +55,7 @@ export function comboBoxTemplate(component: NLDDComboBox): TemplateResult {
 			>
 			<div class="combo-box__input-fade"></div>
 			<div class="combo-box__end">
-				${component.text ? html`
+				${component.text && !component.readonly ? html`
 					<div class="combo-box__clear-button">
 						<nldd-icon-button
 							variant="neutral-transparent"
@@ -68,20 +69,26 @@ export function comboBoxTemplate(component: NLDDComboBox): TemplateResult {
 					</div>
 				` : nothing}
 				${renderValidationIcon(component)}
-				<div class="combo-box__picker-button">
-					<nldd-icon-button
-						variant="neutral-tinted"
-						size=${iconButtonSize}
-						icon="chevron-down"
-						text=${component._t('components.combo-box.open-menu-action')}
-						tooltip-timing="never"
-						?disabled=${component.disabled}
-						?expanded=${component._isOpen}
-						popup-type="listbox"
-						@pointerdown=${component._handlePickerPointerdown}
-						@click=${component._toggleMenu}
-					></nldd-icon-button>
-				</div>
+				<!-- Read-only has no list to open, so the chevron goes rather than
+				     dims: a control that can never do anything is a promise the
+				     field cannot keep. Disabled keeps its button, because that one
+				     comes back. -->
+				${component.readonly ? nothing : html`
+					<div class="combo-box__picker-button">
+						<nldd-icon-button
+							variant="neutral-tinted"
+							size=${iconButtonSize}
+							icon="chevron-down"
+							text=${component._t('components.combo-box.open-menu-action')}
+							tooltip-timing="never"
+							?disabled=${component.disabled}
+							?expanded=${component._isOpen}
+							popup-type="listbox"
+							@pointerdown=${component._handlePickerPointerdown}
+							@click=${component._toggleMenu}
+						></nldd-icon-button>
+					</div>
+				`}
 			</div>
 		</div>
 		<slot @slotchange=${component._onSlotChange}></slot>
