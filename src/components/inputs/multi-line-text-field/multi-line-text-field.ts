@@ -14,8 +14,8 @@
  * @attr {boolean} readonly - Readonly state
  * @attr {boolean} required - Required state
  * @attr {string} autocomplete - Autocomplete hint
- * @attr {string} keyboard - Which on-screen keyboard a phone or tablet raises, forwarded as `inputmode`: 'none' | 'text' | 'decimal' | 'numeric' | 'tel' | 'search' | 'email' | 'url'. It changes nothing about what the field accepts, and nothing at all on a desktop.
- * @attr {string} enter-key - What the Enter key on that keyboard says, forwarded as `enterkeyhint`: 'enter' | 'done' | 'go' | 'next' | 'previous' | 'search' | 'send'. In a field where Enter starts a new line, leave it alone.
+ * @attr {string} keyboard - Which virtual keyboard a phone or tablet raises, forwarded as `inputmode`: 'none' | 'text' | 'decimal' | 'numeric' | 'tel' | 'search' | 'email' | 'url'. It changes nothing about what the field accepts, and nothing at all on a desktop.
+ * @attr {string} enter-key - What the Enter key of the virtual keyboard says, forwarded as `enterkeyhint`: 'enter' | 'done' | 'go' | 'next' | 'previous' | 'search' | 'send'. In a field where Enter starts a new line, leave it alone.
  * @attr {number} rows - Initial visible rows (minimum height). Default: 3.
  * @attr {string} resize - 'none' | 'vertical' | 'auto' (default). 'auto' grows with content (native field-sizing), no manual handle.
  * @attr {string} accessible-label - Accessible label forwarded to the inner textarea. Set automatically by nldd-form-field.

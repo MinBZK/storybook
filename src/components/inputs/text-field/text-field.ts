@@ -11,8 +11,8 @@
  * @attr {boolean} valid - Marks the field as valid
  * @attr {boolean} disabled - Disabled state
  * @attr {string} type - Input type: 'text' | 'email' | 'tel' | 'url'
- * @attr {string} keyboard - Which on-screen keyboard a phone or tablet raises, forwarded as `inputmode`: 'none' | 'text' | 'decimal' | 'numeric' | 'tel' | 'search' | 'email' | 'url'. It changes nothing about what the field accepts, and nothing at all on a desktop. Reach for it where the value is digits but not a quantity you would step (a house number, a postcode, a rack unit): 'numeric'. The keyboard for 'tel', 'email' and 'url' already follows from `type`.
- * @attr {string} enter-key - What the Enter key on that keyboard says, forwarded as `enterkeyhint`: 'enter' | 'done' | 'go' | 'next' | 'previous' | 'search' | 'send'. It only labels the key; what Enter does is still up to the form.
+ * @attr {string} keyboard - Which virtual keyboard a phone or tablet raises, forwarded as `inputmode`: 'none' | 'text' | 'decimal' | 'numeric' | 'tel' | 'search' | 'email' | 'url'. It changes nothing about what the field accepts, and nothing at all on a desktop. Reach for it where the value is digits but not a quantity you would step (a house number, a postcode, a rack unit): 'numeric'. The keyboard for 'tel', 'email' and 'url' already follows from `type`.
+ * @attr {string} enter-key - What the Enter key of the virtual keyboard says, forwarded as `enterkeyhint`: 'enter' | 'done' | 'go' | 'next' | 'previous' | 'search' | 'send'. It only labels the key; what Enter does is still up to the form, and on a desktop it changes nothing.
  * @attr {string} name - Input name for form submission
  * @attr {boolean} readonly - Readonly state
  * @attr {boolean} required - Required state

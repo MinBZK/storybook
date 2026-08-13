@@ -76,7 +76,7 @@ export default {
 			control: 'select',
 			options: ['(geen)', 'none', 'text', 'decimal', 'numeric', 'tel', 'search', 'email', 'url'],
 			mapping: { '(geen)': undefined },
-			description: 'Welk toetsenbord een telefoon opent (inputmode). Verandert niets aan wat het veld accepteert',
+			description: 'Welk virtueel toetsenbord opent op een telefoon of tablet (inputmode). Verandert niets aan wat het veld accepteert',
 			table: { defaultValue: { summary: '(geen)' } },
 		},
 		enterKey: {
@@ -84,7 +84,7 @@ export default {
 			control: 'select',
 			options: ['(geen)', 'enter', 'done', 'go', 'next', 'previous', 'search', 'send'],
 			mapping: { '(geen)': undefined },
-			description: 'Wat de Enter-toets op dat toetsenbord zegt (enterkeyhint)',
+			description: 'Wat de Enter-toets op het virtuele toetsenbord zegt (enterkeyhint)',
 			table: { defaultValue: { summary: '(geen)' } },
 		},
 		autocomplete: {
