@@ -60,6 +60,8 @@ export default {
 		name: '',
 		value: '',
 		required: false,
+		keyboard: undefined,
+		enterKey: undefined,
 		autocomplete: '',
 		noSpellcheck: false,
 		accessibleLabel: '',
@@ -131,6 +133,21 @@ export default {
 			description: 'Required state',
 			table: { defaultValue: { summary: false } },
 		},
+		keyboard: {
+			control: 'select',
+			options: ['(geen)', 'none', 'text', 'decimal', 'numeric', 'tel', 'search', 'email', 'url'],
+			mapping: { '(geen)': undefined },
+			description: 'Welk toetsenbord een telefoon opent (inputmode). Verandert niets aan wat het veld accepteert',
+			table: { defaultValue: { summary: '(geen)' } },
+		},
+		enterKey: {
+			name: 'enter-key',
+			control: 'select',
+			options: ['(geen)', 'enter', 'done', 'go', 'next', 'previous', 'search', 'send'],
+			mapping: { '(geen)': undefined },
+			description: 'Wat de Enter-toets op dat toetsenbord zegt (enterkeyhint)',
+			table: { defaultValue: { summary: '(geen)' } },
+		},
 		autocomplete: {
 			control: 'text',
 			description: 'Browser autofill hint (HTML autocomplete attribute, bv. "off")',
@@ -150,7 +167,7 @@ export default {
 	},
 };
 
-const Template = ({ size, resize, rows, width, placeholder, valid, invalid, readonly, disabled, name, value, required, autocomplete, accessibleLabel, noSpellcheck }: Record<string, any>) => html`
+const Template = ({ size, resize, rows, width, placeholder, valid, invalid, readonly, disabled, name, value, required, keyboard, enterKey, autocomplete, accessibleLabel, noSpellcheck }: Record<string, any>) => html`
 	<nldd-multi-line-text-field
 		size=${size}
 		resize=${resize}
@@ -164,6 +181,8 @@ const Template = ({ size, resize, rows, width, placeholder, valid, invalid, read
 		name=${name}
 		.value=${value}
 		?required=${required}
+		keyboard=${keyboard || nothing}
+		enter-key=${enterKey || nothing}
 		autocomplete=${autocomplete}
 		accessible-label=${accessibleLabel || nothing}
 		?no-spellcheck=${noSpellcheck}

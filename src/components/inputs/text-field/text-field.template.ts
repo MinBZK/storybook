@@ -32,6 +32,8 @@ export function textFieldTemplate(component: NLDDTextField): TemplateResult {
 			<input class="text-field__input"
 				id=${component.inputId || nothing}
 				type=${component.type}
+				inputmode=${component.keyboard || nothing}
+				enterkeyhint=${component.enterKey || nothing}
 				.value=${component.value}
 				placeholder=${component.placeholder || nothing}
 				?disabled=${component.disabled}

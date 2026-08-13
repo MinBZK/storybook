@@ -177,4 +177,33 @@ describe('nldd-text-field', () => {
 		const input = el.shadowRoot!.querySelector('input')!;
 		expect(input.getAttribute('spellcheck')).toBe('false');
 	});
+
+	// The keyboard is a hint to the phone, so the only thing to test is that the
+	// hint arrives: the attributes are absent until asked for, and the field
+	// keeps taking anything that is typed either way.
+	it('sets no inputmode or enterkeyhint of its own', async () => {
+		el = await fixture('<nldd-text-field></nldd-text-field>');
+		await waitForUpdate(el);
+		const input = el.shadowRoot!.querySelector('input')!;
+		expect(input.hasAttribute('inputmode')).toBe(false);
+		expect(input.hasAttribute('enterkeyhint')).toBe(false);
+	});
+
+	it('forwards keyboard to inputmode and enter-key to enterkeyhint', async () => {
+		el = await fixture('<nldd-text-field keyboard="numeric" enter-key="done"></nldd-text-field>');
+		await waitForUpdate(el);
+		const input = el.shadowRoot!.querySelector('input')!;
+		expect(input.getAttribute('inputmode')).toBe('numeric');
+		expect(input.getAttribute('enterkeyhint')).toBe('done');
+	});
+
+	it('keeps accepting text that the keyboard hint does not cover', async () => {
+		el = await fixture('<nldd-text-field keyboard="numeric"></nldd-text-field>');
+		await waitForUpdate(el);
+		const input = el.shadowRoot!.querySelector('input')!;
+		input.value = 'U42';
+		input.dispatchEvent(new Event('input', { bubbles: true }));
+		await waitForUpdate(el);
+		expect((el as unknown as { value: string }).value).toBe('U42');
+	});
 });
