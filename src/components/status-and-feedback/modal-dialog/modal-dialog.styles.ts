@@ -29,6 +29,13 @@ export const modalDialogStyles = css`
 	/* # Block */
 
 	.modal-dialog {
+		/* Where the app's layout context ends, as in nldd-sheet: the dialog scrolls
+		   itself and starts at its own top edge, so anything inside it stops
+		   following the app's scroll mode and its layer offsets. */
+		--context-scroll-mode: nested;
+		--context-layer-top: 0px;
+		--context-layer-bottom: 0px;
+
 		box-sizing: border-box;
 		outline: none;
 		border: none;

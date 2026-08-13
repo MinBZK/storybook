@@ -62,6 +62,14 @@ export const sheetStyles = css`
 	/* # Block */
 
 	.sheet {
+		/* Where the app's layout context ends. The sheet scrolls itself and starts
+		   at its own top edge, so a page inside it keeps its own scroller and its
+		   sticky header sticks to that edge instead of to a bar that stands
+		   outside. See findScrollModeProvider for the other half. */
+		--context-scroll-mode: nested;
+		--context-layer-top: 0px;
+		--context-layer-bottom: 0px;
+
 		display: flex;
 		position: fixed;
 		margin: 0;
