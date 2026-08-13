@@ -21,7 +21,10 @@ export default {
 		status: { type: 'wip' },
 	},
 	args: {
-		values: [],
+		// Twee tokens om mee te beginnen: de controls hieronder zetten values bij
+		// elke wijziging opnieuw, dus een veld dat leeg begint blijft leeg zodra je
+		// aan een knop draait, ook aan readonly.
+		values: ['nl', 'be'],
 		placeholder: 'Land toevoegen…',
 		type: 'text',
 		autocomplete: '',
@@ -37,7 +40,7 @@ export default {
 	argTypes: {
 		values: {
 			control: 'object',
-			description: 'Geselecteerde token-waarden (array; zet via de `values`-property).',
+			description: 'Geselecteerde token-waarden (array; zet via de `values`-property). Tokens die je in het veld zelf toevoegt komen hier niet in terug, dus een volgende controlwijziging zet deze lijst weer neer.',
 			table: { defaultValue: { summary: '[]' } },
 		},
 		placeholder: {
@@ -127,6 +130,8 @@ const render = (args: Record<string, unknown>) => html`
 		?disabled=${args.disabled}
 	>${options}</nldd-token-field>
 `;
+
+export const Default = { render };
 
 export const Empty = { args: { placeholder: 'Land toevoegen…', values: [] }, render };
 export const WithTokens = { args: { values: ['nl', 'be', 'de'] }, render };
