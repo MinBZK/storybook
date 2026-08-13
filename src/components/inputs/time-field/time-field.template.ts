@@ -46,6 +46,11 @@ function renderValidationIcon(component: NLDDTimeField): TemplateResult | typeof
  */
 function renderPicker(component: NLDDTimeField): TemplateResult | typeof nothing {
 	if (component.noPicker) return nothing;
+	// Read-only takes the picker away rather than dimming it: a button that can
+	// never do anything is a promise the field cannot keep, and the value beside
+	// it already says what kind of field this is. Disabled keeps its button,
+	// because that one comes back.
+	if (component.readonly) return nothing;
 	const buttonSize = component.size === 'sm' ? 'xs' : 'sm';
 	return html`
 		<div class="time-field__picker-button">
@@ -55,7 +60,7 @@ function renderPicker(component: NLDDTimeField): TemplateResult | typeof nothing
 				icon="clock"
 				text=${component._t('components.time-field.to-pick-time-action')}
 				tooltip-timing="never"
-				?disabled=${component.disabled || component.readonly}
+				?disabled=${component.disabled}
 				@click=${component._handlePickerClick}
 			></nldd-icon-button>
 			<nldd-popover
