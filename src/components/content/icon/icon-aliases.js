@@ -152,6 +152,9 @@ export const aliases = {
 	'deploy': 'cloud-arrow-up',
 	'upload-to-cloud': 'cloud-arrow-up',
 
+	// cpu
+	'processor': 'cpu',
+
 	// cylinder-split
 	'database': 'cylinder-split',
 
@@ -308,6 +311,9 @@ export const aliases = {
 	// lightbulb
 	'idea': 'lightbulb',
 
+	// lightning
+	'energy': 'lightning',
+
 	// link
 	'url': 'link',
 	'hyperlink': 'link',
@@ -381,6 +387,10 @@ export const aliases = {
 	// megaphone
 	'announcement': 'megaphone',
 
+	// memory-chip
+	'memory': 'memory-chip',
+	'ram': 'memory-chip',
+
 	// message-rectangle-text
 	'annotation': 'message-rectangle-text',
 	'comment': 'message-rectangle-text',
@@ -413,6 +423,10 @@ export const aliases = {
 
 	// parking-sign-square
 	'parking': 'parking-sign-square',
+
+	// pci-card
+	'network-interface-card': 'pci-card',
+	'nic': 'pci-card',
 
 	// pencil
 	'write': 'pencil',
@@ -473,6 +487,10 @@ export const aliases = {
 	'help': 'question-mark-circle',
 	'question': 'question-mark-circle',
 
+	// rack-servers
+	'server': 'rack-servers',
+	'servers': 'rack-servers',
+
 	// shield-check-mark
 	'security': 'shield-check-mark',
 	'verified': 'shield-check-mark',
@@ -486,6 +504,10 @@ export const aliases = {
 
 	// slider-horizontal-3
 	'local-settings': 'slider-horizontal-3',
+
+	// snowflake
+	'cooling': 'snowflake',
+	'airco': 'snowflake',
 
 	// sparkles
 	'ai': 'sparkles',
@@ -540,6 +562,9 @@ export const aliases = {
 	// square-plus-on-square
 	'duplicate': 'square-plus-on-square',
 
+	// ssd-hard-drive
+	'hard-drive': 'ssd-hard-drive',
+
 	// rectangle-stack
 	'stack': 'rectangle-stack',
 	'library': 'rectangle-stack',
@@ -568,12 +593,18 @@ export const aliases = {
 	// timer
 	'countdown': 'timer',
 
+	// transceiver-module
+	'sfp': 'transceiver-module',
+
 	// trash
 	'delete': 'trash',
 
 	// point-bottom-left-to-point-top-right-s-curve-path
 	'path': 'point-bottom-left-to-point-top-right-s-curve-path',
 	'traject': 'point-bottom-left-to-point-top-right-s-curve-path',
+
+	// power-plug
+	'power': 'power-plug',
 
 	// pipeline-corner-2
 	'pipeline': 'pipeline-corner-2',
