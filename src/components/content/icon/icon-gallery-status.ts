@@ -49,6 +49,7 @@ export const NEW_ICONS = new Set([
 	'lightning',
 	'memory-chip',
 	'minus-circle',
+	'network-patch-mapping',
 	'network-switch',
 	'paintbrush',
 	'pci-card',
