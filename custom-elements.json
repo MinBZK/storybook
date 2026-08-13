@@ -7890,6 +7890,16 @@
             },
             {
               "kind": "field",
+              "name": "readonly",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "attribute": "readonly",
+              "reflects": true
+            },
+            {
+              "kind": "field",
               "name": "allowCustom",
               "type": {
                 "text": "boolean"
@@ -8172,6 +8182,15 @@
               "default": "false",
               "fieldName": "disabled",
               "description": "Disabled state"
+            },
+            {
+              "name": "readonly",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "fieldName": "readonly",
+              "description": "Read-only state: the value stays readable, selectable and in the tab order, but the menu does not open and there is nothing to clear. Use this where the value belongs to the record rather than to the form, e.g. the product an asset is an instance of."
             },
             {
               "name": "allow-custom",
@@ -10206,7 +10225,7 @@
               "type": {
                 "text": "Keyboard | undefined"
               },
-              "description": "Which on-screen keyboard a phone or tablet raises, forwarded as `inputmode`: 'none' | 'text' | 'decimal' | 'numeric' | 'tel' | 'search' | 'email' | 'url'. It changes nothing about what the field accepts, and nothing at all on a desktop.",
+              "description": "Which virtual keyboard a phone or tablet raises, forwarded as `inputmode`: 'none' | 'text' | 'decimal' | 'numeric' | 'tel' | 'search' | 'email' | 'url'. It changes nothing about what the field accepts, and nothing at all on a desktop.",
               "fieldName": "keyboard"
             },
             {
@@ -10214,7 +10233,7 @@
               "type": {
                 "text": "EnterKey | undefined"
               },
-              "description": "What the Enter key on that keyboard says, forwarded as `enterkeyhint`: 'enter' | 'done' | 'go' | 'next' | 'previous' | 'search' | 'send'. In a field where Enter starts a new line, leave it alone.",
+              "description": "What the Enter key of the virtual keyboard says, forwarded as `enterkeyhint`: 'enter' | 'done' | 'go' | 'next' | 'previous' | 'search' | 'send'. In a field where Enter starts a new line, leave it alone.",
               "fieldName": "enterKey"
             },
             {
@@ -16517,7 +16536,7 @@
               "type": {
                 "text": "Keyboard | undefined"
               },
-              "description": "Which on-screen keyboard a phone or tablet raises, forwarded as `inputmode`: 'none' | 'text' | 'decimal' | 'numeric' | 'tel' | 'search' | 'email' | 'url'. It changes nothing about what the field accepts, and nothing at all on a desktop. Reach for it where the value is digits but not a quantity you would step (a house number, a postcode, a rack unit): 'numeric'. The keyboard for 'tel', 'email' and 'url' already follows from `type`.",
+              "description": "Which virtual keyboard a phone or tablet raises, forwarded as `inputmode`: 'none' | 'text' | 'decimal' | 'numeric' | 'tel' | 'search' | 'email' | 'url'. It changes nothing about what the field accepts, and nothing at all on a desktop. Reach for it where the value is digits but not a quantity you would step (a house number, a postcode, a rack unit): 'numeric'. The keyboard for 'tel', 'email' and 'url' already follows from `type`.",
               "fieldName": "keyboard"
             },
             {
@@ -16525,7 +16544,7 @@
               "type": {
                 "text": "EnterKey | undefined"
               },
-              "description": "What the Enter key on that keyboard says, forwarded as `enterkeyhint`: 'enter' | 'done' | 'go' | 'next' | 'previous' | 'search' | 'send'. It only labels the key; what Enter does is still up to the form.",
+              "description": "What the Enter key of the virtual keyboard says, forwarded as `enterkeyhint`: 'enter' | 'done' | 'go' | 'next' | 'previous' | 'search' | 'send'. It only labels the key; what Enter does is still up to the form, and on a desktop it changes nothing.",
               "fieldName": "enterKey"
             },
             {
