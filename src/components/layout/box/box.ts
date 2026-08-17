@@ -6,7 +6,7 @@
  * helping users understand their relationship at a glance.
  *
  * @element nldd-box
- * @attr {'tinted'|'base'|'critical'} variant - Which surface this box draws.
+ * @attr {'tinted'|'base'|'critical'} background - Which surface this box draws, named as it is on nldd-app-view, nldd-page, nldd-split-view-pane and nldd-card. It starts tinted where a card starts base: a box is there to stand out from the page, a card to sit on it.
  *   - `tinted` (default): a box on a plain page background.
  *   - `base`: a box on an already-tinted parent (the border ring gets +2
  *   palette steps so it still reads against a card-on-card).
@@ -28,14 +28,14 @@ import { reflectNonDefault } from '../../../utilities/reflect-non-default.js';
 import { boxStyles } from './box.styles.js';
 import { boxTemplate } from './box.template.js';
 
-export type BoxVariant = 'tinted' | 'base' | 'critical';
+export type BoxBackground = 'tinted' | 'base' | 'critical';
 
 @customElement('nldd-box')
 export class NLDDBox extends LitElement {
 	static override styles = boxStyles;
 
-	@property({ reflect: true, converter: reflectNonDefault<BoxVariant>('tinted') })
-	variant: BoxVariant = 'tinted';
+	@property({ reflect: true, converter: reflectNonDefault<BoxBackground>('tinted') })
+	background: BoxBackground = 'tinted';
 
 	override render() {
 		return boxTemplate(this);
