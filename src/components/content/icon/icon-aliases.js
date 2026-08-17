@@ -499,8 +499,10 @@ export const aliases = {
 	'help': 'question-mark-circle',
 	'question': 'question-mark-circle',
 
+	// rack-server
+	'server': 'rack-server',
+
 	// rack-servers
-	'server': 'rack-servers',
 	'servers': 'rack-servers',
 
 	// shield-arrow-right-arrow-left

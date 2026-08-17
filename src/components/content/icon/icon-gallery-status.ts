@@ -61,6 +61,7 @@ export const NEW_ICONS = new Set([
 	'printer',
 	'psu',
 	'puzzle-piece-badge-plus',
+	'rack-server',
 	'rack-servers',
 	'seal-star',
 	'shield-arrow-right-arrow-left',
