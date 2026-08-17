@@ -27,7 +27,7 @@ const RIJKSLEUREN = [
 	'donkerbruin', 'bruin',
 	'donkergroen', 'groen', 'mosgroen', 'mintgroen',
 ];
-const COLORS = [...SEMANTIC_COLORS, ...RIJKSLEUREN];
+const COLORS = [...SEMANTIC_COLORS, ...RIJKSLEUREN, 'inherit'];
 
 export default {
 	title: 'Components/Status & Feedback/Badge',
@@ -45,6 +45,7 @@ export default {
 	args: {
 		size: 'md',
 		color: 'critical',
+		customColor: '',
 		pulse: false,
 		text: '',
 		number: '3',
@@ -65,10 +66,16 @@ export default {
 		color: {
 			control: 'select',
 			options: COLORS,
-			description: 'Kleurvariant',
+			description: 'Kleurvariant. `inherit` vult met de contentkleur eromheen.',
 			table: {
 				defaultValue: { summary: 'critical' },
 			},
+		},
+		customColor: {
+			name: 'custom-color',
+			control: 'text',
+			description: 'Een eigen kleur, als CSS-waarde. Wint van `color`.',
+			table: { defaultValue: { summary: '(geen)' } },
 		},
 		pulse: {
 			control: 'boolean',
@@ -119,12 +126,13 @@ export default {
 	},
 };
 
-const Template = ({ size, color, pulse, text, number, max, icon, accessibleLabel, decorative }: Record<string, any>) => {
+const Template = ({ size, color, customColor, pulse, text, number, max, icon, accessibleLabel, decorative }: Record<string, any>) => {
 	const parsed = number === '' || number === null || number === undefined ? undefined : Number(number);
 	return html`
 		<nldd-badge
 			size=${size}
 			color=${color}
+			custom-color=${customColor || nothing}
 			?pulse=${pulse}
 			text=${text || nothing}
 			number=${Number.isFinite(parsed) ? parsed! : nothing}
@@ -158,6 +166,38 @@ export const Colors = {
 	render: () => html`
 		<div style="display: flex; gap: 12px; align-items: center; flex-wrap: wrap;">
 			${COLORS.map(c => html`<nldd-badge color=${c} number="3"></nldd-badge>`)}
+		</div>
+	`,
+	parameters: {
+		controls: { disable: true },
+	},
+};
+
+/**
+ * `color="inherit"` vult met de kleur van de content eromheen: het
+ * `--context-content-color`-kanaal dat een list-item, tabelrij of menu op z'n
+ * content zet, en anders `currentColor`. Zo reist een badge mee met de regel
+ * waar hij in staat, ook als die oplicht.
+ *
+ * `custom-color` is voor een kleur die het systeem niet kan kennen: de mantel
+ * van een kabel, een kleur die iemand zelf koos. Elke CSS-kleurwaarde mag, en
+ * hij wint van `color`. De tekst erop wordt wit of zwart, wat het beste
+ * contrasteert, dus een lichte kleur krijgt zwarte cijfers en een donkere
+ * witte.
+ */
+export const OwnColor = {
+	name: 'Inherit en custom-color',
+	render: () => html`
+		<div style="display: flex; gap: 24px; align-items: center; flex-wrap: wrap;">
+			<span style="color: #a90061; display: inline-flex; gap: 8px; align-items: center;">
+				<nldd-badge color="inherit" number="3"></nldd-badge>
+				Erft de kleur van deze zin
+			</span>
+			<nldd-badge custom-color="#f8fafc" number="3"></nldd-badge>
+			<nldd-badge custom-color="#eab308" number="3"></nldd-badge>
+			<nldd-badge custom-color="#3b82f6" number="3"></nldd-badge>
+			<nldd-badge custom-color="#374151" number="3"></nldd-badge>
+			<nldd-badge custom-color="oklch(0.6 0.2 20)" text="Eigen"></nldd-badge>
 		</div>
 	`,
 	parameters: {

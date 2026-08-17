@@ -148,4 +148,20 @@ describe('nldd-badge', () => {
 		await waitForUpdate(el);
 		expect(el.getAttribute('max')).toBe('9');
 	});
+
+	it('geeft een eigen kleur door aan de styles', async () => {
+		el = await fixture('<nldd-badge custom-color="#3b82f6" number="3"></nldd-badge>');
+		await waitForUpdate(el);
+		expect(el.style.getPropertyValue('--_custom-color')).toBe('#3b82f6');
+		expect(getComputedStyle(el).color).toBe('rgb(59, 130, 246)');
+	});
+
+	it('haalt de eigen kleur weer weg zodra hij leeg is', async () => {
+		el = await fixture('<nldd-badge custom-color="#3b82f6"></nldd-badge>');
+		await waitForUpdate(el);
+		(el as HTMLElement & { customColor: string }).customColor = '';
+		await waitForUpdate(el);
+		expect(el.hasAttribute('custom-color')).toBe(false);
+		expect(el.style.getPropertyValue('--_custom-color')).toBe('');
+	});
 });

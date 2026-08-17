@@ -10,6 +10,7 @@ export const badgeStyles = css`
 	/* # Host */
 
 	:host {
+		--_custom-color: transparent;
 		--_background-color: var(--semantics-categories-critical-filled-background-color);
 		--_border-color: var(--semantics-categories-critical-filled-highlight-border-color);
 		--_border-width: var(--components-badge-border-width);
@@ -40,6 +41,16 @@ export const badgeStyles = css`
 	}
 
 	/* ## Color */
+
+	/* Fills in the content color around it: the channel a list item, table row
+	   or menu sets on its content, falling back to currentColor elsewhere. So a
+	   badge in a row that lights up travels with that row. The text on top is
+	   black or white, whichever contrasts with the fill. */
+	:host([color="inherit"]) {
+		--_background-color: var(--context-content-color, currentColor);
+		--_border-color: transparent;
+		--_content-color: var(--semantics-content-contrast-color);
+	}
 
 	:host([color="accent"]) {
 		--_background-color: var(--semantics-categories-accent-filled-background-color);
@@ -176,6 +187,18 @@ export const badgeStyles = css`
 		--_content-color: var(--semantics-categories-mintgroen-filled-content-color);
 	}
 
+	/* A color of its own, from the consumer. Setting color on the host rather
+	   than the fill directly is what makes the contrast token work: it reads
+	   currentColor, so the text lands on black or white without a second
+	   formula to keep in step. After every [color] rule, so it wins over one. */
+	:host([custom-color]) {
+		color: var(--_custom-color);
+
+		--_background-color: var(--_custom-color);
+		--_border-color: transparent;
+		--_content-color: var(--semantics-content-contrast-color);
+	}
+
 	:host([hidden]) {
 		display: none;
 	}
@@ -198,7 +221,6 @@ export const badgeStyles = css`
 		gap: var(--_gap);
 		align-items: center;
 		justify-content: center;
-		color: var(--_content-color);
 		font: var(--_font);
 		white-space: nowrap;
 	}
@@ -207,6 +229,10 @@ export const badgeStyles = css`
 		.badge {
 			border: 1px solid CanvasText;
 			background-color: Canvas;
+		}
+
+		.badge__icon,
+		.badge__text {
 			color: CanvasText;
 		}
 	}
@@ -280,7 +306,12 @@ export const badgeStyles = css`
 
 	/* # Elements */
 
+	/* The content carries the content color, not .badge itself: the fill is a
+	   custom property that resolves where it is used, and a fill of currentColor
+	   on an element that also sets color would take that color instead of the
+	   one around it. Mirrors nldd-avatar. */
 	.badge__icon {
+		color: var(--_content-color);
 		display: inline-flex;
 		width: var(--_icon-size);
 		height: var(--_icon-size);
@@ -299,6 +330,7 @@ export const badgeStyles = css`
 	}
 
 	.badge__text {
+		color: var(--_content-color);
 		display: inline-block;
 	}
 `;

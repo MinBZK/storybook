@@ -30861,6 +30861,17 @@
             },
             {
               "kind": "field",
+              "name": "customColor",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "A color of its own, as any CSS color value. Handed to the styles as a\ncustom property rather than read from the attribute in CSS: `attr()` with\na type is not available everywhere yet, and this keeps one code path.",
+              "attribute": "custom-color",
+              "reflects": true
+            },
+            {
+              "kind": "field",
               "name": "pulse",
               "type": {
                 "text": "boolean"
@@ -30958,7 +30969,16 @@
               },
               "default": "'critical'",
               "fieldName": "color",
-              "description": "Semantic ('critical' | 'accent' | 'neutral' | 'warning' | 'success') or a Rijkshuisstijl color ('lintblauw' | 'hemelblauw' | 'oranje' | …). Default: 'critical'"
+              "description": "Semantic ('critical' | 'accent' | 'neutral' | 'warning' | 'success'), a Rijkshuisstijl color ('lintblauw' | 'hemelblauw' | 'oranje' | …), or 'inherit' to fill in the content color around it: the `--context-content-color` channel a list item, table row or menu sets, falling back to `currentColor`. Default: 'critical'"
+            },
+            {
+              "name": "custom-color",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "A color of its own, as any CSS color value ('#a90061', 'oklch(0.6 0.2 20)', 'var(--brand-cable-blue)'). For a color the design system cannot know: the jacket of a cable, a color someone picked. It wins over `color`. Whatever it paints, the text and icon on top become white or black, whichever contrasts.",
+              "fieldName": "customColor"
             },
             {
               "name": "pulse",
