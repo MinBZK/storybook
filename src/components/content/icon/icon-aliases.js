@@ -54,6 +54,9 @@ export const aliases = {
 	// books-vertical
 	'books': 'books-vertical',
 
+	// boxes-3
+	'inventory': 'boxes-3',
+
 	// brackets-ellipsis
 	'embed': 'brackets-ellipsis',
 	'namespace': 'brackets-ellipsis',
@@ -127,6 +130,9 @@ export const aliases = {
 
 	// circle-light
 	'to-do-light': 'circle-light',
+
+	// clipboard-bullet-list
+	'inventory-alt': 'clipboard-bullet-list',
 
 	// clipboard-pencil
 	'form': 'clipboard-pencil',
@@ -308,6 +314,9 @@ export const aliases = {
 	'info': 'info-circle',
 	'information': 'info-circle',
 
+	// kanban-columns
+	'kanban': 'kanban-columns',
+
 	// lightbulb
 	'idea': 'lightbulb',
 
@@ -475,6 +484,9 @@ export const aliases = {
 	// plus-small
 	'add-small': 'plus-small',
 
+	// printer
+	'print': 'printer',
+
 	// puzzle-piece
 	'extension': 'puzzle-piece',
 	'module': 'puzzle-piece',
@@ -490,6 +502,9 @@ export const aliases = {
 	// rack-servers
 	'server': 'rack-servers',
 	'servers': 'rack-servers',
+
+	// shield-arrow-right-arrow-left
+	'firewall': 'shield-arrow-right-arrow-left',
 
 	// shield-check-mark
 	'security': 'shield-check-mark',

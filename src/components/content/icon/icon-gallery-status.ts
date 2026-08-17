@@ -7,11 +7,12 @@
 // the oldest batch that should still read as new. Everything still uncommitted
 // counts as new too, being by definition the batch you are adding right now.
 //
-// A date rather than a rolling window, because what matters is how many batches
-// back you are marking, and batches do not arrive on a schedule. Three or four
-// of them is about right. It was "the last three weeks", which at one point
-// reached over five batches at once, and a gallery where a quarter of the tiles
-// say "new" says nothing at all.
+// Three to four weeks back is the measure, not a number of batches. How much
+// arrives in those weeks varies, and a busy fortnight that fills the gallery
+// with "new" is the honest answer: that much of it is new. Shortening the
+// window because a batch was large takes the label away from icons that are
+// days old, which is what the label is for. A date rather than a rolling window
+// so the sets only move when someone recomputes them.
 //
 //   git log --since=2026-08-01 --reverse --find-renames --name-status --format= \
 //     -- src/components/content/icon/icons
@@ -26,12 +27,14 @@
 // caret-down), which quietly moves new icons into the updated set.
 
 export const NEW_ICONS = new Set([
+	'boxes-3',
 	'brackets-ellipsis-badge-plus',
 	'check-mark-circle-light',
 	'circle',
 	'circle-circle',
 	'circle-circle-light',
 	'circle-light',
+	'clipboard-bullet-list',
 	'clock-light',
 	'cpu',
 	'display',
@@ -45,6 +48,7 @@ export const NEW_ICONS = new Set([
 	'git-pull-request-closed',
 	'git-pull-request-draft',
 	'gpu',
+	'kanban-columns',
 	'kvm-switch',
 	'lightning',
 	'memory-chip',
@@ -54,10 +58,12 @@ export const NEW_ICONS = new Set([
 	'paintbrush',
 	'pci-card',
 	'power-plug',
+	'printer',
 	'psu',
 	'puzzle-piece-badge-plus',
 	'rack-servers',
 	'seal-star',
+	'shield-arrow-right-arrow-left',
 	'ship-wheel-badge-plus',
 	'slash-circle-light',
 	'snowflake',
@@ -80,6 +86,9 @@ export const UPDATED_ICONS = new Set([
 	'media-stop-filled',
 	'point-bottom-left-to-point-top-right-s-curve-path',
 	'seal-check-mark',
+	'shield',
+	'shield-check-mark',
+	'shield-lock',
 	'trash',
 	'viewfinder',
 ]);
