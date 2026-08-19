@@ -50,13 +50,13 @@ export const listItemStyles = css`
 		padding-inline: 0;
 	}
 
-	/* A segmented action at a row edge already owns the padding for that side,
+	/* A segment at a row edge already owns the padding for that side,
 	   so the row drops its own there. Mid-row it claims nothing. */
-	:host(.is-interactive.has-leading-action) .list-item {
+	:host(.is-interactive.has-leading-segment) .list-item {
 		padding-inline-start: 0;
 	}
 
-	:host(.is-interactive.has-trailing-action) .list-item {
+	:host(.is-interactive.has-trailing-segment) .list-item {
 		padding-inline-end: 0;
 	}
 
@@ -141,6 +141,15 @@ export const listItemStyles = css`
 		cursor: var(--semantics-controls-link-cursor);
 	}
 
+	/* A disabled row dims and stops answering the pointer. The link keeps its
+	   href (there is no disabled attribute for an anchor), so the row blocks the
+	   click itself and aria-disabled carries the state. */
+	button.list-item__action:disabled,
+	:host([disabled]) a.list-item__action {
+		cursor: not-allowed;
+		opacity: var(--primitives-opacity-disabled);
+	}
+
 	.list-item__opens-in-new-tab-hint {
 		position: absolute;
 		margin: -1px;
@@ -176,11 +185,29 @@ export const listItemStyles = css`
 		inset-inline: 0;
 	}
 
-	:host([selected]) {
+	/* data-current is set by the row itself when one of its own segments carries
+	   current. A segmented row has no control of its own, so the consumer marks
+	   the segment that holds the link (that is where aria-current belongs) and the
+	   row picks up the paint from it.
+
+	   A ticked row paints the same: it is a row you picked, which is what selected
+	   draws. A ticked checkbox SEGMENT already did this (see is-action-checked
+	   below), and a row that is the checkbox itself had nothing, so the same list
+	   looked different depending on where the tick sat. */
+	:host(:is([selected], [checkbox][checked])),
+	:host(:is([current], [data-current])) {
 		--_background-color: var(--components-list-item-is-selected-background-color);
 		--context-content-color: var(--components-list-item-is-selected-content-color);
 		--context-content-secondary-color: var(--components-list-item-is-selected-content-color);
 	}
+
+	/* The row you are on, with focus in it, is the strongest state a row has.
+	   focus-within on the host rather than a rule on the row-wide control:
+	   focus inside a nested nldd-list-item-segment matches it too, and a
+	   segmented row has no control of its own for the older rules to key off.
+	   Every focus counts, pointer as well as keyboard: clicking the row you are
+	   already on leaves it lit until focus moves away, which is what tells you
+	   where the keyboard will pick up. */
 
 	/* A checked checkbox action selects the whole row, so the fill runs across
 	   the disclosure action too instead of stopping at its boundary. */
@@ -190,37 +217,117 @@ export const listItemStyles = css`
 		--context-content-secondary-color: var(--components-list-item-is-selected-content-color);
 	}
 
-	/* hover only on hover-capable devices: avoids touch-scroll flashing the
-	   hover state on the row under the finger */
+	/* The ladder, the same shape the buttons use: every state has a rest step,
+	   a hover step one rung up and a press step one rung above that. Hover only
+	   on hover-capable devices, so a touch that turns into a scroll does not
+	   flash the row under the finger.
+
+	   The row hands its rung down to its segments through the two context
+	   variables at the end of each block: a segmented row has no control of its
+	   own, so the segment paints, and it must paint on the same scale as the
+	   row it sits in. */
 	@media (hover: hover) {
-		.list-item__action:hover {
+		:host(:not([disabled])) .list-item__action:hover {
 			--_background-color: var(--components-list-item-is-hovered-background-color);
 			--context-content-color: var(--components-list-item-is-hovered-content-color);
 			--context-content-secondary-color: var(--components-list-item-is-hovered-content-color);
 		}
 
-		:host([selected]) .list-item__action:hover {
-			--_background-color: var(--components-list-item-is-selected-background-color);
+		:host(:is([selected], [checkbox][checked]):not([disabled])) .list-item__action:hover,
+		:host(:is([current], [data-current]):not([disabled])) .list-item__action:hover {
+			--_background-color: var(--components-list-item-is-selected-is-hovered-background-color);
 			--context-content-color: var(--components-list-item-is-selected-content-color);
 			--context-content-secondary-color: var(--components-list-item-is-selected-content-color);
 		}
+	}
 
-		:host([selected]) .list-item__action:focus:hover {
-			--_background-color: var(--components-list-item-is-highlighted-background-color);
-			--context-content-color: var(--components-list-item-is-highlighted-content-color);
-			--context-content-secondary-color: var(--components-list-item-is-highlighted-content-color);
+	:host(:is([selected], [checkbox][checked])) {
+		--context-list-item-hovered-background-color: var(--components-list-item-is-selected-is-hovered-background-color);
+		--context-list-item-hovered-content-color: var(--components-list-item-is-selected-content-color);
+		--context-list-item-active-background-color: var(--components-list-item-is-selected-is-active-background-color);
+	}
+
+	/* Pressing the row you are on lands on the accent whether or not focus got
+	   there first. Safari does not focus a button on click, and a press that
+	   waits for focus would go grey there while the other browsers go accent.
+	   Hover still follows the focus: that is the state, not the gesture. */
+	:host(:is([current], [data-current])) {
+		--context-list-item-hovered-background-color: var(--components-list-item-is-selected-is-hovered-background-color);
+		--context-list-item-hovered-content-color: var(--components-list-item-is-selected-content-color);
+		--context-list-item-active-background-color: var(--components-list-item-is-highlighted-is-active-background-color);
+		--context-list-item-active-content-color: var(--components-list-item-is-highlighted-content-color);
+	}
+
+	/* The row you are on, with focus in it, is the strongest state a row has.
+	   focus-within on the host rather than a rule on the row-wide control: focus
+	   inside a nested nldd-list-item-segment matches it too, and a segmented row
+	   has no control of its own for the older rules to key off. Every focus
+	   counts, pointer as well as keyboard: clicking the row you are already on
+	   leaves it lit until focus moves away, which is what tells you where the
+	   keyboard will pick up.
+
+	   After the hover rules on purpose: a pointer that lands on the row is
+	   hovering it as well, and the state it just gave focus to has to win. */
+	:host(:is([current], [data-current]):focus-within) .list-item,
+	:host(:is([current], [data-current]):focus-within) .list-item__action {
+		--context-content-color: var(--components-list-item-is-highlighted-content-color);
+		--context-content-secondary-color: var(--components-list-item-is-highlighted-content-color);
+	}
+
+	:host(:is([current], [data-current]):focus-within) {
+		--context-list-item-hovered-background-color: var(--components-list-item-is-highlighted-is-hovered-background-color);
+		--context-list-item-hovered-content-color: var(--components-list-item-is-highlighted-content-color);
+		--context-list-item-active-background-color: var(--components-list-item-is-highlighted-is-active-background-color);
+	}
+
+	:host(:is([current], [data-current]):focus-within) .list-item::before,
+	:host(:is([current], [data-current]):focus-within) .list-item__action::before {
+		background-color: var(--components-list-item-is-highlighted-background-color);
+	}
+
+	/* Hover and press on top of the accent go further into the accent rather
+	   than back to the neutral fills: grey over blue reads as a hole in the row,
+	   not as "the pointer is here". Only the row-wide control, never the row
+	   itself: on a segmented row the hovered segment deepens on its own, and a
+	   row that darkened as a whole would hide which segment you are on. */
+	@media (hover: hover) {
+		:host(:is([current], [data-current]):focus-within:not([disabled])) .list-item__action:hover::before {
+			background-color: var(--components-list-item-is-highlighted-is-hovered-background-color);
 		}
+	}
+
+	/* Two selectors, because pressing means hovering too and the hover rule
+	   above carries a pseudo-class more: the focused one has to match its
+	   weight to win, and the plain one catches Safari, where the mouse being
+	   down means the row is not focused at all. */
+	:host(:is([current], [data-current]):not([disabled])) .list-item__action.is-pressed::before,
+	:host(:is([current], [data-current]):focus-within:not([disabled])) .list-item__action.is-pressed::before {
+		background-color: var(--components-list-item-is-highlighted-is-active-background-color);
+	}
+
+	/* The content colour has to travel with the fill: the neutral press rule
+	   above sets it too, and black on a deep accent is unreadable. */
+	:host(:is([current], [data-current]):focus-within:not([disabled])) .list-item__action:hover {
+		--context-content-color: var(--components-list-item-is-highlighted-content-color);
+		--context-content-secondary-color: var(--components-list-item-is-highlighted-content-color);
 	}
 
 	/* JS-driven rather than :active, so a touch that turns into a scroll clears
 	   the press (pointercancel) instead of flashing it. */
-	.list-item__action.is-pressed {
-		--_background-color: var(--components-list-item-is-hovered-background-color);
-		--context-content-color: var(--components-list-item-is-hovered-content-color);
-		--context-content-secondary-color: var(--components-list-item-is-hovered-content-color);
+	:host(:not([disabled])) .list-item__action.is-pressed {
+		--_background-color: var(--components-list-item-is-active-background-color);
+		--context-content-color: var(--components-list-item-is-active-content-color);
+		--context-content-secondary-color: var(--components-list-item-is-active-content-color);
 	}
 
-	:host([selected]) .list-item__action {
+	:host(:is([selected], [checkbox][checked]):not([disabled])) .list-item__action.is-pressed,
+	:host(:is([current], [data-current]):not([disabled])) .list-item__action.is-pressed {
+		--_background-color: var(--components-list-item-is-selected-is-active-background-color);
+		--context-content-color: var(--components-list-item-is-selected-content-color);
+		--context-content-secondary-color: var(--components-list-item-is-selected-content-color);
+	}
+
+	:host(:is([selected], [checkbox][checked])) .list-item__action {
 		--_background-color: var(--components-list-item-is-selected-background-color);
 		--context-content-color: var(--components-list-item-is-selected-content-color);
 		--context-content-secondary-color: var(--components-list-item-is-selected-content-color);
@@ -229,10 +336,20 @@ export const listItemStyles = css`
 	/* The strongest fill: a selected row that is pressed or focused, and the
 	   listbox active descendant (.is-highlighted, set by the list because focus
 	   stays in the search input). */
-	:host([selected]) .list-item__action.is-pressed,
-	:host([selected]) .list-item__action:focus,
+	/* The row you are on lights up while it is pressed, and so does the
+	   listbox's active option. A picked row does neither: selected stays on
+	   the neutral scale, focus or press or neither, and only the row you are ON
+	   takes the accent (see the current rules above). */
+	/* Pressing the row you are on: the accent fill comes from the rule near the
+	   focus block, and the content colour has to come after the neutral press
+	   rules above or black lands on a deep accent. */
+	:host(:is([current], [data-current]):not([disabled])) .list-item__action.is-pressed {
+		--context-content-color: var(--components-list-item-is-highlighted-content-color);
+		--context-content-secondary-color: var(--components-list-item-is-highlighted-content-color);
+	}
+
 	.list-item.is-highlighted,
-	:host([selected]) .list-item.is-highlighted .list-item__action {
+	:host(:is([selected], [checkbox][checked])) .list-item.is-highlighted .list-item__action {
 		--_background-color: var(--components-list-item-is-highlighted-background-color);
 		--context-content-color: var(--components-list-item-is-highlighted-content-color);
 		--context-content-secondary-color: var(--components-list-item-is-highlighted-content-color);
@@ -300,10 +417,10 @@ export const listItemStyles = css`
 	/* Content-wide by default; the divider-start/divider-end cell markers
 	   override it through the measured --_divider-inset-* vars. */
 
-	/* A segmented action with focus paints its ring past its own box, and the
+	/* A segment with focus paints its ring past its own box, and the
 	   divider is rendered after the slot — so without this the line ran straight
 	   through the ring. Lifting the focused action puts the ring on top. */
-	::slotted(nldd-list-item-action:focus-within) {
+	::slotted(nldd-list-item-segment:focus-within) {
 		z-index: var(--_focus-z-index);
 	}
 

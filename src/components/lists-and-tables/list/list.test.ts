@@ -4,7 +4,9 @@ import './list.js';
 import '../list-item/list-item.js';
 import '../cells/text-cell/text-cell.js';
 import '../cells/icon-cell/icon-cell.js';
-import '../list-item-action/list-item-action.js';
+import '../list-item-segment/list-item-segment.js';
+import '../cells/cell/cell.js';
+import '../../actions/icon-button/icon-button.js';
 
 describe('nldd-list', () => {
 	let el: HTMLElement;
@@ -457,7 +459,7 @@ describe('nldd-list', () => {
 
 	it('tree: arrow navigation walks the rows of an open branch', async () => {
 		el = await fixture(`
-			<nldd-list type="tree" arrow-navigation>
+			<nldd-list type="tree">
 				<nldd-list-item button expanded>
 					A
 					<nldd-list-item slot="children" button>A1</nldd-list-item>
@@ -497,11 +499,11 @@ describe('nldd-list', () => {
 		el = await fixture(`
 			<nldd-list type="tree">
 				<nldd-list-item>
-					<nldd-list-item-action button disclosure><nldd-icon-cell icon="chevron-right"></nldd-icon-cell></nldd-list-item-action>
+					<nldd-list-item-segment button disclosure><nldd-icon-cell icon="chevron-right"></nldd-icon-cell></nldd-list-item-segment>
 					<nldd-text-cell text="A"></nldd-text-cell>
 				</nldd-list-item>
 				<nldd-list-item>
-					<nldd-list-item-action button disclosure><nldd-icon-cell icon="chevron-right"></nldd-icon-cell></nldd-list-item-action>
+					<nldd-list-item-segment button disclosure><nldd-icon-cell icon="chevron-right"></nldd-icon-cell></nldd-list-item-segment>
 					<nldd-text-cell text="B"></nldd-text-cell>
 				</nldd-list-item>
 			</nldd-list>
@@ -514,9 +516,9 @@ describe('nldd-list', () => {
 		// the host isn't tabbable — which made every row inside a branch
 		// unreachable with Shift+Tab.
 		expect(rows[1].hasAttribute('tabindex')).toBe(false);
-		// Within the current row Tab reaches the segmented action; elsewhere not.
-		const controls = rows.map(row => row.querySelector('nldd-list-item-action')!
-			.shadowRoot!.querySelector('.list-item-action')!);
+		// Within the current row Tab reaches the segment; elsewhere not.
+		const controls = rows.map(row => row.querySelector('nldd-list-item-segment')!
+			.shadowRoot!.querySelector('.list-item-segment')!);
 		expect(controls[0].getAttribute('tabindex')).toBe('0');
 		expect(controls[1].getAttribute('tabindex')).toBe('-1');
 	});
@@ -545,7 +547,7 @@ describe('nldd-list', () => {
 		el = await fixture(`
 			<nldd-list type="tree">
 				<nldd-list-item>
-					<nldd-list-item-action button disclosure><nldd-icon-cell icon="chevron-right"></nldd-icon-cell></nldd-list-item-action>
+					<nldd-list-item-segment button disclosure><nldd-icon-cell icon="chevron-right"></nldd-icon-cell></nldd-list-item-segment>
 					<nldd-text-cell text="A"></nldd-text-cell>
 					<nldd-list-item slot="children"><nldd-text-cell text="A1"></nldd-text-cell></nldd-list-item>
 				</nldd-list-item>
@@ -553,7 +555,7 @@ describe('nldd-list', () => {
 		`);
 		await waitForUpdate(el);
 		const branch = el.querySelector('nldd-list-item')!;
-		const chevron = branch.querySelector('nldd-list-item-action')!;
+		const chevron = branch.querySelector('nldd-list-item-segment')!;
 		let clicks = 0;
 		chevron.addEventListener('click', () => { clicks += 1; });
 		branch.focus();
@@ -574,11 +576,44 @@ describe('nldd-list', () => {
 		expect(clicks).toBe(2);
 	});
 
+	it('tree: Enter follows the row, Space folds it', async () => {
+		el = await fixture(`
+			<nldd-list type="tree">
+				<nldd-list-item>
+					<nldd-list-item-segment button disclosure><nldd-icon-cell icon="chevron-right"></nldd-icon-cell></nldd-list-item-segment>
+					<nldd-list-item-segment button width="full"><nldd-text-cell text="A"></nldd-text-cell></nldd-list-item-segment>
+					<nldd-list-item slot="children"><nldd-text-cell text="A1"></nldd-text-cell></nldd-list-item>
+				</nldd-list-item>
+			</nldd-list>
+		`);
+		await waitForUpdate(el);
+		const branch = el.querySelector('nldd-list-item')!;
+		const [chevron, label] = [...branch.querySelectorAll('nldd-list-item-segment')];
+		let folds = 0;
+		let opens = 0;
+		chevron.addEventListener('click', () => { folds += 1; });
+		label.addEventListener('click', () => { opens += 1; });
+		branch.focus();
+
+		const enter = new KeyboardEvent('keydown', { key: 'Enter', bubbles: true, composed: true, cancelable: true });
+		branch.dispatchEvent(enter);
+		await waitForUpdate(el);
+		expect(enter.defaultPrevented).toBe(true);
+		expect(opens).toBe(1);
+		expect(folds).toBe(0);
+
+		const space = new KeyboardEvent('keydown', { key: ' ', bubbles: true, composed: true, cancelable: true });
+		branch.dispatchEvent(space);
+		await waitForUpdate(el);
+		expect(folds).toBe(1);
+		expect(opens).toBe(1);
+	});
+
 	it('tree: opening a branch keeps focus on the row', async () => {
 		el = await fixture(`
 			<nldd-list type="tree">
 				<nldd-list-item>
-					<nldd-list-item-action button disclosure><nldd-icon-cell icon="chevron-right"></nldd-icon-cell></nldd-list-item-action>
+					<nldd-list-item-segment button disclosure><nldd-icon-cell icon="chevron-right"></nldd-icon-cell></nldd-list-item-segment>
 					<nldd-text-cell text="A"></nldd-text-cell>
 					<nldd-list-item slot="children"><nldd-text-cell text="A1"></nldd-text-cell></nldd-list-item>
 				</nldd-list-item>
@@ -651,7 +686,7 @@ describe('nldd-list – arrow navigation (roving tabindex)', () => {
 	});
 
 	const MARKUP = `
-		<nldd-list arrow-navigation>
+		<nldd-list>
 			<nldd-list-item button text="Een"></nldd-list-item>
 			<nldd-list-item button text="Twee"></nldd-list-item>
 			<nldd-list-item button text="Drie"></nldd-list-item>
@@ -682,10 +717,11 @@ describe('nldd-list – arrow navigation (roving tabindex)', () => {
 		expect(tabindexOf(items[2])).toBe('-1');
 	});
 
-	it('leaves items as their own tab stops when arrow-navigation is off', async () => {
-		el = await fixture(MARKUP.replace('arrow-navigation', ''));
+	it('needs no attribute: a plain list is already one tab stop', async () => {
+		el = await fixture(MARKUP);
 		const items = await settle(el);
-		items.forEach(i => expect(tabindexOf(i)).toBeNull());
+		expect(tabindexOf(items[0])).toBe('0');
+		items.slice(1).forEach(i => expect(tabindexOf(i)).toBe('-1'));
 	});
 
 	it('ArrowDown/ArrowUp move the roving tab stop and wrap around', async () => {
@@ -718,9 +754,9 @@ describe('nldd-list – arrow navigation (roving tabindex)', () => {
 		expect(tabindexOf(items[0])).toBe('0');
 	});
 
-	it('ignores arrow-navigation when reorderable is also set (reorderable wins)', async () => {
+	it('leaves the arrow keys to a reorderable list (it moves rows with them)', async () => {
 		el = await fixture(`
-			<nldd-list arrow-navigation reorderable>
+			<nldd-list reorderable>
 				<nldd-list-item button text="Een"></nldd-list-item>
 				<nldd-list-item button text="Twee"></nldd-list-item>
 			</nldd-list>
@@ -731,7 +767,7 @@ describe('nldd-list – arrow navigation (roving tabindex)', () => {
 
 	it('skips non-interactive items (no button/href) in the roving order', async () => {
 		el = await fixture(`
-			<nldd-list arrow-navigation>
+			<nldd-list>
 				<nldd-list-item button text="Een"></nldd-list-item>
 				<nldd-list-item text="Tussenkop"></nldd-list-item>
 				<nldd-list-item button text="Twee"></nldd-list-item>
@@ -757,10 +793,141 @@ describe('nldd-list – arrow navigation (roving tabindex)', () => {
 		expect(el.getAttribute('aria-keyshortcuts')).toBe('ArrowUp ArrowDown Home End');
 		expect(el.getAttribute('aria-description')).toBe('Gebruik de pijltjestoetsen om door de lijst te navigeren.');
 
-		el.removeAttribute('arrow-navigation');
+		// A reorderable list means something else by the same keys, so it makes no
+		// such promise.
+		el.setAttribute('reorderable', '');
 		await settle(el);
 		expect(el.hasAttribute('aria-keyshortcuts')).toBe(false);
 		expect(el.hasAttribute('aria-description')).toBe(false);
+	});
+
+	it('makes no promise of arrow keys in a list with nothing to operate', async () => {
+		el = await fixture(`
+			<nldd-list>
+				<nldd-list-item><nldd-text-cell text="Een"></nldd-text-cell></nldd-list-item>
+				<nldd-list-item><nldd-text-cell text="Twee"></nldd-text-cell></nldd-list-item>
+			</nldd-list>
+		`);
+		await settle(el);
+		expect(el.hasAttribute('aria-keyshortcuts')).toBe(false);
+		expect(el.hasAttribute('aria-description')).toBe(false);
+	});
+
+	it('stops at a row whose only control sits in a cell', async () => {
+		el = await fixture(`
+			<nldd-list>
+				<nldd-list-item>
+					<nldd-text-cell text="Een"></nldd-text-cell>
+					<nldd-cell width="fit-content"><nldd-icon-button icon="ellipsis" accessible-label="Acties"></nldd-icon-button></nldd-cell>
+				</nldd-list-item>
+				<nldd-list-item>
+					<nldd-text-cell text="Twee"></nldd-text-cell>
+					<nldd-cell width="fit-content"><nldd-icon-button icon="ellipsis" accessible-label="Acties"></nldd-icon-button></nldd-cell>
+				</nldd-list-item>
+			</nldd-list>
+		`);
+		const items = await settle(el);
+		const buttons = [...el.querySelectorAll('nldd-icon-button')] as (HTMLElement & { noTab: boolean })[];
+		// The row is the tab stop, so its own button keeps one and the other row's
+		// button is closed off.
+		expect(items[0].getAttribute('tabindex')).toBe('0');
+		expect(buttons[0].noTab).toBe(false);
+		expect(buttons[1].noTab).toBe(true);
+
+		arrow('ArrowDown');
+		const after = await settle(el);
+		expect(after[1].getAttribute('tabindex')).toBe('0');
+		expect(buttons[0].noTab).toBe(true);
+		expect(buttons[1].noTab).toBe(false);
+	});
+
+	it('takes a native control in a cell out of the tab order and gives it back', async () => {
+		el = await fixture(`
+			<nldd-list>
+				<nldd-list-item>
+					<nldd-cell><button type="button">Een</button></nldd-cell>
+				</nldd-list-item>
+				<nldd-list-item>
+					<nldd-cell><button type="button">Twee</button></nldd-cell>
+				</nldd-list-item>
+			</nldd-list>
+		`);
+		await settle(el);
+		const buttons = [...el.querySelectorAll('button')];
+		expect(buttons[0].hasAttribute('tabindex')).toBe(false);
+		expect(buttons[1].getAttribute('tabindex')).toBe('-1');
+
+		arrow('ArrowDown');
+		await settle(el);
+		expect(buttons[0].getAttribute('tabindex')).toBe('-1');
+		expect(buttons[1].hasAttribute('tabindex')).toBe(false);
+	});
+
+	it('keeps a tab stop the consumer closed off themselves', async () => {
+		el = await fixture(`
+			<nldd-list>
+				<nldd-list-item>
+					<nldd-cell><button type="button" tabindex="-1">Een</button></nldd-cell>
+					<nldd-cell><nldd-icon-button icon="ellipsis" accessible-label="Acties" no-tab></nldd-icon-button></nldd-cell>
+				</nldd-list-item>
+				<nldd-list-item button text="Twee"></nldd-list-item>
+			</nldd-list>
+		`);
+		await settle(el);
+		// The first row is the current one, so its controls would be tabbable —
+		// except that the consumer said otherwise, and that is a decision.
+		expect(el.querySelector('button')!.getAttribute('tabindex')).toBe('-1');
+		expect((el.querySelector('nldd-icon-button') as HTMLElement & { noTab: boolean }).noTab).toBe(true);
+	});
+
+	it('stops at a checkbox row', async () => {
+		el = await fixture(`
+			<nldd-list>
+				<nldd-list-item checkbox text="Een"></nldd-list-item>
+				<nldd-list-item checkbox text="Twee"></nldd-list-item>
+			</nldd-list>
+		`);
+		const items = await settle(el);
+		expect(tabindexOf(items[0])).toBe('0');
+		expect(tabindexOf(items[1])).toBe('-1');
+		arrow('ArrowDown');
+		const after = await settle(el);
+		expect(tabindexOf(after[1])).toBe('0');
+	});
+
+	it('skips a row that holds nothing to operate', async () => {
+		el = await fixture(`
+			<nldd-list>
+				<nldd-list-item button text="Een"></nldd-list-item>
+				<nldd-list-item><nldd-text-cell text="Tussenkop"></nldd-text-cell></nldd-list-item>
+				<nldd-list-item button text="Twee"></nldd-list-item>
+			</nldd-list>
+		`);
+		await settle(el);
+		arrow('ArrowDown');
+		const items = await settle(el);
+		expect(tabindexOf(items[2])).toBe('0');
+	});
+
+	it('gives every control its tab stop back when the arrows go to reordering', async () => {
+		el = await fixture(`
+			<nldd-list>
+				<nldd-list-item>
+					<nldd-cell><button type="button">Een</button></nldd-cell>
+				</nldd-list-item>
+				<nldd-list-item>
+					<nldd-cell><button type="button">Twee</button></nldd-cell>
+				</nldd-list-item>
+			</nldd-list>
+		`);
+		await settle(el);
+		expect(el.querySelectorAll('button')[1].getAttribute('tabindex')).toBe('-1');
+
+		el.setAttribute('reorderable', '');
+		await settle(el);
+		[...el.querySelectorAll('button')].forEach((button) => {
+			expect(button.hasAttribute('tabindex')).toBe(false);
+		});
 	});
 });
 

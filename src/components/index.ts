@@ -116,7 +116,7 @@ export { NLDDPageFooter, NLDDPageFooterLegalBar, NLDDPageFooterLegalBarItem } fr
 
 export { NLDDList } from './lists-and-tables/list/list.js';
 export { NLDDListItem } from './lists-and-tables/list-item/list-item.js';
-export { NLDDListItemAction } from './lists-and-tables/list-item-action/list-item-action.js';
+export { NLDDListItemSegment } from './lists-and-tables/list-item-segment/list-item-segment.js';
 export { NLDDTable, NLDDTableRow } from './lists-and-tables/table/table.js';
 
 export { NLDDCell } from './lists-and-tables/cells/cell/cell.js';

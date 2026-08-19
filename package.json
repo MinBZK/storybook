@@ -322,9 +322,9 @@
       "types": "./dist/components/lists-and-tables/list-item/list-item.d.ts",
       "default": "./dist/components/lists-and-tables/list-item/list-item.js"
     },
-    "./list-item-action": {
-      "types": "./dist/components/lists-and-tables/list-item-action/list-item-action.d.ts",
-      "default": "./dist/components/lists-and-tables/list-item-action/list-item-action.js"
+    "./list-item-segment": {
+      "types": "./dist/components/lists-and-tables/list-item-segment/list-item-segment.d.ts",
+      "default": "./dist/components/lists-and-tables/list-item-segment/list-item-segment.js"
     },
     "./table": {
       "types": "./dist/components/lists-and-tables/table/table.d.ts",

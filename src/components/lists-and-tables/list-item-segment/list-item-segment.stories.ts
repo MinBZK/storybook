@@ -1,5 +1,5 @@
 import { html } from 'lit';
-import './list-item-action.js';
+import './list-item-segment.js';
 import '../list-item/list-item.js';
 import '../list/list.js';
 import '../cells/cell/cell.js';
@@ -10,51 +10,56 @@ import '../../content/icon/icon.js';
 import '../../inputs/checkbox/checkbox.js';
 import '../../actions/icon-button/icon-button.js';
 
-/** Stories are flat markup, so the demo state lives here: a disclosure action
- *  flips the row's `expanded`, a checkbox action mirrors its own state onto the
+/** Stories are flat markup, so the demo state lives here: a disclosure segment
+ *  flips the row's `expanded`, a checkbox segment mirrors its own state onto the
  *  decorative nldd-checkbox inside it. One listener per row, and the
  *  currentTarget check keeps a nested row from toggling its ancestors too. */
 const demoToggle = (e: Event) => {
-	const action = (e.target as HTMLElement).closest('nldd-list-item-action');
-	const row = action?.closest('nldd-list-item');
+	const segment = (e.target as HTMLElement).closest('nldd-list-item-segment');
+	const row = segment?.closest('nldd-list-item');
 	if (!row || row !== e.currentTarget) return;
-	const chevron = action!.querySelector('nldd-icon[name^="chevron"]');
+	const chevron = segment!.querySelector('nldd-icon[name^="chevron"]');
 	if (chevron) {
 		const open = !row.hasAttribute('expanded');
 		row.toggleAttribute('expanded', open);
 		// With `disclosure` the component rotates the chevron from the row's state;
 		// without it these stories swap the icon themselves.
-		if (!action!.hasAttribute('disclosure')) {
+		if (!segment!.hasAttribute('disclosure')) {
 			chevron.setAttribute('name', open ? 'chevron-down' : 'chevron-right');
-			action!.toggleAttribute('expanded', open);
+			segment!.toggleAttribute('expanded', open);
 		}
 		return;
 	}
-	if (action!.hasAttribute('checkbox')) {
-		const box = action!.querySelector('nldd-checkbox') as (HTMLElement & { checked: boolean }) | null;
+	if (segment!.hasAttribute('checkbox')) {
+		const box = segment!.querySelector('nldd-checkbox') as (HTMLElement & { checked: boolean }) | null;
 		if (box) {
 			queueMicrotask(() => {
-				box.checked = action!.hasAttribute('checked');
+				box.checked = segment!.hasAttribute('checked');
 			});
 		}
 	}
 };
 
 export default {
-	title: 'Components/Lists & Tables/List Item Action',
-	component: 'nldd-list-item-action',
+	title: 'Components/Lists & Tables/List Item Segment',
+	component: 'nldd-list-item-segment',
 	tags: ['autodocs'],
 	argTypes: {
-		button: { control: 'boolean', description: 'Rendert de action als button' },
-		href: { control: 'text', description: 'Rendert de action als link; wint van button en checkbox' },
-		checkbox: { control: 'boolean', description: 'Maakt de action een role="checkbox" control' },
-		checked: { control: 'boolean', description: 'Aangevinkt-status van een checkbox-action' },
-		expanded: { control: 'boolean', description: 'Uitklap-status; laat weg als het action niets openklapt' },
+		href: { control: 'text', description: 'Rendert het segment als link. Wint van `checkbox` en `button`.' },
+		button: { control: 'boolean', description: 'Rendert het segment als button. De laatste van de drie: `href` en `checkbox` winnen er allebei van.' },
+		checkbox: { control: 'boolean', description: 'Maakt het segment een role="checkbox" control. Wint van `button`, verliest van `href`.' },
+		checked: { control: 'boolean', description: 'Aangevinkt-status van een checkbox-segment' },
+		current: {
+			control: 'boolean',
+			description: 'De huidige pagina (`aria-current="page"`). Zet het hier en niet op de rij: een gesegmenteerde rij heeft geen eigen link, en de rij leest het van z\'n segmenten en kleurt zichzelf.',
+			table: { defaultValue: { summary: false } },
+		},
+		expanded: { control: 'boolean', description: 'Uitklap-status; laat weg als het segment niets openklapt' },
 		disabled: { control: 'boolean', description: 'Uitgeschakelde staat' },
 		width: {
 			control: 'select',
 			options: ['fit-content', 'full'],
-			description: 'full laat het action meegroeien met de rij',
+			description: 'full laat het segment meegroeien met de rij',
 			table: { defaultValue: { summary: 'fit-content' } },
 		},
 	},
@@ -62,10 +67,11 @@ export default {
 
 export const Default = {
 	args: {
-		button: true,
 		href: '',
+		button: true,
 		checkbox: false,
 		checked: false,
+		current: false,
 		expanded: false,
 		disabled: false,
 		width: 'fit-content',
@@ -73,17 +79,18 @@ export const Default = {
 	render: (args: Record<string, unknown>) => html`
 		<nldd-list accessible-label="Voorbeeld">
 			<nldd-list-item>
-				<nldd-list-item-action
-					?button=${args.button}
+				<nldd-list-item-segment
 					href=${(args.href as string) || ''}
+					?button=${args.button}
 					?checkbox=${args.checkbox}
 					?checked=${args.checked}
+					?current=${args.current}
 					?expanded=${args.expanded}
 					?disabled=${args.disabled}
 					width=${args.width as string}
 				>
-					<nldd-text-cell text="Segment" supporting-text="Het action draagt zijn eigen inline padding, dus de vulling houdt vanzelf ruimte om de tekst"></nldd-text-cell>
-				</nldd-list-item-action>
+					<nldd-text-cell text="Segment" supporting-text="Het segment draagt zijn eigen inline padding, dus de vulling houdt vanzelf ruimte om de tekst"></nldd-text-cell>
+				</nldd-list-item-segment>
 			</nldd-list-item>
 		</nldd-list>
 	`,
@@ -92,7 +99,7 @@ export const Default = {
 /**
  * Twee onafhankelijke acties in één rij: de chevron klapt uit, de rest zet de
  * checkbox aan. Een echte `<input>` of een tweede knop binnen één actie zou
- * ongeldige HTML zijn — daarom splitsen we de rij in actions.
+ * ongeldige HTML zijn — daarom splitsen we de rij in segmenten.
  *
  * De divider loopt standaard over de volle contentbreedte; markeer een cel met
  * `divider-start` of `divider-end` als hij later moet beginnen of eerder moet
@@ -110,7 +117,7 @@ export const TreeRow = {
 		const LEAF_CHEVRON_ZONE = '44';
 		const INDENT_STEP = '16';
 		const cells = (label: string, count: string) => html`
-			<nldd-list-item-action checkbox width="full" accessible-label=${label}>
+			<nldd-list-item-segment checkbox width="full" accessible-label=${label}>
 				<nldd-cell>
 					<nldd-checkbox aria-hidden="true" tabindex="-1"></nldd-checkbox>
 				</nldd-cell>
@@ -118,14 +125,14 @@ export const TreeRow = {
 				<nldd-text-cell text=${label}></nldd-text-cell>
 				<nldd-spacer-cell size="8"></nldd-spacer-cell>
 				<nldd-text-cell width="fit-content" horizontal-alignment="right" color="secondary" text=${count}></nldd-text-cell>
-			</nldd-list-item-action>
+			</nldd-list-item-segment>
 		`;
 		const branch = (label: string, count: string, level: number, expanded: boolean, children: unknown) => html`
 			<nldd-list-item slot=${level ? 'children' : ''} ?expanded=${expanded} @click=${demoToggle}>
 				${Array.from({ length: level }, () => html`<nldd-spacer-cell size=${INDENT_STEP}></nldd-spacer-cell>`)}
-				<nldd-list-item-action button disclosure accessible-label="${label} in- of uitklappen">
+				<nldd-list-item-segment button disclosure accessible-label="${label} in- of uitklappen">
 					<nldd-icon-cell size="20"><nldd-icon name="chevron-right"></nldd-icon></nldd-icon-cell>
-				</nldd-list-item-action>
+				</nldd-list-item-segment>
 				${cells(label, count)}
 				${children}
 			</nldd-list-item>
@@ -150,21 +157,21 @@ export const TreeRow = {
 };
 
 /**
- * De rij navigeert, de knop erachter doet iets anders. Zonder actions kan dit
+ * De rij navigeert, de knop erachter doet iets anders. Zonder segmenten kan dit
  * niet: een button in een link is ongeldige HTML.
  */
 export const LinkWithTrailingAction = {
-	name: 'Link row with a trailing action',
+	name: 'Link row with a trailing segment',
 	render: () => html`
 		<nldd-list accessible-label="Opdrachten">
 			${['Modernisering Inkoop', 'Open Data Architectuur'].map(name => html`
 				<nldd-list-item>
-					<nldd-list-item-action href="#${name}" width="full">
+					<nldd-list-item-segment href="#${name}" width="full">
 						<nldd-text-cell text=${name} supporting-text="Rijkswaterstaat"></nldd-text-cell>
-					</nldd-list-item-action>
-					<nldd-list-item-action button accessible-label="Bewerk ${name}">
+					</nldd-list-item-segment>
+					<nldd-list-item-segment button accessible-label="Bewerk ${name}">
 						<nldd-icon-cell size="20"><nldd-icon name="edit"></nldd-icon></nldd-icon-cell>
-					</nldd-list-item-action>
+					</nldd-list-item-segment>
 					<nldd-spacer-cell size="12"></nldd-spacer-cell>
 				</nldd-list-item>
 			`)}
@@ -174,7 +181,7 @@ export const LinkWithTrailingAction = {
 
 /**
  * In een `type="listbox"` lijst mag een `option` geen interactieve
- * afstammelingen hebben. Het action rendert dan als platte container: de cellen
+ * afstammelingen hebben. Het segment rendert dan als platte container: de cellen
  * blijven staan, alleen de knop verdwijnt. Er verschijnt een DEV-waarschuwing in
  * de console.
  */
@@ -183,19 +190,19 @@ export const InsideListbox = {
 	render: () => html`
 		<nldd-list type="listbox" accessible-label="Opties">
 			<nldd-list-item>
-				<nldd-list-item-action checkbox width="full">
+				<nldd-list-item-segment checkbox width="full">
 					<nldd-text-cell text="Deze rij is een option, dus niet segmenteerbaar"></nldd-text-cell>
-				</nldd-list-item-action>
+				</nldd-list-item-segment>
 			</nldd-list-item>
 		</nldd-list>
 	`,
 };
 
 /**
- * Dezelfde actions in een `variant="box-tinted"` lijst. Twee soorten ruimte die je uit
+ * Dezelfde segmenten in een `variant="box-tinted"` lijst. Twee soorten ruimte die je uit
  * elkaar moet houden: de boxed variant toont altijd zijn start- en end-area met
- * een spacer van 12, en dat is de afstand van het action tot het KADER. De
- * spacers binnen het action zijn de afstand van de inhoud tot de rand van de
+ * een spacer van 12, en dat is de afstand van het segment tot het KADER. De
+ * spacers binnen het segment zijn de afstand van de inhoud tot de rand van de
  * VULLING. Laat je die laatste weg, dan plakt de telling tegen de hover-vorm.
  */
 export const InsideBoxedList = {
@@ -203,49 +210,49 @@ export const InsideBoxedList = {
 	render: () => html`
 		<nldd-list variant="box-tinted" type="tree" accessible-label="Opdrachtgevers">
 			<nldd-list-item @click=${demoToggle}>
-				<nldd-list-item-action button disclosure accessible-label="Agentschappen in- of uitklappen">
+				<nldd-list-item-segment button disclosure accessible-label="Agentschappen in- of uitklappen">
 					<nldd-icon-cell size="20"><nldd-icon name="chevron-right"></nldd-icon></nldd-icon-cell>
-				</nldd-list-item-action>
-				<nldd-list-item-action checkbox width="full" accessible-label="Agentschappen">
+				</nldd-list-item-segment>
+				<nldd-list-item-segment checkbox width="full" accessible-label="Agentschappen">
 					<nldd-cell><nldd-checkbox aria-hidden="true" tabindex="-1"></nldd-checkbox></nldd-cell>
 					<nldd-spacer-cell size="8"></nldd-spacer-cell>
 					<nldd-text-cell text="Agentschappen"></nldd-text-cell>
 					<nldd-spacer-cell size="8"></nldd-spacer-cell>
 					<nldd-text-cell width="fit-content" horizontal-alignment="right" color="secondary" text="15"></nldd-text-cell>
-				</nldd-list-item-action>
+				</nldd-list-item-segment>
 				<nldd-list-item slot="children" @click=${demoToggle}>
 					<nldd-spacer-cell size="16"></nldd-spacer-cell>
 					<nldd-spacer-cell size="44"></nldd-spacer-cell>
-					<nldd-list-item-action checkbox width="full" accessible-label="Rijkswaterstaat">
+					<nldd-list-item-segment checkbox width="full" accessible-label="Rijkswaterstaat">
 						<nldd-cell><nldd-checkbox aria-hidden="true" tabindex="-1"></nldd-checkbox></nldd-cell>
 						<nldd-spacer-cell size="8"></nldd-spacer-cell>
 						<nldd-text-cell text="Rijkswaterstaat"></nldd-text-cell>
 						<nldd-spacer-cell size="8"></nldd-spacer-cell>
 						<nldd-text-cell width="fit-content" horizontal-alignment="right" color="secondary" text="15"></nldd-text-cell>
-					</nldd-list-item-action>
+					</nldd-list-item-segment>
 				</nldd-list-item>
 			</nldd-list-item>
 			<nldd-list-item expanded @click=${demoToggle}>
-				<nldd-list-item-action button disclosure accessible-label="Ministeries in- of uitklappen">
+				<nldd-list-item-segment button disclosure accessible-label="Ministeries in- of uitklappen">
 					<nldd-icon-cell size="20"><nldd-icon name="chevron-right"></nldd-icon></nldd-icon-cell>
-				</nldd-list-item-action>
-				<nldd-list-item-action checkbox width="full" accessible-label="Ministeries">
+				</nldd-list-item-segment>
+				<nldd-list-item-segment checkbox width="full" accessible-label="Ministeries">
 					<nldd-cell><nldd-checkbox aria-hidden="true" tabindex="-1"></nldd-checkbox></nldd-cell>
 					<nldd-spacer-cell size="8"></nldd-spacer-cell>
 					<nldd-text-cell text="Ministeries"></nldd-text-cell>
 					<nldd-spacer-cell size="8"></nldd-spacer-cell>
 					<nldd-text-cell width="fit-content" horizontal-alignment="right" color="secondary" text="14"></nldd-text-cell>
-				</nldd-list-item-action>
+				</nldd-list-item-segment>
 				<nldd-list-item slot="children" @click=${demoToggle}>
 					<nldd-spacer-cell size="16"></nldd-spacer-cell>
 					<nldd-spacer-cell size="44"></nldd-spacer-cell>
-					<nldd-list-item-action checkbox width="full" accessible-label="Ministerie van Algemene Zaken">
+					<nldd-list-item-segment checkbox width="full" accessible-label="Ministerie van Algemene Zaken">
 						<nldd-cell><nldd-checkbox aria-hidden="true" tabindex="-1"></nldd-checkbox></nldd-cell>
 						<nldd-spacer-cell size="8"></nldd-spacer-cell>
 						<nldd-text-cell text="Ministerie van Algemene Zaken"></nldd-text-cell>
 						<nldd-spacer-cell size="8"></nldd-spacer-cell>
 						<nldd-text-cell width="fit-content" horizontal-alignment="right" color="secondary" text="1"></nldd-text-cell>
-					</nldd-list-item-action>
+					</nldd-list-item-segment>
 				</nldd-list-item>
 			</nldd-list-item>
 		</nldd-list>
@@ -267,15 +274,15 @@ export const NestedTree = {
 		const branch = (label: string, level: number, expanded: boolean, children: unknown) => html`
 			<nldd-list-item slot=${level ? 'children' : ''} ?expanded=${expanded} @click=${demoToggle}>
 				${Array.from({ length: level }, () => html`<nldd-spacer-cell size="16"></nldd-spacer-cell>`)}
-				<nldd-list-item-action button disclosure accessible-label="${label} in- of uitklappen">
+				<nldd-list-item-segment button disclosure accessible-label="${label} in- of uitklappen">
 					<nldd-icon-cell size="20"><nldd-icon name="chevron-right"></nldd-icon></nldd-icon-cell>
-				</nldd-list-item-action>
-				<nldd-list-item-action checkbox width="full" accessible-label=${label}>
+				</nldd-list-item-segment>
+				<nldd-list-item-segment checkbox width="full" accessible-label=${label}>
 					<nldd-cell><nldd-checkbox aria-hidden="true" tabindex="-1"></nldd-checkbox></nldd-cell>
 					<nldd-spacer-cell size="8"></nldd-spacer-cell>
 					<nldd-text-cell text=${label}></nldd-text-cell>
 
-				</nldd-list-item-action>
+				</nldd-list-item-segment>
 				${children}
 			</nldd-list-item>
 		`;
@@ -283,12 +290,12 @@ export const NestedTree = {
 			<nldd-list-item slot="children" @click=${demoToggle}>
 				${Array.from({ length: level }, () => html`<nldd-spacer-cell size="16"></nldd-spacer-cell>`)}
 				<nldd-spacer-cell size="44"></nldd-spacer-cell>
-				<nldd-list-item-action checkbox width="full" accessible-label=${label}>
+				<nldd-list-item-segment checkbox width="full" accessible-label=${label}>
 					<nldd-cell><nldd-checkbox aria-hidden="true" tabindex="-1"></nldd-checkbox></nldd-cell>
 					<nldd-spacer-cell size="8"></nldd-spacer-cell>
 					<nldd-text-cell text=${label}></nldd-text-cell>
 
-				</nldd-list-item-action>
+				</nldd-list-item-segment>
 			</nldd-list-item>
 		`;
 		return html`

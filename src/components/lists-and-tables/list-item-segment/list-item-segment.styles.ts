@@ -1,6 +1,6 @@
 import { css } from 'lit';
 
-export const listItemActionStyles = css`
+export const listItemSegmentStyles = css`
 	:host {
 		box-sizing: border-box;
 	}
@@ -13,6 +13,11 @@ export const listItemActionStyles = css`
 
 		display: flex;
 		position: relative;
+		/* Its own stacking context, so the fill below (z-index -1) stays behind
+		   this segment's content but in front of the row's fill. Without it the
+		   two -1 layers land in the same context — the row's while it is lit —
+		   and the segment's disappears underneath. */
+		isolation: isolate;
 		align-items: stretch;
 		/* The row's areas center their children; this must span instead, so its hit
 		   area and fill reach the row's top and bottom edges. */
@@ -39,7 +44,7 @@ export const listItemActionStyles = css`
 		min-width: 0;
 	}
 
-	:host([width="full"]) .list-item-action {
+	:host([width="full"]) .list-item-segment {
 		justify-content: flex-start;
 	}
 
@@ -64,7 +69,7 @@ export const listItemActionStyles = css`
 	   padding is fixed at the indicator inset, the way a button owns its padding,
 	   so the fill always sits the same distance from the content. Do not add
 	   spacer cells for room or hit area — that doubles the space. */
-	.list-item-action {
+	.list-item-segment {
 		box-sizing: border-box;
 		display: flex;
 		position: relative;
@@ -87,16 +92,16 @@ export const listItemActionStyles = css`
 		text-decoration: none;
 	}
 
-	a.list-item-action {
+	a.list-item-segment {
 		cursor: var(--semantics-controls-link-cursor);
 	}
 
-	button.list-item-action:disabled {
+	button.list-item-segment:disabled {
 		cursor: not-allowed;
 		opacity: var(--primitives-opacity-disabled);
 	}
 
-	.list-item-action::before {
+	.list-item-segment::before {
 		content: '';
 		display: block;
 		position: absolute;
@@ -108,40 +113,67 @@ export const listItemActionStyles = css`
 		pointer-events: none;
 	}
 
+	/* The row says which fill a hovered segment takes: on a row that is lit
+	   (current, with focus in it) the neutral hover grey would read as a hole in
+	   the accent, so the row hands down a deeper accent instead. Unset on an
+	   ordinary row, where the fallback is the neutral one. */
 	@media (hover: hover) {
-		a.list-item-action:hover,
-		button.list-item-action:not(:disabled):hover {
-			--_background-color: var(--components-list-item-is-hovered-background-color);
-			--context-content-color: var(--components-list-item-is-hovered-content-color);
-			--context-content-secondary-color: var(--components-list-item-is-hovered-content-color);
+		a.list-item-segment:hover,
+		button.list-item-segment:not(:disabled):hover {
+			--_background-color: var(--context-list-item-hovered-background-color, var(--components-list-item-is-hovered-background-color));
+			--context-content-color: var(--context-list-item-hovered-content-color, var(--components-list-item-is-hovered-content-color));
+			--context-content-secondary-color: var(--context-list-item-hovered-content-color, var(--components-list-item-is-hovered-content-color));
 		}
 	}
 
 	/* Press feedback — works on touch where :hover doesn't. JS-driven so a touch
 	   that turns into a scroll clears it (pointercancel) instead of flashing. */
-	.list-item-action.is-pressed {
-		--_background-color: var(--components-list-item-is-hovered-background-color);
-		--context-content-color: var(--components-list-item-is-hovered-content-color);
-		--context-content-secondary-color: var(--components-list-item-is-hovered-content-color);
+	/* The element selectors match the weight of the hover rule above: a pointer
+	   that presses is hovering as well, and the press has to win. */
+	a.list-item-segment.is-pressed,
+	button.list-item-segment:not(:disabled).is-pressed,
+	.list-item-segment.is-pressed {
+		--_background-color: var(--context-list-item-active-background-color, var(--components-list-item-is-active-background-color));
+		--context-content-color: var(--context-list-item-active-content-color, var(--context-list-item-hovered-content-color, var(--components-list-item-is-active-content-color)));
+		--context-content-secondary-color: var(--context-list-item-active-content-color, var(--context-list-item-hovered-content-color, var(--components-list-item-is-active-content-color)));
 	}
 
 	/* While what this segment opened is on screen it stays lit, a step above
 	   hover, so the menu reads as hanging off this row rather than floating over
 	   the list. After the hover rule on purpose: the pointer usually sits on the
 	   menu by then, but hovering back over the segment must not dim it. */
-	:host([expanded]) .list-item-action {
+	:host([expanded]) .list-item-segment {
 		--_background-color: var(--components-list-item-is-expanded-background-color);
 		--context-content-color: var(--components-list-item-is-expanded-content-color);
 		--context-content-secondary-color: var(--components-list-item-is-expanded-content-color);
 	}
 
-	:host([checked]) .list-item-action {
+	/* An open menu is a state that stays, so it has its own two rungs above its
+	   rest step, the same as an expanded button. */
+	@media (hover: hover) {
+		:host([expanded]) a.list-item-segment:hover,
+		:host([expanded]) button.list-item-segment:not(:disabled):hover {
+			--_background-color: var(--components-list-item-is-expanded-is-hovered-background-color);
+			--context-content-color: var(--components-list-item-is-expanded-content-color);
+			--context-content-secondary-color: var(--components-list-item-is-expanded-content-color);
+		}
+	}
+
+	:host([expanded]) a.list-item-segment.is-pressed,
+	:host([expanded]) button.list-item-segment:not(:disabled).is-pressed,
+	:host([expanded]) .list-item-segment.is-pressed {
+		--_background-color: var(--components-list-item-is-expanded-is-active-background-color);
+		--context-content-color: var(--components-list-item-is-expanded-content-color);
+		--context-content-secondary-color: var(--components-list-item-is-expanded-content-color);
+	}
+
+	:host([checked]) .list-item-segment {
 		--_background-color: var(--components-list-item-is-selected-background-color);
 		--context-content-color: var(--components-list-item-is-selected-content-color);
 		--context-content-secondary-color: var(--components-list-item-is-selected-content-color);
 	}
 
-	.list-item-action:focus-visible:not(.is-pointer-focus)::after {
+	.list-item-segment:focus-visible:not(.is-pointer-focus)::after {
 		content: '';
 		display: block;
 		position: absolute;
