@@ -18,6 +18,7 @@
  * @attr {string} supporting-text - Supporting text shown below the text (md/lg) or after it (sm/xs), in a secondary color. Part of the accessible name (unless `accessible-label` is set, which replaces the whole accessible name).
  * @attr {boolean} single-line - When true, truncates overflowing text with an ellipsis instead of letting it wrap. Requires the button (or an ancestor) to constrain the width.
  * @attr {boolean} no-highlight-border - Removes the per-variant highlight border (e.g. when nldd-button-bar draws a single group border instead).
+ * @attr {boolean} no-tab - Takes the button out of the tab order (tabindex="-1"), for a control owned by a roving container (e.g. a button in a row of an nldd-list, where the arrow keys move between rows) that manages focus itself. Still mouse- and script-focusable.
  * @attr {string} start-icon - Icon name for the start icon (before text)
  * @attr {string} end-icon - Icon name for the end icon (after text)
  * @attr {string} accessible-label - Accessible label for the button, overrides text for screen readers
@@ -91,6 +92,12 @@ export class NLDDButton extends withTranslations(LitElement, nlddButtonTranslati
 	 *  truncated with an ellipsis, as with `single-line`. */
 	@property({ reflect: true, attribute: 'max-width', converter: reflectNonDefault<string>('') })
 	maxWidth = '';
+
+	/** Take the button out of the tab order (`tabindex="-1"`) — for a control owned
+	 *  by a roving container (an `nldd-list` sets it on the rows that are not the
+	 *  current one) that manages focus itself. Still mouse- and script-focusable. */
+	@property({ type: Boolean, reflect: true, attribute: 'no-tab' })
+	noTab = false;
 
 	@property({ type: Boolean, reflect: true, attribute: 'expandable' })
 	expandable = false;
