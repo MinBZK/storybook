@@ -37,7 +37,7 @@ export default {
 		status: { type: 'stable' },
 		docs: {
 			description: {
-				component: 'A flexible icon component. By default fills its parent and inherits color. Set `size` for a fixed spacer-aligned dimension; set `color` for a functional semantic or a rijkskleur. For one-off arbitrary colors, use `style="color: …"` on the host.',
+				component: 'A flexible icon component. By default fills its parent and inherits color. Set `size` for a fixed spacer-aligned dimension; set `color` for a functional semantic or a rijkskleur. For a color the design system cannot know, set `custom-color` to any CSS color value.',
 			},
 		},
 	},
@@ -59,22 +59,30 @@ export default {
 			control: 'select',
 			options: COLOR_OPTIONS,
 			mapping: { '(inherit)': '' },
-			description: 'Functionele semantic of rijkskleur. `(inherit)` = erft `color` van parent. Voor een arbitraire kleur: gebruik `style="color: …"` op de host.',
+			description: 'Functionele semantic of rijkskleur. `(inherit)` = erft `color` van parent.',
 			table: { defaultValue: { summary: '(inherit)' } },
+		},
+		customColor: {
+			name: 'custom-color',
+			control: 'color',
+			description: 'Een eigen kleur, als CSS-kleurwaarde. Voor een kleur die het design system niet kan kennen. Wint van `color`.',
+			table: { defaultValue: { summary: '(geen)' } },
 		},
 	},
 	args: {
 		name: 'heart',
 		size: '24',
 		color: '(inherit)',
+		customColor: '',
 	},
 };
 
-const Template = ({ name, size, color }: Record<string, string>) => html`
+const Template = ({ name, size, color, customColor }: Record<string, string>) => html`
 	<nldd-icon
 		name=${name}
 		size=${size || nothing}
 		color=${color || nothing}
+		custom-color=${customColor || nothing}
 	></nldd-icon>
 `;
 
@@ -140,11 +148,11 @@ export const Rijkskleuren = {
 	parameters: { controls: { disable: true } },
 };
 
-export const ArbitraryColorViaStyle = {
+export const OwnColor = {
 	render: () => html`
 		<div style="display: flex; gap: 24px; align-items: center;">
 			${['#ef4444', '#f97316', '#22c55e', '#3b82f6', '#8b5cf6'].map(color => html`
-				<nldd-icon name="heart" size="40" style=${`color: ${color}`}></nldd-icon>
+				<nldd-icon name="circle-filled" size="40" custom-color=${color}></nldd-icon>
 			`)}
 		</div>
 	`,
@@ -152,7 +160,7 @@ export const ArbitraryColorViaStyle = {
 		controls: { disable: true },
 		docs: {
 			description: {
-				story: 'Voor kleuren buiten de design-system set: zet `style="color: …"` op de host. Het inherited `color` stuurt nog steeds de SVG fill/stroke aan.',
+				story: 'Voor een kleur die het design system niet kan kennen: de mantel van een kabel, een kleur die iemand zelf koos. `custom-color` neemt elke CSS-kleurwaarde en wint van `color`.',
 			},
 		},
 	},

@@ -15,6 +15,7 @@ export const iconStyles = css`
 	:host {
 		--_size: 100%;
 		--_color: inherit;
+		--_custom-color: inherit;
 
 		display: inline-flex;
 		width: var(--_size);
@@ -76,6 +77,16 @@ export const iconStyles = css`
 	:host([color="groen"])       { --_color: var(--components-icon-color-groen-color); }
 	:host([color="mosgroen"])    { --_color: var(--components-icon-color-mosgroen-color); }
 	:host([color="mintgroen"])   { --_color: var(--components-icon-color-mintgroen-color); }
+
+
+	/* # Color — a color of its own
+	 *
+	 * For a color the design system cannot know: the jacket of a cable, a color
+	 * someone picked. After every [color] rule, so it wins over one. */
+
+	:host([custom-color]) {
+		--_color: var(--_custom-color);
+	}
 
 
 	/* # Elements */

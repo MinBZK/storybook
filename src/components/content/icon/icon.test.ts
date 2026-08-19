@@ -34,6 +34,20 @@ describe('nldd-icon', () => {
 		expect(el.getAttribute('color')).toBe('lintblauw');
 	});
 
+	it('paints a custom color, and the SVG fill follows it', async () => {
+		el = await fixture<NLDDIcon>('<nldd-icon custom-color="rgb(0, 0, 255)"></nldd-icon>');
+		await waitForUpdate(el);
+		expect(getComputedStyle(el).color).toBe('rgb(0, 0, 255)');
+		const painted = el.shadowRoot!.querySelector('svg [fill="currentColor"], svg path');
+		expect(getComputedStyle(painted as Element).fill).toBe('rgb(0, 0, 255)');
+	});
+
+	it('a custom color wins over a named one', async () => {
+		el = await fixture<NLDDIcon>('<nldd-icon color="critical" custom-color="rgb(0, 128, 0)"></nldd-icon>');
+		await waitForUpdate(el);
+		expect(getComputedStyle(el).color).toBe('rgb(0, 128, 0)');
+	});
+
 	it('defaults size and color to empty (inherit)', async () => {
 		el = await fixture<NLDDIcon>('<nldd-icon></nldd-icon>');
 		await waitForUpdate(el);
