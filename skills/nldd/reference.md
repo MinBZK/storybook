@@ -2901,7 +2901,7 @@ A segment inside an `nldd-list-item`: it groups a run of cells and makes just th
 | `expanded` | `boolean` | Disclosure state, reflected as `aria-expanded` on the control, and painted: the segment stays lit a step above hover for as long as what it opened is on screen, so a menu reads as hanging off this row rather than floating over the list. Set it on the segment that opens something (a tree row's chevron, a menu). Leave it off entirely when the segment discloses nothing — an absent attribute emits no aria-expanded. |
 | `disclosure` | `boolean` | Marks the segment as the row's disclosure control: `aria-expanded` comes from the parent item's `expanded`, so the state lives in one place. A slotted `nldd-icon-cell` rotates a quarter turn while the row is open |
 | `current` | `boolean` | Marks the segment as the current page (`aria-current="page"`). The row it sits in paints itself as the current row from it, so on a segmented row this is the only place it has to be set. |
-| `disabled` | `boolean` | Disabled state; only applies to button and checkbox segments |
+| `disabled` | `boolean` | Switches the segment off: a `button` or `checkbox` segment stops responding and dims, a `href` segment gets `aria-disabled` and its click is blocked (a link cannot be disabled natively). The arrow keys skip a row whose only segment is off. |
 | `width` | `'fit-content'\|'full'` | `full` lets the segment grow to fill the row (default: 'fit-content') |
 | `accessible-label` | `string` | Accessible name for the control. Set it when the segment holds only an icon, or when the cell text does not describe the action. |
 

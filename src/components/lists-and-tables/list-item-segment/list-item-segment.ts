@@ -44,7 +44,7 @@ export type ListItemSegmentWidth = 'fit-content' | 'full';
  * @attr {boolean} expanded - Disclosure state, reflected as `aria-expanded` on the control, and painted: the segment stays lit a step above hover for as long as what it opened is on screen, so a menu reads as hanging off this row rather than floating over the list. Set it on the segment that opens something (a tree row's chevron, a menu). Leave it off entirely when the segment discloses nothing — an absent attribute emits no aria-expanded.
  * @attr {boolean} disclosure - Marks the segment as the row's disclosure control: `aria-expanded` comes from the parent item's `expanded`, so the state lives in one place. A slotted `nldd-icon-cell` rotates a quarter turn while the row is open
  * @attr {boolean} current - Marks the segment as the current page (`aria-current="page"`). The row it sits in paints itself as the current row from it, so on a segmented row this is the only place it has to be set.
- * @attr {boolean} disabled - Disabled state; only applies to button and checkbox segments
+ * @attr {boolean} disabled - Switches the segment off: a `button` or `checkbox` segment stops responding and dims, a `href` segment gets `aria-disabled` and its click is blocked (a link cannot be disabled natively). The arrow keys skip a row whose only segment is off.
  * @attr {'fit-content'|'full'} width - `full` lets the segment grow to fill the row (default: 'fit-content')
  * @attr {string} accessible-label - Accessible name for the control. Set it when the segment holds only an icon, or when the cell text does not describe the action.
  *
@@ -168,7 +168,13 @@ export class NLDDListItemSegment extends LitElement {
 	}
 
 	private _handleClick = (e: Event) => {
-		if (this.disabled) return;
+		// A disabled <button> never gets here, but a link does: there is no such
+		// thing as a disabled <a>, so the segment stops the navigation itself.
+		if (this.disabled) {
+			e.preventDefault();
+			e.stopPropagation();
+			return;
+		}
 		// Safari and Firefox on Mac don't focus buttons on click. Force focus so
 		// the :focus-visible styling below stays reliable.
 		this._control?.focus();

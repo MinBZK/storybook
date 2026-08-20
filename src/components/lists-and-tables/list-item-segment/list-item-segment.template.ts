@@ -24,6 +24,7 @@ export function template(
 			href=${href ?? nothing}
 			target=${target ?? nothing}
 			rel=${rel ?? nothing}
+			aria-disabled=${disabled ? 'true' : nothing}
 			aria-expanded=${ariaExpanded}
 			aria-current=${ariaCurrent}
 			aria-label=${label}

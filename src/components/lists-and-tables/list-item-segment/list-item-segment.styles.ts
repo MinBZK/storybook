@@ -91,8 +91,11 @@ export const listItemSegmentStyles = css`
 		cursor: var(--semantics-controls-link-cursor);
 	}
 
-	button.list-item-segment:disabled {
-		cursor: not-allowed;
+	/* There is no disabled attribute for an anchor, so the segment blocks the
+	   click itself and aria-disabled carries the state. */
+	button.list-item-segment:disabled,
+	:host([disabled]) a.list-item-segment {
+		cursor: default;
 		opacity: var(--primitives-opacity-disabled);
 	}
 
@@ -111,7 +114,7 @@ export const listItemSegmentStyles = css`
 	/* The row hands down which fill a hovered segment takes. Unset on an ordinary
 	   row, where the fallback answers. */
 	@media (hover: hover) {
-		a.list-item-segment:hover,
+		:host(:not([disabled])) a.list-item-segment:hover,
 		button.list-item-segment:not(:disabled):hover {
 			--_background-color: var(--context-list-item-hovered-background-color, var(--components-list-item-is-hovered-background-color));
 			--context-content-color: var(--context-list-item-hovered-content-color, var(--components-list-item-is-hovered-content-color));
@@ -123,9 +126,9 @@ export const listItemSegmentStyles = css`
 	   that turns into a scroll clears it (pointercancel) instead of flashing. */
 	/* The element selectors match the weight of the hover rule above: a pointer
 	   that presses is hovering as well, and the press has to win. */
-	a.list-item-segment.is-pressed,
+	:host(:not([disabled])) a.list-item-segment.is-pressed,
 	button.list-item-segment:not(:disabled).is-pressed,
-	.list-item-segment.is-pressed {
+	:host(:not([disabled])) .list-item-segment.is-pressed {
 		--_background-color: var(--context-list-item-active-background-color, var(--components-list-item-is-active-background-color));
 		--context-content-color: var(--context-list-item-active-content-color, var(--context-list-item-hovered-content-color, var(--components-list-item-is-active-content-color)));
 		--context-content-secondary-color: var(--context-list-item-active-content-color, var(--context-list-item-hovered-content-color, var(--components-list-item-is-active-content-color)));
@@ -140,7 +143,7 @@ export const listItemSegmentStyles = css`
 	}
 
 	@media (hover: hover) {
-		:host([expanded]) a.list-item-segment:hover,
+		:host([expanded]:not([disabled])) a.list-item-segment:hover,
 		:host([expanded]) button.list-item-segment:not(:disabled):hover {
 			--_background-color: var(--components-list-item-is-expanded-is-hovered-background-color);
 			--context-content-color: var(--components-list-item-is-expanded-content-color);
@@ -148,9 +151,9 @@ export const listItemSegmentStyles = css`
 		}
 	}
 
-	:host([expanded]) a.list-item-segment.is-pressed,
+	:host([expanded]:not([disabled])) a.list-item-segment.is-pressed,
 	:host([expanded]) button.list-item-segment:not(:disabled).is-pressed,
-	:host([expanded]) .list-item-segment.is-pressed {
+	:host([expanded]:not([disabled])) .list-item-segment.is-pressed {
 		--_background-color: var(--components-list-item-is-expanded-is-active-background-color);
 		--context-content-color: var(--components-list-item-is-expanded-content-color);
 		--context-content-secondary-color: var(--components-list-item-is-expanded-content-color);

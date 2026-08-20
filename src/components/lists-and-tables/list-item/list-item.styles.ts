@@ -143,7 +143,7 @@ export const listItemStyles = css`
 	   itself and aria-disabled carries the state. */
 	button.list-item__action:disabled,
 	:host([disabled]) a.list-item__action {
-		cursor: not-allowed;
+		cursor: default;
 		opacity: var(--primitives-opacity-disabled);
 	}
 

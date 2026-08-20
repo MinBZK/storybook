@@ -27499,7 +27499,7 @@
               "type": {
                 "text": "boolean"
               },
-              "description": "Disabled state; only applies to button and checkbox segments",
+              "description": "Switches the segment off: a `button` or `checkbox` segment stops responding and dims, a `href` segment gets `aria-disabled` and its click is blocked (a link cannot be disabled natively). The arrow keys skip a row whose only segment is off.",
               "name": "disabled",
               "default": "false",
               "fieldName": "disabled"

@@ -504,3 +504,27 @@ describe('nldd-list-item-segment – vaste geometrie', () => {
 		expect(style.paddingInlineEnd).toBe('8px');
 	});
 });
+
+describe('nldd-list-item-segment – een uitgezette link', () => {
+	let el: HTMLElement;
+
+	afterEach(() => {
+		if (el) cleanup(el);
+	});
+
+	it('carries aria-disabled, because an anchor cannot be disabled natively', async () => {
+		el = await fixture('<nldd-list-item><nldd-list-item-segment href="/ergens" disabled><nldd-text-cell text="Uit"></nldd-text-cell></nldd-list-item-segment></nldd-list-item>');
+		await waitForUpdate(el);
+		const link = el.querySelector('nldd-list-item-segment')!.shadowRoot!.querySelector('a.list-item-segment')!;
+		expect(link.getAttribute('aria-disabled')).toBe('true');
+	});
+
+	it('blocks the click', async () => {
+		el = await fixture('<nldd-list-item><nldd-list-item-segment href="/ergens" disabled><nldd-text-cell text="Uit"></nldd-text-cell></nldd-list-item-segment></nldd-list-item>');
+		await waitForUpdate(el);
+		const link = el.querySelector('nldd-list-item-segment')!.shadowRoot!.querySelector('a.list-item-segment')!;
+		const event = new MouseEvent('click', { bubbles: true, composed: true, cancelable: true });
+		link.dispatchEvent(event);
+		expect(event.defaultPrevented).toBe(true);
+	});
+});
