@@ -15,6 +15,8 @@ the type of conventional-commit determines the release. Conventional types
 `chore`, `docs`, `ci`, `style`, `test`, `build` are intentionally omitted
 here; consult the commit history if you need that level of detail.
 
+## [0.8.83](https://github.com/MinBZK/storybook/compare/v0.8.82...v0.8.83) (2026-08-20)
+
 ### Highlights
 
 - **`nldd-text`, a component for body text.** New, and the one piece of typography that had no component: every line that is not a heading and not a block of prose. It offers `size` (xxs through lg), `weight`, `line-height`, `color` and `horizontal-alignment`, all of them names for what the token scale already holds, so it cannot invent typography. Color follows the content channel a row, menu or table sets, so a line travels with the row it sits in. Reach for `nldd-title` for a heading, `nldd-rich-text` for prose with its own rhythm.
