@@ -187,10 +187,9 @@ export const badgeStyles = css`
 		--_content-color: var(--semantics-categories-mintgroen-filled-content-color);
 	}
 
-	/* A color of its own, from the consumer. Setting color on the host rather
-	   than the fill directly is what makes the contrast token work: it reads
-	   currentColor, so the text lands on black or white without a second
-	   formula to keep in step. After every [color] rule, so it wins over one. */
+	/* color on the host rather than on the fill: the contrast token reads
+	   currentColor, so the text lands on black or white without a second formula
+	   to keep in step. After every [color] rule, so it wins over one. */
 	:host([custom-color]) {
 		color: var(--_custom-color);
 
