@@ -67,6 +67,8 @@ here; consult the commit history if you need that level of detail.
 
 ### Fixed
 
+- **The text on a colored fill is picked on luminance now, and clears 4.5:1.** `--semantics-content-contrast-color` decided between black and white on OKLCH lightness, which is perceptual and parts ways with the luminance WCAG measures, so a saturated mid blue got white text at 3.68:1. The threshold is now the relative luminance where black and white give the same contrast, Y = (sqrt(21) - 1) / 20, which makes the picked color at least 4.58:1 whatever it lands on. Where the browser has `contrast-color()`, that answers instead. This reaches every component that puts content on a fill it was handed: `nldd-badge`, `nldd-avatar`, `nldd-step-indicator`, `nldd-keyboard-shortcut` and the timeline cell.
+
 - **Switching a row off now moves the tab stop with it.** A row that carried the list's single tab stop kept it after `disabled` landed on it, so Tab reached a row that answers to nothing. The arrow keys already skipped it, and an unrelated change happened to repair it, which is the worst kind of bug: it fixes itself while you look at it. The row re-runs the roving when its own `disabled` changes, and the list watches the attribute too.
 
 - **A read-only combo box no longer announces a list it cannot open.** The picker button and the menu were already gone, but the input kept `role="combobox"` with `aria-haspopup="listbox"`, `aria-autocomplete` and `aria-expanded`. It is a text field with a value in it, and it now says so.

@@ -166,6 +166,17 @@ describe('nldd-badge', () => {
 	});
 });
 
+/** Black or white, whatever notation the browser answers in. The color space
+ *  carries digits of its own (xyz-d65), so it is stripped before the channels
+ *  are read. */
+function picked(color: string): 'black' | 'white' | 'iets anders' {
+	const channels = (color.replace(/[a-z]+-?d?\d*/gi, ' ').match(/[\d.]+/g) ?? []).map(Number).slice(0, 3);
+	if (channels.length !== 3) return 'iets anders';
+	if (channels.every(c => c >= 0.99)) return 'white';
+	if (channels.every(c => c <= 0.01)) return 'black';
+	return 'iets anders';
+}
+
 describe('nldd-badge color="inherit"', () => {
 	let el: HTMLElement;
 
@@ -180,7 +191,7 @@ describe('nldd-badge color="inherit"', () => {
 		// The contrast token lives in variables.css, which the test environment does
 		// not load, so the fixture carries the same formula.
 		el = await fixture(`
-			<div style="color: rgb(0, 0, 0); --context-content-color: rgb(255, 255, 255); --semantics-content-contrast-color: oklch(from currentColor calc((0.65 - l) * infinity) 0 h);">
+			<div style="color: rgb(0, 0, 0); --context-content-color: rgb(255, 255, 255); --semantics-content-contrast-color: color(from currentColor xyz clamp(0, (0.1791 / y - 1) * infinity, 1) clamp(0, (0.1791 / y - 1) * infinity, 1) clamp(0, (0.1791 / y - 1) * infinity, 1) / 1);">
 				<nldd-badge color="inherit" text="3"></nldd-badge>
 			</div>
 		`);
@@ -189,14 +200,14 @@ describe('nldd-badge color="inherit"', () => {
 		const shape = badge.shadowRoot!.querySelector('.badge')!;
 		const text = badge.shadowRoot!.querySelector('.badge__text')!;
 		expect(getComputedStyle(shape).backgroundColor).toBe('rgb(255, 255, 255)');
-		expect(getComputedStyle(text).color).not.toBe('rgb(255, 255, 255)');
+		expect(picked(getComputedStyle(text).color)).toBe('black');
 	});
 
 	it('paints custom-color and puts a contrasting text on it', async () => {
 		// The contrast token lives in variables.css, which the test environment does
 		// not load, so the fixture carries the same formula.
 		el = await fixture(`
-			<div style="--semantics-content-contrast-color: oklch(from currentColor calc((0.65 - l) * infinity) 0 h);">
+			<div style="--semantics-content-contrast-color: color(from currentColor xyz clamp(0, (0.1791 / y - 1) * infinity, 1) clamp(0, (0.1791 / y - 1) * infinity, 1) clamp(0, (0.1791 / y - 1) * infinity, 1) / 1);">
 				<nldd-badge custom-color="rgb(20, 20, 20)" text="3"></nldd-badge>
 			</div>
 		`);
@@ -205,8 +216,9 @@ describe('nldd-badge color="inherit"', () => {
 		const shape = badge.shadowRoot!.querySelector('.badge')!;
 		const text = badge.shadowRoot!.querySelector('.badge__text')!;
 		expect(getComputedStyle(shape).backgroundColor).toBe('rgb(20, 20, 20)');
-		// oklch(1 0 h) is white whatever the hue channel says.
-		expect(getComputedStyle(text).color).toMatch(/^oklch\(1 0 /);
+		// The formula answers in whatever color space it is written in, so read the
+		// channels rather than the notation.
+		expect(picked(getComputedStyle(text).color)).toBe('white');
 	});
 
 	it('falls back to the inherited color where no channel is set', async () => {

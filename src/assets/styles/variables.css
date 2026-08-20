@@ -859,7 +859,13 @@
 	--semantics-content-color: light-dark(var(--primitives-color-neutral-800), var(--primitives-color-neutral-900));
 	--semantics-content-secondary-color: light-dark(var(--primitives-color-neutral-600), var(--primitives-color-neutral-700));
 	--semantics-content-secondary-opacity: 75%;
-	--semantics-content-contrast-color: oklch(from currentColor calc((0.65 - l) * infinity) 0 h);
+	/* Black or white on the current color, whichever reads. The threshold is the
+	   relative luminance where the two give the same contrast, Y = (sqrt(21) - 1) / 20,
+	   so the one that is picked always clears 4.5:1. Lightness would be the wrong
+	   input: it is perceptual, and it parts ways with luminance per hue. `/ 1` keeps
+	   the text opaque on a translucent fill. Replaced by contrast-color() below
+	   wherever the browser has it. */
+	--semantics-content-contrast-color: color(from currentColor xyz clamp(0, (0.1791 / y - 1) * infinity, 1) clamp(0, (0.1791 / y - 1) * infinity, 1) clamp(0, (0.1791 / y - 1) * infinity, 1) / 1);
 	--semantics-content-accent-color: light-dark(var(--primitives-color-accent-750), var(--primitives-color-accent-650));
 	--semantics-content-critical-color: light-dark(var(--primitives-color-critical-600), var(--primitives-color-critical-650));
 	--semantics-content-warning-color: light-dark(var(--primitives-color-warning-600), var(--primitives-color-warning-650));
@@ -2026,4 +2032,14 @@
 
 :root[data-scheme="dark"] {
 	color-scheme: dark;
+}
+
+/* The browser's own pick, wherever it exists: contrast-color() is the same
+   question asked of the engine, which knows the rendered color rather than the
+   one we can reach in a formula. The luminance calculation above stays as the
+   answer for the browsers that do not have it yet. */
+@supports (color: contrast-color(red)) {
+	:root {
+		--semantics-content-contrast-color: contrast-color(currentColor);
+	}
 }
