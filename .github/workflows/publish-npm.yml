@@ -1,18 +1,21 @@
 name: Publish to npmjs
 
-# Requires repository secret NPM_TOKEN: a granular npmjs token with
-# read+write access to the @nldd scope and 2FA bypass enabled.
-# Without it, the publish step fails with E401/EAUTH at runtime.
+# Publishing runs on npmjs trusted publishing: the package trusts this
+# repository and this workflow file by name, and npm exchanges the GitHub OIDC
+# token for publish rights. There is no npm token in this repository, and the
+# trust is registered under Settings > Trusted Publisher on the package, where
+# the workflow filename below has to match. Rename this file and publishing
+# stops until that field is updated.
 #
-# The work is split over two jobs on purpose. `npm run build` executes
-# third-party code by design - vite, tsc, the custom-elements analyzer and
-# every plugin they load. NPM_TOKEN must therefore not be reachable from
-# the job that does that. `build` holds no publish credentials and hands over
-# a finished tarball; `publish` holds the token and runs no dependency code.
-# --ignore-scripts closes the install moment; this closes the token exposure of
-# the build moment. It does not make the build output trustworthy - a hijacked
-# build dependency can still poison dist/, and that dist/ goes into the tarball
-# the provenance vouches for.
+# The work is still split over two jobs. `npm run build` executes third-party
+# code by design - vite, tsc, the custom-elements analyzer and every plugin
+# they load. `build` hands over a finished tarball and can request no
+# credentials of its own: id-token: write is granted to `publish` alone, so an
+# OIDC token can only be minted where nothing but npm runs. --ignore-scripts
+# closes the install moment; this closes the credential exposure of the build
+# moment. It does not make the build output trustworthy - a hijacked build
+# dependency can still poison dist/, and that dist/ goes into the tarball the
+# provenance vouches for.
 
 on:
   push:
@@ -90,9 +93,9 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       contents: read
-      # Nodig voor `npm publish --provenance`: alleen met deze permissie kan npm
-      # een OIDC-token opvragen en dat bij Sigstore inruilen voor een
-      # signing-certificaat. Staat bewust alleen op deze job.
+      # Draagt twee dingen: npm ruilt dit token bij Sigstore in voor een
+      # signing-certificaat (`--provenance`), en npmjs ruilt het in voor
+      # publicatierechten (trusted publishing). Staat bewust alleen op deze job.
       id-token: write
     steps:
       # The one place the version is written by hand, and it cannot be otherwise
@@ -118,7 +121,8 @@ jobs:
       # houdt die vlag in npm 10 wél de pack- en publish-scripts tegen, maar
       # `prepare` niet. Een tarball-publish zet geen `gitHead` in de metadata;
       # de provenance legt de commit-sha al vast.
+      # Geen NODE_AUTH_TOKEN: npm haalt z'n rechten uit het OIDC-token van de
+      # job. Zet je hier alsnog een token neer, dan probeert npm die eerst, en
+      # dan zegt een verlopen token 404 terwijl de trusted publisher klaarstaat.
       - name: Publish to npmjs
         run: npm publish ./*.tgz --provenance --ignore-scripts
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
