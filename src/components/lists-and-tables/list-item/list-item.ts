@@ -1,4 +1,5 @@
 import { LitElement } from 'lit';
+import type { PropertyValues } from 'lit';
 import { customElement, property, query, state } from 'lit/decorators.js';
 import { reflectNonDefault } from '../../../utilities/reflect-non-default.js';
 import { listItemStyles } from './list-item.styles.js';
@@ -453,13 +454,24 @@ export class NLDDListItem extends withTranslations(LitElement, nlddListItemTrans
 		this.classList.toggle('has-trailing-segment', isSegment(ownChildren[ownChildren.length - 1]));
 	}
 
+	override willUpdate(changed: PropertyValues) {
+		super.willUpdate(changed);
+		// Before the first render, so the row is painted with the list's variant and
+		// type right away. Setting them in `firstUpdated` asks for a second render
+		// from inside the first.
+		if (this.hasUpdated || this.hasAttribute('data-nldd-clone')) return;
+		this._syncWithList();
+	}
+
 	override firstUpdated() {
 		// Clones are visual-only copies inside nldd-list's shadow root: their
 		// classes and stamped attributes came along with cloneNode, so no sync.
 		if (this.hasAttribute('data-nldd-clone')) return;
-		this._syncWithList();
 		this._observeChildrenSlot();
-		this._updateChildren();
+		// Read out of the row's own shadow DOM, so not before the first render,
+		// and deferred out of the update cycle: setting the state here would
+		// schedule a second update from inside the first.
+		queueMicrotask(() => this._updateChildren());
 		this._relayExpanded();
 		// First measurement after the first render: the marker offsets need
 		// laid-out boxes.
@@ -579,8 +591,8 @@ export class NLDDListItem extends withTranslations(LitElement, nlddListItemTrans
 	}
 
 	/**
-	 * Reads the initial variant + type from the closest parent nldd-list, once in
-	 * firstUpdated, so the item is styled correctly on first paint. Later changes
+	 * Reads the initial variant + type from the closest parent nldd-list, before
+	 * the first render, so the item is styled correctly on first paint. Later changes
 	 * are PUSHED by the list: its `updated` / `_updateItems` calls `_applyVariant`
 	 * and `_applyParentType` on every item, so the list is the single source of
 	 * truth and a runtime variant/type switch (or an item moved to another list)

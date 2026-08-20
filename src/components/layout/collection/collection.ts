@@ -94,7 +94,7 @@ export class NLDDCollection extends LitElement {
 
 	_onFooterSlotChange = (e: Event): void => {
 		const slot = e.target as HTMLSlotElement;
-		this._hasFooterSlot = slot.assignedElements().length > 0;
+		queueMicrotask(() => { this._hasFooterSlot = slot.assignedElements().length > 0; });
 	};
 
 	@query('.collection__items')
@@ -217,10 +217,14 @@ export class NLDDCollection extends LitElement {
 		this._isScrollable = false;
 	}
 
+	// The first slotchange arrives the moment the first render commits, so the
+	// count is set in a microtask: state written there would otherwise schedule a
+	// second update on top of the one that just finished, which Lit reports on
+	// every page that holds a collection.
 	_onSlotChange(e: Event): void {
 		const slot = e.target as HTMLSlotElement;
 		const items = slot.assignedElements() as HTMLElement[];
-		this._totalCount = items.length;
+		queueMicrotask(() => { this._totalCount = items.length; });
 		if (this.layout === 'horizontal-scroll') {
 			// Adding/removing items changes the content width (scrollWidth) but not
 			// the scroll container's own box, so the ResizeObserver never fires.

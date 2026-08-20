@@ -268,26 +268,47 @@ export class NLDDList extends LitElement {
 
 	// — Lifecycle ————————————————————————————————————————————————————————————
 
+	/**
+	 * What the first render needs to know, read before it happens.
+	 *
+	 * All three of these used to be set in `firstUpdated`, from the slots in the
+	 * shadow root. Setting reactive state there asks for a second render the
+	 * moment the first one finished, which Lit reports on every page as "an
+	 * update scheduled after an update completed". The same three answers are in
+	 * the light DOM, which is there before the first render, so they are read
+	 * from the children instead. The slotchange listeners below keep them true
+	 * afterwards, and by then a second render is what you actually want.
+	 */
+	override willUpdate(changed: Map<string, unknown>) {
+		// Derived state belongs before the render that reads it. In `updated` the
+		// merge lands after the first render has finished, and asks for a second
+		// one on the spot.
+		if (changed.has('translations') || !this.hasUpdated) {
+			this._mergedTranslations = { ...nlddListTranslations, ...this.translations };
+		}
+		if (this.hasUpdated) return;
+		this._updateEmpty();
+		this._hasToolbar = this.querySelector(':scope > [slot="toolbar"]') !== null;
+		this._hasSearchBarEnd = this.querySelector(':scope > [slot="search-bar-end"]') !== null;
+	}
+
 	override firstUpdated() {
+		// Deferred: the browser fires the first slotchange the moment this render
+		// commits, and state set there is an update scheduled on top of the one
+		// that just finished. willUpdate already read these from the light DOM, so
+		// the first event has nothing to add anyway; the later ones do.
 		const slot = this.shadowRoot?.querySelector<HTMLSlotElement>('slot:not([name])');
-		slot?.addEventListener('slotchange', () => {
+		slot?.addEventListener('slotchange', () => queueMicrotask(() => {
 			this._updateItems();
 			this._updateEmpty();
-		});
+		}));
 		this._updateItems();
-		this._updateEmpty();
 		this._warnArrowNav();
 
 		const toolbarSlot = this.shadowRoot?.querySelector<HTMLSlotElement>('slot[name="toolbar"]');
-		const syncToolbar = () => { this._hasToolbar = (toolbarSlot?.assignedElements().length ?? 0) > 0; };
-		toolbarSlot?.addEventListener('slotchange', syncToolbar);
-		syncToolbar();
-
-		// The search-bar-end slot only renders in listbox; sync its initial presence
-		// here. The @slotchange binding in the template keeps it updated afterwards
-		// and re-binds whenever the search bar (re)renders on a type change.
-		const searchBarEndSlot = this.shadowRoot?.querySelector<HTMLSlotElement>('slot[name="search-bar-end"]');
-		if (searchBarEndSlot) this._hasSearchBarEnd = searchBarEndSlot.assignedElements().length > 0;
+		toolbarSlot?.addEventListener('slotchange', () => queueMicrotask(() => {
+			this._hasToolbar = toolbarSlot.assignedElements().length > 0;
+		}));
 
 		// Watch for rows being added or removed, for `hidden` toggles on them
 		// (consumer-driven filtering) and for branches opening and closing, since
@@ -359,9 +380,6 @@ export class NLDDList extends LitElement {
 		}
 		if (changed.has('variant')) {
 			this._updateItemContext();
-		}
-		if (changed.has('translations')) {
-			this._mergedTranslations = { ...nlddListTranslations, ...this.translations };
 		}
 		if (changed.has('type')) {
 			this._applyHostType();
@@ -602,7 +620,8 @@ export class NLDDList extends LitElement {
 	 *  bar gap) collapses when empty. Bound in the template so it follows the slot
 	 *  even though the search bar only renders in listbox mode. */
 	private _onSearchBarEndSlotChange = (event: Event) => {
-		this._hasSearchBarEnd = (event.target as HTMLSlotElement).assignedElements().length > 0;
+		const slot = event.target as HTMLSlotElement;
+		queueMicrotask(() => { this._hasSearchBarEnd = slot.assignedElements().length > 0; });
 	};
 
 	private _onSearchFocus = () => {
