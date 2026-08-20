@@ -42,8 +42,14 @@ export const badgeStyles = css`
 
 	/* ## Color */
 
+	/* color on the host, for the same reason as custom-color below: the contrast
+	   token reads currentColor, so without this the flip is computed against the
+	   inherited color while the fill comes from the context channel. A row that
+	   sets the channel to white over dark text then paints white on white. */
 	:host([color="inherit"]) {
-		--_background-color: var(--context-content-color, currentColor);
+		color: var(--context-content-color, currentColor);
+
+		--_background-color: currentColor;
 		--_border-color: transparent;
 		--_content-color: var(--semantics-content-contrast-color);
 	}

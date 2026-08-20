@@ -165,3 +165,42 @@ describe('nldd-badge', () => {
 		expect(el.style.getPropertyValue('--_custom-color')).toBe('');
 	});
 });
+
+describe('nldd-badge color="inherit"', () => {
+	let el: HTMLElement;
+
+	afterEach(() => {
+		if (el) cleanup(el);
+	});
+
+	it('flips the text against the fill it actually paints, not against the color it inherits', async () => {
+		// A row hands its content color down through the context channel while its
+		// own text color stays what it was. The two used to disagree, and a white
+		// channel over dark text painted white on white.
+		// The contrast token lives in variables.css, which the test environment does
+		// not load, so the fixture carries the same formula.
+		el = await fixture(`
+			<div style="color: rgb(0, 0, 0); --context-content-color: rgb(255, 255, 255); --semantics-content-contrast-color: oklch(from currentColor calc((0.65 - l) * infinity) 0 h);">
+				<nldd-badge color="inherit" text="3"></nldd-badge>
+			</div>
+		`);
+		const badge = el.querySelector('nldd-badge')!;
+		await waitForUpdate(badge);
+		const shape = badge.shadowRoot!.querySelector('.badge')!;
+		const text = badge.shadowRoot!.querySelector('.badge__text')!;
+		expect(getComputedStyle(shape).backgroundColor).toBe('rgb(255, 255, 255)');
+		expect(getComputedStyle(text).color).not.toBe('rgb(255, 255, 255)');
+	});
+
+	it('falls back to the inherited color where no channel is set', async () => {
+		el = await fixture(`
+			<div style="color: rgb(0, 0, 0);">
+				<nldd-badge color="inherit" text="3"></nldd-badge>
+			</div>
+		`);
+		const badge = el.querySelector('nldd-badge')!;
+		await waitForUpdate(badge);
+		const shape = badge.shadowRoot!.querySelector('.badge')!;
+		expect(getComputedStyle(shape).backgroundColor).toBe('rgb(0, 0, 0)');
+	});
+});

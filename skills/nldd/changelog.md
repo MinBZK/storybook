@@ -75,6 +75,8 @@ here; consult the commit history if you need that level of detail.
 
 ### Fixed
 
+- **`color="inherit"` on a badge or an avatar could paint white on white.** The fill came from the content channel around it, while the contrast flip that decides between black and white text read the inherited `color`. Those are the same value in most places, so it went unnoticed until a row set the channel to white over dark text: the badge then took a white fill and, from the dark inherited color, white text as well. Both components now set their own `color` to the fill first, the way `custom-color` already did, so the flip is computed against what is actually painted.
+
 - **An overlay is where the app's layout context ends.** A sheet or dialog inherited the app's scroll mode, so a short page inside an overlay could float its sticky footer mid-screen. An overlay now starts its own context.
 
 ## [0.8.82](https://github.com/MinBZK/storybook/compare/v0.8.81...v0.8.82) (2026-08-11)

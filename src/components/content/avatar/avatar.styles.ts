@@ -43,8 +43,12 @@ export const avatarStyles = css`
 	   nldd-activity-indicator. The fill (not the text) color must resolve here,
 	   so .avatar keeps its inherited color and the contrast text lives on the
 	   child elements. */
+	/* color on the host: the contrast token reads currentColor, so the flip has to
+	   be computed against the same value the fill uses. */
 	:host([color="inherit"]) {
-		--_background-color: var(--context-content-color, currentColor);
+		color: var(--context-content-color, currentColor);
+
+		--_background-color: currentColor;
 		--_content-color: var(--semantics-content-contrast-color);
 	}
 
