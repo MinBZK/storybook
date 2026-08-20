@@ -12,6 +12,7 @@ export function switchTemplate(component: NLDDSwitch): TemplateResult {
 			?disabled=${component.disabled}
 			value=${component.value}
 			aria-label=${component.accessibleLabel || nothing}
+			tabindex=${component.noTab ? '-1' : nothing}
 			@change=${component._handleChange}
 			@pointerdown=${component._handlePointerDown}
 			@pointermove=${component._handlePointerMove}

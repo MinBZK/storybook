@@ -21,6 +21,7 @@ export function radioButtonTemplate(component: NLDDRadioButton): TemplateResult 
 			name=${component.name || ''}
 			value=${component.value}
 			aria-label=${component.accessibleLabel || nothing}
+			tabindex=${component.noTab ? '-1' : nothing}
 			@change=${component._handleChange}
 		>
 		<div class="radio-button__outer-shape"

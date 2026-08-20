@@ -157,3 +157,29 @@ describe('nldd-link', () => {
 		expect(el.shadowRoot!.querySelector('.link__start-icon')).not.toBeNull();
 	});
 });
+
+describe('nldd-link no-tab', () => {
+	let el: HTMLElement;
+
+	afterEach(() => {
+		if (el) cleanup(el);
+	});
+
+	it('takes the link out of the tab order', async () => {
+		el = await fixture<NLDDLink>('<nldd-link href="/x" text="X" no-tab></nldd-link>');
+		await waitForUpdate(el);
+		expect(el.shadowRoot!.querySelector('a')!.getAttribute('tabindex')).toBe('-1');
+	});
+
+	it('wins over the tab stop a disabled link keeps', async () => {
+		el = await fixture<NLDDLink>('<nldd-link href="/x" text="X" disabled no-tab></nldd-link>');
+		await waitForUpdate(el);
+		expect(el.shadowRoot!.querySelector('a')!.getAttribute('tabindex')).toBe('-1');
+	});
+
+	it('is in the tab order by default (no tabindex attribute)', async () => {
+		el = await fixture<NLDDLink>('<nldd-link href="/x" text="X"></nldd-link>');
+		await waitForUpdate(el);
+		expect(el.shadowRoot!.querySelector('a')!.hasAttribute('tabindex')).toBe(false);
+	});
+});

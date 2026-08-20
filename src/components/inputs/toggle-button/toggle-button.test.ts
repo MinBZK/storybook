@@ -508,3 +508,29 @@ describe('nldd-toggle-button – tooltip', () => {
 		expect(deepActiveElement()).toBe(el.shadowRoot!.querySelector('button.toggle-button'));
 	});
 });
+
+describe('nldd-toggle-button no-tab', () => {
+	let el: HTMLElement;
+
+	afterEach(() => {
+		if (el) cleanup(el);
+	});
+
+	it('takes the button out of the tab order', async () => {
+		el = await fixture<NLDDToggleButton>('<nldd-toggle-button text="X" no-tab></nldd-toggle-button>');
+		await waitForUpdate(el);
+		expect(el.shadowRoot!.querySelector('button.toggle-button')!.getAttribute('tabindex')).toBe('-1');
+	});
+
+	it('takes the checkbox variant out of the tab order', async () => {
+		el = await fixture<NLDDToggleButton>('<nldd-toggle-button text="X" type="checkbox" no-tab></nldd-toggle-button>');
+		await waitForUpdate(el);
+		expect(el.shadowRoot!.querySelector('.toggle-button__input')!.getAttribute('tabindex')).toBe('-1');
+	});
+
+	it('is in the tab order by default (no tabindex attribute)', async () => {
+		el = await fixture<NLDDToggleButton>('<nldd-toggle-button text="X"></nldd-toggle-button>');
+		await waitForUpdate(el);
+		expect(el.shadowRoot!.querySelector('button.toggle-button')!.hasAttribute('tabindex')).toBe(false);
+	});
+});

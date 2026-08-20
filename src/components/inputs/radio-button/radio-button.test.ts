@@ -157,3 +157,23 @@ describe('nldd-radio-button – change event', () => {
 		expect(deepActiveElement()).toBe(el.shadowRoot!.querySelector('.radio-button__input'));
 	});
 });
+
+describe('nldd-radio-button no-tab', () => {
+	let el: HTMLElement;
+
+	afterEach(() => {
+		if (el) cleanup(el);
+	});
+
+	it('takes the input out of the tab order', async () => {
+		el = await fixture<NLDDRadioButton>('<nldd-radio-button label="X" no-tab></nldd-radio-button>');
+		await waitForUpdate(el);
+		expect(el.shadowRoot!.querySelector('.radio-button__input')!.getAttribute('tabindex')).toBe('-1');
+	});
+
+	it('is in the tab order by default (no tabindex attribute)', async () => {
+		el = await fixture<NLDDRadioButton>('<nldd-radio-button label="X"></nldd-radio-button>');
+		await waitForUpdate(el);
+		expect(el.shadowRoot!.querySelector('.radio-button__input')!.hasAttribute('tabindex')).toBe(false);
+	});
+});

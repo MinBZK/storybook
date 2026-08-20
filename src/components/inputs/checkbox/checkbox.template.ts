@@ -23,6 +23,7 @@ export function checkboxTemplate(component: NLDDCheckbox): TemplateResult {
 			name=${component.name || ''}
 			value=${component.value}
 			aria-label=${component.accessibleLabel || nothing}
+			tabindex=${component.noTab ? '-1' : nothing}
 			@change=${component._handleChange}
 		>
 		<div class="checkbox__box"

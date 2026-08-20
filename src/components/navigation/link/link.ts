@@ -26,6 +26,7 @@
  * @attr {string} end-icon - Icoon na de tekst
  * @attr {string} accessible-label - Toegankelijk label voor screen readers
  * @attr {boolean} disabled - Uitgeschakelde staat
+ * @attr {boolean} no-tab - Takes the control out of the tab order (tabindex="-1"), for a control owned by a roving container (a row of an nldd-list, where the arrow keys move between rows) that manages focus itself. Still mouse- and script-focusable.
  * @attr {object} translations - Overschrijf vertaalsleutels (bijv. de "Opent in nieuw tabblad"-melding); niet-gezette sleutels vallen terug op Nederlands.
  *
  * @slot - Link tekst (alternatief voor text attribuut)
@@ -74,6 +75,13 @@ export class NLDDLink extends withTranslations(LitElement, nlddLinkTranslations)
 
 	@property({ type: Boolean, reflect: true })
 	disabled = false;
+	/** Take the control out of the tab order (`tabindex="-1"`) — for a control
+	 *  owned by a roving container (an `nldd-list` sets it on the rows that are
+	 *  not the current one) that manages focus itself. Still mouse- and
+	 *  script-focusable. */
+	@property({ type: Boolean, reflect: true, attribute: 'no-tab' })
+	noTab = false;
+
 
 	private _handleClick(e: MouseEvent): void {
 		if (this.disabled) {

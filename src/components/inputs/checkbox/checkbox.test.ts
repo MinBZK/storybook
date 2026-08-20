@@ -238,3 +238,23 @@ describe('nldd-checkbox – accessibility', () => {
 		expect(deepActiveElement()).toBe(el.shadowRoot!.querySelector('.checkbox__input'));
 	});
 });
+
+describe('nldd-checkbox no-tab', () => {
+	let el: HTMLElement;
+
+	afterEach(() => {
+		if (el) cleanup(el);
+	});
+
+	it('takes the input out of the tab order', async () => {
+		el = await fixture<NLDDCheckbox>('<nldd-checkbox label="X" no-tab></nldd-checkbox>');
+		await waitForUpdate(el);
+		expect(el.shadowRoot!.querySelector('.checkbox__input')!.getAttribute('tabindex')).toBe('-1');
+	});
+
+	it('is in the tab order by default (no tabindex attribute)', async () => {
+		el = await fixture<NLDDCheckbox>('<nldd-checkbox label="X"></nldd-checkbox>');
+		await waitForUpdate(el);
+		expect(el.shadowRoot!.querySelector('.checkbox__input')!.hasAttribute('tabindex')).toBe(false);
+	});
+});

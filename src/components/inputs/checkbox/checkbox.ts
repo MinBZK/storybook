@@ -4,6 +4,7 @@
  * @element nldd-checkbox
  * @attr {boolean} checked - Checked state
  * @attr {boolean} disabled - Disabled state
+ * @attr {boolean} no-tab - Takes the control out of the tab order (tabindex="-1"), for a control owned by a roving container (a row of an nldd-list, where the arrow keys move between rows) that manages focus itself. Still mouse- and script-focusable.
  * @attr {boolean} decorative - Renders the box without the input: no focus, no
  *   name/value, nothing announced. For a control that owns the state elsewhere,
  *   such as a list row that is itself the checkbox; putting a real input in
@@ -40,6 +41,13 @@ export class NLDDCheckbox extends FormAssociated(LitElement) {
 
 	@property({ type: Boolean, reflect: true })
 	disabled = false;
+	/** Take the control out of the tab order (`tabindex="-1"`) — for a control
+	 *  owned by a roving container (an `nldd-list` sets it on the rows that are
+	 *  not the current one) that manages focus itself. Still mouse- and
+	 *  script-focusable. */
+	@property({ type: Boolean, reflect: true, attribute: 'no-tab' })
+	noTab = false;
+
 
 	@property({ type: Boolean, reflect: true })
 	indeterminate = false;
