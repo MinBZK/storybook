@@ -43,7 +43,7 @@ here; consult the commit history if you need that level of detail.
 
 - **Icons for a stock, a checklist, a board and printing.** `boxes-3` for a stock of things you own (`inventory`), `clipboard-bullet-list` for that same list read as a checklist (`inventory-alt`), `kanban-columns` for a board of work in columns (`kanban`), and `printer` for printing (`print`).
 
-- **The three task states as one series.** `circle` for to do, `circle-circle` for doing and `check-mark-circle` for done, aliased as `to-do` and `doing`, matching `done`. `minus-circle` is in the set as well, the same ring with a bar across it. That bar reads as "no entry" everywhere else, so keep it away from task states. `circle` doubles as `no-priority`: the same ring as `low-priority` through `high-priority` with nothing in it, so that column keeps reading as a count from zero up.
+- **The three task states as one series.** `circle` for to do, `circle-circle` for doing and `check-mark-circle` for done, aliased as `to-do` and `doing`, matching `done`. `minus-circle` is in the set as well: the same ring with a bar across it. `circle` doubles as `no-priority`: the same ring as `low-priority` through `high-priority` with nothing in it, so that column keeps reading as a count from zero up.
 
 - **A light weight of five state icons, drawn for 32 pixels.** `circle-light`, `circle-circle-light`, `check-mark-circle-light`, `clock-light` and `slash-circle-light` keep the 2-pixel line on a 32 view-box instead of a 24 one, so the line stays 2 pixels at the size they are drawn for rather than growing to 2.7. Use them where a state icon leads a row at 32, and reach for the regular set below that. Aliased as `to-do-light`, `doing-light`, `done-light` and `blocked-light`.
 
