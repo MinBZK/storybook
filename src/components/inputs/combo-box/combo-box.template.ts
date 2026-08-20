@@ -34,12 +34,12 @@ export function comboBoxTemplate(component: NLDDComboBox): TemplateResult {
 		<div class="combo-box">
 			<input class="combo-box__input"
 				type="text"
-				role="combobox"
+				role=${component.readonly ? nothing : 'combobox'}
 				aria-label=${component.accessibleLabel || nothing}
-				aria-expanded=${component._isOpen ? 'true' : 'false'}
-				aria-controls=${component._menuId}
-				aria-autocomplete="list"
-				aria-haspopup="listbox"
+				aria-expanded=${component.readonly ? nothing : (component._isOpen ? 'true' : 'false')}
+				aria-controls=${component.readonly ? nothing : component._menuId}
+				aria-autocomplete=${component.readonly ? nothing : 'list'}
+				aria-haspopup=${component.readonly ? nothing : 'listbox'}
 				aria-activedescendant=${component._highlightedId || nothing}
 				aria-invalid=${component.invalid ? 'true' : nothing}
 				.value=${component.text}

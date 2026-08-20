@@ -25,7 +25,7 @@ here; consult the commit history if you need that level of detail.
 
 - **A color the system does not know, on a badge and an icon.** Some colors are not a category but a fact: the jacket of a cable is blue whatever the house style does. `custom-color` on `nldd-badge` and `nldd-icon` takes any CSS color value and wins over `color`, so the vocabulary of `color` stays closed and one search shows where an app steps outside the palette. On the badge, what sits on the color turns white or black, whichever contrasts better.
 
-- **Thirty icons added, four redrawn.** Added: `cpu`, `gpu`, `memory-chip`, `psu`, `pci-card`, `transceiver-module`, `rack-server`, `rack-servers`, `storage`, `ssd-hard-drive`, `external-hard-drive`, `network-switch`, `kvm-switch`, `power-plug`, `lightning`, `snowflake`, `boxes-3`, `clipboard-bullet-list`, `kanban-columns`, `printer`, `shield-arrow-right-arrow-left`, `network-patch-mapping`, `circle`, `circle-circle`, `minus-circle`, `circle-light`, `circle-circle-light`, `check-mark-circle-light`, `clock-light` and `slash-circle-light`. Redrawn: `shield`, `shield-check-mark`, `shield-lock` and `psu`.
+- **Thirty icons added, three redrawn.** Added: `cpu`, `gpu`, `memory-chip`, `psu`, `pci-card`, `transceiver-module`, `rack-server`, `rack-servers`, `storage`, `ssd-hard-drive`, `external-hard-drive`, `network-switch`, `kvm-switch`, `power-plug`, `lightning`, `snowflake`, `boxes-3`, `clipboard-bullet-list`, `kanban-columns`, `printer`, `shield-arrow-right-arrow-left`, `network-patch-mapping`, `circle`, `circle-circle`, `minus-circle`, `circle-light`, `circle-circle-light`, `check-mark-circle-light`, `clock-light` and `slash-circle-light`. Redrawn: `shield`, `shield-check-mark` and `shield-lock`.
 
 ### Breaking
 
@@ -67,13 +67,15 @@ here; consult the commit history if you need that level of detail.
 
 - **The three shields are redrawn on one silhouette.** `shield`, `shield-check-mark` and `shield-lock` shared a pointed crest built from arcs, and now stand on the same flat-topped, rolled-edge shield as `shield-arrow-right-arrow-left`. That shield is wider at the top and flatter, and that is the reason for it: more fits on it. A check mark, a lock or two arrows passing each other need room, and on a pointed crest such a figure runs into the slanted edges. Four shields that differ only in what they carry, rather than a family that splits the moment a fourth arrives.
 
-- **`psu` is redrawn.** The socket sits lower in the housing, so the plug reads as seated rather than floating.
-
 - **A read-only field takes its controls away instead of dimming them.** A dimmed control invites a click that does nothing. The field keeps its value and its label, and drops the spinner, the picker and the clear button.
 
 - **A subtitle in `nldd-title` is one step larger.** It sat two steps under the title, which read as a caption rather than as the line that belongs to it.
 
 ### Fixed
+
+- **Switching a row off now moves the tab stop with it.** A row that carried the list's single tab stop kept it after `disabled` landed on it, so Tab reached a row that answers to nothing. The arrow keys already skipped it, and an unrelated change happened to repair it, which is the worst kind of bug: it fixes itself while you look at it. The row re-runs the roving when its own `disabled` changes, and the list watches the attribute too.
+
+- **A read-only combo box no longer announces a list it cannot open.** The picker button and the menu were already gone, but the input kept `role="combobox"` with `aria-haspopup="listbox"`, `aria-autocomplete` and `aria-expanded`. It is a text field with a value in it, and it now says so.
 
 - **`color="inherit"` on a badge or an avatar could paint white on white.** The fill came from the content channel around it, while the contrast flip that decides between black and white text read the inherited `color`. Those are the same value in most places, so it went unnoticed until a row set the channel to white over dark text: the badge then took a white fill and, from the dark inherited color, white text as well. Both components now set their own `color` to the fill first, the way `custom-color` already did, so the flip is computed against what is actually painted.
 

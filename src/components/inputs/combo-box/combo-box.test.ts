@@ -887,3 +887,30 @@ describe('nldd-combo-box – allow-custom', () => {
 		});
 	});
 });
+
+describe('nldd-combo-box readonly aria', () => {
+	let el: HTMLElement;
+
+	afterEach(() => {
+		if (el) cleanup(el);
+	});
+
+	it('drops the combobox role and its aria when there is no menu to open', async () => {
+		el = await fixture('<nldd-combo-box readonly accessible-label="Product"></nldd-combo-box>');
+		await waitForUpdate(el);
+		const input = el.shadowRoot!.querySelector('input')!;
+		expect(input.hasAttribute('role')).toBe(false);
+		expect(input.hasAttribute('aria-haspopup')).toBe(false);
+		expect(input.hasAttribute('aria-autocomplete')).toBe(false);
+		expect(input.hasAttribute('aria-expanded')).toBe(false);
+		expect(input.hasAttribute('aria-controls')).toBe(false);
+	});
+
+	it('keeps them on a field that does open', async () => {
+		el = await fixture('<nldd-combo-box accessible-label="Product"></nldd-combo-box>');
+		await waitForUpdate(el);
+		const input = el.shadowRoot!.querySelector('input')!;
+		expect(input.getAttribute('role')).toBe('combobox');
+		expect(input.getAttribute('aria-haspopup')).toBe('listbox');
+	});
+});

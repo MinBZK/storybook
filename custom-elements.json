@@ -8230,7 +8230,7 @@
               },
               "default": "false",
               "fieldName": "readonly",
-              "description": "Read-only state: the value stays readable, selectable and in the tab order, but the menu does not open and there is nothing to clear. Use this where the value belongs to the record rather than to the form, e.g. the product an asset is an instance of."
+              "description": "Read-only state: the value stays readable, selectable and in the tab order, but the menu does not open and there is nothing to clear. The input drops its combobox role and the aria that goes with it, so assistive technology is not told about a list it cannot open. Use this where the value belongs to the record rather than to the form, e.g. the product an asset is an instance of."
             },
             {
               "name": "allow-custom",
@@ -31037,7 +31037,7 @@
                 "text": "string"
               },
               "default": "''",
-              "description": "A color of its own, as any CSS color value ('#a90061', 'oklch(0.6 0.2 20)', 'var(--brand-cable-blue)'). For a color the design system cannot know: the jacket of a cable, a color someone picked. It wins over `color`. Whatever it paints, the text and icon on top become white or black, whichever contrasts.",
+              "description": "A color of its own, as any CSS color value ('#a90061', 'oklch(0.6 0.2 20)', 'var(--brand-cable-blue)'). For a color the design system cannot know: the jacket of a cable, a color someone picked. It wins over `color`. Whatever it paints, the text and icon on top become white or black, whichever contrasts. The text on it is picked from the color's lightness, which approximates contrast rather than measuring it, so check that your own color clears 4.5:1.",
               "fieldName": "customColor"
             },
             {

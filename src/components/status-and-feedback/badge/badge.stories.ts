@@ -181,9 +181,13 @@ export const Colors = {
  *
  * `custom-color` is voor een kleur die het systeem niet kan kennen: de mantel
  * van een kabel, een kleur die iemand zelf koos. Elke CSS-kleurwaarde mag, en
- * hij wint van `color`. De tekst erop wordt wit of zwart, wat het beste
- * contrasteert, dus een lichte kleur krijgt zwarte cijfers en een donkere
- * witte.
+ * hij wint van `color`. De tekst erop wordt wit of zwart, gekozen op de
+ * lichtheid van de kleur: licht krijgt zwarte cijfers, donker witte.
+ *
+ * Dat is een benadering en geen contrastberekening. Lichtheid en relatieve
+ * luminantie lopen per tint uiteen, dus rond het omslagpunt kan de keuze net de
+ * verkeerde kant op vallen; verzadigd middenblauw is het lastigste geval. Kies
+ * je een eigen kleur, meet dan zelf of de tekst erop 4,5:1 haalt.
  */
 export const OwnColor = {
 	name: 'Inherit en custom-color',
@@ -195,7 +199,7 @@ export const OwnColor = {
 			</span>
 			<nldd-badge custom-color="#f8fafc" number="3"></nldd-badge>
 			<nldd-badge custom-color="#eab308" number="3"></nldd-badge>
-			<nldd-badge custom-color="#3b82f6" number="3"></nldd-badge>
+			<nldd-badge custom-color="#1d4ed8" number="3"></nldd-badge>
 			<nldd-badge custom-color="#374151" number="3"></nldd-badge>
 			<nldd-badge custom-color="oklch(0.6 0.2 20)" text="Eigen"></nldd-badge>
 		</div>

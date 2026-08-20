@@ -533,6 +533,14 @@ export class NLDDListItem extends withTranslations(LitElement, nlddListItemTrans
 		if (changed.has('_arrowNavigation') || changed.has('_rovingActive')) {
 			this._syncRovingTabStops();
 		}
+		// A row that switches off mid-flight stops being a stop, but the tab stop it
+		// already holds does not move by itself: a disabled anchor keeps its
+		// tabindex, so Tab would land on a row that answers to nothing until some
+		// unrelated change happened to re-run the roving.
+		if (changed.has('disabled')) {
+			this._syncRovingTabStops();
+			this._parentList?._updateRoving();
+		}
 		this._propagateSize();
 	}
 

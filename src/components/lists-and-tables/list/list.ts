@@ -300,7 +300,7 @@ export class NLDDList extends LitElement {
 				// list, and opening a branch changes which row paints last.
 				if (m.type === 'childList') return m.target === this || isRow(m.target);
 				if (m.type !== 'attributes' || !isRow(m.target)) return false;
-				if (m.attributeName === 'expanded') return true;
+				if (m.attributeName === 'expanded' || m.attributeName === 'disabled') return true;
 				return m.attributeName === 'hidden'
 					&& (m.target.parentElement === this || isRow(m.target.parentElement));
 			});
@@ -312,7 +312,7 @@ export class NLDDList extends LitElement {
 			childList: true,
 			subtree: true,
 			attributes: true,
-			attributeFilter: ['hidden', 'expanded'],
+			attributeFilter: ['hidden', 'expanded', 'disabled'],
 		});
 
 		this._applyHostType();
