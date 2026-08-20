@@ -881,7 +881,7 @@ export const MobieleActiebalk = {
 		<nldd-toolbar size="lg" label="Acties">
 			<nldd-toolbar-item slot="start" priority="10">
 				<nldd-tab-bar accessible-label="Hoofdnavigatie">
-					<nldd-tab-bar-item selected text="Home" icon="home"></nldd-tab-bar-item>
+					<nldd-tab-bar-item current text="Home" icon="home"></nldd-tab-bar-item>
 					<nldd-tab-bar-item text="Profiel" icon="profile"></nldd-tab-bar-item>
 					<nldd-tab-bar-item text="Zoeken" icon="search"></nldd-tab-bar-item>
 				</nldd-tab-bar>
