@@ -3608,7 +3608,7 @@
                 "text": "string"
               },
               "default": "''",
-              "description": "A color of its own, as any CSS color value. Handed to the styles as a\ncustom property rather than read from the attribute in CSS: `attr()` with\na type is not available everywhere yet, and this keeps one code path.",
+              "description": "Handed to the styles as a custom property rather than read from the\nattribute in CSS: `attr()` with a type is not available everywhere yet,\nand this keeps one code path.",
               "attribute": "custom-color",
               "reflects": true
             }
@@ -30926,7 +30926,7 @@
                 "text": "string"
               },
               "default": "''",
-              "description": "A color of its own, as any CSS color value. Handed to the styles as a\ncustom property rather than read from the attribute in CSS: `attr()` with\na type is not available everywhere yet, and this keeps one code path.",
+              "description": "Handed to the styles as a custom property rather than read from the\nattribute in CSS: `attr()` with a type is not available everywhere yet,\nand this keeps one code path.",
               "attribute": "custom-color",
               "reflects": true
             },

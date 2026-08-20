@@ -75,11 +75,9 @@ export class NLDDIcon extends LitElement {
 	@property({ reflect: true, converter: reflectNonDefault<IconColor>('') })
 	color: IconColor = '';
 
-	/**
-	 * A color of its own, as any CSS color value. Handed to the styles as a
-	 * custom property rather than read from the attribute in CSS: `attr()` with
-	 * a type is not available everywhere yet, and this keeps one code path.
-	 */
+	/** Handed to the styles as a custom property rather than read from the
+	 *  attribute in CSS: `attr()` with a type is not available everywhere yet,
+	 *  and this keeps one code path. */
 	@property({ reflect: true, attribute: 'custom-color', converter: reflectNonDefault<string>('') })
 	customColor = '';
 
