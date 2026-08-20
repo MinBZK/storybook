@@ -866,6 +866,14 @@
 	   the text opaque on a translucent fill. Replaced by contrast-color() below
 	   wherever the browser has it. */
 	--semantics-content-contrast-color: color(from currentColor xyz clamp(0, (0.1791 / y - 1) * infinity, 1) clamp(0, (0.1791 / y - 1) * infinity, 1) clamp(0, (0.1791 / y - 1) * infinity, 1) / 1);
+
+	/* The same question asked of the engine, which knows the rendered color
+	   rather than the one a formula can reach. Nested here so both halves of the
+	   answer stand together. */
+	@supports (color: contrast-color(red)) {
+		--semantics-content-contrast-color: contrast-color(currentColor);
+	}
+
 	--semantics-content-accent-color: light-dark(var(--primitives-color-accent-750), var(--primitives-color-accent-650));
 	--semantics-content-critical-color: light-dark(var(--primitives-color-critical-600), var(--primitives-color-critical-650));
 	--semantics-content-warning-color: light-dark(var(--primitives-color-warning-600), var(--primitives-color-warning-650));
@@ -2032,14 +2040,4 @@
 
 :root[data-scheme="dark"] {
 	color-scheme: dark;
-}
-
-/* The browser's own pick, wherever it exists: contrast-color() is the same
-   question asked of the engine, which knows the rendered color rather than the
-   one we can reach in a formula. The luminance calculation above stays as the
-   answer for the browsers that do not have it yet. */
-@supports (color: contrast-color(red)) {
-	:root {
-		--semantics-content-contrast-color: contrast-color(currentColor);
-	}
 }
