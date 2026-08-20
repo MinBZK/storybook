@@ -9,6 +9,7 @@ import '../cells/icon-cell/icon-cell.js';
 import '../../content/icon/icon.js';
 import '../../inputs/checkbox/checkbox.js';
 import '../../actions/icon-button/icon-button.js';
+import '../../actions/menu/menu.js';
 
 /** Stories are flat markup, so the demo state lives here: a disclosure segment
  *  flips the row's `expanded`, a checkbox segment mirrors its own state onto the
@@ -176,6 +177,40 @@ export const LinkWithTrailingAction = {
 				</nldd-list-item>
 			`)}
 		</nldd-list>
+	`,
+};
+
+/**
+ * `expanded` op een segment zegt: wat dit segment opende staat op het scherm. Het
+ * segment blijft dan opgelicht, één trede boven hover, zodat het menu leest als
+ * iets dat aan deze rij hangt in plaats van erboven te zweven. Het menu zet die
+ * staat zelf op z'n anchor, dus in de markup hieronder staat `expanded` nergens.
+ *
+ * Open een menu en beweeg de muis terug over de "..." : de vulling blijft, en
+ * hover en indrukken komen daar bovenop.
+ */
+export const WithMenu = {
+	name: 'Segment met een menu (expanded)',
+	render: () => html`
+		<nldd-list accessible-label="Kabels">
+			${['NL-00001', 'NL-00002'].map(name => html`
+				<nldd-list-item>
+					<nldd-list-item-segment button width="full">
+						<nldd-text-cell text=${name} supporting-text="NIC 1 · Network Interface"></nldd-text-cell>
+					</nldd-list-item-segment>
+					<nldd-list-item-segment button id="menu-anchor-${name}" accessible-label="Acties voor ${name}">
+						<nldd-icon-cell size="20"><nldd-icon name="ellipsis"></nldd-icon></nldd-icon-cell>
+					</nldd-list-item-segment>
+					<nldd-spacer-cell size="12"></nldd-spacer-cell>
+				</nldd-list-item>
+			`)}
+		</nldd-list>
+		${['NL-00001', 'NL-00002'].map(name => html`
+			<nldd-menu anchor="menu-anchor-${name}" placement="bottom-end">
+				<nldd-menu-item text="Bewerken" icon="edit"></nldd-menu-item>
+				<nldd-menu-item text="Verwijderen" icon="trash"></nldd-menu-item>
+			</nldd-menu>
+		`)}
 	`,
 };
 

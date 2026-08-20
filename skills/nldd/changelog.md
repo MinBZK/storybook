@@ -53,7 +53,7 @@ here; consult the commit history if you need that level of detail.
 
 - **A ticked row is painted, the same as a ticked segment.** A row that is the checkbox itself took no fill, so the same list looked different depending on where the tick sat. A ticked row is a row you picked, so it paints what `selected` paints, with the same hover and press steps. Only together with `checkbox`.
 
-- **A segment stays lit while what it opened is on screen.** `expanded` on a segment set `aria-expanded` and turned a chevron, but left the segment looking untouched, so a menu hanging off one row floated over the list without saying which row it belonged to. It now paints one step above hover (`--components-list-item-is-expanded-background-color`), and after the hover rule, so the pointer cannot dim it while the menu is open.
+- **A segment stays lit while what it opened is on screen.** `expanded` on a segment set `aria-expanded` and turned a chevron, but left the segment looking untouched, so a menu hanging off one row floated over the list without saying which row it belonged to. It now paints the same fill as a picked row (`--components-list-item-is-expanded-background-color`, two steps above hover), and after the hover rule, so the pointer cannot dim it while the menu is open.
 
 - **`no-tab` on `nldd-button`.** The same property `nldd-icon-button` already had: take the button out of the tab order (`tabindex="-1"` on the button in the shadow root) because a container around it manages focus itself. An `nldd-list` sets it on the buttons in the rows that are not the current one. Mouse and script still reach the button.
 

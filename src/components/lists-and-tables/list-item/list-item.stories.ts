@@ -137,6 +137,11 @@ export const Selected = {
  * Verder ligt elke staat op dezelfde ladder als bij de buttons: een rust-, een
  * hover- en een indruk-trede, telkens een palettrap uit elkaar. Loop er met de
  * muis en met Tab langs.
+ *
+ * De laatste rij laat het verschil zien tussen een rij die kleurt en een segment
+ * dat kleurt: `current` vult de hele rij, terwijl hover en indruk bij het segment
+ * blijven waar de muis staat. Voor `expanded`, de staat van een segment dat iets
+ * open heeft staan, zie de story van `nldd-list-item-segment`.
  */
 export const StateLadder = {
 	name: 'De staten op een rij',
@@ -157,14 +162,6 @@ export const StateLadder = {
 				</nldd-list-item-segment>
 				<nldd-list-item-segment button width="full">
 					<nldd-text-cell text="Current met segmenten: hover en indruk gelden per segment"></nldd-text-cell>
-				</nldd-list-item-segment>
-			</nldd-list-item>
-			<nldd-list-item>
-				<nldd-list-item-segment button expanded accessible-label="Menu">
-					<nldd-icon-cell size="20"><nldd-icon name="ellipsis"></nldd-icon></nldd-icon-cell>
-				</nldd-list-item-segment>
-				<nldd-list-item-segment button width="full">
-					<nldd-text-cell text="Expanded: een openstaand menu heeft z'n eigen drie treden"></nldd-text-cell>
 				</nldd-list-item-segment>
 			</nldd-list-item>
 		</nldd-list>
