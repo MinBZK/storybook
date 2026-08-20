@@ -210,13 +210,8 @@ export const titleStyles = css`
 		overflow-wrap: anywhere !important;
 	}
 
-	/* balance, not pretty: a heading is a handful of words, so evening out the
-	   line lengths reads better than only protecting the last line.
-	 *
-	 * The measure is in ch, so one value covers every size: ch scales with the
-	 * font, and 40 characters stays 40 characters whether the title is 18px or
-	 * 52px. It only bites in a wide container — inside a card or a column the
-	 * box is already narrower than the cap. */
+	/* The measure is in ch, so one value covers every size: ch scales with the
+	   font, and 40 characters stays 40 characters at 18px and at 52px. */
 	::slotted(:not([slot])) {
 		${slottedReset}
 		${inheritedTextReset}
@@ -228,9 +223,6 @@ export const titleStyles = css`
 		text-wrap: balance !important;
 	}
 
-	/* One step up from the overline: a subtitle is a sentence you read, where an
-	   overline is a label you glance at. At body-sm it disappeared under a
-	   display-sized title. */
 	::slotted([slot="subtitle"]) {
 		${slottedReset}
 		${inheritedTextReset}
@@ -240,18 +232,12 @@ export const titleStyles = css`
 		overflow-wrap: anywhere !important;
 	}
 
-	/* The two smallest titles keep the smaller subtitle: size 6 is body-md
-	   itself, so a subtitle at that size would be as big as the title above it. */
 	:host([size="5"]) ::slotted([slot="subtitle"]),
 	:host([size="6"]) ::slotted([slot="subtitle"]) {
 		font: var(--primitives-font-body-sm-regular-tight) !important;
 	}
 
-	/* color="inherit": follow the surface's text color (e.g. a
-	   filled-categories panel that sets a pure white/black content color);
-	   overline and subtitle take the same color at the system-wide
-	   secondary opacity tier. !important matches the hardened slotted
-	   rules above. */
+	/* !important matches the hardened slotted rules above. */
 
 	:host([color="inherit"]) ::slotted(:not([slot])) {
 		color: inherit !important;

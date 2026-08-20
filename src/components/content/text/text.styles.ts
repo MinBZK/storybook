@@ -52,11 +52,9 @@ export const textStyles = css`
 		--_font-weight: var(--primitives-font-weight-body-bold);
 	}
 
-	/* Emphasis inside the run keeps the weight from the scale rather than the
-	   browser's own "bolder", which is relative: from medium it lands on 700 and
-	   from bold it asks for a weight this font does not have, so the browser
-	   thickens the glyphs itself. ::slotted reaches direct children only —
-	   anything richer than a word or two of emphasis belongs in nldd-rich-text. */
+	/* Not the browser's "bolder", which is relative: from medium it lands on 700
+	   and from bold it asks for a weight this font does not have, so the browser
+	   thickens the glyphs itself. */
 	::slotted(strong),
 	::slotted(b) {
 		color: inherit;
@@ -81,9 +79,6 @@ export const textStyles = css`
 
 	/* # Color */
 
-	/* The context channels first: inside a list item, a menu or a table the row
-	   sets them and moves them on hover, so text that sits there travels with it.
-	   Standalone they are unset and the semantic color answers. */
 	:host([color="secondary"]) {
 		--_color: var(--context-content-secondary-color, var(--semantics-content-secondary-color));
 	}
@@ -104,8 +99,6 @@ export const textStyles = css`
 		--_color: var(--semantics-content-critical-color);
 	}
 
-	/* For text on a painted surface: it takes the color it inherits, whatever the
-	   surface decided that should be. */
 	:host([color="inherit"]) {
 		--_color: inherit;
 	}

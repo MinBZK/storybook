@@ -69,10 +69,6 @@ export function comboBoxTemplate(component: NLDDComboBox): TemplateResult {
 					</div>
 				` : nothing}
 				${renderValidationIcon(component)}
-				<!-- Read-only has no list to open, so the chevron goes rather than
-				     dims: a control that can never do anything is a promise the
-				     field cannot keep. Disabled keeps its button, because that one
-				     comes back. -->
 				${component.readonly ? nothing : html`
 					<div class="combo-box__picker-button">
 						<nldd-icon-button

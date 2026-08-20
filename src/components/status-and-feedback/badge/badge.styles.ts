@@ -42,10 +42,6 @@ export const badgeStyles = css`
 
 	/* ## Color */
 
-	/* Fills in the content color around it: the channel a list item, table row
-	   or menu sets on its content, falling back to currentColor elsewhere. So a
-	   badge in a row that lights up travels with that row. The text on top is
-	   black or white, whichever contrasts with the fill. */
 	:host([color="inherit"]) {
 		--_background-color: var(--context-content-color, currentColor);
 		--_border-color: transparent;
@@ -236,11 +232,7 @@ export const badgeStyles = css`
 		}
 	}
 
-	/* Grows out of the badge and fades: it borrows the badge's own shape and
-	   colour, so it works on a dot as well as on a counter. Behind the content
-	   and inert, so it never affects layout or hit area.
-
-	   A growing box-shadow rather than a scale: scaling multiplies, so a wide
+	/* A growing box-shadow rather than a scale: scaling multiplies, so a wide
 	   badge would throw a halo that is far wider than it is tall. A spread adds
 	   the same distance on every side, whatever the badge measures.
 

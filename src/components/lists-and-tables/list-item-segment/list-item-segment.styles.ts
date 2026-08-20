@@ -65,10 +65,8 @@ export const listItemSegmentStyles = css`
 		}
 	}
 
-	/* The control is the whole action: hit area, fill and focus ring. Its inline
-	   padding is fixed at the indicator inset, the way a button owns its padding,
-	   so the fill always sits the same distance from the content. Do not add
-	   spacer cells for room or hit area — that doubles the space. */
+	/* The control owns its inline padding, fixed at the indicator inset. Do not
+	   add spacer cells for room or hit area: that doubles the space. */
 	.list-item-segment {
 		box-sizing: border-box;
 		display: flex;
@@ -83,9 +81,6 @@ export const listItemSegmentStyles = css`
 		padding-inline: var(--components-list-item-indicator-inline-inset);
 		flex-direction: row;
 		align-items: center;
-		/* Content narrower than the floor is centered in the leftover space, which
-		   is the floor's doing and not the author's. A growing action keeps its
-		   content leading: that is text, and text reads from the start. */
 		justify-content: center;
 		color: inherit;
 		text-align: start;
@@ -113,10 +108,8 @@ export const listItemSegmentStyles = css`
 		pointer-events: none;
 	}
 
-	/* The row says which fill a hovered segment takes: on a row that is lit
-	   (current, with focus in it) the neutral hover grey would read as a hole in
-	   the accent, so the row hands down a deeper accent instead. Unset on an
-	   ordinary row, where the fallback is the neutral one. */
+	/* The row hands down which fill a hovered segment takes. Unset on an ordinary
+	   row, where the fallback answers. */
 	@media (hover: hover) {
 		a.list-item-segment:hover,
 		button.list-item-segment:not(:disabled):hover {
@@ -138,18 +131,14 @@ export const listItemSegmentStyles = css`
 		--context-content-secondary-color: var(--context-list-item-active-content-color, var(--context-list-item-hovered-content-color, var(--components-list-item-is-active-content-color)));
 	}
 
-	/* While what this segment opened is on screen it stays lit, a step above
-	   hover, so the menu reads as hanging off this row rather than floating over
-	   the list. After the hover rule on purpose: the pointer usually sits on the
-	   menu by then, but hovering back over the segment must not dim it. */
+	/* After the hover rule on purpose: hovering back over the segment must not
+	   dim it while what it opened is still on screen. */
 	:host([expanded]) .list-item-segment {
 		--_background-color: var(--components-list-item-is-expanded-background-color);
 		--context-content-color: var(--components-list-item-is-expanded-content-color);
 		--context-content-secondary-color: var(--components-list-item-is-expanded-content-color);
 	}
 
-	/* An open menu is a state that stays, so it has its own two rungs above its
-	   rest step, the same as an expanded button. */
 	@media (hover: hover) {
 		:host([expanded]) a.list-item-segment:hover,
 		:host([expanded]) button.list-item-segment:not(:disabled):hover {
