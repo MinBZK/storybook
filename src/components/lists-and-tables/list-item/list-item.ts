@@ -284,6 +284,8 @@ export class NLDDListItem extends withTranslations(LitElement, nlddListItemTrans
 
 	private _warnedDegenerateDivider = false;
 
+	private _warnedChildrenOutsideTree = false;
+
 	override connectedCallback() {
 		super.connectedCallback();
 		// Before the children upgrade — see _captureAuthoredCellSizes.
@@ -788,11 +790,10 @@ export class NLDDListItem extends withTranslations(LitElement, nlddListItemTrans
 			});
 		}
 		if (!import.meta.env?.DEV) return;
-		if (this._showChildren && this._parentType !== 'tree') {
+		// Once per row: slotchange runs this again on every change to the branch.
+		if (this._showChildren && this._parentType !== 'tree' && !this._warnedChildrenOutsideTree) {
+			this._warnedChildrenOutsideTree = true;
 			console.warn('nldd-list-item: `slot="children"` nests rows, which only carries meaning in an nldd-list with type="tree". Elsewhere the group has no owning tree and assistive technology cannot read the hierarchy.');
-		}
-		if (this._showChildren && this.expanded === undefined) {
-			console.warn('nldd-list-item: a row with children needs `expanded` — without it there is no aria-expanded, so the branch reads as a leaf and the group can never be announced as collapsed.');
 		}
 	}
 
