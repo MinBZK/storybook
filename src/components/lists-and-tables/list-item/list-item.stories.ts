@@ -138,10 +138,12 @@ export const Selected = {
  * hover- en een indruk-trede, telkens een palettrap uit elkaar. Loop er met de
  * muis en met Tab langs.
  *
- * De laatste rij laat het verschil zien tussen een rij die kleurt en een segment
- * dat kleurt: `current` vult de hele rij, terwijl hover en indruk bij het segment
- * blijven waar de muis staat. Voor `expanded`, de staat van een segment dat iets
- * open heeft staan, zie de story van `nldd-list-item-segment`.
+ * De laatste twee rijen zetten die twee naast elkaar in de gesegmenteerde vorm.
+ * In rust zijn ze niet te onderscheiden: allebei grijs, en hover en indruk
+ * blijven bij het segment waar de muis staat. Tab er dan doorheen, want daar
+ * scheiden ze: de current-rij gaat naar accent zodra de focus in een van z'n
+ * segmenten zit, de selected-rij blijft grijs. Voor `expanded`, de staat van een
+ * segment dat iets open heeft staan, zie de story van `nldd-list-item-segment`.
  */
 export const StateLadder = {
 	name: 'De staten op een rij',
@@ -161,7 +163,15 @@ export const StateLadder = {
 					<nldd-icon-cell size="20"><nldd-icon name="chevron-right"></nldd-icon></nldd-icon-cell>
 				</nldd-list-item-segment>
 				<nldd-list-item-segment button width="full">
-					<nldd-text-cell text="Current met segmenten: hover en indruk gelden per segment"></nldd-text-cell>
+					<nldd-text-cell text="Current met segmenten: focus in een segment kleurt de rij accent"></nldd-text-cell>
+				</nldd-list-item-segment>
+			</nldd-list-item>
+			<nldd-list-item selected>
+				<nldd-list-item-segment button disclosure accessible-label="Uitklappen">
+					<nldd-icon-cell size="20"><nldd-icon name="chevron-right"></nldd-icon></nldd-icon-cell>
+				</nldd-list-item-segment>
+				<nldd-list-item-segment button width="full">
+					<nldd-text-cell text="Selected met segmenten: blijft grijs, ook met de focus erin"></nldd-text-cell>
 				</nldd-list-item-segment>
 			</nldd-list-item>
 		</nldd-list>
