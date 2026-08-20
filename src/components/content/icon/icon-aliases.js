@@ -520,6 +520,8 @@ export const aliases = {
 
 	// puzzle-piece-badge-plus
 	'add-plugin': 'puzzle-piece-badge-plus',
+	'add-extension': 'puzzle-piece-badge-plus',
+	'add-module': 'puzzle-piece-badge-plus',
 
 	// question-mark-circle
 	'help': 'question-mark-circle',
@@ -534,8 +536,8 @@ export const aliases = {
 	// shield-arrow-right-arrow-left
 	'firewall': 'shield-arrow-right-arrow-left',
 
-	// waving-lines
-	'network-patch-mapping': 'waving-lines',
+	// waving-crossing-lines
+	'network-patch-mapping': 'waving-crossing-lines',
 
 	// shield-check-mark
 	'security': 'shield-check-mark',

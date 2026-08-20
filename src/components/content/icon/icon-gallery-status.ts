@@ -71,7 +71,7 @@ export const NEW_ICONS = new Set([
 	'ssd-hard-drive',
 	'transceiver-module',
 	'viewfinder-line',
-	'waving-lines',
+	'waving-crossing-lines',
 ]);
 
 export const UPDATED_ICONS = new Set([
