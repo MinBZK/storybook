@@ -868,3 +868,29 @@ describe('nldd-button – slotted popup overlay', () => {
 		expect(menu.matches(':popover-open')).toBe(true);
 	});
 });
+
+describe('nldd-button no-tab', () => {
+	let el: NLDDButton;
+
+	afterEach(() => {
+		if (el) cleanup(el);
+	});
+
+	it('takes the button out of the tab order', async () => {
+		el = await fixture<NLDDButton>('<nldd-button text="Opslaan" no-tab></nldd-button>');
+		await waitForUpdate(el);
+		expect(el.shadowRoot!.querySelector('button')!.getAttribute('tabindex')).toBe('-1');
+	});
+
+	it('is in the tab order by default (no tabindex attribute)', async () => {
+		el = await fixture<NLDDButton>('<nldd-button text="Opslaan"></nldd-button>');
+		await waitForUpdate(el);
+		expect(el.shadowRoot!.querySelector('button')!.hasAttribute('tabindex')).toBe(false);
+	});
+
+	it('takes the link variant out of the tab order', async () => {
+		el = await fixture<NLDDButton>('<nldd-button text="Ga" href="#x" no-tab></nldd-button>');
+		await waitForUpdate(el);
+		expect(el.shadowRoot!.querySelector('a')!.getAttribute('tabindex')).toBe('-1');
+	});
+});

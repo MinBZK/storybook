@@ -10,6 +10,7 @@ export const badgeStyles = css`
 	/* # Host */
 
 	:host {
+		--_custom-color: transparent;
 		--_background-color: var(--semantics-categories-critical-filled-background-color);
 		--_border-color: var(--semantics-categories-critical-filled-highlight-border-color);
 		--_border-width: var(--components-badge-border-width);
@@ -40,6 +41,18 @@ export const badgeStyles = css`
 	}
 
 	/* ## Color */
+
+	/* color on the host, for the same reason as custom-color below: the contrast
+	   token reads currentColor, so without this the flip is computed against the
+	   inherited color while the fill comes from the context channel. A row that
+	   sets the channel to white over dark text then paints white on white. */
+	:host([color="inherit"]) {
+		color: var(--context-content-color, currentColor);
+
+		--_background-color: currentColor;
+		--_border-color: transparent;
+		--_content-color: var(--semantics-content-contrast-color);
+	}
 
 	:host([color="accent"]) {
 		--_background-color: var(--semantics-categories-accent-filled-background-color);
@@ -176,6 +189,17 @@ export const badgeStyles = css`
 		--_content-color: var(--semantics-categories-mintgroen-filled-content-color);
 	}
 
+	/* color on the host rather than on the fill: the contrast token reads
+	   currentColor, so the text lands on black or white without a second formula
+	   to keep in step. After every [color] rule, so it wins over one. */
+	:host([custom-color]) {
+		color: var(--_custom-color);
+
+		--_background-color: var(--_custom-color);
+		--_border-color: transparent;
+		--_content-color: var(--semantics-content-contrast-color);
+	}
+
 	:host([hidden]) {
 		display: none;
 	}
@@ -198,7 +222,6 @@ export const badgeStyles = css`
 		gap: var(--_gap);
 		align-items: center;
 		justify-content: center;
-		color: var(--_content-color);
 		font: var(--_font);
 		white-space: nowrap;
 	}
@@ -207,15 +230,15 @@ export const badgeStyles = css`
 		.badge {
 			border: 1px solid CanvasText;
 			background-color: Canvas;
+		}
+
+		.badge__icon,
+		.badge__text {
 			color: CanvasText;
 		}
 	}
 
-	/* Grows out of the badge and fades: it borrows the badge's own shape and
-	   colour, so it works on a dot as well as on a counter. Behind the content
-	   and inert, so it never affects layout or hit area.
-
-	   A growing box-shadow rather than a scale: scaling multiplies, so a wide
+	/* A growing box-shadow rather than a scale: scaling multiplies, so a wide
 	   badge would throw a halo that is far wider than it is tall. A spread adds
 	   the same distance on every side, whatever the badge measures.
 
@@ -280,7 +303,12 @@ export const badgeStyles = css`
 
 	/* # Elements */
 
+	/* The content carries the content color, not .badge itself: the fill is a
+	   custom property that resolves where it is used, and a fill of currentColor
+	   on an element that also sets color would take that color instead of the
+	   one around it. Mirrors nldd-avatar. */
 	.badge__icon {
+		color: var(--_content-color);
 		display: inline-flex;
 		width: var(--_icon-size);
 		height: var(--_icon-size);
@@ -299,6 +327,7 @@ export const badgeStyles = css`
 	}
 
 	.badge__text {
+		color: var(--_content-color);
 		display: inline-block;
 	}
 `;

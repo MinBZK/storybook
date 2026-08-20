@@ -68,6 +68,11 @@ export const comboBoxStyles = css`
 		border-color: var(--semantics-input-fields-is-invalid-border-color);
 	}
 
+	:host([readonly]) .combo-box {
+		--_background-color: var(--semantics-input-fields-is-read-only-background-color);
+		border-color: var(--semantics-input-fields-is-read-only-border-color);
+	}
+
 	.combo-box:has(input:-webkit-autofill),
 	.combo-box:has(input:autofill) {
 		--_background-color: var(--semantics-input-fields-is-autofill-background-color);

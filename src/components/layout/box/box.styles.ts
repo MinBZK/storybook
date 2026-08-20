@@ -23,17 +23,14 @@ export const boxStyles = css`
 	}
 
 
-	/* ## Background variants */
+	/* ## Backgrounds */
 
-	:host([variant="base"]) {
+	:host([background="base"]) {
 		--_background-color: var(--components-box-base-background-color);
 		--_border-color: var(--components-box-base-border-color);
 	}
 
-
-	/* ## Variants */
-
-	:host([variant="critical"]) {
+	:host([background="critical"]) {
 		--_background-color: var(--components-box-critical-background-color);
 		--_border-color: var(--components-box-critical-border-color);
 	}

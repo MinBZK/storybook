@@ -1,9 +1,9 @@
 import { html, nothing } from 'lit';
 
-export type ListItemActionControl = 'link' | 'button' | 'checkbox' | 'plain';
+export type ListItemSegmentControl = 'link' | 'button' | 'checkbox' | 'plain';
 
 export function template(
-	control: ListItemActionControl,
+	control: ListItemSegmentControl,
 	href: string | undefined,
 	target: string | undefined,
 	rel: string | undefined,
@@ -20,10 +20,11 @@ export function template(
 	const label = accessibleLabel || nothing;
 
 	if (control === 'link') {
-		return html`<a class="list-item-action"
+		return html`<a class="list-item-segment"
 			href=${href ?? nothing}
 			target=${target ?? nothing}
 			rel=${rel ?? nothing}
+			aria-disabled=${disabled ? 'true' : nothing}
 			aria-expanded=${ariaExpanded}
 			aria-current=${ariaCurrent}
 			aria-label=${label}
@@ -32,7 +33,7 @@ export function template(
 	}
 
 	if (control === 'checkbox' || control === 'button') {
-		return html`<button class="list-item-action"
+		return html`<button class="list-item-segment"
 			type="button"
 			role=${control === 'checkbox' ? 'checkbox' : nothing}
 			aria-checked=${control === 'checkbox' ? String(checked) : nothing}
@@ -47,5 +48,5 @@ export function template(
 	// Plain: no control at all. Used in a listbox parent, where an `option` may
 	// not contain interactive descendants — the cells still render, so the row
 	// looks unchanged, it just isn't operable.
-	return html`<div class="list-item-action">${content}</div>`;
+	return html`<div class="list-item-segment">${content}</div>`;
 }

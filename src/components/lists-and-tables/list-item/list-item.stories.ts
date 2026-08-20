@@ -6,6 +6,7 @@ import '../cells/spacer-cell/spacer-cell.js';
 import '../cells/icon-cell/icon-cell.js';
 import '../cells/drag-handle-cell/drag-handle-cell.js';
 import '../../content/icon/icon.js';
+import '../list-item-segment/list-item-segment.js';
 
 export default {
 	title: 'Components/Lists & Tables/List Item',
@@ -18,23 +19,18 @@ export default {
 			description: 'Size of the list item',
 			table: { defaultValue: { summary: 'md' } },
 		},
-		selected: {
-			control: 'boolean',
-			description: 'Whether the item is selected',
-			table: { defaultValue: { summary: 'false' } },
-		},
 		href: {
 			control: 'text',
-			description: 'Maakt het hele item een link',
+			description: 'Maakt het hele item een link. Wint van `checkbox` en `button`.',
 		},
 		button: {
 			control: 'boolean',
-			description: 'Maakt het hele item een button; genegeerd als href is gezet',
+			description: 'Maakt het hele item een button. De laatste van de drie: `href` en `checkbox` winnen er allebei van.',
 			table: { defaultValue: { summary: false } },
 		},
 		checkbox: {
 			control: 'boolean',
-			description: 'Maakt de hele rij een checkbox-control; genegeerd als href is gezet',
+			description: 'Maakt de hele rij een checkbox-control. Wint van `button`, verliest van `href`.',
 			table: { defaultValue: { summary: false } },
 		},
 		checked: {
@@ -42,9 +38,24 @@ export default {
 			description: 'Aangevinkte staat van een checkbox-rij',
 			table: { defaultValue: { summary: false } },
 		},
+		selected: {
+			control: 'boolean',
+			description: 'Een rij die je koos. Blijft grijs, ook met de focus erin; er mogen er meerdere zijn. Voor de rij waar je bent is `current` de juiste.',
+			table: { defaultValue: { summary: false } },
+		},
+		current: {
+			control: 'boolean',
+			description: 'De rij waar je bent: de pagina waar een menu-item heen wijst, het record dat de lijst open heeft staan. In rust net zo grijs als `selected`, en zodra de focus in de rij staat kleurt hij accent. Eén rij per lijst draagt het, waar `selected` er meerdere mag hebben.',
+			table: { defaultValue: { summary: false } },
+		},
 		expanded: {
 			control: 'boolean',
 			description: 'Uitklapstaat; hoort bij een rij die iets opent (de kindrijen van een tak)',
+		},
+		disabled: {
+			control: 'boolean',
+			description: 'Zet de eigen control van de rij uit: een `button`- of `checkbox`-rij reageert niet meer en dimt, een `href`-rij krijgt `aria-disabled` en een geblokkeerde klik. Een rij zonder eigen control heeft niets om uit te zetten, en segmenten hebben hun eigen `disabled`. De pijltjes slaan een uitgezette rij over.',
+			table: { defaultValue: { summary: false } },
 		},
 	},
 };
@@ -52,23 +63,27 @@ export default {
 export const Default = {
 	args: {
 		size: 'md',
-		selected: false,
 		href: '',
 		button: false,
 		checkbox: false,
 		checked: false,
+		selected: false,
+		current: false,
 		expanded: false,
+		disabled: false,
 	},
 	render: (args: Record<string, any>) => html`
 		<nldd-list variant="simple">
 			<nldd-list-item
 				size=${args.size}
-				?selected=${args.selected}
 				href=${args.href || nothing}
 				?button=${args.button}
 				?checkbox=${args.checkbox}
 				?checked=${args.checked}
+				?selected=${args.selected}
+				?current=${args.current}
 				?expanded=${args.expanded}
+				?disabled=${args.disabled}
 			>
 				<nldd-text-cell text="Text cell" supporting-text="Supporting text"></nldd-text-cell>
 			</nldd-list-item>
@@ -107,6 +122,57 @@ export const Selected = {
 			</nldd-list-item>
 			<nldd-list-item>
 				<nldd-text-cell text="Not selected"></nldd-text-cell>
+			</nldd-list-item>
+		</nldd-list>
+	`,
+};
+
+/**
+ * `current` is de rij waar je bent, `selected` een rij die je koos. In rust zien
+ * ze er hetzelfde uit; het verschil laat zich zien zodra de focus in de rij
+ * staat, en dan gaat alleen de current-rij naar accent. Dat werkt ook wanneer
+ * die focus in een geneste `nldd-list-item-segment` zit, waar een gesegmenteerde
+ * rij geen eigen knop heeft om op af te gaan.
+ *
+ * Verder ligt elke staat op dezelfde ladder als bij de buttons: een rust-, een
+ * hover- en een indruk-trede, telkens een palettrap uit elkaar. Loop er met de
+ * muis en met Tab langs.
+ *
+ * De laatste twee rijen zetten die twee naast elkaar in de gesegmenteerde vorm.
+ * In rust zijn ze niet te onderscheiden: allebei grijs, en hover en indruk
+ * blijven bij het segment waar de muis staat. Tab er dan doorheen, want daar
+ * scheiden ze: de current-rij gaat naar accent zodra de focus in een van z'n
+ * segmenten zit, de selected-rij blijft grijs. Voor `expanded`, de staat van een
+ * segment dat iets open heeft staan, zie de story van `nldd-list-item-segment`.
+ */
+export const StateLadder = {
+	name: 'De staten op een rij',
+	render: () => html`
+		<nldd-list type="navigation" aria-label="Staten">
+			<nldd-list-item button>
+				<nldd-text-cell text="Interactief: rust, hover, ingedrukt"></nldd-text-cell>
+			</nldd-list-item>
+			<nldd-list-item button selected>
+				<nldd-text-cell text="Selected: rust, hover, ingedrukt (nooit accent)"></nldd-text-cell>
+			</nldd-list-item>
+			<nldd-list-item button current>
+				<nldd-text-cell text="Current: grijs tot de focus erin staat, dan accent"></nldd-text-cell>
+			</nldd-list-item>
+			<nldd-list-item current>
+				<nldd-list-item-segment button disclosure accessible-label="Uitklappen">
+					<nldd-icon-cell size="20"><nldd-icon name="chevron-right"></nldd-icon></nldd-icon-cell>
+				</nldd-list-item-segment>
+				<nldd-list-item-segment button width="full">
+					<nldd-text-cell text="Current met segmenten: focus in een segment kleurt de rij accent"></nldd-text-cell>
+				</nldd-list-item-segment>
+			</nldd-list-item>
+			<nldd-list-item selected>
+				<nldd-list-item-segment button disclosure accessible-label="Uitklappen">
+					<nldd-icon-cell size="20"><nldd-icon name="chevron-right"></nldd-icon></nldd-icon-cell>
+				</nldd-list-item-segment>
+				<nldd-list-item-segment button width="full">
+					<nldd-text-cell text="Selected met segmenten: blijft grijs, ook met de focus erin"></nldd-text-cell>
+				</nldd-list-item-segment>
 			</nldd-list-item>
 		</nldd-list>
 	`,

@@ -1,5 +1,5 @@
 import { action } from 'storybook/actions';
-import { html } from 'lit';
+import { html, nothing } from 'lit';
 import './text-field.js';
 import '../../forms/form/form.js';
 import '../../forms/form-field/form-field.js';
@@ -72,6 +72,21 @@ export default {
 			description: 'Input type',
 			table: { defaultValue: { summary: 'text' } },
 		},
+		keyboard: {
+			control: 'select',
+			options: ['(geen)', 'none', 'text', 'decimal', 'numeric', 'tel', 'search', 'email', 'url'],
+			mapping: { '(geen)': undefined },
+			description: 'Welk virtueel toetsenbord opent op een telefoon of tablet (inputmode). Verandert niets aan wat het veld accepteert',
+			table: { defaultValue: { summary: '(geen)' } },
+		},
+		enterKey: {
+			name: 'enter-key',
+			control: 'select',
+			options: ['(geen)', 'enter', 'done', 'go', 'next', 'previous', 'search', 'send'],
+			mapping: { '(geen)': undefined },
+			description: 'Wat de Enter-toets op het virtuele toetsenbord zegt (enterkeyhint)',
+			table: { defaultValue: { summary: '(geen)' } },
+		},
 		autocomplete: {
 			control: 'text',
 			description: 'Browser autofill hint (HTML autocomplete attribute, bv. "name", "email", "off")',
@@ -116,6 +131,8 @@ export default {
 		value: '',
 		placeholder: 'Text field',
 		type: 'text',
+		keyboard: undefined,
+		enterKey: undefined,
 		autocomplete: '',
 		noSpellcheck: false,
 		valid: false,
@@ -126,7 +143,7 @@ export default {
 	},
 };
 
-const Template = ({ size, name, value, placeholder, type, autocomplete, valid, invalid, readonly, required, disabled, noSpellcheck, width }: Record<string, any>) => html`
+const Template = ({ size, name, value, placeholder, type, keyboard, enterKey, autocomplete, valid, invalid, readonly, required, disabled, noSpellcheck, width }: Record<string, any>) => html`
 	<nldd-text-field
 		.value=${value}
 		.placeholder=${placeholder}
@@ -135,6 +152,8 @@ const Template = ({ size, name, value, placeholder, type, autocomplete, valid, i
 		?invalid=${invalid}
 		?disabled=${disabled}
 		type=${type}
+		keyboard=${keyboard || nothing}
+		enter-key=${enterKey || nothing}
 		name=${name}
 		autocomplete=${autocomplete}
 		?readonly=${readonly}

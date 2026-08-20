@@ -19,6 +19,7 @@
  * @attr {boolean} valid - Marks the field as valid
  * @attr {boolean} invalid - Marks the field as invalid
  * @attr {boolean} disabled - Disabled state
+ * @attr {boolean} readonly - Read-only state: the value stays readable, selectable and in the tab order, but the menu does not open and there is nothing to clear. The input drops its combobox role and the aria that goes with it, so assistive technology is not told about a list it cannot open. Use this where the value belongs to the record rather than to the form, e.g. the product an asset is an instance of.
  * @attr {boolean} allow-custom - Allow committing free-typed values that match no option (Enter/blur). Default false: only menu options are accepted.
  * @attr {string} name - Input name for form submission
  * @attr {string} autocomplete - Browser autofill hint. Default 'off' to prevent the native autofill panel from competing with the menu dropdown. Set to a valid token (e.g. 'country', 'organization') when browser autofill is desired.
@@ -112,6 +113,9 @@ export class NLDDComboBox extends FormAssociated(LitElement) {
 
 	@property({ type: Boolean, reflect: true })
 	disabled = false;
+
+	@property({ type: Boolean, reflect: true })
+	readonly = false;
 
 	/** Allow committing free-typed values that don't match any menu option (on
 	 *  Enter or blur). Default false: the input only accepts menu options, and a
@@ -371,6 +375,9 @@ export class NLDDComboBox extends FormAssociated(LitElement) {
 	 */
 	public _openMenu(): void {
 		if (!this._menu || this._isOpen) return;
+		// Read-only keeps the value where it is: no list to pick a different one
+		// from, however you asked for it (arrow key, typing, the picker button).
+		if (this.readonly) return;
 		// With allow-custom the typed text is itself a valid value, so a menu
 		// with nothing left to offer stays closed — the "nothing found" empty
 		// state would wrongly suggest the input is invalid.
@@ -475,6 +482,11 @@ export class NLDDComboBox extends FormAssociated(LitElement) {
 	/** On blur: with allow-custom, accept a custom typed value; otherwise discard a
 	 *  non-matching typed value by reverting the input to the current value. */
 	public _handleBlur(e: FocusEvent): void {
+		// Read-only text cannot have been typed, so there is nothing to revert or
+		// commit. Without this, leaving a read-only field that shows a label
+		// without a matching menu option wipes the label: the revert below reads
+		// the text back from the value, and finds nothing.
+		if (this.readonly) return;
 		const relatedTarget = e.relatedTarget as Node | null;
 		const focusMovedIntoMenu = !!relatedTarget && !!this._menu?.contains(relatedTarget);
 		if (!focusMovedIntoMenu) {
@@ -511,6 +523,12 @@ export class NLDDComboBox extends FormAssociated(LitElement) {
 	}
 
 	public _handleKeydown(e: KeyboardEvent): void {
+		// Read-only takes no keys of its own: no menu to open, nothing to commit.
+		// Enter still belongs to the form, the way it would from a read-only input.
+		if (this.readonly) {
+			if (e.key === 'Enter') submitOnEnter(this, e);
+			return;
+		}
 		if (!this._isOpen) {
 			if (e.key === 'ArrowDown') {
 				e.preventDefault();

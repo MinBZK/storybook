@@ -1,7 +1,7 @@
 import { html, nothing } from 'lit';
 import { classMap } from 'lit/directives/class-map.js';
 
-// One flat slot: cells and action segments line up in source order, and the
+// One flat slot: cells and segments line up in source order, and the
 // first/last child IS the row edge (the edge rules in the styles key off
 // that). The divider is a sibling of the action so it anchors to the row
 // block, not to the widened action box.
@@ -21,6 +21,7 @@ export const template = (
 	expanded?: boolean,
 	showChildren = false,
 	hasCheckedSegment = false,
+	disabled = false,
 ) => {
 	const ariaExpanded = expanded === undefined ? nothing : String(expanded);
 	// The branch's child rows. `role="group"` is what makes the nesting the
@@ -46,6 +47,7 @@ export const template = (
 				href=${href}
 				target=${target ?? nothing}
 				rel=${rel ?? nothing}
+				aria-disabled=${disabled ? 'true' : nothing}
 				aria-expanded=${ariaExpanded}
 				tabindex=${actionTabindex ?? nothing}
 			>${content}${
@@ -64,6 +66,7 @@ export const template = (
 			<button class="list-item__action"
 				type="button"
 				role="checkbox"
+				?disabled=${disabled}
 				aria-checked=${String(checked)}
 				aria-expanded=${ariaExpanded}
 				tabindex=${actionTabindex ?? nothing}
@@ -75,6 +78,7 @@ export const template = (
 		return html`<div class=${blockClass}>
 			<button class="list-item__action"
 				type="button"
+				?disabled=${disabled}
 				aria-expanded=${ariaExpanded}
 				tabindex=${actionTabindex ?? nothing}
 			>${content}</button>

@@ -44,20 +44,22 @@ export type IconColor =
  * Color: by default the icon inherits its parent's `color`. Set `color` to one
  * of the functional semantics (`primary-content`, `secondary-content`,
  * `accent`, `critical`, `warning`, `success`) or a rijkskleur (`lintblauw`,
- * `paars`, `groen`, …). For arbitrary one-off colors, set `style="color: …"`
- * on the host — the inherited `color` still drives the SVG fill/stroke.
+ * `paars`, `groen`, …). For a color the design system cannot know — the jacket
+ * of a cable, a color someone picked — set `custom-color` to any CSS color.
  *
  * @element nldd-icon
  *
  * @attr {string} name - The name of the icon to display
  * @attr {string} size - `full` (default) fills the container; `inherit` follows the surrounding text (1em); or a fixed spacer-aligned size in px (16, 20, 24, 28, 32, 40, 44, 48, 56, 64, 80, 96). Empty behaves as `full`.
  * @attr {string} color - Functional (`primary-content`, `secondary-content`, `accent`, `critical`, `warning`, `success`) or rijkskleur (`lintblauw`, `donkerblauw`, `hemelblauw`, `lichtblauw`, `paars`, `violet`, `robijnrood`, `roze`, `rood`, `oranje`, `donkergeel`, `geel`, `donkerbruin`, `bruin`, `donkergroen`, `groen`, `mosgroen`, `mintgroen`). Empty = inherit `color` from parent.
+ * @attr {string} custom-color - A color of its own, as any CSS color value ('#a90061', 'oklch(0.6 0.2 20)', 'var(--brand-cable-blue)'). For a color the design system cannot know. It wins over `color`.
  *
  * @example
  * ```html
  * <nldd-icon name="heart"></nldd-icon>
  * <nldd-icon name="trash" size="24" color="critical"></nldd-icon>
  * <nldd-icon name="leaf" size="32" color="mosgroen"></nldd-icon>
+ * <nldd-icon name="circle-filled" size="16" custom-color="#3b82f6"></nldd-icon>
  * ```
  */
 @customElement('nldd-icon')
@@ -73,6 +75,12 @@ export class NLDDIcon extends LitElement {
 	@property({ reflect: true, converter: reflectNonDefault<IconColor>('') })
 	color: IconColor = '';
 
+	/** Handed to the styles as a custom property rather than read from the
+	 *  attribute in CSS: `attr()` with a type is not available everywhere yet,
+	 *  and this keeps one code path. */
+	@property({ reflect: true, attribute: 'custom-color', converter: reflectNonDefault<string>('') })
+	customColor = '';
+
 	@state()
 	private _iconSvg: string | null = null;
 
@@ -87,6 +95,10 @@ export class NLDDIcon extends LitElement {
 	override updated(changedProperties: Map<string, unknown>): void {
 		if (changedProperties.has('name') && this.name) {
 			this._iconSvg = this._loadIcon(this.name);
+		}
+		if (changedProperties.has('customColor')) {
+			if (this.customColor) this.style.setProperty('--_custom-color', this.customColor);
+			else this.style.removeProperty('--_custom-color');
 		}
 	}
 

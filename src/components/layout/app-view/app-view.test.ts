@@ -7,6 +7,8 @@ import '../split-views/navigation-split-view/navigation-split-view.js';
 import '../split-views/bar-split-view/bar-split-view.js';
 import '../split-views/split-view-pane/split-view-pane.js';
 import '../page/page.js';
+import '../sheet/sheet.js';
+import '../../status-and-feedback/modal-dialog/modal-dialog.js';
 
 describe('nldd-app-view', () => {
 	let el: NLDDAppView;
@@ -278,6 +280,64 @@ describe('nldd-app-view – derived scroll mode', () => {
 		const appView = el as unknown as { registerScrollConsumer(c: { readScrollMode(m?: string): void }): void };
 		appView.registerScrollConsumer({ readScrollMode: (m) => received.push(m) });
 		expect(received).toEqual(['root']);
+	});
+
+	// An overlay scrolls itself and starts at its own top edge. A page inside one
+	// must therefore keep its own scroller and its own zero, however the app
+	// around it scrolls: in root mode it would otherwise stick its header against
+	// the document, offset by an app bar that stands outside the overlay, and
+	// paint it over the first field.
+	it('keeps a page inside a sheet out of root mode, and resets the layer offsets', async () => {
+		el = await fixture<NLDDAppView>(`
+			<nldd-app-view>
+				<nldd-navigation-split-view>
+					<nldd-split-view-pane slot="main" has-content style="--context-layer-top: 60px;">
+						<nldd-page id="in-pane"></nldd-page>
+						<nldd-sheet accessible-label="Edit">
+							<nldd-page id="in-sheet" sticky-header></nldd-page>
+						</nldd-sheet>
+					</nldd-split-view-pane>
+				</nldd-navigation-split-view>
+			</nldd-app-view>
+		`);
+		const nav = el.querySelector('nldd-navigation-split-view') as NLDDNavigationSplitView;
+		const inPane = el.querySelector('#in-pane') as HTMLElement;
+		const inSheet = el.querySelector('#in-sheet') as HTMLElement;
+
+		await setNavWidth(nav, 320);   // full-stack → the app scrolls the document
+
+		expect(inPane.dataset.scroll).toBe('root');
+		expect(getComputedStyle(inPane).getPropertyValue('--context-layer-top').trim()).toBe('60px');
+
+		// Nested is the default, so the page leaves [data-scroll] off rather than
+		// writing it: what counts is that it never flips to root and keeps its own
+		// scroller.
+		expect(inSheet.dataset.scroll).not.toBe('root');
+		expect((inSheet as unknown as { scrollTarget: HTMLElement }).scrollTarget)
+			.toBe(inSheet.shadowRoot!.querySelector('.page__scroll'));
+		expect(getComputedStyle(inSheet).getPropertyValue('--context-scroll-mode').trim()).toBe('nested');
+		expect(getComputedStyle(inSheet).getPropertyValue('--context-layer-top').trim()).toBe('0px');
+	});
+
+	it('keeps a page inside a modal dialog out of root mode', async () => {
+		el = await fixture<NLDDAppView>(`
+			<nldd-app-view>
+				<nldd-navigation-split-view>
+					<nldd-split-view-pane slot="main" has-content>
+						<nldd-modal-dialog accessible-label="Confirm">
+							<nldd-page id="in-dialog" sticky-header></nldd-page>
+						</nldd-modal-dialog>
+					</nldd-split-view-pane>
+				</nldd-navigation-split-view>
+			</nldd-app-view>
+		`);
+		const nav = el.querySelector('nldd-navigation-split-view') as NLDDNavigationSplitView;
+		const inDialog = el.querySelector('#in-dialog') as HTMLElement;
+
+		await setNavWidth(nav, 320);
+
+		expect(inDialog.dataset.scroll).not.toBe('root');
+		expect(getComputedStyle(inDialog).getPropertyValue('--context-scroll-mode').trim()).toBe('nested');
 	});
 
 	// A bare-page app is a single column at every width, so the document scrolls:

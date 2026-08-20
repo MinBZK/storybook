@@ -29,9 +29,17 @@ export interface ScrollModeProvider {
 
 /** Nearest ancestor app-view (light-DOM `closest`; slotted layers stay in the
  *  consumer's light tree so this reaches across the slot boundaries), or null
- *  when a layer is used stand-alone (e.g. a bare page in the docs). */
+ *  when a layer is used stand-alone (e.g. a bare page in the docs).
+ *
+ *  An overlay ends the search: a sheet or a modal dialog is its own scroll
+ *  container and its own top edge, so a page inside one owns its scroller
+ *  whatever the app around it does. Without this the app-view would push its
+ *  root mode straight through the overlay and the page's sticky header would
+ *  stick against the document, over the content of the overlay. The overlays
+ *  reset --context-scroll-mode as well, which is what the stand-alone read
+ *  below then finds. */
 export function findScrollModeProvider(host: Element): ScrollModeProvider | null {
-	const el = host.closest?.('nldd-app-view');
+	const el = host.closest?.('nldd-app-view, nldd-sheet, nldd-modal-dialog');
 	return el && 'registerScrollConsumer' in el ? (el as unknown as ScrollModeProvider) : null;
 }
 

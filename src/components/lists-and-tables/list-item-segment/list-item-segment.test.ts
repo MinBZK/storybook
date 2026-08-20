@@ -1,14 +1,14 @@
 import { describe, it, expect, afterEach, vi } from 'vitest';
 import { fixture, cleanup, waitForUpdate } from '../../../test-utils.js';
-import './list-item-action.js';
-import type { NLDDListItemAction } from './list-item-action.js';
+import './list-item-segment.js';
+import type { NLDDListItemSegment } from './list-item-segment.js';
 import '../list-item/list-item.js';
 import '../list/list.js';
 import '../cells/text-cell/text-cell.js';
 import '../cells/icon-cell/icon-cell.js';
 import '../cells/spacer-cell/spacer-cell.js';
 
-describe('nldd-list-item-action', () => {
+describe('nldd-list-item-segment', () => {
 	let root: HTMLElement;
 
 	afterEach(() => {
@@ -16,43 +16,43 @@ describe('nldd-list-item-action', () => {
 		vi.restoreAllMocks();
 	});
 
-	const mount = async (inner: string, listAttrs = ''): Promise<NLDDListItemAction[]> => {
+	const mount = async (inner: string, listAttrs = ''): Promise<NLDDListItemSegment[]> => {
 		root = await fixture<HTMLElement>(
 			`<nldd-list ${listAttrs}><nldd-list-item>${inner}</nldd-list-item></nldd-list>`,
 		);
 		await waitForUpdate(root);
-		const actions = Array.from(root.querySelectorAll<NLDDListItemAction>('nldd-list-item-action'));
+		const actions = Array.from(root.querySelectorAll<NLDDListItemSegment>('nldd-list-item-segment'));
 		for (const action of actions) await waitForUpdate(action);
 		return actions;
 	};
 
-	const control = (action: NLDDListItemAction): HTMLElement =>
-		action.shadowRoot!.querySelector('.list-item-action') as HTMLElement;
+	const control = (action: NLDDListItemSegment): HTMLElement =>
+		action.shadowRoot!.querySelector('.list-item-segment') as HTMLElement;
 
-	const CHEVRON = '<nldd-list-item-action button expanded accessible-label="Uitklappen"><nldd-text-cell text="›"></nldd-text-cell></nldd-list-item-action>';
-	const LABEL = '<nldd-list-item-action checkbox width="full"><nldd-text-cell text="Ministeries"></nldd-text-cell></nldd-list-item-action>';
+	const CHEVRON = '<nldd-list-item-segment button expanded accessible-label="Uitklappen"><nldd-text-cell text="›"></nldd-text-cell></nldd-list-item-segment>';
+	const LABEL = '<nldd-list-item-segment checkbox width="full"><nldd-text-cell text="Ministeries"></nldd-text-cell></nldd-list-item-segment>';
 
 	it('renders a button action', async () => {
-		const [a] = await mount('<nldd-list-item-action button><nldd-text-cell text="X"></nldd-text-cell></nldd-list-item-action>');
+		const [a] = await mount('<nldd-list-item-segment button><nldd-text-cell text="X"></nldd-text-cell></nldd-list-item-segment>');
 		expect(control(a).tagName).toBe('BUTTON');
 		expect(control(a).getAttribute('type')).toBe('button');
 	});
 
 	it('renders a link action and lets href win over button and checkbox', async () => {
-		const [a] = await mount('<nldd-list-item-action button checkbox href="/ergens"><nldd-text-cell text="X"></nldd-text-cell></nldd-list-item-action>');
+		const [a] = await mount('<nldd-list-item-segment button checkbox href="/ergens"><nldd-text-cell text="X"></nldd-text-cell></nldd-list-item-segment>');
 		expect(control(a).tagName).toBe('A');
 		expect(control(a).getAttribute('href')).toBe('/ergens');
 		expect(control(a).getAttribute('role')).toBeNull();
 	});
 
 	it('renders a checkbox action carrying its state', async () => {
-		const [a] = await mount('<nldd-list-item-action checkbox checked><nldd-text-cell text="X"></nldd-text-cell></nldd-list-item-action>');
+		const [a] = await mount('<nldd-list-item-segment checkbox checked><nldd-text-cell text="X"></nldd-text-cell></nldd-list-item-segment>');
 		expect(control(a).getAttribute('role')).toBe('checkbox');
 		expect(control(a).getAttribute('aria-checked')).toBe('true');
 	});
 
 	it('toggles and fires change when a checkbox action is activated', async () => {
-		const [a] = await mount('<nldd-list-item-action checkbox><nldd-text-cell text="X"></nldd-text-cell></nldd-list-item-action>');
+		const [a] = await mount('<nldd-list-item-segment checkbox><nldd-text-cell text="X"></nldd-text-cell></nldd-list-item-segment>');
 		const seen: boolean[] = [];
 		a.addEventListener('change', (e: Event) => seen.push((e as CustomEvent).detail.checked));
 		control(a).click();
@@ -66,14 +66,14 @@ describe('nldd-list-item-action', () => {
 
 	it('emits aria-expanded only when the attribute is present', async () => {
 		const [withIt, without] = await mount(
-			CHEVRON + '<nldd-list-item-action button><nldd-text-cell text="X"></nldd-text-cell></nldd-list-item-action>',
+			CHEVRON + '<nldd-list-item-segment button><nldd-text-cell text="X"></nldd-text-cell></nldd-list-item-segment>',
 		);
 		expect(control(withIt).getAttribute('aria-expanded')).toBe('true');
 		expect(control(without).getAttribute('aria-expanded')).toBeNull();
 	});
 
 	it('renders without a control — and without a role — when nothing interactive is asked for', async () => {
-		const [a] = await mount('<nldd-list-item-action><nldd-text-cell text="X"></nldd-text-cell></nldd-list-item-action>');
+		const [a] = await mount('<nldd-list-item-segment><nldd-text-cell text="X"></nldd-text-cell></nldd-list-item-segment>');
 		expect(control(a).tagName).toBe('DIV');
 	});
 
@@ -113,14 +113,14 @@ describe('nldd-list-item-action', () => {
 		root = await fixture<HTMLElement>(
 			`<nldd-list style="--semantics-controls-md-min-size: 44px">
 				<nldd-list-item>
-					<nldd-list-item-action button>
+					<nldd-list-item-segment button>
 						<nldd-icon-cell size="20"></nldd-icon-cell>
-					</nldd-list-item-action>
+					</nldd-list-item-segment>
 				</nldd-list-item>
 			</nldd-list>`,
 		);
 		await waitForUpdate(root);
-		const a = root.querySelector<NLDDListItemAction>('nldd-list-item-action')!;
+		const a = root.querySelector<NLDDListItemSegment>('nldd-list-item-segment')!;
 		await waitForUpdate(a);
 		const box = a.getBoundingClientRect();
 		const icon = a.querySelector('nldd-icon-cell')!.getBoundingClientRect();
@@ -130,7 +130,7 @@ describe('nldd-list-item-action', () => {
 	});
 
 	it('keeps a growing action leading-aligned', async () => {
-		const [a] = await mount('<nldd-list-item-action button width="full"><nldd-text-cell text="X"></nldd-text-cell></nldd-list-item-action>');
+		const [a] = await mount('<nldd-list-item-segment button width="full"><nldd-text-cell text="X"></nldd-text-cell></nldd-list-item-segment>');
 		expect(getComputedStyle(control(a)).justifyContent).toBe('flex-start');
 	});
 
@@ -139,10 +139,10 @@ describe('nldd-list-item-action', () => {
 		// control size and the inset (for the fixed action padding) in
 		// explicitly and check the action honours its square floor.
 		root = await fixture<HTMLElement>(
-			'<nldd-list style="--semantics-controls-md-min-size: 44px; --components-list-item-indicator-inline-inset: 8px"><nldd-list-item><nldd-list-item-action button></nldd-list-item-action></nldd-list-item></nldd-list>',
+			'<nldd-list style="--semantics-controls-md-min-size: 44px; --components-list-item-indicator-inline-inset: 8px"><nldd-list-item><nldd-list-item-segment button></nldd-list-item-segment></nldd-list-item></nldd-list>',
 		);
 		await waitForUpdate(root);
-		const a = root.querySelector<NLDDListItemAction>('nldd-list-item-action')!;
+		const a = root.querySelector<NLDDListItemSegment>('nldd-list-item-segment')!;
 		await waitForUpdate(a);
 		const box = a.getBoundingClientRect();
 		expect(box.width).toBeGreaterThanOrEqual(44);
@@ -192,7 +192,7 @@ describe('nldd-list-item – expanded', () => {
 		el = await fixture<HTMLElement>(
 			`<nldd-list type="tree" accessible-label="X">
 				<nldd-list-item expanded>
-					<nldd-list-item-action button disclosure accessible-label="Uitklappen"></nldd-list-item-action>
+					<nldd-list-item-segment button disclosure accessible-label="Uitklappen"></nldd-list-item-segment>
 					<nldd-text-cell text="Tak"></nldd-text-cell>
 					<nldd-list-item slot="children"><nldd-text-cell text="Blad"></nldd-text-cell></nldd-list-item>
 				</nldd-list-item>
@@ -200,10 +200,10 @@ describe('nldd-list-item – expanded', () => {
 		);
 		await waitForUpdate(el);
 		const item = el.querySelector('nldd-list-item')!;
-		const seg = el.querySelector('nldd-list-item-action')!;
+		const seg = el.querySelector('nldd-list-item-segment')!;
 		await waitForUpdate(item);
 		await waitForUpdate(seg);
-		expect(seg.shadowRoot!.querySelector('.list-item-action')!.getAttribute('aria-expanded')).toBe('true');
+		expect(seg.shadowRoot!.querySelector('.list-item-segment')!.getAttribute('aria-expanded')).toBe('true');
 		expect(warn).not.toHaveBeenCalledWith(expect.stringContaining('`expanded` needs somewhere to live'));
 	});
 
@@ -214,10 +214,10 @@ describe('nldd-list-item – expanded', () => {
 		el = await fixture<HTMLElement>(
 			`<nldd-list type="tree" accessible-label="X">
 				<nldd-list-item>
-					<nldd-list-item-action button disclosure accessible-label="Buiten"></nldd-list-item-action>
+					<nldd-list-item-segment button disclosure accessible-label="Buiten"></nldd-list-item-segment>
 					<nldd-text-cell text="Tak"></nldd-text-cell>
 					<nldd-list-item slot="children">
-						<nldd-list-item-action button disclosure accessible-label="Binnen"></nldd-list-item-action>
+						<nldd-list-item-segment button disclosure accessible-label="Binnen"></nldd-list-item-segment>
 						<nldd-text-cell text="Subtak"></nldd-text-cell>
 						<nldd-list-item slot="children"><nldd-text-cell text="Blad"></nldd-text-cell></nldd-list-item>
 					</nldd-list-item>
@@ -226,7 +226,7 @@ describe('nldd-list-item – expanded', () => {
 		);
 		await waitForUpdate(el);
 		const [outer, inner] = [...el.querySelectorAll('nldd-list-item')];
-		const [outerSeg, innerSeg] = [...el.querySelectorAll('nldd-list-item-action')];
+		const [outerSeg, innerSeg] = [...el.querySelectorAll('nldd-list-item-segment')];
 
 		outer.setAttribute('expanded', '');
 		await waitForUpdate(outer);
@@ -236,7 +236,7 @@ describe('nldd-list-item – expanded', () => {
 		expect(outerSeg.classList.contains('is-expanded')).toBe(true);
 		expect(inner.hasAttribute('expanded')).toBe(false);
 		expect(innerSeg.classList.contains('is-expanded')).toBe(false);
-		expect(innerSeg.shadowRoot!.querySelector('.list-item-action')!.getAttribute('aria-expanded')).not.toBe('true');
+		expect(innerSeg.shadowRoot!.querySelector('.list-item-segment')!.getAttribute('aria-expanded')).not.toBe('true');
 	});
 
 	// Without this, every consumer had to turn the chevron themselves, which
@@ -245,9 +245,9 @@ describe('nldd-list-item – expanded', () => {
 		el = await fixture<HTMLElement>(
 			`<nldd-list type="tree" accessible-label="X">
 				<nldd-list-item>
-					<nldd-list-item-action button disclosure accessible-label="Uitklappen">
+					<nldd-list-item-segment button disclosure accessible-label="Uitklappen">
 						<nldd-icon-cell size="20"><nldd-icon name="chevron-right"></nldd-icon></nldd-icon-cell>
-					</nldd-list-item-action>
+					</nldd-list-item-segment>
 					<nldd-text-cell text="Tak"></nldd-text-cell>
 					<nldd-list-item slot="children"><nldd-text-cell text="Blad"></nldd-text-cell></nldd-list-item>
 				</nldd-list-item>
@@ -255,7 +255,7 @@ describe('nldd-list-item – expanded', () => {
 		);
 		await waitForUpdate(el);
 		const item = el.querySelector('nldd-list-item')!;
-		const seg = el.querySelector('nldd-list-item-action')!;
+		const seg = el.querySelector('nldd-list-item-segment')!;
 		const iconCell = el.querySelector('nldd-icon-cell')!;
 		await waitForUpdate(seg);
 		expect(getComputedStyle(iconCell).rotate).toBe('0deg');
@@ -279,15 +279,15 @@ describe('nldd-list-item – padding on the cells', () => {
 		root = await fixture<HTMLElement>(
 			`<nldd-list style="--components-list-item-md-padding-block: 10px">
 				<nldd-list-item>
-					<nldd-list-item-action button width="full">
+					<nldd-list-item-segment button width="full">
 						<nldd-text-cell text="Ministeries"></nldd-text-cell>
-					</nldd-list-item-action>
+					</nldd-list-item-segment>
 				</nldd-list-item>
 			</nldd-list>`,
 		);
 		await waitForUpdate(root);
 		const item = root.querySelector('nldd-list-item')!;
-		const action = root.querySelector<NLDDListItemAction>('nldd-list-item-action')!;
+		const action = root.querySelector<NLDDListItemSegment>('nldd-list-item-segment')!;
 		await waitForUpdate(action);
 		// The padding now sits inside the cell, so no dead band above or below the
 		// action — it used to be inset by the area padding on both sides.
@@ -298,18 +298,18 @@ describe('nldd-list-item – padding on the cells', () => {
 		root = await fixture<HTMLElement>(
 			`<nldd-list>
 				<nldd-list-item>
-					<nldd-list-item-action button>
+					<nldd-list-item-segment button>
 						<nldd-text-cell text="kort"></nldd-text-cell>
-					</nldd-list-item-action>
-					<nldd-list-item-action button width="full">
+					</nldd-list-item-segment>
+					<nldd-list-item-segment button width="full">
 						<nldd-text-cell text="lang" supporting-text="met een tweede regel eronder"></nldd-text-cell>
-					</nldd-list-item-action>
+					</nldd-list-item-segment>
 				</nldd-list-item>
 			</nldd-list>`,
 		);
 		await waitForUpdate(root);
 		const item = root.querySelector('nldd-list-item')!;
-		const actions = root.querySelectorAll<NLDDListItemAction>('nldd-list-item-action');
+		const actions = root.querySelectorAll<NLDDListItemSegment>('nldd-list-item-segment');
 		for (const a of actions) await waitForUpdate(a);
 		const rowHeight = item.getBoundingClientRect().height;
 		// The taller sibling sets the row height; the short one must follow, or its
@@ -447,7 +447,7 @@ describe('nldd-list type="tree"', () => {
 	});
 });
 
-describe('nldd-list-item-action – vaste geometrie', () => {
+describe('nldd-list-item-segment – vaste geometrie', () => {
 	let el: HTMLElement;
 
 	afterEach(() => {
@@ -461,11 +461,11 @@ describe('nldd-list-item-action – vaste geometrie', () => {
 			<div style="${TOKENS}">
 				<nldd-list type="tree" accessible-label="X">
 					<nldd-list-item>
-						<nldd-list-item-action button accessible-label="Icoon-only"></nldd-list-item-action>
+						<nldd-list-item-segment button accessible-label="Icoon-only"></nldd-list-item-segment>
 						<nldd-text-cell text="Rij"></nldd-text-cell>
 					</nldd-list-item>
 					<nldd-list-item size="sm">
-						<nldd-list-item-action button accessible-label="Icoon-only sm"></nldd-list-item-action>
+						<nldd-list-item-segment button accessible-label="Icoon-only sm"></nldd-list-item-segment>
 						<nldd-text-cell text="Rij sm"></nldd-text-cell>
 					</nldd-list-item>
 				</nldd-list>
@@ -473,7 +473,7 @@ describe('nldd-list-item-action – vaste geometrie', () => {
 		`);
 		await waitForUpdate(el);
 		await new Promise(resolve => setTimeout(resolve, 60));
-		const [md, sm] = [...el.querySelectorAll('nldd-list-item-action')];
+		const [md, sm] = [...el.querySelectorAll('nldd-list-item-segment')];
 		const mdRect = md.getBoundingClientRect();
 		const smRect = sm.getBoundingClientRect();
 		expect(mdRect.width).toBeGreaterThanOrEqual(44);
@@ -488,19 +488,43 @@ describe('nldd-list-item-action – vaste geometrie', () => {
 				<nldd-list accessible-label="X">
 					<nldd-list-item>
 						<nldd-text-cell text="Voor"></nldd-text-cell>
-						<nldd-list-item-action button width="full" accessible-label="Groei">
+						<nldd-list-item-segment button width="full" accessible-label="Groei">
 							<nldd-text-cell text="Inhoud"></nldd-text-cell>
-						</nldd-list-item-action>
+						</nldd-list-item-segment>
 						<nldd-text-cell text="Na"></nldd-text-cell>
 					</nldd-list-item>
 				</nldd-list>
 			</div>
 		`);
 		await waitForUpdate(el);
-		const action = el.querySelector('nldd-list-item-action')!;
-		const control = action.shadowRoot!.querySelector('.list-item-action')!;
+		const action = el.querySelector('nldd-list-item-segment')!;
+		const control = action.shadowRoot!.querySelector('.list-item-segment')!;
 		const style = getComputedStyle(control);
 		expect(style.paddingInlineStart).toBe('8px');
 		expect(style.paddingInlineEnd).toBe('8px');
+	});
+});
+
+describe('nldd-list-item-segment – een uitgezette link', () => {
+	let el: HTMLElement;
+
+	afterEach(() => {
+		if (el) cleanup(el);
+	});
+
+	it('carries aria-disabled, because an anchor cannot be disabled natively', async () => {
+		el = await fixture('<nldd-list-item><nldd-list-item-segment href="/ergens" disabled><nldd-text-cell text="Uit"></nldd-text-cell></nldd-list-item-segment></nldd-list-item>');
+		await waitForUpdate(el);
+		const link = el.querySelector('nldd-list-item-segment')!.shadowRoot!.querySelector('a.list-item-segment')!;
+		expect(link.getAttribute('aria-disabled')).toBe('true');
+	});
+
+	it('blocks the click', async () => {
+		el = await fixture('<nldd-list-item><nldd-list-item-segment href="/ergens" disabled><nldd-text-cell text="Uit"></nldd-text-cell></nldd-list-item-segment></nldd-list-item>');
+		await waitForUpdate(el);
+		const link = el.querySelector('nldd-list-item-segment')!.shadowRoot!.querySelector('a.list-item-segment')!;
+		const event = new MouseEvent('click', { bubbles: true, composed: true, cancelable: true });
+		link.dispatchEvent(event);
+		expect(event.defaultPrevented).toBe(true);
 	});
 });

@@ -1,0 +1,78 @@
+/**
+ * Nederlandse Digitale Dienst Text Component (Lit + TypeScript)
+ *
+ * One run of body text at a size from the type scale. It is what you reach for
+ * where an app would otherwise write a bare `<p>` and inherit whatever the page
+ * happens to set: a line under a title, a sentence in a panel, a caption.
+ *
+ * Every combination it offers exists as a token, so it cannot invent typography
+ * — it only names what the scale already has. The three axes are the same three
+ * the tokens carry: size, weight and line height.
+ *
+ * Not for headings, which is `nldd-title`, and not for a block of prose with its
+ * own rhythm, spacing and media widths, which is `nldd-rich-text`. This is one
+ * run of text and nothing around it.
+ *
+ * Color follows the context channel a list item, menu or table sets on its
+ * content, so text inside a row travels with that row as it is hovered or
+ * selected. Standalone that channel is unset and the semantic color answers.
+ *
+ * @element nldd-text
+ * @attr {string} size - Text size on the body scale: 'xxs' | 'xs' | 'sm' | 'md' | 'lg' (default: 'md')
+ * @attr {string} weight - Font weight: 'regular' | 'medium' | 'bold' (default: 'regular'). With 'bold' a slotted `<strong>` no longer stands out: there is nothing bolder in the scale.
+ * @attr {string} line-height - Line height: 'flat' | 'tight' | 'snug' | 'loose' (default: 'snug')
+ * @attr {string} color - Text color: 'default' | 'secondary' | 'accent' | 'success' | 'warning' | 'critical' | 'inherit' (default: 'default'). 'default' and 'secondary' follow the surrounding content channel; 'inherit' takes the color it inherits, for text on a painted surface.
+ * @attr {string} horizontal-alignment - Alignment of the text within the block: 'left' | 'center' | 'right' (default: 'left'). Aligns the words; `horizontal-alignment` on nldd-container moves the box.
+ *
+ * @slot - The text. Inline elements work as they are: `<strong>` and `<b>` take the bold weight from the scale, `<a>`, `<em>` and components such as `nldd-tag` are left alone.
+ */
+
+import { LitElement } from 'lit';
+import { customElement, property } from 'lit/decorators.js';
+import { reflectNonDefault } from '../../../utilities/reflect-non-default.js';
+import { textStyles } from './text.styles.js';
+import { template } from './text.template.js';
+
+type Size = 'xxs' | 'xs' | 'sm' | 'md' | 'lg';
+type Weight = 'regular' | 'medium' | 'bold';
+type LineHeight = 'flat' | 'tight' | 'snug' | 'loose';
+type Color = 'default' | 'secondary' | 'accent' | 'success' | 'warning' | 'critical' | 'inherit';
+type HorizontalAlignment = 'left' | 'center' | 'right';
+
+@customElement('nldd-text')
+export class NLDDText extends LitElement {
+	static override styles = textStyles;
+
+	@property({ reflect: true, converter: reflectNonDefault<Size>('md') })
+	size: Size = 'md';
+
+	@property({ reflect: true, converter: reflectNonDefault<Weight>('regular') })
+	weight: Weight = 'regular';
+
+	@property({
+		reflect: true,
+		attribute: 'line-height',
+		converter: reflectNonDefault<LineHeight>('snug'),
+	})
+	lineHeight: LineHeight = 'snug';
+
+	@property({ reflect: true, converter: reflectNonDefault<Color>('default') })
+	color: Color = 'default';
+
+	@property({
+		reflect: true,
+		attribute: 'horizontal-alignment',
+		converter: reflectNonDefault<HorizontalAlignment>('left'),
+	})
+	horizontalAlignment: HorizontalAlignment = 'left';
+
+	override render() {
+		return template();
+	}
+}
+
+declare global {
+	interface HTMLElementTagNameMap {
+		'nldd-text': NLDDText;
+	}
+}

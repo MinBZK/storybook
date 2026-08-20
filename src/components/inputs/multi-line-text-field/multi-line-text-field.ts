@@ -14,6 +14,8 @@
  * @attr {boolean} readonly - Readonly state
  * @attr {boolean} required - Required state
  * @attr {string} autocomplete - Autocomplete hint
+ * @attr {string} keyboard - Which virtual keyboard a phone or tablet raises, forwarded as `inputmode`: 'none' | 'text' | 'decimal' | 'numeric' | 'tel' | 'search' | 'email' | 'url'. It changes nothing about what the field accepts, and nothing at all on a desktop.
+ * @attr {string} enter-key - What the Enter key of the virtual keyboard says, forwarded as `enterkeyhint`: 'enter' | 'done' | 'go' | 'next' | 'previous' | 'search' | 'send'. In a field where Enter starts a new line, leave it alone.
  * @attr {number} rows - Initial visible rows (minimum height). Default: 3.
  * @attr {string} resize - 'none' | 'vertical' | 'auto' (default). 'auto' grows with content (native field-sizing), no manual handle.
  * @attr {string} accessible-label - Accessible label forwarded to the inner textarea. Set automatically by nldd-form-field.
@@ -30,8 +32,11 @@ import { FormAssociated, type FormValue } from '../../../utilities/form-associat
 import { reflectNonDefault } from '../../../utilities/reflect-non-default.js';
 import { multiLineTextFieldStyles } from './multi-line-text-field.styles.js';
 import { multiLineTextFieldTemplate } from './multi-line-text-field.template.js';
+import type { Keyboard, EnterKey } from '../text-field/text-field.js';
 
 export type ResizeMode = 'none' | 'vertical' | 'auto';
+
+export type { Keyboard, EnterKey } from '../text-field/text-field.js';
 
 @customElement('nldd-multi-line-text-field')
 export class NLDDMultiLineTextField extends FormAssociated(LitElement) {
@@ -82,6 +87,14 @@ export class NLDDMultiLineTextField extends FormAssociated(LitElement) {
 
 	@property({ type: String })
 	autocomplete = '';
+
+	/** Which on-screen keyboard to raise, forwarded as `inputmode`. */
+	@property({ type: String, reflect: true })
+	keyboard?: Keyboard;
+
+	/** What the Enter key says, forwarded as `enterkeyhint`. */
+	@property({ type: String, reflect: true, attribute: 'enter-key' })
+	enterKey?: EnterKey;
 
 	@property({ type: Number })
 	rows = 3;

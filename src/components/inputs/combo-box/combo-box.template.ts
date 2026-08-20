@@ -34,17 +34,18 @@ export function comboBoxTemplate(component: NLDDComboBox): TemplateResult {
 		<div class="combo-box">
 			<input class="combo-box__input"
 				type="text"
-				role="combobox"
+				role=${component.readonly ? nothing : 'combobox'}
 				aria-label=${component.accessibleLabel || nothing}
-				aria-expanded=${component._isOpen ? 'true' : 'false'}
-				aria-controls=${component._menuId}
-				aria-autocomplete="list"
-				aria-haspopup="listbox"
+				aria-expanded=${component.readonly ? nothing : (component._isOpen ? 'true' : 'false')}
+				aria-controls=${component.readonly ? nothing : component._menuId}
+				aria-autocomplete=${component.readonly ? nothing : 'list'}
+				aria-haspopup=${component.readonly ? nothing : 'listbox'}
 				aria-activedescendant=${component._highlightedId || nothing}
 				aria-invalid=${component.invalid ? 'true' : nothing}
 				.value=${component.text}
 				placeholder=${component.placeholder || nothing}
 				?disabled=${component.disabled}
+				?readonly=${component.readonly}
 				name=${component.name || nothing}
 				autocomplete=${component.autocomplete || nothing}
 				spellcheck=${component.noSpellcheck ? 'false' : 'true'}
@@ -54,7 +55,7 @@ export function comboBoxTemplate(component: NLDDComboBox): TemplateResult {
 			>
 			<div class="combo-box__input-fade"></div>
 			<div class="combo-box__end">
-				${component.text ? html`
+				${component.text && !component.readonly ? html`
 					<div class="combo-box__clear-button">
 						<nldd-icon-button
 							variant="neutral-transparent"
@@ -68,20 +69,22 @@ export function comboBoxTemplate(component: NLDDComboBox): TemplateResult {
 					</div>
 				` : nothing}
 				${renderValidationIcon(component)}
-				<div class="combo-box__picker-button">
-					<nldd-icon-button
-						variant="neutral-tinted"
-						size=${iconButtonSize}
-						icon="chevron-down"
-						text=${component._t('components.combo-box.open-menu-action')}
-						tooltip-timing="never"
-						?disabled=${component.disabled}
-						?expanded=${component._isOpen}
-						popup-type="listbox"
-						@pointerdown=${component._handlePickerPointerdown}
-						@click=${component._toggleMenu}
-					></nldd-icon-button>
-				</div>
+				${component.readonly ? nothing : html`
+					<div class="combo-box__picker-button">
+						<nldd-icon-button
+							variant="neutral-tinted"
+							size=${iconButtonSize}
+							icon="chevron-down"
+							text=${component._t('components.combo-box.open-menu-action')}
+							tooltip-timing="never"
+							?disabled=${component.disabled}
+							?expanded=${component._isOpen}
+							popup-type="listbox"
+							@pointerdown=${component._handlePickerPointerdown}
+							@click=${component._toggleMenu}
+						></nldd-icon-button>
+					</div>
+				`}
 			</div>
 		</div>
 		<slot @slotchange=${component._onSlotChange}></slot>

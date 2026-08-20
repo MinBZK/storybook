@@ -15,6 +15,78 @@ the type of conventional-commit determines the release. Conventional types
 `chore`, `docs`, `ci`, `style`, `test`, `build` are intentionally omitted
 here; consult the commit history if you need that level of detail.
 
+### Highlights
+
+- **`nldd-text`, a component for body text.** New, and the one piece of typography that had no component: every line that is not a heading and not a block of prose. It offers `size` (xxs through lg), `weight`, `line-height`, `color` and `horizontal-alignment`, all of them names for what the token scale already holds, so it cannot invent typography. Color follows the content channel a row, menu or table sets, so a line travels with the row it sits in. Reach for `nldd-title` for a heading, `nldd-rich-text` for prose with its own rhythm.
+
+- **Every list answers to the arrow keys, and a row may hold more than one control.** One list now behaves like the next: ArrowUp and ArrowDown walk the rows there is something to do with, Home and End jump to the ends, and the list as a whole is one tab stop. Within the current row Tab walks its segments and the controls in its cells, while those same controls in the other rows stay out of the tab order. Two types mean something else by the same keys, and you can see which before you touch one: a `listbox` runs its keyboard from its search field, and a `reorderable` list moves rows.
+
+- **`current` beside `selected` in a list row.** `current` is the row you are on, `selected` a row you picked, and a list can show both. At rest they look the same, so existing lists do not change. The difference shows when focus is in the row: only the current row takes the accent fill, and it does so from a nested `nldd-list-item-segment` too. Row states now sit on the same ladder as button states, with a rest, hover and press step for each, under the names the buttons already use. Seven tokens more.
+
+- **A color the system does not know, on a badge and an icon.** Some colors are not a category but a fact: the jacket of a cable is blue whatever the house style does. `custom-color` on `nldd-badge` and `nldd-icon` takes any CSS color value and wins over `color`, so the vocabulary of `color` stays closed and one search shows where an app steps outside the palette. On the badge, what sits on the color turns white or black, whichever contrasts better.
+
+- **Thirty icons added, three redrawn.** Added: `cpu`, `gpu`, `memory-chip`, `psu`, `pci-card`, `transceiver-module`, `rack-server`, `rack-servers`, `external-hard-drives`, `ssd-hard-drive`, `external-hard-drive`, `network-switch`, `kvm-switch`, `power-plug`, `lightning`, `snowflake`, `boxes-3`, `clipboard-bullet-list`, `kanban-columns`, `printer`, `shield-arrow-right-arrow-left`, `waving-crossing-lines`, `circle`, `circle-circle`, `minus-circle`, `circle-light`, `circle-circle-light`, `check-mark-circle-light`, `clock-light` and `slash-circle-light`. Redrawn: `shield`, `shield-check-mark` and `shield-lock`.
+
+### Breaking
+
+- **`database-disabled` and `database-unavailable` are now `disabled-database` and `unavailable-database`.** The set puts the state in front everywhere else: `new-namespace`, `no-priority`, `checked-small`. Those two trailed it, and were the only aliases that did apart from the `-light` weights, which name the drawing rather than a state. Both still point at `cylinder-split-slash`. Consumers on an old name change one string.
+
+- **`nldd-list-item-action` is now `nldd-list-item-segment`.** The component was not always an action: without `href`, `button` or `checkbox`, and inside a listbox, it renders as a plain container. What it always is, is a piece of the row with its own hit area and its own fill, which is what the docs had been calling it all along. Consumers rename the element and the import path, and the attributes stay the same. The host classes follow: `has-leading-segment` and `has-trailing-segment`.
+
+- **Every list answers to the arrow keys, and `arrow-navigation` is gone.** Whether the arrow keys work is what a reader may assume about every list, not a setting per list, and as a setting it was unknowable from the outside. Consumers drop the attribute. Leaving it in does nothing, and warns in dev.
+
+- **`nldd-box` paints with `background`, like every other surface.** The attribute was `variant`, which in this system is the word for what a component is, not for which surface it draws. `nldd-app-view`, `nldd-page`, `nldd-split-view-pane` and `nldd-card` all call that `background`. So `variant="base|tinted|critical"` is now `background="base|tinted|critical"`. One thing to know: a box starts on `tinted` where a card starts on `base`, because a box stands out from the page and a card sits on it. Consumers change one string per box.
+
+- **The plus badges are named after what they make.** `add-namespace` is now `new-namespace`, `add-k8s` and `add-kubernetes` are `new-k8s` and `new-kubernetes`, and `add-text-document` is gone in favor of `new-text-document`. A namespace, a cluster and a document are made, not added. `add` stays for putting something that exists into something else, which is why `add-plugin`, `add-user`, `add-location` and `add-emoji` are unchanged. Consumers on an old name change one string.
+
+### Added
+
+- **Eighteen icons for a data center: the hardware and the network.** `cpu`, `gpu`, `memory-chip`, `psu`, `pci-card`, `transceiver-module`, `rack-server`, `rack-servers`, `external-hard-drives`, `ssd-hard-drive`, `external-hard-drive`, `network-switch`, `kvm-switch`, `power-plug`, `lightning`, `snowflake`, `waving-crossing-lines` (`network-patch-mapping`) and `shield-arrow-right-arrow-left` (`firewall`), with the aliases `server`, `servers`, `memory`, `ram`, `processor`, `power`, `cooling`, `airco`, `hard-drive`, `nic`, `network-interface-card`, `sfp` and `energy`. Two are named after what they draw rather than what they came in for: `network-switch`, because `switch` on its own is the verb, and `snowflake`. `arrow-left-right` gets that verb as an alias: `switch` and `swap`, for moving between two things. There are two racks: `rack-servers` drawn flat on for a diagram, and `rack-server` at an angle for a row, where three stacked bays turn into three stripes. `server` points at the angled one, `servers` at the flat one. `waving-crossing-lines` draws the runs themselves, sweeping from one side to the other and crossing on the way, rather than the nodes they connect, which is what a patch panel looks like from the front. Two of them are a pair: `external-hard-drive` is one unit, `external-hard-drives` the stack of three, aliased `storage`. The firewall shield carries the traffic it filters, two arrows passing each other, so it says what it does instead of only saying "safe".
+
+- **Eight icons for getting things done.** The three task states read as one series: `circle` for to do and `circle-circle` for doing, beside the `check-mark-circle` the set already had, aliased as `to-do`, `doing` and `done`. `minus-circle` is in the set as well: the same ring with a bar across it. `kanban-columns` draws a board of work in columns (`kanban`), and `circle-grid-2x2-top-left-check-mark` gets the alias `all-tasks`. `circle` doubles as `no-priority`: the same ring as `low-priority` through `high-priority` with nothing in it, so that column keeps reading as a count from zero up. Four of the state icons come in a light weight drawn for 32 pixels: `circle-light`, `circle-circle-light`, `check-mark-circle-light` and `clock-light` keep the 2-pixel line on a 32 view-box instead of a 24 one, so the line stays 2 pixels at the size they are drawn for rather than growing to 2.7. Use them where a state icon leads a row at 32, and reach for the regular set below that. Aliased as `to-do-light`, `doing-light` and `done-light`.
+
+- **Four icons outside those two groups, and one alias.** `boxes-3` for a stock of things you own (`inventory`), `clipboard-bullet-list` for that same list read as a checklist (`inventory-alt`), `printer` for printing (`print`), and `slash-circle-light` in the same light weight as the state icons (`blocked-light`). `brackets-ellipsis` gets the alias `namespace`, the meaning the brackets with the ellipsis carry wherever the console uses them.
+
+- **`color="inherit"` on `nldd-badge`.** Fill with the content color around it (`--context-content-color`, otherwise `currentColor`), the meaning it already has on `nldd-avatar`, so a badge travels with the line it sits in.
+
+- **`disabled` works on a row and on a link.** A segment could be switched off and a row could not, while a row can just as well be the button or the checkbox. A `button` or `checkbox` row takes the real off state and dims. A link gets `aria-disabled` and a blocked click, because an anchor cannot be switched off the way a button can, and that goes for a link segment as well: there `disabled` used to do nothing at all. Hover and press do nothing there, and the arrow keys skip it: a disabled control is not focusable, so a stop there would swallow the key. That already applied to a disabled segment, so a row whose only segment is off is no longer a stop either.
+
+- **A `current` segment makes its whole row current.** A row built from segments has no link of its own, so `aria-current="page"` belongs on the segment that holds the link. The row reads it off its own segments and paints itself, so it is written once. Reading, not writing: the attributes stay the consumer's. `current` also appears in the controls of `nldd-list-item` and `nldd-list-item-segment` now.
+
+- **A ticked row is painted, the same as a ticked segment.** A row that is the checkbox itself took no fill, so the same list looked different depending on where the tick sat. A ticked row is a row you picked, so it paints what `selected` paints, with the same hover and press steps. Only together with `checkbox`.
+
+- **A segment stays lit while what it opened is on screen.** `expanded` on a segment set `aria-expanded` and turned a chevron, but left the segment looking untouched, so a menu hanging off one row floated over the list without saying which row it belonged to. It now paints the same fill as a picked row (`--components-list-item-is-expanded-background-color`, two steps above hover), and after the hover rule, so the pointer cannot dim it while the menu is open.
+
+- **`no-tab` on `nldd-button`.** The same property `nldd-icon-button` already had: take the button out of the tab order (`tabindex="-1"` on the button in the shadow root) because a container around it manages focus itself. An `nldd-list` sets it on the buttons in the rows that are not the current one. Mouse and script still reach the button.
+
+- **Enter follows the row in a tree.** It activates the row's own link or button, or on a branch built from segments the first one that is not the chevron. Space folds, the same as Left and Right. Enter used to fold, so a branch you could reach with the arrow keys could not be opened without hunting for a segment with Tab.
+
+- **`readonly` on `nldd-combo-box`.** The value stays readable and submits with the form, and the control that would change it is gone rather than dimmed.
+
+- **`keyboard` and `enter-key` on the text fields.** They set `inputmode` and `enterkeyhint`, so a phone shows the right keys and the right label on the return key.
+
+### Changed
+
+- **`inbox` is now `tray`, and a set of aliases moved with the way the set names things.** The file says what it draws, a tray with a slot, and `inbox` stays as the alias for what it is used for. New aliases: `time-light` on `clock-light`, `locked-database` on `cylinder-split-badge-lock`, `checked-text-document` on `file-text-badge-check-mark`, `companies` on `apartment-building-2`, `add-extension` and `add-module` on `puzzle-piece-badge-plus` (the plain piece already answered to all three words, the plus badge only to `plugin`), and the directory vocabulary is carried through the folders it was missing from: `new-directory`, `folders`, `directories`, `open-folder` and `open-directory`.
+
+- **The three shields are redrawn on one silhouette.** `shield`, `shield-check-mark` and `shield-lock` shared a pointed crest built from arcs, and now stand on the same flat-topped, rolled-edge shield as `shield-arrow-right-arrow-left`. That shield is wider at the top and flatter, and that is the reason for it: more fits on it. A check mark, a lock or two arrows passing each other need room, and on a pointed crest such a figure runs into the slanted edges. Four shields that differ only in what they carry, rather than a family that splits the moment a fourth arrives.
+
+- **A read-only field takes its controls away instead of dimming them.** A dimmed control invites a click that does nothing. The field keeps its value and its label, and drops the spinner, the picker and the clear button.
+
+- **A subtitle in `nldd-title` is one step larger.** It sat two steps under the title, which read as a caption rather than as the line that belongs to it.
+
+### Fixed
+
+- **The text on a colored fill is picked on luminance now, and clears 4.5:1.** `--semantics-content-contrast-color` decided between black and white on OKLCH lightness, which is perceptual and parts ways with the luminance WCAG measures, so a saturated mid blue got white text at 3.68:1. The threshold is now the relative luminance where black and white give the same contrast, Y = (sqrt(21) - 1) / 20, which makes the picked color at least 4.58:1 whatever it lands on. Where the browser has `contrast-color()`, that answers instead. This reaches every component that puts content on a fill it was handed: `nldd-badge`, `nldd-avatar`, `nldd-step-indicator`, `nldd-keyboard-shortcut` and the timeline cell.
+
+- **Switching a row off now moves the tab stop with it.** A row that carried the list's single tab stop kept it after `disabled` landed on it, so Tab reached a row that answers to nothing. The arrow keys already skipped it, and an unrelated change happened to repair it, which is the worst kind of bug: it fixes itself while you look at it. The row re-runs the roving when its own `disabled` changes, and the list watches the attribute too.
+
+- **A read-only combo box no longer announces a list it cannot open.** The picker button and the menu were already gone, but the input kept `role="combobox"` with `aria-haspopup="listbox"`, `aria-autocomplete` and `aria-expanded`. It is a text field with a value in it, and it now says so.
+
+- **`color="inherit"` on a badge or an avatar could paint white on white.** The fill came from the content channel around it, while the contrast flip that decides between black and white text read the inherited `color`. Those are the same value in most places, so it went unnoticed until a row set the channel to white over dark text: the badge then took a white fill and, from the dark inherited color, white text as well. Both components now set their own `color` to the fill first, the way `custom-color` already did, so the flip is computed against what is actually painted.
+
+- **An overlay is where the app's layout context ends.** A sheet or dialog inherited the app's scroll mode, so a short page inside an overlay could float its sticky footer mid-screen. An overlay now starts its own context.
+
 ## [0.8.82](https://github.com/MinBZK/storybook/compare/v0.8.81...v0.8.82) (2026-08-11)
 
 ## [0.8.81](https://github.com/MinBZK/storybook/compare/v0.8.80...v0.8.81) (2026-08-11)

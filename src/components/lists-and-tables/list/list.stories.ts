@@ -11,6 +11,9 @@ import '../../content/title/title.js';
 import '../../content/rich-text/rich-text.js';
 import '../../status-and-feedback/inline-dialog/inline-dialog.js';
 import '../../actions/button/button.js';
+import '../../actions/icon-button/icon-button.js';
+import '../../actions/menu/menu.js';
+import '../cells/cell/cell.js';
 import '../../inputs/toggle-button-group/toggle-button-group.js';
 import '../../inputs/toggle-button/toggle-button.js';
 import '../../layout/spacer/spacer.js';
@@ -38,11 +41,6 @@ export default {
 			options: ['always', 'on-touch', 'never'],
 			description: 'Wanneer de scheidingslijnen tussen de items getekend worden. `on-touch` alleen waar met een vinger wordt bediend, onder `(pointer: coarse)`: een aanwijzer heeft de hover-highlight om het ene item van het andere te scheiden en een vinger heeft niets. `never` verbergt ze overal.',
 			table: { defaultValue: { summary: 'always' } },
-		},
-		'arrow-navigation': {
-			control: 'boolean',
-			description: 'Roving-tabindex: ArrowUp/Down verplaatsen focus tussen de interactieve items (Home/End naar eerste/laatste), en de hele lijst wordt één Tab-stop. Alleen focus, geen selectie. Alleen voor simpele lijsten (elk item één actie, geen losse controls); wederzijds uitsluitend met `reorderable`. Zichtbaar effect alleen bij interactieve items — zie de "Arrow navigation"-story.',
-			table: { type: { summary: 'boolean' }, defaultValue: { summary: 'false' } },
 		},
 		'empty-text': {
 			control: 'text',
@@ -83,7 +81,6 @@ export const Default = {
 		variant: 'simple',
 		type: 'list',
 		dividers: 'always',
-		'arrow-navigation': false,
 		'empty-text': '',
 		'empty-supporting-text': '',
 		height: '',
@@ -93,7 +90,6 @@ export const Default = {
 			variant=${args.variant}
 			type=${args.type}
 			dividers=${args.dividers}
-			?arrow-navigation=${args['arrow-navigation']}
 			empty-text=${args['empty-text']}
 			empty-supporting-text=${args['empty-supporting-text']}
 			height=${args.type === 'listbox' && args.height ? args.height : nothing}
@@ -114,13 +110,11 @@ export const Default = {
 export const ArrowNavigation = {
 	name: 'Arrow navigation',
 	args: {
-		'arrow-navigation': true,
 		variant: 'simple',
 		type: 'list',
 	},
 	render: (args: Record<string, any>) => html`
 		<nldd-list
-			?arrow-navigation=${args['arrow-navigation']}
 			variant=${args.variant}
 			type=${args.type}
 		>
@@ -134,7 +128,47 @@ export const ArrowNavigation = {
 	parameters: {
 		docs: {
 			description: {
-				story: 'Met `arrow-navigation` wordt de lijst één Tab-stop. Tab focust het eerste (of `selected`) item; ArrowUp/ArrowDown lopen door de items (wrappend), Home/End springen naar eerste/laatste, en Tab verlaat de lijst weer. Pijltjes verplaatsen alleen focus, niet de selectie. Gebruik het alleen op simpele lijsten waar elk item één actie heeft (geen losse controls in een item); het is wederzijds uitsluitend met `reorderable`.',
+				story: 'Elke lijst is één Tab-stop, zonder dat je er iets voor zet. Tab focust het eerste (of `selected`) item; ArrowUp/ArrowDown lopen door de items (wrappend), Home/End springen naar eerste/laatste, en Tab verlaat de lijst weer. Pijltjes verplaatsen alleen focus, niet de selectie. Een `reorderable` lijst bedoelt iets anders met dezelfde toetsen: daar verplaatsen de pijltjes rijen.',
+			},
+		},
+	},
+};
+
+export const ArrowNavigationWithControls = {
+	name: 'Arrow navigation met controls',
+	args: {
+		variant: 'simple',
+		type: 'list',
+	},
+	render: (args: Record<string, any>) => html`
+		<nldd-list
+			variant=${args.variant}
+			type=${args.type}
+		>
+			${['NL-00001', 'NL-00002', 'NL-00003'].map((label) => html`
+				<nldd-list-item>
+					<nldd-text-cell width="full" text=${label}></nldd-text-cell>
+					<nldd-cell width="fit-content">
+						<nldd-icon-button
+							icon="ellipsis"
+							size="sm"
+							popup-type="menu"
+							accessible-label="Acties voor ${label}"
+						>
+							<nldd-menu slot="popup">
+								<nldd-menu-item text="Bewerken" icon="edit"></nldd-menu-item>
+								<nldd-menu-item text="Verwijderen" icon="trash"></nldd-menu-item>
+							</nldd-menu>
+						</nldd-icon-button>
+					</nldd-cell>
+				</nldd-list-item>
+			`)}
+		</nldd-list>
+	`,
+	parameters: {
+		docs: {
+			description: {
+				story: 'Een rij hoeft niet uit één actie te bestaan. De rij is de Tab-stop, en binnen de huidige rij loopt Tab langs de controls erin; in de andere rijen zijn diezelfde controls uit de tabvolgorde gehaald. Dat werkt voor alles wat native focusbaar is en voor design-system-controls met `no-tab`. Een custom element dat z\'n tabstop in de eigen shadow root houdt en geen `no-tab` biedt, kan de rij niet dichtzetten; dat waarschuwt in dev.',
 			},
 		},
 	},

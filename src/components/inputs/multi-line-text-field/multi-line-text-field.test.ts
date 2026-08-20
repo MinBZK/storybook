@@ -232,4 +232,12 @@ describe('nldd-multi-line-text-field', () => {
 		const textarea = el.shadowRoot!.querySelector('textarea')!;
 		expect(textarea.getAttribute('spellcheck')).toBe('false');
 	});
+
+	it('forwards keyboard to inputmode and enter-key to enterkeyhint', async () => {
+		el = await fixture('<nldd-multi-line-text-field keyboard="numeric" enter-key="send"></nldd-multi-line-text-field>');
+		await waitForUpdate(el);
+		const area = el.shadowRoot!.querySelector('textarea')!;
+		expect(area.getAttribute('inputmode')).toBe('numeric');
+		expect(area.getAttribute('enterkeyhint')).toBe('send');
+	});
 });

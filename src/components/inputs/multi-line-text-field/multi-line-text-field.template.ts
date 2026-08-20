@@ -32,6 +32,8 @@ export function multiLineTextFieldTemplate(component: NLDDMultiLineTextField): T
 			<textarea class="multi-line-text-field__input"
 				id=${component.inputId || nothing}
 				rows=${component.rows}
+				inputmode=${component.keyboard || nothing}
+				enterkeyhint=${component.enterKey || nothing}
 				.value=${component.value}
 				placeholder=${component.placeholder || nothing}
 				?disabled=${component.disabled}

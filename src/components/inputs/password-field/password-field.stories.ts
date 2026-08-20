@@ -99,9 +99,19 @@ export default {
 			control: 'text',
 			description: 'Toegankelijk label voor screen readers',
 		},
+		readonly: {
+			control: 'boolean',
+			description: 'Alleen-lezen toestand: de waarde blijft leesbaar en selecteerbaar, maar is hier niet te wijzigen',
+			table: { defaultValue: { summary: false } },
+		},
 		disabled: {
 			control: 'boolean',
 			description: 'Disabled state',
+			table: { defaultValue: { summary: false } },
+		},
+		required: {
+			control: 'boolean',
+			description: 'Verplichte toestand',
 			table: { defaultValue: { summary: false } },
 		},
 	},
@@ -120,18 +130,22 @@ export default {
 		valid: false,
 		invalid: false,
 		accessibleLabel: '',
+		readonly: false,
 		disabled: false,
+		required: false,
 	},
 };
 
-const Template = ({ size, name, value, placeholder, showButtonText, hideButtonText, showButtonAccessibleLabel, hideButtonAccessibleLabel, autocomplete, masked, valid, invalid, accessibleLabel, disabled, width }: Record<string, any>) => html`
+const Template = ({ size, name, value, placeholder, showButtonText, hideButtonText, showButtonAccessibleLabel, hideButtonAccessibleLabel, autocomplete, masked, valid, invalid, accessibleLabel, readonly, disabled, required, width }: Record<string, any>) => html`
 	<nldd-password-field
 		.value=${value}
 		.placeholder=${placeholder}
 		size=${size}
 		?valid=${valid}
 		?invalid=${invalid}
+		?readonly=${readonly}
 		?disabled=${disabled}
+		?required=${required}
 		.masked=${masked}
 		show-button-text=${showButtonText}
 		hide-button-text=${hideButtonText}

@@ -39,10 +39,10 @@ export default {
 		},
 	},
 	args: {
-		variant: 'tinted',
+		background: 'tinted',
 	},
 	argTypes: {
-		variant: {
+		background: {
 			control: 'select',
 			options: ['tinted', 'base', 'critical'],
 			description: 'Welk vlak de box tekent. `tinted` voor een box op een plain page, `base` voor een box op een al getinte parent (border ring krijgt +2 stappen voor extra contrast), `critical` voor een gebied met onomkeerbare acties.',
@@ -51,8 +51,8 @@ export default {
 	},
 };
 
-export const Standaard = ({ variant }: Record<string, unknown>) => html`
-	<nldd-box variant=${variant as string}>
+export const Standaard = ({ background }: Record<string, unknown>) => html`
+	<nldd-box background=${background as string}>
 		<nldd-container padding="16">
 			<nldd-rich-text>
 				<h3>Wanneer gebruik je een box?</h3>
@@ -78,7 +78,7 @@ export const Standaard = ({ variant }: Record<string, unknown>) => html`
 `;
 
 /**
- * `variant="critical"` markeert een gebied waarvan de acties onomkeerbaar zijn,
+ * `background="critical"` markeert een gebied waarvan de acties onomkeerbaar zijn,
  * een "danger zone". Anders dan `nldd-banner` is dit geen melding maar een vast
  * onderdeel van de pagina: de box krijgt daarom geen eigen ARIA-rol. De kop en
  * het knoplabel moeten het gevaar benoemen, de kleur bevestigt het alleen.
@@ -86,7 +86,7 @@ export const Standaard = ({ variant }: Record<string, unknown>) => html`
 export const Critical = {
 	name: 'Critical variant',
 	render: () => html`
-		<nldd-box variant="critical">
+		<nldd-box background="critical">
 		<nldd-container padding="16">
 				<nldd-rich-text>
 					<h3>Cluster verwijderen</h3>
@@ -104,16 +104,16 @@ export const Critical = {
 export const Vlakken = {
 	render: () => html`
 		<div style="display: flex; flex-direction: column; gap: 24px;">
-			<nldd-box variant="tinted">
+			<nldd-box background="tinted">
 		<nldd-container padding="16">
-					<nldd-rich-text><p>variant="tinted" (default) — getint vlak op een plain pagina</p></nldd-rich-text>
+					<nldd-rich-text><p>background="tinted" (default) — getint vlak op een plain pagina</p></nldd-rich-text>
 
 		</nldd-container>
 	</nldd-box>
 			<div style="background: var(--semantics-surfaces-tinted-background-color); padding: 24px;">
-				<nldd-box variant="base">
+				<nldd-box background="base">
 		<nldd-container padding="16">
-						<nldd-rich-text><p>variant="base" — base-colored box op een al getinte parent. Highlight ring is +2 stappen voor extra contrast.</p></nldd-rich-text>
+						<nldd-rich-text><p>background="base" — base-colored box op een al getinte parent. Highlight ring is +2 stappen voor extra contrast.</p></nldd-rich-text>
 
 		</nldd-container>
 	</nldd-box>

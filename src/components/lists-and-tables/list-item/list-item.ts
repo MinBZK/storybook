@@ -10,10 +10,73 @@ import type { NLDDList, ListType } from '../list/list.js';
 
 export type ListItemSize = 'sm' | 'md';
 
+/** Anything in a row's light DOM that is a tab stop of its own. `[tabindex]`
+ *  counts because an authored one makes any element focusable; the value itself
+ *  is read per element, and put back when the row becomes the current one. */
+const OWN_TAB_STOP = 'a[href], button, input, select, textarea, [contenteditable]:not([contenteditable="false"]), [tabindex]';
+
+/** What a control looked like before a roving row took it out of the tab order.
+ *  `noTab` is undefined for a control without that property — a native one,
+ *  where the tabindex is what moves instead. */
+interface AuthoredTabState {
+	noTab?: boolean;
+	tabindex: string | null;
+}
+
+type RovingControl = HTMLElement & { noTab?: boolean };
+
+/** Keyed on the element, so a row that is re-rendered around the same control
+ *  still knows what the consumer authored. */
+const authoredTabState = new WeakMap<Element, AuthoredTabState>();
+
+function authoredStateOf(el: RovingControl): AuthoredTabState {
+	let authored = authoredTabState.get(el);
+	if (!authored) {
+		authored = { noTab: 'noTab' in el ? el.noTab : undefined, tabindex: el.getAttribute('tabindex') };
+		authoredTabState.set(el, authored);
+	}
+	return authored;
+}
+
+function applyAuthoredTabState(el: RovingControl, authored: AuthoredTabState): void {
+	if (authored.noTab !== undefined) {
+		el.noTab = authored.noTab;
+		return;
+	}
+	if (authored.tabindex === null) el.removeAttribute('tabindex');
+	else el.setAttribute('tabindex', authored.tabindex);
+}
+
+/**
+ * Puts one control in or out of the tab order on behalf of the row it sits in.
+ *
+ * A design-system control keeps its tab stop inside its own shadow root, where
+ * a tabindex on the host cannot reach it, so it carries `no-tab` for exactly
+ * this. Everything else is native and takes the tabindex directly. A consumer
+ * who set either themselves keeps it: their `no-tab` or `tabindex="-1"` is a
+ * decision, not a leftover.
+ */
+function setTabbable(el: RovingControl, tabbable: boolean): void {
+	const authored = authoredStateOf(el);
+	if (authored.noTab !== undefined) {
+		el.noTab = authored.noTab || !tabbable;
+		return;
+	}
+	if (tabbable) applyAuthoredTabState(el, authored);
+	else el.setAttribute('tabindex', '-1');
+}
+
+function releaseTabbable(el: RovingControl): void {
+	const authored = authoredTabState.get(el);
+	if (!authored) return;
+	applyAuthoredTabState(el, authored);
+	authoredTabState.delete(el);
+}
+
 /**
  * A row within an `nldd-list`. Renders as a link when `href` is set, as a
  * checkbox when `checkbox` is set, as a button when `button` is set, or as a
- * plain container otherwise. All cells and action segmented actions share one flat
+ * plain container otherwise. All cells and segments share one flat
  * slot, in source order.
  *
  * ## Geometry
@@ -27,7 +90,7 @@ export type ListItemSize = 'sm' | 'md';
  *    itself outward (`is-interactive` host class → negative inline margin)
  *    and pads the row block back by the same amount, so content stays on the
  *    grid. A row-wide action owns that padding itself, making the whole
- *    widened box one hit area; slotted segmented actions stay in the grid, so their
+ *    widened box one hit area; slotted segments stay in the grid, so their
  *    footprint is position-independent and tree columns line up at any depth.
  *
  * ## Divider
@@ -36,7 +99,7 @@ export type ListItemSize = 'sm' | 'md';
  * an avatar, a checkbox, or the spacers a tree indents with. Rows of different
  * shapes then still line their dividers up with each other, and a tree's
  * dividers step inward with its indentation. Text inside an
- * `nldd-list-item-action` counts as the row's content, and the marker is that
+ * `nldd-list-item-segment` counts as the row's content, and the marker is that
  * text cell rather than the action: the action carries its own inline padding,
  * so its edge sits before the words. A row with no text or title cell keeps the
  * full content width. Mark a cell with `divider-start` and/or `divider-end` to
@@ -48,7 +111,7 @@ export type ListItemSize = 'sm' | 'md';
  *
  * ## Disclosure
  * A branch row can disclose its children in two ways: a dedicated
- * `nldd-list-item-action[disclosure]` segment (only the chevron is clickable),
+ * `nldd-list-item-segment[disclosure]` segment (only the chevron is clickable),
  * or the row itself as the control (`button` + `expanded`, the whole row
  * toggles). In the second case, mark the chevron's `nldd-icon-cell` with
  * `disclosure` and the row turns it with `expanded` — the same affordance,
@@ -81,17 +144,19 @@ export type ListItemSize = 'sm' | 'md';
  * @element nldd-list-item
  *
  * @attr {'sm'|'md'} size - Row size (default: 'md'). Pushed onto the cells whose `size` means the same scale (nldd-text-cell, nldd-drag-handle-cell), so it is written once per row instead of once per cell. A size set on the cell itself wins. Cells where `size` means something else — pixels on nldd-icon-cell / nldd-spacer-cell, a heading scale on nldd-title-cell — are left alone.
- * @attr {boolean} selected - Marks the item as selected. Selection is consumer-managed; the list never sets it. In a `navigation` parent it puts `aria-current="page"` on the inner action, in a `listbox` parent it drives `aria-selected`.
- * @attr {boolean} button - Renders the item as a `<button>`; ignored when `href` is set (a link wins)
- * @attr {boolean} checkbox - Makes the whole row a `role="checkbox"` control; ignored when `href` is set
+ * @attr {boolean} selected - Marks the item as selected: it is one of the rows you picked. Selection is consumer-managed; the list never sets it. In a `navigation` parent it puts `aria-current="page"` on the inner action, in a `listbox` parent it drives `aria-selected`.
+ * @attr {boolean} current - Marks the item as the one you are on: the page a menu row points at, the record a list has open. Exactly one row in a list carries it, where `selected` may be on many. It paints like `selected` at rest, and takes the highlighted fill while focus is anywhere in the row — including inside a nested `nldd-list-item-segment`, which is what a segmented row needs: the focus never reaches the row's own control, because there is none. In a `navigation` parent it puts `aria-current="page"` on the inner action. On a segmented row set it on the segment that holds the link instead: the row reads `current` off its own segments and paints itself, so it is written once, where `aria-current` belongs.
+ * @attr {boolean} button - Renders the item as a `<button>`. Last of the three: `href` and `checkbox` both win over it.
+ * @attr {boolean} checkbox - Makes the whole row a `role="checkbox"` control. Wins over `button`, loses to `href`.
  * @attr {boolean} checked - Checked state of a `checkbox` row; the item toggles it on activation
- * @attr {boolean} expanded - Disclosure state. Drives the `children` group's visibility AND supplies `aria-expanded` — to the row's own control when the row is interactive, or to the segmented action marked `disclosure`. Written once either way; the item DEV-warns when there is nowhere for it to live.
- * @attr {string} href - Renders the item as an `<a>` with this URL. Takes precedence over `button`; without either the item is a plain container with no action.
+ * @attr {boolean} disabled - Switches the row's own control off: a `button` or `checkbox` row stops responding and dims, a `href` row gets `aria-disabled` and its click is blocked (a link cannot be disabled natively). A row without a control of its own has nothing to switch off, and segments carry their own `disabled`. The arrow keys skip a disabled row.
+ * @attr {boolean} expanded - Disclosure state. Drives the `children` group's visibility AND supplies `aria-expanded` — to the row's own control when the row is interactive, or to the segment marked `disclosure`. Written once either way; the item DEV-warns when there is nowhere for it to live.
+ * @attr {string} href - Renders the item as an `<a>` with this URL. Wins over `checkbox` and `button`; without any of the three the item is a plain container with no action.
  * @attr {string} target - Link target forwarded to the `<a>` (e.g. '_blank'); only applies with `href`. With '_blank' a visually hidden "opens in new tab" announcement is added for assistive technology.
  * @attr {string} rel - Link rel forwarded to the `<a>` (e.g. 'noopener noreferrer'); only applies with `href`
  * @attr {boolean} reorderable - Set by the parent `nldd-list` when its own `reorderable` is on (with `type="list"`); consumers do not set this. Serves as a CSS hook for drag handle visibility.
  *
- * @slot - Cells and segmented actions, in source order
+ * @slot - Cells and segments, in source order
  * @slot children - Child rows of a branch in an `nldd-list type="tree"`. Rendered as a `role="group"` below the row, hidden while `expanded` is false. The nesting IS the hierarchy, so aria-level / -posinset / -setsize are derived, not authored. The group has no styling of its own: repeat a spacer-cell per level to indent, or show depth some other way.
  *
  * @fires change - On a `checkbox` row after it toggles; detail: { checked: boolean }
@@ -106,6 +171,17 @@ export class NLDDListItem extends withTranslations(LitElement, nlddListItemTrans
 	@property({ type: Boolean, reflect: true })
 	selected = false;
 
+	/**
+	 * The row you are on, as opposed to the rows you picked (`selected`).
+	 *
+	 * Kept apart because the two say different things and a list can show both:
+	 * a checkbox list where three rows are ticked and one is open. At rest they
+	 * paint the same, so a menu reads the same as it always did; the difference
+	 * shows when focus is in the row.
+	 */
+	@property({ type: Boolean, reflect: true })
+	current = false;
+
 	/** When set, renders the item as a button; ignored when href is set. */
 	@property({ type: Boolean, reflect: true })
 	button = false;
@@ -117,6 +193,17 @@ export class NLDDListItem extends withTranslations(LitElement, nlddListItemTrans
 	/** Checked state of a `checkbox` row. Toggled by the item on activation. */
 	@property({ type: Boolean, reflect: true })
 	checked = false;
+
+	/**
+	 * Switches off the row's own control.
+	 *
+	 * Only the row's own: a row built out of segments has no control here, and
+	 * each segment carries its own `disabled`. A link cannot be disabled the way
+	 * a button can, so there it is `aria-disabled` plus a blocked click, the
+	 * same trade `nldd-button` makes.
+	 */
+	@property({ type: Boolean, reflect: true })
+	disabled = false;
 
 	/**
 	 * Disclosure state of a row that opens something (a tree row's children, a
@@ -154,12 +241,13 @@ export class NLDDListItem extends withTranslations(LitElement, nlddListItemTrans
 	@state()
 	private _parentType: ListType = 'list';
 
-	/** Set by the parent nldd-list when `arrow-navigation` (roving tabindex) is on.
+	/** Set by the parent nldd-list when it runs the roving tabindex (everywhere
+	 *  except a listbox and a reorderable list).
 	 *  Switches the inner action from a normal tab stop to a roving one. */
 	@state()
 	_arrowNavigation = false;
 
-	/** Set by the parent nldd-list: when arrow-navigation is on, exactly one item
+	/** Set by the parent nldd-list: while the roving runs, exactly one item
 	 *  is the roving entry point (tabindex 0); the rest are tabindex -1. */
 	@state()
 	_rovingActive = false;
@@ -181,6 +269,11 @@ export class NLDDListItem extends withTranslations(LitElement, nlddListItemTrans
 	private _hasCheckedSegment = false;
 
 	private _lightDomObserver: MutationObserver | null = null;
+
+	/** The controls in this row the roving takes in and out of the tab order.
+	 *  Rebuilt when the row's light DOM changes, so a keypress does not walk
+	 *  every cell of every row again. */
+	private _rovingControlsCache: RovingControl[] | null = null;
 
 	/** Watches the row and its divider-marker cells for size changes; marker
 	 *  insets are measured, so any reflow can move them. */
@@ -207,10 +300,11 @@ export class NLDDListItem extends withTranslations(LitElement, nlddListItemTrans
 		// turns into a scroll (the browser fires pointercancel for that pointer),
 		// so `active` never sticks while the user scrolls the list.
 		this.addEventListener('pointerdown', this._onPointerDown);
+		this.addEventListener('mousedown', this._onMouseDown);
 		this.addEventListener('pointerup', this._clearPressed);
 		this.addEventListener('pointercancel', this._clearPressed);
 		// Light-DOM state the row derives styling from: a checked checkbox-
-		// segment (row-wide selected fill), which segmented actions own a row edge, and
+		// segment (row-wide selected fill), which segments own a row edge, and
 		// the divider markers. Attribute observation, not events: consumers
 		// also set these programmatically via setAttribute.
 		this._lightDomObserver = new MutationObserver(() => this._onLightDomChange());
@@ -218,7 +312,7 @@ export class NLDDListItem extends withTranslations(LitElement, nlddListItemTrans
 			subtree: true,
 			childList: true,
 			attributes: true,
-			attributeFilter: ['checked', 'divider-start', 'divider-end'],
+			attributeFilter: ['checked', 'current', 'divider-start', 'divider-end'],
 		});
 		this._onLightDomChange();
 	}
@@ -229,6 +323,7 @@ export class NLDDListItem extends withTranslations(LitElement, nlddListItemTrans
 		this.removeEventListener('focusout', this._handleFocusOut);
 		this.removeEventListener('click', this._handleClick);
 		this.removeEventListener('pointerdown', this._onPointerDown);
+		this.removeEventListener('mousedown', this._onMouseDown);
 		this.removeEventListener('pointerup', this._clearPressed);
 		this.removeEventListener('pointercancel', this._clearPressed);
 		this._lightDomObserver?.disconnect();
@@ -239,32 +334,113 @@ export class NLDDListItem extends withTranslations(LitElement, nlddListItemTrans
 
 	private _onLightDomChange(): void {
 		this._updateCheckedSegment();
+		this._updateCurrentSegment();
 		this._updateInteractive();
 		this._measureDividerMarkers();
+		this._rovingControlsCache = null;
+		// A framework can fill a row in a later pass than the one that put the row
+		// in the list, so both have to run again: the tab stops inside this row,
+		// and the list's choice of which rows the arrows stop at — a row that just
+		// gained its only control was not a stop when that choice was made.
+		if (this._arrowNavigation) {
+			this._syncRovingTabStops();
+			this._parentList?._updateRoving();
+		}
+	}
+
+	private get _parentList(): NLDDList | null {
+		return this.closest('nldd-list');
+	}
+
+	/**
+	 * The controls in this row that own a tab stop: a design-system control that
+	 * carries `no-tab`, or anything natively focusable. Segments are left
+	 * out — they have their own channel (`_tabbable`) — but a control slotted
+	 * inside one is not, so it is managed here.
+	 *
+	 * Custom elements that have not upgraded yet cannot answer whether they carry
+	 * `no-tab`, so the cache is dropped and the row re-syncs once they do.
+	 */
+	private _rovingControls(): RovingControl[] {
+		if (this._rovingControlsCache) return this._rovingControlsCache;
+		const pending = new Set<string>();
+		const controls = this._ownDescendants<RovingControl>('*').filter((el) => {
+			const tag = el.tagName.toLowerCase();
+			if (tag === 'nldd-list-item-segment') return false;
+			if (tag.includes('-') && !customElements.get(tag)) {
+				pending.add(tag);
+				return false;
+			}
+			return 'noTab' in el || el.matches(OWN_TAB_STOP);
+		});
+		this._rovingControlsCache = controls;
+		pending.forEach((tag) => {
+			customElements.whenDefined(tag).then(() => {
+				this._rovingControlsCache = null;
+				if (this._arrowNavigation) this._syncRovingTabStops();
+			});
+		});
+		return controls;
+	}
+
+	/**
+	 * Whether the arrow keys stop at this row.
+	 *
+	 * Anything you can operate makes a row a stop: its own link, button or
+	 * checkbox, a segment, or a control sitting in one of its cells. A
+	 * row of nothing but text is skipped, because focus that leads nowhere is a
+	 * dead end for a keyboard.
+	 *
+	 * @internal Read by the parent nldd-list.
+	 */
+	get _isRovingStop(): boolean {
+		// Nothing to land on: a disabled control is not focusable, so a stop there
+		// would swallow the arrow key and leave focus where it was.
+		if (this.disabled) return false;
+		if (this.href || this.button || this.checkbox) return true;
+		if (this._ownDescendants('nldd-list-item-segment:not([disabled])').length > 0) return true;
+		return this._rovingControls().some((control) => !control.hasAttribute('disabled'));
+	}
+
+	/**
+	 * A segment marked `current` makes the whole row the current one.
+	 *
+	 * A row cut into segments has no control of its own, so `aria-current="page"`
+	 * belongs on the segment that holds the link. Written there, the row would
+	 * stay unpainted and the consumer had to set `current` twice, once for the
+	 * semantics and once for the colour, with nothing to catch the two drifting
+	 * apart. The row reads it off its own segments instead — reading, not
+	 * writing: the attributes stay the consumer's.
+	 */
+	private _updateCurrentSegment(): void {
+		this.toggleAttribute(
+			'data-current',
+			this._ownDescendants('nldd-list-item-segment[current]').length > 0,
+		);
 	}
 
 	/** A checked checkbox-segment reads as "this row is selected", so the fill
 	 *  covers the whole row — including a disclosure segment — instead of
-	 *  stopping at the segmented action boundary. Scoped to own descendants: a checked
+	 *  stopping at the segment boundary. Scoped to own descendants: a checked
 	 *  row in a nested branch must not light up its ancestors. */
 	private _updateCheckedSegment(): void {
 		this._hasCheckedSegment =
-			this._ownDescendants('nldd-list-item-action[checkbox][checked]').length > 0;
+			this._ownDescendants('nldd-list-item-segment[checkbox][checked]').length > 0;
 	}
 
 	/** A row with any action — its own href/button/checkbox or a slotted
 	 *  segment — carries the widened geometry: negative host margin plus the
 	 *  compensating row padding (see the geometry rules in the class doc).
 	 *
-	 *  An action segment at a row edge owns the padding for that side itself,
-	 *  so the row drops its own there and the segmented action lands on the row's edge.
+	 *  An segment at a row edge owns the padding for that side itself,
+	 *  so the row drops its own there and the segment lands on the row's edge.
 	 *  Stamped as classes because the CSS cannot ask: `:has()` is not allowed
 	 *  inside `:host()`, and the row's own padding is what has to change — a
-	 *  `::slotted()` rule could only reach the segmented action. */
+	 *  `::slotted()` rule could only reach the segment. */
 	private _updateInteractive(): void {
 		const interactive =
 			!!this.href || this.button || this.checkbox ||
-			this._ownDescendants('nldd-list-item-action').length > 0;
+			this._ownDescendants('nldd-list-item-segment').length > 0;
 		this.classList.toggle('is-interactive', interactive);
 
 		// The row's own children, not the branch's child rows: those go to the
@@ -272,9 +448,9 @@ export class NLDDListItem extends withTranslations(LitElement, nlddListItemTrans
 		// element child is a nested row rather than the row's trailing segment.
 		const ownChildren = Array.from(this.children)
 			.filter(el => el.getAttribute('slot') !== 'children');
-		const isSegment = (el: Element | undefined) => el?.tagName.toLowerCase() === 'nldd-list-item-action';
-		this.classList.toggle('has-leading-action', isSegment(ownChildren[0]));
-		this.classList.toggle('has-trailing-action', isSegment(ownChildren[ownChildren.length - 1]));
+		const isSegment = (el: Element | undefined) => el?.tagName.toLowerCase() === 'nldd-list-item-segment';
+		this.classList.toggle('has-leading-segment', isSegment(ownChildren[0]));
+		this.classList.toggle('has-trailing-segment', isSegment(ownChildren[ownChildren.length - 1]));
 	}
 
 	override firstUpdated() {
@@ -302,12 +478,12 @@ export class NLDDListItem extends withTranslations(LitElement, nlddListItemTrans
 
 	/**
 	 * The row's own descendants for `selector` — everything down to and inside
-	 * its action segmented actions, but NOT inside a nested row. In a tree the child rows
+	 * its segments, but NOT inside a nested row. In a tree the child rows
 	 * are DOM children of this row, so a plain querySelectorAll would push this
 	 * row's state into theirs (a parent's `expanded` turning every nested
 	 * chevron, its `size` overwriting theirs). A `:scope >` child selector is
 	 * too strict the other way: cells legitimately sit one level deeper, inside
-	 * an nldd-list-item-action.
+	 * an nldd-list-item-segment.
 	 */
 	private _ownDescendants<T extends Element>(selector: string): T[] {
 		return Array.from(this.querySelectorAll<T>(selector))
@@ -344,7 +520,7 @@ export class NLDDListItem extends withTranslations(LitElement, nlddListItemTrans
 	}
 
 	override updated(changed: Map<string, unknown>) {
-		if (changed.has('selected') || changed.has('button') || changed.has('checkbox') || changed.has('href') || changed.has('_parentType')) {
+		if (changed.has('selected') || changed.has('current') || changed.has('button') || changed.has('checkbox') || changed.has('href') || changed.has('_parentType')) {
 			this._updateAriaState();
 		}
 		if (changed.has('button') || changed.has('checkbox') || changed.has('href')) {
@@ -356,6 +532,14 @@ export class NLDDListItem extends withTranslations(LitElement, nlddListItemTrans
 		}
 		if (changed.has('_arrowNavigation') || changed.has('_rovingActive')) {
 			this._syncRovingTabStops();
+		}
+		// A row that switches off mid-flight stops being a stop, but the tab stop it
+		// already holds does not move by itself: a disabled anchor keeps its
+		// tabindex, so Tab would land on a row that answers to nothing until some
+		// unrelated change happened to re-run the roving.
+		if (changed.has('disabled')) {
+			this._syncRovingTabStops();
+			this._parentList?._updateRoving();
 		}
 		this._propagateSize();
 	}
@@ -376,8 +560,8 @@ export class NLDDListItem extends withTranslations(LitElement, nlddListItemTrans
 	/** Segments marked `disclosure` announce the row's expanded state, so the
 	 *  consumer writes it once — here, where it also drives the children group. */
 	private _relayExpanded(): void {
-		this._ownDescendants<HTMLElement & { _rowExpanded?: boolean }>('nldd-list-item-action[disclosure]')
-			.forEach(action => { action._rowExpanded = this._resolvedExpanded; });
+		this._ownDescendants<HTMLElement & { _rowExpanded?: boolean }>('nldd-list-item-segment[disclosure]')
+			.forEach(segment => { segment._rowExpanded = this._resolvedExpanded; });
 	}
 
 	/** `expanded` needs a control to sit on; a plain container has none. */
@@ -385,8 +569,8 @@ export class NLDDListItem extends withTranslations(LitElement, nlddListItemTrans
 		if (!import.meta.env?.DEV) return;
 		if (this.expanded === undefined) return;
 		if (this.href || this.button || this.checkbox) return;
-		if (this._ownDescendants('nldd-list-item-action[disclosure]').length > 0) return;
-		console.warn('nldd-list-item: `expanded` needs somewhere to live — make the row interactive (href, button or checkbox), or mark the segmented action that does the disclosing with `disclosure`.');
+		if (this._ownDescendants('nldd-list-item-segment[disclosure]').length > 0) return;
+		console.warn('nldd-list-item: `expanded` needs somewhere to live — make the row interactive (href, button or checkbox), or mark the segment that does the disclosing with `disclosure`.');
 	}
 
 	/** True when the item is an option in a `type="listbox"` parent. */
@@ -423,11 +607,11 @@ export class NLDDListItem extends withTranslations(LitElement, nlddListItemTrans
 	_applyParentType(type: ListType) {
 		this._parentType = type;
 		this._relayToChildren(item => item._applyParentType(type));
-		// Segment actions need the list type too: in a listbox they degrade to a
+		// Segments need the list type too: in a listbox they degrade to a
 		// plain container, since an `option` may not hold interactive descendants.
-		// Own segmented actions only — nested rows get the relay above and push their own.
-		this._ownDescendants<HTMLElement & { _applyParentType?: (t: string) => void }>('nldd-list-item-action')
-			.forEach(action => action._applyParentType?.(type));
+		// Own segments only — nested rows get the relay above and push their own.
+		this._ownDescendants<HTMLElement & { _applyParentType?: (t: string) => void }>('nldd-list-item-segment')
+			.forEach(segment => segment._applyParentType?.(type));
 	}
 
 	/** Nested rows sit in this item's `children` slot, not the list's, so a plain
@@ -460,7 +644,7 @@ export class NLDDListItem extends withTranslations(LitElement, nlddListItemTrans
 
 		// aria-current on the inner action (link/button) — navigation only
 		const action = this._action;
-		if (this._parentType === 'navigation' && this.selected && action) {
+		if (this._parentType === 'navigation' && (this.current || this.selected) && action) {
 			action.setAttribute('aria-current', 'page');
 		} else {
 			action?.removeAttribute('aria-current');
@@ -484,7 +668,7 @@ export class NLDDListItem extends withTranslations(LitElement, nlddListItemTrans
 	 * full-width line back.
 	 */
 	private _implicitDividerStart(): Element[] {
-		// The marker is the CELL, never a segmented action around it: the action
+		// The marker is the CELL, never a segment around it: the action
 		// carries its own inline padding, so its edge sits before the text. Own
 		// descendants, so a text inside a segment counts as this row's content
 		// while a nested row's text does not.
@@ -601,6 +785,13 @@ export class NLDDListItem extends withTranslations(LitElement, nlddListItemTrans
 	}
 
 	private _handleClick = (e: Event) => {
+		// A disabled <button> never gets here, but a link does: there is no such
+		// thing as a disabled <a>, so the row stops the navigation itself.
+		if (this.disabled) {
+			e.preventDefault();
+			e.stopPropagation();
+			return;
+		}
 		// Safari and Firefox on Mac don't focus buttons on click. Force focus
 		// so :has(.list-item__action:focus) and :focus-within CSS work reliably.
 		this._action?.focus();
@@ -627,7 +818,21 @@ export class NLDDListItem extends withTranslations(LitElement, nlddListItemTrans
 		this._action?.classList.remove('is-pointer-focus');
 	};
 
+	/**
+	 * See the same handler in nldd-list-item-segment: Safari hands focus to the
+	 * body while the mouse is down, which drops a row out of its lit state until
+	 * you let go. Left alone on a reorderable row and on a row whose press came
+	 * from a nested one, where the default is doing real work (dragging).
+	 */
+	private _onMouseDown = (e: MouseEvent) => {
+		if (e.button > 0 || this.reorderable) return;
+		if (this._isFromNestedRow(e)) return;
+		if (!this._action) return;
+		e.preventDefault();
+	};
+
 	private _onPointerDown = (e: PointerEvent) => {
+		if (this.disabled) return;
 		// Primary button / touch / pen only (mouse right-click has button > 0).
 		if (e.button > 0) return;
 		// A branch's child rows are light-DOM children, so their pointer events
@@ -635,6 +840,11 @@ export class NLDDListItem extends withTranslations(LitElement, nlddListItemTrans
 		// flashes the press state of every ancestor row above it.
 		if (this._isFromNestedRow(e)) return;
 		this._action?.classList.add('is-pressed');
+		// Safari does not focus a <button> on click, so a row whose paint follows
+		// the focus in it would stay unlit there while the other browsers light
+		// up. Focusing on the press makes the three agree; the ring stays hidden
+		// because is-pointer-focus already marks a pointer focus.
+		this._action?.focus({ preventScroll: true });
 	};
 
 	/** Whether the event started in a row nested inside this one. Only the part
@@ -657,7 +867,7 @@ export class NLDDListItem extends withTranslations(LitElement, nlddListItemTrans
 	 * so consumers can call `listItemEl.focus()` without reaching into shadow DOM.
 	 */
 	override focus(options?: FocusOptions): void {
-		// A tree row without a control of its own (only segmented actions, or
+		// A tree row without a control of its own (only segments, or
 		// none at all) takes focus on the host: that is where role="treeitem"
 		// sits, so assistive technology announces the row rather than a button
 		// inside it. _syncRovingTabStops gives the host the tabindex for it.
@@ -671,8 +881,9 @@ export class NLDDListItem extends withTranslations(LitElement, nlddListItemTrans
 	/**
 	 * The roving tab stop, spread over the row and the controls inside it: the
 	 * current row is reachable with Tab, everything else only with the arrow
-	 * keys. Within the current row Tab then walks its segmented actions, so a row
-	 * that holds a checkbox and a chevron stays fully operable.
+	 * keys. Within the current row Tab then walks its segments and any
+	 * control in its cells, so a row that holds a checkbox and a chevron, or a
+	 * menu button at its end, stays fully operable.
 	 *
 	 * A row that is not the current one carries NO tabindex at all rather than
 	 * -1. A shadow host with a tabindex is a focus scope of its own, and Chromium
@@ -684,14 +895,15 @@ export class NLDDListItem extends withTranslations(LitElement, nlddListItemTrans
 	 * tab stop is in the DOM before focus is handed over.
 	 */
 	_syncRovingTabStops(): void {
-		const ownActions = Array.from(this.children).filter(
+		const ownSegments = Array.from(this.children).filter(
 			(el): el is HTMLElement & { _tabbable?: boolean } =>
 				el.getAttribute('slot') !== 'children'
-				&& el.tagName.toLowerCase() === 'nldd-list-item-action',
+				&& el.tagName.toLowerCase() === 'nldd-list-item-segment',
 		);
 		if (!this._arrowNavigation) {
 			this.removeAttribute('tabindex');
-			ownActions.forEach((action) => { action._tabbable = undefined; });
+			ownSegments.forEach((segment) => { segment._tabbable = undefined; });
+			this._rovingControls().forEach(releaseTabbable);
 			return;
 		}
 		// Only a row without its own control needs the host as focus target; with
@@ -701,16 +913,17 @@ export class NLDDListItem extends withTranslations(LitElement, nlddListItemTrans
 		} else {
 			this.setAttribute('tabindex', '0');
 		}
-		ownActions.forEach((action) => { action._tabbable = this._rovingActive; });
+		ownSegments.forEach((segment) => { segment._tabbable = this._rovingActive; });
+		this._rovingControls().forEach((control) => { setTabbable(control, this._rovingActive); });
 	}
 
-	/** The control that opens and closes this row: the segmented action marked
+	/** The control that opens and closes this row: the segment marked
 	 *  `disclosure`, or the row itself when it is a button. Never a link — Left
 	 *  and Right may not navigate away. */
 	private get _disclosureControl(): HTMLElement | undefined {
 		const action = Array.from(this.children).find(
 			(el) => el.getAttribute('slot') !== 'children'
-				&& el.tagName.toLowerCase() === 'nldd-list-item-action'
+				&& el.tagName.toLowerCase() === 'nldd-list-item-segment'
 				&& el.hasAttribute('disclosure'),
 		) as HTMLElement | undefined;
 		if (action) return action;
@@ -724,10 +937,30 @@ export class NLDDListItem extends withTranslations(LitElement, nlddListItemTrans
 	_activateDisclosure(): boolean {
 		const control = this._disclosureControl;
 		if (!control) return false;
-		// The click lands on a segmented action, and that action pulls focus into
+		// The click lands on a segment, and that segment pulls focus into
 		// its own control — with the pointer-focus flag set, since a click is what
 		// it sees. Focus belongs to the row: that is the roving tab stop, and the
 		// keyboard user has to keep seeing where they are.
+		const hadFocus = this.matches(':focus-within');
+		(control as HTMLElement & { click(): void }).click();
+		if (hadFocus) this.focus();
+		return true;
+	}
+
+	/**
+	 * Activates what this row is FOR, as opposed to what folds it: the first
+	 * segment that is not the disclosure. A row that is its own control
+	 * needs none of this, because the key reaches that control by itself.
+	 * Returns false when there is nothing but a chevron.
+	 */
+	_activatePrimary(): boolean {
+		const segments = [...this.querySelectorAll(':scope > nldd-list-item-segment')];
+		const primary = segments.find((segment) => !segment.hasAttribute('disclosure'));
+		if (!primary) return false;
+		const control = primary.shadowRoot?.querySelector('a, button');
+		if (!control) return false;
+		// Same trade as _activateDisclosure: the click pulls focus into the
+		// segment, and the row has to keep it, because the row is the tab stop.
 		const hadFocus = this.matches(':focus-within');
 		(control as HTMLElement & { click(): void }).click();
 		if (hadFocus) this.focus();
@@ -750,7 +983,7 @@ export class NLDDListItem extends withTranslations(LitElement, nlddListItemTrans
 		// search input is in the tab order, and active moves via
 		// aria-activedescendant. Roving tabindex (arrow-navigation) supersedes
 		// nothing here: the two modes are mutually exclusive on the parent list.
-		// Otherwise, roving tabindex: when the list runs arrow-navigation,
+		// Otherwise, roving tabindex: while the list runs the roving,
 		// exactly one item is the tab stop (0) and the rest are reachable only
 		// via the arrow keys (-1). Off → undefined leaves the native
 		// button/link as a normal tab stop.
@@ -772,6 +1005,7 @@ export class NLDDListItem extends withTranslations(LitElement, nlddListItemTrans
 			this._resolvedExpanded,
 			this._showChildren,
 			this._hasCheckedSegment,
+			this.disabled,
 		);
 	}
 }

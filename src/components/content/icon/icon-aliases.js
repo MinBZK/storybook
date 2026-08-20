@@ -23,6 +23,10 @@ export const aliases = {
 	'collapse': 'arrow-up-right-arrow-down-left',
 	'exit-full-screen': 'arrow-up-right-arrow-down-left',
 
+	// arrow-left-right
+	'switch': 'arrow-left-right',
+	'swap': 'arrow-left-right',
+
 	// arrow-up-arrow-down
 	'sort': 'arrow-up-arrow-down',
 
@@ -40,6 +44,7 @@ export const aliases = {
 	// apartment-building-2
 	'buildings': 'apartment-building-2',
 	'offices': 'apartment-building-2',
+	'companies': 'apartment-building-2',
 
 	// book
 	'guide': 'book',
@@ -54,11 +59,15 @@ export const aliases = {
 	// books-vertical
 	'books': 'books-vertical',
 
+	// boxes-3
+	'inventory': 'boxes-3',
+
 	// brackets-ellipsis
 	'embed': 'brackets-ellipsis',
+	'namespace': 'brackets-ellipsis',
 
 	// brackets-ellipsis-badge-plus
-	'add-namespace': 'brackets-ellipsis-badge-plus',
+	'new-namespace': 'brackets-ellipsis-badge-plus',
 
 	// business-suitcase
 	'work': 'business-suitcase',
@@ -88,6 +97,10 @@ export const aliases = {
 	// check-mark-circle
 	'success': 'check-mark-circle',
 	'valid': 'check-mark-circle',
+	'done': 'check-mark-circle',
+
+	// check-mark-circle-light
+	'done-light': 'check-mark-circle-light',
 
 	// check-mark-extra-small
 	'checked-extra-small': 'check-mark-extra-small',
@@ -104,8 +117,27 @@ export const aliases = {
 	// chevron-right
 	'forward': 'chevron-right',
 
+	// circle
+	'no-priority': 'circle',
+	'to-do': 'circle',
+
+	// circle-circle
+	'doing': 'circle-circle',
+
+	// circle-circle-light
+	'doing-light': 'circle-circle-light',
+
 	// circle-dashed
 	'icon-placeholder': 'circle-dashed',
+
+	// circle-grid-2x2-top-left-check-mark
+	'all-tasks': 'circle-grid-2x2-top-left-check-mark',
+
+	// circle-light
+	'to-do-light': 'circle-light',
+
+	// clipboard-bullet-list
+	'inventory-alt': 'clipboard-bullet-list',
 
 	// clipboard-pencil
 	'form': 'clipboard-pencil',
@@ -116,6 +148,9 @@ export const aliases = {
 	// clock
 	'time': 'clock',
 	'now': 'clock',
+
+	// clock-light
+	'time-light': 'clock-light',
 
 	// clock-arrow-clockwise
 	'future': 'clock-arrow-clockwise',
@@ -131,12 +166,18 @@ export const aliases = {
 	'deploy': 'cloud-arrow-up',
 	'upload-to-cloud': 'cloud-arrow-up',
 
+	// cpu
+	'processor': 'cpu',
+
 	// cylinder-split
 	'database': 'cylinder-split',
 
+	// cylinder-split-badge-lock
+	'locked-database': 'cylinder-split-badge-lock',
+
 	// cylinder-split-slash
-	'database-disabled': 'cylinder-split-slash',
-	'database-unavailable': 'cylinder-split-slash',
+	'disabled-database': 'cylinder-split-slash',
+	'unavailable-database': 'cylinder-split-slash',
 
 	// dismiss
 	'close': 'dismiss',
@@ -227,9 +268,11 @@ export const aliases = {
 	// file-text
 	'text-document': 'file-text',
 
+	// file-text-badge-check-mark
+	'checked-text-document': 'file-text-badge-check-mark',
+
 	// file-text-badge-check-plus
 	'new-text-document': 'file-text-badge-check-plus',
-	'add-text-document': 'file-text-badge-check-plus',
 
 	// file-text-pencil
 	'edit-text-document': 'file-text-pencil',
@@ -251,8 +294,20 @@ export const aliases = {
 
 	// folder-badge-plus
 	'new-folder': 'folder-badge-plus',
+	'new-directory': 'folder-badge-plus',
+
+	// folder-open
+	'open-folder': 'folder-open',
+	'open-directory': 'folder-open',
+
+	// tray
+	'inbox': 'tray',
+
+	// external-hard-drives
+	'storage': 'external-hard-drives',
 
 	// folder-on-folder
+	'folders': 'folder-on-folder',
 	'directories': 'folder-on-folder',
 
 	// gear
@@ -285,8 +340,14 @@ export const aliases = {
 	'info': 'info-circle',
 	'information': 'info-circle',
 
+	// kanban-columns
+	'kanban': 'kanban-columns',
+
 	// lightbulb
 	'idea': 'lightbulb',
+
+	// lightning
+	'energy': 'lightning',
 
 	// link
 	'url': 'link',
@@ -334,8 +395,8 @@ export const aliases = {
 	'kubernetes': 'ship-wheel',
 
 	// ship-wheel-badge-plus
-	'add-k8s': 'ship-wheel-badge-plus',
-	'add-kubernetes': 'ship-wheel-badge-plus',
+	'new-k8s': 'ship-wheel-badge-plus',
+	'new-kubernetes': 'ship-wheel-badge-plus',
 
 	// magnifier
 	'search': 'magnifier',
@@ -360,6 +421,10 @@ export const aliases = {
 
 	// megaphone
 	'announcement': 'megaphone',
+
+	// memory-chip
+	'memory': 'memory-chip',
+	'ram': 'memory-chip',
 
 	// message-rectangle-text
 	'annotation': 'message-rectangle-text',
@@ -393,6 +458,10 @@ export const aliases = {
 
 	// parking-sign-square
 	'parking': 'parking-sign-square',
+
+	// pci-card
+	'network-interface-card': 'pci-card',
+	'nic': 'pci-card',
 
 	// pencil
 	'write': 'pencil',
@@ -441,6 +510,9 @@ export const aliases = {
 	// plus-small
 	'add-small': 'plus-small',
 
+	// printer
+	'print': 'printer',
+
 	// puzzle-piece
 	'extension': 'puzzle-piece',
 	'module': 'puzzle-piece',
@@ -448,10 +520,24 @@ export const aliases = {
 
 	// puzzle-piece-badge-plus
 	'add-plugin': 'puzzle-piece-badge-plus',
+	'add-extension': 'puzzle-piece-badge-plus',
+	'add-module': 'puzzle-piece-badge-plus',
 
 	// question-mark-circle
 	'help': 'question-mark-circle',
 	'question': 'question-mark-circle',
+
+	// rack-server
+	'server': 'rack-server',
+
+	// rack-servers
+	'servers': 'rack-servers',
+
+	// shield-arrow-right-arrow-left
+	'firewall': 'shield-arrow-right-arrow-left',
+
+	// waving-crossing-lines
+	'network-patch-mapping': 'waving-crossing-lines',
 
 	// shield-check-mark
 	'security': 'shield-check-mark',
@@ -461,8 +547,15 @@ export const aliases = {
 	'blocked': 'slash-circle',
 	'forbidden': 'slash-circle',
 
+	// slash-circle-light
+	'blocked-light': 'slash-circle-light',
+
 	// slider-horizontal-3
 	'local-settings': 'slider-horizontal-3',
+
+	// snowflake
+	'cooling': 'snowflake',
+	'airco': 'snowflake',
 
 	// sparkles
 	'ai': 'sparkles',
@@ -517,6 +610,9 @@ export const aliases = {
 	// square-plus-on-square
 	'duplicate': 'square-plus-on-square',
 
+	// ssd-hard-drive
+	'hard-drive': 'ssd-hard-drive',
+
 	// rectangle-stack
 	'stack': 'rectangle-stack',
 	'library': 'rectangle-stack',
@@ -545,12 +641,18 @@ export const aliases = {
 	// timer
 	'countdown': 'timer',
 
+	// transceiver-module
+	'sfp': 'transceiver-module',
+
 	// trash
 	'delete': 'trash',
 
 	// point-bottom-left-to-point-top-right-s-curve-path
 	'path': 'point-bottom-left-to-point-top-right-s-curve-path',
 	'traject': 'point-bottom-left-to-point-top-right-s-curve-path',
+
+	// power-plug
+	'power': 'power-plug',
 
 	// pipeline-corner-2
 	'pipeline': 'pipeline-corner-2',
