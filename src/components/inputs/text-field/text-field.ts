@@ -35,9 +35,15 @@ import { textFieldTemplate } from './text-field.template.js';
 
 export type InputType = 'text' | 'email' | 'tel' | 'url';
 
-export type Keyboard = 'none' | 'text' | 'decimal' | 'numeric' | 'tel' | 'search' | 'email' | 'url';
+/** The tokens `inputmode` and `enterkeyhint` accept. Arrays, so one list types
+ *  the property and answers at runtime: a value outside it is dropped by the
+ *  browser without a word, which is a typo you only find on a phone. */
+export const KEYBOARDS = ['none', 'text', 'decimal', 'numeric', 'tel', 'search', 'email', 'url'] as const;
+export const ENTER_KEYS = ['enter', 'done', 'go', 'next', 'previous', 'search', 'send'] as const;
 
-export type EnterKey = 'enter' | 'done' | 'go' | 'next' | 'previous' | 'search' | 'send';
+export type Keyboard = (typeof KEYBOARDS)[number];
+
+export type EnterKey = (typeof ENTER_KEYS)[number];
 
 /** The keyboard each `type` already asks for. Setting `keyboard` to something
  *  else contradicts the type, which is worth saying out loud in dev. */
@@ -138,6 +144,8 @@ export class NLDDTextField extends FormAssociated(LitElement) {
 
 	override updated(changed: PropertyValues): void {
 		if (changed.has('keyboard') || changed.has('type')) this._warnKeyboardVsType();
+		if (changed.has('keyboard')) this._warnUnknownToken('keyboard', this.keyboard, KEYBOARDS);
+		if (changed.has('enterKey')) this._warnUnknownToken('enter-key', this.enterKey, ENTER_KEYS);
 		if (changed.has('width')) {
 			const w = this.width;
 			if (w && w !== 'full' && CSS.supports('width', w)) {
@@ -146,6 +154,13 @@ export class NLDDTextField extends FormAssociated(LitElement) {
 				this.style.removeProperty('--_width');
 			}
 		}
+	}
+
+	/** A token the browser does not know is dropped silently, and the field falls
+	 *  back to the default keyboard. */
+	private _warnUnknownToken(attribute: string, value: string | undefined, allowed: readonly string[]): void {
+		if (!import.meta.env?.DEV || !value || allowed.includes(value)) return;
+		console.warn(`<nldd-text-field>: ${attribute}="${value}" is not a value the browser knows. Use one of: ${allowed.join(', ')}.`);
 	}
 
 	/** A `type` other than text already asks for its own keyboard. Overriding it

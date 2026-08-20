@@ -821,3 +821,23 @@ describe('nldd-date-field springt met backspace van een leeg einddatumveld terug
 		expect(event.defaultPrevented).toBe(false);
 	});
 });
+
+describe('nldd-date-field readonly', () => {
+	let el: HTMLElement;
+
+	afterEach(() => {
+		if (el) cleanup(el);
+	});
+
+	it('drops the picker button, rather than dimming it', async () => {
+		el = await fixture('<nldd-date-field value="2026-08-19" readonly></nldd-date-field>');
+		await waitForUpdate(el);
+		expect(el.shadowRoot!.querySelector('nldd-icon-button')).toBeNull();
+	});
+
+	it('keeps the picker on a field that can change', async () => {
+		el = await fixture('<nldd-date-field value="2026-08-19"></nldd-date-field>');
+		await waitForUpdate(el);
+		expect(el.shadowRoot!.querySelector('nldd-icon-button')).not.toBeNull();
+	});
+});

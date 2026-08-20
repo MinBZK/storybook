@@ -192,6 +192,23 @@ describe('nldd-badge color="inherit"', () => {
 		expect(getComputedStyle(text).color).not.toBe('rgb(255, 255, 255)');
 	});
 
+	it('paints custom-color and puts a contrasting text on it', async () => {
+		// The contrast token lives in variables.css, which the test environment does
+		// not load, so the fixture carries the same formula.
+		el = await fixture(`
+			<div style="--semantics-content-contrast-color: oklch(from currentColor calc((0.65 - l) * infinity) 0 h);">
+				<nldd-badge custom-color="rgb(20, 20, 20)" text="3"></nldd-badge>
+			</div>
+		`);
+		const badge = el.querySelector('nldd-badge')!;
+		await waitForUpdate(badge);
+		const shape = badge.shadowRoot!.querySelector('.badge')!;
+		const text = badge.shadowRoot!.querySelector('.badge__text')!;
+		expect(getComputedStyle(shape).backgroundColor).toBe('rgb(20, 20, 20)');
+		// oklch(1 0 h) is white whatever the hue channel says.
+		expect(getComputedStyle(text).color).toMatch(/^oklch\(1 0 /);
+	});
+
 	it('falls back to the inherited color where no channel is set', async () => {
 		el = await fixture(`
 			<div style="color: rgb(0, 0, 0);">

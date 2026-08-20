@@ -16138,6 +16138,23 @@
       "path": "src/components/inputs/text-field/text-field.ts",
       "declarations": [
         {
+          "kind": "variable",
+          "name": "KEYBOARDS",
+          "type": {
+            "text": "['none', 'text', 'decimal', 'numeric', 'tel', 'search', 'email', 'url']"
+          },
+          "default": "['none', 'text', 'decimal', 'numeric', 'tel', 'search', 'email', 'url']",
+          "description": "The tokens `inputmode` and `enterkeyhint` accept. Arrays, so one list types\nthe property and answers at runtime: a value outside it is dropped by the\nbrowser without a word, which is a typo you only find on a phone."
+        },
+        {
+          "kind": "variable",
+          "name": "ENTER_KEYS",
+          "type": {
+            "text": "['enter', 'done', 'go', 'next', 'previous', 'search', 'send']"
+          },
+          "default": "['enter', 'done', 'go', 'next', 'previous', 'search', 'send']"
+        },
+        {
           "kind": "class",
           "description": "",
           "name": "NLDDTextField",
@@ -16675,6 +16692,22 @@
         }
       ],
       "exports": [
+        {
+          "kind": "js",
+          "name": "KEYBOARDS",
+          "declaration": {
+            "name": "KEYBOARDS",
+            "module": "src/components/inputs/text-field/text-field.ts"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "ENTER_KEYS",
+          "declaration": {
+            "name": "ENTER_KEYS",
+            "module": "src/components/inputs/text-field/text-field.ts"
+          }
+        },
         {
           "kind": "js",
           "name": "NLDDTextField",
