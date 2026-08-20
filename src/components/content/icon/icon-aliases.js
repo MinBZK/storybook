@@ -23,6 +23,10 @@ export const aliases = {
 	'collapse': 'arrow-up-right-arrow-down-left',
 	'exit-full-screen': 'arrow-up-right-arrow-down-left',
 
+	// arrow-left-right
+	'switch': 'arrow-left-right',
+	'swap': 'arrow-left-right',
+
 	// arrow-up-arrow-down
 	'sort': 'arrow-up-arrow-down',
 
