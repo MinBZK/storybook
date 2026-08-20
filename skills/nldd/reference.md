@@ -339,6 +339,7 @@ Shows one person or organization as a compact, round (person) or rounded (organi
 | `decorative` | `boolean` | Hides the avatar from assistive software (use when the name already stands beside it as text) |
 | `tooltip-timing` | `string` | When the name appears as a tooltip on hover or focus: `default` (after 700ms; the default), `instant`, or `never`. An avatar shows no text, so without a tooltip the name is readable by assistive software only. A `decorative` avatar shows none regardless: there the name already stands beside it as text |
 | `href` | `string` | Makes the avatar a link to this URL; the shape itself becomes the link, so the hit area and the focus ring follow it |
+| `no-tab` | `boolean` | Takes the control out of the tab order (tabindex="-1"), for an avatar that is a link or a button inside a roving container (a row of an nldd-list). Does nothing on a decorative avatar. |
 | `button` | `boolean` | Makes the avatar a button; ignored when `href` is set |
 | `target` | `string` | Link target for href (e.g. '_blank'); completes rel and announces "Opens in a new tab" |
 | `rel` | `string` | Link rel for href; defaults to 'noopener noreferrer' when target='_blank' |
@@ -728,6 +729,7 @@ Nederlandse Digitale Dienst Form Section Component Plain custom element (extends
 | --- | --- | --- |
 | `checked` | `boolean` | Checked state |
 | `disabled` | `boolean` | Disabled state |
+| `no-tab` | `boolean` | Takes the control out of the tab order (tabindex="-1"), for a control owned by a roving container (a row of an nldd-list, where the arrow keys move between rows) that manages focus itself. Still mouse- and script-focusable. |
 | `decorative` | `boolean` | Renders the box without the input: no focus, no name/value, nothing announced. For a control that owns the state elsewhere, such as a list row that is itself the checkbox; putting a real input in there would nest a control inside a control. |
 | `indeterminate` | `boolean` | Indeterminate state (takes precedence over checked visually) |
 | `value` | `string` | Value for form submission |
@@ -1057,6 +1059,7 @@ WAI-ARIA: Wrap radio buttons in a <fieldset>/<legend> or a container with role="
 | --- | --- | --- |
 | `checked` | `boolean` | Checked state |
 | `disabled` | `boolean` | Disabled state |
+| `no-tab` | `boolean` | Takes the control out of the tab order (tabindex="-1"), for a control owned by a roving container (a row of an nldd-list, where the arrow keys move between rows) that manages focus itself. Still mouse- and script-focusable. |
 | `decorative` | `boolean` | Renders the shape without the input: no focus, no name/value, nothing announced. For a control that owns the state elsewhere, such as a list row that is itself the radio; putting a real input in there would nest a control inside a control. |
 | `required` | `boolean` | Required state |
 | `name` | `string` | Radio group name for form submission; ties the buttons of one group together |
@@ -1235,6 +1238,7 @@ A toggle control for on/off settings. Prefer nldd-switch-field for labeled usage
 | --- | --- | --- |
 | `checked` | `boolean` | Whether the switch is on/off |
 | `disabled` | `boolean` | Disabled state |
+| `no-tab` | `boolean` | Takes the control out of the tab order (tabindex="-1"), for a control owned by a roving container (a row of an nldd-list, where the arrow keys move between rows) that manages focus itself. Still mouse- and script-focusable. |
 | `size` | `string` | Switch size: 'xs' \| 'sm' (default: 'sm') |
 | `name` | `string` | Name for form submission; nothing is submitted when the switch is off |
 | `value` | `string` | Value submitted with the form when the switch is on (default: 'on') |
@@ -1408,6 +1412,7 @@ A selectable button that toggles between selected and unselected. Available as a
 | `size` | `'xs' \| 'sm' \| 'md' \| 'lg'` | Button size (default: 'md') |
 | `selected` | `boolean` | Selected state |
 | `disabled` | `boolean` | Disabled state |
+| `no-tab` | `boolean` | Takes the control out of the tab order (tabindex="-1"), for a control owned by a roving container (a row of an nldd-list, where the arrow keys move between rows) that manages focus itself. Still mouse- and script-focusable. |
 | `value` | `string` | Value for form submission (checkbox/radio) |
 | `name` | `string` | Name for form submission (checkbox/radio) |
 | `text` | `string` | Button text |
@@ -2234,6 +2239,7 @@ Hyperlink component met twee modi: 1. **Standalone (sized)** — set `size="xs"|
 | `end-icon` | `string` | Icoon na de tekst |
 | `accessible-label` | `string` | Toegankelijk label voor screen readers |
 | `disabled` | `boolean` | Uitgeschakelde staat |
+| `no-tab` | `boolean` | Takes the control out of the tab order (tabindex="-1"), for a control owned by a roving container (a row of an nldd-list, where the arrow keys move between rows) that manages focus itself. Still mouse- and script-focusable. |
 | `translations` | `object` | Overschrijf vertaalsleutels (bijv. de "Opent in nieuw tabblad"-melding); niet-gezette sleutels vallen terug op Nederlands. |
 
 **Slots**
@@ -2368,7 +2374,7 @@ A horizontal navigation bar with mutually exclusive tabs. Exports both NLDDTabBa
 
 | Attribuut | Type | Beschrijving |
 | --- | --- | --- |
-| `selected` | `boolean` | Selected state (managed by nldd-tab-bar) |
+| `current` | `boolean` | The item you are on. A tab bar switching content manages it itself and renders it as `aria-selected`; a `navigation` bar leaves it to the consumer, since it follows the route, and renders it as `aria-current="page"`. Unlike a list row, which separates `current` from `selected` because it can be both at once, a tab bar has exactly one active item. |
 | `text` | `string` | Tab text; also used as accessible name for icon-only items |
 | `href` | `string` | Optional link URL; renders an anchor instead of a button |
 | `icon` | `string` | Icon name for nldd-icon; an alternative to the icon slot. The icon and icon-and-text variants fall back to a placeholder icon when neither is provided. |

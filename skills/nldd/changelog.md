@@ -15,6 +15,22 @@ the type of conventional-commit determines the release. Conventional types
 `chore`, `docs`, `ci`, `style`, `test`, `build` are intentionally omitted
 here; consult the commit history if you need that level of detail.
 
+### Breaking
+
+- **`selected` on `nldd-tab-bar-item` is now `current`.** That is the name every other navigation component uses: `nldd-menu-bar-item`, `nldd-breadcrumbs` and, since 0.8.83, `nldd-list-item`. A bar that switches content still renders it as `aria-selected` and a `navigation` bar as `aria-current="page"`, and it is that second mode where the attribute was wrong: there the consumer writes it by hand, because the current item follows the route. Consumers rename one attribute per bar. The old one does nothing, and warns in dev. `nldd-document-tab-bar-item` keeps `selected`, because those are tabs over documents rather than routes.
+
+### Added
+
+- **`no-tab` on six more components.** `nldd-link`, `nldd-checkbox`, `nldd-radio-button`, `nldd-switch`, `nldd-toggle-button` and `nldd-avatar` carry the property `nldd-button` and `nldd-icon-button` already had: it sets `tabindex="-1"` on the control in the shadow root, so a container that runs its own focus can take the control out of the tab order. An `nldd-list` sets it on every row but the current one, which is what makes a list of links one tab stop instead of one per row.
+
+### Fixed
+
+- **The warning about a control a row cannot reach now fires, and names the control.** It ran while the list rendered, and a slotted custom element has its shadow root by then but has not rendered into it, so the check found nothing and stayed quiet on the lists it was written for. It waits for the control to have rendered, runs again for rows added later, names the element and reports it once. It stays quiet where nothing is wrong: a segment, a control at a negative tabindex or disabled, and anything the component hides itself, such as a menu item in a closed menu.
+
+- **Lit no longer reports an update scheduled after an update completed.** `nldd-list`, `nldd-list-item` and `nldd-collection` set state from `firstUpdated` and from the first `slotchange`, which asks for a second render on top of the one that just finished. That is a dev-mode warning on every page holding a list. What the first render needs is now read from the light DOM before it, and the rest is set out of the update cycle.
+
+- **A branch row that starts collapsed no longer warns.** The row reads an absent `expanded` as collapsed and emits `aria-expanded="false"`, so the warning asked for something that was already there. The warning about `slot="children"` outside a `type="tree"` list stays, and reports once per row instead of on every change to the branch.
+
 ## [0.8.83](https://github.com/MinBZK/storybook/compare/v0.8.82...v0.8.83) (2026-08-20)
 
 ### Highlights
