@@ -44,6 +44,7 @@ export const aliases = {
 	// apartment-building-2
 	'buildings': 'apartment-building-2',
 	'offices': 'apartment-building-2',
+	'companies': 'apartment-building-2',
 
 	// book
 	'guide': 'book',
@@ -148,6 +149,9 @@ export const aliases = {
 	'time': 'clock',
 	'now': 'clock',
 
+	// clock-light
+	'time-light': 'clock-light',
+
 	// clock-arrow-clockwise
 	'future': 'clock-arrow-clockwise',
 
@@ -168,9 +172,12 @@ export const aliases = {
 	// cylinder-split
 	'database': 'cylinder-split',
 
+	// cylinder-split-badge-lock
+	'locked-database': 'cylinder-split-badge-lock',
+
 	// cylinder-split-slash
-	'database-disabled': 'cylinder-split-slash',
-	'database-unavailable': 'cylinder-split-slash',
+	'disabled-database': 'cylinder-split-slash',
+	'unavailable-database': 'cylinder-split-slash',
 
 	// dismiss
 	'close': 'dismiss',
@@ -261,6 +268,9 @@ export const aliases = {
 	// file-text
 	'text-document': 'file-text',
 
+	// file-text-badge-check-mark
+	'checked-text-document': 'file-text-badge-check-mark',
+
 	// file-text-badge-check-plus
 	'new-text-document': 'file-text-badge-check-plus',
 
@@ -284,8 +294,20 @@ export const aliases = {
 
 	// folder-badge-plus
 	'new-folder': 'folder-badge-plus',
+	'new-directory': 'folder-badge-plus',
+
+	// folder-open
+	'open-folder': 'folder-open',
+	'open-directory': 'folder-open',
+
+	// tray
+	'inbox': 'tray',
+
+	// external-hard-drives
+	'storage': 'external-hard-drives',
 
 	// folder-on-folder
+	'folders': 'folder-on-folder',
 	'directories': 'folder-on-folder',
 
 	// gear
