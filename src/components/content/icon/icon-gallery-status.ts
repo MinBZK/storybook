@@ -53,7 +53,6 @@ export const NEW_ICONS = new Set([
 	'lightning',
 	'memory-chip',
 	'minus-circle',
-	'network-patch-mapping',
 	'network-switch',
 	'paintbrush',
 	'pci-card',
@@ -72,6 +71,7 @@ export const NEW_ICONS = new Set([
 	'storage',
 	'transceiver-module',
 	'viewfinder-line',
+	'waving-lines',
 ]);
 
 export const UPDATED_ICONS = new Set([

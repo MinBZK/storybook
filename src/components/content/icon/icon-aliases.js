@@ -508,6 +508,9 @@ export const aliases = {
 	// shield-arrow-right-arrow-left
 	'firewall': 'shield-arrow-right-arrow-left',
 
+	// waving-lines
+	'network-patch-mapping': 'waving-lines',
+
 	// shield-check-mark
 	'security': 'shield-check-mark',
 	'verified': 'shield-check-mark',
