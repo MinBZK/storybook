@@ -1,4 +1,4 @@
-import { describe, it, expect, afterEach } from 'vitest';
+import { describe, it, expect, afterEach, vi } from 'vitest';
 import { fixture, cleanup, waitForUpdate } from '../../../test-utils.js';
 import './list.js';
 import '../list-item/list-item.js';
@@ -1189,5 +1189,51 @@ describe('nldd-list – listbox', () => {
 		await waitForUpdate(el);
 		expect(clicked).toBe(true);
 		expect(el.shadowRoot!.activeElement).toBe(searchInput());
+	});
+});
+
+describe('nldd-list — the warning about a control the row cannot reach', () => {
+	let el: HTMLElement;
+
+	// Filled on connect, not in the constructor: the parser sets the attributes
+	// only after it has run that.
+	class TestControl extends HTMLElement {
+		connectedCallback() {
+			if (this.shadowRoot) return;
+			this.attachShadow({ mode: 'open' }).innerHTML = this.getAttribute('shadow') ?? '';
+		}
+	}
+	if (!customElements.get('test-control')) customElements.define('test-control', TestControl);
+
+	const mount = async (row: string) => {
+		const warn = vi.spyOn(console, 'warn').mockImplementation(() => {});
+		el = await fixture(`<nldd-list accessible-label="X"><nldd-list-item>${row}</nldd-list-item></nldd-list>`);
+		await waitForUpdate(el);
+		return warn.mock.calls.flat().filter(arg => String(arg).includes('keeps its tab stop'));
+	};
+
+	afterEach(() => {
+		if (el) cleanup(el);
+		vi.restoreAllMocks();
+	});
+
+	it('warns for a custom element that keeps a tab stop of its own', async () => {
+		const warnings = await mount('<test-control shadow="<button>X</button>"></test-control>');
+		expect(warnings).toHaveLength(1);
+	});
+
+	it('stays silent for a control parked at a negative tabindex', async () => {
+		const warnings = await mount('<test-control shadow="<div tabindex=-1></div>"></test-control>');
+		expect(warnings).toHaveLength(0);
+	});
+
+	it('stays silent for a control that is not rendered', async () => {
+		const warnings = await mount('<test-control style="display: none" shadow="<button>X</button>"></test-control>');
+		expect(warnings).toHaveLength(0);
+	});
+
+	it('stays silent for a segment, which the row manages over its own channel', async () => {
+		const warnings = await mount('<nldd-list-item-segment href="/a"><nldd-text-cell text="A"></nldd-text-cell></nldd-list-item-segment>');
+		expect(warnings).toHaveLength(0);
 	});
 });

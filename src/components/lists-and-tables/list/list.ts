@@ -20,6 +20,10 @@ export interface NLDDReorderEventDetail {
 	toIndex: number;
 }
 
+/** What the browser counts as a tab stop in a shadow root: focusable, enabled,
+ *  and not parked at a negative tabindex. */
+const SHADOW_TAB_STOP = ':is(a[href], button, input, select, textarea, [tabindex]):not([tabindex^="-"]):not(:disabled)';
+
 /**
  * A container for `nldd-list-item` elements.
  *
@@ -307,6 +311,7 @@ export class NLDDList extends LitElement {
 			if (!relevant) return;
 			this._updateItems();
 			this._updateEmpty();
+			this._warnUnmanagedControls();
 		});
 		this._itemsObserver.observe(this, {
 			childList: true,
@@ -875,22 +880,64 @@ export class NLDDList extends LitElement {
 		if (this.hasAttribute('arrow-navigation')) {
 			console.warn('nldd-list: `arrow-navigation` is the default now and the attribute does nothing; remove it.');
 		}
-		if (!this._arrowNavActive) return;
-		// A control the row cannot reach: a custom element that keeps its tab stop
-		// in its own shadow root and has no `no-tab` to close it. Such a control
-		// stays a tab stop in EVERY row, which is exactly what the roving promises
-		// it is not. Native controls and design-system ones with `no-tab` are
-		// managed by the row, so they are not the warning's business.
-		const unmanaged = this._getPaintedRows().some((row) =>
-			Array.from(row.querySelectorAll('*')).some((el) => {
-				if (el.closest('nldd-list-item') !== row) return false;
-				if (!el.tagName.includes('-') || 'noTab' in el) return false;
-				return Boolean(el.shadowRoot?.querySelector('a[href], button, input, select, textarea, [tabindex]'));
-			}),
-		);
-		if (unmanaged) {
-			console.warn('nldd-list: a list-item holds a control whose tab stop lives in its own shadow root and that has no `no-tab`, so arrow-navigation cannot take it out of the tab order. Give the component `no-tab`, or wrap the control in an nldd-list-item-segment.');
+		this._warnUnmanagedControls();
+	}
+
+	/** Reported once per element: a list that gains rows would otherwise repeat
+	 *  the same line on every change. */
+	private readonly _warnedUnmanaged = new WeakSet<Element>();
+
+	private _unmanagedWarnScheduled = false;
+
+	/**
+	 * A control the row cannot reach: a custom element that keeps its tab stop in
+	 * its own shadow root and has no `no-tab` to close it. Such a control stays a
+	 * tab stop in EVERY row, which is exactly what the roving promises it is not,
+	 * and the row does not even count as a stop for the arrow keys.
+	 *
+	 * Deferred, and re-run whenever the rows change. A slotted custom element has
+	 * its shadow root the moment it connects, but Lit renders the content on the
+	 * first update, so a check that runs in `firstUpdated` looks into an empty
+	 * shadow root and finds nothing to warn about. Waiting for the element to be
+	 * defined is not enough either: it has to have rendered.
+	 */
+	private _warnUnmanagedControls(): void {
+		if (!import.meta.env?.DEV || !this._arrowNavActive) return;
+		if (this._unmanagedWarnScheduled) return;
+		this._unmanagedWarnScheduled = true;
+		const check = async () => {
+			this._unmanagedWarnScheduled = false;
+			const rows = this._getPaintedRows();
+			await Promise.all(rows.map((row) => row.updateComplete));
+			for (const row of rows) {
+				for (const el of Array.from(row.querySelectorAll('*'))) {
+					if (el.closest('nldd-list-item') !== row) continue;
+					// A segment is managed over its own channel (`_tabbable`), so it
+					// needs no `no-tab`.
+					if (el.tagName.toLowerCase() === 'nldd-list-item-segment') continue;
+					if (!el.tagName.includes('-') || 'noTab' in el) continue;
+					if (this._warnedUnmanaged.has(el)) continue;
+					const upgraded = el as Element & { updateComplete?: Promise<unknown> };
+					if (upgraded.updateComplete) await upgraded.updateComplete;
+					if (!el.shadowRoot?.querySelector(SHADOW_TAB_STOP)) continue;
+					// Nothing hidden on the way from the row: a menu item in a closed
+					// menu is no tab stop of the row's, and the component that hides it
+					// runs its own focus. Computed style, not checkVisibility(): that one
+					// needs a laid-out box and answers false until the first layout.
+					if (this._hiddenWithin(row, el)) continue;
+					this._warnedUnmanaged.add(el);
+					console.warn(`nldd-list: <${el.tagName.toLowerCase()}> in a list-item keeps its tab stop in its own shadow root and has no \`no-tab\`, so the row cannot take it out of the tab order and the arrow keys skip that row. Give the component \`no-tab\`, or wrap the control in an nldd-list-item-segment.`);
+				}
+			}
+		};
+		void check();
+	}
+
+	private _hiddenWithin(row: Element, el: Element): boolean {
+		for (let node: Element | null = el; node && node !== row; node = node.parentElement) {
+			if (getComputedStyle(node).display === 'none') return true;
 		}
+		return false;
 	}
 
 	// — Drag: pointer ————————————————————————————————————————————————————————
