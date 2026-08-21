@@ -85,20 +85,39 @@ export const timelineTrackCellStyles = css`
 		bottom: calc(-1 * var(--semantics-dividers-thickness));
 	}
 
-	:host([status="future"]) .timeline-track-cell__top-line,
-	:host([status="future"]) .timeline-track-cell__bottom-line {
+	/* The status fills the halves as long as line says nothing. */
+	:host([status="future"]:not([line])) .timeline-track-cell__top-line,
+	:host([status="future"]:not([line])) .timeline-track-cell__bottom-line {
 		background-color: var(--_future-fill-color);
 	}
 
-	:host([status="current"]) .timeline-track-cell__bottom-line {
+	:host([status="current"]:not([line])) .timeline-track-cell__bottom-line {
 		background-color: var(--_future-fill-color);
 	}
 
-	:host([status="current"][direction="up"]) .timeline-track-cell__bottom-line {
+	:host([status="current"][direction="up"]:not([line])) .timeline-track-cell__bottom-line {
 		background-color: var(--_track-color);
 	}
 
-	:host([status="current"][direction="up"]) .timeline-track-cell__top-line {
+	:host([status="current"][direction="up"]:not([line])) .timeline-track-cell__top-line {
+		background-color: var(--_future-fill-color);
+	}
+
+	/* And once it does, it says it for both halves: the ones it names are track
+	   you have covered, the other one is track still ahead. It stays drawn —
+	   where you stand in the series is what position says, and naming a fill
+	   does not move you. */
+	:host([line="top"]) .timeline-track-cell__top-line,
+	:host([line="bottom"]) .timeline-track-cell__bottom-line,
+	:host([line="both"]) .timeline-track-cell__top-line,
+	:host([line="both"]) .timeline-track-cell__bottom-line {
+		background-color: var(--_track-color);
+	}
+
+	:host([line="top"]) .timeline-track-cell__bottom-line,
+	:host([line="bottom"]) .timeline-track-cell__top-line,
+	:host([line="none"]) .timeline-track-cell__top-line,
+	:host([line="none"]) .timeline-track-cell__bottom-line {
 		background-color: var(--_future-fill-color);
 	}
 

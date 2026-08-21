@@ -19,6 +19,7 @@
  * @attr {boolean} minor - This row belongs under the previous one: a smaller dot in the same lane, so the track runs straight on and nothing indents. The dot stays empty (a number or an icon would not fit, and would make the row a step of its own); carry the hierarchy in the row itself instead, with an `nldd-text-cell` rather than an `nldd-title-cell` for example
  * @attr {'down' | 'up'} direction - The direction the timeline moves forward in: `down` (default) puts the past above, `up` below. Only the current step has half a track, so this only has an effect there
  * @attr {'first' | 'between' | 'last' | 'only'} position - Place in the series (default 'between'): decides whether the line continues above the dot, below it, or on both sides. `only` is the single row in the series and gets a line on neither side: a track of one dot leads nowhere
+ * @attr {'auto' | 'top' | 'bottom' | 'both' | 'none'} line - Which halves of the track you have covered, when `status` and `direction` get it wrong (default 'auto', which is what those two say). The halves you name are drawn as covered and the other one as still ahead, so `none` covers neither. Which halves are drawn at all stays with `position`, except that naming a half draws it: `line="both"` on a `first` row draws one above too. A row that opens a group of its own is the case for `both`, since the going carries on below it
  * @attr {string} text - Number or short text in the dot
  * @attr {string} icon - Icon name in the dot; wins over `text`
  *
@@ -36,6 +37,7 @@ type Status = 'past' | 'current' | 'future' | 'none';
 type Variant = 'dot' | 'step';
 type Direction = 'down' | 'up';
 type Position = 'first' | 'between' | 'last' | 'only';
+type Line = 'auto' | 'top' | 'bottom' | 'both' | 'none';
 
 @customElement('nldd-timeline-track-cell')
 export class NLDDTimelineTrackCell extends VisibilityMixin(LitElement, 'cells-container') {
@@ -63,6 +65,25 @@ export class NLDDTimelineTrackCell extends VisibilityMixin(LitElement, 'cells-co
 
 	@property({ reflect: true, converter: reflectNonDefault<Position>('between') })
 	position: Position = 'between';
+
+	/**
+	 * Which halves of the track you have covered, for when the status gets it
+	 * wrong.
+	 *
+	 * It reads one row at a time, and a row that opens a group of its own is
+	 * not the end of the going: the step you are on sits inside it, further
+	 * down. Nothing in the cell can see that, and a cell that read its
+	 * neighbours would break the moment rows come and go. So the consumer says
+	 * it, and says it for both halves at once: the ones named are covered and
+	 * the other one is still ahead.
+	 *
+	 * This is about fill, not about place. Where you stand in the series is what
+	 * `position` says, and that keeps deciding which halves are drawn — naming a
+	 * fill does not take a half away. It can add one, though: calling a half
+	 * covered draws it, even where the position left it out.
+	 */
+	@property({ reflect: true, converter: reflectNonDefault<Line>('auto') })
+	line: Line = 'auto';
 
 	@property({ type: String })
 	text = '';

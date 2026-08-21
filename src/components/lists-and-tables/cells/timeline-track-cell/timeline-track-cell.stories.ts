@@ -48,6 +48,12 @@ export default {
 			description: 'Plek in de reeks; bepaalt waar de lijn doorloopt',
 			table: { defaultValue: { summary: 'between' } },
 		},
+		line: {
+			control: 'select',
+			options: ['auto', 'top', 'bottom', 'both', 'none'],
+			description: 'Het spoor rond de stip, als status, direction en position het samen mis hebben. De genoemde helften worden getekend als afgelegd, de rest wordt niet getekend. Een half spoor, boven afgelegd en onder open, is waar auto voor is',
+			table: { defaultValue: { summary: 'auto' } },
+		},
 		text: {
 			control: 'text',
 			description: 'Cijfer of korte tekst in de stip',
@@ -71,6 +77,7 @@ export const Default = {
 		position: 'between',
 		text: '2',
 		icon: '',
+		line: 'auto',
 	},
 	render: (args: Record<string, any>) => html`
 		<nldd-list dividers="never" accessible-label="Tijdlijn" style="max-width: 420px;">
@@ -81,6 +88,7 @@ export const Default = {
 				?minor=${args.minor}
 				direction=${args.direction}
 				position=${args.position}
+				line=${args.line}
 				text=${args.text}
 				icon=${args.icon}
 			></nldd-timeline-track-cell>
@@ -180,6 +188,56 @@ export const Stappenlijst = {
  * verbindt de rijen — de hiërarchie komt van de stipmaat en van gewone tekst in
  * plaats van een titel.
  */
+/**
+ * Een rij die zelf een groep opent, is niet het eind van de voortgang: de stap
+ * waar je bent zit erin, verderop. De cel leest één rij tegelijk en kan dat niet
+ * zien, dus zegt de consument het: `line="both"` maakt beide helften afgelegd,
+ * terwijl de stip `current` blijft. De taakrij is bezig, en de lijn loopt door
+ * naar de substap waar je echt staat.
+ *
+ * `line` gaat over de vulling, niet over de plek: welke helften er staan blijft
+ * `position`. Noem je er één, dan is de andere helft de rustige spoorkleur; bij
+ * `none` zijn ze dat allebei.
+ */
+export const GenesteVoortgang = {
+	name: 'Geneste voortgang (line)',
+	render: () => html`
+		<nldd-list dividers="never" accessible-label="Werkorder" style="max-width: 420px;">
+			<nldd-list-item>
+			<nldd-timeline-track-cell status="past" variant="step" position="first" icon="check-mark"></nldd-timeline-track-cell>
+			<nldd-spacer-cell size="12"></nldd-spacer-cell>
+			<nldd-title-cell text="Materiaal verzamelen" supporting-text="Afgerond"></nldd-title-cell>
+			</nldd-list-item>
+			<nldd-list-item>
+			<nldd-timeline-track-cell status="current" variant="step" line="both" text="2"></nldd-timeline-track-cell>
+			<nldd-spacer-cell size="12"></nldd-spacer-cell>
+			<nldd-title-cell text="Switch vervangen" supporting-text="Bezig"></nldd-title-cell>
+			</nldd-list-item>
+			<nldd-list-item>
+			<nldd-timeline-track-cell status="past" variant="step" minor></nldd-timeline-track-cell>
+			<nldd-spacer-cell size="12"></nldd-spacer-cell>
+			<nldd-text-cell text="Apparaat spanningsloos maken"></nldd-text-cell>
+			</nldd-list-item>
+			<nldd-list-item aria-current="step">
+			<nldd-timeline-track-cell status="current" variant="step" minor></nldd-timeline-track-cell>
+			<nldd-spacer-cell size="12"></nldd-spacer-cell>
+			<nldd-text-cell text="Oude onderdeel verwijderen"></nldd-text-cell>
+			</nldd-list-item>
+			<nldd-list-item>
+			<nldd-timeline-track-cell status="future" variant="step" minor></nldd-timeline-track-cell>
+			<nldd-spacer-cell size="12"></nldd-spacer-cell>
+			<nldd-text-cell text="Nieuw onderdeel plaatsen"></nldd-text-cell>
+			</nldd-list-item>
+			<nldd-list-item>
+			<nldd-timeline-track-cell status="future" variant="step" position="last" text="3"></nldd-timeline-track-cell>
+			<nldd-spacer-cell size="12"></nldd-spacer-cell>
+			<nldd-title-cell text="Testen en afmelden" supporting-text="Nog te doen"></nldd-title-cell>
+			</nldd-list-item>
+		</nldd-list>
+	`,
+	parameters: { controls: { disable: true } },
+};
+
 export const Substappen = {
 	render: () => html`
 		<nldd-list dividers="never" accessible-label="Voortgang aanvraag" style="max-width: 420px;">

@@ -158,3 +158,74 @@ describe('nldd-timeline-track-cell', () => {
 		expect(injected?.textContent).toContain('min-width: 1008px');
 	});
 });
+
+describe('nldd-timeline-track-cell line', () => {
+	let el: HTMLElement;
+
+	afterEach(() => {
+		if (el) cleanup(el);
+	});
+
+	const lines = (cell: HTMLElement) => ({
+		top: !!cell.shadowRoot!.querySelector('.timeline-track-cell__top-line'),
+		bottom: !!cell.shadowRoot!.querySelector('.timeline-track-cell__bottom-line'),
+	});
+
+	// The tokens do not load here, so the fixture carries the two colors itself:
+	// without them both halves resolve to nothing and every color is equal.
+	const COLORS = 'style="--components-timeline-track-cell-color: rgb(1, 2, 3); --components-timeline-track-cell-future-background-color: rgb(4, 5, 6)"';
+
+	const half = (cell: HTMLElement, which: 'top' | 'bottom') => {
+		const line = cell.shadowRoot!.querySelector(`.timeline-track-cell__${which}-line`) as HTMLElement;
+		const color = getComputedStyle(line).backgroundColor;
+		return color === 'rgb(1, 2, 3)' ? 'covered' : color === 'rgb(4, 5, 6)' ? 'open' : color;
+	};
+
+	it('follows the position when it is left alone', async () => {
+		el = await fixture('<nldd-timeline-track-cell position="first"></nldd-timeline-track-cell>');
+		await waitForUpdate(el);
+		expect(lines(el)).toEqual({ top: false, bottom: true });
+	});
+
+	it('keeps the half it does not name, as track still ahead', async () => {
+		el = await fixture(`<nldd-timeline-track-cell position="between" line="top" ${COLORS}></nldd-timeline-track-cell>`);
+		await waitForUpdate(el);
+		expect(lines(el)).toEqual({ top: true, bottom: true });
+		expect(half(el, 'top')).toBe('covered');
+		expect(half(el, 'bottom')).toBe('open');
+	});
+
+	it('draws a half the position leaves out when it calls it covered', async () => {
+		el = await fixture('<nldd-timeline-track-cell position="first" line="both"></nldd-timeline-track-cell>');
+		await waitForUpdate(el);
+		expect(lines(el)).toEqual({ top: true, bottom: true });
+	});
+
+	it('covers neither half on `none`, and takes none away', async () => {
+		el = await fixture(`<nldd-timeline-track-cell position="between" line="none" ${COLORS}></nldd-timeline-track-cell>`);
+		await waitForUpdate(el);
+		expect(lines(el)).toEqual({ top: true, bottom: true });
+		expect(half(el, 'top')).toBe('open');
+		expect(half(el, 'bottom')).toBe('open');
+	});
+
+	it('leaves a half out that neither the position nor the line asks for', async () => {
+		el = await fixture('<nldd-timeline-track-cell position="last" line="none"></nldd-timeline-track-cell>');
+		await waitForUpdate(el);
+		expect(lines(el)).toEqual({ top: true, bottom: false });
+	});
+
+	it('covers both halves of a current step that opens a group', async () => {
+		el = await fixture(`<nldd-timeline-track-cell status="current" line="both" ${COLORS}></nldd-timeline-track-cell>`);
+		await waitForUpdate(el);
+		expect(half(el, 'top')).toBe('covered');
+		expect(half(el, 'bottom')).toBe('covered');
+	});
+
+	it('leaves the half below a plain current step open', async () => {
+		el = await fixture(`<nldd-timeline-track-cell status="current" ${COLORS}></nldd-timeline-track-cell>`);
+		await waitForUpdate(el);
+		expect(half(el, 'top')).toBe('covered');
+		expect(half(el, 'bottom')).toBe('open');
+	});
+});
