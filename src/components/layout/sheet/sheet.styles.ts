@@ -17,6 +17,11 @@ export const sheetStyles = css`
 		--_width: initial;
 		--_height: initial;
 
+		/* A pane hides the back button of the bar inside it, because the menu
+		   beside you is the way back. A sheet has no menu beside it, so a bar in
+		   here keeps its back button even when the pane it stands in hides one. */
+		--context-back-button-display: flex;
+
 		/* contents, not block: the sheet itself is a position:fixed <dialog>, so the
 		   host would only add an empty box. Left as a block it is a flex item like
 		   any other, and inside a split-view pane it collects the pane's

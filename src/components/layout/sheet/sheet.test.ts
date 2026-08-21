@@ -3,6 +3,8 @@ import { fixture, cleanup, waitForUpdate } from '../../../test-utils.js';
 import type { NLDDSheet } from './sheet.js';
 import './sheet.js';
 import '../../inputs/text-field/text-field.js';
+import '../split-views/split-view-pane/split-view-pane.js';
+import '../../navigation/top-title-bar/top-title-bar.js';
 import { sheetStyles } from './sheet.styles.js';
 
 
@@ -625,5 +627,35 @@ describe('nldd-sheet – autofocus', () => {
 		// autofocus never reaches it — the sheet has to focus the host.
 		expect(document.activeElement).toBe(field);
 		expect(field.shadowRoot!.activeElement?.tagName.toLowerCase()).toBe('input');
+	});
+});
+
+describe('nldd-sheet inside a pane that hides back buttons', () => {
+	let el: HTMLElement;
+
+	afterEach(() => {
+		if (el) cleanup(el);
+	});
+
+	it('keeps the back button of a bar inside it', async () => {
+		el = await fixture(`
+			<nldd-split-view-pane hide-back>
+				<nldd-sheet accessible-label="X">
+					<nldd-top-title-bar back-text="Back" text="X"></nldd-top-title-bar>
+				</nldd-sheet>
+			</nldd-split-view-pane>`);
+		await waitForUpdate(el);
+		const bar = el.querySelector('nldd-top-title-bar') as HTMLElement;
+		expect(getComputedStyle(bar).getPropertyValue('--context-back-button-display').trim()).toBe('flex');
+	});
+
+	it('leaves a bar in the pane itself alone', async () => {
+		el = await fixture(`
+			<nldd-split-view-pane hide-back>
+				<nldd-top-title-bar back-text="Back" text="X"></nldd-top-title-bar>
+			</nldd-split-view-pane>`);
+		await waitForUpdate(el);
+		const bar = el.querySelector('nldd-top-title-bar') as HTMLElement;
+		expect(getComputedStyle(bar).getPropertyValue('--context-back-button-display').trim()).toBe('none');
 	});
 });
