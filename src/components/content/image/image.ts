@@ -50,7 +50,7 @@
  * @attr {object} translations - Override translation keys (e.g. the message
  *   shown when the image fails to load); unset keys fall back to Dutch.
  *
- * @slot - Custom `<img>` or `<picture>` (overrides the src-based default).
+ * @slot - Custom `<img>`, `<picture>` or inline `<svg>` (overrides the src-based default). An inline svg keeps its own colors and scales by its viewBox, so a drawing gets the same box, ratio and caption as a photo.
  *   The internal `error` listener is attached only to the built-in `<img>`, so
  *   slotted content does not trigger the error-state overlay automatically.
  *   Consumers slotting their own image are responsible for handling its
