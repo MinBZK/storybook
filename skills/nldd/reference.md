@@ -466,7 +466,7 @@ Wraps a native `<img>` with design-system styling: corner radius variants, aspec
 
 | Slot | Beschrijving |
 | --- | --- |
-| _(default)_ | Custom `<img>` or `<picture>` (overrides the src-based default). The internal `error` listener is attached only to the built-in `<img>`, so slotted content does not trigger the error-state overlay automatically. Consumers slotting their own image are responsible for handling its error state (e.g. swapping the slot content or styling a fallback). |
+| _(default)_ | Custom `<img>`, `<picture>` or inline `<svg>` (overrides the src-based default). An inline svg keeps its own colors and scales by its viewBox, so a drawing gets the same box, ratio and caption as a photo. The internal `error` listener is attached only to the built-in `<img>`, so slotted content does not trigger the error-state overlay automatically. Consumers slotting their own image are responsible for handling its error state (e.g. swapping the slot content or styling a fallback). |
 | `caption` | Rich caption content (overrides the `caption` attribute) |
 
 ### `<nldd-keyboard-shortcut>`
@@ -3021,6 +3021,7 @@ A cell component for displaying timeline track indicators in lists. Shows a vert
 | `minor` | `boolean` | This row belongs under the previous one: a smaller dot in the same lane, so the track runs straight on and nothing indents. The dot stays empty (a number or an icon would not fit, and would make the row a step of its own); carry the hierarchy in the row itself instead, with an `nldd-text-cell` rather than an `nldd-title-cell` for example |
 | `direction` | `'down' \| 'up'` | The direction the timeline moves forward in: `down` (default) puts the past above, `up` below. Only the current step has half a track, so this only has an effect there |
 | `position` | `'first' \| 'between' \| 'last' \| 'only'` | Place in the series (default 'between'): decides whether the line continues above the dot, below it, or on both sides. `only` is the single row in the series and gets a line on neither side: a track of one dot leads nowhere |
+| `line` | `'auto' \| 'top' \| 'bottom' \| 'both' \| 'none'` | Which halves of the track you have covered, when `status` and `direction` get it wrong (default 'auto', which is what those two say). The halves you name are drawn as covered and the other one as still ahead, so `none` covers neither. Which halves are drawn at all stays with `position`, except that naming a half draws it: `line="both"` on a `first` row draws one above too. A row that opens a group of its own is the case for `both`, since the going carries on below it |
 | `text` | `string` | Number or short text in the dot |
 | `icon` | `string` | Icon name in the dot; wins over `text` |
 | `hide-below` | `string` | Hides the element below this breakpoint: `sm` \| `md` \| `lg`, or a CSS length. The value names the breakpoint you hide BELOW, so `hide-below="md"` is hidden in sm and visible from md up. `sm` is the open edge and never hides (DEV-warns). |

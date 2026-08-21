@@ -15,6 +15,8 @@ here; consult the commit history if you need that level of detail.
 
 ### Added
 
+- **`line` on `nldd-timeline-track-cell`, for a step that opens a group.** The status reads one row at a time, and a row that opens a group of its own is not the end of the going: the step you are on sits inside it, further down. So that row drew an open track downward while there was progress below it. `line` says it outright: the halves you name are the track you have covered and the other one is track still ahead, so `none` covers neither. It is about fill, not about place — which halves are drawn stays with `position`, except that calling a half covered draws it. A cell that read its neighbours instead would break the moment rows come and go.
+
 - **`no-tab` on six more components.** `nldd-link`, `nldd-checkbox`, `nldd-radio-button`, `nldd-switch`, `nldd-toggle-button` and `nldd-avatar` carry the property `nldd-button` and `nldd-icon-button` already had: it sets `tabindex="-1"` on the control in the shadow root, so a container that runs its own focus can take the control out of the tab order. An `nldd-list` sets it on every row but the current one, which is what makes a list of links one tab stop instead of one per row.
 
 ### Fixed
