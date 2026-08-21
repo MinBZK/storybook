@@ -16,6 +16,10 @@ export const cardStyles = css`
 		display: flex;
 		/* Anchor for the focus ring, which hangs outside the card box. */
 		position: relative;
+		/* A card takes the width it is given, the same as an nldd-box: as a flex
+		   item it would otherwise shrink to its content. A grid or a fixed width
+		   around it still decides. */
+		width: 100%;
 		flex-direction: column;
 	}
 

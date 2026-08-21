@@ -2,6 +2,7 @@ import { describe, it, expect, afterEach } from 'vitest';
 import { fixture, cleanup, waitForUpdate } from '../../../test-utils.js';
 import type { NLDDCard } from './card.js';
 import './card.js';
+import '../../lists-and-tables/cells/cell/cell.js';
 
 describe('nldd-card', () => {
 	let el: NLDDCard;
@@ -138,5 +139,23 @@ describe('nldd-card', () => {
 		await waitForUpdate(el);
 		const card = el.shadowRoot!.querySelector('.card')!;
 		expect(getComputedStyle(card).backgroundColor).toBe('rgb(1, 2, 3)');
+	});
+});
+
+describe('nldd-card in a cell', () => {
+	let el: HTMLElement;
+
+	afterEach(() => {
+		if (el) cleanup(el);
+	});
+
+	it('fills the cell instead of shrinking to its content', async () => {
+		el = await fixture(`
+			<nldd-cell width="full" style="width: 320px">
+				<nldd-card>Kort</nldd-card>
+			</nldd-cell>`);
+		await waitForUpdate(el);
+		const card = el.querySelector('nldd-card') as HTMLElement;
+		expect(card.getBoundingClientRect().width).toBe(320);
 	});
 });
