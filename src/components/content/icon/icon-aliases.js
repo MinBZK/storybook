@@ -647,6 +647,8 @@ export const aliases = {
 	// trash
 	'delete': 'trash',
 
+	// screwdriver-wrench
+	'tools': 'screwdriver-wrench',
 	// point-bottom-left-to-point-top-right-s-curve-path
 	'path': 'point-bottom-left-to-point-top-right-s-curve-path',
 	'traject': 'point-bottom-left-to-point-top-right-s-curve-path',

@@ -63,6 +63,7 @@ export const NEW_ICONS = new Set([
 	'puzzle-piece-badge-plus',
 	'rack-server',
 	'rack-servers',
+	'screwdriver-wrench',
 	'seal-star',
 	'shield-arrow-right-arrow-left',
 	'ship-wheel-badge-plus',
