@@ -26806,23 +26806,24 @@
             },
             {
               "kind": "field",
-              "name": "variant",
+              "name": "size",
               "type": {
-                "text": "Variant"
+                "text": "Size"
               },
-              "default": "'dot'",
-              "attribute": "variant",
+              "default": "'sm'",
+              "description": "How wide the lane is, and with it how big the dot. One size per list: a\nlane that changes width halfway bends the track.",
+              "attribute": "size",
               "reflects": true
             },
             {
               "kind": "field",
-              "name": "minor",
+              "name": "variant",
               "type": {
-                "text": "boolean"
+                "text": "Variant"
               },
-              "default": "false",
-              "description": "A step below a main step. A meaning, not a measurement: the cell picks the\nsize, so the scale can change later without every consumer following. Its\ndot stays empty -- text, icon and slotted content are ignored.",
-              "attribute": "minor",
+              "default": "'major'",
+              "description": "What stands in the lane: a whole dot, a smaller one, or nothing.\n\nA rank rather than a measurement — the cell picks the sizes, so the scale\ncan change later without every consumer following. `minor` is a row that\nbelongs under the one above it, and its dot stays empty: a number would not\nfit and would make the row a step of its own, so carry that hierarchy in\nthe row instead, with an `nldd-text-cell` rather than an `nldd-title-cell`.\n`none` is a row that carries what a step holds rather than being one.",
+              "attribute": "variant",
               "reflects": true
             },
             {
@@ -26881,7 +26882,7 @@
               "type": {
                 "text": "boolean"
               },
-              "description": "Only a step marker has room to read a number in, and a minor row is smaller\nstill -- besides, a number would claim it is a step of its own.",
+              "description": "Only a whole dot in a wide lane has room to read a number in: a minor one is\nsmaller still, and would claim to be a step of its own.",
               "readonly": true
             },
             {
@@ -26919,25 +26920,25 @@
               },
               "default": "'past'",
               "fieldName": "status",
-              "description": "Status of this step (default 'past'); the same values as `nldd-step-indicator-item`. `none` draws the line only, without a dot"
+              "description": "How far along this row is (default 'past'); the same values as `nldd-step-indicator-item`. It colors the dot and the track around it: covered above where you are, still ahead below"
+            },
+            {
+              "name": "size",
+              "type": {
+                "text": "Size"
+              },
+              "default": "'sm'",
+              "description": "How wide the lane is and so how big the dot: `sm` (default, 16px) for a timeline of events, `md` (24px) where a number or an icon has to fit. Every row in one list takes the same size, or the track jumps",
+              "fieldName": "size"
             },
             {
               "name": "variant",
               "type": {
                 "text": "Variant"
               },
-              "default": "'dot'",
-              "fieldName": "variant",
-              "description": "What this row is: a `dot` (default) on a timeline of events, a 16px dot, or a `step` in a list of steps, a 24px dot with room for a number or an icon"
-            },
-            {
-              "name": "minor",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "This row belongs under the previous one: a smaller dot in the same lane, so the track runs straight on and nothing indents. The dot stays empty (a number or an icon would not fit, and would make the row a step of its own); carry the hierarchy in the row itself instead, with an `nldd-text-cell` rather than an `nldd-title-cell` for example",
-              "fieldName": "minor"
+              "default": "'major'",
+              "description": "What stands in the lane: a whole dot (`major`, the default), a smaller one for a row that belongs under the one above it (`minor`), or nothing at all (`none`) for a row that carries what a step holds rather than being a step. A `none` row keeps its `size` and its `status`, so it stays in the same lane and the track runs on in the right color",
+              "fieldName": "variant"
             },
             {
               "name": "direction",
@@ -26955,7 +26956,7 @@
               },
               "default": "'between'",
               "fieldName": "position",
-              "description": "Place in the series (default 'between'): decides whether the line continues above the dot, below it, or on both sides. `only` is the single row in the series and gets a line on neither side: a track of one dot leads nowhere"
+              "description": "Place in the series (default 'between'): decides whether the line continues above the dot, below it, or on both sides. `only` is the single row in the series and gets a line on neither side: a track of one dot leads nowhere. On a `variant=\"none\"` row, which is nothing but line, `only` leaves it out altogether: the track ends above it"
             },
             {
               "name": "line",
@@ -26963,7 +26964,7 @@
                 "text": "Line"
               },
               "default": "'auto'",
-              "description": "Which halves of the track you have covered, when `status` and `direction` get it wrong (default 'auto', which is what those two say). The halves you name are drawn as covered and the other one as still ahead, so `none` covers neither. Which halves are drawn at all stays with `position`, except that naming a half draws it: `line=\"both\"` on a `first` row draws one above too. A row that opens a group of its own is the case for `both`, since the going carries on below it",
+              "description": "Which halves of the track you have covered, when `status` and `direction` get it wrong (default 'auto', which is what those two say). The halves you name are drawn as covered and the other one as still ahead, so `none` covers neither. Which halves are drawn at all stays with `position`, except that naming a half draws it: `line=\"both\"` on a `first` row draws one above too. A row that opens a group of its own is the case for `both`, since the going carries on below it. A `variant=\"none\"` row has one line rather than two halves, and no point where a fill could change over, so there the status colors the whole of it and `line` overrules the whole of it. On a `current` row that leans the way the timeline runs: what belongs to a point usually comes after it, so going `down` the stretch reads as still ahead and going `up` as behind you",
               "fieldName": "line"
             },
             {

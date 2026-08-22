@@ -15,7 +15,13 @@ the type of conventional-commit determines the release. Conventional types
 `chore`, `docs`, `ci`, `style`, `test`, `build` are intentionally omitted
 here; consult the commit history if you need that level of detail.
 
+### Highlights
+
+- **`screwdriver-wrench`, an icon for work done with your hands.** A screwdriver crossed with an open-end wrench, aliased as `tools`. The set had `gear` for a setting and three gear compounds around it, and nothing at all for the work itself: a round of maintenance, a task somebody walks the floor for, the box of tools you take with you. Not a settings glyph, which is what a gear is and stays.
+
 ### Breaking
+
+- **`nldd-timeline-track-cell` asks three questions instead of two overlapping ones.** `variant="dot|step"` set the size of the dot and the width of the lane at once, `minor` was a boolean beside it, and `status="none"` took the dot away from a list of values that is otherwise about progress. So a row without a dot lost the lane it had to stand in, and had to guess at a color it could not know. Now `size` is the lane (`sm` 16px, `md` 24px, and a number fits in `md`), `variant` is what stands in it (`major`, `minor`, `none`), and `status` is only how far along you are (`past`, `current`, `future`). A row with `variant="none"` keeps its size and its status, so the track runs straight on in the right color; on a `current` one it leans the way the timeline runs, since what belongs to a point usually comes after it. Consumers map `variant="step"` to `size="md"`, `minor` to `variant="minor"`, and `status="none"` to `variant="none"` plus the status that fits. On such a row `position="only"` leaves the line out altogether, for the row that closes a track: what hangs under the last dot has nothing below it to reach.
 
 - **`selected` on `nldd-tab-bar-item` is now `current`.** That is the name every other navigation component uses: `nldd-menu-bar-item`, `nldd-breadcrumbs` and, since 0.8.83, `nldd-list-item`. A bar that switches content still renders it as `aria-selected` and a `navigation` bar as `aria-current="page"`, and it is that second mode where the attribute was wrong: there the consumer writes it by hand, because the current item follows the route. Consumers rename one attribute per bar. The old one does nothing, and warns in dev. `nldd-document-tab-bar-item` keeps `selected`, because those are tabs over documents rather than routes.
 
@@ -26,6 +32,8 @@ here; consult the commit history if you need that level of detail.
 - **`no-tab` on six more components.** `nldd-link`, `nldd-checkbox`, `nldd-radio-button`, `nldd-switch`, `nldd-toggle-button` and `nldd-avatar` carry the property `nldd-button` and `nldd-icon-button` already had: it sets `tabindex="-1"` on the control in the shadow root, so a container that runs its own focus can take the control out of the tab order. An `nldd-list` sets it on every row but the current one, which is what makes a list of links one tab stop instead of one per row.
 
 ### Fixed
+
+- **A row let go outside itself no longer stays lit.** `nldd-list-item` and `nldd-list-item-segment` show the press on `pointerdown` and cleared it on a `pointerup` on the row, which is not where the event lands when you hold the button down, move off the row and release. Nothing cleared it, so the row kept its pressed fill, and a few passes over a list left it looking half selected. The release is watched on the window now, for as long as a press is running.
 
 - **The scroll mode follows a split view that arrives late.** An app derives it from its outermost split view, and no split view at all means the whole app scrolls as one document. A consumer that renders its split view behind a condition, such as a loading state, an error takeover or an empty state, takes it away and puts it back. While it was gone the derivation said `root`, and the split view that comes back measures itself as multi-column, which is what it already was, so it announces nothing. The app-view never heard about it, and every pane kept scrolling as one document until a reload. Every layer already registers with the app-view, so a layer arriving or leaving is now what re-runs the derivation.
 
