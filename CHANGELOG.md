@@ -11,6 +11,8 @@ here; consult the commit history if you need that level of detail.
 
 ### Highlights
 
+- **`note`, an icon for a note.** Three lines of writing on a square with its bottom corner turned up. The set had the `file-text` family for a document, which is a page you file; this is the thing you scribble beside the work and hand to whoever comes next.
+
 - **`screwdriver-wrench`, an icon for work done with your hands.** A screwdriver crossed with an open-end wrench, aliased as `tools`. The set had `gear` for a setting and three gear compounds around it, and nothing at all for the work itself: a round of maintenance, a task somebody walks the floor for, the box of tools you take with you. Not a settings glyph, which is what a gear is and stays.
 
 ### Breaking
