@@ -301,11 +301,11 @@ export class NLDDListItem extends withTranslations(LitElement, nlddListItemTrans
 		this.addEventListener('click', this._handleClick);
 		// Press feedback: shown on press, cleared on release or when a touch
 		// turns into a scroll (the browser fires pointercancel for that pointer),
-		// so `active` never sticks while the user scrolls the list.
+		// so `active` never sticks while the user scrolls the list. The release
+		// is watched on the window rather than here, because a button let go
+		// outside the row fires nowhere near it and the feedback would stay on.
 		this.addEventListener('pointerdown', this._onPointerDown);
 		this.addEventListener('mousedown', this._onMouseDown);
-		this.addEventListener('pointerup', this._clearPressed);
-		this.addEventListener('pointercancel', this._clearPressed);
 		// Light-DOM state the row derives styling from: a checked checkbox-
 		// segment (row-wide selected fill), which segments own a row edge, and
 		// the divider markers. Attribute observation, not events: consumers
@@ -327,8 +327,7 @@ export class NLDDListItem extends withTranslations(LitElement, nlddListItemTrans
 		this.removeEventListener('click', this._handleClick);
 		this.removeEventListener('pointerdown', this._onPointerDown);
 		this.removeEventListener('mousedown', this._onMouseDown);
-		this.removeEventListener('pointerup', this._clearPressed);
-		this.removeEventListener('pointercancel', this._clearPressed);
+		this._clearPressed();
 		this._lightDomObserver?.disconnect();
 		this._lightDomObserver = null;
 		this._dividerMarkerObserver?.disconnect();
@@ -853,6 +852,8 @@ export class NLDDListItem extends withTranslations(LitElement, nlddListItemTrans
 		// flashes the press state of every ancestor row above it.
 		if (this._isFromNestedRow(e)) return;
 		this._action?.classList.add('is-pressed');
+		window.addEventListener('pointerup', this._clearPressed);
+		window.addEventListener('pointercancel', this._clearPressed);
 		// Safari does not focus a <button> on click, so a row whose paint follows
 		// the focus in it would stay unlit there while the other browsers light
 		// up. Focusing on the press makes the three agree; the ring stays hidden
@@ -872,6 +873,8 @@ export class NLDDListItem extends withTranslations(LitElement, nlddListItemTrans
 	}
 
 	private _clearPressed = () => {
+		window.removeEventListener('pointerup', this._clearPressed);
+		window.removeEventListener('pointercancel', this._clearPressed);
 		this._action?.classList.remove('is-pressed');
 	};
 

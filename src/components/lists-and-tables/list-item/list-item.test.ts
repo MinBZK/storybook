@@ -341,6 +341,17 @@ describe('nldd-list-item', () => {
 		expect(action.classList.contains('is-pressed')).toBe(false);
 	});
 
+	it('clears press feedback when the button is let go outside the row', async () => {
+		el = await fixture('<nldd-list-item button text="Rij"></nldd-list-item>');
+		await waitForUpdate(el);
+		const action = el.shadowRoot!.querySelector('.list-item__action')!;
+		el.dispatchEvent(new PointerEvent('pointerdown', { bubbles: true, composed: true, button: 0 }));
+		expect(action.classList.contains('is-pressed')).toBe(true);
+		// Let go somewhere else entirely: the row never sees this event.
+		document.body.dispatchEvent(new PointerEvent('pointerup', { bubbles: true, composed: true }));
+		expect(action.classList.contains('is-pressed')).toBe(false);
+	});
+
 	it('clears press feedback on pointerup', async () => {
 		el = await fixture('<nldd-list-item button>Item</nldd-list-item>');
 		await waitForUpdate(el);

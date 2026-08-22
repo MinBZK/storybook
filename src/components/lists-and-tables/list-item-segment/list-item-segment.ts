@@ -125,10 +125,11 @@ export class NLDDListItemSegment extends LitElement {
 		this.addEventListener('focusin', this._handleFocusIn);
 		this.addEventListener('focusout', this._handleFocusOut);
 		this.addEventListener('click', this._handleClick);
+		// The release is watched on the window rather than here: a button let go
+		// outside the segment fires nowhere near it, and the press feedback would
+		// stay on.
 		this.addEventListener('pointerdown', this._onPointerDown);
 		this.addEventListener('mousedown', this._onMouseDown);
-		this.addEventListener('pointerup', this._clearPressed);
-		this.addEventListener('pointercancel', this._clearPressed);
 	}
 
 	override disconnectedCallback() {
@@ -138,8 +139,7 @@ export class NLDDListItemSegment extends LitElement {
 		this.removeEventListener('click', this._handleClick);
 		this.removeEventListener('pointerdown', this._onPointerDown);
 		this.removeEventListener('mousedown', this._onMouseDown);
-		this.removeEventListener('pointerup', this._clearPressed);
-		this.removeEventListener('pointercancel', this._clearPressed);
+		this._clearPressed();
 	}
 
 	override firstUpdated() {
@@ -214,6 +214,8 @@ export class NLDDListItemSegment extends LitElement {
 	private _onPointerDown = (e: PointerEvent) => {
 		if (e.button > 0 || this.disabled) return;
 		this._control?.classList.add('is-pressed');
+		window.addEventListener('pointerup', this._clearPressed);
+		window.addEventListener('pointercancel', this._clearPressed);
 		// Safari does not focus a <button> on click, so a row whose paint follows
 		// the focus in it (see nldd-list-item's current rules) would stay unlit
 		// there while every other browser lights up. Focusing on the press makes
@@ -223,6 +225,8 @@ export class NLDDListItemSegment extends LitElement {
 	};
 
 	private _clearPressed = () => {
+		window.removeEventListener('pointerup', this._clearPressed);
+		window.removeEventListener('pointercancel', this._clearPressed);
 		this._control?.classList.remove('is-pressed');
 	};
 
