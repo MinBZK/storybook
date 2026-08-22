@@ -9,6 +9,7 @@ export const timelineTrackCellStyles = css`
 		--_lane-size: var(--primitives-space-16);
 		--_marker-size: var(--primitives-space-16);
 		--_marker-corner-radius: var(--primitives-corner-radius-full);
+
 		--_line-width: var(--primitives-space-2);
 		--_track-color: var(--components-timeline-track-cell-color);
 		--_future-fill-color: var(--components-timeline-track-cell-future-background-color);
@@ -34,16 +35,18 @@ export const timelineTrackCellStyles = css`
 		display: none;
 	}
 
-	:host([minor]) {
-		--_marker-size: var(--primitives-space-10);
-	}
-
-	:host([variant="step"]) {
+	/* The lane is the size; the dot fills it, and a minor one sits smaller in the
+	   same lane so the track runs straight on. */
+	:host([size="md"]) {
 		--_lane-size: var(--primitives-space-24);
 		--_marker-size: var(--primitives-space-24);
 	}
 
-	:host([variant="step"][minor]) {
+	:host([variant="minor"]) {
+		--_marker-size: var(--primitives-space-10);
+	}
+
+	:host([size="md"][variant="minor"]) {
 		--_marker-size: var(--primitives-space-12);
 	}
 
@@ -112,6 +115,17 @@ export const timelineTrackCellStyles = css`
 	:host([line="both"]) .timeline-track-cell__top-line,
 	:host([line="both"]) .timeline-track-cell__bottom-line {
 		background-color: var(--_track-color);
+	}
+
+	/* A row without a dot has one line to fill rather than two halves, and no point
+	   where a fill could change over, so its whole line follows the status. On a
+	   current row that leans the way the timeline runs: what belongs to a point
+	   usually comes after it, so going down that stretch is still ahead, and going
+	   up it is behind you. line overrules the whole of it, as everywhere. */
+	:host([variant="none"][status="future"]) .timeline-track-cell__full-line,
+	:host([variant="none"][status="current"]:not([direction="up"])) .timeline-track-cell__full-line,
+	:host([variant="none"][line="none"]) .timeline-track-cell__full-line {
+		background-color: var(--_future-fill-color);
 	}
 
 	:host([line="top"]) .timeline-track-cell__bottom-line,

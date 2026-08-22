@@ -1,6 +1,11 @@
 import { html } from 'lit';
 import { ICONS } from '../../../content/icon/icon.js';
 import './timeline-track-cell.js';
+import '../../../layout/box/box.js';
+import '../../../layout/container/container.js';
+import '../../../content/title/title.js';
+import '../../../content/text/text.js';
+import '../cell/cell.js';
 import '../../list/list.js';
 import '../../list-item/list-item.js';
 import '../spacer-cell/spacer-cell.js';
@@ -21,20 +26,21 @@ export default {
 	argTypes: {
 		status: {
 			control: 'select',
-			options: ['past', 'current', 'future', 'none'],
-			description: 'Status van deze stap; none tekent alleen de lijn',
+			options: ['past', 'current', 'future'],
+			description: 'Hoe ver deze rij is; kleurt de stip en het spoor eromheen',
 			table: { defaultValue: { summary: 'past' } },
+		},
+		size: {
+			control: 'select',
+			options: ['sm', 'md'],
+			description: 'Hoe breed de baan is en dus hoe groot de stip: sm (16px) voor een tijdlijn van gebeurtenissen, md (24px) waar een cijfer of icoon in moet passen',
+			table: { defaultValue: { summary: 'sm' } },
 		},
 		variant: {
 			control: 'select',
-			options: ['dot', 'step'],
-			description: 'Wat deze rij is: een dot op een tijdlijn (16px) of een step in een stappenlijst (24px), met een cijfer of icoon in de stip',
-			table: { defaultValue: { summary: 'dot' } },
-		},
-		minor: {
-			control: 'boolean',
-			description: 'Deze rij hoort onder de vorige: kleinere stip, zelfde baan',
-			table: { defaultValue: { summary: 'false' } },
+			options: ['major', 'minor', 'none'],
+			description: 'Wat er in de baan staat: een hele stip (major), een kleinere voor een rij die onder de vorige hoort (minor), of niets (none) voor een rij die draagt wat een stap bij zich heeft',
+			table: { defaultValue: { summary: 'major' } },
 		},
 		direction: {
 			control: 'select',
@@ -71,8 +77,8 @@ export default {
 export const Default = {
 	args: {
 		status: 'current',
-		variant: 'step',
-		minor: false,
+		size: 'md',
+		variant: 'major',
 		direction: 'down',
 		position: 'between',
 		text: '2',
@@ -84,8 +90,8 @@ export const Default = {
 			<nldd-list-item>
 			<nldd-timeline-track-cell
 				status=${args.status}
+				size=${args.size}
 				variant=${args.variant}
-				?minor=${args.minor}
 				direction=${args.direction}
 				position=${args.position}
 				line=${args.line}
@@ -151,9 +157,9 @@ export const EnkeleRij = {
 };
 
 /**
- * `variant="step"` maakt de stip 24px, groot genoeg voor een cijfer of icoon.
- * Elke rij in de lijst krijgt dezelfde stip: de maat hoort bij de variant, niet
- * bij wat er toevallig in staat, anders verspringt het spoor per rij.
+ * `size="md"` maakt de baan 24px breed en de stip net zo groot, ruim genoeg voor
+ * een cijfer of icoon. Eén maat per lijst: een baan die halverwege van breedte
+ * verandert, knikt het spoor.
  *
  * Dit is de verticale tegenhanger van `nldd-step-indicator`. De semantiek hoort
  * bij de consument: `aria-current="step"` op de rij van de huidige stap, en de
@@ -163,17 +169,17 @@ export const Stappenlijst = {
 	render: () => html`
 		<nldd-list dividers="never" accessible-label="Voortgang aanvraag" style="max-width: 420px;">
 			<nldd-list-item>
-			<nldd-timeline-track-cell status="past" variant="step" position="first" icon="check-mark"></nldd-timeline-track-cell>
+			<nldd-timeline-track-cell status="past" size="md" position="first" icon="check-mark"></nldd-timeline-track-cell>
 			<nldd-spacer-cell size="12"></nldd-spacer-cell>
 			<nldd-title-cell text="Gegevens" supporting-text="Afgerond"></nldd-title-cell>
 			</nldd-list-item>
 			<nldd-list-item aria-current="step">
-			<nldd-timeline-track-cell status="current" variant="step" text="2"></nldd-timeline-track-cell>
+			<nldd-timeline-track-cell status="current" size="md" text="2"></nldd-timeline-track-cell>
 			<nldd-spacer-cell size="12"></nldd-spacer-cell>
 			<nldd-title-cell text="Controle" supporting-text="Huidige stap"></nldd-title-cell>
 			</nldd-list-item>
 			<nldd-list-item>
-			<nldd-timeline-track-cell status="future" variant="step" position="last" text="3"></nldd-timeline-track-cell>
+			<nldd-timeline-track-cell status="future" size="md" position="last" text="3"></nldd-timeline-track-cell>
 			<nldd-spacer-cell size="12"></nldd-spacer-cell>
 			<nldd-title-cell text="Bevestigen" supporting-text="Nog te doen"></nldd-title-cell>
 			</nldd-list-item>
@@ -183,10 +189,10 @@ export const Stappenlijst = {
 };
 
 /**
- * `minor` zet een rij onder de vorige: dezelfde baan, een kleinere stip (12px bij
- * een step, 10px bij een dot). Inspringen zou het spoor breken, en juist dat spoor
- * verbindt de rijen — de hiërarchie komt van de stipmaat en van gewone tekst in
- * plaats van een titel.
+ * `variant="minor"` zet een rij onder de vorige: dezelfde baan, een kleinere stip
+ * (12px bij `size="md"`, 10px bij `sm`). Inspringen zou het spoor breken, en juist
+ * dat spoor verbindt de rijen — de hiërarchie komt van de stipmaat en van gewone
+ * tekst in plaats van een titel.
  */
 /**
  * Een rij die zelf een groep opent, is niet het eind van de voortgang: de stap
@@ -204,34 +210,74 @@ export const GenesteVoortgang = {
 	render: () => html`
 		<nldd-list dividers="never" accessible-label="Werkorder" style="max-width: 420px;">
 			<nldd-list-item>
-			<nldd-timeline-track-cell status="past" variant="step" position="first" icon="check-mark"></nldd-timeline-track-cell>
+			<nldd-timeline-track-cell status="past" size="md" position="first" icon="check-mark"></nldd-timeline-track-cell>
 			<nldd-spacer-cell size="12"></nldd-spacer-cell>
 			<nldd-title-cell text="Materiaal verzamelen" supporting-text="Afgerond"></nldd-title-cell>
 			</nldd-list-item>
 			<nldd-list-item>
-			<nldd-timeline-track-cell status="current" variant="step" line="both" text="2"></nldd-timeline-track-cell>
+			<nldd-timeline-track-cell status="current" size="md" line="both" text="2"></nldd-timeline-track-cell>
 			<nldd-spacer-cell size="12"></nldd-spacer-cell>
 			<nldd-title-cell text="Switch vervangen" supporting-text="Bezig"></nldd-title-cell>
 			</nldd-list-item>
 			<nldd-list-item>
-			<nldd-timeline-track-cell status="past" variant="step" minor></nldd-timeline-track-cell>
+			<nldd-timeline-track-cell status="past" size="md" variant="minor"></nldd-timeline-track-cell>
 			<nldd-spacer-cell size="12"></nldd-spacer-cell>
 			<nldd-text-cell text="Apparaat spanningsloos maken"></nldd-text-cell>
 			</nldd-list-item>
 			<nldd-list-item aria-current="step">
-			<nldd-timeline-track-cell status="current" variant="step" minor></nldd-timeline-track-cell>
+			<nldd-timeline-track-cell status="current" size="md" variant="minor"></nldd-timeline-track-cell>
 			<nldd-spacer-cell size="12"></nldd-spacer-cell>
 			<nldd-text-cell text="Oude onderdeel verwijderen"></nldd-text-cell>
 			</nldd-list-item>
 			<nldd-list-item>
-			<nldd-timeline-track-cell status="future" variant="step" minor></nldd-timeline-track-cell>
+			<nldd-timeline-track-cell status="future" size="md" variant="minor"></nldd-timeline-track-cell>
 			<nldd-spacer-cell size="12"></nldd-spacer-cell>
 			<nldd-text-cell text="Nieuw onderdeel plaatsen"></nldd-text-cell>
 			</nldd-list-item>
 			<nldd-list-item>
-			<nldd-timeline-track-cell status="future" variant="step" position="last" text="3"></nldd-timeline-track-cell>
+			<nldd-timeline-track-cell status="future" size="md" position="last" text="3"></nldd-timeline-track-cell>
 			<nldd-spacer-cell size="12"></nldd-spacer-cell>
 			<nldd-title-cell text="Testen en afmelden" supporting-text="Nog te doen"></nldd-title-cell>
+			</nldd-list-item>
+		</nldd-list>
+	`,
+	parameters: { controls: { disable: true } },
+};
+
+/**
+ * Een rij die een kaart draagt is hoog, en dan staat de stip halverwege iets
+ * aan te wijzen in plaats van naast de naam ervan. Zet de naam daarom in zijn
+ * eigen rij met de stip, en de kaart in een rij eronder zonder stip.
+ *
+ * Die tweede rij houdt dezelfde `size` en `variant` als de rij erboven, anders
+ * staat hij in een andere baan en knikt het spoor. Zijn `status` kleurt de hele
+ * lijn: `past` als het verder naar beneden doorloopt, `current` als het werk
+ * hier stopt.
+ */
+export const KaartOnderEenStap = {
+	name: 'Kaart onder een stap',
+	render: () => html`
+		<nldd-list dividers="never" accessible-label="Werkorder" style="max-width: 420px;">
+			<nldd-list-item>
+			<nldd-timeline-track-cell status="past" size="md" position="first" icon="check-mark"></nldd-timeline-track-cell>
+			<nldd-spacer-cell size="12"></nldd-spacer-cell>
+			<nldd-title-cell text="Materiaal verzamelen"></nldd-title-cell>
+			</nldd-list-item>
+			<nldd-list-item>
+			<nldd-timeline-track-cell status="past" size="md" variant="none"></nldd-timeline-track-cell>
+			<nldd-spacer-cell size="12"></nldd-spacer-cell>
+			<nldd-cell width="full">
+				<nldd-box background="base">
+					<nldd-container padding="16">
+						<nldd-text>Alles uit het magazijn meenemen voordat je de vloer op gaat.</nldd-text>
+					</nldd-container>
+				</nldd-box>
+			</nldd-cell>
+			</nldd-list-item>
+			<nldd-list-item>
+			<nldd-timeline-track-cell status="current" size="md" position="last" text="2"></nldd-timeline-track-cell>
+			<nldd-spacer-cell size="12"></nldd-spacer-cell>
+			<nldd-title-cell text="Switch vervangen" supporting-text="Bezig"></nldd-title-cell>
 			</nldd-list-item>
 		</nldd-list>
 	`,
@@ -242,27 +288,27 @@ export const Substappen = {
 	render: () => html`
 		<nldd-list dividers="never" accessible-label="Voortgang aanvraag" style="max-width: 420px;">
 			<nldd-list-item>
-			<nldd-timeline-track-cell status="past" variant="step" position="first" icon="check-mark"></nldd-timeline-track-cell>
+			<nldd-timeline-track-cell status="past" size="md" position="first" icon="check-mark"></nldd-timeline-track-cell>
 			<nldd-spacer-cell size="12"></nldd-spacer-cell>
 			<nldd-title-cell text="Gegevens" supporting-text="Afgerond"></nldd-title-cell>
 			</nldd-list-item>
 			<nldd-list-item>
-			<nldd-timeline-track-cell status="past" variant="step" minor></nldd-timeline-track-cell>
+			<nldd-timeline-track-cell status="past" size="md" variant="minor"></nldd-timeline-track-cell>
 			<nldd-spacer-cell size="12"></nldd-spacer-cell>
 			<nldd-text-cell text="Contactgegevens"></nldd-text-cell>
 			</nldd-list-item>
 			<nldd-list-item>
-			<nldd-timeline-track-cell status="past" variant="step" minor></nldd-timeline-track-cell>
+			<nldd-timeline-track-cell status="past" size="md" variant="minor"></nldd-timeline-track-cell>
 			<nldd-spacer-cell size="12"></nldd-spacer-cell>
 			<nldd-text-cell text="Bankrekening"></nldd-text-cell>
 			</nldd-list-item>
 			<nldd-list-item aria-current="step">
-			<nldd-timeline-track-cell status="current" variant="step" text="2"></nldd-timeline-track-cell>
+			<nldd-timeline-track-cell status="current" size="md" text="2"></nldd-timeline-track-cell>
 			<nldd-spacer-cell size="12"></nldd-spacer-cell>
 			<nldd-title-cell text="Controle" supporting-text="Huidige stap"></nldd-title-cell>
 			</nldd-list-item>
 			<nldd-list-item>
-			<nldd-timeline-track-cell status="future" variant="step" position="last" text="3"></nldd-timeline-track-cell>
+			<nldd-timeline-track-cell status="future" size="md" position="last" text="3"></nldd-timeline-track-cell>
 			<nldd-spacer-cell size="12"></nldd-spacer-cell>
 			<nldd-title-cell text="Bevestigen" supporting-text="Nog te doen"></nldd-title-cell>
 			</nldd-list-item>
@@ -272,8 +318,8 @@ export const Substappen = {
 };
 
 /**
- * De standaard: een kaal spoor van gebeurtenissen, stippen van 16px. Een `minor`
- * is hier 10px, voor een gebeurtenis die bij de vorige hoort.
+ * De standaard: een kaal spoor van gebeurtenissen, stippen van 16px. Een
+ * `variant="minor"` is hier 10px, voor een gebeurtenis die bij de vorige hoort.
  */
 export const Tussenstappen = {
 	render: () => html`
@@ -284,7 +330,7 @@ export const Tussenstappen = {
 			<nldd-text-cell text="Aanvraag ingediend" supporting-text="3 maart"></nldd-text-cell>
 			</nldd-list-item>
 			<nldd-list-item>
-			<nldd-timeline-track-cell status="past" minor></nldd-timeline-track-cell>
+			<nldd-timeline-track-cell status="past" variant="minor"></nldd-timeline-track-cell>
 			<nldd-spacer-cell size="12"></nldd-spacer-cell>
 			<nldd-text-cell text="Ontvangstbevestiging verstuurd"></nldd-text-cell>
 			</nldd-list-item>
@@ -304,9 +350,13 @@ export const Tussenstappen = {
 };
 
 /**
- * `status="none"` tekent alleen de lijn, voor een rij zonder eigen punt op de
- * tijdlijn (een tussenkop, een groep). De lijn blijft daar accent: hij verbindt,
- * hij vertelt geen voortgang.
+ * `variant="none"` laat de stip weg, voor een rij zonder eigen punt op de tijdlijn:
+ * een tussenkop, een groep, of wat een stap bij zich draagt.
+ *
+ * De rij houdt zijn `size`, dus hij blijft in dezelfde baan staan en het spoor
+ * loopt recht door. En hij houdt zijn `status`: zonder stip is er geen punt waar
+ * de vulling kan omslaan, dus die kleurt de hele lijn. Een tussenkop tussen
+ * afgelegde stappen is `past`, een rij onder de stap waar je nu bent `future`.
  */
 export const ZonderStip = {
 	render: () => html`
@@ -317,7 +367,7 @@ export const ZonderStip = {
 			<nldd-title-cell text="Aanvraag ingediend" supporting-text="3 maart"></nldd-title-cell>
 			</nldd-list-item>
 			<nldd-list-item>
-			<nldd-timeline-track-cell status="none"></nldd-timeline-track-cell>
+			<nldd-timeline-track-cell variant="none"></nldd-timeline-track-cell>
 			<nldd-spacer-cell size="12"></nldd-spacer-cell>
 			<nldd-title-cell text="Maart"></nldd-title-cell>
 			</nldd-list-item>

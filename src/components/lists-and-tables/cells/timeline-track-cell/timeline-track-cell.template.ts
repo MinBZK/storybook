@@ -2,10 +2,13 @@ import { html, nothing, type TemplateResult } from 'lit';
 import type { NLDDTimelineTrackCell } from './timeline-track-cell.js';
 
 export function timelineTrackCellTemplate(component: NLDDTimelineTrackCell): TemplateResult {
-	if (component.status === 'none') {
+	// No dot means no point where a fill could change over, so the row draws one
+	// line from edge to edge instead of two halves. `only` says the track runs
+	// neither above nor below, which here leaves nothing to draw.
+	if (component.variant === 'none') {
 		return html`
 			<div class="timeline-track-cell">
-				<div class="timeline-track-cell__full-line"></div>
+				${component.position === 'only' ? nothing : html`<div class="timeline-track-cell__full-line"></div>`}
 			</div>
 		`;
 	}

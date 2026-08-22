@@ -35,14 +35,14 @@ describe('nldd-timeline-track-cell', () => {
 	});
 
 	it('renders a number in the marker', async () => {
-		el = await fixture<NLDDTimelineTrackCell>('<nldd-timeline-track-cell variant="step" text="2"></nldd-timeline-track-cell>');
+		el = await fixture<NLDDTimelineTrackCell>('<nldd-timeline-track-cell size="md" text="2"></nldd-timeline-track-cell>');
 		await waitForUpdate(el);
 
 		expect(el.shadowRoot!.querySelector('.timeline-track-cell__text')?.textContent?.trim()).toBe('2');
 	});
 
 	it('renders an icon in the marker, which wins from text', async () => {
-		el = await fixture<NLDDTimelineTrackCell>('<nldd-timeline-track-cell variant="step" text="2" icon="check-mark"></nldd-timeline-track-cell>');
+		el = await fixture<NLDDTimelineTrackCell>('<nldd-timeline-track-cell size="md" text="2" icon="check-mark"></nldd-timeline-track-cell>');
 		await waitForUpdate(el);
 
 		expect(el.shadowRoot!.querySelector('nldd-icon')?.getAttribute('name')).toBe('check-mark');
@@ -50,7 +50,7 @@ describe('nldd-timeline-track-cell', () => {
 	});
 
 	it('takes slotted content in the marker', async () => {
-		el = await fixture<NLDDTimelineTrackCell>('<nldd-timeline-track-cell variant="step"><nldd-icon name="check-mark"></nldd-icon></nldd-timeline-track-cell>');
+		el = await fixture<NLDDTimelineTrackCell>('<nldd-timeline-track-cell size="md"><nldd-icon name="check-mark"></nldd-icon></nldd-timeline-track-cell>');
 		await waitForUpdate(el);
 
 		expect(marker()!.querySelector('slot')).not.toBeNull();
@@ -82,19 +82,19 @@ describe('nldd-timeline-track-cell', () => {
 		expect(el.hasAttribute('direction')).toBe(false);
 	});
 
-	it('reflects minor so the styles can size the marker down', async () => {
-		el = await fixture<NLDDTimelineTrackCell>('<nldd-timeline-track-cell status="past"></nldd-timeline-track-cell>');
+	it('reflects variant so the styles can size the marker', async () => {
+		el = await fixture<NLDDTimelineTrackCell>('<nldd-timeline-track-cell></nldd-timeline-track-cell>');
 		await waitForUpdate(el);
-		expect(el.hasAttribute('minor')).toBe(false);
+		expect(el.hasAttribute('variant')).toBe(false);
 
-		el.minor = true;
+		el.variant = 'minor';
 		await waitForUpdate(el);
 
-		expect(el.hasAttribute('minor')).toBe(true);
+		expect(el.getAttribute('variant')).toBe('minor');
 	});
 
 	it('keeps a minor marker empty, whatever content it is given', async () => {
-		el = await fixture<NLDDTimelineTrackCell>('<nldd-timeline-track-cell status="past" variant="step" minor text="2" icon="check-mark">x</nldd-timeline-track-cell>');
+		el = await fixture<NLDDTimelineTrackCell>('<nldd-timeline-track-cell status="past" size="md" variant="minor" text="2" icon="check-mark">x</nldd-timeline-track-cell>');
 		await waitForUpdate(el);
 
 		expect(el.shadowRoot!.querySelector('.timeline-track-cell__text')).toBeNull();
@@ -124,7 +124,7 @@ describe('nldd-timeline-track-cell', () => {
 		const onder = el.shadowRoot!.querySelector('.timeline-track-cell__bottom-line')!;
 		expect(getComputedStyle(onder).bottom).toBe('-1px');
 
-		el = await fixture<NLDDTimelineTrackCell>('<nldd-timeline-track-cell status="none"></nldd-timeline-track-cell>');
+		el = await fixture<NLDDTimelineTrackCell>('<nldd-timeline-track-cell variant="none"></nldd-timeline-track-cell>');
 		el.style.setProperty('--semantics-dividers-thickness', '1px');
 		await waitForUpdate(el);
 		const vol = el.shadowRoot!.querySelector('.timeline-track-cell__full-line')!;
@@ -132,7 +132,7 @@ describe('nldd-timeline-track-cell', () => {
 	});
 
 	it('renders a full line for status=none', async () => {
-		el = await fixture<NLDDTimelineTrackCell>('<nldd-timeline-track-cell status="none"></nldd-timeline-track-cell>');
+		el = await fixture<NLDDTimelineTrackCell>('<nldd-timeline-track-cell variant="none"></nldd-timeline-track-cell>');
 		await waitForUpdate(el);
 
 		expect(el.shadowRoot!.querySelector('.timeline-track-cell__full-line')).not.toBeNull();
@@ -227,5 +227,93 @@ describe('nldd-timeline-track-cell line', () => {
 		await waitForUpdate(el);
 		expect(half(el, 'top')).toBe('covered');
 		expect(half(el, 'bottom')).toBe('open');
+	});
+});
+
+describe('nldd-timeline-track-cell marker', () => {
+	let el: HTMLElement;
+
+	afterEach(() => {
+		if (el) cleanup(el);
+	});
+
+	const marker = (cell: HTMLElement) =>
+		cell.shadowRoot!.querySelector('.timeline-track-cell__marker') as HTMLElement;
+
+	it('stands halfway down the row', async () => {
+		el = await fixture('<nldd-timeline-track-cell size="md" style="height: 100px"></nldd-timeline-track-cell>');
+		await waitForUpdate(el);
+		expect(getComputedStyle(marker(el)).top).toBe('50px');
+	});
+
+	it('is met by both line ends', async () => {
+		el = await fixture('<nldd-timeline-track-cell size="md" position="between" style="height: 100px"></nldd-timeline-track-cell>');
+		await waitForUpdate(el);
+		const top = el.shadowRoot!.querySelector('.timeline-track-cell__top-line') as HTMLElement;
+		const bottom = el.shadowRoot!.querySelector('.timeline-track-cell__bottom-line') as HTMLElement;
+		expect(Math.round(top.getBoundingClientRect().height)).toBe(50);
+		expect(getComputedStyle(bottom).top).toBe('50px');
+	});
+});
+
+describe('nldd-timeline-track-cell with only a line', () => {
+	let el: HTMLElement;
+
+	afterEach(() => {
+		if (el) cleanup(el);
+	});
+
+	const COLORS = 'style="--components-timeline-track-cell-color: rgb(1, 2, 3); --components-timeline-track-cell-future-background-color: rgb(4, 5, 6)"';
+
+	const fullLine = (cell: HTMLElement) =>
+		getComputedStyle(cell.shadowRoot!.querySelector('.timeline-track-cell__full-line') as HTMLElement).backgroundColor;
+
+	it('draws the line as covered by default', async () => {
+		el = await fixture(`<nldd-timeline-track-cell variant="none" ${COLORS}></nldd-timeline-track-cell>`);
+		await waitForUpdate(el);
+		expect(fullLine(el)).toBe('rgb(1, 2, 3)');
+	});
+
+	it('draws it as still ahead on `line="none"`', async () => {
+		el = await fixture(`<nldd-timeline-track-cell variant="none" line="none" ${COLORS}></nldd-timeline-track-cell>`);
+		await waitForUpdate(el);
+		expect(fullLine(el)).toBe('rgb(4, 5, 6)');
+	});
+
+	it('draws nothing at all on `position="only"`, where the track has ended', async () => {
+		el = await fixture(`<nldd-timeline-track-cell variant="none" position="only" ${COLORS}></nldd-timeline-track-cell>`);
+		await waitForUpdate(el);
+		expect(el.shadowRoot!.querySelector('.timeline-track-cell__full-line')).toBeNull();
+	});
+
+	it('has no marker', async () => {
+		el = await fixture('<nldd-timeline-track-cell variant="none"></nldd-timeline-track-cell>');
+		await waitForUpdate(el);
+		expect(el.shadowRoot!.querySelector('.timeline-track-cell__marker')).toBeNull();
+	});
+});
+
+describe('nldd-timeline-track-cell current without a dot', () => {
+	let el: HTMLElement;
+
+	afterEach(() => {
+		if (el) cleanup(el);
+	});
+
+	const COLORS = 'style="--components-timeline-track-cell-color: rgb(1, 2, 3); --components-timeline-track-cell-future-background-color: rgb(4, 5, 6)"';
+
+	const fullLine = (cell: HTMLElement) =>
+		getComputedStyle(cell.shadowRoot!.querySelector('.timeline-track-cell__full-line') as HTMLElement).backgroundColor;
+
+	it('leans the way the timeline runs: still ahead going down', async () => {
+		el = await fixture(`<nldd-timeline-track-cell variant="none" status="current" ${COLORS}></nldd-timeline-track-cell>`);
+		await waitForUpdate(el);
+		expect(fullLine(el)).toBe('rgb(4, 5, 6)');
+	});
+
+	it('and behind you going up', async () => {
+		el = await fixture(`<nldd-timeline-track-cell variant="none" status="current" direction="up" ${COLORS}></nldd-timeline-track-cell>`);
+		await waitForUpdate(el);
+		expect(fullLine(el)).toBe('rgb(1, 2, 3)');
 	});
 });
