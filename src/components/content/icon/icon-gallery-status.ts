@@ -55,6 +55,7 @@ export const NEW_ICONS = new Set([
 	'memory-chip',
 	'minus-circle',
 	'network-switch',
+	'note',
 	'paintbrush',
 	'pci-card',
 	'power-plug',
