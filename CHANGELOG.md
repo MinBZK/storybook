@@ -29,6 +29,8 @@ here; consult the commit history if you need that level of detail.
 
 ### Fixed
 
+- **The clear and picker buttons of a combo box sit in the middle again.** Both are wrapped in a plain block, so the wrapper took the height of the line box it inherited and the button hung at the top of it. That put their place at the mercy of the consumer's typography: centred in a story, and high in an app whose body sets a taller line-height. They are flex now, which is what the file field, the time field and the date field already did.
+
 - **A row let go outside itself no longer stays lit.** `nldd-list-item` and `nldd-list-item-segment` show the press on `pointerdown` and cleared it on a `pointerup` on the row, which is not where the event lands when you hold the button down, move off the row and release. Nothing cleared it, so the row kept its pressed fill, and a few passes over a list left it looking half selected. The release is watched on the window now, for as long as a press is running.
 
 - **The scroll mode follows a split view that arrives late.** An app derives it from its outermost split view, and no split view at all means the whole app scrolls as one document. A consumer that renders its split view behind a condition, such as a loading state, an error takeover or an empty state, takes it away and puts it back. While it was gone the derivation said `root`, and the split view that comes back measures itself as multi-column, which is what it already was, so it announces nothing. The app-view never heard about it, and every pane kept scrolling as one document until a reload. Every layer already registers with the app-view, so a layer arriving or leaving is now what re-runs the derivation.
