@@ -1086,7 +1086,7 @@ export class NLDDList extends LitElement {
 					// needs a laid-out box and answers false until the first layout.
 					if (this._hiddenWithin(row, el)) continue;
 					this._warnedUnmanaged.add(el);
-					console.warn(`nldd-list: <${el.tagName.toLowerCase()}> in a list-item keeps its tab stop in its own shadow root and has no \`no-tab\`, so the row cannot take it out of the tab order and the arrow keys skip that row. Give the component \`no-tab\`, or wrap the control in an nldd-list-item-segment.`);
+					console.warn(`nldd-list: <${el.tagName.toLowerCase()}> in a list-item keeps its tab stop in its own shadow root and has no \`no-tab\`, so the row cannot take it out of the tab order and the arrow keys skip that row. If the rows of this list are not actions themselves, it is a form: set type="form" and the roving falls away. Otherwise give the component \`no-tab\`, or wrap the control in an nldd-list-item-segment.`);
 				}
 			}
 		};
