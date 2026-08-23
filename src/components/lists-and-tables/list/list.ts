@@ -13,7 +13,7 @@ import '../../actions/icon-button/icon-button.js';
 export type ListDividers = 'always' | 'on-touch' | 'never';
 
 export type ListVariant = 'simple' | 'box-tinted' | 'box-base';
-export type ListType = 'list' | 'navigation' | 'listbox' | 'tree';
+export type ListType = 'list' | 'navigation' | 'listbox' | 'tree' | 'form';
 
 export interface NLDDReorderEventDetail {
 	fromIndex: number;
@@ -38,6 +38,16 @@ const SHADOW_TAB_STOP = ':is(a[href], button, input, select, textarea, [tabindex
  *   spacer-cell per level. Comes with its own keyboard, see "Tree" below.
  * - `navigation` — host `role="navigation"`, items with `selected` get
  *   `aria-current="page"` on their inner `<a>` or `<button>`.
+ * - `form` — rows that are not actions themselves: the controls inside them
+ *   are. A row of a label and a field, a switch, a menu button, or a value you
+ *   cannot change at all. Semantically the same as `list` (`role="list"`,
+ *   `role="listitem"`), and everything visual is unchanged; what falls away is
+ *   the keyboard of a list you walk through. No arrow navigation, so no
+ *   promise of it either, and no tab stop on the row: Tab goes straight to the
+ *   controls, in source order, the way it does in any form. Rows that ARE
+ *   actions (`href`, `button`, `checkbox`, or a segment) contradict that and
+ *   warn in development. SwiftUI draws the same line between `List` and
+ *   `Form`, for the same reason.
  * - `listbox` — an accessible, filterable listbox (combobox pattern). The
  *   list renders its OWN search input (`role="combobox"`) pinned
  *   above the options; `.list__items` becomes `role="listbox"`
@@ -50,10 +60,11 @@ const SHADOW_TAB_STOP = ':is(a[href], button, input, select, textarea, [tabindex
  *
  * ### Keyboard
  *
- * Every list answers to the arrow keys, and there is no attribute to switch that
- * on. Whether the keys do something is not a property of one list: it is what a
- * reader may assume about all of them, and a per-list setting made that
- * unknowable from the outside.
+ * A list you walk through answers to the arrow keys, and there is no attribute to
+ * switch that on. Whether the keys do something is not a property of one list: it
+ * is what a reader may assume about all of them, and a per-list setting made that
+ * unknowable from the outside. It follows the type, which you can see before you
+ * touch a key.
  *
  * - ArrowUp / ArrowDown — move focus between the rows there is something to do
  *   with. A row of nothing but text is skipped, because focus that leads nowhere
@@ -63,12 +74,22 @@ const SHADOW_TAB_STOP = ':is(a[href], button, input, select, textarea, [tabindex
  *   Within the current row Tab walks that row's own controls: a chevron beside a
  *   checkbox, a menu button at the end. The same controls in the other rows are
  *   held out of the tab order (`tabindex="-1"`, or `no-tab` on a design-system
- *   control that keeps its tab stop in its own shadow root).
+ *   control that keeps its tab stop in its own shadow root), and so are this
+ *   row's once focus leaves the list, so tabbing back in lands on the row again.
+ * - Escape — out of a control the row holds, back onto the row. One level up,
+ *   where Shift+Tab is one step back. On the row itself the list claims nothing,
+ *   so Escape carries on to whatever holds the list, and a control showing a
+ *   menu keeps the first press for closing that menu.
  *
- * Arrows move focus only; selection stays consumer-managed. Two types answer
- * differently, and both say so on screen before you touch a key: a listbox runs
- * its keyboard from its search field, and a reorderable list moves rows with the
- * arrows.
+ * While focus sits in a control a row holds, the list stands down: those keys
+ * are the control's, and a list that took them anyway would pull focus out of a
+ * combo box or a text field mid-word. What the row IS — its own link, button or
+ * segments — keeps answering here.
+ *
+ * Arrows move focus only; selection stays consumer-managed. Three types answer
+ * differently, and all three say so on screen before you touch a key: a listbox
+ * runs its keyboard from its search field, a reorderable list moves rows with the
+ * arrows, and a form has no rows to move between at all.
  *
  * ### Listbox
  *
@@ -134,7 +155,7 @@ const SHADOW_TAB_STOP = ':is(a[href], button, input, select, textarea, [tabindex
  * @element nldd-list
  *
  * @attr {'simple'|'box-tinted'|'box-base'} variant - Visual style (default 'simple'): `simple` is a plain vertical strip with no chrome, the two `box` values a framed card with rounded corners, fill and inset border ring. `box-tinted` for a list on a plain page, `box-base` for one on an already-tinted parent (the border ring gets +2 palette steps so it still reads against a card-on-card)
- * @attr {'list'|'navigation'|'listbox'|'tree'} type - A11y role and behavior (default 'list'). See the docblock above.
+ * @attr {'list'|'navigation'|'listbox'|'tree'|'form'} type - A11y role and behavior (default 'list'). See the docblock above.
  * @attr {boolean} reorderable - Enables drag-to-reorder and pushes `reorderable` onto the items. Only valid with `type="list"`; there the arrow keys move rows instead of focus.
  * @attr {'always'|'on-touch'|'never'} dividers - When to draw the lines between the items (default 'always'). `on-touch` draws them only where the primary input is touch, under `(pointer: coarse)`: a pointer has the hover highlight to tell one row from the next and a finger has nothing, so the line earns its place in the one case and is clutter in the other. `never` hides them everywhere
  * @attr {string} height - Listbox only: caps the options' scroll region at this CSS length (e.g. '320px'). Unset means no cap.
@@ -354,16 +375,20 @@ export class NLDDList extends LitElement {
 		this.style.containerType = 'inline-size';
 		this.style.containerName = 'cells-container';
 		this.addEventListener('pointerdown', this._onPointerDown);
+		this.addEventListener('keydown', this._onKeyDownCapture, true);
 		this.addEventListener('keydown', this._onKeyDown);
 		this.addEventListener('focusin', this._onFocusIn);
+		this.addEventListener('focusout', this._onFocusOut);
 		this.addEventListener('click', this._onListClick);
 	}
 
 	override disconnectedCallback() {
 		super.disconnectedCallback();
 		this.removeEventListener('pointerdown', this._onPointerDown);
+		this.removeEventListener('keydown', this._onKeyDownCapture, true);
 		this.removeEventListener('keydown', this._onKeyDown);
 		this.removeEventListener('focusin', this._onFocusIn);
+		this.removeEventListener('focusout', this._onFocusOut);
 		this.removeEventListener('click', this._onListClick);
 		this._itemsObserver?.disconnect();
 		this._itemsObserver = null;
@@ -710,6 +735,11 @@ export class NLDDList extends LitElement {
 	 */
 	private get _arrowNavActive(): boolean {
 		if (this.type === 'listbox') return false;
+		// A form's rows are not somewhere to go: the controls in them are, and Tab
+		// already reaches those. Arrow keys would be a promise with nothing behind
+		// it, and the tab stop they need on the row would sit in front of every
+		// field.
+		if (this.type === 'form') return false;
 		return !(this.reorderable && this.type === 'list');
 	}
 
@@ -727,6 +757,27 @@ export class NLDDList extends LitElement {
 	}
 
 	private _rovingScheduled = false;
+
+	private _warnedActionRowInForm = false;
+
+	/**
+	 * Whether the control the Escape came from had a popover open when the key
+	 * went down. Read on the way in, because a control closes its own menu in its
+	 * own handler and does not stop the key: by the time this list sees it on the
+	 * way out, the menu is already gone and one press would do two levels at once.
+	 */
+	private _popoverWasOpen = false;
+
+	private _onKeyDownCapture = (event: KeyboardEvent) => {
+		if (event.key !== 'Escape' || !this._arrowNavActive) return;
+		const origin = this._origin(event);
+		// Asked of the whole row rather than of the control the event came from:
+		// a popover can hang anywhere between the focused node and the row — under
+		// the control, beside it in the same cell — and missing one costs a level.
+		// The other way round costs a press, once, in a row that has an open menu
+		// and a second control you are typing in.
+		this._popoverWasOpen = !!origin?.control && !!origin.row.querySelector(':popover-open');
+	};
 
 	/** Push roving state onto the items, deferred to a microtask: _updateItems can
 	 *  run inside the update lifecycle (firstUpdated/updated), and setting the
@@ -758,6 +809,14 @@ export class NLDDList extends LitElement {
 		// when AT reaches the list). See _arrowNavActive — known limitation.
 		// Only where the keys go somewhere: a list of nothing but text has no stops
 		// to move between, and promising keys that do nothing is worse than silence.
+		if (import.meta.env?.DEV && this.type === 'form' && !this._warnedActionRowInForm) {
+			const action = rows.find((row) => row.href || row.button || row.checkbox
+				|| row.querySelector(':scope > nldd-list-item-segment'));
+			if (action) {
+				this._warnedActionRowInForm = true;
+				console.warn('nldd-list: type="form" says the rows are not actions and the controls inside them are, so its rows carry no keyboard of their own. This one is a link, a button, a checkbox or a set of segments, which contradicts that. Use type="list" for rows you activate, and put the action in a cell if it belongs to a form row.');
+			}
+		}
 		if (interactive.length > 0) {
 			this.setAttribute('aria-keyshortcuts', 'ArrowUp ArrowDown Home End');
 			this.setAttribute('aria-description', this._t('components.list.arrow-navigation-description-text'));
@@ -779,9 +838,8 @@ export class NLDDList extends LitElement {
 		});
 	}
 
-	// items defaults to every row, nested ones included; _onArrowNav passes the
-	// interactive set it already computed (non-interactive rows are kept out of
-	// roving, so they stay false).
+	// items defaults to every row, nested ones included. Callers that pass a
+	// narrower set take on clearing whatever is outside it themselves.
 	private _setRovingActive(activeItem: NLDDListItem, items: NLDDListItem[] = this._getAllRows()) {
 		items.forEach((item) => {
 			item._rovingActive = item === activeItem;
@@ -800,11 +858,66 @@ export class NLDDList extends LitElement {
 		// click, or programmatic focus), so arrows continue from there.
 		if (item && !item._rovingActive && this._getInteractiveItems().includes(item)) {
 			this._setRovingActive(item);
+			return;
 		}
+		// Focus back on the row it was already on: hand its controls their stops
+		// again, since leaving the list parked them.
+		if (item?._rovingActive) item._syncRovingTabStops();
 	};
+
+	/**
+	 * Focus gone from the list: park everything but the row.
+	 *
+	 * The stops a row hands out to its controls last as long as the row is the
+	 * current one, so without this they are still there after you tab away, and
+	 * Shift+Tab back in lands inside the control you left rather than on the row.
+	 * A roving list is one stop from the outside; what is inside opens up once
+	 * you are in. _onFocusIn puts them back.
+	 *
+	 * Deferred: focus moving between two controls of the same row fires focusout
+	 * before focusin, and `relatedTarget` is retargeted at a shadow boundary, so
+	 * the only reliable answer to "did focus leave" is the one you get after it
+	 * has landed.
+	 */
+	private _onFocusOut = () => {
+		if (!this._arrowNavActive) return;
+		queueMicrotask(() => {
+			if (!this.isConnected || this._containsFocus()) return;
+			this._getAllRows().forEach((row) => { row._parkControls(); });
+		});
+	};
+
+	/** Whether focus is anywhere in this list, shadow boundaries included. */
+	private _containsFocus(): boolean {
+		// document.activeElement only ever names the outermost host, so the answer
+		// is a walk down the chain of active elements: at every level, is this the
+		// list or inside it.
+		let node: Element | null = document.activeElement;
+		while (node) {
+			if (node === this || this.contains(node)) return true;
+			node = node.shadowRoot?.activeElement ?? null;
+		}
+		return false;
+	}
+
+	/** The row an event came from, and the control of that row it started in. */
+	private _origin(event: Event): { row: NLDDListItem; control: Element | null } | null {
+		const path = event.composedPath();
+		const row = path.find(
+			(el) => el instanceof Element && el.tagName.toLowerCase() === 'nldd-list-item',
+		) as NLDDListItem | undefined;
+		if (!row) return null;
+		return { row, control: row._slottedControlFor(path) };
+	}
 
 	private _onArrowNav(event: KeyboardEvent) {
 		const { key } = event;
+		// Hands off while focus is in a control the row holds. What those keys do
+		// is the control's business — a combo box moves its options with them, a
+		// text field its caret — and a list that takes them anyway pulls focus out
+		// of the control mid-word. The row itself, its own action and its segments
+		// are not controls it holds, so those keep answering here.
+		if (this._origin(event)?.control) return;
 		if (this.type === 'tree' && (key === 'ArrowRight' || key === 'ArrowLeft')) {
 			this._onTreeHorizontal(event, key);
 			return;
@@ -829,8 +942,36 @@ export class NLDDList extends LitElement {
 		}
 		event.preventDefault();
 		const target = items[next];
-		this._setRovingActive(target, items);
+		// Every row, not just the interactive ones: Escape can leave the flag on a
+		// row that holds a control but is no stop itself, and clearing only the
+		// stops would leave two rows claiming to be the current one.
+		this._setRovingActive(target);
 		target.focus();
+	}
+
+	/**
+	 * Escape: out of a control, back onto the row that holds it.
+	 *
+	 * One level up, not one step back. Shift+Tab retraces the order and lands on
+	 * whatever came before, which is the row only from the first control of a
+	 * row; from the second it is the first. This is the move that works wherever
+	 * you are in the row, and it puts the arrow keys back in reach.
+	 *
+	 * It claims Escape at exactly this one level. On the row it claims nothing,
+	 * so Escape carries on to whatever holds the list — a sheet, a dialog, or
+	 * nothing at all. And a control showing a popover keeps it: that menu is the
+	 * topmost thing you opened, so it is what the first Escape closes.
+	 */
+	private _onEscape(event: KeyboardEvent) {
+		const hadPopover = this._popoverWasOpen;
+		this._popoverWasOpen = false;
+		const origin = this._origin(event);
+		if (!origin?.control) return;
+		if (hadPopover) return;
+		event.preventDefault();
+		event.stopPropagation();
+		this._setRovingActive(origin.row);
+		origin.row.focus();
 	}
 
 	/** Tree only: Right opens a closed branch and steps into an open one, Left
@@ -1041,6 +1182,10 @@ export class NLDDList extends LitElement {
 		// Arrow-navigation and reorder both claim the arrow keys; _arrowNavActive
 		// is false whenever reorderable wins, so the two never run together.
 		if (this._arrowNavActive) {
+			if (event.key === 'Escape') {
+				this._onEscape(event);
+				return;
+			}
 			this._onArrowNav(event);
 			return;
 		}

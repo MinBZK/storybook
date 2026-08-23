@@ -23,11 +23,19 @@ here; consult the commit history if you need that level of detail.
 
 ### Added
 
+- **`type="form"` on `nldd-list`, for rows you fill in rather than walk through.** A row of a label and a field, a switch, a menu button, or a value you cannot change at all. Semantically the same as `list`, and everything visual is unchanged; what falls away is the keyboard of a list you walk through. No arrow navigation, so no promise of it either, and no tab stop on the row: Tab goes straight to the controls, in source order, the way it does in any form. Until now a form built out of rows got the roving anyway, and one row with a button in it became a lone stop that could not move, took a tab stop of its own and painted a focus ring around the whole row. Rows that ARE actions contradict the type and warn in development. SwiftUI draws the same line between `List` and `Form`, for the same reason.
+
+- **Escape, from a control back onto its row.** One level up, where Shift+Tab is one step back: from the second control of a row that lands on the first, not on the row. Escape works wherever you are in the row and puts the arrow keys back in reach. It claims the key at exactly that one level — on the row it claims nothing, so Escape carries on to whatever holds the list, and a control showing a menu keeps the first press for closing that menu.
+
 - **`line` on `nldd-timeline-track-cell`, for a step that opens a group.** The status reads one row at a time, and a row that opens a group of its own is not the end of the going: the step you are on sits inside it, further down. So that row drew an open track downward while there was progress below it. `line` says it outright: the halves you name are the track you have covered and the other one is track still ahead, so `none` covers neither. It is about fill, not about place — which halves are drawn stays with `position`, except that calling a half covered draws it. A cell that read its neighbours instead would break the moment rows come and go.
 
 - **`no-tab` on six more components.** `nldd-link`, `nldd-checkbox`, `nldd-radio-button`, `nldd-switch`, `nldd-toggle-button` and `nldd-avatar` carry the property `nldd-button` and `nldd-icon-button` already had: it sets `tabindex="-1"` on the control in the shadow root, so a container that runs its own focus can take the control out of the tab order. An `nldd-list` sets it on every row but the current one, which is what makes a list of links one tab stop instead of one per row.
 
 ### Fixed
+
+- **A list no longer takes the arrow keys out of a control in one of its rows.** The keys were claimed by whichever list they bubbled through, and what a control does with them never came into it. A combo box in a row lost its menu and its focus on ArrowDown, and a text field lost its caret on Home: the list moved its own selection and pulled focus onto a row mid-word. It now stands down while the key comes from a control the row holds. What the row IS keeps answering — its own link, button or segments — since those are not controls it holds.
+
+- **A list is one tab stop from the outside again.** The current row hands its controls a place in the tab order, and those places stayed handed out after focus left the list. So tabbing back in dropped you into the control you had left rather than on the row, and the arrow keys were two moves away instead of none. Leaving the list parks them again; coming back hands them out.
 
 - **The clear and picker buttons of a combo box sit in the middle again.** Both are wrapped in a plain block, so the wrapper took the height of the line box it inherited and the button hung at the top of it. That put their place at the mercy of the consumer's typography: centred in a story, and high in an app whose body sets a taller line-height. They are flex now, which is what the file field, the time field and the date field already did.
 

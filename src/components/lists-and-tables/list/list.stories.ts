@@ -18,6 +18,8 @@ import '../../inputs/toggle-button-group/toggle-button-group.js';
 import '../../inputs/toggle-button/toggle-button.js';
 import '../../layout/spacer/spacer.js';
 import '../../layout/box/box.js';
+import '../../inputs/date-field/date-field.js';
+import '../../inputs/combo-box/combo-box.js';
 
 export default {
 	title: 'Components/Lists & Tables/List',
@@ -32,8 +34,8 @@ export default {
 		},
 		type: {
 			control: 'select',
-			options: ['list', 'navigation', 'listbox'],
-			description: 'A11y-semantiek: `list` (role="list"), `navigation` (landmark met `aria-current` op het actieve item) of `listbox` (filterbare listbox met eigen zoekveld, combobox-patroon)',
+			options: ['list', 'navigation', 'listbox', 'form'],
+			description: 'A11y-semantiek: `list` (role="list"), `navigation` (landmark met `aria-current` op het actieve item), `listbox` (filterbare listbox met eigen zoekveld, combobox-patroon) of `form` (rijen die zelf geen actie zijn, met de controls erin; geen pijltjesnavigatie)',
 			table: { defaultValue: { summary: 'list' } },
 		},
 		dividers: {
@@ -521,6 +523,56 @@ export const EmptySlotOverride = {
 		docs: {
 			description: {
 				story: 'Inhoud in `[slot=empty]` vervangt de standaard dialog volledig — gebruik je eigen icoon, kop, ondersteunende tekst of action buttons.',
+			},
+		},
+	},
+};
+
+export const Form = {
+	render: () => html`
+		<nldd-list type="form" variant="box-tinted" accessible-label="Eigenschappen">
+			<nldd-list-item>
+				<nldd-text-cell width="full" text="Vervaldatum"></nldd-text-cell>
+				<nldd-spacer-cell size="12"></nldd-spacer-cell>
+				<nldd-cell width="fit-content">
+					<nldd-date-field size="sm" value="2026-08-23"></nldd-date-field>
+				</nldd-cell>
+			</nldd-list-item>
+			<nldd-list-item>
+				<nldd-text-cell width="full" text="Toegewezen aan"></nldd-text-cell>
+				<nldd-spacer-cell size="12"></nldd-spacer-cell>
+				<nldd-cell width="180px">
+					<nldd-combo-box size="sm" text="Yara Nijhuis" value="yara">
+						<nldd-menu>
+							<nldd-menu-item value="yara" text="Yara Nijhuis"></nldd-menu-item>
+							<nldd-menu-item value="ruben" text="Ruben de Groot"></nldd-menu-item>
+						</nldd-menu>
+					</nldd-combo-box>
+				</nldd-cell>
+			</nldd-list-item>
+			<nldd-list-item>
+				<nldd-text-cell width="full" text="Prioriteit"></nldd-text-cell>
+				<nldd-spacer-cell size="12"></nldd-spacer-cell>
+				<nldd-cell width="fit-content">
+					<nldd-button variant="secondary" size="sm" expandable popup-type="menu" text="Hoog">
+						<nldd-menu slot="popup" placement="bottom-end">
+							<nldd-menu-item type="radio" text="Hoog" selected></nldd-menu-item>
+							<nldd-menu-item type="radio" text="Laag"></nldd-menu-item>
+						</nldd-menu>
+					</nldd-button>
+				</nldd-cell>
+			</nldd-list-item>
+			<nldd-list-item>
+				<nldd-text-cell width="full" text="Aangemaakt"></nldd-text-cell>
+				<nldd-text-cell text="24 juli 2026"></nldd-text-cell>
+			</nldd-list-item>
+		</nldd-list>
+	`,
+	parameters: {
+		controls: { disable: true },
+		docs: {
+			description: {
+				story: 'Rijen die zelf geen actie zijn: de controls erin wel. Tab gaat rechtstreeks naar de velden in bronvolgorde, zoals in elk formulier, en er is geen pijltjesnavigatie en dus ook geen tab-stop op de rij. Semantisch gelijk aan `type="list"`; alleen het toetsenbord van een lijst die je doorloopt valt weg. Rijen met `href`, `button`, `checkbox` of segmenten horen hier niet en waarschuwen in development.',
 			},
 		},
 	},

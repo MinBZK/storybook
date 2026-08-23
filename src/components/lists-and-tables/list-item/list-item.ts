@@ -24,7 +24,7 @@ interface AuthoredTabState {
 	tabindex: string | null;
 }
 
-type RovingControl = HTMLElement & { noTab?: boolean };
+export type RovingControl = HTMLElement & { noTab?: boolean };
 
 /** Keyed on the element, so a row that is re-rendered around the same control
  *  still knows what the consumer authored. */
@@ -911,11 +911,7 @@ export class NLDDListItem extends withTranslations(LitElement, nlddListItemTrans
 	 * tab stop is in the DOM before focus is handed over.
 	 */
 	_syncRovingTabStops(): void {
-		const ownSegments = Array.from(this.children).filter(
-			(el): el is HTMLElement & { _tabbable?: boolean } =>
-				el.getAttribute('slot') !== 'children'
-				&& el.tagName.toLowerCase() === 'nldd-list-item-segment',
-		);
+		const ownSegments = this._ownSegments();
 		if (!this._arrowNavigation) {
 			this.removeAttribute('tabindex');
 			ownSegments.forEach((segment) => { segment._tabbable = undefined; });
@@ -931,6 +927,60 @@ export class NLDDListItem extends withTranslations(LitElement, nlddListItemTrans
 		}
 		ownSegments.forEach((segment) => { segment._tabbable = this._rovingActive; });
 		this._rovingControls().forEach((control) => { setTabbable(control, this._rovingActive); });
+	}
+
+	/**
+	 * The control of this row an event started in, if it started in one at all.
+	 *
+	 * Tells apart what the row IS from what it HOLDS, and it asks that of the
+	 * light DOM rather than of `_rovingControls`. That set holds what the roving
+	 * can park, which needs `no-tab` or a native tab stop — and a combo box has
+	 * neither, so the one control most in need of protection is exactly the one
+	 * missing from it.
+	 *
+	 * So: everything in the path that is a light-DOM descendant of this row,
+	 * stopping at the row. Nothing means the event came from the row's own
+	 * action, which lives in its shadow root where `contains` does not reach.
+	 * A segment on its own is what the row IS; a control slotted into one is not,
+	 * and shows up in front of it.
+	 *
+	 * @internal Read by the parent nldd-list.
+	 */
+	_slottedControlFor(path: readonly EventTarget[]): Element | null {
+		const held: Element[] = [];
+		for (const node of path) {
+			if (node === this) break;
+			if (node instanceof Element && this.contains(node)) held.push(node);
+		}
+		if (held.length === 0) return null;
+		if (held.length === 1 && held[0].tagName.toLowerCase() === 'nldd-list-item-segment') return null;
+		return held[0];
+	}
+
+	/**
+	 * Everything but the row itself out of the tab order.
+	 *
+	 * A list is one stop from the outside: Tab into it lands on the row, and the
+	 * controls inside open up from there. Without this the stops the row handed
+	 * out stay handed out after you tab away, so tabbing back in drops you into
+	 * the control you left rather than on the row, and the arrow keys are two
+	 * moves away instead of none.
+	 *
+	 * @internal Called by the parent nldd-list when focus leaves it.
+	 */
+	_parkControls(): void {
+		if (!this._arrowNavigation || !this._rovingActive) return;
+		this._ownSegments().forEach((segment) => { segment._tabbable = false; });
+		this._rovingControls().forEach((control) => { setTabbable(control, false); });
+	}
+
+	/** The segments of this row, leaving out those of a nested tree row. */
+	private _ownSegments(): (HTMLElement & { _tabbable?: boolean })[] {
+		return Array.from(this.children).filter(
+			(el): el is HTMLElement & { _tabbable?: boolean } =>
+				el.getAttribute('slot') !== 'children'
+				&& el.tagName.toLowerCase() === 'nldd-list-item-segment',
+		);
 	}
 
 	/** The control that opens and closes this row: the segment marked
