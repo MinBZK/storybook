@@ -856,7 +856,7 @@ Een tekstveld voor een datum, met een optionele kalender in een popover. De waar
 | `autocomplete` | `string` | Autocomplete-hint, bijvoorbeeld 'bday'. |
 | `accessible-label` | `string` | Toegankelijk label voor de interne input. Wordt automatisch gezet door nldd-form-field. |
 | `error-message-ids` | `string` | Ids voor aria-describedby. Wordt automatisch gezet door nldd-form-field. |
-| `width` | `string` | Breedte. Standaard precies breed genoeg voor een datum plus de iconen; 'full' vult de container, of geef een eigen CSS-lengte. |
+| `width` | `string` | Breedte. Standaard precies breed genoeg voor een datum plus de iconen; 'full' vult de container; 'fit-content' laat de ruimte voor het validatie-icoon weg en groeit weer zodra het veld valid of invalid wordt; of geef een eigen CSS-lengte. |
 | `translations` | `object` | Vertalingen; niet opgegeven sleutels vallen terug op het Nederlands. |
 
 **Slots**
@@ -1360,7 +1360,7 @@ Een tekstveld voor een tijd. De waarde is altijd 24-uurs `HH:mm`; dat is in het 
 | `autocomplete` | `string` | Autocomplete-hint. |
 | `accessible-label` | `string` | Toegankelijk label voor de interne input. Wordt automatisch gezet door nldd-form-field. |
 | `error-message-ids` | `string` | Ids voor aria-describedby. Wordt automatisch gezet door nldd-form-field. |
-| `width` | `string` | Breedte. Standaard precies breed genoeg voor een tijd plus het validatie-icoon; 'full' vult de container, of geef een eigen CSS-lengte. |
+| `width` | `string` | Breedte. Standaard precies breed genoeg voor een tijd plus het validatie-icoon; 'full' vult de container; 'fit-content' laat de ruimte voor het validatie-icoon weg en groeit weer zodra het veld valid of invalid wordt; of geef een eigen CSS-lengte. |
 | `translations` | `object` | Vertalingen; niet opgegeven sleutels vallen terug op het Nederlands. |
 
 **Slots**

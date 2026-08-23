@@ -41,6 +41,18 @@ export const timeFieldStyles = css`
 		display: none;
 	}
 
+	/* 'fit-content' is not the CSS keyword here but this system's width word:
+	   as wide as what is in it. Room held for a validation icon that is not
+	   there is not in it, so what is left is the air the field needs between its
+	   text and the picker button. The full slot comes back the moment a validation
+	   state does, and the field grows at its trailing edge — after the picker
+	   button, leaving the time where it was. Opt-in, because only the consumer
+	   knows whether this field is ever validated. */
+	:host([width="fit-content"]:not([valid]):not([invalid])) {
+		--_validation-icon-area-width: var(--primitives-space-8);
+	}
+
+
 	:host([no-picker]) {
 		--_fixed-width: calc(var(--_edge-width) + var(--_inline-padding) + var(--_validation-icon-area-width));
 	}

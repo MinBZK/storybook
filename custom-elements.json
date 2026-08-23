@@ -8889,7 +8889,7 @@
                 "text": "string"
               },
               "default": "''",
-              "description": "Breedte. Standaard precies breed genoeg voor een datum plus de iconen; 'full' vult de container, of geef een eigen CSS-lengte.",
+              "description": "Breedte. Standaard precies breed genoeg voor een datum plus de iconen; 'full' vult de container; 'fit-content' laat de ruimte voor het validatie-icoon weg en groeit weer zodra het veld valid of invalid wordt; of geef een eigen CSS-lengte.",
               "fieldName": "width"
             },
             {
@@ -17356,7 +17356,7 @@
                 "text": "string"
               },
               "default": "''",
-              "description": "Breedte. Standaard precies breed genoeg voor een tijd plus het validatie-icoon; 'full' vult de container, of geef een eigen CSS-lengte.",
+              "description": "Breedte. Standaard precies breed genoeg voor een tijd plus het validatie-icoon; 'full' vult de container; 'fit-content' laat de ruimte voor het validatie-icoon weg en groeit weer zodra het veld valid of invalid wordt; of geef een eigen CSS-lengte.",
               "fieldName": "width"
             },
             {

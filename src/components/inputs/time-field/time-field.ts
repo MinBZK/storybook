@@ -33,7 +33,7 @@
  * @attr {string} autocomplete - Autocomplete-hint.
  * @attr {string} accessible-label - Toegankelijk label voor de interne input. Wordt automatisch gezet door nldd-form-field.
  * @attr {string} error-message-ids - Ids voor aria-describedby. Wordt automatisch gezet door nldd-form-field.
- * @attr {string} width - Breedte. Standaard precies breed genoeg voor een tijd plus het validatie-icoon; 'full' vult de container, of geef een eigen CSS-lengte.
+ * @attr {string} width - Breedte. Standaard precies breed genoeg voor een tijd plus het validatie-icoon; 'full' vult de container; 'fit-content' laat de ruimte voor het validatie-icoon weg en groeit weer zodra het veld valid of invalid wordt; of geef een eigen CSS-lengte.
  * @attr {object} translations - Vertalingen; niet opgegeven sleutels vallen terug op het Nederlands.
  *
  * @slot picker - Een eigen nldd-time-picker, in plaats van de standaardpicker. Het veld blijft `value`, `min`, `max` en `step` zetten; gebruik de slot voor wat alleen een picker weet, zoals eigen vertalingen.
@@ -629,6 +629,12 @@ export class NLDDTimeField extends FormAssociated(LitElement) {
 			// falling back on that default.
 			if (w === 'full') {
 				this.style.setProperty('--_width', '100%');
+			} else if (w === 'fit-content') {
+				// Caught before CSS.supports, which would accept it as the keyword and
+				// hand the width to the content of the shadow root. It is the default
+				// calculation we want, only without the room the styles hold for a
+				// validation icon — so the override comes off and the styles do the rest.
+				this.style.removeProperty('--_width');
 			} else if (w && CSS.supports('width', w)) {
 				this.style.setProperty('--_width', w);
 			} else {
