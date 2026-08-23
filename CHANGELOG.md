@@ -33,6 +33,8 @@ here; consult the commit history if you need that level of detail.
 
 ### Fixed
 
+- **Escape closes what is on top, and nothing behind it.** A combo box, a token field and anything on `nldd-popover` — a date field's calendar, a time field's picker — closed on Escape and let the same press travel on, so a sheet or window behind them read it as their own cue and went too. One key, two things gone. They now stop the press the way `nldd-menu` already did, and the combo box already did for Enter three lines up in the same switch. With nothing open they claim nothing, so Escape still reaches the sheet.
+
 - **A list no longer takes the arrow keys out of a control in one of its rows.** The keys were claimed by whichever list they bubbled through, and what a control does with them never came into it. A combo box in a row lost its menu and its focus on ArrowDown, and a text field lost its caret on Home: the list moved its own selection and pulled focus onto a row mid-word. It now stands down while the key comes from a control the row holds. What the row IS keeps answering — its own link, button or segments — since those are not controls it holds.
 
 - **A list is one tab stop from the outside again.** The current row hands its controls a place in the tab order, and those places stayed handed out after focus left the list. So tabbing back in dropped you into the control you had left rather than on the row, and the arrow keys were two moves away instead of none. Leaving the list parks them again; coming back hands them out.

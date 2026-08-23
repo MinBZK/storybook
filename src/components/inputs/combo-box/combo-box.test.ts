@@ -914,3 +914,52 @@ describe('nldd-combo-box readonly aria', () => {
 		expect(input.getAttribute('aria-haspopup')).toBe('listbox');
 	});
 });
+
+describe('nldd-combo-box Escape', () => {
+	let el: HTMLElement;
+
+	afterEach(() => {
+		if (el) cleanup(el);
+	});
+
+	const withMenu = () => `
+		<nldd-combo-box accessible-label="Assignee" text="Yara">
+			<nldd-menu>
+				<nldd-menu-item value="yara" text="Yara Nijhuis"></nldd-menu-item>
+				<nldd-menu-item value="ruben" text="Ruben de Groot"></nldd-menu-item>
+			</nldd-menu>
+		</nldd-combo-box>
+	`;
+
+	it('closes its own menu and stops there', async () => {
+		el = await fixture(withMenu());
+		await waitForUpdate(el);
+		const combo = el as unknown as { _isOpen: boolean; _openMenu(): void; _handleKeydown(e: KeyboardEvent): void };
+		combo._openMenu();
+		await waitForUpdate(el);
+		expect(combo._isOpen).toBe(true);
+		const outer = vi.fn();
+		document.addEventListener('keydown', outer);
+		const event = new KeyboardEvent('keydown', { key: 'Escape', bubbles: true, composed: true, cancelable: true });
+		el.shadowRoot!.querySelector('input')!.dispatchEvent(event);
+		document.removeEventListener('keydown', outer);
+		await waitForUpdate(el);
+		expect(combo._isOpen).toBe(false);
+		expect(event.defaultPrevented).toBe(true);
+		// A sheet behind it listens for the same press; it must not get this one.
+		expect(outer).not.toHaveBeenCalled();
+	});
+
+	it('lets Escape travel on while the menu is closed', async () => {
+		el = await fixture(withMenu());
+		await waitForUpdate(el);
+		const outer = vi.fn();
+		document.addEventListener('keydown', outer);
+		const event = new KeyboardEvent('keydown', { key: 'Escape', bubbles: true, composed: true, cancelable: true });
+		el.shadowRoot!.querySelector('input')!.dispatchEvent(event);
+		document.removeEventListener('keydown', outer);
+		await waitForUpdate(el);
+		expect(event.defaultPrevented).toBe(false);
+		expect(outer).toHaveBeenCalledTimes(1);
+	});
+});

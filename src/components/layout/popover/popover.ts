@@ -585,6 +585,18 @@ export class NLDDPopover extends LitElement {
 	};
 
 	private _handleKeydown = (event: KeyboardEvent): void => {
+		// Escape closes this popover and stops there. Left to the browser, one
+		// press walks the whole stack: the close signal takes this popover, and a
+		// dialog behind it — a sheet, a window — takes the same key and goes too.
+		// Only what is on top should answer. Same shape as nldd-menu.
+		if (event.key === 'Escape') {
+			if (!this.matches(':popover-open')) return;
+			event.preventDefault();
+			event.stopPropagation();
+			this.hide();
+			(this._getAnchorEl() as HTMLElement | null)?.focus();
+			return;
+		}
 		if (event.key !== 'Tab') return;
 		const focusables = this._getFocusables();
 		// document.activeElement only returns the shadow host (nldd-button, say),

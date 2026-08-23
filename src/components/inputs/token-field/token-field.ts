@@ -554,8 +554,11 @@ export class NLDDTokenField extends FormAssociated(LitElement) {
 				break;
 			}
 			case 'Escape':
+				// See nldd-combo-box: the key closed this menu and goes no further,
+				// so a sheet behind it does not close on the same press.
 				if (!this._isOpen) return;
 				e.preventDefault();
+				e.stopPropagation();
 				this._closeMenu();
 				break;
 			case 'ArrowLeft':

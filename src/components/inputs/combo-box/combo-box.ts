@@ -595,7 +595,13 @@ export class NLDDComboBox extends FormAssociated(LitElement) {
 				break;
 			}
 			case 'Escape':
+				// Only while the menu is open, and then it goes no further: the key
+				// closed this menu, and a sheet or window behind it must not read
+				// the same press as its own cue to close. With the menu shut,
+				// Escape is not ours and travels on. Enter above says the same.
+				if (!this._isOpen) return;
 				e.preventDefault();
+				e.stopPropagation();
 				this._closeMenu();
 				break;
 		}
