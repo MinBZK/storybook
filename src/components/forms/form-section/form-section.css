@@ -23,15 +23,24 @@
 
 
 /* # Host
-   Top + bottom dividers + padding voor vertical rhythm.
-   Suppression: :first-child, :last-child, en sibling-section
-   (om dubbele lijnen te voorkomen). */
+   Padding voor vertical rhythm: een sectie krijgt meer lucht om zich heen dan
+   twee velden onderling, en dat verschil is de groepering.
+
+   Geen lijnen. Een sectie draagt al een kop, en een streep erbij zegt hetzelfde
+   nog een keer. Ze verschenen bovendien alleen in formulieren die secties
+   gebruiken, waardoor dezelfde applicatie twee soorten formulier kreeg: negen
+   met alleen witruimte, twee met lijnen erdoor. En ze moesten op drie plekken
+   weer onderdrukt worden om niet verkeerd te staan (eerste kind, twee secties
+   op elkaar, laatste kind), waarvan de laatste niet eens werkte: een sectie is
+   bijna nooit het laatste kind, want er volgt een nldd-form-actions, dus stond
+   er in elk formulier met een knop een streep vlak boven die knop.
+
+   Suppression van de padding blijft: bovenaan en tussen twee secties zou hij
+   optellen bij de gap die form.css er al onder zet. */
 
 nldd-form-section {
 	display: block;
 	box-sizing: border-box;
-	border-top: var(--semantics-dividers-thickness) solid var(--semantics-dividers-color);
-	border-bottom: var(--semantics-dividers-thickness) solid var(--semantics-dividers-color);
 	padding-top: var(--semantics-forms-gap);
 	padding-bottom: var(--semantics-forms-gap);
 }
@@ -42,12 +51,10 @@ nldd-form-section[hidden] {
 
 nldd-form-section:first-child,
 nldd-form-section + nldd-form-section {
-	border-top: none;
 	padding-top: 0;
 }
 
 nldd-form-section:last-child {
-	border-bottom: none;
 	padding-bottom: 0;
 }
 

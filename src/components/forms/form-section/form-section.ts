@@ -208,7 +208,7 @@ export class NLDDFormSection extends HTMLElement {
 		// Accessibility implication: without a legend the <fieldset> has no
 		// accessible name. Screen reader behavior varies (Chrome: "group", Firefox:
 		// nothing). That is a deliberate choice: a form section can also be used
-		// purely as visual grouping (divider + padding) without a heading. Want a
+		// purely as visual grouping (the padding around it) without a heading. Want a
 		// screen reader name without a visible title? Wrap the form in an
 		// nldd-form-section WITH text, or use aria-labelledby on the individual
 		// fields.
