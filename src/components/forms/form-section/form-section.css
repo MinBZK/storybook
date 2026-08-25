@@ -118,8 +118,17 @@ nldd-form-section > fieldset.form-section > .form-section__main:first-child {
 	margin-top: 0;
 }
 
-/* Form-fields binnen .form-section__main krijgen hun spacing via form.css's
-   `nldd-form nldd-form-field + nldd-form-field` rule (incl. tighter @media
-   varianten voor top-aligned). Mixed content (form-fields + paragraphs etc.)
-   wordt niet automatisch gespaceerd — gebruik nldd-rich-text of eigen
-   spacing-CSS voor die zeldzame gevallen. */
+/* # Vertical rhythm binnen een sectie
+
+   Hetzelfde als in het formulier eromheen, en om dezelfde reden: een sectie is
+   een groepje binnen datzelfde formulier, en hoort zich niet anders te gedragen.
+
+   Dit stond er eerder niet. Velden binnen een sectie leunden op een regel in
+   form.css die alleen veld-na-veld raakte, dus al het andere dat je in een
+   sectie zette (een knop, een alinea) kreeg geen ruimte en moest je zelf
+   opvangen. De regel hieronder kijkt niet naar wat iets is, alleen of er nog
+   iets zichtbaars op volgt. */
+
+nldd-form-section .form-section__main > *:has(~ *:not([hidden]):not([type='hidden'])) {
+	margin-bottom: var(--semantics-forms-gap);
+}

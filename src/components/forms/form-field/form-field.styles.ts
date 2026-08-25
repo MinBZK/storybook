@@ -13,7 +13,7 @@ export const formFieldStyles = css`
 	/* # Host */
 
 	:host {
-		--_gap: var(--primitives-space-3);
+		--_gap: var(--primitives-space-4);
 
 		${inheritedTextReset}
 		display: block;
@@ -110,7 +110,7 @@ export const formFieldStyles = css`
 		gap: var(--primitives-space-4);
 		align-items: baseline;
 		color: var(--semantics-content-color);
-		font: var(--primitives-font-body-md-regular-tight);
+		font: var(--primitives-font-body-md-regular-flat);
 		text-wrap: pretty;
 	}
 
