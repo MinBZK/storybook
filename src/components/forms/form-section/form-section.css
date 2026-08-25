@@ -39,7 +39,7 @@
 nldd-form-section {
 	display: block;
 	box-sizing: border-box;
-	margin-top: var(--semantics-forms-gap-loose);
+	margin-top: var(--semantics-forms-sections-gap);
 }
 
 nldd-form-section[hidden] {
@@ -126,5 +126,5 @@ nldd-form-section > fieldset.form-section > .form-section__main:first-child {
    iets zichtbaars op volgt. */
 
 nldd-form-section .form-section__main > *:has(~ *:not([hidden]):not([type='hidden'])) {
-	margin-bottom: var(--semantics-forms-gap);
+	margin-bottom: var(--semantics-forms-fields-gap);
 }

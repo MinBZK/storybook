@@ -1558,9 +1558,8 @@
 
 	/* ## Forms */
 
-	--semantics-forms-gap: var(--primitives-space-16);
-	--semantics-forms-gap-tight: var(--primitives-space-10);
-	--semantics-forms-gap-loose: var(--primitives-space-24);
+	--semantics-forms-fields-gap: var(--primitives-space-16);
+	--semantics-forms-sections-gap: var(--primitives-space-24);
 	--semantics-forms-label-column-width: var(--primitives-area-240);
 	--semantics-forms-columns-gap: var(--primitives-space-8);
 	--semantics-forms-section-title-font: var(--primitives-font-body-lg-bold-tight);
