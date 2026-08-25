@@ -39,7 +39,7 @@
  * @slot - Free content (an nldd-container with a form or info, for instance)
  *
  * @fires open - When the popover opens
- * @fires close - When the popover closes
+ * @fires close - When the popover closes. Does not bubble: overlays nest, and a listener on the sheet or window around this one should not hear it close.
  *
  * @method show() - Opens the popover
  * @method hide() - Closes the popover
@@ -562,7 +562,7 @@ export class NLDDPopover extends LitElement {
 			this._cleanupAutoUpdate?.();
 			this._cleanupAutoUpdate = null;
 			this._returnFocus();
-			this.dispatchEvent(new CustomEvent('close', { bubbles: true, composed: true }));
+			this.dispatchEvent(new CustomEvent('close', { bubbles: false, composed: true }));
 			return;
 		}
 

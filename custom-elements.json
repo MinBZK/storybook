@@ -24368,7 +24368,7 @@
             },
             {
               "name": "close",
-              "description": "When the popover closes"
+              "description": "When the popover closes. Does not bubble: overlays nest, and a listener on the sheet or window around this one should not hear it close."
             }
           ],
           "slots": [
@@ -24485,7 +24485,7 @@
             },
             {
               "name": "close",
-              "description": "Fired when the sheet is fully closed"
+              "description": "Fired when the sheet is fully closed. Does not bubble: overlays nest, and a listener on one sheet asking about that sheet should not also hear the form it opened."
             }
           ],
           "attributes": [
@@ -25534,7 +25534,7 @@
             },
             {
               "name": "close",
-              "description": "Wanneer het venster volledig is gesloten"
+              "description": "Wanneer het venster volledig is gesloten. Bubbelt niet: overlays kunnen in elkaar zitten, en een listener op het ene venster hoort niet ook het formulier te horen dat het opende."
             }
           ],
           "attributes": [
@@ -32023,7 +32023,7 @@
             },
             {
               "name": "close",
-              "description": "When the dialog is fully closed"
+              "description": "When the dialog is fully closed. Does not bubble: overlays nest, and a listener on one dialog asking about that dialog should not also hear the form it opened."
             }
           ],
           "attributes": [

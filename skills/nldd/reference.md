@@ -1905,7 +1905,7 @@ A non-modal floating panel anchored to a trigger element. Built on the native Po
 | Event | Beschrijving |
 | --- | --- |
 | `open` | When the popover opens |
-| `close` | When the popover closes |
+| `close` | When the popover closes. Does not bubble: overlays nest, and a listener on the sheet or window around this one should not hear it close. |
 
 ### `<nldd-sheet>`
 
@@ -1932,7 +1932,7 @@ An overlay component that slides in from the side or bottom of the screen. Based
 | Event | Beschrijving |
 | --- | --- |
 | `open` | Fired when the sheet is opened |
-| `close` | Fired when the sheet is fully closed |
+| `close` | Fired when the sheet is fully closed. Does not bubble: overlays nest, and a listener on one sheet asking about that sheet should not also hear the form it opened. |
 
 ### `<nldd-side-by-side-split-view>`
 
@@ -2135,7 +2135,7 @@ Een zwevend venster gebaseerd op het native <dialog>-element. Kan modaal of niet
 | Event | Beschrijving |
 | --- | --- |
 | `open` | Wanneer het venster wordt geopend |
-| `close` | Wanneer het venster volledig is gesloten |
+| `close` | Wanneer het venster volledig is gesloten. Bubbelt niet: overlays kunnen in elkaar zitten, en een listener op het ene venster hoort niet ook het formulier te horen dat het opende. |
 
 ## Navigation
 
@@ -2591,7 +2591,7 @@ A modal window with overlay backdrop, based on the native <dialog> element. Inte
 | Event | Beschrijving |
 | --- | --- |
 | `open` | When the dialog is opened |
-| `close` | When the dialog is fully closed |
+| `close` | When the dialog is fully closed. Does not bubble: overlays nest, and a listener on one dialog asking about that dialog should not also hear the form it opened. |
 
 ### `<nldd-notification>`
 

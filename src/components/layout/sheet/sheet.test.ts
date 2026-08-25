@@ -550,6 +550,36 @@ describe('nldd-sheet meldt sluiten via elke route', () => {
 		expect(aantal).toBe(0);
 	});
 
+	// And the same the other way round: a sheet inside a sheet is an ordinary
+	// thing to build (a floor plan with a form for one room over it), and closing
+	// the inner one must not reach a listener on the outer. Without this the
+	// consumer has to check the target of every close it receives, which is a
+	// trap nobody meets until they nest two overlays.
+	it('laat de close van een geneste sheet niet bij de buitenste aankomen', async () => {
+		el = await fixture<HTMLElement & { show(): void; hide(): void }>(
+			`<nldd-sheet accessible-label="Buiten">
+				<nldd-sheet accessible-label="Binnen"></nldd-sheet>
+			</nldd-sheet>`,
+		);
+		await waitForUpdate(el);
+		const binnen = el.querySelector('nldd-sheet') as HTMLElement & {
+			show(): void;
+			hide(): void;
+		};
+		let buiten = 0;
+		let binnenAantal = 0;
+		el.addEventListener('close', () => { buiten += 1; });
+		binnen.addEventListener('close', () => { binnenAantal += 1; });
+		el.show();
+		binnen.show();
+		await waitForUpdate(el);
+		binnen.hide();
+		await new Promise((r) => setTimeout(r, 60));
+		await waitForUpdate(el);
+		expect(binnenAantal).toBe(1);
+		expect(buiten).toBe(0);
+	});
+
 	it('stuurt close niet twee keer als beide routes samenvallen', async () => {
 		el = await fixture<HTMLElement & { show(): void; hide(): void }>(
 			'<nldd-sheet accessible-label="Test"></nldd-sheet>',

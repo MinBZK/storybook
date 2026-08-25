@@ -16,7 +16,7 @@
  * @slot actions - nldd-button elements, forwarded to nldd-inline-dialog
  *
  * @fires open - When the dialog is opened
- * @fires close - When the dialog is fully closed
+ * @fires close - When the dialog is fully closed. Does not bubble: overlays nest, and a listener on one dialog asking about that dialog should not also hear the form it opened.
  *
  * @method show() - Opens the modal dialog
  * @method hide() - Closes the modal dialog with a closing animation
@@ -117,7 +117,7 @@ export class NLDDModalDialog extends LitElement {
 			dialog.classList.remove('is-closing');
 			this._closing = false;
 			dialog.close();
-			this.dispatchEvent(new CustomEvent('close', { bubbles: true, composed: true }));
+			this.dispatchEvent(new CustomEvent('close', { bubbles: false, composed: true }));
 		};
 
 		dialog.addEventListener('animationend', finish, { once: true });

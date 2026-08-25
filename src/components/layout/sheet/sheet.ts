@@ -23,7 +23,7 @@
  * @slot - Sheet content
  *
  * @fires open - Fired when the sheet is opened
- * @fires close - Fired when the sheet is fully closed
+ * @fires close - Fired when the sheet is fully closed. Does not bubble: overlays nest, and a listener on one sheet asking about that sheet should not also hear the form it opened.
  *
  * @method show() - Opens the sheet
  * @method hide() - Closes the sheet with a closing animation
@@ -253,7 +253,7 @@ export class NLDDSheet extends LitElement {
 	private _emitClose(): void {
 		if (this._closeEmitted) return;
 		this._closeEmitted = true;
-		this.dispatchEvent(new CustomEvent('close', { bubbles: true, composed: true }));
+		this.dispatchEvent(new CustomEvent('close', { bubbles: false, composed: true }));
 	}
 
 	_handleDialogClose(e: Event): void {

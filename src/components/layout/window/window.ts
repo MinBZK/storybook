@@ -26,7 +26,7 @@
  * @slot - Volledige window content (bijv. nldd-page)
  *
  * @fires open - Wanneer het venster wordt geopend
- * @fires close - Wanneer het venster volledig is gesloten
+ * @fires close - Wanneer het venster volledig is gesloten. Bubbelt niet: overlays kunnen in elkaar zitten, en een listener op het ene venster hoort niet ook het formulier te horen dat het opende.
  *
  * @method show() - Opent het venster
  * @method hide() - Sluit het venster
@@ -185,7 +185,7 @@ export class NLDDWindow extends LitElement {
 	private _emitClose(): void {
 		if (this._closeEmitted) return;
 		this._closeEmitted = true;
-		this.dispatchEvent(new CustomEvent('close', { bubbles: true, composed: true }));
+		this.dispatchEvent(new CustomEvent('close', { bubbles: false, composed: true }));
 	}
 
 	_handleDialogClose = (e: Event): void => {
