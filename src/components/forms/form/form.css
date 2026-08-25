@@ -11,6 +11,17 @@ nldd-form > form {
 
 /* # Vertical rhythm
 
+   One gap, between everything. A field, a section, a button, a paragraph: what
+   follows another thing stands the same distance from it.
+
+   There used to be a tighter one as well, 10 instead of 16, for two fields in a
+   row: on every screen below 641px, and above it only when both of them carried
+   their label on top. That took a rule with two container queries and one with
+   four :not()s to say, and it bought six pixels per pair. Five fields under each
+   other saved thirty pixels, less than a third of one field, and in exchange a
+   toggle group or a combo box, which are heavier blocks than a text field, stood
+   ten pixels from the next label.
+
    The gap hangs on the BOTTOM of the preceding child, not on the top of the
    following one. Hidden children (formset management inputs, framework
    bookkeeping) generate no box, so a top margin would let them push the first
@@ -20,19 +31,4 @@ nldd-form > form {
 
 nldd-form > form > *:has(~ *:not([hidden]):not([type='hidden'])) {
 	margin-bottom: var(--semantics-forms-gap);
-}
-
-nldd-form nldd-form-field:has(+ nldd-form-field):has(~ *:not([hidden]):not([type='hidden'])) {
-	@container (max-width: 640px) {
-		margin-bottom: var(--semantics-forms-gap-tight);
-	}
-	@container (min-width: 641px) {
-		margin-bottom: var(--semantics-forms-gap);
-	}
-}
-
-nldd-form nldd-form-field[form-label-alignment='top']:not([label-alignment='left']):not([label-alignment='right']):has(+ nldd-form-field[form-label-alignment='top']:not([label-alignment='left']):not([label-alignment='right'])):has(~ *:not([hidden]):not([type='hidden'])) {
-	@container (min-width: 641px) {
-		margin-bottom: var(--semantics-forms-gap-tight);
-	}
 }
