@@ -26,10 +26,28 @@
    Een sectie krijgt meer lucht boven zich dan twee velden onderling, en dat
    verschil is de groepering.
 
-   Als margin-top, niet als padding. Marges van buren klappen samen, dus de 16
+   Als margin-block, niet als padding. Marges van buren klappen samen, dus de 16
    die het formulier onder het vorige kind zet en de 24 hierboven worden samen
    24, en niet 40. Padding klapt nergens mee samen: die telde bij die 16 op en
    maakte er 32 van, boven én onder elke sectie.
+
+   Aan twee kanten, niet alleen boven. Met alleen een marge bovenop hangt de
+   afstand ónder een sectie af van wat er toevallig achter komt: een volgende
+   sectie of de knoppen brengen hun eigen 24 mee, maar een los veld zegt niets
+   en dan bleef de standaard 16 staan.
+
+   Twee regels en geen margin-block, omdat de twee kanten verschillende
+   voorwaarden hebben. Bovenaan mag hij niet op het eerste kind staan: dit
+   formulier heeft geen rand of padding, dus een marge op het eerste kind klapt
+   eruit en duwt het formulier als geheel omlaag. Onderaan mag hij niet op het
+   laatste staan, want een marge onder het laatste kind is witruimte die nergens
+   naartoe leidt; vandaar dezelfde :has-guard als het ritme in form.css.
+
+   Die guard doet nog iets tweeds. Een fysieke margin-bottom en een logische
+   margin-block-end voor dezelfde kant worden niet op specificiteit beslist maar
+   op volgorde van declaratie, en dat maakt de uitkomst afhankelijk van de
+   laadvolgorde van de bestanden. Met de guard wint deze regel op specificiteit
+   en is die volgorde niet meer van belang.
 
    Geen lijnen meer. Een sectie draagt al een kop, en een streep erbij zegt
    hetzelfde nog een keer. Ze verschenen bovendien alleen in formulieren die
@@ -39,15 +57,18 @@
 nldd-form-section {
 	display: block;
 	box-sizing: border-box;
-	margin-top: var(--semantics-forms-sections-gap);
 }
 
 nldd-form-section[hidden] {
 	display: none;
 }
 
-nldd-form-section:first-child {
-	margin-top: 0;
+nldd-form > form > nldd-form-section:not(:first-child) {
+	margin-block-start: var(--semantics-forms-sections-gap);
+}
+
+nldd-form > form > nldd-form-section:has(~ *:not([hidden]):not([type='hidden'])) {
+	margin-block-end: var(--semantics-forms-sections-gap);
 }
 
 
