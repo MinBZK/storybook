@@ -32,3 +32,16 @@ nldd-form > form {
 nldd-form > form > *:has(~ *:not([hidden]):not([type='hidden'])) {
 	margin-bottom: var(--semantics-forms-gap);
 }
+
+/* More air above the buttons than between two fields, so the end of the form is
+   visibly the end and not one more question. Also in a form without sections,
+   where it would otherwise be one gap like everything else.
+
+   A margin, so it collapses with the one the rhythm above puts under the last
+   child: 16 and 24 next to each other are 24, not 40. Here rather than on the
+   component's own :host, because a consumer reset overrides a host declaration
+   and this is a distance between siblings, not something the element paints. */
+
+nldd-form nldd-form-actions {
+	margin-top: var(--semantics-forms-gap-loose);
+}
