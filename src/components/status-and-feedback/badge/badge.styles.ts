@@ -243,7 +243,7 @@ export const badgeStyles = css`
 	   the same distance on every side, whatever the badge measures.
 
 	   Painted after the badge, so the ring passes over the contrast border the
-	   badge draws in the surface colour instead of starting behind it. The
+	   badge draws in the surface color instead of starting behind it. The
 	   element itself is transparent (the ring is the shadow, which paints
 	   outside the box), so nothing covers the badge's own fill or text. */
 	.badge__pulse {
@@ -255,7 +255,7 @@ export const badgeStyles = css`
 		animation: badge-pulse var(--_pulse-duration) infinite;
 	}
 
-	/* The ring rides on the shadow's own colour rather than on the element's
+	/* The ring rides on the shadow's own color rather than on the element's
 	   opacity: at spread zero the shadow has no area, so it can start at full
 	   strength without a flash, and it is already transparent when the spread
 	   snaps back for the next cycle. Same shape as Shoelace's badge pulse. */
@@ -279,7 +279,7 @@ export const badgeStyles = css`
 		}
 	}
 
-	/* Forced colors paints the badge in system colours; a ring in the same
+	/* Forced colors paints the badge in system colors; a ring in the same
 	   Canvas would read as a second, half-drawn badge. */
 	@media (forced-colors: active) {
 		.badge__pulse {

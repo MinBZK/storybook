@@ -278,7 +278,7 @@ export const listItemStyles = css`
 		background-color: var(--components-list-item-is-highlighted-is-active-background-color);
 	}
 
-	/* The content colour has to travel with the fill: the neutral press rule
+	/* The content color has to travel with the fill: the neutral press rule
 	   above sets it too, and black on a deep accent is unreadable. */
 	:host(:is([current], [data-current]):focus-within:not([disabled])) .list-item__action:hover {
 		--context-content-color: var(--components-list-item-is-highlighted-content-color);

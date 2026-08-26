@@ -248,7 +248,7 @@ export const topNavigationBarStyles = css`
 	   move the whole bar with it.
 
 	   On a small screen the four pixels sit on top, so the text keeps the place
-	   it had and the box grows downward into the row. Off-centre by four, which
+	   it had and the box grows downward into the row. Off-center by four, which
 	   nobody reads as a mistake, where padding on both sides would make the box
 	   28: with border-box the text of 20 and two paddings of 4 no longer fit in
 	   24. From md up the title stands beside a menu bar of 44, so there is room

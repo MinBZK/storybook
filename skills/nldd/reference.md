@@ -607,7 +607,7 @@ A wrapper that shows a tooltip on hover or focus of its child element. It uses `
 | Attribuut | Type | Beschrijving |
 | --- | --- | --- |
 | `text` | `string` | Tooltip text |
-| `open` | `boolean` | Forces the tooltip visible, whatever hover or focus does. Use it for programmatic feedback ("Copied", for instance). Reset it to false to restore the hover behaviour. |
+| `open` | `boolean` | Forces the tooltip visible, whatever hover or focus does. Use it for programmatic feedback ("Copied", for instance). Reset it to false to restore the hover behavior. |
 | `placement` | `string` | Position: 'top' \| 'bottom' \| 'left' \| 'right' (default: 'bottom'; automatically 'top' on touch devices) |
 | `timing` | `string` | When the tooltip appears on hover: 'instant' — right away, without a show delay. 'default' — after the standard show delay (700ms). 'never' — the tooltip is never shown; hover and focus events are ignored, aria-describedby is suppressed, and a tooltip that is already visible disappears. The hide delay and the touch suppression stay in force under every value. A focus trigger is always instant. |
 
@@ -1544,7 +1544,7 @@ Use a box to visually group related components in a distinct, contained region. 
 
 | Attribuut | Type | Beschrijving |
 | --- | --- | --- |
-| `background` | `'tinted'\|'base'\|'critical'` | Which surface this box draws, named as it is on nldd-app-view, nldd-page, nldd-split-view-pane and nldd-card. It starts tinted where a card starts base: a box is there to stand out from the page, a card to sit on it. - `tinted` (default): a box on a plain page background. - `base`: a box on an already-tinted parent (the border ring gets +2 palette steps so it still reads against a card-on-card). - `critical`: a region whose actions are destructive or irreversible (a "danger zone"), tinted and outlined in critical. It carries no ARIA of its own: unlike nldd-banner this is not an announcement but a permanent part of the page, so the heading and the button labels have to name the danger — colour is a reinforcement, never the only signal (WCAG 1.4.1). The box draws the surface and nothing else: it has no padding of its own, the same way nldd-card has none. Put an nldd-container inside it and let that set the inset, so one component owns spacing wherever it is used. |
+| `background` | `'tinted'\|'base'\|'critical'` | Which surface this box draws, named as it is on nldd-app-view, nldd-page, nldd-split-view-pane and nldd-card. It starts tinted where a card starts base: a box is there to stand out from the page, a card to sit on it. - `tinted` (default): a box on a plain page background. - `base`: a box on an already-tinted parent (the border ring gets +2 palette steps so it still reads against a card-on-card). - `critical`: a region whose actions are destructive or irreversible (a "danger zone"), tinted and outlined in critical. It carries no ARIA of its own: unlike nldd-banner this is not an announcement but a permanent part of the page, so the heading and the button labels have to name the danger — color is a reinforcement, never the only signal (WCAG 1.4.1). The box draws the surface and nothing else: it has no padding of its own, the same way nldd-card has none. Put an nldd-container inside it and let that set the inset, so one component owns spacing wherever it is used. |
 
 **Slots**
 

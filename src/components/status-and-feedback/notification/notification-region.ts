@@ -4,7 +4,7 @@ import type { NLDDNotification } from './notification.js';
  * The one place every notification ends up, wherever a consumer wrote it.
  *
  * It exists because a notification cannot answer the three questions that decide
- * its behaviour on its own: where it sits in the stack, how deep it is buried,
+ * its behavior on its own: where it sits in the stack, how deep it is buried,
  * and whether it is the one that should be counting down. All three are
  * properties of the group. The region owns the group, so it owns the answers.
  *

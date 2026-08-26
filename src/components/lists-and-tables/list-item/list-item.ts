@@ -410,7 +410,7 @@ export class NLDDListItem extends withTranslations(LitElement, nlddListItemTrans
 	 * A row cut into segments has no control of its own, so `aria-current="page"`
 	 * belongs on the segment that holds the link. Written there, the row would
 	 * stay unpainted and the consumer had to set `current` twice, once for the
-	 * semantics and once for the colour, with nothing to catch the two drifting
+	 * semantics and once for the color, with nothing to catch the two drifting
 	 * apart. The row reads it off its own segments instead — reading, not
 	 * writing: the attributes stay the consumer's.
 	 */

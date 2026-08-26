@@ -8,7 +8,7 @@ export function template(component: NLDDBadge) {
 	const classes = ['badge', ...modifiers].join(' ');
 	// A badge without text or an icon-only badge has nothing to read, so it carries
 	// its own label. Unless it is decorative: then the words beside it already say
-	// what the colour says, and announcing it again is noise.
+	// what the color says, and announcing it again is noise.
 	const needsAriaImg = !component.decorative && (component._isDot || component._isIconOnly);
 
 	return html`

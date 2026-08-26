@@ -88,7 +88,7 @@ export const avatarGroupStyles = css`
 	}
 
 	/* The smallest step the neutral scale has, one notch off the resting fill.
-	   No semantic hover token fits: the button-hover colours are meant for a
+	   No semantic hover token fits: the button-hover colors are meant for a
 	   control that already looks like a button, and here they read as a jump.
 	   It only has to confirm that this disc is clickable. */
 	.avatar-group__overflow-button:hover {

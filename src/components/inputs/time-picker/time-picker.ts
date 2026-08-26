@@ -307,11 +307,11 @@ export class NLDDTimePicker extends LitElement {
 
 	/** The number of the option closest to the middle of the column. */
 	private _centeredOption(el: HTMLElement): number | null {
-		const centre = el.scrollTop + el.clientHeight / 2;
+		const center = el.scrollTop + el.clientHeight / 2;
 		let best: HTMLElement | null = null;
 		let bestDistance = Infinity;
 		for (const option of el.querySelectorAll<HTMLElement>('.time-picker__list-item')) {
-			const distance = Math.abs(option.offsetTop + option.offsetHeight / 2 - centre);
+			const distance = Math.abs(option.offsetTop + option.offsetHeight / 2 - center);
 			if (distance < bestDistance) {
 				bestDistance = distance;
 				best = option;
