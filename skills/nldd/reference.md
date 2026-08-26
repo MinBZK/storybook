@@ -1211,6 +1211,7 @@ A horizontal group of mutually exclusive (radio) or multi-select (checkbox) opti
 | `name` | `string` | Name for form submission, forwarded to native inputs |
 | `accessible-label` | `string` | Accessible name for the group, set as aria-label |
 | `accessible-labeled-by` | `string` | Id of an external label element, set as aria-labelledby on the group |
+| `required` | `boolean` | Marks the group as required. Enforced in radio mode; in checkbox mode only announced. |
 
 **Slots**
 
@@ -1239,6 +1240,7 @@ A horizontal group of mutually exclusive (radio) or multi-select (checkbox) opti
 | `variant` | `string` | Content type: 'text' \| 'icon' \| 'icon-and-text' (default: 'text'). Set by nldd-segmented-control. |
 | `input-type` | `string` | Type of the native input: 'radio' \| 'checkbox' (default: 'radio'). Set by nldd-segmented-control. |
 | `group-name` | `string` | Name of the group for form submission, put on the native input. Set by nldd-segmented-control. |
+| `required` | `boolean` | Required state. Set by nldd-segmented-control. |
 
 **Slots**
 
@@ -1470,6 +1472,7 @@ A selectable button that toggles between selected and unselected. Available as a
 | `icon` | `string` | Icon name for nldd-icon |
 | `variant` | `'text' \| 'icon' \| 'icon-and-text'` | What renders: text, icon, or both. Unset → auto-detect from text/icon attributes. |
 | `accessible-label` | `string` | Accessible label; required for icon-only usage |
+| `required` | `boolean` | Required state. Set by nldd-toggle-button-group. |
 
 **Slots**
 
@@ -1497,6 +1500,7 @@ Groups nldd-toggle-button elements and manages selection, keyboard navigation, a
 | `disabled` | `boolean` | Disables all buttons |
 | `accessible-label` | `string` | Accessible name for the group (aria-label) |
 | `accessible-labeled-by` | `string` | ID of an external label element (aria-labelledby) |
+| `required` | `boolean` | Marks the group as required. Enforced in radio mode; in checkbox mode only announced. |
 
 **Slots**
 

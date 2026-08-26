@@ -62,6 +62,7 @@ export function toggleButtonTemplate(component: NLDDToggleButton): TemplateResul
 					type=${component.type}
 					.checked=${component.selected}
 					?disabled=${component.disabled}
+					?required=${component.required}
 					name=${component.name || nothing}
 					value=${component.value}
 					aria-label=${ariaLabel}

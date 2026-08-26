@@ -16,6 +16,7 @@
  * @attr {boolean} disabled - Disables all buttons
  * @attr {string} accessible-label - Accessible name for the group (aria-label)
  * @attr {string} accessible-labeled-by - ID of an external label element (aria-labelledby)
+ * @attr {boolean} required - Marks the group as required. Enforced in radio mode; in checkbox mode only announced.
  *
  * @slot - nldd-toggle-button elements
  *
@@ -34,6 +35,24 @@ type GroupType = 'button' | 'checkbox' | 'radio';
 
 @customElement('nldd-toggle-button-group')
 export class NLDDToggleButtonGroup extends LitElement {
+	/**
+	 * Marks the group as required: something has to be selected.
+	 *
+	 * Handed to the items, because that is where the platform reads it. One
+	 * required radio makes the whole group required, and the browser writes its
+	 * own message in the user's language.
+	 *
+	 * Only in radio mode. The same attribute on a checkbox means that box has to
+	 * be ticked, so spreading it over a checkbox group would demand all of them
+	 * instead of one. HTML has no way to say "at least one of these", and
+	 * neither do we: `aria-required` still goes on the group so assistive
+	 * software says it, but nothing enforces it.
+	 */
+	@property({ type: Boolean, reflect: true })
+	required = false;
+
+	private _warnedRequired = false;
+
 	static override styles = toggleButtonGroupStyles;
 
 	/** Says this is the control an nldd-form-field is about, so the field can
@@ -113,9 +132,21 @@ export class NLDDToggleButtonGroup extends LitElement {
 	}
 
 	private _syncButtons(): void {
+		this.toggleAttribute('aria-required', this.required);
+
+		if (import.meta.env?.DEV && this.required && this.type === 'checkbox' && !this._warnedRequired) {
+			this._warnedRequired = true;
+			console.warn(
+				`<${this.localName}>: \`required\` on a checkbox group is announced but not enforced. `
+				+ 'HTML has no way to say "at least one of these", so the form still submits with nothing '
+				+ 'selected. Check it yourself on submit, or use radio mode.',
+			);
+		}
+
 		this._getButtons().forEach(button => {
 			button.type = this.type;
 			button.size = this.size;
+			button.required = this.required && this.type === 'radio';
 
 			// name is only meaningful for checkbox and radio
 			if (this.type !== 'button') {

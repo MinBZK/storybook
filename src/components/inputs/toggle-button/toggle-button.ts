@@ -17,6 +17,7 @@
  * @attr {string} icon - Icon name for nldd-icon
  * @attr {'text' | 'icon' | 'icon-and-text'} variant - What renders: text, icon, or both. Unset → auto-detect from text/icon attributes.
  * @attr {string} accessible-label - Accessible label; required for icon-only usage
+ * @attr {boolean} required - Required state. Set by nldd-toggle-button-group.
  *
  * @slot icon - Slot for a custom icon (e.g. custom SVG). Only used when icon attribute is not set.
  *
@@ -39,6 +40,9 @@ export type ToggleButtonVariant = 'text' | 'icon' | 'icon-and-text';
 @customElement('nldd-toggle-button')
 export class NLDDToggleButton extends DescribedBy(FormAssociated(LitElement)) {
 
+
+	@property({ type: Boolean, reflect: true })
+	required = false;
 	static override styles = toggleButtonStyles;
 
 	/** Says this is the control an nldd-form-field is about, so the field can

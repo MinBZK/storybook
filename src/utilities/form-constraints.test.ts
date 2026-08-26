@@ -4,11 +4,14 @@ import '../components/inputs/checkbox/checkbox.js';
 import '../components/inputs/checkbox-field/checkbox-field.js';
 import '../components/inputs/combo-box/combo-box.js';
 import '../components/inputs/dropdown/dropdown.js';
+import '../components/inputs/segmented-control/segmented-control.js';
 import '../components/inputs/multi-line-text-field/multi-line-text-field.js';
 import '../components/inputs/password-field/password-field.js';
 import '../components/inputs/search-field/search-field.js';
 import '../components/inputs/switch/switch.js';
 import '../components/inputs/switch-field/switch-field.js';
+import '../components/inputs/toggle-button-group/toggle-button-group.js';
+import '../components/inputs/toggle-button/toggle-button.js';
 import '../components/inputs/text-field/text-field.js';
 
 /**
@@ -141,4 +144,72 @@ describe('required reaches the native control', () => {
 			expect(control.validity.valueMissing).toBe(true);
 		});
 	}
+});
+
+/**
+ * A group answers `required` through its items, because that is where the
+ * platform reads it: one required radio makes the whole group required, and
+ * the browser writes its own message.
+ *
+ * Not in checkbox mode. The same attribute on a checkbox means that box has to
+ * be ticked, so spreading it out would demand all of them instead of one.
+ */
+describe('required on a group of controls', () => {
+	let el: HTMLElement;
+
+	afterEach(() => {
+		if (el) cleanup(el);
+	});
+
+	it('nldd-segmented-control: radio mode makes the group required', async () => {
+		el = await fixture<HTMLElement>(`
+			<nldd-segmented-control required accessible-label="Weergave">
+				<nldd-segmented-control-item value="lijst" text="Lijst"></nldd-segmented-control-item>
+				<nldd-segmented-control-item value="raster" text="Raster"></nldd-segmented-control-item>
+			</nldd-segmented-control>
+		`);
+		await waitForUpdate(el);
+		expect(el.hasAttribute('aria-required')).toBe(true);
+		const input = el.querySelector('nldd-segmented-control-item')!.shadowRoot!.querySelector('input') as HTMLInputElement;
+		expect(input.required).toBe(true);
+		expect(input.validity.valueMissing).toBe(true);
+	});
+
+	it('nldd-segmented-control: checkbox mode announces it without demanding every box', async () => {
+		el = await fixture<HTMLElement>(`
+			<nldd-segmented-control required type="checkbox" accessible-label="Weergave">
+				<nldd-segmented-control-item value="lijst" text="Lijst"></nldd-segmented-control-item>
+			</nldd-segmented-control>
+		`);
+		await waitForUpdate(el);
+		expect(el.hasAttribute('aria-required')).toBe(true);
+		const input = el.querySelector('nldd-segmented-control-item')!.shadowRoot!.querySelector('input') as HTMLInputElement;
+		expect(input.required).toBe(false);
+	});
+
+	it('nldd-toggle-button-group: radio mode makes the group required', async () => {
+		el = await fixture<HTMLElement>(`
+			<nldd-toggle-button-group required type="radio" name="weergave" accessible-label="Weergave">
+				<nldd-toggle-button value="lijst" text="Lijst"></nldd-toggle-button>
+				<nldd-toggle-button value="raster" text="Raster"></nldd-toggle-button>
+			</nldd-toggle-button-group>
+		`);
+		await waitForUpdate(el);
+		expect(el.hasAttribute('aria-required')).toBe(true);
+		const input = el.querySelector('nldd-toggle-button')!.shadowRoot!.querySelector('input') as HTMLInputElement;
+		expect(input.required).toBe(true);
+		expect(input.validity.valueMissing).toBe(true);
+	});
+
+	it('nldd-toggle-button-group: checkbox mode announces it without demanding every box', async () => {
+		el = await fixture<HTMLElement>(`
+			<nldd-toggle-button-group required type="checkbox" name="weergave" accessible-label="Weergave">
+				<nldd-toggle-button value="lijst" text="Lijst"></nldd-toggle-button>
+			</nldd-toggle-button-group>
+		`);
+		await waitForUpdate(el);
+		expect(el.hasAttribute('aria-required')).toBe(true);
+		const input = el.querySelector('nldd-toggle-button')!.shadowRoot!.querySelector('input') as HTMLInputElement;
+		expect(input.required).toBe(false);
+	});
 });

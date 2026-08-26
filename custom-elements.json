@@ -13602,6 +13602,16 @@
           "members": [
             {
               "kind": "field",
+              "name": "required",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "attribute": "required",
+              "reflects": true
+            },
+            {
+              "kind": "field",
               "name": "value",
               "type": {
                 "text": "string"
@@ -13721,6 +13731,15 @@
           ],
           "attributes": [
             {
+              "name": "required",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "fieldName": "required",
+              "description": "Required state. Set by nldd-segmented-control."
+            },
+            {
               "name": "value",
               "type": {
                 "text": "string"
@@ -13820,6 +13839,17 @@
           "description": "A horizontal group of mutually exclusive (radio) or multi-select (checkbox) options. Exports both NLDDSegmentedControl and NLDDSegmentedControlItem.",
           "name": "NLDDSegmentedControl",
           "members": [
+            {
+              "kind": "field",
+              "name": "required",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Marks the group as required: something has to be selected.\n\nHanded to the items, because that is where the platform reads it. One\nrequired radio makes the whole group required, and the browser writes its\nown message in the user's language.\n\nOnly in radio mode. The same attribute on a checkbox means that box has to\nbe ticked, so spreading it over a checkbox group would demand all of them\ninstead of one. HTML has no way to say \"at least one of these\", and\nneither do we: `aria-required` still goes on the group so assistive\nsoftware says it, but nothing enforces it.",
+              "attribute": "required",
+              "reflects": true
+            },
             {
               "kind": "field",
               "name": "isFormInput",
@@ -14064,6 +14094,15 @@
             }
           ],
           "attributes": [
+            {
+              "name": "required",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Marks the group as required. Enforced in radio mode; in checkbox mode only announced.",
+              "fieldName": "required"
+            },
             {
               "name": "value",
               "type": {
@@ -18965,6 +19004,17 @@
           "members": [
             {
               "kind": "field",
+              "name": "required",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Marks the group as required: something has to be selected.\n\nHanded to the items, because that is where the platform reads it. One\nrequired radio makes the whole group required, and the browser writes its\nown message in the user's language.\n\nOnly in radio mode. The same attribute on a checkbox means that box has to\nbe ticked, so spreading it over a checkbox group would demand all of them\ninstead of one. HTML has no way to say \"at least one of these\", and\nneither do we: `aria-required` still goes on the group so assistive\nsoftware says it, but nothing enforces it.",
+              "attribute": "required",
+              "reflects": true
+            },
+            {
+              "kind": "field",
               "name": "isFormInput",
               "type": {
                 "text": "boolean"
@@ -19053,6 +19103,15 @@
             }
           ],
           "attributes": [
+            {
+              "name": "required",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Marks the group as required. Enforced in radio mode; in checkbox mode only announced.",
+              "fieldName": "required"
+            },
             {
               "name": "type",
               "type": {
@@ -19156,6 +19215,16 @@
           "description": "A selectable button that toggles between selected and unselected. Available as a button (aria-pressed), checkbox, or radio input.",
           "name": "NLDDToggleButton",
           "members": [
+            {
+              "kind": "field",
+              "name": "required",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "attribute": "required",
+              "reflects": true
+            },
             {
               "kind": "field",
               "name": "isFormInput",
@@ -19451,6 +19520,15 @@
             }
           ],
           "attributes": [
+            {
+              "name": "required",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "fieldName": "required",
+              "description": "Required state. Set by nldd-toggle-button-group."
+            },
             {
               "name": "type",
               "type": {
