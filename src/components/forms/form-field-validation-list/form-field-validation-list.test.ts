@@ -84,6 +84,25 @@ describe('nldd-form-field-validation-list', () => {
 		expect(item(el, 'length').unmet).toBe(false);
 	});
 
+	it('laat `required` als enige regel wél afgaan op leeg', async () => {
+		el = await fixture(`
+			<nldd-form-field label="Wachtwoord">
+				<nldd-text-field invalid></nldd-text-field>
+				<nldd-form-field-validation-list>
+					<nldd-form-field-validation-item id="leeg" required>Vul een wachtwoord in</nldd-form-field-validation-item>
+					<nldd-form-field-validation-item id="length" minlength="8">Minimaal 8 tekens</nldd-form-field-validation-item>
+				</nldd-form-field-validation-list>
+			</nldd-form-field>
+		`);
+		await waitForUpdate(el);
+		expect(item(el, 'leeg').unmet).toBe(true);
+		expect(item(el, 'length').unmet).toBe(false);
+
+		await type(el, 'x');
+		expect(item(el, 'leeg').unmet).toBe(false);
+		expect(item(el, 'length').unmet).toBe(true);
+	});
+
 	it('leest `match` als "bevat", niet als de hele waarde', async () => {
 		el = await fixture(`
 			<nldd-form-field label="Wachtwoord">

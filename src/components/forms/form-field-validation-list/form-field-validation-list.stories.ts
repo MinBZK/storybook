@@ -37,7 +37,7 @@ regel herhalen zegt hetzelfde drie keer.
 		},
 	},
 	args: {
-		hint: false,
+		hint: true,
 	},
 	argTypes: {
 		hint: {
@@ -53,11 +53,16 @@ regel herhalen zegt hetzelfde drie keer.
 	},
 };
 
-/** Een wachtwoord met z'n eisen vooraf zichtbaar. Typ mee en zie ze verdwijnen. */
+/**
+ * Een wachtwoord met z'n eisen vooraf zichtbaar. Typ mee en zie ze uitgaan.
+ *
+ * Zet `hint` uit en de lijst is leeg tot er iets misgaat, want verborgen is de
+ * standaard.
+ */
 export const Default = ({ hint }: Record<string, unknown>) => html`
 	<nldd-form-field label="Wachtwoord">
 		<nldd-password-field name="pw" invalid></nldd-password-field>
-		<nldd-form-field-validation-list ?hint=${hint !== false}>
+		<nldd-form-field-validation-list ?hint=${hint}>
 			<nldd-form-field-validation-item id="length" minlength="8">Minimaal 8 tekens</nldd-form-field-validation-item>
 			<nldd-form-field-validation-item id="capital" match="[A-Z]">Een hoofdletter</nldd-form-field-validation-item>
 			<nldd-form-field-validation-item id="digit" match="[0-9]">Een cijfer</nldd-form-field-validation-item>
@@ -72,6 +77,21 @@ export const AlleenBijEenFout = () => html`
 		<nldd-form-field-validation-list>
 			<nldd-form-field-validation-item id="digits" match="^[0-9 +-]+$">Alleen cijfers, spaties, + en -</nldd-form-field-validation-item>
 			<nldd-form-field-validation-item id="length" minlength="10">Minimaal 10 tekens</nldd-form-field-validation-item>
+		</nldd-form-field-validation-list>
+	</nldd-form-field>
+`;
+
+/**
+ * `required` is de enige regel die een lege waarde niet haalt. Op een leeg veld
+ * zie je dus die ene regel, en niet meteen alle andere.
+ */
+export const VerplichtVeld = () => html`
+	<nldd-form-field label="Wachtwoord">
+		<nldd-password-field name="pw" invalid></nldd-password-field>
+		<nldd-form-field-validation-list>
+			<nldd-form-field-validation-item id="leeg" required>Vul een wachtwoord in</nldd-form-field-validation-item>
+			<nldd-form-field-validation-item id="length" minlength="8">Minimaal 8 tekens</nldd-form-field-validation-item>
+			<nldd-form-field-validation-item id="capital" match="[A-Z]">Een hoofdletter</nldd-form-field-validation-item>
 		</nldd-form-field-validation-list>
 	</nldd-form-field>
 `;

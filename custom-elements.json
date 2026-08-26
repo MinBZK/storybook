@@ -5547,6 +5547,17 @@
             },
             {
               "kind": "field",
+              "name": "required",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "The one rule an empty value does not pass. See `test`.",
+              "attribute": "required",
+              "reflects": true
+            },
+            {
+              "kind": "field",
               "name": "hint",
               "type": {
                 "text": "boolean"
@@ -5600,7 +5611,7 @@
                   }
                 }
               ],
-              "description": "Whether `value` satisfies this item, or null when there is nothing to\nsatisfy because the item carries no rule.\n\nAn empty value passes every rule. Emptiness is what `required` is for, and\na field that lights up all its requirements the moment you focus it reads\nas a page full of mistakes you have not made yet."
+              "description": "Whether `value` satisfies this item, or null when there is nothing to\nsatisfy because the item carries no rule.\n\nAn empty value passes every rule but `required`. A field that lights up\nall of its requirements the moment you focus it reads as a page full of\nmistakes you have not made yet, while \"fill something in\" is the one\nthing that is genuinely wrong about an empty field. So on an empty value\nyou see that one line and nothing else."
             }
           ],
           "attributes": [
@@ -5628,6 +5639,15 @@
               },
               "fieldName": "maxlength",
               "description": "Most characters the value may have."
+            },
+            {
+              "name": "required",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "The value may not be empty. The one rule an empty value does not pass.",
+              "fieldName": "required"
             },
             {
               "name": "hint",
