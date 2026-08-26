@@ -5547,7 +5547,7 @@
                 "text": "LabelAlignment | undefined"
               },
               "default": "undefined",
-              "description": "'top' (default) | 'right' | 'left'. Een eigen waarde wint altijd over de inherited form-label-alignment.",
+              "description": "'top' (default) | 'right' | 'left'. A value of its own always wins over the inherited form-label-alignment.",
               "fieldName": "labelAlignment"
             },
             {

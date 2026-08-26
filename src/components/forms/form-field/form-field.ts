@@ -3,8 +3,8 @@
  *
  * @element nldd-form-field
  *
- * @attr {string} label-alignment - 'top' (default) | 'right' | 'left'. Een eigen waarde wint altijd over de inherited form-label-alignment.
- * @attr {string} form-label-alignment - Door wrappende nldd-form gezet als fallback. Niet zelf zetten in consumer-code.
+ * @attr {string} label-alignment - 'top' (default) | 'right' | 'left'. A value of its own always wins over the inherited form-label-alignment.
+ * @attr {string} form-label-alignment - Set by a wrapping nldd-form as a fallback. Do not set it yourself in consumer code.
  * @attr {string} label - Field label text. Omit for no-label layout.
  * @attr {string} supporting-label - Short supporting text below the label. Same typography as optional badge.
  * @attr {boolean} optional - Shows an optional badge next to the label.

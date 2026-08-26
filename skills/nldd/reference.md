@@ -672,8 +672,8 @@ A layout wrapper for the action buttons at the bottom of a form (typically a sub
 
 | Attribute | Type | Description |
 | --- | --- | --- |
-| `label-alignment` | `string` | 'top' (default) \| 'right' \| 'left'. Een eigen waarde wint altijd over de inherited form-label-alignment. |
-| `form-label-alignment` | `string` | Door wrappende nldd-form gezet als fallback. Niet zelf zetten in consumer-code. |
+| `label-alignment` | `string` | 'top' (default) \| 'right' \| 'left'. A value of its own always wins over the inherited form-label-alignment. |
+| `form-label-alignment` | `string` | Set by a wrapping nldd-form as a fallback. Do not set it yourself in consumer code. |
 | `label` | `string` | Field label text. Omit for no-label layout. |
 | `supporting-label` | `string` | Short supporting text below the label. Same typography as optional badge. |
 | `optional` | `boolean` | Shows an optional badge next to the label. |
