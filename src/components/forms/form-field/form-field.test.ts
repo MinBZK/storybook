@@ -25,6 +25,12 @@ import '../../inputs/switch/switch.js';
 import '../../content/tag/tag.js';
 import '../../actions/button/button.js';
 
+/** The elements a control points at as its description, in order. */
+function describedBy(el: Element): readonly Element[] {
+	return (el as Element & { ariaDescribedByElements?: readonly Element[] | null })
+		.ariaDescribedByElements ?? [];
+}
+
 
 /* ============================================================
    nldd-form-field
@@ -111,7 +117,7 @@ describe('nldd-form-field', () => {
 		expect(el.shadowRoot!.querySelector('label.form-field__label')).not.toBeNull();
 	});
 
-	it('includes help text id in aria-describedby', async () => {
+	it('includes the help text among the elements that describe the input', async () => {
 		el = await fixture(`
 			<nldd-form-field label="Email">
 				<nldd-form-field-help-text id="help-static">Format: DD-MM-YYYY</nldd-form-field-help-text>
@@ -120,8 +126,7 @@ describe('nldd-form-field', () => {
 		`);
 		await waitForUpdate(el);
 		const input = el.querySelector('input')!;
-		const describedBy = input.getAttribute('aria-describedby') ?? '';
-		expect(describedBy).toContain('help-static');
+		expect(describedBy(input)).toContain(el.querySelector('#help-static'));
 	});
 
 	it('hides help text via the hidden attribute', async () => {
@@ -138,7 +143,7 @@ describe('nldd-form-field', () => {
 		expect(getComputedStyle(help).display).toBe('none');
 	});
 
-	it('lists help text id before error id in aria-describedby', async () => {
+	it('lists the help text before the error text', async () => {
 		el = await fixture(`
 			<nldd-form-field label="Email">
 				<nldd-form-field-help-text id="help-1">Format hint</nldd-form-field-help-text>
@@ -148,11 +153,9 @@ describe('nldd-form-field', () => {
 		`);
 		await waitForUpdate(el);
 		const input = el.querySelector('input')!;
-		const describedBy = input.getAttribute('aria-describedby') ?? '';
-		const helpIndex = describedBy.indexOf('help-1');
-		const errIndex = describedBy.indexOf('error-1');
-		expect(helpIndex).toBeGreaterThanOrEqual(0);
-		expect(errIndex).toBeGreaterThan(helpIndex);
+		const order = describedBy(input);
+		expect(order.indexOf(el.querySelector('#help-1')!)).toBe(0);
+		expect(order.indexOf(el.querySelector('#error-1')!)).toBe(1);
 	});
 
 	it('sets aria-label on the slotted input', async () => {
@@ -296,7 +299,7 @@ describe('nldd-form-field error text wiring', () => {
 		expect(el.querySelector('nldd-form-field-error-text')!.hasAttribute('invalid')).toBe(true);
 	});
 
-	it('sets aria-describedby on the input referencing visible error IDs', async () => {
+	it('points the input at the visible error text', async () => {
 		el = await fixture(`
 			<nldd-form-field label="Email">
 				<input invalid error-message="error-1">
@@ -305,10 +308,10 @@ describe('nldd-form-field error text wiring', () => {
 		`);
 		await waitForUpdate(el);
 		const input = el.querySelector('input')!;
-		expect(input.getAttribute('aria-describedby')).toBe('error-1');
+		expect(describedBy(input)).toEqual([el.querySelector('#error-1')]);
 	});
 
-	it('sets aria-describedby with multiple IDs when multiple errors are visible', async () => {
+	it('points the input at every visible error text', async () => {
 		el = await fixture(`
 			<nldd-form-field label="Password">
 				<input invalid error-message="error-required error-length">
@@ -318,10 +321,13 @@ describe('nldd-form-field error text wiring', () => {
 		`);
 		await waitForUpdate(el);
 		const input = el.querySelector('input')!;
-		expect(input.getAttribute('aria-describedby')).toBe('error-required error-length');
+		expect(describedBy(input)).toEqual([
+			el.querySelector('#error-required'),
+			el.querySelector('#error-length'),
+		]);
 	});
 
-	it('removes aria-describedby when errors are cleared', async () => {
+	it('stops describing the input when the errors are cleared', async () => {
 		el = await fixture(`
 			<nldd-form-field label="Email">
 				<input id="ctrl" invalid error-message="error-1">
@@ -331,7 +337,7 @@ describe('nldd-form-field error text wiring', () => {
 		await waitForUpdate(el);
 		el.querySelector('#ctrl')!.removeAttribute('invalid');
 		await waitForUpdate(el);
-		expect(el.querySelector('#ctrl')!.hasAttribute('aria-describedby')).toBe(false);
+		expect(describedBy(el.querySelector('#ctrl')!)).toEqual([]);
 	});
 });
 

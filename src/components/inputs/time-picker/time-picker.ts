@@ -31,6 +31,7 @@ import { customElement, property, state } from 'lit/decorators.js';
 import { timePickerStyles } from './time-picker.styles.js';
 import { timePickerTemplate } from './time-picker.template.js';
 import { nlddTimePickerTranslations, type NLDDTimePickerTranslations } from './time-picker.i18n.js';
+import { DescribedBy } from '../../../utilities/described-by-mixin.js';
 
 const LAST_MINUTE_OF_DAY = 23 * 60 + 59;
 
@@ -48,7 +49,7 @@ function isTime(value: string): boolean {
 }
 
 @customElement('nldd-time-picker')
-export class NLDDTimePicker extends LitElement {
+export class NLDDTimePicker extends DescribedBy(LitElement) {
 
 	static override styles = timePickerStyles;
 
@@ -373,6 +374,11 @@ export class NLDDTimePicker extends LitElement {
 			this._scrolledTo = { hours: null, minutes: null };
 			this.scrollSelectedIntoView();
 		}
+	}
+
+	/** The group is the widget; hour and minute are spinbuttons inside it. */
+	override describedTarget(): Element | null {
+		return this.shadowRoot?.querySelector('[role="group"]') ?? null;
 	}
 
 	override render() {

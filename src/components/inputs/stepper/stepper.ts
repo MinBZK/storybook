@@ -26,11 +26,12 @@ import { nlddStepperTranslations } from './stepper.i18n.js';
 import type { NLDDStepperTranslations } from './stepper.i18n.js';
 import './../../actions/icon-button/icon-button.js';
 import './../../content/icon/icon.js';
+import { DescribedBy } from '../../../utilities/described-by-mixin.js';
 
 export type StepperSize = 'xs' | 'sm' | 'md';
 
 @customElement('nldd-stepper')
-export class NLDDStepper extends FormAssociated(LitElement) {
+export class NLDDStepper extends DescribedBy(FormAssociated(LitElement)) {
 
 	static override styles = stepperStyles;
 
@@ -166,6 +167,11 @@ export class NLDDStepper extends FormAssociated(LitElement) {
 	 */
 	override focus(options?: FocusOptions): void {
 		this.shadowRoot?.querySelector<HTMLElement>('.stepper')?.focus(options);
+	}
+
+	/** The spinbutton is the control; the buttons beside it are shortcuts to it. */
+	override describedTarget(): Element | null {
+		return this.shadowRoot?.querySelector('[role="spinbutton"]') ?? null;
 	}
 
 	override render() {

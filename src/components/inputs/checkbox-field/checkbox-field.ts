@@ -23,9 +23,10 @@ import { FormAssociated, type FormValue } from '../../../utilities/form-associat
 import { checkboxFieldStyles } from './checkbox-field.styles.js';
 import { checkboxFieldTemplate } from './checkbox-field.template.js';
 import type { NLDDCheckbox } from '../checkbox/checkbox.js';
+import { DescribedBy } from '../../../utilities/described-by-mixin.js';
 
 @customElement('nldd-checkbox-field')
-export class NLDDCheckboxField extends FormAssociated(LitElement) {
+export class NLDDCheckboxField extends DescribedBy(FormAssociated(LitElement)) {
 
 	static override styles = checkboxFieldStyles;
 
@@ -101,6 +102,11 @@ export class NLDDCheckboxField extends FormAssociated(LitElement) {
 	 */
 	override focus(options?: FocusOptions): void {
 		this.shadowRoot?.querySelector<NLDDCheckbox>('nldd-checkbox')?.focus(options);
+	}
+
+	/** The checkbox it renders knows which element inside itself is the control. */
+	override describedTarget(): Element | null {
+		return this.shadowRoot?.querySelector('nldd-checkbox') ?? null;
 	}
 
 	override render() {

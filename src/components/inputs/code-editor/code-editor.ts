@@ -56,12 +56,13 @@ import { nlddCodeMirrorTheme } from '../../../utilities/codemirror/theme.js';
 import { loadLanguage } from '../../../utilities/codemirror/languages.js';
 import { codeEditorStyles } from './code-editor.styles.js';
 import { codeEditorTemplate } from './code-editor.template.js';
+import { DescribedBy } from '../../../utilities/described-by-mixin.js';
 
 export type ResizeMode = 'none' | 'vertical' | 'auto';
 export type CodeEditorVariant = 'input-field' | 'simple';
 
 @customElement('nldd-code-editor')
-export class NLDDCodeEditor extends FormAssociated(NLDDCodeMirrorElement) {
+export class NLDDCodeEditor extends DescribedBy(FormAssociated(NLDDCodeMirrorElement)) {
 
 	static override shadowRootOptions = {
 		...LitElement.shadowRootOptions,
@@ -338,6 +339,11 @@ export class NLDDCodeEditor extends FormAssociated(NLDDCodeMirrorElement) {
 
 	formStateRestoreCallback(state: File | string | FormData | null): void {
 		if (typeof state === 'string') this.value = state;
+	}
+
+	/** CodeMirror builds the textbox; the host is only its container. */
+	override describedTarget(): Element | null {
+		return this.shadowRoot?.querySelector('.cm-content') ?? null;
 	}
 
 	override render() {

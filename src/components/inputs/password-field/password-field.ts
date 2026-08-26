@@ -22,7 +22,6 @@
  * @attr {string} name - Input name for form submission
  * @attr {string} autocomplete - Autocomplete hint
  * @attr {string} accessible-label - Accessible label forwarded to the inner input. Set automatically by nldd-form-field.
- * @attr {string} error-message-ids - Ids for aria-describedby on the inner input. Set automatically by nldd-form-field.
  * @attr {string} width - Optional fixed width (any CSS length, e.g. "240px"). Default: stretches to fill container.
  *
  * @fires input - When the input value changes ({ detail: { value } })
@@ -35,9 +34,10 @@ import { submitOnEnter } from '../../../utilities/implicit-submission.js';
 import { reflectNonDefault } from '../../../utilities/reflect-non-default.js';
 import { passwordFieldStyles } from './password-field.styles.js';
 import { passwordFieldTemplate } from './password-field.template.js';
+import { DescribedBy } from '../../../utilities/described-by-mixin.js';
 
 @customElement('nldd-password-field')
-export class NLDDPasswordField extends FormAssociated(LitElement) {
+export class NLDDPasswordField extends DescribedBy(FormAssociated(LitElement)) {
 
 	static override shadowRootOptions = {
 		...LitElement.shadowRootOptions,
@@ -113,8 +113,6 @@ export class NLDDPasswordField extends FormAssociated(LitElement) {
 	@property({ type: String, attribute: 'accessible-label' })
 	accessibleLabel = '';
 
-	@property({ type: String, attribute: 'error-message-ids' })
-	errorMessageIds = '';
 
 	/** Optional fixed width (any CSS length). When unset, the field stretches to fill its container. */
 	@property({ type: String, reflect: true })

@@ -120,7 +120,6 @@ export function timeFieldTemplate(component: NLDDTimeField): TemplateResult {
 				?required=${component.required}
 				autocomplete=${component.autocomplete || nothing}
 				aria-label=${component._fieldLabel || nothing}
-				aria-describedby=${component.errorMessageIds || nothing}
 				aria-invalid=${component.invalid ? 'true' : nothing}
 				@keydown=${component._handleInputKeydown}
 				@input=${component._handleInput}

@@ -40,6 +40,7 @@ import { nlddDatePickerTranslations, MONTH_KEYS, WEEKDAY_KEYS } from './date-pic
 import type { NLDDDatePickerTranslations } from './date-picker.i18n.js';
 import './../../actions/icon-button/icon-button.js';
 import './../../actions/button/button.js';
+import { DescribedBy } from '../../../utilities/described-by-mixin.js';
 
 /**
  * All arithmetic runs on UTC-midnight Dates and ISO strings. UTC keeps a DST
@@ -124,10 +125,10 @@ function clampIso(iso: string, min: string, max: string): string {
 }
 
 @customElement('nldd-date-picker')
-export class NLDDDatePicker extends withTranslations<NLDDDatePickerTranslations>(
+export class NLDDDatePicker extends DescribedBy(withTranslations<NLDDDatePickerTranslations>(
 	LitElement,
 	nlddDatePickerTranslations,
-) {
+)) {
 	static override styles = datePickerStyles;
 
 	/** Says this is the control an nldd-form-field is about, so the field can
@@ -817,6 +818,11 @@ export class NLDDDatePicker extends withTranslations<NLDDDatePickerTranslations>
 		const today = todayIso();
 		this._view = firstOfMonth(today);
 		this._focused = today;
+	}
+
+	/** The grid is the widget; focus roves over the days inside it. */
+	override describedTarget(): Element | null {
+		return this.shadowRoot?.querySelector('[role="grid"]') ?? null;
 	}
 
 	override render() {

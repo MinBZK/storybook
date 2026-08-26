@@ -22,11 +22,12 @@ import { FormAssociated, type FormValue } from '../../../utilities/form-associat
 import { reflectNonDefault } from '../../../utilities/reflect-non-default.js';
 import { switchStyles } from './switch.styles.js';
 import { switchTemplate } from './switch.template.js';
+import { DescribedBy } from '../../../utilities/described-by-mixin.js';
 
 export type SwitchSize = 'xs' | 'sm';
 
 @customElement('nldd-switch')
-export class NLDDSwitch extends FormAssociated(LitElement) {
+export class NLDDSwitch extends DescribedBy(FormAssociated(LitElement)) {
 
 	static override styles = switchStyles;
 

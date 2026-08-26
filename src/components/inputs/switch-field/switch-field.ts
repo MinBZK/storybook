@@ -17,9 +17,10 @@ import { customElement, property } from 'lit/decorators.js';
 import { switchFieldStyles } from './switch-field.styles.js';
 import { switchFieldTemplate } from './switch-field.template.js';
 import type { NLDDSwitch } from '../switch/switch.js';
+import { DescribedBy } from '../../../utilities/described-by-mixin.js';
 
 @customElement('nldd-switch-field')
-export class NLDDSwitchField extends LitElement {
+export class NLDDSwitchField extends DescribedBy(LitElement) {
 	static override styles = switchFieldStyles;
 
 	/** Says this is the control an nldd-form-field is about, so the field can
@@ -64,6 +65,11 @@ export class NLDDSwitchField extends LitElement {
 	 */
 	override focus(options?: FocusOptions): void {
 		this.shadowRoot?.querySelector<NLDDSwitch>('nldd-switch')?.focus(options);
+	}
+
+	/** The switch it renders knows which element inside itself is the control. */
+	override describedTarget(): Element | null {
+		return this.shadowRoot?.querySelector('nldd-switch') ?? null;
 	}
 
 	override render() {

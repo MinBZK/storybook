@@ -45,6 +45,7 @@ import { nlddButtonTranslations } from './button.i18n.js';
 import { PopupAnchorController } from '../../../utilities/popup-anchor-controller.js';
 import './../../content/icon/icon.js';
 import './../../status-and-feedback/activity-indicator/activity-indicator.js';
+import { DescribedBy } from '../../../utilities/described-by-mixin.js';
 
 type Variant =
 	| 'primary'
@@ -64,7 +65,7 @@ type ButtonType = 'button' | 'submit' | 'reset';
 type PopupType = 'menu' | 'listbox' | 'dialog' | 'tree' | 'grid';
 
 @customElement('nldd-button')
-export class NLDDButton extends withTranslations(LitElement, nlddButtonTranslations) {
+export class NLDDButton extends DescribedBy(withTranslations(LitElement, nlddButtonTranslations)) {
 	static override styles = buttonStyles;
 
 	// Form-associated so a type="submit"/"reset" button can drive its form.
@@ -284,6 +285,11 @@ export class NLDDButton extends withTranslations(LitElement, nlddButtonTranslati
 	 */
 	override focus(options?: FocusOptions): void {
 		this.shadowRoot?.querySelector<HTMLElement>('.button')?.focus(options);
+	}
+
+	/** The button or link it renders, not the host around it. */
+	override describedTarget(): Element | null {
+		return this.shadowRoot?.querySelector('button, a') ?? null;
 	}
 
 	override render() {

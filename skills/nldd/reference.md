@@ -855,7 +855,6 @@ A text field for a date, with an optional calendar in a popover. The value is al
 | `name` | `string` | Name for form submission. |
 | `autocomplete` | `string` | Autocomplete hint, for example 'bday'. |
 | `accessible-label` | `string` | Accessible label for the internal input. Set automatically by nldd-form-field. |
-| `error-message-ids` | `string` | Ids for aria-describedby. Set automatically by nldd-form-field. |
 | `width` | `string` | Width. By default exactly wide enough for a date plus the icons; 'full' fills the container; 'fit-content' drops the room for the validation icon and grows again as soon as the field turns valid or invalid; or pass your own CSS length. |
 | `translations` | `object` | Translations; unspecified keys fall back to Dutch. |
 
@@ -940,7 +939,6 @@ A file picker that reads as one control: an nldd-button flush in the corner of a
 | `multiple` | `boolean` | Allows choosing more than one file |
 | `accessible-label` | `string` | Accessible label forwarded to the inner input. Set automatically by nldd-form-field. |
 | `input-id` | `string` | Sets the id on the native input. Set automatically by nldd-form-field. |
-| `error-message-ids` | `string` | Ids for aria-describedby on the inner input. Set automatically by nldd-form-field. |
 | `valid` | `boolean` | Marks the field as valid; shows a check icon on the right, like nldd-dropdown |
 | `invalid` | `boolean` | Marks the field as invalid; shows an alert icon on the right, like nldd-dropdown |
 | `disabled` | `boolean` | Disabled state |
@@ -976,7 +974,6 @@ A file picker that reads as one control: an nldd-button flush in the corner of a
 | `rows` | `number` | Initial visible rows (minimum height). Default: 3. |
 | `resize` | `string` | 'none' \| 'vertical' \| 'auto' (default). 'auto' grows with content (native field-sizing), no manual handle. |
 | `accessible-label` | `string` | Accessible label forwarded to the inner textarea. Set automatically by nldd-form-field. |
-| `error-message-ids` | `string` | Ids for aria-describedby on the inner textarea. Set automatically by nldd-form-field. |
 | `no-spellcheck` | `boolean` | Disables browser spellchecking on the inner textarea |
 | `width` | `string` | Optional fixed width (any CSS length, e.g. "240px"). Default: stretches to fill container. |
 
@@ -1039,7 +1036,6 @@ A password input field with visibility toggle and validation states.
 | `name` | `string` | Input name for form submission |
 | `autocomplete` | `string` | Autocomplete hint |
 | `accessible-label` | `string` | Accessible label forwarded to the inner input. Set automatically by nldd-form-field. |
-| `error-message-ids` | `string` | Ids for aria-describedby on the inner input. Set automatically by nldd-form-field. |
 | `width` | `string` | Optional fixed width (any CSS length, e.g. "240px"). Default: stretches to fill container. |
 
 **Events**
@@ -1324,7 +1320,6 @@ A hybrid markdown editor built on CodeMirror 6 (via NLDDCodeMirrorElement): the 
 | `required` | `boolean` | Required state |
 | `autocomplete` | `string` | Autocomplete hint |
 | `accessible-label` | `string` | Accessible label forwarded to the inner input. Set automatically by nldd-form-field. |
-| `error-message-ids` | `string` | Ids for aria-describedby on the inner input. Set automatically by nldd-form-field. |
 | `no-spellcheck` | `boolean` | Disables browser spellchecking on the inner input |
 | `width` | `string` | Optional fixed width (any CSS length, e.g. "240px"). Default: stretches to fill container. |
 
@@ -1359,7 +1354,6 @@ A text field for a time. The value is always 24-hour `HH:mm`, which is how Dutch
 | `name` | `string` | Name for form submission. |
 | `autocomplete` | `string` | Autocomplete hint. |
 | `accessible-label` | `string` | Accessible label for the internal input. Set automatically by nldd-form-field. |
-| `error-message-ids` | `string` | Ids for aria-describedby. Set automatically by nldd-form-field. |
 | `width` | `string` | Width. By default exactly wide enough for a time plus the validation icon; 'full' fills the container; 'fit-content' drops the room for the validation icon and grows again as soon as the field turns valid or invalid; or pass your own CSS length. |
 | `translations` | `object` | Translations; unspecified keys fall back to Dutch. |
 

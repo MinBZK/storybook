@@ -32,7 +32,6 @@
  * @attr {string} name - Name for form submission.
  * @attr {string} autocomplete - Autocomplete hint.
  * @attr {string} accessible-label - Accessible label for the internal input. Set automatically by nldd-form-field.
- * @attr {string} error-message-ids - Ids for aria-describedby. Set automatically by nldd-form-field.
  * @attr {string} width - Width. By default exactly wide enough for a time plus the validation icon; 'full' fills the container; 'fit-content' drops the room for the validation icon and grows again as soon as the field turns valid or invalid; or pass your own CSS length.
  * @attr {object} translations - Translations; unspecified keys fall back to Dutch.
  *
@@ -52,6 +51,7 @@ import { reflectNonDefault } from '../../../utilities/reflect-non-default.js';
 import { timeFieldStyles } from './time-field.styles.js';
 import { timeFieldTemplate } from './time-field.template.js';
 import { nlddTimeFieldTranslations, type NLDDTimeFieldTranslations } from './time-field.i18n.js';
+import { DescribedBy } from '../../../utilities/described-by-mixin.js';
 
 /** Minutes since midnight of the last time on a day. */
 const LAST_MINUTE_OF_DAY = 23 * 60 + 59;
@@ -118,7 +118,7 @@ export function roundToStep(time: string, step: number, base = '00:00'): string 
 }
 
 @customElement('nldd-time-field')
-export class NLDDTimeField extends FormAssociated(LitElement) {
+export class NLDDTimeField extends DescribedBy(FormAssociated(LitElement)) {
 
 	static override shadowRootOptions = {
 		...LitElement.shadowRootOptions,
@@ -186,8 +186,6 @@ export class NLDDTimeField extends FormAssociated(LitElement) {
 	@property({ type: String, attribute: 'accessible-label' })
 	accessibleLabel = '';
 
-	@property({ type: String, attribute: 'error-message-ids' })
-	errorMessageIds = '';
 
 	/** Optional fixed width. Without a value the field is exactly wide enough. */
 	@property({ type: String, reflect: true })

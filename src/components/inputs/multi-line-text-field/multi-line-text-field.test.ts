@@ -158,14 +158,19 @@ describe('nldd-multi-line-text-field', () => {
 		expect(textarea.getAttribute('aria-label')).toBe('Toelichting');
 	});
 
-	it('forwards error-message-ids to inner textarea aria-describedby', async () => {
-		el = await fixture('<nldd-multi-line-text-field error-message-ids="help-1 error-1"></nldd-multi-line-text-field>');
+	it('points the inner textarea at the elements that describe it', async () => {
+		el = await fixture('<nldd-multi-line-text-field></nldd-multi-line-text-field>');
 		await waitForUpdate(el);
-		const textarea = el.shadowRoot!.querySelector('textarea')!;
-		expect(textarea.getAttribute('aria-describedby')).toBe('help-1 error-1');
+		const hint = document.createElement('p');
+		document.body.appendChild(hint);
+		(el as unknown as { describedByElements: readonly Element[] }).describedByElements = [hint];
+		await waitForUpdate(el);
+		const inner = el.shadowRoot!.querySelector('textarea')! as Element & { ariaDescribedByElements?: readonly Element[] | null };
+		expect(inner.ariaDescribedByElements).toEqual([hint]);
+		hint.remove();
 	});
 
-	it('omits aria-describedby from inner textarea when error-message-ids not set', async () => {
+	it('leaves the inner textarea undescribed when nothing describes it', async () => {
 		el = await fixture('<nldd-multi-line-text-field></nldd-multi-line-text-field>');
 		await waitForUpdate(el);
 		const textarea = el.shadowRoot!.querySelector('textarea')!;

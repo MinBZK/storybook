@@ -39,11 +39,12 @@ import { dropdownTemplate } from './dropdown.template.js';
 import { isPointerMode } from '../../../utilities/input-modality.js';
 import './../../content/icon/icon.js';
 import { setOwnedAttribute } from '../../../utilities/owned-attribute.js';
+import { DescribedBy } from '../../../utilities/described-by-mixin.js';
 
 export type DropdownSize = 'xs' | 'sm' | 'md';
 
 @customElement('nldd-dropdown')
-export class NLDDDropdown extends LitElement {
+export class NLDDDropdown extends DescribedBy(LitElement) {
 	static override styles = dropdownStyles;
 
 	/** Says this is the control an nldd-form-field is about, so the field can
@@ -229,6 +230,11 @@ export class NLDDDropdown extends LitElement {
 	 */
 	override focus(options?: FocusOptions): void {
 		this._select?.focus(options);
+	}
+
+	/** The consumer's own <select>, which it slots in the light DOM. */
+	override describedTarget(): Element | null {
+		return this.querySelector('select');
 	}
 
 	override render() {

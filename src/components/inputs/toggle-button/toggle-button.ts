@@ -30,13 +30,14 @@ import { reflectNonDefault } from '../../../utilities/reflect-non-default.js';
 import { toggleButtonStyles } from './toggle-button.styles.js';
 import { toggleButtonTemplate } from './toggle-button.template.js';
 import './../../content/icon/icon.js';
+import { DescribedBy } from '../../../utilities/described-by-mixin.js';
 
 export type ToggleButtonType = 'button' | 'checkbox' | 'radio';
 export type ToggleButtonSize = 'xs' | 'sm' | 'md' | 'lg';
 export type ToggleButtonVariant = 'text' | 'icon' | 'icon-and-text';
 
 @customElement('nldd-toggle-button')
-export class NLDDToggleButton extends FormAssociated(LitElement) {
+export class NLDDToggleButton extends DescribedBy(FormAssociated(LitElement)) {
 
 	static override styles = toggleButtonStyles;
 
@@ -190,6 +191,11 @@ export class NLDDToggleButton extends FormAssociated(LitElement) {
 		this.shadowRoot
 			?.querySelector<HTMLElement>('.toggle-button__input, button.toggle-button')
 			?.focus(options);
+	}
+
+	/** The button is the control, not the input that carries the value. */
+	override describedTarget(): Element | null {
+		return this.shadowRoot?.querySelector('button.toggle-button') ?? null;
 	}
 
 	override render() {

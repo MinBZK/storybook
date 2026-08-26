@@ -192,14 +192,19 @@ describe('nldd-password-field', () => {
 		expect(el.getAttribute('aria-describedby')).toBe('help-1 error-1');
 	});
 
-	it('forwards error-message-ids to inner input aria-describedby', async () => {
-		el = await fixture('<nldd-password-field error-message-ids="help-1 error-1"></nldd-password-field>');
+	it('points the inner input at the elements that describe it', async () => {
+		el = await fixture('<nldd-password-field></nldd-password-field>');
 		await waitForUpdate(el);
-		const input = el.shadowRoot!.querySelector('input')!;
-		expect(input.getAttribute('aria-describedby')).toBe('help-1 error-1');
+		const hint = document.createElement('p');
+		document.body.appendChild(hint);
+		(el as unknown as { describedByElements: readonly Element[] }).describedByElements = [hint];
+		await waitForUpdate(el);
+		const inner = el.shadowRoot!.querySelector('input')! as Element & { ariaDescribedByElements?: readonly Element[] | null };
+		expect(inner.ariaDescribedByElements).toEqual([hint]);
+		hint.remove();
 	});
 
-	it('omits aria-describedby from inner input when error-message-ids not set', async () => {
+	it('leaves the inner input undescribed when nothing describes it', async () => {
 		el = await fixture('<nldd-password-field></nldd-password-field>');
 		await waitForUpdate(el);
 		const input = el.shadowRoot!.querySelector('input')!;

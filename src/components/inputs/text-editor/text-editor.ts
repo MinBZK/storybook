@@ -92,6 +92,7 @@ import { textEditorStyles } from './text-editor.styles.js';
 import { textEditorTemplate } from './text-editor.template.js';
 import { stripSentinels, docToClean } from './text-editor.annotation-sentinels.js';
 import { nlddTextEditorTranslations, type NLDDTextEditorTranslations } from './text-editor.i18n.js';
+import { DescribedBy } from '../../../utilities/described-by-mixin.js';
 
 export type ResizeMode = 'none' | 'vertical' | 'auto';
 export type TextEditorVariant = 'input-field' | 'simple';
@@ -100,7 +101,7 @@ export type { MentionCandidate, MentionSource, MentionInsertedDetail } from './t
 export type { Annotation } from './text-editor.annotations.js';
 
 @customElement('nldd-text-editor')
-export class NLDDTextEditor extends FormAssociated(NLDDCodeMirrorElement) {
+export class NLDDTextEditor extends DescribedBy(FormAssociated(NLDDCodeMirrorElement)) {
 
 	static override shadowRootOptions = {
 		...LitElement.shadowRootOptions,
@@ -765,6 +766,11 @@ export class NLDDTextEditor extends FormAssociated(NLDDCodeMirrorElement) {
 
 	formStateRestoreCallback(state: File | string | FormData | null): void {
 		if (typeof state === 'string') this.value = state;
+	}
+
+	/** CodeMirror builds the textbox; the host is only its container. */
+	override describedTarget(): Element | null {
+		return this.shadowRoot?.querySelector('.cm-content') ?? null;
 	}
 
 	override render() {

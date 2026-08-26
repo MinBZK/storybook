@@ -42,7 +42,6 @@ export function multiLineTextFieldTemplate(component: NLDDMultiLineTextField): T
 				autocomplete=${component.autocomplete || nothing}
 				spellcheck=${component.noSpellcheck ? 'false' : 'true'}
 				aria-label=${component.accessibleLabel || nothing}
-				aria-describedby=${component.errorMessageIds || nothing}
 				aria-invalid=${component.invalid ? 'true' : nothing}
 				@input=${component._handleInput}
 				@change=${component._handleChange}

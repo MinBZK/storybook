@@ -42,6 +42,7 @@
 import { LitElement } from 'lit';
 import { customElement, property, state } from 'lit/decorators.js';
 import { setOwnedAttribute } from '../../../utilities/owned-attribute.js';
+import { applyDescribedBy, type DescribedElement } from '../../../utilities/described-by-mixin.js';
 import {
 	formFieldStyles,
 	formFieldHelpTextStyles,
@@ -235,11 +236,6 @@ export class NLDDFormField extends LitElement {
 
 		this._applyAccessibleLabel(input);
 
-		// Ensure each help text element has an id so it can be referenced in aria-describedby
-		Array.from(this.children)
-			.filter(el => el.tagName.toLowerCase() === 'nldd-form-field-help-text')
-			.forEach(el => { if (!el.id) el.id = generateId(); });
-
 		this._observer = new MutationObserver(() => this._syncErrorText());
 		this._observer.observe(input, {
 			attributes: true,
@@ -313,59 +309,52 @@ export class NLDDFormField extends LitElement {
 	}
 
 	/**
-	 * Reads `invalid` and `error-message` from the input and toggles
-	 * the `invalid` attribute on the referenced nldd-form-field-error-text elements.
-	 * Also sets `aria-describedby` on the input to reference visible error texts.
+	 * Reads `invalid` and `error-message` from the input, shows the error texts
+	 * it names, and hands the control the elements that describe it.
 	 *
-	 * Note: this mechanism relies on the slotted input reflecting an `invalid`
-	 * attribute, which nldd-text-field and nldd-password-field do. Plain native
-	 * `<input>` elements use constraint validation (validity.valid, the `invalid`
-	 * event) instead — support for native inputs is a known limitation and
-	 * tracked as a follow-up.
+	 * Elements and not ids. An IDREF resolves inside the tree of the element
+	 * that carries it, so an id written here cannot be found from inside a
+	 * component's shadow root: the attribute lands, the id is right, and the
+	 * description comes out empty. A control that renders its own input takes
+	 * `describedByElements` and puts the references where they belong; anything
+	 * that is the control itself, a native input or a host with a role of its
+	 * own, is pointed at directly.
+	 *
+	 * This relies on the control reflecting an `invalid` attribute. A plain
+	 * native `<input>` uses constraint validation instead, which is a known
+	 * limitation and tracked as a follow-up.
 	 */
 	private _syncErrorText() {
 		const input = this._findInput();
 		if (!input) return;
 
-		const isCustomInput = 'inputId' in input;
 		const isInvalid = input.hasAttribute('invalid');
 		const referencedIds = (input.getAttribute('error-message') ?? '')
 			.split(' ')
 			.filter(Boolean);
 
-		const allErrorTexts = Array.from(this.children)
-			.filter(el => el.tagName.toLowerCase() === 'nldd-form-field-error-text');
+		const children = Array.from(this.children);
+		const helpTexts = children
+			.filter(el => el.tagName.toLowerCase() === 'nldd-form-field-help-text');
 
-		const helpIds = Array.from(this.children)
-			.filter(el => el.tagName.toLowerCase() === 'nldd-form-field-help-text' && el.id)
-			.map(el => el.id);
-
-		const visibleErrorIds: string[] = [];
-
-		for (const el of allErrorTexts) {
+		const visibleErrors: Element[] = [];
+		for (const el of children) {
+			if (el.tagName.toLowerCase() !== 'nldd-form-field-error-text') continue;
 			const shouldShow = isInvalid && referencedIds.includes(el.id);
 			el.toggleAttribute('invalid', shouldShow);
-			if (shouldShow && el.id) visibleErrorIds.push(el.id);
+			if (shouldShow) visibleErrors.push(el);
 		}
 
-		// Prepend help text IDs so they are announced first, then error IDs.
-		const describedByIds = [...helpIds, ...visibleErrorIds];
-		const describedByValue = describedByIds.join(' ');
+		// Help first, so it is announced before the errors.
+		const describedBy = [...helpTexts, ...visibleErrors];
 
-		if (isCustomInput) {
-			// For custom elements (nldd-text-field, nldd-password-field), set error-message-ids
-			// so they can forward it to the inner <input aria-describedby>. IDs do not cross
-			// shadow DOM boundaries so setting aria-describedby on the host is not sufficient.
-			(input as unknown as HTMLElement & { errorMessageIds: string }).errorMessageIds = describedByValue;
+		if ('describedByElements' in input) {
+			(input as unknown as DescribedElement).describedByElements = describedBy;
 		} else {
-			if (describedByIds.length > 0) {
-				input.setAttribute('aria-describedby', describedByValue);
-			} else {
-				input.removeAttribute('aria-describedby');
-			}
+			applyDescribedBy(input, describedBy);
 		}
 
-		this._hasErrors = visibleErrorIds.length > 0;
+		this._hasErrors = visibleErrors.length > 0;
 	}
 }
 

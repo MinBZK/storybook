@@ -62,11 +62,12 @@ import '../../actions/menu/menu.js';
 import '../../actions/icon-button/icon-button.js';
 import '../../content/icon/icon.js';
 import { submitOnEnter } from '../../../utilities/implicit-submission.js';
+import { DescribedBy } from '../../../utilities/described-by-mixin.js';
 
 export type ComboBoxSize = 'sm' | 'md';
 
 @customElement('nldd-combo-box')
-export class NLDDComboBox extends FormAssociated(LitElement) {
+export class NLDDComboBox extends DescribedBy(FormAssociated(LitElement)) {
 
 	static override styles = comboBoxStyles;
 

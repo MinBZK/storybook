@@ -25,9 +25,10 @@ import { FormAssociated, type FormValue } from '../../../utilities/form-associat
 import { radioButtonFieldStyles } from './radio-button-field.styles.js';
 import { radioButtonFieldTemplate } from './radio-button-field.template.js';
 import type { NLDDRadioButton } from '../radio-button/radio-button.js';
+import { DescribedBy } from '../../../utilities/described-by-mixin.js';
 
 @customElement('nldd-radio-button-field')
-export class NLDDRadioButtonField extends FormAssociated(LitElement) {
+export class NLDDRadioButtonField extends DescribedBy(FormAssociated(LitElement)) {
 
 	static override styles = radioButtonFieldStyles;
 
@@ -103,6 +104,11 @@ export class NLDDRadioButtonField extends FormAssociated(LitElement) {
 	 */
 	override focus(options?: FocusOptions): void {
 		this.shadowRoot?.querySelector<NLDDRadioButton>('nldd-radio-button')?.focus(options);
+	}
+
+	/** The radio button it renders knows which element inside itself is the control. */
+	override describedTarget(): Element | null {
+		return this.shadowRoot?.querySelector('nldd-radio-button') ?? null;
 	}
 
 	override render() {

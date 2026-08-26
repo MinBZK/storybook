@@ -18,7 +18,6 @@
  * @attr {boolean} required - Required state
  * @attr {string} autocomplete - Autocomplete hint
  * @attr {string} accessible-label - Accessible label forwarded to the inner input. Set automatically by nldd-form-field.
- * @attr {string} error-message-ids - Ids for aria-describedby on the inner input. Set automatically by nldd-form-field.
  * @attr {boolean} no-spellcheck - Disables browser spellchecking on the inner input
  * @attr {string} width - Optional fixed width (any CSS length, e.g. "240px"). Default: stretches to fill container.
  *
@@ -32,6 +31,7 @@ import { submitOnEnter } from '../../../utilities/implicit-submission.js';
 import { reflectNonDefault } from '../../../utilities/reflect-non-default.js';
 import { textFieldStyles } from './text-field.styles.js';
 import { textFieldTemplate } from './text-field.template.js';
+import { DescribedBy } from '../../../utilities/described-by-mixin.js';
 
 export type InputType = 'text' | 'email' | 'tel' | 'url';
 
@@ -54,7 +54,7 @@ const KEYBOARD_IMPLIED_BY_TYPE: Partial<Record<InputType, Keyboard>> = {
 };
 
 @customElement('nldd-text-field')
-export class NLDDTextField extends FormAssociated(LitElement) {
+export class NLDDTextField extends DescribedBy(FormAssociated(LitElement)) {
 
 	static override shadowRootOptions = {
 		...LitElement.shadowRootOptions,
@@ -122,8 +122,6 @@ export class NLDDTextField extends FormAssociated(LitElement) {
 	@property({ type: String, attribute: 'accessible-label' })
 	accessibleLabel = '';
 
-	@property({ type: String, attribute: 'error-message-ids' })
-	errorMessageIds = '';
 
 	@property({ type: Boolean, reflect: true, attribute: 'no-spellcheck' })
 	noSpellcheck = false;

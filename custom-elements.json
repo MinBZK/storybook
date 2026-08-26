@@ -504,6 +504,33 @@
               "description": "Delegates focus to the inner `<button>` (or `<a>` when `href` is set), so\nconsumers can call `buttonEl.focus()` without reaching into shadow DOM."
             },
             {
+              "kind": "method",
+              "name": "describedTarget",
+              "return": {
+                "type": {
+                  "text": "Element | null"
+                }
+              },
+              "description": "The button or link it renders, not the host around it.",
+              "inheritedFrom": {
+                "name": "DescribedBy",
+                "module": "src/utilities/described-by-mixin.ts"
+              }
+            },
+            {
+              "kind": "field",
+              "name": "describedByElements",
+              "type": {
+                "text": "readonly Element[]"
+              },
+              "default": "[]",
+              "description": "Set by nldd-form-field. A consumer never writes this.",
+              "inheritedFrom": {
+                "name": "DescribedBy",
+                "module": "src/utilities/described-by-mixin.ts"
+              }
+            },
+            {
               "kind": "field",
               "name": "translations",
               "type": {
@@ -739,6 +766,10 @@
             }
           ],
           "mixins": [
+            {
+              "name": "DescribedBy",
+              "module": "/src/utilities/described-by-mixin.js"
+            },
             {
               "name": "withTranslations",
               "module": "/src/utilities/with-translations.js"
@@ -6905,6 +6936,33 @@
               "description": "Delegates focus to the inner `<nldd-checkbox>`, which in turn focuses its\nnative input. Lets consumers call `checkboxFieldEl.focus()` without\nreaching into shadow DOM."
             },
             {
+              "kind": "method",
+              "name": "describedTarget",
+              "return": {
+                "type": {
+                  "text": "Element | null"
+                }
+              },
+              "description": "The checkbox it renders knows which element inside itself is the control.",
+              "inheritedFrom": {
+                "name": "DescribedBy",
+                "module": "src/utilities/described-by-mixin.ts"
+              }
+            },
+            {
+              "kind": "field",
+              "name": "describedByElements",
+              "type": {
+                "text": "readonly Element[]"
+              },
+              "default": "[]",
+              "description": "Set by nldd-form-field. A consumer never writes this.",
+              "inheritedFrom": {
+                "name": "DescribedBy",
+                "module": "src/utilities/described-by-mixin.ts"
+              }
+            },
+            {
               "kind": "field",
               "name": "formAssociated",
               "type": {
@@ -7039,6 +7097,10 @@
             }
           ],
           "mixins": [
+            {
+              "name": "DescribedBy",
+              "module": "/src/utilities/described-by-mixin.js"
+            },
             {
               "name": "FormAssociated",
               "module": "/src/utilities/form-associated-mixin.js"
@@ -7240,6 +7302,33 @@
             },
             {
               "kind": "field",
+              "name": "describedByElements",
+              "type": {
+                "text": "readonly Element[]"
+              },
+              "default": "[]",
+              "description": "Set by nldd-form-field. A consumer never writes this.",
+              "inheritedFrom": {
+                "name": "DescribedBy",
+                "module": "src/utilities/described-by-mixin.ts"
+              }
+            },
+            {
+              "kind": "method",
+              "name": "describedTarget",
+              "return": {
+                "type": {
+                  "text": "Element | null"
+                }
+              },
+              "description": "The element the description belongs to. Override where it differs.\n\nPublic rather than protected because TypeScript refuses to emit a\ndeclaration for an anonymous class with protected members, and a mixin\nreturns exactly that. Same reason `formValue()` is public in\nFormAssociated.",
+              "inheritedFrom": {
+                "name": "DescribedBy",
+                "module": "src/utilities/described-by-mixin.ts"
+              }
+            },
+            {
+              "kind": "field",
               "name": "formAssociated",
               "type": {
                 "text": "boolean"
@@ -7391,6 +7480,10 @@
             }
           ],
           "mixins": [
+            {
+              "name": "DescribedBy",
+              "module": "/src/utilities/described-by-mixin.js"
+            },
             {
               "name": "FormAssociated",
               "module": "/src/utilities/form-associated-mixin.js"
@@ -7628,6 +7721,33 @@
               ]
             },
             {
+              "kind": "method",
+              "name": "describedTarget",
+              "return": {
+                "type": {
+                  "text": "Element | null"
+                }
+              },
+              "description": "CodeMirror builds the textbox; the host is only its container.",
+              "inheritedFrom": {
+                "name": "DescribedBy",
+                "module": "src/utilities/described-by-mixin.ts"
+              }
+            },
+            {
+              "kind": "field",
+              "name": "describedByElements",
+              "type": {
+                "text": "readonly Element[]"
+              },
+              "default": "[]",
+              "description": "Set by nldd-form-field. A consumer never writes this.",
+              "inheritedFrom": {
+                "name": "DescribedBy",
+                "module": "src/utilities/described-by-mixin.ts"
+              }
+            },
+            {
               "kind": "field",
               "name": "formAssociated",
               "type": {
@@ -7838,6 +7958,10 @@
             }
           ],
           "mixins": [
+            {
+              "name": "DescribedBy",
+              "module": "/src/utilities/described-by-mixin.js"
+            },
             {
               "name": "FormAssociated",
               "module": "/src/utilities/form-associated-mixin.js"
@@ -8133,6 +8257,33 @@
             },
             {
               "kind": "field",
+              "name": "describedByElements",
+              "type": {
+                "text": "readonly Element[]"
+              },
+              "default": "[]",
+              "description": "Set by nldd-form-field. A consumer never writes this.",
+              "inheritedFrom": {
+                "name": "DescribedBy",
+                "module": "src/utilities/described-by-mixin.ts"
+              }
+            },
+            {
+              "kind": "method",
+              "name": "describedTarget",
+              "return": {
+                "type": {
+                  "text": "Element | null"
+                }
+              },
+              "description": "The element the description belongs to. Override where it differs.\n\nPublic rather than protected because TypeScript refuses to emit a\ndeclaration for an anonymous class with protected members, and a mixin\nreturns exactly that. Same reason `formValue()` is public in\nFormAssociated.",
+              "inheritedFrom": {
+                "name": "DescribedBy",
+                "module": "src/utilities/described-by-mixin.ts"
+              }
+            },
+            {
+              "kind": "field",
               "name": "formAssociated",
               "type": {
                 "text": "boolean"
@@ -8346,6 +8497,10 @@
             }
           ],
           "mixins": [
+            {
+              "name": "DescribedBy",
+              "module": "/src/utilities/described-by-mixin.js"
+            },
             {
               "name": "FormAssociated",
               "module": "/src/utilities/form-associated-mixin.js"
@@ -8579,15 +8734,6 @@
             },
             {
               "kind": "field",
-              "name": "errorMessageIds",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "attribute": "error-message-ids"
-            },
-            {
-              "kind": "field",
               "name": "width",
               "type": {
                 "text": "string"
@@ -8645,6 +8791,33 @@
               "inheritedFrom": {
                 "name": "FormAssociated",
                 "module": "src/utilities/form-associated-mixin.ts"
+              }
+            },
+            {
+              "kind": "field",
+              "name": "describedByElements",
+              "type": {
+                "text": "readonly Element[]"
+              },
+              "default": "[]",
+              "description": "Set by nldd-form-field. A consumer never writes this.",
+              "inheritedFrom": {
+                "name": "DescribedBy",
+                "module": "src/utilities/described-by-mixin.ts"
+              }
+            },
+            {
+              "kind": "method",
+              "name": "describedTarget",
+              "return": {
+                "type": {
+                  "text": "Element | null"
+                }
+              },
+              "description": "The element the description belongs to. Override where it differs.\n\nPublic rather than protected because TypeScript refuses to emit a\ndeclaration for an anonymous class with protected members, and a mixin\nreturns exactly that. Same reason `formValue()` is public in\nFormAssociated.",
+              "inheritedFrom": {
+                "name": "DescribedBy",
+                "module": "src/utilities/described-by-mixin.ts"
               }
             },
             {
@@ -8875,15 +9048,6 @@
               "fieldName": "accessibleLabel"
             },
             {
-              "name": "error-message-ids",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "fieldName": "errorMessageIds",
-              "description": "Ids for aria-describedby. Set automatically by nldd-form-field."
-            },
-            {
               "name": "width",
               "type": {
                 "text": "string"
@@ -8903,6 +9067,10 @@
             }
           ],
           "mixins": [
+            {
+              "name": "DescribedBy",
+              "module": "/src/utilities/described-by-mixin.js"
+            },
             {
               "name": "FormAssociated",
               "module": "/src/utilities/form-associated-mixin.js"
@@ -9082,6 +9250,33 @@
               "description": "Focus lands on the day carrying the roving tabindex - the chosen date, or\ntoday when there is none. Without this an overlay that focuses the calendar\nwould land on its host, which forwards nowhere, leaving the arrow keys dead\nuntil the user has tabbed into the grid themselves."
             },
             {
+              "kind": "method",
+              "name": "describedTarget",
+              "return": {
+                "type": {
+                  "text": "Element | null"
+                }
+              },
+              "description": "The grid is the widget; focus roves over the days inside it.",
+              "inheritedFrom": {
+                "name": "DescribedBy",
+                "module": "src/utilities/described-by-mixin.ts"
+              }
+            },
+            {
+              "kind": "field",
+              "name": "describedByElements",
+              "type": {
+                "text": "readonly Element[]"
+              },
+              "default": "[]",
+              "description": "Set by nldd-form-field. A consumer never writes this.",
+              "inheritedFrom": {
+                "name": "DescribedBy",
+                "module": "src/utilities/described-by-mixin.ts"
+              }
+            },
+            {
               "kind": "field",
               "name": "translations",
               "type": {
@@ -9211,6 +9406,10 @@
             }
           ],
           "mixins": [
+            {
+              "name": "DescribedBy",
+              "module": "/src/utilities/described-by-mixin.js"
+            },
             {
               "name": "withTranslations",
               "module": "/src/utilities/with-translations.js"
@@ -9351,6 +9550,33 @@
                 }
               ],
               "description": "Delegates focus to the slotted `<select>`. The wrapper itself is not\nfocusable, so without this a label pointing at the dropdown has nowhere\nto send focus."
+            },
+            {
+              "kind": "method",
+              "name": "describedTarget",
+              "return": {
+                "type": {
+                  "text": "Element | null"
+                }
+              },
+              "description": "The consumer's own <select>, which it slots in the light DOM.",
+              "inheritedFrom": {
+                "name": "DescribedBy",
+                "module": "src/utilities/described-by-mixin.ts"
+              }
+            },
+            {
+              "kind": "field",
+              "name": "describedByElements",
+              "type": {
+                "text": "readonly Element[]"
+              },
+              "default": "[]",
+              "description": "Set by nldd-form-field. A consumer never writes this.",
+              "inheritedFrom": {
+                "name": "DescribedBy",
+                "module": "src/utilities/described-by-mixin.ts"
+              }
             }
           ],
           "attributes": [
@@ -9416,6 +9642,12 @@
               "default": "''",
               "description": "Accessible name, forwarded as aria-label to the slotted select",
               "fieldName": "accessibleLabel"
+            }
+          ],
+          "mixins": [
+            {
+              "name": "DescribedBy",
+              "module": "/src/utilities/described-by-mixin.js"
             }
           ],
           "superclass": {
@@ -9524,15 +9756,6 @@
               },
               "default": "''",
               "attribute": "input-id"
-            },
-            {
-              "kind": "field",
-              "name": "errorMessageIds",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "attribute": "error-message-ids"
             },
             {
               "kind": "field",
@@ -9658,6 +9881,33 @@
               "description": "Delegates focus to the choose button rather than the hidden input: an input\nthat is `display: none` cannot take focus, and the button is what a user\nsees as the control."
             },
             {
+              "kind": "method",
+              "name": "describedTarget",
+              "return": {
+                "type": {
+                  "text": "Element | null"
+                }
+              },
+              "description": "The file input is display:none and therefore not in the accessibility tree.\nWhat a screen reader meets is the button, so the description goes there.",
+              "inheritedFrom": {
+                "name": "DescribedBy",
+                "module": "src/utilities/described-by-mixin.ts"
+              }
+            },
+            {
+              "kind": "field",
+              "name": "describedByElements",
+              "type": {
+                "text": "readonly Element[]"
+              },
+              "default": "[]",
+              "description": "Set by nldd-form-field. A consumer never writes this.",
+              "inheritedFrom": {
+                "name": "DescribedBy",
+                "module": "src/utilities/described-by-mixin.ts"
+              }
+            },
+            {
               "kind": "field",
               "name": "formAssociated",
               "type": {
@@ -9768,15 +10018,6 @@
               "description": "Sets the id on the native input. Set automatically by nldd-form-field."
             },
             {
-              "name": "error-message-ids",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "fieldName": "errorMessageIds",
-              "description": "Ids for aria-describedby on the inner input. Set automatically by nldd-form-field."
-            },
-            {
               "name": "valid",
               "type": {
                 "text": "boolean"
@@ -9832,6 +10073,10 @@
             }
           ],
           "mixins": [
+            {
+              "name": "DescribedBy",
+              "module": "/src/utilities/described-by-mixin.js"
+            },
             {
               "name": "FormAssociated",
               "module": "/src/utilities/form-associated-mixin.js"
@@ -10050,15 +10295,6 @@
             },
             {
               "kind": "field",
-              "name": "errorMessageIds",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "attribute": "error-message-ids"
-            },
-            {
-              "kind": "field",
               "name": "noSpellcheck",
               "type": {
                 "text": "boolean"
@@ -10117,6 +10353,33 @@
                   }
                 }
               ]
+            },
+            {
+              "kind": "field",
+              "name": "describedByElements",
+              "type": {
+                "text": "readonly Element[]"
+              },
+              "default": "[]",
+              "description": "Set by nldd-form-field. A consumer never writes this.",
+              "inheritedFrom": {
+                "name": "DescribedBy",
+                "module": "src/utilities/described-by-mixin.ts"
+              }
+            },
+            {
+              "kind": "method",
+              "name": "describedTarget",
+              "return": {
+                "type": {
+                  "text": "Element | null"
+                }
+              },
+              "description": "The element the description belongs to. Override where it differs.\n\nPublic rather than protected because TypeScript refuses to emit a\ndeclaration for an anonymous class with protected members, and a mixin\nreturns exactly that. Same reason `formValue()` is public in\nFormAssociated.",
+              "inheritedFrom": {
+                "name": "DescribedBy",
+                "module": "src/utilities/described-by-mixin.ts"
+              }
             },
             {
               "kind": "field",
@@ -10344,15 +10607,6 @@
               "fieldName": "accessibleLabel"
             },
             {
-              "name": "error-message-ids",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "fieldName": "errorMessageIds",
-              "description": "Ids for aria-describedby on the inner textarea. Set automatically by nldd-form-field."
-            },
-            {
               "name": "no-spellcheck",
               "type": {
                 "text": "boolean"
@@ -10372,6 +10626,10 @@
             }
           ],
           "mixins": [
+            {
+              "name": "DescribedBy",
+              "module": "/src/utilities/described-by-mixin.js"
+            },
             {
               "name": "FormAssociated",
               "module": "/src/utilities/form-associated-mixin.js"
@@ -10614,6 +10872,33 @@
             },
             {
               "kind": "field",
+              "name": "describedByElements",
+              "type": {
+                "text": "readonly Element[]"
+              },
+              "default": "[]",
+              "description": "Set by nldd-form-field. A consumer never writes this.",
+              "inheritedFrom": {
+                "name": "DescribedBy",
+                "module": "src/utilities/described-by-mixin.ts"
+              }
+            },
+            {
+              "kind": "method",
+              "name": "describedTarget",
+              "return": {
+                "type": {
+                  "text": "Element | null"
+                }
+              },
+              "description": "The element the description belongs to. Override where it differs.\n\nPublic rather than protected because TypeScript refuses to emit a\ndeclaration for an anonymous class with protected members, and a mixin\nreturns exactly that. Same reason `formValue()` is public in\nFormAssociated.",
+              "inheritedFrom": {
+                "name": "DescribedBy",
+                "module": "src/utilities/described-by-mixin.ts"
+              }
+            },
+            {
+              "kind": "field",
               "name": "formAssociated",
               "type": {
                 "text": "boolean"
@@ -10793,6 +11078,10 @@
             }
           ],
           "mixins": [
+            {
+              "name": "DescribedBy",
+              "module": "/src/utilities/described-by-mixin.js"
+            },
             {
               "name": "FormAssociated",
               "module": "/src/utilities/form-associated-mixin.js"
@@ -11032,15 +11321,6 @@
             },
             {
               "kind": "field",
-              "name": "errorMessageIds",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "attribute": "error-message-ids"
-            },
-            {
-              "kind": "field",
               "name": "width",
               "type": {
                 "text": "string"
@@ -11108,6 +11388,33 @@
                 "type": {
                   "text": "void"
                 }
+              }
+            },
+            {
+              "kind": "field",
+              "name": "describedByElements",
+              "type": {
+                "text": "readonly Element[]"
+              },
+              "default": "[]",
+              "description": "Set by nldd-form-field. A consumer never writes this.",
+              "inheritedFrom": {
+                "name": "DescribedBy",
+                "module": "src/utilities/described-by-mixin.ts"
+              }
+            },
+            {
+              "kind": "method",
+              "name": "describedTarget",
+              "return": {
+                "type": {
+                  "text": "Element | null"
+                }
+              },
+              "description": "The element the description belongs to. Override where it differs.\n\nPublic rather than protected because TypeScript refuses to emit a\ndeclaration for an anonymous class with protected members, and a mixin\nreturns exactly that. Same reason `formValue()` is public in\nFormAssociated.",
+              "inheritedFrom": {
+                "name": "DescribedBy",
+                "module": "src/utilities/described-by-mixin.ts"
               }
             },
             {
@@ -11347,15 +11654,6 @@
               "fieldName": "accessibleLabel"
             },
             {
-              "name": "error-message-ids",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "fieldName": "errorMessageIds",
-              "description": "Ids for aria-describedby on the inner input. Set automatically by nldd-form-field."
-            },
-            {
               "name": "width",
               "type": {
                 "text": "string"
@@ -11366,6 +11664,10 @@
             }
           ],
           "mixins": [
+            {
+              "name": "DescribedBy",
+              "module": "/src/utilities/described-by-mixin.js"
+            },
             {
               "name": "FormAssociated",
               "module": "/src/utilities/form-associated-mixin.js"
@@ -11536,6 +11838,33 @@
               "description": "Delegates focus to the inner `<nldd-radio-button>`, which in turn focuses\nits native input. Lets consumers call `radioFieldEl.focus()` without\nreaching into shadow DOM."
             },
             {
+              "kind": "method",
+              "name": "describedTarget",
+              "return": {
+                "type": {
+                  "text": "Element | null"
+                }
+              },
+              "description": "The radio button it renders knows which element inside itself is the control.",
+              "inheritedFrom": {
+                "name": "DescribedBy",
+                "module": "src/utilities/described-by-mixin.ts"
+              }
+            },
+            {
+              "kind": "field",
+              "name": "describedByElements",
+              "type": {
+                "text": "readonly Element[]"
+              },
+              "default": "[]",
+              "description": "Set by nldd-form-field. A consumer never writes this.",
+              "inheritedFrom": {
+                "name": "DescribedBy",
+                "module": "src/utilities/described-by-mixin.ts"
+              }
+            },
+            {
               "kind": "field",
               "name": "formAssociated",
               "type": {
@@ -11670,6 +11999,10 @@
             }
           ],
           "mixins": [
+            {
+              "name": "DescribedBy",
+              "module": "/src/utilities/described-by-mixin.js"
+            },
             {
               "name": "FormAssociated",
               "module": "/src/utilities/form-associated-mixin.js"
@@ -12044,6 +12377,33 @@
             },
             {
               "kind": "field",
+              "name": "describedByElements",
+              "type": {
+                "text": "readonly Element[]"
+              },
+              "default": "[]",
+              "description": "Set by nldd-form-field. A consumer never writes this.",
+              "inheritedFrom": {
+                "name": "DescribedBy",
+                "module": "src/utilities/described-by-mixin.ts"
+              }
+            },
+            {
+              "kind": "method",
+              "name": "describedTarget",
+              "return": {
+                "type": {
+                  "text": "Element | null"
+                }
+              },
+              "description": "The element the description belongs to. Override where it differs.\n\nPublic rather than protected because TypeScript refuses to emit a\ndeclaration for an anonymous class with protected members, and a mixin\nreturns exactly that. Same reason `formValue()` is public in\nFormAssociated.",
+              "inheritedFrom": {
+                "name": "DescribedBy",
+                "module": "src/utilities/described-by-mixin.ts"
+              }
+            },
+            {
+              "kind": "field",
               "name": "formAssociated",
               "type": {
                 "text": "boolean"
@@ -12195,6 +12555,10 @@
             }
           ],
           "mixins": [
+            {
+              "name": "DescribedBy",
+              "module": "/src/utilities/described-by-mixin.js"
+            },
             {
               "name": "FormAssociated",
               "module": "/src/utilities/form-associated-mixin.js"
@@ -12416,6 +12780,33 @@
             },
             {
               "kind": "field",
+              "name": "describedByElements",
+              "type": {
+                "text": "readonly Element[]"
+              },
+              "default": "[]",
+              "description": "Set by nldd-form-field. A consumer never writes this.",
+              "inheritedFrom": {
+                "name": "DescribedBy",
+                "module": "src/utilities/described-by-mixin.ts"
+              }
+            },
+            {
+              "kind": "method",
+              "name": "describedTarget",
+              "return": {
+                "type": {
+                  "text": "Element | null"
+                }
+              },
+              "description": "The element the description belongs to. Override where it differs.\n\nPublic rather than protected because TypeScript refuses to emit a\ndeclaration for an anonymous class with protected members, and a mixin\nreturns exactly that. Same reason `formValue()` is public in\nFormAssociated.",
+              "inheritedFrom": {
+                "name": "DescribedBy",
+                "module": "src/utilities/described-by-mixin.ts"
+              }
+            },
+            {
+              "kind": "field",
               "name": "formAssociated",
               "type": {
                 "text": "boolean"
@@ -12593,6 +12984,10 @@
             }
           ],
           "mixins": [
+            {
+              "name": "DescribedBy",
+              "module": "/src/utilities/described-by-mixin.js"
+            },
             {
               "name": "FormAssociated",
               "module": "/src/utilities/form-associated-mixin.js"
@@ -13403,6 +13798,33 @@
               "description": "Delegates focus to the spinbutton, the element that carries the tabindex\nand the keyboard handling. The two icon buttons are `tabindex=\"-1\"` on\npurpose, so the stepper is one stop rather than three. Does nothing while\ndisabled, because the spinbutton drops its tabindex then."
             },
             {
+              "kind": "method",
+              "name": "describedTarget",
+              "return": {
+                "type": {
+                  "text": "Element | null"
+                }
+              },
+              "description": "The spinbutton is the control; the buttons beside it are shortcuts to it.",
+              "inheritedFrom": {
+                "name": "DescribedBy",
+                "module": "src/utilities/described-by-mixin.ts"
+              }
+            },
+            {
+              "kind": "field",
+              "name": "describedByElements",
+              "type": {
+                "text": "readonly Element[]"
+              },
+              "default": "[]",
+              "description": "Set by nldd-form-field. A consumer never writes this.",
+              "inheritedFrom": {
+                "name": "DescribedBy",
+                "module": "src/utilities/described-by-mixin.ts"
+              }
+            },
+            {
               "kind": "field",
               "name": "formAssociated",
               "type": {
@@ -13562,6 +13984,10 @@
           ],
           "mixins": [
             {
+              "name": "DescribedBy",
+              "module": "/src/utilities/described-by-mixin.js"
+            },
+            {
               "name": "FormAssociated",
               "module": "/src/utilities/form-associated-mixin.js"
             }
@@ -13677,6 +14103,33 @@
                 }
               ],
               "description": "Delegates focus to the inner `<nldd-switch>`, which in turn focuses its\nnative checkbox input. Lets consumers call `switchFieldEl.focus()` without\nreaching into shadow DOM."
+            },
+            {
+              "kind": "method",
+              "name": "describedTarget",
+              "return": {
+                "type": {
+                  "text": "Element | null"
+                }
+              },
+              "description": "The switch it renders knows which element inside itself is the control.",
+              "inheritedFrom": {
+                "name": "DescribedBy",
+                "module": "src/utilities/described-by-mixin.ts"
+              }
+            },
+            {
+              "kind": "field",
+              "name": "describedByElements",
+              "type": {
+                "text": "readonly Element[]"
+              },
+              "default": "[]",
+              "description": "Set by nldd-form-field. A consumer never writes this.",
+              "inheritedFrom": {
+                "name": "DescribedBy",
+                "module": "src/utilities/described-by-mixin.ts"
+              }
             }
           ],
           "events": [
@@ -13730,6 +14183,12 @@
               "default": "''",
               "fieldName": "label",
               "description": "Label text for the switch"
+            }
+          ],
+          "mixins": [
+            {
+              "name": "DescribedBy",
+              "module": "/src/utilities/described-by-mixin.js"
             }
           ],
           "superclass": {
@@ -13918,6 +14377,33 @@
             },
             {
               "kind": "field",
+              "name": "describedByElements",
+              "type": {
+                "text": "readonly Element[]"
+              },
+              "default": "[]",
+              "description": "Set by nldd-form-field. A consumer never writes this.",
+              "inheritedFrom": {
+                "name": "DescribedBy",
+                "module": "src/utilities/described-by-mixin.ts"
+              }
+            },
+            {
+              "kind": "method",
+              "name": "describedTarget",
+              "return": {
+                "type": {
+                  "text": "Element | null"
+                }
+              },
+              "description": "The element the description belongs to. Override where it differs.\n\nPublic rather than protected because TypeScript refuses to emit a\ndeclaration for an anonymous class with protected members, and a mixin\nreturns exactly that. Same reason `formValue()` is public in\nFormAssociated.",
+              "inheritedFrom": {
+                "name": "DescribedBy",
+                "module": "src/utilities/described-by-mixin.ts"
+              }
+            },
+            {
+              "kind": "field",
               "name": "formAssociated",
               "type": {
                 "text": "boolean"
@@ -14060,6 +14546,10 @@
             }
           ],
           "mixins": [
+            {
+              "name": "DescribedBy",
+              "module": "/src/utilities/described-by-mixin.js"
+            },
             {
               "name": "FormAssociated",
               "module": "/src/utilities/form-associated-mixin.js"
@@ -15903,6 +16393,33 @@
               ]
             },
             {
+              "kind": "method",
+              "name": "describedTarget",
+              "return": {
+                "type": {
+                  "text": "Element | null"
+                }
+              },
+              "description": "CodeMirror builds the textbox; the host is only its container.",
+              "inheritedFrom": {
+                "name": "DescribedBy",
+                "module": "src/utilities/described-by-mixin.ts"
+              }
+            },
+            {
+              "kind": "field",
+              "name": "describedByElements",
+              "type": {
+                "text": "readonly Element[]"
+              },
+              "default": "[]",
+              "description": "Set by nldd-form-field. A consumer never writes this.",
+              "inheritedFrom": {
+                "name": "DescribedBy",
+                "module": "src/utilities/described-by-mixin.ts"
+              }
+            },
+            {
               "kind": "field",
               "name": "formAssociated",
               "type": {
@@ -16125,6 +16642,10 @@
             }
           ],
           "mixins": [
+            {
+              "name": "DescribedBy",
+              "module": "/src/utilities/described-by-mixin.js"
+            },
             {
               "name": "FormAssociated",
               "module": "/src/utilities/form-associated-mixin.js"
@@ -16416,15 +16937,6 @@
             },
             {
               "kind": "field",
-              "name": "errorMessageIds",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "attribute": "error-message-ids"
-            },
-            {
-              "kind": "field",
               "name": "noSpellcheck",
               "type": {
                 "text": "boolean"
@@ -16512,6 +17024,33 @@
                 }
               ],
               "description": "Delegates focus to the inner native `<input>`, so consumers can call\n`textFieldEl.focus()` without reaching into shadow DOM."
+            },
+            {
+              "kind": "field",
+              "name": "describedByElements",
+              "type": {
+                "text": "readonly Element[]"
+              },
+              "default": "[]",
+              "description": "Set by nldd-form-field. A consumer never writes this.",
+              "inheritedFrom": {
+                "name": "DescribedBy",
+                "module": "src/utilities/described-by-mixin.ts"
+              }
+            },
+            {
+              "kind": "method",
+              "name": "describedTarget",
+              "return": {
+                "type": {
+                  "text": "Element | null"
+                }
+              },
+              "description": "The element the description belongs to. Override where it differs.\n\nPublic rather than protected because TypeScript refuses to emit a\ndeclaration for an anonymous class with protected members, and a mixin\nreturns exactly that. Same reason `formValue()` is public in\nFormAssociated.",
+              "inheritedFrom": {
+                "name": "DescribedBy",
+                "module": "src/utilities/described-by-mixin.ts"
+              }
             },
             {
               "kind": "field",
@@ -16730,15 +17269,6 @@
               "fieldName": "accessibleLabel"
             },
             {
-              "name": "error-message-ids",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "fieldName": "errorMessageIds",
-              "description": "Ids for aria-describedby on the inner input. Set automatically by nldd-form-field."
-            },
-            {
               "name": "no-spellcheck",
               "type": {
                 "text": "boolean"
@@ -16758,6 +17288,10 @@
             }
           ],
           "mixins": [
+            {
+              "name": "DescribedBy",
+              "module": "/src/utilities/described-by-mixin.js"
+            },
             {
               "name": "FormAssociated",
               "module": "/src/utilities/form-associated-mixin.js"
@@ -17046,15 +17580,6 @@
             },
             {
               "kind": "field",
-              "name": "errorMessageIds",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "attribute": "error-message-ids"
-            },
-            {
-              "kind": "field",
               "name": "width",
               "type": {
                 "text": "string"
@@ -17113,6 +17638,33 @@
                   }
                 }
               ]
+            },
+            {
+              "kind": "field",
+              "name": "describedByElements",
+              "type": {
+                "text": "readonly Element[]"
+              },
+              "default": "[]",
+              "description": "Set by nldd-form-field. A consumer never writes this.",
+              "inheritedFrom": {
+                "name": "DescribedBy",
+                "module": "src/utilities/described-by-mixin.ts"
+              }
+            },
+            {
+              "kind": "method",
+              "name": "describedTarget",
+              "return": {
+                "type": {
+                  "text": "Element | null"
+                }
+              },
+              "description": "The element the description belongs to. Override where it differs.\n\nPublic rather than protected because TypeScript refuses to emit a\ndeclaration for an anonymous class with protected members, and a mixin\nreturns exactly that. Same reason `formValue()` is public in\nFormAssociated.",
+              "inheritedFrom": {
+                "name": "DescribedBy",
+                "module": "src/utilities/described-by-mixin.ts"
+              }
             },
             {
               "kind": "field",
@@ -17342,15 +17894,6 @@
               "fieldName": "accessibleLabel"
             },
             {
-              "name": "error-message-ids",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "fieldName": "errorMessageIds",
-              "description": "Ids for aria-describedby. Set automatically by nldd-form-field."
-            },
-            {
               "name": "width",
               "type": {
                 "text": "string"
@@ -17370,6 +17913,10 @@
             }
           ],
           "mixins": [
+            {
+              "name": "DescribedBy",
+              "module": "/src/utilities/described-by-mixin.js"
+            },
             {
               "name": "FormAssociated",
               "module": "/src/utilities/form-associated-mixin.js"
@@ -17580,6 +18127,33 @@
                 }
               },
               "description": "Put the chosen value in the middle of the view. The column is seven values\ntall, so `center` lands it on the fourth row with three above and three\nbelow.\n\nPublic because a hidden element cannot be scrolled: with the picker in a\npopover it has no dimensions yet when the value is set, and scrollIntoView\ndoes nothing. The field therefore calls this as soon as the popover\nopens."
+            },
+            {
+              "kind": "method",
+              "name": "describedTarget",
+              "return": {
+                "type": {
+                  "text": "Element | null"
+                }
+              },
+              "description": "The group is the widget; hour and minute are spinbuttons inside it.",
+              "inheritedFrom": {
+                "name": "DescribedBy",
+                "module": "src/utilities/described-by-mixin.ts"
+              }
+            },
+            {
+              "kind": "field",
+              "name": "describedByElements",
+              "type": {
+                "text": "readonly Element[]"
+              },
+              "default": "[]",
+              "description": "Set by nldd-form-field. A consumer never writes this.",
+              "inheritedFrom": {
+                "name": "DescribedBy",
+                "module": "src/utilities/described-by-mixin.ts"
+              }
             }
           ],
           "events": [
@@ -17664,6 +18238,12 @@
               "default": "{}",
               "fieldName": "translations",
               "description": "Translations; unspecified keys fall back to Dutch."
+            }
+          ],
+          "mixins": [
+            {
+              "name": "DescribedBy",
+              "module": "/src/utilities/described-by-mixin.js"
             }
           ],
           "superclass": {
@@ -18101,6 +18681,33 @@
               "description": "Delegates focus to whichever control this type renders: the `<input>` for\n`checkbox` and `radio`, the `<button>` for `button`. Only one of the two\nexists at a time. Lets consumers call `toggleButtonEl.focus()` without\nreaching into shadow DOM."
             },
             {
+              "kind": "method",
+              "name": "describedTarget",
+              "return": {
+                "type": {
+                  "text": "Element | null"
+                }
+              },
+              "description": "The button is the control, not the input that carries the value.",
+              "inheritedFrom": {
+                "name": "DescribedBy",
+                "module": "src/utilities/described-by-mixin.ts"
+              }
+            },
+            {
+              "kind": "field",
+              "name": "describedByElements",
+              "type": {
+                "text": "readonly Element[]"
+              },
+              "default": "[]",
+              "description": "Set by nldd-form-field. A consumer never writes this.",
+              "inheritedFrom": {
+                "name": "DescribedBy",
+                "module": "src/utilities/described-by-mixin.ts"
+              }
+            },
+            {
               "kind": "field",
               "name": "formAssociated",
               "type": {
@@ -18280,6 +18887,10 @@
             }
           ],
           "mixins": [
+            {
+              "name": "DescribedBy",
+              "module": "/src/utilities/described-by-mixin.js"
+            },
             {
               "name": "FormAssociated",
               "module": "/src/utilities/form-associated-mixin.js"
@@ -18550,6 +19161,33 @@
               "description": "Programmatic focus goes to the inner input, or — when it is hidden (all values\nin, no custom, no options left) — to the token holding the roving tabindex."
             },
             {
+              "kind": "method",
+              "name": "describedTarget",
+              "return": {
+                "type": {
+                  "text": "Element | null"
+                }
+              },
+              "description": "The input is the control while it is there. It is not always: the field\nrests as a list of what you picked and grows an input when you go to add\nsomething, so in that resting state the list is what you meet.",
+              "inheritedFrom": {
+                "name": "DescribedBy",
+                "module": "src/utilities/described-by-mixin.ts"
+              }
+            },
+            {
+              "kind": "field",
+              "name": "describedByElements",
+              "type": {
+                "text": "readonly Element[]"
+              },
+              "default": "[]",
+              "description": "Set by nldd-form-field. A consumer never writes this.",
+              "inheritedFrom": {
+                "name": "DescribedBy",
+                "module": "src/utilities/described-by-mixin.ts"
+              }
+            },
+            {
               "kind": "field",
               "name": "formAssociated",
               "type": {
@@ -18758,6 +19396,10 @@
             }
           ],
           "mixins": [
+            {
+              "name": "DescribedBy",
+              "module": "/src/utilities/described-by-mixin.js"
+            },
             {
               "name": "FormAssociated",
               "module": "/src/utilities/form-associated-mixin.js"
@@ -33639,6 +34281,88 @@
           "declaration": {
             "name": "forceScrollLayerRepaint",
             "module": "src/utilities/color-scheme-repaint.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/utilities/described-by-mixin.ts",
+      "declarations": [
+        {
+          "kind": "function",
+          "name": "applyDescribedBy",
+          "return": {
+            "type": {
+              "text": "void"
+            }
+          },
+          "parameters": [
+            {
+              "name": "target",
+              "type": {
+                "text": "Element | null | undefined"
+              }
+            },
+            {
+              "name": "elements",
+              "type": {
+                "text": "readonly Element[]"
+              }
+            }
+          ],
+          "description": "Points an element at the elements that describe it.\n\nElement references and not ids, because an id only resolves inside the tree\nof the element that carries it. An `aria-describedby=\"err\"` on an input in a\nshadow root cannot find an error text in the light DOM: the attribute is\nwritten, the id is right, and the description comes out empty.\n`ariaDescribedByElements` takes the elements themselves and crosses the\nboundary."
+        },
+        {
+          "kind": "mixin",
+          "description": "Lets nldd-form-field hand a control the help and error texts that describe\nit, wherever that control renders them.\n\nThe component answers where, because only it knows: a text field describes\nits inner input, a radio group describes itself because it carries the role,\nand an editor describes the contenteditable it builds. Override\n`describedTarget()` when the default of \"the first native control in my\nshadow root\" is not it.\n\nA controller, not an `updated()` override: a component that defines its own\n`updated()` would have to remember to call super, and forgetting that fails\nsilently in exactly the way this mixin exists to prevent.",
+          "name": "DescribedBy",
+          "members": [
+            {
+              "kind": "field",
+              "name": "describedByElements",
+              "type": {
+                "text": "readonly Element[]"
+              },
+              "default": "[]",
+              "description": "Set by nldd-form-field. A consumer never writes this."
+            },
+            {
+              "kind": "method",
+              "name": "describedTarget",
+              "return": {
+                "type": {
+                  "text": "Element | null"
+                }
+              },
+              "description": "The element the description belongs to. Override where it differs.\n\nPublic rather than protected because TypeScript refuses to emit a\ndeclaration for an anonymous class with protected members, and a mixin\nreturns exactly that. Same reason `formValue()` is public in\nFormAssociated."
+            }
+          ],
+          "parameters": [
+            {
+              "name": "Base",
+              "type": {
+                "text": "T"
+              }
+            }
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "applyDescribedBy",
+          "declaration": {
+            "name": "applyDescribedBy",
+            "module": "src/utilities/described-by-mixin.ts"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "DescribedBy",
+          "declaration": {
+            "name": "DescribedBy",
+            "module": "src/utilities/described-by-mixin.ts"
           }
         }
       ]

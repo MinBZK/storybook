@@ -32,7 +32,6 @@ export function fileFieldTemplate(component: NLDDFileField): TemplateResult {
 				?disabled=${component.disabled}
 				?required=${component.required}
 				aria-label=${component.accessibleLabel || nothing}
-				aria-describedby=${component.errorMessageIds || nothing}
 				@change=${component._handleInputChange}
 			>
 			<div class="file-field__choose-button">

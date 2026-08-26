@@ -32,9 +32,10 @@ import { customElement, property } from 'lit/decorators.js';
 import { FormAssociated, type FormValue } from '../../../utilities/form-associated-mixin.js';
 import { radioButtonStyles } from './radio-button.styles.js';
 import { radioButtonTemplate } from './radio-button.template.js';
+import { DescribedBy } from '../../../utilities/described-by-mixin.js';
 
 @customElement('nldd-radio-button')
-export class NLDDRadioButton extends FormAssociated(LitElement) {
+export class NLDDRadioButton extends DescribedBy(FormAssociated(LitElement)) {
 
 	static override styles = radioButtonStyles;
 

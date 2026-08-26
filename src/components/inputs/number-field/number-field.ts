@@ -30,11 +30,12 @@ import { nlddNumberFieldTranslations } from './number-field.i18n.js';
 import type { NLDDNumberFieldTranslations } from './number-field.i18n.js';
 import './../../actions/icon-button/icon-button.js';
 import './../../content/icon/icon.js';
+import { DescribedBy } from '../../../utilities/described-by-mixin.js';
 
 export type NumberFieldSize = 'sm' | 'md';
 
 @customElement('nldd-number-field')
-export class NLDDNumberField extends FormAssociated(LitElement) {
+export class NLDDNumberField extends DescribedBy(FormAssociated(LitElement)) {
 
 	static override styles = numberFieldStyles;
 

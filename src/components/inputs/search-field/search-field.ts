@@ -31,11 +31,12 @@ import type { NLDDSearchFieldTranslations } from './search-field.i18n.js';
 import './../../actions/icon-button/icon-button.js';
 import './../../actions/button/button.js';
 import './../../content/icon/icon.js';
+import { DescribedBy } from '../../../utilities/described-by-mixin.js';
 
 export type SearchFieldSize = 'sm' | 'md';
 
 @customElement('nldd-search-field')
-export class NLDDSearchField extends FormAssociated(LitElement) {
+export class NLDDSearchField extends DescribedBy(FormAssociated(LitElement)) {
 
 	static override styles = searchFieldStyles;
 

@@ -62,7 +62,6 @@ export function passwordFieldTemplate(component: NLDDPasswordField): TemplateRes
 				autocomplete=${component.autocomplete || nothing}
 				spellcheck="false"
 				aria-label=${component.accessibleLabel || nothing}
-				aria-describedby=${component.errorMessageIds || nothing}
 				aria-invalid=${component.invalid ? 'true' : nothing}
 				@keydown=${component._handleKeydown}
 				@input=${component._handleInput}

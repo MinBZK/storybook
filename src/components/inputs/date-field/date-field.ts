@@ -27,7 +27,6 @@
  * @attr {string} name - Name for form submission.
  * @attr {string} autocomplete - Autocomplete hint, for example 'bday'.
  * @attr {string} accessible-label - Accessible label for the internal input. Set automatically by nldd-form-field.
- * @attr {string} error-message-ids - Ids for aria-describedby. Set automatically by nldd-form-field.
  * @attr {string} width - Width. By default exactly wide enough for a date plus the icons; 'full' fills the container; 'fit-content' drops the room for the validation icon and grows again as soon as the field turns valid or invalid; or pass your own CSS length.
  * @attr {object} translations - Translations; unspecified keys fall back to Dutch.
  *
@@ -51,6 +50,7 @@ import type { NLDDDatePicker } from './../date-picker/date-picker.js';
 import type { NLDDPopover } from './../../layout/popover/popover.js';
 import './../../actions/icon-button/icon-button.js';
 import './../../content/icon/icon.js';
+import { DescribedBy } from '../../../utilities/described-by-mixin.js';
 
 /**
  * Read a typed date generously. Deliberately not a mask: reformatting per
@@ -82,7 +82,7 @@ function formatDisplay(iso: string): string {
 }
 
 @customElement('nldd-date-field')
-export class NLDDDateField extends FormAssociated(LitElement) {
+export class NLDDDateField extends DescribedBy(FormAssociated(LitElement)) {
 
 	static override shadowRootOptions = {
 		...LitElement.shadowRootOptions,
@@ -151,8 +151,6 @@ export class NLDDDateField extends FormAssociated(LitElement) {
 	@property({ type: String, attribute: 'accessible-label' })
 	accessibleLabel = '';
 
-	@property({ type: String, attribute: 'error-message-ids' })
-	errorMessageIds = '';
 
 	/** Optional fixed width. Without a value the field fills its container. */
 	@property({ type: String, reflect: true })
