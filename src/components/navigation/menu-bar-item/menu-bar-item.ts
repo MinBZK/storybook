@@ -1,33 +1,33 @@
 /**
  * Menu Bar Item Component (Lit + TypeScript)
  *
- * Interactief bouwblok voor gebruik in een menu bar. Rendert als <a> (met href)
- * of <button> (zonder href). Ondersteunt icon, text, disclosure indicator,
- * en een expandable popover via een geslotte `<nldd-menu>` (of ander
- * popover-element).
+ * Interactive building block for use in a menu bar. Renders as an <a> (with
+ * href) or a <button> (without href). Supports an icon, text, a disclosure
+ * indicator, and an expandable popover through a slotted `<nldd-menu>` (or
+ * another popover element).
  *
  * @element nldd-menu-bar-item
- * @attr {string} text - Tekst van het item
- * @attr {boolean} current - Markeer als actief/huidig item
- * @attr {string} current-type - aria-current waarde als current is true ('page', 'step', 'location', 'true'). Standaard: 'page'
- * @attr {string} href - Optionele link URL. Zonder href rendert als button.
- * @attr {string} icon - Optioneel icon naam (nldd-icon)
- * @attr {boolean} expandable - Toon disclosure icon en open de geslotte `<nldd-menu>` bij klik
- * @attr {boolean} icon-only - Verberg tekst visueel (altijd)
- * @attr {'icon'|'text'} content-priority - Bepaalt wat zichtbaar blijft in compact modus: 'icon' verbergt tekst, 'text' verbergt icon
- * @attr {boolean} compact - Activeert content-priority gedrag (gezet door parent nldd-menu-bar)
- * @attr {boolean} disabled - Schakel interactie uit
- * @attr {string} accessible-label - Overschrijf aria-label
- * @attr {string} haspopup - aria-haspopup waarde (bijv. "menu", "dialog")
- * @attr {boolean} open - Of het gekoppelde popover/menu open is
- * @attr {boolean} expanded - Of de bijbehorende popover open is; zet aria-expanded op de knop wanneer expandable of haspopup is gezet. Wordt automatisch bijgehouden voor een geslotte `<nldd-menu>`.
+ * @attr {string} text - Text of the item
+ * @attr {boolean} current - Mark as the active or current item
+ * @attr {string} current-type - aria-current value when current is true ('page', 'step', 'location', 'true'). Default: 'page'
+ * @attr {string} href - Optional link URL. Without href it renders as a button.
+ * @attr {string} icon - Optional icon name (nldd-icon)
+ * @attr {boolean} expandable - Show the disclosure icon and open the slotted `<nldd-menu>` on click
+ * @attr {boolean} icon-only - Hide the text visually (always)
+ * @attr {'icon'|'text'} content-priority - Decides what stays visible in compact mode: 'icon' hides the text, 'text' hides the icon
+ * @attr {boolean} compact - Activates content-priority behavior (set by the parent nldd-menu-bar)
+ * @attr {boolean} disabled - Turn interaction off
+ * @attr {string} accessible-label - Override aria-label
+ * @attr {string} haspopup - aria-haspopup value (e.g. "menu", "dialog")
+ * @attr {boolean} open - Whether the linked popover or menu is open
+ * @attr {boolean} expanded - Whether the matching popover is open; sets aria-expanded on the button when expandable or haspopup is set. Tracked automatically for a slotted `<nldd-menu>`.
  *
- * @fires select - Bij klik op non-expandable button item (bubbles, composed)
+ * @fires select - On a click on a non-expandable button item (bubbles, composed)
  *
- * @slot - Inhoud van de expandable popover — wrap items in een `<nldd-menu>`
- *   zodat dit component de menu-API (variant, accessible-label, translations,
- *   filterFn, …) niet hoeft te dupliceren. Event listeners op items werken
- *   direct, omdat er niet meer gekloond wordt.
+ * @slot - Content of the expandable popover. Wrap items in an `<nldd-menu>` so
+ *   this component does not have to duplicate the menu API (variant,
+ *   accessible-label, translations, filterFn and so on). Event listeners on
+ *   items work directly, because nothing is cloned anymore.
  */
 
 import { LitElement } from 'lit';

@@ -75,7 +75,7 @@ function renderComponent(c) {
 	}
 	if (c.attrs.length) {
 		out.push('**Attributes**', '');
-		out.push('| Attribuut | Type | Beschrijving |');
+		out.push('| Attribute | Type | Description |');
 		out.push('| --- | --- | --- |');
 		for (const a of c.attrs) {
 			out.push(
@@ -86,7 +86,7 @@ function renderComponent(c) {
 	}
 	if (c.slots.length) {
 		out.push('**Slots**', '');
-		out.push('| Slot | Beschrijving |');
+		out.push('| Slot | Description |');
 		out.push('| --- | --- |');
 		for (const s of c.slots) {
 			out.push(
@@ -97,7 +97,7 @@ function renderComponent(c) {
 	}
 	if (c.events.length) {
 		out.push('**Events**', '');
-		out.push('| Event | Beschrijving |');
+		out.push('| Event | Description |');
 		out.push('| --- | --- |');
 		for (const e of c.events) {
 			out.push(`| \`${escapeCell(e.name)}\` | ${escapeCell(e.description) || '—'} |`);

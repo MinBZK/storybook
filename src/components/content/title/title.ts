@@ -7,10 +7,10 @@
  * @element nldd-title
  *
  * @attr {number} size - Visual size of the title: 1–6 (default: 3)
- * @attr {string} color - 'inherit' lets the title take the text color of the
- *   ondergrond volgen (voor gekleurde vlakken zoals de filled-categories);
- *   overline en subtitle krijgen dezelfde kleur op verlaagde dekking.
- *   Leeg = standaard contentkleuren.
+ * @attr {string} color - 'inherit' lets the title follow the text color of the
+ *   surface (for colored areas such as the filled categories); overline and
+ *   subtitle get the same color at a lowered opacity. Empty = the default
+ *   content colors.
  *
  * @slot overline - Optional overline above the title
  * @slot - Title text (use h1–h6 for semantics)

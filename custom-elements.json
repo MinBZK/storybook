@@ -525,7 +525,7 @@
               },
               "default": "'neutral-tinted'",
               "fieldName": "variant",
-              "description": "Button variant: 'primary' | 'secondary' | 'destructive' | 'accent-filled' | 'accent-transparent' | 'neutral-tinted' | 'neutral-base' | 'neutral-transparent' | 'critical-tinted' | 'critical-transparent' | 'inherit-filled' | 'inherit-tinted'. De inherit-varianten leiden hun kleuren af van currentColor, voor knoppen op gekleurde vlakken; inherit-filled gebruikt de vlakkleur (--context-parent-background-color) als labelkleur met een wit/zwart-contrastflip als fallback."
+              "description": "Button variant: 'primary' | 'secondary' | 'destructive' | 'accent-filled' | 'accent-transparent' | 'neutral-tinted' | 'neutral-base' | 'neutral-transparent' | 'critical-tinted' | 'critical-transparent' | 'inherit-filled' | 'inherit-tinted'. The inherit variants derive their colors from currentColor, for buttons on colored surfaces; inherit-filled uses the surface color (--context-parent-background-color) as the label color, with a white/black contrast flip as a fallback."
             },
             {
               "name": "size",
@@ -1079,7 +1079,7 @@
               },
               "default": "'neutral-tinted'",
               "fieldName": "variant",
-              "description": "Button variant: 'accent-filled' | 'accent-transparent' | 'neutral-tinted' | 'neutral-transparent' | 'critical-tinted' | 'critical-transparent' | 'inherit-filled' | 'inherit-tinted' | 'primary' | 'secondary' | 'destructive'. De inherit-varianten leiden hun kleuren af van currentColor, voor knoppen op gekleurde vlakken."
+              "description": "Button variant: 'accent-filled' | 'accent-transparent' | 'neutral-tinted' | 'neutral-transparent' | 'critical-tinted' | 'critical-transparent' | 'inherit-filled' | 'inherit-tinted' | 'primary' | 'secondary' | 'destructive'. The inherit variants derive their colors from currentColor, for buttons on colored surfaces."
             },
             {
               "name": "size",
@@ -3338,7 +3338,7 @@
       "declarations": [
         {
           "kind": "class",
-          "description": "Toont een citaat met optionele bron-attributie.",
+          "description": "Shows a quote with an optional source attribution.",
           "name": "NLDDBlockquote",
           "members": [
             {
@@ -3371,11 +3371,11 @@
           "slots": [
             {
               "name": "",
-              "description": "De citaat-paragra(a)f(en) — gebruik bij voorkeur <p>-elementen"
+              "description": "The paragraph or paragraphs of the quote; prefer <p> elements"
             },
             {
               "name": "attribution",
-              "description": "Optionele bronvermelding (auteur, titel, etc.). Ook een An nldd-identity is allowed here; the em dash (\"— \") is then left out."
+              "description": "Optional source attribution (author, title, and so on). An nldd-identity is allowed here; the em dash (\"— \") is then left out."
             }
           ]
         }
@@ -4358,7 +4358,7 @@
       "declarations": [
         {
           "kind": "class",
-          "description": "Toont een toetsencombinatie (zoals Cmd+K of Ctrl+Shift+P) in één gecombineerde container met semantische <kbd>-elementen per toets. Op touch-only devices (geen hover-capable input) wordt de shortcut standaard verborgen omdat hij niet aanroepbaar is. Gebruik het `always-visible` attribuut wanneer de shortcut puur informatief is en altijd zichtbaar moet blijven. Voor cross-platform shortcuts kunnen `mac-keys`, `windows-keys` en `linux-keys` worden gezet — het component picks de juiste op basis van de gedetecteerde OS, met `keys` als fallback voor onbekende platforms.",
+          "description": "Shows a key combination (such as Cmd+K or Ctrl+Shift+P) in one combined container with a semantic <kbd> element per key. On touch-only devices (no hover-capable input) the shortcut is hidden by default, because it cannot be invoked there. Use the `always-visible` attribute when the shortcut is purely informative and should stay visible. For cross-platform shortcuts you can set `mac-keys`, `windows-keys` and `linux-keys`. The component picks the right one from the detected OS, with `keys` as the fallback for unknown platforms.",
           "name": "NLDDKeyboardShortcut",
           "members": [
             {
@@ -4452,7 +4452,7 @@
               },
               "default": "''",
               "fieldName": "keys",
-              "description": "Toetsen gescheiden door '+' (bijv. 'Cmd+K' of 'Ctrl+Shift+P'). Gebruik '+++' voor een letterlijke '+' toets: 'Ctrl+++' wordt 'Ctrl' + '+'. Voor complexere scenario's (bijv. combo met meerdere '+' keys) kun je in plaats van het keys-attribuut de default slot gebruiken met eigen <kbd> elementen."
+              "description": "Keys separated by '+' (e.g. 'Cmd+K' or 'Ctrl+Shift+P'). Use '+++' for a literal '+' key: 'Ctrl+++' becomes 'Ctrl' + '+'. For more complex cases (a combo with several '+' keys, for instance) use the default slot with your own <kbd> elements instead of the keys attribute."
             },
             {
               "name": "mac-keys",
@@ -4461,7 +4461,7 @@
               },
               "default": "''",
               "fieldName": "macKeys",
-              "description": "Optionele override voor macOS (incl. iPhone/iPad/iPod)."
+              "description": "Optional override for macOS (iPhone/iPad/iPod included)."
             },
             {
               "name": "windows-keys",
@@ -4470,7 +4470,7 @@
               },
               "default": "''",
               "fieldName": "windowsKeys",
-              "description": "Optionele override voor Windows."
+              "description": "Optional override for Windows."
             },
             {
               "name": "linux-keys",
@@ -4479,7 +4479,7 @@
               },
               "default": "''",
               "fieldName": "linuxKeys",
-              "description": "Optionele override voor Linux/ChromeOS."
+              "description": "Optional override for Linux/ChromeOS."
             },
             {
               "name": "size",
@@ -4488,7 +4488,7 @@
               },
               "default": "'md'",
               "fieldName": "size",
-              "description": "Grootte: 'sm' | 'md' | 'inherit' (default: 'md'). 'inherit' neemt de font-size over van de container; bij de box-variant schalen de keycaps dan mee in em."
+              "description": "Size: 'sm' | 'md' | 'inherit' (default: 'md'). 'inherit' takes the font-size from the container; in the box variant the keycaps then scale along in em."
             },
             {
               "name": "variant",
@@ -4496,7 +4496,7 @@
                 "text": "Variant"
               },
               "default": "'box'",
-              "description": "'box' (default) toont elke toets als keycap met vulling en highlight-rand; 'simple' toont de toetsen als platte tekst met scheidingstekens — lichter, voor inline gebruik zoals in een menu-item.",
+              "description": "'box' (default) shows each key as a keycap with a fill and a highlight edge. 'simple' shows the keys as plain text with separators: lighter, for inline use such as in a menu item.",
               "fieldName": "variant"
             },
             {
@@ -4505,7 +4505,7 @@
                 "text": "Color"
               },
               "default": "'neutral'",
-              "description": "'neutral' (default) gebruikt de eigen component-kleuren. 'inherit' laat de toetsen en scheidingstekens de omringende tekstkleur (currentColor) volgen, met een doorschijnende contrast-vulling en highlight-rand — handig op een gevulde vlakkleur of een gemarkeerde rij.",
+              "description": "'neutral' (default) uses the component colors of its own. 'inherit' lets the keys and separators follow the surrounding text color (currentColor), with a translucent contrast fill and highlight edge. Useful on a filled surface color or a highlighted row.",
               "fieldName": "color"
             },
             {
@@ -4515,7 +4515,7 @@
               },
               "default": "false",
               "fieldName": "alwaysVisible",
-              "description": "Toon ook op touch-only devices waar shortcuts niet aanroepbaar zijn."
+              "description": "Show on touch-only devices too, where shortcuts cannot be invoked."
             }
           ],
           "superclass": {
@@ -4527,7 +4527,7 @@
           "slots": [
             {
               "name": "",
-              "description": "Optionele custom <kbd>-elementen. Wordt genegeerd als keys is opgegeven."
+              "description": "Optional custom <kbd> elements. Ignored when keys is set."
             }
           ]
         }
@@ -4557,7 +4557,7 @@
       "declarations": [
         {
           "kind": "class",
-          "description": "A container for rich text content that automatically applies responsive typography. Uses no shadow DOM so styles apply to all nested elements. Import nldd-rich-text.css globally in your application. Kinderen worden in drie zones geplaatst: tekst (headings, paragrafen, lijsten, blockquote, div/section) leest op de `main`-maat; media en tabellen (img, figure, video, iframe, table) krijgen het `wide`-accent; al het overige — codeblokken en élke component — krijgt de volledige `full`-span met `justify-self: start`, zodat de ruimte beschikbaar is maar niet geforceerd wordt. Per kind te overschrijven met `data-width=\"main\" | \"wide\" | \"full\"`. In de linkse layout lezen wide en full als bleed naar rechts; met `centered` zijn ze symmetrisch.",
+          "description": "A container for rich text content that automatically applies responsive typography. Uses no shadow DOM so styles apply to all nested elements. Import nldd-rich-text.css globally in your application. Children are placed in three zones: text (headings, paragraphs, lists, blockquote, div/section) reads at the `main` size; media and tables (img, figure, video, iframe, table) get the `wide` accent; everything else, code blocks and every component, gets the full `full` span with `justify-self: start`, so the room is available without being forced. Overridable per child with `data-width=\"main\" | \"wide\" | \"full\"`. In the left-aligned layout, wide and full read as a bleed to the right; with `centered` they are symmetrical.",
           "name": "NLDDRichText",
           "members": [
             {
@@ -4636,7 +4636,7 @@
               },
               "default": "false",
               "fieldName": "hyphens",
-              "description": "Opt-in automatische woordafbreking voor doorlopende tekst (p, li, dd). Vereist een correcte `lang` op de pagina (bijv. `lang=\"nl\"` op `<html>`): zonder taalinfo breekt de browser niet af. Een `overflow-wrap: break-word`-vangnet op p/li staat altijd aan, los van dit attribuut, zodat lange URLs en samenstellingen ook zonder woordenboek netjes breken in plaats van te overlopen."
+              "description": "Opt-in automatic hyphenation for running text (p, li, dd). Needs a correct `lang` on the page (`lang=\"nl\"` on `<html>`, for instance): without language information the browser does not hyphenate. An `overflow-wrap: break-word` safety net on p/li is always on, independent of this attribute, so long URLs and compounds break neatly instead of overflowing even without a dictionary."
             },
             {
               "name": "color",
@@ -4645,7 +4645,7 @@
               },
               "default": "''",
               "fieldName": "color",
-              "description": "'inherit' laat alle tekst de kleur van de ondergrond volgen (voor gekleurde vlakken zoals de filled-categories). Links blijven onderstreept als affordance; secundaire tekst (figcaption) krijgt dezelfde kleur op verlaagde dekking. Bekende v1-gaten: inline code, mark, tabellen en hr behouden hun eigen surfaces. Leeg = standaard contentkleuren."
+              "description": "'inherit' lets all text follow the color of the surface (for colored areas such as the filled categories). Links stay underlined as an affordance; secondary text (figcaption) gets the same color at a lowered opacity. Known v1 gaps: inline code, mark, tables and hr keep their own surfaces. Empty = the default content colors."
             },
             {
               "name": "translations",
@@ -5032,7 +5032,7 @@
               },
               "default": "''",
               "fieldName": "color",
-              "description": "'inherit' lets the title take the text color of the ondergrond volgen (voor gekleurde vlakken zoals de filled-categories); overline en subtitle krijgen dezelfde kleur op verlaagde dekking. Leeg = standaard contentkleuren."
+              "description": "'inherit' lets the title follow the text color of the surface (for colored areas such as the filled categories); overline and subtitle get the same color at a lowered opacity. Empty = the default content colors."
             }
           ],
           "superclass": {
@@ -5420,7 +5420,7 @@
       "declarations": [
         {
           "kind": "class",
-          "description": "Een layout-wrapper voor de actie-knoppen onderaan een formulier (typisch een submit-button of button-group). Volgt dezelfde responsive layout als `nldd-form-field`: met `label-alignment=\"right\"` of `\"left\"` krijgt de inhoud dezelfde insprong als de invoervelden boven, dankzij een `::before`-pseudo-element dat fungeert als spacer-kolom waar de label zou staan. Erft `label-alignment` automatisch over van een wrappende `<nldd-form>`: de form propageert z'n eigen `label-alignment` als `form-label-alignment` naar descendant `nldd-form-actions` (en `nldd-form-field`) via een MutationObserver. Een expliciete eigen `label-alignment` op de form-actions wint via CSS-cascade — de form-code raakt het `label-alignment` attribuut van de descendant nooit aan. <nldd-form label-alignment=\"right\"> <nldd-form-field>...</nldd-form-field> <nldd-form-actions> <nldd-button-group> <nldd-button variant=\"primary\" type=\"submit\" text=\"Opslaan\"></nldd-button> </nldd-button-group> </nldd-form-actions> </nldd-form>",
+          "description": "A layout wrapper for the action buttons at the bottom of a form (typically a submit button or a button group). Follows the same responsive layout as `nldd-form-field`: with `label-alignment=\"right\"` or `\"left\"` the content gets the same indent as the fields above it, thanks to a `::before` pseudo-element that acts as the spacer column where the label would sit. Inherits `label-alignment` automatically from a wrapping `<nldd-form>`: the form propagates its own `label-alignment` as `form-label-alignment` to descendant `nldd-form-actions` (and `nldd-form-field`) through a MutationObserver. An explicit `label-alignment` on the form-actions itself wins through the CSS cascade, and the form code never touches the `label-alignment` attribute of the descendant. <nldd-form label-alignment=\"right\"> <nldd-form-field>...</nldd-form-field> <nldd-form-actions> <nldd-button-group> <nldd-button variant=\"primary\" type=\"submit\" text=\"Opslaan\"></nldd-button> </nldd-button-group> </nldd-form-actions> </nldd-form>",
           "name": "NLDDFormActions",
           "members": [
             {
@@ -5442,7 +5442,7 @@
                 "text": "LabelAlignment | undefined"
               },
               "default": "undefined",
-              "description": "'top' (default) | 'right' | 'left'. Een eigen waarde wint altijd over de inherited form-label-alignment.",
+              "description": "'top' (default) | 'right' | 'left'. A value of its own always wins over the inherited form-label-alignment.",
               "fieldName": "labelAlignment"
             }
           ],
@@ -5455,7 +5455,7 @@
           "slots": [
             {
               "name": "",
-              "description": "Actie-elementen (button, button-group, etc.)"
+              "description": "Action elements (button, button-group, and so on)"
             }
           ]
         }
@@ -5717,7 +5717,7 @@
       "declarations": [
         {
           "kind": "class",
-          "description": "Nederlandse Digitale Dienst Form Section Component Plain custom element (extends HTMLElement, no Lit) — light-DOM render lost een NVDA + Firefox a11y-bug op waar shadow-DOM <fieldset> + <legend> niet betrouwbaar als group-label aangekondigd worden voor slotted controls. Native fieldset/legend in light DOM werkt correct over alle AT/browser-combinaties. **Differs from shadow components:** - Geen shadowRoot — alle children leven in light DOM (binnen het gerenderde <fieldset>). - Geen Lit — pure HTMLElement met handmatige DOM-mutation. - **Vereist global stylesheet import** — `dist/css/form-section.css` (of `global.css`). Form-section heeft geen shadow stylesheet. Renders to: <nldd-form-section> <fieldset class=\"form-section\"> <legend class=\"form-section__header\"> <span class=\"form-section__title\">Title</span> <span class=\"form-section__subtitle\">Subtitle</span> </legend> <div class=\"form-section__main\"> [user's children] </div> </fieldset> </nldd-form-section> **Accessibility note**: de title rendert als `<legend>`. Dat is semantisch een **groep-label**, geen heading. Screenreaders kondigen 't aan wanneer de gebruiker in de fieldset komt, maar gebruikers die met de H-toets door headings springen slaan 'm over. Visueel lijkt 't op een heading; gebruik dit component dus voor *form-grouping*, niet als pagina-structuur. Voor echte page-headings: gebruik een apart heading-element boven het form. **Supporting-text lengte**: de subtitle staat als `<span>` binnen de `<legend>` zodat SR 'm meeleest als group label. Bijwerking: bij elke field-entry binnen de sectie wordt de hele legend (titel + subtitel) opnieuw uitgesproken. Houd `supporting-text` daarom kort (richtlijn: ≤ ~80 tekens) en gebruik 'm voor groep-introductie (\"Vul je adresgegevens in\"), niet voor uitgebreide instructies. Voor langere uitleg op een specifiek veld: gebruik `nldd-form-field-help-text` op dat veld. <nldd-form> <nldd-form-section text=\"Persoonsgegevens\" supporting-text=\"Vul je gegevens in.\"> <nldd-form-field label=\"Voornaam\">...</nldd-form-field> <nldd-form-field label=\"Achternaam\">...</nldd-form-field> </nldd-form-section> <nldd-form-section text=\"Adres\"> <nldd-form-field label=\"Straat\">...</nldd-form-field> </nldd-form-section> <nldd-form-actions>...</nldd-form-actions> </nldd-form>",
+          "description": "Nederlandse Digitale Dienst Form Section Component Plain custom element (extends HTMLElement, no Lit). The light-DOM render works around an NVDA + Firefox a11y bug where a shadow-DOM <fieldset> + <legend> is not reliably announced as the group label for slotted controls. A native fieldset/legend in the light DOM works correctly across all AT/browser combinations. **Differs from shadow components:** - No shadowRoot: all children live in the light DOM (inside the rendered <fieldset>). - No Lit: a plain HTMLElement with manual DOM mutation. - **Requires a global stylesheet import**: `dist/css/form-section.css` (or `global.css`). Form-section has no shadow stylesheet. Renders to: <nldd-form-section> <fieldset class=\"form-section\"> <legend class=\"form-section__header\"> <span class=\"form-section__title\">Title</span> <span class=\"form-section__subtitle\">Subtitle</span> </legend> <div class=\"form-section__main\"> [user's children] </div> </fieldset> </nldd-form-section> **Accessibility note**: the title renders as a `<legend>`. Semantically that is a **group label**, not a heading. Screen readers announce it when the user enters the fieldset, but users jumping through headings with the H key skip it. Visually it looks like a heading, so use this component for *form grouping*, not as page structure. For real page headings, use a separate heading element above the form. **Supporting-text length**: the subtitle sits as a `<span>` inside the `<legend>` so a screen reader reads it along as the group label. Side effect: on every field entry within the section, the whole legend (title + subtitle) is spoken again. Keep `supporting-text` short (roughly 80 characters or less) and use it to introduce the group (\"Vul je adresgegevens in\"), not for detailed instructions. For a longer explanation on one specific field, use `nldd-form-field-help-text` on that field. <nldd-form> <nldd-form-section text=\"Persoonsgegevens\" supporting-text=\"Vul je gegevens in.\"> <nldd-form-field label=\"Voornaam\">...</nldd-form-field> <nldd-form-field label=\"Achternaam\">...</nldd-form-field> </nldd-form-section> <nldd-form-section text=\"Adres\"> <nldd-form-field label=\"Straat\">...</nldd-form-field> </nldd-form-section> <nldd-form-actions>...</nldd-form-actions> </nldd-form>",
           "name": "NLDDFormSection",
           "members": [
             {
@@ -5738,11 +5738,11 @@
           "attributes": [
             {
               "name": "text",
-              "description": "Heading-tekst (gerenderd in `<legend>`)."
+              "description": "Heading text (rendered in the `<legend>`)."
             },
             {
               "name": "supporting-text",
-              "description": "Korte beschrijving onder de heading. Houd ≤ ~80 tekens (zie a11y-note)."
+              "description": "Short description under the heading. Keep it to roughly 80 characters or less (see the a11y note)."
             }
           ],
           "superclass": {
@@ -5777,7 +5777,7 @@
       "declarations": [
         {
           "kind": "class",
-          "description": "Nederlandse Digitale Dienst Form Component Plain custom element (extends HTMLElement, no Lit) — required for light-DOM autofill. Renders a real <form> element in the LIGHT DOM around its children. Chrome's autofill engine looks for native <input> elements that have a <form> ancestor in the light DOM; with shadow-DOM inputs it can't find them, so we keep this component shadow-less. **Differs from other nldd-* components:** - Geen shadowRoot — alle children leven in light DOM (binnen het inner <form>) - Geen Lit — pure HTMLElement met handmatige attribute-mirroring - **Vereist global stylesheet import** — vertical rhythm en form-section divider-suppression regels staan in `dist/css/form.css` (of `global.css`), niet in een component-specifieke shadow stylesheet. Import deze als deel van je app's globale CSS bundle. **Two usage modes:** 1. **Auto-wrap** (default): write children directly. Component creates a `<form>` element and migrates children into it via MutationObserver. Simplest API. 2. **User-provided form** (framework-friendly): write your own `<form>` as direct child. Component detects it, takes over attribute-mirroring, en skipt de migration. Children blijven waar je framework ze plaatst — geen DOM-shuffling die met React/Vue/Angular reconciliation conflicteert. **Framework interop:** In auto-wrap mode wordt elke direct child verplaatst naar het inner form via een MutationObserver. Voor de meeste React/Vue use cases werkt dit prima omdat frameworks alleen DOM-mutaties doen wanneer hun virtual DOM verandert. Voor edge cases (animatie-libs die DOM-positie tracken, SSR-hydration mismatches, frameworks die actief sibling-positions controleren) gebruik dan **user-provided form** mode. Voor programmatische manipulatie: gebruik de `form` getter zodat je direct met het inner `<form>` element werkt: const inner = document.querySelector('nldd-form').form; inner.checkValidity(); inner.appendChild(myInput); // skipt migration-overhead",
+          "description": "Nederlandse Digitale Dienst Form Component Plain custom element (extends HTMLElement, no Lit), required for light-DOM autofill. Renders a real <form> element in the LIGHT DOM around its children. Chrome's autofill engine looks for native <input> elements that have a <form> ancestor in the light DOM; with shadow-DOM inputs it can't find them, so we keep this component shadow-less. **Differs from other nldd-* components:** - No shadowRoot: all children live in the light DOM (inside the inner <form>) - No Lit: a plain HTMLElement with manual attribute mirroring - **Requires a global stylesheet import**: the vertical rhythm rules live in `dist/css/form.css` (or `global.css`), not in a component-specific shadow stylesheet. Import it as part of your app's global CSS bundle. **Two usage modes:** 1. **Auto-wrap** (default): write children directly. Component creates a `<form>` element and migrates children into it via MutationObserver. Simplest API. 2. **User-provided form** (framework-friendly): write your own `<form>` as direct child. Component detects it, takes over attribute mirroring, and skips the migration. Children stay where your framework puts them, so there is no DOM shuffling to conflict with React/Vue/Angular reconciliation. **Framework interop:** In auto-wrap mode every direct child is moved into the inner form through a MutationObserver. That works fine for most React/Vue use cases, because frameworks only mutate the DOM when their virtual DOM changes. For edge cases (animation libraries that track DOM position, SSR hydration mismatches, frameworks that actively check sibling positions) use **user-provided form** mode instead. For programmatic manipulation, use the `form` getter so you work with the inner `<form>` element directly: const inner = document.querySelector('nldd-form').form; inner.checkValidity(); inner.appendChild(myInput); // skips the migration overhead",
           "name": "NLDDForm",
           "members": [
             {
@@ -5793,7 +5793,7 @@
           "attributes": [
             {
               "name": "label-alignment",
-              "description": "Default `label-alignment` voor descendant nldd-form-field en nldd-form-actions ('top' | 'right' | 'left'). Wordt naar descendants gepropageerd als `form-label-alignment`. Een eigen `label-alignment` op de descendant heeft voorrang via CSS-cascade."
+              "description": "Default `label-alignment` for descendant nldd-form-field and nldd-form-actions ('top' | 'right' | 'left'). Propagated to descendants as `form-label-alignment`. A `label-alignment` of its own on the descendant takes precedence through the CSS cascade."
             }
           ],
           "superclass": {
@@ -8390,7 +8390,7 @@
       "declarations": [
         {
           "kind": "class",
-          "description": "Een tekstveld voor een datum, met een optionele kalender in een popover. De waarde is altijd ISO (jjjj-mm-dd); op het scherm staat de Nederlandse notatie (dd-mm-jjjj). Er wordt niet gemaskerd tijdens het typen: invoer wordt royaal geaccepteerd en pas bij het verlaten van het veld genormaliseerd. Foutmeldingen horen bij nldd-form-field, niet hier. Dit veld reflecteert alleen `invalid` / `valid`, net als nldd-text-field.",
+          "description": "A text field for a date, with an optional calendar in a popover. The value is always ISO (yyyy-mm-dd); on screen it shows the Dutch notation (dd-mm-yyyy). Typing is not masked: input is accepted generously and normalized only when the field is left. Error messages belong to nldd-form-field, not here. This field reflects only `invalid` / `valid`, like nldd-text-field.",
           "name": "NLDDDateField",
           "members": [
             {
@@ -8722,11 +8722,11 @@
           "events": [
             {
               "name": "input",
-              "description": "Bij elke wijziging. detail: { value } met de ISO-datum, of '' zolang er geen geldige datum staat."
+              "description": "On every change. detail: { value } with the ISO date, or '' while there is no valid date."
             },
             {
               "name": "change",
-              "description": "Wanneer de waarde is vastgelegd. detail: { value } met de ISO-datum, of ''."
+              "description": "When the value is committed. detail: { value } with the ISO date, or ''."
             }
           ],
           "attributes": [
@@ -8737,7 +8737,7 @@
               },
               "default": "'md'",
               "fieldName": "size",
-              "description": "'md' (standaard) | 'sm'. Wordt automatisch gezet door nldd-form-field."
+              "description": "'md' (default) | 'sm'. Set automatically by nldd-form-field."
             },
             {
               "name": "value",
@@ -8746,7 +8746,7 @@
               },
               "default": "''",
               "fieldName": "value",
-              "description": "De datum als ISO (jjjj-mm-dd). Met `range` een ISO 8601-interval: `jjjj-mm-dd/jjjj-mm-dd`. Leeg wanneer er geen geldige datum staat."
+              "description": "The date as ISO (yyyy-mm-dd). With `range` an ISO 8601 interval: `yyyy-mm-dd/yyyy-mm-dd`. Empty when there is no valid date."
             },
             {
               "name": "range",
@@ -8755,7 +8755,7 @@
               },
               "default": "false",
               "fieldName": "range",
-              "description": "Kies een periode: twee invoervelden en een kalender in bereikmodus."
+              "description": "Pick a period: two inputs and a calendar in range mode."
             },
             {
               "name": "min",
@@ -8764,7 +8764,7 @@
               },
               "default": "''",
               "fieldName": "min",
-              "description": "Vroegst toegestane datum als ISO (jjjj-mm-dd)."
+              "description": "Earliest allowed date as ISO (yyyy-mm-dd)."
             },
             {
               "name": "max",
@@ -8773,7 +8773,7 @@
               },
               "default": "''",
               "fieldName": "max",
-              "description": "Laatst toegestane datum als ISO (jjjj-mm-dd)."
+              "description": "Latest allowed date as ISO (yyyy-mm-dd)."
             },
             {
               "name": "no-picker",
@@ -8782,7 +8782,7 @@
               },
               "default": "false",
               "fieldName": "noPicker",
-              "description": "Verbergt de kalenderknop. Standaard staat die knop er wel."
+              "description": "Hides the calendar button. It is shown by default."
             },
             {
               "name": "input-id",
@@ -8791,7 +8791,7 @@
               },
               "default": "''",
               "fieldName": "inputId",
-              "description": "Zet het id op de interne input. Wordt automatisch gezet door nldd-form-field."
+              "description": "Sets the id on the internal input. Set automatically by nldd-form-field."
             },
             {
               "name": "placeholder",
@@ -8800,7 +8800,7 @@
               },
               "default": "''",
               "fieldName": "placeholder",
-              "description": "Placeholdertekst. Zet hier geen formaat in; gebruik daarvoor de supporting-label van nldd-form-field."
+              "description": "Placeholder text. Do not put a format here; use the supporting label of nldd-form-field for that."
             },
             {
               "name": "invalid",
@@ -8809,7 +8809,7 @@
               },
               "default": "false",
               "fieldName": "invalid",
-              "description": "Markeert het veld als ongeldig."
+              "description": "Marks the field as invalid."
             },
             {
               "name": "valid",
@@ -8818,7 +8818,7 @@
               },
               "default": "false",
               "fieldName": "valid",
-              "description": "Markeert het veld als geldig."
+              "description": "Marks the field as valid."
             },
             {
               "name": "disabled",
@@ -8827,7 +8827,7 @@
               },
               "default": "false",
               "fieldName": "disabled",
-              "description": "Uitgeschakelde staat."
+              "description": "Disabled state."
             },
             {
               "name": "readonly",
@@ -8836,7 +8836,7 @@
               },
               "default": "false",
               "fieldName": "readonly",
-              "description": "Alleen-lezen staat."
+              "description": "Read-only state."
             },
             {
               "name": "required",
@@ -8845,7 +8845,7 @@
               },
               "default": "false",
               "fieldName": "required",
-              "description": "Verplichte staat."
+              "description": "Required state."
             },
             {
               "name": "name",
@@ -8854,7 +8854,7 @@
               },
               "default": "''",
               "fieldName": "name",
-              "description": "Naam voor formulierverzending."
+              "description": "Name for form submission."
             },
             {
               "name": "autocomplete",
@@ -8863,7 +8863,7 @@
               },
               "default": "''",
               "fieldName": "autocomplete",
-              "description": "Autocomplete-hint, bijvoorbeeld 'bday'."
+              "description": "Autocomplete hint, for example 'bday'."
             },
             {
               "name": "accessible-label",
@@ -8871,7 +8871,7 @@
                 "text": "string"
               },
               "default": "''",
-              "description": "Toegankelijk label voor de interne input. Wordt automatisch gezet door nldd-form-field.",
+              "description": "Accessible label for the internal input. Set automatically by nldd-form-field.",
               "fieldName": "accessibleLabel"
             },
             {
@@ -8881,7 +8881,7 @@
               },
               "default": "''",
               "fieldName": "errorMessageIds",
-              "description": "Ids voor aria-describedby. Wordt automatisch gezet door nldd-form-field."
+              "description": "Ids for aria-describedby. Set automatically by nldd-form-field."
             },
             {
               "name": "width",
@@ -8889,7 +8889,7 @@
                 "text": "string"
               },
               "default": "''",
-              "description": "Breedte. Standaard precies breed genoeg voor een datum plus de iconen; 'full' vult de container; 'fit-content' laat de ruimte voor het validatie-icoon weg en groeit weer zodra het veld valid of invalid wordt; of geef een eigen CSS-lengte.",
+              "description": "Width. By default exactly wide enough for a date plus the icons; 'full' fills the container; 'fit-content' drops the room for the validation icon and grows again as soon as the field turns valid or invalid; or pass your own CSS length.",
               "fieldName": "width"
             },
             {
@@ -8898,7 +8898,7 @@
                 "text": "Partial<NLDDDateFieldTranslations>"
               },
               "default": "{}",
-              "description": "Vertalingen; niet opgegeven sleutels vallen terug op het Nederlands.",
+              "description": "Translations; unspecified keys fall back to Dutch.",
               "fieldName": "translations"
             }
           ],
@@ -8917,7 +8917,7 @@
           "slots": [
             {
               "name": "picker",
-              "description": "Een eigen nldd-date-picker, in plaats van de standaardkalender. Het veld blijft `value`, `min`, `max` en `range` zetten; gebruik de slot voor wat alleen een kalender weet: `week-numbers`, `first-day-of-week`, `is-date-unavailable` en eigen vertalingen."
+              "description": "Your own nldd-date-picker instead of the default calendar. The field keeps setting `value`, `min`, `max` and `range`; use the slot for what only a calendar knows: `week-numbers`, `first-day-of-week`, `is-date-unavailable` and its own translations."
             }
           ]
         }
@@ -8947,7 +8947,7 @@
       "declarations": [
         {
           "kind": "class",
-          "description": "Een kalender waarin een datum of een periode wordt gekozen. Het component is zelfstandig bruikbaar - inline op een pagina, in een filterpaneel - en zit ook in de popover van nldd-date-field. Waarden zijn altijd ISO (jjjj-mm-dd). Met `range` kiest de gebruiker in twee stappen een begin- en einddatum.",
+          "description": "A calendar for picking a date or a period. The component works on its own (inline on a page, in a filter panel) and also sits in the popover of nldd-date-field. Values are always ISO (yyyy-mm-dd). With `range` the user picks a start and an end date in two steps.",
           "name": "NLDDDatePicker",
           "members": [
             {
@@ -9098,11 +9098,11 @@
           "events": [
             {
               "name": "change",
-              "description": "Wanneer een datum of een volledige periode is gekozen. detail: { value } of { start, end }."
+              "description": "When a date or a complete period has been chosen. detail: { value } or { start, end }."
             },
             {
               "name": "input",
-              "description": "Ook bij de tussenstap van een periode, wanneer alleen de begindatum staat."
+              "description": "Also on the intermediate step of a period, when only the start date is set."
             }
           ],
           "attributes": [
@@ -9113,7 +9113,7 @@
               },
               "default": "''",
               "fieldName": "value",
-              "description": "De gekozen datum als ISO (jjjj-mm-dd). Alleen zonder `range`."
+              "description": "The chosen date as ISO (yyyy-mm-dd). Only without `range`."
             },
             {
               "name": "start",
@@ -9122,7 +9122,7 @@
               },
               "default": "''",
               "fieldName": "start",
-              "description": "Begin van de periode als ISO. Alleen met `range`."
+              "description": "Start of the period as ISO. Only with `range`."
             },
             {
               "name": "end",
@@ -9131,7 +9131,7 @@
               },
               "default": "''",
               "fieldName": "end",
-              "description": "Einde van de periode als ISO. Alleen met `range`."
+              "description": "End of the period as ISO. Only with `range`."
             },
             {
               "name": "width",
@@ -9139,7 +9139,7 @@
                 "text": "string"
               },
               "default": "''",
-              "description": "Breedte: `full` (vult de container) of een CSS-lengte (bv. `560px`). Leeg (standaard) is de intrinsieke breedte van zeven dagcellen; de cellen rekken mee met de opgegeven breedte.",
+              "description": "Width: `full` (fills the container) or a CSS length (e.g. `560px`). Empty (default) is the intrinsic width of seven day cells; the cells stretch along with the width you pass.",
               "fieldName": "width"
             },
             {
@@ -9149,7 +9149,7 @@
               },
               "default": "false",
               "fieldName": "range",
-              "description": "Kies een periode in plaats van één datum."
+              "description": "Pick a period instead of a single date."
             },
             {
               "name": "min",
@@ -9158,7 +9158,7 @@
               },
               "default": "''",
               "fieldName": "min",
-              "description": "Vroegst toegestane datum: ISO, of `today` met een verschuiving (`today-18y`)."
+              "description": "Earliest allowed date: ISO, or `today` with an offset (`today-18y`)."
             },
             {
               "name": "max",
@@ -9167,7 +9167,7 @@
               },
               "default": "''",
               "fieldName": "max",
-              "description": "Laatst toegestane datum: ISO, of `today` met een verschuiving (`today+1y`)."
+              "description": "Latest allowed date: ISO, or `today` with an offset (`today+1y`)."
             },
             {
               "name": "first-day-of-week",
@@ -9176,7 +9176,7 @@
               },
               "default": "1",
               "fieldName": "firstDayOfWeek",
-              "description": "Eerste dag van de week, 0 is zondag. Standaard 1 (maandag)."
+              "description": "First day of the week, 0 is Sunday. Default 1 (Monday)."
             },
             {
               "name": "week-numbers",
@@ -9185,7 +9185,7 @@
               },
               "default": "false",
               "fieldName": "weekNumbers",
-              "description": "Toont ISO-weeknummers in een kolom links."
+              "description": "Shows ISO week numbers in a column on the left."
             },
             {
               "name": "accessible-label",
@@ -9194,7 +9194,7 @@
               },
               "default": "''",
               "fieldName": "accessibleLabel",
-              "description": "Toegankelijke naam van de kalender."
+              "description": "Accessible name of the calendar."
             },
             {
               "name": "translations",
@@ -9207,7 +9207,7 @@
                 "name": "withTranslations",
                 "module": "src/utilities/with-translations.ts"
               },
-              "description": "Vertalingen; niet opgegeven sleutels vallen terug op het Nederlands."
+              "description": "Translations; unspecified keys fall back to Dutch."
             }
           ],
           "mixins": [
@@ -16858,7 +16858,7 @@
         },
         {
           "kind": "class",
-          "description": "Een tekstveld voor een tijd. De waarde is altijd 24-uurs `HH:mm`; dat is in het Nederlands ook de weergave, dus anders dan bij nldd-date-field valt er niets om te rekenen. Er wordt niet gemaskeerd tijdens het typen: invoer wordt royaal geaccepteerd en pas bij het verlaten van het veld genormaliseerd. Foutmeldingen horen bij nldd-form-field, niet hier. Dit veld reflecteert alleen `invalid` / `valid`, net als nldd-text-field. Wat je in de picker doet is een voorbeeld tot je hem verlaat: het veld toont de tijd meteen, maar legt hem pas vast bij het sluiten. \"Klaar\" en Enter houden de keuze, een klik ernaast ook zodra je iets gekozen hebt, en Annuleer en Escape zetten de oude tijd terug. Op een leeg veld openen de wielen op `min`, of anders op de huidige tijd afgerond op `step`; dat vult het veld nog niet in.",
+          "description": "A text field for a time. The value is always 24-hour `HH:mm`, which is how Dutch shows it too, so unlike nldd-date-field there is nothing to convert. Typing is not masked: input is accepted generously and normalized only when the field is left. Error messages belong to nldd-form-field, not here. This field reflects only `invalid` / `valid`, like nldd-text-field. What you do in the picker is a preview until you leave it. The field shows the time right away but commits it on close. \"Klaar\" and Enter keep the choice, and so does a click outside once you have picked something. Cancel and Escape put the old time back. On an empty field the wheels open at `min`, or otherwise at the current time rounded to `step`, which does not fill in the field yet.",
           "name": "NLDDTimeField",
           "members": [
             {
@@ -17189,11 +17189,11 @@
           "events": [
             {
               "name": "input",
-              "description": "Bij elke wijziging. detail: { value } met `HH:mm`, of '' zolang er geen geldige tijd staat."
+              "description": "On every change. detail: { value } with `HH:mm`, or '' while there is no valid time."
             },
             {
               "name": "change",
-              "description": "Wanneer de waarde is vastgelegd: bij het verlaten van het veld, en bij het sluiten van de picker op een manier die de keuze houdt. detail: { value } met `HH:mm`, of ''."
+              "description": "When the value is committed: on leaving the field, and on closing the picker in a way that keeps the choice. detail: { value } with `HH:mm`, or ''."
             }
           ],
           "attributes": [
@@ -17204,7 +17204,7 @@
               },
               "default": "'md'",
               "fieldName": "size",
-              "description": "'md' (standaard) | 'sm'. Wordt automatisch gezet door nldd-form-field."
+              "description": "'md' (default) | 'sm'. Set automatically by nldd-form-field."
             },
             {
               "name": "value",
@@ -17213,7 +17213,7 @@
               },
               "default": "''",
               "fieldName": "value",
-              "description": "De tijd als `HH:mm` (24-uurs). Leeg wanneer er geen geldige tijd staat."
+              "description": "The time as `HH:mm` (24-hour). Empty when there is no valid time."
             },
             {
               "name": "min",
@@ -17222,7 +17222,7 @@
               },
               "default": "''",
               "fieldName": "min",
-              "description": "Vroegst toegestane tijd als `HH:mm`. Is tevens de basis waarvandaan `step` telt."
+              "description": "Earliest allowed time as `HH:mm`. Also the base that `step` counts from."
             },
             {
               "name": "max",
@@ -17231,7 +17231,7 @@
               },
               "default": "''",
               "fieldName": "max",
-              "description": "Laatst toegestane tijd als `HH:mm`."
+              "description": "Latest allowed time as `HH:mm`."
             },
             {
               "name": "step",
@@ -17240,7 +17240,7 @@
               },
               "default": "1",
               "fieldName": "step",
-              "description": "Minutenstap (standaard 1). Bepaalt welke tijden geldig zijn, waarop wordt afgerond en hoe ver de pijltjestoetsen verspringen."
+              "description": "Step in minutes (default 1). Decides which times are valid, what rounding snaps to, and how far the arrow keys jump."
             },
             {
               "name": "no-picker",
@@ -17249,7 +17249,7 @@
               },
               "default": "false",
               "fieldName": "noPicker",
-              "description": "Verbergt de picker-knop. Standaard staat die knop er wel."
+              "description": "Hides the picker button. It is shown by default."
             },
             {
               "name": "input-id",
@@ -17258,7 +17258,7 @@
               },
               "default": "''",
               "fieldName": "inputId",
-              "description": "Zet het id op de interne input. Wordt automatisch gezet door nldd-form-field."
+              "description": "Sets the id on the internal input. Set automatically by nldd-form-field."
             },
             {
               "name": "placeholder",
@@ -17267,7 +17267,7 @@
               },
               "default": "''",
               "fieldName": "placeholder",
-              "description": "Placeholdertekst. Zet hier geen formaat in; gebruik daarvoor de supporting-label van nldd-form-field."
+              "description": "Placeholder text. Do not put a format here; use the supporting label of nldd-form-field for that."
             },
             {
               "name": "invalid",
@@ -17276,7 +17276,7 @@
               },
               "default": "false",
               "fieldName": "invalid",
-              "description": "Markeert het veld als ongeldig."
+              "description": "Marks the field as invalid."
             },
             {
               "name": "valid",
@@ -17285,7 +17285,7 @@
               },
               "default": "false",
               "fieldName": "valid",
-              "description": "Markeert het veld als geldig."
+              "description": "Marks the field as valid."
             },
             {
               "name": "disabled",
@@ -17294,7 +17294,7 @@
               },
               "default": "false",
               "fieldName": "disabled",
-              "description": "Uitgeschakelde staat."
+              "description": "Disabled state."
             },
             {
               "name": "readonly",
@@ -17303,7 +17303,7 @@
               },
               "default": "false",
               "fieldName": "readonly",
-              "description": "Alleen-lezen staat."
+              "description": "Read-only state."
             },
             {
               "name": "required",
@@ -17312,7 +17312,7 @@
               },
               "default": "false",
               "fieldName": "required",
-              "description": "Verplichte staat."
+              "description": "Required state."
             },
             {
               "name": "name",
@@ -17321,7 +17321,7 @@
               },
               "default": "''",
               "fieldName": "name",
-              "description": "Naam voor formulierverzending."
+              "description": "Name for form submission."
             },
             {
               "name": "autocomplete",
@@ -17330,7 +17330,7 @@
               },
               "default": "''",
               "fieldName": "autocomplete",
-              "description": "Autocomplete-hint."
+              "description": "Autocomplete hint."
             },
             {
               "name": "accessible-label",
@@ -17338,7 +17338,7 @@
                 "text": "string"
               },
               "default": "''",
-              "description": "Toegankelijk label voor de interne input. Wordt automatisch gezet door nldd-form-field.",
+              "description": "Accessible label for the internal input. Set automatically by nldd-form-field.",
               "fieldName": "accessibleLabel"
             },
             {
@@ -17348,7 +17348,7 @@
               },
               "default": "''",
               "fieldName": "errorMessageIds",
-              "description": "Ids voor aria-describedby. Wordt automatisch gezet door nldd-form-field."
+              "description": "Ids for aria-describedby. Set automatically by nldd-form-field."
             },
             {
               "name": "width",
@@ -17356,7 +17356,7 @@
                 "text": "string"
               },
               "default": "''",
-              "description": "Breedte. Standaard precies breed genoeg voor een tijd plus het validatie-icoon; 'full' vult de container; 'fit-content' laat de ruimte voor het validatie-icoon weg en groeit weer zodra het veld valid of invalid wordt; of geef een eigen CSS-lengte.",
+              "description": "Width. By default exactly wide enough for a time plus the validation icon; 'full' fills the container; 'fit-content' drops the room for the validation icon and grows again as soon as the field turns valid or invalid; or pass your own CSS length.",
               "fieldName": "width"
             },
             {
@@ -17365,7 +17365,7 @@
                 "text": "Partial<NLDDTimeFieldTranslations>"
               },
               "default": "{}",
-              "description": "Vertalingen; niet opgegeven sleutels vallen terug op het Nederlands.",
+              "description": "Translations; unspecified keys fall back to Dutch.",
               "fieldName": "translations"
             }
           ],
@@ -17384,7 +17384,7 @@
           "slots": [
             {
               "name": "picker",
-              "description": "Een eigen nldd-time-picker, in plaats van de standaardpicker. Het veld blijft `value`, `min`, `max` en `step` zetten; gebruik de slot voor wat alleen een picker weet, zoals eigen vertalingen."
+              "description": "Your own nldd-time-picker instead of the default one. The field keeps setting `value`, `min`, `max` and `step`; use the slot for what only a picker knows, such as its own translations."
             }
           ]
         }
@@ -17464,7 +17464,7 @@
         },
         {
           "kind": "class",
-          "description": "Twee kolommen, uren en minuten, die als een wiel langs de selectie in het midden schuiven. Het component is zelfstandig bruikbaar (inline op een pagina, in een filterpaneel) en zit ook in de popover van nldd-time-field. Waarden zijn altijd 24-uurs `HH:mm`. Scrollen ís kiezen: wat in het midden tot stilstand komt, is de waarde. Met het toetsenbord bedien je de selectie, want dat is wat een wiel is: uur en minuut zijn er elk een spinbutton. De kolommen eronder staan op aria-hidden, zodat dezelfde waarden niet twee keer worden voorgelezen.",
+          "description": "Two columns, hours and minutes, that slide like a wheel past the selection in the middle. The component works on its own (inline on a page, in a filter panel) and also sits in the popover of nldd-time-field. Values are always 24-hour `HH:mm`. Scrolling is choosing: whatever comes to rest in the middle is the value. The keyboard drives that same selection, because that is what a wheel is: hour and minute are each a spinbutton. The columns underneath are aria-hidden, so the same values are not read out twice.",
           "name": "NLDDTimePicker",
           "members": [
             {
@@ -17585,11 +17585,11 @@
           "events": [
             {
               "name": "input",
-              "description": "Bij elke wijziging: scrollen, de pijltjestoetsen. detail: { value } met `HH:mm`."
+              "description": "On every change: scrolling, the arrow keys. detail: { value } with `HH:mm`."
             },
             {
               "name": "change",
-              "description": "Wanneer de keuze is bevestigd: een klik op een waarde of op de selectie, of Enter. detail: { value } met `HH:mm`. Scrollen geeft alleen `input`, want anders zou een veld dat de picker in een popover toont al vastleggen zodra je stopt met scrollen."
+              "description": "When the choice is confirmed: a click on a value or on the selection, or Enter. detail: { value } with `HH:mm`. Scrolling only fires `input`, because otherwise a field showing the picker in a popover would commit as soon as you stopped scrolling."
             }
           ],
           "attributes": [
@@ -17600,7 +17600,7 @@
               },
               "default": "''",
               "fieldName": "value",
-              "description": "De gekozen tijd als `HH:mm` (24-uurs)."
+              "description": "The chosen time as `HH:mm` (24-hour)."
             },
             {
               "name": "min",
@@ -17609,7 +17609,7 @@
               },
               "default": "''",
               "fieldName": "min",
-              "description": "Vroegst toegestane tijd als `HH:mm`. Is tevens de basis waarvandaan `step` telt."
+              "description": "Earliest allowed time as `HH:mm`. Also the base that `step` counts from."
             },
             {
               "name": "max",
@@ -17618,7 +17618,7 @@
               },
               "default": "''",
               "fieldName": "max",
-              "description": "Laatst toegestane tijd als `HH:mm`."
+              "description": "Latest allowed time as `HH:mm`."
             },
             {
               "name": "step",
@@ -17627,7 +17627,7 @@
               },
               "default": "1",
               "fieldName": "step",
-              "description": "Minutenstap (standaard 1). Bepaalt welke minuten in de kolom staan."
+              "description": "Step in minutes (default 1). Decides which minutes are in the column."
             },
             {
               "name": "rows",
@@ -17636,7 +17636,7 @@
               },
               "default": "7",
               "fieldName": "rows",
-              "description": "Hoogte van de kolommen in rijen (standaard 7, minimaal 3). De gekozen waarde staat altijd in het midden, dus een oneven aantal toont hele rijen en een even aantal kapt boven en onder een halve rij af."
+              "description": "Height of the columns in rows (default 7, minimum 3). The chosen value always sits in the middle, so an odd number shows whole rows and an even number cuts off half a row at the top and bottom."
             },
             {
               "name": "width",
@@ -17645,7 +17645,7 @@
               },
               "default": "''",
               "fieldName": "width",
-              "description": "Breedte: `full` vult de container, of geef een eigen CSS-lengte."
+              "description": "Width: `full` fills the container, or pass your own CSS length."
             },
             {
               "name": "accessible-label",
@@ -17654,7 +17654,7 @@
               },
               "default": "''",
               "fieldName": "accessibleLabel",
-              "description": "Toegankelijke naam van de picker."
+              "description": "Accessible name of the picker."
             },
             {
               "name": "translations",
@@ -17663,7 +17663,7 @@
               },
               "default": "{}",
               "fieldName": "translations",
-              "description": "Vertalingen; niet opgegeven sleutels vallen terug op het Nederlands."
+              "description": "Translations; unspecified keys fall back to Dutch."
             }
           ],
           "superclass": {
@@ -18934,7 +18934,7 @@
       "declarations": [
         {
           "kind": "class",
-          "description": "Een visueel afgebakende kaart met optionele header, body en footer secties. De kaart heeft een elevated look als standaard. Padding wordt overgelaten aan geneste containers. Met `href` wordt de hele kaart een link (een overlay-anchor over de kaart); met `button` een knop (een overlay-button die een gewone, composed `click` geeft — een klik-listener of htmx-attribuut op de kaart zelf werkt dus direct, en Enter/Space doen het native). `href` wint als beide gezet zijn. Geneste interactieve content (bijv. footer-knoppen) moet je erboven tillen met `position: relative; z-index: 1` om klikbaar te blijven.",
+          "description": "A visually bounded card with optional header, body and footer sections. The card is elevated by default. Padding is left to nested containers. With `href` the whole card becomes a link (an overlay anchor across the card), with `button` a button (an overlay button that fires a plain, composed `click`, so a click listener or htmx attribute on the card itself works directly, and Enter/Space work natively). `href` wins when both are set. Nested interactive content, footer buttons for instance, has to be lifted above it with `position: relative; z-index: 1` to stay clickable.",
           "name": "NLDDCard",
           "members": [
             {
@@ -19017,7 +19017,7 @@
               },
               "default": "'base'",
               "fieldName": "background",
-              "description": "Vlakkleur van de kaart: `base` (standaard) op een gewone pagina-achtergrond, `tinted` wanneer de kaart juist mag opvallen tegen een base-surface"
+              "description": "Surface color of the card: `base` (default) on a plain page background, `tinted` when the card should stand out against a base surface"
             },
             {
               "name": "accessible-label",
@@ -19025,7 +19025,7 @@
                 "text": "string | undefined"
               },
               "fieldName": "accessibleLabel",
-              "description": "Toegankelijke naam van de kaart; bij `href`/`button` benoemt deze de link of knop, anders de kaart-region"
+              "description": "Accessible name of the card; with `href`/`button` it names the link or button, otherwise the card region"
             },
             {
               "name": "href",
@@ -19033,7 +19033,7 @@
                 "text": "string"
               },
               "default": "''",
-              "description": "Maakt de hele kaart een link naar deze URL (leeg = geen link)",
+              "description": "Makes the whole card a link to this URL (empty = no link)",
               "fieldName": "href"
             },
             {
@@ -19042,7 +19042,7 @@
                 "text": "boolean"
               },
               "default": "false",
-              "description": "Maakt de hele kaart een knop; genegeerd wanneer `href` is gezet",
+              "description": "Makes the whole card a button; ignored when `href` is set",
               "fieldName": "button"
             },
             {
@@ -19052,7 +19052,7 @@
               },
               "default": "''",
               "fieldName": "target",
-              "description": "Link target voor href (bijv. '_blank'); stelt rel automatisch bij en voegt bij '_blank' een \"Opent in nieuw tabblad\"-melding toe"
+              "description": "Link target for href (e.g. '_blank'); adjusts rel automatically and adds an \"Opent in nieuw tabblad\" announcement for '_blank'"
             },
             {
               "name": "rel",
@@ -19061,7 +19061,7 @@
               },
               "default": "''",
               "fieldName": "rel",
-              "description": "Link rel voor href; standaard 'noopener noreferrer' bij target='_blank'"
+              "description": "Link rel for href; defaults to 'noopener noreferrer' with target='_blank'"
             },
             {
               "name": "translations",
@@ -19074,7 +19074,7 @@
                 "name": "withTranslations",
                 "module": "src/utilities/with-translations.ts"
               },
-              "description": "Overschrijf vertaalsleutels (bijv. de \"Opent in nieuw tabblad\"-melding)"
+              "description": "Override translation keys (e.g. the \"Opent in nieuw tabblad\" announcement)"
             }
           ],
           "mixins": [
@@ -19092,15 +19092,15 @@
           "slots": [
             {
               "name": "header",
-              "description": "Header-content (bijv. nldd-title)"
+              "description": "Header content (e.g. nldd-title)"
             },
             {
               "name": "",
-              "description": "Body-content"
+              "description": "Body content"
             },
             {
               "name": "footer",
-              "description": "Footer-content (bijv. nldd-button-group) — altijd aan onderkant"
+              "description": "Footer content (e.g. nldd-button-group), always at the bottom"
             }
           ]
         }
@@ -20146,7 +20146,7 @@
       "declarations": [
         {
           "kind": "class",
-          "description": "Een scheidingslijn die secties van inhoud visueel van elkaar scheidt.",
+          "description": "A rule that visually separates sections of content.",
           "name": "NLDDDivider",
           "members": [],
           "superclass": {
@@ -25392,7 +25392,7 @@
       "declarations": [
         {
           "kind": "class",
-          "description": "Een zwevend venster gebaseerd op het native <dialog>-element. Kan modaal of niet-modaal worden weergegeven. Positioneerbaar via CSS-waarden. Geen eigen header — consumers gebruiken nldd-page met sticky-header binnenin voor een title bar.",
+          "description": "A floating window based on the native <dialog> element. Can be shown modal or modeless. Positionable through CSS values. No header of its own: consumers use nldd-page with a sticky header inside for a title bar.",
           "name": "NLDDWindow",
           "members": [
             {
@@ -25530,11 +25530,11 @@
           "events": [
             {
               "name": "open",
-              "description": "Wanneer het venster wordt geopend"
+              "description": "When the window opens"
             },
             {
               "name": "close",
-              "description": "Wanneer het venster volledig is gesloten. Bubbelt niet: overlays kunnen in elkaar zitten, en een listener op het ene venster hoort niet ook het formulier te horen dat het opende."
+              "description": "When the window has fully closed. Does not bubble: overlays can sit inside each other, and a listener on one window should not also hear the form that opened it."
             }
           ],
           "attributes": [
@@ -25545,7 +25545,7 @@
               },
               "default": "false",
               "fieldName": "modeless",
-              "description": "Niet-modaal (geen backdrop of focusvergrendeling); standaard is het venster modaal"
+              "description": "Modeless (no backdrop or focus trap); the window is modal by default"
             },
             {
               "name": "no-light-dismiss",
@@ -25554,7 +25554,7 @@
               },
               "default": "false",
               "fieldName": "noLightDismiss",
-              "description": "Een klik op de backdrop sluit het venster niet. Voor vensters waar per ongeluk wegklikken werk kost: een wizard, een formulier met ingevulde velden. Escape en de dismiss-knop blijven werken."
+              "description": "A click on the backdrop does not close the window. For windows where dismissing by accident costs work: a wizard, a form with filled-in fields. Escape and the dismiss button keep working."
             },
             {
               "name": "accessible-label",
@@ -25563,7 +25563,7 @@
               },
               "default": "''",
               "fieldName": "accessibleLabel",
-              "description": "(verplicht) Toegankelijke naam (aria-label). Valt terug op de i18n default ('Venster') als niet gezet — geef altijd een unieke, beschrijvende naam per venster."
+              "description": "(required) Accessible name (aria-label). Falls back to the i18n default ('Venster') when unset. Always pass a unique, descriptive name per window."
             },
             {
               "name": "translations",
@@ -25571,7 +25571,7 @@
                 "text": "Partial<NLDDWindowTranslations>"
               },
               "default": "{}",
-              "description": "Override translation keys; unset keys vallen terug op de Nederlandse default.",
+              "description": "Override translation keys; unset keys fall back to the Dutch default.",
               "fieldName": "translations"
             },
             {
@@ -25580,7 +25580,7 @@
                 "text": "string | undefined"
               },
               "fieldName": "top",
-              "description": "CSS top positie van de bovenrand (bijv. '0', '100px')"
+              "description": "CSS top position of the top edge (e.g. '0', '100px')"
             },
             {
               "name": "left",
@@ -25588,7 +25588,7 @@
                 "text": "string | undefined"
               },
               "fieldName": "left",
-              "description": "CSS left positie van de linkerrand"
+              "description": "CSS left position of the left edge"
             },
             {
               "name": "right",
@@ -25596,7 +25596,7 @@
                 "text": "string | undefined"
               },
               "fieldName": "right",
-              "description": "CSS right waarde"
+              "description": "CSS right value"
             },
             {
               "name": "bottom",
@@ -25604,7 +25604,7 @@
                 "text": "string | undefined"
               },
               "fieldName": "bottom",
-              "description": "CSS bottom waarde"
+              "description": "CSS bottom value"
             },
             {
               "name": "centered",
@@ -25613,7 +25613,7 @@
               },
               "default": "false",
               "fieldName": "centered",
-              "description": "Centreert beide assen op de viewport. Per as overrideable: `centered top=\"0\"` = horizontaal gecentreerd, top-aligned. Mirrort CSS `place-items: center` met `align-items`/`justify-items` overrides."
+              "description": "Centers both axes on the viewport. Overridable per axis: `centered top=\"0\"` is horizontally centered, top aligned. Mirrors CSS `place-items: center` with `align-items`/`justify-items` overrides."
             },
             {
               "name": "width",
@@ -25621,7 +25621,7 @@
                 "text": "string | undefined"
               },
               "fieldName": "width",
-              "description": "CSS width (standaard: var(--components-window-default-width))"
+              "description": "CSS width (default: var(--components-window-default-width))"
             },
             {
               "name": "height",
@@ -25629,7 +25629,7 @@
                 "text": "string | undefined"
               },
               "fieldName": "height",
-              "description": "CSS height (standaard: content height)"
+              "description": "CSS height (default: content height)"
             },
             {
               "name": "scheme",
@@ -25650,7 +25650,7 @@
           "slots": [
             {
               "name": "",
-              "description": "Volledige window content (bijv. nldd-page)"
+              "description": "Complete window content (e.g. nldd-page)"
             }
           ]
         }
@@ -29095,7 +29095,7 @@
       "declarations": [
         {
           "kind": "class",
-          "description": "Hyperlink component met twee modi: 1. **Standalone (sized)** — set `size=\"xs\"|\"sm\"|\"md\"|\"lg\"` voor menu's, actiegebieden of overzichten. Vaste tekstgrootte, `display: inline-flex` met `gap` voor icon-spacing. 2. **Inline (inherit)** — laat `size` weg of zet expliciet `size=\"inherit\"`. De link erft `font-size`, `line-height` en `font-family` van zijn omgeving. Tekst wraps natuurlijk over regels (`display: inline`). Icons werken ook hier; de natuurlijke whitespace tussen icon en tekst zorgt voor de spacing. Voor links in CMS/markdown-output (waar de `<a>` als HTML binnenkomt) blijft `<nldd-rich-text>` met raw `<a>` de aangewezen route.",
+          "description": "Hyperlink component with two modes: 1. **Standalone (sized)**: set `size=\"xs\"|\"sm\"|\"md\"|\"lg\"` for menus, action areas or overviews. Fixed text size, `display: inline-flex` with `gap` for icon spacing. 2. **Inline (inherit)**: leave `size` out or set `size=\"inherit\"` explicitly. The link inherits `font-size`, `line-height` and `font-family` from its surroundings. Text wraps naturally across lines (`display: inline`). Icons work here too; the natural whitespace between icon and text provides the spacing. For links in CMS or markdown output, where the `<a>` arrives as HTML, `<nldd-rich-text>` with a raw `<a>` remains the route to take.",
           "name": "NLDDLink",
           "members": [
             {
@@ -29215,7 +29215,7 @@
               },
               "default": "undefined",
               "fieldName": "href",
-              "description": "Link doel"
+              "description": "Link target"
             },
             {
               "name": "target",
@@ -29224,7 +29224,7 @@
               },
               "default": "undefined",
               "fieldName": "target",
-              "description": "Link target (bijv. '_blank'); stelt rel automatisch bij. Bij '_blank' voegt de link een visueel verborgen \"Opent in nieuw tabblad\"-melding toe voor screenreaders (WCAG 2.1 SC 3.2.2)."
+              "description": "Link target (e.g. '_blank'); adjusts rel automatically. With '_blank' the link adds a visually hidden \"Opent in nieuw tabblad\" announcement for screen readers (WCAG 2.1 SC 3.2.2)."
             },
             {
               "name": "rel",
@@ -29233,7 +29233,7 @@
               },
               "default": "undefined",
               "fieldName": "rel",
-              "description": "Link rel attribuut; standaard 'noopener noreferrer' bij target='_blank'"
+              "description": "Link rel attribute; defaults to 'noopener noreferrer' with target='_blank'"
             },
             {
               "name": "size",
@@ -29241,7 +29241,7 @@
                 "text": "Size | undefined"
               },
               "fieldName": "size",
-              "description": "Tekstgrootte: 'xs' | 'sm' | 'md' | 'lg' | 'inherit'. Leeg = inherit."
+              "description": "Text size: 'xs' | 'sm' | 'md' | 'lg' | 'inherit'. Empty = inherit."
             },
             {
               "name": "text",
@@ -29250,7 +29250,7 @@
               },
               "default": "''",
               "fieldName": "text",
-              "description": "Link tekst (alternatief voor default slot)"
+              "description": "Link text (alternative to the default slot)"
             },
             {
               "name": "start-icon",
@@ -29259,7 +29259,7 @@
               },
               "default": "''",
               "fieldName": "startIcon",
-              "description": "Icoon voor de tekst"
+              "description": "Icon before the text"
             },
             {
               "name": "end-icon",
@@ -29268,7 +29268,7 @@
               },
               "default": "''",
               "fieldName": "endIcon",
-              "description": "Icoon na de tekst"
+              "description": "Icon after the text"
             },
             {
               "name": "accessible-label",
@@ -29277,7 +29277,7 @@
               },
               "default": "''",
               "fieldName": "accessibleLabel",
-              "description": "Toegankelijk label voor screen readers"
+              "description": "Accessible label for screen readers"
             },
             {
               "name": "disabled",
@@ -29286,7 +29286,7 @@
               },
               "default": "false",
               "fieldName": "disabled",
-              "description": "Uitgeschakelde staat"
+              "description": "Disabled state"
             },
             {
               "name": "no-tab",
@@ -29308,7 +29308,7 @@
                 "name": "withTranslations",
                 "module": "src/utilities/with-translations.ts"
               },
-              "description": "Overschrijf vertaalsleutels (bijv. de \"Opent in nieuw tabblad\"-melding); niet-gezette sleutels vallen terug op Nederlands."
+              "description": "Override translation keys (e.g. the \"Opent in nieuw tabblad\" announcement); unset keys fall back to Dutch."
             }
           ],
           "mixins": [
@@ -29326,15 +29326,15 @@
           "slots": [
             {
               "name": "",
-              "description": "Link tekst (alternatief voor text attribuut)"
+              "description": "Link text (alternative to the text attribute)"
             },
             {
               "name": "start-icon",
-              "description": "Custom icoon voor de tekst"
+              "description": "Custom icon before the text"
             },
             {
               "name": "end-icon",
-              "description": "Custom icoon na de tekst"
+              "description": "Custom icon after the text"
             }
           ]
         }
@@ -29364,7 +29364,7 @@
       "declarations": [
         {
           "kind": "class",
-          "description": "Interactief bouwblok voor gebruik in een menu bar. Rendert als <a> (met href) of <button> (zonder href). Ondersteunt icon, text, disclosure indicator, en een expandable popover via een geslotte `<nldd-menu>` (of ander popover-element).",
+          "description": "Interactive building block for use in a menu bar. Renders as an <a> (with href) or a <button> (without href). Supports an icon, text, a disclosure indicator, and an expandable popover through a slotted `<nldd-menu>` (or another popover element).",
           "name": "NLDDMenuBarItem",
           "members": [
             {
@@ -29539,7 +29539,7 @@
               },
               "default": "''",
               "fieldName": "text",
-              "description": "Tekst van het item"
+              "description": "Text of the item"
             },
             {
               "name": "current",
@@ -29548,7 +29548,7 @@
               },
               "default": "false",
               "fieldName": "current",
-              "description": "Markeer als actief/huidig item"
+              "description": "Mark as the active or current item"
             },
             {
               "name": "current-type",
@@ -29557,7 +29557,7 @@
               },
               "default": "'page'",
               "fieldName": "currentType",
-              "description": "aria-current waarde als current is true ('page', 'step', 'location', 'true'). Standaard: 'page'"
+              "description": "aria-current value when current is true ('page', 'step', 'location', 'true'). Default: 'page'"
             },
             {
               "name": "href",
@@ -29566,7 +29566,7 @@
               },
               "default": "''",
               "fieldName": "href",
-              "description": "Optionele link URL. Zonder href rendert als button."
+              "description": "Optional link URL. Without href it renders as a button."
             },
             {
               "name": "icon",
@@ -29575,7 +29575,7 @@
               },
               "default": "''",
               "fieldName": "icon",
-              "description": "Optioneel icon naam (nldd-icon)"
+              "description": "Optional icon name (nldd-icon)"
             },
             {
               "name": "expandable",
@@ -29584,7 +29584,7 @@
               },
               "default": "false",
               "fieldName": "expandable",
-              "description": "Toon disclosure icon en open de geslotte `<nldd-menu>` bij klik"
+              "description": "Show the disclosure icon and open the slotted `<nldd-menu>` on click"
             },
             {
               "name": "icon-only",
@@ -29593,7 +29593,7 @@
               },
               "default": "false",
               "fieldName": "iconOnly",
-              "description": "Verberg tekst visueel (altijd)"
+              "description": "Hide the text visually (always)"
             },
             {
               "name": "content-priority",
@@ -29602,7 +29602,7 @@
               },
               "default": "''",
               "fieldName": "contentPriority",
-              "description": "Bepaalt wat zichtbaar blijft in compact modus: 'icon' verbergt tekst, 'text' verbergt icon"
+              "description": "Decides what stays visible in compact mode: 'icon' hides the text, 'text' hides the icon"
             },
             {
               "name": "compact",
@@ -29611,7 +29611,7 @@
               },
               "default": "false",
               "fieldName": "compact",
-              "description": "Activeert content-priority gedrag (gezet door parent nldd-menu-bar)"
+              "description": "Activates content-priority behavior (set by the parent nldd-menu-bar)"
             },
             {
               "name": "disabled",
@@ -29620,7 +29620,7 @@
               },
               "default": "false",
               "fieldName": "disabled",
-              "description": "Schakel interactie uit"
+              "description": "Turn interaction off"
             },
             {
               "name": "accessible-label",
@@ -29629,7 +29629,7 @@
               },
               "default": "''",
               "fieldName": "accessibleLabel",
-              "description": "Overschrijf aria-label"
+              "description": "Override aria-label"
             },
             {
               "name": "haspopup",
@@ -29638,7 +29638,7 @@
               },
               "default": "''",
               "fieldName": "haspopup",
-              "description": "aria-haspopup waarde (bijv. \"menu\", \"dialog\")"
+              "description": "aria-haspopup value (e.g. \"menu\", \"dialog\")"
             },
             {
               "name": "expanded",
@@ -29647,7 +29647,7 @@
               },
               "default": "false",
               "fieldName": "expanded",
-              "description": "Of de bijbehorende popover open is; zet aria-expanded op de knop wanneer expandable of haspopup is gezet. Wordt automatisch bijgehouden voor een geslotte `<nldd-menu>`."
+              "description": "Whether the matching popover is open; sets aria-expanded on the button when expandable or haspopup is set. Tracked automatically for a slotted `<nldd-menu>`."
             }
           ],
           "superclass": {
@@ -29659,13 +29659,13 @@
           "events": [
             {
               "name": "select",
-              "description": "Bij klik op non-expandable button item (bubbles, composed)"
+              "description": "On a click on a non-expandable button item (bubbles, composed)"
             }
           ],
           "slots": [
             {
               "name": "",
-              "description": "Inhoud van de expandable popover — wrap items in een `<nldd-menu>` zodat dit component de menu-API (variant, accessible-label, translations, filterFn, …) niet hoeft te dupliceren. Event listeners op items werken direct, omdat er niet meer gekloond wordt."
+              "description": "Content of the expandable popover. Wrap items in an `<nldd-menu>` so this component does not have to duplicate the menu API (variant, accessible-label, translations, filterFn and so on). Event listeners on items work directly, because nothing is cloned anymore."
             }
           ]
         }
@@ -29695,7 +29695,7 @@
       "declarations": [
         {
           "kind": "class",
-          "description": "Horizontale rij van nldd-menu-bar-item elementen met automatische overflow detectie. Items die niet passen worden verborgen achter een overflow button met een popover menu.",
+          "description": "Horizontal row of nldd-menu-bar-item elements with automatic overflow detection. Items that do not fit are hidden behind an overflow button with a popover menu.",
           "name": "NLDDMenuBar",
           "members": [
             {
@@ -29759,7 +29759,7 @@
               },
               "default": "''",
               "fieldName": "overflowText",
-              "description": "Tekst voor de overflow button (standaard via i18n)"
+              "description": "Text for the overflow button (default through i18n)"
             },
             {
               "name": "accessible-label",
@@ -29768,7 +29768,7 @@
               },
               "default": "''",
               "fieldName": "accessibleLabel",
-              "description": "aria-label voor de nav landmark"
+              "description": "aria-label for the nav landmark"
             },
             {
               "name": "compact",
@@ -29777,7 +29777,7 @@
               },
               "default": "false",
               "fieldName": "compact",
-              "description": "Propageert compact attribuut naar slotted items (activeert content-priority)"
+              "description": "Propagates the compact attribute to slotted items (activates content priority)"
             },
             {
               "name": "translations",
@@ -29807,7 +29807,7 @@
           "slots": [
             {
               "name": "",
-              "description": "nldd-menu-bar-item elementen"
+              "description": "nldd-menu-bar-item elements"
             }
           ]
         }
@@ -29934,7 +29934,7 @@
                 "text": "boolean"
               },
               "default": "false",
-              "description": "Centreert de pagination in de container (host fills row, items grouped in the middle)",
+              "description": "Centers the pagination in the container (host fills row, items grouped in the middle)",
               "fieldName": "centered"
             },
             {
@@ -29944,7 +29944,7 @@
               },
               "default": "''",
               "fieldName": "hrefPattern",
-              "description": "URL patroon met {page} placeholder, rendert links in plaats van buttons"
+              "description": "URL pattern with a {page} placeholder, renders links instead of buttons"
             },
             {
               "name": "translations",
@@ -29953,7 +29953,7 @@
               },
               "default": "{}",
               "fieldName": "translations",
-              "description": "Vertalingen; niet opgegeven sleutels vallen terug op het Nederlands"
+              "description": "Translations; unspecified keys fall back to Dutch"
             }
           ],
           "superclass": {
@@ -29965,7 +29965,7 @@
           "events": [
             {
               "name": "page-change",
-              "description": "Bij paginawisseling (detail: { page: number, href?: string }). Alleen cancelable in href-mode: preventDefault() voorkomt navigatie (SPA)."
+              "description": "On a page change (detail: { page: number, href?: string }). Only cancelable in href mode: preventDefault() blocks navigation (SPA)."
             }
           ]
         }
@@ -29995,7 +29995,7 @@
       "declarations": [
         {
           "kind": "class",
-          "description": "Accessibility-patroon dat keyboard-gebruikers toestaat om content over te slaan. Wraps content in een default slot — zonder href focust het het eerste element na de skip-link in het DOM (nextElementSibling). Zorg dat er een focusbaar element na het component staat, anders heeft de skip-link geen effect.",
+          "description": "Accessibility pattern that lets keyboard users skip past content. Wraps content in a default slot. Without href it focuses the first element after the skip link in the DOM (nextElementSibling). Make sure a focusable element follows the component, otherwise the skip link has no effect.",
           "name": "NLDDSkipLink",
           "members": [
             {
@@ -30039,7 +30039,7 @@
               },
               "default": "''",
               "fieldName": "text",
-              "description": "Tekst van de skip-link. Fallback naar i18n default."
+              "description": "Text of the skip link. Falls back to the i18n default."
             },
             {
               "name": "href",
@@ -30048,7 +30048,7 @@
               },
               "default": "''",
               "fieldName": "href",
-              "description": "Optioneel extern doel-ID. Zonder href springt naar eind van eigen content."
+              "description": "Optional external target id. Without href it jumps to the end of its own content."
             },
             {
               "name": "translations",
@@ -30078,7 +30078,7 @@
           "slots": [
             {
               "name": "",
-              "description": "Content die overgeslagen kan worden"
+              "description": "Content that can be skipped"
             }
           ]
         }
@@ -30442,7 +30442,7 @@
       "declarations": [
         {
           "kind": "class",
-          "description": "De bovenste balk van een pagina: een logobalk met het Rijkslogo en een optioneel woordmerk, en daaronder de hoofdbalk met de websitetitel, een terugknop, de globale navigatie en de utility-navigatie. Op smalle breedtes verhuist de globale navigatie naar een menusheet achter de menuknop.",
+          "description": "The top bar of a page: a logo bar with the Rijkslogo and an optional wordmark, and below it the main bar with the website title, a back button, the global navigation and the utility navigation. On narrow widths the global navigation moves into a menu sheet behind the menu button.",
           "name": "NLDDTopNavigationBar",
           "members": [
             {
@@ -30575,7 +30575,7 @@
               },
               "default": "''",
               "fieldName": "websiteTitle",
-              "description": "Naam van de website of applicatie, boven de menubalk. Leeg laat de titelregel weg."
+              "description": "Name of the website or application, above the menu bar. Empty leaves the title line out."
             },
             {
               "name": "no-logo",
@@ -30584,7 +30584,7 @@
               },
               "default": "false",
               "fieldName": "noLogo",
-              "description": "Verbergt de hele logobalk, inclusief woordmerk."
+              "description": "Hides the whole logo bar, wordmark included."
             },
             {
               "name": "width",
@@ -30592,7 +30592,7 @@
                 "text": "string"
               },
               "default": "''",
-              "description": "Begrenst de bar-content tot een max-width zodat die uitlijnt met de page-sections. 'full' vult de volle breedte, of geef een eigen CSS-lengte.",
+              "description": "Limits the bar content to a max-width so it lines up with the page sections. 'full' fills the entire width, or pass your own CSS length.",
               "fieldName": "width"
             },
             {
@@ -30602,7 +30602,7 @@
               },
               "default": "''",
               "fieldName": "logoTitle",
-              "description": "Titel van het woordmerk naast het logo. Zonder deze waarde staat het logo er alleen."
+              "description": "Title of the wordmark next to the logo. Without it the logo stands alone."
             },
             {
               "name": "logo-subtitle",
@@ -30611,7 +30611,7 @@
               },
               "default": "''",
               "fieldName": "logoSubtitle",
-              "description": "Subtitel onder de woordmerktitel. Alleen zichtbaar als er een woordmerk is."
+              "description": "Subtitle under the wordmark title. Only visible when there is a wordmark."
             },
             {
               "name": "logo-supporting-text-1",
@@ -30620,7 +30620,7 @@
               },
               "default": "''",
               "fieldName": "logoSupportingText1",
-              "description": "Eerste ondersteunende regel onder de woordmerktitel. Alleen zichtbaar als er een woordmerk is."
+              "description": "First supporting line under the wordmark title. Only visible when there is a wordmark."
             },
             {
               "name": "logo-supporting-text-2",
@@ -30629,7 +30629,7 @@
               },
               "default": "''",
               "fieldName": "logoSupportingText2",
-              "description": "Tweede ondersteunende regel onder de woordmerktitel. Alleen zichtbaar als er een woordmerk is."
+              "description": "Second supporting line under the wordmark title. Only visible when there is a wordmark."
             },
             {
               "name": "logo-href",
@@ -30638,7 +30638,7 @@
               },
               "default": "''",
               "fieldName": "logoHref",
-              "description": "URL voor logo en woordmerk. Zonder deze waarde zijn ze geen link, maar een afbeelding met een toegankelijk label."
+              "description": "URL for the logo and wordmark. Without it they are not a link but an image with an accessible label."
             },
             {
               "name": "website-href",
@@ -30647,7 +30647,7 @@
               },
               "default": "''",
               "fieldName": "websiteHref",
-              "description": "URL voor de websitetitel. Zonder deze waarde blijft de titel gewone tekst."
+              "description": "URL for the website title. Without it the title stays plain text."
             },
             {
               "name": "back-href",
@@ -30656,7 +30656,7 @@
               },
               "default": "''",
               "fieldName": "backHref",
-              "description": "URL van de terugknop. Zonder deze waarde vuurt een klik het `back-click`-event, zodat de consument zelf navigeert."
+              "description": "URL of the back button. Without it a click fires the `back-click` event, so the consumer navigates itself."
             },
             {
               "name": "back-text",
@@ -30665,7 +30665,7 @@
               },
               "default": "''",
               "fieldName": "backText",
-              "description": "Tekst van de terugknop. De knop verschijnt zodra back-text of back-href is gezet; zonder tekst valt hij terug op de vertaling (\"Terug\")."
+              "description": "Text of the back button. The button appears as soon as back-text or back-href is set; without text it falls back to the translation (\"Terug\")."
             },
             {
               "name": "translations",
@@ -31719,7 +31719,7 @@
       "declarations": [
         {
           "kind": "class",
-          "description": "Een guided-discovery coach-mark. Plaats een control (bijv. nldd-search-field) in de default slot; zolang `active` is gezet tilt het component een callout (titel + supporting text + dismiss) in de top layer via de Popover API (`popover=\"manual\"`), geankerd aan het control met Floating UI. Geen backdrop, non-modaal: de achtergrond blijft interactief. Het control zelf blijft op zijn plek in de flow staan. Met `dismissable` beheert het component het sluiten en vuurt het nldd-close: - de gebruiker voert de geadviseerde interactie uit op het control -> close{completed} - de dismiss-knop -> close{dismissed} - een klik/toets BUITEN de coach-mark -> close{ignored} Zonder `dismissable` sluit niets vanzelf (geen knop, geen buiten- of slot-klik); dan bepaalt de consumer het sluiten zelf via `active` of `complete()`. `complete()` werkt altijd en sluit met close{completed} (bijv. pas bij een echte zoekopdracht).",
+          "description": "A guided-discovery coach mark. Put a control (nldd-search-field, for instance) in the default slot. While `active` is set, the component lifts a callout (title + supporting text + dismiss) into the top layer through the Popover API (`popover=\"manual\"`), anchored to the control with Floating UI. No backdrop, non-modal: the background stays interactive. The control itself stays where it is in the flow. With `dismissable` the component manages closing and fires nldd-close: - the user performs the suggested interaction on the control -> close{completed} - the dismiss button -> close{dismissed} - a click or key press OUTSIDE the coach mark -> close{ignored} Without `dismissable` nothing closes by itself (no button, no outside or slot click); the consumer then decides when to close through `active` or `complete()`. `complete()` always works and closes with close{completed}, for example only once a real search has been submitted.",
           "name": "NLDDJustInTimeEducation",
           "members": [
             {
@@ -31819,7 +31819,7 @@
           "events": [
             {
               "name": "nldd-close",
-              "description": "Wanneer de coach-mark sluit. detail: { reason: 'completed' | 'dismissed' | 'ignored' }."
+              "description": "When the coach mark closes. detail: { reason: 'completed' | 'dismissed' | 'ignored' }."
             }
           ],
           "attributes": [
@@ -31830,7 +31830,7 @@
               },
               "default": "false",
               "fieldName": "active",
-              "description": "Toon de coach-mark. App-gestuurd; standaard false."
+              "description": "Show the coach mark. Driven by the app; false by default."
             },
             {
               "name": "text",
@@ -31839,7 +31839,7 @@
               },
               "default": "''",
               "fieldName": "text",
-              "description": "Titel van de callout."
+              "description": "Title of the callout."
             },
             {
               "name": "supporting-text",
@@ -31848,7 +31848,7 @@
               },
               "default": "''",
               "fieldName": "supportingText",
-              "description": "Ondersteunende tekst onder de titel."
+              "description": "Supporting text under the title."
             },
             {
               "name": "placement",
@@ -31857,7 +31857,7 @@
               },
               "default": "'auto'",
               "fieldName": "placement",
-              "description": "'auto' | 'top' | 'bottom' | 'left' | 'right' (standaard 'auto')."
+              "description": "'auto' | 'top' | 'bottom' | 'left' | 'right' (default 'auto')."
             },
             {
               "name": "dismissable",
@@ -31866,7 +31866,7 @@
               },
               "default": "false",
               "fieldName": "dismissable",
-              "description": "Toon de dismiss-knop en sta sluiten toe via 1 klik/toets buiten de coach-mark. Standaard false: dan beheert de consumer het sluiten zelf."
+              "description": "Show the dismiss button and allow closing with one click or key press outside the coach mark. False by default: the consumer then manages closing itself."
             },
             {
               "name": "arrow-length",
@@ -31875,7 +31875,7 @@
               },
               "default": "''",
               "fieldName": "arrowLength",
-              "description": "Pijllengte en dus de afstand tussen card en control, als CSS-lengte (bijv. \\`333px\\`, \\`30vh\\`). Leeg = DS-standaard; onder 40px wordt geklemd."
+              "description": "Arrow length, and therefore the distance between card and control, as a CSS length (e.g. `333px`, `30vh`). Empty = the DS default; anything under 40px is clamped."
             },
             {
               "name": "no-arrow",
@@ -31884,7 +31884,7 @@
               },
               "default": "false",
               "fieldName": "noArrow",
-              "description": "Verberg de pijl; de card staat dan dicht tegen het control."
+              "description": "Hide the arrow; the card then sits close against the control."
             },
             {
               "name": "translations",
@@ -31914,7 +31914,7 @@
           "slots": [
             {
               "name": "",
-              "description": "Het control waar de coach-mark naar wijst (blijft in de normale flow)."
+              "description": "The control the coach mark points at (stays in the normal flow)."
             }
           ]
         }
@@ -33125,7 +33125,7 @@
       "declarations": [
         {
           "kind": "class",
-          "description": "Een smalle, paginabrede statusbalk (24px) met een diepe achtergrondkleur per variant. Gebruik voor persistente systeemtoestand: een storing, gepland onderhoud, een conceptweergave of een lopende opname. De balk toont bewust geen icoon en ondersteunt alleen tekst — de tekst zelf moet de status benoemen (\"Storing: …\", \"Gepland onderhoud …\"), zodat de betekenis niet alleen uit kleur volgt (WCAG 1.4.1). Houd de tekst kort: de balk toont één regel en kapt af met ellipsis, zeker op smallere schermen. Bij een lang bericht met veel informatie hoort alleen de kern in de balk; verwijs voor de rest naar een losse pagina of sheet (bijvoorbeeld via `href` of `button`) waar de gebruiker verder kan lezen. De hele balk kan klikbaar zijn: zet `href` (rendert een `<a>`) of `button` (rendert een `<button>`; luister naar het native `click` event). Zonder beide is de balk statisch. Bij interactie verschijnt een chevron als affordance. Maximaal één actie per balk; meerdere acties of links in lopende tekst horen in nldd-banner. role en aria-live worden automatisch gezet op basis van de variant: - critical → role=\"alert\" (impliceert aria-live=\"assertive\"; onderbreekt de screen reader) - overige → role=\"status\" aria-live=\"polite\" Niet overschrijfbaar — is een rustiger component nodig, kies dan een ander. Gebruik `critical` alleen voor een echte noodsituatie: role=\"alert\" onderbreekt de screen reader bij élke wijziging van de inhoud, dus plaats er geen tekst in die regelmatig verandert (zoals een aftellende timer).",
+          "description": "A narrow, page-wide status bar (24px) with a deep background color per variant. Use it for persistent system state: an outage, planned maintenance, a draft view or a recording in progress. The bar deliberately shows no icon and supports text only. The text itself has to name the status (\"Storing: …\", \"Gepland onderhoud …\"), so the meaning does not follow from color alone (WCAG 1.4.1). Keep the text short: the bar shows one line and truncates with an ellipsis, certainly on narrower screens. For a long message with a lot of information only the essence belongs in the bar. Point to a separate page or sheet for the rest (through `href` or `button`, for instance), where the user can read on. The whole bar can be clickable: set `href` (renders an `<a>`) or `button` (renders a `<button>`; listen for the native `click` event). Without either the bar is static. On interaction a chevron appears as an affordance. One action per bar at most; several actions, or links in running text, belong in nldd-banner. role and aria-live are set automatically from the variant: - critical → role=\"alert\" (implies aria-live=\"assertive\"; interrupts the screen reader) - others → role=\"status\" aria-live=\"polite\" Not overridable. If you need a quieter component, pick a different one. Use `critical` only for a real emergency: role=\"alert\" interrupts the screen reader on every change of the content, so do not put text in it that changes regularly (a counting-down timer, for example).",
           "name": "NLDDStatusBar",
           "members": [
             {
@@ -33196,7 +33196,7 @@
               },
               "default": "'neutral'",
               "fieldName": "variant",
-              "description": "Kleur van de balk (standaard: 'neutral')"
+              "description": "Color of the bar (default: 'neutral')"
             },
             {
               "name": "text",
@@ -33205,7 +33205,7 @@
               },
               "default": "''",
               "fieldName": "text",
-              "description": "De statustekst (één regel; afgekapt met ellipsis)"
+              "description": "The status text (one line; truncated with an ellipsis)"
             },
             {
               "name": "href",
@@ -33214,7 +33214,7 @@
               },
               "default": "''",
               "fieldName": "href",
-              "description": "Maakt de hele balk een link (rendert een <a>)"
+              "description": "Makes the whole bar a link (renders an <a>)"
             },
             {
               "name": "target",
@@ -33222,7 +33222,7 @@
                 "text": "string"
               },
               "default": "''",
-              "description": "Link target (bijv. '_blank'); alleen gebruikt bij href",
+              "description": "Link target (e.g. '_blank'); only used with href",
               "fieldName": "target"
             },
             {
@@ -33231,7 +33231,7 @@
                 "text": "string"
               },
               "default": "''",
-              "description": "Link rel; standaard 'noopener noreferrer' bij target='_blank'",
+              "description": "Link rel; defaults to 'noopener noreferrer' with target='_blank'",
               "fieldName": "rel"
             },
             {
@@ -33241,7 +33241,7 @@
               },
               "default": "false",
               "fieldName": "button",
-              "description": "Maakt de hele balk een button; genegeerd als href is gezet"
+              "description": "Makes the whole bar a button; ignored when href is set"
             }
           ],
           "superclass": {

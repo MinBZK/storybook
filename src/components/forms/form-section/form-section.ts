@@ -1,18 +1,18 @@
 /**
  * Nederlandse Digitale Dienst Form Section Component
  *
- * Plain custom element (extends HTMLElement, no Lit) — light-DOM render
- * lost een NVDA + Firefox a11y-bug op waar shadow-DOM <fieldset> + <legend>
- * niet betrouwbaar als group-label aangekondigd worden voor slotted
- * controls. Native fieldset/legend in light DOM werkt correct over alle
- * AT/browser-combinaties.
+ * Plain custom element (extends HTMLElement, no Lit). The light-DOM render
+ * works around an NVDA + Firefox a11y bug where a shadow-DOM <fieldset> +
+ * <legend> is not reliably announced as the group label for slotted controls.
+ * A native fieldset/legend in the light DOM works correctly across all
+ * AT/browser combinations.
  *
  * **Differs from shadow components:**
- * - Geen shadowRoot — alle children leven in light DOM (binnen het
- *   gerenderde <fieldset>).
- * - Geen Lit — pure HTMLElement met handmatige DOM-mutation.
- * - **Vereist global stylesheet import** — `dist/css/form-section.css`
- *   (of `global.css`). Form-section heeft geen shadow stylesheet.
+ * - No shadowRoot: all children live in the light DOM (inside the rendered
+ *   <fieldset>).
+ * - No Lit: a plain HTMLElement with manual DOM mutation.
+ * - **Requires a global stylesheet import**: `dist/css/form-section.css` (or
+ *   `global.css`). Form-section has no shadow stylesheet.
  *
  * Renders to:
  *
@@ -28,22 +28,20 @@
  *         </fieldset>
  *     </nldd-form-section>
  *
- * **Accessibility note**: de title rendert als `<legend>`. Dat is
- * semantisch een **groep-label**, geen heading. Screenreaders
- * kondigen 't aan wanneer de gebruiker in de fieldset komt, maar
- * gebruikers die met de H-toets door headings springen slaan 'm
- * over. Visueel lijkt 't op een heading; gebruik dit component dus
- * voor *form-grouping*, niet als pagina-structuur. Voor echte
- * page-headings: gebruik een apart heading-element boven het form.
+ * **Accessibility note**: the title renders as a `<legend>`. Semantically that
+ * is a **group label**, not a heading. Screen readers announce it when the user
+ * enters the fieldset, but users jumping through headings with the H key skip
+ * it. Visually it looks like a heading, so use this component for *form
+ * grouping*, not as page structure. For real page headings, use a separate
+ * heading element above the form.
  *
- * **Supporting-text lengte**: de subtitle staat als `<span>` binnen
- * de `<legend>` zodat SR 'm meeleest als group label. Bijwerking: bij
- * elke field-entry binnen de sectie wordt de hele legend (titel +
- * subtitel) opnieuw uitgesproken. Houd `supporting-text` daarom kort
- * (richtlijn: ≤ ~80 tekens) en gebruik 'm voor groep-introductie
- * ("Vul je adresgegevens in"), niet voor uitgebreide instructies.
- * Voor langere uitleg op een specifiek veld: gebruik
- * `nldd-form-field-help-text` op dat veld.
+ * **Supporting-text length**: the subtitle sits as a `<span>` inside the
+ * `<legend>` so a screen reader reads it along as the group label. Side effect:
+ * on every field entry within the section, the whole legend (title + subtitle)
+ * is spoken again. Keep `supporting-text` short (roughly 80 characters or less)
+ * and use it to introduce the group ("Vul je adresgegevens in"), not for
+ * detailed instructions. For a longer explanation on one specific field, use
+ * `nldd-form-field-help-text` on that field.
  *
  *     <nldd-form>
  *         <nldd-form-section text="Persoonsgegevens" supporting-text="Vul je gegevens in.">
@@ -60,10 +58,10 @@
  *
  * @element nldd-form-section
  *
- * @attr {string} text - Heading-tekst (gerenderd in `<legend>`).
- * @attr {string} supporting-text - Korte beschrijving onder de heading. Houd ≤ ~80 tekens (zie a11y-note).
+ * @attr {string} text - Heading text (rendered in the `<legend>`).
+ * @attr {string} supporting-text - Short description under the heading. Keep it to roughly 80 characters or less (see the a11y note).
  *
- * Children van de form-section worden in `.form-section__main` geplaatst.
+ * Children of the form-section are placed in `.form-section__main`.
  */
 
 const FIELDSET_CLASS = 'form-section';

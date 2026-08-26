@@ -1,41 +1,41 @@
 /**
  * Nederlandse Digitale Dienst Keyboard Shortcut Component (Lit + TypeScript)
  *
- * Toont een toetsencombinatie (zoals Cmd+K of Ctrl+Shift+P) in één gecombineerde
- * container met semantische <kbd>-elementen per toets.
+ * Shows a key combination (such as Cmd+K or Ctrl+Shift+P) in one combined
+ * container with a semantic <kbd> element per key.
  *
- * Op touch-only devices (geen hover-capable input) wordt de shortcut standaard
- * verborgen omdat hij niet aanroepbaar is. Gebruik het `always-visible` attribuut
- * wanneer de shortcut puur informatief is en altijd zichtbaar moet blijven.
+ * On touch-only devices (no hover-capable input) the shortcut is hidden by
+ * default, because it cannot be invoked there. Use the `always-visible`
+ * attribute when the shortcut is purely informative and should stay visible.
  *
- * Voor cross-platform shortcuts kunnen `mac-keys`, `windows-keys` en `linux-keys`
- * worden gezet — het component picks de juiste op basis van de gedetecteerde OS,
- * met `keys` als fallback voor onbekende platforms.
+ * For cross-platform shortcuts you can set `mac-keys`, `windows-keys` and
+ * `linux-keys`. The component picks the right one from the detected OS, with
+ * `keys` as the fallback for unknown platforms.
  *
  * @element nldd-keyboard-shortcut
- * @attr {string} keys - Toetsen gescheiden door '+' (bijv. 'Cmd+K' of 'Ctrl+Shift+P').
- *   Gebruik '+++' voor een letterlijke '+' toets: 'Ctrl+++' wordt 'Ctrl' + '+'.
- *   Voor complexere scenario's (bijv. combo met meerdere '+' keys) kun je in plaats
- *   van het keys-attribuut de default slot gebruiken met eigen <kbd> elementen.
- * @attr {string} mac-keys - Optionele override voor macOS (incl. iPhone/iPad/iPod).
- * @attr {string} windows-keys - Optionele override voor Windows.
- * @attr {string} linux-keys - Optionele override voor Linux/ChromeOS.
- * @attr {string} size - Grootte: 'sm' | 'md' | 'inherit' (default: 'md'). 'inherit' neemt de
- *   font-size over van de container; bij de box-variant schalen de keycaps dan mee in em.
- * @attr {string} variant - 'box' (default) toont elke toets als keycap met vulling en
- *   highlight-rand; 'simple' toont de toetsen als platte tekst met scheidingstekens —
- *   lichter, voor inline gebruik zoals in een menu-item.
- * @attr {boolean} always-visible - Toon ook op touch-only devices waar shortcuts niet aanroepbaar zijn.
- * @attr {string} color - 'neutral' (default) gebruikt de eigen component-kleuren. 'inherit'
- *   laat de toetsen en scheidingstekens de omringende tekstkleur (currentColor) volgen, met
- *   een doorschijnende contrast-vulling en highlight-rand — handig op een gevulde vlakkleur
- *   of een gemarkeerde rij.
- * @attr {'mac'|'windows'|'linux'|'other'} debug-os - Ontwikkelhulp: overschrijft de
- *   OS-detectie voor deze instantie, zodat je in Storybook of documentatie meerdere
- *   platform-varianten naast elkaar kunt tonen. Niet bedoeld voor productiegebruik;
- *   laat het leeg (default) zodat de echte OS-detectie geldt.
+ * @attr {string} keys - Keys separated by '+' (e.g. 'Cmd+K' or 'Ctrl+Shift+P').
+ *   Use '+++' for a literal '+' key: 'Ctrl+++' becomes 'Ctrl' + '+'. For more
+ *   complex cases (a combo with several '+' keys, for instance) use the default
+ *   slot with your own <kbd> elements instead of the keys attribute.
+ * @attr {string} mac-keys - Optional override for macOS (iPhone/iPad/iPod included).
+ * @attr {string} windows-keys - Optional override for Windows.
+ * @attr {string} linux-keys - Optional override for Linux/ChromeOS.
+ * @attr {string} size - Size: 'sm' | 'md' | 'inherit' (default: 'md'). 'inherit' takes the
+ *   font-size from the container; in the box variant the keycaps then scale along in em.
+ * @attr {string} variant - 'box' (default) shows each key as a keycap with a fill and a
+ *   highlight edge. 'simple' shows the keys as plain text with separators: lighter, for
+ *   inline use such as in a menu item.
+ * @attr {boolean} always-visible - Show on touch-only devices too, where shortcuts cannot be invoked.
+ * @attr {string} color - 'neutral' (default) uses the component colors of its own. 'inherit'
+ *   lets the keys and separators follow the surrounding text color (currentColor), with a
+ *   translucent contrast fill and highlight edge. Useful on a filled surface color or a
+ *   highlighted row.
+ * @attr {'mac'|'windows'|'linux'|'other'} debug-os - Development aid: overrides the OS
+ *   detection for this instance, so you can show several platform variants side by side in
+ *   Storybook or documentation. Not meant for production use; leave it empty (default) so
+ *   the real OS detection applies.
  *
- * @slot - Optionele custom <kbd>-elementen. Wordt genegeerd als keys is opgegeven.
+ * @slot - Optional custom <kbd> elements. Ignored when keys is set.
  */
 
 import { LitElement } from 'lit';

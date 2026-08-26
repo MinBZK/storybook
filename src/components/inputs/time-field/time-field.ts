@@ -1,45 +1,45 @@
 /**
  * NLDD Design System Time Field Component (Lit + TypeScript)
  *
- * Een tekstveld voor een tijd. De waarde is altijd 24-uurs `HH:mm`; dat is in
- * het Nederlands ook de weergave, dus anders dan bij nldd-date-field valt er
- * niets om te rekenen. Er wordt niet gemaskeerd tijdens het typen: invoer wordt
- * royaal geaccepteerd en pas bij het verlaten van het veld genormaliseerd.
- * Foutmeldingen horen bij nldd-form-field, niet hier. Dit veld reflecteert
- * alleen `invalid` / `valid`, net als nldd-text-field.
+ * A text field for a time. The value is always 24-hour `HH:mm`, which is how
+ * Dutch shows it too, so unlike nldd-date-field there is nothing to convert.
+ * Typing is not masked: input is accepted generously and normalized only when
+ * the field is left. Error messages belong to nldd-form-field, not here. This
+ * field reflects only `invalid` / `valid`, like nldd-text-field.
  *
- * Wat je in de picker doet is een voorbeeld tot je hem verlaat: het veld toont
- * de tijd meteen, maar legt hem pas vast bij het sluiten. "Klaar" en Enter
- * houden de keuze, een klik ernaast ook zodra je iets gekozen hebt, en Annuleer
- * en Escape zetten de oude tijd terug. Op een leeg veld openen de wielen op `min`, of
- * anders op de huidige tijd afgerond op `step`; dat vult het veld nog niet in.
+ * What you do in the picker is a preview until you leave it. The field shows
+ * the time right away but commits it on close. "Klaar" and Enter keep the
+ * choice, and so does a click outside once you have picked something. Cancel
+ * and Escape put the old time back. On an empty field the wheels open at `min`,
+ * or otherwise at the current time rounded to `step`, which does not fill in
+ * the field yet.
  *
  * @element nldd-time-field
  *
- * @attr {string} value - De tijd als `HH:mm` (24-uurs). Leeg wanneer er geen geldige tijd staat.
- * @attr {string} min - Vroegst toegestane tijd als `HH:mm`. Is tevens de basis waarvandaan `step` telt.
- * @attr {string} max - Laatst toegestane tijd als `HH:mm`.
- * @attr {number} step - Minutenstap (standaard 1). Bepaalt welke tijden geldig zijn, waarop wordt afgerond en hoe ver de pijltjestoetsen verspringen.
- * @attr {boolean} no-picker - Verbergt de picker-knop. Standaard staat die knop er wel.
- * @attr {string} placeholder - Placeholdertekst. Zet hier geen formaat in; gebruik daarvoor de supporting-label van nldd-form-field.
- * @attr {string} input-id - Zet het id op de interne input. Wordt automatisch gezet door nldd-form-field.
- * @attr {string} size - 'md' (standaard) | 'sm'. Wordt automatisch gezet door nldd-form-field.
- * @attr {boolean} invalid - Markeert het veld als ongeldig.
- * @attr {boolean} valid - Markeert het veld als geldig.
- * @attr {boolean} disabled - Uitgeschakelde staat.
- * @attr {boolean} readonly - Alleen-lezen staat.
- * @attr {boolean} required - Verplichte staat.
- * @attr {string} name - Naam voor formulierverzending.
- * @attr {string} autocomplete - Autocomplete-hint.
- * @attr {string} accessible-label - Toegankelijk label voor de interne input. Wordt automatisch gezet door nldd-form-field.
- * @attr {string} error-message-ids - Ids voor aria-describedby. Wordt automatisch gezet door nldd-form-field.
- * @attr {string} width - Breedte. Standaard precies breed genoeg voor een tijd plus het validatie-icoon; 'full' vult de container; 'fit-content' laat de ruimte voor het validatie-icoon weg en groeit weer zodra het veld valid of invalid wordt; of geef een eigen CSS-lengte.
- * @attr {object} translations - Vertalingen; niet opgegeven sleutels vallen terug op het Nederlands.
+ * @attr {string} value - The time as `HH:mm` (24-hour). Empty when there is no valid time.
+ * @attr {string} min - Earliest allowed time as `HH:mm`. Also the base that `step` counts from.
+ * @attr {string} max - Latest allowed time as `HH:mm`.
+ * @attr {number} step - Step in minutes (default 1). Decides which times are valid, what rounding snaps to, and how far the arrow keys jump.
+ * @attr {boolean} no-picker - Hides the picker button. It is shown by default.
+ * @attr {string} placeholder - Placeholder text. Do not put a format here; use the supporting label of nldd-form-field for that.
+ * @attr {string} input-id - Sets the id on the internal input. Set automatically by nldd-form-field.
+ * @attr {string} size - 'md' (default) | 'sm'. Set automatically by nldd-form-field.
+ * @attr {boolean} invalid - Marks the field as invalid.
+ * @attr {boolean} valid - Marks the field as valid.
+ * @attr {boolean} disabled - Disabled state.
+ * @attr {boolean} readonly - Read-only state.
+ * @attr {boolean} required - Required state.
+ * @attr {string} name - Name for form submission.
+ * @attr {string} autocomplete - Autocomplete hint.
+ * @attr {string} accessible-label - Accessible label for the internal input. Set automatically by nldd-form-field.
+ * @attr {string} error-message-ids - Ids for aria-describedby. Set automatically by nldd-form-field.
+ * @attr {string} width - Width. By default exactly wide enough for a time plus the validation icon; 'full' fills the container; 'fit-content' drops the room for the validation icon and grows again as soon as the field turns valid or invalid; or pass your own CSS length.
+ * @attr {object} translations - Translations; unspecified keys fall back to Dutch.
  *
- * @slot picker - Een eigen nldd-time-picker, in plaats van de standaardpicker. Het veld blijft `value`, `min`, `max` en `step` zetten; gebruik de slot voor wat alleen een picker weet, zoals eigen vertalingen.
+ * @slot picker - Your own nldd-time-picker instead of the default one. The field keeps setting `value`, `min`, `max` and `step`; use the slot for what only a picker knows, such as its own translations.
  *
- * @fires input - Bij elke wijziging. detail: { value } met `HH:mm`, of '' zolang er geen geldige tijd staat.
- * @fires change - Wanneer de waarde is vastgelegd: bij het verlaten van het veld, en bij het sluiten van de picker op een manier die de keuze houdt. detail: { value } met `HH:mm`, of ''.
+ * @fires input - On every change. detail: { value } with `HH:mm`, or '' while there is no valid time.
+ * @fires change - When the value is committed: on leaving the field, and on closing the picker in a way that keeps the choice. detail: { value } with `HH:mm`, or ''.
  */
 
 import { LitElement, type PropertyValues } from 'lit';

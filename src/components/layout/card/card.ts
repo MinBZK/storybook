@@ -1,30 +1,29 @@
 /**
  * Nederlandse Digitale Dienst Card Component (Lit + TypeScript)
  *
- * Een visueel afgebakende kaart met optionele header, body en footer secties.
- * De kaart heeft een elevated look als standaard. Padding wordt overgelaten
- * aan geneste containers.
+ * A visually bounded card with optional header, body and footer sections. The
+ * card is elevated by default. Padding is left to nested containers.
  *
- * Met `href` wordt de hele kaart een link (een overlay-anchor over de kaart);
- * met `button` een knop (een overlay-button die een gewone, composed `click`
- * geeft — een klik-listener of htmx-attribuut op de kaart zelf werkt dus direct,
- * en Enter/Space doen het native). `href` wint als beide gezet zijn. Geneste
- * interactieve content (bijv. footer-knoppen) moet je erboven tillen met
- * `position: relative; z-index: 1` om klikbaar te blijven.
+ * With `href` the whole card becomes a link (an overlay anchor across the
+ * card), with `button` a button (an overlay button that fires a plain, composed
+ * `click`, so a click listener or htmx attribute on the card itself works
+ * directly, and Enter/Space work natively). `href` wins when both are set.
+ * Nested interactive content, footer buttons for instance, has to be lifted
+ * above it with `position: relative; z-index: 1` to stay clickable.
  *
  * @element nldd-card
  *
- * @attr {'base'|'tinted'} background - Vlakkleur van de kaart: `base` (standaard) op een gewone pagina-achtergrond, `tinted` wanneer de kaart juist mag opvallen tegen een base-surface
- * @attr {string} accessible-label - Toegankelijke naam van de kaart; bij `href`/`button` benoemt deze de link of knop, anders de kaart-region
- * @attr {string} href - Maakt de hele kaart een link naar deze URL (leeg = geen link)
- * @attr {boolean} button - Maakt de hele kaart een knop; genegeerd wanneer `href` is gezet
- * @attr {string} target - Link target voor href (bijv. '_blank'); stelt rel automatisch bij en voegt bij '_blank' een "Opent in nieuw tabblad"-melding toe
- * @attr {string} rel - Link rel voor href; standaard 'noopener noreferrer' bij target='_blank'
- * @attr {object} translations - Overschrijf vertaalsleutels (bijv. de "Opent in nieuw tabblad"-melding)
+ * @attr {'base'|'tinted'} background - Surface color of the card: `base` (default) on a plain page background, `tinted` when the card should stand out against a base surface
+ * @attr {string} accessible-label - Accessible name of the card; with `href`/`button` it names the link or button, otherwise the card region
+ * @attr {string} href - Makes the whole card a link to this URL (empty = no link)
+ * @attr {boolean} button - Makes the whole card a button; ignored when `href` is set
+ * @attr {string} target - Link target for href (e.g. '_blank'); adjusts rel automatically and adds an "Opent in nieuw tabblad" announcement for '_blank'
+ * @attr {string} rel - Link rel for href; defaults to 'noopener noreferrer' with target='_blank'
+ * @attr {object} translations - Override translation keys (e.g. the "Opent in nieuw tabblad" announcement)
  *
- * @slot header - Header-content (bijv. nldd-title)
- * @slot - Body-content
- * @slot footer - Footer-content (bijv. nldd-button-group) — altijd aan onderkant
+ * @slot header - Header content (e.g. nldd-title)
+ * @slot - Body content
+ * @slot footer - Footer content (e.g. nldd-button-group), always at the bottom
  */
 
 import { LitElement } from 'lit';

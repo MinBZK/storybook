@@ -1,19 +1,18 @@
 /**
  * Nederlandse Digitale Dienst Form Component
  *
- * Plain custom element (extends HTMLElement, no Lit) — required for light-DOM
+ * Plain custom element (extends HTMLElement, no Lit), required for light-DOM
  * autofill. Renders a real <form> element in the LIGHT DOM around its
  * children. Chrome's autofill engine looks for native <input> elements that
  * have a <form> ancestor in the light DOM; with shadow-DOM inputs it can't
  * find them, so we keep this component shadow-less.
  *
  * **Differs from other nldd-* components:**
- * - Geen shadowRoot — alle children leven in light DOM (binnen het inner <form>)
- * - Geen Lit — pure HTMLElement met handmatige attribute-mirroring
- * - **Vereist global stylesheet import** — vertical rhythm en form-section
- *   divider-suppression regels staan in `dist/css/form.css` (of `global.css`),
- *   niet in een component-specifieke shadow stylesheet. Import deze als deel
- *   van je app's globale CSS bundle.
+ * - No shadowRoot: all children live in the light DOM (inside the inner <form>)
+ * - No Lit: a plain HTMLElement with manual attribute mirroring
+ * - **Requires a global stylesheet import**: the vertical rhythm rules live in
+ *   `dist/css/form.css` (or `global.css`), not in a component-specific shadow
+ *   stylesheet. Import it as part of your app's global CSS bundle.
  *
  * **Two usage modes:**
  *
@@ -22,25 +21,26 @@
  *    Simplest API.
  *
  * 2. **User-provided form** (framework-friendly): write your own `<form>`
- *    as direct child. Component detects it, takes over attribute-mirroring,
- *    en skipt de migration. Children blijven waar je framework ze plaatst —
- *    geen DOM-shuffling die met React/Vue/Angular reconciliation conflicteert.
+ *    as direct child. Component detects it, takes over attribute mirroring,
+ *    and skips the migration. Children stay where your framework puts them,
+ *    so there is no DOM shuffling to conflict with React/Vue/Angular
+ *    reconciliation.
  *
  * **Framework interop:**
  *
- * In auto-wrap mode wordt elke direct child verplaatst naar het inner form
- * via een MutationObserver. Voor de meeste React/Vue use cases werkt dit
- * prima omdat frameworks alleen DOM-mutaties doen wanneer hun virtual DOM
- * verandert. Voor edge cases (animatie-libs die DOM-positie tracken,
- * SSR-hydration mismatches, frameworks die actief sibling-positions
- * controleren) gebruik dan **user-provided form** mode.
+ * In auto-wrap mode every direct child is moved into the inner form through a
+ * MutationObserver. That works fine for most React/Vue use cases, because
+ * frameworks only mutate the DOM when their virtual DOM changes. For edge
+ * cases (animation libraries that track DOM position, SSR hydration
+ * mismatches, frameworks that actively check sibling positions) use
+ * **user-provided form** mode instead.
  *
- * Voor programmatische manipulatie: gebruik de `form` getter zodat je
- * direct met het inner `<form>` element werkt:
+ * For programmatic manipulation, use the `form` getter so you work with the
+ * inner `<form>` element directly:
  *
  *     const inner = document.querySelector('nldd-form').form;
  *     inner.checkValidity();
- *     inner.appendChild(myInput);  // skipt migration-overhead
+ *     inner.appendChild(myInput);  // skips the migration overhead
  *
  * @element nldd-form
  *
@@ -51,16 +51,16 @@
  * @attr {string} enctype - Encoding type for submission
  * @attr {string} target - Submit target ('_self' | '_blank' | ...)
  * @attr {string} autocomplete - 'on' | 'off' (form-level autofill toggle)
- * @attr {string} label-alignment - Default `label-alignment` voor descendant nldd-form-field en nldd-form-actions ('top' | 'right' | 'left'). Wordt naar descendants gepropageerd als `form-label-alignment`. Een eigen `label-alignment` op de descendant heeft voorrang via CSS-cascade.
+ * @attr {string} label-alignment - Default `label-alignment` for descendant nldd-form-field and nldd-form-actions ('top' | 'right' | 'left'). Propagated to descendants as `form-label-alignment`. A `label-alignment` of its own on the descendant takes precedence through the CSS cascade.
  *
- * @prop {HTMLFormElement | null} form - The inner <form> element (read-only). Use voor `form.checkValidity()`, directe DOM-manipulatie, of als doel voor framework-managed children.
+ * @prop {HTMLFormElement | null} form - The inner <form> element (read-only). Use it for `form.checkValidity()`, direct DOM manipulation, or as the target for framework-managed children.
  *
  * Events bubble naturally from the inner <form>:
  * @fires submit
  * @fires reset
  *
  * @example
- * Globale stylesheet import (eenmalig in je app entry):
+ * Global stylesheet import (once, in your app entry):
  * ```js
  * import '@nldd/design-system/styles';
  * ```

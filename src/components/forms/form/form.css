@@ -11,17 +11,6 @@ nldd-form > form {
 
 /* # Vertical rhythm
 
-   One gap, between everything. A field, a section, a button, a paragraph: what
-   follows another thing stands the same distance from it.
-
-   There used to be a tighter one as well, 10 instead of 16, for two fields in a
-   row: on every screen below 641px, and above it only when both of them carried
-   their label on top. That took a rule with two container queries and one with
-   four :not()s to say, and it bought six pixels per pair. Five fields under each
-   other saved thirty pixels, less than a third of one field, and in exchange a
-   toggle group or a combo box, which are heavier blocks than a text field, stood
-   ten pixels from the next label.
-
    The gap hangs on the BOTTOM of the preceding child, not on the top of the
    following one. Hidden children (formset management inputs, framework
    bookkeeping) generate no box, so a top margin would let them push the first
@@ -33,18 +22,10 @@ nldd-form > form > *:has(~ *:not([hidden]):not([type='hidden'])) {
 	margin-bottom: var(--semantics-forms-fields-gap);
 }
 
-/* More air above the buttons than between two fields, so the end of the form is
-   visibly the end and not one more question. Also in a form without sections,
-   where it would otherwise be one gap like everything else.
-
-   A margin, so it collapses with the one the rhythm above puts under the last
+/* A margin, so it collapses with the one the rhythm above puts under the last
    child: 16 and 24 next to each other are 24, not 40. Here rather than on the
    component's own :host, because a consumer reset overrides a host declaration
-   and this is a distance between siblings, not something the element paints.
-
-   The sections gap, not one of its own: the buttons stand off from the last
-   group the way one group stands off from the next, and a third token for the
-   same distance would only be a second name for it. */
+   and this is a distance between siblings, not something the element paints. */
 
 nldd-form nldd-form-actions {
 	margin-top: var(--semantics-forms-sections-gap);

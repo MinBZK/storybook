@@ -1,40 +1,40 @@
 /**
- * NLDD Design System Datumveld Component (Lit + TypeScript)
+ * NLDD Design System Date Field Component (Lit + TypeScript)
  *
- * Een tekstveld voor een datum, met een optionele kalender in een popover.
- * De waarde is altijd ISO (jjjj-mm-dd); op het scherm staat de Nederlandse
- * notatie (dd-mm-jjjj). Er wordt niet gemaskerd tijdens het typen: invoer wordt
- * royaal geaccepteerd en pas bij het verlaten van het veld genormaliseerd.
+ * A text field for a date, with an optional calendar in a popover. The value is
+ * always ISO (yyyy-mm-dd); on screen it shows the Dutch notation (dd-mm-yyyy).
+ * Typing is not masked: input is accepted generously and normalized only when
+ * the field is left.
  *
- * Foutmeldingen horen bij nldd-form-field, niet hier. Dit veld reflecteert
- * alleen `invalid` / `valid`, net als nldd-text-field.
+ * Error messages belong to nldd-form-field, not here. This field reflects only
+ * `invalid` / `valid`, like nldd-text-field.
  *
  * @element nldd-date-field
  *
- * @attr {string} value - De datum als ISO (jjjj-mm-dd). Met `range` een ISO 8601-interval: `jjjj-mm-dd/jjjj-mm-dd`. Leeg wanneer er geen geldige datum staat.
- * @attr {boolean} range - Kies een periode: twee invoervelden en een kalender in bereikmodus.
- * @attr {string} min - Vroegst toegestane datum als ISO (jjjj-mm-dd).
- * @attr {string} max - Laatst toegestane datum als ISO (jjjj-mm-dd).
- * @attr {boolean} no-picker - Verbergt de kalenderknop. Standaard staat die knop er wel.
- * @attr {string} placeholder - Placeholdertekst. Zet hier geen formaat in; gebruik daarvoor de supporting-label van nldd-form-field.
- * @attr {string} input-id - Zet het id op de interne input. Wordt automatisch gezet door nldd-form-field.
- * @attr {string} size - 'md' (standaard) | 'sm'. Wordt automatisch gezet door nldd-form-field.
- * @attr {boolean} invalid - Markeert het veld als ongeldig.
- * @attr {boolean} valid - Markeert het veld als geldig.
- * @attr {boolean} disabled - Uitgeschakelde staat.
- * @attr {boolean} readonly - Alleen-lezen staat.
- * @attr {boolean} required - Verplichte staat.
- * @attr {string} name - Naam voor formulierverzending.
- * @attr {string} autocomplete - Autocomplete-hint, bijvoorbeeld 'bday'.
- * @attr {string} accessible-label - Toegankelijk label voor de interne input. Wordt automatisch gezet door nldd-form-field.
- * @attr {string} error-message-ids - Ids voor aria-describedby. Wordt automatisch gezet door nldd-form-field.
- * @attr {string} width - Breedte. Standaard precies breed genoeg voor een datum plus de iconen; 'full' vult de container; 'fit-content' laat de ruimte voor het validatie-icoon weg en groeit weer zodra het veld valid of invalid wordt; of geef een eigen CSS-lengte.
- * @attr {object} translations - Vertalingen; niet opgegeven sleutels vallen terug op het Nederlands.
+ * @attr {string} value - The date as ISO (yyyy-mm-dd). With `range` an ISO 8601 interval: `yyyy-mm-dd/yyyy-mm-dd`. Empty when there is no valid date.
+ * @attr {boolean} range - Pick a period: two inputs and a calendar in range mode.
+ * @attr {string} min - Earliest allowed date as ISO (yyyy-mm-dd).
+ * @attr {string} max - Latest allowed date as ISO (yyyy-mm-dd).
+ * @attr {boolean} no-picker - Hides the calendar button. It is shown by default.
+ * @attr {string} placeholder - Placeholder text. Do not put a format here; use the supporting label of nldd-form-field for that.
+ * @attr {string} input-id - Sets the id on the internal input. Set automatically by nldd-form-field.
+ * @attr {string} size - 'md' (default) | 'sm'. Set automatically by nldd-form-field.
+ * @attr {boolean} invalid - Marks the field as invalid.
+ * @attr {boolean} valid - Marks the field as valid.
+ * @attr {boolean} disabled - Disabled state.
+ * @attr {boolean} readonly - Read-only state.
+ * @attr {boolean} required - Required state.
+ * @attr {string} name - Name for form submission.
+ * @attr {string} autocomplete - Autocomplete hint, for example 'bday'.
+ * @attr {string} accessible-label - Accessible label for the internal input. Set automatically by nldd-form-field.
+ * @attr {string} error-message-ids - Ids for aria-describedby. Set automatically by nldd-form-field.
+ * @attr {string} width - Width. By default exactly wide enough for a date plus the icons; 'full' fills the container; 'fit-content' drops the room for the validation icon and grows again as soon as the field turns valid or invalid; or pass your own CSS length.
+ * @attr {object} translations - Translations; unspecified keys fall back to Dutch.
  *
- * @slot picker - Een eigen nldd-date-picker, in plaats van de standaardkalender. Het veld blijft `value`, `min`, `max` en `range` zetten; gebruik de slot voor wat alleen een kalender weet: `week-numbers`, `first-day-of-week`, `is-date-unavailable` en eigen vertalingen.
+ * @slot picker - Your own nldd-date-picker instead of the default calendar. The field keeps setting `value`, `min`, `max` and `range`; use the slot for what only a calendar knows: `week-numbers`, `first-day-of-week`, `is-date-unavailable` and its own translations.
  *
- * @fires input - Bij elke wijziging. detail: { value } met de ISO-datum, of '' zolang er geen geldige datum staat.
- * @fires change - Wanneer de waarde is vastgelegd. detail: { value } met de ISO-datum, of ''.
+ * @fires input - On every change. detail: { value } with the ISO date, or '' while there is no valid date.
+ * @fires change - When the value is committed. detail: { value } with the ISO date, or ''.
  */
 
 import { LitElement, type PropertyValues } from 'lit';
@@ -56,7 +56,7 @@ import './../../content/icon/icon.js';
  * Read a typed date generously. Deliberately not a mask: reformatting per
  * keystroke moves the caret, breaks backspace mid-value and confuses screen
  * readers, so we accept what people type and normalize once on commit.
- * Accepts 12-3-2026, 12/03/2026, 12.03.2026, 12032026 and ISO jjjj-mm-dd.
+ * Accepts 12-3-2026, 12/03/2026, 12.03.2026, 12032026 and ISO yyyy-mm-dd.
  */
 function parseDate(raw: string): string | null {
 	const trimmed = raw.trim();

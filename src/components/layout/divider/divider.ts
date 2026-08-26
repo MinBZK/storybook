@@ -1,7 +1,7 @@
 /**
  * Nederlandse Digitale Dienst Divider Component (Lit + TypeScript)
  *
- * Een scheidingslijn die secties van inhoud visueel van elkaar scheidt.
+ * A rule that visually separates sections of content.
  *
  * @element nldd-divider
  */

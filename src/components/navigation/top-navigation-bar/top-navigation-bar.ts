@@ -1,24 +1,24 @@
 /**
  * Nederlandse Digitale Dienst Top Navigation Bar Component (Lit + TypeScript)
  *
- * De bovenste balk van een pagina: een logobalk met het Rijkslogo en een
- * optioneel woordmerk, en daaronder de hoofdbalk met de websitetitel, een
- * terugknop, de globale navigatie en de utility-navigatie. Op smalle breedtes
- * verhuist de globale navigatie naar een menusheet achter de menuknop.
+ * The top bar of a page: a logo bar with the Rijkslogo and an optional
+ * wordmark, and below it the main bar with the website title, a back button,
+ * the global navigation and the utility navigation. On narrow widths the global
+ * navigation moves into a menu sheet behind the menu button.
  *
  * @element nldd-top-navigation-bar
  *
- * @attr {boolean} no-logo - Verbergt de hele logobalk, inclusief woordmerk.
- * @attr {string} logo-title - Titel van het woordmerk naast het logo. Zonder deze waarde staat het logo er alleen.
- * @attr {string} logo-subtitle - Subtitel onder de woordmerktitel. Alleen zichtbaar als er een woordmerk is.
- * @attr {string} logo-supporting-text-1 - Eerste ondersteunende regel onder de woordmerktitel. Alleen zichtbaar als er een woordmerk is.
- * @attr {string} logo-supporting-text-2 - Tweede ondersteunende regel onder de woordmerktitel. Alleen zichtbaar als er een woordmerk is.
- * @attr {string} logo-href - URL voor logo en woordmerk. Zonder deze waarde zijn ze geen link, maar een afbeelding met een toegankelijk label.
- * @attr {string} website-title - Naam van de website of applicatie, boven de menubalk. Leeg laat de titelregel weg.
- * @attr {string} website-href - URL voor de websitetitel. Zonder deze waarde blijft de titel gewone tekst.
- * @attr {string} back-href - URL van de terugknop. Zonder deze waarde vuurt een klik het `back-click`-event, zodat de consument zelf navigeert.
- * @attr {string} back-text - Tekst van de terugknop. De knop verschijnt zodra back-text of back-href is gezet; zonder tekst valt hij terug op de vertaling ("Terug").
- * @attr {string} width - Begrenst de bar-content tot een max-width zodat die uitlijnt met de page-sections. 'full' vult de volle breedte, of geef een eigen CSS-lengte.
+ * @attr {boolean} no-logo - Hides the whole logo bar, wordmark included.
+ * @attr {string} logo-title - Title of the wordmark next to the logo. Without it the logo stands alone.
+ * @attr {string} logo-subtitle - Subtitle under the wordmark title. Only visible when there is a wordmark.
+ * @attr {string} logo-supporting-text-1 - First supporting line under the wordmark title. Only visible when there is a wordmark.
+ * @attr {string} logo-supporting-text-2 - Second supporting line under the wordmark title. Only visible when there is a wordmark.
+ * @attr {string} logo-href - URL for the logo and wordmark. Without it they are not a link but an image with an accessible label.
+ * @attr {string} website-title - Name of the website or application, above the menu bar. Empty leaves the title line out.
+ * @attr {string} website-href - URL for the website title. Without it the title stays plain text.
+ * @attr {string} back-href - URL of the back button. Without it a click fires the `back-click` event, so the consumer navigates itself.
+ * @attr {string} back-text - Text of the back button. The button appears as soon as back-text or back-href is set; without text it falls back to the translation ("Terug").
+ * @attr {string} width - Limits the bar content to a max-width so it lines up with the page sections. 'full' fills the entire width, or pass your own CSS length.
  */
 
 import { LitElement, type PropertyValues } from 'lit';

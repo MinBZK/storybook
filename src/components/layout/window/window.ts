@@ -1,35 +1,34 @@
 /**
  * Nederlandse Digitale Dienst Window Component (Lit + TypeScript)
  *
- * Een zwevend venster gebaseerd op het native <dialog>-element.
- * Kan modaal of niet-modaal worden weergegeven. Positioneerbaar via
- * CSS-waarden.
+ * A floating window based on the native <dialog> element. Can be shown modal or
+ * modeless. Positionable through CSS values.
  *
- * Geen eigen header — consumers gebruiken nldd-page met sticky-header
- * binnenin voor een title bar.
+ * No header of its own: consumers use nldd-page with a sticky header inside for
+ * a title bar.
  *
  * @element nldd-window
  *
- * @attr {boolean} modeless - Niet-modaal (geen backdrop of focusvergrendeling); standaard is het venster modaal
- * @attr {boolean} no-light-dismiss - Een klik op de backdrop sluit het venster niet. Voor vensters waar per ongeluk wegklikken werk kost: een wizard, een formulier met ingevulde velden. Escape en de dismiss-knop blijven werken.
- * @attr {string} accessible-label - (verplicht) Toegankelijke naam (aria-label). Valt terug op de i18n default ('Venster') als niet gezet — geef altijd een unieke, beschrijvende naam per venster.
- * @attr {object} translations - Override translation keys; unset keys vallen terug op de Nederlandse default.
- * @attr {string} top - CSS top positie van de bovenrand (bijv. '0', '100px')
- * @attr {string} left - CSS left positie van de linkerrand
- * @attr {string} right - CSS right waarde
- * @attr {string} bottom - CSS bottom waarde
- * @attr {boolean} centered - Centreert beide assen op de viewport. Per as overrideable: `centered top="0"` = horizontaal gecentreerd, top-aligned. Mirrort CSS `place-items: center` met `align-items`/`justify-items` overrides.
- * @attr {string} width - CSS width (standaard: var(--components-window-default-width))
- * @attr {string} height - CSS height (standaard: content height)
+ * @attr {boolean} modeless - Modeless (no backdrop or focus trap); the window is modal by default
+ * @attr {boolean} no-light-dismiss - A click on the backdrop does not close the window. For windows where dismissing by accident costs work: a wizard, a form with filled-in fields. Escape and the dismiss button keep working.
+ * @attr {string} accessible-label - (required) Accessible name (aria-label). Falls back to the i18n default ('Venster') when unset. Always pass a unique, descriptive name per window.
+ * @attr {object} translations - Override translation keys; unset keys fall back to the Dutch default.
+ * @attr {string} top - CSS top position of the top edge (e.g. '0', '100px')
+ * @attr {string} left - CSS left position of the left edge
+ * @attr {string} right - CSS right value
+ * @attr {string} bottom - CSS bottom value
+ * @attr {boolean} centered - Centers both axes on the viewport. Overridable per axis: `centered top="0"` is horizontally centered, top aligned. Mirrors CSS `place-items: center` with `align-items`/`justify-items` overrides.
+ * @attr {string} width - CSS width (default: var(--components-window-default-width))
+ * @attr {string} height - CSS height (default: content height)
  * @attr {'inherit'|'light'|'dark'} scheme - Color scheme (default 'inherit').
  *
- * @slot - Volledige window content (bijv. nldd-page)
+ * @slot - Complete window content (e.g. nldd-page)
  *
- * @fires open - Wanneer het venster wordt geopend
- * @fires close - Wanneer het venster volledig is gesloten. Bubbelt niet: overlays kunnen in elkaar zitten, en een listener op het ene venster hoort niet ook het formulier te horen dat het opende.
+ * @fires open - When the window opens
+ * @fires close - When the window has fully closed. Does not bubble: overlays can sit inside each other, and a listener on one window should not also hear the form that opened it.
  *
- * @method show() - Opent het venster
- * @method hide() - Sluit het venster
+ * @method show() - Opens the window
+ * @method hide() - Closes the window
  */
 
 import { LitElement, PropertyValues } from 'lit';

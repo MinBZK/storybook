@@ -1,58 +1,4 @@
-/* Form-section: light-DOM grouping wrapper.
-
-   nldd-form-section bouwt z'n eigen DOM-structuur in light DOM (geen
-   shadow), zodat NVDA + Firefox de native <fieldset> + <legend> als
-   group-label betrouwbaar aankondigen voor de slotted controls.
-
-   Structuur na connectedCallback:
-     <nldd-form-section>
-       <fieldset class="form-section">
-         <legend class="form-section__header">
-           <span class="form-section__title">Title</span>
-           <span class="form-section__subtitle">Subtitle</span>
-         </legend>
-         <div class="form-section__main">
-           [user's children]
-         </div>
-       </fieldset>
-     </nldd-form-section>
-
-   Form-fields die als directe children meegegeven worden, worden in
-   .form-section__main geplaatst (zie form-section.ts).
-*/
-
-
-/* # Host
-   Een sectie krijgt meer lucht boven zich dan twee velden onderling, en dat
-   verschil is de groepering.
-
-   Als margin-block, niet als padding. Marges van buren klappen samen, dus de 16
-   die het formulier onder het vorige kind zet en de 24 hierboven worden samen
-   24, en niet 40. Padding klapt nergens mee samen: die telde bij die 16 op en
-   maakte er 32 van, boven én onder elke sectie.
-
-   Aan twee kanten, niet alleen boven. Met alleen een marge bovenop hangt de
-   afstand ónder een sectie af van wat er toevallig achter komt: een volgende
-   sectie of de knoppen brengen hun eigen 24 mee, maar een los veld zegt niets
-   en dan bleef de standaard 16 staan.
-
-   Twee regels en geen margin-block, omdat de twee kanten verschillende
-   voorwaarden hebben. Bovenaan mag hij niet op het eerste kind staan: dit
-   formulier heeft geen rand of padding, dus een marge op het eerste kind klapt
-   eruit en duwt het formulier als geheel omlaag. Onderaan mag hij niet op het
-   laatste staan, want een marge onder het laatste kind is witruimte die nergens
-   naartoe leidt; vandaar dezelfde :has-guard als het ritme in form.css.
-
-   Die guard doet nog iets tweeds. Een fysieke margin-bottom en een logische
-   margin-block-end voor dezelfde kant worden niet op specificiteit beslist maar
-   op volgorde van declaratie, en dat maakt de uitkomst afhankelijk van de
-   laadvolgorde van de bestanden. Met de guard wint deze regel op specificiteit
-   en is die volgorde niet meer van belang.
-
-   Geen lijnen meer. Een sectie draagt al een kop, en een streep erbij zegt
-   hetzelfde nog een keer. Ze verschenen bovendien alleen in formulieren die
-   secties gebruiken, waardoor dezelfde applicatie twee soorten formulier kreeg:
-   de meeste met alleen witruimte, een enkele met lijnen erdoor. */
+/* # Host */
 
 nldd-form-section {
 	display: block;
@@ -63,9 +9,18 @@ nldd-form-section[hidden] {
 	display: none;
 }
 
+/* A margin and not padding, so it collapses with the gap the form puts under
+   the previous child: 16 and 24 next to each other are 24, not 40. Padding
+   collapses with nothing and would have made it 32. */
+
 nldd-form > form > nldd-form-section:not(:first-child) {
 	margin-block-start: var(--semantics-forms-sections-gap);
 }
+
+/* The :has() guard also settles the cascade: a physical margin-bottom and a
+   logical margin-block-end for the same side are decided on declaration order,
+   not specificity, so without it the outcome would depend on the load order of
+   the files. */
 
 nldd-form > form > nldd-form-section:has(~ *:not([hidden]):not([type='hidden'])) {
 	margin-block-end: var(--semantics-forms-sections-gap);
@@ -135,16 +90,10 @@ nldd-form-section > fieldset.form-section > .form-section__main:first-child {
 	margin-top: 0;
 }
 
-/* # Vertical rhythm binnen een sectie
+/* # Vertical rhythm within a section
 
-   Hetzelfde als in het formulier eromheen, en om dezelfde reden: een sectie is
-   een groepje binnen datzelfde formulier, en hoort zich niet anders te gedragen.
-
-   Dit stond er eerder niet. Velden binnen een sectie leunden op een regel in
-   form.css die alleen veld-na-veld raakte, dus al het andere dat je in een
-   sectie zette (een knop, een alinea) kreeg geen ruimte en moest je zelf
-   opvangen. De regel hieronder kijkt niet naar wat iets is, alleen of er nog
-   iets zichtbaars op volgt. */
+   Same rule and same reason as in form.css: the gap hangs on the bottom, and
+   the :has() guard keeps a trailing gap off the last visible child. */
 
 nldd-form-section .form-section__main > *:has(~ *:not([hidden]):not([type='hidden'])) {
 	margin-bottom: var(--semantics-forms-fields-gap);

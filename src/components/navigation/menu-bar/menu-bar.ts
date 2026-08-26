@@ -1,16 +1,16 @@
 /**
  * Menu Bar Component (Lit + TypeScript)
  *
- * Horizontale rij van nldd-menu-bar-item elementen met automatische overflow
- * detectie. Items die niet passen worden verborgen achter een overflow button
- * met een popover menu.
+ * Horizontal row of nldd-menu-bar-item elements with automatic overflow
+ * detection. Items that do not fit are hidden behind an overflow button with a
+ * popover menu.
  *
  * @element nldd-menu-bar
- * @attr {string} overflow-text - Tekst voor de overflow button (standaard via i18n)
- * @attr {string} accessible-label - aria-label voor de nav landmark
- * @attr {boolean} compact - Propageert compact attribuut naar slotted items (activeert content-priority)
+ * @attr {string} overflow-text - Text for the overflow button (default through i18n)
+ * @attr {string} accessible-label - aria-label for the nav landmark
+ * @attr {boolean} compact - Propagates the compact attribute to slotted items (activates content priority)
  *
- * @slot - nldd-menu-bar-item elementen
+ * @slot - nldd-menu-bar-item elements
  */
 
 import { LitElement, type PropertyValues } from 'lit';
