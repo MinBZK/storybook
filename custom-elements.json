@@ -5512,6 +5512,278 @@
     },
     {
       "kind": "javascript-module",
+      "path": "src/components/forms/form-field-validation-list/form-field-validation-list.ts",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "",
+          "name": "NLDDFormFieldValidationItem",
+          "members": [
+            {
+              "kind": "field",
+              "name": "match",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Not anchored, unlike the native `pattern`. See the note at the top.",
+              "attribute": "match"
+            },
+            {
+              "kind": "field",
+              "name": "minlength",
+              "type": {
+                "text": "number | undefined"
+              },
+              "attribute": "minlength"
+            },
+            {
+              "kind": "field",
+              "name": "maxlength",
+              "type": {
+                "text": "number | undefined"
+              },
+              "attribute": "maxlength"
+            },
+            {
+              "kind": "field",
+              "name": "hint",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "attribute": "hint",
+              "reflects": true
+            },
+            {
+              "kind": "field",
+              "name": "unmet",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "attribute": "unmet",
+              "reflects": true
+            },
+            {
+              "kind": "field",
+              "name": "visible",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "attribute": "visible",
+              "reflects": true
+            },
+            {
+              "kind": "field",
+              "name": "hasRule",
+              "type": {
+                "text": "boolean"
+              },
+              "description": "Whether this item judges itself, or waits for the app to name it.",
+              "readonly": true
+            },
+            {
+              "kind": "method",
+              "name": "test",
+              "return": {
+                "type": {
+                  "text": "boolean | null"
+                }
+              },
+              "parameters": [
+                {
+                  "name": "value",
+                  "type": {
+                    "text": "string"
+                  }
+                }
+              ],
+              "description": "Whether `value` satisfies this item, or null when there is nothing to\nsatisfy because the item carries no rule.\n\nAn empty value passes every rule. Emptiness is what `required` is for, and\na field that lights up all its requirements the moment you focus it reads\nas a page full of mistakes you have not made yet."
+            }
+          ],
+          "attributes": [
+            {
+              "name": "match",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Regular expression the value has to contain. Not anchored, unlike the native `pattern`: `[A-Z]` means \"has a capital in it\".",
+              "fieldName": "match"
+            },
+            {
+              "name": "minlength",
+              "type": {
+                "text": "number | undefined"
+              },
+              "fieldName": "minlength",
+              "description": "Fewest characters the value may have."
+            },
+            {
+              "name": "maxlength",
+              "type": {
+                "text": "number | undefined"
+              },
+              "fieldName": "maxlength",
+              "description": "Most characters the value may have."
+            },
+            {
+              "name": "hint",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "fieldName": "hint",
+              "description": "Show this item before there is a verdict, whatever the list says."
+            },
+            {
+              "name": "unmet",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "fieldName": "unmet",
+              "description": "Whether the value fails this item. Managed by the list; do not set it yourself."
+            },
+            {
+              "name": "visible",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "fieldName": "visible",
+              "description": "Whether the item is on screen. Managed by the list."
+            }
+          ],
+          "superclass": {
+            "name": "LitElement",
+            "package": "lit"
+          },
+          "tagName": "nldd-form-field-validation-item",
+          "customElement": true,
+          "slots": [
+            {
+              "name": "",
+              "description": "The text of the requirement."
+            }
+          ]
+        },
+        {
+          "kind": "class",
+          "description": "Nederlandse Digitale Dienst Form Field Validation List (Lit + TypeScript) Everything a value has to satisfy, in one list. A requirement you can state up front is an item with a rule, and it checks itself while you type. One only a server can decide is an item without a rule, and the app names it in `unmet` on the control. An item is shown when it is not met, or when it is a `hint`. Hidden is the default: a phone number does not need its format spelled out before anyone has typed, while the rules for a password do. A hint stays visible once the field is valid, so the list does not empty out at the moment you get it right. There are no checkmarks. The control already shows a validation icon of its own, and repeating that per line says the same thing three times.",
+          "name": "NLDDFormFieldValidationList",
+          "members": [
+            {
+              "kind": "field",
+              "name": "for",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Id of the control, for a list that sits outside an nldd-form-field.",
+              "attribute": "for"
+            },
+            {
+              "kind": "field",
+              "name": "hint",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "attribute": "hint",
+              "reflects": true
+            },
+            {
+              "kind": "field",
+              "name": "control",
+              "type": {
+                "text": "Element | null"
+              },
+              "default": "null",
+              "description": "The control this list is about.\n\nSet by the wrapping nldd-form-field, which already answers \"which control\nis this field about\" for the label and the description. A `for` of its own\nwins, and setting this property directly is what a test or a story does."
+            },
+            {
+              "kind": "field",
+              "name": "value",
+              "type": {
+                "text": "string | undefined"
+              },
+              "description": "The value to check, when there is no control to read it from."
+            }
+          ],
+          "attributes": [
+            {
+              "name": "for",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Id of the control this list is about. Not needed inside an nldd-form-field, which hands its own control over.",
+              "fieldName": "for"
+            },
+            {
+              "name": "hint",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "fieldName": "hint",
+              "description": "Show every item before there is a verdict, as the requirements of the field. Overridable per item."
+            }
+          ],
+          "superclass": {
+            "name": "LitElement",
+            "package": "lit"
+          },
+          "tagName": "nldd-form-field-validation-list",
+          "customElement": true,
+          "slots": [
+            {
+              "name": "",
+              "description": "nldd-form-field-validation-item elements."
+            }
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "NLDDFormFieldValidationItem",
+          "declaration": {
+            "name": "NLDDFormFieldValidationItem",
+            "module": "src/components/forms/form-field-validation-list/form-field-validation-list.ts"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "nldd-form-field-validation-item",
+          "declaration": {
+            "name": "NLDDFormFieldValidationItem",
+            "module": "src/components/forms/form-field-validation-list/form-field-validation-list.ts"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "NLDDFormFieldValidationList",
+          "declaration": {
+            "name": "NLDDFormFieldValidationList",
+            "module": "src/components/forms/form-field-validation-list/form-field-validation-list.ts"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "nldd-form-field-validation-list",
+          "declaration": {
+            "name": "NLDDFormFieldValidationList",
+            "module": "src/components/forms/form-field-validation-list/form-field-validation-list.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
       "path": "src/components/forms/form-field/form-field.ts",
       "declarations": [
         {
@@ -5627,7 +5899,7 @@
           "slots": [
             {
               "name": "",
-              "description": "The slotted input (e.g. nldd-text-field). Set `invalid` and `error-message=\"id1 id2\"` on the input to wire up error texts. nldd-form-field-error-text elements assign themselves to the errors slot automatically."
+              "description": "The slotted input (e.g. nldd-text-field). Set `invalid` and `unmet=\"id1 id2\"` on the input to say which items of an nldd-form-field-validation-list are not met. nldd-form-field-error-text elements assign themselves to the errors slot automatically."
             }
           ]
         },

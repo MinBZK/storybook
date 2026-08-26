@@ -683,7 +683,7 @@ A layout wrapper for the action buttons at the bottom of a form (typically a sub
 
 | Slot | Description |
 | --- | --- |
-| _(default)_ | The slotted input (e.g. nldd-text-field). Set `invalid` and `error-message="id1 id2"` on the input to wire up error texts. nldd-form-field-error-text elements assign themselves to the errors slot automatically. |
+| _(default)_ | The slotted input (e.g. nldd-text-field). Set `invalid` and `unmet="id1 id2"` on the input to say which items of an nldd-form-field-validation-list are not met. nldd-form-field-error-text elements assign themselves to the errors slot automatically. |
 
 ### `<nldd-form-field-error-text>`
 
@@ -691,7 +691,7 @@ A layout wrapper for the action buttons at the bottom of a form (typically a sub
 
 | Attribute | Type | Description |
 | --- | --- | --- |
-| `id` | `string` | Referenced by the input's `error-message` attribute. |
+| `id` | `string` | Referenced by the input's `unmet` attribute. |
 | `invalid` | `boolean` | Visibility managed automatically by nldd-form-field. |
 
 **Slots**
@@ -707,6 +707,42 @@ A layout wrapper for the action buttons at the bottom of a form (typically a sub
 | Slot | Description |
 | --- | --- |
 | _(default)_ | Help text content. May contain inline elements including links. |
+
+### `<nldd-form-field-validation-item>`
+
+**Attributes**
+
+| Attribute | Type | Description |
+| --- | --- | --- |
+| `match` | `string` | Regular expression the value has to contain. Not anchored, unlike the native `pattern`: `[A-Z]` means "has a capital in it". |
+| `minlength` | `number` | Fewest characters the value may have. |
+| `maxlength` | `number` | Most characters the value may have. |
+| `hint` | `boolean` | Show this item before there is a verdict, whatever the list says. |
+| `unmet` | `boolean` | Whether the value fails this item. Managed by the list; do not set it yourself. |
+| `visible` | `boolean` | Whether the item is on screen. Managed by the list. |
+
+**Slots**
+
+| Slot | Description |
+| --- | --- |
+| _(default)_ | The text of the requirement. |
+
+### `<nldd-form-field-validation-list>`
+
+Nederlandse Digitale Dienst Form Field Validation List (Lit + TypeScript) Everything a value has to satisfy, in one list. A requirement you can state up front is an item with a rule, and it checks itself while you type. One only a server can decide is an item without a rule, and the app names it in `unmet` on the control. An item is shown when it is not met, or when it is a `hint`. Hidden is the default: a phone number does not need its format spelled out before anyone has typed, while the rules for a password do. A hint stays visible once the field is valid, so the list does not empty out at the moment you get it right. There are no checkmarks. The control already shows a validation icon of its own, and repeating that per line says the same thing three times.
+
+**Attributes**
+
+| Attribute | Type | Description |
+| --- | --- | --- |
+| `for` | `string` | Id of the control this list is about. Not needed inside an nldd-form-field, which hands its own control over. |
+| `hint` | `boolean` | Show every item before there is a verdict, as the requirements of the field. Overridable per item. |
+
+**Slots**
+
+| Slot | Description |
+| --- | --- |
+| _(default)_ | nldd-form-field-validation-item elements. |
 
 ### `<nldd-form-section>`
 

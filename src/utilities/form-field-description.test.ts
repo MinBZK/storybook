@@ -185,7 +185,7 @@ describe('nldd-form-field: the error text reaches the accessible description', (
 
 			const control_ = field.querySelector(name) as HTMLElement;
 			control_.setAttribute('invalid', '');
-			control_.setAttribute('error-message', 'fout');
+			control_.setAttribute('unmet', 'fout');
 			await waitForUpdate(field);
 
 			const error = field.querySelector('#fout') as HTMLElement;

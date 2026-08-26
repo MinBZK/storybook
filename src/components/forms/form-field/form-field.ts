@@ -10,7 +10,7 @@
  * @attr {boolean} optional - Shows an optional badge next to the label.
  * @attr {string} optional-label - Text for the optional badge. Defaults to 'Optioneel'.
  *
- * @slot - The slotted input (e.g. nldd-text-field). Set `invalid` and `error-message="id1 id2"` on the input to wire up error texts. nldd-form-field-error-text elements assign themselves to the errors slot automatically.
+ * @slot - The slotted input (e.g. nldd-text-field). Set `invalid` and `unmet="id1 id2"` on the input to say which items of an nldd-form-field-validation-list are not met. nldd-form-field-error-text elements assign themselves to the errors slot automatically.
  *
  * ─────────────────────────────────────────────────────────────────────────
  *
@@ -22,7 +22,7 @@
  *
  * @element nldd-form-field-error-text
  *
- * @attr {string} id - Referenced by the input's `error-message` attribute.
+ * @attr {string} id - Referenced by the input's `unmet` attribute.
  * @attr {boolean} invalid - Visibility managed automatically by nldd-form-field.
  *
  * @slot - The error message text.
@@ -34,7 +34,7 @@
  *   <nldd-form-field-help-text>
  *     At least 8 characters. <a href="/help">Learn more</a>.
  *   </nldd-form-field-help-text>
- *   <nldd-text-field invalid error-message="error-required error-length"></nldd-text-field>
+ *   <nldd-text-field invalid unmet="error-required error-length"></nldd-text-field>
  *   <nldd-form-field-error-text id="error-required">This field is required.</nldd-form-field-error-text>
  *   <nldd-form-field-error-text id="error-length">Must be at least 8 characters.</nldd-form-field-error-text>
  * </nldd-form-field>
@@ -235,11 +235,12 @@ export class NLDDFormField extends LitElement {
 		}
 
 		this._applyAccessibleLabel(input);
+		this._adoptValidationLists(input);
 
 		this._observer = new MutationObserver(() => this._syncErrorText());
 		this._observer.observe(input, {
 			attributes: true,
-			attributeFilter: ['invalid', 'error-message'],
+			attributeFilter: ['invalid', 'valid', 'unmet'],
 		});
 
 		this._syncErrorText();
@@ -280,6 +281,45 @@ export class NLDDFormField extends LitElement {
 	}
 
 	/**
+	 * Hands every validation list in this field the control it is about, so it
+	 * does not have to go looking for one.
+	 *
+	 * A list with a `for` of its own is left alone: that is how you say it is
+	 * about a different control than the first.
+	 *
+	 * More than one control in a field is allowed and sometimes right, a radio
+	 * group with an "Anders" text field beside it being the case this component
+	 * is built for. But a list that reads a value would then quietly read the
+	 * wrong one, and nothing on screen would show it: the rules simply never
+	 * match. Say so once, where it can still be fixed.
+	 */
+	private _adoptValidationLists(input: Element): void {
+		const lists = Array.from(this.children)
+			.filter((el): el is HTMLElement & { control: Element | null } =>
+				el.tagName.toLowerCase() === 'nldd-form-field-validation-list');
+		if (!lists.length) return;
+
+		for (const list of lists) {
+			if (!list.getAttribute('for')) list.control = input;
+		}
+
+		if (!import.meta.env?.DEV) return;
+		const controls = Array.from(this.children)
+			.filter(el => !HELPER_TAGS.includes(el.tagName.toLowerCase()) && isFormInput(el));
+		if (controls.length < 2) return;
+
+		const readsValue = lists.some(list => !list.getAttribute('for') && Array.from(list.children)
+			.some(item => item.hasAttribute('match') || item.hasAttribute('minlength') || item.hasAttribute('maxlength')));
+		if (!readsValue) return;
+
+		const which = this.label ? ` (label="${this.label}")` : '';
+		console.warn(
+			`<nldd-form-field>${which}: more than one control, and the validation list has rules that read a value. `
+			+ `It is reading <${input.localName}>, the first one. Set \`for\` on the list if it should read another.`,
+		);
+	}
+
+	/**
 	 * The input this field is about: the first one in the light DOM, wrapped or
 	 * not.
 	 *
@@ -309,8 +349,8 @@ export class NLDDFormField extends LitElement {
 	}
 
 	/**
-	 * Reads `invalid` and `error-message` from the input, shows the error texts
-	 * it names, and hands the control the elements that describe it.
+	 * Reads `invalid` and `unmet` from the input, shows the error texts it names,
+	 * and hands the control the elements that describe it.
 	 *
 	 * Elements and not ids. An IDREF resolves inside the tree of the element
 	 * that carries it, so an id written here cannot be found from inside a
@@ -329,13 +369,20 @@ export class NLDDFormField extends LitElement {
 		if (!input) return;
 
 		const isInvalid = input.hasAttribute('invalid');
-		const referencedIds = (input.getAttribute('error-message') ?? '')
+		const referencedIds = (input.getAttribute('unmet') ?? '')
 			.split(' ')
 			.filter(Boolean);
 
 		const children = Array.from(this.children);
 		const helpTexts = children
 			.filter(el => el.tagName.toLowerCase() === 'nldd-form-field-help-text');
+		// The list once, not each of its items: the items come and go while you
+		// type, and a description that is rewritten per keystroke is a lot of
+		// churn in something assistive software is reading. A hidden item counts
+		// for nothing in the description, so one reference gives exactly what is
+		// on screen.
+		const lists = children
+			.filter(el => el.tagName.toLowerCase() === 'nldd-form-field-validation-list');
 
 		const visibleErrors: Element[] = [];
 		for (const el of children) {
@@ -345,8 +392,9 @@ export class NLDDFormField extends LitElement {
 			if (shouldShow) visibleErrors.push(el);
 		}
 
-		// Help first, so it is announced before the errors.
-		const describedBy = [...helpTexts, ...visibleErrors];
+		// The requirements before the plain help text, and both before nothing:
+		// what is wrong is why you are here.
+		const describedBy = [...lists, ...helpTexts, ...visibleErrors];
 
 		if ('describedByElements' in input) {
 			(input as unknown as DescribedElement).describedByElements = describedBy;

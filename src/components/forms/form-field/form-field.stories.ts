@@ -33,7 +33,7 @@ import '../../actions/button-group/button-group.js';
  * ```
  *
  * ### Slots
- * - Standaard slot: het geslote invoerelement. Stel `invalid` en `error-message="id1 id2"`
+ * - Standaard slot: het geslote invoerelement. Stel `invalid` en `unmet="id1 id2"`
  *   in op de invoer om foutmeldingen automatisch te koppelen.
  * - `nldd-form-field-help-text`: plaatsen naast de invoer — het component
  *   wijst zichzelf automatisch toe aan het help-slot.
@@ -42,14 +42,14 @@ import '../../actions/button-group/button-group.js';
  *
  * ### Foutmeldingen
  * Voeg zoveel `nldd-form-field-error-text`-elementen toe als nodig. Het formulierveld
- * observeert de invoer en toont alleen de elementen waarnaar `error-message` verwijst.
+ * observeert de invoer en toont alleen de elementen waarnaar `unmet` verwijst.
  *
  * ```html
  * <nldd-form-field label="Wachtwoord">
  *   <nldd-form-field-help-text>
  *     Minimaal 8 tekens. <a href="/help">Meer informatie</a>.
  *   </nldd-form-field-help-text>
- *   <nldd-text-field invalid error-message="error-verplicht error-lengte"></nldd-text-field>
+ *   <nldd-text-field invalid unmet="error-verplicht error-lengte"></nldd-text-field>
  *   <nldd-form-field-error-text id="error-verplicht">Dit veld is verplicht.</nldd-form-field-error-text>
  *   <nldd-form-field-error-text id="error-lengte">Minimaal 8 tekens vereist.</nldd-form-field-error-text>
  * </nldd-form-field>
@@ -126,7 +126,7 @@ export const Optional = () => html`
 
 export const Invalid = () => html`
 	<nldd-form-field label="E-mailadres">
-		<nldd-text-field invalid error-message="error-email"></nldd-text-field>
+		<nldd-text-field invalid unmet="error-email"></nldd-text-field>
 		<nldd-form-field-error-text id="error-email">Voer een geldig e-mailadres in.</nldd-form-field-error-text>
 	</nldd-form-field>
 `;
@@ -136,7 +136,7 @@ export const MultipleErrors = () => html`
 		<nldd-form-field-help-text>
 			Minimaal 8 tekens. <a href="/help">Vereisten</a>.
 		</nldd-form-field-help-text>
-		<nldd-text-field invalid error-message="error-verplicht error-lengte"></nldd-text-field>
+		<nldd-text-field invalid unmet="error-verplicht error-lengte"></nldd-text-field>
 		<nldd-form-field-error-text id="error-verplicht">Dit veld is verplicht.</nldd-form-field-error-text>
 		<nldd-form-field-error-text id="error-lengte">Minimaal 8 tekens vereist.</nldd-form-field-error-text>
 	</nldd-form-field>
@@ -167,7 +167,7 @@ export const CompleteFormTop = () => html`
 				type="tel"
 				input-id="top-telefoon"
 				invalid
-				error-message="error-telefoon"
+				unmet="error-telefoon"
 			></nldd-text-field>
 			<nldd-form-field-error-text id="error-telefoon">Voer een geldig telefoonnummer in.</nldd-form-field-error-text>
 		</nldd-form-field>
@@ -196,7 +196,7 @@ export const CompleteFormRight = () => html`
 					type="tel"
 					input-id="rechts-telefoon"
 					invalid
-					error-message="error-telefoon-rechts"
+					unmet="error-telefoon-rechts"
 				></nldd-text-field>
 				<nldd-form-field-error-text id="error-telefoon-rechts">Voer een geldig telefoonnummer in.</nldd-form-field-error-text>
 			</nldd-form-field>
