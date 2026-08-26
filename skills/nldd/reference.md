@@ -919,6 +919,7 @@ A visual wrapper around a native `<select>` element. The consumer provides a nat
 | `expanded` | `boolean` | Reflects whether the native picker popup is open (driven internally) |
 | `width` | `string` | Optional fixed width (any CSS length, e.g. "240px"). Default: stretches to fill container. |
 | `accessible-label` | `string` | Accessible name, forwarded as aria-label to the slotted select |
+| `required` | `boolean` | Required state, handed to the slotted <select>. A `required` on the <select> itself is left alone. |
 
 **Slots**
 

@@ -3,6 +3,7 @@ import { fixture, cleanup, waitForUpdate } from '../test-utils.js';
 import '../components/inputs/checkbox/checkbox.js';
 import '../components/inputs/checkbox-field/checkbox-field.js';
 import '../components/inputs/combo-box/combo-box.js';
+import '../components/inputs/dropdown/dropdown.js';
 import '../components/inputs/multi-line-text-field/multi-line-text-field.js';
 import '../components/inputs/password-field/password-field.js';
 import '../components/inputs/search-field/search-field.js';
@@ -110,6 +111,25 @@ describe('required reaches the native control', () => {
 			expect(control.validity.valueMissing).toBe(false);
 		});
 	}
+
+	it('nldd-dropdown: hands required to the slotted select', async () => {
+		el = await fixture<HTMLElement>(
+			'<nldd-dropdown required><select aria-label="Optie"><option value="">Kies</option></select></nldd-dropdown>',
+		);
+		await waitForUpdate(el);
+		const select = el.querySelector('select') as HTMLSelectElement;
+		expect(select.required).toBe(true);
+		expect(select.validity.valueMissing).toBe(true);
+	});
+
+	it('nldd-dropdown: leaves a required the consumer put on the select alone', async () => {
+		el = await fixture<HTMLElement>(
+			'<nldd-dropdown><select required aria-label="Optie"><option value="">Kies</option></select></nldd-dropdown>',
+		);
+		await waitForUpdate(el);
+		const select = el.querySelector('select') as HTMLSelectElement;
+		expect(select.required).toBe(true);
+	});
 
 	for (const [name, inner] of [['nldd-checkbox-field', 'nldd-checkbox'], ['nldd-switch-field', 'nldd-switch']] as const) {
 		it(`${name}: hands required to the ${inner} it renders`, async () => {

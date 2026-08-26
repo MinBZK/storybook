@@ -9646,6 +9646,16 @@
               "attribute": "accessible-label"
             },
             {
+              "kind": "field",
+              "name": "required",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "attribute": "required",
+              "reflects": true
+            },
+            {
               "kind": "method",
               "name": "focus",
               "return": {
@@ -9755,6 +9765,15 @@
               "default": "''",
               "description": "Accessible name, forwarded as aria-label to the slotted select",
               "fieldName": "accessibleLabel"
+            },
+            {
+              "name": "required",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "fieldName": "required",
+              "description": "Required state, handed to the slotted <select>. A `required` on the <select> itself is left alone."
             }
           ],
           "mixins": [
