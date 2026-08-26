@@ -1,9 +1,9 @@
 import { html, TemplateResult } from 'lit';
 import type { NLDDFormFieldValidationList, NLDDFormFieldValidationItem } from './form-field-validation-list.js';
 
-export function validationListTemplate(_component: NLDDFormFieldValidationList): TemplateResult {
+export function formFieldValidationListTemplate(_component: NLDDFormFieldValidationList): TemplateResult {
 	return html`
-		<div class="validation-list"
+		<div class="form-field-validation-list"
 			role="list"
 		>
 			<slot></slot>
@@ -11,7 +11,7 @@ export function validationListTemplate(_component: NLDDFormFieldValidationList):
 	`;
 }
 
-export function validationItemTemplate(_component: NLDDFormFieldValidationItem): TemplateResult {
+export function formFieldValidationItemTemplate(_component: NLDDFormFieldValidationItem): TemplateResult {
 	return html`
 		<slot></slot>
 	`;

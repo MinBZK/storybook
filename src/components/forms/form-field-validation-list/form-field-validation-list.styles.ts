@@ -1,7 +1,7 @@
 import { css } from 'lit';
 
 
-export const validationListStyles = css`
+export const formFieldValidationListStyles = css`
 
 
 	/* # Host */
@@ -22,7 +22,7 @@ export const validationListStyles = css`
 
 	/* # List */
 
-	.validation-list {
+	.form-field-validation-list {
 		display: flex;
 		flex-direction: column;
 		gap: var(--primitives-space-2);
@@ -30,7 +30,7 @@ export const validationListStyles = css`
 `;
 
 
-export const validationItemStyles = css`
+export const formFieldValidationItemStyles = css`
 
 
 	/* # Host */

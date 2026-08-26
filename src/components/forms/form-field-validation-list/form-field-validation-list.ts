@@ -49,8 +49,8 @@
  */
 import { LitElement, type PropertyValues } from 'lit';
 import { customElement, property, state } from 'lit/decorators.js';
-import { validationListStyles, validationItemStyles } from './form-field-validation-list.styles.js';
-import { validationListTemplate, validationItemTemplate } from './form-field-validation-list.template.js';
+import { formFieldValidationListStyles, formFieldValidationItemStyles } from './form-field-validation-list.styles.js';
+import { formFieldValidationListTemplate, formFieldValidationItemTemplate } from './form-field-validation-list.template.js';
 
 /** A control that can report its own validity to the form. */
 interface ValidatableControl extends Element {
@@ -66,7 +66,7 @@ interface ValidatableControl extends Element {
 
 @customElement('nldd-form-field-validation-item')
 export class NLDDFormFieldValidationItem extends LitElement {
-	static override styles = validationItemStyles;
+	static override styles = formFieldValidationItemStyles;
 
 	/** Not anchored, unlike the native `pattern`. See the note at the top. */
 	@property({ type: String })
@@ -124,7 +124,7 @@ export class NLDDFormFieldValidationItem extends LitElement {
 	}
 
 	override render() {
-		return validationItemTemplate(this);
+		return formFieldValidationItemTemplate(this);
 	}
 }
 
@@ -135,7 +135,7 @@ export class NLDDFormFieldValidationItem extends LitElement {
 
 @customElement('nldd-form-field-validation-list')
 export class NLDDFormFieldValidationList extends LitElement {
-	static override styles = validationListStyles;
+	static override styles = formFieldValidationListStyles;
 
 	/** Id of the control, for a list that sits outside an nldd-form-field. */
 	@property({ type: String })
@@ -180,7 +180,7 @@ export class NLDDFormFieldValidationList extends LitElement {
 	}
 
 	override render() {
-		return validationListTemplate(this);
+		return formFieldValidationListTemplate(this);
 	}
 
 	private get _items(): NLDDFormFieldValidationItem[] {

@@ -8,7 +8,7 @@ import '../../inputs/password-field/password-field.js';
 import '../../actions/button/button.js';
 
 export default {
-	title: 'Components/Forms/Validation List',
+	title: 'Components/Forms/Form Field Validation List',
 	component: 'nldd-form-field-validation-list',
 	tags: ['autodocs'],
 	parameters: {
