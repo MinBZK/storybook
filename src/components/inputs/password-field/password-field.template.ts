@@ -51,6 +51,9 @@ export function passwordFieldTemplate(component: NLDDPasswordField): TemplateRes
 	return html`
 		<div class="password-field">
 			<input class="password-field__input ${component.masked ? 'is-masked' : ''}"
+				pattern=${component.pattern || nothing}
+				minlength=${component.minlength ?? nothing}
+				maxlength=${component.maxlength ?? nothing}
 				id=${component.inputId || nothing}
 				type=${component.masked ? 'password' : 'text'}
 				.value=${component.value}

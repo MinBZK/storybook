@@ -6877,6 +6877,16 @@
               "attribute": "label"
             },
             {
+              "kind": "field",
+              "name": "required",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "attribute": "required",
+              "reflects": true
+            },
+            {
               "kind": "method",
               "name": "formValue",
               "return": {
@@ -7094,6 +7104,15 @@
               "default": "''",
               "fieldName": "label",
               "description": "Label text for the checkbox"
+            },
+            {
+              "name": "required",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "fieldName": "required",
+              "description": "Required state"
             }
           ],
           "mixins": [
@@ -7230,6 +7249,16 @@
               },
               "default": "''",
               "attribute": "accessible-label"
+            },
+            {
+              "kind": "field",
+              "name": "required",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "attribute": "required",
+              "reflects": true
             },
             {
               "kind": "method",
@@ -7476,7 +7505,16 @@
               },
               "default": "''",
               "fieldName": "accessibleLabel",
-              "description": "Accessible label forwarded as aria-label to the native input. Note: aria-labelledby is not supported as IDREF resolution cannot cross shadow DOM boundaries."
+              "description": "Accessible label forwarded as aria-label to the native input."
+            },
+            {
+              "name": "required",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "fieldName": "required",
+              "description": "Required state Note: aria-labelledby is not supported as IDREF resolution cannot cross shadow DOM boundaries."
             }
           ],
           "mixins": [
@@ -8183,6 +8221,47 @@
               "reflects": true
             },
             {
+              "kind": "field",
+              "name": "required",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "attribute": "required",
+              "reflects": true
+            },
+            {
+              "kind": "field",
+              "name": "pattern",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Regular expression the value has to match, as the native `pattern`.",
+              "attribute": "pattern",
+              "reflects": true
+            },
+            {
+              "kind": "field",
+              "name": "minlength",
+              "type": {
+                "text": "number | undefined"
+              },
+              "description": "Fewest characters the value may have, as the native `minlength`.",
+              "attribute": "minlength",
+              "reflects": true
+            },
+            {
+              "kind": "field",
+              "name": "maxlength",
+              "type": {
+                "text": "number | undefined"
+              },
+              "description": "Most characters the value may have, as the native `maxlength`.",
+              "attribute": "maxlength",
+              "reflects": true
+            },
+            {
               "kind": "method",
               "name": "formValue",
               "return": {
@@ -8494,6 +8573,40 @@
               "default": "''",
               "description": "Optional fixed width (any CSS length, e.g. \"240px\"). Default: stretches to fill container.",
               "fieldName": "width"
+            },
+            {
+              "name": "required",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "fieldName": "required",
+              "description": "Required state"
+            },
+            {
+              "name": "pattern",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Regular expression the value has to match, as the native `pattern`.",
+              "fieldName": "pattern"
+            },
+            {
+              "name": "minlength",
+              "type": {
+                "text": "number | undefined"
+              },
+              "description": "Fewest characters the value may have.",
+              "fieldName": "minlength"
+            },
+            {
+              "name": "maxlength",
+              "type": {
+                "text": "number | undefined"
+              },
+              "description": "Most characters the value may have.",
+              "fieldName": "maxlength"
             }
           ],
           "mixins": [
@@ -10315,6 +10428,26 @@
               "reflects": true
             },
             {
+              "kind": "field",
+              "name": "minlength",
+              "type": {
+                "text": "number | undefined"
+              },
+              "description": "Fewest characters the value may have, as the native `minlength`.",
+              "attribute": "minlength",
+              "reflects": true
+            },
+            {
+              "kind": "field",
+              "name": "maxlength",
+              "type": {
+                "text": "number | undefined"
+              },
+              "description": "Most characters the value may have, as the native `maxlength`.",
+              "attribute": "maxlength",
+              "reflects": true
+            },
+            {
               "kind": "method",
               "name": "formValue",
               "return": {
@@ -10623,6 +10756,22 @@
               "default": "''",
               "description": "Optional fixed width (any CSS length, e.g. \"240px\"). Default: stretches to fill container.",
               "fieldName": "width"
+            },
+            {
+              "name": "minlength",
+              "type": {
+                "text": "number | undefined"
+              },
+              "description": "Fewest characters the value may have.",
+              "fieldName": "minlength"
+            },
+            {
+              "name": "maxlength",
+              "type": {
+                "text": "number | undefined"
+              },
+              "description": "Most characters the value may have.",
+              "fieldName": "maxlength"
             }
           ],
           "mixins": [
@@ -11331,6 +11480,37 @@
               "reflects": true
             },
             {
+              "kind": "field",
+              "name": "pattern",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Regular expression the value has to match, as the native `pattern`.",
+              "attribute": "pattern",
+              "reflects": true
+            },
+            {
+              "kind": "field",
+              "name": "minlength",
+              "type": {
+                "text": "number | undefined"
+              },
+              "description": "Fewest characters the value may have, as the native `minlength`.",
+              "attribute": "minlength",
+              "reflects": true
+            },
+            {
+              "kind": "field",
+              "name": "maxlength",
+              "type": {
+                "text": "number | undefined"
+              },
+              "description": "Most characters the value may have, as the native `maxlength`.",
+              "attribute": "maxlength",
+              "reflects": true
+            },
+            {
               "kind": "method",
               "name": "formValue",
               "return": {
@@ -11661,6 +11841,31 @@
               "default": "''",
               "description": "Optional fixed width (any CSS length, e.g. \"240px\"). Default: stretches to fill container.",
               "fieldName": "width"
+            },
+            {
+              "name": "pattern",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Regular expression the value has to match, as the native `pattern`.",
+              "fieldName": "pattern"
+            },
+            {
+              "name": "minlength",
+              "type": {
+                "text": "number | undefined"
+              },
+              "description": "Fewest characters the value may have.",
+              "fieldName": "minlength"
+            },
+            {
+              "name": "maxlength",
+              "type": {
+                "text": "number | undefined"
+              },
+              "description": "Most characters the value may have.",
+              "fieldName": "maxlength"
             }
           ],
           "mixins": [
@@ -12720,6 +12925,47 @@
               "reflects": true
             },
             {
+              "kind": "field",
+              "name": "required",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "attribute": "required",
+              "reflects": true
+            },
+            {
+              "kind": "field",
+              "name": "pattern",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Regular expression the value has to match, as the native `pattern`.",
+              "attribute": "pattern",
+              "reflects": true
+            },
+            {
+              "kind": "field",
+              "name": "minlength",
+              "type": {
+                "text": "number | undefined"
+              },
+              "description": "Fewest characters the value may have, as the native `minlength`.",
+              "attribute": "minlength",
+              "reflects": true
+            },
+            {
+              "kind": "field",
+              "name": "maxlength",
+              "type": {
+                "text": "number | undefined"
+              },
+              "description": "Most characters the value may have, as the native `maxlength`.",
+              "attribute": "maxlength",
+              "reflects": true
+            },
+            {
               "kind": "method",
               "name": "formValue",
               "return": {
@@ -12981,6 +13227,40 @@
               "default": "''",
               "description": "Optional fixed width (any CSS length, e.g. \"240px\"). Default: stretches to fill container.",
               "fieldName": "width"
+            },
+            {
+              "name": "required",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "fieldName": "required",
+              "description": "Required state"
+            },
+            {
+              "name": "pattern",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Regular expression the value has to match, as the native `pattern`.",
+              "fieldName": "pattern"
+            },
+            {
+              "name": "minlength",
+              "type": {
+                "text": "number | undefined"
+              },
+              "description": "Fewest characters the value may have.",
+              "fieldName": "minlength"
+            },
+            {
+              "name": "maxlength",
+              "type": {
+                "text": "number | undefined"
+              },
+              "description": "Most characters the value may have.",
+              "fieldName": "maxlength"
             }
           ],
           "mixins": [
@@ -14086,6 +14366,16 @@
               "attribute": "label"
             },
             {
+              "kind": "field",
+              "name": "required",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "attribute": "required",
+              "reflects": true
+            },
+            {
               "kind": "method",
               "name": "focus",
               "return": {
@@ -14183,6 +14473,15 @@
               "default": "''",
               "fieldName": "label",
               "description": "Label text for the switch"
+            },
+            {
+              "name": "required",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "fieldName": "required",
+              "description": "Required state"
             }
           ],
           "mixins": [
@@ -14305,6 +14604,16 @@
               },
               "default": "'on'",
               "attribute": "value"
+            },
+            {
+              "kind": "field",
+              "name": "required",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "attribute": "required",
+              "reflects": true
             },
             {
               "kind": "method",
@@ -14543,6 +14852,15 @@
               "default": "'on'",
               "fieldName": "value",
               "description": "Value submitted with the form when the switch is on (default: 'on')"
+            },
+            {
+              "name": "required",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "fieldName": "required",
+              "description": "Required state"
             }
           ],
           "mixins": [
@@ -16957,6 +17275,37 @@
               "reflects": true
             },
             {
+              "kind": "field",
+              "name": "pattern",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Regular expression the value has to match, as the native `pattern`.",
+              "attribute": "pattern",
+              "reflects": true
+            },
+            {
+              "kind": "field",
+              "name": "minlength",
+              "type": {
+                "text": "number | undefined"
+              },
+              "description": "Fewest characters the value may have, as the native `minlength`.",
+              "attribute": "minlength",
+              "reflects": true
+            },
+            {
+              "kind": "field",
+              "name": "maxlength",
+              "type": {
+                "text": "number | undefined"
+              },
+              "description": "Most characters the value may have, as the native `maxlength`.",
+              "attribute": "maxlength",
+              "reflects": true
+            },
+            {
               "kind": "method",
               "name": "formValue",
               "return": {
@@ -17285,6 +17634,31 @@
               "default": "''",
               "description": "Optional fixed width (any CSS length, e.g. \"240px\"). Default: stretches to fill container.",
               "fieldName": "width"
+            },
+            {
+              "name": "pattern",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Regular expression the value has to match, as the native `pattern`.",
+              "fieldName": "pattern"
+            },
+            {
+              "name": "minlength",
+              "type": {
+                "text": "number | undefined"
+              },
+              "description": "Fewest characters the value may have.",
+              "fieldName": "minlength"
+            },
+            {
+              "name": "maxlength",
+              "type": {
+                "text": "number | undefined"
+              },
+              "description": "Most characters the value may have.",
+              "fieldName": "maxlength"
             }
           ],
           "mixins": [

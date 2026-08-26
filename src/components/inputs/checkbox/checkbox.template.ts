@@ -16,6 +16,7 @@ export function checkboxTemplate(component: NLDDCheckbox): TemplateResult {
 	}
 	return html`
 		<input class="checkbox__input"
+			?required=${component.required}
 			type="checkbox"
 			.checked=${component.checked}
 			.indeterminate=${component.indeterminate}

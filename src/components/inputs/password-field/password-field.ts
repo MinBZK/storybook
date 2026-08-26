@@ -23,6 +23,9 @@
  * @attr {string} autocomplete - Autocomplete hint
  * @attr {string} accessible-label - Accessible label forwarded to the inner input. Set automatically by nldd-form-field.
  * @attr {string} width - Optional fixed width (any CSS length, e.g. "240px"). Default: stretches to fill container.
+ * @attr {string} pattern - Regular expression the value has to match, as the native `pattern`.
+ * @attr {number} minlength - Fewest characters the value may have.
+ * @attr {number} maxlength - Most characters the value may have.
  *
  * @fires input - When the input value changes ({ detail: { value } })
  * @fires change - When the input value is committed ({ detail: { value } })
@@ -120,6 +123,19 @@ export class NLDDPasswordField extends DescribedBy(FormAssociated(LitElement)) {
 
 	@query('.password-field__input')
 	private _input!: HTMLInputElement;
+
+
+	/** Regular expression the value has to match, as the native `pattern`. */
+	@property({ type: String, reflect: true })
+	pattern = '';
+
+	/** Fewest characters the value may have, as the native `minlength`. */
+	@property({ type: Number, reflect: true })
+	minlength?: number;
+
+	/** Most characters the value may have, as the native `maxlength`. */
+	@property({ type: Number, reflect: true })
+	maxlength?: number;
 
 	override firstUpdated(): void {
 		this._initialValue = this.value;

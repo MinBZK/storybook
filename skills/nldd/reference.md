@@ -734,7 +734,8 @@ Nederlandse Digitale Dienst Form Section Component Plain custom element (extends
 | `indeterminate` | `boolean` | Indeterminate state (takes precedence over checked visually) |
 | `value` | `string` | Value for form submission |
 | `name` | `string` | Name for form submission |
-| `accessible-label` | `string` | Accessible label forwarded as aria-label to the native input. Note: aria-labelledby is not supported as IDREF resolution cannot cross shadow DOM boundaries. |
+| `accessible-label` | `string` | Accessible label forwarded as aria-label to the native input. |
+| `required` | `boolean` | Required state Note: aria-labelledby is not supported as IDREF resolution cannot cross shadow DOM boundaries. |
 
 **Events**
 
@@ -756,6 +757,7 @@ A checkbox with an inline label for use in forms. Form-associated: participates 
 | `value` | `string` | Value for form submission |
 | `name` | `string` | Name for form submission |
 | `label` | `string` | Label text for the checkbox |
+| `required` | `boolean` | Required state |
 
 **Events**
 
@@ -817,6 +819,10 @@ A text input with autocomplete dropdown via nldd-menu. Add a slotted nldd-menu w
 | `translations` | `object` | Override translation keys; unset keys fall back to Dutch |
 | `no-spellcheck` | `boolean` | Disables browser spellchecking on the inner input |
 | `width` | `string` | Optional fixed width (any CSS length, e.g. "240px"). Default: stretches to fill container. |
+| `required` | `boolean` | Required state |
+| `pattern` | `string` | Regular expression the value has to match, as the native `pattern`. |
+| `minlength` | `number` | Fewest characters the value may have. |
+| `maxlength` | `number` | Most characters the value may have. |
 
 **Slots**
 
@@ -976,6 +982,8 @@ A file picker that reads as one control: an nldd-button flush in the corner of a
 | `accessible-label` | `string` | Accessible label forwarded to the inner textarea. Set automatically by nldd-form-field. |
 | `no-spellcheck` | `boolean` | Disables browser spellchecking on the inner textarea |
 | `width` | `string` | Optional fixed width (any CSS length, e.g. "240px"). Default: stretches to fill container. |
+| `minlength` | `number` | Fewest characters the value may have. |
+| `maxlength` | `number` | Most characters the value may have. |
 
 **Events**
 
@@ -1037,6 +1045,9 @@ A password input field with visibility toggle and validation states.
 | `autocomplete` | `string` | Autocomplete hint |
 | `accessible-label` | `string` | Accessible label forwarded to the inner input. Set automatically by nldd-form-field. |
 | `width` | `string` | Optional fixed width (any CSS length, e.g. "240px"). Default: stretches to fill container. |
+| `pattern` | `string` | Regular expression the value has to match, as the native `pattern`. |
+| `minlength` | `number` | Fewest characters the value may have. |
+| `maxlength` | `number` | Most characters the value may have. |
 
 **Events**
 
@@ -1133,6 +1144,10 @@ A search input with a leading search icon, an optional dismiss button, and an op
 | `translations` | `object` | Override translation keys; unset keys fall back to Dutch |
 | `no-spellcheck` | `boolean` | Disables browser spellchecking on the inner input |
 | `width` | `string` | Optional fixed width (any CSS length, e.g. "240px"). Default: stretches to fill container. |
+| `required` | `boolean` | Required state |
+| `pattern` | `string` | Regular expression the value has to match, as the native `pattern`. |
+| `minlength` | `number` | Fewest characters the value may have. |
+| `maxlength` | `number` | Most characters the value may have. |
 
 **Events**
 
@@ -1239,6 +1254,7 @@ A toggle control for on/off settings. Prefer nldd-switch-field for labeled usage
 | `name` | `string` | Name for form submission; nothing is submitted when the switch is off |
 | `value` | `string` | Value submitted with the form when the switch is on (default: 'on') |
 | `accessible-label` | `string` | Accessible label forwarded as aria-label to the native input. Required when using nldd-switch without nldd-switch-field. |
+| `required` | `boolean` | Required state |
 
 **Events**
 
@@ -1259,6 +1275,7 @@ A switch toggle with an inline label for use in forms.
 | `value` | `string` | Value for form submission |
 | `name` | `string` | Name for form submission |
 | `label` | `string` | Label text for the switch |
+| `required` | `boolean` | Required state |
 
 **Events**
 
@@ -1322,6 +1339,9 @@ A hybrid markdown editor built on CodeMirror 6 (via NLDDCodeMirrorElement): the 
 | `accessible-label` | `string` | Accessible label forwarded to the inner input. Set automatically by nldd-form-field. |
 | `no-spellcheck` | `boolean` | Disables browser spellchecking on the inner input |
 | `width` | `string` | Optional fixed width (any CSS length, e.g. "240px"). Default: stretches to fill container. |
+| `pattern` | `string` | Regular expression the value has to match, as the native `pattern`. |
+| `minlength` | `number` | Fewest characters the value may have. |
+| `maxlength` | `number` | Most characters the value may have. |
 
 **Events**
 

@@ -28,6 +28,10 @@
  * @attr {object} translations - Override translation keys; unset keys fall back to Dutch
  * @attr {boolean} no-spellcheck - Disables browser spellchecking on the inner input
  * @attr {string} width - Optional fixed width (any CSS length, e.g. "240px"). Default: stretches to fill container.
+ * @attr {boolean} required - Required state
+ * @attr {string} pattern - Regular expression the value has to match, as the native `pattern`.
+ * @attr {number} minlength - Fewest characters the value may have.
+ * @attr {number} maxlength - Most characters the value may have.
  *
  * @note Free-text values: only when `allow-custom` is set. Then a typed value that
  *       matches no menu option is emitted as-is via the `change` event on Enter or blur
@@ -167,6 +171,22 @@ export class NLDDComboBox extends DescribedBy(FormAssociated(LitElement)) {
 	_input!: HTMLInputElement;
 
 	// — i18n ——————————————————————————————————————————————————————————————————
+
+
+	@property({ type: Boolean, reflect: true })
+	required = false;
+
+	/** Regular expression the value has to match, as the native `pattern`. */
+	@property({ type: String, reflect: true })
+	pattern = '';
+
+	/** Fewest characters the value may have, as the native `minlength`. */
+	@property({ type: Number, reflect: true })
+	minlength?: number;
+
+	/** Most characters the value may have, as the native `maxlength`. */
+	@property({ type: Number, reflect: true })
+	maxlength?: number;
 
 	public _t(key: keyof NLDDComboBoxTranslations): string {
 		return this.translations[key] ?? nlddComboBoxTranslations[key];

@@ -30,6 +30,9 @@ export function textFieldTemplate(component: NLDDTextField): TemplateResult {
 	return html`
 		<div class="text-field">
 			<input class="text-field__input"
+				pattern=${component.pattern || nothing}
+				minlength=${component.minlength ?? nothing}
+				maxlength=${component.maxlength ?? nothing}
 				id=${component.inputId || nothing}
 				type=${component.type}
 				inputmode=${component.keyboard || nothing}

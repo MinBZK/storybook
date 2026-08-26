@@ -13,6 +13,7 @@
  * @attr {string} value - Value for form submission
  * @attr {string} name - Name for form submission
  * @attr {string} accessible-label - Accessible label forwarded as aria-label to the native input.
+ * @attr {boolean} required - Required state
  *   Note: aria-labelledby is not supported as IDREF resolution cannot cross shadow DOM boundaries.
  *
  * @fires change - Fired when the checkbox state changes; detail: { checked: boolean, value: string }
@@ -61,6 +62,10 @@ export class NLDDCheckbox extends DescribedBy(FormAssociated(LitElement)) {
 
 	@property({ type: String, attribute: 'accessible-label' })
 	accessibleLabel = '';
+
+
+	@property({ type: Boolean, reflect: true })
+	required = false;
 
 	override firstUpdated(): void {
 		this._initialChecked = this.checked;

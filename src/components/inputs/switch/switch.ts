@@ -13,6 +13,7 @@
  * @attr {string} name - Name for form submission; nothing is submitted when the switch is off
  * @attr {string} value - Value submitted with the form when the switch is on (default: 'on')
  * @attr {string} accessible-label - Accessible label forwarded as aria-label to the native input. Required when using nldd-switch without nldd-switch-field.
+ * @attr {boolean} required - Required state
  *
  * @fires change - When the switch state changes; detail: { checked: boolean, value: string }
  */
@@ -62,6 +63,10 @@ export class NLDDSwitch extends DescribedBy(FormAssociated(LitElement)) {
 	value = 'on';
 
 	private _initialChecked = false;
+
+
+	@property({ type: Boolean, reflect: true })
+	required = false;
 
 	override firstUpdated(): void {
 		if (import.meta.env?.DEV && !this.accessibleLabel) {

@@ -5,6 +5,7 @@ import './../../content/icon/icon.js';
 export function switchTemplate(component: NLDDSwitch): TemplateResult {
 	return html`
 		<input class="switch__input"
+			?required=${component.required}
 			type="checkbox"
 			role="switch"
 			.checked=${component.checked}

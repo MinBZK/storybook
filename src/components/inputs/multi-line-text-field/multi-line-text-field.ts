@@ -21,6 +21,8 @@
  * @attr {string} accessible-label - Accessible label forwarded to the inner textarea. Set automatically by nldd-form-field.
  * @attr {boolean} no-spellcheck - Disables browser spellchecking on the inner textarea
  * @attr {string} width - Optional fixed width (any CSS length, e.g. "240px"). Default: stretches to fill container.
+ * @attr {number} minlength - Fewest characters the value may have.
+ * @attr {number} maxlength - Most characters the value may have.
  *
  * @fires input - When value changes
  * @fires change - When value is committed (blur)
@@ -117,6 +119,15 @@ export class NLDDMultiLineTextField extends DescribedBy(FormAssociated(LitElemen
 
 	@query('.multi-line-text-field__input')
 	private _textarea!: HTMLTextAreaElement;
+
+
+	/** Fewest characters the value may have, as the native `minlength`. */
+	@property({ type: Number, reflect: true })
+	minlength?: number;
+
+	/** Most characters the value may have, as the native `maxlength`. */
+	@property({ type: Number, reflect: true })
+	maxlength?: number;
 
 	override firstUpdated(): void {
 		this._initialValue = this.value;

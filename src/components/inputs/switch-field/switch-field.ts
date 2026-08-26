@@ -9,6 +9,7 @@
  * @attr {string} value - Value for form submission
  * @attr {string} name - Name for form submission
  * @attr {string} label - Label text for the switch
+ * @attr {boolean} required - Required state
  *
  * @fires change - When checked state changes; detail: { checked: boolean, value: string }
  */
@@ -41,6 +42,10 @@ export class NLDDSwitchField extends DescribedBy(LitElement) {
 
 	@property({ type: String })
 	label = '';
+
+
+	@property({ type: Boolean, reflect: true })
+	required = false;
 
 	public _handleLabelClick(e: Event): void {
 		if (this.disabled) return;

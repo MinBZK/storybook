@@ -30,6 +30,8 @@ export function multiLineTextFieldTemplate(component: NLDDMultiLineTextField): T
 	return html`
 		<div class="multi-line-text-field">
 			<textarea class="multi-line-text-field__input"
+				minlength=${component.minlength ?? nothing}
+				maxlength=${component.maxlength ?? nothing}
 				id=${component.inputId || nothing}
 				rows=${component.rows}
 				inputmode=${component.keyboard || nothing}
