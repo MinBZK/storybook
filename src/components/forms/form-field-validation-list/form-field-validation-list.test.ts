@@ -2,6 +2,7 @@ import { describe, it, expect, afterEach } from 'vitest';
 import { fixture, cleanup, waitForUpdate } from '../../../test-utils.js';
 import './form-field-validation-list.js';
 import '../form-field/form-field.js';
+import '../form/form.js';
 import '../../inputs/text-field/text-field.js';
 import type { NLDDFormFieldValidationItem } from './form-field-validation-list.js';
 
@@ -218,5 +219,60 @@ describe('nldd-form-field-validation-list', () => {
 		const described = (inner as Element & { ariaDescribedByElements?: readonly Element[] | null })
 			.ariaDescribedByElements ?? [];
 		expect(described).toEqual([el.querySelector('nldd-form-field-validation-list')]);
+	});
+
+	it('toont niets zonder `invalid`, maar blokkeert het formulier wel', async () => {
+		el = await fixture(`
+			<nldd-form-field label="Wachtwoord">
+				<nldd-text-field></nldd-text-field>
+				<nldd-form-field-validation-list>
+					<nldd-form-field-validation-item id="length" minlength="8">Minimaal 8 tekens</nldd-form-field-validation-item>
+				</nldd-form-field-validation-list>
+			</nldd-form-field>
+		`);
+		await waitForUpdate(el);
+		await type(el, 'kort');
+		const control = el.querySelector('nldd-text-field') as HTMLElement & { internals?: ElementInternals };
+
+		expect(item(el, 'length').visible).toBe(false);
+		expect(control.internals?.validity.customError).toBe(true);
+	});
+});
+
+describe('nldd-form markeert een control op het moment dat het platform het zegt', () => {
+	let el: HTMLElement;
+
+	afterEach(() => {
+		if (el) cleanup(el);
+	});
+
+	it('zet `invalid` bij submit en haalt hem weg zodra het klopt', async () => {
+		el = await fixture(`
+			<nldd-form novalidate>
+				<nldd-form-field label="Wachtwoord">
+					<nldd-text-field name="pw"></nldd-text-field>
+					<nldd-form-field-validation-list>
+						<nldd-form-field-validation-item id="length" minlength="8">Minimaal 8 tekens</nldd-form-field-validation-item>
+					</nldd-form-field-validation-list>
+				</nldd-form-field>
+			</nldd-form>
+		`);
+		await waitForUpdate(el);
+		const control = el.querySelector('nldd-text-field') as HTMLElement & { value: string };
+
+		control.value = 'kort';
+		control.dispatchEvent(new Event('input', { bubbles: true }));
+		await waitForUpdate(el);
+		expect(control.hasAttribute('invalid')).toBe(false);
+
+		(el as HTMLElement & { form: HTMLFormElement }).form.checkValidity();
+		await waitForUpdate(el);
+		expect(control.hasAttribute('invalid')).toBe(true);
+		expect(item(el, 'length').visible).toBe(true);
+
+		control.value = 'lang genoeg';
+		control.dispatchEvent(new Event('input', { bubbles: true }));
+		await waitForUpdate(el);
+		expect(control.hasAttribute('invalid')).toBe(false);
 	});
 });

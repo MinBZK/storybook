@@ -103,6 +103,39 @@ export class NLDDForm extends HTMLElement {
 
 	private _form: HTMLFormElement | null = null;
 	private _observer: MutationObserver | null = null;
+
+	/**
+	 * Marks a control as invalid at the moment the platform says so, and
+	 * unmarks it as soon as it is fixed.
+	 *
+	 * `setValidity` and the `invalid` attribute answer different questions.
+	 * The first is whether the value is acceptable, which decides whether the
+	 * form goes; the second is whether to show that, which is a design
+	 * decision about timing. Without something joining them, a control whose
+	 * validation list refuses a value blocks the submit while the screen says
+	 * nothing.
+	 *
+	 * The browser already picks the moment: it fires `invalid` on every failing
+	 * control when the form is submitted. That event does not bubble, so this
+	 * listens in the capture phase. Setting the attribute earlier stays the
+	 * consumer's call.
+	 */
+	private _handleInvalid = (e: Event) => {
+		(e.target as Element | null)?.toggleAttribute('invalid', true);
+	};
+
+	/**
+	 * Clearing is a separate listener, because the platform has no "valid"
+	 * event. A control that is put right keeps its red border until something
+	 * looks again, and the next submit is too late: you fixed it, and the field
+	 * still says you did not.
+	 */
+	private _handleInput = (e: Event) => {
+		const control = e.target as (Element & { internals?: ElementInternals; validity?: ValidityState }) | null;
+		if (!control?.hasAttribute('invalid')) return;
+		const validity = control.internals?.validity ?? control.validity;
+		if (validity?.valid) control.removeAttribute('invalid');
+	};
 	/** When true, user provided their own <form> child — skip migration. */
 	private _userProvidedForm = false;
 
@@ -170,6 +203,9 @@ export class NLDDForm extends HTMLElement {
 			this._observer.observe(this, { childList: true, subtree: true });
 		}
 
+		this.addEventListener('invalid', this._handleInvalid, true);
+		this.addEventListener('input', this._handleInput);
+
 		// Propagate label-alignment to current children (initial + after reconnect)
 		this._propagateLabelAlignment(this.getAttribute('label-alignment'));
 	}
@@ -177,6 +213,8 @@ export class NLDDForm extends HTMLElement {
 	disconnectedCallback(): void {
 		this._observer?.disconnect();
 		this._observer = null;
+		this.removeEventListener('invalid', this._handleInvalid, true);
+		this.removeEventListener('input', this._handleInput);
 	}
 
 	attributeChangedCallback(name: string, _oldVal: string | null, newVal: string | null): void {
