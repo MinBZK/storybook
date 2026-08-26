@@ -131,19 +131,23 @@ export const AlsHetGoedIs = () => html`
 `;
 
 /**
- * Buiten een veld, met `for` naar de control die je bedoelt.
+ * Buiten een `nldd-form-field`, met `for` naar de control die je bedoelt.
  *
- * In een formulier zet `nldd-form` `invalid` bij het versturen en haalt het er
- * weer af zodra het klopt. Los daarvan doet niemand dat, dus deze staat hier
- * hard op `invalid` om te laten zien wat de lijst doet. Typ een hoofdletter en
- * de regel gaat uit; de rand van het veld blijft staan, want die hangt aan het
- * attribuut en niet aan de lijst.
+ * Dat is waar `for` voor is: het veld eromheen ontbreekt, dus er is niemand die
+ * de lijst z'n control aanreikt. Het formulier eromheen is er wel, en die doet
+ * z'n gewone werk: verstuur met een lege waarde en de regel verschijnt, typ een
+ * hoofdletter en hij verdwijnt samen met de rand van het veld.
  */
 export const MetFor = () => html`
-	<nldd-text-field id="los-veld" invalid accessible-label="Wachtwoord"></nldd-text-field>
-	<nldd-form-field-validation-list for="los-veld">
-		<nldd-form-field-validation-item id="capital" match="[A-Z]">Een hoofdletter</nldd-form-field-validation-item>
-	</nldd-form-field-validation-list>
+	<nldd-form>
+		<nldd-text-field id="los-veld" name="code" accessible-label="Code"></nldd-text-field>
+		<nldd-form-field-validation-list for="los-veld">
+			<nldd-form-field-validation-item id="capital" match="[A-Z]">Een hoofdletter</nldd-form-field-validation-item>
+		</nldd-form-field-validation-list>
+		<nldd-form-actions>
+			<nldd-button variant="primary" type="submit" text="Versturen"></nldd-button>
+		</nldd-form-actions>
+	</nldd-form>
 `;
 
 /** In een formulier, naast een help-tekst die iets anders doet: die houdt je niet tegen. */
