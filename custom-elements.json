@@ -5552,7 +5552,7 @@
                 "text": "boolean"
               },
               "default": "false",
-              "description": "The one rule an empty value does not pass. See `test`.",
+              "description": "For a field whose other rules would pass an empty value. See `test`.",
               "attribute": "required",
               "reflects": true
             },
@@ -5611,7 +5611,7 @@
                   }
                 }
               ],
-              "description": "Whether `value` satisfies this item, or null when there is nothing to\nsatisfy because the item carries no rule.\n\nAn empty value passes every rule but `required`. A field that lights up\nall of its requirements the moment you focus it reads as a page full of\nmistakes you have not made yet, while \"fill something in\" is the one\nthing that is genuinely wrong about an empty field. So on an empty value\nyou see that one line and nothing else."
+              "description": "Whether `value` satisfies this item, or null when there is nothing to\nsatisfy because the item carries no rule.\n\nAn empty value is held against the rules like any other, so \"minimaal 8\ntekens\" fails on it, because it does. What keeps a fresh field from\nlighting up all of its requirements is not this method but the verdict: an\nitem only turns critical once the control says `invalid`, and an untouched\nfield has not been judged yet."
             }
           ],
           "attributes": [
@@ -5646,7 +5646,7 @@
                 "text": "boolean"
               },
               "default": "false",
-              "description": "The value may not be empty. The one rule an empty value does not pass.",
+              "description": "The value may not be empty. Use it on a field whose other rules would pass an empty value.",
               "fieldName": "required"
             },
             {

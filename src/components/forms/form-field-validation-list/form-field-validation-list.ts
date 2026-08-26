@@ -28,7 +28,7 @@
  * @attr {string} match - Regular expression the value has to contain. Not anchored, unlike the native `pattern`: `[A-Z]` means "has a capital in it".
  * @attr {number} minlength - Fewest characters the value may have.
  * @attr {number} maxlength - Most characters the value may have.
- * @attr {boolean} required - The value may not be empty. The one rule an empty value does not pass.
+ * @attr {boolean} required - The value may not be empty. Use it on a field whose other rules would pass an empty value.
  * @attr {boolean} hint - Show this item before there is a verdict, whatever the list says.
  * @attr {boolean} unmet - Whether the value fails this item. Managed by the list; do not set it yourself.
  * @attr {boolean} visible - Whether the item is on screen. Managed by the list.
@@ -78,7 +78,7 @@ export class NLDDFormFieldValidationItem extends LitElement {
 	@property({ type: Number })
 	maxlength?: number;
 
-	/** The one rule an empty value does not pass. See `test`. */
+	/** For a field whose other rules would pass an empty value. See `test`. */
 	@property({ type: Boolean, reflect: true })
 	required = false;
 
@@ -103,16 +103,15 @@ export class NLDDFormFieldValidationItem extends LitElement {
 	 * Whether `value` satisfies this item, or null when there is nothing to
 	 * satisfy because the item carries no rule.
 	 *
-	 * An empty value passes every rule but `required`. A field that lights up
-	 * all of its requirements the moment you focus it reads as a page full of
-	 * mistakes you have not made yet, while "fill something in" is the one
-	 * thing that is genuinely wrong about an empty field. So on an empty value
-	 * you see that one line and nothing else.
+	 * An empty value is held against the rules like any other, so "minimaal 8
+	 * tekens" fails on it, because it does. What keeps a fresh field from
+	 * lighting up all of its requirements is not this method but the verdict: an
+	 * item only turns critical once the control says `invalid`, and an untouched
+	 * field has not been judged yet.
 	 */
 	test(value: string): boolean | null {
 		if (!this.hasRule) return null;
 		if (this.required && !value) return false;
-		if (!value) return true;
 		if (this.minlength !== undefined && value.length < this.minlength) return false;
 		if (this.maxlength !== undefined && value.length > this.maxlength) return false;
 		if (this.match && !new RegExp(this.match, 'u').test(value)) return false;

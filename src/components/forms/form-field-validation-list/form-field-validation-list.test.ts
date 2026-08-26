@@ -71,7 +71,7 @@ describe('nldd-form-field-validation-list', () => {
 		expect(item(el, 'length').visible).toBe(false);
 	});
 
-	it('laat een lege waarde elke regel halen, zodat een onaangeraakt veld niet rood staat', async () => {
+	it('houdt een lege waarde tegen de regels aan, want die haalt hij niet', async () => {
 		el = await fixture(`
 			<nldd-form-field label="Wachtwoord">
 				<nldd-text-field invalid></nldd-text-field>
@@ -81,10 +81,24 @@ describe('nldd-form-field-validation-list', () => {
 			</nldd-form-field>
 		`);
 		await waitForUpdate(el);
+		expect(item(el, 'length').unmet).toBe(true);
+	});
+
+	it('laat een onaangeraakt veld met rust, want er is nog geen oordeel', async () => {
+		el = await fixture(`
+			<nldd-form-field label="Wachtwoord">
+				<nldd-text-field></nldd-text-field>
+				<nldd-form-field-validation-list hint>
+					<nldd-form-field-validation-item id="length" minlength="8">Minimaal 8 tekens</nldd-form-field-validation-item>
+				</nldd-form-field-validation-list>
+			</nldd-form-field>
+		`);
+		await waitForUpdate(el);
+		expect(item(el, 'length').visible).toBe(true);
 		expect(item(el, 'length').unmet).toBe(false);
 	});
 
-	it('laat `required` als enige regel wél afgaan op leeg', async () => {
+	it('laat `required` afgaan op leeg, ook zonder andere regels', async () => {
 		el = await fixture(`
 			<nldd-form-field label="Wachtwoord">
 				<nldd-text-field invalid></nldd-text-field>
@@ -96,7 +110,7 @@ describe('nldd-form-field-validation-list', () => {
 		`);
 		await waitForUpdate(el);
 		expect(item(el, 'leeg').unmet).toBe(true);
-		expect(item(el, 'length').unmet).toBe(false);
+		expect(item(el, 'length').unmet).toBe(true);
 
 		await type(el, 'x');
 		expect(item(el, 'leeg').unmet).toBe(false);
