@@ -130,11 +130,19 @@ export const AlsHetGoedIs = () => html`
 	</nldd-form-field>
 `;
 
-/** Buiten een veld, met `for` naar de control die je bedoelt. */
+/**
+ * Buiten een veld, met `for` naar de control die je bedoelt.
+ *
+ * In een formulier zet `nldd-form` `invalid` bij het versturen en haalt het er
+ * weer af zodra het klopt. Los daarvan doet niemand dat, dus deze staat hier
+ * hard op `invalid` om te laten zien wat de lijst doet. Typ een hoofdletter en
+ * de regel gaat uit; de rand van het veld blijft staan, want die hangt aan het
+ * attribuut en niet aan de lijst.
+ */
 export const MetFor = () => html`
-	<nldd-text-field id="los-veld" invalid accessible-label="Postcode"></nldd-text-field>
-	<nldd-form-field-validation-list for="los-veld" hint>
-		<nldd-form-field-validation-item id="format" match="^[0-9]{4} ?[A-Za-z]{2}$">Vier cijfers en twee letters</nldd-form-field-validation-item>
+	<nldd-text-field id="los-veld" invalid accessible-label="Wachtwoord"></nldd-text-field>
+	<nldd-form-field-validation-list for="los-veld">
+		<nldd-form-field-validation-item id="capital" match="[A-Z]">Een hoofdletter</nldd-form-field-validation-item>
 	</nldd-form-field-validation-list>
 `;
 
@@ -147,6 +155,27 @@ export const NaastHelpTekst = () => html`
 				<nldd-form-field-validation-item id="at" match="@">Een apenstaartje</nldd-form-field-validation-item>
 			</nldd-form-field-validation-list>
 			<nldd-form-field-help-text>We sturen een bevestigingsmail naar dit adres.</nldd-form-field-help-text>
+		</nldd-form-field>
+		<nldd-form-actions>
+			<nldd-button variant="primary" type="submit" text="Versturen"></nldd-button>
+		</nldd-form-actions>
+	</nldd-form>
+`;
+
+/**
+ * Een verankerd patroon, voor een waarde die precies een vorm moet hebben. De
+ * `^` en `$` doen hier het werk: zonder die twee zou `match` "bevat" betekenen.
+ *
+ * Verstuur het formulier met een lege of foute postcode en de regel verschijnt.
+ * Typ `1234AB` en hij verdwijnt, samen met de rand van het veld.
+ */
+export const VerankerdPatroon = () => html`
+	<nldd-form>
+		<nldd-form-field label="Postcode">
+			<nldd-text-field name="postcode" width="160px"></nldd-text-field>
+			<nldd-form-field-validation-list>
+				<nldd-form-field-validation-item id="format" match="^[0-9]{4} ?[A-Za-z]{2}$">Vier cijfers en dan twee letters, zoals 1234 AB</nldd-form-field-validation-item>
+			</nldd-form-field-validation-list>
 		</nldd-form-field>
 		<nldd-form-actions>
 			<nldd-button variant="primary" type="submit" text="Versturen"></nldd-button>
