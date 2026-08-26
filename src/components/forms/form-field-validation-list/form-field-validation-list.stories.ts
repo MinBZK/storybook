@@ -37,7 +37,7 @@ regel herhalen zegt hetzelfde drie keer.
 		},
 	},
 	args: {
-		hint: true,
+		hint: false,
 	},
 	argTypes: {
 		hint: {
@@ -54,10 +54,11 @@ regel herhalen zegt hetzelfde drie keer.
 };
 
 /**
- * Een wachtwoord met z'n eisen vooraf zichtbaar. Typ mee en zie ze uitgaan.
+ * Een afgekeurd wachtwoord: wat er nog niet klopt staat eronder. Typ mee en zie
+ * de regels uitgaan zodra je ze haalt.
  *
- * Zet `hint` uit en de lijst is leeg tot er iets misgaat, want verborgen is de
- * standaard.
+ * Zet `hint` aan en ze staan er ook voordat er een oordeel is, als de eisen van
+ * het veld. Verborgen is de standaard.
  */
 export const Default = ({ hint }: Record<string, unknown>) => html`
 	<nldd-form-field label="Wachtwoord">
