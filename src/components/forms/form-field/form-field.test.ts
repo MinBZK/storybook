@@ -627,7 +627,7 @@ describe('nldd-form-field – finds the control', () => {
 			<nldd-form-field label="Bezorgwijze">
 				<nldd-radio-button-group name="b">
 					<nldd-radio-button-field value="post" label="Per post"></nldd-radio-button-field>
-					<nldd-radio-button-field value="anders" label="Anders"></nldd-radio-button-field>
+					<nldd-radio-button-field value="other" label="Anders"></nldd-radio-button-field>
 				</nldd-radio-button-group>
 				<nldd-text-field accessible-label="Andere bezorgwijze"></nldd-text-field>
 			</nldd-form-field>

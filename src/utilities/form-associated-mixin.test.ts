@@ -30,15 +30,15 @@ describe('FormAssociated', () => {
 	afterEach(() => cleanup(el));
 
 	it('submits its value under name', async () => {
-		el = await fixture<HTMLFormElement>('<form><test-form-field name="veld" value="a"></test-form-field></form>');
+		el = await fixture<HTMLFormElement>('<form><test-form-field name="field" value="a"></test-form-field></form>');
 		const field = el.querySelector('test-form-field') as TestField;
 		await waitForUpdate(field);
 
-		expect(new FormData(el as HTMLFormElement).get('veld')).toBe('a');
+		expect(new FormData(el as HTMLFormElement).get('field')).toBe('a');
 	});
 
 	it('commits again on demand, before the next render', async () => {
-		el = await fixture<HTMLFormElement>('<form><test-form-field name="veld" value="a"></test-form-field></form>');
+		el = await fixture<HTMLFormElement>('<form><test-form-field name="field" value="a"></test-form-field></form>');
 		const field = el.querySelector('test-form-field') as TestField;
 		await waitForUpdate(field);
 
@@ -46,19 +46,19 @@ describe('FormAssociated', () => {
 		field.value = 'b';
 		field.commitFormValue();
 
-		expect(new FormData(el as HTMLFormElement).get('veld')).toBe('b');
+		expect(new FormData(el as HTMLFormElement).get('field')).toBe('b');
 	});
 
 	it('submits nothing when formValue returns null', async () => {
-		el = await fixture<HTMLFormElement>('<form><test-form-field name="veld"></test-form-field></form>');
+		el = await fixture<HTMLFormElement>('<form><test-form-field name="field"></test-form-field></form>');
 		await waitForUpdate(el.querySelector('test-form-field') as TestField);
 
-		expect(new FormData(el as HTMLFormElement).has('veld')).toBe(false);
+		expect(new FormData(el as HTMLFormElement).has('field')).toBe(false);
 	});
 
 	it('follows a disabled fieldset', async () => {
 		el = await fixture<HTMLFormElement>(`
-			<form><fieldset><test-form-field name="veld" value="a"></test-form-field></fieldset></form>
+			<form><fieldset><test-form-field name="field" value="a"></test-form-field></fieldset></form>
 		`);
 		const field = el.querySelector('test-form-field') as TestField;
 		await waitForUpdate(field);
@@ -86,12 +86,12 @@ describe('FormAssociated', () => {
 		}
 		customElements.define('test-form-field-updated', WithUpdated);
 
-		el = await fixture<HTMLFormElement>('<form><test-form-field-updated name="veld"></test-form-field-updated></form>');
+		el = await fixture<HTMLFormElement>('<form><test-form-field-updated name="field"></test-form-field-updated></form>');
 		const field = el.querySelector('test-form-field-updated') as WithUpdated;
-		field.setAttribute('name', 'veld');
+		field.setAttribute('name', 'field');
 		await waitForUpdate(field);
 
 		expect(ran).toBeGreaterThan(0);
-		expect(new FormData(el as HTMLFormElement).get('veld')).toBe('x');
+		expect(new FormData(el as HTMLFormElement).get('field')).toBe('x');
 	});
 });

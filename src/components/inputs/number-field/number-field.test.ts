@@ -95,10 +95,10 @@ describe('nldd-number-field – state', () => {
 	});
 
 	it('forwards name to native input', async () => {
-		el = await fixture<NLDDNumberField>('<nldd-number-field name="aantal"></nldd-number-field>');
+		el = await fixture<NLDDNumberField>('<nldd-number-field name="count"></nldd-number-field>');
 		await waitForUpdate(el);
 		const input = el.shadowRoot!.querySelector('input')!;
-		expect(input.name).toBe('aantal');
+		expect(input.name).toBe('count');
 	});
 
 	it('disables native input when disabled', async () => {

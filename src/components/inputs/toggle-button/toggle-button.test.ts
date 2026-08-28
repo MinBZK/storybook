@@ -289,7 +289,7 @@ describe('nldd-toggle-button – interaction (button)', () => {
 	});
 
 	it('click dispatches change event with correct detail', async () => {
-		el = await fixture<NLDDToggleButton>('<nldd-toggle-button text="Label" value="optie"></nldd-toggle-button>');
+		el = await fixture<NLDDToggleButton>('<nldd-toggle-button text="Label" value="option"></nldd-toggle-button>');
 		await waitForUpdate(el);
 
 		let detail: any;
@@ -297,7 +297,7 @@ describe('nldd-toggle-button – interaction (button)', () => {
 		el.shadowRoot!.querySelector('button')!.click();
 
 		expect(detail?.selected).toBe(true);
-		expect(detail?.value).toBe('optie');
+		expect(detail?.value).toBe('option');
 	});
 
 	it('disabled button does not toggle when clicked', async () => {

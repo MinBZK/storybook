@@ -14,7 +14,7 @@ import '../../actions/button-group/button-group.js';
  * ## Gebruik
  * ```html
  * <nldd-form-field label="Kies een optie">
- *   <nldd-radio-button-group name="optie">
+ *   <nldd-radio-button-group name="option">
  *     <nldd-radio-button-field value="1" label="Optie 1"></nldd-radio-button-field>
  *     <nldd-radio-button-field value="2" label="Optie 2"></nldd-radio-button-field>
  *   </nldd-radio-button-group>

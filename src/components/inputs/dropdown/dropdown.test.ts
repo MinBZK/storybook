@@ -6,7 +6,7 @@ import './dropdown.js';
 function selectFixture(): string {
 	return `
 		<nldd-dropdown>
-			<select name="land" aria-label="Land">
+			<select name="country" aria-label="Land">
 				<option value="" disabled selected>Selecteer een land</option>
 				<option value="nl">Nederland</option>
 				<option value="be">België</option>
@@ -130,7 +130,7 @@ describe('nldd-dropdown – state', () => {
 	it('forwards disabled to slotted select', async () => {
 		el = await fixture<NLDDDropdown>(`
 			<nldd-dropdown disabled>
-				<select name="land" aria-label="Land">
+				<select name="country" aria-label="Land">
 					<option value="nl">Nederland</option>
 				</select>
 			</nldd-dropdown>
@@ -143,7 +143,7 @@ describe('nldd-dropdown – state', () => {
 	it('displays the selected option text', async () => {
 		el = await fixture<NLDDDropdown>(`
 			<nldd-dropdown>
-				<select name="land" aria-label="Land">
+				<select name="country" aria-label="Land">
 					<option value="nl" selected>Nederland</option>
 					<option value="be">België</option>
 				</select>
@@ -156,7 +156,7 @@ describe('nldd-dropdown – state', () => {
 	it('supports a placeholder option', async () => {
 		el = await fixture<NLDDDropdown>(`
 			<nldd-dropdown>
-				<select name="land" aria-label="Land">
+				<select name="country" aria-label="Land">
 					<option value="" disabled selected>Selecteer een land</option>
 					<option value="nl">Nederland</option>
 				</select>
@@ -169,7 +169,7 @@ describe('nldd-dropdown – state', () => {
 	it('re-enables slotted select when disabled is removed', async () => {
 		el = await fixture<NLDDDropdown>(`
 			<nldd-dropdown disabled>
-				<select name="land" aria-label="Land">
+				<select name="country" aria-label="Land">
 					<option value="nl">Nederland</option>
 				</select>
 			</nldd-dropdown>
@@ -231,7 +231,7 @@ describe('nldd-dropdown – accessibility', () => {
 		const warnSpy = vi.spyOn(console, 'warn').mockImplementation(() => {});
 		el = await fixture<NLDDDropdown>(`
 			<nldd-dropdown>
-				<select name="land">
+				<select name="country">
 					<option value="nl">Nederland</option>
 				</select>
 			</nldd-dropdown>
@@ -246,7 +246,7 @@ describe('nldd-dropdown – accessibility', () => {
 		const warnSpy = vi.spyOn(console, 'warn').mockImplementation(() => {});
 		el = await fixture<NLDDDropdown>(`
 			<nldd-dropdown>
-				<select name="land" aria-label="Land">
+				<select name="country" aria-label="Land">
 					<option value="nl">Nederland</option>
 				</select>
 			</nldd-dropdown>

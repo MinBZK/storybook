@@ -138,7 +138,7 @@ const cases: Case[] = [
 	{ name: 'nldd-radio-button-field', control: '<nldd-radio-button-field value="1" label="Optie 1"></nldd-radio-button-field>' },
 	{
 		name: 'nldd-radio-button-group',
-		control: `<nldd-radio-button-group name="optie" accessible-label="Optie">
+		control: `<nldd-radio-button-group name="option" accessible-label="Optie">
 			<nldd-radio-button-field value="1" label="Optie 1"></nldd-radio-button-field>
 		</nldd-radio-button-group>`,
 	},
@@ -146,7 +146,7 @@ const cases: Case[] = [
 	{
 		name: 'nldd-segmented-control',
 		control: `<nldd-segmented-control accessible-label="Weergave">
-			<nldd-segmented-control-item value="lijst" text="Lijst"></nldd-segmented-control-item>
+			<nldd-segmented-control-item value="list" text="Lijst"></nldd-segmented-control-item>
 		</nldd-segmented-control>`,
 	},
 	{ name: 'nldd-stepper', control: '<nldd-stepper accessible-label="Aantal"></nldd-stepper>' },
@@ -160,7 +160,7 @@ const cases: Case[] = [
 	{
 		name: 'nldd-toggle-button-group',
 		control: `<nldd-toggle-button-group type="radio" name="view" accessible-label="Weergave">
-			<nldd-toggle-button value="lijst" text="Lijst"></nldd-toggle-button>
+			<nldd-toggle-button value="list" text="Lijst"></nldd-toggle-button>
 		</nldd-toggle-button-group>`,
 	},
 	{ name: 'nldd-token-field', control: '<nldd-token-field accessible-label="Landen"></nldd-token-field>' },

@@ -65,7 +65,7 @@ export default {
 	},
 	args: {
 		name: 'demo',
-		value: 'optie-1',
+		value: 'option-1',
 		checked: false,
 		accessibleLabel: 'Radio button',
 		invalid: false,

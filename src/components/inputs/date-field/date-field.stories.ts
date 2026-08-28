@@ -42,7 +42,7 @@ export default {
 		invalid: false,
 		readonly: false,
 		disabled: false,
-		name: 'datum',
+		name: 'date',
 		value: '',
 		min: '',
 		max: '',

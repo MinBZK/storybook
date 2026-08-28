@@ -28,7 +28,7 @@ import '../../actions/button-group/button-group.js';
  *
  * <!-- Door consument opgegeven -->
  * <nldd-form-field label="Naam">
- *   <nldd-text-field input-id="naam-invoer"></nldd-text-field>
+ *   <nldd-text-field input-id="name-input"></nldd-text-field>
  * </nldd-form-field>
  * ```
  *
@@ -186,7 +186,7 @@ export const CompleteFormRight = () => html`
 	<div style="container-type: inline-size;">
 		<nldd-form label-alignment="right" novalidate>
 			<nldd-form-field label="Volledige naam" supporting-label="Zoals vermeld in uw paspoort.">
-				<nldd-text-field input-id="rechts-volledige-naam"></nldd-text-field>
+				<nldd-text-field input-id="right-full-name"></nldd-text-field>
 			</nldd-form-field>
 			<nldd-form-field label="E-mailadres" supporting-label="We sturen een bevestigingsmail.">
 				<nldd-text-field type="email" input-id="rechts-email"></nldd-text-field>
@@ -194,14 +194,14 @@ export const CompleteFormRight = () => html`
 			<nldd-form-field label="Telefoonnummer" optional>
 				<nldd-text-field
 					type="tel"
-					input-id="rechts-telefoon"
+					input-id="right-phone"
 					invalid
 					unmet="error-telefoon-rechts"
 				></nldd-text-field>
 				<nldd-form-field-error-text id="error-telefoon-rechts">Voer een geldig telefoonnummer in.</nldd-form-field-error-text>
 			</nldd-form-field>
 			<nldd-form-field label="Opmerkingen" optional supporting-label="Eventuele aanvullende opmerkingen.">
-				<nldd-text-field input-id="rechts-opmerkingen"></nldd-text-field>
+				<nldd-text-field input-id="right-comments"></nldd-text-field>
 			</nldd-form-field>
 			<nldd-form-actions>
 				<nldd-button-group>

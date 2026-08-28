@@ -194,9 +194,9 @@ describe('nldd-combo-box – state', () => {
 	});
 
 	it('forwards name to native input', async () => {
-		el = await fixture<NLDDComboBox>('<nldd-combo-box name="land"></nldd-combo-box>');
+		el = await fixture<NLDDComboBox>('<nldd-combo-box name="country"></nldd-combo-box>');
 		await waitForUpdate(el);
-		expect(el.shadowRoot!.querySelector('input')!.name).toBe('land');
+		expect(el.shadowRoot!.querySelector('input')!.name).toBe('country');
 	});
 
 	it('disables native input when disabled', async () => {
@@ -453,15 +453,15 @@ describe('nldd-combo-box – picker pointerdown (touch close)', () => {
 	});
 
 	it('participates in FormData via form-associated API', async () => {
-		const form = await fixture<HTMLFormElement>('<form><nldd-combo-box name="land" value="nl" accessible-label="Land"></nldd-combo-box></form>');
+		const form = await fixture<HTMLFormElement>('<form><nldd-combo-box name="country" value="nl" accessible-label="Land"></nldd-combo-box></form>');
 		const cb = form.querySelector('nldd-combo-box')!;
 		await waitForUpdate(cb);
-		expect(new FormData(form).get('land')).toBe('nl');
+		expect(new FormData(form).get('country')).toBe('nl');
 		cleanup(form);
 	});
 
 	it('resets to the HTML-declared initial value when the parent form is reset', async () => {
-		const form = await fixture<HTMLFormElement>('<form><nldd-combo-box name="land" value="nl" accessible-label="Land"></nldd-combo-box></form>');
+		const form = await fixture<HTMLFormElement>('<form><nldd-combo-box name="country" value="nl" accessible-label="Land"></nldd-combo-box></form>');
 		const cb = form.querySelector<NLDDComboBox>('nldd-combo-box')!;
 		await waitForUpdate(cb);
 		cb.value = 'be';

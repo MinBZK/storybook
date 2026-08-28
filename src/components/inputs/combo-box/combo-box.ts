@@ -45,7 +45,7 @@
  *
  * @example
  * ```html
- * <nldd-combo-box placeholder="Zoek een land" name="land">
+ * <nldd-combo-box placeholder="Zoek een land" name="country">
  *   <nldd-menu>
  *     <nldd-menu-item text="Nederland" value="nl"></nldd-menu-item>
  *     <nldd-menu-item text="België" value="be"></nldd-menu-item>

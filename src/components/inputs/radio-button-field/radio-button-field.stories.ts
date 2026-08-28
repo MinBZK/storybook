@@ -51,7 +51,7 @@ export default {
 	},
 	args: {
 		label: 'Radio button field',
-		value: 'optie-1',
+		value: 'option-1',
 		checked: false,
 		invalid: false,
 		disabled: false,

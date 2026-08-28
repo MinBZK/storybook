@@ -164,8 +164,8 @@ describe('required on a group of controls', () => {
 	it('nldd-segmented-control: radio mode makes the group required', async () => {
 		el = await fixture<HTMLElement>(`
 			<nldd-segmented-control required accessible-label="Weergave">
-				<nldd-segmented-control-item value="lijst" text="Lijst"></nldd-segmented-control-item>
-				<nldd-segmented-control-item value="raster" text="Raster"></nldd-segmented-control-item>
+				<nldd-segmented-control-item value="list" text="Lijst"></nldd-segmented-control-item>
+				<nldd-segmented-control-item value="grid" text="Raster"></nldd-segmented-control-item>
 			</nldd-segmented-control>
 		`);
 		await waitForUpdate(el);
@@ -178,7 +178,7 @@ describe('required on a group of controls', () => {
 	it('nldd-segmented-control: checkbox mode announces it without demanding every box', async () => {
 		el = await fixture<HTMLElement>(`
 			<nldd-segmented-control required type="checkbox" accessible-label="Weergave">
-				<nldd-segmented-control-item value="lijst" text="Lijst"></nldd-segmented-control-item>
+				<nldd-segmented-control-item value="list" text="Lijst"></nldd-segmented-control-item>
 			</nldd-segmented-control>
 		`);
 		await waitForUpdate(el);
@@ -190,8 +190,8 @@ describe('required on a group of controls', () => {
 	it('nldd-toggle-button-group: radio mode makes the group required', async () => {
 		el = await fixture<HTMLElement>(`
 			<nldd-toggle-button-group required type="radio" name="view" accessible-label="Weergave">
-				<nldd-toggle-button value="lijst" text="Lijst"></nldd-toggle-button>
-				<nldd-toggle-button value="raster" text="Raster"></nldd-toggle-button>
+				<nldd-toggle-button value="list" text="Lijst"></nldd-toggle-button>
+				<nldd-toggle-button value="grid" text="Raster"></nldd-toggle-button>
 			</nldd-toggle-button-group>
 		`);
 		await waitForUpdate(el);
@@ -204,7 +204,7 @@ describe('required on a group of controls', () => {
 	it('nldd-toggle-button-group: checkbox mode announces it without demanding every box', async () => {
 		el = await fixture<HTMLElement>(`
 			<nldd-toggle-button-group required type="checkbox" name="view" accessible-label="Weergave">
-				<nldd-toggle-button value="lijst" text="Lijst"></nldd-toggle-button>
+				<nldd-toggle-button value="list" text="Lijst"></nldd-toggle-button>
 			</nldd-toggle-button-group>
 		`);
 		await waitForUpdate(el);

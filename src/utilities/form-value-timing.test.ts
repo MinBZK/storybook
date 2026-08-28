@@ -32,7 +32,7 @@ interface Case {
 	/** Drives the element as a user would, so the component's own handlers run. */
 	act: (el: HTMLElement) => void;
 	expected: string;
-	/** The form field to read; defaults to 'veld'. */
+	/** The form field to read; defaults to 'field'. */
 	field?: string;
 }
 
@@ -57,49 +57,49 @@ function check(el: HTMLElement): void {
 const cases: Case[] = [
 	{
 		name: 'nldd-checkbox',
-		html: '<nldd-checkbox name="veld" value="aan"></nldd-checkbox>',
+		html: '<nldd-checkbox name="field" value="on"></nldd-checkbox>',
 		act: check,
-		expected: 'aan',
+		expected: 'on',
 	},
 	{
 		name: 'nldd-switch',
-		html: '<nldd-switch name="veld" value="aan"></nldd-switch>',
+		html: '<nldd-switch name="field" value="on"></nldd-switch>',
 		act: check,
-		expected: 'aan',
+		expected: 'on',
 	},
 	{
 		name: 'nldd-radio-button',
-		html: '<nldd-radio-button name="veld" value="aan"></nldd-radio-button>',
+		html: '<nldd-radio-button name="field" value="on"></nldd-radio-button>',
 		act: check,
-		expected: 'aan',
+		expected: 'on',
 	},
 	{
 		name: 'nldd-toggle-button',
-		html: '<nldd-toggle-button type="checkbox" name="veld" value="aan" text="Aan"></nldd-toggle-button>',
+		html: '<nldd-toggle-button type="checkbox" name="field" value="on" text="Aan"></nldd-toggle-button>',
 		act: check,
-		expected: 'aan',
+		expected: 'on',
 	},
 	{
 		name: 'nldd-text-field',
-		html: '<nldd-text-field name="veld" accessible-label="Veld"></nldd-text-field>',
+		html: '<nldd-text-field name="field" accessible-label="Veld"></nldd-text-field>',
 		act: el => type(el, 'hallo'),
 		expected: 'hallo',
 	},
 	{
 		name: 'nldd-password-field',
-		html: '<nldd-password-field name="veld" accessible-label="Veld"></nldd-password-field>',
+		html: '<nldd-password-field name="field" accessible-label="Veld"></nldd-password-field>',
 		act: el => type(el, 'geheim'),
 		expected: 'geheim',
 	},
 	{
 		name: 'nldd-search-field',
-		html: '<nldd-search-field name="veld" accessible-label="Veld"></nldd-search-field>',
+		html: '<nldd-search-field name="field" accessible-label="Veld"></nldd-search-field>',
 		act: el => type(el, 'zoekterm'),
 		expected: 'zoekterm',
 	},
 	{
 		name: 'nldd-multi-line-text-field',
-		html: '<nldd-multi-line-text-field name="veld" accessible-label="Veld"></nldd-multi-line-text-field>',
+		html: '<nldd-multi-line-text-field name="field" accessible-label="Veld"></nldd-multi-line-text-field>',
 		act: el => type(el, 'meer tekst', 'textarea'),
 		expected: 'meer tekst',
 	},
@@ -107,7 +107,7 @@ const cases: Case[] = [
 		// Only `change`: this field commits on blur/Enter and returns early when the
 		// preceding `input` already settled the same number.
 		name: 'nldd-number-field',
-		html: '<nldd-number-field name="veld" accessible-label="Veld"></nldd-number-field>',
+		html: '<nldd-number-field name="field" accessible-label="Veld"></nldd-number-field>',
 		act: el => {
 			const input = innerInput(el);
 			input.value = '42';
@@ -117,13 +117,13 @@ const cases: Case[] = [
 	},
 	{
 		name: 'nldd-date-field',
-		html: '<nldd-date-field name="veld" accessible-label="Veld"></nldd-date-field>',
+		html: '<nldd-date-field name="field" accessible-label="Veld"></nldd-date-field>',
 		act: el => type(el, '31-12-2026'),
 		expected: '2026-12-31',
 	},
 	{
 		name: 'nldd-combo-box',
-		html: `<nldd-combo-box name="veld" allow-custom accessible-label="Veld">
+		html: `<nldd-combo-box name="field" allow-custom accessible-label="Veld">
 			<nldd-menu><nldd-menu-item text="Nederland" value="nl"></nldd-menu-item></nldd-menu>
 		</nldd-combo-box>`,
 		// A combo box commits a typed value on blur (or Enter), not while typing.
@@ -156,7 +156,7 @@ describe('form value is committed before the change event', () => {
 
 			let seen: FormDataEntryValue | null = null;
 			root.addEventListener('change', () => {
-				seen = new FormData(form).get(testCase.field ?? 'veld');
+				seen = new FormData(form).get(testCase.field ?? 'field');
 			});
 
 			testCase.act(root);
@@ -170,13 +170,13 @@ describe('form value is committed before the change event', () => {
 	it('nldd-stepper', async () => {
 		form = document.createElement('form');
 		document.body.appendChild(form);
-		root = await fixture<HTMLElement>('<nldd-stepper name="veld" value="1" accessible-label="Aantal"></nldd-stepper>');
+		root = await fixture<HTMLElement>('<nldd-stepper name="field" value="1" accessible-label="Aantal"></nldd-stepper>');
 		form.appendChild(root);
 		await waitForUpdate(root);
 
 		let seen: FormDataEntryValue | null = null;
 		root.addEventListener('change', () => {
-			seen = new FormData(form).get('veld');
+			seen = new FormData(form).get('field');
 		});
 
 		(root.shadowRoot!.querySelectorAll('nldd-icon-button')[1] as HTMLElement).click();
@@ -188,9 +188,9 @@ describe('form value is committed before the change event', () => {
 		form = document.createElement('form');
 		document.body.appendChild(form);
 		root = await fixture<HTMLElement>(
-			`<nldd-segmented-control name="veld" accessible-label="Weergave">
-				<nldd-segmented-control-item value="lijst" text="Lijst"></nldd-segmented-control-item>
-				<nldd-segmented-control-item value="raster" text="Raster"></nldd-segmented-control-item>
+			`<nldd-segmented-control name="field" accessible-label="Weergave">
+				<nldd-segmented-control-item value="list" text="Lijst"></nldd-segmented-control-item>
+				<nldd-segmented-control-item value="grid" text="Raster"></nldd-segmented-control-item>
 			</nldd-segmented-control>`,
 		);
 		form.appendChild(root);
@@ -198,7 +198,7 @@ describe('form value is committed before the change event', () => {
 
 		let seen: FormDataEntryValue | null = null;
 		root.addEventListener('change', () => {
-			seen = new FormData(form).get('veld');
+			seen = new FormData(form).get('field');
 		});
 
 		const item = root.querySelectorAll('nldd-segmented-control-item')[1] as HTMLElement;
@@ -206,6 +206,6 @@ describe('form value is committed before the change event', () => {
 		input.checked = true;
 		input.dispatchEvent(new Event('change', { bubbles: true }));
 
-		expect(seen).toBe('raster');
+		expect(seen).toBe('grid');
 	});
 });

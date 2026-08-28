@@ -24,7 +24,7 @@
  * @example
  * ```html
  * <nldd-dropdown>
- *   <select name="land" aria-label="Land">
+ *   <select name="country" aria-label="Land">
  *     <option value="" disabled selected>Selecteer een land</option>
  *     <option value="nl">Nederland</option>
  *     <option value="be">België</option>

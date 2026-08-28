@@ -331,14 +331,14 @@ const buildListbox = (variant: 'box' | 'simple') => {
 
 	// Consumer-managed filtering: combine the search query with the toolbar's
 	// category radio. An item stays visible when it matches the text AND the
-	// selected category ("alles" = no category filter). The list resets the
+	// selected category ("all" = no category filter). The list resets the
 	// active option to the first visible one after the set changes.
 	let query = '';
-	let category = 'alles';
+	let category = 'all';
 	const apply = () => {
 		el.querySelectorAll('nldd-list-item').forEach((item: Element, i: number) => {
 			const matchesText = query === '' || data[i].label.toLowerCase().includes(query);
-			const matchesCategory = category === 'alles' || data[i].category === category;
+			const matchesCategory = category === 'all' || data[i].category === category;
 			item.toggleAttribute('hidden', !(matchesText && matchesCategory));
 		});
 	};
@@ -383,7 +383,7 @@ const buildListbox = (variant: 'box' | 'simple') => {
 				accessible-label="Filter op categorie"
 				@change=${onCategoryChange}
 			>
-				<nldd-toggle-button value="alles" text="Alles" selected></nldd-toggle-button>
+				<nldd-toggle-button value="all" text="Alles" selected></nldd-toggle-button>
 				<nldd-toggle-button value="groente" text="Groente"></nldd-toggle-button>
 				<nldd-toggle-button value="fruit" text="Fruit"></nldd-toggle-button>
 			</nldd-toggle-button-group>

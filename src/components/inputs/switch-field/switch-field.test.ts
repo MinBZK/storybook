@@ -115,7 +115,7 @@ describe('nldd-switch-field – change event', () => {
 	});
 
 	it('dispatches a change event with checked and value detail', async () => {
-		el = await fixture<NLDDSwitchField>('<nldd-switch-field value="aan"></nldd-switch-field>');
+		el = await fixture<NLDDSwitchField>('<nldd-switch-field value="on"></nldd-switch-field>');
 		await waitForUpdate(el);
 		let detail: any;
 		el.addEventListener('change', ((e: CustomEvent) => { detail = e.detail; }) as EventListener);
@@ -126,7 +126,7 @@ describe('nldd-switch-field – change event', () => {
 		}));
 		expect(detail).toBeDefined();
 		expect(detail.checked).toBe(true);
-		expect(detail.value).toBe('aan');
+		expect(detail.value).toBe('on');
 	});
 });
 

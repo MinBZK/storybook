@@ -433,9 +433,9 @@ describe('nldd-toggle-button-group – toetsenbordnavigatie', () => {
 	it('houdt in een radiogroep één waarde in de form tijdens change', async () => {
 		el = await fixture<NLDDToggleButtonGroup>(`
 			<form>
-				<nldd-toggle-button-group type="radio" name="weergave">
-					<nldd-toggle-button value="lijst" text="Lijst" selected></nldd-toggle-button>
-					<nldd-toggle-button value="raster" text="Raster"></nldd-toggle-button>
+				<nldd-toggle-button-group type="radio" name="view">
+					<nldd-toggle-button value="list" text="Lijst" selected></nldd-toggle-button>
+					<nldd-toggle-button value="grid" text="Raster"></nldd-toggle-button>
 				</nldd-toggle-button-group>
 			</form>
 		`);
@@ -444,19 +444,19 @@ describe('nldd-toggle-button-group – toetsenbordnavigatie', () => {
 		const buttons = el.querySelectorAll<NLDDToggleButton>('nldd-toggle-button');
 		let waardenBijChange: FormDataEntryValue[] = [];
 		form.addEventListener('change', () => {
-			waardenBijChange = new FormData(form as HTMLFormElement).getAll('weergave');
+			waardenBijChange = new FormData(form as HTMLFormElement).getAll('view');
 		});
 
 		buttons[1].selected = true;
 		buttons[1].commitFormValue();
 		buttons[1].dispatchEvent(new CustomEvent('change', {
-			detail: { selected: true, value: 'raster' },
+			detail: { selected: true, value: 'grid' },
 			bubbles: true,
 			composed: true,
 		}));
 		await waitForUpdate(el);
 
-		expect(waardenBijChange).toEqual(['raster']);
+		expect(waardenBijChange).toEqual(['grid']);
 	});
 
 	it('does not handle arrow keys for type=checkbox', async () => {

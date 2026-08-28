@@ -8,9 +8,9 @@ import '../toggle-button/toggle-button.js';
  *
  * ## Gebruik
  * ```html
- * <nldd-toggle-button-group type="radio" name="weergave">
- *   <nldd-toggle-button value="lijst" text="Lijst"></nldd-toggle-button>
- *   <nldd-toggle-button value="kaart" text="Kaart" selected></nldd-toggle-button>
+ * <nldd-toggle-button-group type="radio" name="view">
+ *   <nldd-toggle-button value="list" text="Lijst"></nldd-toggle-button>
+ *   <nldd-toggle-button value="card" text="Kaart" selected></nldd-toggle-button>
  * </nldd-toggle-button-group>
  * ```
  */
@@ -238,8 +238,8 @@ export const Uitgeschakeld = {
 
 export const MetIconen = {
 	render: () => html`
-	<nldd-toggle-button-group type="radio" name="weergave" aria-label="Weergave">
-		<nldd-toggle-button value="lijst" accessible-label="Lijstweergave" icon="list" selected></nldd-toggle-button>
+	<nldd-toggle-button-group type="radio" name="view" aria-label="Weergave">
+		<nldd-toggle-button value="list" accessible-label="Lijstweergave" icon="list" selected></nldd-toggle-button>
 		<nldd-toggle-button value="compact" accessible-label="Compacte weergave" icon="list-decreasing-lines"></nldd-toggle-button>
 		<nldd-toggle-button value="uitgebreid" accessible-label="Uitgebreide weergave" icon="stack"></nldd-toggle-button>
 	</nldd-toggle-button-group>

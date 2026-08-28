@@ -120,7 +120,7 @@ describe('nldd-date-field', () => {
 	});
 
 	it('geeft de interne input geen name - het component submit zelf één waarde', async () => {
-		el = await fixture<NLDDDateField>('<nldd-date-field name="datum"></nldd-date-field>');
+		el = await fixture<NLDDDateField>('<nldd-date-field name="date"></nldd-date-field>');
 		await waitForUpdate(el);
 		expect(textInput(el).hasAttribute('name')).toBe(false);
 	});
@@ -132,13 +132,13 @@ describe('nldd-date-field', () => {
 	it('heeft de nieuwe formwaarde al staan wanneer change afgaat', async () => {
 		const form = document.createElement('form');
 		document.body.appendChild(form);
-		el = await fixture<NLDDDateField>('<nldd-date-field name="datum"></nldd-date-field>');
+		el = await fixture<NLDDDateField>('<nldd-date-field name="date"></nldd-date-field>');
 		form.appendChild(el);
 		await waitForUpdate(el);
 
 		let seen: FormDataEntryValue | null = null;
 		el.addEventListener('change', () => {
-			seen = new FormData(form).get('datum');
+			seen = new FormData(form).get('date');
 		});
 
 		const input = textInput(el);
@@ -274,10 +274,10 @@ describe('nldd-date-field', () => {
 	});
 
 	it('zet het id van form-field op het eerste veld', async () => {
-		el = await fixture<NLDDDateField>('<nldd-date-field range input-id="veld-1"></nldd-date-field>');
+		el = await fixture<NLDDDateField>('<nldd-date-field range input-id="field-1"></nldd-date-field>');
 		await waitForUpdate(el);
 		const [start, end] = inputs(el);
-		expect(start.id).toBe('veld-1');
+		expect(start.id).toBe('field-1');
 		expect(end.id).toBe('');
 	});
 
