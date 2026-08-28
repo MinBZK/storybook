@@ -59,8 +59,8 @@ export default {
 		placeholder: 'Schrijf hier je toelichting',
 		name: '',
 		value: '',
-		minlength: undefined,
-		maxlength: undefined,
+		minlength: null,
+		maxlength: null,
 		required: false,
 		keyboard: undefined,
 		enterKey: undefined,
@@ -133,12 +133,12 @@ export default {
 		minlength: {
 			control: 'number',
 			description: 'Minimaal aantal tekens.',
-			table: { defaultValue: { summary: '(geen)' } },
+			table: { type: { summary: 'number' }, defaultValue: { summary: '(geen)' } },
 		},
 		maxlength: {
 			control: 'number',
 			description: 'Maximaal aantal tekens.',
-			table: { defaultValue: { summary: '(geen)' } },
+			table: { type: { summary: 'number' }, defaultValue: { summary: '(geen)' } },
 		},
 		required: {
 			control: 'boolean',

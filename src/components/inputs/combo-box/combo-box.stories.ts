@@ -78,12 +78,12 @@ export default {
 		minlength: {
 			control: 'number',
 			description: 'Minimaal aantal tekens.',
-			table: { defaultValue: { summary: '(geen)' } },
+			table: { type: { summary: 'number' }, defaultValue: { summary: '(geen)' } },
 		},
 		maxlength: {
 			control: 'number',
 			description: 'Maximaal aantal tekens.',
-			table: { defaultValue: { summary: '(geen)' } },
+			table: { type: { summary: 'number' }, defaultValue: { summary: '(geen)' } },
 		},
 		pattern: {
 			control: 'text',
@@ -124,8 +124,8 @@ export default {
 		allowCustom: false,
 		name: '',
 		value: '',
-		minlength: undefined,
-		maxlength: undefined,
+		minlength: null,
+		maxlength: null,
 		pattern: '',
 		required: false,
 		autocomplete: 'off',

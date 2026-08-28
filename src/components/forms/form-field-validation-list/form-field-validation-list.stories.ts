@@ -40,6 +40,7 @@ regel herhalen zegt hetzelfde drie keer.
 	},
 	args: {
 		hint: false,
+		for: '',
 	},
 	argTypes: {
 		hint: {
