@@ -64,7 +64,7 @@ export default {
 };
 
 const Template = ({ size, valid, invalid, disabled, width, required }: Record<string, any>) => html`
-	<nldd-dropdown size=${size} ?valid=${valid} ?invalid=${invalid} ?disabled=${disabled} width=${width}>
+	<nldd-dropdown size=${size} ?valid=${valid} ?invalid=${invalid} ?disabled=${disabled} ?required=${required} width=${width}>
 		<select name="optie" aria-label="Selecteer een optie">
 			<option value="" disabled selected>Selecteer een optie</option>
 			<option value="optie-1">Optie 1</option>
@@ -72,7 +72,6 @@ const Template = ({ size, valid, invalid, disabled, width, required }: Record<st
 			<option value="optie-3">Optie 3</option>
 		</select>
 	</nldd-dropdown>
-		?required=${required}
 `;
 
 export const Standaard = {

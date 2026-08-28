@@ -133,10 +133,10 @@ const Template = ({
 		end=${end || nothing}
 		min=${min || nothing}
 		max=${max || nothing}
+		?invalid=${invalid}
 		@change=${action('change')}
 		@input=${action('input')}
 	></nldd-date-picker>
-		?invalid=${invalid}
 `;
 
 export const Default = Template.bind({});

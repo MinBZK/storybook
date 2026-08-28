@@ -80,6 +80,7 @@ const Template = ({
 	invalid,
 }: Record<string, any>) => html`
 	<nldd-time-picker
+		?invalid=${invalid}
 		rows=${rows || nothing}
 		width=${width || nothing}
 		value=${value || nothing}
@@ -88,7 +89,6 @@ const Template = ({
 		step=${step || nothing}
 		accessible-label=${accessibleLabel || nothing}
 	></nldd-time-picker>
-		?invalid=${invalid}
 `;
 
 export const Standaard = Template.bind({});
