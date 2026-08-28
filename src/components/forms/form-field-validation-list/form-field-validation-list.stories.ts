@@ -28,8 +28,12 @@ Een eis die je vooraf kunt noemen is een item met een regel, en die controleert
 zichzelf terwijl je typt. Een eis die alleen een server kan vaststellen is een
 item zonder regel, en de app noemt hem in \`unmet\` op de control.
 
-Een item is zichtbaar als hij niet voldaan is, of als hij een \`hint\` is.
-Verborgen is de standaard: een telefoonnummer hoeft z'n formaat niet uit te
+De lijst heeft twee modi en \`judged\` is de schakelaar. Vóór een oordeel toont
+hij z'n hints: de eisen van het veld. Ná een oordeel toont hij alles waaraan de
+waarde niet voldoet, en zijn de hints weg. De lijst zet die schakelaar zelf om
+zodra de control \`invalid\` of \`valid\` meldt, en je kunt hem ook zelf zetten.
+
+Hints staan standaard uit. Een telefoonnummer hoeft z'n formaat niet uit te
 leggen voordat iemand iets heeft getypt, de regels van een wachtwoord wel.
 
 Er zijn geen vinkjes. De control toont zelf al een validatie-icoon, en dat per
@@ -40,12 +44,18 @@ regel herhalen zegt hetzelfde drie keer.
 	},
 	args: {
 		hint: false,
+		judged: true,
 		for: '',
 	},
 	argTypes: {
 		hint: {
 			control: 'boolean',
 			description: 'Toon elk item voordat er een oordeel is, als de eisen van het veld. Per item te overschrijven.',
+			table: { defaultValue: { summary: false } },
+		},
+		judged: {
+			control: 'boolean',
+			description: 'Er is een oordeel geveld: toon wat de waarde niet haalt in plaats van de hints. De lijst zet dit zelf aan zodra de control invalid of valid meldt; met de hand zetten is voor een submit- of reset-handler.',
 			table: { defaultValue: { summary: false } },
 		},
 		for: {
@@ -60,13 +70,15 @@ regel herhalen zegt hetzelfde drie keer.
  * Een afgekeurd wachtwoord: wat er nog niet klopt staat eronder. Typ mee en zie
  * de regels uitgaan zodra je ze haalt.
  *
- * Zet `hint` aan en ze staan er ook voordat er een oordeel is, als de eisen van
- * het veld. Verborgen is de standaard.
+ * Zet `judged` uit en je ziet het veld zoals het eraan toe was vóór de
+ * beoordeling: leeg, tenzij `hint` aanstaat en de eisen dus vooraf al worden
+ * genoemd. De control loopt hier mee met de schakelaar, want zo staat het in een
+ * echte app: het formulier keurt af, en de lijst volgt.
  */
-export const Default = ({ hint, for: control }: Record<string, unknown>) => html`
+export const Default = ({ hint, judged, for: control }: Record<string, unknown>) => html`
 	<nldd-form-field label="Wachtwoord">
-		<nldd-password-field id="password" name="password" invalid></nldd-password-field>
-		<nldd-form-field-validation-list ?hint=${hint} for=${control || nothing}>
+		<nldd-password-field id="password" name="password" ?invalid=${judged}></nldd-password-field>
+		<nldd-form-field-validation-list ?hint=${hint} ?judged=${judged} for=${control || nothing}>
 			<nldd-form-field-validation-item id="password-length" minlength="8">Minimaal 8 tekens</nldd-form-field-validation-item>
 			<nldd-form-field-validation-item id="password-capital" match="[A-Z]">Een hoofdletter</nldd-form-field-validation-item>
 			<nldd-form-field-validation-item id="password-digit" match="[0-9]">Een cijfer</nldd-form-field-validation-item>
@@ -122,7 +134,11 @@ export const RegelsEnServer = () => html`
 	</nldd-form-field>
 `;
 
-/** Een hint blijft staan als het veld goed is, een gewoon item verdwijnt. */
+/**
+ * Na een oordeel is de lijst een to-do, en valt er niets meer te doen dan blijft
+ * hij leeg. Ook de hints zijn weg: die legden uit wat het veld wilde, en dat
+ * weet je inmiddels.
+ */
 export const AlsHetGoedIs = () => html`
 	<nldd-form-field label="Herhaal wachtwoord">
 		<nldd-password-field name="repeat-password" value="Geheim123" valid></nldd-password-field>

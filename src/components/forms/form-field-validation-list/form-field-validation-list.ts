@@ -6,10 +6,14 @@
  * only a server can decide is an item without a rule, and the app names it in
  * `unmet` on the control.
  *
- * An item is shown when it is not met, or when it is a `hint`. Hidden is the
- * default: a phone number does not need its format spelled out before anyone
- * has typed, while the rules for a password do. A hint stays visible once the
- * field is valid, so the list does not empty out at the moment you get it right.
+ * The list has two modes and `judged` is the switch. Before a verdict it shows
+ * its hints, which are the requirements of the field. After one it shows
+ * everything the value does not satisfy, and the hints are gone. The list
+ * throws that switch itself the moment the control reports `invalid` or
+ * `valid`, and a consumer can throw it by hand.
+ *
+ * Hints are off by default. A phone number does not need its format spelled out
+ * before anyone has typed, while the rules for a password do.
  *
  * There are no checkmarks. The control already shows a validation icon of its
  * own, and repeating that per line says the same thing three times.
@@ -18,6 +22,7 @@
  *
  * @attr {string} for - Id of the control this list is about. Not needed inside an nldd-form-field, which hands its own control over.
  * @attr {boolean} hint - Show every item before there is a verdict, as the requirements of the field. Overridable per item.
+ * @attr {boolean} judged - A verdict has been passed: show what the value fails instead of the hints. Set by the list itself when the control reports `invalid` or `valid`, and settable by hand.
  *
  * @slot - nldd-form-field-validation-item elements.
  *
@@ -149,6 +154,24 @@ export class NLDDFormFieldValidationList extends LitElement {
 	hint = false;
 
 	/**
+	 * Whether a verdict has been passed on this field.
+	 *
+	 * The switch between the two modes: before, the hints explain what the field
+	 * wants; after, the list is a to-do of everything the value fails. The list
+	 * turns it on the moment the control reports `invalid` or `valid`, and then
+	 * leaves it on. A verdict is not a state a field returns from: repair the
+	 * value and the control goes back to valid, but the question the hints
+	 * answered has been asked and settled, so bringing them back would undo the
+	 * one thing the verdict achieved.
+	 *
+	 * Set it yourself to flip the mode without a control saying anything, which
+	 * is what a submit handler wants, and clear it to put the field back the way
+	 * it started, which is what a reset wants.
+	 */
+	@property({ type: Boolean, reflect: true })
+	judged = false;
+
+	/**
 	 * The control this list is about.
 	 *
 	 * Set by the wrapping nldd-form-field, which already answers "which control
@@ -235,10 +258,12 @@ export class NLDDFormFieldValidationList extends LitElement {
 	 */
 	private _evaluate(): void {
 		const control = this._resolved;
-		const invalid = control?.hasAttribute('invalid') ?? false;
-		// A hint answers "what does this field want", which is a question you
-		// stop asking the moment you are told what is wrong with what you wrote.
-		const judged = invalid || (control?.hasAttribute('valid') ?? false);
+		// `valid` is the app saying it checked and this field is fine. Believe it
+		// over a rule of our own that disagrees: painting a line red underneath a
+		// field the app calls good helps nobody, and the disagreement is a rule
+		// that was configured wrong.
+		const met = control?.hasAttribute('valid') ?? false;
+		if (met || control?.hasAttribute('invalid')) this.judged = true;
 		const named = (control?.getAttribute('unmet') ?? '').split(' ').filter(Boolean);
 		const value = this._currentValue();
 
@@ -258,8 +283,8 @@ export class NLDDFormFieldValidationList extends LitElement {
 				);
 			}
 
-			item.unmet = invalid && failing;
-			item.visible = item.unmet || (!judged && (item.hint || this.hint));
+			item.unmet = this.judged && !met && failing;
+			item.visible = item.unmet || (!this.judged && (item.hint || this.hint));
 			if (item.visible) anyVisible = true;
 			if (rule === false) {
 				anyRuleFails = true;

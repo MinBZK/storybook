@@ -4,10 +4,14 @@ import './form-field-validation-list.js';
 import '../form-field/form-field.js';
 import '../form/form.js';
 import '../../inputs/text-field/text-field.js';
-import type { NLDDFormFieldValidationItem } from './form-field-validation-list.js';
+import type { NLDDFormFieldValidationItem, NLDDFormFieldValidationList } from './form-field-validation-list.js';
 
 function item(root: ParentNode, id: string): NLDDFormFieldValidationItem {
 	return root.querySelector(`#${id}`) as NLDDFormFieldValidationItem;
+}
+
+function list(root: ParentNode): NLDDFormFieldValidationList {
+	return root.querySelector('nldd-form-field-validation-list') as NLDDFormFieldValidationList;
 }
 
 /** Types into the field the way the component hears it, so the list re-checks. */
@@ -186,6 +190,74 @@ describe('nldd-form-field-validation-list', () => {
 		await type(el, 'Kort');
 		expect(item(el, 'password-length').visible).toBe(true);
 		expect(item(el, 'password-capital').visible).toBe(false);
+	});
+
+	it('laat de hints weg zodra het veld ooit beoordeeld is, ook als het weer goed komt', async () => {
+		el = await fixture(`
+			<nldd-form-field label="Wachtwoord">
+				<nldd-text-field invalid></nldd-text-field>
+				<nldd-form-field-validation-list hint>
+					<nldd-form-field-validation-item id="password-length" minlength="8">Minimaal 8 tekens</nldd-form-field-validation-item>
+				</nldd-form-field-validation-list>
+			</nldd-form-field>
+		`);
+		await waitForUpdate(el);
+		el.querySelector('nldd-text-field')!.removeAttribute('invalid');
+		await type(el, 'LangGenoeg1');
+		// Een oordeel is geen toestand waar een veld uit terugkeert. De vraag die
+		// de hints beantwoordden is gesteld en beslecht.
+		expect(list(el).judged).toBe(true);
+		expect(item(el, 'password-length').visible).toBe(false);
+	});
+
+	it('kan die modus met de hand krijgen, zonder dat de control iets zegt', async () => {
+		el = await fixture(`
+			<nldd-form-field label="Wachtwoord">
+				<nldd-text-field></nldd-text-field>
+				<nldd-form-field-validation-list hint judged>
+					<nldd-form-field-validation-item id="password-length" minlength="8">Minimaal 8 tekens</nldd-form-field-validation-item>
+				</nldd-form-field-validation-list>
+			</nldd-form-field>
+		`);
+		await waitForUpdate(el);
+		expect(item(el, 'password-length').unmet).toBe(true);
+
+		list(el).judged = false;
+		await waitForUpdate(list(el));
+		expect(item(el, 'password-length').unmet).toBe(false);
+		expect(item(el, 'password-length').visible).toBe(true);
+	});
+
+	it('wordt door nldd-form omgezet bij verzending, ook als het eigen veld klopt', async () => {
+		el = await fixture(`
+			<nldd-form>
+				<nldd-form-field label="Naam">
+					<nldd-text-field name="name"></nldd-text-field>
+					<nldd-form-field-validation-list>
+						<nldd-form-field-validation-item id="name-required" required>Vul een naam in</nldd-form-field-validation-item>
+					</nldd-form-field-validation-list>
+				</nldd-form-field>
+				<nldd-form-field label="Bijnaam">
+					<nldd-text-field name="nickname" value="Bart"></nldd-text-field>
+					<nldd-form-field-validation-list hint>
+						<nldd-form-field-validation-item id="nickname-length" minlength="2">Minimaal 2 tekens</nldd-form-field-validation-item>
+					</nldd-form-field-validation-list>
+				</nldd-form-field>
+			</nldd-form>
+		`);
+		await waitForUpdate(el);
+		const nickname = item(el, 'nickname-length');
+		expect(nickname.visible).toBe(true);
+
+		const form = el.querySelector('form')!;
+		form.addEventListener('submit', (e) => e.preventDefault());
+		form.requestSubmit();
+		await waitForUpdate(nickname.parentElement as HTMLElement);
+		// De bijnaam klopt, dus die lijst heeft niets te melden. Maar hij hoort
+		// wel in dezelfde modus te staan als de rest van het formulier.
+		expect((nickname.parentElement as NLDDFormFieldValidationList).judged).toBe(true);
+		expect(nickname.visible).toBe(false);
+		expect(item(el, 'name-required').unmet).toBe(true);
 	});
 
 	it('vindt z\'n control via `for` als hij buiten een veld staat', async () => {
