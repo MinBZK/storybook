@@ -36,24 +36,39 @@ export default {
 			description: 'Aangevinkte toestand',
 			table: { defaultValue: { summary: false } },
 		},
+		invalid: {
+			control: 'boolean',
+			description: 'Ongeldige staat. Wordt aangekondigd met aria-invalid; er wordt niets voor getekend.',
+			table: { defaultValue: { summary: false } },
+		},
 		disabled: {
 			control: 'boolean',
 			description: 'Uitgeschakelde toestand',
 			table: { defaultValue: { summary: false } },
 		},
+		required: {
+			control: 'boolean',
+			description: 'Verplichte staat.',
+			table: { defaultValue: { summary: false } },
+		},
+
 	},
 	args: {
 		label: 'Switch field',
 		value: 'on',
 		checked: false,
+		invalid: false,
 		disabled: false,
+		required: false,
 	},
 };
 
-const Template = ({ label, value, checked, disabled }: Record<string, any>) => html`
+const Template = ({ label, value, checked, invalid, disabled, required }: Record<string, any>) => html`
 	<nldd-switch-field
 		label=${label}
 		?checked=${checked}
+		?invalid=${invalid}
+		?required=${required}
 		?disabled=${disabled}
 		value=${value}
 	></nldd-switch-field>

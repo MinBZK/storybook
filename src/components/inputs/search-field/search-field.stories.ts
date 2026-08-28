@@ -1,4 +1,4 @@
-import { html } from 'lit';
+import { html, nothing } from 'lit';
 import './search-field.js';
 
 /**
@@ -55,10 +55,20 @@ export default {
 			control: 'text',
 			description: 'Toegankelijkheidslabel voor de input. Valt automatisch terug op de placeholder als niet ingevuld.',
 		},
+		required: {
+			control: 'boolean',
+			description: 'Verplichte staat.',
+			table: { defaultValue: { summary: false } },
+		},
 		noSpellcheck: {
 			name: 'no-spellcheck',
 			control: 'boolean',
 			description: 'Disables browser spellchecking on the inner input',
+			table: { defaultValue: { summary: false } },
+		},
+		invalid: {
+			control: 'boolean',
+			description: 'Ongeldige staat. Wordt aangekondigd met aria-invalid; er wordt niets voor getekend.',
 			table: { defaultValue: { summary: false } },
 		},
 		disabled: {
@@ -66,6 +76,22 @@ export default {
 			description: 'Uitgeschakelde toestand',
 			table: { defaultValue: { summary: false } },
 		},
+		minlength: {
+			control: 'number',
+			description: 'Minimaal aantal tekens.',
+			table: { defaultValue: { summary: '(geen)' } },
+		},
+		maxlength: {
+			control: 'number',
+			description: 'Maximaal aantal tekens.',
+			table: { defaultValue: { summary: '(geen)' } },
+		},
+		pattern: {
+			control: 'text',
+			description: 'Reguliere expressie waar de waarde aan moet voldoen, als het native `pattern`.',
+			table: { defaultValue: { summary: '(geen)' } },
+		},
+
 	},
 	args: {
 		size: 'md',
@@ -75,17 +101,27 @@ export default {
 		value: '',
 		placeholder: 'Zoeken',
 		accessibleLabel: '',
+		required: false,
 		noSpellcheck: false,
+		invalid: false,
 		disabled: false,
+		minlength: undefined,
+		maxlength: undefined,
+		pattern: '',
 	},
 };
 
-const Template = ({ size, showSearchButton, name, value, placeholder, accessibleLabel, disabled, noSpellcheck, width }: Record<string, any>) => html`
+const Template = ({ size, showSearchButton, name, value, placeholder, accessibleLabel, invalid, disabled, required, noSpellcheck, width, minlength, maxlength, pattern }: Record<string, any>) => html`
 	<nldd-search-field
+		minlength=${minlength ?? nothing}
+		maxlength=${maxlength ?? nothing}
+		pattern=${pattern || nothing}
 		value=${value}
 		placeholder=${placeholder}
 		accessible-label=${accessibleLabel}
 		size=${size}
+		?invalid=${invalid}
+		?required=${required}
 		?disabled=${disabled}
 		?show-search-button=${showSearchButton}
 		name=${name}

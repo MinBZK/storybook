@@ -53,11 +53,22 @@ export default {
 			control: 'text',
 			description: 'Toegankelijk label voor screen readers',
 		},
+		invalid: {
+			control: 'boolean',
+			description: 'Ongeldige staat. Wordt aangekondigd met aria-invalid; er wordt niets voor getekend.',
+			table: { defaultValue: { summary: false } },
+		},
 		disabled: {
 			control: 'boolean',
 			description: 'Uitgeschakelde toestand',
 			table: { defaultValue: { summary: false } },
 		},
+		required: {
+			control: 'boolean',
+			description: 'Verplichte staat.',
+			table: { defaultValue: { summary: false } },
+		},
+
 	},
 	args: {
 		variant: 'text',
@@ -66,16 +77,20 @@ export default {
 		value: 'vet',
 		type: 'radio',
 		accessibleLabel: '',
+		invalid: false,
 		disabled: false,
+		required: false,
 	},
 };
 
-const Template = ({ variant, size, width, value, type, accessibleLabel, disabled}: Record<string, any>) => html`
+const Template = ({ variant, size, width, value, type, accessibleLabel, invalid, disabled, required }: Record<string, any>) => html`
 	<nldd-segmented-control
 		value=${value}
 		size=${size}
 		type=${type}
 		variant=${variant}
+		?invalid=${invalid}
+		?required=${required}
 		?disabled=${disabled}
 		width=${width || nothing}
 		accessible-label=${accessibleLabel || nothing}

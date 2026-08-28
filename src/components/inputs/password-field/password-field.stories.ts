@@ -109,6 +109,21 @@ export default {
 			description: 'Disabled state',
 			table: { defaultValue: { summary: false } },
 		},
+		minlength: {
+			control: 'number',
+			description: 'Minimaal aantal tekens.',
+			table: { defaultValue: { summary: '(geen)' } },
+		},
+		maxlength: {
+			control: 'number',
+			description: 'Maximaal aantal tekens.',
+			table: { defaultValue: { summary: '(geen)' } },
+		},
+		pattern: {
+			control: 'text',
+			description: 'Reguliere expressie waar de waarde aan moet voldoen, als het native `pattern`.',
+			table: { defaultValue: { summary: '(geen)' } },
+		},
 		required: {
 			control: 'boolean',
 			description: 'Verplichte toestand',
@@ -132,26 +147,32 @@ export default {
 		accessibleLabel: '',
 		readonly: false,
 		disabled: false,
+		minlength: undefined,
+		maxlength: undefined,
+		pattern: '',
 		required: false,
 	},
 };
 
-const Template = ({ size, name, value, placeholder, showButtonText, hideButtonText, showButtonAccessibleLabel, hideButtonAccessibleLabel, autocomplete, masked, valid, invalid, accessibleLabel, readonly, disabled, required, width }: Record<string, any>) => html`
+const Template = ({ size, name, value, placeholder, showButtonText, hideButtonText, showButtonAccessibleLabel, hideButtonAccessibleLabel, autocomplete, masked, valid, invalid, accessibleLabel, readonly, disabled, minlength, maxlength, pattern, required, width }: Record<string, any>) => html`
 	<nldd-password-field
+		minlength=${minlength ?? nothing}
+		maxlength=${maxlength ?? nothing}
 		.value=${value}
 		.placeholder=${placeholder}
 		size=${size}
 		?valid=${valid}
-		?invalid=${invalid}
 		?readonly=${readonly}
+		?invalid=${invalid}
 		?disabled=${disabled}
-		?required=${required}
+		pattern=${pattern || nothing}
 		.masked=${masked}
 		show-button-text=${showButtonText}
 		hide-button-text=${hideButtonText}
 		show-button-accessible-label=${showButtonAccessibleLabel}
 		hide-button-accessible-label=${hideButtonAccessibleLabel}
 		name=${name}
+		?required=${required}
 		autocomplete=${autocomplete}
 		width=${width}
 		accessible-label=${accessibleLabel || nothing}

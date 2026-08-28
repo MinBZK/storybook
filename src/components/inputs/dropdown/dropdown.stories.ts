@@ -46,6 +46,12 @@ export default {
 			description: 'Uitgeschakelde toestand',
 			table: { defaultValue: { summary: false } },
 		},
+		required: {
+			control: 'boolean',
+			description: 'Verplichte staat.',
+			table: { defaultValue: { summary: false } },
+		},
+
 	},
 	args: {
 		size: 'md',
@@ -53,10 +59,11 @@ export default {
 		valid: false,
 		invalid: false,
 		disabled: false,
+		required: false,
 	},
 };
 
-const Template = ({ size, valid, invalid, disabled, width }: Record<string, any>) => html`
+const Template = ({ size, valid, invalid, disabled, width, required }: Record<string, any>) => html`
 	<nldd-dropdown size=${size} ?valid=${valid} ?invalid=${invalid} ?disabled=${disabled} width=${width}>
 		<select name="optie" aria-label="Selecteer een optie">
 			<option value="" disabled selected>Selecteer een optie</option>
@@ -65,6 +72,7 @@ const Template = ({ size, valid, invalid, disabled, width }: Record<string, any>
 			<option value="optie-3">Optie 3</option>
 		</select>
 	</nldd-dropdown>
+		?required=${required}
 `;
 
 export const Standaard = {

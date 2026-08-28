@@ -75,6 +75,26 @@ export default {
 			description: 'Geselecteerde waarde (voor formulierverwerking). Wanneer een matching `<nldd-menu-item>` aanwezig is en `text` leeg is, vult de combo-box `text` automatisch met `item.text`.',
 			table: { defaultValue: { summary: '' } },
 		},
+		minlength: {
+			control: 'number',
+			description: 'Minimaal aantal tekens.',
+			table: { defaultValue: { summary: '(geen)' } },
+		},
+		maxlength: {
+			control: 'number',
+			description: 'Maximaal aantal tekens.',
+			table: { defaultValue: { summary: '(geen)' } },
+		},
+		pattern: {
+			control: 'text',
+			description: 'Reguliere expressie waar de waarde aan moet voldoen, als het native `pattern`.',
+			table: { defaultValue: { summary: '(geen)' } },
+		},
+		required: {
+			control: 'boolean',
+			description: 'Verplichte staat.',
+			table: { defaultValue: { summary: false } },
+		},
 		autocomplete: {
 			control: 'text',
 			description: 'Browser autofill hint. Default "off" om conflict met dropdown te voorkomen. Set bv. "country" of "organization" om autofill toe te staan.',
@@ -104,6 +124,10 @@ export default {
 		allowCustom: false,
 		name: '',
 		value: '',
+		minlength: undefined,
+		maxlength: undefined,
+		pattern: '',
+		required: false,
 		autocomplete: 'off',
 		noSpellcheck: false,
 		accessibleLabel: '',
@@ -117,12 +141,16 @@ const Template = (args: Record<string, any>) => html`
 		text=${args.text}
 		placeholder=${args.placeholder}
 		?valid=${args.valid}
-		?invalid=${args.invalid}
 		?readonly=${args.readonly}
+		?invalid=${args.invalid}
 		?disabled=${args.disabled}
 		?allow-custom=${args.allowCustom}
 		name=${args.name}
 		value=${args.value}
+		minlength=${args.minlength ?? nothing}
+		maxlength=${args.maxlength ?? nothing}
+		pattern=${args.pattern || nothing}
+		?required=${args.required}
 		autocomplete=${args.autocomplete}
 		accessible-label=${args.accessibleLabel || nothing}
 		?no-spellcheck=${args.noSpellcheck}

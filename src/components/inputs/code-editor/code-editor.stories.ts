@@ -49,7 +49,9 @@ export default {
 		rows: 6,
 		resize: 'auto',
 		wrap: false,
+		invalid: false,
 		readonly: false,
+		required: false,
 		disabled: false,
 		accessibleLabel: 'Code',
 	},
@@ -99,9 +101,19 @@ export default {
 			description: 'Wrap lange regels in plaats van horizontaal scrollen',
 			table: { defaultValue: { summary: false } },
 		},
+		invalid: {
+			control: 'boolean',
+			description: 'Ongeldige staat. Wordt aangekondigd met aria-invalid; er wordt niets voor getekend.',
+			table: { defaultValue: { summary: false } },
+		},
 		readonly: {
 			control: 'boolean',
 			description: 'Alleen-lezen staat (focusbaar en selecteerbaar, niet bewerkbaar)',
+			table: { defaultValue: { summary: false } },
+		},
+		required: {
+			control: 'boolean',
+			description: 'Verplichte staat.',
 			table: { defaultValue: { summary: false } },
 		},
 		disabled: {
@@ -127,7 +139,9 @@ const Template = ({
 	rows,
 	resize,
 	wrap,
+	invalid,
 	readonly,
+	required,
 	disabled,
 	accessibleLabel,
 }: Record<string, unknown>) => html`
@@ -141,6 +155,8 @@ const Template = ({
 		resize=${resize as string}
 		?wrap=${wrap}
 		?readonly=${readonly}
+		?invalid=${invalid}
+		?required=${required}
 		?disabled=${disabled}
 		accessible-label=${accessibleLabel || nothing}
 	></nldd-code-editor>

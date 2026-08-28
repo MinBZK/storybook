@@ -73,6 +73,16 @@ export default {
 			control: 'text',
 			description: 'Toegankelijk label voor screen readers (verplicht voor icon-only)',
 		},
+		invalid: {
+			control: 'boolean',
+			description: 'Ongeldige staat. Wordt aangekondigd met aria-invalid; er wordt niets voor getekend.',
+			table: { defaultValue: { summary: false } },
+		},
+		required: {
+			control: 'boolean',
+			description: 'Verplichte staat.',
+			table: { defaultValue: { summary: false } },
+		},
 		disabled: {
 			control: 'boolean',
 			description: 'Uitgeschakelde toestand',
@@ -89,6 +99,8 @@ export default {
 		type: 'button',
 		selected: false,
 		accessibleLabel: '',
+		invalid: false,
+		required: false,
 		disabled: false,
 	},
 };
@@ -99,6 +111,8 @@ const Template = (args: Record<string, any>) => html`
 		type=${args.type}
 		size=${args.size}
 		?selected=${args.selected}
+		?invalid=${args.invalid}
+		?required=${args.required}
 		?disabled=${args.disabled}
 		text=${args.text}
 		icon=${args.icon}

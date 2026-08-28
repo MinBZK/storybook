@@ -44,6 +44,11 @@ export default {
 			description: 'Stapgrootte',
 			table: { defaultValue: { summary: 1 } },
 		},
+		invalid: {
+			control: 'boolean',
+			description: 'Ongeldige staat. Wordt aangekondigd met aria-invalid; er wordt niets voor getekend.',
+			table: { defaultValue: { summary: false } },
+		},
 		disabled: {
 			control: 'boolean',
 			description: 'Uitgeschakelde toestand',
@@ -56,11 +61,12 @@ export default {
 		min: 0,
 		max: 10,
 		step: 1,
+		invalid: false,
 		disabled: false,
 	},
 };
 
-const Template = ({ size, value, min, max, step, disabled }: Record<string, any>) => html`
+const Template = ({ size, value, min, max, step, invalid, disabled }: Record<string, any>) => html`
 	<div style="display: flex; gap: 1rem; align-items: center;">
 		<span style="font: var(--primitives-font-body-md-regular-snug); min-width: 2ch;"
 			.textContent=${String(value)}
@@ -70,6 +76,7 @@ const Template = ({ size, value, min, max, step, disabled }: Record<string, any>
 			min=${min}
 			max=${max}
 			step=${step}
+			?invalid=${invalid}
 			?disabled=${disabled}
 			size=${size}
 			@change=${(e: any) => {

@@ -140,10 +140,10 @@ const Template = ({
 		?no-picker=${noPicker}
 		accessible-label=${accessibleLabel || nothing}
 		?valid=${valid}
-		?invalid=${invalid}
 		?readonly=${readonly}
-		?disabled=${disabled}
+		?invalid=${invalid}
 		?required=${required}
+		?disabled=${disabled}
 		name=${name || nothing}
 	></nldd-time-field>
 `;

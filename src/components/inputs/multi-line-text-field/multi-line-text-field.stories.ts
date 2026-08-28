@@ -59,6 +59,8 @@ export default {
 		placeholder: 'Schrijf hier je toelichting',
 		name: '',
 		value: '',
+		minlength: undefined,
+		maxlength: undefined,
 		required: false,
 		keyboard: undefined,
 		enterKey: undefined,
@@ -128,6 +130,16 @@ export default {
 			description: 'Veldwaarde',
 			table: { defaultValue: { summary: '' } },
 		},
+		minlength: {
+			control: 'number',
+			description: 'Minimaal aantal tekens.',
+			table: { defaultValue: { summary: '(geen)' } },
+		},
+		maxlength: {
+			control: 'number',
+			description: 'Maximaal aantal tekens.',
+			table: { defaultValue: { summary: '(geen)' } },
+		},
 		required: {
 			control: 'boolean',
 			description: 'Required state',
@@ -167,22 +179,24 @@ export default {
 	},
 };
 
-const Template = ({ size, resize, rows, width, placeholder, valid, invalid, readonly, disabled, name, value, required, keyboard, enterKey, autocomplete, accessibleLabel, noSpellcheck }: Record<string, any>) => html`
+const Template = ({ size, resize, rows, width, placeholder, valid, invalid, readonly, disabled, name, value, minlength, maxlength, required, keyboard, enterKey, autocomplete, accessibleLabel, noSpellcheck }: Record<string, any>) => html`
 	<nldd-multi-line-text-field
+		minlength=${minlength ?? nothing}
 		size=${size}
 		resize=${resize}
 		rows=${rows}
 		width=${width}
 		.placeholder=${placeholder}
 		?valid=${valid}
-		?invalid=${invalid}
 		?readonly=${readonly}
+		?invalid=${invalid}
 		?disabled=${disabled}
 		name=${name}
 		.value=${value}
-		?required=${required}
+		maxlength=${maxlength ?? nothing}
 		keyboard=${keyboard || nothing}
 		enter-key=${enterKey || nothing}
+		?required=${required}
 		autocomplete=${autocomplete}
 		accessible-label=${accessibleLabel || nothing}
 		?no-spellcheck=${noSpellcheck}
