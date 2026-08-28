@@ -65,7 +65,7 @@ regel herhalen zegt hetzelfde drie keer.
  */
 export const Default = ({ hint, for: control }: Record<string, unknown>) => html`
 	<nldd-form-field label="Wachtwoord">
-		<nldd-password-field id="pw-veld" name="pw" invalid></nldd-password-field>
+		<nldd-password-field id="password" name="password" invalid></nldd-password-field>
 		<nldd-form-field-validation-list ?hint=${hint} for=${control || nothing}>
 			<nldd-form-field-validation-item id="password-length" minlength="8">Minimaal 8 tekens</nldd-form-field-validation-item>
 			<nldd-form-field-validation-item id="password-capital" match="[A-Z]">Een hoofdletter</nldd-form-field-validation-item>
@@ -77,7 +77,7 @@ export const Default = ({ hint, for: control }: Record<string, unknown>) => html
 /** Zonder `hint` blijft de lijst leeg tot er iets misgaat. Zo hoort een gewoon veld het te doen. */
 export const AlleenBijEenFout = () => html`
 	<nldd-form-field label="Telefoonnummer">
-		<nldd-text-field name="tel" invalid></nldd-text-field>
+		<nldd-text-field name="phone" invalid></nldd-text-field>
 		<nldd-form-field-validation-list>
 			<nldd-form-field-validation-item id="phone-characters" match="^[0-9 +-]+$">Alleen cijfers, spaties, + en -</nldd-form-field-validation-item>
 			<nldd-form-field-validation-item id="phone-length" minlength="10">Minimaal 10 tekens</nldd-form-field-validation-item>
@@ -91,7 +91,7 @@ export const AlleenBijEenFout = () => html`
  */
 export const VerplichtVeld = () => html`
 	<nldd-form-field label="Nieuw wachtwoord">
-		<nldd-password-field name="new-pw" invalid></nldd-password-field>
+		<nldd-password-field name="new-password" invalid></nldd-password-field>
 		<nldd-form-field-validation-list>
 			<nldd-form-field-validation-item id="new-password-empty" required>Vul een wachtwoord in</nldd-form-field-validation-item>
 			<nldd-form-field-validation-item id="new-password-length" minlength="8">Minimaal 8 tekens</nldd-form-field-validation-item>
@@ -103,7 +103,7 @@ export const VerplichtVeld = () => html`
 /** Een item zonder regel wacht op de app: die zet z'n id in `unmet` op de control. */
 export const DoorDeAppAangestuurd = () => html`
 	<nldd-form-field label="Gebruikersnaam">
-		<nldd-text-field name="user" value="jansen" invalid unmet="username-taken"></nldd-text-field>
+		<nldd-text-field name="username" value="jansen" invalid unmet="username-taken"></nldd-text-field>
 		<nldd-form-field-validation-list>
 			<nldd-form-field-validation-item id="username-taken">Deze gebruikersnaam is al in gebruik</nldd-form-field-validation-item>
 		</nldd-form-field-validation-list>
@@ -113,7 +113,7 @@ export const DoorDeAppAangestuurd = () => html`
 /** De twee soorten door elkaar: twee regels die zichzelf toetsen en één die van de server komt. */
 export const RegelsEnServer = () => html`
 	<nldd-form-field label="Wachtwoord wijzigen">
-		<nldd-password-field name="changed-pw" value="geheim" invalid unmet="changed-password-breach"></nldd-password-field>
+		<nldd-password-field name="changed-password" value="geheim" invalid unmet="changed-password-breach"></nldd-password-field>
 		<nldd-form-field-validation-list hint>
 			<nldd-form-field-validation-item id="changed-password-length" minlength="8">Minimaal 8 tekens</nldd-form-field-validation-item>
 			<nldd-form-field-validation-item id="changed-password-capital" match="[A-Z]">Een hoofdletter</nldd-form-field-validation-item>
@@ -125,7 +125,7 @@ export const RegelsEnServer = () => html`
 /** Een hint blijft staan als het veld goed is, een gewoon item verdwijnt. */
 export const AlsHetGoedIs = () => html`
 	<nldd-form-field label="Herhaal wachtwoord">
-		<nldd-password-field name="repeat-pw" value="Geheim123" valid></nldd-password-field>
+		<nldd-password-field name="repeat-password" value="Geheim123" valid></nldd-password-field>
 		<nldd-form-field-validation-list hint>
 			<nldd-form-field-validation-item id="repeat-password-length" minlength="8">Minimaal 8 tekens</nldd-form-field-validation-item>
 			<nldd-form-field-validation-item id="repeat-password-capital" match="[A-Z]">Een hoofdletter</nldd-form-field-validation-item>
@@ -149,12 +149,12 @@ export const AlsHetGoedIs = () => html`
 export const MetFor = () => html`
 	<nldd-form>
 		<nldd-form-field label="Waar heb je ons gevonden?">
-			<nldd-radio-button-group name="bron" accessible-label="Waar heb je ons gevonden?">
-				<nldd-radio-button-field value="zoekmachine" label="Zoekmachine"></nldd-radio-button-field>
-				<nldd-radio-button-field value="anders" label="Anders, namelijk"></nldd-radio-button-field>
+			<nldd-radio-button-group name="source" accessible-label="Waar heb je ons gevonden?">
+				<nldd-radio-button-field value="search-engine" label="Zoekmachine"></nldd-radio-button-field>
+				<nldd-radio-button-field value="other" label="Anders, namelijk"></nldd-radio-button-field>
 			</nldd-radio-button-group>
-			<nldd-text-field id="anders-veld" name="anders" accessible-label="Anders, namelijk"></nldd-text-field>
-			<nldd-form-field-validation-list for="anders-veld">
+			<nldd-text-field id="source-other" name="source-other" accessible-label="Anders, namelijk"></nldd-text-field>
+			<nldd-form-field-validation-list for="source-other">
 				<nldd-form-field-validation-item id="source-explanation" minlength="3">Minimaal 3 tekens toelichting</nldd-form-field-validation-item>
 			</nldd-form-field-validation-list>
 		</nldd-form-field>
@@ -197,9 +197,9 @@ export const NaastHelpTekst = () => html`
 export const VerankerdPatroon = () => html`
 	<nldd-form>
 		<nldd-form-field label="Postcode">
-			<nldd-text-field name="postcode" width="160px"></nldd-text-field>
+			<nldd-text-field name="postal-code" width="160px"></nldd-text-field>
 			<nldd-form-field-validation-list>
-				<nldd-form-field-validation-item id="postcode-format" match="^[0-9]{4} ?[A-Za-z]{2}$">Vier cijfers en dan twee letters, zoals 1234 AB</nldd-form-field-validation-item>
+				<nldd-form-field-validation-item id="postal-code-format" match="^[0-9]{4} ?[A-Za-z]{2}$">Vier cijfers en dan twee letters, zoals 1234 AB</nldd-form-field-validation-item>
 			</nldd-form-field-validation-list>
 		</nldd-form-field>
 		<nldd-form-actions>

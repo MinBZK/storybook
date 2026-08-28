@@ -36,20 +36,20 @@ describe('nldd-form-field-validation-list', () => {
 			<nldd-form-field label="Wachtwoord">
 				<nldd-text-field></nldd-text-field>
 				<nldd-form-field-validation-list>
-					<nldd-form-field-validation-item id="breach">Staat in een datalek</nldd-form-field-validation-item>
+					<nldd-form-field-validation-item id="password-breach">Staat in een datalek</nldd-form-field-validation-item>
 				</nldd-form-field-validation-list>
 			</nldd-form-field>
 		`);
 		await waitForUpdate(el);
-		expect(item(el, 'breach').visible).toBe(false);
+		expect(item(el, 'password-breach').visible).toBe(false);
 
 		const control = el.querySelector('nldd-text-field')!;
-		control.setAttribute('unmet', 'breach');
+		control.setAttribute('unmet', 'password-breach');
 		control.setAttribute('invalid', '');
 		await waitForUpdate(el);
 
-		expect(item(el, 'breach').visible).toBe(true);
-		expect(item(el, 'breach').unmet).toBe(true);
+		expect(item(el, 'password-breach').visible).toBe(true);
+		expect(item(el, 'password-breach').unmet).toBe(true);
 	});
 
 	it('laat een regel zichzelf toetsen en verdwijnen zodra hij gehaald is', async () => {
@@ -57,19 +57,19 @@ describe('nldd-form-field-validation-list', () => {
 			<nldd-form-field label="Wachtwoord">
 				<nldd-text-field invalid></nldd-text-field>
 				<nldd-form-field-validation-list>
-					<nldd-form-field-validation-item id="length" minlength="8">Minimaal 8 tekens</nldd-form-field-validation-item>
+					<nldd-form-field-validation-item id="password-length" minlength="8">Minimaal 8 tekens</nldd-form-field-validation-item>
 				</nldd-form-field-validation-list>
 			</nldd-form-field>
 		`);
 		await waitForUpdate(el);
 
 		await type(el, 'kort');
-		expect(item(el, 'length').unmet).toBe(true);
-		expect(item(el, 'length').visible).toBe(true);
+		expect(item(el, 'password-length').unmet).toBe(true);
+		expect(item(el, 'password-length').visible).toBe(true);
 
 		await type(el, 'lang genoeg');
-		expect(item(el, 'length').unmet).toBe(false);
-		expect(item(el, 'length').visible).toBe(false);
+		expect(item(el, 'password-length').unmet).toBe(false);
+		expect(item(el, 'password-length').visible).toBe(false);
 	});
 
 	it('houdt een lege waarde tegen de regels aan, want die haalt hij niet', async () => {
@@ -77,12 +77,12 @@ describe('nldd-form-field-validation-list', () => {
 			<nldd-form-field label="Wachtwoord">
 				<nldd-text-field invalid></nldd-text-field>
 				<nldd-form-field-validation-list>
-					<nldd-form-field-validation-item id="length" minlength="8">Minimaal 8 tekens</nldd-form-field-validation-item>
+					<nldd-form-field-validation-item id="password-length" minlength="8">Minimaal 8 tekens</nldd-form-field-validation-item>
 				</nldd-form-field-validation-list>
 			</nldd-form-field>
 		`);
 		await waitForUpdate(el);
-		expect(item(el, 'length').unmet).toBe(true);
+		expect(item(el, 'password-length').unmet).toBe(true);
 	});
 
 	it('laat een onaangeraakt veld met rust, want er is nog geen oordeel', async () => {
@@ -90,13 +90,13 @@ describe('nldd-form-field-validation-list', () => {
 			<nldd-form-field label="Wachtwoord">
 				<nldd-text-field></nldd-text-field>
 				<nldd-form-field-validation-list hint>
-					<nldd-form-field-validation-item id="length" minlength="8">Minimaal 8 tekens</nldd-form-field-validation-item>
+					<nldd-form-field-validation-item id="password-length" minlength="8">Minimaal 8 tekens</nldd-form-field-validation-item>
 				</nldd-form-field-validation-list>
 			</nldd-form-field>
 		`);
 		await waitForUpdate(el);
-		expect(item(el, 'length').visible).toBe(true);
-		expect(item(el, 'length').unmet).toBe(false);
+		expect(item(el, 'password-length').visible).toBe(true);
+		expect(item(el, 'password-length').unmet).toBe(false);
 	});
 
 	it('laat `required` afgaan op leeg, ook zonder andere regels', async () => {
@@ -104,18 +104,18 @@ describe('nldd-form-field-validation-list', () => {
 			<nldd-form-field label="Wachtwoord">
 				<nldd-text-field invalid></nldd-text-field>
 				<nldd-form-field-validation-list>
-					<nldd-form-field-validation-item id="leeg" required>Vul een wachtwoord in</nldd-form-field-validation-item>
-					<nldd-form-field-validation-item id="length" minlength="8">Minimaal 8 tekens</nldd-form-field-validation-item>
+					<nldd-form-field-validation-item id="password-empty" required>Vul een wachtwoord in</nldd-form-field-validation-item>
+					<nldd-form-field-validation-item id="password-length" minlength="8">Minimaal 8 tekens</nldd-form-field-validation-item>
 				</nldd-form-field-validation-list>
 			</nldd-form-field>
 		`);
 		await waitForUpdate(el);
-		expect(item(el, 'leeg').unmet).toBe(true);
-		expect(item(el, 'length').unmet).toBe(true);
+		expect(item(el, 'password-empty').unmet).toBe(true);
+		expect(item(el, 'password-length').unmet).toBe(true);
 
 		await type(el, 'x');
-		expect(item(el, 'leeg').unmet).toBe(false);
-		expect(item(el, 'length').unmet).toBe(true);
+		expect(item(el, 'password-empty').unmet).toBe(false);
+		expect(item(el, 'password-length').unmet).toBe(true);
 	});
 
 	it('leest `match` als "bevat", niet als de hele waarde', async () => {
@@ -123,17 +123,17 @@ describe('nldd-form-field-validation-list', () => {
 			<nldd-form-field label="Wachtwoord">
 				<nldd-text-field invalid></nldd-text-field>
 				<nldd-form-field-validation-list>
-					<nldd-form-field-validation-item id="capital" match="[A-Z]">Een hoofdletter</nldd-form-field-validation-item>
+					<nldd-form-field-validation-item id="password-capital" match="[A-Z]">Een hoofdletter</nldd-form-field-validation-item>
 				</nldd-form-field-validation-list>
 			</nldd-form-field>
 		`);
 		await waitForUpdate(el);
 
 		await type(el, 'abc');
-		expect(item(el, 'capital').unmet).toBe(true);
+		expect(item(el, 'password-capital').unmet).toBe(true);
 
 		await type(el, 'aBc');
-		expect(item(el, 'capital').unmet).toBe(false);
+		expect(item(el, 'password-capital').unmet).toBe(false);
 	});
 
 	it('toont met `hint` alles vooraf, neutraal', async () => {
@@ -141,13 +141,13 @@ describe('nldd-form-field-validation-list', () => {
 			<nldd-form-field label="Wachtwoord">
 				<nldd-text-field></nldd-text-field>
 				<nldd-form-field-validation-list hint>
-					<nldd-form-field-validation-item id="length" minlength="8">Minimaal 8 tekens</nldd-form-field-validation-item>
-					<nldd-form-field-validation-item id="capital" match="[A-Z]">Een hoofdletter</nldd-form-field-validation-item>
+					<nldd-form-field-validation-item id="password-length" minlength="8">Minimaal 8 tekens</nldd-form-field-validation-item>
+					<nldd-form-field-validation-item id="password-capital" match="[A-Z]">Een hoofdletter</nldd-form-field-validation-item>
 				</nldd-form-field-validation-list>
 			</nldd-form-field>
 		`);
 		await waitForUpdate(el);
-		for (const id of ['length', 'capital']) {
+		for (const id of ['password-length', 'password-capital']) {
 			expect(item(el, id).visible).toBe(true);
 			expect(item(el, id).unmet).toBe(false);
 		}
@@ -158,23 +158,23 @@ describe('nldd-form-field-validation-list', () => {
 			<nldd-form-field label="Wachtwoord">
 				<nldd-text-field valid></nldd-text-field>
 				<nldd-form-field-validation-list>
-					<nldd-form-field-validation-item id="length" hint minlength="8">Minimaal 8 tekens</nldd-form-field-validation-item>
-					<nldd-form-field-validation-item id="breach">Staat in een datalek</nldd-form-field-validation-item>
+					<nldd-form-field-validation-item id="password-length" hint minlength="8">Minimaal 8 tekens</nldd-form-field-validation-item>
+					<nldd-form-field-validation-item id="password-breach">Staat in een datalek</nldd-form-field-validation-item>
 				</nldd-form-field-validation-list>
 			</nldd-form-field>
 		`);
 		await waitForUpdate(el);
-		expect(item(el, 'length').visible).toBe(true);
-		expect(item(el, 'length').unmet).toBe(false);
-		expect(item(el, 'breach').visible).toBe(false);
+		expect(item(el, 'password-length').visible).toBe(true);
+		expect(item(el, 'password-length').unmet).toBe(false);
+		expect(item(el, 'password-breach').visible).toBe(false);
 	});
 
 	it('vindt z\'n control via `for` als hij buiten een veld staat', async () => {
 		el = await fixture(`
 			<div>
-				<nldd-text-field id="los" invalid></nldd-text-field>
-				<nldd-form-field-validation-list for="los">
-					<nldd-form-field-validation-item id="length" minlength="8">Minimaal 8 tekens</nldd-form-field-validation-item>
+				<nldd-text-field id="standalone" invalid></nldd-text-field>
+				<nldd-form-field-validation-list for="standalone">
+					<nldd-form-field-validation-item id="password-length" minlength="8">Minimaal 8 tekens</nldd-form-field-validation-item>
 				</nldd-form-field-validation-list>
 			</div>
 		`);
@@ -183,7 +183,7 @@ describe('nldd-form-field-validation-list', () => {
 		control.value = 'kort';
 		control.dispatchEvent(new Event('input', { bubbles: true }));
 		await waitForUpdate(el);
-		expect(item(el, 'length').unmet).toBe(true);
+		expect(item(el, 'password-length').unmet).toBe(true);
 	});
 
 	it('meldt een falende regel bij de control, zodat het formulier niet weggaat', async () => {
@@ -191,7 +191,7 @@ describe('nldd-form-field-validation-list', () => {
 			<nldd-form-field label="Wachtwoord">
 				<nldd-text-field></nldd-text-field>
 				<nldd-form-field-validation-list>
-					<nldd-form-field-validation-item id="length" minlength="8">Minimaal 8 tekens</nldd-form-field-validation-item>
+					<nldd-form-field-validation-item id="password-length" minlength="8">Minimaal 8 tekens</nldd-form-field-validation-item>
 				</nldd-form-field-validation-list>
 			</nldd-form-field>
 		`);
@@ -210,7 +210,7 @@ describe('nldd-form-field-validation-list', () => {
 			<nldd-form-field label="Wachtwoord">
 				<nldd-text-field invalid></nldd-text-field>
 				<nldd-form-field-validation-list hint>
-					<nldd-form-field-validation-item id="length" minlength="8">Minimaal 8 tekens</nldd-form-field-validation-item>
+					<nldd-form-field-validation-item id="password-length" minlength="8">Minimaal 8 tekens</nldd-form-field-validation-item>
 				</nldd-form-field-validation-list>
 			</nldd-form-field>
 		`);
@@ -226,7 +226,7 @@ describe('nldd-form-field-validation-list', () => {
 			<nldd-form-field label="Wachtwoord">
 				<nldd-text-field></nldd-text-field>
 				<nldd-form-field-validation-list>
-					<nldd-form-field-validation-item id="length" minlength="8">Minimaal 8 tekens</nldd-form-field-validation-item>
+					<nldd-form-field-validation-item id="password-length" minlength="8">Minimaal 8 tekens</nldd-form-field-validation-item>
 				</nldd-form-field-validation-list>
 			</nldd-form-field>
 		`);
@@ -234,7 +234,7 @@ describe('nldd-form-field-validation-list', () => {
 		await type(el, 'kort');
 		const control = el.querySelector('nldd-text-field') as HTMLElement & { internals?: ElementInternals };
 
-		expect(item(el, 'length').visible).toBe(false);
+		expect(item(el, 'password-length').visible).toBe(false);
 		expect(control.internals?.validity.customError).toBe(true);
 	});
 });
@@ -250,9 +250,9 @@ describe('nldd-form markeert een control op het moment dat het platform het zegt
 		el = await fixture(`
 			<nldd-form novalidate>
 				<nldd-form-field label="Wachtwoord">
-					<nldd-text-field name="pw"></nldd-text-field>
+					<nldd-text-field name="password"></nldd-text-field>
 					<nldd-form-field-validation-list>
-						<nldd-form-field-validation-item id="length" minlength="8">Minimaal 8 tekens</nldd-form-field-validation-item>
+						<nldd-form-field-validation-item id="password-length" minlength="8">Minimaal 8 tekens</nldd-form-field-validation-item>
 					</nldd-form-field-validation-list>
 				</nldd-form-field>
 			</nldd-form>
@@ -271,9 +271,9 @@ describe('nldd-form markeert een control op het moment dat het platform het zegt
 		el = await fixture(`
 			<nldd-form novalidate>
 				<nldd-form-field label="Wachtwoord">
-					<nldd-text-field name="pw"></nldd-text-field>
+					<nldd-text-field name="password"></nldd-text-field>
 					<nldd-form-field-validation-list>
-						<nldd-form-field-validation-item id="length" minlength="8">Minimaal 8 tekens</nldd-form-field-validation-item>
+						<nldd-form-field-validation-item id="password-length" minlength="8">Minimaal 8 tekens</nldd-form-field-validation-item>
 					</nldd-form-field-validation-list>
 				</nldd-form-field>
 			</nldd-form>
@@ -289,7 +289,7 @@ describe('nldd-form markeert een control op het moment dat het platform het zegt
 		(el as HTMLElement & { form: HTMLFormElement }).form.checkValidity();
 		await waitForUpdate(el);
 		expect(control.hasAttribute('invalid')).toBe(true);
-		expect(item(el, 'length').visible).toBe(true);
+		expect(item(el, 'password-length').visible).toBe(true);
 
 		control.value = 'lang genoeg';
 		control.dispatchEvent(new Event('input', { bubbles: true }));
@@ -302,33 +302,33 @@ describe('nldd-form markeert een control op het moment dat het platform het zegt
 		control.dispatchEvent(new Event('input', { bubbles: true }));
 		await waitForUpdate(el);
 		expect(control.hasAttribute('invalid')).toBe(true);
-		expect(item(el, 'length').visible).toBe(true);
+		expect(item(el, 'password-length').visible).toBe(true);
 	});
 
 	it('markeert bij verzending elk veld als beoordeeld, niet alleen het gezakte', async () => {
 		el = await fixture(`
 			<nldd-form novalidate>
-				<nldd-form-field label="A">
-					<nldd-text-field name="a" value="lang genoeg"></nldd-text-field>
+				<nldd-form-field label="Eerste">
+					<nldd-text-field name="first" value="lang genoeg"></nldd-text-field>
 					<nldd-form-field-validation-list>
-						<nldd-form-field-validation-item id="a8" minlength="8">Minimaal 8</nldd-form-field-validation-item>
+						<nldd-form-field-validation-item id="first-length" minlength="8">Minimaal 8</nldd-form-field-validation-item>
 					</nldd-form-field-validation-list>
 				</nldd-form-field>
-				<nldd-form-field label="B">
-					<nldd-text-field name="b"></nldd-text-field>
+				<nldd-form-field label="Tweede">
+					<nldd-text-field name="second"></nldd-text-field>
 					<nldd-form-field-validation-list>
-						<nldd-form-field-validation-item id="b8" minlength="8">Minimaal 8</nldd-form-field-validation-item>
+						<nldd-form-field-validation-item id="second-length" minlength="8">Minimaal 8</nldd-form-field-validation-item>
 					</nldd-form-field-validation-list>
 				</nldd-form-field>
 			</nldd-form>
 		`);
 		await waitForUpdate(el);
-		const a = el.querySelector('[name=a]') as HTMLElement & { value: string };
+		const a = el.querySelector('[name=first]') as HTMLElement & { value: string };
 
 		(el as HTMLElement & { form: HTMLFormElement }).form.checkValidity();
 		await waitForUpdate(el);
 		expect(a.hasAttribute('invalid')).toBe(false);
-		expect(el.querySelector('[name=b]')!.hasAttribute('invalid')).toBe(true);
+		expect(el.querySelector('[name=second]')!.hasAttribute('invalid')).toBe(true);
 
 		// A zakte niet en werd dus niet genoemd, maar is wel beoordeeld: breek
 		// hem en hij zegt het meteen, net als z'n buurman.
@@ -336,16 +336,16 @@ describe('nldd-form markeert een control op het moment dat het platform het zegt
 		a.dispatchEvent(new Event('input', { bubbles: true }));
 		await waitForUpdate(el);
 		expect(a.hasAttribute('invalid')).toBe(true);
-		expect(item(el, 'a8').visible).toBe(true);
+		expect(item(el, 'first-length').visible).toBe(true);
 	});
 
 	it('laat een veld dat nog nooit beoordeeld is met rust tijdens het typen', async () => {
 		el = await fixture(`
 			<nldd-form novalidate>
 				<nldd-form-field label="Wachtwoord">
-					<nldd-text-field name="pw"></nldd-text-field>
+					<nldd-text-field name="password"></nldd-text-field>
 					<nldd-form-field-validation-list>
-						<nldd-form-field-validation-item id="length" minlength="8">Minimaal 8 tekens</nldd-form-field-validation-item>
+						<nldd-form-field-validation-item id="password-length" minlength="8">Minimaal 8 tekens</nldd-form-field-validation-item>
 					</nldd-form-field-validation-list>
 				</nldd-form-field>
 			</nldd-form>
@@ -357,6 +357,6 @@ describe('nldd-form markeert een control op het moment dat het platform het zegt
 		control.dispatchEvent(new Event('input', { bubbles: true }));
 		await waitForUpdate(el);
 		expect(control.hasAttribute('invalid')).toBe(false);
-		expect(item(el, 'length').visible).toBe(false);
+		expect(item(el, 'password-length').visible).toBe(false);
 	});
 });

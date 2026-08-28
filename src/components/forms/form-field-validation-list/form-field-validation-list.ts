@@ -43,7 +43,7 @@
  *
  * @example
  * <nldd-form-field label="Wachtwoord">
- *   <nldd-password-field name="pw" invalid unmet="password-breach"></nldd-password-field>
+ *   <nldd-password-field name="password" invalid unmet="password-breach"></nldd-password-field>
  *   <nldd-form-field-validation-list hint>
  *     <nldd-form-field-validation-item id="password-length" minlength="8">Minimaal 8 tekens</nldd-form-field-validation-item>
  *     <nldd-form-field-validation-item id="password-capital" match="[A-Z]">Een hoofdletter</nldd-form-field-validation-item>

@@ -159,7 +159,7 @@ const cases: Case[] = [
 	{ name: 'nldd-toggle-button', control: '<nldd-toggle-button value="1" text="Vet"></nldd-toggle-button>' },
 	{
 		name: 'nldd-toggle-button-group',
-		control: `<nldd-toggle-button-group type="radio" name="weergave" accessible-label="Weergave">
+		control: `<nldd-toggle-button-group type="radio" name="view" accessible-label="Weergave">
 			<nldd-toggle-button value="lijst" text="Lijst"></nldd-toggle-button>
 		</nldd-toggle-button-group>`,
 	},
@@ -178,17 +178,17 @@ describe('nldd-form-field: the error text reaches the accessible description', (
 			field = await fixture<HTMLElement>(
 				`<nldd-form-field label="Vraag">
 					${control}
-					<nldd-form-field-error-text id="fout">Dit klopt niet.</nldd-form-field-error-text>
+					<nldd-form-field-error-text id="error">Dit klopt niet.</nldd-form-field-error-text>
 				</nldd-form-field>`,
 			);
 			await waitForUpdate(field);
 
 			const control_ = field.querySelector(name) as HTMLElement;
 			control_.setAttribute('invalid', '');
-			control_.setAttribute('unmet', 'fout');
+			control_.setAttribute('unmet', 'error');
 			await waitForUpdate(field);
 
-			const error = field.querySelector('#fout') as HTMLElement;
+			const error = field.querySelector('#error') as HTMLElement;
 			expect(getComputedStyle(error).display).not.toBe('none');
 
 			const target = descriptionTarget(control_);

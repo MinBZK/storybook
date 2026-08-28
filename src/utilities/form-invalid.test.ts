@@ -36,7 +36,7 @@ const cases: [string, string][] = [
 	['nldd-number-field', '<nldd-number-field invalid></nldd-number-field>'],
 	['nldd-radio-button', '<nldd-radio-button invalid value="1" text="Optie"></nldd-radio-button>'],
 	['nldd-radio-button-field', '<nldd-radio-button-field invalid value="1" label="Optie"></nldd-radio-button-field>'],
-	['nldd-radio-button-group', '<nldd-radio-button-group invalid name="x" accessible-label="Vraag"><nldd-radio-button-field value="1" label="Optie"></nldd-radio-button-field></nldd-radio-button-group>'],
+	['nldd-radio-button-group', '<nldd-radio-button-group invalid name="choice" accessible-label="Vraag"><nldd-radio-button-field value="1" label="Optie"></nldd-radio-button-field></nldd-radio-button-group>'],
 	['nldd-search-field', '<nldd-search-field invalid></nldd-search-field>'],
 	['nldd-segmented-control', '<nldd-segmented-control invalid accessible-label="Weergave"><nldd-segmented-control-item value="a" text="A"></nldd-segmented-control-item></nldd-segmented-control>'],
 	['nldd-stepper', '<nldd-stepper invalid accessible-label="Aantal"></nldd-stepper>'],
@@ -45,7 +45,7 @@ const cases: [string, string][] = [
 	['nldd-text-editor', '<nldd-text-editor invalid accessible-label="Tekst"></nldd-text-editor>'],
 	['nldd-time-picker', '<nldd-time-picker invalid accessible-label="Tijd"></nldd-time-picker>'],
 	['nldd-toggle-button', '<nldd-toggle-button invalid value="1" text="Vet"></nldd-toggle-button>'],
-	['nldd-toggle-button-group', '<nldd-toggle-button-group invalid type="radio" name="x" accessible-label="Weergave"><nldd-toggle-button value="1" text="Vet"></nldd-toggle-button></nldd-toggle-button-group>'],
+	['nldd-toggle-button-group', '<nldd-toggle-button-group invalid type="radio" name="choice" accessible-label="Weergave"><nldd-toggle-button value="1" text="Vet"></nldd-toggle-button></nldd-toggle-button-group>'],
 ];
 
 /** The first element carrying aria-invalid, shadow roots included. */

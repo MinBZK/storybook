@@ -189,7 +189,7 @@ describe('required on a group of controls', () => {
 
 	it('nldd-toggle-button-group: radio mode makes the group required', async () => {
 		el = await fixture<HTMLElement>(`
-			<nldd-toggle-button-group required type="radio" name="weergave" accessible-label="Weergave">
+			<nldd-toggle-button-group required type="radio" name="view" accessible-label="Weergave">
 				<nldd-toggle-button value="lijst" text="Lijst"></nldd-toggle-button>
 				<nldd-toggle-button value="raster" text="Raster"></nldd-toggle-button>
 			</nldd-toggle-button-group>
@@ -203,7 +203,7 @@ describe('required on a group of controls', () => {
 
 	it('nldd-toggle-button-group: checkbox mode announces it without demanding every box', async () => {
 		el = await fixture<HTMLElement>(`
-			<nldd-toggle-button-group required type="checkbox" name="weergave" accessible-label="Weergave">
+			<nldd-toggle-button-group required type="checkbox" name="view" accessible-label="Weergave">
 				<nldd-toggle-button value="lijst" text="Lijst"></nldd-toggle-button>
 			</nldd-toggle-button-group>
 		`);
