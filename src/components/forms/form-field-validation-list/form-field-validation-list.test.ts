@@ -157,7 +157,7 @@ describe('nldd-form-field-validation-list', () => {
 		}
 	});
 
-	it('laat een hint staan als het veld goed is, en een gewoon item niet', async () => {
+	it('laat de hints los zodra er een oordeel is', async () => {
 		el = await fixture(`
 			<nldd-form-field label="Wachtwoord">
 				<nldd-text-field valid></nldd-text-field>
@@ -168,9 +168,26 @@ describe('nldd-form-field-validation-list', () => {
 			</nldd-form-field>
 		`);
 		await waitForUpdate(el);
-		expect(item(el, 'password-length').visible).toBe(true);
-		expect(item(el, 'password-length').unmet).toBe(false);
+		// Een hint beantwoordt "wat wil dit veld", en die vraag stel je niet meer
+		// zodra je te horen hebt gekregen wat er van je invoer klopt.
+		expect(item(el, 'password-length').visible).toBe(false);
 		expect(item(el, 'password-breach').visible).toBe(false);
+	});
+
+	it('laat een hint die niet voldaan is wél staan na een oordeel', async () => {
+		el = await fixture(`
+			<nldd-form-field label="Wachtwoord">
+				<nldd-text-field invalid></nldd-text-field>
+				<nldd-form-field-validation-list hint>
+					<nldd-form-field-validation-item id="password-length" minlength="8">Minimaal 8 tekens</nldd-form-field-validation-item>
+					<nldd-form-field-validation-item id="password-capital" match="[A-Z]">Een hoofdletter</nldd-form-field-validation-item>
+				</nldd-form-field-validation-list>
+			</nldd-form-field>
+		`);
+		await waitForUpdate(el);
+		await type(el, 'Kort');
+		expect(item(el, 'password-length').visible).toBe(true);
+		expect(item(el, 'password-capital').visible).toBe(false);
 	});
 
 	it('vindt z\'n control via `for` als hij buiten een veld staat', async () => {

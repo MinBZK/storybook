@@ -236,6 +236,9 @@ export class NLDDFormFieldValidationList extends LitElement {
 	private _evaluate(): void {
 		const control = this._resolved;
 		const invalid = control?.hasAttribute('invalid') ?? false;
+		// A hint answers "what does this field want", which is a question you
+		// stop asking the moment you are told what is wrong with what you wrote.
+		const judged = invalid || (control?.hasAttribute('valid') ?? false);
 		const named = (control?.getAttribute('unmet') ?? '').split(' ').filter(Boolean);
 		const value = this._currentValue();
 
@@ -265,7 +268,7 @@ export class NLDDFormFieldValidationList extends LitElement {
 			}
 
 			item.unmet = invalid && failing;
-			item.visible = item.unmet || item.hint || this.hint;
+			item.visible = item.unmet || (!judged && (item.hint || this.hint));
 			if (item.visible) anyVisible = true;
 			if (rule === false && !silenced) {
 				anyRuleFails = true;
