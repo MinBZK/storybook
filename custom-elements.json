@@ -7179,6 +7179,17 @@
               "reflects": true
             },
             {
+              "kind": "field",
+              "name": "invalid",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Marks the control as invalid.\n\nAnnounced and not drawn. What is wrong belongs in an\nnldd-form-field-validation-list, in words: a red ring around a single\ncheckbox or radio would say the option is wrong, while it is the question\nthat is unanswered. `aria-invalid` still goes on the control, because\nchoosing not to show something is not a reason to keep quiet about it.",
+              "attribute": "invalid",
+              "reflects": true
+            },
+            {
               "kind": "method",
               "name": "formValue",
               "return": {
@@ -7405,6 +7416,15 @@
               "default": "false",
               "fieldName": "required",
               "description": "Required state"
+            },
+            {
+              "name": "invalid",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Marks the control as invalid. Announced with aria-invalid; nothing is drawn for it.",
+              "fieldName": "invalid"
             }
           ],
           "mixins": [
@@ -7550,6 +7570,17 @@
               },
               "default": "false",
               "attribute": "required",
+              "reflects": true
+            },
+            {
+              "kind": "field",
+              "name": "invalid",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Marks the control as invalid.\n\nAnnounced and not drawn. What is wrong belongs in an\nnldd-form-field-validation-list, in words: a red ring around a single\ncheckbox or radio would say the option is wrong, while it is the question\nthat is unanswered. `aria-invalid` still goes on the control, because\nchoosing not to show something is not a reason to keep quiet about it.",
+              "attribute": "invalid",
               "reflects": true
             },
             {
@@ -7806,7 +7837,16 @@
               },
               "default": "false",
               "fieldName": "required",
-              "description": "Required state Note: aria-labelledby is not supported as IDREF resolution cannot cross shadow DOM boundaries."
+              "description": "Required state"
+            },
+            {
+              "name": "invalid",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Marks the control as invalid. Announced with aria-invalid; nothing is drawn for it. Note: aria-labelledby is not supported as IDREF resolution cannot cross shadow DOM boundaries.",
+              "fieldName": "invalid"
             }
           ],
           "mixins": [
@@ -8009,6 +8049,17 @@
               },
               "default": "''",
               "attribute": "accessible-label"
+            },
+            {
+              "kind": "field",
+              "name": "invalid",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Marks the control as invalid.\n\nAnnounced and not drawn. What is wrong belongs in an\nnldd-form-field-validation-list, in words: a red ring around a single\ncheckbox or radio would say the option is wrong, while it is the question\nthat is unanswered. `aria-invalid` still goes on the control, because\nchoosing not to show something is not a reason to keep quiet about it.",
+              "attribute": "invalid",
+              "reflects": true
             },
             {
               "kind": "method",
@@ -8285,6 +8336,15 @@
               "default": "''",
               "fieldName": "accessibleLabel",
               "description": "Accessible label forwarded to the editor. Set automatically by nldd-form-field."
+            },
+            {
+              "name": "invalid",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Marks the control as invalid. Announced with aria-invalid; nothing is drawn for it.",
+              "fieldName": "invalid"
             }
           ],
           "mixins": [
@@ -9636,6 +9696,17 @@
               "description": "Marks individual dates as unselectable - weekends, holidays, dates already booked."
             },
             {
+              "kind": "field",
+              "name": "invalid",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Marks the control as invalid.\n\nAnnounced and not drawn. What is wrong belongs in an\nnldd-form-field-validation-list, in words: a red ring around a single\ncheckbox or radio would say the option is wrong, while it is the question\nthat is unanswered. `aria-invalid` still goes on the control, because\nchoosing not to show something is not a reason to keep quiet about it.",
+              "attribute": "invalid",
+              "reflects": true
+            },
+            {
               "kind": "method",
               "name": "focus",
               "return": {
@@ -9795,6 +9866,15 @@
               "default": "''",
               "fieldName": "accessibleLabel",
               "description": "Accessible name of the calendar."
+            },
+            {
+              "name": "invalid",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Marks the control as invalid. Announced with aria-invalid; nothing is drawn for it.",
+              "fieldName": "invalid"
             },
             {
               "name": "translations",
@@ -11272,6 +11352,17 @@
               "attribute": "translations"
             },
             {
+              "kind": "field",
+              "name": "invalid",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Marks the control as invalid.\n\nAnnounced and not drawn. What is wrong belongs in an\nnldd-form-field-validation-list, in words: a red ring around a single\ncheckbox or radio would say the option is wrong, while it is the question\nthat is unanswered. `aria-invalid` still goes on the control, because\nchoosing not to show something is not a reason to keep quiet about it.",
+              "attribute": "invalid",
+              "reflects": true
+            },
+            {
               "kind": "method",
               "name": "formValue",
               "return": {
@@ -11535,6 +11626,15 @@
               "default": "{}",
               "description": "Translations; unspecified keys fall back to Dutch",
               "fieldName": "translations"
+            },
+            {
+              "name": "invalid",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Marks the control as invalid. Announced with aria-invalid; nothing is drawn for it.",
+              "fieldName": "invalid"
             }
           ],
           "mixins": [
@@ -12295,6 +12395,17 @@
               "attribute": "label"
             },
             {
+              "kind": "field",
+              "name": "invalid",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Marks the control as invalid.\n\nAnnounced and not drawn. What is wrong belongs in an\nnldd-form-field-validation-list, in words: a red ring around a single\ncheckbox or radio would say the option is wrong, while it is the question\nthat is unanswered. `aria-invalid` still goes on the control, because\nchoosing not to show something is not a reason to keep quiet about it.",
+              "attribute": "invalid",
+              "reflects": true
+            },
+            {
               "kind": "method",
               "name": "formValue",
               "return": {
@@ -12512,6 +12623,15 @@
               "default": "''",
               "fieldName": "label",
               "description": "Label text for the radio button"
+            },
+            {
+              "name": "invalid",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Marks the control as invalid. Announced with aria-invalid; nothing is drawn for it.",
+              "fieldName": "invalid"
             }
           ],
           "mixins": [
@@ -12619,6 +12739,17 @@
               "attribute": "accessible-labeled-by"
             },
             {
+              "kind": "field",
+              "name": "invalid",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Marks the control as invalid.\n\nAnnounced and not drawn. What is wrong belongs in an\nnldd-form-field-validation-list, in words: a red ring around a single\ncheckbox or radio would say the option is wrong, while it is the question\nthat is unanswered. `aria-invalid` still goes on the control, because\nchoosing not to show something is not a reason to keep quiet about it.",
+              "attribute": "invalid",
+              "reflects": true
+            },
+            {
               "kind": "method",
               "name": "focus",
               "return": {
@@ -12683,6 +12814,15 @@
               "default": "''",
               "fieldName": "accessibleLabeledBy",
               "description": "Id of an external label element, set as aria-labelledby on the group"
+            },
+            {
+              "name": "invalid",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Marks the control as invalid. Announced with aria-invalid; nothing is drawn for it.",
+              "fieldName": "invalid"
             }
           ],
           "superclass": {
@@ -12821,6 +12961,17 @@
               },
               "default": "''",
               "attribute": "accessible-label"
+            },
+            {
+              "kind": "field",
+              "name": "invalid",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Marks the control as invalid.\n\nAnnounced and not drawn. What is wrong belongs in an\nnldd-form-field-validation-list, in words: a red ring around a single\ncheckbox or radio would say the option is wrong, while it is the question\nthat is unanswered. `aria-invalid` still goes on the control, because\nchoosing not to show something is not a reason to keep quiet about it.",
+              "attribute": "invalid",
+              "reflects": true
             },
             {
               "kind": "method",
@@ -13067,7 +13218,16 @@
               },
               "default": "''",
               "fieldName": "accessibleLabel",
-              "description": "Accessible label forwarded as aria-label to the native input. Note: aria-labelledby is not supported as IDREF resolution cannot cross shadow DOM boundaries."
+              "description": "Accessible label forwarded as aria-label to the native input."
+            },
+            {
+              "name": "invalid",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Marks the control as invalid. Announced with aria-invalid; nothing is drawn for it. Note: aria-labelledby is not supported as IDREF resolution cannot cross shadow DOM boundaries.",
+              "fieldName": "invalid"
             }
           ],
           "mixins": [
@@ -13274,6 +13434,17 @@
               },
               "description": "Most characters the value may have, as the native `maxlength`.",
               "attribute": "maxlength",
+              "reflects": true
+            },
+            {
+              "kind": "field",
+              "name": "invalid",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Marks the control as invalid.\n\nAnnounced and not drawn. What is wrong belongs in an\nnldd-form-field-validation-list, in words: a red ring around a single\ncheckbox or radio would say the option is wrong, while it is the question\nthat is unanswered. `aria-invalid` still goes on the control, because\nchoosing not to show something is not a reason to keep quiet about it.",
+              "attribute": "invalid",
               "reflects": true
             },
             {
@@ -13572,6 +13743,15 @@
               },
               "description": "Most characters the value may have.",
               "fieldName": "maxlength"
+            },
+            {
+              "name": "invalid",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Marks the control as invalid. Announced with aria-invalid; nothing is drawn for it.",
+              "fieldName": "invalid"
             }
           ],
           "mixins": [
@@ -13872,6 +14052,17 @@
             },
             {
               "kind": "field",
+              "name": "invalid",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Marks the group as invalid.\n\nAnnounced and not drawn, and on the group and not on an item: a red ring\naround one option would say that option is wrong, while it is the question\nthat is unanswered. What is wrong belongs in an\nnldd-form-field-validation-list, in words.",
+              "attribute": "invalid",
+              "reflects": true
+            },
+            {
+              "kind": "field",
               "name": "isFormInput",
               "type": {
                 "text": "boolean"
@@ -14124,6 +14315,15 @@
               "fieldName": "required"
             },
             {
+              "name": "invalid",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Marks the group as invalid. Announced with aria-invalid; nothing is drawn for it.",
+              "fieldName": "invalid"
+            },
+            {
               "name": "value",
               "type": {
                 "text": "string"
@@ -14369,6 +14569,17 @@
               "attribute": "translations"
             },
             {
+              "kind": "field",
+              "name": "invalid",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Marks the control as invalid.\n\nAnnounced and not drawn. What is wrong belongs in an\nnldd-form-field-validation-list, in words: a red ring around a single\ncheckbox or radio would say the option is wrong, while it is the question\nthat is unanswered. `aria-invalid` still goes on the control, because\nchoosing not to show something is not a reason to keep quiet about it.",
+              "attribute": "invalid",
+              "reflects": true
+            },
+            {
               "kind": "method",
               "name": "formValue",
               "return": {
@@ -14610,6 +14821,15 @@
               "default": "{}",
               "description": "Translations; unspecified keys fall back to Dutch",
               "fieldName": "translations"
+            },
+            {
+              "name": "invalid",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Marks the control as invalid. Announced with aria-invalid; nothing is drawn for it.",
+              "fieldName": "invalid"
             }
           ],
           "mixins": [
@@ -14726,6 +14946,17 @@
               "reflects": true
             },
             {
+              "kind": "field",
+              "name": "invalid",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Marks the control as invalid.\n\nAnnounced and not drawn. What is wrong belongs in an\nnldd-form-field-validation-list, in words: a red ring around a single\ncheckbox or radio would say the option is wrong, while it is the question\nthat is unanswered. `aria-invalid` still goes on the control, because\nchoosing not to show something is not a reason to keep quiet about it.",
+              "attribute": "invalid",
+              "reflects": true
+            },
+            {
               "kind": "method",
               "name": "focus",
               "return": {
@@ -14832,6 +15063,15 @@
               "default": "false",
               "fieldName": "required",
               "description": "Required state"
+            },
+            {
+              "name": "invalid",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Marks the control as invalid. Announced with aria-invalid; nothing is drawn for it.",
+              "fieldName": "invalid"
             }
           ],
           "mixins": [
@@ -14963,6 +15203,17 @@
               },
               "default": "false",
               "attribute": "required",
+              "reflects": true
+            },
+            {
+              "kind": "field",
+              "name": "invalid",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Marks the control as invalid.\n\nAnnounced and not drawn. What is wrong belongs in an\nnldd-form-field-validation-list, in words: a red ring around a single\ncheckbox or radio would say the option is wrong, while it is the question\nthat is unanswered. `aria-invalid` still goes on the control, because\nchoosing not to show something is not a reason to keep quiet about it.",
+              "attribute": "invalid",
               "reflects": true
             },
             {
@@ -15211,6 +15462,15 @@
               "default": "false",
               "fieldName": "required",
               "description": "Required state"
+            },
+            {
+              "name": "invalid",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Marks the control as invalid. Announced with aria-invalid; nothing is drawn for it.",
+              "fieldName": "invalid"
             }
           ],
           "mixins": [
@@ -16755,6 +17015,17 @@
               "attribute": "translations"
             },
             {
+              "kind": "field",
+              "name": "invalid",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Marks the control as invalid.\n\nAnnounced and not drawn. What is wrong belongs in an\nnldd-form-field-validation-list, in words: a red ring around a single\ncheckbox or radio would say the option is wrong, while it is the question\nthat is unanswered. `aria-invalid` still goes on the control, because\nchoosing not to show something is not a reason to keep quiet about it.",
+              "attribute": "invalid",
+              "reflects": true
+            },
+            {
               "kind": "method",
               "name": "toggleBold",
               "return": {
@@ -17307,6 +17578,15 @@
               "default": "{}",
               "description": "Override the editor's assistive-tech strings (the open-in-new-tab link badge and the annotation count badge). Unset keys fall back to Dutch.",
               "fieldName": "translations"
+            },
+            {
+              "name": "invalid",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Marks the control as invalid. Announced with aria-invalid; nothing is drawn for it.",
+              "fieldName": "invalid"
             }
           ],
           "mixins": [
@@ -18823,6 +19103,17 @@
               "attribute": "translations"
             },
             {
+              "kind": "field",
+              "name": "invalid",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Marks the control as invalid.\n\nAnnounced and not drawn. What is wrong belongs in an\nnldd-form-field-validation-list, in words: a red ring around a single\ncheckbox or radio would say the option is wrong, while it is the question\nthat is unanswered. `aria-invalid` still goes on the control, because\nchoosing not to show something is not a reason to keep quiet about it.",
+              "attribute": "invalid",
+              "reflects": true
+            },
+            {
               "kind": "method",
               "name": "focus",
               "return": {
@@ -18962,6 +19253,15 @@
               "default": "{}",
               "fieldName": "translations",
               "description": "Translations; unspecified keys fall back to Dutch."
+            },
+            {
+              "name": "invalid",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Marks the control as invalid. Announced with aria-invalid; nothing is drawn for it.",
+              "fieldName": "invalid"
             }
           ],
           "mixins": [
@@ -19103,6 +19403,17 @@
               "attribute": "accessible-labeled-by"
             },
             {
+              "kind": "field",
+              "name": "invalid",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Marks the control as invalid.\n\nAnnounced and not drawn. What is wrong belongs in an\nnldd-form-field-validation-list, in words: a red ring around a single\ncheckbox or radio would say the option is wrong, while it is the question\nthat is unanswered. `aria-invalid` still goes on the control, because\nchoosing not to show something is not a reason to keep quiet about it.",
+              "attribute": "invalid",
+              "reflects": true
+            },
+            {
               "kind": "method",
               "name": "focus",
               "return": {
@@ -19185,6 +19496,15 @@
               "default": "''",
               "description": "ID of an external label element (aria-labelledby)",
               "fieldName": "accessibleLabeledBy"
+            },
+            {
+              "name": "invalid",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Marks the control as invalid. Announced with aria-invalid; nothing is drawn for it.",
+              "fieldName": "invalid"
             }
           ],
           "superclass": {
@@ -19364,6 +19684,17 @@
               },
               "default": "''",
               "attribute": "accessible-label"
+            },
+            {
+              "kind": "field",
+              "name": "invalid",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Marks the control as invalid.\n\nAnnounced and not drawn. What is wrong belongs in an\nnldd-form-field-validation-list, in words: a red ring around a single\ncheckbox or radio would say the option is wrong, while it is the question\nthat is unanswered. `aria-invalid` still goes on the control, because\nchoosing not to show something is not a reason to keep quiet about it.",
+              "attribute": "invalid",
+              "reflects": true
             },
             {
               "kind": "method",
@@ -19647,6 +19978,15 @@
               "default": "''",
               "fieldName": "accessibleLabel",
               "description": "Accessible label; required for icon-only usage"
+            },
+            {
+              "name": "invalid",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Marks the control as invalid. Announced with aria-invalid; nothing is drawn for it.",
+              "fieldName": "invalid"
             }
           ],
           "mixins": [
@@ -35077,6 +35417,30 @@
           "description": "Points an element at the elements that describe it.\n\nElement references and not ids, because an id only resolves inside the tree\nof the element that carries it. An `aria-describedby=\"err\"` on an input in a\nshadow root cannot find an error text in the light DOM: the attribute is\nwritten, the id is right, and the description comes out empty.\n`ariaDescribedByElements` takes the elements themselves and crosses the\nboundary."
         },
         {
+          "kind": "function",
+          "name": "applyInvalid",
+          "return": {
+            "type": {
+              "text": "void"
+            }
+          },
+          "parameters": [
+            {
+              "name": "target",
+              "type": {
+                "text": "Element | null | undefined"
+              }
+            },
+            {
+              "name": "invalid",
+              "type": {
+                "text": "boolean"
+              }
+            }
+          ],
+          "description": "Announces that a control is invalid, on the element assistive software meets.\n\nNothing is drawn for it, and that is a decision rather than an omission: what\nis wrong belongs in an nldd-form-field-validation-list, in words. A red ring\naround a single checkbox would say the option is wrong, while it is the\nquestion that is unanswered. Choosing not to show it is no reason to keep\nquiet about it, so `aria-invalid` goes on regardless.\n\nA component that wraps another one hands the state on, the same way it hands\non the description."
+        },
+        {
           "kind": "mixin",
           "description": "Lets nldd-form-field hand a control the help and error texts that describe\nit, wherever that control renders them.\n\nThe component answers where, because only it knows: a text field describes\nits inner input, a radio group describes itself because it carries the role,\nand an editor describes the contenteditable it builds. Override\n`describedTarget()` when the default of \"the first native control in my\nshadow root\" is not it.\n\nA controller, not an `updated()` override: a component that defines its own\n`updated()` would have to remember to call super, and forgetting that fails\nsilently in exactly the way this mixin exists to prevent.",
           "name": "DescribedBy",
@@ -35117,6 +35481,14 @@
           "name": "applyDescribedBy",
           "declaration": {
             "name": "applyDescribedBy",
+            "module": "src/utilities/described-by-mixin.ts"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "applyInvalid",
+          "declaration": {
+            "name": "applyInvalid",
             "module": "src/utilities/described-by-mixin.ts"
           }
         },

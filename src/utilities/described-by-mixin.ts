@@ -38,6 +38,28 @@ export function applyDescribedBy(target: Element | null | undefined, elements: r
 }
 
 /**
+ * Announces that a control is invalid, on the element assistive software meets.
+ *
+ * Nothing is drawn for it, and that is a decision rather than an omission: what
+ * is wrong belongs in an nldd-form-field-validation-list, in words. A red ring
+ * around a single checkbox would say the option is wrong, while it is the
+ * question that is unanswered. Choosing not to show it is no reason to keep
+ * quiet about it, so `aria-invalid` goes on regardless.
+ *
+ * A component that wraps another one hands the state on, the same way it hands
+ * on the description.
+ */
+export function applyInvalid(target: Element | null | undefined, invalid: boolean): void {
+	if (!target) return;
+	if ('invalid' in target) {
+		(target as Element & { invalid: boolean }).invalid = invalid;
+		return;
+	}
+	if (invalid) target.setAttribute('aria-invalid', 'true');
+	else target.removeAttribute('aria-invalid');
+}
+
+/**
  * Lets nldd-form-field hand a control the help and error texts that describe
  * it, wherever that control renders them.
  *
@@ -62,7 +84,14 @@ export function DescribedBy<T extends Constructor<LitElement>>(
 		constructor(...args: any[]) {
 			super(...args);
 			const apply: ReactiveController = {
-				hostUpdated: () => applyDescribedBy(this.describedTarget(), this.describedByElements),
+				hostUpdated: () => {
+					const target = this.describedTarget();
+					applyDescribedBy(target, this.describedByElements);
+					// Optional: nldd-button carries this mixin for its description and
+					// has no validity of its own.
+					const invalid = (this as { invalid?: boolean }).invalid;
+					if (invalid !== undefined) applyInvalid(target, invalid);
+				},
 			};
 			this.addController(apply);
 		}

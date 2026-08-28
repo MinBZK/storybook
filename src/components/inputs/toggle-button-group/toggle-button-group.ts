@@ -17,6 +17,7 @@
  * @attr {string} accessible-label - Accessible name for the group (aria-label)
  * @attr {string} accessible-labeled-by - ID of an external label element (aria-labelledby)
  * @attr {boolean} required - Marks the group as required. Enforced in radio mode; in checkbox mode only announced.
+ * @attr {boolean} invalid - Marks the control as invalid. Announced with aria-invalid; nothing is drawn for it.
  *
  * @slot - nldd-toggle-button elements
  *
@@ -82,6 +83,19 @@ export class NLDDToggleButtonGroup extends LitElement {
 	/** The name this group wrote onto its host, so it only takes back its own. */
 	private _appliedLabel: string | null = null;
 
+
+	/**
+	 * Marks the control as invalid.
+	 *
+	 * Announced and not drawn. What is wrong belongs in an
+	 * nldd-form-field-validation-list, in words: a red ring around a single
+	 * checkbox or radio would say the option is wrong, while it is the question
+	 * that is unanswered. `aria-invalid` still goes on the control, because
+	 * choosing not to show something is not a reason to keep quiet about it.
+	 */
+	@property({ type: Boolean, reflect: true })
+	invalid = false;
+
 	override connectedCallback(): void {
 		super.connectedCallback();
 		this._syncRole();
@@ -133,6 +147,9 @@ export class NLDDToggleButtonGroup extends LitElement {
 
 	private _syncButtons(): void {
 		this.toggleAttribute('aria-required', this.required);
+		// Announced, not drawn. See the note on `invalid`.
+		if (this.invalid) this.setAttribute('aria-invalid', 'true');
+		else this.removeAttribute('aria-invalid');
 
 		if (import.meta.env?.DEV && this.required && this.type === 'checkbox' && !this._warnedRequired) {
 			this._warnedRequired = true;

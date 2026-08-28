@@ -16,6 +16,7 @@
  * @attr {string} accessible-label - Accessible name for the group, set as aria-label
  * @attr {string} accessible-labeled-by - Id of an external label element, set as aria-labelledby on the group
  * @attr {boolean} required - Marks the group as required. Enforced in radio mode; in checkbox mode only announced.
+ * @attr {boolean} invalid - Marks the group as invalid. Announced with aria-invalid; nothing is drawn for it.
  *
  * @fires change - When selection changes; detail: { value: string } for radio, detail: { values: string[] } for checkbox
  *
@@ -105,6 +106,7 @@ export class NLDDSegmentedControlItem extends LitElement {
 	@property({ type: String })
 	icon = '';
 
+
 	public _handleChange(e: Event): void {
 		const input = e.target as HTMLInputElement;
 		this.dispatchEvent(new CustomEvent('item-change', {
@@ -150,6 +152,17 @@ export class NLDDSegmentedControl extends FormAssociated(LitElement) {
 	 */
 	@property({ type: Boolean, reflect: true })
 	required = false;
+
+	/**
+	 * Marks the group as invalid.
+	 *
+	 * Announced and not drawn, and on the group and not on an item: a red ring
+	 * around one option would say that option is wrong, while it is the question
+	 * that is unanswered. What is wrong belongs in an
+	 * nldd-form-field-validation-list, in words.
+	 */
+	@property({ type: Boolean, reflect: true })
+	invalid = false;
 
 	private _warnedRequired = false;
 
@@ -330,6 +343,9 @@ export class NLDDSegmentedControl extends FormAssociated(LitElement) {
 		const items = this._getItems();
 		items.forEach(item => { item.required = this.required && this.type !== 'checkbox'; });
 		this.toggleAttribute('aria-required', this.required);
+		// Announced, not drawn. See the note on `invalid`.
+		if (this.invalid) this.setAttribute('aria-invalid', 'true');
+		else this.removeAttribute('aria-invalid');
 
 		if (import.meta.env?.DEV && this.required && this.type === 'checkbox' && !this._warnedRequired) {
 			this._warnedRequired = true;

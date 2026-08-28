@@ -21,6 +21,7 @@
  * @attr {string} width - Width: `full` fills the container, or pass your own CSS length.
  * @attr {string} accessible-label - Accessible name of the picker.
  * @attr {object} translations - Translations; unspecified keys fall back to Dutch.
+ * @attr {boolean} invalid - Marks the control as invalid. Announced with aria-invalid; nothing is drawn for it.
  *
  * @fires input - On every change: scrolling, the arrow keys. detail: { value } with `HH:mm`.
  * @fires change - When the choice is confirmed: a click on a value or on the selection, or Enter. detail: { value } with `HH:mm`. Scrolling only fires `input`, because otherwise a field showing the picker in a popover would commit as soon as you stopped scrolling.
@@ -90,6 +91,19 @@ export class NLDDTimePicker extends DescribedBy(LitElement) {
 	 */
 	@state()
 	private _scrolledTo: { hours: number | null; minutes: number | null } = { hours: null, minutes: null };
+
+
+	/**
+	 * Marks the control as invalid.
+	 *
+	 * Announced and not drawn. What is wrong belongs in an
+	 * nldd-form-field-validation-list, in words: a red ring around a single
+	 * checkbox or radio would say the option is wrong, while it is the question
+	 * that is unanswered. `aria-invalid` still goes on the control, because
+	 * choosing not to show something is not a reason to keep quiet about it.
+	 */
+	@property({ type: Boolean, reflect: true })
+	invalid = false;
 
 	public _t(key: keyof NLDDTimePickerTranslations): string {
 		return this.translations[key] ?? nlddTimePickerTranslations[key];

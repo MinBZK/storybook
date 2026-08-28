@@ -34,6 +34,7 @@
  * @attr {string} language - Highlight grammar (yaml, json, javascript, typescript, css, html, xml, bash, markdown, rust, gherkin, toml, sql, python). Empty disables highlighting.
  * @attr {boolean} line-numbers - Show a line-number gutter
  * @attr {string} accessible-label - Accessible label forwarded to the editor. Set automatically by nldd-form-field.
+ * @attr {boolean} invalid - Marks the control as invalid. Announced with aria-invalid; nothing is drawn for it.
  *
  * @fires input - When the content changes (detail: { value })
  * @fires change - When the content is committed on blur (detail: { value })
@@ -131,6 +132,19 @@ export class NLDDCodeEditor extends DescribedBy(FormAssociated(NLDDCodeMirrorEle
 	private _placeholderCompartment = new Compartment();
 	private _attrsCompartment = new Compartment();
 	private _languageCompartment = new Compartment();
+
+
+	/**
+	 * Marks the control as invalid.
+	 *
+	 * Announced and not drawn. What is wrong belongs in an
+	 * nldd-form-field-validation-list, in words: a red ring around a single
+	 * checkbox or radio would say the option is wrong, while it is the question
+	 * that is unanswered. `aria-invalid` still goes on the control, because
+	 * choosing not to show something is not a reason to keep quiet about it.
+	 */
+	@property({ type: Boolean, reflect: true })
+	invalid = false;
 
 	protected getEditorParent(): HTMLElement | null | undefined {
 		return this._container;

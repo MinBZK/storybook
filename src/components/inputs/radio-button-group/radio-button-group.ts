@@ -11,6 +11,7 @@
  * @attr {boolean} required - Marks the group as required
  * @attr {string} accessible-label - Accessible name for the group, set as aria-label on the group
  * @attr {string} accessible-labeled-by - Id of an external label element, set as aria-labelledby on the group
+ * @attr {boolean} invalid - Marks the control as invalid. Announced with aria-invalid; nothing is drawn for it.
  *
  * @slot - Slot for nldd-radio-button-field elements
  *
@@ -50,6 +51,19 @@ export class NLDDRadioButtonGroup extends LitElement {
 	/** The name this group wrote onto its host, so it only takes back its own. */
 	private _appliedLabel: string | null = null;
 
+
+	/**
+	 * Marks the control as invalid.
+	 *
+	 * Announced and not drawn. What is wrong belongs in an
+	 * nldd-form-field-validation-list, in words: a red ring around a single
+	 * checkbox or radio would say the option is wrong, while it is the question
+	 * that is unanswered. `aria-invalid` still goes on the control, because
+	 * choosing not to show something is not a reason to keep quiet about it.
+	 */
+	@property({ type: Boolean, reflect: true })
+	invalid = false;
+
 	override connectedCallback(): void {
 		super.connectedCallback();
 		this.setAttribute('role', 'radiogroup');
@@ -76,6 +90,11 @@ export class NLDDRadioButtonGroup extends LitElement {
 		// Only ever take back a name this group wrote itself. Without the guard the
 		// first update would strip an aria-label the consumer put on the host,
 		// because "no accessible-label here" would be read as "remove the name".
+		// Announced, not drawn. See the note on `invalid`.
+		if (changed.has('invalid')) {
+			if (this.invalid) this.setAttribute('aria-invalid', 'true');
+			else this.removeAttribute('aria-invalid');
+		}
 		if (changed.has('accessibleLabel')) {
 			this._appliedLabel = setOwnedAttribute(this, 'aria-label', this.accessibleLabel, this._appliedLabel);
 		}

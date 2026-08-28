@@ -15,6 +15,7 @@
  * @attr {string} width - Width mode: 'full' (stretches to container) or any CSS length (e.g. '240px')
  * @attr {boolean} hide-spin-buttons - When set, hides the decrement and increment buttons
  * @attr {string} accessible-label - Accessible label (aria-label) forwarded to the native input
+ * @attr {boolean} invalid - Marks the control as invalid. Announced with aria-invalid; nothing is drawn for it.
  *
  * @fires input - When the value changes (typing, +/- button, or on-commit correction); detail: { value: number }
  * @fires change - When the value is committed (blur/Enter or +/- button), clamped to [min, max]; empty input falls back to the last valid value. When the committed value differs from the typed value, a matching input event is fired immediately before this one. detail: { value: number }
@@ -90,6 +91,19 @@ export class NLDDNumberField extends DescribedBy(FormAssociated(LitElement)) {
 	 *  Initialized to the clamped `value` in firstUpdated — the 0 default is only
 	 *  relevant before the first render, which no user-facing handler can reach. */
 	private _lastValidValue = 0;
+
+
+	/**
+	 * Marks the control as invalid.
+	 *
+	 * Announced and not drawn. What is wrong belongs in an
+	 * nldd-form-field-validation-list, in words: a red ring around a single
+	 * checkbox or radio would say the option is wrong, while it is the question
+	 * that is unanswered. `aria-invalid` still goes on the control, because
+	 * choosing not to show something is not a reason to keep quiet about it.
+	 */
+	@property({ type: Boolean, reflect: true })
+	invalid = false;
 
 	override firstUpdated(): void {
 		if (import.meta.env?.DEV && !this.accessibleLabel) {

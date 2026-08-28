@@ -43,6 +43,12 @@ export abstract class NLDDCodeMirrorElement extends LitElement {
 			root: this.shadowRoot ?? undefined,
 		});
 		this._hasMounted = true;
+
+		// CodeMirror builds its DOM after the render that made room for it, so
+		// anything that points at .cm-content ran too early. Ask for one more
+		// update now that it is there, or the description and aria-invalid land
+		// nowhere and stay there.
+		this.requestUpdate();
 	}
 
 	/**

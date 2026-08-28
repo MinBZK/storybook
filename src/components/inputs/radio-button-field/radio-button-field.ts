@@ -16,6 +16,7 @@
  * @attr {string} name - Radio group name for form submission, forwarded to the inner nldd-radio-button. Set automatically by nldd-radio-button-group.
  * @attr {boolean} required - Required state, forwarded to the inner nldd-radio-button. Set automatically by nldd-radio-button-group.
  * @attr {string} label - Label text for the radio button
+ * @attr {boolean} invalid - Marks the control as invalid. Announced with aria-invalid; nothing is drawn for it.
  *
  * @fires change - When checked state changes; detail: { checked: boolean, value: string }
  */
@@ -59,6 +60,19 @@ export class NLDDRadioButtonField extends DescribedBy(FormAssociated(LitElement)
 
 	@property({ type: String })
 	label = '';
+
+
+	/**
+	 * Marks the control as invalid.
+	 *
+	 * Announced and not drawn. What is wrong belongs in an
+	 * nldd-form-field-validation-list, in words: a red ring around a single
+	 * checkbox or radio would say the option is wrong, while it is the question
+	 * that is unanswered. `aria-invalid` still goes on the control, because
+	 * choosing not to show something is not a reason to keep quiet about it.
+	 */
+	@property({ type: Boolean, reflect: true })
+	invalid = false;
 
 	override firstUpdated(): void {
 		this._initialChecked = this.checked;

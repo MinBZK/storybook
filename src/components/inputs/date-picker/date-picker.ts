@@ -21,6 +21,7 @@
  * @attr {string} width - Width: `full` (fills the container) or a CSS length (e.g. `560px`). Empty (default) is the intrinsic width of seven day cells; the cells stretch along with the width you pass.
  * @attr {string} accessible-label - Accessible name of the calendar.
  * @attr {object} translations - Translations; unspecified keys fall back to Dutch.
+ * @attr {boolean} invalid - Marks the control as invalid. Announced with aria-invalid; nothing is drawn for it.
  *
  * @prop {(iso: string) => boolean} isDateUnavailable - Marks individual dates as not selectable, for example weekends or public holidays.
  *
@@ -254,6 +255,19 @@ export class NLDDDatePicker extends DescribedBy(withTranslations<NLDDDatePickerT
 
 	/** Set when the keyboard moved focus, so only then is focus pulled to a cell. */
 	private _restoreFocus = false;
+
+
+	/**
+	 * Marks the control as invalid.
+	 *
+	 * Announced and not drawn. What is wrong belongs in an
+	 * nldd-form-field-validation-list, in words: a red ring around a single
+	 * checkbox or radio would say the option is wrong, while it is the question
+	 * that is unanswered. `aria-invalid` still goes on the control, because
+	 * choosing not to show something is not a reason to keep quiet about it.
+	 */
+	@property({ type: Boolean, reflect: true })
+	invalid = false;
 
 	override connectedCallback(): void {
 		super.connectedCallback();

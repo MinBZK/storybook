@@ -772,7 +772,8 @@ Nederlandse Digitale Dienst Form Section Component Plain custom element (extends
 | `value` | `string` | Value for form submission |
 | `name` | `string` | Name for form submission |
 | `accessible-label` | `string` | Accessible label forwarded as aria-label to the native input. |
-| `required` | `boolean` | Required state Note: aria-labelledby is not supported as IDREF resolution cannot cross shadow DOM boundaries. |
+| `required` | `boolean` | Required state |
+| `invalid` | `boolean` | Marks the control as invalid. Announced with aria-invalid; nothing is drawn for it. Note: aria-labelledby is not supported as IDREF resolution cannot cross shadow DOM boundaries. |
 
 **Events**
 
@@ -795,6 +796,7 @@ A checkbox with an inline label for use in forms. Form-associated: participates 
 | `name` | `string` | Name for form submission |
 | `label` | `string` | Label text for the checkbox |
 | `required` | `boolean` | Required state |
+| `invalid` | `boolean` | Marks the control as invalid. Announced with aria-invalid; nothing is drawn for it. |
 
 **Events**
 
@@ -824,6 +826,7 @@ A monospace editor for code, YAML, JSON and other technical content, built on Co
 | `language` | `string` | Highlight grammar (yaml, json, javascript, typescript, css, html, xml, bash, markdown, rust, gherkin, toml, sql, python). Empty disables highlighting. |
 | `line-numbers` | `boolean` | Show a line-number gutter |
 | `accessible-label` | `string` | Accessible label forwarded to the editor. Set automatically by nldd-form-field. |
+| `invalid` | `boolean` | Marks the control as invalid. Announced with aria-invalid; nothing is drawn for it. |
 
 **Events**
 
@@ -933,6 +936,7 @@ A calendar for picking a date or a period. The component works on its own (inlin
 | `width` | `string` | Width: `full` (fills the container) or a CSS length (e.g. `560px`). Empty (default) is the intrinsic width of seven day cells; the cells stretch along with the width you pass. |
 | `accessible-label` | `string` | Accessible name of the calendar. |
 | `translations` | `object` | Translations; unspecified keys fall back to Dutch. |
+| `invalid` | `boolean` | Marks the control as invalid. Announced with aria-invalid; nothing is drawn for it. |
 
 **Events**
 
@@ -1049,6 +1053,7 @@ A numeric input field with decrement and increment buttons.
 | `width` | `string` | Width mode: 'full' (stretches to container) or any CSS length (e.g. '240px') |
 | `hide-spin-buttons` | `boolean` | When set, hides the decrement and increment buttons |
 | `accessible-label` | `string` | Accessible label (aria-label) forwarded to the native input |
+| `invalid` | `boolean` | Marks the control as invalid. Announced with aria-invalid; nothing is drawn for it. |
 
 **Events**
 
@@ -1109,7 +1114,8 @@ WAI-ARIA: Wrap radio buttons in a <fieldset>/<legend> or a container with role="
 | `required` | `boolean` | Required state |
 | `name` | `string` | Radio group name for form submission; ties the buttons of one group together |
 | `value` | `string` | Value submitted with the form when this radio button is checked |
-| `accessible-label` | `string` | Accessible label forwarded as aria-label to the native input. Note: aria-labelledby is not supported as IDREF resolution cannot cross shadow DOM boundaries. |
+| `accessible-label` | `string` | Accessible label forwarded as aria-label to the native input. |
+| `invalid` | `boolean` | Marks the control as invalid. Announced with aria-invalid; nothing is drawn for it. Note: aria-labelledby is not supported as IDREF resolution cannot cross shadow DOM boundaries. |
 
 **Events**
 
@@ -1131,6 +1137,7 @@ A radio button with an inline label. Use inside nldd-radio-button-group for keyb
 | `name` | `string` | Radio group name for form submission, forwarded to the inner nldd-radio-button. Set automatically by nldd-radio-button-group. |
 | `required` | `boolean` | Required state, forwarded to the inner nldd-radio-button. Set automatically by nldd-radio-button-group. |
 | `label` | `string` | Label text for the radio button |
+| `invalid` | `boolean` | Marks the control as invalid. Announced with aria-invalid; nothing is drawn for it. |
 
 **Events**
 
@@ -1151,6 +1158,7 @@ Groups nldd-radio-button-field elements, handles keyboard navigation, and forwar
 | `required` | `boolean` | Marks the group as required |
 | `accessible-label` | `string` | Accessible name for the group, set as aria-label on the group |
 | `accessible-labeled-by` | `string` | Id of an external label element, set as aria-labelledby on the group |
+| `invalid` | `boolean` | Marks the control as invalid. Announced with aria-invalid; nothing is drawn for it. |
 
 **Slots**
 
@@ -1186,6 +1194,7 @@ A search input with a leading search icon, an optional dismiss button, and an op
 | `pattern` | `string` | Regular expression the value has to match, as the native `pattern`. |
 | `minlength` | `number` | Fewest characters the value may have. |
 | `maxlength` | `number` | Most characters the value may have. |
+| `invalid` | `boolean` | Marks the control as invalid. Announced with aria-invalid; nothing is drawn for it. |
 
 **Events**
 
@@ -1213,6 +1222,7 @@ A horizontal group of mutually exclusive (radio) or multi-select (checkbox) opti
 | `accessible-label` | `string` | Accessible name for the group, set as aria-label |
 | `accessible-labeled-by` | `string` | Id of an external label element, set as aria-labelledby on the group |
 | `required` | `boolean` | Marks the group as required. Enforced in radio mode; in checkbox mode only announced. |
+| `invalid` | `boolean` | Marks the group as invalid. Announced with aria-invalid; nothing is drawn for it. |
 
 **Slots**
 
@@ -1272,6 +1282,7 @@ A numeric control with increment and decrement buttons.
 | `name` | `string` | Name for form submission; the value is submitted under this name |
 | `accessible-label` | `string` | Accessible name for the spinbutton; falls back to a generic label |
 | `translations` | `object` | Translations; unspecified keys fall back to Dutch |
+| `invalid` | `boolean` | Marks the control as invalid. Announced with aria-invalid; nothing is drawn for it. |
 
 **Events**
 
@@ -1295,6 +1306,7 @@ A toggle control for on/off settings. Prefer nldd-switch-field for labeled usage
 | `value` | `string` | Value submitted with the form when the switch is on (default: 'on') |
 | `accessible-label` | `string` | Accessible label forwarded as aria-label to the native input. Required when using nldd-switch without nldd-switch-field. |
 | `required` | `boolean` | Required state |
+| `invalid` | `boolean` | Marks the control as invalid. Announced with aria-invalid; nothing is drawn for it. |
 
 **Events**
 
@@ -1316,6 +1328,7 @@ A switch toggle with an inline label for use in forms.
 | `name` | `string` | Name for form submission |
 | `label` | `string` | Label text for the switch |
 | `required` | `boolean` | Required state |
+| `invalid` | `boolean` | Marks the control as invalid. Announced with aria-invalid; nothing is drawn for it. |
 
 **Events**
 
@@ -1345,6 +1358,7 @@ A hybrid markdown editor built on CodeMirror 6 (via NLDDCodeMirrorElement): the 
 | `accessible-label` | `string` | Accessible label forwarded to the editor. Set automatically by nldd-form-field. |
 | `annotatable` | `boolean` | Enable the annotation overlay (off by default). Annotations only render when this is set. |
 | `translations` | `object` | Override the editor's assistive-tech strings (the open-in-new-tab link badge and the annotation count badge). Unset keys fall back to Dutch. |
+| `invalid` | `boolean` | Marks the control as invalid. Announced with aria-invalid; nothing is drawn for it. |
 
 **Events**
 
@@ -1446,6 +1460,7 @@ Two columns, hours and minutes, that slide like a wheel past the selection in th
 | `width` | `string` | Width: `full` fills the container, or pass your own CSS length. |
 | `accessible-label` | `string` | Accessible name of the picker. |
 | `translations` | `object` | Translations; unspecified keys fall back to Dutch. |
+| `invalid` | `boolean` | Marks the control as invalid. Announced with aria-invalid; nothing is drawn for it. |
 
 **Events**
 
@@ -1474,6 +1489,7 @@ A selectable button that toggles between selected and unselected. Available as a
 | `variant` | `'text' \| 'icon' \| 'icon-and-text'` | What renders: text, icon, or both. Unset → auto-detect from text/icon attributes. |
 | `accessible-label` | `string` | Accessible label; required for icon-only usage |
 | `required` | `boolean` | Required state. Set by nldd-toggle-button-group. |
+| `invalid` | `boolean` | Marks the control as invalid. Announced with aria-invalid; nothing is drawn for it. |
 
 **Slots**
 
@@ -1502,6 +1518,7 @@ Groups nldd-toggle-button elements and manages selection, keyboard navigation, a
 | `accessible-label` | `string` | Accessible name for the group (aria-label) |
 | `accessible-labeled-by` | `string` | ID of an external label element (aria-labelledby) |
 | `required` | `boolean` | Marks the group as required. Enforced in radio mode; in checkbox mode only announced. |
+| `invalid` | `boolean` | Marks the control as invalid. Announced with aria-invalid; nothing is drawn for it. |
 
 **Slots**
 

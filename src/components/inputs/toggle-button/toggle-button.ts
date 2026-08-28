@@ -18,6 +18,7 @@
  * @attr {'text' | 'icon' | 'icon-and-text'} variant - What renders: text, icon, or both. Unset → auto-detect from text/icon attributes.
  * @attr {string} accessible-label - Accessible label; required for icon-only usage
  * @attr {boolean} required - Required state. Set by nldd-toggle-button-group.
+ * @attr {boolean} invalid - Marks the control as invalid. Announced with aria-invalid; nothing is drawn for it.
  *
  * @slot icon - Slot for a custom icon (e.g. custom SVG). Only used when icon attribute is not set.
  *
@@ -106,6 +107,19 @@ export class NLDDToggleButton extends DescribedBy(FormAssociated(LitElement)) {
 
 	private _warnedA11y = false;
 	private _warnedEmptyIcon = false;
+
+
+	/**
+	 * Marks the control as invalid.
+	 *
+	 * Announced and not drawn. What is wrong belongs in an
+	 * nldd-form-field-validation-list, in words: a red ring around a single
+	 * checkbox or radio would say the option is wrong, while it is the question
+	 * that is unanswered. `aria-invalid` still goes on the control, because
+	 * choosing not to show something is not a reason to keep quiet about it.
+	 */
+	@property({ type: Boolean, reflect: true })
+	invalid = false;
 
 	override firstUpdated(): void {
 		this._initialSelected = this.selected;

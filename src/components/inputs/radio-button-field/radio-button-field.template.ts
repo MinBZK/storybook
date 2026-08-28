@@ -10,6 +10,7 @@ export function radioButtonFieldTemplate(component: NLDDRadioButtonField): Templ
 		>
 			<div class="radio-button-field__control">
 				<nldd-radio-button
+					?invalid=${component.invalid}
 					?checked=${component.checked}
 					?disabled=${component.disabled}
 					?required=${component.required}

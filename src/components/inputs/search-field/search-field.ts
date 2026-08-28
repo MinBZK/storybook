@@ -19,6 +19,7 @@
  * @attr {string} pattern - Regular expression the value has to match, as the native `pattern`.
  * @attr {number} minlength - Fewest characters the value may have.
  * @attr {number} maxlength - Most characters the value may have.
+ * @attr {boolean} invalid - Marks the control as invalid. Announced with aria-invalid; nothing is drawn for it.
  *
  * @fires input - When the input value changes; detail: { value: string }
  * @fires change - When the input value is committed; detail: { value: string }
@@ -110,6 +111,19 @@ export class NLDDSearchField extends DescribedBy(FormAssociated(LitElement)) {
 	/** Most characters the value may have, as the native `maxlength`. */
 	@property({ type: Number, reflect: true })
 	maxlength?: number;
+
+
+	/**
+	 * Marks the control as invalid.
+	 *
+	 * Announced and not drawn. What is wrong belongs in an
+	 * nldd-form-field-validation-list, in words: a red ring around a single
+	 * checkbox or radio would say the option is wrong, while it is the question
+	 * that is unanswered. `aria-invalid` still goes on the control, because
+	 * choosing not to show something is not a reason to keep quiet about it.
+	 */
+	@property({ type: Boolean, reflect: true })
+	invalid = false;
 
 	override firstUpdated(): void {
 		this._initialValue = this.value;
