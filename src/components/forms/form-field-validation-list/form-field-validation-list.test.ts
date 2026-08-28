@@ -295,5 +295,34 @@ describe('nldd-form markeert een control op het moment dat het platform het zegt
 		control.dispatchEvent(new Event('input', { bubbles: true }));
 		await waitForUpdate(el);
 		expect(control.hasAttribute('invalid')).toBe(false);
+
+		// En weer terug: het formulier weigert dit opnieuw, dus het veld hoort
+		// dat te zeggen in plaats van stil te blijven.
+		control.value = 'kort';
+		control.dispatchEvent(new Event('input', { bubbles: true }));
+		await waitForUpdate(el);
+		expect(control.hasAttribute('invalid')).toBe(true);
+		expect(item(el, 'length').visible).toBe(true);
+	});
+
+	it('laat een veld dat nog nooit beoordeeld is met rust tijdens het typen', async () => {
+		el = await fixture(`
+			<nldd-form novalidate>
+				<nldd-form-field label="Wachtwoord">
+					<nldd-text-field name="pw"></nldd-text-field>
+					<nldd-form-field-validation-list>
+						<nldd-form-field-validation-item id="length" minlength="8">Minimaal 8 tekens</nldd-form-field-validation-item>
+					</nldd-form-field-validation-list>
+				</nldd-form-field>
+			</nldd-form>
+		`);
+		await waitForUpdate(el);
+		const control = el.querySelector('nldd-text-field') as HTMLElement & { value: string };
+
+		control.value = 'k';
+		control.dispatchEvent(new Event('input', { bubbles: true }));
+		await waitForUpdate(el);
+		expect(control.hasAttribute('invalid')).toBe(false);
+		expect(item(el, 'length').visible).toBe(false);
 	});
 });

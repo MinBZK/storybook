@@ -150,11 +150,18 @@ export const MetFor = () => html`
 	</nldd-form>
 `;
 
-/** In een formulier, naast een help-tekst die iets anders doet: die houdt je niet tegen. */
+/**
+ * In een formulier, naast een help-tekst die iets anders doet: die houdt je niet
+ * tegen en blijft dus staan.
+ *
+ * Verstuur met een leeg veld en de regel verschijnt. Typ een apenstaartje en hij
+ * gaat uit, wis het weer en hij komt terug, want het formulier weigert dat
+ * opnieuw.
+ */
 export const NaastHelpTekst = () => html`
 	<nldd-form>
 		<nldd-form-field label="E-mailadres">
-			<nldd-text-field name="email" invalid></nldd-text-field>
+			<nldd-text-field name="email"></nldd-text-field>
 			<nldd-form-field-validation-list>
 				<nldd-form-field-validation-item id="at" match="@">Een apenstaartje</nldd-form-field-validation-item>
 			</nldd-form-field-validation-list>

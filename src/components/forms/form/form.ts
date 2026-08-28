@@ -129,21 +129,34 @@ export class NLDDForm extends HTMLElement {
 	 */
 	private _handleInvalid = (e: Event) => {
 		e.preventDefault();
-		(e.target as Element | null)?.toggleAttribute('invalid', true);
+		const control = e.target as Element | null;
+		if (!control) return;
+		this._judged.add(control);
+		control.toggleAttribute('invalid', true);
 	};
 
 	/**
-	 * Clearing is a separate listener, because the platform has no "valid"
-	 * event. A control that is put right keeps its red border until something
-	 * looks again, and the next submit is too late: you fixed it, and the field
-	 * still says you did not.
+	 * From the first verdict onward, the mark follows the value.
+	 *
+	 * The platform has no "valid" event, so without this a control that is put
+	 * right keeps its mark until the next submit: you fixed it and the field
+	 * still says you did not. And it has to work the other way too. Undo the
+	 * fix and the value is refused again, so a form that stays quiet leaves you
+	 * with a submit that does nothing and nothing on screen saying why.
+	 *
+	 * Only after that first verdict, which is what `_judged` remembers. Before
+	 * it, a field would turn red on the first character typed into it, about a
+	 * value nobody has asked for yet.
 	 */
 	private _handleInput = (e: Event) => {
 		const control = e.target as (Element & { internals?: ElementInternals; validity?: ValidityState }) | null;
-		if (!control?.hasAttribute('invalid')) return;
+		if (!control || !this._judged.has(control)) return;
 		const validity = control.internals?.validity ?? control.validity;
-		if (validity?.valid) control.removeAttribute('invalid');
+		if (validity) control.toggleAttribute('invalid', !validity.valid);
 	};
+
+	/** Controls the platform has judged at least once. */
+	private _judged = new WeakSet<Element>();
 	/** When true, user provided their own <form> child — skip migration. */
 	private _userProvidedForm = false;
 
