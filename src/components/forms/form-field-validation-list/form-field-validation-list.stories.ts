@@ -28,7 +28,7 @@ Een eis die je vooraf kunt noemen is een item met een regel, en die controleert
 zichzelf terwijl je typt. Een eis die alleen een server kan vaststellen is een
 item zonder regel, en de app noemt hem in \`unmet\` op de control.
 
-De lijst heeft twee modi en \`judged\` is de schakelaar. Vóór een oordeel toont
+De lijst heeft twee modi en \`judging\` is de schakelaar. Vóór een oordeel toont
 hij z'n hints: de eisen van het veld. Ná een oordeel toont hij alles waaraan de
 waarde niet voldoet, en zijn de hints weg. De lijst zet die schakelaar zelf om
 zodra de control \`invalid\` of \`valid\` meldt, en je kunt hem ook zelf zetten.
@@ -44,7 +44,7 @@ regel herhalen zegt hetzelfde drie keer.
 	},
 	args: {
 		hint: false,
-		judged: true,
+		judging: true,
 		for: '',
 	},
 	argTypes: {
@@ -53,9 +53,9 @@ regel herhalen zegt hetzelfde drie keer.
 			description: 'Toon elk item voordat er een oordeel is, als de eisen van het veld. Per item te overschrijven.',
 			table: { defaultValue: { summary: false } },
 		},
-		judged: {
+		judging: {
 			control: 'boolean',
-			description: 'Er is een oordeel geveld: toon wat de waarde niet haalt in plaats van de hints. De lijst zet dit zelf aan zodra de control invalid of valid meldt; met de hand zetten is voor een submit- of reset-handler.',
+			description: 'Houd de waarde tegen z\'n regels en toon wat niet klopt, in plaats van te vertellen wat het veld wil. De lijst zet dit zelf aan zodra de control invalid of valid meldt; met de hand zetten is voor een submit- of reset-handler.',
 			table: { defaultValue: { summary: false } },
 		},
 		for: {
@@ -70,15 +70,15 @@ regel herhalen zegt hetzelfde drie keer.
  * Een afgekeurd wachtwoord: wat er nog niet klopt staat eronder. Typ mee en zie
  * de regels uitgaan zodra je ze haalt.
  *
- * Zet `judged` uit en je ziet het veld zoals het eraan toe was vóór de
+ * Zet `judging` uit en je ziet het veld zoals het eraan toe was vóór de
  * beoordeling: leeg, tenzij `hint` aanstaat en de eisen dus vooraf al worden
  * genoemd. De control loopt hier mee met de schakelaar, want zo staat het in een
  * echte app: het formulier keurt af, en de lijst volgt.
  */
-export const Default = ({ hint, judged, for: control }: Record<string, unknown>) => html`
+export const Default = ({ hint, judging, for: control }: Record<string, unknown>) => html`
 	<nldd-form-field label="Wachtwoord">
-		<nldd-password-field id="password" name="password" ?invalid=${judged}></nldd-password-field>
-		<nldd-form-field-validation-list ?hint=${hint} ?judged=${judged} for=${control || nothing}>
+		<nldd-password-field id="password" name="password" ?invalid=${judging}></nldd-password-field>
+		<nldd-form-field-validation-list ?hint=${hint} ?judging=${judging} for=${control || nothing}>
 			<nldd-form-field-validation-item id="password-length" minlength="8">Minimaal 8 tekens</nldd-form-field-validation-item>
 			<nldd-form-field-validation-item id="password-capital" match="[A-Z]">Een hoofdletter</nldd-form-field-validation-item>
 			<nldd-form-field-validation-item id="password-digit" match="[0-9]">Een cijfer</nldd-form-field-validation-item>

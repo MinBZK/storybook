@@ -206,7 +206,7 @@ describe('nldd-form-field-validation-list', () => {
 		await type(el, 'LangGenoeg1');
 		// Een oordeel is geen toestand waar een veld uit terugkeert. De vraag die
 		// de hints beantwoordden is gesteld en beslecht.
-		expect(list(el).judged).toBe(true);
+		expect(list(el).judging).toBe(true);
 		expect(item(el, 'password-length').visible).toBe(false);
 	});
 
@@ -214,7 +214,7 @@ describe('nldd-form-field-validation-list', () => {
 		el = await fixture(`
 			<nldd-form-field label="Wachtwoord">
 				<nldd-text-field></nldd-text-field>
-				<nldd-form-field-validation-list hint judged>
+				<nldd-form-field-validation-list hint judging>
 					<nldd-form-field-validation-item id="password-length" minlength="8">Minimaal 8 tekens</nldd-form-field-validation-item>
 				</nldd-form-field-validation-list>
 			</nldd-form-field>
@@ -222,7 +222,7 @@ describe('nldd-form-field-validation-list', () => {
 		await waitForUpdate(el);
 		expect(item(el, 'password-length').unmet).toBe(true);
 
-		list(el).judged = false;
+		list(el).judging = false;
 		await waitForUpdate(list(el));
 		expect(item(el, 'password-length').unmet).toBe(false);
 		expect(item(el, 'password-length').visible).toBe(true);
@@ -255,7 +255,7 @@ describe('nldd-form-field-validation-list', () => {
 		await waitForUpdate(nickname.parentElement as HTMLElement);
 		// De bijnaam klopt, dus die lijst heeft niets te melden. Maar hij hoort
 		// wel in dezelfde modus te staan als de rest van het formulier.
-		expect((nickname.parentElement as NLDDFormFieldValidationList).judged).toBe(true);
+		expect((nickname.parentElement as NLDDFormFieldValidationList).judging).toBe(true);
 		expect(nickname.visible).toBe(false);
 		expect(item(el, 'name-required').unmet).toBe(true);
 	});

@@ -146,7 +146,7 @@ export class NLDDForm extends HTMLElement {
 		// lists to pick that up from their own control would flip only the ones
 		// next to a failing field and leave the rest explaining themselves.
 		for (const list of (this._form ?? this).querySelectorAll('nldd-form-field-validation-list')) {
-			list.toggleAttribute('judged', true);
+			list.toggleAttribute('judging', true);
 		}
 
 		control.toggleAttribute('invalid', true);

@@ -730,7 +730,7 @@ A layout wrapper for the action buttons at the bottom of a form (typically a sub
 
 ### `<nldd-form-field-validation-list>`
 
-Nederlandse Digitale Dienst Form Field Validation List (Lit + TypeScript) Everything a value has to satisfy, in one list. A requirement you can state up front is an item with a rule, and it checks itself while you type. One only a server can decide is an item without a rule, and the app names it in `unmet` on the control. The list has two modes and `judged` is the switch. Before a verdict it shows its hints, which are the requirements of the field. After one it shows everything the value does not satisfy, and the hints are gone. The list throws that switch itself the moment the control reports `invalid` or `valid`, and a consumer can throw it by hand. Hints are off by default. A phone number does not need its format spelled out before anyone has typed, while the rules for a password do. There are no checkmarks. The control already shows a validation icon of its own, and repeating that per line says the same thing three times.
+Nederlandse Digitale Dienst Form Field Validation List (Lit + TypeScript) Everything a value has to satisfy, in one list. A requirement you can state up front is an item with a rule, and it checks itself while you type. One only a server can decide is an item without a rule, and the app names it in `unmet` on the control. The list has two modes and `judging` is the switch. Before a verdict it shows its hints, which are the requirements of the field. After one it shows everything the value does not satisfy, and the hints are gone. The list throws that switch itself the moment the control reports `invalid` or `valid`, and a consumer can throw it by hand. Hints are off by default. A phone number does not need its format spelled out before anyone has typed, while the rules for a password do. There are no checkmarks. The control already shows a validation icon of its own, and repeating that per line says the same thing three times.
 
 **Attributes**
 
@@ -738,7 +738,7 @@ Nederlandse Digitale Dienst Form Field Validation List (Lit + TypeScript) Everyt
 | --- | --- | --- |
 | `for` | `string` | Id of the control this list is about. Not needed inside an nldd-form-field, which hands its own control over. |
 | `hint` | `boolean` | Show every item before there is a verdict, as the requirements of the field. Overridable per item. |
-| `judged` | `boolean` | A verdict has been passed: show what the value fails instead of the hints. Set by the list itself when the control reports `invalid` or `valid`, and settable by hand. |
+| `judging` | `boolean` | Hold the value to its rules and show what it fails, instead of stating what the field wants. Set by the list itself when the control reports `invalid` or `valid`, and settable by hand. |
 
 **Slots**
 
