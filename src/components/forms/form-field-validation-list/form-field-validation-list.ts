@@ -28,7 +28,7 @@
  * @attr {string} match - Regular expression the value has to contain. Not anchored, unlike the native `pattern`: `[A-Z]` means "has a capital in it".
  * @attr {number} minlength - Fewest characters the value may have.
  * @attr {number} maxlength - Most characters the value may have.
- * @attr {boolean} required - The value may not be empty. While this one fails, the other rules keep quiet: an empty value fails most of them at once, and a field you have not filled in should read as one thing, not five.
+ * @attr {boolean} required - The value may not be empty. Use it on a field whose other rules would pass an empty value.
  * @attr {boolean} hint - Show this item before there is a verdict, whatever the list says.
  * @attr {boolean} unmet - Whether the value fails this item. Managed by the list; do not set it yourself.
  * @attr {boolean} visible - Whether the item is on screen. Managed by the list.
@@ -242,22 +242,13 @@ export class NLDDFormFieldValidationList extends LitElement {
 		const named = (control?.getAttribute('unmet') ?? '').split(' ').filter(Boolean);
 		const value = this._currentValue();
 
-		// An empty value fails almost every rule at once, and then a field you
-		// simply have not filled in reads as three mistakes. `required` is the
-		// one that names what is actually wrong, so while it fails the other
-		// rules keep quiet. Items the app drives are left alone: those are
-		// separate statements, not another way of saying "empty".
-		const emptyAndRequired = this._items
-			.some(item => item.required && item.test(value) === false);
-
 		let anyVisible = false;
 		let anyRuleFails = false;
 		const messages: string[] = [];
 
 		for (const item of this._items) {
 			const rule = item.test(value);
-			const silenced = emptyAndRequired && rule !== null && !item.required;
-			const failing = rule === null ? named.includes(item.id) : (!rule && !silenced);
+			const failing = rule === null ? named.includes(item.id) : !rule;
 
 			if (import.meta.env?.DEV && rule !== null && named.includes(item.id)) {
 				console.warn(
@@ -270,7 +261,7 @@ export class NLDDFormFieldValidationList extends LitElement {
 			item.unmet = invalid && failing;
 			item.visible = item.unmet || (!judged && (item.hint || this.hint));
 			if (item.visible) anyVisible = true;
-			if (rule === false && !silenced) {
+			if (rule === false) {
 				anyRuleFails = true;
 				messages.push(item.textContent?.trim() ?? '');
 			}

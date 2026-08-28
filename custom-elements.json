@@ -5646,7 +5646,7 @@
                 "text": "boolean"
               },
               "default": "false",
-              "description": "The value may not be empty. While this one fails, the other rules keep quiet: an empty value fails most of them at once, and a field you have not filled in should read as one thing, not five.",
+              "description": "The value may not be empty. Use it on a field whose other rules would pass an empty value.",
               "fieldName": "required"
             },
             {

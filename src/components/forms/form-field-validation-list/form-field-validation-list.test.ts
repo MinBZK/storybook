@@ -110,12 +110,10 @@ describe('nldd-form-field-validation-list', () => {
 			</nldd-form-field>
 		`);
 		await waitForUpdate(el);
-		// Alleen de regel die zegt wat er echt aan de hand is. De andere zouden
-		// op leeg ook afgaan, en dan leest een veld dat je nog niet hebt
-		// ingevuld als een handvol fouten.
+		// Alles wat niet voldoet, ook op leeg. Een lege waarde haalt de meeste
+		// regels niet, en dat is wat er dan te repareren valt.
 		expect(item(el, 'password-empty').unmet).toBe(true);
-		expect(item(el, 'password-length').unmet).toBe(false);
-		expect(item(el, 'password-length').visible).toBe(false);
+		expect(item(el, 'password-length').unmet).toBe(true);
 
 		await type(el, 'x');
 		expect(item(el, 'password-empty').unmet).toBe(false);
