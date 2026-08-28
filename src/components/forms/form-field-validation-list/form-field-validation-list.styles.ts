@@ -8,7 +8,6 @@ export const formFieldValidationListStyles = css`
 
 	:host {
 		display: block;
-		margin-top: var(--primitives-space-4);
 	}
 
 	:host(:not(.has-items)) {
@@ -22,8 +21,14 @@ export const formFieldValidationListStyles = css`
 
 	/* # List */
 
+	/* The gap sits here and not on :host, where a consumer reset would win. It
+	   collapses out through the host, which has no padding or border, so it
+	   still reads as the distance between the field and this list. Same route
+	   as .form-field__help-text. */
+
 	.form-field-validation-list {
 		display: flex;
+		margin-top: var(--primitives-space-4);
 		flex-direction: column;
 		gap: var(--primitives-space-2);
 	}
