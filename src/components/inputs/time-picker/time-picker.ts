@@ -33,6 +33,7 @@ import { timePickerStyles } from './time-picker.styles.js';
 import { timePickerTemplate } from './time-picker.template.js';
 import { nlddTimePickerTranslations, type NLDDTimePickerTranslations } from './time-picker.i18n.js';
 import { DescribedBy } from '../../../utilities/described-by-mixin.js';
+import { reflectNonDefault } from '../../../utilities/reflect-non-default.js';
 
 const LAST_MINUTE_OF_DAY = 23 * 60 + 59;
 
@@ -73,7 +74,7 @@ export class NLDDTimePicker extends DescribedBy(LitElement) {
 	@property({ type: Number, reflect: true })
 	rows = 7;
 
-	@property({ type: String, reflect: true })
+	@property({ reflect: true, converter: reflectNonDefault('') })
 	width = '';
 
 	@property({ type: String, attribute: 'accessible-label' })

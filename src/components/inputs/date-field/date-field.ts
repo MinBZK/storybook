@@ -141,7 +141,7 @@ export class NLDDDateField extends DescribedBy(FormAssociated(LitElement)) {
 	@property({ type: Boolean, reflect: true })
 	required = false;
 
-	@property({ type: String, reflect: true })
+	@property({ reflect: true, converter: reflectNonDefault('') })
 	name = '';
 
 	@property({ type: String })
@@ -153,7 +153,7 @@ export class NLDDDateField extends DescribedBy(FormAssociated(LitElement)) {
 
 
 	/** Optional fixed width. Without a value the field fills its container. */
-	@property({ type: String, reflect: true })
+	@property({ reflect: true, converter: reflectNonDefault('') })
 	width = '';
 
 	/** Override one or more translation keys. Keys left out fall back to Dutch. */

@@ -78,7 +78,7 @@ export class NLDDMultiLineTextField extends DescribedBy(FormAssociated(LitElemen
 	@property({ type: Boolean, reflect: true })
 	disabled = false;
 
-	@property({ type: String, reflect: true })
+	@property({ reflect: true, converter: reflectNonDefault('') })
 	name = '';
 
 	@property({ type: Boolean, reflect: true })
@@ -113,7 +113,7 @@ export class NLDDMultiLineTextField extends DescribedBy(FormAssociated(LitElemen
 	noSpellcheck = false;
 
 	/** Optional fixed width (any CSS length). When unset, the field stretches to fill its container. */
-	@property({ type: String, reflect: true })
+	@property({ reflect: true, converter: reflectNonDefault('') })
 	width = '';
 
 

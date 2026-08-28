@@ -38,7 +38,7 @@ export class NLDDSwitch extends DescribedBy(FormAssociated(LitElement)) {
 	static isFormInput = true;
 
 
-	@property({ type: String, reflect: true })
+	@property({ reflect: true, converter: reflectNonDefault('') })
 	name = '';
 
 	@property({ type: Boolean, reflect: true })

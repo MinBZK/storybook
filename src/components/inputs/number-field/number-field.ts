@@ -69,11 +69,11 @@ export class NLDDNumberField extends DescribedBy(FormAssociated(LitElement)) {
 	@property({ type: Boolean, reflect: true })
 	disabled = false;
 
-	@property({ type: String, reflect: true })
+	@property({ reflect: true, converter: reflectNonDefault('') })
 	name = '';
 
 	/** Width mode: 'full' (stretch to container) or any CSS length. */
-	@property({ type: String, reflect: true })
+	@property({ reflect: true, converter: reflectNonDefault('') })
 	width = '';
 
 	@property({ type: Boolean, reflect: true, attribute: 'hide-spin-buttons' })

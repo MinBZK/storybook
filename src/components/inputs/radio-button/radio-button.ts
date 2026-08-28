@@ -34,6 +34,7 @@ import { FormAssociated, type FormValue } from '../../../utilities/form-associat
 import { radioButtonStyles } from './radio-button.styles.js';
 import { radioButtonTemplate } from './radio-button.template.js';
 import { DescribedBy } from '../../../utilities/described-by-mixin.js';
+import { reflectNonDefault } from '../../../utilities/reflect-non-default.js';
 
 @customElement('nldd-radio-button')
 export class NLDDRadioButton extends DescribedBy(FormAssociated(LitElement)) {
@@ -66,7 +67,7 @@ export class NLDDRadioButton extends DescribedBy(FormAssociated(LitElement)) {
 	@property({ type: Boolean, reflect: true })
 	required = false;
 
-	@property({ type: String, reflect: true })
+	@property({ reflect: true, converter: reflectNonDefault('') })
 	name = '';
 
 	@property({ type: String })

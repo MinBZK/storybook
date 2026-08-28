@@ -25,6 +25,7 @@ import { FormAssociated, type FormValue } from '../../../utilities/form-associat
 import { checkboxStyles } from './checkbox.styles.js';
 import { checkboxTemplate } from './checkbox.template.js';
 import { DescribedBy } from '../../../utilities/described-by-mixin.js';
+import { reflectNonDefault } from '../../../utilities/reflect-non-default.js';
 
 @customElement('nldd-checkbox')
 export class NLDDCheckbox extends DescribedBy(FormAssociated(LitElement)) {
@@ -58,7 +59,7 @@ export class NLDDCheckbox extends DescribedBy(FormAssociated(LitElement)) {
 	@property({ type: String })
 	value = 'on';
 
-	@property({ type: String, reflect: true })
+	@property({ reflect: true, converter: reflectNonDefault('') })
 	name = '';
 
 	@property({ type: String, attribute: 'accessible-label' })

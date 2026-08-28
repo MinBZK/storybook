@@ -26,6 +26,7 @@ import { checkboxFieldStyles } from './checkbox-field.styles.js';
 import { checkboxFieldTemplate } from './checkbox-field.template.js';
 import type { NLDDCheckbox } from '../checkbox/checkbox.js';
 import { DescribedBy } from '../../../utilities/described-by-mixin.js';
+import { reflectNonDefault } from '../../../utilities/reflect-non-default.js';
 
 @customElement('nldd-checkbox-field')
 export class NLDDCheckboxField extends DescribedBy(FormAssociated(LitElement)) {
@@ -53,7 +54,7 @@ export class NLDDCheckboxField extends DescribedBy(FormAssociated(LitElement)) {
 
 	/** Reflected: form association reads the host's name attribute, so setting
 	 *  the property alone must still register the field with the form. */
-	@property({ type: String, reflect: true })
+	@property({ reflect: true, converter: reflectNonDefault('') })
 	name = '';
 
 	@property({ type: String })

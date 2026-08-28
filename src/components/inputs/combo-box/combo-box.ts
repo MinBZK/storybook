@@ -128,7 +128,7 @@ export class NLDDComboBox extends DescribedBy(FormAssociated(LitElement)) {
 	@property({ type: Boolean, reflect: true, attribute: 'allow-custom' })
 	allowCustom = false;
 
-	@property({ type: String, reflect: true })
+	@property({ reflect: true, converter: reflectNonDefault('') })
 	name = '';
 
 	/** Browser autofill hint. Use AutoFill tokens (e.g. 'country', 'organization')
@@ -151,7 +151,7 @@ export class NLDDComboBox extends DescribedBy(FormAssociated(LitElement)) {
 	noSpellcheck = false;
 
 	/** Optional fixed width (any CSS length). When unset, the field stretches to fill its container. */
-	@property({ type: String, reflect: true })
+	@property({ reflect: true, converter: reflectNonDefault('') })
 	width = '';
 
 	@state()

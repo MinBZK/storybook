@@ -61,7 +61,7 @@ export class NLDDStepper extends DescribedBy(FormAssociated(LitElement)) {
 	@property({ reflect: true, converter: reflectNonDefault<StepperSize>('md') })
 	size: StepperSize = 'md';
 
-	@property({ type: String, reflect: true })
+	@property({ reflect: true, converter: reflectNonDefault('') })
 	name = '';
 
 	/**

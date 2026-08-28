@@ -106,7 +106,7 @@ export class NLDDPasswordField extends DescribedBy(FormAssociated(LitElement)) {
 	@property({ type: Boolean, reflect: true })
 	required = false;
 
-	@property({ type: String, reflect: true })
+	@property({ reflect: true, converter: reflectNonDefault('') })
 	name = '';
 
 	@property({ type: String })
@@ -118,7 +118,7 @@ export class NLDDPasswordField extends DescribedBy(FormAssociated(LitElement)) {
 
 
 	/** Optional fixed width (any CSS length). When unset, the field stretches to fill its container. */
-	@property({ type: String, reflect: true })
+	@property({ reflect: true, converter: reflectNonDefault('') })
 	width = '';
 
 	@query('.password-field__input')

@@ -109,7 +109,7 @@ export class NLDDTextField extends DescribedBy(FormAssociated(LitElement)) {
 	@property({ type: String, reflect: true, attribute: 'enter-key' })
 	enterKey?: EnterKey;
 
-	@property({ type: String, reflect: true })
+	@property({ reflect: true, converter: reflectNonDefault('') })
 	name = '';
 
 	@property({ type: Boolean, reflect: true })
@@ -130,7 +130,7 @@ export class NLDDTextField extends DescribedBy(FormAssociated(LitElement)) {
 	noSpellcheck = false;
 
 	/** Optional fixed width (any CSS length). When unset, the field stretches to fill its container. */
-	@property({ type: String, reflect: true })
+	@property({ reflect: true, converter: reflectNonDefault('') })
 	width = '';
 
 

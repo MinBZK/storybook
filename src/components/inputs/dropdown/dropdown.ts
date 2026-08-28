@@ -68,7 +68,7 @@ export class NLDDDropdown extends DescribedBy(LitElement) {
 	expanded = false;
 
 	/** Optional fixed width (any CSS length). When unset, the field stretches to fill its container. */
-	@property({ type: String, reflect: true })
+	@property({ reflect: true, converter: reflectNonDefault('') })
 	width = '';
 
 	/**

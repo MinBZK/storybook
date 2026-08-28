@@ -92,7 +92,7 @@ export class NLDDCodeEditor extends DescribedBy(FormAssociated(NLDDCodeMirrorEle
 	@property({ type: Boolean, reflect: true })
 	disabled = false;
 
-	@property({ type: String, reflect: true })
+	@property({ reflect: true, converter: reflectNonDefault('') })
 	name = '';
 
 	@property({ type: Boolean, reflect: true })

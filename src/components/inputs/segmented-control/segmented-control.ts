@@ -207,10 +207,10 @@ export class NLDDSegmentedControl extends FormAssociated(LitElement) {
 	 * '50%') which sets the host width with equal-width items. Default is
 	 * content-based outer with equal-width items.
 	 */
-	@property({ type: String, reflect: true })
+	@property({ reflect: true, converter: reflectNonDefault('') })
 	width = '';
 
-	@property({ type: String, reflect: true })
+	@property({ reflect: true, converter: reflectNonDefault('') })
 	name = '';
 
 	/** Accessible name for the group (aria-label). */

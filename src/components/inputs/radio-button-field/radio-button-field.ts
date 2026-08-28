@@ -27,6 +27,7 @@ import { radioButtonFieldStyles } from './radio-button-field.styles.js';
 import { radioButtonFieldTemplate } from './radio-button-field.template.js';
 import type { NLDDRadioButton } from '../radio-button/radio-button.js';
 import { DescribedBy } from '../../../utilities/described-by-mixin.js';
+import { reflectNonDefault } from '../../../utilities/reflect-non-default.js';
 
 @customElement('nldd-radio-button-field')
 export class NLDDRadioButtonField extends DescribedBy(FormAssociated(LitElement)) {
@@ -52,7 +53,7 @@ export class NLDDRadioButtonField extends DescribedBy(FormAssociated(LitElement)
 	/** Set by nldd-radio-button-group. Not part of the public API.
 	 *  Reflected: form association reads the host's name attribute, and the
 	 *  group assigns the property. */
-	@property({ type: String, reflect: true })
+	@property({ reflect: true, converter: reflectNonDefault('') })
 	name = '';
 
 	@property({ type: Boolean, reflect: true })

@@ -42,6 +42,7 @@ import type { NLDDDatePickerTranslations } from './date-picker.i18n.js';
 import './../../actions/icon-button/icon-button.js';
 import './../../actions/button/button.js';
 import { DescribedBy } from '../../../utilities/described-by-mixin.js';
+import { reflectNonDefault } from '../../../utilities/reflect-non-default.js';
 
 /**
  * All arithmetic runs on UTC-midnight Dates and ISO strings. UTC keeps a DST
@@ -146,7 +147,7 @@ export class NLDDDatePicker extends DescribedBy(withTranslations<NLDDDatePickerT
 	end = '';
 
 	/** Width: 'full' or a CSS length. Empty is the intrinsic seven-cell width. */
-	@property({ type: String, reflect: true })
+	@property({ reflect: true, converter: reflectNonDefault('') })
 	width = '';
 
 	@property({ type: Boolean, reflect: true })

@@ -76,7 +76,7 @@ export class NLDDSearchField extends DescribedBy(FormAssociated(LitElement)) {
 	@property({ type: Boolean, reflect: true })
 	disabled = false;
 
-	@property({ type: String, reflect: true })
+	@property({ reflect: true, converter: reflectNonDefault('') })
 	name = '';
 
 	@property({ type: Boolean, reflect: true, attribute: 'show-search-button' })
@@ -90,7 +90,7 @@ export class NLDDSearchField extends DescribedBy(FormAssociated(LitElement)) {
 	noSpellcheck = false;
 
 	/** Optional fixed width (any CSS length). When unset, the field stretches to fill its container. */
-	@property({ type: String, reflect: true })
+	@property({ reflect: true, converter: reflectNonDefault('') })
 	width = '';
 
 	@query('.search-field__input')
