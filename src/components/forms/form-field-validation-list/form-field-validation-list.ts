@@ -37,13 +37,17 @@
  *
  * ─────────────────────────────────────────────────────────────────────────
  *
+ * Give every item an id that names its field as well as its rule. An id has to
+ * be unique in the whole document, and `length` is the first thing three fields
+ * in one form will all reach for.
+ *
  * @example
  * <nldd-form-field label="Wachtwoord">
- *   <nldd-password-field name="pw" invalid unmet="breach"></nldd-password-field>
+ *   <nldd-password-field name="pw" invalid unmet="password-breach"></nldd-password-field>
  *   <nldd-form-field-validation-list hint>
- *     <nldd-form-field-validation-item id="length" minlength="8">Minimaal 8 tekens</nldd-form-field-validation-item>
- *     <nldd-form-field-validation-item id="capital" match="[A-Z]">Een hoofdletter</nldd-form-field-validation-item>
- *     <nldd-form-field-validation-item id="breach">Dit wachtwoord staat in een bekend datalek</nldd-form-field-validation-item>
+ *     <nldd-form-field-validation-item id="password-length" minlength="8">Minimaal 8 tekens</nldd-form-field-validation-item>
+ *     <nldd-form-field-validation-item id="password-capital" match="[A-Z]">Een hoofdletter</nldd-form-field-validation-item>
+ *     <nldd-form-field-validation-item id="password-breach">Dit wachtwoord staat in een bekend datalek</nldd-form-field-validation-item>
  *   </nldd-form-field-validation-list>
  * </nldd-form-field>
  */

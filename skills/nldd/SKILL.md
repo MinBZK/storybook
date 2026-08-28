@@ -323,33 +323,49 @@ je tekst over meerdere alinea's of bevat hij opmaak, gebruik dan
 ### Formulieren en validatiefouten
 
 `nldd-form-field` koppelt label en input automatisch (geen `for`/`id`-gedoe).
-Voor een foutmelding zet je twee dingen op de input zelf: `invalid` en
-`error-message` met de `id`('s) van de bijbehorende
-`nldd-form-field-error-text`-elementen. Die wijzen zichzelf toe aan de juiste
-slot; jij stuurt alleen `invalid` aan vanuit je eigen validatielogica.
+Alles waar een waarde aan moet voldoen zet je in een
+`nldd-form-field-validation-list`. Een eis die je vooraf kunt noemen krijgt een
+regel en controleert zichzelf terwijl de gebruiker typt. Een eis die alleen je
+server kan vaststellen krijgt er geen, en die noem je in `unmet` op de input.
 
 ```html
-<!-- zet `invalid` op de input als je validatie faalt -->
-<nldd-form-field label="KvK-nummer">
-  <nldd-text-field name="kvk"
-    invalid
-    error-message="kvk-error"
-  ></nldd-text-field>
-  <nldd-form-field-error-text id="kvk-error">
-    Vul een geldig KvK-nummer in (8 cijfers).
-  </nldd-form-field-error-text>
+<nldd-form-field label="Wachtwoord">
+  <nldd-password-field name="pw" unmet="password-breach"></nldd-password-field>
+  <nldd-form-field-validation-list hint>
+    <nldd-form-field-validation-item id="password-length" minlength="8">
+      Minimaal 8 tekens
+    </nldd-form-field-validation-item>
+    <nldd-form-field-validation-item id="password-capital" match="[A-Z]">
+      Een hoofdletter
+    </nldd-form-field-validation-item>
+    <nldd-form-field-validation-item id="password-breach">
+      Dit wachtwoord staat in een bekend datalek
+    </nldd-form-field-validation-item>
+  </nldd-form-field-validation-list>
 </nldd-form-field>
 ```
 
-`invalid` is een gewone boolean-attribuut dat je dynamisch zet: in Vue
-`:invalid="hasError"`, in platte JS `field.toggleAttribute('invalid', hasError)`.
-Zo koppel je dezelfde vlag aan je validatie bij blur, submit of een
-server-respons.
+Geef elk item een id die z'n veld noemt en niet alleen z'n regel. Een id moet
+uniek zijn in de hele pagina, en `length` is het eerste waar drie velden in
+hetzelfde formulier alle drie naar grijpen.
 
-*Waarom dit patroon:* de koppeling loopt via `error-message` → `id`, niet via
-shadow-DOM-trucs, zodat screenreaders de fout aan het veld koppelen. De
-validatie-*regels* (wanneer is iets fout) zijn aan jou; het systeem regelt
-alleen de presentatie en de toegankelijke koppeling.
+**Wanneer een fout verschijnt** bepaalt `invalid` op de input. `nldd-form` zet
+dat attribuut zelf bij het versturen, op het moment dat de browser het
+formulier afkeurt, en haalt het weg zodra het klopt. Wil je eerder tonen, zet
+het dan zelf: in Vue `:invalid="hasError"`, in platte JS
+`field.toggleAttribute('invalid', hasError)`.
+
+`match` is niet verankerd, anders dan het native `pattern`: `[A-Z]` betekent
+"bevat een hoofdletter". Wil je dat de héle waarde een vorm heeft, zet er dan
+zelf `^` en `$` omheen.
+
+*Waarom dit patroon:* zo staat een eis één keer op de pagina in plaats van
+tweemaal, als uitleg vooraf en als foutmelding achteraf. Een `hint` blijft
+zichtbaar als het veld klopt, een gewoon item verdwijnt zodra je het haalt.
+Vinkjes zijn er niet: het veld toont zelf al een validatie-icoon.
+
+Voor tekst die je niet tegenhoudt, zoals "We sturen een bevestigingsmail naar
+dit adres", gebruik je `nldd-form-field-help-text`.
 
 *Ontwerpkeuzes rond formulieren* (markeer optionele velden in plaats van
 verplichte, volg de gedachtegang van de gebruiker in de vraagvolgorde, één veld

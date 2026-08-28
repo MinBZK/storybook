@@ -34,9 +34,9 @@
  *   <nldd-form-field-help-text>
  *     At least 8 characters. <a href="/help">Learn more</a>.
  *   </nldd-form-field-help-text>
- *   <nldd-text-field invalid unmet="error-required error-length"></nldd-text-field>
- *   <nldd-form-field-error-text id="error-required">This field is required.</nldd-form-field-error-text>
- *   <nldd-form-field-error-text id="error-length">Must be at least 8 characters.</nldd-form-field-error-text>
+ *   <nldd-text-field invalid unmet="password-required password-length"></nldd-text-field>
+ *   <nldd-form-field-error-text id="password-required">This field is required.</nldd-form-field-error-text>
+ *   <nldd-form-field-error-text id="password-length">Must be at least 8 characters.</nldd-form-field-error-text>
  * </nldd-form-field>
  */
 import { LitElement } from 'lit';
