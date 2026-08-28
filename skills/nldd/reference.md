@@ -717,7 +717,7 @@ A layout wrapper for the action buttons at the bottom of a form (typically a sub
 | `match` | `string` | Regular expression the value has to contain. Not anchored, unlike the native `pattern`: `[A-Z]` means "has a capital in it". |
 | `minlength` | `number` | Fewest characters the value may have. |
 | `maxlength` | `number` | Most characters the value may have. |
-| `required` | `boolean` | The value may not be empty. Use it on a field whose other rules would pass an empty value. |
+| `required` | `boolean` | The value may not be empty. While this one fails, the other rules keep quiet: an empty value fails most of them at once, and a field you have not filled in should read as one thing, not five. |
 | `hint` | `boolean` | Show this item before there is a verdict, whatever the list says. |
 | `unmet` | `boolean` | Whether the value fails this item. Managed by the list; do not set it yourself. |
 | `visible` | `boolean` | Whether the item is on screen. Managed by the list. |
