@@ -225,15 +225,15 @@ describe('nldd-password-field', () => {
 	});
 
 	it('participates in FormData via form-associated API', async () => {
-		const form = await fixture<HTMLFormElement>('<form><nldd-password-field name="pw" value="secret"></nldd-password-field></form>');
+		const form = await fixture<HTMLFormElement>('<form><nldd-password-field name="password" value="secret"></nldd-password-field></form>');
 		el = form;
 		const pw = form.querySelector('nldd-password-field')!;
 		await waitForUpdate(pw);
-		expect(new FormData(form).get('pw')).toBe('secret');
+		expect(new FormData(form).get('password')).toBe('secret');
 	});
 
 	it('resets to the HTML-declared initial value when the parent form is reset', async () => {
-		const form = await fixture<HTMLFormElement>('<form><nldd-password-field name="pw" value="default"></nldd-password-field></form>');
+		const form = await fixture<HTMLFormElement>('<form><nldd-password-field name="password" value="default"></nldd-password-field></form>');
 		el = form;
 		const pw = form.querySelector('nldd-password-field')! as HTMLElement & { value: string };
 		await waitForUpdate(pw);
