@@ -6354,6 +6354,14 @@
         },
         {
           "kind": "js",
+          "name": "NLDDFormFieldValidationList",
+          "declaration": {
+            "name": "NLDDFormFieldValidationList",
+            "module": "./forms/form-field-validation-list/form-field-validation-list.js"
+          }
+        },
+        {
+          "kind": "js",
           "name": "NLDDFormSection",
           "declaration": {
             "name": "NLDDFormSection",
