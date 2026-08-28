@@ -43,6 +43,7 @@ export { NLDDTooltip } from './content/tooltip/tooltip.js';
 export { NLDDForm } from './forms/form/form.js';
 export { NLDDFormActions } from './forms/form-actions/form-actions.js';
 export { NLDDFormField } from './forms/form-field/form-field.js';
+export { NLDDFormFieldValidationList } from './forms/form-field-validation-list/form-field-validation-list.js';
 export { NLDDFormSection } from './forms/form-section/form-section.js';
 
 
