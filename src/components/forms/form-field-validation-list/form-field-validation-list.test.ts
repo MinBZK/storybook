@@ -246,6 +246,27 @@ describe('nldd-form markeert een control op het moment dat het platform het zegt
 		if (el) cleanup(el);
 	});
 
+	it('laat de native validatiebubbel weg, want we schrijven zelf', async () => {
+		el = await fixture(`
+			<nldd-form novalidate>
+				<nldd-form-field label="Wachtwoord">
+					<nldd-text-field name="pw"></nldd-text-field>
+					<nldd-form-field-validation-list>
+						<nldd-form-field-validation-item id="length" minlength="8">Minimaal 8 tekens</nldd-form-field-validation-item>
+					</nldd-form-field-validation-list>
+				</nldd-form-field>
+			</nldd-form>
+		`);
+		await waitForUpdate(el);
+		const control = el.querySelector('nldd-text-field')!;
+
+		let gemeld = false;
+		control.addEventListener('invalid', e => { gemeld = e.defaultPrevented; });
+		(el as HTMLElement & { form: HTMLFormElement }).form.reportValidity();
+		await waitForUpdate(el);
+		expect(gemeld).toBe(true);
+	});
+
 	it('zet `invalid` bij submit en haalt hem weg zodra het klopt', async () => {
 		el = await fixture(`
 			<nldd-form novalidate>

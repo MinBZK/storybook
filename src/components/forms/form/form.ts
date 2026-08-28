@@ -119,8 +119,16 @@ export class NLDDForm extends HTMLElement {
 	 * control when the form is submitted. That event does not bubble, so this
 	 * listens in the capture phase. Setting the attribute earlier stays the
 	 * consumer's call.
+	 *
+	 * Cancelling that event takes the native validation bubble away, and that is
+	 * the point. This system writes its own messages, under the field, in its
+	 * own type: a second one from the browser says the same thing again, in
+	 * browser chrome, above the field, and disappears on its own while ours
+	 * stays. A field that then has nothing to say is a field that needs an
+	 * nldd-form-field-validation-list, not a bubble.
 	 */
 	private _handleInvalid = (e: Event) => {
+		e.preventDefault();
 		(e.target as Element | null)?.toggleAttribute('invalid', true);
 	};
 
