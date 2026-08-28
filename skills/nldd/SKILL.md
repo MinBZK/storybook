@@ -330,7 +330,7 @@ server kan vaststellen krijgt er geen, en die noem je in `unmet` op de input.
 
 ```html
 <nldd-form-field label="Wachtwoord">
-  <nldd-password-field name="pw" unmet="password-breach"></nldd-password-field>
+  <nldd-password-field name="password" unmet="password-breach"></nldd-password-field>
   <nldd-form-field-validation-list hint>
     <nldd-form-field-validation-item id="password-length" minlength="8">
       Minimaal 8 tekens
