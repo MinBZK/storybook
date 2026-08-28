@@ -126,7 +126,7 @@ export class NLDDPasswordField extends DescribedBy(FormAssociated(LitElement)) {
 
 
 	/** Regular expression the value has to match, as the native `pattern`. */
-	@property({ type: String, reflect: true })
+	@property({ reflect: true, converter: reflectNonDefault('') })
 	pattern = '';
 
 	/** Fewest characters the value may have, as the native `minlength`. */

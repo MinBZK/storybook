@@ -101,7 +101,7 @@ export class NLDDSearchField extends DescribedBy(FormAssociated(LitElement)) {
 	required = false;
 
 	/** Regular expression the value has to match, as the native `pattern`. */
-	@property({ type: String, reflect: true })
+	@property({ reflect: true, converter: reflectNonDefault('') })
 	pattern = '';
 
 	/** Fewest characters the value may have, as the native `minlength`. */
