@@ -78,6 +78,17 @@ src/components/{categorie}/{naam}/
   {naam}.test.ts      # Tests
 ```
 
+### Stap 5: Registreer het component
+
+Zet een regel in `src/components/index.ts` en draai `npm run build:exports`.
+Die genereert de `exports`-map in `package.json` uit dat bestand.
+
+Sla je dit over, dan bouwt alles, slagen alle tests en staat het component
+netjes in `dist`, maar heeft `package.json` er geen subpad voor. Een consument
+die per component importeert, en dat doen ze, krijgt dan geen foutmelding maar
+een tag die nooit upgradet: het element staat in de DOM, z'n properties zijn
+`undefined` en er gebeurt niets.
+
 ---
 
 ## COMPONENT TEMPLATE
