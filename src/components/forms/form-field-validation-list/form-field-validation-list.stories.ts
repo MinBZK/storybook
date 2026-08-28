@@ -5,6 +5,8 @@ import '../form/form.js';
 import '../form-actions/form-actions.js';
 import '../../inputs/text-field/text-field.js';
 import '../../inputs/password-field/password-field.js';
+import '../../inputs/radio-button-group/radio-button-group.js';
+import '../../inputs/radio-button-field/radio-button-field.js';
 import '../../actions/button/button.js';
 
 export default {
@@ -131,19 +133,30 @@ export const AlsHetGoedIs = () => html`
 `;
 
 /**
- * Buiten een `nldd-form-field`, met `for` naar de control die je bedoelt.
+ * Eén vraag met twee controls, en de lijst hoort bij de tweede.
  *
- * Dat is waar `for` voor is: het veld eromheen ontbreekt, dus er is niemand die
- * de lijst z'n control aanreikt. Het formulier eromheen is er wel, en die doet
- * z'n gewone werk: verstuur met een lege waarde en de regel verschijnt, typ een
- * hoofdletter en hij verdwijnt samen met de rand van het veld.
+ * Een veld mag meer dan één control bevatten: een radiogroep met "Anders,
+ * namelijk" ernaast is één vraag en hoort in één veld. `nldd-form-field` reikt
+ * de lijst z'n eerste control aan, want dat is degene die het label draagt. Met
+ * `for` zeg je dat je de andere bedoelt.
+ *
+ * Zonder dat attribuut zou de lijst de radiogroep lezen, matchte er nooit iets,
+ * en bleef de regel staan zonder dat iets uitlegt waarom. Daarom waarschuwt
+ * `nldd-form-field` in DEV zodra een veld meer dan één control heeft en de
+ * lijst een waarde leest.
  */
 export const MetFor = () => html`
 	<nldd-form>
-		<nldd-text-field id="los-veld" name="code" accessible-label="Code"></nldd-text-field>
-		<nldd-form-field-validation-list for="los-veld">
-			<nldd-form-field-validation-item id="capital" match="[A-Z]">Een hoofdletter</nldd-form-field-validation-item>
-		</nldd-form-field-validation-list>
+		<nldd-form-field label="Waar heb je ons gevonden?">
+			<nldd-radio-button-group name="bron" accessible-label="Waar heb je ons gevonden?">
+				<nldd-radio-button-field value="zoekmachine" label="Zoekmachine"></nldd-radio-button-field>
+				<nldd-radio-button-field value="anders" label="Anders, namelijk"></nldd-radio-button-field>
+			</nldd-radio-button-group>
+			<nldd-text-field id="anders-veld" name="anders" accessible-label="Anders, namelijk"></nldd-text-field>
+			<nldd-form-field-validation-list for="anders-veld">
+				<nldd-form-field-validation-item id="toelichting" minlength="3">Minimaal 3 tekens toelichting</nldd-form-field-validation-item>
+			</nldd-form-field-validation-list>
+		</nldd-form-field>
 		<nldd-form-actions>
 			<nldd-button variant="primary" type="submit" text="Versturen"></nldd-button>
 		</nldd-form-actions>

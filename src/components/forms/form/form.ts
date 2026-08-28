@@ -131,7 +131,15 @@ export class NLDDForm extends HTMLElement {
 		e.preventDefault();
 		const control = e.target as Element | null;
 		if (!control) return;
+
+		// Every control, not just this one. The browser judged the whole form,
+		// and a field that happened to pass has been asked the same question as
+		// the one that failed. Marking only the failures would leave two fields
+		// in one form behaving differently: break the one that passed and it
+		// stays quiet, while its neighbour speaks up as you type.
+		for (const el of this._form?.elements ?? []) this._judged.add(el);
 		this._judged.add(control);
+
 		control.toggleAttribute('invalid', true);
 	};
 

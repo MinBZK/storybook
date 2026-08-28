@@ -305,6 +305,40 @@ describe('nldd-form markeert een control op het moment dat het platform het zegt
 		expect(item(el, 'length').visible).toBe(true);
 	});
 
+	it('markeert bij verzending elk veld als beoordeeld, niet alleen het gezakte', async () => {
+		el = await fixture(`
+			<nldd-form novalidate>
+				<nldd-form-field label="A">
+					<nldd-text-field name="a" value="lang genoeg"></nldd-text-field>
+					<nldd-form-field-validation-list>
+						<nldd-form-field-validation-item id="a8" minlength="8">Minimaal 8</nldd-form-field-validation-item>
+					</nldd-form-field-validation-list>
+				</nldd-form-field>
+				<nldd-form-field label="B">
+					<nldd-text-field name="b"></nldd-text-field>
+					<nldd-form-field-validation-list>
+						<nldd-form-field-validation-item id="b8" minlength="8">Minimaal 8</nldd-form-field-validation-item>
+					</nldd-form-field-validation-list>
+				</nldd-form-field>
+			</nldd-form>
+		`);
+		await waitForUpdate(el);
+		const a = el.querySelector('[name=a]') as HTMLElement & { value: string };
+
+		(el as HTMLElement & { form: HTMLFormElement }).form.checkValidity();
+		await waitForUpdate(el);
+		expect(a.hasAttribute('invalid')).toBe(false);
+		expect(el.querySelector('[name=b]')!.hasAttribute('invalid')).toBe(true);
+
+		// A zakte niet en werd dus niet genoemd, maar is wel beoordeeld: breek
+		// hem en hij zegt het meteen, net als z'n buurman.
+		a.value = 'kort';
+		a.dispatchEvent(new Event('input', { bubbles: true }));
+		await waitForUpdate(el);
+		expect(a.hasAttribute('invalid')).toBe(true);
+		expect(item(el, 'a8').visible).toBe(true);
+	});
+
 	it('laat een veld dat nog nooit beoordeeld is met rust tijdens het typen', async () => {
 		el = await fixture(`
 			<nldd-form novalidate>
