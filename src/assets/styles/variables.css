@@ -849,6 +849,15 @@
 
 	--semantics-surfaces-border-width: var(--semantics-dividers-thickness);
 	--semantics-surfaces-corner-radius: var(--primitives-corner-radius-lg);
+	/* How much surface shows around something that overlaps something else: a
+	   badge over its anchor, an avatar over its neighbour, a timeline dot over
+	   the line running under it. Drawn as a spread box-shadow rather than a
+	   border, so it sits outside the shape without moving anything.
+	   Its color is not a token here on purpose: it has to be the background
+	   actually behind the element, which components read from
+	   --context-parent-background-color. A var() at this level would freeze
+	   against :root and always land on the fallback. */
+	--semantics-surfaces-ring-thickness: var(--primitives-space-2);
 	--semantics-surfaces-base-background-color: light-dark(var(--primitives-color-neutral-0), var(--primitives-color-neutral-100));
 	--semantics-surfaces-base-border-color: var(--semantics-dividers-color);
 	--semantics-surfaces-tinted-background-color: light-dark(var(--primitives-color-neutral-25), var(--primitives-color-neutral-75));

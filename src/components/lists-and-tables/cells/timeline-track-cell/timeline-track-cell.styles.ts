@@ -14,8 +14,9 @@ export const timelineTrackCellStyles = css`
 		--_track-color: var(--components-timeline-track-cell-color);
 		--_future-fill-color: var(--components-timeline-track-cell-future-background-color);
 		--_marker-z-index: 1;
-		--_ring-thickness: var(--primitives-space-2);
+		--_ring-thickness: var(--semantics-surfaces-ring-thickness);
 		--_ring-color: var(--context-parent-background-color, var(--semantics-surfaces-base-background-color));
+		--_ring-box-shadow: 0 0 0 var(--_ring-thickness) var(--_ring-color);
 		--_marker-content-color: var(--semantics-content-contrast-color);
 		--_future-content-color: var(--semantics-content-secondary-color);
 		--_current-fill-color: light-dark(var(--primitives-color-accent-75), var(--primitives-color-accent-100));
@@ -150,8 +151,7 @@ export const timelineTrackCellStyles = css`
 		justify-content: center;
 		border: var(--_line-width) solid var(--_track-color);
 		border-radius: var(--_marker-corner-radius);
-		/* Ring in the background color: masks the line running underneath. */
-		box-shadow: 0 0 0 var(--_ring-thickness) var(--_ring-color);
+		box-shadow: var(--_ring-box-shadow);
 		color: var(--_marker-content-color);
 		font: var(--primitives-font-body-sm-medium-flat);
 	}

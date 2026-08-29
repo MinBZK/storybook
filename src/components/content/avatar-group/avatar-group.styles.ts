@@ -18,7 +18,7 @@ export const avatarGroupStyles = css`
 		   round. A fifth is what 8 was at the default size of 40, so the common
 		   case does not move and every other size follows it. */
 		--_overlap-size: calc(var(--_avatar-size) * 0.2);
-		--_ring-width: var(--primitives-border-width-regular);
+		--_ring-thickness: var(--semantics-surfaces-ring-thickness);
 		--_ring-color: var(--context-parent-background-color, var(--semantics-surfaces-base-background-color));
 		--_corner-radius: var(--primitives-corner-radius-full);
 		--_overflow-background-color: light-dark(var(--primitives-color-neutral-25), var(--primitives-color-neutral-150));
@@ -76,7 +76,7 @@ export const avatarGroupStyles = css`
 		margin-inline-start: calc(-1 * var(--_overlap-size));
 		border: none;
 		border-radius: var(--_corner-radius);
-		box-shadow: 0 0 0 var(--_ring-width) var(--_ring-color);
+		box-shadow: 0 0 0 var(--_ring-thickness) var(--_ring-color);
 		background-color: var(--_overflow-background-color);
 		width: var(--_avatar-size);
 		height: var(--_avatar-size);
@@ -114,7 +114,7 @@ export const avatarGroupStyles = css`
 		flex-shrink: 0;
 		margin-inline-start: calc(-1 * var(--_overlap-size));
 		border-radius: var(--_corner-radius);
-		box-shadow: 0 0 0 var(--_ring-width) var(--_ring-color);
+		box-shadow: 0 0 0 var(--_ring-thickness) var(--_ring-color);
 		width: var(--_avatar-size) !important;
 		height: var(--_avatar-size) !important;
 	}
@@ -123,7 +123,7 @@ export const avatarGroupStyles = css`
 	   back as a real border there. */
 	@media (forced-colors: active) {
 		.avatar-group ::slotted(nldd-avatar) {
-			border: var(--_ring-width) solid Canvas;
+			border: var(--_ring-thickness) solid Canvas;
 		}
 	}
 `;
