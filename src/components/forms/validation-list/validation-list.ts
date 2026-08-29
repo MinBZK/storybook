@@ -234,7 +234,12 @@ export class NLDDValidationList extends LitElement {
 	private _resolve(): void {
 		const root = this.getRootNode() as Document | ShadowRoot;
 		const next = this.for ? root.getElementById?.(this.for) ?? null : this.control;
-		if (next === this._resolved) return;
+		// `_observer` and not just the control: taking this element out of the DOM
+		// and putting it back, which is what a consumer portalling a sheet to the
+		// body does, runs disconnectedCallback and takes the listener with it. The
+		// control never changed, so comparing only that would find no work to do
+		// and the list would sit there reacting to nothing.
+		if (next === this._resolved && this._observer) return;
 
 		this._detach();
 		this._resolved = next;

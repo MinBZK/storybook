@@ -283,6 +283,34 @@ describe('nldd-validation-list', () => {
 		expect(item(el, 'nickname-length').visible).toBe(true);
 	});
 
+	it('blijft luisteren nadat het veld verplaatst is', async () => {
+		el = await fixture(`
+			<div>
+				<nldd-form-field label="Wachtwoord">
+					<nldd-text-field invalid></nldd-text-field>
+					<nldd-validation-list>
+						<nldd-validation-item id="password-length" minlength="8">Minimaal 8 tekens</nldd-validation-item>
+					</nldd-validation-list>
+				</nldd-form-field>
+			</div>
+		`);
+		await waitForUpdate(el);
+		expect(item(el, 'password-length').unmet).toBe(true);
+
+		// Een consument die een sheet naar document.body portalt haalt het veld
+		// even uit de DOM. Dat koppelt de listener los, en zonder dit kwam hij
+		// nooit meer terug: de control was niet veranderd, dus _resolve zag geen
+		// werk en de lijst reageerde nergens meer op.
+		const veld = el.querySelector('nldd-form-field')!;
+		const elders = document.createElement('div');
+		el.appendChild(elders);
+		elders.appendChild(veld);
+		await waitForUpdate(el);
+
+		await type(el, 'LangGenoeg1');
+		expect(item(el, 'password-length').unmet).toBe(false);
+	});
+
 	it('vindt z\'n control via `for` als hij buiten een veld staat', async () => {
 		el = await fixture(`
 			<div>
