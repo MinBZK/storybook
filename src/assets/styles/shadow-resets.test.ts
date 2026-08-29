@@ -85,14 +85,6 @@ describe('shadow-resets: host CSS cannot bleed into slotted content', () => {
 		);
 	});
 
-	it('form-field error text — slotted link keeps color and underline', async () => {
-		await assertUnaffected(
-			'<nldd-form-field-error-text invalid><a href="#">link</a></nldd-form-field-error-text>',
-			'a',
-			['color', 'textDecorationLine'],
-		);
-	});
-
 	it('image — slotted img keeps its sizing', async () => {
 		await assertUnaffected(
 			'<nldd-image><img alt="x"></nldd-image>',

@@ -351,18 +351,46 @@ hetzelfde formulier alle drie naar grijpen.
 
 **Wanneer een fout verschijnt** bepaalt `invalid` op de input. `nldd-form` zet
 dat attribuut zelf bij het versturen, op het moment dat de browser het
-formulier afkeurt, en haalt het weg zodra het klopt. Wil je eerder tonen, zet
-het dan zelf: in Vue `:invalid="hasError"`, in platte JS
-`field.toggleAttribute('invalid', hasError)`.
+formulier afkeurt, en haalt het weg zodra het klopt. Wil je het zelf zetten, in
+Vue `:invalid="hasError"` of in platte JS
+`field.toggleAttribute('invalid', hasError)`, doe dat dan bij verzending en niet
+terwijl iemand nog typt. Anders kleurt een veld rood over een waarde die nog
+niet af is.
+
+**De lijst heeft twee modi**, en `judging` op de lijst is de schakelaar. Vóór een
+oordeel toont hij z'n hints: de eisen van het veld. Erna toont hij wat de waarde
+niet haalt, en zijn de hints weg. Hij gaat vanzelf aan zodra de input op
+`invalid` staat, en blijft daarna aan: repareer je de waarde, dan verdwijnt het
+rood, maar de uitleg komt niet terug. Iemand die net te horen heeft gekregen wat
+er mis was, hoeft niet opnieuw uitgelegd te krijgen wat het veld wil. Zet je
+`judging` zelf, dan laat je de hints vallen zonder dat er iets is afgekeurd;
+haal je hem weg, dan staat het veld weer op af, wat een reset wil.
+
+Wat rood wordt volgt `invalid` en niets anders. Er staat dus nooit een rode
+regel onder een veld dat er goed uitziet.
 
 `match` is niet verankerd, anders dan het native `pattern`: `[A-Z]` betekent
 "bevat een hoofdletter". Wil je dat de héle waarde een vorm heeft, zet er dan
 zelf `^` en `$` omheen.
 
+**Schrijf een item als de eis, niet als de opdracht.** Een item is geen control:
+je klikt er niet op en je voert het niet uit. De gebiedende wijs bewaren we voor
+knoppen, waar die een handeling aankondigt die je zelf in gang zet.
+
+| in plaats van | schrijf |
+|---|---|
+| "Vul een geldig KvK-nummer in (8 cijfers)" | "Een KvK-nummer van 8 cijfers" |
+| "Kies minimaal één optie" | "Minimaal één optie" |
+| "Gebruik minimaal 8 tekens" | "Minimaal 8 tekens" |
+
+Dezelfde regel doet namelijk twee dingen: vooraf staat hij er als eis, achteraf
+als wat er nog niet klopt. Een bevel leest vooraf als een standje voordat er iets
+aan de hand is.
+
 *Waarom dit patroon:* zo staat een eis één keer op de pagina in plaats van
-tweemaal, als uitleg vooraf en als foutmelding achteraf. Een `hint` blijft
-zichtbaar als het veld klopt, een gewoon item verdwijnt zodra je het haalt.
-Vinkjes zijn er niet: het veld toont zelf al een validatie-icoon.
+tweemaal, als uitleg vooraf en als foutmelding achteraf. Vinkjes zijn er niet:
+het veld toont zelf al een validatie-icoon, en dat per regel herhalen zegt
+hetzelfde drie keer.
 
 Voor tekst die je niet tegenhoudt, zoals "We sturen een bevestigingsmail naar
 dit adres", gebruik je `nldd-form-field-help-text`.

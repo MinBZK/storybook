@@ -683,22 +683,7 @@ A layout wrapper for the action buttons at the bottom of a form (typically a sub
 
 | Slot | Description |
 | --- | --- |
-| _(default)_ | The slotted input (e.g. nldd-text-field). Set `invalid` and `unmet="id1 id2"` on the input to say which items of an nldd-validation-list are not met. nldd-form-field-error-text elements assign themselves to the errors slot automatically. |
-
-### `<nldd-form-field-error-text>`
-
-**Attributes**
-
-| Attribute | Type | Description |
-| --- | --- | --- |
-| `id` | `string` | Referenced by the input's `unmet` attribute. |
-| `invalid` | `boolean` | Visibility managed automatically by nldd-form-field. |
-
-**Slots**
-
-| Slot | Description |
-| --- | --- |
-| _(default)_ | The error message text. |
+| _(default)_ | The slotted input (e.g. nldd-text-field), its nldd-validation-list and its nldd-form-field-help-text. |
 
 ### `<nldd-form-field-help-text>`
 

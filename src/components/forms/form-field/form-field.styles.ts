@@ -169,16 +169,6 @@ export const formFieldStyles = css`
 	}
 
 
-	/* # Errors */
-
-	.form-field__errors {
-		display: flex;
-		flex-direction: column;
-	}
-
-	:host(.has-errors) .form-field__errors {
-		margin-top: var(--primitives-space-4);
-	}
 `;
 
 export const formFieldHelpTextStyles = css`
@@ -203,68 +193,6 @@ export const formFieldHelpTextStyles = css`
 	.form-field__help-text {
 		margin: var(--primitives-space-4) 0 0;
 		color: var(--semantics-content-color);
-		font: var(--primitives-font-body-sm-regular-tight);
-	}
-
-
-	/* # Links */
-
-	::slotted(a) {
-		${slottedReset}
-		${inheritedTextReset}
-		border-radius: var(--primitives-corner-radius-xxs) !important;
-		color: var(--semantics-links-color) !important;
-		text-decoration: underline !important;
-		text-underline-offset: var(--primitives-space-2) !important;
-	}
-
-	@media (hover: hover) {
-		::slotted(a:hover) {
-			color: var(--semantics-links-is-hovered-color) !important;
-		}
-	}
-
-	::slotted(a:active) {
-		color: var(--semantics-links-is-active-color) !important;
-	}
-
-	::slotted(a:focus-visible) {
-		outline: var(--semantics-focus-ring-outline) !important;
-		outline-offset: var(--semantics-focus-ring-outline-offset) !important;
-		box-shadow: var(--semantics-focus-ring-box-shadow) !important;
-	}
-
-	::slotted(a:focus:not(:focus-visible)) {
-		outline: none !important;
-	}
-`;
-
-export const formFieldErrorTextStyles = css`
-
-
-	/* # Host */
-
-	:host {
-		${inheritedTextReset}
-		display: none;
-	}
-
-	:host([invalid]) {
-		display: block;
-	}
-
-	/* After the invalid rule at equal specificity: hidden must also win on an
-	   error text that is currently shown. */
-	:host([hidden]) {
-		display: none;
-	}
-
-
-	/* # Error text */
-
-	.form-field__error-text {
-		margin: 0;
-		color: var(--semantics-content-critical-color);
 		font: var(--primitives-font-body-sm-regular-tight);
 	}
 

@@ -1,5 +1,6 @@
 import { html } from 'lit';
 import './form-field.js';
+import '../validation-list/validation-list.js';
 import '../form/form.js';
 import '../form-actions/form-actions.js';
 import '../../inputs/text-field/text-field.js';
@@ -33,25 +34,28 @@ import '../../actions/button-group/button-group.js';
  * ```
  *
  * ### Slots
- * - Standaard slot: het geslote invoerelement. Stel `invalid` en `unmet="id1 id2"`
- *   in op de invoer om foutmeldingen automatisch te koppelen.
+ * - Standaard slot: de invoer, met daarnaast z'n `nldd-validation-list`.
  * - `nldd-form-field-help-text`: plaatsen naast de invoer — het component
  *   wijst zichzelf automatisch toe aan het help-slot.
- * - `nldd-form-field-error-text`: plaatsen naast de invoer — het component
- *   wijst zichzelf automatisch toe aan het fout-slot.
  *
  * ### Foutmeldingen
- * Voeg zoveel `nldd-form-field-error-text`-elementen toe als nodig. Het formulierveld
- * observeert de invoer en toont alleen de elementen waarnaar `unmet` verwijst.
+ * Alles waar een waarde aan moet voldoen staat in één `nldd-validation-list`.
+ * Zet `invalid` op de invoer en de lijst toont wat niet klopt; een eis die
+ * alleen een server kan vaststellen noem je in `unmet` op de invoer.
+ *
+ * Het formulierveld reikt de lijst z'n control aan en zet hem in de
+ * toegankelijke beschrijving van die control, vóór de help-tekst.
  *
  * ```html
  * <nldd-form-field label="Wachtwoord">
+ *   <nldd-password-field invalid></nldd-password-field>
+ *   <nldd-validation-list>
+ *     <nldd-validation-item id="wachtwoord-lengte" minlength="8">Minimaal 8 tekens</nldd-validation-item>
+ *     <nldd-validation-item id="wachtwoord-hoofdletter" match="[A-Z]">Een hoofdletter</nldd-validation-item>
+ *   </nldd-validation-list>
  *   <nldd-form-field-help-text>
- *     Minimaal 8 tekens. <a href="/help">Meer informatie</a>.
+ *     We gebruiken dit alleen om je aan te melden. <a href="/help">Meer informatie</a>.
  *   </nldd-form-field-help-text>
- *   <nldd-text-field invalid unmet="error-verplicht error-lengte"></nldd-text-field>
- *   <nldd-form-field-error-text id="error-verplicht">Dit veld is verplicht.</nldd-form-field-error-text>
- *   <nldd-form-field-error-text id="error-lengte">Minimaal 8 tekens vereist.</nldd-form-field-error-text>
  * </nldd-form-field>
  * ```
  */
@@ -126,19 +130,23 @@ export const Optional = () => html`
 
 export const Invalid = () => html`
 	<nldd-form-field label="E-mailadres">
-		<nldd-text-field invalid unmet="error-email"></nldd-text-field>
-		<nldd-form-field-error-text id="error-email">Voer een geldig e-mailadres in.</nldd-form-field-error-text>
+		<nldd-text-field invalid></nldd-text-field>
+		<nldd-validation-list>
+			<nldd-validation-item id="email-apenstaartje" match="@">Een apenstaartje</nldd-validation-item>
+		</nldd-validation-list>
 	</nldd-form-field>
 `;
 
 export const MultipleErrors = () => html`
 	<nldd-form-field label="Wachtwoord">
+		<nldd-text-field invalid></nldd-text-field>
+		<nldd-validation-list>
+			<nldd-validation-item id="wachtwoord-verplicht" required>Vul een wachtwoord in</nldd-validation-item>
+			<nldd-validation-item id="wachtwoord-lengte" minlength="8">Minimaal 8 tekens</nldd-validation-item>
+		</nldd-validation-list>
 		<nldd-form-field-help-text>
-			Minimaal 8 tekens. <a href="/help">Vereisten</a>.
+			We gebruiken dit alleen om je aan te melden. <a href="/help">Meer informatie</a>.
 		</nldd-form-field-help-text>
-		<nldd-text-field invalid unmet="error-verplicht error-lengte"></nldd-text-field>
-		<nldd-form-field-error-text id="error-verplicht">Dit veld is verplicht.</nldd-form-field-error-text>
-		<nldd-form-field-error-text id="error-lengte">Minimaal 8 tekens vereist.</nldd-form-field-error-text>
 	</nldd-form-field>
 `;
 
@@ -167,9 +175,10 @@ export const CompleteFormTop = () => html`
 				type="tel"
 				input-id="top-telefoon"
 				invalid
-				unmet="error-telefoon"
 			></nldd-text-field>
-			<nldd-form-field-error-text id="error-telefoon">Voer een geldig telefoonnummer in.</nldd-form-field-error-text>
+			<nldd-validation-list>
+				<nldd-validation-item id="top-telefoon-formaat" match="^[0-9 +-]+$">Alleen cijfers, spaties, + en -</nldd-validation-item>
+			</nldd-validation-list>
 		</nldd-form-field>
 		<nldd-form-field label="Opmerkingen" optional supporting-label="Eventuele aanvullende opmerkingen.">
 			<nldd-text-field input-id="top-opmerkingen"></nldd-text-field>
@@ -196,9 +205,10 @@ export const CompleteFormRight = () => html`
 					type="tel"
 					input-id="right-phone"
 					invalid
-					unmet="error-telefoon-rechts"
 				></nldd-text-field>
-				<nldd-form-field-error-text id="error-telefoon-rechts">Voer een geldig telefoonnummer in.</nldd-form-field-error-text>
+				<nldd-validation-list>
+					<nldd-validation-item id="rechts-telefoon-formaat" match="^[0-9 +-]+$">Alleen cijfers, spaties, + en -</nldd-validation-item>
+				</nldd-validation-list>
 			</nldd-form-field>
 			<nldd-form-field label="Opmerkingen" optional supporting-label="Eventuele aanvullende opmerkingen.">
 				<nldd-text-field input-id="right-comments"></nldd-text-field>

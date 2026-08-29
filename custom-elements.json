@@ -5627,7 +5627,7 @@
           "slots": [
             {
               "name": "",
-              "description": "The slotted input (e.g. nldd-text-field). Set `invalid` and `unmet=\"id1 id2\"` on the input to say which items of an nldd-validation-list are not met. nldd-form-field-error-text elements assign themselves to the errors slot automatically."
+              "description": "The slotted input (e.g. nldd-text-field), its nldd-validation-list and its nldd-form-field-help-text."
             }
           ]
         },
@@ -5646,47 +5646,6 @@
             {
               "name": "",
               "description": "Help text content. May contain inline elements including links."
-            }
-          ]
-        },
-        {
-          "kind": "class",
-          "description": "",
-          "name": "NLDDFormFieldErrorText",
-          "members": [
-            {
-              "kind": "field",
-              "name": "invalid",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "When present the error text is visible.\nManaged automatically by the parent nldd-form-field — do not set manually.",
-              "attribute": "invalid",
-              "reflects": true
-            }
-          ],
-          "attributes": [
-            {
-              "name": "invalid",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Visibility managed automatically by nldd-form-field.",
-              "fieldName": "invalid"
-            }
-          ],
-          "superclass": {
-            "name": "LitElement",
-            "package": "lit"
-          },
-          "tagName": "nldd-form-field-error-text",
-          "customElement": true,
-          "slots": [
-            {
-              "name": "",
-              "description": "The error message text."
             }
           ]
         }
@@ -5721,22 +5680,6 @@
           "name": "nldd-form-field-help-text",
           "declaration": {
             "name": "NLDDFormFieldHelpText",
-            "module": "src/components/forms/form-field/form-field.ts"
-          }
-        },
-        {
-          "kind": "js",
-          "name": "NLDDFormFieldErrorText",
-          "declaration": {
-            "name": "NLDDFormFieldErrorText",
-            "module": "src/components/forms/form-field/form-field.ts"
-          }
-        },
-        {
-          "kind": "custom-element-definition",
-          "name": "nldd-form-field-error-text",
-          "declaration": {
-            "name": "NLDDFormFieldErrorText",
             "module": "src/components/forms/form-field/form-field.ts"
           }
         }

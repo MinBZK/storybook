@@ -28,23 +28,24 @@ import '../components/inputs/time-picker/time-picker.js';
 import '../components/inputs/toggle-button/toggle-button.js';
 import '../components/inputs/toggle-button-group/toggle-button-group.js';
 import '../components/inputs/token-field/token-field.js';
+import '../components/forms/validation-list/validation-list.js';
 
 /**
- * The contract of nldd-form-field: the error text it shows has to reach the
+ * The contract of nldd-form-field: what describes a field has to reach the
  * accessible description of the control the user actually operates.
  *
- * Showing the text is not enough, and neither is setting the attribute. An
- * IDREF resolves inside the tree of the element that carries it, so
- * `aria-describedby="err"` on an input inside a shadow root cannot find an
- * error text that lives in the light DOM. The attribute is set, the id is
- * right, and the description comes out empty.
+ * Putting the text on screen is not enough, and neither is setting the
+ * attribute. An IDREF resolves inside the tree of the element that carries it,
+ * so `aria-describedby="rules"` on an input inside a shadow root cannot find a
+ * list that lives in the light DOM. The attribute is set, the id is right, and
+ * the description comes out empty.
  *
- * Every input is therefore checked the same way: put it in a field with an
- * error text, mark it invalid, and ask whether the reference resolves from
+ * Every input is therefore checked the same way: put it in a field with a
+ * validation list, mark it invalid, and ask whether the reference resolves from
  * where it is written. Which element that is differs per component. One that
- * carries an ARIA role of its own is the control (a radiogroup); one that
- * hands focus to something inside its shadow root is not, and the description
- * belongs to whatever ends up focused.
+ * carries an ARIA role of its own is the control (a radiogroup); one that hands
+ * focus to something inside its shadow root is not, and the description belongs
+ * to whatever ends up focused.
  */
 
 /** The deepest focused element, piercing shadow roots. */
@@ -94,7 +95,7 @@ function focusReaches(host: HTMLElement, target: Element): boolean {
 	return false;
 }
 
-/** Whether the error text is reachable from `el` as written, elements or ids. */
+/** Whether the description is reachable from `el` as written, elements or ids. */
 function describes(el: Element, error: Element): boolean {
 	const elements = (el as Element & { ariaDescribedByElements?: readonly Element[] | null })
 		.ariaDescribedByElements;
@@ -166,7 +167,7 @@ const cases: Case[] = [
 	{ name: 'nldd-token-field', control: '<nldd-token-field accessible-label="Landen"></nldd-token-field>' },
 ];
 
-describe('nldd-form-field: the error text reaches the accessible description', () => {
+describe('nldd-form-field: the description reaches the control', () => {
 	let field: HTMLElement;
 
 	afterEach(() => {
@@ -178,23 +179,25 @@ describe('nldd-form-field: the error text reaches the accessible description', (
 			field = await fixture<HTMLElement>(
 				`<nldd-form-field label="Vraag">
 					${control}
-					<nldd-form-field-error-text id="error">Dit klopt niet.</nldd-form-field-error-text>
+					<nldd-validation-list id="rules">
+						<nldd-validation-item id="rule-unmet">Dit klopt niet.</nldd-validation-item>
+					</nldd-validation-list>
 				</nldd-form-field>`,
 			);
 			await waitForUpdate(field);
 
 			const control_ = field.querySelector(name) as HTMLElement;
 			control_.setAttribute('invalid', '');
-			control_.setAttribute('unmet', 'error');
+			control_.setAttribute('unmet', 'rule-unmet');
 			await waitForUpdate(field);
 
-			const error = field.querySelector('#error') as HTMLElement;
-			expect(getComputedStyle(error).display).not.toBe('none');
+			const list = field.querySelector('#rules') as HTMLElement;
+			expect(getComputedStyle(list).display).not.toBe('none');
 
 			const target = descriptionTarget(control_);
 			expect(
-				describes(target, error),
-				`${name}: the error text does not reach <${target.localName}>`,
+				describes(target, list),
+				`${name}: the description does not reach <${target.localName}>`,
 			).toBe(true);
 			expect(
 				focusReaches(control_, target),
