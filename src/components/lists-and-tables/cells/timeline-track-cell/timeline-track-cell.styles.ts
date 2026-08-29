@@ -60,12 +60,21 @@ export const timelineTrackCellStyles = css`
 		margin-block: calc(var(--context-cell-padding-block, 0px) * -1);
 	}
 
+	/* The ring, but only left and right. A spread would put the same band above
+	   and below the line, and there it would cut the track at every row
+	   boundary: the lines that run on downward deliberately reach past the cell
+	   to bridge the divider. Two offset copies do the sides and nothing else. A
+	   copy shifted sideways has the same top and bottom as the line itself, so
+	   it can only show along the edge it is pushed out from. */
 	.timeline-track-cell__full-line,
 	.timeline-track-cell__top-line,
 	.timeline-track-cell__bottom-line {
 		position: absolute;
 		left: 50%;
 		margin-left: calc(var(--_line-width) / -2);
+		box-shadow:
+			calc(-1 * var(--_ring-thickness)) 0 0 0 var(--_ring-color),
+			var(--_ring-thickness) 0 0 0 var(--_ring-color);
 		background-color: var(--_track-color);
 		width: var(--_line-width);
 	}
