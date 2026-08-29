@@ -1,5 +1,14 @@
 import type { LitElement, ReactiveController } from 'lit';
 
+/**
+ * The flags a native control can raise, in the order the platform lists them.
+ * `valid` is not one of them: it is the answer, not a reason.
+ */
+const VALIDITY_FLAGS = [
+	'badInput', 'customError', 'patternMismatch', 'rangeOverflow', 'rangeUnderflow',
+	'stepMismatch', 'tooLong', 'tooShort', 'typeMismatch', 'valueMissing',
+] as const satisfies readonly (keyof ValidityStateFlags)[];
+
 /** What ElementInternals accepts as a form value. */
 export type FormValue = string | File | FormData | null;
 
@@ -14,6 +23,11 @@ export interface FormAssociatedElement {
 	/** Extra state for bfcache and state restore, when the value alone is not enough. */
 	formState(): FormValue | undefined;
 	commitFormValue(): void;
+	/** The native control whose constraints the host reports as its own. */
+	validationTarget(): HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement | null;
+	/** A reason of your own, on top of the native ones. Empty clears it. */
+	setCustomValidity(message: string): void;
+	commitValidity(): void;
 }
 
 /**
@@ -63,7 +77,73 @@ export function FormAssociated<T extends Constructor<LitElement>>(Base: T) {
 		/** Commit the value now, from the handler that changed it. */
 		commitFormValue(): void {
 			this.internals.setFormValue(this.formValue(), this.formState());
+			this.commitValidity();
 		}
+
+		/**
+		 * The native control this host speaks for.
+		 *
+		 * The constraint attributes are handed to a control inside the shadow
+		 * root, and that control is not a member of the form around the host: the
+		 * form sees the host, the host sees the control, and without something
+		 * joining them a `required` field submits empty. Override when the control
+		 * is not the first one in the shadow root, or return null for a component
+		 * that has no native control to speak for.
+		 */
+		validationTarget(): HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement | null {
+			return this.shadowRoot?.querySelector('input, textarea, select') ?? null;
+		}
+
+		/**
+		 * A reason the host is invalid that no attribute can express: a server that
+		 * refused the value, or an nldd-validation-list whose rule it fails. Kept
+		 * beside the native flags rather than replacing them, because
+		 * `setValidity` writes the whole set at once and the two arrive from
+		 * different places at different times.
+		 */
+		setCustomValidity(message: string): void {
+			this._customValidity = message;
+			this.commitValidity();
+		}
+
+		/**
+		 * Hands the control's verdict to the form, as the host's own.
+		 *
+		 * Called on every render and from `commitFormValue`, so it follows the
+		 * value for the same reason and with the same timing.
+		 */
+		commitValidity(): void {
+			const target = this.validationTarget();
+			const custom = this._customValidity;
+			if (!target && !custom) {
+				this.internals.setValidity({});
+				return;
+			}
+
+			const flags: ValidityStateFlags = {};
+			let message = '';
+			if (target && !target.validity.valid) {
+				for (const sleutel of VALIDITY_FLAGS) {
+					if (target.validity[sleutel]) flags[sleutel] = true;
+				}
+				message = target.validationMessage;
+			}
+			if (custom) {
+				flags.customError = true;
+				// The custom reason first: it is the one this system wrote, and the
+				// native message is the browser's own wording for the same field.
+				message = custom;
+			}
+
+			const anchor = (target ?? this) as HTMLElement;
+			if (Object.keys(flags).length === 0) {
+				this.internals.setValidity({});
+				return;
+			}
+			this.internals.setValidity(flags, message, anchor);
+		}
+
+		private _customValidity = '';
 
 		formDisabledCallback(disabled: boolean): void {
 			// Every form-associated component declares its own `disabled` property

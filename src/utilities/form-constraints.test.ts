@@ -13,6 +13,8 @@ import '../components/inputs/switch-field/switch-field.js';
 import '../components/inputs/toggle-button-group/toggle-button-group.js';
 import '../components/inputs/toggle-button/toggle-button.js';
 import '../components/inputs/text-field/text-field.js';
+import '../components/forms/form-field/form-field.js';
+import '../components/forms/validation-list/validation-list.js';
 
 /**
  * The contract of the constraint attributes: a component that renders a native
@@ -211,5 +213,112 @@ describe('required on a group of controls', () => {
 		expect(el.hasAttribute('aria-required')).toBe(true);
 		const input = el.querySelector('nldd-toggle-button')!.shadowRoot!.querySelector('input') as HTMLInputElement;
 		expect(input.required).toBe(false);
+	});
+});
+
+/**
+ * The contract that makes the attributes above worth setting: the form has to
+ * see them.
+ *
+ * The control that carries them lives in a shadow root and is therefore not a
+ * member of the form around the host. The form sees the host; the host sees the
+ * control. Without something joining those two a `required` field submits
+ * empty, no `invalid` event fires, and nothing on screen says why — which is
+ * exactly what happened before the form-associated mixin reported the control's
+ * verdict as the host's own.
+ */
+describe('the constraints reach the form around the component', () => {
+	let el: HTMLElement;
+
+	afterEach(() => {
+		if (el) cleanup(el);
+	});
+
+	/** Submits and reports what the platform did, without leaving the page. */
+	async function submit(form: HTMLFormElement): Promise<{ submitted: boolean; invalid: string[] }> {
+		const invalid: string[] = [];
+		const onInvalid = (e: Event) => invalid.push((e.target as Element).tagName.toLowerCase());
+		let submitted = false;
+		form.addEventListener('invalid', onInvalid, true);
+		form.addEventListener('submit', (e) => { e.preventDefault(); submitted = true; }, { once: true });
+		form.requestSubmit();
+		await waitForUpdate(form);
+		form.removeEventListener('invalid', onInvalid, true);
+		return { submitted, invalid };
+	}
+
+	for (const { name, inner, pattern } of cases) {
+		it(`${name}: an empty required field stops the submit`, async () => {
+			el = await fixture<HTMLElement>(`<div><form><${name} name="x" required></${name}></form></div>`);
+			await waitForUpdate(el);
+			const form = el.querySelector('form')!;
+
+			let uitkomst = await submit(form);
+			expect(uitkomst.submitted, `${name}: submitted while empty and required`).toBe(false);
+			expect(uitkomst.invalid).toContain(name);
+
+			const control = el.querySelector(name)! as HTMLElement & { value: string };
+			control.value = 'iets';
+			(control.shadowRoot!.querySelector(inner) as HTMLInputElement).value = 'iets';
+			await waitForUpdate(el);
+
+			uitkomst = await submit(form);
+			expect(uitkomst.submitted, `${name}: still blocked after filling it in`).toBe(true);
+		});
+
+		if (!pattern) continue;
+
+		it(`${name}: a value that fails the pattern stops the submit`, async () => {
+			el = await fixture<HTMLElement>(`<div><form><${name} name="x" pattern="[0-9]{4}"></${name}></form></div>`);
+			await waitForUpdate(el);
+			const form = el.querySelector('form')!;
+			const control = el.querySelector(name)! as HTMLElement & { value: string };
+			const binnen = control.shadowRoot!.querySelector(inner) as HTMLInputElement;
+
+			control.value = 'abcd';
+			binnen.value = 'abcd';
+			await waitForUpdate(el);
+			expect((await submit(form)).submitted).toBe(false);
+
+			control.value = '1234';
+			binnen.value = '1234';
+			await waitForUpdate(el);
+			expect((await submit(form)).submitted).toBe(true);
+		});
+	}
+
+	it('a rule of a validation list and a native constraint hold at the same time', async () => {
+		el = await fixture<HTMLElement>(`
+			<div><form>
+				<nldd-form-field label="Wachtwoord">
+					<nldd-text-field name="pw" required></nldd-text-field>
+					<nldd-validation-list>
+						<nldd-validation-item id="pw-capital" match="[A-Z]">Een hoofdletter</nldd-validation-item>
+					</nldd-validation-list>
+				</nldd-form-field>
+			</form></div>
+		`);
+		await waitForUpdate(el);
+		const form = el.querySelector('form')!;
+		const control = el.querySelector('nldd-text-field')! as HTMLElement & { value: string };
+		const binnen = control.shadowRoot!.querySelector('input') as HTMLInputElement;
+
+		// Leeg: allebei ontevreden.
+		expect((await submit(form)).submitted).toBe(false);
+
+		// Gevuld, maar zonder hoofdletter: het native `required` is tevreden en de
+		// regel niet, en dat mag de een de ander niet laten wegpoetsen.
+		control.value = 'geheim';
+		binnen.value = 'geheim';
+		control.dispatchEvent(new Event('input', { bubbles: true }));
+		await waitForUpdate(el);
+		expect((await submit(form)).submitted, 'de regel liet het formulier door').toBe(false);
+
+		// En met allebei in orde gaat hij weg.
+		control.value = 'Geheim';
+		binnen.value = 'Geheim';
+		control.dispatchEvent(new Event('input', { bubbles: true }));
+		await waitForUpdate(el);
+		expect((await submit(form)).submitted).toBe(true);
 	});
 });

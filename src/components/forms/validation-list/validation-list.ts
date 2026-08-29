@@ -317,17 +317,18 @@ export class NLDDValidationList extends LitElement {
 	 * Only the rules. What the app named in `unmet` it already knows, and
 	 * reporting that back would be this list telling the app what the app told
 	 * it.
+	 *
+	 * Through `setCustomValidity` and not into `internals` directly. A control
+	 * reports its own `required` and `pattern` through the same channel, and
+	 * `setValidity` writes the whole set of flags at once: writing here would
+	 * erase those on the way in, and they would erase this on the next render.
+	 * The platform's own name for a reason of your own is the one both sides
+	 * understand, and a plain native input answers to it too.
 	 */
 	private _reportValidity(fails: boolean, messages: string[]): void {
 		const control = this._resolved as ValidatableControl | null;
-		if (!control) return;
-
-		const message = fails ? messages.filter(Boolean).join('. ') : '';
-		if (control.internals) {
-			control.internals.setValidity(fails ? { customError: true } : {}, message || undefined, control as HTMLElement);
-			return;
-		}
-		control.setCustomValidity?.(message);
+		if (!control?.setCustomValidity) return;
+		control.setCustomValidity(fails ? messages.filter(Boolean).join('. ') : '');
 	}
 }
 
