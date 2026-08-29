@@ -41,7 +41,7 @@ export function applyDescribedBy(target: Element | null | undefined, elements: r
  * Announces that a control is invalid, on the element assistive software meets.
  *
  * Nothing is drawn for it, and that is a decision rather than an omission: what
- * is wrong belongs in an nldd-form-field-validation-list, in words. A red ring
+ * is wrong belongs in an nldd-validation-list, in words. A red ring
  * around a single checkbox would say the option is wrong, while it is the
  * question that is unanswered. Choosing not to show it is no reason to keep
  * quiet about it, so `aria-invalid` goes on regardless.

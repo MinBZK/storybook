@@ -324,24 +324,24 @@ je tekst over meerdere alinea's of bevat hij opmaak, gebruik dan
 
 `nldd-form-field` koppelt label en input automatisch (geen `for`/`id`-gedoe).
 Alles waar een waarde aan moet voldoen zet je in een
-`nldd-form-field-validation-list`. Een eis die je vooraf kunt noemen krijgt een
+`nldd-validation-list`. Een eis die je vooraf kunt noemen krijgt een
 regel en controleert zichzelf terwijl de gebruiker typt. Een eis die alleen je
 server kan vaststellen krijgt er geen, en die noem je in `unmet` op de input.
 
 ```html
 <nldd-form-field label="Wachtwoord">
   <nldd-password-field name="password" unmet="password-breach"></nldd-password-field>
-  <nldd-form-field-validation-list hint>
-    <nldd-form-field-validation-item id="password-length" minlength="8">
+  <nldd-validation-list hint>
+    <nldd-validation-item id="password-length" minlength="8">
       Minimaal 8 tekens
-    </nldd-form-field-validation-item>
-    <nldd-form-field-validation-item id="password-capital" match="[A-Z]">
+    </nldd-validation-item>
+    <nldd-validation-item id="password-capital" match="[A-Z]">
       Een hoofdletter
-    </nldd-form-field-validation-item>
-    <nldd-form-field-validation-item id="password-breach">
+    </nldd-validation-item>
+    <nldd-validation-item id="password-breach">
       Dit wachtwoord staat in een bekend datalek
-    </nldd-form-field-validation-item>
-  </nldd-form-field-validation-list>
+    </nldd-validation-item>
+  </nldd-validation-list>
 </nldd-form-field>
 ```
 

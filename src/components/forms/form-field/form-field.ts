@@ -10,7 +10,7 @@
  * @attr {boolean} optional - Shows an optional badge next to the label.
  * @attr {string} optional-label - Text for the optional badge. Defaults to 'Optioneel'.
  *
- * @slot - The slotted input (e.g. nldd-text-field). Set `invalid` and `unmet="id1 id2"` on the input to say which items of an nldd-form-field-validation-list are not met. nldd-form-field-error-text elements assign themselves to the errors slot automatically.
+ * @slot - The slotted input (e.g. nldd-text-field). Set `invalid` and `unmet="id1 id2"` on the input to say which items of an nldd-validation-list are not met. nldd-form-field-error-text elements assign themselves to the errors slot automatically.
  *
  * ─────────────────────────────────────────────────────────────────────────
  *
@@ -296,7 +296,7 @@ export class NLDDFormField extends LitElement {
 	private _adoptValidationLists(input: Element): void {
 		const lists = Array.from(this.children)
 			.filter((el): el is HTMLElement & { control: Element | null } =>
-				el.tagName.toLowerCase() === 'nldd-form-field-validation-list');
+				el.tagName.toLowerCase() === 'nldd-validation-list');
 		if (!lists.length) return;
 
 		for (const list of lists) {
@@ -382,7 +382,7 @@ export class NLDDFormField extends LitElement {
 		// for nothing in the description, so one reference gives exactly what is
 		// on screen.
 		const lists = children
-			.filter(el => el.tagName.toLowerCase() === 'nldd-form-field-validation-list');
+			.filter(el => el.tagName.toLowerCase() === 'nldd-validation-list');
 
 		const visibleErrors: Element[] = [];
 		for (const el of children) {

@@ -117,7 +117,7 @@ export class NLDDSearchField extends DescribedBy(FormAssociated(LitElement)) {
 	 * Marks the control as invalid.
 	 *
 	 * Announced and not drawn. What is wrong belongs in an
-	 * nldd-form-field-validation-list, in words: a red ring around a single
+	 * nldd-validation-list, in words: a red ring around a single
 	 * checkbox or radio would say the option is wrong, while it is the question
 	 * that is unanswered. `aria-invalid` still goes on the control, because
 	 * choosing not to show something is not a reason to keep quiet about it.

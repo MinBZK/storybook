@@ -106,9 +106,9 @@
       "types": "./dist/components/forms/form-field/form-field.d.ts",
       "default": "./dist/components/forms/form-field/form-field.js"
     },
-    "./form-field-validation-list": {
-      "types": "./dist/components/forms/form-field-validation-list/form-field-validation-list.d.ts",
-      "default": "./dist/components/forms/form-field-validation-list/form-field-validation-list.js"
+    "./validation-list": {
+      "types": "./dist/components/forms/validation-list/validation-list.d.ts",
+      "default": "./dist/components/forms/validation-list/validation-list.js"
     },
     "./form-section": {
       "types": "./dist/components/forms/form-section/form-section.d.ts",

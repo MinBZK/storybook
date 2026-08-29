@@ -1,7 +1,7 @@
 import { css } from 'lit';
 
 
-export const formFieldValidationListStyles = css`
+export const validationListStyles = css`
 
 
 	/* # Host */
@@ -26,7 +26,7 @@ export const formFieldValidationListStyles = css`
 	   still reads as the distance between the field and this list. Same route
 	   as .form-field__help-text. */
 
-	.form-field-validation-list {
+	.validation-list {
 		display: flex;
 		margin-top: var(--primitives-space-4);
 		flex-direction: column;
@@ -35,7 +35,7 @@ export const formFieldValidationListStyles = css`
 `;
 
 
-export const formFieldValidationItemStyles = css`
+export const validationItemStyles = css`
 
 
 	/* # Host */

@@ -1,17 +1,17 @@
 import { describe, it, expect, afterEach } from 'vitest';
 import { fixture, cleanup, waitForUpdate } from '../../../test-utils.js';
-import './form-field-validation-list.js';
+import './validation-list.js';
 import '../form-field/form-field.js';
 import '../form/form.js';
 import '../../inputs/text-field/text-field.js';
-import type { NLDDFormFieldValidationItem, NLDDFormFieldValidationList } from './form-field-validation-list.js';
+import type { NLDDValidationItem, NLDDValidationList } from './validation-list.js';
 
-function item(root: ParentNode, id: string): NLDDFormFieldValidationItem {
-	return root.querySelector(`#${id}`) as NLDDFormFieldValidationItem;
+function item(root: ParentNode, id: string): NLDDValidationItem {
+	return root.querySelector(`#${id}`) as NLDDValidationItem;
 }
 
-function list(root: ParentNode): NLDDFormFieldValidationList {
-	return root.querySelector('nldd-form-field-validation-list') as NLDDFormFieldValidationList;
+function list(root: ParentNode): NLDDValidationList {
+	return root.querySelector('nldd-validation-list') as NLDDValidationList;
 }
 
 /** Types into the field the way the component hears it, so the list re-checks. */
@@ -22,7 +22,7 @@ async function type(field: HTMLElement, value: string): Promise<void> {
 	await waitForUpdate(field);
 }
 
-describe('nldd-form-field-validation-list', () => {
+describe('nldd-validation-list', () => {
 	let el: HTMLElement;
 
 	afterEach(() => {
@@ -30,7 +30,7 @@ describe('nldd-form-field-validation-list', () => {
 	});
 
 	it('rendert zonder fouten', async () => {
-		el = await fixture('<nldd-form-field-validation-list></nldd-form-field-validation-list>');
+		el = await fixture('<nldd-validation-list></nldd-validation-list>');
 		await waitForUpdate(el);
 		expect(el.shadowRoot).not.toBeNull();
 	});
@@ -39,9 +39,9 @@ describe('nldd-form-field-validation-list', () => {
 		el = await fixture(`
 			<nldd-form-field label="Wachtwoord">
 				<nldd-text-field></nldd-text-field>
-				<nldd-form-field-validation-list>
-					<nldd-form-field-validation-item id="password-breach">Staat in een datalek</nldd-form-field-validation-item>
-				</nldd-form-field-validation-list>
+				<nldd-validation-list>
+					<nldd-validation-item id="password-breach">Staat in een datalek</nldd-validation-item>
+				</nldd-validation-list>
 			</nldd-form-field>
 		`);
 		await waitForUpdate(el);
@@ -60,9 +60,9 @@ describe('nldd-form-field-validation-list', () => {
 		el = await fixture(`
 			<nldd-form-field label="Wachtwoord">
 				<nldd-text-field invalid></nldd-text-field>
-				<nldd-form-field-validation-list>
-					<nldd-form-field-validation-item id="password-length" minlength="8">Minimaal 8 tekens</nldd-form-field-validation-item>
-				</nldd-form-field-validation-list>
+				<nldd-validation-list>
+					<nldd-validation-item id="password-length" minlength="8">Minimaal 8 tekens</nldd-validation-item>
+				</nldd-validation-list>
 			</nldd-form-field>
 		`);
 		await waitForUpdate(el);
@@ -80,9 +80,9 @@ describe('nldd-form-field-validation-list', () => {
 		el = await fixture(`
 			<nldd-form-field label="Wachtwoord">
 				<nldd-text-field invalid></nldd-text-field>
-				<nldd-form-field-validation-list>
-					<nldd-form-field-validation-item id="password-length" minlength="8">Minimaal 8 tekens</nldd-form-field-validation-item>
-				</nldd-form-field-validation-list>
+				<nldd-validation-list>
+					<nldd-validation-item id="password-length" minlength="8">Minimaal 8 tekens</nldd-validation-item>
+				</nldd-validation-list>
 			</nldd-form-field>
 		`);
 		await waitForUpdate(el);
@@ -93,9 +93,9 @@ describe('nldd-form-field-validation-list', () => {
 		el = await fixture(`
 			<nldd-form-field label="Wachtwoord">
 				<nldd-text-field></nldd-text-field>
-				<nldd-form-field-validation-list hint>
-					<nldd-form-field-validation-item id="password-length" minlength="8">Minimaal 8 tekens</nldd-form-field-validation-item>
-				</nldd-form-field-validation-list>
+				<nldd-validation-list hint>
+					<nldd-validation-item id="password-length" minlength="8">Minimaal 8 tekens</nldd-validation-item>
+				</nldd-validation-list>
 			</nldd-form-field>
 		`);
 		await waitForUpdate(el);
@@ -107,10 +107,10 @@ describe('nldd-form-field-validation-list', () => {
 		el = await fixture(`
 			<nldd-form-field label="Wachtwoord">
 				<nldd-text-field invalid></nldd-text-field>
-				<nldd-form-field-validation-list>
-					<nldd-form-field-validation-item id="password-empty" required>Vul een wachtwoord in</nldd-form-field-validation-item>
-					<nldd-form-field-validation-item id="password-length" minlength="8">Minimaal 8 tekens</nldd-form-field-validation-item>
-				</nldd-form-field-validation-list>
+				<nldd-validation-list>
+					<nldd-validation-item id="password-empty" required>Vul een wachtwoord in</nldd-validation-item>
+					<nldd-validation-item id="password-length" minlength="8">Minimaal 8 tekens</nldd-validation-item>
+				</nldd-validation-list>
 			</nldd-form-field>
 		`);
 		await waitForUpdate(el);
@@ -128,9 +128,9 @@ describe('nldd-form-field-validation-list', () => {
 		el = await fixture(`
 			<nldd-form-field label="Wachtwoord">
 				<nldd-text-field invalid></nldd-text-field>
-				<nldd-form-field-validation-list>
-					<nldd-form-field-validation-item id="password-capital" match="[A-Z]">Een hoofdletter</nldd-form-field-validation-item>
-				</nldd-form-field-validation-list>
+				<nldd-validation-list>
+					<nldd-validation-item id="password-capital" match="[A-Z]">Een hoofdletter</nldd-validation-item>
+				</nldd-validation-list>
 			</nldd-form-field>
 		`);
 		await waitForUpdate(el);
@@ -146,10 +146,10 @@ describe('nldd-form-field-validation-list', () => {
 		el = await fixture(`
 			<nldd-form-field label="Wachtwoord">
 				<nldd-text-field></nldd-text-field>
-				<nldd-form-field-validation-list hint>
-					<nldd-form-field-validation-item id="password-length" minlength="8">Minimaal 8 tekens</nldd-form-field-validation-item>
-					<nldd-form-field-validation-item id="password-capital" match="[A-Z]">Een hoofdletter</nldd-form-field-validation-item>
-				</nldd-form-field-validation-list>
+				<nldd-validation-list hint>
+					<nldd-validation-item id="password-length" minlength="8">Minimaal 8 tekens</nldd-validation-item>
+					<nldd-validation-item id="password-capital" match="[A-Z]">Een hoofdletter</nldd-validation-item>
+				</nldd-validation-list>
 			</nldd-form-field>
 		`);
 		await waitForUpdate(el);
@@ -163,10 +163,10 @@ describe('nldd-form-field-validation-list', () => {
 		el = await fixture(`
 			<nldd-form-field label="Wachtwoord">
 				<nldd-text-field valid></nldd-text-field>
-				<nldd-form-field-validation-list>
-					<nldd-form-field-validation-item id="password-length" hint minlength="8">Minimaal 8 tekens</nldd-form-field-validation-item>
-					<nldd-form-field-validation-item id="password-breach">Staat in een datalek</nldd-form-field-validation-item>
-				</nldd-form-field-validation-list>
+				<nldd-validation-list>
+					<nldd-validation-item id="password-length" hint minlength="8">Minimaal 8 tekens</nldd-validation-item>
+					<nldd-validation-item id="password-breach">Staat in een datalek</nldd-validation-item>
+				</nldd-validation-list>
 			</nldd-form-field>
 		`);
 		await waitForUpdate(el);
@@ -181,10 +181,10 @@ describe('nldd-form-field-validation-list', () => {
 		el = await fixture(`
 			<nldd-form-field label="Wachtwoord">
 				<nldd-text-field invalid></nldd-text-field>
-				<nldd-form-field-validation-list hint>
-					<nldd-form-field-validation-item id="password-length" minlength="8">Minimaal 8 tekens</nldd-form-field-validation-item>
-					<nldd-form-field-validation-item id="password-capital" match="[A-Z]">Een hoofdletter</nldd-form-field-validation-item>
-				</nldd-form-field-validation-list>
+				<nldd-validation-list hint>
+					<nldd-validation-item id="password-length" minlength="8">Minimaal 8 tekens</nldd-validation-item>
+					<nldd-validation-item id="password-capital" match="[A-Z]">Een hoofdletter</nldd-validation-item>
+				</nldd-validation-list>
 			</nldd-form-field>
 		`);
 		await waitForUpdate(el);
@@ -197,9 +197,9 @@ describe('nldd-form-field-validation-list', () => {
 		el = await fixture(`
 			<nldd-form-field label="Wachtwoord">
 				<nldd-text-field invalid></nldd-text-field>
-				<nldd-form-field-validation-list hint>
-					<nldd-form-field-validation-item id="password-length" minlength="8">Minimaal 8 tekens</nldd-form-field-validation-item>
-				</nldd-form-field-validation-list>
+				<nldd-validation-list hint>
+					<nldd-validation-item id="password-length" minlength="8">Minimaal 8 tekens</nldd-validation-item>
+				</nldd-validation-list>
 			</nldd-form-field>
 		`);
 		await waitForUpdate(el);
@@ -215,9 +215,9 @@ describe('nldd-form-field-validation-list', () => {
 		el = await fixture(`
 			<nldd-form-field label="Wachtwoord">
 				<nldd-text-field></nldd-text-field>
-				<nldd-form-field-validation-list hint judging>
-					<nldd-form-field-validation-item id="password-length" minlength="8">Minimaal 8 tekens</nldd-form-field-validation-item>
-				</nldd-form-field-validation-list>
+				<nldd-validation-list hint judging>
+					<nldd-validation-item id="password-length" minlength="8">Minimaal 8 tekens</nldd-validation-item>
+				</nldd-validation-list>
 			</nldd-form-field>
 		`);
 		await waitForUpdate(el);
@@ -234,15 +234,15 @@ describe('nldd-form-field-validation-list', () => {
 			<nldd-form>
 				<nldd-form-field label="Naam">
 					<nldd-text-field name="name"></nldd-text-field>
-					<nldd-form-field-validation-list>
-						<nldd-form-field-validation-item id="name-required" required>Vul een naam in</nldd-form-field-validation-item>
-					</nldd-form-field-validation-list>
+					<nldd-validation-list>
+						<nldd-validation-item id="name-required" required>Vul een naam in</nldd-validation-item>
+					</nldd-validation-list>
 				</nldd-form-field>
 				<nldd-form-field label="Bijnaam">
 					<nldd-text-field name="nickname" value="Bart"></nldd-text-field>
-					<nldd-form-field-validation-list hint>
-						<nldd-form-field-validation-item id="nickname-length" minlength="2">Minimaal 2 tekens</nldd-form-field-validation-item>
-					</nldd-form-field-validation-list>
+					<nldd-validation-list hint>
+						<nldd-validation-item id="nickname-length" minlength="2">Minimaal 2 tekens</nldd-validation-item>
+					</nldd-validation-list>
 				</nldd-form-field>
 			</nldd-form>
 		`);
@@ -256,7 +256,7 @@ describe('nldd-form-field-validation-list', () => {
 		// wordt dus niet afgekeurd, en dan is er ook niets te oordelen: die lijst
 		// blijft uitleggen wat het veld wil.
 		expect(item(el, 'name-required').unmet).toBe(true);
-		expect((item(el, 'nickname-length').parentElement as NLDDFormFieldValidationList).judging).toBe(false);
+		expect((item(el, 'nickname-length').parentElement as NLDDValidationList).judging).toBe(false);
 		expect(item(el, 'nickname-length').visible).toBe(true);
 	});
 
@@ -264,9 +264,9 @@ describe('nldd-form-field-validation-list', () => {
 		el = await fixture(`
 			<div>
 				<nldd-text-field id="standalone" invalid></nldd-text-field>
-				<nldd-form-field-validation-list for="standalone">
-					<nldd-form-field-validation-item id="password-length" minlength="8">Minimaal 8 tekens</nldd-form-field-validation-item>
-				</nldd-form-field-validation-list>
+				<nldd-validation-list for="standalone">
+					<nldd-validation-item id="password-length" minlength="8">Minimaal 8 tekens</nldd-validation-item>
+				</nldd-validation-list>
 			</div>
 		`);
 		await waitForUpdate(el);
@@ -281,9 +281,9 @@ describe('nldd-form-field-validation-list', () => {
 		el = await fixture(`
 			<nldd-form-field label="Wachtwoord">
 				<nldd-text-field></nldd-text-field>
-				<nldd-form-field-validation-list>
-					<nldd-form-field-validation-item id="password-length" minlength="8">Minimaal 8 tekens</nldd-form-field-validation-item>
-				</nldd-form-field-validation-list>
+				<nldd-validation-list>
+					<nldd-validation-item id="password-length" minlength="8">Minimaal 8 tekens</nldd-validation-item>
+				</nldd-validation-list>
 			</nldd-form-field>
 		`);
 		await waitForUpdate(el);
@@ -300,25 +300,25 @@ describe('nldd-form-field-validation-list', () => {
 		el = await fixture(`
 			<nldd-form-field label="Wachtwoord">
 				<nldd-text-field invalid></nldd-text-field>
-				<nldd-form-field-validation-list hint>
-					<nldd-form-field-validation-item id="password-length" minlength="8">Minimaal 8 tekens</nldd-form-field-validation-item>
-				</nldd-form-field-validation-list>
+				<nldd-validation-list hint>
+					<nldd-validation-item id="password-length" minlength="8">Minimaal 8 tekens</nldd-validation-item>
+				</nldd-validation-list>
 			</nldd-form-field>
 		`);
 		await waitForUpdate(el);
 		const inner = el.querySelector('nldd-text-field')!.shadowRoot!.querySelector('input')!;
 		const described = (inner as Element & { ariaDescribedByElements?: readonly Element[] | null })
 			.ariaDescribedByElements ?? [];
-		expect(described).toEqual([el.querySelector('nldd-form-field-validation-list')]);
+		expect(described).toEqual([el.querySelector('nldd-validation-list')]);
 	});
 
 	it('toont niets zonder `invalid`, maar blokkeert het formulier wel', async () => {
 		el = await fixture(`
 			<nldd-form-field label="Wachtwoord">
 				<nldd-text-field></nldd-text-field>
-				<nldd-form-field-validation-list>
-					<nldd-form-field-validation-item id="password-length" minlength="8">Minimaal 8 tekens</nldd-form-field-validation-item>
-				</nldd-form-field-validation-list>
+				<nldd-validation-list>
+					<nldd-validation-item id="password-length" minlength="8">Minimaal 8 tekens</nldd-validation-item>
+				</nldd-validation-list>
 			</nldd-form-field>
 		`);
 		await waitForUpdate(el);
@@ -342,9 +342,9 @@ describe('nldd-form markeert een control op het moment dat het platform het zegt
 			<nldd-form novalidate>
 				<nldd-form-field label="Wachtwoord">
 					<nldd-text-field name="password"></nldd-text-field>
-					<nldd-form-field-validation-list>
-						<nldd-form-field-validation-item id="password-length" minlength="8">Minimaal 8 tekens</nldd-form-field-validation-item>
-					</nldd-form-field-validation-list>
+					<nldd-validation-list>
+						<nldd-validation-item id="password-length" minlength="8">Minimaal 8 tekens</nldd-validation-item>
+					</nldd-validation-list>
 				</nldd-form-field>
 			</nldd-form>
 		`);
@@ -363,9 +363,9 @@ describe('nldd-form markeert een control op het moment dat het platform het zegt
 			<nldd-form novalidate>
 				<nldd-form-field label="Wachtwoord">
 					<nldd-text-field name="password"></nldd-text-field>
-					<nldd-form-field-validation-list>
-						<nldd-form-field-validation-item id="password-length" minlength="8">Minimaal 8 tekens</nldd-form-field-validation-item>
-					</nldd-form-field-validation-list>
+					<nldd-validation-list>
+						<nldd-validation-item id="password-length" minlength="8">Minimaal 8 tekens</nldd-validation-item>
+					</nldd-validation-list>
 				</nldd-form-field>
 			</nldd-form>
 		`);
@@ -401,15 +401,15 @@ describe('nldd-form markeert een control op het moment dat het platform het zegt
 			<nldd-form novalidate>
 				<nldd-form-field label="Eerste">
 					<nldd-text-field name="first" value="lang genoeg"></nldd-text-field>
-					<nldd-form-field-validation-list>
-						<nldd-form-field-validation-item id="first-length" minlength="8">Minimaal 8</nldd-form-field-validation-item>
-					</nldd-form-field-validation-list>
+					<nldd-validation-list>
+						<nldd-validation-item id="first-length" minlength="8">Minimaal 8</nldd-validation-item>
+					</nldd-validation-list>
 				</nldd-form-field>
 				<nldd-form-field label="Tweede">
 					<nldd-text-field name="second"></nldd-text-field>
-					<nldd-form-field-validation-list>
-						<nldd-form-field-validation-item id="second-length" minlength="8">Minimaal 8</nldd-form-field-validation-item>
-					</nldd-form-field-validation-list>
+					<nldd-validation-list>
+						<nldd-validation-item id="second-length" minlength="8">Minimaal 8</nldd-validation-item>
+					</nldd-validation-list>
 				</nldd-form-field>
 			</nldd-form>
 		`);
@@ -435,9 +435,9 @@ describe('nldd-form markeert een control op het moment dat het platform het zegt
 			<nldd-form novalidate>
 				<nldd-form-field label="Wachtwoord">
 					<nldd-text-field name="password"></nldd-text-field>
-					<nldd-form-field-validation-list>
-						<nldd-form-field-validation-item id="password-length" minlength="8">Minimaal 8 tekens</nldd-form-field-validation-item>
-					</nldd-form-field-validation-list>
+					<nldd-validation-list>
+						<nldd-validation-item id="password-length" minlength="8">Minimaal 8 tekens</nldd-validation-item>
+					</nldd-validation-list>
 				</nldd-form-field>
 			</nldd-form>
 		`);

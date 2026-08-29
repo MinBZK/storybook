@@ -22,7 +22,7 @@ import '../components/inputs/toggle-button-group/toggle-button-group.js';
  * `invalid` is announced on every control, and drawn on none of these.
  *
  * That is a decision. What is wrong belongs in an
- * nldd-form-field-validation-list, in words: a red ring around one checkbox
+ * nldd-validation-list, in words: a red ring around one checkbox
  * would say that option is wrong, while it is the question that is unanswered.
  * Choosing not to show it is no reason to keep quiet about it, so the state has
  * to reach the element assistive software meets.

@@ -1,5 +1,5 @@
 /**
- * Nederlandse Digitale Dienst Form Field Validation List (Lit + TypeScript)
+ * Nederlandse Digitale Dienst Validation List (Lit + TypeScript)
  *
  * Everything a value has to satisfy, in one list. A requirement you can state
  * up front is an item with a rule, and it checks itself while you type. One
@@ -18,17 +18,17 @@
  * There are no checkmarks. The control already shows a validation icon of its
  * own, and repeating that per line says the same thing three times.
  *
- * @element nldd-form-field-validation-list
+ * @element nldd-validation-list
  *
  * @attr {string} for - Id of the control this list is about. Not needed inside an nldd-form-field, which hands its own control over.
  * @attr {boolean} hint - Show every item before there is a verdict, as the requirements of the field. Overridable per item.
  * @attr {boolean} judging - Hold the value to its rules and show what it fails, instead of stating what the field wants. Turned on by the list itself once its control is `invalid`, and settable by hand.
  *
- * @slot - nldd-form-field-validation-item elements.
+ * @slot - nldd-validation-item elements.
  *
  * ─────────────────────────────────────────────────────────────────────────
  *
- * @element nldd-form-field-validation-item
+ * @element nldd-validation-item
  *
  * @attr {string} match - Regular expression the value has to contain. Not anchored, unlike the native `pattern`: `[A-Z]` means "has a capital in it".
  * @attr {number} minlength - Fewest characters the value may have.
@@ -49,17 +49,17 @@
  * @example
  * <nldd-form-field label="Wachtwoord">
  *   <nldd-password-field name="password" invalid unmet="password-breach"></nldd-password-field>
- *   <nldd-form-field-validation-list hint>
- *     <nldd-form-field-validation-item id="password-length" minlength="8">Minimaal 8 tekens</nldd-form-field-validation-item>
- *     <nldd-form-field-validation-item id="password-capital" match="[A-Z]">Een hoofdletter</nldd-form-field-validation-item>
- *     <nldd-form-field-validation-item id="password-breach">Dit wachtwoord staat in een bekend datalek</nldd-form-field-validation-item>
- *   </nldd-form-field-validation-list>
+ *   <nldd-validation-list hint>
+ *     <nldd-validation-item id="password-length" minlength="8">Minimaal 8 tekens</nldd-validation-item>
+ *     <nldd-validation-item id="password-capital" match="[A-Z]">Een hoofdletter</nldd-validation-item>
+ *     <nldd-validation-item id="password-breach">Dit wachtwoord staat in een bekend datalek</nldd-validation-item>
+ *   </nldd-validation-list>
  * </nldd-form-field>
  */
 import { LitElement, type PropertyValues } from 'lit';
 import { customElement, property, state } from 'lit/decorators.js';
-import { formFieldValidationListStyles, formFieldValidationItemStyles } from './form-field-validation-list.styles.js';
-import { formFieldValidationListTemplate, formFieldValidationItemTemplate } from './form-field-validation-list.template.js';
+import { validationListStyles, validationItemStyles } from './validation-list.styles.js';
+import { validationListTemplate, validationItemTemplate } from './validation-list.template.js';
 
 /** A control that can report its own validity to the form. */
 interface ValidatableControl extends Element {
@@ -70,12 +70,12 @@ interface ValidatableControl extends Element {
 
 
 /* ============================================================
-   nldd-form-field-validation-item
+   nldd-validation-item
    ============================================================ */
 
-@customElement('nldd-form-field-validation-item')
-export class NLDDFormFieldValidationItem extends LitElement {
-	static override styles = formFieldValidationItemStyles;
+@customElement('nldd-validation-item')
+export class NLDDValidationItem extends LitElement {
+	static override styles = validationItemStyles;
 
 	/** Not anchored, unlike the native `pattern`. See the note at the top. */
 	@property({ type: String })
@@ -133,18 +133,18 @@ export class NLDDFormFieldValidationItem extends LitElement {
 	}
 
 	override render() {
-		return formFieldValidationItemTemplate(this);
+		return validationItemTemplate(this);
 	}
 }
 
 
 /* ============================================================
-   nldd-form-field-validation-list
+   nldd-validation-list
    ============================================================ */
 
-@customElement('nldd-form-field-validation-list')
-export class NLDDFormFieldValidationList extends LitElement {
-	static override styles = formFieldValidationListStyles;
+@customElement('nldd-validation-list')
+export class NLDDValidationList extends LitElement {
+	static override styles = validationListStyles;
 
 	/** Id of the control, for a list that sits outside an nldd-form-field. */
 	@property({ type: String })
@@ -212,12 +212,12 @@ export class NLDDFormFieldValidationList extends LitElement {
 	}
 
 	override render() {
-		return formFieldValidationListTemplate(this);
+		return validationListTemplate(this);
 	}
 
-	private get _items(): NLDDFormFieldValidationItem[] {
+	private get _items(): NLDDValidationItem[] {
 		return Array.from(this.children)
-			.filter((el): el is NLDDFormFieldValidationItem => el instanceof NLDDFormFieldValidationItem);
+			.filter((el): el is NLDDValidationItem => el instanceof NLDDValidationItem);
 	}
 
 	/**
@@ -282,7 +282,7 @@ export class NLDDFormFieldValidationList extends LitElement {
 
 			if (import.meta.env?.DEV && rule !== null && named.includes(item.id)) {
 				console.warn(
-					`<nldd-form-field-validation-list>: item "${item.id}" has a rule of its own and is also named in \`unmet\`. `
+					`<nldd-validation-list>: item "${item.id}" has a rule of its own and is also named in \`unmet\`. `
 					+ 'The rule decides, and the name is ignored: it is a snapshot of the previous check and cannot be newer '
 					+ 'than the value. Drop it from `unmet`, or take the rule off the item.',
 				);
@@ -325,7 +325,7 @@ export class NLDDFormFieldValidationList extends LitElement {
 
 declare global {
 	interface HTMLElementTagNameMap {
-		'nldd-form-field-validation-list': NLDDFormFieldValidationList;
-		'nldd-form-field-validation-item': NLDDFormFieldValidationItem;
+		'nldd-validation-list': NLDDValidationList;
+		'nldd-validation-item': NLDDValidationItem;
 	}
 }

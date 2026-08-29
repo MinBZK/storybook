@@ -125,7 +125,7 @@ export class NLDDForm extends HTMLElement {
 	 * own type: a second one from the browser says the same thing again, in
 	 * browser chrome, above the field, and disappears on its own while ours
 	 * stays. A field that then has nothing to say is a field that needs an
-	 * nldd-form-field-validation-list, not a bubble.
+	 * nldd-validation-list, not a bubble.
 	 */
 	private _handleInvalid = (e: Event) => {
 		e.preventDefault();

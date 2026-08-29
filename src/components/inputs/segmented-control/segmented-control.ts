@@ -159,7 +159,7 @@ export class NLDDSegmentedControl extends FormAssociated(LitElement) {
 	 * Announced and not drawn, and on the group and not on an item: a red ring
 	 * around one option would say that option is wrong, while it is the question
 	 * that is unanswered. What is wrong belongs in an
-	 * nldd-form-field-validation-list, in words.
+	 * nldd-validation-list, in words.
 	 */
 	@property({ type: Boolean, reflect: true })
 	invalid = false;
