@@ -56,7 +56,7 @@ regel herhalen zegt hetzelfde drie keer.
 		},
 		judging: {
 			control: 'boolean',
-			description: 'Houd de waarde tegen z\'n regels en toon wat niet klopt, in plaats van te vertellen wat het veld wil. De lijst zet dit zelf aan zodra z\'n control op invalid staat; met de hand zetten is voor een submit- of reset-handler.',
+			description: 'Laat de hints vallen, want dit veld is beoordeeld. De lijst zet dit zelf aan zodra z\'n control op invalid staat; met de hand zetten is voor een submit- of reset-handler. Wat rood wordt volgt invalid, niet dit.',
 			table: { defaultValue: { summary: false } },
 		},
 		for: {

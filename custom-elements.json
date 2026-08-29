@@ -6075,7 +6075,7 @@
                 "text": "boolean"
               },
               "default": "false",
-              "description": "Whether the list is judging the value or explaining what the field wants.\n\nThe switch between the two modes. Off, the hints state the requirements;\non, the list is a to-do of everything the value fails. It goes on the\nmoment the control is `invalid`, and then stays on. A field that has been\njudged does not become unjudged: repair the value and the control turns\nvalid again, but the question the hints answered has been asked and\nsettled, so bringing them back would undo the one thing the verdict\nachieved.\n\nSo when a field starts being judged is decided by whoever writes `invalid`\non the control, and the moment to do that is on submit. Writing it while\nsomeone is still typing turns a field red about a value that is not\nfinished, which is the one thing this list is built to avoid.\n\nSet it yourself to flip the mode without a control saying anything, and\nclear it to put the field back the way it started, which is what a reset\nwants.",
+              "description": "Whether the list is judging the value or explaining what the field wants.\n\nThe switch between the two modes. Off, the hints state the requirements;\non, they are gone and what is left is whatever the value fails. It goes on\nthe moment the control is `invalid`, and then stays on. A field that has\nbeen judged does not become unjudged: repair the value and the control\nturns valid again, but the question the hints answered has been asked and\nsettled, so bringing them back would undo the one thing the verdict\nachieved.\n\nWhat it does not decide is what turns red. That follows `invalid` on the\ncontrol and nothing else, so a line never goes critical under a field that\nlooks fine.\n\nSo when a field starts being judged is decided by whoever writes `invalid`\non the control, and the moment to do that is on submit. Writing it while\nsomeone is still typing turns a field red about a value that is not\nfinished, which is the one thing this list is built to avoid.\n\nSet it yourself to flip the mode without a control saying anything, and\nclear it to put the field back the way it started, which is what a reset\nwants.",
               "attribute": "judging",
               "reflects": true
             },
@@ -6122,7 +6122,7 @@
                 "text": "boolean"
               },
               "default": "false",
-              "description": "Hold the value to its rules and show what it fails, instead of stating what the field wants. Turned on by the list itself once its control is `invalid`, and settable by hand.",
+              "description": "Drop the hints, because this field has been judged. Turned on by the list itself once its control is `invalid`, and settable by hand. What turns red follows `invalid`, not this.",
               "fieldName": "judging"
             }
           ],

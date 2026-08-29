@@ -22,7 +22,7 @@
  *
  * @attr {string} for - Id of the control this list is about. Not needed inside an nldd-form-field, which hands its own control over.
  * @attr {boolean} hint - Show every item before there is a verdict, as the requirements of the field. Overridable per item.
- * @attr {boolean} judging - Hold the value to its rules and show what it fails, instead of stating what the field wants. Turned on by the list itself once its control is `invalid`, and settable by hand.
+ * @attr {boolean} judging - Drop the hints, because this field has been judged. Turned on by the list itself once its control is `invalid`, and settable by hand. What turns red follows `invalid`, not this.
  *
  * @slot - nldd-validation-item elements.
  *
@@ -157,12 +157,16 @@ export class NLDDValidationList extends LitElement {
 	 * Whether the list is judging the value or explaining what the field wants.
 	 *
 	 * The switch between the two modes. Off, the hints state the requirements;
-	 * on, the list is a to-do of everything the value fails. It goes on the
-	 * moment the control is `invalid`, and then stays on. A field that has been
-	 * judged does not become unjudged: repair the value and the control turns
-	 * valid again, but the question the hints answered has been asked and
+	 * on, they are gone and what is left is whatever the value fails. It goes on
+	 * the moment the control is `invalid`, and then stays on. A field that has
+	 * been judged does not become unjudged: repair the value and the control
+	 * turns valid again, but the question the hints answered has been asked and
 	 * settled, so bringing them back would undo the one thing the verdict
 	 * achieved.
+	 *
+	 * What it does not decide is what turns red. That follows `invalid` on the
+	 * control and nothing else, so a line never goes critical under a field that
+	 * looks fine.
 	 *
 	 * So when a field starts being judged is decided by whoever writes `invalid`
 	 * on the control, and the moment to do that is on submit. Writing it while
@@ -238,7 +242,7 @@ export class NLDDValidationList extends LitElement {
 
 		next.addEventListener('input', this._onInput);
 		this._observer = new MutationObserver(() => this._evaluate());
-		this._observer.observe(next, { attributes: true, attributeFilter: ['invalid', 'valid', 'unmet'] });
+		this._observer.observe(next, { attributes: true, attributeFilter: ['invalid', 'unmet'] });
 	}
 
 	private _detach(): void {
@@ -263,12 +267,12 @@ export class NLDDValidationList extends LitElement {
 	 */
 	private _evaluate(): void {
 		const control = this._resolved;
-		// `valid` is the app saying it checked and this field is fine. Believe it
-		// over a rule of our own that disagrees: painting a line red underneath a
-		// field the app calls good helps nobody, and the disagreement is a rule
-		// that was configured wrong.
-		const met = control?.hasAttribute('valid') ?? false;
-		if (control?.hasAttribute('invalid')) this.judging = true;
+		// The two attributes answer two questions and are kept apart on purpose.
+		// `invalid` decides what turns critical, so a line never goes red under a
+		// field that looks fine; `judging` only decides whether the hints are
+		// still on screen, and unlike `invalid` it does not come back off.
+		const invalid = control?.hasAttribute('invalid') ?? false;
+		if (invalid) this.judging = true;
 		const named = (control?.getAttribute('unmet') ?? '').split(' ').filter(Boolean);
 		const value = this._currentValue();
 
@@ -288,7 +292,7 @@ export class NLDDValidationList extends LitElement {
 				);
 			}
 
-			item.unmet = this.judging && !met && failing;
+			item.unmet = invalid && failing;
 			item.visible = item.unmet || (!this.judging && (item.hint || this.hint));
 			if (item.visible) anyVisible = true;
 			if (rule === false) {

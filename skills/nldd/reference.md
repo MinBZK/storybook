@@ -749,7 +749,7 @@ Nederlandse Digitale Dienst Validation List (Lit + TypeScript) Everything a valu
 | --- | --- | --- |
 | `for` | `string` | Id of the control this list is about. Not needed inside an nldd-form-field, which hands its own control over. |
 | `hint` | `boolean` | Show every item before there is a verdict, as the requirements of the field. Overridable per item. |
-| `judging` | `boolean` | Hold the value to its rules and show what it fails, instead of stating what the field wants. Turned on by the list itself once its control is `invalid`, and settable by hand. |
+| `judging` | `boolean` | Drop the hints, because this field has been judged. Turned on by the list itself once its control is `invalid`, and settable by hand. What turns red follows `invalid`, not this. |
 
 **Slots**
 

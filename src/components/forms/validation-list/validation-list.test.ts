@@ -170,8 +170,8 @@ describe('nldd-validation-list', () => {
 			</nldd-form-field>
 		`);
 		await waitForUpdate(el);
-		// `invalid` is de enige trigger. Een veld dat goed is heeft niets te
-		// melden, dus z'n hint blijft gewoon uitleggen wat het veld wil.
+		// `invalid` is de enige trigger, en `valid` doet niets: een veld dat goed
+		// is heeft niets te melden, dus z'n hint blijft uitleggen wat het wil.
 		expect(list(el).judging).toBe(false);
 		expect(item(el, 'password-length').visible).toBe(true);
 		expect(item(el, 'password-breach').visible).toBe(false);
@@ -211,7 +211,7 @@ describe('nldd-validation-list', () => {
 		expect(item(el, 'password-length').visible).toBe(false);
 	});
 
-	it('kan die modus met de hand krijgen, zonder dat de control iets zegt', async () => {
+	it('laat met de hand de hints vallen, maar kleurt niets rood', async () => {
 		el = await fixture(`
 			<nldd-form-field label="Wachtwoord">
 				<nldd-text-field></nldd-text-field>
@@ -221,12 +221,35 @@ describe('nldd-validation-list', () => {
 			</nldd-form-field>
 		`);
 		await waitForUpdate(el);
-		expect(item(el, 'password-length').unmet).toBe(true);
+		// `judging` gaat over de hints. Wat rood wordt volgt `invalid`, en de
+		// control zegt hier niets, dus er hoort ook niets rood te staan.
+		expect(item(el, 'password-length').unmet).toBe(false);
+		expect(item(el, 'password-length').visible).toBe(false);
 
 		list(el).judging = false;
 		await waitForUpdate(list(el));
-		expect(item(el, 'password-length').unmet).toBe(false);
 		expect(item(el, 'password-length').visible).toBe(true);
+	});
+
+	it('kleurt niets rood onder een veld dat er goed uitziet', async () => {
+		el = await fixture(`
+			<nldd-form-field label="Wachtwoord">
+				<nldd-text-field invalid></nldd-text-field>
+				<nldd-validation-list>
+					<nldd-validation-item id="password-length" minlength="8">Minimaal 8 tekens</nldd-validation-item>
+				</nldd-validation-list>
+			</nldd-form-field>
+		`);
+		await waitForUpdate(el);
+		expect(item(el, 'password-length').unmet).toBe(true);
+
+		// De consumer keurt het veld niet langer af, maar de regel faalt nog
+		// steeds. Dan zwijgt de lijst: rode tekst bij een neutraal veld wijst
+		// naar iets wat er niet te zien is.
+		el.querySelector('nldd-text-field')!.removeAttribute('invalid');
+		await waitForUpdate(list(el));
+		expect(item(el, 'password-length').unmet).toBe(false);
+		expect(item(el, 'password-length').visible).toBe(false);
 	});
 
 	it('laat bij verzending de lijst van een veld dat klopt met rust', async () => {
