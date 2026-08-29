@@ -140,15 +140,6 @@ export class NLDDForm extends HTMLElement {
 		for (const el of this._form?.elements ?? []) this._judged.add(el);
 		this._judged.add(control);
 
-		// The validation lists in the same breath. They have a mode of their own:
-		// before a verdict they state what the field wants, after one they list
-		// what is left to fix. The whole form has just been judged, so leaving the
-		// lists to pick that up from their own control would flip only the ones
-		// next to a failing field and leave the rest explaining themselves.
-		for (const list of (this._form ?? this).querySelectorAll('nldd-form-field-validation-list')) {
-			list.toggleAttribute('judging', true);
-		}
-
 		control.toggleAttribute('invalid', true);
 	};
 

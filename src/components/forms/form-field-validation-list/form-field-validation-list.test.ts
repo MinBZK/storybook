@@ -159,7 +159,7 @@ describe('nldd-form-field-validation-list', () => {
 		}
 	});
 
-	it('laat de hints los zodra er een oordeel is', async () => {
+	it('gaat niet oordelen omdat een veld goed is', async () => {
 		el = await fixture(`
 			<nldd-form-field label="Wachtwoord">
 				<nldd-text-field valid></nldd-text-field>
@@ -170,9 +170,10 @@ describe('nldd-form-field-validation-list', () => {
 			</nldd-form-field>
 		`);
 		await waitForUpdate(el);
-		// Een hint beantwoordt "wat wil dit veld", en die vraag stel je niet meer
-		// zodra je te horen hebt gekregen wat er van je invoer klopt.
-		expect(item(el, 'password-length').visible).toBe(false);
+		// `invalid` is de enige trigger. Een veld dat goed is heeft niets te
+		// melden, dus z'n hint blijft gewoon uitleggen wat het veld wil.
+		expect(list(el).judging).toBe(false);
+		expect(item(el, 'password-length').visible).toBe(true);
 		expect(item(el, 'password-breach').visible).toBe(false);
 	});
 
@@ -228,7 +229,7 @@ describe('nldd-form-field-validation-list', () => {
 		expect(item(el, 'password-length').visible).toBe(true);
 	});
 
-	it('wordt door nldd-form omgezet bij verzending, ook als het eigen veld klopt', async () => {
+	it('laat bij verzending de lijst van een veld dat klopt met rust', async () => {
 		el = await fixture(`
 			<nldd-form>
 				<nldd-form-field label="Naam">
@@ -246,18 +247,17 @@ describe('nldd-form-field-validation-list', () => {
 			</nldd-form>
 		`);
 		await waitForUpdate(el);
-		const nickname = item(el, 'nickname-length');
-		expect(nickname.visible).toBe(true);
 
 		const form = el.querySelector('form')!;
 		form.addEventListener('submit', (e) => e.preventDefault());
 		form.requestSubmit();
-		await waitForUpdate(nickname.parentElement as HTMLElement);
-		// De bijnaam klopt, dus die lijst heeft niets te melden. Maar hij hoort
-		// wel in dezelfde modus te staan als de rest van het formulier.
-		expect((nickname.parentElement as NLDDFormFieldValidationList).judging).toBe(true);
-		expect(nickname.visible).toBe(false);
+		await waitForUpdate(item(el, 'name-required').parentElement as HTMLElement);
+		// De naam ontbreekt, dus die lijst gaat oordelen. De bijnaam klopt en
+		// wordt dus niet afgekeurd, en dan is er ook niets te oordelen: die lijst
+		// blijft uitleggen wat het veld wil.
 		expect(item(el, 'name-required').unmet).toBe(true);
+		expect((item(el, 'nickname-length').parentElement as NLDDFormFieldValidationList).judging).toBe(false);
+		expect(item(el, 'nickname-length').visible).toBe(true);
 	});
 
 	it('vindt z\'n control via `for` als hij buiten een veld staat', async () => {

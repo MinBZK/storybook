@@ -31,7 +31,8 @@ item zonder regel, en de app noemt hem in \`unmet\` op de control.
 De lijst heeft twee modi en \`judging\` is de schakelaar. Vóór een oordeel toont
 hij z'n hints: de eisen van het veld. Ná een oordeel toont hij alles waaraan de
 waarde niet voldoet, en zijn de hints weg. De lijst zet die schakelaar zelf om
-zodra de control \`invalid\` of \`valid\` meldt, en je kunt hem ook zelf zetten.
+zodra z'n control op \`invalid\` staat. Wannéér een veld beoordeeld wordt is dus
+een keuze van de consumer, en het moment daarvoor is bij verzending.
 
 Hints staan standaard uit. Een telefoonnummer hoeft z'n formaat niet uit te
 leggen voordat iemand iets heeft getypt, de regels van een wachtwoord wel.
@@ -55,7 +56,7 @@ regel herhalen zegt hetzelfde drie keer.
 		},
 		judging: {
 			control: 'boolean',
-			description: 'Houd de waarde tegen z\'n regels en toon wat niet klopt, in plaats van te vertellen wat het veld wil. De lijst zet dit zelf aan zodra de control invalid of valid meldt; met de hand zetten is voor een submit- of reset-handler.',
+			description: 'Houd de waarde tegen z\'n regels en toon wat niet klopt, in plaats van te vertellen wat het veld wil. De lijst zet dit zelf aan zodra z\'n control op invalid staat; met de hand zetten is voor een submit- of reset-handler.',
 			table: { defaultValue: { summary: false } },
 		},
 		for: {
@@ -135,14 +136,17 @@ export const RegelsEnServer = () => html`
 `;
 
 /**
- * Na een oordeel is de lijst een to-do, en valt er niets meer te doen dan blijft
- * hij leeg. Ook de hints zijn weg: die legden uit wat het veld wilde, en dat
- * weet je inmiddels.
+ * Een veld dat beoordeeld is en klopt: de lijst is leeg. Ook de hints zijn weg,
+ * die legden uit wat het veld wilde en dat weet je inmiddels.
+ *
+ * `judging` staat hier met de hand aan. Een statisch voorbeeld heeft geen
+ * afkeuring achter de rug, en in een echt formulier zou het attribuut er staan
+ * doordat het veld eerder op `invalid` stond.
  */
 export const AlsHetGoedIs = () => html`
 	<nldd-form-field label="Herhaal wachtwoord">
 		<nldd-password-field name="repeat-password" value="Geheim123" valid></nldd-password-field>
-		<nldd-form-field-validation-list hint>
+		<nldd-form-field-validation-list hint judging>
 			<nldd-form-field-validation-item id="repeat-password-length" minlength="8">Minimaal 8 tekens</nldd-form-field-validation-item>
 			<nldd-form-field-validation-item id="repeat-password-capital" match="[A-Z]">Een hoofdletter</nldd-form-field-validation-item>
 		</nldd-form-field-validation-list>

@@ -8,9 +8,9 @@
  *
  * The list has two modes and `judging` is the switch. Before a verdict it shows
  * its hints, which are the requirements of the field. After one it shows
- * everything the value does not satisfy, and the hints are gone. The list
- * throws that switch itself the moment the control reports `invalid` or
- * `valid`, and a consumer can throw it by hand.
+ * everything the value does not satisfy, and the hints are gone. It throws that
+ * switch itself the moment its control turns `invalid`, so when the field is
+ * judged is the consumer's decision, and the right moment is on submit.
  *
  * Hints are off by default. A phone number does not need its format spelled out
  * before anyone has typed, while the rules for a password do.
@@ -22,7 +22,7 @@
  *
  * @attr {string} for - Id of the control this list is about. Not needed inside an nldd-form-field, which hands its own control over.
  * @attr {boolean} hint - Show every item before there is a verdict, as the requirements of the field. Overridable per item.
- * @attr {boolean} judging - Hold the value to its rules and show what it fails, instead of stating what the field wants. Set by the list itself when the control reports `invalid` or `valid`, and settable by hand.
+ * @attr {boolean} judging - Hold the value to its rules and show what it fails, instead of stating what the field wants. Turned on by the list itself once its control is `invalid`, and settable by hand.
  *
  * @slot - nldd-form-field-validation-item elements.
  *
@@ -158,15 +158,20 @@ export class NLDDFormFieldValidationList extends LitElement {
 	 *
 	 * The switch between the two modes. Off, the hints state the requirements;
 	 * on, the list is a to-do of everything the value fails. It goes on the
-	 * moment the control reports `invalid` or `valid`, and then stays on. A
-	 * field that has been judged does not become unjudged: repair the value and
-	 * the control turns valid again, but the question the hints answered has
-	 * been asked and settled, so bringing them back would undo the one thing the
-	 * verdict achieved.
+	 * moment the control is `invalid`, and then stays on. A field that has been
+	 * judged does not become unjudged: repair the value and the control turns
+	 * valid again, but the question the hints answered has been asked and
+	 * settled, so bringing them back would undo the one thing the verdict
+	 * achieved.
 	 *
-	 * Set it yourself to flip the mode without a control saying anything, which
-	 * is what a submit handler wants, and clear it to put the field back the way
-	 * it started, which is what a reset wants.
+	 * So when a field starts being judged is decided by whoever writes `invalid`
+	 * on the control, and the moment to do that is on submit. Writing it while
+	 * someone is still typing turns a field red about a value that is not
+	 * finished, which is the one thing this list is built to avoid.
+	 *
+	 * Set it yourself to flip the mode without a control saying anything, and
+	 * clear it to put the field back the way it started, which is what a reset
+	 * wants.
 	 */
 	@property({ type: Boolean, reflect: true })
 	judging = false;
@@ -263,7 +268,7 @@ export class NLDDFormFieldValidationList extends LitElement {
 		// field the app calls good helps nobody, and the disagreement is a rule
 		// that was configured wrong.
 		const met = control?.hasAttribute('valid') ?? false;
-		if (met || control?.hasAttribute('invalid')) this.judging = true;
+		if (control?.hasAttribute('invalid')) this.judging = true;
 		const named = (control?.getAttribute('unmet') ?? '').split(' ').filter(Boolean);
 		const value = this._currentValue();
 
