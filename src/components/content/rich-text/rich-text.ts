@@ -5,31 +5,31 @@
  * typography. Uses no shadow DOM so styles apply to all nested elements.
  * Import nldd-rich-text.css globally in your application.
  *
- * ## Breedtezones
- * Kinderen worden in drie zones geplaatst: tekst (headings, paragrafen,
- * lijsten, blockquote, div/section) leest op de `main`-maat; media en
- * tabellen (img, figure, video, iframe, table) krijgen het `wide`-accent;
- * al het overige — codeblokken en élke component — krijgt de volledige
- * `full`-span met `justify-self: start`, zodat de ruimte beschikbaar is
- * maar niet geforceerd wordt. Per kind te overschrijven met
- * `data-width="main" | "wide" | "full"`. In de linkse layout lezen wide en
- * full als bleed naar rechts; met `centered` zijn ze symmetrisch.
+ * ## Width zones
+ * Children are placed in three zones: text (headings, paragraphs, lists,
+ * blockquote, div/section) reads at the `main` size; media and tables (img,
+ * figure, video, iframe, table) get the `wide` accent; everything else, code
+ * blocks and every component, gets the full `full` span with
+ * `justify-self: start`, so the room is available without being forced.
+ * Overridable per child with `data-width="main" | "wide" | "full"`. In the
+ * left-aligned layout, wide and full read as a bleed to the right; with
+ * `centered` they are symmetrical.
  *
  * @element nldd-rich-text
  *
  * @attr {string} spacing - Spacing between elements: 'flat' | 'tight' | 'snug' (default) | 'loose'
  * @attr {boolean} centered - Centers the main column inside the container; without it, content is left-aligned
- * @attr {boolean} hyphens - Opt-in automatische woordafbreking voor doorlopende
- *   tekst (p, li, dd). Vereist een correcte `lang` op de pagina (bijv.
- *   `lang="nl"` op `<html>`): zonder taalinfo breekt de browser niet af. Een
- *   `overflow-wrap: break-word`-vangnet op p/li staat altijd aan, los van dit
- *   attribuut, zodat lange URLs en samenstellingen ook zonder woordenboek
- *   netjes breken in plaats van te overlopen.
- * @attr {string} color - 'inherit' laat alle tekst de kleur van de ondergrond
- *   volgen (voor gekleurde vlakken zoals de filled-categories). Links blijven
- *   onderstreept als affordance; secundaire tekst (figcaption) krijgt dezelfde
- *   kleur op verlaagde dekking. Bekende v1-gaten: inline code, mark, tabellen
- *   en hr behouden hun eigen surfaces. Leeg = standaard contentkleuren.
+ * @attr {boolean} hyphens - Opt-in automatic hyphenation for running text (p,
+ *   li, dd). Needs a correct `lang` on the page (`lang="nl"` on `<html>`, for
+ *   instance): without language information the browser does not hyphenate. An
+ *   `overflow-wrap: break-word` safety net on p/li is always on, independent of
+ *   this attribute, so long URLs and compounds break neatly instead of
+ *   overflowing even without a dictionary.
+ * @attr {string} color - 'inherit' lets all text follow the color of the
+ *   surface (for colored areas such as the filled categories). Links stay
+ *   underlined as an affordance; secondary text (figcaption) gets the same
+ *   color at a lowered opacity. Known v1 gaps: inline code, mark, tables and hr
+ *   keep their own surfaces. Empty = the default content colors.
  * @attr {object} translations - Override translation keys; unset keys fall back to Dutch
  */
 import { LitElement } from 'lit';

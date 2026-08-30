@@ -8,10 +8,13 @@
  * @element nldd-switch
  * @attr {boolean} checked - Whether the switch is on/off
  * @attr {boolean} disabled - Disabled state
+ * @attr {boolean} no-tab - Takes the control out of the tab order (tabindex="-1"), for a control owned by a roving container (a row of an nldd-list, where the arrow keys move between rows) that manages focus itself. Still mouse- and script-focusable.
  * @attr {string} size - Switch size: 'xs' | 'sm' (default: 'sm')
  * @attr {string} name - Name for form submission; nothing is submitted when the switch is off
  * @attr {string} value - Value submitted with the form when the switch is on (default: 'on')
  * @attr {string} accessible-label - Accessible label forwarded as aria-label to the native input. Required when using nldd-switch without nldd-switch-field.
+ * @attr {boolean} required - Required state
+ * @attr {boolean} invalid - Marks the control as invalid. Announced with aria-invalid; nothing is drawn for it.
  *
  * @fires change - When the switch state changes; detail: { checked: boolean, value: string }
  */
@@ -21,11 +24,12 @@ import { FormAssociated, type FormValue } from '../../../utilities/form-associat
 import { reflectNonDefault } from '../../../utilities/reflect-non-default.js';
 import { switchStyles } from './switch.styles.js';
 import { switchTemplate } from './switch.template.js';
+import { DescribedBy } from '../../../utilities/described-by-mixin.js';
 
 export type SwitchSize = 'xs' | 'sm';
 
 @customElement('nldd-switch')
-export class NLDDSwitch extends FormAssociated(LitElement) {
+export class NLDDSwitch extends DescribedBy(FormAssociated(LitElement)) {
 
 	static override styles = switchStyles;
 
@@ -34,7 +38,7 @@ export class NLDDSwitch extends FormAssociated(LitElement) {
 	static isFormInput = true;
 
 
-	@property({ type: String, reflect: true })
+	@property({ reflect: true, converter: reflectNonDefault('') })
 	name = '';
 
 	@property({ type: Boolean, reflect: true })
@@ -42,6 +46,13 @@ export class NLDDSwitch extends FormAssociated(LitElement) {
 
 	@property({ type: Boolean, reflect: true })
 	disabled = false;
+	/** Take the control out of the tab order (`tabindex="-1"`) — for a control
+	 *  owned by a roving container (an `nldd-list` sets it on the rows that are
+	 *  not the current one) that manages focus itself. Still mouse- and
+	 *  script-focusable. */
+	@property({ type: Boolean, reflect: true, attribute: 'no-tab' })
+	noTab = false;
+
 
 	@property({ reflect: true, converter: reflectNonDefault<SwitchSize>('sm') })
 	size: SwitchSize = 'sm';
@@ -53,6 +64,23 @@ export class NLDDSwitch extends FormAssociated(LitElement) {
 	value = 'on';
 
 	private _initialChecked = false;
+
+
+	@property({ type: Boolean, reflect: true })
+	required = false;
+
+
+	/**
+	 * Marks the control as invalid.
+	 *
+	 * Announced and not drawn. What is wrong belongs in an
+	 * nldd-validation-list, in words: a red ring around a single
+	 * checkbox or radio would say the option is wrong, while it is the question
+	 * that is unanswered. `aria-invalid` still goes on the control, because
+	 * choosing not to show something is not a reason to keep quiet about it.
+	 */
+	@property({ type: Boolean, reflect: true })
+	invalid = false;
 
 	override firstUpdated(): void {
 		if (import.meta.env?.DEV && !this.accessibleLabel) {

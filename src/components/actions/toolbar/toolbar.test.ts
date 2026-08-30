@@ -733,7 +733,7 @@ describe('nldd-toolbar – re-measures on a width change', () => {
 		el = await fixture(`
 			<nldd-toolbar label="Balk" style="width: 340px">
 				<nldd-toolbar-item slot="start">
-					<nldd-button id="naam" text="Een behoorlijk lange naam"></nldd-button>
+					<nldd-button id="name" text="Een behoorlijk lange naam"></nldd-button>
 				</nldd-toolbar-item>
 				<nldd-toolbar-item slot="start"><nldd-button text="Tweede knop"></nldd-button></nldd-toolbar-item>
 			</nldd-toolbar>
@@ -744,7 +744,7 @@ describe('nldd-toolbar – re-measures on a width change', () => {
 		const toolbar = el as unknown as { _measureAndUpdate: () => void };
 		const measure = vi.spyOn(toolbar, '_measureAndUpdate');
 
-		el.querySelector('#naam')!.setAttribute('text', 'Kort');
+		el.querySelector('#name')!.setAttribute('text', 'Kort');
 		await frames(14);
 
 		expect(measure).toHaveBeenCalled();
@@ -754,7 +754,7 @@ describe('nldd-toolbar – re-measures on a width change', () => {
 		el = await fixture(`
 			<nldd-toolbar label="Balk" style="width: 340px">
 				<nldd-toolbar-item slot="start">
-					<nldd-button id="naam2" text="Een behoorlijk lange naam"></nldd-button>
+					<nldd-button id="name2" text="Een behoorlijk lange naam"></nldd-button>
 				</nldd-toolbar-item>
 				<nldd-toolbar-item slot="start"><nldd-button text="Tweede knop"></nldd-button></nldd-toolbar-item>
 			</nldd-toolbar>
@@ -765,7 +765,7 @@ describe('nldd-toolbar – re-measures on a width change', () => {
 		const toolbar = el as unknown as { _measureAndUpdate: () => void };
 		const measure = vi.spyOn(toolbar, '_measureAndUpdate');
 
-		el.querySelector('#naam2')!.setAttribute('text', 'Kort');
+		el.querySelector('#name2')!.setAttribute('text', 'Kort');
 		await frames(20);
 		const afterChange = measure.mock.calls.length;
 

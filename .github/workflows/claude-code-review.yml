@@ -40,13 +40,13 @@ jobs:
 
             ## Project context
 
-            This is the RegelRecht Design System — a library of vanilla Web Components for
-            Dutch Government (Rijksoverheid) applications. Components are built with Lit + TypeScript
-            and documented in Storybook.
+            This is the NLDD Design System — a library of vanilla Web Components for the
+            Nederlandse Digitale Dienst (Rijksoverheid). Components are built with Lit +
+            TypeScript and documented in Storybook.
 
             **Key architecture:**
             - `src/components/` — Lit + TypeScript web components using Shadow DOM
-            - `src/assets/styles/settings.css` — CSS variabelen (primitives, semantics, components)
+            - `src/assets/styles/variables.css` — the CSS variables (primitives, semantics, components)
             - Components follow BEM naming, use CSS variables (never hardcoded values)
             - Must be DigiToegankelijk (WCAG 2.1 AA) compliant
             - Uses RijksSansVF font with system-ui fallback
@@ -79,15 +79,22 @@ jobs:
 
             ### 3. CSS variable usage
 
-            - Are semantic variables preferred over primitives?
-            - No fallback values on CSS variables (strict validation)?
+            - Are semantic variables preferred over primitives? The order is
+              components → semantics → primitives.
+            - No fallback values on `--primitives-*`, `--semantics-*` or `--components-*`:
+              those are validated against variables.css and a fallback hides a missing one.
+              `--context-*` is the exception and takes a fallback by design, because the
+              component it comes from may not be there.
             - Context hooks use `--context-*` prefix?
-            - Internal variables use `--_*` prefix?
+            - Internal variables use `--_*` prefix, declared at the top of `:host` and read
+              as a bare `var(--_x)` in the rules?
 
             ### 4. CSS and styling
 
             - BEM naming convention followed?
-            - No `!important` usage?
+            - `!important` only where a consumer reset would otherwise win, with a comment
+              saying so. It is used deliberately in a handful of components, so flag a new
+              one without a reason rather than every occurrence.
             - Asymmetric padding matches design specs?
             - Disabled states use `var(--primitives-opacity-disabled)`?
 
@@ -101,7 +108,8 @@ jobs:
 
             - TypeScript types correct and complete?
             - No security vulnerabilities (XSS in Shadow DOM, etc.)?
-            - Conventional commit messages used?
+            - Conventional commit messages used, and a consumer-facing change written up in
+              CHANGELOG.md by hand?
             - No unnecessary dependencies or file bloat?
 
             ## Output format

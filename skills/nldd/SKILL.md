@@ -323,33 +323,77 @@ je tekst over meerdere alinea's of bevat hij opmaak, gebruik dan
 ### Formulieren en validatiefouten
 
 `nldd-form-field` koppelt label en input automatisch (geen `for`/`id`-gedoe).
-Voor een foutmelding zet je twee dingen op de input zelf: `invalid` en
-`error-message` met de `id`('s) van de bijbehorende
-`nldd-form-field-error-text`-elementen. Die wijzen zichzelf toe aan de juiste
-slot; jij stuurt alleen `invalid` aan vanuit je eigen validatielogica.
+Alles waar een waarde aan moet voldoen zet je in een
+`nldd-validation-list`. Een eis die je vooraf kunt noemen krijgt een
+regel en controleert zichzelf terwijl de gebruiker typt. Een eis die alleen je
+server kan vaststellen krijgt er geen, en die noem je in `unmet` op de input.
 
 ```html
-<!-- zet `invalid` op de input als je validatie faalt -->
-<nldd-form-field label="KvK-nummer">
-  <nldd-text-field name="kvk"
-    invalid
-    error-message="kvk-error"
-  ></nldd-text-field>
-  <nldd-form-field-error-text id="kvk-error">
-    Vul een geldig KvK-nummer in (8 cijfers).
-  </nldd-form-field-error-text>
+<nldd-form-field label="Wachtwoord">
+  <nldd-password-field name="password" unmet="password-breach"></nldd-password-field>
+  <nldd-validation-list hint>
+    <nldd-validation-item id="password-length" minlength="8">
+      Minimaal 8 tekens
+    </nldd-validation-item>
+    <nldd-validation-item id="password-capital" match="[A-Z]">
+      Een hoofdletter
+    </nldd-validation-item>
+    <nldd-validation-item id="password-breach">
+      Dit wachtwoord staat in een bekend datalek
+    </nldd-validation-item>
+  </nldd-validation-list>
 </nldd-form-field>
 ```
 
-`invalid` is een gewone boolean-attribuut dat je dynamisch zet: in Vue
-`:invalid="hasError"`, in platte JS `field.toggleAttribute('invalid', hasError)`.
-Zo koppel je dezelfde vlag aan je validatie bij blur, submit of een
-server-respons.
+Geef elk item een id die z'n veld noemt en niet alleen z'n regel. Een id moet
+uniek zijn in de hele pagina, en `length` is het eerste waar drie velden in
+hetzelfde formulier alle drie naar grijpen.
 
-*Waarom dit patroon:* de koppeling loopt via `error-message` → `id`, niet via
-shadow-DOM-trucs, zodat screenreaders de fout aan het veld koppelen. De
-validatie-*regels* (wanneer is iets fout) zijn aan jou; het systeem regelt
-alleen de presentatie en de toegankelijke koppeling.
+**Wanneer een fout verschijnt** bepaalt `invalid` op de input. `nldd-form` zet
+dat attribuut zelf bij het versturen, op het moment dat de browser het
+formulier afkeurt, en haalt het weg zodra het klopt. Wil je het zelf zetten, in
+Vue `:invalid="hasError"` of in platte JS
+`field.toggleAttribute('invalid', hasError)`, doe dat dan bij verzending en niet
+terwijl iemand nog typt. Anders kleurt een veld rood over een waarde die nog
+niet af is.
+
+**De lijst heeft twee modi**, en `judging` op de lijst is de schakelaar. Vóór een
+oordeel toont hij z'n hints: de eisen van het veld. Erna toont hij wat de waarde
+niet haalt, en zijn de hints weg. Hij gaat vanzelf aan zodra de input op
+`invalid` staat, en blijft daarna aan: repareer je de waarde, dan verdwijnt het
+rood, maar de uitleg komt niet terug. Iemand die net te horen heeft gekregen wat
+er mis was, hoeft niet opnieuw uitgelegd te krijgen wat het veld wil. Zet je
+`judging` zelf, dan laat je de hints vallen zonder dat er iets is afgekeurd;
+haal je hem weg, dan staat het veld weer op af, wat een reset wil.
+
+Wat rood wordt volgt `invalid` en niets anders. Er staat dus nooit een rode
+regel onder een veld dat er goed uitziet.
+
+`match` is niet verankerd, anders dan het native `pattern`: `[A-Z]` betekent
+"bevat een hoofdletter". Wil je dat de héle waarde een vorm heeft, zet er dan
+zelf `^` en `$` omheen.
+
+**Schrijf een item als de eis, niet als de opdracht.** Een item is geen control:
+je klikt er niet op en je voert het niet uit. De gebiedende wijs bewaren we voor
+knoppen, waar die een handeling aankondigt die je zelf in gang zet.
+
+| in plaats van | schrijf |
+|---|---|
+| "Vul een geldig KvK-nummer in (8 cijfers)" | "Een KvK-nummer van 8 cijfers" |
+| "Kies minimaal één optie" | "Minimaal één optie" |
+| "Gebruik minimaal 8 tekens" | "Minimaal 8 tekens" |
+
+Dezelfde regel doet namelijk twee dingen: vooraf staat hij er als eis, achteraf
+als wat er nog niet klopt. Een bevel leest vooraf als een standje voordat er iets
+aan de hand is.
+
+*Waarom dit patroon:* zo staat een eis één keer op de pagina in plaats van
+tweemaal, als uitleg vooraf en als foutmelding achteraf. Vinkjes zijn er niet:
+het veld toont zelf al een validatie-icoon, en dat per regel herhalen zegt
+hetzelfde drie keer.
+
+Voor tekst die je niet tegenhoudt, zoals "We sturen een bevestigingsmail naar
+dit adres", gebruik je `nldd-form-field-help-text`.
 
 *Ontwerpkeuzes rond formulieren* (markeer optionele velden in plaats van
 verplichte, volg de gedachtegang van de gebruiker in de vraagvolgorde, één veld

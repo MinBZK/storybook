@@ -413,8 +413,7 @@ describe('nldd-list type="tree"', () => {
 		expect(group(branch)!.hasAttribute('hidden')).toBe(true);
 	});
 
-	it('warns when a branch has no expanded state', async () => {
-		const warn = vi.spyOn(console, 'warn').mockImplementation(() => {});
+	it('reads a branch without `expanded` as collapsed', async () => {
 		await mount(`
 			<nldd-list type="tree" accessible-label="X">
 				<nldd-list-item>
@@ -422,7 +421,9 @@ describe('nldd-list type="tree"', () => {
 					<nldd-list-item slot="children"><nldd-text-cell text="Blad"></nldd-text-cell></nldd-list-item>
 				</nldd-list-item>
 			</nldd-list>`);
-		expect(warn).toHaveBeenCalledWith(expect.stringContaining('a row with children needs `expanded`'));
+		const branch = root.querySelector('nldd-list[type="tree"] > nldd-list-item') as HTMLElement;
+		await waitForUpdate(branch);
+		expect(group(branch)!.hasAttribute('hidden')).toBe(true);
 	});
 
 	it('warns when children are nested outside a tree', async () => {

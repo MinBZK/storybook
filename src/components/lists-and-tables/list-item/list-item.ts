@@ -1,4 +1,5 @@
 import { LitElement } from 'lit';
+import type { PropertyValues } from 'lit';
 import { customElement, property, query, state } from 'lit/decorators.js';
 import { reflectNonDefault } from '../../../utilities/reflect-non-default.js';
 import { listItemStyles } from './list-item.styles.js';
@@ -23,7 +24,7 @@ interface AuthoredTabState {
 	tabindex: string | null;
 }
 
-type RovingControl = HTMLElement & { noTab?: boolean };
+export type RovingControl = HTMLElement & { noTab?: boolean };
 
 /** Keyed on the element, so a row that is re-rendered around the same control
  *  still knows what the consumer authored. */
@@ -283,6 +284,8 @@ export class NLDDListItem extends withTranslations(LitElement, nlddListItemTrans
 
 	private _warnedDegenerateDivider = false;
 
+	private _warnedChildrenOutsideTree = false;
+
 	override connectedCallback() {
 		super.connectedCallback();
 		// Before the children upgrade — see _captureAuthoredCellSizes.
@@ -298,11 +301,11 @@ export class NLDDListItem extends withTranslations(LitElement, nlddListItemTrans
 		this.addEventListener('click', this._handleClick);
 		// Press feedback: shown on press, cleared on release or when a touch
 		// turns into a scroll (the browser fires pointercancel for that pointer),
-		// so `active` never sticks while the user scrolls the list.
+		// so `active` never sticks while the user scrolls the list. The release
+		// is watched on the window rather than here, because a button let go
+		// outside the row fires nowhere near it and the feedback would stay on.
 		this.addEventListener('pointerdown', this._onPointerDown);
 		this.addEventListener('mousedown', this._onMouseDown);
-		this.addEventListener('pointerup', this._clearPressed);
-		this.addEventListener('pointercancel', this._clearPressed);
 		// Light-DOM state the row derives styling from: a checked checkbox-
 		// segment (row-wide selected fill), which segments own a row edge, and
 		// the divider markers. Attribute observation, not events: consumers
@@ -324,8 +327,7 @@ export class NLDDListItem extends withTranslations(LitElement, nlddListItemTrans
 		this.removeEventListener('click', this._handleClick);
 		this.removeEventListener('pointerdown', this._onPointerDown);
 		this.removeEventListener('mousedown', this._onMouseDown);
-		this.removeEventListener('pointerup', this._clearPressed);
-		this.removeEventListener('pointercancel', this._clearPressed);
+		this._clearPressed();
 		this._lightDomObserver?.disconnect();
 		this._lightDomObserver = null;
 		this._dividerMarkerObserver?.disconnect();
@@ -408,7 +410,7 @@ export class NLDDListItem extends withTranslations(LitElement, nlddListItemTrans
 	 * A row cut into segments has no control of its own, so `aria-current="page"`
 	 * belongs on the segment that holds the link. Written there, the row would
 	 * stay unpainted and the consumer had to set `current` twice, once for the
-	 * semantics and once for the colour, with nothing to catch the two drifting
+	 * semantics and once for the color, with nothing to catch the two drifting
 	 * apart. The row reads it off its own segments instead — reading, not
 	 * writing: the attributes stay the consumer's.
 	 */
@@ -453,13 +455,24 @@ export class NLDDListItem extends withTranslations(LitElement, nlddListItemTrans
 		this.classList.toggle('has-trailing-segment', isSegment(ownChildren[ownChildren.length - 1]));
 	}
 
+	override willUpdate(changed: PropertyValues) {
+		super.willUpdate(changed);
+		// Before the first render, so the row is painted with the list's variant and
+		// type right away. Setting them in `firstUpdated` asks for a second render
+		// from inside the first.
+		if (this.hasUpdated || this.hasAttribute('data-nldd-clone')) return;
+		this._syncWithList();
+	}
+
 	override firstUpdated() {
 		// Clones are visual-only copies inside nldd-list's shadow root: their
 		// classes and stamped attributes came along with cloneNode, so no sync.
 		if (this.hasAttribute('data-nldd-clone')) return;
-		this._syncWithList();
 		this._observeChildrenSlot();
-		this._updateChildren();
+		// Read out of the row's own shadow DOM, so not before the first render,
+		// and deferred out of the update cycle: setting the state here would
+		// schedule a second update from inside the first.
+		queueMicrotask(() => this._updateChildren());
 		this._relayExpanded();
 		// First measurement after the first render: the marker offsets need
 		// laid-out boxes.
@@ -579,8 +592,8 @@ export class NLDDListItem extends withTranslations(LitElement, nlddListItemTrans
 	}
 
 	/**
-	 * Reads the initial variant + type from the closest parent nldd-list, once in
-	 * firstUpdated, so the item is styled correctly on first paint. Later changes
+	 * Reads the initial variant + type from the closest parent nldd-list, before
+	 * the first render, so the item is styled correctly on first paint. Later changes
 	 * are PUSHED by the list: its `updated` / `_updateItems` calls `_applyVariant`
 	 * and `_applyParentType` on every item, so the list is the single source of
 	 * truth and a runtime variant/type switch (or an item moved to another list)
@@ -776,11 +789,10 @@ export class NLDDListItem extends withTranslations(LitElement, nlddListItemTrans
 			});
 		}
 		if (!import.meta.env?.DEV) return;
-		if (this._showChildren && this._parentType !== 'tree') {
+		// Once per row: slotchange runs this again on every change to the branch.
+		if (this._showChildren && this._parentType !== 'tree' && !this._warnedChildrenOutsideTree) {
+			this._warnedChildrenOutsideTree = true;
 			console.warn('nldd-list-item: `slot="children"` nests rows, which only carries meaning in an nldd-list with type="tree". Elsewhere the group has no owning tree and assistive technology cannot read the hierarchy.');
-		}
-		if (this._showChildren && this.expanded === undefined) {
-			console.warn('nldd-list-item: a row with children needs `expanded` — without it there is no aria-expanded, so the branch reads as a leaf and the group can never be announced as collapsed.');
 		}
 	}
 
@@ -840,6 +852,8 @@ export class NLDDListItem extends withTranslations(LitElement, nlddListItemTrans
 		// flashes the press state of every ancestor row above it.
 		if (this._isFromNestedRow(e)) return;
 		this._action?.classList.add('is-pressed');
+		window.addEventListener('pointerup', this._clearPressed);
+		window.addEventListener('pointercancel', this._clearPressed);
 		// Safari does not focus a <button> on click, so a row whose paint follows
 		// the focus in it would stay unlit there while the other browsers light
 		// up. Focusing on the press makes the three agree; the ring stays hidden
@@ -859,6 +873,8 @@ export class NLDDListItem extends withTranslations(LitElement, nlddListItemTrans
 	}
 
 	private _clearPressed = () => {
+		window.removeEventListener('pointerup', this._clearPressed);
+		window.removeEventListener('pointercancel', this._clearPressed);
 		this._action?.classList.remove('is-pressed');
 	};
 
@@ -895,11 +911,7 @@ export class NLDDListItem extends withTranslations(LitElement, nlddListItemTrans
 	 * tab stop is in the DOM before focus is handed over.
 	 */
 	_syncRovingTabStops(): void {
-		const ownSegments = Array.from(this.children).filter(
-			(el): el is HTMLElement & { _tabbable?: boolean } =>
-				el.getAttribute('slot') !== 'children'
-				&& el.tagName.toLowerCase() === 'nldd-list-item-segment',
-		);
+		const ownSegments = this._ownSegments();
 		if (!this._arrowNavigation) {
 			this.removeAttribute('tabindex');
 			ownSegments.forEach((segment) => { segment._tabbable = undefined; });
@@ -915,6 +927,60 @@ export class NLDDListItem extends withTranslations(LitElement, nlddListItemTrans
 		}
 		ownSegments.forEach((segment) => { segment._tabbable = this._rovingActive; });
 		this._rovingControls().forEach((control) => { setTabbable(control, this._rovingActive); });
+	}
+
+	/**
+	 * The control of this row an event started in, if it started in one at all.
+	 *
+	 * Tells apart what the row IS from what it HOLDS, and it asks that of the
+	 * light DOM rather than of `_rovingControls`. That set holds what the roving
+	 * can park, which needs `no-tab` or a native tab stop — and a combo box has
+	 * neither, so the one control most in need of protection is exactly the one
+	 * missing from it.
+	 *
+	 * So: everything in the path that is a light-DOM descendant of this row,
+	 * stopping at the row. Nothing means the event came from the row's own
+	 * action, which lives in its shadow root where `contains` does not reach.
+	 * A segment on its own is what the row IS; a control slotted into one is not,
+	 * and shows up in front of it.
+	 *
+	 * @internal Read by the parent nldd-list.
+	 */
+	_slottedControlFor(path: readonly EventTarget[]): Element | null {
+		const held: Element[] = [];
+		for (const node of path) {
+			if (node === this) break;
+			if (node instanceof Element && this.contains(node)) held.push(node);
+		}
+		if (held.length === 0) return null;
+		if (held.length === 1 && held[0].tagName.toLowerCase() === 'nldd-list-item-segment') return null;
+		return held[0];
+	}
+
+	/**
+	 * Everything but the row itself out of the tab order.
+	 *
+	 * A list is one stop from the outside: Tab into it lands on the row, and the
+	 * controls inside open up from there. Without this the stops the row handed
+	 * out stay handed out after you tab away, so tabbing back in drops you into
+	 * the control you left rather than on the row, and the arrow keys are two
+	 * moves away instead of none.
+	 *
+	 * @internal Called by the parent nldd-list when focus leaves it.
+	 */
+	_parkControls(): void {
+		if (!this._arrowNavigation || !this._rovingActive) return;
+		this._ownSegments().forEach((segment) => { segment._tabbable = false; });
+		this._rovingControls().forEach((control) => { setTabbable(control, false); });
+	}
+
+	/** The segments of this row, leaving out those of a nested tree row. */
+	private _ownSegments(): (HTMLElement & { _tabbable?: boolean })[] {
+		return Array.from(this.children).filter(
+			(el): el is HTMLElement & { _tabbable?: boolean } =>
+				el.getAttribute('slot') !== 'children'
+				&& el.tagName.toLowerCase() === 'nldd-list-item-segment',
+		);
 	}
 
 	/** The control that opens and closes this row: the segment marked

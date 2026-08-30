@@ -116,6 +116,17 @@ export const imageStyles = css`
 		object-position: var(--_object-position) !important;
 	}
 
+	/* An inline <svg> is a drawing rather than a file, and it arrives through the
+	   same slot. It sizes like <picture>: width and height apply to it, object-fit
+	   does not, so its own viewBox does the fitting. */
+	::slotted(svg) {
+		${slottedReset}
+		display: block !important;
+		width: 100% !important;
+		height: 100% !important;
+		max-width: 100% !important;
+	}
+
 	/* <picture> is a wrapper that picks the right <source>; layout properties
 	   like width/height DO apply to it directly even though object-fit doesn't.
 	   Size it so the slotted picture fills the media wrapper, then let the

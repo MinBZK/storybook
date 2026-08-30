@@ -64,6 +64,11 @@ export default {
 			control: 'text',
 			description: 'Toegankelijk label voor screen readers',
 		},
+		invalid: {
+			control: 'boolean',
+			description: 'Ongeldige staat. Wordt aangekondigd met aria-invalid; er wordt niets voor getekend.',
+			table: { defaultValue: { summary: false } },
+		},
 		disabled: {
 			control: 'boolean',
 			description: 'Uitgeschakelde toestand',
@@ -80,17 +85,19 @@ export default {
 		max: 10,
 		step: 1,
 		accessibleLabel: '',
+		invalid: false,
 		disabled: false,
 	},
 };
 
-const Template = ({ size, hideSpinButtons, name, value, min, max, step, width, accessibleLabel, disabled }: Record<string, any>) => html`
+const Template = ({ size, hideSpinButtons, name, value, min, max, step, width, accessibleLabel, invalid, disabled }: Record<string, any>) => html`
 	<nldd-number-field
 		value=${value}
 		min=${min}
 		max=${max}
 		step=${step}
 		size=${size}
+		?invalid=${invalid}
 		?disabled=${disabled}
 		name=${name}
 		?hide-spin-buttons=${hideSpinButtons}

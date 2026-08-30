@@ -19,20 +19,14 @@ nldd-form > form {
    children are all hidden. */
 
 nldd-form > form > *:has(~ *:not([hidden]):not([type='hidden'])) {
-	margin-bottom: var(--semantics-forms-gap);
+	margin-bottom: var(--semantics-forms-fields-gap);
 }
 
-nldd-form nldd-form-field:has(+ nldd-form-field):has(~ *:not([hidden]):not([type='hidden'])) {
-	@container (max-width: 640px) {
-		margin-bottom: var(--semantics-forms-gap-tight);
-	}
-	@container (min-width: 641px) {
-		margin-bottom: var(--semantics-forms-gap);
-	}
-}
+/* A margin, so it collapses with the one the rhythm above puts under the last
+   child: 16 and 24 next to each other are 24, not 40. Here rather than on the
+   component's own :host, because a consumer reset overrides a host declaration
+   and this is a distance between siblings, not something the element paints. */
 
-nldd-form nldd-form-field[form-label-alignment='top']:not([label-alignment='left']):not([label-alignment='right']):has(+ nldd-form-field[form-label-alignment='top']:not([label-alignment='left']):not([label-alignment='right'])):has(~ *:not([hidden]):not([type='hidden'])) {
-	@container (min-width: 641px) {
-		margin-bottom: var(--semantics-forms-gap-tight);
-	}
+nldd-form nldd-form-actions {
+	margin-top: var(--semantics-forms-sections-gap);
 }

@@ -16,6 +16,7 @@ export const boxStyles = css`
 		--_highlight-border: inset 0 0 0 var(--_border-width) var(--_border-color);
 
 		display: block;
+		width: 100%;
 	}
 
 	:host([hidden]) {

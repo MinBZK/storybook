@@ -148,7 +148,7 @@ describe('nldd-toolbar-item – overflow declaration', () => {
 				<nldd-toolbar-item slot="start">
 					<button type="button">Sorteren</button>
 					<nldd-menu-group slot="overflow" text="Sorteren">
-						<nldd-menu-item type="radio" text="Naam" value="naam"></nldd-menu-item>
+						<nldd-menu-item type="radio" text="Naam" value="name"></nldd-menu-item>
 					</nldd-menu-group>
 				</nldd-toolbar-item>
 			</nldd-toolbar>

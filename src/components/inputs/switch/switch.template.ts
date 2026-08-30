@@ -5,6 +5,7 @@ import './../../content/icon/icon.js';
 export function switchTemplate(component: NLDDSwitch): TemplateResult {
 	return html`
 		<input class="switch__input"
+			?required=${component.required}
 			type="checkbox"
 			role="switch"
 			.checked=${component.checked}
@@ -12,6 +13,7 @@ export function switchTemplate(component: NLDDSwitch): TemplateResult {
 			?disabled=${component.disabled}
 			value=${component.value}
 			aria-label=${component.accessibleLabel || nothing}
+			tabindex=${component.noTab ? '-1' : nothing}
 			@change=${component._handleChange}
 			@pointerdown=${component._handlePointerDown}
 			@pointermove=${component._handlePointerMove}

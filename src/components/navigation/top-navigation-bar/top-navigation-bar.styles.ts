@@ -219,7 +219,6 @@ export const topNavigationBarStyles = css`
 		align-items: center;
 
 		@container (max-width: ${smMax}) {
-			padding-top: var(--primitives-space-4);
 			justify-content: center;
 		}
 
@@ -229,18 +228,31 @@ export const topNavigationBarStyles = css`
 		}
 	}
 
+	/* Without a logo above it the title is the first thing in the bar, so its
+	   focus ring has nothing to sit in. Six is what that ring needs: two of
+	   offset, two of outline, and the halo that follows it. */
+
 	:host([no-logo]) .top-navigation-bar__website-title-bar {
 		@container (max-width: ${smMax}) {
-			padding-top: var(--primitives-space-8);
+			padding-top: var(--primitives-space-6);
 		}
 	}
 
 	/* ## Title */
 
 	.top-navigation-bar__website-title {
+		box-sizing: border-box;
+		display: inline-flex;
+		align-items: center;
+		min-width: var(--semantics-controls-xs-min-size);
+		min-height: var(--semantics-controls-xs-min-size);
 		font: var(--components-top-navigation-bar-title-sm-font);
 		color: var(--semantics-content-color);
 		white-space: nowrap;
+
+		@container (max-width: ${smMax}) {
+			padding-top: var(--primitives-space-4);
+		}
 
 		@container (min-width: ${mdMin}) {
 			font: var(--components-top-navigation-bar-title-md-font);

@@ -52,6 +52,7 @@ export function avatarTemplate(component: NLDDAvatar): TemplateResult {
 				target=${component.target || nothing}
 				rel=${component._resolvedRel() || nothing}
 				aria-label=${controlLabel}
+				tabindex=${component.noTab ? '-1' : nothing}
 			>${content}</a>
 		`
 		: component.button
@@ -59,6 +60,7 @@ export function avatarTemplate(component: NLDDAvatar): TemplateResult {
 				<button class="avatar avatar--interactive"
 					type="button"
 					aria-label=${controlLabel}
+					tabindex=${component.noTab ? '-1' : nothing}
 				>${content}</button>
 			`
 			: html`<div class="avatar">${content}</div>`;

@@ -168,6 +168,15 @@ export const comboBoxStyles = css`
 		height: var(--_validation-icon-size);
 	}
 
+	/* Flex, or the wrapper is as tall as the line box it inherits and the button
+	   inside it hangs at the top of that. It leaves the button's place at the
+	   mercy of the consumer's line-height: centred under one, high under a taller
+	   one. The file field and the time field already do this. */
+	.combo-box__clear-button,
+	.combo-box__picker-button {
+		display: flex;
+	}
+
 	.combo-box__picker-button {
 		margin-left: var(--primitives-space-6);
 	}

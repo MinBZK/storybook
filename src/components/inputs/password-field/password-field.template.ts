@@ -51,6 +51,9 @@ export function passwordFieldTemplate(component: NLDDPasswordField): TemplateRes
 	return html`
 		<div class="password-field">
 			<input class="password-field__input ${component.masked ? 'is-masked' : ''}"
+				pattern=${component.pattern || nothing}
+				minlength=${component.minlength ?? nothing}
+				maxlength=${component.maxlength ?? nothing}
 				id=${component.inputId || nothing}
 				type=${component.masked ? 'password' : 'text'}
 				.value=${component.value}
@@ -62,7 +65,6 @@ export function passwordFieldTemplate(component: NLDDPasswordField): TemplateRes
 				autocomplete=${component.autocomplete || nothing}
 				spellcheck="false"
 				aria-label=${component.accessibleLabel || nothing}
-				aria-describedby=${component.errorMessageIds || nothing}
 				aria-invalid=${component.invalid ? 'true' : nothing}
 				@keydown=${component._handleKeydown}
 				@input=${component._handleInput}

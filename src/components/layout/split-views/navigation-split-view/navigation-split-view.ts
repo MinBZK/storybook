@@ -190,22 +190,41 @@ export class NLDDNavigationSplitView extends LitElement {
 		});
 	}
 
+	private _layoutScheduled = false;
+
+	/**
+	 * The layout is measured, so it runs after a render, and what it decides is
+	 * state, so it must not be set from inside one: that schedules a second
+	 * update on top of the one that just finished, which Lit reports. Coalesced,
+	 * because a resize and a pane change often land together.
+	 */
+	private _scheduleLayout() {
+		if (this._layoutScheduled) return;
+		this._layoutScheduled = true;
+		queueMicrotask(() => {
+			this._layoutScheduled = false;
+			this._updateLayout();
+		});
+	}
+
 	override firstUpdated() {
-		// Read pane min-widths from CSS after first render — styles are guaranteed applied
-		const style = getComputedStyle(this);
-		const read = (prop: string) => parseFloat(style.getPropertyValue(prop));
-		this._paneMinWidths = {
-			primarySidebar: read('--_primary-sidebar-min-width') || this._paneMinWidths.primarySidebar,
-			secondarySidebar: read('--_secondary-sidebar-min-width') || this._paneMinWidths.secondarySidebar,
-			main: read('--_main-min-width') || this._paneMinWidths.main,
-			inspector: read('--_inspector-min-width') || this._paneMinWidths.inspector,
-		};
-		this._updateLayout();
+		// The min-widths come from CSS, so they need the first render behind them.
+		queueMicrotask(() => {
+			const style = getComputedStyle(this);
+			const read = (prop: string) => parseFloat(style.getPropertyValue(prop));
+			this._paneMinWidths = {
+				primarySidebar: read('--_primary-sidebar-min-width') || this._paneMinWidths.primarySidebar,
+				secondarySidebar: read('--_secondary-sidebar-min-width') || this._paneMinWidths.secondarySidebar,
+				main: read('--_main-min-width') || this._paneMinWidths.main,
+				inspector: read('--_inspector-min-width') || this._paneMinWidths.inspector,
+			};
+			this._updateLayout();
+		});
 	}
 
 	override updated(changed: Map<string, unknown>) {
 		if (changed.has('inspectorAsSheet') || changed.has('primarySidebarAsSheet') || changed.has('sidebarAsSheet')) {
-			this._updateLayout();
+			this._scheduleLayout();
 		}
 		// Close inspector sheet immediately when inspector-auto-hidden clears and inspector-as-sheet is not set
 		if (changed.has('inspectorAutoHidden') && !this.inspectorAutoHidden && !this.inspectorAsSheet) {

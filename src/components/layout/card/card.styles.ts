@@ -16,6 +16,7 @@ export const cardStyles = css`
 		display: flex;
 		/* Anchor for the focus ring, which hangs outside the card box. */
 		position: relative;
+		width: 100%;
 		flex-direction: column;
 	}
 

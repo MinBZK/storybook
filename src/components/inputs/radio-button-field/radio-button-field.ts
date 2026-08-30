@@ -16,6 +16,7 @@
  * @attr {string} name - Radio group name for form submission, forwarded to the inner nldd-radio-button. Set automatically by nldd-radio-button-group.
  * @attr {boolean} required - Required state, forwarded to the inner nldd-radio-button. Set automatically by nldd-radio-button-group.
  * @attr {string} label - Label text for the radio button
+ * @attr {boolean} invalid - Marks the control as invalid. Announced with aria-invalid; nothing is drawn for it.
  *
  * @fires change - When checked state changes; detail: { checked: boolean, value: string }
  */
@@ -25,9 +26,11 @@ import { FormAssociated, type FormValue } from '../../../utilities/form-associat
 import { radioButtonFieldStyles } from './radio-button-field.styles.js';
 import { radioButtonFieldTemplate } from './radio-button-field.template.js';
 import type { NLDDRadioButton } from '../radio-button/radio-button.js';
+import { DescribedBy } from '../../../utilities/described-by-mixin.js';
+import { reflectNonDefault } from '../../../utilities/reflect-non-default.js';
 
 @customElement('nldd-radio-button-field')
-export class NLDDRadioButtonField extends FormAssociated(LitElement) {
+export class NLDDRadioButtonField extends DescribedBy(FormAssociated(LitElement)) {
 
 	static override styles = radioButtonFieldStyles;
 
@@ -50,7 +53,7 @@ export class NLDDRadioButtonField extends FormAssociated(LitElement) {
 	/** Set by nldd-radio-button-group. Not part of the public API.
 	 *  Reflected: form association reads the host's name attribute, and the
 	 *  group assigns the property. */
-	@property({ type: String, reflect: true })
+	@property({ reflect: true, converter: reflectNonDefault('') })
 	name = '';
 
 	@property({ type: Boolean, reflect: true })
@@ -58,6 +61,19 @@ export class NLDDRadioButtonField extends FormAssociated(LitElement) {
 
 	@property({ type: String })
 	label = '';
+
+
+	/**
+	 * Marks the control as invalid.
+	 *
+	 * Announced and not drawn. What is wrong belongs in an
+	 * nldd-validation-list, in words: a red ring around a single
+	 * checkbox or radio would say the option is wrong, while it is the question
+	 * that is unanswered. `aria-invalid` still goes on the control, because
+	 * choosing not to show something is not a reason to keep quiet about it.
+	 */
+	@property({ type: Boolean, reflect: true })
+	invalid = false;
 
 	override firstUpdated(): void {
 		this._initialChecked = this.checked;
@@ -103,6 +119,11 @@ export class NLDDRadioButtonField extends FormAssociated(LitElement) {
 	 */
 	override focus(options?: FocusOptions): void {
 		this.shadowRoot?.querySelector<NLDDRadioButton>('nldd-radio-button')?.focus(options);
+	}
+
+	/** The radio button it renders knows which element inside itself is the control. */
+	override describedTarget(): Element | null {
+		return this.shadowRoot?.querySelector('nldd-radio-button') ?? null;
 	}
 
 	override render() {

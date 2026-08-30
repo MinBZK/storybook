@@ -13,6 +13,7 @@
  * @attr {string} name - Name for form submission; the value is submitted under this name
  * @attr {string} accessible-label - Accessible name for the spinbutton; falls back to a generic label
  * @attr {object} translations - Translations; unspecified keys fall back to Dutch
+ * @attr {boolean} invalid - Marks the control as invalid. Announced with aria-invalid; nothing is drawn for it.
  *
  * @fires change - When the value changes; detail: { value: number }
  */
@@ -26,11 +27,12 @@ import { nlddStepperTranslations } from './stepper.i18n.js';
 import type { NLDDStepperTranslations } from './stepper.i18n.js';
 import './../../actions/icon-button/icon-button.js';
 import './../../content/icon/icon.js';
+import { DescribedBy } from '../../../utilities/described-by-mixin.js';
 
 export type StepperSize = 'xs' | 'sm' | 'md';
 
 @customElement('nldd-stepper')
-export class NLDDStepper extends FormAssociated(LitElement) {
+export class NLDDStepper extends DescribedBy(FormAssociated(LitElement)) {
 
 	static override styles = stepperStyles;
 
@@ -59,7 +61,7 @@ export class NLDDStepper extends FormAssociated(LitElement) {
 	@property({ reflect: true, converter: reflectNonDefault<StepperSize>('md') })
 	size: StepperSize = 'md';
 
-	@property({ type: String, reflect: true })
+	@property({ reflect: true, converter: reflectNonDefault('') })
 	name = '';
 
 	/**
@@ -73,6 +75,19 @@ export class NLDDStepper extends FormAssociated(LitElement) {
 	/** Override one or more translation keys. Unspecified keys fall back to Dutch. */
 	@property({ type: Object })
 	translations: Partial<NLDDStepperTranslations> = {};
+
+
+	/**
+	 * Marks the control as invalid.
+	 *
+	 * Announced and not drawn. What is wrong belongs in an
+	 * nldd-validation-list, in words: a red ring around a single
+	 * checkbox or radio would say the option is wrong, while it is the question
+	 * that is unanswered. `aria-invalid` still goes on the control, because
+	 * choosing not to show something is not a reason to keep quiet about it.
+	 */
+	@property({ type: Boolean, reflect: true })
+	invalid = false;
 
 	override firstUpdated(): void {
 		this._initialValue = this.value;
@@ -166,6 +181,11 @@ export class NLDDStepper extends FormAssociated(LitElement) {
 	 */
 	override focus(options?: FocusOptions): void {
 		this.shadowRoot?.querySelector<HTMLElement>('.stepper')?.focus(options);
+	}
+
+	/** The spinbutton is the control; the buttons beside it are shortcuts to it. */
+	override describedTarget(): Element | null {
+		return this.shadowRoot?.querySelector('[role="spinbutton"]') ?? null;
 	}
 
 	override render() {

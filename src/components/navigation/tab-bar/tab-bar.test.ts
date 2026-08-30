@@ -7,7 +7,7 @@ function threeTabBar(): string {
 	return `
 		<nldd-tab-bar>
 			<nldd-tab-bar-item text="Tab A"></nldd-tab-bar-item>
-			<nldd-tab-bar-item selected text="Tab B"></nldd-tab-bar-item>
+			<nldd-tab-bar-item current text="Tab B"></nldd-tab-bar-item>
 			<nldd-tab-bar-item text="Tab C"></nldd-tab-bar-item>
 		</nldd-tab-bar>
 	`;
@@ -160,7 +160,7 @@ describe('nldd-tab-bar-item – content variant detection', () => {
 		document.body.appendChild(host);
 		host.innerHTML = `
 			<nldd-tab-bar variant="text">
-				<nldd-tab-bar-item text="Home" selected></nldd-tab-bar-item>
+				<nldd-tab-bar-item text="Home" current></nldd-tab-bar-item>
 				<nldd-tab-bar-item text="Profiel"></nldd-tab-bar-item>
 				<nldd-tab-bar-item text="Een hele lange tablabel die echt niet in deze smalle balk past"></nldd-tab-bar-item>
 			</nldd-tab-bar>`;
@@ -324,14 +324,14 @@ describe('nldd-tab-bar-item – events', () => {
 		expect(detail.item).toBe(el);
 	});
 
-	it('does not set selected on itself after click', async () => {
+	it('does not mark itself current after click', async () => {
 		el = await fixture<NLDDTabBarItem>('<nldd-tab-bar-item text="Tab"></nldd-tab-bar-item>');
 		await waitForUpdate(el);
 
 		el.shadowRoot!.querySelector('[role="tab"]')!.dispatchEvent(new MouseEvent('click', { bubbles: true, composed: true }));
 		await waitForUpdate(el);
 
-		expect(el.selected).toBe(false);
+		expect(el.current).toBe(false);
 	});
 });
 
@@ -427,18 +427,18 @@ describe('nldd-tab-bar – item selection', () => {
 		if (el) cleanup(el);
 	});
 
-	it('deselects other items when one is selected', async () => {
+	it('clears current on the other items', async () => {
 		el = await fixture<NLDDTabBar>(threeTabBar());
 		await waitForUpdate(el);
 
 		const items = getItems(el);
-		expect(items[1].hasAttribute('selected')).toBe(true);
+		expect(items[1].hasAttribute('current')).toBe(true);
 
 		clickInner(items[2]);
 		await waitForUpdate(el);
 
-		expect(items[1].hasAttribute('selected')).toBe(false);
-		expect(items[2].hasAttribute('selected')).toBe(true);
+		expect(items[1].hasAttribute('current')).toBe(false);
+		expect(items[2].hasAttribute('current')).toBe(true);
 	});
 
 	it('dispatches tabchange event with item detail', async () => {
@@ -592,7 +592,7 @@ describe('nldd-tab-bar – keyboard navigation', () => {
 		vi.restoreAllMocks();
 	});
 
-	it('first enabled item has tabindex="0" when no tab is selected', async () => {
+	it('first enabled item has tabindex="0" when no tab is current', async () => {
 		el = await fixture<NLDDTabBar>(`
 			<nldd-tab-bar>
 				<nldd-tab-bar-item text="A"></nldd-tab-bar-item>
@@ -607,7 +607,7 @@ describe('nldd-tab-bar – keyboard navigation', () => {
 		expect(innerB.getAttribute('tabindex')).toBe('-1');
 	});
 
-	it('selected tab has tabindex="0"', async () => {
+	it('the current tab has tabindex="0"', async () => {
 		el = await fixture<NLDDTabBar>(threeTabBar());
 		await waitForUpdate(el);
 		const items = getItems(el);
@@ -615,7 +615,7 @@ describe('nldd-tab-bar – keyboard navigation', () => {
 		expect(inner.getAttribute('tabindex')).toBe('0');
 	});
 
-	it('non-selected tabs have tabindex="-1"', async () => {
+	it('the tabs that are not current have tabindex="-1"', async () => {
 		el = await fixture<NLDDTabBar>(threeTabBar());
 		await waitForUpdate(el);
 		const items = getItems(el);
@@ -631,8 +631,8 @@ describe('nldd-tab-bar – keyboard navigation', () => {
 		const items = getItems(el);
 		pressKey(items[1], 'ArrowRight');
 		await waitForUpdate(el);
-		expect(items[2].selected).toBe(true);
-		expect(items[1].selected).toBe(false);
+		expect(items[2].current).toBe(true);
+		expect(items[1].current).toBe(false);
 	});
 
 	it('ArrowLeft auto-activates previous tab', async () => {
@@ -641,8 +641,8 @@ describe('nldd-tab-bar – keyboard navigation', () => {
 		const items = getItems(el);
 		pressKey(items[1], 'ArrowLeft');
 		await waitForUpdate(el);
-		expect(items[0].selected).toBe(true);
-		expect(items[1].selected).toBe(false);
+		expect(items[0].current).toBe(true);
+		expect(items[1].current).toBe(false);
 	});
 
 	it('ArrowRight calls focus on next item', async () => {
@@ -737,7 +737,7 @@ describe('nldd-tab-bar – disabled', () => {
 		el = await fixture<NLDDTabBar>(`
 			<nldd-tab-bar disabled>
 				<nldd-tab-bar-item text="A"></nldd-tab-bar-item>
-				<nldd-tab-bar-item selected text="B"></nldd-tab-bar-item>
+				<nldd-tab-bar-item current text="B"></nldd-tab-bar-item>
 				<nldd-tab-bar-item text="C"></nldd-tab-bar-item>
 			</nldd-tab-bar>
 		`);
@@ -745,7 +745,7 @@ describe('nldd-tab-bar – disabled', () => {
 		for (const item of getItems(el)) {
 			const tab = innerTab(item);
 			expect(tab.getAttribute('aria-disabled')).toBe('true');
-			// Even the selected tab, which would otherwise be the roving entry point.
+			// Even the current tab, which would otherwise be the roving entry point.
 			expect(tab.getAttribute('tabindex')).toBe('-1');
 		}
 	});
@@ -753,7 +753,7 @@ describe('nldd-tab-bar – disabled', () => {
 	it('does not change selection or fire tabchange when a disabled tab is clicked', async () => {
 		el = await fixture<NLDDTabBar>(`
 			<nldd-tab-bar disabled>
-				<nldd-tab-bar-item selected text="A"></nldd-tab-bar-item>
+				<nldd-tab-bar-item current text="A"></nldd-tab-bar-item>
 				<nldd-tab-bar-item text="B"></nldd-tab-bar-item>
 			</nldd-tab-bar>
 		`);
@@ -767,14 +767,14 @@ describe('nldd-tab-bar – disabled', () => {
 		await waitForUpdate(el);
 
 		expect(fired).toBe(false);
-		expect(items[0].selected).toBe(true);
-		expect(items[1].selected).toBe(false);
+		expect(items[0].current).toBe(true);
+		expect(items[1].current).toBe(false);
 	});
 
 	it('ignores arrow-key navigation while disabled', async () => {
 		el = await fixture<NLDDTabBar>(`
 			<nldd-tab-bar disabled>
-				<nldd-tab-bar-item selected text="A"></nldd-tab-bar-item>
+				<nldd-tab-bar-item current text="A"></nldd-tab-bar-item>
 				<nldd-tab-bar-item text="B"></nldd-tab-bar-item>
 			</nldd-tab-bar>
 		`);
@@ -784,14 +784,14 @@ describe('nldd-tab-bar – disabled', () => {
 		pressKey(items[0], 'ArrowRight');
 		await waitForUpdate(el);
 
-		expect(items[0].selected).toBe(true);
-		expect(items[1].selected).toBe(false);
+		expect(items[0].current).toBe(true);
+		expect(items[1].current).toBe(false);
 	});
 
 	it('restores the tab order and interactivity when re-enabled', async () => {
 		el = await fixture<NLDDTabBar>(`
 			<nldd-tab-bar disabled>
-				<nldd-tab-bar-item selected text="A"></nldd-tab-bar-item>
+				<nldd-tab-bar-item current text="A"></nldd-tab-bar-item>
 				<nldd-tab-bar-item text="B"></nldd-tab-bar-item>
 			</nldd-tab-bar>
 		`);
@@ -807,14 +807,14 @@ describe('nldd-tab-bar – disabled', () => {
 
 		clickInner(items[1]);
 		await waitForUpdate(el);
-		expect(items[1].selected).toBe(true);
-		expect(items[0].selected).toBe(false);
+		expect(items[1].current).toBe(true);
+		expect(items[0].current).toBe(false);
 	});
 
 	it('disables link items in navigation mode (aria-disabled, no select on click)', async () => {
 		el = await fixture<NLDDTabBar>(`
 			<nldd-tab-bar navigation disabled accessible-label="Navigatie">
-				<nldd-tab-bar-item text="Home" href="/home" selected></nldd-tab-bar-item>
+				<nldd-tab-bar-item text="Home" href="/home" current></nldd-tab-bar-item>
 				<nldd-tab-bar-item text="Profiel" href="/profiel"></nldd-tab-bar-item>
 			</nldd-tab-bar>
 		`);
@@ -851,7 +851,7 @@ describe('nldd-tab-bar – navigation mode', () => {
 	it('renders a nav element when navigation is set', async () => {
 		el = await fixture<NLDDTabBar>(`
 			<nldd-tab-bar navigation accessible-label="Navigatie">
-				<nldd-tab-bar-item text="Home" href="/home" selected></nldd-tab-bar-item>
+				<nldd-tab-bar-item text="Home" href="/home" current></nldd-tab-bar-item>
 			</nldd-tab-bar>
 		`);
 		await waitForUpdate(el);
@@ -868,10 +868,10 @@ describe('nldd-tab-bar – navigation mode', () => {
 		expect(el.shadowRoot!.querySelector('[role="tablist"]')).toBeNull();
 	});
 
-	it('sets aria-current="page" on selected link item in navigation mode', async () => {
+	it('sets aria-current="page" on the current link item in navigation mode', async () => {
 		el = await fixture<NLDDTabBar>(`
 			<nldd-tab-bar navigation accessible-label="Navigatie">
-				<nldd-tab-bar-item text="Home" href="/home" selected></nldd-tab-bar-item>
+				<nldd-tab-bar-item text="Home" href="/home" current></nldd-tab-bar-item>
 				<nldd-tab-bar-item text="Profiel" href="/profiel"></nldd-tab-bar-item>
 			</nldd-tab-bar>
 		`);
@@ -886,7 +886,7 @@ describe('nldd-tab-bar – navigation mode', () => {
 	it('does not self-select on click in navigation mode (the consumer owns selection)', async () => {
 		el = await fixture<NLDDTabBar>(`
 			<nldd-tab-bar navigation accessible-label="Navigatie">
-				<nldd-tab-bar-item text="Home" href="/home" selected></nldd-tab-bar-item>
+				<nldd-tab-bar-item text="Home" href="/home" current></nldd-tab-bar-item>
 				<nldd-tab-bar-item text="Profiel" href="/profiel"></nldd-tab-bar-item>
 			</nldd-tab-bar>
 		`);
@@ -894,17 +894,17 @@ describe('nldd-tab-bar – navigation mode', () => {
 		const items = getItems(el);
 		// The item fires `select` on click; in navigation mode the bar must NOT flip
 		// selection itself — a click that doesn't navigate (guard/popover) would
-		// otherwise leave the wrong tab looking selected.
+		// otherwise leave the wrong tab looking current.
 		items[1].dispatchEvent(new CustomEvent('select', { bubbles: true, composed: true, detail: { item: items[1] } }));
 		await waitForUpdate(el);
-		expect(items[1].hasAttribute('selected')).toBe(false);
-		expect(items[0].hasAttribute('selected')).toBe(true);
+		expect(items[1].hasAttribute('current')).toBe(false);
+		expect(items[0].hasAttribute('current')).toBe(true);
 	});
 
 	it('does not set aria-selected on link items in navigation mode', async () => {
 		el = await fixture<NLDDTabBar>(`
 			<nldd-tab-bar navigation accessible-label="Navigatie">
-				<nldd-tab-bar-item text="Home" href="/home" selected></nldd-tab-bar-item>
+				<nldd-tab-bar-item text="Home" href="/home" current></nldd-tab-bar-item>
 			</nldd-tab-bar>
 		`);
 		await waitForUpdate(el);
@@ -916,7 +916,7 @@ describe('nldd-tab-bar – navigation mode', () => {
 	it('does not auto-activate on ArrowRight in navigation mode', async () => {
 		el = await fixture<NLDDTabBar>(`
 			<nldd-tab-bar navigation accessible-label="Navigatie">
-				<nldd-tab-bar-item text="Home" href="/home" selected></nldd-tab-bar-item>
+				<nldd-tab-bar-item text="Home" href="/home" current></nldd-tab-bar-item>
 				<nldd-tab-bar-item text="Profiel" href="/profiel"></nldd-tab-bar-item>
 			</nldd-tab-bar>
 		`);
@@ -924,7 +924,28 @@ describe('nldd-tab-bar – navigation mode', () => {
 		const items = getItems(el);
 		pressKey(items[0], 'ArrowRight');
 		await waitForUpdate(el);
-		expect(items[0].selected).toBe(true);
-		expect(items[1].selected).toBe(false);
+		expect(items[0].current).toBe(true);
+		expect(items[1].current).toBe(false);
+	});
+});
+
+describe('nldd-tab-bar-item selected -> current', () => {
+	let el: HTMLElement;
+
+	afterEach(() => {
+		if (el) cleanup(el);
+		vi.restoreAllMocks();
+	});
+
+	it('warns about the old attribute, which does nothing', async () => {
+		const warn = vi.spyOn(console, 'warn').mockImplementation(() => {});
+		el = await fixture(`
+			<nldd-tab-bar accessible-label="X">
+				<nldd-tab-bar-item text="Home" selected></nldd-tab-bar-item>
+			</nldd-tab-bar>`);
+		await waitForUpdate(el);
+		expect(warn).toHaveBeenCalledWith(expect.stringContaining('`selected` is now `current`'));
+		const item = el.querySelector('nldd-tab-bar-item') as HTMLElement & { current: boolean };
+		expect(item.current).toBe(false);
 	});
 });

@@ -12,7 +12,7 @@ export const tabBarStyles = css`
 	:host {
 		--_corner-radius: var(--semantics-controls-md-corner-radius);
 		--_gap: var(--primitives-space-1);
-		--_selected-z-index: 1;
+		--_current-z-index: 1;
 		--_focus-z-index: 2;
 
 		${inheritedTextReset}
@@ -80,9 +80,9 @@ export const tabBarStyles = css`
 
 	/* # Focus */
 
-	::slotted(nldd-tab-bar-item[selected]) {
+	::slotted(nldd-tab-bar-item[current]) {
 		position: relative;
-		z-index: var(--_selected-z-index);
+		z-index: var(--_current-z-index);
 	}
 
 	::slotted(nldd-tab-bar-item:focus-within) {
@@ -204,7 +204,7 @@ export const tabBarItemStyles = css`
 		color: var(--semantics-buttons-neutral-tinted-is-active-content-color);
 	}
 
-	:host([selected]) .tab-bar__item {
+	:host([current]) .tab-bar__item {
 		--_highlight-border-color: var(--semantics-buttons-neutral-tinted-is-selected-highlight-border-color);
 
 		background-color: var(--semantics-buttons-neutral-tinted-is-selected-background-color);
@@ -212,7 +212,7 @@ export const tabBarItemStyles = css`
 	}
 
 	@media (hover: hover) {
-		:host([selected]) .tab-bar__item:hover {
+		:host([current]) .tab-bar__item:hover {
 			--_highlight-border-color: var(--semantics-buttons-neutral-tinted-is-selected-is-hovered-highlight-border-color);
 
 			background-color: var(--semantics-buttons-neutral-tinted-is-selected-is-hovered-background-color);
@@ -220,7 +220,7 @@ export const tabBarItemStyles = css`
 		}
 	}
 
-	:host([selected]) .tab-bar__item:active {
+	:host([current]) .tab-bar__item:active {
 		--_highlight-border-color: var(--semantics-buttons-neutral-tinted-is-selected-is-active-highlight-border-color);
 
 		background-color: var(--semantics-buttons-neutral-tinted-is-selected-is-active-background-color);
@@ -228,7 +228,7 @@ export const tabBarItemStyles = css`
 	}
 
 	@media (forced-colors: active) {
-		:host([selected]) .tab-bar__item {
+		:host([current]) .tab-bar__item {
 			background-color: Highlight;
 		}
 	}
@@ -239,7 +239,7 @@ export const tabBarItemStyles = css`
 		box-shadow: var(--semantics-focus-ring-box-shadow);
 	}
 
-	:host([selected]) .tab-bar__item:focus-visible {
+	:host([current]) .tab-bar__item:focus-visible {
 		box-shadow: var(--semantics-focus-ring-box-shadow), inset 0 0 0 var(--primitives-border-width-thin) var(--_highlight-border-color);
 	}
 

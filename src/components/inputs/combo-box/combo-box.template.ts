@@ -33,6 +33,10 @@ export function comboBoxTemplate(component: NLDDComboBox): TemplateResult {
 	return html`
 		<div class="combo-box">
 			<input class="combo-box__input"
+				?required=${component.required}
+				pattern=${component.pattern || nothing}
+				minlength=${component.minlength ?? nothing}
+				maxlength=${component.maxlength ?? nothing}
 				type="text"
 				role=${component.readonly ? nothing : 'combobox'}
 				aria-label=${component.accessibleLabel || nothing}

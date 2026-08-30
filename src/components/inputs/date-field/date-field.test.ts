@@ -1,5 +1,6 @@
 import { describe, it, expect, afterEach } from 'vitest';
 import { fixture, cleanup, waitForUpdate } from '../../../test-utils.js';
+import dateFieldCss from './date-field.styles.ts?raw';
 import './date-field.js';
 import type { NLDDDateField } from './date-field.js';
 import { PICKER_POPOVER_WIDTH } from './date-field.template.js';
@@ -119,7 +120,7 @@ describe('nldd-date-field', () => {
 	});
 
 	it('geeft de interne input geen name - het component submit zelf één waarde', async () => {
-		el = await fixture<NLDDDateField>('<nldd-date-field name="datum"></nldd-date-field>');
+		el = await fixture<NLDDDateField>('<nldd-date-field name="date"></nldd-date-field>');
 		await waitForUpdate(el);
 		expect(textInput(el).hasAttribute('name')).toBe(false);
 	});
@@ -131,13 +132,13 @@ describe('nldd-date-field', () => {
 	it('heeft de nieuwe formwaarde al staan wanneer change afgaat', async () => {
 		const form = document.createElement('form');
 		document.body.appendChild(form);
-		el = await fixture<NLDDDateField>('<nldd-date-field name="datum"></nldd-date-field>');
+		el = await fixture<NLDDDateField>('<nldd-date-field name="date"></nldd-date-field>');
 		form.appendChild(el);
 		await waitForUpdate(el);
 
 		let seen: FormDataEntryValue | null = null;
 		el.addEventListener('change', () => {
-			seen = new FormData(form).get('datum');
+			seen = new FormData(form).get('date');
 		});
 
 		const input = textInput(el);
@@ -273,10 +274,10 @@ describe('nldd-date-field', () => {
 	});
 
 	it('zet het id van form-field op het eerste veld', async () => {
-		el = await fixture<NLDDDateField>('<nldd-date-field range input-id="veld-1"></nldd-date-field>');
+		el = await fixture<NLDDDateField>('<nldd-date-field range input-id="field-1"></nldd-date-field>');
 		await waitForUpdate(el);
 		const [start, end] = inputs(el);
-		expect(start.id).toBe('veld-1');
+		expect(start.id).toBe('field-1');
 		expect(end.id).toBe('');
 	});
 
@@ -839,5 +840,36 @@ describe('nldd-date-field readonly', () => {
 		el = await fixture('<nldd-date-field value="2026-08-19"></nldd-date-field>');
 		await waitForUpdate(el);
 		expect(el.shadowRoot!.querySelector('nldd-icon-button')).not.toBeNull();
+	});
+});
+
+describe('nldd-date-field width="fit-content"', () => {
+	let el: HTMLElement;
+
+	afterEach(() => {
+		if (el) cleanup(el);
+	});
+
+	it('is not handed to CSS as the keyword', async () => {
+		// CSS.supports accepts fit-content as the real keyword, which would size
+		// the field to the content of its shadow root. What is wanted is the
+		// default calculation with the icon slot dropped, so the override comes off
+		// and the stylesheet does the rest.
+		el = await fixture('<nldd-date-field width="fit-content" accessible-label="Due"></nldd-date-field>');
+		await waitForUpdate(el);
+		expect(el.style.getPropertyValue('--_width')).toBe('');
+		expect(el.getAttribute('width')).toBe('fit-content');
+	});
+
+	it('sets a narrower slot, and only while there is no validation state', () => {
+		// Read from the source the same way the progress components check their
+		// tokens: the widths here are calc() over tokens the test page does not
+		// carry, and a browser does not evaluate calc() for an unregistered custom
+		// property, so there is nothing to measure.
+		const rule = /:host\(\[width="fit-content"\]:not\(\[valid\]\):not\(\[invalid\]\)\)\s*\{([^}]*)\}/
+			.exec(dateFieldCss);
+		expect(rule, 'no fit-content rule in date-field.styles.ts').not.toBeNull();
+		expect(rule![1]).toContain('--_validation-icon-area-width');
+		expect(rule![1]).toContain('--primitives-space-8');
 	});
 });

@@ -397,7 +397,9 @@ export default {
 		rows: 8,
 		resize: 'auto',
 		wrap: true,
+		invalid: false,
 		readonly: false,
+		required: false,
 		disabled: false,
 		accessibleLabel: 'Tekst',
 	},
@@ -434,9 +436,19 @@ export default {
 			description: 'Lange regels afbreken (default aan; proza wrapt)',
 			table: { defaultValue: { summary: true } },
 		},
+		invalid: {
+			control: 'boolean',
+			description: 'Ongeldige staat. Wordt aangekondigd met aria-invalid; er wordt niets voor getekend.',
+			table: { defaultValue: { summary: false } },
+		},
 		readonly: {
 			control: 'boolean',
 			description: 'Alleen-lezen staat',
+			table: { defaultValue: { summary: false } },
+		},
+		required: {
+			control: 'boolean',
+			description: 'Verplichte staat.',
 			table: { defaultValue: { summary: false } },
 		},
 		disabled: {
@@ -460,7 +472,9 @@ const Template = ({
 	rows,
 	resize,
 	wrap,
+	invalid,
 	readonly,
+	required,
 	disabled,
 	accessibleLabel,
 }: Record<string, any>) => html`
@@ -472,6 +486,8 @@ const Template = ({
 		resize=${resize as string}
 		?wrap=${wrap}
 		?readonly=${readonly}
+		?invalid=${invalid}
+		?required=${required}
 		?disabled=${disabled}
 		accessible-label=${accessibleLabel || nothing}
 	></nldd-text-editor>

@@ -1,41 +1,42 @@
 /**
  * NLDD Design System Status Bar Component (Lit + TypeScript)
  *
- * Een smalle, paginabrede statusbalk (24px) met een diepe achtergrondkleur
- * per variant. Gebruik voor persistente systeemtoestand: een storing, gepland
- * onderhoud, een conceptweergave of een lopende opname. De balk toont bewust
- * geen icoon en ondersteunt alleen tekst — de tekst zelf moet de status
- * benoemen ("Storing: …", "Gepland onderhoud …"), zodat de betekenis niet
- * alleen uit kleur volgt (WCAG 1.4.1).
+ * A narrow, page-wide status bar (24px) with a deep background color per
+ * variant. Use it for persistent system state: an outage, planned maintenance,
+ * a draft view or a recording in progress. The bar deliberately shows no icon
+ * and supports text only. The text itself has to name the status ("Storing: …",
+ * "Gepland onderhoud …"), so the meaning does not follow from color alone
+ * (WCAG 1.4.1).
  *
- * Houd de tekst kort: de balk toont één regel en kapt af met ellipsis, zeker
- * op smallere schermen. Bij een lang bericht met veel informatie hoort alleen
- * de kern in de balk; verwijs voor de rest naar een losse pagina of sheet
- * (bijvoorbeeld via `href` of `button`) waar de gebruiker verder kan lezen.
+ * Keep the text short: the bar shows one line and truncates with an ellipsis,
+ * certainly on narrower screens. For a long message with a lot of information
+ * only the essence belongs in the bar. Point to a separate page or sheet for
+ * the rest (through `href` or `button`, for instance), where the user can read
+ * on.
  *
- * De hele balk kan klikbaar zijn: zet `href` (rendert een `<a>`) of `button`
- * (rendert een `<button>`; luister naar het native `click` event). Zonder
- * beide is de balk statisch. Bij interactie verschijnt een chevron als
- * affordance. Maximaal één actie per balk; meerdere acties of links in
- * lopende tekst horen in nldd-banner.
+ * The whole bar can be clickable: set `href` (renders an `<a>`) or `button`
+ * (renders a `<button>`; listen for the native `click` event). Without either
+ * the bar is static. On interaction a chevron appears as an affordance. One
+ * action per bar at most; several actions, or links in running text, belong in
+ * nldd-banner.
  *
  * ## ARIA
- * role en aria-live worden automatisch gezet op basis van de variant:
- * - critical → role="alert" (impliceert aria-live="assertive"; onderbreekt de screen reader)
- * - overige  → role="status" aria-live="polite"
- * Niet overschrijfbaar — is een rustiger component nodig, kies dan een ander.
- * Gebruik `critical` alleen voor een echte noodsituatie: role="alert" onderbreekt
- * de screen reader bij élke wijziging van de inhoud, dus plaats er geen tekst in
- * die regelmatig verandert (zoals een aftellende timer).
+ * role and aria-live are set automatically from the variant:
+ * - critical → role="alert" (implies aria-live="assertive"; interrupts the screen reader)
+ * - others   → role="status" aria-live="polite"
+ * Not overridable. If you need a quieter component, pick a different one. Use
+ * `critical` only for a real emergency: role="alert" interrupts the screen
+ * reader on every change of the content, so do not put text in it that changes
+ * regularly (a counting-down timer, for example).
  *
  * @element nldd-status-bar
  *
- * @attr {'neutral'|'accent'|'success'|'warning'|'critical'} variant - Kleur van de balk (standaard: 'neutral')
- * @attr {string} text - De statustekst (één regel; afgekapt met ellipsis)
- * @attr {string} href - Maakt de hele balk een link (rendert een <a>)
- * @attr {string} target - Link target (bijv. '_blank'); alleen gebruikt bij href
- * @attr {string} rel - Link rel; standaard 'noopener noreferrer' bij target='_blank'
- * @attr {boolean} button - Maakt de hele balk een button; genegeerd als href is gezet
+ * @attr {'neutral'|'accent'|'success'|'warning'|'critical'} variant - Color of the bar (default: 'neutral')
+ * @attr {string} text - The status text (one line; truncated with an ellipsis)
+ * @attr {string} href - Makes the whole bar a link (renders an <a>)
+ * @attr {string} target - Link target (e.g. '_blank'); only used with href
+ * @attr {string} rel - Link rel; defaults to 'noopener noreferrer' with target='_blank'
+ * @attr {boolean} button - Makes the whole bar a button; ignored when href is set
  */
 import { LitElement } from 'lit';
 import { customElement, property } from 'lit/decorators.js';

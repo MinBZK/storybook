@@ -18,6 +18,10 @@ export function searchFieldTemplate(component: NLDDSearchField): TemplateResult 
 					<nldd-icon name="search"></nldd-icon>
 				</div>
 				<input class="search-field__input"
+					?required=${component.required}
+					pattern=${component.pattern || nothing}
+					minlength=${component.minlength ?? nothing}
+					maxlength=${component.maxlength ?? nothing}
 					type="search"
 					.value=${component.value}
 					placeholder=${component.placeholder}

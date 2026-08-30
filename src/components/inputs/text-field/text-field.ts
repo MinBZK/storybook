@@ -18,9 +18,11 @@
  * @attr {boolean} required - Required state
  * @attr {string} autocomplete - Autocomplete hint
  * @attr {string} accessible-label - Accessible label forwarded to the inner input. Set automatically by nldd-form-field.
- * @attr {string} error-message-ids - Ids for aria-describedby on the inner input. Set automatically by nldd-form-field.
  * @attr {boolean} no-spellcheck - Disables browser spellchecking on the inner input
  * @attr {string} width - Optional fixed width (any CSS length, e.g. "240px"). Default: stretches to fill container.
+ * @attr {string} pattern - Regular expression the value has to match, as the native `pattern`.
+ * @attr {number} minlength - Fewest characters the value may have.
+ * @attr {number} maxlength - Most characters the value may have.
  *
  * @fires input - When input value changes
  * @fires change - When input value is committed
@@ -32,6 +34,7 @@ import { submitOnEnter } from '../../../utilities/implicit-submission.js';
 import { reflectNonDefault } from '../../../utilities/reflect-non-default.js';
 import { textFieldStyles } from './text-field.styles.js';
 import { textFieldTemplate } from './text-field.template.js';
+import { DescribedBy } from '../../../utilities/described-by-mixin.js';
 
 export type InputType = 'text' | 'email' | 'tel' | 'url';
 
@@ -54,7 +57,7 @@ const KEYBOARD_IMPLIED_BY_TYPE: Partial<Record<InputType, Keyboard>> = {
 };
 
 @customElement('nldd-text-field')
-export class NLDDTextField extends FormAssociated(LitElement) {
+export class NLDDTextField extends DescribedBy(FormAssociated(LitElement)) {
 
 	static override shadowRootOptions = {
 		...LitElement.shadowRootOptions,
@@ -106,7 +109,7 @@ export class NLDDTextField extends FormAssociated(LitElement) {
 	@property({ type: String, reflect: true, attribute: 'enter-key' })
 	enterKey?: EnterKey;
 
-	@property({ type: String, reflect: true })
+	@property({ reflect: true, converter: reflectNonDefault('') })
 	name = '';
 
 	@property({ type: Boolean, reflect: true })
@@ -122,19 +125,30 @@ export class NLDDTextField extends FormAssociated(LitElement) {
 	@property({ type: String, attribute: 'accessible-label' })
 	accessibleLabel = '';
 
-	@property({ type: String, attribute: 'error-message-ids' })
-	errorMessageIds = '';
 
 	@property({ type: Boolean, reflect: true, attribute: 'no-spellcheck' })
 	noSpellcheck = false;
 
 	/** Optional fixed width (any CSS length). When unset, the field stretches to fill its container. */
-	@property({ type: String, reflect: true })
+	@property({ reflect: true, converter: reflectNonDefault('') })
 	width = '';
 
 
 	@query('.text-field__input')
 	private _input!: HTMLInputElement;
+
+
+	/** Regular expression the value has to match, as the native `pattern`. */
+	@property({ reflect: true, converter: reflectNonDefault('') })
+	pattern = '';
+
+	/** Fewest characters the value may have, as the native `minlength`. */
+	@property({ type: Number, reflect: true })
+	minlength?: number;
+
+	/** Most characters the value may have, as the native `maxlength`. */
+	@property({ type: Number, reflect: true })
+	maxlength?: number;
 
 	override firstUpdated(): void {
 		this._initialValue = this.value;

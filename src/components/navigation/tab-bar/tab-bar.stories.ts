@@ -55,7 +55,7 @@ export default {
 // Every item always has both icon and text for accessible, complete markup.
 // variant on the item forces a specific visual presentation.
 const tabBarItems = html`
-	<nldd-tab-bar-item selected text="Home" icon="home"></nldd-tab-bar-item>
+	<nldd-tab-bar-item current text="Home" icon="home"></nldd-tab-bar-item>
 	<nldd-tab-bar-item text="Profiel" icon="profile"></nldd-tab-bar-item>
 	<nldd-tab-bar-item text="Zoeken" icon="search"></nldd-tab-bar-item>
 `;
@@ -138,7 +138,7 @@ export const Gemengd = {
 	render: () => html`
 	<nldd-tab-bar>
 		<nldd-tab-bar-item
-			selected
+			current
 			variant="text"
 			text="Home"
 			icon="home"
@@ -162,7 +162,7 @@ export const Navigatie = {
 	render: () => html`
 	<nldd-tab-bar navigation accessible-label="Hoofdnavigatie">
 		<nldd-tab-bar-item
-			selected
+			current
 			text="Home"
 			icon="home"
 			href="/home"

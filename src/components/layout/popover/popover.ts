@@ -39,7 +39,7 @@
  * @slot - Free content (an nldd-container with a form or info, for instance)
  *
  * @fires open - When the popover opens
- * @fires close - When the popover closes
+ * @fires close - When the popover closes. Does not bubble: overlays nest, and a listener on the sheet or window around this one should not hear it close.
  *
  * @method show() - Opens the popover
  * @method hide() - Closes the popover
@@ -562,7 +562,7 @@ export class NLDDPopover extends LitElement {
 			this._cleanupAutoUpdate?.();
 			this._cleanupAutoUpdate = null;
 			this._returnFocus();
-			this.dispatchEvent(new CustomEvent('close', { bubbles: true, composed: true }));
+			this.dispatchEvent(new CustomEvent('close', { bubbles: false, composed: true }));
 			return;
 		}
 
@@ -585,6 +585,18 @@ export class NLDDPopover extends LitElement {
 	};
 
 	private _handleKeydown = (event: KeyboardEvent): void => {
+		// Escape closes this popover and stops there. Left to the browser, one
+		// press walks the whole stack: the close signal takes this popover, and a
+		// dialog behind it — a sheet, a window — takes the same key and goes too.
+		// Only what is on top should answer. Same shape as nldd-menu.
+		if (event.key === 'Escape') {
+			if (!this.matches(':popover-open')) return;
+			event.preventDefault();
+			event.stopPropagation();
+			this.hide();
+			(this._getAnchorEl() as HTMLElement | null)?.focus();
+			return;
+		}
 		if (event.key !== 'Tab') return;
 		const focusables = this._getFocusables();
 		// document.activeElement only returns the shadow host (nldd-button, say),

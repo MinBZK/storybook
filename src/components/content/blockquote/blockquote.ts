@@ -1,14 +1,13 @@
 /**
  * Nederlandse Digitale Dienst Blockquote Component (Lit + TypeScript)
  *
- * Toont een citaat met optionele bron-attributie.
+ * Shows a quote with an optional source attribution.
  *
  * @element nldd-blockquote
  * @attr {string} cite - URL of the source (forwarded to the <blockquote> element)
  *
- * @slot - De citaat-paragra(a)f(en) — gebruik bij voorkeur <p>-elementen
- * @slot attribution - Optionele bronvermelding (auteur, titel, etc.). Ook een
- *   An nldd-identity is allowed here; the em dash ("— ") is then left out.
+ * @slot - The paragraph or paragraphs of the quote; prefer <p> elements
+ * @slot attribution - Optional source attribution (author, title, and so on). An nldd-identity is allowed here; the em dash ("— ") is then left out.
  */
 
 import { LitElement } from 'lit';

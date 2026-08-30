@@ -15,6 +15,7 @@
  * @attr {boolean} expanded - Reflects whether the native picker popup is open (driven internally)
  * @attr {string} width - Optional fixed width (any CSS length, e.g. "240px"). Default: stretches to fill container.
  * @attr {string} accessible-label - Accessible name, forwarded as aria-label to the slotted select
+ * @attr {boolean} required - Required state, handed to the slotted <select>. A `required` on the <select> itself is left alone.
  *
  * @slot - A native `<select>` element with `<option>` and/or `<optgroup>` children
  *
@@ -23,7 +24,7 @@
  * @example
  * ```html
  * <nldd-dropdown>
- *   <select name="land" aria-label="Land">
+ *   <select name="country" aria-label="Land">
  *     <option value="" disabled selected>Selecteer een land</option>
  *     <option value="nl">Nederland</option>
  *     <option value="be">België</option>
@@ -39,11 +40,12 @@ import { dropdownTemplate } from './dropdown.template.js';
 import { isPointerMode } from '../../../utilities/input-modality.js';
 import './../../content/icon/icon.js';
 import { setOwnedAttribute } from '../../../utilities/owned-attribute.js';
+import { DescribedBy } from '../../../utilities/described-by-mixin.js';
 
 export type DropdownSize = 'xs' | 'sm' | 'md';
 
 @customElement('nldd-dropdown')
-export class NLDDDropdown extends LitElement {
+export class NLDDDropdown extends DescribedBy(LitElement) {
 	static override styles = dropdownStyles;
 
 	/** Says this is the control an nldd-form-field is about, so the field can
@@ -66,7 +68,7 @@ export class NLDDDropdown extends LitElement {
 	expanded = false;
 
 	/** Optional fixed width (any CSS length). When unset, the field stretches to fill its container. */
-	@property({ type: String, reflect: true })
+	@property({ reflect: true, converter: reflectNonDefault('') })
 	width = '';
 
 	/**
@@ -82,8 +84,15 @@ export class NLDDDropdown extends LitElement {
 
 	private _select: HTMLSelectElement | null = null;
 
+
+	@property({ type: Boolean, reflect: true })
+	required = false;
+
 	/** The name this wrapper wrote onto the select, so it only takes back its own. */
 	private _appliedLabel: string | null = null;
+
+	/** Same for `required`, for the same reason. */
+	private _appliedRequired: string | null = null;
 
 	// — Lifecycle ——————————————————————————————————————————————————————————————
 
@@ -96,6 +105,9 @@ export class NLDDDropdown extends LitElement {
 		}
 		if (changedProperties.has('accessibleLabel')) {
 			this._syncAccessibleLabel();
+		}
+		if (changedProperties.has('required')) {
+			this._syncRequired();
 		}
 		if (changedProperties.has('width')) {
 			const w = this.width;
@@ -142,6 +154,7 @@ export class NLDDDropdown extends LitElement {
 		this._syncDisabled();
 		this._syncAriaInvalid();
 		this._syncAccessibleLabel();
+		this._syncRequired();
 		this._syncDisplayValue();
 	}
 
@@ -165,6 +178,28 @@ export class NLDDDropdown extends LitElement {
 	private _syncAccessibleLabel(): void {
 		if (!this._select) return;
 		this._appliedLabel = setOwnedAttribute(this._select, 'aria-label', this.accessibleLabel, this._appliedLabel);
+	}
+
+	/**
+	 * Hands `required` to the `<select>`, which is where the browser reads it.
+	 *
+	 * Only ever takes back a `required` it wrote itself. Writing it on the
+	 * `<select>` is the documented way and stays the more specific one, so a
+	 * wrapper without the attribute must not read "nothing required here" as
+	 * "drop what is there".
+	 *
+	 * Written out as `required="required"` and not as an empty value, because an
+	 * empty value is how setOwnedAttribute says "remove this" and a boolean
+	 * needs something to carry.
+	 */
+	private _syncRequired(): void {
+		if (!this._select) return;
+		this._appliedRequired = setOwnedAttribute(
+			this._select,
+			'required',
+			this.required ? 'required' : '',
+			this._appliedRequired,
+		);
 	}
 
 	private _syncAriaInvalid(): void {
@@ -229,6 +264,11 @@ export class NLDDDropdown extends LitElement {
 	 */
 	override focus(options?: FocusOptions): void {
 		this._select?.focus(options);
+	}
+
+	/** The consumer's own <select>, which it slots in the light DOM. */
+	override describedTarget(): Element | null {
+		return this.querySelector('select');
 	}
 
 	override render() {

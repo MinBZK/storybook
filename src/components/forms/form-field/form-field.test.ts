@@ -25,6 +25,12 @@ import '../../inputs/switch/switch.js';
 import '../../content/tag/tag.js';
 import '../../actions/button/button.js';
 
+/** The elements a control points at as its description, in order. */
+function describedBy(el: Element): readonly Element[] {
+	return (el as Element & { ariaDescribedByElements?: readonly Element[] | null })
+		.ariaDescribedByElements ?? [];
+}
+
 
 /* ============================================================
    nldd-form-field
@@ -111,7 +117,7 @@ describe('nldd-form-field', () => {
 		expect(el.shadowRoot!.querySelector('label.form-field__label')).not.toBeNull();
 	});
 
-	it('includes help text id in aria-describedby', async () => {
+	it('includes the help text among the elements that describe the input', async () => {
 		el = await fixture(`
 			<nldd-form-field label="Email">
 				<nldd-form-field-help-text id="help-static">Format: DD-MM-YYYY</nldd-form-field-help-text>
@@ -120,8 +126,7 @@ describe('nldd-form-field', () => {
 		`);
 		await waitForUpdate(el);
 		const input = el.querySelector('input')!;
-		const describedBy = input.getAttribute('aria-describedby') ?? '';
-		expect(describedBy).toContain('help-static');
+		expect(describedBy(input)).toContain(el.querySelector('#help-static'));
 	});
 
 	it('hides help text via the hidden attribute', async () => {
@@ -138,21 +143,22 @@ describe('nldd-form-field', () => {
 		expect(getComputedStyle(help).display).toBe('none');
 	});
 
-	it('lists help text id before error id in aria-describedby', async () => {
+	it('lists the validation list before the help text', async () => {
 		el = await fixture(`
 			<nldd-form-field label="Email">
 				<nldd-form-field-help-text id="help-1">Format hint</nldd-form-field-help-text>
-				<input invalid error-message="error-1">
-				<nldd-form-field-error-text id="error-1">Required</nldd-form-field-error-text>
+				<input invalid>
+				<nldd-validation-list id="rules-1">
+					<nldd-validation-item id="rule-at" match="@">Een apenstaartje</nldd-validation-item>
+				</nldd-validation-list>
 			</nldd-form-field>
 		`);
 		await waitForUpdate(el);
 		const input = el.querySelector('input')!;
-		const describedBy = input.getAttribute('aria-describedby') ?? '';
-		const helpIndex = describedBy.indexOf('help-1');
-		const errIndex = describedBy.indexOf('error-1');
-		expect(helpIndex).toBeGreaterThanOrEqual(0);
-		expect(errIndex).toBeGreaterThan(helpIndex);
+		const order = describedBy(input);
+		// Wat er mis is staat voorop: dat is waarom je hier bent.
+		expect(order.indexOf(el.querySelector('#rules-1')!)).toBe(0);
+		expect(order.indexOf(el.querySelector('#help-1')!)).toBe(1);
 	});
 
 	it('sets aria-label on the slotted input', async () => {
@@ -203,135 +209,73 @@ describe('nldd-form-field', () => {
    nldd-form-field error text wiring
    ============================================================ */
 
-describe('nldd-form-field error text wiring', () => {
+describe('nldd-form-field description wiring', () => {
 	let el: HTMLElement;
 
 	afterEach(() => {
 		if (el) cleanup(el);
 	});
 
-	it('shows referenced error text when control is invalid', async () => {
+	it('points the input at the validation list', async () => {
 		el = await fixture(`
 			<nldd-form-field label="Email">
-				<input invalid error-message="error-1">
-				<nldd-form-field-error-text id="error-1">Required.</nldd-form-field-error-text>
+				<input invalid>
+				<nldd-validation-list id="rules-1">
+					<nldd-validation-item id="rule-at" match="@">Een apenstaartje</nldd-validation-item>
+				</nldd-validation-list>
 			</nldd-form-field>
 		`);
 		await waitForUpdate(el);
-		expect(el.querySelector('nldd-form-field-error-text')!.hasAttribute('invalid')).toBe(true);
+		const input = el.querySelector('input')!;
+		expect(describedBy(input)).toEqual([el.querySelector('#rules-1')]);
 	});
 
-	it('hides error text when control is not invalid', async () => {
+	it('points at the list once, not at each of its items', async () => {
+		el = await fixture(`
+			<nldd-form-field label="Wachtwoord">
+				<input invalid>
+				<nldd-validation-list id="rules-2">
+					<nldd-validation-item id="rule-length" minlength="8">Minimaal 8 tekens</nldd-validation-item>
+					<nldd-validation-item id="rule-capital" match="[A-Z]">Een hoofdletter</nldd-validation-item>
+				</nldd-validation-list>
+			</nldd-form-field>
+		`);
+		await waitForUpdate(el);
+		// De items komen en gaan terwijl je typt. Een beschrijving die per
+		// toetsaanslag wordt herschreven is veel geruis in iets wat voorgelezen
+		// wordt, en een verborgen item telt toch niet mee.
+		expect(describedBy(el.querySelector('input')!)).toHaveLength(1);
+	});
+
+	it('keeps describing the input when the control turns valid again', async () => {
 		el = await fixture(`
 			<nldd-form-field label="Email">
-				<input error-message="error-1">
-				<nldd-form-field-error-text id="error-1">Required.</nldd-form-field-error-text>
-			</nldd-form-field>
-		`);
-		await waitForUpdate(el);
-		expect(el.querySelector('nldd-form-field-error-text')!.hasAttribute('invalid')).toBe(false);
-	});
-
-	it('only shows error texts referenced by error-message', async () => {
-		el = await fixture(`
-			<nldd-form-field label="Password">
-				<input invalid error-message="error-length">
-				<nldd-form-field-error-text id="error-required">Required.</nldd-form-field-error-text>
-				<nldd-form-field-error-text id="error-length">Too short.</nldd-form-field-error-text>
-			</nldd-form-field>
-		`);
-		await waitForUpdate(el);
-		const [errRequired, errLength] = el.querySelectorAll('nldd-form-field-error-text');
-		expect(errRequired.hasAttribute('invalid')).toBe(false);
-		expect(errLength.hasAttribute('invalid')).toBe(true);
-	});
-
-	it('shows multiple error texts when all are referenced', async () => {
-		el = await fixture(`
-			<nldd-form-field label="Password">
-				<input invalid error-message="error-required error-length">
-				<nldd-form-field-error-text id="error-required">Required.</nldd-form-field-error-text>
-				<nldd-form-field-error-text id="error-length">Too short.</nldd-form-field-error-text>
-			</nldd-form-field>
-		`);
-		await waitForUpdate(el);
-		const [errRequired, errLength] = el.querySelectorAll('nldd-form-field-error-text');
-		expect(errRequired.hasAttribute('invalid')).toBe(true);
-		expect(errLength.hasAttribute('invalid')).toBe(true);
-	});
-
-	it('hides error texts when invalid is removed from control', async () => {
-		el = await fixture(`
-			<nldd-form-field label="Email">
-				<input id="ctrl" invalid error-message="error-1">
-				<nldd-form-field-error-text id="error-1">Required.</nldd-form-field-error-text>
+				<input id="ctrl" invalid>
+				<nldd-validation-list id="rules-3">
+					<nldd-validation-item id="rule-at-2" match="@">Een apenstaartje</nldd-validation-item>
+				</nldd-validation-list>
 			</nldd-form-field>
 		`);
 		await waitForUpdate(el);
 		el.querySelector('#ctrl')!.removeAttribute('invalid');
 		await waitForUpdate(el);
-		expect(el.querySelector('nldd-form-field-error-text')!.hasAttribute('invalid')).toBe(false);
+		// De verwijzing hangt aan de lijst, niet aan de staat van het veld: die
+		// lijst bepaalt zelf wat erin staat, en leeg leest als niets.
+		expect(describedBy(el.querySelector('#ctrl')!)).toEqual([el.querySelector('#rules-3')]);
 	});
 
 	it('does not treat nldd-form-field-help-text as the control', async () => {
 		el = await fixture(`
 			<nldd-form-field label="Email">
 				<nldd-form-field-help-text>Help.</nldd-form-field-help-text>
-				<input invalid error-message="error-1">
-				<nldd-form-field-error-text id="error-1">Required.</nldd-form-field-error-text>
+				<input id="ctrl-2" invalid>
+				<nldd-validation-list id="rules-4">
+					<nldd-validation-item id="rule-at-3" match="@">Een apenstaartje</nldd-validation-item>
+				</nldd-validation-list>
 			</nldd-form-field>
 		`);
 		await waitForUpdate(el);
-		expect(el.querySelector('nldd-form-field-error-text')!.hasAttribute('invalid')).toBe(true);
-	});
-
-	it('does not treat nldd-form-field-error-text as the control', async () => {
-		el = await fixture(`
-			<nldd-form-field label="Email">
-				<nldd-form-field-error-text id="error-1">Required.</nldd-form-field-error-text>
-				<input invalid error-message="error-1">
-			</nldd-form-field>
-		`);
-		await waitForUpdate(el);
-		expect(el.querySelector('nldd-form-field-error-text')!.hasAttribute('invalid')).toBe(true);
-	});
-
-	it('sets aria-describedby on the input referencing visible error IDs', async () => {
-		el = await fixture(`
-			<nldd-form-field label="Email">
-				<input invalid error-message="error-1">
-				<nldd-form-field-error-text id="error-1">Required.</nldd-form-field-error-text>
-			</nldd-form-field>
-		`);
-		await waitForUpdate(el);
-		const input = el.querySelector('input')!;
-		expect(input.getAttribute('aria-describedby')).toBe('error-1');
-	});
-
-	it('sets aria-describedby with multiple IDs when multiple errors are visible', async () => {
-		el = await fixture(`
-			<nldd-form-field label="Password">
-				<input invalid error-message="error-required error-length">
-				<nldd-form-field-error-text id="error-required">Required.</nldd-form-field-error-text>
-				<nldd-form-field-error-text id="error-length">Too short.</nldd-form-field-error-text>
-			</nldd-form-field>
-		`);
-		await waitForUpdate(el);
-		const input = el.querySelector('input')!;
-		expect(input.getAttribute('aria-describedby')).toBe('error-required error-length');
-	});
-
-	it('removes aria-describedby when errors are cleared', async () => {
-		el = await fixture(`
-			<nldd-form-field label="Email">
-				<input id="ctrl" invalid error-message="error-1">
-				<nldd-form-field-error-text id="error-1">Required.</nldd-form-field-error-text>
-			</nldd-form-field>
-		`);
-		await waitForUpdate(el);
-		el.querySelector('#ctrl')!.removeAttribute('invalid');
-		await waitForUpdate(el);
-		expect(el.querySelector('#ctrl')!.hasAttribute('aria-describedby')).toBe(false);
+		expect(describedBy(el.querySelector('#ctrl-2')!)).toHaveLength(2);
 	});
 });
 
@@ -360,36 +304,6 @@ describe('nldd-form-field-help-text', () => {
 	});
 });
 
-
-/* ============================================================
-   nldd-form-field-error-text
-   ============================================================ */
-
-describe('nldd-form-field-error-text', () => {
-	let el: HTMLElement;
-
-	afterEach(() => {
-		if (el) cleanup(el);
-	});
-
-	it('is hidden by default', async () => {
-		el = await fixture('<nldd-form-field-error-text>Error</nldd-form-field-error-text>');
-		await waitForUpdate(el);
-		expect(el.hasAttribute('invalid')).toBe(false);
-	});
-
-	it('is visible when invalid is set', async () => {
-		el = await fixture('<nldd-form-field-error-text invalid>Error</nldd-form-field-error-text>');
-		await waitForUpdate(el);
-		expect(el.hasAttribute('invalid')).toBe(true);
-	});
-
-	it('renders slotted content', async () => {
-		el = await fixture('<nldd-form-field-error-text invalid>Must be at least 8 characters.</nldd-form-field-error-text>');
-		await waitForUpdate(el);
-		expect(el.textContent).toContain('Must be at least 8 characters.');
-	});
-});
 
 /* ============================================================
    Label click focuses the slotted control
@@ -621,7 +535,7 @@ describe('nldd-form-field – finds the control', () => {
 			<nldd-form-field label="Bezorgwijze">
 				<nldd-radio-button-group name="b">
 					<nldd-radio-button-field value="post" label="Per post"></nldd-radio-button-field>
-					<nldd-radio-button-field value="anders" label="Anders"></nldd-radio-button-field>
+					<nldd-radio-button-field value="other" label="Anders"></nldd-radio-button-field>
 				</nldd-radio-button-group>
 				<nldd-text-field accessible-label="Andere bezorgwijze"></nldd-text-field>
 			</nldd-form-field>

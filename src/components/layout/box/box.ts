@@ -14,7 +14,7 @@
  *   "danger zone"), tinted and outlined in critical. It carries no ARIA of its
  *   own: unlike nldd-banner this is not an announcement but a permanent part of
  *   the page, so the heading and the button labels have to name the danger —
- *   colour is a reinforcement, never the only signal (WCAG 1.4.1).
+ *   color is a reinforcement, never the only signal (WCAG 1.4.1).
  * The box draws the surface and nothing else: it has no padding of its own, the
  * same way nldd-card has none. Put an nldd-container inside it and let that set
  * the inset, so one component owns spacing wherever it is used.

@@ -1,29 +1,30 @@
 /**
  * NLDD Design System Time Picker Component (Lit + TypeScript)
  *
- * Twee kolommen, uren en minuten, die als een wiel langs de selectie in het midden
- * schuiven. Het component is zelfstandig bruikbaar (inline op een pagina, in een
- * filterpaneel) en zit ook in de popover van nldd-time-field. Waarden zijn altijd
- * 24-uurs `HH:mm`.
+ * Two columns, hours and minutes, that slide like a wheel past the selection in
+ * the middle. The component works on its own (inline on a page, in a filter
+ * panel) and also sits in the popover of nldd-time-field. Values are always
+ * 24-hour `HH:mm`.
  *
- * Scrollen ís kiezen: wat in het midden tot stilstand komt, is de waarde. Met het
- * toetsenbord bedien je de selectie, want dat is wat een wiel is: uur en minuut zijn
- * er elk een spinbutton. De kolommen eronder staan op aria-hidden, zodat dezelfde
- * waarden niet twee keer worden voorgelezen.
+ * Scrolling is choosing: whatever comes to rest in the middle is the value. The
+ * keyboard drives that same selection, because that is what a wheel is: hour and
+ * minute are each a spinbutton. The columns underneath are aria-hidden, so the
+ * same values are not read out twice.
  *
  * @element nldd-time-picker
  *
- * @attr {string} value - De gekozen tijd als `HH:mm` (24-uurs).
- * @attr {string} min - Vroegst toegestane tijd als `HH:mm`. Is tevens de basis waarvandaan `step` telt.
- * @attr {string} max - Laatst toegestane tijd als `HH:mm`.
- * @attr {number} step - Minutenstap (standaard 1). Bepaalt welke minuten in de kolom staan.
- * @attr {number} rows - Hoogte van de kolommen in rijen (standaard 7, minimaal 3). De gekozen waarde staat altijd in het midden, dus een oneven aantal toont hele rijen en een even aantal kapt boven en onder een halve rij af.
- * @attr {string} width - Breedte: `full` vult de container, of geef een eigen CSS-lengte.
- * @attr {string} accessible-label - Toegankelijke naam van de picker.
- * @attr {object} translations - Vertalingen; niet opgegeven sleutels vallen terug op het Nederlands.
+ * @attr {string} value - The chosen time as `HH:mm` (24-hour).
+ * @attr {string} min - Earliest allowed time as `HH:mm`. Also the base that `step` counts from.
+ * @attr {string} max - Latest allowed time as `HH:mm`.
+ * @attr {number} step - Step in minutes (default 1). Decides which minutes are in the column.
+ * @attr {number} rows - Height of the columns in rows (default 7, minimum 3). The chosen value always sits in the middle, so an odd number shows whole rows and an even number cuts off half a row at the top and bottom.
+ * @attr {string} width - Width: `full` fills the container, or pass your own CSS length.
+ * @attr {string} accessible-label - Accessible name of the picker.
+ * @attr {object} translations - Translations; unspecified keys fall back to Dutch.
+ * @attr {boolean} invalid - Marks the control as invalid. Announced with aria-invalid; nothing is drawn for it.
  *
- * @fires input - Bij elke wijziging: scrollen, de pijltjestoetsen. detail: { value } met `HH:mm`.
- * @fires change - Wanneer de keuze is bevestigd: een klik op een waarde of op de selectie, of Enter. detail: { value } met `HH:mm`. Scrollen geeft alleen `input`, want anders zou een veld dat de picker in een popover toont al vastleggen zodra je stopt met scrollen.
+ * @fires input - On every change: scrolling, the arrow keys. detail: { value } with `HH:mm`.
+ * @fires change - When the choice is confirmed: a click on a value or on the selection, or Enter. detail: { value } with `HH:mm`. Scrolling only fires `input`, because otherwise a field showing the picker in a popover would commit as soon as you stopped scrolling.
  */
 
 import { LitElement, type PropertyValues } from 'lit';
@@ -31,6 +32,8 @@ import { customElement, property, state } from 'lit/decorators.js';
 import { timePickerStyles } from './time-picker.styles.js';
 import { timePickerTemplate } from './time-picker.template.js';
 import { nlddTimePickerTranslations, type NLDDTimePickerTranslations } from './time-picker.i18n.js';
+import { DescribedBy } from '../../../utilities/described-by-mixin.js';
+import { reflectNonDefault } from '../../../utilities/reflect-non-default.js';
 
 const LAST_MINUTE_OF_DAY = 23 * 60 + 59;
 
@@ -48,7 +51,7 @@ function isTime(value: string): boolean {
 }
 
 @customElement('nldd-time-picker')
-export class NLDDTimePicker extends LitElement {
+export class NLDDTimePicker extends DescribedBy(LitElement) {
 
 	static override styles = timePickerStyles;
 
@@ -71,7 +74,7 @@ export class NLDDTimePicker extends LitElement {
 	@property({ type: Number, reflect: true })
 	rows = 7;
 
-	@property({ type: String, reflect: true })
+	@property({ reflect: true, converter: reflectNonDefault('') })
 	width = '';
 
 	@property({ type: String, attribute: 'accessible-label' })
@@ -89,6 +92,19 @@ export class NLDDTimePicker extends LitElement {
 	 */
 	@state()
 	private _scrolledTo: { hours: number | null; minutes: number | null } = { hours: null, minutes: null };
+
+
+	/**
+	 * Marks the control as invalid.
+	 *
+	 * Announced and not drawn. What is wrong belongs in an
+	 * nldd-validation-list, in words: a red ring around a single
+	 * checkbox or radio would say the option is wrong, while it is the question
+	 * that is unanswered. `aria-invalid` still goes on the control, because
+	 * choosing not to show something is not a reason to keep quiet about it.
+	 */
+	@property({ type: Boolean, reflect: true })
+	invalid = false;
 
 	public _t(key: keyof NLDDTimePickerTranslations): string {
 		return this.translations[key] ?? nlddTimePickerTranslations[key];
@@ -307,11 +323,11 @@ export class NLDDTimePicker extends LitElement {
 
 	/** The number of the option closest to the middle of the column. */
 	private _centeredOption(el: HTMLElement): number | null {
-		const centre = el.scrollTop + el.clientHeight / 2;
+		const center = el.scrollTop + el.clientHeight / 2;
 		let best: HTMLElement | null = null;
 		let bestDistance = Infinity;
 		for (const option of el.querySelectorAll<HTMLElement>('.time-picker__list-item')) {
-			const distance = Math.abs(option.offsetTop + option.offsetHeight / 2 - centre);
+			const distance = Math.abs(option.offsetTop + option.offsetHeight / 2 - center);
 			if (distance < bestDistance) {
 				bestDistance = distance;
 				best = option;
@@ -373,6 +389,11 @@ export class NLDDTimePicker extends LitElement {
 			this._scrolledTo = { hours: null, minutes: null };
 			this.scrollSelectedIntoView();
 		}
+	}
+
+	/** The group is the widget; hour and minute are spinbuttons inside it. */
+	override describedTarget(): Element | null {
+		return this.shadowRoot?.querySelector('[role="group"]') ?? null;
 	}
 
 	override render() {

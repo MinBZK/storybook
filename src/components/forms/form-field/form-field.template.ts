@@ -2,7 +2,6 @@
 import { html, nothing, TemplateResult } from 'lit';
 import type { NLDDFormField } from './form-field.js';
 import type { NLDDFormFieldHelpText } from './form-field.js';
-import type { NLDDFormFieldErrorText } from './form-field.js';
 
 /* ============================================================
    nldd-form-field
@@ -38,11 +37,6 @@ export function formFieldTemplate(component: NLDDFormField): TemplateResult {
 			${headerEl}
 			<div class="form-field__main">
 				<slot></slot>
-				<div class="form-field__errors"
-					aria-live="polite"
-				>
-					<slot name="errors"></slot>
-				</div>
 				<slot name="help"></slot>
 			</div>
 		</div>
@@ -56,18 +50,6 @@ export function formFieldTemplate(component: NLDDFormField): TemplateResult {
 export function formFieldHelpTextTemplate(_component: NLDDFormFieldHelpText): TemplateResult {
 	return html`
 		<p class="form-field__help-text">
-			<slot></slot>
-		</p>
-	`;
-}
-
-/* ============================================================
-   nldd-form-field-error-text
-   ============================================================ */
-
-export function formFieldErrorTextTemplate(_component: NLDDFormFieldErrorText): TemplateResult {
-	return html`
-		<p class="form-field__error-text">
 			<slot></slot>
 		</p>
 	`;

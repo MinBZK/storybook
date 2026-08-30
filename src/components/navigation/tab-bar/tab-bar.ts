@@ -19,7 +19,7 @@
  * ---
  *
  * @element nldd-tab-bar-item
- * @attr {boolean} selected - Selected state (managed by nldd-tab-bar)
+ * @attr {boolean} current - The item you are on. A tab bar switching content manages it itself and renders it as `aria-selected`; a `navigation` bar leaves it to the consumer, since it follows the route, and renders it as `aria-current="page"`. Unlike a list row, which separates `current` from `selected` because it can be both at once, a tab bar has exactly one active item.
  * @attr {string} text - Tab text; also used as accessible name for icon-only items
  * @attr {string} href - Optional link URL; renders an anchor instead of a button
  * @attr {string} icon - Icon name for nldd-icon; an alternative to the icon slot. The icon and icon-and-text variants fall back to a placeholder icon when neither is provided.
@@ -43,8 +43,10 @@ import { sanitizeUrl } from '../../../utilities/sanitize-url.js';
 export class NLDDTabBarItem extends LitElement {
 	static override styles = tabBarItemStyles;
 
+	/** The item you are on. `aria-selected` in a tab bar that switches content,
+	 *  `aria-current="page"` in a `navigation` bar. */
 	@property({ type: Boolean, reflect: true })
-	selected = false;
+	current = false;
 
 	@property({ type: String })
 	href = '';
@@ -86,7 +88,7 @@ export class NLDDTabBarItem extends LitElement {
 	@state()
 	_navigation = false;
 
-	/** Set by nldd-tab-bar. Marks this item as the keyboard entry point when no tab is selected. */
+	/** Set by nldd-tab-bar. Marks this item as the keyboard entry point when no tab is current. */
 	@state()
 	_isFallbackFocusable = false;
 
@@ -102,6 +104,9 @@ export class NLDDTabBarItem extends LitElement {
 		const attr = this.getAttribute('variant');
 		if (attr === 'text' || attr === 'icon' || attr === 'icon-and-text') {
 			this._authorVariant = attr;
+		}
+		if (import.meta.env?.DEV && this.hasAttribute('selected')) {
+			console.warn('nldd-tab-bar-item: `selected` is now `current` and the old attribute does nothing; rename it.');
 		}
 	}
 
@@ -120,7 +125,7 @@ export class NLDDTabBarItem extends LitElement {
 
 	_handleClick(event: Event): void {
 		// A disabled bar is inert: swallow the activation and fire no `select`, so a
-		// clicked link never navigates and no tab flips selected.
+		// clicked link never navigates and no tab becomes the current one.
 		if (this._groupDisabled) {
 			event.preventDefault();
 			return;
@@ -223,10 +228,10 @@ export class NLDDTabBar extends LitElement {
 		});
 
 		// Ensure keyboard entry point
-		const hasSelected = items.some(item => item.selected);
+		const hasCurrent = items.some(item => item.current);
 		const firstItem = items[0] ?? null;
 		items.forEach(item => {
-			item._isFallbackFocusable = !hasSelected && item === firstItem;
+			item._isFallbackFocusable = !hasCurrent && item === firstItem;
 		});
 	}
 
@@ -237,15 +242,15 @@ export class NLDDTabBar extends LitElement {
 	private _handleItemSelect = (event: CustomEvent): void => {
 		event.stopPropagation();
 		if (this.disabled) return;
-		// Navigation tabs are controlled by the consumer (selection follows the
-		// route), so don't self-select on click — matching the keyboard path, which
+		// Navigation tabs are controlled by the consumer (the current tab follows
+		// the route), so don't mark one on click — matching the keyboard path, which
 		// already skips auto-activation for navigation tabs. A click that doesn't
-		// actually navigate (e.g. blocked by a guard) must not leave the tab
-		// looking selected. Content-switching tabs still self-manage.
+		// actually navigate (e.g. blocked by a guard) must not leave the tab looking
+		// current. Content-switching tabs still self-manage.
 		if (!this.navigation) {
 			const items = this._getItems();
 			items.forEach(item => {
-				item.selected = item === event.detail.item;
+				item.current = item === event.detail.item;
 			});
 		}
 		this.dispatchEvent(new CustomEvent('tabchange', {
@@ -290,7 +295,7 @@ export class NLDDTabBar extends LitElement {
 			items[newIndex].focus();
 			// Auto-activate only for content-switching tabs, not navigation tabs
 			if (!this.navigation) {
-				items.forEach(item => { item.selected = item === items[newIndex]; });
+				items.forEach(item => { item.current = item === items[newIndex]; });
 				this.dispatchEvent(new CustomEvent('tabchange', {
 					bubbles: true,
 					composed: true,

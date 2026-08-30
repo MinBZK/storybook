@@ -343,3 +343,23 @@ describe('nldd-switch – accessibility', () => {
 		cleanup(el);
 	});
 });
+
+describe('nldd-switch no-tab', () => {
+	let el: HTMLElement;
+
+	afterEach(() => {
+		if (el) cleanup(el);
+	});
+
+	it('takes the input out of the tab order', async () => {
+		el = await fixture<NLDDSwitch>('<nldd-switch label="X" no-tab></nldd-switch>');
+		await waitForUpdate(el);
+		expect(el.shadowRoot!.querySelector('.switch__input')!.getAttribute('tabindex')).toBe('-1');
+	});
+
+	it('is in the tab order by default (no tabindex attribute)', async () => {
+		el = await fixture<NLDDSwitch>('<nldd-switch label="X"></nldd-switch>');
+		await waitForUpdate(el);
+		expect(el.shadowRoot!.querySelector('.switch__input')!.hasAttribute('tabindex')).toBe(false);
+	});
+});

@@ -289,7 +289,7 @@ describe('nldd-toggle-button – interaction (button)', () => {
 	});
 
 	it('click dispatches change event with correct detail', async () => {
-		el = await fixture<NLDDToggleButton>('<nldd-toggle-button text="Label" value="optie"></nldd-toggle-button>');
+		el = await fixture<NLDDToggleButton>('<nldd-toggle-button text="Label" value="option"></nldd-toggle-button>');
 		await waitForUpdate(el);
 
 		let detail: any;
@@ -297,7 +297,7 @@ describe('nldd-toggle-button – interaction (button)', () => {
 		el.shadowRoot!.querySelector('button')!.click();
 
 		expect(detail?.selected).toBe(true);
-		expect(detail?.value).toBe('optie');
+		expect(detail?.value).toBe('option');
 	});
 
 	it('disabled button does not toggle when clicked', async () => {
@@ -506,5 +506,31 @@ describe('nldd-toggle-button – tooltip', () => {
 		await waitForUpdate(el);
 		el.focus();
 		expect(deepActiveElement()).toBe(el.shadowRoot!.querySelector('button.toggle-button'));
+	});
+});
+
+describe('nldd-toggle-button no-tab', () => {
+	let el: HTMLElement;
+
+	afterEach(() => {
+		if (el) cleanup(el);
+	});
+
+	it('takes the button out of the tab order', async () => {
+		el = await fixture<NLDDToggleButton>('<nldd-toggle-button text="X" no-tab></nldd-toggle-button>');
+		await waitForUpdate(el);
+		expect(el.shadowRoot!.querySelector('button.toggle-button')!.getAttribute('tabindex')).toBe('-1');
+	});
+
+	it('takes the checkbox variant out of the tab order', async () => {
+		el = await fixture<NLDDToggleButton>('<nldd-toggle-button text="X" type="checkbox" no-tab></nldd-toggle-button>');
+		await waitForUpdate(el);
+		expect(el.shadowRoot!.querySelector('.toggle-button__input')!.getAttribute('tabindex')).toBe('-1');
+	});
+
+	it('is in the tab order by default (no tabindex attribute)', async () => {
+		el = await fixture<NLDDToggleButton>('<nldd-toggle-button text="X"></nldd-toggle-button>');
+		await waitForUpdate(el);
+		expect(el.shadowRoot!.querySelector('button.toggle-button')!.hasAttribute('tabindex')).toBe(false);
 	});
 });

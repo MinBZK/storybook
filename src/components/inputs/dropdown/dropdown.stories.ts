@@ -46,6 +46,12 @@ export default {
 			description: 'Uitgeschakelde toestand',
 			table: { defaultValue: { summary: false } },
 		},
+		required: {
+			control: 'boolean',
+			description: 'Verplichte staat.',
+			table: { defaultValue: { summary: false } },
+		},
+
 	},
 	args: {
 		size: 'md',
@@ -53,16 +59,17 @@ export default {
 		valid: false,
 		invalid: false,
 		disabled: false,
+		required: false,
 	},
 };
 
-const Template = ({ size, valid, invalid, disabled, width }: Record<string, any>) => html`
-	<nldd-dropdown size=${size} ?valid=${valid} ?invalid=${invalid} ?disabled=${disabled} width=${width}>
-		<select name="optie" aria-label="Selecteer een optie">
+const Template = ({ size, valid, invalid, disabled, width, required }: Record<string, any>) => html`
+	<nldd-dropdown size=${size} ?valid=${valid} ?invalid=${invalid} ?disabled=${disabled} ?required=${required} width=${width}>
+		<select name="option" aria-label="Selecteer een optie">
 			<option value="" disabled selected>Selecteer een optie</option>
-			<option value="optie-1">Optie 1</option>
-			<option value="optie-2">Optie 2</option>
-			<option value="optie-3">Optie 3</option>
+			<option value="option-1">Optie 1</option>
+			<option value="option-2">Optie 2</option>
+			<option value="option-3">Optie 3</option>
 		</select>
 	</nldd-dropdown>
 `;
@@ -76,52 +83,52 @@ export const AlleToestanden = {
 	render: () => html`
 	<div style="display: flex; flex-direction: column; gap: 1rem;">
 		<nldd-dropdown size="xs">
-			<select name="optie-xs" aria-label="Selecteer een optie">
+			<select name="option-xs" aria-label="Selecteer een optie">
 				<option value="" disabled selected>Selecteer een optie</option>
-				<option value="optie-1">Optie 1</option>
-				<option value="optie-2">Optie 2</option>
+				<option value="option-1">Optie 1</option>
+				<option value="option-2">Optie 2</option>
 			</select>
 		</nldd-dropdown>
 		<nldd-dropdown size="sm">
-			<select name="optie-3" aria-label="Selecteer een optie">
+			<select name="option-3" aria-label="Selecteer een optie">
 				<option value="" disabled selected>Selecteer een optie</option>
-				<option value="optie-1">Optie 1</option>
-				<option value="optie-2">Optie 2</option>
+				<option value="option-1">Optie 1</option>
+				<option value="option-2">Optie 2</option>
 			</select>
 		</nldd-dropdown>
 		<nldd-dropdown size="md">
-			<select name="optie-1" aria-label="Selecteer een optie">
+			<select name="option-1" aria-label="Selecteer een optie">
 				<option value="" disabled selected>Selecteer een optie</option>
-				<option value="optie-1">Optie 1</option>
-				<option value="optie-2">Optie 2</option>
+				<option value="option-1">Optie 1</option>
+				<option value="option-2">Optie 2</option>
 			</select>
 		</nldd-dropdown>
 		<nldd-dropdown size="md">
-			<select name="optie-2" aria-label="Selecteer een optie">
-				<option value="optie-1">Optie 1</option>
-				<option value="optie-2">Optie 2</option>
+			<select name="option-2" aria-label="Selecteer een optie">
+				<option value="option-1">Optie 1</option>
+				<option value="option-2">Optie 2</option>
 			</select>
 		</nldd-dropdown>
 		<nldd-dropdown size="md" valid>
-			<select name="optie-valid" aria-label="Selecteer een optie">
-				<option value="optie-1" selected>Optie 1</option>
-				<option value="optie-2">Optie 2</option>
+			<select name="option-valid" aria-label="Selecteer een optie">
+				<option value="option-1" selected>Optie 1</option>
+				<option value="option-2">Optie 2</option>
 			</select>
 		</nldd-dropdown>
 		<nldd-dropdown size="md" invalid>
-			<select name="optie-invalid" aria-label="Selecteer een optie">
+			<select name="option-invalid" aria-label="Selecteer een optie">
 				<option value="" disabled selected>Selecteer een optie</option>
-				<option value="optie-1">Optie 1</option>
+				<option value="option-1">Optie 1</option>
 			</select>
 		</nldd-dropdown>
 		<nldd-dropdown size="md" disabled>
-			<select name="optie-4" aria-label="Selecteer een optie">
-				<option value="optie-1">Optie 1</option>
-				<option value="optie-2">Optie 2</option>
+			<select name="option-4" aria-label="Selecteer een optie">
+				<option value="option-1">Optie 1</option>
+				<option value="option-2">Optie 2</option>
 			</select>
 		</nldd-dropdown>
 		<nldd-dropdown size="md">
-			<select name="optie-5" aria-label="Selecteer een categorie">
+			<select name="option-5" aria-label="Selecteer een categorie">
 				<optgroup label="Groep A">
 					<option value="a1">A1</option>
 					<option value="a2">A2</option>

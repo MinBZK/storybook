@@ -21,6 +21,7 @@ export function segmentedControlItemTemplate(component: NLDDSegmentedControlItem
 				value=${component.value}
 				.checked=${component.selected}
 				?disabled=${component.disabled}
+				?required=${component.required}
 				aria-label=${isIcon ? labelText : nothing}
 				@change=${component._handleChange}
 			>

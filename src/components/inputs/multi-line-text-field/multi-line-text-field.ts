@@ -19,9 +19,10 @@
  * @attr {number} rows - Initial visible rows (minimum height). Default: 3.
  * @attr {string} resize - 'none' | 'vertical' | 'auto' (default). 'auto' grows with content (native field-sizing), no manual handle.
  * @attr {string} accessible-label - Accessible label forwarded to the inner textarea. Set automatically by nldd-form-field.
- * @attr {string} error-message-ids - Ids for aria-describedby on the inner textarea. Set automatically by nldd-form-field.
  * @attr {boolean} no-spellcheck - Disables browser spellchecking on the inner textarea
  * @attr {string} width - Optional fixed width (any CSS length, e.g. "240px"). Default: stretches to fill container.
+ * @attr {number} minlength - Fewest characters the value may have.
+ * @attr {number} maxlength - Most characters the value may have.
  *
  * @fires input - When value changes
  * @fires change - When value is committed (blur)
@@ -33,13 +34,14 @@ import { reflectNonDefault } from '../../../utilities/reflect-non-default.js';
 import { multiLineTextFieldStyles } from './multi-line-text-field.styles.js';
 import { multiLineTextFieldTemplate } from './multi-line-text-field.template.js';
 import type { Keyboard, EnterKey } from '../text-field/text-field.js';
+import { DescribedBy } from '../../../utilities/described-by-mixin.js';
 
 export type ResizeMode = 'none' | 'vertical' | 'auto';
 
 export type { Keyboard, EnterKey } from '../text-field/text-field.js';
 
 @customElement('nldd-multi-line-text-field')
-export class NLDDMultiLineTextField extends FormAssociated(LitElement) {
+export class NLDDMultiLineTextField extends DescribedBy(FormAssociated(LitElement)) {
 
 	static override shadowRootOptions = {
 		...LitElement.shadowRootOptions,
@@ -76,7 +78,7 @@ export class NLDDMultiLineTextField extends FormAssociated(LitElement) {
 	@property({ type: Boolean, reflect: true })
 	disabled = false;
 
-	@property({ type: String, reflect: true })
+	@property({ reflect: true, converter: reflectNonDefault('') })
 	name = '';
 
 	@property({ type: Boolean, reflect: true })
@@ -106,19 +108,26 @@ export class NLDDMultiLineTextField extends FormAssociated(LitElement) {
 	@property({ type: String, attribute: 'accessible-label' })
 	accessibleLabel = '';
 
-	@property({ type: String, attribute: 'error-message-ids' })
-	errorMessageIds = '';
 
 	@property({ type: Boolean, reflect: true, attribute: 'no-spellcheck' })
 	noSpellcheck = false;
 
 	/** Optional fixed width (any CSS length). When unset, the field stretches to fill its container. */
-	@property({ type: String, reflect: true })
+	@property({ reflect: true, converter: reflectNonDefault('') })
 	width = '';
 
 
 	@query('.multi-line-text-field__input')
 	private _textarea!: HTMLTextAreaElement;
+
+
+	/** Fewest characters the value may have, as the native `minlength`. */
+	@property({ type: Number, reflect: true })
+	minlength?: number;
+
+	/** Most characters the value may have, as the native `maxlength`. */
+	@property({ type: Number, reflect: true })
+	maxlength?: number;
 
 	override firstUpdated(): void {
 		this._initialValue = this.value;

@@ -398,8 +398,8 @@ export const LabelsToggle = {
 								variant="icon"
 								accessible-label="Tekststijl"
 							>
-								<nldd-segmented-control-item value="vet" text="Vet" icon="bold"></nldd-segmented-control-item>
-								<nldd-segmented-control-item value="cursief" text="Cursief" icon="italic"></nldd-segmented-control-item>
+								<nldd-segmented-control-item value="bold" text="Vet" icon="bold"></nldd-segmented-control-item>
+								<nldd-segmented-control-item value="italic" text="Cursief" icon="italic"></nldd-segmented-control-item>
 								<nldd-segmented-control-item value="onderstrepen" text="Onderstrepen" icon="underlined"></nldd-segmented-control-item>
 							</nldd-segmented-control>
 							<nldd-menu-group slot="overflow" text="Tekststijl">
@@ -439,8 +439,8 @@ export const LabelsToggle = {
 								variant="icon"
 								accessible-label="Tekststijl"
 							>
-								<nldd-segmented-control-item value="vet" text="Vet" icon="bold"></nldd-segmented-control-item>
-								<nldd-segmented-control-item value="cursief" text="Cursief" icon="italic"></nldd-segmented-control-item>
+								<nldd-segmented-control-item value="bold" text="Vet" icon="bold"></nldd-segmented-control-item>
+								<nldd-segmented-control-item value="italic" text="Cursief" icon="italic"></nldd-segmented-control-item>
 								<nldd-segmented-control-item value="onderstrepen" text="Onderstrepen" icon="underlined"></nldd-segmented-control-item>
 							</nldd-segmented-control>
 							<nldd-menu-group slot="overflow" text="Tekststijl">
@@ -481,8 +481,8 @@ export const WithOverflow = {
 					variant="icon"
 					accessible-label="Tekststijl"
 				>
-					<nldd-segmented-control-item value="vet" text="Vet" icon="bold"></nldd-segmented-control-item>
-					<nldd-segmented-control-item value="cursief" text="Cursief" icon="italic"></nldd-segmented-control-item>
+					<nldd-segmented-control-item value="bold" text="Vet" icon="bold"></nldd-segmented-control-item>
+					<nldd-segmented-control-item value="italic" text="Cursief" icon="italic"></nldd-segmented-control-item>
 					<nldd-segmented-control-item value="onderstrepen" text="Onderstrepen" icon="underlined"></nldd-segmented-control-item>
 				</nldd-segmented-control>
 				<nldd-menu-group slot="overflow" text="Tekststijl">
@@ -574,8 +574,8 @@ export const WithPriority = {
 					variant="icon"
 					accessible-label="Tekststijl"
 				>
-					<nldd-segmented-control-item value="vet" text="Vet" icon="bold"></nldd-segmented-control-item>
-					<nldd-segmented-control-item value="cursief" text="Cursief" icon="italic"></nldd-segmented-control-item>
+					<nldd-segmented-control-item value="bold" text="Vet" icon="bold"></nldd-segmented-control-item>
+					<nldd-segmented-control-item value="italic" text="Cursief" icon="italic"></nldd-segmented-control-item>
 					<nldd-segmented-control-item value="onderstrepen" text="Onderstrepen" icon="underlined"></nldd-segmented-control-item>
 				</nldd-segmented-control>
 				<nldd-menu-group slot="overflow" text="Tekststijl">
@@ -731,8 +731,8 @@ export const WithPinnedOverflow = {
 					variant="icon"
 					accessible-label="Tekststijl"
 				>
-					<nldd-segmented-control-item value="vet" text="Vet" icon="bold"></nldd-segmented-control-item>
-					<nldd-segmented-control-item value="cursief" text="Cursief" icon="italic"></nldd-segmented-control-item>
+					<nldd-segmented-control-item value="bold" text="Vet" icon="bold"></nldd-segmented-control-item>
+					<nldd-segmented-control-item value="italic" text="Cursief" icon="italic"></nldd-segmented-control-item>
 				</nldd-segmented-control>
 				<nldd-menu-group slot="overflow" text="Tekststijl">
 					<nldd-menu-item
@@ -787,8 +787,8 @@ export const WithPinnedAndDynamicOverflow = {
 					variant="icon"
 					accessible-label="Tekststijl"
 				>
-					<nldd-segmented-control-item value="vet" text="Vet" icon="bold"></nldd-segmented-control-item>
-					<nldd-segmented-control-item value="cursief" text="Cursief" icon="italic"></nldd-segmented-control-item>
+					<nldd-segmented-control-item value="bold" text="Vet" icon="bold"></nldd-segmented-control-item>
+					<nldd-segmented-control-item value="italic" text="Cursief" icon="italic"></nldd-segmented-control-item>
 					<nldd-segmented-control-item value="onderstrepen" text="Onderstrepen" icon="underlined"></nldd-segmented-control-item>
 				</nldd-segmented-control>
 				<nldd-menu-group slot="overflow" text="Tekststijl">
@@ -881,7 +881,7 @@ export const MobieleActiebalk = {
 		<nldd-toolbar size="lg" label="Acties">
 			<nldd-toolbar-item slot="start" priority="10">
 				<nldd-tab-bar accessible-label="Hoofdnavigatie">
-					<nldd-tab-bar-item selected text="Home" icon="home"></nldd-tab-bar-item>
+					<nldd-tab-bar-item current text="Home" icon="home"></nldd-tab-bar-item>
 					<nldd-tab-bar-item text="Profiel" icon="profile"></nldd-tab-bar-item>
 					<nldd-tab-bar-item text="Zoeken" icon="search"></nldd-tab-bar-item>
 				</nldd-tab-bar>

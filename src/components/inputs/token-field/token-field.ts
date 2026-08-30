@@ -41,12 +41,13 @@ import { nlddTokenFieldTranslations, type NLDDTokenFieldTranslations } from './t
 import type { NLDDMenu, NLDDMenuItem } from '../../actions/menu/menu.js';
 import '../../actions/menu/menu.js';
 import { submitOnEnter } from '../../../utilities/implicit-submission.js';
+import { DescribedBy } from '../../../utilities/described-by-mixin.js';
 
 /** Trailing control rendered on each token. */
 export type TokenFieldControl = 'dismiss' | 'menu';
 
 @customElement('nldd-token-field')
-export class NLDDTokenField extends FormAssociated(LitElement) {
+export class NLDDTokenField extends DescribedBy(FormAssociated(LitElement)) {
 
 	static override styles = tokenFieldStyles;
 
@@ -554,8 +555,11 @@ export class NLDDTokenField extends FormAssociated(LitElement) {
 				break;
 			}
 			case 'Escape':
+				// See nldd-combo-box: the key closed this menu and goes no further,
+				// so a sheet behind it does not close on the same press.
 				if (!this._isOpen) return;
 				e.preventDefault();
+				e.stopPropagation();
 				this._closeMenu();
 				break;
 			case 'ArrowLeft':
@@ -879,6 +883,16 @@ export class NLDDTokenField extends FormAssociated(LitElement) {
 			}
 		}
 		if (reseat) this._menu.moveHighlight('next');
+	}
+
+	/**
+	 * The input is the control while it is there. It is not always: the field
+	 * rests as a list of what you picked and grows an input when you go to add
+	 * something, so in that resting state the list is what you meet.
+	 */
+	override describedTarget(): Element | null {
+		const root = this.shadowRoot;
+		return root?.querySelector('input.token-field__input') ?? root?.querySelector('.token-field__list') ?? null;
 	}
 
 	override render() {

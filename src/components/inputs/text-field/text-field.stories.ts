@@ -113,6 +113,21 @@ export default {
 			description: 'Readonly state',
 			table: { defaultValue: { summary: false } },
 		},
+		minlength: {
+			control: 'number',
+			description: 'Minimaal aantal tekens.',
+			table: { type: { summary: 'number' }, defaultValue: { summary: '(geen)' } },
+		},
+		maxlength: {
+			control: 'number',
+			description: 'Maximaal aantal tekens.',
+			table: { type: { summary: 'number' }, defaultValue: { summary: '(geen)' } },
+		},
+		pattern: {
+			control: 'text',
+			description: 'Reguliere expressie waar de waarde aan moet voldoen, als het native `pattern`.',
+			table: { defaultValue: { summary: '(geen)' } },
+		},
 		required: {
 			control: 'boolean',
 			description: 'Required state',
@@ -138,13 +153,18 @@ export default {
 		valid: false,
 		invalid: false,
 		readonly: false,
+		minlength: null,
+		maxlength: null,
+		pattern: '',
 		required: false,
 		disabled: false,
 	},
 };
 
-const Template = ({ size, name, value, placeholder, type, keyboard, enterKey, autocomplete, valid, invalid, readonly, required, disabled, noSpellcheck, width }: Record<string, any>) => html`
+const Template = ({ size, name, value, placeholder, type, keyboard, enterKey, autocomplete, valid, invalid, readonly, minlength, maxlength, pattern, required, disabled, noSpellcheck, width }: Record<string, any>) => html`
 	<nldd-text-field
+		minlength=${minlength ?? nothing}
+		maxlength=${maxlength ?? nothing}
 		.value=${value}
 		.placeholder=${placeholder}
 		size=${size}
@@ -155,9 +175,10 @@ const Template = ({ size, name, value, placeholder, type, keyboard, enterKey, au
 		keyboard=${keyboard || nothing}
 		enter-key=${enterKey || nothing}
 		name=${name}
+		?required=${required}
 		autocomplete=${autocomplete}
 		?readonly=${readonly}
-		?required=${required}
+		pattern=${pattern || nothing}
 		?no-spellcheck=${noSpellcheck}
 		width=${width}
 	></nldd-text-field>

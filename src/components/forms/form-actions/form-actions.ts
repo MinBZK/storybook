@@ -1,19 +1,18 @@
 /**
  * Nederlandse Digitale Dienst Form Actions Component (Lit + TypeScript)
  *
- * Een layout-wrapper voor de actie-knoppen onderaan een formulier (typisch
- * een submit-button of button-group). Volgt dezelfde responsive layout als
- * `nldd-form-field`: met `label-alignment="right"` of `"left"` krijgt de
- * inhoud dezelfde insprong als de invoervelden boven, dankzij een
- * `::before`-pseudo-element dat fungeert als spacer-kolom waar de label
- * zou staan.
+ * A layout wrapper for the action buttons at the bottom of a form (typically a
+ * submit button or a button group). Follows the same responsive layout as
+ * `nldd-form-field`: with `label-alignment="right"` or `"left"` the content
+ * gets the same indent as the fields above it, thanks to a `::before`
+ * pseudo-element that acts as the spacer column where the label would sit.
  *
- * Erft `label-alignment` automatisch over van een wrappende `<nldd-form>`:
- * de form propageert z'n eigen `label-alignment` als `form-label-alignment`
- * naar descendant `nldd-form-actions` (en `nldd-form-field`) via een
- * MutationObserver. Een expliciete eigen `label-alignment` op de form-actions
- * wint via CSS-cascade — de form-code raakt het `label-alignment` attribuut
- * van de descendant nooit aan.
+ * Inherits `label-alignment` automatically from a wrapping `<nldd-form>`: the
+ * form propagates its own `label-alignment` as `form-label-alignment` to
+ * descendant `nldd-form-actions` (and `nldd-form-field`) through a
+ * MutationObserver. An explicit `label-alignment` on the form-actions itself
+ * wins through the CSS cascade, and the form code never touches the
+ * `label-alignment` attribute of the descendant.
  *
  *     <nldd-form label-alignment="right">
  *         <nldd-form-field>...</nldd-form-field>
@@ -26,10 +25,10 @@
  *
  * @element nldd-form-actions
  *
- * @attr {string} label-alignment - 'top' (default) | 'right' | 'left'. Een eigen waarde wint altijd over de inherited form-label-alignment.
- * @attr {string} form-label-alignment - Door wrappende nldd-form gezet als fallback. Niet zelf zetten in consumer-code.
+ * @attr {string} label-alignment - 'top' (default) | 'right' | 'left'. A value of its own always wins over the inherited form-label-alignment.
+ * @attr {string} form-label-alignment - Set by a wrapping nldd-form as a fallback. Do not set it yourself in consumer code.
  *
- * @slot - Actie-elementen (button, button-group, etc.)
+ * @slot - Action elements (button, button-group, and so on)
  */
 
 import { LitElement } from 'lit';

@@ -4,6 +4,7 @@
  * @element nldd-checkbox
  * @attr {boolean} checked - Checked state
  * @attr {boolean} disabled - Disabled state
+ * @attr {boolean} no-tab - Takes the control out of the tab order (tabindex="-1"), for a control owned by a roving container (a row of an nldd-list, where the arrow keys move between rows) that manages focus itself. Still mouse- and script-focusable.
  * @attr {boolean} decorative - Renders the box without the input: no focus, no
  *   name/value, nothing announced. For a control that owns the state elsewhere,
  *   such as a list row that is itself the checkbox; putting a real input in
@@ -12,6 +13,8 @@
  * @attr {string} value - Value for form submission
  * @attr {string} name - Name for form submission
  * @attr {string} accessible-label - Accessible label forwarded as aria-label to the native input.
+ * @attr {boolean} required - Required state
+ * @attr {boolean} invalid - Marks the control as invalid. Announced with aria-invalid; nothing is drawn for it.
  *   Note: aria-labelledby is not supported as IDREF resolution cannot cross shadow DOM boundaries.
  *
  * @fires change - Fired when the checkbox state changes; detail: { checked: boolean, value: string }
@@ -21,9 +24,11 @@ import { customElement, property } from 'lit/decorators.js';
 import { FormAssociated, type FormValue } from '../../../utilities/form-associated-mixin.js';
 import { checkboxStyles } from './checkbox.styles.js';
 import { checkboxTemplate } from './checkbox.template.js';
+import { DescribedBy } from '../../../utilities/described-by-mixin.js';
+import { reflectNonDefault } from '../../../utilities/reflect-non-default.js';
 
 @customElement('nldd-checkbox')
-export class NLDDCheckbox extends FormAssociated(LitElement) {
+export class NLDDCheckbox extends DescribedBy(FormAssociated(LitElement)) {
 	static override styles = checkboxStyles;
 
 	/** Says this is the control an nldd-form-field is about, so the field can
@@ -40,6 +45,13 @@ export class NLDDCheckbox extends FormAssociated(LitElement) {
 
 	@property({ type: Boolean, reflect: true })
 	disabled = false;
+	/** Take the control out of the tab order (`tabindex="-1"`) — for a control
+	 *  owned by a roving container (an `nldd-list` sets it on the rows that are
+	 *  not the current one) that manages focus itself. Still mouse- and
+	 *  script-focusable. */
+	@property({ type: Boolean, reflect: true, attribute: 'no-tab' })
+	noTab = false;
+
 
 	@property({ type: Boolean, reflect: true })
 	indeterminate = false;
@@ -47,11 +59,28 @@ export class NLDDCheckbox extends FormAssociated(LitElement) {
 	@property({ type: String })
 	value = 'on';
 
-	@property({ type: String, reflect: true })
+	@property({ reflect: true, converter: reflectNonDefault('') })
 	name = '';
 
 	@property({ type: String, attribute: 'accessible-label' })
 	accessibleLabel = '';
+
+
+	@property({ type: Boolean, reflect: true })
+	required = false;
+
+
+	/**
+	 * Marks the control as invalid.
+	 *
+	 * Announced and not drawn. What is wrong belongs in an
+	 * nldd-validation-list, in words: a red ring around a single
+	 * checkbox or radio would say the option is wrong, while it is the question
+	 * that is unanswered. `aria-invalid` still goes on the control, because
+	 * choosing not to show something is not a reason to keep quiet about it.
+	 */
+	@property({ type: Boolean, reflect: true })
+	invalid = false;
 
 	override firstUpdated(): void {
 		this._initialChecked = this.checked;

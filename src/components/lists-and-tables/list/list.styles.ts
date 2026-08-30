@@ -5,6 +5,11 @@ export const listStyles = css`
 		box-sizing: border-box;
 	}
 
+	/* Nothing in it and nothing said about it: not a thing on the page. */
+	:host(.is-blank) {
+		display: none;
+	}
+
 
 	/* # Host */
 

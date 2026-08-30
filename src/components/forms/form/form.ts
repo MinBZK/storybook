@@ -1,19 +1,18 @@
 /**
  * Nederlandse Digitale Dienst Form Component
  *
- * Plain custom element (extends HTMLElement, no Lit) — required for light-DOM
+ * Plain custom element (extends HTMLElement, no Lit), required for light-DOM
  * autofill. Renders a real <form> element in the LIGHT DOM around its
  * children. Chrome's autofill engine looks for native <input> elements that
  * have a <form> ancestor in the light DOM; with shadow-DOM inputs it can't
  * find them, so we keep this component shadow-less.
  *
  * **Differs from other nldd-* components:**
- * - Geen shadowRoot — alle children leven in light DOM (binnen het inner <form>)
- * - Geen Lit — pure HTMLElement met handmatige attribute-mirroring
- * - **Vereist global stylesheet import** — vertical rhythm en form-section
- *   divider-suppression regels staan in `dist/css/form.css` (of `global.css`),
- *   niet in een component-specifieke shadow stylesheet. Import deze als deel
- *   van je app's globale CSS bundle.
+ * - No shadowRoot: all children live in the light DOM (inside the inner <form>)
+ * - No Lit: a plain HTMLElement with manual attribute mirroring
+ * - **Requires a global stylesheet import**: the vertical rhythm rules live in
+ *   `dist/css/form.css` (or `global.css`), not in a component-specific shadow
+ *   stylesheet. Import it as part of your app's global CSS bundle.
  *
  * **Two usage modes:**
  *
@@ -22,25 +21,26 @@
  *    Simplest API.
  *
  * 2. **User-provided form** (framework-friendly): write your own `<form>`
- *    as direct child. Component detects it, takes over attribute-mirroring,
- *    en skipt de migration. Children blijven waar je framework ze plaatst —
- *    geen DOM-shuffling die met React/Vue/Angular reconciliation conflicteert.
+ *    as direct child. Component detects it, takes over attribute mirroring,
+ *    and skips the migration. Children stay where your framework puts them,
+ *    so there is no DOM shuffling to conflict with React/Vue/Angular
+ *    reconciliation.
  *
  * **Framework interop:**
  *
- * In auto-wrap mode wordt elke direct child verplaatst naar het inner form
- * via een MutationObserver. Voor de meeste React/Vue use cases werkt dit
- * prima omdat frameworks alleen DOM-mutaties doen wanneer hun virtual DOM
- * verandert. Voor edge cases (animatie-libs die DOM-positie tracken,
- * SSR-hydration mismatches, frameworks die actief sibling-positions
- * controleren) gebruik dan **user-provided form** mode.
+ * In auto-wrap mode every direct child is moved into the inner form through a
+ * MutationObserver. That works fine for most React/Vue use cases, because
+ * frameworks only mutate the DOM when their virtual DOM changes. For edge
+ * cases (animation libraries that track DOM position, SSR hydration
+ * mismatches, frameworks that actively check sibling positions) use
+ * **user-provided form** mode instead.
  *
- * Voor programmatische manipulatie: gebruik de `form` getter zodat je
- * direct met het inner `<form>` element werkt:
+ * For programmatic manipulation, use the `form` getter so you work with the
+ * inner `<form>` element directly:
  *
  *     const inner = document.querySelector('nldd-form').form;
  *     inner.checkValidity();
- *     inner.appendChild(myInput);  // skipt migration-overhead
+ *     inner.appendChild(myInput);  // skips the migration overhead
  *
  * @element nldd-form
  *
@@ -51,16 +51,16 @@
  * @attr {string} enctype - Encoding type for submission
  * @attr {string} target - Submit target ('_self' | '_blank' | ...)
  * @attr {string} autocomplete - 'on' | 'off' (form-level autofill toggle)
- * @attr {string} label-alignment - Default `label-alignment` voor descendant nldd-form-field en nldd-form-actions ('top' | 'right' | 'left'). Wordt naar descendants gepropageerd als `form-label-alignment`. Een eigen `label-alignment` op de descendant heeft voorrang via CSS-cascade.
+ * @attr {string} label-alignment - Default `label-alignment` for descendant nldd-form-field and nldd-form-actions ('top' | 'right' | 'left'). Propagated to descendants as `form-label-alignment`. A `label-alignment` of its own on the descendant takes precedence through the CSS cascade.
  *
- * @prop {HTMLFormElement | null} form - The inner <form> element (read-only). Use voor `form.checkValidity()`, directe DOM-manipulatie, of als doel voor framework-managed children.
+ * @prop {HTMLFormElement | null} form - The inner <form> element (read-only). Use it for `form.checkValidity()`, direct DOM manipulation, or as the target for framework-managed children.
  *
  * Events bubble naturally from the inner <form>:
  * @fires submit
  * @fires reset
  *
  * @example
- * Globale stylesheet import (eenmalig in je app entry):
+ * Global stylesheet import (once, in your app entry):
  * ```js
  * import '@nldd/design-system/styles';
  * ```
@@ -103,6 +103,107 @@ export class NLDDForm extends HTMLElement {
 
 	private _form: HTMLFormElement | null = null;
 	private _observer: MutationObserver | null = null;
+
+	/**
+	 * Marks a control as invalid at the moment the platform says so, and
+	 * unmarks it as soon as it is fixed.
+	 *
+	 * `setValidity` and the `invalid` attribute answer different questions.
+	 * The first is whether the value is acceptable, which decides whether the
+	 * form goes; the second is whether to show that, which is a design
+	 * decision about timing. Without something joining them, a control whose
+	 * validation list refuses a value blocks the submit while the screen says
+	 * nothing.
+	 *
+	 * The browser already picks the moment: it fires `invalid` on every failing
+	 * control when the form is submitted. That event does not bubble, so this
+	 * listens in the capture phase. Setting the attribute earlier stays the
+	 * consumer's call.
+	 *
+	 * Cancelling that event takes the native validation bubble away, and that is
+	 * the point. This system writes its own messages, under the field, in its
+	 * own type: a second one from the browser says the same thing again, in
+	 * browser chrome, above the field, and disappears on its own while ours
+	 * stays. A field that then has nothing to say is a field that needs an
+	 * nldd-validation-list, not a bubble.
+	 */
+	private _handleInvalid = (e: Event) => {
+		e.preventDefault();
+		const control = e.target as Element | null;
+		if (!control) return;
+
+		// Every control, not just this one. The browser judged the whole form,
+		// and a field that happened to pass has been asked the same question as
+		// the one that failed. Marking only the failures would leave two fields
+		// in one form behaving differently: break the one that passed and it
+		// stays quiet, while its neighbour speaks up as you type.
+		for (const el of this._form?.elements ?? []) this._judged.add(el);
+		this._judged.add(control);
+
+		control.toggleAttribute('invalid', true);
+
+		// The browser fires invalid on every failing control in tree order, so
+		// the first event of a round is the field to land on. Cancelling that
+		// event above takes away the native bubble and, with it, the browser's
+		// own move to the first failing field. Without this a submit that fails
+		// leaves focus where it was, which for anyone not looking at the screen
+		// means nothing happened at all: no bubble, no focus, and no live region
+		// anywhere in a form. Deferred, so the whole round has been fired and
+		// the submit algorithm is done before focus moves.
+		if (this._focusTarget) return;
+		this._focusTarget = control as HTMLElement;
+		queueMicrotask(() => {
+			this._focusTarget?.focus?.();
+			this._focusTarget = null;
+		});
+	};
+
+	/** The first control to fail this round, focused once the round is over. */
+	private _focusTarget: HTMLElement | null = null;
+
+	/**
+	 * A reset takes the marks off with the values.
+	 *
+	 * A reset fires no `input`, so nothing above hears it and a field that was
+	 * refused keeps its mark over a value the user just cleared. `judging` goes
+	 * with it: the question has been withdrawn, so the hints come back and the
+	 * field is what it was before anyone submitted.
+	 *
+	 * Deferred because the event comes first and the values go back after it,
+	 * so anything read here would still be the old one.
+	 */
+	private _handleReset = () => {
+		queueMicrotask(() => {
+			this._judged = new WeakSet<Element>();
+			for (const el of this._form?.elements ?? []) el.removeAttribute('invalid');
+			for (const list of this.querySelectorAll('nldd-validation-list')) {
+				list.removeAttribute('judging');
+			}
+		});
+	};
+
+	/**
+	 * From the first verdict onward, the mark follows the value.
+	 *
+	 * The platform has no "valid" event, so without this a control that is put
+	 * right keeps its mark until the next submit: you fixed it and the field
+	 * still says you did not. And it has to work the other way too. Undo the
+	 * fix and the value is refused again, so a form that stays quiet leaves you
+	 * with a submit that does nothing and nothing on screen saying why.
+	 *
+	 * Only after that first verdict, which is what `_judged` remembers. Before
+	 * it, a field would turn red on the first character typed into it, about a
+	 * value nobody has asked for yet.
+	 */
+	private _handleInput = (e: Event) => {
+		const control = e.target as (Element & { internals?: ElementInternals; validity?: ValidityState }) | null;
+		if (!control || !this._judged.has(control)) return;
+		const validity = control.internals?.validity ?? control.validity;
+		if (validity) control.toggleAttribute('invalid', !validity.valid);
+	};
+
+	/** Controls the platform has judged at least once. */
+	private _judged = new WeakSet<Element>();
 	/** When true, user provided their own <form> child — skip migration. */
 	private _userProvidedForm = false;
 
@@ -170,6 +271,10 @@ export class NLDDForm extends HTMLElement {
 			this._observer.observe(this, { childList: true, subtree: true });
 		}
 
+		this.addEventListener('invalid', this._handleInvalid, true);
+		this.addEventListener('input', this._handleInput);
+		this.addEventListener('reset', this._handleReset);
+
 		// Propagate label-alignment to current children (initial + after reconnect)
 		this._propagateLabelAlignment(this.getAttribute('label-alignment'));
 	}
@@ -177,6 +282,9 @@ export class NLDDForm extends HTMLElement {
 	disconnectedCallback(): void {
 		this._observer?.disconnect();
 		this._observer = null;
+		this.removeEventListener('invalid', this._handleInvalid, true);
+		this.removeEventListener('input', this._handleInput);
+		this.removeEventListener('reset', this._handleReset);
 	}
 
 	attributeChangedCallback(name: string, _oldVal: string | null, newVal: string | null): void {

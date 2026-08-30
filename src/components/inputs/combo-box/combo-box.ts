@@ -28,6 +28,10 @@
  * @attr {object} translations - Override translation keys; unset keys fall back to Dutch
  * @attr {boolean} no-spellcheck - Disables browser spellchecking on the inner input
  * @attr {string} width - Optional fixed width (any CSS length, e.g. "240px"). Default: stretches to fill container.
+ * @attr {boolean} required - Required state
+ * @attr {string} pattern - Regular expression the value has to match, as the native `pattern`.
+ * @attr {number} minlength - Fewest characters the value may have.
+ * @attr {number} maxlength - Most characters the value may have.
  *
  * @note Free-text values: only when `allow-custom` is set. Then a typed value that
  *       matches no menu option is emitted as-is via the `change` event on Enter or blur
@@ -41,7 +45,7 @@
  *
  * @example
  * ```html
- * <nldd-combo-box placeholder="Zoek een land" name="land">
+ * <nldd-combo-box placeholder="Zoek een land" name="country">
  *   <nldd-menu>
  *     <nldd-menu-item text="Nederland" value="nl"></nldd-menu-item>
  *     <nldd-menu-item text="België" value="be"></nldd-menu-item>
@@ -62,11 +66,12 @@ import '../../actions/menu/menu.js';
 import '../../actions/icon-button/icon-button.js';
 import '../../content/icon/icon.js';
 import { submitOnEnter } from '../../../utilities/implicit-submission.js';
+import { DescribedBy } from '../../../utilities/described-by-mixin.js';
 
 export type ComboBoxSize = 'sm' | 'md';
 
 @customElement('nldd-combo-box')
-export class NLDDComboBox extends FormAssociated(LitElement) {
+export class NLDDComboBox extends DescribedBy(FormAssociated(LitElement)) {
 
 	static override styles = comboBoxStyles;
 
@@ -123,7 +128,7 @@ export class NLDDComboBox extends FormAssociated(LitElement) {
 	@property({ type: Boolean, reflect: true, attribute: 'allow-custom' })
 	allowCustom = false;
 
-	@property({ type: String, reflect: true })
+	@property({ reflect: true, converter: reflectNonDefault('') })
 	name = '';
 
 	/** Browser autofill hint. Use AutoFill tokens (e.g. 'country', 'organization')
@@ -146,7 +151,7 @@ export class NLDDComboBox extends FormAssociated(LitElement) {
 	noSpellcheck = false;
 
 	/** Optional fixed width (any CSS length). When unset, the field stretches to fill its container. */
-	@property({ type: String, reflect: true })
+	@property({ reflect: true, converter: reflectNonDefault('') })
 	width = '';
 
 	@state()
@@ -166,6 +171,22 @@ export class NLDDComboBox extends FormAssociated(LitElement) {
 	_input!: HTMLInputElement;
 
 	// — i18n ——————————————————————————————————————————————————————————————————
+
+
+	@property({ type: Boolean, reflect: true })
+	required = false;
+
+	/** Regular expression the value has to match, as the native `pattern`. */
+	@property({ reflect: true, converter: reflectNonDefault('') })
+	pattern = '';
+
+	/** Fewest characters the value may have, as the native `minlength`. */
+	@property({ type: Number, reflect: true })
+	minlength?: number;
+
+	/** Most characters the value may have, as the native `maxlength`. */
+	@property({ type: Number, reflect: true })
+	maxlength?: number;
 
 	public _t(key: keyof NLDDComboBoxTranslations): string {
 		return this.translations[key] ?? nlddComboBoxTranslations[key];
@@ -595,7 +616,13 @@ export class NLDDComboBox extends FormAssociated(LitElement) {
 				break;
 			}
 			case 'Escape':
+				// Only while the menu is open, and then it goes no further: the key
+				// closed this menu, and a sheet or window behind it must not read
+				// the same press as its own cue to close. With the menu shut,
+				// Escape is not ours and travels on. Enter above says the same.
+				if (!this._isOpen) return;
 				e.preventDefault();
+				e.stopPropagation();
 				this._closeMenu();
 				break;
 		}

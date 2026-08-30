@@ -42,6 +42,8 @@ export default {
 		end: '',
 		min: '',
 		max: '',
+		invalid: false,
+
 	},
 	argTypes: {
 		range: {
@@ -98,6 +100,12 @@ export default {
 			description: 'Laatste datum: ISO, of today met een verschuiving (today+1y)',
 			table: { defaultValue: { summary: '(geen)' } },
 		},
+		invalid: {
+			control: 'boolean',
+			description: 'Ongeldige staat. Wordt aangekondigd met aria-invalid; er wordt niets voor getekend.',
+			table: { defaultValue: { summary: false } },
+		},
+
 	},
 };
 
@@ -112,6 +120,7 @@ const Template = ({
 	end,
 	min,
 	max,
+	invalid,
 }: Record<string, unknown>) => html`
 	<nldd-date-picker
 		?range=${range}
@@ -124,6 +133,7 @@ const Template = ({
 		end=${end || nothing}
 		min=${min || nothing}
 		max=${max || nothing}
+		?invalid=${invalid}
 		@change=${action('change')}
 		@input=${action('input')}
 	></nldd-date-picker>

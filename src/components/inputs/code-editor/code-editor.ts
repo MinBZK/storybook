@@ -34,6 +34,7 @@
  * @attr {string} language - Highlight grammar (yaml, json, javascript, typescript, css, html, xml, bash, markdown, rust, gherkin, toml, sql, python). Empty disables highlighting.
  * @attr {boolean} line-numbers - Show a line-number gutter
  * @attr {string} accessible-label - Accessible label forwarded to the editor. Set automatically by nldd-form-field.
+ * @attr {boolean} invalid - Marks the control as invalid. Announced with aria-invalid; nothing is drawn for it.
  *
  * @fires input - When the content changes (detail: { value })
  * @fires change - When the content is committed on blur (detail: { value })
@@ -56,12 +57,13 @@ import { nlddCodeMirrorTheme } from '../../../utilities/codemirror/theme.js';
 import { loadLanguage } from '../../../utilities/codemirror/languages.js';
 import { codeEditorStyles } from './code-editor.styles.js';
 import { codeEditorTemplate } from './code-editor.template.js';
+import { DescribedBy } from '../../../utilities/described-by-mixin.js';
 
 export type ResizeMode = 'none' | 'vertical' | 'auto';
 export type CodeEditorVariant = 'input-field' | 'simple';
 
 @customElement('nldd-code-editor')
-export class NLDDCodeEditor extends FormAssociated(NLDDCodeMirrorElement) {
+export class NLDDCodeEditor extends DescribedBy(FormAssociated(NLDDCodeMirrorElement)) {
 
 	static override shadowRootOptions = {
 		...LitElement.shadowRootOptions,
@@ -90,7 +92,7 @@ export class NLDDCodeEditor extends FormAssociated(NLDDCodeMirrorElement) {
 	@property({ type: Boolean, reflect: true })
 	disabled = false;
 
-	@property({ type: String, reflect: true })
+	@property({ reflect: true, converter: reflectNonDefault('') })
 	name = '';
 
 	@property({ type: Boolean, reflect: true })
@@ -130,6 +132,19 @@ export class NLDDCodeEditor extends FormAssociated(NLDDCodeMirrorElement) {
 	private _placeholderCompartment = new Compartment();
 	private _attrsCompartment = new Compartment();
 	private _languageCompartment = new Compartment();
+
+
+	/**
+	 * Marks the control as invalid.
+	 *
+	 * Announced and not drawn. What is wrong belongs in an
+	 * nldd-validation-list, in words: a red ring around a single
+	 * checkbox or radio would say the option is wrong, while it is the question
+	 * that is unanswered. `aria-invalid` still goes on the control, because
+	 * choosing not to show something is not a reason to keep quiet about it.
+	 */
+	@property({ type: Boolean, reflect: true })
+	invalid = false;
 
 	protected getEditorParent(): HTMLElement | null | undefined {
 		return this._container;
@@ -338,6 +353,11 @@ export class NLDDCodeEditor extends FormAssociated(NLDDCodeMirrorElement) {
 
 	formStateRestoreCallback(state: File | string | FormData | null): void {
 		if (typeof state === 'string') this.value = state;
+	}
+
+	/** CodeMirror builds the textbox; the host is only its container. */
+	override describedTarget(): Element | null {
+		return this.shadowRoot?.querySelector('.cm-content') ?? null;
 	}
 
 	override render() {

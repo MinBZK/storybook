@@ -271,17 +271,17 @@ nldd-rich-text h6 {
 
 nldd-rich-text p {
 	margin: 0;
-	/* Vangnet, los van [hyphens]: laat lange URLs en Nederlandse
-	   samenstellingen breken zodra ze breder zijn dan de kolom, i.p.v. te
-	   overlopen op smalle (mobiele) breedtes. break-word (niet anywhere) raakt
-	   de grid-min-content-maat niet, dus de main-kolom blijft intact. */
+	/* Safety net, independent of [hyphens]: lets long URLs and Dutch compounds
+	   break as soon as they are wider than the column, instead of overflowing
+	   at narrow (mobile) widths. break-word (not anywhere) leaves the grid
+	   min-content size alone, so the main column stays intact. */
 	overflow-wrap: break-word;
 }
 
 
 /* # Hyphenation */
 
-/* Opt-in via [hyphens]; werkt alleen met een correcte `lang` op de pagina. */
+/* Opt-in through [hyphens]; only works with a correct `lang` on the page. */
 nldd-rich-text[hyphens] :is(p, li, dd) {
 	-webkit-hyphens: auto;
 	hyphens: auto;

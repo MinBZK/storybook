@@ -1,36 +1,37 @@
 /**
  * Nederlandse Digitale Dienst Link Component (Lit + TypeScript)
  *
- * Hyperlink component met twee modi:
+ * Hyperlink component with two modes:
  *
- * 1. **Standalone (sized)** — set `size="xs"|"sm"|"md"|"lg"` voor menu's,
- *    actiegebieden of overzichten. Vaste tekstgrootte, `display: inline-flex`
- *    met `gap` voor icon-spacing.
+ * 1. **Standalone (sized)**: set `size="xs"|"sm"|"md"|"lg"` for menus, action
+ *    areas or overviews. Fixed text size, `display: inline-flex` with `gap` for
+ *    icon spacing.
  *
- * 2. **Inline (inherit)** — laat `size` weg of zet expliciet `size="inherit"`.
- *    De link erft `font-size`, `line-height` en `font-family` van zijn
- *    omgeving. Tekst wraps natuurlijk over regels (`display: inline`). Icons
- *    werken ook hier; de natuurlijke whitespace tussen icon en tekst zorgt
- *    voor de spacing.
+ * 2. **Inline (inherit)**: leave `size` out or set `size="inherit"` explicitly.
+ *    The link inherits `font-size`, `line-height` and `font-family` from its
+ *    surroundings. Text wraps naturally across lines (`display: inline`). Icons
+ *    work here too; the natural whitespace between icon and text provides the
+ *    spacing.
  *
- * Voor links in CMS/markdown-output (waar de `<a>` als HTML binnenkomt) blijft
- * `<nldd-rich-text>` met raw `<a>` de aangewezen route.
+ * For links in CMS or markdown output, where the `<a>` arrives as HTML,
+ * `<nldd-rich-text>` with a raw `<a>` remains the route to take.
  *
  * @element nldd-link
- * @attr {string} href - Link doel
- * @attr {string} target - Link target (bijv. '_blank'); stelt rel automatisch bij. Bij '_blank' voegt de link een visueel verborgen "Opent in nieuw tabblad"-melding toe voor screenreaders (WCAG 2.1 SC 3.2.2).
- * @attr {string} rel - Link rel attribuut; standaard 'noopener noreferrer' bij target='_blank'
- * @attr {string} size - Tekstgrootte: 'xs' | 'sm' | 'md' | 'lg' | 'inherit'. Leeg = inherit.
- * @attr {string} text - Link tekst (alternatief voor default slot)
- * @attr {string} start-icon - Icoon voor de tekst
- * @attr {string} end-icon - Icoon na de tekst
- * @attr {string} accessible-label - Toegankelijk label voor screen readers
- * @attr {boolean} disabled - Uitgeschakelde staat
- * @attr {object} translations - Overschrijf vertaalsleutels (bijv. de "Opent in nieuw tabblad"-melding); niet-gezette sleutels vallen terug op Nederlands.
+ * @attr {string} href - Link target
+ * @attr {string} target - Link target (e.g. '_blank'); adjusts rel automatically. With '_blank' the link adds a visually hidden "Opent in nieuw tabblad" announcement for screen readers (WCAG 2.1 SC 3.2.2).
+ * @attr {string} rel - Link rel attribute; defaults to 'noopener noreferrer' with target='_blank'
+ * @attr {string} size - Text size: 'xs' | 'sm' | 'md' | 'lg' | 'inherit'. Empty = inherit.
+ * @attr {string} text - Link text (alternative to the default slot)
+ * @attr {string} start-icon - Icon before the text
+ * @attr {string} end-icon - Icon after the text
+ * @attr {string} accessible-label - Accessible label for screen readers
+ * @attr {boolean} disabled - Disabled state
+ * @attr {boolean} no-tab - Takes the control out of the tab order (tabindex="-1"), for a control owned by a roving container (a row of an nldd-list, where the arrow keys move between rows) that manages focus itself. Still mouse- and script-focusable.
+ * @attr {object} translations - Override translation keys (e.g. the "Opent in nieuw tabblad" announcement); unset keys fall back to Dutch.
  *
- * @slot - Link tekst (alternatief voor text attribuut)
- * @slot start-icon - Custom icoon voor de tekst
- * @slot end-icon - Custom icoon na de tekst
+ * @slot - Link text (alternative to the text attribute)
+ * @slot start-icon - Custom icon before the text
+ * @slot end-icon - Custom icon after the text
  */
 
 import { LitElement } from 'lit';
@@ -74,6 +75,13 @@ export class NLDDLink extends withTranslations(LitElement, nlddLinkTranslations)
 
 	@property({ type: Boolean, reflect: true })
 	disabled = false;
+	/** Take the control out of the tab order (`tabindex="-1"`) — for a control
+	 *  owned by a roving container (an `nldd-list` sets it on the rows that are
+	 *  not the current one) that manages focus itself. Still mouse- and
+	 *  script-focusable. */
+	@property({ type: Boolean, reflect: true, attribute: 'no-tab' })
+	noTab = false;
+
 
 	private _handleClick(e: MouseEvent): void {
 		if (this.disabled) {

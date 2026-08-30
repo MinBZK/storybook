@@ -42,7 +42,7 @@ export default {
 		invalid: false,
 		readonly: false,
 		disabled: false,
-		name: 'datum',
+		name: 'date',
 		value: '',
 		min: '',
 		max: '',
@@ -63,7 +63,7 @@ export default {
 		},
 		width: {
 			control: 'text',
-			description: 'Breedte: leeg past bij een datum plus iconen, "full" vult de container, of een eigen CSS-lengte.',
+			description: 'Breedte: leeg past bij een datum plus iconen, "full" vult de container, of een eigen CSS-lengte. "fit-content" laat de ruimte voor het validatie-icoon weg en groeit weer zodra het veld valid of invalid wordt.',
 			table: { defaultValue: { summary: '(geen)' } },
 		},
 		placeholder: {
@@ -162,8 +162,8 @@ const Template = ({
 		accessible-label=${accessibleLabel || nothing}
 		?no-picker=${noPicker}
 		?valid=${valid}
-		?invalid=${invalid}
 		?readonly=${readonly}
+		?invalid=${invalid}
 		?disabled=${disabled}
 		name=${name || nothing}
 		value=${value || nothing}

@@ -13,12 +13,16 @@ import '../../actions/icon-button/icon-button.js';
 export type ListDividers = 'always' | 'on-touch' | 'never';
 
 export type ListVariant = 'simple' | 'box-tinted' | 'box-base';
-export type ListType = 'list' | 'navigation' | 'listbox' | 'tree';
+export type ListType = 'list' | 'navigation' | 'listbox' | 'tree' | 'form';
 
 export interface NLDDReorderEventDetail {
 	fromIndex: number;
 	toIndex: number;
 }
+
+/** What the browser counts as a tab stop in a shadow root: focusable, enabled,
+ *  and not parked at a negative tabindex. */
+const SHADOW_TAB_STOP = ':is(a[href], button, input, select, textarea, [tabindex]):not([tabindex^="-"]):not(:disabled)';
 
 /**
  * A container for `nldd-list-item` elements.
@@ -34,6 +38,16 @@ export interface NLDDReorderEventDetail {
  *   spacer-cell per level. Comes with its own keyboard, see "Tree" below.
  * - `navigation` — host `role="navigation"`, items with `selected` get
  *   `aria-current="page"` on their inner `<a>` or `<button>`.
+ * - `form` — rows that are not actions themselves: the controls inside them
+ *   are. A row of a label and a field, a switch, a menu button, or a value you
+ *   cannot change at all. Semantically the same as `list` (`role="list"`,
+ *   `role="listitem"`), and everything visual is unchanged; what falls away is
+ *   the keyboard of a list you walk through. No arrow navigation, so no
+ *   promise of it either, and no tab stop on the row: Tab goes straight to the
+ *   controls, in source order, the way it does in any form. Rows that ARE
+ *   actions (`href`, `button`, `checkbox`, or a segment) contradict that and
+ *   warn in development. SwiftUI draws the same line between `List` and
+ *   `Form`, for the same reason.
  * - `listbox` — an accessible, filterable listbox (combobox pattern). The
  *   list renders its OWN search input (`role="combobox"`) pinned
  *   above the options; `.list__items` becomes `role="listbox"`
@@ -46,10 +60,11 @@ export interface NLDDReorderEventDetail {
  *
  * ### Keyboard
  *
- * Every list answers to the arrow keys, and there is no attribute to switch that
- * on. Whether the keys do something is not a property of one list: it is what a
- * reader may assume about all of them, and a per-list setting made that
- * unknowable from the outside.
+ * A list you walk through answers to the arrow keys, and there is no attribute to
+ * switch that on. Whether the keys do something is not a property of one list: it
+ * is what a reader may assume about all of them, and a per-list setting made that
+ * unknowable from the outside. It follows the type, which you can see before you
+ * touch a key.
  *
  * - ArrowUp / ArrowDown — move focus between the rows there is something to do
  *   with. A row of nothing but text is skipped, because focus that leads nowhere
@@ -59,12 +74,22 @@ export interface NLDDReorderEventDetail {
  *   Within the current row Tab walks that row's own controls: a chevron beside a
  *   checkbox, a menu button at the end. The same controls in the other rows are
  *   held out of the tab order (`tabindex="-1"`, or `no-tab` on a design-system
- *   control that keeps its tab stop in its own shadow root).
+ *   control that keeps its tab stop in its own shadow root), and so are this
+ *   row's once focus leaves the list, so tabbing back in lands on the row again.
+ * - Escape — out of a control the row holds, back onto the row. One level up,
+ *   where Shift+Tab is one step back. On the row itself the list claims nothing,
+ *   so Escape carries on to whatever holds the list, and a control showing a
+ *   menu keeps the first press for closing that menu.
  *
- * Arrows move focus only; selection stays consumer-managed. Two types answer
- * differently, and both say so on screen before you touch a key: a listbox runs
- * its keyboard from its search field, and a reorderable list moves rows with the
- * arrows.
+ * While focus sits in a control a row holds, the list stands down: those keys
+ * are the control's, and a list that took them anyway would pull focus out of a
+ * combo box or a text field mid-word. What the row IS — its own link, button or
+ * segments — keeps answering here.
+ *
+ * Arrows move focus only; selection stays consumer-managed. Three types answer
+ * differently, and all three say so on screen before you touch a key: a listbox
+ * runs its keyboard from its search field, a reorderable list moves rows with the
+ * arrows, and a form has no rows to move between at all.
  *
  * ### Listbox
  *
@@ -130,19 +155,17 @@ export interface NLDDReorderEventDetail {
  * @element nldd-list
  *
  * @attr {'simple'|'box-tinted'|'box-base'} variant - Visual style (default 'simple'): `simple` is a plain vertical strip with no chrome, the two `box` values a framed card with rounded corners, fill and inset border ring. `box-tinted` for a list on a plain page, `box-base` for one on an already-tinted parent (the border ring gets +2 palette steps so it still reads against a card-on-card)
- * @attr {'list'|'navigation'|'listbox'|'tree'} type - A11y role and behavior (default 'list'). See the docblock above.
+ * @attr {'list'|'navigation'|'listbox'|'tree'|'form'} type - A11y role and behavior (default 'list'). See the docblock above.
  * @attr {boolean} reorderable - Enables drag-to-reorder and pushes `reorderable` onto the items. Only valid with `type="list"`; there the arrow keys move rows instead of focus.
  * @attr {'always'|'on-touch'|'never'} dividers - When to draw the lines between the items (default 'always'). `on-touch` draws them only where the primary input is touch, under `(pointer: coarse)`: a pointer has the hover highlight to tell one row from the next and a finger has nothing, so the line earns its place in the one case and is clutter in the other. `never` hides them everywhere
  * @attr {string} height - Listbox only: caps the options' scroll region at this CSS length (e.g. '320px'). Unset means no cap.
- * @attr {string} empty-text - Text for the default empty-state dialog (falls back to the Dutch i18n default). Ignored when `[slot=empty]` is filled.
- * @attr {string} empty-supporting-text - Supporting text for the default empty-state dialog. Ignored when `[slot=empty]` is filled.
  * @attr {string} accessible-label - Accessible name, forwarded to the list in `type="list"` and to the search field in `type="listbox"`. For `type="navigation"` set `aria-label` / `aria-labelledby` on the element itself. Falls back to the i18n default.
  * @attr {object} translations - Override translation keys; unset keys fall back to Dutch
  *
  * @slot        - List items (`nldd-list-item`)
  * @slot toolbar - Controls below the search field (filters, sort, counts, view toggles). Available for every type; collapses when empty.
  * @slot search-bar-end - Controls inline at the end of the search bar, beside the search field (e.g. a filter or options button). Listbox only; collapses when empty.
- * @slot empty - Shown when no items are visible (all `[hidden]` or none). Defaults to `nldd-inline-dialog` with `empty-text` / `empty-supporting-text` (falling back to Dutch i18n "Geen items"). Slot content overrides the default dialog entirely. In `type="listbox"` it is suppressed while the search field is empty (no query yet), so the consumer can show just the search field or its own hint outside the list.
+ * @slot empty - Shown when no items are visible (all `[hidden]` or none). Empty by default: what an empty list should say is the app's to write, so put an `nldd-inline-dialog` here. In `type="listbox"` it is suppressed while the search field is empty (no query yet), so the consumer can show just the search field or its own hint outside the list.
  *
  * @fires nldd-reorder - Reorderable `type="list"`: `{ fromIndex, toIndex }` on drop
  * @fires input - `type="listbox"`: search value changed; `{ value }`. Toggle `[hidden]` on items to filter.
@@ -180,21 +203,6 @@ export class NLDDList extends LitElement {
 	 */
 	@property({ type: String, reflect: true })
 	height = '';
-
-	/**
-	 * Text for the default empty-state dialog. Falls back to the Dutch
-	 * i18n default ("Geen items"). Ignored when consumers slot their
-	 * own content into `[slot=empty]`.
-	 */
-	@property({ reflect: true, attribute: 'empty-text', converter: reflectNonDefault<string>('') })
-	emptyText = '';
-
-	/**
-	 * Optional supporting text for the default empty-state dialog.
-	 * Ignored when consumers slot their own content into `[slot=empty]`.
-	 */
-	@property({ reflect: true, attribute: 'empty-supporting-text', converter: reflectNonDefault<string>('') })
-	emptySupportingText = '';
 
 	/** Accessible name for the list, forwarded to the inner role: the list in
 	 *  `type=list`, the search field in `type=listbox`. For `type=navigation`,
@@ -264,26 +272,47 @@ export class NLDDList extends LitElement {
 
 	// — Lifecycle ————————————————————————————————————————————————————————————
 
+	/**
+	 * What the first render needs to know, read before it happens.
+	 *
+	 * All three of these used to be set in `firstUpdated`, from the slots in the
+	 * shadow root. Setting reactive state there asks for a second render the
+	 * moment the first one finished, which Lit reports on every page as "an
+	 * update scheduled after an update completed". The same three answers are in
+	 * the light DOM, which is there before the first render, so they are read
+	 * from the children instead. The slotchange listeners below keep them true
+	 * afterwards, and by then a second render is what you actually want.
+	 */
+	override willUpdate(changed: Map<string, unknown>) {
+		// Derived state belongs before the render that reads it. In `updated` the
+		// merge lands after the first render has finished, and asks for a second
+		// one on the spot.
+		if (changed.has('translations') || !this.hasUpdated) {
+			this._mergedTranslations = { ...nlddListTranslations, ...this.translations };
+		}
+		if (this.hasUpdated) return;
+		this._updateEmpty();
+		this._hasToolbar = this.querySelector(':scope > [slot="toolbar"]') !== null;
+		this._hasSearchBarEnd = this.querySelector(':scope > [slot="search-bar-end"]') !== null;
+	}
+
 	override firstUpdated() {
+		// Deferred: the browser fires the first slotchange the moment this render
+		// commits, and state set there is an update scheduled on top of the one
+		// that just finished. willUpdate already read these from the light DOM, so
+		// the first event has nothing to add anyway; the later ones do.
 		const slot = this.shadowRoot?.querySelector<HTMLSlotElement>('slot:not([name])');
-		slot?.addEventListener('slotchange', () => {
+		slot?.addEventListener('slotchange', () => queueMicrotask(() => {
 			this._updateItems();
 			this._updateEmpty();
-		});
+		}));
 		this._updateItems();
-		this._updateEmpty();
 		this._warnArrowNav();
 
 		const toolbarSlot = this.shadowRoot?.querySelector<HTMLSlotElement>('slot[name="toolbar"]');
-		const syncToolbar = () => { this._hasToolbar = (toolbarSlot?.assignedElements().length ?? 0) > 0; };
-		toolbarSlot?.addEventListener('slotchange', syncToolbar);
-		syncToolbar();
-
-		// The search-bar-end slot only renders in listbox; sync its initial presence
-		// here. The @slotchange binding in the template keeps it updated afterwards
-		// and re-binds whenever the search bar (re)renders on a type change.
-		const searchBarEndSlot = this.shadowRoot?.querySelector<HTMLSlotElement>('slot[name="search-bar-end"]');
-		if (searchBarEndSlot) this._hasSearchBarEnd = searchBarEndSlot.assignedElements().length > 0;
+		toolbarSlot?.addEventListener('slotchange', () => queueMicrotask(() => {
+			this._hasToolbar = toolbarSlot.assignedElements().length > 0;
+		}));
 
 		// Watch for rows being added or removed, for `hidden` toggles on them
 		// (consumer-driven filtering) and for branches opening and closing, since
@@ -307,6 +336,7 @@ export class NLDDList extends LitElement {
 			if (!relevant) return;
 			this._updateItems();
 			this._updateEmpty();
+			this._warnUnmanagedControls();
 		});
 		this._itemsObserver.observe(this, {
 			childList: true,
@@ -328,16 +358,20 @@ export class NLDDList extends LitElement {
 		this.style.containerType = 'inline-size';
 		this.style.containerName = 'cells-container';
 		this.addEventListener('pointerdown', this._onPointerDown);
+		this.addEventListener('keydown', this._onKeyDownCapture, true);
 		this.addEventListener('keydown', this._onKeyDown);
 		this.addEventListener('focusin', this._onFocusIn);
+		this.addEventListener('focusout', this._onFocusOut);
 		this.addEventListener('click', this._onListClick);
 	}
 
 	override disconnectedCallback() {
 		super.disconnectedCallback();
 		this.removeEventListener('pointerdown', this._onPointerDown);
+		this.removeEventListener('keydown', this._onKeyDownCapture, true);
 		this.removeEventListener('keydown', this._onKeyDown);
 		this.removeEventListener('focusin', this._onFocusIn);
+		this.removeEventListener('focusout', this._onFocusOut);
 		this.removeEventListener('click', this._onListClick);
 		this._itemsObserver?.disconnect();
 		this._itemsObserver = null;
@@ -354,9 +388,6 @@ export class NLDDList extends LitElement {
 		}
 		if (changed.has('variant')) {
 			this._updateItemContext();
-		}
-		if (changed.has('translations')) {
-			this._mergedTranslations = { ...nlddListTranslations, ...this.translations };
 		}
 		if (changed.has('type')) {
 			this._applyHostType();
@@ -490,7 +521,41 @@ export class NLDDList extends LitElement {
 	private _updateEmpty() {
 		const items = this._getItems();
 		this._isEmpty = items.length === 0 || items.every(item => item.hasAttribute('hidden'));
+		// Nothing in it and nothing said about that is not a thing on the page.
+		// Drawing the surface anyway makes "nothing" look different per variant:
+		// invisible on a plain list, an empty tinted bar on a boxed one, which
+		// reads as a skeleton that never loaded.
+		this.classList.toggle(
+			'is-blank',
+			this._isEmpty && !this.querySelector(':scope > [slot="empty"]'),
+		);
+		this._warnSilentEmpty();
 	}
+
+	/**
+	 * A list with nothing in it and nothing to say about that.
+	 *
+	 * There is no default text any more, because what an empty list means is
+	 * the app's to write and a house sentence was wrong more often than right.
+	 * That leaves a real risk of a blank area with nothing in the accessibility
+	 * tree either, so the list asks the person building it rather than
+	 * answering for them. A listbox before you have typed is left alone: an
+	 * empty search is not an empty list.
+	 */
+	private _warnSilentEmpty() {
+		if (!import.meta.env?.DEV) return;
+		if (!this._isEmpty || this._warnedSilentEmpty) return;
+		if (this.type === 'listbox' && !this._searchValue) return;
+		if (this.querySelector(':scope > [slot="empty"]')) return;
+		this._warnedSilentEmpty = true;
+		console.warn(
+			'nldd-list: no items and nothing in [slot="empty"], so the list renders a blank area. '
+			+ 'Put an nldd-inline-dialog in that slot saying what is not there and what the next move is.',
+			this,
+		);
+	}
+
+	private _warnedSilentEmpty = false;
 
 	// — Listbox: active-option model ————————————————————————————————————————————
 
@@ -597,7 +662,8 @@ export class NLDDList extends LitElement {
 	 *  bar gap) collapses when empty. Bound in the template so it follows the slot
 	 *  even though the search bar only renders in listbox mode. */
 	private _onSearchBarEndSlotChange = (event: Event) => {
-		this._hasSearchBarEnd = (event.target as HTMLSlotElement).assignedElements().length > 0;
+		const slot = event.target as HTMLSlotElement;
+		queueMicrotask(() => { this._hasSearchBarEnd = slot.assignedElements().length > 0; });
 	};
 
 	private _onSearchFocus = () => {
@@ -686,6 +752,11 @@ export class NLDDList extends LitElement {
 	 */
 	private get _arrowNavActive(): boolean {
 		if (this.type === 'listbox') return false;
+		// A form's rows are not somewhere to go: the controls in them are, and Tab
+		// already reaches those. Arrow keys would be a promise with nothing behind
+		// it, and the tab stop they need on the row would sit in front of every
+		// field.
+		if (this.type === 'form') return false;
 		return !(this.reorderable && this.type === 'list');
 	}
 
@@ -703,6 +774,27 @@ export class NLDDList extends LitElement {
 	}
 
 	private _rovingScheduled = false;
+
+	private _warnedActionRowInForm = false;
+
+	/**
+	 * Whether the control the Escape came from had a popover open when the key
+	 * went down. Read on the way in, because a control closes its own menu in its
+	 * own handler and does not stop the key: by the time this list sees it on the
+	 * way out, the menu is already gone and one press would do two levels at once.
+	 */
+	private _popoverWasOpen = false;
+
+	private _onKeyDownCapture = (event: KeyboardEvent) => {
+		if (event.key !== 'Escape' || !this._arrowNavActive) return;
+		const origin = this._origin(event);
+		// Asked of the whole row rather than of the control the event came from:
+		// a popover can hang anywhere between the focused node and the row — under
+		// the control, beside it in the same cell — and missing one costs a level.
+		// The other way round costs a press, once, in a row that has an open menu
+		// and a second control you are typing in.
+		this._popoverWasOpen = !!origin?.control && !!origin.row.querySelector(':popover-open');
+	};
 
 	/** Push roving state onto the items, deferred to a microtask: _updateItems can
 	 *  run inside the update lifecycle (firstUpdated/updated), and setting the
@@ -734,6 +826,14 @@ export class NLDDList extends LitElement {
 		// when AT reaches the list). See _arrowNavActive — known limitation.
 		// Only where the keys go somewhere: a list of nothing but text has no stops
 		// to move between, and promising keys that do nothing is worse than silence.
+		if (import.meta.env?.DEV && this.type === 'form' && !this._warnedActionRowInForm) {
+			const action = rows.find((row) => row.href || row.button || row.checkbox
+				|| row.querySelector(':scope > nldd-list-item-segment'));
+			if (action) {
+				this._warnedActionRowInForm = true;
+				console.warn('nldd-list: type="form" says the rows are not actions and the controls inside them are, so its rows carry no keyboard of their own. This one is a link, a button, a checkbox or a set of segments, which contradicts that. Use type="list" for rows you activate, and put the action in a cell if it belongs to a form row.');
+			}
+		}
 		if (interactive.length > 0) {
 			this.setAttribute('aria-keyshortcuts', 'ArrowUp ArrowDown Home End');
 			this.setAttribute('aria-description', this._t('components.list.arrow-navigation-description-text'));
@@ -755,9 +855,8 @@ export class NLDDList extends LitElement {
 		});
 	}
 
-	// items defaults to every row, nested ones included; _onArrowNav passes the
-	// interactive set it already computed (non-interactive rows are kept out of
-	// roving, so they stay false).
+	// items defaults to every row, nested ones included. Callers that pass a
+	// narrower set take on clearing whatever is outside it themselves.
 	private _setRovingActive(activeItem: NLDDListItem, items: NLDDListItem[] = this._getAllRows()) {
 		items.forEach((item) => {
 			item._rovingActive = item === activeItem;
@@ -776,11 +875,66 @@ export class NLDDList extends LitElement {
 		// click, or programmatic focus), so arrows continue from there.
 		if (item && !item._rovingActive && this._getInteractiveItems().includes(item)) {
 			this._setRovingActive(item);
+			return;
 		}
+		// Focus back on the row it was already on: hand its controls their stops
+		// again, since leaving the list parked them.
+		if (item?._rovingActive) item._syncRovingTabStops();
 	};
+
+	/**
+	 * Focus gone from the list: park everything but the row.
+	 *
+	 * The stops a row hands out to its controls last as long as the row is the
+	 * current one, so without this they are still there after you tab away, and
+	 * Shift+Tab back in lands inside the control you left rather than on the row.
+	 * A roving list is one stop from the outside; what is inside opens up once
+	 * you are in. _onFocusIn puts them back.
+	 *
+	 * Deferred: focus moving between two controls of the same row fires focusout
+	 * before focusin, and `relatedTarget` is retargeted at a shadow boundary, so
+	 * the only reliable answer to "did focus leave" is the one you get after it
+	 * has landed.
+	 */
+	private _onFocusOut = () => {
+		if (!this._arrowNavActive) return;
+		queueMicrotask(() => {
+			if (!this.isConnected || this._containsFocus()) return;
+			this._getAllRows().forEach((row) => { row._parkControls(); });
+		});
+	};
+
+	/** Whether focus is anywhere in this list, shadow boundaries included. */
+	private _containsFocus(): boolean {
+		// document.activeElement only ever names the outermost host, so the answer
+		// is a walk down the chain of active elements: at every level, is this the
+		// list or inside it.
+		let node: Element | null = document.activeElement;
+		while (node) {
+			if (node === this || this.contains(node)) return true;
+			node = node.shadowRoot?.activeElement ?? null;
+		}
+		return false;
+	}
+
+	/** The row an event came from, and the control of that row it started in. */
+	private _origin(event: Event): { row: NLDDListItem; control: Element | null } | null {
+		const path = event.composedPath();
+		const row = path.find(
+			(el) => el instanceof Element && el.tagName.toLowerCase() === 'nldd-list-item',
+		) as NLDDListItem | undefined;
+		if (!row) return null;
+		return { row, control: row._slottedControlFor(path) };
+	}
 
 	private _onArrowNav(event: KeyboardEvent) {
 		const { key } = event;
+		// Hands off while focus is in a control the row holds. What those keys do
+		// is the control's business — a combo box moves its options with them, a
+		// text field its caret — and a list that takes them anyway pulls focus out
+		// of the control mid-word. The row itself, its own action and its segments
+		// are not controls it holds, so those keep answering here.
+		if (this._origin(event)?.control) return;
 		if (this.type === 'tree' && (key === 'ArrowRight' || key === 'ArrowLeft')) {
 			this._onTreeHorizontal(event, key);
 			return;
@@ -805,8 +959,36 @@ export class NLDDList extends LitElement {
 		}
 		event.preventDefault();
 		const target = items[next];
-		this._setRovingActive(target, items);
+		// Every row, not just the interactive ones: Escape can leave the flag on a
+		// row that holds a control but is no stop itself, and clearing only the
+		// stops would leave two rows claiming to be the current one.
+		this._setRovingActive(target);
 		target.focus();
+	}
+
+	/**
+	 * Escape: out of a control, back onto the row that holds it.
+	 *
+	 * One level up, not one step back. Shift+Tab retraces the order and lands on
+	 * whatever came before, which is the row only from the first control of a
+	 * row; from the second it is the first. This is the move that works wherever
+	 * you are in the row, and it puts the arrow keys back in reach.
+	 *
+	 * It claims Escape at exactly this one level. On the row it claims nothing,
+	 * so Escape carries on to whatever holds the list — a sheet, a dialog, or
+	 * nothing at all. And a control showing a popover keeps it: that menu is the
+	 * topmost thing you opened, so it is what the first Escape closes.
+	 */
+	private _onEscape(event: KeyboardEvent) {
+		const hadPopover = this._popoverWasOpen;
+		this._popoverWasOpen = false;
+		const origin = this._origin(event);
+		if (!origin?.control) return;
+		if (hadPopover) return;
+		event.preventDefault();
+		event.stopPropagation();
+		this._setRovingActive(origin.row);
+		origin.row.focus();
 	}
 
 	/** Tree only: Right opens a closed branch and steps into an open one, Left
@@ -875,22 +1057,64 @@ export class NLDDList extends LitElement {
 		if (this.hasAttribute('arrow-navigation')) {
 			console.warn('nldd-list: `arrow-navigation` is the default now and the attribute does nothing; remove it.');
 		}
-		if (!this._arrowNavActive) return;
-		// A control the row cannot reach: a custom element that keeps its tab stop
-		// in its own shadow root and has no `no-tab` to close it. Such a control
-		// stays a tab stop in EVERY row, which is exactly what the roving promises
-		// it is not. Native controls and design-system ones with `no-tab` are
-		// managed by the row, so they are not the warning's business.
-		const unmanaged = this._getPaintedRows().some((row) =>
-			Array.from(row.querySelectorAll('*')).some((el) => {
-				if (el.closest('nldd-list-item') !== row) return false;
-				if (!el.tagName.includes('-') || 'noTab' in el) return false;
-				return Boolean(el.shadowRoot?.querySelector('a[href], button, input, select, textarea, [tabindex]'));
-			}),
-		);
-		if (unmanaged) {
-			console.warn('nldd-list: a list-item holds a control whose tab stop lives in its own shadow root and that has no `no-tab`, so arrow-navigation cannot take it out of the tab order. Give the component `no-tab`, or wrap the control in an nldd-list-item-segment.');
+		this._warnUnmanagedControls();
+	}
+
+	/** Reported once per element: a list that gains rows would otherwise repeat
+	 *  the same line on every change. */
+	private readonly _warnedUnmanaged = new WeakSet<Element>();
+
+	private _unmanagedWarnScheduled = false;
+
+	/**
+	 * A control the row cannot reach: a custom element that keeps its tab stop in
+	 * its own shadow root and has no `no-tab` to close it. Such a control stays a
+	 * tab stop in EVERY row, which is exactly what the roving promises it is not,
+	 * and the row does not even count as a stop for the arrow keys.
+	 *
+	 * Deferred, and re-run whenever the rows change. A slotted custom element has
+	 * its shadow root the moment it connects, but Lit renders the content on the
+	 * first update, so a check that runs in `firstUpdated` looks into an empty
+	 * shadow root and finds nothing to warn about. Waiting for the element to be
+	 * defined is not enough either: it has to have rendered.
+	 */
+	private _warnUnmanagedControls(): void {
+		if (!import.meta.env?.DEV || !this._arrowNavActive) return;
+		if (this._unmanagedWarnScheduled) return;
+		this._unmanagedWarnScheduled = true;
+		const check = async () => {
+			this._unmanagedWarnScheduled = false;
+			const rows = this._getPaintedRows();
+			await Promise.all(rows.map((row) => row.updateComplete));
+			for (const row of rows) {
+				for (const el of Array.from(row.querySelectorAll('*'))) {
+					if (el.closest('nldd-list-item') !== row) continue;
+					// A segment is managed over its own channel (`_tabbable`), so it
+					// needs no `no-tab`.
+					if (el.tagName.toLowerCase() === 'nldd-list-item-segment') continue;
+					if (!el.tagName.includes('-') || 'noTab' in el) continue;
+					if (this._warnedUnmanaged.has(el)) continue;
+					const upgraded = el as Element & { updateComplete?: Promise<unknown> };
+					if (upgraded.updateComplete) await upgraded.updateComplete;
+					if (!el.shadowRoot?.querySelector(SHADOW_TAB_STOP)) continue;
+					// Nothing hidden on the way from the row: a menu item in a closed
+					// menu is no tab stop of the row's, and the component that hides it
+					// runs its own focus. Computed style, not checkVisibility(): that one
+					// needs a laid-out box and answers false until the first layout.
+					if (this._hiddenWithin(row, el)) continue;
+					this._warnedUnmanaged.add(el);
+					console.warn(`nldd-list: <${el.tagName.toLowerCase()}> in a list-item keeps its tab stop in its own shadow root and has no \`no-tab\`, so the row cannot take it out of the tab order and the arrow keys skip that row. If the rows of this list are not actions themselves, it is a form: set type="form" and the roving falls away. Otherwise give the component \`no-tab\`, or wrap the control in an nldd-list-item-segment.`);
+				}
+			}
+		};
+		void check();
+	}
+
+	private _hiddenWithin(row: Element, el: Element): boolean {
+		for (let node: Element | null = el; node && node !== row; node = node.parentElement) {
+			if (getComputedStyle(node).display === 'none') return true;
 		}
+		return false;
 	}
 
 	// — Drag: pointer ————————————————————————————————————————————————————————
@@ -975,6 +1199,10 @@ export class NLDDList extends LitElement {
 		// Arrow-navigation and reorder both claim the arrow keys; _arrowNavActive
 		// is false whenever reorderable wins, so the two never run together.
 		if (this._arrowNavActive) {
+			if (event.key === 'Escape') {
+				this._onEscape(event);
+				return;
+			}
 			this._onArrowNav(event);
 			return;
 		}
@@ -1200,8 +1428,6 @@ export class NLDDList extends LitElement {
 			hasToolbar: this._hasToolbar,
 			type: this.type,
 			isEmpty: this._isEmpty,
-			emptyText: this.emptyText || this._t('components.list.empty-text'),
-			emptySupportingText: this.emptySupportingText,
 			listbox: {
 				listboxId: this._listboxId,
 				searchValue: this._searchValue,

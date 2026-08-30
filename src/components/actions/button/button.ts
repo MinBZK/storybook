@@ -2,7 +2,7 @@
  * Nederlandse Digitale Dienst Button Component (Lit + TypeScript)
  *
  * @element nldd-button
- * @attr {string} variant - Button variant: 'primary' | 'secondary' | 'destructive' | 'accent-filled' | 'accent-transparent' | 'neutral-tinted' | 'neutral-base' | 'neutral-transparent' | 'critical-tinted' | 'critical-transparent' | 'inherit-filled' | 'inherit-tinted'. De inherit-varianten leiden hun kleuren af van currentColor, voor knoppen op gekleurde vlakken; inherit-filled gebruikt de vlakkleur (--context-parent-background-color) als labelkleur met een wit/zwart-contrastflip als fallback.
+ * @attr {string} variant - Button variant: 'primary' | 'secondary' | 'destructive' | 'accent-filled' | 'accent-transparent' | 'neutral-tinted' | 'neutral-base' | 'neutral-transparent' | 'critical-tinted' | 'critical-transparent' | 'inherit-filled' | 'inherit-tinted'. The inherit variants derive their colors from currentColor, for buttons on colored surfaces; inherit-filled uses the surface color (--context-parent-background-color) as the label color, with a white/black contrast flip as a fallback.
  * @attr {string} size - Button size: 'xs' | 'sm' | 'md' | 'lg' (default: 'md'). 'lg' uses larger text and 24px start/end icons.
  * @attr {string} horizontal-alignment - Horizontal alignment of the button content: 'left' | 'center' | 'right' (default: unset, centered). Most visible with width="full" or a fixed width.
  * @attr {boolean} loading - Loading state (default: false). Shows an activity indicator over the visually hidden content, sets aria-busy on the inner control and blocks activation, without dropping the button from the tab order (unlike disabled). The content stays laid out, so the button keeps its width.
@@ -45,6 +45,7 @@ import { nlddButtonTranslations } from './button.i18n.js';
 import { PopupAnchorController } from '../../../utilities/popup-anchor-controller.js';
 import './../../content/icon/icon.js';
 import './../../status-and-feedback/activity-indicator/activity-indicator.js';
+import { DescribedBy } from '../../../utilities/described-by-mixin.js';
 
 type Variant =
 	| 'primary'
@@ -64,7 +65,7 @@ type ButtonType = 'button' | 'submit' | 'reset';
 type PopupType = 'menu' | 'listbox' | 'dialog' | 'tree' | 'grid';
 
 @customElement('nldd-button')
-export class NLDDButton extends withTranslations(LitElement, nlddButtonTranslations) {
+export class NLDDButton extends DescribedBy(withTranslations(LitElement, nlddButtonTranslations)) {
 	static override styles = buttonStyles;
 
 	// Form-associated so a type="submit"/"reset" button can drive its form.
@@ -284,6 +285,11 @@ export class NLDDButton extends withTranslations(LitElement, nlddButtonTranslati
 	 */
 	override focus(options?: FocusOptions): void {
 		this.shadowRoot?.querySelector<HTMLElement>('.button')?.focus(options);
+	}
+
+	/** The button or link it renders, not the host around it. */
+	override describedTarget(): Element | null {
+		return this.shadowRoot?.querySelector('button, a') ?? null;
 	}
 
 	override render() {

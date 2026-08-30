@@ -93,6 +93,13 @@ export class NLDDAppView extends LitElement implements ScrollModeProvider {
 	/** @internal */
 	registerScrollConsumer(consumer: ScrollModeConsumer): void {
 		this._scrollConsumers.add(consumer);
+		// The layer that just arrived may BE the split view this app-view derives
+		// from: a consumer that renders its split view behind a condition (a
+		// loading state, an error takeover, an empty state) swaps it out and back,
+		// and while it was gone the derivation said `root`. Re-derive before
+		// handing out the mode, so the new layer gets the fresh answer rather than
+		// the one that was true while the split view was missing.
+		this._evaluateScrollMode();
 		// Hand a newly-registered layer (e.g. a page freshly re-mounted on
 		// navigation) the current derived mode immediately, so it never depends
 		// on a possibly-stale self-read of the inherited var.
@@ -102,6 +109,11 @@ export class NLDDAppView extends LitElement implements ScrollModeProvider {
 	/** @internal */
 	unregisterScrollConsumer(consumer: ScrollModeConsumer): void {
 		this._scrollConsumers.delete(consumer);
+		// Mirror of the register side: the layer that left may have been the split
+		// view, and a single column with no split view scrolls the document.
+		// disconnectedCallback runs after removal from the DOM, so the derivation
+		// no longer finds it.
+		this._evaluateScrollMode();
 	}
 
 	// The outermost (first in document order) horizontal split view — the one

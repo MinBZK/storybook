@@ -9,11 +9,12 @@ export const timelineTrackCellStyles = css`
 		--_lane-size: var(--primitives-space-16);
 		--_marker-size: var(--primitives-space-16);
 		--_marker-corner-radius: var(--primitives-corner-radius-full);
+
 		--_line-width: var(--primitives-space-2);
 		--_track-color: var(--components-timeline-track-cell-color);
 		--_future-fill-color: var(--components-timeline-track-cell-future-background-color);
 		--_marker-z-index: 1;
-		--_ring-thickness: var(--primitives-space-2);
+		--_ring-thickness: var(--semantics-surfaces-ring-thickness);
 		--_ring-color: var(--context-parent-background-color, var(--semantics-surfaces-base-background-color));
 		--_marker-content-color: var(--semantics-content-contrast-color);
 		--_future-content-color: var(--semantics-content-secondary-color);
@@ -34,16 +35,16 @@ export const timelineTrackCellStyles = css`
 		display: none;
 	}
 
-	:host([minor]) {
-		--_marker-size: var(--primitives-space-10);
-	}
-
-	:host([variant="step"]) {
+	:host([size="md"]) {
 		--_lane-size: var(--primitives-space-24);
 		--_marker-size: var(--primitives-space-24);
 	}
 
-	:host([variant="step"][minor]) {
+	:host([variant="minor"]) {
+		--_marker-size: var(--primitives-space-10);
+	}
+
+	:host([size="md"][variant="minor"]) {
 		--_marker-size: var(--primitives-space-12);
 	}
 
@@ -56,12 +57,21 @@ export const timelineTrackCellStyles = css`
 		margin-block: calc(var(--context-cell-padding-block, 0px) * -1);
 	}
 
+	/* The ring, but only left and right. A spread would put the same band above
+	   and below the line, and there it would cut the track at every row
+	   boundary: the lines that run on downward deliberately reach past the cell
+	   to bridge the divider. Two offset copies do the sides and nothing else. A
+	   copy shifted sideways has the same top and bottom as the line itself, so
+	   it can only show along the edge it is pushed out from. */
 	.timeline-track-cell__full-line,
 	.timeline-track-cell__top-line,
 	.timeline-track-cell__bottom-line {
 		position: absolute;
 		left: 50%;
 		margin-left: calc(var(--_line-width) / -2);
+		box-shadow:
+			calc(-1 * var(--_ring-thickness)) 0 0 0 var(--_ring-color),
+			var(--_ring-thickness) 0 0 0 var(--_ring-color);
 		background-color: var(--_track-color);
 		width: var(--_line-width);
 	}
@@ -85,20 +95,40 @@ export const timelineTrackCellStyles = css`
 		bottom: calc(-1 * var(--semantics-dividers-thickness));
 	}
 
-	:host([status="future"]) .timeline-track-cell__top-line,
-	:host([status="future"]) .timeline-track-cell__bottom-line {
+	:host([status="future"]:not([line])) .timeline-track-cell__top-line,
+	:host([status="future"]:not([line])) .timeline-track-cell__bottom-line {
 		background-color: var(--_future-fill-color);
 	}
 
-	:host([status="current"]) .timeline-track-cell__bottom-line {
+	:host([status="current"]:not([line])) .timeline-track-cell__bottom-line {
 		background-color: var(--_future-fill-color);
 	}
 
-	:host([status="current"][direction="up"]) .timeline-track-cell__bottom-line {
+	:host([status="current"][direction="up"]:not([line])) .timeline-track-cell__bottom-line {
 		background-color: var(--_track-color);
 	}
 
-	:host([status="current"][direction="up"]) .timeline-track-cell__top-line {
+	:host([status="current"][direction="up"]:not([line])) .timeline-track-cell__top-line {
+		background-color: var(--_future-fill-color);
+	}
+
+	:host([line="top"]) .timeline-track-cell__top-line,
+	:host([line="bottom"]) .timeline-track-cell__bottom-line,
+	:host([line="both"]) .timeline-track-cell__top-line,
+	:host([line="both"]) .timeline-track-cell__bottom-line {
+		background-color: var(--_track-color);
+	}
+
+	:host([variant="none"][status="future"]) .timeline-track-cell__full-line,
+	:host([variant="none"][status="current"]:not([direction="up"])) .timeline-track-cell__full-line,
+	:host([variant="none"][line="none"]) .timeline-track-cell__full-line {
+		background-color: var(--_future-fill-color);
+	}
+
+	:host([line="top"]) .timeline-track-cell__bottom-line,
+	:host([line="bottom"]) .timeline-track-cell__top-line,
+	:host([line="none"]) .timeline-track-cell__top-line,
+	:host([line="none"]) .timeline-track-cell__bottom-line {
 		background-color: var(--_future-fill-color);
 	}
 
@@ -117,7 +147,6 @@ export const timelineTrackCellStyles = css`
 		justify-content: center;
 		border: var(--_line-width) solid var(--_track-color);
 		border-radius: var(--_marker-corner-radius);
-		/* Ring in the background color: masks the line running underneath. */
 		box-shadow: 0 0 0 var(--_ring-thickness) var(--_ring-color);
 		color: var(--_marker-content-color);
 		font: var(--primitives-font-body-sm-medium-flat);

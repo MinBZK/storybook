@@ -1,7 +1,6 @@
 export const nlddListTranslations = {
 	'components.list.items-accessible-label': 'Lijst',
 	'components.list.navigation-accessible-label': 'Navigatie',
-	'components.list.empty-text': 'Geen items',
 	'components.list.arrow-navigation-description-text': 'Gebruik de pijltjestoetsen om door de lijst te navigeren.',
 	'components.list.search-placeholder-label': 'Zoeken',
 	'components.list.search-clear-action': 'Wis zoekopdracht',

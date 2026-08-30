@@ -20,6 +20,8 @@ export default {
 		max: '',
 		step: 1,
 		accessibleLabel: '',
+		invalid: false,
+
 	},
 	argTypes: {
 		rows: {
@@ -58,6 +60,12 @@ export default {
 			description: 'Toegankelijke naam van de picker',
 			table: { defaultValue: { summary: '(geen)' } },
 		},
+		invalid: {
+			control: 'boolean',
+			description: 'Ongeldige staat. Wordt aangekondigd met aria-invalid; er wordt niets voor getekend.',
+			table: { defaultValue: { summary: false } },
+		},
+
 	},
 };
 
@@ -69,8 +77,10 @@ const Template = ({
 	max,
 	step,
 	accessibleLabel,
+	invalid,
 }: Record<string, any>) => html`
 	<nldd-time-picker
+		?invalid=${invalid}
 		rows=${rows || nothing}
 		width=${width || nothing}
 		value=${value || nothing}

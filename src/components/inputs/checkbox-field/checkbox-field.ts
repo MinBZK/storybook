@@ -14,6 +14,8 @@
  * @attr {string} value - Value for form submission
  * @attr {string} name - Name for form submission
  * @attr {string} label - Label text for the checkbox
+ * @attr {boolean} required - Required state
+ * @attr {boolean} invalid - Marks the control as invalid. Announced with aria-invalid; nothing is drawn for it.
  *
  * @fires change - When checked state changes; detail: { checked: boolean, value: string }
  */
@@ -23,9 +25,11 @@ import { FormAssociated, type FormValue } from '../../../utilities/form-associat
 import { checkboxFieldStyles } from './checkbox-field.styles.js';
 import { checkboxFieldTemplate } from './checkbox-field.template.js';
 import type { NLDDCheckbox } from '../checkbox/checkbox.js';
+import { DescribedBy } from '../../../utilities/described-by-mixin.js';
+import { reflectNonDefault } from '../../../utilities/reflect-non-default.js';
 
 @customElement('nldd-checkbox-field')
-export class NLDDCheckboxField extends FormAssociated(LitElement) {
+export class NLDDCheckboxField extends DescribedBy(FormAssociated(LitElement)) {
 
 	static override styles = checkboxFieldStyles;
 
@@ -50,11 +54,28 @@ export class NLDDCheckboxField extends FormAssociated(LitElement) {
 
 	/** Reflected: form association reads the host's name attribute, so setting
 	 *  the property alone must still register the field with the form. */
-	@property({ type: String, reflect: true })
+	@property({ reflect: true, converter: reflectNonDefault('') })
 	name = '';
 
 	@property({ type: String })
 	label = '';
+
+
+	@property({ type: Boolean, reflect: true })
+	required = false;
+
+
+	/**
+	 * Marks the control as invalid.
+	 *
+	 * Announced and not drawn. What is wrong belongs in an
+	 * nldd-validation-list, in words: a red ring around a single
+	 * checkbox or radio would say the option is wrong, while it is the question
+	 * that is unanswered. `aria-invalid` still goes on the control, because
+	 * choosing not to show something is not a reason to keep quiet about it.
+	 */
+	@property({ type: Boolean, reflect: true })
+	invalid = false;
 
 	override firstUpdated(): void {
 		this._initialChecked = this.checked;
@@ -101,6 +122,11 @@ export class NLDDCheckboxField extends FormAssociated(LitElement) {
 	 */
 	override focus(options?: FocusOptions): void {
 		this.shadowRoot?.querySelector<NLDDCheckbox>('nldd-checkbox')?.focus(options);
+	}
+
+	/** The checkbox it renders knows which element inside itself is the control. */
+	override describedTarget(): Element | null {
+		return this.shadowRoot?.querySelector('nldd-checkbox') ?? null;
 	}
 
 	override render() {

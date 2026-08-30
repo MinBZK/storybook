@@ -1,16 +1,16 @@
 /**
  * Nederlandse Digitale Dienst Skip Link Component (Lit + TypeScript)
  *
- * Accessibility-patroon dat keyboard-gebruikers toestaat om content over te slaan.
- * Wraps content in een default slot — zonder href focust het het eerste element
- * na de skip-link in het DOM (nextElementSibling). Zorg dat er een focusbaar
- * element na het component staat, anders heeft de skip-link geen effect.
+ * Accessibility pattern that lets keyboard users skip past content. Wraps
+ * content in a default slot. Without href it focuses the first element after
+ * the skip link in the DOM (nextElementSibling). Make sure a focusable element
+ * follows the component, otherwise the skip link has no effect.
  *
  * @element nldd-skip-link
- * @attr {string} text - Tekst van de skip-link. Fallback naar i18n default.
- * @attr {string} href - Optioneel extern doel-ID. Zonder href springt naar eind van eigen content.
+ * @attr {string} text - Text of the skip link. Falls back to the i18n default.
+ * @attr {string} href - Optional external target id. Without href it jumps to the end of its own content.
  *
- * @slot - Content die overgeslagen kan worden
+ * @slot - Content that can be skipped
  */
 
 import { LitElement } from 'lit';

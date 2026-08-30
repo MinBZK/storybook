@@ -282,3 +282,29 @@ describe('nldd-avatar – full size', () => {
 	});
 
 });
+
+describe('nldd-avatar no-tab', () => {
+	let el: NLDDAvatar;
+
+	afterEach(() => {
+		if (el) cleanup(el);
+	});
+
+	it('takes the link out of the tab order', async () => {
+		el = await fixture<NLDDAvatar>('<nldd-avatar name="Jan" href="/x" no-tab></nldd-avatar>');
+		await waitForUpdate(el);
+		expect(el.shadowRoot!.querySelector('a')!.getAttribute('tabindex')).toBe('-1');
+	});
+
+	it('takes the button out of the tab order', async () => {
+		el = await fixture<NLDDAvatar>('<nldd-avatar name="Jan" button no-tab></nldd-avatar>');
+		await waitForUpdate(el);
+		expect(el.shadowRoot!.querySelector('button')!.getAttribute('tabindex')).toBe('-1');
+	});
+
+	it('is in the tab order by default (no tabindex attribute)', async () => {
+		el = await fixture<NLDDAvatar>('<nldd-avatar name="Jan" href="/x"></nldd-avatar>');
+		await waitForUpdate(el);
+		expect(el.shadowRoot!.querySelector('a')!.hasAttribute('tabindex')).toBe(false);
+	});
+});

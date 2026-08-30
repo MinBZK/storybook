@@ -3,6 +3,8 @@ import { fixture, cleanup, waitForUpdate } from '../../../test-utils.js';
 import type { NLDDSheet } from './sheet.js';
 import './sheet.js';
 import '../../inputs/text-field/text-field.js';
+import '../split-views/split-view-pane/split-view-pane.js';
+import '../../navigation/top-title-bar/top-title-bar.js';
 import { sheetStyles } from './sheet.styles.js';
 
 
@@ -548,6 +550,36 @@ describe('nldd-sheet meldt sluiten via elke route', () => {
 		expect(aantal).toBe(0);
 	});
 
+	// And the same the other way round: a sheet inside a sheet is an ordinary
+	// thing to build (a floor plan with a form for one room over it), and closing
+	// the inner one must not reach a listener on the outer. Without this the
+	// consumer has to check the target of every close it receives, which is a
+	// trap nobody meets until they nest two overlays.
+	it('laat de close van een geneste sheet niet bij de buitenste aankomen', async () => {
+		el = await fixture<HTMLElement & { show(): void; hide(): void }>(
+			`<nldd-sheet accessible-label="Buiten">
+				<nldd-sheet accessible-label="Binnen"></nldd-sheet>
+			</nldd-sheet>`,
+		);
+		await waitForUpdate(el);
+		const binnen = el.querySelector('nldd-sheet') as HTMLElement & {
+			show(): void;
+			hide(): void;
+		};
+		let buiten = 0;
+		let binnenAantal = 0;
+		el.addEventListener('close', () => { buiten += 1; });
+		binnen.addEventListener('close', () => { binnenAantal += 1; });
+		el.show();
+		binnen.show();
+		await waitForUpdate(el);
+		binnen.hide();
+		await new Promise((r) => setTimeout(r, 60));
+		await waitForUpdate(el);
+		expect(binnenAantal).toBe(1);
+		expect(buiten).toBe(0);
+	});
+
 	it('stuurt close niet twee keer als beide routes samenvallen', async () => {
 		el = await fixture<HTMLElement & { show(): void; hide(): void }>(
 			'<nldd-sheet accessible-label="Test"></nldd-sheet>',
@@ -625,5 +657,35 @@ describe('nldd-sheet – autofocus', () => {
 		// autofocus never reaches it — the sheet has to focus the host.
 		expect(document.activeElement).toBe(field);
 		expect(field.shadowRoot!.activeElement?.tagName.toLowerCase()).toBe('input');
+	});
+});
+
+describe('nldd-sheet inside a pane that hides back buttons', () => {
+	let el: HTMLElement;
+
+	afterEach(() => {
+		if (el) cleanup(el);
+	});
+
+	it('keeps the back button of a bar inside it', async () => {
+		el = await fixture(`
+			<nldd-split-view-pane hide-back>
+				<nldd-sheet accessible-label="X">
+					<nldd-top-title-bar back-text="Back" text="X"></nldd-top-title-bar>
+				</nldd-sheet>
+			</nldd-split-view-pane>`);
+		await waitForUpdate(el);
+		const bar = el.querySelector('nldd-top-title-bar') as HTMLElement;
+		expect(getComputedStyle(bar).getPropertyValue('--context-back-button-display').trim()).toBe('flex');
+	});
+
+	it('leaves a bar in the pane itself alone', async () => {
+		el = await fixture(`
+			<nldd-split-view-pane hide-back>
+				<nldd-top-title-bar back-text="Back" text="X"></nldd-top-title-bar>
+			</nldd-split-view-pane>`);
+		await waitForUpdate(el);
+		const bar = el.querySelector('nldd-top-title-bar') as HTMLElement;
+		expect(getComputedStyle(bar).getPropertyValue('--context-back-button-display').trim()).toBe('none');
 	});
 });

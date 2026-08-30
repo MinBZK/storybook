@@ -1,5 +1,6 @@
 import { html, nothing } from 'lit';
 import './file-field.js';
+import '../../forms/validation-list/validation-list.js';
 import '../../forms/form-field/form-field.js';
 
 /**
@@ -146,10 +147,10 @@ export const InEenFormulierveld = {
 	name: 'In een formulierveld',
 	render: () => html`
 		<nldd-form-field label="Bewijsstuk">
-			<nldd-file-field accept=".pdf" name="bewijsstuk" invalid></nldd-file-field>
-			<nldd-form-field-error-text>
-				Kies een bestand
-			</nldd-form-field-error-text>
+			<nldd-file-field accept=".pdf" name="bewijsstuk" invalid unmet="bewijsstuk-verplicht"></nldd-file-field>
+			<nldd-validation-list>
+				<nldd-validation-item id="bewijsstuk-verplicht">Kies een bestand</nldd-validation-item>
+			</nldd-validation-list>
 		</nldd-form-field>
 	`,
 	parameters: { controls: { disable: true } },

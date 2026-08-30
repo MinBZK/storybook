@@ -2,16 +2,24 @@ import { html, nothing, type TemplateResult } from 'lit';
 import type { NLDDTimelineTrackCell } from './timeline-track-cell.js';
 
 export function timelineTrackCellTemplate(component: NLDDTimelineTrackCell): TemplateResult {
-	if (component.status === 'none') {
+	// No dot means no point where a fill could change over, so the row draws one
+	// line from edge to edge instead of two halves. `only` says the track runs
+	// neither above nor below, which here leaves nothing to draw.
+	if (component.variant === 'none') {
 		return html`
 			<div class="timeline-track-cell">
-				<div class="timeline-track-cell__full-line"></div>
+				${component.position === 'only' ? nothing : html`<div class="timeline-track-cell__full-line"></div>`}
 			</div>
 		`;
 	}
 
-	const showTopLine = component.position === 'between' || component.position === 'last';
-	const showBottomLine = component.position === 'between' || component.position === 'first';
+	// Where you stand in the series decides which halves are drawn; `line` decides
+	// how they are filled, and draws a half the position left out when it names
+	// one as covered.
+	const hasTop = component.position === 'between' || component.position === 'last';
+	const hasBottom = component.position === 'between' || component.position === 'first';
+	const showTopLine = hasTop || component.line === 'top' || component.line === 'both';
+	const showBottomLine = hasBottom || component.line === 'bottom' || component.line === 'both';
 	const marker = !component.showsContent
 		? nothing
 		: component.icon

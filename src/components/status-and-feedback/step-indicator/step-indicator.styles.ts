@@ -24,7 +24,7 @@ export const stepIndicatorStyles = css`
 		--_track-thickness: var(--primitives-space-2);
 		--_marker-z-index: 1;
 		--_marker-corner-radius: var(--primitives-corner-radius-full);
-		--_ring-thickness: var(--primitives-space-2);
+		--_ring-thickness: var(--semantics-surfaces-ring-thickness);
 		--_ring-color: var(--context-parent-background-color, var(--semantics-surfaces-base-background-color));
 		--_marker-content-color: var(--semantics-content-secondary-color);
 		--_progress-content-color: var(--semantics-content-contrast-color);

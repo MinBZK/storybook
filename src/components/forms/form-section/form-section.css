@@ -1,54 +1,29 @@
-/* Form-section: light-DOM grouping wrapper.
-
-   nldd-form-section bouwt z'n eigen DOM-structuur in light DOM (geen
-   shadow), zodat NVDA + Firefox de native <fieldset> + <legend> als
-   group-label betrouwbaar aankondigen voor de slotted controls.
-
-   Structuur na connectedCallback:
-     <nldd-form-section>
-       <fieldset class="form-section">
-         <legend class="form-section__header">
-           <span class="form-section__title">Title</span>
-           <span class="form-section__subtitle">Subtitle</span>
-         </legend>
-         <div class="form-section__main">
-           [user's children]
-         </div>
-       </fieldset>
-     </nldd-form-section>
-
-   Form-fields die als directe children meegegeven worden, worden in
-   .form-section__main geplaatst (zie form-section.ts).
-*/
-
-
-/* # Host
-   Top + bottom dividers + padding voor vertical rhythm.
-   Suppression: :first-child, :last-child, en sibling-section
-   (om dubbele lijnen te voorkomen). */
+/* # Host */
 
 nldd-form-section {
 	display: block;
 	box-sizing: border-box;
-	border-top: var(--semantics-dividers-thickness) solid var(--semantics-dividers-color);
-	border-bottom: var(--semantics-dividers-thickness) solid var(--semantics-dividers-color);
-	padding-top: var(--semantics-forms-gap);
-	padding-bottom: var(--semantics-forms-gap);
 }
 
 nldd-form-section[hidden] {
 	display: none;
 }
 
-nldd-form-section:first-child,
-nldd-form-section + nldd-form-section {
-	border-top: none;
-	padding-top: 0;
+/* A margin and not padding, so it collapses with the gap the form puts under
+   the previous child: 16 and 24 next to each other are 24, not 40. Padding
+   collapses with nothing and would have made it 32. */
+
+nldd-form > form > nldd-form-section:not(:first-child) {
+	margin-block-start: var(--semantics-forms-sections-gap);
 }
 
-nldd-form-section:last-child {
-	border-bottom: none;
-	padding-bottom: 0;
+/* The :has() guard also settles the cascade: a physical margin-bottom and a
+   logical margin-block-end for the same side are decided on declaration order,
+   not specificity, so without it the outcome would depend on the load order of
+   the files. */
+
+nldd-form > form > nldd-form-section:has(~ *:not([hidden]):not([type='hidden'])) {
+	margin-block-end: var(--semantics-forms-sections-gap);
 }
 
 
@@ -100,19 +75,26 @@ nldd-form-section .form-section__subtitle {
 
 /* # Main — gets margin-top to separate from header. When no header is
    rendered (no text + no supporting-text), main is the first child of
-   the fieldset and the margin collapses via :first-child. */
+   the fieldset and the margin collapses via :first-child.
+
+   Closer to the heading than a section stands to what came before it: the
+   heading belongs to what is under it, and the same distance on both sides
+   would leave it floating between the two. */
 
 nldd-form-section > fieldset.form-section > .form-section__main {
 	display: block;
-	margin-top: var(--semantics-forms-gap);
+	margin-top: var(--primitives-space-8);
 }
 
 nldd-form-section > fieldset.form-section > .form-section__main:first-child {
 	margin-top: 0;
 }
 
-/* Form-fields binnen .form-section__main krijgen hun spacing via form.css's
-   `nldd-form nldd-form-field + nldd-form-field` rule (incl. tighter @media
-   varianten voor top-aligned). Mixed content (form-fields + paragraphs etc.)
-   wordt niet automatisch gespaceerd — gebruik nldd-rich-text of eigen
-   spacing-CSS voor die zeldzame gevallen. */
+/* # Vertical rhythm within a section
+
+   Same rule and same reason as in form.css: the gap hangs on the bottom, and
+   the :has() guard keeps a trailing gap off the last visible child. */
+
+nldd-form-section .form-section__main > *:has(~ *:not([hidden]):not([type='hidden'])) {
+	margin-bottom: var(--semantics-forms-fields-gap);
+}

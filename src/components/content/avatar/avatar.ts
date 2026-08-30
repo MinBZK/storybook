@@ -37,6 +37,7 @@
  * @attr {boolean} decorative - Hides the avatar from assistive software (use when the name already stands beside it as text)
  * @attr {string} tooltip-timing - When the name appears as a tooltip on hover or focus: `default` (after 700ms; the default), `instant`, or `never`. An avatar shows no text, so without a tooltip the name is readable by assistive software only. A `decorative` avatar shows none regardless: there the name already stands beside it as text
  * @attr {string} href - Makes the avatar a link to this URL; the shape itself becomes the link, so the hit area and the focus ring follow it
+ * @attr {boolean} no-tab - Takes the control out of the tab order (tabindex="-1"), for an avatar that is a link or a button inside a roving container (a row of an nldd-list). Does nothing on a decorative avatar.
  * @attr {boolean} button - Makes the avatar a button; ignored when `href` is set
  * @attr {string} target - Link target for href (e.g. '_blank'); completes rel and announces "Opens in a new tab"
  * @attr {string} rel - Link rel for href; defaults to 'noopener noreferrer' when target='_blank'
@@ -123,6 +124,13 @@ export class NLDDAvatar extends withTranslations(LitElement, nlddAvatarTranslati
 	 *  area and the focus ring follow its shape (an overlay would be square). */
 	@property({ type: String, reflect: true })
 	href = '';
+
+	/** Take the control out of the tab order (`tabindex="-1"`) — for an avatar
+	 *  that is a link or a button inside a roving container (an `nldd-list` sets
+	 *  it on the rows that are not the current one). Still mouse- and
+	 *  script-focusable, and it does nothing on a decorative avatar. */
+	@property({ type: Boolean, reflect: true, attribute: 'no-tab' })
+	noTab = false;
 
 	/** Makes the avatar a button. Ignored once `href` is set: one avatar is one
 	 *  action, and a link outranks a button (the same rule as nldd-card). */

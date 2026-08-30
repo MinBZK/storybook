@@ -8,9 +8,9 @@ import '../toggle-button/toggle-button.js';
  *
  * ## Gebruik
  * ```html
- * <nldd-toggle-button-group type="radio" name="weergave">
- *   <nldd-toggle-button value="lijst" text="Lijst"></nldd-toggle-button>
- *   <nldd-toggle-button value="kaart" text="Kaart" selected></nldd-toggle-button>
+ * <nldd-toggle-button-group type="radio" name="view">
+ *   <nldd-toggle-button value="list" text="Lijst"></nldd-toggle-button>
+ *   <nldd-toggle-button value="card" text="Kaart" selected></nldd-toggle-button>
  * </nldd-toggle-button-group>
  * ```
  */
@@ -53,6 +53,16 @@ export default {
 			control: 'text',
 			description: 'Toegankelijk label voor screen readers (aria-label van de groep)',
 		},
+		invalid: {
+			control: 'boolean',
+			description: 'Ongeldige staat. Wordt aangekondigd met aria-invalid; er wordt niets voor getekend.',
+			table: { defaultValue: { summary: false } },
+		},
+		required: {
+			control: 'boolean',
+			description: 'Verplichte staat.',
+			table: { defaultValue: { summary: false } },
+		},
 		disabled: {
 			control: 'boolean',
 			description: 'Schakelt alle knoppen uit',
@@ -66,6 +76,8 @@ export default {
 		name: 'groep',
 		type: 'checkbox',
 		accessibleLabel: '',
+		invalid: false,
+		required: false,
 		disabled: false,
 	},
 };
@@ -75,6 +87,8 @@ const Template = (args: Record<string, any>) => html`
 		type=${args.type}
 		name=${args.name}
 		size=${args.size}
+		?invalid=${args.invalid}
+		?required=${args.required}
 		?disabled=${args.disabled}
 		accessible-label=${args.accessibleLabel || nothing}
 	>
@@ -224,8 +238,8 @@ export const Uitgeschakeld = {
 
 export const MetIconen = {
 	render: () => html`
-	<nldd-toggle-button-group type="radio" name="weergave" aria-label="Weergave">
-		<nldd-toggle-button value="lijst" accessible-label="Lijstweergave" icon="list" selected></nldd-toggle-button>
+	<nldd-toggle-button-group type="radio" name="view" aria-label="Weergave">
+		<nldd-toggle-button value="list" accessible-label="Lijstweergave" icon="list" selected></nldd-toggle-button>
 		<nldd-toggle-button value="compact" accessible-label="Compacte weergave" icon="list-decreasing-lines"></nldd-toggle-button>
 		<nldd-toggle-button value="uitgebreid" accessible-label="Uitgebreide weergave" icon="stack"></nldd-toggle-button>
 	</nldd-toggle-button-group>

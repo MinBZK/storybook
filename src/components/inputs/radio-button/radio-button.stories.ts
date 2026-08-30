@@ -46,24 +46,39 @@ export default {
 			control: 'text',
 			description: 'Toegankelijk label voor screen readers',
 		},
+		invalid: {
+			control: 'boolean',
+			description: 'Ongeldige staat. Wordt aangekondigd met aria-invalid; er wordt niets voor getekend.',
+			table: { defaultValue: { summary: false } },
+		},
 		disabled: {
 			control: 'boolean',
 			description: 'Uitgeschakelde toestand',
 			table: { defaultValue: { summary: false } },
 		},
+		required: {
+			control: 'boolean',
+			description: 'Verplichte staat.',
+			table: { defaultValue: { summary: false } },
+		},
+
 	},
 	args: {
 		name: 'demo',
-		value: 'optie-1',
+		value: 'option-1',
 		checked: false,
 		accessibleLabel: 'Radio button',
+		invalid: false,
 		disabled: false,
+		required: false,
 	},
 };
 
-const Template = ({ name, value, checked, accessibleLabel, disabled }: Record<string, any>) => html`
+const Template = ({ name, value, checked, accessibleLabel, invalid, disabled, required }: Record<string, any>) => html`
 	<nldd-radio-button
 		?checked=${checked}
+		?invalid=${invalid}
+		?required=${required}
 		?disabled=${disabled}
 		name=${name}
 		value=${value}

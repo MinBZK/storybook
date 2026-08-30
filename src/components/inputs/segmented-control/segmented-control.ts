@@ -15,6 +15,8 @@
  * @attr {string} name - Name for form submission, forwarded to native inputs
  * @attr {string} accessible-label - Accessible name for the group, set as aria-label
  * @attr {string} accessible-labeled-by - Id of an external label element, set as aria-labelledby on the group
+ * @attr {boolean} required - Marks the group as required. Enforced in radio mode; in checkbox mode only announced.
+ * @attr {boolean} invalid - Marks the group as invalid. Announced with aria-invalid; nothing is drawn for it.
  *
  * @fires change - When selection changes; detail: { value: string } for radio, detail: { values: string[] } for checkbox
  *
@@ -32,6 +34,7 @@
  * @attr {string} variant - Content type: 'text' | 'icon' | 'icon-and-text' (default: 'text'). Set by nldd-segmented-control.
  * @attr {string} input-type - Type of the native input: 'radio' | 'checkbox' (default: 'radio'). Set by nldd-segmented-control.
  * @attr {string} group-name - Name of the group for form submission, put on the native input. Set by nldd-segmented-control.
+ * @attr {boolean} required - Required state. Set by nldd-segmented-control.
  *
  * @slot icon - Slot for a custom icon (e.g. custom SVG). Only used when icon attribute is not set.
  *
@@ -61,6 +64,9 @@ export type SegmentedControlVariant = 'text' | 'icon' | 'icon-and-text';
 
 @customElement('nldd-segmented-control-item')
 export class NLDDSegmentedControlItem extends LitElement {
+
+	@property({ type: Boolean, reflect: true })
+	required = false;
 	static override styles = segmentedControlItemStyles;
 
 	@property({ type: String })
@@ -100,6 +106,7 @@ export class NLDDSegmentedControlItem extends LitElement {
 	@property({ type: String })
 	icon = '';
 
+
 	public _handleChange(e: Event): void {
 		const input = e.target as HTMLInputElement;
 		this.dispatchEvent(new CustomEvent('item-change', {
@@ -129,6 +136,35 @@ export class NLDDSegmentedControlItem extends LitElement {
 
 @customElement('nldd-segmented-control')
 export class NLDDSegmentedControl extends FormAssociated(LitElement) {
+
+	/**
+	 * Marks the group as required: something has to be selected.
+	 *
+	 * Handed to the items, because that is where the platform reads it. One
+	 * required radio makes the whole group required, and the browser writes its
+	 * own message in the user's language.
+	 *
+	 * Only in radio mode. The same attribute on a checkbox means that box has to
+	 * be ticked, so spreading it over a checkbox group would demand all of them
+	 * instead of one. HTML has no way to say "at least one of these", and
+	 * neither do we: `aria-required` still goes on the group so assistive
+	 * software says it, but nothing enforces it.
+	 */
+	@property({ type: Boolean, reflect: true })
+	required = false;
+
+	/**
+	 * Marks the group as invalid.
+	 *
+	 * Announced and not drawn, and on the group and not on an item: a red ring
+	 * around one option would say that option is wrong, while it is the question
+	 * that is unanswered. What is wrong belongs in an
+	 * nldd-validation-list, in words.
+	 */
+	@property({ type: Boolean, reflect: true })
+	invalid = false;
+
+	private _warnedRequired = false;
 
 	static override styles = segmentedControlStyles;
 
@@ -171,10 +207,10 @@ export class NLDDSegmentedControl extends FormAssociated(LitElement) {
 	 * '50%') which sets the host width with equal-width items. Default is
 	 * content-based outer with equal-width items.
 	 */
-	@property({ type: String, reflect: true })
+	@property({ reflect: true, converter: reflectNonDefault('') })
 	width = '';
 
-	@property({ type: String, reflect: true })
+	@property({ reflect: true, converter: reflectNonDefault('') })
 	name = '';
 
 	/** Accessible name for the group (aria-label). */
@@ -305,6 +341,21 @@ export class NLDDSegmentedControl extends FormAssociated(LitElement) {
 
 	private _syncItems(): void {
 		const items = this._getItems();
+		items.forEach(item => { item.required = this.required && this.type !== 'checkbox'; });
+		this.toggleAttribute('aria-required', this.required);
+		// Announced, not drawn. See the note on `invalid`.
+		if (this.invalid) this.setAttribute('aria-invalid', 'true');
+		else this.removeAttribute('aria-invalid');
+
+		if (import.meta.env?.DEV && this.required && this.type === 'checkbox' && !this._warnedRequired) {
+			this._warnedRequired = true;
+			console.warn(
+				`<${this.localName}>: \`required\` on a checkbox group is announced but not enforced. `
+				+ 'HTML has no way to say "at least one of these", so the form still submits with nothing '
+				+ 'selected. Check it yourself on submit, or use radio mode.',
+			);
+		}
+
 		const selectedValues = this._getSelectedValues();
 
 		if (this.disabled) {

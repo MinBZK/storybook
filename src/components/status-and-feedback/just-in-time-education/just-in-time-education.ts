@@ -1,49 +1,50 @@
 /**
  * Nederlandse Digitale Dienst Just in Time Education Component (Lit + TypeScript)
  *
- * Een guided-discovery coach-mark. Plaats een control (bijv. nldd-search-field)
- * in de default slot; zolang `active` is gezet tilt het component een callout
- * (titel + supporting text + dismiss) in de top layer via de Popover API
- * (`popover="manual"`), geankerd aan het control met Floating UI. Geen backdrop,
- * non-modaal: de achtergrond blijft interactief. Het control zelf blijft op zijn
- * plek in de flow staan.
+ * A guided-discovery coach mark. Put a control (nldd-search-field, for
+ * instance) in the default slot. While `active` is set, the component lifts a
+ * callout (title + supporting text + dismiss) into the top layer through the
+ * Popover API (`popover="manual"`), anchored to the control with Floating UI.
+ * No backdrop, non-modal: the background stays interactive. The control itself
+ * stays where it is in the flow.
  *
- * Met `dismissable` beheert het component het sluiten en vuurt het nldd-close:
- *  - de gebruiker voert de geadviseerde interactie uit op het control -> close{completed}
- *  - de dismiss-knop -> close{dismissed}
- *  - een klik/toets BUITEN de coach-mark -> close{ignored}
- * Zonder `dismissable` sluit niets vanzelf (geen knop, geen buiten- of slot-klik);
- * dan bepaalt de consumer het sluiten zelf via `active` of `complete()`. `complete()`
- * werkt altijd en sluit met close{completed} (bijv. pas bij een echte zoekopdracht).
+ * With `dismissable` the component manages closing and fires nldd-close:
+ *  - the user performs the suggested interaction on the control -> close{completed}
+ *  - the dismiss button -> close{dismissed}
+ *  - a click or key press OUTSIDE the coach mark -> close{ignored}
+ * Without `dismissable` nothing closes by itself (no button, no outside or slot
+ * click); the consumer then decides when to close through `active` or
+ * `complete()`. `complete()` always works and closes with close{completed}, for
+ * example only once a real search has been submitted.
  *
  * @element nldd-just-in-time-education
- * @attr {boolean} active - Toon de coach-mark. App-gestuurd; standaard false.
- * @attr {string} text - Titel van de callout.
- * @attr {string} supporting-text - Ondersteunende tekst onder de titel.
- * @attr {string} placement - 'auto' | 'top' | 'bottom' | 'left' | 'right' (standaard 'auto').
- * @attr {boolean} dismissable - Toon de dismiss-knop en sta sluiten toe via 1 klik/toets buiten de coach-mark. Standaard false: dan beheert de consumer het sluiten zelf.
- * @attr {string} arrow-length - Pijllengte en dus de afstand tussen card en control, als CSS-lengte (bijv. \`333px\`, \`30vh\`). Leeg = DS-standaard; onder 40px wordt geklemd.
- * @attr {boolean} no-arrow - Verberg de pijl; de card staat dan dicht tegen het control.
+ * @attr {boolean} active - Show the coach mark. Driven by the app; false by default.
+ * @attr {string} text - Title of the callout.
+ * @attr {string} supporting-text - Supporting text under the title.
+ * @attr {string} placement - 'auto' | 'top' | 'bottom' | 'left' | 'right' (default 'auto').
+ * @attr {boolean} dismissable - Show the dismiss button and allow closing with one click or key press outside the coach mark. False by default: the consumer then manages closing itself.
+ * @attr {string} arrow-length - Arrow length, and therefore the distance between card and control, as a CSS length (e.g. `333px`, `30vh`). Empty = the DS default; anything under 40px is clamped.
+ * @attr {boolean} no-arrow - Hide the arrow; the card then sits close against the control.
  *
- * @slot - Het control waar de coach-mark naar wijst (blijft in de normale flow).
+ * @slot - The control the coach mark points at (stays in the normal flow).
  *
- * @fires nldd-close - Wanneer de coach-mark sluit. detail: { reason: 'completed' | 'dismissed' | 'ignored' }.
+ * @fires nldd-close - When the coach mark closes. detail: { reason: 'completed' | 'dismissed' | 'ignored' }.
  *
- * @note Rendert via de native Popover API (`popover="manual"`) in de top layer,
- * dus het escapet ancestor stacking contexts en `overflow: hidden` clipping.
- * Positionering via Floating UI met `position: absolute` (default strategy) +
- * `autoUpdate`: de callout staat in de documentstroom en scrollt native mee met
- * de pagina, dus scrollen vraagt geen herpositionering. De kant wordt bepaald uit
- * de beschikbare ruimte (horizontaal de viewport, verticaal het hele document)
- * bij openen en bij window-resize.
+ * @note Renders through the native Popover API (`popover="manual"`) in the top
+ * layer, so it escapes ancestor stacking contexts and `overflow: hidden`
+ * clipping. Positioned with Floating UI using `position: absolute` (the default
+ * strategy) plus `autoUpdate`: the callout sits in the document flow and
+ * scrolls along natively with the page, so scrolling needs no repositioning.
+ * The side is picked from the available room (the viewport horizontally, the
+ * whole document vertically) on open and on window resize.
  *
- * @note Focus-model (dismissable): de callout is een bewust NIET-modale dialog
- * (`role="dialog"`, geen `aria-modal`, geen focus-trap). Bij openen gaat focus
- * erin zodat de dismiss-knop bereikbaar is en Escape sluit; Tab verlaat de callout
- * daarna expres naar de pagina, want de coach-mark wijst naar een control dat de
- * gebruiker moet kunnen bereiken, dus focus vasthouden zou het doel ondermijnen.
- * Niet-dismissable gebruikt een benoemde `role="region"` (aria-label = de titel) en
- * verplaatst focus nooit; de polite live region kondigt de tip aan.
+ * @note Focus model (dismissable): the callout is a deliberately NON-modal
+ * dialog (`role="dialog"`, no `aria-modal`, no focus trap). On open, focus moves
+ * into it so the dismiss button is reachable and Escape closes. Tab then leaves
+ * the callout on purpose, because the coach mark points at a control the user
+ * has to be able to reach, so holding focus would defeat the point.
+ * Non-dismissable uses a named `role="region"` (aria-label = the title) and
+ * never moves focus; the polite live region announces the tip.
  */
 
 import { LitElement } from 'lit';

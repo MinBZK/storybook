@@ -10,12 +10,15 @@
  * @attr {'xs' | 'sm' | 'md' | 'lg'} size - Button size (default: 'md')
  * @attr {boolean} selected - Selected state
  * @attr {boolean} disabled - Disabled state
+ * @attr {boolean} no-tab - Takes the control out of the tab order (tabindex="-1"), for a control owned by a roving container (a row of an nldd-list, where the arrow keys move between rows) that manages focus itself. Still mouse- and script-focusable.
  * @attr {string} value - Value for form submission (checkbox/radio)
  * @attr {string} name - Name for form submission (checkbox/radio)
  * @attr {string} text - Button text
  * @attr {string} icon - Icon name for nldd-icon
  * @attr {'text' | 'icon' | 'icon-and-text'} variant - What renders: text, icon, or both. Unset → auto-detect from text/icon attributes.
  * @attr {string} accessible-label - Accessible label; required for icon-only usage
+ * @attr {boolean} required - Required state. Set by nldd-toggle-button-group.
+ * @attr {boolean} invalid - Marks the control as invalid. Announced with aria-invalid; nothing is drawn for it.
  *
  * @slot icon - Slot for a custom icon (e.g. custom SVG). Only used when icon attribute is not set.
  *
@@ -29,14 +32,18 @@ import { reflectNonDefault } from '../../../utilities/reflect-non-default.js';
 import { toggleButtonStyles } from './toggle-button.styles.js';
 import { toggleButtonTemplate } from './toggle-button.template.js';
 import './../../content/icon/icon.js';
+import { DescribedBy } from '../../../utilities/described-by-mixin.js';
 
 export type ToggleButtonType = 'button' | 'checkbox' | 'radio';
 export type ToggleButtonSize = 'xs' | 'sm' | 'md' | 'lg';
 export type ToggleButtonVariant = 'text' | 'icon' | 'icon-and-text';
 
 @customElement('nldd-toggle-button')
-export class NLDDToggleButton extends FormAssociated(LitElement) {
+export class NLDDToggleButton extends DescribedBy(FormAssociated(LitElement)) {
 
+
+	@property({ type: Boolean, reflect: true })
+	required = false;
 	static override styles = toggleButtonStyles;
 
 	/** Says this is the control an nldd-form-field is about, so the field can
@@ -57,11 +64,18 @@ export class NLDDToggleButton extends FormAssociated(LitElement) {
 
 	@property({ type: Boolean, reflect: true })
 	disabled = false;
+	/** Take the control out of the tab order (`tabindex="-1"`) — for a control
+	 *  owned by a roving container (an `nldd-list` sets it on the rows that are
+	 *  not the current one) that manages focus itself. Still mouse- and
+	 *  script-focusable. */
+	@property({ type: Boolean, reflect: true, attribute: 'no-tab' })
+	noTab = false;
+
 
 	@property({ type: String })
 	value = 'on';
 
-	@property({ type: String, reflect: true })
+	@property({ reflect: true, converter: reflectNonDefault('') })
 	name = '';
 
 	/** Button text. */
@@ -93,6 +107,19 @@ export class NLDDToggleButton extends FormAssociated(LitElement) {
 
 	private _warnedA11y = false;
 	private _warnedEmptyIcon = false;
+
+
+	/**
+	 * Marks the control as invalid.
+	 *
+	 * Announced and not drawn. What is wrong belongs in an
+	 * nldd-validation-list, in words: a red ring around a single
+	 * checkbox or radio would say the option is wrong, while it is the question
+	 * that is unanswered. `aria-invalid` still goes on the control, because
+	 * choosing not to show something is not a reason to keep quiet about it.
+	 */
+	@property({ type: Boolean, reflect: true })
+	invalid = false;
 
 	override firstUpdated(): void {
 		this._initialSelected = this.selected;
@@ -182,6 +209,11 @@ export class NLDDToggleButton extends FormAssociated(LitElement) {
 		this.shadowRoot
 			?.querySelector<HTMLElement>('.toggle-button__input, button.toggle-button')
 			?.focus(options);
+	}
+
+	/** The button is the control, not the input that carries the value. */
+	override describedTarget(): Element | null {
+		return this.shadowRoot?.querySelector('button.toggle-button') ?? null;
 	}
 
 	override render() {

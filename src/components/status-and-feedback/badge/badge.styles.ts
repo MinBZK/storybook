@@ -22,6 +22,8 @@ export const badgeStyles = css`
 		--_dot-size: var(--primitives-space-12);
 		--_icon-size: var(--primitives-space-14);
 		--_icon-offset-correction: var(--primitives-space-1);
+		--_ring-thickness: var(--semantics-surfaces-ring-thickness);
+		--_ring-color: var(--context-parent-background-color, var(--semantics-surfaces-base-background-color));
 		--_pulse-spread: var(--primitives-space-8);
 		--_pulse-duration: 1.5s;
 
@@ -213,7 +215,7 @@ export const badgeStyles = css`
 		position: relative;
 		border-radius: var(--components-badge-corner-radius);
 		box-shadow:
-			0 0 0 1px var(--context-parent-background-color, var(--semantics-surfaces-base-background-color)),
+			0 0 0 var(--_ring-thickness) var(--_ring-color),
 			inset 0 0 0 var(--_border-width) var(--_border-color);
 		background-color: var(--_background-color);
 		min-width: var(--_height);
@@ -243,7 +245,7 @@ export const badgeStyles = css`
 	   the same distance on every side, whatever the badge measures.
 
 	   Painted after the badge, so the ring passes over the contrast border the
-	   badge draws in the surface colour instead of starting behind it. The
+	   badge draws in the surface color instead of starting behind it. The
 	   element itself is transparent (the ring is the shadow, which paints
 	   outside the box), so nothing covers the badge's own fill or text. */
 	.badge__pulse {
@@ -255,7 +257,7 @@ export const badgeStyles = css`
 		animation: badge-pulse var(--_pulse-duration) infinite;
 	}
 
-	/* The ring rides on the shadow's own colour rather than on the element's
+	/* The ring rides on the shadow's own color rather than on the element's
 	   opacity: at spread zero the shadow has no area, so it can start at full
 	   strength without a flash, and it is already transparent when the spread
 	   snaps back for the next cycle. Same shape as Shoelace's badge pulse. */
@@ -279,7 +281,7 @@ export const badgeStyles = css`
 		}
 	}
 
-	/* Forced colors paints the badge in system colours; a ring in the same
+	/* Forced colors paints the badge in system colors; a ring in the same
 	   Canvas would read as a second, half-drawn badge. */
 	@media (forced-colors: active) {
 		.badge__pulse {

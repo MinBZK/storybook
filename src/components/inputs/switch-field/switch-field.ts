@@ -9,6 +9,8 @@
  * @attr {string} value - Value for form submission
  * @attr {string} name - Name for form submission
  * @attr {string} label - Label text for the switch
+ * @attr {boolean} required - Required state
+ * @attr {boolean} invalid - Marks the control as invalid. Announced with aria-invalid; nothing is drawn for it.
  *
  * @fires change - When checked state changes; detail: { checked: boolean, value: string }
  */
@@ -17,9 +19,10 @@ import { customElement, property } from 'lit/decorators.js';
 import { switchFieldStyles } from './switch-field.styles.js';
 import { switchFieldTemplate } from './switch-field.template.js';
 import type { NLDDSwitch } from '../switch/switch.js';
+import { DescribedBy } from '../../../utilities/described-by-mixin.js';
 
 @customElement('nldd-switch-field')
-export class NLDDSwitchField extends LitElement {
+export class NLDDSwitchField extends DescribedBy(LitElement) {
 	static override styles = switchFieldStyles;
 
 	/** Says this is the control an nldd-form-field is about, so the field can
@@ -40,6 +43,23 @@ export class NLDDSwitchField extends LitElement {
 
 	@property({ type: String })
 	label = '';
+
+
+	@property({ type: Boolean, reflect: true })
+	required = false;
+
+
+	/**
+	 * Marks the control as invalid.
+	 *
+	 * Announced and not drawn. What is wrong belongs in an
+	 * nldd-validation-list, in words: a red ring around a single
+	 * checkbox or radio would say the option is wrong, while it is the question
+	 * that is unanswered. `aria-invalid` still goes on the control, because
+	 * choosing not to show something is not a reason to keep quiet about it.
+	 */
+	@property({ type: Boolean, reflect: true })
+	invalid = false;
 
 	public _handleLabelClick(e: Event): void {
 		if (this.disabled) return;
@@ -64,6 +84,11 @@ export class NLDDSwitchField extends LitElement {
 	 */
 	override focus(options?: FocusOptions): void {
 		this.shadowRoot?.querySelector<NLDDSwitch>('nldd-switch')?.focus(options);
+	}
+
+	/** The switch it renders knows which element inside itself is the control. */
+	override describedTarget(): Element | null {
+		return this.shadowRoot?.querySelector('nldd-switch') ?? null;
 	}
 
 	override render() {

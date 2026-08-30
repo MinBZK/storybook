@@ -15,6 +15,11 @@
  * @attr {object} translations - Override translation keys; unset keys fall back to Dutch
  * @attr {boolean} no-spellcheck - Disables browser spellchecking on the inner input
  * @attr {string} width - Optional fixed width (any CSS length, e.g. "240px"). Default: stretches to fill container.
+ * @attr {boolean} required - Required state
+ * @attr {string} pattern - Regular expression the value has to match, as the native `pattern`.
+ * @attr {number} minlength - Fewest characters the value may have.
+ * @attr {number} maxlength - Most characters the value may have.
+ * @attr {boolean} invalid - Marks the control as invalid. Announced with aria-invalid; nothing is drawn for it.
  *
  * @fires input - When the input value changes; detail: { value: string }
  * @fires change - When the input value is committed; detail: { value: string }
@@ -31,11 +36,12 @@ import type { NLDDSearchFieldTranslations } from './search-field.i18n.js';
 import './../../actions/icon-button/icon-button.js';
 import './../../actions/button/button.js';
 import './../../content/icon/icon.js';
+import { DescribedBy } from '../../../utilities/described-by-mixin.js';
 
 export type SearchFieldSize = 'sm' | 'md';
 
 @customElement('nldd-search-field')
-export class NLDDSearchField extends FormAssociated(LitElement) {
+export class NLDDSearchField extends DescribedBy(FormAssociated(LitElement)) {
 
 	static override styles = searchFieldStyles;
 
@@ -70,7 +76,7 @@ export class NLDDSearchField extends FormAssociated(LitElement) {
 	@property({ type: Boolean, reflect: true })
 	disabled = false;
 
-	@property({ type: String, reflect: true })
+	@property({ reflect: true, converter: reflectNonDefault('') })
 	name = '';
 
 	@property({ type: Boolean, reflect: true, attribute: 'show-search-button' })
@@ -84,11 +90,40 @@ export class NLDDSearchField extends FormAssociated(LitElement) {
 	noSpellcheck = false;
 
 	/** Optional fixed width (any CSS length). When unset, the field stretches to fill its container. */
-	@property({ type: String, reflect: true })
+	@property({ reflect: true, converter: reflectNonDefault('') })
 	width = '';
 
 	@query('.search-field__input')
 	_input!: HTMLInputElement;
+
+
+	@property({ type: Boolean, reflect: true })
+	required = false;
+
+	/** Regular expression the value has to match, as the native `pattern`. */
+	@property({ reflect: true, converter: reflectNonDefault('') })
+	pattern = '';
+
+	/** Fewest characters the value may have, as the native `minlength`. */
+	@property({ type: Number, reflect: true })
+	minlength?: number;
+
+	/** Most characters the value may have, as the native `maxlength`. */
+	@property({ type: Number, reflect: true })
+	maxlength?: number;
+
+
+	/**
+	 * Marks the control as invalid.
+	 *
+	 * Announced and not drawn. What is wrong belongs in an
+	 * nldd-validation-list, in words: a red ring around a single
+	 * checkbox or radio would say the option is wrong, while it is the question
+	 * that is unanswered. `aria-invalid` still goes on the control, because
+	 * choosing not to show something is not a reason to keep quiet about it.
+	 */
+	@property({ type: Boolean, reflect: true })
+	invalid = false;
 
 	override firstUpdated(): void {
 		this._initialValue = this.value;

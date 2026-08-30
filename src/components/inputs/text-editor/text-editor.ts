@@ -41,6 +41,7 @@
  * @attr {boolean} annotatable - Enable the annotation overlay (off by default). Annotations only render when this is set.
  * @prop {Annotation[]} annotations - Consumer-supplied annotation overlay (property only). Anchored by offset and mapped through edits; the text stays clean. Requires `annotatable`. Assign a NEW array to apply changes (Lit dirty-checks by identity, so in-place mutation like `.push()` won't re-render): `editor.annotations = [...editor.annotations, next]`.
  * @attr {object} translations - Override the editor's assistive-tech strings (the open-in-new-tab link badge and the annotation count badge). Unset keys fall back to Dutch.
+ * @attr {boolean} invalid - Marks the control as invalid. Announced with aria-invalid; nothing is drawn for it.
  *
  * @fires input - When the content changes (detail: { value })
  * @fires change - When the content is committed on blur (detail: { value })
@@ -92,6 +93,7 @@ import { textEditorStyles } from './text-editor.styles.js';
 import { textEditorTemplate } from './text-editor.template.js';
 import { stripSentinels, docToClean } from './text-editor.annotation-sentinels.js';
 import { nlddTextEditorTranslations, type NLDDTextEditorTranslations } from './text-editor.i18n.js';
+import { DescribedBy } from '../../../utilities/described-by-mixin.js';
 
 export type ResizeMode = 'none' | 'vertical' | 'auto';
 export type TextEditorVariant = 'input-field' | 'simple';
@@ -100,7 +102,7 @@ export type { MentionCandidate, MentionSource, MentionInsertedDetail } from './t
 export type { Annotation } from './text-editor.annotations.js';
 
 @customElement('nldd-text-editor')
-export class NLDDTextEditor extends FormAssociated(NLDDCodeMirrorElement) {
+export class NLDDTextEditor extends DescribedBy(FormAssociated(NLDDCodeMirrorElement)) {
 
 	static override shadowRootOptions = {
 		...LitElement.shadowRootOptions,
@@ -129,7 +131,7 @@ export class NLDDTextEditor extends FormAssociated(NLDDCodeMirrorElement) {
 	@property({ type: Boolean, reflect: true })
 	disabled = false;
 
-	@property({ type: String, reflect: true })
+	@property({ reflect: true, converter: reflectNonDefault('') })
 	name = '';
 
 	@property({ type: Boolean, reflect: true })
@@ -192,6 +194,19 @@ export class NLDDTextEditor extends FormAssociated(NLDDCodeMirrorElement) {
 	private _placeholderCompartment = new Compartment();
 	private _attrsCompartment = new Compartment();
 	private _historyCompartment = new Compartment();
+
+
+	/**
+	 * Marks the control as invalid.
+	 *
+	 * Announced and not drawn. What is wrong belongs in an
+	 * nldd-validation-list, in words: a red ring around a single
+	 * checkbox or radio would say the option is wrong, while it is the question
+	 * that is unanswered. `aria-invalid` still goes on the control, because
+	 * choosing not to show something is not a reason to keep quiet about it.
+	 */
+	@property({ type: Boolean, reflect: true })
+	invalid = false;
 
 	protected getEditorParent(): HTMLElement | null | undefined {
 		return this._container;
@@ -765,6 +780,11 @@ export class NLDDTextEditor extends FormAssociated(NLDDCodeMirrorElement) {
 
 	formStateRestoreCallback(state: File | string | FormData | null): void {
 		if (typeof state === 'string') this.value = state;
+	}
+
+	/** CodeMirror builds the textbox; the host is only its container. */
+	override describedTarget(): Element | null {
+		return this.shadowRoot?.querySelector('.cm-content') ?? null;
 	}
 
 	override render() {

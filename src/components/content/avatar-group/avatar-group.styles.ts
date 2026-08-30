@@ -10,8 +10,8 @@ export const avatarGroupStyles = css`
 
 	:host {
 		--_avatar-size: var(--primitives-space-40);
-		--_overlap-size: var(--primitives-space-8);
-		--_ring-width: var(--primitives-border-width-regular);
+		--_overlap-size: calc(var(--_avatar-size) * 0.2);
+		--_ring-thickness: var(--semantics-surfaces-ring-thickness);
 		--_ring-color: var(--context-parent-background-color, var(--semantics-surfaces-base-background-color));
 		--_corner-radius: var(--primitives-corner-radius-full);
 		--_overflow-background-color: light-dark(var(--primitives-color-neutral-25), var(--primitives-color-neutral-150));
@@ -43,16 +43,6 @@ export const avatarGroupStyles = css`
 	:host([size="96"]) { --_avatar-size: var(--primitives-space-96); }
 
 
-	/* A smaller avatar needs less overlap to read as a group, so the small
-	   sizes step down with it. */
-
-	:host([size="16"]),
-	:host([size="20"]),
-	:host([size="24"]) {
-		--_overlap-size: var(--primitives-space-4);
-	}
-
-
 	/* # Group */
 
 	.avatar-group {
@@ -79,7 +69,7 @@ export const avatarGroupStyles = css`
 		margin-inline-start: calc(-1 * var(--_overlap-size));
 		border: none;
 		border-radius: var(--_corner-radius);
-		box-shadow: 0 0 0 var(--_ring-width) var(--_ring-color);
+		box-shadow: 0 0 0 var(--_ring-thickness) var(--_ring-color);
 		background-color: var(--_overflow-background-color);
 		width: var(--_avatar-size);
 		height: var(--_avatar-size);
@@ -91,7 +81,7 @@ export const avatarGroupStyles = css`
 	}
 
 	/* The smallest step the neutral scale has, one notch off the resting fill.
-	   No semantic hover token fits: the button-hover colours are meant for a
+	   No semantic hover token fits: the button-hover colors are meant for a
 	   control that already looks like a button, and here they read as a jump.
 	   It only has to confirm that this disc is clickable. */
 	.avatar-group__overflow-button:hover {
@@ -117,7 +107,7 @@ export const avatarGroupStyles = css`
 		flex-shrink: 0;
 		margin-inline-start: calc(-1 * var(--_overlap-size));
 		border-radius: var(--_corner-radius);
-		box-shadow: 0 0 0 var(--_ring-width) var(--_ring-color);
+		box-shadow: 0 0 0 var(--_ring-thickness) var(--_ring-color);
 		width: var(--_avatar-size) !important;
 		height: var(--_avatar-size) !important;
 	}
@@ -126,7 +116,7 @@ export const avatarGroupStyles = css`
 	   back as a real border there. */
 	@media (forced-colors: active) {
 		.avatar-group ::slotted(nldd-avatar) {
-			border: var(--_ring-width) solid Canvas;
+			border: var(--_ring-thickness) solid Canvas;
 		}
 	}
 `;

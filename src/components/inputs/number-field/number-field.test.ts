@@ -95,10 +95,10 @@ describe('nldd-number-field – state', () => {
 	});
 
 	it('forwards name to native input', async () => {
-		el = await fixture<NLDDNumberField>('<nldd-number-field name="aantal"></nldd-number-field>');
+		el = await fixture<NLDDNumberField>('<nldd-number-field name="count"></nldd-number-field>');
 		await waitForUpdate(el);
 		const input = el.shadowRoot!.querySelector('input')!;
-		expect(input.name).toBe('aantal');
+		expect(input.name).toBe('count');
 	});
 
 	it('disables native input when disabled', async () => {
@@ -448,5 +448,17 @@ describe('nldd-number-field – hide-spin-buttons', () => {
 		el.focus();
 		const input = el.shadowRoot!.querySelector('input');
 		expect(deepActiveElement()).toBe(input);
+	});
+
+	it('geeft de input met hide-spin-buttons z\'n eigen minimumbreedte', async () => {
+		// Die stond er al, maar verloor van een regel die er ná kwam met dezelfde
+		// specificiteit en die altijd matchte, omdat een lege width naar de DOM
+		// reflecteerde. De basisregels staan nu op de kale selector, dus deze wint.
+		// De token zelf komt uit de globale stylesheet, die hier niet geladen is,
+		// dus die zetten we op het element. Het gaat om welke regel wint.
+		el = await fixture('<nldd-number-field hide-spin-buttons accessible-label="Aantal" style="--primitives-space-80: 80px"></nldd-number-field>');
+		await waitForUpdate(el);
+		const input = el.shadowRoot!.querySelector('input')!;
+		expect(getComputedStyle(input).minWidth).toBe('80px');
 	});
 });

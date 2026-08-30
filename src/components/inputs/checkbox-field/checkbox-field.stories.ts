@@ -41,26 +41,41 @@ export default {
 			description: 'Onbepaalde toestand (gedeeltelijk geselecteerd)',
 			table: { defaultValue: { summary: false } },
 		},
+		invalid: {
+			control: 'boolean',
+			description: 'Ongeldige staat. Wordt aangekondigd met aria-invalid; er wordt niets voor getekend.',
+			table: { defaultValue: { summary: false } },
+		},
 		disabled: {
 			control: 'boolean',
 			description: 'Uitgeschakelde toestand',
 			table: { defaultValue: { summary: false } },
 		},
+		required: {
+			control: 'boolean',
+			description: 'Verplichte staat.',
+			table: { defaultValue: { summary: false } },
+		},
+
 	},
 	args: {
 		label: 'Checkbox field',
 		value: 'on',
 		checked: false,
 		indeterminate: false,
+		invalid: false,
 		disabled: false,
+		required: false,
 	},
 };
 
-const Template = ({ label, value, checked, indeterminate, disabled }: Record<string, any>) => html`
+const Template = ({ label, value, checked, indeterminate, invalid, disabled, required }: Record<string, any>) => html`
 	<nldd-checkbox-field
 		label=${label}
 		?checked=${checked}
 		?indeterminate=${indeterminate}
+		?invalid=${invalid}
+		?required=${required}
 		?disabled=${disabled}
 		value=${value}
 	></nldd-checkbox-field>

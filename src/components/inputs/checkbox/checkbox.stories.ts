@@ -47,11 +47,22 @@ export default {
 			control: 'text',
 			description: 'Toegankelijk label voor screen readers',
 		},
+		invalid: {
+			control: 'boolean',
+			description: 'Ongeldige staat. Wordt aangekondigd met aria-invalid; er wordt niets voor getekend.',
+			table: { defaultValue: { summary: false } },
+		},
 		disabled: {
 			control: 'boolean',
 			description: 'Uitgeschakelde toestand',
 			table: { defaultValue: { summary: false } },
 		},
+		required: {
+			control: 'boolean',
+			description: 'Verplichte staat.',
+			table: { defaultValue: { summary: false } },
+		},
+
 	},
 	args: {
 		name: '',
@@ -59,14 +70,18 @@ export default {
 		checked: false,
 		indeterminate: false,
 		accessibleLabel: 'Checkbox',
+		invalid: false,
 		disabled: false,
+		required: false,
 	},
 };
 
-const Template = ({ name, value, checked, indeterminate, accessibleLabel, disabled }: Record<string, any>) => html`
+const Template = ({ name, value, checked, indeterminate, accessibleLabel, invalid, disabled, required }: Record<string, any>) => html`
 	<nldd-checkbox
 		?checked=${checked}
 		?indeterminate=${indeterminate}
+		?invalid=${invalid}
+		?required=${required}
 		?disabled=${disabled}
 		value=${value}
 		name=${name}

@@ -29,7 +29,6 @@
  * @attr {boolean} multiple - Allows choosing more than one file
  * @attr {string} accessible-label - Accessible label forwarded to the inner input. Set automatically by nldd-form-field.
  * @attr {string} input-id - Sets the id on the native input. Set automatically by nldd-form-field.
- * @attr {string} error-message-ids - Ids for aria-describedby on the inner input. Set automatically by nldd-form-field.
  * @attr {boolean} valid - Marks the field as valid; shows a check icon on the right, like nldd-dropdown
  * @attr {boolean} invalid - Marks the field as invalid; shows an alert icon on the right, like nldd-dropdown
  * @attr {boolean} disabled - Disabled state
@@ -48,9 +47,10 @@ import { reflectNonDefault } from '../../../utilities/reflect-non-default.js';
 import { fileFieldStyles } from './file-field.styles.js';
 import { fileFieldTemplate } from './file-field.template.js';
 import { nlddFileFieldTranslations, type NLDDFileFieldTranslations } from './file-field.i18n.js';
+import { DescribedBy } from '../../../utilities/described-by-mixin.js';
 
 @customElement('nldd-file-field')
-export class NLDDFileField extends FormAssociated(LitElement) {
+export class NLDDFileField extends DescribedBy(FormAssociated(LitElement)) {
 
 	static override styles = fileFieldStyles;
 
@@ -75,8 +75,6 @@ export class NLDDFileField extends FormAssociated(LitElement) {
 	@property({ type: String, attribute: 'input-id' })
 	inputId = '';
 
-	@property({ type: String, attribute: 'error-message-ids' })
-	errorMessageIds = '';
 
 	@property({ type: Boolean, reflect: true })
 	valid = false;
@@ -87,7 +85,7 @@ export class NLDDFileField extends FormAssociated(LitElement) {
 	@property({ type: Boolean, reflect: true })
 	disabled = false;
 
-	@property({ type: String, reflect: true })
+	@property({ reflect: true, converter: reflectNonDefault('') })
 	name = '';
 
 	@property({ type: Boolean, reflect: true })
@@ -229,6 +227,12 @@ export class NLDDFileField extends FormAssociated(LitElement) {
 	override focus(options?: FocusOptions): void {
 		const button = this.shadowRoot?.querySelector('nldd-button') as HTMLElement | null;
 		button?.focus(options);
+	}
+
+	/** The file input is display:none and therefore not in the accessibility tree.
+	 *  What a screen reader meets is the button, so the description goes there. */
+	override describedTarget(): Element | null {
+		return this.shadowRoot?.querySelector('nldd-button') ?? null;
 	}
 
 	override render() {

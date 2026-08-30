@@ -238,3 +238,33 @@ describe('nldd-image', () => {
 		expect(el.hasAttribute('loaded')).toBe(false);
 	});
 });
+
+describe('nldd-image with an inline svg', () => {
+	let el: HTMLElement;
+
+	afterEach(() => {
+		if (el) cleanup(el);
+	});
+
+	it('uses the slotted svg instead of the fallback img', async () => {
+		el = await fixture(`
+			<nldd-image decorative aspect-ratio="6/5">
+				<svg viewBox="0 0 120 100"><rect width="120" height="100"></rect></svg>
+			</nldd-image>`);
+		await waitForUpdate(el);
+		const slot = el.shadowRoot!.querySelector<HTMLSlotElement>('slot:not([name])')!;
+		const assigned = slot.assignedElements({ flatten: true });
+		expect(assigned.map(n => n.tagName.toLowerCase())).toEqual(['svg']);
+	});
+
+	it('sizes the svg to the media box', async () => {
+		el = await fixture(`
+			<nldd-image decorative aspect-ratio="6/5" style="width: 240px">
+				<svg viewBox="0 0 120 100"><rect width="120" height="100"></rect></svg>
+			</nldd-image>`);
+		await waitForUpdate(el);
+		const svg = el.querySelector('svg') as SVGElement;
+		expect(getComputedStyle(svg).display).toBe('block');
+		expect(svg.getBoundingClientRect().width).toBe(240);
+	});
+});

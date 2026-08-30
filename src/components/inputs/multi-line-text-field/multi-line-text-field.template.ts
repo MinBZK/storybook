@@ -30,6 +30,8 @@ export function multiLineTextFieldTemplate(component: NLDDMultiLineTextField): T
 	return html`
 		<div class="multi-line-text-field">
 			<textarea class="multi-line-text-field__input"
+				minlength=${component.minlength ?? nothing}
+				maxlength=${component.maxlength ?? nothing}
 				id=${component.inputId || nothing}
 				rows=${component.rows}
 				inputmode=${component.keyboard || nothing}
@@ -42,7 +44,6 @@ export function multiLineTextFieldTemplate(component: NLDDMultiLineTextField): T
 				autocomplete=${component.autocomplete || nothing}
 				spellcheck=${component.noSpellcheck ? 'false' : 'true'}
 				aria-label=${component.accessibleLabel || nothing}
-				aria-describedby=${component.errorMessageIds || nothing}
 				aria-invalid=${component.invalid ? 'true' : nothing}
 				@input=${component._handleInput}
 				@change=${component._handleChange}

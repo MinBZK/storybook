@@ -1,31 +1,32 @@
 /**
- * NLDD Design System Datumkiezer Component (Lit + TypeScript)
+ * NLDD Design System Date Picker Component (Lit + TypeScript)
  *
- * Een kalender waarin een datum of een periode wordt gekozen. Het component is
- * zelfstandig bruikbaar - inline op een pagina, in een filterpaneel - en zit ook
- * in de popover van nldd-date-field.
+ * A calendar for picking a date or a period. The component works on its own
+ * (inline on a page, in a filter panel) and also sits in the popover of
+ * nldd-date-field.
  *
- * Waarden zijn altijd ISO (jjjj-mm-dd). Met `range` kiest de gebruiker in twee
- * stappen een begin- en einddatum.
+ * Values are always ISO (yyyy-mm-dd). With `range` the user picks a start and
+ * an end date in two steps.
  *
  * @element nldd-date-picker
  *
- * @attr {string} value - De gekozen datum als ISO (jjjj-mm-dd). Alleen zonder `range`.
- * @attr {string} start - Begin van de periode als ISO. Alleen met `range`.
- * @attr {string} end - Einde van de periode als ISO. Alleen met `range`.
- * @attr {boolean} range - Kies een periode in plaats van één datum.
- * @attr {string} min - Vroegst toegestane datum: ISO, of `today` met een verschuiving (`today-18y`).
- * @attr {string} max - Laatst toegestane datum: ISO, of `today` met een verschuiving (`today+1y`).
- * @attr {number} first-day-of-week - Eerste dag van de week, 0 is zondag. Standaard 1 (maandag).
- * @attr {boolean} week-numbers - Toont ISO-weeknummers in een kolom links.
- * @attr {string} width - Breedte: `full` (vult de container) of een CSS-lengte (bv. `560px`). Leeg (standaard) is de intrinsieke breedte van zeven dagcellen; de cellen rekken mee met de opgegeven breedte.
- * @attr {string} accessible-label - Toegankelijke naam van de kalender.
- * @attr {object} translations - Vertalingen; niet opgegeven sleutels vallen terug op het Nederlands.
+ * @attr {string} value - The chosen date as ISO (yyyy-mm-dd). Only without `range`.
+ * @attr {string} start - Start of the period as ISO. Only with `range`.
+ * @attr {string} end - End of the period as ISO. Only with `range`.
+ * @attr {boolean} range - Pick a period instead of a single date.
+ * @attr {string} min - Earliest allowed date: ISO, or `today` with an offset (`today-18y`).
+ * @attr {string} max - Latest allowed date: ISO, or `today` with an offset (`today+1y`).
+ * @attr {number} first-day-of-week - First day of the week, 0 is Sunday. Default 1 (Monday).
+ * @attr {boolean} week-numbers - Shows ISO week numbers in a column on the left.
+ * @attr {string} width - Width: `full` (fills the container) or a CSS length (e.g. `560px`). Empty (default) is the intrinsic width of seven day cells; the cells stretch along with the width you pass.
+ * @attr {string} accessible-label - Accessible name of the calendar.
+ * @attr {object} translations - Translations; unspecified keys fall back to Dutch.
+ * @attr {boolean} invalid - Marks the control as invalid. Announced with aria-invalid; nothing is drawn for it.
  *
- * @prop {(iso: string) => boolean} isDateUnavailable - Markeert losse datums als niet kiesbaar, bijvoorbeeld weekenden of feestdagen.
+ * @prop {(iso: string) => boolean} isDateUnavailable - Marks individual dates as not selectable, for example weekends or public holidays.
  *
- * @fires change - Wanneer een datum of een volledige periode is gekozen. detail: { value } of { start, end }.
- * @fires input - Ook bij de tussenstap van een periode, wanneer alleen de begindatum staat.
+ * @fires change - When a date or a complete period has been chosen. detail: { value } or { start, end }.
+ * @fires input - Also on the intermediate step of a period, when only the start date is set.
  */
 
 import { LitElement, type PropertyValues } from 'lit';
@@ -40,6 +41,8 @@ import { nlddDatePickerTranslations, MONTH_KEYS, WEEKDAY_KEYS } from './date-pic
 import type { NLDDDatePickerTranslations } from './date-picker.i18n.js';
 import './../../actions/icon-button/icon-button.js';
 import './../../actions/button/button.js';
+import { DescribedBy } from '../../../utilities/described-by-mixin.js';
+import { reflectNonDefault } from '../../../utilities/reflect-non-default.js';
 
 /**
  * All arithmetic runs on UTC-midnight Dates and ISO strings. UTC keeps a DST
@@ -124,10 +127,10 @@ function clampIso(iso: string, min: string, max: string): string {
 }
 
 @customElement('nldd-date-picker')
-export class NLDDDatePicker extends withTranslations<NLDDDatePickerTranslations>(
+export class NLDDDatePicker extends DescribedBy(withTranslations<NLDDDatePickerTranslations>(
 	LitElement,
 	nlddDatePickerTranslations,
-) {
+)) {
 	static override styles = datePickerStyles;
 
 	/** Says this is the control an nldd-form-field is about, so the field can
@@ -144,7 +147,7 @@ export class NLDDDatePicker extends withTranslations<NLDDDatePickerTranslations>
 	end = '';
 
 	/** Width: 'full' or a CSS length. Empty is the intrinsic seven-cell width. */
-	@property({ type: String, reflect: true })
+	@property({ reflect: true, converter: reflectNonDefault('') })
 	width = '';
 
 	@property({ type: Boolean, reflect: true })
@@ -253,6 +256,19 @@ export class NLDDDatePicker extends withTranslations<NLDDDatePickerTranslations>
 
 	/** Set when the keyboard moved focus, so only then is focus pulled to a cell. */
 	private _restoreFocus = false;
+
+
+	/**
+	 * Marks the control as invalid.
+	 *
+	 * Announced and not drawn. What is wrong belongs in an
+	 * nldd-validation-list, in words: a red ring around a single
+	 * checkbox or radio would say the option is wrong, while it is the question
+	 * that is unanswered. `aria-invalid` still goes on the control, because
+	 * choosing not to show something is not a reason to keep quiet about it.
+	 */
+	@property({ type: Boolean, reflect: true })
+	invalid = false;
 
 	override connectedCallback(): void {
 		super.connectedCallback();
@@ -817,6 +833,11 @@ export class NLDDDatePicker extends withTranslations<NLDDDatePickerTranslations>
 		const today = todayIso();
 		this._view = firstOfMonth(today);
 		this._focused = today;
+	}
+
+	/** The grid is the widget; focus roves over the days inside it. */
+	override describedTarget(): Element | null {
+		return this.shadowRoot?.querySelector('[role="grid"]') ?? null;
 	}
 
 	override render() {

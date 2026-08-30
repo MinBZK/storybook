@@ -1,4 +1,4 @@
-import { describe, it, expect, afterEach } from 'vitest';
+import { describe, it, expect, afterEach, vi } from 'vitest';
 import { fixture, cleanup, waitForUpdate } from '../../../test-utils.js';
 import './list.js';
 import '../list-item/list-item.js';
@@ -7,6 +7,8 @@ import '../cells/icon-cell/icon-cell.js';
 import '../list-item-segment/list-item-segment.js';
 import '../cells/cell/cell.js';
 import '../../actions/icon-button/icon-button.js';
+import '../../inputs/combo-box/combo-box.js';
+import '../../actions/menu/menu.js';
 
 describe('nldd-list', () => {
 	let el: HTMLElement;
@@ -361,28 +363,50 @@ describe('nldd-list', () => {
 	});
 
 
-	// — Empty default inline-dialog ——————————————————————————————————————————
+	// — Empty state ————————————————————————————————————————————————————————
 
-	it('empty default: renders nldd-inline-dialog with i18n text when no items', async () => {
+	it('empty: says nothing of its own, because the words are the app\'s', async () => {
 		el = await fixture('<nldd-list></nldd-list>');
 		await waitForUpdate(el);
-		const dialog = el.shadowRoot!.querySelector('nldd-inline-dialog');
-		expect(dialog).not.toBeNull();
-		expect(dialog!.getAttribute('text')).toBe('Geen items');
+		expect(el.shadowRoot!.querySelector('nldd-inline-dialog')).toBeNull();
 	});
 
-	it('empty default: empty-text attribute overrides the i18n default', async () => {
-		el = await fixture('<nldd-list empty-text="Niets gevonden"></nldd-list>');
+	it('empty: takes itself off the page when the slot is unfilled', async () => {
+		el = await fixture('<nldd-list variant="box-tinted"></nldd-list>');
 		await waitForUpdate(el);
-		const dialog = el.shadowRoot!.querySelector('nldd-inline-dialog');
-		expect(dialog!.getAttribute('text')).toBe('Niets gevonden');
+		expect(getComputedStyle(el).display).toBe('none');
 	});
 
-	it('empty default: empty-supporting-text populates the inline-dialog', async () => {
-		el = await fixture('<nldd-list empty-supporting-text="Probeer iets anders."></nldd-list>');
+	it('empty: stays on the page once the slot says something', async () => {
+		el = await fixture('<nldd-list variant="box-tinted"><nldd-inline-dialog slot="empty" text="Niets gevonden"></nldd-inline-dialog></nldd-list>');
 		await waitForUpdate(el);
-		const dialog = el.shadowRoot!.querySelector('nldd-inline-dialog');
-		expect(dialog!.getAttribute('supporting-text')).toBe('Probeer iets anders.');
+		expect(getComputedStyle(el).display).not.toBe('none');
+	});
+
+	it('empty: warns in DEV about a list that renders a blank area', async () => {
+		const warnings: string[] = [];
+		const original = console.warn;
+		console.warn = (...args: unknown[]) => { warnings.push(String(args[0])); };
+		try {
+			el = await fixture('<nldd-list></nldd-list>');
+			await waitForUpdate(el);
+		} finally {
+			console.warn = original;
+		}
+		expect(warnings.some(warning => /slot="empty"/.test(warning))).toBe(true);
+	});
+
+	it('empty: stays quiet when the slot is filled', async () => {
+		const warnings: string[] = [];
+		const original = console.warn;
+		console.warn = (...args: unknown[]) => { warnings.push(String(args[0])); };
+		try {
+			el = await fixture('<nldd-list><nldd-inline-dialog slot="empty" text="Niets gevonden"></nldd-inline-dialog></nldd-list>');
+			await waitForUpdate(el);
+		} finally {
+			console.warn = original;
+		}
+		expect(warnings.some(warning => /slot="empty"/.test(warning))).toBe(false);
 	});
 
 	it('empty default: slotted content replaces the default dialog', async () => {
@@ -1189,5 +1213,268 @@ describe('nldd-list – listbox', () => {
 		await waitForUpdate(el);
 		expect(clicked).toBe(true);
 		expect(el.shadowRoot!.activeElement).toBe(searchInput());
+	});
+});
+
+describe('nldd-list — the warning about a control the row cannot reach', () => {
+	let el: HTMLElement;
+
+	// Filled on connect, not in the constructor: the parser sets the attributes
+	// only after it has run that.
+	class TestControl extends HTMLElement {
+		connectedCallback() {
+			if (this.shadowRoot) return;
+			this.attachShadow({ mode: 'open' }).innerHTML = this.getAttribute('shadow') ?? '';
+		}
+	}
+	if (!customElements.get('test-control')) customElements.define('test-control', TestControl);
+
+	const mount = async (row: string) => {
+		const warn = vi.spyOn(console, 'warn').mockImplementation(() => {});
+		el = await fixture(`<nldd-list accessible-label="X"><nldd-list-item>${row}</nldd-list-item></nldd-list>`);
+		await waitForUpdate(el);
+		return warn.mock.calls.flat().filter(arg => String(arg).includes('keeps its tab stop'));
+	};
+
+	afterEach(() => {
+		if (el) cleanup(el);
+		vi.restoreAllMocks();
+	});
+
+	it('warns for a custom element that keeps a tab stop of its own', async () => {
+		const warnings = await mount('<test-control shadow="<button>X</button>"></test-control>');
+		expect(warnings).toHaveLength(1);
+	});
+
+	it('stays silent for a control parked at a negative tabindex', async () => {
+		const warnings = await mount('<test-control shadow="<div tabindex=-1></div>"></test-control>');
+		expect(warnings).toHaveLength(0);
+	});
+
+	it('stays silent for a control that is not rendered', async () => {
+		const warnings = await mount('<test-control style="display: none" shadow="<button>X</button>"></test-control>');
+		expect(warnings).toHaveLength(0);
+	});
+
+	it('stays silent for a segment, which the row manages over its own channel', async () => {
+		const warnings = await mount('<nldd-list-item-segment href="/a"><nldd-text-cell text="A"></nldd-text-cell></nldd-list-item-segment>');
+		expect(warnings).toHaveLength(0);
+	});
+});
+
+describe('nldd-list type="form"', () => {
+	let el: HTMLElement;
+
+	afterEach(() => {
+		if (el) cleanup(el);
+	});
+
+	const formList = (extra = '') => `
+		<nldd-list type="form" accessible-label="Properties">
+			<nldd-list-item>
+				<nldd-text-cell width="full" text="Due date"></nldd-text-cell>
+				<nldd-cell><input id="due" value="2026-08-23"></nldd-cell>
+			</nldd-list-item>
+			<nldd-list-item>
+				<nldd-text-cell width="full" text="Created"></nldd-text-cell>
+				<nldd-text-cell text="Jul 24"></nldd-text-cell>
+			</nldd-list-item>
+			${extra}
+		</nldd-list>
+	`;
+
+	it('keeps role="list" on .list__items', async () => {
+		el = await fixture(formList());
+		await waitForUpdate(el);
+		expect(el.shadowRoot!.querySelector('.list__items')!.getAttribute('role')).toBe('list');
+		expect(el.hasAttribute('role')).toBe(false);
+	});
+
+	it('promises no arrow keys', async () => {
+		el = await fixture(formList());
+		await waitForUpdate(el);
+		expect(el.hasAttribute('aria-keyshortcuts')).toBe(false);
+		expect(el.hasAttribute('aria-description')).toBe(false);
+	});
+
+	it('leaves every row without a tab stop, so Tab reaches the controls', async () => {
+		el = await fixture(formList());
+		await waitForUpdate(el);
+		const rows = [...el.querySelectorAll('nldd-list-item')];
+		expect(rows.map((row) => row.getAttribute('tabindex'))).toEqual([null, null]);
+		expect(el.querySelector('#due')!.hasAttribute('tabindex')).toBe(false);
+	});
+
+	it('does not move on an arrow key', async () => {
+		el = await fixture(formList());
+		await waitForUpdate(el);
+		const before = document.activeElement;
+		el.dispatchEvent(new KeyboardEvent('keydown', { key: 'ArrowDown', bubbles: true }));
+		await waitForUpdate(el);
+		expect(document.activeElement).toBe(before);
+	});
+
+	it('warns about a row that is an action itself', async () => {
+		const warn = vi.spyOn(console, 'warn').mockImplementation(() => {});
+		el = await fixture(formList('<nldd-list-item button><nldd-text-cell text="Delete"></nldd-text-cell></nldd-list-item>'));
+		await waitForUpdate(el);
+		expect(warn).toHaveBeenCalledWith(expect.stringContaining('type="form"'));
+		warn.mockRestore();
+	});
+});
+
+describe('nldd-list roving and the controls in a row', () => {
+	let el: HTMLElement;
+
+	afterEach(() => {
+		if (el) cleanup(el);
+	});
+
+	const rovingList = () => `
+		<nldd-list accessible-label="Tasks">
+			<nldd-list-item>
+				<nldd-text-cell width="full" text="One"></nldd-text-cell>
+				<nldd-cell><input id="field" value="typed"></nldd-cell>
+			</nldd-list-item>
+			<nldd-list-item button>
+				<nldd-text-cell width="full" text="Two"></nldd-text-cell>
+			</nldd-list-item>
+		</nldd-list>
+	`;
+
+	it('stands down while the key comes from a control the row holds', async () => {
+		el = await fixture(rovingList());
+		await waitForUpdate(el);
+		const rows = [...el.querySelectorAll('nldd-list-item')];
+		const field = el.querySelector('#field') as HTMLInputElement;
+		field.focus();
+		await waitForUpdate(el);
+		field.dispatchEvent(new KeyboardEvent('keydown', { key: 'ArrowDown', bubbles: true, composed: true }));
+		await waitForUpdate(el);
+		expect(document.activeElement).toBe(field);
+		expect(rows[1].hasAttribute('tabindex')).toBe(false);
+	});
+
+	it('stands down for a control the roving cannot park either', async () => {
+		// A combo box carries no `no-tab` and is no native tab stop, so it is not
+		// in _rovingControls at all — the very control that needs the keys most.
+		el = await fixture(`
+			<nldd-list accessible-label="Tasks">
+				<nldd-list-item>
+					<nldd-text-cell width="full" text="Assigned to"></nldd-text-cell>
+					<nldd-cell><nldd-combo-box text="Yara"></nldd-combo-box></nldd-cell>
+				</nldd-list-item>
+				<nldd-list-item button><nldd-text-cell text="Two"></nldd-text-cell></nldd-list-item>
+			</nldd-list>
+		`);
+		await waitForUpdate(el);
+		const combo = el.querySelector('nldd-combo-box')!;
+		const input = combo.shadowRoot!.querySelector('input') as HTMLInputElement;
+		input.focus();
+		await waitForUpdate(el);
+		input.dispatchEvent(new KeyboardEvent('keydown', { key: 'ArrowDown', bubbles: true, composed: true }));
+		await waitForUpdate(el);
+		expect(document.activeElement).toBe(combo);
+	});
+
+	it('still answers an arrow key from a segment, which is what the row is', async () => {
+		el = await fixture(`
+			<nldd-list accessible-label="Tasks">
+				<nldd-list-item>
+					<nldd-list-item-segment button accessible-label="One">
+						<nldd-text-cell width="full" text="One"></nldd-text-cell>
+					</nldd-list-item-segment>
+				</nldd-list-item>
+				<nldd-list-item button><nldd-text-cell text="Two"></nldd-text-cell></nldd-list-item>
+			</nldd-list>
+		`);
+		await waitForUpdate(el);
+		const rows = [...el.querySelectorAll('nldd-list-item')];
+		const segment = el.querySelector('nldd-list-item-segment')!;
+		segment.shadowRoot!.querySelector('button')!
+			.dispatchEvent(new KeyboardEvent('keydown', { key: 'ArrowDown', bubbles: true, composed: true }));
+		await waitForUpdate(el);
+		expect((rows[1] as unknown as { _rovingActive: boolean })._rovingActive).toBe(true);
+	});
+
+	it('still answers an arrow key from the row itself', async () => {
+		el = await fixture(rovingList());
+		await waitForUpdate(el);
+		const rows = [...el.querySelectorAll('nldd-list-item')];
+		rows[0].dispatchEvent(new KeyboardEvent('keydown', { key: 'ArrowDown', bubbles: true, composed: true }));
+		await waitForUpdate(el);
+		expect((rows[1] as unknown as { _rovingActive: boolean })._rovingActive).toBe(true);
+	});
+
+	it('Escape from a control lands on its row and stops there', async () => {
+		el = await fixture(rovingList());
+		await waitForUpdate(el);
+		const rows = [...el.querySelectorAll('nldd-list-item')];
+		const field = el.querySelector('#field') as HTMLInputElement;
+		field.focus();
+		await waitForUpdate(el);
+		const outer = vi.fn();
+		document.addEventListener('keydown', outer);
+		const event = new KeyboardEvent('keydown', { key: 'Escape', bubbles: true, composed: true, cancelable: true });
+		field.dispatchEvent(event);
+		await waitForUpdate(el);
+		document.removeEventListener('keydown', outer);
+		expect(document.activeElement).toBe(rows[0]);
+		expect(event.defaultPrevented).toBe(true);
+		expect(outer).not.toHaveBeenCalled();
+	});
+
+	it('leaves the first Escape to a control showing a popover', async () => {
+		el = await fixture(`
+			<nldd-list accessible-label="Tasks">
+				<nldd-list-item>
+					<nldd-text-cell width="full" text="One"></nldd-text-cell>
+					<nldd-cell>
+						<span id="control"><input id="field2"><div id="pop" popover>menu</div></span>
+					</nldd-cell>
+				</nldd-list-item>
+				<nldd-list-item button><nldd-text-cell text="Two"></nldd-text-cell></nldd-list-item>
+			</nldd-list>
+		`);
+		await waitForUpdate(el);
+		const field = el.querySelector('#field2') as HTMLInputElement;
+		const pop = el.querySelector('#pop') as HTMLElement & { showPopover(): void; hidePopover(): void };
+		field.focus();
+		pop.showPopover();
+		await waitForUpdate(el);
+		// A control closes its own menu in its own handler and lets the key travel
+		// on, so the list has to read the popover on the way in, not on the way out.
+		field.dispatchEvent(new KeyboardEvent('keydown', { key: 'Escape', bubbles: true, composed: true, cancelable: true }));
+		pop.hidePopover();
+		await waitForUpdate(el);
+		expect(document.activeElement).toBe(field);
+		field.dispatchEvent(new KeyboardEvent('keydown', { key: 'Escape', bubbles: true, composed: true, cancelable: true }));
+		await waitForUpdate(el);
+		expect(document.activeElement).toBe(el.querySelectorAll('nldd-list-item')[0]);
+	});
+
+	it('leaves Escape alone on the row, so what holds the list gets it', async () => {
+		el = await fixture(rovingList());
+		await waitForUpdate(el);
+		const rows = [...el.querySelectorAll('nldd-list-item')];
+		const event = new KeyboardEvent('keydown', { key: 'Escape', bubbles: true, composed: true, cancelable: true });
+		rows[0].dispatchEvent(event);
+		await waitForUpdate(el);
+		expect(event.defaultPrevented).toBe(false);
+	});
+
+	it('parks the row controls once focus leaves the list', async () => {
+		el = await fixture(`<div>${rovingList()}<button id="after">after</button></div>`);
+		const list = el.querySelector('nldd-list')!;
+		await waitForUpdate(list);
+		const field = el.querySelector('#field') as HTMLInputElement;
+		field.focus();
+		await waitForUpdate(list);
+		expect(field.getAttribute('tabindex')).not.toBe('-1');
+		(el.querySelector('#after') as HTMLElement).focus();
+		list.dispatchEvent(new FocusEvent('focusout', { bubbles: true }));
+		await new Promise((resolve) => { queueMicrotask(() => resolve(null)); });
+		await waitForUpdate(list);
+		expect(field.getAttribute('tabindex')).toBe('-1');
 	});
 });

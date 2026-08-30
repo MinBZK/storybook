@@ -3,14 +3,14 @@
  *
  * @element nldd-form-field
  *
- * @attr {string} label-alignment - 'top' (default) | 'right' | 'left'. Een eigen waarde wint altijd over de inherited form-label-alignment.
- * @attr {string} form-label-alignment - Door wrappende nldd-form gezet als fallback. Niet zelf zetten in consumer-code.
+ * @attr {string} label-alignment - 'top' (default) | 'right' | 'left'. A value of its own always wins over the inherited form-label-alignment.
+ * @attr {string} form-label-alignment - Set by a wrapping nldd-form as a fallback. Do not set it yourself in consumer code.
  * @attr {string} label - Field label text. Omit for no-label layout.
  * @attr {string} supporting-label - Short supporting text below the label. Same typography as optional badge.
  * @attr {boolean} optional - Shows an optional badge next to the label.
  * @attr {string} optional-label - Text for the optional badge. Defaults to 'Optioneel'.
  *
- * @slot - The slotted input (e.g. nldd-text-field). Set `invalid` and `error-message="id1 id2"` on the input to wire up error texts. nldd-form-field-error-text elements assign themselves to the errors slot automatically.
+ * @slot - The slotted input (e.g. nldd-text-field), its nldd-validation-list and its nldd-form-field-help-text.
  *
  * ─────────────────────────────────────────────────────────────────────────
  *
@@ -20,43 +20,35 @@
  *
  * ─────────────────────────────────────────────────────────────────────────
  *
- * @element nldd-form-field-error-text
- *
- * @attr {string} id - Referenced by the input's `error-message` attribute.
- * @attr {boolean} invalid - Visibility managed automatically by nldd-form-field.
- *
- * @slot - The error message text.
- *
- * ─────────────────────────────────────────────────────────────────────────
- *
  * @example
  * <nldd-form-field label="Password">
+ *   <nldd-password-field invalid></nldd-password-field>
+ *   <nldd-validation-list>
+ *     <nldd-validation-item id="password-required" required>This field is required.</nldd-validation-item>
+ *     <nldd-validation-item id="password-length" minlength="8">Must be at least 8 characters.</nldd-validation-item>
+ *   </nldd-validation-list>
  *   <nldd-form-field-help-text>
- *     At least 8 characters. <a href="/help">Learn more</a>.
+ *     We only use this to sign you in. <a href="/help">Learn more</a>.
  *   </nldd-form-field-help-text>
- *   <nldd-text-field invalid error-message="error-required error-length"></nldd-text-field>
- *   <nldd-form-field-error-text id="error-required">This field is required.</nldd-form-field-error-text>
- *   <nldd-form-field-error-text id="error-length">Must be at least 8 characters.</nldd-form-field-error-text>
  * </nldd-form-field>
  */
 import { LitElement } from 'lit';
-import { customElement, property, state } from 'lit/decorators.js';
+import { customElement, property } from 'lit/decorators.js';
 import { setOwnedAttribute } from '../../../utilities/owned-attribute.js';
+import { applyDescribedBy, type DescribedElement } from '../../../utilities/described-by-mixin.js';
 import {
 	formFieldStyles,
 	formFieldHelpTextStyles,
-	formFieldErrorTextStyles,
 } from './form-field.styles.js';
 import {
 	formFieldTemplate,
 	formFieldHelpTextTemplate,
-	formFieldErrorTextTemplate,
 } from './form-field.template.js';
 
 export type LabelAlignment = 'top' | 'left' | 'right';
 
 // Exclude helper elements so _findInput() never returns them instead of the actual input
-const HELPER_TAGS = ['nldd-form-field-help-text', 'nldd-form-field-error-text'];
+const HELPER_TAGS = ['nldd-form-field-help-text'];
 
 /**
  * Whether this element is the input a field is about.
@@ -139,7 +131,6 @@ export class NLDDFormField extends LitElement {
 	optionalLabel = 'Optioneel';
 
 	private _childObserver: MutationObserver | null = null;
-	private _observer: MutationObserver | null = null;
 
 	/** The last label this field wrote onto the control, so it only takes back its own. */
 	private _appliedLabel: string | null = null;
@@ -147,15 +138,11 @@ export class NLDDFormField extends LitElement {
 	/** Keeps the "no input found" warning to one per field rather than one per mutation. */
 	private _warnedNoInput = false;
 
-	@state()
-	private _hasErrors = false;
-
 	override render() {
 		return formFieldTemplate(this);
 	}
 
 	override updated(changed: Map<PropertyKey, unknown>) {
-		this.classList.toggle('has-errors', this._hasErrors);
 		if (changed.has('label')) {
 			this._onSlotChange();
 		}
@@ -174,7 +161,6 @@ export class NLDDFormField extends LitElement {
 	override disconnectedCallback() {
 		super.disconnectedCallback();
 		this._childObserver?.disconnect();
-		this._observer?.disconnect();
 	}
 
 	/**
@@ -201,9 +187,6 @@ export class NLDDFormField extends LitElement {
 	}
 
 	private _onSlotChange() {
-		// Disconnect the previous attribute observer before wiring up a new one.
-		this._observer?.disconnect();
-
 		const input = this._findInput();
 		if (!input) {
 			// Only once there is something to look at. An empty field is usually one
@@ -234,19 +217,8 @@ export class NLDDFormField extends LitElement {
 		}
 
 		this._applyAccessibleLabel(input);
-
-		// Ensure each help text element has an id so it can be referenced in aria-describedby
-		Array.from(this.children)
-			.filter(el => el.tagName.toLowerCase() === 'nldd-form-field-help-text')
-			.forEach(el => { if (!el.id) el.id = generateId(); });
-
-		this._observer = new MutationObserver(() => this._syncErrorText());
-		this._observer.observe(input, {
-			attributes: true,
-			attributeFilter: ['invalid', 'error-message'],
-		});
-
-		this._syncErrorText();
+		this._adoptValidationLists(input);
+		this._syncDescription();
 	}
 
 	/**
@@ -284,6 +256,45 @@ export class NLDDFormField extends LitElement {
 	}
 
 	/**
+	 * Hands every validation list in this field the control it is about, so it
+	 * does not have to go looking for one.
+	 *
+	 * A list with a `for` of its own is left alone: that is how you say it is
+	 * about a different control than the first.
+	 *
+	 * More than one control in a field is allowed and sometimes right, a radio
+	 * group with an "Anders" text field beside it being the case this component
+	 * is built for. But a list that reads a value would then quietly read the
+	 * wrong one, and nothing on screen would show it: the rules simply never
+	 * match. Say so once, where it can still be fixed.
+	 */
+	private _adoptValidationLists(input: Element): void {
+		const lists = Array.from(this.children)
+			.filter((el): el is HTMLElement & { control: Element | null } =>
+				el.tagName.toLowerCase() === 'nldd-validation-list');
+		if (!lists.length) return;
+
+		for (const list of lists) {
+			if (!list.getAttribute('for')) list.control = input;
+		}
+
+		if (!import.meta.env?.DEV) return;
+		const controls = Array.from(this.children)
+			.filter(el => !HELPER_TAGS.includes(el.tagName.toLowerCase()) && isFormInput(el));
+		if (controls.length < 2) return;
+
+		const readsValue = lists.some(list => !list.getAttribute('for') && Array.from(list.children)
+			.some(item => item.hasAttribute('match') || item.hasAttribute('minlength') || item.hasAttribute('maxlength')));
+		if (!readsValue) return;
+
+		const which = this.label ? ` (label="${this.label}")` : '';
+		console.warn(
+			`<nldd-form-field>${which}: more than one control, and the validation list has rules that read a value. `
+			+ `It is reading <${input.localName}>, the first one. Set \`for\` on the list if it should read another.`,
+		);
+	}
+
+	/**
 	 * The input this field is about: the first one in the light DOM, wrapped or
 	 * not.
 	 *
@@ -313,59 +324,41 @@ export class NLDDFormField extends LitElement {
 	}
 
 	/**
-	 * Reads `invalid` and `error-message` from the input and toggles
-	 * the `invalid` attribute on the referenced nldd-form-field-error-text elements.
-	 * Also sets `aria-describedby` on the input to reference visible error texts.
+	 * Hands the control the elements that describe it.
 	 *
-	 * Note: this mechanism relies on the slotted input reflecting an `invalid`
-	 * attribute, which nldd-text-field and nldd-password-field do. Plain native
-	 * `<input>` elements use constraint validation (validity.valid, the `invalid`
-	 * event) instead — support for native inputs is a known limitation and
-	 * tracked as a follow-up.
+	 * Elements and not ids. An IDREF resolves inside the tree of the element
+	 * that carries it, so an id written here cannot be found from inside a
+	 * component's shadow root: the attribute lands, the id is right, and the
+	 * description comes out empty. A control that renders its own input takes
+	 * `describedByElements` and puts the references where they belong; anything
+	 * that is the control itself, a native input or a host with a role of its
+	 * own, is pointed at directly.
+	 *
+	 * The list once, not each of its items. The items come and go while you
+	 * type, and a description rewritten per keystroke is a lot of churn in
+	 * something assistive software is reading. A hidden item counts for nothing
+	 * in the description, so one reference gives exactly what is on screen, and
+	 * this never has to run again when the value changes.
+	 *
+	 * The requirements before the plain help text: what is wrong is why you are
+	 * here.
 	 */
-	private _syncErrorText() {
+	private _syncDescription() {
 		const input = this._findInput();
 		if (!input) return;
 
-		const isCustomInput = 'inputId' in input;
-		const isInvalid = input.hasAttribute('invalid');
-		const referencedIds = (input.getAttribute('error-message') ?? '')
-			.split(' ')
-			.filter(Boolean);
+		const children = Array.from(this.children);
+		const tag = (el: Element) => el.tagName.toLowerCase();
+		const describedBy = [
+			...children.filter(el => tag(el) === 'nldd-validation-list'),
+			...children.filter(el => tag(el) === 'nldd-form-field-help-text'),
+		];
 
-		const allErrorTexts = Array.from(this.children)
-			.filter(el => el.tagName.toLowerCase() === 'nldd-form-field-error-text');
-
-		const helpIds = Array.from(this.children)
-			.filter(el => el.tagName.toLowerCase() === 'nldd-form-field-help-text' && el.id)
-			.map(el => el.id);
-
-		const visibleErrorIds: string[] = [];
-
-		for (const el of allErrorTexts) {
-			const shouldShow = isInvalid && referencedIds.includes(el.id);
-			el.toggleAttribute('invalid', shouldShow);
-			if (shouldShow && el.id) visibleErrorIds.push(el.id);
-		}
-
-		// Prepend help text IDs so they are announced first, then error IDs.
-		const describedByIds = [...helpIds, ...visibleErrorIds];
-		const describedByValue = describedByIds.join(' ');
-
-		if (isCustomInput) {
-			// For custom elements (nldd-text-field, nldd-password-field), set error-message-ids
-			// so they can forward it to the inner <input aria-describedby>. IDs do not cross
-			// shadow DOM boundaries so setting aria-describedby on the host is not sufficient.
-			(input as unknown as HTMLElement & { errorMessageIds: string }).errorMessageIds = describedByValue;
+		if ('describedByElements' in input) {
+			(input as unknown as DescribedElement).describedByElements = describedBy;
 		} else {
-			if (describedByIds.length > 0) {
-				input.setAttribute('aria-describedby', describedByValue);
-			} else {
-				input.removeAttribute('aria-describedby');
-			}
+			applyDescribedBy(input, describedBy);
 		}
-
-		this._hasErrors = visibleErrorIds.length > 0;
 	}
 }
 
@@ -391,38 +384,9 @@ export class NLDDFormFieldHelpText extends LitElement {
 }
 
 
-/* ============================================================
-   nldd-form-field-error-text
-   ============================================================ */
-
-@customElement('nldd-form-field-error-text')
-export class NLDDFormFieldErrorText extends LitElement {
-	static override styles = formFieldErrorTextStyles;
-
-	/**
-	 * When present the error text is visible.
-	 * Managed automatically by the parent nldd-form-field — do not set manually.
-	 */
-	@property({ type: Boolean, reflect: true })
-	invalid = false;
-
-	override connectedCallback() {
-		super.connectedCallback();
-		// Assign to the 'errors' slot automatically so consumers don't need to set slot="errors" manually.
-		// Note: this will overwrite any explicit slot attribute set by the consumer.
-		this.slot = 'errors';
-	}
-
-	override render() {
-		return formFieldErrorTextTemplate(this);
-	}
-}
-
-
 declare global {
 	interface HTMLElementTagNameMap {
 		'nldd-form-field': NLDDFormField;
 		'nldd-form-field-help-text': NLDDFormFieldHelpText;
-		'nldd-form-field-error-text': NLDDFormFieldErrorText;
 	}
 }

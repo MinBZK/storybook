@@ -123,7 +123,6 @@ function renderInput(component: NLDDDateField, end: boolean): TemplateResult {
 			?required=${component.required}
 			autocomplete=${!end ? (component.autocomplete || nothing) : nothing}
 			aria-label=${label || nothing}
-			aria-describedby=${component.errorMessageIds || nothing}
 			aria-invalid=${component.invalid ? 'true' : nothing}
 			@keydown=${(e: KeyboardEvent) => component._handleInputKeydown(e, end)}
 			@input=${(e: Event) => component._handleInput(e, end)}

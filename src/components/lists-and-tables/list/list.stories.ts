@@ -18,6 +18,8 @@ import '../../inputs/toggle-button-group/toggle-button-group.js';
 import '../../inputs/toggle-button/toggle-button.js';
 import '../../layout/spacer/spacer.js';
 import '../../layout/box/box.js';
+import '../../inputs/date-field/date-field.js';
+import '../../inputs/combo-box/combo-box.js';
 
 export default {
 	title: 'Components/Lists & Tables/List',
@@ -32,8 +34,8 @@ export default {
 		},
 		type: {
 			control: 'select',
-			options: ['list', 'navigation', 'listbox'],
-			description: 'A11y-semantiek: `list` (role="list"), `navigation` (landmark met `aria-current` op het actieve item) of `listbox` (filterbare listbox met eigen zoekveld, combobox-patroon)',
+			options: ['list', 'navigation', 'listbox', 'form'],
+			description: 'A11y-semantiek: `list` (role="list"), `navigation` (landmark met `aria-current` op het actieve item), `listbox` (filterbare listbox met eigen zoekveld, combobox-patroon) of `form` (rijen die zelf geen actie zijn, met de controls erin; geen pijltjesnavigatie)',
 			table: { defaultValue: { summary: 'list' } },
 		},
 		dividers: {
@@ -41,16 +43,6 @@ export default {
 			options: ['always', 'on-touch', 'never'],
 			description: 'Wanneer de scheidingslijnen tussen de items getekend worden. `on-touch` alleen waar met een vinger wordt bediend, onder `(pointer: coarse)`: een aanwijzer heeft de hover-highlight om het ene item van het andere te scheiden en een vinger heeft niets. `never` verbergt ze overal.',
 			table: { defaultValue: { summary: 'always' } },
-		},
-		'empty-text': {
-			control: 'text',
-			description: 'Tekst van de standaard empty-state-dialog. Valt terug op i18n ("Geen items").',
-			table: { type: { summary: 'string' } },
-		},
-		'empty-supporting-text': {
-			control: 'text',
-			description: 'Ondersteunende tekst van de standaard empty-state-dialog.',
-			table: { type: { summary: 'string' } },
 		},
 		height: {
 			control: 'text',
@@ -81,8 +73,6 @@ export const Default = {
 		variant: 'simple',
 		type: 'list',
 		dividers: 'always',
-		'empty-text': '',
-		'empty-supporting-text': '',
 		height: '',
 	},
 	render: (args: Record<string, any>) => html`
@@ -90,8 +80,6 @@ export const Default = {
 			variant=${args.variant}
 			type=${args.type}
 			dividers=${args.dividers}
-			empty-text=${args['empty-text']}
-			empty-supporting-text=${args['empty-supporting-text']}
 			height=${args.type === 'listbox' && args.height ? args.height : nothing}
 		>
 			<nldd-list-item>
@@ -329,14 +317,14 @@ const buildListbox = (variant: 'box' | 'simple') => {
 
 	// Consumer-managed filtering: combine the search query with the toolbar's
 	// category radio. An item stays visible when it matches the text AND the
-	// selected category ("alles" = no category filter). The list resets the
+	// selected category ("all" = no category filter). The list resets the
 	// active option to the first visible one after the set changes.
 	let query = '';
-	let category = 'alles';
+	let category = 'all';
 	const apply = () => {
 		el.querySelectorAll('nldd-list-item').forEach((item: Element, i: number) => {
 			const matchesText = query === '' || data[i].label.toLowerCase().includes(query);
-			const matchesCategory = category === 'alles' || data[i].category === category;
+			const matchesCategory = category === 'all' || data[i].category === category;
 			item.toggleAttribute('hidden', !(matchesText && matchesCategory));
 		});
 	};
@@ -368,8 +356,6 @@ const buildListbox = (variant: 'box' | 'simple') => {
 			type="listbox"
 			variant=${variant}
 			height="280px"
-			empty-text="Geen resultaten"
-			empty-supporting-text="Probeer een andere zoekterm of filter."
 			@input=${onInput}
 			@click=${onClick}
 		>
@@ -381,7 +367,7 @@ const buildListbox = (variant: 'box' | 'simple') => {
 				accessible-label="Filter op categorie"
 				@change=${onCategoryChange}
 			>
-				<nldd-toggle-button value="alles" text="Alles" selected></nldd-toggle-button>
+				<nldd-toggle-button value="all" text="Alles" selected></nldd-toggle-button>
 				<nldd-toggle-button value="groente" text="Groente"></nldd-toggle-button>
 				<nldd-toggle-button value="fruit" text="Fruit"></nldd-toggle-button>
 			</nldd-toggle-button-group>
@@ -471,39 +457,7 @@ export const ReorderableList = {
 
 // — Empty slot ————————————————————————————————————————————————————————————————
 
-export const EmptyDefault = {
-	render: () => html`
-		<nldd-list variant="box-tinted"></nldd-list>
-	`,
-	parameters: {
-		controls: { disable: true },
-		docs: {
-			description: {
-				story: 'Standaard rendert een lege lijst een default `nldd-inline-dialog` met i18n-tekst ("Geen items"). Geen configuratie nodig.',
-			},
-		},
-	},
-};
-
-export const EmptyWithAttributes = {
-	render: () => html`
-		<nldd-list
-			variant="box-tinted"
-			empty-text="Niets gevonden"
-			empty-supporting-text="Probeer een andere zoekterm."
-		></nldd-list>
-	`,
-	parameters: {
-		controls: { disable: true },
-		docs: {
-			description: {
-				story: 'Gebruik `empty-text` en `empty-supporting-text` om de standaard dialog aan te passen zonder markup te schrijven. Voor rijkere inhoud (icoon, action buttons, alert-variant) slot een complete `nldd-inline-dialog`.',
-			},
-		},
-	},
-};
-
-export const EmptySlotOverride = {
+export const Empty = {
 	render: () => html`
 		<nldd-list variant="box-tinted">
 			<nldd-inline-dialog
@@ -520,7 +474,72 @@ export const EmptySlotOverride = {
 		controls: { disable: true },
 		docs: {
 			description: {
-				story: 'Inhoud in `[slot=empty]` vervangt de standaard dialog volledig — gebruik je eigen icoon, kop, ondersteunende tekst of action buttons.',
+				story: 'Een lege lijst tekent alleen z\'n eigen vlak. Wat daar hoort te staan weet alleen de app: "nog geen assets" en "niets gevonden" zijn twee verschillende zinnen met twee verschillende vervolgstappen. Zet er daarom zelf een `nldd-inline-dialog` in de `empty`-slot, met je eigen icoon, kop, ondersteunende tekst en knoppen.',
+			},
+		},
+	},
+};
+
+export const EmptyWithoutSlot = {
+	name: 'Empty: slot niet gevuld',
+	render: () => html`
+		<nldd-list variant="box-tinted"></nldd-list>
+	`,
+	parameters: {
+		controls: { disable: true },
+		docs: {
+			description: {
+				story: 'Vergeet je die slot, dan blijft het vlak leeg, zoals hier. Dat is geen bedoelde staat: er staat niets op het scherm en niets in de accessibility tree. In development waarschuwt de lijst je er een keer over.',
+			},
+		},
+	},
+};
+
+export const Form = {
+	render: () => html`
+		<nldd-list type="form" variant="box-tinted" accessible-label="Eigenschappen">
+			<nldd-list-item>
+				<nldd-text-cell width="full" text="Vervaldatum"></nldd-text-cell>
+				<nldd-spacer-cell size="12"></nldd-spacer-cell>
+				<nldd-cell width="fit-content">
+					<nldd-date-field size="sm" value="2026-08-23"></nldd-date-field>
+				</nldd-cell>
+			</nldd-list-item>
+			<nldd-list-item>
+				<nldd-text-cell width="full" text="Toegewezen aan"></nldd-text-cell>
+				<nldd-spacer-cell size="12"></nldd-spacer-cell>
+				<nldd-cell width="180px">
+					<nldd-combo-box size="sm" text="Yara Nijhuis" value="yara">
+						<nldd-menu>
+							<nldd-menu-item value="yara" text="Yara Nijhuis"></nldd-menu-item>
+							<nldd-menu-item value="ruben" text="Ruben de Groot"></nldd-menu-item>
+						</nldd-menu>
+					</nldd-combo-box>
+				</nldd-cell>
+			</nldd-list-item>
+			<nldd-list-item>
+				<nldd-text-cell width="full" text="Prioriteit"></nldd-text-cell>
+				<nldd-spacer-cell size="12"></nldd-spacer-cell>
+				<nldd-cell width="fit-content">
+					<nldd-button variant="secondary" size="sm" expandable popup-type="menu" text="Hoog">
+						<nldd-menu slot="popup" placement="bottom-end">
+							<nldd-menu-item type="radio" text="Hoog" selected></nldd-menu-item>
+							<nldd-menu-item type="radio" text="Laag"></nldd-menu-item>
+						</nldd-menu>
+					</nldd-button>
+				</nldd-cell>
+			</nldd-list-item>
+			<nldd-list-item>
+				<nldd-text-cell width="full" text="Aangemaakt"></nldd-text-cell>
+				<nldd-text-cell text="24 juli 2026"></nldd-text-cell>
+			</nldd-list-item>
+		</nldd-list>
+	`,
+	parameters: {
+		controls: { disable: true },
+		docs: {
+			description: {
+				story: 'Rijen die zelf geen actie zijn: de controls erin wel. Tab gaat rechtstreeks naar de velden in bronvolgorde, zoals in elk formulier, en er is geen pijltjesnavigatie en dus ook geen tab-stop op de rij. Semantisch gelijk aan `type="list"`; alleen het toetsenbord van een lijst die je doorloopt valt weg. Rijen met `href`, `button`, `checkbox` of segmenten horen hier niet en waarschuwen in development.',
 			},
 		},
 	},

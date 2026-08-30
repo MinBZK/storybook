@@ -212,6 +212,52 @@ describe('nldd-app-view – derived scroll mode', () => {
 		expect(el.style.getPropertyValue('--context-scroll-mode')).toBe('root');
 	});
 
+	it('re-derives when a split view is swapped in after the app-view connected', async () => {
+		// A consumer that renders its split view behind a condition (a loading
+		// state, an error takeover, an empty state) leaves the app-view with no
+		// split view to derive from, and no split view means `root`. When the
+		// split view comes back it measures itself, and on a wide viewport that
+		// equals its own starting state — so without the first-measurement
+		// announcement it stays silent and every pane keeps scrolling as one
+		// document until you reload.
+		el = await fixture<NLDDAppView>(`
+			<nldd-app-view>
+				<nldd-page></nldd-page>
+			</nldd-app-view>
+		`);
+		expect(el.style.getPropertyValue('--context-scroll-mode')).toBe('root');
+
+		el.innerHTML = `
+			<nldd-navigation-split-view>
+				<nldd-split-view-pane slot="primary-sidebar" has-content></nldd-split-view-pane>
+				<nldd-split-view-pane slot="main" has-content></nldd-split-view-pane>
+			</nldd-navigation-split-view>
+		`;
+		const nav = el.querySelector('nldd-navigation-split-view') as NLDDNavigationSplitView;
+		await setNavWidth(nav, 1280);
+
+		expect(el.style.getPropertyValue('--context-scroll-mode')).toBe('nested');
+	});
+
+	it('falls back to root when the split view is taken away again', async () => {
+		el = await fixture<NLDDAppView>(`
+			<nldd-app-view>
+				<nldd-navigation-split-view>
+					<nldd-split-view-pane slot="primary-sidebar" has-content></nldd-split-view-pane>
+					<nldd-split-view-pane slot="main" has-content></nldd-split-view-pane>
+				</nldd-navigation-split-view>
+			</nldd-app-view>
+		`);
+		const nav = el.querySelector('nldd-navigation-split-view') as NLDDNavigationSplitView;
+		await setNavWidth(nav, 1280);
+		expect(el.style.getPropertyValue('--context-scroll-mode')).toBe('nested');
+
+		el.innerHTML = '<nldd-page></nldd-page>';
+		await waitForUpdate(el);
+
+		expect(el.style.getPropertyValue('--context-scroll-mode')).toBe('root');
+	});
+
 	it('pushes the derived mode down to a nested nldd-page', async () => {
 		el = await fixture<NLDDAppView>(`
 			<nldd-app-view>

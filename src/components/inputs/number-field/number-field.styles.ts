@@ -43,14 +43,14 @@ export const numberFieldStyles = css`
 		opacity: 1;
 	}
 
+	:host {
+		width: var(--_width);
+		max-width: 100%;
+	}
+
 	:host([width="full"]) {
 		display: block;
 		width: 100%;
-	}
-
-	:host([width]) {
-		width: var(--_width);
-		max-width: 100%;
 	}
 
 
@@ -59,17 +59,13 @@ export const numberFieldStyles = css`
 	.number-field {
 		box-sizing: border-box;
 		display: inline-flex;
+		width: 100%;
 		border: var(--semantics-input-fields-border);
 		border-radius: var(--_corner-radius);
 		background-color: var(--semantics-input-fields-background-color);
 		height: var(--_min-size);
 		flex-direction: row;
 		align-items: center;
-	}
-
-	:host([width="full"]) .number-field,
-	:host([width]) .number-field {
-		width: 100%;
 	}
 
 	.number-field:has(.number-field__input:focus-visible) {
@@ -102,9 +98,10 @@ export const numberFieldStyles = css`
 		outline: none;
 		border: none;
 		background: transparent;
-		min-width: var(--_min-size);
+		min-width: 0;
 		padding: 0 var(--primitives-space-6);
 		align-self: stretch;
+		flex-grow: 1;
 		text-align: center;
 		color: var(--semantics-content-color);
 		font: var(--_text-font);
@@ -127,9 +124,4 @@ export const numberFieldStyles = css`
 		text-align: left;
 	}
 
-	:host([width="full"]) .number-field__input,
-	:host([width]) .number-field__input {
-		min-width: 0;
-		flex-grow: 1;
-	}
 `;

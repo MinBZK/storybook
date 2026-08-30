@@ -14,6 +14,7 @@
  * @element nldd-radio-button
  * @attr {boolean} checked - Checked state
  * @attr {boolean} disabled - Disabled state
+ * @attr {boolean} no-tab - Takes the control out of the tab order (tabindex="-1"), for a control owned by a roving container (a row of an nldd-list, where the arrow keys move between rows) that manages focus itself. Still mouse- and script-focusable.
  * @attr {boolean} decorative - Renders the shape without the input: no focus, no
  *   name/value, nothing announced. For a control that owns the state elsewhere,
  *   such as a list row that is itself the radio; putting a real input in there
@@ -22,6 +23,7 @@
  * @attr {string} name - Radio group name for form submission; ties the buttons of one group together
  * @attr {string} value - Value submitted with the form when this radio button is checked
  * @attr {string} accessible-label - Accessible label forwarded as aria-label to the native input.
+ * @attr {boolean} invalid - Marks the control as invalid. Announced with aria-invalid; nothing is drawn for it.
  *   Note: aria-labelledby is not supported as IDREF resolution cannot cross shadow DOM boundaries.
  *
  * @fires change - When checked state changes; detail: { checked: boolean, value: string, name: string }
@@ -31,9 +33,11 @@ import { customElement, property } from 'lit/decorators.js';
 import { FormAssociated, type FormValue } from '../../../utilities/form-associated-mixin.js';
 import { radioButtonStyles } from './radio-button.styles.js';
 import { radioButtonTemplate } from './radio-button.template.js';
+import { DescribedBy } from '../../../utilities/described-by-mixin.js';
+import { reflectNonDefault } from '../../../utilities/reflect-non-default.js';
 
 @customElement('nldd-radio-button')
-export class NLDDRadioButton extends FormAssociated(LitElement) {
+export class NLDDRadioButton extends DescribedBy(FormAssociated(LitElement)) {
 
 	static override styles = radioButtonStyles;
 
@@ -52,11 +56,18 @@ export class NLDDRadioButton extends FormAssociated(LitElement) {
 
 	@property({ type: Boolean, reflect: true })
 	disabled = false;
+	/** Take the control out of the tab order (`tabindex="-1"`) — for a control
+	 *  owned by a roving container (an `nldd-list` sets it on the rows that are
+	 *  not the current one) that manages focus itself. Still mouse- and
+	 *  script-focusable. */
+	@property({ type: Boolean, reflect: true, attribute: 'no-tab' })
+	noTab = false;
+
 
 	@property({ type: Boolean, reflect: true })
 	required = false;
 
-	@property({ type: String, reflect: true })
+	@property({ reflect: true, converter: reflectNonDefault('') })
 	name = '';
 
 	@property({ type: String })
@@ -64,6 +75,19 @@ export class NLDDRadioButton extends FormAssociated(LitElement) {
 
 	@property({ type: String, attribute: 'accessible-label' })
 	accessibleLabel = '';
+
+
+	/**
+	 * Marks the control as invalid.
+	 *
+	 * Announced and not drawn. What is wrong belongs in an
+	 * nldd-validation-list, in words: a red ring around a single
+	 * checkbox or radio would say the option is wrong, while it is the question
+	 * that is unanswered. `aria-invalid` still goes on the control, because
+	 * choosing not to show something is not a reason to keep quiet about it.
+	 */
+	@property({ type: Boolean, reflect: true })
+	invalid = false;
 
 	override firstUpdated(): void {
 		this._initialChecked = this.checked;

@@ -343,10 +343,16 @@ describe('nldd-time-field – toegankelijkheid', () => {
 		expect(el.shadowRoot!.querySelector('input')!.getAttribute('aria-label')).toBe('Starttijd');
 	});
 
-	it('geeft error-message-ids door aan aria-describedby', async () => {
-		el = await fixture<NLDDTimeField>('<nldd-time-field error-message-ids="err-1"></nldd-time-field>');
+	it('wijst de interne input naar de elementen die hem beschrijven', async () => {
+		el = await fixture<NLDDTimeField>('<nldd-time-field></nldd-time-field>');
 		await waitForUpdate(el);
-		expect(el.shadowRoot!.querySelector('input')!.getAttribute('aria-describedby')).toBe('err-1');
+		const uitleg = document.createElement('p');
+		document.body.appendChild(uitleg);
+		(el as unknown as { describedByElements: readonly Element[] }).describedByElements = [uitleg];
+		await waitForUpdate(el);
+		const intern = el.shadowRoot!.querySelector('input')! as Element & { ariaDescribedByElements?: readonly Element[] | null };
+		expect(intern.ariaDescribedByElements).toEqual([uitleg]);
+		uitleg.remove();
 	});
 
 	it('opent een cijfertoetsenbord op mobiel', async () => {

@@ -93,7 +93,7 @@ if (!customElements.get('nldd-menu-group')) {
  * @element nldd-menu-item
  *
  * @attr {string} text - Display text. Supports **bold** markdown syntax.
- * @attr {string} value - Form value. Falls back to text when not set.
+ * @attr {string} value - A value of the item's own, read off the item in a `select` handler. The default filter matches on it as well as on `text` and `aliases`. Not a form value: this component is not form-associated.
  * @attr {string} href - Optional link target. A plain button item with an href renders as an `<a>` so it is a real link (middle-click, open in new tab, copy link). Ignored for submenu openers, checkbox/radio items, and while disabled.
  * @attr {string} aliases - Space-separated alternative search terms.
  * @attr {string} details - Secondary label shown on the right side.
@@ -229,13 +229,15 @@ export class NLDDMenuItem extends LitElement {
 		return this._cachedSubmenuEl !== null;
 	}
 
-	override firstUpdated(): void {
-		// Resolve submenu once and cache. Also trigger a single re-render so
-		// the chevron + ARIA attrs reflect the now-known submenu state.
+	override willUpdate(): void {
+		if (this.hasUpdated) return;
+		// Before the first render, off the light DOM, so the chevron and the ARIA
+		// attributes are right the first time. Resolving it in `firstUpdated` asks
+		// for a second render from inside the first.
 		this._cachedSubmenuEl = this.querySelector(':scope > nldd-menu');
-		if (this._cachedSubmenuEl !== null) {
-			this.requestUpdate();
-		}
+	}
+
+	override firstUpdated(): void {
 		// Submenu attachment is one-shot in v1 — a nldd-menu added after this
 		// point would silently miss aria-controls, the chevron indicator, the
 		// hover-open lifecycle, and the close-state sync. Watch for late
@@ -1686,13 +1688,22 @@ export class NLDDMenu extends LitElement {
 		document.addEventListener('click', this._handleDocumentClick);
 	}
 
-	override firstUpdated(): void {
+	override willUpdate(): void {
+		if (this.hasUpdated) return;
+		// Read off the light DOM, which stands before the first render. Setting it
+		// in `firstUpdated` asks for a second render from inside the first.
 		this._updateEmptyState();
+	}
+
+	override firstUpdated(): void {
 		// Initial header/footer detection: slotchange fires for later changes, but
 		// content assigned before this covers the first render (slot exists on the
-		// root only).
-		this._onHeaderSlotChange();
-		this._onFooterSlotChange();
+		// root only). Read off the slots, so not before the first render, and
+		// deferred out of the update cycle for the same reason as above.
+		queueMicrotask(() => {
+			this._onHeaderSlotChange();
+			this._onFooterSlotChange();
+		});
 		// Give the anchor its aria-haspopup before any interaction. Deferred a
 		// microtask because an `anchor="id"` target may render after us; a later
 		// anchor still gets seeded from `updated()`. Mirrors nldd-popover.

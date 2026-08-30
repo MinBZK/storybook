@@ -10,6 +10,8 @@ export function switchFieldTemplate(component: NLDDSwitchField): TemplateResult 
 		>
 			<div class="switch-field__control">
 				<nldd-switch
+					?invalid=${component.invalid}
+					?required=${component.required}
 					size="sm"
 					name=${component.name || nothing}
 					value=${component.value}

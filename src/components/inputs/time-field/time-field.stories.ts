@@ -39,7 +39,7 @@ export default {
 		},
 		width: {
 			control: 'text',
-			description: "Breedte: 'full' of een eigen CSS-lengte. Leeg is precies breed genoeg voor een tijd.",
+			description: "Breedte: 'full' of een eigen CSS-lengte. Leeg is precies breed genoeg voor een tijd. 'fit-content' laat de ruimte voor het validatie-icoon weg en groeit weer zodra het veld valid of invalid wordt.",
 			table: { defaultValue: { summary: '(geen)' } },
 		},
 		value: {
@@ -140,10 +140,10 @@ const Template = ({
 		?no-picker=${noPicker}
 		accessible-label=${accessibleLabel || nothing}
 		?valid=${valid}
-		?invalid=${invalid}
 		?readonly=${readonly}
-		?disabled=${disabled}
+		?invalid=${invalid}
 		?required=${required}
+		?disabled=${disabled}
 		name=${name || nothing}
 	></nldd-time-field>
 `;

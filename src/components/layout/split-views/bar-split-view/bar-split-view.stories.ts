@@ -78,8 +78,8 @@ const toolbar = html`
 					variant="icon"
 					accessible-label="Tekststijl"
 				>
-					<nldd-segmented-control-item value="vet" text="Vet" icon="bold"></nldd-segmented-control-item>
-					<nldd-segmented-control-item value="cursief" text="Cursief" icon="italic"></nldd-segmented-control-item>
+					<nldd-segmented-control-item value="bold" text="Vet" icon="bold"></nldd-segmented-control-item>
+					<nldd-segmented-control-item value="italic" text="Cursief" icon="italic"></nldd-segmented-control-item>
 					<nldd-segmented-control-item value="onderstrepen" text="Onderstrepen" icon="underlined"></nldd-segmented-control-item>
 				</nldd-segmented-control>
 				<nldd-menu-item
