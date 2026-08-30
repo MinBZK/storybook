@@ -159,15 +159,13 @@ const SHADOW_TAB_STOP = ':is(a[href], button, input, select, textarea, [tabindex
  * @attr {boolean} reorderable - Enables drag-to-reorder and pushes `reorderable` onto the items. Only valid with `type="list"`; there the arrow keys move rows instead of focus.
  * @attr {'always'|'on-touch'|'never'} dividers - When to draw the lines between the items (default 'always'). `on-touch` draws them only where the primary input is touch, under `(pointer: coarse)`: a pointer has the hover highlight to tell one row from the next and a finger has nothing, so the line earns its place in the one case and is clutter in the other. `never` hides them everywhere
  * @attr {string} height - Listbox only: caps the options' scroll region at this CSS length (e.g. '320px'). Unset means no cap.
- * @attr {string} empty-text - Text for the default empty-state dialog (falls back to the Dutch i18n default). Ignored when `[slot=empty]` is filled.
- * @attr {string} empty-supporting-text - Supporting text for the default empty-state dialog. Ignored when `[slot=empty]` is filled.
  * @attr {string} accessible-label - Accessible name, forwarded to the list in `type="list"` and to the search field in `type="listbox"`. For `type="navigation"` set `aria-label` / `aria-labelledby` on the element itself. Falls back to the i18n default.
  * @attr {object} translations - Override translation keys; unset keys fall back to Dutch
  *
  * @slot        - List items (`nldd-list-item`)
  * @slot toolbar - Controls below the search field (filters, sort, counts, view toggles). Available for every type; collapses when empty.
  * @slot search-bar-end - Controls inline at the end of the search bar, beside the search field (e.g. a filter or options button). Listbox only; collapses when empty.
- * @slot empty - Shown when no items are visible (all `[hidden]` or none). Defaults to `nldd-inline-dialog` with `empty-text` / `empty-supporting-text` (falling back to Dutch i18n "Geen items"). Slot content overrides the default dialog entirely. In `type="listbox"` it is suppressed while the search field is empty (no query yet), so the consumer can show just the search field or its own hint outside the list.
+ * @slot empty - Shown when no items are visible (all `[hidden]` or none). Empty by default: what an empty list should say is the app's to write, so put an `nldd-inline-dialog` here. In `type="listbox"` it is suppressed while the search field is empty (no query yet), so the consumer can show just the search field or its own hint outside the list.
  *
  * @fires nldd-reorder - Reorderable `type="list"`: `{ fromIndex, toIndex }` on drop
  * @fires input - `type="listbox"`: search value changed; `{ value }`. Toggle `[hidden]` on items to filter.
@@ -205,21 +203,6 @@ export class NLDDList extends LitElement {
 	 */
 	@property({ type: String, reflect: true })
 	height = '';
-
-	/**
-	 * Text for the default empty-state dialog. Falls back to the Dutch
-	 * i18n default ("Geen items"). Ignored when consumers slot their
-	 * own content into `[slot=empty]`.
-	 */
-	@property({ reflect: true, attribute: 'empty-text', converter: reflectNonDefault<string>('') })
-	emptyText = '';
-
-	/**
-	 * Optional supporting text for the default empty-state dialog.
-	 * Ignored when consumers slot their own content into `[slot=empty]`.
-	 */
-	@property({ reflect: true, attribute: 'empty-supporting-text', converter: reflectNonDefault<string>('') })
-	emptySupportingText = '';
 
 	/** Accessible name for the list, forwarded to the inner role: the list in
 	 *  `type=list`, the search field in `type=listbox`. For `type=navigation`,
@@ -538,7 +521,41 @@ export class NLDDList extends LitElement {
 	private _updateEmpty() {
 		const items = this._getItems();
 		this._isEmpty = items.length === 0 || items.every(item => item.hasAttribute('hidden'));
+		// Nothing in it and nothing said about that is not a thing on the page.
+		// Drawing the surface anyway makes "nothing" look different per variant:
+		// invisible on a plain list, an empty tinted bar on a boxed one, which
+		// reads as a skeleton that never loaded.
+		this.classList.toggle(
+			'is-blank',
+			this._isEmpty && !this.querySelector(':scope > [slot="empty"]'),
+		);
+		this._warnSilentEmpty();
 	}
+
+	/**
+	 * A list with nothing in it and nothing to say about that.
+	 *
+	 * There is no default text any more, because what an empty list means is
+	 * the app's to write and a house sentence was wrong more often than right.
+	 * That leaves a real risk of a blank area with nothing in the accessibility
+	 * tree either, so the list asks the person building it rather than
+	 * answering for them. A listbox before you have typed is left alone: an
+	 * empty search is not an empty list.
+	 */
+	private _warnSilentEmpty() {
+		if (!import.meta.env?.DEV) return;
+		if (!this._isEmpty || this._warnedSilentEmpty) return;
+		if (this.type === 'listbox' && !this._searchValue) return;
+		if (this.querySelector(':scope > [slot="empty"]')) return;
+		this._warnedSilentEmpty = true;
+		console.warn(
+			'nldd-list: no items and nothing in [slot="empty"], so the list renders a blank area. '
+			+ 'Put an nldd-inline-dialog in that slot saying what is not there and what the next move is.',
+			this,
+		);
+	}
+
+	private _warnedSilentEmpty = false;
 
 	// — Listbox: active-option model ————————————————————————————————————————————
 
@@ -1411,8 +1428,6 @@ export class NLDDList extends LitElement {
 			hasToolbar: this._hasToolbar,
 			type: this.type,
 			isEmpty: this._isEmpty,
-			emptyText: this.emptyText || this._t('components.list.empty-text'),
-			emptySupportingText: this.emptySupportingText,
 			listbox: {
 				listboxId: this._listboxId,
 				searchValue: this._searchValue,

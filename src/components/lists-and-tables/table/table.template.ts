@@ -1,6 +1,6 @@
-import { html, nothing } from 'lit';
+import { html } from 'lit';
 
-export function tableTemplate(emptyText: string, emptySupportingText: string) {
+export function tableTemplate() {
 	// Two bare slots (no rowgroup wrappers): the slots are display:contents so
 	// the slotted <nldd-table-row> elements become direct grid items of the
 	// table and can use `grid-template-columns: subgrid`. The header slot is
@@ -9,7 +9,8 @@ export function tableTemplate(emptyText: string, emptySupportingText: string) {
 	// The empty state spans all columns below the rows. It keeps role="row" >
 	// role="cell" so the host stays a valid role="table" (an inline-dialog as a
 	// direct table child would be invalid ARIA); it's removed from the a11y tree
-	// while [hidden]. Slot content (`[slot=empty]`) overrides the default dialog.
+	// while [hidden]. What an empty table should say is the app's to write, so
+	// the slot is empty until a consumer fills it.
 	// Starts hidden — the table toggles `hidden` imperatively from _updateEmpty
 	// (avoids a reactive re-render scheduled out of firstUpdated).
 	return html`
@@ -22,12 +23,7 @@ export function tableTemplate(emptyText: string, emptySupportingText: string) {
 			<div class="table__empty-cell"
 				role="cell"
 			>
-				<slot name="empty">
-					<nldd-inline-dialog
-						text=${emptyText}
-						supporting-text=${emptySupportingText || nothing}
-					></nldd-inline-dialog>
-				</slot>
+				<slot name="empty"></slot>
 			</div>
 		</div>
 	`;

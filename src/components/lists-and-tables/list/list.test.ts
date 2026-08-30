@@ -363,28 +363,50 @@ describe('nldd-list', () => {
 	});
 
 
-	// — Empty default inline-dialog ——————————————————————————————————————————
+	// — Empty state ————————————————————————————————————————————————————————
 
-	it('empty default: renders nldd-inline-dialog with i18n text when no items', async () => {
+	it('empty: says nothing of its own, because the words are the app\'s', async () => {
 		el = await fixture('<nldd-list></nldd-list>');
 		await waitForUpdate(el);
-		const dialog = el.shadowRoot!.querySelector('nldd-inline-dialog');
-		expect(dialog).not.toBeNull();
-		expect(dialog!.getAttribute('text')).toBe('Geen items');
+		expect(el.shadowRoot!.querySelector('nldd-inline-dialog')).toBeNull();
 	});
 
-	it('empty default: empty-text attribute overrides the i18n default', async () => {
-		el = await fixture('<nldd-list empty-text="Niets gevonden"></nldd-list>');
+	it('empty: takes itself off the page when the slot is unfilled', async () => {
+		el = await fixture('<nldd-list variant="box-tinted"></nldd-list>');
 		await waitForUpdate(el);
-		const dialog = el.shadowRoot!.querySelector('nldd-inline-dialog');
-		expect(dialog!.getAttribute('text')).toBe('Niets gevonden');
+		expect(getComputedStyle(el).display).toBe('none');
 	});
 
-	it('empty default: empty-supporting-text populates the inline-dialog', async () => {
-		el = await fixture('<nldd-list empty-supporting-text="Probeer iets anders."></nldd-list>');
+	it('empty: stays on the page once the slot says something', async () => {
+		el = await fixture('<nldd-list variant="box-tinted"><nldd-inline-dialog slot="empty" text="Niets gevonden"></nldd-inline-dialog></nldd-list>');
 		await waitForUpdate(el);
-		const dialog = el.shadowRoot!.querySelector('nldd-inline-dialog');
-		expect(dialog!.getAttribute('supporting-text')).toBe('Probeer iets anders.');
+		expect(getComputedStyle(el).display).not.toBe('none');
+	});
+
+	it('empty: warns in DEV about a list that renders a blank area', async () => {
+		const warnings: string[] = [];
+		const original = console.warn;
+		console.warn = (...args: unknown[]) => { warnings.push(String(args[0])); };
+		try {
+			el = await fixture('<nldd-list></nldd-list>');
+			await waitForUpdate(el);
+		} finally {
+			console.warn = original;
+		}
+		expect(warnings.some(warning => /slot="empty"/.test(warning))).toBe(true);
+	});
+
+	it('empty: stays quiet when the slot is filled', async () => {
+		const warnings: string[] = [];
+		const original = console.warn;
+		console.warn = (...args: unknown[]) => { warnings.push(String(args[0])); };
+		try {
+			el = await fixture('<nldd-list><nldd-inline-dialog slot="empty" text="Niets gevonden"></nldd-inline-dialog></nldd-list>');
+			await waitForUpdate(el);
+		} finally {
+			console.warn = original;
+		}
+		expect(warnings.some(warning => /slot="empty"/.test(warning))).toBe(false);
 	});
 
 	it('empty default: slotted content replaces the default dialog', async () => {

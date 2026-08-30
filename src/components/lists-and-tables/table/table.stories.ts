@@ -49,8 +49,6 @@ export default {
 		mdColumns: '',
 		lgColumns: '',
 		accessibleLabel: 'Gebruikers',
-		emptyText: '',
-		emptySupportingText: '',
 	},
 	argTypes: {
 		background: {
@@ -87,22 +85,10 @@ export default {
 			control: 'text',
 			description: 'Toegankelijke naam voor de tabel.',
 		},
-		emptyText: {
-			name: 'empty-text',
-			control: 'text',
-			description: 'Tekst van de standaard empty-state-dialog. Valt terug op i18n ("Geen items").',
-			table: { defaultValue: { summary: '' } },
-		},
-		emptySupportingText: {
-			name: 'empty-supporting-text',
-			control: 'text',
-			description: 'Ondersteunende tekst van de standaard empty-state-dialog.',
-			table: { defaultValue: { summary: '' } },
-		},
 	},
 };
 
-const Template = ({ background, columns, smColumns, mdColumns, lgColumns, accessibleLabel, emptyText, emptySupportingText }: Record<string, any>) => html`
+const Template = ({ background, columns, smColumns, mdColumns, lgColumns, accessibleLabel }: Record<string, any>) => html`
 	<nldd-table
 		background=${background}
 		columns=${columns}
@@ -110,8 +96,6 @@ const Template = ({ background, columns, smColumns, mdColumns, lgColumns, access
 		md-columns=${mdColumns || nothing}
 		lg-columns=${lgColumns || nothing}
 		accessible-label=${accessibleLabel}
-		empty-text=${emptyText || nothing}
-		empty-supporting-text=${emptySupportingText || nothing}
 	>
 		<nldd-table-row slot="header">
 			<nldd-text-cell text="**Naam**"></nldd-text-cell>
@@ -411,47 +395,7 @@ const emptyHeader = () => html`
 		<nldd-text-cell text="**Rol**"></nldd-text-cell>
 	</nldd-table-row>`;
 
-export const EmptyDefault = {
-	name: 'Empty: default dialog',
-	render: () => html`
-		<nldd-table columns="minmax(160px, 1fr) minmax(200px, 1fr) 120px" accessible-label="Gebruikers">
-			${emptyHeader()}
-		</nldd-table>
-	`,
-	parameters: {
-		controls: { disable: true },
-		docs: {
-			description: {
-				story: 'Heeft de tabel geen zichtbare body-rijen, dan toont hij een standaard `nldd-inline-dialog` met i18n-tekst ("Geen items"). De header wordt in de lege staat verborgen, zodat alleen de melding zichtbaar is. Geen configuratie nodig.',
-			},
-		},
-	},
-};
-
-export const EmptyWithAttributes = {
-	name: 'Empty: aangepaste tekst',
-	render: () => html`
-		<nldd-table
-			columns="minmax(160px, 1fr) minmax(200px, 1fr) 120px"
-			accessible-label="Gebruikers"
-			empty-text="Niets gevonden"
-			empty-supporting-text="Pas de filters aan of probeer een andere zoekterm."
-		>
-			${emptyHeader()}
-		</nldd-table>
-	`,
-	parameters: {
-		controls: { disable: true },
-		docs: {
-			description: {
-				story: 'Gebruik `empty-text` en `empty-supporting-text` om de standaard dialog aan te passen zonder markup te schrijven. Voor rijkere inhoud (icoon, action buttons, alert-variant) slot een complete `nldd-inline-dialog`.',
-			},
-		},
-	},
-};
-
-export const EmptySlotOverride = {
-	name: 'Empty: slot override',
+export const Empty = {
 	render: () => html`
 		<nldd-table columns="minmax(160px, 1fr) minmax(200px, 1fr) 120px" accessible-label="Gebruikers">
 			${emptyHeader()}
@@ -469,7 +413,24 @@ export const EmptySlotOverride = {
 		controls: { disable: true },
 		docs: {
 			description: {
-				story: 'Inhoud in `[slot=empty]` vervangt de standaard dialog volledig — gebruik je eigen icoon, kop, ondersteunende tekst of action buttons.',
+				story: 'Zonder zichtbare body-rijen opent de tabel de lege rij en verbergt hij de header. Wat daar hoort te staan weet alleen de app, dus zet er zelf een `nldd-inline-dialog` in de `empty`-slot, met je eigen icoon, kop, ondersteunende tekst en knoppen.',
+			},
+		},
+	},
+};
+
+export const EmptyWithoutSlot = {
+	name: 'Empty: slot niet gevuld',
+	render: () => html`
+		<nldd-table columns="minmax(160px, 1fr) minmax(200px, 1fr) 120px" accessible-label="Gebruikers">
+			${emptyHeader()}
+		</nldd-table>
+	`,
+	parameters: {
+		controls: { disable: true },
+		docs: {
+			description: {
+				story: 'Vergeet je die slot, dan opent de lege rij en blijft hij leeg, zoals hier. Dat is geen bedoelde staat: er staat niets op het scherm en niets in de accessibility tree. In development waarschuwt de tabel je er een keer over.',
 			},
 		},
 	},

@@ -24,8 +24,6 @@ export interface ListTemplateProps {
 	hasToolbar: boolean;
 	type: ListType;
 	isEmpty: boolean;
-	emptyText: string;
-	emptySupportingText: string;
 	listbox: ListboxOptions;
 }
 
@@ -34,8 +32,6 @@ export const template = ({
 	hasToolbar,
 	type,
 	isEmpty,
-	emptyText,
-	emptySupportingText,
 	listbox,
 }: ListTemplateProps) => {
 	const isNavigation = type === 'navigation';
@@ -122,12 +118,7 @@ export const template = ({
 				<div class="list__empty"
 					?hidden=${!showEmpty}
 				>
-					<slot name="empty">
-						<nldd-inline-dialog
-							text=${emptyText}
-							supporting-text=${emptySupportingText || nothing}
-						></nldd-inline-dialog>
-					</slot>
+					<slot name="empty"></slot>
 				</div>
 			</div>
 		</div>

@@ -1639,7 +1639,7 @@
               "type": {
                 "text": "string"
               },
-              "description": "Form value. Falls back to text when not set.",
+              "description": "A value of the item's own, read off the item in a `select` handler. The default filter matches on it as well as on `text` and `aliases`. Not a form value: this component is not form-associated.",
               "name": "value",
               "default": "''",
               "fieldName": "value"
@@ -30796,7 +30796,7 @@
             },
             {
               "name": "empty",
-              "description": "Shown when no items are visible (all `[hidden]` or none). Defaults to `nldd-inline-dialog` with `empty-text` / `empty-supporting-text` (falling back to Dutch i18n \"Geen items\"). Slot content overrides the default dialog entirely. In `type=\"listbox\"` it is suppressed while the search field is empty (no query yet), so the consumer can show just the search field or its own hint outside the list."
+              "description": "Shown when no items are visible (all `[hidden]` or none). Empty by default: what an empty list should say is the app's to write, so put an `nldd-inline-dialog` here. In `type=\"listbox\"` it is suppressed while the search field is empty (no query yet), so the consumer can show just the search field or its own hint outside the list."
             }
           ],
           "members": [
@@ -30853,28 +30853,6 @@
               "default": "''",
               "description": "Only in `type=\"listbox\"`: caps the options' scroll region at this CSS\nlength (any value `CSS.supports('max-height', …)` accepts, e.g. \"320px\").\nThe search input stays pinned above and the options scroll; the active\noption is kept in view via `scrollIntoView`. Unset → no cap. No effect\noutside listbox mode.",
               "attribute": "height",
-              "reflects": true
-            },
-            {
-              "kind": "field",
-              "name": "emptyText",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Text for the default empty-state dialog. Falls back to the Dutch\ni18n default (\"Geen items\"). Ignored when consumers slot their\nown content into `[slot=empty]`.",
-              "attribute": "empty-text",
-              "reflects": true
-            },
-            {
-              "kind": "field",
-              "name": "emptySupportingText",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Optional supporting text for the default empty-state dialog.\nIgnored when consumers slot their own content into `[slot=empty]`.",
-              "attribute": "empty-supporting-text",
               "reflects": true
             },
             {
@@ -30953,24 +30931,6 @@
               "name": "height",
               "default": "''",
               "fieldName": "height"
-            },
-            {
-              "type": {
-                "text": "string"
-              },
-              "description": "Text for the default empty-state dialog (falls back to the Dutch i18n default). Ignored when `[slot=empty]` is filled.",
-              "name": "empty-text",
-              "default": "''",
-              "fieldName": "emptyText"
-            },
-            {
-              "type": {
-                "text": "string"
-              },
-              "description": "Supporting text for the default empty-state dialog. Ignored when `[slot=empty]` is filled.",
-              "name": "empty-supporting-text",
-              "default": "''",
-              "fieldName": "emptySupportingText"
             },
             {
               "type": {
@@ -31104,28 +31064,6 @@
             },
             {
               "kind": "field",
-              "name": "emptyText",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Text for the default empty-state dialog. Falls back to the Dutch i18n\ndefault. Ignored when consumers slot their own `[slot=empty]` content.",
-              "attribute": "empty-text",
-              "reflects": true
-            },
-            {
-              "kind": "field",
-              "name": "emptySupportingText",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Optional supporting text for the default empty-state dialog. Ignored\nwhen consumers slot their own `[slot=empty]` content.",
-              "attribute": "empty-supporting-text",
-              "reflects": true
-            },
-            {
-              "kind": "field",
               "name": "translations",
               "type": {
                 "text": "Partial<NLDDTableTranslations>"
@@ -31199,24 +31137,6 @@
               "fieldName": "selectable"
             },
             {
-              "name": "empty-text",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Text for the default empty-state dialog (falls back to the Dutch i18n default). Ignored when `[slot=empty]` is filled",
-              "fieldName": "emptyText"
-            },
-            {
-              "name": "empty-supporting-text",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Supporting text for the default empty-state dialog. Ignored when `[slot=empty]` is filled",
-              "fieldName": "emptySupportingText"
-            },
-            {
               "name": "translations",
               "type": {
                 "text": "Partial<NLDDTableTranslations>"
@@ -31243,7 +31163,7 @@
             },
             {
               "name": "empty",
-              "description": "Shown when there are no visible body rows (the header is hidden too). Defaults to `nldd-inline-dialog` with `empty-text` / `empty-supporting-text`"
+              "description": "Shown when there are no visible body rows (the header is hidden too). Empty by default: what an empty table should say is the app's to write, so put an `nldd-inline-dialog` here."
             }
           ]
         },

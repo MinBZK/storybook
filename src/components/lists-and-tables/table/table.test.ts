@@ -101,7 +101,9 @@ describe('nldd-table', () => {
 	});
 
 	it('uses lg-columns when the table is lg-wide', async () => {
-		const host = await fixture('<div style="width: 1100px"><nldd-table columns="1fr" lg-columns="1fr 1fr 1fr 1fr"></nldd-table></div>');
+		// With a row, because a table with nothing in it and nothing in
+		// [slot=empty] takes itself off the page and then has no width to read.
+		const host = await fixture('<div style="width: 1100px"><nldd-table columns="1fr" lg-columns="1fr 1fr 1fr 1fr"><nldd-table-row><nldd-text-cell text="A"></nldd-text-cell></nldd-table-row></nldd-table></div>');
 		const table = host.querySelector('nldd-table') as HTMLElement;
 		await waitForUpdate(table);
 		await nextFrames();
@@ -164,15 +166,12 @@ describe('nldd-table', () => {
 		cleanup(host);
 	});
 
-	it('shows the default empty dialog when there are no body rows', async () => {
+	it('opens the empty row when there are no body rows, and says nothing of its own', async () => {
 		el = await fixture<NLDDTable>('<nldd-table columns="1fr"></nldd-table>');
 		await (el as unknown as NLDDTable).updateComplete;
 		const empty = el.shadowRoot!.querySelector('.table__empty')!;
 		expect(empty.hasAttribute('hidden')).toBe(false);
-		const dialog = el.shadowRoot!.querySelector('nldd-inline-dialog');
-		expect(dialog).not.toBeNull();
-		// Falls back to the Dutch i18n default.
-		expect(dialog!.getAttribute('text')).toBe('Geen items');
+		expect(el.shadowRoot!.querySelector('nldd-inline-dialog')).toBeNull();
 	});
 
 	it('keeps role="table" with a valid row/cell around the empty dialog', async () => {
@@ -209,12 +208,6 @@ describe('nldd-table', () => {
 		el = await fixture<NLDDTable>('<nldd-table columns="1fr"><nldd-table-row hidden><nldd-cell>A</nldd-cell></nldd-table-row></nldd-table>');
 		await (el as unknown as NLDDTable).updateComplete;
 		expect(el.shadowRoot!.querySelector('.table__empty')!.hasAttribute('hidden')).toBe(false);
-	});
-
-	it('empty-text overrides the default dialog text', async () => {
-		el = await fixture<NLDDTable>('<nldd-table columns="1fr" empty-text="Niets gevonden"></nldd-table>');
-		await (el as unknown as NLDDTable).updateComplete;
-		expect(el.shadowRoot!.querySelector('nldd-inline-dialog')!.getAttribute('text')).toBe('Niets gevonden');
 	});
 
 	it('lets [slot=empty] content override the default dialog', async () => {

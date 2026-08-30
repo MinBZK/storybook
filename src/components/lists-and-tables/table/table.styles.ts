@@ -84,6 +84,11 @@ export const tableStyles = css`
 	:host(.is-empty) slot[name="header"] {
 		display: none;
 	}
+
+	/* Nothing in it and nothing said about it: not a thing on the page. */
+	:host(.is-blank) {
+		display: none;
+	}
 `;
 
 export const tableRowStyles = css`

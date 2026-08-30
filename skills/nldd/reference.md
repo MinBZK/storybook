@@ -199,7 +199,7 @@ A single item within an nldd-menu.
 | Attribute | Type | Description |
 | --- | --- | --- |
 | `text` | `string` | Display text. Supports **bold** markdown syntax. |
-| `value` | `string` | Form value. Falls back to text when not set. |
+| `value` | `string` | A value of the item's own, read off the item in a `select` handler. The default filter matches on it as well as on `text` and `aliases`. Not a form value: this component is not form-associated. |
 | `href` | `string` | Optional link target. A plain button item with an href renders as an `<a>` so it is a real link (middle-click, open in new tab, copy link). Ignored for submenu openers, checkbox/radio items, and while disabled. |
 | `aliases` | `string` | Space-separated alternative search terms. |
 | `details` | `string` | Secondary label shown on the right side. |
@@ -2894,8 +2894,6 @@ A container for `nldd-list-item` elements. The `type` attribute switches the lis
 | `reorderable` | `boolean` | Enables drag-to-reorder and pushes `reorderable` onto the items. Only valid with `type="list"`; there the arrow keys move rows instead of focus. |
 | `dividers` | `'always'\|'on-touch'\|'never'` | When to draw the lines between the items (default 'always'). `on-touch` draws them only where the primary input is touch, under `(pointer: coarse)`: a pointer has the hover highlight to tell one row from the next and a finger has nothing, so the line earns its place in the one case and is clutter in the other. `never` hides them everywhere |
 | `height` | `string` | Listbox only: caps the options' scroll region at this CSS length (e.g. '320px'). Unset means no cap. |
-| `empty-text` | `string` | Text for the default empty-state dialog (falls back to the Dutch i18n default). Ignored when `[slot=empty]` is filled. |
-| `empty-supporting-text` | `string` | Supporting text for the default empty-state dialog. Ignored when `[slot=empty]` is filled. |
 | `accessible-label` | `string` | Accessible name, forwarded to the list in `type="list"` and to the search field in `type="listbox"`. For `type="navigation"` set `aria-label` / `aria-labelledby` on the element itself. Falls back to the i18n default. |
 | `translations` | `object` | Override translation keys; unset keys fall back to Dutch |
 
@@ -2906,7 +2904,7 @@ A container for `nldd-list-item` elements. The `type` attribute switches the lis
 | _(default)_ | List items (`nldd-list-item`) |
 | `toolbar` | Controls below the search field (filters, sort, counts, view toggles). Available for every type; collapses when empty. |
 | `search-bar-end` | Controls inline at the end of the search bar, beside the search field (e.g. a filter or options button). Listbox only; collapses when empty. |
-| `empty` | Shown when no items are visible (all `[hidden]` or none). Defaults to `nldd-inline-dialog` with `empty-text` / `empty-supporting-text` (falling back to Dutch i18n "Geen items"). Slot content overrides the default dialog entirely. In `type="listbox"` it is suppressed while the search field is empty (no query yet), so the consumer can show just the search field or its own hint outside the list. |
+| `empty` | Shown when no items are visible (all `[hidden]` or none). Empty by default: what an empty list should say is the app's to write, so put an `nldd-inline-dialog` here. In `type="listbox"` it is suppressed while the search field is empty (no query yet), so the consumer can show just the search field or its own hint outside the list. |
 
 **Events**
 
@@ -3009,8 +3007,6 @@ Exports both NLDDTable and NLDDTableRow. A data table presented as a boxed surfa
 | `lg-columns` | `string` | Track list when the table is lg-wide (≥1008px); falls back to `columns` |
 | `accessible-label` | `string` | Accessible name for the table. Strongly recommended — role="table" needs a name. A missing label is DEV-warned and a generic fallback name is used. |
 | `selectable` | `boolean` | Opt into row selection: body rows expose aria-selected (true/false). Without it, rows omit aria-selected so a non-selectable table isn't announced as selectable. |
-| `empty-text` | `string` | Text for the default empty-state dialog (falls back to the Dutch i18n default). Ignored when `[slot=empty]` is filled |
-| `empty-supporting-text` | `string` | Supporting text for the default empty-state dialog. Ignored when `[slot=empty]` is filled |
 | `translations` | `object` | Override translation keys; unset keys fall back to Dutch |
 
 **Slots**
@@ -3019,7 +3015,7 @@ Exports both NLDDTable and NLDDTableRow. A data table presented as a boxed surfa
 | --- | --- |
 | `header` | One `<nldd-table-row slot="header">` carrying the column headers |
 | _(default)_ | The body rows (`<nldd-table-row>`) |
-| `empty` | Shown when there are no visible body rows (the header is hidden too). Defaults to `nldd-inline-dialog` with `empty-text` / `empty-supporting-text` |
+| `empty` | Shown when there are no visible body rows (the header is hidden too). Empty by default: what an empty table should say is the app's to write, so put an `nldd-inline-dialog` here. |
 
 ### `<nldd-table-row>`
 

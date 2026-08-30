@@ -44,16 +44,6 @@ export default {
 			description: 'Wanneer de scheidingslijnen tussen de items getekend worden. `on-touch` alleen waar met een vinger wordt bediend, onder `(pointer: coarse)`: een aanwijzer heeft de hover-highlight om het ene item van het andere te scheiden en een vinger heeft niets. `never` verbergt ze overal.',
 			table: { defaultValue: { summary: 'always' } },
 		},
-		'empty-text': {
-			control: 'text',
-			description: 'Tekst van de standaard empty-state-dialog. Valt terug op i18n ("Geen items").',
-			table: { type: { summary: 'string' } },
-		},
-		'empty-supporting-text': {
-			control: 'text',
-			description: 'Ondersteunende tekst van de standaard empty-state-dialog.',
-			table: { type: { summary: 'string' } },
-		},
 		height: {
 			control: 'text',
 			description: 'Alleen bij `type="listbox"`: maximale hoogte van het scrollbare opties-gebied (elke CSS-lengte, bijv. "320px"). Het zoekveld blijft erboven staan en de opties scrollen. Leeg = geen limiet.',
@@ -83,8 +73,6 @@ export const Default = {
 		variant: 'simple',
 		type: 'list',
 		dividers: 'always',
-		'empty-text': '',
-		'empty-supporting-text': '',
 		height: '',
 	},
 	render: (args: Record<string, any>) => html`
@@ -92,8 +80,6 @@ export const Default = {
 			variant=${args.variant}
 			type=${args.type}
 			dividers=${args.dividers}
-			empty-text=${args['empty-text']}
-			empty-supporting-text=${args['empty-supporting-text']}
 			height=${args.type === 'listbox' && args.height ? args.height : nothing}
 		>
 			<nldd-list-item>
@@ -370,8 +356,6 @@ const buildListbox = (variant: 'box' | 'simple') => {
 			type="listbox"
 			variant=${variant}
 			height="280px"
-			empty-text="Geen resultaten"
-			empty-supporting-text="Probeer een andere zoekterm of filter."
 			@input=${onInput}
 			@click=${onClick}
 		>
@@ -473,39 +457,7 @@ export const ReorderableList = {
 
 // — Empty slot ————————————————————————————————————————————————————————————————
 
-export const EmptyDefault = {
-	render: () => html`
-		<nldd-list variant="box-tinted"></nldd-list>
-	`,
-	parameters: {
-		controls: { disable: true },
-		docs: {
-			description: {
-				story: 'Standaard rendert een lege lijst een default `nldd-inline-dialog` met i18n-tekst ("Geen items"). Geen configuratie nodig.',
-			},
-		},
-	},
-};
-
-export const EmptyWithAttributes = {
-	render: () => html`
-		<nldd-list
-			variant="box-tinted"
-			empty-text="Niets gevonden"
-			empty-supporting-text="Probeer een andere zoekterm."
-		></nldd-list>
-	`,
-	parameters: {
-		controls: { disable: true },
-		docs: {
-			description: {
-				story: 'Gebruik `empty-text` en `empty-supporting-text` om de standaard dialog aan te passen zonder markup te schrijven. Voor rijkere inhoud (icoon, action buttons, alert-variant) slot een complete `nldd-inline-dialog`.',
-			},
-		},
-	},
-};
-
-export const EmptySlotOverride = {
+export const Empty = {
 	render: () => html`
 		<nldd-list variant="box-tinted">
 			<nldd-inline-dialog
@@ -522,7 +474,22 @@ export const EmptySlotOverride = {
 		controls: { disable: true },
 		docs: {
 			description: {
-				story: 'Inhoud in `[slot=empty]` vervangt de standaard dialog volledig — gebruik je eigen icoon, kop, ondersteunende tekst of action buttons.',
+				story: 'Een lege lijst tekent alleen z\'n eigen vlak. Wat daar hoort te staan weet alleen de app: "nog geen assets" en "niets gevonden" zijn twee verschillende zinnen met twee verschillende vervolgstappen. Zet er daarom zelf een `nldd-inline-dialog` in de `empty`-slot, met je eigen icoon, kop, ondersteunende tekst en knoppen.',
+			},
+		},
+	},
+};
+
+export const EmptyWithoutSlot = {
+	name: 'Empty: slot niet gevuld',
+	render: () => html`
+		<nldd-list variant="box-tinted"></nldd-list>
+	`,
+	parameters: {
+		controls: { disable: true },
+		docs: {
+			description: {
+				story: 'Vergeet je die slot, dan blijft het vlak leeg, zoals hier. Dat is geen bedoelde staat: er staat niets op het scherm en niets in de accessibility tree. In development waarschuwt de lijst je er een keer over.',
 			},
 		},
 	},

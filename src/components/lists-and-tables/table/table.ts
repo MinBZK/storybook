@@ -37,13 +37,11 @@
  * @attr {string} lg-columns - Track list when the table is lg-wide (≥1008px); falls back to `columns`
  * @attr {string} accessible-label - Accessible name for the table. Strongly recommended — role="table" needs a name. A missing label is DEV-warned and a generic fallback name is used.
  * @attr {boolean} selectable - Opt into row selection: body rows expose aria-selected (true/false). Without it, rows omit aria-selected so a non-selectable table isn't announced as selectable.
- * @attr {string} empty-text - Text for the default empty-state dialog (falls back to the Dutch i18n default). Ignored when `[slot=empty]` is filled
- * @attr {string} empty-supporting-text - Supporting text for the default empty-state dialog. Ignored when `[slot=empty]` is filled
  * @attr {object} translations - Override translation keys; unset keys fall back to Dutch
  *
  * @slot header - One `<nldd-table-row slot="header">` carrying the column headers
  * @slot - The body rows (`<nldd-table-row>`)
- * @slot empty - Shown when there are no visible body rows (the header is hidden too). Defaults to `nldd-inline-dialog` with `empty-text` / `empty-supporting-text`
+ * @slot empty - Shown when there are no visible body rows (the header is hidden too). Empty by default: what an empty table should say is the app's to write, so put an `nldd-inline-dialog` here.
  *
  * @element nldd-table-row
  *
@@ -103,16 +101,6 @@ export class NLDDTable extends LitElement {
 	 *  (ARIA 1.2 §6.6.5). The visual `selected` tint on a row works either way. */
 	@property({ type: Boolean, reflect: true })
 	selectable = false;
-
-	/** Text for the default empty-state dialog. Falls back to the Dutch i18n
-	 *  default. Ignored when consumers slot their own `[slot=empty]` content. */
-	@property({ reflect: true, attribute: 'empty-text', converter: reflectNonDefault<string>('') })
-	emptyText = '';
-
-	/** Optional supporting text for the default empty-state dialog. Ignored
-	 *  when consumers slot their own `[slot=empty]` content. */
-	@property({ reflect: true, attribute: 'empty-supporting-text', converter: reflectNonDefault<string>('') })
-	emptySupportingText = '';
 
 	@property({ type: Object })
 	translations: Partial<NLDDTableTranslations> = {};
@@ -196,7 +184,36 @@ export class NLDDTable extends LitElement {
 		const isEmpty = rows.length === 0 || rows.every((row) => row.hasAttribute('hidden'));
 		empty.toggleAttribute('hidden', !isEmpty);
 		this.classList.toggle('is-empty', isEmpty);
+		// See nldd-list: no rows and nothing slotted is not a thing on the page.
+		this.classList.toggle(
+			'is-blank',
+			isEmpty && !this.querySelector(':scope > [slot="empty"]'),
+		);
+		this._warnSilentEmpty(isEmpty);
 	}
+
+	/**
+	 * A table with no rows and nothing to say about that.
+	 *
+	 * There is no default text any more, because what an empty table means is
+	 * the app's to write and a house sentence was wrong more often than right.
+	 * That leaves a real risk of a blank area with nothing in the accessibility
+	 * tree either, so the table asks the person building it rather than
+	 * answering for them.
+	 */
+	private _warnSilentEmpty(isEmpty: boolean): void {
+		if (!import.meta.env?.DEV) return;
+		if (!isEmpty || this._warnedSilentEmpty) return;
+		if (this.querySelector(':scope > [slot="empty"]')) return;
+		this._warnedSilentEmpty = true;
+		console.warn(
+			'nldd-table: no rows and nothing in [slot="empty"], so the table renders a blank area. '
+			+ 'Put an nldd-inline-dialog in that slot saying what is not there and what the next move is.',
+			this,
+		);
+	}
+
+	private _warnedSilentEmpty = false;
 
 	/** The track list for the current width: a breakpoint override when set,
 	 *  otherwise the base `columns`. */
@@ -273,10 +290,7 @@ export class NLDDTable extends LitElement {
 	}
 
 	override render() {
-		return tableTemplate(
-			this.emptyText || this._t('components.table.empty-text'),
-			this.emptySupportingText,
-		);
+		return tableTemplate();
 	}
 }
 
