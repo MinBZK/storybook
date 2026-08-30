@@ -210,9 +210,31 @@ export class NLDDValidationList extends LitElement {
 		this._detach();
 	}
 
-	override updated(changed: PropertyValues) {
+	/**
+	 * Resolving and latching happen before the render, not after it.
+	 *
+	 * Both write a reactive property, `_resolved` and `judging`, and writing one
+	 * from `updated()` asks for a second render on top of the one that just
+	 * finished. That is a dev-mode warning on every field that arrives already
+	 * invalid. Reading what they need does not take a render: the control is
+	 * found by id or handed over as a property, and the items are light DOM.
+	 */
+	override willUpdate(changed: PropertyValues) {
 		if (changed.has('for') || changed.has('control')) this._resolve();
+		this._latchJudging();
+	}
+
+	override updated() {
 		this._evaluate();
+	}
+
+	/**
+	 * A field that has been judged does not become unjudged, so this only ever
+	 * goes on. What turns red is `invalid` and nothing else; this decides only
+	 * whether the hints are still on screen.
+	 */
+	private _latchJudging(): void {
+		if (this._resolved?.hasAttribute('invalid')) this.judging = true;
 	}
 
 	override render() {
@@ -246,7 +268,10 @@ export class NLDDValidationList extends LitElement {
 		if (!next) return;
 
 		next.addEventListener('input', this._onInput);
-		this._observer = new MutationObserver(() => this._evaluate());
+		this._observer = new MutationObserver(() => {
+			this._latchJudging();
+			this._evaluate();
+		});
 		this._observer.observe(next, { attributes: true, attributeFilter: ['invalid', 'unmet'] });
 	}
 
@@ -277,7 +302,6 @@ export class NLDDValidationList extends LitElement {
 		// field that looks fine; `judging` only decides whether the hints are
 		// still on screen, and unlike `invalid` it does not come back off.
 		const invalid = control?.hasAttribute('invalid') ?? false;
-		if (invalid) this.judging = true;
 		const named = (control?.getAttribute('unmet') ?? '').split(' ').filter(Boolean);
 		const value = this._currentValue();
 

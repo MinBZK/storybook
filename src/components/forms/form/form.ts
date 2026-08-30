@@ -141,6 +141,45 @@ export class NLDDForm extends HTMLElement {
 		this._judged.add(control);
 
 		control.toggleAttribute('invalid', true);
+
+		// The browser fires invalid on every failing control in tree order, so
+		// the first event of a round is the field to land on. Cancelling that
+		// event above takes away the native bubble and, with it, the browser's
+		// own move to the first failing field. Without this a submit that fails
+		// leaves focus where it was, which for anyone not looking at the screen
+		// means nothing happened at all: no bubble, no focus, and no live region
+		// anywhere in a form. Deferred, so the whole round has been fired and
+		// the submit algorithm is done before focus moves.
+		if (this._focusTarget) return;
+		this._focusTarget = control as HTMLElement;
+		queueMicrotask(() => {
+			this._focusTarget?.focus?.();
+			this._focusTarget = null;
+		});
+	};
+
+	/** The first control to fail this round, focused once the round is over. */
+	private _focusTarget: HTMLElement | null = null;
+
+	/**
+	 * A reset takes the marks off with the values.
+	 *
+	 * A reset fires no `input`, so nothing above hears it and a field that was
+	 * refused keeps its mark over a value the user just cleared. `judging` goes
+	 * with it: the question has been withdrawn, so the hints come back and the
+	 * field is what it was before anyone submitted.
+	 *
+	 * Deferred because the event comes first and the values go back after it,
+	 * so anything read here would still be the old one.
+	 */
+	private _handleReset = () => {
+		queueMicrotask(() => {
+			this._judged = new WeakSet<Element>();
+			for (const el of this._form?.elements ?? []) el.removeAttribute('invalid');
+			for (const list of this.querySelectorAll('nldd-validation-list')) {
+				list.removeAttribute('judging');
+			}
+		});
 	};
 
 	/**
@@ -234,6 +273,7 @@ export class NLDDForm extends HTMLElement {
 
 		this.addEventListener('invalid', this._handleInvalid, true);
 		this.addEventListener('input', this._handleInput);
+		this.addEventListener('reset', this._handleReset);
 
 		// Propagate label-alignment to current children (initial + after reconnect)
 		this._propagateLabelAlignment(this.getAttribute('label-alignment'));
@@ -244,6 +284,7 @@ export class NLDDForm extends HTMLElement {
 		this._observer = null;
 		this.removeEventListener('invalid', this._handleInvalid, true);
 		this.removeEventListener('input', this._handleInput);
+		this.removeEventListener('reset', this._handleReset);
 	}
 
 	attributeChangedCallback(name: string, _oldVal: string | null, newVal: string | null): void {

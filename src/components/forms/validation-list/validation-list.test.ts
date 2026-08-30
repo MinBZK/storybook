@@ -502,3 +502,94 @@ describe('nldd-form markeert een control op het moment dat het platform het zegt
 		expect(item(el, 'password-length').visible).toBe(false);
 	});
 });
+
+
+describe('nldd-form ruimt op wat het platform niet opruimt', () => {
+	let el: HTMLElement;
+
+	afterEach(() => {
+		if (el) cleanup(el);
+	});
+
+	const settle = () => new Promise(resolve => setTimeout(resolve, 50));
+
+	const twoRequiredFields = `
+		<nldd-form>
+			<nldd-form-field label="Een">
+				<nldd-text-field name="one" required></nldd-text-field>
+				<nldd-validation-list hint>
+					<nldd-validation-item id="one-required" required>Verplicht</nldd-validation-item>
+				</nldd-validation-list>
+			</nldd-form-field>
+			<nldd-form-field label="Twee">
+				<nldd-text-field name="two" required></nldd-text-field>
+				<nldd-validation-list hint>
+					<nldd-validation-item id="two-required" required>Verplicht</nldd-validation-item>
+				</nldd-validation-list>
+			</nldd-form-field>
+			<button type="submit">Verstuur</button>
+		</nldd-form>
+	`;
+
+	it('stuurt de focus naar het eerste veld dat zakt, want de bubbel is weg', async () => {
+		el = await fixture(twoRequiredFields);
+		await waitForUpdate(el);
+		const form = el.querySelector('form') as HTMLFormElement;
+		form.addEventListener('submit', event => event.preventDefault());
+
+		form.requestSubmit();
+		await waitForUpdate(el);
+		await settle();
+
+		const active = document.activeElement as HTMLElement | null;
+		expect(active?.getAttribute('name')).toBe('one');
+		expect(active?.shadowRoot?.activeElement?.tagName.toLowerCase()).toBe('input');
+	});
+
+	it('haalt bij een reset de markering en het oordeel weg', async () => {
+		el = await fixture(twoRequiredFields);
+		await waitForUpdate(el);
+		const form = el.querySelector('form') as HTMLFormElement;
+		form.addEventListener('submit', event => event.preventDefault());
+		const controls = Array.from(el.querySelectorAll('nldd-text-field'));
+		const lists = Array.from(el.querySelectorAll('nldd-validation-list'));
+
+		form.requestSubmit();
+		await waitForUpdate(el);
+		await settle();
+		expect(controls.every(control => control.hasAttribute('invalid'))).toBe(true);
+		expect(lists.every(list => list.hasAttribute('judging'))).toBe(true);
+
+		form.reset();
+		await waitForUpdate(el);
+		await settle();
+		expect(controls.some(control => control.hasAttribute('invalid'))).toBe(false);
+		expect(lists.some(list => list.hasAttribute('judging'))).toBe(false);
+		expect(lists[0].classList.contains('has-items')).toBe(true);
+	});
+
+	it('vraagt geen tweede render aan voor een veld dat al invalid binnenkomt', async () => {
+		const warnings: string[] = [];
+		const original = console.warn;
+		console.warn = (...args: unknown[]) => { warnings.push(String(args[0])); };
+		try {
+			el = await fixture(`
+				<nldd-form-field label="E-mailadres">
+					<nldd-text-field name="email" invalid required></nldd-text-field>
+					<nldd-validation-list hint>
+						<nldd-validation-item id="email-required" required>Een e-mailadres</nldd-validation-item>
+					</nldd-validation-list>
+				</nldd-form-field>
+			`);
+			await waitForUpdate(el);
+			await settle();
+		} finally {
+			console.warn = original;
+		}
+
+		expect(warnings.filter(warning => /scheduled an update/i.test(warning))).toEqual([]);
+		const list = el.querySelector('nldd-validation-list') as NLDDValidationList;
+		expect(list.judging).toBe(true);
+		expect(item(el, 'email-required').unmet).toBe(true);
+	});
+});
