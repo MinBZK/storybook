@@ -24,7 +24,6 @@ export const badgeStyles = css`
 		--_icon-offset-correction: var(--primitives-space-1);
 		--_ring-thickness: var(--semantics-surfaces-ring-thickness);
 		--_ring-color: var(--context-parent-background-color, var(--semantics-surfaces-base-background-color));
-		--_ring-box-shadow: 0 0 0 var(--_ring-thickness) var(--_ring-color);
 		--_pulse-spread: var(--primitives-space-8);
 		--_pulse-duration: 1.5s;
 
@@ -216,7 +215,7 @@ export const badgeStyles = css`
 		position: relative;
 		border-radius: var(--components-badge-corner-radius);
 		box-shadow:
-			var(--_ring-box-shadow),
+			0 0 0 var(--_ring-thickness) var(--_ring-color),
 			inset 0 0 0 var(--_border-width) var(--_border-color);
 		background-color: var(--_background-color);
 		min-width: var(--_height);

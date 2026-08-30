@@ -240,20 +240,6 @@ export const topNavigationBarStyles = css`
 
 	/* ## Title */
 
-	/* Twenty-four in both directions, whatever the screen and whether or not it
-	   is a link. WCAG 2.5.8 asks that of a target, and the padding that used to
-	   make this row 24 sat on the bar around it, where it does nothing for the
-	   size of the target inside. It is not conditional on the href either: a
-	   title that changed height depending on whether it linked somewhere would
-	   move the whole bar with it.
-
-	   On a small screen the four pixels sit on top, so the text keeps the place
-	   it had and the box grows downward into the row. Off-center by four, which
-	   nobody reads as a mistake, where padding on both sides would make the box
-	   28: with border-box the text of 20 and two paddings of 4 no longer fit in
-	   24. From md up the title stands beside a menu bar of 44, so there is room
-	   around it for the ring without asking for any. */
-
 	.top-navigation-bar__website-title {
 		box-sizing: border-box;
 		display: inline-flex;

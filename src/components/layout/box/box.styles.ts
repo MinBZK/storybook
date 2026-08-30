@@ -16,9 +16,6 @@ export const boxStyles = css`
 		--_highlight-border: inset 0 0 0 var(--_border-width) var(--_border-color);
 
 		display: block;
-		/* A box is a surface you lay down, so it takes the width it is given. As a
-		   block that is what happens anyway, but as a flex item — inside an
-		   nldd-cell, say — it would otherwise shrink to its content. */
 		width: 100%;
 	}
 

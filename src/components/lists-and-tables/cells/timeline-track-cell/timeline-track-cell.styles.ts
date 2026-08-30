@@ -16,7 +16,6 @@ export const timelineTrackCellStyles = css`
 		--_marker-z-index: 1;
 		--_ring-thickness: var(--semantics-surfaces-ring-thickness);
 		--_ring-color: var(--context-parent-background-color, var(--semantics-surfaces-base-background-color));
-		--_ring-box-shadow: 0 0 0 var(--_ring-thickness) var(--_ring-color);
 		--_marker-content-color: var(--semantics-content-contrast-color);
 		--_future-content-color: var(--semantics-content-secondary-color);
 		--_current-fill-color: light-dark(var(--primitives-color-accent-75), var(--primitives-color-accent-100));
@@ -36,8 +35,6 @@ export const timelineTrackCellStyles = css`
 		display: none;
 	}
 
-	/* The lane is the size; the dot fills it, and a minor one sits smaller in the
-	   same lane so the track runs straight on. */
 	:host([size="md"]) {
 		--_lane-size: var(--primitives-space-24);
 		--_marker-size: var(--primitives-space-24);
@@ -98,7 +95,6 @@ export const timelineTrackCellStyles = css`
 		bottom: calc(-1 * var(--semantics-dividers-thickness));
 	}
 
-	/* The status fills the halves as long as line says nothing. */
 	:host([status="future"]:not([line])) .timeline-track-cell__top-line,
 	:host([status="future"]:not([line])) .timeline-track-cell__bottom-line {
 		background-color: var(--_future-fill-color);
@@ -116,10 +112,6 @@ export const timelineTrackCellStyles = css`
 		background-color: var(--_future-fill-color);
 	}
 
-	/* And once it does, it says it for both halves: the ones it names are track
-	   you have covered, the other one is track still ahead. It stays drawn —
-	   where you stand in the series is what position says, and naming a fill
-	   does not move you. */
 	:host([line="top"]) .timeline-track-cell__top-line,
 	:host([line="bottom"]) .timeline-track-cell__bottom-line,
 	:host([line="both"]) .timeline-track-cell__top-line,
@@ -127,11 +119,6 @@ export const timelineTrackCellStyles = css`
 		background-color: var(--_track-color);
 	}
 
-	/* A row without a dot has one line to fill rather than two halves, and no point
-	   where a fill could change over, so its whole line follows the status. On a
-	   current row that leans the way the timeline runs: what belongs to a point
-	   usually comes after it, so going down that stretch is still ahead, and going
-	   up it is behind you. line overrules the whole of it, as everywhere. */
 	:host([variant="none"][status="future"]) .timeline-track-cell__full-line,
 	:host([variant="none"][status="current"]:not([direction="up"])) .timeline-track-cell__full-line,
 	:host([variant="none"][line="none"]) .timeline-track-cell__full-line {
@@ -160,7 +147,7 @@ export const timelineTrackCellStyles = css`
 		justify-content: center;
 		border: var(--_line-width) solid var(--_track-color);
 		border-radius: var(--_marker-corner-radius);
-		box-shadow: var(--_ring-box-shadow);
+		box-shadow: 0 0 0 var(--_ring-thickness) var(--_ring-color);
 		color: var(--_marker-content-color);
 		font: var(--primitives-font-body-sm-medium-flat);
 	}

@@ -10,13 +10,6 @@ export const avatarGroupStyles = css`
 
 	:host {
 		--_avatar-size: var(--primitives-space-40);
-		/* A share of the diameter, not a number of pixels. With a fixed 8 the
-		   actual overlap ran from 29% at size 28 down to 8% at 96, so the same
-		   component read as a tight stack at one size and a row of separate
-		   circles at another. The step that was meant to make the small sizes
-		   overlap less made 28 overlap more than 24, which is the other way
-		   round. A fifth is what 8 was at the default size of 40, so the common
-		   case does not move and every other size follows it. */
 		--_overlap-size: calc(var(--_avatar-size) * 0.2);
 		--_ring-thickness: var(--semantics-surfaces-ring-thickness);
 		--_ring-color: var(--context-parent-background-color, var(--semantics-surfaces-base-background-color));
