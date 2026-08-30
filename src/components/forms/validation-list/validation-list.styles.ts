@@ -7,6 +7,8 @@ export const validationListStyles = css`
 	/* # Host */
 
 	:host {
+		--_gap: var(--primitives-space-2);
+
 		display: block;
 	}
 
@@ -21,16 +23,10 @@ export const validationListStyles = css`
 
 	/* # List */
 
-	/* The gap sits here and not on :host, where a consumer reset would win. It
-	   collapses out through the host, which has no padding or border, so it
-	   still reads as the distance between the field and this list. Same route
-	   as .form-field__help-text. */
-
 	.validation-list {
 		display: flex;
-		margin-top: var(--primitives-space-4);
 		flex-direction: column;
-		gap: var(--primitives-space-2);
+		gap: var(--_gap);
 	}
 `;
 
@@ -41,9 +37,12 @@ export const validationItemStyles = css`
 	/* # Host */
 
 	:host {
+		--_content-color: var(--semantics-content-color);
+		--_font: var(--primitives-font-body-sm-regular-tight);
+
 		display: none;
-		color: var(--semantics-content-color);
-		font: var(--primitives-font-body-sm-regular-tight);
+		color: var(--_content-color);
+		font: var(--_font);
 	}
 
 	:host([visible]) {
@@ -51,7 +50,7 @@ export const validationItemStyles = css`
 	}
 
 	:host([unmet]) {
-		color: var(--semantics-content-critical-color);
+		--_content-color: var(--semantics-content-critical-color);
 	}
 
 	/* After the visible rule at equal specificity: hidden must also win on an

@@ -14,6 +14,7 @@ export const formFieldStyles = css`
 
 	:host {
 		--_gap: var(--primitives-space-4);
+		--_description-gap: var(--primitives-space-4);
 
 		${inheritedTextReset}
 		display: block;
@@ -166,6 +167,10 @@ export const formFieldStyles = css`
 		flex-grow: 1;
 		flex-shrink: 1;
 		flex-basis: 0;
+	}
+
+	::slotted(nldd-validation-list) {
+		margin-block-start: var(--_description-gap);
 	}
 
 
