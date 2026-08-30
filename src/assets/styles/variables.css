@@ -367,6 +367,26 @@
 		var(--primitives-font-size-200) / var(--primitives-line-height-flat)
 		var(--primitives-font-family-body)
 	;
+	--primitives-font-body-lg-semi-bold-loose:
+		var(--primitives-font-weight-body-semi-bold)
+		var(--primitives-font-size-200) / var(--primitives-line-height-loose)
+		var(--primitives-font-family-body)
+	;
+	--primitives-font-body-lg-semi-bold-snug:
+		var(--primitives-font-weight-body-semi-bold)
+		var(--primitives-font-size-200) / var(--primitives-line-height-snug)
+		var(--primitives-font-family-body)
+	;
+	--primitives-font-body-lg-semi-bold-tight:
+		var(--primitives-font-weight-body-semi-bold)
+		var(--primitives-font-size-200) / var(--primitives-line-height-tight)
+		var(--primitives-font-family-body)
+	;
+	--primitives-font-body-lg-semi-bold-flat:
+		var(--primitives-font-weight-body-semi-bold)
+		var(--primitives-font-size-200) / var(--primitives-line-height-flat)
+		var(--primitives-font-family-body)
+	;
 	--primitives-font-body-lg-bold-loose:
 		var(--primitives-font-weight-body-bold)
 		var(--primitives-font-size-200) / var(--primitives-line-height-loose)
@@ -424,6 +444,26 @@
 	;
 	--primitives-font-body-md-medium-flat:
 		var(--primitives-font-weight-body-medium)
+		var(--primitives-font-size-100) / var(--primitives-line-height-flat)
+		var(--primitives-font-family-body)
+	;
+	--primitives-font-body-md-semi-bold-loose:
+		var(--primitives-font-weight-body-semi-bold)
+		var(--primitives-font-size-100) / var(--primitives-line-height-loose)
+		var(--primitives-font-family-body)
+	;
+	--primitives-font-body-md-semi-bold-snug:
+		var(--primitives-font-weight-body-semi-bold)
+		var(--primitives-font-size-100) / var(--primitives-line-height-snug)
+		var(--primitives-font-family-body)
+	;
+	--primitives-font-body-md-semi-bold-tight:
+		var(--primitives-font-weight-body-semi-bold)
+		var(--primitives-font-size-100) / var(--primitives-line-height-tight)
+		var(--primitives-font-family-body)
+	;
+	--primitives-font-body-md-semi-bold-flat:
+		var(--primitives-font-weight-body-semi-bold)
 		var(--primitives-font-size-100) / var(--primitives-line-height-flat)
 		var(--primitives-font-family-body)
 	;
@@ -487,6 +527,26 @@
 		var(--primitives-font-size-90) / var(--primitives-line-height-flat)
 		var(--primitives-font-family-body)
 	;
+	--primitives-font-body-sm-semi-bold-loose:
+		var(--primitives-font-weight-body-semi-bold)
+		var(--primitives-font-size-90) / var(--primitives-line-height-loose)
+		var(--primitives-font-family-body)
+	;
+	--primitives-font-body-sm-semi-bold-snug:
+		var(--primitives-font-weight-body-semi-bold)
+		var(--primitives-font-size-90) / var(--primitives-line-height-snug)
+		var(--primitives-font-family-body)
+	;
+	--primitives-font-body-sm-semi-bold-tight:
+		var(--primitives-font-weight-body-semi-bold)
+		var(--primitives-font-size-90) / var(--primitives-line-height-tight)
+		var(--primitives-font-family-body)
+	;
+	--primitives-font-body-sm-semi-bold-flat:
+		var(--primitives-font-weight-body-semi-bold)
+		var(--primitives-font-size-90) / var(--primitives-line-height-flat)
+		var(--primitives-font-family-body)
+	;
 	--primitives-font-body-sm-bold-loose:
 		var(--primitives-font-weight-body-bold)
 		var(--primitives-font-size-90) / var(--primitives-line-height-loose)
@@ -547,6 +607,26 @@
 		var(--primitives-font-size-80) / var(--primitives-line-height-flat)
 		var(--primitives-font-family-body)
 	;
+	--primitives-font-body-xs-semi-bold-loose:
+		var(--primitives-font-weight-body-semi-bold)
+		var(--primitives-font-size-80) / var(--primitives-line-height-loose)
+		var(--primitives-font-family-body)
+	;
+	--primitives-font-body-xs-semi-bold-snug:
+		var(--primitives-font-weight-body-semi-bold)
+		var(--primitives-font-size-80) / var(--primitives-line-height-snug)
+		var(--primitives-font-family-body)
+	;
+	--primitives-font-body-xs-semi-bold-tight:
+		var(--primitives-font-weight-body-semi-bold)
+		var(--primitives-font-size-80) / var(--primitives-line-height-tight)
+		var(--primitives-font-family-body)
+	;
+	--primitives-font-body-xs-semi-bold-flat:
+		var(--primitives-font-weight-body-semi-bold)
+		var(--primitives-font-size-80) / var(--primitives-line-height-flat)
+		var(--primitives-font-family-body)
+	;
 	--primitives-font-body-xs-bold-loose:
 		var(--primitives-font-weight-body-bold)
 		var(--primitives-font-size-80) / var(--primitives-line-height-loose)
@@ -565,11 +645,6 @@
 	--primitives-font-body-xs-bold-flat:
 		var(--primitives-font-weight-body-bold)
 		var(--primitives-font-size-80) / var(--primitives-line-height-flat)
-		var(--primitives-font-family-body)
-	;
-	--primitives-font-body-xxs-bold-flat:
-		var(--primitives-font-weight-body-bold)
-		var(--primitives-font-size-70) / var(--primitives-line-height-flat)
 		var(--primitives-font-family-body)
 	;
 	--primitives-font-body-xxs-regular-loose:
@@ -612,6 +687,26 @@
 		var(--primitives-font-size-70) / var(--primitives-line-height-flat)
 		var(--primitives-font-family-body)
 	;
+	--primitives-font-body-xxs-semi-bold-loose:
+		var(--primitives-font-weight-body-semi-bold)
+		var(--primitives-font-size-70) / var(--primitives-line-height-loose)
+		var(--primitives-font-family-body)
+	;
+	--primitives-font-body-xxs-semi-bold-snug:
+		var(--primitives-font-weight-body-semi-bold)
+		var(--primitives-font-size-70) / var(--primitives-line-height-snug)
+		var(--primitives-font-family-body)
+	;
+	--primitives-font-body-xxs-semi-bold-tight:
+		var(--primitives-font-weight-body-semi-bold)
+		var(--primitives-font-size-70) / var(--primitives-line-height-tight)
+		var(--primitives-font-family-body)
+	;
+	--primitives-font-body-xxs-semi-bold-flat:
+		var(--primitives-font-weight-body-semi-bold)
+		var(--primitives-font-size-70) / var(--primitives-line-height-flat)
+		var(--primitives-font-family-body)
+	;
 	--primitives-font-body-xxs-bold-loose:
 		var(--primitives-font-weight-body-bold)
 		var(--primitives-font-size-70) / var(--primitives-line-height-loose)
@@ -625,6 +720,11 @@
 	--primitives-font-body-xxs-bold-tight:
 		var(--primitives-font-weight-body-bold)
 		var(--primitives-font-size-70) / var(--primitives-line-height-tight)
+		var(--primitives-font-family-body)
+	;
+	--primitives-font-body-xxs-bold-flat:
+		var(--primitives-font-weight-body-bold)
+		var(--primitives-font-size-70) / var(--primitives-line-height-flat)
 		var(--primitives-font-family-body)
 	;
 

@@ -225,7 +225,7 @@ export const toolbarTitleStyles = css`
 		--_title-max-width: var(--primitives-area-240);
 		--_title-group-height: var(--semantics-controls-md-min-size);
 		--_content-gap: var(--primitives-space-6);
-		--_title-font: var(--primitives-font-body-lg-medium-flat);
+		--_title-font: var(--primitives-font-body-lg-semi-bold-flat);
 		--_subtitle-font: var(--primitives-font-body-xs-regular-flat);
 
 		${inheritedTextReset}
@@ -241,7 +241,7 @@ export const toolbarTitleStyles = css`
 
 	:host([size="sm"]) {
 		--_title-group-height: var(--semantics-controls-sm-min-size);
-		--_title-font: var(--primitives-font-body-sm-medium-flat);
+		--_title-font: var(--primitives-font-body-sm-semi-bold-flat);
 		--_subtitle-font: var(--primitives-font-body-xxs-regular-flat);
 	}
 
