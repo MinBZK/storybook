@@ -9,6 +9,8 @@ the type of conventional-commit determines the release. Conventional types
 `chore`, `docs`, `ci`, `style`, `test`, `build` are intentionally omitted
 here; consult the commit history if you need that level of detail.
 
+## [0.8.84](https://github.com/MinBZK/storybook/compare/v0.8.83...v0.8.84) (2026-08-30)
+
 ### Highlights
 
 - **`nldd-validation-list`, everything a value has to satisfy in one list.** A requirement you can state up front is an item with a rule (`minlength`, `maxlength`, `match` or `required`) and it checks itself while you type. One only a server can decide is an item without a rule, and the app names it in `unmet` on the control. `judging` switches the two modes: before a verdict the list states what the field wants, after one those hints are gone for good and what is left is whatever the value fails. What turns red is `invalid` on the control and nothing else, so a line never goes critical under a field that looks fine. Hints are off by default: a phone number does not need its format spelled out before anyone has typed, and a password does.
