@@ -93,7 +93,7 @@ if (!customElements.get('nldd-menu-group')) {
  * @element nldd-menu-item
  *
  * @attr {string} text - Display text. Supports **bold** markdown syntax.
- * @attr {string} value - Form value. Falls back to text when not set.
+ * @attr {string} value - A value of the item's own, read off the item in a `select` handler. The default filter matches on it as well as on `text` and `aliases`. Not a form value: this component is not form-associated.
  * @attr {string} href - Optional link target. A plain button item with an href renders as an `<a>` so it is a real link (middle-click, open in new tab, copy link). Ignored for submenu openers, checkbox/radio items, and while disabled.
  * @attr {string} aliases - Space-separated alternative search terms.
  * @attr {string} details - Secondary label shown on the right side.
