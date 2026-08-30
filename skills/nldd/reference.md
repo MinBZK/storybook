@@ -2496,8 +2496,8 @@ A toolbar for page and container headings with optional navigation and action bu
 
 | Event | Description |
 | --- | --- |
-| `back` | Fired when the back button is clicked (not fired when back-href is set) |
-| `dismiss` | Fired when the dismiss button is clicked |
+| `back` | Fired when the back button is clicked (not fired when back-href is set). It bubbles and is composed, so an ancestor hears it too, which is how nldd-navigation-split-view lets a consumer catch the back of any pane in one place. Listen in one place then: bound to both this bar and an ancestor, a single press runs the handler twice. |
+| `dismiss` | Fired when the dismiss button is clicked. Bubbles and is composed, with the same caveat as `back`. |
 
 ## Status & feedback
 
