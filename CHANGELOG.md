@@ -9,6 +9,18 @@ the type of conventional-commit determines the release. Conventional types
 `chore`, `docs`, `ci`, `style`, `test`, `build` are intentionally omitted
 here; consult the commit history if you need that level of detail.
 
+### Highlights
+
+- **A tulip, in two weights.** `tulip` draws the flower as an outline: three petals, the outer two curling up beside a pointed middle one, over a short stem. `tulip-light` is the same flower with a thinner line, drawn on a 32 view-box like the other light weights, so its line stays 2 pixels at the size it is meant for. In this set `-light` names a weight rather than a state, the way `circle-light` reads beside `circle`.
+
+### Added
+
+- **Icons** — `tulip` and `tulip-light`. No aliases: the name is the flower, and it says what the icon draws.
+
+### Changed
+
+- **`viewfinder` has the corners of `viewfinder-line`.** Each of its four arms is a pixel longer, so a corner now reaches 6 pixels out instead of 5. The two are one pair, `fit-to-view` and `scan`, and `viewfinder-line` already had the longer arms. Side by side the shorter ones read as a smaller icon rather than the same frame with a line through it.
+
 ## [0.8.84](https://github.com/MinBZK/storybook/compare/v0.8.83...v0.8.84) (2026-08-30)
 
 ### Highlights

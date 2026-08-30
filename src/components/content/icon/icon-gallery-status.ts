@@ -14,7 +14,7 @@
 // days old, which is what the label is for. A date rather than a rolling window
 // so the sets only move when someone recomputes them.
 //
-//   git log --since=2026-08-01 --reverse --find-renames --name-status --format= \
+//   git log --since=2026-08-05T00:00 --reverse --find-renames --name-status --format= \
 //     -- src/components/content/icon/icons
 //
 // Read those events oldest first and chain renames forward to today's filename.
@@ -37,7 +37,6 @@ export const NEW_ICONS = new Set([
 	'clipboard-bullet-list',
 	'clock-light',
 	'cpu',
-	'display',
 	'external-hard-drive',
 	'external-hard-drives',
 	'git-branch',
@@ -56,7 +55,6 @@ export const NEW_ICONS = new Set([
 	'minus-circle',
 	'network-switch',
 	'note',
-	'paintbrush',
 	'pci-card',
 	'power-plug',
 	'printer',
@@ -72,7 +70,8 @@ export const NEW_ICONS = new Set([
 	'snowflake',
 	'ssd-hard-drive',
 	'transceiver-module',
-	'viewfinder-line',
+	'tulip',
+	'tulip-light',
 	'waving-crossing-lines',
 ]);
 
@@ -93,5 +92,6 @@ export const UPDATED_ICONS = new Set([
 	'shield-check-mark',
 	'shield-lock',
 	'trash',
+	'tray',
 	'viewfinder',
 ]);
