@@ -1,16 +1,20 @@
 /**
- * The spacing scale, for the attributes that take a step of it.
+ * The spacing scale, for the attributes that take a step of it or a length.
  *
- * Gaps and padding are rhythm: the point of a scale is that the space between
- * things is the same handful of numbers everywhere, so a value off it is not a
- * finer choice but a break in the pattern. These attributes therefore take a
- * step and not a length, and the resolver below is the one place that turns a
- * step into its token.
+ * One rule, and it reads off the value itself: a bare number is a step of the
+ * scale, anything carrying a unit is a length of your own. The two cannot be
+ * confused, so the markup still says which you meant, and the same attribute
+ * means the same thing in every component that uses this.
  *
- * It also draws the line where the old failure was. `gap="16"` in a component
- * that expected a CSS length wrote `--_gap: 16`, which is not a length: the
- * whole declaration fell away and the gap became zero, with nothing said. A
- * value this resolver cannot place is named out loud in dev instead.
+ * The scale is the easy path because spacing is rhythm, and the length is the
+ * way out for the cases a scale cannot reach: a value tied to something else,
+ * a clamp(), a percentage.
+ *
+ * What it will not do is guess. `gap="16"` in a component that expected a
+ * length used to write `--_gap: 16`, which is neither: the declaration fell
+ * away and the gap became zero without a word. A bare number that is no step
+ * is refused and named in dev rather than written, because writing it is that
+ * same silent zero.
  */
 
 /** Every step there is. `'0'` is a value, not the absence of one. */
@@ -20,6 +24,10 @@ export const SPACING_SCALE = [
 ] as const;
 
 export type SpacingSize = (typeof SPACING_SCALE)[number];
+
+/** What these attributes take: a step, or a CSS length of your own. The
+ *  intersection keeps the steps in autocomplete without closing the door. */
+export type SpacingValue = SpacingSize | (string & {});
 
 /** Anything that is not a bare number: a length, a percentage, a calc(). */
 function looksLikeLength(value: string): boolean {
@@ -36,15 +44,11 @@ function warnOnce(element: string, attribute: string, message: string): void {
 }
 
 /**
- * A step of the scale as the token it stands for.
+ * A step of the scale as the token it stands for, or a length as it is.
  *
  * Returns null when there is nothing to set, so a caller can remove the
  * property rather than write an empty one. `element` and `attribute` are only
  * there to name the offender in a dev warning.
- *
- * A length still passes through, because one component used to take them and
- * silently dropping those on the floor would be worse than the warning. It is
- * on its way out.
  */
 export function spacingToValue(
 	value: string | undefined,
@@ -56,22 +60,16 @@ export function spacingToValue(
 	if ((SPACING_SCALE as readonly string[]).includes(step)) {
 		return step === '0' ? '0' : `var(--primitives-space-${step})`;
 	}
+	// A length is yours to pick and passes through untouched.
+	if (looksLikeLength(step)) return step;
+	// A bare number that is no step is not written, because that would be the
+	// silent zero this exists to prevent: there is no --primitives-space-23.
 	if (import.meta.env?.DEV) {
-		if (looksLikeLength(step)) {
-			warnOnce(
-				element,
-				attribute,
-				`${attribute}="${step}" is a CSS length. This attribute takes a step of the spacing scale (${SPACING_SCALE.join(', ')}) and lengths are going away; the nearest step keeps the rhythm of the rest of the page.`,
-			);
-		} else {
-			warnOnce(
-				element,
-				attribute,
-				`${attribute}="${step}" is not a step of the spacing scale (${SPACING_SCALE.join(', ')}), so it resolves to nothing and the space collapses. Pick a step.`,
-			);
-		}
+		warnOnce(
+			element,
+			attribute,
+			`${attribute}="${step}" is neither a step of the spacing scale (${SPACING_SCALE.join(', ')}) nor a CSS length, so it resolves to nothing and the space collapses. Pick a step, or give the number a unit.`,
+		);
 	}
-	// A length is passed on unchanged; a bare number that is no step is not,
-	// because writing it would be the silent zero this exists to prevent.
-	return looksLikeLength(step) ? step : null;
+	return null;
 }

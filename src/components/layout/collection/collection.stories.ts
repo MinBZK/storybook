@@ -63,9 +63,9 @@ export default {
 		},
 		gap: {
 			control: 'select',
-			options: ['(standaard)', '0', '4', '8', '12', '16', '24', '32', '48'],
+			options: ['(standaard)', '0', '4', '8', '12', '16', '24', '32', '48', '2rem'],
 			mapping: { '(standaard)': '' },
-			description: 'Ruimte tussen items, als stap op de spacing-schaal',
+			description: 'Ruimte tussen items: een kaal getal is een stap op de schaal, met een eenheid is het een eigen lengte',
 			table: { defaultValue: { summary: '(standaard)' } },
 		},
 		itemWidth: {

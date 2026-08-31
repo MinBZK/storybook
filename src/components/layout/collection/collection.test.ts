@@ -54,12 +54,20 @@ describe('nldd-collection', () => {
 		expect(el.style.getPropertyValue('--_lg-gap')).toBe('var(--primitives-space-32)');
 	});
 
-	it('refuses a number that is not on the scale rather than collapsing', async () => {
+	it('passes a CSS length through as it is', async () => {
+		el = await fixture('<nldd-collection gap="23px"><div>Item</div></nldd-collection>');
+		await waitForUpdate(el);
+
+		// A unit makes it yours: the scale is the easy path, not the only one.
+		expect(el.style.getPropertyValue('--_gap')).toBe('23px');
+	});
+
+	it('refuses a bare number that is not on the scale rather than collapsing', async () => {
 		el = await fixture('<nldd-collection gap="23"><div>Item</div></nldd-collection>');
 		await waitForUpdate(el);
 
-		// var(--primitives-space-23) does not exist, so writing it would be the
-		// silent zero again. Nothing is written and the default stands.
+		// Neither a step nor a length: var(--primitives-space-23) does not exist,
+		// so writing it would be the silent zero again. The default stands.
 		expect(el.style.getPropertyValue('--_gap')).toBe('');
 	});
 
