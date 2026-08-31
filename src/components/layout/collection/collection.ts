@@ -2,7 +2,7 @@
  * Nederlandse Digitale Dienst Collection Component (Lit + TypeScript)
  *
  * A container for displaying collections of items.
- * Supports grid, stack, and horizontal scroll layouts.
+ * Supports grid, stack, lanes and horizontal scroll layouts.
  * In grid and stack modes, items are paginated via a load-more button. In
  * horizontal scroll, the prev/next controls and the edge fade appear only when
  * the items overflow the container.
@@ -11,11 +11,11 @@
  *
  * @element nldd-collection
  *
- * @attr {string} layout - Layout mode: 'grid' | 'stack' | 'horizontal-scroll' (default: 'grid')
+ * @attr {string} layout - Layout mode: 'grid' | 'stack' | 'lanes' | 'horizontal-scroll' (default: 'grid')
  * @attr {boolean} show-load-more - Show load-more button in grid/stack (default: false)
  * @attr {number} max-items - Number of visible items per page (default: 24)
  * @attr {boolean} lazy-load - Automatically load more items when the button becomes visible
- * @attr {string} item-width - Preferred width for each item (e.g. '280px', '20rem'). In grid layout used as the minimum column width (columns will be at least this wide; 1fr if container allows more). In horizontal scroll used as flex-basis. Never forces horizontal overflow — the value is clamped to container width.
+ * @attr {string} item-width - Preferred width for each item (e.g. '280px', '20rem'). In grid and lanes layouts used as the minimum column width (columns will be at least this wide; 1fr if container allows more). In horizontal scroll used as flex-basis. Never forces horizontal overflow — the value is clamped to container width.
  * @attr {string} gap - Custom gap between items (any CSS length, e.g. '8px'). Overrides the responsive default at every breakpoint; unset keeps the default.
  * @attr {object} translations - Translation overrides; unset keys fall back to Dutch. Available keys: 'components.collection.previous-action', 'components.collection.next-action', 'components.collection.load-more-action'
  *
@@ -39,7 +39,7 @@ import '../../actions/button-bar/button-bar.js';
 import '../../actions/icon-button/icon-button.js';
 import '../../content/icon/icon.js';
 
-type Layout = 'grid' | 'stack' | 'horizontal-scroll';
+type Layout = 'grid' | 'stack' | 'lanes' | 'horizontal-scroll';
 
 @customElement('nldd-collection')
 export class NLDDCollection extends LitElement {

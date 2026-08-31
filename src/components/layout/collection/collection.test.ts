@@ -35,6 +35,36 @@ describe('nldd-collection', () => {
 		expect(el.shadowRoot!.querySelector('nldd-button')).not.toBeNull();
 	});
 
+	it('lays lanes out in columns of the item width', async () => {
+		el = await fixture(`
+			<nldd-collection layout="lanes" item-width="200px" style="width: 640px;">
+				<div>Item 1</div>
+				<div>Item 2</div>
+				<div>Item 3</div>
+			</nldd-collection>
+		`);
+		await waitForUpdate(el);
+		const items = el.shadowRoot!.querySelector('.collection__items')!;
+		const columns = getComputedStyle(items).gridTemplateColumns.split(' ');
+
+		expect(columns.length).toBe(3);
+	});
+
+	it('keeps the load-more button on lanes', async () => {
+		// Where grid keeps it and horizontal-scroll does not: lanes pages like a
+		// grid, which is also why its fallback is one.
+		el = await fixture(`
+			<nldd-collection layout="lanes" show-load-more max-items="2">
+				<div>Item 1</div>
+				<div>Item 2</div>
+				<div>Item 3</div>
+			</nldd-collection>
+		`);
+		await waitForUpdate(el);
+
+		expect(el.shadowRoot!.querySelector('nldd-button')).not.toBeNull();
+	});
+
 	it('does not render load-more button on horizontal-scroll layout', async () => {
 		el = await fixture(`
 			<nldd-collection layout="horizontal-scroll" show-load-more>

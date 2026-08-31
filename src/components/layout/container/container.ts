@@ -47,8 +47,11 @@
  * independent of the surrounding page width.
  *
  * `layout="lanes"` packs items into balanced columns using native CSS grid
- * lanes where supported, falling back to CSS multicol (column-order)
- * elsewhere. CSS-only, no JS. Honours `gap` on both axes and `column-count`.
+ * lanes where supported, falling back to CSS multicol (column-order) elsewhere.
+ * CSS-only, no JS. Honours `gap` on both axes and `column-count`. Note that
+ * nldd-collection's lanes falls back to its own grid rather than to multicol:
+ * that component pages, and multicol redistributes the whole set every time
+ * load-more adds to it.
  *
  * @element nldd-container
  *

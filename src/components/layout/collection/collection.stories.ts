@@ -39,14 +39,14 @@ export default {
 	argTypes: {
 		layout: {
 			control: { type: 'select' },
-			options: ['grid', 'stack', 'horizontal-scroll'],
+			options: ['grid', 'stack', 'lanes', 'horizontal-scroll'],
 			description: 'Lay-outmodus',
 			table: { defaultValue: { summary: 'grid' } },
 		},
 		showLoadMore: {
 			name: 'show-load-more',
 			control: 'boolean',
-			description: 'Toon laad-meer-knop (alleen bij grid en stack)',
+			description: 'Toon laad-meer-knop (alleen bij grid, lanes en stack)',
 			table: { defaultValue: { summary: 'false' } },
 		},
 		lazyLoad: {
@@ -99,9 +99,9 @@ const gradientPairs: [string, string][] = [
 	['0891b2', '4f46e5'],
 ];
 
-const gradientImage = (i: number) => {
+const gradientImage = (i: number, height = 200) => {
 	const [from, to] = gradientPairs[i % gradientPairs.length];
-	const src = `data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' width='480' height='200'><defs><linearGradient id='g' x1='0' y1='0' x2='1' y2='1'><stop offset='0' stop-color='%23${from}'/><stop offset='1' stop-color='%23${to}'/></linearGradient></defs><rect width='480' height='200' fill='url(%23g)'/></svg>`;
+	const src = `data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' width='480' height='${height}'><defs><linearGradient id='g' x1='0' y1='0' x2='1' y2='1'><stop offset='0' stop-color='%23${from}'/><stop offset='1' stop-color='%23${to}'/></linearGradient></defs><rect width='480' height='${height}' fill='url(%23g)'/></svg>`;
 	return html`
 		<img
 			slot="header"
@@ -115,6 +115,15 @@ const gradientImage = (i: number) => {
 const gridItems = Array.from({ length: 12 }, (_, i) => html`
 	<nldd-card>
 		${gradientImage(i)}
+		<nldd-container padding="16">${itemContent(i)}</nldd-container>
+	</nldd-card>
+`);
+
+/* Lanes only shows itself on items that differ in height, so these images run
+   from short to tall rather than all being the same 480x200. */
+const laneItems = Array.from({ length: 12 }, (_, i) => html`
+	<nldd-card>
+		${gradientImage(i, 120 + ((i * 70) % 260))}
 		<nldd-container padding="16">${itemContent(i)}</nldd-container>
 	</nldd-card>
 `);
@@ -169,6 +178,23 @@ export const Stapel = {
 	</nldd-collection>
 `,
 	parameters: { controls: { disable: true } },
+};
+
+export const Banen = {
+	render: () => html`
+	<nldd-collection layout="lanes" show-load-more max-items="6">
+		${laneItems}
+	</nldd-collection>
+`,
+	parameters: {
+		controls: { disable: true },
+		docs: {
+			description: {
+				story:
+					'Kaarten van ongelijke hoogte, in kolommen gepakt. Waar de browser `grid-lanes` kent sluiten ze op elkaar aan; waar niet, valt het terug op het raster hierboven. Die terugval is bewust geen multicol: die vult kolom voor kolom en verdeelt de hele set opnieuw zodra laad-meer erbij zet.',
+			},
+		},
+	},
 };
 
 export const HorizontaalScrollend = {

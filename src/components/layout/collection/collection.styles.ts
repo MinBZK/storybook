@@ -87,6 +87,31 @@ export const collectionStyles = css`
 		flex-direction: column;
 	}
 
+
+	/* ## Lanes */
+
+	/* Items of unequal height packed into columns, native CSS grid-lanes where
+	   there is such a thing. The fallback is the grid above rather than the
+	   multicol nldd-container falls back to, because this component pages:
+	   multicol fills column by column and redistributes the whole set every
+	   time load-more adds to it, so what you had read jumps. Grid fills row by
+	   row like native lanes and grows at the bottom. The ragged edge is what
+	   you lose, and that is a look rather than a behaviour. */
+	:host([layout="lanes"]) .collection__items {
+		display: grid;
+		grid-template-columns: repeat(auto-fill, minmax(min(var(--_item-width), 100%), 1fr));
+	}
+
+	:host([layout="lanes"]) .collection__items ::slotted(*) {
+		min-width: 0;
+	}
+
+	@supports (display: grid-lanes) {
+		:host([layout="lanes"]) .collection__items {
+			display: grid-lanes;
+		}
+	}
+
 	/* ## Horizontal scroll */
 
 	:host([layout="horizontal-scroll"]) .collection__items {
