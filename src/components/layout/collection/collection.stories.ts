@@ -61,6 +61,13 @@ export default {
 			description: 'Aantal items per pagina',
 			table: { defaultValue: { summary: '24' } },
 		},
+		gap: {
+			control: 'select',
+			options: ['(standaard)', '0', '4', '8', '12', '16', '24', '32', '48'],
+			mapping: { '(standaard)': '' },
+			description: 'Ruimte tussen items, als stap op de spacing-schaal',
+			table: { defaultValue: { summary: '(standaard)' } },
+		},
 		itemWidth: {
 			name: 'item-width',
 			control: 'text',
@@ -74,6 +81,7 @@ export default {
 		lazyLoad: false,
 		maxItems: 6,
 		itemWidth: '',
+		gap: '',
 	},
 };
 
@@ -141,13 +149,14 @@ const scrollItems = Array.from({ length: 12 }, (_, i) => html`
 	</nldd-card>
 `);
 
-export const Standaard = ({ layout, showLoadMore, lazyLoad, maxItems, itemWidth }: Record<string, any>) => html`
+export const Standaard = ({ layout, showLoadMore, lazyLoad, maxItems, itemWidth, gap }: Record<string, any>) => html`
 	<nldd-collection
 		layout=${layout}
 		?show-load-more=${showLoadMore}
 		max-items=${maxItems}
 		?lazy-load=${lazyLoad}
 		item-width=${itemWidth || nothing}
+		gap=${gap || nothing}
 	>
 		${listItems}
 	</nldd-collection>

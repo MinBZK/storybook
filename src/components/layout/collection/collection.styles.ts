@@ -42,11 +42,28 @@ export const collectionStyles = css`
 			--_gap: var(--components-collection-lg-gap);
 		}
 
+		/* The per-breakpoint gaps fall back to the plain one, which is either
+		   the component default set above or what the consumer wrote inline.
+		   One resolved value for every rule to read, so a breakpoint is
+		   declared once instead of in each of them. */
+		--_sm-gap: var(--_gap);
+		--_md-gap: var(--_gap);
+		--_lg-gap: var(--_gap);
+		--_resolved-gap: var(--_gap);
+
+		@media (max-width: ${smMax}) { --_resolved-gap: var(--_sm-gap); }
+		@media (min-width: ${mdMin}) and (max-width: ${mdMax}) { --_resolved-gap: var(--_md-gap); }
+		@media (min-width: ${lgMin}) { --_resolved-gap: var(--_lg-gap); }
+
+		@container layout-container (max-width: ${smMax}) { --_resolved-gap: var(--_sm-gap); }
+		@container layout-container (min-width: ${mdMin}) and (max-width: ${mdMax}) { --_resolved-gap: var(--_md-gap); }
+		@container layout-container (min-width: ${lgMin}) { --_resolved-gap: var(--_lg-gap); }
+
 		display: flex;
 		width: 100%;
 		min-width: 0;
 		flex-direction: column;
-		gap: var(--_gap);
+		gap: var(--_resolved-gap);
 	}
 
 	:host([hidden]) {
@@ -59,7 +76,7 @@ export const collectionStyles = css`
 	.collection__items {
 		display: flex;
 		width: 100%;
-		gap: var(--_gap);
+		gap: var(--_resolved-gap);
 	}
 
 	/* ## Grid */

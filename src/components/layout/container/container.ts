@@ -110,10 +110,10 @@ import { LitElement, PropertyValues } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
 import { containerStyles } from './container.styles.js';
 import { containerTemplate } from './container.template.js';
+import { spacingToValue, type SpacingSize } from '../../../utilities/spacing-scale.js';
 
-type PaddingSize =
-	| '0' | '2' | '4' | '6' | '8' | '10' | '12' | '16' | '20' | '24'
-	| '28' | '32' | '40' | '44' | '48' | '56' | '64' | '80' | '96';
+/** The scale lives in one place now; this alias keeps the local reads short. */
+type PaddingSize = SpacingSize;
 
 type Layout = 'stack' | 'row' | 'wrap' | 'grid' | 'columns' | 'lanes';
 type ColumnCount = 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8;
@@ -136,9 +136,7 @@ const VERTICAL_TO_FLEX: Record<VerticalAlignment, string> = {
 const ORDER_ATTRS = ['order', 'sm-order', 'md-order', 'lg-order'] as const;
 
 function sizeToValue(size: PaddingSize | undefined): string | null {
-	if (size === undefined) return null;
-	if (size === '0') return '0';
-	return `var(--primitives-space-${size})`;
+	return spacingToValue(size, 'nldd-container', 'padding/gap');
 }
 
 @customElement('nldd-container')

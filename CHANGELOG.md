@@ -11,6 +11,8 @@ here; consult the commit history if you need that level of detail.
 
 ### Added
 
+- **`gap` on `nldd-collection` is a step of the spacing scale.** It took a CSS length, so `gap="16"` wrote `--_gap: 16`, which is not one: the declaration fell away and the space between the items became nothing at all, without a word. `nldd-container` has read the same attribute as a scale step all along, so the same markup did two different things depending on which component you were in. One meaning now, and one resolver behind both. `sm-gap`, `md-gap` and `lg-gap` come with it, which is what container already had. A length still passes through and says in dev that it is going away; a bare number that is no step is refused rather than written, because writing it is the silent zero this is here to stop.
+
 - **`layout="lanes"` on `nldd-collection`.** Items of unequal height packed into columns, the masonry `nldd-container` has had for a while, now on the component that pages. `item-width` is the minimum column width, the same as it is in `grid`. Where the browser has `grid-lanes` it uses it; where it does not it falls back to that grid rather than to the multicol `nldd-container` falls back to. That is the whole reason the two differ: multicol fills column by column and redistributes every item each time `show-load-more` adds to the set, so what you had already read moves. Grid fills row by row, like native lanes, and grows at the bottom. What you give up in the fallback is the ragged edge, which is a look rather than a behaviour.
 
 ## [0.8.85](https://github.com/MinBZK/storybook/compare/v0.8.84...v0.8.85) (2026-08-31)

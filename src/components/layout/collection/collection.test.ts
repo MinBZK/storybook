@@ -35,6 +35,34 @@ describe('nldd-collection', () => {
 		expect(el.shadowRoot!.querySelector('nldd-button')).not.toBeNull();
 	});
 
+	it('reads gap as a step of the spacing scale', async () => {
+		el = await fixture('<nldd-collection gap="16"><div>Item</div></nldd-collection>');
+		await waitForUpdate(el);
+
+		// The token, not the number. Writing "16" through was the old bug: not a
+		// length, so the declaration fell away and the gap became zero in silence.
+		expect(el.style.getPropertyValue('--_gap')).toBe('var(--primitives-space-16)');
+	});
+
+	it('lets a breakpoint gap override the plain one', async () => {
+		el = await fixture(
+			'<nldd-collection gap="8" lg-gap="32"><div>Item</div></nldd-collection>',
+		);
+		await waitForUpdate(el);
+
+		expect(el.style.getPropertyValue('--_gap')).toBe('var(--primitives-space-8)');
+		expect(el.style.getPropertyValue('--_lg-gap')).toBe('var(--primitives-space-32)');
+	});
+
+	it('refuses a number that is not on the scale rather than collapsing', async () => {
+		el = await fixture('<nldd-collection gap="23"><div>Item</div></nldd-collection>');
+		await waitForUpdate(el);
+
+		// var(--primitives-space-23) does not exist, so writing it would be the
+		// silent zero again. Nothing is written and the default stands.
+		expect(el.style.getPropertyValue('--_gap')).toBe('');
+	});
+
 	it('lays lanes out in columns of the item width', async () => {
 		el = await fixture(`
 			<nldd-collection layout="lanes" item-width="200px" style="width: 640px;">

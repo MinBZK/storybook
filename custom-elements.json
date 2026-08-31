@@ -21921,10 +21921,37 @@
               "kind": "field",
               "name": "gap",
               "type": {
-                "text": "string | undefined"
+                "text": "SpacingSize | undefined"
               },
-              "description": "Custom gap between items (any CSS length, e.g. '8px'). Overrides the\nresponsive default at every breakpoint. Unset keeps the default.",
+              "description": "A step of the spacing scale, overriding the responsive default at every\nbreakpoint. Unset keeps the default.",
               "attribute": "gap",
+              "reflects": true
+            },
+            {
+              "kind": "field",
+              "name": "smGap",
+              "type": {
+                "text": "SpacingSize | undefined"
+              },
+              "attribute": "sm-gap",
+              "reflects": true
+            },
+            {
+              "kind": "field",
+              "name": "mdGap",
+              "type": {
+                "text": "SpacingSize | undefined"
+              },
+              "attribute": "md-gap",
+              "reflects": true
+            },
+            {
+              "kind": "field",
+              "name": "lgGap",
+              "type": {
+                "text": "SpacingSize | undefined"
+              },
+              "attribute": "lg-gap",
               "reflects": true
             },
             {
@@ -21991,10 +22018,34 @@
             {
               "name": "gap",
               "type": {
-                "text": "string | undefined"
+                "text": "SpacingSize | undefined"
               },
-              "description": "Custom gap between items (any CSS length, e.g. '8px'). Overrides the responsive default at every breakpoint; unset keeps the default.",
+              "description": "Gap between items, as a step of the spacing scale ('0', '2', '4', '6', '8', '10', '12', '16', '20', '24', '28', '32', '40', '44', '48', '56', '64', '80', '96'). Overrides the responsive default at every breakpoint; unset keeps the default. A CSS length still passes through and warns in dev, but is going away: a gap is rhythm, and a value off the scale breaks it.",
               "fieldName": "gap"
+            },
+            {
+              "name": "sm-gap",
+              "type": {
+                "text": "SpacingSize | undefined"
+              },
+              "fieldName": "smGap",
+              "description": "Gap at sm, overriding `gap` there"
+            },
+            {
+              "name": "md-gap",
+              "type": {
+                "text": "SpacingSize | undefined"
+              },
+              "fieldName": "mdGap",
+              "description": "Gap at md, overriding `gap` there"
+            },
+            {
+              "name": "lg-gap",
+              "type": {
+                "text": "SpacingSize | undefined"
+              },
+              "fieldName": "lgGap",
+              "description": "Gap at lg, overriding `gap` there"
             },
             {
               "name": "translations",
@@ -37839,6 +37890,69 @@
           "declaration": {
             "name": "ScrollModeController",
             "module": "src/utilities/scroll-mode-controller.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/utilities/spacing-scale.ts",
+      "declarations": [
+        {
+          "kind": "variable",
+          "name": "SPACING_SCALE",
+          "type": {
+            "text": "[\n\t'0', '2', '4', '6', '8', '10', '12', '16', '20', '24',\n\t'28', '32', '40', '44', '48', '56', '64', '80', '96',\n]"
+          },
+          "default": "[ '0', '2', '4', '6', '8', '10', '12', '16', '20', '24', '28', '32', '40', '44', '48', '56', '64', '80', '96', ]",
+          "description": "Every step there is. `'0'` is a value, not the absence of one."
+        },
+        {
+          "kind": "function",
+          "name": "spacingToValue",
+          "return": {
+            "type": {
+              "text": "string | null"
+            }
+          },
+          "parameters": [
+            {
+              "name": "value",
+              "type": {
+                "text": "string | undefined"
+              }
+            },
+            {
+              "name": "element",
+              "type": {
+                "text": "string"
+              }
+            },
+            {
+              "name": "attribute",
+              "type": {
+                "text": "string"
+              }
+            }
+          ],
+          "description": "A step of the scale as the token it stands for.\n\nReturns null when there is nothing to set, so a caller can remove the\nproperty rather than write an empty one. `element` and `attribute` are only\nthere to name the offender in a dev warning.\n\nA length still passes through, because one component used to take them and\nsilently dropping those on the floor would be worse than the warning. It is\non its way out."
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "SPACING_SCALE",
+          "declaration": {
+            "name": "SPACING_SCALE",
+            "module": "src/utilities/spacing-scale.ts"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "spacingToValue",
+          "declaration": {
+            "name": "spacingToValue",
+            "module": "src/utilities/spacing-scale.ts"
           }
         }
       ]
